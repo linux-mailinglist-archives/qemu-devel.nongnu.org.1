@@ -2,57 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4581E746E93
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 12:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77651746EBC
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 12:33:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGdDb-000064-IJ; Tue, 04 Jul 2023 06:25:11 -0400
+	id 1qGdKX-0001VX-DA; Tue, 04 Jul 2023 06:32:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
- id 1qGdDU-00005I-RB; Tue, 04 Jul 2023 06:25:05 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGdKT-0001V9-RY
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 06:32:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
- id 1qGdDQ-0001lF-0w; Tue, 04 Jul 2023 06:25:03 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QwJnd531tz4wxS;
- Tue,  4 Jul 2023 20:24:53 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QwJnY4hH7z4wZw;
- Tue,  4 Jul 2023 20:24:48 +1000 (AEST)
-Message-ID: <a59b2ef2-3a44-7729-2260-bc75d0cc50d9@kaod.org>
-Date: Tue, 4 Jul 2023 12:24:46 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGdKR-0004WK-Iq
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 06:32:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688466734;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2l0qlPws7gg83P1+QCgcrNRMwEpM6U8h1zURy0OM0og=;
+ b=YWR82CWaMem+TpgspIREaA/qM7z6nv+6nEsVmGFyC/XIfCqoJ+H76aNudsOazi+gHtgRDq
+ 8PFPSUaHhmD/clNtVJZzTzS9VCXdFHdiXzTXPwxlrYhlCVKgLHERqZ20uqT9eJUKHlKM3L
+ yfQ4i+x9qxzl0KefE8VSAjxbYk8PgO0=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-135-bYW-dwZ-NL6peIUJa_ilrw-1; Tue, 04 Jul 2023 06:32:13 -0400
+X-MC-Unique: bYW-dwZ-NL6peIUJa_ilrw-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-76746f54ba9so493577885a.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 03:32:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688466733; x=1691058733;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2l0qlPws7gg83P1+QCgcrNRMwEpM6U8h1zURy0OM0og=;
+ b=b/G3/qJGWwIid7CDcEUU+BYtdqnrMCiFG6SGUlGlEakkTACTMwloP4N54kBWcuH/HV
+ 99zhsDXSMcLqlxA7tFAfGcbis9GgvVhdkO4DIsRSoDAAau/OiejvWvbj0I/2QunYt4cd
+ 5F6n7sy2WnnbeCpJjzt8+8HD+Acs4I6dm3s6xZwCVICaiixvC6zs7uusbBwuXNsdCEhR
+ dqrF1Nk1Zd4mj5p3j03WnWtC0HEYsYCna7XSSDS/IWa+cwL1S8WaaIYBJmeNgbVCFV1K
+ 4BoQAy5KJ2pDCX7yTO/56BfQK/O5hQcic7fdLmlLZcg+hKr2XAaZX4yYmt9zzoszXTFc
+ lqRA==
+X-Gm-Message-State: ABy/qLZvaVeeElb2xXikWHzCs0pW7Pesv6/7BZnRRR8KMu6ri7WTZOsV
+ 0mRJJe8dpZK20+MYWBNwqpie/XaDP+ImMv2P3xQ7Bn0k42gaQ6/B5xZlvDRy+IpEr19HmtMOiF6
+ Y+maApYA+uNZB7NE=
+X-Received: by 2002:a05:620a:4611:b0:767:494f:4ab5 with SMTP id
+ br17-20020a05620a461100b00767494f4ab5mr13842680qkb.39.1688466733186; 
+ Tue, 04 Jul 2023 03:32:13 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGd0lPmlaBsk9KtMvCrye5XU1GwODMt8mZEeO7IrAKMtzO6KQm0C7i4wu11X2vRrubkWxQCxA==
+X-Received: by 2002:a05:620a:4611:b0:767:494f:4ab5 with SMTP id
+ br17-20020a05620a461100b00767494f4ab5mr13842658qkb.39.1688466732864; 
+ Tue, 04 Jul 2023 03:32:12 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-179-126.web.vodafone.de.
+ [109.43.179.126]) by smtp.gmail.com with ESMTPSA id
+ e3-20020a05620a12c300b007671cfe8a18sm6950610qkl.13.2023.07.04.03.32.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jul 2023 03:32:12 -0700 (PDT)
+Message-ID: <71bd9791-cdfe-3930-fdd3-64b27b180c6d@redhat.com>
+Date: Tue, 4 Jul 2023 12:32:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH qemu v3] aspeed add montblanc bmc reference from fuji
+ Thunderbird/102.11.0
 Content-Language: en-US
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-To: ~ssinprem <ssinprem@celestica.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, peter.maydell@linaro.org
-Cc: ssumet@celestica.com, srikanth@celestica.com, kgengan@celestica.com,
- andrew@aj.id.au, joel@jms.id.au, thangavelu.v@celestica.com,
- anandaramanv@celestica.com
-References: <168839101774.24055.8166021147074925227-0@git.sr.ht>
- <020268f0-9dee-c732-f543-8ee1a84a97a5@kaod.org>
-In-Reply-To: <020268f0-9dee-c732-f543-8ee1a84a97a5@kaod.org>
+To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
+ mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+ ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
+ armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
+ nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
+References: <20230630091752.67190-1-pmorel@linux.ibm.com>
+ <20230630091752.67190-3-pmorel@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v21 02/20] s390x/cpu topology: add topology entries on CPU
+ hotplug
+In-Reply-To: <20230630091752.67190-3-pmorel@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=18er=CW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,286 +107,361 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/3/23 15:31, Cédric Le Goater wrote:
-> On 7/3/23 15:06, ~ssinprem wrote:
->> From: Sittisak Sinprem <ssinprem@celestica.com>
->>
->> - I2C list follow I2C Tree v1.6 20230320
->> - fru eeprom data use FB FRU format version 4
->>
->> Signed-off-by: Sittisak Sinprem <ssinprem@celestica.com>
+On 30/06/2023 11.17, Pierre Morel wrote:
+> The topology information are attributes of the CPU and are
+> specified during the CPU device creation.
 > 
-> Super !
+> On hot plug we:
+> - calculate the default values for the topology for drawers,
+>    books and sockets in the case they are not specified.
+> - verify the CPU attributes
+> - check that we have still room on the desired socket
 > 
+> The possibility to insert a CPU in a mask is dependent on the
+> number of cores allowed in a socket, a book or a drawer, the
+> checking is done during the hot plug of the CPU to have an
+> immediate answer.
 > 
-> Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Taking that back.
-  
-I missed a few things. See below.
-
-
+> If the complete topology is not specified, the core is added
+> in the physical topology based on its core ID and it gets
+> defaults values for the modifier attributes.
 > 
->> ---
->>   docs/system/arm/aspeed.rst |  1 +
->>   hw/arm/aspeed.c            | 63 ++++++++++++++++++++++++++++++++++++++
->>   hw/arm/aspeed_eeprom.c     | 50 ++++++++++++++++++++++++++++++
->>   hw/arm/aspeed_eeprom.h     |  7 +++++
->>   4 files changed, 121 insertions(+)
->>
->> diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
->> index 80538422a1..5e0824f48b 100644
->> --- a/docs/system/arm/aspeed.rst
->> +++ b/docs/system/arm/aspeed.rst
->> @@ -33,6 +33,7 @@ AST2600 SoC based machines :
->>   - ``tacoma-bmc``           OpenPOWER Witherspoon POWER9 AST2600 BMC
->>   - ``rainier-bmc``          IBM Rainier POWER10 BMC
->>   - ``fuji-bmc``             Facebook Fuji BMC
->> +- ``montblanc-bmc``        Facebook Montblanc BMC
->>   - ``bletchley-bmc``        Facebook Bletchley BMC
->>   - ``fby35-bmc``            Facebook fby35 BMC
->>   - ``qcom-dc-scm-v1-bmc``   Qualcomm DC-SCM V1 BMC
->> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
->> index 9fca644d92..91bd4e5637 100644
->> --- a/hw/arm/aspeed.c
->> +++ b/hw/arm/aspeed.c
->> @@ -189,6 +189,10 @@ struct AspeedMachineState {
->>   #define FUJI_BMC_HW_STRAP1    0x00000000
->>   #define FUJI_BMC_HW_STRAP2    0x00000000
->> +/* Montblanc hardware value */
->> +#define MONTBLANC_BMC_HW_STRAP1    0x00000000
->> +#define MONTBLANC_BMC_HW_STRAP2    0x00000000
->> +
->>   /* Bletchley hardware value */
->>   /* TODO: Leave same as EVB for now. */
->>   #define BLETCHLEY_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
->> @@ -925,6 +929,39 @@ static void fuji_bmc_i2c_init(AspeedMachineState *bmc)
->>       }
->>   }
->> +static void montblanc_bmc_i2c_init(AspeedMachineState *bmc)
->> +{
->> +    AspeedSoCState *soc = &bmc->soc;
->> +    I2CBus *i2c[16] = {};
->> +
->> +    for (int i = 0; i < 16; i++) {
->> +        i2c[i] = aspeed_i2c_get_bus(&soc->i2c, i);
->> +    }
->> +
->> +    /* Ref from Minipack3_I2C_Tree_V1.6 20230320 */
->> +    at24c_eeprom_init_rom(i2c[3], 0x56, 8192, montblanc_scm_fruid, true);
->> +    at24c_eeprom_init_rom(i2c[6], 0x53, 8192, montblanc_fcm_fruid, true);
->> +
->> +    /* CPLD and FPGA */
->> +    at24c_eeprom_init(i2c[1], 0x35, 256);  /* SCM CPLD */
->> +    at24c_eeprom_init(i2c[5], 0x35, 256);  /* COMe CPLD TODO: need to update */
->> +    at24c_eeprom_init(i2c[12], 0x60, 256); /* MCB PWR CPLD */
->> +    at24c_eeprom_init(i2c[13], 0x35, 256); /* IOB FPGA */
->> +
->> +    /* on BMC board */
->> +    at24c_eeprom_init_rom(i2c[8], 0x51, 8192, montblanc_bmc_fruid, true);
->> +                                                      /* BMC EEPROM */
->> +    i2c_slave_create_simple(i2c[8], TYPE_LM75, 0x48); /* Thermal Sensor */
->> +
->> +    /* COMe Sensor/EEPROM */
->> +    at24c_eeprom_init(i2c[0], 0x56, 16384);          /* FRU EEPROM */
->> +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x48); /* INLET Sensor */
->> +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x4A); /* OUTLET Sensor */
->> +
->> +    /* It expects a pca9555 but a pca9552 is compatible */
->> +    create_pca9552(soc, 4, 0x27);
->> +}
->> +
->>   #define TYPE_TMP421 "tmp421"
->>   static void bletchley_bmc_i2c_init(AspeedMachineState *bmc)
->> @@ -1452,6 +1489,28 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
->>           aspeed_soc_num_cpus(amc->soc_name);
->>   };
->> +#define MONTBLANC_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
->> +
->> +static void aspeed_machine_montblanc_class_init(ObjectClass *oc, void *data)
->> +{
->> +    MachineClass *mc = MACHINE_CLASS(oc);
->> +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
->> +
->> +    mc->desc = "Facebook Montblanc BMC (Cortex-A7)";
->> +    amc->soc_name = "ast2600-a3";
->> +    amc->hw_strap1 = MONTBLANC_BMC_HW_STRAP1;
->> +    amc->hw_strap2 = MONTBLANC_BMC_HW_STRAP2;
->> +    amc->fmc_model = "mx66l1g45g";
->> +    amc->spi_model = "mx66l1g45g";
->> +    amc->num_cs = 2;
->> +    amc->macs_mask = ASPEED_MAC3_ON;
->> +    amc->i2c_init = montblanc_bmc_i2c_init;
->> +    amc->uart_default = ASPEED_DEV_UART1;
->> +    mc->default_ram_size = MONTBLANC_BMC_RAM_SIZE;
->> +    mc->default_cpus = mc->min_cpus = mc->max_cpus =
->> +        aspeed_soc_num_cpus(amc->soc_name);
->> +};
->> +
->>   #define BLETCHLEY_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
->>   static void aspeed_machine_bletchley_class_init(ObjectClass *oc, void *data)
->> @@ -1703,6 +1762,10 @@ static const TypeInfo aspeed_machine_types[] = {
->>           .name          = MACHINE_TYPE_NAME("fuji-bmc"),
->>           .parent        = TYPE_ASPEED_MACHINE,
->>           .class_init    = aspeed_machine_fuji_class_init,
->> +    }, {
->> +        .name          = MACHINE_TYPE_NAME("montblanc-bmc"),
->> +        .parent        = TYPE_ASPEED_MACHINE,
->> +        .class_init    = aspeed_machine_montblanc_class_init,
->>       }, {
->>           .name          = MACHINE_TYPE_NAME("bletchley-bmc"),
->>           .parent        = TYPE_ASPEED_MACHINE,
->> diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
->> index ace5266cec..6b3ffba0f8 100644
->> --- a/hw/arm/aspeed_eeprom.c
->> +++ b/hw/arm/aspeed_eeprom.c
->> @@ -161,6 +161,53 @@ const uint8_t rainier_bmc_fruid[] = {
->>       0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
->>   };
->> +/* Montblanc BMC FRU */
->> +const uint8_t montblanc_scm_fruid[8192] = {
-
-
-Please don't specify a 8k size. same below.
-
->> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
->> +    0x43, 0x4b, 0x33, 0x5f, 0x53, 0x43, 0x4d, 0x02, 0x08, 0x32, 0x30, 0x30,
->> +    0x30, 0x32, 0x39, 0x34, 0x35, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
->> +    0x30, 0x31, 0x36, 0x34, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
->> +    0x30, 0x30, 0x30, 0x31, 0x32, 0x37, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
->> +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x30, 0x33, 0x30, 0x31, 0x07,
->> +    0x0d, 0x41, 0x30, 0x33, 0x31, 0x33, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
->> +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
->> +    0x0d, 0x4d, 0x32, 0x32, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
->> +    0x30, 0x32, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
->> +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
->> +    0x43, 0x54, 0x48, 0x10, 0x06, 0x01, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x13,
->> +    0x03, 0x53, 0x43, 0x4d, 0xfa, 0x02, 0x02, 0x61,
->> +};
->> +
->> +const uint8_t montblanc_fcm_fruid[8192] = {
->> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
->> +    0x43, 0x4b, 0x33, 0x5f, 0x46, 0x43, 0x42, 0x02, 0x08, 0x33, 0x30, 0x30,
->> +    0x30, 0x30, 0x31, 0x36, 0x31, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
->> +    0x30, 0x31, 0x36, 0x33, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
->> +    0x30, 0x30, 0x30, 0x31, 0x33, 0x30, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
->> +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x31, 0x32, 0x30, 0x31, 0x07,
->> +    0x0d, 0x41, 0x31, 0x32, 0x31, 0x32, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
->> +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
->> +    0x0d, 0x46, 0x35, 0x30, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
->> +    0x30, 0x35, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
->> +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
->> +    0x43, 0x54, 0x48, 0x10, 0x06, 0x02, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x11,
->> +    0x06, 0x03, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x12, 0x02, 0x8a, 0x00, 0x13,
->> +    0x03, 0x46, 0x43, 0x42, 0xfa, 0x02, 0x50, 0x47,
->> +};
->> +
->> +const uint8_t montblanc_bmc_fruid[8192] = {
->> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
->> +    0x43, 0x4b, 0x33, 0x5f, 0x42, 0x4d, 0x43, 0x04, 0x0c, 0x31, 0x33, 0x32,
->> +    0x30, 0x30, 0x30, 0x31, 0x33, 0x36, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31,
->> +    0x33, 0x31, 0x30, 0x30, 0x30, 0x30, 0x38, 0x36, 0x30, 0x35, 0x20, 0x06,
->> +    0x0c, 0x52, 0x33, 0x30, 0x39, 0x37, 0x47, 0x30, 0x30, 0x30, 0x32, 0x30,
->> +    0x37, 0x07, 0x0d, 0x42, 0x30, 0x32, 0x37, 0x34, 0x58, 0x58, 0x58, 0x58,
->> +    0x58, 0x58, 0x58, 0x58, 0x08, 0x01, 0x04, 0x09, 0x01, 0x00, 0x0a, 0x01,
->> +    0x00, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32, 0x33,
->> +    0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03, 0x43,
->> +    0x54, 0x48, 0x13, 0x03, 0x42, 0x4d, 0x43, 0xfa, 0x02, 0xef, 0xba,
->> +};
-
-These arrays decode as :
-
-         montblanc_scm
-	
-	......MINIPACK3.SCM..20002945..13200016401...13100012701...R
-	3214G000301..A0313XXXXXXXX...........M221323170002..CLS..202
-	30501..WUS..CTH..........SCM...a
-
-         montblanc_fcm
-	
-	......MINIPACK3.FCB..30000161..13200016301...13100013001...R
-	3214G001201..A1212XXXXXXXX...........F501323170005..CLS..202
-	30501..WUS..CTH......................FCB..PG
-
-         montblanc_bmc
-	
-	......MINIPACK3.BMC..13200013601...13100008605...R3097G00020
-	7..B0274XXXXXXXX...........CLS..20230501..WUS..CTH..BMC....
-
-
-where as :
-
-         tiogapass_bmc
-	
-	...........6...XXXXXX.BMC.Storage.Module.XXXXXXXXXXXXX.XXXXX
-	XXXXXXXXX.1.0.XXXXXXXXX.XXXXXXXXXXXXXXXXXX.9....XXXXXX.Tioga
-	.Pass.Single2.XXXXXXXXXXXXXX.XXX2.XXXXXXXXXXXXX.XXXXXXX.1.0.
-	XXXXXXXXX.Config.A.E
-
-         fby35_nic
-	
-	...............XXXXXXXX.Mellanox.ConnectX.6.DX.OCP3.0.XXXXXX
-	XXXXXXXXXXXXXXXXXX.XXXXXXXXXXXXXXXXXXXXX.FRU.Ver.0.02.......
-	....XXXXXXXX.Mellanox.ConnectX.6.DX.OCP3.0.XXXXXXXXXXXXXXXXX
-	XXXX.A9..................XXXXXXXXXXXXXXXXXXXXXXXX.....Connec
-	tX.6.DX...........0.y...........d..........F................
-	.........
-
-         fby35_bb
-	
-	............N.A.N.A............XXXXXX.Management.Board.wBMC.
-	XXXXXXXXXXXXX.XXXXXXXXXXXXXX.1.0.XXXXXXXXX.XXXXXXXXXXXXXXXXX
-	X...........XXXXXX.Yosemite.V3.5.EVT2.XXXXXXXXXXXXXX.EVT2.XX
-	XXXXXXXXXXX.XXXXXXX.1.0.XXXXXXXXX.N.A......C
-
-         fby35_bmc
-	
-	...........6...XXXXXX.BMC.Storage.Module.XXXXXXXXXXXXX.XXXXX
-	XXXXXXXXX.1.0.XXXXXXXXX.XXXXXXXXXXXXXXXXXX.9....XXXXXX.Yosem
-	ite.V3.5.EVT2.XXXXXXXXXXXXXX.EVT2.XXXXXXXXXXXXX.XXXXXXX.1.0.
-	XXXXXXXXX.Config.A.E
-
-         yosemitev2_bmc
-	
-	...........6...XXXXXX.Baseboard.MP.......XXXXXXXXXXXXX.XXXXX
-	XXXXXXXXX.1.0.XXXXXXXXX.XXXXXXXXXXXXXXXXXX.9....XXXXXX.Yosem
-	ite.V2.MP.....XXXXXXXXXXXXXX.EVT2.XXXXXXXXXXXXX.XXXXXXX.1.0.
-	XXXXXXXXX.Config.A.E
-
-
-Are the montblanc contents real numbers ? If so, could you clean
-them up please.
-
-Thanks,
-
-C.
-
->>   const size_t tiogapass_bmc_fruid_len = sizeof(tiogapass_bmc_fruid);
->>   const size_t fby35_nic_fruid_len = sizeof(fby35_nic_fruid);
->>   const size_t fby35_bb_fruid_len = sizeof(fby35_bb_fruid);
->> @@ -168,3 +215,6 @@ const size_t fby35_bmc_fruid_len = sizeof(fby35_bmc_fruid);
->>   const size_t yosemitev2_bmc_fruid_len = sizeof(yosemitev2_bmc_fruid);
->>   const size_t rainier_bb_fruid_len = sizeof(rainier_bb_fruid);
->>   const size_t rainier_bmc_fruid_len = sizeof(rainier_bmc_fruid);
->> +const size_t montblanc_scm_fruid_len = sizeof(montblanc_scm_fruid);
->> +const size_t montblanc_fcm_fruid_len = sizeof(montblanc_fcm_fruid);
->> +const size_t montblanc_bmc_fruid_len = sizeof(montblanc_bmc_fruid);
->> diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
->> index bbf9e54365..b8fbdd0734 100644
->> --- a/hw/arm/aspeed_eeprom.h
->> +++ b/hw/arm/aspeed_eeprom.h
->> @@ -27,4 +27,11 @@ extern const size_t rainier_bb_fruid_len;
->>   extern const uint8_t rainier_bmc_fruid[];
->>   extern const size_t rainier_bmc_fruid_len;
->> +extern const uint8_t montblanc_scm_fruid[];
->> +extern const uint8_t montblanc_fcm_fruid[];
->> +extern const uint8_t montblanc_bmc_fruid[];
->> +extern const size_t montblanc_scm_fruid_len;
->> +extern const size_t montblanc_fcm_fruid_len;
->> +extern const size_t montblanc_bmc_fruid_len;
->> +
->>   #endif
+> This way, starting QEMU without specifying the topology can
+> still get some advantage of the CPU topology.
 > 
-> 
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> ---
+...
+> diff --git a/include/hw/s390x/cpu-topology.h b/include/hw/s390x/cpu-topology.h
+> new file mode 100644
+> index 0000000000..9164ac00a7
+> --- /dev/null
+> +++ b/include/hw/s390x/cpu-topology.h
+> @@ -0,0 +1,54 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * CPU Topology
+> + *
+> + * Copyright IBM Corp. 2022,2023
+
+Nit: Add a space after the comma ?
+
+> + * Author(s): Pierre Morel <pmorel@linux.ibm.com>
+> + *
+> + */
+> +#ifndef HW_S390X_CPU_TOPOLOGY_H
+> +#define HW_S390X_CPU_TOPOLOGY_H
+> +
+> +#ifndef CONFIG_USER_ONLY
+> +
+> +#include "qemu/queue.h"
+> +#include "hw/boards.h"
+> +#include "qapi/qapi-types-machine-target.h"
+> +
+> +typedef struct S390Topology {
+> +    uint8_t *cores_per_socket;
+> +} S390Topology;
+
+So S390Topology has only one entry, "cores_per_socket" here...
+
+...
+> diff --git a/hw/s390x/cpu-topology.c b/hw/s390x/cpu-topology.c
+> new file mode 100644
+> index 0000000000..b163c17f8f
+> --- /dev/null
+> +++ b/hw/s390x/cpu-topology.c
+> @@ -0,0 +1,264 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * CPU Topology
+> + *
+> + * Copyright IBM Corp. 2022,2023
+> + * Author(s): Pierre Morel <pmorel@linux.ibm.com>
+> + *
+> + * S390 topology handling can be divided in two parts:
+> + *
+> + * - The first part in this file is taking care of all common functions
+> + *   used by KVM and TCG to create and modify the topology.
+> + *
+> + * - The second part, building the topology information data for the
+> + *   guest with CPU and KVM specificity will be implemented inside
+> + *   the target/s390/kvm sub tree.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "qapi/error.h"
+> +#include "qemu/error-report.h"
+> +#include "hw/qdev-properties.h"
+> +#include "hw/boards.h"
+> +#include "target/s390x/cpu.h"
+> +#include "hw/s390x/s390-virtio-ccw.h"
+> +#include "hw/s390x/cpu-topology.h"
+> +
+> +/*
+> + * s390_topology is used to keep the topology information.
+> + * .cores_per_socket: tracks information on the count of cores
+> + *                    per socket.
+> + * .smp: keeps track of the machine topology.
+> + *
+
+... but the description talks about ".smp" here, too, which never seems to 
+be added. Leftover from a previous iteration?
+(also: please remove the empty line at the end of the comment)
+
+> + */
+> +S390Topology s390_topology = {
+> +    /* will be initialized after the cpu model is realized */
+> +    .cores_per_socket = NULL,
+> +};
+> +
+> +/**
+> + * s390_socket_nb:
+> + * @cpu: s390x CPU
+> + *
+> + * Returns the socket number used inside the cores_per_socket array
+> + * for a topology tree entry
+> + */
+> +static int __s390_socket_nb(int drawer_id, int book_id, int socket_id)
+
+Please don't use function names starting with double underscores. This 
+namespace is reserved by the C standard.
+Maybe "s390_socket_nb_from_ids" ?
+
+> +{
+> +    return (drawer_id * current_machine->smp.books + book_id) *
+> +           current_machine->smp.sockets + socket_id;
+> +}
+> +
+> +/**
+> + * s390_socket_nb:
+> + * @cpu: s390x CPU
+> + *
+> + * Returns the socket number used inside the cores_per_socket array
+> + * for a cpu.
+> + */
+> +static int s390_socket_nb(S390CPU *cpu)
+> +{
+> +    return __s390_socket_nb(cpu->env.drawer_id, cpu->env.book_id,
+> +                            cpu->env.socket_id);
+> +}
+> +
+> +/**
+> + * s390_has_topology:
+> + *
+> + * Return value: if the topology is supported by the machine.
+
+"Return: true if the topology is supported by the machine"
+
+(QEMU uses kerneldoc style, so it's just "Return:" and not "Return value:", 
+see e.g. https://www.kernel.org/doc/html/latest/doc-guide/kernel-doc.html )
+
+> + */
+> +bool s390_has_topology(void)
+> +{
+> +    return false;
+> +}
+> +
+> +/**
+> + * s390_topology_init:
+> + * @ms: the machine state where the machine topology is defined
+> + *
+> + * Keep track of the machine topology.
+> + *
+> + * Allocate an array to keep the count of cores per socket.
+> + * The index of the array starts at socket 0 from book 0 and
+> + * drawer 0 up to the maximum allowed by the machine topology.
+> + */
+> +static void s390_topology_init(MachineState *ms)
+> +{
+> +    CpuTopology *smp = &ms->smp;
+> +
+> +    s390_topology.cores_per_socket = g_new0(uint8_t, smp->sockets *
+> +                                            smp->books * smp->drawers);
+> +}
+> +
+> +/**
+> + * s390_topology_cpu_default:
+> + * @cpu: pointer to a S390CPU
+> + * @errp: Error pointer
+> + *
+> + * Setup the default topology if no attributes are already set.
+> + * Passing a CPU with some, but not all, attributes set is considered
+> + * an error.
+> + *
+> + * The function calculates the (drawer_id, book_id, socket_id)
+> + * topology by filling the cores starting from the first socket
+> + * (0, 0, 0) up to the last (smp->drawers, smp->books, smp->sockets).
+> + *
+> + * CPU type and dedication have defaults values set in the
+> + * s390x_cpu_properties, entitlement must be adjust depending on the
+> + * dedication.
+> + *
+> + * Returns false if it is impossible to setup a default topology
+> + * true otherwise.
+> + */
+> +static bool s390_topology_cpu_default(S390CPU *cpu, Error **errp)
+> +{
+> +    CpuTopology *smp = &current_machine->smp;
+> +    CPUS390XState *env = &cpu->env;
+> +
+> +    /* All geometry topology attributes must be set or all unset */
+> +    if ((env->socket_id < 0 || env->book_id < 0 || env->drawer_id < 0) &&
+> +        (env->socket_id >= 0 || env->book_id >= 0 || env->drawer_id >= 0)) {
+> +        error_setg(errp,
+> +                   "Please define all or none of the topology geometry attributes");
+> +        return false;
+> +    }
+> +
+> +    /* Check if one of the geometry topology is unset */
+> +    if (env->socket_id < 0) {
+> +        /* Calculate default geometry topology attributes */
+> +        env->socket_id = s390_std_socket(env->core_id, smp);
+> +        env->book_id = s390_std_book(env->core_id, smp);
+> +        env->drawer_id = s390_std_drawer(env->core_id, smp);
+> +    }
+> +
+> +    /*
+> +     * When the user specifies the entitlement as 'auto' on the command line,
+> +     * qemu will set the entitlement as:
+
+s/qemu/QEMU/
+
+> +     * Medium when the CPU is not dedicated.
+> +     * High when dedicated is true.
+> +     */
+> +    if (env->entitlement == S390_CPU_ENTITLEMENT_AUTO) {
+> +        if (env->dedicated) {
+> +            env->entitlement = S390_CPU_ENTITLEMENT_HIGH;
+> +        } else {
+> +            env->entitlement = S390_CPU_ENTITLEMENT_MEDIUM;
+> +        }
+> +    }
+> +    return true;
+> +}
+> +
+> +/**
+> + * s390_topology_check:
+> + * @socket_id: socket to check
+> + * @book_id: book to check
+> + * @drawer_id: drawer to check
+> + * @entitlement: entitlement to check
+> + * @dedicated: dedication to check
+> + * @errp: Error pointer
+> + *
+> + * The function checks if the topology
+> + * attributes fits inside the system topology.
+> + *
+> + * Returns false if the specified topology does not match with
+> + * the machine topology.
+> + */
+> +static bool s390_topology_check(uint16_t socket_id, uint16_t book_id,
+> +                                uint16_t drawer_id, uint16_t entitlement,
+> +                                bool dedicated, Error **errp)
+> +{
+> +    CpuTopology *smp = &current_machine->smp;
+> +    ERRP_GUARD();
+> +
+> +    if (socket_id >= smp->sockets) {
+> +        error_setg(errp, "Unavailable socket: %d", socket_id);
+> +        return false;
+> +    }
+> +    if (book_id >= smp->books) {
+> +        error_setg(errp, "Unavailable book: %d", book_id);
+> +        return false;
+> +    }
+> +    if (drawer_id >= smp->drawers) {
+> +        error_setg(errp, "Unavailable drawer: %d", drawer_id);
+> +        return false;
+> +    }
+> +    if (entitlement >= S390_CPU_ENTITLEMENT__MAX) {
+> +        error_setg(errp, "Unknown entitlement: %d", entitlement);
+> +        return false;
+> +    }
+> +    if (dedicated && (entitlement == S390_CPU_ENTITLEMENT_LOW ||
+> +                      entitlement == S390_CPU_ENTITLEMENT_MEDIUM)) {
+> +        error_setg(errp, "A dedicated cpu implies high entitlement");
+
+s/cpu/CPU/ ?
+
+> +        return false;
+> +    }
+> +    return true;
+> +}
+> +
+> +/**
+> + * s390_update_cpu_props:
+> + * @ms: the machine state
+> + * @cpu: the CPU for which to update the properties from the environment.
+> + *
+> + */
+> +static void s390_update_cpu_props(MachineState *ms, S390CPU *cpu)
+> +{
+> +    CpuInstanceProperties *props;
+> +
+> +    props = &ms->possible_cpus->cpus[cpu->env.core_id].props;
+> +
+> +    props->socket_id = cpu->env.socket_id;
+> +    props->book_id = cpu->env.book_id;
+> +    props->drawer_id = cpu->env.drawer_id;
+> +}
+> +
+> +/**
+> + * s390_topology_setup_cpu:
+> + * @ms: MachineState used to initialize the topology structure on
+> + *      first call.
+> + * @cpu: the new S390CPU to insert in the topology structure
+> + * @errp: the error pointer
+> + *
+> + * Called from CPU hotplug to check and setup the CPU attributes
+> + * before the CPU is inserted in the topology.
+> + * There is no need to update the MTCR explicitly here because it
+> + * will be updated by KVM on creation of the new CPU.
+> + */
+> +void s390_topology_setup_cpu(MachineState *ms, S390CPU *cpu, Error **errp)
+> +{
+> +    ERRP_GUARD();
+> +    int entry;
+> +
+> +    /*
+> +     * We do not want to initialize the topology if the cpu model
+
+s/cpu/CPU/
+
+> +     * does not support topology, consequently, we have to wait for
+> +     * the first CPU to be realized, which realizes the CPU model
+> +     * to initialize the topology structures.
+> +     *
+> +     * s390_topology_setup_cpu() is called from the cpu hotplug.
+> +     */
+> +    if (!s390_topology.cores_per_socket) {
+> +        s390_topology_init(ms);
+> +    }
+> +
+> +    if (!s390_topology_cpu_default(cpu, errp)) {
+> +        return;
+> +    }
+> +
+> +    if (!s390_topology_check(cpu->env.socket_id, cpu->env.book_id,
+> +                             cpu->env.drawer_id, cpu->env.entitlement,
+> +                             cpu->env.dedicated, errp)) {
+> +        return;
+> +    }
+> +
+> +    /* Do we still have space in the socket */
+> +    entry = s390_socket_nb(cpu);
+> +    if (s390_topology.cores_per_socket[entry] >= current_machine->smp.cores) {
+> +        error_setg(errp, "No more space on this socket");
+> +        return;
+> +    }
+> +
+> +    /* Update the count of cores in sockets */
+> +    s390_topology.cores_per_socket[entry] += 1;
+> +
+> +    /* topology tree is reflected in props */
+> +    s390_update_cpu_props(ms, cpu);
+> +}
+
+  Thomas
+
 
 
