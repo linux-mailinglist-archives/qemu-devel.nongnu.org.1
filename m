@@ -2,46 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05086747845
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 20:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 054747478EB
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 22:12:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGkhh-0002Ew-Ji; Tue, 04 Jul 2023 14:24:45 -0400
+	id 1qGmMn-0004j1-A9; Tue, 04 Jul 2023 16:11:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGkhd-00029j-In; Tue, 04 Jul 2023 14:24:42 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qGmMl-0004is-GS
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 16:11:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGkhb-0007vz-Nk; Tue, 04 Jul 2023 14:24:41 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 72F19746369;
- Tue,  4 Jul 2023 20:24:22 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 39AC9746361; Tue,  4 Jul 2023 20:24:22 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 37FFA74635C;
- Tue,  4 Jul 2023 20:24:22 +0200 (CEST)
-Date: Tue, 4 Jul 2023 20:24:22 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-cc: Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH] ppc/pegasos2: Add support for -initrd command line option
-In-Reply-To: <20230704181920.27B58746335@zero.eik.bme.hu>
-Message-ID: <50d98144-3aa2-0103-091b-801f365f42a2@eik.bme.hu>
-References: <20230704181920.27B58746335@zero.eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qGmMj-0007V4-P8
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 16:11:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688501471;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TastBQafAvHliTR+H8WJWs0WdTZNRdzlcZ7GPC2yDOg=;
+ b=C2ut3es9SU5GZjagZQMVz1NIRSMKDrQC2tSOzt6AZ4aa4WjTIRXcqUw1YqBUJ+yrF7Oxoq
+ hKKDZK+r8C0VNDs6R64t93K2wAK7f5YkxK3JStCVq8dX1x5yXUz8NxRB+WirHg99pL2OMF
+ gqwcCi0xJZsa7OPK7AXBqb91wcf4di4=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-470-TdkNuwNRMWaMgVvOmgdkBQ-1; Tue, 04 Jul 2023 16:11:10 -0400
+X-MC-Unique: TdkNuwNRMWaMgVvOmgdkBQ-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-765ad67e690so109500085a.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 13:11:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688501469; x=1691093469;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TastBQafAvHliTR+H8WJWs0WdTZNRdzlcZ7GPC2yDOg=;
+ b=b/DrkGC/PKQ7BXu7f2V+TFeA3UZdjgz3KjmLfSpqU/d1nayScL+51Pef9v2mkDe8Hn
+ hv5iYT4FtYwxANfega2lrkr1xPTWkzbJo9n16twhqRMQoJqHy9XC6VsCdNcKx6J8IT2c
+ 0S11SmXAFO7gffJO+L+egDHV1JL8KfW9/FJv744G1PqdNzvByxTBkrq8C7/KxUfO7mZy
+ y1Bue1REp2eXnsEDUEwkBYuPWc9tCXhcRqBxHHFtVMsNVsJtz9YIPPj2pTQdF9wnC4y0
+ wbLulA01A1Ecu84qrduiEmarB6y1vkc1DtLPhxxBczpixCsL80k6NuR/Cf3QSwHsXKOs
+ CcJA==
+X-Gm-Message-State: AC+VfDzRinRCiV3N8ct50dkq1odmZwIhxYZXyBwa31/05VKOULhx/vr4
+ hybQqXbUutWrsGYLya4cKswkPCY6Rak0iZuLkilJQTfqfdO8WsjKFRnqVCBIbs8lSD5/DargMc4
+ nSPEzQXiioopeNVc=
+X-Received: by 2002:a05:620a:370e:b0:767:ffb:58aa with SMTP id
+ de14-20020a05620a370e00b007670ffb58aamr17007961qkb.3.1688501469620; 
+ Tue, 04 Jul 2023 13:11:09 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7yzh/zT5sFMlWUZvKVrCoyRtL/iCvVilXFsOkwM/Ce2LzjuNffoRWF1ihPQ+WbUq9fKdFjag==
+X-Received: by 2002:a05:620a:370e:b0:767:ffb:58aa with SMTP id
+ de14-20020a05620a370e00b007670ffb58aamr17007940qkb.3.1688501469291; 
+ Tue, 04 Jul 2023 13:11:09 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ c5-20020a05620a11a500b00765aa9e3499sm9868429qkk.135.2023.07.04.13.11.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 13:11:08 -0700 (PDT)
+Date: Tue, 4 Jul 2023 16:11:07 -0400
+From: Peter Xu <peterx@redhat.com>
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+Subject: Re: Memory region endianness
+Message-ID: <ZKR82+54jTZK9Gj4@x1n>
+References: <873fa402-8e75-1ea1-6806-26b93d3ac714@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 10%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <873fa402-8e75-1ea1-6806-26b93d3ac714@eik.bme.hu>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -57,101 +97,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 4 Jul 2023, BALATON Zoltan wrote:
+On Fri, Jun 30, 2023 at 01:37:49AM +0200, BALATON Zoltan wrote:
+> Hello,
+> 
+> Some devices have bits that allow the guest to change endianness of memory
+> mapped resources, e.g. ati-vga should allow switching the regs BAR into big
+> endian on writing a bit. What's the best way to emulate this?
+> 
+> The naive way could be to just test for the bit in the memory ops call backs
+> and do the swap there, but that would add overhead when it's not needed
+> (most guests don't need it) and there are two BARs to access the same
+> registers (one is in an IO BAR that aliases part of the MEM space BAR) and
+> these may need to have different endianness so I'd rather have the memory
+> layer handle it.
+> 
+> Now the question is how can the endianness be changed from the memory ops
+> call back? Is it allowed to overwrite ops.endianness or replace ops with
+> another one that has DEVICE_BIG_ENDIAN? In MemoryRegion the ops field is
+> declared const and nothing seems to try to change it so I guess it might not
+> be changed.
+> 
+> Then do I need to define two memory regions one with little and another with
+> big endian and unmap/map those when the bit is written? Can this be done
+> when a write to the bit happens with LE ops then is it possible from the
+> callback ro unmap the memory region being written and replace it with
+> another? Is there any other easy simple way that I'm missing?
 
-Forgot to add commit message here:
+I hope it'll just work as you said.  It seems the same case to me comparing
+to other memory region updates within an MMIO callback, no matter whether
+the new MR only switched the endianness, or something else has changed.
 
-This also changes type of sz local variable to ssize_t because it is used 
-to store return value of load_elf() and load_image_targphys() that return 
-ssize_t.
+Thanks,
 
-Should I resend for this or you can ammend on commit?
+-- 
+Peter Xu
 
-Regards,
-BALATON Zoltan
-
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
-> hw/ppc/pegasos2.c | 32 +++++++++++++++++++++++++++++++-
-> 1 file changed, 31 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-> index af5489de26..9c9944188b 100644
-> --- a/hw/ppc/pegasos2.c
-> +++ b/hw/ppc/pegasos2.c
-> @@ -44,6 +44,8 @@
-> #define PROM_ADDR     0xfff00000
-> #define PROM_SIZE     0x80000
->
-> +#define INITRD_MIN_ADDR 0x600000
-> +
-> #define KVMPPC_HCALL_BASE    0xf000
-> #define KVMPPC_H_RTAS        (KVMPPC_HCALL_BASE + 0x0)
-> #define KVMPPC_H_VOF_CLIENT  (KVMPPC_HCALL_BASE + 0x5)
-> @@ -80,6 +82,8 @@ struct Pegasos2MachineState {
->     uint64_t kernel_addr;
->     uint64_t kernel_entry;
->     uint64_t kernel_size;
-> +    uint64_t initrd_addr;
-> +    uint64_t initrd_size;
-> };
->
-> static void *build_fdt(MachineState *machine, int *fdt_size);
-> @@ -117,7 +121,8 @@ static void pegasos2_init(MachineState *machine)
->     I2CBus *i2c_bus;
->     const char *fwname = machine->firmware ?: PROM_FILENAME;
->     char *filename;
-> -    int i, sz;
-> +    int i;
-> +    ssize_t sz;
->     uint8_t *spd_data;
->
->     /* init CPU */
-> @@ -213,6 +218,20 @@ static void pegasos2_init(MachineState *machine)
->         warn_report("Using Virtual OpenFirmware but no -kernel option.");
->     }
->
-> +    if (machine->initrd_filename) {
-> +        pm->initrd_addr = pm->kernel_addr + pm->kernel_size + 64 * KiB;
-> +        pm->initrd_addr = ROUND_UP(pm->initrd_addr, 4);
-> +        pm->initrd_addr = MAX(pm->initrd_addr, INITRD_MIN_ADDR);
-> +        sz = load_image_targphys(machine->initrd_filename, pm->initrd_addr,
-> +                                 machine->ram_size - pm->initrd_addr);
-> +        if (sz <= 0) {
-> +            error_report("Could not load initrd '%s'",
-> +                         machine->initrd_filename);
-> +            exit(1);
-> +        }
-> +        pm->initrd_size = sz;
-> +    }
-> +
->     if (!pm->vof && machine->kernel_cmdline && machine->kernel_cmdline[0]) {
->         warn_report("Option -append may be ineffective with -bios.");
->     }
-> @@ -335,6 +354,11 @@ static void pegasos2_machine_reset(MachineState *machine, ShutdownCause reason)
->         error_report("Memory for kernel is in use");
->         exit(1);
->     }
-> +    if (pm->initrd_size &&
-> +        vof_claim(pm->vof, pm->initrd_addr, pm->initrd_size, 0) == -1) {
-> +        error_report("Memory for initrd is in use");
-> +        exit(1);
-> +    }
->     fdt = build_fdt(machine, &sz);
->     /* FIXME: VOF assumes entry is same as load address */
->     d[0] = cpu_to_be64(pm->kernel_entry);
-> @@ -966,6 +990,12 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
->     qemu_fdt_setprop_string(fdt, "/memory@0", "name", "memory");
->
->     qemu_fdt_add_subnode(fdt, "/chosen");
-> +    if (pm->initrd_addr && pm->initrd_size) {
-> +        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-end",
-> +                              pm->initrd_addr + pm->initrd_size);
-> +        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-start",
-> +                              pm->initrd_addr);
-> +    }
->     qemu_fdt_setprop_string(fdt, "/chosen", "bootargs",
->                             machine->kernel_cmdline ?: "");
->     qemu_fdt_setprop_string(fdt, "/chosen", "name", "chosen");
->
 
