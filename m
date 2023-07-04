@@ -2,87 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36DFD7477CF
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 19:31:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 454E97477F1
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 19:39:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGjs8-0005hj-SQ; Tue, 04 Jul 2023 13:31:29 -0400
+	id 1qGjyM-0007xO-Ty; Tue, 04 Jul 2023 13:37:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1qGjrr-0005hV-Cp
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 13:31:12 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1qGjrj-00062p-Mj
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 13:31:09 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3143798f542so2532936f8f.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 10:30:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688491858; x=1691083858;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BqwjmhAwaYZvS/phaxnfzVCTJ9/j9xJS/UL/YJt+b6s=;
- b=hT+X7VtagUWRrZtcDG5GdblPszBfig/NBUZvj9g8sAikW1Dn2p0KnBFOZImeq9/Kno
- T1K3IgdzJesZuVfQUG4HtrzUxCeZqsT+rEi7UrJlz39zywFOu30kRCMTU+SIzBqaAWAa
- 149dFhU8Ru5UPIxe0dJhQHdSta3uKbZbhh1KzdNlitL6PjjFvCIAMyRQkqC9+4l1btOA
- cWpigQrSyvw9lMhB85CRUrNziCKLYnr6jroc/gbLZt8G7fXlPg8mh3QEowr+Zqml3gKb
- NqBSsUlxn37WhWhz7aBLDUXduBcCmRizGWrVPkKHUzXsSNi6vbCoIp4m3tCVcgrBK0Tj
- OA/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688491858; x=1691083858;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BqwjmhAwaYZvS/phaxnfzVCTJ9/j9xJS/UL/YJt+b6s=;
- b=ft3WVidk/xSGyQuMXy4Tuap3BGNzdyRza/i4KMfE9Nbx0YEv5qVsjscN+CP3MsiqVm
- NnTJl2Um2EfWJ9cXcPGi4G5PA6YrFJtwZujpPSu7lpl7+aDWrc2EkNxY++8+mOyUhmDF
- Eek6wFRTdOnOdcLDrZOPDOE2rjEm49NhXBft5arRo42RyZTbQqkv/LY41rRTM/ibF2qe
- 17fBHBLtcQo34slfoVN1BLxD/mpeSPOYT377fYLYYKGvmmKcAi0tFI4iheeevQZ73VOD
- dI094FuF8u2xUUltY0tMJELyRdvgTm58PEUdZAfgtYZg0kluulCDgYr/CC23NuZ6OmJE
- QwEA==
-X-Gm-Message-State: ABy/qLaEm5h0gpfM9EZpjAuiTT+2g+QzXzqEU8yPEM7ojGFlvDIfMk8m
- rLYFsoKQFYkRyGBg1p8nn23WfQ==
-X-Google-Smtp-Source: APBJJlHWq+SJ3MAT2mvB1IoBkIGGFX/y2rPs7AWOeoXKXnc/wSgQPUDmRSAE5u0ro1E6aqUv0kbPzg==
-X-Received: by 2002:a5d:45d1:0:b0:313:fe1b:f447 with SMTP id
- b17-20020a5d45d1000000b00313fe1bf447mr10665728wrs.71.1688491858133; 
- Tue, 04 Jul 2023 10:30:58 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:5cc:caa0:6d79:3eab:6444:9cd4?
- ([2a01:e0a:5cc:caa0:6d79:3eab:6444:9cd4])
- by smtp.gmail.com with ESMTPSA id
- s11-20020a5d69cb000000b00313f07ccca4sm24642181wrw.117.2023.07.04.10.30.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 10:30:57 -0700 (PDT)
-Message-ID: <abce6c15-8824-d3d8-2036-fcc04c74988e@linaro.org>
-Date: Tue, 4 Jul 2023 19:30:57 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
+ (Exim 4.90_1) (envelope-from <fweimer@redhat.com>)
+ id 1qGjyH-0007vc-0a
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 13:37:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <fweimer@redhat.com>)
+ id 1qGjyE-0007Pp-MT
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 13:37:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688492265;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cwPTR2hH8hiWHBPRn7zMv3s8S0pQ1futli008kvEN2g=;
+ b=Q9a+1Ii4bhifqOTXZ6tVoe/mC+jGAkcamCf2yeXHlLgz0MriQSoQbrrmVoVw06CNm0NEw+
+ 2b6CIaeg1DvtDm3xayBjKGyebB+mk2UkKn1ZI1VxFYAA/kXxQ90a5J7xwk0Szke1nbkgar
+ GHxE6PFuchJBRAaZ7/J5DENrIbvXAyc=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-249-ZL0BjnfpMZyX5WJDMmngSg-1; Tue, 04 Jul 2023 13:37:43 -0400
+X-MC-Unique: ZL0BjnfpMZyX5WJDMmngSg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4C2A21C05EA0;
+ Tue,  4 Jul 2023 17:37:43 +0000 (UTC)
+Received: from oldenburg.str.redhat.com (unknown [10.2.16.19])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9FB5A200B415;
+ Tue,  4 Jul 2023 17:37:41 +0000 (UTC)
+From: Florian Weimer <fweimer@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,  qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,  laurent@vivier.eu,
+ Sajan Karumanchi <sajan.karumanchi@amd.com>
 Subject: Re: GLibC AMD CPUID cache reporting regression (was Re: qemu-user
  self emulation broken with default CPU on x86/x64)
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- laurent@vivier.eu, Florian Weimer <fweimer@redhat.com>,
- Sajan Karumanchi <sajan.karumanchi@amd.com>
 References: <c0a35ed3-7e4a-aea6-a3bd-9f0e4079f4e0@linaro.org>
  <ZKM4LV5UboN7PGni@redhat.com>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <ZKM4LV5UboN7PGni@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Date: Tue, 04 Jul 2023 19:37:39 +0200
+In-Reply-To: <ZKM4LV5UboN7PGni@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Mon, 3 Jul 2023 22:05:49 +0100")
+Message-ID: <87v8ez4ly4.fsf@oldenburg.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=fweimer@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,116 +86,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VGhhbmtzIGZvciB0aGlzIGRlZXAgYW5hbHlzaXMuDQoNCkV2ZW4gaWYgdGhlIGJ1ZyBpcyBw
-b3RlbnRpYWxseSBvbiBnbGliYyBzaWRlLCB3b3VsZCB0aGF0IGJlIHdvcnRoIHRvIA0KY2hh
-bmdlIHNvbWV0aGluZyBpbiBxZW11IENQVSBkZXNjcmlwdGlvbiB0byBhdm9pZCBpdCAobGlr
-ZSBjaGFuZ2luZyBjcHVpZCk/DQoNCk9uIDcvMy8yMyAyMzowNSwgRGFuaWVsIFAuIEJlcnJh
-bmfDqSB3cm90ZToNCj4gT24gTW9uLCBKdWwgMDMsIDIwMjMgYXQgMDY6MDM6MDhQTSArMDIw
-MCwgUGllcnJpY2sgQm91dmllciB3cm90ZToNCj4+IEhpIGV2ZXJ5b25lLA0KPj4NCj4+IFJl
-Y2VudGx5IChpbiBkMTM1Zjc4MSBbMV0sIGJldHdlZW4gdjcuMC4wIGFuZCB2OC4wLjApLCBx
-ZW11LXVzZXIgZGVmYXVsdCBjcHUNCj4+IHdhcyB1cGRhdGVkIHRvICJtYXgiIGluc3RlYWQg
-b2YgcWVtdTMyL3FlbXU2NC4NCj4+DQo+PiBUaGlzIGNoYW5nZSAiYnJva2UiIHFlbXUgc2Vs
-ZiBlbXVsYXRpb24gaWYgdGhpcyBuZXcgZGVmYXVsdCBjcHUgaXMgdXNlZC4NCj4+DQo+PiAk
-IC4vcWVtdS14ODZfNjQgLi9xZW11LXg4Nl82NCAtLXZlcnNpb24NCj4+IHFlbXUteDg2XzY0
-OiAuLi91dGlsL2NhY2hlZmx1c2guYzoyMTI6IGluaXRfY2FjaGVfaW5mbzogQXNzZXJ0aW9u
-IGAoaXNpemUgJg0KPj4gKGlzaXplIC0gMSkpID09IDAnIGZhaWxlZC4NCj4+IHFlbXU6IHVu
-Y2F1Z2h0IHRhcmdldCBzaWduYWwgNiAoQWJvcnRlZCkgLSBjb3JlIGR1bXBlZA0KPj4gQWJv
-cnRlZA0KPj4NCj4+IEJ5IHNldHRpbmcgY3B1IGJhY2sgdG8gcWVtdTY0LCBpdCB3b3JrcyBh
-Z2Fpbi4NCj4+ICQgLi9xZW11LXg4Nl82NCAtY3B1IHFlbXU2NCAuL3FlbXUteDg2XzY0ICAt
-LXZlcnNpb24NCj4+IHFlbXUteDg2XzY0IHZlcnNpb24gOC4wLjUwICh2OC4wLjAtMjMxNy1n
-ZTEyNWIwOGVkNikNCj4+IENvcHlyaWdodCAoYykgMjAwMy0yMDIzIEZhYnJpY2UgQmVsbGFy
-ZCBhbmQgdGhlIFFFTVUgUHJvamVjdCBkZXZlbG9wZXJzDQo+Pg0KPj4gQ29tbWVudGluZyBh
-c3NlcnQgZG9lcyBub3Qgd29yaywgYXMgcWVtdSBhbGlnbmVkIG1hbGxvYyBmYWlsIHNob3J0
-bHkgYWZ0ZXIuDQo+Pg0KPj4gSSdtIHdpbGxpbmcgdG8gZml4IGl0LCBidXQgSSdtIG5vdCBz
-dXJlIHdoYXQgaXMgdGhlIGlzc3VlIHdpdGggIm1heCIgY3B1DQo+PiBleGFjdGx5LiBJcyBp
-dCBtaXNzaW5nIENQVSBjYWNoZSBsaW5lLCBvciBzb21ldGhpbmcgZWxzZT8NCj4gDQo+IEkn
-dmUgb2JzZXJ2ZWQgR0xpYkMgaXMgaXNzdWluZyBDUFVJRCBsZWFmIDB4ODAwMF8wMDFkDQo+
-IA0KPiBRRU1VICdtYXgnIENQVSBtb2RlbCBkb2Vzbid0IGRlZm5pZSB4bGV2ZWwsIHNvIFFF
-TVUgbWFrZXMgaXQgZGVmYXVsdA0KPiB0byB0aGUgc2FtZSBhcyBtaW5feGxldmVsLCB3aGlj
-aCBpcyBjYWxjdWxhdGVkIHRvIGJlIDB4ODAwMF8wMDBhLg0KPiANCj4gY3B1X3g4Nl9jcHVp
-ZCgpIGluIFFFTVUgc2VlcyBDUFVJRCBsZWFmIDB4ODAwMF8wMDFkIGlzIGFib3ZlIDB4ODAw
-MF8wMDBhLA0KPiBhbmQgc28gIGNvbnNpZGVycyBpdCBhbiBpbnZhaWxkIENQVUlEIGFuZCB0
-aHVzIGZvcmNlcyBpdCB0byByZXBvcnQNCj4gMHgwMDAwXzAwMGQgd2hpY2ggaXMgc3VwcG9z
-ZWRseSB3aGF0IGFuIGludmFsaWQgQ1BVSUQgbGVhZiBzaG91bGQgZG8uDQo+IA0KPiANCj4g
-TmV0IHJlc3VsdDogZ2xpYmMgaXMgYXNraW5nIGZvciAweDgwMDBfMDAxZCwgYnV0IGdldHRp
-bmcgYmFjayBkYXRhDQo+IGZvciAweDAwMDBfMDAwZC4NCj4gDQo+IFRoaXMgZG9lc24ndCBl
-bmQgaGFwcGlseSBmb3Igb2J2aW91cyByZWFzb25zLCBnZXR0aW5nIGdhcmJhZ2UgZm9yDQo+
-IHRoZSBkY2FjaGUgc2l6ZXMuDQo+IA0KPiANCj4gVGhlICdxZW11NjQnIENQVSBtb2RlbCBh
-bHNvIGdldHMgQ1BVSUQgbGVhZiAweDgwMDBfMDAxZCBjYXBwZWQgYmFjaw0KPiB0byAweDAw
-MDBfMDAwZCwgYnV0IGNydWNpYWxseSBxZW11NjQgbGFja3MgdGhlICd4c2F2ZScgZmVhdHVy
-ZSBiaXQsDQo+IHNvIFFFTVUgcmV0dXJucyBhbGwtemVyb2VzIGZvciBDUFVJRCBsZWFmIDB4
-MDAwMF8wMDBkLiBTdGlsbCBub3QNCj4gZ29vZCwgYnV0IHRoaXMgbWFrZXMgZ2xpYmMgcmVw
-b3J0IDAgZm9yIERDQUNIRV8qLCB3aGljaCBpbiB0dXJuDQo+IGF2b2lkcyB0cmlwcGluZyB1
-cCB0aGUgbmVzdGVkIHFlbXUgd2hpY2ggcXVlcmllcyBEQ0FDSEUgc3lzY29uZi4NCj4gDQo+
-IFNvIHRoZSBwcm9ibGVtIGlzIHRodXMgbW9yZSB3aWRlc3ByZWFkIHRoYW4ganVzdCAnbWF4
-JyBDUFUgbW9kZWwuDQo+IA0KPiBBbnkgUUVNVSBDUFUgbW9kZWwgd2l0aCB2ZW5kb3I9QXV0
-aGVudGljQU1EIGFuZCB0aGUgeHNhdmUgZmVhdHVyZSwNCj4gYW5kIHRoZSB4bGV2ZWwgdW5z
-ZXQsIHdpbGwgY2F1c2UgZ2xpYmMgdG8gcmVwb3J0IGdhcmJhZ2UgZm9yIHRoZQ0KPiBMMUQg
-Y2FjaGUgaW5mbw0KPiANCj4gQW55IFFFTVUgQ1BVIG1vZGVsIHdpdGggdmVuZG9yPUF1dGhl
-bnRpY0FNRCBhbmQgd2l0aG91dCB0aGUgeHNhdmUNCj4gZmVhdHVyZSwgYW5kIHRoZSB4bGV2
-ZWwgdW5zZXQsIHdpbGwgY2F1c2UgZ2xpYmMgdG8gcmVwb3J0IHplcm9lcw0KPiBmb3IgTDFE
-IGNhY2hlIGluZm8NCj4gDQo+IE5laXRoZXIgaXMgZ29vZCwgYnV0IHRoZSBsYXR0ZXIgYXQg
-bGVhc3QgZG9lc24ndCB0cmlwIHVwIHRoZQ0KPiBuZXN0ZWQgUUVNVSB3aGVuIGl0IHF1ZXJp
-ZXMgTDFEIGNhY2hlIGluZm8uDQo+IA0KPiBJJ20gdW5zdXJlIGlmIFFFTVUncyBiZWhhdmlv
-dXIgaXMgY29ycmVjdCB3aXRoIGNhbGN1bGF0aW5nIHRoZQ0KPiBkZWZhdWx0ICd4bGV2ZWwn
-IHZhbHVlcyBmb3IgJ21heCcsIGJ1dCBJJ20gYXNzdW1pbmcgdGhlIHhsZXZlbA0KPiB3YXMg
-Y29ycmVjdCBmb3IgT3B0ZXJvbl9HNC81IHNpbmNlIHRob3NlIGFyZSBleHBsaWNpdGx5IHNl
-dA0KPiBpbiB0aGUgY29kZSBmb3IgYWxvbmcgdGltZS4NCj4gDQo+IE92ZXIgdG8gdGhlIEdM
-aWJDIHNpZGUsIEkgc2VlIHRoZXJlIHdhcyBhIHJlY2VudCBjaGFuZ2U6DQo+IA0KPiBjb21t
-aXQgMTAzYTQ2OWRjNzc1NWZkOWU4Y2NmMzYyZjNkZDRjNTVkYzc2MTkwOA0KPiBBdXRob3I6
-IFNhamFuIEthcnVtYW5jaGkgPHNhamFuLmthcnVtYW5jaGlAYW1kLmNvbT4NCj4gRGF0ZTog
-ICBXZWQgSmFuIDE4IDE4OjI5OjA0IDIwMjMgKzAxMDANCj4gDQo+ICAgICAgeDg2OiBDYWNo
-ZSBjb21wdXRhdGlvbiBmb3IgQU1EIGFyY2hpdGVjdHVyZS4NCj4gICAgICANCj4gICAgICBB
-bGwgQU1EIGFyY2hpdGVjdHVyZXMgY2FjaGUgZGV0YWlscyB3aWxsIGJlIGNvbXB1dGVkIGJh
-c2VkIG9uDQo+ICAgICAgX19jcHVpZF9fIGAweDgwMDBfMDAxRGAgYW5kIHRoZSByZWZlcmVu
-Y2UgdG8gX19jcHVpZF9fIGAweDgwMDBfMDAwNmAgd2lsbCBiZQ0KPiAgICAgIHplcm9lZCBv
-dXQgZm9yIGZ1dHVyZSBhcmNoaXRlY3R1cmVzLg0KPiAgICAgIA0KPiAgICAgIFJldmlld2Vk
-LWJ5OiBQcmVtYWNoYW5kcmEgTWFsbGFwcGEgPHByZW1hY2hhbmRyYS5tYWxsYXBwYUBhbWQu
-Y29tPg0KPiANCj4gDQo+IFRoaXMgaW50cm9kdWNlZCB0aGUgdXNlIG9mIENQVUlEIGxlYWYg
-MHg4MDAwXzAwMUQuIEJlZm9yZSB0aGlzIHBvaW50DQo+IGdsaWJjIHdvdWxkIHVzZSAweDgw
-MDBfMDAwMCBhbmQgMHg4MDAwXzAwMDUgdG8gY2FsY3VsYXRlIHRoZSBjYWNoZQ0KPiBzaXpl
-LiAgUUVNVSB3b3JrZWQgY29ycmVjdGx5IHdpdGggdGhpcyBpbXBsZW1lbnRhdGlvbi4NCj4g
-DQo+ICAgIGh0dHBzOi8vc291cmNld2FyZS5vcmcvcGlwZXJtYWlsL2xpYmMtYWxwaGEvMjAy
-My1KYW51YXJ5LzE0NDgxNS5odG1sDQo+IA0KPiBUaGUgcmVwb3J0ZXIgc2FpZA0KPiANCj4g
-ICAgICJUaG91Z2ggd2UgaGF2ZSBkb25lIHRoZSB0ZXN0aW5nIG9uIFplbiBhbmQgcHJlLVpl
-biBhcmNoaXRlY3R1cmVzLA0KPiAgICAgIHdlIHJlY29tbWVuZCB0byBjYXJyeW91dCB0aGUg
-dGVzdHMgZnJvbSB5b3VyIGVuZCB0b28uIg0KPiANCj4gaXQgaXMgdW5jbGVhciBpZiB0aGVp
-ciB0ZXN0aW5nIHdvdWxkIGhhdmUgY292ZXJlZCBPcHRlcm9uX0c0L09wdGVyb25fRzUNCj4g
-YXJjaGl0ZWN0dXJlcywgYW5kIEkgbm90IGV4cGVjdGluZyB0byBoYXZlIGhhZCBRRU1VIHRl
-c3Rpbmcgb2YgY291cnNlID8NCj4gDQo+IEkgZG9uJ3QgaGF2ZSBhbnkgbm9uLXZpcnR1YWwg
-cHJlLVplbiBzaWxpY29uIEkgY291bGQgdmVyaWZ5IENQVUlEDQo+IGJlaGF2aW91ciBvbi4g
-SSd2ZSBub3QgZm91bmQgaGlzdG9yaWMgdmVyc2lvbnMgb2YgdGhlIEFNRCBhcmNoaXRlY3R1
-cmUNCj4gcmVmZXJlbmNlIHRvIHNlZSB3aGVuIHRoZXkgZmlyc3QgZG9jdW1lbnRlZCAweDgw
-MDBfMDAxZCBhcyBhIHZhbGlkDQo+IENQVUlEIGxlYWYgZm9yIGdldHRpbmcgY2FjaGUgaW5m
-by4NCj4gDQo+IElPVyBpdCBpcyBzdGlsbCB1bmNsZWFyIHRvIG1lIHdoZXRoZXIgdGhlIHJv
-b3QgY2F1c2UgYnVnIGhlcmUgaXMgaW4NCj4gUUVNVSdzIGVtdWxhdGlvbiBvZiBDUFVJRCAw
-eDgwMDBfMDAxZCwgb3Igd2hldGhlciB0aGlzIHdhcyBhY3R1YWxseQ0KPiBhIHJlYWwgcmVn
-cmVzc2lvbiBpbnRyb2R1Y2VkIGluIGdsaWJjID49IDIuMzcNCj4gDQo+IEknbSB0ZW5kaW5n
-IHRvd2FyZHMgZ2xpYmMgcmVncmVzc2lvbiB0aG91Z2guDQo+IA0KPiBDb3B5aW5nIEZsb3Jp
-YW4gYW5kIHRoZSBvcmlnaW5hbCBBTUQgcGF0Y2ggYXV0aG9yDQo+IA0KPiBCcmllZiBzdW1t
-YXJ5DQo+IA0KPiBXaXRoIG9sZCBnbGliYyAyLjM2LCB1c2luZyBRRU1VJ3MgIHFlbXU2NC9t
-YXggQ1BVIG1vZGVsczoNCj4gDQo+ICMgcWVtdS14ODZfNjQtc3RhdGljIC1jcHUgcWVtdTY0
-IC9iaW4vZ2V0Y29uZiAtYSB8IGdyZXAgRENBQ0hFDQo+IExFVkVMMV9EQ0FDSEVfU0laRSAg
-ICAgICAgICAgICAgICAgNjU1MzYNCj4gTEVWRUwxX0RDQUNIRV9BU1NPQyAgICAgICAgICAg
-ICAgICAyDQo+IExFVkVMMV9EQ0FDSEVfTElORVNJWkUgICAgICAgICAgICAgNjQNCj4gDQo+
-ICMgcWVtdS14ODZfNjQtc3RhdGljIC1jcHUgT3B0ZXJvbl9HNCAvYmluL2dldGNvbmYgLWEg
-fCBncmVwIERDQUNIRQ0KPiBMRVZFTDFfRENBQ0hFX1NJWkUgICAgICAgICAgICAgICAgIDY1
-NTM2DQo+IExFVkVMMV9EQ0FDSEVfQVNTT0MgICAgICAgICAgICAgICAgMg0KPiBMRVZFTDFf
-RENBQ0hFX0xJTkVTSVpFICAgICAgICAgICAgIDY0DQo+IA0KPiAjIHFlbXUteDg2XzY0LXN0
-YXRpYyAtY3B1IG1heCAvYmluL2dldGNvbmYgLWEgfCBncmVwIERDQUNIRQ0KPiBMRVZFTDFf
-RENBQ0hFX1NJWkUgICAgICAgICAgICAgICAgIDY1NTM2DQo+IExFVkVMMV9EQ0FDSEVfQVNT
-T0MgICAgICAgICAgICAgICAgMg0KPiBMRVZFTDFfRENBQ0hFX0xJTkVTSVpFICAgICAgICAg
-ICAgIDY0DQo+IA0KPiANCj4gV2l0aCBuZXcgZ2xpYmMgMi4zNzoNCj4gDQo+ICMgcWVtdS14
-ODZfNjQtc3RhdGljIC1jcHUgcWVtdTY0IC9iaW4vZ2V0Y29uZiAtYSB8IGdyZXAgRENBQ0hF
-DQo+IExFVkVMMV9EQ0FDSEVfU0laRSAgICAgICAgICAgICAgICAgMA0KPiBMRVZFTDFfRENB
-Q0hFX0FTU09DICAgICAgICAgICAgICAgIDANCj4gTEVWRUwxX0RDQUNIRV9MSU5FU0laRSAg
-ICAgICAgICAgICAwDQo+IA0KPiAjIHFlbXUteDg2XzY0LXN0YXRpYyAtY3B1IE9wdGVyb25f
-RzQgL2Jpbi9nZXRjb25mIC1hIHwgZ3JlcCBEQ0FDSEUNCj4gTEVWRUwxX0RDQUNIRV9TSVpF
-ICAgICAgICAgICAgICAgICA2OTM4ODkNCj4gTEVWRUwxX0RDQUNIRV9BU1NPQyAgICAgICAg
-ICAgICAgICAxDQo+IExFVkVMMV9EQ0FDSEVfTElORVNJWkUgICAgICAgICAgICAgODMzDQo+
-IA0KPiAjIHFlbXUteDg2XzY0LXN0YXRpYyAtY3B1IG1heCAvYmluL2dldGNvbmYgLWEgfCBn
-cmVwIERDQUNIRQ0KPiBMRVZFTDFfRENBQ0hFX1NJWkUgICAgICAgICAgICAgICAgIDcyNzM4
-MDkNCj4gTEVWRUwxX0RDQUNIRV9BU1NPQyAgICAgICAgICAgICAgICAxDQo+IExFVkVMMV9E
-Q0FDSEVfTElORVNJWkUgICAgICAgICAgICAgMjY5Nw0KPiANCj4gV2l0aCByZWdhcmRzLA0K
-PiBEYW5pZWwNCg==
+* Daniel P. Berrang=C3=A9:
+
+> On Mon, Jul 03, 2023 at 06:03:08PM +0200, Pierrick Bouvier wrote:
+>> Hi everyone,
+>>=20
+>> Recently (in d135f781 [1], between v7.0.0 and v8.0.0), qemu-user default=
+ cpu
+>> was updated to "max" instead of qemu32/qemu64.
+>>=20
+>> This change "broke" qemu self emulation if this new default cpu is used.
+>>=20
+>> $ ./qemu-x86_64 ./qemu-x86_64 --version
+>> qemu-x86_64: ../util/cacheflush.c:212: init_cache_info: Assertion `(isiz=
+e &
+>> (isize - 1)) =3D=3D 0' failed.
+>> qemu: uncaught target signal 6 (Aborted) - core dumped
+>> Aborted
+>>=20
+>> By setting cpu back to qemu64, it works again.
+>> $ ./qemu-x86_64 -cpu qemu64 ./qemu-x86_64  --version
+>> qemu-x86_64 version 8.0.50 (v8.0.0-2317-ge125b08ed6)
+>> Copyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers
+>>=20
+>> Commenting assert does not work, as qemu aligned malloc fail shortly aft=
+er.
+>>=20
+>> I'm willing to fix it, but I'm not sure what is the issue with "max" cpu
+>> exactly. Is it missing CPU cache line, or something else?
+>
+> I've observed GLibC is issuing CPUID leaf 0x8000_001d
+>
+> QEMU 'max' CPU model doesn't defnie xlevel, so QEMU makes it default
+> to the same as min_xlevel, which is calculated to be 0x8000_000a.
+>
+> cpu_x86_cpuid() in QEMU sees CPUID leaf 0x8000_001d is above 0x8000_000a,
+> and so  considers it an invaild CPUID and thus forces it to report
+> 0x0000_000d which is supposedly what an invalid CPUID leaf should do.
+>
+>
+> Net result: glibc is asking for 0x8000_001d, but getting back data
+> for 0x0000_000d.
+>
+> This doesn't end happily for obvious reasons, getting garbage for
+> the dcache sizes.
+>
+>
+> The 'qemu64' CPU model also gets CPUID leaf 0x8000_001d capped back
+> to 0x0000_000d, but crucially qemu64 lacks the 'xsave' feature bit,
+> so QEMU returns all-zeroes for CPUID leaf 0x0000_000d. Still not
+> good, but this makes glibc report 0 for DCACHE_*, which in turn
+> avoids tripping up the nested qemu which queries DCACHE sysconf.
+>
+> So the problem is thus more widespread than just 'max' CPU model.
+>
+> Any QEMU CPU model with vendor=3DAuthenticAMD and the xsave feature,
+> and the xlevel unset, will cause glibc to report garbage for the
+> L1D cache info
+>
+> Any QEMU CPU model with vendor=3DAuthenticAMD and without the xsave
+> feature, and the xlevel unset, will cause glibc to report zeroes
+> for L1D cache info
+>
+> Neither is good, but the latter at least doesn't trip up the
+> nested QEMU when it queries L1D cache info.
+>
+> I'm unsure if QEMU's behaviour is correct with calculating the
+> default 'xlevel' values for 'max', but I'm assuming the xlevel
+> was correct for Opteron_G4/5 since those are explicitly set
+> in the code for along time.
+
+We are tracking this as:
+
+  New AMD cache size computation logic does not work for some CPUs,
+  hypervisors
+  <https://sourceware.org/bugzilla/show_bug.cgi?id=3D30428>
+
+I filed it after we resolved the earlier crashes because the data is
+clearly not accurate.  I was also able to confirm that impacts more than
+just hypervisors.
+
+Sajan posted a first patch:
+
+  [PATCH] x86: Fix for cache computation on AMD legacy cpus.
+  <https://sourceware.org/pipermail/libc-alpha/2023-June/148763.html>
+
+However, it changes the reported cache sizes on some older CPUs compared
+to what we had before (although the values are no longer zero at least).
+
+Thanks,
+Florian
+
 
