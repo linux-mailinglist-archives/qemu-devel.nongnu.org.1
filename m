@@ -2,80 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE72A7471B7
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C107471B6
 	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 14:49:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGfRp-00028B-6p; Tue, 04 Jul 2023 08:48:01 -0400
+	id 1qGfSO-0002DU-Eb; Tue, 04 Jul 2023 08:48:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qGfRn-00027m-3h
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:47:59 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qGfSJ-0002BO-TX
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:48:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qGfRl-0006wy-IR
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:47:58 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qGfSI-00072A-47
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:48:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688474876;
+ s=mimecast20190719; t=1688474908;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0qdKdd2JjSIWDQbbpH3sWspFB6B7JyV/Xsxdc+/CVHw=;
- b=eBf8Iz25VOoihqaNx2k6bOEDm8/5QRZnOnmkCACWOvPEvIcM3LO1CFFzMiw9Th+YGxM86O
- LxDNie6Pj2AXjlXyEPCXyMLbbvARBpKoaRKAwAbVNRNAj29F5re0cWHvRkqtzj6INYk15a
- zOKlSuEG3wKykAdzPRjOVNLIik/9Fjk=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=D1GiKA5wHzxOCUHoDVGWIovg74Fh67/GvKeEPNG0eIs=;
+ b=an/GDTqW6OILtOnl53iQkcNLYwcbeKZCITdAiMxpIRDJtbZsuk9z9jRYHlXOLnFs1DNDIw
+ jv4QsYRb8Ng5ymeFOdo0DgVMAgFni/MoyrPvveO6SvYA9vcChGT9ZRNQiWzyVS4h7DNlRq
+ VRJYhNhvdDXYyLd6C9EpTUbRcOkHepY=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-509-rDQfwXBOMVyWeBpPN5xjJA-1; Tue, 04 Jul 2023 08:47:55 -0400
-X-MC-Unique: rDQfwXBOMVyWeBpPN5xjJA-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7675583f2d0so478072085a.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:47:54 -0700 (PDT)
+ us-mta-653-pOhq-EAcOxmvGPV9Jr8OLg-1; Tue, 04 Jul 2023 08:48:28 -0400
+X-MC-Unique: pOhq-EAcOxmvGPV9Jr8OLg-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-94a355c9028so375642266b.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:48:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688474874; x=1691066874;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0qdKdd2JjSIWDQbbpH3sWspFB6B7JyV/Xsxdc+/CVHw=;
- b=iJqw2nZZz98cLRZFfb4CljJFG8nC6jX/SIRDGZ3S09EFU9ajAI4EHh2FieZYPV0MeA
- G2IMQmzzD7lIk8jd3gPjEaUgoUsIr9rJO/hUxJnQnhVkxwJPh+uror83ijeQGhnBkGJM
- x7gmABRs/wTt2K1jxhSwvzj06nWFUb75h/tjvMw33pB7x2fk0G5m1a3/VKyGOlm+M8dJ
- /14rNUzM8SUM7zxJzCsfKxGcI29xFexueUNMbzE4V/5U1lLp9SSqeLWAsShS0Edw3xre
- yH74Q/mVpRKN2njOIfmA46rAQO4wN5caFQKJEvj0rZbRsBzIvXcmE1SvKGtcP5Cqxt6f
- OqBg==
-X-Gm-Message-State: ABy/qLatGj+Tdn/UHk4LvUwjl7ZE6EwGs2AvYUXqQBfFcI2tzWpcDlAB
- 9HJL+4LKKk+o8oLFzpDXP648VLmQhxtolAgqBHJ/XhxyFt6OxABwpj3y9Ub0e31R7fbuAFUXIgR
- UQeo+zAb2XkcadWs=
-X-Received: by 2002:a05:620a:2888:b0:765:8063:c369 with SMTP id
- j8-20020a05620a288800b007658063c369mr11435601qkp.74.1688474874616; 
- Tue, 04 Jul 2023 05:47:54 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEB6elIZG+r9aLyXAKw5EMlgFeh64jf/BfbkcpQ+JxmcExh5qMxx9LsW4gMcXeLdxg6Ex9/FQ==
-X-Received: by 2002:a05:620a:2888:b0:765:8063:c369 with SMTP id
- j8-20020a05620a288800b007658063c369mr11435591qkp.74.1688474874440; 
- Tue, 04 Jul 2023 05:47:54 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-46-200-163.retail.telecomitalia.it.
- [79.46.200.163]) by smtp.gmail.com with ESMTPSA id
- q26-20020ae9e41a000000b0076722cbcb97sm6757293qkc.33.2023.07.04.05.47.52
+ d=1e100.net; s=20221208; t=1688474906; x=1691066906;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=D1GiKA5wHzxOCUHoDVGWIovg74Fh67/GvKeEPNG0eIs=;
+ b=EcRbkmhrVE7PKQpNRW3S7OiYBN8wyGQo4FnE3Ra0iTEBqCSTjCGIdv/4pb2OPhyesr
+ CByoEKUd3r9no66pc6v0nZIAuxRuqN1ZsRkDe2pVBAy/2Gp5RI3iKAEEr5NIpthDO9ES
+ 1PCafY7FBYCNhsIfBYBCY5qislw1+EOv3dRF93es50gLU7p02sIhUYkIFpwXcNiXWJc2
+ KH2sjvOqGe7NmEqm7x/BM/83HWhgCPOw8b0rlp2Qru5B/k+44PXaPtS3yCKB2UrBT/T2
+ 3e6K/O7zXve79/L5QahUqmNc/GDrE+fhl/HYW4bHpOSNT2HuRbb/RdudegSxgsv/beY3
+ wkjQ==
+X-Gm-Message-State: ABy/qLan3cP2BzuOvTHU/zRYhuXbntUSB1bAlunlo/PAR7Wdag5oxRBj
+ 4AS6lQTGiObw5E+L2QHMlmkCelbuaPanrOvFvpa/rB8iMPvjsKUyH/JwHluQEMv6+ovyyw7vUje
+ PpKW/N75KASlub0M=
+X-Received: by 2002:a17:906:c357:b0:993:28eb:fc05 with SMTP id
+ ci23-20020a170906c35700b0099328ebfc05mr6625510ejb.49.1688474906672; 
+ Tue, 04 Jul 2023 05:48:26 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHjoSoiO97X1AgeCBNnqixLSTefFc9StFL8Xeok2DsQ1z7unsQB3rq/qUVk+d4YnrkqdxRyCg==
+X-Received: by 2002:a17:906:c357:b0:993:28eb:fc05 with SMTP id
+ ci23-20020a170906c35700b0099328ebfc05mr6625499ejb.49.1688474906421; 
+ Tue, 04 Jul 2023 05:48:26 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ z18-20020a1709067e5200b00989257be620sm13111162ejr.200.2023.07.04.05.48.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 05:47:53 -0700 (PDT)
-Date: Tue, 4 Jul 2023 14:47:50 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Qing Wang <qinwang@redhat.com>
-Subject: Re: [PATCH v2] block/blkio: fix module_block.py parsing
-Message-ID: <wmxryeyqf5ww3hgigdyxf6c4pizqhwt63bpb5rrrvjpthayiyo@i26thnboapuf>
-References: <20230704123436.187761-1-stefanha@redhat.com>
+ Tue, 04 Jul 2023 05:48:25 -0700 (PDT)
+Date: Tue, 4 Jul 2023 14:48:25 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Ani Sinha <anisinha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Julia Suvorova <jusual@redhat.com>
+Subject: Re: [PATCH v7 5/6] hw/pci: ensure PCIE devices are plugged into
+ only slot 0 of PCIE port
+Message-ID: <20230704144825.181a1629@imammedo.users.ipa.redhat.com>
+In-Reply-To: <bf793e6b-62a0-0772-0d64-ddb5894ebf53@daynix.com>
+References: <20230704112555.5629-1-anisinha@redhat.com>
+ <20230704112555.5629-6-anisinha@redhat.com>
+ <7356dc51-588c-f2f8-22d9-c8193bae9309@daynix.com>
+ <2C9BF0F4-6CB0-4805-818D-51CABC1EAFDE@redhat.com>
+ <bf793e6b-62a0-0772-0d64-ddb5894ebf53@daynix.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230704123436.187761-1-stefanha@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,41 +107,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 04, 2023 at 02:34:36PM +0200, Stefan Hajnoczi wrote:
->When QEMU is built with --enable-modules, the module_block.py script
->parses block/*.c to find block drivers that are built as modules. The
->script generates a table of block drivers called block_driver_modules[].
->This table is used for block driver module loading.
->
->The blkio.c driver uses macros to define its BlockDriver structs. This
->was done to avoid code duplication but the module_block.py script is
->unable to parse the macro. The result is that libblkio-based block
->drivers can be built as modules but will not be found at runtime.
->
->One fix is to make the module_block.py script or build system fancier so
->it can parse C macros (e.g. by parsing the preprocessed source code). I
->chose not to do this because it raises the complexity of the build,
->making future issues harder to debug.
->
->Keep things simple: use the macro to avoid duplicating BlockDriver
->function pointers but define .format_name and .protocol_name manually
->for each BlockDriver. This way the module_block.py is able to parse the
->code.
->
->Also get rid of the block driver name macros (e.g. DRIVER_IO_URING)
->because module_block.py cannot parse them either.
->
->Fixes: fd66dbd424f5 ("blkio: add libblkio block driver")
->Reported-by: Qing Wang <qinwang@redhat.com>
->Cc: Stefano Garzarella <sgarzare@redhat.com>
->Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
->---
->v2:
->- Drop unnecessary backslashes [Stefano]
->---
-> block/blkio.c | 108 ++++++++++++++++++++++++++------------------------
-> 1 file changed, 56 insertions(+), 52 deletions(-)
+On Tue, 4 Jul 2023 21:02:09 +0900
+Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+> On 2023/07/04 20:59, Ani Sinha wrote:
+> > 
+> >   
+> >> On 04-Jul-2023, at 5:24 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> >>
+> >> On 2023/07/04 20:25, Ani Sinha wrote:  
+> >>> PCI Express ports only have one slot, so PCI Express devices can only be
+> >>> plugged into slot 0 on a PCIE port. Add a warning to let users know when the
+> >>> invalid configuration is used. We may enforce this more strongly later on once
+> >>> we get more clarity on whether we are introducing a bad regression for users
+> >>> currenly using the wrong configuration.
+> >>> The change has been tested to not break or alter behaviors of ARI capable
+> >>> devices by instantiating seven vfs on an emulated igb device (the maximum
+> >>> number of vfs the linux igb driver supports). The vfs instantiated correctly
+> >>> and are seen to have non-zero device/slot numbers in the conventional PCI BDF
+> >>> representation.
+> >>> CC: jusual@redhat.com
+> >>> CC: imammedo@redhat.com
+> >>> CC: mst@redhat.com
+> >>> CC: akihiko.odaki@daynix.com
+> >>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
+> >>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> >>> Reviewed-by: Julia Suvorova <jusual@redhat.com>
+> >>> ---
+> >>>   hw/pci/pci.c | 15 +++++++++++++++
+> >>>   1 file changed, 15 insertions(+)
+> >>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> >>> index e2eb4c3b4a..47517ba3db 100644
+> >>> --- a/hw/pci/pci.c
+> >>> +++ b/hw/pci/pci.c
+> >>> @@ -65,6 +65,7 @@ bool pci_available = true;
+> >>>   static char *pcibus_get_dev_path(DeviceState *dev);
+> >>>   static char *pcibus_get_fw_dev_path(DeviceState *dev);
+> >>>   static void pcibus_reset(BusState *qbus);
+> >>> +static bool pcie_has_upstream_port(PCIDevice *dev);
+> >>>     static Property pci_props[] = {
+> >>>       DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+> >>> @@ -2121,6 +2122,20 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
+> >>>           }
+> >>>       }
+> >>>   +    /*
+> >>> +     * With SRIOV and ARI, vfs can have non-zero slot in the conventional
+> >>> +     * PCI interpretation as all five bits reserved for slot addresses are
+> >>> +     * also used for function bits for the various vfs. Ignore that case.  
+> >>
+> >> You don't have to mention SR/IOV; it affects all ARI-capable devices. A PF can also have non-zero slot number in the conventional interpretation so you shouldn't call it vf either.  
+> > 
+> > Can you please help write a comment that explains this properly for all cases - ARI/non-ARI, PFs and VFs? Once everyone agrees that its clear and correct, I will re-spin.  
+> 
+> Simply, you can say:
+> With ARI, the slot number field in the conventional PCI interpretation 
+> can have a non-zero value as the field bits are reused to extend the 
+> function number bits. Ignore that case.
+
+mentioning 'conventional PCI interpretation' in comment and then immediately
+checking 'pci_is_express(pci_dev)' is confusing. Since comment belongs
+only to PCIE branch it would be better to talk in only about PCIe stuff
+and referring to relevant portions of spec.
+(for example see how it's done in kernel code: only_one_child(...)
+
+PS:
+kernel can be forced  to scan for !0 device numbers, but that's rather
+a hack, so we shouldn't really care about that.
+
+> 
+> >   
+> >>  
+> >>> +     */
+> >>> +    if (pci_is_express(pci_dev) &&
+> >>> +        !pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
+> >>> +        pcie_has_upstream_port(pci_dev) &&
+> >>> +        PCI_SLOT(pci_dev->devfn)) {
+> >>> +        warn_report("PCI: slot %d is not valid for %s,"
+> >>> +                    " parent device only allows plugging into slot 0.",
+> >>> +                    PCI_SLOT(pci_dev->devfn), pci_dev->name);
+> >>> +    }
+> >>> +
+> >>>       if (pci_dev->failover_pair_id) {
+> >>>           if (!pci_bus_is_express(pci_get_bus(pci_dev))) {
+> >>>               error_setg(errp, "failover primary device must be on "  
+> >>  
+> >   
+> 
 
 
