@@ -2,97 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D012374698A
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 08:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA627469C5
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 08:40:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGZPV-0005Tx-P5; Tue, 04 Jul 2023 02:21:13 -0400
+	id 1qGZgR-00089N-Dj; Tue, 04 Jul 2023 02:38:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leobras@redhat.com>)
- id 1qGZP4-0005TP-H8
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 02:20:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qGZgP-000895-69
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 02:38:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leobras@redhat.com>)
- id 1qGZP1-0003aq-OF
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 02:20:46 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qGZgN-0006f1-AE
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 02:38:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688451642;
+ s=mimecast20190719; t=1688452717;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YXw8cAFt2h29KEwkVLQu/v/geoweJwdAV6/z6kuECLg=;
- b=Pg+B7n4hJjT3mz1pIBMgcVonzW3rO/aiPo9JwiRJqX3J1R/zpJMihRO2fTcv/FSfVF1unb
- Ktwv5vdIdbAQ9Lo8ztxwXVyiXA+GalXbl/4v+ubmVXa3GGnKjKYN50vqmtypdswDYVVQd7
- ux6FY7nSgz6YvY48f/WxNbxq57Z7v5U=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DnH2hrGNADfwQl072FwzLxhfuZFKxQkYllO0+e3d6j0=;
+ b=Alb+3ZWkolQDLjZyQc1i2wNh+oIKuxAlXpL6QbUbDysw5Ce4H1NHJnHFnwu/dYjSbX9QuI
+ oc46rwDxUlsLvadYY5YP6UOy/oJjb8YmmPHefGqlLSFyY50ZeYrveBMCU8DmlIKgkw8QOJ
+ rmfTNR5zbINr+595KkEQyJ6g4JehT0s=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-178-JfOv8aBUMPKwKCzehJ1ZPg-1; Tue, 04 Jul 2023 02:20:40 -0400
-X-MC-Unique: JfOv8aBUMPKwKCzehJ1ZPg-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-40327302341so38751791cf.3
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 23:20:40 -0700 (PDT)
+ us-mta-61-l4v0USbJOBi709oejU01xQ-1; Tue, 04 Jul 2023 02:38:36 -0400
+X-MC-Unique: l4v0USbJOBi709oejU01xQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-988907e1b15so438346066b.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 23:38:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688451640; x=1691043640;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YXw8cAFt2h29KEwkVLQu/v/geoweJwdAV6/z6kuECLg=;
- b=XskkayDkI9spyGKaR2EYf4G3tDI6xiVBvk2M7mZXlcv+FxAHAjh7Iyz4KZ0Yrxj1fx
- CgYo3EIj6Sp/fyOr4ugcXsOwXCC5Pgd8um2edd43Hvawq0KG1SAp2lo527NFHG+Knl2l
- eV46jRTvLyKryuF2xuYs0JmdsaQQPC3lRk3byg5O4Em0hLKpgkk+dtNN8/cHt1Rl19hw
- jcfHbsBJvmR7aKQIG9V3UbOMhFBNcbVItRjxKCG12T7jyjHXGuL/xQZbvGvG9CDlGtlr
- dVlPOCOAJZO7u8hVg5oaI5NE4qgcLrhQtLBbb2CJf5IrsOzBmTVhcnmNEdwFKbrHeKqk
- O0YQ==
-X-Gm-Message-State: AC+VfDxHugK7kfYdFd3EDy4bybjSXFKS/t7/F5Te1P9/lZrtCsVOdqqf
- 6CFjT4HuQgD7tf00KMpBrS1r7YmEBM915wxlqhkLeLFKsLUMQze3lur6ZcioglswshUjNHZljPV
- 0UIMV9E7eGyDzW+c=
-X-Received: by 2002:a05:622a:3cc:b0:400:8f4b:d9fc with SMTP id
- k12-20020a05622a03cc00b004008f4bd9fcmr14668533qtx.41.1688451640300; 
- Mon, 03 Jul 2023 23:20:40 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6A8Jt79KLiZNETdxxMMO4gw44wDSeFiQdlpWdXl7RS94aHXN2lijc1d6zB5fsRSQLtvoTOMA==
-X-Received: by 2002:a05:622a:3cc:b0:400:8f4b:d9fc with SMTP id
- k12-20020a05622a03cc00b004008f4bd9fcmr14668519qtx.41.1688451640004; 
- Mon, 03 Jul 2023 23:20:40 -0700 (PDT)
-Received: from ?IPv6:2804:1b3:a800:faf8:1d15:affc:4ee8:6427?
- ([2804:1b3:a800:faf8:1d15:affc:4ee8:6427])
- by smtp.gmail.com with ESMTPSA id
- fb6-20020a05622a480600b003ff1f891206sm8118655qtb.61.2023.07.03.23.20.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 23:20:39 -0700 (PDT)
-Message-ID: <2364a62d0cc278c43dd19da4aceeee70513990e1.camel@redhat.com>
-Subject: Re: [PATCH 1/1] pcie: Add hotplug detect state register to w1cmask
-From: Leonardo =?ISO-8859-1?Q?Br=E1s?= <leobras@redhat.com>
-To: Peter Xu <peterx@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Juan Quintela
- <quintela@redhat.com>, qemu-devel@nongnu.org, Julia Suvorova
- <jusual@redhat.com>,  Igor Mammedov <imammedo@redhat.com>, David Gibson
- <david@gibson.dropbear.id.au>
-Date: Tue, 04 Jul 2023 03:20:36 -0300
-In-Reply-To: <ee67338be410a91a03e5514520141404be0e26f5.camel@redhat.com>
-References: <20230629090500.438976-2-leobras@redhat.com>
- <ZJ25AdfN7AqYkB6z@x1n> <20230629152644-mutt-send-email-mst@kernel.org>
- <ZJ3jJTf+iPwPDuf9@x1n> <20230629160643-mutt-send-email-mst@kernel.org>
- <ZJ3wAPbroS3jUDuQ@x1n>
- <ee67338be410a91a03e5514520141404be0e26f5.camel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 
+ d=1e100.net; s=20221208; t=1688452715; x=1691044715;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DnH2hrGNADfwQl072FwzLxhfuZFKxQkYllO0+e3d6j0=;
+ b=LH/MrQpQ+XPRKR+Px21nvY5CYWt1EU4ZKX9jH5phQthkD8VOC6/+WN4IGy2scDPGFr
+ +On0f7EgeICmezXKrHPseyzM5eYjd0Z/UZ+8jSNGRClMdUpsdwBqVdbuZAh4LYUFCIqT
+ IwmwqJ+jSxWV4zchm2T+vNWACCdhHFjfwPI22Kud9AFWEZZs2ivqBHd4BTwQxqaV/M75
+ /gUyHOErE15GMhbchxxMMx/X4+e86fJswadcXNxQMoN/ntVf7Uu6XACemniUM+1lcT/n
+ tXTQjTf/e2OFLU0jUfJNScY22sfLdUCTkz14/cdXMtxkeQXbmHrnEY3mvz8/R2hJ4o/x
+ dDcg==
+X-Gm-Message-State: ABy/qLZ1hbKcdwfiX+i229Jk3IUtsze45vDxDOGNaPQYIM0DzUWPkYko
+ O2WXXJcQD4WplfdDhD9elnVoVVbPjszi4VOLdY12ShWKfEGsIkPLeBfj/RGDBVPFfWXdUbjUqDL
+ knzh2gKQuvxvjfDA=
+X-Received: by 2002:a17:906:3c11:b0:991:ec83:c0aa with SMTP id
+ h17-20020a1709063c1100b00991ec83c0aamr9636231ejg.70.1688452715608; 
+ Mon, 03 Jul 2023 23:38:35 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFV8NcVNRcOkcLyy0r7Vxf3k8j3w3+6CPnWwrdqo4ePQiHsXJ8GcmL2hzWV/gvG+CwrVj1Btw==
+X-Received: by 2002:a17:906:3c11:b0:991:ec83:c0aa with SMTP id
+ h17-20020a1709063c1100b00991ec83c0aamr9636218ejg.70.1688452715254; 
+ Mon, 03 Jul 2023 23:38:35 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045?
+ ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
+ by smtp.googlemail.com with ESMTPSA id
+ re3-20020a170906d8c300b00977ca5de275sm13126036ejb.13.2023.07.03.23.38.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jul 2023 23:38:34 -0700 (PDT)
+Message-ID: <dded4d33-d64f-9369-0742-a57a1e173153@redhat.com>
+Date: Tue, 4 Jul 2023 08:38:33 +0200
 MIME-Version: 1.0
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=leobras@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2] hw/ide/piix: properly initialize the BMIBA register
+To: Bernhard Beschow <shentey@gmail.com>, Olaf Hering <olaf@aepfle.de>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Richard Henderson <richard.henderson@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Lev Kujawski <lkujaw@member.fsf.org>,
+ qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20230701174659.10246-1-olaf@aepfle.de>
+ <62EDA748-11A3-473F-913D-F9464335A382@gmail.com>
+ <20230703095929.6e793dcf.olaf@aepfle.de>
+ <93902CB6-7A6E-49E5-A55F-432C6B4BC00F@gmail.com>
+Content-Language: en-US
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <93902CB6-7A6E-49E5-A55F-432C6B4BC00F@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,250 +110,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Peter and Michael, I have a few updates on this:
+On 7/3/23 22:33, Bernhard Beschow wrote:
+> Paolo, Peter: Should we switch to pci_device_reset() in
+> pci_xen_ide_unplug()? Or is device_cold_reset() supposed to do
+> everything?
 
-On Mon, 2023-07-03 at 02:20 -0300, Leonardo Br=C3=A1s wrote:
-> Hello Peter and Michael, thanks for reviewing!
->=20
->=20
-> On Thu, 2023-06-29 at 16:56 -0400, Peter Xu wrote:
-> > On Thu, Jun 29, 2023 at 04:06:53PM -0400, Michael S. Tsirkin wrote:
-> > > On Thu, Jun 29, 2023 at 04:01:41PM -0400, Peter Xu wrote:
-> > > > On Thu, Jun 29, 2023 at 03:33:06PM -0400, Michael S. Tsirkin wrote:
-> > > > > On Thu, Jun 29, 2023 at 01:01:53PM -0400, Peter Xu wrote:
-> > > > > > Hi, Leo,
-> > > > > >=20
-> > > > > > Thanks for figuring this out.  Let me copy a few more potential=
- reviewers
-> > > > > > from commit 17858a1695 ("hw/acpi/ich9: Set ACPI PCI hot-plug as=
- default on
-> > > > > > Q35").
-> > > > > >=20
-> > > > > > On Thu, Jun 29, 2023 at 06:05:00AM -0300, Leonardo Bras wrote:
-> > > > > > > When trying to migrate a machine type pc-q35-6.0 or lower, wi=
-th this
-> > > > > > > cmdline options:
-> > > > > > >=20
-> > > > > > > -device driver=3Dpcie-root-port,port=3D18,chassis=3D19,id=3Dp=
-cie-root-port18,bus=3Dpcie.0,addr=3D0x12 \
-> > > > > > > -device driver=3Dnec-usb-xhci,p2=3D4,p3=3D4,id=3Dnex-usb-xhci=
-0,bus=3Dpcie-root-port18,addr=3D0x12.0x1
-> > > > > > >=20
-> > > > > > > the following bug happens after all ram pages were sent:
-> > > > > > >=20
-> > > > > > > qemu-kvm: get_pci_config_device: Bad config data: i=3D0x6e re=
-ad: 0 device: 40 cmask: ff wmask: 0 w1cmask:19
-> > > > > > > qemu-kvm: Failed to load PCIDevice:config
-> > > > > > > qemu-kvm: Failed to load pcie-root-port:parent_obj.parent_obj=
-.parent_obj
-> > > > > > > qemu-kvm: error while loading state for instance 0x0 of devic=
-e '0000:00:12.0/pcie-root-port'
-> > > > > > > qemu-kvm: load of migration failed: Invalid argument
-> > > > > > >=20
-> > > > > > > This happens on pc-q35-6.0 or lower because of:
-> > > > > > > { "ICH9-LPC", ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, "off" }
-> > > > > > >=20
-> > > > > > > In this scenario, hotplug_handler_plug() calls pcie_cap_slot_=
-plug_cb(),
-> > > > > > > which sets the bus dev->config byte 0x6e with bit PCI_EXP_SLT=
-STA_PDS to=20
-> > > > > > > signal PCI hotplug for the guest. After a while the guest wil=
-l deal with
-> > > > > > > this hotplug and qemu will clear the above bit.
-> > > > >=20
-> > > > > Presence Detect State =E2=80=93 This bit indicates the presence o=
-f an
-> > > > > adapter in the slot, reflected by the logical =E2=80=9COR=E2=80=
-=9D of the Physical
-> > > > > Layer in-band presence detect mechanism and, if present, any
-> > > > > out-of-band presence detect mechanism defined for the slot=E2=80=
-=99s
-> > > > > corresponding form factor. Note that the in-band presence
-> > > > > detect mechanism requires that power be applied to an adapter
-> > > > > for its presence to be detected. Consequently, form factors that
-> > > > > require a power controller for hot-plug must implement a
-> > > > > physical pin presence detect mechanism.
-> > > > > RO
-> > > > > Defined encodings are:
-> > > > > 0b Slot Empty
-> > > > > 1b Card Present in slot
-> > > > > This bit must be implemented on all Downstream Ports that
-> > > > > implement slots. For Downstream Ports not connected to slots
-> > > > > (where the Slot Implemented bit of the PCI Express Capabilities
-> > > > > register is 0b), this bit must be hardwired to 1b.
->=20
-> Thank you for providing this doc!
-> I am new to PCI stuff, could you please point this doc?
+device_cold_reset() does not reset state that is part of the bus, so I 
+think it's consistent that it doesn't call pci_do_device_reset().
 
-(I mean, the link to the documentation)
+I agree that calling pci_device_reset() would be a better match for 
+pci_xen_ide_unplug().
 
->=20
-> > > > >=20
-> > > > >=20
-> > > > > And this seems to match what QEMU is doing: it clears on unplug
-> > > > > not after guest deals with hotplug.
->=20
-> Oh, that's weird.
-> It should not unplug the device, so IIUC it should not clear the bit.
-> Maybe something weird is happening in the guest, I will take a look.
-
-Updates on this:
-You are right! For some reason the guest is hot-unplugging the device under=
- some
-conditions, so there is another bug on this for me to look after.
-
->=20
-> > > > >=20
-> > > > >=20
-> > > > > > > Then, during migration, get_pci_config_device() will compare =
-the
-> > > > > > > configs of both the freshly created device and the one that i=
-s being
-> > > > > > > received via migration, which will differ due to the PCI_EXP_=
-SLTSTA_PDS bit
-> > > > > > > and cause the bug to reproduce.
-> > > > >=20
-> > > > > So bit is set on source.
-> > > > > But why is the bit cleared on destination? This is the part I don=
-'t get.
->=20
-> No, bit is set when the device is created by qemu.
-> After some time running (boot process completion) the bit is cleared.
-
-The 'after some time' here is about the guest hot-unplugging the device.
-
->=20
-> The receiving end of migration will then create the device with the bit s=
-et, and
-> then wait for migration. After the source device is received, the compare=
- fails
-> due to those bits being different.
->=20
-
-But anyway, there is some chance the device will be hot-unplugged by the gu=
-est
-OS for any reason, so we need to cover this scenario so it does not break
-migration.
-
->=20
->=20
-> > > >=20
-> > > > My understanding is that when ACPI_PM_PROP_ACPI_PCIHP_BRIDGE is off=
- for the
-> > > > device, we just won't ever PCI_EXP_SLTSTA_PDS bit?
-> > >=20
-> > > Why?
-> >=20
-> > Never mind, spoke too soon, sorry. :(
-> >=20
-> > I thought pcie_cap_slot_plug_cb() can skip the set, but then I just fou=
-nd
-> > that dev->hotplugged is not what I imagined there.
-> >=20
-> > Leo should know better.
->=20
-> There is a difference of which hotplug function is called based on the=
-=20
-> ACPI_PM_PROP_ACPI_PCIHP_BRIDGE option:
->=20
-> When ACPI_PM_PROP_ACPI_PCIHP_BRIDGE=3D=3D"off", hotplug_handler_plug() ca=
-lls
-> pcie_cap_slot_plug_cb() which sets the bus dev->config byte 0x6e with bit
-> PCI_EXP_SLTSTA_PDS.
->=20
-> When ACPI_PM_PROP_ACPI_PCIHP_BRIDGE=3D=3D"on", hotplug_handler_plug() cal=
-ls
-> ich9_pm_device_plug_cb(), which does not set this bit.
->=20
-> >=20
-> > >=20
-> > >=20
-> > > > >=20
-> > > > >=20
-> > > > > > > To avoid this fake incompatibility, there are two fields in P=
-CIDevice that
-> > > > > > > can help:
-> > > > > > >=20
-> > > > > > > .wmask: Used to implement R/W bytes, and
-> > > > > > > .w1cmask: Used to implement RW1C(Write 1 to Clear) bytes
-> > > > > >=20
-> > > > > > Is there one more option to clear the bit in cmask?
->=20
-> We could clear the bit for .cmask . I suggested w1cmask because I previou=
-sly
-> understood that bit was guest-writeable.
-
-IIUC, the bit is guest-writeable, so we should use .wmask instead of .cmask=
- .
-Is this correct?
-
->=20
-> > > > > >=20
-> > > > > > IIUC w1cmask means the guest can now write to this bit, but afa=
-iu from the
-> > > > > > pcie spec it's RO.
-> > > > >=20
-> > > > > Yes this bit must be RO.
->=20
-> My bad, I assumed behavior based on how the guest was working, and this g=
-one
-> wrong. With above documentation provided, I would suggest clearing the .c=
-onfig
-> mask related bit so qemu skips checking this one.
->=20
-> What is your opinion on that?
->=20
-> > > > >=20
-> > > > > > >=20
-> > > > > > > According to pcie_cap_slot_init() the slot status register
-> > > > > > > (PCI_EXP_SLTSTA), in which PCI_EXP_SLTSTA_PDS is a flag, seem=
-s to fall
-> > > > > > > under w1cmask field, with makes sense due to the way signalin=
-g the hotplug
-> > > > > > > works.
-> > > > > > >=20
-> > > > > > > So, add PCI_EXP_SLTSTA_PDS bit to w1cmask, so the fake incomp=
-atibility on
-> > > > > > > get_pci_config_device() does not abort the migration.
-> > > > > > >=20
-> > > > > > > Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=3D221581=
-9
-> > > > > > > Signed-off-by: Leonardo Bras <leobras@redhat.com>
-> > > > > >=20
-> > > > > > Do we need a Fixes: and also the need to copy stable?
-> > > > > >=20
-> > > > > > > ---
-> > > > > > >  hw/pci/pcie.c | 2 +-
-> > > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > > >=20
-> > > > > > > diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> > > > > > > index b8c24cf45f..2def1765a5 100644
-> > > > > > > --- a/hw/pci/pcie.c
-> > > > > > > +++ b/hw/pci/pcie.c
-> > > > > > > @@ -657,7 +657,7 @@ void pcie_cap_slot_init(PCIDevice *dev, P=
-CIESlot *s)
-> > > > > > >                                 PCI_EXP_SLTCTL_EIC);
-> > > > > > > =20
-> > > > > > >      pci_word_test_and_set_mask(dev->w1cmask + pos + PCI_EXP_=
-SLTSTA,
-> > > > > > > -                               PCI_EXP_HP_EV_SUPPORTED);
-> > > > > > > +                               PCI_EXP_HP_EV_SUPPORTED | PCI=
-_EXP_SLTSTA_PDS);
-> > > > > > > =20
-> > > > > > >      dev->exp.hpev_notified =3D false;
-> > > > > > > =20
-> > > > > > > --=20
-> > > > > > > 2.41.0
-> > > > > > >=20
-> > > > > >=20
-> > > > > > --=20
-> > > > > > Peter Xu
-> > > > >=20
-> > > >=20
-> > > > --=20
-> > > > Peter Xu
-> > >=20
-> >=20
->=20
+Paolo
 
 
