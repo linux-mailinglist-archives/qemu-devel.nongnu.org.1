@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05564746FDC
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 13:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B27A6746FE2
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 13:26:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGeAk-0001mx-Sm; Tue, 04 Jul 2023 07:26:18 -0400
+	id 1qGeAx-0001oP-Ru; Tue, 04 Jul 2023 07:26:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qGeAd-0001mE-Cw
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:26:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qGeAg-0001n0-1c
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:26:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qGeAb-0002Bg-Vr
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:26:11 -0400
+ id 1qGeAe-0002CF-J8
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:26:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688469969;
+ s=mimecast20190719; t=1688469972;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XEZcgPReFyzDcO9cLJl1A0SSdm0joHIvq6RFVgYxRzg=;
- b=SEd3LWXJ2TRbcXIjL4ItQ96DyHz4pELBSvKselbMfyYtz0BQtnHG4WiYpyZXc1xxLskL3O
- F8Jm7HTPAJQhuzLrbJEbxq9A7iuXOzgzAe1HfNgd5ykrhdugj5HSvWLTJP69dUSh/8B1E0
- 4gxcZEpZ9PJ/nsbTDP8JANLrWc5goGg=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YQi5DNpBee1TXBxFEGyYLPk0MTnw7h1zNgmbfk3WRkU=;
+ b=g+tK0V5VCkerESuVIrdkSSiQ3Z5QtA5qTorGmWWVQVgdOGor18FivGls/6BKplU49ltlm+
+ tUKKS5hnHG8fOtVG82DBprDjdB+MggTzc90GzuW7TLYMnvYwy1ZLhafnMP0bi2x7rWNgnR
+ KMChPW8kG0b1lesb1HgR/uqXHo/t5E4=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-E9bigWHLPrquSM77pWRcqg-1; Tue, 04 Jul 2023 07:26:08 -0400
-X-MC-Unique: E9bigWHLPrquSM77pWRcqg-1
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-55ac8fcc887so5665640a12.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 04:26:08 -0700 (PDT)
+ us-mta-503-cbwrhBsGPky6A88eP6UfNg-1; Tue, 04 Jul 2023 07:26:10 -0400
+X-MC-Unique: cbwrhBsGPky6A88eP6UfNg-1
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-1b8a4e947a1so8873945ad.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 04:26:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688469967; x=1691061967;
+ d=1e100.net; s=20221208; t=1688469969; x=1691061969;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XEZcgPReFyzDcO9cLJl1A0SSdm0joHIvq6RFVgYxRzg=;
- b=UvK5CZsWfkp01AB9QxIqGMIv7us89+gl0iwIkzujlCGX0GMzd5AgQAFsJsIbx+aKmR
- XcwpuiR3wlJ4+dsf4yjLGSsSZOoYlX2sYsOFAWRPCs9v1CgCYWjt49UcV0m+q+PieZDp
- Up9Umak4UdKClo5yylWadbkPi9iBJjN5qLJWiDcrAiD6aRc3BsW1B+ICcAz6v1VIVCCI
- QKdITfpAQoTJrq8MvuNb6TiKVn7eT6M+pq4AlpsmFbgu6z7Fmx614oDkTYSVNVOl909S
- oRcoJ4eWrpD/gu9ibjvEIoD8i9SeXJgcOP/k7jwg/FclnEK+6dmm3lOwekRi49ddKMhj
- 13Ag==
-X-Gm-Message-State: ABy/qLbrJsjIZyftqz7AdpdvKgpWF4Mw8+qWlpHGYUfZL5O37kj3Nqb5
- 0nb5unggSNU6STYFNcnc2byDvrgccw/8Svt5pbgZ1ThcGhiFjXvE0o1dF0V1s+ZBdlj5rpf4dh8
- LzVm2lBsMniczBatLOygmbwoYpNOFOZlZnRET+Lh29n+9+aaTxhs7SJJtmvCeQ3u6UwFJ7Q1kfg
- U=
-X-Received: by 2002:a17:902:ea06:b0:1b8:9b17:f63d with SMTP id
- s6-20020a170902ea0600b001b89b17f63dmr4278628plg.23.1688469966847; 
- Tue, 04 Jul 2023 04:26:06 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGJrKgF6k21A0KUI7xTGSiXKohqrIIpDLphcGEH6Pui76qK72oYrhrcYf4Y/IW9d74NwqSsmA==
-X-Received: by 2002:a17:902:ea06:b0:1b8:9b17:f63d with SMTP id
- s6-20020a170902ea0600b001b89b17f63dmr4278606plg.23.1688469966370; 
- Tue, 04 Jul 2023 04:26:06 -0700 (PDT)
+ bh=YQi5DNpBee1TXBxFEGyYLPk0MTnw7h1zNgmbfk3WRkU=;
+ b=Kq80rxCpnbJNjzPzzoq3X9eijFI1mOjGW/QBKv1YX/pHhfq68LXnItIM2aLleQqmTo
+ MJGM6Rp1Atf92rBjdE0wwCeWzog7y1MYPm27ZyPzhHihK2KmOLFXXQuuSUMnaJkYkbJA
+ +JcTTzJkUa8Ch00ro4OKFvnxjC7ja+YiwYPdOSya5vtbHUXERqs2fLPeDiucUqzaw/ri
+ 4taVlD4SeFkTijoyb2RCYivHFnDfMkGpjC7TU8g/pdrm09eiQG4FuBJ2DPklL5PTrTE+
+ zHnPh1j2NFpPRUfnlgOBxNpQtii52vzSkYhqJL7RUGO2NJjs/Z5LHvd6mWTMILWLUWlG
+ dLtQ==
+X-Gm-Message-State: ABy/qLYsp4620bj5cxtVhdfYpt+fp5DdxRkZUsv22980a5gOQtPTqYYr
+ fF+E6O2+Su6uH/bvC9zf/+4uC4sj1XClfftIocU3g4QXnkBvRqaEo2ZkzNpRhNzNLLzWGdqUrBT
+ Mxp4Pgg2pISsdEuLchxcFwq4fwQCdl8v3nYjHouVfClOk/CGUsuSTiyiHiv2GT+fszvxQ5zVivl
+ o=
+X-Received: by 2002:a17:902:cec9:b0:1b8:6952:5381 with SMTP id
+ d9-20020a170902cec900b001b869525381mr20532702plg.9.1688469969298; 
+ Tue, 04 Jul 2023 04:26:09 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlH3ZNdNpiO4KfPDBHRqf3YlW7js6k+nBgIfvBCqOSw/BPrRic1+fKAogZGVNXrRP6pYct7vBA==
+X-Received: by 2002:a17:902:cec9:b0:1b8:6952:5381 with SMTP id
+ d9-20020a170902cec900b001b869525381mr20532670plg.9.1688469968856; 
+ Tue, 04 Jul 2023 04:26:08 -0700 (PDT)
 Received: from localhost.localdomain ([115.96.131.170])
  by smtp.googlemail.com with ESMTPSA id
- o7-20020a170902bcc700b001b8a897cd26sm780608pls.195.2023.07.04.04.26.04
+ o7-20020a170902bcc700b001b8a897cd26sm780608pls.195.2023.07.04.04.26.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 04:26:06 -0700 (PDT)
+ Tue, 04 Jul 2023 04:26:08 -0700 (PDT)
 From: Ani Sinha <anisinha@redhat.com>
 To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v7 1/6] tests/acpi: allow changes in DSDT.noacpihp table blob
-Date: Tue,  4 Jul 2023 16:55:50 +0530
-Message-Id: <20230704112555.5629-2-anisinha@redhat.com>
+Subject: [PATCH v7 2/6] tests/acpi/bios-tables-test: use the correct slot on
+ the pcie-root-port
+Date: Tue,  4 Jul 2023 16:55:51 +0530
+Message-Id: <20230704112555.5629-3-anisinha@redhat.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230704112555.5629-1-anisinha@redhat.com>
 References: <20230704112555.5629-1-anisinha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -100,22 +101,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We are going to fix bio-tables-test in the next patch and hence need to
-make sure the acpi tests continue to pass.
+PCIE ports only have one slot, slot 0. Hence, non-zero slots are not available
+for PCIE devices on PCIE root ports. Fix test_acpi_q35_tcg_no_acpi_hotplug()
+so that the test does not use them.
 
 Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 1 +
- 1 file changed, 1 insertion(+)
+ tests/qtest/bios-tables-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..31df9c6187 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,2 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/q35/DSDT.noacpihp",
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index ed1c69cf01..47ba20b957 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -1020,9 +1020,9 @@ static void test_acpi_q35_tcg_no_acpi_hotplug(void)
+         " -device pci-testdev,bus=nohprp,acpi-index=501"
+         " -device pcie-root-port,id=nohprpint,port=0x0,chassis=3,hotplug=off,"
+                                  "multifunction=on,addr=8.0"
+-        " -device pci-testdev,bus=nohprpint,acpi-index=601,addr=8.1"
++        " -device pci-testdev,bus=nohprpint,acpi-index=601,addr=0.1"
+         " -device pcie-root-port,id=hprp2,port=0x0,chassis=4,bus=nohprpint,"
+-                                 "addr=9.0"
++                                 "addr=0.2"
+         " -device pci-testdev,bus=hprp2,acpi-index=602"
+         , &data);
+     free_test_data(&data);
 -- 
 2.39.1
 
