@@ -2,50 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80428746DBF
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 11:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 139D3746DC2
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 11:40:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGcU0-0003bu-Qf; Tue, 04 Jul 2023 05:38:04 -0400
+	id 1qGcVh-0004u7-Le; Tue, 04 Jul 2023 05:39:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGcTy-0003bh-U3; Tue, 04 Jul 2023 05:38:02 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1qGcVc-0004tr-0j
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 05:39:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGcTx-0007q1-D7; Tue, 04 Jul 2023 05:38:02 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 31BDC74635C;
- Tue,  4 Jul 2023 11:37:44 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id ACE70746335; Tue,  4 Jul 2023 11:37:43 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id ABE2A745720;
- Tue,  4 Jul 2023 11:37:43 +0200 (CEST)
-Date: Tue, 4 Jul 2023 11:37:43 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH 12/13] ppc440_pcix: Don't use iomem for regs
-In-Reply-To: <01cd4046-1f7e-beb5-d999-84db6ae23d3e@linaro.org>
-Message-ID: <bc068e12-9a87-23fa-e39e-dd28a233a5b3@eik.bme.hu>
-References: <cover.1688421085.git.balaton@eik.bme.hu>
- <576b54159060392c8bc12a63c665928053b58f24.1688421085.git.balaton@eik.bme.hu>
- <01cd4046-1f7e-beb5-d999-84db6ae23d3e@linaro.org>
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1qGcVB-000835-7r
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 05:39:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688463554;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hfYVrOjGXb41c43sRO73a6V62idtsu/h22x7d0l8NVg=;
+ b=L0hz2W1nWAz+ML+7kxpw4zlFbXl+4qMOk2RAiMRYvE17t3ilVHB7tINSVSKoddZ0puDcFg
+ SYM2+F+V++XVeBndpLeMI3ttUkLHOBLiJa5xVD4/P8qjz1CpRiHlngJScZ/H6GUZeDUiQF
+ 0ffga/2xzwbo2wItxE688rfJapurAEQ=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-624-mWqaELFAMy6hkxzkbHUeSQ-1; Tue, 04 Jul 2023 05:39:13 -0400
+X-MC-Unique: mWqaELFAMy6hkxzkbHUeSQ-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7659924cf20so465802985a.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 02:39:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688463552; x=1691055552;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hfYVrOjGXb41c43sRO73a6V62idtsu/h22x7d0l8NVg=;
+ b=JeNNiNVMzmqsVuxgDioCzeQR6HcLAKeaN4Olkc+AzRJ2R+NUnZjLtP/gl0npbe4gAO
+ 5st/SRfxbEmgo9dsqSPa7TS0XP6Cs5x+x6/jHU06zySvGzMpWAcA4Bk95EXeSWL0r/I/
+ wy+sDp2Qs5dgtidEThhKVHYQuSvbAX4YGiHlN0xxpcisbYcXMJnNM5PT0OSPzHsZsozn
+ +h9zr/5mAygNOJXzRIhhzA/9ZmpqLv7A/tKIz2cpt5VxYhJ0Ky+NKgc5Q/EcV33+kTBe
+ uVTUP0T00+ouncber4pOf6g6Pcu0ie3GHG1kaLF1cjOMKQ6YmguMfXIarTNibJn9mYRO
+ mMBQ==
+X-Gm-Message-State: AC+VfDze8fI7EH6JOybugQ8Rn3Q0pKUFRmOeackH7z5Adn4+YtksXeEc
+ ltAmvV23GRYcutThQVz0goPoEk2HJ+zWJqJ6JPwykz049dAtf6fslqqvFjnYfSKT1vSGRoTpifM
+ ETyrPdhSkue3h2CgIa6MLhEwsUu/I0WQ=
+X-Received: by 2002:a05:620a:2482:b0:767:d0c:9ec1 with SMTP id
+ i2-20020a05620a248200b007670d0c9ec1mr13708859qkn.59.1688463552576; 
+ Tue, 04 Jul 2023 02:39:12 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5Xs9MxFAH0+vMsNI8g1vPyIb7lNl7JAnVct/sKOgD5UNl6Hv1WKsyFjhPb+fkGLMrXtRcT+KPU7/xxQsFLsg0=
+X-Received: by 2002:a05:620a:2482:b0:767:d0c:9ec1 with SMTP id
+ i2-20020a05620a248200b007670d0c9ec1mr13708846qkn.59.1688463552285; Tue, 04
+ Jul 2023 02:39:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-303919976-1688463463=:43117"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230704084210.101822-1-mcascell@redhat.com>
+ <CAJ+F1CLi54BFaeYjZ_eHq+nixPkAcFOGquLx0kRc_YeUeLZVKA@mail.gmail.com>
+In-Reply-To: <CAJ+F1CLi54BFaeYjZ_eHq+nixPkAcFOGquLx0kRc_YeUeLZVKA@mail.gmail.com>
+From: Mauro Matteo Cascella <mcascell@redhat.com>
+Date: Tue, 4 Jul 2023 11:39:01 +0200
+Message-ID: <CAA8xKjUTgUfopThem85v9ufQX0=62J5sZxUiKYt0OO6FH-wqEg@mail.gmail.com>
+Subject: Re: [PATCH] ui/vnc-clipboard: fix infinite loop in inflate_buffer
+ (CVE-2023-3255)
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, kraxel@redhat.com, kevin.denis@synacktiv.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mcascell@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,65 +96,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Tue, Jul 4, 2023 at 11:03=E2=80=AFAM Marc-Andr=C3=A9 Lureau
+<marcandre.lureau@gmail.com> wrote:
+>
+>
+>
+> On Tue, Jul 4, 2023 at 10:42=E2=80=AFAM Mauro Matteo Cascella <mcascell@r=
+edhat.com> wrote:
+>>
+>> A wrong exit condition may lead to an infinite loop when inflating a
+>> valid zlib buffer containing some extra bytes in the `inflate_buffer`
+>> function. The bug only occurs post-authentication. Return the buffer
+>> immediately if the end of the compressed data has been reached
+>> (Z_STREAM_END).
+>>
+>> Fixes: CVE-2023-3255
+>> Fixes: 0bf41cab ("ui/vnc: clipboard support")
+>> Reported-by: Kevin Denis <kevin.denis@synacktiv.com>
+>> Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
+>
+>
+> Tested-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> Note: we may want to disconnect the client when there are extra bytes in =
+the message, or print some warnings.
 
---3866299591-303919976-1688463463=:43117
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Sure, I guess we can call vnc_disconnect_finish or vnc_client_error
+for disconnecting, not sure how to properly print warnings. Feel free
+to add that yourself when applying the patch. Or I can try to send v2
+if you prefer.
 
-On Tue, 4 Jul 2023, Philippe Mathieu-Daudé wrote:
-> On 4/7/23 00:02, BALATON Zoltan wrote:
->> The iomem memory region is better used for the PCI IO space but
->> currently used for registers. Stop using it for that to allow this to
->> be cleaned up in the next patch.
->> 
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Thanks,
+
+>>
 >> ---
->>   hw/ppc/ppc440_pcix.c | 7 ++++---
->>   1 file changed, 4 insertions(+), 3 deletions(-)
->> 
->> diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
->> index adfecf1e76..ee2dc44f67 100644
->> --- a/hw/ppc/ppc440_pcix.c
->> +++ b/hw/ppc/ppc440_pcix.c
->> @@ -484,6 +484,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error 
->> **errp)
->>       SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
->>       PPC440PCIXState *s;
->>       PCIHostState *h;
->> +    MemoryRegion *regs = g_new(MemoryRegion, 1);
+>>  ui/vnc-clipboard.c | 10 ++++------
+>>  1 file changed, 4 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/ui/vnc-clipboard.c b/ui/vnc-clipboard.c
+>> index 8aeadfaa21..c759be3438 100644
+>> --- a/ui/vnc-clipboard.c
+>> +++ b/ui/vnc-clipboard.c
+>> @@ -50,8 +50,11 @@ static uint8_t *inflate_buffer(uint8_t *in, uint32_t =
+in_len, uint32_t *size)
+>>          ret =3D inflate(&stream, Z_FINISH);
+>>          switch (ret) {
+>>          case Z_OK:
+>> -        case Z_STREAM_END:
+>>              break;
+>> +        case Z_STREAM_END:
+>> +            *size =3D stream.total_out;
+>> +            inflateEnd(&stream);
+>> +            return out;
+>>          case Z_BUF_ERROR:
+>>              out_len <<=3D 1;
+>>              if (out_len > (1 << 20)) {
+>> @@ -66,11 +69,6 @@ static uint8_t *inflate_buffer(uint8_t *in, uint32_t =
+in_len, uint32_t *size)
+>>          }
+>>      }
+>>
+>> -    *size =3D stream.total_out;
+>> -    inflateEnd(&stream);
+>> -
+>> -    return out;
+>> -
+>>  err_end:
+>>      inflateEnd(&stream);
+>>  err:
+>> --
+>> 2.41.0
+>>
+>>
 >
-> Why not hold it within PPC440PCIXState?
+>
+> --
+> Marc-Andr=C3=A9 Lureau
 
-Because it's never needed after this function.
 
-Regards,
-BALATON Zoltan
 
->>       h = PCI_HOST_BRIDGE(dev);
->>       s = PPC440_PCIX_HOST(dev);
->> @@ -507,11 +508,11 @@ static void ppc440_pcix_realize(DeviceState *dev, 
->> Error **errp)
->>                             h, "pci-conf-idx", 4);
->>       memory_region_init_io(&h->data_mem, OBJECT(s), &pci_host_data_le_ops,
->>                             h, "pci-conf-data", 4);
->> -    memory_region_init_io(&s->iomem, OBJECT(s), &pci_reg_ops, s,
->> -                          "pci.reg", PPC440_REG_SIZE);
->> +    memory_region_init_io(regs, OBJECT(s), &pci_reg_ops, s, "pci-reg",
->> +                          PPC440_REG_SIZE);
->>       memory_region_add_subregion(&s->container, PCIC0_CFGADDR, 
->> &h->conf_mem);
->>       memory_region_add_subregion(&s->container, PCIC0_CFGDATA, 
->> &h->data_mem);
->> -    memory_region_add_subregion(&s->container, PPC440_REG_BASE, 
->> &s->iomem);
->> +    memory_region_add_subregion(&s->container, PPC440_REG_BASE, regs);
->>       sysbus_init_mmio(sbd, &s->container);
->>   }
->> 
->
->
->
---3866299591-303919976-1688463463=:43117--
+--=20
+Mauro Matteo Cascella
+Red Hat Product Security
+PGP-Key ID: BB3410B0
+
 
