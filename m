@@ -2,93 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 040447473FD
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94000747411
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:26:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGgtT-0000i8-EC; Tue, 04 Jul 2023 10:20:39 -0400
+	id 1qGgyI-0003Lu-2K; Tue, 04 Jul 2023 10:25:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qGgtO-0000hr-S2
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:20:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qGgtM-0004uu-8h
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:20:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688480430;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/SPZQ2GEyn1BZ3EaO3bLyDBZAq+aztXSFu65EHnYeLE=;
- b=aH+kHmYnSAdMds2JYSB6Hyypntv9t7q7tZMB6mSJ9hE7TT4hRt61kLcE86hIptD9hOkD52
- ZqWuGQCeCWSN1smLxYuozdyDcnWcUhQ0ZUnPBRhXXZhtbufmBdg2+oNASjEO5OXnz3aQ42
- /CEkQwpYPlQqrMJcTbiXCpb2kqnxCwQ=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-171-FTvYRGd8MKKI_0B5eQDMlA-1; Tue, 04 Jul 2023 10:20:29 -0400
-X-MC-Unique: FTvYRGd8MKKI_0B5eQDMlA-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2b6f51c5cb3so7156131fa.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:20:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGgyF-0003LB-AM
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:25:35 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGgyC-00060y-78
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:25:35 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3143ccb0f75so1418434f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:25:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688480727; x=1691072727;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GyE3CXPeXedQL5IGhlbGJ9w1KGn4iyl/4Ih2AUEQGDU=;
+ b=u6Gt11xQ7odwivWClsNDIy2Tn4hnuxAuoEvKhVxJDUXqYakv1RyFBPz8fLT2d0qhT5
+ AwgblWyoZtc3c8jLeJqZCxbm96PwlmjoZmbjQi9TNu3z4KnFA5HpOSL29jQiHcvTPljk
+ hdW9zRYfCpN14eiaIsKYDN949y5kHWhILgAeiraU9lNq9QabUofRMZfvximdyNeKx2an
+ EMegRm7Y84RDzEBUoayXuGx20yNH3R1/ilN7V0b4BQ6tj0H8hXiiaRhzumlpRW3PO9LW
+ 1APqMJkCBSDMiqD1Ame65EkoYSAMsK+VgQXZN2zgIzalpRu5w8WcGH23c3ok9VYdbMdK
+ pVzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688480423; x=1691072423;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/SPZQ2GEyn1BZ3EaO3bLyDBZAq+aztXSFu65EHnYeLE=;
- b=LJGEhoAD7r8EdOhRfB4nvQt/4Y/xcHFvNSTi6BYqUxP10Rb6prxehg57A5jE3VBbIA
- T/Ue9R37v/ozMWUCL20idakX0z+DBVJohGccsJUO2aMWVVMapMOhuw27tJGkjSpULL6p
- g6uXlCJjILJqT3MurcsMpyZusckFxJhZm3ROHjx3GevmBnLePPyaUWlB7jaGbmAF7SkH
- Q5TfrmSBOZDWiDf+3cnpAhVsS1XZ56d2Jy4gSwqtS8ofoC64jyxvQIwGwBZqO+rGvIGa
- oGxF85gtstD44qWvHld7/XlJlfvpjV+7Px0/cYjLzS2c5TnyogIEQUzm6rlh/IDdW+pJ
- yhfA==
-X-Gm-Message-State: ABy/qLZe6VHTBMWckhxnvTdTo1kox2A1m9Ys/zogdKSFuXd65XoHiN/e
- lmoclYy0muSyi5fsaPzUJkMZWcfNCmgbH99DTJkKoKm4eNVyPTXYvXya8yfs2VBPSRDFVgxs/Rm
- 769wl1tuIeqX0D5A=
-X-Received: by 2002:a2e:805a:0:b0:2b6:d7d1:95bf with SMTP id
- p26-20020a2e805a000000b002b6d7d195bfmr8091997ljg.9.1688480423431; 
- Tue, 04 Jul 2023 07:20:23 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlF0tRCqTgm07yFDXgSf2sa5ICyMSfXGF0TBuJOnTQgjU0rdt4Giedk+GKBucZgjNTiic0OTww==
-X-Received: by 2002:a2e:805a:0:b0:2b6:d7d1:95bf with SMTP id
- p26-20020a2e805a000000b002b6d7d195bfmr8091976ljg.9.1688480423032; 
- Tue, 04 Jul 2023 07:20:23 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- w6-20020a17090633c600b0098748422178sm13193720eja.56.2023.07.04.07.20.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 07:20:22 -0700 (PDT)
-Date: Tue, 4 Jul 2023 16:20:21 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, Ani Sinha
- <anisinha@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>, Sriram Yagnaraman
- <sriram.yagnaraman@est.tech>, Jason Wang <jasowang@redhat.com>, Keith Busch
- <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
-Subject: Re: [PATCH v4 2/2] pcie: Specify 0 for ARI next function numbers
-Message-ID: <20230704162021.18e05471@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230704122215.23270-3-akihiko.odaki@daynix.com>
-References: <20230704122215.23270-1-akihiko.odaki@daynix.com>
- <20230704122215.23270-3-akihiko.odaki@daynix.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20221208; t=1688480727; x=1691072727;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GyE3CXPeXedQL5IGhlbGJ9w1KGn4iyl/4Ih2AUEQGDU=;
+ b=epLDplQukDfwPxHmjWdb35ExKim6HzS+efa1pTQRqREytGUI4hLo4tph9VD4E+Wgc2
+ mEJs6dVunUlNgnSBStj5DCX486peAw5kN+B17Lp+JV9Xa/HsYH8mB52UrKoDXsPlOToc
+ SdbFYDeNTPrXoP5/ttWCgRpkkgMEXIaM0GxcJDWrnBU10VpNbwPhR9+B6ZGcoXpjUIcs
+ Rjos+2ToqNjsoIDlEw2EUnh/PCLQpAnLxqoNJNn75iks5Jdoc3gfbqZcnkkt9jLUAnmv
+ f7Ry51yrQDQnFi1HDk1V92WiPTEUIpddNweu85bSwuwWoaVpGWN0nKAgnoixkyThg2xn
+ aJ2Q==
+X-Gm-Message-State: ABy/qLYjhA/dwnHk5lkdYvobP0zr8yyWgfScCJT3VCKRT1IfqL5Us//Q
+ /KP0Ch9i3NlIwgfSZfBwJ1VvkA==
+X-Google-Smtp-Source: APBJJlGIyOyJyQR0chuqFyWoaTfT+9xNQQdC1UQyrsB9jhdRmlSM3b083nUv8Y6A/a/AtE4axFVVxA==
+X-Received: by 2002:a5d:5942:0:b0:314:3c8f:d267 with SMTP id
+ e2-20020a5d5942000000b003143c8fd267mr3884554wri.45.1688480727420; 
+ Tue, 04 Jul 2023 07:25:27 -0700 (PDT)
+Received: from [192.168.1.102] ([176.176.157.122])
+ by smtp.gmail.com with ESMTPSA id
+ r3-20020adfda43000000b0030ae3a6be4asm28615167wrl.72.2023.07.04.07.25.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jul 2023 07:25:27 -0700 (PDT)
+Message-ID: <36110549-9404-17c8-905e-46a81af4ea82@linaro.org>
+Date: Tue, 4 Jul 2023 16:25:25 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH 13/15] hw/timer/arm_timer: Fix misuse of SysBus IRQ in
+ IcpPitState
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, Sergey Kambalin <serg.oker@gmail.com>
+References: <20230531203559.29140-1-philmd@linaro.org>
+ <20230531203559.29140-14-philmd@linaro.org>
+ <CAFEAcA8GTuV0AtHnFHbvii9bgDqYjhAJjsjq0CX3WRHrkkaFvw@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA8GTuV0AtHnFHbvii9bgDqYjhAJjsjq0CX3WRHrkkaFvw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,85 +96,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue,  4 Jul 2023 21:22:14 +0900
-Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+On 8/6/23 17:09, Peter Maydell wrote:
+> On Wed, 31 May 2023 at 21:37, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> SysBus IRQ are *output* IRQs. As some sort of simplification
+>> to avoid to forward it, IcpPitState misuses it as ARM timer
+>> input IRQ. Fix that by using a simple IRQ forwarder handler.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   hw/timer/arm_timer.c | 15 ++++++++++++++-
+>>   1 file changed, 14 insertions(+), 1 deletion(-)
 
-> The current implementers of ARI are all SR-IOV devices. The ARI next
-> function number field is undefined for VF .
-                                           ^
-add a reference to a spec (spec name, rev, chapter) where it's declared
-so reviewer or whoever reads it later could easily find relevant
-documentation.
 
->The PF should end the linked
-> list formed with the field by specifying 0.
-ditto
+>> +static void icp_pit_fwd_irq(void *opaque, int n, int level)
+>> +{
+>> +    IntegratorPitState *s = opaque;
+>> +
+>> +    qemu_set_irq(s->irq[n], level);
+>> +}
+>> +
+>>   static void icp_pit_init(Object *obj)
+>>   {
+>>       static const uint32_t tmr_freq[] = {
+>> @@ -402,9 +410,14 @@ static void icp_pit_init(Object *obj)
+>>       IntegratorPitState *s = INTEGRATOR_PIT(obj);
+>>       SysBusDevice *dev = SYS_BUS_DEVICE(obj);
+>>
+>> +    qdev_init_gpio_in_named(DEVICE(obj), icp_pit_fwd_irq,
+>> +                            "timer-in", ARRAY_SIZE(s->timer));
+>> +
+>>       for (unsigned i = 0; i < ARRAY_SIZE(s->timer); i++) {
+>>           s->timer[i] = arm_timer_new(tmr_freq[i], s->irq_in[i]);
+>> -        sysbus_init_irq(dev, &s->irq_in[i]);
+>> +        sysbus_init_irq(dev, &s->irq[i]);
+>> +        sysbus_connect_irq(dev, i,
+>> +                           qdev_get_gpio_in_named(DEVICE(obj), "timer-in", i));
+>>       }
+> 
+> This feels a bit clunky but I think it's what we have to do,
+> since the various _pass_ APIs for forwarding GPIOs and
+> IRQs from a container to an inner device only work with
+> an entire set of IRQs.
 
-> 
-> For migration, the field will keep having 1 as its value on the old
-> virt models.
-> 
-> Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in docs/pcie_sriov.txt")
-> Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
-> Fixes: 3a977deebe ("Intrdocue igb device emulation")
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  include/hw/pci/pci.h | 2 ++
->  hw/core/machine.c    | 1 +
->  hw/pci/pci.c         | 2 ++
->  hw/pci/pcie.c        | 2 +-
->  4 files changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-> index e6d0574a29..9c5b5eb206 100644
-> --- a/include/hw/pci/pci.h
-> +++ b/include/hw/pci/pci.h
-> @@ -209,6 +209,8 @@ enum {
->      QEMU_PCIE_CAP_CXL = (1 << QEMU_PCIE_CXL_BITNR),
->  #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
->      QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
-> +#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
-> +    QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
->  };
->  
->  typedef struct PCIINTxRoute {
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index 46f8f9a2b0..f0d35c6401 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -41,6 +41,7 @@
->  
->  GlobalProperty hw_compat_8_0[] = {
->      { "migration", "multifd-flush-after-each-section", "on"},
-> +    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
->  };
->  const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
->  
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index e2eb4c3b4a..45a9bc0da8 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -82,6 +82,8 @@ static Property pci_props[] = {
->      DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
->      DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
->                      QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
-> +    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
-> +                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
->      DEFINE_PROP_END_OF_LIST()
->  };
->  
-> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> index 9a3f6430e8..cf09e03a10 100644
-> --- a/hw/pci/pcie.c
-> +++ b/hw/pci/pcie.c
-> @@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
->  /* ARI */
->  void pcie_ari_init(PCIDevice *dev, uint16_t offset)
->  {
-> -    uint16_t nextfn = 1;
-> +    uint16_t nextfn = dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 ? 1 : 0;
->  
->      pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
->                          offset, PCI_ARI_SIZEOF);
+Indeed. sysbus_pass_irq() could resolve the last unused IRQ index
+and amend starting at that index, but this doesn't seem a lot of
+need for a such use (so far). We might consider it if we ever merge
+sysbus IRQ API into qdev.
+
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+Thanks!
+
+Phil.
 
 
