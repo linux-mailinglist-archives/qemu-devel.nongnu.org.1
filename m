@@ -2,63 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275D3746E1A
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 11:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B529746E28
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 12:00:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGcns-0003x7-7p; Tue, 04 Jul 2023 05:58:36 -0400
+	id 1qGcp6-0006EE-CR; Tue, 04 Jul 2023 05:59:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qGcnn-0003oT-IZ; Tue, 04 Jul 2023 05:58:33 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qGcp4-0006E1-79; Tue, 04 Jul 2023 05:59:50 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qGcnk-0004aU-5U; Tue, 04 Jul 2023 05:58:31 -0400
-Received: from lhrpeml500003.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QwJ8v27qlz6J7Tr;
- Tue,  4 Jul 2023 17:56:31 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500003.china.huawei.com (7.191.162.67) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 4 Jul 2023 10:58:16 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.027; 
- Tue, 4 Jul 2023 10:58:16 +0100
-To: Shaoqin Huang <shahuang@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-CC: "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "james.morse@arm.com"
- <james.morse@arm.com>, "gshan@redhat.com" <gshan@redhat.com>, Cornelia Huck
- <cohuck@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "Michael S.
- Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Salil Mehta <salil.mehta@opnsrc.net>
-Subject: RE: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
-Thread-Topic: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
-Thread-Index: AQHZp/pp444fl0T5A0KjPRKELV/ZGK+dFe3AgADJLYCAC4aZ8A==
-Date: Tue, 4 Jul 2023 09:58:15 +0000
-Message-ID: <539e6a25b89a45839de37fe92b27d0d3@huawei.com>
-References: <20230626064910.1787255-1-shahuang@redhat.com>
- <9df973ede74e4757b510f26cd5786036@huawei.com>
- <fb5e8d4d-2388-3ab0-aaac-a1dd91e74b08@redhat.com>
-In-Reply-To: <fb5e8d4d-2388-3ab0-aaac-a1dd91e74b08@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.147.121]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qGcp2-0004kY-7u; Tue, 04 Jul 2023 05:59:49 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3649qAqO022950; Tue, 4 Jul 2023 09:59:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=b+MYw9070SETweTUycuTM06z72s6UJE1ceJddXyKWQE=;
+ b=chsrsZGDlLJ+IlOxgqj0MZNqdgV4WHHJMFRai2tpOMZ7CXYccttBeJjtvETzDND5ftR/
+ Z98cGLRwAZG/Z5k0SBmAG84U68jVaaaDxXCOcO7yZ8ZxKsVd8DVMZKexTLb6ULSoOlOb
+ /1vwLMTJ+meu5mQvwtLQIwFMjbTZFaHhuH9rrcKX85WHutt3tX2gNv0GWhdP3lsJuNgW
+ BWVa0mHsYE49qWpYfSb67U7C3QZK4DixSOcrbxL59fwlhRk9r32/AJ58+lU3JfHJMlzO
+ l2kTbE8dr5W6/wGh4A2FifnHnVlcpbmnIE0Ejd/Ck04OxxNLl6QiAoi8DpVMDZIm0KX2 OQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmh5t8491-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jul 2023 09:59:38 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3649sW3X030064;
+ Tue, 4 Jul 2023 09:59:38 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmh5t848d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jul 2023 09:59:38 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3642rWBv018938;
+ Tue, 4 Jul 2023 09:59:36 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rjbs4sy2e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jul 2023 09:59:35 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3649xXE919071590
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Jul 2023 09:59:33 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE9102004B;
+ Tue,  4 Jul 2023 09:59:33 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4083C20043;
+ Tue,  4 Jul 2023 09:59:33 +0000 (GMT)
+Received: from [9.179.4.4] (unknown [9.179.4.4])
+ by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  4 Jul 2023 09:59:33 +0000 (GMT)
+Message-ID: <96ee32ed-56d5-1e0b-9eeb-3ce130800b10@linux.ibm.com>
+Date: Tue, 4 Jul 2023 11:59:32 +0200
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 1/5] ppc/pnv: quad xscom callbacks are P9 specific
+To: Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+References: <20230704054204.168547-1-joel@jms.id.au>
+ <20230704054204.168547-2-joel@jms.id.au>
+Content-Language: en-US
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+In-Reply-To: <20230704054204.168547-2-joel@jms.id.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 1r7lmmWyZCYOC1lTfC8wh6gpmoEgFzye
+X-Proofpoint-ORIG-GUID: kuXDTkS0tRp6jSf5T_8-jlz8UJg2aiPU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-04_06,2023-06-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0
+ bulkscore=0 spamscore=0 mlxscore=0 impostorscore=0 phishscore=0
+ mlxlogscore=999 malwarescore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307040078
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,64 +112,85 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgU2hhb3FpbiwNCkp1c3Qgc2F3IHRoaXMuIEFwb2xvZ2llcy4gSSBtaXNzZWQgdG8gcmVwbHkg
-dGhpcyBlYXJsaWVyIGFzIEkgd2FzIGJpdA0KZGlzY29ubmVjdGVkIGZvciBsYXN0IGZldyBkYXlz
-Lg0KDQoNCj4gRnJvbTogU2hhb3FpbiBIdWFuZyA8c2hhaHVhbmdAcmVkaGF0LmNvbT4NCj4gU2Vu
-dDogVHVlc2RheSwgSnVuZSAyNywgMjAyMyAzOjM1IEFNDQoNCj4gSGkgU2FsaWwsDQo+IA0KPiBP
-biA2LzI2LzIzIDIxOjQyLCBTYWxpbCBNZWh0YSB3cm90ZToNCj4gPj4gRnJvbTogU2hhb3FpbiBI
-dWFuZyA8c2hhaHVhbmdAcmVkaGF0LmNvbT4NCj4gPj4gU2VudDogTW9uZGF5LCBKdW5lIDI2LCAy
-MDIzIDc6NDkgQU0NCj4gPj4gVG86IHFlbXUtZGV2ZWxAbm9uZ251Lm9yZzsgcWVtdS1hcm1Abm9u
-Z251Lm9yZw0KPiA+PiBDYzogb2xpdmVyLnVwdG9uQGxpbnV4LmRldjsgU2FsaWwgTWVodGEgPHNh
-bGlsLm1laHRhQGh1YXdlaS5jb20+Ow0KPiA+PiBqYW1lcy5tb3JzZUBhcm0uY29tOyBnc2hhbkBy
-ZWRoYXQuY29tOyBTaGFvcWluIEh1YW5nIDxzaGFodWFuZ0ByZWRoYXQuY29tPjsNCj4gPj4gQ29y
-bmVsaWEgSHVjayA8Y29odWNrQHJlZGhhdC5jb20+OyBrdm1Admdlci5rZXJuZWwub3JnOyBNaWNo
-YWVsIFMuIFRzaXJraW4NCj4gPj4gPG1zdEByZWRoYXQuY29tPjsgUGFvbG8gQm9uemluaSA8cGJv
-bnppbmlAcmVkaGF0LmNvbT47IFBldGVyIE1heWRlbGwgPHBldGVyLm1heWRlbGxAbGluYXJvLm9y
-Zz4NCj4gPj4gU3ViamVjdDogW1BBVENIIHYxIDAvNV0gdGFyZ2V0L2FybTogSGFuZGxlIHBzY2kg
-Y2FsbHMgaW4gdXNlcnNwYWNlDQo+ID4+DQo+ID4+IFRoZSB1c2Vyc3BhY2UgU01DQ0MgY2FsbCBm
-aWx0ZXJpbmdbMV0gcHJvdmlkZXMgdGhlIGFiaWxpdHkgdG8gZm9yd2FyZCB0aGUgU01DQ0MNCj4g
-Pj4gY2FsbHMgdG8gdGhlIHVzZXJzcGFjZS4gVGhlIHZDUFUgaG90cGx1Z1syXSB3b3VsZCBiZSB0
-aGUgZmlyc3QgbGVnaXRpbWF0ZSB1c2UNCj4gPj4gY2FzZSB0byBoYW5kbGUgdGhlIHBzY2kgY2Fs
-bHMgaW4gdXNlcnNwYWNlLCB0aHVzIHRoZSB2Q1BVIGhvdHBsdWcgY2FuIGRlbnkgdGhlDQo+ID4+
-IFBTQ0lfT04gY2FsbCBpZiB0aGUgdkNQVSBpcyBub3QgcHJlc2VudCBub3cuDQo+ID4+DQo+ID4+
-IFRoaXMgc2VyaWVzIHRyeSB0byBlbmFibGUgdGhlIHVzZXJzcGFjZSBTTUNDQyBjYWxsIGZpbHRl
-cmluZywgdGh1cyBjYW4gaGFuZGxlDQo+ID4+IHRoZSBTTUNDQyBjYWxsIGluIHVzZXJzcGFjZS4g
-VGhlIGZpcnN0IGVuYWJsZWQgU01DQ0MgY2FsbCBpcyBwc2NpIGNhbGwsIGJ5IHVzaW5nDQo+ID4+
-IHRoZSBuZXcgYWRkZWQgb3B0aW9uICd1c2VyLXNtY2NjJywgd2UgY2FuIGVuYWJsZSBoYW5kbGUg
-cHNjaSBjYWxscyBpbiB1c2Vyc3BhY2UuDQo+ID4+DQo+ID4+IHFlbXUtc3lzdGVtLWFhcmNoNjQg
-LW1hY2hpbmUgdmlydCx1c2VyLXNtY2NjPW9uDQo+ID4+DQo+ID4+IFRoaXMgc2VyaWVzIHJldXNl
-IHRoZSBxZW11IGltcGxlbWVudGF0aW9uIG9mIHRoZSBwc2NpIGhhbmRsaW5nLCB0aHVzIHRoZQ0K
-PiA+PiBoYW5kbGluZyBwcm9jZXNzIGlzIHZlcnkgc2ltcGxlLiBCdXQgd2hlbiBoYW5kbGluZyBw
-c2NpIGluIHVzZXJzcGFjZSB3aGVuIHVzaW5nDQo+ID4+IGt2bSwgdGhlIHJlc2V0IHZjcHUgcHJv
-Y2VzcyBuZWVkIHRvIGJlIHRha2luZyBjYXJlLCB0aGUgZGV0YWlsIGlzIGluY2x1ZGVkIGluDQo+
-ID4+IHRoZSBwYXRjaDA1Lg0KPiA+DQo+ID4gVGhpcyBjaGFuZ2UgaXMgaW50ZW5kZWQgZm9yIFZD
-UFUgSG90cGx1ZyBhbmQgYXJlIGR1cGxpY2F0aW5nIHRoZSBjb2RlDQo+ID4gd2UgYXJlIHdvcmtp
-bmcgb24uIFVubGVzcyB0aGlzIGNoYW5nZSBpcyBhbHNvIGludGVuZGVkIGZvciBhbnkgb3RoZXIN
-Cj4gPiBmZWF0dXJlIEkgd291bGQgcmVxdWVzdCB5b3UgdG8gZGVmZXIgdGhpcy4NCj4gDQo+IFRo
-YW5rcyBmb3Igc2hhcmluZyBtZSB0aGUgaW5mb3JtYXRpb24uIEknbSBub3QgaW50ZW5kZWQgZm9y
-IG1lcmdpbmcgdGhpcw0KPiBzZXJpZXMsIGJ1dCBkaXNjdXNzIHNvbWV0aGluZyBhYm91dCB0aGUg
-VkNQVSBIb3RwbHVnLCBzaW5jZSBJJ20gYWxzbw0KPiBmb2xsb3dpbmcgdGhlIHdvcmsgb2YgdkNQ
-VSBIb3RwbHVnLg0KDQpTdXJlLiBJIGFtIG5vdCBhZ2FpbnN0IHRoaXMgd29yayBpbiBhbnkgd2F5
-IGJ1dCB0aGVyZSB3YXMgYml0IG9mIGFuIG92ZXJsYXAgYW5kIHdhcw0KdHJ5aW5nIHRvIGF2b2lk
-IHRoYXQuIA0KDQo+IA0KPiBKdXN0IGN1cmlvdXMsIHdoYXQgaXMgeW91ciBwbGFuIHRvIHVwZGF0
-ZSBhIG5ldyB2ZXJzaW9uIG9mIFZDUFUgSG90cGx1Zw0KPiB3aGljaCBpcyBiYXNlZCBvbiB0aGUg
-dXNlcnNwYWNlIFNNQ0NDIGZpbHRlcmluZz8NCg0KV2UgaGF2ZSBhbHJlYWR5IGluY29ycG9yYXRl
-ZCB0aGlzLiBXZSBoYXZlIG5vdCB0ZXN0ZWQgaXQgcHJvcGVybHkgdGhvdWdoIGFuZA0KdGhlcmUg
-YXJlIHNvbWUgaXNzdWVzIHJlbGF0ZWQgdG8gdGhlIG1pZ3JhdGlvbiB3ZSBhcmUgZml4aW5nLg0K
-DQpJIGRpZCBtZW50aW9uIGFib3V0IHRoaXMgaW4gdGhlIEtWTUZvcnVtMjAyMyBwcmVzZW50YXRp
-b24gYXMgd2VsbC4NCg0KTGF0ZXN0IFFlbXUgUHJvdG90eXBlIChQcmUgUkZDIFYyKSAoTm90IGlu
-IHRoZSBmaW5hbCBzaGFwZSBvZiB0aGUgcGF0Y2hlcykNCmh0dHBzOi8vZ2l0aHViLmNvbS9zYWxp
-bC1tZWh0YS9xZW11LmdpdMKgIMKgdmlydC1jcHVocC1hcm12OC9yZmMtdjEtcG9ydDExMDUyMDIz
-LmRldi0xDQoNCg0Kc2hvdWxkIHdvcmsgYWdhaW5zdCBiZWxvdyBrZXJuZWwgY2hhbmdlcyBhcyBj
-b25maXJtZWQgYnkgSmFtZXMsDQoNCkxhdGVzdCBLZXJuZWwgUHJvdG90eXBlIChQcmUgUkZDIFYy
-ID0gUkZDIFYxICsgRml4ZXMpwqANCmh0dHBzOi8vZ2l0LmdpdGxhYi5hcm0uY29tL2xpbnV4LWFy
-bS9saW51eC1qbS5naXTCoCAgdmlydHVhbF9jcHVfaG90cGx1Zy9yZmMvdjIgIA0KDQoNCldlIGhh
-dmUgbm90IGFkZGVkIHRoZSBzdXBwb3J0IG9mIHVzZXItY29uZmlndXJhYmlsaXR5IHdoaWNoIHlv
-dXIgcGF0Y2gtc2V0IGRvZXMuDQoNCg0KTWFueSB0aGFua3MNClNhbGlsLg0KDQoNCg0KDQoNCg0K
-DQoNCg0KDQoNCg==
+
+
+On 04/07/2023 07:42, Joel Stanley wrote:
+> Rename the functions to include P9 in the name in preparation for adding
+> P10 versions.
+> 
+> Correct the unimp read message while we're changing the function.
+> 
+> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+> Signed-off-by: Joel Stanley <joel@jms.id.au>
+> ---
+
+
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+
+
+> v2: Fix unimp print, and grammar in the commit message
+> ---
+>   hw/ppc/pnv_core.c | 19 ++++++++++---------
+>   1 file changed, 10 insertions(+), 9 deletions(-)
+> 
+> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+> index 0bc3ad41c81c..0f451b3b6e1f 100644
+> --- a/hw/ppc/pnv_core.c
+> +++ b/hw/ppc/pnv_core.c
+> @@ -360,8 +360,8 @@ DEFINE_TYPES(pnv_core_infos)
+>   
+>   #define P9X_EX_NCU_SPEC_BAR                     0x11010
+>   
+> -static uint64_t pnv_quad_xscom_read(void *opaque, hwaddr addr,
+> -                                    unsigned int width)
+> +static uint64_t pnv_quad_power9_xscom_read(void *opaque, hwaddr addr,
+> +                                           unsigned int width)
+>   {
+>       uint32_t offset = addr >> 3;
+>       uint64_t val = -1;
+> @@ -372,15 +372,15 @@ static uint64_t pnv_quad_xscom_read(void *opaque, hwaddr addr,
+>           val = 0;
+>           break;
+>       default:
+> -        qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
+> +        qemu_log_mask(LOG_UNIMP, "%s: reading @0x%08x\n", __func__,
+>                         offset);
+>       }
+>   
+>       return val;
+>   }
+>   
+> -static void pnv_quad_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+> -                                 unsigned int width)
+> +static void pnv_quad_power9_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+> +                                        unsigned int width)
+>   {
+>       uint32_t offset = addr >> 3;
+>   
+> @@ -394,9 +394,9 @@ static void pnv_quad_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+>       }
+>   }
+>   
+> -static const MemoryRegionOps pnv_quad_xscom_ops = {
+> -    .read = pnv_quad_xscom_read,
+> -    .write = pnv_quad_xscom_write,
+> +static const MemoryRegionOps pnv_quad_power9_xscom_ops = {
+> +    .read = pnv_quad_power9_xscom_read,
+> +    .write = pnv_quad_power9_xscom_write,
+>       .valid.min_access_size = 8,
+>       .valid.max_access_size = 8,
+>       .impl.min_access_size = 8,
+> @@ -410,7 +410,8 @@ static void pnv_quad_realize(DeviceState *dev, Error **errp)
+>       char name[32];
+>   
+>       snprintf(name, sizeof(name), "xscom-quad.%d", eq->quad_id);
+> -    pnv_xscom_region_init(&eq->xscom_regs, OBJECT(dev), &pnv_quad_xscom_ops,
+> +    pnv_xscom_region_init(&eq->xscom_regs, OBJECT(dev),
+> +                          &pnv_quad_power9_xscom_ops,
+>                             eq, name, PNV9_XSCOM_EQ_SIZE);
+>   }
+>   
 
