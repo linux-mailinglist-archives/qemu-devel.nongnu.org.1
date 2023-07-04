@@ -2,83 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02398746BC0
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB118746BC2
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:21:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGbGE-0003x0-JM; Tue, 04 Jul 2023 04:19:46 -0400
+	id 1qGbHP-0004nu-FM; Tue, 04 Jul 2023 04:20:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGbGB-0003va-T0
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:19:44 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGbG9-0003T7-WD
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:19:43 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-4fb7b2e3dacso8239899e87.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:19:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688458780; x=1691050780;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=x3vgLRPjiF8VP3UXFGmQRiPjLhQ1O+u+Zvn9JPyzQEU=;
- b=SbfQCi4nxJfEb2BVDs/U6CrKQTToYCbhVnUu67g4+lpPrINYxkvS0ifezGnFDfmg3D
- CiUmom1P+EJTNCpVB8YzoIfMSe17OpCM3m+aylVaXN0uWqMcz5qIzVsfz50RwZVQblks
- BQR6ykQ6wBP2FXAgEVh2TFvqTa4gBLQ9pA0mYsIZq5F4vPYtV+tApCpAmY4ah9cGgfN5
- ablw7zj+6y3mT80KDGyEMDRnRA744yo0A6jftMuW11FupGJlpMR5UcUDUE+ebUcPMTb7
- F4b1JY9/mCGZoJS0VwMqVaBQ8TpwMkKnb+ymfiZ81X7nXafrTIJkNPJtv9jMF27dYLnZ
- Iiyw==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGbHM-0004nY-AP
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:20:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGbHK-0003o9-Hj
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:20:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688458854;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=SfhWrt0MMjVPIwMsRCtGgtLrTQDdE5dEhiAHt7q5H8g=;
+ b=U9+yCEOyWDh7vHFjzNAmkFwzOUsk1AOI+8c8X6NPEpUwaI7q9wnFsPk530lKpHF/Fp0yuh
+ sS6GQPj6sq8wVKnUUmQgSXJ/Ug/PLxhoCYMLOJ0fZ7HmAl5W7HlLIpRvNveqqLLChOnE5C
+ piM9XrVu6uldQLubDanD5In/bqLxrHc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-230-90ObNouGNB2y9PK7T--EPw-1; Tue, 04 Jul 2023 04:20:52 -0400
+X-MC-Unique: 90ObNouGNB2y9PK7T--EPw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fb40ec952bso33799765e9.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:20:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688458780; x=1691050780;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=x3vgLRPjiF8VP3UXFGmQRiPjLhQ1O+u+Zvn9JPyzQEU=;
- b=PwswdMfA0NqJDEPAq27RhvOxbgm1Vx6h04FD9j3VuQGaixn9bm+vlApg3TQbBl+Aba
- 0o2/7zsFzRbq/pALjyinVAoOrwEH3IfcZs9ktarAkW8MWta4K4nX8r3OoFK4DMrCNcoN
- RDZN1ope2gctpZP+MOV0dwLbIzKmwCPst6Nq+e0wLZtAoqmHFEE/7+qO78eK5dAsdL9p
- 7S/GfF1naueDZUeMUk8YWsvG7WMbCUhCn16hu53P9RC6yCDgwFiGuFupUm+S4lxQeD7Q
- HutR/5ovEBNB+8yi3UdRZUtKIcwQeD5CdVRZlyglDYdGkGEm4PWi4gfuq+pX28cfH+Ft
- YiXw==
-X-Gm-Message-State: ABy/qLZxa5dIjwqvQ2QBQGy6yLs/WgCPm2KYcUyoeh45J/uL6pp5rLq3
- KU1EGFCf7EWEYuMwwzPMtUo9jw==
-X-Google-Smtp-Source: APBJJlHajRojrzK+zs5aOQJE9lSbKKBcVHOIatthB11J7Mly0iOMnZYPEyfJbhWRU9UqxLhaQdO+bA==
-X-Received: by 2002:a05:6512:3d0f:b0:4f9:586b:dba1 with SMTP id
- d15-20020a0565123d0f00b004f9586bdba1mr9808689lfv.4.1688458779927; 
- Tue, 04 Jul 2023 01:19:39 -0700 (PDT)
-Received: from [192.168.1.25] (91.232.79.188.dynamic.jazztel.es.
- [188.79.232.91]) by smtp.gmail.com with ESMTPSA id
- u14-20020a05600c138e00b003f9b3829269sm12164072wmf.2.2023.07.04.01.19.39
+ d=1e100.net; s=20221208; t=1688458851; x=1691050851;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SfhWrt0MMjVPIwMsRCtGgtLrTQDdE5dEhiAHt7q5H8g=;
+ b=bs3iQ4UQHjKk2rwWNGispPL/I6FSca9dOm7/2pmPMU2Umj7U4Usqm0co5NKopZQAK3
+ rPAOyOgykA6FwAIxYt5e8P5MIeabQvOgMmxJSsWN66TEmASCDjcuCc8i04nzqq2Beh9c
+ Y30xJqOofzCtcpAS/9jX7kJEbJBtSuAes4fNV98G4uN5Zk7cpAiIQ1ZhlAZQ28qSvlG9
+ E2nilj8JxDb5GvRuLqQle0F9/8SB6GVm3msiddxWw75pDH4XPDyeZkq3mhNeJNaDIBrb
+ vy4DKFctIauTRvh1pIJ2U0eyTO/oARV+TNsvt2TbSyOG+bApjGej9qRMRE1m42IlLDKy
+ rHbQ==
+X-Gm-Message-State: AC+VfDxjhVelAckHoaZCPoJpU088gDU27LHF4eLxXE4Qxu7X0AXvMdTF
+ qq5zzzDoLd2USsfOMhAMdW4ieA8LM5hHByoKArAUn5dJMNWIZabkW8rvce69yR0HCtMEgcsbo3O
+ Hb3EKzaV2iX30IFY=
+X-Received: by 2002:a7b:c5d7:0:b0:3f8:2777:15e with SMTP id
+ n23-20020a7bc5d7000000b003f82777015emr10871221wmk.31.1688458851622; 
+ Tue, 04 Jul 2023 01:20:51 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4DZWSDqbr8yd3WT44bwzrWqaFytalh/Fd+2Hyo/r+VmGfs9K/XC50FZzKHwm6qIvnsW3jKmg==
+X-Received: by 2002:a7b:c5d7:0:b0:3f8:2777:15e with SMTP id
+ n23-20020a7bc5d7000000b003f82777015emr10871211wmk.31.1688458851281; 
+ Tue, 04 Jul 2023 01:20:51 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f30:5a00:b30d:e6bc:74c3:d6f2?
+ (p200300d82f305a00b30de6bc74c3d6f2.dip0.t-ipconnect.de.
+ [2003:d8:2f30:5a00:b30d:e6bc:74c3:d6f2])
+ by smtp.gmail.com with ESMTPSA id
+ s24-20020a7bc398000000b003fb9ebb6b88sm20991926wmj.39.2023.07.04.01.20.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 01:19:39 -0700 (PDT)
-Message-ID: <2d4812ea-bfe0-6d47-4ba4-56ed8c2a1e26@linaro.org>
-Date: Tue, 4 Jul 2023 10:19:37 +0200
+ Tue, 04 Jul 2023 01:20:50 -0700 (PDT)
+Message-ID: <f4e6d2d0-d9e7-8779-8159-7b61546fd210@redhat.com>
+Date: Tue, 4 Jul 2023 10:20:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 00/38] maintainer updates for 8.1: testing, fuzz, plugins, 
- docs, gdbstub
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 0/3] Support message-based DMA in vfio-user server
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-References: <20230703134427.1389440-1-alex.bennee@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230703134427.1389440-1-alex.bennee@linaro.org>
+To: Mattias Nissler <mnissler@rivosinc.com>, qemu-devel@nongnu.org
+Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ stefanha@redhat.com, john.levon@nutanix.com
+References: <20230704080628.852525-1-mnissler@rivosinc.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230704080628.852525-1-mnissler@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12e.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,46 +108,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/3/23 15:43, Alex Bennée wrote:
-> The following changes since commit d145c0da22cde391d8c6672d33146ce306e8bf75:
+On 04.07.23 10:06, Mattias Nissler wrote:
+> This series adds basic support for message-based DMA in qemu's vfio-user
+> server. This is useful for cases where the client does not provide file
+> descriptors for accessing system memory via memory mappings. My motivating use
+> case is to hook up device models as PCIe endpoints to a hardware design. This
+> works by bridging the PCIe transaction layer to vfio-user, and the endpoint
+> does not access memory directly, but sends memory requests TLPs to the hardware
+> design in order to perform DMA.
 > 
->    Merge tag 'pull-tcg-20230701' ofhttps://gitlab.com/rth7680/qemu  into staging (2023-07-01 08:55:37 +0200)
+> Note that in addition to the 3 commits included, we also need a
+> subprojects/libvfio-user roll to bring in this bugfix:
+> https://github.com/nutanix/libvfio-user/commit/bb308a2e8ee9486a4c8b53d8d773f7c8faaeba08
+> Stefan, can I ask you to kindly update the
+> https://gitlab.com/qemu-project/libvfio-user mirror? I'll be happy to include
+> an update to subprojects/libvfio-user.wrap in this series.
 > 
-> are available in the Git repository at:
+> Finally, there is some more work required on top of this series to get
+> message-based DMA to really work well:
 > 
->    https://gitlab.com/stsquad/qemu.git  tags/pull-maintainer-ominbus-030723-1
+> * libvfio-user has a long-standing issue where socket communication gets messed
+>    up when messages are sent from both ends at the same time. See
+>    https://github.com/nutanix/libvfio-user/issues/279 for more details. I've
+>    been engaging there and plan to contribute a fix.
 > 
-> for you to fetch changes up to a6341482695e1d15f11915f12dba98724efb0697:
+> * qemu currently breaks down DMA accesses into chunks of size 8 bytes at
+>    maximum, each of which will be handled in a separate vfio-user DMA request
+>    message. This is quite terrible for large DMA acceses, such as when nvme
+>    reads and writes page-sized blocks for example. Thus, I would like to improve
+>    qemu to be able to perform larger accesses, at least for indirect memory
+>    regions. I have something working locally, but since this will likely result
+>    in more involved surgery and discussion, I am leaving this to be addressed in
+>    a separate patch.
 > 
->    tests/tcg: Add a test for info proc mappings (2023-07-03 12:52:38 +0100)
-> 
-> ----------------------------------------------------------------
-> maintainer updates: testing, fuzz, plugins, docs, gdbstub
-> 
->   - clean up gitlab artefact handling
->   - ensure gitlab publishes artefacts with coverage data
->   - reduce testing scope for coverage job
->   - mention CI pipeline in developer docs
->   - add ability to add plugin args to check-tcg
->   - fix some memory leaks and UB in tests
->   - suppress xcb leaks from fuzzing output
->   - add a test-fuzz to mirror the CI run
->   - allow lci-refresh to be run in $SRC
->   - update lcitool to latest version
->   - add qemu-minimal package set with gcc-native
->   - convert riscv64-cross to lcitool
->   - update sbsa-ref tests
->   - don't include arm_casq_ptw emulation unless TCG
->   - convert plugins to use g_memdup2
->   - ensure plugins instrument SVE helper mem access
->   - improve documentation of QOM/QDEV
->   - make gdbstub send stop responses when it should
->   - report user-mode pid in gdbstub
->   - add support for info proc mappings in gdbstub
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+I remember asking Stefan in the past if there wouldn't be a way to avoid 
+that mmap dance (and also handle uffd etc. easier) for vhost-user 
+(especially, virtiofsd) by only making QEMU access guest memory.
 
+That could make memory-backend-ram support something like vhost-user, 
+avoiding shared memory and everything that comes with that (e.g., no 
+KSM, no shared zeropage).
 
-r~
+So this series tackles vfio-user, does anybody know what it would take 
+to get something similar running for vhost-user?
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
