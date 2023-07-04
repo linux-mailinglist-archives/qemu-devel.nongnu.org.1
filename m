@@ -2,85 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA577477A7
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 19:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B9E7477C8
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 19:30:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGjgU-0000fL-4A; Tue, 04 Jul 2023 13:19:26 -0400
+	id 1qGjpZ-0003ZP-Sg; Tue, 04 Jul 2023 13:28:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=5427c2329=anthony.perard@citrix.com>)
- id 1qGjgS-0000ej-IH; Tue, 04 Jul 2023 13:19:24 -0400
-Received: from esa3.hc3370-68.iphmx.com ([216.71.145.155])
+ (Exim 4.90_1) (envelope-from
+ <BATV+cf2aa98949e522d56bcb+7254+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qGjpW-0003Sw-C6
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 13:28:46 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <prvs=5427c2329=anthony.perard@citrix.com>)
- id 1qGjgP-0002qM-G8; Tue, 04 Jul 2023 13:19:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=citrix.com; s=securemail; t=1688491161;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Eql3MawCi2ZfqehegLJ8cUT771NNec9LMnumXVGF1qE=;
- b=Dfv0x/7U+00nebaodsjzRTiqcxr7Ur54mrL/PP8NGD8Re4SJ5ncBQoVb
- EmvAULfuydqI82zMlpr2DyE36ur/HSdJ4CkfMzmbveyWDqlDlnX7xER6N
- 3FZRQrBH7RqNdsAYkOe53uZq2UAsVUwS8mt2Vh6ERYaBTeAM4nB5fdAVa k=;
-Authentication-Results: esa3.hc3370-68.iphmx.com;
- dkim=none (message not signed) header.i=none
-X-SBRS: 4.0
-X-MesageID: 115157045
-X-Ironport-Server: esa3.hc3370-68.iphmx.com
-X-Remote-IP: 162.221.156.123
-X-Policy: $RELAYED
-IronPort-Data: A9a23:g/iXMqsm1UGONY66HkDFEjp+hOfnVKBeMUV32f8akzHdYApBsoF/q
- tZmKWGFMq7eZzT9Ko8kOoS/8kkF7ZOGzoA2SFNlqCswFysV+JbJXdiXEBz9bniYRiHhoOCLz
- O1FM4Wdc5pkJpP4jk3wWlQ0hSAkjclkfpKlVKiffHg3HVQ+IMsYoUoLs/YjhYJ1isSODQqIu
- Nfjy+XSI1bg0DNvWo4uw/vrRChH4rKq4Vv0gnRkPaoQ5ACGyyFOZH4iDfrZw0XQE9E88tGSH
- 44v/JnhlkvF8hEkDM+Sk7qTWiXmlZaLYGBiIlIPM0STqkAqSh4ai87XB9JFAatjsB2bnsgZ9
- Tl4ncfYpTHFnEH7sL91vxFwS0mSNEDdkVPNCSDXXce7lyUqf5ZwqhnH4Y5f0YAwo45K7W9yG
- fMwGDkEXyG7tf2P0aulZsROmPwfc5nlI9ZK0p1g5Wmx4fcORJnCR+PB5MNC3Sd2jcdLdRrcT
- 5NHM3w1Nk2GOkARfA5NU/rSn8/x7pX7WzRetFKSo7tx+2XJxRZ9+LPsLMDUapqBQsA9ckOw/
- zubpjmmWk1HXDCZ4RW6ymumj+3ooWDUVMFKEvq72q9M33TGkwT/DzVJDADm8JFVkHWWQt9aN
- gkY9zQjqYA080qkSMS7WAe3yFacswIRQZxVGvw25QWJ4q7V5Q+DAS4DVDEpQMc9qMY8SDgu1
- 1mIt9DkHzpitPuSU3313q+dsDeaKSUTa2gYakcsThQC59fLuow/jhvTCN1kFcadjsf4GC3i6
- yqHoCg3m/MYistj/7W2+xXLjiyhorDNTxUp/UPHU2S99AR7aYW5IYuy5jDz9PtFMcOTSl6Kv
- 1ACnM6R6v1ICouC/BFhW81UQuvvvazcdmSB3xg2RcJJGymRF2CLTYlZ0QBGFlhQI98aVRLLf
- nfv5lNf+8oGVJe1VpObc75dGuxzk/iwSYq8C6GEBjZdSsMvLVHapUmCcWbVhjmwyxZ0zMnTL
- L/BKa6R4WAm5bOLJdZcb8MUyvcVyy833gs/rrirnk38gdJyiJN4IIrp0WdijchjtstoWC2Pr
- 75i2zKikn2zqtHWbCjN6pI0JlsXN3U9Dp2eg5UJJr7fels8QT99V665LVYdl2tNxvU9qws11
- ivlBh8wJKTX2BUr1jlmmlg8MeiyDP6TXFowPDA2PEbA5pTQSd/H0UvrTLNuJeNP3LU6nZZJo
- wwtJ53o7gJnFm6WpFzwrPDV8ORfSfhcrVjfZnL4MGVmIsYIqs6g0oaMQzYDPRImVkKf3fbSa
- ZX5vu8HafLvnzhfMfs=
-IronPort-HdrOrdr: A9a23:7HCrbqgBgYreQaAKaZfSTzWLknBQXtQji2hC6mlwRA09TyX4ra
- yTdZEgviMc5wx/ZJhNo7690cu7IU80hKQV3WB5B97LNmTbUQCTXeJfBOXZsljdMhy72ulB1b
- pxN4hSYeeAaWSSVPyKgjWFLw==
-X-Talos-CUID: 9a23:HNyfVG4AIKYvsWnX5dssxEcdK/EdQGLk3W7OD2KaF15VF+2bVgrF
-X-Talos-MUID: =?us-ascii?q?9a23=3AjOhlcA2EuH6aM7kVfYJV62N7vjUjzJuWEUoEk7I?=
- =?us-ascii?q?6+OaIdnR2fDSx3RLoa9py?=
-X-IronPort-AV: E=Sophos;i="6.01,181,1684814400"; d="scan'208";a="115157045"
-To: <qemu-devel@nongnu.org>
-CC: Anthony PERARD <anthony.perard@citrix.com>, Peter Maydell
- <peter.maydell@linaro.org>, Stefano Stabellini <sstabellini@kernel.org>,
- "Paul Durrant" <paul@xen.org>, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
- <hreitz@redhat.com>, <xen-devel@lists.xenproject.org>,
- <qemu-block@nongnu.org>
-Subject: [PATCH] xen-block: Avoid leaks on new error path
-Date: Tue, 4 Jul 2023 18:18:19 +0100
-Message-ID: <20230704171819.42564-1-anthony.perard@citrix.com>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from
+ <BATV+cf2aa98949e522d56bcb+7254+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qGjpT-0005FI-3q
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 13:28:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=sgOtH+/YeJcmEyF3EeLLhp8teRgeyr++kODkNRphnRk=; b=WGm7jJbPP1OfxBNi5/hWLzsS1x
+ 15Zgp9vqZpxvv6Any64hxBo8o5LZSCmr3oWsgznmEOxz3a3ztERveYVwd2IwZYiBHGkDhii8BEpSR
+ zCqxsLSdfH4rqzvI0fFnru2Mu9vp5H1tc9KT+YDxjFWRTjMOMPiKidBVvsjFN2SDlA2PGyAxtHq7C
+ oVaLIFGYXibpLO/RBy+a4QR6ifhGn8h4H9EXNSUQUezOt4WKRZmVBi1j1zKs6lK8zZpmPR+yMyUlP
+ QySx90yKHZXiPZmhaDjrUM59XlCYg/j6IF9B427DWk4QJW6JJc+qMhPqjyZBlNTAeWInzKp+kGjGi
+ d38WyA9Q==;
+Received: from [2001:8b0:10b:5:36c:5942:7c03:2db0]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qGjpM-009Kx1-Us; Tue, 04 Jul 2023 17:28:37 +0000
+Message-ID: <fd4985630c6abf0eb5d3e0c9a73a91726ffd1f7c.camel@infradead.org>
+Subject: Re: [PULL 57/62] hw/xen: Support MSI mapping to PIRQ
+From: David Woodhouse <dwmw2@infradead.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "paul@xen.org" <paul@xen.org>
+Date: Tue, 04 Jul 2023 18:28:36 +0100
+In-Reply-To: <CAFEAcA9We25NEdzMgF_MXuiM_SHQ+u+DS_VQ4ZXyd=ieM+jhNw@mail.gmail.com>
+References: <20230302123029.153265-1-pbonzini@redhat.com>
+ <20230302123029.153265-58-pbonzini@redhat.com>
+ <CAFEAcA9j2cnRVtfxyn=hspgoe0FrAVk7hj1Y=jPiosziz=CD9g@mail.gmail.com>
+ <4a447dc0967186cb92605eb54209636e9eace8f0.camel@amazon.co.uk>
+ <CAFEAcA9We25NEdzMgF_MXuiM_SHQ+u+DS_VQ4ZXyd=ieM+jhNw@mail.gmail.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-zDkGK+i0aWWHkose/WrD"
+User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=216.71.145.155;
- envelope-from=prvs=5427c2329=anthony.perard@citrix.com;
- helo=esa3.hc3370-68.iphmx.com
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+cf2aa98949e522d56bcb+7254+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,80 +76,204 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anthony PERARD <anthony.perard@citrix.com>
-From:  Anthony PERARD via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anthony PERARD <anthony.perard@citrix.com>
 
-Commit 189829399070 ("xen-block: Use specific blockdev driver")
-introduced a new error path, without taking care of allocated
-resources.
+--=-zDkGK+i0aWWHkose/WrD
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-So only allocate the qdicts after the error check, and free both
-`filename` and `driver` when we are about to return and thus taking
-care of both success and error path.
+On Fri, 2023-06-23 at 14:27 +0100, Peter Maydell wrote:
+> On Thu, 6 Apr 2023 at 17:25, Woodhouse, David <dwmw@amazon.co.uk> wrote:
+> >=20
+> > On Thu, 2023-04-06 at 16:48 +0100, Peter Maydell wrote:
+> > > On Thu, 2 Mar 2023 at 12:37, Paolo Bonzini <pbonzini@redhat.com> wrot=
+e:
+> > > >=20
+> > > > From: David Woodhouse <dwmw@amazon.co.uk>
+> > > >=20
+> > > > The way that Xen handles MSI PIRQs is kind of awful.
+> > >=20
+> > > > Now that this is working we can finally enable XENFEAT_hvm_pirqs an=
+d
+> > > > let the guest use it all.
+> > > >=20
+> > >=20
+> > > Hi; Coverity points out a logic error in this code (CID 1507603):
+> > >=20
+> > > > @@ -1638,6 +1877,7 @@ int xen_physdev_unmap_pirq(struct physdev_unm=
+ap_pirq *unmap)
+> > > >=20
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0 /* We can only unmap GSI PIRQs */
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0 if (gsi < 0) {
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 qemu_mutex_unlock(&s->p=
+ort_lock);
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0 }
+> > >=20
+> > > One of the things xen_physdev_unmap_pirq() does early is return
+> > > if gsi is a negative value...
+> > >=20
+> > > > @@ -1646,6 +1886,12 @@ int xen_physdev_unmap_pirq(struct physdev_un=
+map_pirq *unmap)
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0 pirq_inuse_word(s, pirq) &=3D ~pirq_inuse_=
+bit(pirq);
+> > > >=20
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0 trace_kvm_xen_unmap_pirq(pirq, gsi);
+> > > > +=C2=A0=C2=A0=C2=A0 qemu_mutex_unlock(&s->port_lock);
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0 if (gsi =3D=3D IRQ_MSI_EMU) {
+> > >=20
+> > > ...but then later we try to test to see if it is IRQ_MSI_EMU.
+> > > IRQ_MSI_EMU is -3, so this condition can never be true.
+> > >=20
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kvm_update_msi_routes_a=
+ll(NULL, true, 0, 0);
+> > > > +=C2=A0=C2=A0=C2=A0 }
+> > >=20
+> > > What was the intention here ?
+> >=20
+> >=20
+> > Hrm.... the way that Xen automatically maps the MSI to a PIRQ by
+> > snooping on the (masked) writes to the MSI target is awful, as noted.
+> >=20
+> > I don't think Linux guests ever do unmap the MSI PIRQ but it might be
+> > possible; I'll have to do some experiments in Xen to see what happens.
+>=20
+> Did you ever figure out what the right thing here was ?
 
-Coverity only spotted the leak of qdicts (*_layer variables).
+Yeah, I do I think that Xen will actually allow the guest to unmap the
+IRQ_MSI_EMU pirq, and it will mask the underlying MSI when it does so,
+just as it *unmasks* the MSI when the guest binds the irq.
 
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Fixes: Coverity CID 1508722, 1398649
-Fixes: 189829399070 ("xen-block: Use specific blockdev driver")
-Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
----
- hw/block/xen-block.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+But that's partly because Xen handles the awfulness with snooping on
+the MSI table writes differently. The PIRQ isn't automatically marked
+as IRQ_MSI_EMU when the MSI message is written; there's a different
+structure which handles that. And the PIRQ is only set to IRQ_MSI_EMU
+when it's actually *delivered*, AFAICT.
 
-diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
-index f099914831..3906b9058b 100644
---- a/hw/block/xen-block.c
-+++ b/hw/block/xen-block.c
-@@ -781,14 +781,15 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
-     drive = g_new0(XenBlockDrive, 1);
-     drive->id = g_strdup(id);
- 
--    file_layer = qdict_new();
--    driver_layer = qdict_new();
--
-     rc = stat(filename, &st);
-     if (rc) {
-         error_setg_errno(errp, errno, "Could not stat file '%s'", filename);
-         goto done;
-     }
-+
-+    file_layer = qdict_new();
-+    driver_layer = qdict_new();
-+
-     if (S_ISBLK(st.st_mode)) {
-         qdict_put_str(file_layer, "driver", "host_device");
-     } else {
-@@ -796,7 +797,6 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
-     }
- 
-     qdict_put_str(file_layer, "filename", filename);
--    g_free(filename);
- 
-     if (mode && *mode != 'w') {
-         qdict_put_bool(file_layer, "read-only", true);
-@@ -831,7 +831,6 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
-     qdict_put_str(file_layer, "locking", "off");
- 
-     qdict_put_str(driver_layer, "driver", driver);
--    g_free(driver);
- 
-     qdict_put(driver_layer, "file", file_layer);
- 
-@@ -842,6 +841,8 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
-     qobject_unref(driver_layer);
- 
- done:
-+    g_free(filename);
-+    g_free(driver);
-     if (*errp) {
-         xen_block_drive_destroy(drive, NULL);
-         return NULL;
--- 
-Anthony PERARD
+Emulating that more faithfully might actually simplify the locking in
+qemu, which is fairly complex around the MSI=E2=86=92PIRQ=E2=86=92MSI call =
+paths which
+need care to avoid deadlock. I'll see if I can make it simpler.
 
+In the short term though, I think it's harmless that we don't support
+unmapping IRQ_MSI_EMU because AFAICT nobody actually *does* it. But
+I'll look at fixing it anyway, and that dead code will no longer be
+dead.=20
+
+--=-zDkGK+i0aWWHkose/WrD
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwNzA0MTcyODM2WjAvBgkqhkiG9w0BCQQxIgQgUTbJI+2N
+XevE6RGZqthxNxPkeug5N3F+GlfQJqQP3S8wgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgChL0KyFJ6pkY7h4NyoixuG7kwpeJDLkFpU
+pW51R0WwxsUgL2lmTTogV81ffAoF8JeJ4zUwdHuU+bz0Sw2Lc4PPL1ogph5MYfw/e+2ty0anTJ0R
+d3VJFjMFWSv4jTwCN+WdW4wjEly9DWB7vfKxyXoFMSnR+5PCE8IyrJpaMUROQGYAxmOvcZPYs27+
+ObFIFT9vVEuFo3w+cId6aMAd1zazpDRHAuoLkqZmq01nXz3ogRXsQkCSnZrtlrioQNc+DdkEKGNd
+cB6pRitWycARHTov2m9YLQqJGmrplDazbizk2wEfFNb4w+tIF7Q17Z7NeVLp2xb2JahVtMWjAoR1
+CAA/vXzrW/fUwYQvM8QeQAHRvgdfuaq8TppBTqIFuEKlV+b01HPL9KLxUHlab3P4clgDeQJIofkP
+5im4C7ycnl4eVrxmhxDG27v6vh7HdHSXL0BZohbLggD65R9S9NI3/DSja43W7UTQGjkkQOqh7WY4
+Dt4q3OYYW1QV0ouALsCzHDKvDhR7iYaTXFDm3Yc7ToFYRqiX0AS5jC/MZEcGsTGeSkYtm74zTheI
+5RM3vbSST1I8nwp9t3zO6KriaIaNXrnM9Rwq8MYhacntug8bDC/fx8Y8r6TF+EBoj/JiJYdrjlW3
+J+XjlWAX7KZ9cBl9/KOc26TfLVTmWb524isZ+IlufQAAAAAAAA==
+
+
+--=-zDkGK+i0aWWHkose/WrD--
 
