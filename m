@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B365674748A
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:53:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D16B74747F
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:52:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGhNH-0004Lw-NI; Tue, 04 Jul 2023 10:51:27 -0400
+	id 1qGhNJ-0004j1-Da; Tue, 04 Jul 2023 10:51:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGhMf-0003qQ-Rv
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:50:50 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGhMh-0003v7-60
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:50:51 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGhMc-00030D-MU
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:50:49 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-31441dfbf97so654289f8f.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:50:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGhMf-00031t-Fh
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:50:50 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fbc59de009so58789335e9.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:50:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688482241; x=1691074241;
+ d=linaro.org; s=google; t=1688482246; x=1691074246;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8Y5uqlDug0UobussbvEXXtJ8MTJBYQAz+WAikQsGjjQ=;
- b=o6pc1i4aj2XtKjBy5fZWG3Orj80SurirteIzW0tn7W4IHP847n4GgQmaP3CybCNP54
- rKYbvQJwET6k9wp7iGZp8Tf3w/u4Ws4Cs6sXelAQZdssOWcPrmPwzrPZvHlezcf3nitp
- /0W856tsLHUPwyiLvC/CZd6Ip83Yq8kxeAyJxE0Gg9Qf+gAXHu0yyPiegRYMuf+3c5ZI
- z0DSCyGHl2w5Y/XRWByRvsfX0BYm+0lTHri7ohSjScG9QWmYAbuho30PD0DkcJOmOnWq
- 2PuVbos05BZOTYUpcr7sip25Q8Jy4JOuK8XfTu9Tzxj/LJzYcW8IUZOe9WgEx9u3xRJw
- /xYw==
+ bh=oIwsdI/cQgkg0mdSj90u8YDrX9ZsJjYV9q/7uRRhEe8=;
+ b=PL2Bvkq4IL2H79ISndXuECgIemX9vXMX7SsYfKC+RgfClIumNdJAv8F09o8HePBjc0
+ hL3LwHHG96EKsFz/TF2wc1J2d7vU7WFY0HwEk44RBaWFmi9IC+Y8vfOqUoAWnX/TK2qN
+ h9dqrjtLWIp8FflrzHVzsxAqDdWOK83Lp0hXvkfD4kRUWlKlMxEwZdNbFgRfZa9hQBWD
+ PKohkGgOyIVo7fvpddGwHHVE2Ib+z5GfFwhnKLHZOi8ZO0Wtuz8JnRinEfh1khvKhNXO
+ l2GZDcurbmAhpYd6Nrw6zEnod3Oia3IUd36HE+s/Djtoz+YeOm9Utt52KHxCtUef2KBw
+ l07g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688482241; x=1691074241;
+ d=1e100.net; s=20221208; t=1688482246; x=1691074246;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8Y5uqlDug0UobussbvEXXtJ8MTJBYQAz+WAikQsGjjQ=;
- b=RfMnf889bRJqN0M4OYBlj0GgTn0/K7n1m6nl4MoVC+A8AkNFtv/lIrIHTS+kVx45sX
- u//hq4LugNCqHA1EYro9v1r0fBviio+ygSrhzlABuyLXvG8iJjERFfmg7Kx9tA79dTSw
- EbiqJU+JYES+MfVFXc14shHtIJbzkZCeGZPhNUKTTuEmoRmVR7IQaY10CLn6FkS8mMHy
- ohjVXIYy2fL5svd0PVCtHwXpApJR4fNuDBszLCJFb/ZSGSrwWQ06/Zlv6DJF1YdvUGsq
- 7kDsPcud75NJFfiqyqEanOoiz+KQK0GfRJjNtCYwDjEXReBt8NBQj6QB8ZIlMjnLdx/W
- eErA==
-X-Gm-Message-State: ABy/qLYEp/ejDRtDhbAdqc7jG/Iv4NvHk4R+Pd/m4Dqr5FVYTgJVqy5c
- uUlAbZsJHftD8j6FWggnm56fbyo2kOGKx2wOxbQ=
-X-Google-Smtp-Source: APBJJlGeWPzJmluAz7qI6s2cErWujtpobdUfliGHmFB1Aypvw6+pEYvLGkHNKMRCt+z7nDuirJJSKg==
-X-Received: by 2002:adf:ea45:0:b0:313:e88d:e6cf with SMTP id
- j5-20020adfea45000000b00313e88de6cfmr11670620wrn.69.1688482240899; 
- Tue, 04 Jul 2023 07:50:40 -0700 (PDT)
+ bh=oIwsdI/cQgkg0mdSj90u8YDrX9ZsJjYV9q/7uRRhEe8=;
+ b=YgG0XAxH16VG/LVONCdLRDCL0jMHtEmG2rtmkbdfMwaQPwEyi8c0jo50M6+Ft+htkI
+ KMtcylHNIalNfxl2VStjNj60wmg1r3ymYqzJyK6beR6gB1m8KLaNEvj4/SAn8h7Z704n
+ uFBeoyesYJ5b2/jHIvH2y/a+s1Tgkny6giTtji4Y87KlLS4uI427Du1nQn9KL74zAM5s
+ SNYq7PpROtL0LoE2OWdJlMQDUIJoCxs6dFs10ecYMD8/HPQwjpLXcpH0sJLh8qXFd9cD
+ oLbxbuRGx8WKauKtq6C9iMGPZj/Xjj7i2SbxOjzEjbYFpd016C0gk84dBeCRyV6i4/Gg
+ cPLw==
+X-Gm-Message-State: ABy/qLaGrkHSmPBEUhjQzURtcEffFaDcjP7z20InQ/BXxHK0P2MRjrZe
+ MAO1fvQkthK+wXKj55p/CMomnnGZ9Yb8NRWiYlk=
+X-Google-Smtp-Source: APBJJlGm0m+W+yJ99J/kwdV4+LjIii3sHzHd4W9kkAyPfyWE5MAxsTdDXomXktnD2kp2Xzw7m2ORZw==
+X-Received: by 2002:a7b:c8c2:0:b0:3fb:e189:3532 with SMTP id
+ f2-20020a7bc8c2000000b003fbe1893532mr1693571wml.20.1688482246078; 
+ Tue, 04 Jul 2023 07:50:46 -0700 (PDT)
 Received: from localhost.localdomain ([176.176.157.122])
  by smtp.gmail.com with ESMTPSA id
- s7-20020adfeb07000000b0030ae901bc54sm28426750wrn.62.2023.07.04.07.50.39
+ y23-20020a7bcd97000000b003fbb2c0fce5sm17802986wmj.25.2023.07.04.07.50.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 04 Jul 2023 07:50:40 -0700 (PDT)
+ Tue, 04 Jul 2023 07:50:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
@@ -62,18 +62,17 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Sergey Kambalin <serg.oker@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 05/19] hw/timer/arm_timer: CamelCase rename arm_timer_state
- -> ArmTimer
-Date: Tue,  4 Jul 2023 16:49:58 +0200
-Message-Id: <20230704145012.49870-6-philmd@linaro.org>
+Subject: [PATCH v2 06/19] hw/timer/arm_timer: Rename SP804State -> SP804Timer
+Date: Tue,  4 Jul 2023 16:49:59 +0200
+Message-Id: <20230704145012.49870-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230704145012.49870-1-philmd@linaro.org>
 References: <20230704145012.49870-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,114 +95,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Following docs/devel/style.rst guidelines, rename arm_timer_state
-as ArmTimer.
+Following docs/devel/style.rst guidelines, rename SP804State
+as SP804Timer.
 
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/timer/arm_timer.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ hw/timer/arm_timer.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/hw/timer/arm_timer.c b/hw/timer/arm_timer.c
-index c741e89cb4..8a2939483f 100644
+index 8a2939483f..41045de8ed 100644
 --- a/hw/timer/arm_timer.c
 +++ b/hw/timer/arm_timer.c
-@@ -36,11 +36,11 @@ typedef struct {
-     int freq;
-     int int_level;
-     qemu_irq irq;
--} arm_timer_state;
-+} ArmTimer;
- 
- /* Check all active timers, and schedule the next timer interrupt.  */
- 
--static void arm_timer_update(arm_timer_state *s)
-+static void arm_timer_update(ArmTimer *s)
- {
-     /* Update interrupts.  */
-     if (s->int_level && (s->control & TIMER_CTRL_IE)) {
-@@ -52,7 +52,7 @@ static void arm_timer_update(arm_timer_state *s)
- 
- static uint32_t arm_timer_read(void *opaque, hwaddr offset)
- {
--    arm_timer_state *s = opaque;
-+    ArmTimer *s = opaque;
- 
-     switch (offset >> 2) {
-     case 0: /* TimerLoad */
-@@ -79,7 +79,7 @@ static uint32_t arm_timer_read(void *opaque, hwaddr offset)
-  * Reset the timer limit after settings have changed.
-  * May only be called from inside a ptimer transaction block.
+@@ -192,9 +192,9 @@ static ArmTimer *arm_timer_init(uint32_t freq)
   */
--static void arm_timer_recalibrate(arm_timer_state *s, int reload)
-+static void arm_timer_recalibrate(ArmTimer *s, int reload)
- {
-     uint32_t limit;
  
-@@ -99,7 +99,7 @@ static void arm_timer_recalibrate(arm_timer_state *s, int reload)
- static void arm_timer_write(void *opaque, hwaddr offset,
-                             uint32_t value)
- {
--    arm_timer_state *s = opaque;
-+    ArmTimer *s = opaque;
-     int freq;
+ #define TYPE_SP804 "sp804"
+-OBJECT_DECLARE_SIMPLE_TYPE(SP804State, SP804)
++OBJECT_DECLARE_SIMPLE_TYPE(SP804Timer, SP804)
  
-     switch (offset >> 2) {
-@@ -154,7 +154,7 @@ static void arm_timer_write(void *opaque, hwaddr offset,
+-struct SP804State {
++struct SP804Timer {
+     SysBusDevice parent_obj;
  
- static void arm_timer_tick(void *opaque)
+     MemoryRegion iomem;
+@@ -214,7 +214,7 @@ static const uint8_t sp804_ids[] = {
+ /* Merge the IRQs from the two component devices.  */
+ static void sp804_set_irq(void *opaque, int irq, int level)
  {
--    arm_timer_state *s = opaque;
-+    ArmTimer *s = opaque;
-     s->int_level = 1;
-     arm_timer_update(s);
- }
-@@ -164,19 +164,19 @@ static const VMStateDescription vmstate_arm_timer = {
+-    SP804State *s = opaque;
++    SP804Timer *s = opaque;
+ 
+     s->level[irq] = level;
+     qemu_set_irq(s->irq, s->level[0] || s->level[1]);
+@@ -223,7 +223,7 @@ static void sp804_set_irq(void *opaque, int irq, int level)
+ static uint64_t sp804_read(void *opaque, hwaddr offset,
+                            unsigned size)
+ {
+-    SP804State *s = opaque;
++    SP804Timer *s = opaque;
+ 
+     if (offset < 0x20) {
+         return arm_timer_read(s->timer[0], offset);
+@@ -255,7 +255,7 @@ static uint64_t sp804_read(void *opaque, hwaddr offset,
+ static void sp804_write(void *opaque, hwaddr offset,
+                         uint64_t value, unsigned size)
+ {
+-    SP804State *s = opaque;
++    SP804Timer *s = opaque;
+ 
+     if (offset < 0x20) {
+         arm_timer_write(s->timer[0], offset, value);
+@@ -283,14 +283,14 @@ static const VMStateDescription vmstate_sp804 = {
      .version_id = 1,
      .minimum_version_id = 1,
      .fields = (VMStateField[]) {
--        VMSTATE_UINT32(control, arm_timer_state),
--        VMSTATE_UINT32(limit, arm_timer_state),
--        VMSTATE_INT32(int_level, arm_timer_state),
--        VMSTATE_PTIMER(timer, arm_timer_state),
-+        VMSTATE_UINT32(control, ArmTimer),
-+        VMSTATE_UINT32(limit, ArmTimer),
-+        VMSTATE_INT32(int_level, ArmTimer),
-+        VMSTATE_PTIMER(timer, ArmTimer),
+-        VMSTATE_INT32_ARRAY(level, SP804State, 2),
++        VMSTATE_INT32_ARRAY(level, SP804Timer, 2),
          VMSTATE_END_OF_LIST()
      }
  };
  
--static arm_timer_state *arm_timer_init(uint32_t freq)
-+static ArmTimer *arm_timer_init(uint32_t freq)
+ static void sp804_init(Object *obj)
  {
--    arm_timer_state *s;
-+    ArmTimer *s;
+-    SP804State *s = SP804(obj);
++    SP804Timer *s = SP804(obj);
+     SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
  
--    s = g_new0(arm_timer_state, 1);
-+    s = g_new0(ArmTimer, 1);
-     s->freq = freq;
-     s->control = TIMER_CTRL_IE;
+     sysbus_init_irq(sbd, &s->irq);
+@@ -301,7 +301,7 @@ static void sp804_init(Object *obj)
  
-@@ -198,7 +198,7 @@ struct SP804State {
-     SysBusDevice parent_obj;
+ static void sp804_realize(DeviceState *dev, Error **errp)
+ {
+-    SP804State *s = SP804(dev);
++    SP804Timer *s = SP804(dev);
  
-     MemoryRegion iomem;
--    arm_timer_state *timer[2];
-+    ArmTimer *timer[2];
-     uint32_t freq0, freq1;
-     int level[2];
-     qemu_irq irq;
-@@ -333,7 +333,7 @@ struct IntegratorPIT {
-     SysBusDevice parent_obj;
+     s->timer[0] = arm_timer_init(s->freq0);
+     s->timer[1] = arm_timer_init(s->freq1);
+@@ -310,8 +310,8 @@ static void sp804_realize(DeviceState *dev, Error **errp)
+ }
  
-     MemoryRegion iomem;
--    arm_timer_state *timer[3];
-+    ArmTimer *timer[3];
+ static Property sp804_properties[] = {
+-    DEFINE_PROP_UINT32("freq0", SP804State, freq0, 1000000),
+-    DEFINE_PROP_UINT32("freq1", SP804State, freq1, 1000000),
++    DEFINE_PROP_UINT32("freq0", SP804Timer, freq0, 1000000),
++    DEFINE_PROP_UINT32("freq1", SP804Timer, freq1, 1000000),
+     DEFINE_PROP_END_OF_LIST(),
  };
  
- static uint64_t icp_pit_read(void *opaque, hwaddr offset,
+@@ -405,7 +405,7 @@ static const TypeInfo arm_timer_types[] = {
+     }, {
+         .name           = TYPE_SP804,
+         .parent         = TYPE_SYS_BUS_DEVICE,
+-        .instance_size  = sizeof(SP804State),
++        .instance_size  = sizeof(SP804Timer),
+         .instance_init  = sp804_init,
+         .class_init     = sp804_class_init,
+     }
 -- 
 2.38.1
 
