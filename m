@@ -2,95 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E79E746BAF
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B99A746BB7
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:17:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGbCf-0003q8-TC; Tue, 04 Jul 2023 04:16:05 -0400
+	id 1qGbCh-0003yR-84; Tue, 04 Jul 2023 04:16:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qGbCS-0003V6-HN; Tue, 04 Jul 2023 04:15:53 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1qGbCa-0003et-FV; Tue, 04 Jul 2023 04:16:00 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qGbCQ-0002hj-Tk; Tue, 04 Jul 2023 04:15:52 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ id 1qGbCY-0002jI-BP; Tue, 04 Jul 2023 04:16:00 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3647pYGc016693; Tue, 4 Jul 2023 08:15:49 GMT
+ 36487Wvm012253; Tue, 4 Jul 2023 08:15:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=hcX92LQVn8+GnWAqQEMZYO9mGBMlvk2amoo7miXIUpo=;
- b=SKPdu5SRWpPU6Vup8FBwjYGmM9piox6kTtd09zIw/7yBBB1cCFkzpTZBumvXIvkz4ZIr
- aStgHM/Scq7cJr43y7E1fwxU7Axxv+bhrHfY6SMzCPKVijHi0xYD4sKlVek9ROsRAuuH
- BxpB1C0Dze79ZXPcBKQHP/6BGO61mgRNHzKBslCQAd1UVS5I7M1aKVbH6+n5TXh+nvXr
- EDjX9KuFa/mvgyGHTFwJhJ6EvSpODvqAnze1FyBxa5GHgmDyzHY8p3IFvOnOlXf/Jlse
- RIpXmHwkDY7AKOYzRbVUVPmxVL+5bts7SsmI3n8w3tBW/V1WQtoOJGIXVXdsDMmtpVgD +Q== 
+ bh=nkWzaaNDCni4pBaC+FRrWXapY7XHupE3hfJ2C1PRNWs=;
+ b=YzDtvJ8aP3YnTtTUMVL+OzM9jn3EuCjlLYJQ2RvJPM0KiL47fn2jfBAxqZkoSYPfMvsf
+ d7fn63LzKfKEzfmXmUbAOF8nqlWdyJTtiCb7K/1Czvh64zHmwMBIo5bYZCqyd6Gf3V4F
+ MLE7BbuiSEH9Vv8f5l/tfNnf4TmEL6aYZqal+TitKSInTbTQqOqwUh/5E1njYopWm/Ak
+ DvEVoiNhipjb1GvDYDo+TZeASNMBLcqwLlAFVcKzqUWwKxs5lZuhc5SbWLl++rPoZiJw
+ csaTCvE2HL/APexrtHkbZsq7s/bQ15ymUG8v18xD/Wb69hPNTZi0n0TQ2o3ofETYzrxq Mg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmfdh0hbw-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmfbb8k66-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 08:15:49 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3647panw016762;
- Tue, 4 Jul 2023 08:15:48 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmfdh0h8y-1
+ Tue, 04 Jul 2023 08:15:55 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36487v7u015384;
+ Tue, 4 Jul 2023 08:15:54 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmfbb8k2a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 08:15:48 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3642OnRG027895;
- Tue, 4 Jul 2023 08:15:46 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rjbs4swms-1
+ Tue, 04 Jul 2023 08:15:52 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3642gMih030562;
+ Tue, 4 Jul 2023 08:15:50 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3rjbde1wc1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 08:15:46 +0000
+ Tue, 04 Jul 2023 08:15:50 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
  [10.20.54.104])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3648FiUL62521850
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3648FlnG16974498
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 Jul 2023 08:15:44 GMT
+ Tue, 4 Jul 2023 08:15:47 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42BE42004B;
- Tue,  4 Jul 2023 08:15:44 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id B6E2C20043;
+ Tue,  4 Jul 2023 08:15:47 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE9DF20049;
- Tue,  4 Jul 2023 08:15:43 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2DCB620040;
+ Tue,  4 Jul 2023 08:15:47 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.30.217])
  by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  4 Jul 2023 08:15:43 +0000 (GMT)
+ Tue,  4 Jul 2023 08:15:47 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Laurent Vivier <laurent@vivier.eu>,
  Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>
 Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
  qemu-s390x@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 11/12] tests/tcg/s390x: Test MDEB and MDEBR
-Date: Tue,  4 Jul 2023 10:12:35 +0200
-Message-ID: <20230704081506.276055-12-iii@linux.ibm.com>
+Subject: [PATCH v2 12/12] tests/tcg/s390x: Test MVCRL with a large value in R0
+Date: Tue,  4 Jul 2023 10:12:36 +0200
+Message-ID: <20230704081506.276055-13-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230704081506.276055-1-iii@linux.ibm.com>
 References: <20230704081506.276055-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: OW2ztK9Eiea1N1tqqz-VPoshTG8SHVma
-X-Proofpoint-GUID: TY2KwDRVJrr-DFf11KEdnXBvkuF_O4Fn
+X-Proofpoint-GUID: 8iTT1vNukdQrTn6UIQV_DNUJulfMyCHn
+X-Proofpoint-ORIG-GUID: AWwDPKl0_hBEY_cHy1_1u_2mC1hKu62A
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-04_04,2023-06-30_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- bulkscore=0 impostorscore=0 phishscore=0 priorityscore=1501 spamscore=0
- suspectscore=0 mlxscore=0 lowpriorityscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2307040065
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ priorityscore=1501
+ adultscore=0 mlxscore=0 malwarescore=0 suspectscore=0 impostorscore=0
+ clxscore=1015 lowpriorityscore=0 spamscore=0 mlxlogscore=884 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307040065
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -115,62 +115,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Add a small test to prevent regressions.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- tests/tcg/s390x/Makefile.target |  1 +
- tests/tcg/s390x/mdeb.c          | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
- create mode 100644 tests/tcg/s390x/mdeb.c
+ tests/tcg/s390x/mie3-mvcrl.c | 46 ++++++++++++++++++++++++++++--------
+ 1 file changed, 36 insertions(+), 10 deletions(-)
 
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index dbf64c991e9..19fbbc6e531 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -38,6 +38,7 @@ TESTS+=ex-branch
- TESTS+=mxdb
- TESTS+=epsw
- TESTS+=larl
-+TESTS+=mdeb
- 
- cdsg: CFLAGS+=-pthread
- cdsg: LDFLAGS+=-pthread
-diff --git a/tests/tcg/s390x/mdeb.c b/tests/tcg/s390x/mdeb.c
-new file mode 100644
-index 00000000000..4897d28069f
---- /dev/null
-+++ b/tests/tcg/s390x/mdeb.c
-@@ -0,0 +1,30 @@
-+/*
-+ * Test the MDEB and MDEBR instructions.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
+diff --git a/tests/tcg/s390x/mie3-mvcrl.c b/tests/tcg/s390x/mie3-mvcrl.c
+index 93c7b0a2903..ec78dd1d493 100644
+--- a/tests/tcg/s390x/mie3-mvcrl.c
++++ b/tests/tcg/s390x/mie3-mvcrl.c
+@@ -1,29 +1,55 @@
++#include <stdbool.h>
+ #include <stdint.h>
 +#include <stdlib.h>
+ #include <string.h>
+ 
+-
+-static inline void mvcrl_8(const char *dst, const char *src)
++static void mvcrl(const char *dst, const char *src, size_t len)
+ {
++    register long r0 asm("r0") = len;
++
+     asm volatile (
+-        "llill %%r0, 8\n"
+         ".insn sse, 0xE50A00000000, 0(%[dst]), 0(%[src])"
+-        : : [dst] "d" (dst), [src] "d" (src)
+-        : "r0", "memory");
++        : : [dst] "d" (dst), [src] "d" (src), "r" (r0)
++        : "memory");
+ }
+ 
+-
+-int main(int argc, char *argv[])
++static bool test(void)
+ {
+     const char *alpha = "abcdefghijklmnop";
+ 
+     /* array missing 'i' */
+-    char tstr[17] = "abcdefghjklmnop\0" ;
++    char tstr[17] = "abcdefghjklmnop\0";
+ 
+     /* mvcrl reference use: 'open a hole in an array' */
+-    mvcrl_8(tstr + 9, tstr + 8);
++    mvcrl(tstr + 9, tstr + 8, 8);
+ 
+     /* place missing 'i' */
+     tstr[8] = 'i';
+ 
+-    return strncmp(alpha, tstr, 16ul);
++    return strncmp(alpha, tstr, 16ul) == 0;
++}
++
++static bool test_bad_r0(void)
++{
++    char src[256];
++
++    /*
++     * PoP says: Bits 32-55 of general register 0 should contain zeros;
++     * otherwise, the program may not operate compatibly in the future.
++     *
++     * Try it anyway in order to check whether this would crash QEMU itself.
++     */
++    mvcrl(src, src, (size_t)-1);
++
++    return true;
++}
 +
 +int main(void)
 +{
-+    union {
-+        float f[2];
-+        double d;
-+    } a;
-+    float b;
++    bool ok = true;
 +
-+    a.f[0] = 1.2345;
-+    a.f[1] = 999;
-+    b = 6.789;
-+    asm("mdeb %[a],%[b]" : [a] "+f" (a.d) : [b] "R" (b));
-+    assert(a.d > 8.38 && a.d < 8.39);
++    ok &= test();
++    ok &= test_bad_r0();
 +
-+    a.f[0] = 1.2345;
-+    a.f[1] = 999;
-+    b = 6.789;
-+    asm("mdebr %[a],%[b]" : [a] "+f" (a.d) : [b] "f" (b));
-+    assert(a.d > 8.38 && a.d < 8.39);
-+
-+    return EXIT_SUCCESS;
-+}
++    return ok ? EXIT_SUCCESS : EXIT_FAILURE;
+ }
 -- 
 2.41.0
 
