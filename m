@@ -2,95 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65BF7469CB
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 08:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A535C7469F0
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 08:47:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGZlT-0001Ae-VP; Tue, 04 Jul 2023 02:43:55 -0400
+	id 1qGZot-00024s-Qt; Tue, 04 Jul 2023 02:47:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qGZlS-0001AQ-HP
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 02:43:54 -0400
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1qGZor-00024i-OW
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 02:47:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qGZlJ-0007oh-Hw
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 02:43:47 -0400
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1qGZoq-0008OZ-6Z
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 02:47:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688453024;
+ s=mimecast20190719; t=1688453242;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ktGti9wZjksh9AzwFjdaAfAceMrLzpBPYjGKXl9Zjhk=;
- b=GBwGpP/y9AIT49N7kjz87cIt6vtrWxBge6UBSgXyaO8fpWSKBx3L87bz/RR8m56htAapwT
- TzwrrmX98dpWLiqAga8+H8lCzR37igxE9QnOJgsIRPxVPy/VfB3bftPqzY8CViYFD3eXzP
- 4CWGorRE+2c8MpHgTNFKdiW3+iWJTwI=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6I5gxZpXZY/B6bK/Nw4NmPQXXA2Sa97CgqhcgGZpe3w=;
+ b=C7w4GSlNjEgbrtxXe7voN1Tet8iA7bKlYnHwr3s2d++ZNyNY1hKMI5LQH+GF6Gm4rprqO2
+ ztN/Dgo3st2FeU+2tdoc131wcXvTjySU4mymc5pnD4Ty4w2qWGH0SOc7a1UEcSyylZ+lMI
+ sQjHU2yjFxhruh7ilp5iW8f7eXidgNE=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-9-StafzvKbO1muULnV7TgXTg-1; Tue, 04 Jul 2023 02:43:43 -0400
-X-MC-Unique: StafzvKbO1muULnV7TgXTg-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-4f84a8b00e3so4962529e87.0
- for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 23:43:42 -0700 (PDT)
+ us-mta-567-5FQBwPmMMNu86rv_I9fr0Q-1; Tue, 04 Jul 2023 02:47:21 -0400
+X-MC-Unique: 5FQBwPmMMNu86rv_I9fr0Q-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-62fe5abe808so33948856d6.1
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 23:47:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688453021; x=1691045021;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20221208; t=1688453241; x=1691045241;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ktGti9wZjksh9AzwFjdaAfAceMrLzpBPYjGKXl9Zjhk=;
- b=D4G8hn1K8A9uWICqQyx70zvcif+dj0/6ttf/zrwpNqXnzPyku1FoWf83BDObjGqe4D
- nxfNSvkpKsgHtv8ZUQ68nEsjqK8NZiDFyFXQvA0Unu8ChNKEMzTodZE+KIII60/8j2MB
- HO1PRO4OnUH0bhMoAbNiHMFBTiYNhcEfOYu4ZmQgpVQWlvkM6L4+mMZKlFIjHBNwZn/M
- Wkx8GfCqANuxjx+L7zqv0YWdtJkcc/qFjYgrVbDabPhkdpB/VHIhUwJDpf1cD3unpJGS
- LXpA2oTtZApyKxEa52b1NEDYQuV16PGtJF28NUPuBTJ7V/bU2Kn3kPRBHjYFIg4C68yB
- 6y9Q==
-X-Gm-Message-State: ABy/qLbFKzbpFYodQqn0duvYatIOOU3py6GeBjmW8fsxFPicKOTzApa1
- N3nSifVlgw4gzNn9JArrYhQPUPC4myMUzYj4g6zP9miqIDKR+g+vID0WB6YgNgCB4PWRlcLEday
- 0DuIdusAXUGC+UIs=
-X-Received: by 2002:a05:6512:5cf:b0:4f8:75bb:3301 with SMTP id
- o15-20020a05651205cf00b004f875bb3301mr7605556lfo.20.1688453021610; 
- Mon, 03 Jul 2023 23:43:41 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEY/hjjM6i20kaEx9mfbaZTdYMNaivhaPta+Yj4GTm4P3uxc3LlV6qEomLvkIk3eVUyvo6OSw==
-X-Received: by 2002:a05:6512:5cf:b0:4f8:75bb:3301 with SMTP id
- o15-20020a05651205cf00b004f875bb3301mr7605544lfo.20.1688453021222; 
- Mon, 03 Jul 2023 23:43:41 -0700 (PDT)
-Received: from redhat.com ([2.52.13.33]) by smtp.gmail.com with ESMTPSA id
- m16-20020a5d6250000000b003068f5cca8csm27326680wrv.94.2023.07.03.23.43.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 23:43:40 -0700 (PDT)
-Date: Tue, 4 Jul 2023 02:43:37 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Leonardo =?iso-8859-1?Q?Br=E1s?= <leobras@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org,
- Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- David Gibson <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH 1/1] pcie: Add hotplug detect state register to w1cmask
-Message-ID: <20230704024051-mutt-send-email-mst@kernel.org>
-References: <20230629090500.438976-2-leobras@redhat.com> <ZJ25AdfN7AqYkB6z@x1n>
- <20230629152644-mutt-send-email-mst@kernel.org>
- <ZJ3jJTf+iPwPDuf9@x1n>
- <20230629160643-mutt-send-email-mst@kernel.org>
- <ZJ3wAPbroS3jUDuQ@x1n>
- <ee67338be410a91a03e5514520141404be0e26f5.camel@redhat.com>
- <2364a62d0cc278c43dd19da4aceeee70513990e1.camel@redhat.com>
+ bh=6I5gxZpXZY/B6bK/Nw4NmPQXXA2Sa97CgqhcgGZpe3w=;
+ b=kTGmRc1Mpcqjh1+EomJQMGnkhM20HI4vnciqPxtgi46r+GvK4Uj4cHHXQy4nF6Wpcf
+ eSSG48O6Y6gSb0APm4Xp4625i8oW66+e9nYD8ma7eij2wIH/G9xSJSRDAzdfoXBk2pQb
+ 6tHkrcU1TKfnhqBqg4lG+Rw6/tTNS9LMjAd4MSKaCrAocWD3lV2luehWM2fo1HnRcZGp
+ 22TbHf3u3CE5dRBmKPnQn1YrWKr8fLaFt5vC3wsL8oPEE1YktocXUKfYnWFPnb1t/sUe
+ wj+Gr2RSYMUh3wr2YbJklxXWKc1C8UIEuMV+otndu6tys4fBt9dfjEJamgEFK5dgfdGu
+ PsXA==
+X-Gm-Message-State: ABy/qLbYZrR5qK/T+GYlA/+Zzqi5vSfdGQJz3cu2wKoaL1olKIHvdAUI
+ hZCwWnrG0vaweeBLUN6ioK2IVfhZ1decDdmG3k3LBY5EKyTRKdBbgtTNo1nYKuy7TNGx0pSF/EH
+ Zd6RQl1zYyaG11FQ=
+X-Received: by 2002:ad4:5b84:0:b0:636:6646:2e08 with SMTP id
+ 4-20020ad45b84000000b0063666462e08mr14140976qvp.19.1688453240977; 
+ Mon, 03 Jul 2023 23:47:20 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlE+IrYBJECkCsImBrzPoRgEHWPGOa73ids3scmuUiQBmuUZnW0/rSGta2zb5IMVoReWTGt+Sg==
+X-Received: by 2002:ad4:5b84:0:b0:636:6646:2e08 with SMTP id
+ 4-20020ad45b84000000b0063666462e08mr14140965qvp.19.1688453240755; 
+ Mon, 03 Jul 2023 23:47:20 -0700 (PDT)
+Received: from [192.168.100.28] ([82.142.8.70])
+ by smtp.gmail.com with ESMTPSA id
+ f8-20020a05620a068800b0076729e726cbsm6216671qkh.22.2023.07.03.23.47.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jul 2023 23:47:20 -0700 (PDT)
+Message-ID: <3b60a84b-88ab-0d5e-54d3-f47961b1a85d@redhat.com>
+Date: Tue, 4 Jul 2023 08:45:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 2/2] tpm_crb: mark memory as protected
+Content-Language: en-US
+To: Jason Wang <jasowang@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>, mst@redhat.com,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ marcandre.lureau@redhat.com, eric.auger@redhat.com,
+ Peter Xu <peterx@redhat.com>
+References: <20230620195054.23929-1-lvivier@redhat.com>
+ <20230620195054.23929-3-lvivier@redhat.com>
+ <CAFEAcA_r31PU1LRka36dSJ6vZ2boP33MB=Ns5hDMRrSTN1Lmag@mail.gmail.com>
+ <269b9686-f7df-72de-ae6b-242767feccaa@redhat.com>
+ <CACGkMEs9L82XyMfnR6ngSio18n=_Baxh1xFtGkNp72eHVtrUeg@mail.gmail.com>
+From: Laurent Vivier <lvivier@redhat.com>
+In-Reply-To: <CACGkMEs9L82XyMfnR6ngSio18n=_Baxh1xFtGkNp72eHVtrUeg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2364a62d0cc278c43dd19da4aceeee70513990e1.camel@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,220 +111,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 04, 2023 at 03:20:36AM -0300, Leonardo Brás wrote:
-> Hello Peter and Michael, I have a few updates on this:
-> 
-> On Mon, 2023-07-03 at 02:20 -0300, Leonardo Brás wrote:
-> > Hello Peter and Michael, thanks for reviewing!
-> > 
-> > 
-> > On Thu, 2023-06-29 at 16:56 -0400, Peter Xu wrote:
-> > > On Thu, Jun 29, 2023 at 04:06:53PM -0400, Michael S. Tsirkin wrote:
-> > > > On Thu, Jun 29, 2023 at 04:01:41PM -0400, Peter Xu wrote:
-> > > > > On Thu, Jun 29, 2023 at 03:33:06PM -0400, Michael S. Tsirkin wrote:
-> > > > > > On Thu, Jun 29, 2023 at 01:01:53PM -0400, Peter Xu wrote:
-> > > > > > > Hi, Leo,
-> > > > > > > 
-> > > > > > > Thanks for figuring this out.  Let me copy a few more potential reviewers
-> > > > > > > from commit 17858a1695 ("hw/acpi/ich9: Set ACPI PCI hot-plug as default on
-> > > > > > > Q35").
-> > > > > > > 
-> > > > > > > On Thu, Jun 29, 2023 at 06:05:00AM -0300, Leonardo Bras wrote:
-> > > > > > > > When trying to migrate a machine type pc-q35-6.0 or lower, with this
-> > > > > > > > cmdline options:
-> > > > > > > > 
-> > > > > > > > -device driver=pcie-root-port,port=18,chassis=19,id=pcie-root-port18,bus=pcie.0,addr=0x12 \
-> > > > > > > > -device driver=nec-usb-xhci,p2=4,p3=4,id=nex-usb-xhci0,bus=pcie-root-port18,addr=0x12.0x1
-> > > > > > > > 
-> > > > > > > > the following bug happens after all ram pages were sent:
-> > > > > > > > 
-> > > > > > > > qemu-kvm: get_pci_config_device: Bad config data: i=0x6e read: 0 device: 40 cmask: ff wmask: 0 w1cmask:19
-> > > > > > > > qemu-kvm: Failed to load PCIDevice:config
-> > > > > > > > qemu-kvm: Failed to load pcie-root-port:parent_obj.parent_obj.parent_obj
-> > > > > > > > qemu-kvm: error while loading state for instance 0x0 of device '0000:00:12.0/pcie-root-port'
-> > > > > > > > qemu-kvm: load of migration failed: Invalid argument
-> > > > > > > > 
-> > > > > > > > This happens on pc-q35-6.0 or lower because of:
-> > > > > > > > { "ICH9-LPC", ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, "off" }
-> > > > > > > > 
-> > > > > > > > In this scenario, hotplug_handler_plug() calls pcie_cap_slot_plug_cb(),
-> > > > > > > > which sets the bus dev->config byte 0x6e with bit PCI_EXP_SLTSTA_PDS to 
-> > > > > > > > signal PCI hotplug for the guest. After a while the guest will deal with
-> > > > > > > > this hotplug and qemu will clear the above bit.
-> > > > > > 
-> > > > > > Presence Detect State – This bit indicates the presence of an
-> > > > > > adapter in the slot, reflected by the logical “OR” of the Physical
-> > > > > > Layer in-band presence detect mechanism and, if present, any
-> > > > > > out-of-band presence detect mechanism defined for the slot’s
-> > > > > > corresponding form factor. Note that the in-band presence
-> > > > > > detect mechanism requires that power be applied to an adapter
-> > > > > > for its presence to be detected. Consequently, form factors that
-> > > > > > require a power controller for hot-plug must implement a
-> > > > > > physical pin presence detect mechanism.
-> > > > > > RO
-> > > > > > Defined encodings are:
-> > > > > > 0b Slot Empty
-> > > > > > 1b Card Present in slot
-> > > > > > This bit must be implemented on all Downstream Ports that
-> > > > > > implement slots. For Downstream Ports not connected to slots
-> > > > > > (where the Slot Implemented bit of the PCI Express Capabilities
-> > > > > > register is 0b), this bit must be hardwired to 1b.
-> > 
-> > Thank you for providing this doc!
-> > I am new to PCI stuff, could you please point this doc?
-> 
-> (I mean, the link to the documentation)
+Hi,
 
-The pci specs are all here: https://pcisig.com/
-Red Hat is a member so just register, it's free.
+as the region is already skipped by the test of the memory region alignment, I'm going to 
+update my patches by only removing the error_report() as proposed by Peter.
 
-I'd get the 5.0 version of pci express base:
-https://members.pcisig.com/wg/PCI-SIG/document/13005
+I will replace it by a trace to help to debug.
 
-6.0 is out but they did something to make it take years to open,
-and it shouldn't matter for this.
+Thanks,
+Laurent
 
-> > 
-> > > > > > 
-> > > > > > 
-> > > > > > And this seems to match what QEMU is doing: it clears on unplug
-> > > > > > not after guest deals with hotplug.
-> > 
-> > Oh, that's weird.
-> > It should not unplug the device, so IIUC it should not clear the bit.
-> > Maybe something weird is happening in the guest, I will take a look.
+On 7/4/23 05:07, Jason Wang wrote:
+> On Thu, Jun 22, 2023 at 9:39 PM Laurent Vivier <lvivier@redhat.com> wrote:
+>>
+>> On 6/22/23 15:12, Peter Maydell wrote:
+>>> On Tue, 20 Jun 2023 at 20:51, Laurent Vivier <lvivier@redhat.com> wrote:
+>>>>
+>>>> This memory is not correctly aligned and cannot be registered
+>>>> by vDPA and VFIO.
+>>>
+>>> Isn't this a vDPA/VFIO problem? There's no requirement
+>>> for RAM MemoryRegions to be aligned in any way.
 > 
-> Updates on this:
-> You are right! For some reason the guest is hot-unplugging the device under some
-> conditions, so there is another bug on this for me to look after.
+> It's more about the limitation of the IOMMU which can't do subpage protection.
 > 
-> > 
-> > > > > > 
-> > > > > > 
-> > > > > > > > Then, during migration, get_pci_config_device() will compare the
-> > > > > > > > configs of both the freshly created device and the one that is being
-> > > > > > > > received via migration, which will differ due to the PCI_EXP_SLTSTA_PDS bit
-> > > > > > > > and cause the bug to reproduce.
-> > > > > > 
-> > > > > > So bit is set on source.
-> > > > > > But why is the bit cleared on destination? This is the part I don't get.
-> > 
-> > No, bit is set when the device is created by qemu.
-> > After some time running (boot process completion) the bit is cleared.
+>>> Code
+>>> that doesn't want to work with small or weirdly aligned
+>>> regions should skip them if that's the right behaviour
+>>> for that particular code IMHO.
 > 
-> The 'after some time' here is about the guest hot-unplugging the device.
+> We had already had this:
 > 
-> > 
-> > The receiving end of migration will then create the device with the bit set, and
-> > then wait for migration. After the source device is received, the compare fails
-> > due to those bits being different.
-> > 
+>      if ((!memory_region_is_ram(section->mr) &&
+>           !memory_region_is_iommu(section->mr)) ||
+>          memory_region_is_protected(section->mr) ||
+>          /* vhost-vDPA doesn't allow MMIO to be mapped  */
+>          memory_region_is_ram_device(section->mr)) {
+>          return true;
+>      }
 > 
-> But anyway, there is some chance the device will be hot-unplugged by the guest
-> OS for any reason, so we need to cover this scenario so it does not break
-> migration.
+>>>
+>>
+>> Marc-André proposed to modify vDPA code to skip the region but Michal disagreed:
+>>
+>> https://lists.nongnu.org/archive/html/qemu-devel/2022-11/msg03670.html
+>>
+>> No one wants the modification, so the problem cannot be fixed.
+>>
 > 
-> > 
-> > 
-> > > > > 
-> > > > > My understanding is that when ACPI_PM_PROP_ACPI_PCIHP_BRIDGE is off for the
-> > > > > device, we just won't ever PCI_EXP_SLTSTA_PDS bit?
-> > > > 
-> > > > Why?
-> > > 
-> > > Never mind, spoke too soon, sorry. :(
-> > > 
-> > > I thought pcie_cap_slot_plug_cb() can skip the set, but then I just found
-> > > that dev->hotplugged is not what I imagined there.
-> > > 
-> > > Leo should know better.
-> > 
-> > There is a difference of which hotplug function is called based on the 
-> > ACPI_PM_PROP_ACPI_PCIHP_BRIDGE option:
-> > 
-> > When ACPI_PM_PROP_ACPI_PCIHP_BRIDGE=="off", hotplug_handler_plug() calls
-> > pcie_cap_slot_plug_cb() which sets the bus dev->config byte 0x6e with bit
-> > PCI_EXP_SLTSTA_PDS.
-> > 
-> > When ACPI_PM_PROP_ACPI_PCIHP_BRIDGE=="on", hotplug_handler_plug() calls
-> > ich9_pm_device_plug_cb(), which does not set this bit.
-> > 
-> > > 
-> > > > 
-> > > > 
-> > > > > > 
-> > > > > > 
-> > > > > > > > To avoid this fake incompatibility, there are two fields in PCIDevice that
-> > > > > > > > can help:
-> > > > > > > > 
-> > > > > > > > .wmask: Used to implement R/W bytes, and
-> > > > > > > > .w1cmask: Used to implement RW1C(Write 1 to Clear) bytes
-> > > > > > > 
-> > > > > > > Is there one more option to clear the bit in cmask?
-> > 
-> > We could clear the bit for .cmask . I suggested w1cmask because I previously
-> > understood that bit was guest-writeable.
+> Yes, otherwise we end up with explicit check for TPM crb in vhost code...
 > 
-> IIUC, the bit is guest-writeable, so we should use .wmask instead of .cmask .
-> Is this correct?
+> Thanks
 > 
-> > 
-> > > > > > > 
-> > > > > > > IIUC w1cmask means the guest can now write to this bit, but afaiu from the
-> > > > > > > pcie spec it's RO.
-> > > > > > 
-> > > > > > Yes this bit must be RO.
-> > 
-> > My bad, I assumed behavior based on how the guest was working, and this gone
-> > wrong. With above documentation provided, I would suggest clearing the .config
-> > mask related bit so qemu skips checking this one.
-> > 
-> > What is your opinion on that?
-> > 
-> > > > > > 
-> > > > > > > > 
-> > > > > > > > According to pcie_cap_slot_init() the slot status register
-> > > > > > > > (PCI_EXP_SLTSTA), in which PCI_EXP_SLTSTA_PDS is a flag, seems to fall
-> > > > > > > > under w1cmask field, with makes sense due to the way signaling the hotplug
-> > > > > > > > works.
-> > > > > > > > 
-> > > > > > > > So, add PCI_EXP_SLTSTA_PDS bit to w1cmask, so the fake incompatibility on
-> > > > > > > > get_pci_config_device() does not abort the migration.
-> > > > > > > > 
-> > > > > > > > Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2215819
-> > > > > > > > Signed-off-by: Leonardo Bras <leobras@redhat.com>
-> > > > > > > 
-> > > > > > > Do we need a Fixes: and also the need to copy stable?
-> > > > > > > 
-> > > > > > > > ---
-> > > > > > > >  hw/pci/pcie.c | 2 +-
-> > > > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > > > > 
-> > > > > > > > diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> > > > > > > > index b8c24cf45f..2def1765a5 100644
-> > > > > > > > --- a/hw/pci/pcie.c
-> > > > > > > > +++ b/hw/pci/pcie.c
-> > > > > > > > @@ -657,7 +657,7 @@ void pcie_cap_slot_init(PCIDevice *dev, PCIESlot *s)
-> > > > > > > >                                 PCI_EXP_SLTCTL_EIC);
-> > > > > > > >  
-> > > > > > > >      pci_word_test_and_set_mask(dev->w1cmask + pos + PCI_EXP_SLTSTA,
-> > > > > > > > -                               PCI_EXP_HP_EV_SUPPORTED);
-> > > > > > > > +                               PCI_EXP_HP_EV_SUPPORTED | PCI_EXP_SLTSTA_PDS);
-> > > > > > > >  
-> > > > > > > >      dev->exp.hpev_notified = false;
-> > > > > > > >  
-> > > > > > > > -- 
-> > > > > > > > 2.41.0
-> > > > > > > > 
-> > > > > > > 
-> > > > > > > -- 
-> > > > > > > Peter Xu
-> > > > > > 
-> > > > > 
-> > > > > -- 
-> > > > > Peter Xu
-> > > > 
-> > > 
-> > 
+>> Thanks,
+>> Laurent
+>>
+> 
 
 
