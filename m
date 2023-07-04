@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801857476DE
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 18:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5EC7476E3
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 18:38:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGj1G-0001ME-VM; Tue, 04 Jul 2023 12:36:50 -0400
+	id 1qGj1I-0001Nw-6S; Tue, 04 Jul 2023 12:36:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGj1E-0001Jx-6i
+ id 1qGj1E-0001K0-B2
  for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:36:48 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGj1B-0001pJ-6z
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:36:47 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3143b70d6easo1964283f8f.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 09:36:40 -0700 (PDT)
+ id 1qGj1B-0001pp-9B
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:36:48 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-314319c0d3eso3393189f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 09:36:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688488599; x=1691080599;
+ d=linaro.org; s=google; t=1688488600; x=1691080600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=VCXSlv9PBlqNWlv08FHro1sfFi0JArXLUvRt7UUYed4=;
- b=m4etLuyCJXHo8lsBDWWsCkVfJNGu5WCznPshiCzz32kHKxiPnaOGNUcuK55flcCzWl
- WJy5PfnXm6Fb5Rn1XhBTnUA+VVJfB435B59wVt7QtVN4HDwmIx2AXtVuEEphVi1+wK5C
- UCgL5llciq/MAT9XQ5wluppk6XzVCKGKJikpXdPNErhbR298uuK8n2Hh1edBJMQmSClY
- kbrp2uzeCexialr0DTKrmiypCP3Yb7hQy4Xp3A4ZG+/uY4so/KeLEmUeiRvDZ6AI1zxd
- ZS8zfF/botD4dTZ/q//Gg9zFgYFHsZzbUgYpgnfzBe8KzYVon3Ew2wu8mIKuKWFf4GHK
- p0BQ==
+ :reply-to; bh=ljXuz5WdOwWpxwvCuXAlprlm5SQ6d0e/c1sdlk1yWik=;
+ b=iXQM3l4hIFS+7AgtV7coajaTKojqc5SP+UnAAVjX2oNehd7JUbojq/oa1H12WjV09a
+ JzPapmmFQbwhq2+QJRsaS6GPDTvpkfdpjk7X6L/Y0RSa+wCRX9+WK+ZDn0LZpGvPBM0j
+ y1ufWMvL8ky/OT8yMqHtnAsqSK+3r8X/PdJRrgga2vDmOzXfkgYuOgU8e0Xv2+fQl5J7
+ zJB0k0DDNHlUZCHcps8TJtrZCapbpUhpzKOTJkQLk+lEAoE0sBCB+awN+nB0qR2jdxyO
+ 5AI9/ctuoCf5wVJ43Abh9+2tHSU/AjvvYoHruQG+3TVQeJaP7kZ/74YdIvDDUjWJx932
+ d/Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688488599; x=1691080599;
+ d=1e100.net; s=20221208; t=1688488600; x=1691080600;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VCXSlv9PBlqNWlv08FHro1sfFi0JArXLUvRt7UUYed4=;
- b=kfiisAEB5z6swM6kWcTYkdSSVniEcfy+OGezkbtWGmm/h7LgGVDKrsIZPgXIU7LTh/
- H8VztuS1AqJihBxtMkwStZ2mvdaM5wdv3VOUsBqgFRPe8Yq7Xc4bJGe7p5YDaYDfaznm
- Su5ZX2N79xgizTj6kEe07BZXAJ8zldsLEqIEeYUVOj182pJfWHapsPxxbO4awJIfPYNl
- lg+AZbhHiBspeUoV4PBUr4+Uf4YkxcZMttHOiswafWdylCs9RtmT+hfaBq5UT7DggdyW
- DIzW6BDIAmN1vtVnBNms7kdRAIP8DfcWCOTfGingBsxty8Cxb88suf04QF9tvUUXLDgG
- jYJQ==
-X-Gm-Message-State: ABy/qLYdaR2dzkEkPmBfe/bdAWudwq8MYp5S9moud7zmcvlsG7P9f5BQ
- HUVTrZupUF7fjVJ2JXGK2BsdEpGQ4vmbQWGCWxw=
-X-Google-Smtp-Source: APBJJlGDj86lO/74E5DZ+KK/ZHsk2VH2UWzSvl5stCtsA7Bon6+A9hQNm3p2TJzC28stIHtKnV2pUw==
-X-Received: by 2002:adf:e483:0:b0:30a:f030:8637 with SMTP id
- i3-20020adfe483000000b0030af0308637mr11570491wrm.22.1688488599547; 
- Tue, 04 Jul 2023 09:36:39 -0700 (PDT)
+ bh=ljXuz5WdOwWpxwvCuXAlprlm5SQ6d0e/c1sdlk1yWik=;
+ b=TUoi/d7Hg5lndLRGVRBaQrJ3bGoCRjUe73p0Ivcubwxet/9ZQyR3Pc9tD4Qus6q+qV
+ kJim6peHlLH5moGuOpZmJiXZyWADfn6lLBzlDWzh4SO6P+4/K1oVGfKDZR2q8poZL+p0
+ XQO4TQbX7/E6J/b4yJGRbKGch8yZ3oN8e6bKrc4GAkvQaBG7PcrAyMCsyAbkOXKFOLr4
+ 48mIl7Qs5eBzMwHcxRpQaPBrQ8HvS4FtOM83LPrPYXkJr4Ura8dCpi6ICGDfVblk0a8m
+ Ezm3Gw7anYafeyhepxbteZRbEe7tfvHoEOS5XcNFe43hJRHYdQrI2nwreq64+1qjHsn6
+ ZhzQ==
+X-Gm-Message-State: ABy/qLYrF7j5ivbgxvazxqKJZD8UcHfJIRxOwzqFRvYW4/7xT53dG526
+ MUPjnqNDv00yj4EEOCrxyXcP0T4ImAs5C/D3Rvk=
+X-Google-Smtp-Source: APBJJlF2Milc/X+BkhYVTPEkKqKlfiL63NxEES8z/o0ze5k/XgXSeaLkaO85QYKyFoN0+YxDu3aCaQ==
+X-Received: by 2002:adf:efca:0:b0:314:3587:ec72 with SMTP id
+ i10-20020adfefca000000b003143587ec72mr6508721wrp.69.1688488600149; 
+ Tue, 04 Jul 2023 09:36:40 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  r8-20020a056000014800b003143b032b7asm4354258wrx.116.2023.07.04.09.36.39
@@ -58,16 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 04 Jul 2023 09:36:39 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/11] target/arm: gdbstub: Guard M-profile code with CONFIG_TCG
-Date: Tue,  4 Jul 2023 17:36:32 +0100
-Message-Id: <20230704163634.3188465-10-peter.maydell@linaro.org>
+Subject: [PULL 10/11] hw: arm: allwinner-sramc: Set class_size
+Date: Tue,  4 Jul 2023 17:36:33 +0100
+Message-Id: <20230704163634.3188465-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230704163634.3188465-1-peter.maydell@linaro.org>
 References: <20230704163634.3188465-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,63 +91,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-This code is only relevant when TCG is present in the build. Building
-with --disable-tcg --enable-xen on an x86 host we get:
+AwSRAMCClass is larger than SysBusDeviceClass so the class size must be
+advertised accordingly.
 
-$ ../configure --target-list=x86_64-softmmu,aarch64-softmmu --disable-tcg --enable-xen
-$ make -j$(nproc)
-...
-libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `m_sysreg_ptr':
- ../target/arm/gdbstub.c:358: undefined reference to `arm_v7m_get_sp_ptr'
- ../target/arm/gdbstub.c:361: undefined reference to `arm_v7m_get_sp_ptr'
-
-libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `arm_gdb_get_m_systemreg':
-../target/arm/gdbstub.c:405: undefined reference to `arm_v7m_mrs_control'
-
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Message-id: 20230628164821.16771-1-farosas@suse.de
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 05def917e1 ("hw: arm: allwinner-sramc: Add SRAM Controller support for R40")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230628110905.38125-1-akihiko.odaki@daynix.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/gdbstub.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ hw/misc/allwinner-sramc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index 03b17c814f6..f421c5d041c 100644
---- a/target/arm/gdbstub.c
-+++ b/target/arm/gdbstub.c
-@@ -324,6 +324,7 @@ static int arm_gen_dynamic_sysreg_xml(CPUState *cs, int base_reg)
-     return cpu->dyn_sysreg_xml.num;
- }
+diff --git a/hw/misc/allwinner-sramc.c b/hw/misc/allwinner-sramc.c
+index a8b731f8f28..d76c24d081f 100644
+--- a/hw/misc/allwinner-sramc.c
++++ b/hw/misc/allwinner-sramc.c
+@@ -159,6 +159,7 @@ static const TypeInfo allwinner_sramc_info = {
+     .parent        = TYPE_SYS_BUS_DEVICE,
+     .instance_init = allwinner_sramc_init,
+     .instance_size = sizeof(AwSRAMCState),
++    .class_size    = sizeof(AwSRAMCClass),
+     .class_init    = allwinner_sramc_class_init,
+ };
  
-+#ifdef CONFIG_TCG
- typedef enum {
-     M_SYSREG_MSP,
-     M_SYSREG_PSP,
-@@ -481,6 +482,7 @@ static int arm_gen_dynamic_m_secextreg_xml(CPUState *cs, int orig_base_reg)
-     return cpu->dyn_m_secextreg_xml.num;
- }
- #endif
-+#endif /* CONFIG_TCG */
- 
- const char *arm_gdb_get_dynamic_xml(CPUState *cs, const char *xmlname)
- {
-@@ -561,6 +563,7 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
-                              arm_gen_dynamic_sysreg_xml(cs, cs->gdb_num_regs),
-                              "system-registers.xml", 0);
- 
-+#ifdef CONFIG_TCG
-     if (arm_feature(env, ARM_FEATURE_M) && tcg_enabled()) {
-         gdb_register_coprocessor(cs,
-             arm_gdb_get_m_systemreg, arm_gdb_set_m_systemreg,
-@@ -575,4 +578,5 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
-         }
- #endif
-     }
-+#endif /* CONFIG_TCG */
- }
 -- 
 2.34.1
 
