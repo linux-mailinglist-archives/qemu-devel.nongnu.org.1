@@ -2,92 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5881774707B
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 14:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BA474707C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 14:10:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGeqi-0005O2-45; Tue, 04 Jul 2023 08:09:40 -0400
+	id 1qGeqo-0005Qh-LA; Tue, 04 Jul 2023 08:09:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGeqf-0005No-Ai
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:09:37 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGeqm-0005Pz-3G
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:09:44 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGeqd-0004AY-23
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:09:37 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-668704a5b5bso4230271b3a.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:09:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGeqk-0004Bz-1V
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:09:43 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fbc54caad5so50573815e9.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:09:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688472573; x=1691064573;
+ d=linaro.org; s=google; t=1688472580; x=1691064580;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Lo0BxkIUWZ66LWdZFwTmoz0V8WVCNITxWrkNQMl1yw8=;
- b=PRm93BuddqiZIzmI9Ua8uFHSr5pikjAz5kvVs1bXu92awSql2BWTy3mqFhfatMtJ7V
- 9hLEGDZtF7SFBXHl4zrsowNW2XwnKpD5FvrO8/iGFlKupNNSCZyJ4IWefEfYLsPkOxa7
- yAGp/T0vUAuYM7U4lMjMAeuhqZQp7fwCrvHdklgQI+TMNlt5ok5BQeYxbkU0oNlWqHQy
- JLPfq+8t+yCdh1nzKyFbi/lyjPnlehYVpAlEXQU+1dFyHEDiCCnoC016h8AMuLmeDmZ6
- PdJsksD9l4w1FhDO7dWZyUcRpMjlMp0tap9UHhuVJO6+WRTBvJGjV+qzPizT8l+Ij4M7
- PCYA==
+ bh=18Y4eZWtTdRkabjtGGT0SruVFphlbyVq2+WwpHWURkE=;
+ b=kuAkpFekGcjVIzaHG2M3+NwiEliDRk7u439ntKc6mP/orh/9FCjZilDrAUXRHzqHX0
+ Vzu5wFY9NsNBmTRmPBgDMTKVzH6QRYWNYiWU+tIiRa9rMOm3/nid9ufJwTXWYCXUePwY
+ N3hb60X614FL6YQ5EoRpVYA27/H4FKpIKShsUjUfLoE7/GCiJ/QT+xHJSo94vWpExKWl
+ 5qT1DHIVeUl9qMEfrvxP8ohGF/wlXv1cPestrZtzCj7jm6kEYmdSn/OLXWbznDpquIrq
+ HWfSHgnBEQmI4bihc6iygm0gLyEnnGp++6xX6ZHntz5db7xGxOKFbV06sWZHodvh56cy
+ 5CKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688472573; x=1691064573;
+ d=1e100.net; s=20221208; t=1688472580; x=1691064580;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Lo0BxkIUWZ66LWdZFwTmoz0V8WVCNITxWrkNQMl1yw8=;
- b=gjvk3IJ8S7SsaXE+WNPNudt2D4h4NWefc1WY77mbzXGRpFJh1IwsrNb9Vpsc7Ug6+N
- bG3jD6FEhPZT9X394vRHbsbfDru9lUFuEZxj1io2pLeQpB161j0bqFF6xWoerffLoiOF
- dNigBAYpPM/2xurkVK4EQDQVg7zm+8bQxyVQTxV3JWsJJJT3ftBgwrpQt/MSfd8pw96h
- ZkSp2t8yjQh8EAnaT3AjLWzONIuwB71erTF3f9Y0eSaSFrcWp4GH9UTj1jObVbxv1wiq
- dF0PVPBoloZWk+jKIVLH56QVxqudG0wCiSOQXDEhsfqkgiQtB603Eso5NqQdvDfGsU3N
- ZBxQ==
-X-Gm-Message-State: ABy/qLaNqI/b3im3sN8UV+pc4xfqAA3SlPAfkWMukF9NWjCgLhu9o9Tw
- dlWZZdFOMUu12CGAIopLwgUXjw==
-X-Google-Smtp-Source: APBJJlFHGr5dV7kgB7lW2VFnDxZxnv83EQNyuoYmuf6ZqtBN9hiLOS/0iBUxOgfphLiKqrChWxlZZg==
-X-Received: by 2002:a05:6a00:c8f:b0:66c:a45:f00b with SMTP id
- a15-20020a056a000c8f00b0066c0a45f00bmr20379161pfv.23.1688472573223; 
- Tue, 04 Jul 2023 05:09:33 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ bh=18Y4eZWtTdRkabjtGGT0SruVFphlbyVq2+WwpHWURkE=;
+ b=TV2gf/UawVR2jbhy/zYTt9QzDjBou2yYyK5Hx4gk/oHvWU1/6KDyb+7durSFwsrjaP
+ XpAtjU+IT5NoLsla0pP60FvxjuwOo6RWvdg1N2oVCYtVTXR0U3MtIZFngN4uJnIbNldi
+ bxe2AV8EMER8RF888FeJk/LqCR3FUvn5vNw1XsYnqW1/13KNW2sIlDNThdKbJyi0uMVh
+ l58aR7BOdLPBLdbx+AjjomdKAwCStDXkQyTZAfe4Iy7nkGuivzxtch2QP3RtWLcMkLAq
+ Ki8N8jKL9X6QGC+o8zCOAwf1GvIKcbe1ra5DE44NrTVX6hLcS+CkFKs2xiNW5i1tVd/T
+ GaCQ==
+X-Gm-Message-State: AC+VfDzzFG/dvlQnYZlO2bb27UXqfgxy0gDnAdKUyeqlFvfASnVXbPTo
+ Zcq8R0BLTYXBL52e/i2ZiBC6Vw==
+X-Google-Smtp-Source: ACHHUZ6I68Mf5prFPg7O2PaRCxembJ2vUlGDMT/H5Yh4fnA3PunO678eJar2WRARt1/NnzWvXXkH8w==
+X-Received: by 2002:a1c:770c:0:b0:3fb:b5dc:dab1 with SMTP id
+ t12-20020a1c770c000000b003fbb5dcdab1mr9964168wmi.39.1688472580211; 
+ Tue, 04 Jul 2023 05:09:40 -0700 (PDT)
+Received: from [192.168.1.102] ([176.176.157.122])
  by smtp.gmail.com with ESMTPSA id
- a17-20020a62e211000000b0066ccb8e8024sm15152214pfi.30.2023.07.04.05.09.31
+ 24-20020a05600c229800b003fa98908014sm24708459wmf.8.2023.07.04.05.09.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 05:09:32 -0700 (PDT)
-Message-ID: <912dc66d-dad1-53a1-be4e-3ba795ccb947@daynix.com>
-Date: Tue, 4 Jul 2023 21:09:29 +0900
+ Tue, 04 Jul 2023 05:09:39 -0700 (PDT)
+Message-ID: <6fb9e146-7ace-0db6-305b-f6fc135878c1@linaro.org>
+Date: Tue, 4 Jul 2023 14:09:38 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v7 5/6] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v2] kconfig: Add PCIe devices to s390x machines
 Content-Language: en-US
-To: Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>, imammedo@redhat.com
-References: <20230704112555.5629-1-anisinha@redhat.com>
- <20230704112555.5629-6-anisinha@redhat.com>
- <7356dc51-588c-f2f8-22d9-c8193bae9309@daynix.com>
- <2C9BF0F4-6CB0-4805-818D-51CABC1EAFDE@redhat.com>
- <bf793e6b-62a0-0772-0d64-ddb5894ebf53@daynix.com>
- <6AB4A93A-7543-4991-A934-4C6054F0C2BA@redhat.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <6AB4A93A-7543-4991-A934-4C6054F0C2BA@redhat.com>
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>
+References: <20230704120137.2604646-1-clg@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230704120137.2604646-1-clg@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,80 +94,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/07/04 21:08, Ani Sinha wrote:
+On 4/7/23 14:01, Cédric Le Goater wrote:
+> It is useful to extend the number of available PCI devices to KVM guests
+> for passthrough scenarios and also to expose these models to a different
+> (big endian) architecture. Include models for Intel Ethernet adapters
+> and one USB controller, which all support MSI-X. Devices only supporting
+> INTx won't work on s390x.
 > 
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
 > 
->> On 04-Jul-2023, at 5:32 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> On 2023/07/04 20:59, Ani Sinha wrote:
->>>> On 04-Jul-2023, at 5:24 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>
->>>> On 2023/07/04 20:25, Ani Sinha wrote:
->>>>> PCI Express ports only have one slot, so PCI Express devices can only be
->>>>> plugged into slot 0 on a PCIE port. Add a warning to let users know when the
->>>>> invalid configuration is used. We may enforce this more strongly later on once
->>>>> we get more clarity on whether we are introducing a bad regression for users
->>>>> currenly using the wrong configuration.
->>>>> The change has been tested to not break or alter behaviors of ARI capable
->>>>> devices by instantiating seven vfs on an emulated igb device (the maximum
->>>>> number of vfs the linux igb driver supports). The vfs instantiated correctly
->>>>> and are seen to have non-zero device/slot numbers in the conventional PCI BDF
->>>>> representation.
->>>>> CC: jusual@redhat.com
->>>>> CC: imammedo@redhat.com
->>>>> CC: mst@redhat.com
->>>>> CC: akihiko.odaki@daynix.com
->>>>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
->>>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->>>>> Reviewed-by: Julia Suvorova <jusual@redhat.com>
->>>>> ---
->>>>>   hw/pci/pci.c | 15 +++++++++++++++
->>>>>   1 file changed, 15 insertions(+)
->>>>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->>>>> index e2eb4c3b4a..47517ba3db 100644
->>>>> --- a/hw/pci/pci.c
->>>>> +++ b/hw/pci/pci.c
->>>>> @@ -65,6 +65,7 @@ bool pci_available = true;
->>>>>   static char *pcibus_get_dev_path(DeviceState *dev);
->>>>>   static char *pcibus_get_fw_dev_path(DeviceState *dev);
->>>>>   static void pcibus_reset(BusState *qbus);
->>>>> +static bool pcie_has_upstream_port(PCIDevice *dev);
->>>>>     static Property pci_props[] = {
->>>>>       DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
->>>>> @@ -2121,6 +2122,20 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
->>>>>           }
->>>>>       }
->>>>>   +    /*
->>>>> +     * With SRIOV and ARI, vfs can have non-zero slot in the conventional
->>>>> +     * PCI interpretation as all five bits reserved for slot addresses are
->>>>> +     * also used for function bits for the various vfs. Ignore that case.
->>>>
->>>> You don't have to mention SR/IOV; it affects all ARI-capable devices. A PF can also have non-zero slot number in the conventional interpretation so you shouldn't call it vf either.
->>> Can you please help write a comment that explains this properly for all cases - ARI/non-ARI, PFs and VFs? Once everyone agrees that its clear and correct, I will re-spin.
->>
->> Simply, you can say:
->> With ARI, the slot number field in the conventional PCI interpretation can have a non-zero value as the field bits are reused to extend the function number bits. Ignore that case.
+>   Tested under KVM as a machine device, under KVM nested as a passthrough
+>   device
 > 
-> but we are not checking for ARI capability here in the code. So the comment is confusing.
+>   hw/s390x/Kconfig | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
+> index 5e7d8a2bae8b..7a82c58cdf6e 100644
+> --- a/hw/s390x/Kconfig
+> +++ b/hw/s390x/Kconfig
+> @@ -10,3 +10,7 @@ config S390_CCW_VIRTIO
+>       select SCLPCONSOLE
+>       select VIRTIO_CCW
+>       select MSI_NONBROKEN
+> +    imply PCI_EXPRESS
 
-Don't we? We check for:
-!pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI)
+No, PCIe is a bus, which is implemented in s390-pci-bus.c;
+S390_CCW_VIRTIO exposes this bus, so we Kconfig SELECT it.
 
-> 
->>
->>>>
->>>>> +     */
->>>>> +    if (pci_is_express(pci_dev) &&
->>>>> +        !pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
->>>>> +        pcie_has_upstream_port(pci_dev) &&
->>>>> +        PCI_SLOT(pci_dev->devfn)) {
->>>>> +        warn_report("PCI: slot %d is not valid for %s,"
->>>>> +                    " parent device only allows plugging into slot 0.",
->>>>> +                    PCI_SLOT(pci_dev->devfn), pci_dev->name);
->>>>> +    }
->>>>> +
->>>>>       if (pci_dev->failover_pair_id) {
->>>>>           if (!pci_bus_is_express(pci_get_bus(pci_dev))) {
->>>>>               error_setg(errp, "failover primary device must be on "
-> 
+> +    imply E1000E_PCI_EXPRESS
+> +    imply IGB_PCI_EXPRESS
+> +    imply USB_XHCI_PCI
+
+These are devices you can plug on a PCIe bus, so Kconfig
+IMPLY is correct.
 
