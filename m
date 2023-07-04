@@ -2,72 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A759D74723E
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1966E747250
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:13:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGfkB-0001SR-6E; Tue, 04 Jul 2023 09:06:59 -0400
+	id 1qGfp1-0004fL-LW; Tue, 04 Jul 2023 09:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGfk7-0001RV-6O
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:06:55 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1qGfoz-0004f4-9T
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:11:57 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGfk5-0003Uo-11
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:06:54 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-31427ddd3fbso4145132f8f.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:06:52 -0700 (PDT)
+ id 1qGfox-0005GB-NJ
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:11:57 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2b699a2fe86so93086691fa.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:11:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688476011; x=1691068011;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=72OiX3Zm/JYZBpPMQQv+TlFgGKVlYsjEoawtRhhrRGU=;
- b=GLLc/0I+xIHy9hA7VyX5GNms7xbDhgKZl68wGH+TlN9hFOqr476xVRyCOOW1gX+vzQ
- HWu850xE5v797niiIsDtpK0ay5LoNeO1Xhn7OiDL3k2Pims1NdDHdO4zBFT2IOXfDkWg
- 6PswGtnwASZv7AFvM9jX8zGuuGPs6V6vxaQmHHGcRAG5u77y4oUziaTpMfY0jZBtX3RO
- pYMVzXIzpASLqquXNQVsDa754UUiJjxDC0O2qk4RzSzSI7O5FiXjYCcLFTNGu2kjnS+Z
- 7r1W3HjJSe2Wbdm0TBkypFBOQBomZInAyM9kcAHJfclhaF5NFi5aNsUafvn/V6BdKJfC
- 135Q==
+ d=linaro.org; s=google; t=1688476313; x=1691068313;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=uq3yYAZX8z4gQVSQCuo2VcgFD3TeuY6r+Mx7TIhl5ug=;
+ b=ElvNRwkuis3uReZF08CmyT5v/+EJF8oZtNWfZYvPejaXnIIp4yTCNhEngkLz+rOOH3
+ kYySh5OHOk8QBKV/+ZIQuRyer/UJE2mL5/331zltiYy69WL1lH/JJk/+0u0Ba0q4Uz0t
+ ir96Zr5zwmCmmi/XpLhj7ukpjYOrTydZPvtPhS7cHnoWkqJB+XGE7ap4H5h2bth9sPvO
+ 7RyBnRSYzEVxH+L7uZ0gdvWZZP3Wpa2aY00jOkzNBI8Zk+NYV44G0N+mVyMgQNfohTWN
+ q6Kmoc6zzwQfXYVcG/wH3eeJ8J7H4VsFLZ+Cu2WRYftXi9Tf+z+2KfRjK5Wb5OoLThPW
+ syzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688476011; x=1691068011;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=72OiX3Zm/JYZBpPMQQv+TlFgGKVlYsjEoawtRhhrRGU=;
- b=jl74C6+buTs4pWnbx+t5XZiiR88eFsdszTYeh2eBo343+TkvAtrh3QmpY/wUpptSti
- la+qYyzhkfPY7SfkC7g+tP1PRQEjEDVo/shPkj17SrOT4bMdzbunLJnQpBVM7rqyXsss
- W2MPs5VwBLoircuAf6EO8v37sHR+9Qpy9pObnWO9U/2V2PqH2/XfUdN969eA4+vlb3iJ
- roB6OlxHP5OeBcysamNc1fiVPRUh7sPEPvJiTGMdxn0u7HFMLu3sJL58XjdgzEv+aD/v
- Mj/qIiP7Dq2uCXtLZnrRgp4hfy97cEgkw2j/kSfbmiXF4qM10w9vPbU8C6PYXRkXA59l
- 1zFg==
-X-Gm-Message-State: ABy/qLZ/VXgOGIG47LqjY5HgDSl5X3AOAZbBxVpN7D08pmRUze0lH8bF
- slvW5kEpPrpOpt5JnK8HA9p4FA7RIWgKogoUIMc=
-X-Google-Smtp-Source: APBJJlEWlG8MoyZmQRb7bgFRiKoTnQdhUKHp7bAggKuGf5IoCJDVlvUX+95LIe8GPLBp1Jd/itYqYg==
-X-Received: by 2002:adf:fe8f:0:b0:314:183f:7ac0 with SMTP id
- l15-20020adffe8f000000b00314183f7ac0mr11251869wrr.43.1688476011636; 
- Tue, 04 Jul 2023 06:06:51 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- a10-20020adfeeca000000b00314103d6daesm15834737wrp.47.2023.07.04.06.06.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 06:06:51 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH 2/2] target/arm: Define neoverse-v1
-Date: Tue,  4 Jul 2023 14:06:47 +0100
-Message-Id: <20230704130647.2842917-3-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230704130647.2842917-1-peter.maydell@linaro.org>
-References: <20230704130647.2842917-1-peter.maydell@linaro.org>
+ d=1e100.net; s=20221208; t=1688476313; x=1691068313;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uq3yYAZX8z4gQVSQCuo2VcgFD3TeuY6r+Mx7TIhl5ug=;
+ b=JB+agNhtJp+dtC05RN6CjSpDWDziqMEr4Af2NwT1mWDNPYoyAH+DbZrmrnaO/rrDQs
+ zB9PnbdKH/fb2yk2h2JrtlV2A9MXS+dyP1Uc+JYRvK54skLl3Oou7gCFITDWjE0rlIy0
+ Kgb9GBbVFUxftTxvvf6sNsDwkoKxvdA3KMWHbNgpaw5dDqklUPpPSzEb23gG1tmW3YnT
+ 6vcro9iUBnIUtN+fOS848CavzMI5I8GVyyL0VStC4Qq2e30UcguqYvShIcAFD69s5lqx
+ 16/z6eBMyfZYCk3uIEXHaT5A6tzfyRxzmOWx5ApVWJnEd0dbq4ks7cs3RCXeR0SXibHA
+ wuXQ==
+X-Gm-Message-State: ABy/qLYgKmKWSIg8aA44EEuG5Kq+dMAkcdBOmouzWiHYAn8HbxvKQ5z4
+ /4Z3X1CFRvhFM8/XCkjHEazr7zeb+BcMCdh/SrjKHw==
+X-Google-Smtp-Source: APBJJlFEVU+of1U5byzARWYpAo5hceXxn/yNVVVU51dNCEdTSI+WXOvtwE+cCXb1KcY22aIqaj+4RNEUmo+R2bmmSJM=
+X-Received: by 2002:a2e:95d9:0:b0:2b5:80c9:1261 with SMTP id
+ y25-20020a2e95d9000000b002b580c91261mr9627094ljh.48.1688476313553; Tue, 04
+ Jul 2023 06:11:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+References: <20230628202758.16398-1-vikram.garhwal@amd.com>
+In-Reply-To: <20230628202758.16398-1-vikram.garhwal@amd.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 4 Jul 2023 14:11:42 +0100
+Message-ID: <CAFEAcA9aarrVFuBjt5gWgD2iHa_o3-XxbUWig_kDB3D=tCH0WQ@mail.gmail.com>
+Subject: Re: [QEMU][PATCH v1] tests/qtest: xlnx-canfd-test: Fix code coverity
+ issues
+To: Vikram Garhwal <vikram.garhwal@amd.com>
+Cc: qemu-devel@nongnu.org, Francisco Iglesias <francisco.iglesias@amd.com>, 
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,222 +87,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we have implemented support for FEAT_LSE2, we can define
-a CPU model for the Neoverse-V1, and enable it for the virt and
-sbsa-ref boards.
+On Wed, 28 Jun 2023 at 21:28, Vikram Garhwal <vikram.garhwal@amd.com> wrote:
+>
+> Following are done to fix the coverity issues:
+> 1. Change read_data to fix the CID 1512899: Out-of-bounds access (OVERRUN)
+> 2. Fix match_rx_tx_data to fix CID 1512900: Logically dead code (DEADCODE)
+> 3. Replace rand() in generate_random_data() with g_rand_int()
+>
+> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-If you're checking the values against the TRM, note that the
-summary tables differ from the register description in the TRM
-for ID_AA64DFR0_EL1, ID_AA64ZFR0_EL1 and ID_PFR0_EL1: we
-trust the versions in the register descriptions. Also the
-MIDR value in the r1p2 TRM isn't updated from r1p1.
-The CCSIDR_EL1 values in the TRM unfortunately seem to be wrong:
-the comment in the patch describes how I've calculated the
-values used here.
 
-I've stuck with the existing approach for aarch64_add_*_properties
-in the interests of getting this in before softfreeze, though
-there does seem like there ought to be a workable refactoring
-there somewhere.
----
- docs/system/arm/virt.rst |   1 +
- hw/arm/sbsa-ref.c        |   1 +
- hw/arm/virt.c            |   1 +
- target/arm/tcg/cpu64.c   | 128 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 131 insertions(+)
 
-diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-index 1cab33f02e3..51cdac68410 100644
---- a/docs/system/arm/virt.rst
-+++ b/docs/system/arm/virt.rst
-@@ -61,6 +61,7 @@ Supported guest CPU types:
- - ``a64fx`` (64-bit)
- - ``host`` (with KVM only)
- - ``neoverse-n1`` (64-bit)
-+- ``neoverse-v1`` (64-bit)
- - ``max`` (same as ``host`` for KVM; best possible emulation with TCG)
- 
- Note that the default is ``cortex-a15``, so for an AArch64 guest you must
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 0639f97dd5f..f0857198983 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -150,6 +150,7 @@ static const char * const valid_cpus[] = {
-     ARM_CPU_TYPE_NAME("cortex-a57"),
-     ARM_CPU_TYPE_NAME("cortex-a72"),
-     ARM_CPU_TYPE_NAME("neoverse-n1"),
-+    ARM_CPU_TYPE_NAME("neoverse-v1"),
-     ARM_CPU_TYPE_NAME("max"),
- };
- 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 9b9f7d9c687..20b134fe477 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -213,6 +213,7 @@ static const char *valid_cpus[] = {
-     ARM_CPU_TYPE_NAME("cortex-a76"),
-     ARM_CPU_TYPE_NAME("a64fx"),
-     ARM_CPU_TYPE_NAME("neoverse-n1"),
-+    ARM_CPU_TYPE_NAME("neoverse-v1"),
- #endif
-     ARM_CPU_TYPE_NAME("cortex-a53"),
-     ARM_CPU_TYPE_NAME("cortex-a57"),
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 6fec2d8a57a..6b8e8461f54 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -502,6 +502,31 @@ static void define_neoverse_n1_cp_reginfo(ARMCPU *cpu)
-     define_arm_cp_regs(cpu, neoverse_n1_cp_reginfo);
- }
- 
-+static const ARMCPRegInfo neoverse_v1_cp_reginfo[] = {
-+    { .name = "CPUECTLR2_EL1", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 0, .crn = 15, .crm = 1, .opc2 = 5,
-+      .access = PL1_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
-+    { .name = "CPUPPMCR_EL3", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 6, .crn = 15, .crm = 2, .opc2 = 0,
-+      .access = PL3_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
-+    { .name = "CPUPPMCR2_EL3", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 6, .crn = 15, .crm = 2, .opc2 = 1,
-+      .access = PL3_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
-+    { .name = "CPUPPMCR3_EL3", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 6, .crn = 15, .crm = 2, .opc2 = 6,
-+      .access = PL3_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
-+};
-+
-+static void define_neoverse_v1_cp_reginfo(ARMCPU *cpu)
-+{
-+    /*
-+     * The Neoverse V1 has all of the Neoverse N1's IMPDEF
-+     * registers and a few more of its own.
-+     */
-+    define_arm_cp_regs(cpu, neoverse_n1_cp_reginfo);
-+    define_arm_cp_regs(cpu, neoverse_v1_cp_reginfo);
-+}
-+
- static void aarch64_neoverse_n1_initfn(Object *obj)
- {
-     ARMCPU *cpu = ARM_CPU(obj);
-@@ -573,6 +598,108 @@ static void aarch64_neoverse_n1_initfn(Object *obj)
-     define_neoverse_n1_cp_reginfo(cpu);
- }
- 
-+static void aarch64_neoverse_v1_initfn(Object *obj)
-+{
-+    ARMCPU *cpu = ARM_CPU(obj);
-+
-+    cpu->dtb_compatible = "arm,neoverse-v1";
-+    set_feature(&cpu->env, ARM_FEATURE_V8);
-+    set_feature(&cpu->env, ARM_FEATURE_NEON);
-+    set_feature(&cpu->env, ARM_FEATURE_GENERIC_TIMER);
-+    set_feature(&cpu->env, ARM_FEATURE_AARCH64);
-+    set_feature(&cpu->env, ARM_FEATURE_CBAR_RO);
-+    set_feature(&cpu->env, ARM_FEATURE_EL2);
-+    set_feature(&cpu->env, ARM_FEATURE_EL3);
-+    set_feature(&cpu->env, ARM_FEATURE_PMU);
-+
-+    /* Ordered by 3.2.4 AArch64 registers by functional group */
-+    cpu->clidr = 0x82000023;
-+    cpu->ctr = 0xb444c004; /* With DIC and IDC set */
-+    cpu->dcz_blocksize = 4;
-+    cpu->id_aa64afr0 = 0x00000000;
-+    cpu->id_aa64afr1 = 0x00000000;
-+    cpu->isar.id_aa64dfr0  = 0x000001f210305519ull;
-+    cpu->isar.id_aa64dfr1 = 0x00000000;
-+    cpu->isar.id_aa64isar0 = 0x1011111110212120ull; /* with FEAT_RNG */
-+    cpu->isar.id_aa64isar1 = 0x0111000001211032ull;
-+    cpu->isar.id_aa64mmfr0 = 0x0000000000101125ull;
-+    cpu->isar.id_aa64mmfr1 = 0x0000000010212122ull;
-+    cpu->isar.id_aa64mmfr2 = 0x0000000000001011ull;
-+    cpu->isar.id_aa64pfr0  = 0x1101110120111112ull; /* GIC filled in later */
-+    cpu->isar.id_aa64pfr1  = 0x0000000000000020ull;
-+    cpu->id_afr0       = 0x00000000;
-+    cpu->isar.id_dfr0  = 0x15011099;
-+    cpu->isar.id_isar0 = 0x02101110;
-+    cpu->isar.id_isar1 = 0x13112111;
-+    cpu->isar.id_isar2 = 0x21232042;
-+    cpu->isar.id_isar3 = 0x01112131;
-+    cpu->isar.id_isar4 = 0x00010142;
-+    cpu->isar.id_isar5 = 0x11011121;
-+    cpu->isar.id_isar6 = 0x01100111;
-+    cpu->isar.id_mmfr0 = 0x10201105;
-+    cpu->isar.id_mmfr1 = 0x40000000;
-+    cpu->isar.id_mmfr2 = 0x01260000;
-+    cpu->isar.id_mmfr3 = 0x02122211;
-+    cpu->isar.id_mmfr4 = 0x01021110;
-+    cpu->isar.id_pfr0  = 0x21110131;
-+    cpu->isar.id_pfr1  = 0x00010000; /* GIC filled in later */
-+    cpu->isar.id_pfr2  = 0x00000011;
-+    cpu->midr = 0x411FD402;          /* r1p2 */
-+    cpu->revidr = 0;
-+
-+    /*
-+     * The Neoverse-V1 r1p2 TRM lists 32-bit format CCSIDR_EL1 values,
-+     * but also says it implements CCIDX, which means they should be
-+     * 64-bit format. So we here use values which are based on the textual
-+     * information in chapter 2 of the TRM (and on the fact that
-+     * sets * associativity * linesize == cachesize).
-+     *
-+     * The 64-bit CCSIDR_EL1 format is:
-+     *   [55:32] number of sets - 1
-+     *   [23:3]  associativity - 1
-+     *   [2:0]   log2(linesize) - 4
-+     *           so 0 == 16 bytes, 1 == 32 bytes, 2 == 64 bytes, etc
-+     *
-+     * L1: 4-way set associative 64-byte line size, total size 64K,
-+     * so sets is 256.
-+     *
-+     * L2: 8-way set associative, 64 byte line size, either 512K or 1MB.
-+     * We pick 1MB, so this has 2048 sets.
-+     *
-+     * L3: No L3 (this matches the CLIDR_EL1 value).
-+     */
-+    cpu->ccsidr[0] = 0x000000ff0000001aull; /* 64KB L1 dcache */
-+    cpu->ccsidr[1] = 0x000000ff0000001aull; /* 64KB L1 icache */
-+    cpu->ccsidr[2] = 0x000007ff0000003aull; /* 1MB L2 cache */
-+
-+    /* From 3.2.115 SCTLR_EL3 */
-+    cpu->reset_sctlr = 0x30c50838;
-+
-+    /* From 3.4.8 ICC_CTLR_EL3 and 3.4.23 ICH_VTR_EL2 */
-+    cpu->gic_num_lrs = 4;
-+    cpu->gic_vpribits = 5;
-+    cpu->gic_vprebits = 5;
-+    cpu->gic_pribits = 5;
-+
-+    /* From 3.5.1 AdvSIMD AArch64 register summary */
-+    cpu->isar.mvfr0 = 0x10110222;
-+    cpu->isar.mvfr1 = 0x13211111;
-+    cpu->isar.mvfr2 = 0x00000043;
-+
-+    /* From 3.7.5 ID_AA64ZFR0_EL1 */
-+    cpu->isar.id_aa64zfr0 = 0x0000100000100000;
-+    cpu->sve_vq.supported = (1 << 0)  /* 128bit */
-+                            | (1 << 1);  /* 256bit */
-+
-+    /* From 5.5.1 AArch64 PMU register summary */
-+    cpu->isar.reset_pmcr_el0 = 0x41213000;
-+
-+    define_neoverse_v1_cp_reginfo(cpu);
-+
-+    aarch64_add_pauth_properties(obj);
-+    aarch64_add_sve_properties(obj);
-+}
-+
- /*
-  * -cpu max: a CPU with as many features enabled as our emulation supports.
-  * The version of '-cpu max' for qemu-system-arm is defined in cpu32.c;
-@@ -763,6 +890,7 @@ static const ARMCPUInfo aarch64_cpus[] = {
-     { .name = "cortex-a76",         .initfn = aarch64_a76_initfn },
-     { .name = "a64fx",              .initfn = aarch64_a64fx_initfn },
-     { .name = "neoverse-n1",        .initfn = aarch64_neoverse_n1_initfn },
-+    { .name = "neoverse-v1",        .initfn = aarch64_neoverse_v1_initfn },
- };
- 
- static void aarch64_cpu_register_types(void)
--- 
-2.34.1
+Applied to target-arm.next, thanks.
 
+-- PMM
 
