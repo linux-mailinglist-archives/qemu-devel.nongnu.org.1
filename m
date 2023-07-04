@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121E9746C7A
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00639746C7F
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:58:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGbpW-0003fF-F2; Tue, 04 Jul 2023 04:56:14 -0400
+	id 1qGbql-0004O3-9l; Tue, 04 Jul 2023 04:57:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGbpU-0003dy-50
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:56:12 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGbqh-0004NC-UN
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:57:27 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGbpS-0005fF-EE
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:56:11 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fbc587febfso46015975e9.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:56:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGbqe-000634-2v
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:57:26 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbc587febfso46028405e9.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:57:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688460968; x=1691052968;
+ d=linaro.org; s=google; t=1688461040; x=1691053040;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=/+MLJFs0XH7zbYGZSjQ/f38mKmsxZHjSLrw2TtEp9/w=;
- b=GoRErh2VsZp/xvnwKchiOzNy1e9oL6tf//U9SIq9px9OMQUhZKQPVWVdW9hKK61hJ5
- kHVlxxNncuRDrzG+XOfNejuT+NkmbikYapTc3Ffn3c+0rPbEb9jyLWhZ1IKZCRLJSR+b
- Gx4kK4zxp6y8zTJnfbfuZAXa0UN1fhkzEj9BDWBbQHOWoJnwKqp3UH0SO1nbXZP5JY38
- wfuVlDiyUJ5OwUBdKeoF5tcql2KhfzuBXO9VWv4GYAmUk3NUGyPcNYcSJxLkQXBcE8LE
- N/K9JQG03FJAGPM9qgWXKxlgLSZyIbAFDf9GzNB4n7n695wVODjfDQUQ2mKPTnuPmGiZ
- p7HQ==
+ bh=1pS3TwpcCyyDeZg6a+3fZj823CZPp/NOuhCb5QU8jUs=;
+ b=E/wBkhhIXibc/r2r6suJzfpwaCeiP3m4XL3AFC1XZcDmpcb4JoeQ6aVdFaGfRDrTQS
+ WBOo0uwgSIjHhoDoiSFOE5c4/2BKvjEIz0oT7tG5fyS6XWR8TGVpndsgiLex+xBi2f3j
+ D0uOiQ7BvtuouCuYlf0uTptDSPWep0AHljmW5AP+KAtE3su2UDElyll7nVbVOU6eS/rs
+ SkzvUGA7mJwW2rvgymzrrYGMtN77yevg8xifjF/cmDc1hoHm+q+NkvZkYbUs/54DiKBh
+ XDMRcHbsO4HY4uzapiegj7E986g3R9EX6DjcmIURZ6vXffTZJn40iyg71ej5k3J4CzQW
+ ioog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688460968; x=1691052968;
+ d=1e100.net; s=20221208; t=1688461040; x=1691053040;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/+MLJFs0XH7zbYGZSjQ/f38mKmsxZHjSLrw2TtEp9/w=;
- b=jjqxtmU8NsKq/QjzD/F5/dpSomuICrs2ghTZyprMqu9fwySjAxLmglHfY/qMIPyc3v
- F9wJP30nhcU3gNS9acKmfEDcayrg1pA8AABBEMYMaykRKkgEGX4NlTUO+eF5KfcIbVhT
- bSE8ObeF+gVLX8r9BSk3Oxs1KKZHz8zSBV/HDOD9kVq+BE+tFESAOj4u5Yudo9mMrEHd
- Z/qhAkirbWf2+3RW1K1om0Njzqfssj2uYJB0yJvSWkmqt4adtgize1qMo3sC2Wpf2E7K
- 6bU89vMap4oIo+/RQI01rDwrHMbGStNCLrkMijqib5DkBBL4LxY1WgsFMTb37LY7klod
- r96g==
-X-Gm-Message-State: AC+VfDyFr/ukHVHCsegXG2vd4jRTh+GDJfSPddKlbWUrn/0JMJsDoAX4
- 8oEPM/WVMW1oXrizMwPzorv5dQ==
-X-Google-Smtp-Source: ACHHUZ41N+NGtMbEzweDQlrZ2w5efPVr3ZwUHOpg4Eo+27tRG2vII2Prv8q5gp9+XwSEEFv91jz0sg==
-X-Received: by 2002:a7b:cd10:0:b0:3fb:ab76:164b with SMTP id
- f16-20020a7bcd10000000b003fbab76164bmr9775049wmj.13.1688460968525; 
- Tue, 04 Jul 2023 01:56:08 -0700 (PDT)
+ bh=1pS3TwpcCyyDeZg6a+3fZj823CZPp/NOuhCb5QU8jUs=;
+ b=fvsCeIYyoZb/62UxxIRcRkd27UDTkHRJQlqNnGWKrIYS3gQCh+5H0yFynsuVlSAKIr
+ YG4cuYeD7z3YD4320EiGcv9z2vIbuj2fI8q8xeTQu9kXzNQ9qb3iwKVsOK16F7PNEkKr
+ MChcOGwS4AjTGoPqXT11dgmd+5ICVD/PTG4BQ4GCdxSfg7OmD232ujp9atYqAsNR7PnT
+ 34I75STXrQk+pCXhNXsLKqIiOBF6dO8BQ+gfeoyhIuFuPoPgFlxghUYqEv+KgMrkMDTm
+ fuvyyVJA4pEjebyVkiTSF9IrA0/lfLd5w8REtuayTGZ/K3Twh/6I4RGzPKiw3KzCn9ee
+ WxRg==
+X-Gm-Message-State: ABy/qLYfHMhj5cvvr9c0Kr1BGuwT9fnMnnGv1h3xJMPJjXG6AkVc6Pge
+ vNLtWKSJ/MpXobpZmkQiHh7EHA==
+X-Google-Smtp-Source: APBJJlFstrPpkOE9UCO2VQY5L4F/I3a6HGOKuqQvF5tWKEFlZ7KKFsS4WSE4JZVbG3z8qV0Au6Apog==
+X-Received: by 2002:a7b:c40d:0:b0:3fb:df34:176e with SMTP id
+ k13-20020a7bc40d000000b003fbdf34176emr1684588wmi.31.1688461040638; 
+ Tue, 04 Jul 2023 01:57:20 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.157.122])
  by smtp.gmail.com with ESMTPSA id
- w10-20020a1cf60a000000b003f9bd9e3226sm29254025wmc.7.2023.07.04.01.56.07
+ z7-20020a5d4407000000b003143cdc5949sm2032428wrq.9.2023.07.04.01.57.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 01:56:08 -0700 (PDT)
-Message-ID: <a869053e-a26c-5d3f-537b-d81d31da26f1@linaro.org>
-Date: Tue, 4 Jul 2023 10:56:07 +0200
+ Tue, 04 Jul 2023 01:57:20 -0700 (PDT)
+Message-ID: <9058d248-1fe5-f47b-30ab-0ef3bcbef5cf@linaro.org>
+Date: Tue, 4 Jul 2023 10:57:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 09/13] ppc4xx_pci: Rename QOM type name define
+Subject: Re: [PATCH 10/13] ppc4xx_pci: Add define for ppc4xx-host-bridge type
+ name
 Content-Language: en-US
 To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
  qemu-ppc@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
 References: <cover.1688421085.git.balaton@eik.bme.hu>
- <217fab6a7ae5eca2a461b7d55fd76389954799b9.1688421085.git.balaton@eik.bme.hu>
+ <eecc7ae1c5f576f74c1b919e8d7f798fc8a7e6ac.1688421085.git.balaton@eik.bme.hu>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <217fab6a7ae5eca2a461b7d55fd76389954799b9.1688421085.git.balaton@eik.bme.hu>
+In-Reply-To: <eecc7ae1c5f576f74c1b919e8d7f798fc8a7e6ac.1688421085.git.balaton@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,76 +96,68 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/7/23 00:02, BALATON Zoltan wrote:
-> Rename the TYPE_PPC4xx_PCI_HOST_BRIDGE define and its string value to
-> match each other and other similar types and to avoid confusion with
-> "ppc4xx-host-bridge" type defined in same file.
+> Add a QOM type name define for ppc4xx-host-bridge in the common header
+> and replace direct use of the string name with the constant.
 > 
 > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
->   hw/ppc/ppc440_bamboo.c  | 3 +--
->   hw/ppc/ppc4xx_pci.c     | 6 +++---
->   include/hw/ppc/ppc4xx.h | 2 +-
->   3 files changed, 5 insertions(+), 6 deletions(-)
+>   hw/ppc/ppc440_pcix.c    | 3 ++-
+>   hw/ppc/ppc4xx_pci.c     | 4 ++--
+>   include/hw/ppc/ppc4xx.h | 1 +
+>   3 files changed, 5 insertions(+), 3 deletions(-)
 > 
-> diff --git a/hw/ppc/ppc440_bamboo.c b/hw/ppc/ppc440_bamboo.c
-> index f061b8cf3b..45f409c838 100644
-> --- a/hw/ppc/ppc440_bamboo.c
-> +++ b/hw/ppc/ppc440_bamboo.c
-> @@ -205,8 +205,7 @@ static void bamboo_init(MachineState *machine)
->       ppc4xx_sdram_ddr_enable(PPC4xx_SDRAM_DDR(dev));
+> diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
+> index f10f93c533..dfec25ac83 100644
+> --- a/hw/ppc/ppc440_pcix.c
+> +++ b/hw/ppc/ppc440_pcix.c
+> @@ -495,7 +495,8 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
+>                            ppc440_pcix_map_irq, &s->irq, &s->busmem,
+>                            get_system_io(), PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
 >   
->       /* PCI */
-> -    dev = sysbus_create_varargs(TYPE_PPC4xx_PCI_HOST_BRIDGE,
-> -                                PPC440EP_PCI_CONFIG,
-> +    dev = sysbus_create_varargs(TYPE_PPC4xx_PCI_HOST, PPC440EP_PCI_CONFIG,
->                                   qdev_get_gpio_in(uicdev, pci_irq_nrs[0]),
->                                   qdev_get_gpio_in(uicdev, pci_irq_nrs[1]),
->                                   qdev_get_gpio_in(uicdev, pci_irq_nrs[2]),
+> -    s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0), "ppc4xx-host-bridge");
+> +    s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0),
+> +                               TYPE_PPC4xx_HOST_BRIDGE);
+>   
+>       memory_region_init(&s->bm, OBJECT(s), "bm-ppc440-pcix", UINT64_MAX);
+>       memory_region_add_subregion(&s->bm, 0x0, &s->busmem);
 > diff --git a/hw/ppc/ppc4xx_pci.c b/hw/ppc/ppc4xx_pci.c
-> index 1d4a50fa7c..fbdf8266d8 100644
+> index fbdf8266d8..6652119008 100644
 > --- a/hw/ppc/ppc4xx_pci.c
 > +++ b/hw/ppc/ppc4xx_pci.c
-> @@ -46,7 +46,7 @@ struct PCITargetMap {
->       uint32_t la;
->   };
+> @@ -333,7 +333,7 @@ static void ppc4xx_pcihost_realize(DeviceState *dev, Error **errp)
+>                                 TYPE_PCI_BUS);
+>       h->bus = b;
 >   
-> -OBJECT_DECLARE_SIMPLE_TYPE(PPC4xxPCIState, PPC4xx_PCI_HOST_BRIDGE)
-> +OBJECT_DECLARE_SIMPLE_TYPE(PPC4xxPCIState, PPC4xx_PCI_HOST)
+> -    pci_create_simple(b, 0, "ppc4xx-host-bridge");
+> +    pci_create_simple(b, 0, TYPE_PPC4xx_HOST_BRIDGE);
 >   
->   #define PPC4xx_PCI_NR_PMMS 3
->   #define PPC4xx_PCI_NR_PTMS 2
-> @@ -321,7 +321,7 @@ static void ppc4xx_pcihost_realize(DeviceState *dev, Error **errp)
->       int i;
->   
->       h = PCI_HOST_BRIDGE(dev);
-> -    s = PPC4xx_PCI_HOST_BRIDGE(dev);
-> +    s = PPC4xx_PCI_HOST(dev);
->   
->       for (i = 0; i < ARRAY_SIZE(s->irq); i++) {
->           sysbus_init_irq(sbd, &s->irq[i]);
-> @@ -386,7 +386,7 @@ static void ppc4xx_pcihost_class_init(ObjectClass *klass, void *data)
+>       /* XXX split into 2 memory regions, one for config space, one for regs */
+>       memory_region_init(&s->container, OBJECT(s), "pci-container", PCI_ALL_SIZE);
+> @@ -367,7 +367,7 @@ static void ppc4xx_host_bridge_class_init(ObjectClass *klass, void *data)
 >   }
 >   
->   static const TypeInfo ppc4xx_pcihost_info = {
-> -    .name          = TYPE_PPC4xx_PCI_HOST_BRIDGE,
-> +    .name          = TYPE_PPC4xx_PCI_HOST,
->       .parent        = TYPE_PCI_HOST_BRIDGE,
->       .instance_size = sizeof(PPC4xxPCIState),
->       .class_init    = ppc4xx_pcihost_class_init,
+>   static const TypeInfo ppc4xx_host_bridge_info = {
+> -    .name          = "ppc4xx-host-bridge",
+> +    .name          = TYPE_PPC4xx_HOST_BRIDGE,
+>       .parent        = TYPE_PCI_DEVICE,
+>       .instance_size = sizeof(PCIDevice),
+>       .class_init    = ppc4xx_host_bridge_class_init,
 > diff --git a/include/hw/ppc/ppc4xx.h b/include/hw/ppc/ppc4xx.h
-> index 39ca602442..e053b9751b 100644
+> index e053b9751b..766d575e86 100644
 > --- a/include/hw/ppc/ppc4xx.h
 > +++ b/include/hw/ppc/ppc4xx.h
-> @@ -29,7 +29,7 @@
+> @@ -29,6 +29,7 @@
 >   #include "exec/memory.h"
 >   #include "hw/sysbus.h"
 >   
-> -#define TYPE_PPC4xx_PCI_HOST_BRIDGE "ppc4xx-pcihost"
-> +#define TYPE_PPC4xx_PCI_HOST "ppc4xx-pci-host"
+> +#define TYPE_PPC4xx_HOST_BRIDGE "ppc4xx-host-bridge"
 
-This is the host bridge however... Maybe we want to rename:
+This is the function #0 of the host bridge, maybe:
 
-#define TYPE_PPC4xx_PCI_HOST_BRIDGE "ppc4xx-pci-hostbridge"
+#define TYPE_PPC4xx_HOST_BRIDGE_FN0 "ppc4xx-pci-host-bridge-fn0"
 
+>   #define TYPE_PPC4xx_PCI_HOST "ppc4xx-pci-host"
+>   #define TYPE_PPC460EX_PCIE_HOST "ppc460ex-pcie-host"
+>   
 
 
