@@ -2,85 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9F57470F5
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 14:23:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0426E747153
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 14:28:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGf3J-0001uh-12; Tue, 04 Jul 2023 08:22:41 -0400
+	id 1qGf7j-0005HM-IQ; Tue, 04 Jul 2023 08:27:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGf3A-0001tU-PW
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:22:33 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGf36-0007iX-IR
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:22:31 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-557790487feso3866620a12.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:22:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688473346; x=1691065346;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=94unPck/HFMYNf7Mv5w9vhyjWp/Os8sneFiELbRad9k=;
- b=ONVCHyOk6QCsxV39WhdxCYlywZEi/ReX+oQgKS2cln6Tk3GUUxUIDKw7U5Gp8ls41w
- K25kFqqqsh63z33dECBeIDIuAL8hlIr3vCNNo0ppL9uPO510qPO+5j4R5IGDyG34xyuF
- T7/1YESviLBWA4jWKwJ+NKh1VtRBRVYFxsQKIH1MU/KKQ8gxv1hAVFEFSipE08EntPiD
- KkIT4sQyXRBLyf+P4zEpEFAci9frII3uOWP8BEDO+D7h5nDeue2/gQ4+OnODPn8Yogdt
- 6v6GPW0VBwiSI4GWfJUPdgPAUD9VAh6gGFp9GNJ9FF0xIXhG9VHRpIgNskqp1z80duJi
- JQRQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGf7h-0005Gv-KY
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:27:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGf7f-0000N6-V0
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:27:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688473630;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=f1DVV9YwOzEbvqEsOsygUElF9BNPHfcGIhILStRd8EE=;
+ b=gKYJffEW/30zgR0IdzIC65z1qO5Nlw/bHudklzBFCzIC9mhmqgliK8gLaU6XntuF9ADOu7
+ VVGFSATsRafBDp6qaXGraV8KwmNxrYSgwiDDYUc0MJLoVm6Y13cfEDrGxkrEjP9lml7bgW
+ x4eSG6DB8Kwi0VVdQ+apwq6VYgnNAS0=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-183-sCkUEuitNBClUzLvvAHXew-1; Tue, 04 Jul 2023 08:27:09 -0400
+X-MC-Unique: sCkUEuitNBClUzLvvAHXew-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7656c94fc4eso669105585a.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:27:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688473346; x=1691065346;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=94unPck/HFMYNf7Mv5w9vhyjWp/Os8sneFiELbRad9k=;
- b=UNQLZHdMAp2X1YDs9wD1kSMhgJRMiN420pu8mE6xPuy1n3O+EBy4UdpUbWJtGAuKeJ
- hCWfbRrDzjgek1+NMgfXYsrdOz9Ldg1f84UO6igeCNQmy4XREr1BFggOhFp6KpZsJDYr
- t4RGXJVP+6m6v55uxjzozqzrYSJ7gBlY7UJfJThP68t9OJTG+CEs5Pr1VROZ1kGEi3sn
- DkoLza42d3x7XFT0Ui6FdABAdh34e5EaK/HVvfS2QS9kb+8lvnqiPZL2xrN06nmiNd+1
- VyFkpLmiDq53jRuRq+CltsxK7zY+TSK/SDU0woMwvCmFy5JfsSoO+6pmdNkoJKgK4Tdl
- LQUA==
-X-Gm-Message-State: AC+VfDw9tRZcXaaaqr6Se8+zuQo/w0CHgWpVYiSAV707lueC56RBmQAa
- 2rQnvzTrjZEFnzubf7HX+JqdQ+fs2/dRi/8jb4w=
-X-Google-Smtp-Source: ACHHUZ6hfi2is+Ab63aOkzG4Sf/ncxB9KJQ1352amOOyEkdj8JrgeYzXiAqiZPAIEyWgQrvaScHJUw==
-X-Received: by 2002:a05:6a20:8f07:b0:122:a808:dbbe with SMTP id
- b7-20020a056a208f0700b00122a808dbbemr17897376pzk.29.1688473346076; 
- Tue, 04 Jul 2023 05:22:26 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- x48-20020a056a000bf000b0064d32771fa8sm11009743pfu.134.2023.07.04.05.22.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 05:22:25 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v4 2/2] pcie: Specify 0 for ARI next function numbers
-Date: Tue,  4 Jul 2023 21:22:14 +0900
-Message-ID: <20230704122215.23270-3-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230704122215.23270-1-akihiko.odaki@daynix.com>
-References: <20230704122215.23270-1-akihiko.odaki@daynix.com>
+ d=1e100.net; s=20221208; t=1688473629; x=1691065629;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=f1DVV9YwOzEbvqEsOsygUElF9BNPHfcGIhILStRd8EE=;
+ b=JaRno5vsuJq+yzdusWQGk4/gyPVL6LkgLXZR55EgzImVGThAKwYHW30WXcNQCm08eh
+ MFjwlIwrxckGGD8TRrE4TdlLMJE/ZqKw9U7vZzyFg3tTAgfaTx2uOKu2tkZEJplNQ0N/
+ WyDAZ381Z25h8U4rCrd7vujwnDwPMRMD6+oSTLg0vy3lDs7DFEniZEn/HSWOc0UjNYCf
+ K3DZnisEyFihat9N+jEKdFrAdbS+bn1jWY2F1A8RG0nlKZKkDZKBYAAalTwPfZ/9y0nL
+ 4kI/pg54N/CmJIIdyttHLYjfaB+SVho1dj/Gspt7804opy/w7c5YaUE3Yh+TmPHAJ21n
+ ckYQ==
+X-Gm-Message-State: AC+VfDzcxxIuEsDmTkQjIWYaNUnQ5f5oOAoPFIaEBc4CawmO300Ej+T6
+ cSTZ03hZxukWh2sOEEfvxb3feTFk/0mL2yDBrQbLZ/P8euIEVnHhXPA4z/6KhkSjjRDQUu9QWqK
+ AZ/jvfr9q1GCA8a4=
+X-Received: by 2002:a05:620a:4589:b0:765:67fe:5325 with SMTP id
+ bp9-20020a05620a458900b0076567fe5325mr11399710qkb.44.1688473629339; 
+ Tue, 04 Jul 2023 05:27:09 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7zjflw9gGwLPQ+6p7/iOq2otzVQcU0pI8fD11P7JCfoU8kTxxOyduW3xPfK9rVb7NpMdhNEQ==
+X-Received: by 2002:a05:620a:4589:b0:765:67fe:5325 with SMTP id
+ bp9-20020a05620a458900b0076567fe5325mr11399686qkb.44.1688473629093; 
+ Tue, 04 Jul 2023 05:27:09 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-179-126.web.vodafone.de.
+ [109.43.179.126]) by smtp.gmail.com with ESMTPSA id
+ dy1-20020a05620a60c100b007676ee76195sm1924994qkb.20.2023.07.04.05.27.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jul 2023 05:27:07 -0700 (PDT)
+Message-ID: <dd5c5445-e563-8461-a81b-1c637e69362d@redhat.com>
+Date: Tue, 4 Jul 2023 14:27:03 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::530;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v21 03/20] target/s390x/cpu topology: handle STSI(15) and
+ build the SYSIB
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org,
+ frankja@linux.ibm.com, Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
+ mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+ ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
+ armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
+ nsg@linux.ibm.com, berrange@redhat.com, clg@kaod.org
+References: <20230630091752.67190-1-pmorel@linux.ibm.com>
+ <20230630091752.67190-4-pmorel@linux.ibm.com>
+ <aef8accb-3576-2b10-a946-191a6be3e3e0@redhat.com>
+In-Reply-To: <aef8accb-3576-2b10-a946-191a6be3e3e0@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,76 +109,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current implementers of ARI are all SR-IOV devices. The ARI next
-function number field is undefined for VF. The PF should end the linked
-list formed with the field by specifying 0.
+On 04/07/2023 13.40, Thomas Huth wrote:
+...
+> Also, what about protected virtualization? Do you have to use 
+> s390_cpu_pv_mem_write() in case PV is enabled?
 
-For migration, the field will keep having 1 as its value on the old
-virt models.
+Never mind, I keep forgetting that CPU topology can't be used together with 
+PV (I just noticed after reading patch 07/20).
+Not sure ... but maybe a comment here in the code would help?
 
-Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in docs/pcie_sriov.txt")
-Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
-Fixes: 3a977deebe ("Intrdocue igb device emulation")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/hw/pci/pci.h | 2 ++
- hw/core/machine.c    | 1 +
- hw/pci/pci.c         | 2 ++
- hw/pci/pcie.c        | 2 +-
- 4 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index e6d0574a29..9c5b5eb206 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -209,6 +209,8 @@ enum {
-     QEMU_PCIE_CAP_CXL = (1 << QEMU_PCIE_CXL_BITNR),
- #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
-     QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
-+#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
-+    QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
- };
- 
- typedef struct PCIINTxRoute {
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 46f8f9a2b0..f0d35c6401 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -41,6 +41,7 @@
- 
- GlobalProperty hw_compat_8_0[] = {
-     { "migration", "multifd-flush-after-each-section", "on"},
-+    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
- };
- const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
- 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index e2eb4c3b4a..45a9bc0da8 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -82,6 +82,8 @@ static Property pci_props[] = {
-     DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
-     DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
-                     QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
-+    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
-+                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
-     DEFINE_PROP_END_OF_LIST()
- };
- 
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 9a3f6430e8..cf09e03a10 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
- /* ARI */
- void pcie_ari_init(PCIDevice *dev, uint16_t offset)
- {
--    uint16_t nextfn = 1;
-+    uint16_t nextfn = dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 ? 1 : 0;
- 
-     pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
-                         offset, PCI_ARI_SIZEOF);
--- 
-2.41.0
+  Thomas
 
 
