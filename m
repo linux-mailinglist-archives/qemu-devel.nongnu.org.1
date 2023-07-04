@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471AB746914
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 07:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC87746919
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 07:43:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGYo7-0003T1-PK; Tue, 04 Jul 2023 01:42:35 -0400
+	id 1qGYoD-0003U5-Lr; Tue, 04 Jul 2023 01:42:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qGYnv-0003PV-Dj; Tue, 04 Jul 2023 01:42:26 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1qGYnx-0003PZ-MU; Tue, 04 Jul 2023 01:42:26 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qGYnp-00040Z-R3; Tue, 04 Jul 2023 01:42:21 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1b82bf265b2so23517025ad.0; 
- Mon, 03 Jul 2023 22:42:16 -0700 (PDT)
+ id 1qGYns-00045S-Rr; Tue, 04 Jul 2023 01:42:23 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1b8033987baso31214055ad.0; 
+ Mon, 03 Jul 2023 22:42:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688449335; x=1691041335;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
- bh=UY6/jebI6uk/NNipWYOSkvZD8rbshUkVXQpPxGXfzZ0=;
- b=jYLjfbX2YOquhthr6zVP79o1YvYb756/O4cTrTOZlpn0Uxir9UJsze9GAAuyv+E4Sq
- Jgw2IdN737dTp5/72ir75+ogNK2vFzOBGvbUYPuChVDvsyconeXZPpRQ5hkFNZ6WXDLz
- mpYH357Hn7rctt2292oYH0Il2nSckwEvPLkcS4U5+YjXlrAo26oZnNR6/dTM0st2S6fB
- m77L+kxt0e1rQWwXAay27FcTY+plwO9Oh5bJlopqNYClrnXFukeCOPGGWtzHSdPjBPaL
- fTDf2cXzSRGdnzuAhl0BooAFXTYLIuvSNV/VwCLGNL0+5EB3A62Lm76rnQ92fhGMH2Id
- symQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688449335; x=1691041335;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1688449338; x=1691041338;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UY6/jebI6uk/NNipWYOSkvZD8rbshUkVXQpPxGXfzZ0=;
- b=DgL6cxjIauF35fY/OhG/VQtUM7RVkBMkOLdFfXSUIS16OXYmhCdE5hOjtG39/A35ja
- EWxFSKHiKTtyy3LSt4PT1LIP6nKE22ZzAtzUrRNsrUvvHHJDLbalzEoEsfUfdc7X7jYY
- fRosPTcCIhebTeRteyzIE5sOMbx3BQf9qq3gGg8CjagLxU8JdHv38JWrb5THAPjzLrwB
- bKgIq3rEtfT43pS9v5ctZljRa96QBakPTHtp+K5JGYh8YGMDKU7c1KNeg/8dYSetSPNj
- 5SDfeblvEQ3nQbvy785Zww9X5ZhfoL+JEs66Clr1UIZcvM9vP6ny/eRJjZiG/Xd4R6CO
- +CoA==
-X-Gm-Message-State: ABy/qLZ9KDFcS1SUd8z8NGPGyqjOJ0cRHVAs9qvl13uxSUzvHhFRLgGL
- xAGD7/1GAy3gWcd6HE4MfmsGaQCD+CY=
-X-Google-Smtp-Source: APBJJlFQwkyjhpOZnlyTCgZu6mIV1VK3jL36Ln5OReHk/dFtBSksbxHTj1jniYaaLIz9uHYb2LwonQ==
-X-Received: by 2002:a17:902:ea08:b0:1ad:f407:37d1 with SMTP id
- s8-20020a170902ea0800b001adf40737d1mr10012997plg.52.1688449335100; 
- Mon, 03 Jul 2023 22:42:15 -0700 (PDT)
+ bh=Q7eoUd+iblNvNzIFTkrpWth12Z0eS/m6oGNV7VBXjms=;
+ b=FtS3Mme61xbr9JohVKHc8tXV6o9aM949Yx+RRakjCPugcDeFzuWa/ZTfeL+O9AOxhS
+ BsLyl9YBzcH18Vw3rc1mhucBIZGJRm8/N/cjsVoSvGAkaktitTKsH1fm4AffxnHtmEp1
+ 0sc87VfyuLcw+EKvvXf9qGavOf8NlrMfMRkcVmtLHprb8dmxPtvJ0QlBma5Qvg136GNA
+ Ifm19qPCMDgkS1VHFo5ev4Bp9aEyV3mRrdpczTF6wLhAEWVYJCAQ8SIIROCtRLG+wbAO
+ nVYtlJSE45t1Y2Ms2d9iteWGrzKq9gU8YdJIvlV5m5UySOH1sf189CNNotdVEgIKaE/t
+ jy0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688449338; x=1691041338;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=Q7eoUd+iblNvNzIFTkrpWth12Z0eS/m6oGNV7VBXjms=;
+ b=LdbjzCxtPuNtouyMTtscIvPCk+p2MkC0MjnxFOW/tJ8gLLvE1MLk/+3R09t9OxgV+C
+ o5ryd8EpFdUiV67geXm4Od8oUDb3pyjRRGcWLC/tz7fHK3CwpJl7chr+QWkMXGn4ozPU
+ hp4g70KtaNN689kHti8oIlkIsZQ67aOg5J8+t/2TRZfGct81ieo8KMmMpw0n1r3hmb7B
+ /ltKE7FSq/Et9iDvYelez126OFW1TQmkJmATQ9YseYCmEslVGYFw6Dmp8j101oO3iPH1
+ 7Z2pjariypEBZbDcfxwWQj99pD9xHNxFznlquTQ2hLuTYsNFS/nIxUZG7Ksd8ysx2IVN
+ sWeQ==
+X-Gm-Message-State: ABy/qLZCnjLjTQDFBhSSzPFw/UHWjDU0pNNQFBygQb15mGssjH2QnaRQ
+ SFSVTMZPoN3nngYOuR5nf4U=
+X-Google-Smtp-Source: APBJJlHEU6nTRQrnvWwkgQDEBPInw5K7GA3+PYa2S3cH4hhgDmtt3rOL35smoHU6ShPeJr7Jyy56qg==
+X-Received: by 2002:a17:902:d4ca:b0:1b8:224f:e823 with SMTP id
+ o10-20020a170902d4ca00b001b8224fe823mr19794904plg.7.1688449338529; 
+ Mon, 03 Jul 2023 22:42:18 -0700 (PDT)
 Received: from localhost.localdomain
  (2403-5808-8af8-0-7926-51ea-3ff2-71dd.ip6.aussiebb.net.
  [2403:5808:8af8:0:7926:51ea:3ff2:71dd])
  by smtp.gmail.com with ESMTPSA id
- q9-20020a17090311c900b001ae59169f05sm16261879plh.182.2023.07.03.22.42.11
+ q9-20020a17090311c900b001ae59169f05sm16261879plh.182.2023.07.03.22.42.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 22:42:14 -0700 (PDT)
+ Mon, 03 Jul 2023 22:42:17 -0700 (PDT)
 From: Joel Stanley <joel@jms.id.au>
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
 Cc: qemu-devel@nongnu.org,
 	qemu-ppc@nongnu.org
-Subject: [PATCH v2 0/5] ppc/pnv: Extend "quad" model for p10
-Date: Tue,  4 Jul 2023 15:11:59 +0930
-Message-Id: <20230704054204.168547-1-joel@jms.id.au>
+Subject: [PATCH v2 1/5] ppc/pnv: quad xscom callbacks are P9 specific
+Date: Tue,  4 Jul 2023 15:12:00 +0930
+Message-Id: <20230704054204.168547-2-joel@jms.id.au>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230704054204.168547-1-joel@jms.id.au>
+References: <20230704054204.168547-1-joel@jms.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=joel.stan@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=joel.stan@gmail.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -14
 X-Spam_score: -1.5
 X-Spam_bar: -
@@ -93,35 +96,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The quad model implements the EC xscoms for the p9 machine, reusing the
-same model for p10 which isn't quite correct. This series adds a PnvQuad
-class and subclasses it for P9 and P10.
+Rename the functions to include P9 in the name in preparation for adding
+P10 versions.
 
-I mistakenly thought we needed the quad model to implement the core
-thread state scom on p10, because the read was coming in to the address
-belonging to the quad. In fact the quad region was too large,
-overlapping with the core. This is fixed in v2, and the core thread is
-back where it should be in the core model. This should address Nick's
-feedback on the v1 cover letter.
+Correct the unimp read message while we're changing the function.
 
-v2 also adds Cedric's r-b, fixes the s/write/read/ mistakes, and is
-checkpatch clean.
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+---
+v2: Fix unimp print, and grammar in the commit message
+---
+ hw/ppc/pnv_core.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-v1: https://lore.kernel.org/qemu-devel/20230630035547.80329-1-joel@jms.id.au/
-
-Joel Stanley (5):
-  ppc/pnv: quad xscom callbacks are P9 specific
-  ppc/pnv: Subclass quad xscom callbacks
-  ppc/pnv: Add P10 quad xscom model
-  ppc/pnv: Add P10 core xscom model
-  ppc/pnv: Return zero for core thread state xscom
-
- include/hw/ppc/pnv_core.h  |  13 ++-
- include/hw/ppc/pnv_xscom.h |   2 +-
- hw/ppc/pnv.c               |  11 ++-
- hw/ppc/pnv_core.c          | 165 +++++++++++++++++++++++++++++++------
- 4 files changed, 162 insertions(+), 29 deletions(-)
-
+diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+index 0bc3ad41c81c..0f451b3b6e1f 100644
+--- a/hw/ppc/pnv_core.c
++++ b/hw/ppc/pnv_core.c
+@@ -360,8 +360,8 @@ DEFINE_TYPES(pnv_core_infos)
+ 
+ #define P9X_EX_NCU_SPEC_BAR                     0x11010
+ 
+-static uint64_t pnv_quad_xscom_read(void *opaque, hwaddr addr,
+-                                    unsigned int width)
++static uint64_t pnv_quad_power9_xscom_read(void *opaque, hwaddr addr,
++                                           unsigned int width)
+ {
+     uint32_t offset = addr >> 3;
+     uint64_t val = -1;
+@@ -372,15 +372,15 @@ static uint64_t pnv_quad_xscom_read(void *opaque, hwaddr addr,
+         val = 0;
+         break;
+     default:
+-        qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
++        qemu_log_mask(LOG_UNIMP, "%s: reading @0x%08x\n", __func__,
+                       offset);
+     }
+ 
+     return val;
+ }
+ 
+-static void pnv_quad_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+-                                 unsigned int width)
++static void pnv_quad_power9_xscom_write(void *opaque, hwaddr addr, uint64_t val,
++                                        unsigned int width)
+ {
+     uint32_t offset = addr >> 3;
+ 
+@@ -394,9 +394,9 @@ static void pnv_quad_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+     }
+ }
+ 
+-static const MemoryRegionOps pnv_quad_xscom_ops = {
+-    .read = pnv_quad_xscom_read,
+-    .write = pnv_quad_xscom_write,
++static const MemoryRegionOps pnv_quad_power9_xscom_ops = {
++    .read = pnv_quad_power9_xscom_read,
++    .write = pnv_quad_power9_xscom_write,
+     .valid.min_access_size = 8,
+     .valid.max_access_size = 8,
+     .impl.min_access_size = 8,
+@@ -410,7 +410,8 @@ static void pnv_quad_realize(DeviceState *dev, Error **errp)
+     char name[32];
+ 
+     snprintf(name, sizeof(name), "xscom-quad.%d", eq->quad_id);
+-    pnv_xscom_region_init(&eq->xscom_regs, OBJECT(dev), &pnv_quad_xscom_ops,
++    pnv_xscom_region_init(&eq->xscom_regs, OBJECT(dev),
++                          &pnv_quad_power9_xscom_ops,
+                           eq, name, PNV9_XSCOM_EQ_SIZE);
+ }
+ 
 -- 
 2.40.1
 
