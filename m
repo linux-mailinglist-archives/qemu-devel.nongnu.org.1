@@ -2,68 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35096747276
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDD574728F
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:19:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGfsg-0006JO-N7; Tue, 04 Jul 2023 09:15:46 -0400
+	id 1qGfwB-00028S-0a; Tue, 04 Jul 2023 09:19:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGfsc-0006B2-34
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:15:44 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGfw9-000284-1I
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:19:21 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGfsZ-0006Eu-Gg
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:15:41 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-51d9695ec29so5385024a12.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:15:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGfw6-00075i-HS
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:19:20 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3090d3e9c92so7773751f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688476538; x=1691068538;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=duSIobqmJ+6xDh9LXiA95cPbM3Ke85YlO7/s8EEKSn8=;
- b=JeKvD9omZveW6guUMQ09RNC/lqx62bG80WzBpLm3l5hdJ0YVu+FPX9FDqrUGvVZFZX
- Y+R5jzPYUmrcpSp1RTCaOPOOgZhNjhMtx5qHrWjI4ZcZQDpGnkbfSjxwAd4VfHygCChW
- enKpZeUcloDHDR02Pn06Lw3A0TV+8uZbzn9/DPKoAdO/5B4eH5tMz3lufUUpGLMkUlRp
- rzBElOUqxdShNvN6LU2/91Ls1XDVDR6RxAklLeHzdaakdEKh5i3D1rZGKpEZzcepUgOU
- EG0veGBaiuX9miN4QWRF2DG24/x2RJvGYsq9n5DLVWGQFGzGf9h3oNrp010AWvMrZSXY
- HjWA==
+ d=linaro.org; s=google; t=1688476756; x=1691068756;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=eS52ddtp46kuIFZo6uf1JJAgey4a62QPHiUDvV11jPU=;
+ b=jGN5SQ/c8+kFZiJxhz5aYlDjJXDsLeECljIA8GAVKoP/8SFI/Wu587S4JkIkzIIkgW
+ v4WcIdNeUV71kkIYq6/OLswdf5gkYCXyCR3rnZIjU++1T+7bVQX0uZXnXq8CunMNHDgG
+ bgLd0eplhMZqWV9M/6s6R5uuvzrM1P+QDn+TTrNJg/fYBrM+gu9l2Oh2lhvoABJsMqCc
+ l0c6FNQEP4G5lVfWadUb/rcWhPWnwU3dRTcBVez3htcZvv1JFpCNYi3m9A0fjFJdHTxl
+ FHwFvVz5X7chdSVGe4mFwQYzmJoNZa3+mn36b8dTtYi7blllQDDG+1m5qSiQHyLOLH7B
+ jNHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688476538; x=1691068538;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=duSIobqmJ+6xDh9LXiA95cPbM3Ke85YlO7/s8EEKSn8=;
- b=SMBBTTNCsa0B6eDWw3Abz1+jb9S1yLnoMpUzAjfewFC07FhSo8eUDdQ6o++hMSzb2f
- G4HZgdn/q48BmzTVG+EerYfdD61CrSYYwr2g00Q+iGjuggQk+DcaRxwXbZpXi0Ty7Zw3
- lRXyLj2A13m8xgwQVB6SruTJFuuE0gwTGLDETwduNzJM6U1HO3cY0XqqgJ4JPecNr/tK
- G4mK3V/5vMHvz3qoftH4DesB8XUgMvdA1o9Fc5e5YvNss3642Mxiy3iuJ/h9u8brsaqq
- X0PFA2OspU6k4rWAFHcVG4I9HMS0r7p3NiJiIXf8gg2p9YCAOIAOddNz0JwHw+d6vf1b
- +Zdg==
-X-Gm-Message-State: ABy/qLaYC+nqskHSsPVRubQuY9HVoFOMrSCsyv3uGe0wN8BpNxsoEIlz
- obA0ovSy0tpmET/vOvxnLb48qHgmPJztYLEurHfonw==
-X-Google-Smtp-Source: APBJJlG7XHLTyfESv72d6EJ4F4Xt0d/ZJwMdX539lpG0kc+M6u5/Fh7q/9roRbyFrcrcJ1m05t1FIk5d6mtHCfnUUa8=
-X-Received: by 2002:a05:6402:b2d:b0:51e:1a3c:e72e with SMTP id
- bo13-20020a0564020b2d00b0051e1a3ce72emr2163270edb.19.1688476537808; Tue, 04
- Jul 2023 06:15:37 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688476756; x=1691068756;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=eS52ddtp46kuIFZo6uf1JJAgey4a62QPHiUDvV11jPU=;
+ b=TEZ3n1VS9S7Xnbb67g+smAkCPL3D3oXhDUEN2osPc5qtyTYKpm2DSfKJkpu3NqpSKQ
+ /1KIvgeNS1Gemv9Cxocspgz8IHyJYeLGu0/OlNMOx8jcKYm8xdG7n9p53LTiF/HsHsBU
+ 5cTAXnuK98LcqdQTZc/lvy6V7Ol8lII7lMk/3883CsqtLliDTR3zIoih04G6sz9ILjU6
+ jQsOj+mrCrwgf/TvMxolF3y+5nl/BWdut5dIqwDuFqieU6sBNtIqBBOVoUrRDe5CthPu
+ 5ph/Kbi+1/hsqX3+2MdgAVxSu8mEAYuGWmi9JAtEMjAKIZ7WU6Pv4Uc+crTPEJsBLwGC
+ ErxA==
+X-Gm-Message-State: ABy/qLYzzgh6Gw5Cq76Pk2zHZit0wUOtHDN3z1mO9e28EQXonQ9OxVcC
+ qnkO33kNhC47sUPjeclbQpPp/pj6BzUIaooqUM4=
+X-Google-Smtp-Source: APBJJlEm1hH8wMFRjMyHiWxnCpLWQ6PjCyBM7lgOUJUmQ0l2v6QuYpLBUOZj8Z6sLmmtRYE6bB9otQ==
+X-Received: by 2002:a05:6000:1814:b0:314:33a2:78fe with SMTP id
+ m20-20020a056000181400b0031433a278femr10636639wrh.29.1688476756563; 
+ Tue, 04 Jul 2023 06:19:16 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ h2-20020a1ccc02000000b003fa74bff02asm29865184wmb.26.2023.07.04.06.19.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 06:19:16 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 949C51FFBB;
+ Tue,  4 Jul 2023 14:19:15 +0100 (BST)
+References: <20230628072236.1925-1-luzhipeng@cestc.cn>
+User-agent: mu4e 1.11.8; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: luzhipeng <luzhipeng@cestc.cn>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] contrib/gitdm: add domain-map for Cestc
+Date: Tue, 04 Jul 2023 14:19:09 +0100
+In-reply-to: <20230628072236.1925-1-luzhipeng@cestc.cn>
+Message-ID: <875y6zhl0s.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20230628164821.16771-1-farosas@suse.de>
-In-Reply-To: <20230628164821.16771-1-farosas@suse.de>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 4 Jul 2023 14:15:26 +0100
-Message-ID: <CAFEAcA-Z+ThrYO7ycQxc7eVZzF5f+OinL7R=_Cm-SfQ3U8P6_Q@mail.gmail.com>
-Subject: Re: [PATCH] target/arm: gdbstub: Guard M-profile code with CONFIG_TCG
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,26 +95,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 28 Jun 2023 at 17:48, Fabiano Rosas <farosas@suse.de> wrote:
->
-> This code is only relevant when TCG is present in the build. Building
-> with --disable-tcg --enable-xen on an x86 host we get:
->
-> $ ../configure --target-list=x86_64-softmmu,aarch64-softmmu --disable-tcg --enable-xen
-> $ make -j$(nproc)
-> ...
-> libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `m_sysreg_ptr':
->  ../target/arm/gdbstub.c:358: undefined reference to `arm_v7m_get_sp_ptr'
->  ../target/arm/gdbstub.c:361: undefined reference to `arm_v7m_get_sp_ptr'
->
-> libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `arm_gdb_get_m_systemreg':
-> ../target/arm/gdbstub.c:405: undefined reference to `arm_v7m_mrs_control'
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
+luzhipeng <luzhipeng@cestc.cn> writes:
 
+> Signed-off-by: luzhipeng <luzhipeng@cestc.cn>
+> ---
+>  contrib/gitdm/domain-map | 1 +
+>  1 file changed, 1 insertion(+)
 
-Applied to target-arm.next, thanks.
+Queued to gitdm/next, thanks.
 
--- PMM
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
