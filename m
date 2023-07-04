@@ -2,95 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C928747232
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F335674723F
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:07:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGfi1-0000Ll-Pm; Tue, 04 Jul 2023 09:04:45 -0400
+	id 1qGfk8-0001RZ-0o; Tue, 04 Jul 2023 09:06:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGfi0-0000LY-Fh
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:04:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGfhz-0002vG-0z
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:04:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688475882;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HiMORpNhjWVPCDQ6FrSV7sOq+24/gJC8HAOuiDX2wFs=;
- b=JX2IvpoIIymA5B6nwBSh9hIMpOsb9lXIsKCNj6lJ7scW6cflWNFFs7jEw50e6FGnrznRrP
- Ia6xQJejwjTV5d7kS+hHjpTVZ/u2u5ftnF1ebujEL0Uu7pYCPEGcRlhwV6THhf1VVG7FuI
- 4+fkgGDAXF42D8YICSoNx7aCuEj8xgY=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-XtASBGw6OHiGZm44QKJeAg-1; Tue, 04 Jul 2023 09:04:41 -0400
-X-MC-Unique: XtASBGw6OHiGZm44QKJeAg-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-765986c0521so472337385a.3
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:04:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qGfk5-0001Qe-QD
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:06:53 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qGfk4-0003Tl-4y
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:06:53 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-314172bb818so6354294f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:06:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688476010; x=1691068010;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8zLjpDD0zK/WJbpqRspbFIMqr9DpD2291ImUv+z4BQM=;
+ b=SggdcBinL57/rnHpmdWFILW/jf7OEbkbiEUEsENSY8xeOioXU5Ge0ci88w3n8op/Hl
+ sGfz6sXajFjyENPLXJU0n27PnkjA/SzSP/N/MVf3UAn+dujavIiOJbdc1N9PWYNgP2Wo
+ 3M0B4nkzNrGQFSUQTy19BZTO3foRR9PxuCXSq/+RCEYzAUEPKAhPian4DulS5JXv442r
+ 9rzmEF/2cZj+5ViQQXsRJ+KwfT0TAlD+rcd2GBOTMYjJTctB7sQCHzPW5S7bzhmExkUQ
+ HF9GuYNo7AgC/PSCt5VxGRzLrfoP1LLntiSCplcKthTAyp0GADhHxY6bQSkP2ycyqD11
+ z3vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688475881; x=1691067881;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HiMORpNhjWVPCDQ6FrSV7sOq+24/gJC8HAOuiDX2wFs=;
- b=DCZXzhSYN4Qe0TDATEUeL4i4YnrR5S0CCMQt38Y2gGzr2LMeQxZZYUcqa+rKXcx1J6
- NZxcVu61Gt9taZlNXHlXl+XCU5OeqwWnLOdMVxzNbTwFKCxG2xXJJ0DzGbA0Na8Ih6NH
- YXEDAywINwsr78PEkGiXxK4Cu+8pbvaQeeDbexoPmG2QrIPfgUfF0gLRdoCm+oaefVUn
- Hx1Hnc8gJl+hveWXHKyTf8q7ZogxvwfrNXZ/8ku+e1pwJJOYLxIGLFctp04XrT/j3dGl
- ZIToeljBxaZnjls71OHmyjdJAaFx/5gGw1a2bxb6fbmGtHum3hYINXux+ky3e+MkGPAH
- TukQ==
-X-Gm-Message-State: ABy/qLaKaC5KSDFr19L1wT90wDjcwCdkMjfXTzP/4Jckl1tBOe1Pe8fe
- +RDVKKf7Ny6iz+BOjj1fKKf3bjAJBmpUdj8Jiw5TZw9vFi57Sw4Ot0FJR508Ij0Wij7/4epiG6t
- XjIAdslhjqPYpMgE=
-X-Received: by 2002:a05:620a:2482:b0:766:a495:63f1 with SMTP id
- i2-20020a05620a248200b00766a49563f1mr13504742qkn.59.1688475880907; 
- Tue, 04 Jul 2023 06:04:40 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHFHBoOkQUk9Emv4Y19561lhidPw9OK4Iv5arBEnsDeGT+T+gXIEW0yOC/CaRpq1TIu4NMGbQ==
-X-Received: by 2002:a05:620a:2482:b0:766:a495:63f1 with SMTP id
- i2-20020a05620a248200b00766a49563f1mr13504673qkn.59.1688475880163; 
- Tue, 04 Jul 2023 06:04:40 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-126.web.vodafone.de.
- [109.43.179.126]) by smtp.gmail.com with ESMTPSA id
- c20-20020a05620a135400b00767171e4eeasm7537417qkl.2.2023.07.04.06.04.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 06:04:39 -0700 (PDT)
-Message-ID: <579d40ea-50e4-4d84-699b-25268749b138@redhat.com>
-Date: Tue, 4 Jul 2023 15:04:34 +0200
+ d=1e100.net; s=20221208; t=1688476010; x=1691068010;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8zLjpDD0zK/WJbpqRspbFIMqr9DpD2291ImUv+z4BQM=;
+ b=V9VByxXJIK8d+2WZSnx9V3rHEeqgiRZC3vnm8mtloTWjbU9BI6A1Rq2ipZilz9AMGM
+ Df9QqlBsus5WXmPTAlBdzgBPW+Ju/9gWpr794bcL2G09X6q8mUJBE5Uy8D5l5z5aalbM
+ 7BwCVGuC+iK11KVCHnR3ltH1u1c5XWJ/6ae5EFyMfDWPfhGXlVIyqjoDRWZfI7mbj5Bk
+ 9QhzeZQ1LrWohXsbHEOPAbPPBmF+4cwAHrL7bTV61MxF4Y+ttt/hAYlW9TIgvF/pI7kT
+ KNndCvs6AM5WtczOykhRC3oyZiJUcepLZYOzCrTZcjbAeGGZ9vchDm5+lcb2xH3bG7Dl
+ pcjw==
+X-Gm-Message-State: ABy/qLb2usvDeMqG/eW6JjrNu6LHRoDhxUObfhq77ovwVKYjod0GiWZe
+ xzOZz7DQVsfS3NteQ82GwT9r2w==
+X-Google-Smtp-Source: APBJJlFCq/TfGM7ZlpVCMRzHq4PRNNgXvDrF56H8sdGVq5HICBBmUCjebCXCY8SpPSAszMvK3yYUxA==
+X-Received: by 2002:a5d:6647:0:b0:314:362d:6d7b with SMTP id
+ f7-20020a5d6647000000b00314362d6d7bmr5573655wrw.19.1688476009866; 
+ Tue, 04 Jul 2023 06:06:49 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ a10-20020adfeeca000000b00314103d6daesm15834737wrp.47.2023.07.04.06.06.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 06:06:49 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH 0/2] target/arm: Implement Cortex Neoverse-V1
+Date: Tue,  4 Jul 2023 14:06:45 +0100
+Message-Id: <20230704130647.2842917-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v21 11/20] qapi/s390x/cpu topology:
- CPU_POLARIZATION_CHANGE qapi event
-Content-Language: en-US
-To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
- mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
- armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
- nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
-References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-12-pmorel@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230630091752.67190-12-pmorel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,18 +87,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/06/2023 11.17, Pierre Morel wrote:
-> When the guest asks to change the polarization this change
-> is forwarded to the upper layer using QAPI.
-> The upper layer is supposed to take according decisions concerning
-> CPU provisioning.
-> 
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> ---
->   qapi/machine-target.json | 33 +++++++++++++++++++++++++++++++++
->   hw/s390x/cpu-topology.c  |  2 ++
->   2 files changed, 35 insertions(+)
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+This patchset implements the Cortex Neoverse-V1 CPU type, as a
+representative Armv8.3 (+ some extras from 8.4) CPU matching real
+hardware.  The main thing we were waiting for to be able to define
+this was FEAT_LSE2, and that is now supported.
+
+There are a few things the real hardware implements that QEMU does
+not yet, which patch 1 ensures we don't advertise to the guest:
+
+  * FEAT_TRF (Self-hosted Trace Extension)
+  * Trace Macrocell system register access
+  * Memory mapped trace
+  * FEAT_AMU (Activity Monitors Extension)
+  * FEAT_MPAM (Memory Partitioning and Monitoring Extension)
+  * FEAT_NV (Nested Virtualization)
+
+Most of these, like FEAT_SPE which we were already suppressing, are
+"introspection/trace" type features which QEMU is unlikely to ever
+implement.  The odd-one-out here is FEAT_NV -- we could implement
+that and at some point we probably will.
+                
+Patch 2 then implements the CPU itself.
+
+thanks
+-- PMM
+
+Peter Maydell (2):
+  target/arm: Suppress more TCG unimplemented features in ID registers
+  target/arm: Define neoverse-v1
+
+ docs/system/arm/virt.rst |   1 +
+ hw/arm/sbsa-ref.c        |   1 +
+ hw/arm/virt.c            |   1 +
+ target/arm/cpu.c         |  33 ++++++++--
+ target/arm/tcg/cpu64.c   | 128 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 160 insertions(+), 4 deletions(-)
+
+-- 
+2.34.1
 
 
