@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCEA7476DA
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 18:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5437476DC
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 18:37:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGj1D-0001Ii-K2; Tue, 04 Jul 2023 12:36:47 -0400
+	id 1qGj1C-0001IE-OT; Tue, 04 Jul 2023 12:36:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGj1B-0001HO-J6
+ id 1qGj1B-0001HP-IX
  for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:36:45 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGj14-0001nn-6W
+ id 1qGj14-0001nu-HT
  for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:36:41 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3141c3a7547so5961608f8f.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 09:36:37 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fbc12181b6so65827235e9.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 09:36:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688488596; x=1691080596;
+ d=linaro.org; s=google; t=1688488597; x=1691080597;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=xgCaPGnXl46UU9A6jcwSSpnZq6M2JkIzMN4VboZNQHE=;
- b=SDuvYv8zZq65Gg+CrFMlDVf499JnmegaJ7AZOtsSndelw92DsGOIb/OzS3WQNhG392
- mQQns5mqJpsaILgi7Db3bqhC4L0d4Wd02NVtXmvYEJnONz1SMpIgusZ/kXneXGWAgRnE
- 3qZZrV+9g/p78kwVQhXs2hs9E2lxzaRxAvQLix09412JUzytoF+ZvmPWU9sbKsHLz+2t
- fcegYUH1ZwRu/bOr4pov6OWnYKf2ADGhTU5qwcaNTCPQ/pLgtFobWaTooJY+6lCcMEqA
- NdBk8hZ0A+jmrw+slAPDjqUU9g56c+6lFYxxCS2EEmCR9sHbCQEC6DgYUSaBhzznv24P
- fYiw==
+ :reply-to; bh=ANDE8o5tT4TCHpJ1lybjyH19qs/lumWSbTmj9hQZYtk=;
+ b=raiJEk0nQA0pqGWXspkImP+EkS3myBqBZhuJ0UAYZ2thIttrWMp11BFd2kJW4MgZ7m
+ n0BN2mPCgXpPYr4lT0QqWR8BO8CV65kkwnFvTh7Ygd8tfo+/NPmn2mYc+mLTdF1fgtF3
+ qgOUztbT3UlUHl6zOGs2XmnJneaTs54veus9UJx/EOahUPlb9a7FUxm5GNmVcDL50/Pm
+ MQQq/7oC1jEeI6lLh8tB/erMVCyipJguNhyQVa6A0tznufnB/R1T3kqNiNTuF2m8nfli
+ VA32RMxSXey09xxlOQ4/ZHpN4aDWMEVqgVW3VS3F6BeNZ8U7vGGbHOkEVzLh9Ggkr3M1
+ A/uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688488596; x=1691080596;
+ d=1e100.net; s=20221208; t=1688488597; x=1691080597;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xgCaPGnXl46UU9A6jcwSSpnZq6M2JkIzMN4VboZNQHE=;
- b=LodP/qTEifm4NPFUIOot2fZgx0qRnk4X5sYU2RuMZryy3euaR4yu/avGSxex1PzSLn
- HEQDsMLQgwwl9zJzdgMd07/Y8okyyo8DShZAbWXMV1K7We9GQKTDUae+hJQG1CgzxqOj
- 2AvZgtpiLkYW7bndkkfBnHevmP2jfZe/h91+XwsaLD/1W2lCyId0pwTEf6x/URYk536x
- ENVGLjca3SVkeihjZpfWmPTf+C0sTylUOXiwzm9OFRMV+uoMawE/iKmMVEDdP1v1Y1zy
- EvX7o+q/xrddZ4wjCaVtZRSbaNhvPpyQWeX0SQvlHxWiS48pkJF1cu7yaMgJX6HRbY//
- /Zgw==
-X-Gm-Message-State: ABy/qLaCD//WGjQqhzXV2wh7VxMaWGShmSFXyS6RELulCEr4GdFbFiGn
- LLmYJGVe1qWTJmJA+jDFwoyNj7pG0mCsB7AkSqo=
-X-Google-Smtp-Source: APBJJlEMw2BR77RS6PuXcL1QK6d4dC+N7TOjogzcpnGXikPU7mUK0+PFXzAGARdcYmW52Pl3Jrvrig==
-X-Received: by 2002:a5d:62d1:0:b0:313:f38f:1f4e with SMTP id
- o17-20020a5d62d1000000b00313f38f1f4emr10358292wrv.27.1688488596617; 
- Tue, 04 Jul 2023 09:36:36 -0700 (PDT)
+ bh=ANDE8o5tT4TCHpJ1lybjyH19qs/lumWSbTmj9hQZYtk=;
+ b=ZY8D6KydpOVFbk39klubaRjSJYFhZriZAI3xEGDCYKLB8/VR+KPusSugfvPA03K+kB
+ PBBod69KqGTNv8ILdHFcSFht6zC9oCZpvqbelRiPU+U82tBQmhIjX9ZXo9NvPgu96QgJ
+ jMfyJa73mr7awnq6vmAobPtD7r2uJrcqsqgTphZllhYusjce7wGdWaq9muPRPysDNyEN
+ P9UzWQAH3Pops9q6rDry7WDB63UwO4vr+J5crGicleb/VjvUj/CEsD/h+MGZpLUevj7O
+ tav20gBmy3uI4gG3KmdDDeVxHwQbV4jg+N7rlksEsnbVPRJiCBWGJvEyKTULs2hE4OgF
+ JNfg==
+X-Gm-Message-State: ABy/qLZJLkt/QvqYRnUK20adZyuxvFlEWQeQ3jzjDINV+4niUdtaeEPo
+ vgAdhXayJdmZHZk7X1atDKRGssEadqtuvg/lUDc=
+X-Google-Smtp-Source: APBJJlHOz/r2UppZfoACYBp4upU/d98XIJU/PiKONjJCLt8p+Qp9/66jIpax1GgbQOEDN2yfe3GBmw==
+X-Received: by 2002:a1c:f30b:0:b0:3fb:ce46:c0b3 with SMTP id
+ q11-20020a1cf30b000000b003fbce46c0b3mr10156238wmq.35.1688488597011; 
+ Tue, 04 Jul 2023 09:36:37 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  r8-20020a056000014800b003143b032b7asm4354258wrx.116.2023.07.04.09.36.36
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Tue, 04 Jul 2023 09:36:36 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/11] hw/arm/sbsa-ref: use XHCI to replace EHCI
-Date: Tue,  4 Jul 2023 17:36:25 +0100
-Message-Id: <20230704163634.3188465-3-peter.maydell@linaro.org>
+Subject: [PULL 03/11] target/arm: Avoid splitting Zregs across lines in dump
+Date: Tue,  4 Jul 2023 17:36:26 +0100
+Message-Id: <20230704163634.3188465-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230704163634.3188465-1-peter.maydell@linaro.org>
 References: <20230704163634.3188465-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,145 +90,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-The current sbsa-ref cannot use EHCI controller which is only
-able to do 32-bit DMA, since sbsa-ref doesn't have RAM below 4GB.
-Hence, this uses XHCI to provide a usb controller with 64-bit
-DMA capablity instead of EHCI.
+Allow the line length to extend to 548 columns.  While annoyingly wide,
+it's still less confusing than the continuations we print.  Also, the
+default VL used by Linux (and max for A64FX) uses only 140 columns.
 
-We bump the platform version to 0.3 with this change.  Although the
-hardware at the USB controller address changes, the firmware and
-Linux can both cope with this -- on an older non-XHCI-aware
-firmware/kernel setup the probe routine simply fails and the guest
-proceeds without any USB.  (This isn't a loss of functionality,
-because the old USB controller never worked in the first place.) So
-we can call this a backwards-compatible change and only bump the
-minor version.
-
-Signed-off-by: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Message-id: 20230621103847.447508-2-wangyuquan1236@phytium.com.cn
-[PMM: tweaked commit message; add line to docs about what
- changes in platform version 0.3]
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230622151201.1578522-2-richard.henderson@linaro.org
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/sbsa.rst |  5 ++++-
- hw/arm/sbsa-ref.c        | 23 +++++++++++++----------
- hw/arm/Kconfig           |  2 +-
- 3 files changed, 18 insertions(+), 12 deletions(-)
+ target/arm/cpu.c | 36 ++++++++++++++----------------------
+ 1 file changed, 14 insertions(+), 22 deletions(-)
 
-diff --git a/docs/system/arm/sbsa.rst b/docs/system/arm/sbsa.rst
-index a8e0b530a24..bca61608ff8 100644
---- a/docs/system/arm/sbsa.rst
-+++ b/docs/system/arm/sbsa.rst
-@@ -19,7 +19,7 @@ The ``sbsa-ref`` board supports:
-   - A configurable number of AArch64 CPUs
-   - GIC version 3
-   - System bus AHCI controller
--  - System bus EHCI controller
-+  - System bus XHCI controller
-   - CDROM and hard disc on AHCI bus
-   - E1000E ethernet card on PCIe bus
-   - Bochs display adapter on PCIe bus
-@@ -68,3 +68,6 @@ Platform version changes:
- 
- 0.2
-   GIC ITS information is present in devicetree.
-+
-+0.3
-+  The USB controller is an XHCI device, not EHCI
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 82a28b2e0be..1a8519b868f 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -42,6 +42,7 @@
- #include "hw/pci-host/gpex.h"
- #include "hw/qdev-properties.h"
- #include "hw/usb.h"
-+#include "hw/usb/xhci.h"
- #include "hw/char/pl011.h"
- #include "hw/watchdog/sbsa_gwdt.h"
- #include "net/net.h"
-@@ -85,7 +86,7 @@ enum {
-     SBSA_SECURE_UART_MM,
-     SBSA_SECURE_MEM,
-     SBSA_AHCI,
--    SBSA_EHCI,
-+    SBSA_XHCI,
- };
- 
- struct SBSAMachineState {
-@@ -123,7 +124,7 @@ static const MemMapEntry sbsa_ref_memmap[] = {
-     [SBSA_SMMU] =               { 0x60050000, 0x00020000 },
-     /* Space here reserved for more SMMUs */
-     [SBSA_AHCI] =               { 0x60100000, 0x00010000 },
--    [SBSA_EHCI] =               { 0x60110000, 0x00010000 },
-+    [SBSA_XHCI] =               { 0x60110000, 0x00010000 },
-     /* Space here reserved for other devices */
-     [SBSA_PCIE_PIO] =           { 0x7fff0000, 0x00010000 },
-     /* 32-bit address PCIE MMIO space */
-@@ -143,7 +144,7 @@ static const int sbsa_ref_irqmap[] = {
-     [SBSA_SECURE_UART] = 8,
-     [SBSA_SECURE_UART_MM] = 9,
-     [SBSA_AHCI] = 10,
--    [SBSA_EHCI] = 11,
-+    [SBSA_XHCI] = 11,
-     [SBSA_SMMU] = 12, /* ... to 15 */
-     [SBSA_GWDT_WS0] = 16,
- };
-@@ -230,7 +231,7 @@ static void create_fdt(SBSAMachineState *sms)
-      *                        fw compatibility.
-      */
-     qemu_fdt_setprop_cell(fdt, "/", "machine-version-major", 0);
--    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 2);
-+    qemu_fdt_setprop_cell(fdt, "/", "machine-version-minor", 3);
- 
-     if (ms->numa_state->have_numa_distance) {
-         int size = nb_numa_nodes * nb_numa_nodes * 3 * sizeof(uint32_t);
-@@ -604,13 +605,15 @@ static void create_ahci(const SBSAMachineState *sms)
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index a1e77698ba2..f12c714bc43 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -955,7 +955,7 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
+     uint32_t psr = pstate_read(env);
+-    int i;
++    int i, j;
+     int el = arm_current_el(env);
+     const char *ns_status;
+     bool sve;
+@@ -1014,7 +1014,7 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
      }
- }
  
--static void create_ehci(const SBSAMachineState *sms)
-+static void create_xhci(const SBSAMachineState *sms)
- {
--    hwaddr base = sbsa_ref_memmap[SBSA_EHCI].base;
--    int irq = sbsa_ref_irqmap[SBSA_EHCI];
-+    hwaddr base = sbsa_ref_memmap[SBSA_XHCI].base;
-+    int irq = sbsa_ref_irqmap[SBSA_XHCI];
-+    DeviceState *dev = qdev_new(TYPE_XHCI_SYSBUS);
+     if (sve) {
+-        int j, zcr_len = sve_vqm1_for_el(env, el);
++        int zcr_len = sve_vqm1_for_el(env, el);
  
--    sysbus_create_simple("platform-ehci-usb", base,
--                         qdev_get_gpio_in(sms->gic, irq));
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
-+    sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0, qdev_get_gpio_in(sms->gic, irq));
- }
+         for (i = 0; i <= FFR_PRED_NUM; i++) {
+             bool eol;
+@@ -1054,32 +1054,24 @@ static void aarch64_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+             }
+         }
  
- static void create_smmu(const SBSAMachineState *sms, PCIBus *bus)
-@@ -832,7 +835,7 @@ static void sbsa_ref_init(MachineState *machine)
- 
-     create_ahci(sms);
- 
--    create_ehci(sms);
-+    create_xhci(sms);
- 
-     create_pcie(sms);
- 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 7de17d1e8c3..7e683484405 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -266,7 +266,7 @@ config SBSA_REF
-     select PL011 # UART
-     select PL031 # RTC
-     select PL061 # GPIO
--    select USB_EHCI_SYSBUS
-+    select USB_XHCI_SYSBUS
-     select WDT_SBSA
-     select BOCHS_DISPLAY
- 
+-        for (i = 0; i < 32; i++) {
+-            if (zcr_len == 0) {
++        if (zcr_len == 0) {
++            /*
++             * With vl=16, there are only 37 columns per register,
++             * so output two registers per line.
++             */
++            for (i = 0; i < 32; i++) {
+                 qemu_fprintf(f, "Z%02d=%016" PRIx64 ":%016" PRIx64 "%s",
+                              i, env->vfp.zregs[i].d[1],
+                              env->vfp.zregs[i].d[0], i & 1 ? "\n" : " ");
+-            } else if (zcr_len == 1) {
+-                qemu_fprintf(f, "Z%02d=%016" PRIx64 ":%016" PRIx64
+-                             ":%016" PRIx64 ":%016" PRIx64 "\n",
+-                             i, env->vfp.zregs[i].d[3], env->vfp.zregs[i].d[2],
+-                             env->vfp.zregs[i].d[1], env->vfp.zregs[i].d[0]);
+-            } else {
++            }
++        } else {
++            for (i = 0; i < 32; i++) {
++                qemu_fprintf(f, "Z%02d=", i);
+                 for (j = zcr_len; j >= 0; j--) {
+-                    bool odd = (zcr_len - j) % 2 != 0;
+-                    if (j == zcr_len) {
+-                        qemu_fprintf(f, "Z%02d[%x-%x]=", i, j, j - 1);
+-                    } else if (!odd) {
+-                        if (j > 0) {
+-                            qemu_fprintf(f, "   [%x-%x]=", j, j - 1);
+-                        } else {
+-                            qemu_fprintf(f, "     [%x]=", j);
+-                        }
+-                    }
+                     qemu_fprintf(f, "%016" PRIx64 ":%016" PRIx64 "%s",
+                                  env->vfp.zregs[i].d[j * 2 + 1],
+-                                 env->vfp.zregs[i].d[j * 2],
+-                                 odd || j == 0 ? "\n" : ":");
++                                 env->vfp.zregs[i].d[j * 2 + 0],
++                                 j ? ":" : "\n");
+                 }
+             }
+         }
 -- 
 2.34.1
 
