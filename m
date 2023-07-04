@@ -2,71 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB4D746FB0
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 13:16:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EFE9746FB2
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 13:17:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGe0l-0002ja-6F; Tue, 04 Jul 2023 07:16:00 -0400
+	id 1qGe1f-0005Cp-W0; Tue, 04 Jul 2023 07:16:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qGe0a-0002hj-DQ
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:15:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
+ id 1qGe1d-00059g-7r; Tue, 04 Jul 2023 07:16:54 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qGe0W-0007yx-Ds
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:15:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688469343;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ypEP/NT8IxiszDOugkjgPdfbbvRW0XffouojgQcGeOU=;
- b=TwKZ2NzhvCkl18ztUZuQGxyWc7DVRy/h/q8xg0kjYp7adpdQ1qyJfvu59Q7MdXWzfuEr3n
- TFgUk/8KMfPdGW19mOcjd2ZYLQmzvYhbTDwcUJdZGW3SuKeUKcXbW0PbkVPCnIg2Yus+Xu
- fl/0GqbDAX8WwElX+ZitcqbucyLJNQI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-656-slBKrhTXMGCzju5lEFZr_g-1; Tue, 04 Jul 2023 07:15:40 -0400
-X-MC-Unique: slBKrhTXMGCzju5lEFZr_g-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
+ id 1qGe1Z-0008EB-QA; Tue, 04 Jul 2023 07:16:52 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QwKxT3Jf1z4wxS;
+ Tue,  4 Jul 2023 21:16:45 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F04FA805C3F;
- Tue,  4 Jul 2023 11:15:39 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.39.194.15])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0722F492C13;
- Tue,  4 Jul 2023 11:15:37 +0000 (UTC)
-From: Eric Auger <eric.auger@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
- zhenzhong.duan@intel.com
-Cc: alex.williamson@redhat.com, clg@redhap.com, bharat.bhushan@nxp.com,
- peter.maydell@linaro.org
-Subject: [PATCH 2/2] virtio-iommu: Rework the trace in
- virtio_iommu_set_page_size_mask()
-Date: Tue,  4 Jul 2023 13:15:27 +0200
-Message-Id: <20230704111527.3424992-3-eric.auger@redhat.com>
-In-Reply-To: <20230704111527.3424992-1-eric.auger@redhat.com>
-References: <20230704111527.3424992-1-eric.auger@redhat.com>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QwKxP4rz5z4wb8;
+ Tue,  4 Jul 2023 21:16:41 +1000 (AEST)
+Message-ID: <a73ef168-4aed-2acf-5ad1-23e7ded610bd@kaod.org>
+Date: Tue, 4 Jul 2023 13:16:38 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH qemu v4] aspeed add montblanc bmc reference from fuji
+Content-Language: en-US
+To: Sittisak Sinprem <ssinprem@celestica.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, peter.maydell@linaro.org,
+ ssumet@celestica.com, srikanth@celestica.com, kgengan@celestica.com,
+ andrew@aj.id.au, joel@jms.id.au, thangavelu.v@celestica.com,
+ anandaramanv@celestica.com
+References: <168846792266.24055.9837240417124338096-0@git.sr.ht>
+ <CAE+aGtXPYWUG1VubR8DZr7uFpiwg4St1HfYBfBpsiyszSf61Lg@mail.gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CAE+aGtXPYWUG1VubR8DZr7uFpiwg4St1HfYBfBpsiyszSf61Lg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=18er=CW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,64 +67,247 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current error messages in virtio_iommu_set_page_size_mask()
-sound quite similar for different situations and miss the IOMMU
-memory region that causes the issue.
+On 7/4/23 12:57, Sittisak Sinprem wrote:
+> Hi Cédric,
+> 
+> Please stop this patch,
+> after the test, the eeprom content is incorrect,
+> 
+> root@bmc:~# weutil -l
+> bmc_eeprom    /sys/bus/i2c/devices/i2c-8/8-0051/eeprom
+> chassis_eeprom    /sys/bus/i2c/devices/i2c-6/6-0053/eeprom
+> dummy_eeprom    /etc/weutil/meta_eeprom_v4_sample.bin
+> scm_eeprom    /sys/bus/i2c/devices/i2c-3/3-0056/eeprom
+> root@bmc:~# hexdump -C /sys/bus/i2c/devices/i2c-6/6-0053/eeprom
+> 00000000  fb 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+> 00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+> *
+> 00002000
+> root@bmc:~# hexdump -C /sys/bus/i2c/devices/i2c-8/8-0051/eeprom
+> 00000000  fb 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+> 00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+> *
+> 00002000
+> root@bmc:~#
+> 
+> I will send the next version after fixed
 
-Clarify them and rework the comment.
+np.
 
-Also remove the trace when the new page_size_mask is not applied as
-the current frozen granule is kept. This message is rather confusing
-for the end user and anyway the current granule would have been used
-by the driver
+Could you please include a description of the EEPROM contents
+in a C comment before the array definition too ?
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
----
- hw/virtio/virtio-iommu.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+Thanks,
 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 1eaf81bab5..0d9f7196fe 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1101,29 +1101,24 @@ static int virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
-                                           new_mask);
- 
-     if ((cur_mask & new_mask) == 0) {
--        error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
--                   " is incompatible with mask 0x%"PRIx64, cur_mask, new_mask);
-+        error_setg(errp, "virtio-iommu %s reports a page size mask 0x%"PRIx64
-+                   " incompatible with currently supported mask 0x%"PRIx64,
-+                   mr->parent_obj.name, new_mask, cur_mask);
-         return -1;
-     }
- 
-     /*
-      * Once the granule is frozen we can't change the mask anymore. If by
-      * chance the hotplugged device supports the same granule, we can still
--     * accept it. Having a different masks is possible but the guest will use
--     * sub-optimal block sizes, so warn about it.
-+     * accept it.
-      */
-     if (s->granule_frozen) {
--        int new_granule = ctz64(new_mask);
-         int cur_granule = ctz64(cur_mask);
- 
--        if (new_granule != cur_granule) {
--            error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
--                       " is incompatible with mask 0x%"PRIx64, cur_mask,
--                       new_mask);
-+        if (!(BIT(cur_granule) & new_mask)) {
-+            error_setg(errp, "virtio-iommu %s does not support frozen granule 0x%"PRIx64,
-+                       mr->parent_obj.name, BIT(cur_granule));
-             return -1;
--        } else if (new_mask != cur_mask) {
--            warn_report("virtio-iommu page mask 0x%"PRIx64
--                        " does not match 0x%"PRIx64, cur_mask, new_mask);
-         }
-         return 0;
-     }
--- 
-2.38.1
+C.
+
+
+> 
+> On Tue, Jul 4, 2023 at 5:52 PM ~ssinprem <ssinprem@git.sr.ht <mailto:ssinprem@git.sr.ht>> wrote:
+> 
+>     From: Sittisak Sinprem <ssinprem@celestica.com <mailto:ssinprem@celestica.com>>
+> 
+>     - I2C list follow I2C Tree v1.6 20230320
+>     - fru eeprom data use FB FRU format version 4
+> 
+>     Signed-off-by: Sittisak Sinprem <ssinprem@celestica.com <mailto:ssinprem@celestica.com>>
+>     ---
+>       docs/system/arm/aspeed.rst |  1 +
+>       hw/arm/aspeed.c            | 63 ++++++++++++++++++++++++++++++++++++++
+>       hw/arm/aspeed_eeprom.c     | 50 ++++++++++++++++++++++++++++++
+>       hw/arm/aspeed_eeprom.h     |  7 +++++
+>       4 files changed, 121 insertions(+)
+> 
+>     diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+>     index 80538422a1..5e0824f48b 100644
+>     --- a/docs/system/arm/aspeed.rst
+>     +++ b/docs/system/arm/aspeed.rst
+>     @@ -33,6 +33,7 @@ AST2600 SoC based machines :
+>       - ``tacoma-bmc``           OpenPOWER Witherspoon POWER9 AST2600 BMC
+>       - ``rainier-bmc``          IBM Rainier POWER10 BMC
+>       - ``fuji-bmc``             Facebook Fuji BMC
+>     +- ``montblanc-bmc``        Facebook Montblanc BMC
+>       - ``bletchley-bmc``        Facebook Bletchley BMC
+>       - ``fby35-bmc``            Facebook fby35 BMC
+>       - ``qcom-dc-scm-v1-bmc``   Qualcomm DC-SCM V1 BMC
+>     diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+>     index 9fca644d92..91bd4e5637 100644
+>     --- a/hw/arm/aspeed.c
+>     +++ b/hw/arm/aspeed.c
+>     @@ -189,6 +189,10 @@ struct AspeedMachineState {
+>       #define FUJI_BMC_HW_STRAP1    0x00000000
+>       #define FUJI_BMC_HW_STRAP2    0x00000000
+> 
+>     +/* Montblanc hardware value */
+>     +#define MONTBLANC_BMC_HW_STRAP1    0x00000000
+>     +#define MONTBLANC_BMC_HW_STRAP2    0x00000000
+>     +
+>       /* Bletchley hardware value */
+>       /* TODO: Leave same as EVB for now. */
+>       #define BLETCHLEY_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
+>     @@ -925,6 +929,39 @@ static void fuji_bmc_i2c_init(AspeedMachineState *bmc)
+>           }
+>       }
+> 
+>     +static void montblanc_bmc_i2c_init(AspeedMachineState *bmc)
+>     +{
+>     +    AspeedSoCState *soc = &bmc->soc;
+>     +    I2CBus *i2c[16] = {};
+>     +
+>     +    for (int i = 0; i < 16; i++) {
+>     +        i2c[i] = aspeed_i2c_get_bus(&soc->i2c, i);
+>     +    }
+>     +
+>     +    /* Ref from Minipack3_I2C_Tree_V1.6 20230320 */
+>     +    at24c_eeprom_init_rom(i2c[3], 0x56, 8192, montblanc_scm_fruid, true);
+>     +    at24c_eeprom_init_rom(i2c[6], 0x53, 8192, montblanc_fcm_fruid, true);
+>     +
+>     +    /* CPLD and FPGA */
+>     +    at24c_eeprom_init(i2c[1], 0x35, 256);  /* SCM CPLD */
+>     +    at24c_eeprom_init(i2c[5], 0x35, 256);  /* COMe CPLD TODO: need to update */
+>     +    at24c_eeprom_init(i2c[12], 0x60, 256); /* MCB PWR CPLD */
+>     +    at24c_eeprom_init(i2c[13], 0x35, 256); /* IOB FPGA */
+>     +
+>     +    /* on BMC board */
+>     +    at24c_eeprom_init_rom(i2c[8], 0x51, 8192, montblanc_bmc_fruid, true);
+>     +                                                      /* BMC EEPROM */
+>     +    i2c_slave_create_simple(i2c[8], TYPE_LM75, 0x48); /* Thermal Sensor */
+>     +
+>     +    /* COMe Sensor/EEPROM */
+>     +    at24c_eeprom_init(i2c[0], 0x56, 16384);          /* FRU EEPROM */
+>     +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x48); /* INLET Sensor */
+>     +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x4A); /* OUTLET Sensor */
+>     +
+>     +    /* It expects a pca9555 but a pca9552 is compatible */
+>     +    create_pca9552(soc, 4, 0x27);
+>     +}
+>     +
+>       #define TYPE_TMP421 "tmp421"
+> 
+>       static void bletchley_bmc_i2c_init(AspeedMachineState *bmc)
+>     @@ -1452,6 +1489,28 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
+>               aspeed_soc_num_cpus(amc->soc_name);
+>       };
+> 
+>     +#define MONTBLANC_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
+>     +
+>     +static void aspeed_machine_montblanc_class_init(ObjectClass *oc, void *data)
+>     +{
+>     +    MachineClass *mc = MACHINE_CLASS(oc);
+>     +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+>     +
+>     +    mc->desc = "Facebook Montblanc BMC (Cortex-A7)";
+>     +    amc->soc_name = "ast2600-a3";
+>     +    amc->hw_strap1 = MONTBLANC_BMC_HW_STRAP1;
+>     +    amc->hw_strap2 = MONTBLANC_BMC_HW_STRAP2;
+>     +    amc->fmc_model = "mx66l1g45g";
+>     +    amc->spi_model = "mx66l1g45g";
+>     +    amc->num_cs = 2;
+>     +    amc->macs_mask = ASPEED_MAC3_ON;
+>     +    amc->i2c_init = montblanc_bmc_i2c_init;
+>     +    amc->uart_default = ASPEED_DEV_UART1;
+>     +    mc->default_ram_size = MONTBLANC_BMC_RAM_SIZE;
+>     +    mc->default_cpus = mc->min_cpus = mc->max_cpus =
+>     +        aspeed_soc_num_cpus(amc->soc_name);
+>     +};
+>     +
+>       #define BLETCHLEY_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
+> 
+>       static void aspeed_machine_bletchley_class_init(ObjectClass *oc, void *data)
+>     @@ -1703,6 +1762,10 @@ static const TypeInfo aspeed_machine_types[] = {
+>               .name          = MACHINE_TYPE_NAME("fuji-bmc"),
+>               .parent        = TYPE_ASPEED_MACHINE,
+>               .class_init    = aspeed_machine_fuji_class_init,
+>     +    }, {
+>     +        .name          = MACHINE_TYPE_NAME("montblanc-bmc"),
+>     +        .parent        = TYPE_ASPEED_MACHINE,
+>     +        .class_init    = aspeed_machine_montblanc_class_init,
+>           }, {
+>               .name          = MACHINE_TYPE_NAME("bletchley-bmc"),
+>               .parent        = TYPE_ASPEED_MACHINE,
+>     diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
+>     index ace5266cec..8cc73f83dc 100644
+>     --- a/hw/arm/aspeed_eeprom.c
+>     +++ b/hw/arm/aspeed_eeprom.c
+>     @@ -161,6 +161,53 @@ const uint8_t rainier_bmc_fruid[] = {
+>           0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+>       };
+> 
+>     +/* Montblanc BMC FRU */
+>     +const uint8_t montblanc_scm_fruid[] = {
+>     +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+>     +    0x43, 0x4b, 0x33, 0x5f, 0x53, 0x43, 0x4d, 0x02, 0x08, 0x32, 0x30, 0x30,
+>     +    0x30, 0x32, 0x39, 0x34, 0x35, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
+>     +    0x30, 0x31, 0x36, 0x34, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
+>     +    0x30, 0x30, 0x30, 0x31, 0x32, 0x37, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
+>     +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x30, 0x33, 0x30, 0x31, 0x07,
+>     +    0x0d, 0x41, 0x30, 0x33, 0x31, 0x33, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
+>     +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
+>     +    0x0d, 0x4d, 0x32, 0x32, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
+>     +    0x30, 0x32, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
+>     +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
+>     +    0x43, 0x54, 0x48, 0x10, 0x06, 0x01, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x13,
+>     +    0x03, 0x53, 0x43, 0x4d, 0xfa, 0x02, 0x02, 0x61,
+>     +};
+>     +
+>     +const uint8_t montblanc_fcm_fruid[] = {
+>     +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+>     +    0x43, 0x4b, 0x33, 0x5f, 0x46, 0x43, 0x42, 0x02, 0x08, 0x33, 0x30, 0x30,
+>     +    0x30, 0x30, 0x31, 0x36, 0x31, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
+>     +    0x30, 0x31, 0x36, 0x33, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
+>     +    0x30, 0x30, 0x30, 0x31, 0x33, 0x30, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
+>     +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x31, 0x32, 0x30, 0x31, 0x07,
+>     +    0x0d, 0x41, 0x31, 0x32, 0x31, 0x32, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
+>     +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
+>     +    0x0d, 0x46, 0x35, 0x30, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
+>     +    0x30, 0x35, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
+>     +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
+>     +    0x43, 0x54, 0x48, 0x10, 0x06, 0x02, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x11,
+>     +    0x06, 0x03, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x12, 0x02, 0x8a, 0x00, 0x13,
+>     +    0x03, 0x46, 0x43, 0x42, 0xfa, 0x02, 0x50, 0x47,
+>     +};
+>     +
+>     +const uint8_t montblanc_bmc_fruid[] = {
+>     +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+>     +    0x43, 0x4b, 0x33, 0x5f, 0x42, 0x4d, 0x43, 0x04, 0x0c, 0x31, 0x33, 0x32,
+>     +    0x30, 0x30, 0x30, 0x31, 0x33, 0x36, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31,
+>     +    0x33, 0x31, 0x30, 0x30, 0x30, 0x30, 0x38, 0x36, 0x30, 0x35, 0x20, 0x06,
+>     +    0x0c, 0x52, 0x33, 0x30, 0x39, 0x37, 0x47, 0x30, 0x30, 0x30, 0x32, 0x30,
+>     +    0x37, 0x07, 0x0d, 0x42, 0x30, 0x32, 0x37, 0x34, 0x58, 0x58, 0x58, 0x58,
+>     +    0x58, 0x58, 0x58, 0x58, 0x08, 0x01, 0x04, 0x09, 0x01, 0x00, 0x0a, 0x01,
+>     +    0x00, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32, 0x33,
+>     +    0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03, 0x43,
+>     +    0x54, 0x48, 0x13, 0x03, 0x42, 0x4d, 0x43, 0xfa, 0x02, 0xef, 0xba,
+>     +};
+>     +
+>       const size_t tiogapass_bmc_fruid_len = sizeof(tiogapass_bmc_fruid);
+>       const size_t fby35_nic_fruid_len = sizeof(fby35_nic_fruid);
+>       const size_t fby35_bb_fruid_len = sizeof(fby35_bb_fruid);
+>     @@ -168,3 +215,6 @@ const size_t fby35_bmc_fruid_len = sizeof(fby35_bmc_fruid);
+>       const size_t yosemitev2_bmc_fruid_len = sizeof(yosemitev2_bmc_fruid);
+>       const size_t rainier_bb_fruid_len = sizeof(rainier_bb_fruid);
+>       const size_t rainier_bmc_fruid_len = sizeof(rainier_bmc_fruid);
+>     +const size_t montblanc_scm_fruid_len = sizeof(montblanc_scm_fruid);
+>     +const size_t montblanc_fcm_fruid_len = sizeof(montblanc_fcm_fruid);
+>     +const size_t montblanc_bmc_fruid_len = sizeof(montblanc_bmc_fruid);
+>     diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
+>     index bbf9e54365..b8fbdd0734 100644
+>     --- a/hw/arm/aspeed_eeprom.h
+>     +++ b/hw/arm/aspeed_eeprom.h
+>     @@ -27,4 +27,11 @@ extern const size_t rainier_bb_fruid_len;
+>       extern const uint8_t rainier_bmc_fruid[];
+>       extern const size_t rainier_bmc_fruid_len;
+> 
+>     +extern const uint8_t montblanc_scm_fruid[];
+>     +extern const uint8_t montblanc_fcm_fruid[];
+>     +extern const uint8_t montblanc_bmc_fruid[];
+>     +extern const size_t montblanc_scm_fruid_len;
+>     +extern const size_t montblanc_fcm_fruid_len;
+>     +extern const size_t montblanc_bmc_fruid_len;
+>     +
+>       #endif
+>     -- 
+>     2.38.5
+> 
 
 
