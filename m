@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5957474A3
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FAF7474AA
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 17:01:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGhUg-0003nr-RH; Tue, 04 Jul 2023 10:59:06 -0400
+	id 1qGhVy-0004eI-Eb; Tue, 04 Jul 2023 11:00:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGhUf-0003nT-3q
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:59:05 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qGhVn-0004bO-PF
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:00:15 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qGhUd-00055V-7F
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:59:04 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fbca8935bfso43498255e9.3
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:59:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qGhVl-0005ET-C5
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:00:15 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-4f122ff663eso8892647e87.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 08:00:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688482742; x=1691074742;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iOFTVVbYINH5dFWj55CBLAk9q2FfffnSPGFaJ5nn1mc=;
- b=dbiMAaSpt/xOpvZNdCLLeG3v7iZ9eMjOYBIxgnW2dr5L9STmO6wu7f/Fpz4ASJf5ih
- 3gIrjKm/HsmLKxwpeSI5arlP29N9X3Y1ddzuP5sEsP1NxnlyydLjYoeELDHz1iBgpRvO
- AMyAGyFq7ZCsgHk2qU5mHTzet/rWO6DMsgHuTlVwnmErOOeyl5wcIJOL+pg8MRJWC/N9
- rYnANuY57GFRr4GfYnp7tN9v1cV6kceVgfPJw56MUu6AdpHQPzbzJDCppw2Du0FoO4ZI
- q66HTI9kFcA0VZYPLxwrni7szFpFTJh7jrzFx492e/Flz+6oP6uX796konNOCtk0hPUA
- qvFw==
+ d=linaro.org; s=google; t=1688482811; x=1691074811;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Vsfhz2XcvAmjqaIo2HEYGsXHrqzNSeMe0aXhOL6xXRs=;
+ b=GbXTmaEQFm+hg4TvdYDET8kCJ9vrrxVuArwwTAiyX+bpDxqrqzEnyoxhj56O9SssAV
+ KPm1JwAoMMkIEweR0wsxg5pOatawiqmMmUDi3D4j15sj8rTLjgs22Jnu2ZPM4JcdUAOV
+ LaNAL0An0RLpVcX7FTja0nWZaByETrHcg/vVeDvprPWc3yPaXHTmjlIBoDqXvvvMq4Fk
+ dngmOZqY5aknNqvRQZMagd5k83DrSZn2zpG1W5verRRP9UIkkzbERAPBZjExH0UTElbd
+ yd+gCIcNtMEQl/gVjnylWqmoUTJ3Cpvs2MU2Lk06SsREDVV0HgpT61L9lCdWXVPtIWvA
+ XxMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688482742; x=1691074742;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=iOFTVVbYINH5dFWj55CBLAk9q2FfffnSPGFaJ5nn1mc=;
- b=XzaRoqGwWLt3hJ+H4VJca9GAdBI9esKs/rKJU5r4w45DbZXJHOjR3iPG3KySviIQ89
- oYxmVRRejyQa4o3NIL4k0MLwH/zI/gypK0b5u/i/IybGLLXJ9hGgQKhnTMzYsgzXik4E
- yf/WyfpkzkWTfNIxAjqOzDNRnCrIYfCKrFwc+PFs4ZhNz2sZZYYA4txThxu3/3EdxFGN
- Tw3c6JXPWoaE7effXCQ11mKSyPrqYpj4l8aC6msknC+qtiJrAjCeW/8SQitk4Z6YtBFM
- AaYZcVb0c10EUWJtuAM/bBdnyLr6fAdqC6idwHF2Y559QBRb0PflcQkkqCgwWHV84w5S
- I49A==
-X-Gm-Message-State: AC+VfDwwUOx72G8pLB4S8UGnXJAJ06f2ocMrq6zXGBvsiPlQ8pJSuH70
- chOMycXuR5Z+7dHlunAwK1n32TpnfpBpvtts1Z4=
-X-Google-Smtp-Source: ACHHUZ4wdeRuj70TvUx+M1AQ9mDG5J4SQULYeuEeq5OYeHgOXSzycjU2xIb4M1sPsKdQ/7eH7F8jtw==
-X-Received: by 2002:a05:600c:2253:b0:3fb:a5b3:4f02 with SMTP id
- a19-20020a05600c225300b003fba5b34f02mr10719470wmm.36.1688482741782; 
- Tue, 04 Jul 2023 07:59:01 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- w18-20020a5d6092000000b003143be36d99sm3429053wrt.58.2023.07.04.07.59.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 07:59:01 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id F41131FFBB;
- Tue,  4 Jul 2023 15:59:00 +0100 (BST)
-References: <20230704130647.2842917-1-peter.maydell@linaro.org>
- <20230704130647.2842917-3-peter.maydell@linaro.org>
-User-agent: mu4e 1.11.8; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Subject: Re: [PATCH 2/2] target/arm: Define neoverse-v1
-Date: Tue, 04 Jul 2023 15:58:54 +0100
-In-reply-to: <20230704130647.2842917-3-peter.maydell@linaro.org>
-Message-ID: <87sfa3g1u3.fsf@linaro.org>
+ d=1e100.net; s=20221208; t=1688482811; x=1691074811;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Vsfhz2XcvAmjqaIo2HEYGsXHrqzNSeMe0aXhOL6xXRs=;
+ b=Y1ImwihQLUlHgxc9G93fOPG9JQ021jazJ8BoECY3k2A450hKNbcaBwcOU+5DtgxYiH
+ KDcU8vpLtjbK0eVsmO/OvEUe36mTupzKCTGkydkOWMXi4bWenAxRum8R+JEExhuY7hGb
+ rAOG+yT95RA8ZajkwkdSGWf8AITB5DQ0XP/FhYzdLtkNtvBFpZT38eLlp+m4PKl16U03
+ 9T40BAOYJWlucSTOJNq+Ms2P6YydkmiGAWR+Oznn7YKtCXFr9d076gqE8Deiau0URE/u
+ Hnc7P7QuQsr4OgzVUSb2ly8aE5GdaDZHwDsHaWtDvt62llox2821k75gE0cK3gJCeH2C
+ JSzw==
+X-Gm-Message-State: ABy/qLbC8tRTqdfh7qJldNeaK996nXd3CmhFgJwB3ayQwmjZBCBTOgWl
+ IJKcH2IaXzmdgBTxRvIz7xjGf2kV1VyKZODG7DM2gA==
+X-Google-Smtp-Source: APBJJlGpAcyDK9yxlqw4ow2fSm/VY0+ckiuqK4k21HvFEt+NNtLKnefxAtx7V2INI9lVy1uL5HygPg==
+X-Received: by 2002:a05:6512:10c9:b0:4fb:89cd:9616 with SMTP id
+ k9-20020a05651210c900b004fb89cd9616mr10288436lfg.0.1688482810812; 
+ Tue, 04 Jul 2023 08:00:10 -0700 (PDT)
+Received: from [192.168.200.206] (83.21.151.197.ipv4.supernova.orange.pl.
+ [83.21.151.197]) by smtp.gmail.com with ESMTPSA id
+ d26-20020ac2545a000000b004efe73ee01fsm5119878lfn.306.2023.07.04.08.00.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jul 2023 08:00:10 -0700 (PDT)
+Message-ID: <2182ab07-ca32-22ae-8c5a-5d23bfcec5cb@linaro.org>
+Date: Tue, 4 Jul 2023 17:00:09 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 0/2] target/arm: Implement Cortex Neoverse-V1
+Content-Language: pl-PL, en-GB, en-HK
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230704130647.2842917-1-peter.maydell@linaro.org>
+ <81e6bf97-b6c6-e09d-51b5-445bdc3a47bb@linaro.org>
+ <488ca2a9-8e1a-3a62-8487-fefaed69ca8b@linaro.org>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Organization: Linaro
+In-Reply-To: <488ca2a9-8e1a-3a62-8487-fefaed69ca8b@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x136.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,18 +98,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+W dniu 4.07.2023 o 16:54, Philippe Mathieu-Daudé pisze:
+> On 4/7/23 15:35, Marcin Juszkiewicz wrote:
+>> W dniu 4.07.2023 o 15:06, Peter Maydell pisze:
+>>
+>>> This patchset implements the Cortex Neoverse-V1 CPU type, as a
+>>> representative Armv8.3 (+ some extras from 8.4) CPU matching real
+>>> hardware.  The main thing we were waiting for to be able to define
+>>> this was FEAT_LSE2, and that is now supported.
+>>
+>> Now I can add "reach SBSA level 4" to todo list as it requires v8.3 
+>> cpu (I do not count 'max' cpu type).
+> 
+> Do we need to introduce machine variants, such sbsa-lvl3-ref and
+> sbsa-lvl4-ref? Or simply sbsa-level3/sbsa-level4?
 
-Peter Maydell <peter.maydell@linaro.org> writes:
+No such combinations. The plan for sbsa-ref is to have only one platform.
 
-> Now that we have implemented support for FEAT_LSE2, we can define
-> a CPU model for the Neoverse-V1, and enable it for the virt and
-> sbsa-ref boards.
->
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Version of platform is exported in DeviceTree already. TF-A reads it and 
+exports via SMC call to EDK2. What changes between versions is present 
+in documentation.
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
