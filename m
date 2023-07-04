@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108B3746B2E
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 09:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F08746B35
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 09:54:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGar5-0000NG-VJ; Tue, 04 Jul 2023 03:53:47 -0400
+	id 1qGarw-000173-HK; Tue, 04 Jul 2023 03:54:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGar3-0000Mc-Uc
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:53:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGaru-00016c-D6
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:54:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGar2-00061D-Fq
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:53:45 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGars-0006Ey-58
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:54:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688457223;
+ s=mimecast20190719; t=1688457275;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6+7xOlDgmj92MLQ3b8vOV86VUcDfMwo2Wn+lhpfE1l8=;
- b=bJ9oCeV0xdU4LzlEi0ezY8edtpoCSPrLF4ZFsitdE43SOMF3SJl6ccz+XMV6NdUcTIikat
- D7GI8XUD6HfQwgelVshVcwVhnqIbO6FLsYNNuzeDm1oleSwl4AUGh/jx9UCHMWE46RSDHK
- YKwwZlEqUrt1PKJGWq8g/RwFe836Fzg=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eh0YeMbHIYVccUY17N+S/Lm9oyRTYdiGWoB6xgqvPuA=;
+ b=T2Ha/H/E2APVub3+NWbtSQ9ukwJGszxJOWVnR4Npuhc1G8KOLFvkmydSAj+FP4fXOLSLVT
+ RpHG72cstP6qn6cf6/av1FarzkajH+Q6K2NUBEEEYCcwHfjlntpjkTRfSqgZJfaZvYvBn1
+ 3L/HNp+o6m1GyHY5nd+MO4UTg2FweNA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-OgoxBk4ZMr2Z3jRS8Bssrg-1; Tue, 04 Jul 2023 03:53:42 -0400
-X-MC-Unique: OgoxBk4ZMr2Z3jRS8Bssrg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3143a431a01so869925f8f.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 00:53:42 -0700 (PDT)
+ us-mta-110-HYmbNzFOMQ-pLyuHd5t8fg-1; Tue, 04 Jul 2023 03:54:33 -0400
+X-MC-Unique: HYmbNzFOMQ-pLyuHd5t8fg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fb40d0623bso24376505e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 00:54:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688457221; x=1691049221;
+ d=1e100.net; s=20221208; t=1688457272; x=1691049272;
  h=content-transfer-encoding:in-reply-to:organization:from:references
  :cc:to:content-language:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=6+7xOlDgmj92MLQ3b8vOV86VUcDfMwo2Wn+lhpfE1l8=;
- b=S4cgUm10bntd9yAzsXcBapTe0nd7wiHTCvVrRni9T8PK0axjWiDsX7IHzTljdvLH6K
- ygsdS7+cVnCoqg5R6Nshm+2mMHjWQ/145gSZ8+Y2oMMF2utST0vEt+uIgxhyEQWFu1i1
- odvM1wnAOeXrxKcr+fXodlWMQMp+qz0U7f+AYYeezpQkZvWAHUKRp8iIo41GYyhAkroM
- It3sqTVlgAkDRuDrHnHVTi1W4iaGtVnMvlnsuJ4KPZXylZC2c2TmKuXaN6h7PCXtcTyk
- TtyGSMmOZV8SchHDLJ4HFPbStQ4UTwuOnLSdpgycj9uSCDv6omtSYQ+7fVD0NAU0r9eE
- ODLg==
-X-Gm-Message-State: ABy/qLY+VzHpm+/QZuFxO+mvLywyuvCkBnCPgBm69xYizNPWh5/2oGAv
- FrEiEU4gI03HdfWK5ifVBB07hgw1Y4S/Kqg6ADxLt8oCvVpVz3Pw6WG1Md0C2RfxFS/f8SWLqpZ
- VeqbPjrpNhtamvjc=
-X-Received: by 2002:a5d:668a:0:b0:313:f1a4:4112 with SMTP id
- l10-20020a5d668a000000b00313f1a44112mr9398523wru.33.1688457221164; 
- Tue, 04 Jul 2023 00:53:41 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlG81sRG3riDqeOQLrd4jWc2JYH1+PMpRo2iaf3mRbdeuGdQo+TQIDkF6t7LsJbtj3DfSzD15g==
-X-Received: by 2002:a5d:668a:0:b0:313:f1a4:4112 with SMTP id
- l10-20020a5d668a000000b00313f1a44112mr9398510wru.33.1688457220791; 
- Tue, 04 Jul 2023 00:53:40 -0700 (PDT)
+ bh=eh0YeMbHIYVccUY17N+S/Lm9oyRTYdiGWoB6xgqvPuA=;
+ b=TqP+bXMVHpSq/GbfqPQXX2GaNiHNR/wx8o0JUbnVIIVHzQM7xb6Kl2ZDimyHiW9vUl
+ 4ndA+GeEFCf/4bPEpn5DOfyH72OcCYLfu+x1TSiOxFBkriKoDubbROyORaMRExXYnjmU
+ 5+Cfsefv+CXhilej1CGKigs7MmAmv5ssm6Vkui+k8LLhti55g1O/nUFBnDKkfbqE5Ucr
+ Mj1puMPeHczl7fYNw5UGn6rglAQN6JX/ivkyJJRpjJMJm6z5evOahirQ44ZKa2e1VvWH
+ FHUQxaTgIlN+OoJPxOUGSeeKZu86WqODUL2ypzcjTgek1/XOiq2y4F/KJnGeknW4ECXM
+ zGjQ==
+X-Gm-Message-State: AC+VfDxQULWiT4GZpqqqgQ6+GrHFz3500FqgYeSZXLH53+eVAUZJGzaE
+ c1H9Zq0gTNkzwBjIIWhEWBfTwPZCsjQouzQZLoqjHfjhcEB0rrJEF3+ZJ+N5LwLu2Zmq9nMsBDS
+ D+RK486VzgJj2Hp4=
+X-Received: by 2002:a05:600c:b4d:b0:3f6:8ba:6ea2 with SMTP id
+ k13-20020a05600c0b4d00b003f608ba6ea2mr11473921wmr.15.1688457272216; 
+ Tue, 04 Jul 2023 00:54:32 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ5CWee+g/jiR307xIbU3VxA5C87zahScWmHBu7yajSJmRGoZxDybKLLJYWfYLsDnRynyhCywQ==
+X-Received: by 2002:a05:600c:b4d:b0:3f6:8ba:6ea2 with SMTP id
+ k13-20020a05600c0b4d00b003f608ba6ea2mr11473905wmr.15.1688457271877; 
+ Tue, 04 Jul 2023 00:54:31 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f30:5a00:b30d:e6bc:74c3:d6f2?
  (p200300d82f305a00b30de6bc74c3d6f2.dip0.t-ipconnect.de.
  [2003:d8:2f30:5a00:b30d:e6bc:74c3:d6f2])
  by smtp.gmail.com with ESMTPSA id
- w10-20020adfec4a000000b00314172ba213sm13141819wrn.108.2023.07.04.00.53.39
+ h9-20020a05600c314900b003fa9a00d74csm11698110wmo.3.2023.07.04.00.54.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 00:53:40 -0700 (PDT)
-Message-ID: <bf01dde1-e08a-2cdb-8489-b7814f419c0c@redhat.com>
-Date: Tue, 4 Jul 2023 09:53:39 +0200
+ Tue, 04 Jul 2023 00:54:31 -0700 (PDT)
+Message-ID: <c391d299-877c-dc82-4e08-65f1d64f7b5a@redhat.com>
+Date: Tue, 4 Jul 2023 09:54:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 06/12] target/s390x: Fix LRA when DAT is off
+Subject: Re: [PATCH 07/12] target/s390x: Fix relative long instructions with
+ large offsets
 Content-Language: en-US
 To: Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>, 
  Richard Henderson <richard.henderson@linaro.org>
 Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org, qemu-stable@nongnu.org
+ qemu-s390x@nongnu.org
 References: <20230703155801.179167-1-iii@linux.ibm.com>
- <20230703155801.179167-7-iii@linux.ibm.com>
+ <20230703155801.179167-8-iii@linux.ibm.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <20230703155801.179167-7-iii@linux.ibm.com>
+In-Reply-To: <20230703155801.179167-8-iii@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -108,31 +109,30 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 03.07.23 17:50, Ilya Leoshkevich wrote:
-> LRA should perform DAT regardless of whether it's on or off.
-> Disable DAT check for MMU_S390_LRA.
+> The expression "imm * 2" in gen_ri2() can wrap around if imm is large
+> enough.
 > 
-> Fixes: defb0e3157af ("s390x: Implement opcode helpers")
-> Cc: qemu-stable@nongnu.org
+> Fix by casting imm to int64_t, like it's done in disas_jdest().
+> 
+> Fixes: e8ecdfeb30f0 ("Fix EXECUTE of relative branches")
 > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 > ---
->   target/s390x/mmu_helper.c | 2 +-
+>   target/s390x/tcg/translate.c | 2 +-
 >   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/target/s390x/mmu_helper.c b/target/s390x/mmu_helper.c
-> index b04b57c2356..fbb2f1b4d48 100644
-> --- a/target/s390x/mmu_helper.c
-> +++ b/target/s390x/mmu_helper.c
-> @@ -417,7 +417,7 @@ int mmu_translate(CPUS390XState *env, target_ulong vaddr, int rw, uint64_t asc,
+> diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+> index a6079ab7b4f..6661b27efa4 100644
+> --- a/target/s390x/tcg/translate.c
+> +++ b/target/s390x/tcg/translate.c
+> @@ -5794,7 +5794,7 @@ static TCGv gen_ri2(DisasContext *s)
 >   
->       vaddr &= TARGET_PAGE_MASK;
->   
-> -    if (!(env->psw.mask & PSW_MASK_DAT)) {
-> +    if (rw != MMU_S390_LRA && !(env->psw.mask & PSW_MASK_DAT)) {
->           *raddr = vaddr;
->           goto nodat;
+>       disas_jdest(s, i2, is_imm, imm, ri2);
+>       if (is_imm) {
+> -        ri2 = tcg_constant_i64(s->base.pc_next + imm * 2);
+> +        ri2 = tcg_constant_i64(s->base.pc_next + (int64_t)imm * 2);
 >       }
-
-Interesting
+>   
+>       return ri2;
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
 
