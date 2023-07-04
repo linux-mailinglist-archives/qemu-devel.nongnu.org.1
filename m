@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C9A1747346
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 875F9747352
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:50:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGgPR-0002vJ-Ob; Tue, 04 Jul 2023 09:49:37 -0400
+	id 1qGgPV-0002xK-G5; Tue, 04 Jul 2023 09:49:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
- id 1qGgPQ-0002uk-FO; Tue, 04 Jul 2023 09:49:36 -0400
+ id 1qGgPT-0002we-E9; Tue, 04 Jul 2023 09:49:39 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
- id 1qGgPO-0006WS-Eq; Tue, 04 Jul 2023 09:49:36 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QwPKm0nsHz4wxp;
- Tue,  4 Jul 2023 23:49:32 +1000 (AEST)
+ id 1qGgPR-0006X5-D1; Tue, 04 Jul 2023 09:49:39 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QwPKp42pjz4wxq;
+ Tue,  4 Jul 2023 23:49:34 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QwPKk1PQcz4wZw;
- Tue,  4 Jul 2023 23:49:29 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QwPKm4fhwz4wZw;
+ Tue,  4 Jul 2023 23:49:32 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [RFC PATCH 2/4] ppc/pnv: handle END triggers between chips with MMIOs
-Date: Tue,  4 Jul 2023 15:49:19 +0200
-Message-ID: <20230704134921.2626692-3-clg@kaod.org>
+Subject: [RFC PATCH 3/4] ppc/pnv: add support for the PC MMIOs
+Date: Tue,  4 Jul 2023 15:49:20 +0200
+Message-ID: <20230704134921.2626692-4-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230704134921.2626692-1-clg@kaod.org>
 References: <20230704134921.2626692-1-clg@kaod.org>
@@ -64,151 +63,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The notify page of the interrupt controller can either be used to
-receive trigger events from the HW controllers (PHB, PSI) or to
-reroute interrupts between Interrupt Controller. In which case, the
-VSD table is used to determine the address of the notify page of the
-remote IC and the store data is forwarded.
+Associated with each NVT is a CI page address that is intended for use
+by privileged interrupt management code to adjust the backlog counts
+of a logical server and interrupt pending buffer for a specific
+virtual processor. This backlog count adjustment function is valuable
+to avoid extraneous physical interrupts when the hardware accumulates
+the backlog count per event queue post while the software handles
+multiple event queue entries on a single physical interrupt. Likewise
+adjusting the Interrupt Pending Buffer allows a virtual processor to
+process event queues of other priorities during one physical interrupt
+cycle.
 
-Today, our model grabs the remote VSD (EAS, END, NVT) address using
-pnv_xive_get_remote() helper but this is incorrect. EAS accesses
-should always be local and END triggers should be rerouted using a
-store on the remote IC notify page.
+The NVT adjustment is initiated by a store byte (stb) or a double word
+load instruction.
 
-We still have a shortcut in the model for the NVT accesses. It will be
-addressed later when we model the PC mmio operations.
+For the store byte operations that increment/decrement a backlog count
+the value of the data byte is the amount added (counter saturates at
+maximum value) / subtracted from the backlog counter (the counter does
+not go negative).
+
+For the store byte operations that set/reset an IPB priority bit, the
+data byte is ignored.
+
+The load double word operations that target a backlog counter
+increment/decrement the backlog count by one count (counter saturates
+at maximum value / does not go negative).
+
+Load operations to an IPB return the pre-operation value, while load
+operations to a backlog counter return the post-operation value, in
+both cases right justified in the double word.
+
+Programs may use the load operations if they need to know when the
+operation has completed; this may be accomplished by introducing a
+data dependency upon the returned load data. Other operation lengths
+(other than store byte and load double word) are not supported –
+results are boundedly undefined.
 
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/intc/pnv_xive_regs.h |  1 +
- hw/intc/pnv_xive.c      | 68 +++++++++++++++++++++++++++++++++++++++--
- 2 files changed, 67 insertions(+), 2 deletions(-)
+ hw/intc/pnv_xive.c | 85 +++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 80 insertions(+), 5 deletions(-)
 
-diff --git a/hw/intc/pnv_xive_regs.h b/hw/intc/pnv_xive_regs.h
-index c78f030c0260..793847638bce 100644
---- a/hw/intc/pnv_xive_regs.h
-+++ b/hw/intc/pnv_xive_regs.h
-@@ -228,6 +228,7 @@
-  *       VSD and is only meant to be used in indirect mode !
-  */
- #define VSD_MODE                PPC_BITMASK(0, 1)
-+#define  VSD_MODE_INVALID       0
- #define  VSD_MODE_SHARED        1
- #define  VSD_MODE_EXCLUSIVE     2
- #define  VSD_MODE_FORWARD       3
 diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
-index e536b3ec26e5..b41ab85e01bd 100644
+index b41ab85e01bd..844965cfe281 100644
 --- a/hw/intc/pnv_xive.c
 +++ b/hw/intc/pnv_xive.c
-@@ -225,6 +225,11 @@ static uint64_t pnv_xive_vst_addr(PnvXive *xive, uint32_t type, uint8_t blk,
- 
-     /* Remote VST access */
-     if (GETFIELD(VSD_MODE, vsd) == VSD_MODE_FORWARD) {
-+        if (type != VST_TSEL_VPDT) {
-+            xive_error(xive, "VST: invalid access on remote VST %s %x/%x !?",
-+                       info->name, blk, idx);
-+            return 0;
-+        }
-         xive = pnv_xive_get_remote(blk);
- 
-         return xive ? pnv_xive_vst_addr(xive, type, blk, idx) : 0;
-@@ -275,12 +280,26 @@ static int pnv_xive_vst_write(PnvXive *xive, uint32_t type, uint8_t blk,
- static int pnv_xive_get_end(XiveRouter *xrtr, uint8_t blk, uint32_t idx,
-                             XiveEND *end)
+@@ -1773,17 +1773,92 @@ static uint64_t pnv_xive_pc_read(void *opaque, hwaddr addr,
+                                  unsigned size)
  {
-+    PnvXive *xive = PNV_XIVE(xrtr);
-+
-+    if (pnv_xive_block_id(xive) != blk) {
-+        xive_error(xive, "VST: END %x/%x is remote !?", blk, idx);
+     PnvXive *xive = PNV_XIVE(opaque);
++    uint32_t offset = (addr & 0x1F0) >> 4;
++    uint8_t nvt_blk;
++    uint32_t nvt_idx;
++    XiveNVT nvt;
++    uint8_t ipb;
++    uint64_t ret = -1;
+ 
+-    xive_error(xive, "PC: invalid read @%"HWADDR_PRIx, addr);
+-    return -1;
++    if (size != 8) {
++        xive_error(xive, "PC: invalid read size %d @%"HWADDR_PRIx"\n",
++                   size, addr);
 +        return -1;
 +    }
 +
-     return pnv_xive_vst_read(PNV_XIVE(xrtr), VST_TSEL_EQDT, blk, idx, end);
- }
- 
- static int pnv_xive_write_end(XiveRouter *xrtr, uint8_t blk, uint32_t idx,
-                               XiveEND *end, uint8_t word_number)
- {
-+    PnvXive *xive = PNV_XIVE(xrtr);
++    /* TODO: support multi block */
++    nvt_blk = pnv_xive_block_id(xive);
++    nvt_idx = addr >> TM_SHIFT;
 +
-+    if (pnv_xive_block_id(xive) != blk) {
-+        xive_error(xive, "VST: END %x/%x is remote !?", blk, idx);
++    if (xive_router_get_nvt(XIVE_ROUTER(xive), nvt_blk, nvt_idx, &nvt)) {
++        xive_error(xive, "PC: invalid NVT %x/%x\n", nvt_blk, nvt_idx);
 +        return -1;
 +    }
 +
-     return pnv_xive_vst_write(PNV_XIVE(xrtr), VST_TSEL_EQDT, blk, idx, end,
-                               word_number);
- }
-@@ -1349,6 +1368,50 @@ static const MemoryRegionOps pnv_xive_ic_reg_ops = {
- #define PNV_XIVE_SYNC_PUSH          0xf00 /* Sync push context */
- #define PNV_XIVE_SYNC_VPC           0xf80 /* Sync remove VPC store */
- 
-+static void pnv_xive_end_notify(XiveRouter *xrtr, XiveEAS *eas)
-+{
-+    PnvXive *xive = PNV_XIVE(xrtr);
-+    uint8_t end_blk = xive_get_field64(EAS_END_BLOCK, eas->w);
-+    uint32_t end_idx = xive_get_field64(EAS_END_INDEX, eas->w);
-+    uint32_t end_data = xive_get_field64(EAS_END_DATA, eas->w);
-+    uint64_t end_vsd = xive->vsds[VST_TSEL_EQDT][end_blk];
++    ipb = xive_get_field32(NVT_W4_IPB, nvt.w4);
 +
-+    switch (GETFIELD(VSD_MODE, end_vsd)) {
-+    case VSD_MODE_EXCLUSIVE:
-+        /* Perform the END notification on the local IC. */
-+        xive_router_end_notify(xrtr, eas);
++    switch (offset) {
++    case  0x0 ... 0x7: /* set IBP bit x */
++        ret = ipb;
++        ipb |= 1 << offset;
++        break;
++    case 0x10 ... 0x17: /* reset IBP bit x */
++        ret = ipb;
++        ipb &= ~(1 << (offset - 0x10));
 +        break;
 +
-+    case VSD_MODE_FORWARD: {
-+        MemTxResult result;
-+        uint64_t notif_port = end_vsd & VSD_ADDRESS_MASK;
-+        uint64_t data = XIVE_TRIGGER_END | XIVE_TRIGGER_PQ |
-+            be64_to_cpu(eas->w);
-+
-+        /* Forward the store on the remote IC notify page. */
-+        address_space_stq_be(&address_space_memory, notif_port, data,
-+                             MEMTXATTRS_UNSPECIFIED, &result);
-+        if (result != MEMTX_OK) {
-+            xive_error(xive, "IC: Forward notif END %x/%x [%x] failed @%"
-+                       HWADDR_PRIx, end_blk, end_idx, end_data, notif_port);
-+            return;
-+        }
-+        break;
-+    }
-+
-+    case VSD_MODE_INVALID:
++    case  0x8 ... 0xF: /* TODO: increment backlog */
++        /* backlog = offset - 0x8; */
++    case 0x18 ... 0x1F: /* TODO: decrement backlog */
++        /* backlog = offset - 0x18; */
 +    default:
-+        /* Set FIR */
-+        xive_error(xive, "IC: Invalid END VSD for block %x", end_blk);
++        xive_error(xive, "PC: invalid write @%"HWADDR_PRIx"\n", addr);
++    }
++
++    if (ipb != xive_get_field32(NVT_W4_IPB, nvt.w4)) {
++        nvt.w4 = xive_set_field32(NVT_W4_IPB, nvt.w4, ipb);
++        xive_router_write_nvt(XIVE_ROUTER(xive), nvt_blk, nvt_idx, &nvt, 4);
++    }
++
++    return ret;
+ }
+ 
+ static void pnv_xive_pc_write(void *opaque, hwaddr addr,
+                               uint64_t value, unsigned size)
+ {
+     PnvXive *xive = PNV_XIVE(opaque);
++    uint32_t offset = (addr & 0x1F0) >> 4;
++    uint8_t nvt_blk;
++    uint32_t nvt_idx;
++    XiveNVT nvt;
++
++    if (size != 1) {
++        xive_error(xive, "PC: invalid write size %d @%"HWADDR_PRIx"\n",
++                   size, addr);
 +        return;
 +    }
-+}
 +
-+/*
-+ * The notify page can either be used to receive trigger events from
-+ * the HW controllers (PHB, PSI) or to reroute interrupts between
-+ * Interrupt controllers.
-+ */
- static void pnv_xive_ic_hw_trigger(PnvXive *xive, hwaddr addr, uint64_t val)
- {
-     uint8_t blk;
-@@ -1357,8 +1420,8 @@ static void pnv_xive_ic_hw_trigger(PnvXive *xive, hwaddr addr, uint64_t val)
-     trace_pnv_xive_ic_hw_trigger(addr, val);
++    /* TODO: support multi block */
++    nvt_blk = pnv_xive_block_id(xive);
++    nvt_idx = addr >> TM_SHIFT;
++
++    if (xive_router_get_nvt(XIVE_ROUTER(xive), nvt_blk, nvt_idx, &nvt)) {
++        xive_error(xive, "PC: invalid NVT %x/%x\n", nvt_blk, nvt_idx);
++        return;
++    }
  
-     if (val & XIVE_TRIGGER_END) {
--        xive_error(xive, "IC: END trigger at @0x%"HWADDR_PRIx" data 0x%"PRIx64,
--                   addr, val);
-+        val = cpu_to_be64(val);
-+        pnv_xive_end_notify(XIVE_ROUTER(xive), (XiveEAS *) &val);
-         return;
-     }
+-    xive_error(xive, "PC: invalid write to VC @%"HWADDR_PRIx, addr);
++    switch (offset) {
++    case  0x0 ... 0x7: /* ignored */
++    case 0x10 ... 0x17: /* ignored */
++        break;
++
++    case  0x8 ... 0xF: /* TODO: Add to backlog */
++        /* backlog = offset - 0x8; */
++    case 0x18 ... 0x1F: /* TODO: substract to backlog */
++        /* backlog = offset - 0x18; */
++    default:
++        xive_error(xive, "PC: invalid write @%"HWADDR_PRIx"\n", addr);
++    }
+ }
  
-@@ -1998,6 +2061,7 @@ static void pnv_xive_class_init(ObjectClass *klass, void *data)
-     xrc->get_nvt = pnv_xive_get_nvt;
-     xrc->write_nvt = pnv_xive_write_nvt;
-     xrc->get_block_id = pnv_xive_get_block_id;
-+    xrc->end_notify = pnv_xive_end_notify;
- 
-     xnc->notify = pnv_xive_notify;
-     xpc->match_nvt  = pnv_xive_match_nvt;
+ static const MemoryRegionOps pnv_xive_pc_ops = {
+@@ -1791,11 +1866,11 @@ static const MemoryRegionOps pnv_xive_pc_ops = {
+     .write = pnv_xive_pc_write,
+     .endianness = DEVICE_BIG_ENDIAN,
+     .valid = {
+-        .min_access_size = 8,
++        .min_access_size = 1,
+         .max_access_size = 8,
+     },
+     .impl = {
+-        .min_access_size = 8,
++        .min_access_size = 1,
+         .max_access_size = 8,
+     },
+ };
 -- 
 2.41.0
 
