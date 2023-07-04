@@ -2,91 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AF4E74704E
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 14:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D27747278
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:16:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGejh-0000ma-1j; Tue, 04 Jul 2023 08:02:25 -0400
+	id 1qGftC-0006xb-OI; Tue, 04 Jul 2023 09:16:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGejb-0000ld-5b
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:02:22 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qGbUe-0008Md-AK; Tue, 04 Jul 2023 04:34:40 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGejV-0002aE-US
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:02:15 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1b89b75dc1cso11816905ad.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:02:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qGbUb-0006rs-B2; Tue, 04 Jul 2023 04:34:39 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1b7e1875cc1so30201535ad.1; 
+ Tue, 04 Jul 2023 01:34:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688472132; x=1691064132;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=qFRkM0PWEg+hUbKsij98js+8fyCqyqqqyI7i3PTqYgo=;
- b=WqMeeEd6kF/rCoytYjTqDSC1T5uuIbx+UNtqHezffW0I5Jrpsfk1vkyp+Iyduvqz3e
- Vt3ftgdpHeNJygQpUXlViSqYa2byGAljfoVAMzo98+KKIfLgZCUKk9CxS/rH+vMeJ1wE
- Md/XkXq0UlYEj2wlREJ2Hq7Zgl2lWstxnUj8yq2n05rtZJwXWC2OQZGy30m+ygef6s7h
- 1Ru1meD/uuP3ri4Xc4BVtF/moeCMxDcSqB66g64Ybx1hfF/wwvSQtwM/VrvTJBpHZkAN
- jr4zm0Deld3DlwdaT4nv5qF4Wq5hDYuVqfk/ChNWP0++ndMqtTg3HUfgx3oAlPPjTyGu
- 0HKg==
+ d=gmail.com; s=20221208; t=1688459674; x=1691051674;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=JxdDCc6HdBD2ooMfss3EhVWf921bsW4ykEC0D25WTns=;
+ b=qcbL2dJStUTMvAgCXDbktfL1LSD0bHMa6f2V/QaYpP1SURu3xFmE9xb2QU6TJI1OIU
+ naL2t6f9cTfIr+ze5YXCuYUAnB75sj8YuVbRHxL148ctvh/bcIXq70GZgUANcfXfJVBV
+ Mcv/WoRJPw5BQTTAcQA3x9YGh8/hQM3vbi7XoYLoD9rJpVvkkt5KA/JdelbNpoL409iv
+ xzqTiCaqWDVG4a6CKTlgE11CUUSFouhmaLA1V/4tEGLDg5AUcgQSkJmaZ+buoa7jRMs9
+ pi/bMtFMwFig5CUjBuZ+D6o/fVjhK8D0Cb4otb5CcE8OEaxzlLrHxspki+umBhWHQ+MR
+ UniA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688472132; x=1691064132;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qFRkM0PWEg+hUbKsij98js+8fyCqyqqqyI7i3PTqYgo=;
- b=KMBttaO8ISFgtC+Yyu/7ylwLzPIACO3KTECz4HD0ziR3uX6CV8WBHVszx1SD/Qf2Kx
- RQfYUSXV+/WQpFr4HF0g5XmFEeM0QjCNWFjBavkoyvtqpuiDO80TeWDt13lemd+dN+Cj
- HRI2xnkwLIVhcXYJ7lzIwL8iqMj240yBqhTrDgx4e+OuYEfpazl74+ATKSdPH/d/kFnt
- t5CESrguVd/ngpnoTNvCXoHU0gt7yxnOwyqddHkXRb/A/TzaXyA5z4zn8aQzsDUIK0gB
- yxqCEhtd5PZKQPFEVBhc5ssrkhRlu4NgT5Z2B2qUHsAo0LZPx3xKkRAnYmBD7WjvRYMr
- mwYw==
-X-Gm-Message-State: ABy/qLbOb7NyGydt1G2gXcw/jh7qBevMFVTUT3qk2YeNrnAb5G4ndAa9
- IH7MwLKXuRl/0Uhg17eqbYwZAY2QsGArTFWr1/k=
-X-Google-Smtp-Source: APBJJlGGztPAorlguBIOcFEYwbTmuL60xC6EvgEM/SpMWNbNUU7I4Uu7Jf5PsRV7okZ+Vc3/AnNuTA==
-X-Received: by 2002:a17:902:d4ce:b0:1b8:936f:c346 with SMTP id
- o14-20020a170902d4ce00b001b8936fc346mr8861847plg.30.1688472132039; 
- Tue, 04 Jul 2023 05:02:12 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20221208; t=1688459674; x=1691051674;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JxdDCc6HdBD2ooMfss3EhVWf921bsW4ykEC0D25WTns=;
+ b=KJ8zlzBVRsQESv2RNiAqhhfTekiDUvx0sfgAtWVYPmW0Si528C6OjCY9zJjJmI5xs5
+ ijP+E7z/D1TYLhYOG4B4XRhpqr2rjuP80WQjyxHmf1u7eMjqbULvO/yTIcx/6W0CDEE1
+ LOKHznKSzREPAss6Glykg86tqhFcIJhGT/D1KEEEHWT7/1VfMCEsqVk21CoBYagUXBoT
+ GX4pELVbmebq3E8iP2ojQ+xXQfguPcFJa2K+JH/3JXS/MaHGvrRdqdoaFigB9e7cIdZ7
+ zIqGzC9V2rE1jMjQZcXONOKcnNy77nGO+U3ktPGxYmegBG/tpHtdRpluRHuWcNZIqxOO
+ ExFQ==
+X-Gm-Message-State: ABy/qLZ6j75g4Enyf3SLioMxBdC7DqiCWsNREjDIHmEGTlFIommSGZSa
+ fQSNgfxDNRcozlJhAr+TfXrsPlgAC8brpg==
+X-Google-Smtp-Source: APBJJlGaw/dSnfzU9Jq87WmZf3mYP7OfJbtmhtakSFKJ21TgJZ9Hj0sFSBZ0oXgGi5LRUQHcnZUwnQ==
+X-Received: by 2002:a17:902:ce84:b0:1b8:7625:3042 with SMTP id
+ f4-20020a170902ce8400b001b876253042mr7582194plg.10.1688459674681; 
+ Tue, 04 Jul 2023 01:34:34 -0700 (PDT)
+Received: from localhost.localdomain ([218.147.112.168])
  by smtp.gmail.com with ESMTPSA id
- w16-20020a1709029a9000b001b8943b37a5sm3905218plp.24.2023.07.04.05.02.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 05:02:11 -0700 (PDT)
-Message-ID: <bf793e6b-62a0-0772-0d64-ddb5894ebf53@daynix.com>
-Date: Tue, 4 Jul 2023 21:02:09 +0900
+ jg10-20020a17090326ca00b001b7fabe8b0asm14943527plb.2.2023.07.04.01.34.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 01:34:34 -0700 (PDT)
+From: Jeuk Kim <jeuk20.kim@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: fam@euphon.net, hreitz@redhat.com, k.jensen@samsung.com, kwolf@redhat.com,
+ pbonzini@redhat.com, qemu-block@nongnu.org, stefanha@redhat.com,
+ berrange@redhat.com, marcandre.lureau@redhat.com,
+ marcel.apfelbaum@gmail.com, mst@redhat.com, philmd@linaro.org,
+ thuth@redhat.com, Jeuk Kim <jeuk20.kim@gmail.com>
+Subject: [PATCH v4 0/3] hw/ufs: Add Universal Flash Storage (UFS) support
+Date: Tue,  4 Jul 2023 17:33:56 +0900
+Message-Id: <cover.1688459061.git.jeuk20.kim@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v7 5/6] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
-Content-Language: en-US
-To: Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>, imammedo@redhat.com
-References: <20230704112555.5629-1-anisinha@redhat.com>
- <20230704112555.5629-6-anisinha@redhat.com>
- <7356dc51-588c-f2f8-22d9-c8193bae9309@daynix.com>
- <2C9BF0F4-6CB0-4805-818D-51CABC1EAFDE@redhat.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <2C9BF0F4-6CB0-4805-818D-51CABC1EAFDE@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::635;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 04 Jul 2023 09:16:13 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,75 +91,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/07/04 20:59, Ani Sinha wrote:
-> 
-> 
->> On 04-Jul-2023, at 5:24 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> On 2023/07/04 20:25, Ani Sinha wrote:
->>> PCI Express ports only have one slot, so PCI Express devices can only be
->>> plugged into slot 0 on a PCIE port. Add a warning to let users know when the
->>> invalid configuration is used. We may enforce this more strongly later on once
->>> we get more clarity on whether we are introducing a bad regression for users
->>> currenly using the wrong configuration.
->>> The change has been tested to not break or alter behaviors of ARI capable
->>> devices by instantiating seven vfs on an emulated igb device (the maximum
->>> number of vfs the linux igb driver supports). The vfs instantiated correctly
->>> and are seen to have non-zero device/slot numbers in the conventional PCI BDF
->>> representation.
->>> CC: jusual@redhat.com
->>> CC: imammedo@redhat.com
->>> CC: mst@redhat.com
->>> CC: akihiko.odaki@daynix.com
->>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
->>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->>> Reviewed-by: Julia Suvorova <jusual@redhat.com>
->>> ---
->>>   hw/pci/pci.c | 15 +++++++++++++++
->>>   1 file changed, 15 insertions(+)
->>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->>> index e2eb4c3b4a..47517ba3db 100644
->>> --- a/hw/pci/pci.c
->>> +++ b/hw/pci/pci.c
->>> @@ -65,6 +65,7 @@ bool pci_available = true;
->>>   static char *pcibus_get_dev_path(DeviceState *dev);
->>>   static char *pcibus_get_fw_dev_path(DeviceState *dev);
->>>   static void pcibus_reset(BusState *qbus);
->>> +static bool pcie_has_upstream_port(PCIDevice *dev);
->>>     static Property pci_props[] = {
->>>       DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
->>> @@ -2121,6 +2122,20 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
->>>           }
->>>       }
->>>   +    /*
->>> +     * With SRIOV and ARI, vfs can have non-zero slot in the conventional
->>> +     * PCI interpretation as all five bits reserved for slot addresses are
->>> +     * also used for function bits for the various vfs. Ignore that case.
->>
->> You don't have to mention SR/IOV; it affects all ARI-capable devices. A PF can also have non-zero slot number in the conventional interpretation so you shouldn't call it vf either.
-> 
-> Can you please help write a comment that explains this properly for all cases - ARI/non-ARI, PFs and VFs? Once everyone agrees that its clear and correct, I will re-spin.
+From: Jeuk Kim <jeuk20.kim@samsung.com>
 
-Simply, you can say:
-With ARI, the slot number field in the conventional PCI interpretation 
-can have a non-zero value as the field bits are reused to extend the 
-function number bits. Ignore that case.
+Since v3:
+- Replace softmmu_ss -> system_ss in meson
 
-> 
->>
->>> +     */
->>> +    if (pci_is_express(pci_dev) &&
->>> +        !pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
->>> +        pcie_has_upstream_port(pci_dev) &&
->>> +        PCI_SLOT(pci_dev->devfn)) {
->>> +        warn_report("PCI: slot %d is not valid for %s,"
->>> +                    " parent device only allows plugging into slot 0.",
->>> +                    PCI_SLOT(pci_dev->devfn), pci_dev->name);
->>> +    }
->>> +
->>>       if (pci_dev->failover_pair_id) {
->>>           if (!pci_bus_is_express(pci_get_bus(pci_dev))) {
->>>               error_setg(errp, "failover primary device must be on "
->>
-> 
+Since v2:
+Addressed review comment from Stefan Hajnoczi. The main fixes are as
+follows.
+- Use of SPDX licence identifiers
+- fixed endianness error
+- removed memory leak
+- fixed DMA error handling logic
+
+Since v1:
+- use macros of "hw/registerfields.h" (Addressed Philippe's review
+  comments)
+
+This patch series adds support for a new PCI-based UFS device.
+
+The UFS pci device id (PCI_DEVICE_ID_REDHAT_UFS) is not registered
+in the Linux kernel yet, so it does not work right away, but I confirmed
+that it works with Linux when the UFS pci device id is registered.
+
+I have also verified that it works with Windows 10.
+
+Jeuk Kim (3):
+  hw/ufs: Initial commit for emulated Universal-Flash-Storage
+  hw/ufs: Support for Query Transfer Requests
+  hw/ufs: Support for UFS logical unit
+
+ MAINTAINERS              |    6 +
+ docs/specs/pci-ids.rst   |    2 +
+ hw/Kconfig               |    1 +
+ hw/meson.build           |    1 +
+ hw/ufs/Kconfig           |    4 +
+ hw/ufs/lu.c              | 1441 +++++++++++++++++++++++++++++++++++
+ hw/ufs/meson.build       |    1 +
+ hw/ufs/trace-events      |   59 ++
+ hw/ufs/trace.h           |    1 +
+ hw/ufs/ufs.c             | 1545 ++++++++++++++++++++++++++++++++++++++
+ hw/ufs/ufs.h             |  131 ++++
+ include/block/ufs.h      | 1048 ++++++++++++++++++++++++++
+ include/hw/pci/pci.h     |    1 +
+ include/hw/pci/pci_ids.h |    1 +
+ include/scsi/constants.h |    1 +
+ meson.build              |    1 +
+ 16 files changed, 4244 insertions(+)
+ create mode 100644 hw/ufs/Kconfig
+ create mode 100644 hw/ufs/lu.c
+ create mode 100644 hw/ufs/meson.build
+ create mode 100644 hw/ufs/trace-events
+ create mode 100644 hw/ufs/trace.h
+ create mode 100644 hw/ufs/ufs.c
+ create mode 100644 hw/ufs/ufs.h
+ create mode 100644 include/block/ufs.h
+
+-- 
+2.34.1
+
 
