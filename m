@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37882746A9D
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 09:27:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAB4746AB3
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 09:33:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGaQE-0005ej-2i; Tue, 04 Jul 2023 03:26:02 -0400
+	id 1qGaWD-0007IV-Tb; Tue, 04 Jul 2023 03:32:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGaPz-0005eP-PU
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:25:51 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGaWB-0007IH-Cy
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:32:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGaPy-0000BF-1d
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:25:47 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qGaW9-0001Wc-O3
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:32:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688455544;
+ s=mimecast20190719; t=1688455928;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8wazLsigdnbAxRh0ZWsMpOIb61pDWO1lT+7JdpjaQEs=;
- b=UbbnuaNV6w4AHWM04q24fUlYoQySD/H3a3tiRQgEsva9qGYjs42jh3bUP2rq6/J/5qvDM8
- pBEXXCXoaVSUJkDqcCHB4Yp/fQCWHG3DW74bIfPolpiAwItuEHYT1gl+4+16vGZ3Dqt1Dg
- 004TKOdmKvLV9H/VEx4RiltjSBqsEsQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=IOsK2thkEDBqTS2L3hVTXEEXceZmABhjOxKgXaqd4JE=;
+ b=BI9Z3EsLV18SiB5j//AICjGAbPVbP27FR4Zgk84IIQlXZ1qQpOULcJihFvzX131AsMFLVD
+ XSuC7KY+pkFmdYRpf4gGkoT4pXGLh0ul2WQ9FtNV26XTrdwgc7ewhzybun9pvB9d/VD+DU
+ +jZw98eCFK0NV5hb69Pz0b/tPyDsPTg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-146-BFMXCqx1N5i6Q7ec3qiGrA-1; Tue, 04 Jul 2023 03:25:43 -0400
-X-MC-Unique: BFMXCqx1N5i6Q7ec3qiGrA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fbb0fdd060so31970035e9.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 00:25:43 -0700 (PDT)
+ us-mta-640-Knx_ngqeP_KEcBD1chDVxQ-1; Tue, 04 Jul 2023 03:32:07 -0400
+X-MC-Unique: Knx_ngqeP_KEcBD1chDVxQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fbdf34184eso4249015e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 00:32:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688455542; x=1691047542;
+ d=1e100.net; s=20221208; t=1688455926; x=1691047926;
  h=content-transfer-encoding:in-reply-to:organization:from:references
  :cc:to:content-language:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=8wazLsigdnbAxRh0ZWsMpOIb61pDWO1lT+7JdpjaQEs=;
- b=A/9RqsNHr0mnvsO6mPqHzPYMzopq5+AHMqKxazAfbV8nKaRdp7zSQ8Z8ijKbZOZWuj
- I+h87B2Om9MqXnIseARAqqrt33zCnrY2XE7kFhmpaHaT7IAMRK/G4TR967zB42p+2Ij5
- gYxPJA8rSF95GO3GeGr88evDr9louS0T1oxKSuhRPBYmG7J7uP+6Xk3WO/AocnzVxhEl
- +MJ8R3oQUFEyyO8TM7Ob9wOlKAm/fxiMiVwg2e6zGDQhRhmBGz9REXVF2a/GfiJxAg3H
- c9pl06bxtIO4pdG21GYFbFwcgOtn/LBx4XImdFeaELX8gNcHF6zKfrL0egH2jr/+fGHz
- l7dw==
-X-Gm-Message-State: AC+VfDx2I8nggOnZkXUpMxag4f/IpuA/Z7qRmHnMZYPJg/92NyIwIzOG
- +BE5qMZRLu6wp3iOug/IfaPfroTtpT0ka5s9TowaqSJGpNQTgsHb+t8uhboaXQ2qaS2paWi/1e6
- esnV4HDR0tQnN4KQ=
-X-Received: by 2002:a7b:c38f:0:b0:3fb:a46c:7eac with SMTP id
- s15-20020a7bc38f000000b003fba46c7eacmr11073383wmj.7.1688455542484; 
- Tue, 04 Jul 2023 00:25:42 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7SY/LxCv3Ct0EhoAWXHUfKdaZDKZl3posLFzFDwdKW0iW+7Qp5ky4eeTJzhqoKPIlRchpb4w==
-X-Received: by 2002:a7b:c38f:0:b0:3fb:a46c:7eac with SMTP id
- s15-20020a7bc38f000000b003fba46c7eacmr11073365wmj.7.1688455542151; 
- Tue, 04 Jul 2023 00:25:42 -0700 (PDT)
+ bh=IOsK2thkEDBqTS2L3hVTXEEXceZmABhjOxKgXaqd4JE=;
+ b=G8F4sdA9wxzhm7Rt1/cEikZYN1+rijIM0GvXpuz/3bkEE48OmSo2FKEzE/Dg2YhFd6
+ QVwezDJJb7NgudAbvmntFd0VXFIznJzeY16Eb27q0/kbHqGeMQWjA003eYzWtjkp1+sB
+ AgGt3UgvvYZrCaDpHqdweTgGBwRJqtlO1TzJHplFzzmtg7mIP5yYfLTLeI1Rnrj6DkMF
+ t7zwB0tSp60o569I1zHAqCY7UboYreORtaPdMF/+73ebkZg7v/Jqh7LRVIzU8x+HsnBp
+ kTXpJfelmCMvvRdN+e4kvXdMhmqmbh57O/JOh/KekpeYardyWDdN0JN5jq7r4Iet0jbH
+ wiUg==
+X-Gm-Message-State: AC+VfDxum2sN2RSzUt6jB+LqHYual4CDnOjbVnPDRVwljfIadgQqR8Mz
+ n9CXsnglnUCSwWeNBXZewgGTnnwsQG9HyEBAvaEs36+oQBSHcDlakpKg+mxOc0/75RbdXhzzsrp
+ k69T7i1786xj1x4Y+rHZNMVo=
+X-Received: by 2002:a05:600c:21d6:b0:3fb:b400:8443 with SMTP id
+ x22-20020a05600c21d600b003fbb4008443mr9989781wmj.36.1688455926007; 
+ Tue, 04 Jul 2023 00:32:06 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4NsgYRHUHoGytu26YMSMqOjlQu7e3DywGS/NHhT4pZEcWwPotHMscZJsAfXiHs0wNrC2BdPw==
+X-Received: by 2002:a05:600c:21d6:b0:3fb:b400:8443 with SMTP id
+ x22-20020a05600c21d600b003fbb4008443mr9989764wmj.36.1688455925652; 
+ Tue, 04 Jul 2023 00:32:05 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f30:5a00:b30d:e6bc:74c3:d6f2?
  (p200300d82f305a00b30de6bc74c3d6f2.dip0.t-ipconnect.de.
  [2003:d8:2f30:5a00:b30d:e6bc:74c3:d6f2])
  by smtp.gmail.com with ESMTPSA id
- a11-20020a056000050b00b003110dc7f408sm27700004wrf.41.2023.07.04.00.25.41
+ y9-20020a7bcd89000000b003fbb5506e54sm15747766wmj.29.2023.07.04.00.32.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 00:25:41 -0700 (PDT)
-Message-ID: <e7413571-9807-0e1c-5580-989ce9fb4845@redhat.com>
-Date: Tue, 4 Jul 2023 09:25:40 +0200
+ Tue, 04 Jul 2023 00:32:05 -0700 (PDT)
+Message-ID: <e53ccd03-1109-7868-4302-6e578aa503c8@redhat.com>
+Date: Tue, 4 Jul 2023 09:32:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2 1/1] vhost-vdpa: mute unaligned memory error report
+Subject: Re: [PATCH 01/12] linux-user: elfload: Add more initial s390x PSW bits
 Content-Language: en-US
-To: Laurent Vivier <lvivier@redhat.com>, qemu-devel@nongnu.org
-Cc: jasowang@redhat.com, eric.auger@redhat.com, Peter Xu <peterx@redhat.com>, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>, mst@redhat.com,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, marcandre.lureau@redhat.com,
- peter.maydell@linaro.org
-References: <20230704071931.575888-1-lvivier@redhat.com>
- <20230704071931.575888-2-lvivier@redhat.com>
+To: Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org
+References: <20230703155801.179167-1-iii@linux.ibm.com>
+ <20230703155801.179167-2-iii@linux.ibm.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <20230704071931.575888-2-lvivier@redhat.com>
+In-Reply-To: <20230703155801.179167-2-iii@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
@@ -109,73 +107,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04.07.23 09:19, Laurent Vivier wrote:
-> With TPM CRM device, vhost-vdpa reports an error when it tries
-> to register a listener for a non aligned memory region:
+On 03.07.23 17:50, Ilya Leoshkevich wrote:
+> Make the PSW look more similar to the real s390x userspace PSW.
+> Except for being there, the newly added bits should not affect the
+> userspace code execution.
+
+What's the purpose of this then? Required for follow-up patches?
+
 > 
->    qemu-system-x86_64: vhost_vdpa_listener_region_add received unaligned region
->    qemu-system-x86_64: vhost_vdpa_listener_region_del received unaligned region
-> 
-> This error can be confusing for the user whereas we only need to skip
-> the region (as it's already done after the error_report())
-> 
-> Rather than introducing a special case for TPM CRB memory section
-> to not display the message in this case, simply replace the
-> error_report() by a trace function (with more information, like the
-> memory region name).
-> 
-> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 > ---
->   hw/virtio/trace-events | 2 ++
->   hw/virtio/vhost-vdpa.c | 8 ++++++--
->   2 files changed, 8 insertions(+), 2 deletions(-)
+>   linux-user/elfload.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
-> index 8f8d05cf9b01..9b0d643b9475 100644
-> --- a/hw/virtio/trace-events
-> +++ b/hw/virtio/trace-events
-> @@ -34,7 +34,9 @@ vhost_vdpa_dma_map(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_
->   vhost_vdpa_dma_unmap(void *vdpa, int fd, uint32_t msg_type, uint32_t asid, uint64_t iova, uint64_t size, uint8_t type) "vdpa:%p fd: %d msg_type: %"PRIu32" asid: %"PRIu32" iova: 0x%"PRIx64" size: 0x%"PRIx64" type: %"PRIu8
->   vhost_vdpa_listener_begin_batch(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
->   vhost_vdpa_listener_commit(void *v, int fd, uint32_t msg_type, uint8_t type)  "vdpa:%p fd: %d msg_type: %"PRIu32" type: %"PRIu8
-> +vhost_vdpa_listener_region_add_unaligned(void *v, const char *name, uint64_t offset_as, uint64_t offset_page) "vdpa: %p region %s offset_within_address_space %"PRIu64" offset_within_region %"PRIu64
->   vhost_vdpa_listener_region_add(void *vdpa, uint64_t iova, uint64_t llend, void *vaddr, bool readonly) "vdpa: %p iova 0x%"PRIx64" llend 0x%"PRIx64" vaddr: %p read-only: %d"
-> +vhost_vdpa_listener_region_del_unaligned(void *v, const char *name, uint64_t offset_as, uint64_t offset_page) "vdpa: %p region %s offset_within_address_space %"PRIu64" offset_within_region %"PRIu64
->   vhost_vdpa_listener_region_del(void *vdpa, uint64_t iova, uint64_t llend) "vdpa: %p iova 0x%"PRIx64" llend 0x%"PRIx64
->   vhost_vdpa_add_status(void *dev, uint8_t status) "dev: %p status: 0x%"PRIx8
->   vhost_vdpa_init(void *dev, void *vdpa) "dev: %p vdpa: %p"
-> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> index 3c575a9a6e9e..24d32f0d3728 100644
-> --- a/hw/virtio/vhost-vdpa.c
-> +++ b/hw/virtio/vhost-vdpa.c
-> @@ -323,7 +323,9 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+> index 6900974c373..7935110bff4 100644
+> --- a/linux-user/elfload.c
+> +++ b/linux-user/elfload.c
+> @@ -1635,7 +1635,9 @@ const char *elf_hwcap_str(uint32_t bit)
+>   static inline void init_thread(struct target_pt_regs *regs, struct image_info *infop)
+>   {
+>       regs->psw.addr = infop->entry;
+> -    regs->psw.mask = PSW_MASK_64 | PSW_MASK_32;
+> +    regs->psw.mask = PSW_MASK_DAT | PSW_MASK_IO | PSW_MASK_EXT | \
+> +                     PSW_MASK_MCHECK | PSW_MASK_PSTATE | PSW_MASK_64 | \
+> +                     PSW_MASK_32;
+>       regs->gprs[15] = infop->start_stack;
+>   }
 >   
->       if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
->                    (section->offset_within_region & ~TARGET_PAGE_MASK))) {
-> -        error_report("%s received unaligned region", __func__);
-> +        trace_vhost_vdpa_listener_region_add_unaligned(v, section->mr->name,
-> +                       section->offset_within_address_space & ~TARGET_PAGE_MASK,
-> +                       section->offset_within_region & ~TARGET_PAGE_MASK);
->           return;
->       }
->   
-> @@ -405,7 +407,9 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
->   
->       if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
->                    (section->offset_within_region & ~TARGET_PAGE_MASK))) {
-> -        error_report("%s received unaligned region", __func__);
-> +        trace_vhost_vdpa_listener_region_del_unaligned(v, section->mr->name,
-> +                       section->offset_within_address_space & ~TARGET_PAGE_MASK,
-> +                       section->offset_within_region & ~TARGET_PAGE_MASK);
->           return;
->       }
->   
-
-Reviewed-by: David Hildenbrand <david@redhat.com>
-
-
-Do we also want to touch the vfio side in vfio_listener_valid_section(), 
-or why is that one unaffected?
 
 -- 
 Cheers,
