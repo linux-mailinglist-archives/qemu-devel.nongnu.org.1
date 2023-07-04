@@ -2,82 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25CC7467F6
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 05:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 954AB7468AA
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 07:03:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGWoY-0001CH-3p; Mon, 03 Jul 2023 23:34:54 -0400
+	id 1qGYA5-0006ZJ-Of; Tue, 04 Jul 2023 01:01:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qGWoW-0001Bn-56; Mon, 03 Jul 2023 23:34:52 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qGYA3-0006Z0-HI
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 01:01:11 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qGWoU-00033S-Hw; Mon, 03 Jul 2023 23:34:51 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-67ef5af0ce8so4214006b3a.2; 
- Mon, 03 Jul 2023 20:34:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qGYA0-0002yI-Fc
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 01:01:11 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-55779047021so2899768a12.3
+ for <qemu-devel@nongnu.org>; Mon, 03 Jul 2023 22:01:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688441689; x=1691033689;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UieVTM0ijH4N8thbVTg381kGlKgp/GZSBGu7R4hXdyI=;
- b=exvGYXYX83DV3z8u4ykn6T+NpWAjfZrrWrKl0+Bbriprcpgm8Lux96Zncj+ugjSP7x
- XLqvvOT5NBVus1VrAqKZ9T+XfrKwljb2AeAIIWyta1+tJ0UmscF0Zy4mf1ubXBdXa4+Z
- 9X3ImglMlS/FTH++hvw73/oa+vEy8gUf6qy8GwXSvztQsBYTbPn8Jh2Y6POlduDPotQ2
- wftC5LTMajWEi9iVNjrB2GXxIafVGFG74GYWsUO1x/vvGChivGCDcwgFtOk/aXqCAWdo
- MEgGgidCD8YFDTI/Y365WeTRH4bRbye1UNCVnqMKtHyTlG2Vb3DkosYvOGx/p1TM8IGJ
- jJ5g==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688446866; x=1691038866;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7qpS1SgUzvm/KwFc/nZs5YR6nR+kqC3ghrNHtkUczIo=;
+ b=K5UGdhQkqICu/FrRMyhoPieYLT7Qxmon4bNYExEl2g3oJZ4jBJ3X4W+vsP/ZR0kptl
+ kErSTeBBaCxlkpEs30wixrbkekfzwQUK8WaxWypNcjsEydkt4rXHw6i9RIX2wp7ntRzy
+ l3jza8ls+yAK7hRwEZcOfeulrAccY4BEJNULfXiQKXPdAP4Tbtkpb19PTJX04+QyEBuc
+ 1UYpZJmfXuqE9VRR+X3jKp+fLTEOErDXFJEZKe2/28D1p0Dk0EqvFkKIogPPbDWZ9oai
+ IDnGgP+d9wSwpcZaWGJpUpnpTKsxGhROu6kEieEoWWzlSt4YQRa4U+h1/fBJAj8O8Gjw
+ UjcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688441689; x=1691033689;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UieVTM0ijH4N8thbVTg381kGlKgp/GZSBGu7R4hXdyI=;
- b=MOpahKSh/ce3RqZsSjaHQEJcLMBLNqjbdDLT79TweF4ubALyPt8JYDvia5tQBo8BJi
- xGXpD3ehcxMJLWtb5xQTYR3v5jIDmjh6h+656/vjibEv9tGDzs5OnQnw8oSZ/zxsvOva
- fczE9hHBnkydUWsmyjVUR+0p7I5oR9YoLLkZZwXWJzUEoArRQLDSh/JHKLCcpXTOTLur
- MP7U1prfGx7Bzy/6WCaUrxczCFvfjNpkJYfkRWvMq2yOQnqxqXSBxZQRymUfr3imirJN
- oYtInaPQI2E8+ZelwmtHdghI+h//mNpf6ZhHIOfq8lD03wIBM1ra+qijoHKqNYiEuXud
- ZwpA==
-X-Gm-Message-State: ABy/qLasXU79p8osOzmxSqKbCKgB1Kr0MxYY8vvHx4LvLLsEQKWn5pmg
- QzARPcW/wWrXZvHo9Xrk598=
-X-Google-Smtp-Source: APBJJlF7O1pgV0bcuOIx6l2q0/fnlQUXcnVaa3LwE37FxNpfPnL5xSELub30o/g1PpERldwxF6g/qw==
-X-Received: by 2002:a05:6a00:148b:b0:682:4c9f:aa0 with SMTP id
- v11-20020a056a00148b00b006824c9f0aa0mr16194594pfu.29.1688441688516; 
- Mon, 03 Jul 2023 20:34:48 -0700 (PDT)
-Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
- 141-20020a630293000000b00514256c05c2sm15591861pgc.7.2023.07.03.20.34.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 20:34:48 -0700 (PDT)
-From: Hawkins Jiawei <yin31149@gmail.com>
-To: jasowang@redhat.com,
-	mst@redhat.com,
-	eperezma@redhat.com
-Cc: qemu-stable@nongnu.org, qemu-devel@nongnu.org, yin31149@gmail.com,
- 18801353760@163.com
-Subject: [PATCH v3 3/3] vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in
- _load_offloads()
-Date: Tue,  4 Jul 2023 11:34:35 +0800
-Message-Id: <b0396b80e96322b86f1a0b10c098fc1edd947d72.1688438055.git.yin31149@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1688438055.git.yin31149@gmail.com>
-References: <cover.1688438055.git.yin31149@gmail.com>
+ d=1e100.net; s=20221208; t=1688446866; x=1691038866;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7qpS1SgUzvm/KwFc/nZs5YR6nR+kqC3ghrNHtkUczIo=;
+ b=YRBqXuMpZvQUnKXXy1c2e+P7ygKZJnhhBqxTGwfpawpMDauZdLzGAtdz9fNH3ZqsbD
+ 0SMtH8D5qqOSxGvJaXOoHBfP1V4wBeGj4PC2HD8A/geSKro6yf+sO4HXNFhc2gYiv3Z+
+ /a74OXl4EdMeStlDpTgXLKbVTNXtxV0yCoOVZ49gDO6DOck826JU2z51moaO4R2Ki63p
+ 1LHKm+Qf6b3sX8wtKPnOmx9hQD3DfeNn7y8rzMiamtKDSFR2GrS4MxbDEgPBIVRMznVh
+ x2R9BzjvcD60PpdjxkdvUoJSFmMan2jEEIULPUr9SL/ZHaC/CJNV+HJ7NNm8NFqMJjh2
+ NOaQ==
+X-Gm-Message-State: AC+VfDztySjoQSnSaoV+6HR2o1JWrZavwYXqSe+YqiNF7WhvhytU4Bxx
+ tnYTX0DTI6RlEDnKevbc2/LYIg==
+X-Google-Smtp-Source: ACHHUZ6N8upp2RdJKCS/je7mN0CekbaJv8QTAa537gTF5Qsxpd4xlGySsPvT37CkHlt65g3M54W/4g==
+X-Received: by 2002:a05:6a21:339d:b0:116:5321:63bf with SMTP id
+ yy29-20020a056a21339d00b00116532163bfmr9339662pzb.41.1688446866280; 
+ Mon, 03 Jul 2023 22:01:06 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ t12-20020a170902b20c00b001a95f632340sm16096432plr.46.2023.07.03.22.01.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 03 Jul 2023 22:01:05 -0700 (PDT)
+Message-ID: <d6368f95-3adf-9d49-82b4-a138a32010a4@daynix.com>
+Date: Tue, 4 Jul 2023 14:01:03 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=yin31149@gmail.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+To: Ani Sinha <anisinha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>, Igor Mammedov <imammedo@redhat.com>
+References: <20230630041937-mutt-send-email-mst@kernel.org>
+ <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
+ <20230630043734-mutt-send-email-mst@kernel.org>
+ <49B901C6-4819-4A00-8225-39FAA6678F3E@redhat.com>
+ <20230630055717-mutt-send-email-mst@kernel.org>
+ <FB764864-ADD3-4017-8313-ED40A833A81B@redhat.com>
+ <a38e0336-58e5-e796-bd29-0dfc5d1d0e46@daynix.com>
+ <bf351f8b-1c8a-8a7a-7f44-17c9ba18f179@daynix.com>
+ <DFB3B0B7-1F61-4779-9833-2AF1BA3BDFA6@redhat.com>
+ <2ffee496-ec63-ad04-a90b-8c2fadbf3657@daynix.com>
+ <20230702005916-mutt-send-email-mst@kernel.org>
+ <63B46F8F-A52C-4BFC-BAFD-06ACAF2AA6E1@redhat.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <63B46F8F-A52C-4BFC-BAFD-06ACAF2AA6E1@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::530;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,62 +109,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to VirtIO standard, "The class, command and
-command-specific-data are set by the driver,
-and the device sets the ack byte.
-There is little it can do except issue a diagnostic
-if ack is not VIRTIO_NET_OK."
+On 2023/07/03 15:08, Ani Sinha wrote:
+> 
+> 
+>> On 02-Jul-2023, at 10:29 AM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>
+>> On Sat, Jul 01, 2023 at 04:09:31PM +0900, Akihiko Odaki wrote:
+>>> Yes, I want the slot number restriction to be enforced. If it worries you
+>>> too much for regressions, you may implement it as a warning first and then
+>>> turn it a hard error when the next development phase starts.
+>>
+>> That's not a bad idea.
+> 
+> If we had not enforced the check strongly, the tests that we fixed would not get noticed.
+> 
 
-Therefore, QEMU should stop sending the queued SVQ commands and
-cancel the device startup if the device's ack is not VIRTIO_NET_OK.
-
-Yet the problem is that, vhost_vdpa_net_load_offloads() returns 1 based on
-`*s->status != VIRTIO_NET_OK` when the device's ack is VIRTIO_NET_ERR.
-As a result, net->nc->info->load() also returns 1, this makes
-vhost_net_start_one() incorrectly assume the device state is
-successfully loaded by vhost_vdpa_net_load() and return 0, instead of
-goto `fail` label to cancel the device startup, as vhost_net_start_one()
-only cancels the device startup when net->nc->info->load() returns a
-negative value.
-
-This patch fixes this problem by returning -EIO when the device's
-ack is not VIRTIO_NET_OK.
-
-Fixes: 0b58d3686a ("vdpa: Add vhost_vdpa_net_load_offloads()")
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
----
-v3:
- - split the fixes suggested by Eugenio
- - return -EIO suggested by Michael
-
-v2: https://lore.kernel.org/all/69010e9ebb5e3729aef595ed92840f43e48e53e5.1687875592.git.yin31149@gmail.com/
- - fix the same bug in vhost_vdpa_net_load_offloads()
-
-v1: https://lore.kernel.org/all/07a1133d6c989394b342e35d8202257771e76769.1686746406.git.yin31149@gmail.com/
-
- net/vhost-vdpa.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 03d87e85c8..36aa2d7f8c 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -712,8 +712,11 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-     if (unlikely(dev_written < 0)) {
-         return dev_written;
-     }
-+    if (*s->status != VIRTIO_NET_OK) {
-+        return -EIO;
-+    }
- 
--    return *s->status != VIRTIO_NET_OK;
-+    return 0;
- }
- 
- static int vhost_vdpa_net_load(NetClientState *nc)
--- 
-2.25.1
-
+Perhaps so, but we don't have much time before feature freeze. I rather 
+want to see the check implemented as warning in 8.1 instead of delaying 
+the initial implementation of the check after 8.1 (though I worry if 
+it's already too late for 8.1.)
 
