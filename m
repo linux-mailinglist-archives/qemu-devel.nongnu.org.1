@@ -2,70 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F937475C8
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 17:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0223F74760D
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 18:04:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGiPR-0002lZ-Qh; Tue, 04 Jul 2023 11:57:45 -0400
+	id 1qGiUS-0006B8-Gd; Tue, 04 Jul 2023 12:02:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGiPP-0002kc-Af
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:57:43 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGiU7-00060g-5S
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:02:36 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGiPN-0000yx-N9
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:57:43 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4fbb281eec6so3671181e87.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 08:57:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGiU2-00029N-Nr
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:02:34 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3142860734aso3184745f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 09:02:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688486260; x=1691078260;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1688486548; x=1691078548;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TQ8LXiCqh/l23yZNrjpE9MSSiltordpEW1zSioWxsEI=;
- b=IHvaI6QUr/kc9KnPFRcKWkV0tLNbh/UjnLD0XOo9TeESrJrDv/rcSJKdePWsqsvhmU
- zOqapOVzuM0kKzndEdRlKvv0B8HBvf7W/wu1uyPN8iAq4iayndand1iHDdRQhZYYwMDL
- 9/xKNcWLosbY7Waz/4uNNuauBaD3kjh3Xt+k8FWs89eWzUAgdEvi/ehyC2/GMe3Xt90M
- o3NV1TKnItNUl9Og1Bhp1Nz199bmBnEebUx1QY9hNQCwOjllb5gCg56lc4at6pm0ygeH
- 3a6rkwbWTGtC/7D3Nj6ZINkcmRxkMuBg+UCDcZfY0yf69snrnKkhB0OgLR/Y+ba3nr2U
- zi2A==
+ bh=fMeChzpUyW5jyTGUQxxuoOuKKOO34rjMfXyYLTTUTA4=;
+ b=JoFOLJQaicC97cvRmuLUZJTxrvHRNQloUfmqXUYVlVlcByYDXjxuv9kfwDCavwvUaR
+ LuP/QAXH51jmCl4BKJE9FCbC6Dfyt79eur4OsEY4YH2NR7Gtpu/WQM4F3GJO3UIFmWY5
+ AUpSkwFnhoz5vh3S2fPz6wO2VfvANQSbeOT04YZU1AyNTa2Up75NWW8KR4mVonj5Ir7R
+ 0xaP9Su/mx1hsQqGOlwQA8k3QSZGu/CpHVrjppt/0SoWwdrM8TdTwj6aJ1bVc3m0t/ob
+ ED3twg3PCieH7rrW4FBncWMcN0VnaJEbIAoSJh6OImVy5YCQXSMwHS9sgEbQiSvTHhSk
+ shqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688486260; x=1691078260;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TQ8LXiCqh/l23yZNrjpE9MSSiltordpEW1zSioWxsEI=;
- b=C93otGI1uEofZ1BK32dUwrdl36dnS3RZDxzzvjfIZJYWmLvw1RhWTbVq99W6K7JHT8
- 8GH+OzzK/toIbVHxIrZxwRclQYdjgjH1xq2GB9pFFrHxCPk+J1+0SsFsXUNcnuHpVABT
- f06yraawZGxorqeKgurrlKEm4h8WfZBz8wjJonvPnr1Ax5b0KlleX9WUBEyejzg8g+Rx
- ld1obfwvFkxCFGZChw2FnMD3FgeH0C/QRYo3jPzEFIeipU10pqjqH31gpCMFQTKMe9yl
- /KXayFUp9eSauZzQHrHX7Jd8btJHBWel4TNFPPeadu/Wr1+OsRuyd2Tc2hz2QX2q1r+6
- SmXA==
-X-Gm-Message-State: ABy/qLZEDA2cMh/nG4LyYyVMyKf33eSebMDVOxeCWtSHKrXC4d7jKvTF
- O6DmndB2ePH1xGtuR+JNfBrJQKZjCWKGb6UdQNSCbQ==
-X-Google-Smtp-Source: APBJJlGGp2d67/grA2i5YMY3DZV2I9DFdoFA/0ylwdAr8TuaWmQgKb1KAMhZq52mLTupbNbvLj+GsKPd0GiD6OxBIpo=
-X-Received: by 2002:ac2:5b5c:0:b0:4f8:5d94:2e46 with SMTP id
- i28-20020ac25b5c000000b004f85d942e46mr9754294lfp.48.1688486259959; Tue, 04
- Jul 2023 08:57:39 -0700 (PDT)
-MIME-Version: 1.0
+ d=1e100.net; s=20221208; t=1688486548; x=1691078548;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=fMeChzpUyW5jyTGUQxxuoOuKKOO34rjMfXyYLTTUTA4=;
+ b=DR07dtGZhIgbSGJ4bGMxjAife+37o6N2fMvVgSPLaQHW9DXOvS1cVintuFeXpMC718
+ 8UTZaDFTG90wm97rkeYDPj91OAcK/ICnNor5hF53hpWS4iJAFW5KPsQMhCUMIHmRl2ES
+ KN/lxgs3vlJvapLIzfmowPxZc9ns1g6LQrivk/HK8O+M2FNXUNVMZ/2qVaynQE0HV0bq
+ AtYlgjEE1M24qHtQcJ27SH5gZffASa2YeMM2MdlbcgIIzV/NalbqXJTW9JqyVTFYyTLV
+ sxBP17pOWamwdJQKXt5nJlgKxaJdcYdxQItd2IJnLwgNboQ1VE34ksKEEWIpBKANoVue
+ dPqw==
+X-Gm-Message-State: ABy/qLaSVJ//KkMBAfttMskWD4ADATzWFZvtz2v9ppBqQaqfhqDEvVvY
+ dI1ONxCnV5w2N23Sp3Ccbjuuhw==
+X-Google-Smtp-Source: APBJJlHFEzIE7SafOU4WPj9/EimYMClEl/wXpfSVrvtycvXRXO+j31FmaLCz+LAZ3GSvzEpMgRJWHA==
+X-Received: by 2002:adf:cc90:0:b0:306:3352:5b8c with SMTP id
+ p16-20020adfcc90000000b0030633525b8cmr13220088wrj.7.1688486547785; 
+ Tue, 04 Jul 2023 09:02:27 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ d17-20020a5d4f91000000b0031433d8af0dsm6999544wru.18.2023.07.04.09.02.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 09:02:27 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id D8C3D1FFBB;
+ Tue,  4 Jul 2023 17:02:26 +0100 (BST)
 References: <20230704154332.3014896-1-peter.maydell@linaro.org>
- <a96bffba-9653-95b3-4b7c-8787646f1f21@linaro.org>
-In-Reply-To: <a96bffba-9653-95b3-4b7c-8787646f1f21@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 4 Jul 2023 16:57:29 +0100
-Message-ID: <CAFEAcA9rqf6QmG-WWebNmeUPEsmtUCAEtr7miHWaQkk1Bner1g@mail.gmail.com>
+User-agent: mu4e 1.11.8; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Subject: Re: [PATCH] target/arm: Avoid over-length shift in
  arm_cpu_sve_finalize() error case
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+Date: Tue, 04 Jul 2023 17:00:33 +0100
+In-reply-to: <20230704154332.3014896-1-peter.maydell@linaro.org>
+Message-ID: <87jzvffywd.fsf@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,47 +96,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 4 Jul 2023 at 16:52, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> On 4/7/23 17:43, Peter Maydell wrote:
-> > If you build QEMU with the clang sanitizer enabled, you can see it
-> > fire when running the arm-cpu-features test:
-> >
-> > $ QTEST_QEMU_BINARY=3D./build/arm-clang/qemu-system-aarch64 ./build/arm=
--clang/tests/qtest/arm-cpu-features
-> > [...]
-> > ../../target/arm/cpu64.c:125:19: runtime error: shift exponent 64 is to=
-o large for 64-bit type 'unsigned long long'
-> > [...]
-> >
-> > This happens because the user can specify some incorrect SVE
-> > properties that result in our calculating a max_vq of 0.  We catch
-> > this and error out, but before we do that we calculate
-> >
-> >   vq_mask =3D MAKE_64BIT_MASK(0, max_vq);$
-> >
-> > and the MAKE_64BIT_MASK() call is only valid for lengths that are
-> > greater than zero, so we hit the undefined behaviour.
->
-> Can we fix it generically?
->
-> -- >8 --
-> --- a/include/qemu/bitops.h
-> +++ b/include/qemu/bitops.h
-> @@ -28,3 +28,3 @@
->   #define MAKE_64BIT_MASK(shift, length) \
-> -    (((~0ULL) >> (64 - (length))) << (shift))
-> +    ((length) ? (((~0ULL) >> (64 - (length))) << (shift)) : 0)
->
-> ---
 
-Only by introducing a conditional in the case where the length
-isn't a compile time constant.
-Like the extract and deposit functions, the assumption is that
-you're operating on a field that actually exists and isn't
-zero-width.
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-thanks
--- PMM
+> If you build QEMU with the clang sanitizer enabled, you can see it
+> fire when running the arm-cpu-features test:
+>
+> $ QTEST_QEMU_BINARY=3D./build/arm-clang/qemu-system-aarch64 ./build/arm-c=
+lang/tests/qtest/arm-cpu-features
+> [...]
+> ../../target/arm/cpu64.c:125:19: runtime error: shift exponent 64 is too =
+large for 64-bit type 'unsigned long long'
+> [...]
+>
+> This happens because the user can specify some incorrect SVE
+> properties that result in our calculating a max_vq of 0.  We catch
+> this and error out, but before we do that we calculate
+>
+>  vq_mask =3D MAKE_64BIT_MASK(0, max_vq);$
+>
+> and the MAKE_64BIT_MASK() call is only valid for lengths that are
+> greater than zero, so we hit the undefined behaviour.
+
+Hmm that does make me worry we could have more land mines waiting to be
+found. Would converting MAKE_64BIT_MASK into an inline function and
+asserting be a better solution?
+
+>
+> Change the logic so that if max_vq is 0 we specifically set vq_mask
+> to 0 without going via MAKE_64BIT_MASK().  This lets us drop the
+> max_vq check from the error-exit logic, because if max_vq is 0 then
+> vq_map must now be 0.
+>
+> The UB only happens in the case where the user passed us an incorrect
+> set of SVE properties, so it's not a big problem in practice.
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
