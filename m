@@ -2,102 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFDF74765B
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 18:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C05D74765A
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 18:21:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGim0-0004fh-Ip; Tue, 04 Jul 2023 12:21:04 -0400
+	id 1qGim9-0004kU-E4; Tue, 04 Jul 2023 12:21:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qGily-0004f1-1m; Tue, 04 Jul 2023 12:21:02 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qGilv-0006SC-Ij; Tue, 04 Jul 2023 12:21:01 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 364GAQB0010551; Tue, 4 Jul 2023 16:20:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=wNYBMRwmcFO2kcTh3RgskaMryK2kGKo4hrmQ6i5oe4c=;
- b=SQ+4lSa+tHty48tbFX2LUmrnXqwDm4fkuJo/MHc2XsNCcj6aQnnNTFuidhPZRYo6A5rt
- 32NG9B3u7CP9XxSQIcb/E3P+r20SnJcRjN63wfvgI2oDyFLZM/vitYg1AeNrG2TO5DMu
- 6qW3xcRT5OTNBm4NXBDiu2heFMe2D/lBURvIGJ6wQ2AAzDSmIg1alkDklhMEIfE/+As2
- kK/9VNf7zXxjGF2eS6J5hU3J2URLaM1p8YgVwP7y6SW8hrePL7oe/fHEQ1NxJ5on1wk/
- 339v4cpKzNJyr9iSLGoAFj82aQf8pAZTOUFpeZkES4XI92m8DUe20HEa4uitD1dSM0O+ Vg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmpch8g24-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 16:20:54 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 364GBACM013184;
- Tue, 4 Jul 2023 16:20:54 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmpch8g10-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 16:20:53 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 364DHjRP025333;
- Tue, 4 Jul 2023 16:20:51 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rjbs4t45e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 16:20:51 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 364GKnAK18875030
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 Jul 2023 16:20:49 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6B2F62005A;
- Tue,  4 Jul 2023 16:20:49 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1F2C820043;
- Tue,  4 Jul 2023 16:20:49 +0000 (GMT)
-Received: from [9.171.14.192] (unknown [9.171.14.192])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  4 Jul 2023 16:20:49 +0000 (GMT)
-Message-ID: <25be9d1c-08bb-94ff-50e2-8e5e317ef997@linux.ibm.com>
-Date: Tue, 4 Jul 2023 18:20:48 +0200
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qGim7-0004kB-E2
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:21:11 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qGim3-0006Td-TG
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:21:10 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2b5c231f842so86149621fa.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 09:21:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688487665; x=1691079665;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=1fcddEPTkQdKCH2znvJdFzvdfgSmE3hL5aPgd53HswY=;
+ b=YzIkx2Qp9F24N8FExR4IFdgS/8sLzhKXzbGI1PmBLvR2qyG1p7h7mCFBY8sSTRtG94
+ NOkW1lr2648rnFdYk/QQx4v0PaJvLwO4y86Dy7nNuRoVhS5qb4CmgqpLXTGA7vtcL6FT
+ DD7UsQ8HQTWxSx2QNL3RZBkfUo3JoqWVp1Q08xj/peJoTu+CTi+XnIjy9SYiL+zUg21y
+ O3kDtGyKdlLIyYwHlvCUrgj4KjTdHraPnksVpiCp/bBwryvBMACAHXfk9A/Oxxu0W4Y/
+ rURXV01AdkJYkcZDJiPwTtXwNWsVeZpS322jN+JNaTbZbycpEWNQfaOVpZ6iq409NDGp
+ 5W5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688487665; x=1691079665;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1fcddEPTkQdKCH2znvJdFzvdfgSmE3hL5aPgd53HswY=;
+ b=VXSOwVEnv2E8pT4+6a3/TYvbPNswjoTQagErDvMHHMQicu2gcXBu3PkRUzIGiCFmvH
+ ZCkqypS71O1Z0C3Du8GBteno6AkmSs7LpMPdWxmUVque9VvPuUtuedvckOLmOmV4quVl
+ FjkXV/D5/vjAX7wliSOFDkOFzd0wKbYMUCfvC5CliL1eNoyww/6siP0VAQLkvUWNfYSK
+ Ru3xJCaFApqv67sSiOkA/lrtuubO+bYsL3AZWVAfRPFQrPHsXiqnJLRsC6gQ3J0q3PK0
+ XGsdbyl8wzV1W0GeEQDStDhOLaZEZTuDDp+EdmZX4zkWV/s7DAJnV+tihl6GQxQzLIpl
+ xOGQ==
+X-Gm-Message-State: ABy/qLYRlKkP9/XOXCU3li/OLfxO8oDqjbTK5mC2GXSYikZduZ2c5nXa
+ H/cx7qopj7C/DFvuswY9sr1ethuFqFL1LwlfmzcmAxWnkDA+9FtA
+X-Google-Smtp-Source: APBJJlHN4FpZzPYYp9Y067TGuDlwNz1U61zErVonMcUEEv1V9mD50ZA1g9yvA+ar+UCa5EO7tRhhED4Xqbp2GULT7ew=
+X-Received: by 2002:a2e:9844:0:b0:2b6:cbba:1307 with SMTP id
+ e4-20020a2e9844000000b002b6cbba1307mr9253360ljj.0.1688487665553; Tue, 04 Jul
+ 2023 09:21:05 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [RFC PATCH 0/4] ppc: Improve multisocket support
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>
-References: <20230704134921.2626692-1-clg@kaod.org>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20230704134921.2626692-1-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: BCWqrWZAdrqSXfziVXICBVVLwdlgYEFM
-X-Proofpoint-ORIG-GUID: HM98-nZRieXg1bSiIlKWu_prKxoBiY55
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-04_10,2023-07-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 malwarescore=0
- phishscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0 spamscore=0
- suspectscore=0 bulkscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=551
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2307040139
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 4 Jul 2023 17:20:54 +0100
+Message-ID: <CAFEAcA8AzdKw9BH_6757U-P3zCWTdyiVCAa7GB8wcjOF4wdE3Q@mail.gmail.com>
+Subject: intermittent clang sanitizer failure during 'make check-tcg': null
+ pointer deref in IntervalTreeNode
+To: QEMU Developers <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,52 +82,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+If you build QEMU with the clang UB sanitizer and do a
+'make check-tcg' run, it can fail like this:
 
+  TEST    vma-pthread-with-libinsn.so on aarch64
+../../util/interval-tree.c:751:32: runtime error: member access within
+null pointer of type 'IntervalTreeNode' (aka 'struct
+IntervalTreeNode')
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior
+../../util/interval-tree.c:751:32 in
 
-On 04/07/2023 15:49, Cédric Le Goater wrote:
-> Hello,
-> 
-> Here are changes improving multisocket support of the XIVE models
-> (POWER9 only). When a source has an END target on another chip, the
-> XIVE IC will use an MMIO store to forward the notification to the
-> remote chip. The long term plan is to get rid of pnv_xive_get_remote()
-> whic is a modeling shortcut. I have had them for while, they compile,
-> they seem to still work but this is not for merge yet. If someone
-> could take over, that would be nice.
-> 
-> The best way to test is to start a 2 sockets * 1 cpu system with devices
-> attached to the PCI buses of chip 0 and to offline CPU 0. All sources
-> should be configured to be served by CPU 1 on socket 1 and trigger
-> notifications on chip 0 should be forwarded to chip 1.
-> 
-> Last patch adds support for degenerative interrupts. This is used by
-> the lowest level FW of POWER systems. Difficult to test.
-> 
+SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior
+../../util/interval-tree.c:751:32 in
+make[1]: *** [Makefile:181: run-plugin-vma-pthread-with-libinsn.so] Error 124
+make: *** [/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/Makefile.include:56:
+run-tcg-tests-aarch64-linux-user] Error 2
 
+I only saw this once; when I re-ran the test passed...
 
-Thanks for the series! My crystal ball tells me the PC MMIO patch will 
-come handy soon (to be adapted for P10 and groups). And the remote 
-routing looks pretty interesting too.
-The last patch (LSI) may rot a bit longer though :)
-
-   Fred
-
-
-> Thanks,
-> 
-> C.
-> 
-> Cédric Le Goater (4):
->    ppc/xive: introduce a new XiveRouter end_notify() handler
->    ppc/pnv: handle END triggers between chips with MMIOs
->    ppc/pnv: add support for the PC MMIOs
->    ppc/pnv: Add support for degenerative interrupts (POWER LSI)
-> 
->   hw/intc/pnv_xive_regs.h   |   1 +
->   include/hw/ppc/pnv_xive.h |  15 +++
->   include/hw/ppc/xive.h     |   3 +
->   hw/intc/pnv_xive.c        | 262 +++++++++++++++++++++++++++++++-------
->   hw/intc/xive.c            |  50 ++++++--
->   5 files changed, 278 insertions(+), 53 deletions(-)
-> 
+thanks
+-- PMM
 
