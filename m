@@ -2,54 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C308174734F
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D6D747350
 	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:50:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGgPY-00032E-2s; Tue, 04 Jul 2023 09:49:44 -0400
+	id 1qGgQ1-0003dd-5d; Tue, 04 Jul 2023 09:50:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
- id 1qGgPV-0002yn-TS; Tue, 04 Jul 2023 09:49:41 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qGgPz-0003d0-Ix
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:50:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
- id 1qGgPT-0006XV-Kl; Tue, 04 Jul 2023 09:49:41 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QwPKs0B3Sz4wZp;
- Tue,  4 Jul 2023 23:49:37 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QwPKq0p4sz4wZw;
- Tue,  4 Jul 2023 23:49:34 +1000 (AEST)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [RFC PATCH 4/4] ppc/pnv: Add support for degenerative interrupts
- (POWER LSI)
-Date: Tue,  4 Jul 2023 15:49:21 +0200
-Message-ID: <20230704134921.2626692-5-clg@kaod.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230704134921.2626692-1-clg@kaod.org>
-References: <20230704134921.2626692-1-clg@kaod.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=18er=CW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qGgPx-0006nS-HU
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:50:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688478608;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lrxHc79hNIzhjYJmI1XVeHo3MJUejJHHxMs0NgYWi+M=;
+ b=VOurK57gZkFOjwa7AgI+Rf4KcsBDO5YKYoUEKEAfpWvY1RiiWt+awibvmFAD/VZczawi9J
+ EFqrZxRv8hnDbNOfsesSod7xO5ekYA78w8VBX8SWErEw0A/4fzGv3dwIpqfjYcESoI2tkQ
+ 6q+xJEXw8VEiJZcZd2Tm3seOtMG8rL8=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-471-Xy53MQHgPBCtJDY-Ba4qQg-1; Tue, 04 Jul 2023 09:50:06 -0400
+X-MC-Unique: Xy53MQHgPBCtJDY-Ba4qQg-1
+Received: by mail-pf1-f200.google.com with SMTP id
+ d2e1a72fcca58-66870a96b89so5690549b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:50:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688478606; x=1691070606;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lrxHc79hNIzhjYJmI1XVeHo3MJUejJHHxMs0NgYWi+M=;
+ b=BMMErFkkCLL4RgvK+1ueVSJ7wVm7AmeFU25KQbaVCPpuT58DZZX0UGaAOm+XU7fztd
+ nPhJF4iwVz2p1kLqDeBgCnYNkliNv+youmyRWgKgxiYhDRNWRZAYCaM2/3LCOw3fQmTh
+ OpFakoOi6kRFF0q8bfXW+qpwgwoOxbtSeqmimGVPsuZ6pE1WNI9W8OQJMn3b6tVqzekT
+ NSUZfxKVMkbaElLhRWdh6js+1c6zaQsVvKSSJG0yC2W00hrBMGAFPJzgTdSLpEi3l5Fo
+ 14Y/03O1W+BYZpl8h/bx1NuYPOAs6z8L2rharGcN2ldZHBRZOLvNrUpwph/KXTrOyvuY
+ nUIw==
+X-Gm-Message-State: ABy/qLYoBdBEWcit/NmmKNQ2Rvd4/e0H1bk90+LwsTx5dSaQ5A42gXB1
+ KQXCDDzPggxiEKscDZO1fFefPG7SBAJHuRnKr+iU56bM5ISB+rTAG7EN5F+5uWIwn7NKivUqj4l
+ k5UBuVnapS7QP4XM=
+X-Received: by 2002:a05:6a00:1352:b0:682:4b93:a4d3 with SMTP id
+ k18-20020a056a00135200b006824b93a4d3mr13184699pfu.1.1688478605828; 
+ Tue, 04 Jul 2023 06:50:05 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGa5Gn3J2o8CMpo6bf/A7mYqWIxGZ5s6a3CjbmOTBKCRWZUMsq3dlqQuXcl/tTDu+2/7wMvtA==
+X-Received: by 2002:a05:6a00:1352:b0:682:4b93:a4d3 with SMTP id
+ k18-20020a056a00135200b006824b93a4d3mr13184678pfu.1.1688478605489; 
+ Tue, 04 Jul 2023 06:50:05 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.131.170])
+ by smtp.gmail.com with ESMTPSA id
+ ey19-20020a056a0038d300b006827c26f148sm5017224pfb.195.2023.07.04.06.50.02
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 04 Jul 2023 06:50:04 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH v7 5/6] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20230704144825.181a1629@imammedo.users.ipa.redhat.com>
+Date: Tue, 4 Jul 2023 19:20:00 +0530
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ qemu-devel <qemu-devel@nongnu.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <EC8A962B-80F5-499F-9EA8-CC53DA160F1D@redhat.com>
+References: <20230704112555.5629-1-anisinha@redhat.com>
+ <20230704112555.5629-6-anisinha@redhat.com>
+ <7356dc51-588c-f2f8-22d9-c8193bae9309@daynix.com>
+ <2C9BF0F4-6CB0-4805-818D-51CABC1EAFDE@redhat.com>
+ <bf793e6b-62a0-0772-0d64-ddb5894ebf53@daynix.com>
+ <20230704144825.181a1629@imammedo.users.ipa.redhat.com>
+To: Igor Mammedov <imammedo@redhat.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,273 +110,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-POWER systems have a degenerative interrupt path used during system
-bring up. It doesn't rely on the XIVE routing logic and all thread 0
-of each core are notified.
 
-TODO: Need a new OS driver to check modeling.
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- include/hw/ppc/pnv_xive.h |  15 ++++++
- include/hw/ppc/xive.h     |   1 +
- hw/intc/pnv_xive.c        | 109 +++++++++++++++++++++++++-------------
- hw/intc/xive.c            |  22 ++++++++
- 4 files changed, 111 insertions(+), 36 deletions(-)
+> On 04-Jul-2023, at 6:18 PM, Igor Mammedov <imammedo@redhat.com> wrote:
+>=20
+> On Tue, 4 Jul 2023 21:02:09 +0900
+> Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>=20
+>> On 2023/07/04 20:59, Ani Sinha wrote:
+>>>=20
+>>>=20
+>>>> On 04-Jul-2023, at 5:24 PM, Akihiko Odaki =
+<akihiko.odaki@daynix.com> wrote:
+>>>>=20
+>>>> On 2023/07/04 20:25, Ani Sinha wrote: =20
+>>>>> PCI Express ports only have one slot, so PCI Express devices can =
+only be
+>>>>> plugged into slot 0 on a PCIE port. Add a warning to let users =
+know when the
+>>>>> invalid configuration is used. We may enforce this more strongly =
+later on once
+>>>>> we get more clarity on whether we are introducing a bad regression =
+for users
+>>>>> currenly using the wrong configuration.
+>>>>> The change has been tested to not break or alter behaviors of ARI =
+capable
+>>>>> devices by instantiating seven vfs on an emulated igb device (the =
+maximum
+>>>>> number of vfs the linux igb driver supports). The vfs instantiated =
+correctly
+>>>>> and are seen to have non-zero device/slot numbers in the =
+conventional PCI BDF
+>>>>> representation.
+>>>>> CC: jusual@redhat.com
+>>>>> CC: imammedo@redhat.com
+>>>>> CC: mst@redhat.com
+>>>>> CC: akihiko.odaki@daynix.com
+>>>>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=3D2128929
+>>>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>>>>> Reviewed-by: Julia Suvorova <jusual@redhat.com>
+>>>>> ---
+>>>>>  hw/pci/pci.c | 15 +++++++++++++++
+>>>>>  1 file changed, 15 insertions(+)
+>>>>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+>>>>> index e2eb4c3b4a..47517ba3db 100644
+>>>>> --- a/hw/pci/pci.c
+>>>>> +++ b/hw/pci/pci.c
+>>>>> @@ -65,6 +65,7 @@ bool pci_available =3D true;
+>>>>>  static char *pcibus_get_dev_path(DeviceState *dev);
+>>>>>  static char *pcibus_get_fw_dev_path(DeviceState *dev);
+>>>>>  static void pcibus_reset(BusState *qbus);
+>>>>> +static bool pcie_has_upstream_port(PCIDevice *dev);
+>>>>>    static Property pci_props[] =3D {
+>>>>>      DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
+>>>>> @@ -2121,6 +2122,20 @@ static void pci_qdev_realize(DeviceState =
+*qdev, Error **errp)
+>>>>>          }
+>>>>>      }
+>>>>>  +    /*
+>>>>> +     * With SRIOV and ARI, vfs can have non-zero slot in the =
+conventional
+>>>>> +     * PCI interpretation as all five bits reserved for slot =
+addresses are
+>>>>> +     * also used for function bits for the various vfs. Ignore =
+that case. =20
+>>>>=20
+>>>> You don't have to mention SR/IOV; it affects all ARI-capable =
+devices. A PF can also have non-zero slot number in the conventional =
+interpretation so you shouldn't call it vf either. =20
+>>>=20
+>>> Can you please help write a comment that explains this properly for =
+all cases - ARI/non-ARI, PFs and VFs? Once everyone agrees that its =
+clear and correct, I will re-spin. =20
+>>=20
+>> Simply, you can say:
+>> With ARI, the slot number field in the conventional PCI =
+interpretation=20
+>> can have a non-zero value as the field bits are reused to extend the=20=
 
-diff --git a/include/hw/ppc/pnv_xive.h b/include/hw/ppc/pnv_xive.h
-index 9c48430ee418..0ab3a8651ec1 100644
---- a/include/hw/ppc/pnv_xive.h
-+++ b/include/hw/ppc/pnv_xive.h
-@@ -15,6 +15,17 @@
- #include "qom/object.h"
- #include "hw/ppc/xive2.h"
- 
-+struct PnvXive;
-+
-+#define TYPE_PNV_XIVE_LSI "pnv-xive-lsi"
-+#define PNV_XIVE_LSI(obj) OBJECT_CHECK(PnvXiveLsi, (obj), TYPE_PNV_XIVE_LSI)
-+
-+typedef struct PnvXiveLsi {
-+    DeviceState  parent_obj;
-+
-+    struct PnvXive   *xive;
-+} PnvXiveLsi;
-+
- #define TYPE_PNV_XIVE "pnv-xive"
- OBJECT_DECLARE_TYPE(PnvXive, PnvXiveClass,
-                     PNV_XIVE)
-@@ -71,6 +82,10 @@ struct PnvXive {
-     XiveSource    ipi_source;
-     XiveENDSource end_source;
- 
-+    /* Lsi handlers */
-+    PnvXiveLsi    lsi_xive;
-+    XiveSource    lsi_source;
-+
-     /* Interrupt controller registers */
-     uint64_t      regs[0x300];
- 
-diff --git a/include/hw/ppc/xive.h b/include/hw/ppc/xive.h
-index f120874e0ff1..983a475dd77c 100644
---- a/include/hw/ppc/xive.h
-+++ b/include/hw/ppc/xive.h
-@@ -534,6 +534,7 @@ void xive_tctx_reset(XiveTCTX *tctx);
- void xive_tctx_destroy(XiveTCTX *tctx);
- void xive_tctx_ipb_update(XiveTCTX *tctx, uint8_t ring, uint8_t ipb);
- void xive_tctx_reset_os_signal(XiveTCTX *tctx);
-+void xive_tctx_lsi_notify(XiveTCTX *tctx);
- 
- /*
-  * KVM XIVE device helpers
-diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
-index 844965cfe281..9bf138cdea2c 100644
---- a/hw/intc/pnv_xive.c
-+++ b/hw/intc/pnv_xive.c
-@@ -991,7 +991,7 @@ static void pnv_xive_ic_reg_write(void *opaque, hwaddr offset,
-                 memory_region_del_subregion(&xive->ic_mmio,
-                                             &xive->ic_notify_mmio);
-                 memory_region_del_subregion(&xive->ic_mmio,
--                                            &xive->ic_lsi_mmio);
-+                                            &xive->lsi_source.esb_mmio);
-                 memory_region_del_subregion(&xive->ic_mmio,
-                                             &xive->tm_indirect_mmio);
- 
-@@ -1010,7 +1010,7 @@ static void pnv_xive_ic_reg_write(void *opaque, hwaddr offset,
-                                             &xive->ic_notify_mmio);
-                 memory_region_add_subregion(&xive->ic_mmio,
-                                             2ul << xive->ic_shift,
--                                            &xive->ic_lsi_mmio);
-+                                            &xive->lsi_source.esb_mmio);
-                 memory_region_add_subregion(&xive->ic_mmio,
-                                             4ull << xive->ic_shift,
-                                             &xive->tm_indirect_mmio);
-@@ -1503,39 +1503,9 @@ static const MemoryRegionOps pnv_xive_ic_notify_ops = {
- };
- 
- /*
-- * IC - LSI MMIO handlers (not modeled)
-+ * IC - LSI MMIO handlers
-  */
- 
--static void pnv_xive_ic_lsi_write(void *opaque, hwaddr addr,
--                              uint64_t val, unsigned size)
--{
--    PnvXive *xive = PNV_XIVE(opaque);
--
--    xive_error(xive, "IC: LSI invalid write @%"HWADDR_PRIx, addr);
--}
--
--static uint64_t pnv_xive_ic_lsi_read(void *opaque, hwaddr addr, unsigned size)
--{
--    PnvXive *xive = PNV_XIVE(opaque);
--
--    xive_error(xive, "IC: LSI invalid read @%"HWADDR_PRIx, addr);
--    return -1;
--}
--
--static const MemoryRegionOps pnv_xive_ic_lsi_ops = {
--    .read = pnv_xive_ic_lsi_read,
--    .write = pnv_xive_ic_lsi_write,
--    .endianness = DEVICE_BIG_ENDIAN,
--    .valid = {
--        .min_access_size = 8,
--        .max_access_size = 8,
--    },
--    .impl = {
--        .min_access_size = 8,
--        .max_access_size = 8,
--    },
--};
--
- /*
-  * IC - Indirect TIMA MMIO handlers
-  */
-@@ -1975,6 +1945,10 @@ static void pnv_xive_init(Object *obj)
-                             TYPE_XIVE_SOURCE);
-     object_initialize_child(obj, "end_source", &xive->end_source,
-                             TYPE_XIVE_END_SOURCE);
-+    object_initialize_child(obj, "lsi_source", &xive->lsi_source,
-+                            TYPE_XIVE_SOURCE);
-+    object_initialize_child(obj, "xive_lsi", &xive->lsi_xive,
-+                            TYPE_PNV_XIVE_LSI);
- }
- 
- /*
-@@ -1988,6 +1962,7 @@ static void pnv_xive_realize(DeviceState *dev, Error **errp)
-     PnvXive *xive = PNV_XIVE(dev);
-     PnvXiveClass *pxc = PNV_XIVE_GET_CLASS(dev);
-     XiveSource *xsrc = &xive->ipi_source;
-+    XiveSource *lsi_xsrc = &xive->lsi_source;
-     XiveENDSource *end_xsrc = &xive->end_source;
-     Error *local_err = NULL;
- 
-@@ -2037,9 +2012,20 @@ static void pnv_xive_realize(DeviceState *dev, Error **errp)
-                           &pnv_xive_ic_notify_ops,
-                           xive, "xive-ic-notify", 1 << xive->ic_shift);
- 
--    /* The Pervasive LSI trigger and EOI pages (not modeled) */
--    memory_region_init_io(&xive->ic_lsi_mmio, OBJECT(dev), &pnv_xive_ic_lsi_ops,
--                          xive, "xive-ic-lsi", 2 << xive->ic_shift);
-+    /* The Pervasive LSI trigger and EOI pages */
-+
-+    object_property_set_link(OBJECT(&xive->lsi_xive), "xive", OBJECT(xive),
-+                             &error_abort);
-+    if (!qdev_realize(DEVICE(&xive->lsi_xive), NULL, errp)) {
-+        return;
-+    }
-+
-+    object_property_set_int(OBJECT(lsi_xsrc), "nr-irqs", 1, &error_fatal);
-+    object_property_set_link(OBJECT(lsi_xsrc), "xive", OBJECT(&xive->lsi_xive),
-+                             &error_abort);
-+    if (!qdev_realize(DEVICE(lsi_xsrc), NULL, &local_err)) {
-+        return;
-+    }
- 
-     /* Thread Interrupt Management Area (Indirect) */
-     memory_region_init_io(&xive->tm_indirect_mmio, OBJECT(dev),
-@@ -2156,9 +2142,60 @@ static const TypeInfo pnv_xive_info = {
-     }
- };
- 
-+/*
-+ * Notifier proxy for LSI sources
-+ *
-+ * Trigger all threads 0
-+ */
-+static void pnv_xive_lsi_notify(XiveNotifier *xn, uint32_t srcno,
-+                                bool pq_checked)
-+{
-+    PnvXive *xive = PNV_XIVE_LSI(xn)->xive;
-+    PnvChip *chip = xive->chip;
-+    int i;
-+
-+    for (i = 0; i < chip->nr_cores; i++) {
-+        PowerPCCPU *cpu = chip->cores[i]->threads[0];
-+
-+        if (!pnv_xive_is_cpu_enabled(xive, cpu)) {
-+            continue;
-+        }
-+
-+        xive_tctx_lsi_notify(XIVE_TCTX(pnv_cpu_state(cpu)->intc));
-+    }
-+}
-+
-+static Property pnv_xive_lsi_properties[] = {
-+    DEFINE_PROP_LINK("xive", PnvXiveLsi, xive, TYPE_PNV_XIVE, PnvXive *),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static void pnv_xive_lsi_class_init(ObjectClass *klass, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(klass);
-+    XiveNotifierClass *xnc = XIVE_NOTIFIER_CLASS(klass);
-+
-+    dc->desc = "PowerNV XIVE LSI proxy";
-+    device_class_set_props(dc, pnv_xive_lsi_properties);
-+
-+    xnc->notify = pnv_xive_lsi_notify;
-+};
-+
-+static const TypeInfo pnv_xive_lsi_info = {
-+    .name          = TYPE_PNV_XIVE_LSI,
-+    .parent        = TYPE_DEVICE,
-+    .instance_size = sizeof(PnvXiveLsi),
-+    .class_init    = pnv_xive_lsi_class_init,
-+    .interfaces    = (InterfaceInfo[]) {
-+        { TYPE_XIVE_NOTIFIER },
-+        { }
-+    }
-+};
-+
- static void pnv_xive_register_types(void)
- {
-     type_register_static(&pnv_xive_info);
-+    type_register_static(&pnv_xive_lsi_info);
- }
- 
- type_init(pnv_xive_register_types)
-diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-index e36e695a691b..d81b7d6ea6b4 100644
---- a/hw/intc/xive.c
-+++ b/hw/intc/xive.c
-@@ -90,6 +90,8 @@ static uint64_t xive_tctx_accept(XiveTCTX *tctx, uint8_t ring)
-                                regs[TM_CPPR], regs[TM_NSR]);
-     }
- 
-+    /* TODO: drop LP bit when LE is set */
-+
-     return (nsr << 8) | regs[TM_CPPR];
- }
- 
-@@ -153,6 +155,26 @@ void xive_tctx_ipb_update(XiveTCTX *tctx, uint8_t ring, uint8_t ipb)
-     xive_tctx_notify(tctx, ring);
- }
- 
-+void xive_tctx_lsi_notify(XiveTCTX *tctx)
-+{
-+    uint32_t qw3w2 = xive_tctx_word2(&tctx->regs[TM_QW3_HV_PHYS]);
-+    uint8_t *regs = &tctx->regs[TM_QW3_HV_PHYS];
-+
-+    /*
-+     * If the HW context (VT) is enabled and the LSI enabled (LE) bit
-+     * is set, raise the LSI pending bit and notify the CPU on the HV
-+     * line.
-+     */
-+    if ((be32_to_cpu(qw3w2) & (TM_QW3W2_VT | TM_QW3W2_LE)) ==
-+        (TM_QW3W2_VT | TM_QW3W2_LE)) {
-+        qw3w2 = xive_set_field32(TM_QW3W2_LP, qw3w2, 1);
-+        memcpy(&tctx->regs[TM_QW3_HV_PHYS + TM_WORD2], &qw3w2, 4);
-+
-+        regs[TM_NSR] |= (TM_QW3_NSR_HE_LSI << 6);
-+        qemu_irq_raise(xive_tctx_output(tctx, TM_QW3_HV_PHYS));
-+    }
-+}
-+
- /*
-  * XIVE Thread Interrupt Management Area (TIMA)
-  */
--- 
-2.41.0
+>> function number bits. Ignore that case.
+>=20
+> mentioning 'conventional PCI interpretation' in comment and then =
+immediately
+> checking 'pci_is_express(pci_dev)' is confusing. Since comment belongs
+> only to PCIE branch it would be better to talk in only about PCIe =
+stuff
+> and referring to relevant portions of spec.
+
+Ok so how about this?
+
+   * With ARI, devices can have non-zero slot in the traditional BDF     =
+                                                                         =
+   =20
+     * representation as all five bits reserved for slot addresses are   =
+                                                                         =
+     =20
+     * also used for function bits. Ignore that case.                    =
+  =20
+
+
+> (for example see how it's done in kernel code: only_one_child(...)
+>=20
+> PS:
+> kernel can be forced  to scan for !0 device numbers, but that's rather
+> a hack, so we shouldn't really care about that.
+>=20
+>>=20
+>>>=20
+>>>>=20
+>>>>> +     */
+>>>>> +    if (pci_is_express(pci_dev) &&
+>>>>> +        !pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
+>>>>> +        pcie_has_upstream_port(pci_dev) &&
+>>>>> +        PCI_SLOT(pci_dev->devfn)) {
+>>>>> +        warn_report("PCI: slot %d is not valid for %s,"
+>>>>> +                    " parent device only allows plugging into =
+slot 0.",
+>>>>> +                    PCI_SLOT(pci_dev->devfn), pci_dev->name);
+>>>>> +    }
+>>>>> +
+>>>>>      if (pci_dev->failover_pair_id) {
+>>>>>          if (!pci_bus_is_express(pci_get_bus(pci_dev))) {
+>>>>>              error_setg(errp, "failover primary device must be on =
+" =20
 
 
