@@ -2,90 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E53746E51
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 12:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA214746E54
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 12:13:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGcyR-0001d6-RK; Tue, 04 Jul 2023 06:09:31 -0400
+	id 1qGd1D-0002VU-Pj; Tue, 04 Jul 2023 06:12:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGcyO-0001cU-Dw
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 06:09:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qGd18-0002Ua-Tb; Tue, 04 Jul 2023 06:12:19 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGcyM-0006oB-G2
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 06:09:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688465363;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ReVL85Yw0Dg35VJ3gOFqczUvIkmobJgbQpvwrV7PYfg=;
- b=cGVPRb4kVnLCuP8uS2nv0ARUSfumu3nLRSLA5EeDEAudBWOELGGmRsbNVwSWxiHcKyAgb+
- pOHlagF/i84xRkI/TeJKEd4nKC0HE9so2i7Hb1wdE9S9/TTnckGLGgzO6bxhVCZ5dvTahE
- bhZ4V/1btWkSwBlcyoQU+h8mS0CEutQ=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-5_3RxUOSNXevxEmAHM5jiw-1; Tue, 04 Jul 2023 06:09:22 -0400
-X-MC-Unique: 5_3RxUOSNXevxEmAHM5jiw-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-765ab532883so659067885a.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 03:09:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688465362; x=1691057362;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ReVL85Yw0Dg35VJ3gOFqczUvIkmobJgbQpvwrV7PYfg=;
- b=lnspm8RBqEgFVWSBbc36/aYsUHzoVYrqbGAiq7GlCSjTrCpQPVX3JknTp+mZOM4dY0
- qyMFNGqYu+hMBnE7HuS+JPvTVO7FpjdVcQtPcy28AIlvoYaOWQnSSSuP+UU+rohbeb60
- LoheLyoB2GEsIp1ztZZOasX81A5v5cx9Sdvk7Mra+A4OvpIgHw9pzw38NwHPyhMKWiFw
- N9MJ8UgWe81yB3TsXRyskETon68V49gwpraJW5EFoRY2KmvtlUb4HsnJlVjF4b3fEwDo
- m2JMkERQoXRlqw9R+DBF6ANK2jt8reEvExogrQDkKQ03xyomJbvJ6Bm8cU1lzgs+hlb/
- TiuA==
-X-Gm-Message-State: ABy/qLaf3PI/JtGfCwaQguXwJVzUAM29K0p0nSKKU43peb2Y/ZHgTH9d
- 82VTMST8+7Q2kcYz8nrftMbTugwZkIhpltcKo3fvLHdTqeRG2SZyHtWeSfWuFxJIaP2FTdq6vUS
- UdlmgTZKMGQ0FnWE=
-X-Received: by 2002:a05:6214:2129:b0:62d:eda3:431d with SMTP id
- r9-20020a056214212900b0062deda3431dmr15679094qvc.20.1688465362234; 
- Tue, 04 Jul 2023 03:09:22 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHaqGHwkAx9B96edHsi6kzzMp09GLVoaczM+7nTQIIXx4eLwWpSRqILSOvs49ytrL0DkKinig==
-X-Received: by 2002:a05:6214:2129:b0:62d:eda3:431d with SMTP id
- r9-20020a056214212900b0062deda3431dmr15679081qvc.20.1688465361915; 
- Tue, 04 Jul 2023 03:09:21 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-126.web.vodafone.de.
- [109.43.179.126]) by smtp.gmail.com with ESMTPSA id
- s16-20020a05621412d000b00636d2482dd4sm2393850qvv.17.2023.07.04.03.09.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 03:09:21 -0700 (PDT)
-Message-ID: <0e9bc700-38db-2400-5a3f-3660f5485048@redhat.com>
-Date: Tue, 4 Jul 2023 12:09:18 +0200
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qGd16-0007Pz-Ue; Tue, 04 Jul 2023 06:12:18 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3649qA1v022950; Tue, 4 Jul 2023 10:12:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=x5lLJd2Z3YmMGDFerac5dP0SCoPymM2noHAbPDMHGd8=;
+ b=TBJtPHmfLMYbOYwyiEF2LlX2Obv7tWaszmoqnfFCCvD/EqBlumtESp26pJ14qW33rEO9
+ 7nwRXxr7ZpKsDaerX1+CRNJicWpoPIvX6EzmXZT3aaYGx8TOAupdC0pMTq1mYyk6c6/C
+ Y54gGYnvJnj67dB6kDPrGEOD6IJSPOfz47lIoeJJg/Z+/WXqYo7A2ma4DoxIIKI7GfWO
+ f7y07EGx//iC7Zjp5XOPWTqPy2mPkM9ZsfrEkGDO2hi1+v5fL0x+3II7S62k23ZNWqIv
+ j8mBoQ9PfD2sHDDq+Bix2s+VNTnDQ4wc1Oex/1FkC97psfzJUawOzSm+gGrihly87BAj qA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmh5t8hvg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jul 2023 10:12:03 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3649s0Zl028843;
+ Tue, 4 Jul 2023 10:12:03 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmh5t8hup-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jul 2023 10:12:03 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3644U74w005378;
+ Tue, 4 Jul 2023 10:12:00 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3rjbs4sdyf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jul 2023 10:12:00 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 364ABwhJ26477284
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Jul 2023 10:11:58 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 260B02006C;
+ Tue,  4 Jul 2023 10:11:58 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C4AB020065;
+ Tue,  4 Jul 2023 10:11:57 +0000 (GMT)
+Received: from [9.179.4.4] (unknown [9.179.4.4])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  4 Jul 2023 10:11:57 +0000 (GMT)
+Message-ID: <ba65ba98-7e27-5727-f58d-f32580f9fbb3@linux.ibm.com>
+Date: Tue, 4 Jul 2023 12:11:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 3/5] ppc/pnv: Add P10 quad xscom model
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Matthew Rosato <mjrosato@linux.ibm.com>
-References: <20230704093204.2579133-1-clg@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH] kconfig: Add PCIe devices to s390xx machines
-In-Reply-To: <20230704093204.2579133-1-clg@redhat.com>
+To: Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+References: <20230704054204.168547-1-joel@jms.id.au>
+ <20230704054204.168547-4-joel@jms.id.au>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+In-Reply-To: <20230704054204.168547-4-joel@jms.id.au>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: eKtfvL4cQukwbQUl52jbFKS4bkd4tRPF
+X-Proofpoint-ORIG-GUID: u-d3sM3YkqiFn6hNGvqZFMR_dDVsz3f8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-04_06,2023-06-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 suspectscore=0
+ bulkscore=0 spamscore=0 mlxscore=0 impostorscore=0 phishscore=0
+ mlxlogscore=999 malwarescore=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307040083
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,38 +115,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04/07/2023 11.32, Cédric Le Goater wrote:
-> It is useful to extend the number of available PCI devices to KVM guests
-> for passthrough scenarios and also to expose these models to a different
-> (big endian) architecture.
 
-Maybe mention that these devices can work on s390x since they support MSI-X 
-? (While most of the other devices don't work on s390x since they only 
-support legacy interrupts)
 
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
->   hw/s390x/Kconfig | 4 ++++
->   1 file changed, 4 insertions(+)
+On 04/07/2023 07:42, Joel Stanley wrote:
+> Add a PnvQuad class for the P10 powernv machine. No xscoms are
+> implemented yet, but this allows them to be added.
 > 
-> diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
-> index 5e7d8a2bae8b..373f38adcd6b 100644
-> --- a/hw/s390x/Kconfig
-> +++ b/hw/s390x/Kconfig
-> @@ -10,3 +10,7 @@ config S390_CCW_VIRTIO
->       select SCLPCONSOLE
->       select VIRTIO_CCW
->       select MSI_NONBROKEN
-> +    select PCI_EXPRESS
-> +    select E1000E_PCI_EXPRESS
-> +    select IGB_PCI_EXPRESS
-> +    select USB_XHCI_PCI
+> The size is reduced to avoid the quad region from overlapping with the
+> core region.
+> 
+>    address-space: xscom-0
+>      0000000000000000-00000003ffffffff (prio 0, i/o): xscom-0
+>        0000000100000000-00000001000fffff (prio 0, i/o): xscom-quad.0
+>        0000000100108000-0000000100907fff (prio 0, i/o): xscom-core.3
+>        0000000100110000-000000010090ffff (prio 0, i/o): xscom-core.2
+>        0000000100120000-000000010091ffff (prio 0, i/o): xscom-core.1
+>        0000000100140000-000000010093ffff (prio 0, i/o): xscom-core.0
+> 
+> Signed-off-by: Joel Stanley <joel@jms.id.au>
+> ---
 
-Please don't use "select" here - you still want these devices to be disabled 
-in case you run configure with "--without-default-devices".
 
-You can use "imply" instead of "select" instead.
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-  Thomas
 
+   Fred
+
+
+> v2: Fix unimp read message
+>      Wrap lines at 80 col
+>      Set size
+> ---
+>   include/hw/ppc/pnv_xscom.h |  2 +-
+>   hw/ppc/pnv.c               |  2 +-
+>   hw/ppc/pnv_core.c          | 54 ++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 56 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
+> index cbe848d27ba0..f7da9a1dc617 100644
+> --- a/include/hw/ppc/pnv_xscom.h
+> +++ b/include/hw/ppc/pnv_xscom.h
+> @@ -129,7 +129,7 @@ struct PnvXScomInterfaceClass {
+>   
+>   #define PNV10_XSCOM_EQ_BASE(core)     \
+>       ((uint64_t) PNV10_XSCOM_EQ(PNV10_XSCOM_EQ_CHIPLET(core)))
+> -#define PNV10_XSCOM_EQ_SIZE        0x100000
+> +#define PNV10_XSCOM_EQ_SIZE        0x20000
+>   
+>   #define PNV10_XSCOM_EC_BASE(core) \
+>       ((uint64_t) PNV10_XSCOM_EQ_BASE(core) | PNV10_XSCOM_EC(core & 0x3))
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index c77fdb6747a4..5f25fe985ab2 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -1669,7 +1669,7 @@ static void pnv_chip_power10_quad_realize(Pnv10Chip *chip10, Error **errp)
+>           PnvQuad *eq = &chip10->quads[i];
+>   
+>           pnv_chip_quad_realize_one(chip, eq, chip->cores[i * 4],
+> -                                  PNV_QUAD_TYPE_NAME("power9"));
+> +                                  PNV_QUAD_TYPE_NAME("power10"));
+>   
+>           pnv_xscom_add_subregion(chip, PNV10_XSCOM_EQ_BASE(eq->quad_id),
+>                                   &eq->xscom_regs);
+> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+> index 73d25409c937..e4df435b15e9 100644
+> --- a/hw/ppc/pnv_core.c
+> +++ b/hw/ppc/pnv_core.c
+> @@ -404,6 +404,47 @@ static const MemoryRegionOps pnv_quad_power9_xscom_ops = {
+>       .endianness = DEVICE_BIG_ENDIAN,
+>   };
+>   
+> +/*
+> + * POWER10 Quads
+> + */
+> +
+> +static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
+> +                                            unsigned int width)
+> +{
+> +    uint32_t offset = addr >> 3;
+> +    uint64_t val = -1;
+> +
+> +    switch (offset) {
+> +    default:
+> +        qemu_log_mask(LOG_UNIMP, "%s: reading @0x%08x\n", __func__,
+> +                      offset);
+> +    }
+> +
+> +    return val;
+> +}
+> +
+> +static void pnv_quad_power10_xscom_write(void *opaque, hwaddr addr,
+> +                                         uint64_t val, unsigned int width)
+> +{
+> +    uint32_t offset = addr >> 3;
+> +
+> +    switch (offset) {
+> +    default:
+> +        qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
+> +                      offset);
+> +    }
+> +}
+> +
+> +static const MemoryRegionOps pnv_quad_power10_xscom_ops = {
+> +    .read = pnv_quad_power10_xscom_read,
+> +    .write = pnv_quad_power10_xscom_write,
+> +    .valid.min_access_size = 8,
+> +    .valid.max_access_size = 8,
+> +    .impl.min_access_size = 8,
+> +    .impl.max_access_size = 8,
+> +    .endianness = DEVICE_BIG_ENDIAN,
+> +};
+> +
+>   static void pnv_quad_realize(DeviceState *dev, Error **errp)
+>   {
+>       PnvQuad *eq = PNV_QUAD(dev);
+> @@ -430,6 +471,14 @@ static void pnv_quad_power9_class_init(ObjectClass *oc, void *data)
+>       pqc->xscom_size = PNV9_XSCOM_EQ_SIZE;
+>   }
+>   
+> +static void pnv_quad_power10_class_init(ObjectClass *oc, void *data)
+> +{
+> +    PnvQuadClass *pqc = PNV_QUAD_CLASS(oc);
+> +
+> +    pqc->xscom_ops = &pnv_quad_power10_xscom_ops;
+> +    pqc->xscom_size = PNV10_XSCOM_EQ_SIZE;
+> +}
+> +
+>   static void pnv_quad_class_init(ObjectClass *oc, void *data)
+>   {
+>       DeviceClass *dc = DEVICE_CLASS(oc);
+> @@ -453,6 +502,11 @@ static const TypeInfo pnv_quad_infos[] = {
+>           .name = PNV_QUAD_TYPE_NAME("power9"),
+>           .class_init = pnv_quad_power9_class_init,
+>       },
+> +    {
+> +        .parent = TYPE_PNV_QUAD,
+> +        .name = PNV_QUAD_TYPE_NAME("power10"),
+> +        .class_init = pnv_quad_power10_class_init,
+> +    },
+>   };
+>   
+>   DEFINE_TYPES(pnv_quad_infos);
 
