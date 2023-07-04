@@ -2,83 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5668A746C58
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1AE746C5E
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:50:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGbi1-0005Uw-P4; Tue, 04 Jul 2023 04:48:29 -0400
+	id 1qGbjO-00077o-Fv; Tue, 04 Jul 2023 04:49:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGbhz-0005U2-Nn
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:48:27 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGbhy-0001tr-As
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:48:27 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3142860734aso2753533f8f.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:48:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688460504; x=1691052504;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=toKx1fFLd+3/2P2vytnpx3Tsn4SWMbWwnwh4hJZuTuk=;
- b=O1Obz0A6umHoYblvkCg2+Snh7K1+VmFdAHyt5lNbn+ytu6zpm4LN8uMILqiG+mDTAv
- wKfn8cl1YrNOgXb0ytcrmAvLNVwKkyUR28apAbqbe1NdZouXeMNTfVAGa5WLjAqrwG4A
- N3vaPeZrIlIrSfvjvlY5Ggwg9CHKZLj3rU4UNRX7M4Y3J7u4ROqS/LSaRhHo3aOB46mN
- SjLn6KuwNOFybfarRLfuL8tyFLpIuUxRFuMGnIluLRn8vMEVa5B1WHbegZO/6o89k/0z
- 9XIpTSpFppzt/FdstMTr4lDc8E+wwuegMPNBwHrYYFfGoHxPKKUH273aV3upuqgeY4Wc
- s0qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688460504; x=1691052504;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=toKx1fFLd+3/2P2vytnpx3Tsn4SWMbWwnwh4hJZuTuk=;
- b=XqRMxW5fYazRkPST7VIRoG1XGal91g7Odo4AKfiiCrnBNr09pUC/Oo6NsCnWPDx57y
- kTjZHXlhVjLXqokE3FOqAjc5/KMSc1d1qVrWRQxE5rs2kxpzEBkMqxe/BfInzYgg1NO1
- KZGCk//T7fNbF3N0a2mZp2t59mLYm6HNBUfzJj2uoLjH34bOsWF2aKCVan/5ZxshNsGB
- 4rvmh0i9SNZFmGNGVuffXE9kMU0ilfM+Whnd9adMgzvaVjOaSzEQ1I0YEi+6CyEhplQU
- Y1bFAmEysGYA+9WDDRJJTmoA2Fgdmt7O4e4P8MHg7y01GY/jS7THoKJHbpIvICg3Zq5E
- TNpg==
-X-Gm-Message-State: ABy/qLZka2aJytHDGG/o1Ih3GXJGakUuzoN9fgIK0QXRpe8TucRVTNLx
- Bcr8uRB/3lFGHP+llaLQGmSOTA==
-X-Google-Smtp-Source: APBJJlEju6sp0FP6GBXaubFVLLJNmtkhXJ1hLH1LWQxPTv8f08/bDHTlgbUoA4djq9iApQ4nrGQT1A==
-X-Received: by 2002:adf:f84a:0:b0:314:140a:e629 with SMTP id
- d10-20020adff84a000000b00314140ae629mr13829335wrq.7.1688460504591; 
- Tue, 04 Jul 2023 01:48:24 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.157.122])
- by smtp.gmail.com with ESMTPSA id
- y17-20020a1c4b11000000b003f9b24cf881sm32191156wma.16.2023.07.04.01.48.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 01:48:24 -0700 (PDT)
-Message-ID: <6c582b2c-927a-41d1-68a3-19f8189eac70@linaro.org>
-Date: Tue, 4 Jul 2023 10:48:23 +0200
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qGbjE-000773-DU
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:49:44 -0400
+Received: from rev.ng ([5.9.113.41])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qGbjC-0002B7-Ri
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:49:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
+ Cc:To:Subject:Reply-To:MIME-Version:Date:Message-ID:Sender:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=2CTFhDduZ/gmTF0hcnq2jpjnTjXaK4UixOAgd7adtwo=; b=h41MW6RwgcJnbqymFMRuYIuZOK
+ Iix7sbduWhnkJqlsMaADUlseSBYP6r3xYYxRPSkuzzVziJqjehL+SfBo0hSwFWlKbZgyuYYABjIW+
+ G02qdL/ZF+h0KelKPEwRkHxEviBnsSk0bltV+spL7/RV5y0xu/EftruejZr2eBYt9mCQ=;
+Message-ID: <a5a43032-4a8f-a12f-4e18-bb60d9231323@rev.ng>
+Date: Tue, 4 Jul 2023 10:49:32 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 01/13] ppc440: Change ppc460ex_pcie_init() parameter type
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 4/9] include/hw: introduce CPU_MAX_NEGATIVE_ENV_OFFSET
 Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <cover.1688421085.git.balaton@eik.bme.hu>
- <3a4232c444613e63627203cc7c8c22c9d5bb414d.1688421085.git.balaton@eik.bme.hu>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <3a4232c444613e63627203cc7c8c22c9d5bb414d.1688421085.git.balaton@eik.bme.hu>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: ale@rev.ng, pbonzini@redhat.com, eduardo@habkost.net, philmd@linaro.org,
+ marcel.apfelbaum@gmail.com, peter.maydell@linaro.org, wangyanan55@huawei.com
+References: <20230630122551.21766-1-anjo@rev.ng>
+ <20230630122551.21766-5-anjo@rev.ng>
+ <bd3618d9-549b-994d-55a9-d333e7f1a905@linaro.org>
+Organization: rev.ng
+In-Reply-To: <bd3618d9-549b-994d-55a9-d333e7f1a905@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,23 +62,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  anjo@rev.ng
+X-ACL-Warn: ,  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/7/23 00:02, BALATON Zoltan wrote:
-> Change parameter of ppc460ex_pcie_init() from env to cpu to allow
-> further refactoring.
-> 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
->   hw/ppc/ppc440.h    | 2 +-
->   hw/ppc/ppc440_uc.c | 7 ++++---
->   hw/ppc/sam460ex.c  | 2 +-
->   3 files changed, 6 insertions(+), 5 deletions(-)
 
-FWIW I'd rather move ppc460ex_pcie_register_dcrs() in
-this patch. Regardless:
+On 6/30/23 16:19, Richard Henderson wrote:
+> On 6/30/23 14:25, Anton Johansson wrote:
+>> For reasons related to code-generation quality, the offset of
+>> CPUTLBDescFast and IcountDecr from CPUArchState needs to fit within
+>> 11 bits of displacement (arm[32|64] and riscv addressing modes).
+>>
+>> This commit introduces a new constant to store the maximum allowed
+>> negative offset, so it can be statically asserted to hold later on.
+>>
+>> Signed-off-by: Anton Johansson <anjo@rev.ng>
+>> ---
+>>   include/hw/core/cpu.h | 11 +++++++++++
+>>   1 file changed, 11 insertions(+)
+>>
+>> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+>> index c226d7263c..0377f74d48 100644
+>> --- a/include/hw/core/cpu.h
+>> +++ b/include/hw/core/cpu.h
+>> @@ -259,6 +259,17 @@ struct qemu_work_item;
+>>     #define CPU_UNSET_NUMA_NODE_ID -1
+>>   +/*
+>> + * For reasons related to code-generation quality the fast path
+>> + * CPUTLBDescFast array and IcountDecr fields need to be located 
+>> within a
+>> + * small negative offset of CPUArchState.  This requirement comes from
+>> + * host-specific addressing modes of arm[32|64] and riscv which uses 
+>> 12-
+>> + * and 11 bits of displacement respectively.
+>> + */
+>> +#define CPU_MIN_DISPLACEMENT_BITS 11
+>> +#define CPU_MAX_NEGATIVE_ENV_OFFSET \
+>> +    (-(1 << CPU_MIN_DISPLACEMENT_BITS))
+>
+> You'd want 6 bits, for AArch64 LDP (7-bit signed immediate).
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Ah right, but it's scaled so it would be -512 for AArch64 and -256 for 
+arm32,
+that would also agree with the smallest MIN_TLB_MASK_TABLE_OFS  in
+the backends.
+
+-- 
+Anton Johansson,
+rev.ng Labs Srl.
 
 
