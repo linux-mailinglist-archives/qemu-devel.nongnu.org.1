@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6073274759E
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 17:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0254D7475A1
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 17:52:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGiHt-0006Om-19; Tue, 04 Jul 2023 11:49:57 -0400
+	id 1qGiJa-0007XJ-P9; Tue, 04 Jul 2023 11:51:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+cf2aa98949e522d56bcb+7254+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qGiHq-0006NE-1U
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:49:54 -0400
+ id 1qGiJW-0007Wn-PC
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:51:38 -0400
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
  <BATV+cf2aa98949e522d56bcb+7254+infradead.org+dwmw2@casper.srs.infradead.org>)
- id 1qGiHm-0007QP-Ix
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:49:53 -0400
+ id 1qGiJU-000805-Jz
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:51:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
  In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=KN8WDkct5KDv+zlgJ07PaW23LOUrRtz12lZy95c4kak=; b=LroHHymov57kalxmX8R5R14nq7
- KcM8DVe+jS1BBnWIIM92G39Ls+PYSCEg6q4KgdpSKsaUJZaH6EuFpiBdKYv/PBG18lJFSibOOn0Yt
- UQJsutIfZA2VYIwLMrAnHYnMoS7QeotMqd+J2bpH+I7qh5r+ZuGz2bXA8t32buQxQDnm96/1gO2EE
- euREQfphHOHZAIroiWXJwk0fdFLOJgJJPeveajZNz7Sdr6ZC644ki9/T43mG+TT7XZsBFr+JECCiP
- t2b8kxdJOj6K7ovr3lkWwcVuxIgBd3ROsDMOVR7n/QSJZJFD7h21qdW3MhPHqmmVqeNG7GFfqGtk4
- yGXakHCQ==;
+ bh=jI7zKGQ3gRXN+oXWN6iBtxjK5EFSh9wbso5Nq2z8N5w=; b=sEiwtHmuU6jyKcXI5SmdQPEvqD
+ 1F/+oUyc2B5VfWkrxi03HJaddmR2Bg2Jej1J+qJsLJmtuGZ00C4aC9EMZQrT0vj01+RVNJ5FEAbIP
+ v8tPt/ANrC4I5yDWmL3rvdXP0/esRvtCeR6PAu/Ajg3J84cfzxpfWji/M0+55I5B6rc1LduhxCCtj
+ rDCmwYbikTRELco6dr4fKqgdjMiFWjAWtFQ/duUwz2BiJJXkPxS4+farxest5wbTaVQ1oKM6OjQZn
+ igoQM/fKgv8dd/m/o3BhwsqHLsckev7StkqgAoe6bxb8b6URTFm2UUJ/apdE3bTlbpkWDPmZ5r+nQ
+ u9Ug0aKg==;
 Received: from [2001:8b0:10b:5:36c:5942:7c03:2db0]
  (helo=u3832b3a9db3152.ant.amazon.com)
  by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1qGiHc-009Gpk-D0; Tue, 04 Jul 2023 15:49:40 +0000
-Message-ID: <318049e6f803afa150c38190e5ce3540e1b82c8d.camel@infradead.org>
-Subject: Re: [PATCH] i386/xen: consistent locking around Xen singleshot timers
+ id 1qGiJS-009GuK-Hm; Tue, 04 Jul 2023 15:51:34 +0000
+Message-ID: <4d45f38c586d17f878034fdec14e53be1cb83059.camel@infradead.org>
+Subject: [PATCH v2] i386/xen: consistent locking around Xen singleshot timers
 From: David Woodhouse <dwmw2@infradead.org>
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, Paul Durrant
  <paul@xen.org>
-Date: Tue, 04 Jul 2023 16:49:39 +0100
-In-Reply-To: <CAFEAcA_CR0PraF1DuDxw6q9U=Atut_=v0L1gHr6VfgxHCbmJXw@mail.gmail.com>
+Date: Tue, 04 Jul 2023 16:51:34 +0100
+In-Reply-To: <318049e6f803afa150c38190e5ce3540e1b82c8d.camel@infradead.org>
 References: <20230302123029.153265-1-pbonzini@redhat.com>
  <20230302123029.153265-33-pbonzini@redhat.com>
  <CAFEAcA-s+sNDn4z_kXd70koFGSLXqjMUXB5Gn9VzTnaSbr2B_Q@mail.gmail.com>
  <d61333c6394697d88dd08d48cc7fa730ff8e1987.camel@infradead.org>
  <CAFEAcA_CR0PraF1DuDxw6q9U=Atut_=v0L1gHr6VfgxHCbmJXw@mail.gmail.com>
+ <318049e6f803afa150c38190e5ce3540e1b82c8d.camel@infradead.org>
 Content-Type: multipart/signed; micalg="sha-256";
  protocol="application/pkcs7-signature"; 
- boundary="=-Hmh3fuacJvsS+BvKNSoG"
+ boundary="=-paggs13wns28VAeCzKU3"
 User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
@@ -80,52 +81,180 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---=-Hmh3fuacJvsS+BvKNSoG
+--=-paggs13wns28VAeCzKU3
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2023-06-02 at 17:58 +0100, Peter Maydell wrote:
-> On Mon, 22 May 2023 at 19:52, David Woodhouse <dwmw2@infradead.org> wrote=
-:
-> >=20
-> > From: David Woodhouse <dwmw@amazon.co.uk>
-> >=20
-> > Coverity points out (CID 1507534) that we sometimes access
-> > env->xen_singleshot_timer_ns under the protection of
-> > env->xen_timers_lock (eg in xen_vcpu_singleshot_timer_event()) and
-> > sometimes not (the specific case Coverity complains about is in
-> > do_vcpu_soft_reset()).
-> >=20
-> > This isn't strictly an issue. There are two modes for the timers; if
-> > the kernel supports the EVTCHN_SEND capability then it handles all the
-> > timer hypercalls and delivery internally, and all we need to do is an
-> > ioctl to get/set the next timer as part of the vCPU state. If the
-> > kernel doesn't have that support, then we do all the emulation within
-> > qemu, and *those* are the code paths where we actually care about the
-> > locking.
-> >=20
-> > But it doesn't hurt to be a little bit more consistent and avoid having
-> > to explain *why* it's OK.
-> >=20
-> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
->=20
-> Looking a bit more closely at the Coverity lists, there's also
-> CID 1507968 which is for the access to env->xen_singleshot_timer_ns
-> in kvm_get_xen_state(), which this patch doesn't touch, I think ?
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-That one is basically a false positive since it's for the case where
-the kernel is handling the timers and all we do is an ioctl to read the
-state. Which is *inherently* racy if any other vCPU can be running and
-modifying them at the time. And doesn't have anything to race *with* if
-not :)
+Coverity points out (CID 1507534, 1507968) that we sometimes access
+env->xen_singleshot_timer_ns under the protection of
+env->xen_timers_lock and sometimes not.
 
-On the other hand, the one in kvm_put_xen_state() which calls
-do_set_singleshot_timer() is for the userspace case, and *that* one
-probably wants locking. Again in practice it's probably never going to
-have anything to race with, but that's a poor excuse. New patch
-follows.
+This isn't always an issue. There are two modes for the timers; if the
+kernel supports the EVTCHN_SEND capability then it handles all the timer
+hypercalls and delivery internally, and all we use the field for is to
+get/set the timer as part of the vCPU state via an ioctl(). If the
+kernel doesn't have that support, then we do all the emulation within
+qemu, and *those* are the code paths where we actually care about the
+locking.
 
---=-Hmh3fuacJvsS+BvKNSoG
+But it doesn't hurt to be a little bit more consistent and avoid having
+to explain *why* it's OK.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+---
+ target/i386/kvm/xen-emu.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
+
+diff --git a/target/i386/kvm/xen-emu.c b/target/i386/kvm/xen-emu.c
+index d7c7eb8d9c..9946ff0905 100644
+--- a/target/i386/kvm/xen-emu.c
++++ b/target/i386/kvm/xen-emu.c
+@@ -43,6 +43,7 @@
+=20
+ static void xen_vcpu_singleshot_timer_event(void *opaque);
+ static void xen_vcpu_periodic_timer_event(void *opaque);
++static int vcpuop_stop_singleshot_timer(CPUState *cs);
+=20
+ #ifdef TARGET_X86_64
+ #define hypercall_compat32(longmode) (!(longmode))
+@@ -466,6 +467,7 @@ void kvm_xen_inject_vcpu_callback_vector(uint32_t vcpu_=
+id, int type)
+     }
+ }
+=20
++/* Must always be called with xen_timers_lock held */
+ static int kvm_xen_set_vcpu_timer(CPUState *cs)
+ {
+     X86CPU *cpu =3D X86_CPU(cs);
+@@ -483,6 +485,7 @@ static int kvm_xen_set_vcpu_timer(CPUState *cs)
+=20
+ static void do_set_vcpu_timer_virq(CPUState *cs, run_on_cpu_data data)
+ {
++    QEMU_LOCK_GUARD(&X86_CPU(cs)->env.xen_timers_lock);
+     kvm_xen_set_vcpu_timer(cs);
+ }
+=20
+@@ -545,7 +548,6 @@ static void do_vcpu_soft_reset(CPUState *cs, run_on_cpu=
+_data data)
+     env->xen_vcpu_time_info_gpa =3D INVALID_GPA;
+     env->xen_vcpu_runstate_gpa =3D INVALID_GPA;
+     env->xen_vcpu_callback_vector =3D 0;
+-    env->xen_singleshot_timer_ns =3D 0;
+     memset(env->xen_virq, 0, sizeof(env->xen_virq));
+=20
+     set_vcpu_info(cs, INVALID_GPA);
+@@ -555,8 +557,13 @@ static void do_vcpu_soft_reset(CPUState *cs, run_on_cp=
+u_data data)
+                           INVALID_GPA);
+     if (kvm_xen_has_cap(EVTCHN_SEND)) {
+         kvm_xen_set_vcpu_callback_vector(cs);
++
++        QEMU_LOCK_GUARD(&X86_CPU(cs)->env.xen_timers_lock);
++        env->xen_singleshot_timer_ns =3D 0;
+         kvm_xen_set_vcpu_timer(cs);
+-    }
++    } else {
++        vcpuop_stop_singleshot_timer(cs);
++    };
+=20
+ }
+=20
+@@ -1059,6 +1066,10 @@ static int vcpuop_stop_periodic_timer(CPUState *targ=
+et)
+     return 0;
+ }
+=20
++/*
++ * Userspace handling of timer, for older kernels.
++ * Must always be called with xen_timers_lock held.
++ */
+ static int do_set_singleshot_timer(CPUState *cs, uint64_t timeout_abs,
+                                    bool future, bool linux_wa)
+ {
+@@ -1086,12 +1097,8 @@ static int do_set_singleshot_timer(CPUState *cs, uin=
+t64_t timeout_abs,
+         timeout_abs =3D now + delta;
+     }
+=20
+-    qemu_mutex_lock(&env->xen_timers_lock);
+-
+     timer_mod_ns(env->xen_singleshot_timer, qemu_now + delta);
+     env->xen_singleshot_timer_ns =3D now + delta;
+-
+-    qemu_mutex_unlock(&env->xen_timers_lock);
+     return 0;
+ }
+=20
+@@ -1115,6 +1122,7 @@ static int vcpuop_set_singleshot_timer(CPUState *cs, =
+uint64_t arg)
+         return -EFAULT;
+     }
+=20
++    QEMU_LOCK_GUARD(&X86_CPU(cs)->env.xen_timers_lock);
+     return do_set_singleshot_timer(cs, sst.timeout_abs_ns,
+                                    !!(sst.flags & VCPU_SSHOTTMR_future),
+                                    false);
+@@ -1141,6 +1149,7 @@ static bool kvm_xen_hcall_set_timer_op(struct kvm_xen=
+_exit *exit, X86CPU *cpu,
+     if (unlikely(timeout =3D=3D 0)) {
+         err =3D vcpuop_stop_singleshot_timer(CPU(cpu));
+     } else {
++        QEMU_LOCK_GUARD(&X86_CPU(cpu)->env.xen_timers_lock);
+         err =3D do_set_singleshot_timer(CPU(cpu), timeout, false, true);
+     }
+     exit->u.hcall.result =3D err;
+@@ -1826,6 +1835,7 @@ int kvm_put_xen_state(CPUState *cs)
+          * If the kernel has EVTCHN_SEND support then it handles timers to=
+o,
+          * so the timer will be restored by kvm_xen_set_vcpu_timer() below=
+.
+          */
++        QEMU_LOCK_GUARD(&env->xen_timers_lock);
+         if (env->xen_singleshot_timer_ns) {
+             ret =3D do_set_singleshot_timer(cs, env->xen_singleshot_timer_=
+ns,
+                                     false, false);
+@@ -1844,10 +1854,7 @@ int kvm_put_xen_state(CPUState *cs)
+     }
+=20
+     if (env->xen_virq[VIRQ_TIMER]) {
+-        ret =3D kvm_xen_set_vcpu_timer(cs);
+-        if (ret < 0) {
+-            return ret;
+-        }
++        do_set_vcpu_timer_virq(cs, RUN_ON_CPU_HOST_INT(env->xen_virq[VIRQ_=
+TIMER]));
+     }
+     return 0;
+ }
+@@ -1896,6 +1903,15 @@ int kvm_get_xen_state(CPUState *cs)
+         if (ret < 0) {
+             return ret;
+         }
++
++        /*
++         * This locking is fairly pointless, and is here to appease Coveri=
+ty.
++         * There is an unavoidable race condition if a different vCPU sets=
+ a
++         * timer for this vCPU after the value has been read out. But that=
+'s
++         * OK in practice because *all* the vCPUs need to be stopped befor=
+e
++         * we set about migrating their state.
++         */
++        QEMU_LOCK_GUARD(&X86_CPU(cs)->env.xen_timers_lock);
+         env->xen_singleshot_timer_ns =3D va.u.timer.expires_ns;
+     }
+=20
+--=20
+2.34.1
+
+
+
+--=-paggs13wns28VAeCzKU3
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -217,25 +346,25 @@ IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
 dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
 NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
 xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
-DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwNzA0MTU0OTM5WjAvBgkqhkiG9w0BCQQxIgQgejpwtETC
-dVQ0sxULXu+VR8XekMS4AePI3h0bGPNsJwYwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwNzA0MTU1MTM0WjAvBgkqhkiG9w0BCQQxIgQgzC81+TsE
+SWQVYvY0L+AgCVKl93Ny64B3ZdcyrsbJTUcwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
 BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
 A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
 dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
 DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
 MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
 Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
-lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAytZ6/9oXuw8KyKD1xIjkr8TwitjaGcXUh
-//XoTICqYkE5qxiF62YqV/c5tuA2blaSOFjIMK4KVor/qw04XvKFVOThGpSWSaO6OKHg2dUY/fXT
-1M9j2QwpHom6q/KwKVJVg0738wTJLWVqmaNAZ5XJAn3mYx8bdo3G461kmL00v14yrl7nSsaIy7BX
-/8A+bcnOT+mMky8a7o61sN5Rb3pykah5GLtRYBllMexlXYr9aaQEc7Qhq2Dvzl2G+U06jcBERKYn
-NT6lth2FqgvS+X+alw8MAnv1R0XBtNZ2mowT5dKYIU4tDqTFyHIoOZMCuuG196W9+2uMt/GfSHgr
-GsXiruEW4ugjHOs1ITF1nGSSIvebyp9COt9QTWP3v3v2SORTHjVnQmUGcPsYFcd98XvTB2T3sHT5
-GcfSAw+NAIlCHl1tLG74RFut9wo1GI6Qz4+aYNJ9xqltZPetmoo4aWv5sDFSiccElcuRtmXzM3yI
-piwwSxWKuSyP2Y6hkDguv8tV0U6fyfGtf0Xe27uWNcMcdhj4gEuDfRSxFr/htH/HGidut1tzDcAH
-CFVjQ4rXy5KMG8c4bs6Ou5x5VRT95uyIrtkVnC+4gbZXtLZJMTHAJNZ8q7jyEu85dgKO/5zMEfZc
-RjOI7OHSNSW7Qvub5G8Lm5hFyJgluhRd8frZWtj+sgAAAAAAAA==
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgCPMHOhxQ5JbzAnnapwzRpeVzSoh7ubbsA7
+9zXfsusCPeYCNQV2ZObAy6vIrzaWRXwmenEmgr8WBqOrCskrVusxNdQ/IyZlUUFbnBInrfBOlYMc
+VoseyBDAZguaMuEv4MrPmPt/hFS4crJ/PENyQKr5VYg6UVgKmqIbEQSVGxpQEU7CGkR43MLdn3nh
+hK0ee4wzETHWYt5jO8mowcISx0D2KVioXgkwcw25wWGtmXBUCnZzHRp9HBVI0f5xH9aBK1apJm4w
+/RjbsyYgJ0Gp4kFP0OdzxOe5EZsKIE/TCWX8at99py/Nix16JdA1gzhrndbN6rrqxRzXs1xuayHh
+aj6uArgpN9tym7w+baI8N46lHT2MwgNgOgrM6PYaul9DQm/lJhoQYps8FuR9ViH40zjLcLAyVwxs
+awxPGCFMPOyc/A9Eb8F2NafBWBylsrubeyEItd4Uc+pVe+5KbyZibK8LJ6lb2kFIgkFZQFQar39g
+9ot3wj0SNpbc2zUduDP/nMasZ+2FPB85mw5+OJbHEMWcaALUHWZJvs0F8KCFdwRsIf++RpqR8nzf
+ZlGLXxNpw+dsQhDEzWvQvkVBfbD7tQUrVossOO+e0qeaU9neBWSa8XeQdEREMmQ+MFST2GvBa0ef
+rRvqI8w/TsB1oypXx7mVhGxHKvUH8+bwtcBow8m/VgAAAAAAAA==
 
 
---=-Hmh3fuacJvsS+BvKNSoG--
+--=-paggs13wns28VAeCzKU3--
 
