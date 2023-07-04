@@ -2,92 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F5D747491
+	by mail.lfdr.de (Postfix) with ESMTPS id D5368747490
 	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:55:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGhQr-0001i7-0m; Tue, 04 Jul 2023 10:55:09 -0400
+	id 1qGhQm-0001cs-SV; Tue, 04 Jul 2023 10:55:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qGhQo-0001ew-Kq
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:55:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qGhQm-0004G4-Vv
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:55:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688482504;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=EmGEvptwJkM6UoX38+QPWD8ud5IKVgmApDNdi1W8v9U=;
- b=Z6UzKzqkWpdzI7uvwI8IBk6k8S7i7Yrd6PlS3aA/BoJevQbQMDSCXsd92mbsgxIDpqKDjB
- 0MHpcWd+cmYg1UWa/T50Q1vj35eKMEEgkuLj4huaXxYfcjZOnElOJMVTGsNhc9kH3AC4GF
- kEUr8q7qAzwEErNFZ9nIH0vCjKQR1R8=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-551-9Y0CcuKJNg6DVPbaL7EkNw-1; Tue, 04 Jul 2023 10:55:02 -0400
-X-MC-Unique: 9Y0CcuKJNg6DVPbaL7EkNw-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-635e822b49eso40111016d6.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:55:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGhQk-0001Yd-8z
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:55:02 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGhQi-0004E0-LH
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:55:01 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fbc54caad5so52702685e9.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688482498; x=1691074498;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mDL60JMltsMt/Rtg+5wTG42zz2rVVDC3HXHwPSfEEGk=;
+ b=guhz6rDvWjuaIhSJ4DIGVbzCkamwJcvl6uEMHn53jeIR8UCf4ilZOydQohvYacoN2+
+ SSelyymUEntGuaAYrWzYd/nP1LqkAvHNSsvvcXzWimeVz9ttZ7CgX4aPLFHE8gejQoCL
+ nfNIcb4nj4C0+3I7yE0YOZVwea9wjuuALErqeb0EZGrQS+OB/2s2QdVztuldIr3biF9n
+ 5BQvm6INnlmK46zhaeFt28y0EYJB1MBdP5OCRxLoo4SVxOhq7Xvdqq/mi3//Muyrl5zm
+ WIxvWKIf5atcrzo2jrKxG2WN311NFjhcAtw86u0ycLYyrOE9synZwkhK/ZjWrHgiTblB
+ NFDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688482502; x=1691074502;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20221208; t=1688482498; x=1691074498;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EmGEvptwJkM6UoX38+QPWD8ud5IKVgmApDNdi1W8v9U=;
- b=Cag5KxRcgmmZD0HcKKCxmDhDJ0GwPHyAagIlzCJ6Mj1JdbTHRl3ov3KPD5yidF4kql
- NEqOloacjQ5aaF2E5u4IlnyGSAoAkc0RxWOHMLNcqbUCACWwtpci3yJN5DJYOYNJaK8s
- 3s/b0YhvtC5yUeljg3cqJm5OcD6slyGEsLWmOOBYpSyqZqdreVLS5b4IWioFF8JsHepE
- SaERJQeIvCmigZIApzIzCiHmSao7ZeqlhjVD4guRFZnsvvbQiT8ZHJPljMCXIoYQpkiu
- 8jY9eHO7ELu2LEsx9Os2AYcAeuZjWjnJYF3E/v4BxCG+D78SUUEnHD+oFeTbPqktkhSz
- ZHsQ==
-X-Gm-Message-State: ABy/qLbHOj9Y14BP+RB8JrkO58n8oc4+qH4q4NftMH76HR0OobRUiU5k
- mV3G6KdZtAS/+6TJqslY6pkWKtNgjYdo7Gie6P0xnNmmf2Md4UuVppin9Vz4vH5hIlLKbYUoOZ+
- Ev505eXisonwLjpY=
-X-Received: by 2002:a0c:e64b:0:b0:62d:fd45:4d6a with SMTP id
- c11-20020a0ce64b000000b0062dfd454d6amr9018589qvn.16.1688482502417; 
- Tue, 04 Jul 2023 07:55:02 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFcv7mXEP+P8uaHnGHMCyY2IQQ38jVnHxCx+dZMs0x/sr0mlEtHosc5lhtn+CK3mNkoMl7mrg==
-X-Received: by 2002:a0c:e64b:0:b0:62d:fd45:4d6a with SMTP id
- c11-20020a0ce64b000000b0062dfd454d6amr9018582qvn.16.1688482502175; 
- Tue, 04 Jul 2023 07:55:02 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-46-200-163.retail.telecomitalia.it.
- [79.46.200.163]) by smtp.gmail.com with ESMTPSA id
- p3-20020a0cfac3000000b00631fea4d5bcsm12659204qvo.95.2023.07.04.07.55.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 07:55:01 -0700 (PDT)
-Date: Tue, 4 Jul 2023 16:54:53 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, virtio-dev@lists.oasis-open.org, slp@redhat.com, 
- mst@redhat.com, marcandre.lureau@redhat.com, stefanha@redhat.com, 
- viresh.kumar@linaro.org, takahiro.akashi@linaro.org, erik.schilling@linaro.org,
- manos.pitsidianakis@linaro.org, mathieu.poirier@linaro.org
-Subject: Re: [virtio-dev] [RFC PATCH] docs/interop: define STANDALONE
- protocol feature for vhost-user
-Message-ID: <3ogh7u3ezp7vlrp3ticquoajgsnpnglplm44osrsd7gvxv2lyn@g22qgf4vwgp5>
-References: <20230704123600.1808604-1-alex.bennee@linaro.org>
+ bh=mDL60JMltsMt/Rtg+5wTG42zz2rVVDC3HXHwPSfEEGk=;
+ b=LXwTTjVcA7nvEkBy0QJrajaBWpL/u+knb9CTJz3dVYodbftCS4hdFMFDs/aDXQw0Jb
+ A8V0czDmgd1m8hjx55pWFN+0AKafe+hj+fite9zLIN+QApv1C/Fo4ALFwO9gcauMoAh/
+ tPyss6yyL9umqtST5Sd/MbF/IN7O38BUn+V51s9wVfDdltO8A6houtGje5IaF6m47fTF
+ dfw1uki1oAAkrWcGATmQ41Sk2RBF6cqyKDuUDNqy9gFPwO4QGuOUFX7xAmwT7cRWtnjF
+ ZA9ltjGRkQoKw08LkjGXH1bu1peZlyMXUkDMQzT/N6f9bVLRrjLD1rT5GCb3y5ErVu3W
+ 5dhA==
+X-Gm-Message-State: AC+VfDyJBmgF5rjQGO+OZCC/GfZW4kKJHBtBnG6h1RyEYd8PTPocTHNW
+ bfBxksO2Xte13dJmzQ4Xy8WvYg==
+X-Google-Smtp-Source: ACHHUZ5jJPaROpRVARbRAxeyzE+AfZYh1pK82JQ2I/vp92ja5IXbrIg/4Tk09/YFgKDNJsEBglG8/g==
+X-Received: by 2002:a05:600c:3787:b0:3fb:ac73:f7d9 with SMTP id
+ o7-20020a05600c378700b003fbac73f7d9mr10543879wmr.32.1688482498454; 
+ Tue, 04 Jul 2023 07:54:58 -0700 (PDT)
+Received: from [192.168.1.102] ([176.176.157.122])
+ by smtp.gmail.com with ESMTPSA id
+ p5-20020a5d68c5000000b00314283a525bsm10145016wrw.93.2023.07.04.07.54.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jul 2023 07:54:58 -0700 (PDT)
+Message-ID: <488ca2a9-8e1a-3a62-8487-fefaed69ca8b@linaro.org>
+Date: Tue, 4 Jul 2023 16:54:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH 0/2] target/arm: Implement Cortex Neoverse-V1
+Content-Language: en-US
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230704130647.2842917-1-peter.maydell@linaro.org>
+ <81e6bf97-b6c6-e09d-51b5-445bdc3a47bb@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <81e6bf97-b6c6-e09d-51b5-445bdc3a47bb@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230704123600.1808604-1-alex.bennee@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,160 +94,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 04, 2023 at 01:36:00PM +0100, Alex Bennée wrote:
->Currently QEMU has to know some details about the back-end to be able
->to setup the guest. While various parts of the setup can be delegated
->to the backend (for example config handling) this is a very piecemeal
->approach.
->
->This patch suggests a new feature flag (VHOST_USER_PROTOCOL_F_STANDALONE)
->which the back-end can advertise which allows a probe message to be
->sent to get all the details QEMU needs to know in one message.
->
->Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->
->---
->Initial RFC for discussion. I intend to prototype this work with QEMU
->and one of the rust-vmm vhost-user daemons.
+On 4/7/23 15:35, Marcin Juszkiewicz wrote:
+> W dniu 4.07.2023 oÂ 15:06, Peter Maydell pisze:
+> 
+>> This patchset implements the Cortex Neoverse-V1 CPU type, as a
+>> representative Armv8.3 (+ some extras from 8.4) CPU matching real
+>> hardware.Â  The main thing we were waiting for to be able to define
+>> this was FEAT_LSE2, and that is now supported.
+> 
+> Now I can add "reach SBSA level 4" to todo list as it requires v8.3 cpu 
+> (I do not count 'max' cpu type).
 
-Thanks for starting this discussion!
-
-I'm comparing with vhost-vdpa IOCTLs, so my questions may be
-superficial, but they help me understand the differences.
-
->---
-> docs/interop/vhost-user.rst | 37 +++++++++++++++++++++++++++++++++++++
-> hw/virtio/vhost-user.c      |  8 ++++++++
-> 2 files changed, 45 insertions(+)
->
->diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
->index 5a070adbc1..85b1b1583a 100644
->--- a/docs/interop/vhost-user.rst
->+++ b/docs/interop/vhost-user.rst
->@@ -275,6 +275,21 @@ Inflight description
->
-> :queue size: a 16-bit size of virtqueues
->
->+Backend specifications
->+^^^^^^^^^^^^^^^^^^^^^^
->+
->++-----------+-------------+------------+------------+
->+| device id | config size |   min_vqs  |   max_vqs  |
->++-----------+-------------+------------+------------+
->+
->+:device id: a 32-bit value holding the VirtIO device ID
->+
->+:config size: a 32-bit value holding the config size (see ``VHOST_USER_GET_CONFIG``)
->+
->+:min_vqs: a 32-bit value holding the minimum number of vqs supported
-
-Why do we need the minimum?
-
->+
->+:max_vqs: a 32-bit value holding the maximum number of vqs supported, must be >= min_vqs
-
-Is this overlap with VHOST_USER_GET_QUEUE_NUM?
-
->+
-> C structure
-> -----------
->
->@@ -296,6 +311,7 @@ In QEMU the vhost-user message is implemented with the following struct:
->           VhostUserConfig config;
->           VhostUserVringArea area;
->           VhostUserInflight inflight;
->+          VhostUserBackendSpecs specs;
->       };
->   } QEMU_PACKED VhostUserMsg;
->
->@@ -316,6 +332,7 @@ replies. Here is a list of the ones that do:
-> * ``VHOST_USER_GET_VRING_BASE``
-> * ``VHOST_USER_SET_LOG_BASE`` (if ``VHOST_USER_PROTOCOL_F_LOG_SHMFD``)
-> * ``VHOST_USER_GET_INFLIGHT_FD`` (if ``VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD``)
->+* ``VHOST_USER_GET_BACKEND_SPECS`` (if ``VHOST_USER_PROTOCOL_F_STANDALONE``)
->
-> .. seealso::
->
->@@ -885,6 +902,13 @@ Protocol features
->   #define VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS  15
->   #define VHOST_USER_PROTOCOL_F_STATUS               16
->   #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
->+  #define VHOST_USER_PROTOCOL_F_STANDALONE           18
->+
->+Some features are only valid in the presence of other supporting
->+features. In the case of ``VHOST_USER_PROTOCOL_F_STANDALONE`` the
->+backend must also support ``VHOST_USER_PROTOCOL_F_CONFIG`` and
->+``VHOST_USER_PROTOCOL_F_STATUS``.
->+
-
-What about adding a new section where we will describe what we mean
-with "standalone" devices?
-
-For example that the entire virtio device is emulated in the backend,
-etc.
-
-By the way, I was thinking more about F_FULL_DEVICE, but I'm not good
-with names, so I'll just throw out an idea :-)
-
-Thanks,
-Stefano
-
->
-> Front-end message types
-> -----------------------
->@@ -1440,6 +1464,19 @@ Front-end message types
->   query the back-end for its device status as defined in the Virtio
->   specification.
->
->+``VHOST_USER_GET_BACKEND_SPECS``
->+  :id: 41
->+  :request payload: N/A
->+  :reply payload: ``Backend specifications``
->+
->+  When the ``VHOST_USER_PROTOCOL_F_STANDALONE`` protocol feature has been
->+  successfully negotiated, this message is submitted by the front-end to
->+  query the back-end for its capabilities. This is intended to remove
->+  the need for the front-end to know ahead of time what the VirtIO
->+  device the backend emulates is.
->+
->+  The reply contains the device id, size of the config space and the
->+  range of VirtQueues the backend supports.
->
-> Back-end message types
-> ----------------------
->diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
->index c4e0cbd702..28b021d5d3 100644
->--- a/hw/virtio/vhost-user.c
->+++ b/hw/virtio/vhost-user.c
->@@ -202,6 +202,13 @@ typedef struct VhostUserInflight {
->     uint16_t queue_size;
-> } VhostUserInflight;
->
->+typedef struct VhostUserBackendSpecs {
->+    uint32_t device_id;
->+    uint32_t config_size;
->+    uint32_t min_vqs;
->+    uint32_t max_vqs;
->+} VhostUserBackendSpecs;
->+
-> typedef struct {
->     VhostUserRequest request;
->
->@@ -226,6 +233,7 @@ typedef union {
->         VhostUserCryptoSession session;
->         VhostUserVringArea area;
->         VhostUserInflight inflight;
->+        VhostUserBackendSpecs specs;
-> } VhostUserPayload;
->
-> typedef struct VhostUserMsg {
->-- 
->2.39.2
->
->
->---------------------------------------------------------------------
->To unsubscribe, e-mail: virtio-dev-unsubscribe@lists.oasis-open.org
->For additional commands, e-mail: virtio-dev-help@lists.oasis-open.org
->
+Do we need to introduce machine variants, such sbsa-lvl3-ref and
+sbsa-lvl4-ref? Or simply sbsa-level3/sbsa-level4?
 
 
