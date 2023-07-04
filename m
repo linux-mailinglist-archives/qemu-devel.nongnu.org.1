@@ -2,96 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3081747015
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 13:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 303CC74702F
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 13:52:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGeOJ-00024v-G4; Tue, 04 Jul 2023 07:40:19 -0400
+	id 1qGeYc-0005QT-EK; Tue, 04 Jul 2023 07:50:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGeOF-00024F-32
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:40:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGeOB-0005nJ-9A
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:40:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688470809;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Oi6fVChjqae5v2x+1gleSkBXpAtNet65KNmyndopOAY=;
- b=VyRpScN/903BU/CYWlLofuE7nwc22Xk1r4MzlvXREeFMrFio2Ybg2q5LMLstsp+CN429Ph
- 7nO6sgqqxwl95hYbGXxNh3L9sG7EUd4rZByjzvplO9XH+LdXwxs5JQNoJi5KbcjRMXVZUg
- 9XmWGiHiq65IFHfNGtWgD9ZySOjTeig=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-395-W527HzRROPi6Fz1N5WqLXQ-1; Tue, 04 Jul 2023 07:40:08 -0400
-X-MC-Unique: W527HzRROPi6Fz1N5WqLXQ-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-767564705f5so308205185a.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 04:40:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qGeYa-0005Q1-DU
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:50:56 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qGeYY-0008HA-9v
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:50:56 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-263253063f9so4002684a91.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 04:50:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688471453; x=1691063453;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Kcnk1pJPRCg4xtrio4c6tdkkRlL93sRmpzEsfS5ogU8=;
+ b=wW9buaVKV42g9MW2kasWCdvAaK4nBI+rXpYPIPZdU1blWnLfTEh0QOUTT5BQsyp21H
+ xjCpTklwlIjax4u25Kaaq/qXasuE5cotWNeeR1XqAlaLl4UP/bC8XgOjF2Ncbs/WdaBy
+ vRp7Oquj1k9F91W/8OObqWgb5/wImn3ySMF3K9FsTJ9V96KANAYiILs1t68a6uXdO2t0
+ /ECE/1lnIDKX4A1KfOrCjgymM1vly3+QpnxSwcmnOo5s1Y3hyZmSBWVJ1C0KuicXJNAA
+ 7AUz7gHPK7H+cNn2lDkSiXqrCcPJsKQofxfPYS1+AzHE78K3Re6yisgvVW9z/CY1syYc
+ piPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688470807; x=1691062807;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1688471453; x=1691063453;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Oi6fVChjqae5v2x+1gleSkBXpAtNet65KNmyndopOAY=;
- b=fKp/+Mf5+KUBZA7rRe7dzrQdrxJVqWbpAuey5+8MfAbuJ7DsnMh6pHZkVeCwx9noBB
- HKfrlpZnUt7urYyKHVjrHM/GHdWRXNcgngcDlNOQKaULpSC/zzoRa7VqwAJUIHmjfYPt
- lf1wzDE4gH+4zp1Rpz83OWbaOQLYDrzz5GMIdIq6Kyd4+zQquMhNFlZI4iAfFzBV8veB
- iD3RyDs+9GiXMwoeYdU45xqH1/3Wbf9EN3R33jZeVnOrUxK737rJMEHX5dQUMOFbjc53
- jilafnF0C7cp7qbdfV38Mx8cpbcQa2k8ddzl2h/MrQ1k5akGabAyNuueewust2m8Se0h
- 7/qw==
-X-Gm-Message-State: AC+VfDzHkaJ3me+WJS4BllcjBozGPMTGkYTiKsycVnLhLrx2mfi7r+Ku
- oi8dQ82jQDE77GjD42AiCyvGe5zUcx/yaX7iADfNnGp+8law3rGHPfD6LhbdP32baS7O3krUbdU
- qwPfqlHAqEWaNl2g=
-X-Received: by 2002:a05:620a:284d:b0:75b:23a1:8336 with SMTP id
- h13-20020a05620a284d00b0075b23a18336mr14626848qkp.49.1688470807393; 
- Tue, 04 Jul 2023 04:40:07 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ57/KZK051cWfKBlielsxVcW9v/ThO2sEG2UQ+GVFRGHpOjBox0dzhwCZvweXhfNF82MbRaPw==
-X-Received: by 2002:a05:620a:284d:b0:75b:23a1:8336 with SMTP id
- h13-20020a05620a284d00b0075b23a18336mr14626806qkp.49.1688470806973; 
- Tue, 04 Jul 2023 04:40:06 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-126.web.vodafone.de.
- [109.43.179.126]) by smtp.gmail.com with ESMTPSA id
- p3-20020a05620a15e300b007654bb4a842sm4787728qkm.104.2023.07.04.04.40.02
+ bh=Kcnk1pJPRCg4xtrio4c6tdkkRlL93sRmpzEsfS5ogU8=;
+ b=efog1FheB2EsWJNOfaj3vPGDC3aO5e+y6BWrTZ9CFqUk0zcCqLIoiQppJwZnM1sDjO
+ D86XZRFLQ6bqsOIM/VDvR6ZvK9vj3YAilUthEx8JHnd/ajl5+7VhWWq29KEec/sTXD9D
+ dnLhmGAkF2Bi1bUu9paGVkeLZZIq1llPrZAsC4BLLqrcMZSfBQwcRY21uiFflhkyJYrA
+ RK3HrUsnpqsbHr8ABfD/pEK6noNPR3bc9M7jHehqbbW4OYkQFwI4ACj3EkwiKXJr8Fux
+ Ukg73RZx3VCp1ZBjEQavbm0x2jSY6BQ7MIVxOjm+Mb8emaL6QQ6zYA88C/ue0AlX9eje
+ CMbg==
+X-Gm-Message-State: ABy/qLYmWdIcXjbXPi5B4grxnMapR/HcjtOq7NcQ7xY2YnT9j7A3uDB6
+ ID/E7sCvnyMK3GTIBt7DkZexeQ==
+X-Google-Smtp-Source: APBJJlH4b/kWnfKtBv/ourTRM05b85xMY9us9f4QHXUOs6ox6b6SwvVUx438qJk7+0c9S39eOsoFYA==
+X-Received: by 2002:a17:902:bc88:b0:1b8:6987:de84 with SMTP id
+ bb8-20020a170902bc8800b001b86987de84mr13103773plb.48.1688471452794; 
+ Tue, 04 Jul 2023 04:50:52 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ j6-20020a170902c3c600b001b8918da8d1sm4217014plj.80.2023.07.04.04.50.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 04:40:06 -0700 (PDT)
-Message-ID: <aef8accb-3576-2b10-a946-191a6be3e3e0@redhat.com>
-Date: Tue, 4 Jul 2023 13:40:01 +0200
+ Tue, 04 Jul 2023 04:50:52 -0700 (PDT)
+Message-ID: <a6cf6a37-ae26-1725-f564-bc46b2dc892a@daynix.com>
+Date: Tue, 4 Jul 2023 20:50:49 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-devel <qemu-devel@nongnu.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>
+References: <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
+ <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
+ <A50CA177-0E7E-4828-A036-70EB532FE2B8@redhat.com>
+ <20230630041937-mutt-send-email-mst@kernel.org>
+ <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
+ <20230630043734-mutt-send-email-mst@kernel.org>
+ <49B901C6-4819-4A00-8225-39FAA6678F3E@redhat.com>
+ <20230630055717-mutt-send-email-mst@kernel.org>
+ <FB764864-ADD3-4017-8313-ED40A833A81B@redhat.com>
+ <a38e0336-58e5-e796-bd29-0dfc5d1d0e46@daynix.com>
+ <20230630112611-mutt-send-email-mst@kernel.org>
+ <0879ed66-766c-1d3f-dcce-31e1285a7972@daynix.com>
+ <20230704133801.0423b554@imammedo.users.ipa.redhat.com>
 Content-Language: en-US
-To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org,
- frankja@linux.ibm.com, Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
- mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
- armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
- nsg@linux.ibm.com, berrange@redhat.com, clg@kaod.org
-References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-4-pmorel@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v21 03/20] target/s390x/cpu topology: handle STSI(15) and
- build the SYSIB
-In-Reply-To: <20230630091752.67190-4-pmorel@linux.ibm.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230704133801.0423b554@imammedo.users.ipa.redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1033.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,514 +111,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/06/2023 11.17, Pierre Morel wrote:
-> On interception of STSI(15.1.x) the System Information Block
-> (SYSIB) is built from the list of pre-ordered topology entries.
+On 2023/07/04 20:38, Igor Mammedov wrote:
+> On Sat, 1 Jul 2023 16:28:30 +0900
+> Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
 > 
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> ---
-...
-> diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
-> index 7ebd5e05b6..6e7d041b01 100644
-> --- a/target/s390x/cpu.h
-> +++ b/target/s390x/cpu.h
-> @@ -569,6 +569,29 @@ typedef struct SysIB_322 {
->   } SysIB_322;
->   QEMU_BUILD_BUG_ON(sizeof(SysIB_322) != 4096);
->   
-> +/*
-> + * Topology Magnitude fields (MAG) indicates the maximum number of
-> + * topology list entries (TLE) at the corresponding nesting level.
-> + */
-> +#define S390_TOPOLOGY_MAG  6
-> +#define S390_TOPOLOGY_MAG6 0
-> +#define S390_TOPOLOGY_MAG5 1
-> +#define S390_TOPOLOGY_MAG4 2
-> +#define S390_TOPOLOGY_MAG3 3
-> +#define S390_TOPOLOGY_MAG2 4
-> +#define S390_TOPOLOGY_MAG1 5
-> +/* Configuration topology */
-> +typedef struct SysIB_151x {
-> +    uint8_t  reserved0[2];
-> +    uint16_t length;
-> +    uint8_t  mag[S390_TOPOLOGY_MAG];
-> +    uint8_t  reserved1;
-> +    uint8_t  mnest;
-> +    uint32_t reserved2;
-> +    char tle[];
-> +} SysIB_151x;
-> +QEMU_BUILD_BUG_ON(sizeof(SysIB_151x) != 16);
-> +
->   typedef union SysIB {
->       SysIB_111 sysib_111;
->       SysIB_121 sysib_121;
-> @@ -576,9 +599,62 @@ typedef union SysIB {
->       SysIB_221 sysib_221;
->       SysIB_222 sysib_222;
->       SysIB_322 sysib_322;
-> +    SysIB_151x sysib_151x;
->   } SysIB;
->   QEMU_BUILD_BUG_ON(sizeof(SysIB) != 4096);
->   
-> +/*
-> + * CPU Topology List provided by STSI with fc=15 provides a list
-> + * of two different Topology List Entries (TLE) types to specify
-> + * the topology hierarchy.
-> + *
-> + * - Container Topology List Entry
-> + *   Defines a container to contain other Topology List Entries
-> + *   of any type, nested containers or CPU.
-> + * - CPU Topology List Entry
-> + *   Specifies the CPUs position, type, entitlement and polarization
-> + *   of the CPUs contained in the last Container TLE.
-> + *
-> + * There can be theoretically up to five levels of containers, QEMU
-> + * uses only three levels, the drawer's, book's and socket's level.
-> + *
-> + * A container with a nesting level (NL) greater than 1 can only
-> + * contain another container of nesting level NL-1.
-> + *
-> + * A container of nesting level 1 (socket), contains as many CPU TLE
-> + * as needed to describe the position and qualities of all CPUs inside
-> + * the container.
-> + * The qualities of a CPU are polarization, entitlement and type.
-> + *
-> + * The CPU TLE defines the position of the CPUs of identical qualities
-> + * using a 64bits mask which first bit has its offset defined by
-> + * the CPU address orgin field of the CPU TLE like in:
-> + * CPU address = origin * 64 + bit position within the mask
-> + *
-> + */
-> +/* Container type Topology List Entry */
-> +typedef struct SysIBTl_container {
-> +        uint8_t nl;
-> +        uint8_t reserved[6];
-> +        uint8_t id;
-> +} SysIBTl_container;
+>> On 2023/07/01 0:29, Michael S. Tsirkin wrote:
+>>> On Fri, Jun 30, 2023 at 08:36:38PM +0900, Akihiko Odaki wrote:
+>>>> On 2023/06/30 19:37, Ani Sinha wrote:
+>>>>>
+>>>>>   
+>>>>>> On 30-Jun-2023, at 3:30 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>>>>>
+>>>>>> On Fri, Jun 30, 2023 at 02:52:52PM +0530, Ani Sinha wrote:
+>>>>>>>
+>>>>>>>   
+>>>>>>>> On 30-Jun-2023, at 2:13 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>>>>>>>
+>>>>>>>> On Fri, Jun 30, 2023 at 02:06:59PM +0530, Ani Sinha wrote:
+>>>>>>>>>
+>>>>>>>>>   
+>>>>>>>>>> On 30-Jun-2023, at 2:02 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>>>>>>>>>
+>>>>>>>>>> On Fri, Jun 30, 2023 at 01:11:33PM +0530, Ani Sinha wrote:
+>>>>>>>>>>>>
+>>>>>>>>>>>> Thus the check for unoccupied function 0 needs to use pci_is_vf() instead of checking ARI capability, and that can happen in do_pci_register_device().
+>>>>>>>>>>>>   
+>>>>>>>>>>>>> Also where do you propose we move the check?
+>>>>>>>>>>>>
+>>>>>>>>>>>> In pci_qdev_realize(), somewhere after pc->realize() and before option ROM loading.
+>>>>>>>>>>>
+>>>>>>>>>>> Hmm, I tried this. The issue here is something like this would be now allowed since the PF has ARI capability:
+>>>>>>>>>>>
+>>>>>>>>>>> -device pcie-root-port,id=p -device igb,bus=p,addr=0x2.0x0
+>>>>>>>>>>>
+>>>>>>>>>>> The above should not be allowed and when used, we do not see the igb ethernet device from the guest OS.
+>>>>>>>>>>
+>>>>>>>>>> I think it's allowed because it expects you to hotplug function 0 later,
+>>>>>>>>>
+>>>>>>>>> This is about the igb device being plugged into the non-zero slot of the pci-root-port. The guest OS ignores it.
+>>>>>>>>
+>>>>>>>> yes but if you later add a device with ARI and with next field pointing
+>>>>>>>> slot 2 guest will suddently find both.
+>>>>>>>
+>>>>>>> Hmm, I tried this:
+>>>>>>>
+>>>>>>> -device pcie-root-port,id=p \
+>>>>>>> -device igb,bus=p,addr=0x2.0x0 \
+>>>>>>> -device igb,bus=p,addr=0x0.0x0 \
+>>>>>>>
+>>>>>>> The guest only found the second igb device not the first. You can try too.
+>>>>>>
+>>>>>> Because next parameter in pcie_ari_init does not match.
+>>>>>
+>>>>> OK send me a command line that I can test it with. I can’t come up with a case that actually works in practice.
+>>>>
+>>>> I don't think there is one because the code for PCI multifunction does not
+>>>> care ARI. In my opinion, we need yet another check to make non-SR-IOV
+>>>> multifunction and ARI capability mutually exclusive; if a function has the
+>>>> ARI capability and it is not a VF, an attempt to assign non-zero function
+>>>> number for it should fail.
+> 
+> is it stated somewhere in spec(s) that ARI and !SR-IOV are mutually exclusive?
+> 
+>>>
+>>> Why is that? My understanding is that ARI capable devices should also
+>>> set the multifunction bit in the header. It's not terribly clear from
+>>> the spec though.
+>>
+>> Something like the following will not work properly with ARI-capable
+>> device (think of a as an ARI-capable device):
+>> -device a,addr=0x1.0x0,multifunction=on -device a,addr=0x1.0x1
+> (I had a crazy idea, to use it like that so we could put more devices
+> on port without resorting to adding extra bridges)
+> 
+> Can you elaborate some more why it won't work?
 
-Why mixing CamelCase with underscore-style here? SysIBTlContainer would look 
-more natural, I think?
+It won't work because the ARI next function number field is fixed. In 
+this case, the field of the Function at 0x1.0x0 should point to 0x1.0x1, 
+but it doesn't. As the result, the Function at 0x1.0x1 won't be recognized.
 
-> +QEMU_BUILD_BUG_ON(sizeof(SysIBTl_container) != 8);
-> +
-> +/* CPU type Topology List Entry */
-> +typedef struct SysIBTl_cpu {
-> +        uint8_t nl;
-> +        uint8_t reserved0[3];
-> +#define SYSIB_TLE_POLARITY_MASK 0x03
-> +#define SYSIB_TLE_DEDICATED     0x04
-> +        uint8_t flags;
-> +        uint8_t type;
-> +        uint16_t origin;
-> +        uint64_t mask;
-> +} SysIBTl_cpu;
+It's more problematic if some of the Functions are ARI-capable but 
+others are not. In my understanding, all Functions in a ARI-capable 
+device need to have ARI capability, but that's not enforced.
 
-dito, maybe better SysIBTlCpu ?
-
-> +QEMU_BUILD_BUG_ON(sizeof(SysIBTl_cpu) != 16);
-> +
-> +void insert_stsi_15_1_x(S390CPU *cpu, int sel2, uint64_t addr, uint8_t ar);
-> +
->   /* MMU defines */
->   #define ASCE_ORIGIN           (~0xfffULL) /* segment table origin             */
->   #define ASCE_SUBSPACE         0x200       /* subspace group control           */
-> diff --git a/hw/s390x/cpu-topology.c b/hw/s390x/cpu-topology.c
-> index b163c17f8f..ca1634d0ce 100644
-> --- a/hw/s390x/cpu-topology.c
-> +++ b/hw/s390x/cpu-topology.c
-> @@ -29,11 +29,13 @@
->    * .cores_per_socket: tracks information on the count of cores
->    *                    per socket.
->    * .smp: keeps track of the machine topology.
-> - *
-> + * .list: queue the topology entries inside which
-> + *        we keep the information on the CPU topology.
-
-The comment does not match the code below.
-
->    */
->   S390Topology s390_topology = {
->       /* will be initialized after the cpu model is realized */
->       .cores_per_socket = NULL,
-> +    .polarization = S390_CPU_POLARIZATION_HORIZONTAL,
->   };
->   
->   /**
-> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-> index 3ac7ec9acf..5ea358cbb0 100644
-> --- a/target/s390x/kvm/kvm.c
-> +++ b/target/s390x/kvm/kvm.c
-> @@ -1919,9 +1919,12 @@ static int handle_stsi(S390CPU *cpu)
->           if (run->s390_stsi.sel1 != 2 || run->s390_stsi.sel2 != 2) {
->               return 0;
->           }
-> -        /* Only sysib 3.2.2 needs post-handling for now. */
->           insert_stsi_3_2_2(cpu, run->s390_stsi.addr, run->s390_stsi.ar);
->           return 0;
-> +    case 15:
-> +        insert_stsi_15_1_x(cpu, run->s390_stsi.sel2, run->s390_stsi.addr,
-> +                           run->s390_stsi.ar);
-> +        return 0;
->       default:
->           return 0;
->       }
-> diff --git a/target/s390x/kvm/stsi-topology.c b/target/s390x/kvm/stsi-topology.c
-> new file mode 100644
-> index 0000000000..0b789450da
-> --- /dev/null
-> +++ b/target/s390x/kvm/stsi-topology.c
-> @@ -0,0 +1,310 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * QEMU S390x CPU Topology
-> + *
-> + * Copyright IBM Corp. 2022,2023
-> + * Author(s): Pierre Morel <pmorel@linux.ibm.com>
-> + *
-> + */
-> +#include "qemu/osdep.h"
-> +#include "cpu.h"
-> +#include "hw/s390x/pv.h"
-> +#include "hw/sysbus.h"
-> +#include "hw/s390x/sclp.h"
-> +#include "hw/s390x/cpu-topology.h"
-> +
-> +/**
-> + * fill_container:
-> + * @p: The address of the container TLE to fill
-> + * @level: The level of nesting for this container
-> + * @id: The container receives a unique ID inside its own container
-> + *
-> + * Returns the next free TLE entry.
-> + */
-> +static char *fill_container(char *p, int level, int id)
-> +{
-> +    SysIBTl_container *tle = (SysIBTl_container *)p;
-> +
-> +    tle->nl = level;
-> +    tle->id = id;
-> +    return p + sizeof(*tle);
-> +}
-> +
-> +/**
-> + * fill_tle_cpu:
-> + * @p: The address of the CPU TLE to fill
-> + * @entry: a pointer to the S390TopologyEntry defining this
-> + *         CPU container.
-> + *
-> + * Returns the next free TLE entry.
-> + */
-> +static char *fill_tle_cpu(char *p, S390TopologyEntry *entry)
-> +{
-> +    SysIBTl_cpu *tle = (SysIBTl_cpu *)p;
-> +    s390_topology_id topology_id = entry->id;
-> +
-> +    tle->nl = 0;
-> +    if (topology_id.dedicated) {
-> +        tle->flags = SYSIB_TLE_DEDICATED;
-> +    }
-> +    tle->flags |= topology_id.entitlement;
-
-If it was not dedicated, the "|=" might operate with a random value here. 
-Better pre-initialize flags with 0, or change the order of the operations here:
-
-     tle->flags = topology_id.entitlement;
-     if (topology_id.dedicated) {
-         tle->flags |= SYSIB_TLE_DEDICATED;
-     }
-
-> +    tle->type = topology_id.type;
-> +    tle->origin = cpu_to_be16(topology_id.origin * 64);
-> +    tle->mask = cpu_to_be64(entry->mask);
-> +    return p + sizeof(*tle);
-> +}
-> +
-> +/*
-> + * Macro to check that the size of data after increment
-> + * will not get bigger than the size of the SysIB.
-> + */
-> +#define SYSIB_GUARD(data, x) do {       \
-> +        data += x;                      \
-> +        if (data > sizeof(SysIB)) {    \
-> +            return 0;                   \
-> +        }                               \
-> +    } while (0)
-> +
-> +/**
-> + * stsi_topology_fill_sysib:
-> + * @p: A pointer to the position of the first TLE
-> + * @level: The nested level wanted by the guest
-> + *
-> + * Fill the SYSIB with the topology information as described in
-> + * the PoP, nesting containers as appropriate, with the maximum
-> + * nesting limited by @level.
-> + *
-> + * Return value:
-> + * On success: the size of the SysIB_15x after being filled with TLE.
-> + * On error: 0 in the case we would overrun the end of the SysIB.
-> + */
-> +static int stsi_topology_fill_sysib(S390TopologyList *topology_list,
-> +                                    char *p, int level)
-> +{
-> +    S390TopologyEntry *entry;
-> +    int last_drawer = -1;
-> +    int last_book = -1;
-> +    int last_socket = -1;
-> +    int drawer_id = 0;
-> +    int book_id = 0;
-> +    int socket_id = 0;
-> +    int n = sizeof(SysIB_151x);
-> +
-> +    QTAILQ_FOREACH(entry, topology_list, next) {
-> +        bool drawer_change = last_drawer != entry->id.drawer;
-> +        bool book_change = drawer_change || last_book != entry->id.book;
-> +        bool socket_change = book_change || last_socket != entry->id.socket;
-> +
-> +        /* If we reach the sentinel get out */
-> +        if (entry->id.sentinel) {
-> +            break;
-> +        }
-> +
-> +        if (level > 3 && drawer_change) {
-> +            SYSIB_GUARD(n, sizeof(SysIBTl_container));
-> +            p = fill_container(p, 3, drawer_id++);
-> +            book_id = 0;
-> +        }
-> +        if (level > 2 && book_change) {
-> +            SYSIB_GUARD(n, sizeof(SysIBTl_container));
-> +            p = fill_container(p, 2, book_id++);
-> +            socket_id = 0;
-> +        }
-> +        if (socket_change) {
-> +            SYSIB_GUARD(n, sizeof(SysIBTl_container));
-> +            p = fill_container(p, 1, socket_id++);
-> +        }
-> +
-> +        SYSIB_GUARD(n, sizeof(SysIBTl_cpu));
-> +        p = fill_tle_cpu(p, entry);
-> +        last_drawer = entry->id.drawer;
-> +        last_book = entry->id.book;
-> +        last_socket = entry->id.socket;
-> +    }
-> +
-> +    return n;
-> +}
-> +
-> +/**
-> + * setup_stsi:
-> + * sysib: pointer to a SysIB to be filled with SysIB_151x data
-> + * level: Nested level specified by the guest
-> + *
-> + * Setup the SYSIB for STSI 15.1, the header as well as the description
-> + * of the topology.
-> + */
-> +static int setup_stsi(S390TopologyList *topology_list, SysIB_151x *sysib,
-> +                      int level)
-> +{
-> +    sysib->mnest = level;
-> +    switch (level) {
-> +    case 4:
-> +        sysib->mag[S390_TOPOLOGY_MAG4] = current_machine->smp.drawers;
-> +        sysib->mag[S390_TOPOLOGY_MAG3] = current_machine->smp.books;
-> +        sysib->mag[S390_TOPOLOGY_MAG2] = current_machine->smp.sockets;
-> +        sysib->mag[S390_TOPOLOGY_MAG1] = current_machine->smp.cores;
-> +        break;
-> +    case 3:
-> +        sysib->mag[S390_TOPOLOGY_MAG3] = current_machine->smp.drawers *
-> +                                         current_machine->smp.books;
-> +        sysib->mag[S390_TOPOLOGY_MAG2] = current_machine->smp.sockets;
-> +        sysib->mag[S390_TOPOLOGY_MAG1] = current_machine->smp.cores;
-> +        break;
-> +    case 2:
-> +        sysib->mag[S390_TOPOLOGY_MAG2] = current_machine->smp.drawers *
-> +                                         current_machine->smp.books *
-> +                                         current_machine->smp.sockets;
-> +        sysib->mag[S390_TOPOLOGY_MAG1] = current_machine->smp.cores;
-> +        break;
-> +    }
-> +
-> +    return stsi_topology_fill_sysib(topology_list, sysib->tle, level);
-> +}
-> +
-> +/**
-> + * s390_topology_add_cpu_to_entry:
-> + * @entry: Topology entry to setup
-> + * @cpu: the S390CPU to add
-> + *
-> + * Set the core bit inside the topology mask and
-> + * increments the number of cores for the socket.
-
-The second part of the sentence does not seem to be done here anymore?
-
-> + */
-> +static void s390_topology_add_cpu_to_entry(S390TopologyEntry *entry,
-> +                                           S390CPU *cpu)
-> +{
-> +    set_bit(63 - (cpu->env.core_id % 64), &entry->mask);
-> +}
-> +
-> +/**
-> + * s390_topology_from_cpu:
-> + * @cpu: The S390CPU
-> + *
-> + * Initialize the topology id from the CPU environment.
-> + */
-> +static s390_topology_id s390_topology_from_cpu(S390CPU *cpu)
-> +{
-> +    s390_topology_id topology_id = {0};
-> +
-> +    topology_id.drawer = cpu->env.drawer_id;
-> +    topology_id.book = cpu->env.book_id;
-> +    topology_id.socket = cpu->env.socket_id;
-> +    topology_id.origin = cpu->env.core_id / 64;
-> +    topology_id.type = S390_TOPOLOGY_CPU_IFL;
-> +    topology_id.dedicated = cpu->env.dedicated;
-> +
-> +    if (s390_topology.polarization == S390_CPU_POLARIZATION_VERTICAL) {
-> +        topology_id.entitlement = cpu->env.entitlement;
-> +    }
-> +
-> +    return topology_id;
-> +}
-> +
-> +/**
-> + * s390_topology_insert:
-> + * @cpu: s390CPU insert.
-
-"s390CPU insert" sounds like a weird description for @cpu
-
-> + *
-> + * Parse the topology list to find if the entry already
-> + * exist and add the core in it.
-> + * If it does not exist, allocate a new entry and insert
-> + * it in the queue from lower id to greater id.
-> + */
-> +static void s390_topology_insert(S390TopologyList *topology_list, S390CPU *cpu)
-> +{
-> +    s390_topology_id id = s390_topology_from_cpu(cpu);
-> +    S390TopologyEntry *entry = NULL;
-> +    S390TopologyEntry *tmp = NULL;
-> +
-> +    QTAILQ_FOREACH(tmp, topology_list, next) {
-> +        if (id.id == tmp->id.id) {
-> +            s390_topology_add_cpu_to_entry(tmp, cpu);
-> +            return;
-> +        } else if (id.id < tmp->id.id) {
-> +            entry = g_malloc0(sizeof(S390TopologyEntry));
-> +            entry->id.id = id.id;
-> +            s390_topology_add_cpu_to_entry(entry, cpu);
-> +            QTAILQ_INSERT_BEFORE(tmp, entry, next);
-> +            return;
-> +        }
-> +    }
-> +}
-> +
-> +/**
-> + * s390_topology_fill_list_sorted:
-> + *
-> + * Loop over all CPU and insert it at the right place
-> + * inside the TLE entry list.
-> + * Fill the S390Topology list with entries according to the order
-> + * specified by the PoP.
-> + */
-> +static void s390_topology_fill_list_sorted(S390TopologyList *topology_list)
-> +{
-> +    CPUState *cs;
-> +
-> +    CPU_FOREACH(cs) {
-> +        s390_topology_insert(topology_list, S390_CPU(cs));
-> +    }
-> +}
-> +
-> +/**
-> + * s390_topology_empty_list:
-> + *
-> + * Clear all entries in the S390Topology list except the sentinel.
-> + */
-> +static void s390_topology_empty_list(S390TopologyList *topology_list)
-> +{
-> +    S390TopologyEntry *entry = NULL;
-> +    S390TopologyEntry *tmp = NULL;
-> +
-> +    QTAILQ_FOREACH_SAFE(entry, topology_list, next, tmp) {
-> +        QTAILQ_REMOVE(topology_list, entry, next);
-> +        g_free(entry);
-> +    }
-> +}
-> +
-> +/**
-> + * insert_stsi_15_1_x:
-> + * cpu: the CPU doing the call for which we set CC
-> + * sel2: the selector 2, containing the nested level
-> + * addr: Guest logical address of the guest SysIB
-> + * ar: the access register number
-> + *
-> + * Create a list head for the Topology entries and initialize it.
-
-s/Topology/topology/
-
-> + * Insert the first entry as a sentinelle.
-
-s/sentinelle/sentinel/
-
-> + * Emulate STSI 15.1.x, that is, perform all necessary checks and
-> + * fill the SYSIB.
-> + * In case the topology description is too long to fit into the SYSIB,
-> + * set CC=3 and abort without writing the SYSIB.
-> + */
-> +void insert_stsi_15_1_x(S390CPU *cpu, int sel2, uint64_t addr, uint8_t ar)
-> +{
-> +    S390TopologyList topology_list;
-> +    S390TopologyEntry *entry;
-> +    SysIB sysib = {0};
-> +    int length;
-> +
-> +    if (!s390_has_topology() || sel2 < 2 || sel2 > SCLP_READ_SCP_INFO_MNEST) {
-> +        setcc(cpu, 3);
-> +        return;
-> +    }
-> +
-> +    QTAILQ_INIT(&topology_list);
-> +    entry = g_malloc0(sizeof(S390TopologyEntry));
-> +    entry->id.sentinel = 0xff;
-> +    QTAILQ_INSERT_HEAD(&topology_list, entry, next);
-> +
-> +    s390_topology_fill_list_sorted(&topology_list);
-> +
-> +    length = setup_stsi(&topology_list, &sysib.sysib_151x, sel2);
-> +
-> +    if (!length) {
-> +        setcc(cpu, 3);
-> +        return;
-> +    }
-> +
-> +    sysib.sysib_151x.length = cpu_to_be16(length);
-> +    s390_cpu_virt_mem_write(cpu, addr, ar, &sysib, length);
-> +    setcc(cpu, 0);
-
-s390_cpu_virt_mem_write() could fail, I think in that case you should not 
-change the CC value here?
-
-Also, what about protected virtualization? Do you have to use 
-s390_cpu_pv_mem_write() in case PV is enabled?
-
-> +
-> +    s390_topology_empty_list(&topology_list);
-> +}
-> diff --git a/target/s390x/kvm/meson.build b/target/s390x/kvm/meson.build
-> index 37253f75bf..bcf014ba87 100644
-> --- a/target/s390x/kvm/meson.build
-> +++ b/target/s390x/kvm/meson.build
-> @@ -1,6 +1,7 @@
->   
->   s390x_ss.add(when: 'CONFIG_KVM', if_true: files(
-> -  'kvm.c'
-> +  'kvm.c',
-> +  'stsi-topology.c'
->   ), if_false: files(
->     'stubs.c'
->   ))
-
-  Thomas
-
+> 
+>> This is because the next function numbers advertised with ARI are not
+>> updated with the multifunction configuration, but they are hardcoded in
+>> the device implementation. In this sense, the traditional (non-SR/IOV)
+>> multifunction mechanism QEMU has will not work with ARI-capable devices.
+>>
+>>>    
+>>>> But it should be a distinct check as it will need to check the function
+>>>> number bits.
+>>>>   
+>>>>>   
+>>>>>>
+>>>>>>   
+>>>>>>>>   
+>>>>>>>>>> no?
+>>>>>>>>>>
+>>>>>>>>>> I am quite worried about all this work going into blocking
+>>>>>>>>>> what we think is disallowed configurations. We should have
+>>>>>>>>>> maybe blocked them originally, but now that we didn't
+>>>>>>>>>> there's a non zero chance of regressions,
+>>>>>>>>>
+>>>>>>>>> Sigh,
+>>>>>>>>
+>>>>>>>> There's value in patches 1-4 I think - the last patch helped you find
+>>>>>>>> these. so there's value in this work.
+>>>>>>>>   
+>>>>>>>>> no medals here for being brave :-)
+>>>>>>>>
+>>>>>>>> Try removing support for a 3.5mm jack next. Oh wait ...
+>>>>>>>
+>>>>>>> Indeed. Everyone uses bluetooth these days. I for one is happy that the jack is gone (and they were bold enough to do it while Samsung and others still carry the useless port ) :-)
+>>>>
+>>>> Hello from a guy using a shiny M2 Macbook Air carrying the legacy jack with
+>>>> a 100-yen earphone. Even people who ported Linux to this machine spent
+>>>> efforts to get the jack to work on Linux ;)
+>>>>   
+>>>>>>>   
+>>>>>>>>   
+>>>>>>>>>> and the benefit
+>>>>>>>>>> is not guaranteed.
+>>>>>>>>>>
+>>>>>>>>>> -- 
+>>>>>>>>>> MST
+>>>>>   
+>>>    
+>>
+> 
 
