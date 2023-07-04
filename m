@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CECD8746C93
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CADAD746CA7
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 11:02:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGbsj-0005s5-48; Tue, 04 Jul 2023 04:59:33 -0400
+	id 1qGbuZ-0006j9-4W; Tue, 04 Jul 2023 05:01:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGbsg-0005rH-DO
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:59:30 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGbuV-0006io-N2
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 05:01:24 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGbse-0006Jc-EO
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:59:30 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3141c8a6f30so5563595f8f.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:59:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGbuT-0006zu-7K
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 05:01:22 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fba5a8af2cso55216085e9.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 02:01:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688461167; x=1691053167;
+ d=linaro.org; s=google; t=1688461279; x=1691053279;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=j4szfMERPJvfEeou2PQDrip8MiSQ12BUQPxJEzjGF14=;
- b=lCLzuRYL18YqGB30m+WL5qRwrDSZ/nmSJ+I0Bw+1HwUHMdVBmMcOS9ZJtaxh33k0mp
- qqAmekXfXPbrFYUdvLuXGfocbfkhTJRQlLRXsYqabldDtxjZ06RhFIvpdn3JlLEJvYZZ
- stzYEOJeQ/qYBqaULdcKkLRYxLOngPZz3wSyOcNY4uRmos6QtB70zvo5up+QIhW73G6l
- Cdou3gOFsY7+Qb4Y0mwXPAnKWGfIksTICqPw1WEE1MwjRJwTM1D2DfkW4XPteIbIuJMn
- 1LSrsCJAVSQjDdpumT2sZ/aiwiByB9PU0dLxa2b82tjj8uMHpRRjp0HoY0I70l7stq57
- pDoQ==
+ bh=qpn0O+efsAq13PSCa4ZjcSC9kIdT3mS7w4ty/4bQhzs=;
+ b=Y3fsJwqXZDTyWAtS0Zekm8OvWYOWuawWVYA6SW93SsRHniaNZPexXmCm/Pq7eZkv0o
+ ntOZP2wuZFAL47Hiobn28JYO/sDbybXWgLQK7AX4A+pobhaI5y39pykp80ge2BlKbL2k
+ ktGUe3Y3vtTExjVSRLe2413O8OpSDBpslVK4i/Af4YgWtTdgtcGTmsLstQeYZ7+t8J12
+ YkHw/Tao9LJQyTYneb6NDMrwpr1x2gbpkA3wMdE8K9hI9b69byVcrAAD/FAabZK/sA1L
+ WFCFfoE5pxq2V9L5+75a+8Evy1bYDFqRukcHQNKu6Bu2GsvdM+fCz1NT2WCITj49NzAr
+ t4rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688461167; x=1691053167;
+ d=1e100.net; s=20221208; t=1688461279; x=1691053279;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=j4szfMERPJvfEeou2PQDrip8MiSQ12BUQPxJEzjGF14=;
- b=BwYCLN/aWFBMDhZr8mcY9iw2Zd8GYlToEZu56FqbxUEm6qk5hr9uKNWGKWhBzLp24y
- J/D6Cs56uVj5bXYVDYD1ABODB9IX9/JlVgSXdLWhiCCvJufYTNpASYx8B/BskoxEnYM7
- NKXMT/wl2Mp3EsWl1pC8l9Tt+e30wvAQzK/MWZf+NZfAvYFFE5tRpqOLwi7KbWbp4p7z
- tDo2FJNry550erXtKbCwjhZ7DW0d9+V2n6shm78f8JT55bP2osYMPz1dn3oAKQ7IongF
- tQbXcPqCeNylKcVRJnWI0lT/2h5sE7LAcSg0YwMeUn6e4XS4Q4HbhPEWN6LVLAWg3ien
- oawA==
-X-Gm-Message-State: ABy/qLYg1OZXGWJ5aZYlCBpGeOgc4tD9t23XMLjwR8g2KcM0vYAhqgaH
- 3SqApT0bHnQ9mNg3moqbTZ/NsHfmnN2BPjdjmna2VQ==
-X-Google-Smtp-Source: APBJJlHpQofKJF4+GDLVbCdv5KHvkKYbPuODgAYzyjnV51pBKuDeqYbmpn1qsPo1gXCpHDadjyi6lQ==
-X-Received: by 2002:a5d:5543:0:b0:30f:c5b1:23ef with SMTP id
- g3-20020a5d5543000000b0030fc5b123efmr9410911wrw.41.1688461166984; 
- Tue, 04 Jul 2023 01:59:26 -0700 (PDT)
+ bh=qpn0O+efsAq13PSCa4ZjcSC9kIdT3mS7w4ty/4bQhzs=;
+ b=dEvuoF7PGlMulEo+xLoKRDvR4gDD0Z8MVXpNinTNWgV4V+bpgZMqaM/Tb5tErCvpUV
+ VfeDJA9dLrSHgaRckeO0vKvNhHObxw2CTdAJ3uAoEj/BU1LkmVFWST5G5EpK5w6Ee5Jw
+ S5g3+8/OruA1Z8njrl41PKTSzco5j7CNSjhcOnnnqW+T5e+RifpB46lbmcxw7MLGxHz1
+ 3w+8Lm4P7I5FEkR7m7G9uT9rwTxtXrmn3Osptj1rq0tQf3V/1BCtXLBIk0yDRFR6ZSwZ
+ 5BYLD4TmUuSne/xwt3sdZDjAFbc2O/MOMDwFkN0C1nEOjuLhb4PhHKjoERF2WWkPYhCd
+ nL2Q==
+X-Gm-Message-State: AC+VfDwSW/Dvrd6JkxTxZtnp5fdwKI3ptkx4J8YEYbkw1DW06ZkFvexM
+ PtoKNlyF8Dzxu/nfaRnJDY/xVIr+BEYW0oFRmIpkzA==
+X-Google-Smtp-Source: ACHHUZ4Y5yAmEiujWIu1kkS5anCTCQRU/agZgNxYLKxjiItBX4FlESZqzaOKVCfCjLuVhEvXJtcPtA==
+X-Received: by 2002:a05:600c:ac8:b0:3fa:99d6:4796 with SMTP id
+ c8-20020a05600c0ac800b003fa99d64796mr9392462wmr.2.1688461279085; 
+ Tue, 04 Jul 2023 02:01:19 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.157.122])
  by smtp.gmail.com with ESMTPSA id
- x8-20020a5d4908000000b0031432c2fb95sm6440973wrq.88.2023.07.04.01.59.26
+ m23-20020a7bca57000000b003fbc30825fbsm12811899wml.39.2023.07.04.02.01.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 01:59:26 -0700 (PDT)
-Message-ID: <01cd4046-1f7e-beb5-d999-84db6ae23d3e@linaro.org>
-Date: Tue, 4 Jul 2023 10:59:24 +0200
+ Tue, 04 Jul 2023 02:01:18 -0700 (PDT)
+Message-ID: <30d1e44d-8ce5-030b-a052-0574ac76a0c7@linaro.org>
+Date: Tue, 4 Jul 2023 11:01:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 12/13] ppc440_pcix: Don't use iomem for regs
+Subject: Re: [PATCH 13/13] ppc440_pcix: Stop using system io region for PCI bus
 Content-Language: en-US
 To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
  qemu-ppc@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
 References: <cover.1688421085.git.balaton@eik.bme.hu>
- <576b54159060392c8bc12a63c665928053b58f24.1688421085.git.balaton@eik.bme.hu>
+ <19ca518931d704615e801df249f2071c9f74a7dc.1688421085.git.balaton@eik.bme.hu>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <576b54159060392c8bc12a63c665928053b58f24.1688421085.git.balaton@eik.bme.hu>
+In-Reply-To: <19ca518931d704615e801df249f2071c9f74a7dc.1688421085.git.balaton@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,43 +95,48 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/7/23 00:02, BALATON Zoltan wrote:
-> The iomem memory region is better used for the PCI IO space but
-> currently used for registers. Stop using it for that to allow this to
-> be cleaned up in the next patch.
-> 
+> Use the iomem region for the PCI io space and map it directly from the
+> board without an intermediate alias that is not really needed.
+
+"Reduce the I/O region to 64K."
+
 > Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
->   hw/ppc/ppc440_pcix.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
+>   hw/ppc/ppc440_pcix.c | 8 +++++---
+>   hw/ppc/sam460ex.c    | 6 +-----
+>   2 files changed, 6 insertions(+), 8 deletions(-)
 > 
 > diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-> index adfecf1e76..ee2dc44f67 100644
+> index ee2dc44f67..cca8a72c72 100644
 > --- a/hw/ppc/ppc440_pcix.c
 > +++ b/hw/ppc/ppc440_pcix.c
-> @@ -484,6 +484,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
->       SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
->       PPC440PCIXState *s;
->       PCIHostState *h;
-> +    MemoryRegion *regs = g_new(MemoryRegion, 1);
-
-Why not hold it within PPC440PCIXState?
-
->       h = PCI_HOST_BRIDGE(dev);
+> @@ -490,10 +490,11 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
 >       s = PPC440_PCIX_HOST(dev);
-> @@ -507,11 +508,11 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
->                             h, "pci-conf-idx", 4);
->       memory_region_init_io(&h->data_mem, OBJECT(s), &pci_host_data_le_ops,
->                             h, "pci-conf-data", 4);
-> -    memory_region_init_io(&s->iomem, OBJECT(s), &pci_reg_ops, s,
-> -                          "pci.reg", PPC440_REG_SIZE);
-> +    memory_region_init_io(regs, OBJECT(s), &pci_reg_ops, s, "pci-reg",
-> +                          PPC440_REG_SIZE);
->       memory_region_add_subregion(&s->container, PCIC0_CFGADDR, &h->conf_mem);
->       memory_region_add_subregion(&s->container, PCIC0_CFGDATA, &h->data_mem);
-> -    memory_region_add_subregion(&s->container, PPC440_REG_BASE, &s->iomem);
-> +    memory_region_add_subregion(&s->container, PPC440_REG_BASE, regs);
->       sysbus_init_mmio(sbd, &s->container);
->   }
 >   
+>       sysbus_init_irq(sbd, &s->irq);
+> -    memory_region_init(&s->busmem, OBJECT(dev), "pci bus memory", UINT64_MAX);
+> +    memory_region_init(&s->busmem, OBJECT(dev), "pci-mem", UINT64_MAX);
+> +    memory_region_init(&s->iomem, OBJECT(dev), "pci-io", 0x10000);
+
+64 * KiB
+
+>       h->bus = pci_register_root_bus(dev, NULL, ppc440_pcix_set_irq,
+> -                         ppc440_pcix_map_irq, &s->irq, &s->busmem,
+> -                         get_system_io(), PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
+> +                         ppc440_pcix_map_irq, &s->irq, &s->busmem, &s->iomem,
+> +                         PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
+>   
+>       s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0),
+>                                  TYPE_PPC4xx_HOST_BRIDGE);
+> @@ -514,6 +515,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
+>       memory_region_add_subregion(&s->container, PCIC0_CFGDATA, &h->data_mem);
+>       memory_region_add_subregion(&s->container, PPC440_REG_BASE, regs);
+>       sysbus_init_mmio(sbd, &s->container);
+> +    sysbus_init_mmio(sbd, &s->iomem);
+>   }
+
+With the changes requested:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
 
