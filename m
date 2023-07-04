@@ -2,76 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8DF7473F5
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 040447473FD
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:21:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGgrY-0008PZ-P2; Tue, 04 Jul 2023 10:18:40 -0400
+	id 1qGgtT-0000i8-EC; Tue, 04 Jul 2023 10:20:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qGgrW-0008PQ-Js
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:18:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qGgtO-0000hr-S2
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:20:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qGgrU-0004JD-2h
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:18:37 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qGgtM-0004uu-8h
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:20:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688480314;
+ s=mimecast20190719; t=1688480430;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JL/YJUoZofwGSaSAsZ7jDVOURJDFziH5dyjrWMG6IQw=;
- b=cf+4CKjg/Sv+2i3EbdhhvCi3H8zwqI/3Mnzeb2nuXaMlxGOP2aQ+fszCG8ydlsIn4Vlvd7
- jkPLK3R3bUr9pq52dCW4icvC1Oryg2xuGE0Ks93EAAV0JU49klimDomW3fbjvshja6WxJY
- c8VkZIL0vLrFb0+b3RDPNB23Z6/DMQo=
-Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
- [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/SPZQ2GEyn1BZ3EaO3bLyDBZAq+aztXSFu65EHnYeLE=;
+ b=aH+kHmYnSAdMds2JYSB6Hyypntv9t7q7tZMB6mSJ9hE7TT4hRt61kLcE86hIptD9hOkD52
+ ZqWuGQCeCWSN1smLxYuozdyDcnWcUhQ0ZUnPBRhXXZhtbufmBdg2+oNASjEO5OXnz3aQ42
+ /CEkQwpYPlQqrMJcTbiXCpb2kqnxCwQ=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-NKpxUdpeMS2nCLf3wv459w-1; Tue, 04 Jul 2023 10:18:33 -0400
-X-MC-Unique: NKpxUdpeMS2nCLf3wv459w-1
-Received: by mail-yb1-f200.google.com with SMTP id
- 3f1490d57ef6-bfe702f99b8so5894832276.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:18:33 -0700 (PDT)
+ us-mta-171-FTvYRGd8MKKI_0B5eQDMlA-1; Tue, 04 Jul 2023 10:20:29 -0400
+X-MC-Unique: FTvYRGd8MKKI_0B5eQDMlA-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2b6f51c5cb3so7156131fa.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:20:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688480313; x=1691072313;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1688480423; x=1691072423;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JL/YJUoZofwGSaSAsZ7jDVOURJDFziH5dyjrWMG6IQw=;
- b=J2QJGO1OaVjYR/nijU3AQ39WSVTUhaGNIqypOeevU1p8kBJ0X8cp48Xxw4NXCd2/vI
- mq+FarDklfcUvClb14tTN8OT5nYgvYX2ugI9JeZYRiNvv94URfaxM8vHkqH3hu+STaMO
- wdGHhPpRcnzEWpaOrQ5UxLLF9o7JYfGV9nqEjbAyBopZsOgs7FNAOoTZIFf4BySxHdG0
- cNAVnMIAY4mJdl6bfzG0fIU3YQFoFEJr9LYp/8mmhg1Q+yQjx5S5zXe2iqKFvQWshZdU
- NfgqHNpw9MOEeCcvslYKWIX/7dG6Cc1vpe4gRs/ehsfu3KxtERQ6fvf9bk7LfWFpUJSE
- bF0Q==
-X-Gm-Message-State: ABy/qLbOfB4de3Ycsbfr6ZDuZ+pxwsLIIZMbbhvFxegOpdnu5/vXU+Vr
- kUzcbLiJmvypS1dHiTnCmQWlnOhRODrSh/Za0mgcFHK0MQz4N32MAdtAVhCWNDBjJWrKvEWPOay
- dfmjtB3lsBmJVUIaoNiLOKEaOlQacEl1OijDadMI6qg==
-X-Received: by 2002:a25:a287:0:b0:c1a:2928:74ab with SMTP id
- c7-20020a25a287000000b00c1a292874abmr11605722ybi.31.1688480312791; 
- Tue, 04 Jul 2023 07:18:32 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFhhEjAvRF1j4yAAgUNx42zYTzb6Nuy9nQWVPyRDXra/CMfM/nN9ou8XEwJlOVrDg0w2q8Vx/wAd42CZNr4Zyo=
-X-Received: by 2002:a25:a287:0:b0:c1a:2928:74ab with SMTP id
- c7-20020a25a287000000b00c1a292874abmr11605708ybi.31.1688480312507; Tue, 04
- Jul 2023 07:18:32 -0700 (PDT)
+ bh=/SPZQ2GEyn1BZ3EaO3bLyDBZAq+aztXSFu65EHnYeLE=;
+ b=LJGEhoAD7r8EdOhRfB4nvQt/4Y/xcHFvNSTi6BYqUxP10Rb6prxehg57A5jE3VBbIA
+ T/Ue9R37v/ozMWUCL20idakX0z+DBVJohGccsJUO2aMWVVMapMOhuw27tJGkjSpULL6p
+ g6uXlCJjILJqT3MurcsMpyZusckFxJhZm3ROHjx3GevmBnLePPyaUWlB7jaGbmAF7SkH
+ Q5TfrmSBOZDWiDf+3cnpAhVsS1XZ56d2Jy4gSwqtS8ofoC64jyxvQIwGwBZqO+rGvIGa
+ oGxF85gtstD44qWvHld7/XlJlfvpjV+7Px0/cYjLzS2c5TnyogIEQUzm6rlh/IDdW+pJ
+ yhfA==
+X-Gm-Message-State: ABy/qLZe6VHTBMWckhxnvTdTo1kox2A1m9Ys/zogdKSFuXd65XoHiN/e
+ lmoclYy0muSyi5fsaPzUJkMZWcfNCmgbH99DTJkKoKm4eNVyPTXYvXya8yfs2VBPSRDFVgxs/Rm
+ 769wl1tuIeqX0D5A=
+X-Received: by 2002:a2e:805a:0:b0:2b6:d7d1:95bf with SMTP id
+ p26-20020a2e805a000000b002b6d7d195bfmr8091997ljg.9.1688480423431; 
+ Tue, 04 Jul 2023 07:20:23 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlF0tRCqTgm07yFDXgSf2sa5ICyMSfXGF0TBuJOnTQgjU0rdt4Giedk+GKBucZgjNTiic0OTww==
+X-Received: by 2002:a2e:805a:0:b0:2b6:d7d1:95bf with SMTP id
+ p26-20020a2e805a000000b002b6d7d195bfmr8091976ljg.9.1688480423032; 
+ Tue, 04 Jul 2023 07:20:23 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ w6-20020a17090633c600b0098748422178sm13193720eja.56.2023.07.04.07.20.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 07:20:22 -0700 (PDT)
+Date: Tue, 4 Jul 2023 16:20:21 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, Ani Sinha
+ <anisinha@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, Marcel
+ Apfelbaum <marcel.apfelbaum@gmail.com>, Sriram Yagnaraman
+ <sriram.yagnaraman@est.tech>, Jason Wang <jasowang@redhat.com>, Keith Busch
+ <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
+Subject: Re: [PATCH v4 2/2] pcie: Specify 0 for ARI next function numbers
+Message-ID: <20230704162021.18e05471@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230704122215.23270-3-akihiko.odaki@daynix.com>
+References: <20230704122215.23270-1-akihiko.odaki@daynix.com>
+ <20230704122215.23270-3-akihiko.odaki@daynix.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <cover.1688051252.git.yin31149@gmail.com>
- <6d3dc0fc076564a03501e222ef1102a6a7a643af.1688051252.git.yin31149@gmail.com>
-In-Reply-To: <6d3dc0fc076564a03501e222ef1102a6a7a643af.1688051252.git.yin31149@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Tue, 4 Jul 2023 16:17:56 +0200
-Message-ID: <CAJaqyWc2OXN9dnTV3Fmsu6=WErgxNbZ4sZ3Fxkyb18uXXJSB=A@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 1/4] vdpa: Use iovec for vhost_vdpa_net_load_cmd()
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,7 +89,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,134 +105,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 29, 2023 at 5:25=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
->
-> According to VirtIO standard, "The driver MUST follow
-> the VIRTIO_NET_CTRL_MAC_TABLE_SET command by a le32 number,
-> followed by that number of non-multicast MAC addresses,
-> followed by another le32 number, followed by that number
-> of multicast addresses."
->
-> Considering that these data is not stored in contiguous memory,
-> this patch refactors vhost_vdpa_net_load_cmd() to accept
-> scattered data, eliminating the need for an addtional data copy or
-> packing the data into s->cvq_cmd_out_buffer outside of
-> vhost_vdpa_net_load_cmd().
->
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+On Tue,  4 Jul 2023 21:22:14 +0900
+Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+
+> The current implementers of ARI are all SR-IOV devices. The ARI next
+> function number field is undefined for VF .
+                                           ^
+add a reference to a spec (spec name, rev, chapter) where it's declared
+so reviewer or whoever reads it later could easily find relevant
+documentation.
+
+>The PF should end the linked
+> list formed with the field by specifying 0.
+ditto
+
+> 
+> For migration, the field will keep having 1 as its value on the old
+> virt models.
+> 
+> Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in docs/pcie_sriov.txt")
+> Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
+> Fixes: 3a977deebe ("Intrdocue igb device emulation")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
-> v2:
->   - refactor vhost_vdpa_load_cmd() to accept iovec suggested by
-> Eugenio
->
->  net/vhost-vdpa.c | 42 ++++++++++++++++++++++++++++++++----------
->  1 file changed, 32 insertions(+), 10 deletions(-)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 6f6a5c6df6..0bd1c7817c 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -620,29 +620,43 @@ static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAStat=
-e *s, size_t out_len,
->  }
->
->  static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
-> -                                       uint8_t cmd, const void *data,
-> -                                       size_t data_size)
-> +                                       uint8_t cmd, const struct iovec *=
-data,
-> +                                       size_t data_len)
+>  include/hw/pci/pci.h | 2 ++
+>  hw/core/machine.c    | 1 +
+>  hw/pci/pci.c         | 2 ++
+>  hw/pci/pcie.c        | 2 +-
+>  4 files changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index e6d0574a29..9c5b5eb206 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -209,6 +209,8 @@ enum {
+>      QEMU_PCIE_CAP_CXL = (1 << QEMU_PCIE_CXL_BITNR),
+>  #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
+>      QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
+> +#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
+> +    QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
+>  };
+>  
+>  typedef struct PCIINTxRoute {
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index 46f8f9a2b0..f0d35c6401 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -41,6 +41,7 @@
+>  
+>  GlobalProperty hw_compat_8_0[] = {
+>      { "migration", "multifd-flush-after-each-section", "on"},
+> +    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
+>  };
+>  const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
+>  
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index e2eb4c3b4a..45a9bc0da8 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -82,6 +82,8 @@ static Property pci_props[] = {
+>      DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
+>      DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
+>                      QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
+> +    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
+> +                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
+>      DEFINE_PROP_END_OF_LIST()
+>  };
+>  
+> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+> index 9a3f6430e8..cf09e03a10 100644
+> --- a/hw/pci/pcie.c
+> +++ b/hw/pci/pcie.c
+> @@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
+>  /* ARI */
+>  void pcie_ari_init(PCIDevice *dev, uint16_t offset)
 >  {
->      const struct virtio_net_ctrl_hdr ctrl =3D {
->          .class =3D class,
->          .cmd =3D cmd,
->      };
-> +    void *cursor =3D s->cvq_cmd_out_buffer;
->
-> -    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl))=
-;
-> +    /* pack the CVQ command header */
-> +    assert(sizeof(ctrl) < vhost_vdpa_net_cvq_cmd_page_len() -
-> +                          (cursor - s->cvq_cmd_out_buffer));
-> +    memcpy(cursor, &ctrl, sizeof(ctrl));
-> +    cursor +=3D sizeof(ctrl);
->
-> -    memcpy(s->cvq_cmd_out_buffer, &ctrl, sizeof(ctrl));
-> -    memcpy(s->cvq_cmd_out_buffer + sizeof(ctrl), data, data_size);
-> +    /* pack the CVQ command command-specific-data */
-> +    for (int i =3D 0; i < data_len; ++i) {
-> +        assert(data[i].iov_len < vhost_vdpa_net_cvq_cmd_page_len() -
-> +                                 (cursor - s->cvq_cmd_out_buffer));
-> +        memcpy(cursor, data[i].iov_base, data[i].iov_len);
-> +        cursor +=3D data[i].iov_len;
-> +    }
-
-Can we replace all of the above by iov_to_buf?
-
->
-> -    return vhost_vdpa_net_cvq_add(s, sizeof(ctrl) + data_size,
-> +    return vhost_vdpa_net_cvq_add(s, cursor - s->cvq_cmd_out_buffer,
->                                    sizeof(virtio_net_ctrl_ack));
->  }
->
->  static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n=
-)
->  {
->      if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_MAC_AD=
-DR)) {
-> +        const struct iovec data =3D {
-> +            .iov_base =3D (void *)n->mac,
-> +            .iov_len =3D sizeof(n->mac),
-> +        };
->          ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CT=
-RL_MAC,
->                                                    VIRTIO_NET_CTRL_MAC_AD=
-DR_SET,
-> -                                                  n->mac, sizeof(n->mac)=
-);
-> +                                                  &data, 1);
->          if (unlikely(dev_written < 0)) {
->              return dev_written;
->          }
-> @@ -665,9 +679,13 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
->      }
->
->      mq.virtqueue_pairs =3D cpu_to_le16(n->curr_queue_pairs);
-> +    const struct iovec data =3D {
-> +        .iov_base =3D &mq,
-> +        .iov_len =3D sizeof(mq),
-> +    };
->      dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_MQ,
-> -                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SE=
-T, &mq,
-> -                                          sizeof(mq));
-> +                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SE=
-T,
-> +                                          &data, 1);
->      if (unlikely(dev_written < 0)) {
->          return dev_written;
->      }
-> @@ -706,9 +724,13 @@ static int vhost_vdpa_net_load_offloads(VhostVDPASta=
-te *s,
->      }
->
->      offloads =3D cpu_to_le64(n->curr_guest_offloads);
-> +    const struct iovec data =3D {
-> +        .iov_base =3D &offloads,
-> +        .iov_len =3D sizeof(offloads),
-> +    };
->      dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_OFF=
-LOADS,
->                                            VIRTIO_NET_CTRL_GUEST_OFFLOADS=
-_SET,
-> -                                          &offloads, sizeof(offloads));
-> +                                          &data, 1);
->      if (unlikely(dev_written < 0)) {
->          return dev_written;
->      }
-> --
-> 2.25.1
->
+> -    uint16_t nextfn = 1;
+> +    uint16_t nextfn = dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 ? 1 : 0;
+>  
+>      pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
+>                          offset, PCI_ARI_SIZEOF);
 
 
