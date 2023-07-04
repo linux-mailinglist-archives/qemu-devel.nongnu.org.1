@@ -2,76 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F8474748D
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F5D747491
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:55:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGhPv-0000rH-Q8; Tue, 04 Jul 2023 10:54:11 -0400
+	id 1qGhQr-0001i7-0m; Tue, 04 Jul 2023 10:55:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qGhPu-0000r8-9T
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:54:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qGhQo-0001ew-Kq
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:55:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qGhPr-00041x-3e
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:54:10 -0400
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qGhQm-0004G4-Vv
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:55:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688482445;
+ s=mimecast20190719; t=1688482504;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SMkCYIvAwk7fEVV5JKDNHXNgeltzNeShygy6fHjsB9o=;
- b=RZNcnwGt+o9slZD8vJpuJaHYD9SFPpx3GDiEAozYV6kjFgKMx4DKZ+huoN5qgPJLQfH58J
- 95W9fOQmspRCeBKe0wd5rVEejdxaOew5EvW8by2G9hXYKgTzfyvOk62whBg0jjQKOlBOdZ
- GfIiWrwpHZIMIJl449+i0u6x6MqICOk=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EmGEvptwJkM6UoX38+QPWD8ud5IKVgmApDNdi1W8v9U=;
+ b=Z6UzKzqkWpdzI7uvwI8IBk6k8S7i7Yrd6PlS3aA/BoJevQbQMDSCXsd92mbsgxIDpqKDjB
+ 0MHpcWd+cmYg1UWa/T50Q1vj35eKMEEgkuLj4huaXxYfcjZOnElOJMVTGsNhc9kH3AC4GF
+ kEUr8q7qAzwEErNFZ9nIH0vCjKQR1R8=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-RQ7aXO1cMhurUhehrw9dpA-1; Tue, 04 Jul 2023 10:54:04 -0400
-X-MC-Unique: RQ7aXO1cMhurUhehrw9dpA-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-573a92296c7so51675537b3.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:54:04 -0700 (PDT)
+ us-mta-551-9Y0CcuKJNg6DVPbaL7EkNw-1; Tue, 04 Jul 2023 10:55:02 -0400
+X-MC-Unique: 9Y0CcuKJNg6DVPbaL7EkNw-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-635e822b49eso40111016d6.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:55:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688482443; x=1691074443;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SMkCYIvAwk7fEVV5JKDNHXNgeltzNeShygy6fHjsB9o=;
- b=a7cK8uwej3aGe3akCSROlag2tfpqzhtYURwgqoIHGuDz0Q5zWJdJWc7jrqC40Oh2AN
- /j30M8RkMQCTCQnuJ27PYZwfWFSS8u/1qoEyihHsu+IuRgXa8Q3dycG7BIkbhODZnSig
- 5zMJv+asRcN0CDcWv53KQHcOn7XnSNQtLnIYrwVul+JFoxWtg6YG6peWK9ZQHYNN+pqq
- 24nd3/ov3oliu0fwD6LPv0KOTj9ptHTOD92qaCv11f80sZgUGvNBILH3yZVLbjMVZfH6
- kiiICiSrNX52wteDNCXtCqfDtAs1ZLb3nr6qCCJHrnCYZ60Jp3qGBNxGGNEroKyTzpqm
- afXQ==
-X-Gm-Message-State: ABy/qLbkvEtxbWLnCGpff2GapVucyhDAzBpDeic0HVQFGadTRpuCrfPa
- M2HUa3ykj27+MirKGCieRCs1FhEMPCXwd7gcj+GJ5Wyd674gE1HtXsH5Iq3IBB+RBU4RY8y9DJZ
- XMij8uuvmFDtz9gdtLCODc0PuViRG9S0=
-X-Received: by 2002:a5b:3ce:0:b0:c18:fa74:8721 with SMTP id
- t14-20020a5b03ce000000b00c18fa748721mr10516567ybp.12.1688482443541; 
- Tue, 04 Jul 2023 07:54:03 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGivd1X9GX72v+l6xrvKJTzpm/A15nokaCKco8hY8JmarRlhO0yEP5RlQJ6SjPWy6Mpc5YpjuZ/lTqDElg5EDc=
-X-Received: by 2002:a5b:3ce:0:b0:c18:fa74:8721 with SMTP id
- t14-20020a5b03ce000000b00c18fa748721mr10516557ybp.12.1688482443220; Tue, 04
- Jul 2023 07:54:03 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688482502; x=1691074502;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EmGEvptwJkM6UoX38+QPWD8ud5IKVgmApDNdi1W8v9U=;
+ b=Cag5KxRcgmmZD0HcKKCxmDhDJ0GwPHyAagIlzCJ6Mj1JdbTHRl3ov3KPD5yidF4kql
+ NEqOloacjQ5aaF2E5u4IlnyGSAoAkc0RxWOHMLNcqbUCACWwtpci3yJN5DJYOYNJaK8s
+ 3s/b0YhvtC5yUeljg3cqJm5OcD6slyGEsLWmOOBYpSyqZqdreVLS5b4IWioFF8JsHepE
+ SaERJQeIvCmigZIApzIzCiHmSao7ZeqlhjVD4guRFZnsvvbQiT8ZHJPljMCXIoYQpkiu
+ 8jY9eHO7ELu2LEsx9Os2AYcAeuZjWjnJYF3E/v4BxCG+D78SUUEnHD+oFeTbPqktkhSz
+ ZHsQ==
+X-Gm-Message-State: ABy/qLbHOj9Y14BP+RB8JrkO58n8oc4+qH4q4NftMH76HR0OobRUiU5k
+ mV3G6KdZtAS/+6TJqslY6pkWKtNgjYdo7Gie6P0xnNmmf2Md4UuVppin9Vz4vH5hIlLKbYUoOZ+
+ Ev505eXisonwLjpY=
+X-Received: by 2002:a0c:e64b:0:b0:62d:fd45:4d6a with SMTP id
+ c11-20020a0ce64b000000b0062dfd454d6amr9018589qvn.16.1688482502417; 
+ Tue, 04 Jul 2023 07:55:02 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFcv7mXEP+P8uaHnGHMCyY2IQQ38jVnHxCx+dZMs0x/sr0mlEtHosc5lhtn+CK3mNkoMl7mrg==
+X-Received: by 2002:a0c:e64b:0:b0:62d:fd45:4d6a with SMTP id
+ c11-20020a0ce64b000000b0062dfd454d6amr9018582qvn.16.1688482502175; 
+ Tue, 04 Jul 2023 07:55:02 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-46-200-163.retail.telecomitalia.it.
+ [79.46.200.163]) by smtp.gmail.com with ESMTPSA id
+ p3-20020a0cfac3000000b00631fea4d5bcsm12659204qvo.95.2023.07.04.07.55.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 07:55:01 -0700 (PDT)
+Date: Tue, 4 Jul 2023 16:54:53 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, virtio-dev@lists.oasis-open.org, slp@redhat.com, 
+ mst@redhat.com, marcandre.lureau@redhat.com, stefanha@redhat.com, 
+ viresh.kumar@linaro.org, takahiro.akashi@linaro.org, erik.schilling@linaro.org,
+ manos.pitsidianakis@linaro.org, mathieu.poirier@linaro.org
+Subject: Re: [virtio-dev] [RFC PATCH] docs/interop: define STANDALONE
+ protocol feature for vhost-user
+Message-ID: <3ogh7u3ezp7vlrp3ticquoajgsnpnglplm44osrsd7gvxv2lyn@g22qgf4vwgp5>
+References: <20230704123600.1808604-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-References: <cover.1688051252.git.yin31149@gmail.com>
- <2f2560f749186c0eb1055f9926f464587e419eeb.1688051252.git.yin31149@gmail.com>
-In-Reply-To: <2f2560f749186c0eb1055f9926f464587e419eeb.1688051252.git.yin31149@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Tue, 4 Jul 2023 16:53:26 +0200
-Message-ID: <CAJaqyWfq0Sec14Y9UCAtYXRCTyyUwEo0NRBu6uksgESkMVgFUQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 2/4] vdpa: Restore MAC address filtering state
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230704123600.1808604-1-alex.bennee@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,115 +104,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jun 29, 2023 at 5:26=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
+On Tue, Jul 04, 2023 at 01:36:00PM +0100, Alex Bennée wrote:
+>Currently QEMU has to know some details about the back-end to be able
+>to setup the guest. While various parts of the setup can be delegated
+>to the backend (for example config handling) this is a very piecemeal
+>approach.
 >
-> This patch refactors vhost_vdpa_net_load_mac() to
-> restore the MAC address filtering state at device's startup.
+>This patch suggests a new feature flag (VHOST_USER_PROTOCOL_F_STANDALONE)
+>which the back-end can advertise which allows a probe message to be
+>sent to get all the details QEMU needs to know in one message.
 >
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> ---
-> v2:
->   - use iovec suggested by Eugenio
->   - avoid sending CVQ command in default state
+>Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 >
-> v1: https://lore.kernel.org/all/00f72fe154a882fd6dc15bc39e3a1ac63f9dadce.=
-1687402580.git.yin31149@gmail.com/
->
->  net/vhost-vdpa.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 51 insertions(+)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 0bd1c7817c..cb45c84c88 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -665,6 +665,57 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s=
-, const VirtIONet *n)
->          }
->      }
->
-> +    if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_RX)) {
-> +        if (n->mac_table.in_use !=3D 0) {
+>---
+>Initial RFC for discussion. I intend to prototype this work with QEMU
+>and one of the rust-vmm vhost-user daemons.
 
-This may be just style nitpicking, but I find it more clear to return
-early if conditions are not met and then send the CVQ command.
-Something like:
-/*
- * According to ...
- */
-if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_RX)) ||
-(n->mac_table.in_use =3D=3D 0)) {
-  return 0
-}
+Thanks for starting this discussion!
 
-uni_entries =3D n->mac_table.first_multi,
-...
----
+I'm comparing with vhost-vdpa IOCTLs, so my questions may be
+superficial, but they help me understand the differences.
 
-Now I just realized vhost_vdpa_net_load_mac does not follow this for
-checking VIRTIO_NET_F_CTRL_MAC_ADDR.
-
-I'm ok if you leave it this way though.
-
-Thanks!
-
-> +            /*
-> +             * According to virtio_net_reset(), device uses an empty MAC=
- filter
-> +             * table as its default state.
-> +             *
-> +             * Therefore, there is no need to send this CVQ command if t=
-he
-> +             * driver also sets an empty MAC filter table, which aligns =
-with
-> +             * the device's defaults.
-> +             *
-> +             * Note that the device's defaults can mismatch the driver's
-> +             * configuration only at live migration.
-> +             */
-> +            uint32_t uni_entries =3D n->mac_table.first_multi,
-> +                     uni_macs_size =3D uni_entries * ETH_ALEN,
-> +                     mul_entries =3D n->mac_table.in_use - uni_entries,
-> +                     mul_macs_size =3D mul_entries * ETH_ALEN;
-> +            struct virtio_net_ctrl_mac uni =3D {
-> +                .entries =3D cpu_to_le32(uni_entries),
-> +            };
-> +            struct virtio_net_ctrl_mac mul =3D {
-> +                .entries =3D cpu_to_le32(mul_entries),
-> +            };
-> +            const struct iovec data[] =3D {
-> +                {
-> +                    .iov_base =3D &uni,
-> +                    .iov_len =3D sizeof(uni),
-> +                }, {
-> +                    .iov_base =3D n->mac_table.macs,
-> +                    .iov_len =3D uni_macs_size,
-> +                }, {
-> +                    .iov_base =3D &mul,
-> +                    .iov_len =3D sizeof(mul),
-> +                }, {
-> +                    .iov_base =3D &n->mac_table.macs[uni_macs_size],
-> +                    .iov_len =3D mul_macs_size,
-> +                },
-> +            };
-> +            ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s,
-> +                                        VIRTIO_NET_CTRL_MAC,
-> +                                        VIRTIO_NET_CTRL_MAC_TABLE_SET,
-> +                                        data, ARRAY_SIZE(data));
-> +            if (unlikely(dev_written < 0)) {
-> +                return dev_written;
-> +            }
-> +            if (*s->status !=3D VIRTIO_NET_OK) {
-> +                return -EINVAL;
-> +            }
-> +        }
-> +    }
-> +
->      return 0;
->  }
+>---
+> docs/interop/vhost-user.rst | 37 +++++++++++++++++++++++++++++++++++++
+> hw/virtio/vhost-user.c      |  8 ++++++++
+> 2 files changed, 45 insertions(+)
 >
-> --
-> 2.25.1
+>diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+>index 5a070adbc1..85b1b1583a 100644
+>--- a/docs/interop/vhost-user.rst
+>+++ b/docs/interop/vhost-user.rst
+>@@ -275,6 +275,21 @@ Inflight description
+>
+> :queue size: a 16-bit size of virtqueues
+>
+>+Backend specifications
+>+^^^^^^^^^^^^^^^^^^^^^^
+>+
+>++-----------+-------------+------------+------------+
+>+| device id | config size |   min_vqs  |   max_vqs  |
+>++-----------+-------------+------------+------------+
+>+
+>+:device id: a 32-bit value holding the VirtIO device ID
+>+
+>+:config size: a 32-bit value holding the config size (see ``VHOST_USER_GET_CONFIG``)
+>+
+>+:min_vqs: a 32-bit value holding the minimum number of vqs supported
+
+Why do we need the minimum?
+
+>+
+>+:max_vqs: a 32-bit value holding the maximum number of vqs supported, must be >= min_vqs
+
+Is this overlap with VHOST_USER_GET_QUEUE_NUM?
+
+>+
+> C structure
+> -----------
+>
+>@@ -296,6 +311,7 @@ In QEMU the vhost-user message is implemented with the following struct:
+>           VhostUserConfig config;
+>           VhostUserVringArea area;
+>           VhostUserInflight inflight;
+>+          VhostUserBackendSpecs specs;
+>       };
+>   } QEMU_PACKED VhostUserMsg;
+>
+>@@ -316,6 +332,7 @@ replies. Here is a list of the ones that do:
+> * ``VHOST_USER_GET_VRING_BASE``
+> * ``VHOST_USER_SET_LOG_BASE`` (if ``VHOST_USER_PROTOCOL_F_LOG_SHMFD``)
+> * ``VHOST_USER_GET_INFLIGHT_FD`` (if ``VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD``)
+>+* ``VHOST_USER_GET_BACKEND_SPECS`` (if ``VHOST_USER_PROTOCOL_F_STANDALONE``)
+>
+> .. seealso::
+>
+>@@ -885,6 +902,13 @@ Protocol features
+>   #define VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS  15
+>   #define VHOST_USER_PROTOCOL_F_STATUS               16
+>   #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
+>+  #define VHOST_USER_PROTOCOL_F_STANDALONE           18
+>+
+>+Some features are only valid in the presence of other supporting
+>+features. In the case of ``VHOST_USER_PROTOCOL_F_STANDALONE`` the
+>+backend must also support ``VHOST_USER_PROTOCOL_F_CONFIG`` and
+>+``VHOST_USER_PROTOCOL_F_STATUS``.
+>+
+
+What about adding a new section where we will describe what we mean
+with "standalone" devices?
+
+For example that the entire virtio device is emulated in the backend,
+etc.
+
+By the way, I was thinking more about F_FULL_DEVICE, but I'm not good
+with names, so I'll just throw out an idea :-)
+
+Thanks,
+Stefano
+
+>
+> Front-end message types
+> -----------------------
+>@@ -1440,6 +1464,19 @@ Front-end message types
+>   query the back-end for its device status as defined in the Virtio
+>   specification.
+>
+>+``VHOST_USER_GET_BACKEND_SPECS``
+>+  :id: 41
+>+  :request payload: N/A
+>+  :reply payload: ``Backend specifications``
+>+
+>+  When the ``VHOST_USER_PROTOCOL_F_STANDALONE`` protocol feature has been
+>+  successfully negotiated, this message is submitted by the front-end to
+>+  query the back-end for its capabilities. This is intended to remove
+>+  the need for the front-end to know ahead of time what the VirtIO
+>+  device the backend emulates is.
+>+
+>+  The reply contains the device id, size of the config space and the
+>+  range of VirtQueues the backend supports.
+>
+> Back-end message types
+> ----------------------
+>diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+>index c4e0cbd702..28b021d5d3 100644
+>--- a/hw/virtio/vhost-user.c
+>+++ b/hw/virtio/vhost-user.c
+>@@ -202,6 +202,13 @@ typedef struct VhostUserInflight {
+>     uint16_t queue_size;
+> } VhostUserInflight;
+>
+>+typedef struct VhostUserBackendSpecs {
+>+    uint32_t device_id;
+>+    uint32_t config_size;
+>+    uint32_t min_vqs;
+>+    uint32_t max_vqs;
+>+} VhostUserBackendSpecs;
+>+
+> typedef struct {
+>     VhostUserRequest request;
+>
+>@@ -226,6 +233,7 @@ typedef union {
+>         VhostUserCryptoSession session;
+>         VhostUserVringArea area;
+>         VhostUserInflight inflight;
+>+        VhostUserBackendSpecs specs;
+> } VhostUserPayload;
+>
+> typedef struct VhostUserMsg {
+>-- 
+>2.39.2
+>
+>
+>---------------------------------------------------------------------
+>To unsubscribe, e-mail: virtio-dev-unsubscribe@lists.oasis-open.org
+>For additional commands, e-mail: virtio-dev-help@lists.oasis-open.org
 >
 
 
