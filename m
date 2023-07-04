@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA81F74760C
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 18:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9387574761B
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 18:09:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGiUT-0006JQ-FS; Tue, 04 Jul 2023 12:02:57 -0400
+	id 1qGiYn-0001Sa-Bo; Tue, 04 Jul 2023 12:07:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qGiU9-00062X-0d
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:02:38 -0400
-Received: from mail-qt1-x830.google.com ([2607:f8b0:4864:20::830])
+ id 1qGiYg-0001S4-Ua
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:07:18 -0400
+Received: from mail-qt1-x835.google.com ([2607:f8b0:4864:20::835])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qGiU6-00029s-Pf
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:02:36 -0400
-Received: by mail-qt1-x830.google.com with SMTP id
- d75a77b69052e-40339da998eso40756661cf.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 09:02:33 -0700 (PDT)
+ id 1qGiYf-00032Q-1A
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:07:18 -0400
+Received: by mail-qt1-x835.google.com with SMTP id
+ d75a77b69052e-403429b33f5so24444921cf.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 09:07:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688486552; x=1691078552;
+ d=gmail.com; s=20221208; t=1688486836; x=1691078836;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=qEfASsX9I66EYZpQngebDCtBV8yUFZ0BaQyIrGzZMOc=;
- b=rcHMdha4zHrFBiR6bmh5x5AzcjQYg7QnqfPDNmXAbgcKxKW66a7cATteaoRZMFxYbc
- lhsMmI2UcS423wPAmgh7r/TzVxzS1Rim1/8+Rce5pV2yRmZyve+pqeIJGoCh6zTyv4JC
- aVoqUnlqYJobRoxnf093EfWwo5Q5Uw8lUKqwH9dq4ETU4GNLJo/QtTDg5B0p4ucDeUG8
- 4lRzShfC26xJpKEn29PmIqsZmzGlOsE59/KX5w9g2GxskMZ3dGrQn12Xq5oVMDVylBXR
- WHRVF3N8DYWRNtpfQbV96pwquYU+b8Qokv5IB0zNct0q62C3ZBZYVmv4CTshc92/u4Hs
- Pl6w==
+ bh=I2VC/g4RypunwtFsnbH2WEQv8dS52kkRdck1Dlp+RWw=;
+ b=IaNMWc7D4VCI1dMF05eXzuoe8ECDBUh+3Xghq1tkhuxrh44Cs6XXWsX6qV3m7wIRYu
+ OHObiOK6jdImMYfURArx7rbh61RMhVlNJhhIkgBDPebUNY/dntlCpyVp7MteD93lO0n4
+ hNv6Wq0RSdv7ULtrtGJZ7AOHQ/wX02a4uKrNFyTrlP8ODTIj9Kf1L8Tg6gyC/Xnfvl1Y
+ KtZiEwGr2fkUQQFTKuOJfzTIkyNQ1DkF2d4rYW6QR5qo56bX8Hvc4QgwCEnSpkP3PSmO
+ pnUev19fmydfs8P2vc1aYzuBfiYfwhQ7WTepEDvMzIfxetWYxwrySsOid58akpMK07rm
+ NhpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688486552; x=1691078552;
+ d=1e100.net; s=20221208; t=1688486836; x=1691078836;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=qEfASsX9I66EYZpQngebDCtBV8yUFZ0BaQyIrGzZMOc=;
- b=iQzbtSd41fHYcVzseITWicQCteh/solp+PczLcOlHOq19KgWp0p4i76oJYho4Wk6CC
- 5ZsOY+3ATAvYZ0bNAu2gYyK5lOUqX+jNsUDL3loi1jv0Qu79Qg1i6++2UewDVornB3lp
- fkV9llcgdrn/AMF+2Wxd1JkEOonpjeB0aB/cRzjS3QY7agqtCSR7rg2uyDqPdii3hrio
- Bz0fc3mBeT+ZBnAeevJKLWV0vriZgUz8hQrj61rFYAUBM8/8x1YolHNL48O7+HN/3zc5
- PDnkb1UcORF7MV0wO+FF+Uj0z/cycSIJTiXysY6OlZ/dmLU4OiUVm05XMAQK9eMRw6UF
- qgdw==
-X-Gm-Message-State: AC+VfDwr5SpQ9SOUm74tp5q5/xH0LK/zu+DDUNJzEYpB7BgpCE32U1aT
- TBpbxyEHBOD15krRAIg/RnwjekNc5JV+0+yibCc=
-X-Google-Smtp-Source: ACHHUZ6oDp9XHBZWl0wLoCJGzKdwVenongIT9fv8mU/0L37bB36can0CJzt7XrmK8f67NHBv1muelq8jX0kDx3K2KxU=
-X-Received: by 2002:ac8:5a86:0:b0:401:e140:58ab with SMTP id
- c6-20020ac85a86000000b00401e14058abmr17022683qtc.32.1688486552236; Tue, 04
- Jul 2023 09:02:32 -0700 (PDT)
+ bh=I2VC/g4RypunwtFsnbH2WEQv8dS52kkRdck1Dlp+RWw=;
+ b=KpbNAFzBynoKhP9ISignex6xLLBKJnTHKL+OnoE8zrqlhsB6ie/sfMqXFuTf3q/Weu
+ thaUx9ntvEzrLx0JLvsKN8oTslGlDqUKSm5zXhkJ/J86PQGUUC1nzP8ssICu7jYO2aMh
+ 4mZ76ynWDObNw4kPW9FTibr8hlYitzgUO18VQR6pFKMaYhqIz+T9xMf0Ipttk10O+Nbj
+ eUuuuzMCe+zrBiQgreCt6xaesVvcMlStzUmq8cNcHlMprgeroHFSrwYfI+77G9288mOW
+ 6SqKGodliotW/8CXWgYDBRZhVkaHSwQ4wbHpf4JBVJxhw9rm4V3QuORGqiaWro1jgPbS
+ 3Now==
+X-Gm-Message-State: AC+VfDy0e/h9jmLFQw2KNrw9M6QoS2WTheVXrGjxcEpHSfVSYSi55GI5
+ j2dOCCBa3n0cwbMcoJFtcfV5KuZuIC9oJI9m/WdKXTl5KtCf2w==
+X-Google-Smtp-Source: ACHHUZ6arm0XTVDIdxQ4Av94kKZT8KGinPWGn2bfC0FYjKV7AH1mfLm3B59NWidXq+akGMdztAYj5vvDvzs1kX6aR1Y=
+X-Received: by 2002:ac8:5b03:0:b0:3ff:33fb:50d5 with SMTP id
+ m3-20020ac85b03000000b003ff33fb50d5mr13710576qtw.12.1688486835822; Tue, 04
+ Jul 2023 09:07:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230627224451.11739-1-dongwon.kim@intel.com>
-In-Reply-To: <20230627224451.11739-1-dongwon.kim@intel.com>
+References: <20230621213150.29573-1-dongwon.kim@intel.com>
+ <CAJ+F1CJ2cVDAOTY-j77QGj5W1d4wrphcQ2oEUqkw0R4hBX3q0w@mail.gmail.com>
+ <6556daf6-a3a3-132d-df2c-2914c6bb2e47@intel.com>
+In-Reply-To: <6556daf6-a3a3-132d-df2c-2914c6bb2e47@intel.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 4 Jul 2023 18:02:21 +0200
-Message-ID: <CAJ+F1CJSgmN0XxL6eTACozZ=Rd_yg023dgELBWgHdbNZbyxq-g@mail.gmail.com>
-Subject: Re: [PATCH] virtio-gpu: replace the surface with null surface when
- resetting
-To: Dongwon Kim <dongwon.kim@intel.com>
+Date: Tue, 4 Jul 2023 18:07:05 +0200
+Message-ID: <CAJ+F1CJOPqXE-uuDOG7Ftz2-ju94hy49XqW9AszEiUtBKoCrRg@mail.gmail.com>
+Subject: Re: [PATCH] ui/gtk: set the area of the scanout texture correctly
+To: "Kim, Dongwon" <dongwon.kim@intel.com>
 Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
  Vivek Kasireddy <vivek.kasireddy@intel.com>
-Content-Type: multipart/alternative; boundary="0000000000002778d805ffab69e6"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::830;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x830.google.com
+Content-Type: multipart/alternative; boundary="0000000000000ea55505ffab7aa0"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::835;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x835.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -86,231 +87,309 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000002778d805ffab69e6
+--0000000000000ea55505ffab7aa0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 28, 2023 at 1:05=E2=80=AFAM Dongwon Kim <dongwon.kim@intel.com>=
- wrote:
+Hi
 
-> The primary guest scanout shows the booting screen right after reboot
-> but additional guest displays (i.e. max_ouptuts > 1) will keep displaying
-> the old frames until the guest virtio gpu driver gets initialized, which
-> could cause some confusion. A better way is to to replace the surface wit=
-h
-> a place holder that tells the display is not active during the reset of
-> virtio-gpu device.
+On Mon, Jun 26, 2023 at 9:49=E2=80=AFPM Kim, Dongwon <dongwon.kim@intel.com=
+> wrote:
+
+> Hi Marc-Andr=C3=A9 Lureau,
 >
-> And to immediately update the surface with the place holder image after
-> the switch, displaychangelistener_gfx_switch needs to be called with
-> 'update =3D=3D TRUE' in dpy_gfx_replace_surface when the new surface is N=
-ULL.
+> On 6/26/2023 4:56 AM, Marc-Andr=C3=A9 Lureau wrote:
+> > Hi
+> >
+> > On Wed, Jun 21, 2023 at 11:53=E2=80=AFPM Dongwon Kim <dongwon.kim@intel=
+.com>
+> > wrote:
+> >
+> >     x and y offsets and width and height of the scanout texture
+> >     is not correctly configured in case guest scanout frame is
+> >     dmabuf.
+> >
+> >     Cc: Gerd Hoffmann <kraxel@redhat.com>
+> >     Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >     Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> >     Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+> >
+> >
+> > I find this a bit confusing, and I don't know how to actually test it.
+> >
+> > The only place where scanout_{width, height} are set is
+> > virtio_gpu_create_dmabuf() and there, they have the same values as
+> > width and height. it's too easy to get confused with the values imho.
 >
-> Cc: Gerd Hoffmann <kraxel@redhat.com>
-> Cc: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+> Yes, scanout_width/height are same as width/height as far as there is
+> only one guest display exist. But they will be different in case there
+> multiple displays on the guest side, configured in extended mode (when
+> the guest is running Xorg).
+>
+> In this case, blob for the guest display is same for scanout 1 and 2 but
+> each scanout will have different offset and scanout_width/scanout_height
+> to reference a sub region in the same blob(dmabuf).
+>
+> I added x/y/scanout_width/scanout_height with a previous commit:
+>
+> commit e86a93f55463c088aa0b5260e915ffbf9f86c62b
+> Author: Dongwon Kim <dongwon.kim@intel.com>
+> Date:   Wed Nov 3 23:51:52 2021 -0700
+>
+>      virtio-gpu: splitting one extended mode guest fb into n-scanouts
+>
+> > I find the terminology we use for ScanoutTexture much clearer. It uses
+> > backing_{width, height} instead, which indicates quite clearly that
+> > the usual x/y/w/h are for the sub-region to be shown.
+> yeah agreed. Then dmabuf->width/height should be changed to
+> dmabuf->backing_width/height and dmabuf->width/height will be replacing
+> dmabuf->scanout_width/scanout_height. I guess this is what you meant,
+> right?
 >
 
-Acked-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+right, can you send a new patch?
+thanks
 
----
->  hw/display/virtio-gpu.c |  5 +++++
->  ui/console.c            | 11 ++++++-----
->  2 files changed, 11 insertions(+), 5 deletions(-)
+
+> > I think we should have a preliminary commit that renames
+> > scanout_{width, height}.
+> >
+> > Please give some help/hints on how to actually test this code too.
 >
-> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> index 66cddd94d9..de92f003b5 100644
-> --- a/hw/display/virtio-gpu.c
-> +++ b/hw/display/virtio-gpu.c
-> @@ -1354,6 +1354,7 @@ void virtio_gpu_reset(VirtIODevice *vdev)
->      VirtIOGPU *g =3D VIRTIO_GPU(vdev);
->      struct virtio_gpu_simple_resource *res, *tmp;
->      struct virtio_gpu_ctrl_command *cmd;
-> +    int i =3D 0;
+> So this patch is just to make things look consistent in the code level.
+> Having offset (0,0) in this function call for all different scanouts
+> didn't look right to me. This code change won't make anything done
+> differently though. So no test is applicable.
 >
->      QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
->          virtio_gpu_resource_destroy(g, res);
-> @@ -1372,6 +1373,10 @@ void virtio_gpu_reset(VirtIODevice *vdev)
->          g_free(cmd);
->      }
+> >
+> > Thanks!
+> >
+> >
+> >     ---
+> >      ui/gtk-egl.c     | 3 ++-
+> >      ui/gtk-gl-area.c | 3 ++-
+> >      2 files changed, 4 insertions(+), 2 deletions(-)
+> >
+> >     diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+> >     index 19130041bc..e99e3b0d8c 100644
+> >     --- a/ui/gtk-egl.c
+> >     +++ b/ui/gtk-egl.c
+> >     @@ -257,7 +257,8 @@ void
+> >     gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
+> >
+> >          gd_egl_scanout_texture(dcl, dmabuf->texture,
+> >                                 dmabuf->y0_top, dmabuf->width,
+> >     dmabuf->height,
+> >     -                           0, 0, dmabuf->width, dmabuf->height);
+> >     +                           dmabuf->x, dmabuf->y,
+> >     dmabuf->scanout_width,
+> >     +                           dmabuf->scanout_height);
+> >
+> >          if (dmabuf->allow_fences) {
+> >              vc->gfx.guest_fb.dmabuf =3D dmabuf;
+> >     diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+> >     index c384a1516b..1605818bd1 100644
+> >     --- a/ui/gtk-gl-area.c
+> >     +++ b/ui/gtk-gl-area.c
+> >     @@ -299,7 +299,8 @@ void
+> >     gd_gl_area_scanout_dmabuf(DisplayChangeListener *dcl,
+> >
+> >          gd_gl_area_scanout_texture(dcl, dmabuf->texture,
+> >                                     dmabuf->y0_top, dmabuf->width,
+> >     dmabuf->height,
+> >     -                               0, 0, dmabuf->width, dmabuf->height=
+);
+> >     +                               dmabuf->x, dmabuf->y,
+> >     dmabuf->scanout_width,
+> >     +                               dmabuf->scanout_height);
+> >
+> >          if (dmabuf->allow_fences) {
+> >              vc->gfx.guest_fb.dmabuf =3D dmabuf;
+> >     --
+> >     2.34.1
+> >
+> >
+> >
+> >
+> > --
+> > Marc-Andr=C3=A9 Lureau
 >
-> +    for (i =3D 0; i < g->parent_obj.conf.max_outputs; i++) {
-> +        dpy_gfx_replace_surface(g->parent_obj.scanout[i].con, NULL);
-> +    }
-> +
->      virtio_gpu_base_reset(VIRTIO_GPU_BASE(vdev));
->  }
->
-> diff --git a/ui/console.c b/ui/console.c
-> index e173731e20..768f39697c 100644
-> --- a/ui/console.c
-> +++ b/ui/console.c
-> @@ -1787,6 +1787,7 @@ void dpy_gfx_replace_surface(QemuConsole *con,
->      static const char placeholder_msg[] =3D "Display output is not activ=
-e.";
->      DisplayState *s =3D con->ds;
->      DisplaySurface *old_surface =3D con->surface;
-> +    DisplaySurface *new_surface =3D surface;
->      DisplayChangeListener *dcl;
->      int width;
->      int height;
-> @@ -1800,19 +1801,19 @@ void dpy_gfx_replace_surface(QemuConsole *con,
->              height =3D 480;
->          }
->
-> -        surface =3D qemu_create_placeholder_surface(width, height,
-> placeholder_msg);
-> +        new_surface =3D qemu_create_placeholder_surface(width, height,
-> placeholder_msg);
->      }
->
-> -    assert(old_surface !=3D surface);
-> +    assert(old_surface !=3D new_surface);
->
->      con->scanout.kind =3D SCANOUT_SURFACE;
-> -    con->surface =3D surface;
-> -    dpy_gfx_create_texture(con, surface);
-> +    con->surface =3D new_surface;
-> +    dpy_gfx_create_texture(con, new_surface);
->      QLIST_FOREACH(dcl, &s->listeners, next) {
->          if (con !=3D (dcl->con ? dcl->con : active_console)) {
->              continue;
->          }
-> -        displaychangelistener_gfx_switch(dcl, surface, FALSE);
-> +        displaychangelistener_gfx_switch(dcl, new_surface, surface ?
-> FALSE : TRUE);
->      }
->      dpy_gfx_destroy_texture(con, old_surface);
->      qemu_free_displaysurface(old_surface);
-> --
-> 2.34.1
->
->
->
+
 
 --=20
 Marc-Andr=C3=A9 Lureau
 
---0000000000002778d805ffab69e6
+--0000000000000ea55505ffab7aa0
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jun 28, 2023 at 1:05=E2=80=AF=
-AM Dongwon Kim &lt;<a href=3D"mailto:dongwon.kim@intel.com">dongwon.kim@int=
-el.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
-:1ex">The primary guest scanout shows the booting screen right after reboot=
+<div dir=3D"ltr"><div dir=3D"ltr">Hi<br></div><br><div class=3D"gmail_quote=
+"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jun 26, 2023 at 9:49=E2=80=
+=AFPM Kim, Dongwon &lt;<a href=3D"mailto:dongwon.kim@intel.com">dongwon.kim=
+@intel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">Hi Marc-Andr=C3=A9 Lureau,<br>
 <br>
-but additional guest displays (i.e. max_ouptuts &gt; 1) will keep displayin=
-g<br>
-the old frames until the guest virtio gpu driver gets initialized, which<br=
+On 6/26/2023 4:56 AM, Marc-Andr=C3=A9 Lureau wrote:<br>
+&gt; Hi<br>
+&gt;<br>
+&gt; On Wed, Jun 21, 2023 at 11:53=E2=80=AFPM Dongwon Kim &lt;<a href=3D"ma=
+ilto:dongwon.kim@intel.com" target=3D"_blank">dongwon.kim@intel.com</a>&gt;=
+ <br>
+&gt; wrote:<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0x and y offsets and width and height of the scanout=
+ texture<br>
+&gt;=C2=A0 =C2=A0 =C2=A0is not correctly configured in case guest scanout f=
+rame is<br>
+&gt;=C2=A0 =C2=A0 =C2=A0dmabuf.<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0Cc: Gerd Hoffmann &lt;<a href=3D"mailto:kraxel@redh=
+at.com" target=3D"_blank">kraxel@redhat.com</a>&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0Cc: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:ma=
+rcandre.lureau@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a=
+>&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0Cc: Vivek Kasireddy &lt;<a href=3D"mailto:vivek.kas=
+ireddy@intel.com" target=3D"_blank">vivek.kasireddy@intel.com</a>&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0Signed-off-by: Dongwon Kim &lt;<a href=3D"mailto:do=
+ngwon.kim@intel.com" target=3D"_blank">dongwon.kim@intel.com</a>&gt;<br>
+&gt;<br>
+&gt;<br>
+&gt; I find this a bit confusing, and I don&#39;t know how to actually test=
+ it.<br>
+&gt;<br>
+&gt; The only place where scanout_{width, height} are set is <br>
+&gt; virtio_gpu_create_dmabuf() and there, they have the same values as <br=
 >
-could cause some confusion. A better way is to to replace the surface with<=
+&gt; width and height. it&#39;s too easy to get confused with the values im=
+ho.<br>
+<br>
+Yes, scanout_width/height are same as width/height as far as there is <br>
+only one guest display exist. But they will be different in case there <br>
+multiple displays on the guest side, configured in extended mode (when <br>
+the guest is running Xorg).<br>
+<br>
+In this case, blob for the guest display is same for scanout 1 and 2 but <b=
+r>
+each scanout will have different offset and scanout_width/scanout_height <b=
+r>
+to reference a sub region in the same blob(dmabuf).<br>
+<br>
+I added x/y/scanout_width/scanout_height with a previous commit:<br>
+<br>
+commit e86a93f55463c088aa0b5260e915ffbf9f86c62b<br>
+Author: Dongwon Kim &lt;<a href=3D"mailto:dongwon.kim@intel.com" target=3D"=
+_blank">dongwon.kim@intel.com</a>&gt;<br>
+Date:=C2=A0=C2=A0 Wed Nov 3 23:51:52 2021 -0700<br>
+<br>
+=C2=A0=C2=A0=C2=A0=C2=A0 virtio-gpu: splitting one extended mode guest fb i=
+nto n-scanouts<br>
+<br>
+&gt; I find the terminology we use for ScanoutTexture much clearer. It uses=
+ <br>
+&gt; backing_{width, height} instead, which indicates quite clearly that <b=
+r>
+&gt; the usual x/y/w/h are for the sub-region to be shown.<br>
+yeah agreed. Then dmabuf-&gt;width/height should be changed to <br>
+dmabuf-&gt;backing_width/height and dmabuf-&gt;width/height will be replaci=
+ng <br>
+dmabuf-&gt;scanout_width/scanout_height. I guess this is what you meant, ri=
+ght?<br></blockquote><div><br></div><div>right, can you send a new patch?</=
+div><div>thanks</div><div>=C2=A0<br></div><blockquote class=3D"gmail_quote"=
+ style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);p=
+adding-left:1ex">
+&gt; I think we should have a preliminary commit that renames <br>
+&gt; scanout_{width, height}.<br>
+&gt;<br>
+&gt; Please give some help/hints on how to actually test this code too.<br>
+<br>
+So this patch is just to make things look consistent in the code level. <br=
+>
+Having offset (0,0) in this function call for all different scanouts <br>
+didn&#39;t look right to me. This code change won&#39;t make anything done =
+<br>
+differently though. So no test is applicable.<br>
+<br>
+&gt;<br>
+&gt; Thanks!<br>
+&gt;<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0---<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0ui/gtk-egl.c=C2=A0 =C2=A0 =C2=A0| 3 ++-<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0ui/gtk-gl-area.c | 3 ++-<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A02 files changed, 4 insertions(+), 2 deletions=
+(-)<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c<br>
+&gt;=C2=A0 =C2=A0 =C2=A0index 19130041bc..e99e3b0d8c 100644<br>
+&gt;=C2=A0 =C2=A0 =C2=A0--- a/ui/gtk-egl.c<br>
+&gt;=C2=A0 =C2=A0 =C2=A0+++ b/ui/gtk-egl.c<br>
+&gt;=C2=A0 =C2=A0 =C2=A0@@ -257,7 +257,8 @@ void<br>
+&gt;=C2=A0 =C2=A0 =C2=A0gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,<b=
+r>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0 =C2=A0gd_egl_scanout_texture(dcl, dma=
+buf-&gt;texture,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dmabuf-&gt;y0_top, dmabuf-=
+&gt;width,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0dmabuf-&gt;height,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A00, 0, dmabuf-&gt;width, dma=
+buf-&gt;height);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0dmabuf-&gt;x, dmabuf-&gt;y,=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0dmabuf-&gt;scanout_width,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0dmabuf-&gt;scanout_height);=
+<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0 =C2=A0if (dmabuf-&gt;allow_fences) {<=
 br>
-a place holder that tells the display is not active during the reset of<br>
-virtio-gpu device.<br>
-<br>
-And to immediately update the surface with the place holder image after<br>
-the switch, displaychangelistener_gfx_switch needs to be called with<br>
-&#39;update =3D=3D TRUE&#39; in dpy_gfx_replace_surface when the new surfac=
-e is NULL.<br>
-<br>
-Cc: Gerd Hoffmann &lt;<a href=3D"mailto:kraxel@redhat.com" target=3D"_blank=
-">kraxel@redhat.com</a>&gt;<br>
-Cc: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@redhat.co=
-m" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
-Cc: Vivek Kasireddy &lt;<a href=3D"mailto:vivek.kasireddy@intel.com" target=
-=3D"_blank">vivek.kasireddy@intel.com</a>&gt;<br>
-Signed-off-by: Dongwon Kim &lt;<a href=3D"mailto:dongwon.kim@intel.com" tar=
-get=3D"_blank">dongwon.kim@intel.com</a>&gt;<br></blockquote><div><br></div=
-><div>Acked-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lure=
-au@redhat.com">marcandre.lureau@redhat.com</a>&gt; <br></div><div><br></div=
-><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
--left:1px solid rgb(204,204,204);padding-left:1ex">
----<br>
-=C2=A0hw/display/virtio-gpu.c |=C2=A0 5 +++++<br>
-=C2=A0ui/console.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 11 ++++++----=
--<br>
-=C2=A02 files changed, 11 insertions(+), 5 deletions(-)<br>
-<br>
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c<br>
-index 66cddd94d9..de92f003b5 100644<br>
---- a/hw/display/virtio-gpu.c<br>
-+++ b/hw/display/virtio-gpu.c<br>
-@@ -1354,6 +1354,7 @@ void virtio_gpu_reset(VirtIODevice *vdev)<br>
-=C2=A0 =C2=A0 =C2=A0VirtIOGPU *g =3D VIRTIO_GPU(vdev);<br>
-=C2=A0 =C2=A0 =C2=A0struct virtio_gpu_simple_resource *res, *tmp;<br>
-=C2=A0 =C2=A0 =C2=A0struct virtio_gpu_ctrl_command *cmd;<br>
-+=C2=A0 =C2=A0 int i =3D 0;<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0QTAILQ_FOREACH_SAFE(res, &amp;g-&gt;reslist, next, tmp)=
- {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_gpu_resource_destroy(g, res);<br>
-@@ -1372,6 +1373,10 @@ void virtio_gpu_reset(VirtIODevice *vdev)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_free(cmd);<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-+=C2=A0 =C2=A0 for (i =3D 0; i &lt; g-&gt;parent_obj.conf.max_outputs; i++)=
- {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 dpy_gfx_replace_surface(g-&gt;parent_obj.scano=
-ut[i].con, NULL);<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-=C2=A0 =C2=A0 =C2=A0virtio_gpu_base_reset(VIRTIO_GPU_BASE(vdev));<br>
-=C2=A0}<br>
-<br>
-diff --git a/ui/console.c b/ui/console.c<br>
-index e173731e20..768f39697c 100644<br>
---- a/ui/console.c<br>
-+++ b/ui/console.c<br>
-@@ -1787,6 +1787,7 @@ void dpy_gfx_replace_surface(QemuConsole *con,<br>
-=C2=A0 =C2=A0 =C2=A0static const char placeholder_msg[] =3D &quot;Display o=
-utput is not active.&quot;;<br>
-=C2=A0 =C2=A0 =C2=A0DisplayState *s =3D con-&gt;ds;<br>
-=C2=A0 =C2=A0 =C2=A0DisplaySurface *old_surface =3D con-&gt;surface;<br>
-+=C2=A0 =C2=A0 DisplaySurface *new_surface =3D surface;<br>
-=C2=A0 =C2=A0 =C2=A0DisplayChangeListener *dcl;<br>
-=C2=A0 =C2=A0 =C2=A0int width;<br>
-=C2=A0 =C2=A0 =C2=A0int height;<br>
-@@ -1800,19 +1801,19 @@ void dpy_gfx_replace_surface(QemuConsole *con,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0height =3D 480;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 surface =3D qemu_create_placeholder_surface(wi=
-dth, height, placeholder_msg);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 new_surface =3D qemu_create_placeholder_surfac=
-e(width, height, placeholder_msg);<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
--=C2=A0 =C2=A0 assert(old_surface !=3D surface);<br>
-+=C2=A0 =C2=A0 assert(old_surface !=3D new_surface);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0con-&gt;scanout.kind =3D SCANOUT_SURFACE;<br>
--=C2=A0 =C2=A0 con-&gt;surface =3D surface;<br>
--=C2=A0 =C2=A0 dpy_gfx_create_texture(con, surface);<br>
-+=C2=A0 =C2=A0 con-&gt;surface =3D new_surface;<br>
-+=C2=A0 =C2=A0 dpy_gfx_create_texture(con, new_surface);<br>
-=C2=A0 =C2=A0 =C2=A0QLIST_FOREACH(dcl, &amp;s-&gt;listeners, next) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (con !=3D (dcl-&gt;con ? dcl-&gt;con :=
- active_console)) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0continue;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 displaychangelistener_gfx_switch(dcl, surface,=
- FALSE);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 displaychangelistener_gfx_switch(dcl, new_surf=
-ace, surface ? FALSE : TRUE);<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0dpy_gfx_destroy_texture(con, old_surface);<br>
-=C2=A0 =C2=A0 =C2=A0qemu_free_displaysurface(old_surface);<br>
--- <br>
-2.34.1<br>
-<br>
-<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0vc-&gt;gfx.guest_=
+fb.dmabuf =3D dmabuf;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c<br=
+>
+&gt;=C2=A0 =C2=A0 =C2=A0index c384a1516b..1605818bd1 100644<br>
+&gt;=C2=A0 =C2=A0 =C2=A0--- a/ui/gtk-gl-area.c<br>
+&gt;=C2=A0 =C2=A0 =C2=A0+++ b/ui/gtk-gl-area.c<br>
+&gt;=C2=A0 =C2=A0 =C2=A0@@ -299,7 +299,8 @@ void<br>
+&gt;=C2=A0 =C2=A0 =C2=A0gd_gl_area_scanout_dmabuf(DisplayChangeListener *dc=
+l,<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0 =C2=A0gd_gl_area_scanout_texture(dcl,=
+ dmabuf-&gt;texture,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dmabuf-&gt;y=
+0_top, dmabuf-&gt;width,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0dmabuf-&gt;height,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A00, 0, dmabuf-=
+&gt;width, dmabuf-&gt;height);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0dmabuf-&gt;x,=
+ dmabuf-&gt;y,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0dmabuf-&gt;scanout_width,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0dmabuf-&gt;sc=
+anout_height);<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0 =C2=A0if (dmabuf-&gt;allow_fences) {<=
+br>
+&gt;=C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0vc-&gt;gfx.guest_=
+fb.dmabuf =3D dmabuf;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0-- <br>
+&gt;=C2=A0 =C2=A0 =C2=A02.34.1<br>
+&gt;<br>
+&gt;<br>
+&gt;<br>
+&gt;<br>
+&gt; -- <br>
+&gt; Marc-Andr=C3=A9 Lureau<br>
 </blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
 fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
 =A9 Lureau<br></div></div>
 
---0000000000002778d805ffab69e6--
+--0000000000000ea55505ffab7aa0--
 
