@@ -2,82 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A118746C31
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:42:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A64F746C38
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:42:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGbb8-0001No-VZ; Tue, 04 Jul 2023 04:41:23 -0400
+	id 1qGbc9-00029d-Jh; Tue, 04 Jul 2023 04:42:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qGbb7-0001NS-Cb
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:41:21 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qGbb5-00005M-FR
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:41:20 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-55af0a816e4so2721949a12.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:41:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1688460078; x=1691052078;
- h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AzQwHilUs2+h3+nromIKPNidcbjRoSUxGEzJrfFiXVs=;
- b=mpcVt1iaFZezX07RMdpb+pWV3H9LWWJOUdgjCLeeObyq8iLnutYz92JzEjPW5SA6tq
- /bG49B/Yjmh095FCdmTyEv5eltp1PJBBihQg9a3SjuT28wQuh+s55OGffyBHZ+1c8Izb
- VziXrOmzLag2D94QlMdPEjr5kkmCAcA4GE5kw8hfsx35bVJEzF1B8Kl8yvzzpfcaB3WZ
- yHxiEL9GF4ApNpsz5A34etcqEz4JweM2X5vTztUoOZ0KfGgDMMUJEwCRfOmpsgChIQan
- a9ETf36PcPmSiKJLXrbiyqphjgWD0FbpqZuLr6mVm/4DnZ6F3kCd+9Y4mjVDt3ISwlpV
- dv9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688460078; x=1691052078;
- h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AzQwHilUs2+h3+nromIKPNidcbjRoSUxGEzJrfFiXVs=;
- b=g0pEpX/q5NDb3HQBsKJUeKH5MA1OFvuE5313LBJHhOGrFpl2dKvPTJcDljMxnVKz/w
- yK0d/j2Wc7+Nw6CWNxQHOCycxKcvEbw4cYfAYkDYhwk6pUWJdEszmpYNy/j9NF4RxBcD
- /FtNMSDLl4VyM+zAJlCA3n4wAS9oyVyvKUX5z5qvG8+l1HrWU0EMln0AGXtcCsLgQqlq
- l+rj8rtPb5J+Y4823yHgcD5r7PdGAQy98jEA7czcWzu7nEtXdVSMrcxhJezhVSv8sB42
- n6ekGhV29jeVlMTs/gV5M4P7TiXywVXcDVoA6Q7Vd0HcMUH2idrX18QU+Xh6xEyVOsC6
- yKRw==
-X-Gm-Message-State: AC+VfDz6NDIdaBw0AdqJ6ZILOpdq7BUIOsKEFswb0Rp/i4OaR2nuP5Ej
- AFLzEM4j/caK4rKTii+0YxHc+jFgvkGUX0Q0kCKUlWfveZiK3XyaJSP92xtkVt+012PwdqqdZ/Z
- 1U6tpyzn1M+GK7DGB3P+AGITcdNkmtC7PeH2f/MrvzJ5OD5mMW0sew9HhswV1kyKf4O/qKxHdgl
- 7CGQ==
-X-Google-Smtp-Source: ACHHUZ59u0NA2vfQbDTqTWiGhs2RRDG1P0Npmnmqs1+xE1URZGAdm5RlX3YFj1KJQw/nE7C3HpRf2g==
-X-Received: by 2002:a05:6a20:3212:b0:12c:763b:f098 with SMTP id
- hl18-20020a056a20321200b0012c763bf098mr8898296pzc.11.1688460077504; 
- Tue, 04 Jul 2023 01:41:17 -0700 (PDT)
-Received: from hsinchu26.internal.sifive.com
- (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
- by smtp.gmail.com with ESMTPSA id
- f1-20020a170902ab8100b001b80b428d4bsm13870188plr.67.2023.07.04.01.41.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 01:41:16 -0700 (PDT)
-From: Jason Chien <jason.chien@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Jason Chien <jason.chien@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH] target/riscv: Add Zihintntl extension ISA string to DTS
-Date: Tue,  4 Jul 2023 08:40:10 +0000
-Message-Id: <20230704084013.21749-1-jason.chien@sifive.com>
-X-Mailer: git-send-email 2.17.1
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=jason.chien@sifive.com; helo=mail-pg1-x535.google.com
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1qGbc4-00029T-Pt
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:42:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1qGbc3-0000PD-4w
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:42:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688460137;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Ng/ecASVryPUWeUCjgvL1EG9cG/qRB0bmFWKEPyPWG8=;
+ b=HW2IibWYdRcUDwFI/gURIuFTQxblPKkjxGkBufIdDNIdlYBbnzux2nA5dVDczouQ5vtCPa
+ s/i3ythFYlx6A3XUd0lLLhfMB2RifA5NHFm0hFvYThD1lvKf9NjeQqtU4iITFarwhRvOkX
+ yjpu/x1UDMieNh8gs7qMDrpJI0G86b8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-343-hv990zZ6Nl-HETGtMWLvZQ-1; Tue, 04 Jul 2023 04:42:14 -0400
+X-MC-Unique: hv990zZ6Nl-HETGtMWLvZQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 363AA8A2E21;
+ Tue,  4 Jul 2023 08:42:14 +0000 (UTC)
+Received: from f38-work.redhat.com (unknown [10.39.193.5])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 33B53C00049;
+ Tue,  4 Jul 2023 08:42:13 +0000 (UTC)
+From: Mauro Matteo Cascella <mcascell@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: mcascell@redhat.com, kraxel@redhat.com, marcandre.lureau@redhat.com,
+ kevin.denis@synacktiv.com
+Subject: [PATCH] ui/vnc-clipboard: fix infinite loop in inflate_buffer
+ (CVE-2023-3255)
+Date: Tue,  4 Jul 2023 10:41:22 +0200
+Message-ID: <20230704084210.101822-1-mcascell@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcascell@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,68 +77,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RVA23 Profiles states:
-The RVA23 profiles are intended to be used for 64-bit application
-processors that will run rich OS stacks from standard binary OS
-distributions and with a substantial number of third-party binary user
-applications that will be supported over a considerable length of time
-in the field.
+A wrong exit condition may lead to an infinite loop when inflating a
+valid zlib buffer containing some extra bytes in the `inflate_buffer`
+function. The bug only occurs post-authentication. Return the buffer
+immediately if the end of the compressed data has been reached
+(Z_STREAM_END).
 
-The chapter 4 of the unprivileged spec introduces the Zihintntl extension
-and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
-purpose is to enable application and operating system portability across
-different implementations. Thus the DTS should contain the Zihintntl ISA
-string in order to pass to software.
-
-The unprivileged spec states:
-Like any HINTs, these instructions may be freely ignored. Hence, although
-they are described in terms of cache-based memory hierarchies, they do not
-mandate the provision of caches.
-
-These instructions are encoded with used opcode, e.g. ADD x0, x0, x2, which
-QEMU already supports, and QEMU does not emulate cache. Therefore these
-instructions can be considered as a no-op, and we only need to add a new
-property for the Zihintntl extension.
-
-Signed-off-by: Jason Chien <jason.chien@sifive.com>
+Fixes: CVE-2023-3255
+Fixes: 0bf41cab ("ui/vnc: clipboard support")
+Reported-by: Kevin Denis <kevin.denis@synacktiv.com>
+Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
 ---
- target/riscv/cpu.c     | 2 ++
- target/riscv/cpu_cfg.h | 1 +
- 2 files changed, 3 insertions(+)
+ ui/vnc-clipboard.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 881bddf393..6fd21466a4 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -81,6 +81,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
-     ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
-     ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
-+    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
-     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
-     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
-     ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
-@@ -1598,6 +1599,7 @@ static Property riscv_cpu_extensions[] = {
-     DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
-     DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
-     DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
-+    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, true),
-     DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true),
-     DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
-     DEFINE_PROP_BOOL("Zfh", RISCVCPU, cfg.ext_zfh, false),
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index c4a627d335..c7da2facef 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -66,6 +66,7 @@ struct RISCVCPUConfig {
-     bool ext_icbom;
-     bool ext_icboz;
-     bool ext_zicond;
-+    bool ext_zihintntl;
-     bool ext_zihintpause;
-     bool ext_smstateen;
-     bool ext_sstc;
+diff --git a/ui/vnc-clipboard.c b/ui/vnc-clipboard.c
+index 8aeadfaa21..c759be3438 100644
+--- a/ui/vnc-clipboard.c
++++ b/ui/vnc-clipboard.c
+@@ -50,8 +50,11 @@ static uint8_t *inflate_buffer(uint8_t *in, uint32_t in_len, uint32_t *size)
+         ret = inflate(&stream, Z_FINISH);
+         switch (ret) {
+         case Z_OK:
+-        case Z_STREAM_END:
+             break;
++        case Z_STREAM_END:
++            *size = stream.total_out;
++            inflateEnd(&stream);
++            return out;
+         case Z_BUF_ERROR:
+             out_len <<= 1;
+             if (out_len > (1 << 20)) {
+@@ -66,11 +69,6 @@ static uint8_t *inflate_buffer(uint8_t *in, uint32_t in_len, uint32_t *size)
+         }
+     }
+ 
+-    *size = stream.total_out;
+-    inflateEnd(&stream);
+-
+-    return out;
+-
+ err_end:
+     inflateEnd(&stream);
+ err:
 -- 
-2.17.1
+2.41.0
 
 
