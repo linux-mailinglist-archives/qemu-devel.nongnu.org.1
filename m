@@ -2,50 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B079746DFC
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 11:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C33F746E0C
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 11:56:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGceu-0006po-KI; Tue, 04 Jul 2023 05:49:20 -0400
+	id 1qGcl6-0001PA-Lc; Tue, 04 Jul 2023 05:55:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGcer-0006pY-LU; Tue, 04 Jul 2023 05:49:17 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGcep-0001xb-Fd; Tue, 04 Jul 2023 05:49:17 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id C8F26746361;
- Tue,  4 Jul 2023 11:48:52 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 936C674632B; Tue,  4 Jul 2023 11:48:52 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 91D5B74633D;
- Tue,  4 Jul 2023 11:48:52 +0200 (CEST)
-Date: Tue, 4 Jul 2023 11:48:52 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH 05/13] ppc440: Stop using system io region for PCIe buses
-In-Reply-To: <5cea0f52-32d1-afbb-9845-b7bc41222470@linaro.org>
-Message-ID: <0a3422ad-67c7-6088-3ec8-c8fed90ea988@eik.bme.hu>
-References: <cover.1688421085.git.balaton@eik.bme.hu>
- <2d1159457cd395dafbc5de3c4b4e3c5137af5e1a.1688421085.git.balaton@eik.bme.hu>
- <5cea0f52-32d1-afbb-9845-b7bc41222470@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGcl3-0001Or-Dt
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 05:55:41 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGckx-00045s-Ts
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 05:55:38 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-313f1085ac2so6020311f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 02:55:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688464534; x=1691056534;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=OwWRblAHk1qSB0LPNvQh4U7RHeFCSSBV0FrMeg2f22c=;
+ b=HdzgM3iY0tfoGKeKV+gQg1QKtAspj23TFLMMIqCEf8KVA0Z8KPg5jlj4TST/UYUnKv
+ 35O/ykconTMBNV+0GtsKp9CqGaEs7pw/4utKzRsCPDn+ZPv5d84tFXzwRmlcheG6gCfE
+ iT2AmjdsdW0AFqZU8HXeT+VA+gup6LURujCubO1/IohTYTNUDP8YC2oqP/Sa8tagadie
+ 2oN6en1qL0KMQds1sK5xLk3SceaTpbSy6iuQHbopvBe1Gh+lG2DGoUnt9VrY12lM1GXF
+ VC4nWE0IcSHkkz7tvz1+caput3bTWgS+TwfY0LZgRv9+98/iFxO8q/jJ0alamPK/2CnK
+ Dfpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688464534; x=1691056534;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OwWRblAHk1qSB0LPNvQh4U7RHeFCSSBV0FrMeg2f22c=;
+ b=ZTAmj6IXqNCKr4RNbv8YEbIwFmLgjTEomKiKP17zXBDUSTf/XRrslyg5hgpuWmzlhg
+ rhP4O44cACAe9HqZ/Foflxt+EU6Z+Yf5y+auZHcZsxpag6QKXzpeod8D9RQ8X1yLkMLn
+ 6dFKTtSgSat0AIGTUDXXcqUjM62pptcvTQb+uBnV25ZTO4bCYjiRjBeUk8xwTfeb4e3d
+ kRa0fnRU1qTQ5QH4x4XWv2uDDlgGb+SsUOhI8EIqZdIDWwWWOKQXLD1pn2oqf6lf5FRd
+ sCAfsW1XLS15yZKr2qA6q5g0db3AEQkzzn1aUZmyutxWDf5I4S2xjjJRQFBp95VU9XfM
+ g/pw==
+X-Gm-Message-State: ABy/qLbo1RQ+2ButPB4kip0/eY8LULMx6ADw7mbzbhgbmgBU06KczL/h
+ QwZMCfXdOwEvPv3YFhHaq0uzMA==
+X-Google-Smtp-Source: APBJJlEBDkuicjonrGYJCMmcHo0+0S1rlDuGWkmiekL5vzK3fYmj2uJ7OWnSEvS4xpZLQLYVe58PEA==
+X-Received: by 2002:adf:e9c2:0:b0:314:1bb7:8a19 with SMTP id
+ l2-20020adfe9c2000000b003141bb78a19mr10187059wrn.35.1688464533732; 
+ Tue, 04 Jul 2023 02:55:33 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.157.122])
+ by smtp.gmail.com with ESMTPSA id
+ s2-20020adff802000000b00313de682eb3sm27858630wrp.65.2023.07.04.02.55.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jul 2023 02:55:33 -0700 (PDT)
+Message-ID: <cb295ae8-f182-3f23-db52-93f1ceb6a767@linaro.org>
+Date: Tue, 4 Jul 2023 11:55:31 +0200
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-661284354-1688464132=:43117"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH 03/13] ppc440: Add a macro to shorten PCIe controller DCR
+ registration
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+References: <cover.1688421085.git.balaton@eik.bme.hu>
+ <e8ae82b0b6c10e48acbc297fa15d9e5f4befc9d2.1688421085.git.balaton@eik.bme.hu>
+ <e42417b6-e4d1-5137-85d6-837dd438d862@linaro.org>
+ <1dee5084-261c-9698-2251-b82a00cd0c39@eik.bme.hu>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <1dee5084-261c-9698-2251-b82a00cd0c39@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,75 +97,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 4/7/23 11:33, BALATON Zoltan wrote:
+> On Tue, 4 Jul 2023, Philippe Mathieu-Daudé wrote:
+>> On 4/7/23 00:02, BALATON Zoltan wrote:
+>>> It is more readable to wrap the complex call to ppc_dcr_register in a
+>>> macro when needed repeatedly.
+>>>
+>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>> ---
+>>>   hw/ppc/ppc440_uc.c | 76 +++++++++++++++++-----------------------------
+>>>   1 file changed, 28 insertions(+), 48 deletions(-)
+>>
+>>
+>>> +#define PPC440_PCIE_DCR(s, dcrn) \
+>>> +    ppc_dcr_register(&(s)->cpu->env, (s)->dcrn_base + (dcrn), s, \
+>>
+>> '(s), \'
+> 
+> The parenthesis here would be superfluous as it stands alone in a 
+> function parameter between commas so no matter what you substitue here 
+> should not have an unwanted side effect (unless it has a comma but 
+> that's an error anyway) so maybe this is not needed.
 
---3866299591-661284354-1688464132=:43117
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Well I noticed because you used it for the 2 other cases, so I'm
+just trying to be consistent here. Besides, not using parenthesis
+for macro arguments is a bad practice. Problems happen when others
+copy code.
 
-On Tue, 4 Jul 2023, Philippe Mathieu-Daudé wrote:
-> On 4/7/23 00:02, BALATON Zoltan wrote:
->> Add separate memory regions for the mem and io spaces of the PCIe bus
->> to avoid different buses using the same system io region.
->
-> "Reduce the I/O space to 64K."
+> 
+>>> +                     &dcr_read_pcie, &dcr_write_pcie)
+>>> +
+>>> +
+>>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> Thanks for the quick review, I'll post a v2 in a few days to wait a bit 
+> if anobody else has any other request.
+> 
+> Regards,
+> BALATON Zoltan
 
-Unlike the other similar patch this does not reduce the IO space size 
-because get_system_io() was that size already. I've changed the size below 
-to use KiB.
-
-Regards,
-BALATON Zoltan
-
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>   hw/ppc/ppc440_uc.c | 9 ++++++---
->>   1 file changed, 6 insertions(+), 3 deletions(-)
->> 
->> diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
->> index 38ee27f437..0c5d999878 100644
->> --- a/hw/ppc/ppc440_uc.c
->> +++ b/hw/ppc/ppc440_uc.c
->> @@ -776,6 +776,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(PPC460EXPCIEState, 
->> PPC460EX_PCIE_HOST)
->>   struct PPC460EXPCIEState {
->>       PCIExpressHost host;
->>   +    MemoryRegion busmem;
->>       MemoryRegion iomem;
->>       qemu_irq irq[4];
->>       int32_t dcrn_base;
->> @@ -1056,15 +1057,17 @@ static void ppc460ex_pcie_realize(DeviceState *dev, 
->> Error **errp)
->>           error_setg(errp, "invalid PCIe DCRN base");
->>           return;
->>       }
->> +    snprintf(buf, sizeof(buf), "pcie%d-mem", id);
->> +    memory_region_init(&s->busmem, OBJECT(s), buf, UINT64_MAX);
->>       snprintf(buf, sizeof(buf), "pcie%d-io", id);
->> -    memory_region_init(&s->iomem, OBJECT(s), buf, UINT64_MAX);
->> +    memory_region_init(&s->iomem, OBJECT(s), buf, 0x10000);
->
-> 64 * KiB
->
->>       for (i = 0; i < 4; i++) {
->>           sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->irq[i]);
->>       }
->>       snprintf(buf, sizeof(buf), "pcie.%d", id);
->>       pci->bus = pci_register_root_bus(DEVICE(s), buf, ppc460ex_set_irq,
->> -                                pci_swizzle_map_irq_fn, s, &s->iomem,
->> -                                get_system_io(), 0, 4, TYPE_PCIE_BUS);
->> +                                pci_swizzle_map_irq_fn, s, &s->busmem,
->> +                                &s->iomem, 0, 4, TYPE_PCIE_BUS);
->>       ppc460ex_pcie_register_dcrs(s);
->>   }
->> 
->
-> With the changes addressed:
->
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->
->
->
---3866299591-661284354-1688464132=:43117--
 
