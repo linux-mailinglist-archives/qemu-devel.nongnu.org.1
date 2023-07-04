@@ -2,82 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5E4746FE1
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 13:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 027E2747012
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 13:39:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGeAz-0001sv-HK; Tue, 04 Jul 2023 07:26:33 -0400
+	id 1qGeMG-0000cA-V9; Tue, 04 Jul 2023 07:38:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qGeAr-0001or-NH
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:26:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qGeMF-0000c0-EM
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:38:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qGeAq-0002F2-66
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:26:25 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qGeMD-0005HA-K0
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 07:38:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688469983;
+ s=mimecast20190719; t=1688470687;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9Zva16AFX23AuJr9BkFuIQY+13JDh1icsCuMLWKwd7I=;
- b=R6OZGgGtePg+2gzn2Ra71ZekCJtQNQ1OzrI6ANW0gMKO8RATQPXE47SaCVc4SAn2ekMmD3
- A+XRoBVw2NfXdZcMAFvdmySUl/quukIla49orHgYtsu+lo9D8SEiAK+IBz5YAePk4Eb+2j
- BaJ2QO2ZnVVS0zKdHuLy7zC8AbJMLAA=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=V0Pd426OgRa1CywF/3IE4HjlIxv03FXKb5kgbrbIcgI=;
+ b=OYczWd/kbchRncUD9DE2PWRjDTF87BoKZaWqvoFwrwtGGfjbBjH3jafftFcUQCNswu6OZ/
+ hSiWrcO/dipQQg4jnRNAPronijXjyeCr5Z8838J2tVAU19xher76EjaVvrN3op7zGNDxR0
+ Tt9c3E46Yvkpni2mQ7C9z+LFeI5J0QI=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-za4slk2jNLSgrrXU7g_JKQ-1; Tue, 04 Jul 2023 07:26:22 -0400
-X-MC-Unique: za4slk2jNLSgrrXU7g_JKQ-1
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-682abcb2fdeso337817b3a.3
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 04:26:22 -0700 (PDT)
+ us-mta-459-zRoKb-5hO5u3wxfiWDhc-g-1; Tue, 04 Jul 2023 07:38:06 -0400
+X-MC-Unique: zRoKb-5hO5u3wxfiWDhc-g-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-992e6840901so506828566b.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 04:38:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688469981; x=1691061981;
+ d=1e100.net; s=20221208; t=1688470683; x=1691062683;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9Zva16AFX23AuJr9BkFuIQY+13JDh1icsCuMLWKwd7I=;
- b=J1G1rZ0Qw6HhxSRmf5/luWnr3lydOIf7jbg3o7Ws4bVGCuQHOqIzheevwywxAozfqs
- 32q7ePEdqHuE92MThjyNurG1uZcIXsIBP83idw2ukwCvJ0Y0veP3UKFfqjKrdguQyLh4
- TqYlji5W2Q2wfr9eZrb0cf3wf314n14Uee96cw7kTNag9w0hRQToMG/XrF4xauUm3gkv
- O5VBROtHBwCEWwSU0PKMpDXHqOyZOn5NXnvbFystID8k+Fxf021MAShkovbMVqvMW1+y
- d0DQP8mosOG8yAN+3DeJ7E7G3ED03qL77EnAfLAgElm3AE8H+qmPeNn9Co47sqP33CJ1
- RaLg==
-X-Gm-Message-State: ABy/qLZRS7OTg5Vdbt5fsN7vSlLA1vdyRRJlde2mj1y9jq2Ahaql6hLv
- 2UuguL6DkZ6d+mSWrkFSfzjbS9zW5Ct5ZgzXqDOvVKtnfWx6zzV1TyKQRNNqhUYA7mswNU+qm/A
- EH8w1akqfrmlhEbU12nqAf93aIjhUYVrxX0BoQWb3UvHsSnoVghFdOVe1G7A8xjTj+PJb0RG7Q9
- Y=
-X-Received: by 2002:a05:6a20:4327:b0:12e:6e0f:535 with SMTP id
- h39-20020a056a20432700b0012e6e0f0535mr7821752pzk.34.1688469980893; 
- Tue, 04 Jul 2023 04:26:20 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH+zTOzrB4rE574Az2iPZjcCxKLbJO8pXN1lHUc/oQ68DAuPlFP7kmtGDk3mEP117woR1fBYw==
-X-Received: by 2002:a05:6a20:4327:b0:12e:6e0f:535 with SMTP id
- h39-20020a056a20432700b0012e6e0f0535mr7821729pzk.34.1688469980527; 
- Tue, 04 Jul 2023 04:26:20 -0700 (PDT)
-Received: from localhost.localdomain ([115.96.131.170])
- by smtp.googlemail.com with ESMTPSA id
- o7-20020a170902bcc700b001b8a897cd26sm780608pls.195.2023.07.04.04.26.18
+ bh=V0Pd426OgRa1CywF/3IE4HjlIxv03FXKb5kgbrbIcgI=;
+ b=chrnO8YplgpjjVATzCK7om8e0+58QFm3LfSKGUkLbTeXEbJ193IEGye9u6va7Um04e
+ MaZBPGatwwYJHqgtyVzrOs/5MowUliN1I7U7HFJJ0XWZJXURS1gAbMyeDoKG2fuZULKh
+ 9uIP7DEyYR2tr/QksCgcIWtMyZVTGjFPgIKR1x4aXlVswLqEiD2pdkz/DFEzO65F2zeA
+ bXkiqvsRruB90rw5c+y2/A195FLLn/5tvbR/Bt34myFieJG8oTg62/8jBPSTZ5TLrUDB
+ 5PP6ZYvOffjMZReTLA8CAJDU8N/zQl68xlsaYbceYV+z/rqTqoQ5vWr964K44Il3xzJI
+ 7hoQ==
+X-Gm-Message-State: ABy/qLYCKUAgHxIYjDvmwte1h7C6Ef8C1dFhPF18bf5WIw0LuYBzKWih
+ uIhlsMFvyH3TwJNISLFq1RY0IygPCn2u9yb48XOikhxMXt9J8xDspI2Ub7OPQZqWJ8Cem1DMD7O
+ Y8PV2RpE3Ua1U19WtBZ/hEH4=
+X-Received: by 2002:a17:906:2209:b0:989:1a52:72a1 with SMTP id
+ s9-20020a170906220900b009891a5272a1mr12808094ejs.28.1688470683266; 
+ Tue, 04 Jul 2023 04:38:03 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEnKi4Rm35L4xke9cuwGTRJr6i1G23kNTwkay0I11CPT6bYumRT7cBwCuTQI8eJCjVBLMxysQ==
+X-Received: by 2002:a17:906:2209:b0:989:1a52:72a1 with SMTP id
+ s9-20020a170906220900b009891a5272a1mr12808080ejs.28.1688470682966; 
+ Tue, 04 Jul 2023 04:38:02 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ b7-20020a170906660700b009935aba3a9dsm3363095ejp.48.2023.07.04.04.38.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 04:26:20 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v7 6/6] hw/pci: add comment explaining the reason for checking
- function 0 in hotplug
-Date: Tue,  4 Jul 2023 16:55:55 +0530
-Message-Id: <20230704112555.5629-7-anisinha@redhat.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230704112555.5629-1-anisinha@redhat.com>
-References: <20230704112555.5629-1-anisinha@redhat.com>
+ Tue, 04 Jul 2023 04:38:02 -0700 (PDT)
+Date: Tue, 4 Jul 2023 13:38:01 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ qemu-devel <qemu-devel@nongnu.org>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Julia Suvorova <jusual@redhat.com>
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into
+ only slot 0 of PCIE port
+Message-ID: <20230704133801.0423b554@imammedo.users.ipa.redhat.com>
+In-Reply-To: <0879ed66-766c-1d3f-dcce-31e1285a7972@daynix.com>
+References: <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
+ <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
+ <A50CA177-0E7E-4828-A036-70EB532FE2B8@redhat.com>
+ <20230630041937-mutt-send-email-mst@kernel.org>
+ <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
+ <20230630043734-mutt-send-email-mst@kernel.org>
+ <49B901C6-4819-4A00-8225-39FAA6678F3E@redhat.com>
+ <20230630055717-mutt-send-email-mst@kernel.org>
+ <FB764864-ADD3-4017-8313-ED40A833A81B@redhat.com>
+ <a38e0336-58e5-e796-bd29-0dfc5d1d0e46@daynix.com>
+ <20230630112611-mutt-send-email-mst@kernel.org>
+ <0879ed66-766c-1d3f-dcce-31e1285a7972@daynix.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,39 +114,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This change is cosmetic. A comment is added explaining why we need to check for
-the availability of function 0 when we hotplug a device.
+On Sat, 1 Jul 2023 16:28:30 +0900
+Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
 
-CC: mst@redhat.com
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- hw/pci/pci.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+> On 2023/07/01 0:29, Michael S. Tsirkin wrote:
+> > On Fri, Jun 30, 2023 at 08:36:38PM +0900, Akihiko Odaki wrote: =20
+> >> On 2023/06/30 19:37, Ani Sinha wrote: =20
+> >>>
+> >>> =20
+> >>>> On 30-Jun-2023, at 3:30 PM, Michael S. Tsirkin <mst@redhat.com> wrot=
+e:
+> >>>>
+> >>>> On Fri, Jun 30, 2023 at 02:52:52PM +0530, Ani Sinha wrote: =20
+> >>>>>
+> >>>>> =20
+> >>>>>> On 30-Jun-2023, at 2:13 PM, Michael S. Tsirkin <mst@redhat.com> wr=
+ote:
+> >>>>>>
+> >>>>>> On Fri, Jun 30, 2023 at 02:06:59PM +0530, Ani Sinha wrote: =20
+> >>>>>>>
+> >>>>>>> =20
+> >>>>>>>> On 30-Jun-2023, at 2:02 PM, Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+> >>>>>>>>
+> >>>>>>>> On Fri, Jun 30, 2023 at 01:11:33PM +0530, Ani Sinha wrote: =20
+> >>>>>>>>>>
+> >>>>>>>>>> Thus the check for unoccupied function 0 needs to use pci_is_v=
+f() instead of checking ARI capability, and that can happen in do_pci_regis=
+ter_device().
+> >>>>>>>>>> =20
+> >>>>>>>>>>> Also where do you propose we move the check? =20
+> >>>>>>>>>>
+> >>>>>>>>>> In pci_qdev_realize(), somewhere after pc->realize() and befor=
+e option ROM loading. =20
+> >>>>>>>>>
+> >>>>>>>>> Hmm, I tried this. The issue here is something like this would =
+be now allowed since the PF has ARI capability:
+> >>>>>>>>>
+> >>>>>>>>> -device pcie-root-port,id=3Dp -device igb,bus=3Dp,addr=3D0x2.0x0
+> >>>>>>>>>
+> >>>>>>>>> The above should not be allowed and when used, we do not see th=
+e igb ethernet device from the guest OS. =20
+> >>>>>>>>
+> >>>>>>>> I think it's allowed because it expects you to hotplug function =
+0 later, =20
+> >>>>>>>
+> >>>>>>> This is about the igb device being plugged into the non-zero slot=
+ of the pci-root-port. The guest OS ignores it. =20
+> >>>>>>
+> >>>>>> yes but if you later add a device with ARI and with next field poi=
+nting
+> >>>>>> slot 2 guest will suddently find both. =20
+> >>>>>
+> >>>>> Hmm, I tried this:
+> >>>>>
+> >>>>> -device pcie-root-port,id=3Dp \
+> >>>>> -device igb,bus=3Dp,addr=3D0x2.0x0 \
+> >>>>> -device igb,bus=3Dp,addr=3D0x0.0x0 \
+> >>>>>
+> >>>>> The guest only found the second igb device not the first. You can t=
+ry too. =20
+> >>>>
+> >>>> Because next parameter in pcie_ari_init does not match. =20
+> >>>
+> >>> OK send me a command line that I can test it with. I can=E2=80=99t co=
+me up with a case that actually works in practice. =20
+> >>
+> >> I don't think there is one because the code for PCI multifunction does=
+ not
+> >> care ARI. In my opinion, we need yet another check to make non-SR-IOV
+> >> multifunction and ARI capability mutually exclusive; if a function has=
+ the
+> >> ARI capability and it is not a VF, an attempt to assign non-zero funct=
+ion
+> >> number for it should fail. =20
 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 47517ba3db..e3ff3808b6 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -1181,9 +1181,15 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
-                    PCI_SLOT(devfn), PCI_FUNC(devfn), name,
-                    bus->devices[devfn]->name, bus->devices[devfn]->qdev.id);
-         return NULL;
--    } else if (dev->hotplugged &&
--               !pci_is_vf(pci_dev) &&
--               pci_get_function_0(pci_dev)) {
-+    } /*
-+       * Populating function 0 triggers a scan from the guest that
-+       * exposes other non-zero functions. Hence we need to ensure that
-+       * function 0 wasn't added yet. With SRIOV and with or without ARI
-+       * the PF must be hotplugged into function 0 for it to be detected.
-+       */
-+    else if (dev->hotplugged &&
-+             !pci_is_vf(pci_dev) &&
-+             pci_get_function_0(pci_dev)) {
-         error_setg(errp, "PCI: slot %d function 0 already occupied by %s,"
-                    " new func %s cannot be exposed to guest.",
-                    PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
--- 
-2.39.1
+is it stated somewhere in spec(s) that ARI and !SR-IOV are mutually exclusi=
+ve?
+
+> >=20
+> > Why is that? My understanding is that ARI capable devices should also
+> > set the multifunction bit in the header. It's not terribly clear from
+> > the spec though. =20
+>=20
+> Something like the following will not work properly with ARI-capable=20
+> device (think of a as an ARI-capable device):
+> -device a,addr=3D0x1.0x0,multifunction=3Don -device a,addr=3D0x1.0x1
+(I had a crazy idea, to use it like that so we could put more devices
+on port without resorting to adding extra bridges)
+
+Can you elaborate some more why it won't work?
+
+> This is because the next function numbers advertised with ARI are not=20
+> updated with the multifunction configuration, but they are hardcoded in=20
+> the device implementation. In this sense, the traditional (non-SR/IOV)=20
+> multifunction mechanism QEMU has will not work with ARI-capable devices.
+>=20
+> >  =20
+> >> But it should be a distinct check as it will need to check the function
+> >> number bits.
+> >> =20
+> >>> =20
+> >>>>
+> >>>> =20
+> >>>>>> =20
+> >>>>>>>> no?
+> >>>>>>>>
+> >>>>>>>> I am quite worried about all this work going into blocking
+> >>>>>>>> what we think is disallowed configurations. We should have
+> >>>>>>>> maybe blocked them originally, but now that we didn't
+> >>>>>>>> there's a non zero chance of regressions, =20
+> >>>>>>>
+> >>>>>>> Sigh, =20
+> >>>>>>
+> >>>>>> There's value in patches 1-4 I think - the last patch helped you f=
+ind
+> >>>>>> these. so there's value in this work.
+> >>>>>> =20
+> >>>>>>> no medals here for being brave :-) =20
+> >>>>>>
+> >>>>>> Try removing support for a 3.5mm jack next. Oh wait ... =20
+> >>>>>
+> >>>>> Indeed. Everyone uses bluetooth these days. I for one is happy that=
+ the jack is gone (and they were bold enough to do it while Samsung and oth=
+ers still carry the useless port ) :-) =20
+> >>
+> >> Hello from a guy using a shiny M2 Macbook Air carrying the legacy jack=
+ with
+> >> a 100-yen earphone. Even people who ported Linux to this machine spent
+> >> efforts to get the jack to work on Linux ;)
+> >> =20
+> >>>>> =20
+> >>>>>> =20
+> >>>>>>>> and the benefit
+> >>>>>>>> is not guaranteed.
+> >>>>>>>>
+> >>>>>>>> --=20
+> >>>>>>>> MST =20
+> >>> =20
+> >  =20
+>=20
 
 
