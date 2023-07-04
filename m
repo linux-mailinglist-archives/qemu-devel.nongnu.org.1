@@ -2,53 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA27747797
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 19:16:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA577477A7
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 19:20:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGjcc-0006l9-2U; Tue, 04 Jul 2023 13:15:26 -0400
+	id 1qGjgU-0000fL-4A; Tue, 04 Jul 2023 13:19:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
- id 1qGjcS-0006jv-9t; Tue, 04 Jul 2023 13:15:20 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1)
+ (envelope-from <prvs=5427c2329=anthony.perard@citrix.com>)
+ id 1qGjgS-0000ej-IH; Tue, 04 Jul 2023 13:19:24 -0400
+Received: from esa3.hc3370-68.iphmx.com ([216.71.145.155])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
- id 1qGjcJ-0001mA-Q6; Tue, 04 Jul 2023 13:15:09 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QwTts4wdTz4wZw;
- Wed,  5 Jul 2023 03:15:01 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QwTtq6RKYz4wqZ;
- Wed,  5 Jul 2023 03:14:59 +1000 (AEST)
-Message-ID: <697082fb-abb4-2e6f-de60-3a24ef1fd049@kaod.org>
-Date: Tue, 4 Jul 2023 19:14:58 +0200
+ (Exim 4.90_1)
+ (envelope-from <prvs=5427c2329=anthony.perard@citrix.com>)
+ id 1qGjgP-0002qM-G8; Tue, 04 Jul 2023 13:19:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=citrix.com; s=securemail; t=1688491161;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Eql3MawCi2ZfqehegLJ8cUT771NNec9LMnumXVGF1qE=;
+ b=Dfv0x/7U+00nebaodsjzRTiqcxr7Ur54mrL/PP8NGD8Re4SJ5ncBQoVb
+ EmvAULfuydqI82zMlpr2DyE36ur/HSdJ4CkfMzmbveyWDqlDlnX7xER6N
+ 3FZRQrBH7RqNdsAYkOe53uZq2UAsVUwS8mt2Vh6ERYaBTeAM4nB5fdAVa k=;
+Authentication-Results: esa3.hc3370-68.iphmx.com;
+ dkim=none (message not signed) header.i=none
+X-SBRS: 4.0
+X-MesageID: 115157045
+X-Ironport-Server: esa3.hc3370-68.iphmx.com
+X-Remote-IP: 162.221.156.123
+X-Policy: $RELAYED
+IronPort-Data: A9a23:g/iXMqsm1UGONY66HkDFEjp+hOfnVKBeMUV32f8akzHdYApBsoF/q
+ tZmKWGFMq7eZzT9Ko8kOoS/8kkF7ZOGzoA2SFNlqCswFysV+JbJXdiXEBz9bniYRiHhoOCLz
+ O1FM4Wdc5pkJpP4jk3wWlQ0hSAkjclkfpKlVKiffHg3HVQ+IMsYoUoLs/YjhYJ1isSODQqIu
+ Nfjy+XSI1bg0DNvWo4uw/vrRChH4rKq4Vv0gnRkPaoQ5ACGyyFOZH4iDfrZw0XQE9E88tGSH
+ 44v/JnhlkvF8hEkDM+Sk7qTWiXmlZaLYGBiIlIPM0STqkAqSh4ai87XB9JFAatjsB2bnsgZ9
+ Tl4ncfYpTHFnEH7sL91vxFwS0mSNEDdkVPNCSDXXce7lyUqf5ZwqhnH4Y5f0YAwo45K7W9yG
+ fMwGDkEXyG7tf2P0aulZsROmPwfc5nlI9ZK0p1g5Wmx4fcORJnCR+PB5MNC3Sd2jcdLdRrcT
+ 5NHM3w1Nk2GOkARfA5NU/rSn8/x7pX7WzRetFKSo7tx+2XJxRZ9+LPsLMDUapqBQsA9ckOw/
+ zubpjmmWk1HXDCZ4RW6ymumj+3ooWDUVMFKEvq72q9M33TGkwT/DzVJDADm8JFVkHWWQt9aN
+ gkY9zQjqYA080qkSMS7WAe3yFacswIRQZxVGvw25QWJ4q7V5Q+DAS4DVDEpQMc9qMY8SDgu1
+ 1mIt9DkHzpitPuSU3313q+dsDeaKSUTa2gYakcsThQC59fLuow/jhvTCN1kFcadjsf4GC3i6
+ yqHoCg3m/MYistj/7W2+xXLjiyhorDNTxUp/UPHU2S99AR7aYW5IYuy5jDz9PtFMcOTSl6Kv
+ 1ACnM6R6v1ICouC/BFhW81UQuvvvazcdmSB3xg2RcJJGymRF2CLTYlZ0QBGFlhQI98aVRLLf
+ nfv5lNf+8oGVJe1VpObc75dGuxzk/iwSYq8C6GEBjZdSsMvLVHapUmCcWbVhjmwyxZ0zMnTL
+ L/BKa6R4WAm5bOLJdZcb8MUyvcVyy833gs/rrirnk38gdJyiJN4IIrp0WdijchjtstoWC2Pr
+ 75i2zKikn2zqtHWbCjN6pI0JlsXN3U9Dp2eg5UJJr7fels8QT99V665LVYdl2tNxvU9qws11
+ ivlBh8wJKTX2BUr1jlmmlg8MeiyDP6TXFowPDA2PEbA5pTQSd/H0UvrTLNuJeNP3LU6nZZJo
+ wwtJ53o7gJnFm6WpFzwrPDV8ORfSfhcrVjfZnL4MGVmIsYIqs6g0oaMQzYDPRImVkKf3fbSa
+ ZX5vu8HafLvnzhfMfs=
+IronPort-HdrOrdr: A9a23:7HCrbqgBgYreQaAKaZfSTzWLknBQXtQji2hC6mlwRA09TyX4ra
+ yTdZEgviMc5wx/ZJhNo7690cu7IU80hKQV3WB5B97LNmTbUQCTXeJfBOXZsljdMhy72ulB1b
+ pxN4hSYeeAaWSSVPyKgjWFLw==
+X-Talos-CUID: 9a23:HNyfVG4AIKYvsWnX5dssxEcdK/EdQGLk3W7OD2KaF15VF+2bVgrF
+X-Talos-MUID: =?us-ascii?q?9a23=3AjOhlcA2EuH6aM7kVfYJV62N7vjUjzJuWEUoEk7I?=
+ =?us-ascii?q?6+OaIdnR2fDSx3RLoa9py?=
+X-IronPort-AV: E=Sophos;i="6.01,181,1684814400"; d="scan'208";a="115157045"
+To: <qemu-devel@nongnu.org>
+CC: Anthony PERARD <anthony.perard@citrix.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Stefano Stabellini <sstabellini@kernel.org>,
+ "Paul Durrant" <paul@xen.org>, Kevin Wolf <kwolf@redhat.com>, Hanna Reitz
+ <hreitz@redhat.com>, <xen-devel@lists.xenproject.org>,
+ <qemu-block@nongnu.org>
+Subject: [PATCH] xen-block: Avoid leaks on new error path
+Date: Tue, 4 Jul 2023 18:18:19 +0100
+Message-ID: <20230704171819.42564-1-anthony.perard@citrix.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] pnv/xive: Allow mmio operations of any size on the ESB CI
- pages
-Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230704144848.164287-1-fbarrat@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230704144848.164287-1-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=18er=CW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=216.71.145.155;
+ envelope-from=prvs=5427c2329=anthony.perard@citrix.com;
+ helo=esa3.hc3370-68.iphmx.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,87 +94,80 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anthony PERARD <anthony.perard@citrix.com>
+From:  Anthony PERARD via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/4/23 16:48, Frederic Barrat wrote:
-> We currently only allow 64-bit operations on the ESB CI pages. There's
-> no real reason for that limitation, skiboot/linux didn't need
-> more. However the hardware supports any size, so this patch relaxes
-> that restriction. It impacts both the ESB pages for "normal"
-> interrupts as well as the ESB pages for escalation interrupts defined
-> for the ENDs.
-> 
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+From: Anthony PERARD <anthony.perard@citrix.com>
 
+Commit 189829399070 ("xen-block: Use specific blockdev driver")
+introduced a new error path, without taking care of allocated
+resources.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+So only allocate the qdicts after the error check, and free both
+`filename` and `driver` when we are about to return and thus taking
+care of both success and error path.
 
-Thanks,
+Coverity only spotted the leak of qdicts (*_layer variables).
 
-C.
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: Coverity CID 1508722, 1398649
+Fixes: 189829399070 ("xen-block: Use specific blockdev driver")
+Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+---
+ hw/block/xen-block.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-
-> ---
-> 
-> This should wrap-up the cleanup about mmio size for the xive BARs. The
-> NVPG and NVC BAR accesses should also be relaxed but we don't really
-> implement them, any load/store currently fails. Something to address
-> when/if we implement them.
-> 
->   hw/intc/xive.c  | 8 ++++----
->   hw/intc/xive2.c | 4 ++--
->   2 files changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index f60c878345..c014e961a4 100644
-> --- a/hw/intc/xive.c
-> +++ b/hw/intc/xive.c
-> @@ -1175,11 +1175,11 @@ static const MemoryRegionOps xive_source_esb_ops = {
->       .write = xive_source_esb_write,
->       .endianness = DEVICE_BIG_ENDIAN,
->       .valid = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
->           .max_access_size = 8,
->       },
->       .impl = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
->           .max_access_size = 8,
->       },
->   };
-> @@ -2006,11 +2006,11 @@ static const MemoryRegionOps xive_end_source_ops = {
->       .write = xive_end_source_write,
->       .endianness = DEVICE_BIG_ENDIAN,
->       .valid = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
->           .max_access_size = 8,
->       },
->       .impl = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
->           .max_access_size = 8,
->       },
->   };
-> diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
-> index 4d9ff41956..c37ef25d44 100644
-> --- a/hw/intc/xive2.c
-> +++ b/hw/intc/xive2.c
-> @@ -954,11 +954,11 @@ static const MemoryRegionOps xive2_end_source_ops = {
->       .write = xive2_end_source_write,
->       .endianness = DEVICE_BIG_ENDIAN,
->       .valid = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
->           .max_access_size = 8,
->       },
->       .impl = {
-> -        .min_access_size = 8,
-> +        .min_access_size = 1,
->           .max_access_size = 8,
->       },
->   };
+diff --git a/hw/block/xen-block.c b/hw/block/xen-block.c
+index f099914831..3906b9058b 100644
+--- a/hw/block/xen-block.c
++++ b/hw/block/xen-block.c
+@@ -781,14 +781,15 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     drive = g_new0(XenBlockDrive, 1);
+     drive->id = g_strdup(id);
+ 
+-    file_layer = qdict_new();
+-    driver_layer = qdict_new();
+-
+     rc = stat(filename, &st);
+     if (rc) {
+         error_setg_errno(errp, errno, "Could not stat file '%s'", filename);
+         goto done;
+     }
++
++    file_layer = qdict_new();
++    driver_layer = qdict_new();
++
+     if (S_ISBLK(st.st_mode)) {
+         qdict_put_str(file_layer, "driver", "host_device");
+     } else {
+@@ -796,7 +797,6 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     }
+ 
+     qdict_put_str(file_layer, "filename", filename);
+-    g_free(filename);
+ 
+     if (mode && *mode != 'w') {
+         qdict_put_bool(file_layer, "read-only", true);
+@@ -831,7 +831,6 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     qdict_put_str(file_layer, "locking", "off");
+ 
+     qdict_put_str(driver_layer, "driver", driver);
+-    g_free(driver);
+ 
+     qdict_put(driver_layer, "file", file_layer);
+ 
+@@ -842,6 +841,8 @@ static XenBlockDrive *xen_block_drive_create(const char *id,
+     qobject_unref(driver_layer);
+ 
+ done:
++    g_free(filename);
++    g_free(driver);
+     if (*errp) {
+         xen_block_drive_destroy(drive, NULL);
+         return NULL;
+-- 
+Anthony PERARD
 
 
