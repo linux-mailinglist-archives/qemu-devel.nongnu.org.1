@@ -2,84 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0AD17475B8
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 17:55:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F937475C8
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 17:58:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGiNB-0000wI-9c; Tue, 04 Jul 2023 11:55:25 -0400
+	id 1qGiPR-0002lZ-Qh; Tue, 04 Jul 2023 11:57:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGiN9-0000nZ-6H
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:55:23 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qGiPP-0002kc-Af
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:57:43 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGiN6-0000Cs-Q3
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:55:22 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fbc656873eso70494265e9.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 08:55:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qGiPN-0000yx-N9
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:57:43 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4fbb281eec6so3671181e87.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 08:57:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688486118; x=1691078118;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZdLEPOxD/HyhG5wNqOjEnxU/l6nQQKaD+xXft6APAPA=;
- b=Op2F41urZdcsmpF2+pTPpVZ6ozdXRm+afzVUXck/jwnWvZKDoHyMf4A+5cdul40xm+
- T16qUn2kbGW4YYCprtwxMk/JdomuD+YVFeIgeDO4qF0yqAqWII4SwWjMdBU68bxVIASu
- bUAYJ1qwyEbSQ9cjB7Ko+AIAhtkkJA9SuBMxdr+ngw3XaSdnKTHorY7AOexlmwi1x+JZ
- 6mr33CnDbegZ+5RddP2u1Z6G+glV0CRkB09Y8sjvEs1XetXRPuxfUlJtY+7lim03M03Q
- hASkyP1pdUj7FRXD/RNDTQJTYNbWNgiPehhAKUl7pmevnIWpniM7XpgdyJYzPmdguhCR
- a1Jg==
+ d=linaro.org; s=google; t=1688486260; x=1691078260;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=TQ8LXiCqh/l23yZNrjpE9MSSiltordpEW1zSioWxsEI=;
+ b=IHvaI6QUr/kc9KnPFRcKWkV0tLNbh/UjnLD0XOo9TeESrJrDv/rcSJKdePWsqsvhmU
+ zOqapOVzuM0kKzndEdRlKvv0B8HBvf7W/wu1uyPN8iAq4iayndand1iHDdRQhZYYwMDL
+ 9/xKNcWLosbY7Waz/4uNNuauBaD3kjh3Xt+k8FWs89eWzUAgdEvi/ehyC2/GMe3Xt90M
+ o3NV1TKnItNUl9Og1Bhp1Nz199bmBnEebUx1QY9hNQCwOjllb5gCg56lc4at6pm0ygeH
+ 3a6rkwbWTGtC/7D3Nj6ZINkcmRxkMuBg+UCDcZfY0yf69snrnKkhB0OgLR/Y+ba3nr2U
+ zi2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688486118; x=1691078118;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZdLEPOxD/HyhG5wNqOjEnxU/l6nQQKaD+xXft6APAPA=;
- b=CEVvopu12kZcdzhiec7QLeuXM8NHMxXVkFLzX1rSq6wKttJtjxHlJEp9s+OaeK6k+v
- GQwvFH0XRHER08Unay27lz8kSfA1cGJf4g0qcXqrEr8i+zhiEClnNEMuUf2UwbKd4jsm
- fYy5VQ2hvcVhobSVgTfGWwCJCjzGauk4DY6xZzd2vN3KHPbwo7LIwUhGRj9GQv0Vy/g6
- IIwFVEiLdlBLcHxVGItUSXDsIn/riWMeBORM0B5qwm3R/S2Pab7x7mIz1lGks3gJwgRv
- 8Q4/va2U6N0bhwIQYf6SkQwY1lskGkvMToZcYvLSrmzl1k8nQG046EF6M+zaEP36N4UG
- bvJQ==
-X-Gm-Message-State: AC+VfDz1d2qGF+gLZp1qLcQ8ZXIbgdwWurmG5O/0cC9WW+92EQzanIa/
- hIHgrsuB0TT8lkZPzSaXbNBr4w==
-X-Google-Smtp-Source: ACHHUZ4Qf8YCIJq2aj5LWwMvOyico2GJnQD0TpKX4p7qPtMh6q/xu+d9tVZ9BGdCWPMweqAPv9/kVQ==
-X-Received: by 2002:a1c:e909:0:b0:3fb:b05d:f274 with SMTP id
- q9-20020a1ce909000000b003fbb05df274mr18371060wmc.4.1688486118604; 
- Tue, 04 Jul 2023 08:55:18 -0700 (PDT)
-Received: from [192.168.1.102] ([176.176.157.122])
- by smtp.gmail.com with ESMTPSA id
- l25-20020a1c7919000000b003fbb25da65bsm18195169wme.30.2023.07.04.08.55.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 08:55:18 -0700 (PDT)
-Message-ID: <e7575e49-5a22-49b1-9e8c-4e85372c203f@linaro.org>
-Date: Tue, 4 Jul 2023 17:55:16 +0200
+ d=1e100.net; s=20221208; t=1688486260; x=1691078260;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TQ8LXiCqh/l23yZNrjpE9MSSiltordpEW1zSioWxsEI=;
+ b=C93otGI1uEofZ1BK32dUwrdl36dnS3RZDxzzvjfIZJYWmLvw1RhWTbVq99W6K7JHT8
+ 8GH+OzzK/toIbVHxIrZxwRclQYdjgjH1xq2GB9pFFrHxCPk+J1+0SsFsXUNcnuHpVABT
+ f06yraawZGxorqeKgurrlKEm4h8WfZBz8wjJonvPnr1Ax5b0KlleX9WUBEyejzg8g+Rx
+ ld1obfwvFkxCFGZChw2FnMD3FgeH0C/QRYo3jPzEFIeipU10pqjqH31gpCMFQTKMe9yl
+ /KXayFUp9eSauZzQHrHX7Jd8btJHBWel4TNFPPeadu/Wr1+OsRuyd2Tc2hz2QX2q1r+6
+ SmXA==
+X-Gm-Message-State: ABy/qLZEDA2cMh/nG4LyYyVMyKf33eSebMDVOxeCWtSHKrXC4d7jKvTF
+ O6DmndB2ePH1xGtuR+JNfBrJQKZjCWKGb6UdQNSCbQ==
+X-Google-Smtp-Source: APBJJlGGp2d67/grA2i5YMY3DZV2I9DFdoFA/0ylwdAr8TuaWmQgKb1KAMhZq52mLTupbNbvLj+GsKPd0GiD6OxBIpo=
+X-Received: by 2002:ac2:5b5c:0:b0:4f8:5d94:2e46 with SMTP id
+ i28-20020ac25b5c000000b004f85d942e46mr9754294lfp.48.1688486259959; Tue, 04
+ Jul 2023 08:57:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] target/arm: gdbstub: Guard M-profile code with CONFIG_TCG
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-References: <20230628164821.16771-1-farosas@suse.de>
- <d8f954dc-8a69-7593-716c-e360d2c8e47b@linaro.org>
- <CAFEAcA9QSS7qs2kcCuyrDrRc6tb_0euMD3vFJ=_Q8s8dJYBRfw@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA9QSS7qs2kcCuyrDrRc6tb_0euMD3vFJ=_Q8s8dJYBRfw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230704154332.3014896-1-peter.maydell@linaro.org>
+ <a96bffba-9653-95b3-4b7c-8787646f1f21@linaro.org>
+In-Reply-To: <a96bffba-9653-95b3-4b7c-8787646f1f21@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 4 Jul 2023 16:57:29 +0100
+Message-ID: <CAFEAcA9rqf6QmG-WWebNmeUPEsmtUCAEtr7miHWaQkk1Bner1g@mail.gmail.com>
+Subject: Re: [PATCH] target/arm: Avoid over-length shift in
+ arm_cpu_sve_finalize() error case
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,66 +88,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/7/23 17:44, Peter Maydell wrote:
-> On Tue, 4 Jul 2023 at 16:21, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> On 28/6/23 18:48, Fabiano Rosas wrote:
->>> This code is only relevant when TCG is present in the build. Building
->>> with --disable-tcg --enable-xen on an x86 host we get:
->>>
->>> $ ../configure --target-list=x86_64-softmmu,aarch64-softmmu --disable-tcg --enable-xen
->>> $ make -j$(nproc)
->>> ...
->>> libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `m_sysreg_ptr':
->>>    ../target/arm/gdbstub.c:358: undefined reference to `arm_v7m_get_sp_ptr'
->>>    ../target/arm/gdbstub.c:361: undefined reference to `arm_v7m_get_sp_ptr'
->>>
->>> libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `arm_gdb_get_m_systemreg':
->>> ../target/arm/gdbstub.c:405: undefined reference to `arm_v7m_mrs_control'
->>>
->>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->>> ---
->>> This is a respin of:
->>> https://lore.kernel.org/r/20230313151058.19645-5-farosas@suse.de
->>> ---
->>>    target/arm/gdbstub.c | 4 ++++
->>>    1 file changed, 4 insertions(+)
->>>
->>> diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
->>> index 03b17c814f..f421c5d041 100644
->>> --- a/target/arm/gdbstub.c
->>> +++ b/target/arm/gdbstub.c
->>> @@ -324,6 +324,7 @@ static int arm_gen_dynamic_sysreg_xml(CPUState *cs, int base_reg)
->>>        return cpu->dyn_sysreg_xml.num;
->>>    }
->>>
->>> +#ifdef CONFIG_TCG
->>
->> OK.
->>
->>>    typedef enum {
->>>        M_SYSREG_MSP,
->>>        M_SYSREG_PSP,
->>> @@ -481,6 +482,7 @@ static int arm_gen_dynamic_m_secextreg_xml(CPUState *cs, int orig_base_reg)
->>>        return cpu->dyn_m_secextreg_xml.num;
->>>    }
->>>    #endif
->>> +#endif /* CONFIG_TCG */
->>>
->>>    const char *arm_gdb_get_dynamic_xml(CPUState *cs, const char *xmlname)
->>>    {
->>> @@ -561,6 +563,7 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
->>>                                 arm_gen_dynamic_sysreg_xml(cs, cs->gdb_num_regs),
->>>                                 "system-registers.xml", 0);
->>>
->>> +#ifdef CONFIG_TCG
->>
->> IIUC tcg_enabled(), this guard shouldn't be necessary; if CONFIG_TCG
->> is not defined, tcg_enabled() evaluates to 0, and the compiler should
->> elide the whole block.
-> 
-> IME it's a bit optimistic to assume that the compiler will always
-> do that, especially with no optimisation enabled.
+On Tue, 4 Jul 2023 at 16:52, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> On 4/7/23 17:43, Peter Maydell wrote:
+> > If you build QEMU with the clang sanitizer enabled, you can see it
+> > fire when running the arm-cpu-features test:
+> >
+> > $ QTEST_QEMU_BINARY=3D./build/arm-clang/qemu-system-aarch64 ./build/arm=
+-clang/tests/qtest/arm-cpu-features
+> > [...]
+> > ../../target/arm/cpu64.c:125:19: runtime error: shift exponent 64 is to=
+o large for 64-bit type 'unsigned long long'
+> > [...]
+> >
+> > This happens because the user can specify some incorrect SVE
+> > properties that result in our calculating a max_vq of 0.  We catch
+> > this and error out, but before we do that we calculate
+> >
+> >   vq_mask =3D MAKE_64BIT_MASK(0, max_vq);$
+> >
+> > and the MAKE_64BIT_MASK() call is only valid for lengths that are
+> > greater than zero, so we hit the undefined behaviour.
+>
+> Can we fix it generically?
+>
+> -- >8 --
+> --- a/include/qemu/bitops.h
+> +++ b/include/qemu/bitops.h
+> @@ -28,3 +28,3 @@
+>   #define MAKE_64BIT_MASK(shift, length) \
+> -    (((~0ULL) >> (64 - (length))) << (shift))
+> +    ((length) ? (((~0ULL) >> (64 - (length))) << (shift)) : 0)
+>
+> ---
 
-OK I see, thanks.
+Only by introducing a conditional in the case where the length
+isn't a compile time constant.
+Like the extract and deposit functions, the assumption is that
+you're operating on a field that actually exists and isn't
+zero-width.
+
+thanks
+-- PMM
 
