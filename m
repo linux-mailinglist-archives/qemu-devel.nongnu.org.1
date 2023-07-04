@@ -2,88 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89804746B83
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:07:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFAA746BA3
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:16:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGb41-00077F-EH; Tue, 04 Jul 2023 04:07:09 -0400
+	id 1qGbBz-0003KI-79; Tue, 04 Jul 2023 04:15:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGb3x-00074C-LK
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:07:06 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGb3w-0000yx-6D
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:07:05 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-313f3a6db22so6076317f8f.3
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:07:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688458020; x=1691050020;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xPm+FX/LX848rA7rsJcPu8ZynDhBnEhSs6D+c57a3mk=;
- b=PjdjlDIImLN1AFnRrBjRWT4/lilxJXDz3QaUFjP96lj/1Qir4WEB23Cz0jL8OJx4WV
- v3T2PBSNNaSDdYSTzdEVwXVkni4IZdfQTbCVR8/A+YybJeeHz8xSguwxwky82ne3Ty6Q
- zufNikMdNoxoubOfWg0DM9brH8kNpAtB7BvVsZzvVhKvOvZWvJUt/LVaVyDF/DVt7E0v
- 7CFzuN63AmFMPEMF/+oQvOhFKN6u6tNazp0dQFVjPpu9jZPgmeDTfBGHIkewIJ9IneQP
- +E/bOK+JgfJ1qYPsfIMcX3jkoQrm2m35ILOL1lyT+cPjwUy7ZDGx0a29B8qv5FKAKeTh
- CaKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688458020; x=1691050020;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xPm+FX/LX848rA7rsJcPu8ZynDhBnEhSs6D+c57a3mk=;
- b=TfHffaJAnwHlYPWimve4Vs9yOOeE4MTGeyGsZIim3iksaorHFkUqxpf9WKQLF5pxKn
- /hGcH448e4ryElH4Zt5cMoRH/ShAiWgl17iWYzAqCAk29b7nlkywnD57rGxeM4hO+ZPR
- 1IRCDQPqrpRf2mBuMhRHX/2I7ezi/yLGKmKj4NKGcUQifEliUN+8WCAVH3KM9DLddfcV
- jPaziwPweCqqM7DS/3UytpfIZfbm4LCpUDpxetcAc1gaGDI/VyA9Px82fY5vxx17Db+6
- 5yz3C0fxwDpicL+Tyyso1Z4xBtLKZdVQCg3qjqxZ56iqzj123tclPZWxbkfRkzQXETOA
- SB0Q==
-X-Gm-Message-State: ABy/qLary+r6xHiyRwW9TU2YHFzmh6RfdRG1/U35Ed0n3YysKIBGoTbK
- 3p9O+jyaMevKeEAnmS7BP5efkg==
-X-Google-Smtp-Source: APBJJlHB4jsfOokzm81356es+jKx5dhe5JGvIqgo8BFpZmrKAkPEi3eoC1KFVZqwwVMZGYxzGXFxtQ==
-X-Received: by 2002:a5d:5272:0:b0:314:1270:8fc with SMTP id
- l18-20020a5d5272000000b00314127008fcmr11963474wrc.0.1688458020473; 
- Tue, 04 Jul 2023 01:07:00 -0700 (PDT)
-Received: from [192.168.1.25] (91.232.79.188.dynamic.jazztel.es.
- [188.79.232.91]) by smtp.gmail.com with ESMTPSA id
- j8-20020adfff88000000b0031412b685d2sm14071110wrr.32.2023.07.04.01.06.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 01:07:00 -0700 (PDT)
-Message-ID: <330622b9-97eb-53e2-48e8-5be65c777b47@linaro.org>
-Date: Tue, 4 Jul 2023 10:06:57 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 05/12] target/s390x: Fix LRA overwriting the top 32 bits
- on DAT error
-To: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand
- <david@redhat.com>, Laurent Vivier <laurent@vivier.eu>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qGbBv-0003Gv-LW; Tue, 04 Jul 2023 04:15:19 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qGbBt-0002VW-Mq; Tue, 04 Jul 2023 04:15:19 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3647pYLW018110; Tue, 4 Jul 2023 08:15:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=orxdWGWLZE08rUq4EKAoZG4nu9fUZZxdziCCKzvVvgo=;
+ b=Q8crJ/LXMGW/YLx34gY8mfWq2SWNVRfcw3qYYsUhREX81YLOYnJgKdrxO7fgcNUdgmyZ
+ j6GkzkYxo/XzOBArZ0/EbbYlEhC8D3Mg1fj6ysRBfwuZ/I/9/Hpz/Di5acl8iMSDNnTZ
+ WBeJaVQ2z0xG/HCDN+QuyEVnJgATQncRPasyFVM/uPyWi2+rhXlNkxDhOTkG2rVwFmWm
+ TKHoPI7ZAfGYbIk8SeYAn/Bd20N5upPlC8jDvtOJA6AADy/7etBxzD2f1vAXrQnhvkjn
+ qtbuXN80L6l+L/uugae0AWuIh4iS/N1Js1sgzEtSK2vTjcHDy1n8RMRbufca6ltVYok1 jw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmfdg8ju7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jul 2023 08:15:15 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3648FEkm009755;
+ Tue, 4 Jul 2023 08:15:14 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmfdg8jt2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jul 2023 08:15:14 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3645s7Bf032565;
+ Tue, 4 Jul 2023 08:15:12 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3rjbs4swc9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 04 Jul 2023 08:15:12 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3648FANr42992200
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 4 Jul 2023 08:15:10 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 33D8120043;
+ Tue,  4 Jul 2023 08:15:10 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 995E52004B;
+ Tue,  4 Jul 2023 08:15:09 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.179.30.217])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  4 Jul 2023 08:15:09 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
 Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org, qemu-stable@nongnu.org
-References: <20230703155801.179167-1-iii@linux.ibm.com>
- <20230703155801.179167-6-iii@linux.ibm.com>
- <b105761d-9602-030a-e578-12d9cd0a0283@redhat.com>
- <e893b9be6e71946120f6e54422814f7d4219f484.camel@linux.ibm.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <e893b9be6e71946120f6e54422814f7d4219f484.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ qemu-s390x@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 00/12] target/s390x: Miscellaneous TCG fixes
+Date: Tue,  4 Jul 2023 10:12:24 +0200
+Message-ID: <20230704081506.276055-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: DpgPAG-1ltDYVdWmeDIKpFNc-bVjyiqA
+X-Proofpoint-GUID: ZW7BWTDuhE1_D2wVGlbC6hNCqmYKuEE4
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-04_04,2023-06-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 mlxlogscore=975 malwarescore=0
+ suspectscore=0 spamscore=0 phishscore=0 impostorscore=0 clxscore=1015
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307040065
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,17 +111,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/4/23 10:05, Ilya Leoshkevich wrote:
->>> +        ret = (r1 & 0xFFFFFFFF00000000) | exc | 0x80000000;
->>
->> ull missing for large constant?
-> 
-> Will do.
-> 
-> Just for my understanding, why is this necessary?
+v1: https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg00454.html
+v1 -> v2: Add ULL for a large constant (David).
+          Add a comment explaining the usage of ALGFI in the LARL test.
 
-32-bit host; you'll get a warning for the large constant.
+Hi,
 
+Randomized testing found a number of issues in the s390x emulation.
+This series fixes 6 of them (patches 2-7) and adds tests (patches
+8-12); patch 1 is a cosmetic improvement needed for the EPSW test.
 
-r~
+There are more issues, but I thought it would be better to send this
+batch now.
+
+Best regards,
+Ilya
+
+Ilya Leoshkevich (12):
+  linux-user: elfload: Add more initial s390x PSW bits
+  target/s390x: Fix EPSW CC reporting
+  target/s390x: Fix MDEB and MDEBR
+  target/s390x: Fix MVCRL with a large value in R0
+  target/s390x: Fix LRA overwriting the top 32 bits on DAT error
+  target/s390x: Fix LRA when DAT is off
+  target/s390x: Fix relative long instructions with large offsets
+  tests/tcg/s390x: Test EPSW
+  tests/tcg/s390x: Test LARL with a large offset
+  tests/tcg/s390x: Test LRA
+  tests/tcg/s390x: Test MDEB and MDEBR
+  tests/tcg/s390x: Test MVCRL with a large value in R0
+
+ linux-user/elfload.c                    |  4 ++-
+ target/s390x/helper.h                   |  2 +-
+ target/s390x/mmu_helper.c               |  2 +-
+ target/s390x/tcg/fpu_helper.c           |  3 +-
+ target/s390x/tcg/insn-data.h.inc        |  4 +--
+ target/s390x/tcg/mem_helper.c           |  5 +--
+ target/s390x/tcg/translate.c            |  8 +++--
+ tests/tcg/s390x/Makefile.softmmu-target |  1 +
+ tests/tcg/s390x/Makefile.target         |  3 ++
+ tests/tcg/s390x/epsw.c                  | 23 +++++++++++++
+ tests/tcg/s390x/larl.c                  | 21 +++++++++++
+ tests/tcg/s390x/lra.S                   | 19 ++++++++++
+ tests/tcg/s390x/mdeb.c                  | 30 ++++++++++++++++
+ tests/tcg/s390x/mie3-mvcrl.c            | 46 +++++++++++++++++++------
+ 14 files changed, 151 insertions(+), 20 deletions(-)
+ create mode 100644 tests/tcg/s390x/epsw.c
+ create mode 100644 tests/tcg/s390x/larl.c
+ create mode 100644 tests/tcg/s390x/lra.S
+ create mode 100644 tests/tcg/s390x/mdeb.c
+
+-- 
+2.41.0
+
 
