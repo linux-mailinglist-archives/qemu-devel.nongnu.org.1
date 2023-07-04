@@ -2,61 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880BF747556
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 17:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 078A474757B
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 17:42:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGhyK-0004he-Fw; Tue, 04 Jul 2023 11:29:44 -0400
+	id 1qGi8R-000716-OV; Tue, 04 Jul 2023 11:40:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qGhyI-0004gn-Au
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:29:42 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qGi8H-00070B-Ag
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:40:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qGhyG-0003DF-Lc
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:29:42 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qGi8F-0005AJ-IS
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 11:40:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688484579;
+ s=mimecast20190719; t=1688485198;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xuX4O4RNqnlxujeVTfFZ+APxRbxruSPYEbhWSn0x7wE=;
- b=I9983upLWMqJWK1yoKvMUcB+BiyRpG/y4qmMwnIzdnuJA2AgEkdmr+GLpLp2yJLTWlccGd
- TawKfVVjcyKXcrSNrkOJ2Z5jn9UMYpqa3MaeVHxhMN41TfODvN3bJo/wMtFoEG5TsGKOZN
- 8k4e5q/QD/cKuNQ219hshO4zM33RGPo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-517-gUSYqHWoMyyYMtgtk_sRVw-1; Tue, 04 Jul 2023 11:29:36 -0400
-X-MC-Unique: gUSYqHWoMyyYMtgtk_sRVw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D3C0856F67;
- Tue,  4 Jul 2023 15:29:36 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.100])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CDD7F2166B31;
- Tue,  4 Jul 2023 15:29:35 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org,
- Richard Henderson <rth@twiddle.net>, Qing Wang <qinwang@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PULL 1/1] block/blkio: fix module_block.py parsing
-Date: Tue,  4 Jul 2023 17:29:32 +0200
-Message-Id: <20230704152932.194790-2-stefanha@redhat.com>
-In-Reply-To: <20230704152932.194790-1-stefanha@redhat.com>
-References: <20230704152932.194790-1-stefanha@redhat.com>
+ bh=fajVaDpslwMZGr0sUTK2oXQa7ooZzGOS6kDsWVvSLVk=;
+ b=fJtEbBEjrsoF7ANat4icf5obcbglvnCfX+cO+KuGappZv2HYzqMMNCTUfTNtrTPu56o/CE
+ lahiufKZHlr3rlbNRwLu4mZsJ5GECQEZTDbtWFm+j+h+5RwIAJ9ljFQFHsFhMBBcxXoGrZ
+ 12vcO+3N0FhRKSWAdgENo1D1B2LxuJA=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-427-icw1G52hOZ2vX03ryVb0yA-1; Tue, 04 Jul 2023 11:39:57 -0400
+X-MC-Unique: icw1G52hOZ2vX03ryVb0yA-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-c5c8d00ce50so858979276.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 08:39:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688485197; x=1691077197;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fajVaDpslwMZGr0sUTK2oXQa7ooZzGOS6kDsWVvSLVk=;
+ b=b4Li16CethW6e3VkJnfrQd+3cDE+880VriFdu95PbiraNPrjmlebOwpEdsvTrD8Lnj
+ 51Jg9bMSC/KsllpQf1Uz1ErNv+1cWY1SwvoB9k41eq8HUGeI+wyLn1k2ZtuepfY6u9Ma
+ IVDlZDIF/5pTjaP+RBChULuI8LBpcTzQT6kcbG7dCkg+CY2/6qHAZ3rB+PPSbpHqOM3T
+ 0Dvc9wlSpVqx1RxXMxK7LRAUJ3AWQI8/sp5qPWIvAYxLCdD2Mr6UZ9Xxm5KuZE0kErsB
+ ankQRDcZM7LW1fhDmy1b7UTJMQtao0HV4gpbtAebtL6OoY4EIrcxnRjYHv1jtJsjLZXJ
+ xoag==
+X-Gm-Message-State: ABy/qLYu95wM5NKmwxrvTKZOrLYM9GjO5dxxiJMlD01gLnRu0cGxfKCQ
+ jzZ9TQzR2QPwEGFdSMfTU1hxUdnwHD58DGJRSltfLFeRO8PpcI1RQaanEWAps2eG28LA+Slcvv1
+ t7xHPrEZW6ouuNIxSOBiXj+F37XvAE4E=
+X-Received: by 2002:a25:9d0f:0:b0:bfe:e383:6297 with SMTP id
+ i15-20020a259d0f000000b00bfee3836297mr13204713ybp.19.1688485196733; 
+ Tue, 04 Jul 2023 08:39:56 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEpVE2vDSnFISd2Q6hIW6nHP6pT7FrYxsK9fkN3jIrATc6meriv8x52gMPZVMxQuGT+g7pbPM53hYyuV/BXcGE=
+X-Received: by 2002:a25:9d0f:0:b0:bfe:e383:6297 with SMTP id
+ i15-20020a259d0f000000b00bfee3836297mr13204696ybp.19.1688485196444; Tue, 04
+ Jul 2023 08:39:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+References: <cover.1688051252.git.yin31149@gmail.com>
+ <d9d7641ef25d7a4477f8fc4df8cba026380dab76.1688051252.git.yin31149@gmail.com>
+In-Reply-To: <d9d7641ef25d7a4477f8fc4df8cba026380dab76.1688051252.git.yin31149@gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Tue, 4 Jul 2023 17:39:20 +0200
+Message-ID: <CAJaqyWefjZ1-Z08GR8f8kvwxPihEqpzJK17hDnO7wkGx+pCaCw@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 3/4] vdpa: Restore packet receive filtering state
+ relative with _F_CTRL_RX feature
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -65,7 +81,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,184 +97,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When QEMU is built with --enable-modules, the module_block.py script
-parses block/*.c to find block drivers that are built as modules. The
-script generates a table of block drivers called block_driver_modules[].
-This table is used for block driver module loading.
+On Thu, Jun 29, 2023 at 5:26=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
+ wrote:
+>
+> This patch introduces vhost_vdpa_net_load_rx_mode()
+> and vhost_vdpa_net_load_rx() to restore the packet
+> receive filtering state in relation to
+> VIRTIO_NET_F_CTRL_RX feature at device's startup.
+>
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> ---
+> v2:
+>   - avoid sending CVQ command in default state suggested by Eugenio
+>
+> v1: https://lore.kernel.org/all/86eeddcd6f6b04e5c1e44e901ddea3b1b8b6c183.=
+1687402580.git.yin31149@gmail.com/
+>
+>  net/vhost-vdpa.c | 104 +++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 104 insertions(+)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index cb45c84c88..9d5d88756c 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -792,6 +792,106 @@ static int vhost_vdpa_net_load_offloads(VhostVDPASt=
+ate *s,
+>      return 0;
+>  }
+>
+> +static int vhost_vdpa_net_load_rx_mode(VhostVDPAState *s,
+> +                                       uint8_t cmd,
+> +                                       uint8_t on)
+> +{
+> +    ssize_t dev_written;
+> +    const struct iovec data =3D {
+> +        .iov_base =3D &on,
+> +        .iov_len =3D sizeof(on),
+> +    };
+> +    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_RX,
+> +                                          cmd, &data, 1);
+> +    if (unlikely(dev_written < 0)) {
+> +        return dev_written;
+> +    }
+> +    if (*s->status !=3D VIRTIO_NET_OK) {
+> +        return -EINVAL;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
+> +                                  const VirtIONet *n)
+> +{
+> +    uint8_t on;
+> +    int r;
+> +
+> +    if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_RX)) {
 
-The blkio.c driver uses macros to define its BlockDriver structs. This
-was done to avoid code duplication but the module_block.py script is
-unable to parse the macro. The result is that libblkio-based block
-drivers can be built as modules but will not be found at runtime.
+Also suggesting early returns here.
 
-One fix is to make the module_block.py script or build system fancier so
-it can parse C macros (e.g. by parsing the preprocessed source code). I
-chose not to do this because it raises the complexity of the build,
-making future issues harder to debug.
+> +        /* Load the promiscous mode */
+> +        if (n->mac_table.uni_overflow) {
+> +            /*
+> +             * According to VirtIO standard, "Since there are no guarant=
+ees,
+> +             * it can use a hash filter or silently switch to
+> +             * allmulti or promiscuous mode if it is given too many addr=
+esses."
+> +             *
+> +             * QEMU ignores non-multicast(unicast) MAC addresses and
+> +             * marks `uni_overflow` for the device internal state
+> +             * if guest sets too many non-multicast(unicast) MAC address=
+es.
+> +             * Therefore, we should turn promiscous mode on in this case=
+.
+> +             */
+> +            on =3D 1;
+> +        } else {
+> +            on =3D n->promisc;
+> +        }
 
-Keep things simple: use the macro to avoid duplicating BlockDriver
-function pointers but define .format_name and .protocol_name manually
-for each BlockDriver. This way the module_block.py is able to parse the
-code.
+I think we can remove the "on" variable and just do:
 
-Also get rid of the block driver name macros (e.g. DRIVER_IO_URING)
-because module_block.py cannot parse them either.
-
-Fixes: fd66dbd424f5 ("blkio: add libblkio block driver")
-Reported-by: Qing Wang <qinwang@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-id: 20230704123436.187761-1-stefanha@redhat.com
-Cc: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+/*
+ * According to ...
+ */
+if (n->mac_table.uni_overflow || n->promisc) {
+  r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_PROMISC, on);
+  if (r < 0) {
+    return r;
+  }
 ---
- block/blkio.c | 108 ++++++++++++++++++++++++++------------------------
- 1 file changed, 56 insertions(+), 52 deletions(-)
 
-diff --git a/block/blkio.c b/block/blkio.c
-index 527323d625..1798648134 100644
---- a/block/blkio.c
-+++ b/block/blkio.c
-@@ -22,16 +22,6 @@
- 
- #include "block/block-io.h"
- 
--/*
-- * Keep the QEMU BlockDriver names identical to the libblkio driver names.
-- * Using macros instead of typing out the string literals avoids typos.
-- */
--#define DRIVER_IO_URING "io_uring"
--#define DRIVER_NVME_IO_URING "nvme-io_uring"
--#define DRIVER_VIRTIO_BLK_VFIO_PCI "virtio-blk-vfio-pci"
--#define DRIVER_VIRTIO_BLK_VHOST_USER "virtio-blk-vhost-user"
--#define DRIVER_VIRTIO_BLK_VHOST_VDPA "virtio-blk-vhost-vdpa"
--
- /*
-  * Allocated bounce buffers are kept in a list sorted by buffer address.
-  */
-@@ -744,15 +734,15 @@ static int blkio_file_open(BlockDriverState *bs, QDict *options, int flags,
-         return ret;
-     }
- 
--    if (strcmp(blkio_driver, DRIVER_IO_URING) == 0) {
-+    if (strcmp(blkio_driver, "io_uring") == 0) {
-         ret = blkio_io_uring_open(bs, options, flags, errp);
--    } else if (strcmp(blkio_driver, DRIVER_NVME_IO_URING) == 0) {
-+    } else if (strcmp(blkio_driver, "nvme-io_uring") == 0) {
-         ret = blkio_nvme_io_uring(bs, options, flags, errp);
--    } else if (strcmp(blkio_driver, DRIVER_VIRTIO_BLK_VFIO_PCI) == 0) {
-+    } else if (strcmp(blkio_driver, "virtio-blk-vfio-pci") == 0) {
-         ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
--    } else if (strcmp(blkio_driver, DRIVER_VIRTIO_BLK_VHOST_USER) == 0) {
-+    } else if (strcmp(blkio_driver, "virtio-blk-vhost-user") == 0) {
-         ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
--    } else if (strcmp(blkio_driver, DRIVER_VIRTIO_BLK_VHOST_VDPA) == 0) {
-+    } else if (strcmp(blkio_driver, "virtio-blk-vhost-vdpa") == 0) {
-         ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
-     } else {
-         g_assert_not_reached();
-@@ -1028,49 +1018,63 @@ static void blkio_refresh_limits(BlockDriverState *bs, Error **errp)
-  * - truncate
-  */
- 
--#define BLKIO_DRIVER(name, ...) \
--    { \
--        .format_name             = name, \
--        .protocol_name           = name, \
--        .instance_size           = sizeof(BDRVBlkioState), \
--        .bdrv_file_open          = blkio_file_open, \
--        .bdrv_close              = blkio_close, \
--        .bdrv_co_getlength       = blkio_co_getlength, \
--        .bdrv_co_truncate        = blkio_truncate, \
--        .bdrv_co_get_info        = blkio_co_get_info, \
--        .bdrv_attach_aio_context = blkio_attach_aio_context, \
--        .bdrv_detach_aio_context = blkio_detach_aio_context, \
--        .bdrv_co_pdiscard        = blkio_co_pdiscard, \
--        .bdrv_co_preadv          = blkio_co_preadv, \
--        .bdrv_co_pwritev         = blkio_co_pwritev, \
--        .bdrv_co_flush_to_disk   = blkio_co_flush, \
--        .bdrv_co_pwrite_zeroes   = blkio_co_pwrite_zeroes, \
--        .bdrv_refresh_limits     = blkio_refresh_limits, \
--        .bdrv_register_buf       = blkio_register_buf, \
--        .bdrv_unregister_buf     = blkio_unregister_buf, \
--        __VA_ARGS__ \
--    }
-+/*
-+ * Do not include .format_name and .protocol_name because module_block.py
-+ * does not parse macros in the source code.
-+ */
-+#define BLKIO_DRIVER_COMMON \
-+    .instance_size           = sizeof(BDRVBlkioState), \
-+    .bdrv_file_open          = blkio_file_open, \
-+    .bdrv_close              = blkio_close, \
-+    .bdrv_co_getlength       = blkio_co_getlength, \
-+    .bdrv_co_truncate        = blkio_truncate, \
-+    .bdrv_co_get_info        = blkio_co_get_info, \
-+    .bdrv_attach_aio_context = blkio_attach_aio_context, \
-+    .bdrv_detach_aio_context = blkio_detach_aio_context, \
-+    .bdrv_co_pdiscard        = blkio_co_pdiscard, \
-+    .bdrv_co_preadv          = blkio_co_preadv, \
-+    .bdrv_co_pwritev         = blkio_co_pwritev, \
-+    .bdrv_co_flush_to_disk   = blkio_co_flush, \
-+    .bdrv_co_pwrite_zeroes   = blkio_co_pwrite_zeroes, \
-+    .bdrv_refresh_limits     = blkio_refresh_limits, \
-+    .bdrv_register_buf       = blkio_register_buf, \
-+    .bdrv_unregister_buf     = blkio_unregister_buf,
- 
--static BlockDriver bdrv_io_uring = BLKIO_DRIVER(
--    DRIVER_IO_URING,
-+/*
-+ * Use the same .format_name and .protocol_name as the libblkio driver name for
-+ * consistency.
-+ */
-+
-+static BlockDriver bdrv_io_uring = {
-+    .format_name         = "io_uring",
-+    .protocol_name       = "io_uring",
-     .bdrv_needs_filename = true,
--);
-+    BLKIO_DRIVER_COMMON
-+};
- 
--static BlockDriver bdrv_nvme_io_uring = BLKIO_DRIVER(
--    DRIVER_NVME_IO_URING,
--);
-+static BlockDriver bdrv_nvme_io_uring = {
-+    .format_name         = "nvme-io_uring",
-+    .protocol_name       = "nvme-io_uring",
-+    BLKIO_DRIVER_COMMON
-+};
- 
--static BlockDriver bdrv_virtio_blk_vfio_pci = BLKIO_DRIVER(
--    DRIVER_VIRTIO_BLK_VFIO_PCI
--);
-+static BlockDriver bdrv_virtio_blk_vfio_pci = {
-+    .format_name         = "virtio-blk-vfio-pci",
-+    .protocol_name       = "virtio-blk-vfio-pci",
-+    BLKIO_DRIVER_COMMON
-+};
- 
--static BlockDriver bdrv_virtio_blk_vhost_user = BLKIO_DRIVER(
--    DRIVER_VIRTIO_BLK_VHOST_USER
--);
-+static BlockDriver bdrv_virtio_blk_vhost_user = {
-+    .format_name         = "virtio-blk-vhost-user",
-+    .protocol_name       = "virtio-blk-vhost-user",
-+    BLKIO_DRIVER_COMMON
-+};
- 
--static BlockDriver bdrv_virtio_blk_vhost_vdpa = BLKIO_DRIVER(
--    DRIVER_VIRTIO_BLK_VHOST_VDPA
--);
-+static BlockDriver bdrv_virtio_blk_vhost_vdpa = {
-+    .format_name         = "virtio-blk-vhost-vdpa",
-+    .protocol_name       = "virtio-blk-vhost-vdpa",
-+    BLKIO_DRIVER_COMMON
-+};
- 
- static void bdrv_blkio_init(void)
- {
--- 
-2.40.1
+And the equivalent for multicast.
+
+Would that make sense?
+
+Thanks!
+
+> +        if (on !=3D 1) {
+> +            /*
+> +             * According to virtio_net_reset(), device turns promiscuous=
+ mode on
+> +             * by default.
+> +             *
+> +             * Therefore, there is no need to send this CVQ command if t=
+he
+> +             * driver also sets promiscuous mode on, which aligns with
+> +             * the device's defaults.
+> +             *
+> +             * Note that the device's defaults can mismatch the driver's
+> +             * configuration only at live migration.
+> +             */
+> +            r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_PROM=
+ISC, on);
+> +            if (r < 0) {
+> +                return r;
+> +            }
+> +        }
+> +
+> +        /* Load the all-multicast mode */
+> +        if (n->mac_table.multi_overflow) {
+> +            /*
+> +             * According to VirtIO standard, "Since there are no guarant=
+ees,
+> +             * it can use a hash filter or silently switch to
+> +             * allmulti or promiscuous mode if it is given too many addr=
+esses."
+> +             *
+> +             * QEMU ignores multicast MAC addresses and
+> +             * marks `multi_overflow` for the device internal state
+> +             * if guest sets too many multicast MAC addresses.
+> +             * Therefore, we should turn all-multicast mode on in this c=
+ase.
+> +             */
+> +            on =3D 1;
+> +        } else {
+> +            on =3D n->allmulti;
+> +        }
+> +        if (on !=3D 0) {
+> +            /*
+> +             * According to virtio_net_reset(), device turns all-multica=
+st mode
+> +             * off by default.
+> +             *
+> +             * Therefore, there is no need to send this CVQ command if t=
+he
+> +             * driver also sets all-multicast mode off, which aligns wit=
+h
+> +             * the device's defaults.
+> +             *
+> +             * Note that the device's defaults can mismatch the driver's
+> +             * configuration only at live migration.
+> +             */
+> +            r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_ALLM=
+ULTI, on);
+> +            if (r < 0) {
+> +                return r;
+> +            }
+> +        }
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+>  static int vhost_vdpa_net_load(NetClientState *nc)
+>  {
+>      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+> @@ -818,6 +918,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
+>      if (unlikely(r)) {
+>          return r;
+>      }
+> +    r =3D vhost_vdpa_net_load_rx(s, n);
+> +    if (unlikely(r)) {
+> +        return r;
+> +    }
+>
+>      return 0;
+>  }
+> --
+> 2.25.1
+>
 
 
