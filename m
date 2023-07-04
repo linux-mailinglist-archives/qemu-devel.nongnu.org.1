@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9687476DF
+	by mail.lfdr.de (Postfix) with ESMTPS id 801857476DE
 	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 18:37:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGj1F-0001KC-2L; Tue, 04 Jul 2023 12:36:49 -0400
+	id 1qGj1G-0001ME-VM; Tue, 04 Jul 2023 12:36:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGj1C-0001IG-SW
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:36:46 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1qGj1E-0001Jx-6i
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:36:48 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGj16-0001og-IW
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:36:46 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-313e09a5b19so4920852f8f.0
+ id 1qGj1B-0001pJ-6z
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 12:36:47 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3143b70d6easo1964283f8f.2
  for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 09:36:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688488599; x=1691080599;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=eZRfw+Y+qoCHkLPcJJixub5r6MA4gHrUcY1/kPyyLV8=;
- b=SL8Nrpcw5kNmqXkEYA6axmI+XtxoWUkl7qvZZDQ5XBUsVmZlTEXmbcXs8fZKIFFmzF
- ejSVO7dDT9M442Uk1Ln7WR2kBMNZq2Lmy3FdPOvBaSgwaoNjeHN4PnS0kU4DKnx0pgGo
- +eLRlfrBoWT2PC7YgmHUCOZNq587IAh9K2TwARDnh2JzwG/pV8AzsMpT2RcwNzvziyUx
- oE5CmQXjfRH48zqxtWtBMMsb/yhIlCYg2ZAOz5tp2uKKZY3JSnk+pVcenwQXQMjT8Q+Y
- RNc7lVCtReZwUlPvEcUv1br5BpmY871zZyk6lyTHZzBPEKdSpAoMVEMxWElUdsgXlVXn
- /qOQ==
+ :reply-to; bh=VCXSlv9PBlqNWlv08FHro1sfFi0JArXLUvRt7UUYed4=;
+ b=m4etLuyCJXHo8lsBDWWsCkVfJNGu5WCznPshiCzz32kHKxiPnaOGNUcuK55flcCzWl
+ WJy5PfnXm6Fb5Rn1XhBTnUA+VVJfB435B59wVt7QtVN4HDwmIx2AXtVuEEphVi1+wK5C
+ UCgL5llciq/MAT9XQ5wluppk6XzVCKGKJikpXdPNErhbR298uuK8n2Hh1edBJMQmSClY
+ kbrp2uzeCexialr0DTKrmiypCP3Yb7hQy4Xp3A4ZG+/uY4so/KeLEmUeiRvDZ6AI1zxd
+ ZS8zfF/botD4dTZ/q//Gg9zFgYFHsZzbUgYpgnfzBe8KzYVon3Ew2wu8mIKuKWFf4GHK
+ p0BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688488599; x=1691080599;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eZRfw+Y+qoCHkLPcJJixub5r6MA4gHrUcY1/kPyyLV8=;
- b=dfD1xpDQ04djsFRet3EIrW+rnUKR3L8bj3dXvlJ7+ebYSf4UnJXNLIDsybgdgY17rz
- QSnxoo39XgP/+c0QrMEA+WKljfyX+A0h2CyIg+MX9AgUQ7u3jql3P0v2Z6LP2Gs2y3dA
- lBfZtTNiKNEKJxcHHmfd9k2a1td/84reUS6Q+f7T53B0tw28IeNN1GcSNR5gPKVfLHVu
- hGcgss8BRa+M+/ReZX98yYd35eBNxPncMTlXb27l5aDdVy6DdMaGUrRvIt6gDGJdbX+V
- mxPRs/6k5uOWrF1hUjs0RbmnOE3ubm/LpYNU3Hjnr8FqvOu89e5u3ODniDP+Xq6xilBk
- HqdA==
-X-Gm-Message-State: AC+VfDwA5YdfsMADilC6f1/Gm04IZ+JIAaQH0kH6KeO8RyxcBKtCnPTU
- UXzSZ8C0bF2+KQTI75sgcHKislTnq7g4cjhSP1I=
-X-Google-Smtp-Source: ACHHUZ7l4n+R9CcWMjga2lSG9GPDCWpmP9XmYWz5aO9SVIknbAu9LTDcwmwXrDJxV0BUKf0P3oYnqw==
-X-Received: by 2002:a5d:6308:0:b0:30f:c050:88dd with SMTP id
- i8-20020a5d6308000000b0030fc05088ddmr16419155wru.8.1688488599139; 
+ bh=VCXSlv9PBlqNWlv08FHro1sfFi0JArXLUvRt7UUYed4=;
+ b=kfiisAEB5z6swM6kWcTYkdSSVniEcfy+OGezkbtWGmm/h7LgGVDKrsIZPgXIU7LTh/
+ H8VztuS1AqJihBxtMkwStZ2mvdaM5wdv3VOUsBqgFRPe8Yq7Xc4bJGe7p5YDaYDfaznm
+ Su5ZX2N79xgizTj6kEe07BZXAJ8zldsLEqIEeYUVOj182pJfWHapsPxxbO4awJIfPYNl
+ lg+AZbhHiBspeUoV4PBUr4+Uf4YkxcZMttHOiswafWdylCs9RtmT+hfaBq5UT7DggdyW
+ DIzW6BDIAmN1vtVnBNms7kdRAIP8DfcWCOTfGingBsxty8Cxb88suf04QF9tvUUXLDgG
+ jYJQ==
+X-Gm-Message-State: ABy/qLYdaR2dzkEkPmBfe/bdAWudwq8MYp5S9moud7zmcvlsG7P9f5BQ
+ HUVTrZupUF7fjVJ2JXGK2BsdEpGQ4vmbQWGCWxw=
+X-Google-Smtp-Source: APBJJlGDj86lO/74E5DZ+KK/ZHsk2VH2UWzSvl5stCtsA7Bon6+A9hQNm3p2TJzC28stIHtKnV2pUw==
+X-Received: by 2002:adf:e483:0:b0:30a:f030:8637 with SMTP id
+ i3-20020adfe483000000b0030af0308637mr11570491wrm.22.1688488599547; 
  Tue, 04 Jul 2023 09:36:39 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- r8-20020a056000014800b003143b032b7asm4354258wrx.116.2023.07.04.09.36.38
+ r8-20020a056000014800b003143b032b7asm4354258wrx.116.2023.07.04.09.36.39
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 09:36:38 -0700 (PDT)
+ Tue, 04 Jul 2023 09:36:39 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 08/11] tests/qtest: xlnx-canfd-test: Fix code coverity issues
-Date: Tue,  4 Jul 2023 17:36:31 +0100
-Message-Id: <20230704163634.3188465-9-peter.maydell@linaro.org>
+Subject: [PULL 09/11] target/arm: gdbstub: Guard M-profile code with CONFIG_TCG
+Date: Tue,  4 Jul 2023 17:36:32 +0100
+Message-Id: <20230704163634.3188465-10-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230704163634.3188465-1-peter.maydell@linaro.org>
 References: <20230704163634.3188465-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,120 +90,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vikram Garhwal <vikram.garhwal@amd.com>
+From: Fabiano Rosas <farosas@suse.de>
 
-Following are done to fix the coverity issues:
-1. Change read_data to fix the CID 1512899: Out-of-bounds access (OVERRUN)
-2. Fix match_rx_tx_data to fix CID 1512900: Logically dead code (DEADCODE)
-3. Replace rand() in generate_random_data() with g_rand_int()
+This code is only relevant when TCG is present in the build. Building
+with --disable-tcg --enable-xen on an x86 host we get:
 
-Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-Message-id: 20230628202758.16398-1-vikram.garhwal@amd.com
+$ ../configure --target-list=x86_64-softmmu,aarch64-softmmu --disable-tcg --enable-xen
+$ make -j$(nproc)
+...
+libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `m_sysreg_ptr':
+ ../target/arm/gdbstub.c:358: undefined reference to `arm_v7m_get_sp_ptr'
+ ../target/arm/gdbstub.c:361: undefined reference to `arm_v7m_get_sp_ptr'
+
+libqemu-aarch64-softmmu.fa.p/target_arm_gdbstub.c.o: in function `arm_gdb_get_m_systemreg':
+../target/arm/gdbstub.c:405: undefined reference to `arm_v7m_mrs_control'
+
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Message-id: 20230628164821.16771-1-farosas@suse.de
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/qtest/xlnx-canfd-test.c | 33 +++++++++++----------------------
- 1 file changed, 11 insertions(+), 22 deletions(-)
+ target/arm/gdbstub.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/qtest/xlnx-canfd-test.c b/tests/qtest/xlnx-canfd-test.c
-index 76ee106d4f4..78ec9ef2a76 100644
---- a/tests/qtest/xlnx-canfd-test.c
-+++ b/tests/qtest/xlnx-canfd-test.c
-@@ -170,23 +170,23 @@ static void generate_random_data(uint32_t *buf_tx, bool is_canfd_frame)
-     /* Generate random TX data for CANFD frame. */
-     if (is_canfd_frame) {
-         for (int i = 0; i < CANFD_FRAME_SIZE - 2; i++) {
--            buf_tx[2 + i] = rand();
-+            buf_tx[2 + i] = g_random_int();
-         }
-     } else {
-         /* Generate random TX data for CAN frame. */
-         for (int i = 0; i < CAN_FRAME_SIZE - 2; i++) {
--            buf_tx[2 + i] = rand();
-+            buf_tx[2 + i] = g_random_int();
-         }
-     }
+diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+index 03b17c814f6..f421c5d041c 100644
+--- a/target/arm/gdbstub.c
++++ b/target/arm/gdbstub.c
+@@ -324,6 +324,7 @@ static int arm_gen_dynamic_sysreg_xml(CPUState *cs, int base_reg)
+     return cpu->dyn_sysreg_xml.num;
  }
  
--static void read_data(QTestState *qts, uint64_t can_base_addr, uint32_t *buf_rx)
-+static void read_data(QTestState *qts, uint64_t can_base_addr, uint32_t *buf_rx,
-+                      uint32_t frame_size)
++#ifdef CONFIG_TCG
+ typedef enum {
+     M_SYSREG_MSP,
+     M_SYSREG_PSP,
+@@ -481,6 +482,7 @@ static int arm_gen_dynamic_m_secextreg_xml(CPUState *cs, int orig_base_reg)
+     return cpu->dyn_m_secextreg_xml.num;
+ }
+ #endif
++#endif /* CONFIG_TCG */
+ 
+ const char *arm_gdb_get_dynamic_xml(CPUState *cs, const char *xmlname)
  {
-     uint32_t int_status;
-     uint32_t fifo_status_reg_value;
-     /* At which RX FIFO the received data is stored. */
-     uint8_t store_ind = 0;
--    bool is_canfd_frame = false;
+@@ -561,6 +563,7 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
+                              arm_gen_dynamic_sysreg_xml(cs, cs->gdb_num_regs),
+                              "system-registers.xml", 0);
  
-     /* Read the interrupt on CANFD rx. */
-     int_status = qtest_readl(qts, can_base_addr + R_ISR_OFFSET) & ISR_RXOK;
-@@ -207,16 +207,9 @@ static void read_data(QTestState *qts, uint64_t can_base_addr, uint32_t *buf_rx)
-     buf_rx[0] = qtest_readl(qts, can_base_addr + R_RX0_ID_OFFSET);
-     buf_rx[1] = qtest_readl(qts, can_base_addr + R_RX0_DLC_OFFSET);
- 
--    is_canfd_frame = (buf_rx[1] >> DLC_FD_BIT_SHIFT) & 1;
--
--    if (is_canfd_frame) {
--        for (int i = 0; i < CANFD_FRAME_SIZE - 2; i++) {
--            buf_rx[i + 2] = qtest_readl(qts,
--                                    can_base_addr + R_RX0_DATA1_OFFSET + 4 * i);
--        }
--    } else {
--        buf_rx[2] = qtest_readl(qts, can_base_addr + R_RX0_DATA1_OFFSET);
--        buf_rx[3] = qtest_readl(qts, can_base_addr + R_RX0_DATA2_OFFSET);
-+    for (int i = 0; i < frame_size - 2; i++) {
-+        buf_rx[i + 2] = qtest_readl(qts,
-+                                can_base_addr + R_RX0_DATA1_OFFSET + 4 * i);
-     }
- 
-     /* Clear the RX interrupt. */
-@@ -272,10 +265,6 @@ static void match_rx_tx_data(const uint32_t *buf_tx, const uint32_t *buf_rx,
-             g_assert_cmpint((buf_rx[size] & DLC_FD_BIT_MASK), ==,
-                             (buf_tx[size] & DLC_FD_BIT_MASK));
-         } else {
--            if (!is_canfd_frame && size == 4) {
--                break;
--            }
--
-             g_assert_cmpint(buf_rx[size], ==, buf_tx[size]);
++#ifdef CONFIG_TCG
+     if (arm_feature(env, ARM_FEATURE_M) && tcg_enabled()) {
+         gdb_register_coprocessor(cs,
+             arm_gdb_get_m_systemreg, arm_gdb_set_m_systemreg,
+@@ -575,4 +578,5 @@ void arm_cpu_register_gdb_regs_for_features(ARMCPU *cpu)
          }
- 
-@@ -318,7 +307,7 @@ static void test_can_data_transfer(void)
-     write_data(qts, CANFD0_BASE_ADDR, buf_tx, false);
- 
-     send_data(qts, CANFD0_BASE_ADDR);
--    read_data(qts, CANFD1_BASE_ADDR, buf_rx);
-+    read_data(qts, CANFD1_BASE_ADDR, buf_rx, CAN_FRAME_SIZE);
-     match_rx_tx_data(buf_tx, buf_rx, false);
- 
-     qtest_quit(qts);
-@@ -358,7 +347,7 @@ static void test_canfd_data_transfer(void)
-     write_data(qts, CANFD0_BASE_ADDR, buf_tx, true);
- 
-     send_data(qts, CANFD0_BASE_ADDR);
--    read_data(qts, CANFD1_BASE_ADDR, buf_rx);
-+    read_data(qts, CANFD1_BASE_ADDR, buf_rx, CANFD_FRAME_SIZE);
-     match_rx_tx_data(buf_tx, buf_rx, true);
- 
-     qtest_quit(qts);
-@@ -397,7 +386,7 @@ static void test_can_loopback(void)
-     write_data(qts, CANFD0_BASE_ADDR, buf_tx, true);
- 
-     send_data(qts, CANFD0_BASE_ADDR);
--    read_data(qts, CANFD0_BASE_ADDR, buf_rx);
-+    read_data(qts, CANFD0_BASE_ADDR, buf_rx, CANFD_FRAME_SIZE);
-     match_rx_tx_data(buf_tx, buf_rx, true);
- 
-     generate_random_data(buf_tx, true);
-@@ -405,7 +394,7 @@ static void test_can_loopback(void)
-     write_data(qts, CANFD1_BASE_ADDR, buf_tx, true);
- 
-     send_data(qts, CANFD1_BASE_ADDR);
--    read_data(qts, CANFD1_BASE_ADDR, buf_rx);
-+    read_data(qts, CANFD1_BASE_ADDR, buf_rx, CANFD_FRAME_SIZE);
-     match_rx_tx_data(buf_tx, buf_rx, true);
- 
-     qtest_quit(qts);
+ #endif
+     }
++#endif /* CONFIG_TCG */
+ }
 -- 
 2.34.1
 
