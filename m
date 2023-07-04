@@ -2,107 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D24747389
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F37C7473B0
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 16:08:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGgdF-0001HN-6b; Tue, 04 Jul 2023 10:03:53 -0400
+	id 1qGggm-0002h2-Os; Tue, 04 Jul 2023 10:07:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qGgdC-0001Gg-Vn
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:03:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
+ id 1qGggk-0002gb-PG; Tue, 04 Jul 2023 10:07:30 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qGgdB-00019q-3q
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 10:03:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688479426;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4HGQ9hZFGQLrKuJSqFy9SwAoU5nURgXAj670lLeJ6VY=;
- b=KpOL3Qgubr/+2CtkGBl1yM23UHP4lzrVhbjI9R8Mscl6+m9hR8TQ3vLxBXHhxQ+2ugzUUx
- 0Bd9SJcqMEIE8yuE2ZiU3vqjN3ohuDfvCglE6lyqpLxj392i/MneTR8RmEdD58X90gy5wZ
- 4nq/sVCFqz5eOhoyXP7KfxAyKfhBu80=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-245-Id9FsJOlN2iAiz_yh_gebQ-1; Tue, 04 Jul 2023 10:03:45 -0400
-X-MC-Unique: Id9FsJOlN2iAiz_yh_gebQ-1
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-66871648c25so7558949b3a.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 07:03:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688479424; x=1691071424;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4HGQ9hZFGQLrKuJSqFy9SwAoU5nURgXAj670lLeJ6VY=;
- b=MZwydPZXfCle0YDO7yOFFP9BOHw135jJiHWjdaT3V/osCPdX03trX/jP30C900Op3z
- HKYew5j9lmtDUJo524+lDHdbDO1gK27y9MiCyxA5KnVYMEGIpM6mZofY+ojOJFnH2p++
- btJ3EZBB0K5wLCabBT1z4bq5OSq0F6YBIeJ2Sr/X8b8vqD5Q4P6k5HCVBdHkgtQG01tw
- AvTfWoibmtscX8P6/OVokUrxk0I6XKzCmsmVXuO7AoQETmziqUYwuK9cvKFV0MYmz/WC
- 0xjeQyJxsOO6/MG+cdX1sXtZYY1U5MYGV/1ArCfGEtXMM9JhRopvPIU2hNLDM19ShHLK
- v0mA==
-X-Gm-Message-State: ABy/qLbpnjdhfS3im8x70wCvSDtt1SoMF8LnVMyzX4mHayPeF8jTTIod
- dGse4Cn4oE2FUyfUrEnn68V/DBEWKIWDyZPGSOlRRPw6k0NiyKBOr3mWec/Z4zlJJeuO1ffuWsa
- Wjl5PRMKPITSqD/Q=
-X-Received: by 2002:a05:6a00:854:b0:681:50fd:2b93 with SMTP id
- q20-20020a056a00085400b0068150fd2b93mr20004907pfk.25.1688479423984; 
- Tue, 04 Jul 2023 07:03:43 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEFovg4N/G6T/nLO/Hu54EWfL1X/7EWlztpouww0pY5yVDwXyyVjfPXQkMeAGPSMow2KipKLQ==
-X-Received: by 2002:a05:6a00:854:b0:681:50fd:2b93 with SMTP id
- q20-20020a056a00085400b0068150fd2b93mr20004864pfk.25.1688479423470; 
- Tue, 04 Jul 2023 07:03:43 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.131.170])
- by smtp.gmail.com with ESMTPSA id
- j5-20020a62b605000000b00640f51801e6sm15660732pff.159.2023.07.04.07.03.40
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 04 Jul 2023 07:03:43 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <a6cf6a37-ae26-1725-f564-bc46b2dc892a@daynix.com>
-Date: Tue, 4 Jul 2023 19:33:38 +0530
-Cc: Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-devel <qemu-devel@nongnu.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7A2291A2-91AD-4AA5-BA39-419C052C45AF@redhat.com>
-References: <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
- <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
- <A50CA177-0E7E-4828-A036-70EB532FE2B8@redhat.com>
- <20230630041937-mutt-send-email-mst@kernel.org>
- <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
- <20230630043734-mutt-send-email-mst@kernel.org>
- <49B901C6-4819-4A00-8225-39FAA6678F3E@redhat.com>
- <20230630055717-mutt-send-email-mst@kernel.org>
- <FB764864-ADD3-4017-8313-ED40A833A81B@redhat.com>
- <a38e0336-58e5-e796-bd29-0dfc5d1d0e46@daynix.com>
- <20230630112611-mutt-send-email-mst@kernel.org>
- <0879ed66-766c-1d3f-dcce-31e1285a7972@daynix.com>
- <20230704133801.0423b554@imammedo.users.ipa.redhat.com>
- <a6cf6a37-ae26-1725-f564-bc46b2dc892a@daynix.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
+ id 1qGggi-0002CZ-01; Tue, 04 Jul 2023 10:07:30 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QwPkL3ZG2z4wxW;
+ Wed,  5 Jul 2023 00:07:22 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QwPkF0drRz4wZp;
+ Wed,  5 Jul 2023 00:07:16 +1000 (AEST)
+Message-ID: <ad5ea665-dce2-46d3-de14-558db8694eb5@kaod.org>
+Date: Tue, 4 Jul 2023 16:07:14 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH qemu v5] aspeed add montblanc bmc reference from fuji
+Content-Language: en-US
+To: Sittisak Sinprem <ssinprem@celestica.com>, Bin Huang <binhuang@meta.com>, 
+ Tao Ren <taoren@meta.com>, Mike Choi <mikechoi@meta.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, peter.maydell@linaro.org,
+ andrew@aj.id.au, Joel Stanley <joel@jms.id.au>, qemu-stable@nongnu.org,
+ srikanth@celestica.com, ssumet@celestica.com, thangavelu.v@celestica.com,
+ kgengan@celestica.com, anandaramanv@celestica.com
+References: <168846918238.25928.7102858062933368556-0@git.sr.ht>
+ <3cda00c1-54f8-57db-8992-3cafa97d4564@kaod.org>
+ <CAE+aGtX9qcaPXhEYyqDuW_PLsKY9bVXhWiWb=oMT+5X-AXg3zg@mail.gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CAE+aGtX9qcaPXhEYyqDuW_PLsKY9bVXhWiWb=oMT+5X-AXg3zg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=18er=CW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,166 +68,232 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 7/4/23 15:27, Sittisak Sinprem wrote:
+> Hi Meta Team,
+> 
+> the FRU EEPROM content, I think for now detail still be confidential,
+> Please confirm, Can we add the description in Qemu upstream following Cedric's request?
 
+We don't need all the details, and not the confidential part of course.
 
-> On 04-Jul-2023, at 5:20 PM, Akihiko Odaki <akihiko.odaki@daynix.com> =
-wrote:
->=20
-> On 2023/07/04 20:38, Igor Mammedov wrote:
->> On Sat, 1 Jul 2023 16:28:30 +0900
->> Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>> On 2023/07/01 0:29, Michael S. Tsirkin wrote:
->>>> On Fri, Jun 30, 2023 at 08:36:38PM +0900, Akihiko Odaki wrote:
->>>>> On 2023/06/30 19:37, Ani Sinha wrote:
->>>>>>=20
->>>>>> =20
->>>>>>> On 30-Jun-2023, at 3:30 PM, Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->>>>>>>=20
->>>>>>> On Fri, Jun 30, 2023 at 02:52:52PM +0530, Ani Sinha wrote:
->>>>>>>>=20
->>>>>>>> =20
->>>>>>>>> On 30-Jun-2023, at 2:13 PM, Michael S. Tsirkin =
-<mst@redhat.com> wrote:
->>>>>>>>>=20
->>>>>>>>> On Fri, Jun 30, 2023 at 02:06:59PM +0530, Ani Sinha wrote:
->>>>>>>>>>=20
->>>>>>>>>> =20
->>>>>>>>>>> On 30-Jun-2023, at 2:02 PM, Michael S. Tsirkin =
-<mst@redhat.com> wrote:
->>>>>>>>>>>=20
->>>>>>>>>>> On Fri, Jun 30, 2023 at 01:11:33PM +0530, Ani Sinha wrote:
->>>>>>>>>>>>>=20
->>>>>>>>>>>>> Thus the check for unoccupied function 0 needs to use =
-pci_is_vf() instead of checking ARI capability, and that can happen in =
-do_pci_register_device().
->>>>>>>>>>>>> =20
->>>>>>>>>>>>>> Also where do you propose we move the check?
->>>>>>>>>>>>>=20
->>>>>>>>>>>>> In pci_qdev_realize(), somewhere after pc->realize() and =
-before option ROM loading.
->>>>>>>>>>>>=20
->>>>>>>>>>>> Hmm, I tried this. The issue here is something like this =
-would be now allowed since the PF has ARI capability:
->>>>>>>>>>>>=20
->>>>>>>>>>>> -device pcie-root-port,id=3Dp -device =
-igb,bus=3Dp,addr=3D0x2.0x0
->>>>>>>>>>>>=20
->>>>>>>>>>>> The above should not be allowed and when used, we do not =
-see the igb ethernet device from the guest OS.
->>>>>>>>>>>=20
->>>>>>>>>>> I think it's allowed because it expects you to hotplug =
-function 0 later,
->>>>>>>>>>=20
->>>>>>>>>> This is about the igb device being plugged into the non-zero =
-slot of the pci-root-port. The guest OS ignores it.
->>>>>>>>>=20
->>>>>>>>> yes but if you later add a device with ARI and with next field =
-pointing
->>>>>>>>> slot 2 guest will suddently find both.
->>>>>>>>=20
->>>>>>>> Hmm, I tried this:
->>>>>>>>=20
->>>>>>>> -device pcie-root-port,id=3Dp \
->>>>>>>> -device igb,bus=3Dp,addr=3D0x2.0x0 \
->>>>>>>> -device igb,bus=3Dp,addr=3D0x0.0x0 \
->>>>>>>>=20
->>>>>>>> The guest only found the second igb device not the first. You =
-can try too.
->>>>>>>=20
->>>>>>> Because next parameter in pcie_ari_init does not match.
->>>>>>=20
->>>>>> OK send me a command line that I can test it with. I can=E2=80=99t =
-come up with a case that actually works in practice.
->>>>>=20
->>>>> I don't think there is one because the code for PCI multifunction =
-does not
->>>>> care ARI. In my opinion, we need yet another check to make =
-non-SR-IOV
->>>>> multifunction and ARI capability mutually exclusive; if a function =
-has the
->>>>> ARI capability and it is not a VF, an attempt to assign non-zero =
-function
->>>>> number for it should fail.
->> is it stated somewhere in spec(s) that ARI and !SR-IOV are mutually =
-exclusive?
->>>>=20
->>>> Why is that? My understanding is that ARI capable devices should =
-also
->>>> set the multifunction bit in the header. It's not terribly clear =
-from
->>>> the spec though.
->>>=20
->>> Something like the following will not work properly with ARI-capable
->>> device (think of a as an ARI-capable device):
->>> -device a,addr=3D0x1.0x0,multifunction=3Don -device a,addr=3D0x1.0x1
->> (I had a crazy idea, to use it like that so we could put more devices
->> on port without resorting to adding extra bridges)
->> Can you elaborate some more why it won't work?
->=20
-> It won't work because the ARI next function number field is fixed. In =
-this case, the field of the Function at 0x1.0x0 should point to 0x1.0x1, =
-but it doesn=E2=80=99t.
+C.
 
-Where does it point to in this case then? 0x1.0x2 becasue of the stride?
-
-> As the result, the Function at 0x1.0x1 won't be recognized.
->=20
-> It's more problematic if some of the Functions are ARI-capable but =
-others are not. In my understanding, all Functions in a ARI-capable =
-device need to have ARI capability, but that's not enforced.
->=20
->>> This is because the next function numbers advertised with ARI are =
-not
->>> updated with the multifunction configuration, but they are hardcoded =
-in
->>> the device implementation. In this sense, the traditional =
-(non-SR/IOV)
->>> multifunction mechanism QEMU has will not work with ARI-capable =
-devices.
->>>=20
->>>>  =20
->>>>> But it should be a distinct check as it will need to check the =
-function
->>>>> number bits.
->>>>> =20
->>>>>> =20
->>>>>>>=20
->>>>>>> =20
->>>>>>>>> =20
->>>>>>>>>>> no?
->>>>>>>>>>>=20
->>>>>>>>>>> I am quite worried about all this work going into blocking
->>>>>>>>>>> what we think is disallowed configurations. We should have
->>>>>>>>>>> maybe blocked them originally, but now that we didn't
->>>>>>>>>>> there's a non zero chance of regressions,
->>>>>>>>>>=20
->>>>>>>>>> Sigh,
->>>>>>>>>=20
->>>>>>>>> There's value in patches 1-4 I think - the last patch helped =
-you find
->>>>>>>>> these. so there's value in this work.
->>>>>>>>> =20
->>>>>>>>>> no medals here for being brave :-)
->>>>>>>>>=20
->>>>>>>>> Try removing support for a 3.5mm jack next. Oh wait ...
->>>>>>>>=20
->>>>>>>> Indeed. Everyone uses bluetooth these days. I for one is happy =
-that the jack is gone (and they were bold enough to do it while Samsung =
-and others still carry the useless port ) :-)
->>>>>=20
->>>>> Hello from a guy using a shiny M2 Macbook Air carrying the legacy =
-jack with
->>>>> a 100-yen earphone. Even people who ported Linux to this machine =
-spent
->>>>> efforts to get the jack to work on Linux ;)
->>>>> =20
->>>>>>>> =20
->>>>>>>>> =20
->>>>>>>>>>> and the benefit
->>>>>>>>>>> is not guaranteed.
->>>>>>>>>>>=20
->>>>>>>>>>> --=20
->>>>>>>>>>> MST
+> 
+> On Tue, Jul 4, 2023 at 6:19 PM Cédric Le Goater <clg@kaod.org <mailto:clg@kaod.org>> wrote:
+> 
+>     On 7/4/23 13:06, ~ssinprem wrote:
+>      > From: Sittisak Sinprem <ssinprem@celestica.com <mailto:ssinprem@celestica.com>>
+>      >
+>      > - I2C list follow I2C Tree v1.6 20230320
+>      > - fru eeprom data use FB FRU format version 4
+>      >
+>      > Signed-off-by: Sittisak Sinprem <ssinprem@celestica.com <mailto:ssinprem@celestica.com>>
+> 
+>     You shoot too fast :) Please add some description for the EEPROM contents.
+>     What they enable when the OS/FW boots is good to know for QEMU.
+> 
+>     Thanks,
+> 
+>     C.
+> 
+> 
+>      > ---
+>      >   docs/system/arm/aspeed.rst |  1 +
+>      >   hw/arm/aspeed.c            | 65 ++++++++++++++++++++++++++++++++++++++
+>      >   hw/arm/aspeed_eeprom.c     | 50 +++++++++++++++++++++++++++++
+>      >   hw/arm/aspeed_eeprom.h     |  7 ++++
+>      >   4 files changed, 123 insertions(+)
+>      >
+>      > diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+>      > index 80538422a1..5e0824f48b 100644
+>      > --- a/docs/system/arm/aspeed.rst
+>      > +++ b/docs/system/arm/aspeed.rst
+>      > @@ -33,6 +33,7 @@ AST2600 SoC based machines :
+>      >   - ``tacoma-bmc``           OpenPOWER Witherspoon POWER9 AST2600 BMC
+>      >   - ``rainier-bmc``          IBM Rainier POWER10 BMC
+>      >   - ``fuji-bmc``             Facebook Fuji BMC
+>      > +- ``montblanc-bmc``        Facebook Montblanc BMC
+>      >   - ``bletchley-bmc``        Facebook Bletchley BMC
+>      >   - ``fby35-bmc``            Facebook fby35 BMC
+>      >   - ``qcom-dc-scm-v1-bmc``   Qualcomm DC-SCM V1 BMC
+>      > diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+>      > index 9fca644d92..bbb7a3392c 100644
+>      > --- a/hw/arm/aspeed.c
+>      > +++ b/hw/arm/aspeed.c
+>      > @@ -189,6 +189,10 @@ struct AspeedMachineState {
+>      >   #define FUJI_BMC_HW_STRAP1    0x00000000
+>      >   #define FUJI_BMC_HW_STRAP2    0x00000000
+>      >
+>      > +/* Montblanc hardware value */
+>      > +#define MONTBLANC_BMC_HW_STRAP1    0x00000000
+>      > +#define MONTBLANC_BMC_HW_STRAP2    0x00000000
+>      > +
+>      >   /* Bletchley hardware value */
+>      >   /* TODO: Leave same as EVB for now. */
+>      >   #define BLETCHLEY_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
+>      > @@ -925,6 +929,41 @@ static void fuji_bmc_i2c_init(AspeedMachineState *bmc)
+>      >       }
+>      >   }
+>      >
+>      > +static void montblanc_bmc_i2c_init(AspeedMachineState *bmc)
+>      > +{
+>      > +    AspeedSoCState *soc = &bmc->soc;
+>      > +    I2CBus *i2c[16] = {};
+>      > +
+>      > +    for (int i = 0; i < 16; i++) {
+>      > +        i2c[i] = aspeed_i2c_get_bus(&soc->i2c, i);
+>      > +    }
+>      > +
+>      > +    /* Ref from Minipack3_I2C_Tree_V1.6 20230320 */
+>      > +    at24c_eeprom_init_rom(i2c[3], 0x56, 8192, montblanc_scm_fruid,
+>      > +                          montblanc_scm_fruid_len);
+>      > +    at24c_eeprom_init_rom(i2c[6], 0x53, 8192, montblanc_fcm_fruid,
+>      > +                          montblanc_fcm_fruid_len);
+>      > +
+>      > +    /* CPLD and FPGA */
+>      > +    at24c_eeprom_init(i2c[1], 0x35, 256);  /* SCM CPLD */
+>      > +    at24c_eeprom_init(i2c[5], 0x35, 256);  /* COMe CPLD TODO: need to update */
+>      > +    at24c_eeprom_init(i2c[12], 0x60, 256); /* MCB PWR CPLD */
+>      > +    at24c_eeprom_init(i2c[13], 0x35, 256); /* IOB FPGA */
+>      > +
+>      > +    /* on BMC board */
+>      > +    at24c_eeprom_init_rom(i2c[8], 0x51, 8192, montblanc_bmc_fruid,
+>      > +                          montblanc_bmc_fruid_len); /* BMC EEPROM */
+>      > +    i2c_slave_create_simple(i2c[8], TYPE_LM75, 0x48); /* Thermal Sensor */
+>      > +
+>      > +    /* COMe Sensor/EEPROM */
+>      > +    at24c_eeprom_init(i2c[0], 0x56, 16384);          /* FRU EEPROM */
+>      > +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x48); /* INLET Sensor */
+>      > +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x4A); /* OUTLET Sensor */
+>      > +
+>      > +    /* It expects a pca9555 but a pca9552 is compatible */
+>      > +    create_pca9552(soc, 4, 0x27);
+>      > +}
+>      > +
+>      >   #define TYPE_TMP421 "tmp421"
+>      >
+>      >   static void bletchley_bmc_i2c_init(AspeedMachineState *bmc)
+>      > @@ -1452,6 +1491,28 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
+>      >           aspeed_soc_num_cpus(amc->soc_name);
+>      >   };
+>      >
+>      > +#define MONTBLANC_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
+>      > +
+>      > +static void aspeed_machine_montblanc_class_init(ObjectClass *oc, void *data)
+>      > +{
+>      > +    MachineClass *mc = MACHINE_CLASS(oc);
+>      > +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+>      > +
+>      > +    mc->desc = "Facebook Montblanc BMC (Cortex-A7)";
+>      > +    amc->soc_name = "ast2600-a3";
+>      > +    amc->hw_strap1 = MONTBLANC_BMC_HW_STRAP1;
+>      > +    amc->hw_strap2 = MONTBLANC_BMC_HW_STRAP2;
+>      > +    amc->fmc_model = "mx66l1g45g";
+>      > +    amc->spi_model = "mx66l1g45g";
+>      > +    amc->num_cs = 2;
+>      > +    amc->macs_mask = ASPEED_MAC3_ON;
+>      > +    amc->i2c_init = montblanc_bmc_i2c_init;
+>      > +    amc->uart_default = ASPEED_DEV_UART1;
+>      > +    mc->default_ram_size = MONTBLANC_BMC_RAM_SIZE;
+>      > +    mc->default_cpus = mc->min_cpus = mc->max_cpus =
+>      > +        aspeed_soc_num_cpus(amc->soc_name);
+>      > +};
+>      > +
+>      >   #define BLETCHLEY_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
+>      >
+>      >   static void aspeed_machine_bletchley_class_init(ObjectClass *oc, void *data)
+>      > @@ -1703,6 +1764,10 @@ static const TypeInfo aspeed_machine_types[] = {
+>      >           .name          = MACHINE_TYPE_NAME("fuji-bmc"),
+>      >           .parent        = TYPE_ASPEED_MACHINE,
+>      >           .class_init    = aspeed_machine_fuji_class_init,
+>      > +    }, {
+>      > +        .name          = MACHINE_TYPE_NAME("montblanc-bmc"),
+>      > +        .parent        = TYPE_ASPEED_MACHINE,
+>      > +        .class_init    = aspeed_machine_montblanc_class_init,
+>      >       }, {
+>      >           .name          = MACHINE_TYPE_NAME("bletchley-bmc"),
+>      >           .parent        = TYPE_ASPEED_MACHINE,
+>      > diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
+>      > index ace5266cec..8cc73f83dc 100644
+>      > --- a/hw/arm/aspeed_eeprom.c
+>      > +++ b/hw/arm/aspeed_eeprom.c
+>      > @@ -161,6 +161,53 @@ const uint8_t rainier_bmc_fruid[] = {
+>      >       0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+>      >   };
+>      >
+>      > +/* Montblanc BMC FRU */
+>      > +const uint8_t montblanc_scm_fruid[] = {
+>      > +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+>      > +    0x43, 0x4b, 0x33, 0x5f, 0x53, 0x43, 0x4d, 0x02, 0x08, 0x32, 0x30, 0x30,
+>      > +    0x30, 0x32, 0x39, 0x34, 0x35, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
+>      > +    0x30, 0x31, 0x36, 0x34, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
+>      > +    0x30, 0x30, 0x30, 0x31, 0x32, 0x37, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
+>      > +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x30, 0x33, 0x30, 0x31, 0x07,
+>      > +    0x0d, 0x41, 0x30, 0x33, 0x31, 0x33, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
+>      > +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
+>      > +    0x0d, 0x4d, 0x32, 0x32, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
+>      > +    0x30, 0x32, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
+>      > +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
+>      > +    0x43, 0x54, 0x48, 0x10, 0x06, 0x01, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x13,
+>      > +    0x03, 0x53, 0x43, 0x4d, 0xfa, 0x02, 0x02, 0x61,
+>      > +};
+>      > +
+>      > +const uint8_t montblanc_fcm_fruid[] = {
+>      > +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+>      > +    0x43, 0x4b, 0x33, 0x5f, 0x46, 0x43, 0x42, 0x02, 0x08, 0x33, 0x30, 0x30,
+>      > +    0x30, 0x30, 0x31, 0x36, 0x31, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
+>      > +    0x30, 0x31, 0x36, 0x33, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
+>      > +    0x30, 0x30, 0x30, 0x31, 0x33, 0x30, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
+>      > +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x31, 0x32, 0x30, 0x31, 0x07,
+>      > +    0x0d, 0x41, 0x31, 0x32, 0x31, 0x32, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
+>      > +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
+>      > +    0x0d, 0x46, 0x35, 0x30, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
+>      > +    0x30, 0x35, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
+>      > +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
+>      > +    0x43, 0x54, 0x48, 0x10, 0x06, 0x02, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x11,
+>      > +    0x06, 0x03, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x12, 0x02, 0x8a, 0x00, 0x13,
+>      > +    0x03, 0x46, 0x43, 0x42, 0xfa, 0x02, 0x50, 0x47,
+>      > +};
+>      > +
+>      > +const uint8_t montblanc_bmc_fruid[] = {
+>      > +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+>      > +    0x43, 0x4b, 0x33, 0x5f, 0x42, 0x4d, 0x43, 0x04, 0x0c, 0x31, 0x33, 0x32,
+>      > +    0x30, 0x30, 0x30, 0x31, 0x33, 0x36, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31,
+>      > +    0x33, 0x31, 0x30, 0x30, 0x30, 0x30, 0x38, 0x36, 0x30, 0x35, 0x20, 0x06,
+>      > +    0x0c, 0x52, 0x33, 0x30, 0x39, 0x37, 0x47, 0x30, 0x30, 0x30, 0x32, 0x30,
+>      > +    0x37, 0x07, 0x0d, 0x42, 0x30, 0x32, 0x37, 0x34, 0x58, 0x58, 0x58, 0x58,
+>      > +    0x58, 0x58, 0x58, 0x58, 0x08, 0x01, 0x04, 0x09, 0x01, 0x00, 0x0a, 0x01,
+>      > +    0x00, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32, 0x33,
+>      > +    0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03, 0x43,
+>      > +    0x54, 0x48, 0x13, 0x03, 0x42, 0x4d, 0x43, 0xfa, 0x02, 0xef, 0xba,
+>      > +};
+>      > +
+>      >   const size_t tiogapass_bmc_fruid_len = sizeof(tiogapass_bmc_fruid);
+>      >   const size_t fby35_nic_fruid_len = sizeof(fby35_nic_fruid);
+>      >   const size_t fby35_bb_fruid_len = sizeof(fby35_bb_fruid);
+>      > @@ -168,3 +215,6 @@ const size_t fby35_bmc_fruid_len = sizeof(fby35_bmc_fruid);
+>      >   const size_t yosemitev2_bmc_fruid_len = sizeof(yosemitev2_bmc_fruid);
+>      >   const size_t rainier_bb_fruid_len = sizeof(rainier_bb_fruid);
+>      >   const size_t rainier_bmc_fruid_len = sizeof(rainier_bmc_fruid);
+>      > +const size_t montblanc_scm_fruid_len = sizeof(montblanc_scm_fruid);
+>      > +const size_t montblanc_fcm_fruid_len = sizeof(montblanc_fcm_fruid);
+>      > +const size_t montblanc_bmc_fruid_len = sizeof(montblanc_bmc_fruid);
+>      > diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
+>      > index bbf9e54365..b8fbdd0734 100644
+>      > --- a/hw/arm/aspeed_eeprom.h
+>      > +++ b/hw/arm/aspeed_eeprom.h
+>      > @@ -27,4 +27,11 @@ extern const size_t rainier_bb_fruid_len;
+>      >   extern const uint8_t rainier_bmc_fruid[];
+>      >   extern const size_t rainier_bmc_fruid_len;
+>      >
+>      > +extern const uint8_t montblanc_scm_fruid[];
+>      > +extern const uint8_t montblanc_fcm_fruid[];
+>      > +extern const uint8_t montblanc_bmc_fruid[];
+>      > +extern const size_t montblanc_scm_fruid_len;
+>      > +extern const size_t montblanc_fcm_fruid_len;
+>      > +extern const size_t montblanc_bmc_fruid_len;
+>      > +
+>      >   #endif
+> 
 
 
