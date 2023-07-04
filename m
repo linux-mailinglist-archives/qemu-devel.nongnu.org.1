@@ -2,77 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C3C7472CE
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:36:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC46E7472D8
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:39:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGgCL-0003a6-Iy; Tue, 04 Jul 2023 09:36:05 -0400
+	id 1qGgEp-0004q0-MA; Tue, 04 Jul 2023 09:38:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qGgCJ-0003Z9-Kc
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:36:03 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1qGgEl-0004pa-8o
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:38:35 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qGgCG-0003Ht-JC
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:36:03 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3142ee41fd2so3133138f8f.3
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:35:59 -0700 (PDT)
+ id 1qGgEf-0003d8-U3
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:38:31 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fbd33a57b6so47641625e9.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:38:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688477758; x=1691069758;
+ d=linaro.org; s=google; t=1688477908; x=1691069908;
  h=content-transfer-encoding:in-reply-to:organization:from:references
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ExHDRwBi66qNTScO9JUMaCCcf4dgB+1xBOOFnoVQWaE=;
- b=lUfPW2hcyWdM83nomZ1+GT1JDgASJajt5Y45Fvd4KYq7Pi20GAHN2LK14lNxXyv6q8
- K+23mfAsBvrFs0gePceQ3kcWQo4yHkLpYJ5VDvng3PD7GGM0hoKl9xpgr0JOpIUaiEij
- O7b9/BOA59BaHGwcOosyqP0vFzhJ/wI7ZuXHUWRVoTTLUMyiYrV5eIicyY/5sa0IQ4Hu
- E/bFgMxOdiCQPTU4xTYFjgVJmzecED/5z4Le/rVum/7PCf3eOtl4Yfdsr+NGKqA2QjzT
- gcDx9lZbQZLCsEqfvK+8Zy7LYkU2ZYNENDsRHdW5hnmvAB5qOqnCflmyKw5peTQhmrO9
- iPtQ==
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=/auR+vBnOTSzMNHItZpcdNJ69aQsa2SyR4xnE05Mp44=;
+ b=PKZZ3/dbjC6b3H4ESirmgvISkJ0QsQWG1HxK4cA8/gVr4rn59wEoGs/TwUgJQibyHt
+ mP6JoqlQ3msBCwpm8VK88JXd8XgK/zAm2T5EXoEZCzFxsU/C20+ZFx0rXs01/upXhdib
+ NXz3nX6vd/PqmKMDkQj9T68ARMWk8+3NHT2gRUrhdAknXbTlcOcWFUAjDSjE8thSJK15
+ wGYNrAEm5uSvJ8ofm7lxvK36QcXmWZaIC7RilSGuKDkqY47kwNSZPPqPeWe1NagxV1SF
+ UD+newWLcuC3Zk9S9+P7kZJBN65rImGBWYKcw2husQW9HSmBoPnDt1+cL37dabP/NgeJ
+ dm3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688477758; x=1691069758;
+ d=1e100.net; s=20221208; t=1688477908; x=1691069908;
  h=content-transfer-encoding:in-reply-to:organization:from:references
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ExHDRwBi66qNTScO9JUMaCCcf4dgB+1xBOOFnoVQWaE=;
- b=Wuv7FaLt++hGAQLASvoMRpMLH0FSi8ubdSygd1WXvtQUDcqggulwlryy2U7G/YruRn
- luPhTFH8AJKfn+D4qJ+DV0KCFPsaTh+LEWXUEWgc5ZCp4kHnzk3n7OOSMTZYTRB9QVpg
- RfCUlDWXAoKhFfcRnHo0hXKxX6s2ZJxDJbZ4hqHXpdnkJPN7m4hVKpnxD8zw9w4mnNWS
- kt9V0slFCLR5Hg49SKVvX5TPv3Dv2InjGUQU+g5TqoNzzvJ5ROJ0YkiyG5vgK0nz2Uce
- kRJLT25LKrcjyuyJQpRktAHQsTb9HZMPx4iNuBrQJrNBP9hbe7WYx4NRwCaNQEKEScRa
- 59SQ==
-X-Gm-Message-State: ABy/qLY5zueWWwjOKZ1/rK9XtYCOXGAk5xxWnVd9/mkEypFv+6/NFEdd
- FPitjMR57Sp9bgg5C2pV0vs//g==
-X-Google-Smtp-Source: APBJJlGyz51vDnXSIfFkHXBdGwr6Ite+cPX1qJrp8yz/MfGfqiagZuH3iaJJMX9loiBt0/MyBrKH5A==
-X-Received: by 2002:adf:f504:0:b0:313:ebbf:3696 with SMTP id
- q4-20020adff504000000b00313ebbf3696mr10385878wro.46.1688477757606; 
- Tue, 04 Jul 2023 06:35:57 -0700 (PDT)
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/auR+vBnOTSzMNHItZpcdNJ69aQsa2SyR4xnE05Mp44=;
+ b=GlwybX9SSSdSGa+fTQGyv02RMmycnH5Cj/1NTxvltQHAPMm6iH9cIAEnRvHHrU2Lq9
+ 5RwLahSwWufBwR9GRJMneZdfKT1w2lCpUL54X6GqwnfCLXQ3VPHvYcjaHcvcY95K8r5L
+ c2eM2zNmVl+dRHYSMbP16uOxqV2nN9GvRjp1sRW21GPvQdS/MwbBuWGrTbl6o/JQp97n
+ nIfyRNWmv9o5JOZD25hGMU2hVc1JmjxlrOH00Q/gMUg3aZctICLVtVcZWtIZNgPJe5/J
+ 7zdlQQPVHzJrdIDlYXLjdueYOlnFvrPD6M4acfA3yFHU3Fl2yrMWflUjOTpqF2r8Dy1Y
+ VfUQ==
+X-Gm-Message-State: AC+VfDzpcl5W7FwZby7pQdS9PziHg/Zlrfc1dQGKeFKeEMDPDyLJQ4Zi
+ rRSsILem7S/Ifwhkm3LhHr4S1QEfwpnTsNMSBC4LkK/M
+X-Google-Smtp-Source: ACHHUZ5Hj7W+wQUQhP7j/I+7TLHqoMaNBjpaebhGIG0Emi9KFGMfZcIfJ7JoqByiBJ8wufKhl2grdg==
+X-Received: by 2002:a05:600c:2145:b0:3fb:415f:a85b with SMTP id
+ v5-20020a05600c214500b003fb415fa85bmr17645112wml.3.1688477908464; 
+ Tue, 04 Jul 2023 06:38:28 -0700 (PDT)
 Received: from [192.168.200.206] (83.21.151.197.ipv4.supernova.orange.pl.
  [83.21.151.197]) by smtp.gmail.com with ESMTPSA id
- r8-20020a056000014800b003143b032b7asm3994180wrx.116.2023.07.04.06.35.56
+ u20-20020a05600c211400b003fbb618f7adsm16004962wml.15.2023.07.04.06.38.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 06:35:57 -0700 (PDT)
-Message-ID: <81e6bf97-b6c6-e09d-51b5-445bdc3a47bb@linaro.org>
-Date: Tue, 4 Jul 2023 15:35:56 +0200
+ Tue, 04 Jul 2023 06:38:28 -0700 (PDT)
+Message-ID: <84a1162b-84d4-6f9d-4594-5ae43fd3c7b8@linaro.org>
+Date: Tue, 4 Jul 2023 15:38:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 0/2] target/arm: Implement Cortex Neoverse-V1
+Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: add PCIe node into DT
 Content-Language: pl-PL, en-GB, en-HK
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230704130647.2842917-1-peter.maydell@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>
+Cc: qemu-devel@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>,
+ qemu-arm@nongnu.org
+References: <20230626075207.623535-1-marcin.juszkiewicz@linaro.org>
+ <CAFEAcA-K_2SLxbq90TpUyzLpiC0U2WVJe7ffaC_TH66K-=GV4A@mail.gmail.com>
+ <b26c98d3-3e9f-331e-acbd-ae0c451e0ed3@quicinc.com>
+ <CAFEAcA_rg4CbE1Y9mTQmPs_KBqb-S=3Z5Hh78gbVUD6R7DR0hg@mail.gmail.com>
+ <CAFEAcA8mk0upQUqXsdm3YXvRjAJc+6npkXAWWLtHS+3A8bMJKA@mail.gmail.com>
 From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 Organization: Linaro
-In-Reply-To: <20230704130647.2842917-1-peter.maydell@linaro.org>
+In-Reply-To: <CAFEAcA8mk0upQUqXsdm3YXvRjAJc+6npkXAWWLtHS+3A8bMJKA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,16 +102,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 4.07.2023 o 15:06, Peter Maydell pisze:
+W dniu 4.07.2023 o 15:21, Peter Maydell pisze:
 
-> This patchset implements the Cortex Neoverse-V1 CPU type, as a
-> representative Armv8.3 (+ some extras from 8.4) CPU matching real
-> hardware.  The main thing we were waiting for to be able to define
-> this was FEAT_LSE2, and that is now supported.
+> Just to be clear about the status of this patch, I don't
+> have a problem with the code changes, but it does definitely
+> need a much clearer commit message to explain why we're changing
+> the way we handle the PCI controller. So I'm dropping this from
+> my to-review list on the assumption there will be a v2.
 
-Now I can add "reach SBSA level 4" to todo list as it requires v8.3 cpu 
-(I do not count 'max' cpu type).
+Sorry for delay. There will be v2 version of it. I am busy with sorting 
+out EDK2 side of GIC ITS enablement.
 
-Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> We could also do with expanding the commentary in the source
+> file to clarify the design approach we're using w.r.t. what
+> we do and don't want to put into the "dt" blob, but that would
+> probably be best in a different patch.
 
+Already on todo list.
 
