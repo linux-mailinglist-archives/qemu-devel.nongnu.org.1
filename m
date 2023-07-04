@@ -2,103 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED31746E55
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 12:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D49746E58
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 12:15:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGd1s-0002zU-FN; Tue, 04 Jul 2023 06:13:04 -0400
+	id 1qGd3W-0004z5-6u; Tue, 04 Jul 2023 06:14:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qGd1j-0002si-LZ; Tue, 04 Jul 2023 06:12:55 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qGd3T-0004yC-QZ; Tue, 04 Jul 2023 06:14:43 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qGd1h-0007Te-G2; Tue, 04 Jul 2023 06:12:54 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 364A2NAR003506; Tue, 4 Jul 2023 10:12:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=g00hAQbycoXhy9HbQYLSeWkNGrTtzx6Y38jw4fL+cU0=;
- b=fl1eUJNMHgIE92kTEQewWCcSE5Wro937eVeMorxzfAupcrHHJmHx0QQMWCFZqJXDZd+5
- I0mX0uHzTwVRYpCIWImVkh8clEGKv0DRmWzca5sqJVsAz3zy15Q4POzVkzQjgvYHvHja
- sJGH33y0lyOF1nbsWoF1GUcsVCUVWvMz/ABwY3g/p/pa7H+WGR9vgi/ULVM5eGuBYodB
- VEb7mJIHjMzcPtqfr1CV89H8FTX6yYgrqHD9cq0ZbAxmid8aaEpkHCQF3lnJuUqpK9Kb
- 7UMw3IdMuXawvGCv/8z4PY09In4M7kDF/VNWXYKR6MC2qTVDE843iYTEnnFS6wiPxt/J RQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmhaj89ew-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 10:12:42 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 364A2PTU003782;
- Tue, 4 Jul 2023 10:12:41 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmhaj89e0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 10:12:41 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3647R5Lk025232;
- Tue, 4 Jul 2023 10:12:38 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3rjbs4sdt0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 10:12:38 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 364ACa0x24838560
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 Jul 2023 10:12:36 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4066C2006C;
- Tue,  4 Jul 2023 10:12:36 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DCB7A2006E;
- Tue,  4 Jul 2023 10:12:35 +0000 (GMT)
-Received: from [9.179.4.4] (unknown [9.179.4.4])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  4 Jul 2023 10:12:35 +0000 (GMT)
-Message-ID: <980d9ed4-f3bd-2d1b-9a1b-f9f4f244c280@linux.ibm.com>
-Date: Tue, 4 Jul 2023 12:12:34 +0200
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qGd3R-0007km-Hi; Tue, 04 Jul 2023 06:14:43 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 4DC0974635C;
+ Tue,  4 Jul 2023 12:14:23 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id D48AA74632B; Tue,  4 Jul 2023 12:14:22 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id D284374633D;
+ Tue,  4 Jul 2023 12:14:22 +0200 (CEST)
+Date: Tue, 4 Jul 2023 12:14:22 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: Re: [PATCH 12/13] ppc440_pcix: Don't use iomem for regs
+In-Reply-To: <b16e90fd-f12b-a4ce-eec9-6c915ee69030@linaro.org>
+Message-ID: <b06ab26c-f942-b0c6-9abc-92ccd6078603@eik.bme.hu>
+References: <cover.1688421085.git.balaton@eik.bme.hu>
+ <576b54159060392c8bc12a63c665928053b58f24.1688421085.git.balaton@eik.bme.hu>
+ <01cd4046-1f7e-beb5-d999-84db6ae23d3e@linaro.org>
+ <bc068e12-9a87-23fa-e39e-dd28a233a5b3@eik.bme.hu>
+ <b16e90fd-f12b-a4ce-eec9-6c915ee69030@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 5/5] ppc/pnv: Return zero for core thread state xscom
-Content-Language: en-US
-To: Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-References: <20230704054204.168547-1-joel@jms.id.au>
- <20230704054204.168547-6-joel@jms.id.au>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20230704054204.168547-6-joel@jms.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: l9K6qVA_awRTqrN_HCTF3iGbfbPU0KBT
-X-Proofpoint-ORIG-GUID: KTVkqkq24DuGns_qKlv6eK1mF_P4GDcO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-04_06,2023-06-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- clxscore=1015 mlxlogscore=999 spamscore=0 phishscore=0 malwarescore=0
- mlxscore=0 impostorscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307040083
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed;
+ boundary="3866299591-128057532-1688465662=:43117"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,64 +63,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--3866299591-128057532-1688465662=:43117
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-On 04/07/2023 07:42, Joel Stanley wrote:
-> Firmware now warns if booting in LPAR per core mode (PPC bit 62). So
-> this warning doesn't trigger, report the core thread state is 0.
-> 
-> Reviewed-by: Cédric Le Goater <clg@kaod.org>
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> ---
+On Tue, 4 Jul 2023, Philippe Mathieu-Daudé wrote:
+> On 4/7/23 11:37, BALATON Zoltan wrote:
+>> On Tue, 4 Jul 2023, Philippe Mathieu-Daudé wrote:
+>>> On 4/7/23 00:02, BALATON Zoltan wrote:
+>>>> The iomem memory region is better used for the PCI IO space but
+>>>> currently used for registers. Stop using it for that to allow this to
+>>>> be cleaned up in the next patch.
+>>>> 
+>>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>>> ---
+>>>>   hw/ppc/ppc440_pcix.c | 7 ++++---
+>>>>   1 file changed, 4 insertions(+), 3 deletions(-)
+>>>> 
+>>>> diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
+>>>> index adfecf1e76..ee2dc44f67 100644
+>>>> --- a/hw/ppc/ppc440_pcix.c
+>>>> +++ b/hw/ppc/ppc440_pcix.c
+>>>> @@ -484,6 +484,7 @@ static void ppc440_pcix_realize(DeviceState *dev, 
+>>>> Error **errp)
+>>>>       SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
+>>>>       PPC440PCIXState *s;
+>>>>       PCIHostState *h;
+>>>> +    MemoryRegion *regs = g_new(MemoryRegion, 1);
+>>> 
+>>> Why not hold it within PPC440PCIXState?
+>> 
+>> Because it's never needed after this function.
+>
+> But we can't free() it because it has to stay valid as long as
+> PPC440PCIXState is in use. So it seems to belong there.
 
+OK, moved it to PPC440PCIXState.
 
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Regards,
+BALATON Zoltan
 
-   Fred
-
->   hw/ppc/pnv_core.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
-> 
-> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-> index 1eec28c88c41..b7223bb44597 100644
-> --- a/hw/ppc/pnv_core.c
-> +++ b/hw/ppc/pnv_core.c
-> @@ -116,6 +116,8 @@ static const MemoryRegionOps pnv_core_power8_xscom_ops = {
->   #define PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_HYP 0xf010d
->   #define PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR 0xf010a
->   
-> +#define PNV9_XSCOM_EC_CORE_THREAD_STATE    0x10ab3
-> +
->   static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
->                                              unsigned int width)
->   {
-> @@ -134,6 +136,9 @@ static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
->       case PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR:
->           val = 0x0;
->           break;
-> +    case PNV9_XSCOM_EC_CORE_THREAD_STATE:
-> +        val = 0;
-> +        break;
->       default:
->           qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
->                     addr);
-> @@ -171,6 +176,8 @@ static const MemoryRegionOps pnv_core_power9_xscom_ops = {
->    * POWER10 core controls
->    */
->   
-> +#define PNV10_XSCOM_EC_CORE_THREAD_STATE    0x412
-> +
->   static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
->                                              unsigned int width)
->   {
-> @@ -178,6 +185,9 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
->       uint64_t val = 0;
->   
->       switch (offset) {
-> +    case PNV10_XSCOM_EC_CORE_THREAD_STATE:
-> +        val = 0;
-> +        break;
->       default:
->           qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
->                     addr);
+>>>>       h = PCI_HOST_BRIDGE(dev);
+>>>>       s = PPC440_PCIX_HOST(dev);
+>>>> @@ -507,11 +508,11 @@ static void ppc440_pcix_realize(DeviceState *dev, 
+>>>> Error **errp)
+>>>>                             h, "pci-conf-idx", 4);
+>>>>       memory_region_init_io(&h->data_mem, OBJECT(s), 
+>>>> &pci_host_data_le_ops,
+>>>>                             h, "pci-conf-data", 4);
+>>>> -    memory_region_init_io(&s->iomem, OBJECT(s), &pci_reg_ops, s,
+>>>> -                          "pci.reg", PPC440_REG_SIZE);
+>>>> +    memory_region_init_io(regs, OBJECT(s), &pci_reg_ops, s, "pci-reg",
+>>>> +                          PPC440_REG_SIZE);
+>>>>       memory_region_add_subregion(&s->container, PCIC0_CFGADDR, 
+>>>> &h->conf_mem);
+>>>>       memory_region_add_subregion(&s->container, PCIC0_CFGDATA, 
+>>>> &h->data_mem);
+>>>> -    memory_region_add_subregion(&s->container, PPC440_REG_BASE, 
+>>>> &s->iomem);
+>>>> +    memory_region_add_subregion(&s->container, PPC440_REG_BASE, regs);
+>>>>       sysbus_init_mmio(sbd, &s->container);
+>>>>   }
+>>>> 
+>>> 
+>>> 
+>>> 
+>
+>
+>
+--3866299591-128057532-1688465662=:43117--
 
