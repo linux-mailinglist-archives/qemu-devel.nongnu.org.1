@@ -2,52 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D49746E58
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 12:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4581E746E93
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 12:26:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGd3W-0004z5-6u; Tue, 04 Jul 2023 06:14:46 -0400
+	id 1qGdDb-000064-IJ; Tue, 04 Jul 2023 06:25:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGd3T-0004yC-QZ; Tue, 04 Jul 2023 06:14:43 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
+ id 1qGdDU-00005I-RB; Tue, 04 Jul 2023 06:25:05 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qGd3R-0007km-Hi; Tue, 04 Jul 2023 06:14:43 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 4DC0974635C;
- Tue,  4 Jul 2023 12:14:23 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id D48AA74632B; Tue,  4 Jul 2023 12:14:22 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id D284374633D;
- Tue,  4 Jul 2023 12:14:22 +0200 (CEST)
-Date: Tue, 4 Jul 2023 12:14:22 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: Re: [PATCH 12/13] ppc440_pcix: Don't use iomem for regs
-In-Reply-To: <b16e90fd-f12b-a4ce-eec9-6c915ee69030@linaro.org>
-Message-ID: <b06ab26c-f942-b0c6-9abc-92ccd6078603@eik.bme.hu>
-References: <cover.1688421085.git.balaton@eik.bme.hu>
- <576b54159060392c8bc12a63c665928053b58f24.1688421085.git.balaton@eik.bme.hu>
- <01cd4046-1f7e-beb5-d999-84db6ae23d3e@linaro.org>
- <bc068e12-9a87-23fa-e39e-dd28a233a5b3@eik.bme.hu>
- <b16e90fd-f12b-a4ce-eec9-6c915ee69030@linaro.org>
+ (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
+ id 1qGdDQ-0001lF-0w; Tue, 04 Jul 2023 06:25:03 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QwJnd531tz4wxS;
+ Tue,  4 Jul 2023 20:24:53 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QwJnY4hH7z4wZw;
+ Tue,  4 Jul 2023 20:24:48 +1000 (AEST)
+Message-ID: <a59b2ef2-3a44-7729-2260-bc75d0cc50d9@kaod.org>
+Date: Tue, 4 Jul 2023 12:24:46 +0200
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-128057532-1688465662=:43117"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH qemu v3] aspeed add montblanc bmc reference from fuji
+Content-Language: en-US
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+To: ~ssinprem <ssinprem@celestica.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, peter.maydell@linaro.org
+Cc: ssumet@celestica.com, srikanth@celestica.com, kgengan@celestica.com,
+ andrew@aj.id.au, joel@jms.id.au, thangavelu.v@celestica.com,
+ anandaramanv@celestica.com
+References: <168839101774.24055.8166021147074925227-0@git.sr.ht>
+ <020268f0-9dee-c732-f543-8ee1a84a97a5@kaod.org>
+In-Reply-To: <020268f0-9dee-c732-f543-8ee1a84a97a5@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=18er=CW=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,76 +68,286 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On 7/3/23 15:31, Cédric Le Goater wrote:
+> On 7/3/23 15:06, ~ssinprem wrote:
+>> From: Sittisak Sinprem <ssinprem@celestica.com>
+>>
+>> - I2C list follow I2C Tree v1.6 20230320
+>> - fru eeprom data use FB FRU format version 4
+>>
+>> Signed-off-by: Sittisak Sinprem <ssinprem@celestica.com>
+> 
+> Super !
+> 
+> 
+> Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
---3866299591-128057532-1688465662=:43117
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Taking that back.
+  
+I missed a few things. See below.
 
-On Tue, 4 Jul 2023, Philippe Mathieu-Daudé wrote:
-> On 4/7/23 11:37, BALATON Zoltan wrote:
->> On Tue, 4 Jul 2023, Philippe Mathieu-Daudé wrote:
->>> On 4/7/23 00:02, BALATON Zoltan wrote:
->>>> The iomem memory region is better used for the PCI IO space but
->>>> currently used for registers. Stop using it for that to allow this to
->>>> be cleaned up in the next patch.
->>>> 
->>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>>> ---
->>>>   hw/ppc/ppc440_pcix.c | 7 ++++---
->>>>   1 file changed, 4 insertions(+), 3 deletions(-)
->>>> 
->>>> diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
->>>> index adfecf1e76..ee2dc44f67 100644
->>>> --- a/hw/ppc/ppc440_pcix.c
->>>> +++ b/hw/ppc/ppc440_pcix.c
->>>> @@ -484,6 +484,7 @@ static void ppc440_pcix_realize(DeviceState *dev, 
->>>> Error **errp)
->>>>       SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
->>>>       PPC440PCIXState *s;
->>>>       PCIHostState *h;
->>>> +    MemoryRegion *regs = g_new(MemoryRegion, 1);
->>> 
->>> Why not hold it within PPC440PCIXState?
->> 
->> Because it's never needed after this function.
->
-> But we can't free() it because it has to stay valid as long as
-> PPC440PCIXState is in use. So it seems to belong there.
 
-OK, moved it to PPC440PCIXState.
+> 
+>> ---
+>>   docs/system/arm/aspeed.rst |  1 +
+>>   hw/arm/aspeed.c            | 63 ++++++++++++++++++++++++++++++++++++++
+>>   hw/arm/aspeed_eeprom.c     | 50 ++++++++++++++++++++++++++++++
+>>   hw/arm/aspeed_eeprom.h     |  7 +++++
+>>   4 files changed, 121 insertions(+)
+>>
+>> diff --git a/docs/system/arm/aspeed.rst b/docs/system/arm/aspeed.rst
+>> index 80538422a1..5e0824f48b 100644
+>> --- a/docs/system/arm/aspeed.rst
+>> +++ b/docs/system/arm/aspeed.rst
+>> @@ -33,6 +33,7 @@ AST2600 SoC based machines :
+>>   - ``tacoma-bmc``           OpenPOWER Witherspoon POWER9 AST2600 BMC
+>>   - ``rainier-bmc``          IBM Rainier POWER10 BMC
+>>   - ``fuji-bmc``             Facebook Fuji BMC
+>> +- ``montblanc-bmc``        Facebook Montblanc BMC
+>>   - ``bletchley-bmc``        Facebook Bletchley BMC
+>>   - ``fby35-bmc``            Facebook fby35 BMC
+>>   - ``qcom-dc-scm-v1-bmc``   Qualcomm DC-SCM V1 BMC
+>> diff --git a/hw/arm/aspeed.c b/hw/arm/aspeed.c
+>> index 9fca644d92..91bd4e5637 100644
+>> --- a/hw/arm/aspeed.c
+>> +++ b/hw/arm/aspeed.c
+>> @@ -189,6 +189,10 @@ struct AspeedMachineState {
+>>   #define FUJI_BMC_HW_STRAP1    0x00000000
+>>   #define FUJI_BMC_HW_STRAP2    0x00000000
+>> +/* Montblanc hardware value */
+>> +#define MONTBLANC_BMC_HW_STRAP1    0x00000000
+>> +#define MONTBLANC_BMC_HW_STRAP2    0x00000000
+>> +
+>>   /* Bletchley hardware value */
+>>   /* TODO: Leave same as EVB for now. */
+>>   #define BLETCHLEY_BMC_HW_STRAP1 AST2600_EVB_HW_STRAP1
+>> @@ -925,6 +929,39 @@ static void fuji_bmc_i2c_init(AspeedMachineState *bmc)
+>>       }
+>>   }
+>> +static void montblanc_bmc_i2c_init(AspeedMachineState *bmc)
+>> +{
+>> +    AspeedSoCState *soc = &bmc->soc;
+>> +    I2CBus *i2c[16] = {};
+>> +
+>> +    for (int i = 0; i < 16; i++) {
+>> +        i2c[i] = aspeed_i2c_get_bus(&soc->i2c, i);
+>> +    }
+>> +
+>> +    /* Ref from Minipack3_I2C_Tree_V1.6 20230320 */
+>> +    at24c_eeprom_init_rom(i2c[3], 0x56, 8192, montblanc_scm_fruid, true);
+>> +    at24c_eeprom_init_rom(i2c[6], 0x53, 8192, montblanc_fcm_fruid, true);
+>> +
+>> +    /* CPLD and FPGA */
+>> +    at24c_eeprom_init(i2c[1], 0x35, 256);  /* SCM CPLD */
+>> +    at24c_eeprom_init(i2c[5], 0x35, 256);  /* COMe CPLD TODO: need to update */
+>> +    at24c_eeprom_init(i2c[12], 0x60, 256); /* MCB PWR CPLD */
+>> +    at24c_eeprom_init(i2c[13], 0x35, 256); /* IOB FPGA */
+>> +
+>> +    /* on BMC board */
+>> +    at24c_eeprom_init_rom(i2c[8], 0x51, 8192, montblanc_bmc_fruid, true);
+>> +                                                      /* BMC EEPROM */
+>> +    i2c_slave_create_simple(i2c[8], TYPE_LM75, 0x48); /* Thermal Sensor */
+>> +
+>> +    /* COMe Sensor/EEPROM */
+>> +    at24c_eeprom_init(i2c[0], 0x56, 16384);          /* FRU EEPROM */
+>> +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x48); /* INLET Sensor */
+>> +    i2c_slave_create_simple(i2c[0], TYPE_LM75, 0x4A); /* OUTLET Sensor */
+>> +
+>> +    /* It expects a pca9555 but a pca9552 is compatible */
+>> +    create_pca9552(soc, 4, 0x27);
+>> +}
+>> +
+>>   #define TYPE_TMP421 "tmp421"
+>>   static void bletchley_bmc_i2c_init(AspeedMachineState *bmc)
+>> @@ -1452,6 +1489,28 @@ static void aspeed_machine_fuji_class_init(ObjectClass *oc, void *data)
+>>           aspeed_soc_num_cpus(amc->soc_name);
+>>   };
+>> +#define MONTBLANC_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
+>> +
+>> +static void aspeed_machine_montblanc_class_init(ObjectClass *oc, void *data)
+>> +{
+>> +    MachineClass *mc = MACHINE_CLASS(oc);
+>> +    AspeedMachineClass *amc = ASPEED_MACHINE_CLASS(oc);
+>> +
+>> +    mc->desc = "Facebook Montblanc BMC (Cortex-A7)";
+>> +    amc->soc_name = "ast2600-a3";
+>> +    amc->hw_strap1 = MONTBLANC_BMC_HW_STRAP1;
+>> +    amc->hw_strap2 = MONTBLANC_BMC_HW_STRAP2;
+>> +    amc->fmc_model = "mx66l1g45g";
+>> +    amc->spi_model = "mx66l1g45g";
+>> +    amc->num_cs = 2;
+>> +    amc->macs_mask = ASPEED_MAC3_ON;
+>> +    amc->i2c_init = montblanc_bmc_i2c_init;
+>> +    amc->uart_default = ASPEED_DEV_UART1;
+>> +    mc->default_ram_size = MONTBLANC_BMC_RAM_SIZE;
+>> +    mc->default_cpus = mc->min_cpus = mc->max_cpus =
+>> +        aspeed_soc_num_cpus(amc->soc_name);
+>> +};
+>> +
+>>   #define BLETCHLEY_BMC_RAM_SIZE ASPEED_RAM_SIZE(2 * GiB)
+>>   static void aspeed_machine_bletchley_class_init(ObjectClass *oc, void *data)
+>> @@ -1703,6 +1762,10 @@ static const TypeInfo aspeed_machine_types[] = {
+>>           .name          = MACHINE_TYPE_NAME("fuji-bmc"),
+>>           .parent        = TYPE_ASPEED_MACHINE,
+>>           .class_init    = aspeed_machine_fuji_class_init,
+>> +    }, {
+>> +        .name          = MACHINE_TYPE_NAME("montblanc-bmc"),
+>> +        .parent        = TYPE_ASPEED_MACHINE,
+>> +        .class_init    = aspeed_machine_montblanc_class_init,
+>>       }, {
+>>           .name          = MACHINE_TYPE_NAME("bletchley-bmc"),
+>>           .parent        = TYPE_ASPEED_MACHINE,
+>> diff --git a/hw/arm/aspeed_eeprom.c b/hw/arm/aspeed_eeprom.c
+>> index ace5266cec..6b3ffba0f8 100644
+>> --- a/hw/arm/aspeed_eeprom.c
+>> +++ b/hw/arm/aspeed_eeprom.c
+>> @@ -161,6 +161,53 @@ const uint8_t rainier_bmc_fruid[] = {
+>>       0x31, 0x50, 0x46, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00,
+>>   };
+>> +/* Montblanc BMC FRU */
+>> +const uint8_t montblanc_scm_fruid[8192] = {
 
-Regards,
-BALATON Zoltan
 
->>>>       h = PCI_HOST_BRIDGE(dev);
->>>>       s = PPC440_PCIX_HOST(dev);
->>>> @@ -507,11 +508,11 @@ static void ppc440_pcix_realize(DeviceState *dev, 
->>>> Error **errp)
->>>>                             h, "pci-conf-idx", 4);
->>>>       memory_region_init_io(&h->data_mem, OBJECT(s), 
->>>> &pci_host_data_le_ops,
->>>>                             h, "pci-conf-data", 4);
->>>> -    memory_region_init_io(&s->iomem, OBJECT(s), &pci_reg_ops, s,
->>>> -                          "pci.reg", PPC440_REG_SIZE);
->>>> +    memory_region_init_io(regs, OBJECT(s), &pci_reg_ops, s, "pci-reg",
->>>> +                          PPC440_REG_SIZE);
->>>>       memory_region_add_subregion(&s->container, PCIC0_CFGADDR, 
->>>> &h->conf_mem);
->>>>       memory_region_add_subregion(&s->container, PCIC0_CFGDATA, 
->>>> &h->data_mem);
->>>> -    memory_region_add_subregion(&s->container, PPC440_REG_BASE, 
->>>> &s->iomem);
->>>> +    memory_region_add_subregion(&s->container, PPC440_REG_BASE, regs);
->>>>       sysbus_init_mmio(sbd, &s->container);
->>>>   }
->>>> 
->>> 
->>> 
->>> 
->
->
->
---3866299591-128057532-1688465662=:43117--
+Please don't specify a 8k size. same below.
+
+>> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+>> +    0x43, 0x4b, 0x33, 0x5f, 0x53, 0x43, 0x4d, 0x02, 0x08, 0x32, 0x30, 0x30,
+>> +    0x30, 0x32, 0x39, 0x34, 0x35, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
+>> +    0x30, 0x31, 0x36, 0x34, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
+>> +    0x30, 0x30, 0x30, 0x31, 0x32, 0x37, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
+>> +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x30, 0x33, 0x30, 0x31, 0x07,
+>> +    0x0d, 0x41, 0x30, 0x33, 0x31, 0x33, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
+>> +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
+>> +    0x0d, 0x4d, 0x32, 0x32, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
+>> +    0x30, 0x32, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
+>> +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
+>> +    0x43, 0x54, 0x48, 0x10, 0x06, 0x01, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x13,
+>> +    0x03, 0x53, 0x43, 0x4d, 0xfa, 0x02, 0x02, 0x61,
+>> +};
+>> +
+>> +const uint8_t montblanc_fcm_fruid[8192] = {
+>> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+>> +    0x43, 0x4b, 0x33, 0x5f, 0x46, 0x43, 0x42, 0x02, 0x08, 0x33, 0x30, 0x30,
+>> +    0x30, 0x30, 0x31, 0x36, 0x31, 0x04, 0x0c, 0x31, 0x33, 0x32, 0x30, 0x30,
+>> +    0x30, 0x31, 0x36, 0x33, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31, 0x33, 0x31,
+>> +    0x30, 0x30, 0x30, 0x31, 0x33, 0x30, 0x30, 0x31, 0x20, 0x06, 0x0c, 0x52,
+>> +    0x33, 0x32, 0x31, 0x34, 0x47, 0x30, 0x30, 0x31, 0x32, 0x30, 0x31, 0x07,
+>> +    0x0d, 0x41, 0x31, 0x32, 0x31, 0x32, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58,
+>> +    0x58, 0x58, 0x08, 0x01, 0x01, 0x09, 0x01, 0x00, 0x0a, 0x01, 0x00, 0x0b,
+>> +    0x0d, 0x46, 0x35, 0x30, 0x31, 0x33, 0x32, 0x33, 0x31, 0x37, 0x30, 0x30,
+>> +    0x30, 0x35, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32,
+>> +    0x33, 0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03,
+>> +    0x43, 0x54, 0x48, 0x10, 0x06, 0x02, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x11,
+>> +    0x06, 0x03, 0x00, 0x00, 0x91, 0xdb, 0xb4, 0x12, 0x02, 0x8a, 0x00, 0x13,
+>> +    0x03, 0x46, 0x43, 0x42, 0xfa, 0x02, 0x50, 0x47,
+>> +};
+>> +
+>> +const uint8_t montblanc_bmc_fruid[8192] = {
+>> +    0xfb, 0xfb, 0x04, 0xff, 0x01, 0x0d, 0x4d, 0x49, 0x4e, 0x49, 0x50, 0x41,
+>> +    0x43, 0x4b, 0x33, 0x5f, 0x42, 0x4d, 0x43, 0x04, 0x0c, 0x31, 0x33, 0x32,
+>> +    0x30, 0x30, 0x30, 0x31, 0x33, 0x36, 0x30, 0x31, 0x20, 0x05, 0x0c, 0x31,
+>> +    0x33, 0x31, 0x30, 0x30, 0x30, 0x30, 0x38, 0x36, 0x30, 0x35, 0x20, 0x06,
+>> +    0x0c, 0x52, 0x33, 0x30, 0x39, 0x37, 0x47, 0x30, 0x30, 0x30, 0x32, 0x30,
+>> +    0x37, 0x07, 0x0d, 0x42, 0x30, 0x32, 0x37, 0x34, 0x58, 0x58, 0x58, 0x58,
+>> +    0x58, 0x58, 0x58, 0x58, 0x08, 0x01, 0x04, 0x09, 0x01, 0x00, 0x0a, 0x01,
+>> +    0x00, 0x0c, 0x03, 0x43, 0x4c, 0x53, 0x0d, 0x08, 0x32, 0x30, 0x32, 0x33,
+>> +    0x30, 0x35, 0x30, 0x31, 0x0e, 0x03, 0x57, 0x55, 0x53, 0x0f, 0x03, 0x43,
+>> +    0x54, 0x48, 0x13, 0x03, 0x42, 0x4d, 0x43, 0xfa, 0x02, 0xef, 0xba,
+>> +};
+
+These arrays decode as :
+
+         montblanc_scm
+	
+	......MINIPACK3.SCM..20002945..13200016401...13100012701...R
+	3214G000301..A0313XXXXXXXX...........M221323170002..CLS..202
+	30501..WUS..CTH..........SCM...a
+
+         montblanc_fcm
+	
+	......MINIPACK3.FCB..30000161..13200016301...13100013001...R
+	3214G001201..A1212XXXXXXXX...........F501323170005..CLS..202
+	30501..WUS..CTH......................FCB..PG
+
+         montblanc_bmc
+	
+	......MINIPACK3.BMC..13200013601...13100008605...R3097G00020
+	7..B0274XXXXXXXX...........CLS..20230501..WUS..CTH..BMC....
+
+
+where as :
+
+         tiogapass_bmc
+	
+	...........6...XXXXXX.BMC.Storage.Module.XXXXXXXXXXXXX.XXXXX
+	XXXXXXXXX.1.0.XXXXXXXXX.XXXXXXXXXXXXXXXXXX.9....XXXXXX.Tioga
+	.Pass.Single2.XXXXXXXXXXXXXX.XXX2.XXXXXXXXXXXXX.XXXXXXX.1.0.
+	XXXXXXXXX.Config.A.E
+
+         fby35_nic
+	
+	...............XXXXXXXX.Mellanox.ConnectX.6.DX.OCP3.0.XXXXXX
+	XXXXXXXXXXXXXXXXXX.XXXXXXXXXXXXXXXXXXXXX.FRU.Ver.0.02.......
+	....XXXXXXXX.Mellanox.ConnectX.6.DX.OCP3.0.XXXXXXXXXXXXXXXXX
+	XXXX.A9..................XXXXXXXXXXXXXXXXXXXXXXXX.....Connec
+	tX.6.DX...........0.y...........d..........F................
+	.........
+
+         fby35_bb
+	
+	............N.A.N.A............XXXXXX.Management.Board.wBMC.
+	XXXXXXXXXXXXX.XXXXXXXXXXXXXX.1.0.XXXXXXXXX.XXXXXXXXXXXXXXXXX
+	X...........XXXXXX.Yosemite.V3.5.EVT2.XXXXXXXXXXXXXX.EVT2.XX
+	XXXXXXXXXXX.XXXXXXX.1.0.XXXXXXXXX.N.A......C
+
+         fby35_bmc
+	
+	...........6...XXXXXX.BMC.Storage.Module.XXXXXXXXXXXXX.XXXXX
+	XXXXXXXXX.1.0.XXXXXXXXX.XXXXXXXXXXXXXXXXXX.9....XXXXXX.Yosem
+	ite.V3.5.EVT2.XXXXXXXXXXXXXX.EVT2.XXXXXXXXXXXXX.XXXXXXX.1.0.
+	XXXXXXXXX.Config.A.E
+
+         yosemitev2_bmc
+	
+	...........6...XXXXXX.Baseboard.MP.......XXXXXXXXXXXXX.XXXXX
+	XXXXXXXXX.1.0.XXXXXXXXX.XXXXXXXXXXXXXXXXXX.9....XXXXXX.Yosem
+	ite.V2.MP.....XXXXXXXXXXXXXX.EVT2.XXXXXXXXXXXXX.XXXXXXX.1.0.
+	XXXXXXXXX.Config.A.E
+
+
+Are the montblanc contents real numbers ? If so, could you clean
+them up please.
+
+Thanks,
+
+C.
+
+>>   const size_t tiogapass_bmc_fruid_len = sizeof(tiogapass_bmc_fruid);
+>>   const size_t fby35_nic_fruid_len = sizeof(fby35_nic_fruid);
+>>   const size_t fby35_bb_fruid_len = sizeof(fby35_bb_fruid);
+>> @@ -168,3 +215,6 @@ const size_t fby35_bmc_fruid_len = sizeof(fby35_bmc_fruid);
+>>   const size_t yosemitev2_bmc_fruid_len = sizeof(yosemitev2_bmc_fruid);
+>>   const size_t rainier_bb_fruid_len = sizeof(rainier_bb_fruid);
+>>   const size_t rainier_bmc_fruid_len = sizeof(rainier_bmc_fruid);
+>> +const size_t montblanc_scm_fruid_len = sizeof(montblanc_scm_fruid);
+>> +const size_t montblanc_fcm_fruid_len = sizeof(montblanc_fcm_fruid);
+>> +const size_t montblanc_bmc_fruid_len = sizeof(montblanc_bmc_fruid);
+>> diff --git a/hw/arm/aspeed_eeprom.h b/hw/arm/aspeed_eeprom.h
+>> index bbf9e54365..b8fbdd0734 100644
+>> --- a/hw/arm/aspeed_eeprom.h
+>> +++ b/hw/arm/aspeed_eeprom.h
+>> @@ -27,4 +27,11 @@ extern const size_t rainier_bb_fruid_len;
+>>   extern const uint8_t rainier_bmc_fruid[];
+>>   extern const size_t rainier_bmc_fruid_len;
+>> +extern const uint8_t montblanc_scm_fruid[];
+>> +extern const uint8_t montblanc_fcm_fruid[];
+>> +extern const uint8_t montblanc_bmc_fruid[];
+>> +extern const size_t montblanc_scm_fruid_len;
+>> +extern const size_t montblanc_fcm_fruid_len;
+>> +extern const size_t montblanc_bmc_fruid_len;
+>> +
+>>   #endif
+> 
+> 
+
 
