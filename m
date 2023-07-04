@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871AE7467F9
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 05:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F25CC7467F6
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 05:36:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGWoV-0001Bk-Ge; Mon, 03 Jul 2023 23:34:51 -0400
+	id 1qGWoY-0001CH-3p; Mon, 03 Jul 2023 23:34:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qGWoT-0001Ap-4I; Mon, 03 Jul 2023 23:34:49 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1qGWoW-0001Bn-56; Mon, 03 Jul 2023 23:34:52 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qGWoR-00032u-GO; Mon, 03 Jul 2023 23:34:48 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1b89b75dc1cso9089995ad.1; 
- Mon, 03 Jul 2023 20:34:46 -0700 (PDT)
+ id 1qGWoU-00033S-Hw; Mon, 03 Jul 2023 23:34:51 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-67ef5af0ce8so4214006b3a.2; 
+ Mon, 03 Jul 2023 20:34:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688441686; x=1691033686;
+ d=gmail.com; s=20221208; t=1688441689; x=1691033689;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=d4hybVCX0OeK0QstPXvMpIqBFqBkok82Ipoq0R1xsO8=;
- b=SsYFuYZDy5rNK8kyTX9O6TscQZWHne1yMaxCRTucBhdgp26xSB+cn+s9TbsnpXPgaM
- Yb7/VTP7oE1r7I+MFvQVsTw+LLSkBOzZQlBoeUpkTPQUSoAUme5fW1Bag0n1zXsxd1K+
- KOPYDS4RXEbuxDzxynq1j4Jjc2fd3NrmhDR/m8qsq+B+LmNb0AMT90hZg4/RIw44olVk
- kC0rG5vLX5PTjN8KyfQ59kxgATN3bjoVr61BqQanI6QFMMgJS9/ueZLzXeaXKF8m9oqf
- 8/bUb/DfYDPyLjhgZSahawVdrXqDUAAkYGBspJdhzi8mgZiUInyzCCebL+S9D9P4//qd
- m1kg==
+ bh=UieVTM0ijH4N8thbVTg381kGlKgp/GZSBGu7R4hXdyI=;
+ b=exvGYXYX83DV3z8u4ykn6T+NpWAjfZrrWrKl0+Bbriprcpgm8Lux96Zncj+ugjSP7x
+ XLqvvOT5NBVus1VrAqKZ9T+XfrKwljb2AeAIIWyta1+tJ0UmscF0Zy4mf1ubXBdXa4+Z
+ 9X3ImglMlS/FTH++hvw73/oa+vEy8gUf6qy8GwXSvztQsBYTbPn8Jh2Y6POlduDPotQ2
+ wftC5LTMajWEi9iVNjrB2GXxIafVGFG74GYWsUO1x/vvGChivGCDcwgFtOk/aXqCAWdo
+ MEgGgidCD8YFDTI/Y365WeTRH4bRbye1UNCVnqMKtHyTlG2Vb3DkosYvOGx/p1TM8IGJ
+ jJ5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688441686; x=1691033686;
+ d=1e100.net; s=20221208; t=1688441689; x=1691033689;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=d4hybVCX0OeK0QstPXvMpIqBFqBkok82Ipoq0R1xsO8=;
- b=VbLwizdeSTOFlcHZp91Hp+gm46lKIengfg2hVVzUjAnCg3vRFHlTX3M0wBYJyFGv+l
- fIQu3xIg8T7rCiMTcLOmCU3bdd5XLQtlWLPG4T4t2N4Vrk4ZUyZ0kqjRLL4fMzYf0wxF
- BpHKEWgNFTFOE6undBHsgFUxPPQ3PmdfUuy7YIW55aN5PWgaYvSaiUG+1VPaXvSAltB0
- memikpoF2ekrp6E0dXv7WO8SkFRo9P8zpUunbjFEv3HlLA4q2ez+rGWZDbsk6JryKTZf
- hsCJF+4UNLD2Sg0bdFmEa53T+Yh+pm8NywdnEBZ2Y+pAaEB9X1vgL9nM/3rFd800U//9
- ezFQ==
-X-Gm-Message-State: AC+VfDwdbZiSRNJ6rOj/KIupUvO4r64NNTvhzbgvO/0OFtNpHdoj3YRB
- QdBFQBg4JPaPavrN9j1vSD8=
-X-Google-Smtp-Source: ACHHUZ6Av3yZrd2mhIJ5ZfB21+j+pRFKdNlRx4USdtsJKf+bURpHPfR0A0jr7R0hCU5bXO6leoRpHw==
-X-Received: by 2002:a17:902:e84e:b0:1b7:de50:7d9c with SMTP id
- t14-20020a170902e84e00b001b7de507d9cmr27482692plg.15.1688441685551; 
- Mon, 03 Jul 2023 20:34:45 -0700 (PDT)
+ bh=UieVTM0ijH4N8thbVTg381kGlKgp/GZSBGu7R4hXdyI=;
+ b=MOpahKSh/ce3RqZsSjaHQEJcLMBLNqjbdDLT79TweF4ubALyPt8JYDvia5tQBo8BJi
+ xGXpD3ehcxMJLWtb5xQTYR3v5jIDmjh6h+656/vjibEv9tGDzs5OnQnw8oSZ/zxsvOva
+ fczE9hHBnkydUWsmyjVUR+0p7I5oR9YoLLkZZwXWJzUEoArRQLDSh/JHKLCcpXTOTLur
+ MP7U1prfGx7Bzy/6WCaUrxczCFvfjNpkJYfkRWvMq2yOQnqxqXSBxZQRymUfr3imirJN
+ oYtInaPQI2E8+ZelwmtHdghI+h//mNpf6ZhHIOfq8lD03wIBM1ra+qijoHKqNYiEuXud
+ ZwpA==
+X-Gm-Message-State: ABy/qLasXU79p8osOzmxSqKbCKgB1Kr0MxYY8vvHx4LvLLsEQKWn5pmg
+ QzARPcW/wWrXZvHo9Xrk598=
+X-Google-Smtp-Source: APBJJlF7O1pgV0bcuOIx6l2q0/fnlQUXcnVaa3LwE37FxNpfPnL5xSELub30o/g1PpERldwxF6g/qw==
+X-Received: by 2002:a05:6a00:148b:b0:682:4c9f:aa0 with SMTP id
+ v11-20020a056a00148b00b006824c9f0aa0mr16194594pfu.29.1688441688516; 
+ Mon, 03 Jul 2023 20:34:48 -0700 (PDT)
 Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
- i7-20020a170902c94700b001b8707b70d1sm6338993pla.214.2023.07.03.20.34.44
+ 141-20020a630293000000b00514256c05c2sm15591861pgc.7.2023.07.03.20.34.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 20:34:45 -0700 (PDT)
+ Mon, 03 Jul 2023 20:34:48 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
 To: jasowang@redhat.com,
 	mst@redhat.com,
 	eperezma@redhat.com
 Cc: qemu-stable@nongnu.org, qemu-devel@nongnu.org, yin31149@gmail.com,
  18801353760@163.com
-Subject: [PATCH v3 2/3] vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in
- _load_mq()
-Date: Tue,  4 Jul 2023 11:34:34 +0800
-Message-Id: <ec515ebb0b4f56368751b9e318e245a5d994fa72.1688438055.git.yin31149@gmail.com>
+Subject: [PATCH v3 3/3] vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in
+ _load_offloads()
+Date: Tue,  4 Jul 2023 11:34:35 +0800
+Message-Id: <b0396b80e96322b86f1a0b10c098fc1edd947d72.1688438055.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1688438055.git.yin31149@gmail.com>
 References: <cover.1688438055.git.yin31149@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=yin31149@gmail.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=yin31149@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -103,7 +103,7 @@ if ack is not VIRTIO_NET_OK."
 Therefore, QEMU should stop sending the queued SVQ commands and
 cancel the device startup if the device's ack is not VIRTIO_NET_OK.
 
-Yet the problem is that, vhost_vdpa_net_load_mq() returns 1 based on
+Yet the problem is that, vhost_vdpa_net_load_offloads() returns 1 based on
 `*s->status != VIRTIO_NET_OK` when the device's ack is VIRTIO_NET_ERR.
 As a result, net->nc->info->load() also returns 1, this makes
 vhost_net_start_one() incorrectly assume the device state is
@@ -115,7 +115,7 @@ negative value.
 This patch fixes this problem by returning -EIO when the device's
 ack is not VIRTIO_NET_OK.
 
-Fixes: f64c7cda69 ("vdpa: Add vhost_vdpa_net_load_mq")
+Fixes: 0b58d3686a ("vdpa: Add vhost_vdpa_net_load_offloads()")
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
 Acked-by: Eugenio Pérez <eperezma@redhat.com>
@@ -133,10 +133,10 @@ v1: https://lore.kernel.org/all/07a1133d6c989394b342e35d8202257771e76769.1686746
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index ee273c40ca..03d87e85c8 100644
+index 03d87e85c8..36aa2d7f8c 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -671,8 +671,11 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
+@@ -712,8 +712,11 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
      if (unlikely(dev_written < 0)) {
          return dev_written;
      }
@@ -148,7 +148,7 @@ index ee273c40ca..03d87e85c8 100644
 +    return 0;
  }
  
- static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
+ static int vhost_vdpa_net_load(NetClientState *nc)
 -- 
 2.25.1
 
