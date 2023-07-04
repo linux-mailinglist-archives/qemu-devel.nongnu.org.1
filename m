@@ -2,73 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B637A74717C
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 14:36:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3B774717E
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 14:37:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGfGF-0004rf-RZ; Tue, 04 Jul 2023 08:36:03 -0400
+	id 1qGfGt-0005Lq-V3; Tue, 04 Jul 2023 08:36:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qGfGB-0004rQ-NF; Tue, 04 Jul 2023 08:35:59 -0400
-Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGfGr-0005CN-5v
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:36:41 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qGfG3-0002kD-1U; Tue, 04 Jul 2023 08:35:52 -0400
-Received: by mail-ot1-x334.google.com with SMTP id
- 46e09a7af769-6b723aedd3dso3285765a34.3; 
- Tue, 04 Jul 2023 05:35:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGfGp-0002wk-6B
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:36:40 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3143798f542so2208605f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:36:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688474148; x=1691066148;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=8xdT/R+wtPW9/XQrGUvFXMC5ASDznrCwYn6rNfVblds=;
- b=UIGT2GMK0cSqLEjHQhW+7MDpgcxOKL7066+uiO7UVuEBG7VA+GTF+uSzcZQCdg602s
- x/okI0n44eg6ehW03y1wOyaWaHIJLEE0skLWCQIvh/KXGwbz1zbouyroDSNNuOvVuKX1
- dixdQbQTuG7RXjrL65j7XYzrc4/RxtAgpkf5h0ztmvKtvCuRfYaOJvmSFEDb89iwgQYg
- Xmhgg/CkqJ3JtCLfCFemvj+uWRSWkNjDYpQGBL9b1q2SoAmXCE971+SZmppJ/WZ+FDaK
- zYWSveKy/ycYPVCEfWkfpuGmY02/7KfWAuGnRv3sB5G25Ch73gIj9Ib2k1nZlAI5G1ic
- Qbkg==
+ d=linaro.org; s=google; t=1688474197; x=1691066197;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=sdqM9qea1gluYMtuxISIShwJNmf3aOXgi8u2chJ8Mqc=;
+ b=KublXLyFGdbsLhFpEUVt++PgUs9aKclaLrLvP6kqGFMTZOsEOvA19VHjpuRJeP5jEW
+ PlHe/11iujAx66XyBU5htmeEl1zB/osGzSebNpOKOUvqQsRwbEYDY+BFf8YPZTBgUL70
+ A+4UecndPUgakRghoD1o714sKh3DP2WNDNWWhlIv2kkAOu0ISisjpMXNP5iT2It6uC09
+ QmI7JQIgwrtpGKdfMpcd5cNWBRWtNpQhQL+AeeHbZgBQzhWesPBzkwyDLb3qdaMCvMCI
+ DuHJDfb56ZlxMOwsQ5EiAUtHL4WjLvvRBaFDzyuPCYxcfnwlJWoZaReVs+Nh5mzMbNkM
+ aaaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688474148; x=1691066148;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1688474197; x=1691066197;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=8xdT/R+wtPW9/XQrGUvFXMC5ASDznrCwYn6rNfVblds=;
- b=e7Js+Ck1dUsG1Abgjq2fi8QcVQ6fFDV/Ig/8Ey2RIWHmoLLijZn9SYQR1RCuvJF/EX
- 6OsDP2FxuAq5O7UhclKHn41hGZokfmo2fta8osseOoyoeHMdDcc3Koz4xFZPijQj40uk
- IUZZVvEjvvFHt9hAip8k7Yuoo4YID48NXbVI78MGljj2AJGyf+H59FDXmHt4fb30rAMU
- ABXovBb5RAy9r0SkTVlzuKugvnuuRqUDr+s/kN1GSqYvxBe+goTNIo15nhcqih7MKeQw
- DGryS7NAgzAN5tamvXot5wXjc0rHSnd1QfppFLn3qOahGEo0U6b9BIsN836xaFGawk6B
- LoVg==
-X-Gm-Message-State: AC+VfDyHZzVfrlVzRmLCQVmZhkK+1aVE0vIn5HCfj2BLK01o9Z7fxKS3
- 0WwwBKsn4I8+7mMRTSgHOfCX5m0/OK7qr9A/Ncwkiyl/unk=
-X-Google-Smtp-Source: ACHHUZ5oafqgXfw9iX2HiLHkjQew+s7FOzSBlB3K0PWMvzYz4SwkcNrU6b8P1w+o6IqsuqKonJu6UgLCfqCqwneazDw=
-X-Received: by 2002:a05:6808:159f:b0:3a3:7745:bdd7 with SMTP id
- t31-20020a056808159f00b003a37745bdd7mr12568489oiw.17.1688474148636; Tue, 04
- Jul 2023 05:35:48 -0700 (PDT)
+ bh=sdqM9qea1gluYMtuxISIShwJNmf3aOXgi8u2chJ8Mqc=;
+ b=NWFPc42ySwz40MrFv2wJ+Xdmms6Sx3XM0No+6F4S1hLzQoWp5UyllxC/tfSI4E8lOG
+ wKHm4epUkP3FZaRUw5ZWCAYFPGnGWXdDtoqxmCDkkIJBEHpmTn+66R5Ew3gRxcZoXEUx
+ HQjqIxhn8g2696Fdc7zGtStpQny4KKVTnJWV6gZjdoZlEMMjI0p208ax1BWpKCvsktIm
+ z3dB69xUeaz5uulTkJSSHd4gbggOVbrhsaiH3cMVmT4s36JTvI2HkhW30RA78kqCXXoe
+ xePnukj85/ArxGhqCtfe3KGOnAh29W3dD+/iObsSOaX0ZNbuPv8wHRl58op7AOsj3HoH
+ Intw==
+X-Gm-Message-State: ABy/qLb4+7O+xdzh8e6itGihp99nV5f1OnLXxJDuqLJyWqA6uomCPB9z
+ oYmxJldx4vUY5+Gl9v8A6TUAEA==
+X-Google-Smtp-Source: APBJJlF5bvL3gi1v3zWPv3B1bXUa9h+fhIfUgkdWSqdKmBeq2DBxu2CN6lTXrui4wd13YhXvQxqojQ==
+X-Received: by 2002:a5d:670a:0:b0:313:eadf:b82d with SMTP id
+ o10-20020a5d670a000000b00313eadfb82dmr9395725wru.69.1688474197450; 
+ Tue, 04 Jul 2023 05:36:37 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ k9-20020adff5c9000000b0031411b7087dsm15334074wrp.20.2023.07.04.05.36.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 05:36:37 -0700 (PDT)
+Received: from zen.lan (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 8FF211FFBB;
+ Tue,  4 Jul 2023 13:36:36 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: virtio-dev@lists.oasis-open.org, slp@redhat.com, mst@redhat.com,
+ marcandre.lureau@redhat.com, stefanha@redhat.com, viresh.kumar@linaro.org,
+ sgarzare@redhat.com, takahiro.akashi@linaro.org, erik.schilling@linaro.org,
+ manos.pitsidianakis@linaro.org, mathieu.poirier@linaro.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [RFC PATCH] docs/interop: define STANDALONE protocol feature for
+ vhost-user
+Date: Tue,  4 Jul 2023 13:36:00 +0100
+Message-Id: <20230704123600.1808604-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230703103524.162855-1-stefanha@redhat.com>
- <cigfftqvsymwwcv7dvfp3lydpymu2hzx7pmpb3tbnfgiqxlaj7@2xhwxfb6nasj>
-In-Reply-To: <cigfftqvsymwwcv7dvfp3lydpymu2hzx7pmpb3tbnfgiqxlaj7@2xhwxfb6nasj>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 4 Jul 2023 14:35:36 +0200
-Message-ID: <CAJSP0QXq3KQsf0PfHZ3g8FnOfX0UT+z1gRptx1ihu5nfys2_Lg@mail.gmail.com>
-Subject: Re: [PATCH] block/blkio: fix module_block.py parsing
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Qing Wang <qinwang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
- envelope-from=stefanha@gmail.com; helo=mail-ot1-x334.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,157 +97,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 3 Jul 2023 at 12:55, Stefano Garzarella <sgarzare@redhat.com> wrote:
->
-> On Mon, Jul 03, 2023 at 12:35:24PM +0200, Stefan Hajnoczi wrote:
-> >When QEMU is built with --enable-modules, the module_block.py script
-> >parses block/*.c to find block drivers that are built as modules. The
-> >script generates a table of block drivers called block_driver_modules[].
-> >This table is used for block driver module loading.
-> >
-> >The blkio.c driver uses macros to define its BlockDriver structs. This
-> >was done to avoid code duplication but the module_block.py script is
-> >unable to parse the macro. The result is that libblkio-based block
-> >drivers can be built as modules but will not be found at runtime.
-> >
-> >One fix is to make the module_block.py script or build system fancier so
-> >it can parse C macros (e.g. by parsing the preprocessed source code). I
-> >chose not to do this because it raises the complexity of the build,
-> >making future issues harder to debug.
-> >
-> >Keep things simple: use the macro to avoid duplicating BlockDriver
-> >function pointers but define .format_name and .protocol_name manually
-> >for each BlockDriver. This way the module_block.py is able to parse the
-> >code.
-> >
-> >Also get rid of the block driver name macros (e.g. DRIVER_IO_URING)
-> >because module_block.py cannot parse them either.
-> >
-> >Fixes: fd66dbd424f5 ("blkio: add libblkio block driver")
-> >Reported-by: Qing Wang <qinwang@redhat.com>
-> >Cc: Stefano Garzarella <sgarzare@redhat.com>
-> >Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> >---
-> > block/blkio.c | 110 ++++++++++++++++++++++++++------------------------
-> > 1 file changed, 57 insertions(+), 53 deletions(-)
-> >
-> >diff --git a/block/blkio.c b/block/blkio.c
-> >index 527323d625..589f829a83 100644
-> >--- a/block/blkio.c
-> >+++ b/block/blkio.c
-> >@@ -22,16 +22,6 @@
-> >
-> > #include "block/block-io.h"
-> >
-> >-/*
-> >- * Keep the QEMU BlockDriver names identical to the libblkio driver names.
-> >- * Using macros instead of typing out the string literals avoids typos.
-> >- */
-> >-#define DRIVER_IO_URING "io_uring"
-> >-#define DRIVER_NVME_IO_URING "nvme-io_uring"
-> >-#define DRIVER_VIRTIO_BLK_VFIO_PCI "virtio-blk-vfio-pci"
-> >-#define DRIVER_VIRTIO_BLK_VHOST_USER "virtio-blk-vhost-user"
-> >-#define DRIVER_VIRTIO_BLK_VHOST_VDPA "virtio-blk-vhost-vdpa"
-> >-
-> > /*
-> >  * Allocated bounce buffers are kept in a list sorted by buffer address.
-> >  */
-> >@@ -744,15 +734,15 @@ static int blkio_file_open(BlockDriverState *bs, QDict *options, int flags,
-> >         return ret;
-> >     }
-> >
-> >-    if (strcmp(blkio_driver, DRIVER_IO_URING) == 0) {
-> >+    if (strcmp(blkio_driver, "io_uring") == 0) {
-> >         ret = blkio_io_uring_open(bs, options, flags, errp);
-> >-    } else if (strcmp(blkio_driver, DRIVER_NVME_IO_URING) == 0) {
-> >+    } else if (strcmp(blkio_driver, "nvme-io_uring") == 0) {
-> >         ret = blkio_nvme_io_uring(bs, options, flags, errp);
-> >-    } else if (strcmp(blkio_driver, DRIVER_VIRTIO_BLK_VFIO_PCI) == 0) {
-> >+    } else if (strcmp(blkio_driver, "virtio-blk-vfio-pci") == 0) {
-> >         ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
-> >-    } else if (strcmp(blkio_driver, DRIVER_VIRTIO_BLK_VHOST_USER) == 0) {
-> >+    } else if (strcmp(blkio_driver, "virtio-blk-vhost-user") == 0) {
-> >         ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
-> >-    } else if (strcmp(blkio_driver, DRIVER_VIRTIO_BLK_VHOST_VDPA) == 0) {
-> >+    } else if (strcmp(blkio_driver, "virtio-blk-vhost-vdpa") == 0) {
-> >         ret = blkio_virtio_blk_common_open(bs, options, flags, errp);
-> >     } else {
-> >         g_assert_not_reached();
-> >@@ -1028,49 +1018,63 @@ static void blkio_refresh_limits(BlockDriverState *bs, Error **errp)
-> >  * - truncate
-> >  */
-> >
-> >-#define BLKIO_DRIVER(name, ...) \
-> >-    { \
-> >-        .format_name             = name, \
-> >-        .protocol_name           = name, \
-> >-        .instance_size           = sizeof(BDRVBlkioState), \
-> >-        .bdrv_file_open          = blkio_file_open, \
-> >-        .bdrv_close              = blkio_close, \
-> >-        .bdrv_co_getlength       = blkio_co_getlength, \
-> >-        .bdrv_co_truncate        = blkio_truncate, \
-> >-        .bdrv_co_get_info        = blkio_co_get_info, \
-> >-        .bdrv_attach_aio_context = blkio_attach_aio_context, \
-> >-        .bdrv_detach_aio_context = blkio_detach_aio_context, \
-> >-        .bdrv_co_pdiscard        = blkio_co_pdiscard, \
-> >-        .bdrv_co_preadv          = blkio_co_preadv, \
-> >-        .bdrv_co_pwritev         = blkio_co_pwritev, \
-> >-        .bdrv_co_flush_to_disk   = blkio_co_flush, \
-> >-        .bdrv_co_pwrite_zeroes   = blkio_co_pwrite_zeroes, \
-> >-        .bdrv_refresh_limits     = blkio_refresh_limits, \
-> >-        .bdrv_register_buf       = blkio_register_buf, \
-> >-        .bdrv_unregister_buf     = blkio_unregister_buf, \
-> >-        __VA_ARGS__ \
-> >-    }
-> >+/*
-> >+ * Do not include .format_name and .protocol_name because module_block.py
-> >+ * does not parse macros in the source code.
-> >+ */
-> >+#define BLKIO_DRIVER_COMMON \
-> >+    .instance_size           = sizeof(BDRVBlkioState), \
-> >+    .bdrv_file_open          = blkio_file_open, \
-> >+    .bdrv_close              = blkio_close, \
-> >+    .bdrv_co_getlength       = blkio_co_getlength, \
-> >+    .bdrv_co_truncate        = blkio_truncate, \
-> >+    .bdrv_co_get_info        = blkio_co_get_info, \
-> >+    .bdrv_attach_aio_context = blkio_attach_aio_context, \
-> >+    .bdrv_detach_aio_context = blkio_detach_aio_context, \
-> >+    .bdrv_co_pdiscard        = blkio_co_pdiscard, \
-> >+    .bdrv_co_preadv          = blkio_co_preadv, \
-> >+    .bdrv_co_pwritev         = blkio_co_pwritev, \
-> >+    .bdrv_co_flush_to_disk   = blkio_co_flush, \
-> >+    .bdrv_co_pwrite_zeroes   = blkio_co_pwrite_zeroes, \
-> >+    .bdrv_refresh_limits     = blkio_refresh_limits, \
-> >+    .bdrv_register_buf       = blkio_register_buf, \
-> >+    .bdrv_unregister_buf     = blkio_unregister_buf,
-> >
-> >-static BlockDriver bdrv_io_uring = BLKIO_DRIVER(
-> >-    DRIVER_IO_URING,
-> >-    .bdrv_needs_filename = true,
-> >-);
-> >+/*
-> >+ * Use the same .format_name and .protocol_name as the libblkio driver name for
-> >+ * consistency.
-> >+ */
-> >
-> >-static BlockDriver bdrv_nvme_io_uring = BLKIO_DRIVER(
-> >-    DRIVER_NVME_IO_URING,
-> >-);
-> >+static BlockDriver bdrv_io_uring = {
-> >+    .format_name         = "io_uring", \
->
-> Thanks for the fast fix :-)
->
-> Minor thing: we can remove the backslash here and in the following
-> `struct BlockDriver`s fields.
->
-> With or without this:
->
-> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Currently QEMU has to know some details about the back-end to be able
+to setup the guest. While various parts of the setup can be delegated
+to the backend (for example config handling) this is a very piecemeal
+approach.
 
-Oops, the slash is not necessary.
+This patch suggests a new feature flag (VHOST_USER_PROTOCOL_F_STANDALONE)
+which the back-end can advertise which allows a probe message to be
+sent to get all the details QEMU needs to know in one message.
 
-Thanks!
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-Stefan
+---
+Initial RFC for discussion. I intend to prototype this work with QEMU
+and one of the rust-vmm vhost-user daemons.
+---
+ docs/interop/vhost-user.rst | 37 +++++++++++++++++++++++++++++++++++++
+ hw/virtio/vhost-user.c      |  8 ++++++++
+ 2 files changed, 45 insertions(+)
+
+diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+index 5a070adbc1..85b1b1583a 100644
+--- a/docs/interop/vhost-user.rst
++++ b/docs/interop/vhost-user.rst
+@@ -275,6 +275,21 @@ Inflight description
+ 
+ :queue size: a 16-bit size of virtqueues
+ 
++Backend specifications
++^^^^^^^^^^^^^^^^^^^^^^
++
+++-----------+-------------+------------+------------+
++| device id | config size |   min_vqs  |   max_vqs  |
+++-----------+-------------+------------+------------+
++
++:device id: a 32-bit value holding the VirtIO device ID
++
++:config size: a 32-bit value holding the config size (see ``VHOST_USER_GET_CONFIG``)
++
++:min_vqs: a 32-bit value holding the minimum number of vqs supported
++
++:max_vqs: a 32-bit value holding the maximum number of vqs supported, must be >= min_vqs
++
+ C structure
+ -----------
+ 
+@@ -296,6 +311,7 @@ In QEMU the vhost-user message is implemented with the following struct:
+           VhostUserConfig config;
+           VhostUserVringArea area;
+           VhostUserInflight inflight;
++          VhostUserBackendSpecs specs;
+       };
+   } QEMU_PACKED VhostUserMsg;
+ 
+@@ -316,6 +332,7 @@ replies. Here is a list of the ones that do:
+ * ``VHOST_USER_GET_VRING_BASE``
+ * ``VHOST_USER_SET_LOG_BASE`` (if ``VHOST_USER_PROTOCOL_F_LOG_SHMFD``)
+ * ``VHOST_USER_GET_INFLIGHT_FD`` (if ``VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD``)
++* ``VHOST_USER_GET_BACKEND_SPECS`` (if ``VHOST_USER_PROTOCOL_F_STANDALONE``)
+ 
+ .. seealso::
+ 
+@@ -885,6 +902,13 @@ Protocol features
+   #define VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS  15
+   #define VHOST_USER_PROTOCOL_F_STATUS               16
+   #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
++  #define VHOST_USER_PROTOCOL_F_STANDALONE           18
++
++Some features are only valid in the presence of other supporting
++features. In the case of ``VHOST_USER_PROTOCOL_F_STANDALONE`` the
++backend must also support ``VHOST_USER_PROTOCOL_F_CONFIG`` and
++``VHOST_USER_PROTOCOL_F_STATUS``.
++
+ 
+ Front-end message types
+ -----------------------
+@@ -1440,6 +1464,19 @@ Front-end message types
+   query the back-end for its device status as defined in the Virtio
+   specification.
+ 
++``VHOST_USER_GET_BACKEND_SPECS``
++  :id: 41
++  :request payload: N/A
++  :reply payload: ``Backend specifications``
++
++  When the ``VHOST_USER_PROTOCOL_F_STANDALONE`` protocol feature has been
++  successfully negotiated, this message is submitted by the front-end to
++  query the back-end for its capabilities. This is intended to remove
++  the need for the front-end to know ahead of time what the VirtIO
++  device the backend emulates is.
++
++  The reply contains the device id, size of the config space and the
++  range of VirtQueues the backend supports.
+ 
+ Back-end message types
+ ----------------------
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index c4e0cbd702..28b021d5d3 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -202,6 +202,13 @@ typedef struct VhostUserInflight {
+     uint16_t queue_size;
+ } VhostUserInflight;
+ 
++typedef struct VhostUserBackendSpecs {
++    uint32_t device_id;
++    uint32_t config_size;
++    uint32_t min_vqs;
++    uint32_t max_vqs;
++} VhostUserBackendSpecs;
++
+ typedef struct {
+     VhostUserRequest request;
+ 
+@@ -226,6 +233,7 @@ typedef union {
+         VhostUserCryptoSession session;
+         VhostUserVringArea area;
+         VhostUserInflight inflight;
++        VhostUserBackendSpecs specs;
+ } VhostUserPayload;
+ 
+ typedef struct VhostUserMsg {
+-- 
+2.39.2
+
 
