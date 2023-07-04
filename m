@@ -2,71 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3D87472FC
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D25747310
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:44:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGgJS-0007gg-0R; Tue, 04 Jul 2023 09:43:26 -0400
+	id 1qGgJn-0007zi-KH; Tue, 04 Jul 2023 09:43:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGgJQ-0007gR-Aj
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:43:24 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGgJl-0007yG-OP
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:43:45 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGgJO-00050Z-FI
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:43:24 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-51d7e8dd118so7092923a12.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:43:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qGgJk-000576-1c
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:43:45 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3141fa31c2bso5468509f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:43:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688478200; x=1691070200;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=g3WKTMbCl14QBI4gfWNbliS4G7A4xV+8OkuzTjE7ap8=;
- b=sh5Vs7PntejJsry0A4R2zQ4DT2EVIf7xWN8ismR08/RHQ1QkxRHkh75NM3Dca3BJxF
- xuXZ5EQhrd0rmb+Fb72PcpWuzEShCXeTZoCjxz6HuCiRD2XLRPL0Ece+wj79/WoARsMk
- Y22WVe7LnHlECDfY4nFtY4tjCGpi5dNqGZU93SoXL7Q/D/ZnHI2AsMTVR4xcqU7Ski5o
- H9SdNDe4NwxSaLOIfh7/9xWhKFu3jhgNSeNvoMxAMJUHQOs5kC7GK53US/gJmNlaZAa0
- 7kYrQN/NTyONxHPiF0Uy/DhOxGo2GkrmmSiDowcJ9lk5iARth7yIxSj8sMau+bb7wWOP
- ASTA==
+ d=linaro.org; s=google; t=1688478222; x=1691070222;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tluc9qV+EJ5ace5BuDPJfoePU1IrYsKfrn7TnVACHKM=;
+ b=ewTl5TdD/deOBpLANnOLyZMydh+jrN8ROqt2igh1Ms8jlIWa+NJ3KPx/c7LOv0upFr
+ /IY5/yY3HTmJ4CXOfeJDinyvD+g6L8OPenOmnlVIZCmNTiuX3A6xW10oKNl5L0I2SVuq
+ OZWvtoNjfkkne3ezUA9pRd/Kg0LPw+ay97oli2kKamkJJgIio9biBCnCW6JdfkInTYtp
+ ewWHpx7ZRceSXNk+gZzQnUAOU7ilzSDQe5/42H9AIzXfv8n/f6+K14iM9hmYMEq4REil
+ U018wn+OVlPFVeROMthL7/0A/XpZG8BNwGe2lboionAhPEdfeLqrZwsBw51pvw6E5PvR
+ WOXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688478200; x=1691070200;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=g3WKTMbCl14QBI4gfWNbliS4G7A4xV+8OkuzTjE7ap8=;
- b=GRLR+AjPWyJ6B7YcMSdW+otR9iFY3EuGHYq8Y0snW/p1yWdIVXGGRMfCWWx65Zzrt8
- iOpklkDDt+clptbQKW/be7s661y65l9QFXUaRWEr83YlLd4pvTEFCSJt5GA0JMNwbt/t
- /4g/+ut9+Y5Tpplc8EzJFYYumzA7lvhjsTWloRnSeW8GWh9RDh+XNgQB11v8HlTCSOCc
- bu8ticIE9VFSaJQJI7+zZy/buDTm2e2MpnJF7EZVE27YBgNI1GH8zLRoG11Wz8H4sFPO
- gmzJFHUUMmcTSDL4CUHs1O7y4s+dnx4xJB1qzSZqK+sxF/ylUJa0GRZ482XWh3M1fADs
- ihig==
-X-Gm-Message-State: ABy/qLbi5ZJyOgXI7dkN6poDGL+/JZrzmyZPjdIKvHbfPj9gqAOTzsur
- fVPkyMS3RN8Glh+zLPWKGW+X0BcOrAsgmsUrrRsVGS2B4f9VOc26
-X-Google-Smtp-Source: APBJJlEcuLKTcNJ6WlGFZWIo0jTMJlh0p2VQSpCg8vaMmBhaHP8NtzF+wF7X13zsZGd0F/7QcAXBPrnc4xVfGh+hNjU=
-X-Received: by 2002:a05:6402:b28:b0:51d:d5f2:121e with SMTP id
- bo8-20020a0564020b2800b0051dd5f2121emr10860178edb.5.1688478200125; Tue, 04
- Jul 2023 06:43:20 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688478222; x=1691070222;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=tluc9qV+EJ5ace5BuDPJfoePU1IrYsKfrn7TnVACHKM=;
+ b=djg368m7sV/SIiAqFNL4PpMCJqaEHkcD2ViHofG2tMJfD5bwd0S7hagxVnad5QmZSB
+ Z0/M9DqJNvSLMgv6JbFxRZ9WqswLVefIAIeVS0J9ns7NVwMVLFa2HgB19WsAbhbKgsA2
+ RZYMmkER/bvhq7YZn6Y21eSzpTQ+EJUikxILx6LEuU5lnSda8lvkucRrrRHioIoOzVCa
+ vRewRdZUMNfD0V2opuHmnS2XhEcbH5t/V6BYOgnDT1tRnOLLJ1grGX1R8K50QHNTU4lf
+ fl64IHMCsJoEomg+jW9ABfb2NH6VJDu4saL7Wcyh6BHI05GKPI48Z8nTKc7JZ4XYdh+h
+ 0wHw==
+X-Gm-Message-State: ABy/qLauikwGzCz5Z5jBuOaEnc+O3dcSAs35HWnh/cjsxODkV13u08Bg
+ bulV42XjEybSKhpwnJI+xnT9yw==
+X-Google-Smtp-Source: APBJJlEGKM4dEPpkQDkJDidh2bV8TPf8itY9p64+vSlSKzt2kwFBClBActGE8TwsPa07xPRfk+phBw==
+X-Received: by 2002:a5d:4c8c:0:b0:314:1230:29b0 with SMTP id
+ z12-20020a5d4c8c000000b00314123029b0mr12535399wrs.52.1688478222663; 
+ Tue, 04 Jul 2023 06:43:42 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ q18-20020a1ce912000000b003fbd9e390e1sm6039315wmc.47.2023.07.04.06.43.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 06:43:42 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id D86061FFBB;
+ Tue,  4 Jul 2023 14:43:41 +0100 (BST)
+References: <20230628110905.38125-1-akihiko.odaki@daynix.com>
+User-agent: mu4e 1.11.8; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Strahinja Jankovic
+ <strahinja.p.jankovic@gmail.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Beniamino Galvani <b.galvani@gmail.com>,
+ qemu-arm@nongnu.org
+Subject: Re: [PATCH] hw: arm: allwinner-sramc: Set class_size
+Date: Tue, 04 Jul 2023 14:43:35 +0100
+In-reply-to: <20230628110905.38125-1-akihiko.odaki@daynix.com>
+Message-ID: <871qhnhjw2.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20230609172324.982888-1-aaron@os.amperecomputing.com>
- <20230609172324.982888-9-aaron@os.amperecomputing.com>
-In-Reply-To: <20230609172324.982888-9-aaron@os.amperecomputing.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 4 Jul 2023 14:43:09 +0100
-Message-ID: <CAFEAcA_j+3VJ4Ldbo5zf8mJfXTfHC26x8a6YnMbQCRTy45_qAA@mail.gmail.com>
-Subject: Re: [PATCH v3 8/8] target/arm: Add CPU property for QARMA3, enable
- FPACCombined by default
-To: Aaron Lindsay <aaron@os.amperecomputing.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Richard Henderson <richard.henderson@linaro.org>,
- Vincent Dehors <vincent.dehors@smile.fr>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,21 +98,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 9 Jun 2023 at 18:24, Aaron Lindsay <aaron@os.amperecomputing.com> wrote:
+
+Akihiko Odaki <akihiko.odaki@daynix.com> writes:
+
+> AwSRAMCClass is larger than SysBusDeviceClass so the class size must be
+> advertised accordingly.
 >
-> Signed-off-by: Aaron Lindsay <aaron@os.amperecomputing.com>
-> ---
->  target/arm/cpu.h   |  1 +
->  target/arm/cpu64.c | 48 +++++++++++++++++++++++++++++++---------------
->  2 files changed, 34 insertions(+), 15 deletions(-)
+> Fixes: 05def917e1 ("hw: arm: allwinner-sramc: Add SRAM Controller support=
+ for R40")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-This patch also got RTH's reviewed-by tag in the "v3 from March"
-version and didn't change subsequently:
-https://lore.kernel.org/qemu-devel/20230322202541.1404058-9-aaron@os.amperecomputing.com/
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-So:
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-thanks
--- PMM
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
