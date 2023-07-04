@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC147470F6
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A9F57470F5
 	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 14:23:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGf3J-0001v8-8u; Tue, 04 Jul 2023 08:22:41 -0400
+	id 1qGf3J-0001uh-12; Tue, 04 Jul 2023 08:22:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGf39-0001t8-Ju
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:22:32 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1qGf3A-0001tU-PW
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:22:33 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGf32-0007hr-RQ
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:22:27 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6686c74183cso4213292b3a.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:22:24 -0700 (PDT)
+ id 1qGf36-0007iX-IR
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:22:31 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-557790487feso3866620a12.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:22:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688473343; x=1691065343;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688473346; x=1691065346;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=s02o4ecEeuNUThWPP1l7HSPv9qpDPaUhEuBGwN7hbWw=;
- b=woiuYKY8I1A5KV8XKmaNiYng44z9CI4Sggm2B3N5dhvtuWBGZPpFkxYl00SisoTQVm
- 1iZSW+o0tdeovR72I5j3TiRO+fwNpbjpukZcV7GR4JfB6IvWWq9zhcv5Y612wXZ4UF2s
- rAKGGui5sF6jj0KF8iSrHvERA9Pv9Ag7OwdDTZ3IWQZQSQJvnnp/B3ww/lMeosxg3aqA
- FWYkSIkv0s/CaXVKPsAxrx8ZD0KHOgx/koi/FxwZeRKowMF4FNsNfwvWdGlPso/m0OOg
- yTDSgCTIhYflLbVJJPffBOcg389nEmedKn0kfjqtLHjeiUDoHqFTwDvBuoDexTKYy/Ko
- +o/w==
+ bh=94unPck/HFMYNf7Mv5w9vhyjWp/Os8sneFiELbRad9k=;
+ b=ONVCHyOk6QCsxV39WhdxCYlywZEi/ReX+oQgKS2cln6Tk3GUUxUIDKw7U5Gp8ls41w
+ K25kFqqqsh63z33dECBeIDIuAL8hlIr3vCNNo0ppL9uPO510qPO+5j4R5IGDyG34xyuF
+ T7/1YESviLBWA4jWKwJ+NKh1VtRBRVYFxsQKIH1MU/KKQ8gxv1hAVFEFSipE08EntPiD
+ KkIT4sQyXRBLyf+P4zEpEFAci9frII3uOWP8BEDO+D7h5nDeue2/gQ4+OnODPn8Yogdt
+ 6v6GPW0VBwiSI4GWfJUPdgPAUD9VAh6gGFp9GNJ9FF0xIXhG9VHRpIgNskqp1z80duJi
+ JQRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688473343; x=1691065343;
+ d=1e100.net; s=20221208; t=1688473346; x=1691065346;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s02o4ecEeuNUThWPP1l7HSPv9qpDPaUhEuBGwN7hbWw=;
- b=YykvnkSxlCWBZL2sF/pIZDgiF73pzQunCMzQ3Pqo0rX7yneTLCiOdLJw0FTAF2LOdE
- v8VHuq1pxOWGpXqCorgYRLyHOq/qEA6eC4aQmS4VtMqQPmt6Qq0AngpEXHEZI8ZypPs9
- HHk29fi4CxTMZKpKexbnwcEeIL1CK4rPH7yz1xzK529jCYUYvpKMe2V+S7Twg5lWZ/sp
- OzPygo8e53tgiCgvYfNFBgb43Aqa8YPEUXz0GQ8iqlFr5t0Q8U0fB2r4giz318EoJamd
- P9ytXyEqWaa9utmQjbk7PdLTdHmIZmx0THvH2tigUQJufq3MQ026d4s/nIg+y+xD3fEU
- cGgw==
-X-Gm-Message-State: ABy/qLaDkM5zFyFp7vogpjbG/n5vp8d7z9ZPHf4t0pB5H99Hh035q73L
- V6JzzeTuVeZ8RMkxZNh49rZiievBvJoztaMDccU=
-X-Google-Smtp-Source: APBJJlGx0lQRi4rWSH6A9DDCY2ygvWObfz5ygpjcutdToTpfplLtVPek1bnwHl0RPL+HI4Ca6nisKQ==
-X-Received: by 2002:a05:6a00:1506:b0:668:97bf:5ed7 with SMTP id
- q6-20020a056a00150600b0066897bf5ed7mr19413219pfu.22.1688473343382; 
- Tue, 04 Jul 2023 05:22:23 -0700 (PDT)
+ bh=94unPck/HFMYNf7Mv5w9vhyjWp/Os8sneFiELbRad9k=;
+ b=UNQLZHdMAp2X1YDs9wD1kSMhgJRMiN420pu8mE6xPuy1n3O+EBy4UdpUbWJtGAuKeJ
+ hCWfbRrDzjgek1+NMgfXYsrdOz9Ldg1f84UO6igeCNQmy4XREr1BFggOhFp6KpZsJDYr
+ t4RGXJVP+6m6v55uxjzozqzrYSJ7gBlY7UJfJThP68t9OJTG+CEs5Pr1VROZ1kGEi3sn
+ DkoLza42d3x7XFT0Ui6FdABAdh34e5EaK/HVvfS2QS9kb+8lvnqiPZL2xrN06nmiNd+1
+ VyFkpLmiDq53jRuRq+CltsxK7zY+TSK/SDU0woMwvCmFy5JfsSoO+6pmdNkoJKgK4Tdl
+ LQUA==
+X-Gm-Message-State: AC+VfDw9tRZcXaaaqr6Se8+zuQo/w0CHgWpVYiSAV707lueC56RBmQAa
+ 2rQnvzTrjZEFnzubf7HX+JqdQ+fs2/dRi/8jb4w=
+X-Google-Smtp-Source: ACHHUZ6hfi2is+Ab63aOkzG4Sf/ncxB9KJQ1352amOOyEkdj8JrgeYzXiAqiZPAIEyWgQrvaScHJUw==
+X-Received: by 2002:a05:6a20:8f07:b0:122:a808:dbbe with SMTP id
+ b7-20020a056a208f0700b00122a808dbbemr17897376pzk.29.1688473346076; 
+ Tue, 04 Jul 2023 05:22:26 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- x48-20020a056a000bf000b0064d32771fa8sm11009743pfu.134.2023.07.04.05.22.20
+ x48-20020a056a000bf000b0064d32771fa8sm11009743pfu.134.2023.07.04.05.22.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 05:22:23 -0700 (PDT)
+ Tue, 04 Jul 2023 05:22:25 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
@@ -65,16 +65,16 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
  Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
  Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v4 1/2] pcie: Use common ARI next function number
-Date: Tue,  4 Jul 2023 21:22:13 +0900
-Message-ID: <20230704122215.23270-2-akihiko.odaki@daynix.com>
+Subject: [PATCH v4 2/2] pcie: Specify 0 for ARI next function numbers
+Date: Tue,  4 Jul 2023 21:22:14 +0900
+Message-ID: <20230704122215.23270-3-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230704122215.23270-1-akihiko.odaki@daynix.com>
 References: <20230704122215.23270-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::436;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::530;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,109 +96,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently the only implementers of ARI is SR-IOV devices, and they
-behave similar. Share the ARI next function number.
+The current implementers of ARI are all SR-IOV devices. The ARI next
+function number field is undefined for VF. The PF should end the linked
+list formed with the field by specifying 0.
 
+For migration, the field will keep having 1 as its value on the old
+virt models.
+
+Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in docs/pcie_sriov.txt")
+Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
+Fixes: 3a977deebe ("Intrdocue igb device emulation")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- docs/pcie_sriov.txt   | 4 ++--
- include/hw/pci/pcie.h | 2 +-
- hw/net/igb.c          | 2 +-
- hw/net/igbvf.c        | 2 +-
- hw/nvme/ctrl.c        | 2 +-
- hw/pci/pcie.c         | 4 +++-
- 6 files changed, 9 insertions(+), 7 deletions(-)
+ include/hw/pci/pci.h | 2 ++
+ hw/core/machine.c    | 1 +
+ hw/pci/pci.c         | 2 ++
+ hw/pci/pcie.c        | 2 +-
+ 4 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/docs/pcie_sriov.txt b/docs/pcie_sriov.txt
-index 7eff7f2703..a47aad0bfa 100644
---- a/docs/pcie_sriov.txt
-+++ b/docs/pcie_sriov.txt
-@@ -48,7 +48,7 @@ setting up a BAR for a VF.
-       ...
-       int ret = pcie_endpoint_cap_init(d, 0x70);
-       ...
--      pcie_ari_init(d, 0x100, 1);
-+      pcie_ari_init(d, 0x100);
-       ...
+diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+index e6d0574a29..9c5b5eb206 100644
+--- a/include/hw/pci/pci.h
++++ b/include/hw/pci/pci.h
+@@ -209,6 +209,8 @@ enum {
+     QEMU_PCIE_CAP_CXL = (1 << QEMU_PCIE_CXL_BITNR),
+ #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
+     QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
++#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
++    QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
+ };
  
-       /* Add and initialize the SR/IOV capability */
-@@ -78,7 +78,7 @@ setting up a BAR for a VF.
-       ...
-       int ret = pcie_endpoint_cap_init(d, 0x60);
-       ...
--      pcie_ari_init(d, 0x100, 1);
-+      pcie_ari_init(d, 0x100);
-       ...
-       memory_region_init(mr, ... )
-       pcie_sriov_vf_register_bar(d, bar_nr, mr);
-diff --git a/include/hw/pci/pcie.h b/include/hw/pci/pcie.h
-index 3cc2b15957..bf7dc5d685 100644
---- a/include/hw/pci/pcie.h
-+++ b/include/hw/pci/pcie.h
-@@ -134,7 +134,7 @@ void pcie_sync_bridge_lnk(PCIDevice *dev);
- void pcie_acs_init(PCIDevice *dev, uint16_t offset);
- void pcie_acs_reset(PCIDevice *dev);
+ typedef struct PCIINTxRoute {
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 46f8f9a2b0..f0d35c6401 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -41,6 +41,7 @@
  
--void pcie_ari_init(PCIDevice *dev, uint16_t offset, uint16_t nextfn);
-+void pcie_ari_init(PCIDevice *dev, uint16_t offset);
- void pcie_dev_ser_num_init(PCIDevice *dev, uint16_t offset, uint64_t ser_num);
- void pcie_ats_init(PCIDevice *dev, uint16_t offset, bool aligned);
+ GlobalProperty hw_compat_8_0[] = {
+     { "migration", "multifd-flush-after-each-section", "on"},
++    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
+ };
+ const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
  
-diff --git a/hw/net/igb.c b/hw/net/igb.c
-index 1c989d7677..8ff832acfc 100644
---- a/hw/net/igb.c
-+++ b/hw/net/igb.c
-@@ -431,7 +431,7 @@ static void igb_pci_realize(PCIDevice *pci_dev, Error **errp)
-         hw_error("Failed to initialize AER capability");
-     }
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index e2eb4c3b4a..45a9bc0da8 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -82,6 +82,8 @@ static Property pci_props[] = {
+     DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
+     DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
+                     QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
++    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
++                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
+     DEFINE_PROP_END_OF_LIST()
+ };
  
--    pcie_ari_init(pci_dev, 0x150, 1);
-+    pcie_ari_init(pci_dev, 0x150);
- 
-     pcie_sriov_pf_init(pci_dev, IGB_CAP_SRIOV_OFFSET, TYPE_IGBVF,
-         IGB_82576_VF_DEV_ID, IGB_MAX_VF_FUNCTIONS, IGB_MAX_VF_FUNCTIONS,
-diff --git a/hw/net/igbvf.c b/hw/net/igbvf.c
-index 284ea61184..d55e1e8a6a 100644
---- a/hw/net/igbvf.c
-+++ b/hw/net/igbvf.c
-@@ -270,7 +270,7 @@ static void igbvf_pci_realize(PCIDevice *dev, Error **errp)
-         hw_error("Failed to initialize AER capability");
-     }
- 
--    pcie_ari_init(dev, 0x150, 1);
-+    pcie_ari_init(dev, 0x150);
- }
- 
- static void igbvf_pci_uninit(PCIDevice *dev)
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index fd917fcda1..8b7168a266 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8088,7 +8088,7 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
-     pcie_endpoint_cap_init(pci_dev, 0x80);
-     pcie_cap_flr_init(pci_dev);
-     if (n->params.sriov_max_vfs) {
--        pcie_ari_init(pci_dev, 0x100, 1);
-+        pcie_ari_init(pci_dev, 0x100);
-     }
- 
-     /* add one to max_ioqpairs to account for the admin queue pair */
 diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index b8c24cf45f..9a3f6430e8 100644
+index 9a3f6430e8..cf09e03a10 100644
 --- a/hw/pci/pcie.c
 +++ b/hw/pci/pcie.c
-@@ -1028,8 +1028,10 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
-  */
- 
+@@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
  /* ARI */
--void pcie_ari_init(PCIDevice *dev, uint16_t offset, uint16_t nextfn)
-+void pcie_ari_init(PCIDevice *dev, uint16_t offset)
+ void pcie_ari_init(PCIDevice *dev, uint16_t offset)
  {
-+    uint16_t nextfn = 1;
-+
+-    uint16_t nextfn = 1;
++    uint16_t nextfn = dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 ? 1 : 0;
+ 
      pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
                          offset, PCI_ARI_SIZEOF);
-     pci_set_long(dev->config + offset + PCI_ARI_CAP, (nextfn & 0xff) << 8);
 -- 
 2.41.0
 
