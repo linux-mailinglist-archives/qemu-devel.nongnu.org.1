@@ -2,76 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1966E747250
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4411A747275
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 15:15:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGfp1-0004fL-LW; Tue, 04 Jul 2023 09:11:59 -0400
+	id 1qGfrx-0005rl-CL; Tue, 04 Jul 2023 09:15:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGfoz-0004f4-9T
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:11:57 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qGfox-0005GB-NJ
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:11:57 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2b699a2fe86so93086691fa.3
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:11:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688476313; x=1691068313;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=uq3yYAZX8z4gQVSQCuo2VcgFD3TeuY6r+Mx7TIhl5ug=;
- b=ElvNRwkuis3uReZF08CmyT5v/+EJF8oZtNWfZYvPejaXnIIp4yTCNhEngkLz+rOOH3
- kYySh5OHOk8QBKV/+ZIQuRyer/UJE2mL5/331zltiYy69WL1lH/JJk/+0u0Ba0q4Uz0t
- ir96Zr5zwmCmmi/XpLhj7ukpjYOrTydZPvtPhS7cHnoWkqJB+XGE7ap4H5h2bth9sPvO
- 7RyBnRSYzEVxH+L7uZ0gdvWZZP3Wpa2aY00jOkzNBI8Zk+NYV44G0N+mVyMgQNfohTWN
- q6Kmoc6zzwQfXYVcG/wH3eeJ8J7H4VsFLZ+Cu2WRYftXi9Tf+z+2KfRjK5Wb5OoLThPW
- syzQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGfrw-0005rU-5X
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:15:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGfru-0005p1-MC
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 09:14:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688476497;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=HgU56Jb9oAALfA5DNLs9cSNt9PhE+0rEJU0KndMkfmw=;
+ b=XTpq4y6nAWpvUBe2yNLOE7dYaCcE00kVmEGPXuUL88DNrzGEMkTB06Dv5JKC4QJFjLygXA
+ ySk59tRw0kDIfjhmkZtF7TALuBUrbiUQwgve8g6/donicaI1WmzFvfwWS7dP9zLitTwou+
+ hmFeCBl7SFte7wHkj6pXSX7Xi50Rp6k=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-392-8-qujbm4Oiu8_kGdbOcj9A-1; Tue, 04 Jul 2023 09:14:56 -0400
+X-MC-Unique: 8-qujbm4Oiu8_kGdbOcj9A-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4035b114793so22762111cf.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 06:14:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688476313; x=1691068313;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=uq3yYAZX8z4gQVSQCuo2VcgFD3TeuY6r+Mx7TIhl5ug=;
- b=JB+agNhtJp+dtC05RN6CjSpDWDziqMEr4Af2NwT1mWDNPYoyAH+DbZrmrnaO/rrDQs
- zB9PnbdKH/fb2yk2h2JrtlV2A9MXS+dyP1Uc+JYRvK54skLl3Oou7gCFITDWjE0rlIy0
- Kgb9GBbVFUxftTxvvf6sNsDwkoKxvdA3KMWHbNgpaw5dDqklUPpPSzEb23gG1tmW3YnT
- 6vcro9iUBnIUtN+fOS848CavzMI5I8GVyyL0VStC4Qq2e30UcguqYvShIcAFD69s5lqx
- 16/z6eBMyfZYCk3uIEXHaT5A6tzfyRxzmOWx5ApVWJnEd0dbq4ks7cs3RCXeR0SXibHA
- wuXQ==
-X-Gm-Message-State: ABy/qLYgKmKWSIg8aA44EEuG5Kq+dMAkcdBOmouzWiHYAn8HbxvKQ5z4
- /4Z3X1CFRvhFM8/XCkjHEazr7zeb+BcMCdh/SrjKHw==
-X-Google-Smtp-Source: APBJJlFEVU+of1U5byzARWYpAo5hceXxn/yNVVVU51dNCEdTSI+WXOvtwE+cCXb1KcY22aIqaj+4RNEUmo+R2bmmSJM=
-X-Received: by 2002:a2e:95d9:0:b0:2b5:80c9:1261 with SMTP id
- y25-20020a2e95d9000000b002b580c91261mr9627094ljh.48.1688476313553; Tue, 04
- Jul 2023 06:11:53 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688476496; x=1691068496;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HgU56Jb9oAALfA5DNLs9cSNt9PhE+0rEJU0KndMkfmw=;
+ b=kESU6zYUUx07NN7Bs9YJ4b4QfpFKiczIIeVD37QqSyj8FMe4lskXxhQ2kbsRJy6Gk+
+ qlR86BMnaiZEi9ve1aHf1WJHBBNgC0QpGBoR57kuUEtF6NrQLZFbcAXxG+BBlz7MftwK
+ Dq1xkdx9wKk5gHPuYl1xJ0BiJaT/sXl9fzNPkdQQnlcSLI14Km+2qax20//E+Q5NmAIU
+ AcNlV5/JG9z6RnRrepwpdvbCDz+ctrbM9STParez671HNhefH2Fw8xVhpi3C0RwALc7+
+ ROj+G9rCOYXrrAjqYzPktELkpJe9P6nfbiMTeZUEPC3HEYXpx2ZMGpKZaLqX9JfI9sKU
+ 0ddw==
+X-Gm-Message-State: AC+VfDz10CS8b/W1oTD+WMkY80so7hBkyOB9EmmvJ8ZMEHtI0Zo9wsnB
+ 8fuTBuR0U7rdJFx4MhQ1aWsljM7JC9KjralcQof/4Nk77EFRn5Nea9yLBLwmDtKZmlPzK7nJnhO
+ q5dM0WAkHCw37SLU=
+X-Received: by 2002:a05:622a:54b:b0:403:2066:fd4a with SMTP id
+ m11-20020a05622a054b00b004032066fd4amr16238483qtx.33.1688476496075; 
+ Tue, 04 Jul 2023 06:14:56 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ60Hhv6E/D+lFNFeHht/lNY2cZw1ZCZ2ynIsM8esIAOxcMhjUvu2r7D4Ht4xPL8BLFjYp2gEA==
+X-Received: by 2002:a05:622a:54b:b0:403:2066:fd4a with SMTP id
+ m11-20020a05622a054b00b004032066fd4amr16238468qtx.33.1688476495803; 
+ Tue, 04 Jul 2023 06:14:55 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-179-126.web.vodafone.de.
+ [109.43.179.126]) by smtp.gmail.com with ESMTPSA id
+ f14-20020ac859ce000000b003f9c6a311e1sm11131824qtf.47.2023.07.04.06.14.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jul 2023 06:14:55 -0700 (PDT)
+Message-ID: <3ea3a276-a06a-b1b3-bc88-662c94d240e0@redhat.com>
+Date: Tue, 4 Jul 2023 15:14:50 +0200
 MIME-Version: 1.0
-References: <20230628202758.16398-1-vikram.garhwal@amd.com>
-In-Reply-To: <20230628202758.16398-1-vikram.garhwal@amd.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 4 Jul 2023 14:11:42 +0100
-Message-ID: <CAFEAcA9aarrVFuBjt5gWgD2iHa_o3-XxbUWig_kDB3D=tCH0WQ@mail.gmail.com>
-Subject: Re: [QEMU][PATCH v1] tests/qtest: xlnx-canfd-test: Fix code coverity
- issues
-To: Vikram Garhwal <vikram.garhwal@amd.com>
-Cc: qemu-devel@nongnu.org, Francisco Iglesias <francisco.iglesias@amd.com>, 
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v21 14/20] tests/avocado: s390x cpu topology core
+Content-Language: en-US
+To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
+ mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+ ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
+ armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
+ nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
+References: <20230630091752.67190-1-pmorel@linux.ibm.com>
+ <20230630091752.67190-15-pmorel@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230630091752.67190-15-pmorel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,18 +106,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 28 Jun 2023 at 21:28, Vikram Garhwal <vikram.garhwal@amd.com> wrote:
->
-> Following are done to fix the coverity issues:
-> 1. Change read_data to fix the CID 1512899: Out-of-bounds access (OVERRUN)
-> 2. Fix match_rx_tx_data to fix CID 1512900: Logically dead code (DEADCODE)
-> 3. Replace rand() in generate_random_data() with g_rand_int()
->
-> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
+On 30/06/2023 11.17, Pierre Morel wrote:
+> Introduction of the s390x cpu topology core functions and
+> basic tests.
+> 
+> We test the corelation between the command line and
+> the QMP results in query-cpus-fast for various CPU topology.
+> 
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> ---
+>   MAINTAINERS                    |   1 +
+>   tests/avocado/s390_topology.py | 196 +++++++++++++++++++++++++++++++++
+>   2 files changed, 197 insertions(+)
+>   create mode 100644 tests/avocado/s390_topology.py
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 76f236564c..12d0d7bd91 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1705,6 +1705,7 @@ F: hw/s390x/cpu-topology.c
+>   F: target/s390x/kvm/stsi-topology.c
+>   F: docs/devel/s390-cpu-topology.rst
+>   F: docs/system/s390x/cpu-topology.rst
+> +F: tests/avocado/s390_topology.py
+>   
+>   X86 Machines
+>   ------------
+> diff --git a/tests/avocado/s390_topology.py b/tests/avocado/s390_topology.py
+> new file mode 100644
+> index 0000000000..1758ec1f13
+> --- /dev/null
+> +++ b/tests/avocado/s390_topology.py
+> @@ -0,0 +1,196 @@
+> +# Functional test that boots a Linux kernel and checks the console
+> +#
+> +# Copyright IBM Corp. 2023
+> +#
+> +# Author:
+> +#  Pierre Morel <pmorel@linux.ibm.com>
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or
+> +# later.  See the COPYING file in the top-level directory.
+> +
+> +import os
+> +import shutil
+> +import time
+> +
+> +from avocado_qemu import QemuSystemTest
+> +from avocado_qemu import exec_command
+> +from avocado_qemu import exec_command_and_wait_for_pattern
+> +from avocado_qemu import interrupt_interactive_console_until_pattern
+> +from avocado_qemu import wait_for_console_pattern
+> +from avocado.utils import process
+> +from avocado.utils import archive
+> +
+> +
+> +class S390CPUTopology(QemuSystemTest):
+> +    """
+> +    S390x CPU topology consist of 4 topology layers, from bottom to top,
+> +    the cores, sockets, books and drawers and 2 modifiers attributes,
+> +    the entitlement and the dedication.
+> +    See: docs/system/s390x/cpu-topology.rst.
+> +
+> +    S390x CPU topology is setup in different ways:
+> +    - implicitely from the '-smp' argument by completing each topology
 
+implicitly
 
+> +      level one after the other begining with drawer 0, book 0 and socket 0.
 
-Applied to target-arm.next, thanks.
+beginning
 
--- PMM
+> +    - explicitely from the '-device' argument on the QEMU command line
+
+explicitly
+
+> +    - explicitely by hotplug of a new CPU using QMP or HMP
+
+explicitly
+
+  Thomas
+
 
