@@ -2,74 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C118746CAC
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 11:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FEF8746CD6
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 11:06:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGbwU-0007a3-Ku; Tue, 04 Jul 2023 05:03:26 -0400
+	id 1qGbyk-0008KS-9v; Tue, 04 Jul 2023 05:05:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qGbwG-0007Xq-JE
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 05:03:13 -0400
-Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qGbwE-0007Ie-Ud
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 05:03:12 -0400
-Received: by mail-qt1-x831.google.com with SMTP id
- d75a77b69052e-403715da067so2603911cf.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 02:03:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688461389; x=1691053389;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+kmC4tcCT0hmoEEuAY95B7MFc2NoC+YnNgzqC9Lo+xs=;
- b=INNQ/Ys3OmradcHaOEGc2ZZDRmUg0oJ+aiYFZDTINPYNtcBhZi5SMQVNNt1aVZabXo
- r1Dr3d+6NjiDqALm5myomkDgurZVtIzGSJAy9oVf9snwZLIsQj6yS5R9Cc2bnsw0hfcD
- W1UjKjpSKM7Ev1vgwZTkiEtQTCiIyaf8kH2z5zO6xjyBGrH7r7ri727d1goprnlqtTHq
- cs1h3l2gGpwWsfHcKrOnabDaICknCxyPqbt4s3bmc98LgpoFhabQy1/OJ6GJt857zIJY
- xQgPmNfTulALA4MtkSYdxVGTtCWfCsYOLKmz4zJ9uVgxC4QUyTP6AVgAiq0fhoYMLfzY
- 8eOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688461389; x=1691053389;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+kmC4tcCT0hmoEEuAY95B7MFc2NoC+YnNgzqC9Lo+xs=;
- b=ctS/gEQz8GSZ94VYa5btMUohsDB8LoVNI/jQDN6HJX6t9Y3XffLHNgxewodxVnszYe
- ds2y0RRSaJLYos2NmRLaMbP9kP/4bbfItxh7K5hxHW5MeA0ipI0Yooc+1Vn0R9dhHe85
- DVIgRnRoplI7R2fPmD1D32YrGPR6YOTXQsdkEiYXA57ZEuxxKbqWwiC7JsMU32BRefYj
- lZ6g9hBtnchw8iXikoPw0xqfsCmc7hqB/3aMNvwEnaT1G9tkdU7sT3bKp8ZXz2HUEJG5
- SDni+s2gmVAVLtIng7v1Hdcw61YnzhaBuSbJg9vPfCbL/e3JkFPkbUFvn5OsLmTMw6Lx
- v3fQ==
-X-Gm-Message-State: AC+VfDyq3cj9qnx5LAPGNkm69w/0fVMmdjUrf2G8yFuXnJifQ46Vf0Y/
- v0TPwcxXUfhiffjZAILOM4H/Wq/klvdVa8Al8e0=
-X-Google-Smtp-Source: ACHHUZ7CVKl06B5LQJ6bsXW/bjUi3JFirWoXqSP5w+YFDp2UQKJiv/h4WbDoE5YiR5xGvyU6e5ifGy545ZdssT7IHvA=
-X-Received: by 2002:ac8:4e55:0:b0:3f3:91bd:a459 with SMTP id
- e21-20020ac84e55000000b003f391bda459mr15793170qtw.34.1688461389497; Tue, 04
- Jul 2023 02:03:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1qGbyi-0008KC-TU
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 05:05:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1qGbyh-0007tb-0K
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 05:05:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688461542;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=auHYNaNBiHRxlDzlcQkmis1/aL9BjB4ID11oQNInT64=;
+ b=LBrjKbXSo/Zi+vFWIBj0akXJcrbUfjPROukLAbt3NtgkXexWV8QX6AjaG5cKT9jc1YCX+n
+ XsMpn2kmh52aqVKMsMDYpUW/ZVoiE6G0p14b7b0sp2LztVIIh62txeyi8nn2KdNVE8Be5I
+ 0svuHBMPT1b/fEbuN7twdJHQfW3IdCE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-281-80dIaazfMS2Indtq_Enchg-1; Tue, 04 Jul 2023 05:05:38 -0400
+X-MC-Unique: 80dIaazfMS2Indtq_Enchg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9F6B1185A794;
+ Tue,  4 Jul 2023 09:05:37 +0000 (UTC)
+Received: from localhost (dhcp-192-239.str.redhat.com [10.33.192.239])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 13F6A2166B34;
+ Tue,  4 Jul 2023 09:05:36 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Shaoqin Huang <shahuang@redhat.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+Cc: oliver.upton@linux.dev, salil.mehta@huawei.com, james.morse@arm.com,
+ gshan@redhat.com, Shaoqin Huang <shahuang@redhat.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v1 2/5] linux-headers: Import arm-smccc.h from Linux
+ v6.4-rc7
+In-Reply-To: <20230626064910.1787255-3-shahuang@redhat.com>
+Organization: Red Hat GmbH
+References: <20230626064910.1787255-1-shahuang@redhat.com>
+ <20230626064910.1787255-3-shahuang@redhat.com>
+User-Agent: Notmuch/0.37 (https://notmuchmail.org)
+Date: Tue, 04 Jul 2023 11:05:35 +0200
+Message-ID: <87a5wchwrk.fsf@redhat.com>
 MIME-Version: 1.0
-References: <20230704084210.101822-1-mcascell@redhat.com>
-In-Reply-To: <20230704084210.101822-1-mcascell@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 4 Jul 2023 11:02:58 +0200
-Message-ID: <CAJ+F1CLi54BFaeYjZ_eHq+nixPkAcFOGquLx0kRc_YeUeLZVKA@mail.gmail.com>
-Subject: Re: [PATCH] ui/vnc-clipboard: fix infinite loop in inflate_buffer
- (CVE-2023-3255)
-To: Mauro Matteo Cascella <mcascell@redhat.com>
-Cc: qemu-devel@nongnu.org, kraxel@redhat.com, kevin.denis@synacktiv.com
-Content-Type: multipart/alternative; boundary="0000000000005689ba05ffa58d2a"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,151 +82,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000005689ba05ffa58d2a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Mon, Jun 26 2023, Shaoqin Huang <shahuang@redhat.com> wrote:
 
-On Tue, Jul 4, 2023 at 10:42=E2=80=AFAM Mauro Matteo Cascella <mcascell@red=
-hat.com>
-wrote:
-
-> A wrong exit condition may lead to an infinite loop when inflating a
-> valid zlib buffer containing some extra bytes in the `inflate_buffer`
-> function. The bug only occurs post-authentication. Return the buffer
-> immediately if the end of the compressed data has been reached
-> (Z_STREAM_END).
+> Copy in the SMCCC definitions from the kernel, which will be used to
+> implement SMCCC handling in userspace.
 >
-> Fixes: CVE-2023-3255
-> Fixes: 0bf41cab ("ui/vnc: clipboard support")
-> Reported-by: Kevin Denis <kevin.denis@synacktiv.com>
-> Signed-off-by: Mauro Matteo Cascella <mcascell@redhat.com>
->
-
-Tested-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-
-Note: we may want to disconnect the client when there are extra bytes in
-the message, or print some warnings.
-
-
+> Signed-off-by: Shaoqin Huang <shahuang@redhat.com>
 > ---
->  ui/vnc-clipboard.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
->
-> diff --git a/ui/vnc-clipboard.c b/ui/vnc-clipboard.c
-> index 8aeadfaa21..c759be3438 100644
-> --- a/ui/vnc-clipboard.c
-> +++ b/ui/vnc-clipboard.c
-> @@ -50,8 +50,11 @@ static uint8_t *inflate_buffer(uint8_t *in, uint32_t
-> in_len, uint32_t *size)
->          ret =3D inflate(&stream, Z_FINISH);
->          switch (ret) {
->          case Z_OK:
-> -        case Z_STREAM_END:
->              break;
-> +        case Z_STREAM_END:
-> +            *size =3D stream.total_out;
-> +            inflateEnd(&stream);
-> +            return out;
->          case Z_BUF_ERROR:
->              out_len <<=3D 1;
->              if (out_len > (1 << 20)) {
-> @@ -66,11 +69,6 @@ static uint8_t *inflate_buffer(uint8_t *in, uint32_t
-> in_len, uint32_t *size)
->          }
->      }
->
-> -    *size =3D stream.total_out;
-> -    inflateEnd(&stream);
-> -
-> -    return out;
-> -
->  err_end:
->      inflateEnd(&stream);
->  err:
-> --
-> 2.41.0
->
->
->
+>  linux-headers/linux/arm-smccc.h | 240 ++++++++++++++++++++++++++++++++
+>  1 file changed, 240 insertions(+)
+>  create mode 100644 linux-headers/linux/arm-smccc.h
 
---=20
-Marc-Andr=C3=A9 Lureau
+I think you need to add this to the headers update script, so that
+changes get propagated in the future as well.
 
---0000000000005689ba05ffa58d2a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+(I'd just add it to the script and do the update in one go.)
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jul 4, 2023 at 10:42=E2=80=AF=
-AM Mauro Matteo Cascella &lt;<a href=3D"mailto:mcascell@redhat.com">mcascel=
-l@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" styl=
-e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex">A wrong exit condition may lead to an infinite loop when inflat=
-ing a<br>
-valid zlib buffer containing some extra bytes in the `inflate_buffer`<br>
-function. The bug only occurs post-authentication. Return the buffer<br>
-immediately if the end of the compressed data has been reached<br>
-(Z_STREAM_END).<br>
-<br>
-Fixes: CVE-2023-3255<br>
-Fixes: 0bf41cab (&quot;ui/vnc: clipboard support&quot;)<br>
-Reported-by: Kevin Denis &lt;<a href=3D"mailto:kevin.denis@synacktiv.com" t=
-arget=3D"_blank">kevin.denis@synacktiv.com</a>&gt;<br>
-Signed-off-by: Mauro Matteo Cascella &lt;<a href=3D"mailto:mcascell@redhat.=
-com" target=3D"_blank">mcascell@redhat.com</a>&gt;<br></blockquote><div><di=
-v><br></div><div>Tested-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:ma=
-rcandre.lureau@redhat.com">marcandre.lureau@redhat.com</a>&gt;</div></div><=
-div>Reviewed-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lur=
-eau@redhat.com">marcandre.lureau@redhat.com</a>&gt;</div><div><br></div><di=
-v>Note: we may want to disconnect the client when there are extra bytes in =
-the message, or print some warnings.<br></div><div>=C2=A0<br></div><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
- solid rgb(204,204,204);padding-left:1ex">
----<br>
-=C2=A0ui/vnc-clipboard.c | 10 ++++------<br>
-=C2=A01 file changed, 4 insertions(+), 6 deletions(-)<br>
-<br>
-diff --git a/ui/vnc-clipboard.c b/ui/vnc-clipboard.c<br>
-index 8aeadfaa21..c759be3438 100644<br>
---- a/ui/vnc-clipboard.c<br>
-+++ b/ui/vnc-clipboard.c<br>
-@@ -50,8 +50,11 @@ static uint8_t *inflate_buffer(uint8_t *in, uint32_t in_=
-len, uint32_t *size)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D inflate(&amp;stream, Z_FINISH);<b=
-r>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0switch (ret) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0case Z_OK:<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 case Z_STREAM_END:<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 case Z_STREAM_END:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 *size =3D stream.total_out;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 inflateEnd(&amp;stream);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return out;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0case Z_BUF_ERROR:<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0out_len &lt;&lt;=3D 1;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (out_len &gt; (1 &lt;&lt=
-; 20)) {<br>
-@@ -66,11 +69,6 @@ static uint8_t *inflate_buffer(uint8_t *in, uint32_t in_=
-len, uint32_t *size)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
--=C2=A0 =C2=A0 *size =3D stream.total_out;<br>
--=C2=A0 =C2=A0 inflateEnd(&amp;stream);<br>
--<br>
--=C2=A0 =C2=A0 return out;<br>
--<br>
-=C2=A0err_end:<br>
-=C2=A0 =C2=A0 =C2=A0inflateEnd(&amp;stream);<br>
-=C2=A0err:<br>
--- <br>
-2.41.0<br>
-<br>
-<br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
-=A9 Lureau<br></div></div>
-
---0000000000005689ba05ffa58d2a--
 
