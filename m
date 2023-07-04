@@ -2,42 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4260874775B
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 19:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA27747797
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 19:16:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGjMN-0001hj-Ht; Tue, 04 Jul 2023 12:58:39 -0400
+	id 1qGjcc-0006l9-2U; Tue, 04 Jul 2023 13:15:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
- id 1qGjMI-0001h7-5o; Tue, 04 Jul 2023 12:58:35 -0400
+ id 1qGjcS-0006jv-9t; Tue, 04 Jul 2023 13:15:20 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=18er=CW=kaod.org=clg@ozlabs.org>)
- id 1qGjLv-0006ST-D8; Tue, 04 Jul 2023 12:58:28 -0400
+ id 1qGjcJ-0001mA-Q6; Tue, 04 Jul 2023 13:15:09 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QwTWK0nt3z4wxW;
- Wed,  5 Jul 2023 02:58:05 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QwTts4wdTz4wZw;
+ Wed,  5 Jul 2023 03:15:01 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QwTWH4v2Qz4wb8;
- Wed,  5 Jul 2023 02:58:03 +1000 (AEST)
-Message-ID: <6d4334e9-4a90-169b-0a90-a260aaaf2bb2@kaod.org>
-Date: Tue, 4 Jul 2023 18:57:59 +0200
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QwTtq6RKYz4wqZ;
+ Wed,  5 Jul 2023 03:14:59 +1000 (AEST)
+Message-ID: <697082fb-abb4-2e6f-de60-3a24ef1fd049@kaod.org>
+Date: Tue, 4 Jul 2023 19:14:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [RFC PATCH 0/4] ppc: Improve multisocket support
+Subject: Re: [PATCH] pnv/xive: Allow mmio operations of any size on the ESB CI
+ pages
 Content-Language: en-US
-To: Frederic Barrat <fbarrat@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>
-References: <20230704134921.2626692-1-clg@kaod.org>
- <25be9d1c-08bb-94ff-50e2-8e5e317ef997@linux.ibm.com>
+To: Frederic Barrat <fbarrat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230704144848.164287-1-fbarrat@linux.ibm.com>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <25be9d1c-08bb-94ff-50e2-8e5e317ef997@linux.ibm.com>
+In-Reply-To: <20230704144848.164287-1-fbarrat@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=150.107.74.76;
@@ -63,39 +64,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/4/23 18:20, Frederic Barrat wrote:
+On 7/4/23 16:48, Frederic Barrat wrote:
+> We currently only allow 64-bit operations on the ESB CI pages. There's
+> no real reason for that limitation, skiboot/linux didn't need
+> more. However the hardware supports any size, so this patch relaxes
+> that restriction. It impacts both the ESB pages for "normal"
+> interrupts as well as the ESB pages for escalation interrupts defined
+> for the ENDs.
 > 
-> 
-> On 04/07/2023 15:49, Cédric Le Goater wrote:
->> Hello,
->>
->> Here are changes improving multisocket support of the XIVE models
->> (POWER9 only). When a source has an END target on another chip, the
->> XIVE IC will use an MMIO store to forward the notification to the
->> remote chip. The long term plan is to get rid of pnv_xive_get_remote()
->> whic is a modeling shortcut. I have had them for while, they compile,
->> they seem to still work but this is not for merge yet. If someone
->> could take over, that would be nice.
->>
->> The best way to test is to start a 2 sockets * 1 cpu system with devices
->> attached to the PCI buses of chip 0 and to offline CPU 0. All sources
->> should be configured to be served by CPU 1 on socket 1 and trigger
->> notifications on chip 0 should be forwarded to chip 1.
->>
->> Last patch adds support for degenerative interrupts. This is used by
->> the lowest level FW of POWER systems. Difficult to test.
->>
-> 
-> 
-> Thanks for the series! My crystal ball tells me the PC MMIO patch will come handy soon (to be adapted for P10 and groups). And the remote routing looks pretty interesting too.
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-I am glad !
 
-I think the first 2 patches are a good addition. They remove a
-qdev_get_machine() call which is ugly. P10 has the same kind of
-shortcut.
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
 
 C.
 
+
+> ---
+> 
+> This should wrap-up the cleanup about mmio size for the xive BARs. The
+> NVPG and NVC BAR accesses should also be relaxed but we don't really
+> implement them, any load/store currently fails. Something to address
+> when/if we implement them.
+> 
+>   hw/intc/xive.c  | 8 ++++----
+>   hw/intc/xive2.c | 4 ++--
+>   2 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+> index f60c878345..c014e961a4 100644
+> --- a/hw/intc/xive.c
+> +++ b/hw/intc/xive.c
+> @@ -1175,11 +1175,11 @@ static const MemoryRegionOps xive_source_esb_ops = {
+>       .write = xive_source_esb_write,
+>       .endianness = DEVICE_BIG_ENDIAN,
+>       .valid = {
+> -        .min_access_size = 8,
+> +        .min_access_size = 1,
+>           .max_access_size = 8,
+>       },
+>       .impl = {
+> -        .min_access_size = 8,
+> +        .min_access_size = 1,
+>           .max_access_size = 8,
+>       },
+>   };
+> @@ -2006,11 +2006,11 @@ static const MemoryRegionOps xive_end_source_ops = {
+>       .write = xive_end_source_write,
+>       .endianness = DEVICE_BIG_ENDIAN,
+>       .valid = {
+> -        .min_access_size = 8,
+> +        .min_access_size = 1,
+>           .max_access_size = 8,
+>       },
+>       .impl = {
+> -        .min_access_size = 8,
+> +        .min_access_size = 1,
+>           .max_access_size = 8,
+>       },
+>   };
+> diff --git a/hw/intc/xive2.c b/hw/intc/xive2.c
+> index 4d9ff41956..c37ef25d44 100644
+> --- a/hw/intc/xive2.c
+> +++ b/hw/intc/xive2.c
+> @@ -954,11 +954,11 @@ static const MemoryRegionOps xive2_end_source_ops = {
+>       .write = xive2_end_source_write,
+>       .endianness = DEVICE_BIG_ENDIAN,
+>       .valid = {
+> -        .min_access_size = 8,
+> +        .min_access_size = 1,
+>           .max_access_size = 8,
+>       },
+>       .impl = {
+> -        .min_access_size = 8,
+> +        .min_access_size = 1,
+>           .max_access_size = 8,
+>       },
+>   };
 
 
