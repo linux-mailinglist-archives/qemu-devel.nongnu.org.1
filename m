@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A92746B81
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD507746B82
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:07:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGb3l-0006mF-FI; Tue, 04 Jul 2023 04:06:53 -0400
+	id 1qGb3n-0006nC-TQ; Tue, 04 Jul 2023 04:06:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qGb3k-0006li-3z
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:06:52 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1qGb3m-0006mz-4U
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:06:54 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qGb3g-0000rN-Dp
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:06:51 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6686ef86110so2564275b3a.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:06:47 -0700 (PDT)
+ id 1qGb3g-0000sN-H9
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:06:53 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-666e64e97e2so2716277b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:06:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1688458006; x=1691050006; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=dSQNJxzoGgRyw577WtrT9Nv069O9k73QukTdwTWMRR4=;
- b=vLXeIB7xMiD2N7YTVOMOjzSAjrfZ5g0aTW/pyExJ5k6bP9AoNg8raAEQcvgEDukh83
- syOIX8vwBcLNnQ6W0LfManihW3nVNjj8vNQC+em12LX2GglCa5XqLRXmn2ZxafxhuYm8
- qdESxtgytEl+XZ+r+n4bHZWUw1HOaf/xbBCXu5J1VWCeD6EBfoYtewvVj/MTMdZ3WXtZ
- EIhOaqxqM8yGcqW+TQ0PFzB1DlDTcZ+rlOy+jbfoU4RHnf8i6c0Zx2Q8Ru/DzlBGABwq
- dJH8TtAkxlD47Kl3++g+t0LGgg1QrFzfGtkYX9rUVW0GFfCUUMVpuJZrkVCl/FKMzuDq
- JA1Q==
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1688458007; x=1691050007; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=gQ690QrMYdqdPeWSwhBzqou+wm7X9S8MDsUYTaTIvYY=;
+ b=LwdnSD8EynBFBd/Q7iRdMxtbRk0YykA3puw+U3Ngj4LmWtkuawzQlKPyv9aLJrTTR/
+ T1U2KHSuJEHP9NESrYmSvknRMwc0/ev8Y+zdkMQWNllaKPaLbs5KMbAdibxlCQVOpLMP
+ luXmux2lrlErRWcj1bBhjNjmfmd0PoC8UInZ1sZI5R5iDmb42LwaHpLvgLQrWKK98+2u
+ 3VA2Ugi1wwpTKyySleWEojVgczeGzD/psiefFY8wkVd1r0MQfsMy7/X22L6uDO+LV8lH
+ 93c88EsLtz/qa0tKMPJkfl3itFcGLnv1Qmf7CjKMEteNh3b3TNkS6YFp1iS0kB63ttgo
+ bbpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688458006; x=1691050006;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dSQNJxzoGgRyw577WtrT9Nv069O9k73QukTdwTWMRR4=;
- b=aEOwCMN/y6A8Kn5NEQ84RMLHYWOPv87xwrzi5mBAFDwCd1JWpVy+Dx2I3Q9MDZOlq2
- g2ORALAWWib+SD/nQNflJIzhTDNsXtrpoB8TMNaltQ3mcrGvPdlJV/EZdiWJfGljGoNA
- 4S5gOYQC0pautkjfMr1a+1gH6SK49ECIkhkG6VY2uHHMsUFCsTmuHgNtXwybI8NS1eOp
- giqlTXXbFP3qO+tIxELd1oBa7OHL9yyCPzA3/gNaJdBSnxukL2miWIABfSQVlOlgFfMP
- 0rzi12/piuzNr5GhU2CBYi3We9VzZYeIpe5e73wLwo42IWqCoaSMneySTZi68tre0iT9
- /hRg==
-X-Gm-Message-State: ABy/qLYo37Ywmshy3J3ijiQhBO7didMflR1K6C4+Q4B2EMnZguimwsf7
- n4a7+zaS1wpuJa9lz+FtDTtIJHOboN+Ko2ur54KUVw==
-X-Google-Smtp-Source: APBJJlEA1H/lyb4hg9CTLFyWFRfGnUQS9qB3Yl1nDQIrhPeOgshnjyv9OIZ7BgJFcgP36k22cDWq9w==
-X-Received: by 2002:a05:6a00:158b:b0:668:94a2:2ec7 with SMTP id
- u11-20020a056a00158b00b0066894a22ec7mr13200624pfk.25.1688458005726; 
- Tue, 04 Jul 2023 01:06:45 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688458007; x=1691050007;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=gQ690QrMYdqdPeWSwhBzqou+wm7X9S8MDsUYTaTIvYY=;
+ b=ZFivwvgxs/wN6Pld0Ysuxo+7tFPMA7fQMM/GpgMKqFBBzbgFPiEX42HbfuXpW6AdPy
+ 5O5uG0peGVl4roY7QXMcdnL8morHswCl6MTNPVycbO2kBJQPCSIu+cZEpa331EStHLfe
+ GXj/qwj46rgDlRjgd+pALID5jEH8HbLPDcWpFeR72O6nbxLdk6TyIcl7mAYZsc1uVVNq
+ BVEWAVWuZdEQebJxWrH/Bai5a0ocevhwYer2vFoikw5W4VcFJsHsE0StVvnyaE7KDbQP
+ KN6tG1K7HCgjyNiWhyFF0hfZIgt+fq2rRP0+rmVp4kvDl1nbRmvby+9UH4hIumpMO269
+ JR5Q==
+X-Gm-Message-State: ABy/qLZu11ymUtpvIp3GZiv1/bkDL9udIT+PZDFmRqZQAxOopMf0Vcn6
+ kMrwYKCUa/xRRWdnhdPZc3+L4M84QJon4hpeyZ4=
+X-Google-Smtp-Source: APBJJlFuFRFsA9QE3oilriDfAesYiBkU4Ve/gyqnZHn8gphzu0EZtN0GU2qNiYdZP3CnbKeXoOV/+A==
+X-Received: by 2002:a05:6a00:2389:b0:668:681f:ca98 with SMTP id
+ f9-20020a056a00238900b00668681fca98mr14549431pfc.27.1688458006794; 
+ Tue, 04 Jul 2023 01:06:46 -0700 (PDT)
 Received: from mnissler.ba.rivosinc.com ([66.220.2.162])
  by smtp.gmail.com with ESMTPSA id
  u1-20020aa78381000000b00662c4ca18ebsm15113101pfm.128.2023.07.04.01.06.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 01:06:45 -0700 (PDT)
+ Tue, 04 Jul 2023 01:06:46 -0700 (PDT)
 From: Mattias Nissler <mnissler@rivosinc.com>
 To: qemu-devel@nongnu.org
 Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>,
@@ -63,14 +64,16 @@ Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
  stefanha@redhat.com, David Hildenbrand <david@redhat.com>,
  john.levon@nutanix.com, Mattias Nissler <mnissler@rivosinc.com>
-Subject: [PATCH 0/3] Support message-based DMA in vfio-user server
-Date: Tue,  4 Jul 2023 01:06:24 -0700
-Message-Id: <20230704080628.852525-1-mnissler@rivosinc.com>
+Subject: [PATCH 1/3] softmmu: Support concurrent bounce buffers
+Date: Tue,  4 Jul 2023 01:06:25 -0700
+Message-Id: <20230704080628.852525-2-mnissler@rivosinc.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230704080628.852525-1-mnissler@rivosinc.com>
+References: <20230704080628.852525-1-mnissler@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=mnissler@rivosinc.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=mnissler@rivosinc.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,48 +95,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series adds basic support for message-based DMA in qemu's vfio-user
-server. This is useful for cases where the client does not provide file
-descriptors for accessing system memory via memory mappings. My motivating use
-case is to hook up device models as PCIe endpoints to a hardware design. This
-works by bridging the PCIe transaction layer to vfio-user, and the endpoint
-does not access memory directly, but sends memory requests TLPs to the hardware
-design in order to perform DMA.
+It is not uncommon for device models to request mapping of several DMA
+regions at the same time. An example is igb (and probably other net
+devices as well) when a packet is spread across multiple descriptors.
 
-Note that in addition to the 3 commits included, we also need a
-subprojects/libvfio-user roll to bring in this bugfix:
-https://github.com/nutanix/libvfio-user/commit/bb308a2e8ee9486a4c8b53d8d773f7c8faaeba08
-Stefan, can I ask you to kindly update the
-https://gitlab.com/qemu-project/libvfio-user mirror? I'll be happy to include
-an update to subprojects/libvfio-user.wrap in this series.
+In order to support this when indirect DMA is used, as is the case when
+running the device model in a vfio-server process without mmap()-ed DMA,
+this change allocates DMA bounce buffers dynamically instead of
+supporting only a single buffer.
 
-Finally, there is some more work required on top of this series to get
-message-based DMA to really work well:
+Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
+---
+ softmmu/physmem.c | 74 ++++++++++++++++++++++-------------------------
+ 1 file changed, 35 insertions(+), 39 deletions(-)
 
-* libvfio-user has a long-standing issue where socket communication gets messed
-  up when messages are sent from both ends at the same time. See
-  https://github.com/nutanix/libvfio-user/issues/279 for more details. I've
-  been engaging there and plan to contribute a fix.
-
-* qemu currently breaks down DMA accesses into chunks of size 8 bytes at
-  maximum, each of which will be handled in a separate vfio-user DMA request
-  message. This is quite terrible for large DMA acceses, such as when nvme
-  reads and writes page-sized blocks for example. Thus, I would like to improve
-  qemu to be able to perform larger accesses, at least for indirect memory
-  regions. I have something working locally, but since this will likely result
-  in more involved surgery and discussion, I am leaving this to be addressed in
-  a separate patch.
-
-Mattias Nissler (3):
-  softmmu: Support concurrent bounce buffers
-  softmmu: Remove DMA unmap notification callback
-  vfio-user: Message-based DMA support
-
- hw/remote/vfio-user-obj.c |  62 ++++++++++++++++--
- softmmu/dma-helpers.c     |  28 --------
- softmmu/physmem.c         | 131 ++++++++------------------------------
- 3 files changed, 83 insertions(+), 138 deletions(-)
-
+diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+index bda475a719..56130b5a1d 100644
+--- a/softmmu/physmem.c
++++ b/softmmu/physmem.c
+@@ -2904,13 +2904,11 @@ void cpu_flush_icache_range(hwaddr start, hwaddr len)
+ 
+ typedef struct {
+     MemoryRegion *mr;
+-    void *buffer;
+     hwaddr addr;
+-    hwaddr len;
+-    bool in_use;
++    uint8_t buffer[];
+ } BounceBuffer;
+ 
+-static BounceBuffer bounce;
++static size_t bounce_buffers_in_use;
+ 
+ typedef struct MapClient {
+     QEMUBH *bh;
+@@ -2947,7 +2945,7 @@ void cpu_register_map_client(QEMUBH *bh)
+     QLIST_INSERT_HEAD(&map_client_list, client, link);
+     /* Write map_client_list before reading in_use.  */
+     smp_mb();
+-    if (!qatomic_read(&bounce.in_use)) {
++    if (qatomic_read(&bounce_buffers_in_use)) {
+         cpu_notify_map_clients_locked();
+     }
+     qemu_mutex_unlock(&map_client_list_lock);
+@@ -3076,31 +3074,24 @@ void *address_space_map(AddressSpace *as,
+     RCU_READ_LOCK_GUARD();
+     fv = address_space_to_flatview(as);
+     mr = flatview_translate(fv, addr, &xlat, &l, is_write, attrs);
++    memory_region_ref(mr);
+ 
+     if (!memory_access_is_direct(mr, is_write)) {
+-        if (qatomic_xchg(&bounce.in_use, true)) {
+-            *plen = 0;
+-            return NULL;
+-        }
+-        /* Avoid unbounded allocations */
+-        l = MIN(l, TARGET_PAGE_SIZE);
+-        bounce.buffer = qemu_memalign(TARGET_PAGE_SIZE, l);
+-        bounce.addr = addr;
+-        bounce.len = l;
+-
+-        memory_region_ref(mr);
+-        bounce.mr = mr;
++        qatomic_inc_fetch(&bounce_buffers_in_use);
++
++        BounceBuffer *bounce = g_malloc(l + sizeof(BounceBuffer));
++        bounce->addr = addr;
++        bounce->mr = mr;
++
+         if (!is_write) {
+             flatview_read(fv, addr, MEMTXATTRS_UNSPECIFIED,
+-                               bounce.buffer, l);
++                          bounce->buffer, l);
+         }
+ 
+         *plen = l;
+-        return bounce.buffer;
++        return bounce->buffer;
+     }
+ 
+-
+-    memory_region_ref(mr);
+     *plen = flatview_extend_translation(fv, addr, len, mr, xlat,
+                                         l, is_write, attrs);
+     fuzz_dma_read_cb(addr, *plen, mr);
+@@ -3114,31 +3105,36 @@ void *address_space_map(AddressSpace *as,
+ void address_space_unmap(AddressSpace *as, void *buffer, hwaddr len,
+                          bool is_write, hwaddr access_len)
+ {
+-    if (buffer != bounce.buffer) {
+-        MemoryRegion *mr;
+-        ram_addr_t addr1;
++    MemoryRegion *mr;
++    ram_addr_t addr1;
++
++    mr = memory_region_from_host(buffer, &addr1);
++    if (mr == NULL) {
++        /*
++         * Must be a bounce buffer (unless the caller passed a pointer which
++         * wasn't returned by address_space_map, which is illegal).
++         */
++        BounceBuffer *bounce = container_of(buffer, BounceBuffer, buffer);
+ 
+-        mr = memory_region_from_host(buffer, &addr1);
+-        assert(mr != NULL);
+         if (is_write) {
+-            invalidate_and_set_dirty(mr, addr1, access_len);
++            address_space_write(as, bounce->addr, MEMTXATTRS_UNSPECIFIED,
++                                bounce->buffer, access_len);
+         }
+-        if (xen_enabled()) {
+-            xen_invalidate_map_cache_entry(buffer);
++        memory_region_unref(bounce->mr);
++        g_free(bounce);
++
++        if (qatomic_dec_fetch(&bounce_buffers_in_use) == 1) {
++            cpu_notify_map_clients();
+         }
+-        memory_region_unref(mr);
+         return;
+     }
++
++    if (xen_enabled()) {
++        xen_invalidate_map_cache_entry(buffer);
++    }
+     if (is_write) {
+-        address_space_write(as, bounce.addr, MEMTXATTRS_UNSPECIFIED,
+-                            bounce.buffer, access_len);
+-    }
+-    qemu_vfree(bounce.buffer);
+-    bounce.buffer = NULL;
+-    memory_region_unref(bounce.mr);
+-    /* Clear in_use before reading map_client_list.  */
+-    qatomic_set_mb(&bounce.in_use, false);
+-    cpu_notify_map_clients();
++        invalidate_and_set_dirty(mr, addr1, access_len);
++    }
+ }
+ 
+ void *cpu_physical_memory_map(hwaddr addr,
 -- 
 2.34.1
 
