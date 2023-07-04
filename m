@@ -2,67 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF5A746A72
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 09:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F03F746A74
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 09:20:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGaHl-0000Rs-2e; Tue, 04 Jul 2023 03:17:17 -0400
+	id 1qGaKD-0002yo-Jy; Tue, 04 Jul 2023 03:19:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGaHb-0000PK-HA
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:17:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1qGaKA-0002y8-Sw
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:19:46 -0400
+Received: from mout.kundenserver.de ([217.72.192.74])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGaHZ-0006hY-Jc
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:17:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688455024;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Oysj6trjbqoas0ThT8XqdbBjkAsC2RjOZlgy4EWOkus=;
- b=jPfRSi8Jfv0Qn6sxQSj1tZ3Odj3xZp53iaBCBBirZL4iFH7TPQKj84uv7R53qhhklXR958
- AcHUwlAi1q93vgJ9i1ZIhvnGgjbOHcWKCQXGge3IpX0Mff7HR4S/tBEAWr/c3acH6L/GnT
- ygjbIkZokb+tWVTFJ5wdfMbA+zLElmc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-606-Ni-alB_GPsKtxoQLYstnPw-1; Tue, 04 Jul 2023 03:17:03 -0400
-X-MC-Unique: Ni-alB_GPsKtxoQLYstnPw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5AA01830EFC
- for <qemu-devel@nongnu.org>; Tue,  4 Jul 2023 07:17:03 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.192.231])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 43AAA2014E17;
- Tue,  4 Jul 2023 07:17:02 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1qGaK7-0007Ds-TL
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 03:19:46 -0400
+Received: from lenovo-t14s.redhat.com ([82.142.8.70]) by
+ mrelayeu.kundenserver.de (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis)
+ id 1N0WLC-1q4Ile0nbQ-00wUnL; Tue, 04 Jul 2023 09:19:34 +0200
+From: Laurent Vivier <lvivier@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 3/3] tests/qtest/readconfig: Test the docs/config/q35-*.cfg
- files
-Date: Tue,  4 Jul 2023 09:16:55 +0200
-Message-Id: <20230704071655.75381-4-thuth@redhat.com>
-In-Reply-To: <20230704071655.75381-1-thuth@redhat.com>
-References: <20230704071655.75381-1-thuth@redhat.com>
+Cc: jasowang@redhat.com, eric.auger@redhat.com, Peter Xu <peterx@redhat.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>, mst@redhat.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ marcandre.lureau@redhat.com, peter.maydell@linaro.org,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH v2 0/1] vhost-vdpa: skip TPM CRB memory section
+Date: Tue,  4 Jul 2023 09:19:30 +0200
+Message-ID: <20230704071931.575888-1-lvivier@redhat.com>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:HWWUJBk9tc2ek2KaPo3tVUKO78gCItz/IwapJw6yMKZNuLOGuna
+ U7zU+uNv97DywNgWG8jFKmkGWgJxjTPs7METwH5oGU/Qlq4GTvBcfxNy3TLt+TmYS4M+0tS
+ X9px9BbixutEBr7fs2w8ZEq6s9PATu0aOqYt7mhCe99EOwzSL6Ou4utj7Xve7hYAzkHHETC
+ xryj6dnwLQCRIk1ZKldaA==
+UI-OutboundReport: notjunk:1;M01:P0:GlZIR3cJ3sk=;bUrRB9pBqZTsAyPWBjh6xOhJ2oC
+ NW9owWi9ZQgTsrCuoif+L6Impph0L4Y2J4pY3lsW7ZLcqgrAGrJicYf7C0Omb5q3sKgqoh4Ru
+ FwdSCMxtHMjCJUdOXJNHvURmNL/Y8/Ab3tUOEXmhPtLflZCt2PRFLoR/vvztxPODKTiJ0PJER
+ fLrZpoV1mE5689JC2iWsDDeanlW2epPiZRhNX861T/ocQ5jLSXbtUCA7FAm9J5hwYlAvrJ/Rj
+ 6Xa1Ec8CaG2tsEIyAbvZWqJdZIzMq2drmYpRToZ63INrIWV/FNjsL+nijksNOA5FRF2pYsp1q
+ fiuWYq0/nfDjzgKKDltDMlk8loWfcRnC5SO42NWFSTeLGaIxdk3MPM7/QciFh4LH1/6yFR8AI
+ paCgESCFIQ5iDKXVcbUqzVs4G6fy6XKetn7i8Wia7wKSB+qWO3FLYAwOwwZrmd4jzeES2qsPN
+ dyQv4YEKt5gv+uey17X2vXpqJUD9emXNojcvTo1kHg19p/hufLCAVj8dPspWhZ4fPMqtka/UQ
+ 0Ey3yNwzSjtoVpWOyKvnC9rd5B2XlU45rkGcrCT9K2QmkeGUBPpy2tW6DKTtpDXMkPNlkkXBy
+ JqxA+aamUWEXZnsxhBjehe0WpCweDzFbqpxD2tC5TKZVOB4ORFJFLfrnhCCKK7SgOYuO5Z56W
+ 5t6cL6+N9VC93skJ8MMy2rcjjsbnHm3w5JaP7+nS/Q==
+Received-SPF: permerror client-ip=217.72.192.74;
+ envelope-from=lvivier@redhat.com; helo=mout.kundenserver.de
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_FAIL=0.001,
+ SPF_HELO_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,241 +75,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Test that we can successfully parse the docs/config/q35-emulated.cfg,
-docs/config/q35-virtio-graphical.cfg and docs/config/q35-virtio-serial.cfg
-config files (the "...-serial.cfg" file is a subset of the graphical
-config file, so we skip that in quick mode).
-
-These config files use two hard-coded image names which we have to
-replace with unique temporary files to avoid race conditions in case
-the tests are run in parallel. So after creating the temporary image
-files, we also have to create a copy of the config file where we
-replaced the hard-coded image names.
-
-If KVM is not available, we also have to disable the "accel" lines.
-Once everything is in place, we can start QEMU with the modified
-config file and check that everything is available in QEMU.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/qtest/readconfig-test.c | 196 ++++++++++++++++++++++++++++++++++
- 1 file changed, 196 insertions(+)
-
-diff --git a/tests/qtest/readconfig-test.c b/tests/qtest/readconfig-test.c
-index 74526f3af2..760f974e63 100644
---- a/tests/qtest/readconfig-test.c
-+++ b/tests/qtest/readconfig-test.c
-@@ -197,6 +197,189 @@ static void test_docs_config_ich9(void)
-     qtest_quit(qts);
- }
- 
-+#if defined(CONFIG_POSIX) && defined(CONFIG_SLIRP)
-+
-+static char *make_temp_img(const char *template, const char *format, int size)
-+{
-+    GError *error = NULL;
-+    char *temp_name;
-+    int fd;
-+
-+    /* Create a temporary image names */
-+    fd = g_file_open_tmp(template, &temp_name, &error);
-+    if (fd == -1) {
-+        fprintf(stderr, "unable to create file: %s\n", error->message);
-+        g_error_free(error);
-+        return NULL;
-+    }
-+    close(fd);
-+
-+    if (!mkimg(temp_name, format, size)) {
-+        fprintf(stderr, "qemu-img failed to create %s\n", temp_name);
-+        g_free(temp_name);
-+        return NULL;
-+    }
-+
-+    return temp_name;
-+}
-+
-+struct device {
-+    const char *name;
-+    const char *type;
-+};
-+
-+static void test_docs_q35(const char *input_file, struct device *devices)
-+{
-+    QTestState *qts;
-+    QDict *resp;
-+    QObject *qobj;
-+    int ret, i;
-+    g_autofree char *cfg_file = NULL, *sedcmd = NULL;
-+    g_autofree char *hd_file = NULL, *cd_file = NULL;
-+
-+    /* Check that all the devices are available in the QEMU binary */
-+    for (i = 0; devices[i].name; i++) {
-+        if (!qtest_has_device(devices[i].type)) {
-+            g_test_skip("one of the required devices is not available");
-+            return;
-+        }
-+    }
-+
-+    hd_file = make_temp_img("qtest_disk_XXXXXX.qcow2", "qcow2", 1);
-+    cd_file = make_temp_img("qtest_cdrom_XXXXXX.iso", "raw", 1);
-+    if (!hd_file || !cd_file) {
-+        g_test_skip("could not create disk images");
-+        goto cleanup;
-+    }
-+
-+    /* Create a temporary config file where we replace the disk image names */
-+    ret = g_file_open_tmp("q35-emulated-XXXXXX.cfg", &cfg_file, NULL);
-+    if (ret == -1) {
-+        g_test_skip("could not create temporary config file");
-+        goto cleanup;
-+    }
-+    close(ret);
-+
-+    sedcmd = g_strdup_printf("sed -e 's,guest.qcow2,%s,' -e 's,install.iso,%s,'"
-+                             " %s %s > '%s'",
-+                             hd_file, cd_file,
-+                             !qtest_has_accel("kvm") ? "-e '/accel/d'" : "",
-+                             input_file, cfg_file);
-+    ret = system(sedcmd);
-+    if (ret) {
-+        g_test_skip("could not modify temporary config file");
-+        goto cleanup;
-+    }
-+
-+    qts = qtest_initf("-machine none -nodefaults -readconfig %s", cfg_file);
-+
-+    /* Check memory size */
-+    resp = qtest_qmp(qts, "{ 'execute': 'query-memdev' }");
-+    test_x86_memdev_resp(qdict_get(resp, "return"), "pc.ram", 1024);
-+    qobject_unref(resp);
-+
-+    resp = qtest_qmp(qts, "{ 'execute': 'qom-list',"
-+                          "  'arguments': {'path': '/machine/peripheral' }}");
-+    qobj = qdict_get(resp, "return");
-+
-+    /* Check that all the devices have been created */
-+    for (i = 0; devices[i].name; i++) {
-+        test_object_available(qobj, devices[i].name, devices[i].type);
-+    }
-+
-+    qobject_unref(resp);
-+
-+    qtest_quit(qts);
-+
-+cleanup:
-+    if (hd_file) {
-+        unlink(hd_file);
-+    }
-+    if (cd_file) {
-+        unlink(cd_file);
-+    }
-+    if (cfg_file) {
-+        unlink(cfg_file);
-+    }
-+}
-+
-+static void test_docs_q35_emulated(void)
-+{
-+    struct device devices[] = {
-+        { "ich9-pcie-port-1", "ioh3420" },
-+        { "ich9-pcie-port-2", "ioh3420" },
-+        { "ich9-pcie-port-3", "ioh3420" },
-+        { "ich9-pcie-port-4", "ioh3420" },
-+        { "ich9-pci-bridge", "i82801b11-bridge" },
-+        { "ich9-ehci-1", "ich9-usb-ehci1" },
-+        { "ich9-ehci-2", "ich9-usb-ehci2" },
-+        { "ich9-uhci-1", "ich9-usb-uhci1" },
-+        { "ich9-uhci-2", "ich9-usb-uhci2" },
-+        { "ich9-uhci-3", "ich9-usb-uhci3" },
-+        { "ich9-uhci-4", "ich9-usb-uhci4" },
-+        { "ich9-uhci-5", "ich9-usb-uhci5" },
-+        { "ich9-uhci-6", "ich9-usb-uhci6" },
-+        { "sata-disk", "ide-hd" },
-+        { "sata-optical-disk", "ide-cd" },
-+        { "net", "e1000" },
-+        { "video", "VGA" },
-+        { "ich9-hda-audio", "ich9-intel-hda" },
-+        { "ich9-hda-duplex", "hda-duplex" },
-+        { NULL, NULL }
-+    };
-+
-+    test_docs_q35("docs/config/q35-emulated.cfg", devices);
-+}
-+
-+static void test_docs_q35_virtio_graphical(void)
-+{
-+    struct device devices[] = {
-+        { "pcie.1", "pcie-root-port" },
-+        { "pcie.2", "pcie-root-port" },
-+        { "pcie.3", "pcie-root-port" },
-+        { "pcie.4", "pcie-root-port" },
-+        { "pcie.5", "pcie-root-port" },
-+        { "pcie.6", "pcie-root-port" },
-+        { "pcie.7", "pcie-root-port" },
-+        { "pcie.8", "pcie-root-port" },
-+        { "scsi", "virtio-scsi-pci" },
-+        { "scsi-disk", "scsi-hd" },
-+        { "scsi-optical-disk", "scsi-cd" },
-+        { "net", "virtio-net-pci" },
-+        { "usb", "nec-usb-xhci" },
-+        { "tablet", "usb-tablet" },
-+        { "video", "qxl-vga" },
-+        { "sound", "ich9-intel-hda" },
-+        { "duplex", "hda-duplex" },
-+        { NULL, NULL }
-+    };
-+
-+    test_docs_q35("docs/config/q35-virtio-graphical.cfg", devices);
-+}
-+
-+static void test_docs_q35_virtio_serial(void)
-+{
-+    struct device devices[] = {
-+        { "pcie.1", "pcie-root-port" },
-+        { "pcie.2", "pcie-root-port" },
-+        { "pcie.3", "pcie-root-port" },
-+        { "pcie.4", "pcie-root-port" },
-+        { "pcie.5", "pcie-root-port" },
-+        { "pcie.6", "pcie-root-port" },
-+        { "pcie.7", "pcie-root-port" },
-+        { "pcie.8", "pcie-root-port" },
-+        { "scsi", "virtio-scsi-pci" },
-+        { "scsi-disk", "scsi-hd" },
-+        { "scsi-optical-disk", "scsi-cd" },
-+        { "net", "virtio-net-pci" },
-+        { NULL, NULL }
-+    };
-+
-+    test_docs_q35("docs/config/q35-virtio-serial.cfg", devices);
-+}
-+
-+#endif /* CONFIG_LINUX */
-+
- int main(int argc, char *argv[])
- {
-     const char *arch;
-@@ -211,6 +394,19 @@ int main(int argc, char *argv[])
-             qtest_has_device("ich9-usb-uhci1")) {
-             qtest_add_func("readconfig/x86/ich9-ehci-uhci", test_docs_config_ich9);
-         }
-+#if defined(CONFIG_POSIX) && defined(CONFIG_SLIRP)
-+        qtest_add_func("readconfig/x86/q35-emulated", test_docs_q35_emulated);
-+        qtest_add_func("readconfig/x86/q35-virtio-graphical",
-+                       test_docs_q35_virtio_graphical);
-+        if (g_test_slow()) {
-+            /*
-+             * q35-virtio-serial.cfg is a subset of q35-virtio-graphical.cfg,
-+             * so we can skip the test in quick mode
-+             */
-+            qtest_add_func("readconfig/x86/q35-virtio-serial",
-+                           test_docs_q35_virtio_serial);
-+        }
-+#endif
-     }
- #if defined(CONFIG_SPICE) && !defined(__FreeBSD__)
-     qtest_add_func("readconfig/spice", test_spice);
--- 
-2.39.3
-
+An error is reported for vhost-vdpa case:=0D
+qemu-kvm: vhost_vdpa_listener_region_add received unaligned region=0D
+=0D
+Marc-Andr=C3=A9 has proposed a fix to this problem by skipping=0D
+the memory region owned by the TPM CRB but it seems more generic=0D
+to skip not aligned memory.=0D
+=0D
+v1 of this series proposed to set the RAM_PROTECTED flag for the=0D
+TPM CRB memory region.=0D
+=0D
+v2:=0D
+  - do not introduce special case for TPM CRB=0D
+  - do not set RAM_PROTECTED flag for TPM CRB=0D
+  - remove error_report() and replace it with a trace=0D
+=0D
+For the previous discussions, see=0D
+=0D
+https://lists.nongnu.org/archive/html/qemu-devel/2022-11/msg03670.html=0D
+=0D
+and from Eric for VFIO:=0D
+=0D
+https://lore.kernel.org/all/20220506132510.1847942-1-eric.auger@redhat.com/=
+=0D
+https://lore.kernel.org/all/20220524091405.416256-1-eric.auger@redhat.com/=
+=0D
+=0D
+Bug: https://bugzilla.redhat.com/show_bug.cgi?id=3D2141965=0D
+=0D
+Thanks,=0D
+Laurent=0D
+=0D
+Laurent Vivier (1):=0D
+  vhost-vdpa: mute unaligned memory error report=0D
+=0D
+ hw/virtio/trace-events | 2 ++=0D
+ hw/virtio/vhost-vdpa.c | 8 ++++++--=0D
+ 2 files changed, 8 insertions(+), 2 deletions(-)=0D
+=0D
+-- =0D
+2.41.0=0D
+=0D
 
