@@ -2,105 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF07A746B80
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A92746B81
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 10:07:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGb2i-0006S1-F8; Tue, 04 Jul 2023 04:05:48 -0400
+	id 1qGb3l-0006mF-FI; Tue, 04 Jul 2023 04:06:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qGb2X-0006RI-TZ; Tue, 04 Jul 2023 04:05:37 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qGb2V-0000Sn-IG; Tue, 04 Jul 2023 04:05:37 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3647qaYj026997; Tue, 4 Jul 2023 08:05:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=yUt7vyeQ+bQVqieGtgOKWG5T41yXxcqPbm79CWvzbcc=;
- b=Kdu9HP/TWbbKyhoEP7REJAupUuYj8Ug3Dl0kE/ndyILSdUrwWFRt0+uRD4DJBk1F1Rzp
- pIgyvd1G2MJNsizyLH/h1IvSD8y9dbRGTF3+03KlimRJJ8h8y/qhpYngEChjOeeOCYlr
- jKy/1a+nbjByA8IRrvEKURn5Qm40pUBZNeGfWyuFxynYEVnFcAOHjvXpRlAp3fW35Q/h
- iHI+tifeBIQdZ5K0V+2igrqdmoZTeBDypbHjLQclL5R0RmqOrPfAxqgh0AGsDdQNxpVl
- YamcfnIKBPIJQ1h8t+awkfJ0XHpltB0T1IrS/s/42EXngm89iDLvoPnqK79kjm3zg7p8 dg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmfe0gbpe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 08:05:32 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3647vH21008824;
- Tue, 4 Jul 2023 08:05:32 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rmfe0gbna-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 08:05:31 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3644V0VF014180;
- Tue, 4 Jul 2023 08:05:30 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma04fra.de.ibm.com (PPS) with ESMTPS id 3rjbs51ch7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 04 Jul 2023 08:05:30 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36485RbZ22676018
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 4 Jul 2023 08:05:27 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A57D42004D;
- Tue,  4 Jul 2023 08:05:27 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E48220043;
- Tue,  4 Jul 2023 08:05:27 +0000 (GMT)
-Received: from [9.179.30.217] (unknown [9.179.30.217])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  4 Jul 2023 08:05:27 +0000 (GMT)
-Message-ID: <e893b9be6e71946120f6e54422814f7d4219f484.camel@linux.ibm.com>
-Subject: Re: [PATCH 05/12] target/s390x: Fix LRA overwriting the top 32 bits
- on DAT error
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org, qemu-stable@nongnu.org
-Date: Tue, 04 Jul 2023 10:05:26 +0200
-In-Reply-To: <b105761d-9602-030a-e578-12d9cd0a0283@redhat.com>
-References: <20230703155801.179167-1-iii@linux.ibm.com>
- <20230703155801.179167-6-iii@linux.ibm.com>
- <b105761d-9602-030a-e578-12d9cd0a0283@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qGb3k-0006li-3z
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:06:52 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qGb3g-0000rN-Dp
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 04:06:51 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6686ef86110so2564275b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 01:06:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1688458006; x=1691050006; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dSQNJxzoGgRyw577WtrT9Nv069O9k73QukTdwTWMRR4=;
+ b=vLXeIB7xMiD2N7YTVOMOjzSAjrfZ5g0aTW/pyExJ5k6bP9AoNg8raAEQcvgEDukh83
+ syOIX8vwBcLNnQ6W0LfManihW3nVNjj8vNQC+em12LX2GglCa5XqLRXmn2ZxafxhuYm8
+ qdESxtgytEl+XZ+r+n4bHZWUw1HOaf/xbBCXu5J1VWCeD6EBfoYtewvVj/MTMdZ3WXtZ
+ EIhOaqxqM8yGcqW+TQ0PFzB1DlDTcZ+rlOy+jbfoU4RHnf8i6c0Zx2Q8Ru/DzlBGABwq
+ dJH8TtAkxlD47Kl3++g+t0LGgg1QrFzfGtkYX9rUVW0GFfCUUMVpuJZrkVCl/FKMzuDq
+ JA1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688458006; x=1691050006;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dSQNJxzoGgRyw577WtrT9Nv069O9k73QukTdwTWMRR4=;
+ b=aEOwCMN/y6A8Kn5NEQ84RMLHYWOPv87xwrzi5mBAFDwCd1JWpVy+Dx2I3Q9MDZOlq2
+ g2ORALAWWib+SD/nQNflJIzhTDNsXtrpoB8TMNaltQ3mcrGvPdlJV/EZdiWJfGljGoNA
+ 4S5gOYQC0pautkjfMr1a+1gH6SK49ECIkhkG6VY2uHHMsUFCsTmuHgNtXwybI8NS1eOp
+ giqlTXXbFP3qO+tIxELd1oBa7OHL9yyCPzA3/gNaJdBSnxukL2miWIABfSQVlOlgFfMP
+ 0rzi12/piuzNr5GhU2CBYi3We9VzZYeIpe5e73wLwo42IWqCoaSMneySTZi68tre0iT9
+ /hRg==
+X-Gm-Message-State: ABy/qLYo37Ywmshy3J3ijiQhBO7didMflR1K6C4+Q4B2EMnZguimwsf7
+ n4a7+zaS1wpuJa9lz+FtDTtIJHOboN+Ko2ur54KUVw==
+X-Google-Smtp-Source: APBJJlEA1H/lyb4hg9CTLFyWFRfGnUQS9qB3Yl1nDQIrhPeOgshnjyv9OIZ7BgJFcgP36k22cDWq9w==
+X-Received: by 2002:a05:6a00:158b:b0:668:94a2:2ec7 with SMTP id
+ u11-20020a056a00158b00b0066894a22ec7mr13200624pfk.25.1688458005726; 
+ Tue, 04 Jul 2023 01:06:45 -0700 (PDT)
+Received: from mnissler.ba.rivosinc.com ([66.220.2.162])
+ by smtp.gmail.com with ESMTPSA id
+ u1-20020aa78381000000b00662c4ca18ebsm15113101pfm.128.2023.07.04.01.06.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 04 Jul 2023 01:06:45 -0700 (PDT)
+From: Mattias Nissler <mnissler@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ stefanha@redhat.com, David Hildenbrand <david@redhat.com>,
+ john.levon@nutanix.com, Mattias Nissler <mnissler@rivosinc.com>
+Subject: [PATCH 0/3] Support message-based DMA in vfio-user server
+Date: Tue,  4 Jul 2023 01:06:24 -0700
+Message-Id: <20230704080628.852525-1-mnissler@rivosinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dJoeK0qhaiV-YNAnllk_o2XF00_W-eQX
-X-Proofpoint-ORIG-GUID: uCZadksqJMuKL-ose_HYFCThsNRiirs7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-04_04,2023-06-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 phishscore=0 impostorscore=0 spamscore=0 clxscore=1015
- bulkscore=0 malwarescore=0 adultscore=0 priorityscore=1501 mlxlogscore=855
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307040065
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=mnissler@rivosinc.com; helo=mail-pf1-x436.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,106 +92,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-07-04 at 09:47 +0200, David Hildenbrand wrote:
-> On 03.07.23 17:50, Ilya Leoshkevich wrote:
-> > When a DAT error occurs, LRA is supposed to write the error
-> > information
-> > to the bottom 32 bits of R1, and leave the top 32 bits of R1 alone.
-> >=20
-> > Fix by passing the original value of R1 into helper and copying the
-> > top 32 bits to the return value.
-> >=20
-> > Fixes: d8fe4a9c284f ("target-s390: Convert LRA")
-> > Cc: qemu-stable@nongnu.org
-> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> > ---
-> > =C2=A0 target/s390x/helper.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 | 2 +-
-> > =C2=A0 target/s390x/tcg/mem_helper.c | 4 ++--
-> > =C2=A0 target/s390x/tcg/translate.c=C2=A0 | 2 +-
-> > =C2=A0 3 files changed, 4 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/target/s390x/helper.h b/target/s390x/helper.h
-> > index 6bc01df73d7..05102578fc9 100644
-> > --- a/target/s390x/helper.h
-> > +++ b/target/s390x/helper.h
-> > @@ -355,7 +355,7 @@ DEF_HELPER_FLAGS_4(idte, TCG_CALL_NO_RWG, void,
-> > env, i64, i64, i32)
-> > =C2=A0 DEF_HELPER_FLAGS_4(ipte, TCG_CALL_NO_RWG, void, env, i64, i64,
-> > i32)
-> > =C2=A0 DEF_HELPER_FLAGS_1(ptlb, TCG_CALL_NO_RWG, void, env)
-> > =C2=A0 DEF_HELPER_FLAGS_1(purge, TCG_CALL_NO_RWG, void, env)
-> > -DEF_HELPER_2(lra, i64, env, i64)
-> > +DEF_HELPER_3(lra, i64, env, i64, i64)
-> > =C2=A0 DEF_HELPER_1(per_check_exception, void, env)
-> > =C2=A0 DEF_HELPER_FLAGS_3(per_branch, TCG_CALL_NO_RWG, void, env, i64,
-> > i64)
-> > =C2=A0 DEF_HELPER_FLAGS_2(per_ifetch, TCG_CALL_NO_RWG, void, env, i64)
-> > diff --git a/target/s390x/tcg/mem_helper.c
-> > b/target/s390x/tcg/mem_helper.c
-> > index 84ad85212c9..94d93d7ea78 100644
-> > --- a/target/s390x/tcg/mem_helper.c
-> > +++ b/target/s390x/tcg/mem_helper.c
-> > @@ -2356,7 +2356,7 @@ void HELPER(purge)(CPUS390XState *env)
-> > =C2=A0 }
-> > =C2=A0=20
-> > =C2=A0 /* load real address */
-> > -uint64_t HELPER(lra)(CPUS390XState *env, uint64_t addr)
-> > +uint64_t HELPER(lra)(CPUS390XState *env, uint64_t r1, uint64_t
-> > addr)
-> > =C2=A0 {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint64_t asc =3D env->psw.mask & PSW_MAS=
-K_ASC;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint64_t ret, tec;
-> > @@ -2370,7 +2370,7 @@ uint64_t HELPER(lra)(CPUS390XState *env,
-> > uint64_t addr)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 exc =3D mmu_translate(env, addr, MMU_S39=
-0_LRA, asc, &ret,
-> > &flags, &tec);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (exc) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cc =3D 3;
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D exc | 0x80000000;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D (r1 & 0xFFFFFFFF000=
-00000) | exc | 0x80000000;
->=20
-> ull missing for large constant?
+This series adds basic support for message-based DMA in qemu's vfio-user
+server. This is useful for cases where the client does not provide file
+descriptors for accessing system memory via memory mappings. My motivating use
+case is to hook up device models as PCIe endpoints to a hardware design. This
+works by bridging the PCIe transaction layer to vfio-user, and the endpoint
+does not access memory directly, but sends memory requests TLPs to the hardware
+design in order to perform DMA.
 
-Will do.
+Note that in addition to the 3 commits included, we also need a
+subprojects/libvfio-user roll to bring in this bugfix:
+https://github.com/nutanix/libvfio-user/commit/bb308a2e8ee9486a4c8b53d8d773f7c8faaeba08
+Stefan, can I ask you to kindly update the
+https://gitlab.com/qemu-project/libvfio-user mirror? I'll be happy to include
+an update to subprojects/libvfio-user.wrap in this series.
 
-Just for my understanding, why is this necessary?
-The current code base tends towards using ULL, but it's a little bit
-inconsistent:
+Finally, there is some more work required on top of this series to get
+message-based DMA to really work well:
 
-$ git grep -i 0xfffffffff | wc -l
-2338
-$ git grep -i 0xfffffffff | grep -i -v ul | wc -l
-95
+* libvfio-user has a long-standing issue where socket communication gets messed
+  up when messages are sent from both ends at the same time. See
+  https://github.com/nutanix/libvfio-user/issues/279 for more details. I've
+  been engaging there and plan to contribute a fix.
 
+* qemu currently breaks down DMA accesses into chunks of size 8 bytes at
+  maximum, each of which will be handled in a separate vfio-user DMA request
+  message. This is quite terrible for large DMA acceses, such as when nvme
+  reads and writes page-sized blocks for example. Thus, I would like to improve
+  qemu to be able to perform larger accesses, at least for indirect memory
+  regions. I have something working locally, but since this will likely result
+  in more involved surgery and discussion, I am leaving this to be addressed in
+  a separate patch.
 
->=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cc =3D 0;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret |=3D addr & =
-~TARGET_PAGE_MASK;
-> > diff --git a/target/s390x/tcg/translate.c
-> > b/target/s390x/tcg/translate.c
-> > index 0cef6efbef4..a6079ab7b4f 100644
-> > --- a/target/s390x/tcg/translate.c
-> > +++ b/target/s390x/tcg/translate.c
-> > @@ -2932,7 +2932,7 @@ static DisasJumpType op_lctlg(DisasContext
-> > *s, DisasOps *o)
-> > =C2=A0=20
-> > =C2=A0 static DisasJumpType op_lra(DisasContext *s, DisasOps *o)
-> > =C2=A0 {
-> > -=C2=A0=C2=A0=C2=A0 gen_helper_lra(o->out, cpu_env, o->in2);
-> > +=C2=A0=C2=A0=C2=A0 gen_helper_lra(o->out, cpu_env, o->out, o->in2);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 set_cc_static(s);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return DISAS_NEXT;
-> > =C2=A0 }
->=20
-> Can't we use something like in1_r1 + wout_r1_32 instead ? *maybe*
-> cleaner :)
->=20
+Mattias Nissler (3):
+  softmmu: Support concurrent bounce buffers
+  softmmu: Remove DMA unmap notification callback
+  vfio-user: Message-based DMA support
 
-The problem is that we want all 64 bits for the non-error case.
+ hw/remote/vfio-user-obj.c |  62 ++++++++++++++++--
+ softmmu/dma-helpers.c     |  28 --------
+ softmmu/physmem.c         | 131 ++++++++------------------------------
+ 3 files changed, 83 insertions(+), 138 deletions(-)
+
+-- 
+2.34.1
+
 
