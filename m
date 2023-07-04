@@ -2,93 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF8B74705A
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 14:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA33747077
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 14:08:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGekq-0001tj-0n; Tue, 04 Jul 2023 08:03:36 -0400
+	id 1qGeoa-0003iP-Fi; Tue, 04 Jul 2023 08:07:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qGeko-0001tX-6E
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:03:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qGekm-0002qj-Lu
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:03:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688472211;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bGcso718aQ2HnLIgK3qFXXmi6OuKnRgn14jeJtFqyYY=;
- b=Y8Sd0EThBp4k1nhmoxEhdA/LkQSeX4HNeISDNumi//i7bnLcZW7tDwZYcT1inDprtq2UoS
- HH7fd4dRHqSAihWO6amZDRYr3cSExziambppMz6S6bNMY0Uw82wbzQCUcWKdqJgPqqVQkQ
- JTLMtel8/zHagsBODKErqPfMneyXHhw=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-5XUTHWvyNRKujXlIqhkcow-1; Tue, 04 Jul 2023 08:03:30 -0400
-X-MC-Unique: 5XUTHWvyNRKujXlIqhkcow-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-94a348facbbso382117166b.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:03:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGeoT-0003hm-2y
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:07:21 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qGeoP-0003gu-Oj
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 08:07:20 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3094910b150so6293933f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 05:07:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688472436; x=1691064436;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Rm60kBnD7wIuQ7tvcpbnnY+ulDObnPjS7VC+ZfHDx/s=;
+ b=aNDaZQIeiGzj5SjLwVgE4yS8D11HOQJJAq7wwo9MnwsqVCJuYhXlGmxi5FveAtuWSw
+ m3BJkNfyhu8OtXGT97ukeMCaF2OnEC+s/Art9FMrPXqVR3pCv+u2tJTpECvGQC4ykAzW
+ ppLYyEOOPTD2orTMoweH9XQQ9rYyM/fUco23Dc0S8vOITa+SRLobP8sVWhi4PZrf95Od
+ fxjjoZZQ1JQTsa/hMWH4rsqIt33eDwVCFi4BJkMO5QB12pKHCbaEh1H3lkxD7w5wuruD
+ 9cqoZzDi434FFo2DKqeBHXdlkqvjEbMjqCikX3ZcbeqoqnAbY6mjOScqDQEOl88GM3o6
+ s+Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688472204; x=1691064204;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bGcso718aQ2HnLIgK3qFXXmi6OuKnRgn14jeJtFqyYY=;
- b=eUbMvTKa+ZUxlGqgakbFx4UrQaSMlu3PklscnK7SZ/bNQqiTy6ip1HqAG2lV74jlbW
- tSOTrJxRcriNOKQpD8co42tRfQgD5HHKLKYeoLS24SA+n1A4j4RifwuO6yc/PqOos0YA
- WOSMHF+qHAEC2+U6KRaZ732Ap07lpw9uD0DHxNTC5bkRyoYcvd+Rz1ik5WMaq93+rjo2
- eKPYdIcElRIsF7qZe8UznV7tiIzNzg+w9sxQMAe8Fmp2CTne1V+x1mdZWVf+UO2rr8vA
- u+hk6BqzVs4gznLOyHrtP31A4XRy7DvCzujeAb6mGm6nBKlGdDyf8EC/nX4eaJpgteLB
- gu7A==
-X-Gm-Message-State: ABy/qLaK7693xF5tq6B919409XSgZuKpGJsSyjo2QgZvFpXpRVfay0wF
- jylnaRPRH25+i2NWYiiXlfOkLE1qdsBJ4NJTYQpE0P6Qad5dzT/6PPS6xQgtB9TU073k2xBHCaq
- NbBqfDpmFC6XBsKI=
-X-Received: by 2002:a17:906:4f0a:b0:992:ba2c:2e0c with SMTP id
- t10-20020a1709064f0a00b00992ba2c2e0cmr10822324eju.36.1688472204628; 
- Tue, 04 Jul 2023 05:03:24 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFXoJ+P7u6/LK4L3Mwzb3pxQKydnD6tbUnLkPl6BA02bf+qQV4nTVurKdRWcBXqi/i9m5fVAw==
-X-Received: by 2002:a17:906:4f0a:b0:992:ba2c:2e0c with SMTP id
- t10-20020a1709064f0a00b00992ba2c2e0cmr10822302eju.36.1688472204298; 
- Tue, 04 Jul 2023 05:03:24 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- kd9-20020a17090798c900b00992d70cc8acsm6141465ejc.112.2023.07.04.05.03.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 05:03:23 -0700 (PDT)
-Date: Tue, 4 Jul 2023 14:03:23 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, Ani Sinha
- <anisinha@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, Marcel
- Apfelbaum <marcel.apfelbaum@gmail.com>, Sriram Yagnaraman
- <sriram.yagnaraman@est.tech>, Jason Wang <jasowang@redhat.com>, Keith Busch
- <kbusch@kernel.org>, Klaus Jensen <its@irrelevant.dk>
-Subject: Re: [PATCH v3 2/2] pcie: Specify 0 for ARI next function numbers
-Message-ID: <20230704140323.013c2dda@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230702120229.66978-3-akihiko.odaki@daynix.com>
-References: <20230702120229.66978-1-akihiko.odaki@daynix.com>
- <20230702120229.66978-3-akihiko.odaki@daynix.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20221208; t=1688472436; x=1691064436;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Rm60kBnD7wIuQ7tvcpbnnY+ulDObnPjS7VC+ZfHDx/s=;
+ b=V45qGSY2RfkB7rS9Gb3qUF6FzJHLsKPZhOBoYb5+02gV90MGJH8IL7dogVB24frAA6
+ 9m39omot4jkzcInpld1/PatVrQlzA8NaebSeJIUScUbYpLRPvAHMmZ/YMKGvZ3wrCVke
+ mIyiP7UB6FqIVpy6+IJkw5GjA3Be56mfD4r8j04tFHlUvqmNUOt+TWT+AgyAb6kaAX8S
+ CB2nwGoWOS5MSuaqVnhpug10r1lDmL88T6isFhbRSBOuWg+oLopnhBimP13t7yzTWJmv
+ LCrZ2XgAJcIxRTSFeuymRbOeX1I/njtA7IGlrSaLhGWjIZtieSi4EcsD5NsSHRLBrne1
+ PiRg==
+X-Gm-Message-State: ABy/qLYgPqG8qS1X6sVAcvcBcnIkGdTFNOZ+eZmACuyiWXrWoYiny1t8
+ 4AAGV1LXQYutcWGeZmVAG1c5hA==
+X-Google-Smtp-Source: APBJJlGjsHGZurAKXgzzCX7tgo7wgnf52DGlc9VXeuKyGezoj/ajE2V8IjQQQqFmlz036xPj7p8KiQ==
+X-Received: by 2002:a5d:4445:0:b0:314:3a3d:5d1f with SMTP id
+ x5-20020a5d4445000000b003143a3d5d1fmr4221306wrr.19.1688472435726; 
+ Tue, 04 Jul 2023 05:07:15 -0700 (PDT)
+Received: from [192.168.1.102] ([176.176.157.122])
+ by smtp.gmail.com with ESMTPSA id
+ m6-20020adffa06000000b00314417f5272sm1226836wrr.64.2023.07.04.05.07.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jul 2023 05:07:15 -0700 (PDT)
+Message-ID: <8f7f8a7e-6316-74ca-e2cb-d13f86150585@linaro.org>
+Date: Tue, 4 Jul 2023 14:07:13 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] kconfig: Add PCIe devices to s390xx machines
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>
+References: <20230704093204.2579133-1-clg@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230704093204.2579133-1-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,61 +94,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun,  2 Jul 2023 21:02:27 +0900
-Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
-
-> The current implementers of ARI are all SR-IOV devices. The ARI next
-> function number field is undefined for VF. The PF should end the linked
-> list formed with the field by specifying 0.
-
-this should also describe compat behavior changes.
-
-
-> Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in docs/pcie_sriov.txt")
-> Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
-> Fixes: 3a977deebe ("Intrdocue igb device emulation")
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  include/hw/pci/pci.h | 2 ++
->  hw/core/machine.c    | 1 +
->  hw/pci/pci.c         | 2 ++
->  hw/pci/pcie.c        | 2 +-
->  4 files changed, 6 insertions(+), 1 deletion(-)
+On 4/7/23 11:32, Cédric Le Goater wrote:
+> It is useful to extend the number of available PCI devices to KVM guests
+> for passthrough scenarios and also to expose these models to a different
+> (big endian) architecture.
 > 
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>   hw/s390x/Kconfig | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
+> index 5e7d8a2bae8b..373f38adcd6b 100644
+> --- a/hw/s390x/Kconfig
+> +++ b/hw/s390x/Kconfig
+> @@ -10,3 +10,7 @@ config S390_CCW_VIRTIO
+>       select SCLPCONSOLE
+>       select VIRTIO_CCW
+>       select MSI_NONBROKEN
+> +    select PCI_EXPRESS
 
->  GlobalProperty hw_compat_8_0[] = {
->      { "migration", "multifd-flush-after-each-section", "on"},
-> +    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
->  };
+Can zPCI plug legacy PCI devices? I'd expect not, only PCIe
+devices. Then this patch would become:
 
-[...]
-
-> +    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
-> +                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, true),
-
-now, I'm confused a bit. So above line says that default
-x-pcie-ari-nextfn-1=on
-
-then compat also sets it to 'on', so question is why do
-we have compat entry at all?
-If default state doesn't change why do we need involve compat
-machinery and add "x-pcie-ari-nextfn-1" property?
-
->      DEFINE_PROP_END_OF_LIST()
->  };
->  
-> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> index 9a3f6430e8..cf09e03a10 100644
-> --- a/hw/pci/pcie.c
-> +++ b/hw/pci/pcie.c
-> @@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
->  /* ARI */
->  void pcie_ari_init(PCIDevice *dev, uint16_t offset)
->  {
-> -    uint16_t nextfn = 1;
-> +    uint16_t nextfn = dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 ? 1 : 0;
->  
->      pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
->                          offset, PCI_ARI_SIZEOF);
+-- >8 --
+@@ -5,7 +5,7 @@ config S390_CCW_VIRTIO
+      imply VFIO_AP
+      imply VFIO_CCW
+      imply WDT_DIAG288
+-    select PCI
++    select PCI_EXPRESS
+      select S390_FLIC
+      select SCLPCONSOLE
+      select VIRTIO_CCW
+---
 
 
