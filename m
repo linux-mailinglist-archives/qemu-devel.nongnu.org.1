@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC4174691A
-	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 07:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60589746916
+	for <lists+qemu-devel@lfdr.de>; Tue,  4 Jul 2023 07:43:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGYoI-0003WO-5N; Tue, 04 Jul 2023 01:42:46 -0400
+	id 1qGYoG-0003W9-UF; Tue, 04 Jul 2023 01:42:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qGYo5-0003Tt-Q3; Tue, 04 Jul 2023 01:42:35 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1qGYo8-0003U7-WF; Tue, 04 Jul 2023 01:42:37 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qGYo3-0004A0-7e; Tue, 04 Jul 2023 01:42:32 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-55ae51a45deso2526617a12.3; 
- Mon, 03 Jul 2023 22:42:30 -0700 (PDT)
+ id 1qGYo6-0004DR-4k; Tue, 04 Jul 2023 01:42:35 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1b8033987baso31215065ad.0; 
+ Mon, 03 Jul 2023 22:42:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688449349; x=1691041349;
+ d=gmail.com; s=20221208; t=1688449352; x=1691041352;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jQ2U4ciqTykEMRLsEsLYlQMNeQfrUH1E23P+plpKsNY=;
- b=BPghNxnAqehzdurmVgZlj/ITN5orfMb6VMUxWHMu9rHOmchREG5a37UhEOCBH8q2NP
- dFWbretJw1KnuPwBTj65Oi1Iu8RIJWszIj9OLR9VFyes5FaUCXPgikSm/u1LRlJpc2MU
- u9fX7IXBvS9NLbnX079PcIwYZtT0xZM/9luaQobIP5XBEASBeOFDeN4Kcu2i666WMEDN
- WohleA4wL8iw2J99QEQ4fnLDpQn2Amx3LipCFhOOKo+yzsYLiRh5cas6zo0rf30GsT7e
- CurVrkAZP31K24YpW86UZXxpoWauuOO+EGePZOCCOGFnC6WXTeMLAe2KqvUqVTmEKw8k
- zUDQ==
+ bh=Mb1g58UHfH5R1KjeTnU8nIlKmYBN2xuz7JIA9+P33R0=;
+ b=cl4PF2sRSSdUvNIZtJ5IWhh+ziiuX5ZrdP53KIAFjvh/0i32DoH5iGJ8Sutv7L5Vy/
+ NgHYBJRHNWE5ThjD/gR9aEUkG/4I2pJe1DZKXmQy7rHu3lz2m4JysT8ecmnf+GY8XRwS
+ EdiripQCVRU6ELwPua5eMzwlCcnDdJgSrYbqHVH9QMaZXG71iQJ7E1Gpd+MU+BBTIh9w
+ XYpcawoPyc8fExQ+BBurJR2QZP0lFMuyMISOJ+DE5a7czNUeH78PxRmTaY1bL3ukiUzN
+ NOa0IGUD6WdSkvql9JAbL0vGdr+/78HDNVW/3eldlI5ChH68QyTshGt7qYXaG8YoU1nr
+ YJDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688449349; x=1691041349;
+ d=1e100.net; s=20221208; t=1688449352; x=1691041352;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to;
- bh=jQ2U4ciqTykEMRLsEsLYlQMNeQfrUH1E23P+plpKsNY=;
- b=F65Fsy98nCz45Uv724kGDnQyX+MJtyTsNq6QPcNXmFtDBbuM+kF/teHx/PNwgBojOm
- GR2u4UH9s8k9gwuV0eKX4ifs358NnzMa99Y0sOZMLDAGym08AZ3YUoJNhBel9mQeh39M
- OQ+eOYMaYIqdRsXllugoNedX0D1NjREBhOcwSoLEQsRAm7myn1AXR/KCmZJK0t8jdm43
- 0RsAFrOsMMCf8qTgRw3fqeot67BLRg5CA4TnAWZDHHK2HWMVSYYGgk7PMR//YgB/+0uU
- 0evQj+OL3OifPZzCItYfqxw12DOfOTc+bnWqBOazQV4n89TIRkz3eMYjEgmnjvxyb/SS
- ElSg==
-X-Gm-Message-State: AC+VfDyhXcmUCa9nRNFboymFpVkMLvK4OCf2p4ErjaF10BP/v+ut8Zn+
- EdSJ2AkRyEIoVfDPfhme4O34LQ+nwGY=
-X-Google-Smtp-Source: ACHHUZ5M4nyxS5WjduqZhWcQlwHqVcpZRWeVESmAaGDzpDkSoYhdv4f/XKKpBm1gfa3pF+96FTXSFw==
-X-Received: by 2002:a05:6a20:488:b0:103:d538:5ea6 with SMTP id
- 8-20020a056a20048800b00103d5385ea6mr9189255pzc.48.1688449348946; 
- Mon, 03 Jul 2023 22:42:28 -0700 (PDT)
+ bh=Mb1g58UHfH5R1KjeTnU8nIlKmYBN2xuz7JIA9+P33R0=;
+ b=CZj+sd5LtfV6Lzj6UzGxBSqlOweEpSc/iICdyEpqKUxbnAYfqZQKEE0JvILFUUJooY
+ S2j16mW+WiAhFEoxekQZ9667FSCyHZ3InvWfReuHDqYJGNdZ0Cm3c8CcmdOCKNqBpPJC
+ HJ/QGsrQ+8a3MOK5MnfMlclGxomDJDMIQQ9qYASA4Fe0o0w7qUczwzuTjz3uII2dBl4p
+ 04y7Rs4bn5ELYsABW0/F1rzWaNhGriiPl3nXlJ3iihEPD9W0Vca+EVp0IMhxhNFor10I
+ zQ5+kNqvfXnTIlMvM6xx202A9jojNZOh5tr3YpHdPyb4WWJSh6ieAbo9XddD3br4IMGN
+ bksA==
+X-Gm-Message-State: ABy/qLb4rRUjDhFBtJqfGFZM5FZcAxnlDZNXgu9lIVR0728Tc8tNbn9A
+ ViJ6YAdplsvpjBmBk8CH2z8=
+X-Google-Smtp-Source: APBJJlEeEaiGKQGThIb3ewD1abrBFIlclIpSHNOVZhCbjnunAKuV8Fk5xHeNqs8NVAH9fH9e4k6dDQ==
+X-Received: by 2002:a17:903:22c6:b0:1b8:a39e:ff4b with SMTP id
+ y6-20020a17090322c600b001b8a39eff4bmr2834903plg.32.1688449352140; 
+ Mon, 03 Jul 2023 22:42:32 -0700 (PDT)
 Received: from localhost.localdomain
  (2403-5808-8af8-0-7926-51ea-3ff2-71dd.ip6.aussiebb.net.
  [2403:5808:8af8:0:7926:51ea:3ff2:71dd])
  by smtp.gmail.com with ESMTPSA id
- q9-20020a17090311c900b001ae59169f05sm16261879plh.182.2023.07.03.22.42.25
+ q9-20020a17090311c900b001ae59169f05sm16261879plh.182.2023.07.03.22.42.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 03 Jul 2023 22:42:28 -0700 (PDT)
+ Mon, 03 Jul 2023 22:42:31 -0700 (PDT)
 From: Joel Stanley <joel@jms.id.au>
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
 Cc: qemu-devel@nongnu.org,
 	qemu-ppc@nongnu.org
-Subject: [PATCH v2 4/5] ppc/pnv: Add P10 core xscom model
-Date: Tue,  4 Jul 2023 15:12:03 +0930
-Message-Id: <20230704054204.168547-5-joel@jms.id.au>
+Subject: [PATCH v2 5/5] ppc/pnv: Return zero for core thread state xscom
+Date: Tue,  4 Jul 2023 15:12:04 +0930
+Message-Id: <20230704054204.168547-6-joel@jms.id.au>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230704054204.168547-1-joel@jms.id.au>
 References: <20230704054204.168547-1-joel@jms.id.au>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=joel.stan@gmail.com; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=joel.stan@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -14
 X-Spam_score: -1.5
 X-Spam_bar: -
@@ -95,76 +96,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Like the quad xscoms, add a core model for P10 to allow future
-differentiation from P9.
+Firmware now warns if booting in LPAR per core mode (PPC bit 62). So
+this warning doesn't trigger, report the core thread state is 0.
 
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Joel Stanley <joel@jms.id.au>
 ---
- hw/ppc/pnv_core.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 42 insertions(+), 2 deletions(-)
+ hw/ppc/pnv_core.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index e4df435b15e9..1eec28c88c41 100644
+index 1eec28c88c41..b7223bb44597 100644
 --- a/hw/ppc/pnv_core.c
 +++ b/hw/ppc/pnv_core.c
-@@ -167,6 +167,47 @@ static const MemoryRegionOps pnv_core_power9_xscom_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
+@@ -116,6 +116,8 @@ static const MemoryRegionOps pnv_core_power8_xscom_ops = {
+ #define PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_HYP 0xf010d
+ #define PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR 0xf010a
  
-+/*
-+ * POWER10 core controls
-+ */
++#define PNV9_XSCOM_EC_CORE_THREAD_STATE    0x10ab3
 +
-+static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
-+                                           unsigned int width)
-+{
-+    uint32_t offset = addr >> 3;
-+    uint64_t val = 0;
-+
-+    switch (offset) {
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
-+                  addr);
-+    }
-+
-+    return val;
-+}
-+
-+static void pnv_core_power10_xscom_write(void *opaque, hwaddr addr,
-+                                         uint64_t val, unsigned int width)
-+{
-+    uint32_t offset = addr >> 3;
-+
-+    switch (offset) {
-+    default:
-+        qemu_log_mask(LOG_UNIMP, "Warning: writing to reg=0x%" HWADDR_PRIx "\n",
-+                      addr);
-+    }
-+}
-+
-+static const MemoryRegionOps pnv_core_power10_xscom_ops = {
-+    .read = pnv_core_power10_xscom_read,
-+    .write = pnv_core_power10_xscom_write,
-+    .valid.min_access_size = 8,
-+    .valid.max_access_size = 8,
-+    .impl.min_access_size = 8,
-+    .impl.max_access_size = 8,
-+    .endianness = DEVICE_BIG_ENDIAN,
-+};
-+
- static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp)
+ static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
+                                            unsigned int width)
  {
-     CPUPPCState *env = &cpu->env;
-@@ -315,8 +356,7 @@ static void pnv_core_power10_class_init(ObjectClass *oc, void *data)
+@@ -134,6 +136,9 @@ static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
+     case PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR:
+         val = 0x0;
+         break;
++    case PNV9_XSCOM_EC_CORE_THREAD_STATE:
++        val = 0;
++        break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
+                   addr);
+@@ -171,6 +176,8 @@ static const MemoryRegionOps pnv_core_power9_xscom_ops = {
+  * POWER10 core controls
+  */
+ 
++#define PNV10_XSCOM_EC_CORE_THREAD_STATE    0x412
++
+ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
+                                            unsigned int width)
  {
-     PnvCoreClass *pcc = PNV_CORE_CLASS(oc);
+@@ -178,6 +185,9 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
+     uint64_t val = 0;
  
--    /* TODO: Use the P9 XSCOMs for now on P10 */
--    pcc->xscom_ops = &pnv_core_power9_xscom_ops;
-+    pcc->xscom_ops = &pnv_core_power10_xscom_ops;
- }
- 
- static void pnv_core_class_init(ObjectClass *oc, void *data)
+     switch (offset) {
++    case PNV10_XSCOM_EC_CORE_THREAD_STATE:
++        val = 0;
++        break;
+     default:
+         qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
+                   addr);
 -- 
 2.40.1
 
