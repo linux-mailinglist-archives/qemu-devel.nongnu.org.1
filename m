@@ -2,63 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253EE749035
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 23:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7050074904A
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 23:53:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHANa-0004l1-DX; Wed, 05 Jul 2023 17:49:42 -0400
+	id 1qHAQA-0006Ee-Ei; Wed, 05 Jul 2023 17:52:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>)
- id 1qHANX-0004kp-L5; Wed, 05 Jul 2023 17:49:39 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>)
- id 1qHANV-0006h6-Ns; Wed, 05 Jul 2023 17:49:39 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 8D6AF61572;
- Wed,  5 Jul 2023 21:49:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B961BC433C7;
- Wed,  5 Jul 2023 21:49:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1688593767;
- bh=l17JoI3U3B13kYofOaTUt3nf7zbMoQPT/emzkZwf8jo=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=haLRnKAUzXVq2tIpWrDAIfTaNftmo2rAFZHlCDOe7lrVGOvROY7bxx+D+xA8zK7MS
- iY89K5d4ZAUbmlW+4PETEIYSOBhJ+nJ1VC//9g1FyYb0r6eYAclRYoP2SRUtT0hlit
- dqP1Quivn43auLvFwVLCc9LLy3SYFXm0ksVjlNKbI02lWyMlwv3HJDTRMHqmxHVLEt
- jFJbOzJ8XzIoDNKpNGm5FxyxsN6ca3lEUotEu8va/6As1nYfthQhA6rz8MAqouW5cM
- wxLcE5/m6dn1gf1IQ44nKyhhFOACRp/spzx4xIrUyp361xbbYHhjxtwOoDDx/uAbLh
- gqAmshM3aK+yA==
-Date: Wed, 5 Jul 2023 22:49:22 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn,
- zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, ajones@ventanamicro.com,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v8 02/20] hw/riscv/virt.c: skip 'mmu-type' FDT if satp
- mode not set
-Message-ID: <20230705-gallstone-untitled-1463e43aa33c@spud>
-References: <20230705213955.429895-1-dbarboza@ventanamicro.com>
- <20230705213955.429895-3-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qHAQ8-0006CT-2x; Wed, 05 Jul 2023 17:52:20 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qHAQ6-0008OI-1d; Wed, 05 Jul 2023 17:52:19 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-313f3a6db22so8143842f8f.3; 
+ Wed, 05 Jul 2023 14:52:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688593936; x=1691185936;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yJFMedWlKTyOeWNPiP/B80aG4j9davYW0IAez2buqhA=;
+ b=rkwQITE4R6sww5tVR5pG72lECjHlHXawTsexqL23TADbxL4pTW/cVOjeDfIOa57aLb
+ E0BDemB8yF0hQdkDcNzUkb1OAqAbb7ePFdSG+P49U36Rkeo9VDfCgCxXmpOuogkQe6Ah
+ s/SGQn4qFMMv8sTk8lu//uzvf57K3MSOq1meMretIZbSpZWHHONcC9FnIyhu9XGDNPed
+ VddQcUv+S6BNNSxrdA8muVpad3WKCwFP7JpR2m5RIjH90Tj3p7jgJO6iEXJsh/I3rgWU
+ x08OR/+Rz038pbEmNlXWHwuJmbEZ9rwJRuMtDe8YCf6l5zAP3YZL4xbYaOD3queZ9ls8
+ 5bzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688593936; x=1691185936;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yJFMedWlKTyOeWNPiP/B80aG4j9davYW0IAez2buqhA=;
+ b=OZ4kFcJS3LxIN1uQ/jCCEvyjMFdRriKzGk2KPLUuzLIgffST7NQyTUuLWDFcA3Uazk
+ 6LLU0P3mGLtYvi3XAZ4B2HczhxKfsc4CRqOByZgH6icFuzC8TCo0OMoMfnnElVR9iKgi
+ qtbs9SQzITPNs5mxoKtjJoaaCGjH6i4EcGkTwmN7143w78NNc4XSKZZQPQFZTERZXiOh
+ dg+ZtS4B63G8qMcDeogGtsu6KZKaFK9tr/C/N88VzmDnI4mRrda0Uj78TQhbDjbbKL5G
+ /ESoodm92d+LTJNSsigxGGXwBXktT27rx3GSHdJB4UgEHfUGBAje1KjB0FiBJzyviBE+
+ lp2g==
+X-Gm-Message-State: ABy/qLaX6t1zLyDa8r7ve5VuHK1oZVcSoPyZxAz4/fZZPE6LkpKAxZKf
+ oL/kdDikyi9+SMjazD+TSrw=
+X-Google-Smtp-Source: APBJJlHk6NQ7YMrzLxOxfabGiKqAyMoCs/2S/6gDwhx9aFpqwuHXohRPex3OimrF17pWKB0lemh57g==
+X-Received: by 2002:adf:e40d:0:b0:314:13e2:2f78 with SMTP id
+ g13-20020adfe40d000000b0031413e22f78mr15480469wrm.44.1688593935563; 
+ Wed, 05 Jul 2023 14:52:15 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-011-052-236.77.11.pool.telefonica.de.
+ [77.11.52.236]) by smtp.gmail.com with ESMTPSA id
+ y18-20020adff152000000b003141a3c4353sm93101wro.30.2023.07.05.14.52.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Jul 2023 14:52:15 -0700 (PDT)
+Date: Wed, 05 Jul 2023 21:52:05 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Olaf Hering <olaf@aepfle.de>, Paolo Bonzini <pbonzini@redhat.com>
+CC: qemu-devel@nongnu.org,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Lev Kujawski <lkujaw@member.fsf.org>,
+ qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH v2] hw/ide/piix: properly initialize the BMIBA register
+In-Reply-To: <20230705120121.4f353ba6.olaf@aepfle.de>
+References: <20230701174659.10246-1-olaf@aepfle.de>
+ <62EDA748-11A3-473F-913D-F9464335A382@gmail.com>
+ <20230703095929.6e793dcf.olaf@aepfle.de>
+ <93902CB6-7A6E-49E5-A55F-432C6B4BC00F@gmail.com>
+ <dded4d33-d64f-9369-0742-a57a1e173153@redhat.com>
+ <20230705120121.4f353ba6.olaf@aepfle.de>
+Message-ID: <3FF0EBC1-F1F8-4D1D-91DC-904DB287C887@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="QoekzvFzFI67pDsB"
-Content-Disposition: inline
-In-Reply-To: <20230705213955.429895-3-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=conor@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=shentey@gmail.com; helo=mail-wr1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,69 +101,79 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---QoekzvFzFI67pDsB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 05, 2023 at 06:39:37PM -0300, Daniel Henrique Barboza wrote:
-> The absence of a satp mode in riscv_host_cpu_init() is causing the
-> following error:
+Am 5=2E Juli 2023 10:01:21 UTC schrieb Olaf Hering <olaf@aepfle=2Ede>:
+>Tue, 4 Jul 2023 08:38:33 +0200 Paolo Bonzini <pbonzini@redhat=2Ecom>:
+>
+>> I agree that calling pci_device_reset() would be a better match for=20
+>> pci_xen_ide_unplug()=2E
+>
+>This change works as well:
+
+Nice!
+
+>
+>--- a/hw/i386/xen/xen_platform=2Ec
+>+++ b/hw/i386/xen/xen_platform=2Ec
+>@@ -164,8 +164,9 @@ static void pci_unplug_nics(PCIBus *bus)
+>  *
+>  * [1] https://xenbits=2Exen=2Eorg/gitweb/?p=3Dxen=2Egit;a=3Dblob;f=3Ddo=
+cs/misc/hvm-emulated-unplug=2Epandoc
+>  */
+>-static void pci_xen_ide_unplug(DeviceState *dev, bool aux)
+>+static void pci_xen_ide_unplug(PCIDevice *d, bool aux)
+> {
+>+    DeviceState *dev =3D DEVICE(d);
+>     PCIIDEState *pci_ide;
+>     int i;
+>     IDEDevice *idedev;
+>@@ -195,7 +196,7 @@ static void pci_xen_ide_unplug(DeviceState *dev, bool=
+ aux)
+>             blk_unref(blk);
+>         }
+>     }
+>-    device_cold_reset(dev);
+>+    pci_device_reset(d);
+> }
 >=20
-> $ ./qemu/build/qemu-system-riscv64  -machine virt,accel=3Dkvm \
->     -m 2G -smp 1  -nographic -snapshot \
->     -kernel ./guest_imgs/Image \
->     -initrd ./guest_imgs/rootfs_kvm_riscv64.img \
->     -append "earlycon=3Dsbi root=3D/dev/ram rw" \
->     -cpu host
-> **
-> ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should not be
-> reached
-> Bail out! ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should
-> not be reached
-> Aborted
+> static void unplug_disks(PCIBus *b, PCIDevice *d, void *opaque)
+>@@ -210,7 +211,7 @@ static void unplug_disks(PCIBus *b, PCIDevice *d, voi=
+d *opaque)
 >=20
-> The error is triggered from create_fdt_socket_cpus() in hw/riscv/virt.c.
-> It's trying to get satp_mode_str for a NULL cpu->cfg.satp_mode.map.
+>     switch (pci_get_word(d->config + PCI_CLASS_DEVICE)) {
+>     case PCI_CLASS_STORAGE_IDE:
+>-        pci_xen_ide_unplug(DEVICE(d), aux);
+>+        pci_xen_ide_unplug(d, aux);
+>         break;
 >=20
-> For this KVM cpu we would need to inherit the satp supported modes
-> from the RISC-V host. At this moment this is not possible because the
-> KVM driver does not support it. And even when it does we can't just let
-> this broken for every other older kernel.
+>     case PCI_CLASS_STORAGE_SCSI:
+>--- a/hw/ide/piix=2Ec
+>+++ b/hw/ide/piix=2Ec
+>@@ -118,7 +118,6 @@ static void piix_ide_reset(DeviceState *dev)
+>     pci_set_word(pci_conf + PCI_COMMAND, 0x0000);
+>     pci_set_word(pci_conf + PCI_STATUS,
+>                  PCI_STATUS_DEVSEL_MEDIUM | PCI_STATUS_FAST_BACK);
+>-    pci_set_byte(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
+
+I wonder if we should fix this line rather than dropping it=2E pci_device_=
+reset() calls pci_reset_regions() which unconditionally clears all BARs to =
+zero=2E While that works for PIIX IDE the VIA IDE device model intends to s=
+et BARs to the IDE compatibility addresses during reset but pci_reset_regio=
+ns() overwrites it with zeroes again=2E So I wonder if pci_reset_regions() =
+should be dropped such that pci_update_mappings() resets the BARs to whatev=
+er they were set in reset=2E
+
+Of course this won't be an easy change but I wonder if it was more correct=
+, especially since there seems to be no way to have the device model have t=
+he last word=2E Any opinions/suggestions?
+
+Thanks,
+Bernhard
+
+> }
 >=20
-> Since mmu-type is not a required node, according to [1], skip the
-> 'mmu-type' FDT node if there's no satp_mode set. We'll revisit this
-> logic when we can get satp information from KVM.
->=20
-> [1] https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schema=
-s/cpu.yaml
-
-I don't think this is the correct link to reference as backup, as the
-generic binding sets out no requirements. I think you would want to link
-to the RISC-V specific cpus binding.
-
-That said, things like FreeBSD and U-Boot appear to require mmu-type
-https://lore.kernel.org/all/20230705-fondue-bagginess-66c25f1a4135@spud/
-so I am wondering if we should in fact make the mmu-type a required
-property in the RISC-V specific binding.
-
-Since nommu is covered by an mmu type of "riscv,none", I am kinda
-struggling to think of a case where it should be left out (while
-describing real hardware at least).
-
-Cheers,
-Conor.
-
---QoekzvFzFI67pDsB
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZKXlYgAKCRB4tDGHoIJi
-0vyAAQDir4gJPaYaCjtWHlzYXr61lQdVpYDKam6/CE8VtUazOwD/WpApTTiKR2gG
-AD80eWKwZLIe0WngbeWT2Cmd89TT/Ak=
-=lEHv
------END PGP SIGNATURE-----
-
---QoekzvFzFI67pDsB--
+> static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
+>
+>
+>Olaf
 
