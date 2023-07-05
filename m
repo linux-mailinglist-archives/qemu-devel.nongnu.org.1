@@ -2,98 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AFF7481A5
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B747481A4
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 12:03:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGzKc-00011s-Kf; Wed, 05 Jul 2023 06:01:54 -0400
+	id 1qGzL9-00014N-UE; Wed, 05 Jul 2023 06:02:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
- id 1qGzKZ-00010k-Ht; Wed, 05 Jul 2023 06:01:51 -0400
-Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
- id 1qGzKX-0004N6-4V; Wed, 05 Jul 2023 06:01:50 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1688551288; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=LNaOMNNRMY2F5zccsJlDKxn195SI16MN7LLgnNX1HEEf/Frlgn4XSdP8XeUkG2LOaT
- sCEcegd1Oo7rL4DvwX0OtUly4u8HIbrL4pPu6t/3OKj6780Q7yBHAXLXNlPyp1fvA1u9
- TGLBIom6cSV7SJdR5hfCTkQFE49DIBamb5AdlZdLzy8hA27cxDfmOdee6IRNDnlwThab
- sTxMSxWUcDchV7a9boe9irXYSfiX0vN/KfTOl+bnikaeNETO+iPMmlp2gSkqzSRGmWRq
- R4ZTpjAFl5JKXpYPnb4b2grm88Annyo2q7riiRG6WQo6n2kVklzq8FogmuyEccmlb9hq
- cyRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1688551288;
- s=strato-dkim-0002; d=strato.com;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=WDJQ1aunseNiwYyyTV3q0wnD2jHgoXyl1SYmG7xfIUw=;
- b=ZLQJUvguQsuSM0VrMoKX5+ANEMIGqSYrkqkQevSuGcaw+YXfBH4FoQ5PUnF0KCrC24
- e2SPtc9JQAMESZYX+d9wXrE5PPuPvrOP1Umb5+gxDqlsvNkNdDfd76gt4bkecWAfFGyn
- 7tD/kKP9phkg1oOUH4TrO1Jny2+EFJ1ZXXN5zXuIfL5+y3H4zy12XCuZFQi2c/0vz5yw
- zRPbUWONCN0xj/9yuyA6zaLzZTTJ2IQ7RdYDALBixD75GPio1tBqv9COv2n+FuugfOLZ
- 7ojCCmOwALbFezm2Mx+bjOWm9Ax4lhJ+MMy1BqbNQ64CEAo2CZA6j2LXpznDBwNE4tTG
- jvKQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1688551288;
- s=strato-dkim-0002; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=WDJQ1aunseNiwYyyTV3q0wnD2jHgoXyl1SYmG7xfIUw=;
- b=CJAuy8E7/9URsqWo4p3sMLqhlPRiLz9Ndo/Nxpt0KDh3pDWBceUFomF498pFWYu0VD
- lfyRzHAaa8ypGf5/DrH5UEnOz/V8dKknzjtjRRfdFnL9KwUUXI3K5x6xeyjLtcAWiN/p
- 8VMiJbMwND8RC5CspuvEwwP1f+gPrLwmzHP/RuLz6QhxMsvC10YWSfvB2jm4RuIrp0ap
- 2upWAOvfKa9mQ/RP3hO0Wu5avNrYuZTcmNOO8I5CxtW+q02NX2DE/V+YZt7S0Hjuy866
- hBWEnQYW7nS5QYi7x9/+9whRPborOsqBQXHVbpK3t6+pyX7T9e0VbwUcE77nxvECUo9h
- qAjQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1688551288;
- s=strato-dkim-0003; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=WDJQ1aunseNiwYyyTV3q0wnD2jHgoXyl1SYmG7xfIUw=;
- b=W2ANCz62Qgg2SoOgp5bJ6CiiC1zkfpTGHqWgvGDv9c+9y6zO2RVv2YBuCHCY/gM1ga
- RXVgY55iz8Ap+yPvWqDg==
-X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4VReIOE3s+xIC8HZ8TOtjelmE6SkKgUS6xMby0Q=="
-Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
- with ESMTPSA id y5401az65A1RGEZ
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Wed, 5 Jul 2023 12:01:27 +0200 (CEST)
-Date: Wed, 5 Jul 2023 12:01:21 +0200
-From: Olaf Hering <olaf@aepfle.de>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org, Philippe
- =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Richard Henderson
- <richard.henderson@linaro.org>, Kevin Wolf <kwolf@redhat.com>, Lev Kujawski
- <lkujaw@member.fsf.org>, qemu-block@nongnu.org, John Snow
- <jsnow@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v2] hw/ide/piix: properly initialize the BMIBA register
-Message-ID: <20230705120121.4f353ba6.olaf@aepfle.de>
-In-Reply-To: <dded4d33-d64f-9369-0742-a57a1e173153@redhat.com>
-References: <20230701174659.10246-1-olaf@aepfle.de>
- <62EDA748-11A3-473F-913D-F9464335A382@gmail.com>
- <20230703095929.6e793dcf.olaf@aepfle.de>
- <93902CB6-7A6E-49E5-A55F-432C6B4BC00F@gmail.com>
- <dded4d33-d64f-9369-0742-a57a1e173153@redhat.com>
-X-Mailer: Claws Mail 20230601T090920.68bc28c0 hat ein Softwareproblem,
- kann man nichts machen.
+ (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
+ id 1qGzKv-00013e-M6
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 06:02:16 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
+ id 1qGzKs-0004QM-JZ
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 06:02:13 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-51dec0b6fecso6340822a12.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 03:02:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688551328; x=1691143328;
+ h=content-transfer-encoding:in-reply-to:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=x1qOIxkXIfFv1EoW9b7YkBOTZbxKBhC8Y1zftP/wVBI=;
+ b=vSEA9iFa3ChgYS9cPYbKipMEG6lJ7dgHrxJWXF6ssXk5h2ECuZQgIi/vz/0DEAWlD9
+ hi3XHHiFoRA0zcAZo+VAwzIbXUZkwhuR0hmLAwSgshZkZ/rHRQcNQ3a/dgNZKiwGt55T
+ 7wD3KK9qgWrgkN6PDrdQ9maI3dz+deoLbJ0rJjeubRlTgxB8XivoxKxpSh1Wk85sqexd
+ CHM92prscfUZFlmBS8Md7VKcaOrZo62eJjJYAaqTbPY68ZILiPFil2CBJnsysw5CxdEJ
+ f+b4rfjruFPgI3/2hZhgRX0+x+Y5PCObjcn+//N4d7Ke0f9IJaAt2d+mbMPgsFKAMgri
+ pC2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688551328; x=1691143328;
+ h=content-transfer-encoding:in-reply-to:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:sender:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=x1qOIxkXIfFv1EoW9b7YkBOTZbxKBhC8Y1zftP/wVBI=;
+ b=axDkF6zBQfwMsqfB7wtEwIFnIfnORz5oEjSlrbn4LkJDmljj1EAeu0g9mgEQ77hiHB
+ +ci5W+zbBmlWCFL69oHU5/2WfqzXFCixkRN94A1OFs2DEMYmirT8hsl+yRvE2DUgJDa9
+ Em1wCeLRWuFjSzRahzisyY8h0AICFKovXaX19yOj7bod9MIjaiGJENhyFfVbSx5/9Pl5
+ Qv7dpZBaaAtR/d3ywZ3ADqkjJc0cXYwGehQF0Aw7qifftwsGF06JwC3xTA5mms9NgG+s
+ NPUAor5LwVS6LruHerJyZk22/agVOLF49k7tJpGE472aFgIwciDE2kdeSHK+yoRzTeqj
+ cjWg==
+X-Gm-Message-State: ABy/qLb+GwiX+rwvAYaxBJHTcRDI5uVh3wYWrB/+AflwhAVngE9A8jA/
+ 6h7hCIiJdNTrmdkO1qeVCOgF5g==
+X-Google-Smtp-Source: APBJJlGpc8iSmm53Ef2SrSXu4npa4hGDYnAWo7wwF3ICdFHKJ2FUPszzBxQlPZ4pZSK92g7qajTDDg==
+X-Received: by 2002:a05:6402:605:b0:51d:e975:bea8 with SMTP id
+ n5-20020a056402060500b0051de975bea8mr11162371edv.13.1688551328597; 
+ Wed, 05 Jul 2023 03:02:08 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.142.96])
+ by smtp.gmail.com with ESMTPSA id
+ c15-20020a056402100f00b0051a5cf5fcaasm12774903edu.23.2023.07.05.03.02.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Jul 2023 03:02:08 -0700 (PDT)
+From: "=?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=" <philmd@linaro.org>
+X-Google-Original-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@fungible.com>
+Message-ID: <99e31308-3ca6-40aa-a980-bea665dde39d@fungible.com>
+Date: Wed, 5 Jul 2023 12:02:06 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/bUxWgjEYJo0GGljeHIos_Ho";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=85.215.255.51; envelope-from=olaf@aepfle.de;
- helo=mo4-p01-ob.smtp.rzone.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v3] vhost-user: delay vhost_user_stop
+Content-Language: en-US
+To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: mst@redhat.com, pbonzini@redhat.com, den@openvz.org
+References: <20170227104956.24729-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20170227104956.24729-1-marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philippe.mathieu-daude@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,85 +98,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/bUxWgjEYJo0GGljeHIos_Ho
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hi Marc-André,
 
-Tue, 4 Jul 2023 08:38:33 +0200 Paolo Bonzini <pbonzini@redhat.com>:
+[very old patch...]
 
-> I agree that calling pci_device_reset() would be a better match for=20
-> pci_xen_ide_unplug().
+On 27/2/17 11:49, Marc-André Lureau wrote:
+> Since commit b0a335e351103bf92f3f9d0bd5759311be8156ac, a socket write
+> may trigger a disconnect events, calling vhost_user_stop() and clearing
+> all the vhost_dev strutures holding data that vhost.c functions expect
+> to remain valid. Delay the cleanup to keep the vhost_dev structure
+> valid during the vhost.c functions.
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+> v3:
+>   - use aio_bh_schedule_oneshot(), as suggest by Paolo
+> v2:
+>   - fix reconnect race
+> 
+> net/vhost-user.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++-------
+>   1 file changed, 46 insertions(+), 7 deletions(-)
+> 
+> diff --git a/net/vhost-user.c b/net/vhost-user.c
+> index 77b8110f8c..e7e63408a1 100644
+> --- a/net/vhost-user.c
+> +++ b/net/vhost-user.c
+> @@ -190,7 +190,35 @@ static gboolean net_vhost_user_watch(GIOChannel *chan, GIOCondition cond,
+>   
+>       qemu_chr_fe_disconnect(&s->chr);
+>   
+> -    return FALSE;
+> +    return TRUE;
 
-This change works as well:
+Do you mind explaining this change again, it is not clear from
+the commit description. We listen to G_IO_HUP, got a SIGHUP so
+we disconnect the chardev but keep listening for future HUP?
+In which case can that happen? How can we get a chardev connected
+and initialized here without calling net_init_vhost_user() again?
 
---- a/hw/i386/xen/xen_platform.c
-+++ b/hw/i386/xen/xen_platform.c
-@@ -164,8 +164,9 @@ static void pci_unplug_nics(PCIBus *bus)
-  *
-  * [1] https://xenbits.xen.org/gitweb/?p=3Dxen.git;a=3Dblob;f=3Ddocs/misc/=
-hvm-emulated-unplug.pandoc
-  */
--static void pci_xen_ide_unplug(DeviceState *dev, bool aux)
-+static void pci_xen_ide_unplug(PCIDevice *d, bool aux)
- {
-+    DeviceState *dev =3D DEVICE(d);
-     PCIIDEState *pci_ide;
-     int i;
-     IDEDevice *idedev;
-@@ -195,7 +196,7 @@ static void pci_xen_ide_unplug(DeviceState *dev, bool a=
-ux)
-             blk_unref(blk);
-         }
-     }
--    device_cold_reset(dev);
-+    pci_device_reset(d);
- }
-=20
- static void unplug_disks(PCIBus *b, PCIDevice *d, void *opaque)
-@@ -210,7 +211,7 @@ static void unplug_disks(PCIBus *b, PCIDevice *d, void =
-*opaque)
-=20
-     switch (pci_get_word(d->config + PCI_CLASS_DEVICE)) {
-     case PCI_CLASS_STORAGE_IDE:
--        pci_xen_ide_unplug(DEVICE(d), aux);
-+        pci_xen_ide_unplug(d, aux);
-         break;
-=20
-     case PCI_CLASS_STORAGE_SCSI:
---- a/hw/ide/piix.c
-+++ b/hw/ide/piix.c
-@@ -118,7 +118,6 @@ static void piix_ide_reset(DeviceState *dev)
-     pci_set_word(pci_conf + PCI_COMMAND, 0x0000);
-     pci_set_word(pci_conf + PCI_STATUS,
-                  PCI_STATUS_DEVSEL_MEDIUM | PCI_STATUS_FAST_BACK);
--    pci_set_byte(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
- }
-=20
- static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
-
-
-Olaf
-
---Sig_/bUxWgjEYJo0GGljeHIos_Ho
-Content-Type: application/pgp-signature
-Content-Description: Digitale Signatur von OpenPGP
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmSlP3EACgkQ86SN7mm1
-DoBUlA/+LCOJOHRoIwZs/b2/zWoamfsx0FIE7dKQRNP4yJ12f//mywbLPcdWezm9
-MkokLlczbMjWtH9jPZaW6Al+3xTcCFuNeSPw1dTQPmU+pSraj1Fn7RwaQUECCjC2
-t/ZGhTOUCP/r8/cSSNxNMxfOLsPTeffCSFH/epc9GPKY7BLSwSvaCiWHqdYXX12l
-nAS/WxeyPCl4sT0R6Rx05rHGE77aRLGdJRJFEZsHjZdiwTie57BbXyQvTv5fhxMo
-8tngObqnNrQLkoHDqmdBX6pDQTpH1qgBKkToP5HQ1jj/Fym5Xt9GwcQixTBKSQSe
-b1D4n4jUpgZrTvq2vuwmjbDeieyvOEpRWkEBe7iKhnYmpw3m8zlC5jElE6UwoGpE
-/+m4sNgRkoFdhWWqtpeLoWpqzw25Kz7ovn9KZ5JY+gLbD3K0NEvP2TqH1w7JT9vm
-vYI9gDdzkfcnyXN+wcqGZhZjA7OCT4RMl3TPgiPgtz72aqAsOsO5tATlldqAcEG7
-dtaH/Tw9SrQEVHysZAm5h6nzJ4SY2E6LFRqEKYqNqs/TMFJRzVlt5TpMGhHa22fB
-OCyzrtiHnC+GzgyFdFjAZZ4Yv0PzYUrzYHsJJqsXNNgaXIN3Pu1NzLVoLAHSlyz4
-WJHQeTnG7FN0T3sf8Mi5PJjtPU1B/bX6HetDQ7uJT1yi+ByoJ1s=
-=WBC8
------END PGP SIGNATURE-----
-
---Sig_/bUxWgjEYJo0GGljeHIos_Ho--
+> +}
+> +
+> +static void net_vhost_user_event(void *opaque, int event);
+> +
+> +static void chr_closed_bh(void *opaque)
+> +{
+> +    const char *name = opaque;
+> +    NetClientState *ncs[MAX_QUEUE_NUM];
+> +    VhostUserState *s;
+> +    Error *err = NULL;
+> +    int queues;
+> +
+> +    queues = qemu_find_net_clients_except(name, ncs,
+> +                                          NET_CLIENT_DRIVER_NIC,
+> +                                          MAX_QUEUE_NUM);
+> +    assert(queues < MAX_QUEUE_NUM);
+> +
+> +    s = DO_UPCAST(VhostUserState, nc, ncs[0]);
+> +
+> +    qmp_set_link(name, false, &err);
+> +    vhost_user_stop(queues, ncs);
+> +
+> +    qemu_chr_fe_set_handlers(&s->chr, NULL, NULL, net_vhost_user_event,
+> +                             opaque, NULL, true);
+> +
+> +    if (err) {
+> +        error_report_err(err);
+> +    }
+>   }
+>   
+>   static void net_vhost_user_event(void *opaque, int event)
+> @@ -212,20 +240,31 @@ static void net_vhost_user_event(void *opaque, int event)
+>       trace_vhost_user_event(chr->label, event);
+>       switch (event) {
+>       case CHR_EVENT_OPENED:
+> -        s->watch = qemu_chr_fe_add_watch(&s->chr, G_IO_HUP,
+> -                                         net_vhost_user_watch, s);
+>           if (vhost_user_start(queues, ncs, &s->chr) < 0) {
+>               qemu_chr_fe_disconnect(&s->chr);
+>               return;
+>           }
+> +        s->watch = qemu_chr_fe_add_watch(&s->chr, G_IO_HUP,
+> +                                         net_vhost_user_watch, s);
+>           qmp_set_link(name, true, &err);
+>           s->started = true;
+>           break;
+>       case CHR_EVENT_CLOSED:
+> -        qmp_set_link(name, false, &err);
+> -        vhost_user_stop(queues, ncs);
+> -        g_source_remove(s->watch);
+> -        s->watch = 0;
+> +        /* a close event may happen during a read/write, but vhost
+> +         * code assumes the vhost_dev remains setup, so delay the
+> +         * stop & clear to idle.
+> +         * FIXME: better handle failure in vhost code, remove bh
+> +         */
+> +        if (s->watch) {
+> +            AioContext *ctx = qemu_get_current_aio_context();
+> +
+> +            g_source_remove(s->watch);
+> +            s->watch = 0;
+> +            qemu_chr_fe_set_handlers(&s->chr, NULL, NULL, NULL,
+> +                                     NULL, NULL, false);
+> +
+> +            aio_bh_schedule_oneshot(ctx, chr_closed_bh, opaque);
+> +        }
+>           break;
+>       }
+>   
 
