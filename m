@@ -2,82 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AD0747C48
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 07:15:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2D5747C6C
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 07:30:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGuqM-0005UE-AW; Wed, 05 Jul 2023 01:14:22 -0400
+	id 1qGv4Z-0001Rh-8D; Wed, 05 Jul 2023 01:29:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGuqI-0005U1-Ls
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 01:14:18 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1qGv4W-0001R3-6t
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 01:29:00 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGuqE-0000C5-C3
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 01:14:18 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fbc244d307so74138005e9.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 22:14:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <frank.chang@sifive.com>)
+ id 1qGv4T-0003bc-Qe
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 01:28:59 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-4f766777605so9773744e87.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 22:28:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688534052; x=1691126052;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XYFksPaw0oKlAzw3IfrSE54sJ24AakA6BmtogPcwkFQ=;
- b=ijw5Vf+RbPaXE2GN7G/0WEG9u3N9x690aCji4P8bwkSwHkUbUj6pMKTJZiRSFfkBuq
- 4/P59W/AVusMJd//8d1byYO0AzMiixGgBAt2BBIVxmlifRF+wKOcKv54mGR4zcPrSoz4
- GjkB+ViBNE30k8zxAIS4312mIn8FaOzeax5jrADc8bOtYQa0jvk/bnlkB+679Tpd7HSM
- hRdqTgtw/X0wBSQQWJpUZOIW9MCFUfJCiH2YqfDPgTM1RlZ4sm17yV4s3ufJXUfTDwSd
- yGbYA02E+WWBYQ3+S0G7kPv7g3NcirlEvmw0CDcDq+wGtZ9SNqUyp9QZD14skc9iJ3T/
- HBPg==
+ d=sifive.com; s=google; t=1688534935; x=1691126935;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=IRpNPwmKya6i+NN8HgR6KqJWm2gGh6nOq9jxBn8oquU=;
+ b=DepCqlpeTqlJKoC/gQNRz2DSQac2a3lQltVzU25yzDR/yXhsM9IeiYkBtXa0P2DPXq
+ oANTmwSk8DnstkOdENeI1XndPag7HBbUTr9Dp9Hx5+tUSuqJa52mNPatWnj6Bewl3ij+
+ GMmzkEQDItbo/noY3xNeRZxjxPuUqHLOeL8SO/EqDCLYYRo4JaiINDFYehWkxREVoEv5
+ HyKocpmH4iHpJgLo1KklCkLi/4bZkHdwXvYPyWy7vrBZRW8cwergPX4GuPkSEXJd1++t
+ 7cgvD79zqAp/VV2zE8GMZBxwra7dwse83erju1BL4+z+6Q0C2U/C0p20zKg1aQEVkJh7
+ o8Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688534052; x=1691126052;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XYFksPaw0oKlAzw3IfrSE54sJ24AakA6BmtogPcwkFQ=;
- b=XkGT8lZKllkg3/EcRiBsQt2zII8XjRClOioq9uhefNYVvEUNFsOcK8hNSbG1u8oM/l
- FS68IKaV/R9LDVD1F6F2U9jZUfbjThrbijzx7jj5zAT2sp/IKjGMl4bnqr5VaZFgD5I0
- RRPDcZRODF8xSevpiCJx+0g3ofMSKzIhCqPPlN8QbjwzJIM05h2OswKPJuevps3/vLtN
- 4GTOeSjcLKcDh1XgXo0aW9dSOihY5Wm1mvAYuC+6fDrqBAtlkDGEk6fsJhIoG+eeWYaq
- 6khLUigZ0fobouZioE2qdsMhMmXlSdaVptwyWtR4u7cynhXo6Hu3CXM6LlXsgbbSScaP
- bUag==
-X-Gm-Message-State: AC+VfDx0yYvEAb2EL1cruyOc9IlhX9tDyyYRKgQYiofN92Pz3uS3jSq2
- IjVNR8nKevlCY4LTLlZpMpU6nTiNxUF8cD/X9xC6Rg==
-X-Google-Smtp-Source: ACHHUZ4WhWx7hzgIZDnp8NrKkHTIEox8Bk75D4kUusBy7DNc2LsdPrP5oBjr79qv08UoYrBW34QsTQ==
-X-Received: by 2002:a7b:c315:0:b0:3f4:d18f:b2fb with SMTP id
- k21-20020a7bc315000000b003f4d18fb2fbmr14630225wmj.8.1688534052627; 
- Tue, 04 Jul 2023 22:14:12 -0700 (PDT)
-Received: from [192.168.1.25] (91.232.79.188.dynamic.jazztel.es.
- [188.79.232.91]) by smtp.gmail.com with ESMTPSA id
- n5-20020a05600c294500b003fbc0a49b57sm1001932wmd.6.2023.07.04.22.14.11
+ d=1e100.net; s=20221208; t=1688534935; x=1691126935;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IRpNPwmKya6i+NN8HgR6KqJWm2gGh6nOq9jxBn8oquU=;
+ b=c7BjNGdWOx2kX3orCsEGEAL54CDsb+bRl2DrT639fr54XuaVwgvbdoYG/ACrvQeozh
+ HYzgpNwkktrBhpSGv33AflmYNuSXoCoPTBW95N+p5Ws+daden3asZf/jR4EQlOsBwSG7
+ Q3pn5IpxYPnpwIVnhoETpj0dj7txMPgzszhJhzlDFa80iTez5PlRROkbOjzI8avdCo6g
+ nAK1lfuq309fihUKlWq+23faIzaB/0MDjPffy0ainpPWjxMhvLmKIwr465LQ2UC5oR60
+ dnSvjVbc3LI96HORbt5cG2KhuOY9sP3YQwdisyoDOhxaUP72HbyF1oyOsNS1gyIOLyxO
+ VZ2Q==
+X-Gm-Message-State: ABy/qLbkgfU8WndBb2m1LH3EQsGx/6j7dHXvnBSIY9+f2GMy2BnSmrU3
+ Cc8x5vUpu33/rUyxJrKXjcQmwnH01sRq+3/elBsa5bwWLbhxjlHeNeTDb2uvElkJhhSl9smvHGc
+ QlWrsj7rLwlkKe3X2zflifbMlmJPhl6hIXpINNC0tb28Zvf5+fdFjZo+ZRRDVcB9KxWLOViWwls
+ fpIDRx
+X-Google-Smtp-Source: APBJJlH36MQBPUdUFUYjBqn++CjSEXDBqgKGvhwo83jwiuXVwKmMW9KkVtNGEcdk/D749Wu6Auc60Q==
+X-Received: by 2002:a19:4f10:0:b0:4f8:5dd2:21f5 with SMTP id
+ d16-20020a194f10000000b004f85dd221f5mr9937011lfb.67.1688534934940; 
+ Tue, 04 Jul 2023 22:28:54 -0700 (PDT)
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com.
+ [209.85.208.175]) by smtp.gmail.com with ESMTPSA id
+ p5-20020a19f005000000b004fbbf5db0a5sm436151lfc.100.2023.07.04.22.28.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 22:14:12 -0700 (PDT)
-Message-ID: <d2142c8f-4ae7-ae3e-da84-7d7ac376457a@linaro.org>
-Date: Wed, 5 Jul 2023 07:14:10 +0200
+ Tue, 04 Jul 2023 22:28:54 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id
+ 38308e7fff4ca-2b5c231c23aso101464791fa.0; 
+ Tue, 04 Jul 2023 22:28:54 -0700 (PDT)
+X-Received: by 2002:a05:651c:d4:b0:2b6:df5d:8e08 with SMTP id
+ 20-20020a05651c00d400b002b6df5d8e08mr6873343ljr.28.1688534934111; Tue, 04 Jul
+ 2023 22:28:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: intermittent clang sanitizer failure during 'make check-tcg':
- null pointer deref in IntervalTreeNode
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>,
- QEMU Developers <qemu-devel@nongnu.org>
-References: <CAFEAcA8AzdKw9BH_6757U-P3zCWTdyiVCAa7GB8wcjOF4wdE3Q@mail.gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA8AzdKw9BH_6757U-P3zCWTdyiVCAa7GB8wcjOF4wdE3Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230704084013.21749-1-jason.chien@sifive.com>
+In-Reply-To: <20230704084013.21749-1-jason.chien@sifive.com>
+From: Frank Chang <frank.chang@sifive.com>
+Date: Wed, 5 Jul 2023 13:28:42 +0800
+X-Gmail-Original-Message-ID: <CANzO1D3GRUqkdfS1_PcriMAc+Z14bWhtM2FTrV7VQuNBLO74Sg@mail.gmail.com>
+Message-ID: <CANzO1D3GRUqkdfS1_PcriMAc+Z14bWhtM2FTrV7VQuNBLO74Sg@mail.gmail.com>
+Subject: Re: [PATCH] target/riscv: Add Zihintntl extension ISA string to DTS
+To: Jason Chien <jason.chien@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: multipart/alternative; boundary="000000000000f04a7605ffb6acf2"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=frank.chang@sifive.com; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,42 +103,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/4/23 18:20, Peter Maydell wrote:
-> If you build QEMU with the clang UB sanitizer and do a
-> 'make check-tcg' run, it can fail like this:
-> 
->    TEST    vma-pthread-with-libinsn.so on aarch64
-> ../../util/interval-tree.c:751:32: runtime error: member access within
-> null pointer of type 'IntervalTreeNode' (aka 'struct
-> IntervalTreeNode')
-> SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior
-> ../../util/interval-tree.c:751:32 in
-> 
-> SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior
-> ../../util/interval-tree.c:751:32 in
-> make[1]: *** [Makefile:181: run-plugin-vma-pthread-with-libinsn.so] Error 124
-> make: *** [/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/Makefile.include:56:
-> run-tcg-tests-aarch64-linux-user] Error 2
-> 
-> I only saw this once; when I re-ran the test passed...
+--000000000000f04a7605ffb6acf2
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hmm.
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
 
-The 751:32 reference is "left->subtree_last".
+On Tue, Jul 4, 2023 at 4:41=E2=80=AFPM Jason Chien <jason.chien@sifive.com>=
+ wrote:
 
-Three lines above we checked
+> RVA23 Profiles states:
+> The RVA23 profiles are intended to be used for 64-bit application
+> processors that will run rich OS stacks from standard binary OS
+> distributions and with a substantial number of third-party binary user
+> applications that will be supported over a considerable length of time
+> in the field.
+>
+> The chapter 4 of the unprivileged spec introduces the Zihintntl extension
+> and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
+> purpose is to enable application and operating system portability across
+> different implementations. Thus the DTS should contain the Zihintntl ISA
+> string in order to pass to software.
+>
+> The unprivileged spec states:
+> Like any HINTs, these instructions may be freely ignored. Hence, although
+> they are described in terms of cache-based memory hierarchies, they do no=
+t
+> mandate the provision of caches.
+>
+> These instructions are encoded with used opcode, e.g. ADD x0, x0, x2, whi=
+ch
+> QEMU already supports, and QEMU does not emulate cache. Therefore these
+> instructions can be considered as a no-op, and we only need to add a new
+> property for the Zihintntl extension.
+>
+> Signed-off-by: Jason Chien <jason.chien@sifive.com>
+> ---
+>  target/riscv/cpu.c     | 2 ++
+>  target/riscv/cpu_cfg.h | 1 +
+>  2 files changed, 3 insertions(+)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 881bddf393..6fd21466a4 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -81,6 +81,7 @@ static const struct isa_ext_data isa_edata_arr[] =3D {
+>      ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+>      ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
+>      ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
+> +    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
+>      ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause=
+),
+>      ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+>      ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
+> @@ -1598,6 +1599,7 @@ static Property riscv_cpu_extensions[] =3D {
+>      DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
+>      DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+>      DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
+> +    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, true),
+>      DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true)=
+,
+>      DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
+>      DEFINE_PROP_BOOL("Zfh", RISCVCPU, cfg.ext_zfh, false),
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index c4a627d335..c7da2facef 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -66,6 +66,7 @@ struct RISCVCPUConfig {
+>      bool ext_icbom;
+>      bool ext_icboz;
+>      bool ext_zicond;
+> +    bool ext_zihintntl;
+>      bool ext_zihintpause;
+>      bool ext_smstateen;
+>      bool ext_sstc;
+> --
+> 2.17.1
+>
+>
+>
 
-         if (node->rb.rb_left) {
+--000000000000f04a7605ffb6acf2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-but then read it again within the IF
+<div dir=3D"ltr">Reviewed-by: Frank Chang &lt;<a href=3D"mailto:frank.chang=
+@sifive.com">frank.chang@sifive.com</a>&gt;</div><br><div class=3D"gmail_qu=
+ote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jul 4, 2023 at 4:41=E2=
+=80=AFPM Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com">jason.ch=
+ien@sifive.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex">RVA23 Profiles states:<br>
+The RVA23 profiles are intended to be used for 64-bit application<br>
+processors that will run rich OS stacks from standard binary OS<br>
+distributions and with a substantial number of third-party binary user<br>
+applications that will be supported over a considerable length of time<br>
+in the field.<br>
+<br>
+The chapter 4 of the unprivileged spec introduces the Zihintntl extension<b=
+r>
+and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose<b=
+r>
+purpose is to enable application and operating system portability across<br=
+>
+different implementations. Thus the DTS should contain the Zihintntl ISA<br=
+>
+string in order to pass to software.<br>
+<br>
+The unprivileged spec states:<br>
+Like any HINTs, these instructions may be freely ignored. Hence, although<b=
+r>
+they are described in terms of cache-based memory hierarchies, they do not<=
+br>
+mandate the provision of caches.<br>
+<br>
+These instructions are encoded with used opcode, e.g. ADD x0, x0, x2, which=
+<br>
+QEMU already supports, and QEMU does not emulate cache. Therefore these<br>
+instructions can be considered as a no-op, and we only need to add a new<br=
+>
+property for the Zihintntl extension.<br>
+<br>
+Signed-off-by: Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com" ta=
+rget=3D"_blank">jason.chien@sifive.com</a>&gt;<br>
+---<br>
+=C2=A0target/riscv/cpu.c=C2=A0 =C2=A0 =C2=A0| 2 ++<br>
+=C2=A0target/riscv/cpu_cfg.h | 1 +<br>
+=C2=A02 files changed, 3 insertions(+)<br>
+<br>
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c<br>
+index 881bddf393..6fd21466a4 100644<br>
+--- a/target/riscv/cpu.c<br>
++++ b/target/riscv/cpu.c<br>
+@@ -81,6 +81,7 @@ static const struct isa_ext_data isa_edata_arr[] =3D {<br=
+>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zic=
+ond),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr=
+),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_i=
+fencei),<br>
++=C2=A0 =C2=A0 ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihin=
+tntl),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ex=
+t_zihintpause),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawr=
+s),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),<=
+br>
+@@ -1598,6 +1599,7 @@ static Property riscv_cpu_extensions[] =3D {<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;sscofpmf&quot;, RISCVCPU, cfg.ex=
+t_sscofpmf, false),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zifencei&quot;, RISCVCPU, cfg.ex=
+t_ifencei, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zicsr&quot;, RISCVCPU, cfg.ext_i=
+csr, true),<br>
++=C2=A0 =C2=A0 DEFINE_PROP_BOOL(&quot;Zihintntl&quot;, RISCVCPU, cfg.ext_zi=
+hintntl, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zihintpause&quot;, RISCVCPU, cfg=
+.ext_zihintpause, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zawrs&quot;, RISCVCPU, cfg.ext_z=
+awrs, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zfh&quot;, RISCVCPU, cfg.ext_zfh=
+, false),<br>
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h<br>
+index c4a627d335..c7da2facef 100644<br>
+--- a/target/riscv/cpu_cfg.h<br>
++++ b/target/riscv/cpu_cfg.h<br>
+@@ -66,6 +66,7 @@ struct RISCVCPUConfig {<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_icbom;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_icboz;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_zicond;<br>
++=C2=A0 =C2=A0 bool ext_zihintntl;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_zihintpause;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_smstateen;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_sstc;<br>
+-- <br>
+2.17.1<br>
+<br>
+<br>
+</blockquote></div>
 
-             IntervalTreeNode *left = rb_to_itree(node->rb.rb_left);
-
-I suspect a normal optimizing compiler combines these two reads, but UBSAN does not and 
-thus the check and the use race.
-
-On the to-do list...
-
-
-r~
+--000000000000f04a7605ffb6acf2--
 
