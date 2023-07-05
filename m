@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE961748EAF
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0B0748EA7
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:14:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH8st-00034n-OC; Wed, 05 Jul 2023 16:14:00 -0400
+	id 1qH8sb-00032j-F4; Wed, 05 Jul 2023 16:13:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qH8sN-0002tX-5N; Wed, 05 Jul 2023 16:13:23 -0400
+ id 1qH8sM-0002r8-3o; Wed, 05 Jul 2023 16:13:22 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qH8sK-00067C-DE; Wed, 05 Jul 2023 16:13:22 -0400
+ id 1qH8sK-00067S-CY; Wed, 05 Jul 2023 16:13:21 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 70B9E748A5C;
- Wed,  5 Jul 2023 22:12:58 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 9987D748A60;
+ Wed,  5 Jul 2023 22:12:59 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 53F0C748A55; Wed,  5 Jul 2023 22:12:58 +0200 (CEST)
-Message-Id: <3def68f200edd4540393d6b3b03baabe15d649f2.1688586835.git.balaton@eik.bme.hu>
+ id 6D8B8748A5E; Wed,  5 Jul 2023 22:12:59 +0200 (CEST)
+Message-Id: <0091e093b8c3d4b34a509b7daf1ccbeeddd1aca5.1688586835.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1688586835.git.balaton@eik.bme.hu>
 References: <cover.1688586835.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 13/14] ppc440_pcix: Don't use iomem for regs
+Subject: [PATCH v2 14/14] ppc440_pcix: Stop using system io region for PCI bus
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Daniel Henrique Barboza <"danielhb413@gmail.com>, philmd"@linaro.org>
-Date: Wed,  5 Jul 2023 22:12:58 +0200 (CEST)
-X-Spam-Probability: 10%
+Date: Wed,  5 Jul 2023 22:12:59 +0200 (CEST)
+X-Spam-Probability: 8%
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -56,42 +56,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The iomem memory region is better used for the PCI IO space but
-currently used for registers. Stop using it for that to allow this to
-be cleaned up in the next patch.
+Reduce the iomem region to 64K and use it for the PCI io space and map
+it directly from the board without an intermediate alias that is not
+really needed.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/ppc440_pcix.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ hw/ppc/ppc440_pcix.c | 9 ++++++---
+ hw/ppc/sam460ex.c    | 6 +-----
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-index adfecf1e76..cf932e4b25 100644
+index cf932e4b25..672090de94 100644
 --- a/hw/ppc/ppc440_pcix.c
 +++ b/hw/ppc/ppc440_pcix.c
-@@ -63,6 +63,7 @@ struct PPC440PCIXState {
-     MemoryRegion container;
-     MemoryRegion iomem;
-     MemoryRegion busmem;
-+    MemoryRegion regs;
- };
+@@ -23,6 +23,7 @@
+ #include "qemu/error-report.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
++#include "qemu/units.h"
+ #include "hw/irq.h"
+ #include "hw/ppc/ppc.h"
+ #include "hw/ppc/ppc4xx.h"
+@@ -490,10 +491,11 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
+     s = PPC440_PCIX_HOST(dev);
  
- #define PPC440_REG_BASE     0x80000
-@@ -507,11 +508,11 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
-                           h, "pci-conf-idx", 4);
-     memory_region_init_io(&h->data_mem, OBJECT(s), &pci_host_data_le_ops,
-                           h, "pci-conf-data", 4);
--    memory_region_init_io(&s->iomem, OBJECT(s), &pci_reg_ops, s,
--                          "pci.reg", PPC440_REG_SIZE);
-+    memory_region_init_io(&s->regs, OBJECT(s), &pci_reg_ops, s, "pci-reg",
-+                          PPC440_REG_SIZE);
-     memory_region_add_subregion(&s->container, PCIC0_CFGADDR, &h->conf_mem);
+     sysbus_init_irq(sbd, &s->irq);
+-    memory_region_init(&s->busmem, OBJECT(dev), "pci bus memory", UINT64_MAX);
++    memory_region_init(&s->busmem, OBJECT(dev), "pci-mem", UINT64_MAX);
++    memory_region_init(&s->iomem, OBJECT(dev), "pci-io", 64 * KiB);
+     h->bus = pci_register_root_bus(dev, NULL, ppc440_pcix_set_irq,
+-                         ppc440_pcix_map_irq, &s->irq, &s->busmem,
+-                         get_system_io(), PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
++                         ppc440_pcix_map_irq, &s->irq, &s->busmem, &s->iomem,
++                         PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
+ 
+     s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0),
+                                TYPE_PPC4xx_HOST_BRIDGE);
+@@ -514,6 +516,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
      memory_region_add_subregion(&s->container, PCIC0_CFGDATA, &h->data_mem);
--    memory_region_add_subregion(&s->container, PPC440_REG_BASE, &s->iomem);
-+    memory_region_add_subregion(&s->container, PPC440_REG_BASE, &s->regs);
+     memory_region_add_subregion(&s->container, PPC440_REG_BASE, &s->regs);
      sysbus_init_mmio(sbd, &s->container);
++    sysbus_init_mmio(sbd, &s->iomem);
  }
  
+ static void ppc440_pcix_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
+index 8d0e551d14..1e615b8d35 100644
+--- a/hw/ppc/sam460ex.c
++++ b/hw/ppc/sam460ex.c
+@@ -269,7 +269,6 @@ static void main_cpu_reset(void *opaque)
+ 
+ static void sam460ex_init(MachineState *machine)
+ {
+-    MemoryRegion *isa = g_new(MemoryRegion, 1);
+     MemoryRegion *l2cache_ram = g_new(MemoryRegion, 1);
+     DeviceState *uic[4];
+     int i;
+@@ -441,12 +440,9 @@ static void sam460ex_init(MachineState *machine)
+     /* All PCI irqs are connected to the same UIC pin (cf. UBoot source) */
+     dev = sysbus_create_simple(TYPE_PPC440_PCIX_HOST, 0xc0ec00000,
+                                qdev_get_gpio_in(uic[1], 0));
++    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, 0xc08000000);
+     pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
+ 
+-    memory_region_init_alias(isa, NULL, "isa_mmio", get_system_io(),
+-                             0, 0x10000);
+-    memory_region_add_subregion(get_system_memory(), 0xc08000000, isa);
+-
+     /* PCI devices */
+     pci_create_simple(pci_bus, PCI_DEVFN(6, 0), "sm501");
+     /* SoC has a single SATA port but we don't emulate that yet
 -- 
 2.30.9
 
