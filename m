@@ -2,91 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740F574811E
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 11:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2AFF7481A5
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 12:03:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGyxJ-0005ka-Ts; Wed, 05 Jul 2023 05:37:49 -0400
+	id 1qGzKc-00011s-Kf; Wed, 05 Jul 2023 06:01:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qGyxH-0005k6-QY
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 05:37:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
+ id 1qGzKZ-00010k-Ht; Wed, 05 Jul 2023 06:01:51 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([85.215.255.51])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qGyxC-00089V-Pp
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 05:37:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688549861;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iyV1NbVItgPr80q1ZiNZekhKp10UooKWDyn6BXtlauQ=;
- b=B6NnJojVpHNmx0arb+6+2Z0qE8vNnVx1oEag6NqlrPTNlUNukER0fdbk6FBwu3xxkjS6Vu
- aqYvICLTzb/RTZ+7ySPJ0/73vck3Nx/FhLYSrcxEV37MjlMXvDryErsZ7uOHhvVtrT3NTO
- 84zLAIm9BZkm49XgprqLCnMv+meJCW0=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-494-GboxM7EDNyi9ZTHRV7032Q-1; Wed, 05 Jul 2023 05:37:40 -0400
-X-MC-Unique: GboxM7EDNyi9ZTHRV7032Q-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6372702c566so13688176d6.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 02:37:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688549860; x=1691141860;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iyV1NbVItgPr80q1ZiNZekhKp10UooKWDyn6BXtlauQ=;
- b=Q4cWZRzaO/XYPXr8uA3QgeuldIwf9JUVonvUTcutjAMKrUDAWDzPE3HXklzMIHC/et
- kXSBS5yO6W5x0midNpHuSpJm3zww0a4/mBYjnNGV+5tqyLSBl3ViWfPl0M1PwQKG6YvW
- 67yI3x4hwfsmuHTLfNi8J28aTKyDG/ErJ1rYDEINyq5zKLtRTQ/FIbgT9rWo5rHm22JV
- H8wpZVLr/XSj+loHmy3kSK1Gh83vKN5VsSrrBr8/lXUOm9fPOS6WXcLubB7q2rnkGTvI
- bXY+1aHWv+YXZjO2Ax6Kd25D8c4jDHikQEKZs9wmO9Y6GKkGbhu+4dUYHBrevT7bYIxO
- ensA==
-X-Gm-Message-State: ABy/qLbSi/vps5XvBpq75BnP1y3Ys3BqGmU17IUSWESkQHT9A8xyeArH
- fQd2oVCAB9WbhYmdTByNZJ0Cm9Jm9bPzwARbcYItXpoepJif1rNGQPdxje2brH/tNuLn2ynXkWF
- ypHqZ0Ej8vkZnTJE=
-X-Received: by 2002:a05:6214:1c47:b0:62f:f13e:bd73 with SMTP id
- if7-20020a0562141c4700b0062ff13ebd73mr13487581qvb.20.1688549860245; 
- Wed, 05 Jul 2023 02:37:40 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFHL4BEoPQCfsxDvmlF7SuoQLflGcmu7RK9w2yyR30FBEjDJ2bWBef6qAkZlLYSonjwFw4STw==
-X-Received: by 2002:a05:6214:1c47:b0:62f:f13e:bd73 with SMTP id
- if7-20020a0562141c4700b0062ff13ebd73mr13487571qvb.20.1688549860047; 
- Wed, 05 Jul 2023 02:37:40 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:576b:abc6:6396:ed4a?
- ([2a01:e0a:280:24f0:576b:abc6:6396:ed4a])
- by smtp.gmail.com with ESMTPSA id
- lw18-20020a05621457d200b006262de12a8csm5525857qvb.65.2023.07.05.02.37.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 02:37:39 -0700 (PDT)
-Message-ID: <c30fb7f5-8aa4-f710-1c3e-d5c7801b1229@redhat.com>
-Date: Wed, 5 Jul 2023 11:37:38 +0200
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
+ id 1qGzKX-0004N6-4V; Wed, 05 Jul 2023 06:01:50 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1688551288; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=LNaOMNNRMY2F5zccsJlDKxn195SI16MN7LLgnNX1HEEf/Frlgn4XSdP8XeUkG2LOaT
+ sCEcegd1Oo7rL4DvwX0OtUly4u8HIbrL4pPu6t/3OKj6780Q7yBHAXLXNlPyp1fvA1u9
+ TGLBIom6cSV7SJdR5hfCTkQFE49DIBamb5AdlZdLzy8hA27cxDfmOdee6IRNDnlwThab
+ sTxMSxWUcDchV7a9boe9irXYSfiX0vN/KfTOl+bnikaeNETO+iPMmlp2gSkqzSRGmWRq
+ R4ZTpjAFl5JKXpYPnb4b2grm88Annyo2q7riiRG6WQo6n2kVklzq8FogmuyEccmlb9hq
+ cyRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1688551288;
+ s=strato-dkim-0002; d=strato.com;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=WDJQ1aunseNiwYyyTV3q0wnD2jHgoXyl1SYmG7xfIUw=;
+ b=ZLQJUvguQsuSM0VrMoKX5+ANEMIGqSYrkqkQevSuGcaw+YXfBH4FoQ5PUnF0KCrC24
+ e2SPtc9JQAMESZYX+d9wXrE5PPuPvrOP1Umb5+gxDqlsvNkNdDfd76gt4bkecWAfFGyn
+ 7tD/kKP9phkg1oOUH4TrO1Jny2+EFJ1ZXXN5zXuIfL5+y3H4zy12XCuZFQi2c/0vz5yw
+ zRPbUWONCN0xj/9yuyA6zaLzZTTJ2IQ7RdYDALBixD75GPio1tBqv9COv2n+FuugfOLZ
+ 7ojCCmOwALbFezm2Mx+bjOWm9Ax4lhJ+MMy1BqbNQ64CEAo2CZA6j2LXpznDBwNE4tTG
+ jvKQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1688551288;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=WDJQ1aunseNiwYyyTV3q0wnD2jHgoXyl1SYmG7xfIUw=;
+ b=CJAuy8E7/9URsqWo4p3sMLqhlPRiLz9Ndo/Nxpt0KDh3pDWBceUFomF498pFWYu0VD
+ lfyRzHAaa8ypGf5/DrH5UEnOz/V8dKknzjtjRRfdFnL9KwUUXI3K5x6xeyjLtcAWiN/p
+ 8VMiJbMwND8RC5CspuvEwwP1f+gPrLwmzHP/RuLz6QhxMsvC10YWSfvB2jm4RuIrp0ap
+ 2upWAOvfKa9mQ/RP3hO0Wu5avNrYuZTcmNOO8I5CxtW+q02NX2DE/V+YZt7S0Hjuy866
+ hBWEnQYW7nS5QYi7x9/+9whRPborOsqBQXHVbpK3t6+pyX7T9e0VbwUcE77nxvECUo9h
+ qAjQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1688551288;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=WDJQ1aunseNiwYyyTV3q0wnD2jHgoXyl1SYmG7xfIUw=;
+ b=W2ANCz62Qgg2SoOgp5bJ6CiiC1zkfpTGHqWgvGDv9c+9y6zO2RVv2YBuCHCY/gM1ga
+ RXVgY55iz8Ap+yPvWqDg==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4VReIOE3s+xIC8HZ8TOtjelmE6SkKgUS6xMby0Q=="
+Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
+ with ESMTPSA id y5401az65A1RGEZ
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Wed, 5 Jul 2023 12:01:27 +0200 (CEST)
+Date: Wed, 5 Jul 2023 12:01:21 +0200
+From: Olaf Hering <olaf@aepfle.de>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org, Philippe
+ =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Richard Henderson
+ <richard.henderson@linaro.org>, Kevin Wolf <kwolf@redhat.com>, Lev Kujawski
+ <lkujaw@member.fsf.org>, qemu-block@nongnu.org, John Snow
+ <jsnow@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH v2] hw/ide/piix: properly initialize the BMIBA register
+Message-ID: <20230705120121.4f353ba6.olaf@aepfle.de>
+In-Reply-To: <dded4d33-d64f-9369-0742-a57a1e173153@redhat.com>
+References: <20230701174659.10246-1-olaf@aepfle.de>
+ <62EDA748-11A3-473F-913D-F9464335A382@gmail.com>
+ <20230703095929.6e793dcf.olaf@aepfle.de>
+ <93902CB6-7A6E-49E5-A55F-432C6B4BC00F@gmail.com>
+ <dded4d33-d64f-9369-0742-a57a1e173153@redhat.com>
+X-Mailer: Claws Mail 20230601T090920.68bc28c0 hat ein Softwareproblem,
+ kann man nichts machen.
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] ppc/pegasos2: Add support for -initrd command line option
-Content-Language: en-US
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <20230704181920.27B58746335@zero.eik.bme.hu>
- <a789088f-c3ca-9f61-66d3-3bddfc0510fa@redhat.com>
-In-Reply-To: <a789088f-c3ca-9f61-66d3-3bddfc0510fa@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: multipart/signed; boundary="Sig_/bUxWgjEYJo0GGljeHIos_Ho";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=85.215.255.51; envelope-from=olaf@aepfle.de;
+ helo=mo4-p01-ob.smtp.rzone.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,18 +109,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/5/23 11:35, Cédric Le Goater wrote:
-> Hello,
-> 
-> On 7/4/23 20:19, BALATON Zoltan wrote:
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> The patch is not a oneliner, it deserves a minimal commit log.
+--Sig_/bUxWgjEYJo0GGljeHIos_Ho
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-It was fixed later on. Forget my comment.
+Tue, 4 Jul 2023 08:38:33 +0200 Paolo Bonzini <pbonzini@redhat.com>:
 
-Thanks,
+> I agree that calling pci_device_reset() would be a better match for=20
+> pci_xen_ide_unplug().
 
-C.
+This change works as well:
+
+--- a/hw/i386/xen/xen_platform.c
++++ b/hw/i386/xen/xen_platform.c
+@@ -164,8 +164,9 @@ static void pci_unplug_nics(PCIBus *bus)
+  *
+  * [1] https://xenbits.xen.org/gitweb/?p=3Dxen.git;a=3Dblob;f=3Ddocs/misc/=
+hvm-emulated-unplug.pandoc
+  */
+-static void pci_xen_ide_unplug(DeviceState *dev, bool aux)
++static void pci_xen_ide_unplug(PCIDevice *d, bool aux)
+ {
++    DeviceState *dev =3D DEVICE(d);
+     PCIIDEState *pci_ide;
+     int i;
+     IDEDevice *idedev;
+@@ -195,7 +196,7 @@ static void pci_xen_ide_unplug(DeviceState *dev, bool a=
+ux)
+             blk_unref(blk);
+         }
+     }
+-    device_cold_reset(dev);
++    pci_device_reset(d);
+ }
+=20
+ static void unplug_disks(PCIBus *b, PCIDevice *d, void *opaque)
+@@ -210,7 +211,7 @@ static void unplug_disks(PCIBus *b, PCIDevice *d, void =
+*opaque)
+=20
+     switch (pci_get_word(d->config + PCI_CLASS_DEVICE)) {
+     case PCI_CLASS_STORAGE_IDE:
+-        pci_xen_ide_unplug(DEVICE(d), aux);
++        pci_xen_ide_unplug(d, aux);
+         break;
+=20
+     case PCI_CLASS_STORAGE_SCSI:
+--- a/hw/ide/piix.c
++++ b/hw/ide/piix.c
+@@ -118,7 +118,6 @@ static void piix_ide_reset(DeviceState *dev)
+     pci_set_word(pci_conf + PCI_COMMAND, 0x0000);
+     pci_set_word(pci_conf + PCI_STATUS,
+                  PCI_STATUS_DEVSEL_MEDIUM | PCI_STATUS_FAST_BACK);
+-    pci_set_byte(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
+ }
+=20
+ static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
 
 
+Olaf
+
+--Sig_/bUxWgjEYJo0GGljeHIos_Ho
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmSlP3EACgkQ86SN7mm1
+DoBUlA/+LCOJOHRoIwZs/b2/zWoamfsx0FIE7dKQRNP4yJ12f//mywbLPcdWezm9
+MkokLlczbMjWtH9jPZaW6Al+3xTcCFuNeSPw1dTQPmU+pSraj1Fn7RwaQUECCjC2
+t/ZGhTOUCP/r8/cSSNxNMxfOLsPTeffCSFH/epc9GPKY7BLSwSvaCiWHqdYXX12l
+nAS/WxeyPCl4sT0R6Rx05rHGE77aRLGdJRJFEZsHjZdiwTie57BbXyQvTv5fhxMo
+8tngObqnNrQLkoHDqmdBX6pDQTpH1qgBKkToP5HQ1jj/Fym5Xt9GwcQixTBKSQSe
+b1D4n4jUpgZrTvq2vuwmjbDeieyvOEpRWkEBe7iKhnYmpw3m8zlC5jElE6UwoGpE
+/+m4sNgRkoFdhWWqtpeLoWpqzw25Kz7ovn9KZ5JY+gLbD3K0NEvP2TqH1w7JT9vm
+vYI9gDdzkfcnyXN+wcqGZhZjA7OCT4RMl3TPgiPgtz72aqAsOsO5tATlldqAcEG7
+dtaH/Tw9SrQEVHysZAm5h6nzJ4SY2E6LFRqEKYqNqs/TMFJRzVlt5TpMGhHa22fB
+OCyzrtiHnC+GzgyFdFjAZZ4Yv0PzYUrzYHsJJqsXNNgaXIN3Pu1NzLVoLAHSlyz4
+WJHQeTnG7FN0T3sf8Mi5PJjtPU1B/bX6HetDQ7uJT1yi+ByoJ1s=
+=WBC8
+-----END PGP SIGNATURE-----
+
+--Sig_/bUxWgjEYJo0GGljeHIos_Ho--
 
