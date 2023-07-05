@@ -2,97 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35673747F28
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 10:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E78747F29
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 10:15:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGxeP-0003pf-7U; Wed, 05 Jul 2023 04:14:13 -0400
+	id 1qGxfP-0004Y7-JJ; Wed, 05 Jul 2023 04:15:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qGxeN-0003pS-B2; Wed, 05 Jul 2023 04:14:11 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qGxeL-0006t4-2j; Wed, 05 Jul 2023 04:14:11 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36582wSX026313; Wed, 5 Jul 2023 08:14:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : subject :
- date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=oXi7wfAuRaRSnxN+D38M/AhWjD/MUIMODoKZn7zn1J0=;
- b=UZk02LsdsFtKO+Gt9TzgnIqiPCF68fgCe4QSvNIS143FSAVK1PrvfxMLKR6/4I8ECrOX
- PmJ63gFwRacO2iqpgZn7GKOlPPugPSErN1989eOVqVjjXgih/Czy93WJ6oAnaq0BqcAR
- sI5gJpNG0FEnbgf2oJhLQcveni0Ch4Amga3N9vLA6NfGyh/QMxWpUA8yMOoduBIbK7I9
- HoY5wq6zW8oey/jk4zISC6mFvgfYsJDQa3vyeJCrDJ6pnh4eMSOI4OackLI6A7RODmIC
- Yuw3r0TOGHbAYqE16TwQos5+DHDV3fVV5r5b/bXJu085I9yBvru2qxS9OeoyTMTg/33Q yg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rn4nv88ky-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jul 2023 08:14:05 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36586lAA012645;
- Wed, 5 Jul 2023 08:14:05 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rn4nv88kh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jul 2023 08:14:05 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3652OvjC026303;
- Wed, 5 Jul 2023 08:14:03 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3rjbde2f50-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jul 2023 08:14:03 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3658E1dR21955258
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 5 Jul 2023 08:14:01 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F1E9B2016D;
- Wed,  5 Jul 2023 08:14:00 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 98E0B20168;
- Wed,  5 Jul 2023 08:14:00 +0000 (GMT)
-Received: from borneo.ibmuc.com (unknown [9.171.34.89])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  5 Jul 2023 08:14:00 +0000 (GMT)
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Subject: [PATCH] pnv/xive2: Always pass a presenter object when accessing the
- TIMA
-Date: Wed,  5 Jul 2023 10:14:00 +0200
-Message-ID: <20230705081400.218408-1-fbarrat@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qGxfA-0004We-LB
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:15:01 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qGxf7-0006yd-P2
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:15:00 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-98934f000a5so736334266b.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 01:14:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1688544895; x=1691136895;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=0/WZ6781MvIOR+qgsR68tCvVFjtqlQLt6cCtAIGVrpE=;
+ b=LiD+4jbm0YjbbRNRQnoBipGpHKHG3rffvMu2hFi/A0wRVNcrTk8SMPf9IROYcBmi69
+ ru6eKEhYpKvsgfkAB2V58wG47UpNBMKjL1qFqLxEasWonTw/hooqyLSEUJZM3YvBXaae
+ Q7tm4kmKRjNJ7LxbNO0/zHYY4esMd8m9YhGqq8tISCIgKpmfu3ysHFwG7urO9vrgXCPV
+ ujSCmXP/96FLMsFPCnBOITgGyr6wZYFMvErufOWg6f2+Sv75nOJ0UNWXpbiKooOOeCeT
+ zYPcsiw9YhOx/vb6EnynUJ4PnyVtn7i6NDTWU4qOa9QTMBOmkGx4w8MGxv6TuqSJyTN4
+ m2Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688544895; x=1691136895;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0/WZ6781MvIOR+qgsR68tCvVFjtqlQLt6cCtAIGVrpE=;
+ b=Qg8QFmStrd5N9V0fvGviPmGKnWzW9icR9T66mT3orqZ+SiPbHvU4PW245k0OMwxb5j
+ ChJ9CQBA6FldaupulJFsx02ZzJUPN5uwma4bZ30SbQfZsQkUFcTIil+sPjZXGcvHHVYm
+ 5OnR1uKc8qqpPh45V6Ewxh7rf3zitTbmhovPibXN0froH2Y0iZhPNCYJZea7NAHYiCz4
+ +o5l+/jEP/d5V2hj+Un05MHll1XTSL9mUXb3f29EQ2dHzVgVlzbr0zAw+nvsnf/Kpgz5
+ LK7dzds7S0ZINV0PP6F1dAP72p0l0zJOVE4T5guAmUcVZJ+YiifBl1IkdCbtdh+OAHjo
+ DkuA==
+X-Gm-Message-State: AC+VfDySwsCJWlj3tNMJ/IeY1N57VDftF9YUJo3PICADCaiAX+C2Vb1u
+ b/+f8/tiuv/LKqNLCWtKSv6B8g==
+X-Google-Smtp-Source: ACHHUZ71doAi9/phGNTNiFosywGK4CwK8WiNkay3m6bkm8YYOyxEOsw5p8At3eRd6RON5+dyKscXVA==
+X-Received: by 2002:a17:906:ccdd:b0:991:de8e:4f91 with SMTP id
+ ot29-20020a170906ccdd00b00991de8e4f91mr9421713ejb.11.1688544895342; 
+ Wed, 05 Jul 2023 01:14:55 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ w6-20020a17090633c600b0098748422178sm14079846eja.56.2023.07.05.01.14.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 Jul 2023 01:14:54 -0700 (PDT)
+Date: Wed, 5 Jul 2023 10:14:53 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, rkanwal@rivosinc.com, 
+ anup@brainfault.org, dbarboza@ventanamicro.com, atishp@atishpatra.org, 
+ vincent.chen@sifive.com, greentime.hu@sifive.com, frank.chang@sifive.com, 
+ jim.shu@sifive.com
+Subject: Re: [PATCH v4 0/6] Add RISC-V KVM AIA Support
+Message-ID: <20230705-31abcb5d920f105c9a9ccaa8@orel>
+References: <20230621145500.25624-1-yongxuan.wang@sifive.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: eUhwSEoM92IuIG2GnIkiif6Do-SYHIr7
-X-Proofpoint-ORIG-GUID: 73hEBIHhtkvIfWbp5gxoMc8dXnDZqXf-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-04_16,2023-07-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0
- mlxscore=0 adultscore=0 malwarescore=0 phishscore=0 clxscore=1015
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307050073
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230621145500.25624-1-yongxuan.wang@sifive.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,57 +93,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The low-level functions to access the TIMA take a presenter object as
-a first argument. When accessing the TIMA from the IC BAR,
-i.e. indirect calls, we currently pass a NULL pointer for the
-presenter argument. While it appears ok with the current usage, it's
-dangerous. And it's pretty easy to figure out the presenter in that
-context, so this patch fixes it.
+On Wed, Jun 21, 2023 at 02:54:50PM +0000, Yong-Xuan Wang wrote:
+> This series adds support for KVM AIA in RISC-V architecture.
+> 
+> In order to test these patches, we require Linux with KVM AIA support which can
+> be found in the riscv_kvm_aia_hwaccel_v1 branch at
+> https://github.com/avpatel/linux.git
 
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
----
- hw/intc/pnv_xive2.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Is it possible to add irqfd support? Maybe even as simply as the diff
+below? If not, can you explain what still needs to be done in order
+to do so?
 
-diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
-index 82fcd3ea22..bbb44a533c 100644
---- a/hw/intc/pnv_xive2.c
-+++ b/hw/intc/pnv_xive2.c
-@@ -1624,6 +1624,7 @@ static uint64_t pnv_xive2_ic_tm_indirect_read(void *opaque, hwaddr offset,
-                                               unsigned size)
- {
-     PnvXive2 *xive = PNV_XIVE2(opaque);
-+    XivePresenter *xptr = XIVE_PRESENTER(xive);
-     hwaddr hw_page_offset;
-     uint32_t pir;
-     XiveTCTX *tctx;
-@@ -1633,7 +1634,7 @@ static uint64_t pnv_xive2_ic_tm_indirect_read(void *opaque, hwaddr offset,
-     hw_page_offset = pnv_xive2_ic_tm_get_hw_page_offset(xive, offset);
-     tctx = pnv_xive2_get_indirect_tctx(xive, pir);
-     if (tctx) {
--        val = xive_tctx_tm_read(NULL, tctx, hw_page_offset, size);
-+        val = xive_tctx_tm_read(xptr, tctx, hw_page_offset, size);
+Thanks,
+drew
+
+
+diff --git a/hw/intc/riscv_imsic.c b/hw/intc/riscv_imsic.c
+index 00fdb60fc6ab..b38d9bb5506a 100644
+--- a/hw/intc/riscv_imsic.c
++++ b/hw/intc/riscv_imsic.c
+@@ -371,6 +371,7 @@ static void riscv_imsic_realize(DeviceState *dev, Error **errp)
      }
- 
-     return val;
-@@ -1643,6 +1644,7 @@ static void pnv_xive2_ic_tm_indirect_write(void *opaque, hwaddr offset,
-                                            uint64_t val, unsigned size)
- {
-     PnvXive2 *xive = PNV_XIVE2(opaque);
-+    XivePresenter *xptr = XIVE_PRESENTER(xive);
-     hwaddr hw_page_offset;
-     uint32_t pir;
-     XiveTCTX *tctx;
-@@ -1651,7 +1653,7 @@ static void pnv_xive2_ic_tm_indirect_write(void *opaque, hwaddr offset,
-     hw_page_offset = pnv_xive2_ic_tm_get_hw_page_offset(xive, offset);
-     tctx = pnv_xive2_get_indirect_tctx(xive, pir);
-     if (tctx) {
--        xive_tctx_tm_write(NULL, tctx, hw_page_offset, val, size);
-+        xive_tctx_tm_write(xptr, tctx, hw_page_offset, val, size);
-     }
+
+     msi_nonbroken = true;
++    kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
  }
- 
--- 
-2.41.0
+
+ static Property riscv_imsic_properties[] = {
 
 
