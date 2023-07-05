@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2F874894A
+	by mail.lfdr.de (Postfix) with ESMTPS id 322B1748949
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 18:32:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH5Ps-0007DH-LD; Wed, 05 Jul 2023 12:31:44 -0400
+	id 1qH5Pt-0007DI-1u; Wed, 05 Jul 2023 12:31:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qH5Pq-0007CQ-4E
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:31:42 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qH5Pr-0007Cg-50
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:31:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qH5Pn-00031V-SP
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:31:41 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qH5Pp-00031f-8A
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:31:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688574698;
+ s=mimecast20190719; t=1688574700;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0UVw3/3erSv75PWEhesVvVByBAmMS+JnR4htvlIV6yE=;
- b=bu6TDDybw/vAyVRejbKUPQMRaX78d1f2cFygOBcOxVNx680x3oi4oflW80GR5hqpVHstyN
- fAvjqWiM8mVDu/2dzHzpmk5ZkX0nmJABXwJ3qPCR5LV3aqfwWDp2VVkb9/oAY0KHHEkiXs
- 4MIBfYVppclLM6e3Smot59FaQrD4Mrc=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RiGJvmAjJgDhh+5Hyb+zEN0NsPKDhwAESazt+bfQzMs=;
+ b=RUxqolEeKCIJs4IBXlrY1cftMSbUIa0cruNKWa185iikK5CI6fkAYb17d7ea4LT9yKRGw/
+ +lcUYSKJUuHpXBcCJKy4WMZaqPgsU0nogHs24rQsZtBY8Hw7+a/J8QxSudCqnJeAIWtyFW
+ quAOI3MY7vOC1pJe4Q9dA0Huc4su5pU=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-sVrydNtZMbqRff1YeD69nw-1; Wed, 05 Jul 2023 12:31:37 -0400
-X-MC-Unique: sVrydNtZMbqRff1YeD69nw-1
-Received: by mail-ua1-f70.google.com with SMTP id
- a1e0cc1a2514c-79499607027so141407241.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 09:31:37 -0700 (PDT)
+ us-mta-653-Z5bnAFQfNveEcFjoaLfLWQ-1; Wed, 05 Jul 2023 12:31:38 -0400
+X-MC-Unique: Z5bnAFQfNveEcFjoaLfLWQ-1
+Received: by mail-ua1-f71.google.com with SMTP id
+ a1e0cc1a2514c-79499607027so141413241.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 09:31:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688574696; x=1691166696;
+ d=1e100.net; s=20221208; t=1688574697; x=1691166697;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0UVw3/3erSv75PWEhesVvVByBAmMS+JnR4htvlIV6yE=;
- b=QHQ7EEPjHSqJ7v6xLbKkd3X0yut71cwQu8JDansdQkV+E3qP6pUSilONOAkYn4Dfct
- pDUavJ+kLM+AI+Tctlu5h8Y/ARAX2Ac7p96sRNRG2lWR2LiaCZdeE7OYnREAR12gZRqi
- q4TwRhFpbFXwtIDtWFEekgckVIcfV5Sa7jiSPjBxLR3v8CPpIJOEwaZ0DBgJibLcHpAP
- 9eNzsZu3wgOihowC08KUV9OJ35Kcg9DSamXqFrjOIus10Q1C1wI2FHMOrTe1ffku20FV
- TiroPPHpqyieJvnmmyTwv7ReMm9N2RIJiFvA07Z34G1KkCouQWR6rVZl2KKZKbpRXN+S
- tQEQ==
-X-Gm-Message-State: ABy/qLZunkXd7b8FOgCSACvbY5VFjabiBJrTTWjkwal4wz2yEYZUJonu
- Pup2w7y7bqNTwYfQhI82tmnynNEjenTSDmC3rsiEhuQnwrLVuTO7u/Vx1iOyx5zhob1em3bmyyy
- l0R9BaY01CLPXIeQpOQATCWmlQZl21feTxi4pQ4Li+66K6atOZ98zj8IITUvnZZJ3jljSwHIf
-X-Received: by 2002:ac5:c9a2:0:b0:47e:7350:269d with SMTP id
- f2-20020ac5c9a2000000b0047e7350269dmr1554872vkm.1.1688574696424; 
- Wed, 05 Jul 2023 09:31:36 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHq1EinUWWpb/jOkcP46TJnrLsK5zU0aycUXAwxNAG0ErRW99OVRpvJTFL0yaokjDUOOXWl7g==
-X-Received: by 2002:ac5:c9a2:0:b0:47e:7350:269d with SMTP id
- f2-20020ac5c9a2000000b0047e7350269dmr1554819vkm.1.1688574695934; 
- Wed, 05 Jul 2023 09:31:35 -0700 (PDT)
+ bh=RiGJvmAjJgDhh+5Hyb+zEN0NsPKDhwAESazt+bfQzMs=;
+ b=VrFkNYV0qviTyIf89TVkqzbY/FE5bkWdjVlFugxD72J974yphbthNqZv8oIVbooPxs
+ 9cGI0sR963E55xMbsIUpAiHfuuHQhq+XSi60GPvCsII1iUcg+7cstnTvfI4lxLvchvxw
+ SCoaBFem4EUeSMIhc7LgxWDUYSYzrQG9oyN0HPQlxlAFinz5b2UWQj4CmE3TvMmR/wl7
+ lxovU4DXg1O99ebVsLiCo90ODEJPcugUP7kgqje5tXGKi+JOwiKg75YdfH4jNidbxHfq
+ 2O0xrWIVRN5wnveQoTadGrkjibMXZToWNLZYLcWQjDUM5MXYjsMLUzIMXkdtqfyIvL3R
+ JGgg==
+X-Gm-Message-State: ABy/qLYOGuRKEbFWUXtK3kBFYEgQuO6M+4GDLX8uXsobuS1aACKRlWOw
+ rfdumEqD+wEpSZQrmN2WUXsdQ31+l4L++jTGmGVdeS/bNMGhlXD6ba6WPiGnJAkdCueB8ZVUZXC
+ ibw09cxKTc0pdOfPV3uspDXHgpkBTCTr1sy5kfUEl58v4hQq4rOxLOOW4zpVJC3UsjMkDzRnp
+X-Received: by 2002:a05:6102:3c95:b0:443:62fe:6f3b with SMTP id
+ c21-20020a0561023c9500b0044362fe6f3bmr7179193vsv.0.1688574697555; 
+ Wed, 05 Jul 2023 09:31:37 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFo5KznRzv/aD4yhIUk9gdYNwXWp+b05jaawIgHW/x88ZrHXgW+cWJjhaIAdvsc04L6nqsSrw==
+X-Received: by 2002:a05:6102:3c95:b0:443:62fe:6f3b with SMTP id
+ c21-20020a0561023c9500b0044362fe6f3bmr7179156vsv.0.1688574697120; 
+ Wed, 05 Jul 2023 09:31:37 -0700 (PDT)
 Received: from x1n.redhat.com
  (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
  by smtp.gmail.com with ESMTPSA id
- oj2-20020a056214440200b00631fc149a19sm3003159qvb.110.2023.07.05.09.31.34
+ oj2-20020a056214440200b00631fc149a19sm3003159qvb.110.2023.07.05.09.31.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jul 2023 09:31:35 -0700 (PDT)
+ Wed, 05 Jul 2023 09:31:36 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>, Laszlo Ersek <lersek@redhat.com>,
@@ -71,9 +71,9 @@ Cc: Eric Blake <eblake@redhat.com>, Laszlo Ersek <lersek@redhat.com>,
  peterx@redhat.com, Avihai Horon <avihaih@nvidia.com>,
  Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 1/2] migration: switchover-hold parameter
-Date: Wed,  5 Jul 2023 12:31:31 -0400
-Message-ID: <20230705163132.329501-2-peterx@redhat.com>
+Subject: [PATCH v4 2/2] qtest/migration: Use switchover-hold to speedup
+Date: Wed,  5 Jul 2023 12:31:32 -0400
+Message-ID: <20230705163132.329501-3-peterx@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230705163132.329501-1-peterx@redhat.com>
 References: <20230705163132.329501-1-peterx@redhat.com>
@@ -104,331 +104,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a new migration parameter switchover-hold which can block src qemu
-migration from switching over to dest from running.
+This solution is heavily based on Daniel's original approach here, but
+hopefully a cleaner way to impl:
 
-One can set this flag to true so src qemu will keep iterating the VM data,
-not switching over to dest even if it can.
+https://lore.kernel.org/r/20230601161347.1803440-11-berrange@redhat.com
 
-It means now live migration works somehow like COLO; we keep syncing data
-from src to dst without stopping.
+The difference is we use the switchover-hold flag rather than tuning
+bw+downtime to guide test convergence, comparing to use the magic offset.
 
-When the user is ready for the switchover, one can set the parameter from
-true->false.  That'll contain a implicit kick to migration thread to be
-alive and re-evaluate the switchover decision.
+This can achieve similar goal of previous patch "tests/qtest: massively
+speed up migration-test" but without magic offset to write or monitoring.
 
-This can be used in two cases so far in my mind:
+With this flag, we can safely always run migration tests with full
+speed (bw=0).
 
-  (1) One can use this parameter to start pre-heating migration (but not
-      really migrating, so a migrate-cancel will cancel the preheat).  When
-      the user wants to really migrate, just clear the flag.  It'll in most
-      cases migrate immediately because most pages are already synced.
+However for postcopy tests, when with above bw=0, it's easy to happen that
+right after switching to postcopy there're merely no page left, so the
+postcopy paths are not well tested.
 
-  (2) Can also be used as a clean way to do qtest, in many of the precopy
-      tests we have requirement to run after 1 iteration without completing
-      the precopy migration.  Before that we have either set bandwidth to
-      ridiculous low value, or tricks on detecting guest memory change over
-      some adhoc guest memory position.  Now we can simply set this flag
-      then we know precopy won't complete and will just keep going.
+To remedy that, don't wait for a full iteration but switch to postcopy in
+the 1st iteration, adding a precopy bw limit (200MB/s for now, running
+100ms) so it should guarantee enough pages left for postcopy.
 
-Here we leveraged a sem to make sure migration thread won't busy spin on a
-physical cpu, meanwhile provide a timedwait() of 10ms so it can still try
-its best to sync with dest QEMU from time to time.  Note that the sem is
-prone to outdated counts but it's benign, please refer to the comment above
-the semaphore definition for more information.
+One pity is that normally postcopy switchover happens after 1-2 rounds of
+precopy, so qtest doesn't follow that anymore (while it was trying to).
+However it also means previous postcopy tests never tested the case where
+there're holes in pages (pages that never got migrated during precopy), now
+we cover that too which is actually also a valid scenario for postcopy.
+
+The initial solution can reduce migration-test time from 8min to 1min40s,
+this patch can further reduce it from 1m40s to <1m per my local test.
+
+While at it, add migrate_set_bandwidth_[pre|post]copy() and use them.
 
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- qapi/migration.json            | 25 ++++++++++--
- migration/migration.h          | 17 +++++++++
- migration/migration-hmp-cmds.c |  3 ++
- migration/migration.c          | 69 ++++++++++++++++++++++++++++++++--
- migration/options.c            | 17 +++++++++
- 5 files changed, 124 insertions(+), 7 deletions(-)
+ tests/qtest/migration-test.c | 39 +++++++++++++++++++++++++++---------
+ 1 file changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 47dfef0278..c050081555 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -789,6 +789,15 @@
- #     Nodes are mapped to their block device name if there is one, and
- #     to their node name otherwise.  (Since 5.2)
- #
-+# @switchover-hold: Whether we should hold-off precopy switchover from
-+#     src to dest QEMU, even if we can finish migration in the
-+#     downtime specified.  By default off, so precopy migration will
-+#     complete as soon as possible.  One can set it to explicitly keep
-+#     iterating during precopy migration until set the flag to false
-+#     again to kick off the final switchover.  Note, this does not
-+#     affect postcopy switchover, because the user can control that
-+#     using "migrate-start-postcopy" command explicitly.  (Since 8.1)
-+#
- # Features:
- #
- # @unstable: Member @x-checkpoint-delay is experimental.
-@@ -810,7 +819,7 @@
-            'xbzrle-cache-size', 'max-postcopy-bandwidth',
-            'max-cpu-throttle', 'multifd-compression',
-            'multifd-zlib-level' ,'multifd-zstd-level',
--           'block-bitmap-mapping' ] }
-+           'block-bitmap-mapping', 'switchover-hold' ] }
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index b9cc194100..d5584d07a9 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -433,16 +433,23 @@ static void migrate_set_parameter_bool(QTestState *who, const char *parameter,
  
- ##
- # @MigrateSetParameters:
-@@ -945,6 +954,10 @@
- #     Nodes are mapped to their block device name if there is one, and
- #     to their node name otherwise.  (Since 5.2)
- #
-+# @switchover-hold: Whether we should hold-off precopy switchover from
-+#     src to dest QEMU.  For more details, please refer to
-+#     MigrationParameter entry of the same field.  (Since 8.1)
-+#
- # Features:
- #
- # @unstable: Member @x-checkpoint-delay is experimental.
-@@ -982,7 +995,8 @@
-             '*multifd-compression': 'MultiFDCompression',
-             '*multifd-zlib-level': 'uint8',
-             '*multifd-zstd-level': 'uint8',
--            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ] } }
-+            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
-+            '*switchover-hold': 'bool' } }
- 
- ##
- # @migrate-set-parameters:
-@@ -1137,6 +1151,10 @@
- #     Nodes are mapped to their block device name if there is one, and
- #     to their node name otherwise.  (Since 5.2)
- #
-+# @switchover-hold: Whether we should hold-off precopy switchover from
-+#     src to dest QEMU.  For more details, please refer to
-+#     MigrationParameter entry of the same field.  (Since 8.1)
-+#
- # Features:
- #
- # @unstable: Member @x-checkpoint-delay is experimental.
-@@ -1171,7 +1189,8 @@
-             '*multifd-compression': 'MultiFDCompression',
-             '*multifd-zlib-level': 'uint8',
-             '*multifd-zstd-level': 'uint8',
--            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ] } }
-+            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
-+            '*switchover-hold': 'bool' } }
- 
- ##
- # @query-migrate-parameters:
-diff --git a/migration/migration.h b/migration/migration.h
-index a80b22b703..6b31a4b371 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -453,6 +453,23 @@ struct MigrationState {
-      * switchover has been received.
-      */
-     bool switchover_acked;
-+
-+    /*
-+     * Only migration thread will wait on it when switchover_hold==true.
-+     *
-+     * Only qmp set param will kick it when switching switchover_hold from
-+     * true->false.
-+     *
-+     * NOTE: outdated sem count here is benign.  E.g., when this is posted,
-+     * the 1st migration got cancelled, then start the 2nd migration, or
-+     * when someone sets the flag from true->false->true->false.. because
-+     * any outdated sem count will only let the migration thread to run one
-+     * more loop (timedwait() will eat the outdated count) when reaching
-+     * the completion phase, then in the next loop it'll sleep again.  The
-+     * important thing here OTOH is when the migration thread is sleeping
-+     * we can always kick it out of the sleep, which we will always do.
-+     */
-+    QemuSemaphore switchover_hold_sem;
- };
- 
- void migrate_set_state(int *state, int old_state, int new_state);
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 9885d7c9f7..63a2c8a4a3 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -338,6 +338,9 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
-         monitor_printf(mon, "%s: '%s'\n",
-             MigrationParameter_str(MIGRATION_PARAMETER_TLS_AUTHZ),
-             params->tls_authz);
-+        monitor_printf(mon, "%s: %s\n",
-+            MigrationParameter_str(MIGRATION_PARAMETER_SWITCHOVER_HOLD),
-+            params->switchover_hold ? "on" : "off");
- 
-         if (params->has_block_bitmap_mapping) {
-             const BitmapMigrationNodeAliasList *bmnal;
-diff --git a/migration/migration.c b/migration/migration.c
-index 096e8191d1..d75c2bd63c 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2721,6 +2721,67 @@ static bool migration_can_switchover(MigrationState *s)
-     return s->switchover_acked;
- }
- 
-+static bool
-+migration_should_complete(MigrationState *s, uint64_t pending_size)
-+{
-+    /* Need an explicit ACK from dst? */
-+    if (!migration_can_switchover(s)) {
-+        return false;
-+    }
-+
-+    /* We still have large pending data to send? */
-+    if (pending_size && (pending_size >= s->threshold_size)) {
-+        return false;
-+    }
-+
-+    /* The user doesn't want us to switchover yet for precopy */
-+    if (!migration_in_postcopy() && s->parameters.switchover_hold) {
-+        /*
-+         * Note: when reaching here it probably means we've migrated almost
-+         * everything and ready to switchover.  If user asked not to switch
-+         * wait for a short period and respond to kicks immediately.
-+         *
-+         * If we wait too long, there can be a lot of dirty data generated,
-+         * while we could have done something to sync data between src/dst.
-+         *
-+         * If we wait too short, migration thread can eat most/all cpu
-+         * resource looping over switchover_hold.
-+         *
-+         * Make it 10ms which seems to be a good intermediate value.
-+         */
-+        qemu_sem_timedwait(&s->switchover_hold_sem, 10);
-+
-+        /*
-+         * Return false here always even if user changed it, because we'd
-+         * like to re-evaluate everything (e.g. pending_size).
-+         */
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+static bool
-+migration_should_start_postcopy(MigrationState *s, uint64_t must_precopy)
-+{
-+    /* If we're already in postcopy phase, don't bother */
-+    if (migration_in_postcopy()) {
-+        return false;
-+    }
-+
-+    /* Need an explicit ACK from dst? */
-+    if (!migration_can_switchover(s)) {
-+        return false;
-+    }
-+
-+    /* We still have lots of thing that must be migrated in precopy */
-+    if (must_precopy > s->threshold_size) {
-+        return false;
-+    }
-+
-+    return qatomic_read(&s->start_postcopy);
-+}
-+
- /* Migration thread iteration status */
- typedef enum {
-     MIG_ITERATE_RESUME,         /* Resume current iteration */
-@@ -2736,7 +2797,6 @@ static MigIterateState migration_iteration_run(MigrationState *s)
+ static void migrate_ensure_non_converge(QTestState *who)
  {
-     uint64_t must_precopy, can_postcopy;
-     bool in_postcopy = s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE;
--    bool can_switchover = migration_can_switchover(s);
- 
-     qemu_savevm_state_pending_estimate(&must_precopy, &can_postcopy);
-     uint64_t pending_size = must_precopy + can_postcopy;
-@@ -2749,15 +2809,14 @@ static MigIterateState migration_iteration_run(MigrationState *s)
-         trace_migrate_pending_exact(pending_size, must_precopy, can_postcopy);
-     }
- 
--    if ((!pending_size || pending_size < s->threshold_size) && can_switchover) {
-+    if (migration_should_complete(s, pending_size)) {
-         trace_migration_thread_low_pending(pending_size);
-         migration_completion(s);
-         return MIG_ITERATE_BREAK;
-     }
- 
-     /* Still a significant amount to transfer */
--    if (!in_postcopy && must_precopy <= s->threshold_size && can_switchover &&
--        qatomic_read(&s->start_postcopy)) {
-+    if (migration_should_start_postcopy(s, must_precopy)) {
-         if (postcopy_start(s)) {
-             error_report("%s: postcopy failed to start", __func__);
-         }
-@@ -3314,6 +3373,7 @@ static void migration_instance_finalize(Object *obj)
-     qemu_sem_destroy(&ms->rp_state.rp_sem);
-     qemu_sem_destroy(&ms->rp_state.rp_pong_acks);
-     qemu_sem_destroy(&ms->postcopy_qemufile_src_sem);
-+    qemu_sem_destroy(&ms->switchover_hold_sem);
-     error_free(ms->error);
+-    /* Can't converge with 1ms downtime + 3 mbs bandwidth limit */
+-    migrate_set_parameter_int(who, "max-bandwidth", 3 * 1000 * 1000);
+-    migrate_set_parameter_int(who, "downtime-limit", 1);
++    /* Hold off switchover for precopy only */
++    migrate_set_parameter_bool(who, "switchover-hold", true);
  }
  
-@@ -3336,6 +3396,7 @@ static void migration_instance_init(Object *obj)
-     qemu_sem_init(&ms->rate_limit_sem, 0);
-     qemu_sem_init(&ms->wait_unplug_sem, 0);
-     qemu_sem_init(&ms->postcopy_qemufile_src_sem, 0);
-+    qemu_sem_init(&ms->switchover_hold_sem, 0);
-     qemu_mutex_init(&ms->qemu_file_lock);
- }
- 
-diff --git a/migration/options.c b/migration/options.c
-index 5a9505adf7..aac658fb2d 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -163,6 +163,8 @@ Property migration_properties[] = {
-     DEFINE_PROP_STRING("tls-creds", MigrationState, parameters.tls_creds),
-     DEFINE_PROP_STRING("tls-hostname", MigrationState, parameters.tls_hostname),
-     DEFINE_PROP_STRING("tls-authz", MigrationState, parameters.tls_authz),
-+    DEFINE_PROP_BOOL("switchover-hold", MigrationState,
-+                     parameters.switchover_hold, false),
- 
-     /* Migration capabilities */
-     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
-@@ -900,6 +902,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
-     params->announce_rounds = s->parameters.announce_rounds;
-     params->has_announce_step = true;
-     params->announce_step = s->parameters.announce_step;
-+    params->has_switchover_hold = true;
-+    params->switchover_hold = s->parameters.switchover_hold;
- 
-     if (s->parameters.has_block_bitmap_mapping) {
-         params->has_block_bitmap_mapping = true;
-@@ -940,6 +944,7 @@ void migrate_params_init(MigrationParameters *params)
-     params->has_announce_max = true;
-     params->has_announce_rounds = true;
-     params->has_announce_step = true;
-+    params->has_switchover_hold = true;
- }
- 
- /*
-@@ -1194,6 +1199,9 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
-     if (params->has_announce_step) {
-         dest->announce_step = params->announce_step;
-     }
-+    if (params->has_switchover_hold) {
-+        dest->switchover_hold = params->switchover_hold;
-+    }
- 
-     if (params->has_block_bitmap_mapping) {
-         dest->has_block_bitmap_mapping = true;
-@@ -1307,6 +1315,15 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-     if (params->has_announce_step) {
-         s->parameters.announce_step = params->announce_step;
-     }
-+    if (params->has_switchover_hold) {
-+        bool old = s->parameters.switchover_hold;
-+        bool new = params->switchover_hold;
+ static void migrate_ensure_converge(QTestState *who)
+ {
+-    /* Should converge with 30s downtime + 1 gbs bandwidth limit */
+-    migrate_set_parameter_int(who, "max-bandwidth", 1 * 1000 * 1000 * 1000);
+-    migrate_set_parameter_int(who, "downtime-limit", 30 * 1000);
++    migrate_set_parameter_bool(who, "switchover-hold", false);
++}
 +
-+        s->parameters.switchover_hold = params->switchover_hold;
-+        if (old && !new) {
-+            qemu_sem_post(&s->switchover_hold_sem);
-+        }
-+    }
++static void migrate_set_bandwidth_precopy(QTestState *who, int bw)
++{
++    migrate_set_parameter_int(who, "max-bandwidth", bw);
++}
++
++static void migrate_set_bandwidth_postcopy(QTestState *who, int bw)
++{
++    migrate_set_parameter_int(who, "max-postcopy-bandwidth", bw);
+ }
  
-     if (params->has_block_bitmap_mapping) {
-         qapi_free_BitmapMigrationNodeAliasList(
+ static void migrate_pause(QTestState *who)
+@@ -736,6 +743,14 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+         unlink(shmem_path);
+     }
+ 
++    /*
++     * By default, use full speed for precopy in qtests as that will reduce
++     * the time of testing. The default bandwidth (128MB/s) may be too slow
++     * in this case.  Specific test can overwrite this value after the
++     * function returns but before starting migration.
++     */
++    migrate_set_bandwidth_precopy(*from, 0);
++
+     return 0;
+ }
+ 
+@@ -1168,9 +1183,13 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
+     /* Wait for the first serial output from the source */
+     wait_for_serial("src_serial");
+ 
++    /*
++     * Limit precopy to 200MB/s for 0.1 sec, so we guarantee to leave
++     * enough pages (total-20MB) for remote page fault processes later.
++     */
++    migrate_set_bandwidth_precopy(from, 200 * 1024 * 1024);
+     migrate_qmp(from, uri, "{}");
+-
+-    wait_for_migration_pass(from);
++    usleep(100000);
+ 
+     *from_ptr = from;
+     *to_ptr = to;
+@@ -1270,7 +1289,7 @@ static void test_postcopy_recovery_common(MigrateCommon *args)
+     }
+ 
+     /* Turn postcopy speed down, 4K/s is slow enough on any machines */
+-    migrate_set_parameter_int(from, "max-postcopy-bandwidth", 4096);
++    migrate_set_bandwidth_postcopy(from, 4096);
+ 
+     /* Now we start the postcopy */
+     migrate_postcopy_start(from, to);
+@@ -1314,7 +1333,7 @@ static void test_postcopy_recovery_common(MigrateCommon *args)
+     migrate_qmp(from, uri, "{'resume': true}");
+ 
+     /* Restore the postcopy bandwidth to unlimited */
+-    migrate_set_parameter_int(from, "max-postcopy-bandwidth", 0);
++    migrate_set_bandwidth_postcopy(from, 0);
+ 
+     migrate_postcopy_complete(from, to, args);
+ }
 -- 
 2.41.0
 
