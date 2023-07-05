@@ -2,67 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF86748F08
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:39:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19327748F70
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:55:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH9H7-0005TY-FX; Wed, 05 Jul 2023 16:38:57 -0400
+	id 1qH9Vw-0001Iw-EI; Wed, 05 Jul 2023 16:54:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qH9H3-0005T9-Cp; Wed, 05 Jul 2023 16:38:53 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qH9Vm-0001IK-Oi
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 16:54:09 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qH9Gy-0006hx-Ao; Wed, 05 Jul 2023 16:38:51 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qH9Vk-0001sS-Tz
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 16:54:06 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 6F2C520080;
- Wed,  5 Jul 2023 20:38:44 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 223911FE30;
+ Wed,  5 Jul 2023 20:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1688589524; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1688590442; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=uhCYOBkUknaa+HV2QlqWt5y07AxZvMkkDzj+rfASsHQ=;
- b=fjekj82yrlt36UChfWdYjX7DdXPiy21kp8tnshagRwYtEVSxUu10glKHd1ZFGdsphJNkvK
- yARcnrphrmL1qN1eGuBzgc2tRVwH5jKdkybnKfi/sm5FsJ51rGvFFT1aehTTohU8k+AMlm
- pujPkqcRRb6jfboWZxXRrBNMeyD9Bfw=
+ bh=atRG0X2nJf0i2X54TOpJc+S1AXfT5R9EYfNBH/uAyxg=;
+ b=UdgG5QvhAQtwDFqZFhztnviS5UCDoUmTXMvtEgFFsoJSGZkhpNBXPnCHTxGj+mSvJMDkaN
+ WEWc+8Ej/1FBfdNn23RTGOKztSih5IZgqPoOtxEspP/ErWK/LDEAh9xiqwRp+NzCOLEJ89
+ n7hu0TxxzB4eClvMCR7/FPFiBDKd0xs=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1688589524;
+ s=susede2_ed25519; t=1688590442;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=uhCYOBkUknaa+HV2QlqWt5y07AxZvMkkDzj+rfASsHQ=;
- b=LlGTD/+RpQT9onbe7ZB6cqJ2VPjDqS9JbtfNvAaciRnEjy1NpyGN20SQhZAlShYdLlZksA
- 1s8rHKRTYQn4e8BA==
+ bh=atRG0X2nJf0i2X54TOpJc+S1AXfT5R9EYfNBH/uAyxg=;
+ b=vYkrW1+QVwgfc4+r/CZD1Vx2J93L/rTzHf/ePGOZ/z8b+Hha2CQL7mX51KuZsL4MjzstYL
+ Zs+zLyOurFK1pqDQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0187713460;
- Wed,  5 Jul 2023 20:38:43 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9FA1A13460;
+ Wed,  5 Jul 2023 20:54:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id djBqL9PUpWQbNQAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 05 Jul 2023 20:38:43 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id M/2bGmnYpWRTOwAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 05 Jul 2023 20:54:01 +0000
 From: Fabiano Rosas <farosas@suse.de>
-To: Richard Henderson <richard.henderson@linaro.org>, Peter Maydell
- <peter.maydell@linaro.org>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-Subject: Re: [PATCH] target/arm: gdbstub: Guard M-profile code with CONFIG_TCG
-In-Reply-To: <837e45df-08c9-44c9-b4c7-489251901860@linaro.org>
-References: <20230628164821.16771-1-farosas@suse.de>
- <d8f954dc-8a69-7593-716c-e360d2c8e47b@linaro.org>
- <CAFEAcA9QSS7qs2kcCuyrDrRc6tb_0euMD3vFJ=_Q8s8dJYBRfw@mail.gmail.com>
- <837e45df-08c9-44c9-b4c7-489251901860@linaro.org>
-Date: Wed, 05 Jul 2023 17:38:41 -0300
-Message-ID: <87jzve3xgu.fsf@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Leonardo Bras Soares Passos <lsoaresp@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Lukas Straub <lukasstraub2@web.de>, Laszlo Ersek
+ <lersek@redhat.com>, peterx@redhat.com
+Subject: Re: [PATCH v2 2/7] migration: Let migrate_set_error() take ownership
+In-Reply-To: <20230705163502.331007-3-peterx@redhat.com>
+References: <20230705163502.331007-1-peterx@redhat.com>
+ <20230705163502.331007-3-peterx@redhat.com>
+Date: Wed, 05 Jul 2023 17:53:59 -0300
+Message-ID: <87h6qi3wrc.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -86,34 +84,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+Peter Xu <peterx@redhat.com> writes:
 
-> On 7/4/23 17:44, Peter Maydell wrote:
->>> IIUC tcg_enabled(), this guard shouldn't be necessary; if CONFIG_TCG
->>> is not defined, tcg_enabled() evaluates to 0, and the compiler should
->>> elide the whole block.
->> 
->> IME it's a bit optimistic to assume that the compiler will always
->> do that, especially with no optimisation enabled.
+> migrate_set_error() used one error_copy() so it always copy an error.
+> However that's not the major use case - the major use case is one would
+> like to pass the error to migrate_set_error() without further touching the
+> error.
 >
-> There's plenty of other places that we do.
-> The compiler is usually pretty good with "if (0)".
+> It can be proved if we see most of the callers are freeing the error
+> explicitly right afterwards.  There're a few outliers (only if when the
+> caller) where we can use error_copy() explicitly there.
 >
-> My question is if
->
->>       if (arm_feature(env, ARM_FEATURE_M) && tcg_enabled()) { 
->
-> needs to be written
->
->      if (tcg_enabled()) {
->          if (arm_feature(..., M) {
->             ...
->          }
->      }
+> Signed-off-by: Peter Xu <peterx@redhat.com>
 
-Yeah, that doesn't work either. I don't understand why in this
-particular case the compiler seems unable to remove that code.
-
-Can anyone else reproduce this or is it just happening on my setup?
-Maybe something is broken on my side...
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
