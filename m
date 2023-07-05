@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC94747AD3
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 02:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B1E747ADC
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 03:14:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGqnO-0006V8-UI; Tue, 04 Jul 2023 20:55:02 -0400
+	id 1qGr4t-0000pH-Js; Tue, 04 Jul 2023 21:13:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1qGo4l-0004ce-0b
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 18:00:47 -0400
-Received: from mail-il1-x132.google.com ([2607:f8b0:4864:20::132])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qGr4r-0000ou-KR
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 21:13:05 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1qGo4j-00069P-3T
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 18:00:46 -0400
-Received: by mail-il1-x132.google.com with SMTP id
- e9e14a558f8ab-34570ed4cb8so24592175ab.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 15:00:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qGr4p-0000lT-Jj
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 21:13:05 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2b69ed7d050so99330541fa.2
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 18:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688508043; x=1691100043;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=83/cdAL0KcxCkv+HhX4A2NJ1elMGjfOXi6WNzrVwof4=;
- b=S/tM4EiUdeOFAWiPEqX5RsD/Mg0XwY8KteWGtkZzEfNsYVguIbcK9kXS8dAFJbkiBN
- gnRHpuRf1GlzLbqe7Drzx8JAsOeOSuSn2CSGOzOVSPt0wC+XfjEAa2kWwnilErgnElsb
- P/yGSSWyHAXqlA6zTuqp12uNIIB+vTATaiRiGd8eJQJf5RyscC476WfTro2dObwBvGiM
- /XRJJ4lYy1zycH+cOvtkreHsL3xpaCncbW0TuKZy9WerKEwiZ+ACpf5XjUR0Pom1d2rR
- Srun7eun5OT8bnANucTFVEb40Hq3692CNdo/Ran46S+UGj5F86LA/fe39K+pEWDwhudE
- NuQw==
+ d=gmail.com; s=20221208; t=1688519581; x=1691111581;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0fN8225df7qZMzTXTKUAK8qZWumpjCKSs/pakPctGvk=;
+ b=hKJuh4UTPalCD4y1hRFEWhUSwATNspRtQG2yPj112Fl6YgZOUK2pvEsV9W3nqkP322
+ e411Ifl+OZpd8L9bK4J+T6Rn7Fc/jSv5GFm9/m8QnPkGkIV/Sxsy0nGdOJPRs8wgbzxS
+ BZtOasxd2WyBN5E+yVrh1r5LZOESX/V3FZ2xMBotZDOd466/Zh52OTqxMRju3bEfkwQ/
+ 8RtDQRy+0gi8rmdMDxe9ty8PUyi+qq8sxcWaOc9tnr+oh9IV/mU7PM49TacKG7QEpxy2
+ RAKkvpoNsLCg14sfumVnizaOwUWawSDljznSO1uN9OwAHEqHVxVq9jzqLiYxnowWiSpZ
+ mK4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688508043; x=1691100043;
- h=content-language:thread-index:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=83/cdAL0KcxCkv+HhX4A2NJ1elMGjfOXi6WNzrVwof4=;
- b=HpHSR6LWLU3JR8Tl0k57/o2eA26F5Ga6XTXiS8ZU7umgaO5vCoNKJs+hpRJKv+AYkM
- 4j1e7Sg1frKEAAN5PKRb++TmKGrckQAS/6D4lswJs0OM+tjeGI3zw0zVbfzGTrdWHgZJ
- ciw9DFB23TfeG1/XmgqqAi3lqq9jZKWATL2kuk2XqqBIcltN5nJ1Y5paH3R5deOqY10J
- hfxcwZgcSkVy0flcFdi84m9zRiXznMDW2hLWi3AwET86dFsvA+to2G2SI5orLx06gkAM
- DcGN5yY7/70bNB6cozoZn5nlWvvyYijhhfUxMXWETXpeVcz6eo1K9WfgRt5h3cUM7i4c
- 2png==
-X-Gm-Message-State: ABy/qLblOWhiHD9rJJKeCQ6R9T6AG032IMjPlPE+nlEiVlkAqwVGXjx7
- SEjOnuvxF0CzWrQX9U1tvUBP1BMSOzI=
-X-Google-Smtp-Source: APBJJlFNKtFHRooWFkwsor9gIlH4zLVemmSQ3AmppZTkWK22YW44MWRRCQstjyY4pYeEA0aJnBFRPQ==
-X-Received: by 2002:a92:dccb:0:b0:341:c806:a8cd with SMTP id
- b11-20020a92dccb000000b00341c806a8cdmr13622595ilr.6.1688508043303; 
- Tue, 04 Jul 2023 15:00:43 -0700 (PDT)
-Received: from DESKTOPUU50BPD ([2601:284:8201:e850:1a78:8057:4d63:c6a5])
- by smtp.gmail.com with ESMTPSA id
- p4-20020a0566380e8400b0041ab9b6f5b0sm3182728jas.128.2023.07.04.15.00.42
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 04 Jul 2023 15:00:42 -0700 (PDT)
-From: <ltaylorsimpson@gmail.com>
-To: "'Matheus Tavares Bernardino'" <quic_mathbern@quicinc.com>,
- <qemu-devel@nongnu.org>
-Cc: <bcain@quicinc.com>,
-	<quic_mliebel@quicinc.com>
-References: <d40fabcf9d6e92e4cd8d6a144e9b2a9acf4580dc.1688420966.git.quic_mathbern@quicinc.com>
-In-Reply-To: <d40fabcf9d6e92e4cd8d6a144e9b2a9acf4580dc.1688420966.git.quic_mathbern@quicinc.com>
-Subject: RE: [PATCH] Hexagon: move GETPC() calls to top level helpers
-Date: Tue, 4 Jul 2023 16:00:41 -0600
-Message-ID: <000001d9aec2$fa0154e0$ee03fea0$@gmail.com>
+ d=1e100.net; s=20221208; t=1688519581; x=1691111581;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0fN8225df7qZMzTXTKUAK8qZWumpjCKSs/pakPctGvk=;
+ b=JrbbY1PdiZh5QUTgO3TTpJad/K6pzog3iHD06Pxq62yri2u6ZnuQYzbyyTtPsYfdy0
+ Xjx2Y0xJKgvxo8bXgfgZdDofNhmeOACwTXnwJ4ypuzuuBeeVXwYwCb8I2QiWLvCRMxcD
+ 3Yd1EiSYw7WrXcD0coRsfhO4eOKWB5HUBV12lMLRHz2n638dW0JpFiXD+piaNImjUwNS
+ o5AFX2s+oHsZ0x54nDyoJ3JdG5SBI2uVhsZJPEXwOByQHhfIFwD1r4GJJ3e2hkiVTuWy
+ wTaSHM/31is+AxuRioLLO2rW3u0kB/F47b0GYCMDIegaM5FHq/pAzJEN4cq0U4VrcmAf
+ cp1w==
+X-Gm-Message-State: ABy/qLYX9dBwY16X9SusZg4LAuf7dIf2+oOis7vUJoCotggAoSNkl6NG
+ ZFpEeRKwi++YrXFWdOdahUNBRIymTExNvh0WQCE=
+X-Google-Smtp-Source: APBJJlFAzIfRvdqqoyZ6rPRAAV4XQS48zgz2VhkZVnVfRJT++bh7ir4T4geWSOtzxtZdI5Hwf8Zy9xYiS/16hVmnrYg=
+X-Received: by 2002:a2e:9258:0:b0:2b5:9d2a:ab51 with SMTP id
+ v24-20020a2e9258000000b002b59d2aab51mr9933616ljg.5.1688519580387; Tue, 04 Jul
+ 2023 18:13:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQMLtznP2ydTcuVr1uYKeHdh6Igx+K1F9cGw
-Content-Language: en-us
-Received-SPF: pass client-ip=2607:f8b0:4864:20::132;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x132.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+References: <cover.1688051252.git.yin31149@gmail.com>
+ <6d3dc0fc076564a03501e222ef1102a6a7a643af.1688051252.git.yin31149@gmail.com>
+ <CAJaqyWc2OXN9dnTV3Fmsu6=WErgxNbZ4sZ3Fxkyb18uXXJSB=A@mail.gmail.com>
+In-Reply-To: <CAJaqyWc2OXN9dnTV3Fmsu6=WErgxNbZ4sZ3Fxkyb18uXXJSB=A@mail.gmail.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Wed, 5 Jul 2023 09:12:46 +0800
+Message-ID: <CAKrof1Oe2iJHL9WqHxJeWVsoqRv2w9xPhfs1WwdZ1TN=Qb39Ww@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 1/4] vdpa: Use iovec for vhost_vdpa_net_load_cmd()
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=yin31149@gmail.com; helo=mail-lj1-x235.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 04 Jul 2023 20:54:58 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,92 +90,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 2023/7/4 22:17, Eugenio Perez Martin wrote:
+> On Thu, Jun 29, 2023 at 5:25=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.co=
+m> wrote:
+>>
+>> According to VirtIO standard, "The driver MUST follow
+>> the VIRTIO_NET_CTRL_MAC_TABLE_SET command by a le32 number,
+>> followed by that number of non-multicast MAC addresses,
+>> followed by another le32 number, followed by that number
+>> of multicast addresses."
+>>
+>> Considering that these data is not stored in contiguous memory,
+>> this patch refactors vhost_vdpa_net_load_cmd() to accept
+>> scattered data, eliminating the need for an addtional data copy or
+>> packing the data into s->cvq_cmd_out_buffer outside of
+>> vhost_vdpa_net_load_cmd().
+>>
+>> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+>> ---
+>> v2:
+>>    - refactor vhost_vdpa_load_cmd() to accept iovec suggested by
+>> Eugenio
+>>
+>>   net/vhost-vdpa.c | 42 ++++++++++++++++++++++++++++++++----------
+>>   1 file changed, 32 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+>> index 6f6a5c6df6..0bd1c7817c 100644
+>> --- a/net/vhost-vdpa.c
+>> +++ b/net/vhost-vdpa.c
+>> @@ -620,29 +620,43 @@ static ssize_t vhost_vdpa_net_cvq_add(VhostVDPASta=
+te *s, size_t out_len,
+>>   }
+>>
+>>   static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t clas=
+s,
+>> -                                       uint8_t cmd, const void *data,
+>> -                                       size_t data_size)
+>> +                                       uint8_t cmd, const struct iovec =
+*data,
+>> +                                       size_t data_len)
+>>   {
+>>       const struct virtio_net_ctrl_hdr ctrl =3D {
+>>           .class =3D class,
+>>           .cmd =3D cmd,
+>>       };
+>> +    void *cursor =3D s->cvq_cmd_out_buffer;
+>>
+>> -    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl)=
+);
+>> +    /* pack the CVQ command header */
+>> +    assert(sizeof(ctrl) < vhost_vdpa_net_cvq_cmd_page_len() -
+>> +                          (cursor - s->cvq_cmd_out_buffer));
+>> +    memcpy(cursor, &ctrl, sizeof(ctrl));
+>> +    cursor +=3D sizeof(ctrl);
+>>
+>> -    memcpy(s->cvq_cmd_out_buffer, &ctrl, sizeof(ctrl));
+>> -    memcpy(s->cvq_cmd_out_buffer + sizeof(ctrl), data, data_size);
+>> +    /* pack the CVQ command command-specific-data */
+>> +    for (int i =3D 0; i < data_len; ++i) {
+>> +        assert(data[i].iov_len < vhost_vdpa_net_cvq_cmd_page_len() -
+>> +                                 (cursor - s->cvq_cmd_out_buffer));
+>> +        memcpy(cursor, data[i].iov_base, data[i].iov_len);
+>> +        cursor +=3D data[i].iov_len;
+>> +    }
+>
+> Can we replace all of the above by iov_to_buf?
+
+Yes, you are right.
+
+We should use iov_to_buf() here. I will refactor this patch according to
+your suggestion.
+
+Thanks!
 
 
------Original Message-----
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com> 
-Sent: Monday, July 3, 2023 3:50 PM
-To: qemu-devel@nongnu.org
-Cc: bcain@quicinc.com; quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com
-Subject: [PATCH] Hexagon: move GETPC() calls to top level helpers
-
-As docs/devel/loads-stores.rst states:
-
-  ``GETPC()`` should be used with great care: calling
-  it in other functions that are *not* the top level
-  ``HELPER(foo)`` will cause unexpected behavior. Instead, the
-  value of ``GETPC()`` should be read from the helper and passed
-  if needed to the functions that the helper calls.
-
-Let's fix the GETPC() usage in Hexagon, making sure it's always called from
-top level helpers and passed down to the places where it's needed. There are
-two snippets where that is not currently the case:
-
-- probe_store(), which is only called from two helpers, so it's easy to
-  move GETPC() up.
-
-- mem_load*() functions, which are also called directly from helpers,
-  but through the MEM_LOAD*() set of macros. Note that this are only
-  used when compiling with --disable-hexagon-idef-parser.
-
-  In this case, we also take this opportunity to simplify the code,
-  unifying the mem_load*() functions.
-
-Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
----
- target/hexagon/macros.h    | 22 ++++++++++-------
- target/hexagon/op_helper.h | 11 ++-------  target/hexagon/op_helper.c | 49
-+++++++-------------------------------
- 3 files changed, 25 insertions(+), 57 deletions(-)
-
-diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h index
-5451b061ee..efb8013912 100644
---- a/target/hexagon/macros.h
-+++ b/target/hexagon/macros.h
-+
-+#define MEM_LOADn(SIZE, VA) ({ \
-+    check_noshuf(env, pkt_has_store_s1, slot, VA, SIZE); \
-+    cpu_ldub_data_ra(env, VA, GETPC()); \
-+})
-
-Note that check_noshuf calls HELPER(probe_noshuf_load) and
-HELPER(commit_store).  Both of those call GETPC() from within.  So, you'll
-need to pull the contents into separate functions that take ra as an
-argument.
-
-Does this pass the test suite?  You are only using the SIZE parameter in
-check_noshuf, but cpu_ldub_data_ra only reads a single byte.
-
-+#define MEM_LOAD1s(VA) ((int8_t)MEM_LOADn(1, VA)) #define 
-+MEM_LOAD1u(VA) ((uint8_t)MEM_LOADn(1, VA)) #define MEM_LOAD2s(VA) 
-+((int16_t)MEM_LOADn(2, VA)) #define MEM_LOAD2u(VA) 
-+((uint16_t)MEM_LOADn(2, VA)) #define MEM_LOAD4s(VA) 
-+((int32_t)MEM_LOADn(4, VA)) #define MEM_LOAD4u(VA) 
-+((uint32_t)MEM_LOADn(4, VA)) #define MEM_LOAD8s(VA) 
-+((int64_t)MEM_LOADn(8, VA)) #define MEM_LOAD8u(VA) 
-+((uint64_t)MEM_LOADn(8, VA))
-
-A further cleanup would be to remove these altogether and modify the
-definition of fLOAD to use MEM_LOADn.
-
- 
- #define MEM_STORE1(VA, DATA, SLOT) log_store32(env, VA, DATA, 1, SLOT)
-#define MEM_STORE2(VA, DATA, SLOT) log_store32(env, VA, DATA, 2, SLOT) diff
---git a/target/hexagon/op_helper.h b/target/hexagon/op_helper.h index
-8f3764d15e..845c3d197e 100644
---- a/target/hexagon/op_helper.h
-+++ b/target/hexagon/op_helper.h
-@@ -19,15 +19,8 @@
- #define HEXAGON_OP_HELPER_H
- 
-+void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
-+                  uint32_t slot, target_ulong vaddr, int size);
-
-Does this really need to be non-static?
-
-
-Thanks,
-Taylor
-
-
+>
+>>
+>> -    return vhost_vdpa_net_cvq_add(s, sizeof(ctrl) + data_size,
+>> +    return vhost_vdpa_net_cvq_add(s, cursor - s->cvq_cmd_out_buffer,
+>>                                     sizeof(virtio_net_ctrl_ack));
+>>   }
+>>
+>>   static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet =
+*n)
+>>   {
+>>       if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_MAC_=
+ADDR)) {
+>> +        const struct iovec data =3D {
+>> +            .iov_base =3D (void *)n->mac,
+>> +            .iov_len =3D sizeof(n->mac),
+>> +        };
+>>           ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_=
+CTRL_MAC,
+>>                                                     VIRTIO_NET_CTRL_MAC_=
+ADDR_SET,
+>> -                                                  n->mac, sizeof(n->mac=
+));
+>> +                                                  &data, 1);
+>>           if (unlikely(dev_written < 0)) {
+>>               return dev_written;
+>>           }
+>> @@ -665,9 +679,13 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s=
+,
+>>       }
+>>
+>>       mq.virtqueue_pairs =3D cpu_to_le16(n->curr_queue_pairs);
+>> +    const struct iovec data =3D {
+>> +        .iov_base =3D &mq,
+>> +        .iov_len =3D sizeof(mq),
+>> +    };
+>>       dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_MQ,
+>> -                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_S=
+ET, &mq,
+>> -                                          sizeof(mq));
+>> +                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_S=
+ET,
+>> +                                          &data, 1);
+>>       if (unlikely(dev_written < 0)) {
+>>           return dev_written;
+>>       }
+>> @@ -706,9 +724,13 @@ static int vhost_vdpa_net_load_offloads(VhostVDPASt=
+ate *s,
+>>       }
+>>
+>>       offloads =3D cpu_to_le64(n->curr_guest_offloads);
+>> +    const struct iovec data =3D {
+>> +        .iov_base =3D &offloads,
+>> +        .iov_len =3D sizeof(offloads),
+>> +    };
+>>       dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_O=
+FFLOADS,
+>>                                             VIRTIO_NET_CTRL_GUEST_OFFLOA=
+DS_SET,
+>> -                                          &offloads, sizeof(offloads));
+>> +                                          &data, 1);
+>>       if (unlikely(dev_written < 0)) {
+>>           return dev_written;
+>>       }
+>> --
+>> 2.25.1
+>>
+>
 
