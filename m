@@ -2,74 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334CC7482A6
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 833D67482C4
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:14:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH0Ia-0006tt-Fg; Wed, 05 Jul 2023 07:03:52 -0400
+	id 1qH0Qu-0001NS-9J; Wed, 05 Jul 2023 07:12:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qH0IU-0006sy-AR; Wed, 05 Jul 2023 07:03:47 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH0Qq-0001MU-Si
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:12:25 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qH0IS-00017r-0O; Wed, 05 Jul 2023 07:03:45 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2b69f71a7easo107091331fa.1; 
- Wed, 05 Jul 2023 04:03:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH0Qo-0003e4-P0
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:12:24 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-51d9695ec29so6442512a12.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 04:12:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688555022; x=1691147022;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jF7Taa/FOZ/9nzSl0yPqTEHVeR3NA1UoR2aW/kmWn5M=;
- b=Y6ewpPk19CmAfXBIoGme05QzwC39HTRvaKp8AO9GR1nUfQQmegDwATGwFUREKrUl2n
- 8LVw3GFMUnmz52q3T51EPFwVo2sWBrQ1UqSTEBx0ArVPF6YHtASAhZdg/RZ+TOJj7PPH
- qHGsfiVx7DuGAe6rBRqe3bMOAzC4bVzenzBnPcu7sSIKDXq8xEt3sWAel1UghSmrRigZ
- 6/8LxNPAKgnnl1uGOCCE4siGe47YWKfVjl6MlF1Q5cJEWyZLv6IZqFkAsL2Twfu269WF
- J4pP0QNyJzj9OiYSajJJh3Rw6l76XQFA6tuMbyn7WsydWlZ4l/piWNBiN9htjQ0GujIE
- MuKA==
+ d=linaro.org; s=google; t=1688555540; x=1691147540;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FFnVTM41erRPYYtdM2ahHezzF5fD4xoP8cpatY4VCMs=;
+ b=gsjMXvh68CiNy7wwIEUKDpuNvmejeRNelp+YpBCOaYg3aVRtpntxKhP+iJSpQg2sZr
+ jXhp3v6pZqHO0T9wpBctfTM5+rsP41z/KBQq53DRSHKd3e0/BA6J0zcwHmpZTc1cloGB
+ yJZRuELRWZSA0OEcpeIZnpIiQuq3iXAwPdvGLLO825TA5nBitZZOVO5kABHn4EPyMmzn
+ sw/JQT1RPTCjeWAYCeuhw0UAQUCuii4vvbbDO/+9qXRV4RF588haET7LBOydo5U/H5K1
+ P7Vf69ANvLdXpwcOc3GYdPpFlINr2drxDFTK8RyktYQsCdX+AJvC6P1CX8jRTh/iwlJG
+ 1RvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688555022; x=1691147022;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jF7Taa/FOZ/9nzSl0yPqTEHVeR3NA1UoR2aW/kmWn5M=;
- b=Pv5yViW+c+PvJfizdPHsii30+3DS97S5NKyB6/VDHSQ/S0APaBot6rRJU1oSGhazqo
- FRWpaH6MW5cR3dQxSaQLdvDbNdFw0FSZzp/6EFDXkNq4l6n4TW0Y6RfBFmQgPACTkzXB
- +IXbMtJpjXzV751ZiL9EDb4hAkKwoXaYiC0cmKHU8GBUfk2oJpU8b4ZnduBHrzlcf33c
- 9JVqjQTEOpwBhMsy1jsrF5FlK66Mh7TqqHuH3CraVSNn50LW+mrSiXmKhA2QldzIMmyh
- YEOy/adZXkJjUkUHjY5xDXFZMGFDJUtfAHy/uccOwvv+9aJX0neGc81nOsPe+gqYXSwM
- LuSw==
-X-Gm-Message-State: ABy/qLaoEryb8ycgHt9Em+bs0fQ6wq/QccXlNVjKWuUYnwZfAoLA+OXn
- Sng5XJgYF2shV/D9ddMAMlnhcJjAR8A1gSQKR7w=
-X-Google-Smtp-Source: APBJJlHgXSADeMpKgsH7uKj8tnihIFYIftyC0sJSyJR2qCROmOHciWn8qBK2pk+i+VrXKxZfmk2GnFgXQTXkgAh7JmQ=
-X-Received: by 2002:a2e:9cda:0:b0:2b6:cdfb:f1d7 with SMTP id
- g26-20020a2e9cda000000b002b6cdfbf1d7mr10236804ljj.0.1688555021549; Wed, 05
- Jul 2023 04:03:41 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688555540; x=1691147540;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=FFnVTM41erRPYYtdM2ahHezzF5fD4xoP8cpatY4VCMs=;
+ b=IAqnbMiDBpQGwprK+05G4vmwAzRvTZxCuKXa7FonE7cVFAzz91RprxtE1OQJqhnVEZ
+ spYy8/i6eWo8a7DyLw5adpKwM8JRZ32aEDFayqyHUgQMn6ktNuvLiLqU7ssHdPBh5lf4
+ TdWWZsB7FPWHDdGSaefzWnHrAAnNd/pSVc71oMRiu+3HWMvAEJgbergnjvV6BWMBpWgb
+ R4TLIfm9ITrjeIIxmtsOyNC9EX9bymQQvUUlIj44ByKGMDsmh7VjaJlSMnzS6vQ/7PzX
+ YQFC8qH0TaQiMpkt/SND5ccYsf8iV6+ZZvIrlNy7IJUpxazgu8ijdtas8c8zuSUdMqmr
+ sNOQ==
+X-Gm-Message-State: ABy/qLYCydxN/iJE23Y0830ABMOXeQL+dLpN40VBCEqeuuxLb8hzP28b
+ HA8V5NeISSB5AGnAW38bDNrpfi22YmW+LblyAc8=
+X-Google-Smtp-Source: APBJJlFu0sCTeBX1r93xLOvbwZBNoTU/35BRUfes1p0pXA650zOzqyEmnD9zn2AnMgiw8LFziP8kgw==
+X-Received: by 2002:a05:6402:184e:b0:51b:e4c7:410f with SMTP id
+ v14-20020a056402184e00b0051be4c7410fmr8197188edy.6.1688555540206; 
+ Wed, 05 Jul 2023 04:12:20 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.142.96])
+ by smtp.gmail.com with ESMTPSA id
+ n15-20020a05640204cf00b0050bc4600d38sm12964463edw.79.2023.07.05.04.12.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Jul 2023 04:12:19 -0700 (PDT)
+Message-ID: <060f5a94-30ab-b708-5086-09332531fd81@linaro.org>
+Date: Wed, 5 Jul 2023 13:12:12 +0200
 MIME-Version: 1.0
-References: <cover.1688438055.git.yin31149@gmail.com>
- <CAPpAL=z6+Jhoy3w=itO7JEpkijJPZSZNyLVUQ1qS08gqnjN6hQ@mail.gmail.com>
-In-Reply-To: <CAPpAL=z6+Jhoy3w=itO7JEpkijJPZSZNyLVUQ1qS08gqnjN6hQ@mail.gmail.com>
-From: Hawkins Jiawei <yin31149@gmail.com>
-Date: Wed, 5 Jul 2023 19:03:29 +0800
-Message-ID: <CAKrof1P8dRN+fXAX47iiu892kmCjoq-xcUmXrcChHUUh4hRYKA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] vdpa: Return -EIO if device ack is VIRTIO_NET_ERR
-To: Lei Yang <leiyang@redhat.com>
-Cc: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com, 
- qemu-stable@nongnu.org, qemu-devel@nongnu.org, 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=yin31149@gmail.com; helo=mail-lj1-x22a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] pnv/xive: Print CPU target in all TIMA traces
+Content-Language: en-US
+To: Frederic Barrat <fbarrat@linux.ibm.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+References: <20230705110039.231148-1-fbarrat@linux.ibm.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230705110039.231148-1-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,97 +93,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/7/5 15:59, Lei Yang wrote:
-> Hello Hawkins
->
-> QE can help test this series before  it is merged into master, I would
-> like to know what test steps can cover this series related scenario?
->
+On 5/7/23 13:00, Frederic Barrat wrote:
+> Add the CPU target in the trace when reading/writing the TIMA
+> space. It was already done for other TIMA ops (notify, accept, ...),
+> only missing for those 2. Useful for debug and even more now that we
+> experiment with SMT.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> ---
+>   hw/intc/trace-events | 4 ++--
+>   hw/intc/xive.c       | 4 ++--
+>   2 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/hw/intc/trace-events b/hw/intc/trace-events
+> index 5c6094c457..36ff71f947 100644
+> --- a/hw/intc/trace-events
+> +++ b/hw/intc/trace-events
+> @@ -265,8 +265,8 @@ xive_source_esb_read(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64
+>   xive_source_esb_write(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64" IRQ 0x%x val=0x%"PRIx64
+>   xive_router_end_notify(uint8_t end_blk, uint32_t end_idx, uint32_t end_data) "END 0x%02x/0x%04x -> enqueue 0x%08x"
+>   xive_router_end_escalate(uint8_t end_blk, uint32_t end_idx, uint8_t esc_blk, uint32_t esc_idx, uint32_t end_data) "END 0x%02x/0x%04x -> escalate END 0x%02x/0x%04x data 0x%08x"
+> -xive_tctx_tm_write(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
+> -xive_tctx_tm_read(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
+> +xive_tctx_tm_write(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
+> +xive_tctx_tm_read(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
 
-Hi, I would like to suggest the following steps to test this patch series:
+"target" is kinda confusing, what about:
 
-1.  Modify the QEMU source code to make the device return a
-VIRTIO_NET_ERR for the CVQ command. Please apply the patch
-provided below:
+xive_tctx_tm_read(uint32_t cpu_index, ...) "cpu=%d @0x%"PRIx64" ...
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 373609216f..58ade6d4e0 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -642,7 +642,7 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState
-*s, const VirtIONet *n)
-      if (virtio_vdev_has_feature(&n->parent_obj,
-VIRTIO_NET_F_CTRL_MAC_ADDR)) {
-          ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s,
-VIRTIO_NET_CTRL_MAC,
-
-VIRTIO_NET_CTRL_MAC_ADDR_SET,
--                                                  n->mac, sizeof(n->mac));
-+                                                  n->mac,
-sizeof(n->mac) - 1);
-          if (unlikely(dev_written < 0)) {
-              return dev_written;
-          }
-
-2. Start QEMU with the vdpa device in default state.
-Without the patch series, QEMU should not trigger any errors or warnings.
-With the series applied, QEMU should trigger the warning like
-"qemu-system-x86_64: unable to start vhost net: 5: falling back on
-userspace virtio".
-
-Thanks!
-
-
-> Thanks
-> Lei
->
-> On Tue, Jul 4, 2023 at 11:36=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.co=
-m> wrote:
->>
->> According to VirtIO standard, "The class, command and
->> command-specific-data are set by the driver,
->> and the device sets the ack byte.
->> There is little it can do except issue a diagnostic
->> if ack is not VIRTIO_NET_OK."
->>
->> Therefore, QEMU should stop sending the queued SVQ commands and
->> cancel the device startup if the device's ack is not VIRTIO_NET_OK.
->>
->> Yet the problem is that, vhost_vdpa_net_load_x() returns 1 based on
->> `*s->status !=3D VIRTIO_NET_OK` when the device's ack is VIRTIO_NET_ERR.
->> As a result, net->nc->info->load() also returns 1, this makes
->> vhost_net_start_one() incorrectly assume the device state is
->> successfully loaded by vhost_vdpa_net_load() and return 0, instead of
->> goto `fail` label to cancel the device startup, as vhost_net_start_one()
->> only cancels the device startup when net->nc->info->load() returns a
->> negative value.
->>
->> This patchset fixes this problem by returning -EIO when the device's
->> ack is not VIRTIO_NET_OK.
->>
->> Changelog
->> =3D=3D=3D=3D=3D=3D=3D=3D=3D
->> v3:
->>   - split the fixes suggested by Eugenio
->>   - return -EIO suggested by Michael
->>
->> v2: https://lore.kernel.org/all/69010e9ebb5e3729aef595ed92840f43e48e53e5=
-.1687875592.git.yin31149@gmail.com/
->>   - fix the same bug in vhost_vdpa_net_load_offloads()
->>
->> v1: https://lore.kernel.org/all/cover.1686746406.git.yin31149@gmail.com/
->>
->> Hawkins Jiawei (3):
->>    vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_mac()
->>    vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_mq()
->>    vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_offloads()
->>
->>   net/vhost-vdpa.c | 15 +++++++++++----
->>   1 file changed, 11 insertions(+), 4 deletions(-)
->>
->> --
->> 2.25.1
->>
->>
->
+?
 
