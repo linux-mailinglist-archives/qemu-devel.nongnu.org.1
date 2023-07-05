@@ -2,95 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E227B748032
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 10:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D1EF74803C
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 10:57:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGyGd-00065T-Pw; Wed, 05 Jul 2023 04:53:43 -0400
+	id 1qGyJT-00072L-7g; Wed, 05 Jul 2023 04:56:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGyGc-00064i-34
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:53:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jiangkunkun@huawei.com>)
+ id 1qGyJM-000725-OF
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:56:33 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGyGa-0006xH-IW
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:53:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688547219;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=JEyFUuSpxw2m67++RhGuJGOEC/oiC8glFPbfTSquf1M=;
- b=fEtTxe7PRK7Xzp/4mpzF7iB9BTeHpdT/d3Iz5otK8VNIeKY3k59jFumNFrxeJoV8MtjGBw
- vs/Fr0IGZpt5ukSOoHaAtVPZgOwrbE0/FwUwVertq6K6CKA6YytY3pCUjo/dHBN5LygQ7i
- aW2UIrdBHLvph81qQhCuA2xlexAOjv4=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-14-znQSuRAwNWes5ZjNjW2OMA-1; Wed, 05 Jul 2023 04:53:37 -0400
-X-MC-Unique: znQSuRAwNWes5ZjNjW2OMA-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-765986c0521so548754485a.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 01:53:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688547217; x=1691139217;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JEyFUuSpxw2m67++RhGuJGOEC/oiC8glFPbfTSquf1M=;
- b=E+ge8CzAFVYaTfpmgFgKdF3YZ7kQauIfUcpQV7XS4qkHnwEf5EtTw12v21S0Ubn2FG
- bQaMPksMfssaHlJ48kVFkzdSWfa4FmxZk8CGZhf4918zs+0pjr6a6f+pjz0sSPz4lCuT
- bEtji/rw8X/kyk5p/c2HK7iDoXTBqZgBNs7zzvUZLq3ptifu7g4Un+GCeG7wj3Igx+jY
- NWJggxBMO7qwlRhhDtnudgis61wAX4aJyRfLzmoRcrmmlufMwdtmDiFEp78aaEJ2kAJ+
- M9dzyIDBxj8+cvzprdAX5xUqPpF6jfftSj+ZhJ+8ITzyfJA0yqchInnob2u/LJxTSaUD
- oGIA==
-X-Gm-Message-State: ABy/qLYfjsXN0GzFjqyoo2VBAfQhhRVm+faLf+HsWDrp7PnUjleURTpw
- gGMdv3Fav0Mjz4ldP6Cqp8xA+sxlBpXLteB0yuWj3VylG/RfEC4PntgNhujpMkdeGDrFidLMyE3
- 6dKSXMvwBKL4s7dg=
-X-Received: by 2002:a37:ef11:0:b0:767:35a:5f19 with SMTP id
- j17-20020a37ef11000000b00767035a5f19mr14196405qkk.14.1688547217372; 
- Wed, 05 Jul 2023 01:53:37 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5l+Up1PuHm9a+E1pNEtgMCCz4on7wAJIpTXcsQBkkWCgz0dkqS4GCRKF9kVD3pOGTuatoxSA==
-X-Received: by 2002:a37:ef11:0:b0:767:35a:5f19 with SMTP id
- j17-20020a37ef11000000b00767035a5f19mr14196389qkk.14.1688547217126; 
- Wed, 05 Jul 2023 01:53:37 -0700 (PDT)
-Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- x9-20020a05620a01e900b00765f8e5ac7csm10127935qkn.48.2023.07.05.01.53.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 01:53:36 -0700 (PDT)
-Message-ID: <eb088f47-6b16-d8fc-cddc-b3a8f0e53ffe@redhat.com>
-Date: Wed, 5 Jul 2023 10:53:33 +0200
+ (Exim 4.90_1) (envelope-from <jiangkunkun@huawei.com>)
+ id 1qGyJI-0007qY-3W
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:56:32 -0400
+Received: from kwepemm600007.china.huawei.com (unknown [172.30.72.56])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4QwtmP2QZBzqSNc;
+ Wed,  5 Jul 2023 16:55:49 +0800 (CST)
+Received: from [10.174.185.210] (10.174.185.210) by
+ kwepemm600007.china.huawei.com (7.193.23.208) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Wed, 5 Jul 2023 16:56:13 +0800
+Subject: Re: [PATCH V9 32/46] vfio-pci: cpr part 2 (msi)
+To: Steve Sistare <steven.sistare@oracle.com>, <qemu-devel@nongnu.org>
+CC: Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi
+ <stefanha@redhat.com>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Alex Williamson <alex.williamson@redhat.com>,
+ "Daniel P. Berrange" <berrange@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>, Eric Blake
+ <eblake@redhat.com>, Jason Zeng <jason.zeng@linux.intel.com>, Zheng Chuan
+ <zhengchuan@huawei.com>, Mark Kanda <mark.kanda@oracle.com>, Guoyi Tu
+ <tugy@chinatelecom.cn>, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philippe.mathieu.daude@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, David Hildenbrand <david@redhat.com>,
+ John Snow <jsnow@redhat.com>, Peng Liang <tcx4c70@gmail.com>,
+ "wanghaibin.wang@huawei.com" <wanghaibin.wang@huawei.com>, Zenghui Yu
+ <yuzenghui@huawei.com>
+References: <1658851843-236870-1-git-send-email-steven.sistare@oracle.com>
+ <1658851843-236870-33-git-send-email-steven.sistare@oracle.com>
+Message-ID: <8f79e5cb-aa6b-8bff-d0ec-f62fc929f669@huawei.com>
+Date: Wed, 5 Jul 2023 16:56:13 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Content-Language: en-US
-To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
- mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
- armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
- nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
-References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-16-pmorel@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v21 15/20] tests/avocado: s390x cpu topology polarisation
-In-Reply-To: <20230630091752.67190-16-pmorel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <1658851843-236870-33-git-send-email-steven.sistare@oracle.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Language: en-US
+X-Originating-IP: [10.174.185.210]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemm600007.china.huawei.com (7.193.23.208)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=45.249.212.187;
+ envelope-from=jiangkunkun@huawei.com; helo=szxga01-in.huawei.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,103 +79,229 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Kunkun Jiang <jiangkunkun@huawei.com>
+From:  Kunkun Jiang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/06/2023 11.17, Pierre Morel wrote:
-> Polarization is changed on a request from the guest.
-> Let's verify the polarization is accordingly set by QEMU.
-> 
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+Hi Steve,
+
+I have a few questions about the msi part of the vfio device.
+In the reboot mode, you mentioned "The guest drivers' suspend methods
+flush outstanding requests and re-initialize the devices". This means,
+during the downtime,the vfio device dose not generate interrupts. So
+no special processing is required for the msi interrupt of the vfio
+device. Am I right?
+
+In the cpr-exec mode, will the vfio device be "stopped"? If the vfio device
+is running all the time,it is possible to generate interrrupts during the
+downtime. How to deal with these interrupts?
+
+In addition, ARM GICv4 provides support for the direct injection of vLPIs.
+Interrupts are more difficult to handle. In this case, what should be done?
+
+Look forward to your reply.
+
+Kunkun Jiang
+
+On 2022/7/27 0:10, Steve Sistare wrote:
+> Finish cpr for vfio-pci MSI/MSI-X devices by preserving eventfd's and
+> vector state.
+>
+> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
 > ---
->   tests/avocado/s390_topology.py | 46 ++++++++++++++++++++++++++++++++++
->   1 file changed, 46 insertions(+)
-> 
-> diff --git a/tests/avocado/s390_topology.py b/tests/avocado/s390_topology.py
-> index 1758ec1f13..2cf731cb1d 100644
-> --- a/tests/avocado/s390_topology.py
-> +++ b/tests/avocado/s390_topology.py
-> @@ -40,6 +40,7 @@ class S390CPUTopology(QemuSystemTest):
->       The polarization is changed on a request from the guest.
->       """
->       timeout = 90
-> +    event_timeout = 1
-
-When running tests in CI and the machines are very loaded, the tests can be 
-stalled easily by multiple seconds. So using a timeout of 1 seconds sounds 
-way too low for me. Please use at least 5 seconds, or maybe even 10.
-
->       KERNEL_COMMON_COMMAND_LINE = ('printk.time=0 '
->                                     'root=/dev/ram '
-> @@ -99,6 +100,15 @@ def kernel_init(self):
->                            '-initrd', initrd_path,
->                            '-append', kernel_command_line)
+>   hw/vfio/pci.c | 119 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 118 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index b5fd2ec..1d0e8db 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -54,17 +54,47 @@ static void vfio_disable_interrupts(VFIOPCIDevice *vdev);
+>   static void vfio_mmap_set_enabled(VFIOPCIDevice *vdev, bool enabled);
+>   static void vfio_msi_disable_common(VFIOPCIDevice *vdev);
 >   
-> +    def system_init(self):
-> +        self.log.info("System init")
-> +        exec_command(self, 'mount proc -t proc /proc')
-> +        time.sleep(0.2)
-> +        exec_command(self, 'mount sys -t sysfs /sys')
-> +        time.sleep(0.2)
-
-Hard coded sleeps are ugly... they are prone to race conditions (e.g. on 
-loaded test systems), and they artificially slow down the test duration.
-
-What about doing all three commands in one statement instead:
-
-     exec_command_and_wait_for_pattern(self,
-            """mount proc -t proc /proc ;
-               mount sys -t sysfs /sys ;
-               /bin/cat /sys/devices/system/cpu/dispatching""",
-            '0')
-
-?
-
-> +        exec_command_and_wait_for_pattern(self,
-> +                '/bin/cat /sys/devices/system/cpu/dispatching', '0')
+> +#define EVENT_FD_NAME(vdev, name)   \
+> +    g_strdup_printf("%s_%s", (vdev)->vbasedev.name, (name))
 > +
->       def test_single(self):
->           """
->           This test checks the simplest topology with a single CPU.
-> @@ -194,3 +204,39 @@ def test_hotplug_full(self):
->           self.check_topology(3, 1, 1, 1, 'high', False)
->           self.check_topology(4, 1, 1, 1, 'medium', False)
->           self.check_topology(5, 2, 1, 1, 'high', True)
+> +static void save_event_fd(VFIOPCIDevice *vdev, const char *name, int nr,
+> +                          EventNotifier *ev)
+> +{
+> +    int fd = event_notifier_get_fd(ev);
 > +
+> +    if (fd >= 0) {
+> +        g_autofree char *fdname = EVENT_FD_NAME(vdev, name);
 > +
-> +    def guest_set_dispatching(self, dispatching):
-> +        exec_command(self,
-> +                f'echo {dispatching} > /sys/devices/system/cpu/dispatching')
-> +        self.vm.event_wait('CPU_POLARIZATION_CHANGE', self.event_timeout)
-> +        exec_command_and_wait_for_pattern(self,
-> +                '/bin/cat /sys/devices/system/cpu/dispatching', dispatching)
+> +        cpr_resave_fd(fdname, nr, fd);
+> +    }
+> +}
 > +
+> +static int load_event_fd(VFIOPCIDevice *vdev, const char *name, int nr)
+> +{
+> +    g_autofree char *fdname = EVENT_FD_NAME(vdev, name);
+> +    return cpr_find_fd(fdname, nr);
+> +}
 > +
-> +    def test_polarisation(self):
-> +        """
-> +        This test verifies that QEMU modifies the entitlement change after
-> +        several guest polarization change requests.
+> +static void delete_event_fd(VFIOPCIDevice *vdev, const char *name, int nr)
+> +{
+> +    g_autofree char *fdname = EVENT_FD_NAME(vdev, name);
+> +    cpr_delete_fd(fdname, nr);
+> +}
 > +
-> +        :avocado: tags=arch:s390x
-> +        :avocado: tags=machine:s390-ccw-virtio
-> +        """
-> +        self.kernel_init()
-> +        self.vm.launch()
-> +        self.wait_until_booted()
+>   /* Create new or reuse existing eventfd */
+>   static int vfio_notifier_init(VFIOPCIDevice *vdev, EventNotifier *e,
+>                                 const char *name, int nr)
+>   {
+> -    int fd = -1;   /* placeholder until a subsequent patch */
+>       int ret = 0;
+> +    int fd = load_event_fd(vdev, name, nr);
+>   
+>       if (fd >= 0) {
+>           event_notifier_init_fd(e, fd);
+>       } else {
+>           ret = event_notifier_init(e, 0);
+> +        if (!ret) {
+> +            save_event_fd(vdev, name, nr, e);
+> +        }
+>       }
+>       return ret;
+>   }
+> @@ -72,6 +102,7 @@ static int vfio_notifier_init(VFIOPCIDevice *vdev, EventNotifier *e,
+>   static void vfio_notifier_cleanup(VFIOPCIDevice *vdev, EventNotifier *e,
+>                                     const char *name, int nr)
+>   {
+> +    delete_event_fd(vdev, name, nr);
+>       event_notifier_cleanup(e);
+>   }
+>   
+> @@ -512,6 +543,15 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
+>       VFIOMSIVector *vector;
+>       int ret;
+>   
+> +    /*
+> +     * Ignore the callback from msix_set_vector_notifiers during resume.
+> +     * The necessary subset of these actions is called from vfio_claim_vectors
+> +     * during post load.
+> +     */
+> +    if (vdev->vbasedev.reused) {
+> +        return 0;
+> +    }
 > +
-> +        self.system_init()
-> +        res = self.vm.qmp('query-cpu-polarization')
-> +        self.assertEqual(res['return']['polarization'], 'horizontal')
-> +        self.check_topology(0, 0, 0, 0, 'medium', False)
+>       trace_vfio_msix_vector_do_use(vdev->vbasedev.name, nr);
+>   
+>       vector = &vdev->msi_vectors[nr];
+> @@ -2784,6 +2824,11 @@ static void vfio_register_err_notifier(VFIOPCIDevice *vdev)
+>       fd = event_notifier_get_fd(&vdev->err_notifier);
+>       qemu_set_fd_handler(fd, vfio_err_notifier_handler, NULL, vdev);
+>   
+> +    /* Do not alter irq_signaling during vfio_realize for cpr */
+> +    if (vdev->vbasedev.reused) {
+> +        return;
+> +    }
 > +
-> +        self.guest_set_dispatching('1');
-> +        res = self.vm.qmp('query-cpu-polarization')
-> +        self.assertEqual(res['return']['polarization'], 'vertical')
-> +        self.check_topology(0, 0, 0, 0, 'medium', False)
+>       if (vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_ERR_IRQ_INDEX, 0,
+>                                  VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
+>           error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+> @@ -2849,6 +2894,12 @@ static void vfio_register_req_notifier(VFIOPCIDevice *vdev)
+>       fd = event_notifier_get_fd(&vdev->req_notifier);
+>       qemu_set_fd_handler(fd, vfio_req_notifier_handler, NULL, vdev);
+>   
+> +    /* Do not alter irq_signaling during vfio_realize for cpr */
+> +    if (vdev->vbasedev.reused) {
+> +        vdev->req_enabled = true;
+> +        return;
+> +    }
 > +
-> +        self.guest_set_dispatching('0');
-> +        res = self.vm.qmp('query-cpu-polarization')
-> +        self.assertEqual(res['return']['polarization'], 'horizontal')
-> +        self.check_topology(0, 0, 0, 0, 'medium', False)
-
+>       if (vfio_set_irq_signaling(&vdev->vbasedev, VFIO_PCI_REQ_IRQ_INDEX, 0,
+>                              VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
+>           error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
+> @@ -3357,6 +3408,46 @@ static Property vfio_pci_dev_properties[] = {
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+>   
+> +static void vfio_claim_vectors(VFIOPCIDevice *vdev, int nr_vectors, bool msix)
+> +{
+> +    int i, fd;
+> +    bool pending = false;
+> +    PCIDevice *pdev = &vdev->pdev;
+> +
+> +    vdev->nr_vectors = nr_vectors;
+> +    vdev->msi_vectors = g_new0(VFIOMSIVector, nr_vectors);
+> +    vdev->interrupt = msix ? VFIO_INT_MSIX : VFIO_INT_MSI;
+> +
+> +    vfio_prepare_kvm_msi_virq_batch(vdev);
+> +
+> +    for (i = 0; i < nr_vectors; i++) {
+> +        VFIOMSIVector *vector = &vdev->msi_vectors[i];
+> +
+> +        fd = load_event_fd(vdev, "interrupt", i);
+> +        if (fd >= 0) {
+> +            vfio_vector_init(vdev, i);
+> +            qemu_set_fd_handler(fd, vfio_msi_interrupt, NULL, vector);
+> +        }
+> +
+> +        if (load_event_fd(vdev, "kvm_interrupt", i) >= 0) {
+> +            vfio_add_kvm_msi_virq(vdev, vector, i, msix);
+> +        } else {
+> +            vdev->msi_vectors[i].virq = -1;
+> +        }
+> +
+> +        if (msix && msix_is_pending(pdev, i) && msix_is_masked(pdev, i)) {
+> +            set_bit(i, vdev->msix->pending);
+> +            pending = true;
+> +        }
+> +    }
+> +
+> +    vfio_commit_kvm_msi_virq_batch(vdev);
+> +
+> +    if (msix) {
+> +        memory_region_set_enabled(&pdev->msix_pba_mmio, pending);
+> +    }
+> +}
+> +
+>   /*
+>    * The kernel may change non-emulated config bits.  Exclude them from the
+>    * changed-bits check in get_pci_config_device.
+> @@ -3375,6 +3466,29 @@ static int vfio_pci_pre_load(void *opaque)
+>       return 0;
+>   }
+>   
+> +static int vfio_pci_post_load(void *opaque, int version_id)
+> +{
+> +    VFIOPCIDevice *vdev = opaque;
+> +    PCIDevice *pdev = &vdev->pdev;
+> +    int nr_vectors;
+> +
+> +    if (msix_enabled(pdev)) {
+> +        msix_set_vector_notifiers(pdev, vfio_msix_vector_use,
+> +                                   vfio_msix_vector_release, NULL);
+> +        nr_vectors = vdev->msix->entries;
+> +        vfio_claim_vectors(vdev, nr_vectors, true);
+> +
+> +    } else if (msi_enabled(pdev)) {
+> +        nr_vectors = msi_nr_vectors_allocated(pdev);
+> +        vfio_claim_vectors(vdev, nr_vectors, false);
+> +
+> +    } else if (vfio_pci_read_config(pdev, PCI_INTERRUPT_PIN, 1)) {
+> +        assert(0);      /* completed in a subsequent patch */
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+>   static bool vfio_pci_needed(void *opaque)
+>   {
+>       return migrate_mode() == MIG_MODE_CPR_EXEC;
+> @@ -3386,8 +3500,11 @@ static const VMStateDescription vfio_pci_vmstate = {
+>       .minimum_version_id = 0,
+>       .priority = MIG_PRI_VFIO_PCI,       /* must load before container */
+>       .pre_load = vfio_pci_pre_load,
+> +    .post_load = vfio_pci_post_load,
+>       .needed = vfio_pci_needed,
+>       .fields = (VMStateField[]) {
+> +        VMSTATE_PCI_DEVICE(pdev, VFIOPCIDevice),
+> +        VMSTATE_MSIX_TEST(pdev, VFIOPCIDevice, vfio_msix_present),
+>           VMSTATE_END_OF_LIST()
+>       }
+>   };
 
