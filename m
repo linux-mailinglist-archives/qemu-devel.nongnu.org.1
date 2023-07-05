@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15F17490E9
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 00:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C60297490EA
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 00:19:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHAoc-0006PU-D2; Wed, 05 Jul 2023 18:17:38 -0400
+	id 1qHApM-0006in-1A; Wed, 05 Jul 2023 18:18:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1qHAoZ-0006PF-NP
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 18:17:35 -0400
-Received: from mail-il1-x130.google.com ([2607:f8b0:4864:20::130])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qHApJ-0006gv-Jm
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 18:18:21 -0400
+Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
- id 1qHAoX-0007dl-Sc
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 18:17:35 -0400
-Received: by mail-il1-x130.google.com with SMTP id
- e9e14a558f8ab-345c343ce29so36679375ab.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 15:17:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qHApH-0007js-9o
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 18:18:21 -0400
+Received: by mail-oo1-xc32.google.com with SMTP id
+ 006d021491bc7-565db4666d7so402eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 15:18:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688595452; x=1691187452;
- h=thread-index:content-language:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=3nprQbr/r/E3E8d4nn+DrN5CjruNFkajvMkohHMcvyQ=;
- b=hVwyA28y3n+Jlwn7GLfi0fNo/WTemh0iwS9R3sEOxMJ4DpnnDjcivrptBMWJXvasCx
- QLscds+5uGElkpvv39041uOioALzI3yRqrlSSRNKMJBx3K3hGHAcF+YubdKw4EbQ1W3B
- wu1cO4AXTVG1eNkMg/br04bf/IhrS/HROEaOPQf6/Bj7UgipaBCWAlqwISNgxnuDlAGZ
- 0Xt/9t04YEpBA51lallhGrnCE6y9UPnIiwbs/SoxAgpv+QMxY2tpAhC27F2OJ0IyQshl
- ckF46t8KG9qR5I8xKRaZom1EdULsW1CwuEoaFbFDL7Ln3fdC5TG48eGUgIZSkmdkO8Rz
- MFJg==
+ d=ventanamicro.com; s=google; t=1688595498; x=1691187498;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2N3FRMmzL12eCcBKsbFQPwrsz1c6EqeQC2opIuzvIkc=;
+ b=BSgB7kP2yFvoxQxfNUfHqlGweCjPpXWA6WakQKHwfzNO/rGDqeb7XGnsXLBShZ0yy8
+ 8BOqOCfJwB81/F4GZBpGY7QnT7+eFVfFrr4L/aL/gj+Py56kNLFyI4IZRmNNJwfe3opO
+ ZTDhj6eEPec2+VZT+IabLbvGeLzYUdvgIw+Kbaem0sJPCtY8u1BjdwQvUEKSEWOvJ3Uf
+ CRggA7b1V1/B0rsG0exU2B5JZG+k1m+pDAQh8famKTGiiraZBbUGb1cQhzd0gS8qnO40
+ qjPHuUn6G+Cf42Tj3/ptR8elSaMoOLWJCZeS/aPFXt+lgmnYcjF3g7e3OYMAV7DXlnnM
+ RJkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688595452; x=1691187452;
- h=thread-index:content-language:content-transfer-encoding
- :mime-version:message-id:date:subject:in-reply-to:references:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3nprQbr/r/E3E8d4nn+DrN5CjruNFkajvMkohHMcvyQ=;
- b=BX6FuWra58WSIKUfBRh9wthi8COEIjJJMIZK2CzYijfwhhX+8THUsHo7b5ji7xRrr7
- cON5PbKlMZTZyDhE3KZyOPiIj8zbNKApRTOLxjXiQ17j7vSLmomuDPsi0oKAEU74EScR
- 8t8UVfMSPyhPzcFTD13Ozeo0TwXQL0xNiuKi4BVB/mHj0+eU7RcukGudK4lSjKuG2mI+
- WimrHv71IaH04jNRbwflBuC4B5FMljH5VbMjVcgi6N68ckAPcxQfY41E54bdnDlhzX3D
- YlL1BS+oPkH+uzpxOi6jkXQhoJDtv7dmAe9YriWqX4+sIXAMWOd3et6floXdwHMhy94c
- CVpw==
-X-Gm-Message-State: ABy/qLZnAdAEbvlevis3fO2DN6kh5gCXJhPvDitUgf+vHk4L9yXBvaaj
- YesIZxh2w8uC/8W8U/PZJhQ=
-X-Google-Smtp-Source: APBJJlGkFQDr7Kmd/zbeI50aCfz7G3OnqVFW4gMooFulDWA5RgNhn5r8LcRVt1hf/enoQsEmxOu9Hg==
-X-Received: by 2002:a05:6e02:100a:b0:345:a3c6:87ba with SMTP id
- n10-20020a056e02100a00b00345a3c687bamr408955ilj.22.1688595452357; 
- Wed, 05 Jul 2023 15:17:32 -0700 (PDT)
-Received: from DESKTOPUU50BPD ([2601:284:8201:e850:1a78:8057:4d63:c6a5])
- by smtp.gmail.com with ESMTPSA id
- k9-20020a92c9c9000000b00345babb873csm12136ilq.64.2023.07.05.15.17.31
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 05 Jul 2023 15:17:31 -0700 (PDT)
-From: <ltaylorsimpson@gmail.com>
-To: "'Matheus Tavares Bernardino'" <quic_mathbern@quicinc.com>,
- <qemu-devel@nongnu.org>
-Cc: <bcain@quicinc.com>, <quic_mliebel@quicinc.com>,
- <richard.henderson@linaro.org>
-References: <93a2ca786530cbc8a94f7c7a6451f4f1f47c8a9b.1688581908.git.quic_mathbern@quicinc.com>
-In-Reply-To: <93a2ca786530cbc8a94f7c7a6451f4f1f47c8a9b.1688581908.git.quic_mathbern@quicinc.com>
-Subject: RE: [PATCH v2] Hexagon: move GETPC() calls to top level helpers
-Date: Wed, 5 Jul 2023 16:17:30 -0600
-Message-ID: <00a701d9af8e$7de644c0$79b2ce40$@gmail.com>
+ d=1e100.net; s=20221208; t=1688595498; x=1691187498;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2N3FRMmzL12eCcBKsbFQPwrsz1c6EqeQC2opIuzvIkc=;
+ b=Cdm/T08d/yZwE70k1slwhADEtursR+7a4VRp0PxtERhiSLqYtF1lIFvml7O5YZsKuo
+ Z0AYdQNS7yUJW6Au9vQuJcoGNpld5mz4trimxhA52FwBBBSWbyw2cTKwEd+ZB20CpOJC
+ 0AhDfX/8siTuRwapXcQaSUmGqiLYxPXF+BNQqeNAXBNjNWnZ7bwbU/eIpPkjVI2jNd1P
+ embuD67grI413l3N/jqMNm2Pn+3ZGSBoXpVpD/9woR+Z8vo/GN90VQ4uGGpXXNWgsQLI
+ zhupN1PJ6ACd3syDm+FrzYevQSS0Wqg5ZjsIfCm3/yrTL68mahL+7a9MNaUCRKxRvt8g
+ I8Sw==
+X-Gm-Message-State: ABy/qLYf18WxFmu7VhjjfiqKIM/ZfuhKnFBTu+55QdRPzBbzMfmnq5Rl
+ 8U65Tli6A3shehd15tzx2nrzuA==
+X-Google-Smtp-Source: APBJJlHJXqJJ/lM+vE63fIKSuUkDoXFd6voNB9e1St0v8cuZkAfn5axtTgxWFsoSVR6jyphb0+PjFA==
+X-Received: by 2002:a4a:aacc:0:b0:563:49fd:e772 with SMTP id
+ e12-20020a4aaacc000000b0056349fde772mr74363oon.4.1688595497807; 
+ Wed, 05 Jul 2023 15:18:17 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ n17-20020a4ae751000000b0051134f333d3sm112445oov.16.2023.07.05.15.18.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Jul 2023 15:18:17 -0700 (PDT)
+Message-ID: <aba237e8-1b9f-06bc-7fc5-09431cf1cf49@ventanamicro.com>
+Date: Wed, 5 Jul 2023 19:18:13 -0300
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v8 02/20] hw/riscv/virt.c: skip 'mmu-type' FDT if satp
+ mode not set
+Content-Language: en-US
+To: Conor Dooley <conor@kernel.org>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com, ajones@ventanamicro.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230705213955.429895-1-dbarboza@ventanamicro.com>
+ <20230705213955.429895-3-dbarboza@ventanamicro.com>
+ <20230705-gallstone-untitled-1463e43aa33c@spud>
+ <c5372b14-b2b8-4664-4357-a7f22c880dcd@ventanamicro.com>
+ <20230705-patchwork-sibling-4827156457bf@spud>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230705-patchwork-sibling-4827156457bf@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-us
-Thread-Index: AQFuHxwhguCpzCdeEvpTvLtGpI6IkbCC2QcQ
-Received-SPF: pass client-ip=2607:f8b0:4864:20::130;
- envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc32.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,88 +104,81 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-> -----Original Message-----
-> From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-> Sent: Wednesday, July 5, 2023 12:35 PM
-> To: qemu-devel@nongnu.org
-> Cc: quic_mathbern@quicinc.com; bcain@quicinc.com;
-> ltaylorsimpson@gmail.com; quic_mliebel@quicinc.com;
-> richard.henderson@linaro.org
-> Subject: [PATCH v2] Hexagon: move GETPC() calls to top level helpers
+On 7/5/23 19:12, Conor Dooley wrote:
+> On Wed, Jul 05, 2023 at 07:00:52PM -0300, Daniel Henrique Barboza wrote:
+>>
+>>
+>> On 7/5/23 18:49, Conor Dooley wrote:
+>>> On Wed, Jul 05, 2023 at 06:39:37PM -0300, Daniel Henrique Barboza wrote:
+>>>> The absence of a satp mode in riscv_host_cpu_init() is causing the
+>>>> following error:
+>>>>
+>>>> $ ./qemu/build/qemu-system-riscv64  -machine virt,accel=kvm \
+>>>>       -m 2G -smp 1  -nographic -snapshot \
+>>>>       -kernel ./guest_imgs/Image \
+>>>>       -initrd ./guest_imgs/rootfs_kvm_riscv64.img \
+>>>>       -append "earlycon=sbi root=/dev/ram rw" \
+>>>>       -cpu host
+>>>> **
+>>>> ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should not be
+>>>> reached
+>>>> Bail out! ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should
+>>>> not be reached
+>>>> Aborted
+>>>>
+>>>> The error is triggered from create_fdt_socket_cpus() in hw/riscv/virt.c.
+>>>> It's trying to get satp_mode_str for a NULL cpu->cfg.satp_mode.map.
+>>>>
+>>>> For this KVM cpu we would need to inherit the satp supported modes
+>>>> from the RISC-V host. At this moment this is not possible because the
+>>>> KVM driver does not support it. And even when it does we can't just let
+>>>> this broken for every other older kernel.
+>>>>
+>>>> Since mmu-type is not a required node, according to [1], skip the
+>>>> 'mmu-type' FDT node if there's no satp_mode set. We'll revisit this
+>>>> logic when we can get satp information from KVM.
+>>>>
+>>>> [1] https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/cpu.yaml
+>>>
+>>> I don't think this is the correct link to reference as backup, as the
+>>> generic binding sets out no requirements. I think you would want to link
+>>> to the RISC-V specific cpus binding.
+>>
+>> You mean this link?
+>>
+>> https://github.com/torvalds/linux/blob/master/Documentation/devicetree/bindings/riscv/cpus.yaml
 > 
-> As docs/devel/loads-stores.rst states:
-> 
->   ``GETPC()`` should be used with great care: calling
->   it in other functions that are *not* the top level
->   ``HELPER(foo)`` will cause unexpected behavior. Instead, the
->   value of ``GETPC()`` should be read from the helper and passed
->   if needed to the functions that the helper calls.
-> 
-> Let's fix the GETPC() usage in Hexagon, making sure it's always called
-from
-> top level helpers and passed down to the places where it's needed. There
-> are two snippets where that is not currently the case:
-> 
-> - probe_store(), which is only called from two helpers, so it's easy to
->   move GETPC() up.
-> 
-> - mem_load*() functions, which are also called directly from helpers,
->   but through the MEM_LOAD*() set of macros. Note that this are only
->   used when compiling with --disable-hexagon-idef-parser.
-> 
->   In this case, we also take this opportunity to simplify the code,
->   unifying the mem_load*() functions.
-> 
-> Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-> ---
-> v1:
-> d40fabcf9d6e92e4cd8d6a144e9b2a9acf4580dc.1688420966.git.quic_mathber
-> n@quicinc.com
-> 
-> Changes in v2:
-> - Fixed wrong cpu_ld* unification from previous version.
-> - Passed retaddr down to check_noshuf() and further, as Taylor
->   suggested.
-> - Reorganized macros for simplification.
-> 
->  target/hexagon/macros.h    | 19 ++++++------
->  target/hexagon/op_helper.h | 11 ++-----  target/hexagon/op_helper.c | 62
-> +++++++++++---------------------------
->  3 files changed, 29 insertions(+), 63 deletions(-)
-> 
-> diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h index
-> 5451b061ee..e44a932434 100644
-> --- a/target/hexagon/macros.h
-> +++ b/target/hexagon/macros.h
-> @@ -173,15 +173,6 @@
->  #define fLOAD(NUM, SIZE, SIGN, EA, DST) \
-> -    DST = (size##SIZE##SIGN##_t)MEM_LOAD##SIZE##SIGN(EA)
-> +    DST =  (size##SIZE##SIGN##_t)({ \
-> +        check_noshuf(env, pkt_has_store_s1, slot, EA, SIZE, GETPC()); \
-> +        MEM_LOAD##SIZE(env, EA, GETPC()); \
-> +    })
->  #endif
+> Yeah, that's the correct file. Should probably have linked it, sorry
+> about that. And in case it was not clear, not suggesting that this would
+> require a resend, since the reasoning is correct.
 
-This should be formatted as
-#define fLOAD(...) \
-    do { \
-        check_noshuf(...); \
-        DST = ...; \
-    } while (0)
+I don't mind amending this in case we need another version for any other reason.
+Otherwise we'll hope that Alistair will be a true, real gentlemann and amend the
+commit msg for us :D
 
-> a/target/hexagon/op_helper.h b/target/hexagon/op_helper.h index
-> 8f3764d15e..7744e819ef 100644
-> --- a/target/hexagon/op_helper.h
-> +++ b/target/hexagon/op_helper.h
-> +void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
-> +                  uint32_t slot, target_ulong vaddr, int size,
-> +uintptr_t ra);
+> 
+>>> That said, things like FreeBSD and U-Boot appear to require mmu-type
+>>> https://lore.kernel.org/all/20230705-fondue-bagginess-66c25f1a4135@spud/
+>>> so I am wondering if we should in fact make the mmu-type a required
+>>> property in the RISC-V specific binding.
+>>
+>>
+>> To make it required, as far as QEMU is concerned, we'll need to assume a
+>> default value for the 'host' CPU type (e.g. sv57). In the future we can read the
+>> satp host value directly when/if KVM provides satp_mode via get_one_reg().
+> 
+> I dunno if assuming is the right thing to do, since it could be actively
+> wrong. Leaving it out, as you are doing here, is, IMO, nicer to those
+> guests. Once there's an API for it, I think it could then be added and
+> then the additional guests would be supported.
 
-Are you sure this needs to be non-static?
+Makes sense. We'll revisit this piece of code when that API I sent today find
+its way upstream. Thanks,
 
 
-Othersiwe
-Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+Daniel
 
-
+> 
+> Thanks,
+> Conor.
 
