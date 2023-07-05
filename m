@@ -2,65 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E5F7490DB
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 00:13:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B15F17490E9
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 00:18:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHAjq-0003hn-UN; Wed, 05 Jul 2023 18:12:42 -0400
+	id 1qHAoc-0006PU-D2; Wed, 05 Jul 2023 18:17:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>)
- id 1qHAjk-0003du-QK; Wed, 05 Jul 2023 18:12:37 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>)
- id 1qHAji-0006AL-Bt; Wed, 05 Jul 2023 18:12:36 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 3DAC0615C5;
- Wed,  5 Jul 2023 22:12:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9BCC433C8;
- Wed,  5 Jul 2023 22:12:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1688595151;
- bh=NsDWqJBYnoDH3nfiePmOKv7+F471SPVookUbDe1Hbfw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=DyH15WT+y0V8Cz1tdXiqyYWSCpsS44mzalDK1/4SaCPWoHaAydrTtr2Ll1FFBJsDv
- OSiSEwV9WWmgM9kD4i4L9NEpoZ6ukZ4KH9cKlvvfsOyrSruqEymlDgpUHplJSsooA4
- Ct9utAMoA7PfkUk/t6L9kNZ7fg+XP0YEPfi2voYV657b61Ai1qtRhlFffg5icu4eD/
- wpbBqlXA2I6rXuZIk3MdCU3XmXtkUfL7h9e/koSbKk2xh7SkCRPMBGnkkpK/aSeJ0x
- 8DwP1P+8vqWjpwo4mZ16YkNqtYfKopSlqsBS8iP8yL9VTCdKfqqFly23QRQ3NPXaHp
- HiCYxFCV2Lz6A==
-Date: Wed, 5 Jul 2023 23:12:26 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn,
- zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, ajones@ventanamicro.com,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v8 02/20] hw/riscv/virt.c: skip 'mmu-type' FDT if satp
- mode not set
-Message-ID: <20230705-patchwork-sibling-4827156457bf@spud>
-References: <20230705213955.429895-1-dbarboza@ventanamicro.com>
- <20230705213955.429895-3-dbarboza@ventanamicro.com>
- <20230705-gallstone-untitled-1463e43aa33c@spud>
- <c5372b14-b2b8-4664-4357-a7f22c880dcd@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1qHAoZ-0006PF-NP
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 18:17:35 -0400
+Received: from mail-il1-x130.google.com ([2607:f8b0:4864:20::130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1qHAoX-0007dl-Sc
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 18:17:35 -0400
+Received: by mail-il1-x130.google.com with SMTP id
+ e9e14a558f8ab-345c343ce29so36679375ab.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 15:17:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688595452; x=1691187452;
+ h=thread-index:content-language:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3nprQbr/r/E3E8d4nn+DrN5CjruNFkajvMkohHMcvyQ=;
+ b=hVwyA28y3n+Jlwn7GLfi0fNo/WTemh0iwS9R3sEOxMJ4DpnnDjcivrptBMWJXvasCx
+ QLscds+5uGElkpvv39041uOioALzI3yRqrlSSRNKMJBx3K3hGHAcF+YubdKw4EbQ1W3B
+ wu1cO4AXTVG1eNkMg/br04bf/IhrS/HROEaOPQf6/Bj7UgipaBCWAlqwISNgxnuDlAGZ
+ 0Xt/9t04YEpBA51lallhGrnCE6y9UPnIiwbs/SoxAgpv+QMxY2tpAhC27F2OJ0IyQshl
+ ckF46t8KG9qR5I8xKRaZom1EdULsW1CwuEoaFbFDL7Ln3fdC5TG48eGUgIZSkmdkO8Rz
+ MFJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688595452; x=1691187452;
+ h=thread-index:content-language:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3nprQbr/r/E3E8d4nn+DrN5CjruNFkajvMkohHMcvyQ=;
+ b=BX6FuWra58WSIKUfBRh9wthi8COEIjJJMIZK2CzYijfwhhX+8THUsHo7b5ji7xRrr7
+ cON5PbKlMZTZyDhE3KZyOPiIj8zbNKApRTOLxjXiQ17j7vSLmomuDPsi0oKAEU74EScR
+ 8t8UVfMSPyhPzcFTD13Ozeo0TwXQL0xNiuKi4BVB/mHj0+eU7RcukGudK4lSjKuG2mI+
+ WimrHv71IaH04jNRbwflBuC4B5FMljH5VbMjVcgi6N68ckAPcxQfY41E54bdnDlhzX3D
+ YlL1BS+oPkH+uzpxOi6jkXQhoJDtv7dmAe9YriWqX4+sIXAMWOd3et6floXdwHMhy94c
+ CVpw==
+X-Gm-Message-State: ABy/qLZnAdAEbvlevis3fO2DN6kh5gCXJhPvDitUgf+vHk4L9yXBvaaj
+ YesIZxh2w8uC/8W8U/PZJhQ=
+X-Google-Smtp-Source: APBJJlGkFQDr7Kmd/zbeI50aCfz7G3OnqVFW4gMooFulDWA5RgNhn5r8LcRVt1hf/enoQsEmxOu9Hg==
+X-Received: by 2002:a05:6e02:100a:b0:345:a3c6:87ba with SMTP id
+ n10-20020a056e02100a00b00345a3c687bamr408955ilj.22.1688595452357; 
+ Wed, 05 Jul 2023 15:17:32 -0700 (PDT)
+Received: from DESKTOPUU50BPD ([2601:284:8201:e850:1a78:8057:4d63:c6a5])
+ by smtp.gmail.com with ESMTPSA id
+ k9-20020a92c9c9000000b00345babb873csm12136ilq.64.2023.07.05.15.17.31
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 05 Jul 2023 15:17:31 -0700 (PDT)
+From: <ltaylorsimpson@gmail.com>
+To: "'Matheus Tavares Bernardino'" <quic_mathbern@quicinc.com>,
+ <qemu-devel@nongnu.org>
+Cc: <bcain@quicinc.com>, <quic_mliebel@quicinc.com>,
+ <richard.henderson@linaro.org>
+References: <93a2ca786530cbc8a94f7c7a6451f4f1f47c8a9b.1688581908.git.quic_mathbern@quicinc.com>
+In-Reply-To: <93a2ca786530cbc8a94f7c7a6451f4f1f47c8a9b.1688581908.git.quic_mathbern@quicinc.com>
+Subject: RE: [PATCH v2] Hexagon: move GETPC() calls to top level helpers
+Date: Wed, 5 Jul 2023 16:17:30 -0600
+Message-ID: <00a701d9af8e$7de644c0$79b2ce40$@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="P96VPYE46+vtWOU/"
-Content-Disposition: inline
-In-Reply-To: <c5372b14-b2b8-4664-4357-a7f22c880dcd@ventanamicro.com>
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=conor@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-us
+Thread-Index: AQFuHxwhguCpzCdeEvpTvLtGpI6IkbCC2QcQ
+Received-SPF: pass client-ip=2607:f8b0:4864:20::130;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x130.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,91 +98,89 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---P96VPYE46+vtWOU/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 05, 2023 at 07:00:52PM -0300, Daniel Henrique Barboza wrote:
->=20
->=20
-> On 7/5/23 18:49, Conor Dooley wrote:
-> > On Wed, Jul 05, 2023 at 06:39:37PM -0300, Daniel Henrique Barboza wrote:
-> > > The absence of a satp mode in riscv_host_cpu_init() is causing the
-> > > following error:
-> > >=20
-> > > $ ./qemu/build/qemu-system-riscv64  -machine virt,accel=3Dkvm \
-> > >      -m 2G -smp 1  -nographic -snapshot \
-> > >      -kernel ./guest_imgs/Image \
-> > >      -initrd ./guest_imgs/rootfs_kvm_riscv64.img \
-> > >      -append "earlycon=3Dsbi root=3D/dev/ram rw" \
-> > >      -cpu host
-> > > **
-> > > ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should not be
-> > > reached
-> > > Bail out! ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should
-> > > not be reached
-> > > Aborted
-> > >=20
-> > > The error is triggered from create_fdt_socket_cpus() in hw/riscv/virt=
-=2Ec.
-> > > It's trying to get satp_mode_str for a NULL cpu->cfg.satp_mode.map.
-> > >=20
-> > > For this KVM cpu we would need to inherit the satp supported modes
-> > > from the RISC-V host. At this moment this is not possible because the
-> > > KVM driver does not support it. And even when it does we can't just l=
-et
-> > > this broken for every other older kernel.
-> > >=20
-> > > Since mmu-type is not a required node, according to [1], skip the
-> > > 'mmu-type' FDT node if there's no satp_mode set. We'll revisit this
-> > > logic when we can get satp information from KVM.
-> > >=20
-> > > [1] https://github.com/devicetree-org/dt-schema/blob/main/dtschema/sc=
-hemas/cpu.yaml
-> >=20
-> > I don't think this is the correct link to reference as backup, as the
-> > generic binding sets out no requirements. I think you would want to link
-> > to the RISC-V specific cpus binding.
->=20
-> You mean this link?
->=20
-> https://github.com/torvalds/linux/blob/master/Documentation/devicetree/bi=
-ndings/riscv/cpus.yaml
+> -----Original Message-----
+> From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> Sent: Wednesday, July 5, 2023 12:35 PM
+> To: qemu-devel@nongnu.org
+> Cc: quic_mathbern@quicinc.com; bcain@quicinc.com;
+> ltaylorsimpson@gmail.com; quic_mliebel@quicinc.com;
+> richard.henderson@linaro.org
+> Subject: [PATCH v2] Hexagon: move GETPC() calls to top level helpers
+> 
+> As docs/devel/loads-stores.rst states:
+> 
+>   ``GETPC()`` should be used with great care: calling
+>   it in other functions that are *not* the top level
+>   ``HELPER(foo)`` will cause unexpected behavior. Instead, the
+>   value of ``GETPC()`` should be read from the helper and passed
+>   if needed to the functions that the helper calls.
+> 
+> Let's fix the GETPC() usage in Hexagon, making sure it's always called
+from
+> top level helpers and passed down to the places where it's needed. There
+> are two snippets where that is not currently the case:
+> 
+> - probe_store(), which is only called from two helpers, so it's easy to
+>   move GETPC() up.
+> 
+> - mem_load*() functions, which are also called directly from helpers,
+>   but through the MEM_LOAD*() set of macros. Note that this are only
+>   used when compiling with --disable-hexagon-idef-parser.
+> 
+>   In this case, we also take this opportunity to simplify the code,
+>   unifying the mem_load*() functions.
+> 
+> Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> ---
+> v1:
+> d40fabcf9d6e92e4cd8d6a144e9b2a9acf4580dc.1688420966.git.quic_mathber
+> n@quicinc.com
+> 
+> Changes in v2:
+> - Fixed wrong cpu_ld* unification from previous version.
+> - Passed retaddr down to check_noshuf() and further, as Taylor
+>   suggested.
+> - Reorganized macros for simplification.
+> 
+>  target/hexagon/macros.h    | 19 ++++++------
+>  target/hexagon/op_helper.h | 11 ++-----  target/hexagon/op_helper.c | 62
+> +++++++++++---------------------------
+>  3 files changed, 29 insertions(+), 63 deletions(-)
+> 
+> diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h index
+> 5451b061ee..e44a932434 100644
+> --- a/target/hexagon/macros.h
+> +++ b/target/hexagon/macros.h
+> @@ -173,15 +173,6 @@
+>  #define fLOAD(NUM, SIZE, SIGN, EA, DST) \
+> -    DST = (size##SIZE##SIGN##_t)MEM_LOAD##SIZE##SIGN(EA)
+> +    DST =  (size##SIZE##SIGN##_t)({ \
+> +        check_noshuf(env, pkt_has_store_s1, slot, EA, SIZE, GETPC()); \
+> +        MEM_LOAD##SIZE(env, EA, GETPC()); \
+> +    })
+>  #endif
 
-Yeah, that's the correct file. Should probably have linked it, sorry
-about that. And in case it was not clear, not suggesting that this would
-require a resend, since the reasoning is correct.
+This should be formatted as
+#define fLOAD(...) \
+    do { \
+        check_noshuf(...); \
+        DST = ...; \
+    } while (0)
 
-> > That said, things like FreeBSD and U-Boot appear to require mmu-type
-> > https://lore.kernel.org/all/20230705-fondue-bagginess-66c25f1a4135@spud/
-> > so I am wondering if we should in fact make the mmu-type a required
-> > property in the RISC-V specific binding.
->=20
->=20
-> To make it required, as far as QEMU is concerned, we'll need to assume a
-> default value for the 'host' CPU type (e.g. sv57). In the future we can r=
-ead the
-> satp host value directly when/if KVM provides satp_mode via get_one_reg().
+> a/target/hexagon/op_helper.h b/target/hexagon/op_helper.h index
+> 8f3764d15e..7744e819ef 100644
+> --- a/target/hexagon/op_helper.h
+> +++ b/target/hexagon/op_helper.h
+> +void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
+> +                  uint32_t slot, target_ulong vaddr, int size,
+> +uintptr_t ra);
 
-I dunno if assuming is the right thing to do, since it could be actively
-wrong. Leaving it out, as you are doing here, is, IMO, nicer to those
-guests. Once there's an API for it, I think it could then be added and
-then the additional guests would be supported.
+Are you sure this needs to be non-static?
 
-Thanks,
-Conor.
 
---P96VPYE46+vtWOU/
-Content-Type: application/pgp-signature; name="signature.asc"
+Othersiwe
+Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZKXqygAKCRB4tDGHoIJi
-0jbPAP9sjIfSx8h5OBalpwNBWN1elH0Eq6l0NGBqHC0+KRQ21QD9ESjxHgi9zmQr
-aLvLMWHu16MqNo1fEccDt+4bCfs8FAw=
-=bxoh
------END PGP SIGNATURE-----
-
---P96VPYE46+vtWOU/--
 
