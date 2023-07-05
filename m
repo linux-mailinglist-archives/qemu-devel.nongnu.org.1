@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E0B0748EA7
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:14:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D909748ECE
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:22:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH8sb-00032j-F4; Wed, 05 Jul 2023 16:13:37 -0400
+	id 1qH8zW-0005BF-E9; Wed, 05 Jul 2023 16:20:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qH8sM-0002r8-3o; Wed, 05 Jul 2023 16:13:22 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1qH8zL-00058j-3x; Wed, 05 Jul 2023 16:20:35 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qH8sK-00067S-CY; Wed, 05 Jul 2023 16:13:21 -0400
+ id 1qH8zJ-0000wE-1A; Wed, 05 Jul 2023 16:20:34 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 9987D748A60;
- Wed,  5 Jul 2023 22:12:59 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 07D1174635C;
+ Wed,  5 Jul 2023 22:20:14 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 6D8B8748A5E; Wed,  5 Jul 2023 22:12:59 +0200 (CEST)
-Message-Id: <0091e093b8c3d4b34a509b7daf1ccbeeddd1aca5.1688586835.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1688586835.git.balaton@eik.bme.hu>
-References: <cover.1688586835.git.balaton@eik.bme.hu>
+ id CB1C974632B; Wed,  5 Jul 2023 22:20:13 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id C8BA0745720;
+ Wed,  5 Jul 2023 22:20:13 +0200 (CEST)
+Date: Wed, 5 Jul 2023 22:20:13 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 14/14] ppc440_pcix: Stop using system io region for PCI bus
+To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+cc: Daniel Henrique Barboza <danielhb413@gmail.com>, philmd@linaro.org
+Subject: Re: [PATCH v2 00/14] PPC440 devices misc clean up
+In-Reply-To: <cover.1688586835.git.balaton@eik.bme.hu>
+Message-ID: <f1f6133a-df77-37bf-a6ba-8700b0d2df88@eik.bme.hu>
+References: <cover.1688586835.git.balaton@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: qemu-devel@nongnu.org,
-    qemu-ppc@nongnu.org
-Cc: Daniel Henrique Barboza <"danielhb413@gmail.com>, philmd"@linaro.org>
-Date: Wed,  5 Jul 2023 22:12:59 +0200 (CEST)
-X-Spam-Probability: 8%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -56,79 +57,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reduce the iomem region to 64K and use it for the PCI io space and map
-it directly from the board without an intermediate alias that is not
-really needed.
+On Wed, 5 Jul 2023, BALATON Zoltan wrote:
+> These are some small misc clean ups to PPC440 related device models
+> which is all I have ready for now.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/ppc/ppc440_pcix.c | 9 ++++++---
- hw/ppc/sam460ex.c    | 6 +-----
- 2 files changed, 7 insertions(+), 8 deletions(-)
+Sorry, typo in email addresses in cc. Should I send it again or you can 
+pick up from the list?
 
-diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-index cf932e4b25..672090de94 100644
---- a/hw/ppc/ppc440_pcix.c
-+++ b/hw/ppc/ppc440_pcix.c
-@@ -23,6 +23,7 @@
- #include "qemu/error-report.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
-+#include "qemu/units.h"
- #include "hw/irq.h"
- #include "hw/ppc/ppc.h"
- #include "hw/ppc/ppc4xx.h"
-@@ -490,10 +491,11 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
-     s = PPC440_PCIX_HOST(dev);
- 
-     sysbus_init_irq(sbd, &s->irq);
--    memory_region_init(&s->busmem, OBJECT(dev), "pci bus memory", UINT64_MAX);
-+    memory_region_init(&s->busmem, OBJECT(dev), "pci-mem", UINT64_MAX);
-+    memory_region_init(&s->iomem, OBJECT(dev), "pci-io", 64 * KiB);
-     h->bus = pci_register_root_bus(dev, NULL, ppc440_pcix_set_irq,
--                         ppc440_pcix_map_irq, &s->irq, &s->busmem,
--                         get_system_io(), PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
-+                         ppc440_pcix_map_irq, &s->irq, &s->busmem, &s->iomem,
-+                         PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
- 
-     s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0),
-                                TYPE_PPC4xx_HOST_BRIDGE);
-@@ -514,6 +516,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(&s->container, PCIC0_CFGDATA, &h->data_mem);
-     memory_region_add_subregion(&s->container, PPC440_REG_BASE, &s->regs);
-     sysbus_init_mmio(sbd, &s->container);
-+    sysbus_init_mmio(sbd, &s->iomem);
- }
- 
- static void ppc440_pcix_class_init(ObjectClass *klass, void *data)
-diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
-index 8d0e551d14..1e615b8d35 100644
---- a/hw/ppc/sam460ex.c
-+++ b/hw/ppc/sam460ex.c
-@@ -269,7 +269,6 @@ static void main_cpu_reset(void *opaque)
- 
- static void sam460ex_init(MachineState *machine)
- {
--    MemoryRegion *isa = g_new(MemoryRegion, 1);
-     MemoryRegion *l2cache_ram = g_new(MemoryRegion, 1);
-     DeviceState *uic[4];
-     int i;
-@@ -441,12 +440,9 @@ static void sam460ex_init(MachineState *machine)
-     /* All PCI irqs are connected to the same UIC pin (cf. UBoot source) */
-     dev = sysbus_create_simple(TYPE_PPC440_PCIX_HOST, 0xc0ec00000,
-                                qdev_get_gpio_in(uic[1], 0));
-+    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, 0xc08000000);
-     pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
- 
--    memory_region_init_alias(isa, NULL, "isa_mmio", get_system_io(),
--                             0, 0x10000);
--    memory_region_add_subregion(get_system_memory(), 0xc08000000, isa);
--
-     /* PCI devices */
-     pci_create_simple(pci_bus, PCI_DEVFN(6, 0), "sm501");
-     /* SoC has a single SATA port but we don't emulate that yet
--- 
-2.30.9
+Regards,
+BALATON Zoltan
 
+> v2:
+> - Added R-b tags from Philippe
+> - Addressed review comments
+> - Added new patch to rename parent field of PPC460EXPCIEState to parent_obj
+>
+> Patches needing review: 6 7 10-13
+>
+> BALATON Zoltan (14):
+>  ppc440: Change ppc460ex_pcie_init() parameter type
+>  ppc440: Add cpu link property to PCIe controller model
+>  ppc440: Add a macro to shorten PCIe controller DCR registration
+>  ppc440: Rename parent field of PPC460EXPCIEState to match code style
+>  ppc440: Rename local variable in dcr_read_pcie()
+>  ppc440: Stop using system io region for PCIe buses
+>  ppc/sam460ex: Remove address_space_mem local variable
+>  ppc440: Add busnum property to PCIe controller model
+>  ppc440: Remove ppc460ex_pcie_init legacy init function
+>  ppc4xx_pci: Rename QOM type name define
+>  ppc4xx_pci: Add define for ppc4xx-host-bridge type name
+>  ppc440_pcix: Rename QOM type define abd move it to common header
+>  ppc440_pcix: Don't use iomem for regs
+>  ppc440_pcix: Stop using system io region for PCI bus
+>
+> hw/ppc/ppc440.h         |   1 -
+> hw/ppc/ppc440_bamboo.c  |   3 +-
+> hw/ppc/ppc440_pcix.c    |  28 +++---
+> hw/ppc/ppc440_uc.c      | 192 +++++++++++++++++-----------------------
+> hw/ppc/ppc4xx_pci.c     |  10 +--
+> hw/ppc/sam460ex.c       |  33 ++++---
+> include/hw/ppc/ppc4xx.h |   5 +-
+> 7 files changed, 129 insertions(+), 143 deletions(-)
+>
+>
 
