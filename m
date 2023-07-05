@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5027E7489D2
+	by mail.lfdr.de (Postfix) with ESMTPS id 8072C7489D3
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 19:05:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH5vJ-0006cU-HJ; Wed, 05 Jul 2023 13:04:13 -0400
+	id 1qH5ve-0006hF-Hv; Wed, 05 Jul 2023 13:04:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qH5vH-0006c0-Gq; Wed, 05 Jul 2023 13:04:11 -0400
-Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
+ id 1qH5vb-0006gX-9R; Wed, 05 Jul 2023 13:04:31 -0400
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qH5vF-0000VO-6j; Wed, 05 Jul 2023 13:04:11 -0400
-Received: by mail-oa1-x34.google.com with SMTP id
- 586e51a60fabf-1b38121a011so3574452fac.2; 
- Wed, 05 Jul 2023 10:04:08 -0700 (PDT)
+ id 1qH5vZ-0000WC-Gi; Wed, 05 Jul 2023 13:04:30 -0400
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-6b867acbf6dso571492a34.0; 
+ Wed, 05 Jul 2023 10:04:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688576647; x=1691168647;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=gmail.com; s=20221208; t=1688576663; x=1691168663;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=LBFFbXAj0D1rsUoFLcUZE8Sq0BVb8co5EbLKvNkn2vw=;
- b=LKxbwWlQIuz1zyYr21KwsNWUbLWTCkpsQutuDdLYRHUJaB4kbX2vhjkvDtGM9qoMsg
- SEgjU511BOKeHTn+6veKLClO5A9gpeHR9EXSJUufVqw6dGNumD1BKwE0/BQ+pXjcN2k9
- w0Uo3lnfgJujuH2aDFsY75PmoIVV6yGB6ObXkyVI5TH4nOXRiYTbIEr8yLuuMIXW5J6s
- HMWocI8yu26pNOzUi1WmP/zQLCFqnHoUkGLSQ/FUYW6fEcWH/pU5r5iYrNOkhhZ7wE8U
- TdV5Gmsy2OFn5xsiwuCQA/rIaVLQ5UqXdvm5zp2UgzQe2iMRKKBeKWR2UzPnV3m/EXZw
- sI8A==
+ bh=vqSFZPOi6iPo5Zc+TQGReXvriGJnZTPZ5ZbZmmY1Jt4=;
+ b=bYfMl71+XxJbwSocJb40hS2Wg/YE71nlk5FlP2rdNk68raCXZ9JlQvWFqzdkLZjXHy
+ tbLvFh05ZTuEE51fUQ5u7ZUtvcuaB94OIq3ZPFazfx3KcwxW1ZOTI51ytDHHhZSvnNGu
+ CK9faZemY7UpX/CZXObjBlcqJEvSA4i0WlnM22Gd87od7ur10XPwmMJ8T7QNibM48y0W
+ bhoO/zHboIwPVwhM2WKiKNmorRES8PR3djPEAVjCXqlu123egNPeEGhTXp4z1TTZgxSr
+ fl56+0hRStivGroc+np++e0igGU3pmg3ERkJVz6D+Z4PRXHzFTGSCLSvRoyN8SheJLi/
+ UUig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688576647; x=1691168647;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1688576663; x=1691168663;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LBFFbXAj0D1rsUoFLcUZE8Sq0BVb8co5EbLKvNkn2vw=;
- b=JA3tjk18siqUF9mZAEFNpiXegT2kilj6mSvJfbMAS6/AcqDnq7tRbly+j/Cwk17wEt
- HDXk1L1iSmXY833ULiXPrqeVlg3n3bfqYB5yrZXNMk0dkxCNb62M1O+0wZq52WIuEKrR
- y87hLaUK4MP8S+s9wWCG22iDE8050s8LB2choTCWvYYlo8y4qm7SWQUJVlHmPHdmKwxI
- EwTXcgXyePP1b/bWQG+rI8gxoBEUD+Gvzwl/Zhk1+qIFncSBFx1YHun3Dwrq+FBKAxPL
- uJjIcPHt4BEfv0ujEEqh0dqVQS/qzmLz9gaDaWOIC6Skvee01hB7k4UZQoyBR8TRHWgV
- aTVA==
-X-Gm-Message-State: ABy/qLZ+EdM0ntWE6E0M0q1XjemyqGl0LxBWdGRQPd0JYhH49hRqzxbi
- y4nfvMZPPNYnkv34ODrXXlc=
-X-Google-Smtp-Source: APBJJlG8Dfv2EVVCNPJCY6gfXAklIt495zCabTppaPnHhezo/luTSXzSoVkHnwfUYSFiF42fMPq/fg==
-X-Received: by 2002:a05:6871:520c:b0:1ad:3647:1fd0 with SMTP id
- ht12-20020a056871520c00b001ad36471fd0mr17611818oac.22.1688576647095; 
- Wed, 05 Jul 2023 10:04:07 -0700 (PDT)
+ bh=vqSFZPOi6iPo5Zc+TQGReXvriGJnZTPZ5ZbZmmY1Jt4=;
+ b=EuKCL5ybX/lPrFXQSRmf49Tqng+ihvs697eW7XbcUAFZbSLkckkmPtTfpxfvJ13Goy
+ ZImK7MDNWst+25E5rHP3lFixVtJAJvq2XCbS44+gZKmXPmckZc2GgwkSfwPOXjOZf4Zb
+ zdrC6o1otbMIi0IwY3CM2PavjmKkK8t9si+NlwRWKHr9oqyUQcHzcD1yKclNc7unvZJ1
+ bilQeL9MLEpeIhUqbDTnyEN5SpP4yU5RWOEbnSORbjP8H0xppA2sy7ynEfuoQIr/kqte
+ ymLoN9xxj538iPYjlAwFOAHxVvvVmz8HQsY/efWhQgOPfIsevxWtLqPJVdH9ppbcnB8r
+ 7Ttg==
+X-Gm-Message-State: ABy/qLZRgGrbMgrUwAcIEvhv7uDsuCFq+2gZtNQBSJKPUIUE258VhgpD
+ dPx+n5mQJk/DKqYC/r/sJYk=
+X-Google-Smtp-Source: APBJJlFdZgQ3uQgNk/ngKaKOpWX4WBDS2lHInvKZis7wheR9dzB21kpwicF22++f36Wdm+k0qJndGw==
+X-Received: by 2002:a9d:65c2:0:b0:6b7:4bea:558b with SMTP id
+ z2-20020a9d65c2000000b006b74bea558bmr1392441oth.7.1688576663230; 
+ Wed, 05 Jul 2023 10:04:23 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
  [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- dw22-20020a056870771600b001b3f0afda0fsm702443oab.30.2023.07.05.10.04.04
+ e2-20020a9d63c2000000b006b8850ad193sm6987468otl.56.2023.07.05.10.04.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 10:04:06 -0700 (PDT)
-Message-ID: <6e54457b-face-25fe-1df8-f70c0a962610@gmail.com>
-Date: Wed, 5 Jul 2023 14:04:02 -0300
+ Wed, 05 Jul 2023 10:04:22 -0700 (PDT)
+Message-ID: <71ebf920-3614-b19d-1623-1dee4a9d716e@gmail.com>
+Date: Wed, 5 Jul 2023 14:04:17 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2 0/4] ppc/pnv: SMT support for powernv
+Subject: Re: [PATCH] pnv/xive: Print CPU target in all TIMA traces
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230705120631.27670-1-npiggin@gmail.com>
+To: Frederic Barrat <fbarrat@linux.ibm.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+References: <20230705110039.231148-1-fbarrat@linux.ibm.com>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230705120631.27670-1-npiggin@gmail.com>
+In-Reply-To: <20230705110039.231148-1-fbarrat@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::34;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x34.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x334.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,52 +98,53 @@ Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
 
 Daniel
 
-On 7/5/23 09:06, Nicholas Piggin wrote:
-> These patches implement enough to install a distro, boot, run SMP KVM
-> guests with libvirt with good performance using MTTCG (as reported by
-> Cedric).
+On 7/5/23 08:00, Frederic Barrat wrote:
+> Add the CPU target in the trace when reading/writing the TIMA
+> space. It was already done for other TIMA ops (notify, accept, ...),
+> only missing for those 2. Useful for debug and even more now that we
+> experiment with SMT.
 > 
-> There are a few more SPRs that need to be done, and per-LPAR SPRs are
-> mostly not annotated yet so it can't run in 1 LPAR mode. But those can
-> be added in time, it will take a bit of time to get everything exactly
-> as hardware does so I consider this good enough to run common
-> software usefully.
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> ---
+>   hw/intc/trace-events | 4 ++--
+>   hw/intc/xive.c       | 4 ++--
+>   2 files changed, 4 insertions(+), 4 deletions(-)
 > 
-> Since RFC:
-> - Rebased against ppc-next (no conflicts vs upstream anyway).
-> - Add patch 4 avocado boot test with SMT, as was added with pseries SMT.
-> - Renamed POWERPC_FLAG_1LPAR to POWERPC_FLAG_SMT_1LPAR since it implies
->    SMT.
-> - Fixed typos, patch 1, 3 changelogs improvement (hopefully).
-> 
-> Since v1:
-> - Fix clang compile bug
-> - Fix LPAR-per-thread bug in CTRL/DPDES/msgsndp in patch 1
-> - Add 2-socket test case to powernv Linux boot avocado test
-> - Remove SMT caveat from docs/system/ppc/powernv.rst
-> 
-> Thanks,
-> Nick
-> 
-> Nicholas Piggin (4):
->    target/ppc: Add LPAR-per-core vs per-thread mode flag
->    target/ppc: SMT support for the HID SPR
->    ppc/pnv: SMT support for powernv
->    tests/avocado: Add powernv machine test script
-> 
->   docs/system/ppc/powernv.rst  |  5 ---
->   hw/ppc/pnv.c                 | 12 +++++
->   hw/ppc/pnv_core.c            | 13 +++---
->   hw/ppc/spapr_cpu_core.c      |  2 +
->   target/ppc/cpu.h             |  3 ++
->   target/ppc/cpu_init.c        | 14 +++++-
->   target/ppc/excp_helper.c     |  4 ++
->   target/ppc/helper.h          |  1 +
->   target/ppc/misc_helper.c     | 29 ++++++++++++
->   target/ppc/spr_common.h      |  1 +
->   target/ppc/translate.c       | 27 ++++++++---
->   tests/avocado/ppc_powernv.py | 87 ++++++++++++++++++++++++++++++++++++
->   12 files changed, 179 insertions(+), 19 deletions(-)
->   create mode 100644 tests/avocado/ppc_powernv.py
-> 
+> diff --git a/hw/intc/trace-events b/hw/intc/trace-events
+> index 5c6094c457..36ff71f947 100644
+> --- a/hw/intc/trace-events
+> +++ b/hw/intc/trace-events
+> @@ -265,8 +265,8 @@ xive_source_esb_read(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64
+>   xive_source_esb_write(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64" IRQ 0x%x val=0x%"PRIx64
+>   xive_router_end_notify(uint8_t end_blk, uint32_t end_idx, uint32_t end_data) "END 0x%02x/0x%04x -> enqueue 0x%08x"
+>   xive_router_end_escalate(uint8_t end_blk, uint32_t end_idx, uint8_t esc_blk, uint32_t esc_idx, uint32_t end_data) "END 0x%02x/0x%04x -> escalate END 0x%02x/0x%04x data 0x%08x"
+> -xive_tctx_tm_write(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
+> -xive_tctx_tm_read(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
+> +xive_tctx_tm_write(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
+> +xive_tctx_tm_read(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
+>   xive_presenter_notify(uint8_t nvt_blk, uint32_t nvt_idx, uint8_t ring) "found NVT 0x%x/0x%x ring=0x%x"
+>   xive_end_source_read(uint8_t end_blk, uint32_t end_idx, uint64_t addr) "END 0x%x/0x%x @0x%"PRIx64
+>   
+> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+> index c014e961a4..56670b2cac 100644
+> --- a/hw/intc/xive.c
+> +++ b/hw/intc/xive.c
+> @@ -566,7 +566,7 @@ void xive_tctx_tm_write(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
+>   {
+>       const XiveTmOp *xto;
+>   
+> -    trace_xive_tctx_tm_write(offset, size, value);
+> +    trace_xive_tctx_tm_write(tctx->cs->cpu_index, offset, size, value);
+>   
+>       /*
+>        * TODO: check V bit in Q[0-3]W2
+> @@ -639,7 +639,7 @@ uint64_t xive_tctx_tm_read(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
+>        */
+>       ret = xive_tm_raw_read(tctx, offset, size);
+>   out:
+> -    trace_xive_tctx_tm_read(offset, size, ret);
+> +    trace_xive_tctx_tm_read(tctx->cs->cpu_index, offset, size, ret);
+>       return ret;
+>   }
+>   
 
