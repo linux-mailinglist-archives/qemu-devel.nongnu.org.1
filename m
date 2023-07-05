@@ -2,72 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67864747B62
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 04:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F902747B65
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 04:10:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGru5-0001HM-Ne; Tue, 04 Jul 2023 22:06:03 -0400
+	id 1qGrx2-0003Zt-Iz; Tue, 04 Jul 2023 22:09:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qGrtr-0001Es-QP; Tue, 04 Jul 2023 22:05:50 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qGrx0-0003Zf-TP
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 22:09:02 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qGrtp-0005pn-6F; Tue, 04 Jul 2023 22:05:47 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-991c786369cso727103866b.1; 
- Tue, 04 Jul 2023 19:05:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qGrwy-0007OE-Lc
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 22:09:02 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4f9fdb0ef35so9981728e87.0
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 19:09:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1688522743; x=1691114743;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=sV7iyPLTHpB6T8Z/z7UWIfMfvfhOmoiUKepqpLlDEdI=;
- b=MTilERlIbpWB2iGNpzfIkjSkpN1JhfhZnr3dyAqTSVqY8U/1x7YGK8S6KyYIN0KfLo
- 8S0giWlZLHv3mEiamYuYbGX5CQXJ90dr3xAP5wEiOFLdUR42JXlOTR7ONRCicCQBJ/4C
- EgtDearLi1O5QAP9PppgOTFJ6f8gnS46JpmOY=
+ d=gmail.com; s=20221208; t=1688522938; x=1691114938;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Lf7YBHGl8cgVDiGsGm19ct/xlDRLsNXD+G8+wVO7e90=;
+ b=i5dszBuBa6yuSBN9368BvGWygLcUP0bgVRrQi5jn8s7SVzrVCzZITc9qWGd1FKxX4Q
+ g2+rJaMXvenpdpHTdmS7GhFhiyu/cxmi1P5Z9u92ga9lml3Srrdi/OCBGHopwB3lkZRL
+ xPiV03wog+W9PmuZIwd8ZlTWABMhWTCB4O8bQ0RZ2g33WQO60cx29DBwbfsFkGQ3ERcZ
+ QOmfdeoo1MCYEAEnu6zSzxKiDcMZ+SZzayWYBq3rEAE/F7C3yuBE4AwdLh3QD8hjUhr7
+ SdUTr2E59oy61HZz/Lehx5BKWkzdBgI9ghpWe3moj8nzdaviG7WVGQY88IXhSbeGJzyC
+ QT5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688522743; x=1691114743;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=sV7iyPLTHpB6T8Z/z7UWIfMfvfhOmoiUKepqpLlDEdI=;
- b=PBtqDz9MAU1eT4iKfe9ZNbRYvGz1wEIELempwIujZw6GWnsWPQy+NnFFzdGVig0Ys3
- woSZOSB91ZrT9WfV4rPpqNjxfnmfUIcLQ70Nj6sBSP7kZYlcUkYTYv+bmTF8UId+iGY+
- MSCZRioB7c1VbI6cnPapAkdDbvx1CUVfPGHB/PJ69R6BvoMxDJF7gJmbm1F5IiaErCaU
- zqFGjKiD6of0SisGCnOEbJEmPEHhkdngb6P/Bi4pPFZKpcc2/xdL4XOoayMTx+GCi5D1
- UlySAc14hAax73wrHmRATeAzQxiuCMxIJwx83C8zbJcQW1uwIS9CkshA482JYvDmIznZ
- cNQA==
-X-Gm-Message-State: AC+VfDwyRgG40ev+hEYuRwm1sBHVAA9Hn3eXfbgFpl7mgPMTn0DS329R
- tx+6rRU3AiwE3kSC9rMb9RpinPH9YvLwrlSu4sM=
-X-Google-Smtp-Source: APBJJlHyYKYQBvjTPfYDHJvWPjazp89fk+oVU8BOUgGzJF+M1iGr6IT8RQD8grZYLtoNK7Ns+lwaFnfFe9mw0feNgK0=
-X-Received: by 2002:a17:906:b7c8:b0:984:bd75:6a3 with SMTP id
- fy8-20020a170906b7c800b00984bd7506a3mr10970799ejb.58.1688522742956; Tue, 04
- Jul 2023 19:05:42 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688522938; x=1691114938;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Lf7YBHGl8cgVDiGsGm19ct/xlDRLsNXD+G8+wVO7e90=;
+ b=HlZKXIcF3Yvg9vAZVOksZio6dknnIGyUr1vUx/3tgUVCPoyun71KHrRIXKFFLJxVF7
+ 1rtNXgiiGu8so4UBK6f8KQ0Zg6Gm0LOYA5Z/AMcGmy8DTPhEHhxnKwJ1S6aD8WQsddeo
+ 6x+lNTVYZYSu1vKxq+gu8JBKVVkMKgsLkE7udPTfog5UTCoy12aRAv6URGN5VCvO+o2c
+ Lmb9FNNQapEeFEWAhhxq6TZHssB/SmmYKFzvFQsE8cqkRmcroUfH3284a21vI8HUN/SS
+ zh3ZnDSpbxUFrE51W0wFTKQNpQ1jL7h5yC8G/Q87lOxXrPtALN2ZT49hlY8yh+f/4VRt
+ 3+rA==
+X-Gm-Message-State: ABy/qLYW31/SfadzqPSz77uHKYzFDmK1y7+Zhg0PFLPqKf5XOE/ZCvzY
+ xkiKsq/Xm9+AuFhLHAXEywU3Zg95deMxR9axfsA=
+X-Google-Smtp-Source: APBJJlGMrAsmqq4e6kE2NKxkO3HT4GgZCdhLvcknmKuhnwhdbaoHvXCzSmCZ8NP5yzKWTRLLL8kPLLlwZidaUNzlT18=
+X-Received: by 2002:a2e:7a0f:0:b0:2b5:81bc:43a8 with SMTP id
+ v15-20020a2e7a0f000000b002b581bc43a8mr9098451ljc.0.1688522938041; Tue, 04 Jul
+ 2023 19:08:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230705012736.20020-1-npiggin@gmail.com>
-In-Reply-To: <20230705012736.20020-1-npiggin@gmail.com>
-From: Joel Stanley <joel@jms.id.au>
-Date: Wed, 5 Jul 2023 02:05:31 +0000
-Message-ID: <CACPK8XcsBt5ZQ=SRFd2+6OjRx4zM1gmcr12djiMugS9QTa6SGw@mail.gmail.com>
-Subject: Re: [PATCH] ppc/pnv: Set P10 core xscom region size to match hardware
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>, 
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+References: <cover.1688051252.git.yin31149@gmail.com>
+ <d9d7641ef25d7a4477f8fc4df8cba026380dab76.1688051252.git.yin31149@gmail.com>
+ <CAJaqyWefjZ1-Z08GR8f8kvwxPihEqpzJK17hDnO7wkGx+pCaCw@mail.gmail.com>
+In-Reply-To: <CAJaqyWefjZ1-Z08GR8f8kvwxPihEqpzJK17hDnO7wkGx+pCaCw@mail.gmail.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Wed, 5 Jul 2023 10:08:44 +0800
+Message-ID: <CAKrof1ODXvY-8U5zSQcFfKyaoSHTVJ6h5wFkxzZfTebmp5X7Rw@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 3/4] vdpa: Restore packet receive filtering state
+ relative with _F_CTRL_RX feature
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=yin31149@gmail.com; helo=mail-lf1-x129.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, URIBL_CSS=0.1 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,66 +91,202 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 5 Jul 2023 at 01:27, Nicholas Piggin <npiggin@gmail.com> wrote:
+On 2023/7/4 23:39, Eugenio Perez Martin wrote:
+> On Thu, Jun 29, 2023 at 5:26=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.co=
+m> wrote:
+>>
+>> This patch introduces vhost_vdpa_net_load_rx_mode()
+>> and vhost_vdpa_net_load_rx() to restore the packet
+>> receive filtering state in relation to
+>> VIRTIO_NET_F_CTRL_RX feature at device's startup.
+>>
+>> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+>> ---
+>> v2:
+>>    - avoid sending CVQ command in default state suggested by Eugenio
+>>
+>> v1: https://lore.kernel.org/all/86eeddcd6f6b04e5c1e44e901ddea3b1b8b6c183=
+.1687402580.git.yin31149@gmail.com/
+>>
+>>   net/vhost-vdpa.c | 104 +++++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 104 insertions(+)
+>>
+>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+>> index cb45c84c88..9d5d88756c 100644
+>> --- a/net/vhost-vdpa.c
+>> +++ b/net/vhost-vdpa.c
+>> @@ -792,6 +792,106 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAS=
+tate *s,
+>>       return 0;
+>>   }
+>>
+>> +static int vhost_vdpa_net_load_rx_mode(VhostVDPAState *s,
+>> +                                       uint8_t cmd,
+>> +                                       uint8_t on)
+>> +{
+>> +    ssize_t dev_written;
+>> +    const struct iovec data =3D {
+>> +        .iov_base =3D &on,
+>> +        .iov_len =3D sizeof(on),
+>> +    };
+>> +    dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_RX,
+>> +                                          cmd, &data, 1);
+>> +    if (unlikely(dev_written < 0)) {
+>> +        return dev_written;
+>> +    }
+>> +    if (*s->status !=3D VIRTIO_NET_OK) {
+>> +        return -EINVAL;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>> +static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
+>> +                                  const VirtIONet *n)
+>> +{
+>> +    uint8_t on;
+>> +    int r;
+>> +
+>> +    if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_RX)) =
+{
 >
-> The P10 core xscom memory regions overlap because the size is wrong.
-> The P10 core+L2 xscom region size is allocated as 0x1000 (with some
-> unused ranges). "EC" is used as a closer match, as "EX" includes L3
-> which has a disjoint xscom range that would require a different
-> region if it were implemented.
+> Also suggesting early returns here.
+
+So, for CVQ commands related to VIRTIO_NET_F_CTRL_EXTRA_RX, would it be
+more appropriate to create a new function, maybe
+vhost_vdpa_net_load_rx_extra, to handle them instead of sending those
+CVQ commands within this function, if we choose to return early?
+
 >
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-Nice, that looks better:
-
-0000000100000000-00000001000fffff (prio 0, i/o): xscom-quad.0: 0x100000
-0000000100108000-000000010010ffff (prio 0, i/o): xscom-core.3: 0x8000
-0000000100110000-0000000100117fff (prio 0, i/o): xscom-core.2: 0x8000
-0000000100120000-0000000100127fff (prio 0, i/o): xscom-core.1: 0x8000
-0000000100140000-0000000100147fff (prio 0, i/o): xscom-core.0: 0x8000
-0000000108000000-00000001080fffff (prio 0, i/o): xscom-quad.4: 0x100000
-0000000108108000-000000010810ffff (prio 0, i/o): xscom-core.7: 0x8000
-0000000108110000-0000000108117fff (prio 0, i/o): xscom-core.6: 0x8000
-0000000108120000-0000000108127fff (prio 0, i/o): xscom-core.5: 0x8000
-0000000108140000-0000000108147fff (prio 0, i/o): xscom-core.4: 0x8000
-
-Reviewed-by: Joel Stanley <joel@jms.id.au>
-
-
+>> +        /* Load the promiscous mode */
+>> +        if (n->mac_table.uni_overflow) {
+>> +            /*
+>> +             * According to VirtIO standard, "Since there are no guaran=
+tees,
+>> +             * it can use a hash filter or silently switch to
+>> +             * allmulti or promiscuous mode if it is given too many add=
+resses."
+>> +             *
+>> +             * QEMU ignores non-multicast(unicast) MAC addresses and
+>> +             * marks `uni_overflow` for the device internal state
+>> +             * if guest sets too many non-multicast(unicast) MAC addres=
+ses.
+>> +             * Therefore, we should turn promiscous mode on in this cas=
+e.
+>> +             */
+>> +            on =3D 1;
+>> +        } else {
+>> +            on =3D n->promisc;
+>> +        }
+>
+> I think we can remove the "on" variable and just do:
+>
+> /*
+>   * According to ...
+>   */
+> if (n->mac_table.uni_overflow || n->promisc) {
+>    r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_PROMISC, on);
+>    if (r < 0) {
+>      return r;
+>    }
 > ---
->  hw/ppc/pnv_core.c          | 3 +--
->  include/hw/ppc/pnv_xscom.h | 2 +-
->  2 files changed, 2 insertions(+), 3 deletions(-)
 >
-> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-> index b7223bb445..ffbc29cbf4 100644
-> --- a/hw/ppc/pnv_core.c
-> +++ b/hw/ppc/pnv_core.c
-> @@ -299,9 +299,8 @@ static void pnv_core_realize(DeviceState *dev, Error **errp)
->      }
+> And the equivalent for multicast.
 >
->      snprintf(name, sizeof(name), "xscom-core.%d", cc->core_id);
-> -    /* TODO: check PNV_XSCOM_EX_SIZE for p10 */
->      pnv_xscom_region_init(&pc->xscom_regs, OBJECT(dev), pcc->xscom_ops,
-> -                          pc, name, PNV_XSCOM_EX_SIZE);
-> +                          pc, name, PNV10_XSCOM_EC_SIZE);
+> Would that make sense?
+
+Yes, I will refactor these according to your suggestion.
+
+Thanks!
+
+
 >
->      qemu_register_reset(pnv_core_reset, pc);
->      return;
-> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
-> index f7da9a1dc6..a4c9d95dc5 100644
-> --- a/include/hw/ppc/pnv_xscom.h
-> +++ b/include/hw/ppc/pnv_xscom.h
-> @@ -133,7 +133,7 @@ struct PnvXScomInterfaceClass {
+> Thanks!
 >
->  #define PNV10_XSCOM_EC_BASE(core) \
->      ((uint64_t) PNV10_XSCOM_EQ_BASE(core) | PNV10_XSCOM_EC(core & 0x3))
-> -#define PNV10_XSCOM_EC_SIZE        0x100000
-> +#define PNV10_XSCOM_EC_SIZE        0x1000
->
->  #define PNV10_XSCOM_PSIHB_BASE     0x3011D00
->  #define PNV10_XSCOM_PSIHB_SIZE     0x100
-> --
-> 2.40.1
+>> +        if (on !=3D 1) {
+>> +            /*
+>> +             * According to virtio_net_reset(), device turns promiscuou=
+s mode on
+>> +             * by default.
+>> +             *
+>> +             * Therefore, there is no need to send this CVQ command if =
+the
+>> +             * driver also sets promiscuous mode on, which aligns with
+>> +             * the device's defaults.
+>> +             *
+>> +             * Note that the device's defaults can mismatch the driver'=
+s
+>> +             * configuration only at live migration.
+>> +             */
+>> +            r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_PRO=
+MISC, on);
+>> +            if (r < 0) {
+>> +                return r;
+>> +            }
+>> +        }
+>> +
+>> +        /* Load the all-multicast mode */
+>> +        if (n->mac_table.multi_overflow) {
+>> +            /*
+>> +             * According to VirtIO standard, "Since there are no guaran=
+tees,
+>> +             * it can use a hash filter or silently switch to
+>> +             * allmulti or promiscuous mode if it is given too many add=
+resses."
+>> +             *
+>> +             * QEMU ignores multicast MAC addresses and
+>> +             * marks `multi_overflow` for the device internal state
+>> +             * if guest sets too many multicast MAC addresses.
+>> +             * Therefore, we should turn all-multicast mode on in this =
+case.
+>> +             */
+>> +            on =3D 1;
+>> +        } else {
+>> +            on =3D n->allmulti;
+>> +        }
+>> +        if (on !=3D 0) {
+>> +            /*
+>> +             * According to virtio_net_reset(), device turns all-multic=
+ast mode
+>> +             * off by default.
+>> +             *
+>> +             * Therefore, there is no need to send this CVQ command if =
+the
+>> +             * driver also sets all-multicast mode off, which aligns wi=
+th
+>> +             * the device's defaults.
+>> +             *
+>> +             * Note that the device's defaults can mismatch the driver'=
+s
+>> +             * configuration only at live migration.
+>> +             */
+>> +            r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_ALL=
+MULTI, on);
+>> +            if (r < 0) {
+>> +                return r;
+>> +            }
+>> +        }
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>>   static int vhost_vdpa_net_load(NetClientState *nc)
+>>   {
+>>       VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
+>> @@ -818,6 +918,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
+>>       if (unlikely(r)) {
+>>           return r;
+>>       }
+>> +    r =3D vhost_vdpa_net_load_rx(s, n);
+>> +    if (unlikely(r)) {
+>> +        return r;
+>> +    }
+>>
+>>       return 0;
+>>   }
+>> --
+>> 2.25.1
+>>
 >
 
