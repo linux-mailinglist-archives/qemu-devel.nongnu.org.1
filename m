@@ -2,89 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6B67487F3
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 17:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC737487F5
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 17:27:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH4Oy-00033F-08; Wed, 05 Jul 2023 11:26:45 -0400
+	id 1qH4PA-0003CU-Iz; Wed, 05 Jul 2023 11:26:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH4Os-00032O-Nl
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:26:38 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH4Oq-0004cB-QZ
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:26:38 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-4faaaa476a9so11108745e87.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 08:26:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688570795; x=1691162795;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=B2Yile8esPPs/3ib7DpmTipXPKTF/5nmpEd6mDvqcWs=;
- b=KcZVLHmxf7RLbFfMarv4CFNu6NXbhrjMK+uAoOvZSJmovqmxQvh6H7BGbLHvaqLKGm
- 2//EMXFkEXutnC5sh21PfQDb/jNQMg7K/hmBkL3P5W03q3oK1nOW7HBgeRN6ggopQEl9
- y97Ns5ARNLDtkND5P4Y4it82rkByiUEwYU7bf+6QSxdzUR04o7rqgoHuN4d949oBfzU+
- YKFByQ5LDSouUoQs/Ynqq3avsLRjbYVIRamFgCoVsBlCF6cpu0CnuXp81FwV0IZDH1ZF
- yg0QpPPCJBxSzujr2+Wo3Pux4tgcqwYGrlP6QkNLD31Tm866UmZbxOP23gcoQ/Aak1gr
- xyXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688570795; x=1691162795;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=B2Yile8esPPs/3ib7DpmTipXPKTF/5nmpEd6mDvqcWs=;
- b=Hh1nofC1TEkWRjEj9oB+qBNPQkir1X6uMTuAO6wSi0VvFJStuPuJIdAFJ0LjQk3I9E
- 0yoZJxB59f6lbNet2RyCICSnaS+Ojm1HRjZxUfr5Cx4pgWuVM62ipkmPhJ9xzxNmqOxN
- zKk1Fn+ISAhNX7kCG78soklsHqcbDc4y4VxRt0EoxKfDKCng6vqb9y3mrH2duM989PAs
- hE8BXhMtYBnGw6qZq6BkV7nVJSEJsU4tIUwN9QfEnTieEtE9M17p/DpS7FjNJLlAAES/
- OscjyHA4r9129DxuFcTynpcWOVPYIb8d2023FXf8lPVv6f0HuXJPJ9qwlmCTbG7r3bRv
- 9CpA==
-X-Gm-Message-State: ABy/qLaM33gLyJx3o7NCBKpun3G9UnwHyBkwVM6Ki/ThXc4Js7QayRYP
- IoNm7QPi54Rp/NW4mqQ5Tyj2Gg==
-X-Google-Smtp-Source: APBJJlERAlxBrejw+lOiHjyBMSrD4F88T/v5gQ6a9BqZCV+y7mv7ergsIKNBU3yOKU2vXsTzQAaovg==
-X-Received: by 2002:a05:6512:714:b0:4f8:554f:36aa with SMTP id
- b20-20020a056512071400b004f8554f36aamr10002200lfs.29.1688570794934; 
- Wed, 05 Jul 2023 08:26:34 -0700 (PDT)
-Received: from [192.168.82.227] ([91.223.100.51])
- by smtp.gmail.com with ESMTPSA id
- t3-20020a19ad03000000b004fa52552c82sm5410694lfc.155.2023.07.05.08.26.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 08:26:34 -0700 (PDT)
-Message-ID: <9ff6e150-5556-8a2a-5e0f-078cb9fae595@linaro.org>
-Date: Wed, 5 Jul 2023 17:26:30 +0200
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qH4P5-00035U-DQ; Wed, 05 Jul 2023 11:26:51 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qH4P3-0004eY-1k; Wed, 05 Jul 2023 11:26:51 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id C185B11ABE;
+ Wed,  5 Jul 2023 18:26:45 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 84D89130BB;
+ Wed,  5 Jul 2023 18:26:43 +0300 (MSK)
+Message-ID: <d60d3c9b-9ba1-2833-6f6a-825b6c4f4f8c@tls.msk.ru>
+Date: Wed, 5 Jul 2023 18:26:43 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 02/19] hw/timer/arm_timer: Remove pointless cast from
- void *
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3] linux-user/syscall: Implement execve without execveat
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Sergey Kambalin <serg.oker@gmail.com>
-References: <20230704145012.49870-1-philmd@linaro.org>
- <20230704145012.49870-3-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230704145012.49870-3-philmd@linaro.org>
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, richard.henderson@linaro.org, sir@cmpwn.com,
+ philmd@linaro.org, qemu-stable <qemu-stable@nongnu.org>
+References: <20230705121023.973284-1-pierrick.bouvier@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230705121023.973284-1-pierrick.bouvier@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,14 +60,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/4/23 16:49, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> Reviewed-by: Peter Maydell<peter.maydell@linaro.org>
-> ---
->   hw/timer/arm_timer.c | 16 ++++++++--------
->   1 file changed, 8 insertions(+), 8 deletions(-)
+05.07.2023 15:10, Pierrick Bouvier wrote:
+> Support for execveat syscall was implemented in 55bbe4 and is available
+> since QEMU 8.0.0. It relies on host execveat, which is widely available
+> on most of Linux kernels today.
+> 
+> However, this change breaks qemu-user self emulation, if "host" qemu
+> version is less than 8.0.0. Indeed, it does not implement yet execveat.
+> This strange use case happens with most of distribution today having
+> binfmt support.
+> 
+> With a concrete failing example:
+> $ qemu-x86_64-7.2 qemu-x86_64-8.0 /bin/bash -c /bin/ls
+> /bin/bash: line 1: /bin/ls: Function not implemented
+> -> not implemented means execve returned ENOSYS
+> 
+> qemu-user-static 7.2 and 8.0 can be conveniently grabbed from debian
+> packages qemu-user-static* [1].
+> 
+> One usage of this is running wine-arm64 from linux-x64 (details [2]).
+> This is by updating qemu embedded in docker image that we ran into this
+> issue.
+> 
+> The solution to update host qemu is not always possible. Either it's
+> complicated or ask you to recompile it, or simply is not accessible
+> (GitLab CI, GitHub Actions). Thus, it could be worth to implement execve
+> without relying on execveat, which is the goal of this patch.
+> 
+> This patch was tested with example presented in this commit message.
+> 
+> [1] http://ftp.us.debian.org/debian/pool/main/q/qemu/
+> [1] https://www.linaro.org/blog/emulate-windows-on-arm/
+> 
+> Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org
 
-r~
+Thanks!
+
+/mjt
 
