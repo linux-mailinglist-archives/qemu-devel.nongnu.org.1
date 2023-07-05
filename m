@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94127483B2
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 14:01:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4276B7483B1
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 14:01:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH1Ar-0006M5-Jt; Wed, 05 Jul 2023 07:59:57 -0400
+	id 1qH1Au-0006MY-5R; Wed, 05 Jul 2023 08:00:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qH1Aq-0006Kz-2u
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:59:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qH1As-0006MM-Cu
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:59:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qH1Ao-00012m-Mm
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:59:55 -0400
+ id 1qH1Aq-000138-Us
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:59:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688558394;
+ s=mimecast20190719; t=1688558396;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
  bh=OXw8vJ2Z6H1k/M0qb77qhRA9FHdNbZ/XkMQEvdiJIkU=;
- b=E2Sg+T0wqNiGucfksrF0doAkNkuIW6ZwEGNs6qIvN8IVitJW3cu01CeqlEIl30VEIJUl9z
- OryWrngxPCbcWiwzJGh0giZdInTri8u+dKDWMUMWu+z9JYUVxcDTI5IY6pl3o/qak4q5uQ
- I4gg77qK2J+cOc+KV9f7pvRCq/UfzYY=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ b=XfOB253vSoRQ0tOrr7OMvZ0iX9iPY836HyJeCWbX88wT6IaC70kSAFhBPNWl8+gboxkf/2
+ 0SXI+PnJMOX+PBi69sXldbaKGZTtmrCxvmxPqc2ZpZDZ/xaVeGJM5BrfmcWP2v7HHAfHF4
+ a5c95qvILd5JL5sVHfytdcxedPLDNgg=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-44-Uj5ccGEBN7SmH3UKQdbOVQ-1; Wed, 05 Jul 2023 07:59:52 -0400
-X-MC-Unique: Uj5ccGEBN7SmH3UKQdbOVQ-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1b8071502d2so90818785ad.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 04:59:52 -0700 (PDT)
+ us-mta-657-EXaI0TePNUGT0hBfLIMonA-1; Wed, 05 Jul 2023 07:59:55 -0400
+X-MC-Unique: EXaI0TePNUGT0hBfLIMonA-1
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-5578082558eso6318146a12.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 04:59:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688558391; x=1691150391;
+ d=1e100.net; s=20221208; t=1688558393; x=1691150393;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
  bh=OXw8vJ2Z6H1k/M0qb77qhRA9FHdNbZ/XkMQEvdiJIkU=;
- b=k9XQcmqtwC8zmsIGFOOUSfeplxV688qRV6OMsfzPL1J6GJkSsLuOfp6eozcYYeJgQd
- sdjsSUNHqB9V4jakSnqwUWFiHutxnCKu75Hq8JG+5pS40B4sMfjVMxWI/zq67pO4AShY
- t+OhnmZ+ZJl0PtHld225REslolcLfeGDI0Oi+kmbDmiq7x2HXMNfNkXpv/GT/8pMUHzF
- 7tLerRcb8HQZhxv4LYhCEXpKUUF+ct++x/s2uixZlFnv1lk09aXaeZfJQVgLbfBqu8Ob
- V58QRcNK02hNTOIcIshj6Ha+0+FcWbYv7iB80Vz3yijt3cJ8J3uVpWByxQCaXE67Pq5u
- DDvw==
-X-Gm-Message-State: ABy/qLbj3+BFVepy9a+stDsHwnK97ZzUOLkzqTTo+dgFF5pSxHqflelo
- bP84TyZdXXdnn15KafuSVS7Z0rFhCJ6iCwZz8f02q+2V8oUIeMPAAO6BHn8Uxk+fmtoZtdjVjlv
- RJFbfl+LG0WgiiX2SL63VTrFKNdB8XA3DfF5Jr4eqBDdopJdqLmiG4CAtRUlzf2iMlQBzi6aAyV
- Y=
-X-Received: by 2002:a17:902:d703:b0:1b8:9046:4bfb with SMTP id
- w3-20020a170902d70300b001b890464bfbmr10384019ply.9.1688558391066; 
- Wed, 05 Jul 2023 04:59:51 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH1jnHKy+vnoLw9dA9Y94ZZYnarbOZroNOlLESN9cNXok6Sw/jea4+vuPnddjfd9ZXP6n9LUg==
-X-Received: by 2002:a17:902:d703:b0:1b8:9046:4bfb with SMTP id
- w3-20020a170902d70300b001b890464bfbmr10384003ply.9.1688558390777; 
- Wed, 05 Jul 2023 04:59:50 -0700 (PDT)
+ b=C8IPWpSkoKztTXH9nZl/aBWy42OqbKfuRcPAithvEQCbBqCTNDEKoHw3IIHp9dePU5
+ OfAyAj7bknKzSRY+IA7YNbfz+wmXpZDU+ayUNWF3Qfvqe2SNAmq9VmqWr3Bm0xW4KtbD
+ C2YcOBzzmM3LarNqxVHN3jhgOsjq0TJfUR4MLqyBi5Lon6Gh+AXu70gqcF8B0h9LPHNE
+ Xbw2pdBmoiDlyoIHI3ZDZF0eLkc9Sf78Tr8c7m9eN3QWbaEgMGEBjC+2h7MfV4BLQxeK
+ oRQv13vyQQ+yCjAhMseXzR6fXeCeJneKqE/vKCTRPCSy1FLPDcOl+kKexyWjDsJsWfUc
+ dCrA==
+X-Gm-Message-State: ABy/qLZn+lztJfvzj0EM4zBxwI9EeIqw57kh++0iTLzE/oAObUPeurFj
+ vGL8YcYHQ6/KiBzEOqIMp/wwItZgDqVEohgM9s7kwkIn2YllvecGyFnUaWYe7rrXvaH7X7/zzc0
+ f3U3+o2S6NJkYCwIvZaMFua2XEzgcOmSXpNCZC1SaPi84YyhzMljJX8SV2pCuv6vyc+UJt0+wXP
+ k=
+X-Received: by 2002:a17:902:e808:b0:1b8:b46d:91b7 with SMTP id
+ u8-20020a170902e80800b001b8b46d91b7mr420346plg.45.1688558393597; 
+ Wed, 05 Jul 2023 04:59:53 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFMYO/DrpoJnJ6AHxKRs8ctEPV/TxH6d0wDxQJ/4px4GAoCOVRYdn6E8D78Hvlm6vZ0j9w1qA==
+X-Received: by 2002:a17:902:e808:b0:1b8:b46d:91b7 with SMTP id
+ u8-20020a170902e80800b001b8b46d91b7mr420334plg.45.1688558393267; 
+ Wed, 05 Jul 2023 04:59:53 -0700 (PDT)
 Received: from localhost.localdomain ([115.96.119.220])
  by smtp.googlemail.com with ESMTPSA id
- v3-20020a1709028d8300b001b89c313185sm4878852plo.205.2023.07.05.04.59.48
+ v3-20020a1709028d8300b001b89c313185sm4878852plo.205.2023.07.05.04.59.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jul 2023 04:59:50 -0700 (PDT)
+ Wed, 05 Jul 2023 04:59:52 -0700 (PDT)
 From: Ani Sinha <anisinha@redhat.com>
 To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
 Cc: Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v8 6/6] hw/pci: add comment explaining the reason for checking
- function 0 in hotplug
-Date: Wed,  5 Jul 2023 17:29:24 +0530
-Message-Id: <20230705115925.5339-7-anisinha@redhat.com>
+Subject: [PATCH v8 6/6] hw/pci: add comment to explain checking for available
+ function 0 in pci hotplug
+Date: Wed,  5 Jul 2023 17:29:25 +0530
+Message-Id: <20230705115925.5339-8-anisinha@redhat.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230705115925.5339-1-anisinha@redhat.com>
 References: <20230705115925.5339-1-anisinha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
