@@ -2,46 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D909748ECE
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7352748EF1
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:27:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH8zW-0005BF-E9; Wed, 05 Jul 2023 16:20:46 -0400
+	id 1qH94h-0000T5-DQ; Wed, 05 Jul 2023 16:26:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qH8zL-00058j-3x; Wed, 05 Jul 2023 16:20:35 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qH8zJ-0000wE-1A; Wed, 05 Jul 2023 16:20:34 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 07D1174635C;
- Wed,  5 Jul 2023 22:20:14 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id CB1C974632B; Wed,  5 Jul 2023 22:20:13 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C8BA0745720;
- Wed,  5 Jul 2023 22:20:13 +0200 (CEST)
-Date: Wed, 5 Jul 2023 22:20:13 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-cc: Daniel Henrique Barboza <danielhb413@gmail.com>, philmd@linaro.org
-Subject: Re: [PATCH v2 00/14] PPC440 devices misc clean up
-In-Reply-To: <cover.1688586835.git.balaton@eik.bme.hu>
-Message-ID: <f1f6133a-df77-37bf-a6ba-8700b0d2df88@eik.bme.hu>
-References: <cover.1688586835.git.balaton@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH94e-0000SA-JT
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 16:26:04 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH94b-0002FF-GY
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 16:26:02 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-98e39784a85so217954866b.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 13:26:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688588760; x=1691180760;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VJVNNwQEBZ27OV7Q2nq6ui/idP/Xg+POsZCDKdiJMkI=;
+ b=MQAXQghqTVTNk/jQSp+7a0KOMHKjzwHi7LtQH6NXQhu5hnppOzScSL4vewgGVcAQ3g
+ OtrdItl/rt4Fq30KtsfcxdUgmux9G5U/e767lvpFcgBPWf/rYNa9ne/y5jExFs2lmvK4
+ T43+zYbvMi2tuy7yB7OHkD0GUC8cG5oeBkaK+6cajotVLwIWBJtBKzmrwvc04s57wWu0
+ qT4ZFg2cjkkWXV6Y8WXedBAAArYHJT8s2a9juSV9wWaoU6p3ImJsXeU+fmgP6qxcjmPG
+ G1BXvZYWhDzDUz+NJaxXXwu1LiUQ2p42qmNCpXwJnI3bOfQH7Ka3XjAIyvDhNqz2sD54
+ OzwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688588760; x=1691180760;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VJVNNwQEBZ27OV7Q2nq6ui/idP/Xg+POsZCDKdiJMkI=;
+ b=R9LXXAZ3Hd9pRiPu0XeDWRINzpoABq+OnYI5u1KmOqS92nqNRA+aPZ+E8xjZknmpdU
+ OJUWqqKNO0MM5qtFqebg1ibSXKHEMVlfu7GI41q7skfd8RzhyPCfvR97xWmLPqTYtyHM
+ ZkJwKZkQiF2GdfIAMKN6c8UNMCSGTGyy8WuJK1pUO+PqZ12CeA4chXatHKX5i3T+svAV
+ 2K9dN6lmDQyA68nat6gO/9DMuJRZaGA/bjwQenonIV2S7sOyAWpArF1ZCW40UhtMDYN/
+ ZzEQGgrN4NC1t5E+D0TcX+tVRZKLAbOsoc0VRtmqCEAjyIkvOM6JSV3cYsBj49AJQM/V
+ WuUg==
+X-Gm-Message-State: ABy/qLbuAnru/65mgFVjIcX5RjCA9DrfcSOcLq/pYzgZzTlPEAaN2240
+ emlM30PAPXQOog648aGK+nru9A==
+X-Google-Smtp-Source: APBJJlEzMlEFq2xjr8mZJuFGho4v3qCQW5jqN5dPVO/ofzRgfD42noZpWOWAaq0FElgYgHbk9kM/Hg==
+X-Received: by 2002:a17:906:77db:b0:992:1ecb:d296 with SMTP id
+ m27-20020a17090677db00b009921ecbd296mr215081ejn.12.1688588759733; 
+ Wed, 05 Jul 2023 13:25:59 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.225])
+ by smtp.gmail.com with ESMTPSA id
+ k25-20020a17090666d900b009737b8d47b6sm14933069ejp.203.2023.07.05.13.25.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Jul 2023 13:25:59 -0700 (PDT)
+Message-ID: <70797f02-839e-74d8-6f40-fe1e39861508@linaro.org>
+Date: Wed, 5 Jul 2023 22:25:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v3] kconfig: Add PCIe devices to s390x machines
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>
+References: <20230705152301.2850086-1-clg@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230705152301.2850086-1-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -57,47 +94,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 5 Jul 2023, BALATON Zoltan wrote:
-> These are some small misc clean ups to PPC440 related device models
-> which is all I have ready for now.
+On 5/7/23 17:23, Cédric Le Goater wrote:
+> It is useful to extend the number of available PCI devices to KVM guests
+> for passthrough scenarios and also to expose these models to a different
+> (big endian) architecture. Include models for Intel Ethernet adapters
+> and one USB controller, which all support MSI-X. Devices only supporting
+> INTx won't work on s390x.
+> 
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+> 
+>   v3: PCI -> PCI_EXPRESS
+>   v2: select -> imply
+>    
+>   hw/s390x/Kconfig | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
 
-Sorry, typo in email addresses in cc. Should I send it again or you can 
-pick up from the list?
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Regards,
-BALATON Zoltan
 
-> v2:
-> - Added R-b tags from Philippe
-> - Addressed review comments
-> - Added new patch to rename parent field of PPC460EXPCIEState to parent_obj
->
-> Patches needing review: 6 7 10-13
->
-> BALATON Zoltan (14):
->  ppc440: Change ppc460ex_pcie_init() parameter type
->  ppc440: Add cpu link property to PCIe controller model
->  ppc440: Add a macro to shorten PCIe controller DCR registration
->  ppc440: Rename parent field of PPC460EXPCIEState to match code style
->  ppc440: Rename local variable in dcr_read_pcie()
->  ppc440: Stop using system io region for PCIe buses
->  ppc/sam460ex: Remove address_space_mem local variable
->  ppc440: Add busnum property to PCIe controller model
->  ppc440: Remove ppc460ex_pcie_init legacy init function
->  ppc4xx_pci: Rename QOM type name define
->  ppc4xx_pci: Add define for ppc4xx-host-bridge type name
->  ppc440_pcix: Rename QOM type define abd move it to common header
->  ppc440_pcix: Don't use iomem for regs
->  ppc440_pcix: Stop using system io region for PCI bus
->
-> hw/ppc/ppc440.h         |   1 -
-> hw/ppc/ppc440_bamboo.c  |   3 +-
-> hw/ppc/ppc440_pcix.c    |  28 +++---
-> hw/ppc/ppc440_uc.c      | 192 +++++++++++++++++-----------------------
-> hw/ppc/ppc4xx_pci.c     |  10 +--
-> hw/ppc/sam460ex.c       |  33 ++++---
-> include/hw/ppc/ppc4xx.h |   5 +-
-> 7 files changed, 129 insertions(+), 143 deletions(-)
->
->
 
