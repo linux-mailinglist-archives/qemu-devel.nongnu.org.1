@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71818748507
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7C4748508
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 15:33:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH2cR-0006Jf-IV; Wed, 05 Jul 2023 09:32:31 -0400
+	id 1qH2cm-0006Ni-1p; Wed, 05 Jul 2023 09:32:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH2bw-0006HC-FS
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 09:32:01 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH2c2-0006Jm-MX
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 09:32:07 -0400
 Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH2bt-0001yC-Vu
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 09:32:00 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH2c0-0001zO-Qb
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 09:32:06 -0400
 Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-51d95aed33aso6622900a12.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 06:31:57 -0700 (PDT)
+ 4fb4d7f45d1cf-51dec0b6fecso6612101a12.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 06:32:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688563916; x=1691155916;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=8csFKMjZVuRSRwCfVd0lvLcd2iu1cnTH6S6ysLgFoCk=;
- b=ZXp2zRjMqjof1A1zhHwk12O8UlT/rgkwakAG5D17jnA3VGSTNHp77qajrPAWOGSG67
- BBHlTwv1PBu2s7/g0k+SD3Phu4uyKuFkn8JobnQOMGvem2tV1KMLGfblFoD93vnl6TkK
- z4+JdiFXENKoxdXcFl/WterrOKiA0SECPqlFAyJ33SuiugbE/QE6M55ENQx5zxcVMpBc
- ZhTyxtxCtlHEj1HxdfXV1EI6Va3nj1AmIQcEc+sqHrkjwdO0zllbpqtvS9zZppXlho0+
- fxFx5+j44EQvuBhDsHCngtw0CRFmi8mQpQ+PknpMb4dkLUyq/sZP2MlKIe4AGHDjgKbT
- IhPQ==
+ d=linaro.org; s=google; t=1688563923; x=1691155923;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BC1jdW44jTbjaqw2f+cHkqvuGEwANPMIK+BI/ks2IFM=;
+ b=XDbDSozq35ZG0pXCbsCpOfO7iANG2I1G6CfJEwXUGwroSkox9wFFNPyOFGZlyR0ZN1
+ gwSR6q5IJz+JTmQ2+HbnA+FsJfFx//Cx7MDyGP6xqQj5pS8ePITVfiOwS4HaDpfwKMz2
+ qrjCJtX5x+LUmHqvD54lu8bxs6nUpC92QkmxBjeGksl1doJjDZznu3Vzzeblx66OHvKH
+ 5xcZVJGN5LKzY4XzxMaV8KQpZU4unp00GP8BjzBvnfUcBFb+hViKs/Q8iXZ2UCqhgA2/
+ Ofv+d+6bfYkIhIr9u0Al34GR1epXqVgc+DLTVzoODWhDq0+huYQP16zih5ysaio9/66H
+ pfQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688563916; x=1691155916;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8csFKMjZVuRSRwCfVd0lvLcd2iu1cnTH6S6ysLgFoCk=;
- b=fJCF+VhOLPziushYfb9kPIWfxPvI0/BHOMh74/EiBBlh08d1r33PHlmphavgDyuG6C
- qV7X3x3xSg7WJxsROk4h5CsxMuKT/y70UuaRDFdLEZBWnEyCnJHq0zVJlZBZs3Ydewto
- JwrFPKgU1jqCUapTaklzInf78UpCS2TVJxbkCPET/Rk8uU8Z9UW+0SHHdm2Ufm2b6ACy
- F+wd3OWLZN4KZLCM18+WiNPx373uuu1RgdXRrLFIbp+ChpkhzhyyKi0gdYfgwDClYav2
- vJDNXFmaKLwhCWh48fKgtD6bmjsCFop/lMjTED0GrljefaYPGtUKnCNpna9H2/VaJFTU
- vgEA==
-X-Gm-Message-State: ABy/qLbwXUS5pDftMOR0xxZp6Sk0qU4q/J1Q1HjnXyPInnII2RAZDpV0
- CsiJaDvM0tNSq7pOXy1O/jIB7OGuYOjGyF685pA=
-X-Google-Smtp-Source: APBJJlGDOh7LgVrmb2lvIuj7R0kmOi9bQcgjYdZ7LNPiwn7BmSDgYl762UqVj1hHz9c14Yoij6G91g==
-X-Received: by 2002:aa7:d68f:0:b0:516:af22:bcc6 with SMTP id
- d15-20020aa7d68f000000b00516af22bcc6mr9477842edr.21.1688563916383; 
- Wed, 05 Jul 2023 06:31:56 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688563923; x=1691155923;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BC1jdW44jTbjaqw2f+cHkqvuGEwANPMIK+BI/ks2IFM=;
+ b=kBq1pYRHww1IdAKwXSktO9Rb7JYvY4AzWJgccX5DYACDsVj5XWpg4rZiEJWgY8dRPF
+ 9l5hT4cEsJHAaCEfrqEykaPXQnVa5srVHJGWeVwc02KFMKnI8KG2NJibDsafYSLS865s
+ z28Ibk4bl9FgXoteuWeO7nkUteHSdL4sIza/PA0ogK5XRKoFPsA8wqepJe0YHe0QWJaW
+ xWq4ahmnJzS+h3vcOZYm7i9A56GbaJozlc65Jj6vMD46LdUr8NvVAa20ZnJ+0OB58UDD
+ 9JbuUCUZslYZHt9l/dKbVU0tx404q1BahSLn18pKw8w5ghImAPO0aT6xUmoqmnt54Ils
+ 5vYw==
+X-Gm-Message-State: ABy/qLabCZPcxNUjO2cbYoPGG/YMzuRjkpSXY6cAHwaMqjMut1aeetJ7
+ qFGKgv2gWjzTmbUEzw7kuxZG5fYoSFwHgAa3flk=
+X-Google-Smtp-Source: APBJJlE1s3AeW0n7XHE+gP/KuquZEt+wiurKiZM0MJJV2zqY+4ase25SCW25I0URuVRnEriRlVsLZQ==
+X-Received: by 2002:aa7:c158:0:b0:51d:9ddf:f0f6 with SMTP id
+ r24-20020aa7c158000000b0051d9ddff0f6mr11671088edp.36.1688563923308; 
+ Wed, 05 Jul 2023 06:32:03 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.142.96])
  by smtp.gmail.com with ESMTPSA id
- l11-20020a056402028b00b0051e0272ad00sm5794845edv.75.2023.07.05.06.31.48
+ e11-20020a056402148b00b0051e1a4454b2sm2701296edv.67.2023.07.05.06.32.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 05 Jul 2023 06:31:56 -0700 (PDT)
+ Wed, 05 Jul 2023 06:32:03 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Joel Stanley <joel@jms.id.au>,
@@ -68,13 +69,15 @@ Cc: Gerd Hoffmann <kraxel@redhat.com>, Joel Stanley <joel@jms.id.au>,
  Jason Wang <jasowang@redhat.com>, qemu-arm@nongnu.org,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 0/4] chardev/char-fe: Document FEWatchFunc and use
- G_SOURCE_CONTINUE/REMOVE
-Date: Wed,  5 Jul 2023 15:31:35 +0200
-Message-Id: <20230705133139.54419-1-philmd@linaro.org>
+Subject: [PATCH 1/4] io/channel: Explicit QIOChannel doc is based on GLib's
+ IOChannel
+Date: Wed,  5 Jul 2023 15:31:36 +0200
+Message-Id: <20230705133139.54419-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230705133139.54419-1-philmd@linaro.org>
+References: <20230705133139.54419-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::534;
  envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
@@ -84,7 +87,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,29 +103,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Improve qio and chardev frontend documentation,
-have FEWatchFunc handlers return G_SOURCE_CONTINUE/REMOVE.
+One can get lost looking for "public API docs". Explicit
+we are referring to GLib IOChannel documentation.
 
-Philippe Mathieu-Daudé (4):
-  io/channel: Explicit QIOChannel doc is based on GLib's IOChannel
-  chardev/char-fe: Clarify qemu_chr_fe_add_watch 'condition' arg is a
-    mask
-  chardev/char-fe: Document FEWatchFunc typedef
-  hw/char: Have FEWatchFunc handlers return G_SOURCE_CONTINUE/REMOVE
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/io/channel.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- include/chardev/char-fe.h | 18 ++++++++++++++++--
- include/io/channel.h      |  2 +-
- hw/char/cadence_uart.c    |  8 ++++----
- hw/char/cmsdk-apb-uart.c  |  6 +++---
- hw/char/ibex_uart.c       |  8 ++++----
- hw/char/nrf51_uart.c      |  4 ++--
- hw/char/serial.c          |  2 +-
- hw/char/virtio-console.c  |  2 +-
- hw/usb/redirect.c         |  2 +-
- monitor/monitor.c         |  2 +-
- net/vhost-user.c          |  2 +-
- 11 files changed, 35 insertions(+), 21 deletions(-)
-
+diff --git a/include/io/channel.h b/include/io/channel.h
+index 229bf36910..998718b470 100644
+--- a/include/io/channel.h
++++ b/include/io/channel.h
+@@ -97,7 +97,7 @@ struct QIOChannel {
+  * The first five callbacks are mandatory to support, others
+  * provide additional optional features.
+  *
+- * Consult the corresponding public API docs for a description
++ * Consult the corresponding GLib IOChannel public API docs for a description
+  * of the semantics of each callback. io_shutdown in particular
+  * must be thread-safe, terminate quickly and must not block.
+  */
 -- 
 2.38.1
 
