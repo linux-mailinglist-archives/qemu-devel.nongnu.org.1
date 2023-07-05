@@ -2,85 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CF8747B88
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 04:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0DA747B90
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 04:30:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGsC6-0007oj-Oc; Tue, 04 Jul 2023 22:24:38 -0400
+	id 1qGsHl-0001p7-Vw; Tue, 04 Jul 2023 22:30:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGsC4-0007oD-WB
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 22:24:37 -0400
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
+ id 1qGsHd-0001mj-JL
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 22:30:24 -0400
+Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGsC3-0002FT-I0
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 22:24:36 -0400
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-1b0156a1c49so5116835fac.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 19:24:35 -0700 (PDT)
+ id 1qGsHb-0003iF-M2
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 22:30:21 -0400
+Received: by mail-oa1-x36.google.com with SMTP id
+ 586e51a60fabf-1b09276ed49so5822141fac.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 19:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688523874; x=1691115874;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=47Yq+XAduorsz2KmhQ+w+8/Qtk7q4JrgCgNfGVyADpw=;
- b=NBRCBJW0Gh6zLqEa3BDOwnb6BsaYXSKzzhvhVsW/zXejmNYZRHTyQ5aBkOtVoD+MV2
- teaRrDqVjZ9SAxs5wwhUqdeFTTJ18krVsyMo3TYMij1dzl7EZyl3Jc2AyBcu/ncixXgH
- 0GXLebfctE5euLO+eoLNP97QOOgSkwOVj7/ybbn5FSKqF1rRpGpTBIsEMCpy5ZgR/TaN
- LZOB+4TlMK91d95P6ecd9eNyVY+xwoWB01EiQrckU+byXk2xpaUH6XD9X7aK+6pWlOxJ
- npytgkek1GHxDXVjM2Ffin12e4aFCombyNZWhWXaHlWkIAZkZUVaOEdTMz1PEM7o1OOS
- pu8Q==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688524218; x=1691116218;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=03CCo0OxlakifLZBFG7OVXncB6kKDFwE9K8mQaU08TM=;
+ b=Ho8jmGL6PCT+c3Ufp9lYay5Sj7bohjCwWocvdhRZgUDeB6nGIe9W+iowo/IrANGYKi
+ aJyov1JaqTrkJtv4poBCrKOdlUHEOsxWjmXVz4Hi5ITk7vacG24GH0a3L5qbZS4LthUo
+ 1CU/EGptsZNwkVRW8Zx5q33HJCUkgAJp3dbOYcMzkbSCW0lmiEVznu5jrjur4LkKCiNE
+ unDJ9tS3xyLR++paqgrUfRc/7Q0mZa2P3KOU/dRk0j4DfOx977s2UpWAkPh8JLPPF461
+ AeMSevIgdQS64fiQ+Ke+UpEOwFA2oZwdjJF7pK80akySR499pO2KhYKoMW5NOhnYNECw
+ WtYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688523874; x=1691115874;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=47Yq+XAduorsz2KmhQ+w+8/Qtk7q4JrgCgNfGVyADpw=;
- b=kAHieDzp9TQR5Ubi/ked5OR6Gkc/WkLJ8EkQchES8ya+JA33FZdxV3PpsLscMYa8rA
- cfrzcRtkvjaLvXwl9otBHBs2unY31lBiUQNQDDMAvM9Ko3m7YNPtXTA2fc43R8DIR9Vx
- PczSPIGTMWKelEt7vrGCu02E4UISebudYqd2HwaaYt0+N9zt14BlHlmGIThSoMwsrYXk
- ZW5t8DZDSKZKu4FvaBQUTCuqphKfc1+/bc5dLWVEwgAGPeO3ufTeyoe544sjBeiO3Zem
- XAe+HBCJFIZvStYk+leu5rYWTb8s72T5KLJy5WcgPQLVwvLtVF7vvu670s0BGJNzNWnB
- DQHg==
-X-Gm-Message-State: ABy/qLaeoDG73Nj2wUILXsAzbnGwmNDIuAwp2MLPTrRAg1pGoxe4bNHt
- zinxjxNuAxxo22lIQYKw7l0tvXVgpHC3+Jpifkw=
-X-Google-Smtp-Source: APBJJlHd/EcOVs4PMVpLY5v1w6kuQQsE7LdWj5VXUs1tsIfWuga5PDVAAec8OEuNdGP7H2SBmTvOvA==
-X-Received: by 2002:a05:6870:e746:b0:1b3:ec6b:b264 with SMTP id
- t6-20020a056870e74600b001b3ec6bb264mr335871oak.5.1688523873982; 
- Tue, 04 Jul 2023 19:24:33 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20221208; t=1688524218; x=1691116218;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:subject:from:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=03CCo0OxlakifLZBFG7OVXncB6kKDFwE9K8mQaU08TM=;
+ b=KlRF/Au9sREQtiyKK/SZTwdA1itH2DGhZiPvHdkrqmjJ1FMPE8IqVkfpuKJVTehSAd
+ 5T7M+2/fW49AwsUPIdMiWPTrwesWhr1RLYzQP9ooiEpaR87N8sNMr3FXdXP1WZFbRCuw
+ zC2MW/5p19JwL6CMg47aVZHZiB/s195Ue5LQGQLQxn0s1IGZOuM5gzyYiDXElqS8TR3J
+ Kc0BzDNlnqVRXBrw3tIDSeqhZuExqkH28eJ9rYqjpJ0xNvI0kpWBugu+j6pAD7wgNo/Y
+ +oDWVsUlSqnHCBnSn2DPXd27Vuk19XhuhWXBzkLvmqpfLfkfwRYY1cSrPSDql5O6N1PJ
+ 5/gA==
+X-Gm-Message-State: ABy/qLbbojqDYd/WgwsLMDQEo2BAiIgiQ9myFCwZKWwuBZwaoeY1bZsE
+ t5RkepnZNJw7EBTubFLJi2ibKw==
+X-Google-Smtp-Source: APBJJlFCNCMa0arC5ZK5gqAKMr1I97LQY85TNBBWANjPfmcyWbVrW/ML+6B7ifE4vrCRYMaDv/m44g==
+X-Received: by 2002:a05:6870:cf06:b0:1a2:7f63:9920 with SMTP id
+ xf6-20020a056870cf0600b001a27f639920mr11517117oab.26.1688524218435; 
+ Tue, 04 Jul 2023 19:30:18 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- u10-20020a17090282ca00b001b8062c1db3sm15235365plz.82.2023.07.04.19.24.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 04 Jul 2023 19:24:33 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v5 2/2] pcie: Specify 0 for ARI next function numbers
-Date: Wed,  5 Jul 2023 11:24:20 +0900
-Message-ID: <20230705022421.13115-3-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230705022421.13115-1-akihiko.odaki@daynix.com>
-References: <20230705022421.13115-1-akihiko.odaki@daynix.com>
+ f24-20020a170902ab9800b001a6f7744a27sm17739834plr.87.2023.07.04.19.30.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jul 2023 19:30:17 -0700 (PDT)
+Message-ID: <bcb11edc-8b4b-80c1-99e5-504165305d5b@daynix.com>
+Date: Wed, 5 Jul 2023 11:30:15 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
+ slot 0 of PCIE port
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Julia Suvorova <jusual@redhat.com>
+References: <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
+ <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
+ <A50CA177-0E7E-4828-A036-70EB532FE2B8@redhat.com>
+ <20230630041937-mutt-send-email-mst@kernel.org>
+ <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
+ <20230630043734-mutt-send-email-mst@kernel.org>
+ <49B901C6-4819-4A00-8225-39FAA6678F3E@redhat.com>
+ <20230630055717-mutt-send-email-mst@kernel.org>
+ <FB764864-ADD3-4017-8313-ED40A833A81B@redhat.com>
+ <a38e0336-58e5-e796-bd29-0dfc5d1d0e46@daynix.com>
+ <20230630112611-mutt-send-email-mst@kernel.org>
+ <0879ed66-766c-1d3f-dcce-31e1285a7972@daynix.com>
+ <20230704133801.0423b554@imammedo.users.ipa.redhat.com>
+ <a6cf6a37-ae26-1725-f564-bc46b2dc892a@daynix.com>
+ <7A2291A2-91AD-4AA5-BA39-419C052C45AF@redhat.com>
+Content-Language: en-US
+In-Reply-To: <7A2291A2-91AD-4AA5-BA39-419C052C45AF@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2001:4860:4864:20::2e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oa1-x2e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2001:4860:4864:20::36;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oa1-x36.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,78 +113,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current implementers of ARI are all SR-IOV devices. The ARI next
-function number field is undefined for VF according to PCI Express Base
-Specification Revision 5.0 Version 1.0 section 9.3.7.7. The PF should
-end the linked list formed with the field by specifying 0 according to
-section 7.8.7.2.
+On 2023/07/04 23:03, Ani Sinha wrote:
+> 
+> 
+>> On 04-Jul-2023, at 5:20 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> On 2023/07/04 20:38, Igor Mammedov wrote:
+>>> On Sat, 1 Jul 2023 16:28:30 +0900
+>>> Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>>> On 2023/07/01 0:29, Michael S. Tsirkin wrote:
+>>>>> On Fri, Jun 30, 2023 at 08:36:38PM +0900, Akihiko Odaki wrote:
+>>>>>> On 2023/06/30 19:37, Ani Sinha wrote:
+>>>>>>>
+>>>>>>>   
+>>>>>>>> On 30-Jun-2023, at 3:30 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>>>>>>>
+>>>>>>>> On Fri, Jun 30, 2023 at 02:52:52PM +0530, Ani Sinha wrote:
+>>>>>>>>>
+>>>>>>>>>   
+>>>>>>>>>> On 30-Jun-2023, at 2:13 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>>>>>>>>>
+>>>>>>>>>> On Fri, Jun 30, 2023 at 02:06:59PM +0530, Ani Sinha wrote:
+>>>>>>>>>>>
+>>>>>>>>>>>   
+>>>>>>>>>>>> On 30-Jun-2023, at 2:02 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>>>>>>>>>>>
+>>>>>>>>>>>> On Fri, Jun 30, 2023 at 01:11:33PM +0530, Ani Sinha wrote:
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> Thus the check for unoccupied function 0 needs to use pci_is_vf() instead of checking ARI capability, and that can happen in do_pci_register_device().
+>>>>>>>>>>>>>>   
+>>>>>>>>>>>>>>> Also where do you propose we move the check?
+>>>>>>>>>>>>>>
+>>>>>>>>>>>>>> In pci_qdev_realize(), somewhere after pc->realize() and before option ROM loading.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Hmm, I tried this. The issue here is something like this would be now allowed since the PF has ARI capability:
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> -device pcie-root-port,id=p -device igb,bus=p,addr=0x2.0x0
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> The above should not be allowed and when used, we do not see the igb ethernet device from the guest OS.
+>>>>>>>>>>>>
+>>>>>>>>>>>> I think it's allowed because it expects you to hotplug function 0 later,
+>>>>>>>>>>>
+>>>>>>>>>>> This is about the igb device being plugged into the non-zero slot of the pci-root-port. The guest OS ignores it.
+>>>>>>>>>>
+>>>>>>>>>> yes but if you later add a device with ARI and with next field pointing
+>>>>>>>>>> slot 2 guest will suddently find both.
+>>>>>>>>>
+>>>>>>>>> Hmm, I tried this:
+>>>>>>>>>
+>>>>>>>>> -device pcie-root-port,id=p \
+>>>>>>>>> -device igb,bus=p,addr=0x2.0x0 \
+>>>>>>>>> -device igb,bus=p,addr=0x0.0x0 \
+>>>>>>>>>
+>>>>>>>>> The guest only found the second igb device not the first. You can try too.
+>>>>>>>>
+>>>>>>>> Because next parameter in pcie_ari_init does not match.
+>>>>>>>
+>>>>>>> OK send me a command line that I can test it with. I can’t come up with a case that actually works in practice.
+>>>>>>
+>>>>>> I don't think there is one because the code for PCI multifunction does not
+>>>>>> care ARI. In my opinion, we need yet another check to make non-SR-IOV
+>>>>>> multifunction and ARI capability mutually exclusive; if a function has the
+>>>>>> ARI capability and it is not a VF, an attempt to assign non-zero function
+>>>>>> number for it should fail.
+>>> is it stated somewhere in spec(s) that ARI and !SR-IOV are mutually exclusive?
+>>>>>
+>>>>> Why is that? My understanding is that ARI capable devices should also
+>>>>> set the multifunction bit in the header. It's not terribly clear from
+>>>>> the spec though.
+>>>>
+>>>> Something like the following will not work properly with ARI-capable
+>>>> device (think of a as an ARI-capable device):
+>>>> -device a,addr=0x1.0x0,multifunction=on -device a,addr=0x1.0x1
+>>> (I had a crazy idea, to use it like that so we could put more devices
+>>> on port without resorting to adding extra bridges)
+>>> Can you elaborate some more why it won't work?
+>>
+>> It won't work because the ARI next function number field is fixed. In this case, the field of the Function at 0x1.0x0 should point to 0x1.0x1, but it doesn’t.
+> 
+> Where does it point to in this case then? 0x1.0x2 becasue of the stride?
 
-For migration, the field will keep having 1 as its value on the old
-virt models.
+With "[PATCH v5 0/2] pcie: Fix ARI next function numbers"*, it will 
+point to 0, which ends the linked list formed with the ARI next number 
+fields and make it only contain Function 0.
 
-Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in docs/pcie_sriov.txt")
-Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
-Fixes: 3a977deebe ("Intrdocue igb device emulation")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/hw/pci/pci.h | 2 ++
- hw/core/machine.c    | 1 +
- hw/pci/pci.c         | 2 ++
- hw/pci/pcie.c        | 2 +-
- 4 files changed, 6 insertions(+), 1 deletion(-)
+* 
+https://lore.kernel.org/qemu-devel/20230705022421.13115-1-akihiko.odaki@daynix.com/
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index e6d0574a29..9c5b5eb206 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -209,6 +209,8 @@ enum {
-     QEMU_PCIE_CAP_CXL = (1 << QEMU_PCIE_CXL_BITNR),
- #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
-     QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
-+#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
-+    QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
- };
- 
- typedef struct PCIINTxRoute {
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 46f8f9a2b0..f0d35c6401 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -41,6 +41,7 @@
- 
- GlobalProperty hw_compat_8_0[] = {
-     { "migration", "multifd-flush-after-each-section", "on"},
-+    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
- };
- const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
- 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index e2eb4c3b4a..45a9bc0da8 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -82,6 +82,8 @@ static Property pci_props[] = {
-     DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
-     DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
-                     QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
-+    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
-+                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
-     DEFINE_PROP_END_OF_LIST()
- };
- 
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 9a3f6430e8..cf09e03a10 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
- /* ARI */
- void pcie_ari_init(PCIDevice *dev, uint16_t offset)
- {
--    uint16_t nextfn = 1;
-+    uint16_t nextfn = dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 ? 1 : 0;
- 
-     pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
-                         offset, PCI_ARI_SIZEOF);
--- 
-2.41.0
-
+> 
+>> As the result, the Function at 0x1.0x1 won't be recognized.
+>>
+>> It's more problematic if some of the Functions are ARI-capable but others are not. In my understanding, all Functions in a ARI-capable device need to have ARI capability, but that's not enforced.
+>>
+>>>> This is because the next function numbers advertised with ARI are not
+>>>> updated with the multifunction configuration, but they are hardcoded in
+>>>> the device implementation. In this sense, the traditional (non-SR/IOV)
+>>>> multifunction mechanism QEMU has will not work with ARI-capable devices.
+>>>>
+>>>>>    
+>>>>>> But it should be a distinct check as it will need to check the function
+>>>>>> number bits.
+>>>>>>   
+>>>>>>>   
+>>>>>>>>
+>>>>>>>>   
+>>>>>>>>>>   
+>>>>>>>>>>>> no?
+>>>>>>>>>>>>
+>>>>>>>>>>>> I am quite worried about all this work going into blocking
+>>>>>>>>>>>> what we think is disallowed configurations. We should have
+>>>>>>>>>>>> maybe blocked them originally, but now that we didn't
+>>>>>>>>>>>> there's a non zero chance of regressions,
+>>>>>>>>>>>
+>>>>>>>>>>> Sigh,
+>>>>>>>>>>
+>>>>>>>>>> There's value in patches 1-4 I think - the last patch helped you find
+>>>>>>>>>> these. so there's value in this work.
+>>>>>>>>>>   
+>>>>>>>>>>> no medals here for being brave :-)
+>>>>>>>>>>
+>>>>>>>>>> Try removing support for a 3.5mm jack next. Oh wait ...
+>>>>>>>>>
+>>>>>>>>> Indeed. Everyone uses bluetooth these days. I for one is happy that the jack is gone (and they were bold enough to do it while Samsung and others still carry the useless port ) :-)
+>>>>>>
+>>>>>> Hello from a guy using a shiny M2 Macbook Air carrying the legacy jack with
+>>>>>> a 100-yen earphone. Even people who ported Linux to this machine spent
+>>>>>> efforts to get the jack to work on Linux ;)
+>>>>>>   
+>>>>>>>>>   
+>>>>>>>>>>   
+>>>>>>>>>>>> and the benefit
+>>>>>>>>>>>> is not guaranteed.
+>>>>>>>>>>>>
+>>>>>>>>>>>> -- 
+>>>>>>>>>>>> MST
+> 
 
