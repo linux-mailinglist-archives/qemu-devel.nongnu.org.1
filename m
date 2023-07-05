@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D81D748833
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 17:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49632748835
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 17:41:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH4cN-0008D5-HC; Wed, 05 Jul 2023 11:40:35 -0400
+	id 1qH4d1-0000b0-Dt; Wed, 05 Jul 2023 11:41:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH4cK-0008Cm-Ah
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:40:32 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ id 1qH4cx-0000Up-Iq
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:41:11 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH4cI-0000oY-M4
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:40:32 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2b63e5f94f1so11633131fa.1
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 08:40:30 -0700 (PDT)
+ id 1qH4cv-000112-PC
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:41:11 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4faaaa476a9so11136527e87.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 08:41:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688571629; x=1691163629;
+ d=linaro.org; s=google; t=1688571668; x=1691163668;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=53KVq7Nq9uCiBVBBdxVtz201TxrVN46PUmnFMXsFHBY=;
- b=bEvx7KNF4xah8GqIq1T8H8kVAnZsQCZTr+M4sckOA3vVDg89CA8yuqm9OQ1saT32jZ
- TZ+jzo6UtG2Yj7A5Whr9grz6TN+67uwH25/ET2I6ZX+Up3IbhGT4tBqsufR7JW0Wj+N0
- wl5wxsBA26TT5UaaAuyLMTyi7hXGDtUe9bqftcEyqI16tlm0CGvbu6EkO7uibxsCtz31
- 1xvfsJNr5X+TDfOKpx3U3BJeR1jzZFYgcUcOIbswG/jeYu1x/Z+877MWF2urXmloRzw1
- xa9ReBcKuiFws7A5SBC2DcD/tHUCdDuKUAUCQNvuZ6nTGHkuQox/pEHyyvu2VKIn67Cw
- e8lA==
+ bh=63v8MvgHzFrmnLCG9jUQWQLThc4dtGA6q7ee9vcXv7I=;
+ b=U7hn+dZRH+zREblWmTyV65j/RZCBQaJ+2hKaxR4UlRFdirxXgMYWVEHJlj0DQfCP0v
+ mPQI2Pt9AuBUNVN2m6LJB8olXNGkbjBQz+pW2Mp2A3Sy393ikiCaWojippP1TLY+ylcF
+ Moqg0HMbULWwmAm/pvMfFylpNeou9bl1UcFA0UDdPMW9HmK6e6YrG0ZJVgUqsYmnimbl
+ W5zwqkGUk2vxBjRlx/473s6qM7v3PaeZEE9w97lzeuL3xdS61h9+QwDhj+f4G9rYZH34
+ iQbkEWcSoll2alO7iJZBuBTdibdWz2Da0pzZ27jjYRsgYRHT6z+/PrpjOdYDQksA+i0y
+ IZFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688571629; x=1691163629;
+ d=1e100.net; s=20221208; t=1688571668; x=1691163668;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=53KVq7Nq9uCiBVBBdxVtz201TxrVN46PUmnFMXsFHBY=;
- b=ko2GofVSPYE9NrmCmE+4wrE1TNVehpghb82Hy+6Zx9fi/lWJXAStgzaN3rOaw6e8rB
- jMZbTMWINJTWegjBah8H/IvblippHA6KTpolPkwSLEUYN/2DnEOZa6riu6XmwN0c+cKz
- 7geVzVBwp6Sluvk92w4hB/ybOPEbn/oy4whSjDp/7aYp92jJi43kW7S7Xo84nvhjh6qx
- zB2kjOetGeIBPOyb4gwuTc+2ZkOn0dDOvOYRafgNlWjWHR0vDz7RQcb348MkzO96I3J1
- 9sw95KugravoOxFgN4D5szEbcf9fIGZ+pF8i8Rn8KFrvZhqJD/9kyaAjVxaOw7zgk4g4
- aEOg==
-X-Gm-Message-State: ABy/qLZ0cRzrMhqlJzpK1vjPSyQhnHzIch55qS7Wj8MMuWG8uhUfwhXA
- fz/lOVhhopamNnBB9dzu2SBuxw==
-X-Google-Smtp-Source: APBJJlFcUI61jVpNxkcs72eMMF8WPlU53v0JXwnLAv7GfcG+2IVvMsduHimhEYdY7l5o+1k7hfPgKA==
-X-Received: by 2002:a05:651c:339:b0:2b6:9e82:446 with SMTP id
- b25-20020a05651c033900b002b69e820446mr1053715ljp.0.1688571628693; 
- Wed, 05 Jul 2023 08:40:28 -0700 (PDT)
+ bh=63v8MvgHzFrmnLCG9jUQWQLThc4dtGA6q7ee9vcXv7I=;
+ b=GBkru2ijHkhzI97Ol4/Zwju2mgqbVspzrd7Vl9WY2lfpQAWQjG2mFbxvZCw0qJv7AS
+ uXQtBlPckBbqFpMvETUT8YVRrF3N9y+k3pp9W/kfQCnTImLme41XP+W4EVZwbFhBrXjX
+ /pW1oO8631hunSZmBzFnmubsCYPLDYCVHHIFQnrRXaD+RFr4irWZj5563sgwvK5e1vIH
+ imsS/cHtY20krmY/d7kfbYGIdDv64nIV0oWdpvWxIlxsJHusBXKt6+p0fTts7nIkoSAc
+ XvysoQzhAPjdmifBi4P7+slMUIRrhubkKaqNGwVu38lopUS3MtUpNwn9t9XFWgtcO/bw
+ BMwQ==
+X-Gm-Message-State: ABy/qLZ7jeffeLixPfUB0yBv9LDHJyrc7zfzUUgVpZ/IJb3T1PB15Xzj
+ YGuEiBBaCRNjr+T24AaTmryYXw==
+X-Google-Smtp-Source: APBJJlExERYWNljDmlQzQHRRp/g2amNFK0w2P+UfwmU36hdIQFArTQEWAR1jh9Zt9CKNdqk2TJuZWw==
+X-Received: by 2002:a2e:9252:0:b0:2b3:4ea3:d020 with SMTP id
+ v18-20020a2e9252000000b002b34ea3d020mr11397565ljg.17.1688571667885; 
+ Wed, 05 Jul 2023 08:41:07 -0700 (PDT)
 Received: from [192.168.82.227] ([91.223.100.51])
  by smtp.gmail.com with ESMTPSA id
- f8-20020a2ea0c8000000b002b6fcce5e5fsm518666ljm.113.2023.07.05.08.40.26
+ l1-20020a2e7001000000b002b484bdae08sm6322243ljc.32.2023.07.05.08.41.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 08:40:28 -0700 (PDT)
-Message-ID: <c7c73add-6f38-56ec-2a25-b4fb2a213f5a@linaro.org>
-Date: Wed, 5 Jul 2023 17:40:23 +0200
+ Wed, 05 Jul 2023 08:41:07 -0700 (PDT)
+Message-ID: <d869697c-0d15-b18a-1f92-19df8d5d536d@linaro.org>
+Date: Wed, 5 Jul 2023 17:41:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 15/19] hw/timer/arm_timer: Fix misuse of SysBus IRQ in
- IntegratorPIT
+Subject: Re: [PATCH v2 16/19] hw/timer/arm_timer: Extract icp_pit_realize()
+ from icp_pit_init()
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -71,13 +71,13 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
  <pbonzini@redhat.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Sergey Kambalin <serg.oker@gmail.com>
 References: <20230704145012.49870-1-philmd@linaro.org>
- <20230704145012.49870-16-philmd@linaro.org>
+ <20230704145012.49870-17-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230704145012.49870-16-philmd@linaro.org>
+In-Reply-To: <20230704145012.49870-17-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x235.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -101,22 +101,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/4/23 16:50, Philippe Mathieu-Daudé wrote:
-> SysBus IRQ are*output*  IRQs. As some sort of simplification
-> to avoid to forward it, IntegratorPIT misuses it as ARM timer
-> input IRQ. Fix that by using a simple IRQ forwarder handler.
-> 
-> Note: sysbus_pass_irq() forwards GPIOs and IRQs from a container
-> to an inner device but only work with an entire set of IRQs, so
-> we can not use it here where we forward a single IRQ from each
-> timer.
+> To make the next commit easier to digest, extract icp_pit_realize()
+> from icp_pit_init() as a preliminary step.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> Reviewed-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   hw/timer/arm_timer.c | 15 ++++++++++++++-
->   1 file changed, 14 insertions(+), 1 deletion(-)
+>   hw/timer/arm_timer.c | 21 +++++++++++++++++++--
+>   1 file changed, 19 insertions(+), 2 deletions(-)
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
