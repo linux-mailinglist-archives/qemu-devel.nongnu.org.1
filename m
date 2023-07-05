@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B95748EF4
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2311748EFA
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:36:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH99j-0002sV-81; Wed, 05 Jul 2023 16:31:19 -0400
+	id 1qH9Dk-00040j-2K; Wed, 05 Jul 2023 16:35:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH99f-0002q4-Kz
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 16:31:15 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH9DV-0003x8-Ji
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 16:35:19 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH99d-0004eo-G9
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 16:31:15 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4fba8f2197bso8231274e87.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 13:31:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH9DU-00062A-1q
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 16:35:13 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-991ef0b464cso222376166b.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 13:35:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688589071; x=1691181071;
+ d=linaro.org; s=google; t=1688589310; x=1691181310;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=zYeOppu/Qu36jETx1AY920Wy0fvuDMzwxOGZTUPKoWk=;
- b=dK5628i4uCrH9cAxCHjE3VbsrTFd194RTJhArz1vDieZkVrBh0/joKzQJqBaoc7Nbf
- B5SGma7HwvkAKrLzdgfkuoNMFvaXn/UtYTkzVatyJoZs1uLq7duGT646/7Jrnrq14fu9
- gPk20LRUclFUEECml/CmEQpbKxAZpA8vrFAlFGPcRRVzulZpFX66NCF/pc9ciuM36NpP
- js3L6/5fGO0eFy+2ltVklU1vsj7ARFFRNbxqG6z7xOM1wSUUaLuXfSwfB4klSgOzkI+v
- 1CWxmitpk83knMasWKJL3YuqXkiMJyE9oYMEh4x6sUsa+L4LoSQjwWl19uKWEVd4w6AD
- 6PTA==
+ bh=Aoavj10agISuxA7H9qqy+vGkR7hN/BR039AWfsJatbE=;
+ b=bBoJzud1IGcvRNtdIfAusM+c/E7LQxnWOXJ0hEMyTf5MQP6CCrlsMidI1n9EZTF6YG
+ twL+M2IMSrDwlgcwlg1lWq1ssb0E+cGLiEsS3x9C9/ZBtxGg1cCPFfzYvGR5g3zuGx3n
+ IUa/e9rlMa+G4I43jnDD+qQAeOzeQ+AovRuz6k64tmlm6LjtmbCiltNS8MELfJHi/mmy
+ LSOE/BJWgVk8UaVCEnqjgQgAobxTfitHZlkO/pAywfsoWDkSujN0XJ7q5/l9lxSIgDrx
+ n7lRkUd9kXiyuxDSjwL28inxvgwn3QcdoDqUcZU6iYcdLwiDmRecgmMYkdn3UEeeiNBs
+ xTpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688589071; x=1691181071;
+ d=1e100.net; s=20221208; t=1688589310; x=1691181310;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zYeOppu/Qu36jETx1AY920Wy0fvuDMzwxOGZTUPKoWk=;
- b=L16Eta/V33jt+KsGoEh7LpdphJH4dBCvWXihs7HTST95lI+9QkygKS4w/peMFhB9/r
- 5YcIxV7+xnMv1l3k7om+s8xtc1zUoLXwLYzJrp1eWQufLCSdSNiSRNOq498jvceAiAHN
- hs9ei32OpPGs0lQ000qoPCowWsUDy7M7Dwsi/vmnGyOj6YGk/q3/VvoeialLNZqAnrHJ
- hPp6THjg2huTX851A6X6cLD11Lrt/3kU8U/4kYwjPMvStDCXYb9Jl0cLRtUQsd3+C0HP
- Pq+rjescDvbDnc557EJZsGXPj7YY8crq9hTkFWaMXLGWQr/JCtBCG/7zSYjGkuNQnAAu
- m52A==
-X-Gm-Message-State: ABy/qLbaGe00++wgK0Byz6QGy6lV5MuZ+6FcajnTttQ6yfZv3Tyx+0x7
- EAOim2s66dlxp/lCEhknwOfVVA==
-X-Google-Smtp-Source: APBJJlEiSH5E/vq99N+qPaiS1WcdJUK03Jsfk2V/MKn4vwc9Dw5Gt/+Qc6FqqRt05jGMwXnpSaz2zQ==
-X-Received: by 2002:a05:6512:32b7:b0:4f8:7897:55e6 with SMTP id
- q23-20020a05651232b700b004f8789755e6mr48592lfe.45.1688589070983; 
- Wed, 05 Jul 2023 13:31:10 -0700 (PDT)
+ bh=Aoavj10agISuxA7H9qqy+vGkR7hN/BR039AWfsJatbE=;
+ b=ib/J98mrpcXQPrVLss/yQrK+NJ5DBoo7nnM5N5qAyCbRuGs62ol4AHjN642I3hyJCo
+ jKb1lEi407W4fqWClgL+bASySWR6JCULO+L71VZ3l8Q7cje/9Q6PumwFli0Zo/GK3mrE
+ Wy3Tj0pF9/CFer/wWsPWI34J4/T6+39IqlktesejEMmKrYEKGYah7+x0SbRDZST19e4D
+ p3qU3Zu5tZWWaUUopf40TjpRr52sdAdfNBngej5CaUFRDz4WV7DKF/NdNmQmay2OZ4y6
+ JVJcJP3RqYuQrh40IhNINlIlNzae6HPxRjtqfWf4cQ/fryrC2SP6hpBvP9aMkZ8ugk2E
+ eYzw==
+X-Gm-Message-State: ABy/qLYxH81v91yz9KLvuc+uVVC+89QQYbWFQmt7QEhzmv7yq3+cDZ5k
+ Oj22TOnnvRBLOloTViHflR70OQ==
+X-Google-Smtp-Source: APBJJlFelVMXf/izjWVyUOzK90Kr7Uml77rlE/Yef6SQwRKSpv57UkJzpLnEwmtPwvd1gExAoge8Xw==
+X-Received: by 2002:a17:906:1041:b0:992:8d96:4de3 with SMTP id
+ j1-20020a170906104100b009928d964de3mr200237ejj.24.1688589310223; 
+ Wed, 05 Jul 2023 13:35:10 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.199.225])
  by smtp.gmail.com with ESMTPSA id
- g19-20020a50ee13000000b0051df5bd1cd8sm6980337eds.65.2023.07.05.13.31.09
+ l9-20020a1709060e0900b0098de7d28c34sm14849803eji.193.2023.07.05.13.35.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 13:31:10 -0700 (PDT)
-Message-ID: <2d4ee5d6-db9f-12c4-63d1-6cca2118f05d@linaro.org>
-Date: Wed, 5 Jul 2023 22:31:09 +0200
+ Wed, 05 Jul 2023 13:35:09 -0700 (PDT)
+Message-ID: <413a30a2-c050-7587-8c0e-a6d89c8b7ab3@linaro.org>
+Date: Wed, 5 Jul 2023 22:35:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v2 06/14] ppc440: Stop using system io region for PCIe
- buses
+Subject: Re: [PATCH 1/4] QGA VSS: Add wrapper to send log to debugger and
+ stderr
 Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
-References: <cover.1688586835.git.balaton@eik.bme.hu>
- <b631c3a61729eee2166d899b8888164ebeb71574.1688586835.git.balaton@eik.bme.hu>
+To: Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, Yan Vugenfirer <yvugenfi@redhat.com>
+References: <20230705141205.525776-1-kkostiuk@redhat.com>
+ <20230705141205.525776-2-kkostiuk@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <b631c3a61729eee2166d899b8888164ebeb71574.1688586835.git.balaton@eik.bme.hu>
+In-Reply-To: <20230705141205.525776-2-kkostiuk@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,15 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/7/23 22:12, BALATON Zoltan wrote:
-> Add separate memory regions for the mem and io spaces of the PCIe bus
-> to avoid different buses using the same system io region.
-> 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
->   hw/ppc/ppc440_uc.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
+Hi Konstantin,
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 5/7/23 16:12, Konstantin Kostiuk wrote:
+> Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+> ---
+>   qga/vss-win32/vss-debug.h | 31 +++++++++++++++++++++++++++++++
+>   1 file changed, 31 insertions(+)
+>   create mode 100644 qga/vss-win32/vss-debug.h
+
+
+> +#define PRINT_DEBUG(fmt, ...) {                                               \
+> +    char user_sting[512] = { 0 };                                             \
+> +    char full_string[640] = { 0 };                                            \
+> +    snprintf(user_sting, 512, fmt, ## __VA_ARGS__);                           \
+> +    snprintf(full_string, 640, QGA_PROVIDER_NAME"[%lu]: %s %s\n",             \
+> +        GetCurrentThreadId(), __func__, user_sting);                          \
+> +    OutputDebugString(full_string);                                           \
+> +    fprintf(stderr, "%s", full_string);                                       \
+> +}
+
+Why not simply use a plain function?
+
+> +#define PRINT_DEBUG_BEGIN PRINT_DEBUG("begin")
+> +#define PRINT_DEBUG_END PRINT_DEBUG("end")
+> +
+> +#endif
 
 
