@@ -2,99 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A032747CC2
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 08:04:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E0E747CF8
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 08:21:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGvb6-0004Fd-PK; Wed, 05 Jul 2023 02:02:40 -0400
+	id 1qGvtG-0001bs-Fv; Wed, 05 Jul 2023 02:21:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qGvb4-0004FT-It
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 02:02:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qGvtD-0001bT-Rm
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 02:21:24 -0400
+Received: from mail-dm6nam12on2050.outbound.protection.outlook.com
+ ([40.107.243.50] helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qGvb2-0002Vr-GO
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 02:02:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688536955;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PS0zcBUjK4kS78pAinPYEj0ZJBEXG7CLZ+/xON8fTgE=;
- b=P3UQZv6MXdxYm7vgs9OgUw9gIXlg0XcbIBWOCg394aiGDJ/trNOyjRgSBptolm/9ZqV/yH
- F7Tz8dOxPLU76CUMe9rl4hm4DjXg750eMPotDk+U/i9c+YdB8AIrvjmOguFaVT3Su9V+4j
- x4TKYIhX7dvZmneVDf5qsYYmHx/1Bbs=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-375-b_PM0SeBOZuPtzzP4Q7p_Q-1; Wed, 05 Jul 2023 02:02:33 -0400
-X-MC-Unique: b_PM0SeBOZuPtzzP4Q7p_Q-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2b6fbf1305fso10084641fa.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 23:02:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688536952; x=1691128952;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PS0zcBUjK4kS78pAinPYEj0ZJBEXG7CLZ+/xON8fTgE=;
- b=BWsdOAbNLAnLsZuBzY6Vmz2RMQw8ciapRaf3bhCELtTOsbUgKNc8AOYLQXZn/ocH7T
- ed4vGzliDS4dN1mf+XeGhhIlJG0bbOBNlgThejMLx4h+ZLYKPolae/DzCDXQdysErB08
- yUStAoFCaCJueIOF17WYa+KUM9cXp7h+MqP3TYK2Guf6KRwTTdkLGhjiJgU5r7Fcqm3+
- qgmUeoA11D/Y3Ckzdgt8Nk4HDcuhJe9FoJ1xCd7abC4JV/GlvW5yZr+vGVQcschjNbHv
- wXQe8Z2Y3DsN6vgs3pWmTUfcpkv9eFKrv2YA79bqBhs4x7kPuo+KUQgKQLpx3jlDluxM
- 8i1w==
-X-Gm-Message-State: ABy/qLbjOna/GdTgcKyA86gtXVp4QCPfHk18QpwyS/K8rXiP9amrFdWA
- qcRgip20DT21uRR+IPaUAGeOqjAn2VtZ0TdYT1vx6weXX6hEzAn43f9IPKzskvuzCKp9h0ER36o
- 2G7P+zjzBg4fY5ACYnuk/CWNicsZtjC8=
-X-Received: by 2002:a2e:97ce:0:b0:2b6:ecdd:16cf with SMTP id
- m14-20020a2e97ce000000b002b6ecdd16cfmr4958845ljj.40.1688536952186; 
- Tue, 04 Jul 2023 23:02:32 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFZwxR/1WN3AdYBtCC4NBixQZVK6pDfa3byfqbcXl6UAwgIg3jq9yviUxGxhdIWN0zUlETDuemzwg75ePDBt9c=
-X-Received: by 2002:a2e:97ce:0:b0:2b6:ecdd:16cf with SMTP id
- m14-20020a2e97ce000000b002b6ecdd16cfmr4958822ljj.40.1688536951845; Tue, 04
- Jul 2023 23:02:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qGvtA-0007Ho-H7
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 02:21:23 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=V0kdpNj4/Wo0e1xFISYpjmKHvGjojDDIUtKafQOEMapWi5tOV6nRexUgOC5TvbomHrhEFl3kJ4vSe/8jKA1b42prBKNuH7pLPW9gw7hOHBW+P/RbzzcYMHwiibfTagjSyD0hw0qJgMiJrUpAe+mVTv5XtTc9Ks8knSHOvYcH3j01wJTMHm8GjV8c9gXA8kt5qCD71idIgWVwliHw72uYNNt0JkEQWWiIaSqb5VRCbS3v2TXGUwXV8XvlW87+0bKKsdyKKTbnP04CWqt/0sDFlNQWWROafL6Ceqop8x5s4oh9u+LKGDQ1I3uhh98SJswYF8kcrlGl9HeVt5cnu3v+BQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7w4nJY6LlZDfGkplh7lTtc4pIOEptdwHzOrmO2F4c+k=;
+ b=eVq72+yt5hMXxEG8mNjpaWwMqgoGNAWCPKSBUj6Fgg6Hl7LiNT3GUd6wYwfVp1g5effQvX/23pFrfMzLtyXjbqGE7+VScnFYFuMHJTa7GIz5RpN4q9PLDWFyCLITyoEtTcNkBMzI0eTth2CdzLh4eHwHZYKTucG25Rb6IGAVV8Y/VwGd0adqet8EMFXBxGHun8pKcTk/AJ/70lDiKBMoD8SNVN6LdGx29VT5eEctMbvF2uE4Te5iJZgXNscWtWxON9RHa2KjdOCOQPQJJDa83ws7mdrzgKL9nTj1qhNDpUahxeJyqooZEe6dKRoJFJYeHwhp8g0TAW9upWHywzt0lg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7w4nJY6LlZDfGkplh7lTtc4pIOEptdwHzOrmO2F4c+k=;
+ b=kFLRxz4CnvaPWkJTXRgk50fXSqOWHmY6NgsDd3jjCr7roJn6RHzJTa6lHuAIvRA0ua3T6rwKyIv9opVL5b1hi867EQXAyii8+vnUnOxva1l0LSxQyHhQNRsQOUZqnNdVXZITl9xV27kSOECXyd0amQiyjiNPHSZLSks+jENTFVhBsRUBpfF/4Ih4lAzp6Hw4tk9lK1P01S3P/w/WXo7UT9I+99DZsu14vjoAN7P6nm/A8RkOUX1/EoZFwgIrFCuJCqKJtp9XVxD2FSk6+5liXnb7PWxUNVyZre9NUIv/cvH2rw/ThxK6HOnAv4Mt1hJyGocL0COtGwqlMAv9ISa7RQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
+ by SJ2PR12MB9085.namprd12.prod.outlook.com (2603:10b6:a03:564::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.24; Wed, 5 Jul
+ 2023 06:16:14 +0000
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::dbd4:621f:5387:9e2b]) by DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::dbd4:621f:5387:9e2b%6]) with mapi id 15.20.6544.024; Wed, 5 Jul 2023
+ 06:16:14 +0000
+Message-ID: <3be3c6a8-d160-3357-0643-9b741aa7e660@nvidia.com>
+Date: Wed, 5 Jul 2023 09:16:08 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2] vfio: Fix null pointer dereference bug in
+ vfio_bars_finalize()
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230704133927.24677-1-avihaih@nvidia.com>
+ <4795eb6d-7409-0e1b-9c17-ad31718e3170@redhat.com>
+From: Avihai Horon <avihaih@nvidia.com>
+In-Reply-To: <4795eb6d-7409-0e1b-9c17-ad31718e3170@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR2P281CA0047.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:92::14) To DM6PR12MB5549.namprd12.prod.outlook.com
+ (2603:10b6:5:209::13)
 MIME-Version: 1.0
-References: <20230622215824.2173343-1-i.maximets@ovn.org>
- <CACGkMEsXOb8wiYo9ktgqh8MqD971=ARJ_etL7MBF-uyo6qt1eA@mail.gmail.com>
- <CACGkMEuyq+5_cqx4T03fcaLOGUCrKLZn51sZxNSXyZq8CqLXTg@mail.gmail.com>
- <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
- <CACGkMEuaUTGeCYfH-MbtX_79scN-CkBmFMcY0fwKo4vO_9cn4w@mail.gmail.com>
- <26c03cd4-5582-489c-9f4c-aeaf8e157b42@ovn.org>
- <CACGkMEsE6_91mOhCP5ezT96zz-Tb-bLXQr9ktrLg6zG0TZC3Lg@mail.gmail.com>
- <CAJSP0QXPiNK2rH6_8bB7sjMpdQjT--oX0u4FkdaTj7Ew3qs8CA@mail.gmail.com>
- <CACGkMEuN_PeXZhqaN4EJP8rKRVK=wftpkH3--y267j9+7smCOw@mail.gmail.com>
- <CAJSP0QVg-mmtnMXZpxRKutbdgpdNeawJT45iQSp4cf=MRedZAQ@mail.gmail.com>
- <CACGkMEtdk-Qi+5M+pEa9v=S_ehRs=m7Ux4=Sf6aqk0EqNzyQ5g@mail.gmail.com>
- <CAJSP0QW22f18V0pXTO-w4BXONJ3wLCbczMjKSKCRnxiF+7W=eg@mail.gmail.com>
- <CACGkMEvCV6JcQ3LOQvCx=9KXKqE_SAQwzxFXe1c+PdSMH_KbDg@mail.gmail.com>
- <CAJSP0QUtCnE49YWA6PmVSExMaFf2VZi3St1Wysk9ruDS37ALHg@mail.gmail.com>
- <CACGkMEu1V4HBdP3JFYV-+Uec1s6f0U3fj5f9tV0FApQ+U8rbrw@mail.gmail.com>
- <CAJSP0QU-p_cKCevxTabKhfq9T2=UShLqcced-OCmfCx3dE+6rQ@mail.gmail.com>
-In-Reply-To: <CAJSP0QU-p_cKCevxTabKhfq9T2=UShLqcced-OCmfCx3dE+6rQ@mail.gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 5 Jul 2023 14:02:20 +0800
-Message-ID: <CACGkMEv2u-pcFY_+Y-r6ODj6hjEDUhVG5VV-cX0Fko7VNPZ=0g@mail.gmail.com>
-Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Ilya Maximets <i.maximets@ovn.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|SJ2PR12MB9085:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4739f65a-e153-42b9-8ff2-08db7d1f55ee
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Nqr7zE0YnoNQB7Q3V88y+/uuP8xCf/c9mF3v4kywNd9d31jsS02FHWvNhQTZY9C44DEMx8tBqDYU5u/zNNpjCWL+YbFHSbvyRs82M+bRvy6vGT+5PQepJRHWigjVbwFBL8RkDWGbBjyJ5kRH7+feTcFizp7pBPdynz5qFMUfx2q4H86xnqK2F/Nl69iBDpOfAa0NBgqv7KCca1KXM3YUDEBif4EeBkFuJ81D6Vu+IfG/hhqnA0Nyakku1PuQDneUhNPJgJjW2VvD+k7q5bMyqCSp2Dgg8Ss1Imj9EimADgllu9NYJboRiBtXyEEzVYoCBP6T1D6jOoGrmhW91Nod4/n1iP2ZBnAX3+m6RhcfKKCaxcWADqsyfgidtfXk1zs6LdNwwr8e/hT9dtai8dfIV1JCUmHdHrKDLh6kZyRMPWxvWxmRiYLJTeyu+w1ndb9Lx/fAHdhIWWwse0WfE5fnKxz3bf+hm/TNLl0S5IIztfyEzTBDIybHmtduCA0l8792vnXN/MCUGrCSUdaihxw2BMatl4Ky9Y806N6E5tYLR3hdDwC34xo2RfE9IRzakCrMoa7jEWzzOx/ff/iw9h2lRaaa65p1xFPHh8cVplD4NU9FSO+pV8ZJPrBhc82OdpRqMIXYNBIWFIjeYDr6YhTG/g==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(136003)(346002)(376002)(366004)(39860400002)(396003)(451199021)(26005)(31686004)(478600001)(6666004)(6506007)(6512007)(31696002)(86362001)(2616005)(186003)(53546011)(66556008)(38100700002)(54906003)(66476007)(4326008)(66946007)(66574015)(83380400001)(6486002)(316002)(8676002)(8936002)(41300700001)(2906002)(5660300002)(36756003)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SUdtbE52aXA5cVZzS01OYnlJM09aYndtMGpSSk5SS1pna3B3L2VTakJ4RTJx?=
+ =?utf-8?B?TEZBZC9sN2Z3cXYzb2JlVWNrdzMyRTNXcENlZldSemw3WUJPTXMvbkIzbUZu?=
+ =?utf-8?B?NG1MWEZZd2loSU90Z3kwK0xYdnhqVFBhaFJZMVVwMU5od0lPeGNmQVVkS0Rv?=
+ =?utf-8?B?Z1ZBSjh5U0Rrb0xmU3VXdTFZazAwVG1jRjFPVXYyYTNCa0FaYVBFTHgrejZX?=
+ =?utf-8?B?MDVqQVVzLzJIU0luWW80elExY29ZM0ZMbDBadGxnVFZhaVZzVEt2UU4xMlhS?=
+ =?utf-8?B?bW4rMThnaDVUQXY2clBLVlM3bmFhamFxS3N3bEFDRzJJWDh1TFZBRWxpK2hU?=
+ =?utf-8?B?VG5FeU5mU1ErZmZES1NwbXJzMzdhRVpMbW5TT1UxSHh4VTdXcWVRVVZhZjlP?=
+ =?utf-8?B?QkVwckZ2aVlwdXUrUVlSVmprQ0oveXlvS3ovZDh6SFJmT05OYWE4UHlISTha?=
+ =?utf-8?B?NXBraUZMQVZqdnc2b2tiNHVoMUQyeE5Xc3ZhL2xuVDl3Yzk2RFg0ejlQMHR5?=
+ =?utf-8?B?bU81WTJOalNXanBWeHEwNzJTN3JEM2Q3S2VNMWJJN1loeWZ2NGFZUDV1QmxN?=
+ =?utf-8?B?TnNKdFdzcTB5OFowTklxd1JoMlFxSUhCVU0xUGNOZDkwK1BGelJWZzQyVnFQ?=
+ =?utf-8?B?VXBUWWhEZ2VBRjF3NUlJYmNJS1paNm9YRXBUUTR1OEgwZ2lIczE5UG1qcHkw?=
+ =?utf-8?B?bUZydndGT1I1VXZiOHBma3RkN29lcUhoRXNDZnh2ZzBUWHJTZm92MFR0b0Yz?=
+ =?utf-8?B?WXY0TjRWbFJQcllBNTM0K2NaQW14QlhRWkpXSnl4bnliS1ZaWmtTdTZIRVcy?=
+ =?utf-8?B?T1B0eTBtdEo4dmF3S3RUVVBWdDdIdDdPQkUxbFJ4Z3F6RC9GanVYRkNTOG5K?=
+ =?utf-8?B?Q2h6aFY1OXhlMEtuZGREWmwyRUswd2F2VHJyVGQ3UU9XZTRnMDFwS0h0NmNi?=
+ =?utf-8?B?Vlh3bENoNlRHYXdFb3dVWnY3YnhEL2NFcjZxSlJmY092VkczUFQwcEtydFpJ?=
+ =?utf-8?B?bkpKL1VvaEREYjZDNC9IQ0J0aHdIRk1NVXYzL21OSVBXelgraHNNakdQTC9t?=
+ =?utf-8?B?VlVQb2doWTJjS1FnZ3UvSldSM0NSVC9xRklpV2JUUGVoL0hIcU55OXJCWXdY?=
+ =?utf-8?B?czNwbkZ6bFFUR0I3dlRPemJhV2tySWZMSmhxbzhlL0xDUFUySVh5TVVVeE5m?=
+ =?utf-8?B?UjNndG9hWmk5OWNHbU4rZnFhZEhsMzhjMHhzUG5kTFhhaDZxSWZBZ2xIZ1VQ?=
+ =?utf-8?B?WnFkRFR5ZDkzNDdPK01hSkdhV2FKR1ZEZm5XNVFTZ1Nqanp2NEtyMk5kK0lv?=
+ =?utf-8?B?enBWNnhLdHJaaXBYRXF6WEhuV1ZESjI4VDlOODl5c3Vjc0hqRWJJSXR3VFZM?=
+ =?utf-8?B?RGFYcnN2ekIxTkhaTXYrSDRRMGxaRGdrTHBLM1oxR0JNd083WkhQcXU4MVFD?=
+ =?utf-8?B?eWx1d2xzUlQyQ3IwNE9IeDNSazVSYjgzazZDNzZFN0ZCZHJTdWRZUERoMmZT?=
+ =?utf-8?B?UExTd0NOVG5hWDEzN0NRcmJmTW04NTIrQlZ6ZEdmOEw2THE5ZWNwdTlvOFJF?=
+ =?utf-8?B?eEdBQXIrL3RlaUFvZDdGQXQ5MnFlTVBlL1NoWnhHR2p5ajY3SlhhUFNsYXV0?=
+ =?utf-8?B?Ny8xY29YUW9qSUZXRXBMQjd0NUEzTWVKK0VGVXlPTi9pU3VpSDBObzNTbU92?=
+ =?utf-8?B?OERtQkRaSkVUTm1wUTVxL2ZZUjVUazZxZTNGbDE2ZnlqWU5wSGdFV2tJUHE5?=
+ =?utf-8?B?WU5Ua2l5ejVnaWZNcno1UWJIdThxaDNnR0tjY0xIeHJ5UHpldkVSQTZSbEdH?=
+ =?utf-8?B?SXlDTmtLSGdlbW9ya2xKbkxvNFROMHR4eHZ2RlJzUzFTd3pVRHBybng1WDFF?=
+ =?utf-8?B?dDE5RmZkQVZabHRNcVVmRk9ub0loNmwrZWZGd0tHQ2MrYVBLd3pmMzBHL3NU?=
+ =?utf-8?B?QWwrN2x3THdqVlZ2VldpTnFFOHFwWW9yRVh2cm9tRUVCRUg5QlFiZGRFRzhI?=
+ =?utf-8?B?VDVCR21IMnVOVU9rUy92M2xMSzhLN28zbHhZV3owWTlZaHd3eVp6UkV1bjlq?=
+ =?utf-8?B?SE91L3YzTFYxRzFoSTh3VFk3WU5YMEU3S1Y4Tm1GTnBLSTQ2d1N4dFhDa2ta?=
+ =?utf-8?Q?k/nh5lDRQHOUeN6iW6E8/eA/m?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4739f65a-e153-42b9-8ff2-08db7d1f55ee
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jul 2023 06:16:14.4389 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4wlvnPPUR0btRw9VBwJraew/la/y9AXfiLQELB3dCMsjxtKZSaytlm6F2v0/lG7PpEAf6S0tphGwzwM1FbIe/Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9085
+Received-SPF: softfail client-ip=40.107.243.50;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,231 +149,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 3, 2023 at 5:03=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.com>=
- wrote:
->
-> On Fri, 30 Jun 2023 at 09:41, Jason Wang <jasowang@redhat.com> wrote:
-> >
-> > On Thu, Jun 29, 2023 at 8:36=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail=
-.com> wrote:
-> > >
-> > > On Thu, 29 Jun 2023 at 07:26, Jason Wang <jasowang@redhat.com> wrote:
-> > > >
-> > > > On Wed, Jun 28, 2023 at 4:25=E2=80=AFPM Stefan Hajnoczi <stefanha@g=
-mail.com> wrote:
-> > > > >
-> > > > > On Wed, 28 Jun 2023 at 10:19, Jason Wang <jasowang@redhat.com> wr=
-ote:
-> > > > > >
-> > > > > > On Wed, Jun 28, 2023 at 4:15=E2=80=AFPM Stefan Hajnoczi <stefan=
-ha@gmail.com> wrote:
-> > > > > > >
-> > > > > > > On Wed, 28 Jun 2023 at 09:59, Jason Wang <jasowang@redhat.com=
-> wrote:
-> > > > > > > >
-> > > > > > > > On Wed, Jun 28, 2023 at 3:46=E2=80=AFPM Stefan Hajnoczi <st=
-efanha@gmail.com> wrote:
-> > > > > > > > >
-> > > > > > > > > On Wed, 28 Jun 2023 at 05:28, Jason Wang <jasowang@redhat=
-.com> wrote:
-> > > > > > > > > >
-> > > > > > > > > > On Wed, Jun 28, 2023 at 6:45=E2=80=AFAM Ilya Maximets <=
-i.maximets@ovn.org> wrote:
-> > > > > > > > > > >
-> > > > > > > > > > > On 6/27/23 04:54, Jason Wang wrote:
-> > > > > > > > > > > > On Mon, Jun 26, 2023 at 9:17=E2=80=AFPM Ilya Maxime=
-ts <i.maximets@ovn.org> wrote:
-> > > > > > > > > > > >>
-> > > > > > > > > > > >> On 6/26/23 08:32, Jason Wang wrote:
-> > > > > > > > > > > >>> On Sun, Jun 25, 2023 at 3:06=E2=80=AFPM Jason Wan=
-g <jasowang@redhat.com> wrote:
-> > > > > > > > > > > >>>>
-> > > > > > > > > > > >>>> On Fri, Jun 23, 2023 at 5:58=E2=80=AFAM Ilya Max=
-imets <i.maximets@ovn.org> wrote:
-> > > > > > > > > > > >> It is noticeably more performant than a tap with v=
-host=3Don in terms of PPS.
-> > > > > > > > > > > >> So, that might be one case.  Taking into account t=
-hat just rcu lock and
-> > > > > > > > > > > >> unlock in virtio-net code takes more time than a p=
-acket copy, some batching
-> > > > > > > > > > > >> on QEMU side should improve performance significan=
-tly.  And it shouldn't be
-> > > > > > > > > > > >> too hard to implement.
-> > > > > > > > > > > >>
-> > > > > > > > > > > >> Performance over virtual interfaces may potentiall=
-y be improved by creating
-> > > > > > > > > > > >> a kernel thread for async Tx.  Similarly to what i=
-o_uring allows.  Currently
-> > > > > > > > > > > >> Tx on non-zero-copy interfaces is synchronous, and=
- that doesn't allow to
-> > > > > > > > > > > >> scale well.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Interestingly, actually, there are a lot of "duplic=
-ation" between
-> > > > > > > > > > > > io_uring and AF_XDP:
-> > > > > > > > > > > >
-> > > > > > > > > > > > 1) both have similar memory model (user register)
-> > > > > > > > > > > > 2) both use ring for communication
-> > > > > > > > > > > >
-> > > > > > > > > > > > I wonder if we can let io_uring talks directly to A=
-F_XDP.
-> > > > > > > > > > >
-> > > > > > > > > > > Well, if we submit poll() in QEMU main loop via io_ur=
-ing, then we can
-> > > > > > > > > > > avoid cost of the synchronous Tx for non-zero-copy mo=
-des, i.e. for
-> > > > > > > > > > > virtual interfaces.  io_uring thread in the kernel wi=
-ll be able to
-> > > > > > > > > > > perform transmission for us.
-> > > > > > > > > >
-> > > > > > > > > > It would be nice if we can use iothread/vhost other tha=
-n the main loop
-> > > > > > > > > > even if io_uring can use kthreads. We can avoid the mem=
-ory translation
-> > > > > > > > > > cost.
-> > > > > > > > >
-> > > > > > > > > The QEMU event loop (AioContext) has io_uring code
-> > > > > > > > > (utils/fdmon-io_uring.c) but it's disabled at the moment.=
- I'm working
-> > > > > > > > > on patches to re-enable it and will probably send them in=
- July. The
-> > > > > > > > > patches also add an API to submit arbitrary io_uring oper=
-ations so
-> > > > > > > > > that you can do stuff besides file descriptor monitoring.=
- Both the
-> > > > > > > > > main loop and IOThreads will be able to use io_uring on L=
-inux hosts.
-> > > > > > > >
-> > > > > > > > Just to make sure I understand. If we still need a copy fro=
-m guest to
-> > > > > > > > io_uring buffer, we still need to go via memory API for GPA=
- which
-> > > > > > > > seems expensive.
-> > > > > > > >
-> > > > > > > > Vhost seems to be a shortcut for this.
-> > > > > > >
-> > > > > > > I'm not sure how exactly you're thinking of using io_uring.
-> > > > > > >
-> > > > > > > Simply using io_uring for the event loop (file descriptor mon=
-itoring)
-> > > > > > > doesn't involve an extra buffer, but the packet payload still=
- needs to
-> > > > > > > reside in AF_XDP umem, so there is a copy between guest memor=
-y and
-> > > > > > > umem.
-> > > > > >
-> > > > > > So there would be a translation from GPA to HVA (unless io_urin=
-g
-> > > > > > support 2 stages) which needs to go via qemu memory core. And t=
-his
-> > > > > > part seems to be very expensive according to my test in the pas=
-t.
-> > > > >
-> > > > > Yes, but in the current approach where AF_XDP is implemented as a=
- QEMU
-> > > > > netdev, there is already QEMU device emulation (e.g. virtio-net)
-> > > > > happening. So the GPA to HVA translation will happen anyway in de=
-vice
-> > > > > emulation.
-> > > >
-> > > > Just to make sure we're on the same page.
-> > > >
-> > > > I meant, AF_XDP can do more than e.g 10Mpps. So if we still use the
-> > > > QEMU netdev, it would be very hard to achieve that if we stick to
-> > > > using the Qemu memory core translations which need to take care abo=
-ut
-> > > > too much extra stuff. That's why I suggest using vhost in io thread=
-s
-> > > > which only cares about ram so the translation could be very fast.
-> > >
-> > > What does using "vhost in io threads" mean?
-> >
-> > It means a vhost userspace dataplane that is implemented via io threads=
-.
->
-> AFAIK this does not exist today. QEMU's built-in devices that use
-> IOThreads don't use vhost code. QEMU vhost code is for vhost kernel,
-> vhost-user, or vDPA but not built-in devices that use IOThreads. The
-> built-in devices implement VirtioDeviceClass callbacks directly and
-> use AioContext APIs to run in IOThreads.
 
-Yes.
+On 04/07/2023 18:54, Cédric Le Goater wrote:
+> External email: Use caution opening links or attachments
+>
+>
+> Hello Avihai
+>
+> On 7/4/23 15:39, Avihai Horon wrote:
+>> vfio_realize() has the following flow:
+>> 1. vfio_bars_prepare() -- sets VFIOBAR->size.
+>> 2. msix_early_setup().
+>> 3. vfio_bars_register() -- allocates VFIOBAR->mr.
+>>
+>> After vfio_bars_prepare() is called msix_early_setup() can fail. If it
+>> does fail, vfio_bars_register() is never called and VFIOBAR->mr is not
+>> allocated.
+>>
+>> In this case, vfio_bars_finalize() is called as part of the error flow
+>> to free the bars' resources. However, vfio_bars_finalize() calls
+>> object_unparent() for VFIOBAR->mr after checking only VFIOBAR->size, and
+>> thus we get a null pointer dereference.
+>>
+>> Fix it by checking VFIOBAR->mr in vfio_bars_finalize().
+>
+> Did you see the issue by reading the code or did you actually crash
+> QEMU with a test case ?
+
+I actually got a segmentation fault after msix_early_setup() failed (due 
+to some other misconfiguration from my side).
 
 >
-> Do you have an idea for using vhost code for built-in devices? Maybe
-> it's fastest if you explain your idea and its advantages instead of me
-> guessing.
-
-It's something like I'd proposed in [1]:
-
-1) a vhost that is implemented via IOThreads
-2) memory translation is done via vhost memory table/IOTLB
-
-The advantages are:
-
-1) No 3rd application like DPDK application
-2) Attack surface were reduced
-3) Better understanding/interactions with device model for things like
-RSS and IOMMU
-
-There could be some dis-advantages but it's not obvious to me :)
-
-It's something like linking SPDK/DPDK to Qemu.
-
+>>
+>> Fixes: 89d5202edc50 ("vfio/pci: Allow relocating MSI-X MMIO")
+>> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 >
-> > > > > Regarding pinning - I wonder if that's something that can be refi=
-ned
-> > > > > in the kernel by adding an AF_XDP flag that enables on-demand pin=
-ning
-> > > > > of umem. That way only rx and tx buffers that are currently in us=
-e
-> > > > > will be pinned. The disadvantage is the runtime overhead to pin/u=
-npin
-> > > > > pages. I'm not sure whether it's possible to implement this, I ha=
-ven't
-> > > > > checked the kernel code.
-> > > >
-> > > > It requires the device to do page faults which is not commonly
-> > > > supported nowadays.
-> > >
-> > > I don't understand this comment. AF_XDP processes each rx/tx
-> > > descriptor. At that point it can getuserpages() or similar in order t=
-o
-> > > pin the page. When the memory is no longer needed, it can put those
-> > > pages. No fault mechanism is needed. What am I missing?
-> >
-> > Ok, I think I kind of get you, you mean doing pinning while processing
-> > rx/tx buffers? It's not easy since GUP itself is not very fast, it may
-> > hit PPS for sure.
 >
-> Yes. It's not as fast as permanently pinning rx/tx buffers, but it
-> supports unpinned guest RAM.
-
-Right, it's a balance between pin and PPS. PPS seems to be more
-important in this case.
-
+> Reviewed-by: Cédric Le Goater <clg@redhat.com>
 >
-> There are variations on this approach, like keeping a certain amount
-> of pages pinned after they have been used so the cost of
-> pinning/unpinning can be avoided when the same pages are reused in the
-> future, but I don't know how effective that is in practice.
+> Thanks,
 >
-> Is there a more efficient approach without relying on hardware page
-> fault support?
-
-I guess so, I see some slides that say device page fault is very slow.
-
+> C.
 >
-> My understanding is that hardware page fault support is not yet
-> deployed. We'd be left with pinning guest RAM permanently or using a
-> runtime pinning/unpinning approach like I've described.
-
-Probably.
-
-Thanks
-
 >
-> Stefan
+>> ---
+>>
+>>   Changes from v1:
+>>   * Assert VFIOBAR->size and set VFIOBAR->mr to NULL to make the code
+>>     more accurate. (Philippe)
+>>   * Small reword in the last paragraph of the commit message.
+>>
+>>   hw/vfio/pci.c | 4 +++-
+>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+>> index ab6645ba60..bc98791cbb 100644
+>> --- a/hw/vfio/pci.c
+>> +++ b/hw/vfio/pci.c
+>> @@ -1752,9 +1752,11 @@ static void vfio_bars_finalize(VFIOPCIDevice 
+>> *vdev)
+>>
+>>           vfio_bar_quirk_finalize(vdev, i);
+>>           vfio_region_finalize(&bar->region);
+>> -        if (bar->size) {
+>> +        if (bar->mr) {
+>> +            assert(bar->size);
+>>               object_unparent(OBJECT(bar->mr));
+>>               g_free(bar->mr);
+>> +            bar->mr = NULL;
+>>           }
+>>       }
+>>
 >
-
 
