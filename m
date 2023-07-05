@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8072C7489D3
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD7B7489D1
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 19:05:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH5ve-0006hF-Hv; Wed, 05 Jul 2023 13:04:34 -0400
+	id 1qH5w2-0006iw-6X; Wed, 05 Jul 2023 13:04:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qH5vb-0006gX-9R; Wed, 05 Jul 2023 13:04:31 -0400
-Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ id 1qH5vn-0006iR-Jh; Wed, 05 Jul 2023 13:04:43 -0400
+Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qH5vZ-0000WC-Gi; Wed, 05 Jul 2023 13:04:30 -0400
-Received: by mail-ot1-x334.google.com with SMTP id
- 46e09a7af769-6b867acbf6dso571492a34.0; 
- Wed, 05 Jul 2023 10:04:24 -0700 (PDT)
+ id 1qH5vm-0000YK-2V; Wed, 05 Jul 2023 13:04:43 -0400
+Received: by mail-oa1-x29.google.com with SMTP id
+ 586e51a60fabf-1b3da531a56so1506701fac.1; 
+ Wed, 05 Jul 2023 10:04:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688576663; x=1691168663;
+ d=gmail.com; s=20221208; t=1688576676; x=1691168676;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vqSFZPOi6iPo5Zc+TQGReXvriGJnZTPZ5ZbZmmY1Jt4=;
- b=bYfMl71+XxJbwSocJb40hS2Wg/YE71nlk5FlP2rdNk68raCXZ9JlQvWFqzdkLZjXHy
- tbLvFh05ZTuEE51fUQ5u7ZUtvcuaB94OIq3ZPFazfx3KcwxW1ZOTI51ytDHHhZSvnNGu
- CK9faZemY7UpX/CZXObjBlcqJEvSA4i0WlnM22Gd87od7ur10XPwmMJ8T7QNibM48y0W
- bhoO/zHboIwPVwhM2WKiKNmorRES8PR3djPEAVjCXqlu123egNPeEGhTXp4z1TTZgxSr
- fl56+0hRStivGroc+np++e0igGU3pmg3ERkJVz6D+Z4PRXHzFTGSCLSvRoyN8SheJLi/
- UUig==
+ bh=OkPAjK/zLaem8tGMszmFGNGWxr1ccjPV1u8hILCllX0=;
+ b=bAuOm5LSHxZ4KKWSeqhmOiA6PXODYQm5R6bZnSjZRuT2OQXIq7umwqckthaDIEydjr
+ UpI0pu1YNAOmVO+FsCydhyzGQCWsOoAxJfaWIIADwogrsYGodHS7XP5Qme5kKWvFbQHL
+ LG7pEdhculpWjsiceaVATt5dZW2NPuwiBEAftAo6bW1EBHfe6+T9zo3LK2/bq9A63suP
+ atUsSEoZq8xQ2YNCND2gs+Zek3WYr7YuHRVQ0YJ7KWcL/ko7ogGd7dT6DiP8p0Rcotpr
+ TFbq3C1eEo0cABbDwvmwcHAbvM3bezmyM3Zz4eZ+HIKNtJd2rTC9Jb6YOi+mcuV7dFpA
+ YEYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688576663; x=1691168663;
+ d=1e100.net; s=20221208; t=1688576676; x=1691168676;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vqSFZPOi6iPo5Zc+TQGReXvriGJnZTPZ5ZbZmmY1Jt4=;
- b=EuKCL5ybX/lPrFXQSRmf49Tqng+ihvs697eW7XbcUAFZbSLkckkmPtTfpxfvJ13Goy
- ZImK7MDNWst+25E5rHP3lFixVtJAJvq2XCbS44+gZKmXPmckZc2GgwkSfwPOXjOZf4Zb
- zdrC6o1otbMIi0IwY3CM2PavjmKkK8t9si+NlwRWKHr9oqyUQcHzcD1yKclNc7unvZJ1
- bilQeL9MLEpeIhUqbDTnyEN5SpP4yU5RWOEbnSORbjP8H0xppA2sy7ynEfuoQIr/kqte
- ymLoN9xxj538iPYjlAwFOAHxVvvVmz8HQsY/efWhQgOPfIsevxWtLqPJVdH9ppbcnB8r
- 7Ttg==
-X-Gm-Message-State: ABy/qLZRgGrbMgrUwAcIEvhv7uDsuCFq+2gZtNQBSJKPUIUE258VhgpD
- dPx+n5mQJk/DKqYC/r/sJYk=
-X-Google-Smtp-Source: APBJJlFdZgQ3uQgNk/ngKaKOpWX4WBDS2lHInvKZis7wheR9dzB21kpwicF22++f36Wdm+k0qJndGw==
-X-Received: by 2002:a9d:65c2:0:b0:6b7:4bea:558b with SMTP id
- z2-20020a9d65c2000000b006b74bea558bmr1392441oth.7.1688576663230; 
- Wed, 05 Jul 2023 10:04:23 -0700 (PDT)
+ bh=OkPAjK/zLaem8tGMszmFGNGWxr1ccjPV1u8hILCllX0=;
+ b=QXxDU3vNMm5rQUROdYmIpNw6+zmTokt+KgdlOR0wy8IkHFEeYH9X1xHXwuIxHbFzsk
+ qCG0x0C5EAh6DSVrIDwXbVekMTVb956c1P7C92srcGQjADnvc/c4iuEKwR6I62bzJF/4
+ LDpdCb7PdyxyTc9zEtd+aPnvVbyYuxa0QshI0eJkEeCjocLGnT80ouz6jcZYnGZjD+4/
+ i7sEdunp4TJxjDeyqHrjGP6xDUTm7i6bYluCVk5goroQ1XtdyfcWEa97V5x8K2Ez9LJ4
+ E5CK83Xtbc5Iveq2nloxHbxYX8DM02cd63nV5Y9fDGsNaVK6lGRwu0+UTmu50nrsYlN+
+ zX8Q==
+X-Gm-Message-State: AC+VfDzOPy7qBej+uOcEubldxFZcECbA3PDCSdptlxd0ngA/Vay5fwtb
+ EYzrhz+wNZGgUsVmADfjUV8=
+X-Google-Smtp-Source: ACHHUZ77iZwEnGOzd45t7E8j9VTToK02j/1ggyKSC8iKp/9a4x/hHuQRdx5Fs1ecR6WZaOE2pTvokA==
+X-Received: by 2002:a05:6870:ee14:b0:1b0:7661:dd18 with SMTP id
+ ga20-20020a056870ee1400b001b07661dd18mr21912209oab.23.1688576676164; 
+ Wed, 05 Jul 2023 10:04:36 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
  [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- e2-20020a9d63c2000000b006b8850ad193sm6987468otl.56.2023.07.05.10.04.19
+ bd6-20020a056870d78600b001ad21a705a8sm15332940oab.49.2023.07.05.10.04.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 10:04:22 -0700 (PDT)
-Message-ID: <71ebf920-3614-b19d-1623-1dee4a9d716e@gmail.com>
-Date: Wed, 5 Jul 2023 14:04:17 -0300
+ Wed, 05 Jul 2023 10:04:35 -0700 (PDT)
+Message-ID: <4f250f88-1f3d-857e-a866-4d7ae2a7964a@gmail.com>
+Date: Wed, 5 Jul 2023 14:04:33 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] pnv/xive: Print CPU target in all TIMA traces
+Subject: Re: [PATCH] pnv/xive2: Always pass a presenter object when accessing
+ the TIMA
 Content-Language: en-US
 To: Frederic Barrat <fbarrat@linux.ibm.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
  <clg@kaod.org>, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230705110039.231148-1-fbarrat@linux.ibm.com>
+References: <20230705081400.218408-1-fbarrat@linux.ibm.com>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230705110039.231148-1-fbarrat@linux.ibm.com>
+In-Reply-To: <20230705081400.218408-1-fbarrat@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x334.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::29;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x29.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,53 +99,55 @@ Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
 
 Daniel
 
-On 7/5/23 08:00, Frederic Barrat wrote:
-> Add the CPU target in the trace when reading/writing the TIMA
-> space. It was already done for other TIMA ops (notify, accept, ...),
-> only missing for those 2. Useful for debug and even more now that we
-> experiment with SMT.
+On 7/5/23 05:14, Frederic Barrat wrote:
+> The low-level functions to access the TIMA take a presenter object as
+> a first argument. When accessing the TIMA from the IC BAR,
+> i.e. indirect calls, we currently pass a NULL pointer for the
+> presenter argument. While it appears ok with the current usage, it's
+> dangerous. And it's pretty easy to figure out the presenter in that
+> context, so this patch fixes it.
 > 
 > Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 > ---
->   hw/intc/trace-events | 4 ++--
->   hw/intc/xive.c       | 4 ++--
->   2 files changed, 4 insertions(+), 4 deletions(-)
+>   hw/intc/pnv_xive2.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/hw/intc/trace-events b/hw/intc/trace-events
-> index 5c6094c457..36ff71f947 100644
-> --- a/hw/intc/trace-events
-> +++ b/hw/intc/trace-events
-> @@ -265,8 +265,8 @@ xive_source_esb_read(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64
->   xive_source_esb_write(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64" IRQ 0x%x val=0x%"PRIx64
->   xive_router_end_notify(uint8_t end_blk, uint32_t end_idx, uint32_t end_data) "END 0x%02x/0x%04x -> enqueue 0x%08x"
->   xive_router_end_escalate(uint8_t end_blk, uint32_t end_idx, uint8_t esc_blk, uint32_t esc_idx, uint32_t end_data) "END 0x%02x/0x%04x -> escalate END 0x%02x/0x%04x data 0x%08x"
-> -xive_tctx_tm_write(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
-> -xive_tctx_tm_read(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
-> +xive_tctx_tm_write(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
-> +xive_tctx_tm_read(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
->   xive_presenter_notify(uint8_t nvt_blk, uint32_t nvt_idx, uint8_t ring) "found NVT 0x%x/0x%x ring=0x%x"
->   xive_end_source_read(uint8_t end_blk, uint32_t end_idx, uint64_t addr) "END 0x%x/0x%x @0x%"PRIx64
->   
-> diff --git a/hw/intc/xive.c b/hw/intc/xive.c
-> index c014e961a4..56670b2cac 100644
-> --- a/hw/intc/xive.c
-> +++ b/hw/intc/xive.c
-> @@ -566,7 +566,7 @@ void xive_tctx_tm_write(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
+> diff --git a/hw/intc/pnv_xive2.c b/hw/intc/pnv_xive2.c
+> index 82fcd3ea22..bbb44a533c 100644
+> --- a/hw/intc/pnv_xive2.c
+> +++ b/hw/intc/pnv_xive2.c
+> @@ -1624,6 +1624,7 @@ static uint64_t pnv_xive2_ic_tm_indirect_read(void *opaque, hwaddr offset,
+>                                                 unsigned size)
 >   {
->       const XiveTmOp *xto;
+>       PnvXive2 *xive = PNV_XIVE2(opaque);
+> +    XivePresenter *xptr = XIVE_PRESENTER(xive);
+>       hwaddr hw_page_offset;
+>       uint32_t pir;
+>       XiveTCTX *tctx;
+> @@ -1633,7 +1634,7 @@ static uint64_t pnv_xive2_ic_tm_indirect_read(void *opaque, hwaddr offset,
+>       hw_page_offset = pnv_xive2_ic_tm_get_hw_page_offset(xive, offset);
+>       tctx = pnv_xive2_get_indirect_tctx(xive, pir);
+>       if (tctx) {
+> -        val = xive_tctx_tm_read(NULL, tctx, hw_page_offset, size);
+> +        val = xive_tctx_tm_read(xptr, tctx, hw_page_offset, size);
+>       }
 >   
-> -    trace_xive_tctx_tm_write(offset, size, value);
-> +    trace_xive_tctx_tm_write(tctx->cs->cpu_index, offset, size, value);
->   
->       /*
->        * TODO: check V bit in Q[0-3]W2
-> @@ -639,7 +639,7 @@ uint64_t xive_tctx_tm_read(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
->        */
->       ret = xive_tm_raw_read(tctx, offset, size);
->   out:
-> -    trace_xive_tctx_tm_read(offset, size, ret);
-> +    trace_xive_tctx_tm_read(tctx->cs->cpu_index, offset, size, ret);
->       return ret;
+>       return val;
+> @@ -1643,6 +1644,7 @@ static void pnv_xive2_ic_tm_indirect_write(void *opaque, hwaddr offset,
+>                                              uint64_t val, unsigned size)
+>   {
+>       PnvXive2 *xive = PNV_XIVE2(opaque);
+> +    XivePresenter *xptr = XIVE_PRESENTER(xive);
+>       hwaddr hw_page_offset;
+>       uint32_t pir;
+>       XiveTCTX *tctx;
+> @@ -1651,7 +1653,7 @@ static void pnv_xive2_ic_tm_indirect_write(void *opaque, hwaddr offset,
+>       hw_page_offset = pnv_xive2_ic_tm_get_hw_page_offset(xive, offset);
+>       tctx = pnv_xive2_get_indirect_tctx(xive, pir);
+>       if (tctx) {
+> -        xive_tctx_tm_write(NULL, tctx, hw_page_offset, val, size);
+> +        xive_tctx_tm_write(xptr, tctx, hw_page_offset, val, size);
+>       }
 >   }
 >   
 
