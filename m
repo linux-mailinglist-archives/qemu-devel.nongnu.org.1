@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B1E747ADC
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 03:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DA08747AE0
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 03:16:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGr4t-0000pH-Js; Tue, 04 Jul 2023 21:13:07 -0400
+	id 1qGr7q-0001po-Sq; Tue, 04 Jul 2023 21:16:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qGr4r-0000ou-KR
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 21:13:05 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qGr7o-0001pa-2D; Tue, 04 Jul 2023 21:16:08 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qGr4p-0000lT-Jj
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 21:13:05 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2b69ed7d050so99330541fa.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 18:13:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qGr7m-0001fN-AO; Tue, 04 Jul 2023 21:16:07 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-55adfa61199so4509217a12.2; 
+ Tue, 04 Jul 2023 18:16:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688519581; x=1691111581;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1688519764; x=1691111764;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0fN8225df7qZMzTXTKUAK8qZWumpjCKSs/pakPctGvk=;
- b=hKJuh4UTPalCD4y1hRFEWhUSwATNspRtQG2yPj112Fl6YgZOUK2pvEsV9W3nqkP322
- e411Ifl+OZpd8L9bK4J+T6Rn7Fc/jSv5GFm9/m8QnPkGkIV/Sxsy0nGdOJPRs8wgbzxS
- BZtOasxd2WyBN5E+yVrh1r5LZOESX/V3FZ2xMBotZDOd466/Zh52OTqxMRju3bEfkwQ/
- 8RtDQRy+0gi8rmdMDxe9ty8PUyi+qq8sxcWaOc9tnr+oh9IV/mU7PM49TacKG7QEpxy2
- RAKkvpoNsLCg14sfumVnizaOwUWawSDljznSO1uN9OwAHEqHVxVq9jzqLiYxnowWiSpZ
- mK4A==
+ bh=bcE6/LoPmw/j92rzJtNg4XhS/HvzyNVEwT2Sn/Z430U=;
+ b=F7+IspckwNo2SQ7/97gLRrLfO6E/P7oIeUiWga7Et8WBIX1cjzmw4qmmBHkWdAYVH4
+ pnF4MzWPZRbpRIAQ7XOV3vG6i99ywaEvZzbzf1yKQabgWVoh1C0hGiJRqoreHIeC1jSC
+ OO6i9TEdhR/xSPVXylF4Mp31FUGcmAQQLk6EpoxDwzt6lL04d8wtSAeoKskv9iwGBnIJ
+ ZoG5Pf+BWoIFDIfY4zRaNA0dxZ/rPCO0+9i6/gYJSaW20V4wVlLtfRF1Fiavsu3m+Xue
+ EFiWyn+W6kduzRkS/h9XCqLW37pODC0yeC7Qf7mI0LTODGWnZavDfac/4tRVut7Ckt0l
+ j9nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688519581; x=1691111581;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0fN8225df7qZMzTXTKUAK8qZWumpjCKSs/pakPctGvk=;
- b=JrbbY1PdiZh5QUTgO3TTpJad/K6pzog3iHD06Pxq62yri2u6ZnuQYzbyyTtPsYfdy0
- Xjx2Y0xJKgvxo8bXgfgZdDofNhmeOACwTXnwJ4ypuzuuBeeVXwYwCb8I2QiWLvCRMxcD
- 3Yd1EiSYw7WrXcD0coRsfhO4eOKWB5HUBV12lMLRHz2n638dW0JpFiXD+piaNImjUwNS
- o5AFX2s+oHsZ0x54nDyoJ3JdG5SBI2uVhsZJPEXwOByQHhfIFwD1r4GJJ3e2hkiVTuWy
- wTaSHM/31is+AxuRioLLO2rW3u0kB/F47b0GYCMDIegaM5FHq/pAzJEN4cq0U4VrcmAf
- cp1w==
-X-Gm-Message-State: ABy/qLYX9dBwY16X9SusZg4LAuf7dIf2+oOis7vUJoCotggAoSNkl6NG
- ZFpEeRKwi++YrXFWdOdahUNBRIymTExNvh0WQCE=
-X-Google-Smtp-Source: APBJJlFAzIfRvdqqoyZ6rPRAAV4XQS48zgz2VhkZVnVfRJT++bh7ir4T4geWSOtzxtZdI5Hwf8Zy9xYiS/16hVmnrYg=
-X-Received: by 2002:a2e:9258:0:b0:2b5:9d2a:ab51 with SMTP id
- v24-20020a2e9258000000b002b59d2aab51mr9933616ljg.5.1688519580387; Tue, 04 Jul
- 2023 18:13:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1688051252.git.yin31149@gmail.com>
- <6d3dc0fc076564a03501e222ef1102a6a7a643af.1688051252.git.yin31149@gmail.com>
- <CAJaqyWc2OXN9dnTV3Fmsu6=WErgxNbZ4sZ3Fxkyb18uXXJSB=A@mail.gmail.com>
-In-Reply-To: <CAJaqyWc2OXN9dnTV3Fmsu6=WErgxNbZ4sZ3Fxkyb18uXXJSB=A@mail.gmail.com>
-From: Hawkins Jiawei <yin31149@gmail.com>
-Date: Wed, 5 Jul 2023 09:12:46 +0800
-Message-ID: <CAKrof1Oe2iJHL9WqHxJeWVsoqRv2w9xPhfs1WwdZ1TN=Qb39Ww@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 1/4] vdpa: Use iovec for vhost_vdpa_net_load_cmd()
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
+ d=1e100.net; s=20221208; t=1688519764; x=1691111764;
+ h=in-reply-to:references:subject:cc:to:from:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=bcE6/LoPmw/j92rzJtNg4XhS/HvzyNVEwT2Sn/Z430U=;
+ b=iM1kPnlhllL0cnN0SJBZsGjy5m7fGHY58an5l3UKU3YtDgmA94bT5sW2d8vIwxqEUu
+ S1p7Ce8TJf0vFB8xT8eRpkJFmZx+HgxVOlI485dQrpfJg3uR0JhweZkdgH890PCSmUfD
+ APm7kukhFnLOYPYhg/wpzQ1p8Z2qmtsseDcYtZ1fvBhRwWFOsV7G/G242YF4xJ/nq2Ya
+ Je//UNXpVLReJWg8kQvFWFuq5w89mzNE9TgdhWAmIC8cN5XH6Lpq6WzqmJWgh+PHUE/v
+ iNWVEFnVNPw0n9cg88MrR4YBnUaOljRdo+OZ6TJVtan11dSK0nl75tt+26OuPkp58VE9
+ dp3g==
+X-Gm-Message-State: ABy/qLYiwSw/eLNPuikwTM0Mo0VBNsJH4nC4lnNZMILCtCCGNPFI4Ylp
+ SBUeX+L5CBoo89Ot6Hd5o2E=
+X-Google-Smtp-Source: APBJJlFLCel5nO0oC7DKEyV0EyAjecNq9RtUvijwXKJvBocRAwHMlE2X24qcbnzyMYyKyweGUKMgow==
+X-Received: by 2002:a05:6a21:6d9c:b0:12f:1f1f:b8b5 with SMTP id
+ wl28-20020a056a216d9c00b0012f1f1fb8b5mr4638285pzb.51.1688519763548; 
+ Tue, 04 Jul 2023 18:16:03 -0700 (PDT)
+Received: from localhost ([61.68.2.145]) by smtp.gmail.com with ESMTPSA id
+ q18-20020a62e112000000b0067aea93af40sm12667487pfh.2.2023.07.04.18.16.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 04 Jul 2023 18:16:03 -0700 (PDT)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=yin31149@gmail.com; helo=mail-lj1-x235.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 05 Jul 2023 11:15:58 +1000
+Message-Id: <CTTUASA1LO97.3N0QY20HXPNVG@wheely>
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Joel Stanley" <joel@jms.id.au>, =?utf-8?q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?=
+ <fbarrat@linux.ibm.com>
+Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>
+Subject: Re: [PATCH v2 0/5] ppc/pnv: Extend "quad" model for p10
+X-Mailer: aerc 0.15.2
+References: <20230704054204.168547-1-joel@jms.id.au>
+In-Reply-To: <20230704054204.168547-1-joel@jms.id.au>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,146 +91,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/7/4 22:17, Eugenio Perez Martin wrote:
-> On Thu, Jun 29, 2023 at 5:25=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.co=
-m> wrote:
->>
->> According to VirtIO standard, "The driver MUST follow
->> the VIRTIO_NET_CTRL_MAC_TABLE_SET command by a le32 number,
->> followed by that number of non-multicast MAC addresses,
->> followed by another le32 number, followed by that number
->> of multicast addresses."
->>
->> Considering that these data is not stored in contiguous memory,
->> this patch refactors vhost_vdpa_net_load_cmd() to accept
->> scattered data, eliminating the need for an addtional data copy or
->> packing the data into s->cvq_cmd_out_buffer outside of
->> vhost_vdpa_net_load_cmd().
->>
->> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
->> ---
->> v2:
->>    - refactor vhost_vdpa_load_cmd() to accept iovec suggested by
->> Eugenio
->>
->>   net/vhost-vdpa.c | 42 ++++++++++++++++++++++++++++++++----------
->>   1 file changed, 32 insertions(+), 10 deletions(-)
->>
->> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
->> index 6f6a5c6df6..0bd1c7817c 100644
->> --- a/net/vhost-vdpa.c
->> +++ b/net/vhost-vdpa.c
->> @@ -620,29 +620,43 @@ static ssize_t vhost_vdpa_net_cvq_add(VhostVDPASta=
-te *s, size_t out_len,
->>   }
->>
->>   static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t clas=
-s,
->> -                                       uint8_t cmd, const void *data,
->> -                                       size_t data_size)
->> +                                       uint8_t cmd, const struct iovec =
-*data,
->> +                                       size_t data_len)
->>   {
->>       const struct virtio_net_ctrl_hdr ctrl =3D {
->>           .class =3D class,
->>           .cmd =3D cmd,
->>       };
->> +    void *cursor =3D s->cvq_cmd_out_buffer;
->>
->> -    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl)=
-);
->> +    /* pack the CVQ command header */
->> +    assert(sizeof(ctrl) < vhost_vdpa_net_cvq_cmd_page_len() -
->> +                          (cursor - s->cvq_cmd_out_buffer));
->> +    memcpy(cursor, &ctrl, sizeof(ctrl));
->> +    cursor +=3D sizeof(ctrl);
->>
->> -    memcpy(s->cvq_cmd_out_buffer, &ctrl, sizeof(ctrl));
->> -    memcpy(s->cvq_cmd_out_buffer + sizeof(ctrl), data, data_size);
->> +    /* pack the CVQ command command-specific-data */
->> +    for (int i =3D 0; i < data_len; ++i) {
->> +        assert(data[i].iov_len < vhost_vdpa_net_cvq_cmd_page_len() -
->> +                                 (cursor - s->cvq_cmd_out_buffer));
->> +        memcpy(cursor, data[i].iov_base, data[i].iov_len);
->> +        cursor +=3D data[i].iov_len;
->> +    }
+On Tue Jul 4, 2023 at 3:41 PM AEST, Joel Stanley wrote:
+> The quad model implements the EC xscoms for the p9 machine, reusing the
+> same model for p10 which isn't quite correct. This series adds a PnvQuad
+> class and subclasses it for P9 and P10.
 >
-> Can we replace all of the above by iov_to_buf?
+> I mistakenly thought we needed the quad model to implement the core
+> thread state scom on p10, because the read was coming in to the address
+> belonging to the quad. In fact the quad region was too large,
+> overlapping with the core. This is fixed in v2, and the core thread is
+> back where it should be in the core model. This should address Nick's
+> feedback on the v1 cover letter.
 
-Yes, you are right.
+Already queued, but FWIW these all look good to me. Thanks, this is a
+good base to add some more functions on too.
 
-We should use iov_to_buf() here. I will refactor this patch according to
-your suggestion.
+One thing is the core xscom regions seem to still overlap...
 
-Thanks!
-
+Thanks,
+Nick
 
 >
->>
->> -    return vhost_vdpa_net_cvq_add(s, sizeof(ctrl) + data_size,
->> +    return vhost_vdpa_net_cvq_add(s, cursor - s->cvq_cmd_out_buffer,
->>                                     sizeof(virtio_net_ctrl_ack));
->>   }
->>
->>   static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet =
-*n)
->>   {
->>       if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_MAC_=
-ADDR)) {
->> +        const struct iovec data =3D {
->> +            .iov_base =3D (void *)n->mac,
->> +            .iov_len =3D sizeof(n->mac),
->> +        };
->>           ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_=
-CTRL_MAC,
->>                                                     VIRTIO_NET_CTRL_MAC_=
-ADDR_SET,
->> -                                                  n->mac, sizeof(n->mac=
-));
->> +                                                  &data, 1);
->>           if (unlikely(dev_written < 0)) {
->>               return dev_written;
->>           }
->> @@ -665,9 +679,13 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s=
-,
->>       }
->>
->>       mq.virtqueue_pairs =3D cpu_to_le16(n->curr_queue_pairs);
->> +    const struct iovec data =3D {
->> +        .iov_base =3D &mq,
->> +        .iov_len =3D sizeof(mq),
->> +    };
->>       dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_MQ,
->> -                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_S=
-ET, &mq,
->> -                                          sizeof(mq));
->> +                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_S=
-ET,
->> +                                          &data, 1);
->>       if (unlikely(dev_written < 0)) {
->>           return dev_written;
->>       }
->> @@ -706,9 +724,13 @@ static int vhost_vdpa_net_load_offloads(VhostVDPASt=
-ate *s,
->>       }
->>
->>       offloads =3D cpu_to_le64(n->curr_guest_offloads);
->> +    const struct iovec data =3D {
->> +        .iov_base =3D &offloads,
->> +        .iov_len =3D sizeof(offloads),
->> +    };
->>       dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_O=
-FFLOADS,
->>                                             VIRTIO_NET_CTRL_GUEST_OFFLOA=
-DS_SET,
->> -                                          &offloads, sizeof(offloads));
->> +                                          &data, 1);
->>       if (unlikely(dev_written < 0)) {
->>           return dev_written;
->>       }
->> --
->> 2.25.1
->>
+> v2 also adds Cedric's r-b, fixes the s/write/read/ mistakes, and is
+> checkpatch clean.
 >
+> v1: https://lore.kernel.org/qemu-devel/20230630035547.80329-1-joel@jms.id=
+.au/
+>
+> Joel Stanley (5):
+>   ppc/pnv: quad xscom callbacks are P9 specific
+>   ppc/pnv: Subclass quad xscom callbacks
+>   ppc/pnv: Add P10 quad xscom model
+>   ppc/pnv: Add P10 core xscom model
+>   ppc/pnv: Return zero for core thread state xscom
+>
+>  include/hw/ppc/pnv_core.h  |  13 ++-
+>  include/hw/ppc/pnv_xscom.h |   2 +-
+>  hw/ppc/pnv.c               |  11 ++-
+>  hw/ppc/pnv_core.c          | 165 +++++++++++++++++++++++++++++++------
+>  4 files changed, 162 insertions(+), 29 deletions(-)
+
 
