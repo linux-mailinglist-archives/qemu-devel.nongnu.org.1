@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFD1749011
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 23:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A32D74900F
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 23:44:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHAEe-0004qK-RL; Wed, 05 Jul 2023 17:40:29 -0400
+	id 1qHAEh-0004rp-I8; Wed, 05 Jul 2023 17:40:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHAEY-0004q3-Bu
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 17:40:22 -0400
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ id 1qHAEe-0004rD-4P
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 17:40:28 -0400
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHAEW-0001dx-G9
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 17:40:22 -0400
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-1b059dd7c0cso107501fac.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 14:40:20 -0700 (PDT)
+ id 1qHAEZ-0001g4-UM
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 17:40:27 -0400
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-1b06ea7e7beso111386fac.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 14:40:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688593219; x=1691185219;
+ d=ventanamicro.com; s=google; t=1688593222; x=1691185222;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qoye68O0i1yEKW8VfAgtj15Ya8kYL4Awy2Enb7ifSQs=;
- b=AmNPh8JVW0uUayISjKLiHt8w4NypkVPJvn492AtuWqK1PFhXyZDXmDwMxCUj48Kfc1
- cauX1CK3h3Kue6u5gZLHFRMEZVLzjrOAXddmpbRTVaZNiTvEYRrF+EO1HNMo/PL0n1Mk
- WB78nHRgeILLT/1/RQ4XvmMtHzHlk91bT+9eHL242KU03+ohIAykBnQiVeBmrZHHAXDC
- yXAj2NBlY3lIyr9QHIRG5cyNJ9cTuUuCVU8qyE3vC2c0i+c5J0dEvuoL/7qJ7iXqyf/Y
- n0k0Bsjqf0YHgvP9xkkpQ5MH6u8jHUgSD2PZ9KzLfjC6EMjAk5SX1pQ69XO0dx5tuopV
- SRfA==
+ bh=33KLGr0PYPhXh2aqp4GGNqlAtjUXgfgNTsUYRUiF5eg=;
+ b=dN2ANTrmIvTd42TCIDZvtIwAiYyc5bNJ9MDhE8Fi+YfaBK50zDwBvsZEFknPhgZJHe
+ 6LEzXYpdQziKMI+07PfZtlRq1Qg5u7bJU+ly86xe6UMvxjv4hp1uaS5SSY0vP4epk6gY
+ Fo0KiYQUceMOvS6ePbMGIJh/AwVsPZn3aZxY1Zt2KI324oU7N4js3VwQVjNzsqGlz7m+
+ 6+rBiOBAydkSqsZyTcNZzTy1bnOZF5D27//57mWGG+a663YGW3qgtuphCerWsA2NA5h8
+ PhT1bOzCBjfnaIl8T8Asy6PNor8EfucqpFvVbnwbBqcOtM9h614vi0OLFrlU6rCLQo80
+ f38g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688593219; x=1691185219;
+ d=1e100.net; s=20221208; t=1688593222; x=1691185222;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qoye68O0i1yEKW8VfAgtj15Ya8kYL4Awy2Enb7ifSQs=;
- b=EWgs7LQtbD9j1mSxhYMGRF78e6PCIIuDiQpsZTvX3KsTDdboPsEFfV+yBBue6uvn78
- 3nII4ISVporMpsXTdJ+dC+jJNLhk57uidN7jO9jBzlGE3dF33wISXoYD8GhsNmaJYUYB
- VZik61cNaEMMn33UXqrc0TW2lPCMHUPU8flMGfBIShJt0oF974kP62sFwQYuw17PF3Y4
- RxZCIotmAgNt0B+umW8lgK5AFHPW74yKdcRzYzJ0BW5xW/4W0cvBgba8suV1OAFEWzKt
- VQ2Yp3QihMvSZH20RycznuZwbqIk455fihoPHCPA/eKXmdAlnZrC1hxM3QjgLGkVAP3V
- n/2Q==
-X-Gm-Message-State: ABy/qLb2Rx4yFNK5382AOTExKRBxW3E3IFfczCY0LAZta7Q+BjBIV0al
- Kkd70LSkSgHjlb8gJzR9qdqf9pGusrLZgdOl7+E=
-X-Google-Smtp-Source: APBJJlF9XFirpjIOVtGBsQdZGiPcwYwx7Uw2nxpZP/GInFLlxk6ja8N+L7EIBQXKJRGbVdwQ18MjdQ==
-X-Received: by 2002:a05:6870:c152:b0:1b0:59dd:e265 with SMTP id
- g18-20020a056870c15200b001b059dde265mr218887oad.57.1688593219112; 
- Wed, 05 Jul 2023 14:40:19 -0700 (PDT)
+ bh=33KLGr0PYPhXh2aqp4GGNqlAtjUXgfgNTsUYRUiF5eg=;
+ b=Fgz6s/5Bg+wGyZMGXOMtrTqq3fHnbfrBGft7vc3sVi9eElT0lNCAu3SsSi7YremyMp
+ SQifVXqH4FoboFrU0ynGJtXjSuTlCSSsvdU7vARQOHIEzljIBGj5B1HjIRsS7EsjSx+9
+ uD/VBZXzwTjYd1+MOnJnD0Dm9EWG193xlWztXTVvuqiOYWvOSCEcuzbJCdtsYkizOstu
+ ItlDDx+ZgFx2+yrmW4UEgQgr8HSy6+hWH4LTEaUOz4eajfpLzM5tOptLyU4FgqDZZe1p
+ AYxG05NImLvnaF8mCbyPVP8wV76xpeY4FBxE8uB7MPdfW/rBfkseHvD8Ng1yiYI3Yz40
+ 1Vsg==
+X-Gm-Message-State: ABy/qLYYEkCc4NnGlVE8V7jE0my/NzUlS3SIDeNZT8ambjUpGoCUMC5x
+ p9C7oa9ELeIjdVHkgd6ltUAHnShDmVsxjfYmSVE=
+X-Google-Smtp-Source: APBJJlH9HavS4fPD7t3jCciMw0piff2l0fPDeDsjFepfzIRP5ptbLRfK7/4vf9DHDAvhjaa2pXONIw==
+X-Received: by 2002:a05:6870:ea01:b0:1b3:ef56:270b with SMTP id
+ g1-20020a056870ea0100b001b3ef56270bmr317806oap.29.1688593222378; 
+ Wed, 05 Jul 2023 14:40:22 -0700 (PDT)
 Received: from grind.. (201-69-66-110.dial-up.telesp.net.br. [201.69.66.110])
  by smtp.gmail.com with ESMTPSA id
- m1-20020a4add01000000b0056665a16536sm70764oou.30.2023.07.05.14.40.16
+ m1-20020a4add01000000b0056665a16536sm70764oou.30.2023.07.05.14.40.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jul 2023 14:40:18 -0700 (PDT)
+ Wed, 05 Jul 2023 14:40:21 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v8 05/20] target/riscv/cpu.c: restrict 'marchid' value
-Date: Wed,  5 Jul 2023 18:39:40 -0300
-Message-ID: <20230705213955.429895-6-dbarboza@ventanamicro.com>
+Subject: [PATCH v8 06/20] target/riscv: use KVM scratch CPUs to init KVM
+ properties
+Date: Wed,  5 Jul 2023 18:39:41 -0300
+Message-ID: <20230705213955.429895-7-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230705213955.429895-1-dbarboza@ventanamicro.com>
 References: <20230705213955.429895-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2a.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::35;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,132 +95,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'marchid' shouldn't be set to a different value as previously set for
-named CPUs.
+Certain validations, such as the validations done for the machine IDs
+(mvendorid/marchid/mimpid), are done before starting the CPU.
+Non-dynamic (named) CPUs tries to match user input with a preset
+default. As it is today we can't prefetch a KVM default for these cases
+because we're only able to read/write KVM regs after the vcpu is
+spinning.
 
-For all other CPUs it shouldn't be freely set either - the spec requires
-that 'marchid' can't have the MSB (most significant bit) set and every
-other bit set to zero, i.e. 0x80000000 is an invalid 'marchid' value for
-32 bit CPUs.
+Our target/arm friends use a concept called "scratch CPU", which
+consists of creating a vcpu for doing queries and validations and so on,
+which is discarded shortly after use [1]. This is a suitable solution
+for what we need so let's implement it in target/riscv as well.
 
-As with 'mimpid', setting a default value based on the current QEMU
-version is not a good idea because it implies that the CPU
-implementation changes from one QEMU version to the other. Named CPUs
-should set 'marchid' to a meaningful value instead, and generic CPUs can
-set to any valid value.
+kvm_riscv_init_machine_ids() will be used to do any pre-launch setup for
+KVM CPUs, via riscv_cpu_add_user_properties(). The function will create
+a KVM scratch CPU, fetch KVM regs that work as default values for user
+properties, and then discard the scratch CPU afterwards.
 
-For the 'veyron-v1' CPU this is the error thrown if 'marchid' is set to
-a different val:
+We're starting by initializing 'mvendorid'. This concept will be used to
+init other KVM specific properties in the next patches as well.
 
-$ ./build/qemu-system-riscv64 -M virt -nographic -cpu veyron-v1,marchid=0x80000000
-qemu-system-riscv64: can't apply global veyron-v1-riscv-cpu.marchid=0x80000000:
-    Unable to change veyron-v1-riscv-cpu marchid (0x8000000000010000)
+[1] target/arm/kvm.c, kvm_arm_create_scratch_host_vcpu()
 
-And, for generics CPUs, this is the error when trying to set to an
-invalid val:
-
-$ ./build/qemu-system-riscv64 -M virt -nographic -cpu rv64,marchid=0x8000000000000000
-qemu-system-riscv64: can't apply global rv64-riscv-cpu.marchid=0x8000000000000000:
-    Unable to set marchid with MSB (64) bit set and the remaining bits zero
-
+Suggested-by: Andrew Jones <ajones@ventanamicro.com>
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 60 ++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 53 insertions(+), 7 deletions(-)
+ target/riscv/cpu.c       |  6 +++
+ target/riscv/kvm.c       | 85 ++++++++++++++++++++++++++++++++++++++++
+ target/riscv/kvm_riscv.h |  1 +
+ 3 files changed, 92 insertions(+)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 477f8f8f97..9080d021fa 100644
+index 9080d021fa..0e1265bb17 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -39,11 +39,6 @@
- #include "tcg/tcg.h"
+@@ -1792,6 +1792,12 @@ static void riscv_cpu_add_user_properties(Object *obj)
+     Property *prop;
+     DeviceState *dev = DEVICE(obj);
  
- /* RISC-V CPU definitions */
--
--#define RISCV_CPU_MARCHID   ((QEMU_VERSION_MAJOR << 16) | \
--                             (QEMU_VERSION_MINOR << 8)  | \
--                             (QEMU_VERSION_MICRO))
--
- static const char riscv_single_letter_exts[] = "IEMAFDQCPVH";
++#ifndef CONFIG_USER_ONLY
++    if (kvm_enabled()) {
++        kvm_riscv_init_user_properties(obj);
++    }
++#endif
++
+     riscv_cpu_add_misa_properties(obj);
  
- struct isa_ext_data {
-@@ -1811,8 +1806,6 @@ static void riscv_cpu_add_user_properties(Object *obj)
- static Property riscv_cpu_properties[] = {
-     DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
- 
--    DEFINE_PROP_UINT64("marchid", RISCVCPU, cfg.marchid, RISCV_CPU_MARCHID),
--
- #ifndef CONFIG_USER_ONLY
-     DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
- #endif
-@@ -1959,6 +1952,56 @@ static void cpu_get_mimpid(Object *obj, Visitor *v, const char *name,
-     visit_type_bool(v, name, &value, errp);
+     for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index 0f932a5b96..37f0f70794 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -309,6 +309,91 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
+     env->kvm_timer_dirty = false;
  }
  
-+static void cpu_set_marchid(Object *obj, Visitor *v, const char *name,
-+                            void *opaque, Error **errp)
++typedef struct KVMScratchCPU {
++    int kvmfd;
++    int vmfd;
++    int cpufd;
++} KVMScratchCPU;
++
++/*
++ * Heavily inspired by kvm_arm_create_scratch_host_vcpu()
++ * from target/arm/kvm.c.
++ */
++static bool kvm_riscv_create_scratch_vcpu(KVMScratchCPU *scratch)
 +{
-+    bool dynamic_cpu = riscv_cpu_is_dynamic(obj);
-+    RISCVCPU *cpu = RISCV_CPU(obj);
-+    uint64_t prev_val = cpu->cfg.marchid;
-+    uint64_t value, invalid_val;
-+    uint32_t mxlen = 0;
++    int kvmfd = -1, vmfd = -1, cpufd = -1;
 +
-+    if (!visit_type_uint64(v, name, &value, errp)) {
-+        return;
++    kvmfd = qemu_open_old("/dev/kvm", O_RDWR);
++    if (kvmfd < 0) {
++        goto err;
++    }
++    do {
++        vmfd = ioctl(kvmfd, KVM_CREATE_VM, 0);
++    } while (vmfd == -1 && errno == EINTR);
++    if (vmfd < 0) {
++        goto err;
++    }
++    cpufd = ioctl(vmfd, KVM_CREATE_VCPU, 0);
++    if (cpufd < 0) {
++        goto err;
 +    }
 +
-+    if (!dynamic_cpu && prev_val != value) {
-+        error_setg(errp, "Unable to change %s marchid (0x%" PRIu64 ")",
-+                   object_get_typename(obj), prev_val);
-+        return;
++    scratch->kvmfd =  kvmfd;
++    scratch->vmfd = vmfd;
++    scratch->cpufd = cpufd;
++
++    return true;
++
++ err:
++    if (cpufd >= 0) {
++        close(cpufd);
++    }
++    if (vmfd >= 0) {
++        close(vmfd);
++    }
++    if (kvmfd >= 0) {
++        close(kvmfd);
 +    }
 +
-+    switch (riscv_cpu_mxl(&cpu->env)) {
-+    case MXL_RV32:
-+        mxlen = 32;
-+        break;
-+    case MXL_RV64:
-+    case MXL_RV128:
-+        mxlen = 64;
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    invalid_val = 1LL << (mxlen - 1);
-+
-+    if (value == invalid_val) {
-+        error_setg(errp, "Unable to set marchid with MSB (%u) bit set "
-+                         "and the remaining bits zero", mxlen);
-+        return;
-+    }
-+
-+    cpu->cfg.marchid = value;
++    return false;
 +}
 +
-+static void cpu_get_marchid(Object *obj, Visitor *v, const char *name,
-+                           void *opaque, Error **errp)
++static void kvm_riscv_destroy_scratch_vcpu(KVMScratchCPU *scratch)
 +{
-+    bool value = RISCV_CPU(obj)->cfg.marchid;
-+
-+    visit_type_bool(v, name, &value, errp);
++    close(scratch->cpufd);
++    close(scratch->vmfd);
++    close(scratch->kvmfd);
 +}
 +
- static void riscv_cpu_class_init(ObjectClass *c, void *data)
- {
-     RISCVCPUClass *mcc = RISCV_CPU_CLASS(c);
-@@ -1996,6 +2039,9 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
-     object_class_property_add(c, "mimpid", "uint64", cpu_get_mimpid,
-                               cpu_set_mimpid, NULL, NULL);
++static void kvm_riscv_init_machine_ids(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
++{
++    CPURISCVState *env = &cpu->env;
++    struct kvm_one_reg reg;
++    int ret;
++
++    reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
++                              KVM_REG_RISCV_CONFIG_REG(mvendorid));
++    reg.addr = (uint64_t)&cpu->cfg.mvendorid;
++    ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
++    if (ret != 0) {
++        error_report("Unable to retrieve mvendorid from host, error %d", ret);
++    }
++}
++
++void kvm_riscv_init_user_properties(Object *cpu_obj)
++{
++    RISCVCPU *cpu = RISCV_CPU(cpu_obj);
++    KVMScratchCPU kvmcpu;
++
++    if (!kvm_riscv_create_scratch_vcpu(&kvmcpu)) {
++        return;
++    }
++
++    kvm_riscv_init_machine_ids(cpu, &kvmcpu);
++
++    kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
++}
++
+ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
+     KVM_CAP_LAST_INFO
+ };
+diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+index ed281bdce0..e3ba935808 100644
+--- a/target/riscv/kvm_riscv.h
++++ b/target/riscv/kvm_riscv.h
+@@ -19,6 +19,7 @@
+ #ifndef QEMU_KVM_RISCV_H
+ #define QEMU_KVM_RISCV_H
  
-+    object_class_property_add(c, "marchid", "uint64", cpu_get_marchid,
-+                              cpu_set_marchid, NULL, NULL);
-+
-     device_class_set_props(dc, riscv_cpu_properties);
- }
++void kvm_riscv_init_user_properties(Object *cpu_obj);
+ void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+ void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
  
 -- 
 2.41.0
