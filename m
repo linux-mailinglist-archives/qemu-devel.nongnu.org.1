@@ -2,100 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80777486F2
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 16:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FE97486F7
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 16:55:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH3tY-0000jt-3l; Wed, 05 Jul 2023 10:54:16 -0400
+	id 1qH3tr-00012Q-Mq; Wed, 05 Jul 2023 10:54:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1qH3tV-0000gP-Ku; Wed, 05 Jul 2023 10:54:13 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1qH3tp-00010M-QM; Wed, 05 Jul 2023 10:54:33 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1qH3tT-00052r-F6; Wed, 05 Jul 2023 10:54:13 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ id 1qH3tn-0005C3-UE; Wed, 05 Jul 2023 10:54:33 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 365EkBCB014718; Wed, 5 Jul 2023 14:54:06 GMT
+ 365ElGfa025131; Wed, 5 Jul 2023 14:54:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=n1/8lltmCTysSv23G8HWDNHgfSq6dTdqvlU8wPtKpMc=;
- b=BmOXEsDj9Sn6MnhrBJZzgkhHwD9WNH+z+Qy0wTW1GighjW1ojsK6W+vsrwSL3AUD6r+h
- 7LD097vMsKdisfT8GOEuNBrDKryoYMDuVeLbTMenHOBaf3Xa4Sq/DXPQX8F5n55WEqPa
- nIiNWmo7QjBipw3BeV8REG/LhDNB/sVndKnMA2kvx344/KP2QtojxYfLvv4ye54CljKX
- yt0ZgwUc9rl1hI1MxPRtkH2FHnkjXTs3L5aUYEKBb8OfDEhVaUFr/sngtMeerL8zfIHM
- PAOD8+rfPrmUaXEUOTX+UyILI7p7l4p1EbCF5UtndvCdlHsSsOg2+ggd71AJwBJsJLk/ kg== 
+ bh=5EcbGLiAS27e6YrPvxrZ/zZwp5TJxanTNX8WdJ0MeSE=;
+ b=G/uMO4dhAFSvk+tsWtjWU4PJEEo3E0EKt+bilesKMnDW45ZKf1SSGE3kwSUeYZZ17cU6
+ jQDnQzbGG8FHsP3A3rlcG0QtU8iTHYTVk2UB1VRvr13nsN5p5Wev4Jd3ZPi2dUqWibCe
+ Ur9XfVa8ND7whnbeARKYekfo5CWlZy6rrN7pTi7jnuk6DNcK2oTxIVhN02l8VY2A3jU7
+ 1yHORxdWxsMsEzP194D8egMKIdXgCgKZtP42gQWlbTSf8CixJzcB6N+/xNI7VgDZsc+k
+ 5/WEpxvL/fuDGVsUeiI3MXklz7Tgju/7oN8l2alHOCDFeZwz1lr+w3QZMDrjOp29jRY9 XQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnajp871v-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnak4074y-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jul 2023 14:54:06 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 365EkPkP015205;
- Wed, 5 Jul 2023 14:54:05 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnajp871h-1
+ Wed, 05 Jul 2023 14:54:27 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 365EnijE004352;
+ Wed, 5 Jul 2023 14:54:26 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rnak4074e-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jul 2023 14:54:05 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 365CPqBB029952;
- Wed, 5 Jul 2023 14:54:05 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
- by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3rjbs5yh90-1
+ Wed, 05 Jul 2023 14:54:26 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 365CKgve016327;
+ Wed, 5 Jul 2023 14:54:25 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
+ by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3rjbs6fee3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jul 2023 14:54:05 +0000
+ Wed, 05 Jul 2023 14:54:25 +0000
 Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
  [10.39.53.228])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 365Es3qC56033612
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 365EsO7459638240
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 5 Jul 2023 14:54:03 GMT
+ Wed, 5 Jul 2023 14:54:24 GMT
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 52CC858066;
- Wed,  5 Jul 2023 14:54:03 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2807B58059;
+ Wed,  5 Jul 2023 14:54:24 +0000 (GMT)
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7618E5804B;
- Wed,  5 Jul 2023 14:54:02 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 14E5658063;
+ Wed,  5 Jul 2023 14:54:23 +0000 (GMT)
 Received: from [9.61.162.136] (unknown [9.61.162.136])
  by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  5 Jul 2023 14:54:02 +0000 (GMT)
-Message-ID: <497815d2-27ce-fa08-c835-f2245f79bacb@linux.ibm.com>
-Date: Wed, 5 Jul 2023 10:54:01 -0400
+ Wed,  5 Jul 2023 14:54:22 +0000 (GMT)
+Message-ID: <96628b6b-a9e9-c817-7d2a-211bb47f5eb5@linux.ibm.com>
+Date: Wed, 5 Jul 2023 10:54:22 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2] kconfig: Add PCIe devices to s390x machines
+Subject: Re: [PATCH 1/2] block/file-posix: fix g_file_get_contents return path
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>
-References: <20230704120137.2604646-1-clg@redhat.com>
- <6fb9e146-7ace-0db6-305b-f6fc135878c1@linaro.org>
- <149fdc25-f88d-67f5-f409-8ea2299e41ef@redhat.com>
- <bf100be6-2b22-f45d-3479-f8ce50cfdf76@linaro.org>
+To: Sam Li <faithilikerun@gmail.com>, qemu-devel@nongnu.org
+Cc: dlemoal@kernel.org, dmitry.fomichev@wdc.com, stefanha@redhat.com,
+ hare@suse.de, qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>
+References: <20230604061658.49004-1-faithilikerun@gmail.com>
 From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <bf100be6-2b22-f45d-3479-f8ce50cfdf76@linaro.org>
+In-Reply-To: <20230604061658.49004-1-faithilikerun@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ZT5rmEd3y-o7SJ9_qvOCX7G8jNwnZQFM
-X-Proofpoint-ORIG-GUID: E0Hn83LqQCwatOCx6IKJe4EkDKnFS7Bs
+X-Proofpoint-ORIG-GUID: mkr8JAmKGqw4c0vUIL-lwridoB6D7iyN
+X-Proofpoint-GUID: rjQpk0Km68f0hNEaI8LCZLH9gmZrhNBV
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-05_06,2023-07-05_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 spamscore=0 malwarescore=0 clxscore=1011 phishscore=0
- mlxlogscore=941 mlxscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ spamscore=0
+ lowpriorityscore=0 impostorscore=0 clxscore=1011 suspectscore=0 mlxscore=0
+ adultscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2307050131
-Received-SPF: pass client-ip=148.163.156.1;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0a-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.158.5;
+ envelope-from=mjrosato@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -118,71 +115,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/4/23 9:33 AM, Philippe Mathieu-Daudé wrote:
-> On 4/7/23 14:32, Cédric Le Goater wrote:
->> On 7/4/23 14:09, Philippe Mathieu-Daudé wrote:
->>> On 4/7/23 14:01, Cédric Le Goater wrote:
->>>> It is useful to extend the number of available PCI devices to KVM guests
->>>> for passthrough scenarios and also to expose these models to a different
->>>> (big endian) architecture. Include models for Intel Ethernet adapters
->>>> and one USB controller, which all support MSI-X. Devices only supporting
->>>> INTx won't work on s390x.
->>>>
->>>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->>>> ---
->>>>
->>>>   Tested under KVM as a machine device, under KVM nested as a passthrough
->>>>   device
->>>>
->>>>   hw/s390x/Kconfig | 4 ++++
->>>>   1 file changed, 4 insertions(+)
->>>>
->>>> diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
->>>> index 5e7d8a2bae8b..7a82c58cdf6e 100644
->>>> --- a/hw/s390x/Kconfig
->>>> +++ b/hw/s390x/Kconfig
->>>> @@ -10,3 +10,7 @@ config S390_CCW_VIRTIO
->>>>       select SCLPCONSOLE
->>>>       select VIRTIO_CCW
->>>>       select MSI_NONBROKEN
->>>> +    imply PCI_EXPRESS
->>>
->>> No, PCIe is a bus, which is implemented in s390-pci-bus.c;
->>> S390_CCW_VIRTIO exposes this bus, so we Kconfig SELECT it.
->>>
->>>> +    imply E1000E_PCI_EXPRESS
->>>> +    imply IGB_PCI_EXPRESS
->>>> +    imply USB_XHCI_PCI
->>>
->>> These are devices you can plug on a PCIe bus, so Kconfig
->>> IMPLY is correct.
->>
->> If I understand correctly, this should be ?
->>
->> @@ -5,8 +5,11 @@ config S390_CCW_VIRTIO
->>       imply VFIO_AP
->>       imply VFIO_CCW
->>       imply WDT_DIAG288
->> -    select PCI
->> +    select PCI_EXPRESS
->>       select S390_FLIC
->>       select SCLPCONSOLE
->>       select VIRTIO_CCW
->>       select MSI_NONBROKEN
->> +    imply E1000E_PCI_EXPRESS
->> +    imply IGB_PCI_EXPRESS
->> +    imply USB_XHCI_PCI
+On 6/4/23 2:16 AM, Sam Li wrote:
+> The g_file_get_contents() function returns a g_boolean. If it fails, the
+> returned value will be 0 instead of -1. Solve the issue by skipping
+> assigning ret value.
 > 
-> This is how I'd write this patch. Note I have zero knowledge of zPCI.
+> This issue was found by Matthew Rosato using virtio-blk-{pci,ccw} backed
+> by an NVMe partition e.g. /dev/nvme0n1p1 on s390x.
 > 
+> Signed-off-by: Sam Li <faithilikerun@gmail.com>
 
-Indeed, our s390x PCI emulation is lacking in some places (e.g. missing legacy interrupts as Thomas indicated in a prior thread) so we want to be selective about what we enable.  
-
-I have no strong objection to adding them as long as you've tested them.
-
-Based on the above comments, will there be a v3?  I don't have the imply'd devices readily available for test but I did do some passthrough and virtio sanity-testing with s390x hardware to make sure this changes doesn't regress anything there.  I used the diff just above (select PCI_EXPRESS + imply*3)
+Polite ping on this patch -- this issue still exists in master as of today and this patch resolves it for me.  Just want to make sure it gets into 8.1
 
 Thanks,
 Matt
+
+> ---
+>  block/file-posix.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/block/file-posix.c b/block/file-posix.c
+> index ac1ed54811..0d9d179a35 100644
+> --- a/block/file-posix.c
+> +++ b/block/file-posix.c
+> @@ -1232,7 +1232,6 @@ static int hdev_get_max_hw_transfer(int fd, struct stat *st)
+>  static int get_sysfs_str_val(struct stat *st, const char *attribute,
+>                               char **val) {
+>      g_autofree char *sysfspath = NULL;
+> -    int ret;
+>      size_t len;
+>  
+>      if (!S_ISBLK(st->st_mode)) {
+> @@ -1242,8 +1241,7 @@ static int get_sysfs_str_val(struct stat *st, const char *attribute,
+>      sysfspath = g_strdup_printf("/sys/dev/block/%u:%u/queue/%s",
+>                                  major(st->st_rdev), minor(st->st_rdev),
+>                                  attribute);
+> -    ret = g_file_get_contents(sysfspath, val, &len, NULL);
+> -    if (ret == -1) {
+> +    if (!g_file_get_contents(sysfspath, val, &len, NULL)) {
+>          return -ENOENT;
+>      }
+>  
+> @@ -1253,7 +1251,7 @@ static int get_sysfs_str_val(struct stat *st, const char *attribute,
+>      if (*(p + len - 1) == '\n') {
+>          *(p + len - 1) = '\0';
+>      }
+> -    return ret;
+> +    return 0;
+>  }
+>  #endif
+>  
 
 
