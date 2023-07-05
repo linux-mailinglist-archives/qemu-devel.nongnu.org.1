@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D96B674863D
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 16:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EFC0748659
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 16:29:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH3Q6-0007pf-26; Wed, 05 Jul 2023 10:23:50 -0400
+	id 1qH3Uf-0000WF-7o; Wed, 05 Jul 2023 10:28:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH3Q3-0007pH-KB
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:23:47 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qH3UZ-0000Vj-CA
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:28:28 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH3Q2-000737-3j
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:23:47 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3143b88faebso3028882f8f.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 07:23:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qH3UX-0007uC-0Z
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:28:27 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4faaaa476a9so10988908e87.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 07:28:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688567024; x=1691159024;
+ d=linaro.org; s=google; t=1688567302; x=1691159302;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=/w8C0TsFl/0Df7MloHT0i76ryBfelfU3M9Pi4ntb0Kc=;
- b=dIXG+ZcQhSHUcAzIuv5A/JB1zxcTgFpft/v9r2r+IUSOcawIxiB1CxmFDoJZtn6B6b
- TIsNOcdRFs44d4JSxTwW+hcJSS24576u1CCDEqYyQJMkxdrmPHNESYfivw9wEbjdP5Un
- dcOBYcBvzZf7RJFYyjzthph9pPdLkpK40dwPC50v+5EKwQbqY7u6BnLugFdHtGrD977C
- qei2aglykNDtXcZ+c/jf2Frhk7PlE9V0HXa/bX+p6AAj64/4qf5a2m38isANdozl9ALg
- qaOjO/dDe+U/bIeHiUxqiLdlXF+cYLKFPkYT5UF3FPcJypoaVr+y7Er5cxmG6oGzGR1L
- 0OEQ==
+ bh=PDPOmokUF2beJm8ie2U23bitmWIjV59/u3PFgyn9hms=;
+ b=EurDq2Skxz8vTmIDbDDA+tM2SeT5Ejmbca/WCEoHELiW0kbVw2WfYDyoeNPcmfAn58
+ p/2MMV46jn03Mu27IHlF55nb0TiX+8xfZw0JlnQBljtc6DSnCsGe+6C7f6xJoFlHsxOt
+ fnvGAg7IIgV//de93K3FPbFTXdBVVVXoX6lZeaG5WO/yYEXs7K8GBOmpFoaq6srpJU36
+ F+bZqmzUu+AXPMSqDuUh6VHWGbYt8FI6779QBjTZnF5qDFHMHpE6zjDbTtt2snmv5dBq
+ mzZvvcqVGBpE/Uls8GwN5RVakUMfrcHCSGY688vjgnNFWZBCYdrAKu2mSX20ceyjL9H2
+ 71Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688567024; x=1691159024;
+ d=1e100.net; s=20221208; t=1688567302; x=1691159302;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/w8C0TsFl/0Df7MloHT0i76ryBfelfU3M9Pi4ntb0Kc=;
- b=SsHuRk+5c/IZV1wqjnJMj2Q3ZyU+VTyx6r26OCLYOofTIec9vuY9wHpdiAoduiDXs8
- ht2JVP+Axb9I2Fu63SLK/qfd0Gyr+GFNxI53Dw5Yh83o6arXbLrjWFBvHqOd8Z+wslsx
- puV0Fp8vfx9rOxaC4X4+arPGnbmLeTPv7ZVaVWXm/wAIJOUSm7uUPkerc1BfFgVqlGlK
- D4VatRAqe5PhDnj3FLEWm73JXBoTYLHEU31N5QHkw+QdyhmV9KwLPvyu8VYZXjVoTOO6
- mVmP5PQGXk4kcXSE6ze02E55H6OnryMDN1wb5i9VjX2/JRcMJJQUJRKSLPTF2E5LJePW
- rNdQ==
-X-Gm-Message-State: ABy/qLbK44bGidTNoQAU/rEXdIcJZdQMW4P0AEI2UWvGftuHr45PBmn6
- AnrS0R9DA33cnjkKD1B11dIa4w==
-X-Google-Smtp-Source: APBJJlEgNFwGMENBmERZV+6pWWcYNH4DwHsrdtMzQpVPC5MGB50tkVogWoWp/y79SK/OxmmZGpy6vg==
-X-Received: by 2002:adf:fc4e:0:b0:313:f9a0:c530 with SMTP id
- e14-20020adffc4e000000b00313f9a0c530mr16918319wrs.52.1688567023823; 
- Wed, 05 Jul 2023 07:23:43 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.142.96])
+ bh=PDPOmokUF2beJm8ie2U23bitmWIjV59/u3PFgyn9hms=;
+ b=J7b8UZso49RCTm+OlglwHZxlSkV+sFtjb5BW1CadN2B1kwPr606Roa4Hq5utBqyv8O
+ 40EGqurqpJqhf2976rtA3cWK2CN+fJLhQKuAkMPpSYCD+WCN3kHjH6kZ+ISQTolG75zU
+ cal6nmwEJapQ2KocJje3ntSIKc9AXvgHwC201fdZnWh3x/Xu2+R/tehCZqmTnSxAbEdH
+ P4VMJ4GErQJ5wI/Sq5eEYDCuPn/Y4qqoxyEUtt6TI3qdJvPlpfeTExvfs29vhCjnOCoH
+ 3Evek04SY3gJDJrPhVjRpIWzxuAiQ93j83TY3UAU40u/7hd1cZ5UY+RSCFePHlH+E4Bm
+ HPvg==
+X-Gm-Message-State: ABy/qLYZ2E6NVkZS9usfX1AvXSmL5gzCfltlpESt25bn8i47T5U1TJVi
+ au6NX1BGyd/eLQkbye+oOqULPw==
+X-Google-Smtp-Source: APBJJlHADc0w15Z0H+W3AkiHOAh9shvM4XDRnWgSKZK8bp/J0jEOlMp/EPPiBVKrKOko21SLlDn7tg==
+X-Received: by 2002:a2e:91ce:0:b0:2b6:9871:21b0 with SMTP id
+ u14-20020a2e91ce000000b002b6987121b0mr12033616ljg.36.1688567302557; 
+ Wed, 05 Jul 2023 07:28:22 -0700 (PDT)
+Received: from [192.168.82.227] ([91.223.100.51])
  by smtp.gmail.com with ESMTPSA id
- b3-20020a056000054300b002c70ce264bfsm31407155wrf.76.2023.07.05.07.23.40
+ z11-20020a2e7e0b000000b002b6ff6e7dccsm330689ljc.26.2023.07.05.07.28.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 07:23:43 -0700 (PDT)
-Message-ID: <7afd7d7c-fdc8-3853-01ff-a085a52395bc@linaro.org>
-Date: Wed, 5 Jul 2023 16:23:37 +0200
+ Wed, 05 Jul 2023 07:28:22 -0700 (PDT)
+Message-ID: <2a4fc15a-10fb-8b44-ce98-63e704d10d9a@linaro.org>
+Date: Wed, 5 Jul 2023 16:28:15 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] meson.build: Skip C++ detection unless we're targeting
- Windows
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 02/37] tests/multiarch: Add test-aes
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20230705133639.146073-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230705133639.146073-1-thuth@redhat.com>
+To: =?UTF-8?Q?Christoph_M=c3=bcllner?= <christoph.muellner@vrull.eu>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
+ pbonzini@redhat.com, eduardo@habkost.net, alistair.francis@wdc.com,
+ danielhb413@gmail.com, =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20230703100520.68224-1-richard.henderson@linaro.org>
+ <20230703100520.68224-3-richard.henderson@linaro.org>
+ <CAEg0e7hqkof1N9ymmkopPpEP8P+cnUJ=qr365dxHgUQaRPvvgQ@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAEg0e7hqkof1N9ymmkopPpEP8P+cnUJ=qr365dxHgUQaRPvvgQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,16 +98,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/7/23 15:36, Thomas Huth wrote:
-> The only C++ code that we currently still have in the repository
-> is the code in qga/vss-win32/ - so we can skip the C++ detection
-> unless we are compiling binaries for Windows.
+On 7/3/23 14:08, Christoph Müllner wrote:
+>> +config-cc.mak: Makefile
+>> +       $(quiet-@)( \
+>> +           $(call cc-option,-mrv64g_zk, CROSS_CC_HAS_ZK) \
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   meson.build | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> I think this should be "-march=rv64g_zk" instead of "-mrv64g_zk"
+> Otherwise this will always fail.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+*shrug* FWIW, something built for me...
 
+> 
+> But I would drop this gating mechanism and use the idea that you
+> proposed for Zfa:
+
+... however, you're right, I should be using .insn here.
+Thanks for the translations, I've c-n-p'd them in.
+
+
+r~
 
