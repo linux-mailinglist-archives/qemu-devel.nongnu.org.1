@@ -2,88 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7050074904A
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 23:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A475749055
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 23:55:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHAQA-0006Ee-Ei; Wed, 05 Jul 2023 17:52:22 -0400
+	id 1qHASU-0007CU-F1; Wed, 05 Jul 2023 17:54:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qHAQ8-0006CT-2x; Wed, 05 Jul 2023 17:52:20 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qHASR-0007C1-S2
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 17:54:43 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qHAQ6-0008OI-1d; Wed, 05 Jul 2023 17:52:19 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-313f3a6db22so8143842f8f.3; 
- Wed, 05 Jul 2023 14:52:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688593936; x=1691185936;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yJFMedWlKTyOeWNPiP/B80aG4j9davYW0IAez2buqhA=;
- b=rkwQITE4R6sww5tVR5pG72lECjHlHXawTsexqL23TADbxL4pTW/cVOjeDfIOa57aLb
- E0BDemB8yF0hQdkDcNzUkb1OAqAbb7ePFdSG+P49U36Rkeo9VDfCgCxXmpOuogkQe6Ah
- s/SGQn4qFMMv8sTk8lu//uzvf57K3MSOq1meMretIZbSpZWHHONcC9FnIyhu9XGDNPed
- VddQcUv+S6BNNSxrdA8muVpad3WKCwFP7JpR2m5RIjH90Tj3p7jgJO6iEXJsh/I3rgWU
- x08OR/+Rz038pbEmNlXWHwuJmbEZ9rwJRuMtDe8YCf6l5zAP3YZL4xbYaOD3queZ9ls8
- 5bzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688593936; x=1691185936;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yJFMedWlKTyOeWNPiP/B80aG4j9davYW0IAez2buqhA=;
- b=OZ4kFcJS3LxIN1uQ/jCCEvyjMFdRriKzGk2KPLUuzLIgffST7NQyTUuLWDFcA3Uazk
- 6LLU0P3mGLtYvi3XAZ4B2HczhxKfsc4CRqOByZgH6icFuzC8TCo0OMoMfnnElVR9iKgi
- qtbs9SQzITPNs5mxoKtjJoaaCGjH6i4EcGkTwmN7143w78NNc4XSKZZQPQFZTERZXiOh
- dg+ZtS4B63G8qMcDeogGtsu6KZKaFK9tr/C/N88VzmDnI4mRrda0Uj78TQhbDjbbKL5G
- /ESoodm92d+LTJNSsigxGGXwBXktT27rx3GSHdJB4UgEHfUGBAje1KjB0FiBJzyviBE+
- lp2g==
-X-Gm-Message-State: ABy/qLaX6t1zLyDa8r7ve5VuHK1oZVcSoPyZxAz4/fZZPE6LkpKAxZKf
- oL/kdDikyi9+SMjazD+TSrw=
-X-Google-Smtp-Source: APBJJlHk6NQ7YMrzLxOxfabGiKqAyMoCs/2S/6gDwhx9aFpqwuHXohRPex3OimrF17pWKB0lemh57g==
-X-Received: by 2002:adf:e40d:0:b0:314:13e2:2f78 with SMTP id
- g13-20020adfe40d000000b0031413e22f78mr15480469wrm.44.1688593935563; 
- Wed, 05 Jul 2023 14:52:15 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-011-052-236.77.11.pool.telefonica.de.
- [77.11.52.236]) by smtp.gmail.com with ESMTPSA id
- y18-20020adff152000000b003141a3c4353sm93101wro.30.2023.07.05.14.52.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 14:52:15 -0700 (PDT)
-Date: Wed, 05 Jul 2023 21:52:05 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Olaf Hering <olaf@aepfle.de>, Paolo Bonzini <pbonzini@redhat.com>
-CC: qemu-devel@nongnu.org,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Lev Kujawski <lkujaw@member.fsf.org>,
- qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v2] hw/ide/piix: properly initialize the BMIBA register
-In-Reply-To: <20230705120121.4f353ba6.olaf@aepfle.de>
-References: <20230701174659.10246-1-olaf@aepfle.de>
- <62EDA748-11A3-473F-913D-F9464335A382@gmail.com>
- <20230703095929.6e793dcf.olaf@aepfle.de>
- <93902CB6-7A6E-49E5-A55F-432C6B4BC00F@gmail.com>
- <dded4d33-d64f-9369-0742-a57a1e173153@redhat.com>
- <20230705120121.4f353ba6.olaf@aepfle.de>
-Message-ID: <3FF0EBC1-F1F8-4D1D-91DC-904DB287C887@gmail.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qHASQ-0000xS-AE
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 17:54:43 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 5FBC621F3E;
+ Wed,  5 Jul 2023 21:54:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1688594080; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5CCCffy8ynJl/oQU+chXPWdPGzu/o82Sk1hhBkw29/U=;
+ b=ZnkwRpjvhoNUz43ATcaCFwH9XJ3f6d53j+ZDQcjBRVi/H/8XHmh93ozSyJ5L+Zxqjx3ArR
+ 3zE1wQ5fhLcPYtDmEOziUvmXV/fENddJg+WHlL2vbEf86dCg2d+zmvQzTPJOpfcyZnFw/D
+ XFb3HSGRgfKCd1LqwSeOj0e9wv0zd3U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1688594080;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5CCCffy8ynJl/oQU+chXPWdPGzu/o82Sk1hhBkw29/U=;
+ b=UH6BiT2Y2PrvEY1KFmmMj26uIvOmghceUUdz0PtUMLq81nG996HsVoOK3G1BlykkHU8N+o
+ nF3am7+Z1IcYrHBg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E09A9134F3;
+ Wed,  5 Jul 2023 21:54:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id H6L4J5/mpWQ0VAAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 05 Jul 2023 21:54:39 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: Leonardo Bras Soares Passos <lsoaresp@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Lukas Straub <lukasstraub2@web.de>, Laszlo Ersek
+ <lersek@redhat.com>, peterx@redhat.com
+Subject: Re: [PATCH v2 6/7] qemufile: Always return a verbose error
+In-Reply-To: <20230705163502.331007-7-peterx@redhat.com>
+References: <20230705163502.331007-1-peterx@redhat.com>
+ <20230705163502.331007-7-peterx@redhat.com>
+Date: Wed, 05 Jul 2023 18:54:37 -0300
+Message-ID: <87bkgq3tya.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,80 +84,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Peter Xu <peterx@redhat.com> writes:
 
-
-Am 5=2E Juli 2023 10:01:21 UTC schrieb Olaf Hering <olaf@aepfle=2Ede>:
->Tue, 4 Jul 2023 08:38:33 +0200 Paolo Bonzini <pbonzini@redhat=2Ecom>:
+> There're a lot of cases where we only have an errno set in last_error but
+> without a detailed error description.  When this happens, try to generate
+> an error contains the errno as a descriptive error.
 >
->> I agree that calling pci_device_reset() would be a better match for=20
->> pci_xen_ide_unplug()=2E
+> This will be helpful in cases where one relies on the Error*.  E.g.,
+> migration state only caches Error* in MigrationState.error.  With this,
+> we'll display correct error messages in e.g. query-migrate when the error
+> was only set by qemu_file_set_error().
 >
->This change works as well:
-
-Nice!
-
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  migration/qemu-file.c | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
 >
->--- a/hw/i386/xen/xen_platform=2Ec
->+++ b/hw/i386/xen/xen_platform=2Ec
->@@ -164,8 +164,9 @@ static void pci_unplug_nics(PCIBus *bus)
->  *
->  * [1] https://xenbits=2Exen=2Eorg/gitweb/?p=3Dxen=2Egit;a=3Dblob;f=3Ddo=
-cs/misc/hvm-emulated-unplug=2Epandoc
->  */
->-static void pci_xen_ide_unplug(DeviceState *dev, bool aux)
->+static void pci_xen_ide_unplug(PCIDevice *d, bool aux)
-> {
->+    DeviceState *dev =3D DEVICE(d);
->     PCIIDEState *pci_ide;
->     int i;
->     IDEDevice *idedev;
->@@ -195,7 +196,7 @@ static void pci_xen_ide_unplug(DeviceState *dev, bool=
- aux)
->             blk_unref(blk);
->         }
->     }
->-    device_cold_reset(dev);
->+    pci_device_reset(d);
-> }
->=20
-> static void unplug_disks(PCIBus *b, PCIDevice *d, void *opaque)
->@@ -210,7 +211,7 @@ static void unplug_disks(PCIBus *b, PCIDevice *d, voi=
-d *opaque)
->=20
->     switch (pci_get_word(d->config + PCI_CLASS_DEVICE)) {
->     case PCI_CLASS_STORAGE_IDE:
->-        pci_xen_ide_unplug(DEVICE(d), aux);
->+        pci_xen_ide_unplug(d, aux);
->         break;
->=20
->     case PCI_CLASS_STORAGE_SCSI:
->--- a/hw/ide/piix=2Ec
->+++ b/hw/ide/piix=2Ec
->@@ -118,7 +118,6 @@ static void piix_ide_reset(DeviceState *dev)
->     pci_set_word(pci_conf + PCI_COMMAND, 0x0000);
->     pci_set_word(pci_conf + PCI_STATUS,
->                  PCI_STATUS_DEVSEL_MEDIUM | PCI_STATUS_FAST_BACK);
->-    pci_set_byte(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
+> diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+> index acc282654a..419b4092e7 100644
+> --- a/migration/qemu-file.c
+> +++ b/migration/qemu-file.c
+> @@ -156,15 +156,24 @@ void qemu_file_set_hooks(QEMUFile *f, const QEMUFileHooks *hooks)
+>   *
+>   * Return negative error value if there has been an error on previous
+>   * operations, return 0 if no error happened.
+> - * Optional, it returns Error* in errp, but it may be NULL even if return value
+> - * is not 0.
+>   *
+> + * If errp is specified, a verbose error message will be copied over.
+>   */
+>  int qemu_file_get_error_obj(QEMUFile *f, Error **errp)
+>  {
+> +    if (!f->last_error) {
+> +        return 0;
+> +    }
+> +
+> +    /* There is an error */
+>      if (errp) {
+> -        *errp = f->last_error_obj ? error_copy(f->last_error_obj) : NULL;
+> +        if (f->last_error_obj) {
+> +            *errp = error_copy(f->last_error_obj);
+> +        } else {
+> +            error_setg_errno(errp, -f->last_error, "Channel error");
 
-I wonder if we should fix this line rather than dropping it=2E pci_device_=
-reset() calls pci_reset_regions() which unconditionally clears all BARs to =
-zero=2E While that works for PIIX IDE the VIA IDE device model intends to s=
-et BARs to the IDE compatibility addresses during reset but pci_reset_regio=
-ns() overwrites it with zeroes again=2E So I wonder if pci_reset_regions() =
-should be dropped such that pci_update_mappings() resets the BARs to whatev=
-er they were set in reset=2E
+There are a couple of places that do:
 
-Of course this won't be an easy change but I wonder if it was more correct=
-, especially since there seems to be no way to have the device model have t=
-he last word=2E Any opinions/suggestions?
+    ret = vmstate_save(f, se, ms->vmdesc);
+    if (ret) {
+        qemu_file_set_error(f, ret);
+        break;
+    }
 
-Thanks,
-Bernhard
+and vmstate_save() can return > 0 on error. This would make this message
+say "Unknown error". This is minor.
 
-> }
->=20
-> static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
->
->
->Olaf
+But take a look at qemu_fclose(). It can return f->last_error while the
+function documentation says it should return negative on error.
+
+Should we make qemu_file_set_error() check 'ret' and always set a
+negative value for f->last_error?
 
