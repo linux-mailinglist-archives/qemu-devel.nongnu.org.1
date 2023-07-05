@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D500748822
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 17:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 957A2748823
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 17:35:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH4Wi-0001Kf-LA; Wed, 05 Jul 2023 11:34:44 -0400
+	id 1qH4XI-0002sn-Dk; Wed, 05 Jul 2023 11:35:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH4We-0001Ir-9d
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:34:40 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ id 1qH4XF-0002s1-Ss
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:35:18 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH4Wc-0007Gh-JC
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:34:39 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4fb96e2b573so11160419e87.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 08:34:38 -0700 (PDT)
+ id 1qH4XE-0007am-0p
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:35:17 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2b6f97c7115so28557971fa.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 08:35:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688571277; x=1691163277;
+ d=linaro.org; s=google; t=1688571314; x=1691163314;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=YRT1GNxZuXOH+ykrEwU9JPtek3gcjBVtoTfvmbKMxjI=;
- b=PcVAuiSJwVKFGQg1dcyOGq3oP05BIhZd0CNxG87bhUbpD8X7uBJlDdDaeQbH/7ASju
- Qn1ETMMz0b2R2wxJFvoYNiD9CRP9GA0DrT/zFM0uxYMDo4dXqryDnH1wABcWTee3JaUh
- p2FXHtmbcwHMRtpJPRH0Y79+ng0AwOkcUqR9Z+YhJimErzdNQ3wDuFOWSB/4D5ZGY6Wk
- 41v740vYn1d3FrVloJj1yNeT4HZIaU0Qn7azQC2JU3S1QP4qh0tf8js6AoIZBjHil48v
- iSXRPg0I8xds3vICrIAwC5DM4Qx8N1am2KHH/cyKSrRx6wIx2V9gozGyjJvslC2cdB2G
- /85A==
+ bh=2DHe1QaVgK8mtorbJNzJ6CmI76dQhNUVHpBsBIhL9cA=;
+ b=pJILxbqDCJ44poaULK00l8fw1sYFRUV+aC58WSTfQ617Zo18sdxy+zZ0C2wbuVw/wk
+ PzNl5g1ZVTZe+6O8yzkojhKkBktSdMeakU/RcHJhs/ognRsB0BvJwT/S/bgP3HSQwQ6b
+ 5IOM0WsEhLxbXUTjUzTv/Vgh25lbmHH2xeaU1hUKs7NRAYCV/GK9uL9vhavOsbRb/0qM
+ DbpSDOOoKPsE2c3IgVM60OQNjCylx+YauDR3KWDiVwxufDRnW4hBojUHqco61o2vJORg
+ ZHJjdPNhSBdyT0SUc+yi5gszs9/57CI04CkPordIOqQOg5gk4u0xkCqti9CYydSpQtQP
+ QZ6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688571277; x=1691163277;
+ d=1e100.net; s=20221208; t=1688571314; x=1691163314;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YRT1GNxZuXOH+ykrEwU9JPtek3gcjBVtoTfvmbKMxjI=;
- b=BveNuNKoN41QnkCcdW2Y2Sssci6EtLfuh3hCwjpPPqYM9lWI3wcKxbBGS7EZ/52DaG
- fU6DKZj8rngO2rwXLXIHBW/xamZG17pM5EK0hDv8cTby+AlUFsEcx/ry1bJdO8b/+ktW
- oknJHBjBUByfahK4Vy/Ve6gQBmT9DU+q4e1245P3G04ycA9RGIciz+dPc3rtvAq7bQ8a
- mroo0qBY/iSWVq99YR9Sr8Pb2mPHJZRuZDcwcCXJWINZColPTW2U+iU20AfRdKXm8txH
- 7s/qae0m8zeWJrSpYL9KLFuakg6Vx/SRmFZTY+1FW8kpuYhozK7SxZOgZTeeEI9GBhVc
- fr9g==
-X-Gm-Message-State: ABy/qLZ/uvprSws4jJb5TFsEokVr0uLy5rfWqO4sdqZyLvwwDlRyN52r
- sj8umGQ0h0UFIj15S8um9Zk5eA==
-X-Google-Smtp-Source: APBJJlGw6c+TLQYOY8uC+KbXigA3butcFM5bys7QPVUnfBIMaFM6rULfJSF+JIrfxazuTctpPmHDEQ==
-X-Received: by 2002:a05:6512:2007:b0:4f7:604f:f4c8 with SMTP id
- a7-20020a056512200700b004f7604ff4c8mr11339879lfb.18.1688571276534; 
- Wed, 05 Jul 2023 08:34:36 -0700 (PDT)
+ bh=2DHe1QaVgK8mtorbJNzJ6CmI76dQhNUVHpBsBIhL9cA=;
+ b=IJ8Pq3mABzgCcSjWJcWdU66QiDQ6qov/dwt1nFXV+GsUYibDfD72cQRYiqlPGx/N+C
+ cjGuVlnOj7uTlbW4Rfj1MKznn5YC8Gnk0BvWyJZrmk1hndGS41cGycq7MRZ4futO0gAJ
+ fL59vNCaXG76JDki0mFfeHzTpgPCwT2zyXyye875xAbDbEEqo/UoHASJF3ClFV/Yb8iZ
+ adSOOezAP0/4HKiaUFl+pBprccfbAzvDr5jd86x2Scjw/RsnzKyftrc1/DM8K1JMLuHw
+ Kc1RSOgwJ7aek54vRJwsyjYJXINDeM1dYYMGIFmYf2Bp37i3IBLS3GFl8Ty9iE5ikJ0n
+ yaDw==
+X-Gm-Message-State: ABy/qLZzIJYOyU0bZxESw4K0yS2GyqIcLP8MAahBsf+HYbHC7DMvMFkd
+ T9BqKAS0zvCjzy1KgZqSb10uEQ==
+X-Google-Smtp-Source: APBJJlHO3uAhYv+B8MQ8vZm5oc3E3vZ+GQoFLIXkIqOlVBH+J+EoyXakv028Uykr5Xy0oHY2CC+HcA==
+X-Received: by 2002:a2e:7016:0:b0:2b6:a6e7:5afa with SMTP id
+ l22-20020a2e7016000000b002b6a6e75afamr10815819ljc.12.1688571313754; 
+ Wed, 05 Jul 2023 08:35:13 -0700 (PDT)
 Received: from [192.168.82.227] ([91.223.100.51])
  by smtp.gmail.com with ESMTPSA id
- d20-20020ac25454000000b004faa369ac1esm5361166lfn.91.2023.07.05.08.34.34
+ u17-20020a2e9b11000000b002b6dc99f858sm2788328lji.66.2023.07.05.08.35.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 08:34:36 -0700 (PDT)
-Message-ID: <06f12565-7458-d233-a39d-cd74110a9af7@linaro.org>
-Date: Wed, 5 Jul 2023 17:34:32 +0200
+ Wed, 05 Jul 2023 08:35:13 -0700 (PDT)
+Message-ID: <383855df-366e-5bd0-6663-7517e2dc526e@linaro.org>
+Date: Wed, 5 Jul 2023 17:35:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 08/19] hw/timer/arm_timer: Extract
- arm_timer_reset_hold()
+Subject: Re: [PATCH v2 09/19] hw/timer/arm_timer: Convert read/write handlers
+ to MemoryRegionOps ones
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -71,13 +71,13 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
  <pbonzini@redhat.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Sergey Kambalin <serg.oker@gmail.com>
 References: <20230704145012.49870-1-philmd@linaro.org>
- <20230704145012.49870-9-philmd@linaro.org>
+ <20230704145012.49870-10-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230704145012.49870-9-philmd@linaro.org>
+In-Reply-To: <20230704145012.49870-10-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x22d.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -101,14 +101,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/4/23 16:50, Philippe Mathieu-Daudé wrote:
-> Extract arm_timer_reset_hold() before converting this model to
-> QOM/QDev in few commits. This will become our ResettableHoldPhase
-> handler.
+> In order to simplify the QOM convertion of ARM_TIMER in a few
+> commits, start converting the read/write() handlers to follow
+> the MemoryRegionOps::read/write() prototypes.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   hw/timer/arm_timer.c | 9 ++++++++-
->   1 file changed, 8 insertions(+), 1 deletion(-)
+>   hw/timer/arm_timer.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
