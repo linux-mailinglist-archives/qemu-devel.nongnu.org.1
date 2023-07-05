@@ -2,57 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1450574865A
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 16:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC964748669
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 16:33:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH3Ux-0000a9-K3; Wed, 05 Jul 2023 10:28:51 -0400
+	id 1qH3Yf-0002Dm-1M; Wed, 05 Jul 2023 10:32:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=c5xU=CX=kaod.org=clg@ozlabs.org>)
- id 1qH3Uv-0000YE-HD; Wed, 05 Jul 2023 10:28:49 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=c5xU=CX=kaod.org=clg@ozlabs.org>)
- id 1qH3Ut-0007yM-5i; Wed, 05 Jul 2023 10:28:49 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qx28S5hyyz4wxW;
- Thu,  6 Jul 2023 00:28:40 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qx28Q1XTtz4wb8;
- Thu,  6 Jul 2023 00:28:37 +1000 (AEST)
-Message-ID: <20f8f102-ce09-8aeb-202c-5db507b7a79f@kaod.org>
-Date: Wed, 5 Jul 2023 16:28:34 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qH3YQ-0002D8-J0
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:32:28 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qH3YO-0000Q5-8I
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:32:26 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2b6f52e1c5cso29633181fa.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 07:32:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688567540; x=1691159540;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TGMxSVxdyfaEo0E1iTSZEeZAouIT0GsXaETPIxDto8o=;
+ b=qRZwdLAlG7BMWgptrI7EI5lJK6ijA0adJMYEOx7VrtSKzhxKPfIAvhjac0Mwrwvytf
+ r1twTdpyvfusx77tc5NijvdiHVSHEmbauTtzU6PapQ2xU+6WBufFo8Z4DvuenlpxaNiH
+ IbgVqYTaqco64dyceNAmeOtruqYxEOJn2b0k9rYGwTI6x6ncdL4E+/PFMdGFuIstMPdp
+ q+qj0NRJPC6tQmPtVS4dOp68hvLgo4HeNdjvuFx4zuTfeoaSB49H3W14qQ2wLssPaX2c
+ ztGo7dN7Ho33Jh45udPD81Zlv7kZTVeGmj30Pqlzx0qSwkdCqoIgfoTBbO8AqvkdoHA1
+ mjpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688567540; x=1691159540;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TGMxSVxdyfaEo0E1iTSZEeZAouIT0GsXaETPIxDto8o=;
+ b=C61DzLRSvSGUeiKC+aKmWav4eIWHS2AmKJXZLIItcfKNN7Ls37Uofg7LVxrHj0Jzh/
+ XjJ/MhJbWD2SIASPVCOPaurJo9Y72N3KPwKDAK8z6SR2fpgFWkiIF/zYM9CDXcg3M6eT
+ 88p1E7hATayHKHj8KkarjlHoymOGZsdNibx3JnOuwByn8/B0KDIdJfnce6GwTNQwgoqm
+ krxY3fUp3kFw4p9rBZRTNGbb5NmnNVB35XO6u62MKlV9vvarRdAdYXz01F0qvS0cDua2
+ 4twfw0WG+U2mEewWfWPhgg6xVxV3132Ics6wkNqj0HFkCvq8VjoCePR6F00yI8CaLfkm
+ k4rw==
+X-Gm-Message-State: ABy/qLZ5xU7VAnm44WGDqGmwaBZ7qHKF1sZScl1UzoD7EdLH+kp1i+HV
+ yBlY79AfzeyXcTRgrH2Kq8Wuow==
+X-Google-Smtp-Source: APBJJlGPBhESFu3dln3nX4ZcSJThsm6UNbOoKH7AkAK0hUoFx29rU7Snbfy4H/5bKyhpR3+9WCbXUQ==
+X-Received: by 2002:a2e:8605:0:b0:2b6:df71:cff1 with SMTP id
+ a5-20020a2e8605000000b002b6df71cff1mr9619981lji.52.1688567540585; 
+ Wed, 05 Jul 2023 07:32:20 -0700 (PDT)
+Received: from [192.168.82.227] ([91.223.100.51])
+ by smtp.gmail.com with ESMTPSA id
+ f21-20020a2e9195000000b002b6cb40e9aasm3629995ljg.103.2023.07.05.07.32.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Jul 2023 07:32:20 -0700 (PDT)
+Message-ID: <837e45df-08c9-44c9-b4c7-489251901860@linaro.org>
+Date: Wed, 5 Jul 2023 16:32:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 4/4] tests/avocado: Add powernv machine test script
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] target/arm: gdbstub: Guard M-profile code with CONFIG_TCG
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230705120631.27670-1-npiggin@gmail.com>
- <20230705120631.27670-5-npiggin@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230705120631.27670-5-npiggin@gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20230628164821.16771-1-farosas@suse.de>
+ <d8f954dc-8a69-7593-716c-e360d2c8e47b@linaro.org>
+ <CAFEAcA9QSS7qs2kcCuyrDrRc6tb_0euMD3vFJ=_Q8s8dJYBRfw@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA9QSS7qs2kcCuyrDrRc6tb_0euMD3vFJ=_Q8s8dJYBRfw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=c5xU=CX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.089, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x22d.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,134 +97,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/5/23 14:06, Nicholas Piggin wrote:
-> This copies ppc_pseries.py to start a set of powernv tests, including
-> a Linux boot test for the newly added SMT mode.
+On 7/4/23 17:44, Peter Maydell wrote:
+>> IIUC tcg_enabled(), this guard shouldn't be necessary; if CONFIG_TCG
+>> is not defined, tcg_enabled() evaluates to 0, and the compiler should
+>> elide the whole block.
 > 
-> Reviewed-by: Cédric Le Goater <clg@kaod.org>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> I didn't add the powernv10 support yet as Cedric suggested, and kept the
-> same vmlinuz because it's common with the pseries tests. We should do
-> that in later tests though. Might be time to update default to power10
-> soon if the model is becoming more complete...
+> IME it's a bit optimistic to assume that the compiler will always
+> do that, especially with no optimisation enabled.
 
-power10 is as good as power9, I would say. power9 has been the default for
-4 years now. power9 systems are publicly  available though. As you wish.
+There's plenty of other places that we do.
+The compiler is usually pretty good with "if (0)".
 
-If we had some ways to deactivate the doorbells when booting Linux, we
-would test XIVE with the CPU IPIs also with the tests you introduced.
+My question is if
 
-Pity this wasn't merged :
+>       if (arm_feature(env, ARM_FEATURE_M) && tcg_enabled()) { 
 
-   https://lore.kernel.org/all/20211105102636.1016378-12-clg@kaod.org/
+needs to be written
 
-May be it is possible to tweak the CPU features in OPAL with a QEMU
-DT property to remove doorbells ?
-
-C.
+     if (tcg_enabled()) {
+         if (arm_feature(..., M) {
+            ...
+         }
+     }
 
 
-> 
-> Thanks,
-> Nick
-> 
->   tests/avocado/ppc_powernv.py | 87 ++++++++++++++++++++++++++++++++++++
->   1 file changed, 87 insertions(+)
->   create mode 100644 tests/avocado/ppc_powernv.py
-> 
-> diff --git a/tests/avocado/ppc_powernv.py b/tests/avocado/ppc_powernv.py
-> new file mode 100644
-> index 0000000000..d0e5c07bde
-> --- /dev/null
-> +++ b/tests/avocado/ppc_powernv.py
-> @@ -0,0 +1,87 @@
-> +# Test that Linux kernel boots on ppc powernv machines and check the console
-> +#
-> +# Copyright (c) 2018, 2020 Red Hat, Inc.
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2 or
-> +# later.  See the COPYING file in the top-level directory.
-> +
-> +from avocado.utils import archive
-> +from avocado_qemu import QemuSystemTest
-> +from avocado_qemu import wait_for_console_pattern
-> +
-> +class powernvMachine(QemuSystemTest):
-> +
-> +    timeout = 90
-> +    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
-> +    panic_message = 'Kernel panic - not syncing'
-> +    good_message = 'VFS: Cannot open root device'
-> +
-> +    def do_test_linux_boot(self):
-> +        self.require_accelerator("tcg")
-> +        kernel_url = ('https://archives.fedoraproject.org/pub/archive'
-> +                      '/fedora-secondary/releases/29/Everything/ppc64le/os'
-> +                      '/ppc/ppc64/vmlinuz')
-> +        kernel_hash = '3fe04abfc852b66653b8c3c897a59a689270bc77'
-> +        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-> +
-> +        self.vm.set_console()
-> +        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=hvc0'
-> +        self.vm.add_args('-kernel', kernel_path,
-> +                         '-append', kernel_command_line)
-> +        self.vm.launch()
-> +
-> +    def test_linux_boot(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:powernv
-> +        :avocado: tags=accel:tcg
-> +        """
-> +
-> +        self.do_test_linux_boot()
-> +        console_pattern = 'VFS: Cannot open root device'
-> +        wait_for_console_pattern(self, console_pattern, self.panic_message)
-> +
-> +    def test_linux_smp_boot(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:powernv
-> +        :avocado: tags=accel:tcg
-> +        """
-> +
-> +        self.vm.add_args('-smp', '4')
-> +        self.do_test_linux_boot()
-> +        console_pattern = 'smp: Brought up 1 node, 4 CPUs'
-> +        wait_for_console_pattern(self, console_pattern, self.panic_message)
-> +        wait_for_console_pattern(self, self.good_message, self.panic_message)
-> +
-> +    def test_linux_smt_boot(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:powernv
-> +        :avocado: tags=accel:tcg
-> +        """
-> +
-> +        self.vm.add_args('-smp', '4,threads=4')
-> +        self.do_test_linux_boot()
-> +        console_pattern = 'CPU maps initialized for 4 threads per core'
-> +        wait_for_console_pattern(self, console_pattern, self.panic_message)
-> +        console_pattern = 'smp: Brought up 1 node, 4 CPUs'
-> +        wait_for_console_pattern(self, console_pattern, self.panic_message)
-> +        wait_for_console_pattern(self, self.good_message, self.panic_message)
-> +
-> +    def test_linux_big_boot(self):
-> +        """
-> +        :avocado: tags=arch:ppc64
-> +        :avocado: tags=machine:powernv
-> +        :avocado: tags=accel:tcg
-> +        """
-> +
-> +        self.vm.add_args('-smp', '16,threads=4,cores=2,sockets=2')
-> +
-> +        # powernv does not support NUMA
-> +        self.do_test_linux_boot()
-> +        console_pattern = 'CPU maps initialized for 4 threads per core'
-> +        wait_for_console_pattern(self, console_pattern, self.panic_message)
-> +        console_pattern = 'smp: Brought up 2 nodes, 16 CPUs'
-> +        wait_for_console_pattern(self, console_pattern, self.panic_message)
-> +        wait_for_console_pattern(self, self.good_message, self.panic_message)
-
+r~
 
