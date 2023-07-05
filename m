@@ -2,94 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6415D747B27
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 03:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A615747B42
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 03:43:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGrUm-00059C-3j; Tue, 04 Jul 2023 21:39:52 -0400
+	id 1qGrXw-0006G7-3V; Tue, 04 Jul 2023 21:43:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGrUh-00058v-QM
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 21:39:50 -0400
-Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qGrXp-0006Fw-Ft
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 21:43:02 -0400
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGrUf-0007PJ-MZ
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 21:39:47 -0400
-Received: by mail-qk1-x731.google.com with SMTP id
- af79cd13be357-7658430eb5dso657743785a.2
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 18:39:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qGrXn-0000EZ-Cy
+ for qemu-devel@nongnu.org; Tue, 04 Jul 2023 21:43:01 -0400
+Received: by mail-lf1-x12f.google.com with SMTP id
+ 2adb3069b0e04-4fb5bcb9a28so9558148e87.3
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 18:42:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688521184; x=1691113184;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Iz2N5WQskhj2+va/Y1inf+/PITJjXWiVnncG+c+1Vsc=;
- b=JN+Eg6BYr0WNfzIB55fuKYXJMaJbd1OEgAHB/lGs9VeZb2Np1KrRgnanOLCQ99JwG8
- Vi9W6dKkLuUlbWHFh10BVQd1np5A9PpiCNYCA1Vhlwj55ac1FFSkW6GvrSMA61oRHDnF
- 90dyxM4e5OMGXyWro2boMOTeGUmsBAYWWkhHeHaviTM6qe6K+Rm7auYocB+qNe1kCNl0
- Zh8IDwn7LI+/TE8Ju7v06ozP/E1y9h8MZE6+cEt26I0jq9+vIkegRZiPCTeJj2t2QtC4
- ge4SHV4QmO+2ExzoK0gx4dwqMe49tiQHRwxy/Tb59IDGlEMvLzztgFraZClzASMsYdTg
- H4Wg==
+ d=gmail.com; s=20221208; t=1688521376; x=1691113376;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2k2KGMWCH1bBjAnV+1l5pry3LrIkchdomIudfQwinE8=;
+ b=CK3C7d2KQZNsQHwlTHDir/QhJknYsDCMGeuRG1SKvlNRhGw11OOiiUZjI56twWjSUi
+ NHJ/WbUyu68Kz24t/5P4su8dHwz+shmugLt+bKht80wLGzK9ApGgWcYwtp1xgCZdT/Yy
+ +Zkef5hMPgikYaTtG7URIPpZw780y+kT1CgN9OiNpMyNrsPxEZArL01dA3VCKEV4NZM/
+ T6YJUB3Hd5vL4g1sZIF5BcnAF+3GuG+Tecq31hKR6UZAKpp2sqxC2fP62AQHQxhEZ3rA
+ Zmr3ecvWOWxmOFoXsneCXUb8jCmxlFg+TH3iY03RZXC3xJAcpZYKbW78oKjgolocVpCr
+ mjLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688521184; x=1691113184;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Iz2N5WQskhj2+va/Y1inf+/PITJjXWiVnncG+c+1Vsc=;
- b=LhFLRcvhvnjcb5JzJD0OxN7gVvzWJvOu+3tjB49YY1zsysKCB13zpU8G0CMNnKUEnn
- SKcjeLMle2NW9qC5OeufblLkH8aOTT3gneTuIL1rC3GmGm3dxRhMD9sPOJw+dfrtM2F9
- dpAL9VVlWrqbJgj1iRw35a/VwNIPLHhF7ljGk9w+NlRvzHeDdFIEoSuru0d+Gve90sCc
- I9NEEBiHTESaLipk0EWETmHLQLF5C+zNnKBoJ5PitNfVuAPTl+iRUmWz/H103qkPXB6Y
- /Z6QWjxA9NPPYpQWPfRh4s7aVRa8ZM6Ozx2E4yKoovrmNPY28aP1zxrOWIVGgOyQJ7lU
- j61Q==
-X-Gm-Message-State: AC+VfDyRKz2nuOyc5ijAep3e6U7qm+svMkbPgGNdaNU5drajBkwiSZ/8
- Xx7Mj+5poSMlLc9YtGXSGDh0Yw==
-X-Google-Smtp-Source: ACHHUZ7T1Xs3pqlxUlesOUVr8QpSlcTezrE/I/YNLZ+2k6yvR0WVu4M1QI2hu5dqL3h4w/JKFGydZg==
-X-Received: by 2002:a37:b484:0:b0:763:d495:1810 with SMTP id
- d126-20020a37b484000000b00763d4951810mr14840740qkf.37.1688521184313; 
- Tue, 04 Jul 2023 18:39:44 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- d14-20020aa78e4e000000b0067acbc74977sm13197853pfr.96.2023.07.04.18.39.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 18:39:43 -0700 (PDT)
-Message-ID: <0815cf6b-9739-8494-89db-3f2cdf032d40@daynix.com>
-Date: Wed, 5 Jul 2023 10:39:40 +0900
+ d=1e100.net; s=20221208; t=1688521376; x=1691113376;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2k2KGMWCH1bBjAnV+1l5pry3LrIkchdomIudfQwinE8=;
+ b=Mj2HCcJ7zZd5d5PmoVA3f8lh85v+WMSrIxjCsEQ0D3pJpX8Uv2RFGGd8h3wfuRjwHH
+ +jJ33OKitmKaxT9LkgJQW0bXY3HZp/eBIPTWPzLFTO/YSE0FoyzPV63uWIqzFZPI5G0c
+ ndXQBflRF4iWNGL4Bqt93AeAV5+nHV8X4lc6uLUBHHTKZdzH/WErBPoxmgbcbZ0xNR/H
+ O9ekfn+ubUS3/3TROWG6o5E32L0LsV0xKR+lTxhVPax/StuyOCeLKG3qeU7brA9Klj5G
+ mZJkuZW2h0Nf5MuEE0HyyzjGczI3mUxnDF2CP9AoPPdOWw2emJZiONGjvV0u5ajasaDQ
+ VlbA==
+X-Gm-Message-State: ABy/qLYRUmCtzmczQXfd9bof5pswmHzO1f3p8FUUdSy5rZPDlK999303
+ A2XQvu68UwzsEIlMC+KDxhqUUke+C0M4UGXGZCE=
+X-Google-Smtp-Source: APBJJlGShF0a0orqic+EyEXHQY4lIowWsL+g2S+tG4Bjnyi98R/N2dF7k+aa5oDFgvP1y6v5dVe1RWTazYimNM4kI6g=
+X-Received: by 2002:a2e:97d1:0:b0:2b6:e651:8591 with SMTP id
+ m17-20020a2e97d1000000b002b6e6518591mr5576553ljj.37.1688521376132; Tue, 04
+ Jul 2023 18:42:56 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v7 5/6] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
-Content-Language: en-US
-To: Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, "Michael S. Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>
-References: <20230704112555.5629-1-anisinha@redhat.com>
- <20230704112555.5629-6-anisinha@redhat.com>
- <7356dc51-588c-f2f8-22d9-c8193bae9309@daynix.com>
- <2C9BF0F4-6CB0-4805-818D-51CABC1EAFDE@redhat.com>
- <bf793e6b-62a0-0772-0d64-ddb5894ebf53@daynix.com>
- <20230704144825.181a1629@imammedo.users.ipa.redhat.com>
- <EC8A962B-80F5-499F-9EA8-CC53DA160F1D@redhat.com>
- <20230704162836.61a08ff9@imammedo.users.ipa.redhat.com>
- <AD213C8D-85EC-43F6-B9C0-3541BFBDCBCF@redhat.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <AD213C8D-85EC-43F6-B9C0-3541BFBDCBCF@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::731;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-qk1-x731.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+References: <cover.1688051252.git.yin31149@gmail.com>
+ <2f2560f749186c0eb1055f9926f464587e419eeb.1688051252.git.yin31149@gmail.com>
+ <CAJaqyWfq0Sec14Y9UCAtYXRCTyyUwEo0NRBu6uksgESkMVgFUQ@mail.gmail.com>
+In-Reply-To: <CAJaqyWfq0Sec14Y9UCAtYXRCTyyUwEo0NRBu6uksgESkMVgFUQ@mail.gmail.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Wed, 5 Jul 2023 09:42:34 +0800
+Message-ID: <CAKrof1PExLDTkfu5B1Kg2s7CQAXbdhGn2s=Pt-g-nfBBRyPTiA@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 2/4] vdpa: Restore MAC address filtering state
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
+ envelope-from=yin31149@gmail.com; helo=mail-lf1-x12f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,145 +90,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 2023/7/4 22:53, Eugenio Perez Martin wrote:
+> On Thu, Jun 29, 2023 at 5:26=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.co=
+m> wrote:
+>>
+>> This patch refactors vhost_vdpa_net_load_mac() to
+>> restore the MAC address filtering state at device's startup.
+>>
+>> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+>> ---
+>> v2:
+>>    - use iovec suggested by Eugenio
+>>    - avoid sending CVQ command in default state
+>>
+>> v1: https://lore.kernel.org/all/00f72fe154a882fd6dc15bc39e3a1ac63f9dadce=
+.1687402580.git.yin31149@gmail.com/
+>>
+>>   net/vhost-vdpa.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 51 insertions(+)
+>>
+>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+>> index 0bd1c7817c..cb45c84c88 100644
+>> --- a/net/vhost-vdpa.c
+>> +++ b/net/vhost-vdpa.c
+>> @@ -665,6 +665,57 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *=
+s, const VirtIONet *n)
+>>           }
+>>       }
+>>
+>> +    if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_RX)) =
+{
+>> +        if (n->mac_table.in_use !=3D 0) {
+>
+> This may be just style nitpicking, but I find it more clear to return
+> early if conditions are not met and then send the CVQ command.
+
+Yes, this makes code more clear to read.
+
+But it appears that we may meet a problem if the function
+vhost_vdpa_net_load_x() sends multiple CVQ commands. It is possible that
+we might not meet the condition for one of the CVQ commands, but we
+could still meet the conditions for other CVQ commands.
+
+Therefore, in the case of vhost_vdpa_net_load_x() sending multiple CVQ
+commands, if we still hope to use this style, should we split the
+function into multiple functions, with each function responsible for
+sending only one CVQ command? Or should we jump to the next CVQ command
+instead of returning from the function if the conditions are not met?
+
+Thanks!
 
 
-On 2023/07/05 0:07, Ani Sinha wrote:
-> 
-> 
->> On 04-Jul-2023, at 7:58 PM, Igor Mammedov <imammedo@redhat.com> wrote:
+> Something like:
+> /*
+>   * According to ...
+>   */
+> if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_RX)) ||
+> (n->mac_table.in_use =3D=3D 0)) {
+>    return 0
+> }
+>
+> uni_entries =3D n->mac_table.first_multi,
+> ...
+> ---
+>
+> Now I just realized vhost_vdpa_net_load_mac does not follow this for
+> checking VIRTIO_NET_F_CTRL_MAC_ADDR.
+>
+> I'm ok if you leave it this way though.
+>
+> Thanks!
+>
+>> +            /*
+>> +             * According to virtio_net_reset(), device uses an empty MA=
+C filter
+>> +             * table as its default state.
+>> +             *
+>> +             * Therefore, there is no need to send this CVQ command if =
+the
+>> +             * driver also sets an empty MAC filter table, which aligns=
+ with
+>> +             * the device's defaults.
+>> +             *
+>> +             * Note that the device's defaults can mismatch the driver'=
+s
+>> +             * configuration only at live migration.
+>> +             */
+>> +            uint32_t uni_entries =3D n->mac_table.first_multi,
+>> +                     uni_macs_size =3D uni_entries * ETH_ALEN,
+>> +                     mul_entries =3D n->mac_table.in_use - uni_entries,
+>> +                     mul_macs_size =3D mul_entries * ETH_ALEN;
+>> +            struct virtio_net_ctrl_mac uni =3D {
+>> +                .entries =3D cpu_to_le32(uni_entries),
+>> +            };
+>> +            struct virtio_net_ctrl_mac mul =3D {
+>> +                .entries =3D cpu_to_le32(mul_entries),
+>> +            };
+>> +            const struct iovec data[] =3D {
+>> +                {
+>> +                    .iov_base =3D &uni,
+>> +                    .iov_len =3D sizeof(uni),
+>> +                }, {
+>> +                    .iov_base =3D n->mac_table.macs,
+>> +                    .iov_len =3D uni_macs_size,
+>> +                }, {
+>> +                    .iov_base =3D &mul,
+>> +                    .iov_len =3D sizeof(mul),
+>> +                }, {
+>> +                    .iov_base =3D &n->mac_table.macs[uni_macs_size],
+>> +                    .iov_len =3D mul_macs_size,
+>> +                },
+>> +            };
+>> +            ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s,
+>> +                                        VIRTIO_NET_CTRL_MAC,
+>> +                                        VIRTIO_NET_CTRL_MAC_TABLE_SET,
+>> +                                        data, ARRAY_SIZE(data));
+>> +            if (unlikely(dev_written < 0)) {
+>> +                return dev_written;
+>> +            }
+>> +            if (*s->status !=3D VIRTIO_NET_OK) {
+>> +                return -EINVAL;
+>> +            }
+>> +        }
+>> +    }
+>> +
+>>       return 0;
+>>   }
 >>
->> On Tue, 4 Jul 2023 19:20:00 +0530
->> Ani Sinha <anisinha@redhat.com> wrote:
+>> --
+>> 2.25.1
 >>
->>>> On 04-Jul-2023, at 6:18 PM, Igor Mammedov <imammedo@redhat.com> wrote:
->>>>
->>>> On Tue, 4 Jul 2023 21:02:09 +0900
->>>> Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>
->>>>> On 2023/07/04 20:59, Ani Sinha wrote:
->>>>>>
->>>>>>
->>>>>>> On 04-Jul-2023, at 5:24 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>>>>
->>>>>>> On 2023/07/04 20:25, Ani Sinha wrote:
->>>>>>>> PCI Express ports only have one slot, so PCI Express devices can only be
->>>>>>>> plugged into slot 0 on a PCIE port. Add a warning to let users know when the
->>>>>>>> invalid configuration is used. We may enforce this more strongly later on once
->>>>>>>> we get more clarity on whether we are introducing a bad regression for users
->>>>>>>> currenly using the wrong configuration.
->>>>>>>> The change has been tested to not break or alter behaviors of ARI capable
->>>>>>>> devices by instantiating seven vfs on an emulated igb device (the maximum
->>>>>>>> number of vfs the linux igb driver supports). The vfs instantiated correctly
->>>>>>>> and are seen to have non-zero device/slot numbers in the conventional PCI BDF
->>>>>>>> representation.
->>>>>>>> CC: jusual@redhat.com
->>>>>>>> CC: imammedo@redhat.com
->>>>>>>> CC: mst@redhat.com
->>>>>>>> CC: akihiko.odaki@daynix.com
->>>>>>>> Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=2128929
->>>>>>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->>>>>>>> Reviewed-by: Julia Suvorova <jusual@redhat.com>
->>>>>>>> ---
->>>>>>>> hw/pci/pci.c | 15 +++++++++++++++
->>>>>>>> 1 file changed, 15 insertions(+)
->>>>>>>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->>>>>>>> index e2eb4c3b4a..47517ba3db 100644
->>>>>>>> --- a/hw/pci/pci.c
->>>>>>>> +++ b/hw/pci/pci.c
->>>>>>>> @@ -65,6 +65,7 @@ bool pci_available = true;
->>>>>>>> static char *pcibus_get_dev_path(DeviceState *dev);
->>>>>>>> static char *pcibus_get_fw_dev_path(DeviceState *dev);
->>>>>>>> static void pcibus_reset(BusState *qbus);
->>>>>>>> +static bool pcie_has_upstream_port(PCIDevice *dev);
->>>>>>>>    static Property pci_props[] = {
->>>>>>>>      DEFINE_PROP_PCI_DEVFN("addr", PCIDevice, devfn, -1),
->>>>>>>> @@ -2121,6 +2122,20 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
->>>>>>>>          }
->>>>>>>>      }
->>>>>>>> +    /*
->>>>>>>> +     * With SRIOV and ARI, vfs can have non-zero slot in the conventional
->>>>>>>> +     * PCI interpretation as all five bits reserved for slot addresses are
->>>>>>>> +     * also used for function bits for the various vfs. Ignore that case.
->>>>>>>
->>>>>>> You don't have to mention SR/IOV; it affects all ARI-capable devices. A PF can also have non-zero slot number in the conventional interpretation so you shouldn't call it vf either.
->>>>>>
->>>>>> Can you please help write a comment that explains this properly for all cases - ARI/non-ARI, PFs and VFs? Once everyone agrees that its clear and correct, I will re-spin.
->>>>>
->>>>> Simply, you can say:
->>>>> With ARI, the slot number field in the conventional PCI interpretation
->>>>> can have a non-zero value as the field bits are reused to extend the
->>>>> function number bits. Ignore that case.
->>>>
->>>> mentioning 'conventional PCI interpretation' in comment and then immediately
->>>> checking 'pci_is_express(pci_dev)' is confusing. Since comment belongs
->>>> only to PCIE branch it would be better to talk in only about PCIe stuff
->>>> and referring to relevant portions of spec.
->>>
->>> Ok so how about this?
->>>
->>>    * With ARI, devices can have non-zero slot in the traditional BDF
->>>      * representation as all five bits reserved for slot addresses are
->>>      * also used for function bits. Ignore that case.
->>
->> you still refer to traditional (which I misread as 'conventional'),
->> steal the linux comment and argument it with ARI if necessary,
->> something like this (probably needs some more massaging):
-> 
-> The comment messaging in these patches seems to exceed the value of the patch itself :-)
-> 
-> How about this?
-> 
->      /*
->       * A PCIe Downstream Port normally leads to a Link with only Device
->       * 0 on it (PCIe spec r3.1, sec 7.3.1).
->       * With ARI, PCI_SLOT() can return non-zero value as all five bits
->       * reserved for slot addresses are also used for function bits.
->       * Hence, ignore ARI capable devices.
->       */
-
-Perhaps: s/normally leads to/must lead to/
-
- From the kernel perspective, they may need to deal with a quirky 
-hardware that does not conform with the specification, but from QEMU 
-perspective, it is what we *must* conform with.
-
-Otherwise looks good to me.
-
-> 
->>
->>
->>          /*
->>          * A PCIe Downstream Port normally leads to a Link with only Device
->>          * 0 on it (PCIe spec r3.1, sec 7.3.1).
->>           However PCI_SLOT() is broken if ARI is enabled, hence work around it
->>           by skipping check if the later cap is present.
->>          */
->>
->>>
->>>
->>>> (for example see how it's done in kernel code: only_one_child(...)
->>>>
->>>> PS:
->>>> kernel can be forced  to scan for !0 device numbers, but that's rather
->>>> a hack, so we shouldn't really care about that.
->>>>
->>>>>
->>>>>>
->>>>>>>
->>>>>>>> +     */
->>>>>>>> +    if (pci_is_express(pci_dev) &&
->>>>>>>> +        !pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
->>>>>>>> +        pcie_has_upstream_port(pci_dev) &&
->>>>>>>> +        PCI_SLOT(pci_dev->devfn)) {
->>>>>>>> +        warn_report("PCI: slot %d is not valid for %s,"
->>>>>>>> +                    " parent device only allows plugging into slot 0.",
->>>>>>>> +                    PCI_SLOT(pci_dev->devfn), pci_dev->name);
->>>>>>>> +    }
->>>>>>>> +
->>>>>>>>      if (pci_dev->failover_pair_id) {
->>>>>>>>          if (!pci_bus_is_express(pci_get_bus(pci_dev))) {
->>>>>>>>              error_setg(errp, "failover primary device must be on "
->>>
->>
-> 
+>
 
