@@ -2,92 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB26748509
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 15:33:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A62748522
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 15:38:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH2cy-0006qu-Jq; Wed, 05 Jul 2023 09:33:04 -0400
+	id 1qH2gp-0003aU-8Q; Wed, 05 Jul 2023 09:37:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH2ct-0006cE-FW
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 09:33:00 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qH2gd-0003ST-Fw
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 09:36:53 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH2cq-000279-0P
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 09:32:59 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-991fe70f21bso785512566b.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 06:32:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qH2gQ-00031k-C2
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 09:36:39 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2b5c231c23aso109438031fa.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 06:36:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688563974; x=1691155974;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HbPpVNUF+2VtKxJIu33BIAkZvOsT1iQzIQdIxYzIzlM=;
- b=Zs65T8lrpAsp7bPFCDIQITGy3XYVCr4pc2Ckgr3shVR6gqfoGdW3bYtQfs0X65ljgt
- Kb6n0Qs50ujvbyGuHtcyzv04HrvCNCluk1BweVB72QhUvOuiQitkK6XqArai7SY2xQdn
- 7g2RIek8fi6WEZwmkR5h6iVJSHwk83Ozz5BN59IDO+V/A4cQE2xfI7tgY9IMJ7HHxTvJ
- 5b4jly0w1duwswFIueRg1mdKdEtKINYIRQqb5Lhg89bNPsoC0C4/c3t8NwhIhnI3muQC
- shJvy0jN5zDrNsb42KuOn1HQg8/G2dPJpZhXSCjqpZgkmSjd9prfyGoQzLAi5XrvCXlT
- XgLA==
+ d=linaro.org; s=google; t=1688564196; x=1691156196;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pf+E5VMuYaHZno32BFB2ICK2QdbbEgaD6cQc4pmfP4Q=;
+ b=qQe7WnXNbmiVFk30Jj30WK8wpu5Rs93S07f+Y0hqNS8vJ6ia6rNxySVys1tEoutYxh
+ DK4a6tn2Bwfnwrbqh20WnnVsbu9ja6P7ZF7jmORfhPqCfebCU82MIHsj8ayzMCjnraMA
+ tn8H6eJJDxroO4VJlep6qaJVvLzlgRJKBXfvsX+vnM/WSSQWS3gI79eHzIKpRjzxgG2F
+ WxKdge/J1kicm4ubN//nNeU4QyTDHuUp3dbm9DCUOKMIEtcYkSZosp4jo39VNeNU1tle
+ b6onVy7of+WjK1gz8WGf/io1vH3T9wc1Aew5/fbq00VQQEO0/eLiomn7C0sikXdbNa4/
+ vKxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688563974; x=1691155974;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HbPpVNUF+2VtKxJIu33BIAkZvOsT1iQzIQdIxYzIzlM=;
- b=U/tIVSS2xOjTEwiv5bcU91eTUxUDN+fyo4YKwud7Bg1I87bO9vIEd+GVpgpbcbL0WA
- nON1bFKoEveL0hrPJRkNvp1nQsJ29peYHAC2pvqKm5r9W3q8wUrtQa/hhxSjdfJRo3yX
- JF9askJJLM8gjbnA1opisk8TJpRfBPG/kVdngqKuWiM2UuPc5yg0cCA6bud4Ui8W7TID
- WhhSO2Wr6nS8M2GzRMb6mbbbJVMa8VXOImRzPoF+KfieB7alDd1j0J2KnwotsAyTZb6f
- 2Y+SVHSry+HeThZuhJXXSOd4frvNqaWwHqaKdllws3VnDDj6pxZKKyZSZ4mqzV4iZqgA
- 5V5Q==
-X-Gm-Message-State: ABy/qLaN7bfndZ9rbSt6YKZpSaFOJlxVA29i3YjH1zhsSZ6F89X037l/
- kFa+Vjhjh7f1KdgDJMYGXAn5+argmr/cbaM1mpI=
-X-Google-Smtp-Source: APBJJlFrCCE5HTIQmuwHovVYZynRCUNQpI/ETUER5sVmjRQ1zCfUrGPW8GECPf/KcxsnSwv4i4maEw==
-X-Received: by 2002:a17:906:113:b0:993:a37a:cb4c with SMTP id
- 19-20020a170906011300b00993a37acb4cmr1600571eje.9.1688563974377; 
- Wed, 05 Jul 2023 06:32:54 -0700 (PDT)
-Received: from m1x-phil.lan ([176.176.142.96])
+ d=1e100.net; s=20221208; t=1688564196; x=1691156196;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pf+E5VMuYaHZno32BFB2ICK2QdbbEgaD6cQc4pmfP4Q=;
+ b=kf/xQOofiWaEwwA9dLuLw0WhztMxrWpHgXTJodIxLJktizqeV0VIjQVZP+UQYfbBVA
+ F1JEE2F+9erV/GEF/yDMJP6ibo9vVqyumOwA8TysE8D3RzVJW/9FMx82ibv1BEo3/QNv
+ i0OWYD8VF4mIzdvTAfFn2CTbXoXbAJzQeeXuQo01Z6pI+m80wZ1lYkos/zb06FAy79YM
+ jP+wrCUCVgimznMI7az9GZU65hHb7ij/776FJquc+Ni/F+7CL5VlUu2DzJCNX5mHQ/kz
+ oPsDqHc+WmKJ9km7pOCT26K+TnIBp9nwwWG+404CAHAeI8sqVlNNT61WZJdbNJIIxlpr
+ I/sA==
+X-Gm-Message-State: ABy/qLZ+10wSk/WXZEPCTIGkFaR1AhKp63YWS7GOkkXfIFLBKjtWUUvg
+ zznnZdgEhmBrD0uzW3X3ylzrkA==
+X-Google-Smtp-Source: APBJJlFQ5n9LppTZnrUZeFKe8N5urhqqEsOk7vMZ5Ao7J/T8fVaGoekyYu9JI3nYQujsbuACGJ0vJQ==
+X-Received: by 2002:a2e:2e16:0:b0:2b6:b575:b26c with SMTP id
+ u22-20020a2e2e16000000b002b6b575b26cmr10968375lju.47.1688564195819; 
+ Wed, 05 Jul 2023 06:36:35 -0700 (PDT)
+Received: from [192.168.82.227] ([91.223.100.51])
  by smtp.gmail.com with ESMTPSA id
- ot6-20020a170906ccc600b0098df7d0e096sm14299620ejb.54.2023.07.05.06.32.41
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 05 Jul 2023 06:32:53 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Joel Stanley <joel@jms.id.au>,
- Markus Armbruster <armbru@redhat.com>,
- Alistair Francis <alistair@alistair23.me>,
- Laurent Vivier <lvivier@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Amit Shah <amit@kernel.org>,
- qemu-riscv@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, qemu-arm@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/4] hw/char: Have FEWatchFunc handlers return
- G_SOURCE_CONTINUE/REMOVE
-Date: Wed,  5 Jul 2023 15:31:39 +0200
-Message-Id: <20230705133139.54419-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230705133139.54419-1-philmd@linaro.org>
-References: <20230705133139.54419-1-philmd@linaro.org>
+ 15-20020a05651c00cf00b002b6ca937d60sm3796432ljr.8.2023.07.05.06.36.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Jul 2023 06:36:35 -0700 (PDT)
+Message-ID: <3f065f3d-8f52-3e99-af65-f829f74947e9@linaro.org>
+Date: Wed, 5 Jul 2023 15:36:19 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PULL 07/11] tests/tcg/aarch64: Add testcases for IC IVAU and
+ dual-mapped code
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ =?UTF-8?Q?John_H=c3=b6gberg?= <john.hogberg@ericsson.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20230704163634.3188465-1-peter.maydell@linaro.org>
+ <20230704163634.3188465-8-peter.maydell@linaro.org>
+ <2e39933a-b9d9-5792-8c4e-dd558d4aad5d@linaro.org>
+ <dd6a96b4-1b72-67e2-58ce-8011203128ae@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <dd6a96b4-1b72-67e2-58ce-8011203128ae@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x22d.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,216 +99,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-GLib recommend to use G_SOURCE_REMOVE / G_SOURCE_CONTINUE
-for GSourceFunc callbacks. Our FEWatchFunc is a GSourceFunc
-returning such value. Use such definitions which are
-"more memorable" [*].
+On 7/5/23 11:25, Philippe Mathieu-Daudé wrote:
+>> /usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/bin/ld: 
+>> /usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/lib/../lib/librt.a(shm_open.o): in function `shm_open':
+>> (.text+0x3c): undefined reference to `__shm_directory'
+>> /usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/bin/ld: 
+>> (.text+0xcc): undefined reference to `pthread_setcancelstate'
+>> /usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/bin/ld: 
+>> (.text+0xfc): undefined reference to `pthread_setcancelstate'
+>> /usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/bin/ld: 
+>> /usr/lib/gcc-cross/aarch64-linux-gnu/10/../../../../aarch64-linux-gnu/lib/../lib/librt.a(shm_unlink.o): in function `shm_unlink':
+>> (.text+0x30): undefined reference to `__shm_directory'
+>> collect2: error: ld returned 1 exit status
+>> make[1]: *** [Makefile:119: icivau] Error 1
+>> make[1]: *** Waiting for unfinished jobs....
+>> make: *** [/builds/qemu-project/qemu/tests/Makefile.include:50: 
+>> build-tcg-tests-aarch64-linux-user] Error 2
+>>
+>> It looks like this test needs something else.
+> 
+> Maybe:
+> 
+> icivau: LDFLAGS+=-lrt -pthread
 
-[*] https://docs.gtk.org/glib/callback.SourceFunc.html#return-value
+Yes, that's the ticket I'm sure.
+Today is a travel day, so I'll still let someone else re-test.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/char/cadence_uart.c   | 8 ++++----
- hw/char/cmsdk-apb-uart.c | 6 +++---
- hw/char/ibex_uart.c      | 8 ++++----
- hw/char/nrf51_uart.c     | 4 ++--
- hw/char/serial.c         | 2 +-
- hw/char/virtio-console.c | 2 +-
- hw/usb/redirect.c        | 2 +-
- monitor/monitor.c        | 2 +-
- net/vhost-user.c         | 2 +-
- 9 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/hw/char/cadence_uart.c b/hw/char/cadence_uart.c
-index 807e398541..eff0304a18 100644
---- a/hw/char/cadence_uart.c
-+++ b/hw/char/cadence_uart.c
-@@ -307,11 +307,11 @@ static gboolean cadence_uart_xmit(void *do_not_use, GIOCondition cond,
-     /* instant drain the fifo when there's no back-end */
-     if (!qemu_chr_fe_backend_connected(&s->chr)) {
-         s->tx_count = 0;
--        return FALSE;
-+        return G_SOURCE_REMOVE;
-     }
- 
-     if (!s->tx_count) {
--        return FALSE;
-+        return G_SOURCE_REMOVE;
-     }
- 
-     ret = qemu_chr_fe_write(&s->chr, s->tx_fifo, s->tx_count);
-@@ -326,12 +326,12 @@ static gboolean cadence_uart_xmit(void *do_not_use, GIOCondition cond,
-                                         cadence_uart_xmit, s);
-         if (!r) {
-             s->tx_count = 0;
--            return FALSE;
-+            return G_SOURCE_REMOVE;
-         }
-     }
- 
-     uart_update_status(s);
--    return FALSE;
-+    return G_SOURCE_REMOVE;
- }
- 
- static void uart_write_tx_fifo(CadenceUARTState *s, const uint8_t *buf,
-diff --git a/hw/char/cmsdk-apb-uart.c b/hw/char/cmsdk-apb-uart.c
-index f8dc89ee3d..d466cd93de 100644
---- a/hw/char/cmsdk-apb-uart.c
-+++ b/hw/char/cmsdk-apb-uart.c
-@@ -199,7 +199,7 @@ static gboolean uart_transmit(void *do_not_use, GIOCondition cond, void *opaque)
-     s->watch_tag = 0;
- 
-     if (!(s->ctrl & R_CTRL_TX_EN_MASK) || !(s->state & R_STATE_TXFULL_MASK)) {
--        return FALSE;
-+        return G_SOURCE_REMOVE;
-     }
- 
-     ret = qemu_chr_fe_write(&s->chr, &s->txbuf, 1);
-@@ -215,7 +215,7 @@ static gboolean uart_transmit(void *do_not_use, GIOCondition cond, void *opaque)
-         }
-         /* Transmit pending */
-         trace_cmsdk_apb_uart_tx_pending();
--        return FALSE;
-+        return G_SOURCE_REMOVE;
-     }
- 
- buffer_drained:
-@@ -227,7 +227,7 @@ buffer_drained:
-         s->intstatus |= R_INTSTATUS_TX_MASK;
-     }
-     cmsdk_apb_uart_update(s);
--    return FALSE;
-+    return G_SOURCE_REMOVE;
- }
- 
- static void uart_cancel_transmit(CMSDKAPBUART *s)
-diff --git a/hw/char/ibex_uart.c b/hw/char/ibex_uart.c
-index f70adb5308..51708c0836 100644
---- a/hw/char/ibex_uart.c
-+++ b/hw/char/ibex_uart.c
-@@ -147,7 +147,7 @@ static gboolean ibex_uart_xmit(void *do_not_use, GIOCondition cond,
-     /* instant drain the fifo when there's no back-end */
-     if (!qemu_chr_fe_backend_connected(&s->chr)) {
-         s->tx_level = 0;
--        return FALSE;
-+        return G_SOURCE_REMOVE;
-     }
- 
-     if (!s->tx_level) {
-@@ -156,7 +156,7 @@ static gboolean ibex_uart_xmit(void *do_not_use, GIOCondition cond,
-         s->uart_intr_state |= R_INTR_STATE_TX_EMPTY_MASK;
-         s->uart_intr_state &= ~R_INTR_STATE_TX_WATERMARK_MASK;
-         ibex_uart_update_irqs(s);
--        return FALSE;
-+        return G_SOURCE_REMOVE;
-     }
- 
-     ret = qemu_chr_fe_write(&s->chr, s->tx_fifo, s->tx_level);
-@@ -171,7 +171,7 @@ static gboolean ibex_uart_xmit(void *do_not_use, GIOCondition cond,
-                                         ibex_uart_xmit, s);
-         if (!r) {
-             s->tx_level = 0;
--            return FALSE;
-+            return G_SOURCE_REMOVE;
-         }
-     }
- 
-@@ -192,7 +192,7 @@ static gboolean ibex_uart_xmit(void *do_not_use, GIOCondition cond,
-     }
- 
-     ibex_uart_update_irqs(s);
--    return FALSE;
-+    return G_SOURCE_REMOVE;
- }
- 
- static void uart_write_tx_fifo(IbexUartState *s, const uint8_t *buf,
-diff --git a/hw/char/nrf51_uart.c b/hw/char/nrf51_uart.c
-index 3c6f982de9..dfe2276d71 100644
---- a/hw/char/nrf51_uart.c
-+++ b/hw/char/nrf51_uart.c
-@@ -93,13 +93,13 @@ static gboolean uart_transmit(void *do_not_use, GIOCondition cond, void *opaque)
-              */
-             goto buffer_drained;
-         }
--        return FALSE;
-+        return G_SOURCE_REMOVE;
-     }
- 
- buffer_drained:
-     s->reg[R_UART_TXDRDY] = 1;
-     s->pending_tx_byte = false;
--    return FALSE;
-+    return G_SOURCE_REMOVE;
- }
- 
- static void uart_cancel_transmit(NRF51UARTState *s)
-diff --git a/hw/char/serial.c b/hw/char/serial.c
-index 270e1b1094..f3094f860f 100644
---- a/hw/char/serial.c
-+++ b/hw/char/serial.c
-@@ -226,7 +226,7 @@ static gboolean serial_watch_cb(void *do_not_use, GIOCondition cond,
-     SerialState *s = opaque;
-     s->watch_tag = 0;
-     serial_xmit(s);
--    return FALSE;
-+    return G_SOURCE_REMOVE;
- }
- 
- static void serial_xmit(SerialState *s)
-diff --git a/hw/char/virtio-console.c b/hw/char/virtio-console.c
-index dd5a02e339..dbe0b28e60 100644
---- a/hw/char/virtio-console.c
-+++ b/hw/char/virtio-console.c
-@@ -45,7 +45,7 @@ static gboolean chr_write_unblocked(void *do_not_use, GIOCondition cond,
- 
-     vcon->watch = 0;
-     virtio_serial_throttle_port(VIRTIO_SERIAL_PORT(vcon), false);
--    return FALSE;
-+    return G_SOURCE_REMOVE;
- }
- 
- /* Callback function that's called when the guest sends us data */
-diff --git a/hw/usb/redirect.c b/hw/usb/redirect.c
-index 39fbaaab16..4bbf8afb33 100644
---- a/hw/usb/redirect.c
-+++ b/hw/usb/redirect.c
-@@ -278,7 +278,7 @@ static gboolean usbredir_write_unblocked(void *do_not_use, GIOCondition cond,
-     dev->watch = 0;
-     usbredirparser_do_write(dev->parser);
- 
--    return FALSE;
-+    return G_SOURCE_REMOVE;
- }
- 
- static int usbredir_write(void *priv, uint8_t *data, int count)
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index dc352f9e9d..941f87815a 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -144,7 +144,7 @@ static gboolean monitor_unblocked(void *do_not_use, GIOCondition cond,
-     QEMU_LOCK_GUARD(&mon->mon_lock);
-     mon->out_watch = 0;
-     monitor_flush_locked(mon);
--    return FALSE;
-+    return G_SOURCE_REMOVE;
- }
- 
- /* Caller must hold mon->mon_lock */
-diff --git a/net/vhost-user.c b/net/vhost-user.c
-index 5993e4afca..12555518e8 100644
---- a/net/vhost-user.c
-+++ b/net/vhost-user.c
-@@ -239,7 +239,7 @@ static gboolean net_vhost_user_watch(void *do_not_use, GIOCondition cond,
- 
-     qemu_chr_fe_disconnect(&s->chr);
- 
--    return TRUE;
-+    return G_SOURCE_CONTINUE;
- }
- 
- static void net_vhost_user_event(void *opaque, QEMUChrEvent event);
--- 
-2.38.1
-
+r~
 
