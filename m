@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E8B748585
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 15:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4CD7485B9
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 16:11:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH2wO-0004ij-NW; Wed, 05 Jul 2023 09:53:08 -0400
+	id 1qH3CR-0000Ie-4O; Wed, 05 Jul 2023 10:09:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH2wM-0004iJ-IB
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 09:53:06 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ id 1qH3CP-0000IR-Gd
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:09:41 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH2wK-0006yy-Qu
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 09:53:06 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2b6ef64342aso42118851fa.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 06:53:04 -0700 (PDT)
+ id 1qH3CN-00033V-Hu
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:09:40 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-4fa16c6a85cso10491297e87.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 07:09:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688565183; x=1691157183;
+ d=linaro.org; s=google; t=1688566172; x=1691158172;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=0uRkTN8qg60w9UdsxDymsO/5BE5XssZaL7cz8WBLbdw=;
- b=BY0C52nrag/qS+TY6mU7mwKuohgzg8/9MO50hpHXL73jH9+QIyrMkxj5sAQPA2Pt6K
- 5q5TCHqN9J9YKp3GvRUYX29XRwzdXxIc69zxkdVTTDMcrFQu6JsCjNIXa2apuKEPeIju
- S+HQtF77U8pPJkWctSybg20mjdrzQY6W5JEk0IreqY7HNYqDxNZ3JCRLL2dupGARIqgn
- wSLHMjDkztzVAkrHJRsnMDcaP3ShGcQ5vByMgkbjeSmEoIfCupxviZ8tdrGuS7SYx+bl
- yYkGfbBXTaDZPytI6w93ImkMkKoB6z1Lq9e4gdtcSMRZFlF6J6zkJbpOKilqe/7gLCgn
- 7Q+A==
+ bh=IT7VOjXzhE0F6KzYnB2zDoIqc9zBbn9NN57jEFx6LwE=;
+ b=m57GYkMtJwhExeYpuFCL01cZ+44Y0tt76hFPwVfnWA6AHnC78R5F6sVBi7jM+sahsz
+ H2un/iiUuU9pgTnq893W1JKsGupNlFzqy4M8f7JFfveW92+FHLAVbQe85/0t4T6GsPeH
+ D/rCT5gGvMX6ObaOso1qoaK/Ndkj0cMgbkynrRYnCS7FaZNcEY0uqdR0/jtt7x4qpiId
+ gQZlT8N8pJrHbOvn5ERY76uZw4EpbyBUIovhPKse5vztXhD3jjrAXh4m1TG+6ZvKlGbG
+ +NqqzqTVnJJlywCY21PncmTrO5yYTXTF2wga1AUR+UvTXvZjUHSpwTzoaR3lu4YWSfHU
+ Q/xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688565183; x=1691157183;
+ d=1e100.net; s=20221208; t=1688566172; x=1691158172;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0uRkTN8qg60w9UdsxDymsO/5BE5XssZaL7cz8WBLbdw=;
- b=eXOxI5yVSw4f1s5FdRQcjok5sHPdw9oWiJYVJsGkdslPq8HYzNcj/8F8UcITQpsjlX
- pMYzxdi0Ws/l3aGZjh4OLpAPH6mXPnu2gIHM62igzEf8B7Zd6lUY1fE2sv3Z7XLF+EWF
- bEcpoWjg+pw8Xrv7rFisRb4AbGml8bvpe6yPbGDFPe5aMr2DCO0DSZGWzmGoY8r8NPmp
- Gns6qVqgzXNuSHQXR0NnaCcQyKM7MloffZVI5oqRRzS1UMWKFdPhxuTQh+g8Gg9LoctZ
- 1XXOcqKtAIpZz/Ib9hSy9ux6SNHByGvJC+5eYMZ2WDirYRSMnka99UKSPAsyswmuOcGZ
- CRag==
-X-Gm-Message-State: ABy/qLabo9gSRLQ0y4anJtVim7FXjHZF6EA3fl5tQnWDs2v+DqxwUl/q
- kK6BSNhLJAsIRKSoOAn1TZ53Iw==
-X-Google-Smtp-Source: APBJJlFvJAczcikEGqYQB5iucnEo+Imr+cs1PO8Bszfo/evyPs7tZM6EGkTs3YuczHT8bSoMgsoPtg==
-X-Received: by 2002:a2e:3a0f:0:b0:2b6:decf:5cbf with SMTP id
- h15-20020a2e3a0f000000b002b6decf5cbfmr7845605lja.32.1688565182744; 
- Wed, 05 Jul 2023 06:53:02 -0700 (PDT)
+ bh=IT7VOjXzhE0F6KzYnB2zDoIqc9zBbn9NN57jEFx6LwE=;
+ b=HTh9mYYiuqeN9AItt0DzlL8LTYcEamk3WypOMbJfKpElr/6XNSnGWpBnDAWUaDcfiO
+ dzCv6a7UWvuz3GzwqCk+t1Fqg+FWTOUmMFgrzd4hJ0xud3D76S/M8PNg4oG2RQGMaKMx
+ /WpgJHGn9+WzK0QvLM8ulqwMyUpTFIqvhdMPL4u7rWhfakjfrbjsF6wQ+vDhmGrBpL8s
+ yPlgdeV4ldySe4uxwsLUb9vFytyAsAUiwERPbaQ7k3RHe+z8EPI/1I29JqxkjKDzLw+5
+ dSC1TUXhHcisMZPBaUfF1PRTTJb2euMCbxKIGbs+hkUhWXFJw6JyhN4tMxQgnZDlnnEb
+ 4aUg==
+X-Gm-Message-State: ABy/qLa0lNegHroSIi4QHQ9V9J9sKEolSA3sO/nWqTo5aZnvUXhRkpsu
+ JtDr3LNDPZBCY7PC/9yKLmwrLA==
+X-Google-Smtp-Source: APBJJlE3p7NUrY8GJBDpZ0eL2b50aF07E0h5wKC9BCQsoadGDVUWfv9fB2SieDQMViyWZ0De5wY1YA==
+X-Received: by 2002:a05:6512:3606:b0:4fb:89f5:f6d2 with SMTP id
+ f6-20020a056512360600b004fb89f5f6d2mr11441969lfs.47.1688566172296; 
+ Wed, 05 Jul 2023 07:09:32 -0700 (PDT)
 Received: from [192.168.82.227] ([91.223.100.51])
  by smtp.gmail.com with ESMTPSA id
- r1-20020a2e94c1000000b002b6ee0ff9bbsm1345969ljh.67.2023.07.05.06.53.01
+ l15-20020a19c20f000000b004fb8c31c8desm3981807lfc.208.2023.07.05.07.09.30
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 06:53:02 -0700 (PDT)
-Message-ID: <52969943-de97-2d71-5321-175ee83cf73d@linaro.org>
-Date: Wed, 5 Jul 2023 15:52:53 +0200
+ Wed, 05 Jul 2023 07:09:31 -0700 (PDT)
+Message-ID: <efed6e67-beb2-dc60-18c5-af0fe1431f0b@linaro.org>
+Date: Wed, 5 Jul 2023 16:09:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 1/2] target/arm: Suppress more TCG unimplemented features
- in ID registers
+Subject: Re: [PATCH 2/2] target/arm: Define neoverse-v1
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20230704130647.2842917-1-peter.maydell@linaro.org>
- <20230704130647.2842917-2-peter.maydell@linaro.org>
+ <20230704130647.2842917-3-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230704130647.2842917-2-peter.maydell@linaro.org>
+In-Reply-To: <20230704130647.2842917-3-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x235.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,29 +96,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/4/23 15:06, Peter Maydell wrote:
-> We already squash the ID register field for FEAT_SPE (the Statistical
-> Profiling Extension) because TCG does not implement it and if we
-> advertise it to the guest the guest will crash trying to look at
-> non-existent system registers.  Do the same for some other features
-> which a real hardware Neoverse-V1 implements but which TCG doesn't:
->   * FEAT_TRF (Self-hosted Trace Extension)
->   * Trace Macrocell system register access
->   * Memory mapped trace
->   * FEAT_AMU (Activity Monitors Extension)
->   * FEAT_MPAM (Memory Partitioning and Monitoring Extension)
->   * FEAT_NV (Nested Virtualization)
-> 
-> Most of these, like FEAT_SPE, are "introspection/trace" type features
-> which QEMU is unlikely to ever implement.  The odd-one-out here is
-> FEAT_NV -- we could implement that and at some point we probably
-> will.
-> 
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
-> ---
->   target/arm/cpu.c | 33 +++++++++++++++++++++++++++++----
->   1 file changed, 29 insertions(+), 4 deletions(-)
+> If you're checking the values against the TRM, note that the
+> summary tables differ from the register description in the TRM
+> for ID_AA64DFR0_EL1, ID_AA64ZFR0_EL1 and ID_PFR0_EL1: we
+> trust the versions in the register descriptions. Also the
+> MIDR value in the r1p2 TRM isn't updated from r1p1.
+> The CCSIDR_EL1 values in the TRM unfortunately seem to be wrong:
+> the comment in the patch describes how I've calculated the
+> values used here.
+...
+> +    cpu->isar.id_aa64mmfr2 = 0x0000000000001011ull;
 
+I see 0x0220011102101011, not in your list of exceptions above.
+
+Otherwise,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 r~
 
