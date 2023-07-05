@@ -2,87 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B747481A4
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 12:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A48B7481A6
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 12:03:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGzL9-00014N-UE; Wed, 05 Jul 2023 06:02:27 -0400
+	id 1qGzLm-0001s3-AI; Wed, 05 Jul 2023 06:03:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
- id 1qGzKv-00013e-M6
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 06:02:16 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philippe.mathieu-daude@linaro.org>)
- id 1qGzKs-0004QM-JZ
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 06:02:13 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-51dec0b6fecso6340822a12.1
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 03:02:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688551328; x=1691143328;
- h=content-transfer-encoding:in-reply-to:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:sender:from:to:cc:subject:date:message-id:reply-to;
- bh=x1qOIxkXIfFv1EoW9b7YkBOTZbxKBhC8Y1zftP/wVBI=;
- b=vSEA9iFa3ChgYS9cPYbKipMEG6lJ7dgHrxJWXF6ssXk5h2ECuZQgIi/vz/0DEAWlD9
- hi3XHHiFoRA0zcAZo+VAwzIbXUZkwhuR0hmLAwSgshZkZ/rHRQcNQ3a/dgNZKiwGt55T
- 7wD3KK9qgWrgkN6PDrdQ9maI3dz+deoLbJ0rJjeubRlTgxB8XivoxKxpSh1Wk85sqexd
- CHM92prscfUZFlmBS8Md7VKcaOrZo62eJjJYAaqTbPY68ZILiPFil2CBJnsysw5CxdEJ
- f+b4rfjruFPgI3/2hZhgRX0+x+Y5PCObjcn+//N4d7Ke0f9IJaAt2d+mbMPgsFKAMgri
- pC2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688551328; x=1691143328;
- h=content-transfer-encoding:in-reply-to:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:sender:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=x1qOIxkXIfFv1EoW9b7YkBOTZbxKBhC8Y1zftP/wVBI=;
- b=axDkF6zBQfwMsqfB7wtEwIFnIfnORz5oEjSlrbn4LkJDmljj1EAeu0g9mgEQ77hiHB
- +ci5W+zbBmlWCFL69oHU5/2WfqzXFCixkRN94A1OFs2DEMYmirT8hsl+yRvE2DUgJDa9
- Em1wCeLRWuFjSzRahzisyY8h0AICFKovXaX19yOj7bod9MIjaiGJENhyFfVbSx5/9Pl5
- Qv7dpZBaaAtR/d3ywZ3ADqkjJc0cXYwGehQF0Aw7qifftwsGF06JwC3xTA5mms9NgG+s
- NPUAor5LwVS6LruHerJyZk22/agVOLF49k7tJpGE472aFgIwciDE2kdeSHK+yoRzTeqj
- cjWg==
-X-Gm-Message-State: ABy/qLb+GwiX+rwvAYaxBJHTcRDI5uVh3wYWrB/+AflwhAVngE9A8jA/
- 6h7hCIiJdNTrmdkO1qeVCOgF5g==
-X-Google-Smtp-Source: APBJJlGpc8iSmm53Ef2SrSXu4npa4hGDYnAWo7wwF3ICdFHKJ2FUPszzBxQlPZ4pZSK92g7qajTDDg==
-X-Received: by 2002:a05:6402:605:b0:51d:e975:bea8 with SMTP id
- n5-20020a056402060500b0051de975bea8mr11162371edv.13.1688551328597; 
- Wed, 05 Jul 2023 03:02:08 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.142.96])
- by smtp.gmail.com with ESMTPSA id
- c15-20020a056402100f00b0051a5cf5fcaasm12774903edu.23.2023.07.05.03.02.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 03:02:08 -0700 (PDT)
-From: "=?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=" <philmd@linaro.org>
-X-Google-Original-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@fungible.com>
-Message-ID: <99e31308-3ca6-40aa-a980-bea665dde39d@fungible.com>
-Date: Wed, 5 Jul 2023 12:02:06 +0200
+ (Exim 4.90_1) (envelope-from <SRS0=c5xU=CX=kaod.org=clg@ozlabs.org>)
+ id 1qGzLh-0001jM-Tc; Wed, 05 Jul 2023 06:03:01 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=c5xU=CX=kaod.org=clg@ozlabs.org>)
+ id 1qGzLe-0004Uq-Sz; Wed, 05 Jul 2023 06:03:01 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QwwFn4kKjz4wqX;
+ Wed,  5 Jul 2023 20:02:53 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QwwFl3Dq6z4wZv;
+ Wed,  5 Jul 2023 20:02:51 +1000 (AEST)
+Message-ID: <4b916a32-daf3-7081-af1a-c10c3ea26a40@kaod.org>
+Date: Wed, 5 Jul 2023 12:02:48 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3] vhost-user: delay vhost_user_stop
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] ppc/pnv: Set P10 core xscom region size to match hardware
 Content-Language: en-US
-To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Cc: mst@redhat.com, pbonzini@redhat.com, den@openvz.org
-References: <20170227104956.24729-1-marcandre.lureau@redhat.com>
-In-Reply-To: <20170227104956.24729-1-marcandre.lureau@redhat.com>
+To: Joel Stanley <joel@jms.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+References: <20230705012736.20020-1-npiggin@gmail.com>
+ <CACPK8XcsBt5ZQ=SRFd2+6OjRx4zM1gmcr12djiMugS9QTa6SGw@mail.gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <CACPK8XcsBt5ZQ=SRFd2+6OjRx4zM1gmcr12djiMugS9QTa6SGw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philippe.mathieu-daude@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=c5xU=CX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.09, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,111 +66,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Marc-André,
-
-[very old patch...]
-
-On 27/2/17 11:49, Marc-André Lureau wrote:
-> Since commit b0a335e351103bf92f3f9d0bd5759311be8156ac, a socket write
-> may trigger a disconnect events, calling vhost_user_stop() and clearing
-> all the vhost_dev strutures holding data that vhost.c functions expect
-> to remain valid. Delay the cleanup to keep the vhost_dev structure
-> valid during the vhost.c functions.
+On 7/5/23 04:05, Joel Stanley wrote:
+> On Wed, 5 Jul 2023 at 01:27, Nicholas Piggin <npiggin@gmail.com> wrote:
+>>
+>> The P10 core xscom memory regions overlap because the size is wrong.
+>> The P10 core+L2 xscom region size is allocated as 0x1000 (with some
+>> unused ranges). "EC" is used as a closer match, as "EX" includes L3
+>> which has a disjoint xscom range that would require a different
+>> region if it were implemented.
+>>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> ---
-> v3:
->   - use aio_bh_schedule_oneshot(), as suggest by Paolo
-> v2:
->   - fix reconnect race
+> Nice, that looks better:
 > 
-> net/vhost-user.c | 53 ++++++++++++++++++++++++++++++++++++++++++++++-------
->   1 file changed, 46 insertions(+), 7 deletions(-)
+> 0000000100000000-00000001000fffff (prio 0, i/o): xscom-quad.0: 0x100000
+> 0000000100108000-000000010010ffff (prio 0, i/o): xscom-core.3: 0x8000
+> 0000000100110000-0000000100117fff (prio 0, i/o): xscom-core.2: 0x8000
+> 0000000100120000-0000000100127fff (prio 0, i/o): xscom-core.1: 0x8000
+> 0000000100140000-0000000100147fff (prio 0, i/o): xscom-core.0: 0x8000
+> 0000000108000000-00000001080fffff (prio 0, i/o): xscom-quad.4: 0x100000
+> 0000000108108000-000000010810ffff (prio 0, i/o): xscom-core.7: 0x8000
+> 0000000108110000-0000000108117fff (prio 0, i/o): xscom-core.6: 0x8000
+> 0000000108120000-0000000108127fff (prio 0, i/o): xscom-core.5: 0x8000
+> 0000000108140000-0000000108147fff (prio 0, i/o): xscom-core.4: 0x8000
 > 
-> diff --git a/net/vhost-user.c b/net/vhost-user.c
-> index 77b8110f8c..e7e63408a1 100644
-> --- a/net/vhost-user.c
-> +++ b/net/vhost-user.c
-> @@ -190,7 +190,35 @@ static gboolean net_vhost_user_watch(GIOChannel *chan, GIOCondition cond,
->   
->       qemu_chr_fe_disconnect(&s->chr);
->   
-> -    return FALSE;
-> +    return TRUE;
+> Reviewed-by: Joel Stanley <joel@jms.id.au>
 
-Do you mind explaining this change again, it is not clear from
-the commit description. We listen to G_IO_HUP, got a SIGHUP so
-we disconnect the chardev but keep listening for future HUP?
-In which case can that happen? How can we get a chardev connected
-and initialized here without calling net_init_vhost_user() again?
+It'd interesting to add some dummy SLW handlers to get rid of the
+XSCOM errors at boot and shutdown on P10 :
 
-> +}
-> +
-> +static void net_vhost_user_event(void *opaque, int event);
-> +
-> +static void chr_closed_bh(void *opaque)
-> +{
-> +    const char *name = opaque;
-> +    NetClientState *ncs[MAX_QUEUE_NUM];
-> +    VhostUserState *s;
-> +    Error *err = NULL;
-> +    int queues;
-> +
-> +    queues = qemu_find_net_clients_except(name, ncs,
-> +                                          NET_CLIENT_DRIVER_NIC,
-> +                                          MAX_QUEUE_NUM);
-> +    assert(queues < MAX_QUEUE_NUM);
-> +
-> +    s = DO_UPCAST(VhostUserState, nc, ncs[0]);
-> +
-> +    qmp_set_link(name, false, &err);
-> +    vhost_user_stop(queues, ncs);
-> +
-> +    qemu_chr_fe_set_handlers(&s->chr, NULL, NULL, net_vhost_user_event,
-> +                             opaque, NULL, true);
-> +
-> +    if (err) {
-> +        error_report_err(err);
-> +    }
->   }
->   
->   static void net_vhost_user_event(void *opaque, int event)
-> @@ -212,20 +240,31 @@ static void net_vhost_user_event(void *opaque, int event)
->       trace_vhost_user_event(chr->label, event);
->       switch (event) {
->       case CHR_EVENT_OPENED:
-> -        s->watch = qemu_chr_fe_add_watch(&s->chr, G_IO_HUP,
-> -                                         net_vhost_user_watch, s);
->           if (vhost_user_start(queues, ncs, &s->chr) < 0) {
->               qemu_chr_fe_disconnect(&s->chr);
->               return;
->           }
-> +        s->watch = qemu_chr_fe_add_watch(&s->chr, G_IO_HUP,
-> +                                         net_vhost_user_watch, s);
->           qmp_set_link(name, true, &err);
->           s->started = true;
->           break;
->       case CHR_EVENT_CLOSED:
-> -        qmp_set_link(name, false, &err);
-> -        vhost_user_stop(queues, ncs);
-> -        g_source_remove(s->watch);
-> -        s->watch = 0;
-> +        /* a close event may happen during a read/write, but vhost
-> +         * code assumes the vhost_dev remains setup, so delay the
-> +         * stop & clear to idle.
-> +         * FIXME: better handle failure in vhost code, remove bh
-> +         */
-> +        if (s->watch) {
-> +            AioContext *ctx = qemu_get_current_aio_context();
-> +
-> +            g_source_remove(s->watch);
-> +            s->watch = 0;
-> +            qemu_chr_fe_set_handlers(&s->chr, NULL, NULL, NULL,
-> +                                     NULL, NULL, false);
-> +
-> +            aio_bh_schedule_oneshot(ctx, chr_closed_bh, opaque);
-> +        }
->           break;
->       }
->   
+[ 4824.393446266,3] XSCOM: write error gcid=0x0 pcb_addr=0x200e883c stat=0x0
+[ 4824.393588777,5] Unable to log error
+[ 4824.393650582,3] XSCOM: Write failed, ret =  -6
+[ 4824.394124623,3] Could not set special wakeup on 0:0: Unable to write QME_SPWU_HYP.
+[ 4824.394368459,3] XSCOM: write error gcid=0x0 pcb_addr=0x200e883c stat=0x0
+[ 4824.394382007,5] Unable to log error
+[ 4824.394384603,3] XSCOM: Write failed, ret =  -6
+
+Thanks,
+
+C.
+
+> 
+> 
+>> ---
+>>   hw/ppc/pnv_core.c          | 3 +--
+>>   include/hw/ppc/pnv_xscom.h | 2 +-
+>>   2 files changed, 2 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+>> index b7223bb445..ffbc29cbf4 100644
+>> --- a/hw/ppc/pnv_core.c
+>> +++ b/hw/ppc/pnv_core.c
+>> @@ -299,9 +299,8 @@ static void pnv_core_realize(DeviceState *dev, Error **errp)
+>>       }
+>>
+>>       snprintf(name, sizeof(name), "xscom-core.%d", cc->core_id);
+>> -    /* TODO: check PNV_XSCOM_EX_SIZE for p10 */
+>>       pnv_xscom_region_init(&pc->xscom_regs, OBJECT(dev), pcc->xscom_ops,
+>> -                          pc, name, PNV_XSCOM_EX_SIZE);
+>> +                          pc, name, PNV10_XSCOM_EC_SIZE);
+>>
+>>       qemu_register_reset(pnv_core_reset, pc);
+>>       return;
+>> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
+>> index f7da9a1dc6..a4c9d95dc5 100644
+>> --- a/include/hw/ppc/pnv_xscom.h
+>> +++ b/include/hw/ppc/pnv_xscom.h
+>> @@ -133,7 +133,7 @@ struct PnvXScomInterfaceClass {
+>>
+>>   #define PNV10_XSCOM_EC_BASE(core) \
+>>       ((uint64_t) PNV10_XSCOM_EQ_BASE(core) | PNV10_XSCOM_EC(core & 0x3))
+>> -#define PNV10_XSCOM_EC_SIZE        0x100000
+>> +#define PNV10_XSCOM_EC_SIZE        0x1000
+>>
+>>   #define PNV10_XSCOM_PSIHB_BASE     0x3011D00
+>>   #define PNV10_XSCOM_PSIHB_SIZE     0x100
+>> --
+>> 2.40.1
+>>
+
 
