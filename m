@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B3E74867F
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 16:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A227486C2
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 16:46:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH3ch-0003G1-HE; Wed, 05 Jul 2023 10:36:51 -0400
+	id 1qH3l4-00054B-3h; Wed, 05 Jul 2023 10:45:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH3cf-0003Fl-Ma
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:36:49 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ id 1qH3l1-00053T-Dz
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:45:27 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH3ce-0001Ng-6x
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:36:49 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2b69ed7d050so110561901fa.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 07:36:47 -0700 (PDT)
+ id 1qH3kz-0003Ol-M5
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 10:45:27 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-4fb7589b187so10681968e87.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 07:45:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688567806; x=1691159806;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1688568324; x=1691160324;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=pVXXFyrrUQWj+YEFhNJ6H8UEs+ymG9N4wGF336xLcx8=;
- b=F3jvq5N8N6cPohU2VXiZWj+1EGIxYfm5lnuCO22e86K7kylXJ7Wy3puIauHK8SrYVi
- ts/9MC7xyMgRNB0UcReSgKpEcuBHoztaj2kog+3CTnuLm9y+DX+7FOPzXLw6i1Y+gast
- X2ssH3naI7gfvCMOOd91QachVtuVYsrUd/HYEpQI+0F6qdbP2Su/hCIkyJu/StlGD0Uf
- QAgWK3nzgVvQlWQHzij3MG0T5Hg1yeonXMQmmRfZg8fsHmZdEdQsZaUXzh1fWA1XLlPD
- R5CHhkrAE1pX/t1beimm8S/zVavNnUJybcnRvJdSL3EWCIvSeLr20gZn5os6VGTtUZvm
- Kd7w==
+ bh=Tl2AskdNCf03W6dDZ14SDintwMW6XEoJs3CByzgxNoA=;
+ b=v4UVc4AQ/ovoSV9touIg4srcKrE/2pOcu1he4jvAKSbHz7j9BxWjXH1Vat2ZWsdkrx
+ hyk8jusKVdvT57v2/Q+29HxFqJYRdM0obszObGjPL4YnhD4aGWO7r0wdKS2yABdn7Y68
+ 2jZyIgpcGypy23hGdEpERhHmmmSqWZb9aAH12tdXF8mNVqai2Xr8c9M3lfyxA3n+mZov
+ Vsxwy3vSLGVlRqjuYwcx70Ue13lLppVbPk5dv/VFeBNEiAWdy+Di4n8sDfTge1FgeYyT
+ cVQN7JpUb9NIFwOEK2NU7Wt2lEU/aRXhJVuSbACbdzocYL8sFbUTaQRtxRSNE0+p354Z
+ kwfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688567806; x=1691159806;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1688568324; x=1691160324;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pVXXFyrrUQWj+YEFhNJ6H8UEs+ymG9N4wGF336xLcx8=;
- b=YDdEb+deFMfhArll4v4wwOLa2eLXnozbCF6cG284YeJ/cRdO8h2TO4qjDoHQHa8y3X
- E0tYdiHyxWEgQpLx7Cxq34c7Ig67dCUnzwN9ZhxELrV1gdC6BgqZYOrLQ7dyMJVl5UKO
- VTosCrlDmFSTHCFXAB8B8VnbXxOb9m01L6NDNE2IwSJrn1TJmd2kggV70MkQ5nsKDLq1
- akAZoxqcBKaSt3HXIITI4gV3lLzcteFMoSFIzzsgiCJDrxZf3LgqKuaYXZi/bKIAG2VQ
- /PBdAHXHaTh0puyUHisWiUew8vT7J3Zx3NgwKdAooUYZvZII1lCNUt+1rljvhvpvkugq
- GN8Q==
-X-Gm-Message-State: ABy/qLaDZeBTKJuSM/N2CeTRe93+IJbDyk4EXCf6sUrEe4eqoWcJ1NGL
- zJtVh4oGCfPp+SEHqzAKPsNU+n1ZoC84vCmeWJPd4Q==
-X-Google-Smtp-Source: APBJJlHLPGijpsz6po2i6FDjZq0ZFrmceTpt+puLYb37BL3t5becUzFbTFPNjHjTQdYwS7Ed4eGi9g==
-X-Received: by 2002:a2e:7318:0:b0:2b6:ec69:7c3b with SMTP id
- o24-20020a2e7318000000b002b6ec697c3bmr6248225ljc.46.1688567806259; 
- Wed, 05 Jul 2023 07:36:46 -0700 (PDT)
+ bh=Tl2AskdNCf03W6dDZ14SDintwMW6XEoJs3CByzgxNoA=;
+ b=FBsx/JVos+WTqL6uv7xpSfGPxu4oU7oX4WiFuOjis9dhq4c4Sx/kwBQUNSv0u97nMY
+ nllVaF46kqgKFz+FgFF0ghupbWexSJJkWKuw3YrDGgkK+pJtwK4NPJgLHdJySIFCnuLC
+ E4Xw/lbPfSNH0CZ3eWanJDYGt7A1RWA6KHAkiXERaVwPUSJPbwA9wzudA8ZcDOjW/RPL
+ PnlWVrfR+m/Ej/H0RND1QNqGvl6pGtck7uNSAPPbwq2L2rQFRCcoQpDORB9PHyEpB8V5
+ YMQfAMcjdRFWawqGAGTQxlGudmz0XNIGWbhEjl4hbXgskxlNNqDKcyLljrHH028r96mK
+ DUKQ==
+X-Gm-Message-State: ABy/qLaHkzxHuOkOshCwDprvPts1Plw0OXxnZ96MlBDwo/cGsh/zlRjI
+ MBGbbX7qxLhUcPt4uYMEhKg1Zw==
+X-Google-Smtp-Source: APBJJlGu/tGi8FN4Awg8+1+xOn2/b4sUy4lEpOir/9O5QHsU1SEJJr+9i1Xepexq7Cydo4bMc8oxRg==
+X-Received: by 2002:a05:6512:2386:b0:4fb:8987:734e with SMTP id
+ c6-20020a056512238600b004fb8987734emr13394389lfv.68.1688568323807; 
+ Wed, 05 Jul 2023 07:45:23 -0700 (PDT)
 Received: from [192.168.82.227] ([91.223.100.51])
  by smtp.gmail.com with ESMTPSA id
- s18-20020a2e9c12000000b002b6df22f0edsm2596126lji.64.2023.07.05.07.36.44
+ o10-20020ac2494a000000b004fbac2646e3sm2473663lfi.195.2023.07.05.07.45.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 07:36:45 -0700 (PDT)
-Message-ID: <f6ec16da-f104-01b6-553b-2bebf0166759@linaro.org>
-Date: Wed, 5 Jul 2023 16:36:31 +0200
+ Wed, 05 Jul 2023 07:45:23 -0700 (PDT)
+Message-ID: <c90fd4c8-59a4-e4b9-544b-8eb6cd03b4d3@linaro.org>
+Date: Wed, 5 Jul 2023 16:45:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
 Subject: Re: [PATCH] target/arm: Avoid over-length shift in
  arm_cpu_sve_finalize() error case
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 References: <20230704154332.3014896-1-peter.maydell@linaro.org>
+ <87jzvffywd.fsf@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230704154332.3014896-1-peter.maydell@linaro.org>
+In-Reply-To: <87jzvffywd.fsf@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x232.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,38 +97,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/4/23 17:43, Peter Maydell wrote:
-> If you build QEMU with the clang sanitizer enabled, you can see it
-> fire when running the arm-cpu-features test:
+On 7/4/23 18:00, Alex Bennée wrote:
 > 
-> $ QTEST_QEMU_BINARY=./build/arm-clang/qemu-system-aarch64 ./build/arm-clang/tests/qtest/arm-cpu-features
-> [...]
-> ../../target/arm/cpu64.c:125:19: runtime error: shift exponent 64 is too large for 64-bit type 'unsigned long long'
-> [...]
+> Peter Maydell <peter.maydell@linaro.org> writes:
 > 
-> This happens because the user can specify some incorrect SVE
-> properties that result in our calculating a max_vq of 0.  We catch
-> this and error out, but before we do that we calculate
+>> If you build QEMU with the clang sanitizer enabled, you can see it
+>> fire when running the arm-cpu-features test:
+>>
+>> $ QTEST_QEMU_BINARY=./build/arm-clang/qemu-system-aarch64 ./build/arm-clang/tests/qtest/arm-cpu-features
+>> [...]
+>> ../../target/arm/cpu64.c:125:19: runtime error: shift exponent 64 is too large for 64-bit type 'unsigned long long'
+>> [...]
+>>
+>> This happens because the user can specify some incorrect SVE
+>> properties that result in our calculating a max_vq of 0.  We catch
+>> this and error out, but before we do that we calculate
+>>
+>>   vq_mask = MAKE_64BIT_MASK(0, max_vq);$
+>>
+>> and the MAKE_64BIT_MASK() call is only valid for lengths that are
+>> greater than zero, so we hit the undefined behaviour.
 > 
->   vq_mask = MAKE_64BIT_MASK(0, max_vq);$
-> 
-> and the MAKE_64BIT_MASK() call is only valid for lengths that are
-> greater than zero, so we hit the undefined behaviour.
-> 
-> Change the logic so that if max_vq is 0 we specifically set vq_mask
-> to 0 without going via MAKE_64BIT_MASK().  This lets us drop the
-> max_vq check from the error-exit logic, because if max_vq is 0 then
-> vq_map must now be 0.
-> 
-> The UB only happens in the case where the user passed us an incorrect
-> set of SVE properties, so it's not a big problem in practice.
-> 
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
-> ---
->   target/arm/cpu64.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+> Hmm that does make me worry we could have more land mines waiting to be
+> found. Would converting MAKE_64BIT_MASK into an inline function and
+> asserting be a better solution?
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+I'd be tempted to keep a macro, and use __builtin_constant_p to make sure this expands to 
+a constant if possible.  Ideally constants would be diagnosed at compile-time and runtime 
+values get runtime asserts.
+
 
 r~
+
 
