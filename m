@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E275E747C40
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 07:05:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AD0747C48
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 07:15:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGuh3-0003eJ-BZ; Wed, 05 Jul 2023 01:04:45 -0400
+	id 1qGuqM-0005UE-AW; Wed, 05 Jul 2023 01:14:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGugz-0003dl-5V
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 01:04:41 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1qGuqI-0005U1-Ls
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 01:14:18 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qGugw-0006KC-Pj
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 01:04:40 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3143ccb0f75so2289428f8f.0
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 22:04:38 -0700 (PDT)
+ id 1qGuqE-0000C5-C3
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 01:14:18 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3fbc244d307so74138005e9.1
+ for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 22:14:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688533477; x=1691125477;
- h=content-transfer-encoding:in-reply-to:references:to:from
+ d=linaro.org; s=google; t=1688534052; x=1691126052;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=xnnqxlEi1vy92wcECknKEznTucnJ7qT1JdK7AD3H3T4=;
- b=DIo0k+NyCHEt1CPXKR2zTRnJhK02ZqSKdflVd++wPV3aIkTT7dg6IqimxFxi+0bXoS
- X6rV/BwKR9jzcSX5CaHVh88eBL8DibTuyYTbFReuIkJXReIV6fX2hIywnCpH+s+FhBGd
- 5CfTC9alMgaeY7xBgNH/bZ31MNPuVahX2SDsqQQj2S2jdb444ngrejuj1EFBlyuZ/mQC
- i2Ubf5DftHuoaNLP0Txy4OU1dj3AOD6+eUzPCG0Z4rBvCEuq4JyZd6CJGZBGh0VG15aU
- Fl96B4u5WnjmB5ZjBc24RqlUSpzNR1SVrXqDircvyqqDjor968NUedn06iD5RUfKO6UJ
- mtBw==
+ bh=XYFksPaw0oKlAzw3IfrSE54sJ24AakA6BmtogPcwkFQ=;
+ b=ijw5Vf+RbPaXE2GN7G/0WEG9u3N9x690aCji4P8bwkSwHkUbUj6pMKTJZiRSFfkBuq
+ 4/P59W/AVusMJd//8d1byYO0AzMiixGgBAt2BBIVxmlifRF+wKOcKv54mGR4zcPrSoz4
+ GjkB+ViBNE30k8zxAIS4312mIn8FaOzeax5jrADc8bOtYQa0jvk/bnlkB+679Tpd7HSM
+ hRdqTgtw/X0wBSQQWJpUZOIW9MCFUfJCiH2YqfDPgTM1RlZ4sm17yV4s3ufJXUfTDwSd
+ yGbYA02E+WWBYQ3+S0G7kPv7g3NcirlEvmw0CDcDq+wGtZ9SNqUyp9QZD14skc9iJ3T/
+ HBPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688533477; x=1691125477;
- h=content-transfer-encoding:in-reply-to:references:to:from
+ d=1e100.net; s=20221208; t=1688534052; x=1691126052;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xnnqxlEi1vy92wcECknKEznTucnJ7qT1JdK7AD3H3T4=;
- b=cXjHo8a5sxD8KlRZ+GoNHWN35Ews/SVqWZCEv8C1HK0nHEZZyaPdCcTBoKXM+Txs1j
- j/O5Z4udnGPlIFlLkBkHj4O6c/ALJnjC0VwbGnHwdtmgZuKPMsmFM+OiSmKjl+8dAFBx
- 6MXu0lNE/WNlkaVLQgnl2/JWeUSU7b8NPqpeFbxdoj5UrJ5up5sbOsCFMZ5Ifh+1NDEx
- PDudLZ/i7+CV3Vnv3/wlue6i86iwvSI2/ubSzV6Kfq8D8R/Fpe8WWgc4ZbDPg2d9cKy6
- xci4OYf/pVIFsBf1LzHNvl9sPcF1DG/3kkd0t1smWKoipAJDQL9kcDkJNkNoNBNUBOZK
- jbDA==
-X-Gm-Message-State: ABy/qLZWaPp5hr4jBCEMEYx8jtBvHiP6uVvDX1nSgarabRnDTNyiuoph
- pzXjMge875gDCZBGYqqjLD84tw==
-X-Google-Smtp-Source: APBJJlG+HYjDYpCMVRjJWIH/JADDflswpwG/ZgXaHs0DzWiV3MjVT/SVTQgH3gHDkEG8mEfgpysPGg==
-X-Received: by 2002:a05:6000:1cc3:b0:314:2faa:a23 with SMTP id
- bf3-20020a0560001cc300b003142faa0a23mr15770836wrb.43.1688533476913; 
- Tue, 04 Jul 2023 22:04:36 -0700 (PDT)
+ bh=XYFksPaw0oKlAzw3IfrSE54sJ24AakA6BmtogPcwkFQ=;
+ b=XkGT8lZKllkg3/EcRiBsQt2zII8XjRClOioq9uhefNYVvEUNFsOcK8hNSbG1u8oM/l
+ FS68IKaV/R9LDVD1F6F2U9jZUfbjThrbijzx7jj5zAT2sp/IKjGMl4bnqr5VaZFgD5I0
+ RRPDcZRODF8xSevpiCJx+0g3ofMSKzIhCqPPlN8QbjwzJIM05h2OswKPJuevps3/vLtN
+ 4GTOeSjcLKcDh1XgXo0aW9dSOihY5Wm1mvAYuC+6fDrqBAtlkDGEk6fsJhIoG+eeWYaq
+ 6khLUigZ0fobouZioE2qdsMhMmXlSdaVptwyWtR4u7cynhXo6Hu3CXM6LlXsgbbSScaP
+ bUag==
+X-Gm-Message-State: AC+VfDx0yYvEAb2EL1cruyOc9IlhX9tDyyYRKgQYiofN92Pz3uS3jSq2
+ IjVNR8nKevlCY4LTLlZpMpU6nTiNxUF8cD/X9xC6Rg==
+X-Google-Smtp-Source: ACHHUZ4WhWx7hzgIZDnp8NrKkHTIEox8Bk75D4kUusBy7DNc2LsdPrP5oBjr79qv08UoYrBW34QsTQ==
+X-Received: by 2002:a7b:c315:0:b0:3f4:d18f:b2fb with SMTP id
+ k21-20020a7bc315000000b003f4d18fb2fbmr14630225wmj.8.1688534052627; 
+ Tue, 04 Jul 2023 22:14:12 -0700 (PDT)
 Received: from [192.168.1.25] (91.232.79.188.dynamic.jazztel.es.
  [188.79.232.91]) by smtp.gmail.com with ESMTPSA id
- n17-20020a5d6611000000b003140fff4f75sm17488270wru.17.2023.07.04.22.04.36
+ n5-20020a05600c294500b003fbc0a49b57sm1001932wmd.6.2023.07.04.22.14.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 22:04:36 -0700 (PDT)
-Message-ID: <d73e2121-ee38-3245-8a3b-804931ea80a2@linaro.org>
-Date: Wed, 5 Jul 2023 07:04:34 +0200
+ Tue, 04 Jul 2023 22:14:12 -0700 (PDT)
+Message-ID: <d2142c8f-4ae7-ae3e-da84-7d7ac376457a@linaro.org>
+Date: Wed, 5 Jul 2023 07:14:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 00/11] target-arm queue
+Subject: Re: intermittent clang sanitizer failure during 'make check-tcg':
+ null pointer deref in IntervalTreeNode
 Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>,
+ QEMU Developers <qemu-devel@nongnu.org>
+References: <CAFEAcA8AzdKw9BH_6757U-P3zCWTdyiVCAa7GB8wcjOF4wdE3Q@mail.gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20230704163634.3188465-1-peter.maydell@linaro.org>
- <29a83e80-32b5-cbb2-8dbd-13192e485e1e@linaro.org>
-In-Reply-To: <29a83e80-32b5-cbb2-8dbd-13192e485e1e@linaro.org>
+In-Reply-To: <CAFEAcA8AzdKw9BH_6757U-P3zCWTdyiVCAa7GB8wcjOF4wdE3Q@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,40 +95,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/5/23 06:57, Richard Henderson wrote:
-> On 7/4/23 18:36, Peter Maydell wrote:
->>   docs/system/arm/sbsa.rst          |   5 +-
->>   hw/arm/sbsa-ref.c                 |  23 +++--
->>   hw/misc/allwinner-sramc.c         |   1 +
->>   target/arm/cpu.c                  |  65 ++++++++-----
->>   target/arm/gdbstub.c              |   4 +
->>   target/arm/helper.c               |  70 +++++++++++---
->>   target/arm/tcg/translate-sme.c    |  24 +++--
->>   target/xtensa/exc_helper.c        |   3 +
->>   tests/qtest/xlnx-canfd-test.c     |  33 +++----
->>   tests/tcg/aarch64/icivau.c        | 189 ++++++++++++++++++++++++++++++++++++++
->>   tests/tcg/aarch64/sme-outprod1.c  |  83 +++++++++++++++++
->>   hw/arm/Kconfig                    |   2 +-
->>   tests/tcg/aarch64/Makefile.target |  13 ++-
->>   13 files changed, 436 insertions(+), 79 deletions(-)
+On 7/4/23 18:20, Peter Maydell wrote:
+> If you build QEMU with the clang UB sanitizer and do a
+> 'make check-tcg' run, it can fail like this:
 > 
-> There's one more failure:
+>    TEST    vma-pthread-with-libinsn.so on aarch64
+> ../../util/interval-tree.c:751:32: runtime error: member access within
+> null pointer of type 'IntervalTreeNode' (aka 'struct
+> IntervalTreeNode')
+> SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior
+> ../../util/interval-tree.c:751:32 in
 > 
-> https://gitlab.com/qemu-project/qemu/-/jobs/4592433432#L3723
+> SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior
+> ../../util/interval-tree.c:751:32 in
+> make[1]: *** [Makefile:181: run-plugin-vma-pthread-with-libinsn.so] Error 124
+> make: *** [/mnt/nvmedisk/linaro/qemu-from-laptop/qemu/tests/Makefile.include:56:
+> run-tcg-tests-aarch64-linux-user] Error 2
 > 
->> /tmp/ccASXpLo.s: Assembler messages:
->> /tmp/ccASXpLo.s:782: Error: selected processor does not support system register name 
->> 'id_aa64zfr0_el1'
->> /tmp/ccASXpLo.s:829: Error: selected processor does not support system register name 
->> 'id_aa64smfr0_el1'
->> make[1]: *** [Makefile:119: sysregs] Error 1
-> 
-> I guess it's the change to Makefile.target, as I don't see any other likely candidates.
+> I only saw this once; when I re-ran the test passed...
 
-Ho hum, that's *my* patch 5, "Fix SME full tile indexing".
-I'll have a closer look tomorrow.  Sorry about that.
+Hmm.
+
+The 751:32 reference is "left->subtree_last".
+
+Three lines above we checked
+
+         if (node->rb.rb_left) {
+
+but then read it again within the IF
+
+             IntervalTreeNode *left = rb_to_itree(node->rb.rb_left);
+
+I suspect a normal optimizing compiler combines these two reads, but UBSAN does not and 
+thus the check and the use race.
+
+On the to-do list...
 
 
 r~
-
 
