@@ -2,85 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB7F7482E6
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AE67482E7
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:31:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH0eZ-0001LP-1A; Wed, 05 Jul 2023 07:26:35 -0400
+	id 1qH0hR-0004ql-Tm; Wed, 05 Jul 2023 07:29:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH0eX-0001Fp-5N
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:26:33 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH0eU-0007Lb-UU
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:26:32 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9923833737eso584646166b.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 04:26:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688556389; x=1691148389;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MyuaJykDfDc91If9jqWs8HPZsxuZz34VTznoTL7e8Lk=;
- b=sA49nNhuJzMGXGT1exA9iOaqxXavR1detzIBd+pJv01vczzD+LgBk0TiWnasudkii2
- ipbfYibv50owNBUWt2aSM0m8fnYVTCR3F0b23ZaU1/6xJuW53OBJqkcwtK8ky+0NokVI
- mGQY3XF2u80u6D9rmZdhm+ZUO1O7qhTM39fyUiv0L52aKcMBayKAcbO0+hIZZLnCw8at
- RXjesXkHaSJST1yLfIw4f5wN+Eg+knB1CHvqwrIKH2+OtUDLHu2wtOnnLocIt014pto+
- tnBB2rSuyInH5AqwsMx/DzZF/j2mbEjnfDYg9lICGUox8JDsOb3/qbxm4gL9/63YUwlL
- JcbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688556389; x=1691148389;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MyuaJykDfDc91If9jqWs8HPZsxuZz34VTznoTL7e8Lk=;
- b=YczlzKvMhcxhPLHYVJHdbfh0EUpHFwwO/TMv5qw2BzBzEGHLx/yawbVpad1uYx2UwB
- 7OLOOem/Bg4aXgbmNQwP4WlGaQmF2At9jYIMD8O5cdjKRep6j2TSITe58kxbM3UYLosT
- R9KIJu4KfXj1Kdxw0RYTEG7sJ+jP5S/27EC6bUcuyfsvL4whNO7mVtsOW3tX6sWuArYT
- c4vRwpXcgan61KTRn1TOzD3tOXaeNEdNOnGkuVJGWsgyPaS2Mcm+rQzMrLsV5UKoln5Q
- E1V1J69aYxqysfbX/sIjBrN5twoKrNL/HCMGY9/kWmEENUUIX08ku9nas17CDcFJV6lE
- w9Kg==
-X-Gm-Message-State: ABy/qLbWL5llsQYH+QORAFS9g6KIQqnNDfolZrK5/7qEjiwdJc6fy2Lb
- XwPN0c6ZdnqXyqP12VltjdRCoQ==
-X-Google-Smtp-Source: APBJJlEGMQnh+ISYuZjrowEPilWp6bHlYMpdzbRmAFz4WXB6llCDurHdKYdAwy5HuMfC4cTBhR98Hw==
-X-Received: by 2002:a17:906:24d:b0:973:e349:43c9 with SMTP id
- 13-20020a170906024d00b00973e34943c9mr12202444ejl.77.1688556389328; 
- Wed, 05 Jul 2023 04:26:29 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.142.96])
- by smtp.gmail.com with ESMTPSA id
- lc1-20020a170906f90100b00988e953a586sm14540186ejb.61.2023.07.05.04.26.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 04:26:29 -0700 (PDT)
-Message-ID: <cf7ed8a2-8fce-7ec9-c124-dd07871de362@linaro.org>
-Date: Wed, 5 Jul 2023 13:26:17 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qH0hQ-0004qZ-7e
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:29:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qH0hO-0007zw-P0
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:29:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688556569;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=1GION45l99bvaOSMLKaYczU1iPV7H4LpUmfK+UN48rA=;
+ b=PN29QorKCACFjqoj0ZxmjlL1x/Yo5P8JKV51yyfnUCx4R2e80LItTk4X/ooea7nLoAGeeo
+ z0bGwORZQeWGucBdJh/ScljajSzIR7Oq+/QT62PJr+adjkbM890lzscOn++x+CcVwdJV2T
+ 7aPVNrpaZiT3sabRQlUVQKOnFY7Y0QA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-612-QshFrFzUMomYbW8wFWtesg-1; Wed, 05 Jul 2023 07:29:25 -0400
+X-MC-Unique: QshFrFzUMomYbW8wFWtesg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5EAF58022EF;
+ Wed,  5 Jul 2023 11:29:25 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3B2B010197;
+ Wed,  5 Jul 2023 11:29:25 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3799521E6A1F; Wed,  5 Jul 2023 13:29:24 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Het Gala <het.gala@nutanix.com>
+Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
+ dgilbert@redhat.com,  pbonzini@redhat.com,  berrange@redhat.com,
+ armbru@redhat.com,  eblake@redhat.com,  manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+Subject: Re: [PATCH v6 2/9] migration: convert uri parameter into
+ 'MigrateAddress' struct
+References: <20230606101557.202060-1-het.gala@nutanix.com>
+ <20230606101557.202060-3-het.gala@nutanix.com>
+Date: Wed, 05 Jul 2023 13:29:24 +0200
+In-Reply-To: <20230606101557.202060-3-het.gala@nutanix.com> (Het Gala's
+ message of "Tue, 6 Jun 2023 10:15:50 +0000")
+Message-ID: <877creiokr.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] pnv/xive: Print CPU target in all TIMA traces
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230705110039.231148-1-fbarrat@linux.ibm.com>
- <060f5a94-30ab-b708-5086-09332531fd81@linaro.org>
- <dfbaa810-d1b8-1873-2994-14e7be16ce46@kaod.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <dfbaa810-d1b8-1873-2994-14e7be16ce46@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,52 +84,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/7/23 13:18, Cédric Le Goater wrote:
-> On 7/5/23 13:12, Philippe Mathieu-Daudé wrote:
->> On 5/7/23 13:00, Frederic Barrat wrote:
->>> Add the CPU target in the trace when reading/writing the TIMA
->>> space. It was already done for other TIMA ops (notify, accept, ...),
->>> only missing for those 2. Useful for debug and even more now that we
->>> experiment with SMT.
->>>
->>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
->>> ---
->>>   hw/intc/trace-events | 4 ++--
->>>   hw/intc/xive.c       | 4 ++--
->>>   2 files changed, 4 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/hw/intc/trace-events b/hw/intc/trace-events
->>> index 5c6094c457..36ff71f947 100644
->>> --- a/hw/intc/trace-events
->>> +++ b/hw/intc/trace-events
->>> @@ -265,8 +265,8 @@ xive_source_esb_read(uint64_t addr, uint32_t 
->>> srcno, uint64_t value) "@0x%"PRIx64
->>>   xive_source_esb_write(uint64_t addr, uint32_t srcno, uint64_t 
->>> value) "@0x%"PRIx64" IRQ 0x%x val=0x%"PRIx64
->>>   xive_router_end_notify(uint8_t end_blk, uint32_t end_idx, uint32_t 
->>> end_data) "END 0x%02x/0x%04x -> enqueue 0x%08x"
->>>   xive_router_end_escalate(uint8_t end_blk, uint32_t end_idx, uint8_t 
->>> esc_blk, uint32_t esc_idx, uint32_t end_data) "END 0x%02x/0x%04x -> 
->>> escalate END 0x%02x/0x%04x data 0x%08x"
->>> -xive_tctx_tm_write(uint64_t offset, unsigned int size, uint64_t 
->>> value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
->>> -xive_tctx_tm_read(uint64_t offset, unsigned int size, uint64_t 
->>> value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
->>> +xive_tctx_tm_write(uint32_t index, uint64_t offset, unsigned int 
->>> size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
->>> +xive_tctx_tm_read(uint32_t index, uint64_t offset, unsigned int 
->>> size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
->>
->> "target" is kinda confusing, what about:
->>
->> xive_tctx_tm_read(uint32_t cpu_index, ...) "cpu=%d @0x%"PRIx64" ...
-> 
-> An interrupt 'source' is served by a 'target', a target could be a CPU,
-> a vCPU id, a group of vCPU, a process id.
-> 
-> 'target' is part of the XIVE nomenclature, in HW specs, in drivers, FW,
-> Linux, KVM, and models in QEMU. It is fine.
+Drive-by comment...
 
-Ah OK. Then xive_tctx_tm_read(uint32_t target, ...).
+Het Gala <het.gala@nutanix.com> writes:
+
+> This patch parses 'migrate' and 'migrate-incoming' QAPI's 'uri' parameter
+> with all the migration connection related information and stores them
+> inside well defined 'MigrateAddress' struct.
+>
+> Misc: limit line width in exec.c to 80 characters recommended by Qemu.
+>
+> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+
+[...]
+
+> diff --git a/migration/migration.c b/migration/migration.c
+> index dc05c6f6ea..0eb25bb5a4 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -64,6 +64,7 @@
+>  #include "yank_functions.h"
+>  #include "sysemu/qtest.h"
+>  #include "options.h"
+> +#include "qemu/sockets.h"
+>  
+>  static NotifierList migration_state_notifiers =
+>      NOTIFIER_LIST_INITIALIZER(migration_state_notifiers);
+> @@ -420,15 +421,63 @@ void migrate_add_address(SocketAddress *address)
+>                        QAPI_CLONE(SocketAddress, address));
+>  }
+>  
+> +static bool migrate_uri_parse(const char *uri,
+> +                              MigrationAddress **channel,
+> +                              Error **errp)
+> +{
+> +    g_autoptr(MigrationAddress) addrs = g_new0(MigrationAddress, 1);
+
+@addrs suggests plural, yet it points to a single MigrationAddress.
+Recommend @addr.
+
+Same elsewhere.
+
+[...]
 
 
