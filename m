@@ -2,92 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC8C7483BD
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 14:04:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 946CF7483C3
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 14:07:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH1Es-0003gQ-O2; Wed, 05 Jul 2023 08:04:06 -0400
+	id 1qH1HW-0004Yk-Fv; Wed, 05 Jul 2023 08:06:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qH1Eq-0003ft-8q
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 08:04:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qH1Eo-0002YT-9G
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 08:04:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688558641;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FMrwNJVFiqPUNKKxGQF3GZaw9AE8DMvjrxFmykZYZ7I=;
- b=K3Hv3tJSwx6qOUz01fynYNGvEWZwJyE2s9k/I23ugSz7iz1tk60DcG7U1A4il9QMttFeHx
- 6A34jQwZofiJ/yrcGsoFXEjEHXqOmO1dhZY27vOZS6rFsZ9AnRrKBR8g7SQMqwb60Tywcp
- 9B6uOh4Y/yQ3Y46y5Aok95ZZZeb+30k=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-192-O7Kw4RCmPUGuzM5W2HBDeA-1; Wed, 05 Jul 2023 08:03:53 -0400
-X-MC-Unique: O7Kw4RCmPUGuzM5W2HBDeA-1
-Received: by mail-pl1-f198.google.com with SMTP id
- d9443c01a7336-1b8b310553bso5462405ad.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 05:03:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qH1HQ-0004YJ-GY; Wed, 05 Jul 2023 08:06:44 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qH1HO-0003QD-Qs; Wed, 05 Jul 2023 08:06:44 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-666eb03457cso3192503b3a.1; 
+ Wed, 05 Jul 2023 05:06:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688558801; x=1691150801;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QpWQZZvqc+xRSq8Cw25A0bSQznzupSTQBbkmzzSuxAk=;
+ b=G08B9u6A5XFKOMOEHpgHv9MncFYhrrZGbC3NlhJz6OjKkKALJ4ziU7kwSU/4OK0cfI
+ esNy4vZ20auwzAJuo+vAGsK13S6K8SijbFwKe7K9DG7Zh3svVonFoSbouDx1S0H1QwyA
+ zeReRUUYQ/7MrI/uK8i48ZGvkAPyDxYWIYW4ogtkvLlgsGaPtvI1m4S5FM9LkbHTDDbT
+ Ty6yJsFfmSdRGVoKxvbj/m/8IOKUpqJsc87/ayiWCkV7YXsvUHdXcPAKRCXNdYutzmxG
+ q909PFGixZiPU77x80jt/R/Kw+PQPErM6tHeEit4qP5o4E4fkYv1SgVAHyn0yoLAgf8L
+ ikGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688558617; x=1691150617;
- h=message-id:in-reply-to:to:references:date:subject:mime-version
- :content-transfer-encoding:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FMrwNJVFiqPUNKKxGQF3GZaw9AE8DMvjrxFmykZYZ7I=;
- b=FBn4xgo0IZtDuyyghQx2/FERYtwvBT/qEBStdYVZtg22LvkfgFVBHFpHl4y90fWQdy
- OxExrt20PKe7elCUCMSGNxBbcoStiV2yxomgrAuy+ACbaAAAwZqWKtLrUi3up+9Cqh4h
- Z/6Su3qUzKGkUMeYR2w/CQCIzax4DhgWbkdTByAFGinWzE8OastICUyXPWDQhizxvsGF
- /kMEIEJGk9dFqqYp4C6WZxmpgEDtTm36XU4U0csNsgw/wM5YgDluUxCon7m39f5dS/Tk
- EZdS9KpufmhX081OTBe4kBFJ4ujU9SXDYYZsFlF9GO3iGfrRHvV0vnEoSqLNFj26ZlpU
- p/TA==
-X-Gm-Message-State: ABy/qLbMK5kq1RhUcftOd6QKXbkEKvd4qkxGmofWeySWOvyL2wzgtnWl
- aLVUKRpbpc4PKfUmn4t4qV9OZSZ0f5qKPv9b5Qy4NBbQvjgGqtmBXDhj8t+wEwt8KxhVZY5k/Tr
- /KFTAlUurLZCAhbStbgGQjzpOyAKLvH6mEn0+8D+b6k2OHDK09/RZFIHZGUmrOGw13Snx+z2c5g
- U=
-X-Received: by 2002:a17:902:db0a:b0:1b8:9ed3:a3fd with SMTP id
- m10-20020a170902db0a00b001b89ed3a3fdmr9090333plx.29.1688558616821; 
- Wed, 05 Jul 2023 05:03:36 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHsJ+FtR2sRkLqqIr9DLfYXa4iITDi8MmVBtYuQUssmRI6mcLcnwWgxwBkwPcXPwyAGZr7JRA==
-X-Received: by 2002:a17:902:db0a:b0:1b8:9ed3:a3fd with SMTP id
- m10-20020a170902db0a00b001b89ed3a3fdmr9090309plx.29.1688558616441; 
- Wed, 05 Jul 2023 05:03:36 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.119.220])
+ d=1e100.net; s=20221208; t=1688558801; x=1691150801;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=QpWQZZvqc+xRSq8Cw25A0bSQznzupSTQBbkmzzSuxAk=;
+ b=k1/cnwkXfQkczj0evW96l1UnEc/Qr61VzLYwn40IqZamaty5FCXNJJSEUWho7z3I4g
+ R8ybCZS7r7ewdoCOCmkEOk4J8BWyac53dkeUBIjHH/6mosGX7viHaroacMcDs+4+mo0i
+ +bVxl39zG9RFpn9ptwe5ea2WaXNqq9WEuDi5XX1tWCGBQl6U89kK50f0JRiu6EyWJqhW
+ tVNIOP1aU7UGOOOzPhfLA6eK1ucnT4vLqRzyp6o8JroawklenERq5YHKY/6jhShYtgtz
+ gq3C6CCMQn4vIF41aABNQOBFfOICB7AkyV3U+MquYyWFn/B/C0lbwuUyJSoAQ+pdb//F
+ GGcw==
+X-Gm-Message-State: ABy/qLbYf0t53yux4vMCstXVCMbJltadJF2qKfhhTILvDf8cPrdxAiLw
+ EegdnpPXrmCBsxKBG9r1ZhU=
+X-Google-Smtp-Source: APBJJlFDqCBjkdr6HFIfX8kKXUOnELdUrwfBDur8wlVVC+2cUDwoYsuPZt94MR4boJx35rnMFGjY1A==
+X-Received: by 2002:a62:1ac9:0:b0:668:7090:bf18 with SMTP id
+ a192-20020a621ac9000000b006687090bf18mr11563164pfa.34.1688558800734; 
+ Wed, 05 Jul 2023 05:06:40 -0700 (PDT)
+Received: from wheely.local0.net ([61.68.2.145])
  by smtp.gmail.com with ESMTPSA id
- k3-20020a170902694300b001a24cded097sm18808433plt.236.2023.07.05.05.03.34
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 05 Jul 2023 05:03:36 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v8 6/6] hw/pci: add comment explaining the reason for
- checking function 0 in hotplug
-Date: Wed, 5 Jul 2023 17:33:31 +0530
-References: <20230705115925.5339-1-anisinha@redhat.com>
- <20230705115925.5339-7-anisinha@redhat.com>
-To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-In-Reply-To: <20230705115925.5339-7-anisinha@redhat.com>
-Message-Id: <F99D12E7-135A-4A03-8B9D-1FF384FBCA5A@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+ x16-20020a056a00271000b0067459e92801sm15764843pfv.64.2023.07.05.05.06.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 Jul 2023 05:06:40 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH v2 0/4] ppc/pnv: SMT support for powernv
+Date: Wed,  5 Jul 2023 22:06:27 +1000
+Message-Id: <20230705120631.27670-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,52 +92,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+These patches implement enough to install a distro, boot, run SMP KVM
+guests with libvirt with good performance using MTTCG (as reported by
+Cedric).
 
+There are a few more SPRs that need to be done, and per-LPAR SPRs are
+mostly not annotated yet so it can't run in 1 LPAR mode. But those can
+be added in time, it will take a bit of time to get everything exactly
+as hardware does so I consider this good enough to run common
+software usefully.
 
-> On 05-Jul-2023, at 5:29 PM, Ani Sinha <anisinha@redhat.com> wrote:
->=20
-> This change is cosmetic. A comment is added explaining why we need to =
-check for
-> the availability of function 0 when we hotplug a device.
+Since RFC:
+- Rebased against ppc-next (no conflicts vs upstream anyway).
+- Add patch 4 avocado boot test with SMT, as was added with pseries SMT.
+- Renamed POWERPC_FLAG_1LPAR to POWERPC_FLAG_SMT_1LPAR since it implies
+  SMT.
+- Fixed typos, patch 1, 3 changelogs improvement (hopefully).
 
-Please ignore this patch. Its a duplicate of one already sent with an =
-updated patch summary.
+Since v1:
+- Fix clang compile bug
+- Fix LPAR-per-thread bug in CTRL/DPDES/msgsndp in patch 1
+- Add 2-socket test case to powernv Linux boot avocado test
+- Remove SMT caveat from docs/system/ppc/powernv.rst
 
->=20
-> CC: mst@redhat.com
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> ---
-> hw/pci/pci.c | 11 ++++++++---
-> 1 file changed, 8 insertions(+), 3 deletions(-)
->=20
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index 62b393dfb7..7aee3a7f12 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -1181,9 +1181,14 @@ static PCIDevice =
-*do_pci_register_device(PCIDevice *pci_dev,
->                    PCI_SLOT(devfn), PCI_FUNC(devfn), name,
->                    bus->devices[devfn]->name, =
-bus->devices[devfn]->qdev.id);
->         return NULL;
-> -    } else if (dev->hotplugged &&
-> -               !pci_is_vf(pci_dev) &&
-> -               pci_get_function_0(pci_dev)) {
-> +    } /*
-> +       * Populating function 0 triggers a scan from the guest that
-> +       * exposes other non-zero functions. Hence we need to ensure =
-that
-> +       * function 0 wasn't added yet.
-> +       */
-> +    else if (dev->hotplugged &&
-> +             !pci_is_vf(pci_dev) &&
-> +             pci_get_function_0(pci_dev)) {
->         error_setg(errp, "PCI: slot %d function 0 already occupied by =
-%s,"
->                    " new func %s cannot be exposed to guest.",
->                    PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
-> --=20
-> 2.39.1
->=20
+Thanks,
+Nick
+
+Nicholas Piggin (4):
+  target/ppc: Add LPAR-per-core vs per-thread mode flag
+  target/ppc: SMT support for the HID SPR
+  ppc/pnv: SMT support for powernv
+  tests/avocado: Add powernv machine test script
+
+ docs/system/ppc/powernv.rst  |  5 ---
+ hw/ppc/pnv.c                 | 12 +++++
+ hw/ppc/pnv_core.c            | 13 +++---
+ hw/ppc/spapr_cpu_core.c      |  2 +
+ target/ppc/cpu.h             |  3 ++
+ target/ppc/cpu_init.c        | 14 +++++-
+ target/ppc/excp_helper.c     |  4 ++
+ target/ppc/helper.h          |  1 +
+ target/ppc/misc_helper.c     | 29 ++++++++++++
+ target/ppc/spr_common.h      |  1 +
+ target/ppc/translate.c       | 27 ++++++++---
+ tests/avocado/ppc_powernv.py | 87 ++++++++++++++++++++++++++++++++++++
+ 12 files changed, 179 insertions(+), 19 deletions(-)
+ create mode 100644 tests/avocado/ppc_powernv.py
+
+-- 
+2.40.1
 
 
