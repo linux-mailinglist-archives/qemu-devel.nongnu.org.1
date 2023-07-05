@@ -2,83 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20C07482C6
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B957482CD
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:19:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH0Su-0002cY-Qy; Wed, 05 Jul 2023 07:14:32 -0400
+	id 1qH0Wf-0005CI-Nn; Wed, 05 Jul 2023 07:18:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH0St-0002b3-Dv
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:14:31 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH0Sr-0004GY-Bu
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:14:31 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-992b66e5affso755532566b.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 04:14:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688555668; x=1691147668;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=t+gTD/VP/iPwL+akZPkVl1SCkyXZuNpJIHDM3AOBEXw=;
- b=xXTmBJwjmc2MWhaNeaEDqDrCDkc4zkwrxxEtNx5TiLFuTTrbw7cJPaJfHqh8rSKmta
- b+uy4x2XT3ClYfn/JD2FYGjTKzF38t0Z0kKKNI+VgzfnssnnfpV1fkcgyUyPTDtGycS/
- SBqBzcvLD0SzDTc7IMYXsvbskOTnMF1EN5CWzI2XqOuX7tX67rRxw3y5gZC9VZY4S7y5
- EjHi0dhn0kPV0lof1OeqG/gswVYRDYR4rtcpGXR8eTR6Pu4jdK8bDsI6VpdXcuO9dGat
- NunMWqk4l69l0lH0CF4+UJ+baQrJ7kLtwMG+za5bas5cuLWd0VR17XjfbCZApbp0RoVU
- KhFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688555668; x=1691147668;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t+gTD/VP/iPwL+akZPkVl1SCkyXZuNpJIHDM3AOBEXw=;
- b=BVNnA2IG7f/J1zL1ZaFwZTYFEGwifXDDfJE3A6hihThCRtBLSZDL331altG4UkhtYX
- sQrs9LvR6UUI2Y1tAozAUXAI1TBWbGqjwLGU4sPk7rOiEtXc7yuC9setlxni90ZCHCX0
- 6w/rQWrC4wS6hN2ppSFvR+7+7apLPdjxwSrQtFo5YwnLJJYn+YK4YfBRpsTXAfn7kzjZ
- HzWRfMZbtbtq2ZsTz8cpwWLQYOd7R3Ww+gIdtyBrXtxm/nyQmU5dHzJIdxt2uZtv1ZE9
- It4XD3ME2pb/PSH0JTQud0sRjwKVfyXpvzp996E68sZ1q9diyscniO8uTkG8A2D6ZfdQ
- DJNw==
-X-Gm-Message-State: ABy/qLYeKKNTUi7Ho2G5Zg8cwcnyjNFjULk8sD2pa0b6BTl8hUKMrL5U
- LPhCCAo2R1KS8onMAeofWc8jWA==
-X-Google-Smtp-Source: APBJJlGDQHESvHw5TunUo83+HqXNuabDUJggLoCfY5nIBJMaI/t5fDmTd3i2ijmaIKn9Mf6IkHoZVw==
-X-Received: by 2002:a17:906:824d:b0:991:b292:695 with SMTP id
- f13-20020a170906824d00b00991b2920695mr11804355ejx.55.1688555667797; 
- Wed, 05 Jul 2023 04:14:27 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.142.96])
- by smtp.gmail.com with ESMTPSA id
- bv12-20020a170906b1cc00b00988a0765e29sm14410570ejb.104.2023.07.05.04.14.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 04:14:27 -0700 (PDT)
-Message-ID: <d8dee538-30ad-e116-36ac-64c06003f378@linaro.org>
-Date: Wed, 5 Jul 2023 13:14:22 +0200
+ (Exim 4.90_1) (envelope-from <SRS0=c5xU=CX=kaod.org=clg@ozlabs.org>)
+ id 1qH0We-0005B9-BO; Wed, 05 Jul 2023 07:18:24 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=c5xU=CX=kaod.org=clg@ozlabs.org>)
+ id 1qH0Wc-0005OJ-Ep; Wed, 05 Jul 2023 07:18:24 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qwxwp4BXjz4wbP;
+ Wed,  5 Jul 2023 21:18:18 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qwxwm6f4rz4wZs;
+ Wed,  5 Jul 2023 21:18:16 +1000 (AEST)
+Message-ID: <dfbaa810-d1b8-1873-2994-14e7be16ce46@kaod.org>
+Date: Wed, 5 Jul 2023 13:18:14 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v2] linux-user/syscall: Implement execve without execveat
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] pnv/xive: Print CPU target in all TIMA traces
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, richard.henderson@linaro.org, sir@cmpwn.com
-References: <20230705090056.610699-1-pierrick.bouvier@linaro.org>
- <8fbd6900-7c33-17e4-600a-e4799719686b@tls.msk.ru>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <8fbd6900-7c33-17e4-600a-e4799719686b@tls.msk.ru>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230705110039.231148-1-fbarrat@linux.ibm.com>
+ <060f5a94-30ab-b708-5086-09332531fd81@linaro.org>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <060f5a94-30ab-b708-5086-09332531fd81@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=c5xU=CX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.089, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,49 +66,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/7/23 12:26, Michael Tokarev wrote:
-> 05.07.2023 12:00, Pierrick Bouvier wrote:
-> ...
-
-
->> @@ -8696,11 +8697,14 @@ static int do_execveat(CPUArchState *cpu_env, 
->> int dirfd,
->>           goto execve_efault;
->>       }
->> +    const char* exe = p;
->>       if (is_proc_myself(p, "exe")) {
->> -        ret = get_errno(safe_execveat(dirfd, exec_path, argp, envp, 
->> flags));
->> -    } else {
->> -        ret = get_errno(safe_execveat(dirfd, p, argp, envp, flags));
->> +        exe = exec_path;
->>       }
->> +    ret = is_execveat ?
->> +        safe_execveat(dirfd, exe, argp, envp, flags):
->> +        safe_execve(exe, argp, envp);
->> +    ret = get_errno(ret);
-
-
-> ERROR: spaces required around that ':' (ctx:VxE)
-> #169: FILE: linux-user/syscall.c:8705:
-> +        safe_execveat(dirfd, exe, argp, envp, flags):
->                                                       ^
+On 7/5/23 13:12, Philippe Mathieu-Daudé wrote:
+> On 5/7/23 13:00, Frederic Barrat wrote:
+>> Add the CPU target in the trace when reading/writing the TIMA
+>> space. It was already done for other TIMA ops (notify, accept, ...),
+>> only missing for those 2. Useful for debug and even more now that we
+>> experiment with SMT.
+>>
+>> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+>> ---
+>>   hw/intc/trace-events | 4 ++--
+>>   hw/intc/xive.c       | 4 ++--
+>>   2 files changed, 4 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/hw/intc/trace-events b/hw/intc/trace-events
+>> index 5c6094c457..36ff71f947 100644
+>> --- a/hw/intc/trace-events
+>> +++ b/hw/intc/trace-events
+>> @@ -265,8 +265,8 @@ xive_source_esb_read(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64
+>>   xive_source_esb_write(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64" IRQ 0x%x val=0x%"PRIx64
+>>   xive_router_end_notify(uint8_t end_blk, uint32_t end_idx, uint32_t end_data) "END 0x%02x/0x%04x -> enqueue 0x%08x"
+>>   xive_router_end_escalate(uint8_t end_blk, uint32_t end_idx, uint8_t esc_blk, uint32_t esc_idx, uint32_t end_data) "END 0x%02x/0x%04x -> escalate END 0x%02x/0x%04x data 0x%08x"
+>> -xive_tctx_tm_write(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
+>> -xive_tctx_tm_read(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
+>> +xive_tctx_tm_write(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
+>> +xive_tctx_tm_read(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
 > 
-> total: 2 errors, 0 warnings, 47 lines checked
+> "target" is kinda confusing, what about:
 > 
-> Your patch has style problems, please review.  If any of these errors
-> are false positives report them to the maintainer, see
-> CHECKPATCH in MAINTAINERS.
+> xive_tctx_tm_read(uint32_t cpu_index, ...) "cpu=%d @0x%"PRIx64" ...
+
+An interrupt 'source' is served by a 'target', a target could be a CPU,
+a vCPU id, a group of vCPU, a process id.
+
+'target' is part of the XIVE nomenclature, in HW specs, in drivers, FW,
+Linux, KVM, and models in QEMU. It is fine.
+
+Thanks,
+
+C.
+  
 > 
-> As I mentioned in the v1, I don't remember offhand how the arithmetic if
-> should be styled in qemu.  At the very best, the v2 variant is difficult
-> to read because ":" is too close to ";" visually, an extra space before
-> it will make it more explicit.
-
-KISS, alternatively:
-
-     ret = is_execveat
-           ? safe_execveat(dirfd, exe, argp, envp, flags)
-           : safe_execve(exe, argp, envp);
+> ?
 
 
