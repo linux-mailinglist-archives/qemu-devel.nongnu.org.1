@@ -2,87 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29418747FB4
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 10:30:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 265EB747FC3
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 10:35:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGxsu-0008T8-BQ; Wed, 05 Jul 2023 04:29:12 -0400
+	id 1qGxy2-0001vZ-AB; Wed, 05 Jul 2023 04:34:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qGxsp-0008Rk-Fe
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:29:07 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qGxy1-0001vJ-2l; Wed, 05 Jul 2023 04:34:29 -0400
+Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qGxsn-0001f0-L0
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:29:07 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fbc5d5742eso65620435e9.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 01:29:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qGxxz-0002eo-9p; Wed, 05 Jul 2023 04:34:28 -0400
+Received: by mail-oa1-x36.google.com with SMTP id
+ 586e51a60fabf-1b0419f758eso288839fac.1; 
+ Wed, 05 Jul 2023 01:34:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688545743; x=1691137743;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=JZ/7Au/EgLOeJf9nTzpj6FxhVf5fm25gIjxIqFgfeW8=;
- b=ueAtvBo0WHs7bZG2ztxSEPZPpmsgFAZOgoeFDOR61211+JBUoxqh6cf4j0VS3MYdRf
- gZiXGvDj2o4QDAIhd0OAaa4MrhfQ2TeddWKCRBJxEg47hD1DZURpXyYjj74VQwFmQqM8
- qluTSbXFphpsh4U3MGDzCWb19PGt4yn5GTzk+zporG4FeP1Rmug6wU4oXZZ0vIe+Q/FY
- NJAP+n3ESlpdZB+swxOD4hDFUVW2254dFv0xvEKt5nHDG8b7o6tc5Rpt1DQ+wOn6K5H2
- nmRg44HkUj1vgwFAlL0U/B0kV+RitAjErtRHWcgqQdDtYdKTTOtSUT32vTErZhUJzsX4
- +cXg==
+ d=gmail.com; s=20221208; t=1688546065; x=1691138065;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YEXMWxr8qSlAK1tCQ2t0O3cbPVz3ic2msoLN6hmD690=;
+ b=TW5FVy8HzpcHckBQeNbRCZ0WNjfTNK355gjnmYitx3QzKQM1wJzqg8DG1jjUQVn6Ob
+ KN7rAPl1LKkEa6xp3ibF5fBP/JuUf/zzqXJh17REUf6x5MVJD1bRLAVWBIykuoC30Rfa
+ ipbhN9aFhRjZV+zJoM9jQbM4MMHbWu0JHMYZqju6Pp65i25aTOJ/7MD355xqA215iEHm
+ lOzeUciY749FRs0kceQjKHbhYg/+iQ8UxKAT8rYtsp2jSeXQS3uWNeXoytHrUYY5QQ92
+ 7UhRjAyfPf+oOnJCDsOdyw331XsoNZSAod9KLT9LP22IoJgUlQ6s/zvmP0Q5C3BHNLKe
+ /8wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688545743; x=1691137743;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JZ/7Au/EgLOeJf9nTzpj6FxhVf5fm25gIjxIqFgfeW8=;
- b=Xwrwc0oG0JZtHEssBiL+/gOfkLoympOcEugg2bsWluLL6n6cm5znFfjk2sT5n/MAX8
- oGpDQivzVVRtxe9ggZMSMsb2hAn3ketyKtB5NhmHvGIq1ocxiQz2iEkFfW4FRj4gZH5n
- q7j6u8Qeb5OUY0fngbJ7m9ybg5mp3FERcJXq68rCd1J7jW4pjbQ/m3Lh1+7f8OA/iWQE
- NyPgKwuKXqMK4jJ/m5OemH1EXEqug24MYVL929EXLNFRRu1jP5dSIl69yBUMWkQMNRu8
- HBXGqsjsIpGVS/u/fA7KLbJWb+1QfVu/yxd5F5PBJc4Z7VwFXlsZDiiKh97bOofWv67i
- Zc1w==
-X-Gm-Message-State: AC+VfDxtkhSpT/J29fOCvcOiG7PM+CFw4bIpBLK9KPLmprxM2eNg4Oo6
- AhC8n0SCA0rr0L6CC0g1hb490w==
-X-Google-Smtp-Source: ACHHUZ5i9vVsB40JWKmZrT5V1HZcy+WvJ3btz7HGpgbTgYS2kBaCeLaA+xKUTIBVyZwC/aWh0xG0DA==
-X-Received: by 2002:a05:600c:b59:b0:3f8:f4f3:82ec with SMTP id
- k25-20020a05600c0b5900b003f8f4f382ecmr14044262wmr.8.1688545743212; 
- Wed, 05 Jul 2023 01:29:03 -0700 (PDT)
-Received: from myrica ([2.219.138.198]) by smtp.gmail.com with ESMTPSA id
- 10-20020a05600c024a00b003fa98908014sm1441411wmj.8.2023.07.05.01.29.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jul 2023 01:29:02 -0700 (PDT)
-Date: Wed, 5 Jul 2023 09:29:02 +0100
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-Cc: Eric Auger <eric.auger@redhat.com>,
- "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "mst@redhat.com" <mst@redhat.com>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhap.com" <clg@redhap.com>,
- "bharat.bhushan@nxp.com" <bharat.bhushan@nxp.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>
-Subject: Re: [PATCH 1/2] virtio-iommu: Fix 64kB host page size VFIO device
- assignment
-Message-ID: <20230705082902.GA2234638@myrica>
-References: <20230704111527.3424992-1-eric.auger@redhat.com>
- <20230704111527.3424992-2-eric.auger@redhat.com>
- <SJ0PR11MB674435F2BA42A8925ABA336F922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ d=1e100.net; s=20221208; t=1688546065; x=1691138065;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YEXMWxr8qSlAK1tCQ2t0O3cbPVz3ic2msoLN6hmD690=;
+ b=UYaNU7smEsQO5mbSO7b+V59cxppVppIOsm9NQKfzlJV9zkC04oM1d+l8StPPr73RtR
+ omZwsyhoO+TL6jU6SKMUny+AjRqBvjEN/StTgcn1PxQ4Lz6J1VFp3lDn+CA9+vE5vve7
+ asTq3wcnU0DCDEpRkynHxGBIz5vNdg7gDnJ4wOYJamhD/ioqDrzV8I2eC0i+j+BSPWcv
+ NYNPgtWCa4xY00rdVk9zC5tcsywilO+/Xa+n/Cx+7y+mkAE6Bty3cEZseMUOwARdXbDI
+ ihj5enZpWyF40GbjD2wvYgHkMbta/ePsjevpI5Vwnkg2i9REcSdJZK8kflIoYxqtzPJ7
+ SBrw==
+X-Gm-Message-State: ABy/qLa31J3uIhBU5p7uDirk2xK1ioAH547kXZe6ExpkyqArOcInz+yZ
+ iXxQVM0yfXGAZGfrthPMyPU=
+X-Google-Smtp-Source: APBJJlEfNMXcEWdFYeIgXWC9xGCCsB7dmnwmHNOORe9M7VE8kUpLlyXe4k6tGe7Lw11TEMj8P+YyeQ==
+X-Received: by 2002:a05:6871:546:b0:1b3:da9d:2208 with SMTP id
+ t6-20020a056871054600b001b3da9d2208mr776141oal.26.1688546065279; 
+ Wed, 05 Jul 2023 01:34:25 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ d17-20020a056830045100b006b722e466cdsm3653372otc.31.2023.07.05.01.34.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Jul 2023 01:34:24 -0700 (PDT)
+Message-ID: <924e1048-9d63-17c2-75aa-982ffeb0e1c0@gmail.com>
+Date: Wed, 5 Jul 2023 05:34:22 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SJ0PR11MB674435F2BA42A8925ABA336F922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] ppc/pegasos2: Add support for -initrd command line option
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+References: <20230704181920.27B58746335@zero.eik.bme.hu>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20230704181920.27B58746335@zero.eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::36;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x36.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,51 +93,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 05, 2023 at 04:52:09AM +0000, Duan, Zhenzhong wrote:
-> Hi Eric,
+
+
+On 7/4/23 15:19, BALATON Zoltan wrote:
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+> ---
+
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+
+And pushed to ppc-next after amending the commit msg.
+
+
+Daniel
+
+>   hw/ppc/pegasos2.c | 32 +++++++++++++++++++++++++++++++-
+>   1 file changed, 31 insertions(+), 1 deletion(-)
 > 
-> >-----Original Message-----
-> >From: Eric Auger <eric.auger@redhat.com>
-> >Sent: Tuesday, July 4, 2023 7:15 PM
-> >Subject: [PATCH 1/2] virtio-iommu: Fix 64kB host page size VFIO device
-> >assignment
-> >
-> >When running on a 64kB page size host and protecting a VFIO device
-> >with the virtio-iommu, qemu crashes with this kind of message:
-> >
-> >qemu-kvm: virtio-iommu page mask 0xfffffffffffff000 is incompatible
-> >with mask 0x20010000
-> 
-> Does 0x20010000 mean only  512MB and 64KB super page mapping is
-> supported for host iommu hw? 4KB mapping not supported?
-
-It's not a restriction by the HW IOMMU, but the host kernel. An Arm SMMU
-can implement 4KB, 16KB and/or 64KB granules, but the host kernel only
-advertises through VFIO the granule corresponding to host PAGE_SIZE. This
-restriction is done by arm_lpae_restrict_pgsizes() in order to choose a
-page size when a device is driven by the host.
-
-> 
-> There is a check in guest kernel side hint only 4KB is supported, with
-> this patch we force viommu->pgsize_bitmap to 0x20010000
-> and fail below check? Does this device work in guest?
-> Please correct me if I understand wrong.
-
-Right, a guest using 4KB pages under a host that uses 64KB is not
-supported, because if the guest attempts to dma_map a 4K page, the IOMMU
-cannot create a mapping small enough, the mapping would have to spill over
-neighbouring guest memory.
-
-One possible solution would be supporting multiple page granules. If we
-added a page granule negotiation through VFIO and virtio-iommu then the
-guest could pick the page size it wants. But this requires changes to
-Linux UAPI so isn't a priority at the moment, because we're trying to
-enable nesting which would support 64K-host/4K-guest as well.
-
-See also the discussion on the patch that introduced the guest check
-https://lore.kernel.org/linux-iommu/20200318114047.1518048-1-jean-philippe@linaro.org/
-
-Thanks,
-Jean
-
+> diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
+> index af5489de26..9c9944188b 100644
+> --- a/hw/ppc/pegasos2.c
+> +++ b/hw/ppc/pegasos2.c
+> @@ -44,6 +44,8 @@
+>   #define PROM_ADDR     0xfff00000
+>   #define PROM_SIZE     0x80000
+>   
+> +#define INITRD_MIN_ADDR 0x600000
+> +
+>   #define KVMPPC_HCALL_BASE    0xf000
+>   #define KVMPPC_H_RTAS        (KVMPPC_HCALL_BASE + 0x0)
+>   #define KVMPPC_H_VOF_CLIENT  (KVMPPC_HCALL_BASE + 0x5)
+> @@ -80,6 +82,8 @@ struct Pegasos2MachineState {
+>       uint64_t kernel_addr;
+>       uint64_t kernel_entry;
+>       uint64_t kernel_size;
+> +    uint64_t initrd_addr;
+> +    uint64_t initrd_size;
+>   };
+>   
+>   static void *build_fdt(MachineState *machine, int *fdt_size);
+> @@ -117,7 +121,8 @@ static void pegasos2_init(MachineState *machine)
+>       I2CBus *i2c_bus;
+>       const char *fwname = machine->firmware ?: PROM_FILENAME;
+>       char *filename;
+> -    int i, sz;
+> +    int i;
+> +    ssize_t sz;
+>       uint8_t *spd_data;
+>   
+>       /* init CPU */
+> @@ -213,6 +218,20 @@ static void pegasos2_init(MachineState *machine)
+>           warn_report("Using Virtual OpenFirmware but no -kernel option.");
+>       }
+>   
+> +    if (machine->initrd_filename) {
+> +        pm->initrd_addr = pm->kernel_addr + pm->kernel_size + 64 * KiB;
+> +        pm->initrd_addr = ROUND_UP(pm->initrd_addr, 4);
+> +        pm->initrd_addr = MAX(pm->initrd_addr, INITRD_MIN_ADDR);
+> +        sz = load_image_targphys(machine->initrd_filename, pm->initrd_addr,
+> +                                 machine->ram_size - pm->initrd_addr);
+> +        if (sz <= 0) {
+> +            error_report("Could not load initrd '%s'",
+> +                         machine->initrd_filename);
+> +            exit(1);
+> +        }
+> +        pm->initrd_size = sz;
+> +    }
+> +
+>       if (!pm->vof && machine->kernel_cmdline && machine->kernel_cmdline[0]) {
+>           warn_report("Option -append may be ineffective with -bios.");
+>       }
+> @@ -335,6 +354,11 @@ static void pegasos2_machine_reset(MachineState *machine, ShutdownCause reason)
+>           error_report("Memory for kernel is in use");
+>           exit(1);
+>       }
+> +    if (pm->initrd_size &&
+> +        vof_claim(pm->vof, pm->initrd_addr, pm->initrd_size, 0) == -1) {
+> +        error_report("Memory for initrd is in use");
+> +        exit(1);
+> +    }
+>       fdt = build_fdt(machine, &sz);
+>       /* FIXME: VOF assumes entry is same as load address */
+>       d[0] = cpu_to_be64(pm->kernel_entry);
+> @@ -966,6 +990,12 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
+>       qemu_fdt_setprop_string(fdt, "/memory@0", "name", "memory");
+>   
+>       qemu_fdt_add_subnode(fdt, "/chosen");
+> +    if (pm->initrd_addr && pm->initrd_size) {
+> +        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-end",
+> +                              pm->initrd_addr + pm->initrd_size);
+> +        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-start",
+> +                              pm->initrd_addr);
+> +    }
+>       qemu_fdt_setprop_string(fdt, "/chosen", "bootargs",
+>                               machine->kernel_cmdline ?: "");
+>       qemu_fdt_setprop_string(fdt, "/chosen", "name", "chosen");
 
