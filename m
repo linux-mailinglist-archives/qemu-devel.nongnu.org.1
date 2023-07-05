@@ -2,136 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF460748BF2
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 20:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4B5748BF8
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 20:35:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH7JR-0006vl-Ds; Wed, 05 Jul 2023 14:33:13 -0400
+	id 1qH7Kw-0007Xt-Tz; Wed, 05 Jul 2023 14:34:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qH7JJ-0006vU-G0
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 14:33:05 -0400
-Received: from mail-co1nam11on2042.outbound.protection.outlook.com
- ([40.107.220.42] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
+ id 1qH7Kr-0007UY-9j
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 14:34:41 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
- id 1qH7JH-0004lI-AZ
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 14:33:05 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HHLLKjU2H3kQwviUlU650mu/Z4/a4NewDWwpRI6lvEiM+nPJmDgilzHKb2Fh0o7ZkZPK5lWtShcUtyalfYdiMB3S0CumF2LZXRMRZxDwqAAS8xWGC821kt0WaAPembWCl0KlRMev5+5RH/BHUUmJ8yt5MBvVZ8NsQ0xuaw4IJR/LT9V4llGQO8g6URKGKaGCUXKEifhY3RWB6Kk2VKx6GdhCL/l4Q4M19u96hcOoeDJevgfbzUCaYGKzWYibaHJdiTVf30lCfZLCwV2TrbQdBwUjHdC0m/NKJQQsV/s0qFt5HpLxPxA72+ieobSiIrCgpy2T02RF53SA0fUnUiXyHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fm3cCinPBy1WmkuFaQLCmtQcl5JvjiPa5nZOgOKbmCA=;
- b=Q8oRuc6imz22Gg8w4h7KtVN8O4zzQ2U1QfydqI/sXczP418QDRAK4c0oyIpFJ3YXbuKxyaXaxNcvt73GrvLEnZ+UyAfEghUx6/J6GUtKheyEYBs8TH6NLeSwBCLw1BSy/lhCI0dGYOyXlShF64TgST6sa9iaXh7gNqNut1r2Fk029k7q2Nd5BpQkyou+uENcKyO8ai4NQfo2T4xPk36enFf+mKCEMnhMbP7wS6OJhZW85RRnJVRniH/mFG6hgTSAOgwdm2vSvcKk/WrbvSlXQlgYDTInsXUwuraNKQ5hw9bvOX/1KlRk5GrCzlOqJQ3fKAJWvYYAI44xl8vUzMiVSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fm3cCinPBy1WmkuFaQLCmtQcl5JvjiPa5nZOgOKbmCA=;
- b=RUCPM6VpY3OxXvEYunfYC6nK0T1hMYhqUa+OWsoikwu1NOXtq2o+WhJ5Oo8Qk4mt6iRapvNvAWYNS2ZPM+kEXcq2TbLnZfiJuB/WgJ7ANU4T8cTV/SoigcSJljYC/otxpTmeYn9mRbg8x0kigR/qOEcHYIGM/jfN/tVs9gcgP0A=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MW3PR12MB4409.namprd12.prod.outlook.com (2603:10b6:303:2d::23)
- by IA0PR12MB8206.namprd12.prod.outlook.com (2603:10b6:208:403::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.24; Wed, 5 Jul
- 2023 18:27:55 +0000
-Received: from MW3PR12MB4409.namprd12.prod.outlook.com
- ([fe80::1182:e204:82d8:a4e]) by MW3PR12MB4409.namprd12.prod.outlook.com
- ([fe80::1182:e204:82d8:a4e%4]) with mapi id 15.20.6565.016; Wed, 5 Jul 2023
- 18:27:55 +0000
-Message-ID: <88543f52-e764-8b84-48a2-3fbdf0ac0cff@amd.com>
-Date: Wed, 5 Jul 2023 11:27:52 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v1 2/2] xen_arm: Initialize RAM and add hi/low memory
- regions
-Content-Language: en-US
-To: Leo Yan <leo.yan@linaro.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, qemu-devel@nongnu.org
-Cc: sstabellini@kernel.org
-References: <20230629174310.14434-3-vikram.garhwal@amd.com>
- <20230703061445.GA1606549@leoy-yangtze.lan>
-From: Vikram Garhwal <vikram.garhwal@amd.com>
-In-Reply-To: <20230703061445.GA1606549@leoy-yangtze.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0140.namprd13.prod.outlook.com
- (2603:10b6:a03:2c6::25) To MW3PR12MB4409.namprd12.prod.outlook.com
- (2603:10b6:303:2d::23)
+ (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
+ id 1qH7Kp-000539-05
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 14:34:41 -0400
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 365HxvlV001158; Wed, 5 Jul 2023 18:34:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=qcppdkim1; bh=ap39a9nRuE6+vvU0U6bWmjvuMjuR8aKrNtil6rIYeGw=;
+ b=WNw6uNDo22KG7Vtu1hmOuhWNKdbVh5Gwf+HFtlXXbI0TijsI45woc560pj4wC+1mPMoH
+ 0IdSVwFfhhsKgGnkpRuhrfuuFuGLabtILTlGpLKZlxumnAMody83XOOzcv9ORNNNe3ak
+ WMaENWNJ8BrB3MxaustahOkAIi4fQb+P/ODVP8mY+GX3BfYgaNz2lD+48BUJkK5ysPvR
+ 66TzuWVsiJmHlEw8VU+XR2mI+DCBK2GMbR/Lmpi9bJ6LeqTsnw9sGXs1Adn3geISMgFK
+ HYg/0REe3JNWLeZF3EBDCWsAWJjKq74Ztx3iRmbVz489WxP8polw22Nxur/It6S7KDJA BA== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rmxy91yy6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Jul 2023 18:34:33 +0000
+Received: from pps.filterd (NALASPPMTA02.qualcomm.com [127.0.0.1])
+ by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 365IYWux005348; 
+ Wed, 5 Jul 2023 18:34:32 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by NALASPPMTA02.qualcomm.com (PPS) with ESMTPS id 3rjd7my3jj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Jul 2023 18:34:32 +0000
+Received: from NALASPPMTA02.qualcomm.com (NALASPPMTA02.qualcomm.com
+ [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 365IYWns005342;
+ Wed, 5 Jul 2023 18:34:32 GMT
+Received: from hu-devc-sd-u20-a-1.qualcomm.com (hu-mathbern-lv.qualcomm.com
+ [10.47.235.147])
+ by NALASPPMTA02.qualcomm.com (PPS) with ESMTPS id 365IYVcA005340
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Jul 2023 18:34:32 +0000
+Received: by hu-devc-sd-u20-a-1.qualcomm.com (Postfix, from userid 4229910)
+ id C8E86780D; Wed,  5 Jul 2023 15:34:31 -0300 (-03)
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+To: qemu-devel@nongnu.org
+Cc: quic_mathbern@quicinc.com, bcain@quicinc.com, ltaylorsimpson@gmail.com,
+ quic_mliebel@quicinc.com, richard.henderson@linaro.org
+Subject: [PATCH v2] Hexagon: move GETPC() calls to top level helpers
+Date: Wed,  5 Jul 2023 15:34:30 -0300
+Message-Id: <93a2ca786530cbc8a94f7c7a6451f4f1f47c8a9b.1688581908.git.quic_mathbern@quicinc.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW3PR12MB4409:EE_|IA0PR12MB8206:EE_
-X-MS-Office365-Filtering-Correlation-Id: 865046bb-590b-4ebb-1cba-08db7d858cd5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1BUZcycEw25TbrMTZF5ecYZrCFwl9BZyKf1dQx8iwyxic2pvYCk0iEnGELZjZ6SeuJGx45nRXvazv+XI+jb3l3BiKnp7mDduUqW0YCoaVZ7bzdo1AODsqBS+C6VFDEvm7QJIgM8oScKCGDP6QRKYujBW/5oF9ahy1r1t32JmyGHF8d/Mdx6j6Wl6F06jnm92b7KIq0nRX6FL27iXpy3y6Y9lIXrZcfqZPg/i/0ysCM2y7yt4QIcSoxt0eD0etYeOZ1938Qt3UWBVV9frCiTO+Qdpi2XCR+KXploVBGos36H48GzCjG6rEbHqls14Q3IizwJaF/M+UpAls9oppHRrxZmRtVDHhNYcNgvldc0KAvAnFdAD+wdkpkKvXieSjlhpStksxxjqbxq22LEkALsEBf8j60YQB8AmHPC/XfCTLYwBdNOjGNJ4+F7mOSYpOM1dlY+r3H8WZs3piDKXkf1sZmB3y44Jx0UHroTd+/gVXALkyLTTfCSf+3k98yiADa4gte9h56GlZI3VrzjKD3fYeKnxkHCpSWl6IPKQdV/NXGPTGcS82ZUYZNYSNN822nqLQ6elqmTx3x+43sO1C25gB58nqTqRAVm0EgSaVzhsG+j6ie4M6zzDzQgnRIGuAX90ZbSaBoYU8FLT6JjA3mYh/g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW3PR12MB4409.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(4636009)(39860400002)(346002)(366004)(136003)(376002)(396003)(451199021)(2616005)(31696002)(86362001)(36756003)(44832011)(41300700001)(8676002)(31686004)(8936002)(5660300002)(2906002)(110136005)(316002)(66946007)(66476007)(66556008)(6486002)(478600001)(6666004)(4326008)(6506007)(53546011)(26005)(6512007)(186003)(38100700002)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Wno3blp3eG9ocU1NN1BHdmFXYXJvRUd1QVBOSFUwZ3NxQW5IZjdkdEtIdXNE?=
- =?utf-8?B?anh1bnpVNDVWRzIxVlphLzFqYjU0NmZHb3FIdFRWMFppRnJJdzM5ZGZYbnRN?=
- =?utf-8?B?K0tMdFRjMHd4Uk1paUllcXdSZG0wbHR0M2JvYi9GRGVVTEhLdW9yaHZFN3kv?=
- =?utf-8?B?emFRejFxajVTMXArK0VsaGNpS1hZd20vb0NGRGM2OUg0Q3BXUklaajdwazJz?=
- =?utf-8?B?cHVXSXdCTEpNYTRUbHVSUlR6cGxOclNKQnlhZlkvaml1aGdnSmFQbXpFUjdv?=
- =?utf-8?B?c004aVNHNEtxRnk5bWpUS3drbFg1VzUwQUMxdTh6QWdpbG93SmpGK2dPUjB3?=
- =?utf-8?B?OWxKUXp2OGsyczBHLzhrRjA5OHJPZjNjWVhYaEwxNmJYT0tibWJIRDVPcVF0?=
- =?utf-8?B?WUJvb3lvSjVjcE1qRVpvQU9ORUxkaVlCWlBOUE9oMGMzOVgvQmR6dnJzOER0?=
- =?utf-8?B?TFlnNVlpbEhyeCthY2RJN0szd0dWek9yY1ppTWVxQlpzWC80ZmFiMkIyQ00z?=
- =?utf-8?B?cXFlaGg0OUozU2ROWCtHNVVaL0YrZkcxQWxydVRrOVMzclZNWXZMbWZXUVJD?=
- =?utf-8?B?SWovakxxQWswYmpuQUk2WE1meXRFU1I2RjRGTURmalpsRWtZRkJBdHRuQ1BB?=
- =?utf-8?B?NVdXamdLOVRQV2wvN0FNM2d5T3pBSW5NTVpSbGt6Z3VTYjBTOFpCc1N1THVV?=
- =?utf-8?B?UURSTWg3UUQzQlBQODVPWE1iTzRLYmRKeHlaRTU4WjFHYk8wbDlMK29sQkJn?=
- =?utf-8?B?L0xRRkJHTkMrL3hEelpySE9ZMWlBNlVKeHY3Zi80OHJkM1lyTlBWd1JQZ0VM?=
- =?utf-8?B?cHRMbXNETm5hNU5GbUxIYStpOWEySWhrWXg2RlV2QWlDWUd4MHdReDNubk9V?=
- =?utf-8?B?ellRVVNvb1NLVytwd2JoMlg0bXNqWTNCbEFkV0pOb1JaL1FqSVdtQ2hCamoy?=
- =?utf-8?B?MXJmUFh4MERadmtJQUc4cVYvMnBKaFdOZzh3N1U3a3NGbWtRSDJiYU9xQ1J4?=
- =?utf-8?B?ZEVBUmJKQ000ekdGYzA2Ti8vb09kR2NLU2l2VzNQOHZBS0R6RjE0aGR3ckpy?=
- =?utf-8?B?NmNWSERhb0YwaTE1SlVYWU05UmxCamxtTnpPb2hYc2NiQWRtWTFVM21FRWp2?=
- =?utf-8?B?QUdOUmN1TS9ONzBwaFQweFlhc0tJTFhkWlF5UE85NVpzYkFJSzRDT0dmTXpZ?=
- =?utf-8?B?WjJKQUxKcTB4R01kRW02U0RMMWg2MktKTlZvT1ZJR0ZTVnk4bnlyWGdNc09q?=
- =?utf-8?B?Y2dMQlZFUkQzY1MxR1JobnZqdEZUZzJDUldEWTNicWp6WXd2V0tyNHJ0TDYr?=
- =?utf-8?B?eTh4aU5HNWFoaTdCT3JIY1VpMnhOcFdwZ2pZdC8xVGV4azZXbDkvWHM5N2t6?=
- =?utf-8?B?VTNEc1lMWEZtMFUyaGpwTjF5R0NDUG9yaUp0SUVGNVZ3em83SWc5QUd6UmlS?=
- =?utf-8?B?RFpDOXFoQzNrYkpGTlpqK3Z1NnhLakNQeVJJemxDY0o4Q1pGb0w4RmQyaURs?=
- =?utf-8?B?cHkra3FJMkJvaUpRQVNMZ3VRaTdNTUprQ012L0twVWJrZW93T3o2TkNlUXBQ?=
- =?utf-8?B?RXdQWXh5T3Q1NFdJOXpoUXh5ZFFieVNWV2wrcWpxYVNySy9GYU1nRE5QYXgy?=
- =?utf-8?B?NFl5VEZZd0RaZFBwNjZPUExTYTVJZW1nT3FaRjZCOTR0c04rbjFhRE02UG42?=
- =?utf-8?B?TVU3bmI3NDBCZ0hmbVFTcnRtZWRnQkVxVnJlbldBL05wTnZvcHhRMTFGek1p?=
- =?utf-8?B?cWVycDdpelJ0ektHemZNd0x6bGU0bW13VFdNNFZjeS9SMlQ4VS9XRjc1cjlK?=
- =?utf-8?B?Q3oxM0kvSkw4UDhsYkVtNEhIVEVsSGxmM2hBSnpQQUJDTUlWWWJWbk1hQ3Vn?=
- =?utf-8?B?TnMrMWVlL1RxdU5wb3hKRG8vTVFRRVdEVy92UnR2azQvQmd2bTA0Z3ZzQ2Zy?=
- =?utf-8?B?NFErYzlCandrMzRXVHJBMEs4NjFFT0RHZ1ZubksxSDQ2alRHaHlIWFBOdHdH?=
- =?utf-8?B?T2svM1IrWGhmdXBvaVlkS2JHZmFCdk14TVVURWZTb3h6WXkzdTdGTDV5ZTF4?=
- =?utf-8?B?WmRPQTBLeUNmRktiQWZLdTJKczVWUlZjL1RFT3FJbmp6SEVqWE1kandOM01s?=
- =?utf-8?Q?A8DVVnw0pGdU75hpLLnnp7slq?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 865046bb-590b-4ebb-1cba-08db7d858cd5
-X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4409.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jul 2023 18:27:55.1491 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: J8/ZUa82JCaeEMckTAmAoxgyRsmysp5+zP7R/j5ntgrJWyCMVPmE7n8oaYiHrO4a8Tk4kh7SOnpcKNYZYjiYXQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8206
-Received-SPF: softfail client-ip=40.107.220.42;
- envelope-from=vikram.garhwal@amd.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: 0np-aZ5WGbdaehNOWNK-zONFEcoRbwik
+X-Proofpoint-ORIG-GUID: 0np-aZ5WGbdaehNOWNK-zONFEcoRbwik
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-05_09,2023-07-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ mlxlogscore=999 suspectscore=0 clxscore=1015 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 spamscore=0 malwarescore=0
+ adultscore=0 phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2305260000 definitions=main-2307050169
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=mathbern@qualcomm.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,51 +104,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-HI Leo,
+As docs/devel/loads-stores.rst states:
 
-On 7/2/23 11:14 PM, Leo Yan wrote:
-> Hi Vikram,
->
-> On Thu, Jun 29, 2023 at 10:43:10AM -0700, Oleksandr Tyshchenko wrote:
->
-> [...]
->
->>   void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
->>   {
->>       hw_error("Invalid ioreq type 0x%x\n", req->type);
->> @@ -135,6 +170,14 @@ static void xen_arm_init(MachineState *machine)
->>   
->>       xam->state =  g_new0(XenIOState, 1);
->>   
->> +    if (machine->ram_size == 0) {
->> +        DPRINTF("ram_size not specified. QEMU machine will be started without"
->> +                " TPM, IOREQ and Virtio-MMIO backends\n");
->> +        return;
->> +    }
->> +
->> +    xen_init_ram(machine);
->> +
->>       xen_register_ioreq(xam->state, machine->smp.cpus, xen_memory_listener);
->>   
->>       xen_create_virtio_mmio_devices(xam);
->> @@ -182,6 +225,8 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
->>       mc->init = xen_arm_init;
->>       mc->max_cpus = 1;
->>       mc->default_machine_opts = "accel=xen";
->> +    /* Set explicitly here to make sure that real ram_size is passed */
->> +    mc->default_ram_size = 0;
-> This patch fails to apply on my side on QEMU 8.0.0.
->
->>       printf("CHECK for NEW BUILD\n");
-> The printf sentence is introduced unexpectly, right?
-I will rebase it with latest and resend v2.
-Thank you!
->
-> Thanks,
-> Leo
->
->>   #ifdef CONFIG_TPM
->> -- 
->> 2.25.1
+  ``GETPC()`` should be used with great care: calling
+  it in other functions that are *not* the top level
+  ``HELPER(foo)`` will cause unexpected behavior. Instead, the
+  value of ``GETPC()`` should be read from the helper and passed
+  if needed to the functions that the helper calls.
+
+Let's fix the GETPC() usage in Hexagon, making sure it's always called
+from top level helpers and passed down to the places where it's
+needed. There are two snippets where that is not currently the case:
+
+- probe_store(), which is only called from two helpers, so it's easy to
+  move GETPC() up.
+
+- mem_load*() functions, which are also called directly from helpers,
+  but through the MEM_LOAD*() set of macros. Note that this are only
+  used when compiling with --disable-hexagon-idef-parser.
+
+  In this case, we also take this opportunity to simplify the code,
+  unifying the mem_load*() functions.
+
+Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+---
+v1: d40fabcf9d6e92e4cd8d6a144e9b2a9acf4580dc.1688420966.git.quic_mathbern@quicinc.com
+
+Changes in v2:
+- Fixed wrong cpu_ld* unification from previous version.
+- Passed retaddr down to check_noshuf() and further, as Taylor
+  suggested.
+- Reorganized macros for simplification.
+
+ target/hexagon/macros.h    | 19 ++++++------
+ target/hexagon/op_helper.h | 11 ++-----
+ target/hexagon/op_helper.c | 62 +++++++++++---------------------------
+ 3 files changed, 29 insertions(+), 63 deletions(-)
+
+diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
+index 5451b061ee..e44a932434 100644
+--- a/target/hexagon/macros.h
++++ b/target/hexagon/macros.h
+@@ -173,15 +173,6 @@
+ #define MEM_STORE8(VA, DATA, SLOT) \
+     MEM_STORE8_FUNC(DATA)(cpu_env, VA, DATA, SLOT)
+ #else
+-#define MEM_LOAD1s(VA) ((int8_t)mem_load1(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD1u(VA) ((uint8_t)mem_load1(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD2s(VA) ((int16_t)mem_load2(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD2u(VA) ((uint16_t)mem_load2(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD4s(VA) ((int32_t)mem_load4(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD4u(VA) ((uint32_t)mem_load4(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD8s(VA) ((int64_t)mem_load8(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD8u(VA) ((uint64_t)mem_load8(env, pkt_has_store_s1, slot, VA))
+-
+ #define MEM_STORE1(VA, DATA, SLOT) log_store32(env, VA, DATA, 1, SLOT)
+ #define MEM_STORE2(VA, DATA, SLOT) log_store32(env, VA, DATA, 2, SLOT)
+ #define MEM_STORE4(VA, DATA, SLOT) log_store32(env, VA, DATA, 4, SLOT)
+@@ -530,8 +521,16 @@ static inline TCGv gen_read_ireg(TCGv result, TCGv val, int shift)
+ #ifdef QEMU_GENERATE
+ #define fLOAD(NUM, SIZE, SIGN, EA, DST) MEM_LOAD##SIZE##SIGN(DST, EA)
+ #else
++#define MEM_LOAD1 cpu_ldub_data_ra
++#define MEM_LOAD2 cpu_lduw_data_ra
++#define MEM_LOAD4 cpu_ldl_data_ra
++#define MEM_LOAD8 cpu_ldq_data_ra
++
+ #define fLOAD(NUM, SIZE, SIGN, EA, DST) \
+-    DST = (size##SIZE##SIGN##_t)MEM_LOAD##SIZE##SIGN(EA)
++    DST =  (size##SIZE##SIGN##_t)({ \
++        check_noshuf(env, pkt_has_store_s1, slot, EA, SIZE, GETPC()); \
++        MEM_LOAD##SIZE(env, EA, GETPC()); \
++    })
+ #endif
+ 
+ #define fMEMOP(NUM, SIZE, SIGN, EA, FNTYPE, VALUE)
+diff --git a/target/hexagon/op_helper.h b/target/hexagon/op_helper.h
+index 8f3764d15e..7744e819ef 100644
+--- a/target/hexagon/op_helper.h
++++ b/target/hexagon/op_helper.h
+@@ -19,15 +19,8 @@
+ #define HEXAGON_OP_HELPER_H
+ 
+ /* Misc functions */
+-uint8_t mem_load1(CPUHexagonState *env, bool pkt_has_store_s1,
+-                  uint32_t slot, target_ulong vaddr);
+-uint16_t mem_load2(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr);
+-uint32_t mem_load4(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr);
+-uint64_t mem_load8(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr);
+-
++void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
++                  uint32_t slot, target_ulong vaddr, int size, uintptr_t ra);
+ void log_store64(CPUHexagonState *env, target_ulong addr,
+                  int64_t val, int width, int slot);
+ void log_store32(CPUHexagonState *env, target_ulong addr,
+diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
+index 12967ac21e..abc9fc4724 100644
+--- a/target/hexagon/op_helper.c
++++ b/target/hexagon/op_helper.c
+@@ -95,9 +95,8 @@ void HELPER(debug_check_store_width)(CPUHexagonState *env, int slot, int check)
+     }
+ }
+ 
+-void HELPER(commit_store)(CPUHexagonState *env, int slot_num)
++static void commit_store(CPUHexagonState *env, int slot_num, uintptr_t ra)
+ {
+-    uintptr_t ra = GETPC();
+     uint8_t width = env->mem_log_stores[slot_num].width;
+     target_ulong va = env->mem_log_stores[slot_num].va;
+ 
+@@ -119,6 +118,12 @@ void HELPER(commit_store)(CPUHexagonState *env, int slot_num)
+     }
+ }
+ 
++void HELPER(commit_store)(CPUHexagonState *env, int slot_num)
++{
++    uintptr_t ra = GETPC();
++    commit_store(env, slot_num, ra);
++}
++
+ void HELPER(gather_store)(CPUHexagonState *env, uint32_t addr, int slot)
+ {
+     mem_gather_store(env, addr, slot);
+@@ -467,13 +472,12 @@ int32_t HELPER(cabacdecbin_pred)(int64_t RssV, int64_t RttV)
+ }
+ 
+ static void probe_store(CPUHexagonState *env, int slot, int mmu_idx,
+-                        bool is_predicated)
++                        bool is_predicated, uintptr_t retaddr)
+ {
+     if (!is_predicated || !(env->slot_cancelled & (1 << slot))) {
+         size1u_t width = env->mem_log_stores[slot].width;
+         target_ulong va = env->mem_log_stores[slot].va;
+-        uintptr_t ra = GETPC();
+-        probe_write(env, va, width, mmu_idx, ra);
++        probe_write(env, va, width, mmu_idx, retaddr);
+     }
+ }
+ 
+@@ -494,7 +498,8 @@ void HELPER(probe_pkt_scalar_store_s0)(CPUHexagonState *env, int args)
+     int mmu_idx = FIELD_EX32(args, PROBE_PKT_SCALAR_STORE_S0, MMU_IDX);
+     bool is_predicated =
+         FIELD_EX32(args, PROBE_PKT_SCALAR_STORE_S0, IS_PREDICATED);
+-    probe_store(env, 0, mmu_idx, is_predicated);
++    uintptr_t ra = GETPC();
++    probe_store(env, 0, mmu_idx, is_predicated, ra);
+ }
+ 
+ void HELPER(probe_hvx_stores)(CPUHexagonState *env, int mmu_idx)
+@@ -547,12 +552,13 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
+     bool s0_is_pred = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, S0_IS_PRED);
+     bool s1_is_pred = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, S1_IS_PRED);
+     int mmu_idx = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, MMU_IDX);
++    uintptr_t ra = GETPC();
+ 
+     if (has_st0) {
+-        probe_store(env, 0, mmu_idx, s0_is_pred);
++        probe_store(env, 0, mmu_idx, s0_is_pred, ra);
+     }
+     if (has_st1) {
+-        probe_store(env, 1, mmu_idx, s1_is_pred);
++        probe_store(env, 1, mmu_idx, s1_is_pred, ra);
+     }
+     if (has_hvx_stores) {
+         HELPER(probe_hvx_stores)(env, mmu_idx);
+@@ -566,48 +572,16 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
+  * If the load is in slot 0 and there is a store in slot1 (that
+  * wasn't cancelled), we have to do the store first.
+  */
+-static void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
+-                         uint32_t slot, target_ulong vaddr, int size)
++void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
++                  uint32_t slot, target_ulong vaddr, int size, uintptr_t ra)
+ {
+     if (slot == 0 && pkt_has_store_s1 &&
+         ((env->slot_cancelled & (1 << 1)) == 0)) {
+-        HELPER(probe_noshuf_load)(env, vaddr, size, MMU_USER_IDX);
+-        HELPER(commit_store)(env, 1);
++        probe_read(env, vaddr, size, MMU_USER_IDX, ra);
++        commit_store(env, 1, ra);
+     }
+ }
+ 
+-uint8_t mem_load1(CPUHexagonState *env, bool pkt_has_store_s1,
+-                  uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 1);
+-    return cpu_ldub_data_ra(env, vaddr, ra);
+-}
+-
+-uint16_t mem_load2(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 2);
+-    return cpu_lduw_data_ra(env, vaddr, ra);
+-}
+-
+-uint32_t mem_load4(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 4);
+-    return cpu_ldl_data_ra(env, vaddr, ra);
+-}
+-
+-uint64_t mem_load8(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 8);
+-    return cpu_ldq_data_ra(env, vaddr, ra);
+-}
+-
+ /* Floating point */
+ float64 HELPER(conv_sf2df)(CPUHexagonState *env, float32 RsV)
+ {
+-- 
+2.37.2
 
 
