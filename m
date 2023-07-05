@@ -2,55 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B957482CD
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A57867482DF
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:22:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH0Wf-0005CI-Nn; Wed, 05 Jul 2023 07:18:25 -0400
+	id 1qH0aI-0007Zk-EB; Wed, 05 Jul 2023 07:22:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=c5xU=CX=kaod.org=clg@ozlabs.org>)
- id 1qH0We-0005B9-BO; Wed, 05 Jul 2023 07:18:24 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qH0aG-0007Z5-74
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:22:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=c5xU=CX=kaod.org=clg@ozlabs.org>)
- id 1qH0Wc-0005OJ-Ep; Wed, 05 Jul 2023 07:18:24 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qwxwp4BXjz4wbP;
- Wed,  5 Jul 2023 21:18:18 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qH0aE-0006JH-BW
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:22:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688556123;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fj0ULByj4TyR4SsyJV5QOhKKNDHJv7ywDzU7PNxBtV4=;
+ b=NmR0sIEyJz3kUD/xU0w2Aa9kf9/9+BJzvscsSfRZ3cBpze+OA2B3JIIMizaRqxcuQ1U7Mn
+ bgJNPo6YEZJuNsSmXs1J1fhhvs7CEtct0wl6LrgKmjp7SXawWZjrhWY4MwCJaSCq4MzjVk
+ fzkbpk7sTbMlk2O5f9JOnb/0grF61M8=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-166-fSudfr_INIW7rZ5D25l5GA-1; Wed, 05 Jul 2023 07:21:59 -0400
+X-MC-Unique: fSudfr_INIW7rZ5D25l5GA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qwxwm6f4rz4wZs;
- Wed,  5 Jul 2023 21:18:16 +1000 (AEST)
-Message-ID: <dfbaa810-d1b8-1873-2994-14e7be16ce46@kaod.org>
-Date: Wed, 5 Jul 2023 13:18:14 +0200
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 66B7B3806713;
+ Wed,  5 Jul 2023 11:21:59 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4319F200B402;
+ Wed,  5 Jul 2023 11:21:59 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3411A21E6A1F; Wed,  5 Jul 2023 13:21:58 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Het Gala <het.gala@nutanix.com>
+Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
+ dgilbert@redhat.com,  pbonzini@redhat.com,  berrange@redhat.com,
+ eblake@redhat.com,  manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+Subject: Re: [PATCH v6 1/9] migration: introduced 'MigrateAddress' in QAPI
+ for migration wire protocol.
+References: <20230606101557.202060-1-het.gala@nutanix.com>
+ <20230606101557.202060-2-het.gala@nutanix.com>
+Date: Wed, 05 Jul 2023 13:21:58 +0200
+In-Reply-To: <20230606101557.202060-2-het.gala@nutanix.com> (Het Gala's
+ message of "Tue, 6 Jun 2023 10:15:49 +0000")
+Message-ID: <87cz16iox5.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] pnv/xive: Print CPU target in all TIMA traces
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230705110039.231148-1-fbarrat@linux.ibm.com>
- <060f5a94-30ab-b708-5086-09332531fd81@linaro.org>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <060f5a94-30ab-b708-5086-09332531fd81@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=c5xU=CX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.089, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,47 +86,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/5/23 13:12, Philippe Mathieu-Daudé wrote:
-> On 5/7/23 13:00, Frederic Barrat wrote:
->> Add the CPU target in the trace when reading/writing the TIMA
->> space. It was already done for other TIMA ops (notify, accept, ...),
->> only missing for those 2. Useful for debug and even more now that we
->> experiment with SMT.
->>
->> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
->> ---
->>   hw/intc/trace-events | 4 ++--
->>   hw/intc/xive.c       | 4 ++--
->>   2 files changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/hw/intc/trace-events b/hw/intc/trace-events
->> index 5c6094c457..36ff71f947 100644
->> --- a/hw/intc/trace-events
->> +++ b/hw/intc/trace-events
->> @@ -265,8 +265,8 @@ xive_source_esb_read(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64
->>   xive_source_esb_write(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64" IRQ 0x%x val=0x%"PRIx64
->>   xive_router_end_notify(uint8_t end_blk, uint32_t end_idx, uint32_t end_data) "END 0x%02x/0x%04x -> enqueue 0x%08x"
->>   xive_router_end_escalate(uint8_t end_blk, uint32_t end_idx, uint8_t esc_blk, uint32_t esc_idx, uint32_t end_data) "END 0x%02x/0x%04x -> escalate END 0x%02x/0x%04x data 0x%08x"
->> -xive_tctx_tm_write(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
->> -xive_tctx_tm_read(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
->> +xive_tctx_tm_write(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
->> +xive_tctx_tm_read(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
-> 
-> "target" is kinda confusing, what about:
-> 
-> xive_tctx_tm_read(uint32_t cpu_index, ...) "cpu=%d @0x%"PRIx64" ...
+Het Gala <het.gala@nutanix.com> writes:
 
-An interrupt 'source' is served by a 'target', a target could be a CPU,
-a vCPU id, a group of vCPU, a process id.
+> This patch introduces well defined MigrateAddress struct and its related
+> child objects.
+>
+> The existing argument of 'migrate' and 'migrate-incoming' QAPI - 'uri'
+> is of string type. The current migration flow follows double encoding
+> scheme for  fetching migration parameters such as 'uri' and this is
+> not an ideal design.
+>
+> Motive for intoducing struct level design is to prevent double encoding
+> of QAPI arguments, as Qemu should be able to directly use the QAPI
+> arguments without any level of encoding.
+>
+> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+>  qapi/migration.json | 45 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 45 insertions(+)
+>
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 179af0c4d8..e61d25eba2 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -1407,6 +1407,51 @@
+>  ##
+>  { 'command': 'migrate-continue', 'data': {'state': 'MigrationStatus'} }
+>=20=20
+> +##
+> +# @MigrationAddressType:
+> +#
+> +# The migration stream transport mechanisms.
+> +#
+> +# @socket: Migrate via socket.
+> +#
+> +# @exec: Direct the migration stream to another process.
+> +#
+> +# @rdma: Migrate via RDMA.
+> +#
+> +# Since 8.1
+> +##
+> +{ 'enum': 'MigrationAddressType',
+> +  'data': ['socket', 'exec', 'rdma'] }
+> +
+> +##
+> +# @MigrationExecCommand:
+> +#
+> +# @args: list of commands for migraton stream execution to a file.
 
-'target' is part of the XIVE nomenclature, in HW specs, in drivers, FW,
-Linux, KVM, and models in QEMU. It is fine.
+Typo: migration
 
-Thanks,
+> +#
+> +# Notes:
+> +#
+> +# 1. @args[0] needs to be the path to the new program.
 
-C.
-  
-> 
-> ?
+@args can't be a "list of commands", as we're spawning just one process.
+So what is it?
+
+Digging through the code with the entire series applied...  Member @args
+is used in two places:
+
+1. qemu_start_incoming_migration() passes it to
+   exec_start_incoming_migration(), which translates it into an array
+   and passes it to qio_channel_command_new_spawn().
+
+2. qmp_migrate() passes it to exec_start_outgoing_migration(), which
+   does the same.
+
+qio_channel_command_new_spawn() passes it to
+g_spawn_async_with_pipes().  A close read of the latter's documentation
+leads me to:
+
+* args[0] is the excutable's file name.  As usual, a relative name is
+  relative to the QEMU process's current working directory.
+
+* args[1..] are the arguments.
+
+Unlike POSIX interfaces like execv() and posix_spawn(), this doesn't
+separate the executable's file name and 0-th argument.
+
+In short, the head of @args is the executable's filename, and the
+remainder are the arguments.  The fact that the the executable's
+filename is passed as 0-th argument to the child process is detail.
+
+Perhaps this could do:
+
+   ##
+   # @MigrationExecCommand:
+   #
+   # @args: command and arguments to execute.
+
+If we want more detail, perhaps:
+
+   # @args: command (list head) and arguments (list tail) to execute.
+
+Not sure we need it.  Thoughts?
+
+> +#
+> +# Since 8.1
+> +##
+> +{ 'struct': 'MigrationExecCommand',
+> +  'data': {'args': [ 'str' ] } }
+> +
+> +##
+> +# @MigrationAddress:
+> +#
+> +# Migration endpoint configuration.
+> +#
+> +# Since 8.1
+> +##
+> +{ 'union': 'MigrationAddress',
+> +  'base': { 'transport' : 'MigrationAddressType'},
+> +  'discriminator': 'transport',
+> +  'data': {
+> +    'socket': 'SocketAddress',
+> +    'exec': 'MigrationExecCommand',
+> +    'rdma': 'InetSocketAddress' } }
+> +
+>  ##
+>  # @migrate:
+>  #
 
 
