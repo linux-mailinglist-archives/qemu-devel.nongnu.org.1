@@ -2,71 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91674748981
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 18:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5027E7489D2
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 19:05:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH5jR-0002Mh-Rh; Wed, 05 Jul 2023 12:51:58 -0400
+	id 1qH5vJ-0006cU-HJ; Wed, 05 Jul 2023 13:04:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qH5jC-0002LB-CT
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:51:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qH5jA-0006nY-Tg
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:51:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688575900;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=B+jWD8J30spDME4DbjhwZSLOayYk9MvKNCF70X1UfdM=;
- b=Vr/1S3rr34B7Vh2x3k8+BO/Wib/9ALP3peMHrcaeTbk5VtKGzceFOnr1KDL4bEudrh6kgG
- BOeSun8dkv2Z0PaS22QqKw8DLZVegYIq+WX88NXBfaWCF4bloYL6+zTbgtWT28smWYQ5GR
- rhTQARKkqKf6+yGGzcB1jgXt3dK4dec=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-614-mtgGoX5TOgKlH4o1dTBOHw-1; Wed, 05 Jul 2023 12:51:36 -0400
-X-MC-Unique: mtgGoX5TOgKlH4o1dTBOHw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6DFCF38294A5;
- Wed,  5 Jul 2023 16:51:35 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.39.192.226])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3140C1121314;
- Wed,  5 Jul 2023 16:51:32 +0000 (UTC)
-From: Eric Auger <eric.auger@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org,
- zhenzhong.duan@intel.com
-Cc: alex.williamson@redhat.com, clg@redhat.com, bharat.bhushan@nxp.com,
- peter.maydell@linaro.org
-Subject: [PATCH v2 2/2] virtio-iommu: Rework the traces in
- virtio_iommu_set_page_size_mask()
-Date: Wed,  5 Jul 2023 18:51:18 +0200
-Message-Id: <20230705165118.28194-3-eric.auger@redhat.com>
-In-Reply-To: <20230705165118.28194-1-eric.auger@redhat.com>
-References: <20230705165118.28194-1-eric.auger@redhat.com>
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qH5vH-0006c0-Gq; Wed, 05 Jul 2023 13:04:11 -0400
+Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qH5vF-0000VO-6j; Wed, 05 Jul 2023 13:04:11 -0400
+Received: by mail-oa1-x34.google.com with SMTP id
+ 586e51a60fabf-1b38121a011so3574452fac.2; 
+ Wed, 05 Jul 2023 10:04:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688576647; x=1691168647;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=LBFFbXAj0D1rsUoFLcUZE8Sq0BVb8co5EbLKvNkn2vw=;
+ b=LKxbwWlQIuz1zyYr21KwsNWUbLWTCkpsQutuDdLYRHUJaB4kbX2vhjkvDtGM9qoMsg
+ SEgjU511BOKeHTn+6veKLClO5A9gpeHR9EXSJUufVqw6dGNumD1BKwE0/BQ+pXjcN2k9
+ w0Uo3lnfgJujuH2aDFsY75PmoIVV6yGB6ObXkyVI5TH4nOXRiYTbIEr8yLuuMIXW5J6s
+ HMWocI8yu26pNOzUi1WmP/zQLCFqnHoUkGLSQ/FUYW6fEcWH/pU5r5iYrNOkhhZ7wE8U
+ TdV5Gmsy2OFn5xsiwuCQA/rIaVLQ5UqXdvm5zp2UgzQe2iMRKKBeKWR2UzPnV3m/EXZw
+ sI8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688576647; x=1691168647;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LBFFbXAj0D1rsUoFLcUZE8Sq0BVb8co5EbLKvNkn2vw=;
+ b=JA3tjk18siqUF9mZAEFNpiXegT2kilj6mSvJfbMAS6/AcqDnq7tRbly+j/Cwk17wEt
+ HDXk1L1iSmXY833ULiXPrqeVlg3n3bfqYB5yrZXNMk0dkxCNb62M1O+0wZq52WIuEKrR
+ y87hLaUK4MP8S+s9wWCG22iDE8050s8LB2choTCWvYYlo8y4qm7SWQUJVlHmPHdmKwxI
+ EwTXcgXyePP1b/bWQG+rI8gxoBEUD+Gvzwl/Zhk1+qIFncSBFx1YHun3Dwrq+FBKAxPL
+ uJjIcPHt4BEfv0ujEEqh0dqVQS/qzmLz9gaDaWOIC6Skvee01hB7k4UZQoyBR8TRHWgV
+ aTVA==
+X-Gm-Message-State: ABy/qLZ+EdM0ntWE6E0M0q1XjemyqGl0LxBWdGRQPd0JYhH49hRqzxbi
+ y4nfvMZPPNYnkv34ODrXXlc=
+X-Google-Smtp-Source: APBJJlG8Dfv2EVVCNPJCY6gfXAklIt495zCabTppaPnHhezo/luTSXzSoVkHnwfUYSFiF42fMPq/fg==
+X-Received: by 2002:a05:6871:520c:b0:1ad:3647:1fd0 with SMTP id
+ ht12-20020a056871520c00b001ad36471fd0mr17611818oac.22.1688576647095; 
+ Wed, 05 Jul 2023 10:04:07 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ dw22-20020a056870771600b001b3f0afda0fsm702443oab.30.2023.07.05.10.04.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Jul 2023 10:04:06 -0700 (PDT)
+Message-ID: <6e54457b-face-25fe-1df8-f70c0a962610@gmail.com>
+Date: Wed, 5 Jul 2023 14:04:02 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 0/4] ppc/pnv: SMT support for powernv
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230705120631.27670-1-npiggin@gmail.com>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20230705120631.27670-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::34;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x34.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,65 +97,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current error messages in virtio_iommu_set_page_size_mask()
-sound quite similar for different situations and miss the IOMMU
-memory region that causes the issue.
+Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
 
-Clarify them and rework the comment.
 
-Also remove the trace when the new page_size_mask is not applied as
-the current frozen granule is kept. This message is rather confusing
-for the end user and anyway the current granule would have been used
-by the driver.
+Daniel
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/virtio/virtio-iommu.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
-
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 8d0c5e3f32..4b711ddd09 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1101,29 +1101,24 @@ static int virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
-                                           new_mask);
- 
-     if ((cur_mask & new_mask) == 0) {
--        error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
--                   " is incompatible with mask 0x%"PRIx64, cur_mask, new_mask);
-+        error_setg(errp, "virtio-iommu %s reports a page size mask 0x%"PRIx64
-+                   " incompatible with currently supported mask 0x%"PRIx64,
-+                   mr->parent_obj.name, new_mask, cur_mask);
-         return -1;
-     }
- 
-     /*
-      * Once the granule is frozen we can't change the mask anymore. If by
-      * chance the hotplugged device supports the same granule, we can still
--     * accept it. Having a different masks is possible but the guest will use
--     * sub-optimal block sizes, so warn about it.
-+     * accept it.
-      */
-     if (s->granule_frozen) {
--        int new_granule = ctz64(new_mask);
-         int cur_granule = ctz64(cur_mask);
- 
--        if (new_granule != cur_granule) {
--            error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
--                       " is incompatible with mask 0x%"PRIx64, cur_mask,
--                       new_mask);
-+        if (!(BIT(cur_granule) & new_mask)) {
-+            error_setg(errp, "virtio-iommu %s does not support frozen granule 0x%"PRIx64,
-+                       mr->parent_obj.name, BIT(cur_granule));
-             return -1;
--        } else if (new_mask != cur_mask) {
--            warn_report("virtio-iommu page mask 0x%"PRIx64
--                        " does not match 0x%"PRIx64, cur_mask, new_mask);
-         }
-         return 0;
-     }
--- 
-2.38.1
-
+On 7/5/23 09:06, Nicholas Piggin wrote:
+> These patches implement enough to install a distro, boot, run SMP KVM
+> guests with libvirt with good performance using MTTCG (as reported by
+> Cedric).
+> 
+> There are a few more SPRs that need to be done, and per-LPAR SPRs are
+> mostly not annotated yet so it can't run in 1 LPAR mode. But those can
+> be added in time, it will take a bit of time to get everything exactly
+> as hardware does so I consider this good enough to run common
+> software usefully.
+> 
+> Since RFC:
+> - Rebased against ppc-next (no conflicts vs upstream anyway).
+> - Add patch 4 avocado boot test with SMT, as was added with pseries SMT.
+> - Renamed POWERPC_FLAG_1LPAR to POWERPC_FLAG_SMT_1LPAR since it implies
+>    SMT.
+> - Fixed typos, patch 1, 3 changelogs improvement (hopefully).
+> 
+> Since v1:
+> - Fix clang compile bug
+> - Fix LPAR-per-thread bug in CTRL/DPDES/msgsndp in patch 1
+> - Add 2-socket test case to powernv Linux boot avocado test
+> - Remove SMT caveat from docs/system/ppc/powernv.rst
+> 
+> Thanks,
+> Nick
+> 
+> Nicholas Piggin (4):
+>    target/ppc: Add LPAR-per-core vs per-thread mode flag
+>    target/ppc: SMT support for the HID SPR
+>    ppc/pnv: SMT support for powernv
+>    tests/avocado: Add powernv machine test script
+> 
+>   docs/system/ppc/powernv.rst  |  5 ---
+>   hw/ppc/pnv.c                 | 12 +++++
+>   hw/ppc/pnv_core.c            | 13 +++---
+>   hw/ppc/spapr_cpu_core.c      |  2 +
+>   target/ppc/cpu.h             |  3 ++
+>   target/ppc/cpu_init.c        | 14 +++++-
+>   target/ppc/excp_helper.c     |  4 ++
+>   target/ppc/helper.h          |  1 +
+>   target/ppc/misc_helper.c     | 29 ++++++++++++
+>   target/ppc/spr_common.h      |  1 +
+>   target/ppc/translate.c       | 27 ++++++++---
+>   tests/avocado/ppc_powernv.py | 87 ++++++++++++++++++++++++++++++++++++
+>   12 files changed, 179 insertions(+), 19 deletions(-)
+>   create mode 100644 tests/avocado/ppc_powernv.py
+> 
 
