@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 274C47482E4
+	by mail.lfdr.de (Postfix) with ESMTPS id 142DB7482E3
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:26:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH0dm-0000jY-9Z; Wed, 05 Jul 2023 07:25:46 -0400
+	id 1qH0do-0000k2-0T; Wed, 05 Jul 2023 07:25:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qH0dk-0000jE-H7
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:25:44 -0400
+ id 1qH0dl-0000ja-QA
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:25:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qH0dj-00075n-4C
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:25:44 -0400
+ id 1qH0dk-00075z-BL
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:25:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688556342;
+ s=mimecast20190719; t=1688556343;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=iFE/VLWDeD88Y2mZh0/SkWHYUkPtW6ze/pBDwBQhf1c=;
- b=TrSpyboFyeMYmmxxIKxWaKotf7jppyleRbXiDTekQr0DVUmKffVjVw+Vw2JFA+gzNTqAa8
- FbYsR+FHx1PNk1ArTzAbiBZ3qJ/Lvkak6rkqF/0mTZ77u3bs2cV5RF54O81hyXuqRYVp4m
- Z4nEYVyify4UMUUsIutzdV6UYUVmrf8=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LRiSgzLFaJJeJ6EaNdB1G5P7C2mjdtmSUgXnuWHFD3o=;
+ b=BajZADNLT29tFyyopjq2ciUW1Urv4JFF40t/+1UyMjHC/5z9KdZsJ/aqpzn7dcS7fzaxGO
+ 7WkroKju3syW2Dblee7jacEkAkO15NO1iPBpsVxVOhb7dZIszDVnA1C8G3OvAMNJ1I5bi6
+ 1BozTSmP239jfSQUCeWUIYe6EJhOwlc=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-283-o2TjGZv8PbC5EB7yPY8AUA-1; Wed, 05 Jul 2023 07:25:40 -0400
-X-MC-Unique: o2TjGZv8PbC5EB7yPY8AUA-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2b6fdbe2efdso7307631fa.3
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 04:25:40 -0700 (PDT)
+ us-mta-349-SJDJagxJPKWtARkmPbKozg-1; Wed, 05 Jul 2023 07:25:41 -0400
+X-MC-Unique: SJDJagxJPKWtARkmPbKozg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-98df34aa83aso77614566b.1
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 04:25:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688556339; x=1691148339;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iFE/VLWDeD88Y2mZh0/SkWHYUkPtW6ze/pBDwBQhf1c=;
- b=QSOj8dg2HvsPFo2uEvVHVJL+XRNW0PYdkvQS2VqLxIS2tRAnoDC5wdniRJnZKYkyeK
- NFM2WU+fre3h0jr8cJusnARjQ1lU4CplBLRv8XiH1ejh7s5PaGxd+ZbdY2zc784yLtWp
- Nxg25gYZ6rsFRH1gnyceg9uAzvidmXmSEp0QQyyIKTSbjR0uJAY43Gac72d8ee0dI0xi
- 0sIeUp7P4X4FDsVEKTKdEbwvm/FnrQwfCEniSw1ZBWAnsdvQ1wGTaEcfafnzDpWUFC9v
- kQ2PtaDgmy1PS65oESNaPeCs8aOvCJ3yEZnRU90dG/vgLpvAnjifsLrJFd0ZEKbRRqBI
- 5qlQ==
-X-Gm-Message-State: ABy/qLav24im/GwRlKUAH9v1MORIWLpB6bV3wF3lXKBxathn234SqKfD
- HedOpHhuhvfuhHdHtKpJYCEfQ4vrjTBWt7vaWCqMc70OSLcqykEt513crlEj0RBHSLkcKASgzgZ
- 6Uel0oAQImaC+eq6yDEgn1BJqFhr1hMLg4+XHeFKjrdk6FViDUHSbg2a52CPtVKRyhJYcY9yLev
- g=
-X-Received: by 2002:a2e:b164:0:b0:2b6:d733:b580 with SMTP id
- a4-20020a2eb164000000b002b6d733b580mr8763401ljm.37.1688556338905; 
- Wed, 05 Jul 2023 04:25:38 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlG7OVchk+DLtqkqMYGNw+9hSwt5O4E1CprK4bSw31jo8HqgBRPf+gdj/Fsmo0D5CHIInlK/Jw==
-X-Received: by 2002:a2e:b164:0:b0:2b6:d733:b580 with SMTP id
- a4-20020a2eb164000000b002b6d733b580mr8763386ljm.37.1688556338504; 
- Wed, 05 Jul 2023 04:25:38 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688556340; x=1691148340;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LRiSgzLFaJJeJ6EaNdB1G5P7C2mjdtmSUgXnuWHFD3o=;
+ b=XIUXJFm1RaJF41GtUwxPC+0yVFK/DDUcIU97HWco3tIOeXGTRnn+IyBbADy3qL+PFO
+ xF1iJpLsq2EABmVTKxuP/bB4cLVIiBeujMvuXmydsSylJrcgj6qa4L3rmdelgGAHoynE
+ QlwmvNs9rVwt0+2uyThag39CEtgGNoB9VRhLAzrKQrwhFM+mCHRdNMB87+QT3+1a4oB6
+ w2N9iXnJgiYooZrQSVLeE4XVAcbbRB/IK4lVIfMhAoL1AYDKL69fGk2RQiQgwpACZ3Kd
+ Dffry38fntFeLHpx6KwsXZbm8EkncFc/BX0FATCChkINvQrRjgJ+bME9OVbuwPjlQfmv
+ iKdw==
+X-Gm-Message-State: ABy/qLYVpUbYSooSlU5yMW9DMLOz4wbRazTNsbAXok5mcj8BqF4t6C62
+ IAyHpdRo6pIMmx2v1EKxuEn4bP2Pdy0UjSDsEv9mHE/Kr85jCoBsjdsZpoJSc9D8zNJxeS40rCj
+ KDj9qqHOYNNKoGJXKL9UG0ORAB32x7A4MKotd/oM20SUFMcWYoJUDpV17kHcM8TFDNdsm57r+zw
+ E=
+X-Received: by 2002:a17:907:7fa2:b0:96f:94f1:b0a5 with SMTP id
+ qk34-20020a1709077fa200b0096f94f1b0a5mr1995142ejc.8.1688556340395; 
+ Wed, 05 Jul 2023 04:25:40 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEzBYYWwtwrUeC6S3AxAE86aynV71c/Pn78hGAWFt1Rsu/jFYM5CYFXB4OOt/GU3JStjVfesQ==
+X-Received: by 2002:a17:907:7fa2:b0:96f:94f1:b0a5 with SMTP id
+ qk34-20020a1709077fa200b0096f94f1b0a5mr1995124ejc.8.1688556340102; 
+ Wed, 05 Jul 2023 04:25:40 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- gv18-20020a170906f11200b0098e0a937a6asm13838554ejb.69.2023.07.05.04.25.37
+ j13-20020aa7de8d000000b0051a2c7f5b0fsm13245122edv.88.2023.07.05.04.25.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jul 2023 04:25:37 -0700 (PDT)
+ Wed, 05 Jul 2023 04:25:39 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: jsnow@redhat.com
-Subject: [PATCH 0/2] python: first step towards Python 3.12 support
-Date: Wed,  5 Jul 2023 13:25:34 +0200
-Message-ID: <20230705112536.54025-1-pbonzini@redhat.com>
+Subject: [PATCH 1/2] python: work around mypy false positive
+Date: Wed,  5 Jul 2023 13:25:35 +0200
+Message-ID: <20230705112536.54025-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230705112536.54025-1-pbonzini@redhat.com>
+References: <20230705112536.54025-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -98,24 +101,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Python 3.12 situation is a mess, with both flake8 and pylint giving
-false positives that do not happen with Python 3.11.  As a first step
-towards understanding these issues, drop support for old linter versions
-that do not work with it.  This at least makes it possible to install
-easily the same versions of the linters on any version of Python, and
-put the blame on the interpreter.
+mypy 1.4.0 signals an error:
 
-Paolo
+qemu/qmp/qmp_tui.py:350: error: Non-overlapping equality check (left operand type: "Literal[Runstate.DISCONNECTING]", right operand type: "Literal[Runstate.IDLE]")  [comparison-overlap]
 
-Paolo Bonzini (2):
-  python: work around mypy false positive
-  python: bump minimum requirements so they are compatible with 3.12
+This is because it does not realiez that self.disconnect() could change
+the value of self.runstate.
 
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
  python/qemu/qmp/qmp_tui.py | 3 ++-
- python/setup.cfg           | 2 +-
- python/tests/minreqs.txt   | 9 ++++-----
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/python/qemu/qmp/qmp_tui.py b/python/qemu/qmp/qmp_tui.py
+index 83691447231..1b68a71397f 100644
+--- a/python/qemu/qmp/qmp_tui.py
++++ b/python/qemu/qmp/qmp_tui.py
+@@ -346,7 +346,8 @@ async def manage_connection(self) -> None:
+                 self._set_status('[Disconnected]')
+                 await self.disconnect()
+                 # check if a retry is needed
+-                if self.runstate == Runstate.IDLE:
++                # mypy bug - doesn't realize self.runstate could change
++                if self.runstate == Runstate.IDLE:  # type: ignore
+                     continue
+             await self.runstate_changed()
+ 
 -- 
 2.41.0
 
