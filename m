@@ -2,45 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D034674829F
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 602857482A1
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:01:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH0Dp-0004MW-0a; Wed, 05 Jul 2023 06:58:57 -0400
+	id 1qH0Fo-0005Jv-Ey; Wed, 05 Jul 2023 07:01:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ben@codethink.co.uk>)
- id 1qH0Dm-0004M3-An; Wed, 05 Jul 2023 06:58:54 -0400
-Received: from imap4.hz.codethink.co.uk ([188.40.203.114])
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qH0Fl-0005IW-Rq; Wed, 05 Jul 2023 07:00:57 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ben@codethink.co.uk>)
- id 1qH0Di-0008S6-GK; Wed, 05 Jul 2023 06:58:53 -0400
-Received: from cpc152649-stkp13-2-0-cust121.10-2.cable.virginm.net
- ([86.15.83.122] helo=rainbowdash)
- by imap4.hz.codethink.co.uk with esmtpsa  (Exim 4.94.2 #2 (Debian))
- id 1qH0DX-008b59-Hf; Wed, 05 Jul 2023 11:58:39 +0100
-Received: from ben by rainbowdash with local (Exim 4.96)
- (envelope-from <ben@rainbowdash>) id 1qH0DW-000Htz-2k;
- Wed, 05 Jul 2023 11:58:38 +0100
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-To: qemu-riscv@nongnu.org
-Cc: qemu-devel@nongnu.org, liweiwei@iscas.ac.cn, bin.meng@windriver.com,
- alistair.francis@wdc.com, almer@dabbelt.com,
- Ben Dooks <ben.dooks@codethink.co.uk>
-Subject: [PATCH] riscv: add config for asid size
-Date: Wed,  5 Jul 2023 11:58:38 +0100
-Message-Id: <20230705105838.68806-1-ben.dooks@codethink.co.uk>
-X-Mailer: git-send-email 2.40.1
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qH0Fj-0000WA-UM; Wed, 05 Jul 2023 07:00:57 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 365AmrIq015874; Wed, 5 Jul 2023 11:00:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : subject :
+ date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=yAE1KZJU+vMCR32DnejA5HEDVo530z0D489GP1IoCu0=;
+ b=I7fmLZ/PfestgwHXvLP6xD6KC2zYANef0+m+4mpzMdn038BP2dxzXTbn3qtzwQR7mYxn
+ hL/3HD1GdZS1ZwyetAJwhFLTNQnpYjJy+IwHYPqonkrIlSH12C/ZQwnU9EGZYR/SM//h
+ TbUQuM66++VgDQNwykZtmI6hM8y/Ouk1GyrShjWr9KCmNIQeIizFj7XfRVglTrT21aok
+ pZnw4MlcrEw8RTKFPeH7Sg5LAbioCkLhpr7a/pLN7qI8fFgbwEBkXjGWrTTCB3AFVpbB
+ Nh0NhyvHlyfJDvDzMdR8M3auVcIuaUKKXIuBj67G5eXC3FiVFw9N34gUjWunEMLLyhj2 gw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rn73e88gb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Jul 2023 11:00:45 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 365ApYlL023595;
+ Wed, 5 Jul 2023 11:00:44 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rn73e88fa-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Jul 2023 11:00:44 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3652BQET019448;
+ Wed, 5 Jul 2023 11:00:43 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma06fra.de.ibm.com (PPS) with ESMTPS id 3rjbddsuus-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Jul 2023 11:00:42 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 365B0eKS20382346
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 5 Jul 2023 11:00:40 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 87F8320040;
+ Wed,  5 Jul 2023 11:00:40 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2B85220043;
+ Wed,  5 Jul 2023 11:00:40 +0000 (GMT)
+Received: from borneo.ibmuc.com (unknown [9.171.34.89])
+ by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed,  5 Jul 2023 11:00:40 +0000 (GMT)
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH] pnv/xive: Print CPU target in all TIMA traces
+Date: Wed,  5 Jul 2023 13:00:39 +0200
+Message-ID: <20230705110039.231148-1-fbarrat@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=188.40.203.114; envelope-from=ben@codethink.co.uk;
- helo=imap4.hz.codethink.co.uk
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: cT2ifrN-PyvGElHXAB9KYOVHLeSFMqcO
+X-Proofpoint-ORIG-GUID: _o3I_MKaDp6EMq-AT2vX6I-4f8bKoW_9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-05_02,2023-07-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0
+ clxscore=1015 lowpriorityscore=0 bulkscore=0 mlxlogscore=981
+ priorityscore=1501 spamscore=0 mlxscore=0 phishscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307050092
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,148 +108,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a config to the cpu state to control the size of the ASID area
-in the SATP CSR to enable testing with smaller than the default (which
-is currently maximum for both rv32 and rv64). It also adds the ability
-to stop the ASID feature by using 0 to disable it.
+Add the CPU target in the trace when reading/writing the TIMA
+space. It was already done for other TIMA ops (notify, accept, ...),
+only missing for those 2. Useful for debug and even more now that we
+experiment with SMT.
 
-For example, an rv64 with only 8 asid bits:
-	-cpu rv64,asid-bits=8
-
-or no asids:
-        -cpu rv64,asid-bits=0
-
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 ---
- target/riscv/cpu.c      | 42 +++++++++++++++++++++++++++++++++++++++++
- target/riscv/cpu.h      |  1 +
- target/riscv/cpu_bits.h |  2 ++
- target/riscv/cpu_cfg.h  |  1 +
- target/riscv/csr.c      |  1 +
- 5 files changed, 47 insertions(+)
+ hw/intc/trace-events | 4 ++--
+ hw/intc/xive.c       | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 4035fe0e62..c703005aba 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1281,6 +1281,38 @@ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
-         }
-     }
- }
-+
-+static void riscv_cpu_asid_finalized_features(RISCVCPU *cpu, Error **errp)
-+{
-+    bool rv32 = riscv_cpu_mxl(&cpu->env) == MXL_RV32;
-+    target_ulong asid_mask, asid_shift;
-+    target_ulong calc_mask;
-+
-+    if (rv32) {
-+        asid_mask = SATP32_ASID;
-+        asid_shift = SATP32_ASID_SHIFT;
-+    } else {
-+        asid_mask = SATP64_ASID;
-+        asid_shift = SATP64_ASID_SHIFT;
-+    }
-+
-+    if (cpu->cfg.asid_bits < 0) {
-+        cpu->env.asid_clear = 0;
-+        return;
-+    }
-+
-+    calc_mask = ((target_ulong)1 << cpu->cfg.asid_bits) - 1;
-+    calc_mask <<= asid_shift;
-+
-+    if (calc_mask > asid_mask) {
-+        error_setg(errp, "invalid ASID bits [0 %d]",
-+                   __builtin_clz(asid_mask >> asid_shift));
-+        return;
-+    }
-+
-+    cpu->env.asid_clear = calc_mask ^ asid_mask;
-+}
-+
- #endif
+diff --git a/hw/intc/trace-events b/hw/intc/trace-events
+index 5c6094c457..36ff71f947 100644
+--- a/hw/intc/trace-events
++++ b/hw/intc/trace-events
+@@ -265,8 +265,8 @@ xive_source_esb_read(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64
+ xive_source_esb_write(uint64_t addr, uint32_t srcno, uint64_t value) "@0x%"PRIx64" IRQ 0x%x val=0x%"PRIx64
+ xive_router_end_notify(uint8_t end_blk, uint32_t end_idx, uint32_t end_data) "END 0x%02x/0x%04x -> enqueue 0x%08x"
+ xive_router_end_escalate(uint8_t end_blk, uint32_t end_idx, uint8_t esc_blk, uint32_t esc_idx, uint32_t end_data) "END 0x%02x/0x%04x -> escalate END 0x%02x/0x%04x data 0x%08x"
+-xive_tctx_tm_write(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
+-xive_tctx_tm_read(uint64_t offset, unsigned int size, uint64_t value) "@0x%"PRIx64" sz=%d val=0x%" PRIx64
++xive_tctx_tm_write(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
++xive_tctx_tm_read(uint32_t index, uint64_t offset, unsigned int size, uint64_t value) "target=%d @0x%"PRIx64" sz=%d val=0x%" PRIx64
+ xive_presenter_notify(uint8_t nvt_blk, uint32_t nvt_idx, uint8_t ring) "found NVT 0x%x/0x%x ring=0x%x"
+ xive_end_source_read(uint8_t end_blk, uint32_t end_idx, uint64_t addr) "END 0x%x/0x%x @0x%"PRIx64
  
- static void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
-@@ -1293,6 +1325,12 @@ static void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
-         error_propagate(errp, local_err);
-         return;
-     }
-+
-+    riscv_cpu_asid_finalized_features(cpu, &local_err);
-+    if (local_err != NULL) {
-+        error_propagate(errp, local_err);
-+        return;
-+    }
- #endif
+diff --git a/hw/intc/xive.c b/hw/intc/xive.c
+index c014e961a4..56670b2cac 100644
+--- a/hw/intc/xive.c
++++ b/hw/intc/xive.c
+@@ -566,7 +566,7 @@ void xive_tctx_tm_write(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
+ {
+     const XiveTmOp *xto;
+ 
+-    trace_xive_tctx_tm_write(offset, size, value);
++    trace_xive_tctx_tm_write(tctx->cs->cpu_index, offset, size, value);
+ 
+     /*
+      * TODO: check V bit in Q[0-3]W2
+@@ -639,7 +639,7 @@ uint64_t xive_tctx_tm_read(XivePresenter *xptr, XiveTCTX *tctx, hwaddr offset,
+      */
+     ret = xive_tm_raw_read(tctx, offset, size);
+ out:
+-    trace_xive_tctx_tm_read(offset, size, ret);
++    trace_xive_tctx_tm_read(tctx->cs->cpu_index, offset, size, ret);
+     return ret;
  }
  
-@@ -1648,6 +1686,10 @@ static Property riscv_cpu_extensions[] = {
-     DEFINE_PROP_BOOL("zicboz", RISCVCPU, cfg.ext_icboz, true),
-     DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 64),
- 
-+#ifndef CONFIG_USER_ONLY
-+    DEFINE_PROP_INT32("asid-bits",  RISCVCPU, cfg.asid_bits, -1),
-+#endif
-+
-     DEFINE_PROP_BOOL("zmmul", RISCVCPU, cfg.ext_zmmul, false),
- 
-     DEFINE_PROP_BOOL("zca", RISCVCPU, cfg.ext_zca, false),
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 7adb8706ac..5b35770795 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -194,6 +194,7 @@ struct CPUArchState {
-     uint64_t mideleg;
- 
-     target_ulong satp;   /* since: priv-1.10.0 */
-+    target_ulong asid_clear;    /* always clear these bits in satp */
-     target_ulong stval;
-     target_ulong medeleg;
- 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 59f0ffd9e1..fd753ce3f4 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -617,11 +617,13 @@ typedef enum {
- /* RV32 satp CSR field masks */
- #define SATP32_MODE         0x80000000
- #define SATP32_ASID         0x7fc00000
-+#define SATP32_ASID_SHIFT   22
- #define SATP32_PPN          0x003fffff
- 
- /* RV64 satp CSR field masks */
- #define SATP64_MODE         0xF000000000000000ULL
- #define SATP64_ASID         0x0FFFF00000000000ULL
-+#define SATP64_ASID_SHIFT   44
- #define SATP64_PPN          0x00000FFFFFFFFFFFULL
- 
- /* VM modes (satp.mode) privileged ISA 1.10 */
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index c4a627d335..4d578797cc 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -128,6 +128,7 @@ struct RISCVCPUConfig {
-     bool short_isa_string;
- 
- #ifndef CONFIG_USER_ONLY
-+    int32_t asid_bits;
-     RISCVSATPMap satp_mode;
- #endif
- };
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 58499b5afc..215b71bd31 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -2731,6 +2731,7 @@ static RISCVException write_satp(CPURISCVState *env, int csrno,
-         return RISCV_EXCP_NONE;
-     }
- 
-+    val &= ~env->asid_clear;
-     if (riscv_cpu_mxl(env) == MXL_RV32) {
-         vm = validate_vm(env, get_field(val, SATP32_MODE));
-         mask = (val ^ env->satp) & (SATP32_MODE | SATP32_ASID | SATP32_PPN);
 -- 
-2.40.1
+2.41.0
 
 
