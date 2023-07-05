@@ -2,101 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0DA747B90
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 04:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58262747BA6
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 05:01:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGsHl-0001p7-Vw; Tue, 04 Jul 2023 22:30:30 -0400
+	id 1qGskJ-0006cF-R1; Tue, 04 Jul 2023 22:59:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGsHd-0001mj-JL
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 22:30:24 -0400
-Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qGskI-0006bn-3d; Tue, 04 Jul 2023 22:59:58 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qGsHb-0003iF-M2
- for qemu-devel@nongnu.org; Tue, 04 Jul 2023 22:30:21 -0400
-Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-1b09276ed49so5822141fac.1
- for <qemu-devel@nongnu.org>; Tue, 04 Jul 2023 19:30:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qGskG-0002Bq-7s; Tue, 04 Jul 2023 22:59:57 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-66c729f5618so5017531b3a.1; 
+ Tue, 04 Jul 2023 19:59:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688524218; x=1691116218;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
- :cc:subject:date:message-id:reply-to;
- bh=03CCo0OxlakifLZBFG7OVXncB6kKDFwE9K8mQaU08TM=;
- b=Ho8jmGL6PCT+c3Ufp9lYay5Sj7bohjCwWocvdhRZgUDeB6nGIe9W+iowo/IrANGYKi
- aJyov1JaqTrkJtv4poBCrKOdlUHEOsxWjmXVz4Hi5ITk7vacG24GH0a3L5qbZS4LthUo
- 1CU/EGptsZNwkVRW8Zx5q33HJCUkgAJp3dbOYcMzkbSCW0lmiEVznu5jrjur4LkKCiNE
- unDJ9tS3xyLR++paqgrUfRc/7Q0mZa2P3KOU/dRk0j4DfOx977s2UpWAkPh8JLPPF461
- AeMSevIgdQS64fiQ+Ke+UpEOwFA2oZwdjJF7pK80akySR499pO2KhYKoMW5NOhnYNECw
- WtYg==
+ d=gmail.com; s=20221208; t=1688525994; x=1691117994;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2CfDg5Fz86hVEB5Ibq54FaNsAwLvu/rJB6uS0nhLKwU=;
+ b=AGbr3mEi4btaWWcKWblUKlNgDNFXbhDu3o6VUr5sIMAjCSW1AC+2RGe9DJkijq3VLj
+ qNCfBLk3VBzQMGEqiRDoztntpYM5AxwlBxlpJYA4E0vr74QUq61s8OtAN3p5Gz7HfQJe
+ BekTKzmtOSUC7Xb8TxIqSvHuAl4LQSvFiAlrZVDfmcGG+xRSeWiuEio+LR73M2uYSuUH
+ xkiOliSEOFJNt1sVJb2OD0HiIGxKqsouGUADUbsHNq3SbxH9XlPWvPdez92TI9mSkVAZ
+ ZWbyuNN1MuHGzixm6miRdKyncRkRjT+GOXShDIes4iddz7MhqAYQQi8IknMiU8dDErh5
+ JO5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688524218; x=1691116218;
- h=content-transfer-encoding:in-reply-to:content-language:references
- :cc:to:subject:from:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=03CCo0OxlakifLZBFG7OVXncB6kKDFwE9K8mQaU08TM=;
- b=KlRF/Au9sREQtiyKK/SZTwdA1itH2DGhZiPvHdkrqmjJ1FMPE8IqVkfpuKJVTehSAd
- 5T7M+2/fW49AwsUPIdMiWPTrwesWhr1RLYzQP9ooiEpaR87N8sNMr3FXdXP1WZFbRCuw
- zC2MW/5p19JwL6CMg47aVZHZiB/s195Ue5LQGQLQxn0s1IGZOuM5gzyYiDXElqS8TR3J
- Kc0BzDNlnqVRXBrw3tIDSeqhZuExqkH28eJ9rYqjpJ0xNvI0kpWBugu+j6pAD7wgNo/Y
- +oDWVsUlSqnHCBnSn2DPXd27Vuk19XhuhWXBzkLvmqpfLfkfwRYY1cSrPSDql5O6N1PJ
- 5/gA==
-X-Gm-Message-State: ABy/qLbbojqDYd/WgwsLMDQEo2BAiIgiQ9myFCwZKWwuBZwaoeY1bZsE
- t5RkepnZNJw7EBTubFLJi2ibKw==
-X-Google-Smtp-Source: APBJJlFCNCMa0arC5ZK5gqAKMr1I97LQY85TNBBWANjPfmcyWbVrW/ML+6B7ifE4vrCRYMaDv/m44g==
-X-Received: by 2002:a05:6870:cf06:b0:1a2:7f63:9920 with SMTP id
- xf6-20020a056870cf0600b001a27f639920mr11517117oab.26.1688524218435; 
- Tue, 04 Jul 2023 19:30:18 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- f24-20020a170902ab9800b001a6f7744a27sm17739834plr.87.2023.07.04.19.30.16
+ d=1e100.net; s=20221208; t=1688525994; x=1691117994;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=2CfDg5Fz86hVEB5Ibq54FaNsAwLvu/rJB6uS0nhLKwU=;
+ b=GxBVqtCeB1FoDgH8q0dlBQDMgbtA19myTxx3fAd1IsnTbU647s2OHWuVqX8x3WYzcu
+ 9uZibjpUAEFGRnI5GUtSjPGKECD9ptAVGLyKWM7CBIaD8+jFJBsOPXI51bEimIicSYF6
+ TKtBTbTK3bsGH9gbcjpJlZba7/+7dfI0kONe6TxHJBKTQHVuINtN4j3NaI5C24TQOqVy
+ nK9w50v9QDt27ldG4IXQYvZhZPhVh2CTkrBoTejYBkyuX9fx8IF8ZBwR3TCY7z3uPS9j
+ toJBnco6cY1I0p9qmfQ3XMO24oIVU6ToyEc/PPpilTNlhPhOiWEzLvnDENua9YLlfNk2
+ lvMw==
+X-Gm-Message-State: ABy/qLbHqp9mc7UavrXHEZFra2QyPbpEaAtKzvxTN7kxvA6Zr+IiZ7Gj
+ POQlfq8wLVn7VjMW18c51WY=
+X-Google-Smtp-Source: APBJJlHe3F947KyGOVrrlGYv8dDzZ34/SxMgNy2gvDKOYf+1iMYd5vG3g8kojHnC2tFFfZuSPn7wsQ==
+X-Received: by 2002:a05:6a00:cd6:b0:67b:2eba:bed4 with SMTP id
+ b22-20020a056a000cd600b0067b2ebabed4mr19679617pfv.14.1688525994355; 
+ Tue, 04 Jul 2023 19:59:54 -0700 (PDT)
+Received: from localhost ([61.68.2.145]) by smtp.gmail.com with ESMTPSA id
+ y10-20020aa7804a000000b00669c99d05fasm16289274pfm.150.2023.07.04.19.59.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 04 Jul 2023 19:30:17 -0700 (PDT)
-Message-ID: <bcb11edc-8b4b-80c1-99e5-504165305d5b@daynix.com>
-Date: Wed, 5 Jul 2023 11:30:15 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: Re: [PATCH v6 5/5] hw/pci: ensure PCIE devices are plugged into only
- slot 0 of PCIE port
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Julia Suvorova <jusual@redhat.com>
-References: <9DDBE75A-C72C-4238-9166-3CBDBEA68188@redhat.com>
- <167eea06-b917-8783-5cd6-8fda56e41331@daynix.com>
- <A50CA177-0E7E-4828-A036-70EB532FE2B8@redhat.com>
- <20230630041937-mutt-send-email-mst@kernel.org>
- <4618EAD1-2862-4288-A881-CA860D04ADB0@redhat.com>
- <20230630043734-mutt-send-email-mst@kernel.org>
- <49B901C6-4819-4A00-8225-39FAA6678F3E@redhat.com>
- <20230630055717-mutt-send-email-mst@kernel.org>
- <FB764864-ADD3-4017-8313-ED40A833A81B@redhat.com>
- <a38e0336-58e5-e796-bd29-0dfc5d1d0e46@daynix.com>
- <20230630112611-mutt-send-email-mst@kernel.org>
- <0879ed66-766c-1d3f-dcce-31e1285a7972@daynix.com>
- <20230704133801.0423b554@imammedo.users.ipa.redhat.com>
- <a6cf6a37-ae26-1725-f564-bc46b2dc892a@daynix.com>
- <7A2291A2-91AD-4AA5-BA39-419C052C45AF@redhat.com>
-Content-Language: en-US
-In-Reply-To: <7A2291A2-91AD-4AA5-BA39-419C052C45AF@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2001:4860:4864:20::36;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oa1-x36.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+ Tue, 04 Jul 2023 19:59:53 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 05 Jul 2023 12:59:48 +1000
+Message-Id: <CTTWIA9IFYYP.24I02IOSLH97T@wheely>
+Cc: <qemu-devel@nongnu.org>, <qemu-ppc@nongnu.org>, "Daniel Henrique
+ Barboza" <danielhb413@gmail.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, "David Gibson" <david@gibson.dropbear.id.au>, "Greg Kurz"
+ <groug@kaod.org>, "Harsh Prateek Bora" <harshpb@linux.ibm.com>, "Richard
+ Henderson" <richard.henderson@linaro.org>
+Subject: Re: [PATCH v3] target/ppc: Make checkstop actually stop the system
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "BALATON Zoltan" <balaton@eik.bme.hu>
+X-Mailer: aerc 0.15.2
+References: <20230703120340.45349-1-npiggin@gmail.com>
+ <68789d6e-5bf8-88d6-2bd5-405339500f44@eik.bme.hu>
+ <CTSK657Y1RRB.3919QR3A490A5@wheely>
+ <93da1b1b-aabc-aba1-0706-16b3513ad0e9@eik.bme.hu>
+In-Reply-To: <93da1b1b-aabc-aba1-0706-16b3513ad0e9@eik.bme.hu>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,139 +96,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/07/04 23:03, Ani Sinha wrote:
-> 
-> 
->> On 04-Jul-2023, at 5:20 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> On 2023/07/04 20:38, Igor Mammedov wrote:
->>> On Sat, 1 Jul 2023 16:28:30 +0900
->>> Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>> On 2023/07/01 0:29, Michael S. Tsirkin wrote:
->>>>> On Fri, Jun 30, 2023 at 08:36:38PM +0900, Akihiko Odaki wrote:
->>>>>> On 2023/06/30 19:37, Ani Sinha wrote:
->>>>>>>
->>>>>>>   
->>>>>>>> On 30-Jun-2023, at 3:30 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
->>>>>>>>
->>>>>>>> On Fri, Jun 30, 2023 at 02:52:52PM +0530, Ani Sinha wrote:
->>>>>>>>>
->>>>>>>>>   
->>>>>>>>>> On 30-Jun-2023, at 2:13 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
->>>>>>>>>>
->>>>>>>>>> On Fri, Jun 30, 2023 at 02:06:59PM +0530, Ani Sinha wrote:
->>>>>>>>>>>
->>>>>>>>>>>   
->>>>>>>>>>>> On 30-Jun-2023, at 2:02 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
->>>>>>>>>>>>
->>>>>>>>>>>> On Fri, Jun 30, 2023 at 01:11:33PM +0530, Ani Sinha wrote:
->>>>>>>>>>>>>>
->>>>>>>>>>>>>> Thus the check for unoccupied function 0 needs to use pci_is_vf() instead of checking ARI capability, and that can happen in do_pci_register_device().
->>>>>>>>>>>>>>   
->>>>>>>>>>>>>>> Also where do you propose we move the check?
->>>>>>>>>>>>>>
->>>>>>>>>>>>>> In pci_qdev_realize(), somewhere after pc->realize() and before option ROM loading.
->>>>>>>>>>>>>
->>>>>>>>>>>>> Hmm, I tried this. The issue here is something like this would be now allowed since the PF has ARI capability:
->>>>>>>>>>>>>
->>>>>>>>>>>>> -device pcie-root-port,id=p -device igb,bus=p,addr=0x2.0x0
->>>>>>>>>>>>>
->>>>>>>>>>>>> The above should not be allowed and when used, we do not see the igb ethernet device from the guest OS.
->>>>>>>>>>>>
->>>>>>>>>>>> I think it's allowed because it expects you to hotplug function 0 later,
->>>>>>>>>>>
->>>>>>>>>>> This is about the igb device being plugged into the non-zero slot of the pci-root-port. The guest OS ignores it.
->>>>>>>>>>
->>>>>>>>>> yes but if you later add a device with ARI and with next field pointing
->>>>>>>>>> slot 2 guest will suddently find both.
->>>>>>>>>
->>>>>>>>> Hmm, I tried this:
->>>>>>>>>
->>>>>>>>> -device pcie-root-port,id=p \
->>>>>>>>> -device igb,bus=p,addr=0x2.0x0 \
->>>>>>>>> -device igb,bus=p,addr=0x0.0x0 \
->>>>>>>>>
->>>>>>>>> The guest only found the second igb device not the first. You can try too.
->>>>>>>>
->>>>>>>> Because next parameter in pcie_ari_init does not match.
->>>>>>>
->>>>>>> OK send me a command line that I can test it with. I can’t come up with a case that actually works in practice.
->>>>>>
->>>>>> I don't think there is one because the code for PCI multifunction does not
->>>>>> care ARI. In my opinion, we need yet another check to make non-SR-IOV
->>>>>> multifunction and ARI capability mutually exclusive; if a function has the
->>>>>> ARI capability and it is not a VF, an attempt to assign non-zero function
->>>>>> number for it should fail.
->>> is it stated somewhere in spec(s) that ARI and !SR-IOV are mutually exclusive?
->>>>>
->>>>> Why is that? My understanding is that ARI capable devices should also
->>>>> set the multifunction bit in the header. It's not terribly clear from
->>>>> the spec though.
->>>>
->>>> Something like the following will not work properly with ARI-capable
->>>> device (think of a as an ARI-capable device):
->>>> -device a,addr=0x1.0x0,multifunction=on -device a,addr=0x1.0x1
->>> (I had a crazy idea, to use it like that so we could put more devices
->>> on port without resorting to adding extra bridges)
->>> Can you elaborate some more why it won't work?
->>
->> It won't work because the ARI next function number field is fixed. In this case, the field of the Function at 0x1.0x0 should point to 0x1.0x1, but it doesn’t.
-> 
-> Where does it point to in this case then? 0x1.0x2 becasue of the stride?
+On Tue Jul 4, 2023 at 1:06 AM AEST, BALATON Zoltan wrote:
+> On Mon, 3 Jul 2023, Nicholas Piggin wrote:
+> > On Mon Jul 3, 2023 at 10:26 PM AEST, BALATON Zoltan wrote:
+> >> On Mon, 3 Jul 2023, Nicholas Piggin wrote:
+> >>> checkstop state does not halt the system, interrupts continue to be
+> >>> serviced, and other CPUs run. Stop the machine with
+> >>> qemu_system_guest_panicked.
+> >>>
+> >>> Change the logging not to print separately to stderr because a
+> >>> checkstop is a guest error (or perhaps a simulated machine error)
+> >>> rather than a QEMU error. CPU registers are dumped.
+> >>>
+> >>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> >>>
+> >>> Since v1:
+> >>> - Fix loop exit so it stops on the checkstop-causing instruction, rat=
+her than
+> >>>  after it.
+> >>>
+> >>> Since v2:
+> >>> - Rebase on ppc-next.
+> >>
+> >> Is this really based on ppc-next or on my series or another patch from
+> >> you? I think the patch from my series that introduces the checksrop
+> >> function that this patch is changing is not yet in ppc-next so this ma=
+y
+> >> not apply there.
+> >
+> > It is based on ppc-next unless I've done something silly. Is this
+> > the patch you were talking about?
+> >
+> > https://gitlab.com/danielhb/qemu/-/commit/26d089ac20080066061ed61fb58a5=
+411e275e191
+> >
+> >> I think you've posted an alternative to the patch moving
+> >> checkstop handling to a function and the sc patch which may clash with=
+ the
+> >> not yet merged parts in my series but i could not follow all these
+> >> patches. I'm not sure Daniel could so maybe you could send it as a ser=
+ies
+> >> to include all patches you want to add or state what it's based on.
+> >
+> > Things are getting a little confusing, but I think what Daniel has
+> > is okay. Were were talking about changing checkstop with my patch,
+> > but no big deal to take yours first, I've reworked things.
+>
+> Sorry my bad. Yes it's getting confusing to me and missed that Daniel=20
+> already merged that patch on ppc-next, I thought it was one of the patche=
+s=20
+> not yet merged. So this can go on top then.
+>
+> There was another change for fixing sc that may clash that I'm not sure=
+=20
+> if I need to do anything about.
 
-With "[PATCH v5 0/2] pcie: Fix ARI next function numbers"*, it will 
-point to 0, which ends the linked list formed with the ARI next number 
-fields and make it only contain Function 0.
+The sc patches still had the problem of changing the syscall dump to
+the instruction after syscall IIRC. So that would need to be fixed.
+But that does make me a bit less happy about them too... Anyway
+resend with fix and rebase if you want  them.
 
-* 
-https://lore.kernel.org/qemu-devel/20230705022421.13115-1-akihiko.odaki@daynix.com/
-
-> 
->> As the result, the Function at 0x1.0x1 won't be recognized.
->>
->> It's more problematic if some of the Functions are ARI-capable but others are not. In my understanding, all Functions in a ARI-capable device need to have ARI capability, but that's not enforced.
->>
->>>> This is because the next function numbers advertised with ARI are not
->>>> updated with the multifunction configuration, but they are hardcoded in
->>>> the device implementation. In this sense, the traditional (non-SR/IOV)
->>>> multifunction mechanism QEMU has will not work with ARI-capable devices.
->>>>
->>>>>    
->>>>>> But it should be a distinct check as it will need to check the function
->>>>>> number bits.
->>>>>>   
->>>>>>>   
->>>>>>>>
->>>>>>>>   
->>>>>>>>>>   
->>>>>>>>>>>> no?
->>>>>>>>>>>>
->>>>>>>>>>>> I am quite worried about all this work going into blocking
->>>>>>>>>>>> what we think is disallowed configurations. We should have
->>>>>>>>>>>> maybe blocked them originally, but now that we didn't
->>>>>>>>>>>> there's a non zero chance of regressions,
->>>>>>>>>>>
->>>>>>>>>>> Sigh,
->>>>>>>>>>
->>>>>>>>>> There's value in patches 1-4 I think - the last patch helped you find
->>>>>>>>>> these. so there's value in this work.
->>>>>>>>>>   
->>>>>>>>>>> no medals here for being brave :-)
->>>>>>>>>>
->>>>>>>>>> Try removing support for a 3.5mm jack next. Oh wait ...
->>>>>>>>>
->>>>>>>>> Indeed. Everyone uses bluetooth these days. I for one is happy that the jack is gone (and they were bold enough to do it while Samsung and others still carry the useless port ) :-)
->>>>>>
->>>>>> Hello from a guy using a shiny M2 Macbook Air carrying the legacy jack with
->>>>>> a 100-yen earphone. Even people who ported Linux to this machine spent
->>>>>> efforts to get the jack to work on Linux ;)
->>>>>>   
->>>>>>>>>   
->>>>>>>>>>   
->>>>>>>>>>>> and the benefit
->>>>>>>>>>>> is not guaranteed.
->>>>>>>>>>>>
->>>>>>>>>>>> -- 
->>>>>>>>>>>> MST
-> 
+Thanks,
+Nick
 
