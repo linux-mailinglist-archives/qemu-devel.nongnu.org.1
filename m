@@ -2,90 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F73748952
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 18:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 289F674897F
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 18:52:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH5UR-0003kM-Bv; Wed, 05 Jul 2023 12:36:27 -0400
+	id 1qH5iU-00021N-JP; Wed, 05 Jul 2023 12:50:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_tsoni@quicinc.com>)
- id 1qH5UO-0003d5-TM
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:36:24 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_tsoni@quicinc.com>)
- id 1qH5UM-0003ug-PL
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:36:24 -0400
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 365AxQsS027164; Wed, 5 Jul 2023 16:35:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=1LkpsqZt0ahDlMcRJ/hQzznlhXlQT9KyKKQXVy+VVwA=;
- b=j0BV13rcXKoF92RwQihBfFAEeHa7RdeD7UM8ElWHHD6KpLXTEGlbdnRg7HKikvcW6XFh
- ifcYgx4HDFOEEhS4SIw5NicnRH7ATXQk74/nkMt3rpiM7SFw7/PELq+INyhfrWnKEHWv
- tX9lCzdrs2NbCDqKvIrs+5fMMhs0eg0lVzTokNPphYFya6yH7odZH0VSC7WRjJ8uUoyW
- o+tJqwm6MNKlRNrg2SNhVgStap8UBFZ/zozvF7H0cU1Po64+itFEYRQc1VIhzhhKXf2a
- ukUXlZT+89ZT16FD6FA/I8JLL+lXy4j5YPpySdMWHAv6Ng/TewnkuUaIU+ir7mAoNJIS Ig== 
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com
- [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rn2w59crs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 05 Jul 2023 16:35:16 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com
- [10.52.223.231])
- by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 365GZF4X011338
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 5 Jul 2023 16:35:15 GMT
-Received: from [10.110.49.233] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 5 Jul
- 2023 09:35:15 -0700
-Message-ID: <d2976893-5079-aade-0b9b-8135aa1ef44a@quicinc.com>
-Date: Wed, 5 Jul 2023 09:35:14 -0700
+ (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
+ id 1qH5iG-00020I-Vn
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:50:50 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jupham125@gmail.com>)
+ id 1qH5iE-0006cN-OL
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:50:44 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2b69923a715so107818701fa.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 09:50:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688575840; x=1691167840;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=bE9yrATJHPUCt1jUjZIqILQnXk4UyK7yZkcv1ebfyTk=;
+ b=M16P+w7a/yWdVz0eiYH3wGp3xCISTjHwovI9GFORA6DdCtAdmDt3aULq5Qpp//jcYE
+ Qv3zdGymS2FWt8O+dSTIuihiOHZIjEXzsq6yCJiHgtQog4TOLpZlx5PO0EqKNipw4Zec
+ FEwU7E+HWQT/kTDfPFjmsqzzCXdDNpKsXgtDDT7XfeTkBvI3wRuuVkMR7IIqGIvxJjW+
+ UauV6QL8kEAWdifBMM0Pii8KOSAijbirEXk9UIlAdXz60hUR0JIzv/PmV6BMPyB3NDL3
+ 3ZPHxAX2LDUozERbBIc01eWnXUdIRqf9MA0lc90RmgqCAI/ewk93FoVjtForAwzQoZAN
+ G31g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688575840; x=1691167840;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bE9yrATJHPUCt1jUjZIqILQnXk4UyK7yZkcv1ebfyTk=;
+ b=Aydjr5xsg0p6Htojz2gp7SCyxLMc4RS97acyiWF5YbyUxj4GgU5wiL33UgYNCVp70h
+ 35/v0u5BETZIh7UDLqKAlISFQ7S1enb4dM6d/ov/zUnSqEvOnnPVgVMXN0hWMuef3RE4
+ YPXci/HxVr2NKLcY4N5okgwIks+eSninphtvCLXeyavr1ruqN8r4EeG9G7YrVV5PoUlm
+ N1/KcUpfd4/mrxFgf0QgxPnwNRgQDeBk1NRDE5iFFCiBlMkZI6ePWqbkPAaWChFs89pO
+ emOx40kTLynMJm1/7HPf34Wz/iAVa72sqUw0NAGB/gMnMoxZcHxJ6Yux5whHCugD2Jfd
+ hA6w==
+X-Gm-Message-State: ABy/qLbvSQXcSWXSvaginjZEt6HWYKOOZfhGGExSbNZfFgV2v1iCqJiI
+ nObK/8V1QViEHLMphiFc47yxjblq30D408fbWfg=
+X-Google-Smtp-Source: APBJJlG34RyjPrEg1Qz4TqqelRnq6gV0nra3CNF/SVQJTZMTN3DYutB51yQByBKAwEkjVlHTBzWO0q1gpC3iPM6YSHM=
+X-Received: by 2002:a2e:8502:0:b0:2b6:a65f:7294 with SMTP id
+ j2-20020a2e8502000000b002b6a65f7294mr13031666lji.50.1688575839850; Wed, 05
+ Jul 2023 09:50:39 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2] virtio: add a new vcpu watchdog
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, zhanghao1
- <zhanghao1@kylinos.cn>
-CC: <pbonzini@redhat.com>, <berrange@redhat.com>, <qemu-devel@nongnu.org>
-References: <20230705081813.411526-1-zhanghao1@kylinos.cn>
- <87fs62fp7f.fsf@linaro.org>
-From: Trilok Soni <quic_tsoni@quicinc.com>
-In-Reply-To: <87fs62fp7f.fsf@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: nrGYaYwMLBlZiQUtAluHweW9DCiF7ecs
-X-Proofpoint-GUID: nrGYaYwMLBlZiQUtAluHweW9DCiF7ecs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-05_08,2023-07-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- malwarescore=0 bulkscore=0 impostorscore=0 phishscore=0 adultscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1011 spamscore=0
- suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307050149
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_tsoni@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -28
-X-Spam_score: -2.9
-X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <cover.1687278381.git.jupham125@gmail.com>
+ <38A3023A-6FAC-4155-BD7F-1C1DB16450EE@gmail.com>
+In-Reply-To: <38A3023A-6FAC-4155-BD7F-1C1DB16450EE@gmail.com>
+From: Joel Upham <jupham125@gmail.com>
+Date: Wed, 5 Jul 2023 12:50:28 -0400
+Message-ID: <CADPhr0m6XuvZZuCtsXSgex3-FwR+cZ+6113VY+RJ3WfGuaqWDQ@mail.gmail.com>
+Subject: Re: [PATCH v1 00/23] Q35 support for Xen
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000001c559505ffc0338a"
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=jupham125@gmail.com; helo=mail-lj1-x235.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,46 +86,293 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/5/2023 6:42 AM, Alex Bennée wrote:
-> 
-> zhanghao1 <zhanghao1@kylinos.cn> writes:
-> 
->> Each vcpu creates a corresponding timer task. The watchdog
->> is driven by a timer according to a certain period. Each time
->> the timer expires, the counter is decremented. When the counter
->> is "0", the watchdog considers the vcpu to be stalling and resets
->> the VM. To avoid watchdog expiration, the guest kernel driver
->> needs to periodically send a pet event to update the counter.
->>
->> Signed-off-by: zhanghao1 <zhanghao1@kylinos.cn>
->> ---
->> v2:
->>   - change the function name and remove the redundant word 'stall'
->>   - add trace-events to replace DPRINTF and qemu_log
->>   - call 'watchdog_perform_action()' to reset vm
->>   - update g_new0 to replace malloc
->>   - update only use '.generic_name'
->>   - update the bool variable 'is_initialized' to uint32_t
->>
->> v1: https://lore.kernel.org/qemu-devel/20230615061302.301754-1-zhanghao1@kylinos.cn/
-> <snip>
->> +static void virtio_vcpu_watchdog_device_realize(DeviceState *dev, Error **errp)
->> +{
->> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
->> +    vwdt = VIRTIO_VCPU_WATCHDOG(dev);
->> +
->> +    virtio_init(vdev, VIRTIO_ID_WATCHDOG, 0);
-> 
-> This will never compile because VIRTIO_ID_WATCHDOG isn't defined
-> anywhere.
-> 
-> Next time you post you need to also include a link to the kernel side of
-> the driver and the virtio specification (or inflight patch for it).
+--0000000000001c559505ffc0338a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+I believe it might have been master unstable branch. Last commit before my
+patches was:
 
-Is this similar to vcpu stall based watchdog driver submitted and merged 
-in kernel.org (by Google) sometime back?
+commit 19a720b74fde7e859d19f12c66a72e545947a657
+Merge: c6a5fc2ac7 367189efae
+Author: Richard Henderson <richard.henderson@linaro.org>
+Date:   Thu Jun 1 08:30:29 2023 -0700
 
----Trilok Soni
+-Joel
 
+On Thu, Jun 22, 2023 at 1:11=E2=80=AFPM Bernhard Beschow <shentey@gmail.com=
+> wrote:
+
+>
+>
+> Am 20. Juni 2023 17:24:33 UTC schrieb Joel Upham <jupham125@gmail.com>:
+> >These are the Qemu changes needed to support the q35 chipset for xen
+> >I based the patches from 2017 found on the mailing list here:
+> >
+> https://lists.xenproject.org/archives/html/xen-devel/2018-03/msg01176.htm=
+l
+> >
+> >I have been using a version of these patches on Xen 4.16 with Qemu
+> >version 4.1 for over 6 months.  The guest VMs are very stable, and PCIe
+> >PT is working as was designed (all of the PCIe devices are on the root
+> >PCIe device).  I have successfully passed through GPUs, NICs, etc. I was
+> >asked by those in the community to attempt to once again upstream the
+> >patches.  I have them working with Seabios and OVMF (patches are needed
+> >to OVMF which I will be sending to the mailing list). The Qemu patches
+> >allow for the xenvbd to properly unplug the AHCI SATA device, and all
+> >xen pv windows drivers work as intended.
+> >
+> >I used the original author of the patches to get a majority of this to
+> work:
+> >Alexey Gerasimenko.  I fixed the patches to be in line with the upstream
+> >Qemu and Xen versions.  Any original issues may still exist; however, I
+> >am sure in time they can be improved. If the code doesn't exist then the=
+y
+> >can't be actively looked at by the community.
+> >
+> >I am not an expert on the Q35 chipset or PCIe technology.  This is my
+> >first patch to this mailing list.
+>
+> Patchew was unable to apply this series onto master:
+> https://patchew.org/QEMU/cover.1687278381.git.jupham125@gmail.com/ What
+> revision is the series based on?
+>
+> Can you rebase? Rebasing this series will probably cause quite some work
+> since it will simplify here and there, as indicated by Igor and by my
+> comments in "version zero" of this series.
+>
+> Best regards,
+> Bernhard
+>
+> >
+> >
+> >Joel Upham (23):
+> >  pc/xen: Xen Q35 support: provide IRQ handling for PCI devices
+> >  pc/q35: Apply PCI bus BSEL property for Xen PCI device hotplug
+> >  q35/acpi/xen: Provide ACPI PCI hotplug interface for Xen on Q35
+> >  q35/xen: Add Xen platform device support for Q35
+> >  q35: Fix incorrect values for PCIEXBAR masks
+> >  xen/pt: XenHostPCIDevice: provide functions for PCI Capabilities and
+> >    PCIe Extended Capabilities enumeration
+> >  xen/pt: avoid reading PCIe device type and cap version multiple times
+> >  xen/pt: determine the legacy/PCIe mode for a passed through device
+> >  xen/pt: Xen PCIe passthrough support for Q35: bypass PCIe topology
+> >    check
+> >  xen/pt: add support for PCIe Extended Capabilities and larger config
+> >    space
+> >  xen/pt: handle PCIe Extended Capabilities Next register
+> >  xen/pt: allow to hide PCIe Extended Capabilities
+> >  xen/pt: add Vendor-specific PCIe Extended Capability descriptor and
+> >    sizing
+> >  xen/pt: add fixed-size PCIe Extended Capabilities descriptors
+> >  xen/pt: add AER PCIe Extended Capability descriptor and sizing
+> >  xen/pt: add descriptors and size calculation for
+> >    RCLD/ACS/PMUX/DPA/MCAST/TPH/DPC PCIe Extended Capabilities
+> >  xen/pt: add Resizable BAR PCIe Extended Capability descriptor and
+> >    sizing
+> >  xen/pt: add VC/VC9/MFVC PCIe Extended Capabilities descriptors and
+> >    sizing
+> >  xen/pt: Fake capability id
+> >  xen platform: unplug ahci object
+> >  pc/q35: setup q35 for xen
+> >  qdev-monitor/pt: bypass root device check
+> >  s3 support: enabling s3 with q35
+> >
+> > hw/acpi/ich9.c                |   22 +-
+> > hw/acpi/pcihp.c               |    6 +-
+> > hw/core/machine.c             |   19 +
+> > hw/i386/pc_piix.c             |    3 +-
+> > hw/i386/pc_q35.c              |   39 +-
+> > hw/i386/xen/xen-hvm.c         |    7 +-
+> > hw/i386/xen/xen_platform.c    |   19 +-
+> > hw/isa/lpc_ich9.c             |   53 +-
+> > hw/isa/piix3.c                |    2 +-
+> > hw/pci-host/q35.c             |   28 +-
+> > hw/pci/pci.c                  |   17 +
+> > hw/xen/xen-host-pci-device.c  |  106 +++-
+> > hw/xen/xen-host-pci-device.h  |    6 +-
+> > hw/xen/xen_pt.c               |   49 +-
+> > hw/xen/xen_pt.h               |   18 +-
+> > hw/xen/xen_pt_config_init.c   | 1103 ++++++++++++++++++++++++++++++---
+> > include/hw/acpi/pcihp.h       |    2 +
+> > include/hw/boards.h           |    1 +
+> > include/hw/i386/pc.h          |    3 +
+> > include/hw/pci-host/q35.h     |    4 +-
+> > include/hw/pci/pci.h          |    3 +
+> > include/hw/southbridge/ich9.h |    1 +
+> > include/hw/xen/xen.h          |    4 +-
+> > qemu-options.hx               |    1 +
+> > softmmu/qdev-monitor.c        |    4 +-
+> > stubs/xen-hw-stub.c           |    4 +-
+> > 26 files changed, 1394 insertions(+), 130 deletions(-)
+> >
+>
+
+--0000000000001c559505ffc0338a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">I believe it might have been master unstable branch. Last =
+commit before my patches was:<br><br>commit 19a720b74fde7e859d19f12c66a72e5=
+45947a657<br>Merge: c6a5fc2ac7 367189efae<br>Author: Richard Henderson &lt;=
+<a href=3D"mailto:richard.henderson@linaro.org">richard.henderson@linaro.or=
+g</a>&gt;<br><div>Date: =C2=A0 Thu Jun 1 08:30:29 2023 -0700</div><div><br>=
+</div><div>-Joel<br></div></div><br><div class=3D"gmail_quote"><div dir=3D"=
+ltr" class=3D"gmail_attr">On Thu, Jun 22, 2023 at 1:11=E2=80=AFPM Bernhard =
+Beschow &lt;<a href=3D"mailto:shentey@gmail.com">shentey@gmail.com</a>&gt; =
+wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
+px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><br>
+<br>
+Am 20. Juni 2023 17:24:33 UTC schrieb Joel Upham &lt;<a href=3D"mailto:juph=
+am125@gmail.com" target=3D"_blank">jupham125@gmail.com</a>&gt;:<br>
+&gt;These are the Qemu changes needed to support the q35 chipset for xen<br=
+>
+&gt;I based the patches from 2017 found on the mailing list here:<br>
+&gt;<a href=3D"https://lists.xenproject.org/archives/html/xen-devel/2018-03=
+/msg01176.html" rel=3D"noreferrer" target=3D"_blank">https://lists.xenproje=
+ct.org/archives/html/xen-devel/2018-03/msg01176.html</a><br>
+&gt;<br>
+&gt;I have been using a version of these patches on Xen 4.16 with Qemu<br>
+&gt;version 4.1 for over 6 months.=C2=A0 The guest VMs are very stable, and=
+ PCIe<br>
+&gt;PT is working as was designed (all of the PCIe devices are on the root<=
+br>
+&gt;PCIe device).=C2=A0 I have successfully passed through GPUs, NICs, etc.=
+ I was<br>
+&gt;asked by those in the community to attempt to once again upstream the<b=
+r>
+&gt;patches.=C2=A0 I have them working with Seabios and OVMF (patches are n=
+eeded<br>
+&gt;to OVMF which I will be sending to the mailing list). The Qemu patches =
+<br>
+&gt;allow for the xenvbd to properly unplug the AHCI SATA device, and all <=
+br>
+&gt;xen pv windows drivers work as intended.<br>
+&gt;<br>
+&gt;I used the original author of the patches to get a majority of this to =
+work:<br>
+&gt;Alexey Gerasimenko.=C2=A0 I fixed the patches to be in line with the up=
+stream<br>
+&gt;Qemu and Xen versions.=C2=A0 Any original issues may still exist; howev=
+er, I<br>
+&gt;am sure in time they can be improved. If the code doesn&#39;t exist the=
+n they<br>
+&gt;can&#39;t be actively looked at by the community.<br>
+&gt;<br>
+&gt;I am not an expert on the Q35 chipset or PCIe technology.=C2=A0 This is=
+ my<br>
+&gt;first patch to this mailing list.<br>
+<br>
+Patchew was unable to apply this series onto master: <a href=3D"https://pat=
+chew.org/QEMU/cover.1687278381.git.jupham125@gmail.com/" rel=3D"noreferrer"=
+ target=3D"_blank">https://patchew.org/QEMU/cover.1687278381.git.jupham125@=
+gmail.com/</a> What revision is the series based on?<br>
+<br>
+Can you rebase? Rebasing this series will probably cause quite some work si=
+nce it will simplify here and there, as indicated by Igor and by my comment=
+s in &quot;version zero&quot; of this series.<br>
+<br>
+Best regards,<br>
+Bernhard<br>
+<br>
+&gt;<br>
+&gt;<br>
+&gt;Joel Upham (23):<br>
+&gt;=C2=A0 pc/xen: Xen Q35 support: provide IRQ handling for PCI devices<br=
+>
+&gt;=C2=A0 pc/q35: Apply PCI bus BSEL property for Xen PCI device hotplug<b=
+r>
+&gt;=C2=A0 q35/acpi/xen: Provide ACPI PCI hotplug interface for Xen on Q35<=
+br>
+&gt;=C2=A0 q35/xen: Add Xen platform device support for Q35<br>
+&gt;=C2=A0 q35: Fix incorrect values for PCIEXBAR masks<br>
+&gt;=C2=A0 xen/pt: XenHostPCIDevice: provide functions for PCI Capabilities=
+ and<br>
+&gt;=C2=A0 =C2=A0 PCIe Extended Capabilities enumeration<br>
+&gt;=C2=A0 xen/pt: avoid reading PCIe device type and cap version multiple =
+times<br>
+&gt;=C2=A0 xen/pt: determine the legacy/PCIe mode for a passed through devi=
+ce<br>
+&gt;=C2=A0 xen/pt: Xen PCIe passthrough support for Q35: bypass PCIe topolo=
+gy<br>
+&gt;=C2=A0 =C2=A0 check<br>
+&gt;=C2=A0 xen/pt: add support for PCIe Extended Capabilities and larger co=
+nfig<br>
+&gt;=C2=A0 =C2=A0 space<br>
+&gt;=C2=A0 xen/pt: handle PCIe Extended Capabilities Next register<br>
+&gt;=C2=A0 xen/pt: allow to hide PCIe Extended Capabilities<br>
+&gt;=C2=A0 xen/pt: add Vendor-specific PCIe Extended Capability descriptor =
+and<br>
+&gt;=C2=A0 =C2=A0 sizing<br>
+&gt;=C2=A0 xen/pt: add fixed-size PCIe Extended Capabilities descriptors<br=
+>
+&gt;=C2=A0 xen/pt: add AER PCIe Extended Capability descriptor and sizing<b=
+r>
+&gt;=C2=A0 xen/pt: add descriptors and size calculation for<br>
+&gt;=C2=A0 =C2=A0 RCLD/ACS/PMUX/DPA/MCAST/TPH/DPC PCIe Extended Capabilitie=
+s<br>
+&gt;=C2=A0 xen/pt: add Resizable BAR PCIe Extended Capability descriptor an=
+d<br>
+&gt;=C2=A0 =C2=A0 sizing<br>
+&gt;=C2=A0 xen/pt: add VC/VC9/MFVC PCIe Extended Capabilities descriptors a=
+nd<br>
+&gt;=C2=A0 =C2=A0 sizing<br>
+&gt;=C2=A0 xen/pt: Fake capability id<br>
+&gt;=C2=A0 xen platform: unplug ahci object<br>
+&gt;=C2=A0 pc/q35: setup q35 for xen<br>
+&gt;=C2=A0 qdev-monitor/pt: bypass root device check<br>
+&gt;=C2=A0 s3 support: enabling s3 with q35<br>
+&gt;<br>
+&gt; hw/acpi/ich9.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+|=C2=A0 =C2=A022 +-<br>
+&gt; hw/acpi/pcihp.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+|=C2=A0 =C2=A0 6 +-<br>
+&gt; hw/core/machine.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=
+=A0 =C2=A019 +<br>
+&gt; hw/i386/pc_piix.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=
+=A0 =C2=A0 3 +-<br>
+&gt; hw/i386/pc_q35.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=
+=A0 =C2=A039 +-<br>
+&gt; hw/i386/xen/xen-hvm.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 =
+7 +-<br>
+&gt; hw/i386/xen/xen_platform.c=C2=A0 =C2=A0 |=C2=A0 =C2=A019 +-<br>
+&gt; hw/isa/lpc_ich9.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=
+=A0 =C2=A053 +-<br>
+&gt; hw/isa/piix3.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+|=C2=A0 =C2=A0 2 +-<br>
+&gt; hw/pci-host/q35.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=
+=A0 =C2=A028 +-<br>
+&gt; hw/pci/pci.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 |=C2=A0 =C2=A017 +<br>
+&gt; hw/xen/xen-host-pci-device.c=C2=A0 |=C2=A0 106 +++-<br>
+&gt; hw/xen/xen-host-pci-device.h=C2=A0 |=C2=A0 =C2=A0 6 +-<br>
+&gt; hw/xen/xen_pt.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+|=C2=A0 =C2=A049 +-<br>
+&gt; hw/xen/xen_pt.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+|=C2=A0 =C2=A018 +-<br>
+&gt; hw/xen/xen_pt_config_init.c=C2=A0 =C2=A0| 1103 +++++++++++++++++++++++=
++++++++---<br>
+&gt; include/hw/acpi/pcihp.h=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 2 +<b=
+r>
+&gt; include/hw/boards.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =
+=C2=A0 1 +<br>
+&gt; include/hw/i386/pc.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =
+3 +<br>
+&gt; include/hw/pci-host/q35.h=C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 4 +-<br>
+&gt; include/hw/pci/pci.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =
+3 +<br>
+&gt; include/hw/southbridge/ich9.h |=C2=A0 =C2=A0 1 +<br>
+&gt; include/hw/xen/xen.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =
+4 +-<br>
+&gt; qemu-options.hx=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+|=C2=A0 =C2=A0 1 +<br>
+&gt; softmmu/qdev-monitor.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 4 +-<=
+br>
+&gt; stubs/xen-hw-stub.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =
+=C2=A0 4 +-<br>
+&gt; 26 files changed, 1394 insertions(+), 130 deletions(-)<br>
+&gt;<br>
+</blockquote></div>
+
+--0000000000001c559505ffc0338a--
 
