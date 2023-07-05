@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC58074894F
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 18:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F73748952
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 18:36:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH5TO-0001e3-Qk; Wed, 05 Jul 2023 12:35:22 -0400
+	id 1qH5UR-0003kM-Bv; Wed, 05 Jul 2023 12:36:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qH5TH-0001ZZ-Im
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:35:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <quic_tsoni@quicinc.com>)
+ id 1qH5UO-0003d5-TM
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:36:24 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qH5TF-0003cO-O1
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:35:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688574913;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2wMxl19wPT6NOIYdfEthE3CTENPdu0RlUwoU249Hq90=;
- b=X4UuWnyiggDHXh60JSm/yrW4V/4pBzWV//Wy/ruOn48XkjHlSputnW4my7wm6Ahm6pOcLJ
- MFBd/Cexhr0pEYiEKt9c+3AFlxYCvFZSVsgzGbPIBuAVpgLBV3b7a3oLksbG55K5akO0cp
- uUudXavj+FVQMK68r+I/fUPKA+ucwxI=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-302-r4bhcU94OHeNE4c0ajZSbw-1; Wed, 05 Jul 2023 12:35:11 -0400
-X-MC-Unique: r4bhcU94OHeNE4c0ajZSbw-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-74faf5008bbso128206085a.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 09:35:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688574911; x=1691166911;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2wMxl19wPT6NOIYdfEthE3CTENPdu0RlUwoU249Hq90=;
- b=PYPEiRwbXj2E1vJCRQz5gstRzGDbUL6lQ72sYRQj3TYwNNnKsLSa2grw9jYkWEHli+
- a9MrXfGCV6OvtKPV28nSmUMrQg3n8kZiBMT6SSJv5ACkdZ6Pjn0flS5aW3ZdCdc2bBhY
- R3wC6/4dtgoay0XBSy8VH+epAsOIZoczl6u8D8EXOS+bT5ysUVr31NKDwenrFJAgmAlz
- to78PXuDuXCTMEQp62jaF0+v6ECegdmw6hNOvqB8bH/HqQDnd9UqpLMeRQjqjL479JUt
- WD93vjM6LcDOoswgTx+93ltBlAUoAVqhRk8iPzWRzQNNjxX4gPOosRFcestLVZ9quvrW
- k9kQ==
-X-Gm-Message-State: AC+VfDz0DGlkqGKWa4EozfNzv/79NPKwn+U209LVjk3bOIqIhTYliPss
- 3j6Gyrh65p/z/Vm3eFGSvpqwjF3GQp1GGfK2agmzzih0V0D8Eb4cwo+KUtNtXApYI2aGv+OO5Lk
- pfFCuAw1tksj9mpDz2LqbJTFPFObpL2W6CrRUWismLJlu/m6puiIW8iZzs1W5FcD6Id10sd4S
-X-Received: by 2002:a05:620a:1a8c:b0:767:3ea3:2ac8 with SMTP id
- bl12-20020a05620a1a8c00b007673ea32ac8mr20660582qkb.1.1688574911160; 
- Wed, 05 Jul 2023 09:35:11 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5IFKvxhJeiheKhdmzEftt9xaEk1O0M9sytH+EQvg72sRgoXzLimEQF06RaJH+2BxA6KemY/w==
-X-Received: by 2002:a05:620a:1a8c:b0:767:3ea3:2ac8 with SMTP id
- bl12-20020a05620a1a8c00b007673ea32ac8mr20660551qkb.1.1688574910762; 
- Wed, 05 Jul 2023 09:35:10 -0700 (PDT)
-Received: from x1n.redhat.com
- (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
- by smtp.gmail.com with ESMTPSA id
- x19-20020a05620a12b300b007620b03ee65sm6760094qki.37.2023.07.05.09.35.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jul 2023 09:35:10 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Juan Quintela <quintela@redhat.com>,
- Lukas Straub <lukasstraub2@web.de>, Laszlo Ersek <lersek@redhat.com>,
- peterx@redhat.com
-Subject: [PATCH v2 7/7] migration: Provide explicit error message for file
- shutdowns
-Date: Wed,  5 Jul 2023 12:35:02 -0400
-Message-ID: <20230705163502.331007-8-peterx@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230705163502.331007-1-peterx@redhat.com>
-References: <20230705163502.331007-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <quic_tsoni@quicinc.com>)
+ id 1qH5UM-0003ug-PL
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:36:24 -0400
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 365AxQsS027164; Wed, 5 Jul 2023 16:35:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=1LkpsqZt0ahDlMcRJ/hQzznlhXlQT9KyKKQXVy+VVwA=;
+ b=j0BV13rcXKoF92RwQihBfFAEeHa7RdeD7UM8ElWHHD6KpLXTEGlbdnRg7HKikvcW6XFh
+ ifcYgx4HDFOEEhS4SIw5NicnRH7ATXQk74/nkMt3rpiM7SFw7/PELq+INyhfrWnKEHWv
+ tX9lCzdrs2NbCDqKvIrs+5fMMhs0eg0lVzTokNPphYFya6yH7odZH0VSC7WRjJ8uUoyW
+ o+tJqwm6MNKlRNrg2SNhVgStap8UBFZ/zozvF7H0cU1Po64+itFEYRQc1VIhzhhKXf2a
+ ukUXlZT+89ZT16FD6FA/I8JLL+lXy4j5YPpySdMWHAv6Ng/TewnkuUaIU+ir7mAoNJIS Ig== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rn2w59crs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 05 Jul 2023 16:35:16 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com
+ [10.52.223.231])
+ by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 365GZF4X011338
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 5 Jul 2023 16:35:15 GMT
+Received: from [10.110.49.233] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.30; Wed, 5 Jul
+ 2023 09:35:15 -0700
+Message-ID: <d2976893-5079-aade-0b9b-8135aa1ef44a@quicinc.com>
+Date: Wed, 5 Jul 2023 09:35:14 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2] virtio: add a new vcpu watchdog
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, zhanghao1
+ <zhanghao1@kylinos.cn>
+CC: <pbonzini@redhat.com>, <berrange@redhat.com>, <qemu-devel@nongnu.org>
+References: <20230705081813.411526-1-zhanghao1@kylinos.cn>
+ <87fs62fp7f.fsf@linaro.org>
+From: Trilok Soni <quic_tsoni@quicinc.com>
+In-Reply-To: <87fs62fp7f.fsf@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: nrGYaYwMLBlZiQUtAluHweW9DCiF7ecs
+X-Proofpoint-GUID: nrGYaYwMLBlZiQUtAluHweW9DCiF7ecs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-05_08,2023-07-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ malwarescore=0 bulkscore=0 impostorscore=0 phishscore=0 adultscore=0
+ lowpriorityscore=0 priorityscore=1501 clxscore=1011 spamscore=0
+ suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307050149
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_tsoni@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,42 +102,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Provide an explicit reason for qemu_file_shutdown()s, which can be
-displayed in query-migrate when used.
+On 7/5/2023 6:42 AM, Alex Bennée wrote:
+> 
+> zhanghao1 <zhanghao1@kylinos.cn> writes:
+> 
+>> Each vcpu creates a corresponding timer task. The watchdog
+>> is driven by a timer according to a certain period. Each time
+>> the timer expires, the counter is decremented. When the counter
+>> is "0", the watchdog considers the vcpu to be stalling and resets
+>> the VM. To avoid watchdog expiration, the guest kernel driver
+>> needs to periodically send a pet event to update the counter.
+>>
+>> Signed-off-by: zhanghao1 <zhanghao1@kylinos.cn>
+>> ---
+>> v2:
+>>   - change the function name and remove the redundant word 'stall'
+>>   - add trace-events to replace DPRINTF and qemu_log
+>>   - call 'watchdog_perform_action()' to reset vm
+>>   - update g_new0 to replace malloc
+>>   - update only use '.generic_name'
+>>   - update the bool variable 'is_initialized' to uint32_t
+>>
+>> v1: https://lore.kernel.org/qemu-devel/20230615061302.301754-1-zhanghao1@kylinos.cn/
+> <snip>
+>> +static void virtio_vcpu_watchdog_device_realize(DeviceState *dev, Error **errp)
+>> +{
+>> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
+>> +    vwdt = VIRTIO_VCPU_WATCHDOG(dev);
+>> +
+>> +    virtio_init(vdev, VIRTIO_ID_WATCHDOG, 0);
+> 
+> This will never compile because VIRTIO_ID_WATCHDOG isn't defined
+> anywhere.
+> 
+> Next time you post you need to also include a link to the kernel side of
+> the driver and the virtio specification (or inflight patch for it).
 
-This will make e.g. migrate-pause to display explicit error descriptions,
-from:
 
-"error-desc": "Channel error: Input/output error"
+Is this similar to vcpu stall based watchdog driver submitted and merged 
+in kernel.org (by Google) sometime back?
 
-To:
-
-"error-desc": "Channel is explicitly shutdown by the user"
-
-in query-migrate.
-
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/qemu-file.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index 419b4092e7..ff605027de 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -87,7 +87,10 @@ int qemu_file_shutdown(QEMUFile *f)
-      *      --> guest crash!
-      */
-     if (!f->last_error) {
--        qemu_file_set_error(f, -EIO);
-+        Error *err = NULL;
-+
-+        error_setg(&err, "Channel is explicitly shutdown by the user");
-+        qemu_file_set_error_obj(f, -EIO, err);
-     }
- 
-     if (!qio_channel_has_feature(f->ioc,
--- 
-2.41.0
+---Trilok Soni
 
 
