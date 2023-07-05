@@ -2,91 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60297490EA
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 00:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A8B7490F9
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 00:25:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHApM-0006in-1A; Wed, 05 Jul 2023 18:18:24 -0400
+	id 1qHAvB-0000Do-B9; Wed, 05 Jul 2023 18:24:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHApJ-0006gv-Jm
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 18:18:21 -0400
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qHAv6-0000BW-QT
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 18:24:20 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHApH-0007js-9o
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 18:18:21 -0400
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-565db4666d7so402eaf.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 15:18:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qHAv0-0001DT-9j
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 18:24:17 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fbc5d5742bso301155e9.2
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 15:24:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688595498; x=1691187498;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2N3FRMmzL12eCcBKsbFQPwrsz1c6EqeQC2opIuzvIkc=;
- b=BSgB7kP2yFvoxQxfNUfHqlGweCjPpXWA6WakQKHwfzNO/rGDqeb7XGnsXLBShZ0yy8
- 8BOqOCfJwB81/F4GZBpGY7QnT7+eFVfFrr4L/aL/gj+Py56kNLFyI4IZRmNNJwfe3opO
- ZTDhj6eEPec2+VZT+IabLbvGeLzYUdvgIw+Kbaem0sJPCtY8u1BjdwQvUEKSEWOvJ3Uf
- CRggA7b1V1/B0rsG0exU2B5JZG+k1m+pDAQh8famKTGiiraZBbUGb1cQhzd0gS8qnO40
- qjPHuUn6G+Cf42Tj3/ptR8elSaMoOLWJCZeS/aPFXt+lgmnYcjF3g7e3OYMAV7DXlnnM
- RJkg==
+ d=gmail.com; s=20221208; t=1688595851; x=1691187851;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hoR4YxCK1TXumF+90/q/7D/WdpmCvdEiuaUsmP2Ol+k=;
+ b=G6XsLokh2NHw4gc25F+J8oFL5v89Qcnvh2BkK4mSUKsNJ6q3TlWr23MM+pf7M9OtiP
+ dmHC0jfX/S0vipccKIZRmd0syImZ3f04BgngcNg3ZSeCAM+5GqQY6WV38gbgV109MXJo
+ zKMgvI9A1dMjxD7hrAjB7R+Yc08u2hEad1z35FHJUETWY7BXfpYa5RFqHQyzQx4sKEQq
+ H4RU6ntVHEH5Vq5ixKZYLPHSk+4r7VKqPO0OT2XcQdTDOhnLgGBbg+iEnXbvvAtCrYyL
+ CUKUz5I1BQI5mCIp1ucf8zpBqJF/7znVJWVgR6SUvnTSpLFZnQm0ctk4LMKY0l/JInXs
+ VAJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688595498; x=1691187498;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2N3FRMmzL12eCcBKsbFQPwrsz1c6EqeQC2opIuzvIkc=;
- b=Cdm/T08d/yZwE70k1slwhADEtursR+7a4VRp0PxtERhiSLqYtF1lIFvml7O5YZsKuo
- Z0AYdQNS7yUJW6Au9vQuJcoGNpld5mz4trimxhA52FwBBBSWbyw2cTKwEd+ZB20CpOJC
- 0AhDfX/8siTuRwapXcQaSUmGqiLYxPXF+BNQqeNAXBNjNWnZ7bwbU/eIpPkjVI2jNd1P
- embuD67grI413l3N/jqMNm2Pn+3ZGSBoXpVpD/9woR+Z8vo/GN90VQ4uGGpXXNWgsQLI
- zhupN1PJ6ACd3syDm+FrzYevQSS0Wqg5ZjsIfCm3/yrTL68mahL+7a9MNaUCRKxRvt8g
- I8Sw==
-X-Gm-Message-State: ABy/qLYf18WxFmu7VhjjfiqKIM/ZfuhKnFBTu+55QdRPzBbzMfmnq5Rl
- 8U65Tli6A3shehd15tzx2nrzuA==
-X-Google-Smtp-Source: APBJJlHJXqJJ/lM+vE63fIKSuUkDoXFd6voNB9e1St0v8cuZkAfn5axtTgxWFsoSVR6jyphb0+PjFA==
-X-Received: by 2002:a4a:aacc:0:b0:563:49fd:e772 with SMTP id
- e12-20020a4aaacc000000b0056349fde772mr74363oon.4.1688595497807; 
- Wed, 05 Jul 2023 15:18:17 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- n17-20020a4ae751000000b0051134f333d3sm112445oov.16.2023.07.05.15.18.14
+ d=1e100.net; s=20221208; t=1688595851; x=1691187851;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hoR4YxCK1TXumF+90/q/7D/WdpmCvdEiuaUsmP2Ol+k=;
+ b=gVXlIP79PBdTZOS4/dCRK5OQn107vQ21WfZqrlc9E1KsYNmvG8rn2tH/LHlOEaHAuG
+ 5t+jXSY9ata7D9nUmPB/C/Cgkb3Rg3YA97V2qHH1DvOwE6WmAaEt15eH2/VH9jPx2bSh
+ DNBKXPKcUb2hFls6B9P5orHtlXb4fkUwlFHYX2fId6KDqn3gMDnCnABUfR/StVbdHzAr
+ ClME95VvO/Tv4K/4r1MywKBa+DZBOwsiWdJhAomzj1mgsPG12+NCePzpK3nlo+fRcalQ
+ uVo68LXI21sXUgJwSm+Hfna++aqfE1iJcyg+J6J49nXa45+X+D0ceEZLhZR4FDwvXlP6
+ XcIA==
+X-Gm-Message-State: AC+VfDxJCNVPWqfwpELB3RZAqobJA/5IHaCtibT6MPwP41yNyVm87vdQ
+ FkEDb69uz4nHeBRJv2uaQqs=
+X-Google-Smtp-Source: ACHHUZ5Ls4ZwGBAmLjwrsuECctxuo96/SAWHKMJc8SzdUk+XkJ/9sCx6IRo9M2p3yiDlziuLJYOeuQ==
+X-Received: by 2002:a1c:7215:0:b0:3fa:71db:56ff with SMTP id
+ n21-20020a1c7215000000b003fa71db56ffmr14401589wmc.40.1688595850706; 
+ Wed, 05 Jul 2023 15:24:10 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-011-052-236.77.11.pool.telefonica.de.
+ [77.11.52.236]) by smtp.gmail.com with ESMTPSA id
+ v22-20020a1cf716000000b003fbe43238c6sm284668wmh.9.2023.07.05.15.24.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 15:18:17 -0700 (PDT)
-Message-ID: <aba237e8-1b9f-06bc-7fc5-09431cf1cf49@ventanamicro.com>
-Date: Wed, 5 Jul 2023 19:18:13 -0300
+ Wed, 05 Jul 2023 15:24:10 -0700 (PDT)
+Date: Wed, 05 Jul 2023 22:24:02 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Joel Upham <jupham125@gmail.com>
+CC: qemu-devel@nongnu.org
+Subject: Re: [PATCH v1 00/23] Q35 support for Xen
+In-Reply-To: <CADPhr0m6XuvZZuCtsXSgex3-FwR+cZ+6113VY+RJ3WfGuaqWDQ@mail.gmail.com>
+References: <cover.1687278381.git.jupham125@gmail.com>
+ <38A3023A-6FAC-4155-BD7F-1C1DB16450EE@gmail.com>
+ <CADPhr0m6XuvZZuCtsXSgex3-FwR+cZ+6113VY+RJ3WfGuaqWDQ@mail.gmail.com>
+Message-ID: <B75057FD-62E4-4B15-8F65-D48DDE45C260@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v8 02/20] hw/riscv/virt.c: skip 'mmu-type' FDT if satp
- mode not set
-Content-Language: en-US
-To: Conor Dooley <conor@kernel.org>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com, ajones@ventanamicro.com,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230705213955.429895-1-dbarboza@ventanamicro.com>
- <20230705213955.429895-3-dbarboza@ventanamicro.com>
- <20230705-gallstone-untitled-1463e43aa33c@spud>
- <c5372b14-b2b8-4664-4357-a7f22c880dcd@ventanamicro.com>
- <20230705-patchwork-sibling-4827156457bf@spud>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230705-patchwork-sibling-4827156457bf@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc32.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,81 +94,155 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 7/5/23 19:12, Conor Dooley wrote:
-> On Wed, Jul 05, 2023 at 07:00:52PM -0300, Daniel Henrique Barboza wrote:
+Am 5=2E Juli 2023 16:50:28 UTC schrieb Joel Upham <jupham125@gmail=2Ecom>:
+>I believe it might have been master unstable branch=2E Last commit before=
+ my
+>patches was:
+>
+>commit 19a720b74fde7e859d19f12c66a72e545947a657
+>Merge: c6a5fc2ac7 367189efae
+>Author: Richard Henderson <richard=2Ehenderson@linaro=2Eorg>
+>Date:   Thu Jun 1 08:30:29 2023 -0700
+
+Indeed!
+
+I've rebased your series and changed the first commit of your series to on=
+ly touch pc_q35=2Ec: https://github=2Ecom/shentok/qemu/commits/q35-xen =2E =
+Judging just from compilation my work on decoupling Xen and PIIX seems to h=
+ave provided a good blueprint for the ICH9 LPC device model (no changes nee=
+ded there)=2E
+
+How can one run Xen/Q35? I've tried running Xen/PC with the PIIX4 rather t=
+han the usual PIIX3 south bridge before which essentially only changes the =
+PCI IDs=2E But that didn't work=2E With Q35/ICH9 the differences would be w=
+ay bigger=2E=2E=2E
+
+Thanks,
+Bernhard
+
+P=2ES=2E: I'm waiting for Xen to become compilable again with my Linux dis=
+tribution such that I could add PIIX4 support to Xen=2E
+
+>
+>-Joel
+>
+>On Thu, Jun 22, 2023 at 1:11=E2=80=AFPM Bernhard Beschow <shentey@gmail=
+=2Ecom> wrote:
+>
 >>
 >>
->> On 7/5/23 18:49, Conor Dooley wrote:
->>> On Wed, Jul 05, 2023 at 06:39:37PM -0300, Daniel Henrique Barboza wrote:
->>>> The absence of a satp mode in riscv_host_cpu_init() is causing the
->>>> following error:
->>>>
->>>> $ ./qemu/build/qemu-system-riscv64  -machine virt,accel=kvm \
->>>>       -m 2G -smp 1  -nographic -snapshot \
->>>>       -kernel ./guest_imgs/Image \
->>>>       -initrd ./guest_imgs/rootfs_kvm_riscv64.img \
->>>>       -append "earlycon=sbi root=/dev/ram rw" \
->>>>       -cpu host
->>>> **
->>>> ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should not be
->>>> reached
->>>> Bail out! ERROR:../target/riscv/cpu.c:320:satp_mode_str: code should
->>>> not be reached
->>>> Aborted
->>>>
->>>> The error is triggered from create_fdt_socket_cpus() in hw/riscv/virt.c.
->>>> It's trying to get satp_mode_str for a NULL cpu->cfg.satp_mode.map.
->>>>
->>>> For this KVM cpu we would need to inherit the satp supported modes
->>>> from the RISC-V host. At this moment this is not possible because the
->>>> KVM driver does not support it. And even when it does we can't just let
->>>> this broken for every other older kernel.
->>>>
->>>> Since mmu-type is not a required node, according to [1], skip the
->>>> 'mmu-type' FDT node if there's no satp_mode set. We'll revisit this
->>>> logic when we can get satp information from KVM.
->>>>
->>>> [1] https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/cpu.yaml
->>>
->>> I don't think this is the correct link to reference as backup, as the
->>> generic binding sets out no requirements. I think you would want to link
->>> to the RISC-V specific cpus binding.
+>> Am 20=2E Juni 2023 17:24:33 UTC schrieb Joel Upham <jupham125@gmail=2Ec=
+om>:
+>> >These are the Qemu changes needed to support the q35 chipset for xen
+>> >I based the patches from 2017 found on the mailing list here:
+>> >
+>> https://lists=2Exenproject=2Eorg/archives/html/xen-devel/2018-03/msg011=
+76=2Ehtml
+>> >
+>> >I have been using a version of these patches on Xen 4=2E16 with Qemu
+>> >version 4=2E1 for over 6 months=2E  The guest VMs are very stable, and=
+ PCIe
+>> >PT is working as was designed (all of the PCIe devices are on the root
+>> >PCIe device)=2E  I have successfully passed through GPUs, NICs, etc=2E=
+ I was
+>> >asked by those in the community to attempt to once again upstream the
+>> >patches=2E  I have them working with Seabios and OVMF (patches are nee=
+ded
+>> >to OVMF which I will be sending to the mailing list)=2E The Qemu patch=
+es
+>> >allow for the xenvbd to properly unplug the AHCI SATA device, and all
+>> >xen pv windows drivers work as intended=2E
+>> >
+>> >I used the original author of the patches to get a majority of this to
+>> work:
+>> >Alexey Gerasimenko=2E  I fixed the patches to be in line with the upst=
+ream
+>> >Qemu and Xen versions=2E  Any original issues may still exist; however=
+, I
+>> >am sure in time they can be improved=2E If the code doesn't exist then=
+ they
+>> >can't be actively looked at by the community=2E
+>> >
+>> >I am not an expert on the Q35 chipset or PCIe technology=2E  This is m=
+y
+>> >first patch to this mailing list=2E
 >>
->> You mean this link?
+>> Patchew was unable to apply this series onto master:
+>> https://patchew=2Eorg/QEMU/cover=2E1687278381=2Egit=2Ejupham125@gmail=
+=2Ecom/ What
+>> revision is the series based on?
 >>
->> https://github.com/torvalds/linux/blob/master/Documentation/devicetree/bindings/riscv/cpus.yaml
-> 
-> Yeah, that's the correct file. Should probably have linked it, sorry
-> about that. And in case it was not clear, not suggesting that this would
-> require a resend, since the reasoning is correct.
-
-I don't mind amending this in case we need another version for any other reason.
-Otherwise we'll hope that Alistair will be a true, real gentlemann and amend the
-commit msg for us :D
-
-> 
->>> That said, things like FreeBSD and U-Boot appear to require mmu-type
->>> https://lore.kernel.org/all/20230705-fondue-bagginess-66c25f1a4135@spud/
->>> so I am wondering if we should in fact make the mmu-type a required
->>> property in the RISC-V specific binding.
+>> Can you rebase? Rebasing this series will probably cause quite some wor=
+k
+>> since it will simplify here and there, as indicated by Igor and by my
+>> comments in "version zero" of this series=2E
 >>
+>> Best regards,
+>> Bernhard
 >>
->> To make it required, as far as QEMU is concerned, we'll need to assume a
->> default value for the 'host' CPU type (e.g. sv57). In the future we can read the
->> satp host value directly when/if KVM provides satp_mode via get_one_reg().
-> 
-> I dunno if assuming is the right thing to do, since it could be actively
-> wrong. Leaving it out, as you are doing here, is, IMO, nicer to those
-> guests. Once there's an API for it, I think it could then be added and
-> then the additional guests would be supported.
-
-Makes sense. We'll revisit this piece of code when that API I sent today find
-its way upstream. Thanks,
-
-
-Daniel
-
-> 
-> Thanks,
-> Conor.
+>> >
+>> >
+>> >Joel Upham (23):
+>> >  pc/xen: Xen Q35 support: provide IRQ handling for PCI devices
+>> >  pc/q35: Apply PCI bus BSEL property for Xen PCI device hotplug
+>> >  q35/acpi/xen: Provide ACPI PCI hotplug interface for Xen on Q35
+>> >  q35/xen: Add Xen platform device support for Q35
+>> >  q35: Fix incorrect values for PCIEXBAR masks
+>> >  xen/pt: XenHostPCIDevice: provide functions for PCI Capabilities and
+>> >    PCIe Extended Capabilities enumeration
+>> >  xen/pt: avoid reading PCIe device type and cap version multiple time=
+s
+>> >  xen/pt: determine the legacy/PCIe mode for a passed through device
+>> >  xen/pt: Xen PCIe passthrough support for Q35: bypass PCIe topology
+>> >    check
+>> >  xen/pt: add support for PCIe Extended Capabilities and larger config
+>> >    space
+>> >  xen/pt: handle PCIe Extended Capabilities Next register
+>> >  xen/pt: allow to hide PCIe Extended Capabilities
+>> >  xen/pt: add Vendor-specific PCIe Extended Capability descriptor and
+>> >    sizing
+>> >  xen/pt: add fixed-size PCIe Extended Capabilities descriptors
+>> >  xen/pt: add AER PCIe Extended Capability descriptor and sizing
+>> >  xen/pt: add descriptors and size calculation for
+>> >    RCLD/ACS/PMUX/DPA/MCAST/TPH/DPC PCIe Extended Capabilities
+>> >  xen/pt: add Resizable BAR PCIe Extended Capability descriptor and
+>> >    sizing
+>> >  xen/pt: add VC/VC9/MFVC PCIe Extended Capabilities descriptors and
+>> >    sizing
+>> >  xen/pt: Fake capability id
+>> >  xen platform: unplug ahci object
+>> >  pc/q35: setup q35 for xen
+>> >  qdev-monitor/pt: bypass root device check
+>> >  s3 support: enabling s3 with q35
+>> >
+>> > hw/acpi/ich9=2Ec                |   22 +-
+>> > hw/acpi/pcihp=2Ec               |    6 +-
+>> > hw/core/machine=2Ec             |   19 +
+>> > hw/i386/pc_piix=2Ec             |    3 +-
+>> > hw/i386/pc_q35=2Ec              |   39 +-
+>> > hw/i386/xen/xen-hvm=2Ec         |    7 +-
+>> > hw/i386/xen/xen_platform=2Ec    |   19 +-
+>> > hw/isa/lpc_ich9=2Ec             |   53 +-
+>> > hw/isa/piix3=2Ec                |    2 +-
+>> > hw/pci-host/q35=2Ec             |   28 +-
+>> > hw/pci/pci=2Ec                  |   17 +
+>> > hw/xen/xen-host-pci-device=2Ec  |  106 +++-
+>> > hw/xen/xen-host-pci-device=2Eh  |    6 +-
+>> > hw/xen/xen_pt=2Ec               |   49 +-
+>> > hw/xen/xen_pt=2Eh               |   18 +-
+>> > hw/xen/xen_pt_config_init=2Ec   | 1103 ++++++++++++++++++++++++++++++=
+---
+>> > include/hw/acpi/pcihp=2Eh       |    2 +
+>> > include/hw/boards=2Eh           |    1 +
+>> > include/hw/i386/pc=2Eh          |    3 +
+>> > include/hw/pci-host/q35=2Eh     |    4 +-
+>> > include/hw/pci/pci=2Eh          |    3 +
+>> > include/hw/southbridge/ich9=2Eh |    1 +
+>> > include/hw/xen/xen=2Eh          |    4 +-
+>> > qemu-options=2Ehx               |    1 +
+>> > softmmu/qdev-monitor=2Ec        |    4 +-
+>> > stubs/xen-hw-stub=2Ec           |    4 +-
+>> > 26 files changed, 1394 insertions(+), 130 deletions(-)
+>> >
+>>
 
