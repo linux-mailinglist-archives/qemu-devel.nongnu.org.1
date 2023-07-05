@@ -2,91 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 200917482EF
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC45B748366
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:47:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH0l2-0005qW-R9; Wed, 05 Jul 2023 07:33:16 -0400
+	id 1qH0xh-0001ZR-Vx; Wed, 05 Jul 2023 07:46:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qH0l0-0005pL-KR
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:33:14 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH0xO-0001Z7-Qj
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:46:04 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qH0ky-0000wR-3q
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:33:14 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fbc54cab6fso59274345e9.0
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 04:33:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qH0xM-0005XR-W0
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:46:02 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-51d9128494cso6405607a12.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 04:46:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688556786; x=1691148786;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=d9OeV4Azz5FNN4zDVHuiAiDcX7+Unc+PeJIK+IFYXfI=;
- b=aw7QOlkwo9IIPYXRIjhjkLhU6ktiv0/Q5ydkkhLMCM+IBzSZXAyM2AsPvAOzLLL6X/
- fTGBgck6ykk1HyimJSxeuioEjTuVdU//F8+5xlMPueVSQIWQBJjgmxoe7nCdUdLNAAst
- +dK0TisJR4U9C3gKExC/lApCNpZqskaKAPY1Mt3KnBAJQ43C2MOGSXOuLnyoTHLRIJmA
- 8KE0CR7ecoNyOAB3nUg3ylkCHZa3Gbi7LlLRaDX7LGRz9sWGfrc/F0aJ16/fq+Ay8Ctk
- 9XCEe+GKgjPIbiSZUv1Qmlv6B/SRVDdtrvcH/3fGATAz4qQ4mkvtADSzdSWmcQbXkYbt
- B3KQ==
+ d=linaro.org; s=google; t=1688557559; x=1691149559;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YlvHuKvesmhTB8CtcHXWorDgoBFHKq7RenHPoX+G0Z4=;
+ b=SEb4sg8F4P4jfE826Tb7ceQjgy9rUIaFR3o+2UOlpHsBbrHpA8IHi1lU6Ed5ST83RG
+ sJv9btC8mvq5HhFjzKGWee0LAImzEx4E/I7tac8CAmWFT8dkZViNhXFEJ8Gj4v4HVI5e
+ 579TQ/JJ9kpOCmfRzx+eLgke8Wlvx+9AG2oCdEqNDWJhSCitbLVaIeUzv0ixJUPNvz+m
+ rk5f0LBG1mJt+If3AKNjmUNEtRF/T1z5VRnLQ/ibSedarOD/Du2S6HBFDu7+V6te6b9w
+ WwxgMpZPPBNfylh/HPYixSWtqUSpQGKgUXv4efCSl/sFZXxRUnZgHILrtpHai8zVANqk
+ JMDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688556786; x=1691148786;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=d9OeV4Azz5FNN4zDVHuiAiDcX7+Unc+PeJIK+IFYXfI=;
- b=Ng0DOLYHJSNdAb/hb248b5ftHmCHOCmFrUQifaJC1DPc+fnb0hAF0doh7razYsMXF/
- GjGIgJW+wgmw+/lPKQ846RyI+vC58R6UDrSDaiNxYuRfnXsfxOLteQfrkYj25+D9CIqh
- ULRnCB1i8fOTWXI7bhJ8PISL6n00OoKLPKrGux2AxYbxV+nL+KTyk4SWdwLhk4QvYv91
- T3Pim5nmV0YzsF0QLLarl84qRtHwdjBAdq4zHw2P3hk5NNAQJxYDiB//x5w9ZKaS2tqp
- Q5DyKWoy2mlbswR50y+viL7lXsdNVJLGdQL4dysOcBbkVDL5ZRRpLghCBr6ezPZT7Jvy
- TOaQ==
-X-Gm-Message-State: AC+VfDxrQ1OVDcUH9qjXMW1kLgnFJl1iG255PTNvcqkxSSHv1TjgSUu3
- wqECXl1My7SQxAJeIYPhe0upGw==
-X-Google-Smtp-Source: ACHHUZ6P2TW2qJrhI1uPXdq37D74NUpdUs4lI9Avxn5fRPL+ZyCUgMLOWS9u+MGvkXhYwIyKkXlC9w==
-X-Received: by 2002:a1c:720f:0:b0:3f7:a552:2ec7 with SMTP id
- n15-20020a1c720f000000b003f7a5522ec7mr12790316wmc.33.1688556786579; 
- Wed, 05 Jul 2023 04:33:06 -0700 (PDT)
-Received: from myrica ([2.219.138.198]) by smtp.gmail.com with ESMTPSA id
- u4-20020a5d5144000000b0031444673643sm2568202wrt.57.2023.07.05.04.33.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jul 2023 04:33:06 -0700 (PDT)
-Date: Wed, 5 Jul 2023 12:33:05 +0100
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-Cc: Eric Auger <eric.auger@redhat.com>,
- "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "mst@redhat.com" <mst@redhat.com>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhap.com" <clg@redhap.com>,
- "bharat.bhushan@nxp.com" <bharat.bhushan@nxp.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>
-Subject: Re: [PATCH 1/2] virtio-iommu: Fix 64kB host page size VFIO device
- assignment
-Message-ID: <20230705113305.GA2267040@myrica>
-References: <20230704111527.3424992-1-eric.auger@redhat.com>
- <20230704111527.3424992-2-eric.auger@redhat.com>
- <SJ0PR11MB674435F2BA42A8925ABA336F922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <20230705082902.GA2234638@myrica>
- <SJ0PR11MB674426C1F9AB893C82E371A4922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ d=1e100.net; s=20221208; t=1688557559; x=1691149559;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YlvHuKvesmhTB8CtcHXWorDgoBFHKq7RenHPoX+G0Z4=;
+ b=k59EvzMDaRWj5HC5ftpnxHHGjxXO6+Ec8dEbycVXpfRYLvOHty3iNWzxNMJIz21yni
+ VxVEX2LcZwKmHV86flkIQ1SHq9/vnUPDYh94Ni+orrtgzaLcyNtSCiPr93CXpbNwEbrM
+ 6YcuAxETblylspEBQL4a9RMvBU4pzrhDhSAHU9pydA9shDYtmN4NQp0PbpqtvfHtKRhx
+ FnhD0HfAJtgxEqR4Ud2s/O7UJL82kWJcr0/sPZexeVN/v7uCfpd43P8oyPNcVfuMRA69
+ z/aQ4skBKsOIX//x8P5V+8vlxhYDNhsQDv9Yz+eVu/Lz8b3TSYSPleRTRVLKKB9gDpL5
+ tf8A==
+X-Gm-Message-State: ABy/qLZmtSwneFTGOO35i+uWt8H8W8TETq7gXsrHKnXTxsKx1BIn6RJJ
+ pM5mzPo313KgUtrXY5gZNoV/qQ==
+X-Google-Smtp-Source: APBJJlE4cy0RhzUGjVA17GRFp7Umjk0tcR4I0JlhRBltbSddVLwhLg/uAKHhhYE58Ii5NTr89bI/tA==
+X-Received: by 2002:a50:fb09:0:b0:51d:fa7c:c330 with SMTP id
+ d9-20020a50fb09000000b0051dfa7cc330mr9710215edq.26.1688557559242; 
+ Wed, 05 Jul 2023 04:45:59 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.142.96])
+ by smtp.gmail.com with ESMTPSA id
+ b18-20020aa7d492000000b0051da4b5bc8fsm10131989edr.20.2023.07.05.04.45.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 05 Jul 2023 04:45:58 -0700 (PDT)
+Message-ID: <82434e83-d156-1a29-fb82-d6127162c185@linaro.org>
+Date: Wed, 5 Jul 2023 13:44:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SJ0PR11MB674426C1F9AB893C82E371A4922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v3 06/13] docs/devel: simplify the minimal checklist
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: fam@euphon.net, berrange@redhat.com, f4bug@amsat.org,
+ aurelien@aurel32.net, pbonzini@redhat.com, stefanha@redhat.com,
+ crosa@redhat.com, Thomas Huth <thuth@redhat.com>
+References: <20221117172532.538149-1-alex.bennee@linaro.org>
+ <20221117172532.538149-7-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20221117172532.538149-7-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,62 +96,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 05, 2023 at 10:13:11AM +0000, Duan, Zhenzhong wrote:
-> >-----Original Message-----
-> >From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> >Sent: Wednesday, July 5, 2023 4:29 PM
-> >Subject: Re: [PATCH 1/2] virtio-iommu: Fix 64kB host page size VFIO device
-> >assignment
-> >
-> >On Wed, Jul 05, 2023 at 04:52:09AM +0000, Duan, Zhenzhong wrote:
-> >> Hi Eric,
-> >>
-> >> >-----Original Message-----
-> >> >From: Eric Auger <eric.auger@redhat.com>
-> >> >Sent: Tuesday, July 4, 2023 7:15 PM
-> >> >Subject: [PATCH 1/2] virtio-iommu: Fix 64kB host page size VFIO
-> >> >device assignment
-> >> >
-> >> >When running on a 64kB page size host and protecting a VFIO device
-> >> >with the virtio-iommu, qemu crashes with this kind of message:
-> >> >
-> >> >qemu-kvm: virtio-iommu page mask 0xfffffffffffff000 is incompatible
-> >> >with mask 0x20010000
-> >>
-> >> Does 0x20010000 mean only  512MB and 64KB super page mapping is
-> >> supported for host iommu hw? 4KB mapping not supported?
-> >
-> >It's not a restriction by the HW IOMMU, but the host kernel. An Arm SMMU
-> >can implement 4KB, 16KB and/or 64KB granules, but the host kernel only
-> >advertises through VFIO the granule corresponding to host PAGE_SIZE. This
-> >restriction is done by arm_lpae_restrict_pgsizes() in order to choose a page
-> >size when a device is driven by the host.
+Hi Alex,
+
+On 17/11/22 18:25, Alex Bennée wrote:
+> The bullet points are quite long and contain process tips. Move those
+> bits of the bullet to the relevant sections and link to them. Use a
+> table for nicer formatting of the checklist.
 > 
-> Just curious why not advertises the Arm SMMU implemented granules to VFIO
-> Eg:4KB, 16KB or 64KB granules?
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+> Message-Id: <20221111145529.4020801-8-alex.bennee@linaro.org>
+> ---
+>   docs/devel/submitting-a-patch.rst | 75 ++++++++++++++++++++-----------
+>   1 file changed, 49 insertions(+), 26 deletions(-)
 
-That's possible, but the difficulty is setting up the page table
-configuration afterwards. At the moment the host installs the HW page
-tables early, when QEMU sets up the VFIO container. That initializes the
-page size bitmap because configuring the HW page tables requires picking
-one of the supported granules (setting TG0 in the SMMU Context
-Descriptor).
 
-If the guest could pick a granule via an ATTACH request, then QEMU would
-need to tell the host kernel to install page tables with the desired
-granule at that point. That would require a new interface in VFIO to
-reconfigure a live container and replace the existing HW page tables
-configuration (before ATTACH, the container must already be configured
-with working page tables in order to implement boot-bypass, I think).
+> @@ -314,10 +320,12 @@ git repository to fetch the original commit.
+>   Patch emails must include a ``Signed-off-by:`` line
+>   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   
+> -For more information see `SubmittingPatches 1.12
+> -<http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmittingPatches?id=f6f94e2ab1b33f0082ac22d71f66385a60d8157f#n297>`__.
+> -This is vital or we will not be able to apply your patch! Please use
+> -your real name to sign a patch (not an alias or acronym).
 
-> But arm_lpae_restrict_pgsizes() restricted ones,
-> Eg: for SZ_4K, (SZ_4K | SZ_2M | SZ_1G).
-> (SZ_4K | SZ_2M | SZ_1G) looks not real hardware granules of Arm SMMU.
+Revisiting this patch, asking for some real name instead of alias
+was at least helpful during patch review, we could address the
+contributor by its name. Addressing an acronym is socially weird
+(at least in my culture netiquette).
 
-Yes, the granule here is 4K, and other bits only indicate huge page sizes,
-so the user can try to optimize large mappings to use fewer TLB entries
-where possible.
+> +Your patches **must** include a Signed-off-by: line. This is a hard
+> +requirement because it's how you say "I'm legally okay to contribute
+> +this and happy for it to go into QEMU". The process is modelled after
+> +the `Linux kernel
+> +<http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/Documentation/SubmittingPatches?id=f6f94e2ab1b33f0082ac22d71f66385a60d8157f#n297>`__
+> +policy.
 
-Thanks,
-Jean
+
 
