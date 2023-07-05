@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2230274882D
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 17:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 305FF748831
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 17:39:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH4ZZ-0006Dw-Qv; Wed, 05 Jul 2023 11:37:41 -0400
+	id 1qH4bB-0007BN-1z; Wed, 05 Jul 2023 11:39:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH4ZX-0006Cz-9N
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:37:39 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ id 1qH4b3-0007A5-F8
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:39:13 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qH4ZV-00088L-Ot
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:37:39 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2b6f943383eso31452201fa.2
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 08:37:37 -0700 (PDT)
+ id 1qH4b1-0000Bc-4U
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 11:39:12 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-4fb863edcb6so11212626e87.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 08:39:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688571456; x=1691163456;
+ d=linaro.org; s=google; t=1688571549; x=1691163549;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QGHy7FMXXJn566nQ8DVkTBJYquiPZWI8dwZTvVmhlPU=;
- b=FxTnvDk2Z3BpKOID6/Elwz/ubFbAo7VOcGolU9q4Lb5SEZ4ctVy6xCQ6oDS2LiUVom
- cfX1ywDZ1IIeZYLp7x26wKjWxlfI95i/W41ZKBjslWjaZOlF5+6nMdE+bivqpQJm9f1M
- JWsJ09iTtvN47LMZmdwa8R9rY44vk075J8zs1VDR3+Jq5qaf+0RvqNVg2grPCTX1Zgog
- 3jdj/r0BTLJrLiju4If0l7BuCbUfsVyP8YymtSc6T6OWT7guOFodSBOpAfEzU9VvVNM6
- p7RmRVdB/GnUiu07hBCiForiJzGniY/we4OnndGFgRtyUu+d3VvouSC90yeOvWzNYSOg
- 4wOw==
+ bh=Aw4HA0Lgo41S/ubw1rDl7Ft37QejOJrSPAdELKF3qnQ=;
+ b=X04+fjwpf6kM7JjQbdJLkFlsbyrdZqw7MOdxNiClCk3H1PTokijAsd94lxDxPVD1LP
+ lsN46re++i4X78anmGE9zobvpY3SNw/6plrla24URlx5PIqaQs/eCUeFMYLHMHV/AK1T
+ 9fikXXbxeOsFLxQaHh8BNDxjTlINT+nredoIaKR3auHMosvhNlcTGSOx6HuaUZMHOmEq
+ hr0v1GAgZuKMPgYZOORM64jyLrhY4ml+BY15ID6FEmFkxeFeIkrH+eAhFtwBQD4KTMmL
+ 3t+ZMgYNbJkpRAl8ZGlZisAztUuO37y3o8zt1jp3EpbNu9Zj5Tk4V2rqMpnQf9WwNgzf
+ eDHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688571456; x=1691163456;
+ d=1e100.net; s=20221208; t=1688571549; x=1691163549;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QGHy7FMXXJn566nQ8DVkTBJYquiPZWI8dwZTvVmhlPU=;
- b=HnQlsDUSsoTRcCxv33kXOcRqaEReZ97r8qz3X5bUi84h7UsCLMkZLLkkPBzWOsMjzZ
- kfqP37tVfo5lj6HgqEHdndd4+KYspQAS1LMDrz6hqDck0UBsZHzex+5Bq6rhGj+etNqj
- sjppNM/Ucpx74hGL1m4diF2TO4A1uLjkSgGAJVwst2qE/IMijGk0ArkorsY0Gn3JB5IZ
- JKcUUGjTSPMPcI1VxOG3BrjLlfqSDF96+p3hOJFiswF2+NSZkWVrY+qpymoLTsBV/RXG
- Zncy1gh5UbMNMWarm8BEVdWbELDWEU5KOfXdcPD6agXCiNwHKhXXlC6WWfr4Vsxs9lOH
- m7jw==
-X-Gm-Message-State: ABy/qLapRwDlDQeBp8H8bMay06oXANmpH8pcrmJXk0GPtfMHl3fuucnY
- 3JqTIGzgqaMriLT4mhoStsoLrQ==
-X-Google-Smtp-Source: APBJJlGvbu/89Spcgiqqm2nmwhQBXeq8OmdJnsdWzgflPGrf9aeclkv4ongxF4MRWoh84Laj9O+ZVQ==
-X-Received: by 2002:a2e:9d45:0:b0:2b6:c394:91dd with SMTP id
- y5-20020a2e9d45000000b002b6c39491ddmr10585556ljj.10.1688571455909; 
- Wed, 05 Jul 2023 08:37:35 -0700 (PDT)
+ bh=Aw4HA0Lgo41S/ubw1rDl7Ft37QejOJrSPAdELKF3qnQ=;
+ b=GPS/o0tcrA5tZ91UBVotIn7o9GqxHqBSTJcry5d7kfTnT/jPS25od4vl6DmDb6lI+s
+ EXTK2fUTL+x4kRIXrIznBTB6RRENMnksN5+6lvpo/cyobTm5imSdYonF/HY5UudXgkIS
+ V2db++781Ai1ZVkmt4DpdTNuypMWiL9qJ2actYgRfMF4IUjv3jhtJ64XSBAdKIcF/A72
+ VNa94WEEmIFN2HH6PRaptzu0IHXPH/xtuAA+iZ0YJWHj8FLKRe0nGZ4DDSizttVY6OUj
+ k9a6/YOEGS9EzVgmZe9MGNMU2/yfv1b4rbaAUlKaZd+jBFtLC9pK6KkFymEtQhagGvC5
+ YXEg==
+X-Gm-Message-State: ABy/qLYeiwCVcGMItv4ISiHGOwx1OjYFWTT7W/TGNIlskbbTJUyEQa0d
+ Dxn32iVk5zspiSW/1mXttOUokon5Uxe3xGH2nPwpxg==
+X-Google-Smtp-Source: APBJJlHNl8cWgdkWJmsyBkx+49Rr6tgc1NY3WTbG8Sp4sApVPmJSmQU3+ubcsgSxfDdK+W6rm1lNNQ==
+X-Received: by 2002:ac2:5e29:0:b0:4fa:d194:36be with SMTP id
+ o9-20020ac25e29000000b004fad19436bemr10608885lfg.65.1688571548684; 
+ Wed, 05 Jul 2023 08:39:08 -0700 (PDT)
 Received: from [192.168.82.227] ([91.223.100.51])
  by smtp.gmail.com with ESMTPSA id
- a4-20020a2eb164000000b002b6d5395732sm3403585ljm.1.2023.07.05.08.37.33
+ r4-20020a19ac44000000b004fba5c20ab1sm3047586lfc.167.2023.07.05.08.39.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 08:37:35 -0700 (PDT)
-Message-ID: <d7d27404-fd00-e3eb-77b5-75735b590496@linaro.org>
-Date: Wed, 5 Jul 2023 17:37:31 +0200
+ Wed, 05 Jul 2023 08:39:08 -0700 (PDT)
+Message-ID: <a3b1e2ee-d0ef-7e68-33ac-9cceb7b527a1@linaro.org>
+Date: Wed, 5 Jul 2023 17:39:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 13/19] hw/timer/arm_timer: Iterate on timers using
- for() loop statement
+Subject: Re: [PATCH v2 14/19] hw/timer/arm_timer: Pass timer output IRQ as
+ parameter to arm_timer_new
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -71,13 +71,13 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
  <pbonzini@redhat.com>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Sergey Kambalin <serg.oker@gmail.com>
 References: <20230704145012.49870-1-philmd@linaro.org>
- <20230704145012.49870-14-philmd@linaro.org>
+ <20230704145012.49870-15-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230704145012.49870-14-philmd@linaro.org>
+In-Reply-To: <20230704145012.49870-15-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -101,17 +101,23 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/4/23 16:50, Philippe Mathieu-Daudé wrote:
-> The same pattern is used for each timer, 2 or 3 times. To avoid
-> too much code churn in the next commits, iterate on the number
-> of timers using a for() loop statement.
+> Both SP804Timer/IntegratorPIT peek at ArmTimer internal state.
+> This is fine so far but we want to convert ArmTimer to QOM
+> where peeking at QOM state internal should be avoided.
+> ArmTimer's IRQ is just a pointer, so we can pass/set it via
+> argument, avoiding accessing ArmTimer internal state except
+> from the arm_timer_*() methods.
+> 
+> Once ArmTimer get QOM'ified (in a few commits), it will
+> inherit the SysBus API. This IRQ will then become a SysBus
+> IRQ within this ArmTimer object.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> Reviewed-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   hw/timer/arm_timer.c | 27 ++++++++++++++-------------
->   1 file changed, 14 insertions(+), 13 deletions(-)
+>   hw/timer/arm_timer.c | 13 ++++++++-----
+>   1 file changed, 8 insertions(+), 5 deletions(-)
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
