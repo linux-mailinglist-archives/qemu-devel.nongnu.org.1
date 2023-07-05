@@ -2,81 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 265EB747FC3
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 10:35:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34498747FF7
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 10:43:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGxy2-0001vZ-AB; Wed, 05 Jul 2023 04:34:30 -0400
+	id 1qGy5M-0003Lw-NV; Wed, 05 Jul 2023 04:42:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qGxy1-0001vJ-2l; Wed, 05 Jul 2023 04:34:29 -0400
-Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qGxxz-0002eo-9p; Wed, 05 Jul 2023 04:34:28 -0400
-Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-1b0419f758eso288839fac.1; 
- Wed, 05 Jul 2023 01:34:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688546065; x=1691138065;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=YEXMWxr8qSlAK1tCQ2t0O3cbPVz3ic2msoLN6hmD690=;
- b=TW5FVy8HzpcHckBQeNbRCZ0WNjfTNK355gjnmYitx3QzKQM1wJzqg8DG1jjUQVn6Ob
- KN7rAPl1LKkEa6xp3ibF5fBP/JuUf/zzqXJh17REUf6x5MVJD1bRLAVWBIykuoC30Rfa
- ipbhN9aFhRjZV+zJoM9jQbM4MMHbWu0JHMYZqju6Pp65i25aTOJ/7MD355xqA215iEHm
- lOzeUciY749FRs0kceQjKHbhYg/+iQ8UxKAT8rYtsp2jSeXQS3uWNeXoytHrUYY5QQ92
- 7UhRjAyfPf+oOnJCDsOdyw331XsoNZSAod9KLT9LP22IoJgUlQ6s/zvmP0Q5C3BHNLKe
- /8wQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGy5K-0003Lb-Fe
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:42:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qGy5B-0004cU-T8
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:42:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688546512;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wdNrP8dfk3Kph9Hz/PClECdrtpW1/BqpQGymcbZPeJ8=;
+ b=ThPXjU+xbVpnWv/b5eg+KENd3BzJ9xp8DbCClTDOBCtDY+KQi4/lxSRU07P78f5RVZMacT
+ IqtlCqYAoNtnQcOUZ20iyP6qEGjkPWfmm7KHz8iS/Otd2WrSnhk0UVJZna/He8xXdUr3rI
+ UPjJJshcDaXFEEfM35M8QTa7O93tYqY=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-157-nAZtKt_EMRKUO9JGvY99VA-1; Wed, 05 Jul 2023 04:41:50 -0400
+X-MC-Unique: nAZtKt_EMRKUO9JGvY99VA-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7659c6caeaeso764644985a.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 01:41:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688546065; x=1691138065;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1688546509; x=1691138509;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YEXMWxr8qSlAK1tCQ2t0O3cbPVz3ic2msoLN6hmD690=;
- b=UYaNU7smEsQO5mbSO7b+V59cxppVppIOsm9NQKfzlJV9zkC04oM1d+l8StPPr73RtR
- omZwsyhoO+TL6jU6SKMUny+AjRqBvjEN/StTgcn1PxQ4Lz6J1VFp3lDn+CA9+vE5vve7
- asTq3wcnU0DCDEpRkynHxGBIz5vNdg7gDnJ4wOYJamhD/ioqDrzV8I2eC0i+j+BSPWcv
- NYNPgtWCa4xY00rdVk9zC5tcsywilO+/Xa+n/Cx+7y+mkAE6Bty3cEZseMUOwARdXbDI
- ihj5enZpWyF40GbjD2wvYgHkMbta/ePsjevpI5Vwnkg2i9REcSdJZK8kflIoYxqtzPJ7
- SBrw==
-X-Gm-Message-State: ABy/qLa31J3uIhBU5p7uDirk2xK1ioAH547kXZe6ExpkyqArOcInz+yZ
- iXxQVM0yfXGAZGfrthPMyPU=
-X-Google-Smtp-Source: APBJJlEfNMXcEWdFYeIgXWC9xGCCsB7dmnwmHNOORe9M7VE8kUpLlyXe4k6tGe7Lw11TEMj8P+YyeQ==
-X-Received: by 2002:a05:6871:546:b0:1b3:da9d:2208 with SMTP id
- t6-20020a056871054600b001b3da9d2208mr776141oal.26.1688546065279; 
- Wed, 05 Jul 2023 01:34:25 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
- [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- d17-20020a056830045100b006b722e466cdsm3653372otc.31.2023.07.05.01.34.24
+ bh=wdNrP8dfk3Kph9Hz/PClECdrtpW1/BqpQGymcbZPeJ8=;
+ b=WQuz+Sw3XgkpKpkBib4mREo2ls+B/TyMN8/PMLi3WxVs4QqLtocyD3pXPE5i0lOfV1
+ sXU4vm+UfeGdTPQZD2TMMvN+ggYeMqaxtgZtr+Xd93hsMSLlZHP/d3rAAzengXKifSby
+ UpjxDfSor3KqlNR1bVMxumx9hHLZA/uNca7YtNe0ucK0acozt3zfTW+hnt9rXtiFE3+c
+ ogtgNwfmbXqzn4i7RiflQETDoNeH6hzM8ZwBEAaVT8brsD5kkP5sn2ClCHSYpQ3TOw9d
+ JivDCJ+D0vOxscA+fXvDAomDr4oKC3QtZQj37QoUnfIqdRRUFEXhrN0CaNfxh94/IYiU
+ O8yw==
+X-Gm-Message-State: AC+VfDyRJyjU0Ol29dmpw4OqPWUjXgurt256pMQBgoTnIP1B97W6ytF7
+ fbS8jxwO0CxMYCpF8CFCThTc31ELD0+xJQdvXkoT3h9NfrUnrQ93SVKEe7hIdJQXptvls/NsqXz
+ 99R7cJ1rmAn7x9hc=
+X-Received: by 2002:ae9:df81:0:b0:767:2bbc:fcc7 with SMTP id
+ t123-20020ae9df81000000b007672bbcfcc7mr14631372qkf.14.1688546508975; 
+ Wed, 05 Jul 2023 01:41:48 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ71CaVCRrRR6rAohpxhb22V8YOaZAWx/3GRQchHhTTXWU9kQNAREmhAA45MAu/KGLSqmAabOA==
+X-Received: by 2002:ae9:df81:0:b0:767:2bbc:fcc7 with SMTP id
+ t123-20020ae9df81000000b007672bbcfcc7mr14631339qkf.14.1688546508543; 
+ Wed, 05 Jul 2023 01:41:48 -0700 (PDT)
+Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ t2-20020a05620a034200b007674f5c3fcdsm5334544qkm.23.2023.07.05.01.41.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 01:34:24 -0700 (PDT)
-Message-ID: <924e1048-9d63-17c2-75aa-982ffeb0e1c0@gmail.com>
-Date: Wed, 5 Jul 2023 05:34:22 -0300
+ Wed, 05 Jul 2023 01:41:47 -0700 (PDT)
+Message-ID: <a4fe8fe8-c71e-931b-b86b-94c8673c3236@redhat.com>
+Date: Wed, 5 Jul 2023 10:41:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] ppc/pegasos2: Add support for -initrd command line option
+ Thunderbird/102.11.0
 Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-References: <20230704181920.27B58746335@zero.eik.bme.hu>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230704181920.27B58746335@zero.eik.bme.hu>
+To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
+ mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+ ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
+ armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
+ nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
+References: <20230630091752.67190-1-pmorel@linux.ibm.com>
+ <20230630091752.67190-14-pmorel@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v21 13/20] docs/s390x/cpu topology: document s390x cpu
+ topology
+In-Reply-To: <20230630091752.67190-14-pmorel@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::36;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x36.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,98 +107,401 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 7/4/23 15:19, BALATON Zoltan wrote:
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
-
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-
-And pushed to ppc-next after amending the commit msg.
-
-
-Daniel
-
->   hw/ppc/pegasos2.c | 32 +++++++++++++++++++++++++++++++-
->   1 file changed, 31 insertions(+), 1 deletion(-)
+On 30/06/2023 11.17, Pierre Morel wrote:
+> Add some basic examples for the definition of cpu topology
+> in s390x.
 > 
-> diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-> index af5489de26..9c9944188b 100644
-> --- a/hw/ppc/pegasos2.c
-> +++ b/hw/ppc/pegasos2.c
-> @@ -44,6 +44,8 @@
->   #define PROM_ADDR     0xfff00000
->   #define PROM_SIZE     0x80000
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> ---
+>   MAINTAINERS                        |   2 +
+>   docs/devel/index-internals.rst     |   1 +
+>   docs/devel/s390-cpu-topology.rst   | 170 ++++++++++++++++++++
+>   docs/system/s390x/cpu-topology.rst | 240 +++++++++++++++++++++++++++++
+>   docs/system/target-s390x.rst       |   1 +
+>   5 files changed, 414 insertions(+)
+>   create mode 100644 docs/devel/s390-cpu-topology.rst
+>   create mode 100644 docs/system/s390x/cpu-topology.rst
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b8d3e8815c..76f236564c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1703,6 +1703,8 @@ S: Supported
+>   F: include/hw/s390x/cpu-topology.h
+>   F: hw/s390x/cpu-topology.c
+>   F: target/s390x/kvm/stsi-topology.c
+> +F: docs/devel/s390-cpu-topology.rst
+> +F: docs/system/s390x/cpu-topology.rst
 >   
-> +#define INITRD_MIN_ADDR 0x600000
+>   X86 Machines
+>   ------------
+> diff --git a/docs/devel/index-internals.rst b/docs/devel/index-internals.rst
+> index e1a93df263..6f81df92bc 100644
+> --- a/docs/devel/index-internals.rst
+> +++ b/docs/devel/index-internals.rst
+> @@ -14,6 +14,7 @@ Details about QEMU's various subsystems including how to add features to them.
+>      migration
+>      multi-process
+>      reset
+> +   s390-cpu-topology
+>      s390-dasd-ipl
+>      tracing
+>      vfio-migration
+> diff --git a/docs/devel/s390-cpu-topology.rst b/docs/devel/s390-cpu-topology.rst
+> new file mode 100644
+> index 0000000000..cd36476011
+> --- /dev/null
+> +++ b/docs/devel/s390-cpu-topology.rst
+> @@ -0,0 +1,170 @@
+> +QAPI interface for S390 CPU topology
+> +====================================
 > +
->   #define KVMPPC_HCALL_BASE    0xf000
->   #define KVMPPC_H_RTAS        (KVMPPC_HCALL_BASE + 0x0)
->   #define KVMPPC_H_VOF_CLIENT  (KVMPPC_HCALL_BASE + 0x5)
-> @@ -80,6 +82,8 @@ struct Pegasos2MachineState {
->       uint64_t kernel_addr;
->       uint64_t kernel_entry;
->       uint64_t kernel_size;
-> +    uint64_t initrd_addr;
-> +    uint64_t initrd_size;
->   };
->   
->   static void *build_fdt(MachineState *machine, int *fdt_size);
-> @@ -117,7 +121,8 @@ static void pegasos2_init(MachineState *machine)
->       I2CBus *i2c_bus;
->       const char *fwname = machine->firmware ?: PROM_FILENAME;
->       char *filename;
-> -    int i, sz;
-> +    int i;
-> +    ssize_t sz;
->       uint8_t *spd_data;
->   
->       /* init CPU */
-> @@ -213,6 +218,20 @@ static void pegasos2_init(MachineState *machine)
->           warn_report("Using Virtual OpenFirmware but no -kernel option.");
->       }
->   
-> +    if (machine->initrd_filename) {
-> +        pm->initrd_addr = pm->kernel_addr + pm->kernel_size + 64 * KiB;
-> +        pm->initrd_addr = ROUND_UP(pm->initrd_addr, 4);
-> +        pm->initrd_addr = MAX(pm->initrd_addr, INITRD_MIN_ADDR);
-> +        sz = load_image_targphys(machine->initrd_filename, pm->initrd_addr,
-> +                                 machine->ram_size - pm->initrd_addr);
-> +        if (sz <= 0) {
-> +            error_report("Could not load initrd '%s'",
-> +                         machine->initrd_filename);
-> +            exit(1);
-> +        }
-> +        pm->initrd_size = sz;
-> +    }
+> +Let's start QEMU with the following command defining 4 CPUs,
+
+Maybe better something like this:
+
+The following sections will explain the S390 CPU topology with the help of 
+exemplary output. For this, let's assume that QEMU has been started with the 
+following command, defining 4 CPUs.
+
+?
+
+> +CPU[0] defined by the -smp argument will have default values:
 > +
->       if (!pm->vof && machine->kernel_cmdline && machine->kernel_cmdline[0]) {
->           warn_report("Option -append may be ineffective with -bios.");
->       }
-> @@ -335,6 +354,11 @@ static void pegasos2_machine_reset(MachineState *machine, ShutdownCause reason)
->           error_report("Memory for kernel is in use");
->           exit(1);
->       }
-> +    if (pm->initrd_size &&
-> +        vof_claim(pm->vof, pm->initrd_addr, pm->initrd_size, 0) == -1) {
-> +        error_report("Memory for initrd is in use");
-> +        exit(1);
+> +.. code-block:: bash
+> +
+> + qemu-system-s390x \
+> +    -enable-kvm \
+> +    -cpu z14,ctop=on \
+> +    -smp 1,drawers=3,books=3,sockets=2,cores=2,maxcpus=36 \
+> +    \
+> +    -device z14-s390x-cpu,core-id=19,entitlement=high \
+> +    -device z14-s390x-cpu,core-id=11,entitlement=low \
+> +    -device z14-s390x-cpu,core-id=112,entitlement=high \
+> +   ...
+> +
+> +and see the result when using the QAPI interface.
+...
+> +QAPI command: set-cpu-topology
+> +------------------------------
+> +
+> +The command set-cpu-topology allows to modify the topology tree
+> +or the topology modifiers of a vCPU in the configuration.
+> +
+> +.. code-block:: QMP
+> +
+> +    { "execute": "set-cpu-topology",
+> +      "arguments": {
+> +         "core-id": 11,
+> +         "socket-id": 0,
+> +         "book-id": 0,
+> +         "drawer-id": 0,
+> +         "entitlement": "low",
+> +         "dedicated": false
+> +      }
 > +    }
->       fdt = build_fdt(machine, &sz);
->       /* FIXME: VOF assumes entry is same as load address */
->       d[0] = cpu_to_be64(pm->kernel_entry);
-> @@ -966,6 +990,12 @@ static void *build_fdt(MachineState *machine, int *fdt_size)
->       qemu_fdt_setprop_string(fdt, "/memory@0", "name", "memory");
->   
->       qemu_fdt_add_subnode(fdt, "/chosen");
-> +    if (pm->initrd_addr && pm->initrd_size) {
-> +        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-end",
-> +                              pm->initrd_addr + pm->initrd_size);
-> +        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-start",
-> +                              pm->initrd_addr);
-> +    }
->       qemu_fdt_setprop_string(fdt, "/chosen", "bootargs",
->                               machine->kernel_cmdline ?: "");
->       qemu_fdt_setprop_string(fdt, "/chosen", "name", "chosen");
+> +    {"return": {}}
+> +
+> +The core-id parameter is the only non optional parameter and every
+> +unspecified parameter keeps its previous value.
+> +
+> +QAPI event CPU_POLARIZATION_CHANGE
+> +----------------------------------
+> +
+> +When a guest is requests a modification of the polarization,
+
+Scratch the word "is".
+
+> +QEMU sends a CPU_POLARIZATION_CHANGE event.
+...
+> diff --git a/docs/system/s390x/cpu-topology.rst b/docs/system/s390x/cpu-topology.rst
+> new file mode 100644
+> index 0000000000..0535a5d883
+> --- /dev/null
+> +++ b/docs/system/s390x/cpu-topology.rst
+> @@ -0,0 +1,240 @@
+> +CPU topology on s390x
+> +=====================
+> +
+> +Since QEMU 8.1, CPU topology on s390x provides up to 3 levels of
+> +topology containers: drawers, books, sockets, defining a tree shaped
+> +hierarchy.
+
+"drawers, books and sockets. They define a tree-shaped hierarchy."
+
+?
+
+> +The socket container contains one or more CPU entries.
+
+"The socket container has one or more CPU entries." ?
+
+> +Each of these CPU entries consists of a bitmap and three CPU attributes:
+> +
+> +- CPU type
+> +- entitlement
+> +- dedication
+> +
+> +Each bit set in the bitmap correspond to the core-id of a vCPU with
+> +matching the three attribute.
+> +
+> +This documentation provide general information on S390 CPU topology,
+> +how to enable it and on the new CPU attributes.
+> +For information on how to modify the S390 CPU topology and on how to
+> +monitor the polarization change see ``Developer Information``.
+
+It would be nicer to have a proper link here instead. See commit 
+d6359e150dbdf84f67add786473fd277a9a442bb for example how to do this in our 
+.rst files.
+
+> +Prerequisites
+> +-------------
+> +
+> +To use the CPU topology, you need to run with KVM on a s390x host that
+> +uses the Linux kernel v6.0 or newer (which provide the so-called
+> +``KVM_CAP_S390_CPU_TOPOLOGY`` capability that allows QEMU to signal the
+> +CPU topology facility via the so-called STFLE bit 11 to the VM).
+> +
+> +Enabling CPU topology
+> +---------------------
+> +
+> +Currently, CPU topology is only enabled in the host model by default.
+> +
+> +Enabling CPU topology in a CPU model is done by setting the CPU flag
+> +``ctop`` to ``on`` like in:
+> +
+> +.. code-block:: bash
+> +
+> +   -cpu gen16b,ctop=on
+> +
+> +Having the topology disabled by default allows migration between
+> +old and new QEMU without adding new flags.
+> +
+> +Default topology usage
+> +----------------------
+> +
+> +The CPU topology can be specified on the QEMU command line
+> +with the ``-smp`` or the ``-device`` QEMU command arguments.
+> +
+> +Note also that since 7.2 threads are no longer supported in the topology
+> +and the ``-smp`` command line argument accepts only ``threads=1``.
+> +
+> +If none of the containers attributes (drawers, books, sockets) are
+> +specified for the ``-smp`` flag, the number of these containers
+> +is ``1`` .
+
+"Thus the following two options will result in the same topology, for 
+example:" ?
+
+> +.. code-block:: bash
+> +
+> +    -smp cpus=5,drawer=1,books=1,sockets=8,cores=4,maxcpus=32
+> +
+> +or
+> +
+> +.. code-block:: bash
+> +
+> +    -smp cpus=5,sockets=8,cores=4,maxcpus=32
+> +
+> +When a CPU is defined by the ``-smp`` command argument, its position
+> +inside the topology is calculated by adding the CPUs to the topology
+> +based on the core-id starting with core-0 at position 0 of socket-0,
+> +book-0, drawer-0 and filling all CPUs of socket-0 before to fill socket-1
+> +of book-0 and so on up to the last socket of the last book of the last
+> +drawer.
+> +
+> +When a CPU is defined by the ``-device`` command argument, the
+> +tree topology attributes must be all defined or all not defined.
+> +
+> +.. code-block:: bash
+> +
+> +    -device gen16b-s390x-cpu,drawer-id=1,book-id=1,socket-id=2,core-id=1
+> +
+> +or
+> +
+> +.. code-block:: bash
+> +
+> +    -device gen16b-s390x-cpu,core-id=1,dedicated=true
+> +
+> +If none of the tree attributes (drawer, book, sockets), are specified
+> +for the ``-device`` argument, as for all CPUs defined with the ``-smp``
+> +command argument the topology tree attributes will be set by simply
+> +adding the CPUs to the topology based on the core-id starting with
+> +core-0 at position 0 of socket-0, book-0, drawer-0.
+> +
+> +QEMU will not try to solve collisions and will report an error if the
+> +CPU topology, explicitly or implicitly defined on a ``-device``
+> +argument collides with the definition of a CPU implicitely defined
+
+s/implicitely/implicitly/
+
+> +on the ``-smp`` argument.
+> +
+> +When the topology modifier attributes are not defined for the
+> +``-device`` command argument they takes following default values:
+> +
+> +- dedicated: ``false``
+> +- entitlement: ``medium``
+> +
+> +
+> +Hot plug
+> +++++++++
+> +
+> +New CPUs can be plugged using the device_add hmp command as in:
+> +
+> +.. code-block:: bash
+> +
+> +  (qemu) device_add gen16b-s390x-cpu,core-id=9
+> +
+> +The same placement of the CPU is derived from the core-id as described above.
+> +
+> +The topology can of course be fully defined:
+> +
+> +.. code-block:: bash
+> +
+> +    (qemu) device_add gen16b-s390x-cpu,drawer-id=1,book-id=1,socket-id=2,core-id=1
+> +
+> +
+> +Examples
+> +++++++++
+> +
+> +In the following machine we define 8 sockets with 4 cores each.
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-s390x -m 2G \
+> +    -cpu gen16b,ctop=on \
+> +    -smp cpus=5,sockets=8,cores=4,maxcpus=32 \
+> +    -device host-s390x-cpu,core-id=14 \
+> +
+> +A new CPUs can be plugged using the device_add hmp command as before:
+> +
+> +.. code-block:: bash
+> +
+> +  (qemu) device_add gen16b-s390x-cpu,core-id=9
+> +
+> +The core-id defines the placement of the core in the topology by
+> +starting with core 0 in socket 0 up to maxcpus.
+> +
+> +In the example above:
+> +
+> +* There are 5 CPUs provided to the guest with the ``-smp`` command line
+> +  They will take the core-ids 0,1,2,3,4
+> +  As we have 4 cores in a socket, we have 4 CPUs provided
+> +  to the guest in socket 0, with core-ids 0,1,2,3.
+> +  The last cpu, with core-id 4, will be on socket 1.
+> +
+> +* the core with ID 14 provided by the ``-device`` command line will
+> +  be placed in socket 3, with core-id 14
+> +
+> +* the core with ID 9 provided by the ``device_add`` qmp command will
+> +  be placed in socket 2, with core-id 9
+> +
+> +
+> +Polarization, entitlement and dedication
+> +----------------------------------------
+> +
+> +Polarization
+> +++++++++++++
+> +
+> +The polarization is an indication given by the ``guest`` to the host
+
+Why quoting guest, but not host? I'd remove the quotes from guest here.
+
+> +that it is able to make use of CPU provisioning information.
+> +The guest indicates the polarization by using the PTF instruction.
+> +
+> +Polarization is define two models of CPU provisioning: horizontal
+
+"Polarization defines ..." ? ... or "Polarization is defined by ..." ?
+
+> +and vertical.
+> +
+> +The horizontal polarization is the default model on boot and after
+> +subsystem reset in which the guest considers all vCPUs being having
+
+scratch "being" ?
+
+> +an equal provisioning of CPUs by the host.
+> +
+> +In the vertical polarization model the guest can make use of the
+> +vCPU entitlement information provided by the host to optimize
+> +kernel thread scheduling.
+> +
+> +A subsystem reset puts all vCPU of the configuration into the
+> +horizontal polarization.
+> +
+> +Entitlement
+> ++++++++++++
+> +
+> +The vertical polarization specifies that the guest's vCPU can get
+> +different real CPU provisions:
+> +
+> +- a vCPU with vertical high entitlement specifies that this
+> +  vCPU gets 100% of the real CPU provisioning.
+> +
+> +- a vCPU with vertical medium entitlement specifies that this
+> +  vCPU shares the real CPU with other vCPUs.
+> +
+> +- a vCPU with vertical low entitlement specifies that this
+> +  vCPU only gets real CPU provisioning when no other vCPUs needs it.
+> +
+> +In the case a vCPU with vertical high entitlement does not use
+> +the real CPU, the unused "slack" can be dispatched to other vCPU
+> +with medium or low entitlement.
+> +
+> +The upper level specifies a vCPU as ``dedicated`` when the vCPU is
+
+Using `` quotes will print "dedicated" in monotyped font ... is that what 
+you wanted here? AFAIK we're mainly doing that for things that can be typed 
+in the terminal, e.g. command line options. So should this use normal quotes 
+instead?
+
+> +fully dedicated to a single real CPU.
+> +
+> +The dedicated bit is an indication of affinity of a vCPU for a real CPU
+> +while the entitlement indicates the sharing or exclusivity of use.
+> +
+> +Defining the topology on command line
+> +-------------------------------------
+> +
+> +The topology can entirely be defined using -device cpu statements,
+> +with the exception of CPU 0 which must be defined with the -smp
+> +argument.
+> +
+> +For example, here we set the position of the cores 1,2,3 to
+> +drawer 1, book 1, socket 2 and cores 0,9 and 14 to drawer 0,
+> +book 0, socket 0 without defining entitlement or dedication.
+> +The core 4, will be set on its default position on socket 1
+> +(since we have 4 core per socket) and we define it as dedicated and
+> +with vertical high entitlement.
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-s390x -m 2G \
+> +    -cpu gen16b,ctop=on \
+> +    -smp cpus=1,sockets=8,cores=4,maxcpus=32 \
+> +    \
+> +    -device gen16b-s390x-cpu,drawer-id=1,book-id=1,socket-id=2,core-id=1 \
+> +    -device gen16b-s390x-cpu,drawer-id=1,book-id=1,socket-id=2,core-id=2 \
+> +    -device gen16b-s390x-cpu,drawer-id=1,book-id=1,socket-id=2,core-id=3 \
+> +    \
+> +    -device gen16b-s390x-cpu,drawer-id=0,book-id=0,socket-id=0,core-id=9 \
+> +    -device gen16b-s390x-cpu,drawer-id=0,book-id=0,socket-id=0,core-id=14 \
+> +    \
+> +    -device gen16b-s390x-cpu,core-id=4,dedicated=on,entitlement=high
+> +
+> +The entitlement defined for the CPU 4, will only be used after the guest
+> +successfully enables vertical polarization by using the PTF instruction.
+> diff --git a/docs/system/target-s390x.rst b/docs/system/target-s390x.rst
+> index f6f11433c7..94c981e732 100644
+> --- a/docs/system/target-s390x.rst
+> +++ b/docs/system/target-s390x.rst
+> @@ -34,3 +34,4 @@ Architectural features
+>   .. toctree::
+>      s390x/bootdevices
+>      s390x/protvirt
+> +   s390x/cpu-topology
+
+  Thomas
+
 
