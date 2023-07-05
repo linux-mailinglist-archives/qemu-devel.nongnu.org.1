@@ -2,160 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74E3747F42
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 10:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E985747F62
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 10:20:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qGxht-0005bL-2W; Wed, 05 Jul 2023 04:17:49 -0400
+	id 1qGxjf-0006XI-24; Wed, 05 Jul 2023 04:19:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qGxhq-0005as-2s; Wed, 05 Jul 2023 04:17:46 -0400
-Received: from mga04.intel.com ([192.55.52.120])
+ (Exim 4.90_1) (envelope-from <zhanghao1@kylinos.cn>)
+ id 1qGxjY-0006Wm-AS
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:19:32 -0400
+Received: from mailgw.kylinos.cn ([124.126.103.232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qGxhn-0007fE-Q2; Wed, 05 Jul 2023 04:17:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1688545063; x=1720081063;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=9N10Iwwo/H7sGxF/HarS4yeJ06DDtC9eZMPoUqecCy0=;
- b=mb9/kl2x9YSm50+9S4NGDwxgsLiYGLkwzI9bkyAACF0CvhEXyptlbbIL
- WEHk8XVZzraORato4I7ovKun3zM3VPqzSlU4OzIP6UNJBATTU6z/R3c4f
- RdkN0JB7W3W3USNlAzW1sB+JgG27usUnWB8gdcQeWtcZM1jDASLv0BqPy
- zccYWhyW1XiZ0N0jscMe2SJEV+uqtXqqlTSeVYsCybZHCe+01zNXV42GG
- r0IzcjkTENBTlMULs7HxrjnRUzgxTMfRDG2s4T1uhY3N8hlVvfyfb+dMC
- ShyP6D5Y75JTUofN0rRo0Qjouo/OroRHKhteWsez7wFav/8J2lZ5aYx2b A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="362146748"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="362146748"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jul 2023 01:17:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10761"; a="748639418"
-X-IronPort-AV: E=Sophos;i="6.01,182,1684825200"; d="scan'208";a="748639418"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orsmga008.jf.intel.com with ESMTP; 05 Jul 2023 01:17:39 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Wed, 5 Jul 2023 01:17:39 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Wed, 5 Jul 2023 01:17:39 -0700
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.41) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Wed, 5 Jul 2023 01:17:39 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LMZ1gBIaZDkmns4Sv8pbmGBBIelA4Qdng5++SI0l/LF1tPfdsg0D4CLLiwDeridW0UsweHRxRyS+R7kp4Nufu6PsfoMdfAa3Nbr3gZ0jFW4Zk1n9hXFPa9LTJEUdsj9vcjZsBI6wm7bfcbN1G6doCYOcSAeajY+3bEQ97J5IyQ14hrkNr66BFALigDfKQr8lBF+pLmWtbmx9XmsGSSo/hRYxAPvYz/P4VWVK9f/DPU356XdwldAqIoVMkgb88gVSsDmQhTt7iRDd1nUR1gjHyA+dOiN6Xttbs7d4fmQOT1ax2tOEKqb7RS1edHgdU7DzDbGB6bSEj84ZtxC9xSk/ZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VF/DiPmRuD1rAxI39yJjEi45JQDUNmA+Nu8FQhbptI0=;
- b=XgZYgxd4lGMBhUVqWfr7Q50BoVc8rP84hQOgWCMkzSMLC9q9LWU/o3geQqZ4kFihYuso+LyTBi2p9s+W3pj3GVVUAUhIhnUq6yE1OdPRaIWMMfon/HXOwQjqOUaxLHvPVwWZxZ4GOQ5RZXL4wGGgw83CkA3tLoVbQN5nUQGSGjiqOYYUBpYPKCEXv148/ma2dWefs+X0gXIiWraIaVC6J0Ssn34AkbE5YV62EeMnKy62lRRnJCxFwShit34x3iEDwsiXIljrX90Hi3nULeO9ai07Xr1TiugTPCOAG4xiudF7TUv+K/9AJh0FlF1RA/ttmdcZ+OuM7xu1W0IyRIUHhg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by SA1PR11MB8541.namprd11.prod.outlook.com (2603:10b6:806:3a9::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.24; Wed, 5 Jul
- 2023 08:17:37 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::f580:d6a6:47a1:95f0]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::f580:d6a6:47a1:95f0%6]) with mapi id 15.20.6544.024; Wed, 5 Jul 2023
- 08:17:37 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Eric Auger <eric.auger@redhat.com>, "eric.auger.pro@gmail.com"
- <eric.auger.pro@gmail.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "mst@redhat.com"
- <mst@redhat.com>, "jean-philippe@linaro.org" <jean-philippe@linaro.org>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhap.com" <clg@redhap.com>, "bharat.bhushan@nxp.com"
- <bharat.bhushan@nxp.com>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>
-Subject: RE: [PATCH 2/2] virtio-iommu: Rework the trace in
- virtio_iommu_set_page_size_mask()
-Thread-Topic: [PATCH 2/2] virtio-iommu: Rework the trace in
- virtio_iommu_set_page_size_mask()
-Thread-Index: AQHZrmjmjixANg4+sU2QQB+pIVxfpK+qnCOwgAA38RA=
-Date: Wed, 5 Jul 2023 08:17:36 +0000
-Message-ID: <SJ0PR11MB6744AEDC41BE576A59908A30922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20230704111527.3424992-1-eric.auger@redhat.com>
- <20230704111527.3424992-3-eric.auger@redhat.com>
- <SJ0PR11MB6744FA4E41101F7EED607E9C922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-In-Reply-To: <SJ0PR11MB6744FA4E41101F7EED607E9C922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|SA1PR11MB8541:EE_
-x-ms-office365-filtering-correlation-id: 5316f222-3bff-40f0-730b-08db7d304ace
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: UzwM72xrv14cI25KPazqsIQHMp9h4TKWGxnrb9bYOBAsFxt3tmBtagPfMRe2TKdAQJtQcLeemX++9WabmjjVW1txbzgaDWa295wlrCay1DDklE7cglDP4lxITgWX5ebIFDIadm9E+KG1B8OUrqujYQWpHj/iZgZTOKUzW/w6qnwKoFBGGRDCf48JtTRrps74NjtEsqxxz+G+mti2g2kc/itMcEySHUBesEuYrMSD+c1KTAtaqSIEWmVD19Swn38ye/QOlQy0ykTFXlbk3nRCBe98x5eaMu5FedxoIgwW+1b4eObPXD2OAp41Yr0fx0asHiqYMJ4UaCgAVpMdZ3Oi41QhZl6q5yOLDnNucc27cjEt3aR0m9uC1wldiqr+HgV3IM43T9lCI4rkiqiOHPve7ck93HJTP5FHSnb2AfF+3f66Fnts/+MeE4I3SFU9I/SrOX5Qz28VwZLUpv59SOE+rtTVPEq95MNAy1jSe0yipZfppIXrzF/HAPSXGm5jeLhrcuzYht6j2WubXExveyBRN8ozQ+SZxW9Dta/MBKpgv4BL4Y5hNqunAYz+UPfR2IdFjsJT3xBagAhmxWR+mmnnty5j0CSp2Ohq2p5AJCt9DtuACxMLRSxeqSaNbjwFGwGA
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(39860400002)(346002)(396003)(366004)(136003)(376002)(451199021)(41300700001)(54906003)(7696005)(38100700002)(83380400001)(71200400001)(6506007)(122000001)(186003)(2940100002)(82960400001)(9686003)(86362001)(55016003)(110136005)(38070700005)(316002)(478600001)(66446008)(66946007)(76116006)(66556008)(66476007)(4326008)(64756008)(8936002)(33656002)(8676002)(26005)(7416002)(52536014)(5660300002)(2906002);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?BxosOcpd0ETde6eMj7P1wLu0Pmoo14iH52IV2PHpxk9/yCpv/oZmwL5dCFwC?=
- =?us-ascii?Q?py3kNd6hx7NkYalgTr9QVgOWETyWPYIVcUn8gHeC/d07ucCFQAHkdZ5usXwL?=
- =?us-ascii?Q?e0WsjsPUD2TkhSsUnQ0nuZDmJ3Ba48hxCXp8NB328YK9J2zDZLjm0K1abIxJ?=
- =?us-ascii?Q?Y3o9hvA0g5ygUmxP9q6DSpoy4Trn/MH+Mebl4yIjfOP/3FHSLFshx1Xn4p9h?=
- =?us-ascii?Q?PcbrW6eGeuv6VkKCVmSIWIBqdM+84qU8HVh89csguHRb6ZnnJap1HyPPQ8pH?=
- =?us-ascii?Q?muO34xo4jvRr1nVoHzHiRdXXLKRIVZ4MUodmlahWpEm+WuVzb8pQfgy92oyL?=
- =?us-ascii?Q?YG58AbEyf8nDk3/d8BkOoq4dqWkrY1+MmNX6PoUzqFQmuLafcnIBgpYkOF0+?=
- =?us-ascii?Q?0Ol7y4KHBi3pj61A4w17y5moVFUenBFx5IUzEy7MAZ0VQo88qKCvlbpkYfaw?=
- =?us-ascii?Q?cohjp01Frgu8sEgsTtt2vYvB9p1IPmyWGL71jtaopfjY/3ALXvP7CYJOeKIF?=
- =?us-ascii?Q?PN2D/WMua4VCAekrpy6yoaqzBXd+NKgwanJg1sE7u+roTX8YXzlkLSsgS5gO?=
- =?us-ascii?Q?TzGS/U3609Es0kxAcVd9FOJxLnfrecFDdhTo7JEuGg+Ub43kpGn+9RbkSoUN?=
- =?us-ascii?Q?Fi7TCg0vSUBobgnndClh3DFXt3yLZ1XOaUkOHkB3Nw9o3I/ED843VVxEKREI?=
- =?us-ascii?Q?UZx3u0Cuae9NUojWiW+BB7Zts2v2R+m4EDbQa+zSg7ZY6nxu4Kul1L92uqQU?=
- =?us-ascii?Q?HK/aA2MqT2P1iUXbSnUuyLbhE5MtTMeJMgoj8fCyBc4z2yPlZNyGbxDP+B/l?=
- =?us-ascii?Q?nSs9q1y2rEDFFpAz7NsJhG0Dw64KqQ1DGw9Ioy8npr8q1ZN4nxOw8zIbf4ZA?=
- =?us-ascii?Q?aee3etGhEsVRG9tdQMus74gWuhHOB+N5X1L8K1uEj+DvX2Vji5PqbZAZ0KXd?=
- =?us-ascii?Q?ewh7bhR4fSE0alIYSAjeWcNYauEFBKBvH3o5qdg0h2cSOYq/G5oYvYz8xFrP?=
- =?us-ascii?Q?7KKDKepmIQntBUz+Z7JygPWZlqw3d5zsSqgjRdjH5RPopaW1wWvPryDEvohD?=
- =?us-ascii?Q?f0uAeeuiVGqk54FzYJWvKclMrw+dw08nhMjBO/ikPeDOZK0q967XMsWniLnp?=
- =?us-ascii?Q?vlk5bwhtU4nlanHjLDUPXPtitgXoMM8QuwDZhizUZFxOyai11RC5BRe9erx1?=
- =?us-ascii?Q?xScz39TWq7TazV/orWLwvw29FbwxsOZC55I1whB6upp4aRn8tgvmYZ4MA/Us?=
- =?us-ascii?Q?dB1iRAgTQ7yiVBb4F3uoz6yncLNGQqIDuk7iwmJjajgh8R8FucXvCduSDnSi?=
- =?us-ascii?Q?YHCG76TMKdPEwZgxLNalUgJ26xTQ4sljGNtM2+kEsT42IXRfO5htu1oMDrHn?=
- =?us-ascii?Q?TuESq/L3hys2Q8y4m4E4diuv0J2lhn7oUmkkU5/OZr8werMd7V2qkuDODP5S?=
- =?us-ascii?Q?89JGFptvu3P7TZaIZEUdspcC2bI62h8GWX4+8PTzX7QDaLtrDXa7H66GUGOa?=
- =?us-ascii?Q?8M+PGBf3i6w6ynJm9b+EK5JZ1Skq3jrkh4kOVknPgxDoiAZmU4sDDXGt6/Y1?=
- =?us-ascii?Q?TL7+8GPr0atDNX4/86Rxsaeeh9yofeIjbGyYFyOQ?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <zhanghao1@kylinos.cn>)
+ id 1qGxjQ-0007zU-LY
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 04:19:32 -0400
+X-UUID: ff2df42a177b42938f41d3ee2a90a997-20230705
+X-CID-O-RULE: Release_Ham
+X-CID-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.27, REQID:1c244c42-6298-4007-af1a-195b4deb4fca, IP:5,
+ U
+ RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,AC
+ TION:release,TS:-10
+X-CID-INFO: VERSION:1.1.27, REQID:1c244c42-6298-4007-af1a-195b4deb4fca, IP:5,
+ URL
+ :0,TC:0,Content:-25,EDM:25,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+ ON:release,TS:-10
+X-CID-META: VersionHash:01c9525, CLOUDID:64aab882-5a99-42ae-a2dd-e4afb731b474,
+ B
+ ulkID:230705100759I2IPX061,BulkQuantity:2,Recheck:0,SF:24|17|19|44|102,TC:
+ nil,Content:0,EDM:5,IP:-2,URL:11|1,File:nil,Bulk:40,QS:nil,BEC:nil,COL:0,O
+ SI:0,OSA:0,AV:0,LES:1,SPR:NO
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR, TF_CID_SPAM_FAS, TF_CID_SPAM_FSD,
+ TF_CID_SPAM_FSI, TF_CID_SPAM_ULN
+X-UUID: ff2df42a177b42938f41d3ee2a90a997-20230705
+X-User: zhanghao1@kylinos.cn
+Received: from localhost.localdomain [(111.48.58.12)] by mailgw
+ (envelope-from <zhanghao1@kylinos.cn>) (Generic MTA)
+ with ESMTP id 1295193389; Wed, 05 Jul 2023 16:19:12 +0800
+From: zhanghao1 <zhanghao1@kylinos.cn>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, berrange@redhat.com, zhanghao1 <zhanghao1@kylinos.cn>
+Subject: [PATCH v2] virtio: add a new vcpu watchdog
+Date: Wed,  5 Jul 2023 16:18:13 +0800
+Message-Id: <20230705081813.411526-1-zhanghao1@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5316f222-3bff-40f0-730b-08db7d304ace
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Jul 2023 08:17:36.9408 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 2ROGMU+cFMTa8LDZyxtjQtyUFg6TonY6ef4jUccihVSI33QXdw8OuBJfMacgmiAesbVTLRFFZjLYdPjGQMTPa2glj1rJ3iL5/6hhWUyQwXc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8541
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.120;
- envelope-from=zhenzhong.duan@intel.com; helo=mga04.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=124.126.103.232;
+ envelope-from=zhanghao1@kylinos.cn; helo=mailgw.kylinos.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -171,113 +75,454 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Each vcpu creates a corresponding timer task. The watchdog
+is driven by a timer according to a certain period. Each time
+the timer expires, the counter is decremented. When the counter
+is "0", the watchdog considers the vcpu to be stalling and resets
+the VM. To avoid watchdog expiration, the guest kernel driver
+needs to periodically send a pet event to update the counter.
+
+Signed-off-by: zhanghao1 <zhanghao1@kylinos.cn>
+---
+v2:
+ - change the function name and remove the redundant word 'stall'
+ - add trace-events to replace DPRINTF and qemu_log
+ - call 'watchdog_perform_action()' to reset vm
+ - update g_new0 to replace malloc
+ - update only use '.generic_name'
+ - update the bool variable 'is_initialized' to uint32_t
+
+v1: https://lore.kernel.org/qemu-devel/20230615061302.301754-1-zhanghao1@kylinos.cn/
+
+ hw/virtio/Kconfig                        |   5 +
+ hw/virtio/meson.build                    |   2 +
+ hw/virtio/trace-events                   |   6 +
+ hw/virtio/virtio-vcpu-watchdog-pci.c     |  86 +++++++++
+ hw/virtio/virtio-vcpu-watchdog.c         | 226 +++++++++++++++++++++++
+ include/hw/virtio/virtio-vcpu-watchdog.h |  37 ++++
+ 6 files changed, 362 insertions(+)
+ create mode 100644 hw/virtio/virtio-vcpu-watchdog-pci.c
+ create mode 100644 hw/virtio/virtio-vcpu-watchdog.c
+ create mode 100644 include/hw/virtio/virtio-vcpu-watchdog.h
+
+diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
+index 89e9e426d8..85bb7ce46d 100644
+--- a/hw/virtio/Kconfig
++++ b/hw/virtio/Kconfig
+@@ -90,3 +90,8 @@ config VHOST_VDPA_DEV
+     bool
+     default y
+     depends on VIRTIO && VHOST_VDPA && LINUX
++
++config VIRTIO_VCPU_WATCHDOG
++    bool
++    default y
++    depends on VIRTIO
+diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
+index bdec78bfc6..fe2084ec07 100644
+--- a/hw/virtio/meson.build
++++ b/hw/virtio/meson.build
+@@ -33,6 +33,7 @@ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('vhost-user
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_GPIO', if_true: files('vhost-user-gpio.c'))
+ specific_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_GPIO'], if_true: files('vhost-user-gpio-pci.c'))
+ specific_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
++specific_virtio_ss.add(when: 'CONFIG_VIRTIO_VCPU_WATCHDOG', if_true: files('virtio-vcpu-watchdog.c'))
+ 
+ virtio_pci_ss = ss.source_set()
+ virtio_pci_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost-vsock-pci.c'))
+@@ -59,6 +60,7 @@ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_PMEM', if_true: files('virtio-pmem-pci.c'
+ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu-pci.c'))
+ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem-pci.c'))
+ virtio_pci_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev-pci.c'))
++virtio_pci_ss.add(when: 'CONFIG_VIRTIO_VCPU_WATCHDOG', if_true: files('virtio-vcpu-watchdog-pci.c'))
+ 
+ specific_virtio_ss.add_all(when: 'CONFIG_VIRTIO_PCI', if_true: virtio_pci_ss)
+ 
+diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+index 8f8d05cf9b..dc0d5174e6 100644
+--- a/hw/virtio/trace-events
++++ b/hw/virtio/trace-events
+@@ -151,3 +151,9 @@ virtio_pmem_flush_done(int type) "fsync return=%d"
+ virtio_gpio_start(void) "start"
+ virtio_gpio_stop(void) "stop"
+ virtio_gpio_set_status(uint8_t status) "0x%x"
++
++# virtio-vcpu-watchdog.c
++virtio_receive_vcpu_info(size_t len, int cpu, uint32_t is_initialized, uint32_t ticks) "len=%zd cpu=%d is_initialized=%d ticks=%d"
++virtio_vcpu_check_ticks(int cpu_id, uint32_t ticks) "cpu_id=%d ticks=%d"
++virtio_vcpu_check_reset(int cpu_id) "CPU:%d is stall need to reset vm"
++virtio_vcpu_watchdog_process(int thread_id) "vcpu thread id:%d"
+diff --git a/hw/virtio/virtio-vcpu-watchdog-pci.c b/hw/virtio/virtio-vcpu-watchdog-pci.c
+new file mode 100644
+index 0000000000..f264c82d6f
+--- /dev/null
++++ b/hw/virtio/virtio-vcpu-watchdog-pci.c
+@@ -0,0 +1,86 @@
++/*
++ * Virtio cpu watchdog PCI Bindings
++ *
++ * Copyright 2023 Kylin, Inc.
++ * Copyright 2023 Hao Zhang <zhanghao1@kylinos.cn>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or
++ * (at your option) any later version.  See the COPYING file in the
++ * top-level directory.
++ */
++
++#include "qemu/osdep.h"
++
++#include "hw/virtio/virtio-pci.h"
++#include "hw/virtio/virtio-vcpu-watchdog.h"
++#include "qapi/error.h"
++#include "qemu/module.h"
++
++typedef struct VirtIOCpuWatchdogPCI VirtIOCpuWatchdogPCI;
++
++/*
++ * virtio-cpu-watchdog-pci: This extends VirtioPCIProxy.
++ */
++#define TYPE_VIRTIO_CPU_WATCHDOG_PCI "virtio-vcpu-watchdog-pci"
++DECLARE_INSTANCE_CHECKER(VirtIOCpuWatchdogPCI, VIRTIO_CPU_WATCHDOG_PCI,
++                         TYPE_VIRTIO_CPU_WATCHDOG_PCI)
++
++struct VirtIOCpuWatchdogPCI {
++    VirtIOPCIProxy parent_obj;
++    VirtIOCPUWATCHDOG vdev;
++};
++
++static Property vcpu_watchdog_properties[] = {
++    DEFINE_PROP_UINT32("vectors", VirtIOPCIProxy, nvectors,
++                       DEV_NVECTORS_UNSPECIFIED),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void virtio_vcpu_watchdog_pci_realize(VirtIOPCIProxy *vpci_dev, Error **errp)
++{
++    VirtIOCpuWatchdogPCI *dev = VIRTIO_CPU_WATCHDOG_PCI(vpci_dev);
++    DeviceState *vdev = DEVICE(&dev->vdev);
++
++    if (vpci_dev->nvectors == DEV_NVECTORS_UNSPECIFIED) {
++        vpci_dev->nvectors = 1;
++    }
++
++    if (!qdev_realize(vdev, BUS(&vpci_dev->bus), errp)) {
++        return;
++    }
++}
++
++static void virtio_vcpu_watchdog_pci_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
++    PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
++
++    k->realize = virtio_vcpu_watchdog_pci_realize;
++    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
++    device_class_set_props(dc, vcpu_watchdog_properties);
++    pcidev_k->revision = VIRTIO_PCI_ABI_VERSION;
++    pcidev_k->class_id = PCI_CLASS_OTHERS;
++}
++
++static void virtio_vcpu_watchdog_init(Object *obj)
++{
++    VirtIOCpuWatchdogPCI *dev = VIRTIO_CPU_WATCHDOG_PCI(obj);
++
++    virtio_instance_init_common(obj, &dev->vdev, sizeof(dev->vdev),
++                                TYPE_VIRTIO_VCPU_WATCHDOG);
++}
++
++static const VirtioPCIDeviceTypeInfo virtio_vcpu_watchdog_pci_info = {
++    .generic_name  = TYPE_VIRTIO_CPU_WATCHDOG_PCI,
++    .instance_size = sizeof(VirtIOCpuWatchdogPCI),
++    .instance_init = virtio_vcpu_watchdog_init,
++    .class_init    = virtio_vcpu_watchdog_pci_class_init,
++};
++
++static void virtio_vcpu_watchdog_pci_register(void)
++{
++    virtio_pci_types_register(&virtio_vcpu_watchdog_pci_info);
++}
++
++type_init(virtio_vcpu_watchdog_pci_register)
+diff --git a/hw/virtio/virtio-vcpu-watchdog.c b/hw/virtio/virtio-vcpu-watchdog.c
+new file mode 100644
+index 0000000000..f9cf658711
+--- /dev/null
++++ b/hw/virtio/virtio-vcpu-watchdog.c
+@@ -0,0 +1,226 @@
++/*
++ * A virtio device implementing a vcpu watchdog.
++ *
++ * Copyright 2023 Kylin, Inc.
++ * Copyright 2023 zhanghao1 <zhanghao1@kylinos.cn>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or
++ * (at your option) any later version.  See the COPYING file in the
++ * top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "qemu/iov.h"
++#include "qemu/module.h"
++#include "qemu/bswap.h"
++#include "hw/virtio/virtio.h"
++#include "hw/virtio/virtio-vcpu-watchdog.h"
++#include "qom/object_interfaces.h"
++#include "trace.h"
++#include "standard-headers/linux/virtio_ids.h"
++#include "hw/virtio/virtio-access.h"
++#include "hw/boards.h"
++#include "sysemu/cpus.h"
++#include "sysemu/runstate.h"
++#include "sysemu/watchdog.h"
++
++#define VCPU_DEFAULT_CLOCK_HZ (5)
++#define VCPU_DEFAULT_TIMEOUT_SEC (8)
++#define MSEC_PER_SEC 1000
++#define PROCSTAT_UTIME_INDX 13
++#define PROCSTAT_GUEST_TIME_INDX 42
++
++struct vcpu_info {
++    uint32_t cpu_id;
++    uint32_t is_initialized;
++    uint32_t ticks;
++    uint64_t not_running_last_timestamp;
++};
++
++static VirtIOCPUWATCHDOG *vwdt;
++
++static bool is_guest_ready(VirtIOCPUWATCHDOG *vwdt)
++{
++    VirtIODevice *vdev = VIRTIO_DEVICE(vwdt);
++    if (virtio_queue_ready(vwdt->vq) &&
++        (vdev->status & VIRTIO_CONFIG_S_FEATURES_OK)) {
++        return true;
++    }
++    return false;
++}
++
++/* receive data from guest */
++static void receive_vcpu_info(void *opaque, void *buf, size_t size)
++{
++    VirtIOCPUWATCHDOG *vwdt = opaque;
++    VirtIODevice *vdev = VIRTIO_DEVICE(vwdt);
++    g_autofree VirtQueueElement *elem;
++    size_t len;
++
++    if (!is_guest_ready(vwdt)) {
++        return;
++    }
++
++    elem = virtqueue_pop(vwdt->vq, sizeof(VirtQueueElement));
++    if (!elem) {
++        return;
++    }
++
++    len = iov_size(elem->out_sg, elem->out_num);
++
++    len = iov_to_buf(elem->out_sg, elem->out_num,
++                     0, buf, len);
++
++    int cpu = virtio_ldl_p(vdev, &((struct vcpu_info *)buf)->cpu_id);
++    trace_virtio_receive_vcpu_info(len, cpu,
++                                   ((struct vcpu_info *)buf)->is_initialized,
++                                   ((struct vcpu_info *)buf)->ticks);
++
++    virtqueue_push(vwdt->vq, elem, len);
++    virtio_notify(vdev, vwdt->vq);
++}
++
++static void vcpu_check(void *opaque)
++{
++    int *cpu_id = (int *)opaque;
++
++    struct vcpu_info *priv = vwdt->recv_buf[*cpu_id];
++
++    trace_virtio_vcpu_check_ticks(*cpu_id, priv->ticks);
++    
++    priv->ticks -= 1;
++
++    if (priv->ticks <= 0) {
++        /* cpu is stall, reset vm */
++        trace_virtio_vcpu_check_reset(*cpu_id);
++        watchdog_perform_action();
++    }
++
++    int64_t expire_timer = qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL);
++    expire_timer += (MSEC_PER_SEC / VCPU_DEFAULT_CLOCK_HZ);
++    timer_mod(vwdt->timer[*cpu_id], expire_timer);
++}
++
++static void virtio_vcpu_watchdog_process(VirtIOCPUWATCHDOG *vwdt)
++{
++    int i = 0;
++    struct vcpu_info recv_buf;
++
++    if (!is_guest_ready(vwdt)) {
++        return;
++    }
++
++    receive_vcpu_info(vwdt, &recv_buf, sizeof(recv_buf));
++
++    for (i = 0; i < vwdt->num_timers; i++) {
++        if (vwdt->recv_buf[i]) {
++            if (vwdt->recv_buf[i]->cpu_id == recv_buf.cpu_id) {
++                /* update ticks */
++                vwdt->recv_buf[i]->is_initialized = 1;
++                vwdt->recv_buf[i]->ticks = recv_buf.ticks;
++            }
++        } else {
++            break;
++        }
++    }
++
++    if (i != vwdt->num_timers) {
++        struct vcpu_info *priv = g_new0(struct vcpu_info, 1);
++
++        memcpy(priv, &recv_buf, sizeof(struct vcpu_info));
++        vwdt->recv_buf[i] = priv;
++        vwdt->timer[i] = timer_new_ms(QEMU_CLOCK_VIRTUAL,
++                                            vcpu_check, &priv->cpu_id);
++
++        int64_t expire_timer = qemu_clock_get_ms(QEMU_CLOCK_VIRTUAL);
++        expire_timer += (MSEC_PER_SEC / VCPU_DEFAULT_CLOCK_HZ);
++        timer_mod(vwdt->timer[i], expire_timer);
++
++        CPUState *cpu = qemu_get_cpu(recv_buf.cpu_id);
++        if (!cpu) {
++            return;
++        }
++        trace_virtio_vcpu_watchdog_process(cpu->thread_id);
++    }
++}
++
++static void handle_input(VirtIODevice *vdev, VirtQueue *vq)
++{
++    VirtIOCPUWATCHDOG *vwdt = VIRTIO_VCPU_WATCHDOG(vdev);
++    virtio_vcpu_watchdog_process(vwdt);
++}
++
++static uint64_t get_features(VirtIODevice *vdev, uint64_t f, Error **errp)
++{
++    return f;
++}
++
++static void virtio_vcpu_watchdog_device_realize(DeviceState *dev, Error **errp)
++{
++    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
++    vwdt = VIRTIO_VCPU_WATCHDOG(dev);
++
++    virtio_init(vdev, VIRTIO_ID_WATCHDOG, 0);
++
++    vwdt->vq = virtio_add_queue(vdev, 1024, handle_input);
++
++    MachineState *ms = MACHINE(qdev_get_machine());
++    unsigned int smp_cpus = ms->smp.cpus;
++
++    vwdt->timer = g_new0(struct QEMUTimer *, smp_cpus);
++
++    vwdt->recv_buf = g_new0(struct vcpu_info *, smp_cpus);
++
++    vwdt->num_timers = smp_cpus;
++}
++
++static void virtio_vcpu_watchdog_device_unrealize(DeviceState *dev)
++{
++    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
++    VirtIOCPUWATCHDOG  *vwdt = VIRTIO_VCPU_WATCHDOG(dev);
++
++    g_free(vwdt->timer);
++    g_free(vwdt->recv_buf);
++    virtio_cleanup(vdev);
++}
++
++static const VMStateDescription vmstate_virtio_vcpu_watchdog = {
++    .name = "virtio-vcpu-watchdog",
++    .minimum_version_id = 1,
++    .version_id = 1,
++    .fields = (VMStateField[]) {
++        VMSTATE_VIRTIO_DEVICE,
++        VMSTATE_END_OF_LIST()
++    },
++};
++
++static Property virtio_vcpu_watchdog_properties[] = {
++};
++
++static void virtio_vcpu_watchdog_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
++
++    device_class_set_props(dc, virtio_vcpu_watchdog_properties);
++    dc->vmsd = &vmstate_virtio_vcpu_watchdog;
++    set_bit(DEVICE_CATEGORY_MISC, dc->categories);
++    vdc->realize = virtio_vcpu_watchdog_device_realize;
++    vdc->unrealize = virtio_vcpu_watchdog_device_unrealize;
++    vdc->get_features = get_features;
++}
++
++static const TypeInfo virtio_vcpu_watchdog_info = {
++    .name = TYPE_VIRTIO_VCPU_WATCHDOG,
++    .parent = TYPE_VIRTIO_DEVICE,
++    .instance_size = sizeof(VirtIOCPUWATCHDOG),
++    .class_init = virtio_vcpu_watchdog_class_init,
++};
++
++static void virtio_register_types(void)
++{
++    type_register_static(&virtio_vcpu_watchdog_info);
++}
++
++type_init(virtio_register_types)
+diff --git a/include/hw/virtio/virtio-vcpu-watchdog.h b/include/hw/virtio/virtio-vcpu-watchdog.h
+new file mode 100644
+index 0000000000..6cce4e9bab
+--- /dev/null
++++ b/include/hw/virtio/virtio-vcpu-watchdog.h
+@@ -0,0 +1,37 @@
++/*
++ * Virtio cpu watchdog Support
++ *
++ * Copyright Kylin, Inc. 2023
++ * Copyright zhanghao1 <zhanghao1@kylinos.cn>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or
++ * (at your option) any later version.  See the COPYING file in the
++ * top-level directory.
++ */
++
++#ifndef QEMU_VIRTIO_CPU_WATCHDOG_H
++#define QEMU_VIRTIO_CPU_WATCHDOG_H
++
++#include "hw/virtio/virtio.h"
++
++#define TYPE_VIRTIO_VCPU_WATCHDOG "virtio-vcpu-watchdog-device"
++
++#define VIRTIO_VCPU_WATCHDOG(obj) \
++        OBJECT_CHECK(VirtIOCPUWATCHDOG, (obj), TYPE_VIRTIO_VCPU_WATCHDOG)
++#define VIRTIO_CPU_WATCHDOG_GET_PARENT_CLASS(obj) \
++        OBJECT_GET_PARENT_CLASS(obj, TYPE_VIRTIO_VCPU_WATCHDOG)
++typedef struct VirtIOCPUWATCHDOG {
++    VirtIODevice parent_obj;
++
++    /* Only one vq - guest puts message on it when vcpu is stall */
++    VirtQueue *vq;
++
++    QEMUTimer **timer;
++    int num_timers;
++
++    struct vcpu_info **recv_buf;
++
++    uint64_t not_running_last_timestamp;
++} VirtIOCPUWATCHDOG;
++
++#endif
+-- 
+2.25.1
 
 
->-----Original Message-----
->From: Duan, Zhenzhong
->Sent: Wednesday, July 5, 2023 12:56 PM
->Subject: RE: [PATCH 2/2] virtio-iommu: Rework the trace in
->virtio_iommu_set_page_size_mask()
->
->
->
->>-----Original Message-----
->>From: Eric Auger <eric.auger@redhat.com>
->>Sent: Tuesday, July 4, 2023 7:15 PM
->>To: eric.auger.pro@gmail.com; eric.auger@redhat.com; qemu-
->>devel@nongnu.org; qemu-arm@nongnu.org; mst@redhat.com; jean-
->>philippe@linaro.org; Duan, Zhenzhong <zhenzhong.duan@intel.com>
->>Cc: alex.williamson@redhat.com; clg@redhap.com;
->bharat.bhushan@nxp.com;
->>peter.maydell@linaro.org
->>Subject: [PATCH 2/2] virtio-iommu: Rework the trace in
->>virtio_iommu_set_page_size_mask()
->>
->>The current error messages in virtio_iommu_set_page_size_mask() sound
->>quite similar for different situations and miss the IOMMU memory region
->>that causes the issue.
->>
->>Clarify them and rework the comment.
->>
->>Also remove the trace when the new page_size_mask is not applied as the
->>current frozen granule is kept. This message is rather confusing for
->>the end user and anyway the current granule would have been used by the
->>driver
->>
->>Signed-off-by: Eric Auger <eric.auger@redhat.com>
->>---
->> hw/virtio/virtio-iommu.c | 19 +++++++------------
->> 1 file changed, 7 insertions(+), 12 deletions(-)
->>
->>diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c index
->>1eaf81bab5..0d9f7196fe 100644
->>--- a/hw/virtio/virtio-iommu.c
->>+++ b/hw/virtio/virtio-iommu.c
->>@@ -1101,29 +1101,24 @@ static int
->>virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
->>                                           new_mask);
->>
->>     if ((cur_mask & new_mask) =3D=3D 0) {
->>-        error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
->>-                   " is incompatible with mask 0x%"PRIx64, cur_mask, new=
-_mask);
->>+        error_setg(errp, "virtio-iommu %s reports a page size mask 0x%"P=
-RIx64
->>+                   " incompatible with currently supported mask 0x%"PRIx=
-64,
->>+                   mr->parent_obj.name, new_mask, cur_mask);
->>         return -1;
->>     }
->>
->>     /*
->>      * Once the granule is frozen we can't change the mask anymore. If b=
-y
->>      * chance the hotplugged device supports the same granule, we can st=
-ill
->>-     * accept it. Having a different masks is possible but the guest wil=
-l use
->>-     * sub-optimal block sizes, so warn about it.
->>+     * accept it.
->>      */
->>     if (s->granule_frozen) {
->>-        int new_granule =3D ctz64(new_mask);
->>         int cur_granule =3D ctz64(cur_mask);
->>
->>-        if (new_granule !=3D cur_granule) {
->>-            error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
->>-                       " is incompatible with mask 0x%"PRIx64, cur_mask,
->>-                       new_mask);
->>+        if (!(BIT(cur_granule) & new_mask)) {
-
-Sorry, I read this piece code again and got a question, if new_mask has fin=
-er
-granularity than cur_granule, should we allow it to pass even though
-BIT(cur_granule) is not set?
-
-Thanks
-Zhenzhong
-
->
->Good catch.
->
->Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->
->Thanks
->Zhenzhong
->
->>+            error_setg(errp, "virtio-iommu %s does not support frozen
->>+ granule
->>0x%"PRIx64,
->>+                       mr->parent_obj.name, BIT(cur_granule));
->>             return -1;
->>-        } else if (new_mask !=3D cur_mask) {
->>-            warn_report("virtio-iommu page mask 0x%"PRIx64
->>-                        " does not match 0x%"PRIx64, cur_mask, new_mask)=
-;
->>         }
->>         return 0;
->>     }
->>--
->>2.38.1
-
+No virus found
+		Checked by Hillstone Network AntiVirus
 
