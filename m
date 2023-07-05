@@ -2,66 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57867482DF
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:22:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 274C47482E4
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 13:26:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH0aI-0007Zk-EB; Wed, 05 Jul 2023 07:22:10 -0400
+	id 1qH0dm-0000jY-9Z; Wed, 05 Jul 2023 07:25:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qH0aG-0007Z5-74
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:22:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qH0dk-0000jE-H7
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:25:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qH0aE-0006JH-BW
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:22:07 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qH0dj-00075n-4C
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 07:25:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688556123;
+ s=mimecast20190719; t=1688556342;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fj0ULByj4TyR4SsyJV5QOhKKNDHJv7ywDzU7PNxBtV4=;
- b=NmR0sIEyJz3kUD/xU0w2Aa9kf9/9+BJzvscsSfRZ3cBpze+OA2B3JIIMizaRqxcuQ1U7Mn
- bgJNPo6YEZJuNsSmXs1J1fhhvs7CEtct0wl6LrgKmjp7SXawWZjrhWY4MwCJaSCq4MzjVk
- fzkbpk7sTbMlk2O5f9JOnb/0grF61M8=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-166-fSudfr_INIW7rZ5D25l5GA-1; Wed, 05 Jul 2023 07:21:59 -0400
-X-MC-Unique: fSudfr_INIW7rZ5D25l5GA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 66B7B3806713;
- Wed,  5 Jul 2023 11:21:59 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4319F200B402;
- Wed,  5 Jul 2023 11:21:59 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3411A21E6A1F; Wed,  5 Jul 2023 13:21:58 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: qemu-devel@nongnu.org,  prerna.saxena@nutanix.com,  quintela@redhat.com,
- dgilbert@redhat.com,  pbonzini@redhat.com,  berrange@redhat.com,
- eblake@redhat.com,  manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-Subject: Re: [PATCH v6 1/9] migration: introduced 'MigrateAddress' in QAPI
- for migration wire protocol.
-References: <20230606101557.202060-1-het.gala@nutanix.com>
- <20230606101557.202060-2-het.gala@nutanix.com>
-Date: Wed, 05 Jul 2023 13:21:58 +0200
-In-Reply-To: <20230606101557.202060-2-het.gala@nutanix.com> (Het Gala's
- message of "Tue, 6 Jun 2023 10:15:49 +0000")
-Message-ID: <87cz16iox5.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=iFE/VLWDeD88Y2mZh0/SkWHYUkPtW6ze/pBDwBQhf1c=;
+ b=TrSpyboFyeMYmmxxIKxWaKotf7jppyleRbXiDTekQr0DVUmKffVjVw+Vw2JFA+gzNTqAa8
+ FbYsR+FHx1PNk1ArTzAbiBZ3qJ/Lvkak6rkqF/0mTZ77u3bs2cV5RF54O81hyXuqRYVp4m
+ Z4nEYVyify4UMUUsIutzdV6UYUVmrf8=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-283-o2TjGZv8PbC5EB7yPY8AUA-1; Wed, 05 Jul 2023 07:25:40 -0400
+X-MC-Unique: o2TjGZv8PbC5EB7yPY8AUA-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2b6fdbe2efdso7307631fa.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 04:25:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688556339; x=1691148339;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iFE/VLWDeD88Y2mZh0/SkWHYUkPtW6ze/pBDwBQhf1c=;
+ b=QSOj8dg2HvsPFo2uEvVHVJL+XRNW0PYdkvQS2VqLxIS2tRAnoDC5wdniRJnZKYkyeK
+ NFM2WU+fre3h0jr8cJusnARjQ1lU4CplBLRv8XiH1ejh7s5PaGxd+ZbdY2zc784yLtWp
+ Nxg25gYZ6rsFRH1gnyceg9uAzvidmXmSEp0QQyyIKTSbjR0uJAY43Gac72d8ee0dI0xi
+ 0sIeUp7P4X4FDsVEKTKdEbwvm/FnrQwfCEniSw1ZBWAnsdvQ1wGTaEcfafnzDpWUFC9v
+ kQ2PtaDgmy1PS65oESNaPeCs8aOvCJ3yEZnRU90dG/vgLpvAnjifsLrJFd0ZEKbRRqBI
+ 5qlQ==
+X-Gm-Message-State: ABy/qLav24im/GwRlKUAH9v1MORIWLpB6bV3wF3lXKBxathn234SqKfD
+ HedOpHhuhvfuhHdHtKpJYCEfQ4vrjTBWt7vaWCqMc70OSLcqykEt513crlEj0RBHSLkcKASgzgZ
+ 6Uel0oAQImaC+eq6yDEgn1BJqFhr1hMLg4+XHeFKjrdk6FViDUHSbg2a52CPtVKRyhJYcY9yLev
+ g=
+X-Received: by 2002:a2e:b164:0:b0:2b6:d733:b580 with SMTP id
+ a4-20020a2eb164000000b002b6d733b580mr8763401ljm.37.1688556338905; 
+ Wed, 05 Jul 2023 04:25:38 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlG7OVchk+DLtqkqMYGNw+9hSwt5O4E1CprK4bSw31jo8HqgBRPf+gdj/Fsmo0D5CHIInlK/Jw==
+X-Received: by 2002:a2e:b164:0:b0:2b6:d733:b580 with SMTP id
+ a4-20020a2eb164000000b002b6d733b580mr8763386ljm.37.1688556338504; 
+ Wed, 05 Jul 2023 04:25:38 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ by smtp.gmail.com with ESMTPSA id
+ gv18-20020a170906f11200b0098e0a937a6asm13838554ejb.69.2023.07.05.04.25.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 Jul 2023 04:25:37 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: jsnow@redhat.com
+Subject: [PATCH 0/2] python: first step towards Python 3.12 support
+Date: Wed,  5 Jul 2023 13:25:34 +0200
+Message-ID: <20230705112536.54025-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,129 +98,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
+The Python 3.12 situation is a mess, with both flake8 and pylint giving
+false positives that do not happen with Python 3.11.  As a first step
+towards understanding these issues, drop support for old linter versions
+that do not work with it.  This at least makes it possible to install
+easily the same versions of the linters on any version of Python, and
+put the blame on the interpreter.
 
-> This patch introduces well defined MigrateAddress struct and its related
-> child objects.
->
-> The existing argument of 'migrate' and 'migrate-incoming' QAPI - 'uri'
-> is of string type. The current migration flow follows double encoding
-> scheme for  fetching migration parameters such as 'uri' and this is
-> not an ideal design.
->
-> Motive for intoducing struct level design is to prevent double encoding
-> of QAPI arguments, as Qemu should be able to directly use the QAPI
-> arguments without any level of encoding.
->
-> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> ---
->  qapi/migration.json | 45 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 45 insertions(+)
->
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 179af0c4d8..e61d25eba2 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -1407,6 +1407,51 @@
->  ##
->  { 'command': 'migrate-continue', 'data': {'state': 'MigrationStatus'} }
->=20=20
-> +##
-> +# @MigrationAddressType:
-> +#
-> +# The migration stream transport mechanisms.
-> +#
-> +# @socket: Migrate via socket.
-> +#
-> +# @exec: Direct the migration stream to another process.
-> +#
-> +# @rdma: Migrate via RDMA.
-> +#
-> +# Since 8.1
-> +##
-> +{ 'enum': 'MigrationAddressType',
-> +  'data': ['socket', 'exec', 'rdma'] }
-> +
-> +##
-> +# @MigrationExecCommand:
-> +#
-> +# @args: list of commands for migraton stream execution to a file.
+Paolo
 
-Typo: migration
+Paolo Bonzini (2):
+  python: work around mypy false positive
+  python: bump minimum requirements so they are compatible with 3.12
 
-> +#
-> +# Notes:
-> +#
-> +# 1. @args[0] needs to be the path to the new program.
+ python/qemu/qmp/qmp_tui.py | 3 ++-
+ python/setup.cfg           | 2 +-
+ python/tests/minreqs.txt   | 9 ++++-----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-@args can't be a "list of commands", as we're spawning just one process.
-So what is it?
-
-Digging through the code with the entire series applied...  Member @args
-is used in two places:
-
-1. qemu_start_incoming_migration() passes it to
-   exec_start_incoming_migration(), which translates it into an array
-   and passes it to qio_channel_command_new_spawn().
-
-2. qmp_migrate() passes it to exec_start_outgoing_migration(), which
-   does the same.
-
-qio_channel_command_new_spawn() passes it to
-g_spawn_async_with_pipes().  A close read of the latter's documentation
-leads me to:
-
-* args[0] is the excutable's file name.  As usual, a relative name is
-  relative to the QEMU process's current working directory.
-
-* args[1..] are the arguments.
-
-Unlike POSIX interfaces like execv() and posix_spawn(), this doesn't
-separate the executable's file name and 0-th argument.
-
-In short, the head of @args is the executable's filename, and the
-remainder are the arguments.  The fact that the the executable's
-filename is passed as 0-th argument to the child process is detail.
-
-Perhaps this could do:
-
-   ##
-   # @MigrationExecCommand:
-   #
-   # @args: command and arguments to execute.
-
-If we want more detail, perhaps:
-
-   # @args: command (list head) and arguments (list tail) to execute.
-
-Not sure we need it.  Thoughts?
-
-> +#
-> +# Since 8.1
-> +##
-> +{ 'struct': 'MigrationExecCommand',
-> +  'data': {'args': [ 'str' ] } }
-> +
-> +##
-> +# @MigrationAddress:
-> +#
-> +# Migration endpoint configuration.
-> +#
-> +# Since 8.1
-> +##
-> +{ 'union': 'MigrationAddress',
-> +  'base': { 'transport' : 'MigrationAddressType'},
-> +  'discriminator': 'transport',
-> +  'data': {
-> +    'socket': 'SocketAddress',
-> +    'exec': 'MigrationExecCommand',
-> +    'rdma': 'InetSocketAddress' } }
-> +
->  ##
->  # @migrate:
->  #
+-- 
+2.41.0
 
 
