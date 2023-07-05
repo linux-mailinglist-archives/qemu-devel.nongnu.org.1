@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2E474894B
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2F874894A
 	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 18:32:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH5Ps-0007Ci-1j; Wed, 05 Jul 2023 12:31:44 -0400
+	id 1qH5Ps-0007DH-LD; Wed, 05 Jul 2023 12:31:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qH5Pp-0007CH-5j
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:31:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qH5Pq-0007CQ-4E
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:31:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qH5Pn-00031P-Fa
- for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:31:40 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qH5Pn-00031V-SP
+ for qemu-devel@nongnu.org; Wed, 05 Jul 2023 12:31:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1688574698;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=W5ObyngV/i2EDF8aNBNPe4LEpTXiZ7BBn64rExkwn7M=;
- b=D4jVzUdaeEJjEpBRiF7HUfnS6L0ZfY/p4gF6Emv4Gmn/iFwSl02bD4PhVlKD6xIjrxY8W+
- 4vAWOHgrrxS3EZ+L7PWJOqDid6LWjrs4mB+h8GC0N5M8vd0alNlkj7KaOgtLRinq2eFU4W
- B72WjXt+2+TBhc+UXJlB6XEAUMoPQRI=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0UVw3/3erSv75PWEhesVvVByBAmMS+JnR4htvlIV6yE=;
+ b=bu6TDDybw/vAyVRejbKUPQMRaX78d1f2cFygOBcOxVNx680x3oi4oflW80GR5hqpVHstyN
+ fAvjqWiM8mVDu/2dzHzpmk5ZkX0nmJABXwJ3qPCR5LV3aqfwWDp2VVkb9/oAY0KHHEkiXs
+ 4MIBfYVppclLM6e3Smot59FaQrD4Mrc=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-138-FNsglliTOnqlPmFZuAujhw-1; Wed, 05 Jul 2023 12:31:35 -0400
-X-MC-Unique: FNsglliTOnqlPmFZuAujhw-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-76716078e78so123056085a.1
- for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 09:31:35 -0700 (PDT)
+ us-mta-589-sVrydNtZMbqRff1YeD69nw-1; Wed, 05 Jul 2023 12:31:37 -0400
+X-MC-Unique: sVrydNtZMbqRff1YeD69nw-1
+Received: by mail-ua1-f70.google.com with SMTP id
+ a1e0cc1a2514c-79499607027so141407241.0
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 09:31:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688574695; x=1691166695;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=W5ObyngV/i2EDF8aNBNPe4LEpTXiZ7BBn64rExkwn7M=;
- b=MuejtzN03fcGuB4laO2YFjixzb9nKb+/231Z/a7WY3YRFF01QwDMyFJUV2XzOBhtST
- xaO1Rgv08o9hMm6UGhx8j9DbpJ9uUOawuHuj+9/7CGnGoOE4OpKZtsfd6a7U+CCIZi9H
- /N4mtp4NcQkkAcSbPu4Pk1R0K07Cal9qLA3PABFUoor5PBCESh/Ku33RGUo3ritIOxOT
- hb2+TntVaAnB0pIQbnw3FgQ+e/CX7fVWQ/a8BKdQp9PCfVp9PEZuJKYwmPzYYFioHbzL
- 86VTp5tl+Onav/ut5zfQ2rJbVlxCwi8YwJED4DoRv2i4XhP6/ZH7y6KXpqzxD236mhbs
- 6ibw==
-X-Gm-Message-State: ABy/qLaJDQuMfC0UjzVqcvfo6e8KAhIcdZ9NoeFHlTS2N47SlKueYWqt
- Rp17QvTNRnF4Kf3uYl4OiBcFaoSrYOdSjsFhA9p4vpKSiBpe0qnENpkUqNFBEgSzvllZh1dGfsk
- 67GGWw4V94I6MX1xAqDV0pU/cWgNB6L+OMF+Nt+IhI730jhgq5y2elQKM1ayBJiKwMgbccM/J
-X-Received: by 2002:a05:6214:5002:b0:625:aa49:c182 with SMTP id
- jo2-20020a056214500200b00625aa49c182mr5091136qvb.6.1688574695152; 
+ d=1e100.net; s=20221208; t=1688574696; x=1691166696;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0UVw3/3erSv75PWEhesVvVByBAmMS+JnR4htvlIV6yE=;
+ b=QHQ7EEPjHSqJ7v6xLbKkd3X0yut71cwQu8JDansdQkV+E3qP6pUSilONOAkYn4Dfct
+ pDUavJ+kLM+AI+Tctlu5h8Y/ARAX2Ac7p96sRNRG2lWR2LiaCZdeE7OYnREAR12gZRqi
+ q4TwRhFpbFXwtIDtWFEekgckVIcfV5Sa7jiSPjBxLR3v8CPpIJOEwaZ0DBgJibLcHpAP
+ 9eNzsZu3wgOihowC08KUV9OJ35Kcg9DSamXqFrjOIus10Q1C1wI2FHMOrTe1ffku20FV
+ TiroPPHpqyieJvnmmyTwv7ReMm9N2RIJiFvA07Z34G1KkCouQWR6rVZl2KKZKbpRXN+S
+ tQEQ==
+X-Gm-Message-State: ABy/qLZunkXd7b8FOgCSACvbY5VFjabiBJrTTWjkwal4wz2yEYZUJonu
+ Pup2w7y7bqNTwYfQhI82tmnynNEjenTSDmC3rsiEhuQnwrLVuTO7u/Vx1iOyx5zhob1em3bmyyy
+ l0R9BaY01CLPXIeQpOQATCWmlQZl21feTxi4pQ4Li+66K6atOZ98zj8IITUvnZZJ3jljSwHIf
+X-Received: by 2002:ac5:c9a2:0:b0:47e:7350:269d with SMTP id
+ f2-20020ac5c9a2000000b0047e7350269dmr1554872vkm.1.1688574696424; 
+ Wed, 05 Jul 2023 09:31:36 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHq1EinUWWpb/jOkcP46TJnrLsK5zU0aycUXAwxNAG0ErRW99OVRpvJTFL0yaokjDUOOXWl7g==
+X-Received: by 2002:ac5:c9a2:0:b0:47e:7350:269d with SMTP id
+ f2-20020ac5c9a2000000b0047e7350269dmr1554819vkm.1.1688574695934; 
  Wed, 05 Jul 2023 09:31:35 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGU2hqx5HFffixegXIuxTMuoQUpP1e0OJagdz2ND5XBw/rMs6cCMc+mwIfKJgZcGXDbeYEJgA==
-X-Received: by 2002:a05:6214:5002:b0:625:aa49:c182 with SMTP id
- jo2-20020a056214500200b00625aa49c182mr5091107qvb.6.1688574694709; 
- Wed, 05 Jul 2023 09:31:34 -0700 (PDT)
 Received: from x1n.redhat.com
  (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
  by smtp.gmail.com with ESMTPSA id
- oj2-20020a056214440200b00631fc149a19sm3003159qvb.110.2023.07.05.09.31.33
+ oj2-20020a056214440200b00631fc149a19sm3003159qvb.110.2023.07.05.09.31.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jul 2023 09:31:34 -0700 (PDT)
+ Wed, 05 Jul 2023 09:31:35 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eric Blake <eblake@redhat.com>, Laszlo Ersek <lersek@redhat.com>,
@@ -70,14 +71,15 @@ Cc: Eric Blake <eblake@redhat.com>, Laszlo Ersek <lersek@redhat.com>,
  peterx@redhat.com, Avihai Horon <avihaih@nvidia.com>,
  Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 0/2] migration: switchover-hold flag
-Date: Wed,  5 Jul 2023 12:31:30 -0400
-Message-ID: <20230705163132.329501-1-peterx@redhat.com>
+Subject: [PATCH v4 1/2] migration: switchover-hold parameter
+Date: Wed,  5 Jul 2023 12:31:31 -0400
+Message-ID: <20230705163132.329501-2-peterx@redhat.com>
 X-Mailer: git-send-email 2.41.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230705163132.329501-1-peterx@redhat.com>
+References: <20230705163132.329501-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,21 +104,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This v4 patchset is based on master.  Since I'm not sure how long this
-series will take for review, we could probably apply Dan's previous patch
-10 first, then when I repost I can provide a revert patch when needed.
+Add a new migration parameter switchover-hold which can block src qemu
+migration from switching over to dest from running.
 
-v4:
-- Remove one unused var (accident after the rebase..)
-v3:
-- Rebase only (v2 is not yet applicable after switchover-ack series merged)
+One can set this flag to true so src qemu will keep iterating the VM data,
+not switching over to dest even if it can.
 
-A new flag "switchover-hold" is added to allow src qemu explicitly hold
-switchover for precopy migration.  Note that this flag will not affect
-postcopy switchover because src qemu already has migrate-start-postcopy,
-which is a finer grained knob just for that.  In general this flag only
-affects reaching migration completion phase, when set it'll block it from
-happening while keep the migration iteration going.
+It means now live migration works somehow like COLO; we keep syncing data
+from src to dst without stopping.
+
+When the user is ready for the switchover, one can set the parameter from
+true->false.  That'll contain a implicit kick to migration thread to be
+alive and re-evaluate the switchover decision.
 
 This can be used in two cases so far in my mind:
 
@@ -132,30 +131,304 @@ This can be used in two cases so far in my mind:
       some adhoc guest memory position.  Now we can simply set this flag
       then we know precopy won't complete and will just keep going.
 
-The 1st use case may look a bit like COLO where we can actually keep both
-QEMU _mostly_ in sync.  I'm not sure whether it can be useful anywhere,
-though.
+Here we leveraged a sem to make sure migration thread won't busy spin on a
+physical cpu, meanwhile provide a timedwait() of 10ms so it can still try
+its best to sync with dest QEMU from time to time.  Note that the sem is
+prone to outdated counts but it's benign, please refer to the comment above
+the semaphore definition for more information.
 
-Patch 1 will introduce the new flag.
-
-Patch 2 will leverage the new flag to speed up migration-test. An initial
-test is this can make migration-test finish within a little bit less than
-1m.
-
-Please have a look, thanks.
-
-Peter Xu (2):
-  migration: switchover-hold parameter
-  qtest/migration: Use switchover-hold to speedup
-
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
  qapi/migration.json            | 25 ++++++++++--
  migration/migration.h          | 17 +++++++++
  migration/migration-hmp-cmds.c |  3 ++
  migration/migration.c          | 69 ++++++++++++++++++++++++++++++++--
  migration/options.c            | 17 +++++++++
- tests/qtest/migration-test.c   | 39 ++++++++++++++-----
- 6 files changed, 153 insertions(+), 17 deletions(-)
+ 5 files changed, 124 insertions(+), 7 deletions(-)
 
+diff --git a/qapi/migration.json b/qapi/migration.json
+index 47dfef0278..c050081555 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -789,6 +789,15 @@
+ #     Nodes are mapped to their block device name if there is one, and
+ #     to their node name otherwise.  (Since 5.2)
+ #
++# @switchover-hold: Whether we should hold-off precopy switchover from
++#     src to dest QEMU, even if we can finish migration in the
++#     downtime specified.  By default off, so precopy migration will
++#     complete as soon as possible.  One can set it to explicitly keep
++#     iterating during precopy migration until set the flag to false
++#     again to kick off the final switchover.  Note, this does not
++#     affect postcopy switchover, because the user can control that
++#     using "migrate-start-postcopy" command explicitly.  (Since 8.1)
++#
+ # Features:
+ #
+ # @unstable: Member @x-checkpoint-delay is experimental.
+@@ -810,7 +819,7 @@
+            'xbzrle-cache-size', 'max-postcopy-bandwidth',
+            'max-cpu-throttle', 'multifd-compression',
+            'multifd-zlib-level' ,'multifd-zstd-level',
+-           'block-bitmap-mapping' ] }
++           'block-bitmap-mapping', 'switchover-hold' ] }
+ 
+ ##
+ # @MigrateSetParameters:
+@@ -945,6 +954,10 @@
+ #     Nodes are mapped to their block device name if there is one, and
+ #     to their node name otherwise.  (Since 5.2)
+ #
++# @switchover-hold: Whether we should hold-off precopy switchover from
++#     src to dest QEMU.  For more details, please refer to
++#     MigrationParameter entry of the same field.  (Since 8.1)
++#
+ # Features:
+ #
+ # @unstable: Member @x-checkpoint-delay is experimental.
+@@ -982,7 +995,8 @@
+             '*multifd-compression': 'MultiFDCompression',
+             '*multifd-zlib-level': 'uint8',
+             '*multifd-zstd-level': 'uint8',
+-            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ] } }
++            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
++            '*switchover-hold': 'bool' } }
+ 
+ ##
+ # @migrate-set-parameters:
+@@ -1137,6 +1151,10 @@
+ #     Nodes are mapped to their block device name if there is one, and
+ #     to their node name otherwise.  (Since 5.2)
+ #
++# @switchover-hold: Whether we should hold-off precopy switchover from
++#     src to dest QEMU.  For more details, please refer to
++#     MigrationParameter entry of the same field.  (Since 8.1)
++#
+ # Features:
+ #
+ # @unstable: Member @x-checkpoint-delay is experimental.
+@@ -1171,7 +1189,8 @@
+             '*multifd-compression': 'MultiFDCompression',
+             '*multifd-zlib-level': 'uint8',
+             '*multifd-zstd-level': 'uint8',
+-            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ] } }
++            '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
++            '*switchover-hold': 'bool' } }
+ 
+ ##
+ # @query-migrate-parameters:
+diff --git a/migration/migration.h b/migration/migration.h
+index a80b22b703..6b31a4b371 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -453,6 +453,23 @@ struct MigrationState {
+      * switchover has been received.
+      */
+     bool switchover_acked;
++
++    /*
++     * Only migration thread will wait on it when switchover_hold==true.
++     *
++     * Only qmp set param will kick it when switching switchover_hold from
++     * true->false.
++     *
++     * NOTE: outdated sem count here is benign.  E.g., when this is posted,
++     * the 1st migration got cancelled, then start the 2nd migration, or
++     * when someone sets the flag from true->false->true->false.. because
++     * any outdated sem count will only let the migration thread to run one
++     * more loop (timedwait() will eat the outdated count) when reaching
++     * the completion phase, then in the next loop it'll sleep again.  The
++     * important thing here OTOH is when the migration thread is sleeping
++     * we can always kick it out of the sleep, which we will always do.
++     */
++    QemuSemaphore switchover_hold_sem;
+ };
+ 
+ void migrate_set_state(int *state, int old_state, int new_state);
+diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
+index 9885d7c9f7..63a2c8a4a3 100644
+--- a/migration/migration-hmp-cmds.c
++++ b/migration/migration-hmp-cmds.c
+@@ -338,6 +338,9 @@ void hmp_info_migrate_parameters(Monitor *mon, const QDict *qdict)
+         monitor_printf(mon, "%s: '%s'\n",
+             MigrationParameter_str(MIGRATION_PARAMETER_TLS_AUTHZ),
+             params->tls_authz);
++        monitor_printf(mon, "%s: %s\n",
++            MigrationParameter_str(MIGRATION_PARAMETER_SWITCHOVER_HOLD),
++            params->switchover_hold ? "on" : "off");
+ 
+         if (params->has_block_bitmap_mapping) {
+             const BitmapMigrationNodeAliasList *bmnal;
+diff --git a/migration/migration.c b/migration/migration.c
+index 096e8191d1..d75c2bd63c 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2721,6 +2721,67 @@ static bool migration_can_switchover(MigrationState *s)
+     return s->switchover_acked;
+ }
+ 
++static bool
++migration_should_complete(MigrationState *s, uint64_t pending_size)
++{
++    /* Need an explicit ACK from dst? */
++    if (!migration_can_switchover(s)) {
++        return false;
++    }
++
++    /* We still have large pending data to send? */
++    if (pending_size && (pending_size >= s->threshold_size)) {
++        return false;
++    }
++
++    /* The user doesn't want us to switchover yet for precopy */
++    if (!migration_in_postcopy() && s->parameters.switchover_hold) {
++        /*
++         * Note: when reaching here it probably means we've migrated almost
++         * everything and ready to switchover.  If user asked not to switch
++         * wait for a short period and respond to kicks immediately.
++         *
++         * If we wait too long, there can be a lot of dirty data generated,
++         * while we could have done something to sync data between src/dst.
++         *
++         * If we wait too short, migration thread can eat most/all cpu
++         * resource looping over switchover_hold.
++         *
++         * Make it 10ms which seems to be a good intermediate value.
++         */
++        qemu_sem_timedwait(&s->switchover_hold_sem, 10);
++
++        /*
++         * Return false here always even if user changed it, because we'd
++         * like to re-evaluate everything (e.g. pending_size).
++         */
++        return false;
++    }
++
++    return true;
++}
++
++static bool
++migration_should_start_postcopy(MigrationState *s, uint64_t must_precopy)
++{
++    /* If we're already in postcopy phase, don't bother */
++    if (migration_in_postcopy()) {
++        return false;
++    }
++
++    /* Need an explicit ACK from dst? */
++    if (!migration_can_switchover(s)) {
++        return false;
++    }
++
++    /* We still have lots of thing that must be migrated in precopy */
++    if (must_precopy > s->threshold_size) {
++        return false;
++    }
++
++    return qatomic_read(&s->start_postcopy);
++}
++
+ /* Migration thread iteration status */
+ typedef enum {
+     MIG_ITERATE_RESUME,         /* Resume current iteration */
+@@ -2736,7 +2797,6 @@ static MigIterateState migration_iteration_run(MigrationState *s)
+ {
+     uint64_t must_precopy, can_postcopy;
+     bool in_postcopy = s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE;
+-    bool can_switchover = migration_can_switchover(s);
+ 
+     qemu_savevm_state_pending_estimate(&must_precopy, &can_postcopy);
+     uint64_t pending_size = must_precopy + can_postcopy;
+@@ -2749,15 +2809,14 @@ static MigIterateState migration_iteration_run(MigrationState *s)
+         trace_migrate_pending_exact(pending_size, must_precopy, can_postcopy);
+     }
+ 
+-    if ((!pending_size || pending_size < s->threshold_size) && can_switchover) {
++    if (migration_should_complete(s, pending_size)) {
+         trace_migration_thread_low_pending(pending_size);
+         migration_completion(s);
+         return MIG_ITERATE_BREAK;
+     }
+ 
+     /* Still a significant amount to transfer */
+-    if (!in_postcopy && must_precopy <= s->threshold_size && can_switchover &&
+-        qatomic_read(&s->start_postcopy)) {
++    if (migration_should_start_postcopy(s, must_precopy)) {
+         if (postcopy_start(s)) {
+             error_report("%s: postcopy failed to start", __func__);
+         }
+@@ -3314,6 +3373,7 @@ static void migration_instance_finalize(Object *obj)
+     qemu_sem_destroy(&ms->rp_state.rp_sem);
+     qemu_sem_destroy(&ms->rp_state.rp_pong_acks);
+     qemu_sem_destroy(&ms->postcopy_qemufile_src_sem);
++    qemu_sem_destroy(&ms->switchover_hold_sem);
+     error_free(ms->error);
+ }
+ 
+@@ -3336,6 +3396,7 @@ static void migration_instance_init(Object *obj)
+     qemu_sem_init(&ms->rate_limit_sem, 0);
+     qemu_sem_init(&ms->wait_unplug_sem, 0);
+     qemu_sem_init(&ms->postcopy_qemufile_src_sem, 0);
++    qemu_sem_init(&ms->switchover_hold_sem, 0);
+     qemu_mutex_init(&ms->qemu_file_lock);
+ }
+ 
+diff --git a/migration/options.c b/migration/options.c
+index 5a9505adf7..aac658fb2d 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -163,6 +163,8 @@ Property migration_properties[] = {
+     DEFINE_PROP_STRING("tls-creds", MigrationState, parameters.tls_creds),
+     DEFINE_PROP_STRING("tls-hostname", MigrationState, parameters.tls_hostname),
+     DEFINE_PROP_STRING("tls-authz", MigrationState, parameters.tls_authz),
++    DEFINE_PROP_BOOL("switchover-hold", MigrationState,
++                     parameters.switchover_hold, false),
+ 
+     /* Migration capabilities */
+     DEFINE_PROP_MIG_CAP("x-xbzrle", MIGRATION_CAPABILITY_XBZRLE),
+@@ -900,6 +902,8 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
+     params->announce_rounds = s->parameters.announce_rounds;
+     params->has_announce_step = true;
+     params->announce_step = s->parameters.announce_step;
++    params->has_switchover_hold = true;
++    params->switchover_hold = s->parameters.switchover_hold;
+ 
+     if (s->parameters.has_block_bitmap_mapping) {
+         params->has_block_bitmap_mapping = true;
+@@ -940,6 +944,7 @@ void migrate_params_init(MigrationParameters *params)
+     params->has_announce_max = true;
+     params->has_announce_rounds = true;
+     params->has_announce_step = true;
++    params->has_switchover_hold = true;
+ }
+ 
+ /*
+@@ -1194,6 +1199,9 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
+     if (params->has_announce_step) {
+         dest->announce_step = params->announce_step;
+     }
++    if (params->has_switchover_hold) {
++        dest->switchover_hold = params->switchover_hold;
++    }
+ 
+     if (params->has_block_bitmap_mapping) {
+         dest->has_block_bitmap_mapping = true;
+@@ -1307,6 +1315,15 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
+     if (params->has_announce_step) {
+         s->parameters.announce_step = params->announce_step;
+     }
++    if (params->has_switchover_hold) {
++        bool old = s->parameters.switchover_hold;
++        bool new = params->switchover_hold;
++
++        s->parameters.switchover_hold = params->switchover_hold;
++        if (old && !new) {
++            qemu_sem_post(&s->switchover_hold_sem);
++        }
++    }
+ 
+     if (params->has_block_bitmap_mapping) {
+         qapi_free_BitmapMigrationNodeAliasList(
 -- 
 2.41.0
 
