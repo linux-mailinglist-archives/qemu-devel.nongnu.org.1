@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF64748EB6
-	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:18:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE45748EBA
+	for <lists+qemu-devel@lfdr.de>; Wed,  5 Jul 2023 22:18:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qH8sa-00031g-0T; Wed, 05 Jul 2023 16:13:36 -0400
+	id 1qH8sZ-00031Z-Qk; Wed, 05 Jul 2023 16:13:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qH8sD-0002jV-UH; Wed, 05 Jul 2023 16:13:14 -0400
+ id 1qH8sE-0002jr-IL; Wed, 05 Jul 2023 16:13:14 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qH8sB-00065A-FM; Wed, 05 Jul 2023 16:13:13 -0400
+ id 1qH8sC-00065m-Of; Wed, 05 Jul 2023 16:13:14 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 38EC2748A6A;
- Wed,  5 Jul 2023 22:12:53 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 496F5748A55;
+ Wed,  5 Jul 2023 22:12:54 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 1490D748A69; Wed,  5 Jul 2023 22:12:53 +0200 (CEST)
-Message-Id: <fdb84344025e00fadf74d0be95665fcb0ac1e039.1688586835.git.balaton@eik.bme.hu>
+ id 25938748A4D; Wed,  5 Jul 2023 22:12:54 +0200 (CEST)
+Message-Id: <29aafeea9f1c871c739600a7b093c5456e8a1dc8.1688586835.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1688586835.git.balaton@eik.bme.hu>
 References: <cover.1688586835.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 08/14] ppc440: Add busnum property to PCIe controller model
+Subject: [PATCH v2 09/14] ppc440: Remove ppc460ex_pcie_init legacy init
+ function
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Daniel Henrique Barboza <"danielhb413@gmail.com>, philmd"@linaro.org>
-Date: Wed,  5 Jul 2023 22:12:53 +0200 (CEST)
+Date: Wed,  5 Jul 2023 22:12:54 +0200 (CEST)
 X-Spam-Probability: 8%
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
@@ -56,89 +57,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of guessing controller number from dcrn_base add a property so
-the device does not need knowledge about where it is used.
+After previous changes we can now remove the legacy init function and
+move the device creation to board code.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/ppc440_uc.c | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ hw/ppc/ppc440.h         |  1 -
+ hw/ppc/ppc440_uc.c      | 21 ---------------------
+ hw/ppc/sam460ex.c       | 17 ++++++++++++++++-
+ include/hw/ppc/ppc4xx.h |  1 +
+ 4 files changed, 17 insertions(+), 23 deletions(-)
 
+diff --git a/hw/ppc/ppc440.h b/hw/ppc/ppc440.h
+index ae42bcf0c8..909373fb38 100644
+--- a/hw/ppc/ppc440.h
++++ b/hw/ppc/ppc440.h
+@@ -18,6 +18,5 @@ void ppc4xx_cpr_init(CPUPPCState *env);
+ void ppc4xx_sdr_init(CPUPPCState *env);
+ void ppc4xx_ahb_init(CPUPPCState *env);
+ void ppc4xx_dma_init(CPUPPCState *env, int dcr_base);
+-void ppc460ex_pcie_init(PowerPCCPU *cpu);
+ 
+ #endif /* PPC440_H */
 diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
-index 663abf3449..b74b2212fa 100644
+index b74b2212fa..4181c843a8 100644
 --- a/hw/ppc/ppc440_uc.c
 +++ b/hw/ppc/ppc440_uc.c
-@@ -779,6 +779,7 @@ struct PPC460EXPCIEState {
-     MemoryRegion busmem;
-     MemoryRegion iomem;
-     qemu_irq irq[4];
-+    int32_t num;
-     int32_t dcrn_base;
-     PowerPCCPU *cpu;
+@@ -770,7 +770,6 @@ void ppc4xx_dma_init(CPUPPCState *env, int dcr_base)
+  */
+ #include "hw/pci/pcie_host.h"
  
-@@ -1039,32 +1040,25 @@ static void ppc460ex_pcie_realize(DeviceState *dev, Error **errp)
- {
-     PPC460EXPCIEState *s = PPC460EX_PCIE_HOST(dev);
-     PCIHostState *pci = PCI_HOST_BRIDGE(dev);
--    int i, id;
--    char buf[16];
-+    int i;
-+    char buf[20];
+-#define TYPE_PPC460EX_PCIE_HOST "ppc460ex-pcie-host"
+ OBJECT_DECLARE_SIMPLE_TYPE(PPC460EXPCIEState, PPC460EX_PCIE_HOST)
  
-     if (!s->cpu) {
-         error_setg(errp, "cpu link property must be set");
-         return;
-     }
--    switch (s->dcrn_base) {
--    case DCRN_PCIE0_BASE:
--        id = 0;
--        break;
--    case DCRN_PCIE1_BASE:
--        id = 1;
--        break;
--    default:
--        error_setg(errp, "invalid PCIe DCRN base");
-+    if (s->num < 0 || s->dcrn_base < 0) {
-+        error_setg(errp, "busnum and dcrn-base properties must be set");
-         return;
-     }
--    snprintf(buf, sizeof(buf), "pcie%d-mem", id);
-+    snprintf(buf, sizeof(buf), "pcie%d-mem", s->num);
-     memory_region_init(&s->busmem, OBJECT(s), buf, UINT64_MAX);
--    snprintf(buf, sizeof(buf), "pcie%d-io", id);
-+    snprintf(buf, sizeof(buf), "pcie%d-io", s->num);
-     memory_region_init(&s->iomem, OBJECT(s), buf, 64 * KiB);
-     for (i = 0; i < 4; i++) {
-         sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->irq[i]);
-     }
--    snprintf(buf, sizeof(buf), "pcie.%d", id);
-+    snprintf(buf, sizeof(buf), "pcie.%d", s->num);
-     pci->bus = pci_register_root_bus(DEVICE(s), buf, ppc460ex_set_irq,
-                                 pci_swizzle_map_irq_fn, s, &s->busmem,
-                                 &s->iomem, 0, 4, TYPE_PCIE_BUS);
-@@ -1072,6 +1066,7 @@ static void ppc460ex_pcie_realize(DeviceState *dev, Error **errp)
+ struct PPC460EXPCIEState {
+@@ -799,9 +798,6 @@ struct PPC460EXPCIEState {
+     uint32_t cfg;
+ };
+ 
+-#define DCRN_PCIE0_BASE 0x100
+-#define DCRN_PCIE1_BASE 0x120
+-
+ enum {
+     PEGPL_CFGBAH = 0x0,
+     PEGPL_CFGBAL,
+@@ -1096,20 +1092,3 @@ static void ppc460ex_pcie_register(void)
  }
  
- static Property ppc460ex_pcie_props[] = {
-+    DEFINE_PROP_INT32("busnum", PPC460EXPCIEState, num, -1),
-     DEFINE_PROP_INT32("dcrn-base", PPC460EXPCIEState, dcrn_base, -1),
-     DEFINE_PROP_LINK("cpu", PPC460EXPCIEState, cpu, TYPE_POWERPC_CPU,
-                      PowerPCCPU *),
-@@ -1107,11 +1102,13 @@ void ppc460ex_pcie_init(PowerPCCPU *cpu)
-     DeviceState *dev;
+ type_init(ppc460ex_pcie_register)
+-
+-void ppc460ex_pcie_init(PowerPCCPU *cpu)
+-{
+-    DeviceState *dev;
+-
+-    dev = qdev_new(TYPE_PPC460EX_PCIE_HOST);
+-    qdev_prop_set_int32(dev, "busnum", 0);
+-    qdev_prop_set_int32(dev, "dcrn-base", DCRN_PCIE0_BASE);
+-    object_property_set_link(OBJECT(dev), "cpu", OBJECT(cpu), &error_abort);
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+-
+-    dev = qdev_new(TYPE_PPC460EX_PCIE_HOST);
+-    qdev_prop_set_int32(dev, "busnum", 1);
+-    qdev_prop_set_int32(dev, "dcrn-base", DCRN_PCIE1_BASE);
+-    object_property_set_link(OBJECT(dev), "cpu", OBJECT(cpu), &error_abort);
+-    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+-}
+diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
+index f098226974..d446cfc37b 100644
+--- a/hw/ppc/sam460ex.c
++++ b/hw/ppc/sam460ex.c
+@@ -45,6 +45,9 @@
+ /* dd bs=1 skip=$(($(stat -c '%s' updater/updater-460) - 0x80000)) \
+      if=updater/updater-460 of=u-boot-sam460-20100605.bin */
  
-     dev = qdev_new(TYPE_PPC460EX_PCIE_HOST);
++#define PCIE0_DCRN_BASE 0x100
++#define PCIE1_DCRN_BASE 0x120
++
+ /* from Sam460 U-Boot include/configs/Sam460ex.h */
+ #define FLASH_BASE             0xfff00000
+ #define FLASH_BASE_H           0x4
+@@ -421,8 +424,20 @@ static void sam460ex_init(MachineState *machine)
+     usb_create_simple(usb_bus_find(-1), "usb-kbd");
+     usb_create_simple(usb_bus_find(-1), "usb-mouse");
+ 
++    /* PCIe buses */
++    dev = qdev_new(TYPE_PPC460EX_PCIE_HOST);
 +    qdev_prop_set_int32(dev, "busnum", 0);
-     qdev_prop_set_int32(dev, "dcrn-base", DCRN_PCIE0_BASE);
-     object_property_set_link(OBJECT(dev), "cpu", OBJECT(cpu), &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
- 
-     dev = qdev_new(TYPE_PPC460EX_PCIE_HOST);
++    qdev_prop_set_int32(dev, "dcrn-base", PCIE0_DCRN_BASE);
++    object_property_set_link(OBJECT(dev), "cpu", OBJECT(cpu), &error_abort);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++
++    dev = qdev_new(TYPE_PPC460EX_PCIE_HOST);
 +    qdev_prop_set_int32(dev, "busnum", 1);
-     qdev_prop_set_int32(dev, "dcrn-base", DCRN_PCIE1_BASE);
-     object_property_set_link(OBJECT(dev), "cpu", OBJECT(cpu), &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++    qdev_prop_set_int32(dev, "dcrn-base", PCIE1_DCRN_BASE);
++    object_property_set_link(OBJECT(dev), "cpu", OBJECT(cpu), &error_abort);
++    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
++
+     /* PCI bus */
+-    ppc460ex_pcie_init(cpu);
+     /* All PCI irqs are connected to the same UIC pin (cf. UBoot source) */
+     dev = sysbus_create_simple("ppc440-pcix-host", 0xc0ec00000,
+                                qdev_get_gpio_in(uic[1], 0));
+diff --git a/include/hw/ppc/ppc4xx.h b/include/hw/ppc/ppc4xx.h
+index f8c86e09ec..39ca602442 100644
+--- a/include/hw/ppc/ppc4xx.h
++++ b/include/hw/ppc/ppc4xx.h
+@@ -30,6 +30,7 @@
+ #include "hw/sysbus.h"
+ 
+ #define TYPE_PPC4xx_PCI_HOST_BRIDGE "ppc4xx-pcihost"
++#define TYPE_PPC460EX_PCIE_HOST "ppc460ex-pcie-host"
+ 
+ /*
+  * Generic DCR device
 -- 
 2.30.9
 
