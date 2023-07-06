@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933C274A2C8
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D5174A2C7
 	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 19:06:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHSQM-0006gP-E2; Thu, 06 Jul 2023 13:05:46 -0400
+	id 1qHSQN-0006gl-Hn; Thu, 06 Jul 2023 13:05:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHSQI-0006eC-Hv
+ id 1qHSQI-0006eK-Qs
  for qemu-devel@nongnu.org; Thu, 06 Jul 2023 13:05:42 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHSQH-0001MH-43
+ id 1qHSQH-0001MS-7m
  for qemu-devel@nongnu.org; Thu, 06 Jul 2023 13:05:42 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fbc77e76abso10563605e9.1
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3fbd33a573cso10280985e9.2
  for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 10:05:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688663139; x=1691255139;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=QDc0d2vFAXHVAlsZcS72EOuarHd+LttspSaXM/ba1G8=;
- b=kYIM335KhwwTIhkNmYzd5GieHGTrZs4YqVd+Uc2gXHN72Nk8Z3bbzNKw/OLWDAwA1T
- LiNg3WO4lSfsVncd5L/TOSmufr8crZuPLQwjmGYab9riAoS+5KDQXeKThUC//g25qFO3
- /ZJev3xVlTKazuIRBDH5gc0GgZT18qfPEFZnUEpCA4TPBdBt6FhJ6ZnaeJ2BCq3lr1jZ
- aOf4bPIXGsmV4k2eDkbP+ivfON3naNDIcCCSsg1ml8FeOKd/YbFne6rcqGw1qdbzvOEy
- naLLAz6hpLuIdWjHrh0gX0st534BQH00yc0wvbD6N56sSAnotfZanUI5G9W7n/4YLy/k
- O60w==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=cAnvI5Kaq2Mz02gDA0MtWIWvJJDUeYFa5i6Y59oqKIQ=;
+ b=aOSqGKfasdpLIjs4siU1/vSFDIDO2YdKPsLNBGBMWYx6MjXpX+E3o98abSALVK3EiV
+ rFT4HwYiubJ1lzuOa3KGKLCjOkg6liQy6fYixn2cR0Zk5kwpYMp+/e3YuhyYzGAYv7h+
+ HY3JCam56+NFsu/Pv6oPzdPtrdoBUpvS73PM1H0amdhST5bcDepgNJrq3xi4E/3GAqBO
+ C44qW6HerNzLQ8E7jVMD/4ZW9QbA9EuSUkaOF2sHqO1XraJMLzN5V2BLmwlL5UdFkKtf
+ 0gAVru94OPRb+MAZ35aikT1NOqaUSFffuAASMpM/H3ThloBt9yZWOCAy/3L7y69btDSZ
+ WNCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688663139; x=1691255139;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=QDc0d2vFAXHVAlsZcS72EOuarHd+LttspSaXM/ba1G8=;
- b=imt6kLuRziMBQsPoH8GmQlbLjAZM2VDqHSzO865pV3BXqLrfWPYSx7sbb3AjkKIeir
- q7vBz4W6RIi73+re0SZpcRZAhbNpyYwecdrDrre0e0aPSJhEIh6Pb2fzLaLkeHUtmjR+
- lRK1lvC6DRdbAoMnySeLY1WQgvJlb5T8qlgk7OdyhnjBkKUQxsSCYaXJV/rRV9mS6OlK
- 17sdA2QOTfFU4qQh1fIJ4A84yZbf0l1z3stoXnb36PcW92nR1UcJ6r9Rv2dv5Ijgqy1T
- i9ur43oOS7YKkd33hMUgod25uNnKNWKisoRbl26Hb8YiY4CUL9YqLaKd/46OcnOyDeB2
- kwDw==
-X-Gm-Message-State: ABy/qLbtsmj+uQZN7bg+onCm3bMOWEK1bEROywjxEt9NDBsoo72sBHGA
- nYJq48VtVbaiIZMCZm1Kr8B2Z8yVLrMFJCg43O3RXg==
-X-Google-Smtp-Source: APBJJlHEBAyaKRTj7dmtDKkFFoVoW4DwaqoWIzuLBwczf7uy+XxsETSUn1W7WXdXFRuOT9l14M7MCQ==
-X-Received: by 2002:a7b:c4c6:0:b0:3f8:b6c:84aa with SMTP id
- g6-20020a7bc4c6000000b003f80b6c84aamr1782518wmk.24.1688663138897; 
- Thu, 06 Jul 2023 10:05:38 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cAnvI5Kaq2Mz02gDA0MtWIWvJJDUeYFa5i6Y59oqKIQ=;
+ b=Mc7HICjUcF3T2tOh2UnHp6n0xZ00Gxs0Ha6TsbFiROrzsZ9cjz6dgxQm+gyFzRdGAa
+ 4h77OGCUAtDrML7z0o2VSyuTv8k0wslfpp3CEDtZ7roXlbt6UWm2Za5x+4DgsxzXDYVD
+ KmCaTfB7RFn92Bot9V3ST+LqGeQVGjfPeel8y7nDtFkUkJIxMcBgvnH+9WWGgKY6HncE
+ RRmO7PEcwxGI0Vexc5/80HvnqQkiL7ZC3TpJZGMvSxhwvcjEeKPS7pguHwHe/e0sz8XN
+ QIk6lW7CnTmv9JOKhEJoVG9FjP+6vF6Kmwg64w+ROd9yaXwmdE1/oLhVEUyCB1Sn2Hdb
+ VcCg==
+X-Gm-Message-State: ABy/qLZMtop+YPu2WSsl/oql5ueQjDhxv66vBXgo0AkLkj5FT2TiBbyv
+ +TYv6aklHHSaedTzczXfhSnwp1fNStW7vznElW99YQ==
+X-Google-Smtp-Source: APBJJlE7ST4W9aExJTHNUdHsBE1iB+SpIezXJejXdT+Hc3fq/HLceNsB8An4bciqYEimm0O62FWwCg==
+X-Received: by 2002:a7b:cb97:0:b0:3fa:93b0:a69c with SMTP id
+ m23-20020a7bcb97000000b003fa93b0a69cmr1789323wmi.24.1688663139508; 
+ Thu, 06 Jul 2023 10:05:39 -0700 (PDT)
 Received: from stoup.quadriga.com ([95.152.217.99])
  by smtp.gmail.com with ESMTPSA id
- 24-20020a05600c021800b003fbfa6066acsm71888wmi.40.2023.07.06.10.05.38
+ 24-20020a05600c021800b003fbfa6066acsm71888wmi.40.2023.07.06.10.05.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 10:05:38 -0700 (PDT)
+ Thu, 06 Jul 2023 10:05:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: rjones@redhat.com, peterz@infradead.org, arnd@arndb.de,
  naresh.kamboju@linaro.org, anders.roxell@linaro.org,
  daniel.diaz@linaro.org, ben.copeland@linaro.org, pbonzini@redhat.com
-Subject: [PATCH 0/2] accel/tcg: Fix race condition in tb create/invalidate
-Date: Thu,  6 Jul 2023 18:05:35 +0100
-Message-Id: <20230706170537.95959-1-richard.henderson@linaro.org>
+Subject: [PATCH 1/2] accel/tcg: Split out cpu_exec_longjmp_cleanup
+Date: Thu,  6 Jul 2023 18:05:36 +0100
+Message-Id: <20230706170537.95959-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230706170537.95959-1-richard.henderson@linaro.org>
+References: <20230706170537.95959-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,27 +93,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks for the test case, Richard WMJ.  Using the fedora rawhide
-kernel-core-6.5.0-0.rc0.20230703gita901a3568fd2.8.fc39.x86_64.rpm
-I was able to reproduce the problem within 30 iterations.
+Share the setjmp cleanup between cpu_exec_step_atomic
+and cpu_exec_setjmp.
 
-I'm now at 650 iterations and counting.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ accel/tcg/cpu-exec.c | 43 +++++++++++++++++++------------------------
+ 1 file changed, 19 insertions(+), 24 deletions(-)
 
-
-r~
-
-
-Richard Henderson (2):
-  accel/tcg: Split out cpu_exec_longjmp_cleanup
-  accel/tcg: Always lock pages before translation
-
- accel/tcg/internal.h      |  30 ++++-
- accel/tcg/cpu-exec.c      |  47 ++++----
- accel/tcg/tb-maint.c      | 242 ++++++++++++++++++++------------------
- accel/tcg/translate-all.c |  43 ++++++-
- accel/tcg/translator.c    |  34 ++++--
- 5 files changed, 239 insertions(+), 157 deletions(-)
-
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index ba1890a373..31aa320513 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -526,6 +526,23 @@ static void cpu_exec_exit(CPUState *cpu)
+     }
+ }
+ 
++static void cpu_exec_longjmp_cleanup(CPUState *cpu)
++{
++    /* Non-buggy compilers preserve this; assert the correct value. */
++    g_assert(cpu == current_cpu);
++
++#ifdef CONFIG_USER_ONLY
++    clear_helper_retaddr();
++    if (have_mmap_lock()) {
++        mmap_unlock();
++    }
++#endif
++    if (qemu_mutex_iothread_locked()) {
++        qemu_mutex_unlock_iothread();
++    }
++    assert_no_pages_locked();
++}
++
+ void cpu_exec_step_atomic(CPUState *cpu)
+ {
+     CPUArchState *env = cpu->env_ptr;
+@@ -568,16 +585,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
+         cpu_tb_exec(cpu, tb, &tb_exit);
+         cpu_exec_exit(cpu);
+     } else {
+-#ifdef CONFIG_USER_ONLY
+-        clear_helper_retaddr();
+-        if (have_mmap_lock()) {
+-            mmap_unlock();
+-        }
+-#endif
+-        if (qemu_mutex_iothread_locked()) {
+-            qemu_mutex_unlock_iothread();
+-        }
+-        assert_no_pages_locked();
++        cpu_exec_longjmp_cleanup(cpu);
+     }
+ 
+     /*
+@@ -1023,20 +1031,7 @@ static int cpu_exec_setjmp(CPUState *cpu, SyncClocks *sc)
+ {
+     /* Prepare setjmp context for exception handling. */
+     if (unlikely(sigsetjmp(cpu->jmp_env, 0) != 0)) {
+-        /* Non-buggy compilers preserve this; assert the correct value. */
+-        g_assert(cpu == current_cpu);
+-
+-#ifdef CONFIG_USER_ONLY
+-        clear_helper_retaddr();
+-        if (have_mmap_lock()) {
+-            mmap_unlock();
+-        }
+-#endif
+-        if (qemu_mutex_iothread_locked()) {
+-            qemu_mutex_unlock_iothread();
+-        }
+-
+-        assert_no_pages_locked();
++        cpu_exec_longjmp_cleanup(cpu);
+     }
+ 
+     return cpu_exec_loop(cpu, sc);
 -- 
 2.34.1
 
