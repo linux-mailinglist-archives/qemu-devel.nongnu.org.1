@@ -2,90 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8206A749B04
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CFB1749B05
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:43:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHNNu-0005TV-Rh; Thu, 06 Jul 2023 07:42:55 -0400
+	id 1qHNOr-0005nj-Ts; Thu, 06 Jul 2023 07:43:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qHNNn-0005St-LO
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:42:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qHNOZ-0005jB-Ps; Thu, 06 Jul 2023 07:43:35 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qHNNi-0007Cu-PI
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:42:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688643760;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=vcf7QHKLpBXcPUjgGD0oUcQaTofe75gJXZKJMFB7UG8=;
- b=XAp5uyveZAnxE8mEcZgnnPNftNLpY6Od95kCz64ryhK0f7/p3n2BOrVHU1MsInKOzgoBai
- ri+p3g4Q1wiDPX2huA9npHEyj/JdEv4uCp38ogBkYJHm5YfFFEJH+MP3ZjQK4YN3hQmGKk
- aoROJTKwfBbhCZFPZIZRgnIo2xDsNig=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-MoW_4gx_Ne65vHyszM5tIQ-1; Thu, 06 Jul 2023 07:42:39 -0400
-X-MC-Unique: MoW_4gx_Ne65vHyszM5tIQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3143ac4a562so301316f8f.2
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 04:42:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688643758; x=1691235758;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vcf7QHKLpBXcPUjgGD0oUcQaTofe75gJXZKJMFB7UG8=;
- b=PDw3gBxkdfb2/UcSJNM/gHzVrwDNp8m4yNNGyVxJNmXSrFC5fJdKAjWlPsam5jryz6
- 0Uu3uxaaN22rtxPtuDfaO6ENgOGnKYMGU/H8t3FbMxTkcJIRKBtK5YFRbgBtXGnUizuB
- 7woajjhi9Qw3bt7WSUSqKvdKqAYzaOpJiutG/J5xf0i2iuCF0flx3vmLTCLrT6wSp0Ab
- l+bK8LW6pMq6uxDPBYLwT3QXtllpG0ZgNXPtRkC3nU/vVTq6ZiVsz9CONvW8+60tZ3K7
- HjWYH4nJlbRXOCWT7CES5ILf6dOzGL6ytBHvv2xvl4d8HCcYcGfv6YqFstsNJ+YZ+vKE
- rN9w==
-X-Gm-Message-State: ABy/qLbqVlas6DAP7sLAH2iYeB2nqWVzP91Z8H0JWdEnl28cpK4upDzI
- PpqTz2t9lLsdeec1ZnGCzos1L4kvxWsC2LBMu7Ael3J7dxfAK7nYVLuc/2ezazkpDp5FnmWwouO
- auuWIiOv2wHlS+hs=
-X-Received: by 2002:adf:e34c:0:b0:314:3643:83b5 with SMTP id
- n12-20020adfe34c000000b00314364383b5mr1217716wrj.41.1688643758481; 
- Thu, 06 Jul 2023 04:42:38 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHkF1wWNx/dq/ctP/3CQIYUFC/XB91GkFvtY5pJ7CDF0xg3ezRE13zqQbHeJsf1dfcgUsnF5g==
-X-Received: by 2002:adf:e34c:0:b0:314:3643:83b5 with SMTP id
- n12-20020adfe34c000000b00314364383b5mr1217699wrj.41.1688643758217; 
- Thu, 06 Jul 2023 04:42:38 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- k7-20020a5d6287000000b00314417f5272sm1674176wru.64.2023.07.06.04.42.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 04:42:37 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Laszlo Ersek <lersek@redhat.com>
-Cc: qemu-devel@nongnu.org,  Leonardo Bras <leobras@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  qemu-trivial@nongnu.org
-Subject: Re: [PATCH 2/2] migration: unexport migrate_fd_error()
-In-Reply-To: <20230706102937.82490-3-lersek@redhat.com> (Laszlo Ersek's
- message of "Thu, 6 Jul 2023 12:29:37 +0200")
-References: <20230706102937.82490-1-lersek@redhat.com>
- <20230706102937.82490-3-lersek@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 06 Jul 2023 13:42:37 +0200
-Message-ID: <87wmzd9sgi.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qHNOW-0007L8-HY; Thu, 06 Jul 2023 07:43:35 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 0B664746335;
+ Thu,  6 Jul 2023 13:43:11 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 953CE74632B; Thu,  6 Jul 2023 13:43:10 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 9392B745720;
+ Thu,  6 Jul 2023 13:43:10 +0200 (CEST)
+Date: Thu, 6 Jul 2023 13:43:10 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
+cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, 
+ qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: Re: [PATCH v3] target/ppc: Machine check on invalid real address
+ access on POWER9/10
+In-Reply-To: <53ae3355-e7a9-13cb-92d7-b300f44951f1@kaod.org>
+Message-ID: <26d30881-8d33-2c4f-1998-834991cf8538@eik.bme.hu>
+References: <20230703120301.45313-1-npiggin@gmail.com>
+ <CTUWXISZHAI1.3A3FS0U9SD90B@wheely>
+ <53ae3355-e7a9-13cb-92d7-b300f44951f1@kaod.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-104072064-1688643790=:49441"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,24 +61,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Laszlo Ersek <lersek@redhat.com> wrote:
-> The only migrate_fd_error() call sites are in "migration/migration.c",
-> which is also where we define migrate_fd_error(). Make the function
-> static, and remove its declaration from "migration/migration.h".
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--3866299591-104072064-1688643790=:49441
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Thu, 6 Jul 2023, Cédric Le Goater wrote:
+> On 7/6/23 09:32, Nicholas Piggin wrote:
+>> On Mon Jul 3, 2023 at 10:03 PM AEST, Nicholas Piggin wrote:
+>>> ppc currently silently accepts invalid real address access. Catch
+>>> these and turn them into machine checks on POWER9/10 machines.
+>> 
+>> Would there be any objections to merging this and the checkstop patch?
+>> We could disable this one before release if it turns out to cause
+>> breakage.
+>> 
+>> I don't think it needs to rebase, and passes clang build and make check
+>> here. Just messed up the separator on the changelog of the checkstop
+>> patch.
 >
-> Cc: Juan Quintela <quintela@redhat.com> (maintainer:Migration)
-> Cc: Leonardo Bras <leobras@redhat.com> (reviewer:Migration)
-> Cc: Peter Xu <peterx@redhat.com> (reviewer:Migration)
-> Cc: qemu-trivial@nongnu.org
-> Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2018404
-> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+> I have been using the v2 series for a while :
+>
+>  https://patchwork.ozlabs.org/project/qemu-ppc/list/?series=361456
+>
+> without patch 4 and it looked good. Let's take v3 since this patch is
+> unchanged.
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+I think there was a newer version that dropped the test for the MSR bit 
+from the checkstop function and left that at the call site to avoid adding 
+a one line wrapper later. This version does not seem to be that so 
+probably the next iteration is better but I was lost following these 
+series..
 
-queued.
-
+Regards,
+BALATON Zoltan
+--3866299591-104072064-1688643790=:49441--
 
