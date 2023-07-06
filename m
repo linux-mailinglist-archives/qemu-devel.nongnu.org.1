@@ -2,60 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CBDD74A368
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 19:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 826EF74A380
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 19:59:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHT4E-0002kL-K9; Thu, 06 Jul 2023 13:46:58 -0400
+	id 1qHTFK-0005jI-7Q; Thu, 06 Jul 2023 13:58:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1qHT4A-0002jF-Ir
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 13:46:54 -0400
+ (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
+ id 1qHTFD-0005ik-8e
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 13:58:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1qHT48-0002e7-BZ
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 13:46:53 -0400
+ (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
+ id 1qHTFA-0000du-Rf
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 13:58:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688665609;
+ s=mimecast20190719; t=1688666294;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DzxRNkJ4GtVFs0wt1JseAdbsh2aLjvSMe3hpjEL/604=;
- b=Z1oyodPqBV9d/WOsGmpHn7drSLfEhJMvtzn8XGAd/DJwWgPh8ZJHAM71Dd6EEh60TWNUN7
- t5Qaq90tS6YIdv9ZWgBxwsyqxye8J5vzbmJue8cgViUllJOatxrwU7m2ETbqXGAFKGJGpm
- 7HV04N0Hmi5Ecu9ji5EWaK/dPrPHobs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-654-6QgFRMCbMeyvvDQLDBA6Og-1; Thu, 06 Jul 2023 13:46:43 -0400
-X-MC-Unique: 6QgFRMCbMeyvvDQLDBA6Og-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2568E104D521;
- Thu,  6 Jul 2023 17:46:43 +0000 (UTC)
-Received: from localhost (unknown [10.42.28.237])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DC50540C2063;
- Thu,  6 Jul 2023 17:46:42 +0000 (UTC)
-Date: Thu, 6 Jul 2023 18:46:42 +0100
-From: "Richard W.M. Jones" <rjones@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, peterz@infradead.org, arnd@arndb.de,
- naresh.kamboju@linaro.org, anders.roxell@linaro.org,
- daniel.diaz@linaro.org, ben.copeland@linaro.org, pbonzini@redhat.com
-Subject: Re: [PATCH 1/2] accel/tcg: Split out cpu_exec_longjmp_cleanup
-Message-ID: <20230706174642.GP7636@redhat.com>
-References: <20230706170537.95959-1-richard.henderson@linaro.org>
- <20230706170537.95959-2-richard.henderson@linaro.org>
+ bh=K6vjTDqRH+GV7CGi66XdjlxLwv01u+P9iHXlIShqWmE=;
+ b=B0Y+//8koS4o7VRVRofgX7dVyEvhG0tFfS3COkWCRBN7T2hpDwRUd4duS8BkX1d6+toyIo
+ nS3s2eq72JKy36kuWsePNcDiAYeWS2BgMtRUnYJi2Mglox/aW2E08M9rZIIfNyjX71iS11
+ ad6cJBoCabxrvpjfO0DTUAGIVuGhrfk=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-450-lIdX3m0gPRCdIOVpoOsyAA-1; Thu, 06 Jul 2023 13:58:13 -0400
+X-MC-Unique: lIdX3m0gPRCdIOVpoOsyAA-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-76783ba6d62so118310685a.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 10:58:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688666293; x=1691258293;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=K6vjTDqRH+GV7CGi66XdjlxLwv01u+P9iHXlIShqWmE=;
+ b=K37pmFk+nL3+aNepsyk1moAV7IyXAvHb7s9Zy31IuespNSjN8WqajtJkoBKpAG4t0C
+ GTIIApTf4m0oYBfF4XiKyiSUvB7A6B43hUtS/LqRmOqp1B8lQ0+K0N2GrzrGHYZYc1eB
+ nhVG14lXfe2pMIskAd6DdrN6ze+CYpaJY8YD4LG5uJ1O1wEtvfJEYF4ZnIAK8Z8inhbF
+ SGYW8i2plLWCcPHIhtzcDi3DlhC+xs6vIuvFiXQMS9nIxGvjpAA2ha3EFoKbJE2jxI1/
+ RJa6Ui2hfomEo+WDInaLIuyWU62XOZBVgAC5zf+w4a+U0v7WYocr7LtvxYacx7V19STV
+ rKpQ==
+X-Gm-Message-State: ABy/qLYAtMpdZ3VK9VeWs7WwtNl08hLV7k3JMC8SnR1thVGigB7IAB2p
+ uAYjS+PvnUJ0boZL90rVdcnYJAFIBfaqeywcxI1carUVc8E0uzNMEtH6m60lRdaJhyqw6dGCYjJ
+ 5kZvkZF+58osAkM+iVZ3JVsYptLko8AI=
+X-Received: by 2002:ac8:7f54:0:b0:403:691f:5403 with SMTP id
+ g20-20020ac87f54000000b00403691f5403mr3197264qtk.67.1688666293162; 
+ Thu, 06 Jul 2023 10:58:13 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHJRlsw6n4ZLZmdv5xdhcJgkc3iSyziDheBTLCiEsWdd4VC1X0tZP0ga6YsP3p50zuYc65TITvWwFv445Ue0RE=
+X-Received: by 2002:ac8:7f54:0:b0:403:691f:5403 with SMTP id
+ g20-20020ac87f54000000b00403691f5403mr3197248qtk.67.1688666292803; Thu, 06
+ Jul 2023 10:58:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230706170537.95959-2-richard.henderson@linaro.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=rjones@redhat.com;
+References: <20230706045546.593605-3-leobras@redhat.com>
+ <87o7kpbid7.fsf@secure.mitica>
+In-Reply-To: <87o7kpbid7.fsf@secure.mitica>
+From: Leonardo Bras Soares Passos <leobras@redhat.com>
+Date: Thu, 6 Jul 2023 14:58:02 -0300
+Message-ID: <CAJ6HWG7QHHd=zp5g0KH7uxK9eXEp5CQ6SkFTMpQPUahy0AM5pA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] pcie: Add hotplug detect state register to cmask
+To: quintela@redhat.com
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lsoaresp@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,97 +97,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 06, 2023 at 06:05:36PM +0100, Richard Henderson wrote:
-> Share the setjmp cleanup between cpu_exec_step_atomic
-> and cpu_exec_setjmp.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On Thu, Jul 6, 2023 at 4:37=E2=80=AFAM Juan Quintela <quintela@redhat.com> =
+wrote:
+>
+> Leonardo Bras <leobras@redhat.com> wrote:
+> > When trying to migrate a machine type pc-q35-6.0 or lower, with this
+> > cmdline options,
+> >
+> > -device driver=3Dpcie-root-port,port=3D18,chassis=3D19,id=3Dpcie-root-p=
+ort18,bus=3Dpcie.0,addr=3D0x12 \
+> > -device driver=3Dnec-usb-xhci,p2=3D4,p3=3D4,id=3Dnex-usb-xhci0,bus=3Dpc=
+ie-root-port18,addr=3D0x12.0x1
+> >
+> > the following bug happens after all ram pages were sent:
+> >
+> > qemu-kvm: get_pci_config_device: Bad config data: i=3D0x6e read: 0 devi=
+ce: 40 cmask: ff wmask: 0 w1cmask:19
+> > qemu-kvm: Failed to load PCIDevice:config
+> > qemu-kvm: Failed to load pcie-root-port:parent_obj.parent_obj.parent_ob=
+j
+> > qemu-kvm: error while loading state for instance 0x0 of device '0000:00=
+:12.0/pcie-root-port'
+> > qemu-kvm: load of migration failed: Invalid argument
+> >
+> > This happens on pc-q35-6.0 or lower because of:
+> > { "ICH9-LPC", ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, "off" }
+> >
+> > In this scenario, hotplug_handler_plug() calls pcie_cap_slot_plug_cb(),
+> > which sets dev->config byte 0x6e with bit PCI_EXP_SLTSTA_PDS to signal =
+PCI
+> > hotplug for the guest. After a while the guest will deal with this hotp=
+lug
+> > and qemu will clear the above bit.
+> >
+> > Then, during migration, get_pci_config_device() will compare the
+> > configs of both the freshly created device and the one that is being
+> > received via migration, which will differ due to the PCI_EXP_SLTSTA_PDS=
+ bit
+> > and cause the bug to reproduce.
+> >
+> > To avoid this fake incompatibility, there are tree fields in PCIDevice =
+that
+> > can help:
+> >
+> > - wmask: Used to implement R/W bytes, and
+> > - w1cmask: Used to implement RW1C(Write 1 to Clear) bytes
+> > - cmask: Used to enable config checks on load.
+> >
+> > According to PCI Express=C2=AE Base Specification Revision 5.0 Version =
+1.0,
+> > table 7-27 (Slot Status Register) bit 6, the "Presence Detect State" is
+> > listed as RO (read-only), so it only makes sense to make use of the cma=
+sk
+> > field.
+> >
+> > So, clear PCI_EXP_SLTSTA_PDS bit on cmask, so the fake incompatibility =
+on
+> > get_pci_config_device() does not abort the migration.
+> >
+> > Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=3D2215819
+> > Signed-off-by: Leonardo Bras <leobras@redhat.com>
+>
+>
+>
+>
+> > ---
+> >  hw/pci/pcie.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+> > index b8c24cf45f..cae56bf1c8 100644
+> > --- a/hw/pci/pcie.c
+> > +++ b/hw/pci/pcie.c
+> > @@ -659,6 +659,10 @@ void pcie_cap_slot_init(PCIDevice *dev, PCIESlot *=
+s)
+> >      pci_word_test_and_set_mask(dev->w1cmask + pos + PCI_EXP_SLTSTA,
+> >                                 PCI_EXP_HP_EV_SUPPORTED);
+> >
+> > +    /* Avoid migration abortion when this device hot-removed by guest
+> > */
+>
+> I would have included here the text in the commit:
+>
+>  According to PCI Express=C2=AE Base Specification Revision 5.0 Version 1=
+.0,
+>  table 7-27 (Slot Status Register) bit 6, the "Presence Detect State" is
+>  listed as RO (read-only), so it only makes sense to make use of the cmas=
+k
+>  field.
+>
+> and
+>
+> This happens on pc-q35-6.0 or lower because of:
+> { "ICH9-LPC", ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, "off" }
+>
+> so if we ever remove the machine type pc-q35-6.0, we can drop it.
 
-Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
+It makes sense adding this to the code.
 
-(I'm still testing the other one, but already up to 600 iterations)
+In the remove machine-type case, IIUC we would have to drop every
+machine-type older than pc-q35-6.0.
+Also,  we would not support migration to any machine without
+ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, right?
 
-Rich.
+>
+> Yes, I know that we don't drop machine types, but we should at some point=
+.
+>
+>
+> > +    pci_word_test_and_clear_mask(dev->cmask + pos + PCI_EXP_SLTSTA,
+> > +                                 PCI_EXP_SLTSTA_PDS);
+> > +
+> >      dev->exp.hpev_notified =3D false;
+> >
+> >      qbus_set_hotplug_handler(BUS(pci_bridge_get_sec_bus(PCI_BRIDGE(dev=
+))),
+>
+> I agree that this is (at least) a step on the right direction.
+>
+> I wmould had expected to have to need some check related to the value
+> of:
+>
+> { "ICH9-LPC", ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, "off" }
+>
 
-> ---
->  accel/tcg/cpu-exec.c | 43 +++++++++++++++++++------------------------
->  1 file changed, 19 insertions(+), 24 deletions(-)
-> 
-> diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-> index ba1890a373..31aa320513 100644
-> --- a/accel/tcg/cpu-exec.c
-> +++ b/accel/tcg/cpu-exec.c
-> @@ -526,6 +526,23 @@ static void cpu_exec_exit(CPUState *cpu)
->      }
->  }
->  
-> +static void cpu_exec_longjmp_cleanup(CPUState *cpu)
-> +{
-> +    /* Non-buggy compilers preserve this; assert the correct value. */
-> +    g_assert(cpu == current_cpu);
-> +
-> +#ifdef CONFIG_USER_ONLY
-> +    clear_helper_retaddr();
-> +    if (have_mmap_lock()) {
-> +        mmap_unlock();
-> +    }
-> +#endif
-> +    if (qemu_mutex_iothread_locked()) {
-> +        qemu_mutex_unlock_iothread();
-> +    }
-> +    assert_no_pages_locked();
-> +}
-> +
->  void cpu_exec_step_atomic(CPUState *cpu)
->  {
->      CPUArchState *env = cpu->env_ptr;
-> @@ -568,16 +585,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
->          cpu_tb_exec(cpu, tb, &tb_exit);
->          cpu_exec_exit(cpu);
->      } else {
-> -#ifdef CONFIG_USER_ONLY
-> -        clear_helper_retaddr();
-> -        if (have_mmap_lock()) {
-> -            mmap_unlock();
-> -        }
-> -#endif
-> -        if (qemu_mutex_iothread_locked()) {
-> -            qemu_mutex_unlock_iothread();
-> -        }
-> -        assert_no_pages_locked();
-> +        cpu_exec_longjmp_cleanup(cpu);
->      }
->  
->      /*
-> @@ -1023,20 +1031,7 @@ static int cpu_exec_setjmp(CPUState *cpu, SyncClocks *sc)
->  {
->      /* Prepare setjmp context for exception handling. */
->      if (unlikely(sigsetjmp(cpu->jmp_env, 0) != 0)) {
-> -        /* Non-buggy compilers preserve this; assert the correct value. */
-> -        g_assert(cpu == current_cpu);
-> -
-> -#ifdef CONFIG_USER_ONLY
-> -        clear_helper_retaddr();
-> -        if (have_mmap_lock()) {
-> -            mmap_unlock();
-> -        }
-> -#endif
-> -        if (qemu_mutex_iothread_locked()) {
-> -            qemu_mutex_unlock_iothread();
-> -        }
-> -
-> -        assert_no_pages_locked();
-> +        cpu_exec_longjmp_cleanup(cpu);
->      }
->  
->      return cpu_exec_loop(cpu, sc);
-> -- 
-> 2.34.1
+This bug affects versions older than qemu 6.0. If we add this, we
+would have some extra work backporting this to older versions (if
+necessary) because the 'property' did not exist back then.
 
--- 
-Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
-Read my programming and virtualization blog: http://rwmj.wordpress.com
-virt-builder quickly builds VMs from scratch
-http://libguestfs.org/virt-builder.1.html
+> But I will not claim _any_ understanding of the PCI specification.
+>
+> So:
+>
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>
+> about that it fixes the migration bug.
+>
+
+Thanks Juan!
+Leo
 
 
