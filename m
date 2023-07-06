@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E4B7492C0
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 02:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4371C7492C1
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 02:49:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHD8j-00044A-FE; Wed, 05 Jul 2023 20:46:33 -0400
+	id 1qHDBI-0005RB-J9; Wed, 05 Jul 2023 20:49:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHD8X-00042W-UP; Wed, 05 Jul 2023 20:46:21 -0400
-Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ id 1qHDB8-0005Qp-8K; Wed, 05 Jul 2023 20:49:02 -0400
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHD8V-0005PN-CF; Wed, 05 Jul 2023 20:46:21 -0400
-Received: by mail-oa1-x33.google.com with SMTP id
- 586e51a60fabf-1b3f722fdafso216181fac.3; 
- Wed, 05 Jul 2023 17:46:17 -0700 (PDT)
+ id 1qHDB6-0005xY-2d; Wed, 05 Jul 2023 20:49:01 -0400
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6b74b37fbe0so134525a34.1; 
+ Wed, 05 Jul 2023 17:48:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688604376; x=1691196376;
+ d=gmail.com; s=20221208; t=1688604537; x=1691196537;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Xgd0J0M/LOGIAR3jh60MvZK3voHCoMGU0yevT4UJBd8=;
- b=LvhA2xVS1odaT9QTfZYLZo/obPgCvXMNo8LB6BhOD3qQOvctOb3tq1KK1HeuldM0nB
- ijSZTK9kC6+XuySn/TIMLPU5kaQ+g2KKWSulEtagWZBDXzBj5DYiWFkDMYoXDserefCb
- H+TdKua6/51FWI52FmZPc51T3/yW3UTDJmFnJVjCt/8uDLESWeOq8k1hHHfjzrFDmLJR
- s/VOhfP/FpqYj+x5l+DQ9o5CtTLhIe8wbvrq7I7EdxqMKpQwtfsVuXI2ILt3Dv4/p472
- 4OpXF799JmNR1vWk/o0VBs2mlY4hLBqcz3UIYaWYsuicP0umELiuuHKBVdkrJEaZwVWi
- 2aZw==
+ bh=hCDXdhZZuCPWOq2URkfGwiulau0hdVBXSX3tRPjGmoE=;
+ b=nGXTUOZaQ++W3g6dh9A2n2jFou9kRcOJfg4KLK9RT6WW6KQr1xxXltSom+Vjd64bt+
+ P2HDUx4vxsvA7Ae6Bg79xp8Px9qLG9Eti3yFfme7syeKgzeZEy/JbqU2Zm6jtl6gUgw2
+ 9vXHWi6bl4u3JgYQVRF2qSbQ2LJnkKM559AgmZdfu+KUDCYRJ4byeY9zxViWI683/kVw
+ DpRTyRTkyzxwRV0Aez3AFGU/p3QoJ7RhsrA8wLJtx+ELahspwRrIXyut37hctdiQ5AJ6
+ tiIUrd6QTkQ7xZ1CFxCb7HrYfTx04y7hewgN4/Hs8t+PL74LpSvChsiryOlxe6YucT3Y
+ +AUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688604376; x=1691196376;
+ d=1e100.net; s=20221208; t=1688604537; x=1691196537;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Xgd0J0M/LOGIAR3jh60MvZK3voHCoMGU0yevT4UJBd8=;
- b=fU3jGmv5QPA/D34O9P9VJ6mAQhHUFiOKI7m9ncn2JfvgEbPN1BpmMMgVjV5BvAn+cM
- aiSNnKuqPKVQ/Se0Ak6ivI8qVG1KjqSrBSs93Cb0q6K/OaiPElMCKaStdQBMR0JlAyCY
- G+UGgOV8UeR8BsI77RHG7WPbxHKkRvyRi1v+B74iNX1v/caSbnr6tWfnfoY3uILsnOCy
- 8Zr/KqC9PxBhX9gLMpyCxQxmvQHRBUOIMQwW+Jj4oCzlObXJRVtGC6+Da2GyraEMG8S5
- iic02oIx+pEAvzqr5yRqXEcA1tMQrk6yvMKEEMEJYir/BL6rJsYA9i9/1CRQAwH8wJ5G
- Uu7g==
-X-Gm-Message-State: ABy/qLblh7Ix8DvaanCTLPngY426SotZMPkDZ+TcsgKIFgp5O3oxJ56+
- sMzN0BV869Ovh6sLmw6fg88=
-X-Google-Smtp-Source: APBJJlGQooJ+1jNjp0o4nGCPLw2nwvce/uyladwfHo25duaLLDEMccrqmBAx0Uj4jr4pPbyykkWIaw==
-X-Received: by 2002:a05:6870:e392:b0:1b0:57f8:dab0 with SMTP id
- x18-20020a056870e39200b001b057f8dab0mr855182oad.17.1688604376155; 
- Wed, 05 Jul 2023 17:46:16 -0700 (PDT)
+ bh=hCDXdhZZuCPWOq2URkfGwiulau0hdVBXSX3tRPjGmoE=;
+ b=CdR5sNG4J2sDTcpvwhdkvDi5PSJTnbgPKLebSDE77bdnk3MUSeJ8T1kV6rx2u9wWvB
+ 0C3qzsLKJw4Ke1BuZOHEJ0jUmagXUiKfRU/C/9Zli6rlxUIEJNgVfTVP8TFe1K1SnxKA
+ L1dGUGir8prDajPQCKsTimcbxBhYbQKdMN5eeO54GMc/T/0avXyOweGGLa/WUR/+5lbg
+ 7a7j30z52Km2QEc6M5RmDauioIGFhr9BV/RRAfAwZ50NJt1wdbIR4+lOk6WudCvOAdsB
+ Gn1UhUOgd59zdkOvJd2Jj/EqR7LKicIShaghImsUyERj/0q17rmOOdGHiRC4d5hGbbgw
+ IoJg==
+X-Gm-Message-State: ABy/qLY6r0rHORpRa0g9WUmQNgJglYIONdGwFQnD5knJ1nM8Grct5N6p
+ qh8LHz2tmvvkM6GbFhZp1j/QqnybRc4=
+X-Google-Smtp-Source: APBJJlG+Ayr1jKM8Hb96L7Fzk1HI4rGU2nEmBVKViTQUvOFw+Nq3NS6szfeM8TpKWszIy0YQhTQtKA==
+X-Received: by 2002:a05:6870:65ac:b0:1b3:d6eb:2b77 with SMTP id
+ fp44-20020a05687065ac00b001b3d6eb2b77mr697998oab.13.1688604537343; 
+ Wed, 05 Jul 2023 17:48:57 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
  [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- dt1-20020a0568705a8100b001b053e47bb3sm223441oab.43.2023.07.05.17.46.14
+ x12-20020a4ac58c000000b0056360466d3esm173850oop.48.2023.07.05.17.48.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 05 Jul 2023 17:46:15 -0700 (PDT)
-Message-ID: <f82474d1-c442-451b-b800-c89d062e60cf@gmail.com>
-Date: Wed, 5 Jul 2023 21:46:13 -0300
+ Wed, 05 Jul 2023 17:48:57 -0700 (PDT)
+Message-ID: <d192a786-6019-f1d3-6491-c245527da417@gmail.com>
+Date: Wed, 5 Jul 2023 21:48:54 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2 07/14] ppc/sam460ex: Remove address_space_mem local
- variable
+Subject: Re: [PATCH v2 00/14] PPC440 devices misc clean up
 Content-Language: en-US
 To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
  qemu-ppc@nongnu.org
 Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
 References: <cover.1688586835.git.balaton@eik.bme.hu>
- <d134d64f13258d1f157b445fedb1e86cf3abb606.1688586835.git.balaton@eik.bme.hu>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <d134d64f13258d1f157b445fedb1e86cf3abb606.1688586835.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1688586835.git.balaton@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::33;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x33.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,56 +94,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Zoltan,
 
+Patches 1-9 are queued. Don't need to re-send those.
+
+
+Thanks,
+
+Daniel
 
 On 7/5/23 17:12, BALATON Zoltan wrote:
-> Some places already use  get_system_memory() directly so replace the
-> remaining uses and drop the local variable.
+> These are some small misc clean ups to PPC440 related device models
+> which is all I have ready for now.
 > 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
-
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-
->   hw/ppc/sam460ex.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
+> v2:
+> - Added R-b tags from Philippe
+> - Addressed review comments
+> - Added new patch to rename parent field of PPC460EXPCIEState to parent_obj
 > 
-> diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
-> index aaa8d2f4a5..f098226974 100644
-> --- a/hw/ppc/sam460ex.c
-> +++ b/hw/ppc/sam460ex.c
-> @@ -266,7 +266,6 @@ static void main_cpu_reset(void *opaque)
->   
->   static void sam460ex_init(MachineState *machine)
->   {
-> -    MemoryRegion *address_space_mem = get_system_memory();
->       MemoryRegion *isa = g_new(MemoryRegion, 1);
->       MemoryRegion *l2cache_ram = g_new(MemoryRegion, 1);
->       DeviceState *uic[4];
-> @@ -406,7 +405,8 @@ static void sam460ex_init(MachineState *machine)
->       /* FIXME: remove this after fixing l2sram mapping in ppc440_uc.c? */
->       memory_region_init_ram(l2cache_ram, NULL, "ppc440.l2cache_ram", 256 * KiB,
->                              &error_abort);
-> -    memory_region_add_subregion(address_space_mem, 0x400000000LL, l2cache_ram);
-> +    memory_region_add_subregion(get_system_memory(), 0x400000000LL,
-> +                                l2cache_ram);
->   
->       /* USB */
->       sysbus_create_simple(TYPE_PPC4xx_EHCI, 0x4bffd0400,
-> @@ -444,13 +444,13 @@ static void sam460ex_init(MachineState *machine)
->       /* SoC has 4 UARTs
->        * but board has only one wired and two are present in fdt */
->       if (serial_hd(0) != NULL) {
-> -        serial_mm_init(address_space_mem, 0x4ef600300, 0,
-> +        serial_mm_init(get_system_memory(), 0x4ef600300, 0,
->                          qdev_get_gpio_in(uic[1], 1),
->                          PPC_SERIAL_MM_BAUDBASE, serial_hd(0),
->                          DEVICE_BIG_ENDIAN);
->       }
->       if (serial_hd(1) != NULL) {
-> -        serial_mm_init(address_space_mem, 0x4ef600400, 0,
-> +        serial_mm_init(get_system_memory(), 0x4ef600400, 0,
->                          qdev_get_gpio_in(uic[0], 1),
->                          PPC_SERIAL_MM_BAUDBASE, serial_hd(1),
->                          DEVICE_BIG_ENDIAN);
+> Patches needing review: 6 7 10-13
+> 
+> BALATON Zoltan (14):
+>    ppc440: Change ppc460ex_pcie_init() parameter type
+>    ppc440: Add cpu link property to PCIe controller model
+>    ppc440: Add a macro to shorten PCIe controller DCR registration
+>    ppc440: Rename parent field of PPC460EXPCIEState to match code style
+>    ppc440: Rename local variable in dcr_read_pcie()
+>    ppc440: Stop using system io region for PCIe buses
+>    ppc/sam460ex: Remove address_space_mem local variable
+>    ppc440: Add busnum property to PCIe controller model
+>    ppc440: Remove ppc460ex_pcie_init legacy init function
+>    ppc4xx_pci: Rename QOM type name define
+>    ppc4xx_pci: Add define for ppc4xx-host-bridge type name
+>    ppc440_pcix: Rename QOM type define abd move it to common header
+>    ppc440_pcix: Don't use iomem for regs
+>    ppc440_pcix: Stop using system io region for PCI bus
+> 
+>   hw/ppc/ppc440.h         |   1 -
+>   hw/ppc/ppc440_bamboo.c  |   3 +-
+>   hw/ppc/ppc440_pcix.c    |  28 +++---
+>   hw/ppc/ppc440_uc.c      | 192 +++++++++++++++++-----------------------
+>   hw/ppc/ppc4xx_pci.c     |  10 +--
+>   hw/ppc/sam460ex.c       |  33 ++++---
+>   include/hw/ppc/ppc4xx.h |   5 +-
+>   7 files changed, 129 insertions(+), 143 deletions(-)
+> 
 
