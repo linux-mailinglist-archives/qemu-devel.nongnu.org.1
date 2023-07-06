@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A25B74A3DE
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 20:39:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B63CE74A3E0
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 20:40:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHTt1-00084u-3M; Thu, 06 Jul 2023 14:39:27 -0400
+	id 1qHTtz-0000zc-JD; Thu, 06 Jul 2023 14:40:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTsx-000832-E9
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:39:23 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTtw-0000z0-1g
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:40:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTsv-0005Yy-TD
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:39:23 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTtu-00060B-BM
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:40:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688668760;
+ s=mimecast20190719; t=1688668821;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=hXWrEh+Cy6nbSk01Y+ceXGLVN04cETRNPWaKar3Iqi0=;
- b=ML3lTuNSA3C79XE8GcIgWljM6hGUcSm4G5dJf1I3LThU5NpBG727hKmvPXUkfzcCm4AzWL
- Jvq0JyB2bi7ha9apr9OQ60XVE59lUKHu0+QywY1L8XES8SbL69pU1R8QN7r4qWoosD25AU
- G/FQ52Ret12jilx9WVnSsC/kf43vfuo=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EwcoR630wLPnHTr9do7leqZ5u1Nkv2fmUl67i+Q0QW4=;
+ b=ExC3fqRl/uQgw0zAiQh4RYzclLeesGaQc342fA2BIOyMwqklrE26sppjnSUiYbW2WY9yRq
+ GU/GWy7wHmWOs/uTAUcn+0yFMmI5UeZo4vOHXJZ8EAmA0pixj0dKnKNtndUxOVxKdG0AEm
+ L91y+pV85vJ0E1sWNO/Kpq3+CppzQkM=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-381-cNj1oPssP7-jbB4v9kMPZQ-1; Thu, 06 Jul 2023 14:39:17 -0400
-X-MC-Unique: cNj1oPssP7-jbB4v9kMPZQ-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-765ad67e690so22338685a.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 11:39:17 -0700 (PDT)
+ us-mta-563-BTRWRAVSOIeUTSZSsFKhqQ-1; Thu, 06 Jul 2023 14:40:20 -0400
+X-MC-Unique: BTRWRAVSOIeUTSZSsFKhqQ-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-635eb5b04e1so2548026d6.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 11:40:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688668757; x=1689273557;
+ d=1e100.net; s=20221208; t=1688668819; x=1689273619;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hXWrEh+Cy6nbSk01Y+ceXGLVN04cETRNPWaKar3Iqi0=;
- b=LpSa58coKyglM+SbZLOEEvpkzPTMGZjExoW5x27abefBnIMR/az6A2AVubVGW3Oes/
- w1fwqT2YQMm5FkEW0sY7SodxY4semaXcy9iahZnQBDZ3YnRSLjiUSuvmYxnPizbuUnGH
- z7uSPvyLxvDprA/zEak0gnZup0S4/9ccxVweZDZJiTREdZZI11OhiChEJ2Z83uC47Qqg
- lWHI+x6flCxlJGFjFcuMxTDzDB0SQyFqAiy3CcAAn4lNBrsZJZd9ufflL9eTrLV8LX8c
- GY8B7Kb2A9HRn3pb8pFWBKrlkMn89Z/iyWvRjTZ+aFB5RHX8qScNr0rAcInI+y61eWJf
- RngA==
-X-Gm-Message-State: ABy/qLZ33YoVMxSjZRA2lfi3wHfdewomwkcd4z8Zni/3Bl9thIL+YFtm
- gQZq+GhOFp43bjcUk564nHRKFmSsJhAE0x7Fug1kOEIepH+Ea13LZAH3UKhEUf8T3JP9ce/Py7+
- /JAHomP6phUTpZJ4=
-X-Received: by 2002:a05:620a:290f:b0:767:ffb:58aa with SMTP id
- m15-20020a05620a290f00b007670ffb58aamr3515578qkp.3.1688668757038; 
- Thu, 06 Jul 2023 11:39:17 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHns7Tc+Rm41bylbTKcwT6nawLggCtkWNiS/DHd7aRgtei07JH42RMoZaJSPreOym4W0cl+xg==
-X-Received: by 2002:a05:620a:290f:b0:767:ffb:58aa with SMTP id
- m15-20020a05620a290f00b007670ffb58aamr3515551qkp.3.1688668756695; 
- Thu, 06 Jul 2023 11:39:16 -0700 (PDT)
+ bh=EwcoR630wLPnHTr9do7leqZ5u1Nkv2fmUl67i+Q0QW4=;
+ b=XV1dBCBjB/iLca7PkKVdsuBdGRm0XIitRZ36VVr1u+pFBEwdgRlx0Q6vzPuNq/XY8q
+ sbxWsZX5VFBgvE29NcFn2ZfhO0WE+2vHuzf07TMUmwtD+Shg/1w06fqDsBHAn7JfDpyr
+ 5z1pgj1znq2VeQAgFyRde576hNZpY80XOxbiTMisxtF625yCHZrzbRHZl1EWR7wnYkPw
+ iaj2aZ/D8VCj2VPfoDdLXoj+X8LDqX1Qqz8rpmXIxp0hR+/2CHt8jWgGyZPcgfKzn77O
+ e61E+wgAY/ocWR5GkiEII8lqOQB1gPnnwF096lT9lZpDbbqQxKkaR0rM7T2ywoK/TYr4
+ +F2Q==
+X-Gm-Message-State: ABy/qLYUiK53gcsz6ebtslOkLwqFoReXm6hZGxna3vpWaCKx3rO9VxLS
+ liuB0RBz7Ra6TG+ZAdPFdfonZpBGsZfOiOVdvj6fJKAQp6ugrMRme8QPiF/EbgcQS0L2Y9oZptn
+ VAP8f5OXmcikzTT8=
+X-Received: by 2002:ad4:4eee:0:b0:635:da19:a680 with SMTP id
+ dv14-20020ad44eee000000b00635da19a680mr2921286qvb.2.1688668819566; 
+ Thu, 06 Jul 2023 11:40:19 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlH+Cfyx7Q4szf+1jr1/RvT+dDr56tfZgR1oKfql8i3TeD59KfJPQ2XFV5no7hrZNe9umjcPRA==
+X-Received: by 2002:ad4:4eee:0:b0:635:da19:a680 with SMTP id
+ dv14-20020ad44eee000000b00635da19a680mr2921273qvb.2.1688668819280; 
+ Thu, 06 Jul 2023 11:40:19 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- oo26-20020a05620a531a00b0076715ec99dbsm976950qkn.133.2023.07.06.11.39.15
+ n8-20020a0c9d48000000b00631eaf8b9e5sm1153438qvf.138.2023.07.06.11.40.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 11:39:16 -0700 (PDT)
-Date: Thu, 6 Jul 2023 14:39:14 -0400
+ Thu, 06 Jul 2023 11:40:19 -0700 (PDT)
+Date: Thu, 6 Jul 2023 14:40:17 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>,
  Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v3 1/6] tests/qtest: migration: Expose
- migrate_set_capability
-Message-ID: <ZKcKUldUCPpA9tJL@x1n>
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH v3 4/6] migration: Set migration status early in incoming
+ side
+Message-ID: <ZKcKkZ6uSqQnYBqe@x1n>
 References: <20230630212902.19925-1-farosas@suse.de>
- <20230630212902.19925-2-farosas@suse.de>
+ <20230630212902.19925-5-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230630212902.19925-2-farosas@suse.de>
+In-Reply-To: <20230630212902.19925-5-farosas@suse.de>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -102,12 +101,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 30, 2023 at 06:28:57PM -0300, Fabiano Rosas wrote:
-> The following patch will make use of this function from within
-> migrate-helpers.c, so move it there.
+On Fri, Jun 30, 2023 at 06:29:00PM -0300, Fabiano Rosas wrote:
+> We are sending a migration event of MIGRATION_STATUS_SETUP at
+> qemu_start_incoming_migration but never actually setting the state.
 > 
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> This creates a window between qmp_migrate_incoming and
+> process_incoming_migration_co where the migration status is still
+> MIGRATION_STATUS_NONE. Calling query-migrate during this time will
+> return an empty response even though the incoming migration command
+> has already been issued.
+> 
+> Commit 7cf1fe6d68 ("migration: Add migration events on target side")
+> has added support to the 'events' capability to the incoming part of
+> migration, but chose to send the SETUP event without setting the
+> state. I'm assuming this was a mistake.
+> 
+> This introduces a change in behavior, any QMP client waiting for the
+> SETUP event will hang, unless it has previously enabled the 'events'
+> capability. Having the capability enabled is sufficient to continue to
+> receive the event.
+> 
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
