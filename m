@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 892E17496E0
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 09:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD1E7496E4
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 09:58:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHJrD-0002Ht-PD; Thu, 06 Jul 2023 03:56:55 -0400
+	id 1qHJrD-0002IR-Vs; Thu, 06 Jul 2023 03:56:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHJr2-0002F1-4O
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:56:45 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHJr4-0002Fr-E4
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:56:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHJqy-0007Lj-1i
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:56:41 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHJr1-0007M5-RZ
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:56:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688630199;
+ s=mimecast20190719; t=1688630201;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bB5am1/wievjqeDq9pWP6E7oZd7KTgSHM6XOUFzUNWk=;
- b=DipAsc16b2Bt6ARVgC/qzXRqyxLH6oIhUMjOndhnK4e0F2JfY56tARde0TJ6XQwt6CiYYH
- s0uy0tXCn6g1MDxFsCE1zjUI0nuFd+fX4YgEtVm9gybmXo5cGe3LVgE/WyWuKxQtgzWzMs
- NDkDMp/Yy31OnyV9Tf+j3QqjlAYeQ5g=
+ bh=TcRjU/QKBHx5s8/4mzZ7k2PVwAnKyXc14KgCruFUohw=;
+ b=g/SwJ+mDiiKEUQtMMGPhgH0snkpaLWDkDkqWHFmYoiuiU8D7FnYLAy+w7T6PCGnTpi8ga6
+ 4gXCKTrFsDgds7kI/uGIZnEff5bDcdqVcLWGhLXThuXh9nBJmLq6bR12Rm6K6VGnqtADr7
+ cIcqlwgr/Zhr60a8Qr/L96YDU2O/uTg=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-270-RgvSpwvQPr20vwZkcWb6wA-1; Thu, 06 Jul 2023 03:56:35 -0400
-X-MC-Unique: RgvSpwvQPr20vwZkcWb6wA-1
+ us-mta-104-67ihg6skPzaLOZ3Cj5MCEQ-1; Thu, 06 Jul 2023 03:56:37 -0400
+X-MC-Unique: 67ihg6skPzaLOZ3Cj5MCEQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43F2838117E7;
- Thu,  6 Jul 2023 07:56:35 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9B40A3C0F673;
+ Thu,  6 Jul 2023 07:56:37 +0000 (UTC)
 Received: from t14s.cit.tum.de (unknown [10.39.193.162])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4CC1318EB4;
- Thu,  6 Jul 2023 07:56:33 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A7F6818EB4;
+ Thu,  6 Jul 2023 07:56:35 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -48,10 +48,10 @@ Cc: David Hildenbrand <david@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peng Tao <tao.peng@linux.alibaba.com>, Mario Casquero <mcasquer@redhat.com>
-Subject: [PATCH v2 1/4] softmmu/physmem: Warn with ram_block_discard_range()
- on MAP_PRIVATE file mapping
-Date: Thu,  6 Jul 2023 09:56:06 +0200
-Message-ID: <20230706075612.67404-2-david@redhat.com>
+Subject: [PATCH v2 2/4] virtio-mem: Skip most of virtio_mem_unplug_all()
+ without plugged memory
+Date: Thu,  6 Jul 2023 09:56:07 +0200
+Message-ID: <20230706075612.67404-3-david@redhat.com>
 In-Reply-To: <20230706075612.67404-1-david@redhat.com>
 References: <20230706075612.67404-1-david@redhat.com>
 MIME-Version: 1.0
@@ -82,60 +82,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ram_block_discard_range() cannot possibly do the right thing in
-MAP_PRIVATE file mappings in the general case.
+Already when starting QEMU we perform one system reset that ends up
+triggering virtio_mem_unplug_all() with no actual memory plugged yet.
+That, in turn will trigger ram_block_discard_range() and perform some
+other actions that are not required in that case.
 
-To achieve the documented semantics, we also have to punch a hole into
-the file, possibly messing with other MAP_PRIVATE/MAP_SHARED mappings
-of such a file.
+Let's optimize virtio_mem_unplug_all() for the case that no memory is
+plugged. This will be beneficial for x-ignore-shared support as well.
 
-For example, using VM templating -- see commit b17fbbe55cba ("migration:
-allow private destination ram with x-ignore-shared") -- in combination with
-any mechanism that relies on discarding of RAM is problematic. This
-includes:
-* Postcopy live migration
-* virtio-balloon inflation/deflation or free-page-reporting
-* virtio-mem
-
-So at least warn that there is something possibly dangerous is going on
-when using ram_block_discard_range() in these cases.
-
-Acked-by: Peter Xu <peterx@redhat.com>
 Tested-by: Mario Casquero <mcasquer@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- softmmu/physmem.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ hw/virtio/virtio-mem.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index bda475a719..4ee157bda4 100644
---- a/softmmu/physmem.c
-+++ b/softmmu/physmem.c
-@@ -3456,6 +3456,24 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-              * so a userfault will trigger.
-              */
- #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
-+            /*
-+             * We'll discard data from the actual file, even though we only
-+             * have a MAP_PRIVATE mapping, possibly messing with other
-+             * MAP_PRIVATE/MAP_SHARED mappings. There is no easy way to
-+             * change that behavior whithout violating the promised
-+             * semantics of ram_block_discard_range().
-+             *
-+             * Only warn, because it work as long as nobody else uses that
-+             * file.
-+             */
-+            if (!qemu_ram_is_shared(rb)) {
-+                warn_report_once("ram_block_discard_range: Discarding RAM"
-+                                 " in private file mappings is possibly"
-+                                 " dangerous, because it will modify the"
-+                                 " underlying file and will affect other"
-+                                 " users of the file");
-+            }
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index ec0ae32589..a922c21380 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -621,20 +621,20 @@ static int virtio_mem_unplug_all(VirtIOMEM *vmem)
+ {
+     RAMBlock *rb = vmem->memdev->mr.ram_block;
+ 
+-    if (virtio_mem_is_busy()) {
+-        return -EBUSY;
+-    }
+-
+-    if (ram_block_discard_range(rb, 0, qemu_ram_get_used_length(rb))) {
+-        return -EBUSY;
+-    }
+-    virtio_mem_notify_unplug_all(vmem);
+-
+-    bitmap_clear(vmem->bitmap, 0, vmem->bitmap_size);
+     if (vmem->size) {
++        if (virtio_mem_is_busy()) {
++            return -EBUSY;
++        }
++        if (ram_block_discard_range(rb, 0, qemu_ram_get_used_length(rb))) {
++            return -EBUSY;
++        }
++        virtio_mem_notify_unplug_all(vmem);
 +
-             ret = fallocate(rb->fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-                             start, length);
-             if (ret) {
++        bitmap_clear(vmem->bitmap, 0, vmem->bitmap_size);
+         vmem->size = 0;
+         notifier_list_notify(&vmem->size_change_notifiers, &vmem->size);
+     }
++
+     trace_virtio_mem_unplugged_all();
+     virtio_mem_resize_usable_region(vmem, vmem->requested_size, true);
+     return 0;
 -- 
 2.41.0
 
