@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17B074A4A1
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 22:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F96B74A4C3
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 22:18:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHVBG-0007PW-Fj; Thu, 06 Jul 2023 16:02:22 -0400
+	id 1qHVPv-0001iV-1S; Thu, 06 Jul 2023 16:17:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qHVBD-0007P1-SM
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:02:19 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHVPt-0001iI-9J
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:17:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qHVBA-00048x-RV
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:02:18 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHVPr-0000fd-PY
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:17:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688673735;
+ s=mimecast20190719; t=1688674646;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3d66+TvRXJkGHToXksSZ4hEEvL1mw/2JzIEndIGjPwY=;
- b=MNL8WIYL4EMipLCDZNkk5x7Kq+Qi2po4keOUUHoXz+YaaS2nUJMLW3PsTt96cjqn0EICKq
- dENavgiYXEs8qag5gkRnmnIex2scTzTJ/IRIevpE5k0QUghkZkSt7lHBgsFFQtxHVVe1Bv
- qCkoOTSleOFKIUrfV0knb7lLLd80VA4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3Mo2Le56fBq6TN6Z1AjKJb7oo7BY2b2lUaI+zFkB5dA=;
+ b=hDCykCYb8/kIIE4QJeoK/+1mTLhrmChdR+NlZjo9jWZh0G+cRvd0TSlro+nMHBK1COBTfb
+ eMeccrd/h7MyyA9Dj6ymKvVfhxxeSlZlN0efNMcgZLgj2H4G3FLoMw2OULNNRhATXfNYdN
+ 9A7A7GBdVWdj5oKi4xXxxN7z/WHYHzg=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-6yLrbcqsMkWfN7LJJAtoHw-1; Thu, 06 Jul 2023 16:02:14 -0400
-X-MC-Unique: 6yLrbcqsMkWfN7LJJAtoHw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fb8284465aso7245345e9.2
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 13:02:13 -0700 (PDT)
+ us-mta-489-xm3SbR0XPBmcRyT95wflQQ-1; Thu, 06 Jul 2023 16:17:25 -0400
+X-MC-Unique: xm3SbR0XPBmcRyT95wflQQ-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7673887b2cfso29386485a.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 13:17:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688673733; x=1691265733;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3d66+TvRXJkGHToXksSZ4hEEvL1mw/2JzIEndIGjPwY=;
- b=CykCWQBGNndYuddg5QGVg2YgqNPlDVdNwk6SuEuPMQ1sVtGa5ZnZwIR8b2VvfPG4Gf
- JN/MrBWiiQB8LrACP6RgynLJQurebw4Iol5OlLJP9l7YSpcZCt3tiaQUdsfixjfYt6c3
- 4WPd6TGH+sK7nldtwvJirWi9/fkKvF/gF4zGXxCq/yMy1BNFkT0+HhPE03mI+iZ+q7JW
- ZIIhu/b9Pav7S03pq2hCOBjNgF6LTCOjUUfV2oVpXbrYBaMKHR9AC5FV7H8DwGerGWzW
- aRrJmpLLGsbozloa0VuIhqexqVJOywRF6Vcf/dgobnpjM0kGXytDHMKb7Yam8VAPPRrT
- webA==
-X-Gm-Message-State: ABy/qLaeDKuncKBApjiOXWLbozm2+I9N2nuVtmWR93f6Fp0le9Z3w323
- 4wgcXyokVkeesuEvrBjqYHzrF6x40qALnsC2amNbWyRwcr4SakUtIpGzYhkuogtfYcOEVUqgo0f
- FHxKIAFpQwgg1UUE=
-X-Received: by 2002:a05:600c:2246:b0:3fa:8fc2:3969 with SMTP id
- a6-20020a05600c224600b003fa8fc23969mr2329489wmm.17.1688673732974; 
- Thu, 06 Jul 2023 13:02:12 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFyQcf8pvVoSfrm9kxa8dqrZyIMLHfwy/ivUbEwBXvORrYyngDokXVFnC28IDRZCxA1QCclVw==
-X-Received: by 2002:a05:600c:2246:b0:3fa:8fc2:3969 with SMTP id
- a6-20020a05600c224600b003fa8fc23969mr2329470wmm.17.1688673732658; 
- Thu, 06 Jul 2023 13:02:12 -0700 (PDT)
-Received: from redhat.com ([2.52.13.33]) by smtp.gmail.com with ESMTPSA id
- m16-20020a7bcb90000000b003fbdd5d0758sm453477wmi.22.2023.07.06.13.02.10
+ d=1e100.net; s=20221208; t=1688674644; x=1691266644;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3Mo2Le56fBq6TN6Z1AjKJb7oo7BY2b2lUaI+zFkB5dA=;
+ b=kfVKdLwWPLAoKUrvIxVmptvh7OKP4/XC1AWSM9IipycRSPF782IB6b5SC3LToYSfX/
+ M3bC/ATKE1y/SWXe+HxYXlOvql6Lyj4r1ni2HpUtxDEJXzwjnMoG3/Vyb/sYp8f6yQzQ
+ oZNtKCykPmYk00lHX0ymEKaSk5dLQiliOT564hy0MVvxjuoejWkbjf6SehwnYUMlZ6l2
+ kD+1OiocVzYvf5vDFBpQ7eZtsQt4iFvsQKCoWq9gnQjAAdGuvERAFn7nu/osdD/lRxbS
+ adbR53H1qrglBBLuT/RcEGxKsMEnMpwQe2pUUm9+cl4dRMl8HCKOMh8zsw6fy8EXkABK
+ BdrQ==
+X-Gm-Message-State: ABy/qLahednd4sRymnjjjnpGS4wml6LTfuUdJpHo5VD9xxQDor0a7mIg
+ x5I2KThw+JVXOabkAZ4aBRCgirRi0LobifZEWbCxZUHExe5hXHwt4JLjyDKQTqaVGc6evjk5vfS
+ W4CLpUiPWc1wY2Jo=
+X-Received: by 2002:a05:620a:19a7:b0:765:5b3d:8195 with SMTP id
+ bm39-20020a05620a19a700b007655b3d8195mr3244125qkb.6.1688674644563; 
+ Thu, 06 Jul 2023 13:17:24 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlE/C8UX7SUddKeeHwddf6sLGXIl181RdfbTgRUQaemLfG1yt9uhHX3x8X7K4QCRIlIujm64rA==
+X-Received: by 2002:a05:620a:19a7:b0:765:5b3d:8195 with SMTP id
+ bm39-20020a05620a19a700b007655b3d8195mr3244109qkb.6.1688674644291; 
+ Thu, 06 Jul 2023 13:17:24 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ o20-20020a05620a131400b007673774caabsm1079256qkj.92.2023.07.06.13.17.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 13:02:12 -0700 (PDT)
-Date: Thu, 6 Jul 2023 16:02:08 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
- Cindy Lu <lulu@redhat.com>, si-wei.liu@oracle.com,
- Stefano Garzarella <sgarzare@redhat.com>,
- Shannon Nelson <snelson@pensando.io>,
- Gautam Dawar <gdawar@xilinx.com>, Jason Wang <jasowang@redhat.com>,
- Harpreet Singh Anand <hanand@xilinx.com>,
- Parav Pandit <parav@mellanox.com>, Dragos Tatulea <dtatulea@nvidia.com>,
- Zhu Lingshan <lingshan.zhu@intel.com>, Lei Yang <leiyang@redhat.com>
-Subject: Re: [RFC PATCH 0/6] Enable vdpa net migration with features
- depending on CVQ
-Message-ID: <20230706160139-mutt-send-email-mst@kernel.org>
-References: <20230706191227.835526-1-eperezma@redhat.com>
+ Thu, 06 Jul 2023 13:17:24 -0700 (PDT)
+Date: Thu, 6 Jul 2023 16:17:20 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Leonardo Bras Soares Passos <leobras@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 1/1] pcie: Add hotplug detect state register to cmask
+Message-ID: <ZKchUNPG1mofzSOC@x1n>
+References: <20230706045546.593605-3-leobras@redhat.com> <ZKbRRt8ESGsMz+o7@x1n>
+ <CAJ6HWG4iUX=+7FTCkXitFfc1zFNJ9aR5PzDRyPLSZVq1Kos8fA@mail.gmail.com>
+ <ZKcEjfTDDgDZWu9Q@x1n>
+ <20230706144844-mutt-send-email-mst@kernel.org>
+ <ZKcPr3gueuOM4LGY@x1n>
+ <20230706155936-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230706191227.835526-1-eperezma@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+In-Reply-To: <20230706155936-mutt-send-email-mst@kernel.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,37 +103,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 06, 2023 at 09:12:21PM +0200, Eugenio Pérez wrote:
-> At this moment the migration of net features that depends on CVQ is not
-> possible, as there is no reliable way to restore the device state like mac
-> address, number of enabled queues, etc to the destination.  This is mainly
-> caused because the device must only read CVQ, and process all the commands
-> before resuming the dataplane.
-> 
-> This RFC lift that requirement, sending the VHOST_VDPA_SET_VRING_ENABLE ioctl
-> for dataplane vqs only after the device has processed all commands.  If this
-> method is valid or not, or if it must be signalled by the parent driver
-> somehow, is still under discussion.  In case it is valid, this code allows
-> testing the vDPA device for it.
+On Thu, Jul 06, 2023 at 04:00:49PM -0400, Michael S. Tsirkin wrote:
+> I mean his patch is exactly right. cmask was designed with this
+> kind of use case in mind.
+> Will queue.
 
-And you plan to add the reset trick too in a future version?
+That's great news.
 
-> Eugenio Pérez (6):
->   vdpa: export vhost_vdpa_set_vring_ready
->   vdpa: add should_enable op
->   vdpa: use virtio_ops->should_enable at vhost_vdpa_set_vrings_ready
->   vdpa: add stub vhost_vdpa_should_enable
->   vdpa: delay enable of data vqs
->   vdpa: remove net cvq migration blocker
-> 
->  include/hw/virtio/vhost-vdpa.h |  9 +++++++
->  hw/virtio/vhost-vdpa.c         | 33 +++++++++++++++++++------
->  net/vhost-vdpa.c               | 45 +++++++++++++++++++++++++---------
->  hw/virtio/trace-events         |  2 +-
->  4 files changed, 68 insertions(+), 21 deletions(-)
-> 
-> -- 
-> 2.39.3
-> 
+> If you want to suggest more text to the commit log, for the benefit
+> of backporters, that is fine by me.
+
+If you're fine with it I've no issue; since we're reaching soft-freeze I'd
+think it better if it can be merged on time (or just slightly enhance the
+commit message when merge).
+
+Thanks!
+
+-- 
+Peter Xu
 
 
