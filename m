@@ -2,76 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1585B74951F
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 07:52:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C1C749534
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 08:02:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHHuR-0002gr-6S; Thu, 06 Jul 2023 01:52:07 -0400
+	id 1qHI3O-0004Sk-G7; Thu, 06 Jul 2023 02:01:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qHHuO-0002ad-Hs; Thu, 06 Jul 2023 01:52:04 -0400
-Received: from mail-vs1-xe2d.google.com ([2607:f8b0:4864:20::e2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qHHuM-0008Ka-IN; Thu, 06 Jul 2023 01:52:04 -0400
-Received: by mail-vs1-xe2d.google.com with SMTP id
- ada2fe7eead31-440bc794fcdso91309137.3; 
- Wed, 05 Jul 2023 22:52:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688622720; x=1691214720;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NQjelDx7CyOiQWfvkPlCTEnKx6CE+Dog3fytrj4gH34=;
- b=AJQLbgg/bZlky48x/vK1h7o1d73tVBq5qYr9fUBLo9m+TQknxlZXdG+GS86FzspdCE
- diadWUWICA57/AJKMfDHDTYB/uNTItpfiXQQIatfVft8ENnWTDJfKxvg5I6jpIymF6x9
- 5foIJL/SJ/+PdAvWEs6NQk2dHjtKMQeJVqCm6AtEpxultSGxfxkLjxpz0KYfxSWqGOeM
- I8Jp2o8H2lQbRfrYnewFf5OgDP6HBNotZeL+64k5xTUvGBkXQpN0zho1sCQgAKZn9StQ
- YU8+vZvrF2lgRshkgXmFenwal6ti+aNUV8fBQmo8hvyANh1N/b7FQudQFluibCH+tI+i
- 9OXg==
+ (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
+ id 1qHI3H-0004SJ-Ls
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 02:01:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
+ id 1qHI3G-0001h4-0W
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 02:01:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688623272;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ube1y7JOBK0sYBUge2MjDkyKJYg7nc/dcuBp4XK4m2M=;
+ b=QPC7jsYVsG5eOBRsz1vC2MibTOLQV5DaF4L281RkRgCpqA91CHaEt2jLr5YY+MLJwHWBKk
+ i6I/UFdltB8s1ae8DRLrgu2LhcekLAUWUWy+4uivOXF7R1kCPT/dPXijDWPjMdxtpKRGPN
+ dATmNh0YfIp8aOfop7QVQrxzClPt4SA=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-532-U5M4XtxOPA6x8W3lQ8Cj6w-1; Thu, 06 Jul 2023 02:00:05 -0400
+X-MC-Unique: U5M4XtxOPA6x8W3lQ8Cj6w-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2b6f97c9d54so2919271fa.3
+ for <qemu-devel@nongnu.org>; Wed, 05 Jul 2023 23:00:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688622720; x=1691214720;
+ d=1e100.net; s=20221208; t=1688623204; x=1691215204;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NQjelDx7CyOiQWfvkPlCTEnKx6CE+Dog3fytrj4gH34=;
- b=Je4pHKXeuiIE4uMkxxFT4IHpsQXULxcqEp2b1+d6lqILThKux2buQ6VDZr270n6u+m
- D2nlOCiJYhxsPAwQ5V24TL6NHvVwCqaB5DzoAdY/vYXGUaHnOiqMVTQLnqZLNspsjqWS
- mV8Mg3QkyvGVEauZeKnsvjI7gjbxfrMzfiU4qco4ZB7SHppI8Wk0SEjzkA1cZus+pAVb
- XpWJtBaF5Dm5eIbMtWAHc44enEZves+lVKz42cmHiorW1aHKABx8FxT3tgSriZi5cPRq
- kf45hSt58oygbHFv3Oqqf5M5MwTrS9ts0dOVS7VWOS2i1b8ZDINhK0WVnswPzf0DEDVA
- 6Zxg==
-X-Gm-Message-State: ABy/qLYOV2KTcU3Il2JNoroWP59ualxgL0DxWpdch28uKxJxlVfTTL0R
- pM6mlYQSOI45DVpjrPHbZkx55LhcFZn93Naa4RQ=
-X-Google-Smtp-Source: APBJJlEfg8/pmbTE/hEMSLMHAdsDYlVGIfasnfCn8Dtl9/L6OwnqHjn+8kwE7+iGw03RXG8nC0j9N69oHxrvh+OKXBU=
-X-Received: by 2002:a67:ec82:0:b0:445:209:cac7 with SMTP id
- h2-20020a67ec82000000b004450209cac7mr629638vsp.27.1688622720604; Wed, 05 Jul
- 2023 22:52:00 -0700 (PDT)
+ bh=ube1y7JOBK0sYBUge2MjDkyKJYg7nc/dcuBp4XK4m2M=;
+ b=l5YzwXcH7g21J/09psAe5v8rXf4OESOZlBr70IEXJxxemBYJCDo5b3mKV79EGqahpp
+ afXsIMdGc/N0C3JWCY/EAfVT1Ks5g7QG4WSDIgJ3suiBh1AxkXCMR/tIigi7f07qDVcr
+ xXtFyCJBrVBDkvg8rP1etXkui0aeC0gAKYHm/tNwtAnlgmT4ro68pIvSjZqn/GQeEAbu
+ wru23KpsBUXziTY70csIWL3FuYcJde5wKxSLkPjHF41LsSF9l2aZzdi+NZlgidlmcdGf
+ mePedekX+9WWam0N/P6AqNGmIKIWi0CN0K8uCQSpP4FX6phADAlEY0uOwWhCdbzomsa1
+ wqEQ==
+X-Gm-Message-State: ABy/qLYlIApullCsbQKY8K9aY7PjD0qqPzmIUuXeGGcQ+iWzjEJPidrB
+ m6obnpqvdF/MSW7o+HGnXK2ZqAGJchqjiKHtxu3MRWaNUZTokOpEoiajKyOeLwcdZm/WpVlPz8H
+ XzMpSkwEDONvkk1IdovKvVpLF/D0m3Qs=
+X-Received: by 2002:a2e:8706:0:b0:2b5:9f54:e290 with SMTP id
+ m6-20020a2e8706000000b002b59f54e290mr519525lji.0.1688623204160; 
+ Wed, 05 Jul 2023 23:00:04 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlH5dC+QauLezhrplZL+O1uEhTILzY1Y5kwNDaxerNYLS5LWy31HLsJ7/BKtKYrSZ73jYcBEdLIsCogNQgJBnb0=
+X-Received: by 2002:a2e:8706:0:b0:2b5:9f54:e290 with SMTP id
+ m6-20020a2e8706000000b002b59f54e290mr519519lji.0.1688623203853; Wed, 05 Jul
+ 2023 23:00:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230703071759.86775-1-liweiwei@iscas.ac.cn>
- <20230703071759.86775-2-liweiwei@iscas.ac.cn>
-In-Reply-To: <20230703071759.86775-2-liweiwei@iscas.ac.cn>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 6 Jul 2023 15:51:34 +1000
-Message-ID: <CAKmqyKOk6nriU67WRwhFXVmnwt8Xgix2d1n6wM9dA=Lw71vHzw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/1] target/riscv: Add disas support for BF16 extensions
-To: Weiwei Li <liweiwei@iscas.ac.cn>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, dbarboza@ventanamicro.com, 
- zhiwei_liu@linux.alibaba.com, wangjunqiang@iscas.ac.cn, lazyparser@gmail.com
+References: <20230620130354.322180-1-david@redhat.com>
+In-Reply-To: <20230620130354.322180-1-david@redhat.com>
+From: Mario Casquero <mcasquer@redhat.com>
+Date: Thu, 6 Jul 2023 07:59:53 +0200
+Message-ID: <CAMXpfWs5cz2xqkPLwkuCz1NLV+0rKv3wafRtBCQqcyPzvWhGOg@mail.gmail.com>
+Subject: Re: [PATCH v1 0/4] virtio-mem: Support "x-ignore-shared" migration
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, 
+ Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Peng Tao <tao.peng@linux.alibaba.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2d;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcasquer@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,168 +98,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 3, 2023 at 5:20=E2=80=AFPM Weiwei Li <liweiwei@iscas.ac.cn> wro=
-te:
->
-> Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-> Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+This series has been tested successfully by QE. Start a VM with a 8G
+virtio-mem device and start memtester on it. Enable x-ignore-shared
+capability and then do migration. Migration was successful and
+virtio-mem can be resized as usual.
 
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Tested-by: Mario Casquero <mcasquer@redhat.com>
 
-Alistair
+BR,
+Mario
 
-> ---
->  disas/riscv.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 44 insertions(+)
+
+
+
+On Tue, Jun 20, 2023 at 3:05=E2=80=AFPM David Hildenbrand <david@redhat.com=
+> wrote:
 >
-> diff --git a/disas/riscv.c b/disas/riscv.c
-> index 94e568a7e9..9f0195be30 100644
-> --- a/disas/riscv.c
-> +++ b/disas/riscv.c
-> @@ -819,6 +819,16 @@ typedef enum {
->      rv_op_cm_jalt =3D 788,
->      rv_op_czero_eqz =3D 789,
->      rv_op_czero_nez =3D 790,
-> +    rv_op_fcvt_bf16_s =3D 791,
-> +    rv_op_fcvt_s_bf16 =3D 792,
-> +    rv_op_vfncvtbf16_f_f_w =3D 793,
-> +    rv_op_vfwcvtbf16_f_f_v =3D 794,
-> +    rv_op_vfwmaccbf16_vv =3D 795,
-> +    rv_op_vfwmaccbf16_vf =3D 796,
-> +    rv_op_flh =3D 797,
-> +    rv_op_fsh =3D 798,
-> +    rv_op_fmv_h_x =3D 799,
-> +    rv_op_fmv_x_h =3D 800,
->  } rv_op;
+> Stumbling over "x-ignore-shared" migration support for virtio-mem on
+> my todo list, I remember talking to Dave G. a while ago about how
+> ram_block_discard_range() in MAP_PIRVATE file mappings is possibly
+> harmful when the file is used somewhere else -- for example, with VM
+> templating in multiple VMs.
 >
->  /* register names */
-> @@ -1905,6 +1915,16 @@ const rv_opcode_data rvi_opcode_data[] =3D {
->      { "cm.jalt", rv_codec_zcmt_jt, rv_fmt_zcmt_index, NULL, 0 },
->      { "czero.eqz", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
->      { "czero.nez", rv_codec_r, rv_fmt_rd_rs1_rs2, NULL, 0, 0, 0 },
-> +    { "fcvt.bf16.s", rv_codec_r_m, rv_fmt_rm_frd_frs1, NULL, 0, 0, 0 },
-> +    { "fcvt.s.bf16", rv_codec_r_m, rv_fmt_rm_frd_frs1, NULL, 0, 0, 0 },
-> +    { "vfncvtbf16.f.f.w", rv_codec_v_r, rv_fmt_vd_vs2_vm, NULL, 0, 0, 0 =
-},
-> +    { "vfwcvtbf16.f.f.v", rv_codec_v_r, rv_fmt_vd_vs2_vm, NULL, 0, 0, 0 =
-},
-> +    { "vfwmaccbf16.vv", rv_codec_v_r, rv_fmt_vd_vs1_vs2_vm, NULL, 0, 0, =
-0 },
-> +    { "vfwmaccbf16.vf", rv_codec_v_r, rv_fmt_vd_fs1_vs2_vm, NULL, 0, 0, =
-0 },
-> +    { "flh", rv_codec_i, rv_fmt_frd_offset_rs1, NULL, 0, 0, 0 },
-> +    { "fsh", rv_codec_s, rv_fmt_frs2_offset_rs1, NULL, 0, 0, 0 },
-> +    { "fmv.h.x", rv_codec_r, rv_fmt_frd_rs1, NULL, 0, 0, 0 },
-> +    { "fmv.x.h", rv_codec_r, rv_fmt_rd_frs1, NULL, 0, 0, 0 },
->  };
+> This series adds a warning to ram_block_discard_range() in that problemat=
+ic
+> case and adds "x-ignore-shared" migration support for virtio-mem, which
+> is pretty straight-forward. The last patch also documents how VM templati=
+ng
+> interacts with virtio-mem.
 >
->  /* CSR names */
-> @@ -2380,6 +2400,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_i=
-sa isa)
->                  case 3: op =3D rv_op_vloxei8_v; break;
->                  }
->                  break;
-> +            case 1: op =3D rv_op_flh; break;
->              case 2: op =3D rv_op_flw; break;
->              case 3: op =3D rv_op_fld; break;
->              case 4: op =3D rv_op_flq; break;
-> @@ -2583,6 +2604,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_i=
-sa isa)
->                  case 3: op =3D rv_op_vsoxei8_v; break;
->                  }
->                  break;
-> +            case 1: op =3D rv_op_fsh; break;
->              case 2: op =3D rv_op_fsw; break;
->              case 3: op =3D rv_op_fsd; break;
->              case 4: op =3D rv_op_fsq; break;
-> @@ -2860,6 +2882,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_i=
-sa isa)
->                  switch ((inst >> 20) & 0b11111) {
->                  case 1: op =3D rv_op_fcvt_s_d; break;
->                  case 3: op =3D rv_op_fcvt_s_q; break;
-> +                case 6: op =3D rv_op_fcvt_s_bf16; break;
->                  }
->                  break;
->              case 33:
-> @@ -2868,6 +2891,11 @@ static void decode_inst_opcode(rv_decode *dec, rv_=
-isa isa)
->                  case 3: op =3D rv_op_fcvt_d_q; break;
->                  }
->                  break;
-> +            case 34:
-> +                switch (((inst >> 20) & 0b11111)) {
-> +                case 8: op =3D rv_op_fcvt_bf16_s; break;
-> +                }
-> +                break;
->              case 35:
->                  switch ((inst >> 20) & 0b11111) {
->                  case 0: op =3D rv_op_fcvt_q_s; break;
-> @@ -2972,6 +3000,12 @@ static void decode_inst_opcode(rv_decode *dec, rv_=
-isa isa)
->                  case 1: op =3D rv_op_fclass_d; break;
->                  }
->                  break;
-> +            case 114:
-> +                switch (((inst >> 17) & 0b11111000) |
-> +                        ((inst >> 12) & 0b00000111)) {
-> +                case 0: op =3D rv_op_fmv_x_h; break;
-> +                }
-> +                break;
->              case 115:
->                  switch (((inst >> 17) & 0b11111000) |
->                          ((inst >> 12) & 0b00000111)) {
-> @@ -2991,6 +3025,12 @@ static void decode_inst_opcode(rv_decode *dec, rv_=
-isa isa)
->                  case 0: op =3D rv_op_fmv_d_x; break;
->                  }
->                  break;
-> +            case 122:
-> +                switch (((inst >> 17) & 0b11111000) |
-> +                        ((inst >> 12) & 0b00000111)) {
-> +                case 0: op =3D rv_op_fmv_h_x; break;
-> +                }
-> +                break;
->              case 123:
->                  switch (((inst >> 17) & 0b11111000) |
->                          ((inst >> 12) & 0b00000111)) {
-> @@ -3087,6 +3127,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_i=
-sa isa)
->                      case 10: op =3D rv_op_vfwcvt_f_xu_v; break;
->                      case 11: op =3D rv_op_vfwcvt_f_x_v; break;
->                      case 12: op =3D rv_op_vfwcvt_f_f_v; break;
-> +                    case 13: op =3D rv_op_vfwcvtbf16_f_f_v; break;
->                      case 14: op =3D rv_op_vfwcvt_rtz_xu_f_v; break;
->                      case 15: op =3D rv_op_vfwcvt_rtz_x_f_v; break;
->                      case 16: op =3D rv_op_vfncvt_xu_f_w; break;
-> @@ -3097,6 +3138,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_i=
-sa isa)
->                      case 21: op =3D rv_op_vfncvt_rod_f_f_w; break;
->                      case 22: op =3D rv_op_vfncvt_rtz_xu_f_w; break;
->                      case 23: op =3D rv_op_vfncvt_rtz_x_f_w; break;
-> +                    case 29: op =3D rv_op_vfncvtbf16_f_f_w; break;
->                      }
->                      break;
->                  case 19:
-> @@ -3128,6 +3170,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_i=
-sa isa)
->                  case 52: op =3D rv_op_vfwadd_wv; break;
->                  case 54: op =3D rv_op_vfwsub_wv; break;
->                  case 56: op =3D rv_op_vfwmul_vv; break;
-> +                case 59: op =3D rv_op_vfwmaccbf16_vv; break;
->                  case 60: op =3D rv_op_vfwmacc_vv; break;
->                  case 61: op =3D rv_op_vfwnmacc_vv; break;
->                  case 62: op =3D rv_op_vfwmsac_vv; break;
-> @@ -3366,6 +3409,7 @@ static void decode_inst_opcode(rv_decode *dec, rv_i=
-sa isa)
->                  case 52: op =3D rv_op_vfwadd_wf; break;
->                  case 54: op =3D rv_op_vfwsub_wf; break;
->                  case 56: op =3D rv_op_vfwmul_vf; break;
-> +                case 59: op =3D rv_op_vfwmaccbf16_vf; break;
->                  case 60: op =3D rv_op_vfwmacc_vf; break;
->                  case 61: op =3D rv_op_vfwnmacc_vf; break;
->                  case 62: op =3D rv_op_vfwmsac_vf; break;
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: Juan Quintela <quintela@redhat.com>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Leonardo Bras <leobras@redhat.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: "Philippe Mathieu-Daud=C3=A9" <philmd@linaro.org>
+> Cc: Peng Tao <tao.peng@linux.alibaba.com>
+>
+> David Hildenbrand (4):
+>   softmmu/physmem: Warn with ram_block_discard_range() on MAP_PRIVATE
+>     file mapping
+>   virtio-mem: Skip most of virtio_mem_unplug_all() without plugged
+>     memory
+>   migration/ram: Expose ramblock_is_ignored() as
+>     migrate_ram_is_ignored()
+>   virtio-mem: Support "x-ignore-shared" migration
+>
+>  hw/virtio/virtio-mem.c   | 67 ++++++++++++++++++++++++++++------------
+>  include/migration/misc.h |  1 +
+>  migration/postcopy-ram.c |  2 +-
+>  migration/ram.c          | 14 ++++-----
+>  migration/ram.h          |  3 +-
+>  softmmu/physmem.c        | 18 +++++++++++
+>  6 files changed, 76 insertions(+), 29 deletions(-)
+>
 > --
-> 2.25.1
+> 2.40.1
 >
 >
+
 
