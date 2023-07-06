@@ -2,96 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFD974963B
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 09:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2818F749668
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 09:32:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHJHX-00006t-KE; Thu, 06 Jul 2023 03:20:03 -0400
+	id 1qHJRz-00038S-Qg; Thu, 06 Jul 2023 03:30:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHJHU-00005y-Hr
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:20:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHJHR-0007yL-JF
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:19:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688627995;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=FxgodwLyofDC1QSD76qnGKtHNOI4pE1XJNzl4MR/H9g=;
- b=AQwgFFBWLw0wdPFWT5YsGzjJJuPhf+wO+X0XqCMa5laCwfzdy0BMovFwAZM19FG1xEqX3A
- Kdi0lfzo70HnrTd7IWXFcqnsJsrvDx6jl7Ua4mPjgiL7rLmYdXLX3HPX3EY3aJeCKYrso2
- X909YqCohmbhyZk6vKUeTbpYIp9pNOY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-149-LXAJ_PqcM7aaW7KQ7w5Rzg-1; Thu, 06 Jul 2023 03:19:54 -0400
-X-MC-Unique: LXAJ_PqcM7aaW7KQ7w5Rzg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3faabd8fd33so2506505e9.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 00:19:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1qHJRq-000386-10
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:30:46 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1qHJRo-0006pa-4P
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:30:41 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3143798f542so277572f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 00:30:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688628638; x=1691220638;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wWuH+5Pz1Egi9rZuQN0gb5NGXUmUpImz8Z0aA1Vhxt8=;
+ b=ausk4CyHZVxxOP78X1zq/ATbgaX6p+/JK0lFUjVTVU4x8eC7XaI7iUHRTlcVwcKHry
+ VLSYMIzqwF9yJjWx29tfVqDdHx7eB9ASfeVCmOExN+3hEfIHToh0nUVSNY5xxJTQvk+T
+ X8WpV8L8NyMizluPvolDYElTBYcoc+Z076vHxe8bzn5luMkN97MyClbLEULdAOj16v/W
+ v69RtaLHIMX+7r5E9d4F+dPdRixACkQ+yVA2ut5d7l3em/Q3yD1G1PiDMOkx4L8Y6DN8
+ gpYdmjSIclYWLtjbwR76Ntw/GcJ3Ei/1aMxuY+geTuDrJVEyg/VwVH7ocgq8Vgu4mDxW
+ DI1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688627993; x=1691219993;
- h=content-transfer-encoding:in-reply-to:organization:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FxgodwLyofDC1QSD76qnGKtHNOI4pE1XJNzl4MR/H9g=;
- b=L5lzACREamPDwM+e/v21as/RHMDOc9rI5PkE6o+AxWCEb3yvOAb8WMLGKB59ZsrqKK
- TvgYAmHlCO3O/3B6wj2s0GEsfWgldZKEmp/aiW5dSrvJrGa3FRggiOvrltjUrv+wTCki
- d9H7VcfnBIMD6lTwV5OXv8/FozMpHnoxRfLSC5NsSx2gTtmUr6H3xFBi4fp3DPPOFd/7
- /Uj7JgDcQQP1iw6nXb61z4nfKf39YgoNK9ljRvqd9LuEUwhkMQu9LmpJQK4YRMSCZOuf
- UHkFxaTa+QA+ZMFmEjhwRCAYay+b4U7W9yFgyoYauowBuRNhaADHkUa3LJSfK3jOG2Bl
- EoCg==
-X-Gm-Message-State: ABy/qLaePDPBE+QHIY+hfhdBUoV9l5vRwbpIL1VvvBQEV7Ezi/arAhMK
- anwBDH/gzAAcLhDJKUz+LWNpuSBxJhPRMF+XDE183EUGVQixSg+Hnoaz1rvfgBqjOyNRk6yrqd1
- ETWjfu3lR1kdXib4=
-X-Received: by 2002:a05:600c:214e:b0:3f8:fc2a:c7eb with SMTP id
- v14-20020a05600c214e00b003f8fc2ac7ebmr615428wml.5.1688627993414; 
- Thu, 06 Jul 2023 00:19:53 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlE9PotvMf/lHIclT2560wNBGZWW/iNa4l7jiyMOy59rYdeyOjxME27gVPieehoS3wQzDOEI+A==
-X-Received: by 2002:a05:600c:214e:b0:3f8:fc2a:c7eb with SMTP id
- v14-20020a05600c214e00b003f8fc2ac7ebmr615416wml.5.1688627993094; 
- Thu, 06 Jul 2023 00:19:53 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
- ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+ d=1e100.net; s=20221208; t=1688628638; x=1691220638;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wWuH+5Pz1Egi9rZuQN0gb5NGXUmUpImz8Z0aA1Vhxt8=;
+ b=XAKFtCun+NqP2mRnoyL+3DiqdT2aSYhurmj+Y4iQGeYmMEXIbwGOvJFCw0/bMtGc4f
+ m/lQZEP5zu/kpaaz6PBgdC3r5r7kzjekrnpArnAobgFxhWgos/YoNg1MukTNXpJNOH0A
+ bYSX3NpZg4ogdZpoyV6mEZTJV4wpuAGD9V9e6+HXDlJx+Y/NJF+ggFaHKLC3Sj1/+fyK
+ kQpmChaiHKAuCrhF7NyXG3oBKgYZZ17V7b3A1FE4VCNLT8WBJlwNMb0a2loHKVf3Sd3Q
+ miN2WLA7GrvA/rg0E32633BdXq2KWh0LSwY3U3qzCQK3t9fdPIhiI5gBu9ZQl62DjsLp
+ GhKA==
+X-Gm-Message-State: ABy/qLYXvo/B9yP1PsBRlYqfqBmlsYURDjePqL+O1akQpYkwsicf8bUJ
+ jXo/gPir2w4UH+BF0T7WdfxH7Q==
+X-Google-Smtp-Source: APBJJlFuB6rkfvzkfwmCnMWyPG3Se9yDLLGtR9DgbYK9M09WtNdn95iKKkeWw5EGN0vbz3YUU9CH3g==
+X-Received: by 2002:a5d:4d8e:0:b0:314:3e77:f210 with SMTP id
+ b14-20020a5d4d8e000000b003143e77f210mr734383wru.59.1688628637967; 
+ Thu, 06 Jul 2023 00:30:37 -0700 (PDT)
+Received: from ?IPV6:2a01:cb16:17:9b7:7202:56c8:8848:ac68?
+ ([2a01:cb16:17:9b7:7202:56c8:8848:ac68])
  by smtp.gmail.com with ESMTPSA id
- q9-20020adff789000000b00313e2abfb8dsm1034195wrp.92.2023.07.06.00.19.52
+ k15-20020a056000004f00b003140fff4f75sm1096500wrx.17.2023.07.06.00.30.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 00:19:52 -0700 (PDT)
-Message-ID: <1b20090d-69dc-ae85-3f3d-59ba352e7ed5@redhat.com>
-Date: Thu, 6 Jul 2023 09:19:51 +0200
+ Thu, 06 Jul 2023 00:30:37 -0700 (PDT)
+Message-ID: <696064fd-0509-b4d9-ff93-f60385fb00d0@linaro.org>
+Date: Thu, 6 Jul 2023 09:30:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v1 0/4] virtio-mem: Support "x-ignore-shared" migration
-To: Mario Casquero <mcasquer@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Peng Tao <tao.peng@linux.alibaba.com>
-References: <20230620130354.322180-1-david@redhat.com>
- <CAMXpfWs5cz2xqkPLwkuCz1NLV+0rKv3wafRtBCQqcyPzvWhGOg@mail.gmail.com>
+Subject: Re: [PATCH v3] linux-user/syscall: Implement execve without execveat
 Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <CAMXpfWs5cz2xqkPLwkuCz1NLV+0rKv3wafRtBCQqcyPzvWhGOg@mail.gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, sir@cmpwn.com, philmd@linaro.org
+References: <20230705121023.973284-1-pierrick.bouvier@linaro.org>
+ <4e5a77e3-17bc-f4bf-b0d3-476469b768c2@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <4e5a77e3-17bc-f4bf-b0d3-476469b768c2@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,20 +96,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06.07.23 07:59, Mario Casquero wrote:
-> This series has been tested successfully by QE. Start a VM with a 8G
-> virtio-mem device and start memtester on it. Enable x-ignore-shared
-> capability and then do migration. Migration was successful and
-> virtio-mem can be resized as usual.
+On 7/5/23 17:46, Richard Henderson wrote:
+> On 7/5/23 14:10, Pierrick Bouvier wrote:
+>> Support for execveat syscall was implemented in 55bbe4 and is available
+>> since QEMU 8.0.0. It relies on host execveat, which is widely available
+>> on most of Linux kernels today.
+>>
+>> However, this change breaks qemu-user self emulation, if "host" qemu
+>> version is less than 8.0.0. Indeed, it does not implement yet execveat.
+>> This strange use case happens with most of distribution today having
+>> binfmt support.
+>>
+>> With a concrete failing example:
+>> $ qemu-x86_64-7.2 qemu-x86_64-8.0 /bin/bash -c /bin/ls
+>> /bin/bash: line 1: /bin/ls: Function not implemented
+>> -> not implemented means execve returned ENOSYS
+>>
+>> qemu-user-static 7.2 and 8.0 can be conveniently grabbed from debian
+>> packages qemu-user-static* [1].
+>>
+>> One usage of this is running wine-arm64 from linux-x64 (details [2]).
+>> This is by updating qemu embedded in docker image that we ran into this
+>> issue.
+>>
+>> The solution to update host qemu is not always possible. Either it's
+>> complicated or ask you to recompile it, or simply is not accessible
+>> (GitLab CI, GitHub Actions). Thus, it could be worth to implement execve
+>> without relying on execveat, which is the goal of this patch.
+>>
+>> This patch was tested with example presented in this commit message.
+>>
+>> [1]http://ftp.us.debian.org/debian/pool/main/q/qemu/
+>> [1]https://www.linaro.org/blog/emulate-windows-on-arm/
+>>
+>> Signed-off-by: Pierrick Bouvier<pierrick.bouvier@linaro.org>
+>> ---
+>>    linux-user/syscall.c | 20 ++++++++++++--------
+>>    1 file changed, 12 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+>> index 08162cc966..90777c5833 100644
+>> --- a/linux-user/syscall.c
+>> +++ b/linux-user/syscall.c
+>> @@ -659,6 +659,7 @@ safe_syscall4(pid_t, wait4, pid_t, pid, int *, status, int, options, \
+>>    #endif
+>>    safe_syscall5(int, waitid, idtype_t, idtype, id_t, id, siginfo_t *, infop, \
+>>                  int, options, struct rusage *, rusage)
+>> +safe_syscall3(int, execve, const char *, filename, char **, argv, char **, envp)
 > 
-> Tested-by: Mario Casquero <mcasquer@redhat.com>
+> I guess we'll quickly get a build-time error if there's no host execve syscall
+> (which looks to be, eventually, compat-only).
+>
+
+Out of curiosity, is there any plan for deprecation (or removal) of 
+execve on a specific architecture? I thought it had to stay there, just 
+for backward compatibility.
+
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > 
-
-Thanks a lot Mario!
-
--- 
-Cheers,
-
-David / dhildenb
-
+> 
+> r~
 
