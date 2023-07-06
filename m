@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9673C74A284
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 18:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 157F574A288
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 18:52:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHSCL-0002qo-6U; Thu, 06 Jul 2023 12:51:17 -0400
+	id 1qHSDS-0003dS-BQ; Thu, 06 Jul 2023 12:52:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHSC9-0002q5-BT
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 12:51:08 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHSDR-0003dI-4k
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 12:52:25 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHSC5-00009Z-8A
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 12:51:04 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-992e22c09edso109260466b.2
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 09:51:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHSDP-0002jn-BE
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 12:52:24 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-991f956fb5aso113095166b.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 09:52:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688662259; x=1691254259;
+ d=linaro.org; s=google; t=1688662342; x=1691254342;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Xz5uFkMVAHreoQsP7qWUQ7Nk5ICo8gFm0Z5UxHN3DYM=;
- b=O9DU5yRoGcUpnn4ec/qHb8Nr9a5nBpuuP32GE4LsyDwg2kA1/cJZVL/l9EFQ/boiPO
- KZFee4mlDbTMSd+z4UTxzI2B8yZuqUSeYslw3nEHDs4c2uesl2whELy7XiYerLZGMwQA
- l8oFS86+A9ZQT8m/5OzH/NNIQtmn0ukLB7uKFZuP47u6ciVkst+C/EdlvQG13Uumgaxo
- cymRbsTDjECBYhWpeGqe2ym9glUrAXJpRRf0o/oKchmh/wo4kRnL0Ou67pcrP1ZAxUfJ
- RgbXXBtENgg+GKmUOgEt8IyjfeXF4K+41F3qrKvUPPb96nVkqceh51CYmpPGM71XY4Ll
- YwhQ==
+ bh=ikuNgDWY6W9yyr9/ymfDu+WXJaFVezLGC2wIptEcjKs=;
+ b=LeU3/k3lY31XvBpuYPBFChcwj9lA/zkGh6Bk647NpptPpG3dtPfb3oz+h3punUMZZy
+ uYuiE3Qmvg8WTlEzDJZ88Rz3LTCtxwPgoh17wofMfD8I2jopeziq7haMzcdUU9+xoDNo
+ qXSLu/hKaaAavV/MGT6mB92lnzfyf18X6KrUd/T0MMMvMtEpQBa/jGorN0EZRqNCHjcS
+ R5+bfr9QdPonlIYF6Kg0a6SCYEq0YxtugZldfA0BoHiXnrNoQOKKPpwNvTuCpXHwdKb6
+ Kmjxj8SWpbGbafg95+sRGDyblL+1LBUKrcx4eWd1cEHnptVf2XijsiZlrcSX7+vpTlNx
+ JRTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688662259; x=1691254259;
+ d=1e100.net; s=20221208; t=1688662342; x=1691254342;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Xz5uFkMVAHreoQsP7qWUQ7Nk5ICo8gFm0Z5UxHN3DYM=;
- b=DuFdyPaliRE2gURdIgL0/EsmVs6UMVYi5ariErTEJ+O+k65hVTH0IWoTnPYIdBPPBB
- OQhXHhUU+quMUXtOjqXe276zRDq7ZAoHaD4svQYlgfLLEI1JnV83AS2Jg3umWHga4bg2
- 6f49sbWw9CWcMGs2pFkpM47D4pnB9j9L4069zFtudu45pPIy0fKc8vwptOLasH1ECz7p
- WOdAk8Rh3H2u+vUSxCrWwj8Ouu+++Cljx7pbj3/dqIm2MjEWz0TFDoksT2cDD592ETcZ
- PxmQKdxEqcMAAE6uIMFuyOlYAHosMRgiOXn54MW/pEsZ6hZoYGllpq4XweIMjxIxwU59
- 82vQ==
-X-Gm-Message-State: ABy/qLY9p1A+s49IHlOXzHTiR7SxDI68ietxXVa7ZvOjCchzUDT+/gNg
- op9NoQboFKKDUUvl3PuT0E0EVw==
-X-Google-Smtp-Source: APBJJlEyKBONGcfBZCJkmY/HjvyD+4VKSj03dsa8ID25/OjNEyj2GhWyljDqwggWygT5U6czyEYEEA==
-X-Received: by 2002:a17:906:20e:b0:992:8a4a:6811 with SMTP id
- 14-20020a170906020e00b009928a4a6811mr2313658ejd.15.1688662259675; 
- Thu, 06 Jul 2023 09:50:59 -0700 (PDT)
+ bh=ikuNgDWY6W9yyr9/ymfDu+WXJaFVezLGC2wIptEcjKs=;
+ b=f4qPPdzLNZoAzmsgyOIkGgQxxGU70oOaHn15dVtAFpF8DgBxxeX8obd6VdYXitEsSB
+ HG4wrx+fxhnCWubDAEoF+r6W0/wlPlVxsOQHbpmxQBQxSOeJix0GiG9eWJX7MqMKATfu
+ m7qET9V60eoH2LHDe7eT9LpvRBHfC03RgarMwkczSfeeS1Xva0ouPzP28oNTbDQ379TI
+ uJv10qgO/hEh5COr2FZN301EdDIiLcDUfHj90QLtk0/anCyaeTykScUPOTAU3KQITBaC
+ 8ksGyZzdlv4sYOotwmWZtWO+BULE9N0NAzIKansmkoNAs0jiyPJMLMv2kvej+mGjQ1Pi
+ s+Nw==
+X-Gm-Message-State: ABy/qLY6vFutvvaW6+OQq5pXg1IQ8q/alqmR/RMc+3PaPVKdV06uhccD
+ 1OhhMpkfmduuh02dz2TeergbMg==
+X-Google-Smtp-Source: APBJJlEfBLerxO0sf6S+7zMzDl7QNc74JV0hrSKb8uCQoVFhg9QJnR+Jf0pMbhhLl4yce6cHS2YXMQ==
+X-Received: by 2002:a17:906:116:b0:988:7d1:f5a5 with SMTP id
+ 22-20020a170906011600b0098807d1f5a5mr1925834eje.28.1688662341791; 
+ Thu, 06 Jul 2023 09:52:21 -0700 (PDT)
 Received: from [192.168.1.102] ([176.187.199.225])
  by smtp.gmail.com with ESMTPSA id
- m10-20020a17090607ca00b00989257be620sm1017322ejc.200.2023.07.06.09.50.58
+ a13-20020a1709065f8d00b0099364d9f0e2sm1037663eju.98.2023.07.06.09.52.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 09:50:59 -0700 (PDT)
-Message-ID: <c03209e3-c0e3-3fb0-c627-478bd820fc89@linaro.org>
-Date: Thu, 6 Jul 2023 18:50:57 +0200
+ Thu, 06 Jul 2023 09:52:21 -0700 (PDT)
+Message-ID: <be80fac9-dad2-bd46-a1e3-646f56337dea@linaro.org>
+Date: Thu, 6 Jul 2023 18:52:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] hw/arm/virt-acpi-build.c: Add missing header
+Subject: Re: [PATCH] tb-maint: Document #ifdef..else..endif correctly
 Content-Language: en-US
-To: Peng Liang <tcx4c70@gmail.com>, mst@redhat.com, imammedo@redhat.com,
- anisinha@redhat.com, shannon.zhaosl@gmail.com, peter.maydell@linaro.org
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- QEMU Trivial <qemu-trivial@nongnu.org>
-References: <20230706150839.1180137-1-tcx4c70@gmail.com>
+To: "Richard W.M. Jones" <rjones@redhat.com>, richard.henderson@linaro.org
+Cc: pbonzini@redhat.com, qemu-devel@nongnu.org
+References: <20230706134314.907591-1-rjones@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230706150839.1180137-1-tcx4c70@gmail.com>
+In-Reply-To: <20230706134314.907591-1-rjones@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,22 +92,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/7/23 17:08, Peng Liang wrote:
-> virt-acpi-build.c uses warn_report. However, it doesn't include
-> qemu/error-report.h directly, it include qemu/error-report.h via trace.h
-> if we enable log trace backend. But if we disable the log trace backend
-> (e.g., --enable-trace-backends=nop), then virt-acpi-build.c will not
-> include qemu/error-report.h any more and it will lead to build errors.
-> Include qemu/error-report.h directly in virt-acpi-build.c to avoid the
-> errors.
+On 6/7/23 15:43, Richard W.M. Jones wrote:
+> It was hard to tell from the comments whether the code applied to user
+> mode (CONFIG_USER_ONLY) or system mode.  Fix the comments on the #else
+> and #endif directives to be clearer.
 > 
-
-Fixes: 451b157041 ("acpi: Align the size to 128k")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> Signed-off-by: Peng Liang <tcx4c70@gmail.com>
+> Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
 > ---
->   hw/arm/virt-acpi-build.c | 1 +
->   1 file changed, 1 insertion(+)
+>   accel/tcg/tb-maint.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
