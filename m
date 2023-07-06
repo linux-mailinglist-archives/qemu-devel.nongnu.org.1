@@ -2,84 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD9A74997D
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B07749980
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:30:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHMDB-0003D9-LF; Thu, 06 Jul 2023 06:27:45 -0400
+	id 1qHMFB-00041a-Fv; Thu, 06 Jul 2023 06:29:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHMD9-0003Cb-MW
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:27:43 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHMD7-0003xy-3k
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:27:43 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-51d7e8dd118so817240a12.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 03:27:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688639257; x=1691231257;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=TjI5VncEJUo131PC1BdfMM1kZk+v4da39H8MLcFrQag=;
- b=QOpc0g+iGdf+RTxPB4yMSBchXmqviaoFQrimRwvWWCJ9bdsOL4ntqKaJtll1tyqoa+
- QiLFcMm2ZgEOejCw/sVbK4/YVurHCJ03PaApn1hp73inF4nkF9sf8441IDAuKb/82diO
- PhS7+ApY3hzTc/WEn4iqdxBQ2TWpRTnMB2VFCPSok7hgXyM2F9cYWvDCH7MyvTZHnOd8
- wGSmvJCUWCYcjnGlwUYdMYxlgm/4IPZhQYuKH+ZQ3tS4kqtMa0ePVHpVdqNmSxmMlbw0
- NIPSLFkJ3iOy+Y1u3biRqIyVVZp2sFLsixSN+yNkYGR7Q4JL7gF9NrIuhUz4eST7n48I
- yXDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688639257; x=1691231257;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TjI5VncEJUo131PC1BdfMM1kZk+v4da39H8MLcFrQag=;
- b=BXT/8TupKkZG2J5Tz0LFJkN/puQkw3M+GZv3pSxQ3B6Qp3O8oy0HQJCNHye7E3vfZn
- 1gZUZiLRk4fPB7w1NmIL07aDKS2Jc4YB1KTFTEMVzdSZo2iiz5vigQrpC8dozr1e/TgH
- NAdnKNdE7huAz1+58fNsx3huUHbpka1toQL2FORbx7a1fCupEAe1lWN9CZ+8fm9uaSYm
- QT4W50uIzJmUI/3XLTF8ahKDv+puXnbkx74hejzY/DRIMLSbI2izDGWPxAjjITPKrYBQ
- lZ9AgLGR/IDiIET47npOswL+zLp5bRkGIPySBZ8R6boM6yesil27r9P1hKJbWOU/sxfn
- jAZg==
-X-Gm-Message-State: ABy/qLaLutBD4RHDEi41Hki0+bd2AxpVHQIbsZQavH2aS2wyRtj4XMDX
- wTq3dQCuUJ4haY2z2vr3NIKAOQ==
-X-Google-Smtp-Source: APBJJlGPjYL0hxBofJhy+PuqZnONHGPqgm66Q/cu1PD5WUCJ3P5SRdkVG3deMQ2luqgjzUKTfdDrtA==
-X-Received: by 2002:a05:6402:184e:b0:514:9929:1b01 with SMTP id
- v14-20020a056402184e00b0051499291b01mr1154620edy.8.1688639256875; 
- Thu, 06 Jul 2023 03:27:36 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.199.225])
- by smtp.gmail.com with ESMTPSA id
- r6-20020aa7d146000000b0051df54c6a27sm604480edo.56.2023.07.06.03.27.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 03:27:36 -0700 (PDT)
-Message-ID: <d26ae819-2152-ad85-efd6-425f0f9987af@linaro.org>
-Date: Thu, 6 Jul 2023 12:27:35 +0200
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qHMF9-00040r-Cd
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:29:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qHMF6-0005UC-F3
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:29:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688639383;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1FH8fc3JHx5q6sniT6A1fun6+ZU+GvwHJq/9vpECM6A=;
+ b=Cawe6EmTas2sOWxhFa1ddasfsAEHTmzb5gD71V3MFimbkNrqxBEgf4kcljYATcWhO8hSip
+ Ow6XQy2P3cTq0DOO7VxAyVvz3gmcUYbsxabJWyTTEmJgQgD7X9sfI20AsnGvdVn6QOOU1+
+ GhKkZVhBH/wPua/6VzD8FaIAPjGQPAI=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-137-v49gfcoSNySPjVcaVSR6Pw-1; Thu, 06 Jul 2023 06:29:40 -0400
+X-MC-Unique: v49gfcoSNySPjVcaVSR6Pw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 442FA1C29AE6;
+ Thu,  6 Jul 2023 10:29:40 +0000 (UTC)
+Received: from lacos-laptop-9.usersys.redhat.com (unknown [10.39.194.17])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1DBA9F5CE3;
+ Thu,  6 Jul 2023 10:29:38 +0000 (UTC)
+From: Laszlo Ersek <lersek@redhat.com>
+To: qemu-devel@nongnu.org,
+	lersek@redhat.com
+Cc: Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Peter Xu <peterx@redhat.com>, qemu-trivial@nongnu.org
+Subject: [PATCH 0/2] migration: trivialities
+Date: Thu,  6 Jul 2023 12:29:35 +0200
+Message-Id: <20230706102937.82490-1-lersek@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] target/arm: Avoid over-length shift in
- arm_cpu_sve_finalize() error case
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
-References: <20230704154332.3014896-1-peter.maydell@linaro.org>
- <87jzvffywd.fsf@linaro.org> <c90fd4c8-59a4-e4b9-544b-8eb6cd03b4d3@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <c90fd4c8-59a4-e4b9-544b-8eb6cd03b4d3@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: base64
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -3
+X-Spam_score: -0.4
+X-Spam_bar: /
+X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ MIME_BASE64_TEXT=1.741, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,66 +75,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/7/23 16:45, Richard Henderson wrote:
-> On 7/4/23 18:00, Alex Bennée wrote:
->>
->> Peter Maydell <peter.maydell@linaro.org> writes:
->>
->>> If you build QEMU with the clang sanitizer enabled, you can see it
->>> fire when running the arm-cpu-features test:
->>>
->>> $ QTEST_QEMU_BINARY=./build/arm-clang/qemu-system-aarch64 
->>> ./build/arm-clang/tests/qtest/arm-cpu-features
->>> [...]
->>> ../../target/arm/cpu64.c:125:19: runtime error: shift exponent 64 is 
->>> too large for 64-bit type 'unsigned long long'
->>> [...]
->>>
->>> This happens because the user can specify some incorrect SVE
->>> properties that result in our calculating a max_vq of 0.  We catch
->>> this and error out, but before we do that we calculate
->>>
->>>   vq_mask = MAKE_64BIT_MASK(0, max_vq);$
->>>
->>> and the MAKE_64BIT_MASK() call is only valid for lengths that are
->>> greater than zero, so we hit the undefined behaviour.
->>
->> Hmm that does make me worry we could have more land mines waiting to be
->> found. Would converting MAKE_64BIT_MASK into an inline function and
->> asserting be a better solution?
-> 
-> I'd be tempted to keep a macro, and use __builtin_constant_p to make 
-> sure this expands to a constant if possible.  Ideally constants would be 
-> diagnosed at compile-time and runtime values get runtime asserts.
+U1NJQTsgb3JpZ2luYWxseSBmb3IgUkhCWiMyMDE4NDA0IChoZW5jZSB0aGUgbGlua3MgaW4gdGhl
+IGNvbW1pdAptZXNzYWdlcykuCgpDYzogSnVhbiBRdWludGVsYSA8cXVpbnRlbGFAcmVkaGF0LmNv
+bT4gKG1haW50YWluZXI6TWlncmF0aW9uKQpDYzogTGVvbmFyZG8gQnJhcyA8bGVvYnJhc0ByZWRo
+YXQuY29tPiAocmV2aWV3ZXI6TWlncmF0aW9uKQpDYzogUGV0ZXIgWHUgPHBldGVyeEByZWRoYXQu
+Y29tPiAocmV2aWV3ZXI6TWlncmF0aW9uKQpDYzogcWVtdS10cml2aWFsQG5vbmdudS5vcmcKCkxh
+c3psbyBFcnNlayAoMik6CiAgbWlncmF0aW9uOiBmYWN0b3Igb3V0ICJyZXN1bWVfcmVxdWVzdGVk
+IiBpbiBxbXBfbWlncmF0ZSgpCiAgbWlncmF0aW9uOiB1bmV4cG9ydCBtaWdyYXRlX2ZkX2Vycm9y
+KCkKCiBtaWdyYXRpb24vbWlncmF0aW9uLmggfCAgMSAtCiBtaWdyYXRpb24vbWlncmF0aW9uLmMg
+fCAxMiArKysrKysrLS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCA2IGRl
+bGV0aW9ucygtKQoKCmJhc2UtY29tbWl0OiAyYTZhZTY5MTU0NTQyY2FhOTFkZDE3YzQwZmQzZjVm
+ZmJlYzMwMGRlCg==
 
-Indeed inlined function doesn't work because MAKE_64BIT_MASK() is
-used in static const value definitions:
-
-include/hw/cxl/cxl_component.h:52:1: error: expression is not an integer 
-constant expression
-CXLx_CAPABILITY_HEADER(LINK, 0x8)
-^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-include/hw/cxl/cxl_component.h:50:9: note: expanded from macro 
-'CXLx_CAPABILITY_HEADER'
-         FIELD(CXL_##type##_CAPABILITY_HEADER, PTR, 20, 12)
-         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-include/hw/registerfields.h:46:41: note: expanded from macro 'FIELD'
-                                         MAKE_64BIT_MASK(shift, length)};
-                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This builds however:
-
--- >8 --
---- a/include/qemu/bitops.h
-+++ b/include/qemu/bitops.h
-@@ -28,3 +28,5 @@
-  #define MAKE_64BIT_MASK(shift, length) \
--    (((~0ULL) >> (64 - (length))) << (shift))
-+    ((__builtin_constant_p(length) && !(length)) \
-+     ? 0 \
-+     : (((~0ULL) >> (64 - (length))) << (shift)))
-
----
-
-But then UB is still present at runtime.
 
