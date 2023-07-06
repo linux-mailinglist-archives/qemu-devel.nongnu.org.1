@@ -2,97 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1C9749A95
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D431749AB6
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:34:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHN9N-0001gM-70; Thu, 06 Jul 2023 07:27:54 -0400
+	id 1qHNEq-0002la-TB; Thu, 06 Jul 2023 07:33:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHN9L-0001g8-U8
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:27:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qHNEo-0002lK-B8; Thu, 06 Jul 2023 07:33:30 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHN9J-00051v-Vm
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:27:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688642867;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UgUCMAvQmgyZUKrP52mCTFcPPq4PYhhi1hoGBse5uDo=;
- b=Yq8K0onf6FFx+UIalcHc8LjybvCtnrZwdWdukkpEr/VIWKfMtN5Mfjnx0mQq2jPBcGfOTx
- Yjmo7bDiobHhBrasr8DG7XpF3/PLk2t1mvnpiGlDNNSvj0wxctsszfFX9aw8lfUMnHxVgf
- EvY5scSoNXyvMh8pwP1B8cPSUJ9NYyE=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-581-uWUw2LOWOaudJDyJkhQhdQ-1; Thu, 06 Jul 2023 07:27:46 -0400
-X-MC-Unique: uWUw2LOWOaudJDyJkhQhdQ-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-4edbdd8268bso562601e87.2
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 04:27:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688642864; x=1691234864;
- h=content-transfer-encoding:in-reply-to:subject:organization:from
- :references:cc:to:content-language:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UgUCMAvQmgyZUKrP52mCTFcPPq4PYhhi1hoGBse5uDo=;
- b=W2eop4uBRd/HpHQk/eqALEs8uIkaEAhntzfWvhnQ+/oRdBiQiEHif7XHDqIHtMgaMf
- 4Maf9ykppjNnowWE2H0n7z3d/50jpZcNE7WDV6HHFe1+FDbpZEMubt66Xc1H4s6ICtOl
- FIr6Lv5+3uDGVgBsaX0zceeuqbW9IKmToD1Y//NAm1kgef3tTQeQ6z0ao9EOqdoMZ4wX
- X9R5EeFXFukJ4abKm9UzmEg3FeAPa/fjG0l1VIlyGfDPR/gkme5W16ulxNv/FR2tL4lT
- 4YOCLEVnZhsXoG88QuMb2khht1rhNWFDqZQtdMbvGKUrx8G8eg5IfhbJvW9QlaopxQwZ
- 7NzQ==
-X-Gm-Message-State: ABy/qLZM28EsoFSbvLcKvDkuv9ygEUduLTbP51Wn5xEiauCFruBvWoX3
- yxFcqXKAySo7H2UApp5sNDLORSf01hQFXTcH8TxkIoyp5v68n8y5/PIDDW4aPDPwDY6Zzgo9vLl
- M8jHCrubX/XyvRG8=
-X-Received: by 2002:a05:6512:ad6:b0:4fb:89e3:5ac4 with SMTP id
- n22-20020a0565120ad600b004fb89e35ac4mr1395008lfu.66.1688642864248; 
- Thu, 06 Jul 2023 04:27:44 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFPaRFz+/PV0zhT86Anp/iKbsOpdHps0eFYhp86oYg2quwdKa+P1Lk0zfdzOLh+6E86lbuIgw==
-X-Received: by 2002:a05:6512:ad6:b0:4fb:89e3:5ac4 with SMTP id
- n22-20020a0565120ad600b004fb89e35ac4mr1394993lfu.66.1688642863820; 
- Thu, 06 Jul 2023 04:27:43 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
- ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
- by smtp.gmail.com with ESMTPSA id
- n12-20020adfe78c000000b00314367cf43asm1626335wrm.106.2023.07.06.04.27.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 04:27:43 -0700 (PDT)
-Message-ID: <f30c1439-b7bd-172a-b01a-f7c16d838465@redhat.com>
-Date: Thu, 6 Jul 2023 13:27:42 +0200
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qHNEl-0003MH-5R; Thu, 06 Jul 2023 07:33:30 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id BF7C5746369;
+ Thu,  6 Jul 2023 13:33:05 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 8346E74635C; Thu,  6 Jul 2023 13:33:05 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8173A746335;
+ Thu,  6 Jul 2023 13:33:05 +0200 (CEST)
+Date: Thu, 6 Jul 2023 13:33:05 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Nicholas Piggin <npiggin@gmail.com>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>, 
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH v3] target/ppc: Make checkstop actually stop the system
+In-Reply-To: <CTTWIA9IFYYP.24I02IOSLH97T@wheely>
+Message-ID: <c123e1f9-8752-332b-6bfb-404f07bbc173@eik.bme.hu>
+References: <20230703120340.45349-1-npiggin@gmail.com>
+ <68789d6e-5bf8-88d6-2bd5-405339500f44@eik.bme.hu>
+ <CTSK657Y1RRB.3919QR3A490A5@wheely>
+ <93da1b1b-aabc-aba1-0706-16b3513ad0e9@eik.bme.hu>
+ <CTTWIA9IFYYP.24I02IOSLH97T@wheely>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Content-Language: en-US
-To: quintela@redhat.com
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Peng Tao <tao.peng@linux.alibaba.com>, Mario Casquero <mcasquer@redhat.com>
-References: <20230706075612.67404-1-david@redhat.com>
- <20230706075612.67404-5-david@redhat.com> <875y6xb8pj.fsf@secure.mitica>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v2 4/4] virtio-mem: Support "x-ignore-shared" migration
-In-Reply-To: <875y6xb8pj.fsf@secure.mitica>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,98 +66,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06.07.23 13:06, Juan Quintela wrote:
-> David Hildenbrand <david@redhat.com> wrote:
->> To achieve desired "x-ignore-shared" functionality, we should not
->> discard all RAM when realizing the device and not mess with
->> preallocation/postcopy when loading device state. In essence, we should
->> not touch RAM content.
+On Wed, 5 Jul 2023, Nicholas Piggin wrote:
+> On Tue Jul 4, 2023 at 1:06 AM AEST, BALATON Zoltan wrote:
+>> On Mon, 3 Jul 2023, Nicholas Piggin wrote:
+>>> On Mon Jul 3, 2023 at 10:26 PM AEST, BALATON Zoltan wrote:
+>>>> On Mon, 3 Jul 2023, Nicholas Piggin wrote:
+>>>>> checkstop state does not halt the system, interrupts continue to be
+>>>>> serviced, and other CPUs run. Stop the machine with
+>>>>> qemu_system_guest_panicked.
+>>>>>
+>>>>> Change the logging not to print separately to stderr because a
+>>>>> checkstop is a guest error (or perhaps a simulated machine error)
+>>>>> rather than a QEMU error. CPU registers are dumped.
+>>>>>
+>>>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>>>>
+>>>>> Since v1:
+>>>>> - Fix loop exit so it stops on the checkstop-causing instruction, rather than
+>>>>>  after it.
+>>>>>
+>>>>> Since v2:
+>>>>> - Rebase on ppc-next.
+>>>>
+>>>> Is this really based on ppc-next or on my series or another patch from
+>>>> you? I think the patch from my series that introduces the checksrop
+>>>> function that this patch is changing is not yet in ppc-next so this may
+>>>> not apply there.
+>>>
+>>> It is based on ppc-next unless I've done something silly. Is this
+>>> the patch you were talking about?
+>>>
+>>> https://gitlab.com/danielhb/qemu/-/commit/26d089ac20080066061ed61fb58a5411e275e191
+>>>
+>>>> I think you've posted an alternative to the patch moving
+>>>> checkstop handling to a function and the sc patch which may clash with the
+>>>> not yet merged parts in my series but i could not follow all these
+>>>> patches. I'm not sure Daniel could so maybe you could send it as a series
+>>>> to include all patches you want to add or state what it's based on.
+>>>
+>>> Things are getting a little confusing, but I think what Daniel has
+>>> is okay. Were were talking about changing checkstop with my patch,
+>>> but no big deal to take yours first, I've reworked things.
 >>
->> As "x-ignore-shared" gets set after realizing the device, we cannot
->> rely on that. Let's simply skip discarding of RAM on incoming migration.
->> Note that virtio_mem_post_load() will call
->> virtio_mem_restore_unplugged() -- unless "x-ignore-shared" is set. So
->> once migration finished we'll have a consistent state.
+>> Sorry my bad. Yes it's getting confusing to me and missed that Daniel
+>> already merged that patch on ppc-next, I thought it was one of the patches
+>> not yet merged. So this can go on top then.
 >>
->> The initial system reset will also not discard any RAM, because
->> virtio_mem_unplug_all() will not call virtio_mem_unplug_all() when no
->> memory is plugged (which is the case before loading the device state).
->>
->> Note that something like VM templating -- see commit b17fbbe55cba
->> ("migration: allow private destination ram with x-ignore-shared")
-> 
-> And here I am, I reviewed the patch, and 4 years later I don't remember
-> anything about it O:-)
+>> There was another change for fixing sc that may clash that I'm not sure
+>> if I need to do anything about.
+>
+> The sc patches still had the problem of changing the syscall dump to
+> the instruction after syscall IIRC. So that would need to be fixed.
+> But that does make me a bit less happy about them too... Anyway
+> resend with fix and rebase if you want  them.
 
-:)
+I won't have time now to change this series so I gave on these excp_helper 
+patches for now. I'll wait for your patches to go in first then I'll 
+rebase the remaining ones on that in next devel cycle. What's alredy 
+merged for ppc440 and pegasos2 is enough for the next release or maybe if 
+the last 3 patches from the ppc440 series renaming host bridge type names 
+could go in that would be all from me at the moment. Thank you.
 
-[...]
-
->> +    /*
->> +     * If shared RAM is migrated using the file content and not using QEMU,
->> +     * don't mess with preallocation and postcopy.
->> +     */
->> +    if (migrate_ram_is_ignored(vmem->memdev->mr.ram_block)) {
->> +        return 0;
->> +    }
->> +
->> +    if (vmem->prealloc && !vmem->early_migration) {
->> +        warn_report("Proper preallocation with migration requires a newer QEMU machine");
->> +    }
->> +
-> 
-> Could you explain why you are putting the check after calling
-> virtio_mem_notify_populate_cb()?
-> 
-> What is it expected to for file memory backed RAM?  I got lost when I
-> saw that it just calls:
-> 
-> static int virtio_mem_notify_populate_cb(MemoryRegionSection *s, void *arg)
-> {
->      RamDiscardListener *rdl = arg;
-> 
->      return rdl->notify_populate(rdl, s);
-> }
-> 
-> 
-> I end in vfio, and got completely confused about what is going on there.
-
-
-:)
-
-
-Once we reached virtio_mem_post_load(), we restored the bitmap that 
-contains the state of all device blocks (plugged vs. unplugged).
-
-Whenever we modify the bitmap (plug / unplug), we have to notify 
-(RamDiscardManager) listeners, such that they are aware of the state 
-change and can perform according action.
-
-For example, vfio will go ahead and register the newly plugged blocks 
-with the kernel (DMA map it into the vfio), where the kernel will end up 
-long-term pinning these pages. Effectively, we only end up DMA-mapping 
-plugged memory blocks, so only these get pinned by the kernel (and we 
-can actually release the memory of unplugged blocks).
-
-
-So here (virtio_mem_post_load()), we just restored the bitmap from the 
-migration stream and effectively went from 0 plugged blocks (bitmap 
-empty) before migration to "maybe some plugged blocks in the bitmap".
-
-So we go over the bitmap and tell the world (vfio) to go ahead and 
-DMA-map these blocks that are suddenly plugged.
-
-
-And that part is independent of the actual RAM migration / 
-x-ignore-shared, sow have to do it unconditional.
-
-
-
-Thanks for the thorough review!
-
--- 
-Cheers,
-
-David / dhildenb
-
+Regards,
+BALATON Zoltan
 
