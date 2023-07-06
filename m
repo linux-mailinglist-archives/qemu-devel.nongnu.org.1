@@ -2,67 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10783749D59
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9ED749D78
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:24:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHOwX-0003In-Ez; Thu, 06 Jul 2023 09:22:45 -0400
+	id 1qHOxu-000470-Uh; Thu, 06 Jul 2023 09:24:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1qHOwV-0003IN-7E; Thu, 06 Jul 2023 09:22:43 -0400
-Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1qHOwS-0008Ej-8e; Thu, 06 Jul 2023 09:22:42 -0400
-Received: from [192.168.0.120] (unknown [114.95.176.74])
- by APP-01 (Coremail) with SMTP id qwCowAB3fwsRwKZkROHtCA--.26543S2;
- Thu, 06 Jul 2023 21:22:26 +0800 (CST)
-Message-ID: <dfc75d1f-f28d-7d2c-26f9-72086ffb54ca@iscas.ac.cn>
-Date: Thu, 6 Jul 2023 21:22:25 +0800
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHOxp-00046s-23
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:24:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHOxn-0000IT-Hi
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:24:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688649842;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=U5BAXv48qk7ZaK8c1E2ozrrkfWUJlTQOfc9N/KYF/gs=;
+ b=fR6AQ5+IsRqic2OQEbQTNYfRBKzUyF7aNrRtY1bDviM7xTZ/bWjPlYmXE0fGjQwqOhPWLI
+ 4h7OAESjkNYqIJqnDsgWwi6ReJqU9sfvwTw9COV89L7ZVXrZvCOzFSWsm2abIYwQy6+P+F
+ SQvVweo7e7MlxP7MFATGrRvA7RT7Fso=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-386-9T3wIsm7M6aGRAxOsWn3Mg-1; Thu, 06 Jul 2023 09:24:01 -0400
+X-MC-Unique: 9T3wIsm7M6aGRAxOsWn3Mg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fbb0fdd060so4450635e9.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 06:24:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688649839; x=1691241839;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=U5BAXv48qk7ZaK8c1E2ozrrkfWUJlTQOfc9N/KYF/gs=;
+ b=BnUx1eim68rShm2Hpupog9yP3lewNyQVIcYUVtytYd0ngwebs+0UkFoxxfKdTXM0ao
+ FrNedwlP8lRQQr1ETL/RVMx2qTdC/uK/otfrP05av6PWhHBSgAWsdoGvmGHryF0Qlqlh
+ olQ/WOL9SzDWJELi0eiNUv6Cndodm/Pop8LpWXqZxpxl3A8xoyfSgGJhtMF8EQKq4XJW
+ nnzPU+hmXiDelg8Uzwl/6U3/TBbFt3QwEZcQBrTCNGZtthVGDez60C85ynwxlTI+AHlh
+ jfYqMQgljtExlSMm8PaGznXCv5eVTR5paDt+TQ88ttFvjRiYqS4Ryr2ybTBnMACKmto3
+ xZtA==
+X-Gm-Message-State: ABy/qLasiHKjiL9a8dHtsgZSfsyojd4MGhYIzHOm/FkHuzrKdaANs6LV
+ PkTFB12dEqB813ExDfJ19xWEmkcmECne+l/k8fNUXZWK8h0mvT4H6/NTJc1M4ZPIWl4ZrM+yM1j
+ gtx3X0tWoecq/A00=
+X-Received: by 2002:a5d:5647:0:b0:314:31ca:7d1f with SMTP id
+ j7-20020a5d5647000000b0031431ca7d1fmr1349809wrw.20.1688649839344; 
+ Thu, 06 Jul 2023 06:23:59 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlE1dX92ERFqHxpu6Wu/p0QXsCxFv46ikzR7dCZQ89VLw7dxgS/d+TFJldCsjXWOmFRFzVqMVw==
+X-Received: by 2002:a5d:5647:0:b0:314:31ca:7d1f with SMTP id
+ j7-20020a5d5647000000b0031431ca7d1fmr1349795wrw.20.1688649838964; 
+ Thu, 06 Jul 2023 06:23:58 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
+ ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+ by smtp.gmail.com with ESMTPSA id
+ i14-20020adffdce000000b003141f96ed36sm1945179wrs.0.2023.07.06.06.23.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jul 2023 06:23:58 -0700 (PDT)
+Message-ID: <74d081c8-f836-bb6d-935e-1ece625b6011@redhat.com>
+Date: Thu, 6 Jul 2023 15:23:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Cc: liweiwei@iscas.ac.cn, qemu-riscv@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: Re: [PATCH] target/riscv: Fix LMUL check to use minimum SEW
-To: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org
-References: <20230706104433.16264-1-rbradford@rivosinc.com>
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 1/4] softmmu/physmem: Warn with
+ ram_block_discard_range() on MAP_PRIVATE file mapping
 Content-Language: en-US
-From: Weiwei Li <liweiwei@iscas.ac.cn>
-In-Reply-To: <20230706104433.16264-1-rbradford@rivosinc.com>
+To: quintela@redhat.com
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Peng Tao <tao.peng@linux.alibaba.com>, Mario Casquero <mcasquer@redhat.com>
+References: <20230706075612.67404-1-david@redhat.com>
+ <20230706075612.67404-2-david@redhat.com> <87jzvdbgv1.fsf@secure.mitica>
+ <6cceb935-1830-2984-7529-59d1f8881d34@redhat.com>
+ <87zg496uss.fsf@secure.mitica>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <87zg496uss.fsf@secure.mitica>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: qwCowAB3fwsRwKZkROHtCA--.26543S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CrWrXr1DXFyrCFWxGrW7urg_yoW8KFWDpF
- 4UCFW29FykXayxu3Z29w4jqw45ZFW8KFWjkwnYv34UA345GryvvFn8K3ZrZF18JFyfAryj
- qa4jv3WfZ398AaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUkm14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
- 1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
- 6r4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
- Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
- I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
- 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCYjI0SjxkI62AI1cAE67vI
- Y487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
- 0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
- 0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
- WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
- IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUoOJ5UUUUU
-X-Originating-IP: [114.95.176.74]
-X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
-Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
- helo=cstnet.cn
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,81 +111,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 06.07.23 15:20, Juan Quintela wrote:
+> David Hildenbrand <david@redhat.com> wrote:
+>> On 06.07.23 10:10, Juan Quintela wrote:
+>>> David Hildenbrand <david@redhat.com> wrote:
+>>>> ram_block_discard_range() cannot possibly do the right thing in
+>>>> MAP_PRIVATE file mappings in the general case.
+>>>>
+>>>> To achieve the documented semantics, we also have to punch a hole into
+>>>> the file, possibly messing with other MAP_PRIVATE/MAP_SHARED mappings
+>>>> of such a file.
+>>>>
+>>>> For example, using VM templating -- see commit b17fbbe55cba ("migration:
+>>>> allow private destination ram with x-ignore-shared") -- in combination with
+>>>> any mechanism that relies on discarding of RAM is problematic. This
+>>>> includes:
+>>>> * Postcopy live migration
+>>>> * virtio-balloon inflation/deflation or free-page-reporting
+>>>> * virtio-mem
+>>>>
+>>>> So at least warn that there is something possibly dangerous is going on
+>>>> when using ram_block_discard_range() in these cases.
+>>>>
+>>>> Acked-by: Peter Xu <peterx@redhat.com>
+>>>> Tested-by: Mario Casquero <mcasquer@redhat.com>
+>>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>>> (at least we give a warning)
+>>> But I wonder if we can do better and test that:
+>>>    * Postcopy live migration
+>>>      We can check if we are on postcopy, or put a marker so we know
+>>> that
+>>>      postcopy can have problems when started.
+>>>    * virtio-balloon inflation/deflation or free-page-reporting
+>>>      We can check if we have ever used virtio-balloon.
+>>>    * virtio-mem
+>>>      We can check if we have used virtio-men
+>>> I am just wondering if that is even possible?
+>>
+>> Now we warn when any of these features actually tries discarding RAM
+>> (calling ram_block_discard_range()).
+>>
+>> As these features trigger discarding of RAM, once we reach this point
+>> we know that they are getting used. (in comparison to default libvirt
+>> attaching a virtio-balloon device without anybody ever using it)
+>>
+>>
+>> The alternative would be checking the RAM for compatibility when
+>> configuring each features. I decided to warn at a central place for
+>> now, which covers any users.
+> 
+> I think this is the right thing to do.
+> 
+> Patient: It hurts when I do this.
+> Doctor: Don't do that.
+> 
+> O:-)
 
-On 2023/7/6 18:44, Rob Bradford wrote:
-> The previous check was failing with:
->
-> ELEN = 64 SEW = 16 and LMUL = 1/8 (encoded as 5) which is a valid
-> combination.
->
-> Fix the check to correctly match the specification by using minimum SEW
-> rather than the active SEW.
->
->  From the specification:
->
-> "In general, the requirement is to support LMUL ≥ SEWMIN/ELEN, where
-> SEWMIN is the narrowest supported SEW value and ELEN is the widest
-> supported SEW value. In the standard extensions, SEWMIN=8. For standard
-> vector extensions with ELEN=32, fractional LMULs of 1/2 and 1/4 must be
-> supported. For standard vector extensions with ELEN=64, fractional LMULs
-> of 1/2, 1/4, and 1/8 must be supported."
->
->  From inspection this new check allows:
->
-> ELEN=64 1/2, 1/4, 1/8 (encoded as 7, 6, 5 respectfully)
-> ELEN=32 1/2, 1/4 (encoded as 7 and 6 respectfully)
+:)
 
-This is a little confusing.  there is  note in spec to explain why  LMUL 
-≥ SEW MIN /ELEN:
+> 
+> Now more seriously, at this point we are very late to do anything
+> sensible.  I think that the normal thing when we are configuring
+> incompatible things just flag it.
+> 
+> We are following that approach with migration for some time now, and
+> everybody is happier.
 
-"When LMUL < SEW MIN /ELEN, there is no guarantee an implementation 
-would have enough bits in the fractional vector register to store
+For the time being I'll move forward with this patch.
 
-Note at least one element, as VLEN=ELEN is a valid implementation 
-choice. For example, with VLEN=ELEN=32, and SEW MIN =8, an LMUL of
+I agree that warning early is nicer (but warning for example for 
+virtio-balloon early doesn't make too much sense: libvirt adds it 
+blindly to each VM just to query guest statistics and never inflate the 
+balloon).
 
-1/8 would only provide four bits of storage in a vector register."
+In any case we'll want to warn here as well, because we know that new 
+callers will easily ignore that limitation / checks.
 
-In this way, when VLEN=ELEN=64,  an LMUL of 1/8 would only provide 8 
-bits of storage in a vector register, so it's also not suitable for sew 
-= 16.
+-- 
+Cheers,
 
-Maybe we can explain the above description of the spec in another way: 
-we must support lmul=1/8 when ELEN=64, but it's only available when sew = 8.
-
-Regards,
-
-Weiwei Li
-
-`
-
-Regards,
-
-Weiwei Li
-
->
-> Fixes: d9b7609a1fb2 ("target/riscv: rvv-1.0: configure instructions")
->
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> ---
->   target/riscv/vector_helper.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-> index 1e06e7447c..8dfd8fe484 100644
-> --- a/target/riscv/vector_helper.c
-> +++ b/target/riscv/vector_helper.c
-> @@ -43,9 +43,9 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
->                                               xlen - 1 - R_VTYPE_RESERVED_SHIFT);
->   
->       if (lmul & 4) {
-> -        /* Fractional LMUL. */
-> +        /* Fractional LMUL - check LMUL >= ELEN/SEW_MIN (8) */
->           if (lmul == 4 ||
-> -            cpu->cfg.elen >> (8 - lmul) < sew) {
-> +            cpu->cfg.elen >> (8 - lmul) < 8) {
->               vill = true;
->           }
->       }
+David / dhildenb
 
 
