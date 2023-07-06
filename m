@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 093E774A082
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B55D74A083
 	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 17:10:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHQbC-0005eD-B0; Thu, 06 Jul 2023 11:08:50 -0400
+	id 1qHQc2-0005kE-DV; Thu, 06 Jul 2023 11:09:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHQb9-0005da-L1
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 11:08:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHQb7-0001T5-Tr
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 11:08:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688656124;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GAIMTyu1BIHEBauyXkMmX5L59y7lTNjXLOi6GtqGxR8=;
- b=UVQSaiw4Noz4J4lCmbt/jk/yPMyk8u+dRbtDq1n4TlqJT7XJxDuCEtwcGwxZKUwACqR8ZG
- HYe23NaS1i0sCb1vDLyqcyfsomphKaQ8jJEDbPiZK9f4e1NqwdqTUi5WwoR2RYZ6aPuk0t
- cLx61XKGnRYk88DgGsVfL0aeusG246k=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-354-WZ_aHjKtMe2xrqGSP5_FCw-1; Thu, 06 Jul 2023 11:08:37 -0400
-X-MC-Unique: WZ_aHjKtMe2xrqGSP5_FCw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E4B7A1C06ED0;
- Thu,  6 Jul 2023 15:08:35 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C332B492B01;
- Thu,  6 Jul 2023 15:08:35 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AAE5421E6A1F; Thu,  6 Jul 2023 17:08:34 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: ~hyman <hyman@git.sr.ht>
-Cc: qemu-devel <qemu-devel@nongnu.org>,  ~hyman <yong.huang@smartx.com>,
- Peter Xu <peterx@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Juan
- Quintela <quintela@redhat.com>,  "Dr. David Alan Gilbert"
- <dgilbert@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Richard
- Henderson <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Dau?=
- =?utf-8?Q?d=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH QEMU v7 8/9] migration: Extend query-migrate to provide
- dirty page limit info
-References: <168853615963.17240.15832775267134683267-8@git.sr.ht>
-Date: Thu, 06 Jul 2023 17:08:34 +0200
-In-Reply-To: <168853615963.17240.15832775267134683267-8@git.sr.ht>
- (hyman@git.sr.ht's message of "Thu, 08 Jun 2023 00:21:58 +0800")
-Message-ID: <87ttuhnklp.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <tcx4c70@gmail.com>)
+ id 1qHQbz-0005hr-Go; Thu, 06 Jul 2023 11:09:39 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tcx4c70@gmail.com>)
+ id 1qHQbx-0001bG-Uh; Thu, 06 Jul 2023 11:09:39 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-55ae51a45deso479264a12.3; 
+ Thu, 06 Jul 2023 08:09:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688656175; x=1691248175;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Lc+ZtzDQqTYPVEDEPp9TCdNmwWdUxNxiAmSD2f53Jvo=;
+ b=XVyfg4VtVB35ZwD3FOPZufZ1oW8o7qzPqfTD+1XoDx74F1D0jmjclKDoKxybiluJu7
+ M8IZBAYh5t/3RUIK0Vehw0jCzgNMC1j2/0j+JOzmLLw+ak5/Pp5vo+sX9h4V0wK+UUAe
+ R5YYY7f9uhRojySCOwlJmUbxHRoCz08tEZHQ1AvGJzScYj+ZT0JR5lkYh0whldt+F/Jd
+ hIypDEkCh2WYW+Atm2nIBU8b/8mC4iD3uIrqr4XQFz0Vue2B5tPgbBvDtIb9+eI9nblP
+ a5exETPQqOx687Za1EbqDH65CZkhL4qRNGxpweQYANTkS6vbZiwzL/TzQC/JMREb+nO3
+ jEoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688656175; x=1691248175;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Lc+ZtzDQqTYPVEDEPp9TCdNmwWdUxNxiAmSD2f53Jvo=;
+ b=bvDl3KIvHigYIjSff8xuF+2XvV9WIjbqJHJKbNkQdt9z0GC+zRoNP/patAI2kFNvTG
+ 6h8UfwkzX3s0BHZGND3h2sof7plkg+z0gA39yT0khdHA/VeBmaU4wtPs5+A7/bPyHEpp
+ I7dQhICIZ52XfnUNyYubc/pC/viVhUWuub5hK0UeAP/sRPvtAJz4lCmO7oDlZZ6iUHOb
+ ewf65RYhaMB04a3PNI5N4AMgcUUcgr/B31EQivtVLyeDqG9zoPtR36iY96shxy0Wh6zn
+ 6l3+ke7XlGYVG5GjqncXkMf2Dgks9tE6x8Zl2mybsKr0KL6jWagk6MUwbrRdANEoPgiV
+ 5LAw==
+X-Gm-Message-State: ABy/qLZyb2+CvDZsFch8LTmqcdLH6Os1/hLQ1ecJygqsEeQgrFdwgI0n
+ Qx90hW2BEL+0DF5GqTFYOLg=
+X-Google-Smtp-Source: APBJJlEJGU1pIWTL138gn5Gojd1tek7cimZHGyeatGjyt148G/AGz/Mc0GcjyEofII/txBx5woyB7w==
+X-Received: by 2002:a05:6a20:6a0f:b0:12e:5fd0:f4af with SMTP id
+ p15-20020a056a206a0f00b0012e5fd0f4afmr1814063pzk.28.1688656175097; 
+ Thu, 06 Jul 2023 08:09:35 -0700 (PDT)
+Received: from localhost.lan ([2a01:111:f100:6000::4134:a26f])
+ by smtp.gmail.com with ESMTPSA id
+ d13-20020a170902aa8d00b001b51b3e84cesm1555671plr.166.2023.07.06.08.09.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Jul 2023 08:09:34 -0700 (PDT)
+From: Peng Liang <tcx4c70@gmail.com>
+To: mst@redhat.com, imammedo@redhat.com, anisinha@redhat.com,
+ shannon.zhaosl@gmail.com, peter.maydell@linaro.org
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Peng Liang <tcx4c70@gmail.com>
+Subject: [PATCH] hw/arm/virt-acpi-build.c: Add missing header
+Date: Thu,  6 Jul 2023 23:08:38 +0800
+Message-ID: <20230706150839.1180137-1-tcx4c70@gmail.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=tcx4c70@gmail.com; helo=mail-pg1-x531.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,94 +88,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-~hyman <hyman@git.sr.ht> writes:
+virt-acpi-build.c uses warn_report. However, it doesn't include
+qemu/error-report.h directly, it include qemu/error-report.h via trace.h
+if we enable log trace backend. But if we disable the log trace backend
+(e.g., --enable-trace-backends=nop), then virt-acpi-build.c will not
+include qemu/error-report.h any more and it will lead to build errors.
+Include qemu/error-report.h directly in virt-acpi-build.c to avoid the
+errors.
 
-> From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
->
-> Extend query-migrate to provide throttle time and estimated
-> ring full time with dirty-limit capability enabled, through which
-> we can observe if dirty limit take effect during live migration.
->
-> Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-> Reviewed-by: Markus Armbruster <armbru@redhat.com>
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
+Signed-off-by: Peng Liang <tcx4c70@gmail.com>
+---
+ hw/arm/virt-acpi-build.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-[...]
-
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index cc51835cdd..ebc15e2782 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -250,6 +250,18 @@
->  #     blocked.  Present and non-empty when migration is blocked.
->  #     (since 6.0)
->  #
-> +# @dirty-limit-throttle-time-per-round: Maximum throttle time (in micros=
-econds) of virtual
-> +#                                       CPUs each dirty ring full round,=
- which shows how
-> +#                                       MigrationCapability dirty-limit =
-affects the guest
-> +#                                       during live migration. (since 8.=
-1)
-> +#
-> +# @dirty-limit-ring-full-time: Estimated average dirty ring full time (i=
-n microseconds)
-> +#                              each dirty ring full round, note that the=
- value equals
-
-Period instead of comma, please.
-
-> +#                              dirty ring memory size divided by average=
- dirty page rate
-> +#                              of virtual CPU, which can be used to obse=
-rve the average
-
-of the virtual CPU
-
-> +#                              memory load of virtual CPU indirectly. No=
-te that zero
-
-again
-
-> +#                              means guest doesn't dirty memory (since 8=
-.1)
-> +#
-
-Please format like
-
-   # @dirty-limit-throttle-time-per-round: Maximum throttle time (in
-   #     microseconds) of virtual CPUs each dirty ring full round, which
-   #     shows how MigrationCapability dirty-limit affects the guest
-   #     during live migration.  (since 8.1)
-   #
-   # @dirty-limit-ring-full-time: Estimated average dirty ring full time
-   #     (in microseconds) each dirty ring full round.  Note that the
-   #     value equals dirty ring memory size divided by average dirty
-   #     page rate of the virtual CPU, which can be used to observe the
-   #     average memory load of the virtual CPU indirectly.  Note that
-   #     zero means guest doesn't dirty memory (since 8.1)
-
-to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
-to conform to current conventions).
-
-Might want to scratch "Note that" both times.
-
->  # Since: 0.14
->  ##
->  { 'struct': 'MigrationInfo',
-> @@ -267,7 +279,9 @@
->             '*postcopy-blocktime' : 'uint32',
->             '*postcopy-vcpu-blocktime': ['uint32'],
->             '*compression': 'CompressionStats',
-> -           '*socket-address': ['SocketAddress'] } }
-> +           '*socket-address': ['SocketAddress'],
-> +           '*dirty-limit-throttle-time-per-round': 'uint64',
-> +           '*dirty-limit-ring-full-time': 'uint64'} }
->=20=20
->  ##
->  # @query-migrate:
-
-[...]
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index 55f2706bc9..44cf9f3312 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -57,6 +57,7 @@
+ #include "migration/vmstate.h"
+ #include "hw/acpi/ghes.h"
+ #include "hw/acpi/viot.h"
++#include "qemu/error-report.h"
+ 
+ #define ARM_SPI_BASE 32
+ 
+-- 
+2.41.0
 
 
