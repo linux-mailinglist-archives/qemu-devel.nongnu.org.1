@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8F1749A19
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B99C749A36
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:05:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHMgv-0003eI-Dj; Thu, 06 Jul 2023 06:58:29 -0400
+	id 1qHMm4-0005nz-2m; Thu, 06 Jul 2023 07:03:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qHMgo-0003d5-Ip
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:58:26 -0400
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1qHMm1-0005ne-TN
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:03:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qHMgm-0007qh-Ki
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:58:22 -0400
+ (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
+ id 1qHMm0-00043j-3w
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:03:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688641099;
+ s=mimecast20190719; t=1688641422;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wlyUL9rlgFz+9AULvsiFCp9QJR3Kc3bEsoWwLTdQrPQ=;
- b=g95WkadGnJ71XFXQAIPOIKpYVN+HMlS55E0MQuOK6MMyhgiDz+bPxiE83QXcNEwBPMFsnM
- y+HXKf6Y9u1xSmR1EDGNbCn9xnJj2X1EVMhsQ2vJX9Eh68kH8p1GjUeRXzSqDSQOBIpLXi
- xyDNZIKIp+aPsvCo+rtaWkfuI21ZVqo=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=b6bzGYt61GwzjEB49dmBYSnIesPdHxrz1cSZ7qTitE0=;
+ b=bgvQgD/nQV6xU1tn1BMOjdl3mFsnekJoo0X3BfxRmiXQjA7bK5URK3Y2iNTJ6bV26ndOrZ
+ wj6IOXxoafWk1Dr7lXo+jTwfuW2juxG8F21xaVBdRUIlmpH5QePj5FzPb3UeZIui/4O5jo
+ pcFyOwIn+pn7YrIn9aUg8NOc+eU0Fts=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-423-hMUGRuXKP0OTEUX8lTesiw-1; Thu, 06 Jul 2023 06:58:17 -0400
-X-MC-Unique: hMUGRuXKP0OTEUX8lTesiw-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2b6ce2f2960so9681941fa.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 03:58:16 -0700 (PDT)
+ us-mta-65-eXPMWBEUMSWtGe9bEL8uKg-1; Thu, 06 Jul 2023 07:03:41 -0400
+X-MC-Unique: eXPMWBEUMSWtGe9bEL8uKg-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-51df43db167so499323a12.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 04:03:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688641096; x=1691233096;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=wlyUL9rlgFz+9AULvsiFCp9QJR3Kc3bEsoWwLTdQrPQ=;
- b=hqgHcaXty2+9PjvP+8Irf7+vW40XzARChCTK4zdx0tBbF4eyUKnqwVZZiAfumHgLjW
- 7YAy2rggU5F3tFElwOCUZjBHGlp0UYJFYWgpeft/1qbuNyrgP/tk0aI3+sMO7uGgUy8q
- JSdi29jL0pDtVTG0S0WnWYS+0Va2NRsFEN4/YmJWH/X48tAjhCM7YKN0FKzVXAfwtjva
- yYKVB7N1fLPB6TWw304Wuk5RUQ2VCp48Pxr4PpEQD6nv+ymVDhQBI8T968Apc/t0YSxK
- hocsj1MZQfQLhLM8yu5exVFaSgA80VCy3cklmBFS1hTGVJoqftFdyxL4Lc6hbWmEjqX/
- WrFg==
-X-Gm-Message-State: ABy/qLbJ7Nea1JmzB8pvknXaoYeTiZbFizUF5MV9iPcwLfJHuTyTNVep
- Cp4wEW7uAbIYLKBrnjXtKgecLYGYO8O0TeNUqsM5W0tjsc+jGGcmlf84EoXKjezvwoSmYSsSYqT
- NJgwRWLzTXz9HNiqnbslUn97Gmh2xcuc=
-X-Received: by 2002:a05:651c:107b:b0:2b6:d7d2:1a65 with SMTP id
- y27-20020a05651c107b00b002b6d7d21a65mr1944432ljm.18.1688641095872; 
- Thu, 06 Jul 2023 03:58:15 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlF1uHrMWDJW4PM1BBNRtWX4pYT99WdSf7bWDoqn3HKRKL6t3Qwsw2zPuFNGnprbJBQyfhU+RR8sljp1yGmZ9kg=
-X-Received: by 2002:a05:651c:107b:b0:2b6:d7d2:1a65 with SMTP id
- y27-20020a05651c107b00b002b6d7d21a65mr1944423ljm.18.1688641095593; Thu, 06
- Jul 2023 03:58:15 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688641420; x=1691233420;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=b6bzGYt61GwzjEB49dmBYSnIesPdHxrz1cSZ7qTitE0=;
+ b=l5TsTNovUMvdj9CsAcZE4YbTWcwepITUKKk14+nvRB6EPL34a9aOXj1DncTEv4shMm
+ et0lzFQa2ZPS+w8J6QGG+iZ7i7PfQmHzRRVxk42YQ1KoMEKNuHhIjlnhbBMdGf0VVifS
+ J1HpX2LFQMvi6bnLAX1qp/cW6AS0RXyK826XtSY3xj29BiI0VJZP95fyDmbDN+HqFP0j
+ q5imoE+9+ggPKYsE4Onb+cURq783lqP42wt+bmCpNZl5XFVO78o8i37RE3mRVQQ3cer3
+ iSLm1k8kay77SYiXh/J1PlwSErPeg+IrZtgneveOebS/ont2U163f9s0iZ6r79kiRt5t
+ g9sw==
+X-Gm-Message-State: ABy/qLZXl+gZGM52/BI32wXmziD/8DDe8w4hiO6eA/ism12ARiQ/f4nV
+ pbs3B1N2WR55bO/lJnbkf1ivfdr0+Yvwn3VnbhCkViSfz+KOfJwUthvytPWoguaEkdj8Npqpy8o
+ 8ROI2aM4HvYxq3rM1bv4uvqzM/CyGqi8=
+X-Received: by 2002:a05:6402:2022:b0:51d:9e0c:1396 with SMTP id
+ ay2-20020a056402202200b0051d9e0c1396mr1277562edb.35.1688641419879; 
+ Thu, 06 Jul 2023 04:03:39 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlE3q7HABt1wMOL2I7tbhqQVb1/Oe5a5RBMCQnIcJ3jrnY95G8JjBwNd7VeTTqNyTEnbaE4l61wp8b+87VN9Ils=
+X-Received: by 2002:a05:6402:2022:b0:51d:9e0c:1396 with SMTP id
+ ay2-20020a056402202200b0051d9e0c1396mr1277551edb.35.1688641419610; Thu, 06
+ Jul 2023 04:03:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230705141205.525776-1-kkostiuk@redhat.com>
- <20230705141205.525776-2-kkostiuk@redhat.com>
- <413a30a2-c050-7587-8c0e-a6d89c8b7ab3@linaro.org>
- <CAPMcbCp2Rx4jz3S9R8VbaeRZrkakn4HE7e-GZtubv5b29Km1OA@mail.gmail.com>
- <d5f8bc76-7cd5-a389-338d-53687ad76cdc@linaro.org>
-In-Reply-To: <d5f8bc76-7cd5-a389-338d-53687ad76cdc@linaro.org>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Thu, 6 Jul 2023 13:58:04 +0300
-Message-ID: <CAPMcbCpwWj3YOnxzofnirvDi1V1oJvds+CDjpb+ib5_SCawvTw@mail.gmail.com>
-Subject: Re: [PATCH 1/4] QGA VSS: Add wrapper to send log to debugger and
- stderr
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Michael Roth <michael.roth@amd.com>, Yan Vugenfirer <yvugenfi@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000a80ae705ffcf6420"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+References: <cover.1688438055.git.yin31149@gmail.com>
+ <CAPpAL=z6+Jhoy3w=itO7JEpkijJPZSZNyLVUQ1qS08gqnjN6hQ@mail.gmail.com>
+ <CAKrof1P8dRN+fXAX47iiu892kmCjoq-xcUmXrcChHUUh4hRYKA@mail.gmail.com>
+In-Reply-To: <CAKrof1P8dRN+fXAX47iiu892kmCjoq-xcUmXrcChHUUh4hRYKA@mail.gmail.com>
+From: Lei Yang <leiyang@redhat.com>
+Date: Thu, 6 Jul 2023 19:03:03 +0800
+Message-ID: <CAPpAL=yX+p3D=O9PHJyNe5W+_mrT2WXe4BcPYpdVKZb=4VvjgQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/3] vdpa: Return -EIO if device ack is VIRTIO_NET_ERR
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com, 
+ qemu-stable@nongnu.org, qemu-devel@nongnu.org, 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=leiyang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,195 +97,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a80ae705ffcf6420
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Jul 6, 2023 at 1:01=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd@=
-linaro.org>
+On Wed, Jul 5, 2023 at 7:03=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com> =
 wrote:
-
-> On 6/7/23 09:54, Konstantin Kostiuk wrote:
-> > Hi Philippe,
-> >
-> > On Wed, Jul 5, 2023 at 11:35=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-> > <philmd@linaro.org <mailto:philmd@linaro.org>> wrote:
-> >
-> >     Hi Konstantin,
-> >
-> >     On 5/7/23 16:12, Konstantin Kostiuk wrote:
-> >      > Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com
-> >     <mailto:kkostiuk@redhat.com>>
-> >      > ---
-> >      >   qga/vss-win32/vss-debug.h | 31 +++++++++++++++++++++++++++++++
-> >      >   1 file changed, 31 insertions(+)
-> >      >   create mode 100644 qga/vss-win32/vss-debug.h
-> >
-> >
-> >      > +#define PRINT_DEBUG(fmt, ...) {
-> >                   \
-> >      > +    char user_sting[512] =3D { 0 };
-> >                   \
-> >      > +    char full_string[640] =3D { 0 };
-> >                    \
-> >      > +    snprintf(user_sting, 512, fmt, ## __VA_ARGS__);
-> >                   \
-> >      > +    snprintf(full_string, 640, QGA_PROVIDER_NAME"[%lu]: %s
-> >     %s\n",             \
-> >      > +        GetCurrentThreadId(), __func__, user_sting);
-> >                    \
-> >      > +    OutputDebugString(full_string);
-> >                   \
-> >      > +    fprintf(stderr, "%s", full_string);
-> >                   \
-> >      > +}
-> >
-> >     Why not simply use a plain function?
-> >
-> >
-> > I am not sure what you mean.
-> >
-> > If you mean to call OutputDebugString directly, then we need to
-> > concatenate the proper string
-> > for each call.
-> > If you mean convert PRINT_DEBUG to function, then we can't use the
-> > __func__ macro in
-> > PRINT_DEBUG to get the real function name. We can convert PRINT_DEBUG t=
-o
-> > function
-> > and a new macro that will call PRINT_DEBUG and pass a proper value of
-> > __fucn__.
-> >
-> > What solution is better there?
 >
->    void qga_debug(const char *funcname, const char *fmt, ...);
+> On 2023/7/5 15:59, Lei Yang wrote:
+> > Hello Hawkins
+> >
+> > QE can help test this series before  it is merged into master, I would
+> > like to know what test steps can cover this series related scenario?
+> >
 >
-> and g_strdup_vprintf()?
+> Hi, I would like to suggest the following steps to test this patch series=
+:
 >
-
-
-I agree about the qga_debug function.
-About g_strdup_vprintf I am not sure. Currently, VSS uses only one function
-from GLib (g_assertion_message_expr).
-In the past, we had problems with GLib due to mistakes in Windows
-implementation and we thinking about
-removing GLib from VSS at all. As VSS.DLL is also invoked directly from
-Windows, we should use standard
-C++ types in public functions. We can use GLib types/functions for the
-internal part of DLL, but I think it will
-be confusing.
-
---000000000000a80ae705ffcf6420
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jul 6, 2023 at 1:01=E2=80=AFP=
-M Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">phil=
-md@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" sty=
-le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
-ng-left:1ex">On 6/7/23 09:54, Konstantin Kostiuk wrote:<br>
-&gt; Hi Philippe,<br>
-&gt; <br>
-&gt; On Wed, Jul 5, 2023 at 11:35=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <b=
-r>
-&gt; &lt;<a href=3D"mailto:philmd@linaro.org" target=3D"_blank">philmd@lina=
-ro.org</a> &lt;mailto:<a href=3D"mailto:philmd@linaro.org" target=3D"_blank=
-">philmd@linaro.org</a>&gt;&gt; wrote:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0Hi Konstantin,<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0On 5/7/23 16:12, Konstantin Kostiuk wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Signed-off-by: Konstantin Kostiuk &lt;<a href=
-=3D"mailto:kkostiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a><b=
-r>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:kkostiuk@redhat.com" t=
-arget=3D"_blank">kkostiuk@redhat.com</a>&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; ---<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0qga/vss-win32/vss-debug.h | 31 ++=
-+++++++++++++++++++++++++++++<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A01 file changed, 31 insertions(+)<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0create mode 100644 qga/vss-win32/=
-vss-debug.h<br>
-&gt; <br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +#define PRINT_DEBUG(fmt, ...) {=C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 char user_sting[512] =3D { 0 }=
-;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 char full_string[640] =3D { 0 =
-};=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 snprintf(user_sting, 512, fmt,=
- ## __VA_ARGS__);=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 snprintf(full_string, 640, QGA=
-_PROVIDER_NAME&quot;[%lu]: %s<br>
-&gt;=C2=A0 =C2=A0 =C2=A0%s\n&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0\<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 GetCurrentThread=
-Id(), __func__, user_sting);=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 OutputDebugString(full_string)=
-;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +=C2=A0 =C2=A0 fprintf(stderr, &quot;%s&quot;=
-, full_string);=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; +}<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0Why not simply use a plain function?<br>
-&gt; <br>
-&gt; <br>
-&gt; I am not sure what you mean.<br>
-&gt; <br>
-&gt; If you mean to call OutputDebugString directly, then we need to <br>
-&gt; concatenate the proper string<br>
-&gt; for each call.<br>
-&gt; If you mean convert PRINT_DEBUG to function, then we can&#39;t use the=
- <br>
-&gt; __func__ macro in<br>
-&gt; PRINT_DEBUG to get the real function name. We can convert PRINT_DEBUG =
-to <br>
-&gt; function<br>
-&gt; and a new macro that will call PRINT_DEBUG and pass a proper value of =
-<br>
-&gt; __fucn__.<br>
-&gt; <br>
-&gt; What solution is better there?<br>
-<br>
-=C2=A0 =C2=A0void qga_debug(const char *funcname, const char *fmt, ...);<br=
+> 1.  Modify the QEMU source code to make the device return a
+> VIRTIO_NET_ERR for the CVQ command. Please apply the patch
+> provided below:
 >
-<br>
-and g_strdup_vprintf()?<br></blockquote><div><br></div><div><br></div><div>=
-I agree about the qga_debug function. <br></div><div>About g_strdup_vprintf=
- I am not sure. Currently, VSS uses only one function from GLib (g_assertio=
-n_message_expr).</div><div>In the past, we had problems with GLib due to mi=
-stakes in Windows implementation and we thinking about</div><div>removing G=
-Lib from VSS at all. As VSS.DLL is also invoked directly from Windows, we s=
-hould use standard <br></div><div>C++ types in public functions. We can use=
- GLib types/functions for the internal part of DLL, <span class=3D"gmail-Hw=
-tZe" lang=3D"en"><span class=3D"gmail-jCAhz gmail-ChMk0b"><span class=3D"gm=
-ail-ryNqvb">but I think it will <br></span></span></span></div><div><span c=
-lass=3D"gmail-HwtZe" lang=3D"en"><span class=3D"gmail-jCAhz gmail-ChMk0b"><=
-span class=3D"gmail-ryNqvb">be confusing. <br></span></span></span></div></=
-div></div>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 373609216f..58ade6d4e0 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -642,7 +642,7 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState
+> *s, const VirtIONet *n)
+>       if (virtio_vdev_has_feature(&n->parent_obj,
+> VIRTIO_NET_F_CTRL_MAC_ADDR)) {
+>           ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s,
+> VIRTIO_NET_CTRL_MAC,
+>
+> VIRTIO_NET_CTRL_MAC_ADDR_SET,
+> -                                                  n->mac, sizeof(n->mac)=
+);
+> +                                                  n->mac,
+> sizeof(n->mac) - 1);
+>           if (unlikely(dev_written < 0)) {
+>               return dev_written;
+>           }
+>
+> 2. Start QEMU with the vdpa device in default state.
+> Without the patch series, QEMU should not trigger any errors or warnings.
+> With the series applied, QEMU should trigger the warning like
+> "qemu-system-x86_64: unable to start vhost net: 5: falling back on
+> userspace virtio".
 
---000000000000a80ae705ffcf6420--
+Based on the above steps, QE tests it without the above patch first,
+it will not trigger any errors or warnings. Then QE manually applied
+the above patch, boot guest again, it can trigger this warning:
+qemu-system-x86_64: unable to start vhost net: 5: falling back on
+userspace virtio, this is an expected result.
+
+Tested-by: Lei Yang <leiyang@redhat.com>
+
+BR
+Lei
+
+>
+> Thanks!
+>
+>
+> > Thanks
+> > Lei
+> >
+> > On Tue, Jul 4, 2023 at 11:36=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.=
+com> wrote:
+> >>
+> >> According to VirtIO standard, "The class, command and
+> >> command-specific-data are set by the driver,
+> >> and the device sets the ack byte.
+> >> There is little it can do except issue a diagnostic
+> >> if ack is not VIRTIO_NET_OK."
+> >>
+> >> Therefore, QEMU should stop sending the queued SVQ commands and
+> >> cancel the device startup if the device's ack is not VIRTIO_NET_OK.
+> >>
+> >> Yet the problem is that, vhost_vdpa_net_load_x() returns 1 based on
+> >> `*s->status !=3D VIRTIO_NET_OK` when the device's ack is VIRTIO_NET_ER=
+R.
+> >> As a result, net->nc->info->load() also returns 1, this makes
+> >> vhost_net_start_one() incorrectly assume the device state is
+> >> successfully loaded by vhost_vdpa_net_load() and return 0, instead of
+> >> goto `fail` label to cancel the device startup, as vhost_net_start_one=
+()
+> >> only cancels the device startup when net->nc->info->load() returns a
+> >> negative value.
+> >>
+> >> This patchset fixes this problem by returning -EIO when the device's
+> >> ack is not VIRTIO_NET_OK.
+> >>
+> >> Changelog
+> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >> v3:
+> >>   - split the fixes suggested by Eugenio
+> >>   - return -EIO suggested by Michael
+> >>
+> >> v2: https://lore.kernel.org/all/69010e9ebb5e3729aef595ed92840f43e48e53=
+e5.1687875592.git.yin31149@gmail.com/
+> >>   - fix the same bug in vhost_vdpa_net_load_offloads()
+> >>
+> >> v1: https://lore.kernel.org/all/cover.1686746406.git.yin31149@gmail.co=
+m/
+> >>
+> >> Hawkins Jiawei (3):
+> >>    vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_mac()
+> >>    vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_mq()
+> >>    vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in _load_offloads=
+()
+> >>
+> >>   net/vhost-vdpa.c | 15 +++++++++++----
+> >>   1 file changed, 11 insertions(+), 4 deletions(-)
+> >>
+> >> --
+> >> 2.25.1
+> >>
+> >>
+> >
+>
 
 
