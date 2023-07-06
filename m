@@ -2,68 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8991874A406
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 20:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DFC74A3DC
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 20:39:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHU9o-0000Tu-O9; Thu, 06 Jul 2023 14:56:48 -0400
+	id 1qHTri-0006gj-R1; Thu, 06 Jul 2023 14:38:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qHU9i-0000TG-DU
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:56:43 -0400
-Received: from mga17.intel.com ([192.55.52.151])
+ (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
+ id 1qHTrf-0006gU-PB
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:38:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1qHU9g-000347-E6
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:56:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1688669800; x=1720205800;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=h9Aw93+KkhRdw/4+fISFiGgpCUIVeymTStHVIw5+xsc=;
- b=jqbQDkRInOEIXU8A6ywslfvmvQ81vkF2r9sWaYaPxdxvPqTS7RqaoQN5
- banmxTQCaJKcVfHqeTP/ZSgMPod2GEXy+j5oiAnN8VRcfR28I7oJyaooQ
- Bbj932YksFwmP40nr2Bupfj+LR1ZO7zCNoGjjugrfQP4PFSF99TpI6w2j
- N9nTV9PnJ/APQodQdIO4un6MkyQcKqkOylWLzyGX7oqb+O2reH1cItFRs
- WJm8Hjr0PFuq4JSiM1ysc2O8hRT/cQp3TrUZcflImb1PCerrm5e1cY9BP
- ZsHGymm/3PicABT+lnKpTyoGrQxXt4Y232F8OYi6SE4kGtNISXHnfq2vX g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10763"; a="344024317"
-X-IronPort-AV: E=Sophos;i="6.01,185,1684825200"; d="scan'208";a="344024317"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jul 2023 11:56:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10763"; a="809755788"
-X-IronPort-AV: E=Sophos;i="6.01,185,1684825200"; d="scan'208";a="809755788"
-Received: from dongwonk-z390-aorus-ultra-intel-gfx.fm.intel.com
- ([10.105.129.122])
- by FMSMGA003.fm.intel.com with ESMTP; 06 Jul 2023 11:56:31 -0700
-From: Dongwon Kim <dongwon.kim@intel.com>
-To: qemu-devel@nongnu.org
-Cc: Dongwon Kim <dongwon.kim@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: [PATCH] ui/gtk: skip refresh if new dmabuf has been submitted
-Date: Thu,  6 Jul 2023 11:33:55 -0700
-Message-Id: <20230706183355.29361-2-dongwon.kim@intel.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20230706183355.29361-1-dongwon.kim@intel.com>
-References: <CAJ+F1C+9hbdgv7tLibnYKS-3fOBotVU=MHwYq6Ly2Wccf-Dd_g@mail.gmail.com>
- <20230706183355.29361-1-dongwon.kim@intel.com>
+ (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
+ id 1qHTrd-0005KW-Qi
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:38:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688668680;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=o1Aej7Pgvvhbgtm6+O++ixwM0i0bggEXgnRS6utJyys=;
+ b=DVZMwGd4TMIUEfCvbjfD832TCrJwkWagdm6rESik+2D9F9ttQx9C8joCXrVA/KkF2S37wX
+ 8upxaSBHBiVFP0G7dYDOVNCaRKYXmUXMBCSQ3CknxKkOMVkwNffUP01klQfCMTssqIEOYg
+ a5VNsKjq5UuHdkiWeX1tzW+tQcIJvUQ=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-17-1uDKkRQ5MrKqLpvsN-B0Ag-1; Thu, 06 Jul 2023 14:37:59 -0400
+X-MC-Unique: 1uDKkRQ5MrKqLpvsN-B0Ag-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-40351198686so11067881cf.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 11:37:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688668679; x=1691260679;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=o1Aej7Pgvvhbgtm6+O++ixwM0i0bggEXgnRS6utJyys=;
+ b=KEdAiGxeUQ3vTGxjj6TOkB6mFwRGTZMB4LiN0XSgtpny6PjzoxNfWPWCWUQb+UfAdI
+ RpdaJFv9TLJTICWHIZ+cki7cNlm/iV9H2rhG4GqkqgP3wF7F8PPESRxVVwUgTQ7n4gAU
+ bLjAcBqU9hDjh8DzkT9hO3Q/P//owUsZte4Vb/8wPdaoeRMwWfLoEFol9AvUWenn67yn
+ qBdPoXlpIvYl8dmYt6eU0TCHT0sLkjYDIf5Fjxiq9mDoFJThCdfZmZXmyEa07k7jLjnd
+ t+xIVx7IxlihXlnhjmLywg/n3DAZv7e9CS5Pyy/NF7a23nTr2wlVkJ5f+XOoDnwtt2nB
+ AUKg==
+X-Gm-Message-State: ABy/qLb3u7+lnt1t303CgpdPqIK0RwnDdIq7dO0uFemBVPFoI2hOnEJv
+ rCnIqD+Vrt3PBr45HVowdi1xZDLskx+U0E1Z1DVZwROWNvkU86KTFg6rPaXWZqWmlKHX6BHmLnG
+ lNiIyDha+pODXLkMmsiOc0yEE0K31OU4=
+X-Received: by 2002:a05:622a:82:b0:403:3a32:2b53 with SMTP id
+ o2-20020a05622a008200b004033a322b53mr3330676qtw.50.1688668679071; 
+ Thu, 06 Jul 2023 11:37:59 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGVGfuaB9HXv32ipqYyR7M8QJzDVnGUuz07H/Fsi8rix9feW+4KTxLLK25ys5cFy9ccxC9iCKeABDXhtnz+Juc=
+X-Received: by 2002:a05:622a:82:b0:403:3a32:2b53 with SMTP id
+ o2-20020a05622a008200b004033a322b53mr3330661qtw.50.1688668678850; Thu, 06 Jul
+ 2023 11:37:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.151; envelope-from=dongwon.kim@intel.com;
- helo=mga17.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20230706045546.593605-3-leobras@redhat.com> <ZKbRRt8ESGsMz+o7@x1n>
+ <CAJ6HWG4iUX=+7FTCkXitFfc1zFNJ9aR5PzDRyPLSZVq1Kos8fA@mail.gmail.com>
+ <ZKcEjfTDDgDZWu9Q@x1n>
+In-Reply-To: <ZKcEjfTDDgDZWu9Q@x1n>
+From: Leonardo Bras Soares Passos <leobras@redhat.com>
+Date: Thu, 6 Jul 2023 15:37:48 -0300
+Message-ID: <CAJ6HWG7LPC=xwiYM7NuAQJAr8jYaVY=XbpdT6tZg+TxF9YaQjQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] pcie: Add hotplug detect state register to cmask
+To: Peter Xu <peterx@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lsoaresp@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,50 +98,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Skip refresh if a new dmabuf (guest scanout frame) has already been
-submitted and ready to be drawn because the scanout will be updated
-with new frame anyway.
+On Thu, Jul 6, 2023 at 3:24=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
+>
+> On Thu, Jul 06, 2023 at 03:07:40PM -0300, Leonardo Bras Soares Passos wro=
+te:
+> > > I asked the same question, and I still keep confused: whether there's=
+ a
+> > > first bad commit?  Starting from when it fails?
+> > >
+> > > For example, is this broken on 6.0 binaries too with pc-q35-6.0?
+> >
+> > I tested for qemu 6.0, and it still reproduces, but have not pursued
+> > this any further.
+>
+> I see, thanks!
+>
+> But then do you know why it's never hit before?  I assume it means this b=
+ug
+> has been there for a long time.
 
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+
+Oh, I totally missed updating the commit msg  on this:
+
 ---
- ui/gtk-egl.c     | 4 ++++
- ui/gtk-gl-area.c | 4 ++++
- 2 files changed, 8 insertions(+)
+In this scenario, hotplug_handler_plug() calls pcie_cap_slot_plug_cb(),
+which sets dev->config byte 0x6e with bit PCI_EXP_SLTSTA_PDS to signal PCI
+- hotplug for the guest. After a while the guest will deal with this hotplu=
+g
+- and qemu will clear the above bit.
++ hotplug for the guest. After a while, if the guest powers down the device
++ qemu will clear the above bit.
+---
 
-diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index d59b8cd7d7..859aa8185e 100644
---- a/ui/gtk-egl.c
-+++ b/ui/gtk-egl.c
-@@ -144,6 +144,10 @@ void gd_egl_refresh(DisplayChangeListener *dcl)
-     gd_update_monitor_refresh_rate(
-             vc, vc->window ? vc->window : vc->gfx.drawing_area);
- 
-+    if (vc->gfx.guest_fb.dmabuf && vc->gfx.guest_fb.dmabuf->draw_submitted) {
-+        return;
-+    }
-+
-     if (!vc->gfx.esurface) {
-         gd_egl_init(vc);
-         if (!vc->gfx.esurface) {
-diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index 7367dfd793..7da75bd025 100644
---- a/ui/gtk-gl-area.c
-+++ b/ui/gtk-gl-area.c
-@@ -123,6 +123,10 @@ void gd_gl_area_refresh(DisplayChangeListener *dcl)
- 
-     gd_update_monitor_refresh_rate(vc, vc->window ? vc->window : vc->gfx.drawing_area);
- 
-+    if (vc->gfx.guest_fb.dmabuf && vc->gfx.guest_fb.dmabuf->draw_submitted) {
-+        return;
-+    }
-+
-     if (!vc->gfx.gls) {
-         if (!gtk_widget_get_realized(vc->gfx.drawing_area)) {
-             return;
--- 
-2.34.1
+The whole idea is that the guest powers down the device, which causes
+qemu to hot-remove it, and clear PCI_EXP_SLTSTA_PDS.
+
+---
+ /*
+     * If the slot is populated, power indicator is off and power
+     * controller is off, it is safe to detach the devices.
+     *
+     * Note: don't detach if condition was already true:
+     * this is a work around for guests that overwrite
+     * control of powered off slots before powering them on.
+     */
+    if ((sltsta & PCI_EXP_SLTSTA_PDS) && pcie_sltctl_powered_off(val) &&
+        !pcie_sltctl_powered_off(old_slt_ctl))
+    {
+        pcie_cap_slot_do_unplug(dev); // clear PCI_EXP_SLTSTA_PDS
+    }
+---
+
+Since the bit is different on source & target qemu, the migration is aborte=
+d.
+
+
+>
+> --
+> Peter Xu
+>
+
+Thanks for reviewing Peter!
+I will send a v3 with the updated commit msg and add the comments
+suggested by Juan in the source code.
+
+Thanks!
+Leo
 
 
