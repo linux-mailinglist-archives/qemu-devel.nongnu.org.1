@@ -2,75 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1182F74A3E4
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 20:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C2D74A3E6
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 20:50:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHU10-0003g1-LY; Thu, 06 Jul 2023 14:47:42 -0400
+	id 1qHU34-0004Wp-65; Thu, 06 Jul 2023 14:49:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qHU0y-0003cI-SN
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:47:40 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qHU0x-0002gF-4K
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:47:40 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 5E0551F74C;
- Thu,  6 Jul 2023 18:47:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1688669257; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHU32-0004WK-Iu
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:49:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHU31-0004Oa-1V
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:49:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688669383;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=f+u/k+q1J4lI3RXa3hYZFAWie+JRP0+csKG/ON/2e20=;
- b=Rh5OULAue3Cx90A9Y/YjBsNleioH0JwgXlIQ3p6dbdFo+vEVomLlaYOzHt7TSjvYgNrcdR
- GGvmFsQdfY/UN4cmj6syitq8G5c4M0DPfloxmXH5ivLkpUC1FXqf6T1Z8dCNTmCe0i2MXb
- SlR8dX16CtMF/UUFk0Rgl8oeWyeK/9Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1688669257;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=f+u/k+q1J4lI3RXa3hYZFAWie+JRP0+csKG/ON/2e20=;
- b=pqjyupaV3JJL792GfuspnoZUyz+oLawhMc8IQRzysRwNQxJtxNeS5ZiZ1E87MKkc5zg0de
- mQ9jbOKnaAuB0JDg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E0FBA138FC;
- Thu,  6 Jul 2023 18:47:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id TNeKKkgMp2SZcQAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 06 Jul 2023 18:47:36 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Leonardo Bras Soares Passos
- <lsoaresp@redhat.com>, Juan Quintela <quintela@redhat.com>, Lukas Straub
- <lukasstraub2@web.de>, Laszlo Ersek <lersek@redhat.com>
-Subject: Re: [PATCH v2 7/7] migration: Provide explicit error message for
- file shutdowns
-In-Reply-To: <ZKcDAjUQvwB7g/qP@x1n>
-References: <20230705163502.331007-1-peterx@redhat.com>
- <20230705163502.331007-8-peterx@redhat.com> <878rbu3tgm.fsf@suse.de>
- <ZKXv+1eoDDlWj812@x1n> <87v8exjgid.fsf@suse.de> <ZKbrio28Oa7mzaV1@x1n>
- <87o7kpj66h.fsf@suse.de> <ZKcDAjUQvwB7g/qP@x1n>
-Date: Thu, 06 Jul 2023 15:47:34 -0300
-Message-ID: <87lefskhbt.fsf@suse.de>
+ bh=D3yL3qsWg+DO3jkgC9JFdTKiCBmHm6gB4MslFgWsF4U=;
+ b=I9HidkJTfLkgKQD93xartWHK5IOHwqDkQXgkjkfRjANUDx+LmxtF3nxOcvzB/aBSn1pODA
+ ajBtN3DLuGE5QBfFsj+Z5Cf+GLPmpS+NWsqIGDZ1dEnwStJPUMr+oK0EFTBLc4MLUIMAas
+ eLpYUaBhkVuewM3BsdRhv1MAwzr6jWM=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-436-zkcPCUclNrmfBExHvsa3lA-1; Thu, 06 Jul 2023 14:49:41 -0400
+X-MC-Unique: zkcPCUclNrmfBExHvsa3lA-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7672918d8a4so27795585a.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 11:49:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688669381; x=1691261381;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=D3yL3qsWg+DO3jkgC9JFdTKiCBmHm6gB4MslFgWsF4U=;
+ b=WCr6RYkCjbTCq5mSA2gsiphuXG5UW5YUgsB4aDmqeXg75E+CI2L8NHwAiFrOT9PU6m
+ PUupn17k/G01Vs7pPw1R9VoIErXRQv12MzzjOS48yx5NShSGGOark8cWGXEAZMdC5K+0
+ lw1FEsPYCLvaqQXvGMqwz79XHapqkI2egN4HAMwZe7v5AoeM56juMgOxzt/d+jCgeUoj
+ yl9iC3+HVnEZFX71BjU1p9KQytBd16Ywd0dVwC3sxUT19jhYR6aKOgM36jCeqyyjHj4k
+ 92zXY3yL0mg1LBvbQG5n4+ri7HZ+W9hgBdTk6ci9tnEZbaNRjDKCM9FMQcnsKZQmeEQH
+ 3dNA==
+X-Gm-Message-State: ABy/qLZ4d/dhDuhFkpqQJjWM50Iqzw+GwD/Z3fwt4yxvKjYfI+BIw+D1
+ ixdGrIT7agS0z264N5OXlGCbNBz6U8gN6JVG0TDdAj3USgs391Wmc2WcsotAM0ozKLXr2VFIiMV
+ R22OX8J2Y6ZRV+NA=
+X-Received: by 2002:a05:622a:1a04:b0:402:ae02:a713 with SMTP id
+ f4-20020a05622a1a0400b00402ae02a713mr3308112qtb.3.1688669381476; 
+ Thu, 06 Jul 2023 11:49:41 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFQsYL9jxYge9k7Pme1KnlPF1cjdn3SRQvehkBMSyj/C6ze4jhWrqX4wEsg1e9n/4RnV4ms3Q==
+X-Received: by 2002:a05:622a:1a04:b0:402:ae02:a713 with SMTP id
+ f4-20020a05622a1a0400b00402ae02a713mr3308099qtb.3.1688669381197; 
+ Thu, 06 Jul 2023 11:49:41 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ m5-20020aed27c5000000b0040331a24f16sm919865qtg.3.2023.07.06.11.49.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Jul 2023 11:49:40 -0700 (PDT)
+Date: Thu, 6 Jul 2023 14:49:28 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 6/6] tests/qtest: migration-test: Add tests for
+ file-based migration
+Message-ID: <ZKcMuMJU6y6UWlFY@x1n>
+References: <20230630212902.19925-1-farosas@suse.de>
+ <20230630212902.19925-7-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230630212902.19925-7-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,123 +102,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On Fri, Jun 30, 2023 at 06:29:02PM -0300, Fabiano Rosas wrote:
+> Add basic tests for file-based migration.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-> On Thu, Jul 06, 2023 at 02:33:42PM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Thu, Jul 06, 2023 at 10:50:34AM -0300, Fabiano Rosas wrote:
->> >> Peter Xu <peterx@redhat.com> writes:
->> >> 
->> >> > On Wed, Jul 05, 2023 at 07:05:13PM -0300, Fabiano Rosas wrote:
->> >> >> Peter Xu <peterx@redhat.com> writes:
->> >> >> 
->> >> >> > Provide an explicit reason for qemu_file_shutdown()s, which can be
->> >> >> > displayed in query-migrate when used.
->> >> >> >
->> >> >> 
->> >> >> Can we consider this to cover the TODO:
->> >> >> 
->> >> >>  * TODO: convert to propagate Error objects instead of squashing
->> >> >>  * to a fixed errno value
->> >> >> 
->> >> >> or would that need something fancier?
->> >> >
->> >> > The TODO seems to say we want to allow qemu_file_shutdown() to report an
->> >> > Error* when anything wrong happened (e.g. shutdown() failed)?  While this
->> >> > patch was trying to store a specific error string so when query migration
->> >> > later it'll show up to the user.  If so, IMHO they're two things.
->> >> >
->> >> 
->> >> Ok, just making sure.
->> >> 
->> >> >> 
->> >> >> > This will make e.g. migrate-pause to display explicit error descriptions,
->> >> >> > from:
->> >> >> >
->> >> >> > "error-desc": "Channel error: Input/output error"
->> >> >> >
->> >> >> > To:
->> >> >> >
->> >> >> > "error-desc": "Channel is explicitly shutdown by the user"
->> >> >> >
->> >> >> > in query-migrate.
->> >> >> >
->> >> >> > Signed-off-by: Peter Xu <peterx@redhat.com>
->> >> >> > ---
->> >> >> >  migration/qemu-file.c | 5 ++++-
->> >> >> >  1 file changed, 4 insertions(+), 1 deletion(-)
->> >> >> >
->> >> >> > diff --git a/migration/qemu-file.c b/migration/qemu-file.c
->> >> >> > index 419b4092e7..ff605027de 100644
->> >> >> > --- a/migration/qemu-file.c
->> >> >> > +++ b/migration/qemu-file.c
->> >> >> > @@ -87,7 +87,10 @@ int qemu_file_shutdown(QEMUFile *f)
->> >> >> >       *      --> guest crash!
->> >> >> >       */
->> >> >> >      if (!f->last_error) {
->> >> >> > -        qemu_file_set_error(f, -EIO);
->> >> >> > +        Error *err = NULL;
->> >> >> > +
->> >> >> > +        error_setg(&err, "Channel is explicitly shutdown by the user");
->> >> >> 
->> >> >> It is good that we can grep this message. However, I'm confused about
->> >> >> who the "user" is meant to be here and how are they implicated in this
->> >> >> error.
->> >> >
->> >> > Ah, here the user is who sends the "migrate-pause" command, according to
->> >> > the example of the commit message.
->> >> >
->> >> 
->> >> That's where I'm confused. There are 15 callsites for
->> >> qemu_file_shutdown(). Only 2 of them are from migrate-pause. So I'm
->> >> missing the logical step that links migrate-pause with this
->> >> error_setg().
->> >> Are you assuming that the race described will only happen
->> >> with migrate-pause and the other invocations would have set an error
->> >> already?
->> >
->> > It's not a race, but I think you're right. I thought it was always the case
->> 
->> I'm talking about the race with another thread checking f->last_error
->> and this thread setting it. Described in commit f5816b5c86ed
->> ("migration: Fix race on qemu_file_shutdown()").
->
-> I don't yet catch your point, sorry.  I thought f5816b5c86ed closed that
-> race.  What's still missing?
->
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-I was initially trying to ask if your previous knowledge about the
-situation that caused the race could allow you to infer that the error
-message would only be relevant in the migrate-pause scenario. But I now
-understand that is not the case.
+One trivial comment below:
 
->> 
->> > to shut but actually not: we do shutdown() also in a few places where we
->> > don't really fail, either for COLO or for completion of migration.  With
->> > the 1st patch, it'll even show in query-migrate.  Thanks for spotting it -
->> > I could have done better.
->> >
->> 
->> The idea is that we avoid doing IO after the file has been shutdown, so
->> we preload this -EIO error. We could just alter the message to "Channel
->> has been explicitly shutdown" or "Tried to do IO after channel
->> shutdown". It would still be better than the generic EIO message.
->
-> My point is I'm afraid (I thought after you pointed out, but maybe I just
-> misread what you said..) we'll call qemu_file_shutdown() even in normal
-> paths, so we can see an error poped up in query-migrate even if nothing
-> wrong happened. I think that's unwanted.
->
+> +static void test_precopy_file_offset_bad(void)
+> +{
+> +    /* using a value not supported by qemu_strtosz() */
+> +    g_autofree char *uri = g_strdup_printf("file:%s/migfile,offset=0x20M",
 
-I see. My point was that the error message wouldn't always match the
-situation in which qemu_file_shutdown() was called. The fact that we
-might not even want the error message at all had not crossed my mind.
+Better reuse FILE_TEST_FILENAME.
 
-> We can still improve that msg by only setting that specific error in e.g.
-> qmp_migrate_pause|cancel() or paths where we know we want to set the error,
-> but I'd rather drop the patch first so the rest patches can be reviewed and
-> merged first; that'll be a cosmetic change.
+> +                                           tmpfs);
+> +    MigrateCommon args = {
+> +        .connect_uri = uri,
+> +        .listen_uri = "defer",
+> +        .result = MIG_TEST_QMP_ERROR,
+> +    };
+> +
+> +    test_precopy_common(&args);
+> +}
 
-Ok, I agree. Thanks for the clarification.
+-- 
+Peter Xu
+
 
