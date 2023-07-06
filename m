@@ -2,83 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DE3749CCA
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 14:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C024749D21
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:11:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHOVX-0001Ps-Jo; Thu, 06 Jul 2023 08:54:51 -0400
+	id 1qHOkV-0006Jq-AT; Thu, 06 Jul 2023 09:10:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHOVV-0001Pg-Sd
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:54:49 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHOVU-0004gD-5Q
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:54:49 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2b6fdaf6eefso9455441fa.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 05:54:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688648086; x=1691240086;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=O3guBtNhqF4CEUto0+hAzbYK0KEXmWQIQC+PoiDnRiM=;
- b=jtJRXxqL8CD++Y8duxI0pspR7AKNrfV6N1Jh9pMZrIgEItFYV6iKmTJxoZRkKeTxJn
- n1bJUNQabAUWAje66STl5Q+N5vBI4O01OS52A+AR910YqQ+PVP50ZIbirvST3rcUhy6r
- 0lbg8BBDMNY35ib0Kbi/qPWMNMjjqzyKCU8qqoB790fLG0uG5buxUw9R57Z08BhiKUXr
- YwCdBchn+8XyjheZum8VHrCJHyQqL58MTKZ0Xk10rhgF63zVa0Vygcl+HQRZ9kvWDsQ9
- 9bPBi9oc97R/0c5ewz+yPji0C6yGjEziKEgnswbCFbpWeRu2boyiLdMVGz6NwDnk4GQ8
- u1Ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688648086; x=1691240086;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=O3guBtNhqF4CEUto0+hAzbYK0KEXmWQIQC+PoiDnRiM=;
- b=B4Qwv0zYn4FxjQRI5FH5g8hRTgO8yKNBI8nH9aG4/j8OTRKVm7p7+vVrpkiWM9Gbin
- M68TL2cy3A0M3GvRRS1E6rV0kiXQ5RTQNT+tLUMcCG6m9yKh4T+jvqf/6MMc7grGgoQl
- FrIjt8hOnqV+jwm+0K/7EtyolVuHf87T1S3iGmgJ81aa51BfDFpoGnalFIiibExb5Uha
- GtFOlbYistL6NjrDO49+uDuYPn/udlv/iXRMa1FCYJXMCHB443qjgsaAN8/kWG9+ABHW
- nB+8B8IyrNDOl/vhqMe//9vQtaMv+LxVoUmbUmYJ2o1yMRFRIAFhevijr/JhhdLRaMAA
- GO5A==
-X-Gm-Message-State: ABy/qLY7/KGk3J04exx/3Tz1v3QU5mA1YBuOGMSR4GmQW4PGw9xigbin
- 0S3NDPxIVyt5AXGuJ51BW+kZ63+oVKGJFwpyhoZq6w==
-X-Google-Smtp-Source: APBJJlE1SkvjLj/0HcYkO5JYxyNejZe7zNPDv0yd0kdV9EQKZKbTb5N3zMDF++qNeYzF6JExG27kuvHkD12JV97i3IM=
-X-Received: by 2002:a2e:9917:0:b0:2b6:9f95:46d3 with SMTP id
- v23-20020a2e9917000000b002b69f9546d3mr1292006lji.9.1688648086129; Thu, 06 Jul
- 2023 05:54:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <SRS0=00IJ=CY=kaod.org=clg@ozlabs.org>)
+ id 1qHOkQ-0006J9-15; Thu, 06 Jul 2023 09:10:14 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=00IJ=CY=kaod.org=clg@ozlabs.org>)
+ id 1qHOkN-00006J-Lv; Thu, 06 Jul 2023 09:10:13 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4QxcMK1yD8z4wZs;
+ Thu,  6 Jul 2023 23:10:05 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4QxcMG6qBrz4wxR;
+ Thu,  6 Jul 2023 23:10:01 +1000 (AEST)
+Message-ID: <21376ffa-b3ec-5864-868a-246d7138b1f8@kaod.org>
+Date: Thu, 6 Jul 2023 15:10:00 +0200
 MIME-Version: 1.0
-References: <20230704163634.3188465-1-peter.maydell@linaro.org>
- <20230704163634.3188465-8-peter.maydell@linaro.org>
- <2e39933a-b9d9-5792-8c4e-dd558d4aad5d@linaro.org>
- <dd6a96b4-1b72-67e2-58ce-8011203128ae@linaro.org>
- <CAFEAcA8o8nG7_DWnjYHOL7R2x1DjJdQ-=Moe_jkSibXscZ2mQg@mail.gmail.com>
- <9cc96e295ba6ee2e8cad5cf82da6b926713fa9fd.camel@ericsson.com>
-In-Reply-To: <9cc96e295ba6ee2e8cad5cf82da6b926713fa9fd.camel@ericsson.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 6 Jul 2023 13:54:35 +0100
-Message-ID: <CAFEAcA8KOsqS-T7rdrvnhkac5DuAhgkgZCsNgMGkWbk2kdsfuw@mail.gmail.com>
-Subject: Re: [PULL 07/11] tests/tcg/aarch64: Add testcases for IC IVAU and
- dual-mapped code
-To: =?UTF-8?Q?John_H=C3=B6gberg?= <john.hogberg@ericsson.com>
-Cc: "philmd@linaro.org" <philmd@linaro.org>, 
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x232.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3] target/ppc: Machine check on invalid real address
+ access on POWER9/10
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20230703120301.45313-1-npiggin@gmail.com>
+ <CTUWXISZHAI1.3A3FS0U9SD90B@wheely>
+ <53ae3355-e7a9-13cb-92d7-b300f44951f1@kaod.org>
+ <26d30881-8d33-2c4f-1998-834991cf8538@eik.bme.hu>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <26d30881-8d33-2c4f-1998-834991cf8538@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=00IJ=CY=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,29 +70,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 6 Jul 2023 at 13:45, John H=C3=B6gberg <john.hogberg@ericsson.com> =
-wrote:
->
-> > That is enough to get it to build, but then in the CI the test
-> > consistently fails:
-> >
-> > https://gitlab.com/pm215/qemu/-/jobs/4606447875
-> >
-> > TEST icivau on aarch64
-> > make[1]: *** [Makefile:178: run-icivau] Error 1
-> >
-> > I'm going to drop this patch from the pullreq until we
-> > can figure out what's going on...
->
-> Oops, -pthread wasn't required on my machine.
->
-> I'm unable to reproduce the failure locally. Is it possible to strace it
-> and see whether it was caused by failing to set up dual-mapped code?
+On 7/6/23 13:43, BALATON Zoltan wrote:
+> On Thu, 6 Jul 2023, Cédric Le Goater wrote:
+>> On 7/6/23 09:32, Nicholas Piggin wrote:
+>>> On Mon Jul 3, 2023 at 10:03 PM AEST, Nicholas Piggin wrote:
+>>>> ppc currently silently accepts invalid real address access. Catch
+>>>> these and turn them into machine checks on POWER9/10 machines.
+>>>
+>>> Would there be any objections to merging this and the checkstop patch?
+>>> We could disable this one before release if it turns out to cause
+>>> breakage.
+>>>
+>>> I don't think it needs to rebase, and passes clang build and make check
+>>> here. Just messed up the separator on the changelog of the checkstop
+>>> patch.
+>>
+>> I have been using the v2 series for a while :
+>>
+>>  https://patchwork.ozlabs.org/project/qemu-ppc/list/?series=361456
+>>
+>> without patch 4 and it looked good. Let's take v3 since this patch is
+>> unchanged.
+> 
+> I think there was a newer version that dropped the test for the MSR bit from the checkstop function and left that at the call site to avoid adding a one line wrapper later. This version does not seem to be that so probably the next iteration is better but I was lost following these series..
 
-On the CI machines all you get is what the test case (and
-whatever the makefile chooses to wrap it in) writes
-to stdout/stderr.
+Yes. It was a bit confusing to track for me also. Things should
+cool down with soft freeze. After that, I am in favor of dealing
+with large series !
 
-thanks
--- PMM
+Thanks
+
+C.
+
 
