@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F6374950A
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FEB1749509
 	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 07:41:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHHib-0003I1-Cr; Thu, 06 Jul 2023 01:39:53 -0400
+	id 1qHHib-0003I3-JP; Thu, 06 Jul 2023 01:39:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qHHiM-0003GY-Gl; Thu, 06 Jul 2023 01:39:38 -0400
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ id 1qHHiP-0003H3-D1; Thu, 06 Jul 2023 01:39:41 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qHHiJ-0003z8-VC; Thu, 06 Jul 2023 01:39:38 -0400
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-3a1e6022b93so385357b6e.1; 
- Wed, 05 Jul 2023 22:39:35 -0700 (PDT)
+ id 1qHHiN-000406-LV; Thu, 06 Jul 2023 01:39:41 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-55767141512so180094a12.3; 
+ Wed, 05 Jul 2023 22:39:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688621974; x=1691213974;
+ d=gmail.com; s=20221208; t=1688621978; x=1691213978;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b+kP5o6dJuQmIYekhU8jJbdaQArbeV9ocjVg3lz9hx4=;
- b=IQCwrBNWiBzm4xjLblLu71BHcRPf/AKEsj8z2ycK+kArib6XcwtadtvZet9zmqfm5M
- 1BJTrj/A1Vz7hqcz60T0GM4rIPSz/FiOVGralvOYTzpFyxpWGHwr22NnRTsQyZe7MCf4
- snmVTl7PdEvS8JZt4+WMEuJbUvhXZvXNvjIdejEQ73zxXh3afVsBoM/RZIZgfnEGUqJ4
- VlOuam199TO9e+04haVWULeD0ZXOI16+IIk9aGcD3X2+RmMDz7dZoJRtyyMDY2BAkMFn
- M1JcJREEL0XPB5gz58d2HxCVHQoNUk9j9WmkEiHdRDvJ4Rnm/Pj3mkYKk/SmYXNWbl7u
- D1AQ==
+ bh=xGgC20QkcCf3g1w9sY8uAZa7WxFWNeCwEnhLGxQ6p/o=;
+ b=JAOOsEgE1LyuZ205y6VFpZ+diCi1eJfzZqXnON7ork6ZVzORT0Sjmwk8qWVqaSv3R9
+ OnKbHLibVzqoqUn2cMdlGw6dqg+iZO8N+bT8DsqdNEPwIeRYCXDKSLEqjUinJpHTFCzZ
+ aY4dfJL7WX/DU3qpSkIgeiB4KRybevQ0Pk+q1ArvAPZJ7uYfdxCVeG05edi2kpHf1nKY
+ K8wXxH9neS5YKmNUtgeIqP/X5nHp9HVu+v30w6sXTG6/o4JH5KIfIDtWd+0t6BpCWgk0
+ gaeouXAQSy+W7sRWPl774afpE6WDNSflCNeWp8LGj2ovBI7sGxaHUf9Ugdsegi4f8CJc
+ SZAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688621974; x=1691213974;
+ d=1e100.net; s=20221208; t=1688621978; x=1691213978;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b+kP5o6dJuQmIYekhU8jJbdaQArbeV9ocjVg3lz9hx4=;
- b=AQlt+dcwhT6COhs+UrGIv44xYq/7VD8S6odLjH/RyQdBGQhCyhgGA8yeQ3YVA5FeBG
- hwD1wEIYJv0Vi0hahhbB6FFuOXlMW+T0qHJpgd5FpVsOfCFOQ4AlT7atTExANaV+gqVn
- x0JE0q4iXvxXwNgIIDYXE9FyrDzU+Hbj7fKR92tdoqCnHIF98PcJpp7dViYXGFwUcPEk
- e5CE+TY706+Sdfoqsi7qN7m6J5vsDVA1s87Em0GL7rpF50E1AXWbO9pmhf6KKWzJLfet
- QO/JbWWyX5nkhlJS/XkVDx0wLRXnYP4yEMzEDiQLlvou90RMWbmFGzV4dVh+Ke2rpst8
- 3bgw==
-X-Gm-Message-State: ABy/qLbEKa9ro2W0lJUFkK6Fb2waGTGakEMnnWqzYm/I8ESwC1kMRqiu
- XH1SykqksJn8CLQi8hv8h/0=
-X-Google-Smtp-Source: APBJJlGWBzDnQq8SusFOdLBQYlSktpk4ObcOicAH3AEH13MbyY4PC8VJcY5WpnPNi7bDy/pljq+J2A==
-X-Received: by 2002:a05:6808:c8:b0:3a1:188c:9311 with SMTP id
- t8-20020a05680800c800b003a1188c9311mr671500oic.24.1688621974276; 
- Wed, 05 Jul 2023 22:39:34 -0700 (PDT)
+ bh=xGgC20QkcCf3g1w9sY8uAZa7WxFWNeCwEnhLGxQ6p/o=;
+ b=jECvwXO4vmQiNUI3DrwltOEZiTt5h+ehw2k0Uz3rmNXbQMAaGD8rpxSfHqTkvwp167
+ zwoeKSLdy2p11YyFbQgRvZQtTT0Wg6FcUBYogJ1sM/eP0al0ZEZ4AWnqTAJVrwLaOV4m
+ TFrUiRqLzj5ZhcRRyaN03G2rZT6+Nz1nN748fBWc+gs19J/BvvcJMxeZpFt04YO4jcTw
+ s0fhTdhkcjRYLBk0Y8qK3N3QQnIJ/nXWoVba/i094vHN/lOd408IIlT0vJGDAOIVpDFg
+ LbDC94QX6ChON2fhaN3DV01xiZSsQzTFuimZDzi2/EJpmy5cT/0xbWDH45k2jWGwMik4
+ NLpQ==
+X-Gm-Message-State: ABy/qLa6eywTAPadaJN/czeaGrC6wdah0Pb71XiPX+HDUKaH4mFZPr3p
+ zN2L9Fhm8kdjRKTz6p/enBg=
+X-Google-Smtp-Source: APBJJlGcDFmbS5F+d26+08R0P2IiPdXaDNT+gp5gsNxuo7YQ9VMox328Ztys789UamhBkz4VA0fqzQ==
+X-Received: by 2002:a05:6a20:6598:b0:123:c3dc:2052 with SMTP id
+ p24-20020a056a20659800b00123c3dc2052mr521192pzh.35.1688621977753; 
+ Wed, 05 Jul 2023 22:39:37 -0700 (PDT)
 Received: from wheely.local0.net ([61.68.2.145])
  by smtp.gmail.com with ESMTPSA id
- ix10-20020a170902f80a00b001b3d8ac1b6bsm427764plb.212.2023.07.05.22.39.31
+ ix10-20020a170902f80a00b001b3d8ac1b6bsm427764plb.212.2023.07.05.22.39.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 05 Jul 2023 22:39:34 -0700 (PDT)
+ Wed, 05 Jul 2023 22:39:37 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Joel Stanley <joel@jms.id.au>,
@@ -62,17 +62,16 @@ To: Daniel Henrique Barboza <danielhb413@gmail.com>,
  =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
 Cc: qemu-devel@nongnu.org,
 	qemu-ppc@nongnu.org
-Subject: [PATCH v2 1/2] ppc/pnv: Set P10 core xscom region size to match
- hardware
-Date: Thu,  6 Jul 2023 15:39:22 +1000
-Message-Id: <20230706053923.115003-2-npiggin@gmail.com>
+Subject: [PATCH v2 2/2] tests/qtest: Add xscom tests for powernv10 machine
+Date: Thu,  6 Jul 2023 15:39:23 +1000
+Message-Id: <20230706053923.115003-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230706053923.115003-1-npiggin@gmail.com>
 References: <20230706053923.115003-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x22a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=npiggin@gmail.com; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,83 +94,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The P10 core xscom memory regions overlap because the size is wrong.
-The P10 core+L2 xscom region size is allocated as 0x1000 (with some
-unused ranges). "EC" is used as a closer match, as "EX" includes L3
-which has a disjoint xscom range that would require a different
-region if it were implemented.
+Add basic chip and core xscom tests for powernv10 machine, equivalent
+to tests for powernv8 and 9.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/pnv_core.c          | 6 ++++--
- include/hw/ppc/pnv_core.h  | 1 +
- include/hw/ppc/pnv_xscom.h | 2 +-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ tests/qtest/pnv-xscom-test.c | 44 ++++++++++++++++++++++++++++--------
+ 1 file changed, 35 insertions(+), 9 deletions(-)
 
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index 8a72171ce0..aa363e4b85 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -296,9 +296,8 @@ static void pnv_core_realize(DeviceState *dev, Error **errp)
-     }
+diff --git a/tests/qtest/pnv-xscom-test.c b/tests/qtest/pnv-xscom-test.c
+index 2c46d5cf6d..80903fa782 100644
+--- a/tests/qtest/pnv-xscom-test.c
++++ b/tests/qtest/pnv-xscom-test.c
+@@ -15,6 +15,7 @@ typedef enum PnvChipType {
+     PNV_CHIP_POWER8,      /* AKA Venice */
+     PNV_CHIP_POWER8NVL,   /* AKA Naples */
+     PNV_CHIP_POWER9,      /* AKA Nimbus */
++    PNV_CHIP_POWER10,
+ } PnvChipType;
  
-     snprintf(name, sizeof(name), "xscom-core.%d", cc->core_id);
--    /* TODO: check PNV_XSCOM_EX_SIZE for p10 */
-     pnv_xscom_region_init(&pc->xscom_regs, OBJECT(dev), pcc->xscom_ops,
--                          pc, name, PNV_XSCOM_EX_SIZE);
-+                          pc, name, pcc->xscom_size);
- 
-     qemu_register_reset(pnv_core_reset, pc);
-     return;
-@@ -350,6 +349,7 @@ static void pnv_core_power8_class_init(ObjectClass *oc, void *data)
-     PnvCoreClass *pcc = PNV_CORE_CLASS(oc);
- 
-     pcc->xscom_ops = &pnv_core_power8_xscom_ops;
-+    pcc->xscom_size = PNV_XSCOM_EX_SIZE;
- }
- 
- static void pnv_core_power9_class_init(ObjectClass *oc, void *data)
-@@ -357,6 +357,7 @@ static void pnv_core_power9_class_init(ObjectClass *oc, void *data)
-     PnvCoreClass *pcc = PNV_CORE_CLASS(oc);
- 
-     pcc->xscom_ops = &pnv_core_power9_xscom_ops;
-+    pcc->xscom_size = PNV_XSCOM_EX_SIZE;
- }
- 
- static void pnv_core_power10_class_init(ObjectClass *oc, void *data)
-@@ -364,6 +365,7 @@ static void pnv_core_power10_class_init(ObjectClass *oc, void *data)
-     PnvCoreClass *pcc = PNV_CORE_CLASS(oc);
- 
-     pcc->xscom_ops = &pnv_core_power10_xscom_ops;
-+    pcc->xscom_size = PNV10_XSCOM_EC_SIZE;
- }
- 
- static void pnv_core_class_init(ObjectClass *oc, void *data)
-diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
-index 77ef00f47a..aa5ca281fc 100644
---- a/include/hw/ppc/pnv_core.h
-+++ b/include/hw/ppc/pnv_core.h
-@@ -46,6 +46,7 @@ struct PnvCoreClass {
-     DeviceClass parent_class;
- 
-     const MemoryRegionOps *xscom_ops;
-+    uint64_t xscom_size;
+ typedef struct PnvChip {
+@@ -46,13 +47,22 @@ static const PnvChip pnv_chips[] = {
+         .cfam_id    = 0x220d104900008000ull,
+         .first_core = 0x0,
+     },
++    {
++        .chip_type  = PNV_CHIP_POWER10,
++        .cpu_model  = "POWER10",
++        .xscom_base = 0x000603fc00000000ull,
++        .cfam_id    = 0x120da04900008000ull,
++        .first_core = 0x0,
++    },
  };
  
- #define PNV_CORE_TYPE_SUFFIX "-" TYPE_PNV_CORE
-diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
-index f7da9a1dc6..a4c9d95dc5 100644
---- a/include/hw/ppc/pnv_xscom.h
-+++ b/include/hw/ppc/pnv_xscom.h
-@@ -133,7 +133,7 @@ struct PnvXScomInterfaceClass {
+ static uint64_t pnv_xscom_addr(const PnvChip *chip, uint32_t pcba)
+ {
+     uint64_t addr = chip->xscom_base;
  
- #define PNV10_XSCOM_EC_BASE(core) \
-     ((uint64_t) PNV10_XSCOM_EQ_BASE(core) | PNV10_XSCOM_EC(core & 0x3))
--#define PNV10_XSCOM_EC_SIZE        0x100000
-+#define PNV10_XSCOM_EC_SIZE        0x1000
+-    if (chip->chip_type == PNV_CHIP_POWER9) {
++    if (chip->chip_type == PNV_CHIP_POWER10) {
++        addr |= ((uint64_t) pcba << 3);
++    } else if (chip->chip_type == PNV_CHIP_POWER9) {
+         addr |= ((uint64_t) pcba << 3);
+     } else {
+         addr |= (((uint64_t) pcba << 4) & ~0xffull) |
+@@ -82,6 +92,8 @@ static void test_cfam_id(const void *data)
  
- #define PNV10_XSCOM_PSIHB_BASE     0x3011D00
- #define PNV10_XSCOM_PSIHB_SIZE     0x100
+     if (chip->chip_type == PNV_CHIP_POWER9) {
+         machine = "powernv9";
++    } else if (chip->chip_type == PNV_CHIP_POWER10) {
++        machine = "powernv10";
+     }
+ 
+     qts = qtest_initf("-M %s -accel tcg -cpu %s",
+@@ -96,23 +108,35 @@ static void test_cfam_id(const void *data)
+     (PNV_XSCOM_EX_CORE_BASE | ((uint64_t)(core) << 24))
+ #define PNV_XSCOM_P9_EC_BASE(core) \
+     ((uint64_t)(((core) & 0x1F) + 0x20) << 24)
++#define PNV_XSCOM_P10_EC_BASE(core) \
++    ((uint64_t)((((core) & ~0x3) + 0x20) << 24) + 0x20000 + (0x1000 << (3 - (core & 0x3))))
+ 
+ #define PNV_XSCOM_EX_DTS_RESULT0     0x50000
+ 
+ static void test_xscom_core(QTestState *qts, const PnvChip *chip)
+ {
+-    uint32_t first_core_dts0 = PNV_XSCOM_EX_DTS_RESULT0;
+-    uint64_t dts0;
++    if (chip->chip_type == PNV_CHIP_POWER10) {
++        uint32_t first_core_thread_state =
++                 PNV_XSCOM_P10_EC_BASE(chip->first_core) + 0x412;
++        uint64_t thread_state;
++
++        thread_state = pnv_xscom_read(qts, chip, first_core_thread_state);
+ 
+-    if (chip->chip_type != PNV_CHIP_POWER9) {
+-        first_core_dts0 |= PNV_XSCOM_EX_BASE(chip->first_core);
++        g_assert_cmphex(thread_state, ==, 0);
+     } else {
+-        first_core_dts0 |= PNV_XSCOM_P9_EC_BASE(chip->first_core);
+-    }
++        uint32_t first_core_dts0 = PNV_XSCOM_EX_DTS_RESULT0;
++        uint64_t dts0;
+ 
+-    dts0 = pnv_xscom_read(qts, chip, first_core_dts0);
++        if (chip->chip_type == PNV_CHIP_POWER9) {
++            first_core_dts0 |= PNV_XSCOM_P9_EC_BASE(chip->first_core);
++        } else { /* POWER8 */
++            first_core_dts0 |= PNV_XSCOM_EX_BASE(chip->first_core);
++        }
+ 
+-    g_assert_cmphex(dts0, ==, 0x26f024f023f0000ull);
++        dts0 = pnv_xscom_read(qts, chip, first_core_dts0);
++
++        g_assert_cmphex(dts0, ==, 0x26f024f023f0000ull);
++    }
+ }
+ 
+ static void test_core(const void *data)
+@@ -123,6 +147,8 @@ static void test_core(const void *data)
+ 
+     if (chip->chip_type == PNV_CHIP_POWER9) {
+         machine = "powernv9";
++    } else if (chip->chip_type == PNV_CHIP_POWER10) {
++        machine = "powernv10";
+     }
+ 
+     qts = qtest_initf("-M %s -accel tcg -cpu %s",
 -- 
 2.40.1
 
