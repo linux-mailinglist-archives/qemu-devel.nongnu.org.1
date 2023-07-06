@@ -2,69 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504817496E6
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 09:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2BD749719
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 10:08:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHJrE-0002Ie-O1; Thu, 06 Jul 2023 03:56:56 -0400
+	id 1qHK1J-0006ha-GW; Thu, 06 Jul 2023 04:07:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHJr6-0002Gk-Lo
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:56:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHJr5-0007N3-40
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:56:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688630206;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eOycEAp85606HetPMXyjJ/tDvSBVUrHWFd7f1sN46Rc=;
- b=WtFxU1ITUG2IHTAGmtiFAhgJxxMKeVlu4jYRoT1NjuPkYiDeKN4YugpIqrEc3xLXFE3cOY
- RUcGpH3hJIa84PY+J3dS6Kdxb4QMZpCYbDXvaZ7xBH3NOk0a16CoQAzdWFLikpGfFM8Ciz
- kVmCCeWat2DOCQaYVEfGRQZn4aDyM2Q=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-253-CVb3PnQMNUKH9L1lLNHqhQ-1; Thu, 06 Jul 2023 03:56:43 -0400
-X-MC-Unique: CVb3PnQMNUKH9L1lLNHqhQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B971680123E;
- Thu,  6 Jul 2023 07:56:42 +0000 (UTC)
-Received: from t14s.cit.tum.de (unknown [10.39.193.162])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A892818EB4;
- Thu,  6 Jul 2023 07:56:40 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peng Tao <tao.peng@linux.alibaba.com>, Mario Casquero <mcasquer@redhat.com>
-Subject: [PATCH v2 4/4] virtio-mem: Support "x-ignore-shared" migration
-Date: Thu,  6 Jul 2023 09:56:09 +0200
-Message-ID: <20230706075612.67404-5-david@redhat.com>
-In-Reply-To: <20230706075612.67404-1-david@redhat.com>
-References: <20230706075612.67404-1-david@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qHK1B-0006h2-VC
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:07:15 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qHK1A-0005eE-0z
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:07:13 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3142970df44so285986f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 01:07:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688630830; x=1691222830;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=z3n3NXzsfDpAbC8sSkXt9i4KZdHisQmtG892sioNbSM=;
+ b=lCneo2JmDX/hd0RFIdycqdfTcnHUjK5tvAoVo393SkSCSTSLyQ3vYyJojbvl53QKJn
+ c1d7Z0R3IrzAyt3ubDqUNL446ET7qm2qWfdvvMcmUV/03a82B6v9STNK5zYLCzEnW0Rq
+ azkvzmrzgjqWNjFhaxKFY3dNejoWey12hgH3lG/Fief3+6m2qx3xduNbKu4SCI7NUi4u
+ oM/o0/csnnussfS3nfdK/DCdhLgxCIMeFOBU+guh+rEh7Yr9yprcP8M5y9Ji8kWpkUao
+ lJPe40mt/vGLc7wGlDk72TtI6y8Z6GsMOe54AYCraq/cwiTQZL0a+SYoG0+wYnO2v8tN
+ PIoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688630830; x=1691222830;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=z3n3NXzsfDpAbC8sSkXt9i4KZdHisQmtG892sioNbSM=;
+ b=Rq1TOSfHiRlC31ybQQ6jrgGNn4NDoIbEOccxddF0STCu5J/WgDxukZ4OBHkWqnFxvL
+ 1FNC/oTzpJUEuxrc/ASW0hO5BIMJm8OzwKq0twpkT+fb6HszgPvcHtPeo3vsWtPNHaU7
+ cVBriDklRkJplWLAjyZwLnTF0/Ch9v7hVe45mAwSlIjSuHyU4fupYK3rBfbmHm6po5/G
+ 1ah5qTOVdLSoS+slZtIhNDz0La+3hmATxzT2uliFXZt/CR+hyeq4+rH6dXKIvabS8S7n
+ BgiCevu6j/tIC2U0hei9bYiLQNOrQq8DC0t39+J+e6TrabKMRYkOi8LrCJhSahAJZ7pc
+ 22gg==
+X-Gm-Message-State: ABy/qLamhYa+55txzqPPkVbHYqKntprFgNV6JsmTgaD7/RFfHkzQa27H
+ YF0wYs9WAAsPJ2Xw6M3gO02Pvg==
+X-Google-Smtp-Source: APBJJlHQO5PpxGluw6t7SSxvE41sEE7nvuEzudlVLVsFIzjiqZIdDHlk5iqQr46o7Eo89FCukGj3bA==
+X-Received: by 2002:adf:f809:0:b0:314:421f:532f with SMTP id
+ s9-20020adff809000000b00314421f532fmr838981wrp.44.1688630829837; 
+ Thu, 06 Jul 2023 01:07:09 -0700 (PDT)
+Received: from [192.168.82.227] ([91.209.212.17])
+ by smtp.gmail.com with ESMTPSA id
+ v8-20020a5d5908000000b0031437ec7ec1sm1194476wrd.2.2023.07.06.01.07.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jul 2023 01:07:09 -0700 (PDT)
+Message-ID: <30be90c8-ad32-10fd-d821-49a355536f88@linaro.org>
+Date: Thu, 6 Jul 2023 09:07:05 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3] linux-user/syscall: Implement execve without execveat
+Content-Language: en-US
+To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, sir@cmpwn.com, philmd@linaro.org
+References: <20230705121023.973284-1-pierrick.bouvier@linaro.org>
+ <4e5a77e3-17bc-f4bf-b0d3-476469b768c2@linaro.org>
+ <696064fd-0509-b4d9-ff93-f60385fb00d0@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <696064fd-0509-b4d9-ff93-f60385fb00d0@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,126 +96,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To achieve desired "x-ignore-shared" functionality, we should not
-discard all RAM when realizing the device and not mess with
-preallocation/postcopy when loading device state. In essence, we should
-not touch RAM content.
+On 7/6/23 08:30, Pierrick Bouvier wrote:
+>> I guess we'll quickly get a build-time error if there's no host execve syscall
+>> (which looks to be, eventually, compat-only).
+>>
+> 
+> Out of curiosity, is there any plan for deprecation (or removal) of execve on a specific 
+> architecture? I thought it had to stay there, just for backward compatibility.
 
-As "x-ignore-shared" gets set after realizing the device, we cannot
-rely on that. Let's simply skip discarding of RAM on incoming migration.
-Note that virtio_mem_post_load() will call
-virtio_mem_restore_unplugged() -- unless "x-ignore-shared" is set. So
-once migration finished we'll have a consistent state.
+Not on an existing architecture, but the next new one could in theory only implement 
+execveat.  Compare with open, which is not implemented by aarch64 and newer, only openat.
 
-The initial system reset will also not discard any RAM, because
-virtio_mem_unplug_all() will not call virtio_mem_unplug_all() when no
-memory is plugged (which is the case before loading the device state).
 
-Note that something like VM templating -- see commit b17fbbe55cba
-("migration: allow private destination ram with x-ignore-shared") -- is
-currently incompatible with virtio-mem and ram_block_discard_range() will
-warn in case a private file mapping is supplied by virtio-mem.
-
-For VM templating with virtio-mem, it makes more sense to either
-(a) Create the template without the virtio-mem device and hotplug a
-    virtio-mem device to the new VM instances using proper own memory
-    backend.
-(b) Use a virtio-mem device that doesn't provide any memory in the
-    template (requested-size=0) and use private anonymous memory.
-
-Tested-by: Mario Casquero <mcasquer@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- hw/virtio/virtio-mem.c | 47 ++++++++++++++++++++++++++++++++++--------
- 1 file changed, 38 insertions(+), 9 deletions(-)
-
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index a922c21380..3f41e00e74 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -18,6 +18,7 @@
- #include "sysemu/numa.h"
- #include "sysemu/sysemu.h"
- #include "sysemu/reset.h"
-+#include "sysemu/runstate.h"
- #include "hw/virtio/virtio.h"
- #include "hw/virtio/virtio-bus.h"
- #include "hw/virtio/virtio-mem.h"
-@@ -901,11 +902,23 @@ static void virtio_mem_device_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    ret = ram_block_discard_range(rb, 0, qemu_ram_get_used_length(rb));
--    if (ret) {
--        error_setg_errno(errp, -ret, "Unexpected error discarding RAM");
--        ram_block_coordinated_discard_require(false);
--        return;
-+    /*
-+     * We don't know at this point whether shared RAM is migrated using
-+     * QEMU or migrated using the file content. "x-ignore-shared" will be
-+     * configured after realizing the device. So in case we have an
-+     * incoming migration, simply always skip the discard step.
-+     *
-+     * Otherwise, make sure that we start with a clean slate: either the
-+     * memory backend might get reused or the shared file might still have
-+     * memory allocated.
-+     */
-+    if (!runstate_check(RUN_STATE_INMIGRATE)) {
-+        ret = ram_block_discard_range(rb, 0, qemu_ram_get_used_length(rb));
-+        if (ret) {
-+            error_setg_errno(errp, -ret, "Unexpected error discarding RAM");
-+            ram_block_coordinated_discard_require(false);
-+            return;
-+        }
-     }
- 
-     virtio_mem_resize_usable_region(vmem, vmem->requested_size, true);
-@@ -977,10 +990,6 @@ static int virtio_mem_post_load(void *opaque, int version_id)
-     RamDiscardListener *rdl;
-     int ret;
- 
--    if (vmem->prealloc && !vmem->early_migration) {
--        warn_report("Proper preallocation with migration requires a newer QEMU machine");
--    }
--
-     /*
-      * We started out with all memory discarded and our memory region is mapped
-      * into an address space. Replay, now that we updated the bitmap.
-@@ -993,6 +1002,18 @@ static int virtio_mem_post_load(void *opaque, int version_id)
-         }
-     }
- 
-+    /*
-+     * If shared RAM is migrated using the file content and not using QEMU,
-+     * don't mess with preallocation and postcopy.
-+     */
-+    if (migrate_ram_is_ignored(vmem->memdev->mr.ram_block)) {
-+        return 0;
-+    }
-+
-+    if (vmem->prealloc && !vmem->early_migration) {
-+        warn_report("Proper preallocation with migration requires a newer QEMU machine");
-+    }
-+
-     if (migration_in_incoming_postcopy()) {
-         return 0;
-     }
-@@ -1025,6 +1046,14 @@ static int virtio_mem_post_load_early(void *opaque, int version_id)
-         return 0;
-     }
- 
-+    /*
-+     * If shared RAM is migrated using the file content and not using QEMU,
-+     * don't mess with preallocation and postcopy.
-+     */
-+    if (migrate_ram_is_ignored(rb)) {
-+        return 0;
-+    }
-+
-     /*
-      * We restored the bitmap and verified that the basic properties
-      * match on source and destination, so we can go ahead and preallocate
--- 
-2.41.0
-
+r~
 
