@@ -2,87 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A3274A3A0
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 20:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 757A374A405
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 20:57:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHTV9-0002X5-3G; Thu, 06 Jul 2023 14:14:47 -0400
+	id 1qHU9m-0000Ts-J6; Thu, 06 Jul 2023 14:56:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTV8-0002Wu-2A
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:14:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1qHU9f-0000T5-JV
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:56:40 -0400
+Received: from mga17.intel.com ([192.55.52.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTV6-0006kG-JK
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:14:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688667283;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=BEbQ/5CaEKqRSUHGjmXsX9UkZ0cJPEjhHo3ytO2cwFA=;
- b=eCgPC1YtfaaLd/lpaBEYW5UuCcWeYWRLFNX7IbG5sZ8n0gJWZWyvXm6I46ZsYEqAuchd4F
- X1NSRb2FmothwpHSN8QPjqQt1yh7P77KPzU4jVkt4ZEG3TE4AHuh5QnsO6SLqBcBNZJsPK
- z6CyJi2Be1PZ0cP5lq+GzdUYJjDFp3E=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-370-3Mir3ORDOK2kl18DfwciDw-1; Thu, 06 Jul 2023 14:14:40 -0400
-X-MC-Unique: 3Mir3ORDOK2kl18DfwciDw-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-40359e38529so2971381cf.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 11:14:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688667279; x=1691259279;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BEbQ/5CaEKqRSUHGjmXsX9UkZ0cJPEjhHo3ytO2cwFA=;
- b=jBHfPFWXEI504UlDR1qM7ZN1t6/0LBG1dlMLzsXxX7B474XjPxQhXTT3jsl4nztXUo
- cVlR01u57kEkxNTdRYNZxMFoaW3ulJ++uOFBOk+BspuNKwdXkIwzusOJoQRW7xOS/y9W
- /lA5gPh4pO1OTfeKvi/x3bh7MPam+2d57HRA4gVHPlHMlC7NC9tLLRGDSV7aZtd4hd8W
- p7CVe78ZhT4Yg/2jB09kFLOz/gpQq2q3w2DduTwtVLDUBrtjyMQUxNBA7QA/1bsdh4P4
- vbLg/IY5jF6vw8x+QxrlNMC3M/MeDXWpK+hGCEOGLflvC+4340j1hv3F6RPvc6OEW2jz
- MxeQ==
-X-Gm-Message-State: ABy/qLbcvnynWkBdtihbPB02TPpnUCsnRxFP5i+ZVaawft5C/KpvmRhm
- 8XMu1TSpPsBZB/JW8MkKYUEIaEJoMPbUwlr279SHvaAV1Fm6/X1xppXUEbjmsOQgWpQefhHqrur
- DTvY/BXRGLqXUW18=
-X-Received: by 2002:a05:622a:1a82:b0:400:84a9:a09c with SMTP id
- s2-20020a05622a1a8200b0040084a9a09cmr3448075qtc.6.1688667279666; 
- Thu, 06 Jul 2023 11:14:39 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHspwvsxYQPjTKZVZTCRIuMYspdchsbdmuCxG8bRSNM/UtSbcgsbyiSJW7AVxUK8YLm4g9T6w==
-X-Received: by 2002:a05:622a:1a82:b0:400:84a9:a09c with SMTP id
- s2-20020a05622a1a8200b0040084a9a09cmr3448063qtc.6.1688667279451; 
- Thu, 06 Jul 2023 11:14:39 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- a25-20020ac84359000000b003fdebf1a634sm850315qtn.75.2023.07.06.11.14.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 11:14:39 -0700 (PDT)
-Date: Thu, 6 Jul 2023 14:14:37 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Leonardo Bras Soares Passos <leobras@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 1/1] pcie: Add hotplug detect state register to cmask
-Message-ID: <ZKcEjfTDDgDZWu9Q@x1n>
-References: <20230706045546.593605-3-leobras@redhat.com> <ZKbRRt8ESGsMz+o7@x1n>
- <CAJ6HWG4iUX=+7FTCkXitFfc1zFNJ9aR5PzDRyPLSZVq1Kos8fA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1qHU9c-000347-PA
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:56:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1688669796; x=1720205796;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=JwUaUdYFJwdjZQvydfHaexDtxxAqjQ/7S8NfQja+8VQ=;
+ b=RaxXpRRT5xLZol2bQ4KEW0i6faWA+wdOK+/paDaMv8O/i6yLR8YV5LZ+
+ EN0KlNlpq8mqZ2o+7cGWaxXYbOhjTWKwKCA2pf8rFjvqbYKiYxzpE34SH
+ wX6Lapip7JXX203yCScJADc/Jh6qrytIQi/KEsYgHjnfcXSdH0r+y9T4v
+ EZbTIz9FOtR10KteUHBXzk5z8vi5nW33GizrCxsdJcsOunMOZYBtN7Pe9
+ dvOzdatbW1q3vkyv1KeNvWjKmv6BnQEFpq2sbQCBNojv43Pxw0kuZOjjg
+ mbIPSRhgZU6zYM0j12699jggVlAdUEzDhJaZBdNNMoNLZeyn/fQwrzC2t g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10763"; a="344024312"
+X-IronPort-AV: E=Sophos;i="6.01,185,1684825200"; d="scan'208";a="344024312"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Jul 2023 11:56:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10763"; a="809755784"
+X-IronPort-AV: E=Sophos;i="6.01,185,1684825200"; d="scan'208";a="809755784"
+Received: from dongwonk-z390-aorus-ultra-intel-gfx.fm.intel.com
+ ([10.105.129.122])
+ by FMSMGA003.fm.intel.com with ESMTP; 06 Jul 2023 11:56:31 -0700
+From: Dongwon Kim <dongwon.kim@intel.com>
+To: qemu-devel@nongnu.org
+Cc: Dongwon Kim <dongwon.kim@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: [PATCH] ui/gtk: set scanout-mode right before scheduling draw
+Date: Thu,  6 Jul 2023 11:33:54 -0700
+Message-Id: <20230706183355.29361-1-dongwon.kim@intel.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <CAJ+F1C+9hbdgv7tLibnYKS-3fOBotVU=MHwYq6Ly2Wccf-Dd_g@mail.gmail.com>
+References: <CAJ+F1C+9hbdgv7tLibnYKS-3fOBotVU=MHwYq6Ly2Wccf-Dd_g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAJ6HWG4iUX=+7FTCkXitFfc1zFNJ9aR5PzDRyPLSZVq1Kos8fA@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.55.52.151; envelope-from=dongwon.kim@intel.com;
+ helo=mga17.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,21 +79,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 06, 2023 at 03:07:40PM -0300, Leonardo Bras Soares Passos wrote:
-> > I asked the same question, and I still keep confused: whether there's a
-> > first bad commit?  Starting from when it fails?
-> >
-> > For example, is this broken on 6.0 binaries too with pc-q35-6.0?
-> 
-> I tested for qemu 6.0, and it still reproduces, but have not pursued
-> this any further.
+Setting scanout mode is better to be done very last minute
+right because the mode can be reset anytime after it is set in
+dpy_gl_scanout_texture by any asynchronouse dpy_refresh call,
+which eventually cancels drawing of the guest scanout texture.
 
-I see, thanks!
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+---
+ ui/gtk-egl.c     | 2 +-
+ ui/gtk-gl-area.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-But then do you know why it's never hit before?  I assume it means this bug
-has been there for a long time.
-
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index d59b8cd7d7..b0356d1969 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -238,7 +238,6 @@ void gd_egl_scanout_texture(DisplayChangeListener *dcl,
+     eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
+                    vc->gfx.esurface, vc->gfx.ectx);
+ 
+-    gtk_egl_set_scanout_mode(vc, true);
+     egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
+                          backing_id, false);
+ }
+@@ -347,6 +346,7 @@ void gd_egl_flush(DisplayChangeListener *dcl,
+     if (vc->gfx.guest_fb.dmabuf && !vc->gfx.guest_fb.dmabuf->draw_submitted) {
+         graphic_hw_gl_block(vc->gfx.dcl.con, true);
+         vc->gfx.guest_fb.dmabuf->draw_submitted = true;
++        gtk_egl_set_scanout_mode(vc, true);
+         gtk_widget_queue_draw_area(area, x, y, w, h);
+         return;
+     }
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index 7367dfd793..cc8c2f8061 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -262,7 +262,6 @@ void gd_gl_area_scanout_texture(DisplayChangeListener *dcl,
+         return;
+     }
+ 
+-    gtk_gl_area_set_scanout_mode(vc, true);
+     egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
+                          backing_id, false);
+ }
+@@ -282,6 +281,7 @@ void gd_gl_area_scanout_flush(DisplayChangeListener *dcl,
+     if (vc->gfx.guest_fb.dmabuf && !vc->gfx.guest_fb.dmabuf->draw_submitted) {
+         graphic_hw_gl_block(vc->gfx.dcl.con, true);
+         vc->gfx.guest_fb.dmabuf->draw_submitted = true;
++        gtk_gl_area_set_scanout_mode(vc, true);
+     }
+     gtk_gl_area_queue_render(GTK_GL_AREA(vc->gfx.drawing_area));
+ }
 -- 
-Peter Xu
+2.34.1
 
 
