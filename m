@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48688749FAB
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 16:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FB074A047
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 17:01:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHQHD-0007EU-Ek; Thu, 06 Jul 2023 10:48:11 -0400
+	id 1qHQS7-0003HN-Lp; Thu, 06 Jul 2023 10:59:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHQH8-000798-3N
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 10:48:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHQS1-0003H6-LL
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 10:59:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHQH6-0000W4-1G
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 10:48:05 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHQRy-0003Bl-Fm
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 10:59:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688654882;
+ s=mimecast20190719; t=1688655557;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SBd7QhwVF87UnyoCwN4BvGtkWPpexkW5vgQ0WVX6y1U=;
- b=Ore6Cw8OFYy8PDxCgYyCsUNU0DvSRHMtcLfy5TovSODTRTxGDNJ7lMRMisEK8qO4vpsbNw
- 3F/qkDiO0qLHdrNu8KFeSvSlx7aJyDlzFdIkyyZUVaUWsJUWyqF6o00MNtBO7w3lUCjxEq
- NM/KjoywIN4LAhbPFLCrpVw+AXIZ4NA=
+ bh=Jr15GtauzOZy4UNNTLDRlqgzGqok5Y017suwWAGDhnA=;
+ b=WnsGeVIv70guII8mZlo4AJyvWDeMHuaJbhjksZ6LcmujwBNSAVvbCTFUyTgIpabz4E2ypl
+ GSuhzaD8JvQM5rj0UK5g8/pLFodOuRhh8S/DU5tDjFuqV9oCMSciVOAYojVy6tQNJavtE8
+ 5YH6v6GhGnB29RVU7BFo75pl1CWockU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-613-XN0fKsywMbW1FKj2DyNygw-1; Thu, 06 Jul 2023 10:47:59 -0400
-X-MC-Unique: XN0fKsywMbW1FKj2DyNygw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-230-8KlKpdTGNTiA3O2g1LgQow-1; Thu, 06 Jul 2023 10:59:13 -0400
+X-MC-Unique: 8KlKpdTGNTiA3O2g1LgQow-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8796D185A793;
- Thu,  6 Jul 2023 14:47:58 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B3C0A185A794;
+ Thu,  6 Jul 2023 14:59:12 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 65D034CD0CA;
- Thu,  6 Jul 2023 14:47:58 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 91B57492B02;
+ Thu,  6 Jul 2023 14:59:12 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5E74921E6A1F; Thu,  6 Jul 2023 16:47:57 +0200 (CEST)
+ id 8588F21E6A1F; Thu,  6 Jul 2023 16:59:11 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: ~hyman <hyman@git.sr.ht>
 Cc: qemu-devel <qemu-devel@nongnu.org>,  ~hyman <yong.huang@smartx.com>,
  Peter Xu <peterx@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Juan
  Quintela <quintela@redhat.com>,  "Dr. David Alan Gilbert"
- <dgilbert@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Richard
- Henderson <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Dau?=
- =?utf-8?Q?d=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH QEMU v7 3/9] qapi/migration: Introduce vcpu-dirty-limit
- parameters
-References: <168853615963.17240.15832775267134683267-3@git.sr.ht>
-Date: Thu, 06 Jul 2023 16:47:57 +0200
-In-Reply-To: <168853615963.17240.15832775267134683267-3@git.sr.ht>
- (hyman@git.sr.ht's message of "Wed, 07 Jun 2023 22:58:32 +0800")
-Message-ID: <87h6qhp04i.fsf@pond.sub.org>
+ <dgilbert@redhat.com>,  Eric Blake <eblake@redhat.com>,  Markus Armbruster
+ <armbru@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Laurent Vivier
+ <lvivier@redhat.com>,  Richard Henderson <richard.henderson@linaro.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH QEMU v7 4/9] migration: Introduce dirty-limit capability
+References: <168853615963.17240.15832775267134683267-4@git.sr.ht>
+Date: Thu, 06 Jul 2023 16:59:11 +0200
+In-Reply-To: <168853615963.17240.15832775267134683267-4@git.sr.ht>
+ (hyman@git.sr.ht's message of "Wed, 07 Jun 2023 23:30:50 +0800")
+Message-ID: <877crdozls.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -92,16 +91,23 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 >
-> Introduce "vcpu-dirty-limit" migration parameter used
-> to limit dirty page rate during live migration.
+> Introduce migration dirty-limit capability, which can
+> be turned on before live migration and limit dirty
+> page rate durty live migration.
 >
-> "vcpu-dirty-limit" and "x-vcpu-dirty-limit-period" are
-> two dirty-limit-related migration parameters, which can
-> be set before and during live migration by qmp
-> migrate-set-parameters.
+> Introduce migrate_dirty_limit function to help check
+> if dirty-limit capability enabled during live migration.
 >
-> This two parameters are used to help implement the dirty
-> page rate limit algo of migration.
+> Meanwhile, refactor vcpu_dirty_rate_stat_collect
+> so that period can be configured instead of hardcoded.
+>
+> dirty-limit capability is kind of like auto-converge
+> but using dirty limit instead of traditional cpu-throttle
+> to throttle guest down. To enable this feature, turn on
+> the dirty-limit capability before live migration using
+> migrate-set-capabilities, and set the parameters
+> "x-vcpu-dirty-limit-period", "vcpu-dirty-limit" suitably
+> to speed up convergence.
 >
 > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 > Acked-by: Peter Xu <peterx@redhat.com>
@@ -109,94 +115,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 [...]
 
+> diff --git a/migration/options.h b/migration/options.h
+> index 9aaf363322..b5a950d4e4 100644
+> --- a/migration/options.h
+> +++ b/migration/options.h
+> @@ -24,6 +24,7 @@ extern Property migration_properties[];
+>  /* capabilities */
+>=20=20
+>  bool migrate_auto_converge(void);
+> +bool migrate_dirty_limit(void);
+>  bool migrate_background_snapshot(void);
+>  bool migrate_block(void);
+>  bool migrate_colo(void);
 > diff --git a/qapi/migration.json b/qapi/migration.json
-> index 384b768e03..aa590dbf0e 100644
+> index aa590dbf0e..cc51835cdd 100644
 > --- a/qapi/migration.json
 > +++ b/qapi/migration.json
-> @@ -793,6 +793,9 @@
->  #                             live migration. Should be in the range 1 t=
-o 1000ms,
->  #                             defaults to 1000ms. (Since 8.1)
+> @@ -497,6 +497,16 @@
+>  #     are present.  'return-path' capability must be enabled to use
+>  #     it.  (since 8.1)
 >  #
-> +# @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
-> +#                    Defaults to 1. (Since 8.1)
+> +# @dirty-limit: If enabled, migration will use the dirty-limit algo to
+> +#               throttle down guest instead of auto-converge algo.
+> +#               Throttle algo only works when vCPU's dirtyrate greater
+> +#               than 'vcpu-dirty-limit', read processes in guest os
+> +#               aren't penalized any more, so this algo can improve
+> +#               performance of vCPU during live migration. This is an
+> +#               optional performance feature and should not affect the
+> +#               correctness of the existing auto-converge algo.
+> +#               (since 8.1)
 > +#
-
-"Dirty rate" with a space, because that's how we spell it elsewhere.
 
 Please format like
 
-   # @vcpu-dirty-limit: Dirty rate limit (MB/s) during live migration.
-   #     Defaults to 1. (Since 8.1)
-   #
+   # @dirty-limit: If enabled, migration will use the dirty-limit algo to
+   #     throttle down guest instead of auto-converge algo.  Throttle
+   #     algo only works when vCPU's dirtyrate greater than
+   #     'vcpu-dirty-limit', read processes in guest os aren't penalized
+   #     any more, so this algo can improve performance of vCPU during
+   #     live migration.  This is an optional performance feature and
+   #     should not affect the correctness of the existing auto-converge
+   #     algo.  (since 8.1)
 
 to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
 to conform to current conventions).
 
->  # Features:
->  #
->  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
-> @@ -816,7 +819,8 @@
->             'max-cpu-throttle', 'multifd-compression',
->             'multifd-zlib-level', 'multifd-zstd-level',
->             'block-bitmap-mapping',
-> -           { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable=
-'] } ] }
-> +           { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable=
-'] },
-> +           'vcpu-dirty-limit'] }
->=20=20
->  ##
->  # @MigrateSetParameters:
-> @@ -955,6 +959,9 @@
->  #                             live migration. Should be in the range 1 t=
-o 1000ms,
->  #                             defaults to 1000ms. (Since 8.1)
->  #
-> +# @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
-> +#                    Defaults to 1. (Since 8.1)
-> +#
+"Dirty rate" with a space, because that's how we spell it elsewhere.
 
-Likewise.
+Moreover, "algo" is not a word, "algorithm" is :)
+
+Is "the dirty-limit algorithm" defined anywhere?=20=20
+
+More word-smithing is needed, but I'd like to get the reference to "the
+dirty-limit algorithm" clarified first.
 
 >  # Features:
 >  #
->  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
-> @@ -995,7 +1002,8 @@
->              '*multifd-zstd-level': 'uint8',
->              '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
-> -                                            'features': [ 'unstable' ] }=
- } }
-> +                                            'features': [ 'unstable' ] },
-> +            '*vcpu-dirty-limit': 'uint64'} }
+>  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+> @@ -512,7 +522,8 @@
+>             'dirty-bitmaps', 'postcopy-blocktime', 'late-block-activate',
+>             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+>             'validate-uuid', 'background-snapshot',
+> -           'zero-copy-send', 'postcopy-preempt', 'switchover-ack'] }
+> +           'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
+> +           'dirty-limit'] }
 >=20=20
 >  ##
->  # @migrate-set-parameters:
-> @@ -1154,6 +1162,9 @@
->  #                             live migration. Should be in the range 1 t=
-o 1000ms,
->  #                             defaults to 1000ms. (Since 8.1)
->  #
-> +# @vcpu-dirty-limit: Dirtyrate limit (MB/s) during live migration.
-> +#                    Defaults to 1. (Since 8.1)
-> +#
+>  # @MigrationCapabilityStatus:
 
-Likewise.
-
->  # Features:
->  #
->  # @unstable: Members @x-checkpoint-delay and @x-vcpu-dirty-limit-period
-> @@ -1191,7 +1202,8 @@
->              '*multifd-zstd-level': 'uint8',
->              '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
->              '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
-> -                                            'features': [ 'unstable' ] }=
- } }
-> +                                            'features': [ 'unstable' ] },
-> +            '*vcpu-dirty-limit': 'uint64'} }
->=20=20
->  ##
->  # @query-migrate-parameters:
+[...]
 
 
