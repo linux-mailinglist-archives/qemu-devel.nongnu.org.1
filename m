@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2499B74993A
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD9A74997D
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:29:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHM4u-0007uK-14; Thu, 06 Jul 2023 06:19:13 -0400
+	id 1qHMDB-0003D9-LF; Thu, 06 Jul 2023 06:27:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHM4j-0007ce-Oq
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:19:01 -0400
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHMD9-0003Cb-MW
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:27:43 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHM4f-0007Fo-SW
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:19:01 -0400
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-6b8baa72c71so456730a34.2
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 03:18:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHMD7-0003xy-3k
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:27:43 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-51d7e8dd118so817240a12.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 03:27:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688638735; x=1691230735;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AzVtd4dMEV7tMVEoxB2sThcnS8dot4yLDoGGf/I1sbI=;
- b=PDUCAEZIHxGc6+W/WJT6UhfJWSM0tMebRSuTJUNnTTqWJIp3DCZvrzTgvl20J5yPR6
- +7Ll8R9GzOJ5bQmeIuwdzFdbLm8jtXlFBnwrjA9Fu1azp5uiFMY01ieoxKDR28yalNPE
- jLfOEXwOoEQAMrMAi5dOP4Ya6BCKXKh8fxO2GiX3GTGGvqAGk4RFKOc7dXfhnaa2zrp7
- FA0sANa3zLhkPV2Bcr+VaHe18qujHOZPrGa6LOiM82XeT/TmfKp8nf9Iu4QDJ0pKEi4o
- t+8E/+T2z2Ii9EDGP/VyK+Eq7dP5yszkbLSGwTIV/hKAlLzlsFvTperEUXQJuHyxFt1Z
- nliw==
+ d=linaro.org; s=google; t=1688639257; x=1691231257;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TjI5VncEJUo131PC1BdfMM1kZk+v4da39H8MLcFrQag=;
+ b=QOpc0g+iGdf+RTxPB4yMSBchXmqviaoFQrimRwvWWCJ9bdsOL4ntqKaJtll1tyqoa+
+ QiLFcMm2ZgEOejCw/sVbK4/YVurHCJ03PaApn1hp73inF4nkF9sf8441IDAuKb/82diO
+ PhS7+ApY3hzTc/WEn4iqdxBQ2TWpRTnMB2VFCPSok7hgXyM2F9cYWvDCH7MyvTZHnOd8
+ wGSmvJCUWCYcjnGlwUYdMYxlgm/4IPZhQYuKH+ZQ3tS4kqtMa0ePVHpVdqNmSxmMlbw0
+ NIPSLFkJ3iOy+Y1u3biRqIyVVZp2sFLsixSN+yNkYGR7Q4JL7gF9NrIuhUz4eST7n48I
+ yXDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688638735; x=1691230735;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AzVtd4dMEV7tMVEoxB2sThcnS8dot4yLDoGGf/I1sbI=;
- b=OI5/61d6onZa6A8W+GsQRmMYU+Os6g9Im9uqSSfr3uZvoEbeE4oyYiKKMmTBSQD8CV
- ala9nHhKp9U5JxrDqUNxXmJPggSW1LwtwaNa9s8JEQ49hrj+TbCrIbbLfVJZSb8G3kCt
- oPRWzQ06mAC0+BjrCWqhWxRIxtVPaBNDsx8ewhuFVH5+O7RuQT0PBh+RJ/Kw+EBHvIHH
- 3iB2Fawwgefd+qiaIVWOVF4iNjAX3SvNGIqQJxE7ecClpZ4xXlc/UY5n2LgG6AVyT5Pi
- RIPud0MPKiVzYWB5EhbTzxSEk8S72y3O3Ti5Zy+aPftc4k3xW3kzAV03181ZWNqVuVFr
- sr/A==
-X-Gm-Message-State: ABy/qLaxnzfA0KFtcDTvuMUjXNV2IE5u0jKJ0p607HZl12hMiMat6Mtn
- f94LVZpIT+CfZiI2DtSdaRb6vbTbAXDEyQi5iTM=
-X-Google-Smtp-Source: APBJJlESdM7f3eVKtoJETyZQ8lA4DHLqASzmTBY5uK6+HZX080ZxLJ2Wd8m3wwQuQV6U5Wb+YTeqUw==
-X-Received: by 2002:a05:6830:18d8:b0:6b7:3214:6901 with SMTP id
- v24-20020a05683018d800b006b732146901mr1598635ote.21.1688638735721; 
- Thu, 06 Jul 2023 03:18:55 -0700 (PDT)
-Received: from grind.. (201-69-66-110.dial-up.telesp.net.br. [201.69.66.110])
+ d=1e100.net; s=20221208; t=1688639257; x=1691231257;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TjI5VncEJUo131PC1BdfMM1kZk+v4da39H8MLcFrQag=;
+ b=BXT/8TupKkZG2J5Tz0LFJkN/puQkw3M+GZv3pSxQ3B6Qp3O8oy0HQJCNHye7E3vfZn
+ 1gZUZiLRk4fPB7w1NmIL07aDKS2Jc4YB1KTFTEMVzdSZo2iiz5vigQrpC8dozr1e/TgH
+ NAdnKNdE7huAz1+58fNsx3huUHbpka1toQL2FORbx7a1fCupEAe1lWN9CZ+8fm9uaSYm
+ QT4W50uIzJmUI/3XLTF8ahKDv+puXnbkx74hejzY/DRIMLSbI2izDGWPxAjjITPKrYBQ
+ lZ9AgLGR/IDiIET47npOswL+zLp5bRkGIPySBZ8R6boM6yesil27r9P1hKJbWOU/sxfn
+ jAZg==
+X-Gm-Message-State: ABy/qLaLutBD4RHDEi41Hki0+bd2AxpVHQIbsZQavH2aS2wyRtj4XMDX
+ wTq3dQCuUJ4haY2z2vr3NIKAOQ==
+X-Google-Smtp-Source: APBJJlGPjYL0hxBofJhy+PuqZnONHGPqgm66Q/cu1PD5WUCJ3P5SRdkVG3deMQ2luqgjzUKTfdDrtA==
+X-Received: by 2002:a05:6402:184e:b0:514:9929:1b01 with SMTP id
+ v14-20020a056402184e00b0051499291b01mr1154620edy.8.1688639256875; 
+ Thu, 06 Jul 2023 03:27:36 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.225])
  by smtp.gmail.com with ESMTPSA id
- h25-20020a9d6a59000000b006b8850ad193sm511382otn.56.2023.07.06.03.18.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 03:18:55 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v9 20/20] target/riscv/kvm.c: read/write (cbom|cboz)_blocksize
- in KVM
-Date: Thu,  6 Jul 2023 07:17:38 -0300
-Message-ID: <20230706101738.460804-21-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230706101738.460804-1-dbarboza@ventanamicro.com>
-References: <20230706101738.460804-1-dbarboza@ventanamicro.com>
+ r6-20020aa7d146000000b0051df54c6a27sm604480edo.56.2023.07.06.03.27.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jul 2023 03:27:36 -0700 (PDT)
+Message-ID: <d26ae819-2152-ad85-efd6-425f0f9987af@linaro.org>
+Date: Thu, 6 Jul 2023 12:27:35 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] target/arm: Avoid over-length shift in
+ arm_cpu_sve_finalize() error case
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+References: <20230704154332.3014896-1-peter.maydell@linaro.org>
+ <87jzvffywd.fsf@linaro.org> <c90fd4c8-59a4-e4b9-544b-8eb6cd03b4d3@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <c90fd4c8-59a4-e4b9-544b-8eb6cd03b4d3@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,142 +96,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If we don't set a proper cbom_blocksize|cboz_blocksize in the FDT the
-Linux Kernel will fail to detect the availability of the CBOM/CBOZ
-extensions, regardless of the contents of the 'riscv,isa' DT prop.
+On 5/7/23 16:45, Richard Henderson wrote:
+> On 7/4/23 18:00, Alex Bennée wrote:
+>>
+>> Peter Maydell <peter.maydell@linaro.org> writes:
+>>
+>>> If you build QEMU with the clang sanitizer enabled, you can see it
+>>> fire when running the arm-cpu-features test:
+>>>
+>>> $ QTEST_QEMU_BINARY=./build/arm-clang/qemu-system-aarch64 
+>>> ./build/arm-clang/tests/qtest/arm-cpu-features
+>>> [...]
+>>> ../../target/arm/cpu64.c:125:19: runtime error: shift exponent 64 is 
+>>> too large for 64-bit type 'unsigned long long'
+>>> [...]
+>>>
+>>> This happens because the user can specify some incorrect SVE
+>>> properties that result in our calculating a max_vq of 0.  We catch
+>>> this and error out, but before we do that we calculate
+>>>
+>>>   vq_mask = MAKE_64BIT_MASK(0, max_vq);$
+>>>
+>>> and the MAKE_64BIT_MASK() call is only valid for lengths that are
+>>> greater than zero, so we hit the undefined behaviour.
+>>
+>> Hmm that does make me worry we could have more land mines waiting to be
+>> found. Would converting MAKE_64BIT_MASK into an inline function and
+>> asserting be a better solution?
+> 
+> I'd be tempted to keep a macro, and use __builtin_constant_p to make 
+> sure this expands to a constant if possible.  Ideally constants would be 
+> diagnosed at compile-time and runtime values get runtime asserts.
 
-The FDT is being written using the cpu->cfg.cbom|z_blocksize attributes,
-so let's expose them as user properties like it is already done with
-TCG.
+Indeed inlined function doesn't work because MAKE_64BIT_MASK() is
+used in static const value definitions:
 
-This will also require us to determine proper blocksize values during
-init() time since the FDT is already created during realize(). We'll
-take a ride in kvm_riscv_init_multiext_cfg() to do it. Note that we
-don't need to fetch both cbom and cboz blocksizes every time: check for
-their parent extensions (icbom and icboz) and only read the blocksizes
-if needed.
+include/hw/cxl/cxl_component.h:52:1: error: expression is not an integer 
+constant expression
+CXLx_CAPABILITY_HEADER(LINK, 0x8)
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/hw/cxl/cxl_component.h:50:9: note: expanded from macro 
+'CXLx_CAPABILITY_HEADER'
+         FIELD(CXL_##type##_CAPABILITY_HEADER, PTR, 20, 12)
+         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/hw/registerfields.h:46:41: note: expanded from macro 'FIELD'
+                                         MAKE_64BIT_MASK(shift, length)};
+                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In contrast with cbom|z_blocksize properties from TCG, the user is not
-able to set any value that is different from the 'host' value when
-running KVM. KVM can be particularly harsh dealing with it: a ENOTSUPP
-can be thrown for the mere attempt of executing kvm_set_one_reg() for
-these 2 regs.
+This builds however:
 
-Hopefully we don't need to call kvm_set_one_reg() for these regs.
-We'll check if the user input matches the host value in
-kvm_cpu_set_cbomz_blksize(), the set() accessor for both blocksize
-properties. We'll fail fast since it's already known to not be
-supported.
+-- >8 --
+--- a/include/qemu/bitops.h
++++ b/include/qemu/bitops.h
+@@ -28,3 +28,5 @@
+  #define MAKE_64BIT_MASK(shift, length) \
+-    (((~0ULL) >> (64 - (length))) << (shift))
++    ((__builtin_constant_p(length) && !(length)) \
++     ? 0 \
++     : (((~0ULL) >> (64 - (length))) << (shift)))
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- target/riscv/kvm.c | 70 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
 
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index cfeab5a4c0..d831ee9b5d 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -276,6 +276,42 @@ static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
-     kvm_cpu_cfg_set(cpu, multi_ext_cfg, value);
- }
- 
-+static KVMCPUConfig kvm_cbom_blocksize = {
-+    .name = "cbom_blocksize",
-+    .offset = CPUCFG(cbom_blocksize),
-+    .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicbom_block_size)
-+};
-+
-+static KVMCPUConfig kvm_cboz_blocksize = {
-+    .name = "cboz_blocksize",
-+    .offset = CPUCFG(cboz_blocksize),
-+    .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicboz_block_size)
-+};
-+
-+static void kvm_cpu_set_cbomz_blksize(Object *obj, Visitor *v,
-+                                      const char *name,
-+                                      void *opaque, Error **errp)
-+{
-+    KVMCPUConfig *cbomz_cfg = opaque;
-+    RISCVCPU *cpu = RISCV_CPU(obj);
-+    uint16_t value, *host_val;
-+
-+    if (!visit_type_uint16(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    host_val = kvmconfig_get_cfg_addr(cpu, cbomz_cfg);
-+
-+    if (value != *host_val) {
-+        error_report("Unable to set %s to a different value than "
-+                     "the host (%u)",
-+                     cbomz_cfg->name, *host_val);
-+        exit(EXIT_FAILURE);
-+    }
-+
-+    cbomz_cfg->user_set = true;
-+}
-+
- static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
- {
-     CPURISCVState *env = &cpu->env;
-@@ -329,6 +365,14 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
-                             kvm_cpu_set_multi_ext_cfg,
-                             NULL, multi_cfg);
-     }
-+
-+    object_property_add(cpu_obj, "cbom_blocksize", "uint16",
-+                        NULL, kvm_cpu_set_cbomz_blksize,
-+                        NULL, &kvm_cbom_blocksize);
-+
-+    object_property_add(cpu_obj, "cboz_blocksize", "uint16",
-+                        NULL, kvm_cpu_set_cbomz_blksize,
-+                        NULL, &kvm_cboz_blocksize);
- }
- 
- static int kvm_riscv_get_regs_core(CPUState *cs)
-@@ -644,6 +688,24 @@ static void kvm_riscv_init_misa_ext_mask(RISCVCPU *cpu,
-     env->misa_ext = env->misa_ext_mask;
- }
- 
-+static void kvm_riscv_read_cbomz_blksize(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
-+                                         KVMCPUConfig *cbomz_cfg)
-+{
-+    CPURISCVState *env = &cpu->env;
-+    struct kvm_one_reg reg;
-+    int ret;
-+
-+    reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_CONFIG,
-+                              cbomz_cfg->kvm_reg_id);
-+    reg.addr = (uint64_t)kvmconfig_get_cfg_addr(cpu, cbomz_cfg);
-+    ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-+    if (ret != 0) {
-+        error_report("Unable to read KVM reg %s, error %d",
-+                     cbomz_cfg->name, ret);
-+        exit(EXIT_FAILURE);
-+    }
-+}
-+
- static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
- {
-     CPURISCVState *env = &cpu->env;
-@@ -675,6 +737,14 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
- 
-         kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
-     }
-+
-+    if (cpu->cfg.ext_icbom) {
-+        kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cbom_blocksize);
-+    }
-+
-+    if (cpu->cfg.ext_icboz) {
-+        kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cboz_blocksize);
-+    }
- }
- 
- void kvm_riscv_init_user_properties(Object *cpu_obj)
--- 
-2.41.0
-
+But then UB is still present at runtime.
 
