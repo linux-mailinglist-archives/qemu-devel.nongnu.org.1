@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96190749D93
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF2D749D9B
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:27:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHOze-0005OU-4Z; Thu, 06 Jul 2023 09:25:58 -0400
+	id 1qHOzc-0005HS-He; Thu, 06 Jul 2023 09:25:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHOzK-0004qw-5n
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:25:38 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1qHOzM-0004re-1E
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:25:40 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHOzE-0000sW-Vi
+ id 1qHOzE-0000sp-Ud
  for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:25:36 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fbac8b01b3so16591105e9.1
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fbc244d307so7637225e9.1
  for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 06:25:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688649919; x=1691241919;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=REQxdvHqMD5dtevjQjK3Wnx/HFYuQ118HppndU5qJ5M=;
- b=ooaS1xdbtay9lt4wBuU22N3LBehSNEH0DtKOj55QKGRf+kTMXWdvcJFbUVTlHmjNpW
- 8eMgjJRy3xyfnUm+hsXmBnF+a9FJo90Y64YFEH+8/laKS4Um5+ipT3hDZmC86dh982FE
- X6cL84gD6nLCQfam/tEPVSxcCJsV2FFzPwTlyBx/B9BfTIkRfSHgECT3D4Blgxj7gHLj
- e9wBlEGEj/bNrwc2LSM63fMCylUezoi/OkUS/AC7xaU7hFptrC2Ya7Z2csrJhy41ofBz
- zDUlJkvkqHizB88jhMFmPMHfyo+l66CatKlk7wrAg/QeHnVXJlXMI2FE5ruV34yVE480
- oH8w==
+ :reply-to; bh=U9CeGIttj7agKc+IG3L3VXz8hzpfa363h3PPFaSP8BM=;
+ b=hGr+Oivwm0S4HtGd3ZiUwg5XZK2WTrzCsqT5IqO3tPDxtj6kDwL5iPz+DmnRUh40fC
+ 5UaY7iqBHdnTzjUioh1PqgY8hRZN/uXPAKdQ0pP9nQDNSU8jdB4xZ55LkeqK+1ep5rPC
+ LgcllW4V/OjtoJ3I9b6fdfw89kMfGYZw1fgK7Zs+AHoc8EI6cBYxzrNrqFSE7CjSFkjk
+ JwtmIHqQLCLosbVOTsU1pMK1HLedbI2o25DQ4RyxyuDh9J5o45Es1YoU26J53G+cNVWl
+ Xp/57OpguJwT85h3my/eyi6UEm3dGeWvz8NiGVioIEpydWRpVOhPCAS0GUdVmmJlN4Ss
+ HadA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688649919; x=1691241919;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=REQxdvHqMD5dtevjQjK3Wnx/HFYuQ118HppndU5qJ5M=;
- b=bi3Ei8SJ0/dObqVo6miBDUM7U73cOBTlsbWhUOIIhSb5ynMX5QMu52ek/3Y9IGDIxS
- Ne3nMqWinmPctG9cn5qYGAaTR+BHl1y96B7Qh+/VCV1taFn+LT4O4pGKrrA/sioNqdZw
- TRy0PeL3FiNQJqVmIrEB40PxRtVZxvQxQSpm2MDj4MchquWVttzdM6sTtLuj8ORXYSG9
- V9yi2cJSk+Wwj8iq1dIHphX1vVNs7J80n06AQunO/iZYNVkSYYuX/Xeoy17D0yiF2ugE
- nshqYO+hR2/GX+I4eFzohITncAbn3Ygem/6OiFa3ZRsVn22elR+3tjQ5kd4G0Sjy4p2x
- Ob9w==
-X-Gm-Message-State: ABy/qLbEYq0FerROdjVh0grqLqiO3kvNxyvOrDlbk9O3w/Z5s8KNoV5Q
- PE7gUO72fGJ24T6SZbVhJMAvh8MQSd2BC25oyP4=
-X-Google-Smtp-Source: APBJJlGdHBLeLajFod82IG52SLmMAVTdXv6sJe8iXft4Cl72IZsqA5eIiLFPgij0pZXQ6xUi/Yj+7Q==
-X-Received: by 2002:a05:600c:3582:b0:3fa:7bf0:7a81 with SMTP id
- p2-20020a05600c358200b003fa7bf07a81mr5359604wmq.0.1688649919112; 
+ bh=U9CeGIttj7agKc+IG3L3VXz8hzpfa363h3PPFaSP8BM=;
+ b=e+8y02PSJuZ3s7S3ZqiyVpZClvUjNnJrAQJeluRf3AeaktaAss7RLyD5f2pf7g84DG
+ Lo1biglsXW40oKO9IifVRN4qlETfZP7Wm75C+kiXl2UFiffHgkHIVFQYvt3QPwK9FE+M
+ A6cdL1dBfVrnQAR4kb1abC41Pa9Ehat4u6z/aLeNSm/xQV/7mT58smNxs4i7h5dBhrVE
+ 4qmVDaCFKxb+fgP1XHTMf+Yq/SviJGGX6MuURw8nK5nseDJinT6eCJSMlcfU4kt1d/X+
+ gifUdeSd7JwG4zDquAZu23hWxUdPi3wR51cVIFl28XC5IimZCuSCB2NzZIfM3zxfCVKU
+ DTsA==
+X-Gm-Message-State: ABy/qLbAHFZ+bgYLTdad7NK3sipdv3jwladVDHdt7NNCnkOzzK0X/W5Y
+ 6nnSXfO8Bq+aoS0PqzeuyEPXGs0n1/EFNbrW628=
+X-Google-Smtp-Source: APBJJlFVTFzUaPxVukiXaEiDHIn2wMeRWeMwrlCwh7EDz6hnD2M4EthM4H3nfowFB+PCJLjgXCeBdw==
+X-Received: by 2002:a7b:c043:0:b0:3f9:c04:e76c with SMTP id
+ u3-20020a7bc043000000b003f90c04e76cmr1449802wmc.28.1688649919505; 
  Thu, 06 Jul 2023 06:25:19 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- s15-20020a5d510f000000b00304adbeeabbsm1856170wrt.99.2023.07.06.06.25.18
+ s15-20020a5d510f000000b00304adbeeabbsm1856170wrt.99.2023.07.06.06.25.19
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 06:25:18 -0700 (PDT)
+ Thu, 06 Jul 2023 06:25:19 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 11/14] target/xtensa: Assert that interrupt level is within
- bounds
-Date: Thu,  6 Jul 2023 14:25:09 +0100
-Message-Id: <20230706132512.3534397-12-peter.maydell@linaro.org>
+Subject: [PULL 12/14] target/arm: Suppress more TCG unimplemented features in
+ ID registers
+Date: Thu,  6 Jul 2023 14:25:10 +0100
+Message-Id: <20230706132512.3534397-13-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230706132512.3534397-1-peter.maydell@linaro.org>
 References: <20230706132512.3534397-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,36 +92,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In handle_interrupt() we use level as an index into the interrupt_vector[]
-array. This is safe because we have checked it against env->config->nlevel,
-but Coverity can't see that (and it is only true because each CPU config
-sets its XCHAL_NUM_INTLEVELS to something less than MAX_NLEVELS), so it
-complains about a possible array overrun (CID 1507131)
+We already squash the ID register field for FEAT_SPE (the Statistical
+Profiling Extension) because TCG does not implement it and if we
+advertise it to the guest the guest will crash trying to look at
+non-existent system registers.  Do the same for some other features
+which a real hardware Neoverse-V1 implements but which TCG doesn't:
+ * FEAT_TRF (Self-hosted Trace Extension)
+ * Trace Macrocell system register access
+ * Memory mapped trace
+ * FEAT_AMU (Activity Monitors Extension)
+ * FEAT_MPAM (Memory Partitioning and Monitoring Extension)
+ * FEAT_NV (Nested Virtualization)
 
-Add an assert() which will make Coverity happy and catch the unlikely
-case of a mis-set XCHAL_NUM_INTLEVELS in future.
+Most of these, like FEAT_SPE, are "introspection/trace" type features
+which QEMU is unlikely to ever implement.  The odd-one-out here is
+FEAT_NV -- we could implement that and at some point we probably
+will.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Acked-by: Max Filippov <jcmvbkbc@gmail.com>
-Message-id: 20230623154135.1930261-1-peter.maydell@linaro.org
+Message-id: 20230704130647.2842917-2-peter.maydell@linaro.org
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/xtensa/exc_helper.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/arm/cpu.c | 33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/target/xtensa/exc_helper.c b/target/xtensa/exc_helper.c
-index d4823a65cda..43f6a862de2 100644
---- a/target/xtensa/exc_helper.c
-+++ b/target/xtensa/exc_helper.c
-@@ -169,6 +169,9 @@ static void handle_interrupt(CPUXtensaState *env)
-         CPUState *cs = env_cpu(env);
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index 822efa5b2c1..69e2bde3c2d 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2069,13 +2069,38 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
  
-         if (level > 1) {
-+            /* env->config->nlevel check should have ensured this */
-+            assert(level < sizeof(env->config->interrupt_vector));
-+
-             env->sregs[EPC1 + level - 1] = env->pc;
-             env->sregs[EPS2 + level - 2] = env->sregs[PS];
-             env->sregs[PS] =
+     if (tcg_enabled()) {
+         /*
+-         * Don't report the Statistical Profiling Extension in the ID
+-         * registers, because TCG doesn't implement it yet (not even a
+-         * minimal stub version) and guests will fall over when they
+-         * try to access the non-existent system registers for it.
++         * Don't report some architectural features in the ID registers
++         * where TCG does not yet implement it (not even a minimal
++         * stub version). This avoids guests falling over when they
++         * try to access the non-existent system registers for them.
+          */
++        /* FEAT_SPE (Statistical Profiling Extension) */
+         cpu->isar.id_aa64dfr0 =
+             FIELD_DP64(cpu->isar.id_aa64dfr0, ID_AA64DFR0, PMSVER, 0);
++        /* FEAT_TRF (Self-hosted Trace Extension) */
++        cpu->isar.id_aa64dfr0 =
++            FIELD_DP64(cpu->isar.id_aa64dfr0, ID_AA64DFR0, TRACEFILT, 0);
++        cpu->isar.id_dfr0 =
++            FIELD_DP32(cpu->isar.id_dfr0, ID_DFR0, TRACEFILT, 0);
++        /* Trace Macrocell system register access */
++        cpu->isar.id_aa64dfr0 =
++            FIELD_DP64(cpu->isar.id_aa64dfr0, ID_AA64DFR0, TRACEVER, 0);
++        cpu->isar.id_dfr0 =
++            FIELD_DP32(cpu->isar.id_dfr0, ID_DFR0, COPTRC, 0);
++        /* Memory mapped trace */
++        cpu->isar.id_dfr0 =
++            FIELD_DP32(cpu->isar.id_dfr0, ID_DFR0, MMAPTRC, 0);
++        /* FEAT_AMU (Activity Monitors Extension) */
++        cpu->isar.id_aa64pfr0 =
++            FIELD_DP64(cpu->isar.id_aa64pfr0, ID_AA64PFR0, AMU, 0);
++        cpu->isar.id_pfr0 =
++            FIELD_DP32(cpu->isar.id_pfr0, ID_PFR0, AMU, 0);
++        /* FEAT_MPAM (Memory Partitioning and Monitoring Extension) */
++        cpu->isar.id_aa64pfr0 =
++            FIELD_DP64(cpu->isar.id_aa64pfr0, ID_AA64PFR0, MPAM, 0);
++        /* FEAT_NV (Nested Virtualization) */
++        cpu->isar.id_aa64mmfr2 =
++            FIELD_DP64(cpu->isar.id_aa64mmfr2, ID_AA64MMFR2, NV, 0);
+     }
+ 
+     /* MPU can be configured out of a PMSA CPU either by setting has-mpu
 -- 
 2.34.1
 
