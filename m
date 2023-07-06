@@ -2,144 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661B9749CB0
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 14:52:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EA1749C56
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 14:47:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHORe-0007a8-0H; Thu, 06 Jul 2023 08:50:50 -0400
+	id 1qHONf-0005GM-Gh; Thu, 06 Jul 2023 08:46:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.hogberg@ericsson.com>)
- id 1qHORa-0007Yh-9c
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:50:46 -0400
-Received: from mail-ve1eur01on2079.outbound.protection.outlook.com
- ([40.107.14.79] helo=EUR01-VE1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <john.hogberg@ericsson.com>)
- id 1qHORY-00025h-Dz
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:50:46 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hFxvCTarJCDNgeJOqI2HI5ncmWML4UiKTVutmpCr33vfylurAJ5GeMua5Cn4XMT/f8KfqJOVa4LvDY1YW2Pj3niHM3p2yEGI3C0UXkW4/DsR2pq+QLRUne8RQGc7teP8GXNr5sWvQwr+90E42MrzX3t/77ybJDsRFwrnjmN/RznlkyD/hY0gBSMOA7ApLLb60L+8YxXj/JsD9CPhX/n7t1X6SyVcq4i3iS13ii7ShfFFJw8EMZJN9RbyWGBcQCVPnJKM5a93HemVKALxN1uI5+ej75dsfzh4wfcd8lIE5u0qAJXqfSCyC4t55bP8t5VzB01xfVarq8Wwm4lL8rfXAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E5/o4jqUDFRfIDjGalw0S5j5EbVlLnvj0sUP9UCPw8g=;
- b=R1HWVGQV+8WkbjMys+AYrVC1d+XaZMVue1+eG5NfsblTY/JOzFcXV5oCzfPJ0p1xR1ayTUNadXYWz1vtx1anVAJ3Q4TCnDq3aEt7i4lKW6Ikd0mNt4dyPmvCjq7Ee5VMaaWVAbBP3vVq0VGCTOzf7c0qy1LpBnU+wlV4wNcVkHklZEDN5UaD4c8INisWXQfxbiYN7y8072yKlSwMDXyt8dDygm8SBTjXj0KajiB+0x7emn6xq9hqy0cHC3EQzyWId02Tw3MiteLX6j+G0CbnBkbUP5jYe79wxOBCORCjbmOFBwc4xQFZ44OxJUF1Js70sKMgtxAg2pT92eZGatff4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ericsson.com; dmarc=pass action=none header.from=ericsson.com;
- dkim=pass header.d=ericsson.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ericsson.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E5/o4jqUDFRfIDjGalw0S5j5EbVlLnvj0sUP9UCPw8g=;
- b=B2+n0QJLHlHVzCqH3c8M+L3HJEzFCuuG90T9HOldqC8kQBxHdgA2B+yYew+b3N/Y93WlPd+l9+8XJMqW7hQkzOKZIowWlRwcplo3zyWiZ1Bz2TRsxXVaNQDE7z0aGlQE6RfrIWUP1C1yDqESB4sEeUY6ThEEparDgXvIJLHs7/g=
-Received: from DU0PR07MB8833.eurprd07.prod.outlook.com (2603:10a6:10:310::5)
- by AS8PR07MB9332.eurprd07.prod.outlook.com (2603:10a6:20b:618::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.17; Thu, 6 Jul
- 2023 12:45:35 +0000
-Received: from DU0PR07MB8833.eurprd07.prod.outlook.com
- ([fe80::fe43:aa1:308c:b32b]) by DU0PR07MB8833.eurprd07.prod.outlook.com
- ([fe80::fe43:aa1:308c:b32b%4]) with mapi id 15.20.6565.016; Thu, 6 Jul 2023
- 12:45:35 +0000
-From: =?utf-8?B?Sm9obiBIw7ZnYmVyZw==?= <john.hogberg@ericsson.com>
-To: "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "philmd@linaro.org"
- <philmd@linaro.org>
-CC: "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PULL 07/11] tests/tcg/aarch64: Add testcases for IC IVAU and
- dual-mapped code
-Thread-Topic: [PULL 07/11] tests/tcg/aarch64: Add testcases for IC IVAU and
- dual-mapped code
-Thread-Index: AQHZrpXy6z7PV/lvLU251CqHWLCVua+qnCOAgABL3ACAAcUCgIAABVUA
-Date: Thu, 6 Jul 2023 12:45:35 +0000
-Message-ID: <9cc96e295ba6ee2e8cad5cf82da6b926713fa9fd.camel@ericsson.com>
-References: <20230704163634.3188465-1-peter.maydell@linaro.org>
- <20230704163634.3188465-8-peter.maydell@linaro.org>
- <2e39933a-b9d9-5792-8c4e-dd558d4aad5d@linaro.org>
- <dd6a96b4-1b72-67e2-58ce-8011203128ae@linaro.org>
- <CAFEAcA8o8nG7_DWnjYHOL7R2x1DjJdQ-=Moe_jkSibXscZ2mQg@mail.gmail.com>
-In-Reply-To: <CAFEAcA8o8nG7_DWnjYHOL7R2x1DjJdQ-=Moe_jkSibXscZ2mQg@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=ericsson.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR07MB8833:EE_|AS8PR07MB9332:EE_
-x-ms-office365-filtering-correlation-id: 1e0eea06-8664-4f03-ab93-08db7e1ee4c6
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: HC43QFsJtLDXgYYPHqcv8TkAQ7P536Xru2ZofLoQPkSqDGZy828yHXU+Nw968hUdirs/0NdK2YK9gAywikQqxYH5/8GIhk1itdMWLs4uq6yYRc8t4moQ2MTvYNOdorezkWkbLrsgEi5GXCmIsdb8v9bkZwpSpsL+E0+ubK9I6ZRh5GXH4v2j2uJvsjR4aAEOFYXVbbNBMGWsNHbR3zd7chgiLhSgCHg9Mm0elTFLK1Uti1XonbNVb4LgsEVXP2B9tjv1CucootkANLAMK1KydZGUXWS5KvIauPPQv+L6QRIwUVZc6F+VpJdfiqaTRIeQzMN+eYiUhSW+0n/Xq2zuVLhwa0cBQWAgS3rFUeUh7d0adg2gUWq3a3Db1CyYWCIw+k1GzEzOpmZf44HZVhbqT5aXl1Ux7PO68VBiUJYC1BmDiypAa91GwRGaxvHJP6LvilsyKOjSGE+pv0Q1tFdqafkzF+Y8OWGUL5mQhMyxCvYlCu4hUuCfksVO6ZldLocA3/cMrMQBKIiHkS4O//qotDS7ckTaIba9bjtqzRx4J1Afjx735v6T8ZTBUEA/ij4lM7tZherXerrLbQixNCLm4coiZqMD8rrbdktw50ShI7VMQinj6WDWF598fo40syJR55Tn9vtpLRO9oXCPRHPl1w==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DU0PR07MB8833.eurprd07.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(4636009)(136003)(366004)(39860400002)(346002)(376002)(396003)(451199021)(186003)(8676002)(8936002)(6506007)(26005)(2906002)(2616005)(66946007)(76116006)(85202003)(5660300002)(4744005)(41300700001)(36756003)(91956017)(71200400001)(122000001)(6486002)(82960400001)(4326008)(85182001)(64756008)(316002)(66476007)(66446008)(83380400001)(66556008)(110136005)(54906003)(6512007)(966005)(478600001)(38070700005)(86362001)(38100700002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ck5BM0lVUzdGdHR6S0N0VnZ4R1BaU0ZKRnBJbWZBUllGSFJYMFZWdnlsQnBo?=
- =?utf-8?B?YVNyb1VlK3htRlJIRjVUcDVuSlR6QUEwaUtBRDVOQ2lhbTAybXI2dlM0ZjM0?=
- =?utf-8?B?UC9FQUE3dkJwejJJbUhwTHd3OFRYYkNqT2hSSmZqc0xpODdDNGtlTHEvdWR3?=
- =?utf-8?B?YUtxcXk4VUJacVQ1V1pHbkFDTlJhVzN4a2ozRFZIc3FRbjV3N2crS1BxNTdK?=
- =?utf-8?B?cVlBVzNBb3oxWkY2RWtlRy9uL2FGdnlEQmZnaU9YYlMvYmNUL1hHUWRndGg0?=
- =?utf-8?B?cWhlVDB3b09LVkdTbW5EelJjb2lxekFBa0hCMERHQkpiVTBVNjBDcUFaMkhi?=
- =?utf-8?B?ZTdIYUhZMTl4dmo4QlJjbmlUM3JZeHpCTFJ1SVVDaGdLcjFGVXd4bUpQSzhw?=
- =?utf-8?B?blh3aFl4U050V0lGQlE4NC9ReWYrcUdoazFWUE5UYkZQcVRlTDFKL0JYQ21i?=
- =?utf-8?B?dUJNRmxvRnIyV25Oc1liQW9WaldmRUNPYzRBTTF4SUE5NDJjSS9ueXB0aWRz?=
- =?utf-8?B?UE9DMGVjQ1Q1MHdSSTRUMUNaMFV6YWRrZFkyV2RvVk41SDE1bURwSHFUVURQ?=
- =?utf-8?B?aDY4QTdHdkpoalh5VGFFRnVpUHYxbzEyK3VoaHJyMlJFclN0RlBuVTdXaWRj?=
- =?utf-8?B?SFpZVTlCZmt1NnFrc0N5Y1VxM21nZmR4clc5TjVJb2w3YXdNZ1ZxNkE1dG5q?=
- =?utf-8?B?Q0xUTGpaSjhWR0huVW9LS2R1c0Y2RzJKMGVmZE4yUWZ3dlZ5L3JTWDNqUlhL?=
- =?utf-8?B?QnNTVmNIdmlTZW1VbGl4YWprRnhVS25oUEJrbmVXcElXdm02ODlJR05IeXp1?=
- =?utf-8?B?MVdna1orclNKYjlpY3QrVFE3UTc5Q3dEV1VONy9CcTRlWU14OEkvQm5VSzVq?=
- =?utf-8?B?aWtmZFRFRzB3aFZTZ1Y0SnZhRTRPeC9QYWk0QkpqbnFnRFdTQUoyQWJBeEJ3?=
- =?utf-8?B?WXFsR0t0QXVJcGpyUHBQL0tqTmRJNSsxc1ZtVTNsRkt6OWFLSmJrZ3FsaHhJ?=
- =?utf-8?B?SWsvOEVVSVg3bWtCL1dRMWRDQzRka1MvcjhiRWFwV0VRbW9nNjJGVnpQOHBK?=
- =?utf-8?B?MndsaU4wc09VTjYxZktRcHIrTnBJK05sWDlLcGZvQUNLdnhUVmlTVTFvOVJl?=
- =?utf-8?B?WXpkanhIN1E0VS9GWlpRVDJITmdaaUNlcHBpMk5GV1lSUjUyREJzdVRJYnhZ?=
- =?utf-8?B?KzMyV1MwYzlOTTlFeE9aM2dpSGxwZC9rTVdHREd4T2RyME5PbVp3MVNjZlpm?=
- =?utf-8?B?Vm44VEpCSisyYUhUdzFlVURObnZrMjAwT1RINWxxSjdZejk2aktPelEwa3pk?=
- =?utf-8?B?Q1JsZVRNQks2SW5wWFhzUkI5TndQRHFJdkxaNlo1aEhMMkNzeUsva2I3VlNL?=
- =?utf-8?B?Nkw3QkJSZ1hNMURIK3dxOEY4eW9iSHVtZnZScjNqdm1XbHRRWFVpZ1AyUFFu?=
- =?utf-8?B?QUdsWlh0ZjlKOVNQa1VyMjVxU3hkMU05QTBkTW5DTWVxL1Q4WWF6QWducEdt?=
- =?utf-8?B?Tzd3MFBUc3MxdE1JbTNTWTRERnN1ZVdJZnpzUXUzWE53a2hSQXVuUmNzcUN0?=
- =?utf-8?B?TFFHVkhwYVZNaUVjNXhGQWhFNFQwSEtFc2xYcGJQaUNpcDJGbTRPemtkVXU5?=
- =?utf-8?B?N0dVM2ZEMWJWNE54eG5DTGUvSE1rMGh5OG9VeVRsS3Znb1lobG9qRkJzN3Zp?=
- =?utf-8?B?aSsrejBKNVJaMUJpcGE4QWw4SDZlazMrWE9MNUJtVkl4MWtqazNTWU81b2Qx?=
- =?utf-8?B?VUhoMjVXTDcxUzZSTkRlQWsvYndzdlJHWkpkdHlaQjNuQTM1VFZwaElIUGMy?=
- =?utf-8?B?ZTdJd21qZTdOMFJtUzZOZUUrTzAxLzFXYkYxUFBHc1BKV3hKZnFQaVFTazND?=
- =?utf-8?B?cWM0RnJaN0pjMHFMMEViVFNrK1AraStPS0xrMGgrcmU0blp4NUV3WHJ4Vmty?=
- =?utf-8?B?ZmpRdG9ycElwUE1DUE5uNktXS3g2bVNIRXlpdW51YWFYQzJMSnVnTEtCMUZ2?=
- =?utf-8?B?Q1BqYVhaelhhRnR1Z1lqUnltNk9XanJxREtQRDhMQ2RyTDFUT3lYQXViQXMy?=
- =?utf-8?B?MlNuR3cxL3FFVGtDRy9aZ3RpWlBYSnRlL3ZSbXJzaW92Q2VHYldpWWlUSEJv?=
- =?utf-8?B?WDFWNmt3RGJLZndJcUdsZUlRWW9BdEZlZmd2VTQxYi9XejF4NjdOTVFqYXQw?=
- =?utf-8?B?Tmc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DEA0B4619E21E648A4DFAD14BF2BDE59@eurprd07.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qHONd-0005Fu-18
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:46:41 -0400
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qHONY-0005J8-OY
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:46:40 -0400
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-5607cdb0959so365509eaf.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 05:46:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1688647595; x=1691239595;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nYjgBZzt066YUWA8F+6WqzSS7eox/EZdz6lxP5hTbM0=;
+ b=WAeAs5WMsTP6KKavc0XPB+GY59qoGxApEtxaVjLYcNkpHL43JvYxc8R5V5Efqy6Kj2
+ jWOX0335n7q8kQ14spBSnOeEx4Obl39iEwNojcyiDwzBwTbaGcun8Qyiv8bWO8f93GU1
+ iXyv8wyHUpUjJOFIOl4PjQg2pHuTBR/b/+3fhWaGt/h+r5tN+UJi6bWG1zaSkZ5USQcG
+ g14KPmZgjIB5GX4FeQRJ/xkAI1FdPwKe8Y81oe+1xeoo+kmCZoQF61MZmt/lB4oGjJAt
+ KWlylLKmk+11uarPVdw6uByqSmxJv9+M27xp9BajCnxkm+W3aAsWew1DiO3V5QTetw92
+ 6GrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688647595; x=1691239595;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nYjgBZzt066YUWA8F+6WqzSS7eox/EZdz6lxP5hTbM0=;
+ b=Apm21pxGJqiV58EFPGsq9jUyGP+4oMiOUMUKsfJvDN/cuoPZA0FbAyOblWUx5LEKC9
+ jlpGwlb9BLXHLiGkZHIHXvuZ+9AIhCgpACgi+7emzFfw4j7uI9fSJkFS9gG3W29c1nM0
+ IoXN3ykAV1qS1r+uBYzHMGncQfZrWqMS5CZkMdM/jLPZIaSgsQOCqqjDr05ZD2zbHb0O
+ xCLNQNCcb3bd3MmvF/Y127muC9cZouJglJsCZO+yHGo7qgAL0UgLBmKavRhmjI/gCULU
+ Lo9WvYL/wEZ70IVa0yKNjfSUHwfp17G/mTOUmPtf0p+6n5ey7KAtr3DQT/pjfX3uFy6H
+ 5hAg==
+X-Gm-Message-State: ABy/qLY/HmFGtp7A7dr740CxSX9Ztg9VTWxKbRKcvT2USxxDjJx0i9VZ
+ HfDjvDaSCt2I/0cNJ3PDbm2k7w==
+X-Google-Smtp-Source: APBJJlH/RTRASKChaM+dk7QugFP3mHbUz8e29ZzwdRsH3+A8a5YfseAnw5qQcB5MXwolhmOC3X6VrA==
+X-Received: by 2002:a4a:3310:0:b0:563:60a4:3513 with SMTP id
+ q16-20020a4a3310000000b0056360a43513mr1001638ooq.7.1688647595332; 
+ Thu, 06 Jul 2023 05:46:35 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ z4-20020a4a9844000000b0054fd51435efsm655837ooi.8.2023.07.06.05.46.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jul 2023 05:46:35 -0700 (PDT)
+Message-ID: <b414305b-5cdc-6be8-1a06-d50ae57db69d@ventanamicro.com>
+Date: Thu, 6 Jul 2023 09:46:30 -0300
 MIME-Version: 1.0
-X-OriginatorOrg: ericsson.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR07MB8833.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e0eea06-8664-4f03-ab93-08db7e1ee4c6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jul 2023 12:45:35.5125 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 92e84ceb-fbfd-47ab-be52-080c6b87953f
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: L+TfXo1F1UgXWkrwX24yP8tlutBjQbVqtyD4haR6mLjTsfajgBxi8aE2dQj39zHl3QnhF3yepehknq5MYBdBVp/odrA684zv/ZAvagct08g=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR07MB9332
-Received-SPF: pass client-ip=40.107.14.79;
- envelope-from=john.hogberg@ericsson.com;
- helo=EUR01-VE1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v9 14/20] target/riscv/kvm.c: add multi-letter extension
+ KVM properties
+Content-Language: en-US
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20230706101738.460804-1-dbarboza@ventanamicro.com>
+ <20230706101738.460804-15-dbarboza@ventanamicro.com>
+ <20230706-b3ce7ed0f6265c69afad8d90@orel>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230706-b3ce7ed0f6265c69afad8d90@orel>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc31.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -155,14 +99,229 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBUaGF0IGlzIGVub3VnaCB0byBnZXQgaXQgdG8gYnVpbGQsIGJ1dCB0aGVuIGluIHRoZSBDSSB0
-aGUgdGVzdA0KPiBjb25zaXN0ZW50bHkgZmFpbHM6DQo+DQo+IGh0dHBzOi8vZ2l0bGFiLmNvbS9w
-bTIxNS9xZW11Ly0vam9icy80NjA2NDQ3ODc1DQo+DQo+IFRFU1QgaWNpdmF1IG9uIGFhcmNoNjQN
-Cj4gbWFrZVsxXTogKioqIFtNYWtlZmlsZToxNzg6IHJ1bi1pY2l2YXVdIEVycm9yIDENCj4NCj4g
-SSdtIGdvaW5nIHRvIGRyb3AgdGhpcyBwYXRjaCBmcm9tIHRoZSBwdWxscmVxIHVudGlsIHdlDQo+
-IGNhbiBmaWd1cmUgb3V0IHdoYXQncyBnb2luZyBvbi4uLg0KDQpPb3BzLCAtcHRocmVhZCB3YXNu
-J3QgcmVxdWlyZWQgb24gbXkgbWFjaGluZS4NCg0KSSdtIHVuYWJsZSB0byByZXByb2R1Y2UgdGhl
-IGZhaWx1cmUgbG9jYWxseS4gSXMgaXQgcG9zc2libGUgdG8gc3RyYWNlIGl0DQphbmQgc2VlIHdo
-ZXRoZXIgaXQgd2FzIGNhdXNlZCBieSBmYWlsaW5nIHRvIHNldCB1cCBkdWFsLW1hcHBlZCBjb2Rl
-Pw0KDQovSm9obg0K
+
+
+On 7/6/23 09:14, Andrew Jones wrote:
+> On Thu, Jul 06, 2023 at 07:17:32AM -0300, Daniel Henrique Barboza wrote:
+>> Let's add KVM user properties for the multi-letter extensions that KVM
+>> currently supports: zicbom, zicboz, zihintpause, zbb, ssaia, sstc,
+>> svinval and svpbmt.
+>>
+>> As with MISA extensions, we're using the KVMCPUConfig type to hold
+>> information about the state of each extension. However, multi-letter
+>> extensions have more cases to cover than MISA extensions, so we're
+>> adding an extra 'supported' flag as well. This flag will reflect if a
+>> given extension is supported by KVM, i.e. KVM knows how to handle it.
+>> This is determined during KVM extension discovery in
+>> kvm_riscv_init_multiext_cfg(), where we test for ENOENT errors. Any
+>                                                     ^ EINVAL
+
+Alistair, let me know if you want me to send a v10 with this commit msg fix.
+
+
+Thanks,
+
+Daniel
+
+> 
+>> other error will cause an abort.
+>>
+>> The use of the 'user_set' is similar to what we already do with MISA
+>> extensions: the flag set only if the user is changing the extension
+>> state.
+>>
+>> The 'supported' flag will be used later on to make an exception for
+>> users that are disabling multi-letter extensions that are unknown to
+>> KVM.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/cpu.c |   8 +++
+>>   target/riscv/kvm.c | 119 +++++++++++++++++++++++++++++++++++++++++++++
+>>   2 files changed, 127 insertions(+)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 5c8832a030..31e591a938 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -1860,6 +1860,14 @@ static void riscv_cpu_add_user_properties(Object *obj)
+>>       riscv_cpu_add_misa_properties(obj);
+>>   
+>>       for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
+>> +#ifndef CONFIG_USER_ONLY
+>> +        if (kvm_enabled()) {
+>> +            /* Check if KVM created the property already */
+>> +            if (object_property_find(obj, prop->name)) {
+>> +                continue;
+>> +            }
+>> +        }
+>> +#endif
+>>           qdev_property_add_static(dev, prop);
+>>       }
+>>   
+>> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+>> index 7afd6024e6..2d39ec154f 100644
+>> --- a/target/riscv/kvm.c
+>> +++ b/target/riscv/kvm.c
+>> @@ -113,6 +113,7 @@ typedef struct KVMCPUConfig {
+>>       target_ulong offset;
+>>       int kvm_reg_id;
+>>       bool user_set;
+>> +    bool supported;
+>>   } KVMCPUConfig;
+>>   
+>>   #define KVM_MISA_CFG(_bit, _reg_id) \
+>> @@ -197,6 +198,81 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
+>>       }
+>>   }
+>>   
+>> +#define CPUCFG(_prop) offsetof(struct RISCVCPUConfig, _prop)
+>> +
+>> +#define KVM_EXT_CFG(_name, _prop, _reg_id) \
+>> +    {.name = _name, .offset = CPUCFG(_prop), \
+>> +     .kvm_reg_id = _reg_id}
+>> +
+>> +static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+>> +    KVM_EXT_CFG("zicbom", ext_icbom, KVM_RISCV_ISA_EXT_ZICBOM),
+>> +    KVM_EXT_CFG("zicboz", ext_icboz, KVM_RISCV_ISA_EXT_ZICBOZ),
+>> +    KVM_EXT_CFG("zihintpause", ext_zihintpause, KVM_RISCV_ISA_EXT_ZIHINTPAUSE),
+>> +    KVM_EXT_CFG("zbb", ext_zbb, KVM_RISCV_ISA_EXT_ZBB),
+>> +    KVM_EXT_CFG("ssaia", ext_ssaia, KVM_RISCV_ISA_EXT_SSAIA),
+>> +    KVM_EXT_CFG("sstc", ext_sstc, KVM_RISCV_ISA_EXT_SSTC),
+>> +    KVM_EXT_CFG("svinval", ext_svinval, KVM_RISCV_ISA_EXT_SVINVAL),
+>> +    KVM_EXT_CFG("svpbmt", ext_svpbmt, KVM_RISCV_ISA_EXT_SVPBMT),
+>> +};
+>> +
+>> +static void kvm_cpu_cfg_set(RISCVCPU *cpu, KVMCPUConfig *multi_ext,
+>> +                            uint32_t val)
+>> +{
+>> +    int cpu_cfg_offset = multi_ext->offset;
+>> +    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
+>> +
+>> +    *ext_enabled = val;
+>> +}
+>> +
+>> +static uint32_t kvm_cpu_cfg_get(RISCVCPU *cpu,
+>> +                                KVMCPUConfig *multi_ext)
+>> +{
+>> +    int cpu_cfg_offset = multi_ext->offset;
+>> +    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
+>> +
+>> +    return *ext_enabled;
+>> +}
+>> +
+>> +static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
+>> +                                      const char *name,
+>> +                                      void *opaque, Error **errp)
+>> +{
+>> +    KVMCPUConfig *multi_ext_cfg = opaque;
+>> +    RISCVCPU *cpu = RISCV_CPU(obj);
+>> +    bool value, host_val;
+>> +
+>> +    if (!visit_type_bool(v, name, &value, errp)) {
+>> +        return;
+>> +    }
+>> +
+>> +    host_val = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
+>> +
+>> +    /*
+>> +     * Ignore if the user is setting the same value
+>> +     * as the host.
+>> +     */
+>> +    if (value == host_val) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (!multi_ext_cfg->supported) {
+>> +        /*
+>> +         * Error out if the user is trying to enable an
+>> +         * extension that KVM doesn't support. Ignore
+>> +         * option otherwise.
+>> +         */
+>> +        if (value) {
+>> +            error_setg(errp, "KVM does not support disabling extension %s",
+>> +                       multi_ext_cfg->name);
+>> +        }
+>> +
+>> +        return;
+>> +    }
+>> +
+>> +    multi_ext_cfg->user_set = true;
+>> +    kvm_cpu_cfg_set(cpu, multi_ext_cfg, value);
+>> +}
+>> +
+>>   static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+>>   {
+>>       int i;
+>> @@ -215,6 +291,15 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+>>           object_property_set_description(cpu_obj, misa_cfg->name,
+>>                                           misa_cfg->description);
+>>       }
+>> +
+>> +    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
+>> +        KVMCPUConfig *multi_cfg = &kvm_multi_ext_cfgs[i];
+>> +
+>> +        object_property_add(cpu_obj, multi_cfg->name, "bool",
+>> +                            NULL,
+>> +                            kvm_cpu_set_multi_ext_cfg,
+>> +                            NULL, multi_cfg);
+>> +    }
+>>   }
+>>   
+>>   static int kvm_riscv_get_regs_core(CPUState *cs)
+>> @@ -530,6 +615,39 @@ static void kvm_riscv_init_misa_ext_mask(RISCVCPU *cpu,
+>>       env->misa_ext = env->misa_ext_mask;
+>>   }
+>>   
+>> +static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+>> +{
+>> +    CPURISCVState *env = &cpu->env;
+>> +    uint64_t val;
+>> +    int i, ret;
+>> +
+>> +    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
+>> +        KVMCPUConfig *multi_ext_cfg = &kvm_multi_ext_cfgs[i];
+>> +        struct kvm_one_reg reg;
+>> +
+>> +        reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_ISA_EXT,
+>> +                                  multi_ext_cfg->kvm_reg_id);
+>> +        reg.addr = (uint64_t)&val;
+>> +        ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
+>> +        if (ret != 0) {
+>> +            if (errno == EINVAL) {
+>> +                /* Silently default to 'false' if KVM does not support it. */
+>> +                multi_ext_cfg->supported = false;
+>> +                val = false;
+>> +            } else {
+>> +                error_report("Unable to read ISA_EXT KVM register %s, "
+>> +                             "error %d", multi_ext_cfg->name, ret);
+>> +                kvm_riscv_destroy_scratch_vcpu(kvmcpu);
+>> +                exit(EXIT_FAILURE);
+>> +            }
+>> +        } else {
+>> +            multi_ext_cfg->supported = true;
+>> +        }
+>> +
+>> +        kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
+>> +    }
+>> +}
+>> +
+>>   void kvm_riscv_init_user_properties(Object *cpu_obj)
+>>   {
+>>       RISCVCPU *cpu = RISCV_CPU(cpu_obj);
+>> @@ -542,6 +660,7 @@ void kvm_riscv_init_user_properties(Object *cpu_obj)
+>>       kvm_riscv_add_cpu_user_properties(cpu_obj);
+>>       kvm_riscv_init_machine_ids(cpu, &kvmcpu);
+>>       kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
+>> +    kvm_riscv_init_multiext_cfg(cpu, &kvmcpu);
+>>   
+>>       kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
+>>   }
+>> -- 
+>> 2.41.0
+>>
+> 
+> Otherwise,
+> 
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
