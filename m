@@ -2,76 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABFE074A399
+	by mail.lfdr.de (Postfix) with ESMTPS id BD65674A39A
 	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 20:09:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHTOX-00005w-MB; Thu, 06 Jul 2023 14:07:57 -0400
+	id 1qHTOw-0000Bz-RH; Thu, 06 Jul 2023 14:08:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
- id 1qHTOW-0008WL-HA
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:07:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTOv-0000Bn-Fk
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:08:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
- id 1qHTOU-00049d-GS
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:07:56 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTOs-0004DF-Ki
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:08:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688666873;
+ s=mimecast20190719; t=1688666898;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iHuHrux1nKF21nU2M29iUC+4GdGa0o5+iwBeOUDZtW8=;
- b=KK6XnT1/MfZ/O7eJxudSmKcFtKJb53bIx6w7RefD5YewS5yKgC7ox5ScnYbRWEOu0sIG35
- Nz/cSI/VNdWo27o/utloI03kfvO1JyQC7D/NoX/2PJvwSVICSPz9UkUiB2hyB6OdFxbRky
- 1AYz4djLbT5oBQvplqHmAGgxYIMX/5E=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uwzPQ/mIlZbABW5+Yt3OMEzbzEGwGP1tFtMtFKkceKs=;
+ b=RIGJmBPem4bXBSX9EYgqvab5NBqEXVJ3XRlvu9bO1W+n6PCGTFxVbgMhB5wWZu5OGlM8Cl
+ Q3TvQpCkPeXqJb8iQLPYG9jsfylkTPUBZt8UKb6dP/q8v2txHYC3N/mEq7XIrvTkBVakOm
+ gwFJc6Vqd8+nWGBe6ak4m6lYU26+j38=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-6TRR5Ci4N0au39gjsVNcQQ-1; Thu, 06 Jul 2023 14:07:52 -0400
-X-MC-Unique: 6TRR5Ci4N0au39gjsVNcQQ-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-40327302341so9252221cf.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 11:07:52 -0700 (PDT)
+ us-mta-312-EOpJ9DLLNkiUaBWD5ZoyOw-1; Thu, 06 Jul 2023 14:08:16 -0400
+X-MC-Unique: EOpJ9DLLNkiUaBWD5ZoyOw-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-767a1ad2175so19024185a.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 11:08:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688666871; x=1691258871;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iHuHrux1nKF21nU2M29iUC+4GdGa0o5+iwBeOUDZtW8=;
- b=DcnyOWPCZIZ5a+XHVZlhUm395UvFz9dH01GlMN2E9kl3FkhaE3bniAQijT4z2kZp84
- UAN645tVz9A+RpwvFx1SWvF9GMbQecjaFeYxD8A2qi2dtyFkkoHi+eR1/H9NMI6M6R0Z
- sNFsmJ4lPw6L+0mpDM9q6pOu01s84269N0zoDfbGZuiZELVLU4orY29+twnCGN122OVp
- 1L2keL61mVrMUoewFA5N+io1uJf5439cenQmAhXWK0catMbi3mEsAUa/mKsLrUe1RLuA
- YqTFHwW0Yy/6TXLLfJUeK+VSIdmHBbzJ3hKgJU7ZKkn0cyA/2vKr5gqdFHsYQFOfYWTd
- MbhQ==
-X-Gm-Message-State: ABy/qLY4pwjxHNU70e77kFBl+NgWC9+PO5cs22ow+vrHvPoeucnmVTlO
- ULS7MCkpk58g+XBHhjwunhOTRWUBAZm3LyZApyrPsxttKqEy+jyhOCFYBanbsrIt7oWoVwam0bq
- MSEQkD1aEUvZfprBxF4+bKGIzOHfHvfk=
-X-Received: by 2002:ac8:7fc2:0:b0:403:92b9:abd0 with SMTP id
- b2-20020ac87fc2000000b0040392b9abd0mr1964225qtk.51.1688666871476; 
- Thu, 06 Jul 2023 11:07:51 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFJblDDNltiLfzFG/QiSjAg+YLu9TDXcB9hZ6kcdUzx34Y/86uquuBcbvWb8MSHhrkZnX4FArDsot9x2xjXFIA=
-X-Received: by 2002:ac8:7fc2:0:b0:403:92b9:abd0 with SMTP id
- b2-20020ac87fc2000000b0040392b9abd0mr1964207qtk.51.1688666871208; Thu, 06 Jul
- 2023 11:07:51 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688666896; x=1689271696;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uwzPQ/mIlZbABW5+Yt3OMEzbzEGwGP1tFtMtFKkceKs=;
+ b=ej7dDQTkGjeiqW5/NbTP+cbCxAfME4lh0zW1nOhNavxTbsGmRXKyH5agdLr8grBD4H
+ dlyVkcTIXCzzVwCeD7V4D2zdIi7aksrSl2JnxEAPpaBBREySD8BHuFhaNbb51/3fvjkL
+ /Hqg0tQrZXgPDHkvbjhWHNroFuKXRkSMgzpavRN720R5uhnOpKac0+Ar+ERpmQi2lQiV
+ pMrk2TujYXHlBjSlc4ehhaQIpOPSPAJNavk4fGDOTWYEpQ6Y7jx6r7NwjwY3DS39zF6C
+ 4FLWP2wl7MPqv3PzMzy943Qb0vscadKL2OZY/ZuC3yAVn2m7QdnQ5Ydfsjg1urcEY+lb
+ s9Mw==
+X-Gm-Message-State: ABy/qLan6nJn4MhCEEbqAN6I973tDzn4EaA1v9nApp41LbF0fgTvN0KH
+ nqzzz9QKWjcEOZUOxamGviWK23pUPORHa+UZ8WXRiW7uuWcdxZ5hASoA9wBZpiJdj4hHVqnnJ+1
+ qTY8wkqLiEjRYYNo=
+X-Received: by 2002:a05:620a:1992:b0:767:3ea3:2ac8 with SMTP id
+ bm18-20020a05620a199200b007673ea32ac8mr3383371qkb.1.1688666896336; 
+ Thu, 06 Jul 2023 11:08:16 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHawFYLMYhbKy936Yum2TX4WIsb16+C1kGr7yl65G/OvMN+bbZk3wjqaS8Y3wmtuRocjGJNzw==
+X-Received: by 2002:a05:620a:1992:b0:767:3ea3:2ac8 with SMTP id
+ bm18-20020a05620a199200b007673ea32ac8mr3383344qkb.1.1688666895980; 
+ Thu, 06 Jul 2023 11:08:15 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ i3-20020a37c203000000b007678a546bf0sm959816qkm.119.2023.07.06.11.08.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Jul 2023 11:08:15 -0700 (PDT)
+Date: Thu, 6 Jul 2023 14:08:02 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Lukas Straub <lukasstraub2@web.de>,
+ Laszlo Ersek <lersek@redhat.com>
+Subject: Re: [PATCH v2 7/7] migration: Provide explicit error message for
+ file shutdowns
+Message-ID: <ZKcDAjUQvwB7g/qP@x1n>
+References: <20230705163502.331007-1-peterx@redhat.com>
+ <20230705163502.331007-8-peterx@redhat.com>
+ <878rbu3tgm.fsf@suse.de> <ZKXv+1eoDDlWj812@x1n>
+ <87v8exjgid.fsf@suse.de> <ZKbrio28Oa7mzaV1@x1n>
+ <87o7kpj66h.fsf@suse.de>
 MIME-Version: 1.0
-References: <20230706045546.593605-3-leobras@redhat.com> <ZKbRRt8ESGsMz+o7@x1n>
-In-Reply-To: <ZKbRRt8ESGsMz+o7@x1n>
-From: Leonardo Bras Soares Passos <leobras@redhat.com>
-Date: Thu, 6 Jul 2023 15:07:40 -0300
-Message-ID: <CAJ6HWG4iUX=+7FTCkXitFfc1zFNJ9aR5PzDRyPLSZVq1Kos8fA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] pcie: Add hotplug detect state register to cmask
-To: Peter Xu <peterx@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lsoaresp@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87o7kpj66h.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,144 +103,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 6, 2023 at 11:35=E2=80=AFAM Peter Xu <peterx@redhat.com> wrote:
->
-> On Thu, Jul 06, 2023 at 01:55:47AM -0300, Leonardo Bras wrote:
-> > When trying to migrate a machine type pc-q35-6.0 or lower, with this
-> > cmdline options,
+On Thu, Jul 06, 2023 at 02:33:42PM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> 
+> > On Thu, Jul 06, 2023 at 10:50:34AM -0300, Fabiano Rosas wrote:
+> >> Peter Xu <peterx@redhat.com> writes:
+> >> 
+> >> > On Wed, Jul 05, 2023 at 07:05:13PM -0300, Fabiano Rosas wrote:
+> >> >> Peter Xu <peterx@redhat.com> writes:
+> >> >> 
+> >> >> > Provide an explicit reason for qemu_file_shutdown()s, which can be
+> >> >> > displayed in query-migrate when used.
+> >> >> >
+> >> >> 
+> >> >> Can we consider this to cover the TODO:
+> >> >> 
+> >> >>  * TODO: convert to propagate Error objects instead of squashing
+> >> >>  * to a fixed errno value
+> >> >> 
+> >> >> or would that need something fancier?
+> >> >
+> >> > The TODO seems to say we want to allow qemu_file_shutdown() to report an
+> >> > Error* when anything wrong happened (e.g. shutdown() failed)?  While this
+> >> > patch was trying to store a specific error string so when query migration
+> >> > later it'll show up to the user.  If so, IMHO they're two things.
+> >> >
+> >> 
+> >> Ok, just making sure.
+> >> 
+> >> >> 
+> >> >> > This will make e.g. migrate-pause to display explicit error descriptions,
+> >> >> > from:
+> >> >> >
+> >> >> > "error-desc": "Channel error: Input/output error"
+> >> >> >
+> >> >> > To:
+> >> >> >
+> >> >> > "error-desc": "Channel is explicitly shutdown by the user"
+> >> >> >
+> >> >> > in query-migrate.
+> >> >> >
+> >> >> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> >> >> > ---
+> >> >> >  migration/qemu-file.c | 5 ++++-
+> >> >> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >> >> >
+> >> >> > diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+> >> >> > index 419b4092e7..ff605027de 100644
+> >> >> > --- a/migration/qemu-file.c
+> >> >> > +++ b/migration/qemu-file.c
+> >> >> > @@ -87,7 +87,10 @@ int qemu_file_shutdown(QEMUFile *f)
+> >> >> >       *      --> guest crash!
+> >> >> >       */
+> >> >> >      if (!f->last_error) {
+> >> >> > -        qemu_file_set_error(f, -EIO);
+> >> >> > +        Error *err = NULL;
+> >> >> > +
+> >> >> > +        error_setg(&err, "Channel is explicitly shutdown by the user");
+> >> >> 
+> >> >> It is good that we can grep this message. However, I'm confused about
+> >> >> who the "user" is meant to be here and how are they implicated in this
+> >> >> error.
+> >> >
+> >> > Ah, here the user is who sends the "migrate-pause" command, according to
+> >> > the example of the commit message.
+> >> >
+> >> 
+> >> That's where I'm confused. There are 15 callsites for
+> >> qemu_file_shutdown(). Only 2 of them are from migrate-pause. So I'm
+> >> missing the logical step that links migrate-pause with this
+> >> error_setg().
+> >> Are you assuming that the race described will only happen
+> >> with migrate-pause and the other invocations would have set an error
+> >> already?
 > >
-> > -device driver=3Dpcie-root-port,port=3D18,chassis=3D19,id=3Dpcie-root-p=
-ort18,bus=3Dpcie.0,addr=3D0x12 \
-> > -device driver=3Dnec-usb-xhci,p2=3D4,p3=3D4,id=3Dnex-usb-xhci0,bus=3Dpc=
-ie-root-port18,addr=3D0x12.0x1
-> >
-> > the following bug happens after all ram pages were sent:
-> >
-> > qemu-kvm: get_pci_config_device: Bad config data: i=3D0x6e read: 0 devi=
-ce: 40 cmask: ff wmask: 0 w1cmask:19
-> > qemu-kvm: Failed to load PCIDevice:config
-> > qemu-kvm: Failed to load pcie-root-port:parent_obj.parent_obj.parent_ob=
-j
-> > qemu-kvm: error while loading state for instance 0x0 of device '0000:00=
-:12.0/pcie-root-port'
-> > qemu-kvm: load of migration failed: Invalid argument
-> >
-> > This happens on pc-q35-6.0 or lower because of:
-> > { "ICH9-LPC", ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, "off" }
-> >
-> > In this scenario, hotplug_handler_plug() calls pcie_cap_slot_plug_cb(),
-> > which sets dev->config byte 0x6e with bit PCI_EXP_SLTSTA_PDS to signal =
-PCI
-> > hotplug for the guest. After a while the guest will deal with this hotp=
-lug
-> > and qemu will clear the above bit.
->
-> Do you mean that the bit will be cleared after this point for the whole
-> lifecycle of the VM, as long as the pcie topology doesn't change again?
->
-> "This bit indicates the presence of an adapter in the slot"
->
-> IIUC the adapter in the slot is there, why it's cleared rather than set?
+> > It's not a race, but I think you're right. I thought it was always the case
+> 
+> I'm talking about the race with another thread checking f->last_error
+> and this thread setting it. Described in commit f5816b5c86ed
+> ("migration: Fix race on qemu_file_shutdown()").
 
-Fort some reason the guest is powering down the device, and we have in qemu=
-:
+I don't yet catch your point, sorry.  I thought f5816b5c86ed closed that
+race.  What's still missing?
 
- /*
-     * If the slot is populated, power indicator is off and power
-     * controller is off, it is safe to detach the devices.
-     *
-     * Note: don't detach if condition was already true:
-     * this is a work around for guests that overwrite
-     * control of powered off slots before powering them on.
-     */
-    if ((sltsta & PCI_EXP_SLTSTA_PDS) && pcie_sltctl_powered_off(val) &&
-        !pcie_sltctl_powered_off(old_slt_ctl))
-    {
-        pcie_cap_slot_do_unplug(dev);  // clears PCI_EXP_SLTSTA_PDS
-    }
+> 
+> > to shut but actually not: we do shutdown() also in a few places where we
+> > don't really fail, either for COLO or for completion of migration.  With
+> > the 1st patch, it'll even show in query-migrate.  Thanks for spotting it -
+> > I could have done better.
+> >
+> 
+> The idea is that we avoid doing IO after the file has been shutdown, so
+> we preload this -EIO error. We could just alter the message to "Channel
+> has been explicitly shutdown" or "Tried to do IO after channel
+> shutdown". It would still be better than the generic EIO message.
 
+My point is I'm afraid (I thought after you pointed out, but maybe I just
+misread what you said..) we'll call qemu_file_shutdown() even in normal
+paths, so we can see an error poped up in query-migrate even if nothing
+wrong happened. I think that's unwanted.
 
->
-> >
-> > Then, during migration, get_pci_config_device() will compare the
-> > configs of both the freshly created device and the one that is being
-> > received via migration, which will differ due to the PCI_EXP_SLTSTA_PDS=
- bit
-> > and cause the bug to reproduce.
-> >
-> > To avoid this fake incompatibility, there are tree fields in PCIDevice =
-that
-> > can help:
-> >
-> > - wmask: Used to implement R/W bytes, and
-> > - w1cmask: Used to implement RW1C(Write 1 to Clear) bytes
-> > - cmask: Used to enable config checks on load.
-> >
-> > According to PCI Express=C2=AE Base Specification Revision 5.0 Version =
-1.0,
-> > table 7-27 (Slot Status Register) bit 6, the "Presence Detect State" is
-> > listed as RO (read-only), so it only makes sense to make use of the cma=
-sk
-> > field.
-> >
-> > So, clear PCI_EXP_SLTSTA_PDS bit on cmask, so the fake incompatibility =
-on
-> > get_pci_config_device() does not abort the migration.
->
-> Yes, using cmask makes more sense to me, but we'd need some pci developer
-> to ack it at last I guess, anyway.
+We can still improve that msg by only setting that specific error in e.g.
+qmp_migrate_pause|cancel() or paths where we know we want to set the error,
+but I'd rather drop the patch first so the rest patches can be reviewed and
+merged first; that'll be a cosmetic change.
 
-Agree! I am waiting for Michael's opinion on this.
-
->
-> >
-> > Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=3D2215819
-> > Signed-off-by: Leonardo Bras <leobras@redhat.com>
->
-> I asked the same question, and I still keep confused: whether there's a
-> first bad commit?  Starting from when it fails?
->
-> For example, is this broken on 6.0 binaries too with pc-q35-6.0?
-
-I tested for qemu 6.0, and it still reproduces, but have not pursued
-this any further.
-
->
-> Thanks,
-
-
-Thank you!
-Leo
-
->
-> > ---
-> >  hw/pci/pcie.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> > index b8c24cf45f..cae56bf1c8 100644
-> > --- a/hw/pci/pcie.c
-> > +++ b/hw/pci/pcie.c
-> > @@ -659,6 +659,10 @@ void pcie_cap_slot_init(PCIDevice *dev, PCIESlot *=
-s)
-> >      pci_word_test_and_set_mask(dev->w1cmask + pos + PCI_EXP_SLTSTA,
-> >                                 PCI_EXP_HP_EV_SUPPORTED);
-> >
-> > +    /* Avoid migration abortion when this device hot-removed by guest =
-*/
-> > +    pci_word_test_and_clear_mask(dev->cmask + pos + PCI_EXP_SLTSTA,
-> > +                                 PCI_EXP_SLTSTA_PDS);
-> > +
-> >      dev->exp.hpev_notified =3D false;
-> >
-> >      qbus_set_hotplug_handler(BUS(pci_bridge_get_sec_bus(PCI_BRIDGE(dev=
-))),
-> > --
-> > 2.41.0
-> >
->
-> --
-> Peter Xu
->
+-- 
+Peter Xu
 
 
