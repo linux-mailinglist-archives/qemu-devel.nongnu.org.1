@@ -2,56 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B587496D1
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 09:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 084597496D8
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 09:55:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHJlj-00006Q-DH; Thu, 06 Jul 2023 03:51:15 -0400
+	id 1qHJpc-0001PQ-Et; Thu, 06 Jul 2023 03:55:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=00IJ=CY=kaod.org=clg@ozlabs.org>)
- id 1qHJlc-0008WA-Tb; Thu, 06 Jul 2023 03:51:09 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qHJpS-0001NR-TL
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:55:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=00IJ=CY=kaod.org=clg@ozlabs.org>)
- id 1qHJlZ-0003ss-Pu; Thu, 06 Jul 2023 03:51:08 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QxTH73zj4z4wxR;
- Thu,  6 Jul 2023 17:50:59 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QxTH43T4Vz4wZw;
- Thu,  6 Jul 2023 17:50:56 +1000 (AEST)
-Message-ID: <53ae3355-e7a9-13cb-92d7-b300f44951f1@kaod.org>
-Date: Thu, 6 Jul 2023 09:50:54 +0200
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qHJpR-0006wR-8S
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 03:55:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688630104;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WpagJKcD957bqNBG0NhbnwEA8KGS51hVUldyc/CUoxw=;
+ b=I2V6JHGpTZtbsoxCV+FOPj5L3Sjo7o8ksXcdjPZJPO6982ePgx1g49M45hM8I2Yvlmz0fN
+ b7ESUT+klrTlU4RYmZ2p9YGELcJnQ8wxgPxy2iXBtDXVbgmo1vs12G5xAmXV1l7TDyKKmB
+ 96wy+cp2K+8RCPRcm8kzRUQfnEANzmQ=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-187-zE4TYP7wONeUPqCr0SphLA-1; Thu, 06 Jul 2023 03:55:02 -0400
+X-MC-Unique: zE4TYP7wONeUPqCr0SphLA-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2b6fdb7eeafso3721281fa.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 00:55:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688630099; x=1691222099;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WpagJKcD957bqNBG0NhbnwEA8KGS51hVUldyc/CUoxw=;
+ b=Y91wF62kog/x0m3M9+Jh38ROUAXArNobYPsHtTY4qcBCqULw++MDcEsOvylXGEN36U
+ 4QXb5M06AeV3ZDgTDO393/U++gmyevStpmFzHoCRxWOQv+zG1u34JbmWHA2lj36JkTBb
+ iM72m+DhROjClyXCLFshXvfWR9Nm7Y7lxEAM7fjc64XOBwra195IWY3WDeUhMCtocFbC
+ NK4MH6b5rkA40qv9QPV/inEh2hy520ZFmqK7fdOLSbCN7rix7sP16zZmZdEYVBwOvuZm
+ a9bd+xNwQp0f1j980tiQcuKFcZU2ilfBQtlxFV0F7BAVEevsfJWWM5DJK+bhFYoal6FY
+ 65nw==
+X-Gm-Message-State: ABy/qLaleYunGeTa4dqAO4IJZBS7uDjJGZ79DbZOHh2W94v7h9LqWvs4
+ v1eP59ie7GieDMMGJVgXpnDlb/6essyUMl5+oLjLFGtjHBTro6Xmv9vo8kif8n29tkRiX3nSxX9
+ FcJUEmeUO++FXFOTT3t1SqRDjn32EWrI=
+X-Received: by 2002:a2e:98c7:0:b0:2b6:e2c1:9816 with SMTP id
+ s7-20020a2e98c7000000b002b6e2c19816mr814020ljj.20.1688630099407; 
+ Thu, 06 Jul 2023 00:54:59 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHDbutMUqa8boZKxNvrWbp2niV5xCtenKTH91Z3Von1YKbfBDo44q+mrqTLOKErgiSL3sQy5XwVdL5dcLR+w5g=
+X-Received: by 2002:a2e:98c7:0:b0:2b6:e2c1:9816 with SMTP id
+ s7-20020a2e98c7000000b002b6e2c19816mr814009ljj.20.1688630099116; Thu, 06 Jul
+ 2023 00:54:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v3] target/ppc: Machine check on invalid real address
- access on POWER9/10
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-References: <20230703120301.45313-1-npiggin@gmail.com>
- <CTUWXISZHAI1.3A3FS0U9SD90B@wheely>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CTUWXISZHAI1.3A3FS0U9SD90B@wheely>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=00IJ=CY=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+References: <20230705141205.525776-1-kkostiuk@redhat.com>
+ <20230705141205.525776-2-kkostiuk@redhat.com>
+ <413a30a2-c050-7587-8c0e-a6d89c8b7ab3@linaro.org>
+In-Reply-To: <413a30a2-c050-7587-8c0e-a6d89c8b7ab3@linaro.org>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+Date: Thu, 6 Jul 2023 10:54:47 +0300
+Message-ID: <CAPMcbCp2Rx4jz3S9R8VbaeRZrkakn4HE7e-GZtubv5b29Km1OA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] QGA VSS: Add wrapper to send log to debugger and
+ stderr
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Michael Roth <michael.roth@amd.com>, Yan Vugenfirer <yvugenfi@redhat.com>
+Content-Type: multipart/alternative; boundary="00000000000037137e05ffccd5bb"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,45 +97,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/6/23 09:32, Nicholas Piggin wrote:
-> On Mon Jul 3, 2023 at 10:03 PM AEST, Nicholas Piggin wrote:
->> ppc currently silently accepts invalid real address access. Catch
->> these and turn them into machine checks on POWER9/10 machines.
-> 
-> Would there be any objections to merging this and the checkstop patch?
-> We could disable this one before release if it turns out to cause
-> breakage.
-> 
-> I don't think it needs to rebase, and passes clang build and make check
-> here. Just messed up the separator on the changelog of the checkstop
-> patch.
+--00000000000037137e05ffccd5bb
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I have been using the v2 series for a while :
+Hi Philippe,
 
-   https://patchwork.ozlabs.org/project/qemu-ppc/list/?series=361456
+On Wed, Jul 5, 2023 at 11:35=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd=
+@linaro.org>
+wrote:
 
-without patch 4 and it looked good. Let's take v3 since this patch is
-unchanged.
+> Hi Konstantin,
+>
+> On 5/7/23 16:12, Konstantin Kostiuk wrote:
+> > Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+> > ---
+> >   qga/vss-win32/vss-debug.h | 31 +++++++++++++++++++++++++++++++
+> >   1 file changed, 31 insertions(+)
+> >   create mode 100644 qga/vss-win32/vss-debug.h
+>
+>
+> > +#define PRINT_DEBUG(fmt, ...) {
+>        \
+> > +    char user_sting[512] =3D { 0 };
+>        \
+> > +    char full_string[640] =3D { 0 };
+>       \
+> > +    snprintf(user_sting, 512, fmt, ## __VA_ARGS__);
+>        \
+> > +    snprintf(full_string, 640, QGA_PROVIDER_NAME"[%lu]: %s %s\n",
+>        \
+> > +        GetCurrentThreadId(), __func__, user_sting);
+>       \
+> > +    OutputDebugString(full_string);
+>        \
+> > +    fprintf(stderr, "%s", full_string);
+>        \
+> > +}
+>
+> Why not simply use a plain function?
+>
 
-Thanks,
+I am not sure what you mean.
 
-C.
+If you mean to call OutputDebugString directly, then we need to concatenate
+the proper string
+for each call.
+If you mean convert PRINT_DEBUG to function, then we can't use the __func__
+macro in
+PRINT_DEBUG to get the real function name. We can convert PRINT_DEBUG to
+function
+and a new macro that will call PRINT_DEBUG and pass a proper value of
+__fucn__.
 
-
-> Thanks,
-> Nick
-> 
-> 
->>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> ---
->> Since v1:
->> - Only implement this for POWER9/10. Seems like previous IBM processors
->>    may not catch this, trying to get info.
->>
->> Since v2:
->> - Split out from larger series since it is independent.
+What solution is better there?
 
 
+>
+> > +#define PRINT_DEBUG_BEGIN PRINT_DEBUG("begin")
+> > +#define PRINT_DEBUG_END PRINT_DEBUG("end")
+> > +
+> > +#endif
+>
+>
+
+--00000000000037137e05ffccd5bb
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hi Philippe,<br></div><br><div class=3D"g=
+mail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jul 5, 2023 at 11=
+:35=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@lin=
+aro.org">philmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex">Hi Konstantin,<br>
+<br>
+On 5/7/23 16:12, Konstantin Kostiuk wrote:<br>
+&gt; Signed-off-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkostiuk@redha=
+t.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0qga/vss-win32/vss-debug.h | 31 +++++++++++++++++++++++++++=
+++++<br>
+&gt;=C2=A0 =C2=A01 file changed, 31 insertions(+)<br>
+&gt;=C2=A0 =C2=A0create mode 100644 qga/vss-win32/vss-debug.h<br>
+<br>
+<br>
+&gt; +#define PRINT_DEBUG(fmt, ...) {=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
+&gt; +=C2=A0 =C2=A0 char user_sting[512] =3D { 0 };=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
+&gt; +=C2=A0 =C2=A0 char full_string[640] =3D { 0 };=C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 \<br>
+&gt; +=C2=A0 =C2=A0 snprintf(user_sting, 512, fmt, ## __VA_ARGS__);=C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0\<br>
+&gt; +=C2=A0 =C2=A0 snprintf(full_string, 640, QGA_PROVIDER_NAME&quot;[%lu]=
+: %s %s\n&quot;,=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 GetCurrentThreadId(), __func__, user_stin=
+g);=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 \<br>
+&gt; +=C2=A0 =C2=A0 OutputDebugString(full_string);=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
+&gt; +=C2=A0 =C2=A0 fprintf(stderr, &quot;%s&quot;, full_string);=C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0\<br>
+&gt; +}<br>
+<br>
+Why not simply use a plain function?<br></blockquote><div><br></div><div>I =
+am not sure what you mean. <br><br>If you mean to call OutputDebugString di=
+rectly, then we need to concatenate the proper string</div><div>for each ca=
+ll.<br>If you mean convert PRINT_DEBUG to function, then we can&#39;t use t=
+he __func__ macro in</div><div>PRINT_DEBUG to get the real function name. W=
+e can convert PRINT_DEBUG to function <br></div><div>and a new macro that w=
+ill call PRINT_DEBUG and pass a proper value of __fucn__.<br><br>What solut=
+ion is better there? </div><div>=C2=A0</div><blockquote class=3D"gmail_quot=
+e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
+;padding-left:1ex">
+<br>
+&gt; +#define PRINT_DEBUG_BEGIN PRINT_DEBUG(&quot;begin&quot;)<br>
+&gt; +#define PRINT_DEBUG_END PRINT_DEBUG(&quot;end&quot;)<br>
+&gt; +<br>
+&gt; +#endif<br>
+<br>
+</blockquote></div></div>
+
+--00000000000037137e05ffccd5bb--
 
 
