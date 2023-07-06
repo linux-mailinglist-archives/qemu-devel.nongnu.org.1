@@ -2,86 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAAAF749B25
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D41C3749B30
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:55:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHNVE-0000xl-Qk; Thu, 06 Jul 2023 07:50:28 -0400
+	id 1qHNYd-00025u-5J; Thu, 06 Jul 2023 07:53:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHNV7-0000vn-Bi
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:50:25 -0400
-Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHNV5-0000aH-Kr
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:50:21 -0400
-Received: by mail-ot1-x32f.google.com with SMTP id
- 46e09a7af769-6b73b839025so576841a34.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 04:50:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688644218; x=1691236218;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Ca4yaWZAtusWL2+Y6PDQe2Y+G7VzbBYOX9to+l3pppk=;
- b=BCR0aBdDPTSM8t3ifns0Aybgd9RY701A5725tmE3haTImRKxw4gpbBe9UXNATdQYXH
- DST9qVVZhpWa/w8TXCQ1U4VUcsOfgiNx+xIDS5zoYcgvAtN7R4XyiGSki6od8MQAEPdx
- zSZLp/63qnuc3BUztRJz/Bw/cpBxXPm0wdYdyqLKEXQktKVzCQe29afj2N0eZptoyS6u
- bSvA3E6bebBnX7ikaaQJxdVXEUvLfZgmGmE/Emob8LT8LxDx9O67Ct6cVvWb+4RTq3Kh
- pLXDRFcF5lePsGuQHnZE2FtbS5cVzvtL3HsxVtOk6eGycgx2uEGnoJiKtW31QNc56Lwd
- aOjg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHNYb-00025X-9S
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:53:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHNYZ-0002gX-Fk
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:53:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688644433;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=G0os+kN4bZe4SfQH+vXx/HJh5UhcMsuNW8IKvBsb5N0=;
+ b=Xz0z2QwiKXOHYikapwPfHMR3KEp2hkbDvLWvDxJ6JDhCBF/8DbWmBZ1d+1QBZmORbbJURu
+ XzzmGMIUp9BrP5B3DqMI9IbNj/6MpSpvsgaPXyR1nKWUvLiamEnkP0eIDbaihjNofRRzjI
+ Ey1VI2bQaNng8FBfa2cqAWiiXrC9FzE=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-520-xqYO8imSPhWUMeFD_Qyo4A-1; Thu, 06 Jul 2023 07:53:51 -0400
+X-MC-Unique: xqYO8imSPhWUMeFD_Qyo4A-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7672918d8a4so19144185a.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 04:53:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688644218; x=1691236218;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ca4yaWZAtusWL2+Y6PDQe2Y+G7VzbBYOX9to+l3pppk=;
- b=RdpaY95UMhi4JcIyjwbdva0CNs6wiImQDFkggGSRImVeHaIy30WoouQ1QMtFNXdZh3
- 55DwfzP6BisrD3dCV/64gQaNjaQXrvDeHgiroibyJakUp4QvQl1wfed9VN2anP0XFMot
- 63IkmbVP6j39bDmrdeNUhqD2Hwb8kle1SgCBUQSEYQRmI5ukw6kGF7vdhgVjtMZTz1vD
- rdev363TZ0rWZsJ1ED3XmTSSa+2O0KehSBdPGJwLoNH1pfDWK39FBtUC+hWK/AvdMiwO
- l+PIQtMGklvUgGXNjoxEGLVb2G+oDOsPhRAlKPLdxZBXXnofHLw7ACT7t9WEuabNn8tA
- OswQ==
-X-Gm-Message-State: ABy/qLaTX2uqptVBdg0midl2Q+rEaEHpJyEO6IBmsOzwekkofaOCrRKq
- xxoiH4KK+6p9oZI+o5JVmmc7aQ==
-X-Google-Smtp-Source: APBJJlHVIHgn5g5OYwmy0+b+GQ4fxpQCSGxBCY9LC0I16VOtrMZhKnfT1jVKtnlbp1U2kP1dhiFNPA==
-X-Received: by 2002:a05:6830:1085:b0:6b8:8f8f:3f46 with SMTP id
- y5-20020a056830108500b006b88f8f3f46mr2235851oto.13.1688644218328; 
- Thu, 06 Jul 2023 04:50:18 -0700 (PDT)
-Received: from ?IPV6:2804:7f0:bcc0:bdf2:b7ba:a476:c0e3:fb59?
- ([2804:7f0:bcc0:bdf2:b7ba:a476:c0e3:fb59])
- by smtp.gmail.com with ESMTPSA id
- h25-20020a9d6a59000000b006b8850ad193sm570404otn.56.2023.07.06.04.50.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 04:50:17 -0700 (PDT)
-Message-ID: <f77e5e6e-efff-3c2b-f7da-7155eb40586a@ventanamicro.com>
-Date: Thu, 6 Jul 2023 08:50:14 -0300
+ d=1e100.net; s=20221208; t=1688644431; x=1691236431;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=G0os+kN4bZe4SfQH+vXx/HJh5UhcMsuNW8IKvBsb5N0=;
+ b=caJPFFpws2uT0M2ManVy+9xj8zV0Pm/9udADMsi2s2xWmzJ5Jexjqu6q+a7aW857cb
+ t44WG+st94gPLOEFekEu4pdPyE9Y67Ns78x972NSLcR6vMEL1jdYEenWnnuo9D0MLHdj
+ dghMBKkn8qRB/Wrfd9R59+/ju3xQpiqnAGG5NWtrdRKCGoKmy8Xnc9sYJYx8FpWXTFJT
+ mOcuMoFgqNuBY3IERIvESBUiPUUSR7Z6MVyicaIULmEIX0C+VFyExOdaLNYr6TR7ArBT
+ qQXkn34ApIiinWYT+ja5cm5VyughM7cK3bmAkwvtCfFbWBQydBCRs78BpdrLam1vofIu
+ +kAA==
+X-Gm-Message-State: ABy/qLaHawsCNOgSRoDzxvlWa/AZ7n+c8LLJnmqUPUKNCb0WzDyobBwW
+ 1UIzQ+YeIDbVLNLXPJ2YQbVo2UuvR5ENaaP7C8hi4sPTO1AFjDyuFvAcztyqNHweoYA34ItcjmA
+ tu0GkYNyPnIadCNI=
+X-Received: by 2002:a05:620a:28cd:b0:765:58ac:9458 with SMTP id
+ l13-20020a05620a28cd00b0076558ac9458mr1702990qkp.7.1688644431105; 
+ Thu, 06 Jul 2023 04:53:51 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHvTIqjSdsRTGkthb34jWXbeqlNnjuAoaco3GgHjX54WBJNqPlEYKII4ufgBapizq/zICo2Hw==
+X-Received: by 2002:a05:620a:28cd:b0:765:58ac:9458 with SMTP id
+ l13-20020a05620a28cd00b0076558ac9458mr1702970qkp.7.1688644430801; 
+ Thu, 06 Jul 2023 04:53:50 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ o11-20020ae9f50b000000b007675bef6b0dsm635112qkg.118.2023.07.06.04.53.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Jul 2023 04:53:50 -0700 (PDT)
+Date: Thu, 6 Jul 2023 07:53:49 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Laszlo Ersek <lersek@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Juan Quintela <quintela@redhat.com>
+Subject: Re: [PATCH] docs/migration: Update postcopy bits
+Message-ID: <ZKarTWisVKjpo+Wr@x1n>
+References: <20230627200222.557529-1-peterx@redhat.com>
+ <ddb293c6-2475-8fbb-7d84-f276ce17956a@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] target/riscv: Fix LMUL check to use minimum SEW
-Content-Language: en-US
-To: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20230706104433.16264-1-rbradford@rivosinc.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230706104433.16264-1-rbradford@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ddb293c6-2475-8fbb-7d84-f276ce17956a@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,55 +100,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Jul 06, 2023 at 12:15:47PM +0200, Laszlo Ersek wrote:
+> One suggestion, to squash in:
+> 
+> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+> index 6f65c23b47dc..3294679936b2 100644
+> --- a/docs/devel/migration.rst
+> +++ b/docs/devel/migration.rst
+> @@ -594,8 +594,7 @@ Postcopy
+>  'Postcopy' migration is a way to deal with migrations that refuse to converge
+>  (or take too long to converge) its plus side is that there is an upper bound on
+>  the amount of migration traffic and time it takes, the down side is that during
+> -the postcopy phase, a failure of *either* side or the network connection causes
+> -the guest to be lost.
+> +the postcopy phase, a failure of *either* side causes the guest to be lost.
+>  
+>  In postcopy the destination CPUs are started before all the memory has been
+>  transferred, and accesses to pages that are yet to be transferred cause
+> 
+> This removes "or the network connection" as a fatal failure.
 
+Makes sense.
 
-On 7/6/23 07:44, Rob Bradford wrote:
-> The previous check was failing with:
 > 
-> ELEN = 64 SEW = 16 and LMUL = 1/8 (encoded as 5) which is a valid
-> combination.
-> 
-> Fix the check to correctly match the specification by using minimum SEW
-> rather than the active SEW.
-> 
->  From the specification:
-> 
-> "In general, the requirement is to support LMUL ≥ SEWMIN/ELEN, where
-> SEWMIN is the narrowest supported SEW value and ELEN is the widest
-> supported SEW value. In the standard extensions, SEWMIN=8. For standard
-> vector extensions with ELEN=32, fractional LMULs of 1/2 and 1/4 must be
-> supported. For standard vector extensions with ELEN=64, fractional LMULs
-> of 1/2, 1/4, and 1/8 must be supported."
-> 
->  From inspection this new check allows:
-> 
-> ELEN=64 1/2, 1/4, 1/8 (encoded as 7, 6, 5 respectfully)
-> ELEN=32 1/2, 1/4 (encoded as 7 and 6 respectfully)
-> 
-> Fixes: d9b7609a1fb2 ("target/riscv: rvv-1.0: configure instructions")
-> 
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> ---
+> Acked-by: Laszlo Ersek <lersek@redhat.com>
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Thanks!
 
->   target/riscv/vector_helper.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-> index 1e06e7447c..8dfd8fe484 100644
-> --- a/target/riscv/vector_helper.c
-> +++ b/target/riscv/vector_helper.c
-> @@ -43,9 +43,9 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
->                                               xlen - 1 - R_VTYPE_RESERVED_SHIFT);
->   
->       if (lmul & 4) {
-> -        /* Fractional LMUL. */
-> +        /* Fractional LMUL - check LMUL >= ELEN/SEW_MIN (8) */
->           if (lmul == 4 ||
-> -            cpu->cfg.elen >> (8 - lmul) < sew) {
-> +            cpu->cfg.elen >> (8 - lmul) < 8) {
->               vill = true;
->           }
->       }
+-- 
+Peter Xu
+
 
