@@ -2,75 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3AF749BCF
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 14:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5F6749C3E
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 14:44:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHO7T-0006ij-4A; Thu, 06 Jul 2023 08:29:59 -0400
+	id 1qHOKj-00030k-11; Thu, 06 Jul 2023 08:43:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHO7K-0006iJ-Qk
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:29:51 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHO7J-000477-0w
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:29:50 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-51de841a727so953753a12.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 05:29:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688646586; x=1691238586;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=9WuXS1bpnCIT0yUrBldYGQxYo/Xm6JygWdrvtRk+JkE=;
- b=sLVIDt4vGua6yIgv/UWU3fQVpzsnHMSoOtzIPKk2Y+hNspPUZ4WC7JEM3wKwtH37sn
- aZF+h1Oq9i2+4+b2rTEQDJLOZ7tLWzlz3osaLVhQxRzOg1rnuSPJJpj04DY1yucTC76D
- mg47D/z2N2AuiRrrT5UxEoNX0jbhnHzHJyjp0fV8oLQNF70BwFzpOnyuouWYoE/zt0/X
- mJximP4LaAf1OMSjIBBako3aAQ7uWnh/WwIckHjyaU1vDVESUclSXkBR9/Dty47liv3N
- QGLrYGrwjIbP24cNLBmucOQz9ihyqu2sbyS9AV15RCSfAyUmhHxXK11GwkGCcxOW+dCp
- AZsg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHOKg-000308-E6
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:43:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHOKe-0004Sl-Pq
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:43:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688647415;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=YpN+gpBqrQ6vDZ9ShzCKAHpCEp0xmNk1NTUdT589mns=;
+ b=CmgWjS48dOsjoD/IlhdMA+bVlef+G/4KsdL4PQa5/v+Ce6uLILTN0nA+B51ZZFKLw/MEVp
+ YcrVWrBpjZE0Fy8u6tAConx03ftebnZcamDnJwqFIVeHk2mJrKUz3bRY7wqWENUucbfyFu
+ O1nmSJoksXKf2pCg67ofTFJMbmUEHS8=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-465-_tU8N7rqNFiqhjsE0ds5Yg-1; Thu, 06 Jul 2023 08:43:34 -0400
+X-MC-Unique: _tU8N7rqNFiqhjsE0ds5Yg-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7672918d8a4so19848885a.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 05:43:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688646586; x=1691238586;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1688647414; x=1691239414;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=9WuXS1bpnCIT0yUrBldYGQxYo/Xm6JygWdrvtRk+JkE=;
- b=k9grErq5tkbqtrHe2sX0Gvf5DcvgIJfjeQHssGxLQ22ESNVk/m0smTW4HXJN63IcM0
- 7IuYYbcxmA65YTviQE403v/1/3vTqjL1whp9eDcybbHaPTXf+5vok+2oEfMROscCWq+D
- 1RTfQ1sxPwnRHcFx7gefg7To6Elz9uk4Rk0BwcOFNwaOxNGBFqefY+m4f/NPWr7kGtl/
- OnPHvPjb48ILFRwSRsj9aazaul2znb6BQv4lfPGFMIEA1KulL0MPZTS+Nt6El3Ux9fmI
- IzRHeWIhwTU9CvcUDHck0v+1RAYMSjcySlYdc0/21Mhj49T0V0QIWRRmUu9zinCnAV88
- PHxA==
-X-Gm-Message-State: ABy/qLaEqsN2LftqoXJNE2wA+UHBWI0FUsr5+dd6t1SYEKRA3et6At/J
- yoNpJRxPlcLOEYxlfzRADM9O1WDFiEzj9tg+gz2cPg==
-X-Google-Smtp-Source: APBJJlF4fHWxch2udr2Ob7SbGxmadMyI25ISD9VSsETmdNr+DuSx4ahmMWn0mbO8R0MU8I79RH4wpgJo8NmdxrZOh9s=
-X-Received: by 2002:aa7:cc15:0:b0:51e:1690:1b97 with SMTP id
- q21-20020aa7cc15000000b0051e16901b97mr1436602edt.19.1688646586659; Thu, 06
- Jul 2023 05:29:46 -0700 (PDT)
+ bh=YpN+gpBqrQ6vDZ9ShzCKAHpCEp0xmNk1NTUdT589mns=;
+ b=TGv1ls1RTILsQpK42xgbS1WgFFzWO6zxdByWEYU5b9jGKLpCYoCGq1RkhpL3jtBvTa
+ DRVSuLAqfkbrJYGpWkqyDnnqr75K84+fvnOVmQCOwRVEfuLiKbNJHHVyMh8brTu3PRVq
+ urUblRd1sm28WEHCVlKnyW5FkVR3CYe4wkoo9Q29DFiHAXX26JVVgxbLZpLYHnOhZO0U
+ VEhK9w/kAt3k8335ctSi85GLH7D6IMQojETOvM7g1+Mx6ZhFojMUn8N2ROPj7LvQG/wj
+ hhXTrmwm4rrAXaWeYkHu9Pfjc9pm510+KfHSIp7djtLxOqQxGFW+tK2eyh4Gt0XYZJ44
+ so4A==
+X-Gm-Message-State: ABy/qLYzYoKrNHE+pFff+3gjKPw7fE/C6vHLhKPIRfyPVDgowAO54+8O
+ uxAo9t2uleMWCazUJ/3XoFjXvEm0yEheuWmyqlblSKH6RZNh1cH3XPdsVZq8qQrSzAgbDVpiqsc
+ TSmE88OIZuewtRaVxHmpHQLt7zHxFN1QYL33yJ0sVYf3B8Yz70ffRNFnjV/x8mC8rYqqweRNm
+X-Received: by 2002:a05:6214:410f:b0:625:aa48:e50f with SMTP id
+ kc15-20020a056214410f00b00625aa48e50fmr1670811qvb.6.1688647413925; 
+ Thu, 06 Jul 2023 05:43:33 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEqmFR+kXYbZwhPJg+PolaATJ+wcf03zaIZB8DHXtRqZzVXGGhtiP7rBfO6oJYnfy3Q8XKIxQ==
+X-Received: by 2002:a05:6214:410f:b0:625:aa48:e50f with SMTP id
+ kc15-20020a056214410f00b00625aa48e50fmr1670783qvb.6.1688647413521; 
+ Thu, 06 Jul 2023 05:43:33 -0700 (PDT)
+Received: from x1n.redhat.com
+ (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
+ by smtp.gmail.com with ESMTPSA id
+ d13-20020a0ce44d000000b006301d3cab9csm832816qvm.27.2023.07.06.05.43.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Jul 2023 05:43:33 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ peterx@redhat.com, Avihai Horon <avihaih@nvidia.com>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v5 0/2] migration: switchover-hold flag
+Date: Thu,  6 Jul 2023 08:43:29 -0400
+Message-ID: <20230706124331.377939-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230704130647.2842917-1-peter.maydell@linaro.org>
- <20230704130647.2842917-3-peter.maydell@linaro.org>
- <efed6e67-beb2-dc60-18c5-af0fe1431f0b@linaro.org>
-In-Reply-To: <efed6e67-beb2-dc60-18c5-af0fe1431f0b@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 6 Jul 2023 13:29:35 +0100
-Message-ID: <CAFEAcA8itOZACU_MWTzZHUf0Nt64LBGcSLJ9Qry9xn4PCw2W+Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] target/arm: Define neoverse-v1
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,25 +102,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 5 Jul 2023 at 15:09, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> On 7/4/23 15:06, Peter Maydell wrote:
-> > If you're checking the values against the TRM, note that the
-> > summary tables differ from the register description in the TRM
-> > for ID_AA64DFR0_EL1, ID_AA64ZFR0_EL1 and ID_PFR0_EL1: we
-> > trust the versions in the register descriptions. Also the
-> > MIDR value in the r1p2 TRM isn't updated from r1p1.
-> > The CCSIDR_EL1 values in the TRM unfortunately seem to be wrong:
-> > the comment in the patch describes how I've calculated the
-> > values used here.
-> ...
-> > +    cpu->isar.id_aa64mmfr2 = 0x0000000000001011ull;
->
-> I see 0x0220011102101011, not in your list of exceptions above.
+This v5 patchset is based on master.  Since I'm not sure how long this
+series will take for review, we could probably apply Dan's previous patch
+10 first, then when I repost I can provide a revert patch when needed.
 
-Good catch -- I must have cut-and-pasted the neoverse-n1
-code and then forgotten to update that value in it.
+v5:
+- Fix HMP set the new bit [Avihai]
 
--- PMM
+A new flag "switchover-hold" is added to allow src qemu explicitly hold
+switchover for precopy migration.  Note that this flag will not affect
+postcopy switchover because src qemu already has migrate-start-postcopy,
+which is a finer grained knob just for that.  In general this flag only
+affects reaching migration completion phase, when set it'll block it from
+happening while keep the migration iteration going.
+
+This can be used in two cases so far in my mind:
+
+  (1) One can use this parameter to start pre-heating migration (but not
+      really migrating, so a migrate-cancel will cancel the preheat).  When
+      the user wants to really migrate, just clear the flag.  It'll in most
+      cases migrate immediately because most pages are already synced.
+
+  (2) Can also be used as a clean way to do qtest, in many of the precopy
+      tests we have requirement to run after 1 iteration without completing
+      the precopy migration.  Before that we have either set bandwidth to
+      ridiculous low value, or tricks on detecting guest memory change over
+      some adhoc guest memory position.  Now we can simply set this flag
+      then we know precopy won't complete and will just keep going.
+
+The 1st use case may look a bit like COLO where we can actually keep both
+QEMU _mostly_ in sync.  I'm not sure whether it can be useful anywhere,
+though.
+
+Patch 1 will introduce the new flag.
+
+Patch 2 will leverage the new flag to speed up migration-test. An initial
+test is this can make migration-test finish within a little bit less than
+1m.
+
+Please have a look, thanks.
+
+Peter Xu (2):
+  migration: switchover-hold parameter
+  qtest/migration: Use switchover-hold to speedup
+
+ qapi/migration.json            | 25 ++++++++++--
+ migration/migration.h          | 17 +++++++++
+ migration/migration-hmp-cmds.c |  7 ++++
+ migration/migration.c          | 69 ++++++++++++++++++++++++++++++++--
+ migration/options.c            | 17 +++++++++
+ tests/qtest/migration-test.c   | 39 ++++++++++++++-----
+ 6 files changed, 157 insertions(+), 17 deletions(-)
+
+-- 
+2.41.0
+
 
