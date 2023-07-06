@@ -2,76 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BA07493C8
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 04:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E94F7493D9
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 04:47:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHEoa-0004Tt-G8; Wed, 05 Jul 2023 22:33:52 -0400
+	id 1qHF07-0007RK-0E; Wed, 05 Jul 2023 22:45:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qHEoJ-0004TX-JP; Wed, 05 Jul 2023 22:33:36 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ id 1qHF03-0007Qs-Tx; Wed, 05 Jul 2023 22:45:44 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qHEoG-0004qE-Qi; Wed, 05 Jul 2023 22:33:34 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-992e22c09edso14892766b.2; 
- Wed, 05 Jul 2023 19:33:30 -0700 (PDT)
+ id 1qHF01-0006Rj-JN; Wed, 05 Jul 2023 22:45:43 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-55b66ca1c80so149150a12.0; 
+ Wed, 05 Jul 2023 19:45:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1688610809; x=1691202809;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+pS7VmVKZRb82wwgtLZxWdDaT1jbAtExkgiBO5G1Tm0=;
- b=e3XRZvpHiYnsGDu+0XmsP9TplTXh7pusmiRP6w5B74feafchX1+5qArqqQ6EcXe7Wx
- OWQX1eAriU3CEsQkU5+z637p7AOhLmY/a8dWDUzCdLHDtR8BpCVnla2NxMyuKP49qJjb
- czrsHJqm2j3V3ppBpjbhrRqGVIjXVEk6QTs28=
+ d=gmail.com; s=20221208; t=1688611540; x=1691203540;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=zamhrUE7QKq/C1YwfHmgJpaWDsCNbyB14Zijx2Rbk5U=;
+ b=EwkgihQgcK0kyA1fxrCib925C23ifg5vsYFJuCoIQtYtJoA4PKAJmHXaYzo8/b3gAf
+ aU5KspVmCdhD9Gkw4U+nxU73KWkBGiLKCpKWmRGpgunw/Eyq8nX7h9HeSVlRklKE0JXz
+ 5cZbhEctebiktGnv74SLU8qX/9qcTC8TjtxWEmHmtF21MYKwyMUGoxvX+DDb/5dKMcYO
+ ZPbS6jP2hf/QYzAG/q3UWukZp59lxbqVVdjOgHwfsyf96p75LHpHLt3GMvo/opTYPROl
+ VaZk9SJ9jyWRNVB6EYJBSDRBDSeLcqN+eI9FyC0kDSftLVGyXuoiLIqSQHs7eeQQanCF
+ 7QhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688610809; x=1691202809;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+pS7VmVKZRb82wwgtLZxWdDaT1jbAtExkgiBO5G1Tm0=;
- b=CgHCQIfiEIs9oejqXqXjhJ+qV852pRc4/TtqS4reKXPoANLiv5sM78pa78vQ8WO3d+
- iFt/b3V5bUCW3+sWokybNNZ8xESb3k5J8sLxL528LW2LYcLcAEDA3VpgG1ZAUroW9xTR
- BwRKxeZa49CoLUZ0+wZuaAjkY8S9LazHuFX0wqlvxf1zM3j0FIJI8BlSfkV2+aQI77Q5
- EcGzLLBKqdRFEl0u17KyAOU56g0oS7ZVtVWz9sSFHKGjZZ2mOmcUV8l8h/Mve8Kkbehz
- /MS/hFbMwof81kHRBnUOHkknMcrDayRefhXhKXXj4ddO6049MFydOPM+NsBSDyuhFuNw
- hwew==
-X-Gm-Message-State: ABy/qLY8+Nd/gXcbU8mfdmLRR1OClzWlGz+OjVQI0DwCsUtRQDB1Je67
- yHW7N3VTu15Qr5XyFK1XulP1u2MiIjgvljzzMNk=
-X-Google-Smtp-Source: APBJJlEJn6ZyKOT8hPropctWIpNy5QF9eI2edbDP0R5P0mDSm3aA0Au5nF0TiFNqhgbAOjRifGsR/Rozip//Tjv4qCQ=
-X-Received: by 2002:a17:907:587:b0:990:8807:8f86 with SMTP id
- vw7-20020a170907058700b0099088078f86mr335653ejb.38.1688610809182; Wed, 05 Jul
- 2023 19:33:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230705012736.20020-1-npiggin@gmail.com>
- <CACPK8XcsBt5ZQ=SRFd2+6OjRx4zM1gmcr12djiMugS9QTa6SGw@mail.gmail.com>
- <4b916a32-daf3-7081-af1a-c10c3ea26a40@kaod.org>
-In-Reply-To: <4b916a32-daf3-7081-af1a-c10c3ea26a40@kaod.org>
+ d=1e100.net; s=20221208; t=1688611540; x=1691203540;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zamhrUE7QKq/C1YwfHmgJpaWDsCNbyB14Zijx2Rbk5U=;
+ b=CP8WHW04TRlr/dGIGepyXBOJ1qjP4ux5q2Rs9lP0XVG4Axigiu/YPZ/m0XPZMk3fEk
+ 04jSPyBv0ZrZSqMf5k6PGfbE+VBcuYYF59Jjb0HJIrbLHbsp5tGrfVXDBpO6NsT9pUo7
+ 8M/5vXnA7lx2bbH0oKQDxkMH3IA7L9gGA8MnEVqTtKSnNNPt+BBWqa/ykl1i3I7DKwbw
+ Urm9nwqad/tiUTRtdMzD3f9Pi3to8p/Mk/LdHDn986G8CxnfIjTmD4ihm6x2g/N+jQOA
+ qhfhtiur8pb/PoxAoCx+p7dJ1d2+utB/8ojsiVLggg2GO9mARAm389VbdcjkvCNe4Zer
+ wgjA==
+X-Gm-Message-State: ABy/qLZ3tgevepxMpnqEy74RW8mAne9eBLohZx5v+OXroT1BAWjX9CLv
+ zxybbPseWLn/kEuhxWhiF3E=
+X-Google-Smtp-Source: APBJJlEXdvXaG6vibxOhJNRSloKCtR1NtWGnfIT0p0l0PiU7QmQXL48Koh2i5cHtR6Lyf7c5sbFNxg==
+X-Received: by 2002:a05:6a20:6a98:b0:126:8b8a:f8c7 with SMTP id
+ bi24-20020a056a206a9800b001268b8af8c7mr413282pzb.37.1688611539499; 
+ Wed, 05 Jul 2023 19:45:39 -0700 (PDT)
+Received: from localhost.localdomain
+ (2403-5808-8af8-0-7926-51ea-3ff2-71dd.ip6.aussiebb.net.
+ [2403:5808:8af8:0:7926:51ea:3ff2:71dd])
+ by smtp.gmail.com with ESMTPSA id
+ i12-20020a1709026acc00b001b8b26fa6c1sm169470plt.115.2023.07.05.19.45.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 05 Jul 2023 19:45:38 -0700 (PDT)
 From: Joel Stanley <joel@jms.id.au>
-Date: Thu, 6 Jul 2023 02:33:17 +0000
-Message-ID: <CACPK8XeLUOzviiT_8daqB2edCbLkBeeEB6HGMxboVTwcx9q2yA@mail.gmail.com>
-Subject: Re: [PATCH] ppc/pnv: Set P10 core xscom region size to match hardware
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, 
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>, 
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>
+Cc: qemu-devel@nongnu.org,
+	qemu-ppc@nongnu.org
+Subject: [PATCH] ppc/pnv: Log all unimp warnings with similar message
+Date: Thu,  6 Jul 2023 12:15:28 +0930
+Message-Id: <20230706024528.40065-1-joel@jms.id.au>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=joel.stan@gmail.com; helo=mail-pg1-x52b.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
 X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
  FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, URIBL_CSS=0.1 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,124 +92,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 5 Jul 2023 at 10:02, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
->
-> On 7/5/23 04:05, Joel Stanley wrote:
-> > On Wed, 5 Jul 2023 at 01:27, Nicholas Piggin <npiggin@gmail.com> wrote:
-> >>
-> >> The P10 core xscom memory regions overlap because the size is wrong.
-> >> The P10 core+L2 xscom region size is allocated as 0x1000 (with some
-> >> unused ranges). "EC" is used as a closer match, as "EX" includes L3
-> >> which has a disjoint xscom range that would require a different
-> >> region if it were implemented.
-> >>
-> >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> >
-> > Nice, that looks better:
-> >
-> > 0000000100000000-00000001000fffff (prio 0, i/o): xscom-quad.0: 0x100000
-> > 0000000100108000-000000010010ffff (prio 0, i/o): xscom-core.3: 0x8000
-> > 0000000100110000-0000000100117fff (prio 0, i/o): xscom-core.2: 0x8000
-> > 0000000100120000-0000000100127fff (prio 0, i/o): xscom-core.1: 0x8000
-> > 0000000100140000-0000000100147fff (prio 0, i/o): xscom-core.0: 0x8000
-> > 0000000108000000-00000001080fffff (prio 0, i/o): xscom-quad.4: 0x100000
-> > 0000000108108000-000000010810ffff (prio 0, i/o): xscom-core.7: 0x8000
-> > 0000000108110000-0000000108117fff (prio 0, i/o): xscom-core.6: 0x8000
-> > 0000000108120000-0000000108127fff (prio 0, i/o): xscom-core.5: 0x8000
-> > 0000000108140000-0000000108147fff (prio 0, i/o): xscom-core.4: 0x8000
-> >
-> > Reviewed-by: Joel Stanley <joel@jms.id.au>
->
-> It'd interesting to add some dummy SLW handlers to get rid of the
-> XSCOM errors at boot and shutdown on P10 :
->
-> [ 4824.393446266,3] XSCOM: write error gcid=3D0x0 pcb_addr=3D0x200e883c s=
-tat=3D0x0
-> [ 4824.393588777,5] Unable to log error
-> [ 4824.393650582,3] XSCOM: Write failed, ret =3D  -6
-> [ 4824.394124623,3] Could not set special wakeup on 0:0: Unable to write =
-QME_SPWU_HYP.
-> [ 4824.394368459,3] XSCOM: write error gcid=3D0x0 pcb_addr=3D0x200e883c s=
-tat=3D0x0
-> [ 4824.394382007,5] Unable to log error
-> [ 4824.394384603,3] XSCOM: Write failed, ret =3D  -6
+Add the function name so there's an indication as to where the message
+is coming from. Change all prints to use the offset instead of the
+address.
 
-Yes. I was looking at this yesterday. We need to figure out how to do
-the xscom addressing for the QME. It sets (different) bits in order to
-address a given core.
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+---
+Happy to use the address instead of the offset (or print both), but I
+like the idea of being consistent.
+---
+ hw/ppc/pnv_core.c | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
-For a -smp 4 machine, the P10_QME_SPWU_HYP read comes in on these addresses=
-:
-
-    case 0x200e883c:
-    case 0x200e483c:
-    case 0x200e283c:
-    case 0x200e183c:
-
-ie, the fourth nibble selects the core.
-
-For a -smp 8 machine, the address now has bit 24 set to select the
-second quad, so we need to cover these addresses:
-
-    case 0x210e883c:
-    case 0x210e483c:
-    case 0x210e283c:
-    case 0x210e183c:
-
-I am thinking about how to map this into an address range that a model
-can claim.
-
-Cheers,
-
-Joel
-
-PS. For reference, this is sufficient to silence xscom errors with
-skiboot and -M powernv10 -smp4. A different set of hacks is required
-for p9.
-
---- a/hw/ppc/pnv_xscom.c
-+++ b/hw/ppc/pnv_xscom.c
-@@ -106,6 +106,26 @@ static uint64_t xscom_read_default(PnvChip *chip,
-uint32_t pcba)
-     case 0x401082a:
-     case 0x4010828:
-         return 0;
-+
-+    /* P10_QME_SPWU_HYP */
-+    case 0x200e883c:
-+    case 0x200e483c:
-+    case 0x200e283c:
-+    case 0x200e183c:
-+        return 0;
-+
-+    /* P10_QME_SSH_HYP */
-+    case 0x200e882c:
-+    case 0x200e482c:
-+    case 0x200e282c:
-+    case 0x200e182c:
-+        return 0;
-+
-+    /* XPEC_P10_PCI_CPLT_CONF1 */
-+    case 0x08000009:
-+    case 0x09000009:
-+        return 0;
-+
+diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+index ffbc29cbf4f9..3eb95670d6a3 100644
+--- a/hw/ppc/pnv_core.c
++++ b/hw/ppc/pnv_core.c
+@@ -85,8 +85,8 @@ static uint64_t pnv_core_power8_xscom_read(void *opaque, hwaddr addr,
+         val = 0x24f000000000000ull;
+         break;
      default:
-         return -1;
+-        qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
+-                  addr);
++        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
++                      offset);
      }
-@@ -152,6 +172,13 @@ static bool xscom_write_default(PnvChip *chip,
-uint32_t pcba, uint64_t val)
-     case PRD_P8_IPOLL_REG_STATUS:
-     case PRD_P9_IPOLL_REG_MASK:
-     case PRD_P9_IPOLL_REG_STATUS:
+ 
+     return val;
+@@ -95,8 +95,10 @@ static uint64_t pnv_core_power8_xscom_read(void *opaque, hwaddr addr,
+ static void pnv_core_power8_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+                                         unsigned int width)
+ {
+-    qemu_log_mask(LOG_UNIMP, "Warning: writing to reg=0x%" HWADDR_PRIx "\n",
+-                  addr);
++    uint32_t offset = addr >> 3;
 +
-+    /* P10_QME_SPWU_HYP */
-+    case 0x200e883c:
-+    case 0x200e483c:
-+    case 0x200e283c:
-+    case 0x200e183c:
-+
-         return true;
++    qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
++                  offset);
+ }
+ 
+ static const MemoryRegionOps pnv_core_power8_xscom_ops = {
+@@ -140,8 +142,8 @@ static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
+         val = 0;
+         break;
      default:
-         return false;
+-        qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
+-                  addr);
++        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
++                      offset);
+     }
+ 
+     return val;
+@@ -157,8 +159,8 @@ static void pnv_core_power9_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+     case PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR:
+         break;
+     default:
+-        qemu_log_mask(LOG_UNIMP, "Warning: writing to reg=0x%" HWADDR_PRIx "\n",
+-                      addr);
++        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
++                      offset);
+     }
+ }
+ 
+@@ -189,8 +191,8 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
+         val = 0;
+         break;
+     default:
+-        qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
+-                  addr);
++        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
++                      offset);
+     }
+ 
+     return val;
+@@ -203,8 +205,8 @@ static void pnv_core_power10_xscom_write(void *opaque, hwaddr addr,
+ 
+     switch (offset) {
+     default:
+-        qemu_log_mask(LOG_UNIMP, "Warning: writing to reg=0x%" HWADDR_PRIx "\n",
+-                      addr);
++        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
++                      offset);
+     }
+ }
+ 
+@@ -421,7 +423,7 @@ static uint64_t pnv_quad_power9_xscom_read(void *opaque, hwaddr addr,
+         val = 0;
+         break;
+     default:
+-        qemu_log_mask(LOG_UNIMP, "%s: reading @0x%08x\n", __func__,
++        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+                       offset);
+     }
+ 
+@@ -438,7 +440,7 @@ static void pnv_quad_power9_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+     case P9X_EX_NCU_SPEC_BAR + 0x400: /* Second EX */
+         break;
+     default:
+-        qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
++        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+                   offset);
+     }
+ }
+@@ -465,7 +467,7 @@ static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
+ 
+     switch (offset) {
+     default:
+-        qemu_log_mask(LOG_UNIMP, "%s: reading @0x%08x\n", __func__,
++        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+                       offset);
+     }
+ 
+@@ -479,7 +481,7 @@ static void pnv_quad_power10_xscom_write(void *opaque, hwaddr addr,
+ 
+     switch (offset) {
+     default:
+-        qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
++        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+                       offset);
+     }
+ }
+-- 
+2.40.1
+
 
