@@ -2,84 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F70274990B
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2E774992F
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:16:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHLwF-0002eA-Su; Thu, 06 Jul 2023 06:10:15 -0400
+	id 1qHM1r-00040o-Hf; Thu, 06 Jul 2023 06:16:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHLwB-0002ds-Gs
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:10:11 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHLw9-00031V-8Z
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:10:11 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-992ca792065so64013166b.2
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 03:10:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688638207; x=1691230207;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=rlzA/To1rz4pnkRGLEr7guh7j0qWaB/VXOD3ON7FZHo=;
- b=xmY3qnvpB641+2KTbaCYH5x7/4XSWHGYpI3rS7L0x2toKCgoofaCCVLdrHze7Q9eOt
- Xb5buqQt9LFARLvW9s2cbkS6QVPE/GfA62g5UQY5ol3oOOftvEmmzyH8AE0DSOib3W1w
- IbKjo2yCCliG8QZtaDdq6DRCJTgje/hPGtdQ16xsksen+SpElcLnT1MOgFLjL+V85O9n
- d1Bn1NFfIstNWkTF84tZZ8+DoyTc6B4ORsq3Z4GPaUo3WbaIAMKtpNjIF58pB+ZLHM0e
- lOhkS3AIDh2A6hl45GXGfV+uz4086UiOXs4NjldLp1qqkCLOW99nSrG2von27J0gSMRb
- 9E/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688638207; x=1691230207;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rlzA/To1rz4pnkRGLEr7guh7j0qWaB/VXOD3ON7FZHo=;
- b=eivGoYb15n0k2GnqToH5BM9154dXyWogJukVB7QpT8Hay3uKJY5yxoillZNbH/wRRX
- /wuhMzphTnPTN9xxiKqesQmpw3qYBPSFCiZVRuBP5JFlso0sBbjWeUh7vKdIcIzUn6zN
- l0wic1H7ompmKSDFx+2T/A2oBJ8yiOpu11HXa/4eIrl4eZiYqYwIujlq7CJSH846g9c+
- L0UAwIpJFFP7hEevYxzGdQLUPKDZcT9LlNuZ9aZ9UrJFitUiPzyxjJVqpXFwv6+EJbmC
- PKZdfOi8FxVO4xFnjx3fNp3BFWtZOCxm68rqHH/yRjccH04svkzWcV1bVYzha1QCoCbS
- Kbcw==
-X-Gm-Message-State: ABy/qLYUvKbtu8AA73UNbCyke1fXfc+inlA05EgjUj8tuj5N5q+R0haS
- 9+Dqop3aJfuVwZpFvm9CFDeuMQDrTPbMGIE7P5Y=
-X-Google-Smtp-Source: APBJJlGINy3V+2nQwYlNgoHbtysVnvn00Q3AXGyThEyb3IrP3z8P9SWyO00OfjXomBr1Go8u9tiNOw==
-X-Received: by 2002:a17:906:1392:b0:97e:aace:b6bc with SMTP id
- f18-20020a170906139200b0097eaaceb6bcmr1049088ejc.53.1688638207562; 
- Thu, 06 Jul 2023 03:10:07 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.199.225])
- by smtp.gmail.com with ESMTPSA id
- j13-20020a170906094d00b00991bba473e2sm604712ejd.85.2023.07.06.03.10.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 03:10:07 -0700 (PDT)
-Message-ID: <83711380-73dd-e7a4-d888-3010fe4fb906@linaro.org>
-Date: Thu, 6 Jul 2023 12:10:05 +0200
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qHM1o-0003zC-Qn
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:16:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qHM1m-0004um-Qb
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:16:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688638556;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Lai2jSluB6Hol1XoCgFN0/XwaVbMUG7S5ipHRjn+3AQ=;
+ b=HRIiaJ9H9zq/SPHNSQF4QBbMEfmwev0lvVfh+VCIZstUIGMckwrb8oILOLR80hDE4CSKao
+ 5+UsFGRof9PyPjb17JYwO0gSD+haz0VSU4wv2Kj8VC/+G3QBVHAPGX1Y6iLshKkjbs9+qI
+ /Ixir2SCymvNxSbW2nZxfk9uTMii3bE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-201-x0IbV2WDMMOdMvcq5_CK6w-1; Thu, 06 Jul 2023 06:15:55 -0400
+X-MC-Unique: x0IbV2WDMMOdMvcq5_CK6w-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 014A681DA5D
+ for <qemu-devel@nongnu.org>; Thu,  6 Jul 2023 10:15:55 +0000 (UTC)
+Received: from [10.39.194.17] (unknown [10.39.194.17])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 092A92166B25;
+ Thu,  6 Jul 2023 10:15:53 +0000 (UTC)
+Message-ID: <ddb293c6-2475-8fbb-7d84-f276ce17956a@redhat.com>
+Date: Thu, 6 Jul 2023 12:15:47 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH 14/21] mac_via: work around underflow in TimeDBRA timing
- loop in SETUPTIMEK
+Subject: Re: [PATCH] docs/migration: Update postcopy bits
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
- <20230702154838.722809-15-mark.cave-ayland@ilande.co.uk>
- <13c93212-0dc4-b7f6-0e29-eb8753f30801@linaro.org>
- <a00ae69d-3e2f-73fd-3e4a-c6e6154a0328@ilande.co.uk>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <a00ae69d-3e2f-73fd-3e4a-c6e6154a0328@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
+ Juan Quintela <quintela@redhat.com>
+References: <20230627200222.557529-1-peterx@redhat.com>
+From: Laszlo Ersek <lersek@redhat.com>
+In-Reply-To: <20230627200222.557529-1-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,92 +80,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/7/23 21:49, Mark Cave-Ayland wrote:
-> On 03/07/2023 09:30, Philippe Mathieu-Daudé wrote:
+On 6/27/23 22:02, Peter Xu wrote:
+> We have postcopy recovery but not reflected in the document, do an update
+> for that.
 > 
->> On 2/7/23 17:48, Mark Cave-Ayland wrote:
->>> The MacOS toolbox ROM calculates the number of branches that can be 
->>> executed
->>> per millisecond as part of its timer calibration. Since modern hosts are
->>> considerably quicker than original hardware, the negative counter 
->>> reaches zero
->>> before the calibration completes leading to division by zero later in
->>> CALCULATESLOD.
->>>
->>> Instead of trying to fudge the timing loop (which won't work for 
->>> TimeDBRA/TimeSCCDB
->>> anyhow), use the pattern of access to the VIA1 registers to detect 
->>> when SETUPTIMEK
->>> has finished executing and write some well-known good timer values to 
->>> TimeDBRA
->>> and TimeSCCDB taken from real hardware with a suitable scaling factor.
->>>
->>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>> ---
->>>   hw/misc/mac_via.c         | 115 ++++++++++++++++++++++++++++++++++++++
->>>   hw/misc/trace-events      |   1 +
->>>   include/hw/misc/mac_via.h |   3 +
->>>   3 files changed, 119 insertions(+)
->>>
->>> diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
->>> index baeb73eeb3..766a32a95d 100644
->>> --- a/hw/misc/mac_via.c
->>> +++ b/hw/misc/mac_via.c
->>> @@ -16,6 +16,7 @@
->>>    */
->>>   #include "qemu/osdep.h"
->>> +#include "exec/address-spaces.h"
->>>   #include "migration/vmstate.h"
->>>   #include "hw/sysbus.h"
->>>   #include "hw/irq.h"
->>
->>
->>> +/*
->>> + * Addresses and real values for TimeDBRA/TimeSCCB to allow timer 
->>> calibration
->>> + * to succeed (NOTE: both values have been multiplied by 3 to cope 
->>> with the
->>> + * speed of QEMU execution on a modern host
->>> + */
->>> +#define MACOS_TIMEDBRA        0xd00
->>> +#define MACOS_TIMESCCB        0xd02
->>> +
->>> +#define MACOS_TIMEDBRA_VALUE  (0x2a00 * 3)
->>> +#define MACOS_TIMESCCB_VALUE  (0x079d * 3)
->>> +
->>> +static bool via1_is_toolbox_timer_calibrated(void)
->>> +{
->>> +    /*
->>> +     * Indicate whether the MacOS toolbox has been calibrated by 
->>> checking
->>> +     * for the value of our magic constants
->>> +     */
->>> +    uint16_t timedbra = lduw_be_phys(&address_space_memory, 
->>> MACOS_TIMEDBRA);
->>> +    uint16_t timesccdb = lduw_be_phys(&address_space_memory, 
->>> MACOS_TIMESCCB);
->>
->> Rather than using the global address_space_memory (which we secretly
->> try to remove entirely), could we pass a MemoryRegion link property
->> to the VIA1 device?
+> Add a very small section on postcopy preempt.
 > 
-> Hmmm good question. It seems to me that we're dispatching a write to the 
-> default address space (which includes all RAM and MMIO etc.) rather than 
-> a particular MemoryRegion so it feels as if AddressSpace is the right 
-> approach here. Unfortunately since AddressSpace is not a QOM type then 
-> it isn't possible to pass it as a link property.
+> Touch up the pagemap section, dropping the unsent map because it's already
+> been dropped in the source code in commit 1e7cf8c323 ("migration/postcopy:
+> unsentmap is not necessary for postcopy").
+> 
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  docs/devel/migration.rst | 89 +++++++++++++++++++++++++++++-----------
+>  1 file changed, 65 insertions(+), 24 deletions(-)
+> 
+> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+> index 6f65c23b47..6ed485ae38 100644
+> --- a/docs/devel/migration.rst
+> +++ b/docs/devel/migration.rst
+> @@ -721,6 +721,42 @@ processing.
+>     is no longer used by migration, while the listen thread carries on servicing
+>     page data until the end of migration.
+>  
+> +Postcopy Recovery
+> +-----------------
+> +
+> +Comparing to precopy, postcopy is special on error handlings.  When any
+> +error happens (in this case, mostly network errors), QEMU cannot easily
+> +fail a migration because VM data resides in both source and destination
+> +QEMU instances.  On the other hand, when issue happens QEMU on both sides
+> +will go into a paused state.  It'll need a recovery phase to continue a
+> +paused postcopy migration.
+> +
+> +The recovery phase normally contains a few steps:
+> +
+> +  - When network issue occurs, both QEMU will go into PAUSED state
+> +
+> +  - When the network is recovered (or a new network is provided), the admin
+> +    can setup the new channel for migration using QMP command
+> +    'migrate-recover' on destination node, preparing for a resume.
+> +
+> +  - On source host, the admin can continue the interrupted postcopy
+> +    migration using QMP command 'migrate' with resume=true flag set.
+> +
+> +  - After the connection is re-established, QEMU will continue the postcopy
+> +    migration on both sides.
+> +
+> +During a paused postcopy migration, the VM can logically still continue
+> +running, and it will not be impacted from any page access to pages that
+> +were already migrated to destination VM before the interruption happens.
+> +However, if any of the missing pages got accessed on destination VM, the VM
+> +thread will be halted waiting for the page to be migrated, it means it can
+> +be halted until the recovery is complete.
+> +
+> +The impact of accessing missing pages can be relevant to different
+> +configurations of the guest.  For example, when with async page fault
+> +enabled, logically the guest can proactively schedule out the threads
+> +accessing missing pages.
+> +
+>  Postcopy states
+>  ---------------
+>  
+> @@ -765,36 +801,31 @@ ADVISE->DISCARD->LISTEN->RUNNING->END
+>      (although it can't do the cleanup it would do as it
+>      finishes a normal migration).
+>  
+> + - Paused
+> +
+> +    Postcopy can run into a paused state (normally on both sides when
+> +    happens), where all threads will be temporarily halted mostly due to
+> +    network errors.  When reaching paused state, migration will make sure
+> +    the qemu binary on both sides maintain the data without corrupting
+> +    the VM.  To continue the migration, the admin needs to fix the
+> +    migration channel using the QMP command 'migrate-recover' on the
+> +    destination node, then resume the migration using QMP command 'migrate'
+> +    again on source node, with resume=true flag set.
+> +
+>   - End
+>  
+>      The listen thread can now quit, and perform the cleanup of migration
+>      state, the migration is now complete.
+>  
+> -Source side page maps
+> ----------------------
+> +Source side page map
+> +--------------------
+>  
+> -The source side keeps two bitmaps during postcopy; 'the migration bitmap'
+> -and 'unsent map'.  The 'migration bitmap' is basically the same as in
+> -the precopy case, and holds a bit to indicate that page is 'dirty' -
+> -i.e. needs sending.  During the precopy phase this is updated as the CPU
+> -dirties pages, however during postcopy the CPUs are stopped and nothing
+> -should dirty anything any more.
+> -
+> -The 'unsent map' is used for the transition to postcopy. It is a bitmap that
+> -has a bit cleared whenever a page is sent to the destination, however during
+> -the transition to postcopy mode it is combined with the migration bitmap
+> -to form a set of pages that:
+> -
+> -   a) Have been sent but then redirtied (which must be discarded)
+> -   b) Have not yet been sent - which also must be discarded to cause any
+> -      transparent huge pages built during precopy to be broken.
+> -
+> -Note that the contents of the unsentmap are sacrificed during the calculation
+> -of the discard set and thus aren't valid once in postcopy.  The dirtymap
+> -is still valid and is used to ensure that no page is sent more than once.  Any
+> -request for a page that has already been sent is ignored.  Duplicate requests
+> -such as this can happen as a page is sent at about the same time the
+> -destination accesses it.
+> +The 'migration bitmap' in postcopy is basically the same as in the precopy,
+> +where each of the bit to indicate that page is 'dirty' - i.e. needs
+> +sending.  During the precopy phase this is updated as the CPU dirties
+> +pages, however during postcopy the CPUs are stopped and nothing should
+> +dirty anything any more. Instead, dirty bits are cleared when the relevant
+> +pages are sent during postcopy.
+>  
+>  Postcopy with hugepages
+>  -----------------------
+> @@ -853,6 +884,16 @@ Retro-fitting postcopy to existing clients is possible:
+>       guest memory access is made while holding a lock then all other
+>       threads waiting for that lock will also be blocked.
+>  
+> +Postcopy Preemption Mode
+> +------------------------
+> +
+> +Postcopy preempt is a new capability introduced in 8.0 QEMU release, it
+> +allows urgent pages (those got page fault requested from destination QEMU
+> +explicitly) to be sent in a separate preempt channel, rather than queued in
+> +the background migration channel.  Anyone who cares about latencies of page
+> +faults during a postcopy migration should enable this feature.  By default,
+> +it's not enabled.
+> +
+>  Firmware
+>  ========
+>  
 
-We pass a MR link.
+One suggestion, to squash in:
 
-> There are existing examples in qtest that use first_cpu->as which seems 
-> a better option unless we want to move away from using first_cpu in the 
-> codebase?
+diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
+index 6f65c23b47dc..3294679936b2 100644
+--- a/docs/devel/migration.rst
++++ b/docs/devel/migration.rst
+@@ -594,8 +594,7 @@ Postcopy
+ 'Postcopy' migration is a way to deal with migrations that refuse to converge
+ (or take too long to converge) its plus side is that there is an upper bound on
+ the amount of migration traffic and time it takes, the down side is that during
+-the postcopy phase, a failure of *either* side or the network connection causes
+-the guest to be lost.
++the postcopy phase, a failure of *either* side causes the guest to be lost.
+ 
+ In postcopy the destination CPUs are started before all the memory has been
+ transferred, and accesses to pages that are yet to be transferred cause
 
-See:
+This removes "or the network connection" as a fatal failure.
 
-   $ git grep -E "(PROP.*LINK.*MEMORY_REGION|dma-mr)"
+Acked-by: Laszlo Ersek <lersek@redhat.com>
 
-Anyway I don't object to your patch, we can rework this
-&address_space_memory use later when we'll have discussed the whole
-design.
+Laszlo
+
 
