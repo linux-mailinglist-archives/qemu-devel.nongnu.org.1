@@ -2,69 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E2E774992F
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:16:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 111AF749936
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:19:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHM1r-00040o-Hf; Thu, 06 Jul 2023 06:16:03 -0400
+	id 1qHM3a-0004jK-TW; Thu, 06 Jul 2023 06:17:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qHM1o-0003zC-Qn
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:16:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qHM1m-0004um-Qb
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:16:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688638556;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Lai2jSluB6Hol1XoCgFN0/XwaVbMUG7S5ipHRjn+3AQ=;
- b=HRIiaJ9H9zq/SPHNSQF4QBbMEfmwev0lvVfh+VCIZstUIGMckwrb8oILOLR80hDE4CSKao
- 5+UsFGRof9PyPjb17JYwO0gSD+haz0VSU4wv2Kj8VC/+G3QBVHAPGX1Y6iLshKkjbs9+qI
- /Ixir2SCymvNxSbW2nZxfk9uTMii3bE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-201-x0IbV2WDMMOdMvcq5_CK6w-1; Thu, 06 Jul 2023 06:15:55 -0400
-X-MC-Unique: x0IbV2WDMMOdMvcq5_CK6w-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 014A681DA5D
- for <qemu-devel@nongnu.org>; Thu,  6 Jul 2023 10:15:55 +0000 (UTC)
-Received: from [10.39.194.17] (unknown [10.39.194.17])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 092A92166B25;
- Thu,  6 Jul 2023 10:15:53 +0000 (UTC)
-Message-ID: <ddb293c6-2475-8fbb-7d84-f276ce17956a@redhat.com>
-Date: Thu, 6 Jul 2023 12:15:47 +0200
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qHM3Z-0004in-6X
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:17:49 -0400
+Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qHM3X-0005qD-Id
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:17:48 -0400
+Received: by mail-ot1-x336.google.com with SMTP id
+ 46e09a7af769-6b883e1e9d5so378907a34.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 03:17:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1688638666; x=1691230666;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=pZ0vziReUTJ6jE0UHySINqmk2Aeu7EHNyCfMcmvDeao=;
+ b=AXfvZLJbu+1GSZBrodgZerEdQdc79c+NZGYXmeUyC9TEk4lcHPxH+fCweiwYQGIODD
+ qoQLZHJ/HfveYycEyvx7M6xc/EK4cTwlOIzTMR0N+sUM92iJe5wu4kIh6r4AAHtZ7eDd
+ OR/e+k62tpaYZK7fIL5VYD6nkVZD/bfftEzNblXBfQpgUUvBNuw7yrPeCM84ORxOSQCa
+ DzD0Rfv3ZCZeFqV/95J92ogEFixvEZ+1s4scRxA22gEvS3/unw2gVcKIX6GRTCq+n4OO
+ 7d92JpXwj6gLKheXbXee2ErGVjawZojdmb/BEnpjjYi/204TaljZ7YwN/dgwfcw2ljRW
+ S4sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688638666; x=1691230666;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=pZ0vziReUTJ6jE0UHySINqmk2Aeu7EHNyCfMcmvDeao=;
+ b=WpdCTYFZo88aExlAUr4P9Ch4tram4xxp5mc4cX8fQBOWu1KCh9GLYkQ+2FBatxLKSj
+ 0c97Wc4hLs0PWXt38RCLDYi/+H6EZA7+YPQTWXnWq79b3cXkTDig4CAJcKhwxooA4QzW
+ yDrLQz2b3SuEbt+vxH44QoiELdWpGaT7yUzg2JuOjPF5xeM89sS0ErXnrm1wcXGJ/yfX
+ DHcjGJWlt8QFR0K0ww+dBFcqGzktbYfJAxgQRkhfoiIcLPcL0QvfMYVPBzayMJpeOm2o
+ qd99JLikpkNDHUcjFEszloGXyTExWoRamSxyAzC+XjWhhmCFG2SW+sh6iAPUkowV7eAZ
+ URkQ==
+X-Gm-Message-State: ABy/qLabdEHWIadcuxED0lyaYuzD2SajFr4Y2d13tPAMVz5ijdr8YB8e
+ o7XhUELiCjP33uiOQfl87YkYHnFZckMPbJ9pnrs=
+X-Google-Smtp-Source: APBJJlFHTD+k6I6LRBh/19512+UBnRVYCTNtzBINBnlpVmqAwQXo9ShyF67rd3rUAqleoc/4SCeOZw==
+X-Received: by 2002:a9d:7f83:0:b0:6b8:8f20:4cbc with SMTP id
+ t3-20020a9d7f83000000b006b88f204cbcmr1494637otp.13.1688638665752; 
+ Thu, 06 Jul 2023 03:17:45 -0700 (PDT)
+Received: from grind.. (201-69-66-110.dial-up.telesp.net.br. [201.69.66.110])
+ by smtp.gmail.com with ESMTPSA id
+ h25-20020a9d6a59000000b006b8850ad193sm511382otn.56.2023.07.06.03.17.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Jul 2023 03:17:45 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v9 00/20] target/riscv, KVM: fixes and enhancements
+Date: Thu,  6 Jul 2023 07:17:18 -0300
+Message-ID: <20230706101738.460804-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Subject: Re: [PATCH] docs/migration: Update postcopy bits
-Content-Language: en-US
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Juan Quintela <quintela@redhat.com>
-References: <20230627200222.557529-1-peterx@redhat.com>
-From: Laszlo Ersek <lersek@redhat.com>
-In-Reply-To: <20230627200222.557529-1-peterx@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lersek@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,163 +92,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/27/23 22:02, Peter Xu wrote:
-> We have postcopy recovery but not reflected in the document, do an update
-> for that.
-> 
-> Add a very small section on postcopy preempt.
-> 
-> Touch up the pagemap section, dropping the unsent map because it's already
-> been dropped in the source code in commit 1e7cf8c323 ("migration/postcopy:
-> unsentmap is not necessary for postcopy").
-> 
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  docs/devel/migration.rst | 89 +++++++++++++++++++++++++++++-----------
->  1 file changed, 65 insertions(+), 24 deletions(-)
-> 
-> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
-> index 6f65c23b47..6ed485ae38 100644
-> --- a/docs/devel/migration.rst
-> +++ b/docs/devel/migration.rst
-> @@ -721,6 +721,42 @@ processing.
->     is no longer used by migration, while the listen thread carries on servicing
->     page data until the end of migration.
->  
-> +Postcopy Recovery
-> +-----------------
-> +
-> +Comparing to precopy, postcopy is special on error handlings.  When any
-> +error happens (in this case, mostly network errors), QEMU cannot easily
-> +fail a migration because VM data resides in both source and destination
-> +QEMU instances.  On the other hand, when issue happens QEMU on both sides
-> +will go into a paused state.  It'll need a recovery phase to continue a
-> +paused postcopy migration.
-> +
-> +The recovery phase normally contains a few steps:
-> +
-> +  - When network issue occurs, both QEMU will go into PAUSED state
-> +
-> +  - When the network is recovered (or a new network is provided), the admin
-> +    can setup the new channel for migration using QMP command
-> +    'migrate-recover' on destination node, preparing for a resume.
-> +
-> +  - On source host, the admin can continue the interrupted postcopy
-> +    migration using QMP command 'migrate' with resume=true flag set.
-> +
-> +  - After the connection is re-established, QEMU will continue the postcopy
-> +    migration on both sides.
-> +
-> +During a paused postcopy migration, the VM can logically still continue
-> +running, and it will not be impacted from any page access to pages that
-> +were already migrated to destination VM before the interruption happens.
-> +However, if any of the missing pages got accessed on destination VM, the VM
-> +thread will be halted waiting for the page to be migrated, it means it can
-> +be halted until the recovery is complete.
-> +
-> +The impact of accessing missing pages can be relevant to different
-> +configurations of the guest.  For example, when with async page fault
-> +enabled, logically the guest can proactively schedule out the threads
-> +accessing missing pages.
-> +
->  Postcopy states
->  ---------------
->  
-> @@ -765,36 +801,31 @@ ADVISE->DISCARD->LISTEN->RUNNING->END
->      (although it can't do the cleanup it would do as it
->      finishes a normal migration).
->  
-> + - Paused
-> +
-> +    Postcopy can run into a paused state (normally on both sides when
-> +    happens), where all threads will be temporarily halted mostly due to
-> +    network errors.  When reaching paused state, migration will make sure
-> +    the qemu binary on both sides maintain the data without corrupting
-> +    the VM.  To continue the migration, the admin needs to fix the
-> +    migration channel using the QMP command 'migrate-recover' on the
-> +    destination node, then resume the migration using QMP command 'migrate'
-> +    again on source node, with resume=true flag set.
-> +
->   - End
->  
->      The listen thread can now quit, and perform the cleanup of migration
->      state, the migration is now complete.
->  
-> -Source side page maps
-> ----------------------
-> +Source side page map
-> +--------------------
->  
-> -The source side keeps two bitmaps during postcopy; 'the migration bitmap'
-> -and 'unsent map'.  The 'migration bitmap' is basically the same as in
-> -the precopy case, and holds a bit to indicate that page is 'dirty' -
-> -i.e. needs sending.  During the precopy phase this is updated as the CPU
-> -dirties pages, however during postcopy the CPUs are stopped and nothing
-> -should dirty anything any more.
-> -
-> -The 'unsent map' is used for the transition to postcopy. It is a bitmap that
-> -has a bit cleared whenever a page is sent to the destination, however during
-> -the transition to postcopy mode it is combined with the migration bitmap
-> -to form a set of pages that:
-> -
-> -   a) Have been sent but then redirtied (which must be discarded)
-> -   b) Have not yet been sent - which also must be discarded to cause any
-> -      transparent huge pages built during precopy to be broken.
-> -
-> -Note that the contents of the unsentmap are sacrificed during the calculation
-> -of the discard set and thus aren't valid once in postcopy.  The dirtymap
-> -is still valid and is used to ensure that no page is sent more than once.  Any
-> -request for a page that has already been sent is ignored.  Duplicate requests
-> -such as this can happen as a page is sent at about the same time the
-> -destination accesses it.
-> +The 'migration bitmap' in postcopy is basically the same as in the precopy,
-> +where each of the bit to indicate that page is 'dirty' - i.e. needs
-> +sending.  During the precopy phase this is updated as the CPU dirties
-> +pages, however during postcopy the CPUs are stopped and nothing should
-> +dirty anything any more. Instead, dirty bits are cleared when the relevant
-> +pages are sent during postcopy.
->  
->  Postcopy with hugepages
->  -----------------------
-> @@ -853,6 +884,16 @@ Retro-fitting postcopy to existing clients is possible:
->       guest memory access is made while holding a lock then all other
->       threads waiting for that lock will also be blocked.
->  
-> +Postcopy Preemption Mode
-> +------------------------
-> +
-> +Postcopy preempt is a new capability introduced in 8.0 QEMU release, it
-> +allows urgent pages (those got page fault requested from destination QEMU
-> +explicitly) to be sent in a separate preempt channel, rather than queued in
-> +the background migration channel.  Anyone who cares about latencies of page
-> +faults during a postcopy migration should enable this feature.  By default,
-> +it's not enabled.
-> +
->  Firmware
->  ========
->  
+Hi,
 
-One suggestion, to squash in:
+In this version we dialed back from our design decision in patch 14,
+returning to the design we've been using since the first version. The
+rationale behind is that we can't get rid of EINVAL since it will break
+extension for all other KVM versions prior to this one where we're
+adding the first version of the KVM specific capabilities. We'll switch
+later on for get-reg-list when it's available, but for now we're stuck
+with EINVAL. Drew provided a detailed explanation here:
 
-diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
-index 6f65c23b47dc..3294679936b2 100644
---- a/docs/devel/migration.rst
-+++ b/docs/devel/migration.rst
-@@ -594,8 +594,7 @@ Postcopy
- 'Postcopy' migration is a way to deal with migrations that refuse to converge
- (or take too long to converge) its plus side is that there is an upper bound on
- the amount of migration traffic and time it takes, the down side is that during
--the postcopy phase, a failure of *either* side or the network connection causes
--the guest to be lost.
-+the postcopy phase, a failure of *either* side causes the guest to be lost.
- 
- In postcopy the destination CPUs are started before all the memory has been
- transferred, and accesses to pages that are yet to be transferred cause
+https://lore.kernel.org/qemu-devel/20230706-38ab9f9705448bb10413f1af@orel/T/#m75a5323e76518c02598758fdd6a8943951812875
 
-This removes "or the network connection" as a fatal failure.
+As a bonus I also fixed the device-tree binding link satp in patch 2 like
+Connor suggested. 
 
-Acked-by: Laszlo Ersek <lersek@redhat.com>
+I believe we're ready to go.
 
-Laszlo
+Patches missing review: 14
+
+Changes from v8:
+  - patch 2:
+    - fix device-tree binding link in commit message 
+  - patch 14:
+    - use EINVAL instead of ENOENT
+v8 link: https://lore.kernel.org/qemu-devel/20230706-38ab9f9705448bb10413f1af@orel/T/#m1c889304847598789db313f3e0854ed0d41ce60c
+
+Daniel Henrique Barboza (20):
+  target/riscv: skip features setup for KVM CPUs
+  hw/riscv/virt.c: skip 'mmu-type' FDT if satp mode not set
+  target/riscv/cpu.c: restrict 'mvendorid' value
+  target/riscv/cpu.c: restrict 'mimpid' value
+  target/riscv/cpu.c: restrict 'marchid' value
+  target/riscv: use KVM scratch CPUs to init KVM properties
+  target/riscv: read marchid/mimpid in kvm_riscv_init_machine_ids()
+  target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs
+  linux-headers: Update to v6.4-rc1
+  target/riscv/kvm.c: init 'misa_ext_mask' with scratch CPU
+  target/riscv/cpu: add misa_ext_info_arr[]
+  target/riscv: add KVM specific MISA properties
+  target/riscv/kvm.c: update KVM MISA bits
+  target/riscv/kvm.c: add multi-letter extension KVM properties
+  target/riscv/cpu.c: add satp_mode properties earlier
+  target/riscv/cpu.c: remove priv_ver check from riscv_isa_string_ext()
+  target/riscv/cpu.c: create KVM mock properties
+  target/riscv: update multi-letter extension KVM properties
+  target/riscv/kvm.c: add kvmconfig_get_cfg_addr() helper
+  target/riscv/kvm.c: read/write (cbom|cboz)_blocksize in KVM
+
+ hw/riscv/virt.c                               |  14 +-
+ include/standard-headers/linux/const.h        |   2 +-
+ include/standard-headers/linux/virtio_blk.h   |  18 +-
+ .../standard-headers/linux/virtio_config.h    |   6 +
+ include/standard-headers/linux/virtio_net.h   |   1 +
+ linux-headers/asm-arm64/kvm.h                 |  33 ++
+ linux-headers/asm-riscv/kvm.h                 |  53 +-
+ linux-headers/asm-riscv/unistd.h              |   9 +
+ linux-headers/asm-s390/unistd_32.h            |   1 +
+ linux-headers/asm-s390/unistd_64.h            |   1 +
+ linux-headers/asm-x86/kvm.h                   |   3 +
+ linux-headers/linux/const.h                   |   2 +-
+ linux-headers/linux/kvm.h                     |  12 +-
+ linux-headers/linux/psp-sev.h                 |   7 +
+ linux-headers/linux/userfaultfd.h             |  17 +-
+ target/riscv/cpu.c                            | 341 ++++++++++--
+ target/riscv/cpu.h                            |   7 +-
+ target/riscv/kvm.c                            | 499 +++++++++++++++++-
+ target/riscv/kvm_riscv.h                      |   1 +
+ 19 files changed, 940 insertions(+), 87 deletions(-)
+
+-- 
+2.41.0
 
 
