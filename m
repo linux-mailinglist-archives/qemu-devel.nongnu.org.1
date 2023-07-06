@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707DF7497B3
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 10:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 402037497C2
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 10:55:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHKhg-0002lo-Mr; Thu, 06 Jul 2023 04:51:11 -0400
+	id 1qHKl1-0004sr-SF; Thu, 06 Jul 2023 04:54:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHKhW-0002dW-NQ
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:50:58 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHKkx-0004sK-UJ
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:54:31 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHKhV-0007yA-5e
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:50:58 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-986d8332f50so54943166b.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 01:50:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHKkw-0001AC-DB
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:54:31 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-51d93425853so637658a12.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 01:54:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688633455; x=1691225455;
+ d=linaro.org; s=google; t=1688633668; x=1691225668;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=CniIOzDXhYMaXuEP6vqLCYXmvMQ3w0l601sik5s9zoY=;
- b=DaNPnyesgDdyZyrzsN4QjYYQhEH96S/npSUTu08J0QMNW9tc9qsvno8r4/NPaLR2AG
- LV4inDYQkk21XOzkIBmHj3RNRSuEeV7If4XRSjoI7sTJdZPJ4yrcSDL4qlE7nSQaTRPH
- 3duEC0n33NE6sUeBc5xPeRfU/RJ0coLYdzwFla0SpyXyj6mY+rgrUQSS555q73r9onyS
- paM2zCLg/MAplHTQSG0wli7zl63vguDVuG6a4v/QZuZN2D1RF8bC3Q1BPfTku3/Gr6yR
- qrwa2fIjjMBR9WuG7Jh/FxOolnkktaa9ZRSfTlEgy5IS6PUSjBpPAkQWQ7t/ipdHmYFR
- KaHA==
+ bh=3LEwJlDCCvsscZHDcT9vhNZr/NT01L6YBlOu8f92Vmc=;
+ b=ycnU1asSFzZfGXMIXTd7g8NrKLi2g+2b3zh8Ca5j0mziCqI//WohGfuresXMM3+TsJ
+ XyhuCilpdW2IpsENyNqA5+++BFRfbYJUF47J6aPR0H8lqh8P08Ho3v/eU/l3+FuWqVxl
+ AU+xRMrWJRJN+45T/pYjXw1GOncjpyc5C91WRfkALG57L1cfGXscZHtaMn0ZKKE76p7M
+ j5yiRrytrKGxKQkAuQ2FJRmW4RDEGlYz8lg8Gt7xFxJoULlkwMXEbHLIh4xa5mVQW5ZB
+ 3zaFTmykqoWtyuHrLEEUADW1H44F5Ij5sFQodobpWlpBYJq0pDgFRe7JaA6KMAb81Gaq
+ 7UCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688633455; x=1691225455;
+ d=1e100.net; s=20221208; t=1688633668; x=1691225668;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CniIOzDXhYMaXuEP6vqLCYXmvMQ3w0l601sik5s9zoY=;
- b=e4hrePAiolUmV5zbGAg8wF9y5aewLMgWkn+tVqLhuf22FClnF1n0oRIgMAlwyuoORz
- R9K8Pkp78Vy5hspVFNjTjuWWqzBcsONM2Lk/NDEX7LrGwNzhJ7sX4i0QKs+4RMyTPEKe
- Yy7q643v1DH2QrDVTah4E2AJsMhUVRB56Y4IPJJtQu0P1enAnDhiWEDiDvNxwBV5d7qP
- VKF//5PuBAdeIk5ATAOCFnzlEDXajM7B326DBN0WXxVJEeWLiGo9JBsXM4iEUI31dI59
- rVa2zwDqNLnjz38nZ1wx7cb/E6pNaE/DW9NMjH2GFdnlqCcMqYRfTM+h6JuWpqeTaDjQ
- n+8Q==
-X-Gm-Message-State: ABy/qLY1gGZcIXGKZUpdK16w1fsCWtQYw5iLbkK11R2/XbVHWbfnRjn5
- n8RWQe6lMEDN2VRa4efaFP8TOQbq32fUgMuE+Mw=
-X-Google-Smtp-Source: APBJJlGeYQy6xolAfczdGZDZB7OwzbNu3K+Qj2no8P3v8sQaQS34x/sVvPaIuLSmFgriCMicuInBig==
-X-Received: by 2002:a17:906:f2ca:b0:96f:d345:d0f7 with SMTP id
- gz10-20020a170906f2ca00b0096fd345d0f7mr685469ejb.62.1688633455534; 
- Thu, 06 Jul 2023 01:50:55 -0700 (PDT)
+ bh=3LEwJlDCCvsscZHDcT9vhNZr/NT01L6YBlOu8f92Vmc=;
+ b=e+VE9xK1Lvw+qTYpJGnS2gH0A4DwqYq6aRu0DZWVwvLHU8sT2V5L5rUAW6SDobGndR
+ QgRtdpdxLbbBqHZ/mbzMvKKnRHDBtBDEK/h/crUGPKDox82OBV7MRtl1HzHIu3RkjLVU
+ 9LwdOhv12R6JooVnJGibYwskGLswifozCAg2WsyGrldsEgKrP6BuwfjZ1yImW5DPL89f
+ 2wg+6EmmRjHhxxrNeRbqZVB8sKcAK6zlkNYRDAdJz5Jo7ry5zMmrL7/8LNcy5SJBY3jq
+ UvE72U7o+E57bRJiMSayHO2dO5Zr6uaRElF5otYx5oQNIbMwn5tfvYKTD1W3TzTPn/Qi
+ BqDw==
+X-Gm-Message-State: ABy/qLb/eo1t+QkwE/wjJVQWCSmTe2kuppaUAARWOx3Vursuc4UzKi/A
+ h5gyMYblKRzaInvrU+38E5rYTQ==
+X-Google-Smtp-Source: APBJJlFQ6oJvGlbfXpk4Ng/Nv7/7LadrOU6TR/lUpYJT3babmH+CiRbvxoVonk92PBKA06aONHTUeQ==
+X-Received: by 2002:aa7:d350:0:b0:51e:f8a:e5ef with SMTP id
+ m16-20020aa7d350000000b0051e0f8ae5efmr1139160edr.18.1688633668725; 
+ Thu, 06 Jul 2023 01:54:28 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.199.225])
  by smtp.gmail.com with ESMTPSA id
- v26-20020a17090690da00b0098e4aef0791sm532682ejw.66.2023.07.06.01.50.53
+ y8-20020aa7ccc8000000b0051a2d2f82fdsm515093edt.6.2023.07.06.01.54.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 01:50:55 -0700 (PDT)
-Message-ID: <590f7428-4f46-0d6f-b616-f77e509013b6@linaro.org>
-Date: Thu, 6 Jul 2023 10:50:52 +0200
+ Thu, 06 Jul 2023 01:54:28 -0700 (PDT)
+Message-ID: <ee98ce1e-ca79-3276-45c1-09a599f19a58@linaro.org>
+Date: Thu, 6 Jul 2023 10:54:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] meson.build: Remove the logic to link C code with the C++
- linker
+Subject: Re: [PATCH v2] riscv: Generate devicetree only after machine
+ initialization is complete
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Michael Roth <michael.roth@amd.com>, Konstantin Kostiuk
- <kkostiuk@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <20230706064736.178962-1-thuth@redhat.com>
+To: Guenter Roeck <linux@roeck-us.net>, Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair23@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.c>
+References: <20230706035937.1870483-1-linux@roeck-us.net>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230706064736.178962-1-thuth@redhat.com>
+In-Reply-To: <20230706035937.1870483-1-linux@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,20 +98,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/7/23 08:47, Thomas Huth wrote:
-> We are not mixing C++ with C code anymore, the only remaining
-> C++ code in qga/vss-win32/ is used for a plain C++ executable.
-> Thus we can remove the hacks for linking C code with the C++ linker
-> now to simplify meson.build a little bit, and also to avoid that
-> some C++ code sneaks in by accident again.
+On 6/7/23 05:59, Guenter Roeck wrote:
+> If the devicetree is created before machine initialization is complete,
+> it misses dynamic devices. Specifically, the tpm device is not added
+> to the devicetree file and is therefore not instantiated in Linux.
+> Load/create devicetree in virt_machine_done() to solve the problem.
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Cc: Alistair Francis <alistair23@gmail.com>
+> Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.c>
+> Fixes: 325b7c4e75 hw/riscv: Enable TPM backends
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 > ---
->   meson.build     | 24 ++++++------------------
->   scripts/main.c  |  1 -
->   qga/meson.build |  2 +-
->   3 files changed, 7 insertions(+), 20 deletions(-)
->   delete mode 100644 scripts/main.c
+> v2: Handle devicetree (load & create) entirely in machine_done function.
+> 
+>   hw/riscv/virt.c | 22 +++++++++++-----------
+>   1 file changed, 11 insertions(+), 11 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
