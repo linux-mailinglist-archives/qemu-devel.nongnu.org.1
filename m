@@ -2,89 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41C3749B30
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:55:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF994749B2F
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:55:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHNYd-00025u-5J; Thu, 06 Jul 2023 07:53:59 -0400
+	id 1qHNZD-0002Wi-Qo; Thu, 06 Jul 2023 07:54:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHNYb-00025X-9S
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:53:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qHNZ4-0002Sm-P2; Thu, 06 Jul 2023 07:54:27 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHNYZ-0002gX-Fk
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:53:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688644433;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=G0os+kN4bZe4SfQH+vXx/HJh5UhcMsuNW8IKvBsb5N0=;
- b=Xz0z2QwiKXOHYikapwPfHMR3KEp2hkbDvLWvDxJ6JDhCBF/8DbWmBZ1d+1QBZmORbbJURu
- XzzmGMIUp9BrP5B3DqMI9IbNj/6MpSpvsgaPXyR1nKWUvLiamEnkP0eIDbaihjNofRRzjI
- Ey1VI2bQaNng8FBfa2cqAWiiXrC9FzE=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-520-xqYO8imSPhWUMeFD_Qyo4A-1; Thu, 06 Jul 2023 07:53:51 -0400
-X-MC-Unique: xqYO8imSPhWUMeFD_Qyo4A-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7672918d8a4so19144185a.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 04:53:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688644431; x=1691236431;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=G0os+kN4bZe4SfQH+vXx/HJh5UhcMsuNW8IKvBsb5N0=;
- b=caJPFFpws2uT0M2ManVy+9xj8zV0Pm/9udADMsi2s2xWmzJ5Jexjqu6q+a7aW857cb
- t44WG+st94gPLOEFekEu4pdPyE9Y67Ns78x972NSLcR6vMEL1jdYEenWnnuo9D0MLHdj
- dghMBKkn8qRB/Wrfd9R59+/ju3xQpiqnAGG5NWtrdRKCGoKmy8Xnc9sYJYx8FpWXTFJT
- mOcuMoFgqNuBY3IERIvESBUiPUUSR7Z6MVyicaIULmEIX0C+VFyExOdaLNYr6TR7ArBT
- qQXkn34ApIiinWYT+ja5cm5VyughM7cK3bmAkwvtCfFbWBQydBCRs78BpdrLam1vofIu
- +kAA==
-X-Gm-Message-State: ABy/qLaHawsCNOgSRoDzxvlWa/AZ7n+c8LLJnmqUPUKNCb0WzDyobBwW
- 1UIzQ+YeIDbVLNLXPJ2YQbVo2UuvR5ENaaP7C8hi4sPTO1AFjDyuFvAcztyqNHweoYA34ItcjmA
- tu0GkYNyPnIadCNI=
-X-Received: by 2002:a05:620a:28cd:b0:765:58ac:9458 with SMTP id
- l13-20020a05620a28cd00b0076558ac9458mr1702990qkp.7.1688644431105; 
- Thu, 06 Jul 2023 04:53:51 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHvTIqjSdsRTGkthb34jWXbeqlNnjuAoaco3GgHjX54WBJNqPlEYKII4ufgBapizq/zICo2Hw==
-X-Received: by 2002:a05:620a:28cd:b0:765:58ac:9458 with SMTP id
- l13-20020a05620a28cd00b0076558ac9458mr1702970qkp.7.1688644430801; 
- Thu, 06 Jul 2023 04:53:50 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- o11-20020ae9f50b000000b007675bef6b0dsm635112qkg.118.2023.07.06.04.53.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 04:53:50 -0700 (PDT)
-Date: Thu, 6 Jul 2023 07:53:49 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Laszlo Ersek <lersek@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
- Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH] docs/migration: Update postcopy bits
-Message-ID: <ZKarTWisVKjpo+Wr@x1n>
-References: <20230627200222.557529-1-peterx@redhat.com>
- <ddb293c6-2475-8fbb-7d84-f276ce17956a@redhat.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qHNZ2-00040H-5e; Thu, 06 Jul 2023 07:54:26 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 420A4746369;
+ Thu,  6 Jul 2023 13:54:04 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 0C3C274635C; Thu,  6 Jul 2023 13:54:04 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 0AD3174632B;
+ Thu,  6 Jul 2023 13:54:04 +0200 (CEST)
+Date: Thu, 6 Jul 2023 13:54:04 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?C=E9dric_Le_Goater?= <clg@kaod.org>
+cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, 
+ qemu-ppc@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>, 
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: Re: [PATCH v3] target/ppc: Machine check on invalid real address
+ access on POWER9/10
+In-Reply-To: <26d30881-8d33-2c4f-1998-834991cf8538@eik.bme.hu>
+Message-ID: <b74255f1-f81a-b50d-148e-3f343b79d575@eik.bme.hu>
+References: <20230703120301.45313-1-npiggin@gmail.com>
+ <CTUWXISZHAI1.3A3FS0U9SD90B@wheely>
+ <53ae3355-e7a9-13cb-92d7-b300f44951f1@kaod.org>
+ <26d30881-8d33-2c4f-1998-834991cf8538@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ddb293c6-2475-8fbb-7d84-f276ce17956a@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: multipart/mixed;
+ boundary="3866299591-1323466494-1688644444=:49441"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,34 +65,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 06, 2023 at 12:15:47PM +0200, Laszlo Ersek wrote:
-> One suggestion, to squash in:
-> 
-> diff --git a/docs/devel/migration.rst b/docs/devel/migration.rst
-> index 6f65c23b47dc..3294679936b2 100644
-> --- a/docs/devel/migration.rst
-> +++ b/docs/devel/migration.rst
-> @@ -594,8 +594,7 @@ Postcopy
->  'Postcopy' migration is a way to deal with migrations that refuse to converge
->  (or take too long to converge) its plus side is that there is an upper bound on
->  the amount of migration traffic and time it takes, the down side is that during
-> -the postcopy phase, a failure of *either* side or the network connection causes
-> -the guest to be lost.
-> +the postcopy phase, a failure of *either* side causes the guest to be lost.
->  
->  In postcopy the destination CPUs are started before all the memory has been
->  transferred, and accesses to pages that are yet to be transferred cause
-> 
-> This removes "or the network connection" as a fatal failure.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Makes sense.
+--3866299591-1323466494-1688644444=:49441
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-> 
-> Acked-by: Laszlo Ersek <lersek@redhat.com>
+On Thu, 6 Jul 2023, BALATON Zoltan wrote:
+> On Thu, 6 Jul 2023, Cédric Le Goater wrote:
+>> On 7/6/23 09:32, Nicholas Piggin wrote:
+>>> On Mon Jul 3, 2023 at 10:03 PM AEST, Nicholas Piggin wrote:
+>>>> ppc currently silently accepts invalid real address access. Catch
+>>>> these and turn them into machine checks on POWER9/10 machines.
+>>> 
+>>> Would there be any objections to merging this and the checkstop patch?
+>>> We could disable this one before release if it turns out to cause
+>>> breakage.
+>>> 
+>>> I don't think it needs to rebase, and passes clang build and make check
+>>> here. Just messed up the separator on the changelog of the checkstop
+>>> patch.
+>> 
+>> I have been using the v2 series for a while :
+>>
+>>  https://patchwork.ozlabs.org/project/qemu-ppc/list/?series=361456
+>> 
+>> without patch 4 and it looked good. Let's take v3 since this patch is
+>> unchanged.
+>
+> I think there was a newer version that dropped the test for the MSR bit from 
+> the checkstop function and left that at the call site to avoid adding a one 
+> line wrapper later. This version does not seem to be that so probably the 
+> next iteration is better but I was lost following these series..
 
-Thanks!
+Or that was this one but then what's v3? I'm completely confused now about 
+these so I'll just stop trying to follow. I've already said I'll only 
+rebase my series changing excp_helper in next devel cycle so just go on 
+with this without me, hopefully that's less confusing because at least 
+one source of possible conflict is out of picture for now.
 
--- 
-Peter Xu
-
+Regards,
+BALATON Zoltan
+--3866299591-1323466494-1688644444=:49441--
 
