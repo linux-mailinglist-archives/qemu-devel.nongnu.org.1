@@ -2,60 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7B8749ABB
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB8E749ABE
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:35:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHNFo-0002wu-My; Thu, 06 Jul 2023 07:34:32 -0400
+	id 1qHNGh-000495-TX; Thu, 06 Jul 2023 07:35:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1qHNFf-0002wa-WA
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:34:24 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qHNGf-00048q-QD
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:35:25 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1qHNFe-0004SI-7D
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:34:23 -0400
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id C6EA81FDA0;
- Thu,  6 Jul 2023 11:34:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1688643259; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type;
- bh=exsdSDuNag7GKLYR2OTq5/q/dnMJTTdzKeqZl7R3N64=;
- b=SqzB095fSw6YoIAr3jJbVaGmLK27HAVpsUsodtfwdHxrGn6vOKjCnkdfafpgUrBTB1J0kw
- GecB0mL5X99a8tr2N4fOFAI8weXtr+u+V/0ifycF/+ojqS9uXde5EEkfLq0lG8Qgb0ojWC
- PU384xOFFg0Foy/guqg+rypejA8BpdQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1688643259;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type;
- bh=exsdSDuNag7GKLYR2OTq5/q/dnMJTTdzKeqZl7R3N64=;
- b=L0RyOS/r7jfTUfruQ06C8Isy4rwH6wqnxDotzV5gAzJrF3SP7o4IKkcZ5WdkXo6TCskkSO
- xgzSShXDLbW6ojCg==
-Received: from hawking.nue2.suse.org (unknown [10.168.4.11])
- by relay2.suse.de (Postfix) with ESMTP id 7FD4F2C142;
- Thu,  6 Jul 2023 11:34:19 +0000 (UTC)
-Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
- id 6FD294A03CA; Thu,  6 Jul 2023 13:34:19 +0200 (CEST)
-From: Andreas Schwab <schwab@suse.de>
-To: Laurent Vivier <laurent@vivier.eu>
-Cc: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
-Subject: [PATCH] linux-user: make sure brk(0) returns a page-aligned value
-X-Yow: I LIKE Aisle 7a.
-Date: Thu, 06 Jul 2023 13:34:19 +0200
-Message-ID: <mvmpm55qnno.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qHNGb-0004pS-Mq
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:35:24 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-51dff848168so886445a12.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 04:35:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688643317; x=1691235317;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=goLMMiocXftD+TzHWg/04C7yxuFBpGLnp+Zaq88+HvE=;
+ b=bIL8j4+uaiyvIQk8cefG4gn3jyqUD5IjNUM6R2FAcYtsy923nZatCoW0EhZfFkEux6
+ SOTWCjWE1xb3tgKDQlR4kTyxiwGigx3YisjC1tpBWxdtKRc9UTzaQjhZNB32EH1mYjyR
+ oODZqgGoKzYSF7pnG3DbsXRABAK6CBRES0Vku97bW4iRuEUNLMZdy7OcoM5PFM7g/TCh
+ kXK/yntXhU6XlV+XcCDH4Xw9ML6mHeALS5mPLtVYtnCAssqobeAQp3tu0miXH8nesgQn
+ 4QGmusMH/InCUoiA/uSpmfbQbLfX3a6cXgvgSdC7EOyYZiMm6RBXTL+HyvG4HLnDlLYv
+ Mgow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688643317; x=1691235317;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=goLMMiocXftD+TzHWg/04C7yxuFBpGLnp+Zaq88+HvE=;
+ b=HiL5Qha5BfduyeBW03AQ0v0MalYW+1ASvGoLYbNajijxTpOY8Ln7LI4hikiOZCRh1+
+ aPgKV2SUuSLJdZeUfaykIuIFi1UfhJVDPEOM3ZeQbHqhfA7CiYCcFfowCwuluyFX7uRX
+ mzRvXc+BsOcRKWO7Ki0qnCntD2kNkm07yKDQvcLEI+COHsQSgEstmkarLSXG8j38lN7t
+ mW0+wprzmlBQ7u3psYd7/GlSak2tA1h/pLaNkjYSAy3rAt7HgpcAtNpGUu/ucGLOq2Po
+ JoNCGPcR3XBjuKbJxCdpCDuYyWDdL2+Ac4+sb10VEUhhWfwaqoP31Q9pf3YnLD2365mt
+ fesA==
+X-Gm-Message-State: ABy/qLa/DyiWXXmzSe7RFDqOz9l6+NqNEIluBztPp3MnwpsCKoOvsxW+
+ Hwml/002Oy2XW007a1xB04+bQY2BMji16VsenO+ebA==
+X-Google-Smtp-Source: APBJJlF71dAT28cUptEiAxL/XGYvkvOWO8MshGdQaco7os8apHqRvzX2WNOYXT3fHfvtxCiCmHkNaaW3wa9UKQazgEc=
+X-Received: by 2002:aa7:d699:0:b0:51d:8a53:d13 with SMTP id
+ d25-20020aa7d699000000b0051d8a530d13mr1130846edr.42.1688643317449; Thu, 06
+ Jul 2023 04:35:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=schwab@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20230704163634.3188465-1-peter.maydell@linaro.org>
+ <29a83e80-32b5-cbb2-8dbd-13192e485e1e@linaro.org>
+ <d73e2121-ee38-3245-8a3b-804931ea80a2@linaro.org>
+In-Reply-To: <d73e2121-ee38-3245-8a3b-804931ea80a2@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 6 Jul 2023 12:35:06 +0100
+Message-ID: <CAFEAcA_dKacrOG+rTO2jfo=jkTg4e8CjdumsLa+PjPHRJA_+bg@mail.gmail.com>
+Subject: Re: [PULL 00/11] target-arm queue
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,31 +86,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
-Signed-off-by: Andreas Schwab <schwab@suse.de>
----
- linux-user/syscall.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, 5 Jul 2023 at 06:04, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 7/5/23 06:57, Richard Henderson wrote:
+> > https://gitlab.com/qemu-project/qemu/-/jobs/4592433432#L3723
+> >
+> >> /tmp/ccASXpLo.s: Assembler messages:
+> >> /tmp/ccASXpLo.s:782: Error: selected processor does not support system register name
+> >> 'id_aa64zfr0_el1'
+> >> /tmp/ccASXpLo.s:829: Error: selected processor does not support system register name
+> >> 'id_aa64smfr0_el1'
+> >> make[1]: *** [Makefile:119: sysregs] Error 1
+> >
+> > I guess it's the change to Makefile.target, as I don't see any other likely candidates.
+>
+> Ho hum, that's *my* patch 5, "Fix SME full tile indexing".
+> I'll have a closer look tomorrow.  Sorry about that.
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 08162cc966..e8a17377f5 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -805,7 +805,7 @@ static abi_ulong brk_page;
- 
- void target_set_brk(abi_ulong new_brk)
- {
--    target_brk = new_brk;
-+    target_brk = TARGET_PAGE_ALIGN(new_brk);
-     brk_page = HOST_PAGE_ALIGN(target_brk);
- }
- 
--- 
-2.41.0
+I think we can fix this by using the S3_.... syntax
+instead, and we can drop the #ifdef HAS_ARMV9_SME entirely:
+these registers are in the ID register space so they will
+read-as-zero and pass the test regardless of guest CPU type.
+However, it doesn't look like I can run this CI job under
+my personal gitlab account, so I'll have to do a blind
+attempt at a fix and resubmit the pullreq for you to see...
 
-
--- 
-Andreas Schwab, SUSE Labs, schwab@suse.de
-GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
-"And now for something completely different."
+thanks
+-- PMM
 
