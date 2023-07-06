@@ -2,74 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A41874A323
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 19:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBDD74A368
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 19:48:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHSrW-0006mb-46; Thu, 06 Jul 2023 13:33:50 -0400
+	id 1qHT4E-0002kL-K9; Thu, 06 Jul 2023 13:46:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qHSrU-0006mO-Jb
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 13:33:48 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qHSrS-00045h-T5
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 13:33:48 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 58DFD1F74C;
- Thu,  6 Jul 2023 17:33:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1688664825; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1qHT4A-0002jF-Ir
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 13:46:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1qHT48-0002e7-BZ
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 13:46:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688665609;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=w4ck3nfuKrl2AYdfFMT7bkXTQCw7IPZGehvWeYPnL80=;
- b=2OHQ71vctys8wrGDWxj7jT2IqjX04do7IHytY0F2dgUlwskSMONKraWDTwydhcrPF8VvSP
- mzHS4d89wlVm4ii2zdEPgBBotKJRxIWQWPJ1NIu7h6FQKrnIVwON5S0vdIGf2peXgRQkol
- 9Zv46voXKyQj73oOTQOMIOJZpe/TPig=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1688664825;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=w4ck3nfuKrl2AYdfFMT7bkXTQCw7IPZGehvWeYPnL80=;
- b=iC9wIO7pjSNQ/JLmS/QnNUuE03yWwfV7zSRuD4jhjJhk7xdXg2qzcGzij80QIiHC67zQyZ
- Sl5u/u5LjjglJ4CA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ bh=DzxRNkJ4GtVFs0wt1JseAdbsh2aLjvSMe3hpjEL/604=;
+ b=Z1oyodPqBV9d/WOsGmpHn7drSLfEhJMvtzn8XGAd/DJwWgPh8ZJHAM71Dd6EEh60TWNUN7
+ t5Qaq90tS6YIdv9ZWgBxwsyqxye8J5vzbmJue8cgViUllJOatxrwU7m2ETbqXGAFKGJGpm
+ 7HV04N0Hmi5Ecu9ji5EWaK/dPrPHobs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-654-6QgFRMCbMeyvvDQLDBA6Og-1; Thu, 06 Jul 2023 13:46:43 -0400
+X-MC-Unique: 6QgFRMCbMeyvvDQLDBA6Og-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DC823138FC;
- Thu,  6 Jul 2023 17:33:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id YsKBKfj6pmTyUQAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 06 Jul 2023 17:33:44 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Leonardo Bras Soares Passos
- <lsoaresp@redhat.com>, Juan Quintela <quintela@redhat.com>, Lukas Straub
- <lukasstraub2@web.de>, Laszlo Ersek <lersek@redhat.com>
-Subject: Re: [PATCH v2 7/7] migration: Provide explicit error message for
- file shutdowns
-In-Reply-To: <ZKbrio28Oa7mzaV1@x1n>
-References: <20230705163502.331007-1-peterx@redhat.com>
- <20230705163502.331007-8-peterx@redhat.com> <878rbu3tgm.fsf@suse.de>
- <ZKXv+1eoDDlWj812@x1n> <87v8exjgid.fsf@suse.de> <ZKbrio28Oa7mzaV1@x1n>
-Date: Thu, 06 Jul 2023 14:33:42 -0300
-Message-ID: <87o7kpj66h.fsf@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2568E104D521;
+ Thu,  6 Jul 2023 17:46:43 +0000 (UTC)
+Received: from localhost (unknown [10.42.28.237])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DC50540C2063;
+ Thu,  6 Jul 2023 17:46:42 +0000 (UTC)
+Date: Thu, 6 Jul 2023 18:46:42 +0100
+From: "Richard W.M. Jones" <rjones@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, peterz@infradead.org, arnd@arndb.de,
+ naresh.kamboju@linaro.org, anders.roxell@linaro.org,
+ daniel.diaz@linaro.org, ben.copeland@linaro.org, pbonzini@redhat.com
+Subject: Re: [PATCH 1/2] accel/tcg: Split out cpu_exec_longjmp_cleanup
+Message-ID: <20230706174642.GP7636@redhat.com>
+References: <20230706170537.95959-1-richard.henderson@linaro.org>
+ <20230706170537.95959-2-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230706170537.95959-2-richard.henderson@linaro.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=rjones@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,95 +80,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On Thu, Jul 06, 2023 at 06:05:36PM +0100, Richard Henderson wrote:
+> Share the setjmp cleanup between cpu_exec_step_atomic
+> and cpu_exec_setjmp.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-> On Thu, Jul 06, 2023 at 10:50:34AM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Wed, Jul 05, 2023 at 07:05:13PM -0300, Fabiano Rosas wrote:
->> >> Peter Xu <peterx@redhat.com> writes:
->> >> 
->> >> > Provide an explicit reason for qemu_file_shutdown()s, which can be
->> >> > displayed in query-migrate when used.
->> >> >
->> >> 
->> >> Can we consider this to cover the TODO:
->> >> 
->> >>  * TODO: convert to propagate Error objects instead of squashing
->> >>  * to a fixed errno value
->> >> 
->> >> or would that need something fancier?
->> >
->> > The TODO seems to say we want to allow qemu_file_shutdown() to report an
->> > Error* when anything wrong happened (e.g. shutdown() failed)?  While this
->> > patch was trying to store a specific error string so when query migration
->> > later it'll show up to the user.  If so, IMHO they're two things.
->> >
->> 
->> Ok, just making sure.
->> 
->> >> 
->> >> > This will make e.g. migrate-pause to display explicit error descriptions,
->> >> > from:
->> >> >
->> >> > "error-desc": "Channel error: Input/output error"
->> >> >
->> >> > To:
->> >> >
->> >> > "error-desc": "Channel is explicitly shutdown by the user"
->> >> >
->> >> > in query-migrate.
->> >> >
->> >> > Signed-off-by: Peter Xu <peterx@redhat.com>
->> >> > ---
->> >> >  migration/qemu-file.c | 5 ++++-
->> >> >  1 file changed, 4 insertions(+), 1 deletion(-)
->> >> >
->> >> > diff --git a/migration/qemu-file.c b/migration/qemu-file.c
->> >> > index 419b4092e7..ff605027de 100644
->> >> > --- a/migration/qemu-file.c
->> >> > +++ b/migration/qemu-file.c
->> >> > @@ -87,7 +87,10 @@ int qemu_file_shutdown(QEMUFile *f)
->> >> >       *      --> guest crash!
->> >> >       */
->> >> >      if (!f->last_error) {
->> >> > -        qemu_file_set_error(f, -EIO);
->> >> > +        Error *err = NULL;
->> >> > +
->> >> > +        error_setg(&err, "Channel is explicitly shutdown by the user");
->> >> 
->> >> It is good that we can grep this message. However, I'm confused about
->> >> who the "user" is meant to be here and how are they implicated in this
->> >> error.
->> >
->> > Ah, here the user is who sends the "migrate-pause" command, according to
->> > the example of the commit message.
->> >
->> 
->> That's where I'm confused. There are 15 callsites for
->> qemu_file_shutdown(). Only 2 of them are from migrate-pause. So I'm
->> missing the logical step that links migrate-pause with this
->> error_setg().
->> Are you assuming that the race described will only happen
->> with migrate-pause and the other invocations would have set an error
->> already?
->
-> It's not a race, but I think you're right. I thought it was always the case
+Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
 
-I'm talking about the race with another thread checking f->last_error
-and this thread setting it. Described in commit f5816b5c86ed
-("migration: Fix race on qemu_file_shutdown()").
+(I'm still testing the other one, but already up to 600 iterations)
 
-> to shut but actually not: we do shutdown() also in a few places where we
-> don't really fail, either for COLO or for completion of migration.  With
-> the 1st patch, it'll even show in query-migrate.  Thanks for spotting it -
-> I could have done better.
->
+Rich.
 
-The idea is that we avoid doing IO after the file has been shutdown, so
-we preload this -EIO error. We could just alter the message to "Channel
-has been explicitly shutdown" or "Tried to do IO after channel
-shutdown". It would still be better than the generic EIO message.
+> ---
+>  accel/tcg/cpu-exec.c | 43 +++++++++++++++++++------------------------
+>  1 file changed, 19 insertions(+), 24 deletions(-)
+> 
+> diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+> index ba1890a373..31aa320513 100644
+> --- a/accel/tcg/cpu-exec.c
+> +++ b/accel/tcg/cpu-exec.c
+> @@ -526,6 +526,23 @@ static void cpu_exec_exit(CPUState *cpu)
+>      }
+>  }
+>  
+> +static void cpu_exec_longjmp_cleanup(CPUState *cpu)
+> +{
+> +    /* Non-buggy compilers preserve this; assert the correct value. */
+> +    g_assert(cpu == current_cpu);
+> +
+> +#ifdef CONFIG_USER_ONLY
+> +    clear_helper_retaddr();
+> +    if (have_mmap_lock()) {
+> +        mmap_unlock();
+> +    }
+> +#endif
+> +    if (qemu_mutex_iothread_locked()) {
+> +        qemu_mutex_unlock_iothread();
+> +    }
+> +    assert_no_pages_locked();
+> +}
+> +
+>  void cpu_exec_step_atomic(CPUState *cpu)
+>  {
+>      CPUArchState *env = cpu->env_ptr;
+> @@ -568,16 +585,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
+>          cpu_tb_exec(cpu, tb, &tb_exit);
+>          cpu_exec_exit(cpu);
+>      } else {
+> -#ifdef CONFIG_USER_ONLY
+> -        clear_helper_retaddr();
+> -        if (have_mmap_lock()) {
+> -            mmap_unlock();
+> -        }
+> -#endif
+> -        if (qemu_mutex_iothread_locked()) {
+> -            qemu_mutex_unlock_iothread();
+> -        }
+> -        assert_no_pages_locked();
+> +        cpu_exec_longjmp_cleanup(cpu);
+>      }
+>  
+>      /*
+> @@ -1023,20 +1031,7 @@ static int cpu_exec_setjmp(CPUState *cpu, SyncClocks *sc)
+>  {
+>      /* Prepare setjmp context for exception handling. */
+>      if (unlikely(sigsetjmp(cpu->jmp_env, 0) != 0)) {
+> -        /* Non-buggy compilers preserve this; assert the correct value. */
+> -        g_assert(cpu == current_cpu);
+> -
+> -#ifdef CONFIG_USER_ONLY
+> -        clear_helper_retaddr();
+> -        if (have_mmap_lock()) {
+> -            mmap_unlock();
+> -        }
+> -#endif
+> -        if (qemu_mutex_iothread_locked()) {
+> -            qemu_mutex_unlock_iothread();
+> -        }
+> -
+> -        assert_no_pages_locked();
+> +        cpu_exec_longjmp_cleanup(cpu);
+>      }
+>  
+>      return cpu_exec_loop(cpu, sc);
+> -- 
+> 2.34.1
 
-But up to you.
+-- 
+Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
+Read my programming and virtualization blog: http://rwmj.wordpress.com
+virt-builder quickly builds VMs from scratch
+http://libguestfs.org/virt-builder.1.html
+
 
