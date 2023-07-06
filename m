@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CF374A4F8
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 22:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C07174A53A
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 22:51:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHVfr-0000n2-9s; Thu, 06 Jul 2023 16:33:59 -0400
+	id 1qHVva-0004VC-R1; Thu, 06 Jul 2023 16:50:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHVfo-0000mT-Oy; Thu, 06 Jul 2023 16:33:56 -0400
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ id 1qHVvY-0004Uz-3V; Thu, 06 Jul 2023 16:50:12 -0400
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHVfn-0004kk-4H; Thu, 06 Jul 2023 16:33:56 -0400
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6b74e2d8c98so1032402a34.2; 
- Thu, 06 Jul 2023 13:33:54 -0700 (PDT)
+ id 1qHVvW-000532-H1; Thu, 06 Jul 2023 16:50:11 -0400
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6b5f362f4beso980906a34.2; 
+ Thu, 06 Jul 2023 13:50:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688675633; x=1691267633;
+ d=gmail.com; s=20221208; t=1688676608; x=1691268608;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=O6ySMC9LHc5fuzhnsO6dsNxDTz/udZBSDMxcB//l7f4=;
- b=cBdV/amPpgZ84y/SVfSZHz1hpiFwcCd8HlW6Qo1afmhKkDXu9WNvrN1Ubeec+bY/lX
- NZ9goRnIq+NcxhhAEYWAXfWY313cRx6aj4QSOiqtmTIO6N+ro1AMmmH3cwif1aJgT4md
- LyWoJMfvMZnK6kn5MZdgj7Jmr8K8H86djV5mn0mm82Xmgt4SrfnuGvsy8j42DXXvZcgV
- iyBYBerz/MwAcyPS6Kndx7blpuTu3vCKZpILpDpeVhmFaO/Qmi2R1hxYD2vDi02bEPwn
- S4Tf3ztYUiDvdsCGIhgkM53KDND7o4UJIRq0q1dH9eG+2JXD3tDNmxPSP31RPDk7VTHw
- NhHg==
+ bh=6euJUEjoJcxx+jyv7OneEGA6vqtlfmKNk64IHkM4DA8=;
+ b=RiI6fPV7qj2i/eVMhHxjlJ+Alq+qvwPNg8Yuvnpo8yz8b6LHxW0obmniAj7A07q0hb
+ KsVzFtJ3w3W6Wg8nPzF0MrseKhC/iFm7uKAZJG52VqYfwouSvCJo9IFSBUSyjVfKrNwJ
+ WRppwQLeIQHpqWdc5XZ7j2D9IzC/uWn7fpy1iSlxz0M47oVB2WV6yScUXfszM7djiImr
+ t4bUFGQc+d8xb2mrRMdl50uLd5ahZD2PmZYOZNdhyg9HTz238HqQ9zl7XW/fyO+bDrdH
+ eBy7JsI03s2IBrGR2bPXPDD4mNLMjeGfb53NJuRzxTjo3fW/5WkDkj/FNWJtVm6SKhTV
+ bWXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688675633; x=1691267633;
+ d=1e100.net; s=20221208; t=1688676608; x=1691268608;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=O6ySMC9LHc5fuzhnsO6dsNxDTz/udZBSDMxcB//l7f4=;
- b=MrVCFjgTsUbOHtC/zkuhiRG7RsSTtwnWQfEhvWc9MtBJLtueVgIFutyO42VBQHH3J4
- w4PewhGqkP3P2ZF7ELhkyNi2skXxjV5hujedY7cVv783md0QkDBupJWiYaTZMLapu9h/
- iDKSY2sZfMHQybfPzftfyCUWZo0Q6RAX5fIVDWipBbc+lngkqzPh4bpyx/NuggnwGGyq
- +YfwHqSAhHvwK5V+KgsznLBB4/seRbl+iJlDh7HLCfS87aCZn+QlCO3PbBtBQiaaHuSq
- 1eTbY3APthrsSW//1MR0C4ps1sbAAk0OKOAknVOLxpmxnzIhIryebm4ZFXB5WPOfGBem
- V5Tg==
-X-Gm-Message-State: ABy/qLapREmkLbdy/fz2xOygURqPJWDniMDwycBhOZcWCf7abYiL1j81
- 8pcrGQJ9Pbx4S3dYQ9lZsAI=
-X-Google-Smtp-Source: APBJJlE+0ljvgrsPgvMeNjjW4DAypK2cGLe+xZxgLH8RR4m3nPwmDZSx8/wAO9PVa71xsFPhvb1P3g==
-X-Received: by 2002:a9d:734d:0:b0:6b7:4a86:f038 with SMTP id
- l13-20020a9d734d000000b006b74a86f038mr2836312otk.15.1688675633442; 
- Thu, 06 Jul 2023 13:33:53 -0700 (PDT)
+ bh=6euJUEjoJcxx+jyv7OneEGA6vqtlfmKNk64IHkM4DA8=;
+ b=jyZCOvA7rf3RWyCS7qI7PR7FXUGf0AiJV0h5hEy0VmrWwWQRcqakyPmEJPY9dX2VU1
+ lnTjSjn4luJs6aM0gUWojEfzEc7HuDES1P3QMra4dhLZdOXVwEmltnhwllm3P06GOUiT
+ 7Tb+Hc5A5x1yC5VJNFQ/lmiyyYc9hDeg8KLMNxoRE0Km2XJkXNh/wXeT2Q8GKT0bvt5k
+ XgFjl62yCCF2s8qHGgTuoS00m7VkDILpp83lWrF+AZ5d1M6CwJXtqj1RxJCPddq/tet7
+ QfbA2KONjNks0HS0hKtmVmjWryOQY75rrDt2y+i8hOjl2IcOSF5sa5+pCYXCLpWkUOFL
+ sVYw==
+X-Gm-Message-State: ABy/qLagYTx+uESC30D4owJxQTKe1SJNrWZVPdWrF+I/RYWbKJnrIGku
+ 0fjJnod5Oya/1euiELx2lSh6SXZB2fY=
+X-Google-Smtp-Source: APBJJlF/eaOxyOT6DCOv7wG1+M2JWc5qgzjySIwHA54DA/N1Hpatb66XGvo3UooclPOGx/NkFqBOrg==
+X-Received: by 2002:a9d:6393:0:b0:6b8:70a2:cfe9 with SMTP id
+ w19-20020a9d6393000000b006b870a2cfe9mr3398800otk.20.1688676608309; 
+ Thu, 06 Jul 2023 13:50:08 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
  [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
- g23-20020a9d6497000000b006b58e0ef27esm1036249otl.39.2023.07.06.13.33.51
+ q6-20020a056830018600b006b87c41a57esm1073286ota.11.2023.07.06.13.50.06
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 13:33:53 -0700 (PDT)
-Message-ID: <e0b5c630-8312-bec0-459e-517f06eb65fb@gmail.com>
-Date: Thu, 6 Jul 2023 17:33:50 -0300
+ Thu, 06 Jul 2023 13:50:07 -0700 (PDT)
+Message-ID: <ba50f55b-1c48-df50-a16c-95f0f51f48f8@gmail.com>
+Date: Thu, 6 Jul 2023 17:50:04 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [RESEND PATCH v3 4/4] ppc440_pcix: Rename QOM type define abd
- move it to common header
+Subject: Re: [PATCH v3] target/ppc: Machine check on invalid real address
+ access on POWER9/10
 Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Cc: philmd@linaro.org
-References: <cover.1688641673.git.balaton@eik.bme.hu>
- <1a1c3fe4b120f345d1005ad7ceca4500783691f7.1688641673.git.balaton@eik.bme.hu>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+References: <20230703120301.45313-1-npiggin@gmail.com>
+ <CTUWXISZHAI1.3A3FS0U9SD90B@wheely>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <1a1c3fe4b120f345d1005ad7ceca4500783691f7.1688641673.git.balaton@eik.bme.hu>
+In-Reply-To: <CTUWXISZHAI1.3A3FS0U9SD90B@wheely>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,85 +99,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 7/6/23 08:16, BALATON Zoltan wrote:
-> Rename TYPE_PPC440_PCIX_HOST_BRIDGE to better match its string value,
-> move it to common header and use it also in sam460ex to replace hard
-> coded type name.
+On 7/6/23 04:32, Nicholas Piggin wrote:
+> On Mon Jul 3, 2023 at 10:03 PM AEST, Nicholas Piggin wrote:
+>> ppc currently silently accepts invalid real address access. Catch
+>> these and turn them into machine checks on POWER9/10 machines.
 > 
-> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-> ---
+> Would there be any objections to merging this and the checkstop patch?
+> We could disable this one before release if it turns out to cause
+> breakage.
 
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+I don't have objections but his bad boy has no acks.
 
->   hw/ppc/ppc440_pcix.c    | 9 ++++-----
->   hw/ppc/sam460ex.c       | 2 +-
->   include/hw/ppc/ppc4xx.h | 1 +
->   3 files changed, 6 insertions(+), 6 deletions(-)
+Cedric, if you vouch for this change send a R-b and I'll queue this up.
+
+
+Thanks,
+
+
+Daniel
+
 > 
-> diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-> index 9321ca0abd..672090de94 100644
-> --- a/hw/ppc/ppc440_pcix.c
-> +++ b/hw/ppc/ppc440_pcix.c
-> @@ -45,8 +45,7 @@ struct PLBInMap {
->       MemoryRegion mr;
->   };
->   
-> -#define TYPE_PPC440_PCIX_HOST_BRIDGE "ppc440-pcix-host"
-> -OBJECT_DECLARE_SIMPLE_TYPE(PPC440PCIXState, PPC440_PCIX_HOST_BRIDGE)
-> +OBJECT_DECLARE_SIMPLE_TYPE(PPC440PCIXState, PPC440_PCIX_HOST)
->   
->   #define PPC440_PCIX_NR_POMS 3
->   #define PPC440_PCIX_NR_PIMS 3
-> @@ -399,7 +398,7 @@ static const MemoryRegionOps pci_reg_ops = {
->   
->   static void ppc440_pcix_reset(DeviceState *dev)
->   {
-> -    struct PPC440PCIXState *s = PPC440_PCIX_HOST_BRIDGE(dev);
-> +    struct PPC440PCIXState *s = PPC440_PCIX_HOST(dev);
->       int i;
->   
->       for (i = 0; i < PPC440_PCIX_NR_POMS; i++) {
-> @@ -489,7 +488,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
->       PCIHostState *h;
->   
->       h = PCI_HOST_BRIDGE(dev);
-> -    s = PPC440_PCIX_HOST_BRIDGE(dev);
-> +    s = PPC440_PCIX_HOST(dev);
->   
->       sysbus_init_irq(sbd, &s->irq);
->       memory_region_init(&s->busmem, OBJECT(dev), "pci-mem", UINT64_MAX);
-> @@ -529,7 +528,7 @@ static void ppc440_pcix_class_init(ObjectClass *klass, void *data)
->   }
->   
->   static const TypeInfo ppc440_pcix_info = {
-> -    .name          = TYPE_PPC440_PCIX_HOST_BRIDGE,
-> +    .name          = TYPE_PPC440_PCIX_HOST,
->       .parent        = TYPE_PCI_HOST_BRIDGE,
->       .instance_size = sizeof(PPC440PCIXState),
->       .class_init    = ppc440_pcix_class_init,
-> diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
-> index 7da38bd58e..1e615b8d35 100644
-> --- a/hw/ppc/sam460ex.c
-> +++ b/hw/ppc/sam460ex.c
-> @@ -438,7 +438,7 @@ static void sam460ex_init(MachineState *machine)
->   
->       /* PCI bus */
->       /* All PCI irqs are connected to the same UIC pin (cf. UBoot source) */
-> -    dev = sysbus_create_simple("ppc440-pcix-host", 0xc0ec00000,
-> +    dev = sysbus_create_simple(TYPE_PPC440_PCIX_HOST, 0xc0ec00000,
->                                  qdev_get_gpio_in(uic[1], 0));
->       sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, 0xc08000000);
->       pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
-> diff --git a/include/hw/ppc/ppc4xx.h b/include/hw/ppc/ppc4xx.h
-> index 766d575e86..ea7740239b 100644
-> --- a/include/hw/ppc/ppc4xx.h
-> +++ b/include/hw/ppc/ppc4xx.h
-> @@ -31,6 +31,7 @@
->   
->   #define TYPE_PPC4xx_HOST_BRIDGE "ppc4xx-host-bridge"
->   #define TYPE_PPC4xx_PCI_HOST "ppc4xx-pci-host"
-> +#define TYPE_PPC440_PCIX_HOST "ppc440-pcix-host"
->   #define TYPE_PPC460EX_PCIE_HOST "ppc460ex-pcie-host"
->   
->   /*
+> I don't think it needs to rebase, and passes clang build and make check
+> here. Just messed up the separator on the changelog of the checkstop
+> patch.
+> 
+> Thanks,
+> Nick
+> 
+> 
+>>
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>> Since v1:
+>> - Only implement this for POWER9/10. Seems like previous IBM processors
+>>    may not catch this, trying to get info.
+>>
+>> Since v2:
+>> - Split out from larger series since it is independent.
 
