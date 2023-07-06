@@ -2,49 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C44F3749A5F
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D887498F3
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:04:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHMw3-00005C-K6; Thu, 06 Jul 2023 07:14:07 -0400
+	id 1qHLqA-0000vS-J7; Thu, 06 Jul 2023 06:03:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qHMvu-0008TB-41; Thu, 06 Jul 2023 07:14:00 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qHMvs-0006CL-Ic; Thu, 06 Jul 2023 07:13:57 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 33679748A55;
- Thu,  6 Jul 2023 13:13:38 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 12812746E5A; Thu,  6 Jul 2023 13:13:38 +0200 (CEST)
-Message-Id: <1a1c3fe4b120f345d1005ad7ceca4500783691f7.1688641673.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1688641673.git.balaton@eik.bme.hu>
-References: <cover.1688641673.git.balaton@eik.bme.hu>
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Date: Mon, 3 Jul 2023 23:21:04 +0200
-Subject: [PATCH v3 4/4] ppc440_pcix: Rename QOM type define abd move it to
- common header
-Date: Thu, 06 Jul 2023 13:07:53 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHLq8-0000ut-I9
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:03:56 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHLq5-0008N1-Rq
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:03:56 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-4fb94b1423eso617050e87.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 03:03:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688637832; x=1691229832;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nYjWj/1a6y9A6d3F1DFRMrQHLg9CzgX8+fuE9Xq2eTA=;
+ b=fojw2j7Ki1BnAZ7jwtaPiaprXt51n4+abAvpmcenuCl1N3hOTpbG4PmgykpTmDuRER
+ S2ODyylQ5T1blhghxYaG3nKVtIJgo4EuqqSPpklcrGpk6abJlaEV2wDD/8zs3ElN3Qbw
+ KRwcjpUdCuznycHyVHsZPeRhCGhx+R6koTXDzIr0C3o8GojnrDcYLgqJ86tF06UKKjWc
+ 8DjZFrNPaCztke1KFfZwLt6u7WRAPHd+LCK6MZNqCoz54DNfdgNpInlfUJnxZ/tF8UjD
+ iejW3Xt1rPMW/MMq5OrB9hVawdcL0j5EtIsZg1F+/2HX006fkyXzrseMsLHPJWJDh9dC
+ 4uqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688637832; x=1691229832;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nYjWj/1a6y9A6d3F1DFRMrQHLg9CzgX8+fuE9Xq2eTA=;
+ b=Yg1DSWZbzsI4qIILyOO/Ib/ERjmqEiwHRAhlp8t9HG1+DTnGM+MZnFFLjJ/kKm52kh
+ Z0Szt9YRe4dl0EI9gxwwhjBrlXgh04XuLPqfNKizdEFO4Wuy7PH/TRCCK3LOUf3TulcU
+ QdjSvSs2B8GaLHIYNbuI/2S6X8ETnGdqFRUNtACq2S9lGN9uuWFmGac9I8iPMfY0zOef
+ CDcKEOYz9ZPhy4hzjIV+7OzFPnrXisx0J2TgnquVq8eeMYiq5ykRnZIHRLdfFtnxLXyN
+ NkFixS8V6JSzj+24kfXzC22IMn7/s2pq3qfmeTPzmha5XNpWPukeqs4PA7euUkDt3oDt
+ Bpzw==
+X-Gm-Message-State: ABy/qLbbL9yad7vakToCngDBctWAyG0rWBQDAADM3ug+XEp3OcllozdP
+ +GOeMzI0VMhgE6b00CgvINBSTQ==
+X-Google-Smtp-Source: APBJJlGBXAMKjpUK7EuKuYtohrhovzkdJsVrny9uQ3NpIeVVTRpAKrv450YTKYrtx8GxGAGqQ9JGfg==
+X-Received: by 2002:a05:6512:3e24:b0:4fb:97e8:ed8c with SMTP id
+ i36-20020a0565123e2400b004fb97e8ed8cmr1344761lfv.4.1688637831923; 
+ Thu, 06 Jul 2023 03:03:51 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.199.225])
+ by smtp.gmail.com with ESMTPSA id
+ v19-20020aa7d9d3000000b0051e069ebee3sm575022eds.14.2023.07.06.03.03.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jul 2023 03:03:51 -0700 (PDT)
+Message-ID: <8ada3ba0-1b09-93aa-a5fb-55ca08c8ef33@linaro.org>
+Date: Thu, 6 Jul 2023 12:03:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v3] kconfig: Add PCIe devices to s390x machines
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>
+References: <20230705152301.2850086-1-clg@redhat.com>
+ <f45b0555-0808-0e99-24cb-fbf24bc2277e@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <f45b0555-0808-0e99-24cb-fbf24bc2277e@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-To: qemu-devel@nongnu.org,
-    qemu-ppc@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
-    philmd@linaro.org
-X-Spam-Probability: 13%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -7
-X-Spam_score: -0.8
-X-Spam_bar: /
-X-Spam_report: (-0.8 / 5.0 requ) BAYES_00=-1.9, INVALID_DATE=1.096,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,84 +96,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename TYPE_PPC440_PCIX_HOST_BRIDGE to better match its string value,
-move it to common header and use it also in sam460ex to replace hard
-coded type name.
+On 6/7/23 11:38, Paolo Bonzini wrote:
+> On 7/5/23 17:23, Cédric Le Goater wrote:
+>> +    imply E1000E_PCI_EXPRESS
+>> +    imply IGB_PCI_EXPRESS
+>> +    imply USB_XHCI_PCI
+> 
+> "imply" should only be used whenever the device can be created with the 
+> front-end/back-end combo command line options, and as far as I can see 
+> this is not the case here.
+> 
+> You could set CONFIG_PCIE_DEVICES=y in s390-softmmu.mak and make these 
+> three devices "default y if PCI_DEVICES || PCIE_DEVICES".
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- hw/ppc/ppc440_pcix.c    | 9 ++++-----
- hw/ppc/sam460ex.c       | 2 +-
- include/hw/ppc/ppc4xx.h | 1 +
- 3 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-index 9321ca0abd..672090de94 100644
---- a/hw/ppc/ppc440_pcix.c
-+++ b/hw/ppc/ppc440_pcix.c
-@@ -45,8 +45,7 @@ struct PLBInMap {
-     MemoryRegion mr;
- };
- 
--#define TYPE_PPC440_PCIX_HOST_BRIDGE "ppc440-pcix-host"
--OBJECT_DECLARE_SIMPLE_TYPE(PPC440PCIXState, PPC440_PCIX_HOST_BRIDGE)
-+OBJECT_DECLARE_SIMPLE_TYPE(PPC440PCIXState, PPC440_PCIX_HOST)
- 
- #define PPC440_PCIX_NR_POMS 3
- #define PPC440_PCIX_NR_PIMS 3
-@@ -399,7 +398,7 @@ static const MemoryRegionOps pci_reg_ops = {
- 
- static void ppc440_pcix_reset(DeviceState *dev)
- {
--    struct PPC440PCIXState *s = PPC440_PCIX_HOST_BRIDGE(dev);
-+    struct PPC440PCIXState *s = PPC440_PCIX_HOST(dev);
-     int i;
- 
-     for (i = 0; i < PPC440_PCIX_NR_POMS; i++) {
-@@ -489,7 +488,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
-     PCIHostState *h;
- 
-     h = PCI_HOST_BRIDGE(dev);
--    s = PPC440_PCIX_HOST_BRIDGE(dev);
-+    s = PPC440_PCIX_HOST(dev);
- 
-     sysbus_init_irq(sbd, &s->irq);
-     memory_region_init(&s->busmem, OBJECT(dev), "pci-mem", UINT64_MAX);
-@@ -529,7 +528,7 @@ static void ppc440_pcix_class_init(ObjectClass *klass, void *data)
- }
- 
- static const TypeInfo ppc440_pcix_info = {
--    .name          = TYPE_PPC440_PCIX_HOST_BRIDGE,
-+    .name          = TYPE_PPC440_PCIX_HOST,
-     .parent        = TYPE_PCI_HOST_BRIDGE,
-     .instance_size = sizeof(PPC440PCIXState),
-     .class_init    = ppc440_pcix_class_init,
-diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
-index 7da38bd58e..1e615b8d35 100644
---- a/hw/ppc/sam460ex.c
-+++ b/hw/ppc/sam460ex.c
-@@ -438,7 +438,7 @@ static void sam460ex_init(MachineState *machine)
- 
-     /* PCI bus */
-     /* All PCI irqs are connected to the same UIC pin (cf. UBoot source) */
--    dev = sysbus_create_simple("ppc440-pcix-host", 0xc0ec00000,
-+    dev = sysbus_create_simple(TYPE_PPC440_PCIX_HOST, 0xc0ec00000,
-                                qdev_get_gpio_in(uic[1], 0));
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, 0xc08000000);
-     pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
-diff --git a/include/hw/ppc/ppc4xx.h b/include/hw/ppc/ppc4xx.h
-index 766d575e86..ea7740239b 100644
---- a/include/hw/ppc/ppc4xx.h
-+++ b/include/hw/ppc/ppc4xx.h
-@@ -31,6 +31,7 @@
- 
- #define TYPE_PPC4xx_HOST_BRIDGE "ppc4xx-host-bridge"
- #define TYPE_PPC4xx_PCI_HOST "ppc4xx-pci-host"
-+#define TYPE_PPC440_PCIX_HOST "ppc440-pcix-host"
- #define TYPE_PPC460EX_PCIE_HOST "ppc460ex-pcie-host"
- 
- /*
--- 
-2.30.9
-
+"default y if PCIE_DEVICES" for *_PCI_EXPRESS.
 
