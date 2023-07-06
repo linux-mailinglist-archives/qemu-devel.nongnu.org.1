@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74666749D90
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 308A8749D8B
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:26:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHOzN-0004s0-SU; Thu, 06 Jul 2023 09:25:45 -0400
+	id 1qHOzf-0005UB-BE; Thu, 06 Jul 2023 09:25:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHOzK-0004qu-57
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:25:38 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1qHOzO-0004s7-QH
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:25:45 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHOz8-0000t2-7K
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:25:35 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3143b88faebso665896f8f.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 06:25:20 -0700 (PDT)
+ id 1qHOzK-0000tA-Fh
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:25:41 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-307d20548adso637748f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 06:25:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688649920; x=1691241920;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=gH8Mkhg5ZXAgRegRdPk6KSzUN9/vkxemaNfVM/X3CsQ=;
- b=K1vNkFIPr/rrNkWnLvlDt6PCVSD9If7pL5lG7iAWe9ObT3niiKjKtus3shHyktBEnU
- k1ruK3hu1JBZdjLyww6yzpnllA4pMXxaKT4vtIlnXiXHI8fihoEj9TiNBjXfi/1WSn/A
- +Uik0peP505LMZOHaSjVuP8yQQIrYuJq+j6dKtxt4QThoW911HVyVFigsfPVLvIoIfSA
- MDG5PHg7XsXbEqqwC+G076+NPkPj16t6dEJ8E9xzg2vv2ZBJEU0EWpxWtp3lhMDZps0T
- 2WIkRqP8Lczx0NzcZ+iwlL80RBaycBOIofFoxx0jlCaxwSl2Wi8z/vG2eAcVJFevaZ3X
- jkgw==
+ :reply-to; bh=1ed/BVXYFJwYxRqofY4hhjASHZDBl9OIQc2oGaDlpXM=;
+ b=XRA5eP4xPae0paRyo+1i6wtVNwJES6mHV6mzcrUPcQAOuOAop1eMPINMhddUgGB3LZ
+ OxsC/EmPafoltOPTnGL+1WX4GhqhAqL1Y2llA6nowA8HBn7CzmYB29eSQzxQlcP4DEo/
+ I1NtcZJUV8Wq625xgF2H+eylfoBinqKuqZF2iLRC9IHKL8v6ZPfOKkvXqu++UMaK8soa
+ /9ODKLUwpdv9ljtjxC3W8+9YigV2cYIaK4kH/wngMycft8rSy0jhq1/3UjCAioPzVuR9
+ bEGBrivMsSf0Ilhh4xeNIJ5afEBTGkiUowjHAJ0enzoGFaG08+KAHbI/+Xv0aQmZk+dt
+ QPTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688649920; x=1691241920;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gH8Mkhg5ZXAgRegRdPk6KSzUN9/vkxemaNfVM/X3CsQ=;
- b=RS/avya4BREBSuJKU/vT4Y7J+QTFteNYbBqylbSOjvwTTfqjBvrldCvHT6r/97lgn3
- a9k0O/3wAdSlOYpOEi6eEIE/FtLigZ6KxnmknGR90VX/EteSJ8szV/CPOGRhCX81gvxW
- 6GOUPLYCQNkrs1p1Sj7FbpUQlG08AunruTSjaSrryTr50fzD1KYcp6v9utmJ4Z+LEynD
- la5uxqgvinYFdjtLAiM2WaRh+C1qKKxE6nr1sWCYVjcDbxytDjt7Q+zVSCRfD0/GOO7v
- W9oQHCQwLwHRNqMif5NkuDfjhTwhgiahFcJDfquTHdhRia05kX1jC5a1uvjUpLWuQe0D
- gd+A==
-X-Gm-Message-State: ABy/qLbkfFZX3O6+E81LRDcXKbL9B2I0FNs/X4ex/EMcQ2I9NBaB3Z2K
- 5CtiJgxyFnzEe6tthAU8/YOawQk7a4sPdiy0E4c=
-X-Google-Smtp-Source: APBJJlHE3gsJszw0jqEJUBby1y9n7MbpNHTrO3A7Ia6SNUcKJCPukRR6SsV9914N2P3hNREvLHlIHw==
-X-Received: by 2002:adf:e9d1:0:b0:313:e88d:e6cf with SMTP id
- l17-20020adfe9d1000000b00313e88de6cfmr1562928wrn.69.1688649919894; 
- Thu, 06 Jul 2023 06:25:19 -0700 (PDT)
+ bh=1ed/BVXYFJwYxRqofY4hhjASHZDBl9OIQc2oGaDlpXM=;
+ b=lFB+5FxW8C4455VTYzuBRxp4BurxxgP7D/BNnZrckPJaRSSu4Nb2wn7UcQWeoyWin7
+ 9qYj28vtEKIHDP+4ElWQ66+fFqb7QWHZmag3Izy47WWG52JmoNeZ5CHmhLygaB3aqdYw
+ iHydHCg5VyD0VVgsCtfhK3nQUVl0a7Y89oBPD05/hk3idXulmZf7uux93+/cwQDapwvJ
+ tyTKSM/21SngJ8JcSA56wgbqDMnMV7VEVX5VhucHf2KG2oDRQiHZlXGiv+HB4Obac3+H
+ MC72+Rbu4WcSLxR5lFZcD2BT16HqoRE7n4HdsJI2YASqUmWRm4HKRhdZamNSIbdDOp2H
+ zPsA==
+X-Gm-Message-State: ABy/qLYwtCi/K0Y/PDrJ/XTmHgo8/JjWMxoM6GjnnvgNg1S67vRfuawi
+ L5LB0dYshyvCeAgl/c2Tx/s/J/bjNfoCYflfgq8=
+X-Google-Smtp-Source: APBJJlEvZFj/0ctpT8extXPhet8KptDPyKURlFbAF3HyQQV3EQCSygWnBqF3AghfDz4PieyAZ8Ki/w==
+X-Received: by 2002:a5d:48d2:0:b0:30f:c42e:3299 with SMTP id
+ p18-20020a5d48d2000000b0030fc42e3299mr1269486wrs.60.1688649920276; 
+ Thu, 06 Jul 2023 06:25:20 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- s15-20020a5d510f000000b00304adbeeabbsm1856170wrt.99.2023.07.06.06.25.19
+ s15-20020a5d510f000000b00304adbeeabbsm1856170wrt.99.2023.07.06.06.25.20
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 06:25:19 -0700 (PDT)
+ Thu, 06 Jul 2023 06:25:20 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/14] target/arm: Define neoverse-v1
-Date: Thu,  6 Jul 2023 14:25:11 +0100
-Message-Id: <20230706132512.3534397-14-peter.maydell@linaro.org>
+Subject: [PULL 14/14] target/arm: Avoid over-length shift in
+ arm_cpu_sve_finalize() error case
+Date: Thu,  6 Jul 2023 14:25:12 +0100
+Message-Id: <20230706132512.3534397-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230706132512.3534397-1-peter.maydell@linaro.org>
 References: <20230706132512.3534397-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,210 +92,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we have implemented support for FEAT_LSE2, we can define
-a CPU model for the Neoverse-V1, and enable it for the virt and
-sbsa-ref boards.
+If you build QEMU with the clang sanitizer enabled, you can see it
+fire when running the arm-cpu-features test:
+
+$ QTEST_QEMU_BINARY=./build/arm-clang/qemu-system-aarch64 ./build/arm-clang/tests/qtest/arm-cpu-features
+[...]
+../../target/arm/cpu64.c:125:19: runtime error: shift exponent 64 is too large for 64-bit type 'unsigned long long'
+[...]
+
+This happens because the user can specify some incorrect SVE
+properties that result in our calculating a max_vq of 0.  We catch
+this and error out, but before we do that we calculate
+
+ vq_mask = MAKE_64BIT_MASK(0, max_vq);$
+
+and the MAKE_64BIT_MASK() call is only valid for lengths that are
+greater than zero, so we hit the undefined behaviour.
+
+Change the logic so that if max_vq is 0 we specifically set vq_mask
+to 0 without going via MAKE_64BIT_MASK().  This lets us drop the
+max_vq check from the error-exit logic, because if max_vq is 0 then
+vq_map must now be 0.
+
+The UB only happens in the case where the user passed us an incorrect
+set of SVE properties, so it's not a big problem in practice.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20230704130647.2842917-3-peter.maydell@linaro.org
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230704154332.3014896-1-peter.maydell@linaro.org
 ---
- docs/system/arm/virt.rst |   1 +
- hw/arm/sbsa-ref.c        |   1 +
- hw/arm/virt.c            |   1 +
- target/arm/tcg/cpu64.c   | 128 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 131 insertions(+)
+ target/arm/cpu64.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/docs/system/arm/virt.rst b/docs/system/arm/virt.rst
-index 1cab33f02e3..51cdac68410 100644
---- a/docs/system/arm/virt.rst
-+++ b/docs/system/arm/virt.rst
-@@ -61,6 +61,7 @@ Supported guest CPU types:
- - ``a64fx`` (64-bit)
- - ``host`` (with KVM only)
- - ``neoverse-n1`` (64-bit)
-+- ``neoverse-v1`` (64-bit)
- - ``max`` (same as ``host`` for KVM; best possible emulation with TCG)
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index 6eaf8e32cfa..6012e4ef549 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -122,10 +122,10 @@ void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp)
+         vq = ctz32(tmp) + 1;
  
- Note that the default is ``cortex-a15``, so for an AArch64 guest you must
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index 1a8519b868f..c2e0a9fa1a0 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -153,6 +153,7 @@ static const char * const valid_cpus[] = {
-     ARM_CPU_TYPE_NAME("cortex-a57"),
-     ARM_CPU_TYPE_NAME("cortex-a72"),
-     ARM_CPU_TYPE_NAME("neoverse-n1"),
-+    ARM_CPU_TYPE_NAME("neoverse-v1"),
-     ARM_CPU_TYPE_NAME("max"),
- };
+         max_vq = vq <= ARM_MAX_VQ ? vq - 1 : ARM_MAX_VQ;
+-        vq_mask = MAKE_64BIT_MASK(0, max_vq);
++        vq_mask = max_vq > 0 ? MAKE_64BIT_MASK(0, max_vq) : 0;
+         vq_map = vq_supported & ~vq_init & vq_mask;
  
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 3196db556ee..796181e1698 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -214,6 +214,7 @@ static const char *valid_cpus[] = {
-     ARM_CPU_TYPE_NAME("cortex-a76"),
-     ARM_CPU_TYPE_NAME("a64fx"),
-     ARM_CPU_TYPE_NAME("neoverse-n1"),
-+    ARM_CPU_TYPE_NAME("neoverse-v1"),
- #endif
-     ARM_CPU_TYPE_NAME("cortex-a53"),
-     ARM_CPU_TYPE_NAME("cortex-a57"),
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 6fec2d8a57a..8019f00bc3f 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -502,6 +502,31 @@ static void define_neoverse_n1_cp_reginfo(ARMCPU *cpu)
-     define_arm_cp_regs(cpu, neoverse_n1_cp_reginfo);
- }
- 
-+static const ARMCPRegInfo neoverse_v1_cp_reginfo[] = {
-+    { .name = "CPUECTLR2_EL1", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 0, .crn = 15, .crm = 1, .opc2 = 5,
-+      .access = PL1_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
-+    { .name = "CPUPPMCR_EL3", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 6, .crn = 15, .crm = 2, .opc2 = 0,
-+      .access = PL3_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
-+    { .name = "CPUPPMCR2_EL3", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 6, .crn = 15, .crm = 2, .opc2 = 1,
-+      .access = PL3_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
-+    { .name = "CPUPPMCR3_EL3", .state = ARM_CP_STATE_AA64,
-+      .opc0 = 3, .opc1 = 6, .crn = 15, .crm = 2, .opc2 = 6,
-+      .access = PL3_RW, .type = ARM_CP_CONST, .resetvalue = 0 },
-+};
-+
-+static void define_neoverse_v1_cp_reginfo(ARMCPU *cpu)
-+{
-+    /*
-+     * The Neoverse V1 has all of the Neoverse N1's IMPDEF
-+     * registers and a few more of its own.
-+     */
-+    define_arm_cp_regs(cpu, neoverse_n1_cp_reginfo);
-+    define_arm_cp_regs(cpu, neoverse_v1_cp_reginfo);
-+}
-+
- static void aarch64_neoverse_n1_initfn(Object *obj)
- {
-     ARMCPU *cpu = ARM_CPU(obj);
-@@ -573,6 +598,108 @@ static void aarch64_neoverse_n1_initfn(Object *obj)
-     define_neoverse_n1_cp_reginfo(cpu);
- }
- 
-+static void aarch64_neoverse_v1_initfn(Object *obj)
-+{
-+    ARMCPU *cpu = ARM_CPU(obj);
-+
-+    cpu->dtb_compatible = "arm,neoverse-v1";
-+    set_feature(&cpu->env, ARM_FEATURE_V8);
-+    set_feature(&cpu->env, ARM_FEATURE_NEON);
-+    set_feature(&cpu->env, ARM_FEATURE_GENERIC_TIMER);
-+    set_feature(&cpu->env, ARM_FEATURE_AARCH64);
-+    set_feature(&cpu->env, ARM_FEATURE_CBAR_RO);
-+    set_feature(&cpu->env, ARM_FEATURE_EL2);
-+    set_feature(&cpu->env, ARM_FEATURE_EL3);
-+    set_feature(&cpu->env, ARM_FEATURE_PMU);
-+
-+    /* Ordered by 3.2.4 AArch64 registers by functional group */
-+    cpu->clidr = 0x82000023;
-+    cpu->ctr = 0xb444c004; /* With DIC and IDC set */
-+    cpu->dcz_blocksize = 4;
-+    cpu->id_aa64afr0 = 0x00000000;
-+    cpu->id_aa64afr1 = 0x00000000;
-+    cpu->isar.id_aa64dfr0  = 0x000001f210305519ull;
-+    cpu->isar.id_aa64dfr1 = 0x00000000;
-+    cpu->isar.id_aa64isar0 = 0x1011111110212120ull; /* with FEAT_RNG */
-+    cpu->isar.id_aa64isar1 = 0x0111000001211032ull;
-+    cpu->isar.id_aa64mmfr0 = 0x0000000000101125ull;
-+    cpu->isar.id_aa64mmfr1 = 0x0000000010212122ull;
-+    cpu->isar.id_aa64mmfr2 = 0x0220011102101011ull;
-+    cpu->isar.id_aa64pfr0  = 0x1101110120111112ull; /* GIC filled in later */
-+    cpu->isar.id_aa64pfr1  = 0x0000000000000020ull;
-+    cpu->id_afr0       = 0x00000000;
-+    cpu->isar.id_dfr0  = 0x15011099;
-+    cpu->isar.id_isar0 = 0x02101110;
-+    cpu->isar.id_isar1 = 0x13112111;
-+    cpu->isar.id_isar2 = 0x21232042;
-+    cpu->isar.id_isar3 = 0x01112131;
-+    cpu->isar.id_isar4 = 0x00010142;
-+    cpu->isar.id_isar5 = 0x11011121;
-+    cpu->isar.id_isar6 = 0x01100111;
-+    cpu->isar.id_mmfr0 = 0x10201105;
-+    cpu->isar.id_mmfr1 = 0x40000000;
-+    cpu->isar.id_mmfr2 = 0x01260000;
-+    cpu->isar.id_mmfr3 = 0x02122211;
-+    cpu->isar.id_mmfr4 = 0x01021110;
-+    cpu->isar.id_pfr0  = 0x21110131;
-+    cpu->isar.id_pfr1  = 0x00010000; /* GIC filled in later */
-+    cpu->isar.id_pfr2  = 0x00000011;
-+    cpu->midr = 0x411FD402;          /* r1p2 */
-+    cpu->revidr = 0;
-+
-+    /*
-+     * The Neoverse-V1 r1p2 TRM lists 32-bit format CCSIDR_EL1 values,
-+     * but also says it implements CCIDX, which means they should be
-+     * 64-bit format. So we here use values which are based on the textual
-+     * information in chapter 2 of the TRM (and on the fact that
-+     * sets * associativity * linesize == cachesize).
-+     *
-+     * The 64-bit CCSIDR_EL1 format is:
-+     *   [55:32] number of sets - 1
-+     *   [23:3]  associativity - 1
-+     *   [2:0]   log2(linesize) - 4
-+     *           so 0 == 16 bytes, 1 == 32 bytes, 2 == 64 bytes, etc
-+     *
-+     * L1: 4-way set associative 64-byte line size, total size 64K,
-+     * so sets is 256.
-+     *
-+     * L2: 8-way set associative, 64 byte line size, either 512K or 1MB.
-+     * We pick 1MB, so this has 2048 sets.
-+     *
-+     * L3: No L3 (this matches the CLIDR_EL1 value).
-+     */
-+    cpu->ccsidr[0] = 0x000000ff0000001aull; /* 64KB L1 dcache */
-+    cpu->ccsidr[1] = 0x000000ff0000001aull; /* 64KB L1 icache */
-+    cpu->ccsidr[2] = 0x000007ff0000003aull; /* 1MB L2 cache */
-+
-+    /* From 3.2.115 SCTLR_EL3 */
-+    cpu->reset_sctlr = 0x30c50838;
-+
-+    /* From 3.4.8 ICC_CTLR_EL3 and 3.4.23 ICH_VTR_EL2 */
-+    cpu->gic_num_lrs = 4;
-+    cpu->gic_vpribits = 5;
-+    cpu->gic_vprebits = 5;
-+    cpu->gic_pribits = 5;
-+
-+    /* From 3.5.1 AdvSIMD AArch64 register summary */
-+    cpu->isar.mvfr0 = 0x10110222;
-+    cpu->isar.mvfr1 = 0x13211111;
-+    cpu->isar.mvfr2 = 0x00000043;
-+
-+    /* From 3.7.5 ID_AA64ZFR0_EL1 */
-+    cpu->isar.id_aa64zfr0 = 0x0000100000100000;
-+    cpu->sve_vq.supported = (1 << 0)  /* 128bit */
-+                            | (1 << 1);  /* 256bit */
-+
-+    /* From 5.5.1 AArch64 PMU register summary */
-+    cpu->isar.reset_pmcr_el0 = 0x41213000;
-+
-+    define_neoverse_v1_cp_reginfo(cpu);
-+
-+    aarch64_add_pauth_properties(obj);
-+    aarch64_add_sve_properties(obj);
-+}
-+
- /*
-  * -cpu max: a CPU with as many features enabled as our emulation supports.
-  * The version of '-cpu max' for qemu-system-arm is defined in cpu32.c;
-@@ -763,6 +890,7 @@ static const ARMCPUInfo aarch64_cpus[] = {
-     { .name = "cortex-a76",         .initfn = aarch64_a76_initfn },
-     { .name = "a64fx",              .initfn = aarch64_a64fx_initfn },
-     { .name = "neoverse-n1",        .initfn = aarch64_neoverse_n1_initfn },
-+    { .name = "neoverse-v1",        .initfn = aarch64_neoverse_v1_initfn },
- };
- 
- static void aarch64_cpu_register_types(void)
+-        if (max_vq == 0 || vq_map == 0) {
++        if (vq_map == 0) {
+             error_setg(errp, "cannot disable sve%d", vq * 128);
+             error_append_hint(errp, "Disabling sve%d results in all "
+                               "vector lengths being disabled.\n",
 -- 
 2.34.1
 
