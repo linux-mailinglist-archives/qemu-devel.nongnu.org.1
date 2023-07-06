@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DAFE74A3DB
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 20:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1756074A3DD
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 20:39:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHTrn-0006he-Io; Thu, 06 Jul 2023 14:38:11 -0400
+	id 1qHTsm-0007cT-Pk; Thu, 06 Jul 2023 14:39:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTrl-0006hD-In
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:38:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTsh-0007Rt-2x
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:39:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTrk-0005Mq-6g
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:38:09 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHTsf-0005VD-EQ
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 14:39:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688668687;
+ s=mimecast20190719; t=1688668743;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=hjRwF6ebnjFB2OJGwftocCiucIJXWTFR0MoxlGRUOJI=;
- b=FNLBe0qpQ2U1pQljldQIWOymhPbWMBS/603W+/Uk+zDExh86PBqE30ABr6any81stZ+iMv
- ptZGrsTnzcxxmPE4Q1KsO47DNY3ClCT+xMVi5kem59PP0+E18BWVBiRYwUjARfD8tZK+Pf
- pyi78TTCH39XlMGOjhaC6DcMoElskKw=
-Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com
- [209.85.160.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Qt8pHKH/UsDvVXeulzj0TQoUnbnpuV0wJmbUQBCMyGs=;
+ b=bI9Ah0jA/zQa5uW8PUQCeuIsI55G5fTiRsnrjRzNPP7FkhEYgXL565Epx6ByYJQbWqVqrj
+ B73j9gs0HoidLsobp+2f11Mal09TJZv87v1UnQadDsoNveUSF2b3XMuCSyu8BclZeSvOM4
+ 28UZ3QHcGNfH18Lkg8MaYI6WMFWpAsI=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-LrbMYygUO9W-O8H2F_N5KA-1; Thu, 06 Jul 2023 14:38:06 -0400
-X-MC-Unique: LrbMYygUO9W-O8H2F_N5KA-1
-Received: by mail-oa1-f70.google.com with SMTP id
- 586e51a60fabf-1b3bb17fc7dso251455fac.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 11:38:06 -0700 (PDT)
+ us-mta-329-KpuC9PmgN96EExjNRR292w-1; Thu, 06 Jul 2023 14:39:00 -0400
+X-MC-Unique: KpuC9PmgN96EExjNRR292w-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-63656624620so2180116d6.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 11:39:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688668685; x=1689273485;
+ d=1e100.net; s=20221208; t=1688668739; x=1691260739;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hjRwF6ebnjFB2OJGwftocCiucIJXWTFR0MoxlGRUOJI=;
- b=BcCawpOwkx9tA1S5+l52cKWvLpUyQJrwcI1yCbaaSw5QW0ZyxOXxmFq7J/zwFz7wXk
- WcdmYNuqV+adphKic+6f5JcK3d12RuLkZ/gtpftD1mT1sBv+cb4z4eE4OJ6Ech5Ypc0k
- 9FHW2zdLxUc6h/iSzIztEJm8eRJf2L3aF/VEI7ZlPmWCxZOaWS+YiUVeZic6qz80pmI4
- 1GhezBA1pQnEaVWZc7pEQFWozItC8ZxH/XR75xcPrdUAaoo+SCy0l7AAnnPT+ynrRhtU
- j/TMvCtpK8LB/U6MfnNmB+ffPn4JhHItpMx9hpWHYqiDzRCs3559zQlOKMfBZddNlC0l
- 5dJQ==
-X-Gm-Message-State: ABy/qLZpnI4cMTvNt+kTr981pnBWmM0T+5NFOjp8+GYhmBgt8F4IRaog
- VOJ/59N0s7EP4bOte0amoF6Rncvcy6/k0uKrhLXhvr8D/A1RdNTWO0/LJtxHsidtIr+Gcls8ffC
- NHSTPOWDEg3OU1Lk=
-X-Received: by 2002:a05:6870:230a:b0:1b3:afdc:6c08 with SMTP id
- w10-20020a056870230a00b001b3afdc6c08mr2816750oao.0.1688668685653; 
- Thu, 06 Jul 2023 11:38:05 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlE1hEls6dvCA9Uqjmnp3yNvlX7HBwcH+bF47VYwd3edcBMEcdRjTnXj97G+xVwPgjvZCwSEAA==
-X-Received: by 2002:a05:6870:230a:b0:1b3:afdc:6c08 with SMTP id
- w10-20020a056870230a00b001b3afdc6c08mr2816734oao.0.1688668685385; 
- Thu, 06 Jul 2023 11:38:05 -0700 (PDT)
+ bh=Qt8pHKH/UsDvVXeulzj0TQoUnbnpuV0wJmbUQBCMyGs=;
+ b=QJh21t+N6j2oPEpGjuUFVw8V06GcKiLBOdJPkw8btbrZW4QZ3mI8Ps8kAwJhou47s9
+ 1ffue4lQEjfy4hfU1u2nAZzraVkD0VfyODY+0twLPQDozXsuat27qfa0QOIvTQ1ZIQTR
+ NvT0l2yArEJEOy6UhLe36Phjvo8VfPiZ1AvLw+Q/7W3+T8r0FPfFSF0kWHaAfRxTYXth
+ 6vuMDlYAryedyolvXc/2jYByJGsuzqnUxbie8YTkCLlVXHBDBjvWMnFIZ7uqS5gffUeV
+ WIkgcsHyFFtT5DISenOrw+bOIgKOTguIT/+uFl/zFyDe0BpdGjAtuDt4Z5kvPvaGl6Ua
+ h5/g==
+X-Gm-Message-State: ABy/qLaxJhPELfwM3mv+MxLwSxKwq9fYXfF1OHMOMcdv/dZ1IG5HQG/p
+ paEt0vjlmriM8HREONBm0bbaW7qym8LaBOHBWaHjtNf5vNWrwPLHyoSee/M83Tl8YUDjdbwOcvq
+ Y0XW1hpfQMGGAL1w=
+X-Received: by 2002:a05:6214:1d0b:b0:635:ec47:bfb0 with SMTP id
+ e11-20020a0562141d0b00b00635ec47bfb0mr2700759qvd.5.1688668739650; 
+ Thu, 06 Jul 2023 11:38:59 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlH9cO356Kbpqp8Wm6ZuWqLXKB/v+6k6Pno9dNsoZjEv6jXjsdN3TwkwD80pWgQb8O6hNfBk/A==
+X-Received: by 2002:a05:6214:1d0b:b0:635:ec47:bfb0 with SMTP id
+ e11-20020a0562141d0b00b00635ec47bfb0mr2700745qvd.5.1688668739420; 
+ Thu, 06 Jul 2023 11:38:59 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- b6-20020ac86786000000b003f9b9d7f319sm860522qtp.70.2023.07.06.11.38.04
+ t12-20020a0cb38c000000b006364a0caaadsm1166126qve.78.2023.07.06.11.38.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 11:38:04 -0700 (PDT)
-Date: Thu, 6 Jul 2023 14:38:02 -0400
+ Thu, 06 Jul 2023 11:38:59 -0700 (PDT)
+Date: Thu, 6 Jul 2023 14:38:57 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>,
  Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 2/6] tests/qtest: migration: Add migrate_incoming_qmp
- helper
-Message-ID: <ZKcKCpJk2ypOf5H0@x1n>
+ Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH v3 3/6] tests/qtest: migration: Use migrate_incoming_qmp
+ where appropriate
+Message-ID: <ZKcKQZTCqBg6XW4W@x1n>
 References: <20230630212902.19925-1-farosas@suse.de>
- <20230630212902.19925-3-farosas@suse.de>
+ <20230630212902.19925-4-farosas@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230630212902.19925-3-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+In-Reply-To: <20230630212902.19925-4-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,17 +102,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jun 30, 2023 at 06:28:58PM -0300, Fabiano Rosas wrote:
-> file-based migration requires the target to initiate its migration after
-> the source has finished writing out the data in the file. Currently
-> there's no easy way to initiate 'migrate-incoming', allow this by
-> introducing migrate_incoming_qmp helper, similarly to migrate_qmp.
-> 
-> Also make sure migration events are enabled and wait for the incoming
-> migration to start before returning. This avoid a race when querying
-> the migration status too soon after issuing the command.
+On Fri, Jun 30, 2023 at 06:28:59PM -0300, Fabiano Rosas wrote:
+> Use the new migrate_incoming_qmp helper in the places that currently
+> open-code calling migrate-incoming.
 > 
 > Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 
