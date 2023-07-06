@@ -2,91 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2435274A22F
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 18:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B08AF74A232
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 18:29:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHRpt-0006ys-Q0; Thu, 06 Jul 2023 12:28:05 -0400
+	id 1qHRql-0007bt-7O; Thu, 06 Jul 2023 12:28:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHRpr-0006yW-CZ
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 12:28:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHRpp-0005JZ-Cp
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 12:28:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688660880;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=An39eYk9IBNtHSZEyL2r4DYl1YHhBdcJPUjR7F8M0+0=;
- b=Izl97TvalyVV0HoM0PkDJM0VU0ixVweib+U37gLGEgP/gtfHkKOeMgKvHdXpVOwu3I88ID
- G2B16Wu2oanmI7tSf/fapzlhHQ5yd/WcLMEcZIx+V9bcOuk9iSL6snudBmlKWXnWBHwveT
- K9vViE+8u0xtQhIdCT82C/7i2TxtvPA=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-dPkgMda2Ou-VsuhSmlYHLA-1; Thu, 06 Jul 2023 12:27:58 -0400
-X-MC-Unique: dPkgMda2Ou-VsuhSmlYHLA-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-403838e9f4dso2530981cf.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 09:27:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qHRqj-0007bh-SW; Thu, 06 Jul 2023 12:28:57 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <xadimgnik@gmail.com>)
+ id 1qHRqi-0005Wd-9D; Thu, 06 Jul 2023 12:28:57 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fbc244d307so10218695e9.1; 
+ Thu, 06 Jul 2023 09:28:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688660933; x=1691252933;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3Nrzaoz+rsxVgQTd6TxexIuCRlSLkofQwGuRUpX9fTY=;
+ b=lRE5ncMMCLuhjZR7WCD9aIRabbtkx72rnve+GOLxtTjFVgCmhjIjI1BAyFoegY0t6+
+ PRFrrxdVjaFL3OLdaNmXR16w786N8MHGmcm+MVOoZMMjs5GKyfOF7sP5DClmcmwAsSAK
+ 0wzjGoSKnIHCBGRAmu+3uOt8aK5g6xWX0lxQof+d4tKxb+P+1RFJE5DOp2fjpqZ7lucF
+ fZf9ukLA0CS1JZaSzCMIoRL1X/6334t/BCvebW/LS0c+2fwJV4oVzQ7jRjickoReikRX
+ z5CSX5skhwsPzo/LUkGGZ9Dnntgbp2CX2XjBLynF5Kon+6KTS1ecJO63B3Ap+TTfsMBZ
+ SWWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688660878; x=1689265678;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20221208; t=1688660933; x=1691252933;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=An39eYk9IBNtHSZEyL2r4DYl1YHhBdcJPUjR7F8M0+0=;
- b=FBV/yB7JCjatHlQRUrQQRWdGig+he/d3EiHL6XK4s4x8mn8S0T8oz4ncIBG/6LQZkL
- 5zgZ7DKUa/yD4BOBwe+uxapSb+IxN9kVWoVJYO+3HtRfmv/8HqNZ+UQNl+EWveswCN4C
- rwZtj3a2V28PQPaAMnyXfCmvZeyPzuq390fo20e6dOcfK4apvAGgRsL/EreywsTuSJs0
- jsbWSz3SMJQL98GzGACfDhWwRyelp4MGSKyb+AnzF8kqA3GMs3hNuf7kHrFWlnBAhvBo
- lg1sYf9Xqn6SN/t+02J36Njxqni0VTh68yj8LlzQ/HUgfTDTpY7Tmzyk73lBu0FDavtZ
- QuWA==
-X-Gm-Message-State: ABy/qLaHStsddcr6TsdMLMiJx9ELuC1+v4YLBOC7pU1RYA+pOdNS0/6s
- 7jj19BNHxUF10v2InPYJt/38ZUVYyIMIIqJSL6TB2B9YqKCW81MUNtlcIRcyEvmmegztMQIzDj4
- 2lFIgaZssmaVOGug=
-X-Received: by 2002:a05:622a:1ba4:b0:3f6:a8e2:127b with SMTP id
- bp36-20020a05622a1ba400b003f6a8e2127bmr2854049qtb.5.1688660878311; 
- Thu, 06 Jul 2023 09:27:58 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHpJwSio82Sjqv7d36uKh9Jdvx1i8J2/mkPL3/W3aLRBYgDCD1BQfFnJ2SVYVHYQhzo5fO3tA==
-X-Received: by 2002:a05:622a:1ba4:b0:3f6:a8e2:127b with SMTP id
- bp36-20020a05622a1ba400b003f6a8e2127bmr2854029qtb.5.1688660877980; 
- Thu, 06 Jul 2023 09:27:57 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- s13-20020ac8758d000000b0040328b5fbe2sm755115qtq.58.2023.07.06.09.27.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 09:27:57 -0700 (PDT)
-Date: Thu, 6 Jul 2023 12:27:54 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Leonardo Bras Soares Passos <lsoaresp@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Lukas Straub <lukasstraub2@web.de>,
- Laszlo Ersek <lersek@redhat.com>
-Subject: Re: [PATCH v2 7/7] migration: Provide explicit error message for
- file shutdowns
-Message-ID: <ZKbrio28Oa7mzaV1@x1n>
-References: <20230705163502.331007-1-peterx@redhat.com>
- <20230705163502.331007-8-peterx@redhat.com>
- <878rbu3tgm.fsf@suse.de> <ZKXv+1eoDDlWj812@x1n>
- <87v8exjgid.fsf@suse.de>
+ bh=3Nrzaoz+rsxVgQTd6TxexIuCRlSLkofQwGuRUpX9fTY=;
+ b=hynUPMDFUwaWNoufqRzFLEHxsjGGfeW5ZmvWhyDnWekremnaJ4ywBnxDJmyVTfJ9Ja
+ 1GORkfPezPSSi+nUUndf+JSk40CJle8wVba0bAODTscxWzgwxl3A//YSKp+5NnWPafcB
+ 2Pb/0niQm+YjHBRml6lpxrTOogOpUsN7pMiMPofu1jnDa8rfojNlQbBfK1dj0xxn+X2N
+ kas+KRSSJJqkIncTHlPv2tGEPUgHXr+w8xpqORhR1YPm3ijYpM9owYSXm/k4v17ie1Ja
+ 37PY9BL8ANZSkaWn64Bg5SQ1wjw8aDJdWbOmY6oNChK7OrDbN6p3P3VwnrzOGNtLTVVF
+ h2CA==
+X-Gm-Message-State: ABy/qLYo1vPQkilznovAfqCe4W1EZNU+WjqbkZXgI4UtLLoQsB4XHGCj
+ fWS9Ta/HsvHixkI0vfQyhKs=
+X-Google-Smtp-Source: APBJJlGWcxJJF03lZm81+ayN8BYKTAHsb1a6gRv3FRByPiONZ3DSvT07hsvUipV0f0QybLNHfc56Dg==
+X-Received: by 2002:a05:600c:2055:b0:3f7:4961:52ad with SMTP id
+ p21-20020a05600c205500b003f7496152admr1975126wmg.3.1688660932849; 
+ Thu, 06 Jul 2023 09:28:52 -0700 (PDT)
+Received: from [10.95.131.194] (54-240-197-233.amazon.com. [54.240.197.233])
+ by smtp.gmail.com with ESMTPSA id
+ n10-20020a1c720a000000b003f733c1129fsm797wmc.33.2023.07.06.09.28.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jul 2023 09:28:52 -0700 (PDT)
+From: Paul Durrant <xadimgnik@gmail.com>
+X-Google-Original-From: Paul Durrant <paul@xen.org>
+Message-ID: <c1d5ff39-2e2a-d863-7de5-7092e559c344@xen.org>
+Date: Thu, 6 Jul 2023 17:28:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87v8exjgid.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] xen-block: Avoid leaks on new error path
+Content-Language: en-US
+To: Anthony PERARD <anthony.perard@citrix.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Stefano Stabellini <sstabellini@kernel.org>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, xen-devel@lists.xenproject.org,
+ qemu-block@nongnu.org
+References: <20230704171819.42564-1-anthony.perard@citrix.com>
+Organization: Xen Project
+In-Reply-To: <20230704171819.42564-1-anthony.perard@citrix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=xadimgnik@gmail.com; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,89 +95,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: paul@xen.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 06, 2023 at 10:50:34AM -0300, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
+On 04/07/2023 18:18, Anthony PERARD wrote:
+> From: Anthony PERARD <anthony.perard@citrix.com>
 > 
-> > On Wed, Jul 05, 2023 at 07:05:13PM -0300, Fabiano Rosas wrote:
-> >> Peter Xu <peterx@redhat.com> writes:
-> >> 
-> >> > Provide an explicit reason for qemu_file_shutdown()s, which can be
-> >> > displayed in query-migrate when used.
-> >> >
-> >> 
-> >> Can we consider this to cover the TODO:
-> >> 
-> >>  * TODO: convert to propagate Error objects instead of squashing
-> >>  * to a fixed errno value
-> >> 
-> >> or would that need something fancier?
-> >
-> > The TODO seems to say we want to allow qemu_file_shutdown() to report an
-> > Error* when anything wrong happened (e.g. shutdown() failed)?  While this
-> > patch was trying to store a specific error string so when query migration
-> > later it'll show up to the user.  If so, IMHO they're two things.
-> >
+> Commit 189829399070 ("xen-block: Use specific blockdev driver")
+> introduced a new error path, without taking care of allocated
+> resources.
 > 
-> Ok, just making sure.
+> So only allocate the qdicts after the error check, and free both
+> `filename` and `driver` when we are about to return and thus taking
+> care of both success and error path.
 > 
-> >> 
-> >> > This will make e.g. migrate-pause to display explicit error descriptions,
-> >> > from:
-> >> >
-> >> > "error-desc": "Channel error: Input/output error"
-> >> >
-> >> > To:
-> >> >
-> >> > "error-desc": "Channel is explicitly shutdown by the user"
-> >> >
-> >> > in query-migrate.
-> >> >
-> >> > Signed-off-by: Peter Xu <peterx@redhat.com>
-> >> > ---
-> >> >  migration/qemu-file.c | 5 ++++-
-> >> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> >> >
-> >> > diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-> >> > index 419b4092e7..ff605027de 100644
-> >> > --- a/migration/qemu-file.c
-> >> > +++ b/migration/qemu-file.c
-> >> > @@ -87,7 +87,10 @@ int qemu_file_shutdown(QEMUFile *f)
-> >> >       *      --> guest crash!
-> >> >       */
-> >> >      if (!f->last_error) {
-> >> > -        qemu_file_set_error(f, -EIO);
-> >> > +        Error *err = NULL;
-> >> > +
-> >> > +        error_setg(&err, "Channel is explicitly shutdown by the user");
-> >> 
-> >> It is good that we can grep this message. However, I'm confused about
-> >> who the "user" is meant to be here and how are they implicated in this
-> >> error.
-> >
-> > Ah, here the user is who sends the "migrate-pause" command, according to
-> > the example of the commit message.
-> >
+> Coverity only spotted the leak of qdicts (*_layer variables).
 > 
-> That's where I'm confused. There are 15 callsites for
-> qemu_file_shutdown(). Only 2 of them are from migrate-pause. So I'm
-> missing the logical step that links migrate-pause with this
-> error_setg().
-> Are you assuming that the race described will only happen
-> with migrate-pause and the other invocations would have set an error
-> already?
+> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> Fixes: Coverity CID 1508722, 1398649
+> Fixes: 189829399070 ("xen-block: Use specific blockdev driver")
+> Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+> ---
+>   hw/block/xen-block.c | 11 ++++++-----
+>   1 file changed, 6 insertions(+), 5 deletions(-)
+> 
 
-It's not a race, but I think you're right. I thought it was always the case
-to shut but actually not: we do shutdown() also in a few places where we
-don't really fail, either for COLO or for completion of migration.  With
-the 1st patch, it'll even show in query-migrate.  Thanks for spotting it -
-I could have done better.
-
-Let's drop this patch.. sorry for the noise.
-
--- 
-Peter Xu
+Reviewed-by: Paul Durrant <paul@xen.org>
 
 
