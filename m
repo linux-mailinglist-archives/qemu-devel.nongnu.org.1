@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C193A749946
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B449749947
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 12:20:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHM4Y-0006Aq-UY; Thu, 06 Jul 2023 06:18:50 -0400
+	id 1qHM4Z-0006HZ-Ap; Thu, 06 Jul 2023 06:18:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHM4Q-0005nY-GV
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:18:42 -0400
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+ id 1qHM4U-0005yH-5o
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:18:46 -0400
+Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHM4O-0007BP-U3
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:18:42 -0400
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-6b72329b63eso497379a34.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 03:18:40 -0700 (PDT)
+ id 1qHM4S-0007CN-K1
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 06:18:45 -0400
+Received: by mail-ot1-x336.google.com with SMTP id
+ 46e09a7af769-6b7541d885cso453454a34.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 03:18:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688638719; x=1691230719;
+ d=ventanamicro.com; s=google; t=1688638723; x=1691230723;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EtERhF/xfYQMjn+bEX8PIQ4lMIfhPOCNLObYIRjwmfo=;
- b=Xvo9Z7sLLXjXiA3kW5RQam6YOAB0d5csEgcqRTXEF+yeNNspLbneLWFqb8wabwY79d
- BnalB3nJ4a6kS+niZTCUrbEy554DHNFgN+b9hNUGVHIQ6Yy5zW3KpMrJGsUxK7tIHD+V
- UKb46EXlS0NKv0GJL9zRjkD6G4vhSkm7g1rgaUeLXH+SA23vG0rXqbIiOP8HCuiZyfL8
- 9zML0bGdT6akYL0NyX+Y4VA1k10gbG1+tZwwlAH6fXaKwEGoa2KU3+XGbRedPhcJLwiE
- sKUB0p2lXquLHnxRrGiiAwC2JZNNYdBCa0iux36MoXgiK8V88GBa1nQga9hfTjOKAMLz
- jTmw==
+ bh=9xHvxLB9xtcGXjVSbRp4EDf5ah7gB89LgOtfMTIsy9Y=;
+ b=FLFgWlc0U9GNhYvs8R2b5B1N3bH7qOzuc6aODWtHU02WQCFZaj7oGviRPwpJrvCY2O
+ eV5tdqDysTR7N0nszsiqKV9jVBQbAtvaTME4bC/r5YGSzZrIDu90XZChSb7woLC/2zv7
+ bjExDFGCWYJvCB8tfi8yG+FjH4hPoLk+VkfCycg4LBhSnOXS2eLjNwEsSHyKUgBiDg1M
+ eGFXGqiVG8C5JSAnmsRKYjXpfPM9doq8zWcj/yCO86JOUA1MmuVYSXQuKQBnl0pF3QtV
+ e2BsMlab98zm7lmHDlgQOZnTuPdeoQl3XtKhfkfa/Vg4l2QptPU+FB2BaDMxI917El1E
+ 1n0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688638719; x=1691230719;
+ d=1e100.net; s=20221208; t=1688638723; x=1691230723;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EtERhF/xfYQMjn+bEX8PIQ4lMIfhPOCNLObYIRjwmfo=;
- b=jkcLORIr47lksJMWYWxtLvcNqpbxoPzn4OcrFMdksBOADpUTNVVol1fJG7iOS7eqxe
- y4fLlhNZ0N/D7RC46D/w7Ryu9vL7YvBF2/GOEDpSwCAzdfbrMgvX3bqxtanjUtBw3dI7
- SMt+H32jiJdYB9/sDxcoDJLOJXz2TWPauhDud65WGA3k2O0A4rUmZyl9HJ2F4FYrIBW6
- iR6dOwSoTcXW9e+exVtbLojuNbJtsgAxAfdp3NjryO00VDsdZ93OhJqadonL8GXNN8/P
- c0K+4y1VhEwSDh+3QBxUyVM0duZH4sk+axfKomtvc2s5HtmKc/uqQBNp6u1bjAoYdff4
- 0GZA==
-X-Gm-Message-State: ABy/qLYDlLYdQlKXmNPvuFBEVrsIGZxJRBnsPoNt7Uoq0B88A1Q968Cz
- Sqz/S6/9gGDCG7mWPbpqA1aIdz2S+62AggJzmC4=
-X-Google-Smtp-Source: APBJJlG2bme4Byg+0/yVDn7wiDlKyii+6s8ju1zO0zJqJg0KVZfe4Ipoci+ykRUv+aS21WwDRmk6yA==
-X-Received: by 2002:a05:6870:e392:b0:1ad:34f5:559e with SMTP id
- x18-20020a056870e39200b001ad34f5559emr1909172oad.25.1688638719726; 
- Thu, 06 Jul 2023 03:18:39 -0700 (PDT)
+ bh=9xHvxLB9xtcGXjVSbRp4EDf5ah7gB89LgOtfMTIsy9Y=;
+ b=V2+I1D+mP+fcJSyze2LGu6s30nCgsk/pFBJ7zEsnqhWSsyCZuo/x76d/TRzaxb5RHg
+ EqdSEpdZBJ3SXw6QjvjcHMr0VmOZCpjsbIO+bbHVlckfS39GO/x1Lxa/owUNKfZzOtjL
+ AE1hHBCGpxMCWKl2/cx1lDTE8m/A6RNwSXEi8ylyoVU5PGgYy/HIkl+UAyecmNg07cKA
+ n8Y05DwEqeALRqP6xouTc7GFGNFKoDHfv+BKRi1wI2HMXNFzgeDMjmAFCgUvirdGs8oN
+ qfsCU6JpVBGDjP15NXMtX50lr+QXMlc+8qlPKiJ+NxAwQiEHUwWPyr9aX36IuhqdFZTk
+ UJGQ==
+X-Gm-Message-State: ABy/qLaa4znWcFskNQd5jGvAqzOfUrvGTcvfZ7X97JK85JwViE8EV23A
+ SIBWsawQhv1vbwIPeS8Dlty5aT9ui9HQ2SKbCRA=
+X-Google-Smtp-Source: APBJJlEEH6XhQIEbpvRdPLojACr1QrDW++kPCjHEnNzD0eesTdnE0FRhZc8vE9bXBnMC6mI+2Lh3Uw==
+X-Received: by 2002:a9d:6942:0:b0:6b8:807d:82d1 with SMTP id
+ p2-20020a9d6942000000b006b8807d82d1mr1390663oto.35.1688638722998; 
+ Thu, 06 Jul 2023 03:18:42 -0700 (PDT)
 Received: from grind.. (201-69-66-110.dial-up.telesp.net.br. [201.69.66.110])
  by smtp.gmail.com with ESMTPSA id
- h25-20020a9d6a59000000b006b8850ad193sm511382otn.56.2023.07.06.03.18.36
+ h25-20020a9d6a59000000b006b8850ad193sm511382otn.56.2023.07.06.03.18.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 03:18:39 -0700 (PDT)
+ Thu, 06 Jul 2023 03:18:42 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v9 15/20] target/riscv/cpu.c: add satp_mode properties earlier
-Date: Thu,  6 Jul 2023 07:17:33 -0300
-Message-ID: <20230706101738.460804-16-dbarboza@ventanamicro.com>
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v9 16/20] target/riscv/cpu.c: remove priv_ver check from
+ riscv_isa_string_ext()
+Date: Thu,  6 Jul 2023 07:17:34 -0300
+Message-ID: <20230706101738.460804-17-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230706101738.460804-1-dbarboza@ventanamicro.com>
 References: <20230706101738.460804-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x330.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,47 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-riscv_cpu_add_user_properties() ended up with an excess of "#ifndef
-CONFIG_USER_ONLY" blocks after changes that added KVM properties
-handling.
+riscv_isa_string_ext() is being used by riscv_isa_string(), which is
+then used by boards to retrieve the 'riscv,isa' string to be written in
+the FDT. All this happens after riscv_cpu_realize(), meaning that we're
+already past riscv_cpu_validate_set_extensions() and, more important,
+riscv_cpu_disable_priv_spec_isa_exts().
 
-KVM specific properties are required to be created earlier than their
-TCG counterparts, but the remaining props can be created at any order.
-Move riscv_add_satp_mode_properties() to the start of the function,
-inside the !CONFIG_USER_ONLY block already present there, to remove the
-last ifndef block.
+This means that all extensions that needed to be disabled due to
+priv_spec mismatch are already disabled. Checking this again during
+riscv_isa_string_ext() is unneeded. Remove it.
+
+As a bonus, riscv_isa_string_ext() can now be used with the 'host'
+KVM-only CPU type since it doesn't have a env->priv_ver assigned and it
+would fail this check for no good reason.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/riscv/cpu.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ target/riscv/cpu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 31e591a938..deb3c0f035 100644
+index deb3c0f035..2acf77949f 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1852,6 +1852,8 @@ static void riscv_cpu_add_user_properties(Object *obj)
-     DeviceState *dev = DEVICE(obj);
+@@ -2124,8 +2124,7 @@ static void riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
+     int i;
  
- #ifndef CONFIG_USER_ONLY
-+    riscv_add_satp_mode_properties(obj);
-+
-     if (kvm_enabled()) {
-         kvm_riscv_init_user_properties(obj);
-     }
-@@ -1870,10 +1872,6 @@ static void riscv_cpu_add_user_properties(Object *obj)
- #endif
-         qdev_property_add_static(dev, prop);
-     }
--
--#ifndef CONFIG_USER_ONLY
--    riscv_add_satp_mode_properties(obj);
--#endif
- }
- 
- static Property riscv_cpu_properties[] = {
+     for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
+-        if (cpu->env.priv_ver >= isa_edata_arr[i].min_version &&
+-            isa_ext_is_enabled(cpu, &isa_edata_arr[i])) {
++        if (isa_ext_is_enabled(cpu, &isa_edata_arr[i])) {
+             new = g_strconcat(old, "_", isa_edata_arr[i].name, NULL);
+             g_free(old);
+             old = new;
 -- 
 2.41.0
 
