@@ -2,136 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB5C749D22
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:11:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3C9749D2A
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:16:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHOk8-0006BH-Ih; Thu, 06 Jul 2023 09:09:56 -0400
+	id 1qHOom-0000E3-VH; Thu, 06 Jul 2023 09:14:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qHOk2-0006AV-Lr; Thu, 06 Jul 2023 09:09:50 -0400
-Received: from mail-he1eur01on0728.outbound.protection.outlook.com
- ([2a01:111:f400:fe1e::728]
- helo=EUR01-HE1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qHOok-0000AC-Vo; Thu, 06 Jul 2023 09:14:42 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qHOjz-0007GW-Be; Thu, 06 Jul 2023 09:09:50 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=W5FzrsUxK/1ZVBNlPgIGJT6nfFbx4NWDqhoDgxybP/5fldbVFlq9FPef0RCIGe3N//tV3gHlZO6uKLp/uhJXsaA3AwEOno/5f1l6H6dRurFZYG3gKBhdPN1coIlqN4pIPF7feWdZ7jLSLCvUZ7j/h4k9369rnJcE78PmCN5LfhKVT14qaPipqR2WFdHL5PJgNKoJpP8Ru4hMnvQmRr2/7ECB07pBE1DPR1LtEjJVE+FUV7poc/HY5soFEw8J+B5tsoVx4jCz3kyqd+JT/Am4iaTzYmRWzPmX0gq+qy73vQnQTaG8/9FSBvGUxdgyZa9yu8DGSyhJwvw0OpT0pt+o5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tqFkC0Q4w9LtHVwntaAVmRxWPm87VBcXnO+qtuA5OQY=;
- b=TGulzuidF7LT6ZlmdOA55V4do7k/x1JOT+tBNHmyQ45lXxRuGcJ2frnbk8PJvr1F7JselaKWkF8viAYiuxl9hPFpgwCVx55N43uS9FREbE20D1kgh63FDi2hYUvizAYlMK58MiT8uj1g51pCFmZgOd9ftlmmiz77uDmUGWyTicpEPG+xx0MVpC5utMTauC0IX1Ab9eL9TaGdzzJp6oZdCZ4WTGU2zcYp610Shk86NGIfb+i95wULIUgJ/ouTTTT+ewaEttyeYUzCTPXig+MObWb/BIoSLiwfIqj5Tug473dcI0Kt0WkcGF/Iy4NRlA+NLvIrTO2cht2bpR1Zp3Fbtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tqFkC0Q4w9LtHVwntaAVmRxWPm87VBcXnO+qtuA5OQY=;
- b=GQavHc+1wc/siOu0jixmMWc6TZBnQgHInb33A/nX0ueu+lyOU1RDA0L6zuIwwwKnRDyqfzERYSl3Fpx/dHdr3OxiTHYJH2X6k7ca77bJNxiKWehN2ZFIn2VJKeLdWAy6p0+/pR2SImTvOxnjAu9J9c1ev7qQX+1+2fLtmASgy9F1Xn3rZ1H22td7AIX7biygqaUaqdUmrEZAuWV/449J7bVGFMHF7C9SyfxPMdQ31Vr+SGGz4VGlZLlc2diq/pHTYHsEMQ1cJtZk07MXI/3/uJHmYaGjUyAtg/N1EO+KHexyCu6OPVKn6kjvnPxaKLlc2sL5nxW/RVftr/VSokU9sQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from AM4PR08MB2932.eurprd08.prod.outlook.com (2603:10a6:205:e::33)
- by DB8PR08MB5403.eurprd08.prod.outlook.com (2603:10a6:10:116::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.17; Thu, 6 Jul
- 2023 13:09:38 +0000
-Received: from AM4PR08MB2932.eurprd08.prod.outlook.com
- ([fe80::c9c4:b136:a31a:bc35]) by AM4PR08MB2932.eurprd08.prod.outlook.com
- ([fe80::c9c4:b136:a31a:bc35%4]) with mapi id 15.20.6565.016; Thu, 6 Jul 2023
- 13:09:38 +0000
-Message-ID: <e05d3f08-2d08-ec64-e8ca-882aa6a6378a@virtuozzo.com>
-Date: Thu, 6 Jul 2023 16:10:50 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 2/3] qemu-img: map: report compressed data blocks
-Content-Language: en-US
-To: "Denis V. Lunev" <den@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com
-References: <20230607152627.468786-1-andrey.drobyshev@virtuozzo.com>
- <20230607152627.468786-3-andrey.drobyshev@virtuozzo.com>
- <0398442b-50aa-fe28-0379-3b57ef749564@virtuozzo.com>
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <0398442b-50aa-fe28-0379-3b57ef749564@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ZR0P278CA0178.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:45::22) To AM4PR08MB2932.eurprd08.prod.outlook.com
- (2603:10a6:205:e::33)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qHOof-00015E-MI; Thu, 06 Jul 2023 09:14:42 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 26DEB469A0;
+ Thu,  6 Jul 2023 15:14:24 +0200 (CEST)
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, pbonzini@redhat.com, t.lamprecht@proxmox.com,
+ qemu-stable@nongnu.org, kwolf@redhat.com, hreitz@redhat.com
+Subject: [PATCH] qemu_cleanup: begin drained section after vm_shutdown()
+Date: Thu,  6 Jul 2023 15:14:18 +0200
+Message-Id: <20230706131418.423713-1-f.ebner@proxmox.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM4PR08MB2932:EE_|DB8PR08MB5403:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9c680244-8d81-4fd5-4dd8-08db7e2240cc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: fHhjXM4Ac9pY+ZJo7aPaVeLgt9jAVerLjw+IEhAApb0Lt1q9RiRfTPdUeFJHWrOEnV5IqhflafZ9+649ybShNbTB7TYI0hLEb5qfm3pC75zz4uplKqs5qcbmsrqCDH37ctWGXl+TYvLJOlIfz1woolZad0Ae9HjvRAUNwAh0NwkE+HjC81vVjN4K7bT1iTOBT0Iioj3oT/3/ENJIb3Hl278F4s0EIV/9Xd1bMzZyFObC/RnK0/vpKxn4F8CILrWjPBNh0mMayEfZHpOj2iWOLNCrunzDLRejOiGnQqcEHh3SlRlk2KDZcPWYr0fxb9zloqqckyg4zCIgOvDJIZrr7QNxK4uBf6Rn1EdyO4CAcj0V+Bnu973HglsvSLEA8kAauu9O0j+AJuqanJ3wSsgrxT63O1f4W7czOEOBKkKCaQ2ZK0dn8hqTrkH75I+uSk/hsOnYqsB4I3FpCdAoXpJXhUFfmdLhxO8HRvPxgDtdeGuDzjGKPSiMV13+OP4qBMF/vwLS4VZssmAG1R3wr6sZcDS6+w7jls5myNB1EMwYqOrylStcCsL19XZWRfsngQdEiMBNgb3l9cwKa0nNgz3msfi81oiPeW7kDNBPNCJ2wUtwERZPwKvIYJqNvtF07sU60hhdsAll0aXYgSPXe2xemg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AM4PR08MB2932.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(4636009)(39850400004)(366004)(136003)(376002)(346002)(396003)(451199021)(41300700001)(66556008)(478600001)(6512007)(86362001)(31696002)(38100700002)(6486002)(66946007)(316002)(4326008)(66476007)(83380400001)(6666004)(36756003)(8936002)(2906002)(2616005)(5660300002)(8676002)(44832011)(186003)(31686004)(6506007)(26005)(53546011)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?V09IOVgyc0NFM2dWclBJUmlHSnhFbVFIWVRwbUVIRnMyREM4M1Q2WnBuMGdT?=
- =?utf-8?B?TFYyZ21RSEZyRUZqSWZ6OGpZZEFnOTNPamg4cDlHRTBDM0dKMG5MSTN6b2s0?=
- =?utf-8?B?YWE0Z3VGMmJwVmYxbDZPdVIwMGlzOFF0VkhGZGV4L2dGQTVhZmRTZHRrYy9T?=
- =?utf-8?B?RTZLUE9rT0t2NkZRNEt5SGVieFM5dXYrWTY2Q0tRUEN4M0tDTlkwKzJxbDJF?=
- =?utf-8?B?WU5ub3o1alZpUVh3eWlwcmlIMEl1Z1UyWnpNZWhlYlB0RFJ3d2RpRFVGTmRx?=
- =?utf-8?B?KzdBSXZ1NmV1QmorNDh2MC9yaDBYeVRFUXdEQjJkOEZHL1YxOTA3MG93aVEw?=
- =?utf-8?B?YnpOT2pWaUNhSWtSTWtMbXhKQWY2UFlXd0JrU3FZQ2psenNtRzFVS20ySjF2?=
- =?utf-8?B?NW12bjFNUVlvbVNhNFJHaG5XSjVwTDd1TFV4b3l0eHFDb05TcG1ld0ZNVGZX?=
- =?utf-8?B?S2NnZmdYTWY5bGhSRWVkVVJBTEw0eEV2ZEdYYjVCdVA4cGxaaG14eERqa2xE?=
- =?utf-8?B?dTE4TDFBREpySTI1M3VpdjRVaDBOZm1VeUdVU1I3RGhaaFBxNWtuWWV6c2ZG?=
- =?utf-8?B?QzJERjhUYmMwY2pTaWRFbmhSaC91bzl6UTVOem1rcGZpbDg2cDlRQUxNQklO?=
- =?utf-8?B?Z3FIVmVQMTVOYU9SU3JnaTJQa2hSdHlsTnFrSS8rSGd4MXpPelF5VVN1bWls?=
- =?utf-8?B?d2VBOEZDdkZkSXRlTDZXZE45VjA2ZmQvWWNyT2hJRzhhYjJyN3BQZloyTE0z?=
- =?utf-8?B?akMzbjlhVWh6NERJYm9xV3BhQ0dTQmZqR0JFVnEraTNMWEVJSEtqTWQ2dFFF?=
- =?utf-8?B?VURLcEMzVGtFSTRpNHBzTitxMFVoNXl2bjFkdnl4QldTRUxVaUNJVjkrRDVJ?=
- =?utf-8?B?a3o1L0hmdVptcnlXck1iQXE4STQ5dldZUXFLM0YzalpwTXpDWDMrLzJuSUp1?=
- =?utf-8?B?am1Bblo0NG0zMWRmNTJHQkYrV2NMSHlKOUd4Q0Y1dFRQUTQ0dHVGVFdYN1Zh?=
- =?utf-8?B?L09IQXU1Y0k4S3NaTzVHendvaWpCdGdteTFhN0NLeEIvUCtoeGhlamllby9C?=
- =?utf-8?B?RHdYZXIyMEFRa29oYW9WdVNxS2JFSGRsaDdoUFFSOXFIMFNldkpzNlViYUc1?=
- =?utf-8?B?Mnd2c203c09nK0ZTeW5QbXBkZ1U3TVFVNTlIR1M0bDVCUVNmaUx4WXNRdHhS?=
- =?utf-8?B?aGhmVjRsT1RKenVHeEZZQnBZdEE5c0hrM1ZMZHMvVjViMzhBanpLTFFjSG5k?=
- =?utf-8?B?TGs5ZkxiS0JYQVFyT3Z0Tm9qNDBWVlc2ZTBhSXlnU1NMbGhSQTFsbHRuK080?=
- =?utf-8?B?TDN6eWg0YzRFVjArZHkxRExFelIyL0M3RDFlL3NmYVVEQVhFZm9BbXpFNW9F?=
- =?utf-8?B?LzQvbVJLY3NjMVFLaDd3YnNselc3WWhZWWNOZEt3bkxqVldyZkQ5Z05jcEtn?=
- =?utf-8?B?R2VOb1pPN0dTMGNUS1g3S3JsNlh1U3BnVnJYQXNPdlI4WlJ4SlZOVk9lSklZ?=
- =?utf-8?B?Z2xsNUF6bTVUK0xXY1dLdEVuUk1YNzBCdWFBaDE5MmhkTWRrd2pLRWR5TWFW?=
- =?utf-8?B?WXkzVGQybTBKL3hsaHZEeWc5WWRzNHg1TDZhSUFrVTQvOGRrS3BpbmMvbi9v?=
- =?utf-8?B?T0ZxdGhFbjFjcGNSNUxaTTNpVFZ0V1Rza2tFWnliaUJhNCtPZ1I0Z2ZKWW5L?=
- =?utf-8?B?b21scmd1Ylhlc1MzbFV1V1piODVaZTdEd1BYWXNJZmgza2JpTS9udlN0di9i?=
- =?utf-8?B?cXFid094QTlWVkczbldJOEVVWDFoTXNrdmw4MTZ1RzVxc01sZ2ZtTmxjZmgy?=
- =?utf-8?B?VHZ5NTgvOWFNZ2ZidmJ2enRQejlxNXhUVlh6M0hJM0NaQXhMUHB1UGs2OXpS?=
- =?utf-8?B?YThwRGwrVFRxY2hXbGF3MEpKM1ZZUW9VTnFrMmsvNVVmNHlyRnErOGd0SjJO?=
- =?utf-8?B?YlpidmdHZ0NFbE9DaVdwaUZZSnRySVJEclAwTVdjanJZMVZFazZyMytPZHF6?=
- =?utf-8?B?a09zdHhDZFAwWlNCUG5HbW1FV09GdEhUSGRuZG1NdWFXNjlqbFArbmY5RWYw?=
- =?utf-8?B?THNQWGZ4N2xvQ1VGUWhWYmtUZnlOUVRLRHZYMmUwRkRQYytvKzV4dHprODNL?=
- =?utf-8?B?ZHY3L21OaWJEd2tkc2FURE5PdzVENkJrYXQ0cFMwY1kxejF3OVIwYzR1WnAv?=
- =?utf-8?Q?FRYUnB2fbd6nhyY9wOk3AFQ=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c680244-8d81-4fd5-4dd8-08db7e2240cc
-X-MS-Exchange-CrossTenant-AuthSource: AM4PR08MB2932.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2023 13:09:38.5982 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p8YNGNQIIoX6Cx7oNGV37rfCtNbhd5tRg9f7n+qcG+sv+/rXq79ZkWb+5gWrF0I/Col8KDyOHirmVmS36d89QTi0q7v1ArXe2P6iDM8ZOG0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR08MB5403
-Received-SPF: pass client-ip=2a01:111:f400:fe1e::728;
- envelope-from=andrey.drobyshev@virtuozzo.com;
- helo=EUR01-HE1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,138 +52,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/21/23 21:12, Denis V. Lunev wrote:
-> On 6/7/23 17:26, Andrey Drobyshev wrote:
->> Right now "qemu-img map" reports compressed blocks as containing data
->> but having no host offset.  This is not very informative.  Instead,
->> let's add another boolean field named "compressed" in case JSON output
->> mode is specified.  This is achieved by utilizing new allocation status
->> flag BDRV_BLOCK_COMPRESSED for bdrv_block_status().
->>
->> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
->> ---
->>   qapi/block-core.json |  7 +++++--
->>   qemu-img.c           | 16 +++++++++++++---
->>   2 files changed, 18 insertions(+), 5 deletions(-)
->>
->> diff --git a/qapi/block-core.json b/qapi/block-core.json
->> index 5dd5f7e4b0..bc6653e5d6 100644
->> --- a/qapi/block-core.json
->> +++ b/qapi/block-core.json
->> @@ -409,6 +409,9 @@
->>   #
->>   # @zero: whether the virtual blocks read as zeroes
->>   #
->> +# @compressed: true indicates that data is stored compressed (the target
->> +#     format must support compression)
->> +#
->>   # @depth: number of layers (0 = top image, 1 = top image's backing
->>   #     file, ..., n - 1 = bottom image (where n is the number of images
->>   #     in the chain)) before reaching one for which the range is
->> @@ -426,8 +429,8 @@
->>   ##
->>   { 'struct': 'MapEntry',
->>     'data': {'start': 'int', 'length': 'int', 'data': 'bool',
->> -           'zero': 'bool', 'depth': 'int', 'present': 'bool',
->> -           '*offset': 'int', '*filename': 'str' } }
->> +           'zero': 'bool', 'compressed': 'bool', 'depth': 'int',
->> +           'present': 'bool', '*offset': 'int', '*filename': 'str' } }
-> after some thoughts I would say that for compatibility reasons it
-> would be beneficial to have compressed field optional.
->>     ##
->>   # @BlockdevCacheInfo:
->> diff --git a/qemu-img.c b/qemu-img.c
->> index 27f48051b0..9bb69f58f6 100644
->> --- a/qemu-img.c
->> +++ b/qemu-img.c
->> @@ -3083,7 +3083,7 @@ static int img_info(int argc, char **argv)
->>   }
->>     static int dump_map_entry(OutputFormat output_format, MapEntry *e,
->> -                          MapEntry *next)
->> +                          MapEntry *next, bool can_compress)
->>   {
->>       switch (output_format) {
->>       case OFORMAT_HUMAN:
->> @@ -3112,6 +3112,9 @@ static int dump_map_entry(OutputFormat
->> output_format, MapEntry *e,
->>                  e->present ? "true" : "false",
->>                  e->zero ? "true" : "false",
->>                  e->data ? "true" : "false");
->> +        if (can_compress) {
->> +            printf(", \"compressed\": %s", e->compressed ? "true" :
->> "false");
-> If compressed field is optional, then it would be reasonable to skip
-> filling this field for non-compressed clusters. In that case we
-> will not need 'can_compress' parameter of the call.
-> 
-> Ha! More importantly. The field (according to the metadata) is
-> mandatory while it is reported conditionally, i.e. the field is
-> optional in reality. There is a problem in a this or that way.
-> 
+in order to avoid requests being stuck in a BlockBackend's request
+queue during cleanup. Having such requests can lead to a deadlock [0]
+with a virtio-scsi-pci device using iothread that's busy with IO when
+initiating a shutdown with QMP 'quit'.
 
-Yes, I agree that making this field optional makes sense since we do not
-include it for formats which don't support compression.
+There is a race where such a queued request can continue sometime
+(maybe after bdrv_child_free()?) during bdrv_root_unref_child() [1].
+The completion will hold the AioContext lock and wait for the BQL
+during SCSI completion, but the main thread will hold the BQL and
+wait for the AioContext as part of bdrv_root_unref_child(), leading to
+the deadlock [0].
 
-However, I don't think we should entirely omit it for uncompressed
-clusters.  If we keep it present that would be more consistent with the
-current logic, as with '"zero": false' field which is always included.
+[0]:
 
->> +        }
->>           if (e->has_offset) {
->>               printf(", \"offset\": %"PRId64"", e->offset);
->>           }
->> @@ -3172,6 +3175,7 @@ static int get_block_status(BlockDriverState
->> *bs, int64_t offset,
->>           .length = bytes,
->>           .data = !!(ret & BDRV_BLOCK_DATA),
->>           .zero = !!(ret & BDRV_BLOCK_ZERO),
->> +        .compressed = !!(ret & BDRV_BLOCK_COMPRESSED),
->>           .offset = map,
->>           .has_offset = has_offset,
->>           .depth = depth,
->> @@ -3189,6 +3193,7 @@ static inline bool entry_mergeable(const
->> MapEntry *curr, const MapEntry *next)
->>       }
->>       if (curr->zero != next->zero ||
->>           curr->data != next->data ||
->> +        curr->compressed != next->compressed ||
->>           curr->depth != next->depth ||
->>           curr->present != next->present ||
->>           !curr->filename != !next->filename ||
->> @@ -3218,6 +3223,7 @@ static int img_map(int argc, char **argv)
->>       bool force_share = false;
->>       int64_t start_offset = 0;
->>       int64_t max_length = -1;
->> +    bool can_compress = false;
->>         fmt = NULL;
->>       output = NULL;
->> @@ -3313,6 +3319,10 @@ static int img_map(int argc, char **argv)
->>           length = MIN(start_offset + max_length, length);
->>       }
->>   +    if (output_format == OFORMAT_JSON) {
->> +        can_compress = block_driver_can_compress(bs->drv);
->> +    }
->> +
->>       curr.start = start_offset;
->>       while (curr.start + curr.length < length) {
->>           int64_t offset = curr.start + curr.length;
->> @@ -3330,7 +3340,7 @@ static int img_map(int argc, char **argv)
->>           }
->>             if (curr.length > 0) {
->> -            ret = dump_map_entry(output_format, &curr, &next);
->> +            ret = dump_map_entry(output_format, &curr, &next,
->> can_compress);
->>               if (ret < 0) {
->>                   goto out;
->>               }
->> @@ -3338,7 +3348,7 @@ static int img_map(int argc, char **argv)
->>           curr = next;
->>       }
->>   -    ret = dump_map_entry(output_format, &curr, NULL);
->> +    ret = dump_map_entry(output_format, &curr, NULL, can_compress);
->>       if (output_format == OFORMAT_JSON) {
->>           puts("]");
->>       }
-> 
+> Thread 3 (Thread 0x7f3bbd87b700 (LWP 135952) "qemu-system-x86"):
+> #0  __lll_lock_wait (futex=futex@entry=0x564183365f00 <qemu_global_mutex>, private=0) at lowlevellock.c:52
+> #1  0x00007f3bc1c0d843 in __GI___pthread_mutex_lock (mutex=0x564183365f00 <qemu_global_mutex>) at ../nptl/pthread_mutex_lock.c:80
+> #2  0x0000564182939f2e in qemu_mutex_lock_impl (mutex=0x564183365f00 <qemu_global_mutex>, file=0x564182b7f774 "../softmmu/physmem.c", line=2593) at ../util/qemu-thread-posix.c:94
+> #3  0x000056418247cc2a in qemu_mutex_lock_iothread_impl (file=0x564182b7f774 "../softmmu/physmem.c", line=2593) at ../softmmu/cpus.c:504
+> #4  0x00005641826d5325 in prepare_mmio_access (mr=0x5641856148a0) at ../softmmu/physmem.c:2593
+> #5  0x00005641826d6fe7 in address_space_stl_internal (as=0x56418679b310, addr=4276113408, val=16418, attrs=..., result=0x0, endian=DEVICE_LITTLE_ENDIAN) at /home/febner/repos/qemu/memory_ldst.c.inc:318
+> #6  0x00005641826d7154 in address_space_stl_le (as=0x56418679b310, addr=4276113408, val=16418, attrs=..., result=0x0) at /home/febner/repos/qemu/memory_ldst.c.inc:357
+> #7  0x0000564182374b07 in pci_msi_trigger (dev=0x56418679b0d0, msg=...) at ../hw/pci/pci.c:359
+> #8  0x000056418237118b in msi_send_message (dev=0x56418679b0d0, msg=...) at ../hw/pci/msi.c:379
+> #9  0x0000564182372c10 in msix_notify (dev=0x56418679b0d0, vector=8) at ../hw/pci/msix.c:542
+> #10 0x000056418243719c in virtio_pci_notify (d=0x56418679b0d0, vector=8) at ../hw/virtio/virtio-pci.c:77
+> #11 0x00005641826933b0 in virtio_notify_vector (vdev=0x5641867a34a0, vector=8) at ../hw/virtio/virtio.c:1985
+> #12 0x00005641826948d6 in virtio_irq (vq=0x5641867ac078) at ../hw/virtio/virtio.c:2461
+> #13 0x0000564182694978 in virtio_notify (vdev=0x5641867a34a0, vq=0x5641867ac078) at ../hw/virtio/virtio.c:2473
+> #14 0x0000564182665b83 in virtio_scsi_complete_req (req=0x7f3bb000e5d0) at ../hw/scsi/virtio-scsi.c:115
+> #15 0x00005641826670ce in virtio_scsi_complete_cmd_req (req=0x7f3bb000e5d0) at ../hw/scsi/virtio-scsi.c:641
+> #16 0x000056418266736b in virtio_scsi_command_complete (r=0x7f3bb0010560, resid=0) at ../hw/scsi/virtio-scsi.c:712
+> #17 0x000056418239aac6 in scsi_req_complete (req=0x7f3bb0010560, status=2) at ../hw/scsi/scsi-bus.c:1526
+> #18 0x000056418239e090 in scsi_handle_rw_error (r=0x7f3bb0010560, ret=-123, acct_failed=false) at ../hw/scsi/scsi-disk.c:242
+> #19 0x000056418239e13f in scsi_disk_req_check_error (r=0x7f3bb0010560, ret=-123, acct_failed=false) at ../hw/scsi/scsi-disk.c:265
+> #20 0x000056418239e482 in scsi_dma_complete_noio (r=0x7f3bb0010560, ret=-123) at ../hw/scsi/scsi-disk.c:340
+> #21 0x000056418239e5d9 in scsi_dma_complete (opaque=0x7f3bb0010560, ret=-123) at ../hw/scsi/scsi-disk.c:371
+> #22 0x00005641824809ad in dma_complete (dbs=0x7f3bb000d9d0, ret=-123) at ../softmmu/dma-helpers.c:107
+> #23 0x0000564182480a72 in dma_blk_cb (opaque=0x7f3bb000d9d0, ret=-123) at ../softmmu/dma-helpers.c:127
+> #24 0x00005641827bf78a in blk_aio_complete (acb=0x7f3bb00021a0) at ../block/block-backend.c:1563
+> #25 0x00005641827bfa5e in blk_aio_write_entry (opaque=0x7f3bb00021a0) at ../block/block-backend.c:1630
+> #26 0x000056418295638a in coroutine_trampoline (i0=-1342102448, i1=32571) at ../util/coroutine-ucontext.c:177
+> #27 0x00007f3bc0caed40 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+> #28 0x00007f3bbd8757f0 in ?? ()
+> #29 0x0000000000000000 in ?? ()
+>
+> Thread 1 (Thread 0x7f3bbe3e9280 (LWP 135944) "qemu-system-x86"):
+> #0  __lll_lock_wait (futex=futex@entry=0x5641856f2a00, private=0) at lowlevellock.c:52
+> #1  0x00007f3bc1c0d8d1 in __GI___pthread_mutex_lock (mutex=0x5641856f2a00) at ../nptl/pthread_mutex_lock.c:115
+> #2  0x0000564182939f2e in qemu_mutex_lock_impl (mutex=0x5641856f2a00, file=0x564182c0e319 "../util/async.c", line=728) at ../util/qemu-thread-posix.c:94
+> #3  0x000056418293a140 in qemu_rec_mutex_lock_impl (mutex=0x5641856f2a00, file=0x564182c0e319 "../util/async.c", line=728) at ../util/qemu-thread-posix.c:149
+> #4  0x00005641829532d5 in aio_context_acquire (ctx=0x5641856f29a0) at ../util/async.c:728
+> #5  0x000056418279d5df in bdrv_set_aio_context_commit (opaque=0x5641856e6e50) at ../block.c:7493
+> #6  0x000056418294e288 in tran_commit (tran=0x56418630bfe0) at ../util/transactions.c:87
+> #7  0x000056418279d880 in bdrv_try_change_aio_context (bs=0x5641856f7130, ctx=0x56418548f810, ignore_child=0x0, errp=0x0) at ../block.c:7626
+> #8  0x0000564182793f39 in bdrv_root_unref_child (child=0x5641856f47d0) at ../block.c:3242
+> #9  0x00005641827be137 in blk_remove_bs (blk=0x564185709880) at ../block/block-backend.c:914
+> #10 0x00005641827bd689 in blk_remove_all_bs () at ../block/block-backend.c:583
+> #11 0x0000564182798699 in bdrv_close_all () at ../block.c:5117
+> #12 0x000056418248a5b2 in qemu_cleanup () at ../softmmu/runstate.c:821
+> #13 0x0000564182738603 in qemu_default_main () at ../softmmu/main.c:38
+> #14 0x0000564182738631 in main (argc=30, argv=0x7ffd675a8a48) at ../softmmu/main.c:48
+>
+> (gdb) p *((QemuMutex*)0x5641856f2a00)
+> $1 = {lock = {__data = {__lock = 2, __count = 2, __owner = 135952, ...
+> (gdb) p *((QemuMutex*)0x564183365f00)
+> $2 = {lock = {__data = {__lock = 2, __count = 0, __owner = 135944, ...
+
+[1]:
+
+> Thread 1 "qemu-system-x86" hit Breakpoint 5, bdrv_drain_all_end () at ../block/io.c:551
+> #0  bdrv_drain_all_end () at ../block/io.c:551
+> #1  0x00005569810f0376 in bdrv_graph_wrlock (bs=0x0) at ../block/graph-lock.c:156
+> #2  0x00005569810bd3e0 in bdrv_replace_child_noperm (child=0x556982e2d7d0, new_bs=0x0) at ../block.c:2897
+> #3  0x00005569810bdef2 in bdrv_root_unref_child (child=0x556982e2d7d0) at ../block.c:3227
+> #4  0x00005569810e8137 in blk_remove_bs (blk=0x556982e42880) at ../block/block-backend.c:914
+> #5  0x00005569810e7689 in blk_remove_all_bs () at ../block/block-backend.c:583
+> #6  0x00005569810c2699 in bdrv_close_all () at ../block.c:5117
+> #7  0x0000556980db45b2 in qemu_cleanup () at ../softmmu/runstate.c:821
+> #8  0x0000556981062603 in qemu_default_main () at ../softmmu/main.c:38
+> #9  0x0000556981062631 in main (argc=30, argv=0x7ffd7a82a418) at ../softmmu/main.c:48
+> [Switching to Thread 0x7fe76dab2700 (LWP 103649)]
+>
+> Thread 3 "qemu-system-x86" hit Breakpoint 4, blk_inc_in_flight (blk=0x556982e42880) at ../block/block-backend.c:1505
+> #0  blk_inc_in_flight (blk=0x556982e42880) at ../block/block-backend.c:1505
+> #1  0x00005569810e8f36 in blk_wait_while_drained (blk=0x556982e42880) at ../block/block-backend.c:1312
+> #2  0x00005569810e9231 in blk_co_do_pwritev_part (blk=0x556982e42880, offset=3422961664, bytes=4096, qiov=0x556983028060, qiov_offset=0, flags=0) at ../block/block-backend.c:1402
+> #3  0x00005569810e9a4b in blk_aio_write_entry (opaque=0x556982e2cfa0) at ../block/block-backend.c:1628
+> #4  0x000055698128038a in coroutine_trampoline (i0=-2090057872, i1=21865) at ../util/coroutine-ucontext.c:177
+> #5  0x00007fe770f50d40 in ?? () from /lib/x86_64-linux-gnu/libc.so.6
+> #6  0x00007ffd7a829570 in ?? ()
+> #7  0x0000000000000000 in ?? ()
+
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+---
+
+Does there need to be another bdrv_flush_all() like there is in
+do_vm_stop() since that is now not inside the final drained section
+anymore?
+
+ softmmu/runstate.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/softmmu/runstate.c b/softmmu/runstate.c
+index a9fbcf4862..f3bd862818 100644
+--- a/softmmu/runstate.c
++++ b/softmmu/runstate.c
+@@ -802,21 +802,21 @@ void qemu_cleanup(void)
+      */
+     blk_exp_close_all();
+ 
++
++    /* No more vcpu or device emulation activity beyond this point */
++    vm_shutdown();
++    replay_finish();
++
+     /*
+      * We must cancel all block jobs while the block layer is drained,
+      * or cancelling will be affected by throttling and thus may block
+      * for an extended period of time.
+-     * vm_shutdown() will bdrv_drain_all(), so we may as well include
+-     * it in the drained section.
++     * Begin the drained section after vm_shutdown() to avoid requests being
++     * stuck in the BlockBackend's request queue.
+      * We do not need to end this section, because we do not want any
+      * requests happening from here on anyway.
+      */
+     bdrv_drain_all_begin();
+-
+-    /* No more vcpu or device emulation activity beyond this point */
+-    vm_shutdown();
+-    replay_finish();
+-
+     job_cancel_sync_all();
+     bdrv_close_all();
+ 
+-- 
+2.30.2
+
 
 
