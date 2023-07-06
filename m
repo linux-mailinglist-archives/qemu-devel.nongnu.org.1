@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FB074A047
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 17:01:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 093E774A082
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 17:10:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHQS7-0003HN-Lp; Thu, 06 Jul 2023 10:59:27 -0400
+	id 1qHQbC-0005eD-B0; Thu, 06 Jul 2023 11:08:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHQS1-0003H6-LL
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 10:59:24 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHQb9-0005da-L1
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 11:08:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHQRy-0003Bl-Fm
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 10:59:20 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHQb7-0001T5-Tr
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 11:08:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688655557;
+ s=mimecast20190719; t=1688656124;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Jr15GtauzOZy4UNNTLDRlqgzGqok5Y017suwWAGDhnA=;
- b=WnsGeVIv70guII8mZlo4AJyvWDeMHuaJbhjksZ6LcmujwBNSAVvbCTFUyTgIpabz4E2ypl
- GSuhzaD8JvQM5rj0UK5g8/pLFodOuRhh8S/DU5tDjFuqV9oCMSciVOAYojVy6tQNJavtE8
- 5YH6v6GhGnB29RVU7BFo75pl1CWockU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GAIMTyu1BIHEBauyXkMmX5L59y7lTNjXLOi6GtqGxR8=;
+ b=UVQSaiw4Noz4J4lCmbt/jk/yPMyk8u+dRbtDq1n4TlqJT7XJxDuCEtwcGwxZKUwACqR8ZG
+ HYe23NaS1i0sCb1vDLyqcyfsomphKaQ8jJEDbPiZK9f4e1NqwdqTUi5WwoR2RYZ6aPuk0t
+ cLx61XKGnRYk88DgGsVfL0aeusG246k=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-230-8KlKpdTGNTiA3O2g1LgQow-1; Thu, 06 Jul 2023 10:59:13 -0400
-X-MC-Unique: 8KlKpdTGNTiA3O2g1LgQow-1
+ us-mta-354-WZ_aHjKtMe2xrqGSP5_FCw-1; Thu, 06 Jul 2023 11:08:37 -0400
+X-MC-Unique: WZ_aHjKtMe2xrqGSP5_FCw-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B3C0A185A794;
- Thu,  6 Jul 2023 14:59:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E4B7A1C06ED0;
+ Thu,  6 Jul 2023 15:08:35 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 91B57492B02;
- Thu,  6 Jul 2023 14:59:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C332B492B01;
+ Thu,  6 Jul 2023 15:08:35 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8588F21E6A1F; Thu,  6 Jul 2023 16:59:11 +0200 (CEST)
+ id AAE5421E6A1F; Thu,  6 Jul 2023 17:08:34 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: ~hyman <hyman@git.sr.ht>
 Cc: qemu-devel <qemu-devel@nongnu.org>,  ~hyman <yong.huang@smartx.com>,
  Peter Xu <peterx@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Juan
  Quintela <quintela@redhat.com>,  "Dr. David Alan Gilbert"
- <dgilbert@redhat.com>,  Eric Blake <eblake@redhat.com>,  Markus Armbruster
- <armbru@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Laurent Vivier
- <lvivier@redhat.com>,  Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH QEMU v7 4/9] migration: Introduce dirty-limit capability
-References: <168853615963.17240.15832775267134683267-4@git.sr.ht>
-Date: Thu, 06 Jul 2023 16:59:11 +0200
-In-Reply-To: <168853615963.17240.15832775267134683267-4@git.sr.ht>
- (hyman@git.sr.ht's message of "Wed, 07 Jun 2023 23:30:50 +0800")
-Message-ID: <877crdozls.fsf@pond.sub.org>
+ <dgilbert@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Richard
+ Henderson <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Dau?=
+ =?utf-8?Q?d=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH QEMU v7 8/9] migration: Extend query-migrate to provide
+ dirty page limit info
+References: <168853615963.17240.15832775267134683267-8@git.sr.ht>
+Date: Thu, 06 Jul 2023 17:08:34 +0200
+In-Reply-To: <168853615963.17240.15832775267134683267-8@git.sr.ht>
+ (hyman@git.sr.ht's message of "Thu, 08 Jun 2023 00:21:58 +0800")
+Message-ID: <87ttuhnklp.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -91,97 +92,89 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 >
-> Introduce migration dirty-limit capability, which can
-> be turned on before live migration and limit dirty
-> page rate durty live migration.
->
-> Introduce migrate_dirty_limit function to help check
-> if dirty-limit capability enabled during live migration.
->
-> Meanwhile, refactor vcpu_dirty_rate_stat_collect
-> so that period can be configured instead of hardcoded.
->
-> dirty-limit capability is kind of like auto-converge
-> but using dirty limit instead of traditional cpu-throttle
-> to throttle guest down. To enable this feature, turn on
-> the dirty-limit capability before live migration using
-> migrate-set-capabilities, and set the parameters
-> "x-vcpu-dirty-limit-period", "vcpu-dirty-limit" suitably
-> to speed up convergence.
+> Extend query-migrate to provide throttle time and estimated
+> ring full time with dirty-limit capability enabled, through which
+> we can observe if dirty limit take effect during live migration.
 >
 > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-> Acked-by: Peter Xu <peterx@redhat.com>
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
 > Reviewed-by: Juan Quintela <quintela@redhat.com>
 
 [...]
 
-> diff --git a/migration/options.h b/migration/options.h
-> index 9aaf363322..b5a950d4e4 100644
-> --- a/migration/options.h
-> +++ b/migration/options.h
-> @@ -24,6 +24,7 @@ extern Property migration_properties[];
->  /* capabilities */
->=20=20
->  bool migrate_auto_converge(void);
-> +bool migrate_dirty_limit(void);
->  bool migrate_background_snapshot(void);
->  bool migrate_block(void);
->  bool migrate_colo(void);
 > diff --git a/qapi/migration.json b/qapi/migration.json
-> index aa590dbf0e..cc51835cdd 100644
+> index cc51835cdd..ebc15e2782 100644
 > --- a/qapi/migration.json
 > +++ b/qapi/migration.json
-> @@ -497,6 +497,16 @@
->  #     are present.  'return-path' capability must be enabled to use
->  #     it.  (since 8.1)
+> @@ -250,6 +250,18 @@
+>  #     blocked.  Present and non-empty when migration is blocked.
+>  #     (since 6.0)
 >  #
-> +# @dirty-limit: If enabled, migration will use the dirty-limit algo to
-> +#               throttle down guest instead of auto-converge algo.
-> +#               Throttle algo only works when vCPU's dirtyrate greater
-> +#               than 'vcpu-dirty-limit', read processes in guest os
-> +#               aren't penalized any more, so this algo can improve
-> +#               performance of vCPU during live migration. This is an
-> +#               optional performance feature and should not affect the
-> +#               correctness of the existing auto-converge algo.
-> +#               (since 8.1)
+> +# @dirty-limit-throttle-time-per-round: Maximum throttle time (in micros=
+econds) of virtual
+> +#                                       CPUs each dirty ring full round,=
+ which shows how
+> +#                                       MigrationCapability dirty-limit =
+affects the guest
+> +#                                       during live migration. (since 8.=
+1)
+> +#
+> +# @dirty-limit-ring-full-time: Estimated average dirty ring full time (i=
+n microseconds)
+> +#                              each dirty ring full round, note that the=
+ value equals
+
+Period instead of comma, please.
+
+> +#                              dirty ring memory size divided by average=
+ dirty page rate
+> +#                              of virtual CPU, which can be used to obse=
+rve the average
+
+of the virtual CPU
+
+> +#                              memory load of virtual CPU indirectly. No=
+te that zero
+
+again
+
+> +#                              means guest doesn't dirty memory (since 8=
+.1)
 > +#
 
 Please format like
 
-   # @dirty-limit: If enabled, migration will use the dirty-limit algo to
-   #     throttle down guest instead of auto-converge algo.  Throttle
-   #     algo only works when vCPU's dirtyrate greater than
-   #     'vcpu-dirty-limit', read processes in guest os aren't penalized
-   #     any more, so this algo can improve performance of vCPU during
-   #     live migration.  This is an optional performance feature and
-   #     should not affect the correctness of the existing auto-converge
-   #     algo.  (since 8.1)
+   # @dirty-limit-throttle-time-per-round: Maximum throttle time (in
+   #     microseconds) of virtual CPUs each dirty ring full round, which
+   #     shows how MigrationCapability dirty-limit affects the guest
+   #     during live migration.  (since 8.1)
+   #
+   # @dirty-limit-ring-full-time: Estimated average dirty ring full time
+   #     (in microseconds) each dirty ring full round.  Note that the
+   #     value equals dirty ring memory size divided by average dirty
+   #     page rate of the virtual CPU, which can be used to observe the
+   #     average memory load of the virtual CPU indirectly.  Note that
+   #     zero means guest doesn't dirty memory (since 8.1)
 
 to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
 to conform to current conventions).
 
-"Dirty rate" with a space, because that's how we spell it elsewhere.
+Might want to scratch "Note that" both times.
 
-Moreover, "algo" is not a word, "algorithm" is :)
-
-Is "the dirty-limit algorithm" defined anywhere?=20=20
-
-More word-smithing is needed, but I'd like to get the reference to "the
-dirty-limit algorithm" clarified first.
-
->  # Features:
->  #
->  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
-> @@ -512,7 +522,8 @@
->             'dirty-bitmaps', 'postcopy-blocktime', 'late-block-activate',
->             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
->             'validate-uuid', 'background-snapshot',
-> -           'zero-copy-send', 'postcopy-preempt', 'switchover-ack'] }
-> +           'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
-> +           'dirty-limit'] }
+>  # Since: 0.14
+>  ##
+>  { 'struct': 'MigrationInfo',
+> @@ -267,7 +279,9 @@
+>             '*postcopy-blocktime' : 'uint32',
+>             '*postcopy-vcpu-blocktime': ['uint32'],
+>             '*compression': 'CompressionStats',
+> -           '*socket-address': ['SocketAddress'] } }
+> +           '*socket-address': ['SocketAddress'],
+> +           '*dirty-limit-throttle-time-per-round': 'uint64',
+> +           '*dirty-limit-ring-full-time': 'uint64'} }
 >=20=20
 >  ##
->  # @MigrationCapabilityStatus:
+>  # @query-migrate:
 
 [...]
 
