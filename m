@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDAF74A25A
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 18:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B83274A263
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 18:43:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHS0S-0006Et-VB; Thu, 06 Jul 2023 12:39:00 -0400
+	id 1qHS4D-0007i1-V1; Thu, 06 Jul 2023 12:42:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qHS0R-0006EJ-DF
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 12:38:59 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHS4B-0007gj-VT
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 12:42:51 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qHS0O-0000eP-VE
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 12:38:59 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3142860734aso1899551f8f.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 09:38:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHS4A-0004BR-94
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 12:42:51 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2b5c231c23aso14417021fa.0
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 09:42:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688661535; x=1691253535;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=U7xXdNB40/K680n7T99wTqBVhWHJISv/bcehHzHAZWk=;
- b=zJrEQT29k+IfpqzwOVClBSREw7cHQTm+SG1AT2XGOdZLmnma1n2W8bXx27EjPjB9B8
- yxOWQ03CGJy//H5aK8oy9xmF30LMBFx3n63V59etXeB+dzMH5F2TWzNp5mt2O8w29Seg
- JgQLuDM+vyIc57c9CmKlzeRegxNi9OOYs1P3j2oQyif/z/DMHvrASwwqyPIbizF9vG1b
- HJHpXr30T07MwAe+a8VJM2AuWpkQ8GGOSdVi4W4DdKVyaXgHBJlC5IgoybGdbfFp0E7o
- nI3NLrtXKY6BuaEjCEor/yEnU5YBBs3ZFAyNEkKz2Ml0CQ3E7908rSQFnfWTy4Gg/CG4
- 2rjg==
+ d=linaro.org; s=google; t=1688661768; x=1691253768;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mCgMcmRBiPxG28jfyIvn98PIf7zhjIQFTtaUi8xKxC0=;
+ b=SdxpZasiKmpSDgjjXEaucPIx8UKEK1FCX/9NIhIkRH/H3hlj5QgW3UOvImPXcRRk64
+ OOBvaE/i4gMFyfGKYCHiFdbnSDeSRxIakEsMAmM+AQpKJx+JPN9IwvkUSEQa1ybDGTjW
+ U/dRkZkKSVTNLxGvdyymNrnAS8PZ6RoSbhTjuwgOVgzhN1AEHPcWVacf0SO2rftzWQPA
+ CKgcdkS//Ksw4MsCTMAqRDrrciIGjpkxwsYj345Ws4jE80qmhCC0z5cvHiJIrUruXCKh
+ KCeJW7J59JRaTz0iKP3nCfJl34yGNU+Xpdiq3xUZECS/I6iTIjxfpbhWRsZx7gi/BeVf
+ SD9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688661535; x=1691253535;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=U7xXdNB40/K680n7T99wTqBVhWHJISv/bcehHzHAZWk=;
- b=lXgWfv+WUHVJ6Yz/Pyi4x6xKwZ7Ftqa21TWOW4HEzywsYcE1eRgwqga4TSe60Ka18P
- eocLoEy9hAWWSSYX8TATBWXyAvA0F0iQ9Bu5GIWOQoHUUL+GPwGnuqY1FWqzUcbxaRIM
- C/tnjhhGcBBugpqDq8ImvNywnb6lX+piMlwjbnMuQT1Nec7ZaNPFByuzFfNbO2JLq8Tx
- RaS1PQJdrQUmXAiKXcUEKEXsA1pRlReXe5DWHqIUN4UIPCRwDigSc+hDkkdP4AebGyGL
- hxDtUZRuHdqBxZbOzkIlJCK/OlPrCTiOJpo8ddugIqLFirQUVZRLfUYJfLhvoC0Cc/dm
- bcrQ==
-X-Gm-Message-State: ABy/qLY6Oo0q6OrUfRLjrC+g0cWI2XapA+L+esqWoc44kuTDoSUiiwCe
- c0B6ZEY4/uO0SSUonh0oWyF9/g==
-X-Google-Smtp-Source: APBJJlE7wvtZD/CMvgAUfhweUpg6wEjMksWYw5HUJQzj6JXR5gcCw8z0PrEkF4HUA0cICmHXxwa8ew==
-X-Received: by 2002:adf:f30c:0:b0:314:1b87:b76d with SMTP id
- i12-20020adff30c000000b003141b87b76dmr2375499wro.30.1688661534855; 
- Thu, 06 Jul 2023 09:38:54 -0700 (PDT)
-Received: from [192.168.200.206] (83.21.151.197.ipv4.supernova.orange.pl.
- [83.21.151.197]) by smtp.gmail.com with ESMTPSA id
- l8-20020a5d5608000000b003142c85fbcdsm2317816wrv.11.2023.07.06.09.38.53
+ d=1e100.net; s=20221208; t=1688661768; x=1691253768;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mCgMcmRBiPxG28jfyIvn98PIf7zhjIQFTtaUi8xKxC0=;
+ b=ZZhDJ0m74nx+zxGLf/nThVUGo8thU771wAGJ24w1m2xOWGaMXPJV/T/GNweuFGHz5A
+ 7UubTKEwdlFdR8KDchCht0hgDNjOWPK+4uTObm0GcPqsIfUi0ZOkBXlNwcp7CSOWV4O6
+ ovwn/92CoELLwmMqyQ5PvaFcOVJpiMepTMLM5//+m2XIyG9AZ9OQcNkAzyT5pjLqReKe
+ alzc5LcIKOcHHABAnFYxHZ4bKYCo76hi6fKdwEPi1dd63e1lz3IlNg1ri0kDy6Xsws0C
+ +ZQaDqjoUnjDcTl7RofQWRDMmB7XvUfqkbL3Fh2lhQqpY6VfaZFB3177xWZ2dnlNs59W
+ VJzA==
+X-Gm-Message-State: ABy/qLYTZrYIScEBb0DzAHAcRxi9W6aCM+HcDm7ENFCldxVYNHKsAGmX
+ +ucPE4N2pVLs3JUgAS5ma1lXvw==
+X-Google-Smtp-Source: APBJJlF6woPh8CiOT4XT4dSY7lj6SmpGxGfxjsMC4bR67y5qanQA9YFge13LGxVOJCtqK0YArjmkCA==
+X-Received: by 2002:a2e:8809:0:b0:2b6:fc84:4949 with SMTP id
+ x9-20020a2e8809000000b002b6fc844949mr1623402ljh.50.1688661768045; 
+ Thu, 06 Jul 2023 09:42:48 -0700 (PDT)
+Received: from [192.168.1.102] ([176.187.199.225])
+ by smtp.gmail.com with ESMTPSA id
+ qq2-20020a17090720c200b0098860721959sm1027127ejb.198.2023.07.06.09.42.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 09:38:54 -0700 (PDT)
-Message-ID: <7128e56b-0f52-3ec3-f4f0-34a6f11de308@linaro.org>
-Date: Thu, 6 Jul 2023 18:38:52 +0200
+ Thu, 06 Jul 2023 09:42:47 -0700 (PDT)
+Message-ID: <3ed74089-bfca-b779-3f21-a8e2f82d8741@linaro.org>
+Date: Thu, 6 Jul 2023 18:42:45 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] target/arm: Fix ptw parameters in S1_ptw_translate() for
- debug contexts
-Content-Language: pl-PL, en-GB, en-HK
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20230706140850.3007762-2-jean-philippe@linaro.org>
- <CAFEAcA8h-VXZkD0SBrjOYg-FFVk5AW0RrAs4AL4w6RXWZzWUsQ@mail.gmail.com>
- <20230706152543.GB2570588@myrica>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <20230706152543.GB2570588@myrica>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH 1/2] migration: factor out "resume_requested" in
+ qmp_migrate()
+Content-Language: en-US
+To: Laszlo Ersek <lersek@redhat.com>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Peter Xu <peterx@redhat.com>, qemu-trivial@nongnu.org
+References: <20230706102937.82490-1-lersek@redhat.com>
+ <20230706102937.82490-2-lersek@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230706102937.82490-2-lersek@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,12 +95,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 6.07.2023 o 17:25, Jean-Philippe Brucker pisze:
+On 6/7/23 12:29, Laszlo Ersek wrote:
+> It cuts back on those awkward, duplicated !(has_resume && resume)
+> expressions.
+> 
+> Cc: Juan Quintela <quintela@redhat.com> (maintainer:Migration)
+> Cc: Leonardo Bras <leobras@redhat.com> (reviewer:Migration)
+> Cc: Peter Xu <peterx@redhat.com> (reviewer:Migration)
+> Cc: qemu-trivial@nongnu.org
+> Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2018404
+> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+> ---
+>   migration/migration.c | 10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
 
-> (Note that there is an issue with TF-A missing ENABLE_FEAT_FGT for qemu at
-> the moment, which prevents booting Linux with -cpu max. I'll send the fix
-> to TF-A after this, but this reproducer should at least boot edk2.)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Which reminds me that qemu/qemu_sbsa targets are still out of sync in 
-TF-A when it comes to enabled features ;(
 
