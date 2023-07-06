@@ -2,91 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E36E74A4F3
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 22:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE77A74A4F9
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 22:34:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHVdW-0008GY-IP; Thu, 06 Jul 2023 16:31:34 -0400
+	id 1qHVfa-0000k0-FW; Thu, 06 Jul 2023 16:33:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qHVdV-0008GN-DW
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:31:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qHVdT-0004EL-0c
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:31:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688675489;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=U/9jIEG/px6ygFHyypchvagG+Mho81wBFqtI8M9DV3o=;
- b=YuU7b7FtiB7jQ3br87k45DLFBKIYr9L751iG+3bBksCabgGOCeMIUMxV70nRZ/sPnwu1Rl
- yWbNV/M+ySlSIpeGGSRVC3+VpLKaJna2ciR9DYPZLrJ+a5tuZNMCVW73o4JIEYfguC1F8b
- 813No+25/c+FlUV5569X6fJe+3JR0mc=
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
- [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-498-zQXnnWSZMPSbVR7i9Ge0hg-1; Thu, 06 Jul 2023 16:31:26 -0400
-X-MC-Unique: zQXnnWSZMPSbVR7i9Ge0hg-1
-Received: by mail-io1-f71.google.com with SMTP id
- ca18e2360f4ac-786596bc0a6so50057139f.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 13:31:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qHVfQ-0000jL-6L; Thu, 06 Jul 2023 16:33:33 -0400
+Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qHVfN-0004bV-GJ; Thu, 06 Jul 2023 16:33:31 -0400
+Received: by mail-oa1-x30.google.com with SMTP id
+ 586e51a60fabf-1b0138963ffso1182106fac.0; 
+ Thu, 06 Jul 2023 13:33:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688675607; x=1691267607;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=11UR/PX+6bl3+x6pDXwAFcVjGYp6eh7aP4o8L4G1uXg=;
+ b=VQ44XR2rvOCm8hKwHvsuqba39hoSLalZsmTxuGpms9WmGqSZGpN1B+ryuhjApxQXU4
+ hQ8p6gU2YZfGmYWRRYCGuSJy9PJRtoqSapwarxh0joD3P3v4Sj93xe6bplmK/ur6EXbY
+ h7b/4tNHx+9So0cCbxkT9cEFz71JmNtRpwPjWGUV7DyIk+d+HJVsVhF/fpeUdqVBWY9z
+ Py1FSfEh2MnH/VCGxJoA2lZFHT5691/G3744WdTz7ffqysiHO1JGxbP6hrkBIKuH52bk
+ +gteE8FDAPku3kevBAb8HDyeIDtYgSsRbopm9Hykva+uDxv9U3xFpm93d/bzH0BimMPR
+ 5Rvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688675486; x=1691267486;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=U/9jIEG/px6ygFHyypchvagG+Mho81wBFqtI8M9DV3o=;
- b=OUCcclvbArJUIfdwR68S9gZjTe20c4mxI3rYgHVyZhiBknF6sIxO90Ltnrek0qh/34
- YxOvqnFAhh5rFaXAsyctD2r2xGDaGshbqs6ZKy0roz/uHtdse3OY4b0ySWW7yXTBFikX
- MfkOGYthZqZygHKmVQ0Jmc5PYeVwe9Xu2RfKwxed++D7FcAmVVc9YhlIgjvBNEBinGGj
- 9p7G/hSjtQnRoIH4PQZvWaqyMHmLwTk6DjDqLwlDKtbYtep4XZzaEoyVIBeuPkuGNdOx
- 11Bu35SVWA2zerG0pyCecZceRfIFXuS56Uyn0r96pnjogWxmZ0e7q4IOoXZn4h/6b64Y
- ehEw==
-X-Gm-Message-State: ABy/qLbluk5ZeiR7xdtG25GTS9yFEN8i+8F/UIdGfTMwuXYJULfJ9vW/
- 4crkKw9P66AHdrewWRkfxSxPkSia0vYJ1J6TY5DYZ1Gk2WaVIBH8YRa81brS54F20YSEMjVwRVQ
- x7EMGTjLRuXKJVp4=
-X-Received: by 2002:a5d:8258:0:b0:783:5452:e335 with SMTP id
- n24-20020a5d8258000000b007835452e335mr4403307ioo.6.1688675485843; 
- Thu, 06 Jul 2023 13:31:25 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHPzCgYCBL2menwDHmvZKMJXeDQLe/URq16K4HtfrTNCHotWBqHIJ7AiwPP/7eMTBZ6zAXlDg==
-X-Received: by 2002:a5d:8258:0:b0:783:5452:e335 with SMTP id
- n24-20020a5d8258000000b007835452e335mr4403292ioo.6.1688675485568; 
- Thu, 06 Jul 2023 13:31:25 -0700 (PDT)
-Received: from redhat.com ([38.15.36.239]) by smtp.gmail.com with ESMTPSA id
- h26-20020a02b61a000000b0042b358194acsm746894jam.114.2023.07.06.13.31.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 13:31:25 -0700 (PDT)
-Date: Thu, 6 Jul 2023 14:31:24 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Avihai Horon <avihaih@nvidia.com>
-Cc: <qemu-devel@nongnu.org>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
- <clg@redhat.com>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
- <philmd@linaro.org>
-Subject: Re: [PATCH v2] vfio: Fix null pointer dereference bug in
- vfio_bars_finalize()
-Message-ID: <20230706143124.7eb9ab9d.alex.williamson@redhat.com>
-In-Reply-To: <20230704133927.24677-1-avihaih@nvidia.com>
-References: <20230704133927.24677-1-avihaih@nvidia.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20221208; t=1688675607; x=1691267607;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=11UR/PX+6bl3+x6pDXwAFcVjGYp6eh7aP4o8L4G1uXg=;
+ b=BPm+LxO5nWXpWutrbBUf2/yUa9z1mCI9BOF+vWlz6uFZ2nDS7JtZrkhfsTZj3oulny
+ twi6aNZ17TfksJoTnZJrsC1o55Ij8KlPj/pRErxWWUkW8TVPTGT0lC27uK7u6oac6/Zc
+ L22ZGw37JeLGUx7k9mT2UXmtSK4EI8nIxxWON67KUlMCE0TcXIj+ec3Wfq/bHNLsMbe6
+ GILOtkYkpXp+Bm8CDGQaWpxkVU7LeunxYKpyBIVOllh7rvbqaNtahuw93BDTBbJZX4CF
+ oJGPzc7r3AMFZ8lIV00TVdVAp2UywypY7IXBT9S3l6banntW5pLhKskvGY0ojcWE+qXC
+ s+Eg==
+X-Gm-Message-State: ABy/qLaxTrmSyB/w5IXln0nuVPFFtFx2FpzrpBDZ/PBfP4SqekCxJX7E
+ Nmg6XrWj9zaxyJ9FvMwskfU=
+X-Google-Smtp-Source: APBJJlGfEscUflbh8Ikyppwr/O73I6LHzhU4799Aa6lR9i1ifZY9DKFmnA1E78frkY2rIDyzeoACjw==
+X-Received: by 2002:a05:6870:c1d2:b0:1b0:3cd4:76d5 with SMTP id
+ i18-20020a056870c1d200b001b03cd476d5mr3506839oad.37.1688675606684; 
+ Thu, 06 Jul 2023 13:33:26 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-110.dial-up.telesp.net.br.
+ [201.69.66.110]) by smtp.gmail.com with ESMTPSA id
+ zf41-20020a0568716aa900b001807f020a39sm1093163oab.12.2023.07.06.13.33.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jul 2023 13:33:26 -0700 (PDT)
+Message-ID: <a5716042-3cc0-2cb4-d35e-d29377bdf8d5@gmail.com>
+Date: Thu, 6 Jul 2023 17:33:22 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [RESEND PATCH v3 2/4] ppc4xx_pci: Rename QOM type name define
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: philmd@linaro.org
+References: <cover.1688641673.git.balaton@eik.bme.hu>
+ <c59c28ef440633dbd1de0bda0a93b7862ef91104.1688641673.git.balaton@eik.bme.hu>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <c59c28ef440633dbd1de0bda0a93b7862ef91104.1688641673.git.balaton@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2001:4860:4864:20::30;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x30.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,55 +95,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 4 Jul 2023 16:39:27 +0300
-Avihai Horon <avihaih@nvidia.com> wrote:
 
-> vfio_realize() has the following flow:
-> 1. vfio_bars_prepare() -- sets VFIOBAR->size.
-> 2. msix_early_setup().
-> 3. vfio_bars_register() -- allocates VFIOBAR->mr.
+
+On 7/6/23 08:16, BALATON Zoltan wrote:
+> Rename the TYPE_PPC4xx_PCI_HOST_BRIDGE define and its string value to
+> match each other and other similar types and to avoid confusion with
+> "ppc4xx-host-bridge" type defined in same file.
 > 
-> After vfio_bars_prepare() is called msix_early_setup() can fail. If it
-> does fail, vfio_bars_register() is never called and VFIOBAR->mr is not
-> allocated.
-> 
-> In this case, vfio_bars_finalize() is called as part of the error flow
-> to free the bars' resources. However, vfio_bars_finalize() calls
-> object_unparent() for VFIOBAR->mr after checking only VFIOBAR->size, and
-> thus we get a null pointer dereference.
-> 
-> Fix it by checking VFIOBAR->mr in vfio_bars_finalize().
-> 
-> Fixes: 89d5202edc50 ("vfio/pci: Allow relocating MSI-X MMIO")
-> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 > ---
-> 
->  Changes from v1:
->  * Assert VFIOBAR->size and set VFIOBAR->mr to NULL to make the code
->    more accurate. (Philippe)
->  * Small reword in the last paragraph of the commit message.
-> 
->  hw/vfio/pci.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index ab6645ba60..bc98791cbb 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -1752,9 +1752,11 @@ static void vfio_bars_finalize(VFIOPCIDevice *vdev)
->  
->          vfio_bar_quirk_finalize(vdev, i);
->          vfio_region_finalize(&bar->region);
-> -        if (bar->size) {
-> +        if (bar->mr) {
-> +            assert(bar->size);
->              object_unparent(OBJECT(bar->mr));
->              g_free(bar->mr);
-> +            bar->mr = NULL;
->          }
->      }
->  
 
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+I struggled a bit to understand what's to gain with this change, but it makes
+more sense when we consider the changes made in the next patch (where a
+TYPE_PPC4xx_HOST_BRIDGE macro is introduced to match the "ppc4xx-host-bridge"
+name).
 
+I also understand the comments Phil made in version 1. We have several QOM names
+that are too similar ("ppc4xx-pci-host", "ppc4xx-host-bridge" in the next patch,
+"ppc440-pcix-host" in patch 4), all of them being PCI host bridges. I am uncertain
+whether renaming the QOM name of these devices to make them less similar is worth
+it.
+
+Matching the macro names with the actual QOM name is a step in the right direction
+though.
+
+
+Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+
+
+
+
+>   hw/ppc/ppc440_bamboo.c  | 3 +--
+>   hw/ppc/ppc4xx_pci.c     | 6 +++---
+>   include/hw/ppc/ppc4xx.h | 2 +-
+>   3 files changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/hw/ppc/ppc440_bamboo.c b/hw/ppc/ppc440_bamboo.c
+> index f061b8cf3b..45f409c838 100644
+> --- a/hw/ppc/ppc440_bamboo.c
+> +++ b/hw/ppc/ppc440_bamboo.c
+> @@ -205,8 +205,7 @@ static void bamboo_init(MachineState *machine)
+>       ppc4xx_sdram_ddr_enable(PPC4xx_SDRAM_DDR(dev));
+>   
+>       /* PCI */
+> -    dev = sysbus_create_varargs(TYPE_PPC4xx_PCI_HOST_BRIDGE,
+> -                                PPC440EP_PCI_CONFIG,
+> +    dev = sysbus_create_varargs(TYPE_PPC4xx_PCI_HOST, PPC440EP_PCI_CONFIG,
+>                                   qdev_get_gpio_in(uicdev, pci_irq_nrs[0]),
+>                                   qdev_get_gpio_in(uicdev, pci_irq_nrs[1]),
+>                                   qdev_get_gpio_in(uicdev, pci_irq_nrs[2]),
+> diff --git a/hw/ppc/ppc4xx_pci.c b/hw/ppc/ppc4xx_pci.c
+> index 1d4a50fa7c..fbdf8266d8 100644
+> --- a/hw/ppc/ppc4xx_pci.c
+> +++ b/hw/ppc/ppc4xx_pci.c
+> @@ -46,7 +46,7 @@ struct PCITargetMap {
+>       uint32_t la;
+>   };
+>   
+> -OBJECT_DECLARE_SIMPLE_TYPE(PPC4xxPCIState, PPC4xx_PCI_HOST_BRIDGE)
+> +OBJECT_DECLARE_SIMPLE_TYPE(PPC4xxPCIState, PPC4xx_PCI_HOST)
+>   
+>   #define PPC4xx_PCI_NR_PMMS 3
+>   #define PPC4xx_PCI_NR_PTMS 2
+> @@ -321,7 +321,7 @@ static void ppc4xx_pcihost_realize(DeviceState *dev, Error **errp)
+>       int i;
+>   
+>       h = PCI_HOST_BRIDGE(dev);
+> -    s = PPC4xx_PCI_HOST_BRIDGE(dev);
+> +    s = PPC4xx_PCI_HOST(dev);
+>   
+>       for (i = 0; i < ARRAY_SIZE(s->irq); i++) {
+>           sysbus_init_irq(sbd, &s->irq[i]);
+> @@ -386,7 +386,7 @@ static void ppc4xx_pcihost_class_init(ObjectClass *klass, void *data)
+>   }
+>   
+>   static const TypeInfo ppc4xx_pcihost_info = {
+> -    .name          = TYPE_PPC4xx_PCI_HOST_BRIDGE,
+> +    .name          = TYPE_PPC4xx_PCI_HOST,
+>       .parent        = TYPE_PCI_HOST_BRIDGE,
+>       .instance_size = sizeof(PPC4xxPCIState),
+>       .class_init    = ppc4xx_pcihost_class_init,
+> diff --git a/include/hw/ppc/ppc4xx.h b/include/hw/ppc/ppc4xx.h
+> index 39ca602442..e053b9751b 100644
+> --- a/include/hw/ppc/ppc4xx.h
+> +++ b/include/hw/ppc/ppc4xx.h
+> @@ -29,7 +29,7 @@
+>   #include "exec/memory.h"
+>   #include "hw/sysbus.h"
+>   
+> -#define TYPE_PPC4xx_PCI_HOST_BRIDGE "ppc4xx-pcihost"
+> +#define TYPE_PPC4xx_PCI_HOST "ppc4xx-pci-host"
+>   #define TYPE_PPC460EX_PCIE_HOST "ppc460ex-pcie-host"
+>   
+>   /*
 
