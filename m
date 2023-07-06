@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39527497B0
+	by mail.lfdr.de (Postfix) with ESMTPS id BB1387497B1
 	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 10:51:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHKgS-0001hS-Dr; Thu, 06 Jul 2023 04:49:52 -0400
+	id 1qHKgy-0001mV-Qw; Thu, 06 Jul 2023 04:50:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qHKgL-0001gJ-PH
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:49:45 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHKgV-0001jE-AD
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:49:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qHKgK-0007R0-3k
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:49:45 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHKgT-0007Sf-NY
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:49:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688633382;
+ s=mimecast20190719; t=1688633393;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qyZ8GpdrNZGRhIXLWUDfliNUZE38nlTnizftmOInMNU=;
- b=OhtDC0A0rfRJWqV0UqlbVVZBuVyyTdISSNBGtykDtVxVOhMBeGGN46yM0O/61pqbTg84rU
- 3HqoC2Gx2NAYI8LyvScMwm4XZpUjHnI/L0QSQp9OypF5LICOVfGir+uAY7TQWl/E8nPLmM
- EgnNRUxXX9mK1g503EyHZVwhVqEHcP8=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+x0mUPg9tkUNdnOnly5upPmO36Mdqg9jKQ8gcked0X4=;
+ b=AwQzYY47vP42Xgzmj/YPJtpKo37d5VJbqdZpS5IuI2urFt+tIDg9SHI//D8/5MuLJWfKSd
+ aWQa2X+5K/Zr25h8sug1hiFCPvqMxTJV6UnA9aQVK35tC8vj2xf35/l8QoyjCx4sk1ML7/
+ 1orWOPxitqN/JB2cIeMB6OclK2/pSJA=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-52-0P2CGFgONaaEBvQsDD2HoA-1; Thu, 06 Jul 2023 04:49:41 -0400
-X-MC-Unique: 0P2CGFgONaaEBvQsDD2HoA-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-4033a6deb00so3637791cf.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 01:49:41 -0700 (PDT)
+ us-mta-340-r-tz5bYfNs-pY_B4RIpJWg-1; Thu, 06 Jul 2023 04:49:51 -0400
+X-MC-Unique: r-tz5bYfNs-pY_B4RIpJWg-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2b700e51e93so4560331fa.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 01:49:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688633381; x=1691225381;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qyZ8GpdrNZGRhIXLWUDfliNUZE38nlTnizftmOInMNU=;
- b=SVxNXTT4ww8yRykrodCVG49ZRC6Xsa0+//tKLRSY/SdiL4sC2caJE5PKaZQRqL/K6h
- Jw3D+MK5vqjq93noPfF/zXauC7wQB/wyr10QCL0rZmkxlGMM1zTPYCzBQnKtbBf1IgWv
- DIsrd2D5dRTgbI/7a4I01b2Dy7Uk2OV5swuLH2kpWxjQJCdrYDjXA28yhCaJr79tZQ8a
- JsRIzBwzRlIf9UQ2Ub9FrUF2Almxteh7HnUmzcevWmnZxth57C2SyD0Iw+quSwii+SET
- oTOo7mS43tMn6HndjjwT3ShYKZpxXtIDbb+tsdtJ6D8e1EWjITMM0oaTkCb7ZXN3OQMB
- yMCw==
-X-Gm-Message-State: ABy/qLatgiVoWB7mkv77myJjtp0CnIa/2dvgwpQ4eYpgNcPWIRH8G7ih
- dAQ3ZDKxFuRAqeMazZOpjK+l56KecxPDvT6ac8ZBfTLQ4NKKmPxNtDXdjN1KSCvMdskEUGWdqKC
- +3H+YqWDrVQc+kOo=
-X-Received: by 2002:a05:622a:487:b0:400:8613:5379 with SMTP id
- p7-20020a05622a048700b0040086135379mr5019584qtx.8.1688633381157; 
- Thu, 06 Jul 2023 01:49:41 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEWmLwd2pzbRhIFUfwjJ1EM9cbHlP4+9I540VjR9BmxYyQTYHsOeBCm1ZQyWypuJXJjudbd/w==
-X-Received: by 2002:a05:622a:487:b0:400:8613:5379 with SMTP id
- p7-20020a05622a048700b0040086135379mr5019578qtx.8.1688633380936; 
- Thu, 06 Jul 2023 01:49:40 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-114.web.vodafone.de.
- [109.43.176.114]) by smtp.gmail.com with ESMTPSA id
- s2-20020ac85ec2000000b003ff654694b6sm396257qtx.46.2023.07.06.01.49.38
+ d=1e100.net; s=20221208; t=1688633390; x=1691225390;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+x0mUPg9tkUNdnOnly5upPmO36Mdqg9jKQ8gcked0X4=;
+ b=ZE0jSIU2ZzWicGMRtwKbWSnkp1u0XBwYulcV31IsfQDfAuLvC2xi2RYJy448KTjl5l
+ k3rgmRhLQdBQ9ZZFVlgn0dh4KwyQb3hzpEyJrZ7o+QZdKo/IhEJBV7TgKfD08ucMJlO+
+ UKhJXIh3zwErEU7Ts/4PBPsKFn7I78AxgA30PqSvoyD0NRH9CHZ12AJ6EoadqE4h4LRx
+ NvWi1RbM0tASnP/tNtjC6Ujn25xi6qtVjAOb37JDkVl9+19f5rSg3lrwgdAXuamq8zQ1
+ NpRwAaWSWBULbTElduxxJ6/MO4FTAMkQ/EfL6Pln5uYFmZqSE2TLS8u3MFShDDDb9ePF
+ 2eRg==
+X-Gm-Message-State: ABy/qLal/0oOSDrJYt268OZTe3dyBD7cJ4GAP5pOtXYpUYNrO90CZjOc
+ nTfj/E5aPpNIzsaMggKzLpFCTeu0NkpQKvNkzvKeEfGPTAcnjVMt/SWlRrBD6KyFMkNhgOmugtV
+ NOFAofMxlAxCMba80CesEdYqSqj8DnX5u0MUt2uzVTTh7OnV5hrIMhOz63wGzKSZk/ge0bCs=
+X-Received: by 2002:a2e:9004:0:b0:2b6:a44d:e255 with SMTP id
+ h4-20020a2e9004000000b002b6a44de255mr805479ljg.0.1688633390498; 
+ Thu, 06 Jul 2023 01:49:50 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEjHEdKZJ7thHSfJ7CVY+n4y98iFtsYkeYFxbzMzpDrdYnwSPLvK84+DoUNZyVFoqbkxM65UA==
+X-Received: by 2002:a2e:9004:0:b0:2b6:a44d:e255 with SMTP id
+ h4-20020a2e9004000000b002b6a44de255mr805460ljg.0.1688633390098; 
+ Thu, 06 Jul 2023 01:49:50 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
+ ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+ by smtp.gmail.com with ESMTPSA id
+ c18-20020a7bc852000000b003fba6a0c881sm4418357wml.43.2023.07.06.01.49.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 01:49:40 -0700 (PDT)
-Message-ID: <46c80c90-76dc-fc35-a383-7fbe7e43d66b@redhat.com>
-Date: Thu, 6 Jul 2023 10:49:36 +0200
+ Thu, 06 Jul 2023 01:49:49 -0700 (PDT)
+Message-ID: <be03090f-7203-bd70-b984-dd797718a86e@redhat.com>
+Date: Thu, 6 Jul 2023 10:49:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 3/5] migration: migrate 'blk' command option is
- deprecated.
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 1/4] softmmu/physmem: Warn with
+ ram_block_discard_range() on MAP_PRIVATE file mapping
 Content-Language: en-US
-To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- libvir-list@redhat.com, Peter Xu <peterx@redhat.com>, qemu-block@nongnu.org,
- Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-References: <20230622195019.4396-1-quintela@redhat.com>
- <20230622195019.4396-4-quintela@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230622195019.4396-4-quintela@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Peng Tao <tao.peng@linux.alibaba.com>, Mario Casquero <mcasquer@redhat.com>
+References: <20230706075612.67404-1-david@redhat.com>
+ <20230706075612.67404-2-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230706075612.67404-2-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -107,16 +109,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/06/2023 21.50, Juan Quintela wrote:
-> Set the 'block' migration capability to 'true' instead.
-> 
-> Signed-off-by: Juan Quintela <quintela@redhat.com>
-> ---
->   docs/about/deprecated.rst |  7 +++++++
->   qapi/migration.json       | 10 +++++++---
->   migration/migration.c     |  5 +++++
->   3 files changed, 19 insertions(+), 3 deletions(-)
+>   #ifdef CONFIG_FALLOCATE_PUNCH_HOLE
+> +            /*
+> +             * We'll discard data from the actual file, even though we only
+> +             * have a MAP_PRIVATE mapping, possibly messing with other
+> +             * MAP_PRIVATE/MAP_SHARED mappings. There is no easy way to
+> +             * change that behavior whithout violating the promised
+> +             * semantics of ram_block_discard_range().
+> +             *
+> +             * Only warn, because it work as long as nobody else uses that
+>
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+I'll fixup
+
+s/work/works/
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
