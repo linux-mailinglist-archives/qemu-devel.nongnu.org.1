@@ -2,42 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9C4749A6B
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6168B749A7C
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:20:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHMzE-0004bf-9J; Thu, 06 Jul 2023 07:17:24 -0400
+	id 1qHN1d-0008HY-Qf; Thu, 06 Jul 2023 07:19:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qHMyz-0004XO-Uf; Thu, 06 Jul 2023 07:17:10 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1qHN1c-0008HL-4m; Thu, 06 Jul 2023 07:19:52 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qHMyu-0007ga-5I; Thu, 06 Jul 2023 07:17:06 -0400
+ id 1qHN1a-0002D6-GU; Thu, 06 Jul 2023 07:19:51 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id BB7CD748A5D;
- Thu,  6 Jul 2023 13:16:45 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 22C7B746369;
+ Thu,  6 Jul 2023 13:19:32 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 9B224748A55; Thu,  6 Jul 2023 13:16:45 +0200 (CEST)
-Message-Id: <1a1c3fe4b120f345d1005ad7ceca4500783691f7.1688641673.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1688641673.git.balaton@eik.bme.hu>
-References: <cover.1688641673.git.balaton@eik.bme.hu>
+ id E61AF746335; Thu,  6 Jul 2023 13:19:31 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id E4A2C745720;
+ Thu,  6 Jul 2023 13:19:31 +0200 (CEST)
+Date: Thu, 6 Jul 2023 13:19:31 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [RESEND PATCH v3 4/4] ppc440_pcix: Rename QOM type define abd move it
- to common header
+To: Daniel Henrique Barboza <danielhb413@gmail.com>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v2 00/14] PPC440 devices misc clean up
+In-Reply-To: <c00e7c46-6928-ed4d-f2c6-2754a590802f@gmail.com>
+Message-ID: <2155c455-6ac0-638f-e9a8-735233451e19@eik.bme.hu>
+References: <cover.1688586835.git.balaton@eik.bme.hu>
+ <d192a786-6019-f1d3-6491-c245527da417@gmail.com>
+ <ec526143-9f3f-3d8d-9977-2ee76a31ef23@eik.bme.hu>
+ <c00e7c46-6928-ed4d-f2c6-2754a590802f@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: qemu-devel@nongnu.org,
-    qemu-ppc@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
-    philmd@linaro.org
-Date: Thu,  6 Jul 2023 13:16:45 +0200 (CEST)
-X-Spam-Probability: 8%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -58,84 +61,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename TYPE_PPC440_PCIX_HOST_BRIDGE to better match its string value,
-move it to common header and use it also in sam460ex to replace hard
-coded type name.
+On Thu, 6 Jul 2023, Daniel Henrique Barboza wrote:
+> On 7/5/23 22:09, BALATON Zoltan wrote:
+>> On Wed, 5 Jul 2023, Daniel Henrique Barboza wrote:
+>>> Zoltan,
+>>> 
+>>> Patches 1-9 are queued. Don't need to re-send those.
+>> 
+>> Thanks, the last two patches are also reviewed and they don't depend on the 
+>> ones before so you could queue those too.
+>
+> Just queued patch 13.
+>
+> Patch 14 doesn't apply in ppc-next even after applying patch 13:
+>
+> $ git am -s -m \[PATCH\ v2\ 14_14\]\ ppc440_pcix\:\ Stop\ using\ system\ io\ 
+> region\ for\ PCI\ bus\ -\ BALATON\ Zoltan\ \<balaton@eik.bme.hu\>\ -\ 
+> 2023-07-05\ 1712.eml
+> Applying: ppc440_pcix: Stop using system io region for PCI bus
+> error: patch failed: hw/ppc/ppc440_pcix.c:490
+> error: hw/ppc/ppc440_pcix.c: patch does not apply
+> error: patch failed: hw/ppc/sam460ex.c:441
+> error: hw/ppc/sam460ex.c: patch does not apply
+> Patch failed at 0001 ppc440_pcix: Stop using system io region for PCI bus
+> hint: Use 'git am --show-current-patch=diff' to see the failed patch
+> When you have resolved this problem, run "git am --continue".
+> If you prefer to skip this patch, run "git am --skip" instead.
+> To restore the original branch and stop patching, run "git am --abort".
+>
+> I suspect we need  some of the previous (10, 11, 12) to apply it cleanly.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- hw/ppc/ppc440_pcix.c    | 9 ++++-----
- hw/ppc/sam460ex.c       | 2 +-
- include/hw/ppc/ppc4xx.h | 1 +
- 3 files changed, 6 insertions(+), 6 deletions(-)
+There was only one place in context that differs. All I did was an 
+interactive rebase with moving it to the front and it did not have any 
+conflict. I've resent a v3 series with that so you can take the first 
+patch from that (or the rest of that if we can reach a decision on 
+naming). The first attempt had wrong dates so I've resent the series. 
+Sorry about that.
 
-diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-index 9321ca0abd..672090de94 100644
---- a/hw/ppc/ppc440_pcix.c
-+++ b/hw/ppc/ppc440_pcix.c
-@@ -45,8 +45,7 @@ struct PLBInMap {
-     MemoryRegion mr;
- };
- 
--#define TYPE_PPC440_PCIX_HOST_BRIDGE "ppc440-pcix-host"
--OBJECT_DECLARE_SIMPLE_TYPE(PPC440PCIXState, PPC440_PCIX_HOST_BRIDGE)
-+OBJECT_DECLARE_SIMPLE_TYPE(PPC440PCIXState, PPC440_PCIX_HOST)
- 
- #define PPC440_PCIX_NR_POMS 3
- #define PPC440_PCIX_NR_PIMS 3
-@@ -399,7 +398,7 @@ static const MemoryRegionOps pci_reg_ops = {
- 
- static void ppc440_pcix_reset(DeviceState *dev)
- {
--    struct PPC440PCIXState *s = PPC440_PCIX_HOST_BRIDGE(dev);
-+    struct PPC440PCIXState *s = PPC440_PCIX_HOST(dev);
-     int i;
- 
-     for (i = 0; i < PPC440_PCIX_NR_POMS; i++) {
-@@ -489,7 +488,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
-     PCIHostState *h;
- 
-     h = PCI_HOST_BRIDGE(dev);
--    s = PPC440_PCIX_HOST_BRIDGE(dev);
-+    s = PPC440_PCIX_HOST(dev);
- 
-     sysbus_init_irq(sbd, &s->irq);
-     memory_region_init(&s->busmem, OBJECT(dev), "pci-mem", UINT64_MAX);
-@@ -529,7 +528,7 @@ static void ppc440_pcix_class_init(ObjectClass *klass, void *data)
- }
- 
- static const TypeInfo ppc440_pcix_info = {
--    .name          = TYPE_PPC440_PCIX_HOST_BRIDGE,
-+    .name          = TYPE_PPC440_PCIX_HOST,
-     .parent        = TYPE_PCI_HOST_BRIDGE,
-     .instance_size = sizeof(PPC440PCIXState),
-     .class_init    = ppc440_pcix_class_init,
-diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
-index 7da38bd58e..1e615b8d35 100644
---- a/hw/ppc/sam460ex.c
-+++ b/hw/ppc/sam460ex.c
-@@ -438,7 +438,7 @@ static void sam460ex_init(MachineState *machine)
- 
-     /* PCI bus */
-     /* All PCI irqs are connected to the same UIC pin (cf. UBoot source) */
--    dev = sysbus_create_simple("ppc440-pcix-host", 0xc0ec00000,
-+    dev = sysbus_create_simple(TYPE_PPC440_PCIX_HOST, 0xc0ec00000,
-                                qdev_get_gpio_in(uic[1], 0));
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, 0xc08000000);
-     pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
-diff --git a/include/hw/ppc/ppc4xx.h b/include/hw/ppc/ppc4xx.h
-index 766d575e86..ea7740239b 100644
---- a/include/hw/ppc/ppc4xx.h
-+++ b/include/hw/ppc/ppc4xx.h
-@@ -31,6 +31,7 @@
- 
- #define TYPE_PPC4xx_HOST_BRIDGE "ppc4xx-host-bridge"
- #define TYPE_PPC4xx_PCI_HOST "ppc4xx-pci-host"
-+#define TYPE_PPC440_PCIX_HOST "ppc440-pcix-host"
- #define TYPE_PPC460EX_PCIE_HOST "ppc460ex-pcie-host"
- 
- /*
--- 
-2.30.9
-
+Regards,
+BALATON Zoltan
 
