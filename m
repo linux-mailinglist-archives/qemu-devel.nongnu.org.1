@@ -2,74 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6195749F10
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 16:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B450F749F26
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 16:37:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHPyY-0000w6-2T; Thu, 06 Jul 2023 10:28:54 -0400
+	id 1qHQ5J-0001Mp-Oo; Thu, 06 Jul 2023 10:35:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHPyR-0000vc-Bm
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 10:28:47 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1qHQ5I-0001MQ-1X
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 10:35:52 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHPyP-0006YC-6U
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 10:28:47 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-51e344efd75so974844a12.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 07:28:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1qHQ53-0001Em-IB
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 10:35:51 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fbc59de0e2so8324055e9.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 07:35:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688653723; x=1691245723;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=qLS1hwBQH5ErHG6O5e6dliXGtwv264wz9BRHClS/Nuo=;
- b=ZZkQh+bTR0BRdeUEf2KPPRezN6Q31G4PlHV0w7d74bPonnOHcBXpohpCxKzI4cD+c8
- JnXWUcqKzj5e7vuPYiXZupkF5N1D+wMHcjDU96tFDXUyGOzxzZQoQi2WnTyCC5owPOMg
- j9yORUnDbtELcX5bhR7gDMwGlaHcQdWo0CeNGYB8WG9rmzQQPMijkMhKl5nmhPJ3lTUw
- O8hj9yD+vDQhu6iiD02GmJeccai2fbMcA1yr79Fhk/W+rkML+pLRxA9TogvOTwF3mRzo
- IfsdRbzM0CzanQfC0dr47mA7G4lNzkhj19LRnwLSrCJD3pHBHnYSbwIrviC0Jlr7aVpR
- bd+Q==
+ d=linaro.org; s=google; t=1688654135; x=1691246135;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=eyiUSaebPET6ayqOPUfohu6nN2Lek0YUQPyQxh6i/zI=;
+ b=vg8NmG1FAxdS566eWwh69uVFpo9Z0Me0T2LEmsPbWIlio1dROA4XZAaGASnys8xag9
+ VamEb0xe86hWSvZ6TEuBn9SYnauW4V8NYDwNFlUJJZ8tNkIx4dWCXmkajbHcVPxPs5yH
+ xOIrhV/5Jjtwn1N1QR92+OMMaX+jUtAy+eSmO4HvWhKdyGMVciTQMvxCn3npgw0O1vg6
+ b5YCiUw0DXxxklHZA4ksA3urZPztJe2iDL8zLqY2iyXq56MApcw7Tk30T1AjbV2blt4X
+ uPq9sG2C2zTixmODC4WR8Bk0a5Eyis2b9AAxnkN94BMb29SHQ+0AYYfPYQRNMB5cYeSm
+ LOZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688653723; x=1691245723;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qLS1hwBQH5ErHG6O5e6dliXGtwv264wz9BRHClS/Nuo=;
- b=YwjJYpiFw6q5L2BcAxvwH2Vq4RLncUfDLh0GCUlXnle0bCJwKB84KpwXTuBiTvVlz/
- FAdkTb7qZDRTpT4eS7oCjTmYDqcYyGhrt6fsBh0XpSYR7/Ov2dTc+crxN8LYrWDZAbU9
- jmxazxO17E0a5dMhywrJRcNaB3nUyi0ZFKaWhJ2RH9zrkwYE0oh+LDL/OQG8enxKii9Z
- IRBAgb/rELWe3t6tr3AZ2JuhKEIYDQun8xiduZKtq7JXfqEt/rmOzxPeuCD2fVuD+zyh
- 06sl7oVWhJsIAxD1zIhVdYSmvT0UzTaZVcL03SkuKh5uiP5P9AvK/x5doRjdi0WGhT1s
- czlA==
-X-Gm-Message-State: ABy/qLYH1Rlk16BO9FI0H1pCsr0dRZF+CPrJ6drndPppfar5o6dlahaY
- g4uyoK4BeOP60Zwi/G507QIO1cXCPVBkFSiIQLbmPQ==
-X-Google-Smtp-Source: APBJJlFL1guKJxRESHMrVAiXfs3e0CzLMG1gI3KftrTbMENO7WtfdfNXNJ/E2HZ0lolyZc9WcqosfgyeDWkqPjtzZU4=
-X-Received: by 2002:a05:6402:1355:b0:51e:fb9:7615 with SMTP id
- y21-20020a056402135500b0051e0fb97615mr2522636edw.13.1688653723095; Thu, 06
- Jul 2023 07:28:43 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688654135; x=1691246135;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=eyiUSaebPET6ayqOPUfohu6nN2Lek0YUQPyQxh6i/zI=;
+ b=Yy8pJBslBwqMGzdiCNEVRUoorc54zTerjvjxya2YqiATyhbXx7hEevJBtUEHMvf0rD
+ +DAWhhuPDWc+jkf/H7RXzK1gus7uS0FU5AOu3FCx+DofFzAri5rsRi7I1u7V3wUYODTI
+ 2NwyI9frtBSyMd496M8fPU0fkN5E9FGWuRwzFv77uBVfymxegNBOKZjMrm6gcKuX0pxl
+ hsXptlzvLPzFCG1ewMKCqdcyDb5RlVQJ9uU+xfqbII/J0O5eRpbWVKqUgo1uNCfuL/G+
+ duB7t3161+sdI8WL0FGTyQsQSQTtQezaZi5a2nekKx2EXhHRPXe/09V/RpVPfvOXr6rL
+ NzFQ==
+X-Gm-Message-State: ABy/qLYm6V70NQYGzkZCSkSggma6m3PS+hsVdHDJcrv28jQWbWBaMEgO
+ SQ7BLRGmi7PRKLpRbbe0m39HpXN8lxeg0ldzKpE=
+X-Google-Smtp-Source: APBJJlEqf4RiBAawczyxwkToWivdWzoCjP9WqbP3dQJ784KkZ7bVZhEmfLfQt0eJir0qWDTNaFFVaA==
+X-Received: by 2002:a7b:c849:0:b0:3f7:aad8:4e05 with SMTP id
+ c9-20020a7bc849000000b003f7aad84e05mr1497644wml.11.1688654135267; 
+ Thu, 06 Jul 2023 07:35:35 -0700 (PDT)
+Received: from myrica ([2.219.138.198]) by smtp.gmail.com with ESMTPSA id
+ n3-20020a5d51c3000000b00313f7b077fesm2012410wrv.59.2023.07.06.07.35.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Jul 2023 07:35:35 -0700 (PDT)
+Date: Thu, 6 Jul 2023 15:35:35 +0100
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "mst@redhat.com" <mst@redhat.com>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhap.com" <clg@redhap.com>,
+ "bharat.bhushan@nxp.com" <bharat.bhushan@nxp.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>
+Subject: Re: [PATCH 2/2] virtio-iommu: Rework the trace in
+ virtio_iommu_set_page_size_mask()
+Message-ID: <20230706143535.GA2570588@myrica>
+References: <20230704111527.3424992-1-eric.auger@redhat.com>
+ <20230704111527.3424992-3-eric.auger@redhat.com>
+ <SJ0PR11MB6744FA4E41101F7EED607E9C922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <SJ0PR11MB6744AEDC41BE576A59908A30922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <a11b8c79-9efc-6686-6405-863abb8824ae@redhat.com>
 MIME-Version: 1.0
-References: <20230706140850.3007762-2-jean-philippe@linaro.org>
-In-Reply-To: <20230706140850.3007762-2-jean-philippe@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 6 Jul 2023 15:28:32 +0100
-Message-ID: <CAFEAcA8h-VXZkD0SBrjOYg-FFVk5AW0RrAs4AL4w6RXWZzWUsQ@mail.gmail.com>
-Subject: Re: [PATCH] target/arm: Fix ptw parameters in S1_ptw_translate() for
- debug contexts
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a11b8c79-9efc-6686-6405-863abb8824ae@redhat.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,64 +102,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 6 Jul 2023 at 15:12, Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
->
-> Arm TF-A fails to boot via semihosting following a recent change to the
-> MMU code. Semihosting attempts to read parameters passed by TF-A in
-> secure RAM via cpu_memory_rw_debug(). While performing the S1
-> translation, we call S1_ptw_translate() on the page table descriptor
-> address, with an MMU index of ARMMMUIdx_Phys_S. At the moment
-> S1_ptw_translate() doesn't interpret this as a secure access, and as a
-> result we attempt to read the page table descriptor from the non-secure
-> address space, which fails.
->
-> Fixes: fe4a5472ccd6 ("target/arm: Use get_phys_addr_with_struct in S1_ptw_translate")
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> ---
-> I'm not entirely sure why the semihosting parameters are accessed
-> through stage-1 translation rather than directly as physical addresses,
-> but I'm not familiar with semihosting.
+On Wed, Jul 05, 2023 at 03:16:31PM +0200, Eric Auger wrote:
+> >>> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c index
+> >>> 1eaf81bab5..0d9f7196fe 100644
+> >>> --- a/hw/virtio/virtio-iommu.c
+> >>> +++ b/hw/virtio/virtio-iommu.c
+> >>> @@ -1101,29 +1101,24 @@ static int
+> >>> virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
+> >>>                                           new_mask);
+> >>>
+> >>>     if ((cur_mask & new_mask) == 0) {
+> >>> -        error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
+> >>> -                   " is incompatible with mask 0x%"PRIx64, cur_mask, new_mask);
+> >>> +        error_setg(errp, "virtio-iommu %s reports a page size mask 0x%"PRIx64
+> >>> +                   " incompatible with currently supported mask 0x%"PRIx64,
+> >>> +                   mr->parent_obj.name, new_mask, cur_mask);
+> >>>         return -1;
+> >>>     }
+> >>>
+> >>>     /*
+> >>>      * Once the granule is frozen we can't change the mask anymore. If by
+> >>>      * chance the hotplugged device supports the same granule, we can still
+> >>> -     * accept it. Having a different masks is possible but the guest will use
+> >>> -     * sub-optimal block sizes, so warn about it.
+> >>> +     * accept it.
+> >>>      */
+> >>>     if (s->granule_frozen) {
+> >>> -        int new_granule = ctz64(new_mask);
+> >>>         int cur_granule = ctz64(cur_mask);
+> >>>
+> >>> -        if (new_granule != cur_granule) {
+> >>> -            error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
+> >>> -                       " is incompatible with mask 0x%"PRIx64, cur_mask,
+> >>> -                       new_mask);
+> >>> +        if (!(BIT(cur_granule) & new_mask)) {
+> > Sorry, I read this piece code again and got a question, if new_mask has finer
+> > granularity than cur_granule, should we allow it to pass even though
+> > BIT(cur_granule) is not set?
+> I think this should work but this is not straightforward to test.
+> virtio-iommu would use the current granule for map/unmap. In map/unmap
+> notifiers, this is split into pow2 ranges and cascaded to VFIO through
+> vfio_dma_map/unmap. The iova and size are aligned with the smaller
+> supported granule.
+> 
+> Jean, do you share this understanding or do I miss something.
 
-The semihosting ABI says the guest code should pass "a pointer
-to the parameter block". It doesn't say explicitly, but the
-straightforward interpretation is "a pointer that the guest
-itself could dereference to read/write the values", which means
-a virtual address, not a physical one. It would be pretty
-painful for the guest to have to figure out "what is the
-physaddr for this virtual address" to pass it to the semihosting
-call.
+Yes, I also think that would work. The guest would only issue mappings
+with the larger granularity, which can be applied by VFIO with a finer
+granule. However I doubt we're going to encounter this case, because
+seeing a cur_granule larger than 4k here means that a VFIO device has
+already been assigned with a large granule like 64k, and we're trying to
+add a new device with 4k. This indicates two HW IOMMUs supporting
+different granules in the same system, which seems unlikely.
 
-Do you have a repro case for this bug? Did it work
-before commit fe4a5472ccd6 ?
+Hopefully by the time we actually need this (if ever) we will support
+per-endpoint probe properties, which allow informing the guest about
+different hardware properties instead of relying on one global property in
+the virtio config.
 
-> ---
->  target/arm/ptw.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-> index 9aaff1546a..e3a738c28e 100644
-> --- a/target/arm/ptw.c
-> +++ b/target/arm/ptw.c
-> @@ -465,10 +465,8 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
->          S1Translate s2ptw = {
->              .in_mmu_idx = s2_mmu_idx,
->              .in_ptw_idx = ptw_idx_for_stage_2(env, s2_mmu_idx),
-> -            .in_secure = s2_mmu_idx == ARMMMUIdx_Stage2_S,
-> -            .in_space = (s2_mmu_idx == ARMMMUIdx_Stage2_S ? ARMSS_Secure
-> -                         : space == ARMSS_Realm ? ARMSS_Realm
-> -                         : ARMSS_NonSecure),
-> +            .in_secure = is_secure,
-> +            .in_space = space,
-
-If the problem is fe4a5472ccd6 then this seems an odd change to
-be making, because in_secure and in_space were set that way
-before that commit too...
-
->              .in_debug = true,
->          };
->          GetPhysAddrResult s2 = { };
-
-thanks
--- PMM
+Thanks,
+Jean
 
