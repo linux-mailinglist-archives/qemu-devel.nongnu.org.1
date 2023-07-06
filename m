@@ -2,84 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2BD749719
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 10:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5B874971F
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 10:11:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHK1J-0006ha-GW; Thu, 06 Jul 2023 04:07:21 -0400
+	id 1qHK4D-000852-H9; Thu, 06 Jul 2023 04:10:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHK1B-0006h2-VC
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:07:15 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHK1A-0005eE-0z
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:07:13 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3142970df44so285986f8f.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 01:07:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688630830; x=1691222830;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=z3n3NXzsfDpAbC8sSkXt9i4KZdHisQmtG892sioNbSM=;
- b=lCneo2JmDX/hd0RFIdycqdfTcnHUjK5tvAoVo393SkSCSTSLyQ3vYyJojbvl53QKJn
- c1d7Z0R3IrzAyt3ubDqUNL446ET7qm2qWfdvvMcmUV/03a82B6v9STNK5zYLCzEnW0Rq
- azkvzmrzgjqWNjFhaxKFY3dNejoWey12hgH3lG/Fief3+6m2qx3xduNbKu4SCI7NUi4u
- oM/o0/csnnussfS3nfdK/DCdhLgxCIMeFOBU+guh+rEh7Yr9yprcP8M5y9Ji8kWpkUao
- lJPe40mt/vGLc7wGlDk72TtI6y8Z6GsMOe54AYCraq/cwiTQZL0a+SYoG0+wYnO2v8tN
- PIoQ==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qHK4A-00084i-MQ
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:10:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qHK48-0006JN-JC
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:10:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688631015;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=XwJzwzdP06Db8PqqlrR3oNCpNv22nBriDam4kGhZ9+w=;
+ b=ZcbLXgDhQw56hKCjgZAjosohiO/k7g7SsjSH08jb2ybnVTzL28KHC8hzhQKEYbXiWAxqDa
+ SU002m0XBy29SO/KBAPJ9xDuQnDRGmg18cxNKDQa0csr3tRlt7r9IZUOnjK3aISXkws1qS
+ R6E8Pex9BJTj7QRlJ4LhuI/nWADdS1o=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-107-Vo4zmmcuMSyZhR_DPzDOJw-1; Thu, 06 Jul 2023 04:10:13 -0400
+X-MC-Unique: Vo4zmmcuMSyZhR_DPzDOJw-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2b6f97c9d54so4239291fa.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 01:10:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688630830; x=1691222830;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z3n3NXzsfDpAbC8sSkXt9i4KZdHisQmtG892sioNbSM=;
- b=Rq1TOSfHiRlC31ybQQ6jrgGNn4NDoIbEOccxddF0STCu5J/WgDxukZ4OBHkWqnFxvL
- 1FNC/oTzpJUEuxrc/ASW0hO5BIMJm8OzwKq0twpkT+fb6HszgPvcHtPeo3vsWtPNHaU7
- cVBriDklRkJplWLAjyZwLnTF0/Ch9v7hVe45mAwSlIjSuHyU4fupYK3rBfbmHm6po5/G
- 1ah5qTOVdLSoS+slZtIhNDz0La+3hmATxzT2uliFXZt/CR+hyeq4+rH6dXKIvabS8S7n
- BgiCevu6j/tIC2U0hei9bYiLQNOrQq8DC0t39+J+e6TrabKMRYkOi8LrCJhSahAJZ7pc
- 22gg==
-X-Gm-Message-State: ABy/qLamhYa+55txzqPPkVbHYqKntprFgNV6JsmTgaD7/RFfHkzQa27H
- YF0wYs9WAAsPJ2Xw6M3gO02Pvg==
-X-Google-Smtp-Source: APBJJlHQO5PpxGluw6t7SSxvE41sEE7nvuEzudlVLVsFIzjiqZIdDHlk5iqQr46o7Eo89FCukGj3bA==
-X-Received: by 2002:adf:f809:0:b0:314:421f:532f with SMTP id
- s9-20020adff809000000b00314421f532fmr838981wrp.44.1688630829837; 
- Thu, 06 Jul 2023 01:07:09 -0700 (PDT)
-Received: from [192.168.82.227] ([91.209.212.17])
- by smtp.gmail.com with ESMTPSA id
- v8-20020a5d5908000000b0031437ec7ec1sm1194476wrd.2.2023.07.06.01.07.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 06 Jul 2023 01:07:09 -0700 (PDT)
-Message-ID: <30be90c8-ad32-10fd-d821-49a355536f88@linaro.org>
-Date: Thu, 6 Jul 2023 09:07:05 +0100
+ d=1e100.net; s=20221208; t=1688631012; x=1691223012;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XwJzwzdP06Db8PqqlrR3oNCpNv22nBriDam4kGhZ9+w=;
+ b=lz2RsVPFwUQpmv6WWCYdEl2/kGkb8fetB0juFaWQAxeGMBT1yCmUxghA5W+khM3rZZ
+ lD/CEBt+75Y3GGOTVfONgqioxiqeR9Rr5226wM9y7iOI7cFNCixbz2zncvTfV2L7K3iR
+ MmnDoK1kkzY2sbHyXvfW++M8Ad/QMX6J0+j04EQCiTNIHBsaZC+hpx+wlR4B5LXMyHp0
+ t+O6rmthg5QL6deRChL4z/I7FWAax5NFVAqOrdJzuVydbG9uCnNHHwF3K9kEJqhpZPcr
+ Ognd4NIt9A1J35Qi3IdQDuqM0CNTcdCaB+CD3ltPl0xZtPf4WU6v8dQLDcbeFgi7rq1x
+ vNew==
+X-Gm-Message-State: ABy/qLZcN92XOP66N1nkkxyAgbWYV0GXNHa1J8EIxYFiI427skwF0TRs
+ 8fOnhsKdR+7ohaTBHggL321Rp35IDzhOJuLFnTTyyr3KzlK9RyNIvJk0BW+PuZmBG/1hbuSu1Sc
+ wvaFdcK2oqzrooWI=
+X-Received: by 2002:a2e:700b:0:b0:2b1:c1ae:73e3 with SMTP id
+ l11-20020a2e700b000000b002b1c1ae73e3mr783481ljc.15.1688631012135; 
+ Thu, 06 Jul 2023 01:10:12 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGETaRIL7gIiZgtDIefeh0jAVElq6H/QMx5Y4wCGfURqZAzHtRXu4BsLMOCrDXnUrLDmnOMow==
+X-Received: by 2002:a2e:700b:0:b0:2b1:c1ae:73e3 with SMTP id
+ l11-20020a2e700b000000b002b1c1ae73e3mr783466ljc.15.1688631011797; 
+ Thu, 06 Jul 2023 01:10:11 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ k1-20020a7bc301000000b003f9bd9e3226sm1354090wmj.7.2023.07.06.01.10.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Jul 2023 01:10:11 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Peng
+ Tao <tao.peng@linux.alibaba.com>,  Mario Casquero <mcasquer@redhat.com>
+Subject: Re: [PATCH v2 1/4] softmmu/physmem: Warn with
+ ram_block_discard_range() on MAP_PRIVATE file mapping
+In-Reply-To: <20230706075612.67404-2-david@redhat.com> (David Hildenbrand's
+ message of "Thu, 6 Jul 2023 09:56:06 +0200")
+References: <20230706075612.67404-1-david@redhat.com>
+ <20230706075612.67404-2-david@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 06 Jul 2023 10:10:10 +0200
+Message-ID: <87jzvdbgv1.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3] linux-user/syscall: Implement execve without execveat
-Content-Language: en-US
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, sir@cmpwn.com, philmd@linaro.org
-References: <20230705121023.973284-1-pierrick.bouvier@linaro.org>
- <4e5a77e3-17bc-f4bf-b0d3-476469b768c2@linaro.org>
- <696064fd-0509-b4d9-ff93-f60385fb00d0@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <696064fd-0509-b4d9-ff93-f60385fb00d0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,20 +102,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/6/23 08:30, Pierrick Bouvier wrote:
->> I guess we'll quickly get a build-time error if there's no host execve syscall
->> (which looks to be, eventually, compat-only).
->>
-> 
-> Out of curiosity, is there any plan for deprecation (or removal) of execve on a specific 
-> architecture? I thought it had to stay there, just for backward compatibility.
+David Hildenbrand <david@redhat.com> wrote:
+> ram_block_discard_range() cannot possibly do the right thing in
+> MAP_PRIVATE file mappings in the general case.
+>
+> To achieve the documented semantics, we also have to punch a hole into
+> the file, possibly messing with other MAP_PRIVATE/MAP_SHARED mappings
+> of such a file.
+>
+> For example, using VM templating -- see commit b17fbbe55cba ("migration:
+> allow private destination ram with x-ignore-shared") -- in combination with
+> any mechanism that relies on discarding of RAM is problematic. This
+> includes:
+> * Postcopy live migration
+> * virtio-balloon inflation/deflation or free-page-reporting
+> * virtio-mem
+>
+> So at least warn that there is something possibly dangerous is going on
+> when using ram_block_discard_range() in these cases.
+>
+> Acked-by: Peter Xu <peterx@redhat.com>
+> Tested-by: Mario Casquero <mcasquer@redhat.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Not on an existing architecture, but the next new one could in theory only implement 
-execveat.  Compare with open, which is not implemented by aarch64 and newer, only openat.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+
+(at least we give a warning)
+
+But I wonder if we can do better and test that:
+ * Postcopy live migration
+
+   We can check if we are on postcopy, or put a marker so we know that
+   postcopy can have problems when started.
+
+ * virtio-balloon inflation/deflation or free-page-reporting
+
+   We can check if we have ever used virtio-balloon.
+
+ * virtio-mem
+
+   We can check if we have used virtio-men
 
 
-r~
+I am just wondering if that is even possible?
+
+Thanks, Juan.
+
 
