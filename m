@@ -2,80 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308A8749D8B
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B653749D99
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:27:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHOzf-0005UB-BE; Thu, 06 Jul 2023 09:25:59 -0400
+	id 1qHP16-0000SU-0U; Thu, 06 Jul 2023 09:27:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHOzO-0004s7-QH
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:25:45 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHOzK-0000tA-Fh
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:25:41 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-307d20548adso637748f8f.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 06:25:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688649920; x=1691241920;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1ed/BVXYFJwYxRqofY4hhjASHZDBl9OIQc2oGaDlpXM=;
- b=XRA5eP4xPae0paRyo+1i6wtVNwJES6mHV6mzcrUPcQAOuOAop1eMPINMhddUgGB3LZ
- OxsC/EmPafoltOPTnGL+1WX4GhqhAqL1Y2llA6nowA8HBn7CzmYB29eSQzxQlcP4DEo/
- I1NtcZJUV8Wq625xgF2H+eylfoBinqKuqZF2iLRC9IHKL8v6ZPfOKkvXqu++UMaK8soa
- /9ODKLUwpdv9ljtjxC3W8+9YigV2cYIaK4kH/wngMycft8rSy0jhq1/3UjCAioPzVuR9
- bEGBrivMsSf0Ilhh4xeNIJ5afEBTGkiUowjHAJ0enzoGFaG08+KAHbI/+Xv0aQmZk+dt
- QPTw==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qHP0r-0000BV-SQ
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:27:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qHP0p-0001fx-QN
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:27:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688650030;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=gS2cQ+S5rZhTae0BZLo3iZATEyRpOoyacznuVsEpcGQ=;
+ b=UZy5Bfv87qjS+xv1h9SGPlsN7mWxNbVw9yfFumfxkkP4vJu4tVBprDAZRR+2QXjKKAvTco
+ l7A9RAwt0NZAlkiKXyzGDJjd6jg7FG7RRIBRy9FtuuoreD90kTZc434pKtlA1dt1XvP9nH
+ soQgP/9PtZczls7/vmNVPwT1llL5ELQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-631-LuDksfOLNluwqWt-YaSf6A-1; Thu, 06 Jul 2023 09:27:09 -0400
+X-MC-Unique: LuDksfOLNluwqWt-YaSf6A-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fbdde92299so4075825e9.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 06:27:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688649920; x=1691241920;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1688650027; x=1691242027;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1ed/BVXYFJwYxRqofY4hhjASHZDBl9OIQc2oGaDlpXM=;
- b=lFB+5FxW8C4455VTYzuBRxp4BurxxgP7D/BNnZrckPJaRSSu4Nb2wn7UcQWeoyWin7
- 9qYj28vtEKIHDP+4ElWQ66+fFqb7QWHZmag3Izy47WWG52JmoNeZ5CHmhLygaB3aqdYw
- iHydHCg5VyD0VVgsCtfhK3nQUVl0a7Y89oBPD05/hk3idXulmZf7uux93+/cwQDapwvJ
- tyTKSM/21SngJ8JcSA56wgbqDMnMV7VEVX5VhucHf2KG2oDRQiHZlXGiv+HB4Obac3+H
- MC72+Rbu4WcSLxR5lFZcD2BT16HqoRE7n4HdsJI2YASqUmWRm4HKRhdZamNSIbdDOp2H
- zPsA==
-X-Gm-Message-State: ABy/qLYwtCi/K0Y/PDrJ/XTmHgo8/JjWMxoM6GjnnvgNg1S67vRfuawi
- L5LB0dYshyvCeAgl/c2Tx/s/J/bjNfoCYflfgq8=
-X-Google-Smtp-Source: APBJJlEvZFj/0ctpT8extXPhet8KptDPyKURlFbAF3HyQQV3EQCSygWnBqF3AghfDz4PieyAZ8Ki/w==
-X-Received: by 2002:a5d:48d2:0:b0:30f:c42e:3299 with SMTP id
- p18-20020a5d48d2000000b0030fc42e3299mr1269486wrs.60.1688649920276; 
- Thu, 06 Jul 2023 06:25:20 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- s15-20020a5d510f000000b00304adbeeabbsm1856170wrt.99.2023.07.06.06.25.20
- for <qemu-devel@nongnu.org>
+ bh=gS2cQ+S5rZhTae0BZLo3iZATEyRpOoyacznuVsEpcGQ=;
+ b=Sm5EpWZjpZFNC9NZ6JlpUdmyPZwLlnW2AA29l2r3Zws72S0NauFi0GjI6ix0u1hBU5
+ UUzqdwHdTI4s9qVe5XuLGzNalAiZxU4hCmF/BMFoz+pDQcAlJAK+5KHF5UHsqCR5p9+0
+ k1G0hXvEWuaL9kAd6XSgUYtxLRTfcbc2yx/tVkh8yDMjpKSVIyQmvuFMP9qEN+41ASAO
+ AJ6xPdjo0xc4TFDU6KHw5BGe37r+KBum3bRRKVVNMBA2O08S242WifrnX6W6Li1jy3Pa
+ MjG6IveknsBkELFQacQ5lGoNgvJcQAT3qJKo2lNoIqHCjp2bphsvXoy8fdvT7YnIl8Cz
+ 4h5A==
+X-Gm-Message-State: ABy/qLYiIF/yLn0Krk5SqOMdKokmumS6mQCW4lIHmGs/jh5q0zpPDJvM
+ F9/5NID8+/2LBAKIUj2MG0+B5DVbHyIAU/z2zqgwhGJMQSbBvsynHk+cAbEmJXpu2MVAyIfwam1
+ 0K6vvsLI12N9WgE0=
+X-Received: by 2002:a7b:c4d1:0:b0:3f8:2777:15e with SMTP id
+ g17-20020a7bc4d1000000b003f82777015emr1343195wmk.31.1688650027529; 
+ Thu, 06 Jul 2023 06:27:07 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFrhutM6gNqzbU35KNhtQ0rrBTTSQ/Iahf3fpV/y8SliSJ9K0eIounBiF0PlEX3cDaM6GmxrQ==
+X-Received: by 2002:a7b:c4d1:0:b0:3f8:2777:15e with SMTP id
+ g17-20020a7bc4d1000000b003f82777015emr1343169wmk.31.1688650027205; 
+ Thu, 06 Jul 2023 06:27:07 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ s14-20020a7bc38e000000b003fbdf8292a7sm2085503wmj.46.2023.07.06.06.27.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 06:25:20 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 14/14] target/arm: Avoid over-length shift in
- arm_cpu_sve_finalize() error case
-Date: Thu,  6 Jul 2023 14:25:12 +0100
-Message-Id: <20230706132512.3534397-15-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230706132512.3534397-1-peter.maydell@linaro.org>
-References: <20230706132512.3534397-1-peter.maydell@linaro.org>
+ Thu, 06 Jul 2023 06:27:06 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Peng
+ Tao <tao.peng@linux.alibaba.com>,  Mario Casquero <mcasquer@redhat.com>
+Subject: Re: [PATCH v2 2/4] virtio-mem: Skip most of virtio_mem_unplug_all()
+ without plugged memory
+In-Reply-To: <02c15d72-b29f-b0da-42a6-f77040d4f8ab@redhat.com> (David
+ Hildenbrand's message of "Thu, 6 Jul 2023 10:38:09 +0200")
+References: <20230706075612.67404-1-david@redhat.com>
+ <20230706075612.67404-3-david@redhat.com>
+ <87fs61bglq.fsf@secure.mitica>
+ <02c15d72-b29f-b0da-42a6-f77040d4f8ab@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 06 Jul 2023 15:27:05 +0200
+Message-ID: <87v8ex6uhi.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,60 +104,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If you build QEMU with the clang sanitizer enabled, you can see it
-fire when running the arm-cpu-features test:
+David Hildenbrand <david@redhat.com> wrote:
+> On 06.07.23 10:15, Juan Quintela wrote:
+>> David Hildenbrand <david@redhat.com> wrote:
+>>> Already when starting QEMU we perform one system reset that ends up
+>>> triggering virtio_mem_unplug_all() with no actual memory plugged yet.
+>>> That, in turn will trigger ram_block_discard_range() and perform some
+>>> other actions that are not required in that case.
+>>>
+>>> Let's optimize virtio_mem_unplug_all() for the case that no memory is
+>>> plugged. This will be beneficial for x-ignore-shared support as well.
+>>>
+>>> Tested-by: Mario Casquero <mcasquer@redhat.com>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> It works, so ...
+>> Reviewed-by: Juan Quintela <quintela@redhat.com>
+>
+> Thanks!
+>
+> [...]
+>
+>>> +        bitmap_clear(vmem->bitmap, 0, vmem->bitmap_size);
+>>>           vmem->size = 0;
+>>>           notifier_list_notify(&vmem->size_change_notifiers, &vmem->size);
+>>>       }
+>>> +
+>>>       trace_virtio_mem_unplugged_all();
+>>>       virtio_mem_resize_usable_region(vmem, vmem->requested_size, true);
+>>>       return 0;
+>> Once that we are here.  Do you remember _why_ do we allow virtio-mem
+>> plug/unplug in the middle of a migration.
+>> We forbid to plug/unplug everything else.  Why do we need to
+>> plug/unplug
+>> virtio-mem during migration?
+>
+> With virtio-mem you tell the VM the desired size for the device
+> (requested-size), and the VM will select blocks to (un)plug and send
+> (un)plug requests to the hypervisor in order to reach the requested
+> size.
+>
+> So changing the requested size in the hypervisor (by the QEMU user)
+> and the VM processing that resize request is asynchronous -- similar
+> to memory ballooning.
+>
+> As the VM can send these (un)plug requests any time, and we exactly
+> don't want to allow (un)plug during migration, we have
+> virtio_mem_is_busy() to reject any such requests to tell the VM
+> "please try again later".
 
-$ QTEST_QEMU_BINARY=./build/arm-clang/qemu-system-aarch64 ./build/arm-clang/tests/qtest/arm-cpu-features
-[...]
-../../target/arm/cpu64.c:125:19: runtime error: shift exponent 64 is too large for 64-bit type 'unsigned long long'
-[...]
+Ahh.
 
-This happens because the user can specify some incorrect SVE
-properties that result in our calculating a max_vq of 0.  We catch
-this and error out, but before we do that we calculate
+I see it now.
 
- vq_mask = MAKE_64BIT_MASK(0, max_vq);$
-
-and the MAKE_64BIT_MASK() call is only valid for lengths that are
-greater than zero, so we hit the undefined behaviour.
-
-Change the logic so that if max_vq is 0 we specifically set vq_mask
-to 0 without going via MAKE_64BIT_MASK().  This lets us drop the
-max_vq check from the error-exit logic, because if max_vq is 0 then
-vq_map must now be 0.
-
-The UB only happens in the case where the user passed us an incorrect
-set of SVE properties, so it's not a big problem in practice.
-
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230704154332.3014896-1-peter.maydell@linaro.org
----
- target/arm/cpu64.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 6eaf8e32cfa..6012e4ef549 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -122,10 +122,10 @@ void arm_cpu_sve_finalize(ARMCPU *cpu, Error **errp)
-         vq = ctz32(tmp) + 1;
- 
-         max_vq = vq <= ARM_MAX_VQ ? vq - 1 : ARM_MAX_VQ;
--        vq_mask = MAKE_64BIT_MASK(0, max_vq);
-+        vq_mask = max_vq > 0 ? MAKE_64BIT_MASK(0, max_vq) : 0;
-         vq_map = vq_supported & ~vq_init & vq_mask;
- 
--        if (max_vq == 0 || vq_map == 0) {
-+        if (vq_map == 0) {
-             error_setg(errp, "cannot disable sve%d", vq * 128);
-             error_append_hint(errp, "Disabling sve%d results in all "
-                               "vector lengths being disabled.\n",
--- 
-2.34.1
+Thanks, Juan.
 
 
