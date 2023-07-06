@@ -2,62 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A5874A4C9
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 22:21:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A1E74A4C4
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 22:20:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHVRv-0002PN-SH; Thu, 06 Jul 2023 16:19:35 -0400
+	id 1qHVRz-0002Q7-7d; Thu, 06 Jul 2023 16:19:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qHVRu-0002PE-8N
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:19:34 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qHVRx-0002Pl-9N
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:19:37 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qHVRs-0002Zn-Ke
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:19:34 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qHVRv-0002aR-NW
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:19:37 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 5B1A722181;
- Thu,  6 Jul 2023 20:19:31 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 567831F74C;
+ Thu,  6 Jul 2023 20:19:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1688674771; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=RumLlNs+w1qS4o+NCwDx/mHZSkGsxPhQRzBYkTCKJLU=;
- b=izPByKgrZfPxKbqpc0xdD34pi6+nHUGaMPWSPkrwTCbOk5TF+X4u7xWE44ZtYhj4NxonAV
- nm6yWcyKvkzxZa6P8JNweVwdtpJQJr6EfYItUW+ZQgdfhEkxh6c38AU5H/kZKK1gZUFsZb
- Yl+0CkHqhCTLiOR+pQ8aKEOXtBBOIaA=
+ t=1688674774; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PkZS9ZtzVGUTb9I2atgGRPMygxnIqq4458KCpqRwZ1w=;
+ b=SSyKXtQ/fQDogsrFI4pUdvgf1pW8vkCL/PwlWgzrWBUq5ZlcIRLzsg2tkYRVu2p0UwM9be
+ Fb2TcNK8F7Ai1gN0ZkTxV0PKSf7/Dv+mS8bVGk/cnMx7hdpLRnCC8+0ax470UVFy2n81X3
+ an2HkgSQKRBC20LxKONFykffojFddG0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1688674771;
+ s=susede2_ed25519; t=1688674774;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=RumLlNs+w1qS4o+NCwDx/mHZSkGsxPhQRzBYkTCKJLU=;
- b=eluyXpb3HdKgh7erfJYWB2g3OPWj/tpmpMNi48Q+NjSTqjvpp+C2QA5eSROq7OxrvEYS28
- JfnbQLDMWxFV3PCg==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PkZS9ZtzVGUTb9I2atgGRPMygxnIqq4458KCpqRwZ1w=;
+ b=nNCsKV+jLldvw18fugB1TkUZVd8/x9DkTZLcVEFoI/wLONpTeVqGmgHXQcnSDKVL+yVGeg
+ X31IAlo89bBo8RDg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D2FFE138EE;
- Thu,  6 Jul 2023 20:19:29 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CBEC9138EE;
+ Thu,  6 Jul 2023 20:19:31 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id G2KmJtEhp2S8GAAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 06 Jul 2023 20:19:29 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id 4BYgJdMhp2S8GAAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 06 Jul 2023 20:19:31 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Steve Sistare <steven.sistare@oracle.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v4 0/6] migration: Test the new "file:" migration
-Date: Thu,  6 Jul 2023 17:19:21 -0300
-Message-Id: <20230706201927.15442-1-farosas@suse.de>
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Subject: [PATCH v4 1/6] tests/qtest: migration: Expose migrate_set_capability
+Date: Thu,  6 Jul 2023 17:19:22 -0300
+Message-Id: <20230706201927.15442-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20230706201927.15442-1-farosas@suse.de>
+References: <20230706201927.15442-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -80,57 +88,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on:
-[PATCH V4 0/2] migration file URI
-https://lore.kernel.org/r/1688135108-316997-1-git-send-email-steven.sistare@oracle.com
+The following patch will make use of this function from within
+migrate-helpers.c, so move it there.
 
-Since v3:
+Reviewed-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ tests/qtest/migration-helpers.c | 11 +++++++++++
+ tests/qtest/migration-helpers.h |  3 +++
+ tests/qtest/migration-test.c    | 11 -----------
+ 3 files changed, 14 insertions(+), 11 deletions(-)
 
-- used FILE_TEST_FILENAME for the three tests
-
-v3:
-https://lore.kernel.org/r/20230630212902.19925-1-farosas@suse.de
-
-v2:
-https://lore.kernel.org/r/20230628165542.17214-1-farosas@suse.de
-
-v1:
-https://lore.kernel.org/r/20230626182210.8792-1-farosas@suse.de
-
-Here's the test for the file: migration.
-
-I hit an issue with the setting of migration status. If we call
-query-migrate too soon after migrate-incoming, the query returns an
-empty response because we're not setting the MIGRATION_STATUS_SETUP in
-the incoming path. We just send the event, but never actually change
-state.
-
-Aside from the fix, there's some tidying up to avoid duplicating too
-much code in the tests.
-
-Thanks
-
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/912226554
-
-Fabiano Rosas (6):
-  tests/qtest: migration: Expose migrate_set_capability
-  tests/qtest: migration: Add migrate_incoming_qmp helper
-  tests/qtest: migration: Use migrate_incoming_qmp where appropriate
-  migration: Set migration status early in incoming side
-  tests/qtest: migration: Add support for negative testing of
-    qmp_migrate
-  tests/qtest: migration-test: Add tests for file-based migration
-
- migration/migration.c             |   7 +-
- tests/qtest/libqtest.c            |  33 +++++++
- tests/qtest/libqtest.h            |  28 ++++++
- tests/qtest/meson.build           |   1 +
- tests/qtest/migration-helpers.c   |  60 +++++++++++++
- tests/qtest/migration-helpers.h   |  10 +++
- tests/qtest/migration-test.c      | 138 +++++++++++++++++++++++++-----
- tests/qtest/virtio-net-failover.c |  77 ++---------------
- 8 files changed, 261 insertions(+), 93 deletions(-)
-
+diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+index be00c52d00..2df198c99e 100644
+--- a/tests/qtest/migration-helpers.c
++++ b/tests/qtest/migration-helpers.c
+@@ -70,6 +70,17 @@ void migrate_qmp(QTestState *who, const char *uri, const char *fmt, ...)
+                              "{ 'execute': 'migrate', 'arguments': %p}", args);
+ }
+ 
++void migrate_set_capability(QTestState *who, const char *capability,
++                            bool value)
++{
++    qtest_qmp_assert_success(who,
++                             "{ 'execute': 'migrate-set-capabilities',"
++                             "'arguments': { "
++                             "'capabilities': [ { "
++                             "'capability': %s, 'state': %i } ] } }",
++                             capability, value);
++}
++
+ /*
+  * Note: caller is responsible to free the returned object via
+  * qobject_unref() after use
+diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+index 009e250e90..484d7c960f 100644
+--- a/tests/qtest/migration-helpers.h
++++ b/tests/qtest/migration-helpers.h
+@@ -23,6 +23,9 @@ bool migrate_watch_for_resume(QTestState *who, const char *name,
+ G_GNUC_PRINTF(3, 4)
+ void migrate_qmp(QTestState *who, const char *uri, const char *fmt, ...);
+ 
++void migrate_set_capability(QTestState *who, const char *capability,
++                            bool value);
++
+ QDict *migrate_query(QTestState *who);
+ QDict *migrate_query_not_failed(QTestState *who);
+ 
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 18bcfc04a6..df17bf431f 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -472,17 +472,6 @@ static void migrate_cancel(QTestState *who)
+     qtest_qmp_assert_success(who, "{ 'execute': 'migrate_cancel' }");
+ }
+ 
+-static void migrate_set_capability(QTestState *who, const char *capability,
+-                                   bool value)
+-{
+-    qtest_qmp_assert_success(who,
+-                             "{ 'execute': 'migrate-set-capabilities',"
+-                             "'arguments': { "
+-                             "'capabilities': [ { "
+-                             "'capability': %s, 'state': %i } ] } }",
+-                             capability, value);
+-}
+-
+ static void migrate_postcopy_start(QTestState *from, QTestState *to)
+ {
+     qtest_qmp_assert_success(from, "{ 'execute': 'migrate-start-postcopy' }");
 -- 
 2.35.3
 
