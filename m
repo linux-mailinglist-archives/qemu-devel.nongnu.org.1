@@ -2,74 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B20D74A446
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 21:14:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD88E74A44C
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 21:16:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHUPO-00066F-QP; Thu, 06 Jul 2023 15:12:54 -0400
+	id 1qHUSO-00027N-0a; Thu, 06 Jul 2023 15:16:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qHUPM-00065o-94
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 15:12:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <den@openvz.org>)
+ id 1qHUSI-000267-2f; Thu, 06 Jul 2023 15:15:54 -0400
+Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qHUPK-0003ix-0J
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 15:12:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688670769;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=27cB9bWF+h14/jQtV/P+lGLeqj4W8ligToLP5nYNQo4=;
- b=Qhfd8UXqoINHxsxz/FmzYSwo9Kykxa+u6L7t8ggkBmfEVT9KLjHU7Ygu3ErefICZzKZI/q
- bmLYUGxNAeQdcKU5OpDaOdjN/6JKjuzEo+lnnm8Z/f8q/CpSZuF8Nx8MGeD7dScoxU/5Eu
- 899BgGIZEZhxI/2VVi5d/DZHN+wtO8M=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-131-m_Le2UpBPK6aZeaHcXSR1g-1; Thu, 06 Jul 2023 15:12:46 -0400
-X-MC-Unique: m_Le2UpBPK6aZeaHcXSR1g-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A09E981D9EC;
- Thu,  6 Jul 2023 19:12:45 +0000 (UTC)
-Received: from eperezma.remote.csb (unknown [10.39.194.147])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 823B44087C6A;
- Thu,  6 Jul 2023 19:12:43 +0000 (UTC)
-From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Cindy Lu <lulu@redhat.com>, si-wei.liu@oracle.com,
- Stefano Garzarella <sgarzare@redhat.com>,
- Shannon Nelson <snelson@pensando.io>, Gautam Dawar <gdawar@xilinx.com>,
- Jason Wang <jasowang@redhat.com>, Harpreet Singh Anand <hanand@xilinx.com>,
- Parav Pandit <parav@mellanox.com>, Dragos Tatulea <dtatulea@nvidia.com>,
- Zhu Lingshan <lingshan.zhu@intel.com>, Lei Yang <leiyang@redhat.com>
-Subject: [RFC PATCH 6/6] vdpa: remove net cvq migration blocker
-Date: Thu,  6 Jul 2023 21:12:27 +0200
-Message-Id: <20230706191227.835526-7-eperezma@redhat.com>
-In-Reply-To: <20230706191227.835526-1-eperezma@redhat.com>
-References: <20230706191227.835526-1-eperezma@redhat.com>
+ (Exim 4.90_1) (envelope-from <den@openvz.org>)
+ id 1qHUSG-0004ra-6V; Thu, 06 Jul 2023 15:15:53 -0400
+Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <den@openvz.org>) id 1qHUQu-00FXJs-0p;
+ Thu, 06 Jul 2023 21:15:44 +0200
+From: "Denis V. Lunev" <den@openvz.org>
+To: qemu-block@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, "Denis V. Lunev" <den@openvz.org>,
+ Eric Blake <eblake@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Hanna Reitz <hreitz@redhat.com>
+Subject: [PATCH 1/1] qemu-nbd: fix regression with qemu-nbd --fork run over ssh
+Date: Thu,  6 Jul 2023 21:15:45 +0200
+Message-Id: <20230706191545.130087-1-den@openvz.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=130.117.225.111; envelope-from=den@openvz.org;
+ helo=relay.virtuozzo.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,39 +55,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we have add migration blockers if the device does not support
-all the needed features, remove the general blocker applied to all net
-devices with CVQ.
+Commit e6df58a5578fee7a50bbf36f4a50a2781cff855d
+    Author: Hanna Reitz <hreitz@redhat.com>
+    Date:   Wed May 8 23:18:18 2019 +0200
+    qemu-nbd: Do not close stderr
+has introduced an interesting regression. Original behavior of
+    ssh somehost qemu-nbd /home/den/tmp/file -f raw --fork
+was the following:
+ * qemu-nbd was started as a daemon
+ * the command execution is done and ssh exited with success
 
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+The patch has changed this behavior and 'ssh' command now hangs forever.
+
+According to the normal specification of the daemon() call, we should
+endup with STDERR pointing to /dev/null. That should be done at the
+very end of the successful startup sequence when the pipe to the
+bootstrap process (used for diagnostics) is no longer needed.
+
+This could be achived in the same way as done for 'qemu-nbd -c' case.
+STDOUT copying to STDERR does the trick.
+
+This also leads to proper 'ssh' connection closing which fixes my
+original problem.
+
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+CC: Eric Blake <eblake@redhat.com>
+CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+CC: Hanna Reitz <hreitz@redhat.com>
 ---
- net/vhost-vdpa.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ qemu-nbd.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index d5970e9f06..5432b50498 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -996,18 +996,6 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-         s->vhost_vdpa.shadow_vq_ops = &vhost_vdpa_net_svq_ops;
-         s->vhost_vdpa.shadow_vq_ops_opaque = s;
-         s->cvq_isolated = cvq_isolated;
+diff --git a/qemu-nbd.c b/qemu-nbd.c
+index 4276163564..e9e118dfdb 100644
+--- a/qemu-nbd.c
++++ b/qemu-nbd.c
+@@ -575,7 +575,6 @@ int main(int argc, char **argv)
+     bool writethrough = false; /* Client will flush as needed. */
+     bool fork_process = false;
+     bool list = false;
+-    int old_stderr = -1;
+     unsigned socket_activation;
+     const char *pid_file_name = NULL;
+     const char *selinux_label = NULL;
+@@ -930,11 +929,6 @@ int main(int argc, char **argv)
+         } else if (pid == 0) {
+             close(stderr_fd[0]);
+ 
+-            /* Remember parent's stderr if we will be restoring it. */
+-            if (fork_process) {
+-                old_stderr = dup(STDERR_FILENO);
+-            }
 -
--        /*
--         * TODO: We cannot migrate devices with CVQ and no x-svq enabled as
--         * there is no way to set the device state (MAC, MQ, etc) before
--         * starting the datapath.
--         *
--         * Migration blocker ownership now belongs to s->vhost_vdpa.
--         */
--        if (!svq) {
--            error_setg(&s->vhost_vdpa.migration_blocker,
--                       "net vdpa cannot migrate with CVQ feature");
--        }
+             ret = qemu_daemon(1, 0);
+ 
+             /* Temporarily redirect stderr to the parent's pipe...  */
+@@ -1152,8 +1146,7 @@ int main(int argc, char **argv)
      }
-     ret = vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index, nvqs);
-     if (ret) {
+ 
+     if (fork_process) {
+-        dup2(old_stderr, STDERR_FILENO);
+-        close(old_stderr);
++        dup2(STDOUT_FILENO, STDERR_FILENO);
+     }
+ 
+     state = RUNNING;
 -- 
-2.39.3
+2.34.1
 
 
