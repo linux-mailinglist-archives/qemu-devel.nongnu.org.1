@@ -2,75 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DB8E749ABE
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C78749B03
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 13:43:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHNGh-000495-TX; Thu, 06 Jul 2023 07:35:27 -0400
+	id 1qHNNY-0005Rr-KK; Thu, 06 Jul 2023 07:42:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHNGf-00048q-QD
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:35:25 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qHNGb-0004pS-Mq
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:35:24 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-51dff848168so886445a12.2
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 04:35:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688643317; x=1691235317;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=goLMMiocXftD+TzHWg/04C7yxuFBpGLnp+Zaq88+HvE=;
- b=bIL8j4+uaiyvIQk8cefG4gn3jyqUD5IjNUM6R2FAcYtsy923nZatCoW0EhZfFkEux6
- SOTWCjWE1xb3tgKDQlR4kTyxiwGigx3YisjC1tpBWxdtKRc9UTzaQjhZNB32EH1mYjyR
- oODZqgGoKzYSF7pnG3DbsXRABAK6CBRES0Vku97bW4iRuEUNLMZdy7OcoM5PFM7g/TCh
- kXK/yntXhU6XlV+XcCDH4Xw9ML6mHeALS5mPLtVYtnCAssqobeAQp3tu0miXH8nesgQn
- 4QGmusMH/InCUoiA/uSpmfbQbLfX3a6cXgvgSdC7EOyYZiMm6RBXTL+HyvG4HLnDlLYv
- Mgow==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qHNNW-0005RU-95
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:42:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qHNNO-00078B-NK
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 07:42:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688643740;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=JUduR/Bwi1v0roLeHwv+HCpk0DV295GfQxEuB4DbDNQ=;
+ b=ZLcceBpOjD/Zj5GCJ8/rlXWOhwsp0aHeqlG3maLNAinnkoZRkDJM2cpuVwnTlUd8W4rq6R
+ +wSHwNE6ilVjk3a304GifUU/Sr8+0WrRyoAv6uXnhul+yzG2etRCSA2+OuIJ4mpzfJNKDU
+ Bmrz7omhRBox+lAk/iEyIvKUYnaDsEU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-642-cirlpwgyM86zHCThgGhXHg-1; Thu, 06 Jul 2023 07:42:17 -0400
+X-MC-Unique: cirlpwgyM86zHCThgGhXHg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3fbaade0c71so3490435e9.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 04:42:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688643317; x=1691235317;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=goLMMiocXftD+TzHWg/04C7yxuFBpGLnp+Zaq88+HvE=;
- b=HiL5Qha5BfduyeBW03AQ0v0MalYW+1ASvGoLYbNajijxTpOY8Ln7LI4hikiOZCRh1+
- aPgKV2SUuSLJdZeUfaykIuIFi1UfhJVDPEOM3ZeQbHqhfA7CiYCcFfowCwuluyFX7uRX
- mzRvXc+BsOcRKWO7Ki0qnCntD2kNkm07yKDQvcLEI+COHsQSgEstmkarLSXG8j38lN7t
- mW0+wprzmlBQ7u3psYd7/GlSak2tA1h/pLaNkjYSAy3rAt7HgpcAtNpGUu/ucGLOq2Po
- JoNCGPcR3XBjuKbJxCdpCDuYyWDdL2+Ac4+sb10VEUhhWfwaqoP31Q9pf3YnLD2365mt
- fesA==
-X-Gm-Message-State: ABy/qLa/DyiWXXmzSe7RFDqOz9l6+NqNEIluBztPp3MnwpsCKoOvsxW+
- Hwml/002Oy2XW007a1xB04+bQY2BMji16VsenO+ebA==
-X-Google-Smtp-Source: APBJJlF71dAT28cUptEiAxL/XGYvkvOWO8MshGdQaco7os8apHqRvzX2WNOYXT3fHfvtxCiCmHkNaaW3wa9UKQazgEc=
-X-Received: by 2002:aa7:d699:0:b0:51d:8a53:d13 with SMTP id
- d25-20020aa7d699000000b0051d8a530d13mr1130846edr.42.1688643317449; Thu, 06
- Jul 2023 04:35:17 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688643736; x=1691235736;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JUduR/Bwi1v0roLeHwv+HCpk0DV295GfQxEuB4DbDNQ=;
+ b=apvV2wihK/bMoKCDHDnsky9ethgstvtOvu61pGJSWluBZyY61I5QRtNwYs/YHmwpbW
+ i5LhuqhA8dkmgpAktlErRQYCvo24DH35IJPA3cnA42FaGWnoT4uykqBpE/KeJADOhHHr
+ 9RJZpWc98Z3NIUqeahSq8gI3sAs8mCk7xF4xtimCIgEjzITp5sWfO79gaQaCkgGMBdTq
+ F/iKorUnsmhfD20ks2Q4WGrH9gVjhMQXYZ1wtRTO73rr4t+fsPhSn5a7dwiEdkk3UqCZ
+ v6ab6TI5cYtHJVYUlaq8umvKx2gFrGPlRRRr12plAt+SXeatcX1KM7QzKLnw6/4svGeH
+ 21uQ==
+X-Gm-Message-State: ABy/qLZ4D8vT5Y4KSfzCa32XQHXMgOoO4Qe7b+zgl1L6E4FyXaW/WnjS
+ jBbjTb4GIfgcNxZkK9b8PsRcSsnZAZTgW6zWPgjfEzNMlf5xAxVEDWZRmcPQ+3Wog6fXwwMDvut
+ FsBhrz+UkZVisTkM=
+X-Received: by 2002:a1c:7204:0:b0:3fa:9767:c816 with SMTP id
+ n4-20020a1c7204000000b003fa9767c816mr1047870wmc.39.1688643735927; 
+ Thu, 06 Jul 2023 04:42:15 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlH+gQExkVZ4+CA7TY1ttMMPhnJGDCSd+dTPylauck7BugEXiRpbGJCJeLQYKC/SAuOOnljmsw==
+X-Received: by 2002:a1c:7204:0:b0:3fa:9767:c816 with SMTP id
+ n4-20020a1c7204000000b003fa9767c816mr1047860wmc.39.1688643735643; 
+ Thu, 06 Jul 2023 04:42:15 -0700 (PDT)
+Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
+ [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
+ k21-20020a7bc415000000b003fbd1c8d230sm4908129wmi.20.2023.07.06.04.42.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 06 Jul 2023 04:42:15 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Laszlo Ersek <lersek@redhat.com>
+Cc: qemu-devel@nongnu.org,  Leonardo Bras <leobras@redhat.com>,  Peter Xu
+ <peterx@redhat.com>,  qemu-trivial@nongnu.org
+Subject: Re: [PATCH 1/2] migration: factor out "resume_requested" in
+ qmp_migrate()
+In-Reply-To: <20230706102937.82490-2-lersek@redhat.com> (Laszlo Ersek's
+ message of "Thu, 6 Jul 2023 12:29:36 +0200")
+References: <20230706102937.82490-1-lersek@redhat.com>
+ <20230706102937.82490-2-lersek@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Thu, 06 Jul 2023 13:42:14 +0200
+Message-ID: <871qhlb71l.fsf@secure.mitica>
 MIME-Version: 1.0
-References: <20230704163634.3188465-1-peter.maydell@linaro.org>
- <29a83e80-32b5-cbb2-8dbd-13192e485e1e@linaro.org>
- <d73e2121-ee38-3245-8a3b-804931ea80a2@linaro.org>
-In-Reply-To: <d73e2121-ee38-3245-8a3b-804931ea80a2@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 6 Jul 2023 12:35:06 +0100
-Message-ID: <CAFEAcA_dKacrOG+rTO2jfo=jkTg4e8CjdumsLa+PjPHRJA_+bg@mail.gmail.com>
-Subject: Re: [PULL 00/11] target-arm queue
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,35 +99,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 5 Jul 2023 at 06:04, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+Laszlo Ersek <lersek@redhat.com> wrote:
+> It cuts back on those awkward, duplicated !(has_resume && resume)
+> expressions.
 >
-> On 7/5/23 06:57, Richard Henderson wrote:
-> > https://gitlab.com/qemu-project/qemu/-/jobs/4592433432#L3723
-> >
-> >> /tmp/ccASXpLo.s: Assembler messages:
-> >> /tmp/ccASXpLo.s:782: Error: selected processor does not support system register name
-> >> 'id_aa64zfr0_el1'
-> >> /tmp/ccASXpLo.s:829: Error: selected processor does not support system register name
-> >> 'id_aa64smfr0_el1'
-> >> make[1]: *** [Makefile:119: sysregs] Error 1
-> >
-> > I guess it's the change to Makefile.target, as I don't see any other likely candidates.
->
-> Ho hum, that's *my* patch 5, "Fix SME full tile indexing".
-> I'll have a closer look tomorrow.  Sorry about that.
+> Cc: Juan Quintela <quintela@redhat.com> (maintainer:Migration)
+> Cc: Leonardo Bras <leobras@redhat.com> (reviewer:Migration)
+> Cc: Peter Xu <peterx@redhat.com> (reviewer:Migration)
+> Cc: qemu-trivial@nongnu.org
+> Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2018404
+> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
 
-I think we can fix this by using the S3_.... syntax
-instead, and we can drop the #ifdef HAS_ARMV9_SME entirely:
-these registers are in the ID register space so they will
-read-as-zero and pass the test regardless of guest CPU type.
-However, it doesn't look like I can run this CI job under
-my personal gitlab account, so I'll have to do a blind
-attempt at a fix and resubmit the pullreq for you to see...
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-thanks
--- PMM
+Thanks.
+
+queued.
+
 
