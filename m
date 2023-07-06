@@ -2,83 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482DE749790
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 10:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE705749795
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 10:38:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHKTO-0003cT-CS; Thu, 06 Jul 2023 04:36:22 -0400
+	id 1qHKVG-0004Yz-Iq; Thu, 06 Jul 2023 04:38:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qHKTM-0003bm-2G
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:36:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHKVE-0004Yi-PU
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:38:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qHKTK-000763-61
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:36:19 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qHKVD-0008Mb-4I
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 04:38:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688632576;
+ s=mimecast20190719; t=1688632694;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3SjgP7686GQZfv8fgkyfl4FZEkpLB8N63udlicjyxwQ=;
- b=c+KOvEZutYrjrPNTQeHLYiD74qgMjX/xPMkixKZShFlRPYizVsW8fBLz/n0xWVyrlwP2Dv
- EB4g+G3HkDYwYsb8nvUIC8nAlpMGRLiIexDC0V3g6FJVBWHVw7TNX1DzfWsiLpnTGKXfP2
- ez+/D3CrX4yE3LekwhR/HnHqSXSkkGI=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Fnzxx0FjlCL8P9+nk9oJvNm0Zgo5W8HDK3UIFTwch5A=;
+ b=DbG4jP3qPZE5IVIDWyRYGpt09VmUEJoZjriKLPIuYdFN95Ng8HQhKYolvDVdZ8qxoeMl9f
+ whHKlkWInf8kVLDcCop72oCy1th6jdw9EwVvUhoaFG/HM2X1tJ+LTVhAONt6mPgYHOtXL0
+ At9T2Wi5mEQ6+bxoAkD1nSIOVImsslM=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-xDvrBiplM3-8vezK_Lu9_A-1; Thu, 06 Jul 2023 04:36:14 -0400
-X-MC-Unique: xDvrBiplM3-8vezK_Lu9_A-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4edc7ab63ccso192353e87.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 01:36:14 -0700 (PDT)
+ us-mta-328-GfSH4Z87PRay2EF2Il6HiA-1; Thu, 06 Jul 2023 04:38:13 -0400
+X-MC-Unique: GfSH4Z87PRay2EF2Il6HiA-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-4fb748a83b4so194950e87.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 01:38:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688632573; x=1691224573;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1688632691; x=1691224691;
+ h=content-transfer-encoding:in-reply-to:subject:organization:from
+ :references:cc:to:content-language:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=3SjgP7686GQZfv8fgkyfl4FZEkpLB8N63udlicjyxwQ=;
- b=ak8HpM5d0MRZDz4yy+t/drLamEWbOOVAY/VXk0KcxUTpygQRRF1y7C/oaNwuBMS9RT
- /tFpVZ+opf02mAi98bElDXzQtrnU/rOWSu497YHVlogu8IRPJL6AlJK6g5pywjApGYK+
- 06BMGNoHjmrUHp4V/cVtpBHQV8Pc7mROwjg58EUMPsvQH2rb/plC+t68GIZryite3/YC
- qvPbcFNwwyjv3ekoAqS7NZun+kMjHbuMnaekvjN1xa8WdGl7qBRNIDWmGjd6I9qAM1yw
- AAYBaxO7sOwNI9iV0Y6LbPZy7TzVYqf1r1ZLH+drcjWzwRVzowRy+b0faZlcn/fS++pa
- nW5g==
-X-Gm-Message-State: ABy/qLZ2qXfWtiT5h0rqYwHhbp7eRGb9j4Jc8/1TVAO2q870KszbU6qj
- 1gaWiRnKvbMIh6GFDSWfG34hwYrv1fAB8zM9ZkRbiDviZMDytf0LLIHdvaeMoNRvxEUByq21S5Z
- S7kD+IrnW/hHjfweniEdXhlXwLSrqEfI=
-X-Received: by 2002:a2e:3a1a:0:b0:2b6:3651:f12f with SMTP id
- h26-20020a2e3a1a000000b002b63651f12fmr811197lja.3.1688632573278; 
- Thu, 06 Jul 2023 01:36:13 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFPHj8Imvp/IGZnkx5FhbU+iSwPLKVgbRRT+rwumlvD9B2R5Frs7r3lREqL6cvMEevDt0c9XoUZaLXXxveTQyg=
-X-Received: by 2002:a2e:3a1a:0:b0:2b6:3651:f12f with SMTP id
- h26-20020a2e3a1a000000b002b63651f12fmr811190lja.3.1688632573015; Thu, 06 Jul
- 2023 01:36:13 -0700 (PDT)
+ bh=Fnzxx0FjlCL8P9+nk9oJvNm0Zgo5W8HDK3UIFTwch5A=;
+ b=HQIHOqWWndpB0kYZ+hekXNQZBeEDvBFZAnJig+CYk/RBibsUq9LZK98QMvV5gVZAJo
+ /auHw1b+rOez80w/PSMKY8yeUCv4tnTgBLPNGM+KgY0FwlB13wXlLW+E9AaXggm8ir+k
+ zW/h0vUM2i58A99yVdy+JHecjsVOdO7GWVoH8/HR1Jafbg2ShIXpwjgt43r3C0TPGZfu
+ DGIXk6A3NeDVOwhuQS3+jTX7dQWVSS1Mn9+nhkhTfSrsmUnWfVFPvGZwbhU43dRK9qlJ
+ NpgOk0oUx/zVzIwqvqLEbq2DBPTsSFTEXUbb1cMAtK3dHJRVIGzso0QNr5pF9oLQSDe/
+ G01A==
+X-Gm-Message-State: ABy/qLZQypf6myYPADanCMqCl/uR4FXcytR2sHJpe1UgOc6CDLDgZfAw
+ 5RQNgMdwNzFfr/lRkpMLXRLYZGV6uG4PgdZb7h+ptU05mnMSbdT+4xtsJkIxoIwQ3fnFTcnUKsh
+ QxJELtVLMyvKNhNY=
+X-Received: by 2002:a05:6512:3157:b0:4f8:7617:6445 with SMTP id
+ s23-20020a056512315700b004f876176445mr879814lfi.48.1688632691554; 
+ Thu, 06 Jul 2023 01:38:11 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlG8XzbGHVDxf+BykaVxoHiEK69JWxH8R0iOqeGq6f/HxT0lfDwcJ7LryILlPEwdrkj40Vl9BQ==
+X-Received: by 2002:a05:6512:3157:b0:4f8:7617:6445 with SMTP id
+ s23-20020a056512315700b004f876176445mr879789lfi.48.1688632691164; 
+ Thu, 06 Jul 2023 01:38:11 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
+ ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+ by smtp.gmail.com with ESMTPSA id
+ t19-20020a7bc3d3000000b003fb739d27aesm4398333wmj.35.2023.07.06.01.38.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 06 Jul 2023 01:38:10 -0700 (PDT)
+Message-ID: <02c15d72-b29f-b0da-42a6-f77040d4f8ab@redhat.com>
+Date: Thu, 6 Jul 2023 10:38:09 +0200
 MIME-Version: 1.0
-References: <20230705141205.525776-1-kkostiuk@redhat.com>
- <20230705141205.525776-3-kkostiuk@redhat.com>
- <fe2afd5c-fc4b-f1f5-017b-a33cb9bfe894@linaro.org>
-In-Reply-To: <fe2afd5c-fc4b-f1f5-017b-a33cb9bfe894@linaro.org>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Thu, 6 Jul 2023 11:36:01 +0300
-Message-ID: <CAPMcbCqbzGMZJ2V2ZPxovR5_MB4UCZuwYoLqqpbeQLqFfnEjkg@mail.gmail.com>
-Subject: Re: [PATCH 2/4] QGA VSS: Replace 'fprintf(stderr' with PRINT_DEBUG
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Michael Roth <michael.roth@amd.com>, Yan Vugenfirer <yvugenfi@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000abcf5d05ffcd684a"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To: quintela@redhat.com
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Peng Tao <tao.peng@linux.alibaba.com>, Mario Casquero <mcasquer@redhat.com>
+References: <20230706075612.67404-1-david@redhat.com>
+ <20230706075612.67404-3-david@redhat.com> <87fs61bglq.fsf@secure.mitica>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH v2 2/4] virtio-mem: Skip most of virtio_mem_unplug_all()
+ without plugged memory
+In-Reply-To: <87fs61bglq.fsf@secure.mitica>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,98 +109,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000abcf5d05ffcd684a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 06.07.23 10:15, Juan Quintela wrote:
+> David Hildenbrand <david@redhat.com> wrote:
+>> Already when starting QEMU we perform one system reset that ends up
+>> triggering virtio_mem_unplug_all() with no actual memory plugged yet.
+>> That, in turn will trigger ram_block_discard_range() and perform some
+>> other actions that are not required in that case.
+>>
+>> Let's optimize virtio_mem_unplug_all() for the case that no memory is
+>> plugged. This will be beneficial for x-ignore-shared support as well.
+>>
+>> Tested-by: Mario Casquero <mcasquer@redhat.com>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+> 
+> It works, so ...
+> 
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-On Wed, Jul 5, 2023 at 11:36=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd=
-@linaro.org>
-wrote:
+Thanks!
 
-> On 5/7/23 16:12, Konstantin Kostiuk wrote:
-> > Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-> > ---
-> >   qga/vss-win32/install.cpp   | 13 +++++++------
-> >   qga/vss-win32/requester.cpp |  9 +++++----
-> >   2 files changed, 12 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
-> > index ff93b08a9e..c10a397e51 100644
-> > --- a/qga/vss-win32/install.cpp
-> > +++ b/qga/vss-win32/install.cpp
-> > @@ -13,6 +13,7 @@
-> >   #include "qemu/osdep.h"
-> >
-> >   #include "vss-common.h"
-> > +#include "vss-debug.h"
-> >   #ifdef HAVE_VSS_SDK
-> >   #include <vscoordint.h>
-> >   #else
-> > @@ -54,7 +55,7 @@ void errmsg(DWORD err, const char *text)
-> >                     FORMAT_MESSAGE_FROM_SYSTEM |
-> FORMAT_MESSAGE_IGNORE_INSERTS,
-> >                     NULL, err, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT=
-),
-> >                     (char *)&msg, 0, NULL);
-> > -    fprintf(stderr, "%.*s. (Error: %lx) %s\n", len, text, err, msg);
-> > +    PRINT_DEBUG("%.*s. (Error: %lx) %s\n", len, text, err, msg);
->
-> PRINT_DEBUG() ends calling fprintf(stderr)...
->
->
-Yes, PRINT_DEBUG calling fprintf(stderr).
-This patch replaces fprintf(stderr call from errmsg with PRINT_DEBUG.
+[...]
 
-What do you mean by this comment?
+>> +        bitmap_clear(vmem->bitmap, 0, vmem->bitmap_size);
+>>           vmem->size = 0;
+>>           notifier_list_notify(&vmem->size_change_notifiers, &vmem->size);
+>>       }
+>> +
+>>       trace_virtio_mem_unplugged_all();
+>>       virtio_mem_resize_usable_region(vmem, vmem->requested_size, true);
+>>       return 0;
+> 
+> Once that we are here.  Do you remember _why_ do we allow virtio-mem
+> plug/unplug in the middle of a migration.
+> 
+> We forbid to plug/unplug everything else.  Why do we need to plug/unplug
+> virtio-mem during migration?
 
---000000000000abcf5d05ffcd684a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+With virtio-mem you tell the VM the desired size for the device 
+(requested-size), and the VM will select blocks to (un)plug and send 
+(un)plug requests to the hypervisor in order to reach the requested size.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jul 5, 2023 at 11:36=E2=80=AF=
-PM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro.org">phi=
-lmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">On 5/7/23 16:12, Konstantin Kostiuk wrote:<br>
-&gt; Signed-off-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkostiuk@redha=
-t.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 =C2=A0qga/vss-win32/install.cpp=C2=A0 =C2=A0| 13 +++++++------<b=
-r>
-&gt;=C2=A0 =C2=A0qga/vss-win32/requester.cpp |=C2=A0 9 +++++----<br>
-&gt;=C2=A0 =C2=A02 files changed, 12 insertions(+), 10 deletions(-)<br>
-&gt; <br>
-&gt; diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp<br>
-&gt; index ff93b08a9e..c10a397e51 100644<br>
-&gt; --- a/qga/vss-win32/install.cpp<br>
-&gt; +++ b/qga/vss-win32/install.cpp<br>
-&gt; @@ -13,6 +13,7 @@<br>
-&gt;=C2=A0 =C2=A0#include &quot;qemu/osdep.h&quot;<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0#include &quot;vss-common.h&quot;<br>
-&gt; +#include &quot;vss-debug.h&quot;<br>
-&gt;=C2=A0 =C2=A0#ifdef HAVE_VSS_SDK<br>
-&gt;=C2=A0 =C2=A0#include &lt;vscoordint.h&gt;<br>
-&gt;=C2=A0 =C2=A0#else<br>
-&gt; @@ -54,7 +55,7 @@ void errmsg(DWORD err, const char *text)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0NULL, err, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0(char *)&amp;msg, 0, NULL);<br>
-&gt; -=C2=A0 =C2=A0 fprintf(stderr, &quot;%.*s. (Error: %lx) %s\n&quot;, le=
-n, text, err, msg);<br>
-&gt; +=C2=A0 =C2=A0 PRINT_DEBUG(&quot;%.*s. (Error: %lx) %s\n&quot;, len, t=
-ext, err, msg);<br>
-<br>
-PRINT_DEBUG() ends calling fprintf(stderr)...<br>
-<br></blockquote><div><br></div><div>Yes, PRINT_DEBUG calling fprintf(stder=
-r).</div><div>This patch replaces fprintf(stderr call from errmsg with PRIN=
-T_DEBUG.</div><div><br></div><div>What do you mean by this comment? <br></d=
-iv><div>=C2=A0</div></div></div>
+So changing the requested size in the hypervisor (by the QEMU user) and 
+the VM processing that resize request is asynchronous -- similar to 
+memory ballooning.
 
---000000000000abcf5d05ffcd684a--
+As the VM can send these (un)plug requests any time, and we exactly 
+don't want to allow (un)plug during migration, we have 
+virtio_mem_is_busy() to reject any such requests to tell the VM "please 
+try again later".
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
