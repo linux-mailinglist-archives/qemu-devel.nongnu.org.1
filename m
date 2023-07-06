@@ -2,95 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B653749D99
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 425EB749DA4
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 15:29:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHP16-0000SU-0U; Thu, 06 Jul 2023 09:27:28 -0400
+	id 1qHP2W-00040q-Bk; Thu, 06 Jul 2023 09:28:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qHP0r-0000BV-SQ
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:27:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qHP1w-0003t3-3f; Thu, 06 Jul 2023 09:28:24 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qHP0p-0001fx-QN
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 09:27:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688650030;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=gS2cQ+S5rZhTae0BZLo3iZATEyRpOoyacznuVsEpcGQ=;
- b=UZy5Bfv87qjS+xv1h9SGPlsN7mWxNbVw9yfFumfxkkP4vJu4tVBprDAZRR+2QXjKKAvTco
- l7A9RAwt0NZAlkiKXyzGDJjd6jg7FG7RRIBRy9FtuuoreD90kTZc434pKtlA1dt1XvP9nH
- soQgP/9PtZczls7/vmNVPwT1llL5ELQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-LuDksfOLNluwqWt-YaSf6A-1; Thu, 06 Jul 2023 09:27:09 -0400
-X-MC-Unique: LuDksfOLNluwqWt-YaSf6A-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fbdde92299so4075825e9.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 06:27:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688650027; x=1691242027;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gS2cQ+S5rZhTae0BZLo3iZATEyRpOoyacznuVsEpcGQ=;
- b=Sm5EpWZjpZFNC9NZ6JlpUdmyPZwLlnW2AA29l2r3Zws72S0NauFi0GjI6ix0u1hBU5
- UUzqdwHdTI4s9qVe5XuLGzNalAiZxU4hCmF/BMFoz+pDQcAlJAK+5KHF5UHsqCR5p9+0
- k1G0hXvEWuaL9kAd6XSgUYtxLRTfcbc2yx/tVkh8yDMjpKSVIyQmvuFMP9qEN+41ASAO
- AJ6xPdjo0xc4TFDU6KHw5BGe37r+KBum3bRRKVVNMBA2O08S242WifrnX6W6Li1jy3Pa
- MjG6IveknsBkELFQacQ5lGoNgvJcQAT3qJKo2lNoIqHCjp2bphsvXoy8fdvT7YnIl8Cz
- 4h5A==
-X-Gm-Message-State: ABy/qLYiIF/yLn0Krk5SqOMdKokmumS6mQCW4lIHmGs/jh5q0zpPDJvM
- F9/5NID8+/2LBAKIUj2MG0+B5DVbHyIAU/z2zqgwhGJMQSbBvsynHk+cAbEmJXpu2MVAyIfwam1
- 0K6vvsLI12N9WgE0=
-X-Received: by 2002:a7b:c4d1:0:b0:3f8:2777:15e with SMTP id
- g17-20020a7bc4d1000000b003f82777015emr1343195wmk.31.1688650027529; 
- Thu, 06 Jul 2023 06:27:07 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFrhutM6gNqzbU35KNhtQ0rrBTTSQ/Iahf3fpV/y8SliSJ9K0eIounBiF0PlEX3cDaM6GmxrQ==
-X-Received: by 2002:a7b:c4d1:0:b0:3f8:2777:15e with SMTP id
- g17-20020a7bc4d1000000b003f82777015emr1343169wmk.31.1688650027205; 
- Thu, 06 Jul 2023 06:27:07 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- s14-20020a7bc38e000000b003fbdf8292a7sm2085503wmj.46.2023.07.06.06.27.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 06:27:06 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org,  "Michael S. Tsirkin" <mst@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Leonardo Bras <leobras@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Peng
- Tao <tao.peng@linux.alibaba.com>,  Mario Casquero <mcasquer@redhat.com>
-Subject: Re: [PATCH v2 2/4] virtio-mem: Skip most of virtio_mem_unplug_all()
- without plugged memory
-In-Reply-To: <02c15d72-b29f-b0da-42a6-f77040d4f8ab@redhat.com> (David
- Hildenbrand's message of "Thu, 6 Jul 2023 10:38:09 +0200")
-References: <20230706075612.67404-1-david@redhat.com>
- <20230706075612.67404-3-david@redhat.com>
- <87fs61bglq.fsf@secure.mitica>
- <02c15d72-b29f-b0da-42a6-f77040d4f8ab@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Thu, 06 Jul 2023 15:27:05 +0200
-Message-ID: <87v8ex6uhi.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qHP1s-0001wQ-Tj; Thu, 06 Jul 2023 09:28:19 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 4F59312092;
+ Thu,  6 Jul 2023 16:28:07 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id AC287133B3;
+ Thu,  6 Jul 2023 16:28:06 +0300 (MSK)
+Message-ID: <33088999-cc41-7dd6-b522-84af01913172@tls.msk.ru>
+Date: Thu, 6 Jul 2023 16:28:06 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/2] migration: factor out "resume_requested" in
+ qmp_migrate()
+Content-Language: en-US
+To: Laszlo Ersek <lersek@redhat.com>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Peter Xu <peterx@redhat.com>, qemu-trivial@nongnu.org
+References: <20230706102937.82490-1-lersek@redhat.com>
+ <20230706102937.82490-2-lersek@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230706102937.82490-2-lersek@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,62 +59,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-David Hildenbrand <david@redhat.com> wrote:
-> On 06.07.23 10:15, Juan Quintela wrote:
->> David Hildenbrand <david@redhat.com> wrote:
->>> Already when starting QEMU we perform one system reset that ends up
->>> triggering virtio_mem_unplug_all() with no actual memory plugged yet.
->>> That, in turn will trigger ram_block_discard_range() and perform some
->>> other actions that are not required in that case.
->>>
->>> Let's optimize virtio_mem_unplug_all() for the case that no memory is
->>> plugged. This will be beneficial for x-ignore-shared support as well.
->>>
->>> Tested-by: Mario Casquero <mcasquer@redhat.com>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->> It works, so ...
->> Reviewed-by: Juan Quintela <quintela@redhat.com>
->
-> Thanks!
->
-> [...]
->
->>> +        bitmap_clear(vmem->bitmap, 0, vmem->bitmap_size);
->>>           vmem->size = 0;
->>>           notifier_list_notify(&vmem->size_change_notifiers, &vmem->size);
->>>       }
->>> +
->>>       trace_virtio_mem_unplugged_all();
->>>       virtio_mem_resize_usable_region(vmem, vmem->requested_size, true);
->>>       return 0;
->> Once that we are here.  Do you remember _why_ do we allow virtio-mem
->> plug/unplug in the middle of a migration.
->> We forbid to plug/unplug everything else.  Why do we need to
->> plug/unplug
->> virtio-mem during migration?
->
-> With virtio-mem you tell the VM the desired size for the device
-> (requested-size), and the VM will select blocks to (un)plug and send
-> (un)plug requests to the hypervisor in order to reach the requested
-> size.
->
-> So changing the requested size in the hypervisor (by the QEMU user)
-> and the VM processing that resize request is asynchronous -- similar
-> to memory ballooning.
->
-> As the VM can send these (un)plug requests any time, and we exactly
-> don't want to allow (un)plug during migration, we have
-> virtio_mem_is_busy() to reject any such requests to tell the VM
-> "please try again later".
+06.07.2023 13:29, Laszlo Ersek пишет:
+> It cuts back on those awkward, duplicated !(has_resume && resume)
+> expressions.
+> 
+> Cc: Juan Quintela <quintela@redhat.com> (maintainer:Migration)
+> Cc: Leonardo Bras <leobras@redhat.com> (reviewer:Migration)
+> Cc: Peter Xu <peterx@redhat.com> (reviewer:Migration)
+> Cc: qemu-trivial@nongnu.org
+> Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2018404
+> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+> ---
+>   migration/migration.c | 10 ++++++----
+>   1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 096e8191d15c..a60a5acee533 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -1637,6 +1637,7 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
+>                    bool has_inc, bool inc, bool has_detach, bool detach,
+>                    bool has_resume, bool resume, Error **errp)
+>   {
+> +    bool resume_requested;
+>       Error *local_err = NULL;
+>       MigrationState *s = migrate_get_current();
+>       const char *p = NULL;
+> @@ -1646,13 +1647,14 @@ void qmp_migrate(const char *uri, bool has_blk, bool blk,
+>           return;
+>       }
+>   
+> +    resume_requested = has_resume && resume;
 
-Ahh.
+Dunno if it's worth it or cleaner, but it can be reduced to
 
-I see it now.
+       if (!has_resume)  resume = false;
 
-Thanks, Juan.
+and checking for only resume below this point.
+In other words, there's no need for an additional local var.
 
+All other params (has_inc & inc, has_detach_detach etc) are like this
+too.
+
+Anyway,
+
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+
+/mjt
 
