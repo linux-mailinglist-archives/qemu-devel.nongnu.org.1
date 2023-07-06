@@ -2,87 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DA974A620
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 23:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A3D74A69A
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 00:12:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHWp3-0005BA-8W; Thu, 06 Jul 2023 17:47:33 -0400
+	id 1qHXBd-0008T9-PF; Thu, 06 Jul 2023 18:10:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
- id 1qHWp1-0005Ax-8u
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 17:47:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <chris@laplante.io>) id 1qHXBc-0008T1-T3
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 18:10:52 -0400
+Received: from mail-4018.proton.ch ([185.70.40.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
- id 1qHWoz-0007jJ-Bi
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 17:47:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688680045;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Ld/CWNzn999knNZnqKlT+U0bCvGioDPxcN/px9mCspw=;
- b=FRLKcW+VcLe25OlZlXzuTbeHJPbB2Z1Ab2wTIX7t+9uaDI3YGCtGd6CYhrXj05UUsakoeS
- m5Xu8sPxXUCzYwSa+MILeORlBzq4nwnWbH34gBoU+zLFMAtGEXoz2KwIWDhg807DCKvYCz
- ckbjqTDeSYOZHzq3c+PSoZrURvOA67c=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-xOSXtDxEPF6B0ia03_dPYQ-1; Thu, 06 Jul 2023 17:47:24 -0400
-X-MC-Unique: xOSXtDxEPF6B0ia03_dPYQ-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-767564705f5so148405585a.1
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 14:47:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688680043; x=1691272043;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ld/CWNzn999knNZnqKlT+U0bCvGioDPxcN/px9mCspw=;
- b=avHgjBhycd8OcrgCh19HnrkLxYe+EkClwT+xXtG6LiPXrK+sEmpxGVJ7G+nF7hjgRn
- YqTcaC68spbgoWR4m3X2lWLKILqwDpHG2QaI0piqLmed3wQGi58tSp84nTlOqL86bvMj
- /OvLtHdTYLQu3fe1+JqwntBeQzyqz51aJ+gUdds5knWYjU3soe6x5zG40z1aKXxn+t/E
- P4R8dY3u80kAv2fYeyILnJzNWagt6HSfvhlL37KhUVYNQIF+5Y8LvLDbv2RwitpX9Fmf
- OOHQ7SoBJZKgInyxf+Pn+E7LHWQFwm0XN+8ye3G5cG0ZNyiANQF2orsIF+Z086UpRjEK
- wdMw==
-X-Gm-Message-State: ABy/qLZhc4lyKZJpIdfUA/5Wf9nSPfRh1rtFnKFv83CEOKJ40jTHfWZB
- 4mj47hkLIeHJVWpFXLlsBOJb/TxPYdjSFPSdgRfPlBC2cVGlmdi1Pwp+XCp3u9uZte1YlUI6F08
- X21Ix2UabPdNzGIW6N2Ts+Hp4NSG/wyo=
-X-Received: by 2002:a05:622a:15d2:b0:400:aaed:592e with SMTP id
- d18-20020a05622a15d200b00400aaed592emr3512599qty.49.1688680043641; 
- Thu, 06 Jul 2023 14:47:23 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHmyt/hNp5coHr9JoSQoCvaT3HvKNLwhL+NuPijMbRS8jNbxeK6LhSGkfuZvRSW4qlCrOE9pxpK0WwGq5fuf10=
-X-Received: by 2002:a05:622a:15d2:b0:400:aaed:592e with SMTP id
- d18-20020a05622a15d200b00400aaed592emr3512585qty.49.1688680043410; Thu, 06
- Jul 2023 14:47:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <chris@laplante.io>) id 1qHXBY-0002Qb-Lk
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 18:10:52 -0400
+Date: Thu, 06 Jul 2023 22:10:34 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=laplante.io;
+ s=protonmail3; t=1688681443; x=1688940643;
+ bh=OfYegLzZKgKXhAfJ/X+pc6Zk/6etksyaxLDLvXsyidI=;
+ h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+ Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+ b=55KJ6lY06jx2EloMlNbN9aYOKeGUkRU1gZbL+u83SP2FWRE6ZxT3dp4nixuKGFhdL
+ 9MotEr6xurnSQVzgVzEfu8dGqygaDsv2Nd8bhHwnWrc6HUIfCWrlg4KJp5YCz+6TzQ
+ A2uhEDXA5HMtoZMDaomuJEs2Fx7M2GDv00b16yuaYHbgp2O4hWT1Lpxbo1lIbf36LF
+ ruaXGie9sj9TvALdCCsOSwlJN6J3r3Del3PV3GhUTvBHjIHcWAASggABOEmxV83wQL
+ 795ojwVDrErT4CbddNtgaNkECSp/v0zeE10LSkt8eMz/1JVz8SV2a6ITw2GRkvskn3
+ ZwNHaZpsT+BZg==
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+From: Chris Laplante <chris@laplante.io>
+Subject: Addition of qtest_irq_intercept_out_named,
+ or modify qtest_irq_interrupt_out?
+Message-ID: <v4-CFRWoJDePdhYGwXmcoZ4pJoJVk37oEGjiSx0aN-3K4aBwDF3_5SVTlspGOZnwk9QA7ewsCyGgitkgaxtSLRiqe2euhsY1klbjIdCkHf8=@laplante.io>
+Feedback-ID: 43500449:user:proton
 MIME-Version: 1.0
-References: <20230706045546.593605-3-leobras@redhat.com> <ZKbRRt8ESGsMz+o7@x1n>
- <CAJ6HWG4iUX=+7FTCkXitFfc1zFNJ9aR5PzDRyPLSZVq1Kos8fA@mail.gmail.com>
- <ZKcEjfTDDgDZWu9Q@x1n>
-In-Reply-To: <ZKcEjfTDDgDZWu9Q@x1n>
-From: Leonardo Bras Soares Passos <leobras@redhat.com>
-Date: Thu, 6 Jul 2023 18:47:12 -0300
-Message-ID: <CAJ6HWG5OTPVv_-BB--Q0s=8PkEHZGDkdbjyx3fdpFJjn9yqoyQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] pcie: Add hotplug detect state register to cmask
-To: Peter Xu <peterx@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lsoaresp@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: multipart/alternative;
+ boundary="b1_L024ue0u8dswTsNNFscTTvT38dBMp5MjoPgr4834Os"
+Received-SPF: pass client-ip=185.70.40.18; envelope-from=chris@laplante.io;
+ helo=mail-4018.proton.ch
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,45 +61,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 6, 2023 at 3:24=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
->
-> On Thu, Jul 06, 2023 at 03:07:40PM -0300, Leonardo Bras Soares Passos wro=
-te:
-> > > I asked the same question, and I still keep confused: whether there's=
- a
-> > > first bad commit?  Starting from when it fails?
-> > >
-> > > For example, is this broken on 6.0 binaries too with pc-q35-6.0?
-> >
-> > I tested for qemu 6.0, and it still reproduces, but have not pursued
-> > this any further.
->
-> I see, thanks!
->
-> But then do you know why it's never hit before?  I assume it means this b=
-ug
-> has been there for a long time.
+This is a multi-part message in MIME format.
 
-Even longer than expected:
+--b1_L024ue0u8dswTsNNFscTTvT38dBMp5MjoPgr4834Os
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-I did some testing looking for the bug:
+SGVsbG8gYWxsLAoKSSBoYXZlIGEgdGVzdCBjYXNlIHRoYXQgbmVlZHMgdG8gaW50ZXJjZXB0IGEg
+bmFtZWQgR1BJTyBvdXQgaW50ZXJydXB0LiBxdGVzdF9pcnFfaW50ZXJjZXB0X291dCBkb2Vzbid0
+IHN1cHBvcnQgdGhpcyBjdXJyZW50bHkuIEkgd291bGQgbGlrZSB0byBzZW5kIGEgcGF0Y2ggdG8g
+YWRkIHRoaXMgZnVuY3Rpb25hbGl0eS4gRG9lcyBhbnlvbmUgaGF2ZSBhIHByZWZlcmVuY2UgaWYg
+SSBpbXBsZW1lbnQgaXQgaXMgYSBuZXcgZnVuY3Rpb24gKHF0ZXN0X2lycV9pbnRlcmNlcHRfb3V0
+X25hbWVkKSwgdnMgYWRkIHRoZSBmdW5jdGlvbmFsaXR5IHRvIHF0ZXN0X2lycV9pbnRlcmNlcHRf
+b3V0IGluIHRoZSBmb3JtIG9mIGFuIG9wdGlvbmFsIGFkZGl0aW9uYWwgcGFyYW1ldGVyPwoKVGhh
+bmtzLApDaHJpcw==
 
-qemu v5.0.1 reproduces
-qemu v4.0.1 reproduces
-qemu v3.0.1 reproduces
-qemu v2.12.1 reproduces
+--b1_L024ue0u8dswTsNNFscTTvT38dBMp5MjoPgr4834Os
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: base64
 
-I decided to stop testing at this point, because it required python2
-for building qemu, and it is far enough (5 years).
+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDE0
+cHg7Ij5IZWxsbyBhbGwsPC9kaXY+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5z
+LXNlcmlmOyBmb250LXNpemU6IDE0cHg7Ij48YnI+PC9kaXY+PGRpdiBzdHlsZT0iZm9udC1mYW1p
+bHk6IEFyaWFsLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDE0cHg7Ij5JIGhhdmUgYSB0ZXN0IGNh
+c2UgdGhhdCBuZWVkcyB0byBpbnRlcmNlcHQgYSBuYW1lZCBHUElPIG91dCBpbnRlcnJ1cHQuJm5i
+c3A7PHNwYW4+cXRlc3RfaXJxX2ludGVyY2VwdF9vdXQgZG9lc24ndCBzdXBwb3J0IHRoaXMgY3Vy
+cmVudGx5LiBJIHdvdWxkIGxpa2UgdG8gc2VuZCBhIHBhdGNoIHRvIGFkZCB0aGlzIGZ1bmN0aW9u
+YWxpdHkuIERvZXMgYW55b25lIGhhdmUgYSBwcmVmZXJlbmNlIGlmIEkgaW1wbGVtZW50IGl0IGlz
+IGEgbmV3IGZ1bmN0aW9uICg8c3Bhbj5xdGVzdF9pcnFfaW50ZXJjZXB0X291dF9uYW1lZCksIHZz
+IGFkZCB0aGUgZnVuY3Rpb25hbGl0eSB0byZuYnNwOzxzcGFuPnF0ZXN0X2lycV9pbnRlcmNlcHRf
+b3V0IGluIHRoZSBmb3JtIG9mIGFuIG9wdGlvbmFsIGFkZGl0aW9uYWwgcGFyYW1ldGVyPzwvc3Bh
+bj48L3NwYW4+PC9zcGFuPjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcmlhbCwgc2Fu
+cy1zZXJpZjsgZm9udC1zaXplOiAxNHB4OyI+PHNwYW4+PHNwYW4+PHNwYW4+PGJyPjwvc3Bhbj48
+L3NwYW4+PC9zcGFuPjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcmlhbCwgc2Fucy1z
+ZXJpZjsgZm9udC1zaXplOiAxNHB4OyI+PHNwYW4+PHNwYW4+PHNwYW4+VGhhbmtzLDwvc3Bhbj48
+L3NwYW4+PC9zcGFuPjwvZGl2PjxkaXYgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcmlhbCwgc2Fucy1z
+ZXJpZjsgZm9udC1zaXplOiAxNHB4OyI+PHNwYW4+PHNwYW4+PHNwYW4+Q2hyaXM8L3NwYW4+PC9z
+cGFuPjwvc3Bhbj48L2Rpdj4NCjxkaXYgY2xhc3M9InByb3Rvbm1haWxfc2lnbmF0dXJlX2Jsb2Nr
+IHByb3Rvbm1haWxfc2lnbmF0dXJlX2Jsb2NrLWVtcHR5IiBzdHlsZT0iZm9udC1mYW1pbHk6IEFy
+aWFsLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDE0cHg7Ij4NCiAgICA8ZGl2IGNsYXNzPSJwcm90
+b25tYWlsX3NpZ25hdHVyZV9ibG9jay11c2VyIHByb3Rvbm1haWxfc2lnbmF0dXJlX2Jsb2NrLWVt
+cHR5Ij4NCiAgICAgICAgDQogICAgICAgICAgICA8L2Rpdj4NCiAgICANCiAgICAgICAgICAgIDxk
+aXYgY2xhc3M9InByb3Rvbm1haWxfc2lnbmF0dXJlX2Jsb2NrLXByb3RvbiBwcm90b25tYWlsX3Np
+Z25hdHVyZV9ibG9jay1lbXB0eSI+DQogICAgICAgIA0KICAgICAgICAgICAgPC9kaXY+DQo8L2Rp
+dj4NCg==
 
-Seems to be a very old bug, that just hasn't bothered anyone until now.
 
->
-> --
-> Peter Xu
->
-
-Thanks!
-Leo
+--b1_L024ue0u8dswTsNNFscTTvT38dBMp5MjoPgr4834Os--
 
 
