@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D16749B5E
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 14:07:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1601749B89
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 14:16:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHNk2-0006m9-QH; Thu, 06 Jul 2023 08:05:46 -0400
+	id 1qHNsw-00016l-2a; Thu, 06 Jul 2023 08:14:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHNk0-0006lV-80
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:05:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qHNjy-0005hS-KT
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:05:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688645141;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dpsrKkCdFTvbHEAcFl7IrATej5Z/ON7JWoq5B6JCjlY=;
- b=DC2pvxH+Olem2GTjIJFZfmlhLKnRRDHdhQAgSvRM0hXj4WcqXXyPDTa01j+9wkYpj1A2h/
- FD9E7DKyx7N07eDsoP7anhcGwhJ5Fhi1NaiwhNv8/41b6F3+bFZ1M8v4rkVMmL/eyTsflA
- 7Ic9jjKGSg3kM/u6sEbRbVXmX+IzxuM=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-673-VMcoEuG8NImivwWkXBbd0A-1; Thu, 06 Jul 2023 08:05:39 -0400
-X-MC-Unique: VMcoEuG8NImivwWkXBbd0A-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-4034b144d3bso2031141cf.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 05:05:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qHNsr-00016V-KF
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:14:54 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qHNsj-0004C0-UG
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 08:14:53 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-98df3dea907so78949266b.3
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 05:14:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1688645684; x=1691237684;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=U61ZIYXOtn/DXa6IKteFBkd4ezxGa8EA5k+Kmu58Rhg=;
+ b=VzcTuHvTpcyo1yGGwZHA0jkobstDFXi0GyrKsubY49Lqzi5Foh1SBDFQueMNy+IgAE
+ jVuw5KG/1m6iEaKl1QMTBsQhAZoW4yx5nzv53fhF/aokfXFARMnT/PcW2sNMjnYsVnqK
+ j0n/BVU2Ee21t6xL0bh1ugt84sw4ksKLH3HCONbvDXRTdVGEAYZWe8PFfzInQ2Gadeve
+ /qPg735V+LgKtBJzQqruv5bm5sFtreVIq9urGEVqLnEszu8H6uCLxFnlssQOeTPETO/p
+ OOU4zETHTeobidPTOj0RPZZmWvUrEuIda5UEQjbuezyvDE9nd7yb9VGk/EwlN8dYL4qd
+ ysnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688645139; x=1689249939;
+ d=1e100.net; s=20221208; t=1688645684; x=1691237684;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dpsrKkCdFTvbHEAcFl7IrATej5Z/ON7JWoq5B6JCjlY=;
- b=aiOkkGwRf3UvsexaSDQa4oytH2FTXulxeNotStf8sQlubYdPITkHkQXArMOc+3BnPN
- qha9b02cIq9KppNlRMno5vP66nJc9RSLbxgS+YDARtYQUQQFdhGltlwhwY/BJ8nNeayH
- XavjzATlks5K6sEATcEul69tTxgwi5IX/fHDIdKnlgTaHrYYGSLeX6pt300ACw2NK8p7
- MVOjPBUZ75Dca9K41Xac3nNQRxao/EGoYaLLLtRJDWbN7rbOEd1MB6jZFhsJzkCmUG+L
- OMTMXJmmJEiMJJIlDVE+lCtxCA+/StPPLoChGpxJoWjPeN1g9lZGdpnIg/mrYuC7rTHf
- Ebmg==
-X-Gm-Message-State: ABy/qLY1JlD9T7vIqG46CLYWJdLk5G0D27HVJGvrYjPBgMQu9qkGXd9L
- 5t0cLG1BQpIJfaC/55t6mY1aEJO9j2TqjzjFcief8UPaNrgCaD7fVtjsuWvtKYSjPDiCJ9I06AC
- jzYAAqIvt67UUm2o=
-X-Received: by 2002:a05:6214:1c49:b0:635:e528:521a with SMTP id
- if9-20020a0562141c4900b00635e528521amr1586988qvb.5.1688645139188; 
- Thu, 06 Jul 2023 05:05:39 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFlsxr6GMPcji8rAk4rAan61aATxlSig5GOGe0alNSt2WYJ6xtV+YjURmZ8yc0S3BEILUT6Uw==
-X-Received: by 2002:a05:6214:1c49:b0:635:e528:521a with SMTP id
- if9-20020a0562141c4900b00635e528521amr1586970qvb.5.1688645138865; 
- Thu, 06 Jul 2023 05:05:38 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- f3-20020a0cf3c3000000b00635ef3a34ebsm798290qvm.48.2023.07.06.05.05.38
+ bh=U61ZIYXOtn/DXa6IKteFBkd4ezxGa8EA5k+Kmu58Rhg=;
+ b=mFh8K+MIGqFtgx60diSpx9XCDzoicqC36Uwfv43fHZB458joAmPjT5MShxdmmpP+Dq
+ bJjlZDb+c501ZJhsesNax/nAO8mFLT2o2M/FKSp6FaplccKGF8pGV8oNXPmCMAcGaFmE
+ /sR4CdyRPOhRA2Ve7e8pKgrrCkRuMta5KOtWg2ThpM2FNdv0mAtnnOKfTSjif6yjbJ4L
+ BMWbyXlFSYAKx8X+uITA4mwtoDEFm1kB6NVtZR5o4IWr3EOR9Do9kbh/a+SuiaxVBxOm
+ +Y0Wf3tCLHdhbjiNVVqoOOWzBn/NTN987rDP7azESeK+p0r99XYq5N+oeHfzjZ0KumDW
+ hRAw==
+X-Gm-Message-State: ABy/qLYCrok6VNi9n2AR1IR2u4pruz+zMAbsJSKQWD0Lo9t9cZoHSZ4U
+ 7n+vFKInGimAw0aozAHpWjyYnA==
+X-Google-Smtp-Source: APBJJlFglHTG0xo+RRvB4vjL33v8R4wAFfpLEOtsoIpLjN2UIzSXvU1Oeah/CFvP10rtoUjc5NspsA==
+X-Received: by 2002:a17:906:c30e:b0:992:16bb:2b6e with SMTP id
+ s14-20020a170906c30e00b0099216bb2b6emr1100325ejz.29.1688645684101; 
+ Thu, 06 Jul 2023 05:14:44 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ jt5-20020a170906dfc500b0098822e05539sm735379ejc.191.2023.07.06.05.14.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 05:05:38 -0700 (PDT)
-Date: Thu, 6 Jul 2023 08:05:37 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Laszlo Ersek <lersek@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, qemu-trivial@nongnu.org
-Subject: Re: [PATCH 0/2] migration: trivialities
-Message-ID: <ZKauEVBEYTcRqR+p@x1n>
-References: <20230706102937.82490-1-lersek@redhat.com>
+ Thu, 06 Jul 2023 05:14:43 -0700 (PDT)
+Date: Thu, 6 Jul 2023 14:14:42 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH v9 14/20] target/riscv/kvm.c: add multi-letter extension
+ KVM properties
+Message-ID: <20230706-b3ce7ed0f6265c69afad8d90@orel>
+References: <20230706101738.460804-1-dbarboza@ventanamicro.com>
+ <20230706101738.460804-15-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230706102937.82490-1-lersek@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <20230706101738.460804-15-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,22 +94,218 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 06, 2023 at 12:29:35PM +0200, Laszlo Ersek wrote:
-> SSIA; originally for RHBZ#2018404 (hence the links in the commit
-> messages).
+On Thu, Jul 06, 2023 at 07:17:32AM -0300, Daniel Henrique Barboza wrote:
+> Let's add KVM user properties for the multi-letter extensions that KVM
+> currently supports: zicbom, zicboz, zihintpause, zbb, ssaia, sstc,
+> svinval and svpbmt.
 > 
-> Cc: Juan Quintela <quintela@redhat.com> (maintainer:Migration)
-> Cc: Leonardo Bras <leobras@redhat.com> (reviewer:Migration)
-> Cc: Peter Xu <peterx@redhat.com> (reviewer:Migration)
-> Cc: qemu-trivial@nongnu.org
+> As with MISA extensions, we're using the KVMCPUConfig type to hold
+> information about the state of each extension. However, multi-letter
+> extensions have more cases to cover than MISA extensions, so we're
+> adding an extra 'supported' flag as well. This flag will reflect if a
+> given extension is supported by KVM, i.e. KVM knows how to handle it.
+> This is determined during KVM extension discovery in
+> kvm_riscv_init_multiext_cfg(), where we test for ENOENT errors. Any
+                                                   ^ EINVAL
+
+> other error will cause an abort.
 > 
-> Laszlo Ersek (2):
->   migration: factor out "resume_requested" in qmp_migrate()
->   migration: unexport migrate_fd_error()
+> The use of the 'user_set' is similar to what we already do with MISA
+> extensions: the flag set only if the user is changing the extension
+> state.
+> 
+> The 'supported' flag will be used later on to make an exception for
+> users that are disabling multi-letter extensions that are unknown to
+> KVM.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  target/riscv/cpu.c |   8 +++
+>  target/riscv/kvm.c | 119 +++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 127 insertions(+)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 5c8832a030..31e591a938 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1860,6 +1860,14 @@ static void riscv_cpu_add_user_properties(Object *obj)
+>      riscv_cpu_add_misa_properties(obj);
+>  
+>      for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
+> +#ifndef CONFIG_USER_ONLY
+> +        if (kvm_enabled()) {
+> +            /* Check if KVM created the property already */
+> +            if (object_property_find(obj, prop->name)) {
+> +                continue;
+> +            }
+> +        }
+> +#endif
+>          qdev_property_add_static(dev, prop);
+>      }
+>  
+> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+> index 7afd6024e6..2d39ec154f 100644
+> --- a/target/riscv/kvm.c
+> +++ b/target/riscv/kvm.c
+> @@ -113,6 +113,7 @@ typedef struct KVMCPUConfig {
+>      target_ulong offset;
+>      int kvm_reg_id;
+>      bool user_set;
+> +    bool supported;
+>  } KVMCPUConfig;
+>  
+>  #define KVM_MISA_CFG(_bit, _reg_id) \
+> @@ -197,6 +198,81 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
+>      }
+>  }
+>  
+> +#define CPUCFG(_prop) offsetof(struct RISCVCPUConfig, _prop)
+> +
+> +#define KVM_EXT_CFG(_name, _prop, _reg_id) \
+> +    {.name = _name, .offset = CPUCFG(_prop), \
+> +     .kvm_reg_id = _reg_id}
+> +
+> +static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+> +    KVM_EXT_CFG("zicbom", ext_icbom, KVM_RISCV_ISA_EXT_ZICBOM),
+> +    KVM_EXT_CFG("zicboz", ext_icboz, KVM_RISCV_ISA_EXT_ZICBOZ),
+> +    KVM_EXT_CFG("zihintpause", ext_zihintpause, KVM_RISCV_ISA_EXT_ZIHINTPAUSE),
+> +    KVM_EXT_CFG("zbb", ext_zbb, KVM_RISCV_ISA_EXT_ZBB),
+> +    KVM_EXT_CFG("ssaia", ext_ssaia, KVM_RISCV_ISA_EXT_SSAIA),
+> +    KVM_EXT_CFG("sstc", ext_sstc, KVM_RISCV_ISA_EXT_SSTC),
+> +    KVM_EXT_CFG("svinval", ext_svinval, KVM_RISCV_ISA_EXT_SVINVAL),
+> +    KVM_EXT_CFG("svpbmt", ext_svpbmt, KVM_RISCV_ISA_EXT_SVPBMT),
+> +};
+> +
+> +static void kvm_cpu_cfg_set(RISCVCPU *cpu, KVMCPUConfig *multi_ext,
+> +                            uint32_t val)
+> +{
+> +    int cpu_cfg_offset = multi_ext->offset;
+> +    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
+> +
+> +    *ext_enabled = val;
+> +}
+> +
+> +static uint32_t kvm_cpu_cfg_get(RISCVCPU *cpu,
+> +                                KVMCPUConfig *multi_ext)
+> +{
+> +    int cpu_cfg_offset = multi_ext->offset;
+> +    bool *ext_enabled = (void *)&cpu->cfg + cpu_cfg_offset;
+> +
+> +    return *ext_enabled;
+> +}
+> +
+> +static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
+> +                                      const char *name,
+> +                                      void *opaque, Error **errp)
+> +{
+> +    KVMCPUConfig *multi_ext_cfg = opaque;
+> +    RISCVCPU *cpu = RISCV_CPU(obj);
+> +    bool value, host_val;
+> +
+> +    if (!visit_type_bool(v, name, &value, errp)) {
+> +        return;
+> +    }
+> +
+> +    host_val = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
+> +
+> +    /*
+> +     * Ignore if the user is setting the same value
+> +     * as the host.
+> +     */
+> +    if (value == host_val) {
+> +        return;
+> +    }
+> +
+> +    if (!multi_ext_cfg->supported) {
+> +        /*
+> +         * Error out if the user is trying to enable an
+> +         * extension that KVM doesn't support. Ignore
+> +         * option otherwise.
+> +         */
+> +        if (value) {
+> +            error_setg(errp, "KVM does not support disabling extension %s",
+> +                       multi_ext_cfg->name);
+> +        }
+> +
+> +        return;
+> +    }
+> +
+> +    multi_ext_cfg->user_set = true;
+> +    kvm_cpu_cfg_set(cpu, multi_ext_cfg, value);
+> +}
+> +
+>  static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+>  {
+>      int i;
+> @@ -215,6 +291,15 @@ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+>          object_property_set_description(cpu_obj, misa_cfg->name,
+>                                          misa_cfg->description);
+>      }
+> +
+> +    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
+> +        KVMCPUConfig *multi_cfg = &kvm_multi_ext_cfgs[i];
+> +
+> +        object_property_add(cpu_obj, multi_cfg->name, "bool",
+> +                            NULL,
+> +                            kvm_cpu_set_multi_ext_cfg,
+> +                            NULL, multi_cfg);
+> +    }
+>  }
+>  
+>  static int kvm_riscv_get_regs_core(CPUState *cs)
+> @@ -530,6 +615,39 @@ static void kvm_riscv_init_misa_ext_mask(RISCVCPU *cpu,
+>      env->misa_ext = env->misa_ext_mask;
+>  }
+>  
+> +static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+> +{
+> +    CPURISCVState *env = &cpu->env;
+> +    uint64_t val;
+> +    int i, ret;
+> +
+> +    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
+> +        KVMCPUConfig *multi_ext_cfg = &kvm_multi_ext_cfgs[i];
+> +        struct kvm_one_reg reg;
+> +
+> +        reg.id = kvm_riscv_reg_id(env, KVM_REG_RISCV_ISA_EXT,
+> +                                  multi_ext_cfg->kvm_reg_id);
+> +        reg.addr = (uint64_t)&val;
+> +        ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
+> +        if (ret != 0) {
+> +            if (errno == EINVAL) {
+> +                /* Silently default to 'false' if KVM does not support it. */
+> +                multi_ext_cfg->supported = false;
+> +                val = false;
+> +            } else {
+> +                error_report("Unable to read ISA_EXT KVM register %s, "
+> +                             "error %d", multi_ext_cfg->name, ret);
+> +                kvm_riscv_destroy_scratch_vcpu(kvmcpu);
+> +                exit(EXIT_FAILURE);
+> +            }
+> +        } else {
+> +            multi_ext_cfg->supported = true;
+> +        }
+> +
+> +        kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
+> +    }
+> +}
+> +
+>  void kvm_riscv_init_user_properties(Object *cpu_obj)
+>  {
+>      RISCVCPU *cpu = RISCV_CPU(cpu_obj);
+> @@ -542,6 +660,7 @@ void kvm_riscv_init_user_properties(Object *cpu_obj)
+>      kvm_riscv_add_cpu_user_properties(cpu_obj);
+>      kvm_riscv_init_machine_ids(cpu, &kvmcpu);
+>      kvm_riscv_init_misa_ext_mask(cpu, &kvmcpu);
+> +    kvm_riscv_init_multiext_cfg(cpu, &kvmcpu);
+>  
+>      kvm_riscv_destroy_scratch_vcpu(&kvmcpu);
+>  }
+> -- 
+> 2.41.0
+>
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Otherwise,
 
--- 
-Peter Xu
-
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
