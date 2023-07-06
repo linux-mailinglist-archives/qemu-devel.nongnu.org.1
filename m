@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43BA974A4A4
-	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 22:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D17B074A4A1
+	for <lists+qemu-devel@lfdr.de>; Thu,  6 Jul 2023 22:03:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHVDa-0008Lo-LC; Thu, 06 Jul 2023 16:04:46 -0400
+	id 1qHVBG-0007PW-Fj; Thu, 06 Jul 2023 16:02:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qHVDY-0008LK-79
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:04:44 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qHVBD-0007P1-SM
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:02:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qHVDW-0004ZQ-LT
- for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:04:43 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qHVBA-00048x-RV
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 16:02:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688673877;
+ s=mimecast20190719; t=1688673735;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=esjILQxvACfP+Geb3schWtcLox5IMdEaEPGt2r68vqc=;
- b=A6L4IFwMIebBCgV5qDRL5LDdnS9YZRHTMSUvnJComoL9rZg4rUV6Gz4evxjOWkRWyoir1i
- n7MUudUjS/UMLOYxnHiOL0+jVlmdvwYT6JwE3JhVOHMwvH+1VgS+PWpzEqn2BoLZ8BFVrb
- 8B7ZBr/ZDLeZgbNkXf+e9RKdnv+DOYw=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3d66+TvRXJkGHToXksSZ4hEEvL1mw/2JzIEndIGjPwY=;
+ b=MNL8WIYL4EMipLCDZNkk5x7Kq+Qi2po4keOUUHoXz+YaaS2nUJMLW3PsTt96cjqn0EICKq
+ dENavgiYXEs8qag5gkRnmnIex2scTzTJ/IRIevpE5k0QUghkZkSt7lHBgsFFQtxHVVe1Bv
+ qCkoOTSleOFKIUrfV0knb7lLLd80VA4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-39-0-OBvl3fNeKFjXKmblo5rg-1; Thu, 06 Jul 2023 16:01:06 -0400
-X-MC-Unique: 0-OBvl3fNeKFjXKmblo5rg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-31455dcc30eso254890f8f.0
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 13:00:58 -0700 (PDT)
+ us-mta-583-6yLrbcqsMkWfN7LJJAtoHw-1; Thu, 06 Jul 2023 16:02:14 -0400
+X-MC-Unique: 6yLrbcqsMkWfN7LJJAtoHw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3fb8284465aso7245345e9.2
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 13:02:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688673653; x=1691265653;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=esjILQxvACfP+Geb3schWtcLox5IMdEaEPGt2r68vqc=;
- b=kowkN+Lp1MKFC54SxAwMP3b5U8jQKpyB/QxMMgVT/Vm6scaKt/r4nRDJkcsABzRRvv
- 8f/Iv3p7Pk0gNkfUslR09hOR4g6mz3Ui8FSq20abGfdLWFZ4Y4aQIps+s+EpG0BAAQg/
- 2pxSHABo9tXp/DeNX48jnVhTVp7kjEWNfugcRs6nAZ+NKEAnrtdooq5R8xvwZHLVBgOS
- xPy5IAabnBWzqFp73a8v+VlktkcFvZhpwgvwzC1cBoX0kCXLEQNzGKaegeL8UJb5Qb2T
- BNeb81xLP/fQMU4cAIUuIdn+DNLxz7D0btIM+E6LeIo1IbEP5y43hhMmg5Gb5ULAr+3y
- HCxg==
-X-Gm-Message-State: ABy/qLaH+XZvz9ApLTytOnDa4h71PHTfHt4xDpRPpywoyHRtylebPEC3
- r3D6Hpmvb+q4fWWCBFmrsZCzrMDHaqk0jvMFEPw/S4nhh7JhLWfe2F+Ddyyk7hMzOl9gRzS947f
- ydDkLDyKpL2yV4rs=
-X-Received: by 2002:a5d:4a52:0:b0:314:4482:9b44 with SMTP id
- v18-20020a5d4a52000000b0031444829b44mr3068277wrs.5.1688673653057; 
- Thu, 06 Jul 2023 13:00:53 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGlmScm+VXHqLNjK0/Aq+eAogJLy86BEqxH8IMnx2CcAwPzldFTDe059XgG1+bLqaixVBbQNA==
-X-Received: by 2002:a5d:4a52:0:b0:314:4482:9b44 with SMTP id
- v18-20020a5d4a52000000b0031444829b44mr3068265wrs.5.1688673652755; 
- Thu, 06 Jul 2023 13:00:52 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688673733; x=1691265733;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3d66+TvRXJkGHToXksSZ4hEEvL1mw/2JzIEndIGjPwY=;
+ b=CykCWQBGNndYuddg5QGVg2YgqNPlDVdNwk6SuEuPMQ1sVtGa5ZnZwIR8b2VvfPG4Gf
+ JN/MrBWiiQB8LrACP6RgynLJQurebw4Iol5OlLJP9l7YSpcZCt3tiaQUdsfixjfYt6c3
+ 4WPd6TGH+sK7nldtwvJirWi9/fkKvF/gF4zGXxCq/yMy1BNFkT0+HhPE03mI+iZ+q7JW
+ ZIIhu/b9Pav7S03pq2hCOBjNgF6LTCOjUUfV2oVpXbrYBaMKHR9AC5FV7H8DwGerGWzW
+ aRrJmpLLGsbozloa0VuIhqexqVJOywRF6Vcf/dgobnpjM0kGXytDHMKb7Yam8VAPPRrT
+ webA==
+X-Gm-Message-State: ABy/qLaeDKuncKBApjiOXWLbozm2+I9N2nuVtmWR93f6Fp0le9Z3w323
+ 4wgcXyokVkeesuEvrBjqYHzrF6x40qALnsC2amNbWyRwcr4SakUtIpGzYhkuogtfYcOEVUqgo0f
+ FHxKIAFpQwgg1UUE=
+X-Received: by 2002:a05:600c:2246:b0:3fa:8fc2:3969 with SMTP id
+ a6-20020a05600c224600b003fa8fc23969mr2329489wmm.17.1688673732974; 
+ Thu, 06 Jul 2023 13:02:12 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFyQcf8pvVoSfrm9kxa8dqrZyIMLHfwy/ivUbEwBXvORrYyngDokXVFnC28IDRZCxA1QCclVw==
+X-Received: by 2002:a05:600c:2246:b0:3fa:8fc2:3969 with SMTP id
+ a6-20020a05600c224600b003fa8fc23969mr2329470wmm.17.1688673732658; 
+ Thu, 06 Jul 2023 13:02:12 -0700 (PDT)
 Received: from redhat.com ([2.52.13.33]) by smtp.gmail.com with ESMTPSA id
- 10-20020a05600c230a00b003fae92e7a8dsm447842wmo.27.2023.07.06.13.00.51
+ m16-20020a7bcb90000000b003fbdd5d0758sm453477wmi.22.2023.07.06.13.02.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 06 Jul 2023 13:00:52 -0700 (PDT)
-Date: Thu, 6 Jul 2023 16:00:49 -0400
+ Thu, 06 Jul 2023 13:02:12 -0700 (PDT)
+Date: Thu, 6 Jul 2023 16:02:08 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: Leonardo Bras Soares Passos <leobras@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 1/1] pcie: Add hotplug detect state register to cmask
-Message-ID: <20230706155936-mutt-send-email-mst@kernel.org>
-References: <20230706045546.593605-3-leobras@redhat.com> <ZKbRRt8ESGsMz+o7@x1n>
- <CAJ6HWG4iUX=+7FTCkXitFfc1zFNJ9aR5PzDRyPLSZVq1Kos8fA@mail.gmail.com>
- <ZKcEjfTDDgDZWu9Q@x1n>
- <20230706144844-mutt-send-email-mst@kernel.org>
- <ZKcPr3gueuOM4LGY@x1n>
+To: Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ Cindy Lu <lulu@redhat.com>, si-wei.liu@oracle.com,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Shannon Nelson <snelson@pensando.io>,
+ Gautam Dawar <gdawar@xilinx.com>, Jason Wang <jasowang@redhat.com>,
+ Harpreet Singh Anand <hanand@xilinx.com>,
+ Parav Pandit <parav@mellanox.com>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Zhu Lingshan <lingshan.zhu@intel.com>, Lei Yang <leiyang@redhat.com>
+Subject: Re: [RFC PATCH 0/6] Enable vdpa net migration with features
+ depending on CVQ
+Message-ID: <20230706160139-mutt-send-email-mst@kernel.org>
+References: <20230706191227.835526-1-eperezma@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ZKcPr3gueuOM4LGY@x1n>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230706191227.835526-1-eperezma@redhat.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -101,59 +105,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 06, 2023 at 03:02:07PM -0400, Peter Xu wrote:
-> On Thu, Jul 06, 2023 at 02:50:20PM -0400, Michael S. Tsirkin wrote:
-> > On Thu, Jul 06, 2023 at 02:14:37PM -0400, Peter Xu wrote:
-> > > On Thu, Jul 06, 2023 at 03:07:40PM -0300, Leonardo Bras Soares Passos wrote:
-> > > > > I asked the same question, and I still keep confused: whether there's a
-> > > > > first bad commit?  Starting from when it fails?
-> > > > >
-> > > > > For example, is this broken on 6.0 binaries too with pc-q35-6.0?
-> > > > 
-> > > > I tested for qemu 6.0, and it still reproduces, but have not pursued
-> > > > this any further.
-> > > 
-> > > I see, thanks!
-> > > 
-> > > But then do you know why it's never hit before?  I assume it means this bug
-> > > has been there for a long time.
-> > 
-> > It's a race - you have to migrate after the bit has been set before
-> > the bit got cleared.
-> > cmask is exactly for bits that qemu modifies itself.
+On Thu, Jul 06, 2023 at 09:12:21PM +0200, Eugenio Pérez wrote:
+> At this moment the migration of net features that depends on CVQ is not
+> possible, as there is no reliable way to restore the device state like mac
+> address, number of enabled queues, etc to the destination.  This is mainly
+> caused because the device must only read CVQ, and process all the commands
+> before resuming the dataplane.
 > 
-> Michael, do you mean that Leo's patch is wrong?
+> This RFC lift that requirement, sending the VHOST_VDPA_SET_VRING_ENABLE ioctl
+> for dataplane vqs only after the device has processed all commands.  If this
+> method is valid or not, or if it must be signalled by the parent driver
+> somehow, is still under discussion.  In case it is valid, this code allows
+> testing the vDPA device for it.
 
+And you plan to add the reset trick too in a future version?
 
-I mean his patch is exactly right. cmask was designed with this
-kind of use case in mind.
-Will queue.
-
-> I just got understood why it got cleared - I think Leo didn't mention that
-> the device was actually offlined before migration, IIUC that's why the PDS
-> bit got cleared, if PDS was trying to describe that of the slot.
+> Eugenio Pérez (6):
+>   vdpa: export vhost_vdpa_set_vring_ready
+>   vdpa: add should_enable op
+>   vdpa: use virtio_ops->should_enable at vhost_vdpa_set_vrings_ready
+>   vdpa: add stub vhost_vdpa_should_enable
+>   vdpa: delay enable of data vqs
+>   vdpa: remove net cvq migration blocker
 > 
-> According to:
+>  include/hw/virtio/vhost-vdpa.h |  9 +++++++
+>  hw/virtio/vhost-vdpa.c         | 33 +++++++++++++++++++------
+>  net/vhost-vdpa.c               | 45 +++++++++++++++++++++++++---------
+>  hw/virtio/trace-events         |  2 +-
+>  4 files changed, 68 insertions(+), 21 deletions(-)
 > 
->     /* Used to enable checks on load. Note that writable bits are
->      * never checked even if set in cmask. */
->     uint8_t *cmask;
-> 
-> It does sound reasonable to me to have PDS cleared when device offlined.
-> Since hypervisor doesn't really know what the condition the slot presence
-> bit would be when migrating, it seems we should just clear the bit in
-> cmask.
-> 
-> So with the last reply from Leo, the patch looks all right to me.  It's
-> just that as Leo mentioned, we should mention the offline process if that's
-> the case, because that's definitely an important step to reproduce the issue.
-> 
-> Thanks,
-
-If you want to suggest more text to the commit log, for the benefit
-of backporters, that is fine by me.
-
 > -- 
-> Peter Xu
+> 2.39.3
+> 
 
 
