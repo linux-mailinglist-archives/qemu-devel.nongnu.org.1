@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A807F74B00B
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE0B74B029
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:45:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjhO-0002f5-6b; Fri, 07 Jul 2023 07:32:30 -0400
+	id 1qHjhR-0002hZ-KO; Fri, 07 Jul 2023 07:32:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjhL-0002aQ-V0; Fri, 07 Jul 2023 07:32:27 -0400
-Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ id 1qHjhP-0002gZ-BI; Fri, 07 Jul 2023 07:32:31 -0400
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjhK-0006hh-3R; Fri, 07 Jul 2023 07:32:27 -0400
-Received: by mail-ot1-x32d.google.com with SMTP id
- 46e09a7af769-6b73a2d622dso1096459a34.0; 
- Fri, 07 Jul 2023 04:32:25 -0700 (PDT)
+ id 1qHjhM-0006in-L1; Fri, 07 Jul 2023 07:32:30 -0400
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6b74791c948so1606359a34.3; 
+ Fri, 07 Jul 2023 04:32:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729544; x=1691321544;
+ d=gmail.com; s=20221208; t=1688729547; x=1691321547;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=z3EdM87I8jrg+Sm3nBqPNIxyF85v1gyhGlSobHhRHFw=;
- b=WCYdWtmD3TFJCw1d4HFT/IZcLjX1LPAq8KVhgav1YjHCVzat2WERoI5IHNFC2LXR4g
- wxmCDXrBUKScGXMZvTI0TomItVUU6rvIvrL+0o+1zXp1jL5X9pnvzOwEPEbZNyNOkGDX
- Mi9eyiTUDVv2sUIim0eLbFZOseQVzxPOUw3LpwMXxyVxvU3TBZTs7GyJijNdQeFQFSgN
- OqKTIsmVHXoVOrSZrYm4zXlgi1o/Rtfl595h38fqiGjcG7KfAYw2QP7NC/d5cyA1PFbu
- q86bs3d4FeNKPzkrkmSagcRWBLJHhfnBh65Vyvn7IMC/EzdmF3sB1+V+YMCwhENzM0sk
- 4OCQ==
+ bh=+6ODJ7ibGt/kKlxPnmobX7LyZmwNxrb4XqcToA7Ww9U=;
+ b=GzewKOmlHtVPO4GveFdd9UxZmnl2yTw65yGPTkLhl7BAsvOMMcujmcACyQxxGPhBCW
+ 6e1mB0UQNhVjhOKrwTt3d4fjZopwbVBtvzDVIJsXAMRo32QxrktjBQcQRJOUkDzqo/Ts
+ HjlZk9VVTrs2mzrJhTB4y+5Fil2Vii2ktiian5IVZ3Ly4WBj/aD1q6uQw33/hEjYJ2Jo
+ nNFDDX1YUgARJ13NyF4WP8XmpM0m2Ej2z5FFXJ8lMYgAfxTlwlyYV4jqVBzegin55jG7
+ cELg7jTCUceW2IyA13sJoPzElpxsaH8ijPfXdrPqQRYjFI9GRdW791gCEaUrepoYry5l
+ ZfRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729544; x=1691321544;
+ d=1e100.net; s=20221208; t=1688729547; x=1691321547;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=z3EdM87I8jrg+Sm3nBqPNIxyF85v1gyhGlSobHhRHFw=;
- b=Og5t4vmQFecQxoFSZ5uRvyDRmB3KYNhNTMA82x0sRICmj1ixkQ3rR9jrLS2rncYyfR
- Gc2eSjwG9IhlEzMPsJhH/Ihrc2LQ9ZaXCO0rMLJflAcdwcqMjxX6mjUclaPvPsKk+5/d
- N7FeGd7A4ZLNuqfYHHo0v7iedGzruxDGFtvwfdKF8xoAxTV13wcXq+jmPSvP7VkZVCIL
- r5ncSgSLbG0/etT3UNxd8tO/Lld1nbvQw3AygpT+rjYXFOpzaE1LctD1z4oqyeGjMCCC
- v8I8EghMwdU6NaeNu6VvSf6GP+zu+gPrO16qscz6Z6yG7Bv9k1YUNanrmadtrCNu4n8T
- 1EDw==
-X-Gm-Message-State: ABy/qLbjzZqYESdv5qP3KCZxZ51F8SM4Q3dbIwCimZApSjydw+VQKlfn
- YYWcBmo6S8HB2KazTrHqWrkUkWAbSzw=
-X-Google-Smtp-Source: APBJJlHacJMJbaXDP1sYyzNwGvxgeK8bkYljtVS7hnglCvUABzLez9oAfP57Ej+s2HSQRcU+pX4O5Q==
-X-Received: by 2002:a05:6830:20cc:b0:6b8:b2d9:1a9d with SMTP id
- z12-20020a05683020cc00b006b8b2d91a9dmr2818251otq.2.1688729544561; 
- Fri, 07 Jul 2023 04:32:24 -0700 (PDT)
+ bh=+6ODJ7ibGt/kKlxPnmobX7LyZmwNxrb4XqcToA7Ww9U=;
+ b=j3pRvssve+0UH+ZFBFTBRAReL2KeQSiZYX2P14+LhupOi7AcPpMeU8rTJjQw7IEeRK
+ 5RR/4NRqXgo+ydrWFvkt5fKS2IQmLAmxiEbDXiv3gqP8YgRowxMzo/XI4DA0SSzXIXdB
+ /qwsOW/q2RJskhPW8VsYmBz+Eo6kzVLChZUKcX1Xnizxzi1dR+8ADrKw26ugJ6QkgER4
+ LByvrqhM7epw9hHcTarmKb8kAn7MEXIrjJZhjZqp0QJhhqTXbgNlSnMUmx7TVb05I8l7
+ sMTq9o5xgTLOQIze7aM3M9y0k1DMf8p0zS1YTFCGO9iyqhgljiizaXVY6hWQkKlf//E5
+ gcgg==
+X-Gm-Message-State: ABy/qLZmv/TBtTdUet0TkH1WBlY7t/t7j2+9d199zwBvdB/rBie056Eo
+ KzbcRFxaqh6KaSra8fH8aZNzyP6UfQw=
+X-Google-Smtp-Source: APBJJlG6WJvtaqzrnsrN/LzDbsn7DsiUeMxRS6wFUk6TJ7J23qhS0/qMyQbSrDG8Jq3bkBRLFIjrtg==
+X-Received: by 2002:a9d:744b:0:b0:6b8:8269:aa3e with SMTP id
+ p11-20020a9d744b000000b006b88269aa3emr5047848otk.14.1688729547139; 
+ Fri, 07 Jul 2023 04:32:27 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.22
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:32:24 -0700 (PDT)
+ Fri, 07 Jul 2023 04:32:26 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  richard.henderson@linaro.org, Joel Stanley <joel@jms.id.au>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Frederic Barrat <fbarrat@linux.ibm.com>
-Subject: [PULL 24/60] ppc/pnv: Add P10 quad xscom model
-Date: Fri,  7 Jul 2023 08:30:32 -0300
-Message-ID: <20230707113108.7145-25-danielhb413@gmail.com>
+Subject: [PULL 25/60] ppc/pnv: Add P10 core xscom model
+Date: Fri,  7 Jul 2023 08:30:33 -0300
+Message-ID: <20230707113108.7145-26-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,86 +96,60 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Joel Stanley <joel@jms.id.au>
 
-Add a PnvQuad class for the P10 powernv machine. No xscoms are
-implemented yet, but this allows them to be added.
-
-The size is reduced to avoid the quad region from overlapping with the
-core region.
-
-  address-space: xscom-0
-    0000000000000000-00000003ffffffff (prio 0, i/o): xscom-0
-      0000000100000000-00000001000fffff (prio 0, i/o): xscom-quad.0
-      0000000100108000-0000000100907fff (prio 0, i/o): xscom-core.3
-      0000000100110000-000000010090ffff (prio 0, i/o): xscom-core.2
-      0000000100120000-000000010091ffff (prio 0, i/o): xscom-core.1
-      0000000100140000-000000010093ffff (prio 0, i/o): xscom-core.0
+Like the quad xscoms, add a core model for P10 to allow future
+differentiation from P9.
 
 Signed-off-by: Joel Stanley <joel@jms.id.au>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Message-ID: <20230704054204.168547-4-joel@jms.id.au>
+Message-ID: <20230704054204.168547-5-joel@jms.id.au>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- hw/ppc/pnv.c               |  2 +-
- hw/ppc/pnv_core.c          | 54 ++++++++++++++++++++++++++++++++++++++
- include/hw/ppc/pnv_xscom.h |  2 +-
- 3 files changed, 56 insertions(+), 2 deletions(-)
+ hw/ppc/pnv_core.c | 44 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 42 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index c77fdb6747..5f25fe985a 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -1669,7 +1669,7 @@ static void pnv_chip_power10_quad_realize(Pnv10Chip *chip10, Error **errp)
-         PnvQuad *eq = &chip10->quads[i];
- 
-         pnv_chip_quad_realize_one(chip, eq, chip->cores[i * 4],
--                                  PNV_QUAD_TYPE_NAME("power9"));
-+                                  PNV_QUAD_TYPE_NAME("power10"));
- 
-         pnv_xscom_add_subregion(chip, PNV10_XSCOM_EQ_BASE(eq->quad_id),
-                                 &eq->xscom_regs);
 diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index 73d25409c9..e4df435b15 100644
+index e4df435b15..1eec28c88c 100644
 --- a/hw/ppc/pnv_core.c
 +++ b/hw/ppc/pnv_core.c
-@@ -404,6 +404,47 @@ static const MemoryRegionOps pnv_quad_power9_xscom_ops = {
+@@ -167,6 +167,47 @@ static const MemoryRegionOps pnv_core_power9_xscom_ops = {
      .endianness = DEVICE_BIG_ENDIAN,
  };
  
 +/*
-+ * POWER10 Quads
++ * POWER10 core controls
 + */
 +
-+static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
-+                                            unsigned int width)
++static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
++                                           unsigned int width)
 +{
 +    uint32_t offset = addr >> 3;
-+    uint64_t val = -1;
++    uint64_t val = 0;
 +
 +    switch (offset) {
 +    default:
-+        qemu_log_mask(LOG_UNIMP, "%s: reading @0x%08x\n", __func__,
-+                      offset);
++        qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
++                  addr);
 +    }
 +
 +    return val;
 +}
 +
-+static void pnv_quad_power10_xscom_write(void *opaque, hwaddr addr,
++static void pnv_core_power10_xscom_write(void *opaque, hwaddr addr,
 +                                         uint64_t val, unsigned int width)
 +{
 +    uint32_t offset = addr >> 3;
 +
 +    switch (offset) {
 +    default:
-+        qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
-+                      offset);
++        qemu_log_mask(LOG_UNIMP, "Warning: writing to reg=0x%" HWADDR_PRIx "\n",
++                      addr);
 +    }
 +}
 +
-+static const MemoryRegionOps pnv_quad_power10_xscom_ops = {
-+    .read = pnv_quad_power10_xscom_read,
-+    .write = pnv_quad_power10_xscom_write,
++static const MemoryRegionOps pnv_core_power10_xscom_ops = {
++    .read = pnv_core_power10_xscom_read,
++    .write = pnv_core_power10_xscom_write,
 +    .valid.min_access_size = 8,
 +    .valid.max_access_size = 8,
 +    .impl.min_access_size = 8,
@@ -183,49 +157,19 @@ index 73d25409c9..e4df435b15 100644
 +    .endianness = DEVICE_BIG_ENDIAN,
 +};
 +
- static void pnv_quad_realize(DeviceState *dev, Error **errp)
+ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp)
  {
-     PnvQuad *eq = PNV_QUAD(dev);
-@@ -430,6 +471,14 @@ static void pnv_quad_power9_class_init(ObjectClass *oc, void *data)
-     pqc->xscom_size = PNV9_XSCOM_EQ_SIZE;
+     CPUPPCState *env = &cpu->env;
+@@ -315,8 +356,7 @@ static void pnv_core_power10_class_init(ObjectClass *oc, void *data)
+ {
+     PnvCoreClass *pcc = PNV_CORE_CLASS(oc);
+ 
+-    /* TODO: Use the P9 XSCOMs for now on P10 */
+-    pcc->xscom_ops = &pnv_core_power9_xscom_ops;
++    pcc->xscom_ops = &pnv_core_power10_xscom_ops;
  }
  
-+static void pnv_quad_power10_class_init(ObjectClass *oc, void *data)
-+{
-+    PnvQuadClass *pqc = PNV_QUAD_CLASS(oc);
-+
-+    pqc->xscom_ops = &pnv_quad_power10_xscom_ops;
-+    pqc->xscom_size = PNV10_XSCOM_EQ_SIZE;
-+}
-+
- static void pnv_quad_class_init(ObjectClass *oc, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
-@@ -453,6 +502,11 @@ static const TypeInfo pnv_quad_infos[] = {
-         .name = PNV_QUAD_TYPE_NAME("power9"),
-         .class_init = pnv_quad_power9_class_init,
-     },
-+    {
-+        .parent = TYPE_PNV_QUAD,
-+        .name = PNV_QUAD_TYPE_NAME("power10"),
-+        .class_init = pnv_quad_power10_class_init,
-+    },
- };
- 
- DEFINE_TYPES(pnv_quad_infos);
-diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
-index cbe848d27b..f7da9a1dc6 100644
---- a/include/hw/ppc/pnv_xscom.h
-+++ b/include/hw/ppc/pnv_xscom.h
-@@ -129,7 +129,7 @@ struct PnvXScomInterfaceClass {
- 
- #define PNV10_XSCOM_EQ_BASE(core)     \
-     ((uint64_t) PNV10_XSCOM_EQ(PNV10_XSCOM_EQ_CHIPLET(core)))
--#define PNV10_XSCOM_EQ_SIZE        0x100000
-+#define PNV10_XSCOM_EQ_SIZE        0x20000
- 
- #define PNV10_XSCOM_EC_BASE(core) \
-     ((uint64_t) PNV10_XSCOM_EQ_BASE(core) | PNV10_XSCOM_EC(core & 0x3))
+ static void pnv_core_class_init(ObjectClass *oc, void *data)
 -- 
 2.41.0
 
