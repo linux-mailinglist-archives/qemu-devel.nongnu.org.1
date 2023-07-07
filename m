@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DA474B040
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A26474B03E
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:48:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjhm-0003Et-RQ; Fri, 07 Jul 2023 07:32:54 -0400
+	id 1qHjhr-0003OA-67; Fri, 07 Jul 2023 07:33:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjhh-00032x-01; Fri, 07 Jul 2023 07:32:50 -0400
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ id 1qHjhl-0003D2-4l; Fri, 07 Jul 2023 07:32:53 -0400
+Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjhf-0006nP-Dx; Fri, 07 Jul 2023 07:32:48 -0400
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6b8a6ca994eso1611608a34.1; 
- Fri, 07 Jul 2023 04:32:45 -0700 (PDT)
+ id 1qHjhh-0006ng-TT; Fri, 07 Jul 2023 07:32:52 -0400
+Received: by mail-ot1-x333.google.com with SMTP id
+ 46e09a7af769-6b75637076eso1627613a34.2; 
+ Fri, 07 Jul 2023 04:32:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729565; x=1691321565;
+ d=gmail.com; s=20221208; t=1688729568; x=1691321568;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mbNq/01MgOjIPRTLf1s/y3co3sqpAmHZNoVphu0ZvvY=;
- b=U4XTCjKa/FrrA8OS2exKRq7UVxkS062OHXmdwYNOWRsUGuyzdvgAUPfKxtZrPYdKe7
- zs2unnmRs2EY5mycehl4kdBjXaWssMte59Js840Ql/mLYUUewB0a4N/bJPFatpCfXF8d
- 7OVquMsLmp/y90W9HTqyJvsTXYhiP3taqhJ/iQFDGDCbTkO0qXHdtYQKXD1IKs6hWJDG
- Lf+u9M3GZUB5sRqk6AWQ2w5Dt3De1lq+XNhKLcrok8HtZ5dL0eY/8hC168wY3NA5Y9oX
- FFLx2pR1+Ep7vusTWeYqRkFxLXS1dTJs5wfrvxS+PGVfjbYQ9yQix6jAVycGLeptc5qP
- HHdA==
+ bh=LBqNDvSs5Wa5TnsOiDj0bWKOiiB8IyybwzexMIV6a1s=;
+ b=hN/Xz0pxd3i2PpIjXRdLwfvtDpezuRnk+Pk1LFVZQsjU7CZ9ZDC9nmmZT/Ia2yViGo
+ AbmavQ+PJCAHZKgpiCcf2CHupsmuDqzQulZ4sYpGqF7ZeBKRH1o+XPqPI82ZoduCuY3m
+ 2G+lk/NNx12UPhfu+SeqjGNmpwBr3ezVkp8ISdH+AqdxjTkaY19LjjXG84TdgFrj4TTx
+ 9JMtK+7kDa51+CqtnFcWh+6DB2CqOQraHY6+scg1gR8cCPx3pWiFu+JdwgJnc1UA7sc6
+ 3pKkOjsUm1ClqCXEOC9UPD2v9On5PZc5wZ3fopnxKz0brfM5e2mPYjHOTIZD2fe/Rw0P
+ QAqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729565; x=1691321565;
+ d=1e100.net; s=20221208; t=1688729568; x=1691321568;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mbNq/01MgOjIPRTLf1s/y3co3sqpAmHZNoVphu0ZvvY=;
- b=c8JzJg8SIkBM6c3FuKHQmjcELzDPaVyZLVYZ8y3+Eu59tzOVW04fIM6GjMIEahNvhR
- WDPsMDkQYevZe9ioqX3GAtBbLTcWcvNhyYk+06T511T6MloRtHw7F6NA8aPyhbjTi0sB
- G+8o0RB0jYTIihWP7xXoodvYiiXx0n/EXRM6VGuF6BhfjGcSZiUk46DdAL9wIoHYS2Mq
- z49UeVgGzJEjsx36rZQFIFH3pCVqxDo+xwgWsTAyBea/eVFAZsmJasNegzlC9MyumnOy
- GpsjXmw6VwLCIXGlRaNEbtKTJYCEd0kgTuOU0a+MFfLKKgQql8NyPf4NBbNAolvbavJD
- Fong==
-X-Gm-Message-State: ABy/qLZmaTe/wHn9ys421seEg/mzAuc+qkMYE6ZlLZICKDGEb4cAz6xe
- /C3P3cgXnFdhI8dbWGl24L+znRlgA5A=
-X-Google-Smtp-Source: APBJJlHeuB0h7IR4thIlsj2zUAVfYZDYpyA/EZgra2mTyjJDUCCL5efYSajzK+H98lkV/dn0mrkeuQ==
-X-Received: by 2002:a05:6830:10c:b0:6b2:ab63:6ed with SMTP id
- i12-20020a056830010c00b006b2ab6306edmr4847997otp.35.1688729565213; 
- Fri, 07 Jul 2023 04:32:45 -0700 (PDT)
+ bh=LBqNDvSs5Wa5TnsOiDj0bWKOiiB8IyybwzexMIV6a1s=;
+ b=i/eZuk2D+qgZrQXspg4e6kYuZiSkFt5SQ4CLVseZeOq1vIKYyt5NgwPbH/fKmgJjkF
+ FeEgtfCjAlQai5yqwqqod+hvhnqeoDlJUXgeSN01L3xakxhpvp9hxo/jkETxM8V/Gt19
+ x28UKKwdzfLzEOsbf7ci6Hl6HjTxjtmEpiWvWwujDvFySo6HiX+0vFkze5yQEkHiy3eJ
+ zhNRb3CE+L2t9TIeqlq32KdJO0nzHw2CeO2XMsXJtriuYOb7XCX4F/8t/PezctTRyvpU
+ OUPVEpziSf0OowbRobI/s+uodv/VvC+5p0xnLE7eJeYwIFa52U/m6q43eW+ABPGZ5EcC
+ U54A==
+X-Gm-Message-State: ABy/qLaF3IBgfAEhqiQDvRscM9W0SyqGyP0JcSWCUay2T9a2fcdTIfl+
+ 4ADeTLbpJoFU/zWwIN6A5Rm5UElrrkI=
+X-Google-Smtp-Source: APBJJlGc28a271HqCWw/ZgKnx6ouWqaDY1PEgdQytJXsNQP7P7SV/qAmsz11lOK9zcGqNDb0yxlhLw==
+X-Received: by 2002:a9d:6210:0:b0:6b8:8174:80e4 with SMTP id
+ g16-20020a9d6210000000b006b8817480e4mr5003522otj.21.1688729567830; 
+ Fri, 07 Jul 2023 04:32:47 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.42
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:32:45 -0700 (PDT)
+ Fri, 07 Jul 2023 04:32:47 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 32/60] target/ppc: SMT support for the HID SPR
-Date: Fri,  7 Jul 2023 08:30:40 -0300
-Message-ID: <20230707113108.7145-33-danielhb413@gmail.com>
+Subject: [PULL 33/60] ppc/pnv: SMT support for powernv
+Date: Fri,  7 Jul 2023 08:30:41 -0300
+Message-ID: <20230707113108.7145-34-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x333.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,118 +95,106 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-HID is a per-core shared register, skiboot sets this (e.g., setting
-HILE) on one thread and that must affect all threads of the core.
+Set the TIR default value with the SMT thread index, and place some
+standard limits on SMT configurations. Now powernv is able to boot
+skiboot and Linux with a SMT topology, including booting a KVM guest.
+
+There are several SPRs and other features (e.g., broadcast msgsnd)
+that are not implemented, but not used by OPAL or Linux and can be
+added incrementally.
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Tested-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20230705120631.27670-3-npiggin@gmail.com>
+Message-ID: <20230705120631.27670-4-npiggin@gmail.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- target/ppc/cpu_init.c    |  2 +-
- target/ppc/helper.h      |  1 +
- target/ppc/misc_helper.c | 21 +++++++++++++++++++++
- target/ppc/spr_common.h  |  1 +
- target/ppc/translate.c   | 16 ++++++++++++++++
- 5 files changed, 40 insertions(+), 1 deletion(-)
+ docs/system/ppc/powernv.rst |  5 -----
+ hw/ppc/pnv.c                | 12 ++++++++++++
+ hw/ppc/pnv_core.c           | 13 +++++--------
+ 3 files changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 905a59aea9..720aad9e05 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -5638,7 +5638,7 @@ static void register_power_common_book4_sprs(CPUPPCState *env)
-     spr_register_hv(env, SPR_HID0, "HID0",
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_write_generic,
-+                 &spr_read_generic, &spr_core_write_generic,
-                  0x00000000);
-     spr_register_hv(env, SPR_TSCR, "TSCR",
-                  SPR_NOACCESS, SPR_NOACCESS,
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 828f7844c8..abec6fe341 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -704,6 +704,7 @@ DEF_HELPER_3(store_dcr, void, env, tl, tl)
+diff --git a/docs/system/ppc/powernv.rst b/docs/system/ppc/powernv.rst
+index c8f9762342..09f3965858 100644
+--- a/docs/system/ppc/powernv.rst
++++ b/docs/system/ppc/powernv.rst
+@@ -195,11 +195,6 @@ Use a MTD drive to add a PNOR to the machine, and get a NVRAM :
  
- DEF_HELPER_2(load_dump_spr, void, env, i32)
- DEF_HELPER_2(store_dump_spr, void, env, i32)
-+DEF_HELPER_3(spr_core_write_generic, void, env, i32, tl)
- DEF_HELPER_3(spr_write_CTRL, void, env, i32, tl)
+   -drive file=./witherspoon.pnor,format=raw,if=mtd
  
- DEF_HELPER_4(fscr_facility_check, void, env, i32, i32, i32)
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index 26e546cc9c..692d058665 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -43,6 +43,27 @@ void helper_store_dump_spr(CPUPPCState *env, uint32_t sprn)
-              env->spr[sprn]);
- }
+-CAVEATS
+--------
+-
+- * No support for multiple HW threads (SMT=1). Same as pseries.
+-
+ Maintainer contact information
+ ------------------------------
  
-+void helper_spr_core_write_generic(CPUPPCState *env, uint32_t sprn,
-+                                   target_ulong val)
-+{
-+    CPUState *cs = env_cpu(env);
-+    CPUState *ccs;
-+    uint32_t nr_threads = cs->nr_threads;
-+    uint32_t core_id = env->spr[SPR_PIR] & ~(nr_threads - 1);
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 5f25fe985a..23740f9d07 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -887,6 +887,18 @@ static void pnv_init(MachineState *machine)
+ 
+     pnv->num_chips =
+         machine->smp.max_cpus / (machine->smp.cores * machine->smp.threads);
 +
-+    assert(core_id == env->spr[SPR_PIR] - env->spr[SPR_TIR]);
-+
-+    if (nr_threads == 1) {
-+        env->spr[sprn] = val;
-+        return;
++    if (machine->smp.threads > 8) {
++        error_report("Cannot support more than 8 threads/core "
++                     "on a powernv machine");
++        exit(1);
 +    }
-+
-+    THREAD_SIBLING_FOREACH(cs, ccs) {
-+        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
-+        cenv->spr[sprn] = val;
++    if (!is_power_of_2(machine->smp.threads)) {
++        error_report("Cannot support %d threads/core on a powernv"
++                     "machine because it must be a power of 2",
++                     machine->smp.threads);
++        exit(1);
 +    }
-+}
-+
- void helper_spr_write_CTRL(CPUPPCState *env, uint32_t sprn,
-                            target_ulong val)
+     /*
+      * TODO: should we decide on how many chips we can create based
+      * on #cores and Venice vs. Murano vs. Naples chip type etc...,
+diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+index b7223bb445..8a72171ce0 100644
+--- a/hw/ppc/pnv_core.c
++++ b/hw/ppc/pnv_core.c
+@@ -218,12 +218,13 @@ static const MemoryRegionOps pnv_core_power10_xscom_ops = {
+     .endianness = DEVICE_BIG_ENDIAN,
+ };
+ 
+-static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp)
++static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
++                                 int thread_index)
  {
-diff --git a/target/ppc/spr_common.h b/target/ppc/spr_common.h
-index fbf52123b5..5995070eaf 100644
---- a/target/ppc/spr_common.h
-+++ b/target/ppc/spr_common.h
-@@ -82,6 +82,7 @@ void spr_noaccess(DisasContext *ctx, int gprn, int sprn);
- void spr_read_generic(DisasContext *ctx, int gprn, int sprn);
- void spr_write_generic(DisasContext *ctx, int sprn, int gprn);
- void spr_write_generic32(DisasContext *ctx, int sprn, int gprn);
-+void spr_core_write_generic(DisasContext *ctx, int sprn, int gprn);
- void spr_write_MMCR0(DisasContext *ctx, int sprn, int gprn);
- void spr_write_MMCR1(DisasContext *ctx, int sprn, int gprn);
- void spr_write_PMC(DisasContext *ctx, int sprn, int gprn);
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 4556297ab5..e6a0709066 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -438,6 +438,22 @@ void spr_write_generic32(DisasContext *ctx, int sprn, int gprn)
- #endif
- }
+     CPUPPCState *env = &cpu->env;
+     int core_pir;
+-    int thread_index = 0; /* TODO: TCG supports only one thread */
+     ppc_spr_t *pir = &env->spr_cb[SPR_PIR];
++    ppc_spr_t *tir = &env->spr_cb[SPR_TIR];
+     Error *local_err = NULL;
+     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(pc->chip);
  
-+void spr_core_write_generic(DisasContext *ctx, int sprn, int gprn)
-+{
-+    if (!(ctx->flags & POWERPC_FLAG_SMT)) {
-+        spr_write_generic(ctx, sprn, gprn);
-+        return;
-+    }
-+
-+    if (!gen_serialize(ctx)) {
-+        return;
-+    }
-+
-+    gen_helper_spr_core_write_generic(cpu_env, tcg_constant_i32(sprn),
-+                                      cpu_gpr[gprn]);
-+    spr_store_dump_spr(sprn);
-+}
-+
- static void spr_write_CTRL_ST(DisasContext *ctx, int sprn, int gprn)
- {
-     /* This does not implement >1 thread */
+@@ -239,11 +240,7 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp)
+ 
+     core_pir = object_property_get_uint(OBJECT(pc), "pir", &error_abort);
+ 
+-    /*
+-     * The PIR of a thread is the core PIR + the thread index. We will
+-     * need to find a way to get the thread index when TCG supports
+-     * more than 1. We could use the object name ?
+-     */
++    tir->default_value = thread_index;
+     pir->default_value = core_pir + thread_index;
+ 
+     /* Set time-base frequency to 512 MHz */
+@@ -292,7 +289,7 @@ static void pnv_core_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     for (j = 0; j < cc->nr_threads; j++) {
+-        pnv_core_cpu_realize(pc, pc->threads[j], &local_err);
++        pnv_core_cpu_realize(pc, pc->threads[j], &local_err, j);
+         if (local_err) {
+             goto err;
+         }
 -- 
 2.41.0
 
