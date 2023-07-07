@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0B174B7A0
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 22:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB78F74B7AF
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 22:14:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHrj1-0008Df-50; Fri, 07 Jul 2023 16:06:43 -0400
+	id 1qHrp3-0002H9-SV; Fri, 07 Jul 2023 16:12:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHriw-0008DT-7s
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:06:38 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1qHrp1-0002FT-Q1
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:12:55 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHrir-00079N-Hz
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:06:36 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3fbc63c2e84so25405005e9.3
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 13:06:32 -0700 (PDT)
+ id 1qHrou-0005ze-Vj
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:12:55 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-313e09a5b19so3083541f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 13:12:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688760391; x=1691352391;
+ d=linaro.org; s=google; t=1688760765; x=1691352765;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=WZUfSRzxF/vjBjo/51juxiCNYS2KSmG1SOOw+K+nlCk=;
- b=hJEooYa9WwK3ZbDFq7JwkFxA+vhU8zucHClW+lYs7zfwcJBkMSQECx/E4HnhG+rVGj
- ahVRzg9whd7+D0Ungr9b0j7+hf1gDlYOSUOode1FlwB7WvmykfyuwNB8nwlD6eOXNF0V
- StxX+/lbEnBU99gtsNl7+zLagW7N0ZLA1ZtMZV3x5UCFi6JJFDm4fr5JqdcITdIZEoi2
- HBjyij4yiVRk2Op3T/Q4ZGb5XvBAsTkD34/TMgGblmYY/gwU5BjNJG80zIx0A1xANmKm
- 0X3t1t8OpQS95lNfHiJZnhUlrkOIElGFLrlQLKtnmJvuavFdLngTfKMx+HZ7DW5XeO9S
- IA1A==
+ bh=hNKCZf49pb//jdl6pnd+4L6O+4LLaJjDsI33iJbiLZk=;
+ b=Ld00U7J8Clc6X38cBf+Pga5Yw1wCDAJhIbMwGMdeczCts5q0mTsOGAYdubBQWT0rFL
+ ksvULCqlC6s9ME2Bw8qLfyNH9zN/Sav5JdJj5wRdaRw7Ns16QVyhU9SzdOt2H8cdu4JM
+ 4q/e9Bx3ik1XclAzmXZaN7ojjOqPmKK4h02/xMThwvh6CEchhfZH4R4qnt4ntp+mOFmc
+ DefykUyUrfLkm3d5buKZMH3/3ytyN06Yk0iogpnBMjQOJ1MdEEqHAUYqpWcSWJpCKGCk
+ QIT06j3vSLBIflDsWk7d/GLsTtWxHMiM6Whd/d3w+n46DLM9xMosqNEqwukDc25QzFai
+ +COA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688760391; x=1691352391;
+ d=1e100.net; s=20221208; t=1688760765; x=1691352765;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WZUfSRzxF/vjBjo/51juxiCNYS2KSmG1SOOw+K+nlCk=;
- b=Hf7K33w0zIwMVhirZqVToM+CioZ08FoOmIyI2vVj/Wg+QYuIvL87A9xALPY00xXIQw
- nV0gliYmJYBGcyntRdVrJiyBl5H9Mc956xq6dG5b7q/5DtJtZNzb+qg6cDze6LNT/02K
- jD5zRiHvw0A7tRkLaS8mqfhrn1jiixnbq0AddD/uePf0k+UihZkto3O+oP4l6RLLKtKf
- tUJGH3Uk438uZ8FwwHp/F2woI4U+oldJy7ubGvdK4guTuGGpB3C8oph4oOuoHCEt0wxw
- zfsYu74VBOz3jz205HsYEjUlECDo6j3a5K2TsqjHu/0hvetGutRSlGFDSbWPm281jWNs
- qo/Q==
-X-Gm-Message-State: ABy/qLb78wUMQPuvc9dYVmRdOUnf6XljEZ0RnMv6GgwKqsBlz2B97/WO
- GY9sKLsyshfDX0D6MpBbuEZlVg==
-X-Google-Smtp-Source: APBJJlFml2RCUidL7PpbZZTZfXXyRfgUQYQsRAkKybwnq4mC1TMnma9OauyJH+ZTERG5WNuHYgTu7g==
-X-Received: by 2002:a05:600c:22cf:b0:3fa:96ad:5d2e with SMTP id
- 15-20020a05600c22cf00b003fa96ad5d2emr5177867wmg.19.1688760390710; 
- Fri, 07 Jul 2023 13:06:30 -0700 (PDT)
+ bh=hNKCZf49pb//jdl6pnd+4L6O+4LLaJjDsI33iJbiLZk=;
+ b=LQAAJ6ed3A3Z2x4oHbUfj2Nv0FNhTB8gRBBIhF2yhDdKo4TvhlOgulQkqiTfrsGrFO
+ h8k+WWx9jQb7MfsFyrydKqIh6tVOPVgwY73TewB9v22zGX8yK6JKw5EkoJnGQ1oy1bAp
+ 2AqokZwUhvCYAAvIkFiAhBXTQNgs4qC6U8OPRu3u/E6PcKf0ha65SB/uuCNqUQgI7KdK
+ vJLhQF6zgMBkJxVhGv18ji7VuqSc7mpXet43h1mI595JEIgx7+X+wZPsYpFWUEn4LmKv
+ 64obZEvAYQq1SOMiJKkL3YsT3lrLyY/kPDSmFBShW+ciaakb+/PVFK5E8SAbcPEuZT/P
+ f3Pw==
+X-Gm-Message-State: ABy/qLZ6q6RM0YbIbAOGBCy9KnakfNU1blBF+o8F+VhulNkUHg5adoh4
+ URqUJ40Qc030MbggJG1VfjHPaw==
+X-Google-Smtp-Source: APBJJlE37WE8GI1xNs4RlkNC/kxnOYwP/TZ1NwkJUpWlT7N1TxryU16nLhAtMVjxXCfdM86dvTet4g==
+X-Received: by 2002:adf:dfd1:0:b0:307:7959:6461 with SMTP id
+ q17-20020adfdfd1000000b0030779596461mr6100571wrn.31.1688760764648; 
+ Fri, 07 Jul 2023 13:12:44 -0700 (PDT)
 Received: from [192.168.1.5] (host-92-23-208-66.as13285.net. [92.23.208.66])
  by smtp.gmail.com with ESMTPSA id
- l20-20020a7bc354000000b003fbb8c7c799sm3309262wmj.30.2023.07.07.13.06.30
+ d4-20020adffd84000000b00311d8c2561bsm5239357wrr.60.2023.07.07.13.12.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 13:06:30 -0700 (PDT)
-Message-ID: <9f3ffcdb-b685-6d73-51f3-efa5000c462b@linaro.org>
-Date: Fri, 7 Jul 2023 21:06:29 +0100
+ Fri, 07 Jul 2023 13:12:44 -0700 (PDT)
+Message-ID: <17272422-74ca-7c31-403c-dc13f2f2b1e0@linaro.org>
+Date: Fri, 7 Jul 2023 21:12:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 3/4] linux-user: Fix mmap2() syscall on 32-bit targets to
- allow file mapping beyond 4GB
+Subject: Re: [PATCH 1/4] linux-user: Fix fcntl64() to return O_LARGEFILE for
+ 32-bit targets
 Content-Language: en-US
 To: Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
  qemu-devel@nongnu.org
 References: <20230707131928.89500-1-deller@gmx.de>
- <20230707131928.89500-4-deller@gmx.de>
- <1147c41d-3bcc-eadf-f625-819caa349e97@linaro.org>
- <74be0ddd-b0f3-8fd3-8953-1595571db96f@gmx.de>
+ <20230707131928.89500-2-deller@gmx.de>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <74be0ddd-b0f3-8fd3-8953-1595571db96f@gmx.de>
+In-Reply-To: <20230707131928.89500-2-deller@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x332.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,48 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/7/23 21:04, Helge Deller wrote:
-> On 7/7/23 21:47, Richard Henderson wrote:
->> On 7/7/23 14:19, Helge Deller wrote:
->>> The mmap2() syscall allows 32-bit guests to specify the offset into a
->>> file in page units (instead of bytes, as done by mmap(2)).
->>> On physical machines this allows 32-bit applications to map such parts
->>> of large files which are stored beyond the 4GB limit.
->>>
->>> Allow the same behaviour when emulating 32-bit guests with qemu.
->>>
->>> For that switch the mmap2() function to always take an abi_ullong
->>> (64-bit) offset parameter for target_mmap() and mmap_frag() to avoid an
->>> arithmetical overflow when shifing a 32-bit offset parameter by
->>> 12 bits (=PAGE_SHIFT) and thus possibly overflow the abi_ulong (32-bit)
->>> type.
->>>
->>> Signed-off-by: Helge Deller<deller@gmx.de>
->>> ---
->>>   linux-user/mmap.c      | 9 +++++----
->>>   linux-user/syscall.c   | 2 +-
->>>   linux-user/user-mmap.h | 2 +-
->>>   3 files changed, 7 insertions(+), 6 deletions(-)
->>
->> https://patchew.org/QEMU/20230630132159.376995-1-richard.henderson@linaro.org/20230630132159.376995-12-richard.henderson@linaro.org/
->>
->> Wherein I use the host off_t (which must be 64-bits).
+On 7/7/23 14:19, Helge Deller wrote:
+> On a 64-bit host, O_LARGEFILE has the value 0.
+> When running a 32-bit guest on a 64-bit host, fcntl64(F_GETFL) should
+> return with the O_LARGEFILE flag set, because the 64-bit host supports
+> large files unconditionally.
 > 
-> I like your patch.
-> But wouldn't it be better to use off64_t instead of off_t just to make
-> clear that this is a 64bit int?
+> The flag translation should have happened in do_fcntl(), but since O_LARGEFILE
+> is zero for 64-bit hosts, the translation can't be done with the
+> translation table.
 
-No, I don't think so.  That's the point of _FILE_OFFSET_BITS=64.
-
-> And this part:
-> -                          arg5, arg6 << MMAP_SHIFT);
-> +                          arg5, (off_t)(abi_ulong)arg6 << MMAP_SHIFT);
-> maybe should become (with brackets): ?
-> +                          arg5, ((off64_t)(abi_ulong)arg6) << MMAP_SHIFT);
-
-Why would you add useless parenthesis?
-At some point everyone should know C operator precedence...
+But surely add the code to do_fcntl, right after the host_to_target_bitmask, so that it's 
+present for fcntl64 as well?
 
 
 r~
+
+> 
+> Fix it by setting the TARGET_O_LARGEFILE flag unconditionally for
+> 32-bit guests on 64-bit hosts when fcntl64() is called.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> ---
+>   linux-user/syscall.c | 9 +++++++++
+>   1 file changed, 9 insertions(+)
+> 
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 08162cc966..3f1e8e7ad9 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -12328,6 +12328,15 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+>           }
+> 
+>           switch(arg2) {
+> +#if HOST_LONG_BITS == 64 && TARGET_LONG_BITS == 32 && \
+> +    O_LARGEFILE == 0     && TARGET_O_LARGEFILE != 0
+> +        case TARGET_F_GETFL:
+> +            ret = do_fcntl(arg1, arg2, arg3);
+> +            if (ret > 0) {
+> +                ret |= TARGET_O_LARGEFILE;
+> +            }
+> +	    break;
+> +#endif
+>           case TARGET_F_GETLK64:
+>               ret = copyfrom(&fl, arg3);
+>               if (ret) {
+> --
+> 2.41.0
+> 
+
 
