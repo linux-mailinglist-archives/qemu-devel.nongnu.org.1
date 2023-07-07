@@ -2,92 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30EC074ADBE
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 11:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7668374ADD0
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 11:31:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHhgo-0007IE-3B; Fri, 07 Jul 2023 05:23:46 -0400
+	id 1qHhnO-0004UZ-IN; Fri, 07 Jul 2023 05:30:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHhge-0007FF-JD; Fri, 07 Jul 2023 05:23:38 -0400
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qHhnM-0004UM-NN; Fri, 07 Jul 2023 05:30:32 -0400
+Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHhgc-0001Rv-LM; Fri, 07 Jul 2023 05:23:36 -0400
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-6b5f362f4beso1411190a34.2; 
- Fri, 07 Jul 2023 02:23:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qHhnK-0007de-3g; Fri, 07 Jul 2023 05:30:32 -0400
+Received: by mail-qt1-x832.google.com with SMTP id
+ d75a77b69052e-4009ea1597bso13178991cf.1; 
+ Fri, 07 Jul 2023 02:30:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688721813; x=1691313813;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5B5ubqempAczq8nUymwrhLnZrLmFfQ9UrwRfh1ok6tM=;
- b=bKf9ZsVeWk7dS0PmpPNQhFl7ZknrpazESZAcin0Fj3KbPeHQ7eqQGdPRc01GepQ40T
- n/IHphBnUGqrSPf8hs7Q4GnprTLp9RRBiNPvansZ7I6JhA3OTxX0Qnznr5T4UJ/5Ka+p
- dbwoVoy58lxhr8HoWHHIYsEqp2Ix4CIgamog0j7sxakFoPaLn/5Wduj1jXf3Lm/PDKoG
- AKPg/VupBbW5IcP2gJ0EyYiq8JYXWYvWkCnhDKGwkNJ5UXiVlmKL7OXi07sJU1dPW6If
- K5hEamVgeSym4dnEg9RjKFfog3uywCYGocSoT8cJJ6FLtLcmYWTHUuvCWIOd+aPnywmH
- O8Zg==
+ d=gmail.com; s=20221208; t=1688722227; x=1691314227;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=BUfY3MB1xVdojrWWLdh+vtnnRE+UpxTIaHfNaVkrfC4=;
+ b=kvMkCT9nOY4L2rmJ9m6vioZA3d3qNpu5puDFTeYFUSuy9tzwx7+8InHDECd3CsE829
+ hFej0XAunOUsu+iDd04rlL9j+wG8qTQPmmc/VmrcGSYdEG8beCXa5jZ4OzC2usf2X+zo
+ QbijSmhq5J+IhLgOYbFHMmO3FU6419I3ikXGPf+8/HL5p37dp74n+EZj43Nt2X76CSWR
+ fjxlGaB6D4XANQY82OJ3cpjWVPYHiGgKCdAxFWtvbC4D5vADTr2bM5hpluDXZz0qXyZr
+ wWA0f3aIuM7TDmD5p1w+AlzGMkFhzcfgRY2kzjw83MNrPkLCjjJPkL5xt1g/qe4O47em
+ xDSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688721813; x=1691313813;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5B5ubqempAczq8nUymwrhLnZrLmFfQ9UrwRfh1ok6tM=;
- b=VJid4q1oA/F5EOJOMrCd5LaiZyS5bj/T9S4BD0nbOeZF4qJJpFWh0nIwa0rlqiQ9c3
- ANEWE/7nAXaJK1GTRMiaWJ5mOgcZ5jEs2+p07DdyYz5hQWRVL1JLxgLLUOufXJjNyvkC
- vxJ09wwNusA8LOu5e4lbYBsHgnSJ3k81BaHTQKereIFpDsFvPr+K60vT5ktvtjmqev7w
- LQ8qxHsQHJOTFjrjLjxJzs9LDUk4LT5gl6BMUqt+BKZ2jZX6Fu91mRN3HYPpCB6dmsT6
- UQgap3yf3ctybEBrsTD0tqx0+LAKvqZEF+AOHxvZsUCSl/enr3nNccvVPSvGJw6IvoQl
- 432g==
-X-Gm-Message-State: ABy/qLYwkW/Ev/r3vobo1b/i7xMEc0wm19OlnpyQmFbPPp+k6WVk/OWZ
- wplDCN6DbJPrUl56Mr4D3fU=
-X-Google-Smtp-Source: APBJJlGzg51IvS5w0hSrJDqhVMbFCyKjU5aiA/ddeRZqxrSuCDFIpphpQXq0rYMpte3XC/HnAAVctw==
-X-Received: by 2002:a9d:6ac5:0:b0:6b8:7bc4:10af with SMTP id
- m5-20020a9d6ac5000000b006b87bc410afmr4887194otq.3.1688721812989; 
- Fri, 07 Jul 2023 02:23:32 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-19.dial-up.telesp.net.br.
- [201.69.66.19]) by smtp.gmail.com with ESMTPSA id
- k20-20020a0568301bf400b006b757c307afsm1493900otb.23.2023.07.07.02.23.29
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 02:23:32 -0700 (PDT)
-Message-ID: <be94c434-8a94-c848-0fae-0f1ce250868e@gmail.com>
-Date: Fri, 7 Jul 2023 06:23:27 -0300
+ d=1e100.net; s=20221208; t=1688722227; x=1691314227;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BUfY3MB1xVdojrWWLdh+vtnnRE+UpxTIaHfNaVkrfC4=;
+ b=WCKUhq43rRfVNmMmed5d7SiSEVVFg+rOJ4NlQtAgryF8Cy8hT5ZS5VMigzM6bRp2Vn
+ 9Lb1eGRHMaQNWMOV8QB9rBQMKYS2OQY2WD/PxUb+G8f+MMxRJQ710QxQGOwLB2fhI6Yq
+ n9OAoOxhsjKwOltpQxuW88Y+d5Wx19i+732rf8d/n4OM+CtIRcyGpFvUeHOsqL3eY52n
+ bgkbFMFrgN3f9FJfGBPCOYVsxTIQGAzTiLfR9UQiNCTZa3P6Z2qRjpMhsX6f7x5P0ogX
+ E8PVxE8FRjz6Yxcx5fWKLGeiR+U3Qm4d/08X9V7kCMIGCyvjHbiphqapwW6lIgTKVCeK
+ omVA==
+X-Gm-Message-State: ABy/qLZkiaBw5Gs426IgSrs7OoZUsodyV7Ho93mvJB0d+fz6DwPsjA7s
+ uGyN7vHdh9toDUOfFySLz99jNF64hUwQ1Jdm8ro=
+X-Google-Smtp-Source: APBJJlH/zb0DDK/kbL0zD5IRrUKSzAt/GlT3Y9e4KLrtNHn38L6chaad3KmrT3NginE+lXbs/Xn5TrK7H+AWlTKQ/QA=
+X-Received: by 2002:ac8:5c4c:0:b0:400:8eb6:4bf2 with SMTP id
+ j12-20020ac85c4c000000b004008eb64bf2mr5906800qtj.13.1688722227423; Fri, 07
+ Jul 2023 02:30:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/7] target/ppc: Fix CPU reservation migration for
- record-replay
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20230623125707.323517-1-npiggin@gmail.com>
- <20230623125707.323517-2-npiggin@gmail.com>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230623125707.323517-2-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x331.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230705181718.387522-1-berrange@redhat.com>
+In-Reply-To: <20230705181718.387522-1-berrange@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Fri, 7 Jul 2023 13:30:16 +0400
+Message-ID: <CAJ+F1CJt1PPSVwMAstLRog5PtPvAvA4xuccZgenTDc5SBLTGQQ@mail.gmail.com>
+Subject: Re: [PATCH] io: remove io watch if TLS channel is closed during
+ handshake
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org, 
+ Mauro Matteo Cascella <mcascell@redhat.com>, jiangyegen <jiangyegen@huawei.com>
+Content-Type: multipart/alternative; boundary="0000000000007d71ea05ffe248ef"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x832.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,145 +84,225 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TmljaywNCg0KT24gNi8yMy8yMyAwOTo1NywgTmljaG9sYXMgUGlnZ2luIHdyb3RlOg0KPiBw
-cGMgb25seSBtaWdyYXRlcyByZXNlcnZlX2FkZHIsIHNvIHRoZSBkZXN0aW5hdGlvbiBtYWNo
-aW5lIGNhbiBnZXQgYQ0KPiB2YWxpZCByZXNlcnZhdGlvbiB3aXRoIGFuIGluY29ycmVjdCBy
-ZXNlcnZhdGlvbiB2YWx1ZSBvZiAwLiBQcmlvciB0bw0KPiBjb21taXQgMzkyZDMyOGFiZTc1
-MyAoInRhcmdldC9wcGM6IEVuc3VyZSBzdGN4IHNpemUgbWF0Y2hlcyBsYXJ4IiksDQo+IHRo
-aXMgY291bGQgcGVybWl0IGEgc3RjeC4gdG8gaW5jb3JyZWN0bHkgc3VjY2VlZC4gVGhhdCBj
-b21taXQNCj4gaW5hZHZlcnRlbnRseSBmaXhlZCB0aGF0IGJ1ZyBiZWNhdXNlIHRoZSB0YXJn
-ZXQgbWFjaGluZSBzdGFydHMgd2l0aCBhbg0KPiBpbXBvc3NpYmxlIHJlc2VydmF0aW9uIHNp
-emUgb2YgMCwgc28gYW55IHN0Y3guIHdpbGwgZmFpbC4NCj4gDQo+IFRoaXMgYmVoYXZpb3Vy
-IGlzIHBlcm1pdHRlZCBieSB0aGUgSVNBIGJlY2F1c2UgcmVzZXJ2YXRpb24gbG9zcyBtYXkN
-Cj4gaGF2ZSBpbXBsZW1lbnRhdGlvbi1kZXBlbmRlbnQgY2F1c2UuIFdoYXQncyBtb3JlLCB3
-aXRoIEtWTSBtYWNoaW5lcyBpdA0KPiBpcyBpbXBvc3NpYmxlIHNhdmUgb3IgcmVhc29uYWJs
-eSByZXN0b3JlIHJlc2VydmF0aW9uIHN0YXRlLiBIb3dldmVyIGlmDQo+IHRoZSB2bXN0YXRl
-IGlzIGJlaW5nIHVzZWQgZm9yIHJlY29yZC1yZXBsYXksIHRoZSByZXNlcnZhdGlvbiBtdXN0
-IGJlDQo+IHNhdmVkIGFuZCByZXN0b3JlZCBleGFjdGx5IGluIG9yZGVyIGZvciBleGVjdXRp
-b24gZnJvbSBzbmFwc2hvdCB0bw0KPiBtYXRjaCB0aGUgcmVjb3JkLg0KPiANCj4gVGhpcyBw
-YXRjaCBkZXByZWNhdGVzIHRoZSBleGlzdGluZyBpbmNvbXBsZXRlIHJlc2VydmVfYWRkciB2
-bXN0YXRlLA0KPiBhbmQgYWRkcyBhIG5ldyB2bXN0YXRlIHN1YnNlY3Rpb24gd2l0aCBjb21w
-bGV0ZSByZXNlcnZhdGlvbiBzdGF0ZS4NCj4gVGhlIG5ldyB2bXN0YXRlIGlzIG5lZWRlZCBv
-bmx5IHdoZW4gcmVjb3JkLXJlcGxheSBtb2RlIGlzIGFjdGl2ZS4NCj4gDQo+IFNpZ25lZC1v
-ZmYtYnk6IE5pY2hvbGFzIFBpZ2dpbiA8bnBpZ2dpbkBnbWFpbC5jb20+DQo+IC0tLQ0KPiAg
-IHRhcmdldC9wcGMvY3B1LmggICAgICAgfCAgMiArKw0KPiAgIHRhcmdldC9wcGMvbWFjaGlu
-ZS5jICAgfCAyNiArKysrKysrKysrKysrKysrKysrKysrKystLQ0KPiAgIHRhcmdldC9wcGMv
-dHJhbnNsYXRlLmMgfCAgMiArKw0KPiAgIDMgZmlsZXMgY2hhbmdlZCwgMjggaW5zZXJ0aW9u
-cygrKSwgMiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS90YXJnZXQvcHBjL2Nw
-dS5oIGIvdGFyZ2V0L3BwYy9jcHUuaA0KPiBpbmRleCA0MTM4YTI1ODAxLi4wMDg3Y2U2NmUy
-IDEwMDY0NA0KPiAtLS0gYS90YXJnZXQvcHBjL2NwdS5oDQo+ICsrKyBiL3RhcmdldC9wcGMv
-Y3B1LmgNCj4gQEAgLTExMTksNyArMTExOSw5IEBAIHN0cnVjdCBDUFVBcmNoU3RhdGUgew0K
-PiAgICAgICB0YXJnZXRfdWxvbmcgcmVzZXJ2ZV9hZGRyOyAgIC8qIFJlc2VydmF0aW9uIGFk
-ZHJlc3MgKi8NCj4gICAgICAgdGFyZ2V0X3Vsb25nIHJlc2VydmVfbGVuZ3RoOyAvKiBSZXNl
-cnZhdGlvbiBsYXJ4IG9wIHNpemUgKGJ5dGVzKSAqLw0KPiAgICAgICB0YXJnZXRfdWxvbmcg
-cmVzZXJ2ZV92YWw7ICAgIC8qIFJlc2VydmF0aW9uIHZhbHVlICovDQo+ICsjaWYgZGVmaW5l
-ZChUQVJHRVRfUFBDNjQpDQo+ICAgICAgIHRhcmdldF91bG9uZyByZXNlcnZlX3ZhbDI7DQo+
-ICsjZW5kaWYNCg0KXiB0aGlzIGlmZGVmIGJyZWFrcyBnaXRsYWIgb24gYSBoYW5kZnVsIG9m
-IHJ1bm5lcnMgd2l0aCB0aGlzIGVycm9yOg0KDQpodHRwczovL2dpdGxhYi5jb20vZGFuaWVs
-aGIvcWVtdS8tL2pvYnMvNDYxMjAzMDk2NA0KDQpbMTYzNy8yOTg1XSBDb21waWxpbmcgQyBv
-YmplY3QgbGlicWVtdS1wcGMtbGludXgtdXNlci5mYS5wL3RhcmdldF9wcGNfdHJhbnNsYXRl
-LmMubw0KRkFJTEVEOiBsaWJxZW11LXBwYy1saW51eC11c2VyLmZhLnAvdGFyZ2V0X3BwY190
-cmFuc2xhdGUuYy5vDQpjYyAtbTY0IC1tY3gxNiAtSWxpYnFlbXUtcHBjLWxpbnV4LXVzZXIu
-ZmEucCAtSS4gLUkuLiAtSXRhcmdldC9wcGMgLUkuLi90YXJnZXQvcHBjIC1JLi4vY29tbW9u
-LXVzZXIvaG9zdC94ODZfNjQgLUkuLi9saW51eC11c2VyL2luY2x1ZGUvaG9zdC94ODZfNjQg
-LUkuLi9saW51eC11c2VyL2luY2x1ZGUgLUlsaW51eC11c2VyIC1JLi4vbGludXgtdXNlciAt
-SWxpbnV4LXVzZXIvcHBjIC1JLi4vbGludXgtdXNlci9wcGMgLUlxYXBpIC1JdHJhY2UgLUl1
-aS9zaGFkZXIgLUkvdXNyL2luY2x1ZGUvY2Fwc3RvbmUgLUkvdXNyL2luY2x1ZGUvZ2xpYi0y
-LjAgLUkvdXNyL2xpYi94ODZfNjQtbGludXgtZ251L2dsaWItMi4wL2luY2x1ZGUgLWZkaWFn
-bm9zdGljcy1jb2xvcj1hdXRvIC1XYWxsIC1XaW52YWxpZC1wY2ggLVdlcnJvciAtc3RkPWdu
-dTExIC1PMiAtZyAtZnN0YWNrLXByb3RlY3Rvci1zdHJvbmcgLVVfRk9SVElGWV9TT1VSQ0Ug
-LURfRk9SVElGWV9TT1VSQ0U9MiAtV3VuZGVmIC1Xd3JpdGUtc3RyaW5ncyAtV21pc3Npbmct
-cHJvdG90eXBlcyAtV3N0cmljdC1wcm90b3R5cGVzIC1XcmVkdW5kYW50LWRlY2xzIC1Xb2xk
-LXN0eWxlLWRlY2xhcmF0aW9uIC1Xb2xkLXN0eWxlLWRlZmluaXRpb24gLVd0eXBlLWxpbWl0
-cyAtV2Zvcm1hdC1zZWN1cml0eSAtV2Zvcm1hdC15MmsgLVdpbml0LXNlbGYgLVdpZ25vcmVk
-LXF1YWxpZmllcnMgLVdlbXB0eS1ib2R5IC1XbmVzdGVkLWV4dGVybnMgLVdlbmRpZi1sYWJl
-bHMgLVdleHBhbnNpb24tdG8tZGVmaW5lZCAtV2ltcGxpY2l0LWZhbGx0aHJvdWdoPTIgLVdt
-aXNzaW5nLWZvcm1hdC1hdHRyaWJ1dGUgLVduby1taXNzaW5nLWluY2x1ZGUtZGlycyAtV25v
-LXNoaWZ0LW5lZ2F0aXZlLXZhbHVlIC1Xbm8tcHNhYmkgLWlzeXN0ZW0gL2J1aWxkcy9kYW5p
-ZWxoYi9xZW11L2xpbnV4LWhlYWRlcnMgLWlzeXN0ZW0gbGludXgtaGVhZGVycyAtaXF1b3Rl
-IC4gLWlxdW90ZSAvYnVpbGRzL2RhbmllbGhiL3FlbXUgLWlxdW90ZSAvYnVpbGRzL2Rhbmll
-bGhiL3FlbXUvaW5jbHVkZSAtaXF1b3RlIC9idWlsZHMvZGFuaWVsaGIvcWVtdS9ob3N0L2lu
-Y2x1ZGUveDg2XzY0IC1pcXVvdGUgL2J1aWxkcy9kYW5pZWxoYi9xZW11L2hvc3QvaW5jbHVk
-ZS9nZW5lcmljIC1pcXVvdGUgL2J1aWxkcy9kYW5pZWxoYi9xZW11L3RjZy9pMzg2IC1wdGhy
-ZWFkIC1EX0dOVV9TT1VSQ0UgLURfRklMRV9PRkZTRVRfQklUUz02NCAtRF9MQVJHRUZJTEVf
-U09VUkNFIC1mbm8tc3RyaWN0LWFsaWFzaW5nIC1mbm8tY29tbW9uIC1md3JhcHYgLWZQSUUg
-LWlzeXN0ZW0uLi9saW51eC1oZWFkZXJzIC1pc3lzdGVtbGludXgtaGVhZGVycyAtRE5FRURf
-Q1BVX0ggJy1EQ09ORklHX1RBUkdFVD0icHBjLWxpbnV4LXVzZXItY29uZmlnLXRhcmdldC5o
-IicgJy1EQ09ORklHX0RFVklDRVM9InBwYy1saW51eC11c2VyLWNvbmZpZy1kZXZpY2VzLmgi
-JyAtTUQgLU1RIGxpYnFlbXUtcHBjLWxpbnV4LXVzZXIuZmEucC90YXJnZXRfcHBjX3RyYW5z
-bGF0ZS5jLm8gLU1GIGxpYnFlbXUtcHBjLWxpbnV4LXVzZXIuZmEucC90YXJnZXRfcHBjX3Ry
-YW5zbGF0ZS5jLm8uZCAtbyBsaWJxZW11LXBwYy1saW51eC11c2VyLmZhLnAvdGFyZ2V0X3Bw
-Y190cmFuc2xhdGUuYy5vIC1jIC4uL3RhcmdldC9wcGMvdHJhbnNsYXRlLmMNCi4uL3Rhcmdl
-dC9wcGMvdHJhbnNsYXRlLmM6IEluIGZ1bmN0aW9uICdwcGNfdHJhbnNsYXRlX2luaXQnOg0K
-Li4vdGFyZ2V0L3BwYy90cmFuc2xhdGUuYzoxNTY6NTogZXJyb3I6ICdjcHVfcmVzZXJ2ZV92
-YWwyJyB1bmRlY2xhcmVkIChmaXJzdCB1c2UgaW4gdGhpcyBmdW5jdGlvbik7IGRpZCB5b3Ug
-bWVhbiAnY3B1X3Jlc2VydmVfdmFsJz8NCiAgIDE1NiB8ICAgICBjcHVfcmVzZXJ2ZV92YWwy
-ID0gdGNnX2dsb2JhbF9tZW1fbmV3KGNwdV9lbnYsDQogICAgICAgfCAgICAgXn5+fn5+fn5+
-fn5+fn5+fg0KICAgICAgIHwgICAgIGNwdV9yZXNlcnZlX3ZhbA0KLi4vdGFyZ2V0L3BwYy90
-cmFuc2xhdGUuYzoxNTY6NTogbm90ZTogZWFjaCB1bmRlY2xhcmVkIGlkZW50aWZpZXIgaXMg
-cmVwb3J0ZWQgb25seSBvbmNlIGZvciBlYWNoIGZ1bmN0aW9uIGl0IGFwcGVhcnMgaW4NCklu
-IGZpbGUgaW5jbHVkZWQgZnJvbSAvdXNyL2luY2x1ZGUvcnBjL25ldGRiLmg6NDIsDQogICAg
-ICAgICAgICAgICAgICBmcm9tIC91c3IvaW5jbHVkZS9uZXRkYi5oOjMyLA0KICAgICAgICAg
-ICAgICAgICAgZnJvbSAvYnVpbGRzL2RhbmllbGhiL3FlbXUvaW5jbHVkZS9zeXNlbXUvb3Mt
-cG9zaXguaDozNCwNCiAgICAgICAgICAgICAgICAgIGZyb20gL2J1aWxkcy9kYW5pZWxoYi9x
-ZW11L2luY2x1ZGUvcWVtdS9vc2RlcC5oOjE1MSwNCiAgICAgICAgICAgICAgICAgIGZyb20g
-Li4vdGFyZ2V0L3BwYy90cmFuc2xhdGUuYzoyMToNCi4uL3RhcmdldC9wcGMvdHJhbnNsYXRl
-LmM6MTU3OjY1OiBlcnJvcjogJ0NQVVBQQ1N0YXRlJyB7YWthICdzdHJ1Y3QgQ1BVQXJjaFN0
-YXRlJ30gaGFzIG5vIG1lbWJlciBuYW1lZCAncmVzZXJ2ZV92YWwyJzsgZGlkIHlvdSBtZWFu
-ICdyZXNlcnZlX3ZhbCc/DQogICAxNTcgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBvZmZzZXRvZihDUFVQUENTdGF0ZSwgcmVzZXJ2ZV92YWwyKSwNCiAg
-ICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICBefn5+fn5+fn5+fn4NClsxNjM4LzI5ODVdIENvbXBpbGluZyBD
-IG9iamVjdCBsaWJxZW11LXBwYy1saW51eC11c2VyLmZhLnAvbGliZGVjbnVtYmVyX2RlY051
-bWJlci5jLm8NCg0KDQpJJ2xsIGxlYXZlIHBhdGNoIDEgYW5kIDUgYmVoaW5kIGZvciBub3cu
-IFNpbmNlIHRoZXkncmUgbWFya2VkIGFzIGZpeGVzIHlvdQ0KY2FuIHNlbmQgdGhlbSBkdXJp
-bmcgdGhlIGZyZWV6ZS4gVGhhbmtzLA0KDQoNCkRhbmllbA0KDQoNCj4gICANCj4gICAgICAg
-LyogVGhlc2UgYXJlIHVzZWQgaW4gc3VwZXJ2aXNvciBtb2RlIG9ubHkgKi8NCj4gICAgICAg
-dGFyZ2V0X3Vsb25nIG1zcjsgICAgICAvKiBtYWNoaW5lIHN0YXRlIHJlZ2lzdGVyICovDQo+
-IGRpZmYgLS1naXQgYS90YXJnZXQvcHBjL21hY2hpbmUuYyBiL3RhcmdldC9wcGMvbWFjaGlu
-ZS5jDQo+IGluZGV4IDEzNGIxNmM2MjUuLmE4MTc1MzJlNWIgMTAwNjQ0DQo+IC0tLSBhL3Rh
-cmdldC9wcGMvbWFjaGluZS5jDQo+ICsrKyBiL3RhcmdldC9wcGMvbWFjaGluZS5jDQo+IEBA
-IC0xMCw2ICsxMCw3IEBADQo+ICAgI2luY2x1ZGUgInFlbXUvbWFpbi1sb29wLmgiDQo+ICAg
-I2luY2x1ZGUgImt2bV9wcGMuaCINCj4gICAjaW5jbHVkZSAicG93ZXI4LXBtdS5oIg0KPiAr
-I2luY2x1ZGUgInN5c2VtdS9yZXBsYXkuaCINCj4gICANCj4gICBzdGF0aWMgdm9pZCBwb3N0
-X2xvYWRfdXBkYXRlX21zcihDUFVQUENTdGF0ZSAqZW52KQ0KPiAgIHsNCj4gQEAgLTY3MSw2
-ICs2NzIsMjcgQEAgc3RhdGljIGNvbnN0IFZNU3RhdGVEZXNjcmlwdGlvbiB2bXN0YXRlX2Nv
-bXBhdCA9IHsNCj4gICAgICAgfQ0KPiAgIH07DQo+ICAgDQo+ICtzdGF0aWMgYm9vbCByZXNl
-cnZhdGlvbl9uZWVkZWQodm9pZCAqb3BhcXVlKQ0KPiArew0KPiArICAgIHJldHVybiAocmVw
-bGF5X21vZGUgIT0gUkVQTEFZX01PREVfTk9ORSk7DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyBj
-b25zdCBWTVN0YXRlRGVzY3JpcHRpb24gdm1zdGF0ZV9yZXNlcnZhdGlvbiA9IHsNCj4gKyAg
-ICAubmFtZSA9ICJjcHUvcmVzZXJ2YXRpb24iLA0KPiArICAgIC52ZXJzaW9uX2lkID0gMSwN
-Cj4gKyAgICAubWluaW11bV92ZXJzaW9uX2lkID0gMSwNCj4gKyAgICAubmVlZGVkID0gcmVz
-ZXJ2YXRpb25fbmVlZGVkLA0KPiArICAgIC5maWVsZHMgPSAoVk1TdGF0ZUZpZWxkW10pIHsN
-Cj4gKyAgICAgICAgVk1TVEFURV9VSU5UVEwoZW52LnJlc2VydmVfYWRkciwgUG93ZXJQQ0NQ
-VSksDQo+ICsgICAgICAgIFZNU1RBVEVfVUlOVFRMKGVudi5yZXNlcnZlX2xlbmd0aCwgUG93
-ZXJQQ0NQVSksDQo+ICsgICAgICAgIFZNU1RBVEVfVUlOVFRMKGVudi5yZXNlcnZlX3ZhbCwg
-UG93ZXJQQ0NQVSksDQo+ICsjaWYgZGVmaW5lZChUQVJHRVRfUFBDNjQpDQo+ICsgICAgICAg
-IFZNU1RBVEVfVUlOVFRMKGVudi5yZXNlcnZlX3ZhbDIsIFBvd2VyUENDUFUpLA0KPiArI2Vu
-ZGlmDQo+ICsgICAgICAgIFZNU1RBVEVfRU5EX09GX0xJU1QoKQ0KPiArICAgIH0NCj4gK307
-DQo+ICsNCj4gICBjb25zdCBWTVN0YXRlRGVzY3JpcHRpb24gdm1zdGF0ZV9wcGNfY3B1ID0g
-ew0KPiAgICAgICAubmFtZSA9ICJjcHUiLA0KPiAgICAgICAudmVyc2lvbl9pZCA9IDUsDQo+
-IEBAIC02OTIsOCArNzE0LDcgQEAgY29uc3QgVk1TdGF0ZURlc2NyaXB0aW9uIHZtc3RhdGVf
-cHBjX2NwdSA9IHsNCj4gICAgICAgICAgIFZNU1RBVEVfVUlOVFRMX0FSUkFZKGVudi5zcHIs
-IFBvd2VyUENDUFUsIDEwMjQpLA0KPiAgICAgICAgICAgVk1TVEFURV9VSU5UNjQoZW52LnNw
-ZV9hY2MsIFBvd2VyUENDUFUpLA0KPiAgIA0KPiAtICAgICAgICAvKiBSZXNlcnZhdGlvbiAq
-Lw0KPiAtICAgICAgICBWTVNUQVRFX1VJTlRUTChlbnYucmVzZXJ2ZV9hZGRyLCBQb3dlclBD
-Q1BVKSwNCj4gKyAgICAgICAgVk1TVEFURV9VTlVTRUQoc2l6ZW9mKHRhcmdldF91bG9uZykp
-LCAvKiB3YXMgZW52LnJlc2VydmVfYWRkciAqLw0KPiAgIA0KPiAgICAgICAgICAgLyogU3Vw
-ZXJ2aXNvciBtb2RlIGFyY2hpdGVjdGVkIHN0YXRlICovDQo+ICAgICAgICAgICBWTVNUQVRF
-X1VJTlRUTChlbnYubXNyLCBQb3dlclBDQ1BVKSwNCj4gQEAgLTcyMiw2ICs3NDMsNyBAQCBj
-b25zdCBWTVN0YXRlRGVzY3JpcHRpb24gdm1zdGF0ZV9wcGNfY3B1ID0gew0KPiAgICAgICAg
-ICAgJnZtc3RhdGVfdGxiZW1iLA0KPiAgICAgICAgICAgJnZtc3RhdGVfdGxibWFzLA0KPiAg
-ICAgICAgICAgJnZtc3RhdGVfY29tcGF0LA0KPiArICAgICAgICAmdm1zdGF0ZV9yZXNlcnZh
-dGlvbiwNCj4gICAgICAgICAgIE5VTEwNCj4gICAgICAgfQ0KPiAgIH07DQo+IGRpZmYgLS1n
-aXQgYS90YXJnZXQvcHBjL3RyYW5zbGF0ZS5jIGIvdGFyZ2V0L3BwYy90cmFuc2xhdGUuYw0K
-PiBpbmRleCBjOWZiN2I0MGE1Li5lYjI3OGMyNjgzIDEwMDY0NA0KPiAtLS0gYS90YXJnZXQv
-cHBjL3RyYW5zbGF0ZS5jDQo+ICsrKyBiL3RhcmdldC9wcGMvdHJhbnNsYXRlLmMNCj4gQEAg
-LTc3LDcgKzc3LDkgQEAgc3RhdGljIFRDR3YgY3B1X3hlciwgY3B1X3NvLCBjcHVfb3YsIGNw
-dV9jYSwgY3B1X292MzIsIGNwdV9jYTMyOw0KPiAgIHN0YXRpYyBUQ0d2IGNwdV9yZXNlcnZl
-Ow0KPiAgIHN0YXRpYyBUQ0d2IGNwdV9yZXNlcnZlX2xlbmd0aDsNCj4gICBzdGF0aWMgVENH
-diBjcHVfcmVzZXJ2ZV92YWw7DQo+ICsjaWYgZGVmaW5lZChUQVJHRVRfUFBDNjQpDQo+ICAg
-c3RhdGljIFRDR3YgY3B1X3Jlc2VydmVfdmFsMjsNCj4gKyNlbmRpZg0KPiAgIHN0YXRpYyBU
-Q0d2IGNwdV9mcHNjcjsNCj4gICBzdGF0aWMgVENHdl9pMzIgY3B1X2FjY2Vzc190eXBlOw0K
-PiAgIA0K
+--0000000000007d71ea05ffe248ef
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Jul 5, 2023 at 10:20=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange@r=
+edhat.com>
+wrote:
+
+> The TLS handshake make take some time to complete, during which time an
+> I/O watch might be registered with the main loop. If the owner of the
+> I/O channel invokes qio_channel_close() while the handshake is waiting
+> to continue the I/O watch must be removed. Failing to remove it will
+> later trigger the completion callback which the owner is not expecting
+> to receive. In the case of the VNC server, this results in a SEGV as
+> vnc_disconnect_start() tries to shutdown a client connection that is
+> already gone / NULL.
+>
+> CVE-2023-3354
+> Reported-by: jiangyegen <jiangyegen@huawei.com>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>
+
+
+
+> ---
+>  include/io/channel-tls.h |  1 +
+>  io/channel-tls.c         | 18 ++++++++++++------
+>  2 files changed, 13 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/io/channel-tls.h b/include/io/channel-tls.h
+> index 5672479e9e..26c67f17e2 100644
+> --- a/include/io/channel-tls.h
+> +++ b/include/io/channel-tls.h
+> @@ -48,6 +48,7 @@ struct QIOChannelTLS {
+>      QIOChannel *master;
+>      QCryptoTLSSession *session;
+>      QIOChannelShutdown shutdown;
+> +    guint hs_ioc_tag;
+>  };
+>
+>  /**
+> diff --git a/io/channel-tls.c b/io/channel-tls.c
+> index 9805dd0a3f..e327e6a5c2 100644
+> --- a/io/channel-tls.c
+> +++ b/io/channel-tls.c
+> @@ -198,12 +198,13 @@ static void
+> qio_channel_tls_handshake_task(QIOChannelTLS *ioc,
+>          }
+>
+>          trace_qio_channel_tls_handshake_pending(ioc, status);
+> -        qio_channel_add_watch_full(ioc->master,
+> -                                   condition,
+> -                                   qio_channel_tls_handshake_io,
+> -                                   data,
+> -                                   NULL,
+> -                                   context);
+> +        ioc->hs_ioc_tag =3D
+> +            qio_channel_add_watch_full(ioc->master,
+> +                                       condition,
+> +                                       qio_channel_tls_handshake_io,
+> +                                       data,
+> +                                       NULL,
+> +                                       context);
+>      }
+>  }
+>
+> @@ -218,6 +219,7 @@ static gboolean
+> qio_channel_tls_handshake_io(QIOChannel *ioc,
+>      QIOChannelTLS *tioc =3D QIO_CHANNEL_TLS(
+>          qio_task_get_source(task));
+>
+> +    tioc->hs_ioc_tag =3D 0;
+>      g_free(data);
+>      qio_channel_tls_handshake_task(tioc, task, context);
+>
+> @@ -378,6 +380,10 @@ static int qio_channel_tls_close(QIOChannel *ioc,
+>  {
+>      QIOChannelTLS *tioc =3D QIO_CHANNEL_TLS(ioc);
+>
+> +    if (tioc->hs_ioc_tag) {
+> +        g_source_remove(tioc->hs_ioc_tag);
+>
+
+set it to 0 ?
+or
+g_clear_handle_id(&tios->hs_ioc_tag, g_source_remove);
+
+
+> +    }
+> +
+>      return qio_channel_close(tioc->master, errp);
+>  }
+>
+> --
+> 2.41.0
+>
+>
+>
+
+--=20
+Marc-Andr=C3=A9 Lureau
+
+--0000000000007d71ea05ffe248ef
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jul 5, 2023 at 10:20=E2=80=AF=
+PM Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com">berra=
+nge@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex">The TLS handshake make take some time to complete, during whi=
+ch time an<br>
+I/O watch might be registered with the main loop. If the owner of the<br>
+I/O channel invokes qio_channel_close() while the handshake is waiting<br>
+to continue the I/O watch must be removed. Failing to remove it will<br>
+later trigger the completion callback which the owner is not expecting<br>
+to receive. In the case of the VNC server, this results in a SEGV as<br>
+vnc_disconnect_start() tries to shutdown a client connection that is<br>
+already gone / NULL.<br>
+<br>
+CVE-2023-3354<br>
+Reported-by: jiangyegen &lt;<a href=3D"mailto:jiangyegen@huawei.com" target=
+=3D"_blank">jiangyegen@huawei.com</a>&gt;<br>
+Signed-off-by: Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redha=
+t.com" target=3D"_blank">berrange@redhat.com</a>&gt;<br></blockquote><div><=
+br></div>=C2=A0<br><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
+x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+---<br>
+=C2=A0include/io/channel-tls.h |=C2=A0 1 +<br>
+=C2=A0io/channel-tls.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 18 ++++++++++++--=
+----<br>
+=C2=A02 files changed, 13 insertions(+), 6 deletions(-)<br>
+<br>
+diff --git a/include/io/channel-tls.h b/include/io/channel-tls.h<br>
+index 5672479e9e..26c67f17e2 100644<br>
+--- a/include/io/channel-tls.h<br>
++++ b/include/io/channel-tls.h<br>
+@@ -48,6 +48,7 @@ struct QIOChannelTLS {<br>
+=C2=A0 =C2=A0 =C2=A0QIOChannel *master;<br>
+=C2=A0 =C2=A0 =C2=A0QCryptoTLSSession *session;<br>
+=C2=A0 =C2=A0 =C2=A0QIOChannelShutdown shutdown;<br>
++=C2=A0 =C2=A0 guint hs_ioc_tag;<br>
+=C2=A0};<br>
+<br>
+=C2=A0/**<br>
+diff --git a/io/channel-tls.c b/io/channel-tls.c<br>
+index 9805dd0a3f..e327e6a5c2 100644<br>
+--- a/io/channel-tls.c<br>
++++ b/io/channel-tls.c<br>
+@@ -198,12 +198,13 @@ static void qio_channel_tls_handshake_task(QIOChannel=
+TLS *ioc,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0trace_qio_channel_tls_handshake_pending(i=
+oc, status);<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 qio_channel_add_watch_full(ioc-&gt;master,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0condition,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qio_channel_tls_handsha=
+ke_io,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0data,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0NULL,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0context);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 ioc-&gt;hs_ioc_tag =3D<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 qio_channel_add_watch_full(ioc-&=
+gt;master,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0condition=
+,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qio_chann=
+el_tls_handshake_io,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0data,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0NULL,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0context);=
+<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+=C2=A0}<br>
+<br>
+@@ -218,6 +219,7 @@ static gboolean qio_channel_tls_handshake_io(QIOChannel=
+ *ioc,<br>
+=C2=A0 =C2=A0 =C2=A0QIOChannelTLS *tioc =3D QIO_CHANNEL_TLS(<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0qio_task_get_source(task));<br>
+<br>
++=C2=A0 =C2=A0 tioc-&gt;hs_ioc_tag =3D 0;<br>
+=C2=A0 =C2=A0 =C2=A0g_free(data);<br>
+=C2=A0 =C2=A0 =C2=A0qio_channel_tls_handshake_task(tioc, task, context);<br=
+>
+<br>
+@@ -378,6 +380,10 @@ static int qio_channel_tls_close(QIOChannel *ioc,<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0QIOChannelTLS *tioc =3D QIO_CHANNEL_TLS(ioc);<br>
+<br>
++=C2=A0 =C2=A0 if (tioc-&gt;hs_ioc_tag) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_source_remove(tioc-&gt;hs_ioc_tag);<br></blo=
+ckquote><div><br></div><div>set it to 0 ?</div><div>or<br></div><div>g_clea=
+r_handle_id(&amp;tios-&gt;hs_ioc_tag, g_source_remove);</div><div>=C2=A0<br=
+></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
+border-left:1px solid rgb(204,204,204);padding-left:1ex">
++=C2=A0 =C2=A0 }<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0return qio_channel_close(tioc-&gt;master, errp);<br>
+=C2=A0}<br>
+<br>
+-- <br>
+2.41.0<br>
+<br>
+<br>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
+=A9 Lureau<br></div></div>
+
+--0000000000007d71ea05ffe248ef--
 
