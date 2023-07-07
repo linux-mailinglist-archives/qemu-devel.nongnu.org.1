@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A065A74AC79
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 10:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC0FE74AC7A
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 10:06:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHgSF-0008Iz-QO; Fri, 07 Jul 2023 04:04:39 -0400
+	id 1qHgTP-0000Du-1t; Fri, 07 Jul 2023 04:05:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHgSD-0008Iq-3i
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:04:37 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qHgTI-00007H-Gy
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:05:45 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHgSA-0006Z1-Jq
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:04:36 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-51e43473ee0so127739a12.3
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 01:04:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qHgTH-00070J-1P
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:05:44 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3143493728dso1605405f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 01:05:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688717072; x=1691309072;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ d=linaro.org; s=google; t=1688717141; x=1691309141;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=YJeRqIbgb4g1gLODNjMVt6Bz39+Pe/64pQB0SmLgnVs=;
- b=TEAITajMGNK74AGp+X/GZHmAXYsinUBu8FxtfAD9huDc572Trbg/wj89UgYD/DcIBB
- q3+9XzMLXnuBHOmVBK+9pNJxfMkamtla+nNXNzqqpIajM7/WdUsVTh6tL+reV42u4ozq
- IclCWHcFMiYYLgh57+uomuHBmoDyxqYGNg8M5n0HPt148Ir4wio6wjJb9NGr6y30sTJw
- daav0fv9KhMDrSGiddEkOa+8DKSWqrVSi6cW4yQY98YcFDTHpSPAcXNEtvbs4QQzyYMP
- T+7Pj1j1p4fh/2r/8YWuO/BLtsMjF9symAosRqAFheLZJnoBSPULfKPiWLHxVRBCv088
- IADA==
+ bh=JNWJ6qTkIaBtPvohxYHXruJi0qfMpcHpbdOP6aVByLw=;
+ b=AAgI0l2OotGpRpFQdHooudWktc7+FhpmEbF9dJwZnmkGeQQOYJIzTdeaplyLwNHH+A
+ YE/pnqjSGKdJVm/2M57G6ZtcTPSJqaQN2AhtJ9npaXVhhlUgMvMMQNzlnWOsTVOqxjwM
+ 4jsAFYrsRhuUCHyYxpASwqA8OZmGzxAqPenf1dhXPGBUIQPAw8tqNUtTfwTeMGMgu+mz
+ P9GbbSxgZ+gJ2PpWeKV6A2fxA5e74cJOKRABO0WH2V7zjlJBC0t46RPNMZUYk8fF4Q9+
+ JjhPB2onELbjPGXb0oExUmJ5OBkIoQSxBhztF4FwIpImEqLn4newqdi8zMz5bZB5gqbo
+ Gpgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688717072; x=1691309072;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
+ d=1e100.net; s=20221208; t=1688717141; x=1691309141;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YJeRqIbgb4g1gLODNjMVt6Bz39+Pe/64pQB0SmLgnVs=;
- b=NH/kTVIMnDb6jm8XJcxSuNNciwfcDRtj5fnN8xaPaOEAcBoDTWz7N/bT3p4jGyCTE9
- XlbF6T/hq61oCoEHRozgpzq++4Llmi6iH8rX9kIKvZr7lCA6T0buTcffNwNUxcG1Cqqr
- Nwg8YGrZ868EaeNnGK1XSCtEMRTp6ldpWT/Fxig+SeNunFvW1iBSZ2B2dZbb0J7e7ufE
- zDL8VYMaITkTWfAkdWBEsKoPXYdjHfBH1s77w4ef4EPeAxziT6s2xzvED2A+oG1h20CK
- SGEzC9FgB1c9vsKkrvCyy0j0kv7uYLZwoZmncNRBbe3wtuUqnjUKWZmrYFlFGD380RPt
- t+rg==
-X-Gm-Message-State: ABy/qLZtOxtCp49uM4AZ79f7bhHhsAu0mmvARUh7bqKsbQlkTySeu12s
- 1qNkJgjLngJffrA2aSV5Se4KgWkubz0CbdvXPbw=
-X-Google-Smtp-Source: APBJJlG5KX3Ki+ROHPjtRXDy7Sp/X6hZ6CckrnvtcjB6p8T2DeLpXd4jrVAAOEzClp+wY1isew4VEw==
-X-Received: by 2002:a17:906:6485:b0:98e:419b:4cbc with SMTP id
- e5-20020a170906648500b0098e419b4cbcmr3471893ejm.12.1688717072443; 
- Fri, 07 Jul 2023 01:04:32 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.215.192])
+ bh=JNWJ6qTkIaBtPvohxYHXruJi0qfMpcHpbdOP6aVByLw=;
+ b=Q1b/2szNheJdtVrXqp2j3uO40bITvIlOC0mOl3KTlQBZQy9Uhe0rMMcio0I8llaUpm
+ yCW7+UkzCvFCdKu26A47TgktVNLJl/BNE1rOiXgmWSJaphBNlGUA5ikJJo7xlWsC1Oy2
+ dFcPbqfaRo13k5P83uNFBEWyMI/mXiC7ItwwQksNP8CmPe9/iBW8We2QDZTpKYahUtYm
+ WrhNmO8tgDw9DrMetOVHyiGzJI6eyj/DiKf+WMJhrJ4acQMxvmmNEFaacw/dV3gRnMWK
+ UGOH5lBtKouw5Z8G/nZUIfAE0S8wTj5PDx/5My+5IJnrf8xDmouGbVgEBuWJAaQomtSo
+ WFQQ==
+X-Gm-Message-State: ABy/qLYmwqSZaQEwRd3XmW+DvrT0zS5Xc4cqKl2mVX2J17qssXc9LWSF
+ i3ef5Gu/4926Y4Uq1MzXyCKg5ZFZG+rnMaymf4g=
+X-Google-Smtp-Source: APBJJlFJTPbYP5gxybMK5y0TSVyImah5c9qVn4PxDVxfXFxP5F83v3DHqQmBuJ0qGg1yKB2wbOSwMg==
+X-Received: by 2002:a5d:654a:0:b0:314:3aa5:d285 with SMTP id
+ z10-20020a5d654a000000b003143aa5d285mr3472205wrv.11.1688717140718; 
+ Fri, 07 Jul 2023 01:05:40 -0700 (PDT)
+Received: from [192.168.82.227] ([91.209.212.56])
  by smtp.gmail.com with ESMTPSA id
- a17-20020a1709062b1100b00992ea405a79sm1824639ejg.166.2023.07.07.01.04.31
+ b8-20020adfe308000000b003143c06135bsm3774503wrj.50.2023.07.07.01.05.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 01:04:32 -0700 (PDT)
-Message-ID: <fb1ebb07-6452-9ba1-f394-9b43a44a4d80@linaro.org>
-Date: Fri, 7 Jul 2023 10:04:30 +0200
+ Fri, 07 Jul 2023 01:05:40 -0700 (PDT)
+Message-ID: <b61fedbe-b7d8-e354-430d-db593151912e@linaro.org>
+Date: Fri, 7 Jul 2023 09:05:35 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: Addition of qtest_irq_intercept_out_named, or modify
- qtest_irq_interrupt_out?
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 2/2] accel/tcg: Always lock pages before translation
 Content-Language: en-US
-To: Chris Laplante <chris@laplante.io>, Thomas Huth <thuth@redhat.com>
-References: <v4-CFRWoJDePdhYGwXmcoZ4pJoJVk37oEGjiSx0aN-3K4aBwDF3_5SVTlspGOZnwk9QA7ewsCyGgitkgaxtSLRiqe2euhsY1klbjIdCkHf8=@laplante.io>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <v4-CFRWoJDePdhYGwXmcoZ4pJoJVk37oEGjiSx0aN-3K4aBwDF3_5SVTlspGOZnwk9QA7ewsCyGgitkgaxtSLRiqe2euhsY1klbjIdCkHf8=@laplante.io>
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: rjones@redhat.com, peterz@infradead.org, arnd@arndb.de,
+ naresh.kamboju@linaro.org, anders.roxell@linaro.org, daniel.diaz@linaro.org,
+ ben.copeland@linaro.org, pbonzini@redhat.com, Liren Wei <lrwei@bupt.edu.cn>
+References: <20230706170537.95959-1-richard.henderson@linaro.org>
+ <20230706170537.95959-3-richard.henderson@linaro.org>
+In-Reply-To: <20230706170537.95959-3-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -93,28 +97,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Chris,
+On 7/6/23 18:05, Richard Henderson wrote:
+> +++ b/accel/tcg/cpu-exec.c
+> @@ -531,6 +531,10 @@ static void cpu_exec_longjmp_cleanup(CPUState *cpu)
+>       /* Non-buggy compilers preserve this; assert the correct value. */
+>       g_assert(cpu == current_cpu);
+>   
+> +    if (tcg_ctx->gen_tb) {
+> +        tb_unlock_pages(tcg_ctx->gen_tb);
+> +        tcg_ctx->gen_tb = NULL;
+> +    }
 
-On 7/7/23 00:10, Chris Laplante wrote:
-> Hello all,
-> 
-> I have a test case that needs to intercept a named GPIO out interrupt. 
-> qtest_irq_intercept_out doesn't support this currently. I would like to 
-> send a patch to add this functionality. Does anyone have a preference if 
-> I implement it is a new function (qtest_irq_intercept_out_named), vs add 
-> the functionality to qtest_irq_intercept_out in the form of an optional 
-> additional parameter?
+Ho hum, fails for user-only, since there is one tcg_ctx and this cpu didn't necessarily 
+own it.  Just a slight tweak needed, I'm sure.
 
-qtest_irq_intercept_out() takes a QOM path argument. Whether it is
-a named IRQ or not should be irrelevant at this layer.
 
-IMO qtest_process_command() need to be improved to handle named IRQs,
-see the "/* We don't support intercept of named GPIOs yet */" comment
-from commit a5f54290ce ("qdev: Implement named GPIOs"). Few days later
-commit 60a79016ae ("qtest/irq: Rework IRQ interception") improved the
-support. Few is missing IMO.
-
-Regards,
-
-Phil.
+r~
 
