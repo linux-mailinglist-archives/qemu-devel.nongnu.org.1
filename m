@@ -2,58 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 415F474AD89
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 11:07:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A8E74AD8A
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 11:07:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHhQw-0003MK-7q; Fri, 07 Jul 2023 05:07:22 -0400
+	id 1qHhQy-0003PJ-RZ; Fri, 07 Jul 2023 05:07:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qHhQo-0003LZ-0p
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:20 -0400
+ id 1qHhQx-0003NB-3Q
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qHhQm-0007W2-Fo
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:13 -0400
+ id 1qHhQu-0007jX-FL
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688720831;
+ s=mimecast20190719; t=1688720836;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hngWlh01uggikH8vut+q8NhpbVbDq3xjnBlBtwxG3sI=;
- b=JhR2x0twf8v5WsTp3wbCC+w5ino3GFTIWqIrA6JUBnWCASGyy0QsOZZaylrMeJqwFRCgjM
- WvdkUzNtzbOI+cvERnPl/tDbuY1oTJHmtUjY1rNQy1YT7/eWlCZQhjtKpJbrJggm/mAjeU
- 4vR3sdPAHH1EgNsbe+svghlgHdg+s8g=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VIpvC/RbbIP8wVn40pR/GVLGYUw2TXq0JtABaDJP7X0=;
+ b=hnkM310SMNTu1ofrO3F1GBjGV+7xQyn31/srov6uwwH6xm0jGpx6HyAbT+EswzjtmD2KKS
+ i/rre7+t1KkZeELWguDbm2ZUdpScDiil6qMglYYmlIC6ftaQpkeeStfuTHWm6tLY/Aotdq
+ Fta8RZxZ/eAZiOWw/J0Pjmk0QUxPobA=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-518-Navls_VwMhWhX8n6krCcBg-1; Fri, 07 Jul 2023 05:07:10 -0400
-X-MC-Unique: Navls_VwMhWhX8n6krCcBg-1
+ us-mta-380-vzn0bA6eMMqkH2Dn_sCV5g-1; Fri, 07 Jul 2023 05:07:13 -0400
+X-MC-Unique: vzn0bA6eMMqkH2Dn_sCV5g-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1BE5E873239;
- Fri,  7 Jul 2023 09:07:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 33E4C280BC50;
+ Fri,  7 Jul 2023 09:07:13 +0000 (UTC)
 Received: from hp-dl380pg8-01.lab.eng.pek2.redhat.com
  (hp-dl380pg8-01.lab.eng.pek2.redhat.com [10.73.8.10])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5C68F1121330;
- Fri,  7 Jul 2023 09:07:07 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AF3691121330;
+ Fri,  7 Jul 2023 09:07:10 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org, richard.henderson@linaro.org,
  peter.maydell@linaro.org
-Cc: Laurent Vivier <lvivier@redhat.com>,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PULL 13/15] net: socket: remove net_init_socket()
-Date: Fri,  7 Jul 2023 05:06:26 -0400
-Message-Id: <20230707090628.2210346-14-jasowang@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Andrew Melnychenko <andrew@daynix.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 14/15] e1000e: Add ICR clearing by corresponding IMS bit
+Date: Fri,  7 Jul 2023 05:06:27 -0400
+Message-Id: <20230707090628.2210346-15-jasowang@redhat.com>
 In-Reply-To: <20230707090628.2210346-1-jasowang@redhat.com>
 References: <20230707090628.2210346-1-jasowang@redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -80,91 +82,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Move the file descriptor type checking before doing anything with it.
-If it's not usable, don't close it as it could be in use by another
-part of QEMU, only fail and report an error.
+The datasheet does not say what happens when interrupt was asserted
+(ICR.INT_ASSERT=1) and auto mask is *not* active.
+However, section of 13.3.27 the PCIe* GbE Controllers Open Source
+Software Developer’s Manual, which were written for older devices,
+namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
+82573E/82573V/82573L, does say:
+> If IMS = 0b, then the ICR register is always clear-on-read. If IMS is
+> not 0b, but some ICR bit is set where the corresponding IMS bit is not
+> set, then a read does not clear the ICR register. For example, if
+> IMS = 10101010b and ICR = 01010101b, then a read to the ICR register
+> does not clear it. If IMS = 10101010b and ICR = 0101011b, then a read
+> to the ICR register clears it entirely (ICR.INT_ASSERTED = 1b).
 
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+Linux does no longer activate auto mask since commit
+0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware clears
+ICR even in such a case so we also should do so.
+
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=1707441
+Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- net/socket.c | 43 +++++++++++++++++--------------------------
- 1 file changed, 17 insertions(+), 26 deletions(-)
+ hw/net/e1000e_core.c | 38 ++++++++++++++++++++++++++++++++------
+ hw/net/trace-events  |  1 +
+ 2 files changed, 33 insertions(+), 6 deletions(-)
 
-diff --git a/net/socket.c b/net/socket.c
-index 6b1f0fe..8e3702e 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -463,28 +463,6 @@ static int net_socket_fd_check(int fd, Error **errp)
-     return so_type;
- }
- 
--static NetSocketState *net_socket_fd_init(NetClientState *peer,
--                                          const char *model, const char *name,
--                                          int fd, int is_connected,
--                                          const char *mc, Error **errp)
--{
--    int so_type;
--
--    so_type = net_socket_fd_check(fd, errp);
--    if (so_type < 0) {
--        close(fd);
--        return NULL;
--    }
--    switch(so_type) {
--    case SOCK_DGRAM:
--        return net_socket_fd_init_dgram(peer, model, name, fd, is_connected,
--                                        mc, errp);
--    case SOCK_STREAM:
--        return net_socket_fd_init_stream(peer, model, name, fd, is_connected);
--    }
--    return NULL;
--}
--
- static void net_socket_accept(void *opaque)
- {
-     NetSocketState *s = opaque;
-@@ -728,21 +706,34 @@ int net_init_socket(const Netdev *netdev, const char *name,
+diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+index 9f185d0..f8aeafa 100644
+--- a/hw/net/e1000e_core.c
++++ b/hw/net/e1000e_core.c
+@@ -2604,12 +2604,38 @@ e1000e_mac_icr_read(E1000ECore *core, int index)
+         e1000e_lower_interrupts(core, ICR, 0xffffffff);
      }
  
-     if (sock->fd) {
--        int fd, ret;
-+        int fd, ret, so_type;
- 
-         fd = monitor_fd_param(monitor_cur(), sock->fd, errp);
-         if (fd == -1) {
-             return -1;
-         }
-+        so_type = net_socket_fd_check(fd, errp);
-+        if (so_type < 0) {
-+            return -1;
+-    if ((core->mac[ICR] & E1000_ICR_ASSERTED) &&
+-        (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME)) {
+-        trace_e1000e_irq_icr_clear_iame();
+-        e1000e_lower_interrupts(core, ICR, 0xffffffff);
+-        trace_e1000e_irq_icr_process_iame();
+-        e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
++    if (core->mac[ICR] & E1000_ICR_ASSERTED) {
++        if (core->mac[CTRL_EXT] & E1000_CTRL_EXT_IAME) {
++            trace_e1000e_irq_icr_clear_iame();
++            e1000e_lower_interrupts(core, ICR, 0xffffffff);
++            trace_e1000e_irq_icr_process_iame();
++            e1000e_lower_interrupts(core, IMS, core->mac[IAM]);
 +        }
-         ret = qemu_socket_try_set_nonblock(fd);
-         if (ret < 0) {
-             error_setg_errno(errp, -ret, "%s: Can't use file descriptor %d",
-                              name, fd);
-             return -1;
-         }
--        if (!net_socket_fd_init(peer, "socket", name, fd, 1, sock->mcast,
--                                errp)) {
--            return -1;
-+        switch (so_type) {
-+        case SOCK_DGRAM:
-+            if (!net_socket_fd_init_dgram(peer, "socket", name, fd, 1,
-+                                          sock->mcast, errp)) {
-+                return -1;
-+            }
-+            break;
-+        case SOCK_STREAM:
-+            if (!net_socket_fd_init_stream(peer, "socket", name, fd, 1)) {
-+                return -1;
-+            }
-+            break;
-         }
-         return 0;
++
++        /*
++         * The datasheet does not say what happens when interrupt was asserted
++         * (ICR.INT_ASSERT=1) and auto mask is *not* active.
++         * However, section of 13.3.27 the PCIe* GbE Controllers Open Source
++         * Software Developer’s Manual, which were written for older devices,
++         * namely 631xESB/632xESB, 82563EB/82564EB, 82571EB/82572EI &
++         * 82573E/82573V/82573L, does say:
++         * > If IMS = 0b, then the ICR register is always clear-on-read. If IMS
++         * > is not 0b, but some ICR bit is set where the corresponding IMS bit
++         * > is not set, then a read does not clear the ICR register. For
++         * > example, if IMS = 10101010b and ICR = 01010101b, then a read to the
++         * > ICR register does not clear it. If IMS = 10101010b and
++         * > ICR = 0101011b, then a read to the ICR register clears it entirely
++         * > (ICR.INT_ASSERTED = 1b).
++         *
++         * Linux does no longer activate auto mask since commit
++         * 0a8047ac68e50e4ccbadcfc6b6b070805b976885 and the real hardware
++         * clears ICR even in such a case so we also should do so.
++         */
++        if (core->mac[ICR] & core->mac[IMS]) {
++            trace_e1000e_irq_icr_clear_icr_bit_ims(core->mac[ICR],
++                                                   core->mac[IMS]);
++            e1000e_lower_interrupts(core, ICR, 0xffffffff);
++        }
      }
+ 
+     return ret;
+diff --git a/hw/net/trace-events b/hw/net/trace-events
+index e4a98b2..3eeacc5 100644
+--- a/hw/net/trace-events
++++ b/hw/net/trace-events
+@@ -217,6 +217,7 @@ e1000e_irq_read_ims(uint32_t ims) "Current IMS: 0x%x"
+ e1000e_irq_icr_clear_nonmsix_icr_read(void) "Clearing ICR on read due to non MSI-X int"
+ e1000e_irq_icr_clear_zero_ims(void) "Clearing ICR on read due to zero IMS"
+ e1000e_irq_icr_clear_iame(void) "Clearing ICR on read due to IAME"
++e1000e_irq_icr_clear_icr_bit_ims(uint32_t icr, uint32_t ims) "Clearing ICR on read due corresponding IMS bit: 0x%x & 0x%x"
+ e1000e_irq_iam_clear_eiame(uint32_t iam, uint32_t cause) "Clearing IMS due to EIAME, IAM: 0x%X, cause: 0x%X"
+ e1000e_irq_icr_clear_eiac(uint32_t icr, uint32_t eiac) "Clearing ICR bits due to EIAC, ICR: 0x%X, EIAC: 0x%X"
+ e1000e_irq_ims_clear_set_imc(uint32_t val) "Clearing IMS bits due to IMC write 0x%x"
 -- 
 2.7.4
 
