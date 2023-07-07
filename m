@@ -2,76 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E19E774FAF0
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 00:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 627B074FD8A
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 05:14:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJLpn-00012o-2f; Tue, 11 Jul 2023 18:27:51 -0400
+	id 1qJQHg-0008Ny-RF; Tue, 11 Jul 2023 23:12:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qJLpl-00012g-FO
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 18:27:49 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qJLpj-0004ib-TO
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 18:27:49 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 634A41FD9C;
- Tue, 11 Jul 2023 22:27:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1689114465; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tzhEtB8uhxX6N6qULd1nEoHqLRVbmxqvItSuO5zmbgY=;
- b=lNCF0FBz/AlpTgxddQh453d4BnPQVNRTa4zwtdHP0QdLeCoOFhHnrmD1zMT2MwA+0pE+G5
- Au6TUGdTsBIidEx58Szt/FZDmmGYwkE1oYMTW4qfA6WjAlKr8/+X7hrrelBJ+BndhnMsEa
- tebZyb1lvsPlfDibGpbvY0HjR4inuzM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1689114465;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tzhEtB8uhxX6N6qULd1nEoHqLRVbmxqvItSuO5zmbgY=;
- b=DZWK2Ky3es5axOiMw4Lmq+EgwGtB4dS/Y4OTcaJJgobmu/E+YAr052OcVorhpFdSLOKzC+
- SlWe8zC0tlDfi4CQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E02A41390F;
- Tue, 11 Jul 2023 22:27:44 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id jd6/KWDXrWTFUAAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 11 Jul 2023 22:27:44 +0000
-From: Fabiano Rosas <farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
+ id 1qJQHc-0008N0-Ay
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 23:12:52 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
+ id 1qJQHV-0002Oq-Jl
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 23:12:52 -0400
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36C2juXU004535; Wed, 12 Jul 2023 03:12:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=qcppdkim1; bh=OcPIWmUbmI5mcM3tEJVRQOZTl45JMitBbuuoJvkSjlE=;
+ b=PGWoTNJlUFxgoR5SxuM/0rf9JH2u7VmejNOIFZ4W3ZcmNWkquiOL+dNc6vkiqbzPB30s
+ xtKqOXVObOK9fgmzXpY+sFh51mJKFyrUzdKp9T45OmhSymXie2RC8vPfc7QC+aPKQFG+
+ jUY1IcPiEvy7l76lgH7K2MLg4MWak7b7/hq7Y1Myc7dcZeGS5iCmhTh8lIaiU6NzkUmq
+ mxX6dphov9gAkqT9p5CqhHj04arpUBT8fpH7ml+IFSHahu53eP5e6zxQjooMuIrsdoXG
+ RVKKKa7fTSqkOzvyOZGLQl7jWxqIBozIvagGHXGntm9QoNzCrWnBlqzfVmZ0w4RfVjif ag== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rseqprg6a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 03:12:40 +0000
+Received: from pps.filterd (NALASPPMTA05.qualcomm.com [127.0.0.1])
+ by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 36C3CdCU025077; 
+ Wed, 12 Jul 2023 03:12:39 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 3rrpyeg698-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 03:12:39 +0000
+Received: from NALASPPMTA05.qualcomm.com (NALASPPMTA05.qualcomm.com
+ [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36C38wkw020707;
+ Wed, 12 Jul 2023 03:12:39 GMT
+Received: from hu-devc-sd-u20-a-1.qualcomm.com (hu-mathbern-lv.qualcomm.com
+ [10.47.235.147])
+ by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 36C3CdUW024921
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 03:12:39 +0000
+Received: by hu-devc-sd-u20-a-1.qualcomm.com (Postfix, from userid 4229910)
+ id F18D66325; Fri,  7 Jul 2023 09:06:40 -0300 (-03)
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Steve
- Sistare <steven.sistare@oracle.com>, =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Leonardo Bras <leobras@redhat.com>, Thomas Huth
- <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>
-Subject: Re: [PATCH v4 6/6] tests/qtest: migration-test: Add tests for
- file-based migration
-In-Reply-To: <20230706201927.15442-7-farosas@suse.de>
-References: <20230706201927.15442-1-farosas@suse.de>
- <20230706201927.15442-7-farosas@suse.de>
-Date: Tue, 11 Jul 2023 19:27:42 -0300
-Message-ID: <87jzv6jd7l.fsf@suse.de>
+Cc: quic_mathbern@quicinc.com, bcain@quicinc.com, ltaylorsimpson@gmail.com,
+ quic_mliebel@quicinc.com, richard.henderson@linaro.org
+Subject: [PATCH v3] Hexagon: move GETPC() calls to top level helpers
+Date: Fri,  7 Jul 2023 09:06:38 -0300
+Message-Id: <7101d252bf20bc6bfcb0d2ded9383d047f27b136.1688731504.git.quic_mathbern@quicinc.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: zNb_Mp4ZUoaZBdgL-PtSrhxf8j5pLJQV
+X-Proofpoint-ORIG-GUID: zNb_Mp4ZUoaZBdgL-PtSrhxf8j5pLJQV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-11_14,2023-07-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ bulkscore=0 suspectscore=0 phishscore=0 mlxlogscore=999 clxscore=1015
+ impostorscore=0 adultscore=0 malwarescore=0 priorityscore=1501 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2307120026
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=mathbern@qualcomm.com; helo=mx0b-0031df01.pphosted.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,60 +104,225 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+As docs/devel/loads-stores.rst states:
 
-> Add basic tests for file-based migration.
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> ---
->  tests/qtest/migration-test.c | 99 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 99 insertions(+)
->
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index 2fdf6a115e..c052dbe1f1 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -52,6 +52,10 @@ static bool got_dst_resume;
->   */
->  #define DIRTYLIMIT_TOLERANCE_RANGE  25  /* MB/s */
->  
-> +#define QEMU_VM_FILE_MAGIC 0x5145564d
-> +#define FILE_TEST_FILENAME "migfile"
-> +#define FILE_TEST_OFFSET 0x1000
-> +
->  #if defined(__linux__)
->  #include <sys/syscall.h>
->  #include <sys/vfs.h>
-> @@ -762,6 +766,7 @@ static void test_migrate_end(QTestState *from, QTestState *to, bool test_dest)
->      cleanup("migsocket");
->      cleanup("src_serial");
->      cleanup("dest_serial");
-> +    cleanup(FILE_TEST_FILENAME);
->  }
->  
->  #ifdef CONFIG_GNUTLS
-> @@ -1459,11 +1464,28 @@ static void test_precopy_common(MigrateCommon *args)
->               */
->              wait_for_migration_complete(from);
->  
-> +            /*
-> +             * For file based migration the target must begin its
-> +             * migration after the source has finished.
-> +             */
-> +            if (strstr(connect_uri, "file:")) {
-> +                migrate_incoming_qmp(to, connect_uri, "{}");
-> +            }
-> +
+  ``GETPC()`` should be used with great care: calling
+  it in other functions that are *not* the top level
+  ``HELPER(foo)`` will cause unexpected behavior. Instead, the
+  value of ``GETPC()`` should be read from the helper and passed
+  if needed to the functions that the helper calls.
 
-This is now broken since we merged commit e02f56e3de ("tests/qtest:
-massively speed up migration-test").
+Let's fix the GETPC() usage in Hexagon, making sure it's always called
+from top level helpers and passed down to the places where it's
+needed. There are two snippets where that is not currently the case:
 
-We cannot monitor the destination while the source is still running
-because we need the source to have finished writing to the file before
-we can start the destination. I'll have to think of another way of
-testing a migration that is done with a live source but asynchronous
-incoming migration.
+- probe_store(), which is only called from two helpers, so it's easy to
+  move GETPC() up.
 
-Any suggestions are welcome.
+- mem_load*() functions, which are also called directly from helpers,
+  but through the MEM_LOAD*() set of macros. Note that this are only
+  used when compiling with --disable-hexagon-idef-parser.
+
+  In this case, we also take this opportunity to simplify the code,
+  unifying the mem_load*() functions.
+
+Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+---
+v2: https://lore.kernel.org/qemu-devel/93a2ca786530cbc8a94f7c7a6451f4f1f47c8a9b.1688581908.git.quic_mathbern@quicinc.com/
+
+Changes in v3: refactored fLOAD macro with 'do {...} while(0)' as
+suggested by Taylor and added his Reviewed-by.
+
+ target/hexagon/macros.h    | 19 ++++++------
+ target/hexagon/op_helper.h | 11 ++-----
+ target/hexagon/op_helper.c | 62 +++++++++++---------------------------
+ 3 files changed, 29 insertions(+), 63 deletions(-)
+
+diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
+index 5451b061ee..dafa0df6ed 100644
+--- a/target/hexagon/macros.h
++++ b/target/hexagon/macros.h
+@@ -173,15 +173,6 @@
+ #define MEM_STORE8(VA, DATA, SLOT) \
+     MEM_STORE8_FUNC(DATA)(cpu_env, VA, DATA, SLOT)
+ #else
+-#define MEM_LOAD1s(VA) ((int8_t)mem_load1(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD1u(VA) ((uint8_t)mem_load1(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD2s(VA) ((int16_t)mem_load2(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD2u(VA) ((uint16_t)mem_load2(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD4s(VA) ((int32_t)mem_load4(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD4u(VA) ((uint32_t)mem_load4(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD8s(VA) ((int64_t)mem_load8(env, pkt_has_store_s1, slot, VA))
+-#define MEM_LOAD8u(VA) ((uint64_t)mem_load8(env, pkt_has_store_s1, slot, VA))
+-
+ #define MEM_STORE1(VA, DATA, SLOT) log_store32(env, VA, DATA, 1, SLOT)
+ #define MEM_STORE2(VA, DATA, SLOT) log_store32(env, VA, DATA, 2, SLOT)
+ #define MEM_STORE4(VA, DATA, SLOT) log_store32(env, VA, DATA, 4, SLOT)
+@@ -530,8 +521,16 @@ static inline TCGv gen_read_ireg(TCGv result, TCGv val, int shift)
+ #ifdef QEMU_GENERATE
+ #define fLOAD(NUM, SIZE, SIGN, EA, DST) MEM_LOAD##SIZE##SIGN(DST, EA)
+ #else
++#define MEM_LOAD1 cpu_ldub_data_ra
++#define MEM_LOAD2 cpu_lduw_data_ra
++#define MEM_LOAD4 cpu_ldl_data_ra
++#define MEM_LOAD8 cpu_ldq_data_ra
++
+ #define fLOAD(NUM, SIZE, SIGN, EA, DST) \
+-    DST = (size##SIZE##SIGN##_t)MEM_LOAD##SIZE##SIGN(EA)
++    do { \
++        check_noshuf(env, pkt_has_store_s1, slot, EA, SIZE, GETPC()); \
++        DST = (size##SIZE##SIGN##_t)MEM_LOAD##SIZE(env, EA, GETPC()); \
++    } while (0)
+ #endif
+ 
+ #define fMEMOP(NUM, SIZE, SIGN, EA, FNTYPE, VALUE)
+diff --git a/target/hexagon/op_helper.h b/target/hexagon/op_helper.h
+index 8f3764d15e..7744e819ef 100644
+--- a/target/hexagon/op_helper.h
++++ b/target/hexagon/op_helper.h
+@@ -19,15 +19,8 @@
+ #define HEXAGON_OP_HELPER_H
+ 
+ /* Misc functions */
+-uint8_t mem_load1(CPUHexagonState *env, bool pkt_has_store_s1,
+-                  uint32_t slot, target_ulong vaddr);
+-uint16_t mem_load2(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr);
+-uint32_t mem_load4(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr);
+-uint64_t mem_load8(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr);
+-
++void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
++                  uint32_t slot, target_ulong vaddr, int size, uintptr_t ra);
+ void log_store64(CPUHexagonState *env, target_ulong addr,
+                  int64_t val, int width, int slot);
+ void log_store32(CPUHexagonState *env, target_ulong addr,
+diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
+index 12967ac21e..abc9fc4724 100644
+--- a/target/hexagon/op_helper.c
++++ b/target/hexagon/op_helper.c
+@@ -95,9 +95,8 @@ void HELPER(debug_check_store_width)(CPUHexagonState *env, int slot, int check)
+     }
+ }
+ 
+-void HELPER(commit_store)(CPUHexagonState *env, int slot_num)
++static void commit_store(CPUHexagonState *env, int slot_num, uintptr_t ra)
+ {
+-    uintptr_t ra = GETPC();
+     uint8_t width = env->mem_log_stores[slot_num].width;
+     target_ulong va = env->mem_log_stores[slot_num].va;
+ 
+@@ -119,6 +118,12 @@ void HELPER(commit_store)(CPUHexagonState *env, int slot_num)
+     }
+ }
+ 
++void HELPER(commit_store)(CPUHexagonState *env, int slot_num)
++{
++    uintptr_t ra = GETPC();
++    commit_store(env, slot_num, ra);
++}
++
+ void HELPER(gather_store)(CPUHexagonState *env, uint32_t addr, int slot)
+ {
+     mem_gather_store(env, addr, slot);
+@@ -467,13 +472,12 @@ int32_t HELPER(cabacdecbin_pred)(int64_t RssV, int64_t RttV)
+ }
+ 
+ static void probe_store(CPUHexagonState *env, int slot, int mmu_idx,
+-                        bool is_predicated)
++                        bool is_predicated, uintptr_t retaddr)
+ {
+     if (!is_predicated || !(env->slot_cancelled & (1 << slot))) {
+         size1u_t width = env->mem_log_stores[slot].width;
+         target_ulong va = env->mem_log_stores[slot].va;
+-        uintptr_t ra = GETPC();
+-        probe_write(env, va, width, mmu_idx, ra);
++        probe_write(env, va, width, mmu_idx, retaddr);
+     }
+ }
+ 
+@@ -494,7 +498,8 @@ void HELPER(probe_pkt_scalar_store_s0)(CPUHexagonState *env, int args)
+     int mmu_idx = FIELD_EX32(args, PROBE_PKT_SCALAR_STORE_S0, MMU_IDX);
+     bool is_predicated =
+         FIELD_EX32(args, PROBE_PKT_SCALAR_STORE_S0, IS_PREDICATED);
+-    probe_store(env, 0, mmu_idx, is_predicated);
++    uintptr_t ra = GETPC();
++    probe_store(env, 0, mmu_idx, is_predicated, ra);
+ }
+ 
+ void HELPER(probe_hvx_stores)(CPUHexagonState *env, int mmu_idx)
+@@ -547,12 +552,13 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
+     bool s0_is_pred = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, S0_IS_PRED);
+     bool s1_is_pred = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, S1_IS_PRED);
+     int mmu_idx = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, MMU_IDX);
++    uintptr_t ra = GETPC();
+ 
+     if (has_st0) {
+-        probe_store(env, 0, mmu_idx, s0_is_pred);
++        probe_store(env, 0, mmu_idx, s0_is_pred, ra);
+     }
+     if (has_st1) {
+-        probe_store(env, 1, mmu_idx, s1_is_pred);
++        probe_store(env, 1, mmu_idx, s1_is_pred, ra);
+     }
+     if (has_hvx_stores) {
+         HELPER(probe_hvx_stores)(env, mmu_idx);
+@@ -566,48 +572,16 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
+  * If the load is in slot 0 and there is a store in slot1 (that
+  * wasn't cancelled), we have to do the store first.
+  */
+-static void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
+-                         uint32_t slot, target_ulong vaddr, int size)
++void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
++                  uint32_t slot, target_ulong vaddr, int size, uintptr_t ra)
+ {
+     if (slot == 0 && pkt_has_store_s1 &&
+         ((env->slot_cancelled & (1 << 1)) == 0)) {
+-        HELPER(probe_noshuf_load)(env, vaddr, size, MMU_USER_IDX);
+-        HELPER(commit_store)(env, 1);
++        probe_read(env, vaddr, size, MMU_USER_IDX, ra);
++        commit_store(env, 1, ra);
+     }
+ }
+ 
+-uint8_t mem_load1(CPUHexagonState *env, bool pkt_has_store_s1,
+-                  uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 1);
+-    return cpu_ldub_data_ra(env, vaddr, ra);
+-}
+-
+-uint16_t mem_load2(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 2);
+-    return cpu_lduw_data_ra(env, vaddr, ra);
+-}
+-
+-uint32_t mem_load4(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 4);
+-    return cpu_ldl_data_ra(env, vaddr, ra);
+-}
+-
+-uint64_t mem_load8(CPUHexagonState *env, bool pkt_has_store_s1,
+-                   uint32_t slot, target_ulong vaddr)
+-{
+-    uintptr_t ra = GETPC();
+-    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 8);
+-    return cpu_ldq_data_ra(env, vaddr, ra);
+-}
+-
+ /* Floating point */
+ float64 HELPER(conv_sf2df)(CPUHexagonState *env, float32 RsV)
+ {
+-- 
+2.37.2
+
 
