@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A26474B03E
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F4574B008
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:40:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjhr-0003OA-67; Fri, 07 Jul 2023 07:33:00 -0400
+	id 1qHjhv-0003PS-FS; Fri, 07 Jul 2023 07:33:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjhl-0003D2-4l; Fri, 07 Jul 2023 07:32:53 -0400
-Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
+ id 1qHjhp-0003O8-6p; Fri, 07 Jul 2023 07:32:57 -0400
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjhh-0006ng-TT; Fri, 07 Jul 2023 07:32:52 -0400
-Received: by mail-ot1-x333.google.com with SMTP id
- 46e09a7af769-6b75637076eso1627613a34.2; 
- Fri, 07 Jul 2023 04:32:48 -0700 (PDT)
+ id 1qHjhl-0006oD-8t; Fri, 07 Jul 2023 07:32:56 -0400
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-6b74b37fbe0so1690016a34.1; 
+ Fri, 07 Jul 2023 04:32:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729568; x=1691321568;
+ d=gmail.com; s=20221208; t=1688729570; x=1691321570;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LBqNDvSs5Wa5TnsOiDj0bWKOiiB8IyybwzexMIV6a1s=;
- b=hN/Xz0pxd3i2PpIjXRdLwfvtDpezuRnk+Pk1LFVZQsjU7CZ9ZDC9nmmZT/Ia2yViGo
- AbmavQ+PJCAHZKgpiCcf2CHupsmuDqzQulZ4sYpGqF7ZeBKRH1o+XPqPI82ZoduCuY3m
- 2G+lk/NNx12UPhfu+SeqjGNmpwBr3ezVkp8ISdH+AqdxjTkaY19LjjXG84TdgFrj4TTx
- 9JMtK+7kDa51+CqtnFcWh+6DB2CqOQraHY6+scg1gR8cCPx3pWiFu+JdwgJnc1UA7sc6
- 3pKkOjsUm1ClqCXEOC9UPD2v9On5PZc5wZ3fopnxKz0brfM5e2mPYjHOTIZD2fe/Rw0P
- QAqg==
+ bh=CRvRXA7Kh7MmoEvnAsBLLz4TkYuG2taDUOr4AOTd1gE=;
+ b=iVavzohH2BB6L+iLZfg6l+lg7aFpFk9X+n6dyPQZ/T4L8WGtx9oFn1Z/MX3bk2vV8s
+ ckAOhpLKA+HSg6Ok/+Urwcwr5wVmXKC83iWg3kWt3bE7AZJdRfPXBM+yjDA6LqPAFcai
+ VxQw1lEDp85CiTk7cFUIaZl5lm8kEPS7mJntN9EdlPsstZe1U6HTOV04azEAeVOfLFdJ
+ t/ZnUrR2SzfhEWNPdqT5EmWPR+gOMqymK/gFjXYUNUF5AWMbm9ZfnSHikQYttBqzWev+
+ nZJn+EbTwXR/TJbcSjkUtnWxqJDjNPvnS7B9qgX2Wp+ht8TOUltCH3yl39L3bcoiw2A5
+ kvJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729568; x=1691321568;
+ d=1e100.net; s=20221208; t=1688729570; x=1691321570;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LBqNDvSs5Wa5TnsOiDj0bWKOiiB8IyybwzexMIV6a1s=;
- b=i/eZuk2D+qgZrQXspg4e6kYuZiSkFt5SQ4CLVseZeOq1vIKYyt5NgwPbH/fKmgJjkF
- FeEgtfCjAlQai5yqwqqod+hvhnqeoDlJUXgeSN01L3xakxhpvp9hxo/jkETxM8V/Gt19
- x28UKKwdzfLzEOsbf7ci6Hl6HjTxjtmEpiWvWwujDvFySo6HiX+0vFkze5yQEkHiy3eJ
- zhNRb3CE+L2t9TIeqlq32KdJO0nzHw2CeO2XMsXJtriuYOb7XCX4F/8t/PezctTRyvpU
- OUPVEpziSf0OowbRobI/s+uodv/VvC+5p0xnLE7eJeYwIFa52U/m6q43eW+ABPGZ5EcC
- U54A==
-X-Gm-Message-State: ABy/qLaF3IBgfAEhqiQDvRscM9W0SyqGyP0JcSWCUay2T9a2fcdTIfl+
- 4ADeTLbpJoFU/zWwIN6A5Rm5UElrrkI=
-X-Google-Smtp-Source: APBJJlGc28a271HqCWw/ZgKnx6ouWqaDY1PEgdQytJXsNQP7P7SV/qAmsz11lOK9zcGqNDb0yxlhLw==
-X-Received: by 2002:a9d:6210:0:b0:6b8:8174:80e4 with SMTP id
- g16-20020a9d6210000000b006b8817480e4mr5003522otj.21.1688729567830; 
- Fri, 07 Jul 2023 04:32:47 -0700 (PDT)
+ bh=CRvRXA7Kh7MmoEvnAsBLLz4TkYuG2taDUOr4AOTd1gE=;
+ b=Dar8M0I/mp71Zm0Oc0gdkMv7XYYdJceLwGH+qJsm1EFvyUOhsv6x5Vby9HTE8JYHNI
+ yPI2dlv9rxegYfDom9QfL67keENfsGToMB9UiYqJ/oR2Srs32opOuJ0BUgmUBMb8ESgr
+ FNqDAaUIX+/f3fcz1L8iHtc3c4rej/epaWsEC8bBJYdTaK4MAmajHwP107YoQF9QlxSP
+ ItazVqn3w681jtkJ+JSfoqtnzOfVz0fCRQ9bSzpNLXF4WKc+sS03cYb6RFI5GhvwbZuS
+ Gg6YXBXZ1BnxK74g4qU2dQcORx+056nBiv2DVw7JqW3U9xRSIaEJEitTar3q1WW3OO1N
+ OovQ==
+X-Gm-Message-State: ABy/qLbHqH5YAtIbSuNeBAW0Y7beuAyM7a/8b1SL4vN4TknGzLe0WNAJ
+ t5VybmSk+8HqLdwq7hzohVB9gfOiWA4=
+X-Google-Smtp-Source: APBJJlHxRxsxr8vHvEvSik4XJTEWKQzHogDovrNf6URItz6SjNEyOcWUvxmq7BSlcLnHjijRUlrrLw==
+X-Received: by 2002:a9d:7391:0:b0:6b7:4c0a:5de7 with SMTP id
+ j17-20020a9d7391000000b006b74c0a5de7mr4602390otk.33.1688729570148; 
+ Fri, 07 Jul 2023 04:32:50 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.45
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:32:47 -0700 (PDT)
+ Fri, 07 Jul 2023 04:32:49 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 33/60] ppc/pnv: SMT support for powernv
-Date: Fri,  7 Jul 2023 08:30:41 -0300
-Message-ID: <20230707113108.7145-34-danielhb413@gmail.com>
+Subject: [PULL 34/60] tests/avocado: Add powernv machine test script
+Date: Fri,  7 Jul 2023 08:30:42 -0300
+Message-ID: <20230707113108.7145-35-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x333.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x332.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,106 +95,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-Set the TIR default value with the SMT thread index, and place some
-standard limits on SMT configurations. Now powernv is able to boot
-skiboot and Linux with a SMT topology, including booting a KVM guest.
-
-There are several SPRs and other features (e.g., broadcast msgsnd)
-that are not implemented, but not used by OPAL or Linux and can be
-added incrementally.
+This copies ppc_pseries.py to start a set of powernv tests, including
+a Linux boot test for the newly added SMT mode.
 
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Tested-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20230705120631.27670-4-npiggin@gmail.com>
+Message-ID: <20230705120631.27670-5-npiggin@gmail.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- docs/system/ppc/powernv.rst |  5 -----
- hw/ppc/pnv.c                | 12 ++++++++++++
- hw/ppc/pnv_core.c           | 13 +++++--------
- 3 files changed, 17 insertions(+), 13 deletions(-)
+ tests/avocado/ppc_powernv.py | 87 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 87 insertions(+)
+ create mode 100644 tests/avocado/ppc_powernv.py
 
-diff --git a/docs/system/ppc/powernv.rst b/docs/system/ppc/powernv.rst
-index c8f9762342..09f3965858 100644
---- a/docs/system/ppc/powernv.rst
-+++ b/docs/system/ppc/powernv.rst
-@@ -195,11 +195,6 @@ Use a MTD drive to add a PNOR to the machine, and get a NVRAM :
- 
-   -drive file=./witherspoon.pnor,format=raw,if=mtd
- 
--CAVEATS
---------
--
-- * No support for multiple HW threads (SMT=1). Same as pseries.
--
- Maintainer contact information
- ------------------------------
- 
-diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-index 5f25fe985a..23740f9d07 100644
---- a/hw/ppc/pnv.c
-+++ b/hw/ppc/pnv.c
-@@ -887,6 +887,18 @@ static void pnv_init(MachineState *machine)
- 
-     pnv->num_chips =
-         machine->smp.max_cpus / (machine->smp.cores * machine->smp.threads);
+diff --git a/tests/avocado/ppc_powernv.py b/tests/avocado/ppc_powernv.py
+new file mode 100644
+index 0000000000..d0e5c07bde
+--- /dev/null
++++ b/tests/avocado/ppc_powernv.py
+@@ -0,0 +1,87 @@
++# Test that Linux kernel boots on ppc powernv machines and check the console
++#
++# Copyright (c) 2018, 2020 Red Hat, Inc.
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or
++# later.  See the COPYING file in the top-level directory.
 +
-+    if (machine->smp.threads > 8) {
-+        error_report("Cannot support more than 8 threads/core "
-+                     "on a powernv machine");
-+        exit(1);
-+    }
-+    if (!is_power_of_2(machine->smp.threads)) {
-+        error_report("Cannot support %d threads/core on a powernv"
-+                     "machine because it must be a power of 2",
-+                     machine->smp.threads);
-+        exit(1);
-+    }
-     /*
-      * TODO: should we decide on how many chips we can create based
-      * on #cores and Venice vs. Murano vs. Naples chip type etc...,
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index b7223bb445..8a72171ce0 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -218,12 +218,13 @@ static const MemoryRegionOps pnv_core_power10_xscom_ops = {
-     .endianness = DEVICE_BIG_ENDIAN,
- };
- 
--static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp)
-+static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp,
-+                                 int thread_index)
- {
-     CPUPPCState *env = &cpu->env;
-     int core_pir;
--    int thread_index = 0; /* TODO: TCG supports only one thread */
-     ppc_spr_t *pir = &env->spr_cb[SPR_PIR];
-+    ppc_spr_t *tir = &env->spr_cb[SPR_TIR];
-     Error *local_err = NULL;
-     PnvChipClass *pcc = PNV_CHIP_GET_CLASS(pc->chip);
- 
-@@ -239,11 +240,7 @@ static void pnv_core_cpu_realize(PnvCore *pc, PowerPCCPU *cpu, Error **errp)
- 
-     core_pir = object_property_get_uint(OBJECT(pc), "pir", &error_abort);
- 
--    /*
--     * The PIR of a thread is the core PIR + the thread index. We will
--     * need to find a way to get the thread index when TCG supports
--     * more than 1. We could use the object name ?
--     */
-+    tir->default_value = thread_index;
-     pir->default_value = core_pir + thread_index;
- 
-     /* Set time-base frequency to 512 MHz */
-@@ -292,7 +289,7 @@ static void pnv_core_realize(DeviceState *dev, Error **errp)
-     }
- 
-     for (j = 0; j < cc->nr_threads; j++) {
--        pnv_core_cpu_realize(pc, pc->threads[j], &local_err);
-+        pnv_core_cpu_realize(pc, pc->threads[j], &local_err, j);
-         if (local_err) {
-             goto err;
-         }
++from avocado.utils import archive
++from avocado_qemu import QemuSystemTest
++from avocado_qemu import wait_for_console_pattern
++
++class powernvMachine(QemuSystemTest):
++
++    timeout = 90
++    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
++    panic_message = 'Kernel panic - not syncing'
++    good_message = 'VFS: Cannot open root device'
++
++    def do_test_linux_boot(self):
++        self.require_accelerator("tcg")
++        kernel_url = ('https://archives.fedoraproject.org/pub/archive'
++                      '/fedora-secondary/releases/29/Everything/ppc64le/os'
++                      '/ppc/ppc64/vmlinuz')
++        kernel_hash = '3fe04abfc852b66653b8c3c897a59a689270bc77'
++        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
++
++        self.vm.set_console()
++        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=hvc0'
++        self.vm.add_args('-kernel', kernel_path,
++                         '-append', kernel_command_line)
++        self.vm.launch()
++
++    def test_linux_boot(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:powernv
++        :avocado: tags=accel:tcg
++        """
++
++        self.do_test_linux_boot()
++        console_pattern = 'VFS: Cannot open root device'
++        wait_for_console_pattern(self, console_pattern, self.panic_message)
++
++    def test_linux_smp_boot(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:powernv
++        :avocado: tags=accel:tcg
++        """
++
++        self.vm.add_args('-smp', '4')
++        self.do_test_linux_boot()
++        console_pattern = 'smp: Brought up 1 node, 4 CPUs'
++        wait_for_console_pattern(self, console_pattern, self.panic_message)
++        wait_for_console_pattern(self, self.good_message, self.panic_message)
++
++    def test_linux_smt_boot(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:powernv
++        :avocado: tags=accel:tcg
++        """
++
++        self.vm.add_args('-smp', '4,threads=4')
++        self.do_test_linux_boot()
++        console_pattern = 'CPU maps initialized for 4 threads per core'
++        wait_for_console_pattern(self, console_pattern, self.panic_message)
++        console_pattern = 'smp: Brought up 1 node, 4 CPUs'
++        wait_for_console_pattern(self, console_pattern, self.panic_message)
++        wait_for_console_pattern(self, self.good_message, self.panic_message)
++
++    def test_linux_big_boot(self):
++        """
++        :avocado: tags=arch:ppc64
++        :avocado: tags=machine:powernv
++        :avocado: tags=accel:tcg
++        """
++
++        self.vm.add_args('-smp', '16,threads=4,cores=2,sockets=2')
++
++        # powernv does not support NUMA
++        self.do_test_linux_boot()
++        console_pattern = 'CPU maps initialized for 4 threads per core'
++        wait_for_console_pattern(self, console_pattern, self.panic_message)
++        console_pattern = 'smp: Brought up 2 nodes, 16 CPUs'
++        wait_for_console_pattern(self, console_pattern, self.panic_message)
++        wait_for_console_pattern(self, self.good_message, self.panic_message)
 -- 
 2.41.0
 
