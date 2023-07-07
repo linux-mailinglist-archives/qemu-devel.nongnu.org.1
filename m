@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E520B74AFF2
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA1074B01B
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:44:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHji4-0004AF-SI; Fri, 07 Jul 2023 07:33:12 -0400
+	id 1qHji7-0004Se-3d; Fri, 07 Jul 2023 07:33:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHji2-0003yN-Qy; Fri, 07 Jul 2023 07:33:10 -0400
+ id 1qHji4-0004BD-7W; Fri, 07 Jul 2023 07:33:12 -0400
 Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjhw-0006pZ-EJ; Fri, 07 Jul 2023 07:33:10 -0400
+ id 1qHji1-0006pp-FA; Fri, 07 Jul 2023 07:33:11 -0400
 Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6b75637076eso1627667a34.2; 
- Fri, 07 Jul 2023 04:32:57 -0700 (PDT)
+ 46e09a7af769-6b73c2b6dcfso1401831a34.2; 
+ Fri, 07 Jul 2023 04:33:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729577; x=1691321577;
+ d=gmail.com; s=20221208; t=1688729579; x=1691321579;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k61BptTOwj98xOgsrzjqXszhqFKZTaKD33+onC34AMU=;
- b=jJxzL8fmGloo/q+z+E2CdnQZfVbD6a6YD+vqTNyxQnt01Clo/JlgED7Y7e7yiOuaSK
- cbSM0GPkXGy/lKg62jrd5wdf6OwIaoqTaWEuU1yHN5gD4o0XyF0LEvlEC6bqCGyT1Omy
- Bqbf3ypNKjQFIa7+bV8qYgTHhqigCwE9EhopzywHtxhiKBRjUREyrUDm5fzUEi0vjbb0
- d5cU6RjXEbz60rUVyD6xD6q2exBz+j9ygtd7BhOLbWdcWzOb5lim07M/JfKkvtz5XTy/
- UtYWBf6G7kgU+BV4v7ddse9ZFxbyfDqA2hmXzixD8f9lnu7Wgfxe00IfF7ACHkAyBvZc
- lqrA==
+ bh=d0RYFo5oi3sfSkX8z3IXMaD1SoISEg37Beg8/IEFmIY=;
+ b=TVyvvT+HP7FOtkxFmRJXoN0tXiSnypTg2xBnhMqbpv8h32KEnFB7EwgElLC4gb3zKj
+ p3sdQ3Sy9akiFxbq/+bnqZmOOcxZERBsduA8ObI0++Jf3ZyXOHHeh3oSMkdBLeoV90yx
+ Dv52JsnOtgFyCAKQ38BzoFbHRkcCGr2vXIQgSKe83wLD9ZQIrTcqFjQiN+E9kpfMBHCO
+ g4lQKfMEVSAzGZq8FDdSheVcSCLbt/UjGZktQO4Mt2Qlp1mZ9Gf5ztbCDaOUbMlLMQfI
+ tWw78b9M6T7Lh40KTr+gnIVH9HkngOzmr1ZfuduPlnLXWc12Gu4/JCevYkjn1GrGbCv6
+ dLUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729577; x=1691321577;
+ d=1e100.net; s=20221208; t=1688729579; x=1691321579;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k61BptTOwj98xOgsrzjqXszhqFKZTaKD33+onC34AMU=;
- b=LBaLsW7UYCH9zrA+vU+l3X4+qMmEbwSl1cm7Pea72s6k+bW0NiuvdXdZprvAtuI+Bb
- 6tmHfA123DMaT+qse8+U6praXyhMKkqiVNuBXWqstL77PiAeebIs7ncmo35wyHDvleE5
- I4tgVA91MFhd1bQk30ePWQ2fdmuZFVMZKSOCAsnSjWbz4PS4XYaX5HtakWZc4bUg/bc6
- q43/i6JBTSU3gnSiHqAj5FwDOr3L3NZQjfLMevDrMZ4q+/YRCqUC8giGKR2rp/FDVw1x
- pD9UovBXpaj9lN6WVkCn0+J6p0Aiq03hk4h2dg6ZonGze5K6R+Z1NmHyzW8O3fCLjTva
- O86w==
-X-Gm-Message-State: ABy/qLbqQ7rFSXnvVlesoY5AFAqWTYO3PD4aY44QotyC/hPS2QgwpPXn
- mszUdJ09AmN80//pOCp0GuiK9C/pdZM=
-X-Google-Smtp-Source: APBJJlGfuiB1L3YMJrWeK5s+unKTNbsizK51xZT4Uwn8w1T4p3sR/QMthUaaEID6t3FNBFRIMXbytA==
-X-Received: by 2002:a05:6830:2057:b0:6b7:43eb:c1a with SMTP id
- f23-20020a056830205700b006b743eb0c1amr4084736otp.36.1688729577228; 
- Fri, 07 Jul 2023 04:32:57 -0700 (PDT)
+ bh=d0RYFo5oi3sfSkX8z3IXMaD1SoISEg37Beg8/IEFmIY=;
+ b=CaqVG/Whog/Bg7cfbK4NatGsNIGmomdGH3skCrdba276cTWmnxKhmkVHUIi5p0mgpK
+ 7iTtWN9ZKCV5qMBo+J6dHds0kRihRJ5/Lg07uMd2e/6zHMAXnZfTwTfE2lGIYhcW0T8v
+ drs66k9UEZZ2UBRB6fOXckYPO9wrtdXrkQmuL5Ba+DZo75WiLzfawzWZdw08FA7MWABx
+ +9pGePe48p6MwBLa7G5ahbvNb6Ut6piSIrPuawY4U3iRcNzrUfkgiybcyHrvDCCquTHj
+ NNcZMwJTHY2BQ8zR1cwn6D4+hhEXwvJsr4IY6tCaPvij92Ma4cO5E+j05MCxRe8hqagv
+ v07g==
+X-Gm-Message-State: ABy/qLZ0BvH6GKsRr2UW/Lw3WL9GC82+1cbC7Q6zBHV3B/Y6pOnbUQAb
+ /4RYZuHukg0vU+JzTfAcbB9+4O/33ww=
+X-Google-Smtp-Source: APBJJlGQ7fxcBoygAqQoEA52w6uJnuk3juaCbY0arfzlAVLKhg5mKFmNcPVy2Blgg49UHm666ehfLQ==
+X-Received: by 2002:a05:6830:2007:b0:6b7:4a5a:2711 with SMTP id
+ e7-20020a056830200700b006b74a5a2711mr4074322otp.36.1688729579572; 
+ Fri, 07 Jul 2023 04:32:59 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.55
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:32:57 -0700 (PDT)
+ Fri, 07 Jul 2023 04:32:59 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  richard.henderson@linaro.org, BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 37/60] ppc440: Add a macro to shorten PCIe controller DCR
- registration
-Date: Fri,  7 Jul 2023 08:30:45 -0300
-Message-ID: <20230707113108.7145-38-danielhb413@gmail.com>
+Subject: [PULL 38/60] ppc440: Rename parent field of PPC460EXPCIEState to
+ match code style
+Date: Fri,  7 Jul 2023 08:30:46 -0300
+Message-ID: <20230707113108.7145-39-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
@@ -96,106 +96,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-It is shorter and more readable to wrap the complex call to
-ppc_dcr_register() in a macro than to repeat it several times.
+QOM prefers to call the parent field parent_obj, change
+PPC460EXPCIEState ro match that convention.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <4dec5ef8115791dc67253afdff9a703eb816a2a8.1688586835.git.balaton@eik.bme.hu>
+Message-ID: <6995f28215d2a489a661b7d91a1783048829d467.1688586835.git.balaton@eik.bme.hu>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- hw/ppc/ppc440_uc.c | 76 +++++++++++++++++-----------------------------
- 1 file changed, 28 insertions(+), 48 deletions(-)
+ hw/ppc/ppc440_uc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
-index b26c0cee1b..b36dc409d7 100644
+index b36dc409d7..22c74839ae 100644
 --- a/hw/ppc/ppc440_uc.c
 +++ b/hw/ppc/ppc440_uc.c
-@@ -1002,56 +1002,36 @@ static void ppc460ex_set_irq(void *opaque, int irq_num, int level)
-        qemu_set_irq(s->irq[irq_num], level);
- }
+@@ -774,7 +774,7 @@ void ppc4xx_dma_init(CPUPPCState *env, int dcr_base)
+ OBJECT_DECLARE_SIMPLE_TYPE(PPC460EXPCIEState, PPC460EX_PCIE_HOST)
  
-+#define PPC440_PCIE_DCR(s, dcrn) \
-+    ppc_dcr_register(&(s)->cpu->env, (s)->dcrn_base + (dcrn), (s), \
-+                     &dcr_read_pcie, &dcr_write_pcie)
-+
-+
- static void ppc460ex_pcie_register_dcrs(PPC460EXPCIEState *s)
- {
--    CPUPPCState *env = &s->cpu->env;
--
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_CFGBAH, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_CFGBAL, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_CFGMSK, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_MSGBAH, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_MSGBAL, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_MSGMSK, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR1BAH, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR1BAL, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR1MSKH, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR1MSKL, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR2BAH, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR2BAL, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR2MSKH, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR2MSKL, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR3BAH, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR3BAL, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR3MSKH, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR3MSKL, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_REGBAH, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_REGBAL, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_REGMSK, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_SPECIAL, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
--    ppc_dcr_register(env, s->dcrn_base + PEGPL_CFG, s,
--                     &dcr_read_pcie, &dcr_write_pcie);
-+    PPC440_PCIE_DCR(s, PEGPL_CFGBAH);
-+    PPC440_PCIE_DCR(s, PEGPL_CFGBAL);
-+    PPC440_PCIE_DCR(s, PEGPL_CFGMSK);
-+    PPC440_PCIE_DCR(s, PEGPL_MSGBAH);
-+    PPC440_PCIE_DCR(s, PEGPL_MSGBAL);
-+    PPC440_PCIE_DCR(s, PEGPL_MSGMSK);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR1BAH);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR1BAL);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR1MSKH);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR1MSKL);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR2BAH);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR2BAL);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR2MSKH);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR2MSKL);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR3BAH);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR3BAL);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR3MSKH);
-+    PPC440_PCIE_DCR(s, PEGPL_OMR3MSKL);
-+    PPC440_PCIE_DCR(s, PEGPL_REGBAH);
-+    PPC440_PCIE_DCR(s, PEGPL_REGBAL);
-+    PPC440_PCIE_DCR(s, PEGPL_REGMSK);
-+    PPC440_PCIE_DCR(s, PEGPL_SPECIAL);
-+    PPC440_PCIE_DCR(s, PEGPL_CFG);
- }
+ struct PPC460EXPCIEState {
+-    PCIExpressHost host;
++    PCIExpressHost parent_obj;
  
- static void ppc460ex_pcie_realize(DeviceState *dev, Error **errp)
+     MemoryRegion iomem;
+     qemu_irq irq[4];
 -- 
 2.41.0
 
