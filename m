@@ -2,86 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F83A74ABDE
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 09:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C668174ABF3
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 09:32:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHfpl-0006rt-2x; Fri, 07 Jul 2023 03:24:55 -0400
+	id 1qHfvK-00006L-D6; Fri, 07 Jul 2023 03:30:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHfpV-0006rd-C7; Fri, 07 Jul 2023 03:24:37 -0400
-Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHfpT-0001DJ-Ql; Fri, 07 Jul 2023 03:24:37 -0400
-Received: by mail-oa1-x34.google.com with SMTP id
- 586e51a60fabf-1a1fa977667so1586875fac.1; 
- Fri, 07 Jul 2023 00:24:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688714674; x=1691306674;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+v0c7jqXEaSQ8/CKVRHuIXi+OHiePF56yDcM+f6NjZM=;
- b=E1NVjUDE64Ygtts87T9i3RTHMYDqbMyGpllu1wNHIkXaPUPz6q+GJmUGircGAE2R76
- 0og8tT5c77NmqhB7Pzb+xESN3oVar2S4kBnwM/hLKJLHsh6KS5k5moX8TcITs7Rz/5/S
- gl41CRfjFvYYPL7FdnZi2UMg1ehYn3/h9zIb0jbSd3qRWWdj5i5yD9cu85eO4twaunJW
- l7HTYAeXo34LhuZ9Z9Tr4/QLTAJL9/rnppE2/7khUrW6o23Xj2Nh4sGQGnTyEU/02tFu
- 56GECAPS7UwZO9EoQwSqhH+wK+SV8xU/PxQioQx0Z+Qth+ItP3r6NcoKh7DCVlkuEnRU
- OH5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688714674; x=1691306674;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+v0c7jqXEaSQ8/CKVRHuIXi+OHiePF56yDcM+f6NjZM=;
- b=Tp4YRo0TWrFBn4CZzLsTJN98ff/79JTZXLlO8U9zWQr6LGOkmWihQl35EaGYM0vdr6
- 5BF71dvgNtTsXf0Ihe1D9DltZqh7zm7ZDiF34SvNAxtUSmSHXlpxBwCJD2rSZw8xXzt2
- EsEhWPnQ82V6Rk8or1VDJ/kyDV56dsQkMakQQEdveZu3oaIkt7yFtpmt9fwKzbyWwFaZ
- d+oCUJgjVF8y2BpDH0OLxAx5Tnijh/6g0lkGLR20HanknY4cFhFtM4w5H9TCoNC6fHm4
- KF6yrUvzR7jsICSgKv6fbbiijw+eIhmxyAX42bHvdJJ/wyMyxr70df003VX68jXReQZO
- 1Izg==
-X-Gm-Message-State: ABy/qLYpR2QlwZSNddeBloEzu93oZGV7wBOM/2695su+OU4DCHzgQMK+
- Jxiwf92kLbKQxULWpIQ0RhlnoPgBCOU=
-X-Google-Smtp-Source: APBJJlG21NBgnNX/iX/+YLsmS5eeUnw49hto47HXkhql9DP+A1alLI5t6H51qpFjQyekrU7bu/H2jw==
-X-Received: by 2002:a05:6870:c89d:b0:19f:aee0:e169 with SMTP id
- er29-20020a056870c89d00b0019faee0e169mr5470904oab.30.1688714674188; 
- Fri, 07 Jul 2023 00:24:34 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-19.dial-up.telesp.net.br.
- [201.69.66.19]) by smtp.gmail.com with ESMTPSA id
- c6-20020a056870b28600b001aa02b7bfabsm1527682oao.33.2023.07.07.00.24.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 00:24:33 -0700 (PDT)
-Message-ID: <bf8cc98d-662b-c4ce-2837-a70c79b0e5e6@gmail.com>
-Date: Fri, 7 Jul 2023 04:24:30 -0300
+ (Exim 4.90_1) (envelope-from <SRS0=P5Di=CZ=kaod.org=clg@ozlabs.org>)
+ id 1qHfv9-00006A-Sw; Fri, 07 Jul 2023 03:30:27 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=P5Di=CZ=kaod.org=clg@ozlabs.org>)
+ id 1qHfv5-0002X2-RB; Fri, 07 Jul 2023 03:30:27 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qy4mp1yYmz4wxP;
+ Fri,  7 Jul 2023 17:30:18 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qy4mm57rTz4wZv;
+ Fri,  7 Jul 2023 17:30:16 +1000 (AEST)
+Message-ID: <4df588a9-7897-8ed5-bc72-c418034ad242@kaod.org>
+Date: Fri, 7 Jul 2023 09:30:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v3 0/6] target/ppc: Few cleanups in kvm_ppc.h
+Subject: Re: [PATCH v2] ppc/pnv: Add QME region for P10
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Greg Kurz <groug@kaod.org>,
- kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
-References: <20230627115124.19632-1-philmd@linaro.org>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230627115124.19632-1-philmd@linaro.org>
+To: Joel Stanley <joel@jms.id.au>, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
+ <fbarrat@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+References: <20230707071213.9924-1-joel@jms.id.au>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230707071213.9924-1-joel@jms.id.au>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::34;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x34.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=P5Di=CZ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,34 +63,226 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Phil,
-
-I queued all patches to ppc-next. I fixed up patch 3 to not move the cpu_list
-macro as Greg suggested. If you're strongly attached to it let me know and
-I'll remove it from the queue.
-
-Greg, feel free to send your R-b in patch 3 if patch 3 with this change pleases
-you.
-
-
-Daniel
-
-On 6/27/23 08:51, Philippe Mathieu-Daudé wrote:
-> PPC specific changes of a bigger KVM cleanup, remove "kvm_ppc.h"
-> from user emulation. Mostly trivial IMO.
+On 7/7/23 09:12, Joel Stanley wrote:
+> The Quad Management Engine (QME) manages power related settings for its
+> quad. The xscom region is separate from the quad xscoms, therefore a new
+> region is added. The xscoms in a QME select a given core by selecting
+> the forth nibble.
 > 
-> Philippe Mathieu-Daudé (6):
->    target/ppc: Have 'kvm_ppc.h' include 'sysemu/kvm.h'
->    target/ppc: Reorder #ifdef'ry in kvm_ppc.h
->    target/ppc: Move CPU QOM definitions to cpu-qom.h
->    target/ppc: Define TYPE_HOST_POWERPC_CPU in cpu-qom.h
->    target/ppc: Restrict 'kvm_ppc.h' to sysemu in cpu_init.c
->    target/ppc: Remove pointless checks of CONFIG_USER_ONLY in 'kvm_ppc.h'
+> Implement dummy reads for the stop state history (SSH) and special
+> wakeup (SPWU) registers. This quietens some sxcom errors when skiboot
+> boots on p10.
 > 
->   target/ppc/cpu-qom.h  |  7 +++++
->   target/ppc/cpu.h      |  6 ----
->   target/ppc/kvm_ppc.h  | 70 ++++++++++++++++++-------------------------
->   target/ppc/cpu_init.c |  2 +-
->   4 files changed, 37 insertions(+), 48 deletions(-)
+> Power9 does not have a QME.
 > 
+> Signed-off-by: Joel Stanley <joel@jms.id.au>
+
+Nice, how about these now :
+
+
+[   24.482066616,3] Could not set special wakeup on 0:0: operation timeout.
+[   25.022003091,3] Could not set special wakeup on 0:0: operation timeout.
+[   25.073902795,3] Could not set special wakeup on 0:0: operation timeout.
+
+[ 1593.383133413,3] Could not set special wakeup on 0:0: timeout waiting for SPECIAL_WKUP_DONE.
+[ 1593.435173594,3] Could not set special wakeup on 0:0: timeout waiting for SPECIAL_WKUP_DONE.
+
+:)
+
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+Thanks,
+
+C.
+
+
+> ---
+> v2:
+>   Clean up extra whitespace
+>   Make realize quad specific so power9 doesn't end up with the qme region
+> ---
+>   include/hw/ppc/pnv_core.h  |  4 ++
+>   include/hw/ppc/pnv_xscom.h | 11 ++++++
+>   hw/ppc/pnv.c               |  3 ++
+>   hw/ppc/pnv_core.c          | 78 +++++++++++++++++++++++++++++++++++++-
+>   4 files changed, 94 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
+> index 77ef00f47a72..c829a18aa9c6 100644
+> --- a/include/hw/ppc/pnv_core.h
+> +++ b/include/hw/ppc/pnv_core.h
+> @@ -65,6 +65,9 @@ struct PnvQuadClass {
+>   
+>       const MemoryRegionOps *xscom_ops;
+>       uint64_t xscom_size;
+> +
+> +    const MemoryRegionOps *xscom_qme_ops;
+> +    uint64_t xscom_qme_size;
+>   };
+>   
+>   #define TYPE_PNV_QUAD "powernv-cpu-quad"
+> @@ -79,5 +82,6 @@ struct PnvQuad {
+>   
+>       uint32_t quad_id;
+>       MemoryRegion xscom_regs;
+> +    MemoryRegion xscom_qme_regs;
+>   };
+>   #endif /* PPC_PNV_CORE_H */
+> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
+> index a4c9d95dc5d3..9bc64635471e 100644
+> --- a/include/hw/ppc/pnv_xscom.h
+> +++ b/include/hw/ppc/pnv_xscom.h
+> @@ -127,6 +127,17 @@ struct PnvXScomInterfaceClass {
+>   #define PNV10_XSCOM_EC(proc)                    \
+>       ((0x2 << 16) | ((1 << (3 - (proc))) << 12))
+>   
+> +#define PNV10_XSCOM_QME(chiplet) \
+> +        (PNV10_XSCOM_EQ(chiplet) | (0xE << 16))
+> +
+> +/*
+> + * Make the region larger by 0x1000 (instead of starting at an offset) so the
+> + * modelled addresses start from 0
+> + */
+> +#define PNV10_XSCOM_QME_BASE(core)     \
+> +    ((uint64_t) PNV10_XSCOM_QME(PNV10_XSCOM_EQ_CHIPLET(core)))
+> +#define PNV10_XSCOM_QME_SIZE        (0x8000 + 0x1000)
+> +
+>   #define PNV10_XSCOM_EQ_BASE(core)     \
+>       ((uint64_t) PNV10_XSCOM_EQ(PNV10_XSCOM_EQ_CHIPLET(core)))
+>   #define PNV10_XSCOM_EQ_SIZE        0x20000
+> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+> index 23740f9d0733..eb54f93986df 100644
+> --- a/hw/ppc/pnv.c
+> +++ b/hw/ppc/pnv.c
+> @@ -1685,6 +1685,9 @@ static void pnv_chip_power10_quad_realize(Pnv10Chip *chip10, Error **errp)
+>   
+>           pnv_xscom_add_subregion(chip, PNV10_XSCOM_EQ_BASE(eq->quad_id),
+>                                   &eq->xscom_regs);
+> +
+> +        pnv_xscom_add_subregion(chip, PNV10_XSCOM_QME_BASE(eq->quad_id),
+> +                                &eq->xscom_qme_regs);
+>       }
+>   }
+>   
+> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+> index 1f244ed181d0..09eb2bf94b9e 100644
+> --- a/hw/ppc/pnv_core.c
+> +++ b/hw/ppc/pnv_core.c
+> @@ -493,7 +493,67 @@ static const MemoryRegionOps pnv_quad_power10_xscom_ops = {
+>       .endianness = DEVICE_BIG_ENDIAN,
+>   };
+>   
+> -static void pnv_quad_realize(DeviceState *dev, Error **errp)
+> +#define P10_QME_SPWU_HYP 0x83c
+> +#define P10_QME_SSH_HYP  0x82c
+> +
+> +static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
+> +                                            unsigned int width)
+> +{
+> +    uint32_t offset = addr >> 3;
+> +    uint64_t val = -1;
+> +
+> +    /*
+> +     * Forth nibble selects the core within a quad, mask it to process read
+> +     * for any core.
+> +     */
+> +    switch (offset & ~0xf000) {
+> +    case P10_QME_SPWU_HYP:
+> +    case P10_QME_SSH_HYP:
+> +        return 0;
+> +    default:
+> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+> +                      offset);
+> +    }
+> +
+> +    return val;
+> +}
+> +
+> +static void pnv_qme_power10_xscom_write(void *opaque, hwaddr addr,
+> +                                         uint64_t val, unsigned int width)
+> +{
+> +    uint32_t offset = addr >> 3;
+> +
+> +    switch (offset) {
+> +    default:
+> +        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+> +                      offset);
+> +    }
+> +}
+> +
+> +static const MemoryRegionOps pnv_qme_power10_xscom_ops = {
+> +    .read = pnv_qme_power10_xscom_read,
+> +    .write = pnv_qme_power10_xscom_write,
+> +    .valid.min_access_size = 8,
+> +    .valid.max_access_size = 8,
+> +    .impl.min_access_size = 8,
+> +    .impl.max_access_size = 8,
+> +    .endianness = DEVICE_BIG_ENDIAN,
+> +};
+> +
+> +static void pnv_quad_power9_realize(DeviceState *dev, Error **errp)
+> +{
+> +    PnvQuad *eq = PNV_QUAD(dev);
+> +    PnvQuadClass *pqc = PNV_QUAD_GET_CLASS(eq);
+> +    char name[32];
+> +
+> +    snprintf(name, sizeof(name), "xscom-quad.%d", eq->quad_id);
+> +    pnv_xscom_region_init(&eq->xscom_regs, OBJECT(dev),
+> +                          pqc->xscom_ops,
+> +                          eq, name,
+> +                          pqc->xscom_size);
+> +}
+> +
+> +static void pnv_quad_power10_realize(DeviceState *dev, Error **errp)
+>   {
+>       PnvQuad *eq = PNV_QUAD(dev);
+>       PnvQuadClass *pqc = PNV_QUAD_GET_CLASS(eq);
+> @@ -504,6 +564,12 @@ static void pnv_quad_realize(DeviceState *dev, Error **errp)
+>                             pqc->xscom_ops,
+>                             eq, name,
+>                             pqc->xscom_size);
+> +
+> +    snprintf(name, sizeof(name), "xscom-qme.%d", eq->quad_id);
+> +    pnv_xscom_region_init(&eq->xscom_qme_regs, OBJECT(dev),
+> +                          pqc->xscom_qme_ops,
+> +                          eq, name,
+> +                          pqc->xscom_qme_size);
+>   }
+>   
+>   static Property pnv_quad_properties[] = {
+> @@ -514,6 +580,9 @@ static Property pnv_quad_properties[] = {
+>   static void pnv_quad_power9_class_init(ObjectClass *oc, void *data)
+>   {
+>       PnvQuadClass *pqc = PNV_QUAD_CLASS(oc);
+> +    DeviceClass *dc = DEVICE_CLASS(oc);
+> +
+> +    dc->realize = pnv_quad_power9_realize;
+>   
+>       pqc->xscom_ops = &pnv_quad_power9_xscom_ops;
+>       pqc->xscom_size = PNV9_XSCOM_EQ_SIZE;
+> @@ -522,16 +591,21 @@ static void pnv_quad_power9_class_init(ObjectClass *oc, void *data)
+>   static void pnv_quad_power10_class_init(ObjectClass *oc, void *data)
+>   {
+>       PnvQuadClass *pqc = PNV_QUAD_CLASS(oc);
+> +    DeviceClass *dc = DEVICE_CLASS(oc);
+> +
+> +    dc->realize = pnv_quad_power10_realize;
+>   
+>       pqc->xscom_ops = &pnv_quad_power10_xscom_ops;
+>       pqc->xscom_size = PNV10_XSCOM_EQ_SIZE;
+> +
+> +    pqc->xscom_qme_ops = &pnv_qme_power10_xscom_ops;
+> +    pqc->xscom_qme_size = PNV10_XSCOM_QME_SIZE;
+>   }
+>   
+>   static void pnv_quad_class_init(ObjectClass *oc, void *data)
+>   {
+>       DeviceClass *dc = DEVICE_CLASS(oc);
+>   
+> -    dc->realize = pnv_quad_realize;
+>       device_class_set_props(dc, pnv_quad_properties);
+>       dc->user_creatable = false;
+>   }
+
 
