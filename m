@@ -2,83 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A2D74B77D
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 21:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D9A74B79C
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 22:05:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHrTY-00024C-L8; Fri, 07 Jul 2023 15:50:44 -0400
+	id 1qHrgb-00070b-78; Fri, 07 Jul 2023 16:04:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHrTS-000219-61
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 15:50:38 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHrTQ-0007F4-GP
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 15:50:37 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-51d8fa4dbf9so2965875a12.1
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 12:50:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688759435; x=1691351435;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oeUR+SdX/6yesgIiuLAqr0CsQFOhF/7irAv5qteWJGE=;
- b=KvX+XASwH8gFK2yBTejVf+FyxyXxC73W5+hPAUFkQmmoMONyfV0xUCctrLGAKrCpTK
- hfEcTsPO50TbvDydTD+rKGPr3rjaRHrnScPN1dq9LDrcaTuA1WOn6qtz5TJis2R6iKUz
- cPTUhX7yS7jaZBoRUN6qjS82wHznivvhjlB/ll0Z3WIN0KaRoJPnbXDeKeSVyvewdKwW
- mUsfjn1jOfaMJaCW8+0FhIbbQ8w6SBf6p4H28aTOkRMHeU7ZmiIJU10vVuW90apqavcO
- j+apNPf/WUMjJF4VOudkgOFGJkS7nWaB8nTH8EO9DJ0wkui1TjDqQ0ec+EckgA534VVe
- 5now==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688759435; x=1691351435;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oeUR+SdX/6yesgIiuLAqr0CsQFOhF/7irAv5qteWJGE=;
- b=DmShZaEpQuvIrtjWeOnlY7tcvoBKPPXqCdvDTwSELddnCpm6UUe0FKznMJVG6ly4zz
- zLrwWGTY7mMt+h0qXe0r5ec7sItbwhcF0nbiIG9kbqclXyZ0rQ4JnLpc405ezCR5ohv0
- oaXwYaGoRSigD/6C2o/BA9rxL7h8POq/oPpr7BUkfyDuXNmnxL0wp8BSwGUUrYWn1lzX
- 6f+ibCsPOmSYwFjp+fhXDdXxKiljbwz/rxRVMLECSmuBrUvKbN14uV/uqlczE34nJogn
- /x+a1h3UFM0cqTts4w03Xb1G/axoGCYhsMZFHxvUFGn5VZe+Z7EqqKQ2j45Rd1OmjhR9
- ySSA==
-X-Gm-Message-State: ABy/qLaGvwsQtwQ6FdR/jrzGaZc0neazfaKoJipjVGG2VncxFH88honK
- wLXIme68QsSicRebDCiNB56TGg==
-X-Google-Smtp-Source: APBJJlFGuERbAeSKLdQlY6bIo0gyACbve1TWZ6BRiLr02fAt4zSYnbl+p6zpGYo0tuWY6ytCt+MBgA==
-X-Received: by 2002:aa7:ccd4:0:b0:51d:e255:6173 with SMTP id
- y20-20020aa7ccd4000000b0051de2556173mr4628748edt.0.1688759435091; 
- Fri, 07 Jul 2023 12:50:35 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.215.192])
- by smtp.gmail.com with ESMTPSA id
- i22-20020aa7c716000000b0051df13f1d8fsm2398964edq.71.2023.07.07.12.50.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 12:50:34 -0700 (PDT)
-Message-ID: <35340e21-fff9-e04b-808f-0eb9775daea3@linaro.org>
-Date: Fri, 7 Jul 2023 21:50:26 +0200
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qHrgZ-00070K-LB
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:04:11 -0400
+Received: from mout.gmx.net ([212.227.17.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qHrgX-0003VX-Do
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:04:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1688760246; x=1689365046; i=deller@gmx.de;
+ bh=Q0tugVbyuW6OW1hS4a4rbN0ezLWFwt4QBMuARiMNwYk=;
+ h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+ b=UzE+sgASV3q4Nkce7Nh+I/Er0ODWDuIn9QZOzuaNPC6jcK4tt7857CHbFFsmZLZd2unpzd9
+ F5szQ67Ek0XLadlBbClLUWZGKUPG7h9M/xzGJhwWggmQlO11h0ATGmOnt0ObnH7HgMOxDxEZF
+ qFec5DhyERkJKAGWAJ+E1mfCbNO/uQOKUGVz6o41e9iSBoVDDeljb99hpb1ksKGRcWp5XCkt7
+ RuRLEZJY4/LaYVlW2hfA7fsfcgcI3S4X+jiFip0V2jqj2NSnHKqUqCEN8mndFCEcq5vqaxAon
+ toa5jlk1zCN7pfgKNTq/vcHPg3zqCEGu1OxnkDTMJqbzjVSCIacw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.153.180]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MMofc-1qaUUs2YWC-00Iodl; Fri, 07
+ Jul 2023 22:04:06 +0200
+Message-ID: <74be0ddd-b0f3-8fd3-8953-1595571db96f@gmx.de>
+Date: Fri, 7 Jul 2023 22:04:06 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v4 17/37] target/ppc: Use aesenc_SB_SR_MC_AK
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 3/4] linux-user: Fix mmap2() syscall on 32-bit targets to
+ allow file mapping beyond 4GB
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
- eduardo@habkost.net, alistair.francis@wdc.com, danielhb413@gmail.com
-References: <20230703100520.68224-1-richard.henderson@linaro.org>
- <20230703100520.68224-18-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230703100520.68224-18-richard.henderson@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
+References: <20230707131928.89500-1-deller@gmx.de>
+ <20230707131928.89500-4-deller@gmx.de>
+ <1147c41d-3bcc-eadf-f625-819caa349e97@linaro.org>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <1147c41d-3bcc-eadf-f625-819caa349e97@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:5jEkLvB4CoLkaNLoSL2JD00MznaNw5Qk6CiaexIv7ztrdWNR/yS
+ 3NhGyMnKymHYqpNcq//1M7PIffMFhwDXgq926y9mXN1Cl6nLYyl9pS9s4Nkhd1VC+g1akZD
+ TGtTJzRqy7f5yzJrx4YDFjMWh8E2Cb8Osryr9S+OB/XIjIVgsK18C7Ie6eJt53a3xOwgIGG
+ LoaAK4Xj7gbLp4/SwPZqA==
+UI-OutboundReport: notjunk:1;M01:P0:Pcy6nIfFjSQ=;zIRp0gkcTnWRSPTof2/nXkgZhDC
+ /WRHiHs67pPQmVCh8dun9AGaGykGQ3yTVOFXeUF+Na/1pHK37y0UP+wuUtVv8IxeJSeXwU76N
+ X6AX4PJCbYborG9k+rm3KxhHB9fYEFrYsw6H8aaD12ITDRSTS+fex6JnPF264+scuq+OEkr4J
+ E3wiVnTEMU05o8EgZLT/nARH+Djjx0PymGU6xNo+Tp/nuKfFrBgxoy0/NIsNk15P/4TbywnjF
+ ZhWnxaufN35tljqNCEHqI6aaBcEB1KeHeUD0kI2xVUEd1KWmBPiYgfEKsz1H+wjKWLv4Ttjpz
+ C/egiE+iUw1IjbSuKYC9x4BGVyHtlYdupzZfZqBCDfZHU4OHGKo1T/lO8hrMM4oTBVCQc6l+a
+ 8NM7+d91/OE6EiZex6uRKzV9IUyB/7YIQ6NrMxkhr7P0S1RXhEaBW/eudnMz2h70/BwDmKIb+
+ fDRxNvZrlaDTZnOg8Th3R1nvhWbMkJ2u0vGMAUkruSE7Vpbp1rV52A+kuemXEZArWidlI7ATT
+ jC0wNeCm16kLtAuY7Zs4Q5zMQ/+wa3A/gTfwdylAh8L/Yhr0LS337RzB3/PdU8h/3Be+oW2w5
+ u5pdlVLxR+kidaC9jYXAYiQySvPYUBV73R1KS+oO7fcU4dKYTor+iDcgOwBD56sfNdrkXoYee
+ QRL7T7Ftu+SQKxRAA4xL6nVC6gh5soGvXxRzyWcU75xUfLx+r2V9CxpvQ/1bB8hDf1Bn421og
+ OByCVB5Xxj7+z2mGlX1J/OtDnVO3gxhPJAhql4L3FaJw6JljCqHt7fubpQa0HNavQ2DFvu1cg
+ MK927NGX0BL3HY8xXPuOVM+ZtWglTSY9sr0cPBcj7/3yUMgx9LUIO4lfh8fuhjbTASkBDX4J7
+ 3jfqjsEb7mwggYgwrMpeh/qbbx7FXG5k+zjIWo7g8Q66pe6DxPBVCpsBe8DD04WbCFSXDEMFt
+ n/nqSZZ0GqKctGkfjiIICs/fsyE=
+Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -28
+X-Spam_score: -2.9
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.092, RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,15 +89,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/23 12:05, Richard Henderson wrote:
-> This implements the VCIPHER instruction.
-> 
-> Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/ppc/int_helper.c | 14 ++++----------
->   1 file changed, 4 insertions(+), 10 deletions(-)
+On 7/7/23 21:47, Richard Henderson wrote:
+> On 7/7/23 14:19, Helge Deller wrote:
+>> The mmap2() syscall allows 32-bit guests to specify the offset into a
+>> file in page units (instead of bytes, as done by mmap(2)).
+>> On physical machines this allows 32-bit applications to map such parts
+>> of large files which are stored beyond the 4GB limit.
+>>
+>> Allow the same behaviour when emulating 32-bit guests with qemu.
+>>
+>> For that switch the mmap2() function to always take an abi_ullong
+>> (64-bit) offset parameter for target_mmap() and mmap_frag() to avoid an
+>> arithmetical overflow when shifing a 32-bit offset parameter by
+>> 12 bits (=3DPAGE_SHIFT) and thus possibly overflow the abi_ulong (32-bi=
+t)
+>> type.
+>>
+>> Signed-off-by: Helge Deller<deller@gmx.de>
+>> ---
+>> =C2=A0 linux-user/mmap.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 9 +++++----
+>> =C2=A0 linux-user/syscall.c=C2=A0=C2=A0 | 2 +-
+>> =C2=A0 linux-user/user-mmap.h | 2 +-
+>> =C2=A0 3 files changed, 7 insertions(+), 6 deletions(-)
+>
+> https://patchew.org/QEMU/20230630132159.376995-1-richard.henderson@linar=
+o.org/20230630132159.376995-12-richard.henderson@linaro.org/
+>
+> Wherein I use the host off_t (which must be 64-bits).
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I like your patch.
+But wouldn't it be better to use off64_t instead of off_t just to make
+clear that this is a 64bit int?
 
+And this part:
+-                          arg5, arg6 << MMAP_SHIFT);
++                          arg5, (off_t)(abi_ulong)arg6 << MMAP_SHIFT);
+maybe should become (with brackets): ?
++                          arg5, ((off64_t)(abi_ulong)arg6) << MMAP_SHIFT)=
+;
+
+In any case I'm fine if your or my patch could be appled.
+
+Helge
 
