@@ -2,68 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D55774ACEB
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 10:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2510974ACF5
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 10:34:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHgs9-0008UA-G7; Fri, 07 Jul 2023 04:31:25 -0400
+	id 1qHgug-0003Fu-2Z; Fri, 07 Jul 2023 04:34:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qHgs3-0008R7-TN
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:31:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qHgs1-0003lD-Lr
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:31:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688718676;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=W4dR6PmfnbjRDUHSGEV2Jptj0Yn2MG5MJIAlYDj0o/U=;
- b=dWY6meybmOmrNlhPtExyBK1Rgen3KrerCTFzk9qN8RICzmDR0qeLcPMLnLSJcceqQrkucw
- uqInz3QcpXg5hLiptMijstOb6MAhM16o8A/X0A2TEAVeQbFDH5WPBteG9ESkzvyDqR3aRv
- +h03VHgF3qP5/ud5rart7ppH+ZqPnCY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-193-8635zydNPcibvwQ7lq4VIA-1; Fri, 07 Jul 2023 04:31:15 -0400
-X-MC-Unique: 8635zydNPcibvwQ7lq4VIA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F2A0D104D504;
- Fri,  7 Jul 2023 08:31:14 +0000 (UTC)
-Received: from kostyanf14nb.redhat.com (unknown [10.45.225.190])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C5C8C1121330;
- Fri,  7 Jul 2023 08:31:13 +0000 (UTC)
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 4/4] QGA VSS: Add log in functions begin/end
-Date: Fri,  7 Jul 2023 11:31:05 +0300
-Message-Id: <20230707083105.746811-5-kkostiuk@redhat.com>
-In-Reply-To: <20230707083105.746811-1-kkostiuk@redhat.com>
-References: <20230707083105.746811-1-kkostiuk@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHgud-0003FU-4f
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:33:59 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHguX-0004Jk-OZ
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:33:55 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-992b27e1c55so198269166b.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 01:33:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688718832; x=1691310832;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GT2yk6kxYqHPwYutqCZ+uYL9TgjnU0zlEWYIJMaAZyM=;
+ b=a+fCgejEcZ8GrtWyo1eSI3fhmMEniQkK6rgq/QzOz4rdqzgfjq8Q5th9AHmbf2EubQ
+ A5b4zKVWCBWqE72m2eFhdh9/P6uuygmk1V1StgeHgksXFoKDKrpyAcwOU4kKm+2AceVw
+ T0/JKFY3qGzNfC4r1bRNdXTYK5u0CSNgv0cmkVl4/ufqS2VadqzQTk+Ip7dAID6ywoYW
+ soghbAZbC6JdqCBX8IvKcczTP6BfQ3mQoQll3rPt9yqzly/vdcWNE1tMhgV7uTDBnqWX
+ YD//XWtE2IdDz2miQcYFHU0S31pKL69yijxRxqVbyZmKXyh/en3dvNiFlQf7JlWAAXM2
+ uhCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688718832; x=1691310832;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GT2yk6kxYqHPwYutqCZ+uYL9TgjnU0zlEWYIJMaAZyM=;
+ b=W5Lc+XKHP1FHJ3yRWNn85/lWQMuGu55tQsLDmxSfmsMDdK8+z0UoLcm+Twt/BPZ1zQ
+ KJ+KNz5bNz4k5U/DOJZahHfo1lpFrUVlfCx2emlUq0t8hwORgWdYuaJJDE3zKYPAtGkD
+ 8VRc8eAhxBskQBVoj7PJpHTa1318qSgqWNG7RbbGkiz6i+eEyE7aKdmuY+cqmTdt9ee0
+ DnptJTqCt5F0lQWv+P2bXYz+MRDsZ23iFO0Wx+c1OZPUBx66An/mFL+dXu4VLDdnnJe0
+ RnxxOZSxRsY0QkmSypBy+h2F+Co3rmi0mqx4iG5f2nrnV/mQQ7fYM7pgiuCE+O1INMWA
+ KzDA==
+X-Gm-Message-State: ABy/qLaev8scmlbZdoQQbwrQwNcTNc5EPYSb9Nx6lHooTYgD5cLcuiV/
+ Nd5l+U+tX2RwXC6tbsC5wmfgww==
+X-Google-Smtp-Source: APBJJlG5GdC7ECZN/s0W2mh/uGtl/4GdS+iz082jmGQ5L/afE3kJM9Dj67w99RJUjf79UxAVFc/3cQ==
+X-Received: by 2002:a17:907:8d11:b0:96f:8439:6143 with SMTP id
+ tc17-20020a1709078d1100b0096f84396143mr3752092ejc.40.1688718831981; 
+ Fri, 07 Jul 2023 01:33:51 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.215.192])
+ by smtp.gmail.com with ESMTPSA id
+ v26-20020a17090690da00b0098e4aef0791sm1877567ejw.66.2023.07.07.01.33.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 07 Jul 2023 01:33:51 -0700 (PDT)
+Message-ID: <a2f05a31-676a-a1d2-270e-56c525a22291@linaro.org>
+Date: Fri, 7 Jul 2023 10:33:50 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v2 1/4] QGA VSS: Add wrapper to send log to debugger and
+ stderr
+Content-Language: en-US
+To: Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Roth <michael.roth@amd.com>
+References: <20230707083105.746811-1-kkostiuk@redhat.com>
+ <20230707083105.746811-2-kkostiuk@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230707083105.746811-2-kkostiuk@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,409 +95,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
----
- qga/vss-win32/install.cpp   | 33 +++++++++++++++++++++++++++++++++
- qga/vss-win32/provider.cpp  |  3 +++
- qga/vss-win32/requester.cpp | 34 ++++++++++++++++++++++++++++++++++
- 3 files changed, 70 insertions(+)
+On 7/7/23 10:31, Konstantin Kostiuk wrote:
+> Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+> ---
+>   qga/vss-win32/meson.build   |  2 +-
+>   qga/vss-win32/vss-debug.cpp | 31 +++++++++++++++++++++++++++++++
+>   qga/vss-win32/vss-debug.h   | 24 ++++++++++++++++++++++++
+>   3 files changed, 56 insertions(+), 1 deletion(-)
+>   create mode 100644 qga/vss-win32/vss-debug.cpp
+>   create mode 100644 qga/vss-win32/vss-debug.h
+> 
+> diff --git a/qga/vss-win32/meson.build b/qga/vss-win32/meson.build
+> index 9483ccd3b8..0ac918910b 100644
+> --- a/qga/vss-win32/meson.build
+> +++ b/qga/vss-win32/meson.build
+> @@ -7,7 +7,7 @@ link_args = cc.get_supported_link_arguments([
+>   
+>   qga_vss = shared_module(
+>     'qga-vss',
+> -  ['requester.cpp', 'provider.cpp', 'install.cpp', genh],
+> +  ['requester.cpp', 'provider.cpp', 'install.cpp', 'vss-debug.cpp', genh],
+>     name_prefix: '',
+>     cpp_args: ['-Wno-unknown-pragmas', '-Wno-delete-non-virtual-dtor', '-Wno-non-virtual-dtor'],
+>     link_args: link_args,
+> diff --git a/qga/vss-win32/vss-debug.cpp b/qga/vss-win32/vss-debug.cpp
+> new file mode 100644
+> index 0000000000..de190a53f4
+> --- /dev/null
+> +++ b/qga/vss-win32/vss-debug.cpp
+> @@ -0,0 +1,31 @@
+> +/*
+> + * QEMU Guest Agent VSS debug declarations
+> + *
+> + * Copyright (C) 2023 Red Hat Inc
+> + *
+> + * Authors:
+> + *  Konstantin Kostiuk <kkostiuk@redhat.com>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "vss-common.h"
+> +
+> +void G_GNUC_PRINTF(2, 3)
 
-diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
-index c84c40106e..0740fb0761 100644
---- a/qga/vss-win32/install.cpp
-+++ b/qga/vss-win32/install.cpp
-@@ -100,6 +100,8 @@ HRESULT put_Value(ICatalogObject *pObj, LPCWSTR name, T val)
- /* Lookup Administrators group name from winmgmt */
- static HRESULT GetAdminName(_bstr_t *name)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr;
-     COMPointer<IWbemLocator> pLoc;
-     COMPointer<IWbemServices> pSvc;
-@@ -142,6 +144,7 @@ static HRESULT GetAdminName(_bstr_t *name)
-     }
- 
- out:
-+    qga_debug_end;
-     return hr;
- }
- 
-@@ -149,6 +152,8 @@ out:
- static HRESULT getNameByStringSID(
-     const wchar_t *sid, LPWSTR buffer, LPDWORD bufferLen)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr = S_OK;
-     PSID psid = NULL;
-     SID_NAME_USE groupType;
-@@ -168,6 +173,7 @@ static HRESULT getNameByStringSID(
-     LocalFree(psid);
- 
- out:
-+    qga_debug_end;
-     return hr;
- }
- 
-@@ -175,6 +181,8 @@ out:
- static HRESULT QGAProviderFind(
-     HRESULT (*found)(ICatalogCollection *, int, void *), void *arg)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr;
-     COMInitializer initializer;
-     COMPointer<IUnknown> pUnknown;
-@@ -205,12 +213,15 @@ static HRESULT QGAProviderFind(
-     chk(pColl->SaveChanges(&n));
- 
- out:
-+    qga_debug_end;
-     return hr;
- }
- 
- /* Count QGA VSS provider in COM+ Application Catalog */
- static HRESULT QGAProviderCount(ICatalogCollection *coll, int i, void *arg)
- {
-+    qga_debug_begin;
-+
-     (*(int *)arg)++;
-     return S_OK;
- }
-@@ -218,28 +229,35 @@ static HRESULT QGAProviderCount(ICatalogCollection *coll, int i, void *arg)
- /* Remove QGA VSS provider from COM+ Application Catalog Collection */
- static HRESULT QGAProviderRemove(ICatalogCollection *coll, int i, void *arg)
- {
-+    qga_debug_begin;
-     HRESULT hr;
- 
-     qga_debug("Removing COM+ Application: %s", QGA_PROVIDER_NAME);
-     chk(coll->Remove(i));
- out:
-+    qga_debug_end;
-     return hr;
- }
- 
- /* Unregister this module from COM+ Applications Catalog */
- STDAPI COMUnregister(void)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr;
- 
-     DllUnregisterServer();
-     chk(QGAProviderFind(QGAProviderRemove, NULL));
- out:
-+    qga_debug_end;
-     return hr;
- }
- 
- /* Register this module to COM+ Applications Catalog */
- STDAPI COMRegister(void)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr;
-     COMInitializer initializer;
-     COMPointer<IUnknown> pUnknown;
-@@ -259,12 +277,14 @@ STDAPI COMRegister(void)
- 
-     if (!g_hinstDll) {
-         errmsg(E_FAIL, "Failed to initialize DLL");
-+        qga_debug_end;
-         return E_FAIL;
-     }
- 
-     chk(QGAProviderFind(QGAProviderCount, (void *)&count));
-     if (count) {
-         errmsg(E_ABORT, "QGA VSS Provider is already installed");
-+        qga_debug_end;
-         return E_ABORT;
-     }
- 
-@@ -355,6 +375,7 @@ out:
-         COMUnregister();
-     }
- 
-+    qga_debug_end;
-     return hr;
- }
- 
-@@ -370,6 +391,8 @@ STDAPI_(void) CALLBACK DLLCOMUnregister(HWND, HINSTANCE, LPSTR, int)
- 
- static BOOL CreateRegistryKey(LPCTSTR key, LPCTSTR value, LPCTSTR data)
- {
-+    qga_debug_begin;
-+
-     HKEY  hKey;
-     LONG  ret;
-     DWORD size;
-@@ -390,6 +413,7 @@ static BOOL CreateRegistryKey(LPCTSTR key, LPCTSTR value, LPCTSTR data)
-     RegCloseKey(hKey);
- 
- out:
-+    qga_debug_end;
-     if (ret != ERROR_SUCCESS) {
-         /* As we cannot printf within DllRegisterServer(), show a dialog. */
-         errmsg_dialog(ret, "Cannot add registry", key);
-@@ -401,6 +425,8 @@ out:
- /* Register this dll as a VSS provider */
- STDAPI DllRegisterServer(void)
- {
-+    qga_debug_begin;
-+
-     COMInitializer initializer;
-     COMPointer<IVssAdmin> pVssAdmin;
-     HRESULT hr = E_FAIL;
-@@ -479,12 +505,15 @@ out:
-         DllUnregisterServer();
-     }
- 
-+    qga_debug_end;
-     return hr;
- }
- 
- /* Unregister this VSS hardware provider from the system */
- STDAPI DllUnregisterServer(void)
- {
-+    qga_debug_begin;
-+
-     TCHAR key[256];
-     COMInitializer initializer;
-     COMPointer<IVssAdmin> pVssAdmin;
-@@ -502,6 +531,7 @@ STDAPI DllUnregisterServer(void)
-     SHDeleteKey(HKEY_CLASSES_ROOT, key);
-     SHDeleteKey(HKEY_CLASSES_ROOT, g_szProgid);
- 
-+    qga_debug_end;
-     return S_OK; /* Uninstall should never fail */
- }
- 
-@@ -528,6 +558,8 @@ namespace _com_util
- /* Stop QGA VSS provider service using Winsvc API  */
- STDAPI StopService(void)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr = S_OK;
-     SC_HANDLE manager = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
-     SC_HANDLE service = NULL;
-@@ -552,5 +584,6 @@ STDAPI StopService(void)
- out:
-     CloseServiceHandle(service);
-     CloseServiceHandle(manager);
-+    qga_debug_end;
-     return hr;
- }
-diff --git a/qga/vss-win32/provider.cpp b/qga/vss-win32/provider.cpp
-index 1b885e24ee..cc72e5ef1b 100644
---- a/qga/vss-win32/provider.cpp
-+++ b/qga/vss-win32/provider.cpp
-@@ -12,6 +12,7 @@
- 
- #include "qemu/osdep.h"
- #include "vss-common.h"
-+#include "vss-debug.h"
- #ifdef HAVE_VSS_SDK
- #include <vscoordint.h>
- #else
-@@ -529,9 +530,11 @@ STDAPI DllCanUnloadNow()
- EXTERN_C
- BOOL WINAPI DllMain(HINSTANCE hinstDll, DWORD dwReason, LPVOID lpReserved)
- {
-+    qga_debug("begin, reason = %lu", dwReason);
-     if (dwReason == DLL_PROCESS_ATTACH) {
-         g_hinstDll = hinstDll;
-         DisableThreadLibraryCalls(hinstDll);
-     }
-+    qga_debug_end;
-     return TRUE;
- }
-diff --git a/qga/vss-win32/requester.cpp b/qga/vss-win32/requester.cpp
-index f3eafacfc1..9884c65e70 100644
---- a/qga/vss-win32/requester.cpp
-+++ b/qga/vss-win32/requester.cpp
-@@ -57,6 +57,8 @@ static struct QGAVSSContext {
- 
- STDAPI requester_init(void)
- {
-+    qga_debug_begin;
-+
-     COMInitializer initializer; /* to call CoInitializeSecurity */
-     HRESULT hr = CoInitializeSecurity(
-         NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
-@@ -92,11 +94,14 @@ STDAPI requester_init(void)
-         return HRESULT_FROM_WIN32(GetLastError());
-     }
- 
-+    qga_debug_end;
-     return S_OK;
- }
- 
- static void requester_cleanup(void)
- {
-+    qga_debug_begin;
-+
-     if (vss_ctx.hEventFrozen) {
-         CloseHandle(vss_ctx.hEventFrozen);
-         vss_ctx.hEventFrozen = NULL;
-@@ -118,10 +123,13 @@ static void requester_cleanup(void)
-         vss_ctx.pVssbc = NULL;
-     }
-     vss_ctx.cFrozenVols = 0;
-+    qga_debug_end;
- }
- 
- STDAPI requester_deinit(void)
- {
-+    qga_debug_begin;
-+
-     requester_cleanup();
- 
-     pCreateVssBackupComponents = NULL;
-@@ -131,11 +139,14 @@ STDAPI requester_deinit(void)
-         hLib = NULL;
-     }
- 
-+    qga_debug_end;
-     return S_OK;
- }
- 
- static HRESULT WaitForAsync(IVssAsync *pAsync)
- {
-+    qga_debug_begin;
-+
-     HRESULT ret, hr;
- 
-     do {
-@@ -151,11 +162,14 @@ static HRESULT WaitForAsync(IVssAsync *pAsync)
-         }
-     } while (ret == VSS_S_ASYNC_PENDING);
- 
-+    qga_debug_end;
-     return ret;
- }
- 
- static void AddComponents(ErrorSet *errset)
- {
-+    qga_debug_begin;
-+
-     unsigned int cWriters, i;
-     VSS_ID id, idInstance, idWriter;
-     BSTR bstrWriterName = NULL;
-@@ -237,17 +251,21 @@ out:
-     if (pComponent && info) {
-         pComponent->FreeComponentInfo(info);
-     }
-+    qga_debug_end;
- }
- 
- DWORD get_reg_dword_value(HKEY baseKey, LPCSTR subKey, LPCSTR valueName,
-                           DWORD defaultData)
- {
-+    qga_debug_begin;
-+
-     DWORD regGetValueError;
-     DWORD dwordData;
-     DWORD dataSize = sizeof(DWORD);
- 
-     regGetValueError = RegGetValue(baseKey, subKey, valueName, RRF_RT_DWORD,
-                                    NULL, &dwordData, &dataSize);
-+    qga_debug_end;
-     if (regGetValueError  != ERROR_SUCCESS) {
-         return defaultData;
-     }
-@@ -262,6 +280,8 @@ bool is_valid_vss_backup_type(VSS_BACKUP_TYPE vssBT)
- VSS_BACKUP_TYPE get_vss_backup_type(
-     VSS_BACKUP_TYPE defaultVssBT = DEFAULT_VSS_BACKUP_TYPE)
- {
-+    qga_debug_begin;
-+
-     VSS_BACKUP_TYPE vssBackupType;
- 
-     vssBackupType = static_cast<VSS_BACKUP_TYPE>(
-@@ -269,6 +289,7 @@ VSS_BACKUP_TYPE get_vss_backup_type(
-                                                 QGA_PROVIDER_REGISTRY_ADDRESS,
-                                                 "VssOption",
-                                                 defaultVssBT));
-+    qga_debug_end;
-     if (!is_valid_vss_backup_type(vssBackupType)) {
-         return defaultVssBT;
-     }
-@@ -277,6 +298,8 @@ VSS_BACKUP_TYPE get_vss_backup_type(
- 
- void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
- {
-+    qga_debug_begin;
-+
-     COMPointer<IVssAsync> pAsync;
-     HANDLE volume;
-     HRESULT hr;
-@@ -292,6 +315,7 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
- 
-     if (vss_ctx.pVssbc) { /* already frozen */
-         *num_vols = 0;
-+        qga_debug("finished, already frozen");
-         return;
-     }
- 
-@@ -449,6 +473,7 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
-         }
-     }
- 
-+    qga_debug("preparing for backup");
-     hr = vss_ctx.pVssbc->PrepareForBackup(pAsync.replace());
-     if (SUCCEEDED(hr)) {
-         hr = WaitForAsync(pAsync);
-@@ -472,6 +497,7 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
-      * CQGAVssProvider::CommitSnapshots will kick vss_ctx.hEventFrozen
-      * after the applications and filesystems are frozen.
-      */
-+    qga_debug("do snapshot set");
-     hr = vss_ctx.pVssbc->DoSnapshotSet(&vss_ctx.pAsyncSnapshot);
-     if (FAILED(hr)) {
-         err_set(errset, hr, "failed to do snapshot set");
-@@ -518,6 +544,7 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
-         *num_vols = vss_ctx.cFrozenVols = num_fixed_drives;
-     }
- 
-+    qga_debug("end successful");
-     return;
- 
- out:
-@@ -528,11 +555,14 @@ out:
- out1:
-     requester_cleanup();
-     CoUninitialize();
-+
-+    qga_debug_end;
- }
- 
- 
- void requester_thaw(int *num_vols, void *mountpints, ErrorSet *errset)
- {
-+    qga_debug_begin;
-     COMPointer<IVssAsync> pAsync;
- 
-     if (!vss_ctx.hEventThaw) {
-@@ -541,6 +571,8 @@ void requester_thaw(int *num_vols, void *mountpints, ErrorSet *errset)
-          * and no volumes must be frozen. We return without an error.
-          */
-         *num_vols = 0;
-+        qga_debug("finished, no volumes were frozen");
-+
-         return;
-     }
- 
-@@ -597,4 +629,6 @@ void requester_thaw(int *num_vols, void *mountpints, ErrorSet *errset)
- 
-     CoUninitialize();
-     StopService();
-+
-+    qga_debug_end;
- }
--- 
-2.34.1
+"G_GNUC_PRINTF(2, 3)" attribute goes with the declaration,
+not the definition ...
+
+> +qga_debug_internal(const char *funcname, const char *fmt, ...)  {
+> +    char user_sting[512] = {0};
+> +    char full_string[640] = {0};
+> +
+> +    va_list args;
+> +    va_start(args, fmt);
+> +    vsnprintf(user_sting, 512, fmt, args);
+> +    va_end(args);
+> +
+> +    snprintf(full_string, 640, QGA_PROVIDER_NAME "[%lu]: %s %s\n",
+> +             GetCurrentThreadId(), funcname, user_sting);
+> +
+> +    OutputDebugString(full_string);
+> +    fprintf(stderr, "%s", full_string);
+> +}
+> diff --git a/qga/vss-win32/vss-debug.h b/qga/vss-win32/vss-debug.h
+> new file mode 100644
+> index 0000000000..4a15049a62
+> --- /dev/null
+> +++ b/qga/vss-win32/vss-debug.h
+> @@ -0,0 +1,24 @@
+> +/*
+> + * QEMU Guest Agent VSS debug declarations
+> + *
+> + * Copyright (C) 2023 Red Hat Inc
+> + *
+> + * Authors:
+> + *  Konstantin Kostiuk <kkostiuk@redhat.com>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
+> + * See the COPYING file in the top-level directory.
+> + */
+> +
+> +#include <vss-handles.h>
+> +
+> +#ifndef VSS_DEBUG_H
+> +#define VSS_DEBUG_H
+> +
+
+... here: "G_GNUC_PRINTF(2, 3)".
+
+> +void qga_debug_internal(const char *funcname, const char *fmt, ...);
+> +
+> +#define qga_debug(fmt, ...) qga_debug_internal(__func__, fmt, ## __VA_ARGS__)
+> +#define qga_debug_begin qga_debug("begin")
+> +#define qga_debug_end qga_debug("end")
+> +
+> +#endif
+
+Otherwise LGTM, thanks for the rework.
 
 
