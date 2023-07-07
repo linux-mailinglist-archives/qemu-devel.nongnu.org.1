@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A834D74B031
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FF174B012
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:42:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjij-0007k5-D9; Fri, 07 Jul 2023 07:33:53 -0400
+	id 1qHjio-0007y3-0P; Fri, 07 Jul 2023 07:33:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjih-0007ee-DY; Fri, 07 Jul 2023 07:33:51 -0400
-Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
+ id 1qHjik-0007qO-BR; Fri, 07 Jul 2023 07:33:54 -0400
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjif-00075z-UV; Fri, 07 Jul 2023 07:33:51 -0400
-Received: by mail-ot1-x335.google.com with SMTP id
- 46e09a7af769-6b5ef64bca6so1625248a34.3; 
- Fri, 07 Jul 2023 04:33:49 -0700 (PDT)
+ id 1qHjii-00076U-G3; Fri, 07 Jul 2023 07:33:54 -0400
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-6b5d57d7db9so1621041a34.3; 
+ Fri, 07 Jul 2023 04:33:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729628; x=1691321628;
+ d=gmail.com; s=20221208; t=1688729631; x=1691321631;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QkjDD2MyIJf1W+5sZdfrx7JqdlOzHwifJlixrav+Tr8=;
- b=dQyKtjvKEcFGqWzBWIZD9lhfBZYeck+bO9PxtEv6fqGCcYkSIBXAC6h1FT0ipEO8O0
- vHd61JMgcy8x6dRRtSjFNmtpujrk8n0xU/T1b4+sKOMQsPYhIo5hbZAna1EUZHGlhYkw
- 3vztgGbQiK7sIODC8M2WUxdBNfuMGa2xUaf8bZ4skiWxrhLLBNrPd9Xi5zXazhRdHuQK
- n57rHd3v8HD3zBuzFjLeGxI8mNJe331qlaskTooSaRCHINX2wqkDVPQDIJDk/JIh7rux
- DemJAQXkhUFJ8b4vs/lb9npy5rgcudXdgIms5dEE8eEwOsbY2XySJybqM9aHPlDBmKp9
- 1Mhg==
+ bh=iJhHiL+RKwf7JtrP7pqVhpinS8XH9PYLJ6UN9H6R5S0=;
+ b=qFcX7ZzjZIfn3+kX/qQCZGgq4tDBKqGKeeEsyc63aZsoQAWyMb2pls/KOwKr/p2qz9
+ Am2YwE+xD0W3WUkJdoVnUzDYNhKQBOiZ2EQs7WAmVGt3PxxwhnxvYEbAxsApt0GAtyyw
+ 2+6SiMZR/cXFUvIhEA5h/z7OQIFfNIPjo/pzhH8xsPkuHzTmqKRBgXJbhdTLSISr3t8a
+ FHT9V2KYeyWFW+KK9Pvd3wuA4yPHAvNMCYuUH9IMocvtRhs2ep8XAZRC0HleZIw5hCt0
+ UTQ9hdBYf2OniCW6FFOdMYwzbOtNaEcwCyBf1Ygjnr9V0r26nQbPZHHge1e3yAJsxFks
+ DM7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729628; x=1691321628;
+ d=1e100.net; s=20221208; t=1688729631; x=1691321631;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QkjDD2MyIJf1W+5sZdfrx7JqdlOzHwifJlixrav+Tr8=;
- b=NyvGpjaasBkjoquB0P7Kx3zpksMqoLCdMVA521C6VLgJiGWTxdsK7K3X4S36kvNSRN
- fif6/hDBJbNq9edHbOrmKKbel3i4rny8sViJSzU/Sx6jxcVa9k2gF20H/4cnWsbUdHFE
- R9yV6/XRWc0aLL9rtRQLj8Lh4pEmHLSgy8MEIxmf/bq7lyC/J5kEeWeySwYMR7mO+zfU
- 1MJKs8UwUKECx0KhFEZJXL4GwTo1aHtfsB/vFDe3am1vvlqAp6dQgfVbVQ2JA2Lwis9O
- OCWMjMZKrtAPSHrZFMsEpFLsnSFrbiQVtzDGmElNgaKZy5MEkR1XHpLLHSWVEyHpD2ly
- Am3w==
-X-Gm-Message-State: ABy/qLahRx5+w9ZYwtaPeRrGjtft6avbDuKFBspi4DizkKY8RK/xYoAt
- hf/1AKvnYtTklFzhs6lRGIKm85Zwy6M=
-X-Google-Smtp-Source: APBJJlFhdJiDUNbIEkmw3HoPiHHJlPXxRnfNOwv69vSgzMDLYUODLThV/OMf8o8pulpmFj3679Ginw==
-X-Received: by 2002:a05:6830:1314:b0:6b7:3dab:dbd6 with SMTP id
- p20-20020a056830131400b006b73dabdbd6mr1305234otq.15.1688729628451; 
- Fri, 07 Jul 2023 04:33:48 -0700 (PDT)
+ bh=iJhHiL+RKwf7JtrP7pqVhpinS8XH9PYLJ6UN9H6R5S0=;
+ b=amnhzmJ/YWPFz1uvLbOAp+TC/i+Ft3hkcEsXvvrBa+Hn29UqICCItsRMQz44GuGCd/
+ DAxtEBSnsfEOTBGSnpho61sN6tRHaHUobXX4FdXUgzKg+S77o6aw5lebuvlUN3d9Ml9o
+ na1efXziW0foXyc8mqM1PNd1b2yD8XjPzamdKw6Dy/JIr0qQD9g2KUQ9l2C957f1rvZ3
+ E3l54CNs7fkWYd1fNcgoq3MuvkXUwwIZ+biYNAMAjOVR8vmw+p6R5TAIKEt8km8rwohU
+ YrcNGZ9tRevHYBZcVeylF7FZR4o1i4QNBqzvL54uj6Ky5Erk170mS42UonJQvWjrdu9T
+ od0w==
+X-Gm-Message-State: ABy/qLYwm8okGa+qMiUPUZeIkRTCo+jcK6wS6UaF8RErXxT65f8Pm2wI
+ EUhKhrS7H2ZbkEDj1ErxzV9aihuBab4=
+X-Google-Smtp-Source: APBJJlEdGZL2zSRMLF8R/dfqGlFHTxkLtANCojBxrL8ivaCAA3qD7QPRJAQiTVD0cj60rzmkMwNajw==
+X-Received: by 2002:a05:6830:1683:b0:6b9:107b:5978 with SMTP id
+ k3-20020a056830168300b006b9107b5978mr2017452otr.27.1688729630997; 
+ Fri, 07 Jul 2023 04:33:50 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.33.46
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.33.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:33:48 -0700 (PDT)
+ Fri, 07 Jul 2023 04:33:50 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Greg Kurz <groug@kaod.org>
-Subject: [PULL 58/60] target/ppc: Remove pointless checks of CONFIG_USER_ONLY
- in 'kvm_ppc.h'
-Date: Fri,  7 Jul 2023 08:31:06 -0300
-Message-ID: <20230707113108.7145-59-danielhb413@gmail.com>
+ richard.henderson@linaro.org, Joel Stanley <joel@jms.id.au>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PULL 59/60] ppc/pnv: Add QME region for P10
+Date: Fri,  7 Jul 2023 08:31:07 -0300
+Message-ID: <20230707113108.7145-60-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x335.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,54 +93,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Joel Stanley <joel@jms.id.au>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The Quad Management Engine (QME) manages power related settings for its
+quad. The xscom region is separate from the quad xscoms, therefore a new
+region is added. The xscoms in a QME select a given core by selecting
+the forth nibble.
+
+Implement dummy reads for the stop state history (SSH) and special
+wakeup (SPWU) registers. This quietens some sxcom errors when skiboot
+boots on p10.
+
+Power9 does not have a QME.
+
+Signed-off-by: Joel Stanley <joel@jms.id.au>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-ID: <20230627115124.19632-7-philmd@linaro.org>
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Message-ID: <20230707071213.9924-1-joel@jms.id.au>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- target/ppc/kvm_ppc.h | 5 -----
- 1 file changed, 5 deletions(-)
+ hw/ppc/pnv.c               |  3 ++
+ hw/ppc/pnv_core.c          | 78 +++++++++++++++++++++++++++++++++++++-
+ include/hw/ppc/pnv_core.h  |  4 ++
+ include/hw/ppc/pnv_xscom.h | 11 ++++++
+ 4 files changed, 94 insertions(+), 2 deletions(-)
 
-diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
-index 901e188c9a..6a4dd9c560 100644
---- a/target/ppc/kvm_ppc.h
-+++ b/target/ppc/kvm_ppc.h
-@@ -42,7 +42,6 @@ int kvmppc_booke_watchdog_enable(PowerPCCPU *cpu);
- target_ulong kvmppc_configure_v3_mmu(PowerPCCPU *cpu,
-                                      bool radix, bool gtse,
-                                      uint64_t proc_tbl);
--#ifndef CONFIG_USER_ONLY
- bool kvmppc_spapr_use_multitce(void);
- int kvmppc_spapr_enable_inkernel_multitce(void);
- void *kvmppc_create_spapr_tce(uint32_t liobn, uint32_t page_shift,
-@@ -52,7 +51,6 @@ int kvmppc_remove_spapr_tce(void *table, int pfd, uint32_t window_size);
- int kvmppc_reset_htab(int shift_hint);
- uint64_t kvmppc_vrma_limit(unsigned int hash_shift);
- bool kvmppc_has_cap_spapr_vfio(void);
--#endif /* !CONFIG_USER_ONLY */
- bool kvmppc_has_cap_epr(void);
- int kvmppc_define_rtas_kernel_token(uint32_t token, const char *function);
- int kvmppc_get_htab_fd(bool write, uint64_t index, Error **errp);
-@@ -262,7 +260,6 @@ static inline void kvmppc_set_reg_tb_offset(PowerPCCPU *cpu, int64_t tb_offset)
- {
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index 23740f9d07..eb54f93986 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -1685,6 +1685,9 @@ static void pnv_chip_power10_quad_realize(Pnv10Chip *chip10, Error **errp)
+ 
+         pnv_xscom_add_subregion(chip, PNV10_XSCOM_EQ_BASE(eq->quad_id),
+                                 &eq->xscom_regs);
++
++        pnv_xscom_add_subregion(chip, PNV10_XSCOM_QME_BASE(eq->quad_id),
++                                &eq->xscom_qme_regs);
+     }
  }
  
--#ifndef CONFIG_USER_ONLY
- static inline bool kvmppc_spapr_use_multitce(void)
+diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+index 9e7cf341dc..9b39d527de 100644
+--- a/hw/ppc/pnv_core.c
++++ b/hw/ppc/pnv_core.c
+@@ -496,7 +496,67 @@ static const MemoryRegionOps pnv_quad_power10_xscom_ops = {
+     .endianness = DEVICE_BIG_ENDIAN,
+ };
+ 
+-static void pnv_quad_realize(DeviceState *dev, Error **errp)
++#define P10_QME_SPWU_HYP 0x83c
++#define P10_QME_SSH_HYP  0x82c
++
++static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
++                                            unsigned int width)
++{
++    uint32_t offset = addr >> 3;
++    uint64_t val = -1;
++
++    /*
++     * Forth nibble selects the core within a quad, mask it to process read
++     * for any core.
++     */
++    switch (offset & ~0xf000) {
++    case P10_QME_SPWU_HYP:
++    case P10_QME_SSH_HYP:
++        return 0;
++    default:
++        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
++                      offset);
++    }
++
++    return val;
++}
++
++static void pnv_qme_power10_xscom_write(void *opaque, hwaddr addr,
++                                         uint64_t val, unsigned int width)
++{
++    uint32_t offset = addr >> 3;
++
++    switch (offset) {
++    default:
++        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
++                      offset);
++    }
++}
++
++static const MemoryRegionOps pnv_qme_power10_xscom_ops = {
++    .read = pnv_qme_power10_xscom_read,
++    .write = pnv_qme_power10_xscom_write,
++    .valid.min_access_size = 8,
++    .valid.max_access_size = 8,
++    .impl.min_access_size = 8,
++    .impl.max_access_size = 8,
++    .endianness = DEVICE_BIG_ENDIAN,
++};
++
++static void pnv_quad_power9_realize(DeviceState *dev, Error **errp)
++{
++    PnvQuad *eq = PNV_QUAD(dev);
++    PnvQuadClass *pqc = PNV_QUAD_GET_CLASS(eq);
++    char name[32];
++
++    snprintf(name, sizeof(name), "xscom-quad.%d", eq->quad_id);
++    pnv_xscom_region_init(&eq->xscom_regs, OBJECT(dev),
++                          pqc->xscom_ops,
++                          eq, name,
++                          pqc->xscom_size);
++}
++
++static void pnv_quad_power10_realize(DeviceState *dev, Error **errp)
  {
-     return false;
-@@ -322,8 +319,6 @@ static inline void kvmppc_write_hpte(hwaddr ptex, uint64_t pte0, uint64_t pte1)
-     abort();
+     PnvQuad *eq = PNV_QUAD(dev);
+     PnvQuadClass *pqc = PNV_QUAD_GET_CLASS(eq);
+@@ -507,6 +567,12 @@ static void pnv_quad_realize(DeviceState *dev, Error **errp)
+                           pqc->xscom_ops,
+                           eq, name,
+                           pqc->xscom_size);
++
++    snprintf(name, sizeof(name), "xscom-qme.%d", eq->quad_id);
++    pnv_xscom_region_init(&eq->xscom_qme_regs, OBJECT(dev),
++                          pqc->xscom_qme_ops,
++                          eq, name,
++                          pqc->xscom_qme_size);
  }
  
--#endif /* !CONFIG_USER_ONLY */
--
- static inline bool kvmppc_has_cap_epr(void)
+ static Property pnv_quad_properties[] = {
+@@ -517,6 +583,9 @@ static Property pnv_quad_properties[] = {
+ static void pnv_quad_power9_class_init(ObjectClass *oc, void *data)
  {
-     return false;
+     PnvQuadClass *pqc = PNV_QUAD_CLASS(oc);
++    DeviceClass *dc = DEVICE_CLASS(oc);
++
++    dc->realize = pnv_quad_power9_realize;
+ 
+     pqc->xscom_ops = &pnv_quad_power9_xscom_ops;
+     pqc->xscom_size = PNV9_XSCOM_EQ_SIZE;
+@@ -525,16 +594,21 @@ static void pnv_quad_power9_class_init(ObjectClass *oc, void *data)
+ static void pnv_quad_power10_class_init(ObjectClass *oc, void *data)
+ {
+     PnvQuadClass *pqc = PNV_QUAD_CLASS(oc);
++    DeviceClass *dc = DEVICE_CLASS(oc);
++
++    dc->realize = pnv_quad_power10_realize;
+ 
+     pqc->xscom_ops = &pnv_quad_power10_xscom_ops;
+     pqc->xscom_size = PNV10_XSCOM_EQ_SIZE;
++
++    pqc->xscom_qme_ops = &pnv_qme_power10_xscom_ops;
++    pqc->xscom_qme_size = PNV10_XSCOM_QME_SIZE;
+ }
+ 
+ static void pnv_quad_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+ 
+-    dc->realize = pnv_quad_realize;
+     device_class_set_props(dc, pnv_quad_properties);
+     dc->user_creatable = false;
+ }
+diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
+index aa5ca281fc..4db21229a6 100644
+--- a/include/hw/ppc/pnv_core.h
++++ b/include/hw/ppc/pnv_core.h
+@@ -66,6 +66,9 @@ struct PnvQuadClass {
+ 
+     const MemoryRegionOps *xscom_ops;
+     uint64_t xscom_size;
++
++    const MemoryRegionOps *xscom_qme_ops;
++    uint64_t xscom_qme_size;
+ };
+ 
+ #define TYPE_PNV_QUAD "powernv-cpu-quad"
+@@ -80,5 +83,6 @@ struct PnvQuad {
+ 
+     uint32_t quad_id;
+     MemoryRegion xscom_regs;
++    MemoryRegion xscom_qme_regs;
+ };
+ #endif /* PPC_PNV_CORE_H */
+diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
+index a4c9d95dc5..9bc6463547 100644
+--- a/include/hw/ppc/pnv_xscom.h
++++ b/include/hw/ppc/pnv_xscom.h
+@@ -127,6 +127,17 @@ struct PnvXScomInterfaceClass {
+ #define PNV10_XSCOM_EC(proc)                    \
+     ((0x2 << 16) | ((1 << (3 - (proc))) << 12))
+ 
++#define PNV10_XSCOM_QME(chiplet) \
++        (PNV10_XSCOM_EQ(chiplet) | (0xE << 16))
++
++/*
++ * Make the region larger by 0x1000 (instead of starting at an offset) so the
++ * modelled addresses start from 0
++ */
++#define PNV10_XSCOM_QME_BASE(core)     \
++    ((uint64_t) PNV10_XSCOM_QME(PNV10_XSCOM_EQ_CHIPLET(core)))
++#define PNV10_XSCOM_QME_SIZE        (0x8000 + 0x1000)
++
+ #define PNV10_XSCOM_EQ_BASE(core)     \
+     ((uint64_t) PNV10_XSCOM_EQ(PNV10_XSCOM_EQ_CHIPLET(core)))
+ #define PNV10_XSCOM_EQ_SIZE        0x20000
 -- 
 2.41.0
 
