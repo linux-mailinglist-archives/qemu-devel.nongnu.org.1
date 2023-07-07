@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B2F74B44B
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 17:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2113674B447
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 17:28:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHnNB-0000Ut-Rn; Fri, 07 Jul 2023 11:27:53 -0400
+	id 1qHnNC-0000Y3-Sk; Fri, 07 Jul 2023 11:27:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qHnN2-0000Rq-Qs
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:27:45 -0400
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ id 1qHnN4-0000T6-JA
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:27:48 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qHnN0-000757-7m
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:27:43 -0400
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-262ef07be72so1131492a91.1
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 08:27:41 -0700 (PDT)
+ id 1qHnN2-00075K-SX
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:27:46 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-55ba5bb0bf3so1378992a12.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 08:27:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688743661; x=1691335661;
+ d=gmail.com; s=20221208; t=1688743663; x=1691335663;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gbPDnDvXZ1jM7wSAre9NYEyzAMjFpX5GahcGVkR6sow=;
- b=LYizImPp984a/iy50pZAmS/YFWO3NHYTqx1Ns9UrjNhmeafqRVAAm1K0pDVcEwCIyC
- IpLztQnKXhMFLXEwvDSyg+XZbIqiORQw3xAl2K8h1iHtsTasRSVSBlxiq85eL96FvcVV
- fXYpy79geo8RWku8seMlaHxQ0q6ZPbeBG+MBQvESwgiTmE9s8ZrnOF/vM80BNoUyYM7d
- xb3ODSGOJYEmv8TCCM6scUR6VfHtfWc+XAuSPENi5jXI7Dv+zIUNDbmvsecnrnRwnUZt
- SOj530XM2m8EZu2SsUlgvANiC+onoLR7Zd4N+DbLTaAx89kIKjHmIXn1rrI6oPjjZGSL
- kr8w==
+ bh=nfZfag1JfSDpKsrmVxXiIq1XR8AXvbuoqO5vmNYxwj4=;
+ b=AAQ7NeqH06r+Qm2mcDIktt5ZumaRY0byL8xJL5M2eiCy2hlnGv8M9OwB8zv8dXwYWV
+ beJaPEWdQqtJmtwEf4AFYsYu/ZQnEYzz/i4KwH6L/kO20UhuTWt9vYXgJnvbFqFGtm/L
+ t9mSNq2PAaBD3tzjeVZGAwD4Neoe8eG+ORfNLWbFaJ8s0dkHS3DnyH/f3YX3V+mP7qLU
+ dSeuCQU9tqu7lT/MYr1T6+iU0j0dMQ3RC0s4mtjQqgGr4HBT5svOzdNYMF9RcnSIlUvj
+ BavbzNSitcnS+3Wo5Mf+mfGutXC+qCiUVVr7bPuQdckmNXRYfg3mgixg8VkxVuMMsweN
+ 2ZqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688743661; x=1691335661;
+ d=1e100.net; s=20221208; t=1688743663; x=1691335663;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gbPDnDvXZ1jM7wSAre9NYEyzAMjFpX5GahcGVkR6sow=;
- b=QKUImj931lXJe1ZUpP7IaaNMGFyQ4veThqfvP/5rc1exrNvBwQHGQ179lrvxY+Fq03
- V0WvVorm/4sr8+Ovh0ZzWNSQAa6sTAD0afvR/TF1jCZ8vARWW1V4b5//DyBtricXlvMi
- 3WMAfZQC/w6KeFQ4MphQI+61VfmMHFOIeqEjUu5VJByWoxTiaurC4T3HtQEaXoWWb1JP
- u57wKy/cKPTno3ayAHGUQjx483asJmmf3Polr78b5pE4xYmKl2xuahJgq+DzjSsyTaLf
- c04UaOl3VtLfmPwfB6NJaafGVjqHaF1ZRvyYVIrX8oj7NQ8fTJPoRqpvfndd4EShLk2M
- AiPQ==
-X-Gm-Message-State: ABy/qLb9dbq3k7CN5EHsbKgHC8J3uA+/0jZoIsxf5+MzwgDcqWOIiHTe
- ymQEGFbMBxn366ycvJ5b2lA=
-X-Google-Smtp-Source: APBJJlFLSk9Qf+U3VClxm+5cjqSOzr/DFHmaMNuop+7ps6WoxJITicMZQzFjStjg5/AmlQcjbZXErg==
-X-Received: by 2002:a17:90a:ca08:b0:25e:d013:c22c with SMTP id
- x8-20020a17090aca0800b0025ed013c22cmr4185789pjt.47.1688743660508; 
- Fri, 07 Jul 2023 08:27:40 -0700 (PDT)
+ bh=nfZfag1JfSDpKsrmVxXiIq1XR8AXvbuoqO5vmNYxwj4=;
+ b=RY8AdFjpFEK/O8yyykb9mYpVcaAamZLZ22jJGgtsFYgMnqxDkyz7od+4ZSkQGtMRsP
+ tFElfQ8vS0Z65uRDDQSZuJ4VkFjbc/cLEejmAjdGf9usKMI5nB1XSK3YEfkCHvMOFond
+ FjjdL8DXz3bA4EEwl89OSEYUOijaWQS/pqxylYGLAAR4vOb+dr0GTvHtAYBjR+QUtvZZ
+ nMyRs1nzpdtIaki+OHKcnKEPtMbb8k/78EkseakgZH4KN5PE/+zthJ+Hees9IgK0nS0K
+ EHqwNzlkZ7VerkolILKp9b+ow26ECTOYOQwIDcNvzSQeQp/NS44uUho4+fn6Mzri9Nrd
+ WzsQ==
+X-Gm-Message-State: ABy/qLbdA9eXJEZH8cqLLRjym1AKUvCzT5QVgDKHFq/h70mvWmUFLneB
+ vPxzC/ztvAMDA43ft/xlRpWSsB8UqETJGQ==
+X-Google-Smtp-Source: APBJJlGi1acLqrUwF1N6tuouJQZ5Rgt6aMWeEGa1z/gafk/Apcl+bi4uF2N0UiBu+Y1WTSN9/zcPWA==
+X-Received: by 2002:a05:6a20:9390:b0:12a:f4d2:3e25 with SMTP id
+ x16-20020a056a20939000b0012af4d23e25mr8614423pzh.29.1688743663022; 
+ Fri, 07 Jul 2023 08:27:43 -0700 (PDT)
 Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
- w4-20020a17090aea0400b00263e59c1a9fsm1685397pjy.34.2023.07.07.08.27.39
+ u12-20020aa7848c000000b0065da94fe921sm3021526pfn.50.2023.07.07.08.27.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 08:27:40 -0700 (PDT)
+ Fri, 07 Jul 2023 08:27:42 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
 To: jasowang@redhat.com,
 	mst@redhat.com,
@@ -62,16 +62,16 @@ To: jasowang@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	yin31149@gmail.com,
 	18801353760@163.com
-Subject: [PATCH v3 1/7] vdpa: Use iovec for vhost_vdpa_net_load_cmd()
-Date: Fri,  7 Jul 2023 23:27:28 +0800
-Message-Id: <3482cc50eebd13db4140b8b5dec9d0cc25b20b1b.1688743107.git.yin31149@gmail.com>
+Subject: [PATCH v3 2/7] vdpa: Restore MAC address filtering state
+Date: Fri,  7 Jul 2023 23:27:29 +0800
+Message-Id: <4b9550c14bc8c98c8f48e04dbf3d3ac41489d3fd.1688743107.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1688743107.git.yin31149@gmail.com>
 References: <cover.1688743107.git.yin31149@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=yin31149@gmail.com; helo=mail-pj1-x102c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=yin31149@gmail.com; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,110 +95,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to VirtIO standard, "The driver MUST follow
-the VIRTIO_NET_CTRL_MAC_TABLE_SET command by a le32 number,
-followed by that number of non-multicast MAC addresses,
-followed by another le32 number, followed by that number
-of multicast addresses."
-
-Considering that these data is not stored in contiguous memory,
-this patch refactors vhost_vdpa_net_load_cmd() to accept
-scattered data, eliminating the need for an addtional data copy or
-packing the data into s->cvq_cmd_out_buffer outside of
-vhost_vdpa_net_load_cmd().
+This patch refactors vhost_vdpa_net_load_mac() to
+restore the MAC address filtering state at device's startup.
 
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 ---
 v3:
-  - rename argument name to `data_sg` and `data_num`
-  - use iov_to_buf() suggested by Eugenio
+  - return early if mismatch the condition suggested by Eugenio
 
-v2: https://lore.kernel.org/all/6d3dc0fc076564a03501e222ef1102a6a7a643af.1688051252.git.yin31149@gmail.com/
-  - refactor vhost_vdpa_load_cmd() to accept iovec suggested by
-Eugenio
+v2: https://lore.kernel.org/all/2f2560f749186c0eb1055f9926f464587e419eeb.1688051252.git.yin31149@gmail.com/
+  - use iovec suggested by Eugenio
+  - avoid sending CVQ command in default state
 
- net/vhost-vdpa.c | 33 +++++++++++++++++++++++++--------
- 1 file changed, 25 insertions(+), 8 deletions(-)
+v1: https://lore.kernel.org/all/00f72fe154a882fd6dc15bc39e3a1ac63f9dadce.1687402580.git.yin31149@gmail.com/
+
+ net/vhost-vdpa.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 373609216f..31ef6ad6ec 100644
+index 31ef6ad6ec..7189ccafaf 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -620,29 +620,38 @@ static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s, size_t out_len,
- }
- 
- static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
--                                       uint8_t cmd, const void *data,
--                                       size_t data_size)
-+                                       uint8_t cmd, const struct iovec *data_sg,
-+                                       size_t data_num)
- {
-     const struct virtio_net_ctrl_hdr ctrl = {
-         .class = class,
-         .cmd = cmd,
-     };
-+    size_t data_size = iov_size(data_sg, data_num);
- 
-     assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl));
- 
-+    /* pack the CVQ command header */
-     memcpy(s->cvq_cmd_out_buffer, &ctrl, sizeof(ctrl));
--    memcpy(s->cvq_cmd_out_buffer + sizeof(ctrl), data, data_size);
- 
--    return vhost_vdpa_net_cvq_add(s, sizeof(ctrl) + data_size,
-+    /* pack the CVQ command command-specific-data */
-+    iov_to_buf(data_sg, data_num, 0,
-+               s->cvq_cmd_out_buffer + sizeof(ctrl), data_size);
-+
-+    return vhost_vdpa_net_cvq_add(s, data_size + sizeof(ctrl),
-                                   sizeof(virtio_net_ctrl_ack));
- }
- 
- static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n)
- {
-     if (virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_MAC_ADDR)) {
-+        const struct iovec data = {
-+            .iov_base = (void *)n->mac,
-+            .iov_len = sizeof(n->mac),
-+        };
-         ssize_t dev_written = vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_MAC,
-                                                   VIRTIO_NET_CTRL_MAC_ADDR_SET,
--                                                  n->mac, sizeof(n->mac));
-+                                                  &data, 1);
-         if (unlikely(dev_written < 0)) {
-             return dev_written;
+@@ -660,6 +660,58 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n)
          }
-@@ -665,9 +674,13 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
      }
  
-     mq.virtqueue_pairs = cpu_to_le16(n->curr_queue_pairs);
-+    const struct iovec data = {
-+        .iov_base = &mq,
-+        .iov_len = sizeof(mq),
++    /*
++     * According to VirtIO standard, "The device MUST have an
++     * empty MAC filtering table on reset.".
++     *
++     * Therefore, there is no need to send this CVQ command if the
++     * driver also sets an empty MAC filter table, which aligns with
++     * the device's defaults.
++     *
++     * Note that the device's defaults can mismatch the driver's
++     * configuration only at live migration.
++     */
++    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_RX) ||
++        n->mac_table.in_use == 0) {
++        return 0;
++    }
++
++    uint32_t uni_entries = n->mac_table.first_multi,
++             uni_macs_size = uni_entries * ETH_ALEN,
++             mul_entries = n->mac_table.in_use - uni_entries,
++             mul_macs_size = mul_entries * ETH_ALEN;
++    struct virtio_net_ctrl_mac uni = {
++        .entries = cpu_to_le32(uni_entries),
 +    };
-     dev_written = vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_MQ,
--                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET, &mq,
--                                          sizeof(mq));
-+                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
-+                                          &data, 1);
-     if (unlikely(dev_written < 0)) {
-         return dev_written;
-     }
-@@ -706,9 +719,13 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-     }
++    struct virtio_net_ctrl_mac mul = {
++        .entries = cpu_to_le32(mul_entries),
++    };
++    const struct iovec data[] = {
++        {
++            .iov_base = &uni,
++            .iov_len = sizeof(uni),
++        }, {
++            .iov_base = n->mac_table.macs,
++            .iov_len = uni_macs_size,
++        }, {
++            .iov_base = &mul,
++            .iov_len = sizeof(mul),
++        }, {
++            .iov_base = &n->mac_table.macs[uni_macs_size],
++            .iov_len = mul_macs_size,
++        },
++    };
++    ssize_t dev_written = vhost_vdpa_net_load_cmd(s,
++                                VIRTIO_NET_CTRL_MAC,
++                                VIRTIO_NET_CTRL_MAC_TABLE_SET,
++                                data, ARRAY_SIZE(data));
++    if (unlikely(dev_written < 0)) {
++        return dev_written;
++    }
++    if (*s->status != VIRTIO_NET_OK) {
++        return -EIO;
++    }
++
+     return 0;
+ }
  
-     offloads = cpu_to_le64(n->curr_guest_offloads);
-+    const struct iovec data = {
-+        .iov_base = &offloads,
-+        .iov_len = sizeof(offloads),
-+    };
-     dev_written = vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_GUEST_OFFLOADS,
-                                           VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
--                                          &offloads, sizeof(offloads));
-+                                          &data, 1);
-     if (unlikely(dev_written < 0)) {
-         return dev_written;
-     }
 -- 
 2.25.1
 
