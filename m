@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CAF174B82F
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 22:42:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BB174B83F
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 22:44:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHsGM-0004o3-Qv; Fri, 07 Jul 2023 16:41:10 -0400
+	id 1qHsGN-0004og-9p; Fri, 07 Jul 2023 16:41:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHsGK-0004nR-ML
+ id 1qHsGK-0004nS-Mm
  for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:41:08 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHsGG-0004g8-Ro
+ id 1qHsGH-0004gx-2Z
  for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:41:08 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-4f76a0a19d4so3614421e87.2
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fbea14700bso24685945e9.3
  for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 13:41:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688762463; x=1691354463;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QWcGYI7xB8LlKTPPYJbQ3MPkeMAscTRkJ+piG/iDAy8=;
- b=kgLd9JZgzUCnBaWwYIHeSliIdqz/CKARNj85jImEDDcsHeY0pgtIW7ztsTJ0HGyNcN
- 3clYBcy+0OZjalk998XWFASrSjp3abW4rwS7y3S4R2b0qN6FWOxmalGJTintaRw0RnPG
- kHvJDrR/eO15Q8h93eztPsNlg4Qqsr4FKX72T+gSqpVxwatto76A189TqhpleV5+/q6n
- MDFl/OUUtEwgcjq++8UvajWgQkkhnLa2eralseRgVwySLsFyuUN1fKa1OPIaUovEpcR+
- DG7PmQ/qfxBic6aeiYMY6IrkYifAQ5tf96IgTHQPzR3FrAGNvi6Nvm53FyvOy4uL8LuJ
- 5ClQ==
+ bh=qGV05zqZ+kYKrbzC2hjbmm/a6tBHPtbV1LUiCeA7Icg=;
+ b=iNM8wBWftYTJNXz5D2VDQQjww9AvpUGEuDnbMzYBq4psrzbtXKaSl3rgByvXJap/en
+ U5bnBRSht7q915qBoLI9byGyWp3rgURcD4zQcI23K1GmwxCNhOes4g+ConeyDNUfWTdB
+ qKOigVkUw9l7Sbe6a1rUzeSxETFaYmSQXulDZID2uiW+Tx6f09ulLxZJTM5Y48YrFksr
+ IGj9aOk6gQzyjXR/XSdxY8yURzucwjBeYgrVUnangyqhzqZ55gUTFG5Qe2HE4GiLM5UX
+ j3B1NCvHGB5VIJ7exp1gYDJWyW8q/Us8mFSJhrO1SDo6NDwHHj625iHb3OYGtaUZUFdn
+ nzqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688762463; x=1691354463;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QWcGYI7xB8LlKTPPYJbQ3MPkeMAscTRkJ+piG/iDAy8=;
- b=HpsNav8kOVWj/jsBdflaO5VtlVKq01RpAcRc4FvzcSlpqKS7vOwS7lA22kbD0KGksE
- 6n6ddlSmJ7RAzMiQEQBI/1sI0av2maU2acHNfBQq6YNth2MR22IGJQqunUDMsi1IVLLn
- PqTcD+iZCVWz7Pk0LhgaOGGWKFr1GQDaLEsv0tFhqpUx0mWbZylJZVBQuRQXuxtNHFZD
- Yy/nmEpIHanG8IZ1NrOqWlkAV6VojLLBK5HsZ4jUZ0VMkVP/8frHIdH266SH52q/G7xa
- 16vBn8QImuQCtr3LRrx9uel4FGzqtNmEj4aEdrdG6O/rwc1yj0qWD1/Qp6+gf7xw+MLn
- lEHA==
-X-Gm-Message-State: ABy/qLbM/E/yynev8LtAeADtEXES+lp6mTZXNlf9D0fMQblhpPPP8/F3
- ErBXUs/WFnJs8z3LOZY0WZpFyBNfGRAl4xcZakrGdA==
-X-Google-Smtp-Source: APBJJlEjwU3+MfoxViyCrTROJG+f7j3jee3/sRhVNXqmIHtOVZMBa3TP3s5nmabkjMcxpdSfI2hHcQ==
-X-Received: by 2002:a05:6512:3b83:b0:4f6:45af:70b8 with SMTP id
- g3-20020a0565123b8300b004f645af70b8mr5412257lfv.58.1688762463004; 
+ bh=qGV05zqZ+kYKrbzC2hjbmm/a6tBHPtbV1LUiCeA7Icg=;
+ b=IQAV3zFSTyYJ10p1r8ycegnbwgzBXPOfsapznmlA9M7DeMsHykNt6iWRgdg7JcpaYx
+ fWSmXyv4SUiHjPQW9XxXlXTRvU2FHhsseZSZ/S3cnZapklpk0t0noo18X+5PBNpQti4s
+ Mlf03d8/hNrbkv8DPJNln+XY+3Keaa8pqoaRhL0ozcwV2h8W1ktVQJo5qXoO3VV/xH7F
+ 0vSq8rBX4xPlINYp8gu1IxPOTB57FjtvcK/yyOKyK27f7BWYmOIokFxkys+SDnj1fNnt
+ 3g6Mp7YLUV+0fQ0H23TSAkOTHwbTfqN6KlazwxtaigezBKC2sRv6lqQ0VhohFXwgXjEF
+ svvg==
+X-Gm-Message-State: ABy/qLbyAYDt+Byi0ykn5jewwdVUaNzL0TlYKaBP8OgiiULk/qHlni38
+ Jdll+9auHKtXoVb9H1GdB6OzplWXUyaHh13tfk3GUg==
+X-Google-Smtp-Source: APBJJlGUedQrSy6FU1aAmSFDpHtvZ/e/h3aIiG2HNnyL733I9so7inwVU9pp2adv0fROUcFSmWFSEg==
+X-Received: by 2002:a7b:c392:0:b0:3fb:d1db:5454 with SMTP id
+ s18-20020a7bc392000000b003fbd1db5454mr5373575wmj.35.1688762463732; 
  Fri, 07 Jul 2023 13:41:03 -0700 (PDT)
 Received: from localhost.localdomain (host-92-23-208-66.as13285.net.
  [92.23.208.66]) by smtp.gmail.com with ESMTPSA id
- q10-20020a1ce90a000000b003fbb25da65bsm3337736wmc.30.2023.07.07.13.41.02
+ q10-20020a1ce90a000000b003fbb25da65bsm3337736wmc.30.2023.07.07.13.41.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 13:41:02 -0700 (PDT)
+ Fri, 07 Jul 2023 13:41:03 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu, mjt@tls.msk.ru, Warner Losh <imp@bsdimp.com>,
- Kyle Evans <kevans@freebsd.org>
-Subject: [PATCH v2 08/24] bsd-user: Use page_check_range_empty for MAP_EXCL
-Date: Fri,  7 Jul 2023 21:40:38 +0100
-Message-Id: <20230707204054.8792-11-richard.henderson@linaro.org>
+Cc: laurent@vivier.eu,
+	mjt@tls.msk.ru
+Subject: [PATCH v2 09/24] linux-user: Implement MAP_FIXED_NOREPLACE
+Date: Fri,  7 Jul 2023 21:40:39 +0100
+Message-Id: <20230707204054.8792-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230707204054.8792-1-richard.henderson@linaro.org>
 References: <20230707204054.8792-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,29 +92,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous check returned -1 when any page within
-[start, start+len) is unmapped, not when all are unmapped.
-
-Cc: Warner Losh <imp@bsdimp.com>
-Cc: Kyle Evans <kevans@freebsd.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/mmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ linux-user/mmap.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
-index 565b9f97ed..07b5b8055e 100644
---- a/bsd-user/mmap.c
-+++ b/bsd-user/mmap.c
-@@ -609,7 +609,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int prot,
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 12275593a1..b2e130e700 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -508,7 +508,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+      * If the user is asking for the kernel to find a location, do that
+      * before we truncate the length for mapping files below.
+      */
+-    if (!(flags & MAP_FIXED)) {
++    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
+         host_len = len + offset - host_offset;
+         host_len = HOST_PAGE_ALIGN(host_len);
+         start = mmap_find_vma(real_start, host_len, TARGET_PAGE_SIZE);
+@@ -550,7 +550,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
          }
+     }
  
-         /* Reject the mapping if any page within the range is mapped */
--        if ((flags & MAP_EXCL) && page_check_range(start, len, 0) < 0) {
-+        if ((flags & MAP_EXCL) && !page_check_range_empty(start, end - 1)) {
-             errno = EINVAL;
+-    if (!(flags & MAP_FIXED)) {
++    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
+         unsigned long host_start;
+         void *p;
+ 
+@@ -599,6 +599,13 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
              goto fail;
          }
+ 
++        /* Validate that the chosen range is empty. */
++        if ((flags & MAP_FIXED_NOREPLACE)
++            && !page_check_range_empty(start, end - 1)) {
++            errno = EEXIST;
++            goto fail;
++        }
++
+         /*
+          * worst case: we cannot map the file because the offset is not
+          * aligned, so we read it
+@@ -614,7 +621,8 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+                 goto fail;
+             }
+             retaddr = target_mmap(start, len, target_prot | PROT_WRITE,
+-                                  MAP_FIXED | MAP_PRIVATE | MAP_ANONYMOUS,
++                                  (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))
++                                  | MAP_PRIVATE | MAP_ANONYMOUS,
+                                   -1, 0);
+             if (retaddr == -1) {
+                 goto fail;
 -- 
 2.34.1
 
