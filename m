@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27E874ABBE
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 09:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F83A74ABDE
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 09:25:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHflT-0004gC-4v; Fri, 07 Jul 2023 03:20:27 -0400
+	id 1qHfpl-0006rt-2x; Fri, 07 Jul 2023 03:24:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHflM-0004Zr-P0; Fri, 07 Jul 2023 03:20:24 -0400
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ id 1qHfpV-0006rd-C7; Fri, 07 Jul 2023 03:24:37 -0400
+Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHflK-0008Dc-Iy; Fri, 07 Jul 2023 03:20:19 -0400
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-5636426c1b3so1101985eaf.1; 
- Fri, 07 Jul 2023 00:20:17 -0700 (PDT)
+ id 1qHfpT-0001DJ-Ql; Fri, 07 Jul 2023 03:24:37 -0400
+Received: by mail-oa1-x34.google.com with SMTP id
+ 586e51a60fabf-1a1fa977667so1586875fac.1; 
+ Fri, 07 Jul 2023 00:24:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688714417; x=1691306417;
+ d=gmail.com; s=20221208; t=1688714674; x=1691306674;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=WtaATV2Cd32wXbns9M50SQNgsVaLOzcgrEdKa7M4whg=;
- b=A9FV0aMPz5kS3GOmrZjyZ8b9kR38nk8pzr1P8b2xqd2fWsmb6UbeTtA+GiUq2v5K3U
- au36drEUjK13N2yD2v2LxrPzc1Hw3+RrMyvzN0iqm+f3eukyfz3h27/acVAEoUXqPTZW
- 4Wo+tQzcaaUbCZYgB0i7FDUPx/UpLFdADrFyskKqfRAzE3KA2gzmwYIEdhLEt9oDVktE
- p8uW9rMgFu6xy2vqJnfyP5iTIM3Hiw2VJs+SqcfGn1GRihGBddSPiV3LNTXpinR47f0s
- B4CR4HCxn2VHVsFGPqGnkJJWT0FfTzHjVQDn9Ev+r+PvkthIL/9X8XKeQ8kLQHb7Wnfq
- iswA==
+ bh=+v0c7jqXEaSQ8/CKVRHuIXi+OHiePF56yDcM+f6NjZM=;
+ b=E1NVjUDE64Ygtts87T9i3RTHMYDqbMyGpllu1wNHIkXaPUPz6q+GJmUGircGAE2R76
+ 0og8tT5c77NmqhB7Pzb+xESN3oVar2S4kBnwM/hLKJLHsh6KS5k5moX8TcITs7Rz/5/S
+ gl41CRfjFvYYPL7FdnZi2UMg1ehYn3/h9zIb0jbSd3qRWWdj5i5yD9cu85eO4twaunJW
+ l7HTYAeXo34LhuZ9Z9Tr4/QLTAJL9/rnppE2/7khUrW6o23Xj2Nh4sGQGnTyEU/02tFu
+ 56GECAPS7UwZO9EoQwSqhH+wK+SV8xU/PxQioQx0Z+Qth+ItP3r6NcoKh7DCVlkuEnRU
+ OH5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688714417; x=1691306417;
+ d=1e100.net; s=20221208; t=1688714674; x=1691306674;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WtaATV2Cd32wXbns9M50SQNgsVaLOzcgrEdKa7M4whg=;
- b=AZAcRqJrF0k+/nMxJxWpmA8ymWKLpGrdfC3gL4RAimJh4Nd1hS27RPw2cLlo/3R4bs
- l1sUmqbLmRKryNikeXqRrWwhyruBoUxF+T2ij3qFomDKqNYLMzcHiy74X9hUaiFQHMb4
- Vb1hBB1DH05NbY73NcnSDNkfV7mcyurPXqyl4D1Xv64RFlPGzHjAD3h7HXYeIkTsYiPd
- MrLyQhWCpL/UAC0ExwluTHl+8clSiFdhFIE8MFF/se52uKvGRY9vdYxm7jLURoLChXE3
- HDk1jK2IPF4aDkz0jgobVBoMpT7XP7K7cpILBl8DBksrtHsPrsuf920NjHuVZF6K2kJH
- z0ew==
-X-Gm-Message-State: ABy/qLYLuUq/CkD83sYFfz+HWp0UNI2nqngyNxXuB+K578cZU1TK+QCL
- BgIHyJwQn+QyJalOTltccfo=
-X-Google-Smtp-Source: APBJJlHj1988T2tI4rv8NzYIm0w9M3GKluX3SGnLmPqjWT0RUAVqZ0dQfzocoRxU4l3Xq14rejI62g==
-X-Received: by 2002:a05:6808:14d3:b0:3a1:dd99:8158 with SMTP id
- f19-20020a05680814d300b003a1dd998158mr4669975oiw.6.1688714416920; 
- Fri, 07 Jul 2023 00:20:16 -0700 (PDT)
+ bh=+v0c7jqXEaSQ8/CKVRHuIXi+OHiePF56yDcM+f6NjZM=;
+ b=Tp4YRo0TWrFBn4CZzLsTJN98ff/79JTZXLlO8U9zWQr6LGOkmWihQl35EaGYM0vdr6
+ 5BF71dvgNtTsXf0Ihe1D9DltZqh7zm7ZDiF34SvNAxtUSmSHXlpxBwCJD2rSZw8xXzt2
+ EsEhWPnQ82V6Rk8or1VDJ/kyDV56dsQkMakQQEdveZu3oaIkt7yFtpmt9fwKzbyWwFaZ
+ d+oCUJgjVF8y2BpDH0OLxAx5Tnijh/6g0lkGLR20HanknY4cFhFtM4w5H9TCoNC6fHm4
+ KF6yrUvzR7jsICSgKv6fbbiijw+eIhmxyAX42bHvdJJ/wyMyxr70df003VX68jXReQZO
+ 1Izg==
+X-Gm-Message-State: ABy/qLYpR2QlwZSNddeBloEzu93oZGV7wBOM/2695su+OU4DCHzgQMK+
+ Jxiwf92kLbKQxULWpIQ0RhlnoPgBCOU=
+X-Google-Smtp-Source: APBJJlG21NBgnNX/iX/+YLsmS5eeUnw49hto47HXkhql9DP+A1alLI5t6H51qpFjQyekrU7bu/H2jw==
+X-Received: by 2002:a05:6870:c89d:b0:19f:aee0:e169 with SMTP id
+ er29-20020a056870c89d00b0019faee0e169mr5470904oab.30.1688714674188; 
+ Fri, 07 Jul 2023 00:24:34 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-19.dial-up.telesp.net.br.
  [201.69.66.19]) by smtp.gmail.com with ESMTPSA id
- s4-20020a0568080b0400b003a1ed9482d4sm1425685oij.4.2023.07.07.00.20.14
+ c6-20020a056870b28600b001aa02b7bfabsm1527682oao.33.2023.07.07.00.24.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 00:20:16 -0700 (PDT)
-Message-ID: <e16f68a3-4d8f-4200-b9ef-131bcdd13db1@gmail.com>
-Date: Fri, 7 Jul 2023 04:20:13 -0300
+ Fri, 07 Jul 2023 00:24:33 -0700 (PDT)
+Message-ID: <bf8cc98d-662b-c4ce-2837-a70c79b0e5e6@gmail.com>
+Date: Fri, 7 Jul 2023 04:24:30 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2 0/2] ppc/pnv: Set P10 core xscom region size to match
- hardware
+Subject: Re: [PATCH v3 0/6] target/ppc: Few cleanups in kvm_ppc.h
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, Joel Stanley <joel@jms.id.au>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-References: <20230706053923.115003-1-npiggin@gmail.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: David Gibson <david@gibson.dropbear.id.au>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Greg Kurz <groug@kaod.org>,
+ kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
+References: <20230627115124.19632-1-philmd@linaro.org>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230706053923.115003-1-npiggin@gmail.com>
+In-Reply-To: <20230627115124.19632-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc33.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::34;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x34.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,31 +97,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
+Phil,
+
+I queued all patches to ppc-next. I fixed up patch 3 to not move the cpu_list
+macro as Greg suggested. If you're strongly attached to it let me know and
+I'll remove it from the queue.
+
+Greg, feel free to send your R-b in patch 3 if patch 3 with this change pleases
+you.
 
 
 Daniel
 
-On 7/6/23 02:39, Nicholas Piggin wrote:
-> Sorry about the paper bag bug in the first version of the patch -
-> I broke powernv8 and 9.
+On 6/27/23 08:51, Philippe Mathieu-Daudé wrote:
+> PPC specific changes of a bigger KVM cleanup, remove "kvm_ppc.h"
+> from user emulation. Mostly trivial IMO.
 > 
-> This adds a xsom_size core class field to change the P10 size without
-> changing the others.
+> Philippe Mathieu-Daudé (6):
+>    target/ppc: Have 'kvm_ppc.h' include 'sysemu/kvm.h'
+>    target/ppc: Reorder #ifdef'ry in kvm_ppc.h
+>    target/ppc: Move CPU QOM definitions to cpu-qom.h
+>    target/ppc: Define TYPE_HOST_POWERPC_CPU in cpu-qom.h
+>    target/ppc: Restrict 'kvm_ppc.h' to sysemu in cpu_init.c
+>    target/ppc: Remove pointless checks of CONFIG_USER_ONLY in 'kvm_ppc.h'
 > 
-> Also added a P10 xscom test, and passes make check.
-> 
-> Thanks,
-> Nick
-> 
-> Nicholas Piggin (2):
->    ppc/pnv: Set P10 core xscom region size to match hardware
->    tests/qtest: Add xscom tests for powernv10 machine
-> 
->   hw/ppc/pnv_core.c            |  6 +++--
->   include/hw/ppc/pnv_core.h    |  1 +
->   include/hw/ppc/pnv_xscom.h   |  2 +-
->   tests/qtest/pnv-xscom-test.c | 44 ++++++++++++++++++++++++++++--------
->   4 files changed, 41 insertions(+), 12 deletions(-)
+>   target/ppc/cpu-qom.h  |  7 +++++
+>   target/ppc/cpu.h      |  6 ----
+>   target/ppc/kvm_ppc.h  | 70 ++++++++++++++++++-------------------------
+>   target/ppc/cpu_init.c |  2 +-
+>   4 files changed, 37 insertions(+), 48 deletions(-)
 > 
 
