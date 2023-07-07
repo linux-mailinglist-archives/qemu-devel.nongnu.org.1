@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A455574AF82
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:09:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7887874AF84
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:10:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjL9-0004r3-5a; Fri, 07 Jul 2023 07:09:31 -0400
+	id 1qHjLd-0005Tw-RA; Fri, 07 Jul 2023 07:10:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjKl-0004mh-Gj; Fri, 07 Jul 2023 07:09:09 -0400
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+ id 1qHjLY-0005M5-MR; Fri, 07 Jul 2023 07:09:57 -0400
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjKi-00017m-0c; Fri, 07 Jul 2023 07:09:06 -0400
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-1a1fa977667so1736293fac.1; 
- Fri, 07 Jul 2023 04:08:59 -0700 (PDT)
+ id 1qHjLW-0002A3-DT; Fri, 07 Jul 2023 07:09:56 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-1b3f281c4e1so1741980fac.3; 
+ Fri, 07 Jul 2023 04:09:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688728138; x=1691320138;
+ d=gmail.com; s=20221208; t=1688728193; x=1691320193;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UoaLEOktCYrLnZlcHppXdlPcB9N9ZIa6RmL0ReOBWvA=;
- b=TEBqt6yO11r5Z21ZihWhgOTXl1tl3VFfgV/eBINbn65JI4Vnrgtul7AAWkM4NPkcxk
- FVv5AVAc36GmxzLX3vi2D2fp8rEXK3orPbqsgp3uYSAwUNBpbeo8FRunDfXJEdpA0s1y
- 3T8uoIAVeQhBDjeBDNTW2oEmL6k7+io8X1p/WEqS/DHFbGJtAgJMnukMqv6mktZ9LLds
- 4FNXQCR58bcrXZ0bttP0oSm6mQ0YTFFhP6vayG9on1X+MtZ/1fk53DSJSrw4r810wBMJ
- K3ubt4LbFF4k2vcnxwR4uwbqGzcB6HzyRAAL73dg58ePlTnAH0/jgzk5rBPnnToghGqM
- VLJw==
+ bh=gA87/TMoO+oxcM9nNucuuBjcg2ftxsHvjEP7OyTBHw4=;
+ b=otEI68GFiyzx942GzdZUpL0VBCp3zJjuWGGSAqon9wRLRX+gdaL6bPUGvEWMJ+mBB6
+ PD91OYesInv9b93kLWMoV+9I27QpeOL62CGqZQiC6eSD0BV6O8/4ceZpqdPKaRrrdwA7
+ fdPPa/nD6P1cSlIeJh9zFbu6+a49nfzh/UZFEySsyhxi0No5ouqWfTFQ4/IVXOrNHnZS
+ jZXpRq/cLgb2iL3tf11oz7CEOIG7YKhayy6DOhrQWsfHvjWZJRFw7NmGd9xIXT38uDxE
+ RAVR8PT6Wg5sixBwTzdpHlZdBIXaKa6XBsq/yJXyJwwzKkEQZigGbtHn4hLf9tVrI+++
+ B1Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688728138; x=1691320138;
+ d=1e100.net; s=20221208; t=1688728193; x=1691320193;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UoaLEOktCYrLnZlcHppXdlPcB9N9ZIa6RmL0ReOBWvA=;
- b=GBzoacElPNBpaxmzp9twpUuKDm62lX2+u+aaoftJSxWHCKQRsady+u9jfIbfZakNoY
- KGUoEJvtsNa+GuX8TRDGedUyRuaZOLlL9Vu/WY/ZyDdxVwafSCTjXY4aQR2wuAaQ66Zw
- 1ZN9HfmMMkIIJAbOhMp9PgzOh6LYKad1driKFlkRcZ60so3r020nmXPpBYp620JlxhA/
- nUxXrCxtetZFXsgxzexT4WAoPd8+3heKanlmAU3jSYI+WU4mAZVb/q1DeeP1d7KAq4Ek
- Ucugi9hVg7jz9FQXf+ZPq6/R0cGaITXWUVA1S9suPS42E1j2n2U9gP/drpA3tf6zRTVk
- +mVw==
-X-Gm-Message-State: ABy/qLaNKzbndy7VhPySDf+PGD2PIPZfjaXid05O38UPD3BfssnypK81
- 0ZkVtGLRr4LmQSf5QK8QYSA=
-X-Google-Smtp-Source: APBJJlEPABPsIZBkqRtNQBr/vdIszwvZMOoQC/NjtOfrksb0nVWYM2lWM+mt6Vi7tHtL+9YHJYa6QA==
-X-Received: by 2002:a05:6871:6a4:b0:1b0:19a4:63f5 with SMTP id
- l36-20020a05687106a400b001b019a463f5mr6437981oao.52.1688728138290; 
- Fri, 07 Jul 2023 04:08:58 -0700 (PDT)
+ bh=gA87/TMoO+oxcM9nNucuuBjcg2ftxsHvjEP7OyTBHw4=;
+ b=iw0svdzqoKW0diNSFXCK/2O0IYKPhoy0pUFuUPDyiYkuwLh0DKPuJJbOwmmoLiNAtl
+ CFC8bCR+kcJizEsYshG+fFbVCMWNOtyHL2n+s5YhPYtUNZt8o54p5dfQ2ViUYLHbnGQ/
+ ftYtDny0YiQ8aceaieXr9SGhTW8pkJNZZZr+SpCfsdFXHmYyAwZCrXhZ3PEo1A/+UvVI
+ PlIuszQgTa4ZFNmuaBvb0e+tXKjvKMKC7EAkWLhxff5HtDBREiBdrEhCoETQCxO29aDS
+ 6NSksRcb0ZBTkyEBXwP0Qdtk88S2yEW/ayOeYFWewqUAEXZO6ymuRTsSMyEDGdprPKoK
+ P3rA==
+X-Gm-Message-State: ABy/qLb/RwcExid9l0tODBBFP1xqAhu2mgxnSZ5Vz61DyvPww/V8/0/0
+ xOIUXNfo/EzN6yEKXeu7xgI=
+X-Google-Smtp-Source: APBJJlGMPoNqtENxEw8auHksj2/M6Akcet5aMyi9N3gfFNfvVf9E6K5umAt4DjVQAvPiwFTLRXs2yw==
+X-Received: by 2002:a05:6871:a4:b0:1b4:624a:fb9 with SMTP id
+ u36-20020a05687100a400b001b4624a0fb9mr51388oaa.46.1688728192602; 
+ Fri, 07 Jul 2023 04:09:52 -0700 (PDT)
 Received: from ?IPV6:2804:14c:f435:9162::1002? ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- y82-20020a4a4555000000b005667b061eebsm766349ooa.13.2023.07.07.04.08.56
+ u17-20020a05687004d100b001b36c56e6a7sm1644593oam.44.2023.07.07.04.09.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 04:08:58 -0700 (PDT)
-Message-ID: <fa93bf11-d4f2-7e3b-1258-5a0d8a628927@gmail.com>
-Date: Fri, 7 Jul 2023 08:08:54 -0300
+ Fri, 07 Jul 2023 04:09:52 -0700 (PDT)
+Message-ID: <b0047746-5b36-c39b-c669-055d08ca3164@gmail.com>
+Date: Fri, 7 Jul 2023 08:09:47 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2] ppc/pnv: Add QME region for P10
+Subject: Re: [PATCH v6] ppc: Enable 2nd DAWR support on p10
 Content-Language: en-US
-To: Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?=
- <fbarrat@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-References: <20230707071213.9924-1-joel@jms.id.au>
+To: Shivaprasad G Bhat <sbhat@linux.ibm.com>, david@gibson.dropbear.id.au
+Cc: clg@kaod.org, groug@kaod.org, harshpb@linux.ibm.com, npiggin@gmail.com,
+ pbonzini@redhat.com, qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, ravi.bangoria@amd.com
+References: <168871963321.58984.15628382614621248470.stgit@ltcd89-lp2>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230707071213.9924-1-joel@jms.id.au>
+In-Reply-To: <168871963321.58984.15628382614621248470.stgit@ltcd89-lp2>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x29.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x32.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,209 +95,325 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This one was a buzzer shot.
+
+
 Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
 
 
 Daniel
 
-On 7/7/23 04:12, Joel Stanley wrote:
-> The Quad Management Engine (QME) manages power related settings for its
-> quad. The xscom region is separate from the quad xscoms, therefore a new
-> region is added. The xscoms in a QME select a given core by selecting
-> the forth nibble.
+
+On 7/7/23 05:47, Shivaprasad G Bhat wrote:
+> From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 > 
-> Implement dummy reads for the stop state history (SSH) and special
-> wakeup (SPWU) registers. This quietens some sxcom errors when skiboot
-> boots on p10.
+> As per the PAPR, bit 0 of byte 64 in pa-features property
+> indicates availability of 2nd DAWR registers. i.e. If this bit is set, 2nd
+> DAWR is present, otherwise not. Use KVM_CAP_PPC_DAWR1 capability to find
+> whether kvm supports 2nd DAWR or not. If it's supported, allow user to set
+> the pa-feature bit in guest DT using cap-dawr1 machine capability. Though,
+> watchpoint on powerpc TCG guest is not supported and thus 2nd DAWR is not
+> enabled for TCG mode.
 > 
-> Power9 does not have a QME.
-> 
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
+> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+> Reviewed-by: Greg Kurz <groug@kaod.org>
+> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
 > ---
-> v2:
->   Clean up extra whitespace
->   Make realize quad specific so power9 doesn't end up with the qme region
-> ---
->   include/hw/ppc/pnv_core.h  |  4 ++
->   include/hw/ppc/pnv_xscom.h | 11 ++++++
->   hw/ppc/pnv.c               |  3 ++
->   hw/ppc/pnv_core.c          | 78 +++++++++++++++++++++++++++++++++++++-
->   4 files changed, 94 insertions(+), 2 deletions(-)
+> Changelog:
+> v5: https://lore.kernel.org/all/20210412114433.129702-1-ravi.bangoria@linux.ibm.com/
+> v5->v6:
+>    - The other patches in the original series already merged.
+>    - Rebased to the top of the tree. So, the gen_spr_book3s_310_dbg() is renamed
+>      to register_book3s_310_dbg_sprs() and moved to cpu_init.c accordingly.
+>    - No functional changes.
 > 
-> diff --git a/include/hw/ppc/pnv_core.h b/include/hw/ppc/pnv_core.h
-> index 77ef00f47a72..c829a18aa9c6 100644
-> --- a/include/hw/ppc/pnv_core.h
-> +++ b/include/hw/ppc/pnv_core.h
-> @@ -65,6 +65,9 @@ struct PnvQuadClass {
->   
->       const MemoryRegionOps *xscom_ops;
->       uint64_t xscom_size;
-> +
-> +    const MemoryRegionOps *xscom_qme_ops;
-> +    uint64_t xscom_qme_size;
+> v4: https://lore.kernel.org/r/20210406053833.282907-1-ravi.bangoria@linux.ibm.com
+> v3->v4:
+>    - Make error message more proper.
+> 
+> v3: https://lore.kernel.org/r/20210330095350.36309-1-ravi.bangoria@linux.ibm.com
+> v3->v4:
+>    - spapr_dt_pa_features(): POWER10 processor is compatible with 3.0
+>      (PCR_COMPAT_3_00). No need to ppc_check_compat(3_10) for now as
+>      ppc_check_compati(3_00) will also be true. ppc_check_compat(3_10)
+>      can be added while introducing pa_features_310 in future.
+>    - Use error_append_hint() for hints. Also add ERRP_GUARD().
+>    - Add kvmppc_set_cap_dawr1() stub function for CONFIG_KVM=n.
+> 
+> v2: https://lore.kernel.org/r/20210329041906.213991-1-ravi.bangoria@linux.ibm.com
+> v2->v3:
+>    - Don't introduce pa_features_310[], instead, reuse pa_features_300[]
+>      for 3.1 guests, as there is no difference between initial values of
+>      them atm.
+>    - Call gen_spr_book3s_310_dbg() from init_proc_POWER10() instead of
+>      init_proc_POWER8(). Also, Don't call gen_spr_book3s_207_dbg() from
+>      gen_spr_book3s_310_dbg() as init_proc_POWER10() already calls it.
+> 
+> v1: https://lore.kernel.org/r/20200723104220.314671-1-ravi.bangoria@linux.ibm.com
+> v1->v2:
+>    - Introduce machine capability cap-dawr1 to enable/disable
+>      the feature. By default, 2nd DAWR is OFF for guests even
+>      when host kvm supports it. User has to manually enable it
+>      with -machine cap-dawr1=on if he wishes to use it.
+>    - Split the header file changes into separate patch. (Sync
+>      headers from v5.12-rc3)
+> 
+> [1] https://git.kernel.org/torvalds/c/bd1de1a0e6eff
+> 
+>   hw/ppc/spapr.c         |    7 ++++++-
+>   hw/ppc/spapr_caps.c    |   32 ++++++++++++++++++++++++++++++++
+>   include/hw/ppc/spapr.h |    6 +++++-
+>   target/ppc/cpu.h       |    2 ++
+>   target/ppc/cpu_init.c  |   15 +++++++++++++++
+>   target/ppc/kvm.c       |   12 ++++++++++++
+>   target/ppc/kvm_ppc.h   |   12 ++++++++++++
+>   7 files changed, 84 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index 54dbfd7fe9..1e54e0c719 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -241,7 +241,7 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
+>           0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 48 - 53 */
+>           /* 54: DecFP, 56: DecI, 58: SHA */
+>           0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 54 - 59 */
+> -        /* 60: NM atomic, 62: RNG */
+> +        /* 60: NM atomic, 62: RNG, 64: DAWR1 (ISA 3.1) */
+>           0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 60 - 65 */
+>       };
+>       uint8_t *pa_features = NULL;
+> @@ -282,6 +282,9 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
+>            * in pa-features. So hide it from them. */
+>           pa_features[40 + 2] &= ~0x80; /* Radix MMU */
+>       }
+> +    if (spapr_get_cap(spapr, SPAPR_CAP_DAWR1)) {
+> +        pa_features[66] |= 0x80;
+> +    }
+> 
+>       _FDT((fdt_setprop(fdt, offset, "ibm,pa-features", pa_features, pa_size)));
+>   }
+> @@ -2084,6 +2087,7 @@ static const VMStateDescription vmstate_spapr = {
+>           &vmstate_spapr_cap_fwnmi,
+>           &vmstate_spapr_fwnmi,
+>           &vmstate_spapr_cap_rpt_invalidate,
+> +        &vmstate_spapr_cap_dawr1,
+>           NULL
+>       }
 >   };
->   
->   #define TYPE_PNV_QUAD "powernv-cpu-quad"
-> @@ -79,5 +82,6 @@ struct PnvQuad {
->   
->       uint32_t quad_id;
->       MemoryRegion xscom_regs;
-> +    MemoryRegion xscom_qme_regs;
->   };
->   #endif /* PPC_PNV_CORE_H */
-> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
-> index a4c9d95dc5d3..9bc64635471e 100644
-> --- a/include/hw/ppc/pnv_xscom.h
-> +++ b/include/hw/ppc/pnv_xscom.h
-> @@ -127,6 +127,17 @@ struct PnvXScomInterfaceClass {
->   #define PNV10_XSCOM_EC(proc)                    \
->       ((0x2 << 16) | ((1 << (3 - (proc))) << 12))
->   
-> +#define PNV10_XSCOM_QME(chiplet) \
-> +        (PNV10_XSCOM_EQ(chiplet) | (0xE << 16))
-> +
-> +/*
-> + * Make the region larger by 0x1000 (instead of starting at an offset) so the
-> + * modelled addresses start from 0
-> + */
-> +#define PNV10_XSCOM_QME_BASE(core)     \
-> +    ((uint64_t) PNV10_XSCOM_QME(PNV10_XSCOM_EQ_CHIPLET(core)))
-> +#define PNV10_XSCOM_QME_SIZE        (0x8000 + 0x1000)
-> +
->   #define PNV10_XSCOM_EQ_BASE(core)     \
->       ((uint64_t) PNV10_XSCOM_EQ(PNV10_XSCOM_EQ_CHIPLET(core)))
->   #define PNV10_XSCOM_EQ_SIZE        0x20000
-> diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
-> index 23740f9d0733..eb54f93986df 100644
-> --- a/hw/ppc/pnv.c
-> +++ b/hw/ppc/pnv.c
-> @@ -1685,6 +1685,9 @@ static void pnv_chip_power10_quad_realize(Pnv10Chip *chip10, Error **errp)
->   
->           pnv_xscom_add_subregion(chip, PNV10_XSCOM_EQ_BASE(eq->quad_id),
->                                   &eq->xscom_regs);
-> +
-> +        pnv_xscom_add_subregion(chip, PNV10_XSCOM_QME_BASE(eq->quad_id),
-> +                                &eq->xscom_qme_regs);
+> @@ -4683,6 +4687,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
+>       smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] = SPAPR_CAP_ON;
+>       smc->default_caps.caps[SPAPR_CAP_FWNMI] = SPAPR_CAP_ON;
+>       smc->default_caps.caps[SPAPR_CAP_RPT_INVALIDATE] = SPAPR_CAP_OFF;
+> +    smc->default_caps.caps[SPAPR_CAP_DAWR1] = SPAPR_CAP_OFF;
+> 
+>       /*
+>        * This cap specifies whether the AIL 3 mode for
+> diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+> index 5a0755d34f..2f2cf4a250 100644
+> --- a/hw/ppc/spapr_caps.c
+> +++ b/hw/ppc/spapr_caps.c
+> @@ -655,6 +655,28 @@ static void cap_ail_mode_3_apply(SpaprMachineState *spapr,
 >       }
 >   }
->   
-> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-> index 1f244ed181d0..09eb2bf94b9e 100644
-> --- a/hw/ppc/pnv_core.c
-> +++ b/hw/ppc/pnv_core.c
-> @@ -493,7 +493,67 @@ static const MemoryRegionOps pnv_quad_power10_xscom_ops = {
->       .endianness = DEVICE_BIG_ENDIAN,
+> 
+> +static void cap_dawr1_apply(SpaprMachineState *spapr, uint8_t val,
+> +                               Error **errp)
+> +{
+> +    ERRP_GUARD();
+> +    if (!val) {
+> +        return; /* Disable by default */
+> +    }
+> +
+> +    if (tcg_enabled()) {
+> +        error_setg(errp, "DAWR1 not supported in TCG.");
+> +        error_append_hint(errp, "Try appending -machine cap-dawr1=off\n");
+> +    } else if (kvm_enabled()) {
+> +        if (!kvmppc_has_cap_dawr1()) {
+> +            error_setg(errp, "DAWR1 not supported by KVM.");
+> +            error_append_hint(errp, "Try appending -machine cap-dawr1=off\n");
+> +        } else if (kvmppc_set_cap_dawr1(val) < 0) {
+> +            error_setg(errp, "Error enabling cap-dawr1 with KVM.");
+> +            error_append_hint(errp, "Try appending -machine cap-dawr1=off\n");
+> +        }
+> +    }
+> +}
+> +
+>   SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
+>       [SPAPR_CAP_HTM] = {
+>           .name = "htm",
+> @@ -781,6 +803,15 @@ SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
+>           .type = "bool",
+>           .apply = cap_ail_mode_3_apply,
+>       },
+> +    [SPAPR_CAP_DAWR1] = {
+> +        .name = "dawr1",
+> +        .description = "Allow 2nd Data Address Watchpoint Register (DAWR1)",
+> +        .index = SPAPR_CAP_DAWR1,
+> +        .get = spapr_cap_get_bool,
+> +        .set = spapr_cap_set_bool,
+> +        .type = "bool",
+> +        .apply = cap_dawr1_apply,
+> +    },
 >   };
->   
-> -static void pnv_quad_realize(DeviceState *dev, Error **errp)
-> +#define P10_QME_SPWU_HYP 0x83c
-> +#define P10_QME_SSH_HYP  0x82c
-> +
-> +static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
-> +                                            unsigned int width)
+> 
+>   static SpaprCapabilities default_caps_with_cpu(SpaprMachineState *spapr,
+> @@ -923,6 +954,7 @@ SPAPR_CAP_MIG_STATE(large_decr, SPAPR_CAP_LARGE_DECREMENTER);
+>   SPAPR_CAP_MIG_STATE(ccf_assist, SPAPR_CAP_CCF_ASSIST);
+>   SPAPR_CAP_MIG_STATE(fwnmi, SPAPR_CAP_FWNMI);
+>   SPAPR_CAP_MIG_STATE(rpt_invalidate, SPAPR_CAP_RPT_INVALIDATE);
+> +SPAPR_CAP_MIG_STATE(dawr1, SPAPR_CAP_DAWR1);
+> 
+>   void spapr_caps_init(SpaprMachineState *spapr)
+>   {
+> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+> index 538b2dfb89..47fffb921a 100644
+> --- a/include/hw/ppc/spapr.h
+> +++ b/include/hw/ppc/spapr.h
+> @@ -80,8 +80,10 @@ typedef enum {
+>   #define SPAPR_CAP_RPT_INVALIDATE        0x0B
+>   /* Support for AIL modes */
+>   #define SPAPR_CAP_AIL_MODE_3            0x0C
+> +/* DAWR1 */
+> +#define SPAPR_CAP_DAWR1                 0x0D
+>   /* Num Caps */
+> -#define SPAPR_CAP_NUM                   (SPAPR_CAP_AIL_MODE_3 + 1)
+> +#define SPAPR_CAP_NUM                   (SPAPR_CAP_DAWR1 + 1)
+> 
+>   /*
+>    * Capability Values
+> @@ -407,6 +409,7 @@ struct SpaprMachineState {
+>   #define H_SET_MODE_RESOURCE_SET_DAWR0           2
+>   #define H_SET_MODE_RESOURCE_ADDR_TRANS_MODE     3
+>   #define H_SET_MODE_RESOURCE_LE                  4
+> +#define H_SET_MODE_RESOURCE_SET_DAWR1           5
+> 
+>   /* Flags for H_SET_MODE_RESOURCE_LE */
+>   #define H_SET_MODE_ENDIAN_BIG    0
+> @@ -990,6 +993,7 @@ extern const VMStateDescription vmstate_spapr_cap_ccf_assist;
+>   extern const VMStateDescription vmstate_spapr_cap_fwnmi;
+>   extern const VMStateDescription vmstate_spapr_cap_rpt_invalidate;
+>   extern const VMStateDescription vmstate_spapr_wdt;
+> +extern const VMStateDescription vmstate_spapr_cap_dawr1;
+> 
+>   static inline uint8_t spapr_get_cap(SpaprMachineState *spapr, int cap)
+>   {
+> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+> index af12c93ebc..64855935f7 100644
+> --- a/target/ppc/cpu.h
+> +++ b/target/ppc/cpu.h
+> @@ -1588,9 +1588,11 @@ void ppc_compat_add_property(Object *obj, const char *name,
+>   #define SPR_PSPB              (0x09F)
+>   #define SPR_DPDES             (0x0B0)
+>   #define SPR_DAWR0             (0x0B4)
+> +#define SPR_DAWR1             (0x0B5)
+>   #define SPR_RPR               (0x0BA)
+>   #define SPR_CIABR             (0x0BB)
+>   #define SPR_DAWRX0            (0x0BC)
+> +#define SPR_DAWRX1            (0x0BD)
+>   #define SPR_HFSCR             (0x0BE)
+>   #define SPR_VRSAVE            (0x100)
+>   #define SPR_USPRG0            (0x100)
+> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+> index aeff71d063..c688e52928 100644
+> --- a/target/ppc/cpu_init.c
+> +++ b/target/ppc/cpu_init.c
+> @@ -5131,6 +5131,20 @@ static void register_book3s_207_dbg_sprs(CPUPPCState *env)
+>                           KVM_REG_PPC_CIABR, 0x00000000);
+>   }
+> 
+> +static void register_book3s_310_dbg_sprs(CPUPPCState *env)
 > +{
-> +    uint32_t offset = addr >> 3;
-> +    uint64_t val = -1;
-> +
-> +    /*
-> +     * Forth nibble selects the core within a quad, mask it to process read
-> +     * for any core.
-> +     */
-> +    switch (offset & ~0xf000) {
-> +    case P10_QME_SPWU_HYP:
-> +    case P10_QME_SSH_HYP:
-> +        return 0;
-> +    default:
-> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
-> +                      offset);
-> +    }
-> +
-> +    return val;
+> +    spr_register_kvm_hv(env, SPR_DAWR1, "DAWR1",
+> +                        SPR_NOACCESS, SPR_NOACCESS,
+> +                        SPR_NOACCESS, SPR_NOACCESS,
+> +                        &spr_read_generic, &spr_write_generic,
+> +                        KVM_REG_PPC_DAWR1, 0x00000000);
+> +    spr_register_kvm_hv(env, SPR_DAWRX1, "DAWRX1",
+> +                        SPR_NOACCESS, SPR_NOACCESS,
+> +                        SPR_NOACCESS, SPR_NOACCESS,
+> +                        &spr_read_generic, &spr_write_generic32,
+> +                        KVM_REG_PPC_DAWRX1, 0x00000000);
 > +}
 > +
-> +static void pnv_qme_power10_xscom_write(void *opaque, hwaddr addr,
-> +                                         uint64_t val, unsigned int width)
+>   static void register_970_dbg_sprs(CPUPPCState *env)
+>   {
+>       /* Breakpoints */
+> @@ -6435,6 +6449,7 @@ static void init_proc_POWER10(CPUPPCState *env)
+>       /* Common Registers */
+>       init_proc_book3s_common(env);
+>       register_book3s_207_dbg_sprs(env);
+> +    register_book3s_310_dbg_sprs(env);
+> 
+>       /* Common TCG PMU */
+>       init_tcg_pmu_power8(env);
+> diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+> index a8a935e267..05f68d2d91 100644
+> --- a/target/ppc/kvm.c
+> +++ b/target/ppc/kvm.c
+> @@ -89,6 +89,7 @@ static int cap_large_decr;
+>   static int cap_fwnmi;
+>   static int cap_rpt_invalidate;
+>   static int cap_ail_mode_3;
+> +static int cap_dawr1;
+> 
+>   static uint32_t debug_inst_opcode;
+> 
+> @@ -138,6 +139,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+>       cap_ppc_nested_kvm_hv = kvm_vm_check_extension(s, KVM_CAP_PPC_NESTED_HV);
+>       cap_large_decr = kvmppc_get_dec_bits();
+>       cap_fwnmi = kvm_vm_check_extension(s, KVM_CAP_PPC_FWNMI);
+> +    cap_dawr1 = kvm_vm_check_extension(s, KVM_CAP_PPC_DAWR1);
+>       /*
+>        * Note: setting it to false because there is not such capability
+>        * in KVM at this moment.
+> @@ -2109,6 +2111,16 @@ int kvmppc_set_fwnmi(PowerPCCPU *cpu)
+>       return kvm_vcpu_enable_cap(cs, KVM_CAP_PPC_FWNMI, 0);
+>   }
+> 
+> +bool kvmppc_has_cap_dawr1(void)
 > +{
-> +    uint32_t offset = addr >> 3;
-> +
-> +    switch (offset) {
-> +    default:
-> +        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
-> +                      offset);
-> +    }
+> +    return !!cap_dawr1;
 > +}
 > +
-> +static const MemoryRegionOps pnv_qme_power10_xscom_ops = {
-> +    .read = pnv_qme_power10_xscom_read,
-> +    .write = pnv_qme_power10_xscom_write,
-> +    .valid.min_access_size = 8,
-> +    .valid.max_access_size = 8,
-> +    .impl.min_access_size = 8,
-> +    .impl.max_access_size = 8,
-> +    .endianness = DEVICE_BIG_ENDIAN,
-> +};
-> +
-> +static void pnv_quad_power9_realize(DeviceState *dev, Error **errp)
+> +int kvmppc_set_cap_dawr1(int enable)
 > +{
-> +    PnvQuad *eq = PNV_QUAD(dev);
-> +    PnvQuadClass *pqc = PNV_QUAD_GET_CLASS(eq);
-> +    char name[32];
-> +
-> +    snprintf(name, sizeof(name), "xscom-quad.%d", eq->quad_id);
-> +    pnv_xscom_region_init(&eq->xscom_regs, OBJECT(dev),
-> +                          pqc->xscom_ops,
-> +                          eq, name,
-> +                          pqc->xscom_size);
+> +    return kvm_vm_enable_cap(kvm_state, KVM_CAP_PPC_DAWR1, 0, enable);
 > +}
 > +
-> +static void pnv_quad_power10_realize(DeviceState *dev, Error **errp)
+>   int kvmppc_smt_threads(void)
 >   {
->       PnvQuad *eq = PNV_QUAD(dev);
->       PnvQuadClass *pqc = PNV_QUAD_GET_CLASS(eq);
-> @@ -504,6 +564,12 @@ static void pnv_quad_realize(DeviceState *dev, Error **errp)
->                             pqc->xscom_ops,
->                             eq, name,
->                             pqc->xscom_size);
-> +
-> +    snprintf(name, sizeof(name), "xscom-qme.%d", eq->quad_id);
-> +    pnv_xscom_region_init(&eq->xscom_qme_regs, OBJECT(dev),
-> +                          pqc->xscom_qme_ops,
-> +                          eq, name,
-> +                          pqc->xscom_qme_size);
+>       return cap_ppc_smt ? cap_ppc_smt : 1;
+> diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
+> index 611debc3ce..584916a6d1 100644
+> --- a/target/ppc/kvm_ppc.h
+> +++ b/target/ppc/kvm_ppc.h
+> @@ -67,6 +67,8 @@ bool kvmppc_has_cap_htm(void);
+>   bool kvmppc_has_cap_mmu_radix(void);
+>   bool kvmppc_has_cap_mmu_hash_v3(void);
+>   bool kvmppc_has_cap_xive(void);
+> +bool kvmppc_has_cap_dawr1(void);
+> +int kvmppc_set_cap_dawr1(int enable);
+>   int kvmppc_get_cap_safe_cache(void);
+>   int kvmppc_get_cap_safe_bounds_check(void);
+>   int kvmppc_get_cap_safe_indirect_branch(void);
+> @@ -352,6 +354,16 @@ static inline bool kvmppc_has_cap_xive(void)
+>       return false;
 >   }
->   
->   static Property pnv_quad_properties[] = {
-> @@ -514,6 +580,9 @@ static Property pnv_quad_properties[] = {
->   static void pnv_quad_power9_class_init(ObjectClass *oc, void *data)
->   {
->       PnvQuadClass *pqc = PNV_QUAD_CLASS(oc);
-> +    DeviceClass *dc = DEVICE_CLASS(oc);
+> 
+> +static inline bool kvmppc_has_cap_dawr1(void)
+> +{
+> +    return false;
+> +}
 > +
-> +    dc->realize = pnv_quad_power9_realize;
->   
->       pqc->xscom_ops = &pnv_quad_power9_xscom_ops;
->       pqc->xscom_size = PNV9_XSCOM_EQ_SIZE;
-> @@ -522,16 +591,21 @@ static void pnv_quad_power9_class_init(ObjectClass *oc, void *data)
->   static void pnv_quad_power10_class_init(ObjectClass *oc, void *data)
->   {
->       PnvQuadClass *pqc = PNV_QUAD_CLASS(oc);
-> +    DeviceClass *dc = DEVICE_CLASS(oc);
+> +static inline int kvmppc_set_cap_dawr1(int enable)
+> +{
+> +    abort();
+> +}
 > +
-> +    dc->realize = pnv_quad_power10_realize;
->   
->       pqc->xscom_ops = &pnv_quad_power10_xscom_ops;
->       pqc->xscom_size = PNV10_XSCOM_EQ_SIZE;
-> +
-> +    pqc->xscom_qme_ops = &pnv_qme_power10_xscom_ops;
-> +    pqc->xscom_qme_size = PNV10_XSCOM_QME_SIZE;
->   }
->   
->   static void pnv_quad_class_init(ObjectClass *oc, void *data)
+>   static inline int kvmppc_get_cap_safe_cache(void)
 >   {
->       DeviceClass *dc = DEVICE_CLASS(oc);
->   
-> -    dc->realize = pnv_quad_realize;
->       device_class_set_props(dc, pnv_quad_properties);
->       dc->user_creatable = false;
->   }
+>       return 0;
+> 
+> 
 
