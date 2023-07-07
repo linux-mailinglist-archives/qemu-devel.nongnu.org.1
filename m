@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDF974B841
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 22:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F2974B843
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 22:45:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHsGb-0004zr-IM; Fri, 07 Jul 2023 16:41:25 -0400
+	id 1qHsJs-0007eP-Fd; Fri, 07 Jul 2023 16:44:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHsGT-0004su-J9
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:41:17 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1qHsJj-0007X9-ND
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:44:40 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHsGR-0004v4-RS
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:41:17 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fbf1b82d9cso25266485e9.2
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 13:41:14 -0700 (PDT)
+ id 1qHsJQ-00044f-HT
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:44:39 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fbc77e76abso25519405e9.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 13:44:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688762473; x=1691354473;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Z4tz1Qg7924YrzRDQ0nhW1mfYwrF0UAZkf+8N9yiaRs=;
- b=c7v1EOzd7+Jktv2/UHfyzhvSITchi4KvSbUT/d/T4CaKwpKlzEtLFTRsSyjqsEi/p/
- kBqjCas0O9w07N8813Z306F+FDLHjTnLw0bmGiJZz8cfCepRSUQXbCjpxAQCbYcM0NL3
- noBSBIhz3JjBSTkLHZOjHW2BGkKJGpicN1VLBeA/+sZ4zYRiZJULGhUcEBGuB6uVoZfX
- kEw2cR/dvaK/fIoS4z6ZdP68dCTMnOHHI5DHHKfsgZUz+I2b6kIKYeta9xssHm+mMHi7
- H6Rk2kWdN6kLh8XVNR5QjuzOQigeMH2yosUR42sngI7JGEBxAmpIHmZ+RvAFVxTe5ULv
- 1Ijg==
+ d=linaro.org; s=google; t=1688762658; x=1691354658;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1jGym/mYCo2k0gksX+nw+AihnByWl6o6I71FrLVtmts=;
+ b=FvRAkLkps0G0ht30x2KXGt+mJM5gGIf1qz69lUne0jVaTaFmW45DHVBHopzu8lPwKH
+ ebOAo2kVQxQW+UEeYgtTkdNS43e3L34sCnfHNLnpTYuggMwE8Gk8SWOQm/LhtuiLHbNj
+ baF4sFecF0Ziso6ONAlInlOWcxX5l5058E6FexQlwb4TulIdlTxos8s8Z8apCgkvxL/P
+ 7qyrcLDToSwmXz9Ss6hygnbm8Vm+7cw34zLiCiXvPAR2llQ86mlrQUajABn5HNtrHsmS
+ tXu73zKiVjQmW1HrOgRZheycNq3cr4NikYZ8lESOFyTyt+KH/AI8uBMXkPsbcosxtgNu
+ yBAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688762473; x=1691354473;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Z4tz1Qg7924YrzRDQ0nhW1mfYwrF0UAZkf+8N9yiaRs=;
- b=ZxtObTJysdxQtT9Mq6Pnw1VIxNRLFfKBK6GNLDsVeR9atiaM1Q++AIwZgi4Z8OtJda
- TGk4xmz+Y/TtkeB291d0ZA0Pk6UWys4Akz8hfvI8d44UNZ9IEBOexeTa5+3/+LJ6WaOL
- WiZrd5Q4W+mZ6x6bpwgY8VFacTXywSzhRVM3VrkcInZJ2FYIHUoK2ykc1J0uZ0B9+PCV
- 4Y4vOFaz8tAQ5cv6lhSE1H/9RJSnU4x6gf+C5mTx2pkNmjLHKHFWJnJPBIeHlnij072H
- ewwId5y5NeWxSOwaVqRBwbPaGLsRur2tiARIkPfJOu/1ZTQtp36gKyTgsiCZ+0Vw+jVb
- f7Qg==
-X-Gm-Message-State: ABy/qLbzc7ib4jqoTVxBRgOdrtFl65nCr5oAy5YqyK6XCkrHsgGivsql
- m9nr4DxEEQM/QCMiJCXdB6wi8iC+tt3rsc33zs69sg==
-X-Google-Smtp-Source: APBJJlEScjw+RI/d7eMEA3HhPILvqK5PJOPMcB5GMZKx5fFUnbyL0rnxnFvSCwI2y5enqfgV4k4YPA==
-X-Received: by 2002:a7b:c4c6:0:b0:3f8:b6c:84aa with SMTP id
- g6-20020a7bc4c6000000b003f80b6c84aamr4477900wmk.24.1688762472947; 
- Fri, 07 Jul 2023 13:41:12 -0700 (PDT)
-Received: from localhost.localdomain (host-92-23-208-66.as13285.net.
- [92.23.208.66]) by smtp.gmail.com with ESMTPSA id
- q10-20020a1ce90a000000b003fbb25da65bsm3337736wmc.30.2023.07.07.13.41.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 13:41:12 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu,
-	mjt@tls.msk.ru
-Subject: [PATCH v2 24/24] linux-user: Simplify target_madvise
-Date: Fri,  7 Jul 2023 21:40:54 +0100
-Message-Id: <20230707204054.8792-27-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230707204054.8792-1-richard.henderson@linaro.org>
-References: <20230707204054.8792-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20221208; t=1688762658; x=1691354658;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1jGym/mYCo2k0gksX+nw+AihnByWl6o6I71FrLVtmts=;
+ b=dTmSEuJ7JgvsoJN5OqCM+2akcmdfrHpCnch+9xXkwhV63uqpcn/IszfFZLsnxyHC3z
+ AnNoS6dQ0AjCmjHT5E9JroeIUE0JlOPCKGzErivOYBPW7yaX925U8+KngeiQmwKzXPTF
+ vCUzjBIf5MfP2vQVfW7yvbJqWbiPnM+sdC/hRY5ZTpyoNt/e04Kc8mATuhj2AmOZ185W
+ lXCtoVnl7mmy/q7Apd4ll31LOXM9iHLJw/nYu5ZvEk2+51EdFWk2B9+FWHhsk3KfMpe8
+ rHSmpOPRdR/S5uYdmgNfY+LuvHOQ47OvwebYrVzpzTa0CnFGCMwPPcDIZQwyrP3a2PKn
+ pWgw==
+X-Gm-Message-State: ABy/qLYVscxSaDMXP7PwM8fY7TmaKTan7DamDW5J+U3MstdU9nUgJh6o
+ AFTzDVZ8mY7nsCRlIIX2MiHhtw==
+X-Google-Smtp-Source: APBJJlFbdO78snxn4MQTSSdTQqgfXYx7cpV62PYZYErzKdOV0AzL3rNBkWx54/IutB9IkSm/k0t3FA==
+X-Received: by 2002:a7b:cd1a:0:b0:3fb:cfe8:8d12 with SMTP id
+ f26-20020a7bcd1a000000b003fbcfe88d12mr4941105wmj.14.1688762658607; 
+ Fri, 07 Jul 2023 13:44:18 -0700 (PDT)
+Received: from [192.168.1.5] (host-92-23-208-66.as13285.net. [92.23.208.66])
+ by smtp.gmail.com with ESMTPSA id
+ u10-20020a05600c00ca00b003f9bd9e3226sm3408169wmm.7.2023.07.07.13.44.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 07 Jul 2023 13:44:18 -0700 (PDT)
+Message-ID: <d400dedd-ca21-4c72-629a-f79cfcf7b5da@linaro.org>
+Date: Fri, 7 Jul 2023 21:44:16 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 1/6] hw/virtio: Propagate page_mask to
+ vhost_vdpa_listener_skipped_section()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>
+References: <20230707151719.70613-1-philmd@linaro.org>
+ <20230707151719.70613-2-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230707151719.70613-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, NICE_REPLY_A=-0.092, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,53 +96,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The trivial length 0 check can be moved up, simplifying some
-of the other cases.  The end < start test is handled by
-guest_range_valid_untagged.
+On 7/7/23 16:17, Philippe Mathieu-Daudé wrote:
+> In order to make vhost-vdpa.c a target-agnostic source unit,
+> we need to remove the TARGET_PAGE_SIZE / TARGET_PAGE_MASK /
+> TARGET_PAGE_ALIGN uses. TARGET_PAGE_SIZE will be replaced by
+> the runtime qemu_target_page_size(). The other ones will be
+> deduced from TARGET_PAGE_SIZE.
+> 
+> Since the 3 macros are used in 3 related functions (sharing
+> the same call tree), we'll refactor them to only depend on
+> TARGET_PAGE_SIZE.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- linux-user/mmap.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+TARGET_PAGE_MASK?
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index a2bef1ebe6..48b83ca8bf 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -900,28 +900,17 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
- 
- abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
- {
--    abi_ulong len, end;
-+    abi_ulong len;
-     int ret = 0;
- 
-     if (start & ~TARGET_PAGE_MASK) {
-         return -TARGET_EINVAL;
-     }
--    len = TARGET_PAGE_ALIGN(len_in);
--
--    if (len_in && !len) {
--        return -TARGET_EINVAL;
--    }
--
--    end = start + len;
--    if (end < start) {
--        return -TARGET_EINVAL;
--    }
--
--    if (end == start) {
-+    if (len_in == 0) {
-         return 0;
-     }
--
--    if (!guest_range_valid_untagged(start, len)) {
-+    len = TARGET_PAGE_ALIGN(len_in);
-+    if (len == 0 || !guest_range_valid_untagged(start, len)) {
-         return -TARGET_EINVAL;
-     }
- 
--- 
-2.34.1
+The code looks fine,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+r~
+
+> 
+> Having the following call tree:
+> 
+>    vhost_vdpa_listener_region_del()
+>      -> vhost_vdpa_listener_skipped_section()
+>         -> vhost_vdpa_section_end()
+> 
+> The first step is to propagate TARGET_PAGE_MASK to
+> vhost_vdpa_listener_skipped_section().
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   hw/virtio/vhost-vdpa.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> index 3c575a9a6e..87653bf841 100644
+> --- a/hw/virtio/vhost-vdpa.c
+> +++ b/hw/virtio/vhost-vdpa.c
+> @@ -42,7 +42,8 @@ static Int128 vhost_vdpa_section_end(const MemoryRegionSection *section)
+>   
+>   static bool vhost_vdpa_listener_skipped_section(MemoryRegionSection *section,
+>                                                   uint64_t iova_min,
+> -                                                uint64_t iova_max)
+> +                                                uint64_t iova_max,
+> +                                                int page_mask)
+>   {
+>       Int128 llend;
+>   
+> @@ -313,7 +314,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+>       int ret;
+>   
+>       if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
+> -                                            v->iova_range.last)) {
+> +                                            v->iova_range.last, TARGET_PAGE_MASK)) {
+>           return;
+>       }
+>       if (memory_region_is_iommu(section->mr)) {
+> @@ -396,7 +397,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
+>       int ret;
+>   
+>       if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
+> -                                            v->iova_range.last)) {
+> +                                            v->iova_range.last, TARGET_PAGE_MASK)) {
+>           return;
+>       }
+>       if (memory_region_is_iommu(section->mr)) {
 
 
