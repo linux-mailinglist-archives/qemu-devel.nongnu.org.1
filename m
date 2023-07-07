@@ -2,73 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47FEB74AC53
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 09:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC5F74AC91
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 10:12:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHgJZ-0006Ro-5a; Fri, 07 Jul 2023 03:55:41 -0400
+	id 1qHgYp-0002eU-GL; Fri, 07 Jul 2023 04:11:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qHgJU-0006Ph-Sd; Fri, 07 Jul 2023 03:55:37 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qHgYn-0002dp-Ni
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:11:25 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
- id 1qHgJS-0000m3-T8; Fri, 07 Jul 2023 03:55:36 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-992af8b3b1bso192853466b.1; 
- Fri, 07 Jul 2023 00:55:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qHgYk-0006yZ-2U
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:11:23 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-313f1085ac2so1557049f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 01:11:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=jms.id.au; s=google; t=1688716533; x=1691308533;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1688717480; x=1691309480;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mFr1tZrrjp5H3h6Ax3mdMe3NLSpiO/ilud1S8H3B9oA=;
- b=UNmx3LhURZb9KVM2iU7Rxt2XBif9ySbVxSwB1SIaM9NNhmkeE9gMESoMg3OOB8LXPQ
- VnJvb0VuUn5lBEYLVcrEJveokf58on/B/QT/ovAVQLxG9P973bQGfzm7lQnnSRl9vA8j
- 6BBJW9vvN5ru2tx3iekFF5/3LwGcS/oDeMX9M=
+ bh=tZSiuHkgL0yIE4O7HLzt7OeU1T4BdYuO8GxB/QwP7IE=;
+ b=SgZzwzTmfrpJW45AQv4cZhlMtl0qUEkPbDYQ+zWBeemCu186kHjR5GziCLwNO/XVox
+ 8YowywwCKDz03LxFhgWqDriMP/EtGWsTDykREIXsIKoVLhpZmDUHDYSKMZt1sQvA2HoC
+ zPkSbHeZoTVDmjM57QfaOXrep2/wgTnYnvPTpjXR3+hNti06z5YMuhivr+kXrGZ9FMII
+ oKfRdBId1xzLwtr5pHC/SfEo40Faby7XiMYUFqEA7afDoANnnHQXQ9Y//sijqEqQpiE+
+ KBqZN1wIMyLWcPmWudi/MJH+ShU4LfWLx+lMN1MTgxIZOAIK++azU7QObluJDM5jWRs1
+ srmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688716533; x=1691308533;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mFr1tZrrjp5H3h6Ax3mdMe3NLSpiO/ilud1S8H3B9oA=;
- b=if4eSyZEOAuhmH8zM1DfpcNZo6uV3MoeEgWRR5w51aPSYWUH2pS8DkHoJm0bFUcrTZ
- /EEyKB/p9hoYQgMHbGXg/T0Fz58Lb/WK0L+vJYEMzlBYnfQTnNfUsk0i+tlD9zc/ZrqA
- INNCWNPKfvc0RYi+jKbrFiXxahsTTzL6zmuyIUw8BbfXt7TgAWhBJDbCMr7uM+YQetnm
- 7uAwT4zHTbyo/Sy5bKfJPUwUoAG5/qIBszWrWv5p53j+8k44EwhFY3Ig0bLwCIU44kyG
- r4OuUSoDZUsW4Z213A+tv5qlPjR6eDaLJ4TXJrJZjPuDN5n8UFKbgjuZsPRLf0JD6NlS
- xl0Q==
-X-Gm-Message-State: ABy/qLbg32/0CumnraXLG5qXQfBr3h2952NL3d489YoPit1tw/21+tvN
- vAvyY1Mfz8pdbA9ZEmagqTl1Cdhl4/TFmWqxuMY=
-X-Google-Smtp-Source: APBJJlFfwR3kzesWvK3uV3YMdpc5A1N/zoY4tzka5zMtDCt6J+RLIerIYbl+t1gBCjA6iCWPxhfQk6rpLAOQrWuQOEA=
-X-Received: by 2002:a17:906:242:b0:993:ce6c:685c with SMTP id
- 2-20020a170906024200b00993ce6c685cmr1328476ejl.18.1688716532730; Fri, 07 Jul
- 2023 00:55:32 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688717480; x=1691309480;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=tZSiuHkgL0yIE4O7HLzt7OeU1T4BdYuO8GxB/QwP7IE=;
+ b=mGCLD0ZNjISSEJoUEfZ//mA24nb9zoSMmIjnWFmnKoWBrQbL31dpQdiC6BlJuHmbka
+ bLhvSRDj7sjQSwp05j45GmNpOgoGQ52QM36F5IDEz27yhskSG5rHDlXmy9A9JrWPrOTw
+ QHw+b+4NZ0QHpkpMs97cyYxK6SGZD0N0e3AfqVHzay4URP8w2f7ZKZpE5UmgvOTKlOCg
+ 1LWhTlgPX3XGeFU7wTspF3EUT1Y/Xh/aiXLqr8SMfBfc+v/kujvRo9gskSHXyk2K+V0d
+ lYBGJR6aONupk/00SRfB+3QJWBAA6SQzl1M44YUTeQLPebYGNPcXn1GgyGjo3M4t2bn7
+ AI/g==
+X-Gm-Message-State: ABy/qLYEGwF88esDz+s7iK2ReCSLIM7SOlSCOH1/4G3XyAclBCRpJKDf
+ ALz70Kk5BM83h/yGbwD6r8d9AA==
+X-Google-Smtp-Source: APBJJlELgNlFsG5To0sX/neKfbROvRH2npY/Vu4w+FYIb8dQp2oL4hHsoTptBpUvIg2XpjB0R41XKQ==
+X-Received: by 2002:adf:f809:0:b0:314:421f:532f with SMTP id
+ s9-20020adff809000000b00314421f532fmr3564042wrp.44.1688717480600; 
+ Fri, 07 Jul 2023 01:11:20 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ z18-20020a5d6552000000b0030fd03e3d25sm3801870wrv.75.2023.07.07.01.11.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 07 Jul 2023 01:11:20 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id CA9481FFBB;
+ Fri,  7 Jul 2023 09:11:19 +0100 (BST)
+References: <20230704123600.1808604-1-alex.bennee@linaro.org>
+ <20230706124347-mutt-send-email-mst@kernel.org>
+User-agent: mu4e 1.11.9; emacs 29.0.92
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, virtio-dev@lists.oasis-open.org, slp@redhat.com,
+ marcandre.lureau@redhat.com, stefanha@redhat.com, viresh.kumar@linaro.org,
+ sgarzare@redhat.com, takahiro.akashi@linaro.org,
+ erik.schilling@linaro.org, manos.pitsidianakis@linaro.org,
+ mathieu.poirier@linaro.org
+Subject: Re: [RFC PATCH] docs/interop: define STANDALONE protocol feature
+ for vhost-user
+Date: Fri, 07 Jul 2023 08:58:00 +0100
+In-reply-to: <20230706124347-mutt-send-email-mst@kernel.org>
+Message-ID: <87ilawdtug.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20230707071213.9924-1-joel@jms.id.au>
- <4df588a9-7897-8ed5-bc72-c418034ad242@kaod.org>
-In-Reply-To: <4df588a9-7897-8ed5-bc72-c418034ad242@kaod.org>
-From: Joel Stanley <joel@jms.id.au>
-Date: Fri, 7 Jul 2023 07:55:20 +0000
-Message-ID: <CACPK8XdtYGqx-zSEa8MXO+2x5hVO2Vbku-+nqRmsjfdywFLjDg@mail.gmail.com>
-Subject: Re: [PATCH v2] ppc/pnv: Add QME region for P10
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>, 
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=joel.stan@gmail.com; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, URIBL_CSS=0.1 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,116 +101,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 7 Jul 2023 at 07:30, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+
+"Michael S. Tsirkin" <mst@redhat.com> writes:
+
+> On Tue, Jul 04, 2023 at 01:36:00PM +0100, Alex Benn=C3=A9e wrote:
+>> Currently QEMU has to know some details about the back-end to be able
+>> to setup the guest. While various parts of the setup can be delegated
+>> to the backend (for example config handling) this is a very piecemeal
+>> approach.
 >
-> On 7/7/23 09:12, Joel Stanley wrote:
-> > The Quad Management Engine (QME) manages power related settings for its
-> > quad. The xscom region is separate from the quad xscoms, therefore a ne=
-w
-> > region is added. The xscoms in a QME select a given core by selecting
-> > the forth nibble.
-> >
-> > Implement dummy reads for the stop state history (SSH) and special
-> > wakeup (SPWU) registers. This quietens some sxcom errors when skiboot
-> > boots on p10.
-> >
-> > Power9 does not have a QME.
-> >
-> > Signed-off-by: Joel Stanley <joel@jms.id.au>
+>> This patch suggests a new feature flag (VHOST_USER_PROTOCOL_F_STANDALONE)
+>> which the back-end can advertise which allows a probe message to be
+>> sent to get all the details QEMU needs to know in one message.
 >
-> Nice, how about these now :
+> The reason we do piecemeal is that these existing pieces can be reused
+> as others evolve or fall by wayside.
+
+Sure I have no objection in principle but we then turn code like:
+
+        if (dev->protocol_features & (1ULL << VHOST_USER_PROTOCOL_F_STANDAL=
+ONE)) {
+            err =3D vhost_user_get_backend_specs(dev, errp);
+            if (err < 0) {
+                error_setg_errno(errp, EPROTO, "vhost_get_backend_specs fai=
+led");
+                return -EPROTO;
+            }
+        }
+
+to
+
+        if (dev->protocol_features & (1ULL << VHOST_USER_PROTOCOL_F_ID) &&
+            dev->protocol_features & (1ULL << VHOST_USER_PROTOCOL_F_CFGSZ) =
+&&
+            dev->protocol_features & (1ULL << VHOST_USER_PROTOCOL_F_MINVQ) =
+&&
+            dev->protocol_features & (1ULL << VHOST_USER_PROTOCOL_F_MAXVQ)
+        ) {
+            err =3D vhost_user_get_virtio_id(dev, errp);
+            if (err < 0) {
+                error_setg_errno(errp, EPROTO, "vhost_get_backend_id failed=
+");
+                return -EPROTO;
+            }
+            err =3D vhost_user_get_virtio_cfgsz(dev, errp);
+            if (err < 0) {
+                error_setg_errno(errp, EPROTO, "vhost_get_backend_cfgsz fai=
+led");
+                return -EPROTO;
+            }
+            err =3D vhost_user_get_virtio_minvq(dev, errp);
+            if (err < 0) {
+                error_setg_errno(errp, EPROTO, "vhost_get_backend_minvq fai=
+led");
+                return -EPROTO;
+            }
+            err =3D vhost_user_get_virtio_maxvq(dev, errp);
+            if (err < 0) {
+                error_setg_errno(errp, EPROTO, "vhost_get_backend_maxvq fai=
+led");
+                return -EPROTO;
+            }
+            dev->specs.valid =3D true;
+        }
+
+for little gain IMHO.
+
+> For example, I can think of instances where you want to connect
+> specifically to e.g. networking backend, and specify it
+> on command line. Reasons could be many, e.g. for debugging,
+> or to prevent connecting to wrong device on wrong channel
+> (kind of like type safety).
+
+I don't quite follow what you are trying to say here.
+
+> What is the reason to have 1 message? startup latency?
+> How about we allow pipelining several messages then?
+> Will be easier.
+
+I'm not overly worried about performance because this is all at
+start-up. I am worried about excessive complexity though. We already
+have quite a lot of interacting protocol messages.
+
 >
 >
-> [   24.482066616,3] Could not set special wakeup on 0:0: operation timeou=
-t.
-> [   25.022003091,3] Could not set special wakeup on 0:0: operation timeou=
-t.
-> [   25.073902795,3] Could not set special wakeup on 0:0: operation timeou=
-t.
+>>=20
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>>=20
+>> ---
+>> Initial RFC for discussion. I intend to prototype this work with QEMU
+>> and one of the rust-vmm vhost-user daemons.
+>> ---
+>>  docs/interop/vhost-user.rst | 37 +++++++++++++++++++++++++++++++++++++
+>>  hw/virtio/vhost-user.c      |  8 ++++++++
+>>  2 files changed, 45 insertions(+)
+>>=20
+>> diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+>> index 5a070adbc1..85b1b1583a 100644
+>> --- a/docs/interop/vhost-user.rst
+>> +++ b/docs/interop/vhost-user.rst
+>> @@ -275,6 +275,21 @@ Inflight description
+>>=20=20
+>>  :queue size: a 16-bit size of virtqueues
+>>=20=20
+>> +Backend specifications
+>> +^^^^^^^^^^^^^^^^^^^^^^
+>> +
+>> ++-----------+-------------+------------+------------+
+>> +| device id | config size |   min_vqs  |   max_vqs  |
+>> ++-----------+-------------+------------+------------+
+>> +
+>> +:device id: a 32-bit value holding the VirtIO device ID
+>> +
+>> +:config size: a 32-bit value holding the config size (see ``VHOST_USER_=
+GET_CONFIG``)
+>> +
+>> +:min_vqs: a 32-bit value holding the minimum number of vqs supported
+>> +
+>> +:max_vqs: a 32-bit value holding the maximum number of vqs supported, m=
+ust be >=3D min_vqs
+>> +
 >
-> [ 1593.383133413,3] Could not set special wakeup on 0:0: timeout waiting =
-for SPECIAL_WKUP_DONE.
-> [ 1593.435173594,3] Could not set special wakeup on 0:0: timeout waiting =
-for SPECIAL_WKUP_DONE.
+> looks like a weird set of info.
 
-Yes, something like below, except hard coding is not sufficient. We
-need to pass the core state into the quad model so the qme callbacks
-can keep track of the wakeup state.
+It's basically the information you need for -device vhost-user-device to
+start-up (and what is essentially the information set by the stubs as
+they start-up).
 
-From: Joel Stanley <joel@jms.id.au>
-Date: Fri, 7 Jul 2023 13:37:17 +0930
-Subject: [PATCH] ppc/pnv: Implement more sleep related registers
+> why would we want # of vqs and not their sizes?
 
-We need to get the core object into the quad callback so we can update
-the sleep state.
+I thought the vring's themselves where allocated by the driver. We only
+need to the number of vqs so we can allocate the tracking structures.
 
-Signed-off-by: Joel Stanley <joel@jms.id.au>
----
- hw/ppc/pnv_core.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+> why config size but not config itself?
 
-diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-index 09eb2bf94b9e..359b341c748f 100644
---- a/hw/ppc/pnv_core.c
-+++ b/hw/ppc/pnv_core.c
-@@ -179,6 +179,7 @@ static const MemoryRegionOps pnv_core_power9_xscom_ops =
-=3D {
-  */
+We already have GET_CONFIG and SET_CONFIG but without knowing the size
+of the config space we can't properly set it up.
 
- #define PNV10_XSCOM_EC_CORE_THREAD_STATE    0x412
-+#define PNV10_XSCOM_EC_RAS_STATUS           0x454
+<snip>
 
- static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
-                                            unsigned int width)
-@@ -190,6 +191,9 @@ static uint64_t pnv_core_power10_xscom_read(void
-*opaque, hwaddr addr,
-     case PNV10_XSCOM_EC_CORE_THREAD_STATE:
-         val =3D 0;
-         break;
-+    case PNV10_XSCOM_EC_RAS_STATUS:
-+        val =3D -1;
-+        break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
-                       offset);
-@@ -494,7 +498,12 @@ static const MemoryRegionOps pnv_quad_power10_xscom_op=
-s =3D {
- };
-
- #define P10_QME_SPWU_HYP 0x83c
-+#define  P10_SPWU_REQ           PPC_BIT(0)
-+#define  P10_SPWU_DONE          PPC_BIT(4)
-+
- #define P10_QME_SSH_HYP  0x82c
-+#define  P10_SSH_CORE_GATED     PPC_BIT(0)
-+#define  P10_SSH_SPWU_DONE      PPC_BIT(1)
-
- static uint64_t pnv_qme_power10_xscom_read(void *opaque, hwaddr addr,
-                                             unsigned int width)
-@@ -508,8 +517,11 @@ static uint64_t pnv_qme_power10_xscom_read(void
-*opaque, hwaddr addr,
-      */
-     switch (offset & ~0xf000) {
-     case P10_QME_SPWU_HYP:
-+        val =3D 0;
-+        break;
-     case P10_QME_SSH_HYP:
--        return 0;
-+        val =3D P10_SSH_SPWU_DONE;
-+        break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
-                       offset);
-@@ -524,6 +536,8 @@ static void pnv_qme_power10_xscom_write(void
-*opaque, hwaddr addr,
-     uint32_t offset =3D addr >> 3;
-
-     switch (offset) {
-+    case P10_QME_SSH_HYP:
-+    case P10_QME_SPWU_HYP:
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
-                       offset);
 --=20
-2.40.1
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
