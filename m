@@ -2,61 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F8074B0B3
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 14:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D69474B06D
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 14:03:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHkWy-0002Yv-TB; Fri, 07 Jul 2023 08:25:49 -0400
+	id 1qHkAR-0008Pz-Lm; Fri, 07 Jul 2023 08:02:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshanliukou@163.com>)
- id 1qHc4h-0004Os-Hu; Thu, 06 Jul 2023 23:24:03 -0400
-Received: from m12.mail.163.com ([220.181.12.198])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaoshanliukou@163.com>)
- id 1qHc4b-0008Bk-5N; Thu, 06 Jul 2023 23:24:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=K1BmQ
- N6UzhwIggWAHir/kTdOpmmvmeW9cqyZO1NRX50=; b=Gn77yeFBcp4ydxanQ8UKp
- uxFLccN+hweALakVyUBpsLP04rHGiLzESUsWPZNhZDH3vKv4s+IV+Gl6dgOIo03g
- o8DsiT3xEsRv6LLMGqE2gMJNBruuSHuV64iFoQWKBgfG3ZR1+82cUFEyy7hDhGY4
- nrWGoDw5pX6ukIWDJWzQA8=
-Received: from yangzhang2020.localdomain (unknown [60.24.208.92])
- by zwqz-smtp-mta-g1-4 (Coremail) with SMTP id _____wD3elEahadk1ZPOBw--.32303S2;
- Fri, 07 Jul 2023 11:23:13 +0800 (CST)
-From: "yang.zhang" <gaoshanliukou@163.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- zhiwei_liu@linux.alibaba.com, dbarboza@ventanamicro.com,
- "yang.zhang" <yang.zhang@hexintek.com>
-Subject: [PATCH] target/riscv KVM_RISCV_SET_TIMER macro is not configured
- correctly
-Date: Fri,  7 Jul 2023 11:23:06 +0800
-Message-Id: <20230707032306.4606-1-gaoshanliukou@163.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <naresh.kamboju@linaro.org>)
+ id 1qHkAC-0008MH-Dt
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 08:02:18 -0400
+Received: from mail-vk1-xa34.google.com ([2607:f8b0:4864:20::a34])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <naresh.kamboju@linaro.org>)
+ id 1qHkAA-0003I3-S2
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 08:02:16 -0400
+Received: by mail-vk1-xa34.google.com with SMTP id
+ 71dfb90a1353d-4714e9f07c0so486594e0c.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 05:02:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688731331; x=1691323331;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=1fD1/s8Rr8USq+BqwdbXQVVmwBnxLCd0NcWZS3JC5Bg=;
+ b=umXi5yArkAwiN/n9mTXgLHGqdF4VKbzP6F+EgLFsPtgxmajYaVeYaGOKSv8Gig3zUk
+ xULUGADGBv7L75XAdemzVV7NvqSJQ+RWEzlsOWQ8eEpah/2YHBkKoBihWwUVWlzweRK9
+ /g1f3ZX4/+P+NAfwDNul3YHp3WYFnqhyPUZEjgs7UdlO5wHNEL1zU3E7oKCq1M5/Juuk
+ W8VYqXtaJyH8qjiBUZcNRla+DbUeRe+k6+HHBXXnddwv3UI54CTDNmXg+2Ome8n/Rn50
+ YuWPlBFGQ4AO+PYqWwlwAMQv1kgdQp2cgn8XdGUDfl0K9VGpLxcwVmpJYKe277IZ2DOz
+ GlrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688731331; x=1691323331;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1fD1/s8Rr8USq+BqwdbXQVVmwBnxLCd0NcWZS3JC5Bg=;
+ b=TSD6+n4EEkTwrvUaIUgx+qmUQWUl/Jk0Kn11mOl899p2TIkPIw4tI/Csz1h+E5hHEz
+ GMizisrzywZRd5U4HSzBGUlQIjXAktdXzSW+qnoLeX6E3DLKN80YEWKrjCt8CoPVvWml
+ 9TfVLlzh61G2Ac7vthO9jtJ2zW5koQBNRKefVKEXqbudvPgOiLHPWZP+dMSmgMo0SArC
+ +3V5Y0Xs7dHrxe8PnkcStK9jhadMby08+nqukKXNAKMf/m4EYgtx3Waxzls5wneydmEz
+ 0vXy6wgGKtqW22cEY/XllLXSuHt4Wm6aVhXnbnWmYX9YaA+8ZJ3J4ybK8otNmfVui5HN
+ yhVA==
+X-Gm-Message-State: ABy/qLZ76iaIwugJ9wAgVr62vAbUVvBtJM07Gn5g3X5OUSNxKT5yzK6Q
+ 1xqB67JhLEkfXdg3+vi7zLVBm0jNuQ7QR1Q+8cOTvw==
+X-Google-Smtp-Source: APBJJlEuByoAo+2h3fSm0XUgmVVrYyCj0oPh9BqxjX2ateTnFoMdZDd6t4wrsjCmbF0qXT1E7LyAgl1sRW3h/F8Bi9A=
+X-Received: by 2002:a67:f643:0:b0:443:516b:782 with SMTP id
+ u3-20020a67f643000000b00443516b0782mr1972918vso.33.1688731330651; Fri, 07 Jul
+ 2023 05:02:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wD3elEahadk1ZPOBw--.32303S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jr1ktry3WFy8ZF1fGF4xXrb_yoW3uFg_Gw
- 40g3WxurWjvayYvFWUAw45Cryj9r95Ka1I93WrJFsxC34jgrWUJ3ZYgFn7Aryruw4xWr93
- Zr1xJr9xCryYyjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUea0P7UUUUU==
-X-Originating-IP: [60.24.208.92]
-X-CM-SenderInfo: pjdr2x5dqox3xnrxqiywtou0bp/1tbiUQOl8mDESKYIsgAAs1
-Received-SPF: pass client-ip=220.181.12.198;
- envelope-from=gaoshanliukou@163.com; helo=m12.mail.163.com
+References: <20230707103611.5906-1-richard.henderson@linaro.org>
+In-Reply-To: <20230707103611.5906-1-richard.henderson@linaro.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 7 Jul 2023 17:31:59 +0530
+Message-ID: <CA+G9fYtf+Yni==ZHcO_+Gqi2RE_k1FJ3z7MX+PuktVWYzbQ2+A@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] accel/tcg: Fix race condition in tb
+ create/invalidate
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, rjones@redhat.com, pbonzini@redhat.com, 
+ lkft-triage@lists.linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a34;
+ envelope-from=naresh.kamboju@linaro.org; helo=mail-vk1-xa34.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001, RCVD_IN_MSPIKE_L4=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 07 Jul 2023 08:25:42 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,30 +86,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "yang.zhang" <yang.zhang@hexintek.com>
+On Fri, 7 Jul 2023 at 16:06, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> Changes for v2:
+>
+> Adjust the change to cpu_exec_longjmp_cleanup, which should now survive
+> user-only testing.  I'm not really happy with it.  I suggested two
+> alternatives in the block comment, but neither of them are trivial.
+>
+> Please re-review, if you gave it a glance before.  And if you have
+> any bright suggestions short of "use real exceptions", I'm all ears.
 
-Should set/get riscv all reg timer,i.e, time/compare/frequency/state.
+Thanks for your patch.
+Since, The problem has been reported initially by LKFT, we would run our
+LKFT test plans by using tuxtest with latest kernel and get back to you in the
+next few days.
 
-Signed-off-by:Yang Zhang <yang.zhang@hexintek.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1688
----
- target/riscv/kvm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+- Naresh
 
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 30f21453d6..0c567f668c 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -99,7 +99,7 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
- 
- #define KVM_RISCV_SET_TIMER(cs, env, name, reg) \
-     do { \
--        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(env, time), &reg); \
-+        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(env, name), &reg); \
-         if (ret) { \
-             abort(); \
-         } \
--- 
-2.25.1
-
+>
+> r~
+>
+>
+> Richard Henderson (2):
+>   accel/tcg: Split out cpu_exec_longjmp_cleanup
+>   accel/tcg: Always lock pages before translation
+>
+>  accel/tcg/internal.h      |  30 ++++-
+>  accel/tcg/cpu-exec.c      |  63 ++++++----
+>  accel/tcg/tb-maint.c      | 242 ++++++++++++++++++++------------------
+>  accel/tcg/translate-all.c |  43 ++++++-
+>  accel/tcg/translator.c    |  34 ++++--
+>  5 files changed, 255 insertions(+), 157 deletions(-)
+>
+> --
+> 2.34.1
+>
+>
 
