@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B82E74B026
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A76674B034
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:47:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjiS-0006R1-UK; Fri, 07 Jul 2023 07:33:37 -0400
+	id 1qHjiV-0006sJ-N8; Fri, 07 Jul 2023 07:33:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjiQ-00069S-5a; Fri, 07 Jul 2023 07:33:34 -0400
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
+ id 1qHjiS-0006Xj-PI; Fri, 07 Jul 2023 07:33:36 -0400
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjiO-0006wJ-Dk; Fri, 07 Jul 2023 07:33:33 -0400
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-6b7474b0501so1632537a34.1; 
- Fri, 07 Jul 2023 04:33:31 -0700 (PDT)
+ id 1qHjiQ-0006xX-VT; Fri, 07 Jul 2023 07:33:36 -0400
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-1b0748bc78dso1845909fac.0; 
+ Fri, 07 Jul 2023 04:33:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729611; x=1691321611;
+ d=gmail.com; s=20221208; t=1688729613; x=1691321613;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Gmn37gxv2SzvBfqbi+VS7fh6apL5R/NleDuDc6XKW4Y=;
- b=rkmmcNNT1FEMGfKkrcUHKrIXOGemHoBjgm4vaU0Q+32ZQbFkfki5essbDMeR9f99G8
- ueoXOE+iXrfu9D7np1LeRQbNVu88uJqZ7OjpzdGmQ+zFM2o5K16SCqLXxaKaFUGWYias
- 5SLcnTq9X6+RjpZUgsoAIYnpei50SQ97tCMadG4Ied0g7f9aBre1OaQdKTwoGSylcsrP
- zSAiptppV0ptHT0IRbv/lecz0ol3ptvJDGve1EIk8IvxUUXfWIMNB4v9x6ZphwUr8wvz
- NWjG9eHjoynZqvuLwhWBIGYGK+8DbiTJ6lxBnjSnilKj+MSoPHs+2QDVJPqG6y1M7H/8
- H4MA==
+ bh=dej50tkFsteNueaQMci7bTrmP7efUeMrQoIO7A5G7sY=;
+ b=P7opYRPB2ZtyPa6Bwze2Xk30AQ0/mdL1MAieVIfex2BK8hqM6HmOduZFNZBi2FQh9G
+ UztTeO5TZLNUcsQc7jwzx2TqCTTC4x506Dw81Tg4sUXpRNxWsh3gTK2SUBDb4QEQhryu
+ Na7s3ia63/f4KrM7H7R6GoGRINZl9Y8QJ7v7p0nQkyM/zmJ6VsTKYjzWS497snOHG1iq
+ CithNK6n3o59yu0XI8BFJXBW5oTfRSdPfV3SNkvXKQRoLNfDCDobsVT4rzFzbDtlMDMa
+ HjRRnUZUCnfDQ9wZIW2adjK9lU4DTITH6GSNEuZmhdNErtY+wlB07Rfkf4+eNLupwmKP
+ a1Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729611; x=1691321611;
+ d=1e100.net; s=20221208; t=1688729613; x=1691321613;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Gmn37gxv2SzvBfqbi+VS7fh6apL5R/NleDuDc6XKW4Y=;
- b=GF+xw/HunkIbz58F6uI0CmBxj4bgHfaZgvz3HWSz6jGfhg/j0dGJBk48QEEBGwo08S
- 40j8H6eraNN51QPopFMaqcrebgy83HTFth6Ov0B+dArid4p1WA8D+8z8KTa37Gp8JeuI
- 80W4MXQqLAFd1lJpHkFTbGMtlP1R6QCAgYEFSWckzOH5CL+N/oE12HingUdGHHTWJepO
- pb9ZSUT4hcpyVgiE0hAqMicPIDBR4FQAbQrU1h2nWpA4lTRkPdax7uONwF3SFHIXkHTR
- 78nbQM1gUzqP2wb7RT5VsPf+5Kt9DZUacMJTXliJSlZ5G0XUYbhER7CjOshn1fmfko/H
- q8AA==
-X-Gm-Message-State: ABy/qLZrJJwNwMzy4zDUu3T4KekNYj+N2QYTE0FgJBJ1ixcehjydZGPF
- 2Lg/9WyQgfECQovasBQBJlDH5+GOgBE=
-X-Google-Smtp-Source: APBJJlFC8aDQYZXn0fWUbRVcCiBYFnhj6LCBsv1u/2k8CM35nN+KEjNHaHYqGr5EaxSIbvB+hqS28Q==
-X-Received: by 2002:a9d:7394:0:b0:6b8:778f:d67 with SMTP id
- j20-20020a9d7394000000b006b8778f0d67mr3542707otk.27.1688729610961; 
- Fri, 07 Jul 2023 04:33:30 -0700 (PDT)
+ bh=dej50tkFsteNueaQMci7bTrmP7efUeMrQoIO7A5G7sY=;
+ b=LJ6wjThR74a04dHudRX5pTK7p/oiDS+MOBsz/P6hAeIy7ADgRRheNSXGrwJxuXemr9
+ i2q8c2kq+WFDLDFX2s4Daw22+I3WJDSswZMyc5aySYpThLxN3DaS9N4IYY/1XOrd6NQF
+ oVSBps4cpuP66FIGt2wtVyCgsmcSlKoOi/B1o879RvtsxZnsrgbWJMTqo5T3/eAwoDI1
+ 9MBnx387eBXH2UdlDjxkKzlKeis+Bd8WMCM+UAw2pFAW+5SoE8mAntjstSBJfEUlAKFn
+ GZ1ILdXbNXDttRGjnIlVRoJsOvvGzkRATlUtZB0hpF04RwBWbTTrmMmsEQV7F9fUabrX
+ FvZw==
+X-Gm-Message-State: ABy/qLafHOsr+Xj3tY/MFu5OLXI/8gL0/F1dS2uavKZbepoVJGvJ8Qha
+ UuNY1J3V7WV/Ud6r8XSPVR3BykVbGDw=
+X-Google-Smtp-Source: APBJJlEZIORzuav8Shkig8/iP9TY7dg3cp8JDlU01X9qujgvx9LwCBIF2dZqnojLlSvxfodNkDNWqg==
+X-Received: by 2002:a05:6871:97:b0:1b3:8d35:c850 with SMTP id
+ u23-20020a056871009700b001b38d35c850mr2285335oaa.7.1688729613323; 
+ Fri, 07 Jul 2023 04:33:33 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.33.28
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.33.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:33:30 -0700 (PDT)
+ Fri, 07 Jul 2023 04:33:33 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 51/60] tests/qtest: Add xscom tests for powernv10 machine
-Date: Fri,  7 Jul 2023 08:30:59 -0300
-Message-ID: <20230707113108.7145-52-danielhb413@gmail.com>
+Subject: [PULL 52/60] target/ppc: Machine check on invalid real address access
+ on POWER9/10
+Date: Fri,  7 Jul 2023 08:31:00 -0300
+Message-ID: <20230707113108.7145-53-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x329.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2c;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,117 +96,114 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-Add basic chip and core xscom tests for powernv10 machine, equivalent
-to tests for powernv8 and 9.
+ppc currently silently accepts invalid real address access. Catch
+these and turn them into machine checks on POWER9/10 machines.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Tested-by: Cédric Le Goater <clg@kaod.org>
-Message-ID: <20230706053923.115003-3-npiggin@gmail.com>
+Message-ID: <20230703120301.45313-1-npiggin@gmail.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- tests/qtest/pnv-xscom-test.c | 45 ++++++++++++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 9 deletions(-)
+ target/ppc/cpu_init.c    |  1 +
+ target/ppc/excp_helper.c | 49 ++++++++++++++++++++++++++++++++++++++++
+ target/ppc/internal.h    |  5 ++++
+ 3 files changed, 55 insertions(+)
 
-diff --git a/tests/qtest/pnv-xscom-test.c b/tests/qtest/pnv-xscom-test.c
-index 2c46d5cf6d..8a5ac11037 100644
---- a/tests/qtest/pnv-xscom-test.c
-+++ b/tests/qtest/pnv-xscom-test.c
-@@ -15,6 +15,7 @@ typedef enum PnvChipType {
-     PNV_CHIP_POWER8,      /* AKA Venice */
-     PNV_CHIP_POWER8NVL,   /* AKA Naples */
-     PNV_CHIP_POWER9,      /* AKA Nimbus */
-+    PNV_CHIP_POWER10,
- } PnvChipType;
- 
- typedef struct PnvChip {
-@@ -46,13 +47,22 @@ static const PnvChip pnv_chips[] = {
-         .cfam_id    = 0x220d104900008000ull,
-         .first_core = 0x0,
-     },
-+    {
-+        .chip_type  = PNV_CHIP_POWER10,
-+        .cpu_model  = "POWER10",
-+        .xscom_base = 0x000603fc00000000ull,
-+        .cfam_id    = 0x120da04900008000ull,
-+        .first_core = 0x0,
-+    },
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 720aad9e05..6ac1765a8d 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -7335,6 +7335,7 @@ static const struct TCGCPUOps ppc_tcg_ops = {
+   .cpu_exec_enter = ppc_cpu_exec_enter,
+   .cpu_exec_exit = ppc_cpu_exec_exit,
+   .do_unaligned_access = ppc_cpu_do_unaligned_access,
++  .do_transaction_failed = ppc_cpu_do_transaction_failed,
+ #endif /* !CONFIG_USER_ONLY */
  };
+ #endif /* CONFIG_TCG */
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 7683ea0fc9..003805b202 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -1428,7 +1428,9 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+         /* machine check exceptions don't have ME set */
+         new_msr &= ~((target_ulong)1 << MSR_ME);
  
- static uint64_t pnv_xscom_addr(const PnvChip *chip, uint32_t pcba)
- {
-     uint64_t addr = chip->xscom_base;
- 
--    if (chip->chip_type == PNV_CHIP_POWER9) {
-+    if (chip->chip_type == PNV_CHIP_POWER10) {
-+        addr |= ((uint64_t) pcba << 3);
-+    } else if (chip->chip_type == PNV_CHIP_POWER9) {
-         addr |= ((uint64_t) pcba << 3);
-     } else {
-         addr |= (((uint64_t) pcba << 4) & ~0xffull) |
-@@ -82,6 +92,8 @@ static void test_cfam_id(const void *data)
- 
-     if (chip->chip_type == PNV_CHIP_POWER9) {
-         machine = "powernv9";
-+    } else if (chip->chip_type == PNV_CHIP_POWER10) {
-+        machine = "powernv10";
-     }
- 
-     qts = qtest_initf("-M %s -accel tcg -cpu %s",
-@@ -96,23 +108,36 @@ static void test_cfam_id(const void *data)
-     (PNV_XSCOM_EX_CORE_BASE | ((uint64_t)(core) << 24))
- #define PNV_XSCOM_P9_EC_BASE(core) \
-     ((uint64_t)(((core) & 0x1F) + 0x20) << 24)
-+#define PNV_XSCOM_P10_EC_BASE(core) \
-+    ((uint64_t)((((core) & ~0x3) + 0x20) << 24) + 0x20000 + \
-+     (0x1000 << (3 - (core & 0x3))))
- 
- #define PNV_XSCOM_EX_DTS_RESULT0     0x50000
- 
- static void test_xscom_core(QTestState *qts, const PnvChip *chip)
- {
--    uint32_t first_core_dts0 = PNV_XSCOM_EX_DTS_RESULT0;
--    uint64_t dts0;
-+    if (chip->chip_type == PNV_CHIP_POWER10) {
-+        uint32_t first_core_thread_state =
-+                 PNV_XSCOM_P10_EC_BASE(chip->first_core) + 0x412;
-+        uint64_t thread_state;
++        msr |= env->error_code;
+         break;
 +
-+        thread_state = pnv_xscom_read(qts, chip, first_core_thread_state);
- 
--    if (chip->chip_type != PNV_CHIP_POWER9) {
--        first_core_dts0 |= PNV_XSCOM_EX_BASE(chip->first_core);
-+        g_assert_cmphex(thread_state, ==, 0);
-     } else {
--        first_core_dts0 |= PNV_XSCOM_P9_EC_BASE(chip->first_core);
--    }
-+        uint32_t first_core_dts0 = PNV_XSCOM_EX_DTS_RESULT0;
-+        uint64_t dts0;
- 
--    dts0 = pnv_xscom_read(qts, chip, first_core_dts0);
-+        if (chip->chip_type == PNV_CHIP_POWER9) {
-+            first_core_dts0 |= PNV_XSCOM_P9_EC_BASE(chip->first_core);
-+        } else { /* POWER8 */
-+            first_core_dts0 |= PNV_XSCOM_EX_BASE(chip->first_core);
-+        }
- 
--    g_assert_cmphex(dts0, ==, 0x26f024f023f0000ull);
-+        dts0 = pnv_xscom_read(qts, chip, first_core_dts0);
-+
-+        g_assert_cmphex(dts0, ==, 0x26f024f023f0000ull);
-+    }
+     case POWERPC_EXCP_DSI:       /* Data storage exception                   */
+         trace_ppc_excp_dsi(env->spr[SPR_DSISR], env->spr[SPR_DAR]);
+         break;
+@@ -3188,5 +3190,52 @@ void ppc_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
+     env->error_code = insn & 0x03FF0000;
+     cpu_loop_exit(cs);
  }
++
++void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
++                                   vaddr vaddr, unsigned size,
++                                   MMUAccessType access_type,
++                                   int mmu_idx, MemTxAttrs attrs,
++                                   MemTxResult response, uintptr_t retaddr)
++{
++    CPUPPCState *env = cs->env_ptr;
++
++    switch (env->excp_model) {
++#if defined(TARGET_PPC64)
++    case POWERPC_EXCP_POWER9:
++    case POWERPC_EXCP_POWER10:
++        /*
++         * Machine check codes can be found in processor User Manual or
++         * Linux or skiboot source.
++         */
++        if (access_type == MMU_DATA_LOAD) {
++            env->spr[SPR_DAR] = vaddr;
++            env->spr[SPR_DSISR] = PPC_BIT(57);
++            env->error_code = PPC_BIT(42);
++
++        } else if (access_type == MMU_DATA_STORE) {
++            /*
++             * MCE for stores in POWER is asynchronous so hardware does
++             * not set DAR, but QEMU can do better.
++             */
++            env->spr[SPR_DAR] = vaddr;
++            env->error_code = PPC_BIT(36) | PPC_BIT(43) | PPC_BIT(45);
++            env->error_code |= PPC_BIT(42);
++
++        } else { /* Fetch */
++            env->error_code = PPC_BIT(36) | PPC_BIT(44) | PPC_BIT(45);
++        }
++        break;
++#endif
++    default:
++        /*
++         * TODO: Check behaviour for other CPUs, for now do nothing.
++         * Could add a basic MCE even if real hardware ignores.
++         */
++        return;
++    }
++
++    cs->exception_index = POWERPC_EXCP_MCHECK;
++    cpu_loop_exit_restore(cs, retaddr);
++}
+ #endif /* CONFIG_TCG */
+ #endif /* !CONFIG_USER_ONLY */
+diff --git a/target/ppc/internal.h b/target/ppc/internal.h
+index 901bae6d39..57acb3212c 100644
+--- a/target/ppc/internal.h
++++ b/target/ppc/internal.h
+@@ -296,6 +296,11 @@ bool ppc_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+ G_NORETURN void ppc_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
+                                             MMUAccessType access_type, int mmu_idx,
+                                             uintptr_t retaddr);
++void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
++                                   vaddr addr, unsigned size,
++                                   MMUAccessType access_type,
++                                   int mmu_idx, MemTxAttrs attrs,
++                                   MemTxResult response, uintptr_t retaddr);
+ #endif
  
- static void test_core(const void *data)
-@@ -123,6 +148,8 @@ static void test_core(const void *data)
- 
-     if (chip->chip_type == PNV_CHIP_POWER9) {
-         machine = "powernv9";
-+    } else if (chip->chip_type == PNV_CHIP_POWER10) {
-+        machine = "powernv10";
-     }
- 
-     qts = qtest_initf("-M %s -accel tcg -cpu %s",
+ FIELD(GER_MSK, XMSK, 0, 4)
 -- 
 2.41.0
 
