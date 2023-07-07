@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B715F74AFE5
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDEE274B028
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:45:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHji9-0004fN-7T; Fri, 07 Jul 2023 07:33:17 -0400
+	id 1qHji8-0004aw-F4; Fri, 07 Jul 2023 07:33:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHji5-0004N7-Nc; Fri, 07 Jul 2023 07:33:13 -0400
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ id 1qHji5-0004LU-JZ; Fri, 07 Jul 2023 07:33:13 -0400
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHji2-0006qC-Iz; Fri, 07 Jul 2023 07:33:13 -0400
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-1b06da65bdbso1656575fac.1; 
- Fri, 07 Jul 2023 04:33:03 -0700 (PDT)
+ id 1qHji2-0006qX-Iq; Fri, 07 Jul 2023 07:33:13 -0400
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-6b5d5e6b086so1085635a34.1; 
+ Fri, 07 Jul 2023 04:33:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729582; x=1691321582;
+ d=gmail.com; s=20221208; t=1688729584; x=1691321584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uKJ3O0O2Vv4yXcQhqJAnFubhCWRrq84OrzaoroTx/MQ=;
- b=BzaWz1b3Gb3XtnwngBQhUClHBC3P5cE0BPLZgTKuL7CjS1M6Uf2zwvR/s+d81FmnDu
- wSluz7pPoRk0xI6ctDvE/qnI7s1DrT9r6lsDym0qSybdbXkd/fjynWwZ7mksgLLxVbVu
- OU7LS7qpd+EzrAo/dH6CPj2JyS4BjynykEB03tUSAtMamJhULpdS8eHkPlAntLBztVX5
- uHyupemGH7zzfb0dyYEy4EK2u5iLB3Q240V9LNPuUhWaJ8TlvGQxeLn2PEyMBvfyO7y2
- rPGxqtWNydBwe7/D2K2aNzqGCN8XYB3UxPPyZzeetwnQiQRHh1bHDLdEqfQd06WsyFLU
- NYdQ==
+ bh=p/GxMQMavw5Cwmp/cFEwPDkTT6/BM+6Or9w33NsKt4c=;
+ b=Sc8MoUkfe+dEQ9poimAw85gHUBQPECMvspQgkizCteUrR+OVn5/pYQFEiENHv7Q7uM
+ fAstc1qQeXw7A7J85hSRLaw9kbP3s9MqzNXK4Jwzw9ByKFrtMWSAKr8J+J7/EKpcI1Vg
+ ftjSNiDMPnCXgWAtDJXAyUu5IuMZu7rofPmg6gJrQvvZMvFie0AqWhuH4n72MtBi8Hv5
+ 3ZKvdMgjx4IbmBABlBarbyy6j2+28GcfUHFLTVfjhvZqqn292OFaVdnKIwupHO+aMQ0g
+ D3285QrQAD3CJD152bLX8Iqm4Dgj7ASmh0ikGaY06AaUBhWxKTazyxsHi8WWpv13H8DS
+ UQ5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729582; x=1691321582;
+ d=1e100.net; s=20221208; t=1688729584; x=1691321584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uKJ3O0O2Vv4yXcQhqJAnFubhCWRrq84OrzaoroTx/MQ=;
- b=BMssSj2/zs8HbfCAFbQEfJvvG0c16afxY0NjU39tmBuM097tKk7uHFJkLXaHaJ5D7E
- xjljOt24RFuKkrS+ts2zlW7E6gTYtmTbqsxj2KUuYlN/tUKc+gmLWy2vTv2Z1dULw0cc
- ivoiIdf5hX34THAbzQ+LmffAFx4YzUxSxE/mltdiL4+9vXNiNwQuDtLm2CjC5CeCGD9a
- HeD+aOWYT2oa/s2C/wQJPtc7dM/6t1+FM4ZRlmEJ+/iIbusw3ba/5I7/L/wKaAfPtUS9
- vGeejAGNGwK8aygIQBIxzYBZZ5VOOuzUmxqjgIMuZ/a0X3ohJDOECQJ4Ju7N9EJeFdfP
- mjJA==
-X-Gm-Message-State: ABy/qLY4m/YM1DKnDQuO5WHtrdyX2Zmu7gSp4BvU2+nHoshGS/1PseD/
- DQdwyXFDWXmR0C5iLcWm9hpdWkAGi8E=
-X-Google-Smtp-Source: APBJJlFc/GflzoylRo3pV/COQB1A0aVAWenEANou04e7oud+fe6MV9QPZ4zRe3Xd5Hn4NH2l0NhSkg==
-X-Received: by 2002:a05:6870:1fc9:b0:1ad:e92:62e1 with SMTP id
- gp9-20020a0568701fc900b001ad0e9262e1mr5480322oac.54.1688729582170; 
- Fri, 07 Jul 2023 04:33:02 -0700 (PDT)
+ bh=p/GxMQMavw5Cwmp/cFEwPDkTT6/BM+6Or9w33NsKt4c=;
+ b=lN9bYLcXN1btlI6yofwvG9DRGUSEvEVkKzmbz5grah8pyhj8yaLfUFuzawIe6J4EQG
+ Sjiqbj6CfV9qoOwGGeWcr6LGvgwMOK2OKK1vVETQvrwaTtceehPTVXC4ZNdgFK2YuzJS
+ kbcxeBnRuN3UkOk2bpkDXzhfxn+0PJLkzMXNFc93F63W2lyeKlQNDY2dMRx7PsJZbmin
+ d0SUfhigW5X4An5uA76ldYlCrrKSgze7/+9nJeAc873ZTkDa5dN+Fai2khGav0MG1CPR
+ asatptamYew90g/aUAFPmTrx12NP1J2Ihqo4P1WCBmZ7CM8+3Qmp7SuAX72siF+Dg6Z1
+ k+/w==
+X-Gm-Message-State: ABy/qLYzTxy+9UaSft8VMXCxwXoikZaNrzcrAJ01uakXWHn6Xq1y6DF8
+ zd8YE3005nP35N3KitemppXCfrShXH0=
+X-Google-Smtp-Source: APBJJlHeEYHSXZF4KqHCPDcIkLCnOjVs7xWIsQjIKpYr7oQoW+JbDsFqfHskvm77VRI/aTkvIHQKOA==
+X-Received: by 2002:a9d:7a97:0:b0:6b7:564d:f368 with SMTP id
+ l23-20020a9d7a97000000b006b7564df368mr2574686otn.5.1688729584576; 
+ Fri, 07 Jul 2023 04:33:04 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.33.00
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.33.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:33:01 -0700 (PDT)
+ Fri, 07 Jul 2023 04:33:04 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  richard.henderson@linaro.org, BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 39/60] ppc440: Rename local variable in dcr_read_pcie()
-Date: Fri,  7 Jul 2023 08:30:47 -0300
-Message-ID: <20230707113108.7145-40-danielhb413@gmail.com>
+Subject: [PULL 40/60] ppc440: Stop using system io region for PCIe buses
+Date: Fri,  7 Jul 2023 08:30:48 -0300
+Message-ID: <20230707113108.7145-41-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,124 +95,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Rename local variable storing state struct in dcr_read_pcie() for
-brevity and consistency with other functions.
+Add separate memory regions for the mem and io spaces of the PCIe bus
+to avoid different buses using the same system io region.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <7b6f0033ada74075fc094b1397deb406e1a05741.1688586835.git.balaton@eik.bme.hu>
+Message-ID: <b631c3a61729eee2166d899b8888164ebeb71574.1688586835.git.balaton@eik.bme.hu>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- hw/ppc/ppc440_uc.c | 50 +++++++++++++++++++++++-----------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ hw/ppc/ppc440_uc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
-index 22c74839ae..5724db2702 100644
+index 5724db2702..663abf3449 100644
 --- a/hw/ppc/ppc440_uc.c
 +++ b/hw/ppc/ppc440_uc.c
-@@ -828,78 +828,78 @@ enum {
+@@ -776,6 +776,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(PPC460EXPCIEState, PPC460EX_PCIE_HOST)
+ struct PPC460EXPCIEState {
+     PCIExpressHost parent_obj;
  
- static uint32_t dcr_read_pcie(void *opaque, int dcrn)
- {
--    PPC460EXPCIEState *state = opaque;
-+    PPC460EXPCIEState *s = opaque;
-     uint32_t ret = 0;
- 
--    switch (dcrn - state->dcrn_base) {
-+    switch (dcrn - s->dcrn_base) {
-     case PEGPL_CFGBAH:
--        ret = state->cfg_base >> 32;
-+        ret = s->cfg_base >> 32;
-         break;
-     case PEGPL_CFGBAL:
--        ret = state->cfg_base;
-+        ret = s->cfg_base;
-         break;
-     case PEGPL_CFGMSK:
--        ret = state->cfg_mask;
-+        ret = s->cfg_mask;
-         break;
-     case PEGPL_MSGBAH:
--        ret = state->msg_base >> 32;
-+        ret = s->msg_base >> 32;
-         break;
-     case PEGPL_MSGBAL:
--        ret = state->msg_base;
-+        ret = s->msg_base;
-         break;
-     case PEGPL_MSGMSK:
--        ret = state->msg_mask;
-+        ret = s->msg_mask;
-         break;
-     case PEGPL_OMR1BAH:
--        ret = state->omr1_base >> 32;
-+        ret = s->omr1_base >> 32;
-         break;
-     case PEGPL_OMR1BAL:
--        ret = state->omr1_base;
-+        ret = s->omr1_base;
-         break;
-     case PEGPL_OMR1MSKH:
--        ret = state->omr1_mask >> 32;
-+        ret = s->omr1_mask >> 32;
-         break;
-     case PEGPL_OMR1MSKL:
--        ret = state->omr1_mask;
-+        ret = s->omr1_mask;
-         break;
-     case PEGPL_OMR2BAH:
--        ret = state->omr2_base >> 32;
-+        ret = s->omr2_base >> 32;
-         break;
-     case PEGPL_OMR2BAL:
--        ret = state->omr2_base;
-+        ret = s->omr2_base;
-         break;
-     case PEGPL_OMR2MSKH:
--        ret = state->omr2_mask >> 32;
-+        ret = s->omr2_mask >> 32;
-         break;
-     case PEGPL_OMR2MSKL:
--        ret = state->omr3_mask;
-+        ret = s->omr3_mask;
-         break;
-     case PEGPL_OMR3BAH:
--        ret = state->omr3_base >> 32;
-+        ret = s->omr3_base >> 32;
-         break;
-     case PEGPL_OMR3BAL:
--        ret = state->omr3_base;
-+        ret = s->omr3_base;
-         break;
-     case PEGPL_OMR3MSKH:
--        ret = state->omr3_mask >> 32;
-+        ret = s->omr3_mask >> 32;
-         break;
-     case PEGPL_OMR3MSKL:
--        ret = state->omr3_mask;
-+        ret = s->omr3_mask;
-         break;
-     case PEGPL_REGBAH:
--        ret = state->reg_base >> 32;
-+        ret = s->reg_base >> 32;
-         break;
-     case PEGPL_REGBAL:
--        ret = state->reg_base;
-+        ret = s->reg_base;
-         break;
-     case PEGPL_REGMSK:
--        ret = state->reg_mask;
-+        ret = s->reg_mask;
-         break;
-     case PEGPL_SPECIAL:
--        ret = state->special;
-+        ret = s->special;
-         break;
-     case PEGPL_CFG:
--        ret = state->cfg;
-+        ret = s->cfg;
-         break;
++    MemoryRegion busmem;
+     MemoryRegion iomem;
+     qemu_irq irq[4];
+     int32_t dcrn_base;
+@@ -1056,15 +1057,17 @@ static void ppc460ex_pcie_realize(DeviceState *dev, Error **errp)
+         error_setg(errp, "invalid PCIe DCRN base");
+         return;
      }
++    snprintf(buf, sizeof(buf), "pcie%d-mem", id);
++    memory_region_init(&s->busmem, OBJECT(s), buf, UINT64_MAX);
+     snprintf(buf, sizeof(buf), "pcie%d-io", id);
+-    memory_region_init(&s->iomem, OBJECT(s), buf, UINT64_MAX);
++    memory_region_init(&s->iomem, OBJECT(s), buf, 64 * KiB);
+     for (i = 0; i < 4; i++) {
+         sysbus_init_irq(SYS_BUS_DEVICE(dev), &s->irq[i]);
+     }
+     snprintf(buf, sizeof(buf), "pcie.%d", id);
+     pci->bus = pci_register_root_bus(DEVICE(s), buf, ppc460ex_set_irq,
+-                                pci_swizzle_map_irq_fn, s, &s->iomem,
+-                                get_system_io(), 0, 4, TYPE_PCIE_BUS);
++                                pci_swizzle_map_irq_fn, s, &s->busmem,
++                                &s->iomem, 0, 4, TYPE_PCIE_BUS);
+     ppc460ex_pcie_register_dcrs(s);
+ }
  
 -- 
 2.41.0
