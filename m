@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF47974B02F
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B92174AFED
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:36:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjgR-0001me-Pr; Fri, 07 Jul 2023 07:31:31 -0400
+	id 1qHjgS-0001n2-3X; Fri, 07 Jul 2023 07:31:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjgM-0001kU-Jz; Fri, 07 Jul 2023 07:31:29 -0400
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ id 1qHjgP-0001m4-2v; Fri, 07 Jul 2023 07:31:29 -0400
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjgK-0006Si-Js; Fri, 07 Jul 2023 07:31:26 -0400
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6b708b97418so1657584a34.3; 
- Fri, 07 Jul 2023 04:31:23 -0700 (PDT)
+ id 1qHjgM-0006T4-Qz; Fri, 07 Jul 2023 07:31:28 -0400
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-6b7474b0501so1631369a34.1; 
+ Fri, 07 Jul 2023 04:31:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729483; x=1691321483;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Qh6BMV8TeKYl9RWTA8iKGz+S/YN80L9APtWqv8Po7tM=;
- b=GkaZcOg7djHhR0BrivyFpCYj4YQTReucngLYvo60FcJCEhGKwtDtZXzlNJDwqHtw1G
- 1kIV9fmikqe3BTeeaqe8ye4R33F5MqpSlGrIGyOhDEPfdP6g6xwpcuG+6+TpQbe9b17N
- jk5fA2ag62SQBuFcWBPIBwJuKaGXXietRqXAsiBDfe+A7X77tJqOEM7vGnKffoTYFmlj
- k1atAEy+v7T/yZN686YdiFXq2UpxjixacC0ynWW1aYJ4VveumH3K2oZpZ3gSOnKyxrma
- /kPC6XtfjMkn4oOsWozUYcZviW5c5vK8GeDcUlvE7Qu8RxlrjMSnaxSawJqeTtTjyvNY
- N6SQ==
+ d=gmail.com; s=20221208; t=1688729485; x=1691321485;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bUg7Q73kEMeAx0Een00oIb5s2nW2Sa1jBnegcv9S4ZI=;
+ b=WZo8cwwLDoGOCBO3slD+2yc2xNmAXt3I88cCDWvnx9C2Zi95HUzGqDzxSjNefTxZjP
+ Z58LfTPqHutqF9HABlAzgt/crn7+3l/LcvbmVEOWoTfYHOJNkOnTHFaim3uuVMvBvu9s
+ jeTdyPfFCvdkTDb141kgn+CfGnM5M4r+QYEs+ncxKc9TJU5tM0oiPyQm3Zlcv0gWsr3i
+ d81JoSxRg8ECmTwkQKFfCMPV0PFjTxXMMRTfTNwu6oX5QF9DW3vU6R64eAwZJ2Gpn/fp
+ UeE4ydmuLwhh3XlL+fF6VlfBC43FHgLwcKKT8NyGNB4e/JxJbX2EXA7F6edm/WlU+XFf
+ h60Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729483; x=1691321483;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Qh6BMV8TeKYl9RWTA8iKGz+S/YN80L9APtWqv8Po7tM=;
- b=FCtOKteOinmnIYs0O71ziQMAbxzWCTyS0XAi0djl8ziSrCfSzZtE/Z5CCGpkR29BZp
- xfrNzTg2cp/O5ElqtHtpPsetQEYgnRylo5mNv97EEiT3ZY+6m7YmaqdDayQaYktLXT/l
- 99iGpG8BbaJxXF+pi3zlM15n62HL2O1DSkSUHEtxSd2uaWUoCT6XDXJh9NONuvhAVMgJ
- 31FkrZr46kh9oakRVLiQr/ajjVDlrPVYyLfiSACNqre3SMF0kBclUp3FwdD05r93FFbL
- jij6oT9tS/mkr3bA3qWsaexNsX2+XZa5JHHMHBIcsP4ZSLgfG+inpCVaMqr5O3daajRv
- JGww==
-X-Gm-Message-State: ABy/qLYEb4HzTSWjH/mI24MaWC3ToDYRT5FMqVIyo5PjprL5qJGxyzv8
- RJg8IVIHQGyFGphZKHiFfZ7vmpPK2cM=
-X-Google-Smtp-Source: APBJJlHHTtf1HHd7uUekgZFIXs+0yXirnaBRNc4jXdrcw9DaPxQp1zPFWXce8lo4ATLZogzfKPimRQ==
-X-Received: by 2002:a9d:7483:0:b0:6b9:247d:755 with SMTP id
- t3-20020a9d7483000000b006b9247d0755mr56705otk.3.1688729482912; 
- Fri, 07 Jul 2023 04:31:22 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688729485; x=1691321485;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bUg7Q73kEMeAx0Een00oIb5s2nW2Sa1jBnegcv9S4ZI=;
+ b=NchwSyxxRxAdbg2PmElUAXt9YnxQ/8tgXSz9sDnjgG71D6H2ELN9iYoN01EZFvTUAy
+ RVl3cD+1InqfUlV7tiOm92BpYDQAWSMAFzstTI11coR2zbQTFJIvOkPj8DwKitW4h8f4
+ gYnZgm4r6ptfu0QUTRkkEy9X7rAE1OXLwPgehQt+RXd6ELfZL1uYia1P10SPHh75ZFlh
+ 9sI2uP/2FLK1pOnc9/4yj7CM2IxKgkxcn69548Tqvb3hOYJ9A+ZGWslJ1m4UzyqByf2c
+ CEk/jCHn7T3uj4AfINjijUShGYUDy0ANnA+Se+aws5oMZUWPD0IrUx6T3NhxrTWqtrfF
+ pVcQ==
+X-Gm-Message-State: ABy/qLZjSnQff5OlQmrjWMoDGgyciuEI+3e4e/d9IVwdCXY9bgmcDaOM
+ OV9kEjq1sMBN6J+G7z5TrBkMuhKMhD0=
+X-Google-Smtp-Source: APBJJlE3fOQFaSLn1NdyjGXR+HfQKOZP2txBzK7M/JLfZtmtPxYw91mVFEzgF3R0ms5qJgMdYPLVZQ==
+X-Received: by 2002:a9d:4d0e:0:b0:6b9:1be6:ef56 with SMTP id
+ n14-20020a9d4d0e000000b006b91be6ef56mr683710otf.23.1688729485367; 
+ Fri, 07 Jul 2023 04:31:25 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.31.21
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.31.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:31:22 -0700 (PDT)
+ Fri, 07 Jul 2023 04:31:25 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org
-Subject: [PULL 00/60] ppc queue
-Date: Fri,  7 Jul 2023 08:30:08 -0300
-Message-ID: <20230707113108.7145-1-danielhb413@gmail.com>
+ richard.henderson@linaro.org, Frederic Barrat <fbarrat@linux.ibm.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PULL 01/60] pnv/psi: Allow access to PSI registers through xscom
+Date: Fri,  7 Jul 2023 08:30:09 -0300
+Message-ID: <20230707113108.7145-2-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
+References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -89,148 +93,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 97c81ef4b8e203d9620fd46e7eb77004563e3675:
+From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-  Merge tag 'pull-9p-20230706' of https://github.com/cschoenebeck/qemu into staging (2023-07-06 18:19:42 +0100)
+skiboot only uses mmio to access the PSI registers (once the BAR is
+set) but we don't have any reason to block the accesses through
+xscom. This patch enables xscom access to the PSI registers. It
+converts the xscom addresses to mmio addresses, which requires a bit
+of care for the PSIHB, then reuse the existing mmio ops.
 
-are available in the Git repository at:
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Message-ID: <20230630102609.193214-1-fbarrat@linux.ibm.com>
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+---
+ hw/ppc/pnv_psi.c | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-  https://gitlab.com/danielhb/qemu.git tags/pull-ppc-20230707
+diff --git a/hw/ppc/pnv_psi.c b/hw/ppc/pnv_psi.c
+index 8aa09ab26b..46da58dff8 100644
+--- a/hw/ppc/pnv_psi.c
++++ b/hw/ppc/pnv_psi.c
+@@ -121,8 +121,12 @@
+ #define PSIHB9_BAR_MASK                 0x00fffffffff00000ull
+ #define PSIHB9_FSPBAR_MASK              0x00ffffff00000000ull
+ 
++/* mmio address to xscom address */
+ #define PSIHB_REG(addr) (((addr) >> 3) + PSIHB_XSCOM_BAR)
+ 
++/* xscom address to mmio address */
++#define PSIHB_MMIO(reg) ((reg - PSIHB_XSCOM_BAR) << 3)
++
+ static void pnv_psi_set_bar(PnvPsi *psi, uint64_t bar)
+ {
+     PnvPsiClass *ppc = PNV_PSI_GET_CLASS(psi);
+@@ -769,24 +773,31 @@ static const MemoryRegionOps pnv_psi_p9_mmio_ops = {
+ 
+ static uint64_t pnv_psi_p9_xscom_read(void *opaque, hwaddr addr, unsigned size)
+ {
+-    /* No read are expected */
+-    qemu_log_mask(LOG_GUEST_ERROR, "PSI: xscom read at 0x%" PRIx64 "\n", addr);
+-    return -1;
++    uint32_t reg = addr >> 3;
++    uint64_t val = -1;
++
++    if (reg < PSIHB_XSCOM_BAR) {
++        /* FIR, not modeled */
++        qemu_log_mask(LOG_UNIMP, "PSI: xscom read at 0x%08x\n", reg);
++    } else {
++        val = pnv_psi_p9_mmio_read(opaque, PSIHB_MMIO(reg), size);
++    }
++    return val;
+ }
+ 
+ static void pnv_psi_p9_xscom_write(void *opaque, hwaddr addr,
+                                 uint64_t val, unsigned size)
+ {
+     PnvPsi *psi = PNV_PSI(opaque);
++    uint32_t reg = addr >> 3;
+ 
+-    /* XSCOM is only used to set the PSIHB MMIO region */
+-    switch (addr >> 3) {
+-    case PSIHB_XSCOM_BAR:
++    if (reg < PSIHB_XSCOM_BAR) {
++        /* FIR, not modeled */
++        qemu_log_mask(LOG_UNIMP, "PSI: xscom write at 0x%08x\n", reg);
++    } else if (reg == PSIHB_XSCOM_BAR) {
+         pnv_psi_set_bar(psi, val);
+-        break;
+-    default:
+-        qemu_log_mask(LOG_GUEST_ERROR, "PSI: xscom write at 0x%" PRIx64 "\n",
+-                      addr);
++    } else {
++        pnv_psi_p9_mmio_write(opaque, PSIHB_MMIO(reg), val, size);
+     }
+ }
+ 
+-- 
+2.41.0
 
-for you to fetch changes up to 2f8ebb98ef8c7e85b23678812d8a7a95c9479673:
-
-  ppc: Enable 2nd DAWR support on p10 (2023-07-07 06:33:04 -0300)
-
-----------------------------------------------------------------
-ppc patch queue for 2023-07-07:
-
-In this last queue for 8.1 we have a lot of fixes and improvements all
-around: SMT support for powerNV, XIVE fixes, PPC440 cleanups, exception
-handling cleanups and kvm_pph.h cleanups just to name a few.
-
-Thanks everyone in the qemu-ppc community for all the contributions for
-the next QEMU release.
-
-----------------------------------------------------------------
-BALATON Zoltan (22):
-      mv64361: Add dummy gigabit ethernet PHY access registers
-      target/ppc: Remove some superfluous parentheses
-      target/ppc: Remove unneeded parameter from powerpc_reset_wakeup()
-      target/ppc: Move common check in exception handlers to a function
-      target/ppc: Remove some more local CPUState variables only used once
-      target/ppd: Remove unused define
-      target/ppc: Get CPUState in one step
-      ppc/pegasos2: Add support for -initrd command line option
-      ppc440: Change ppc460ex_pcie_init() parameter type
-      ppc440: Add cpu link property to PCIe controller model
-      ppc440: Add a macro to shorten PCIe controller DCR registration
-      ppc440: Rename parent field of PPC460EXPCIEState to match code style
-      ppc440: Rename local variable in dcr_read_pcie()
-      ppc440: Stop using system io region for PCIe buses
-      ppc440: Add busnum property to PCIe controller model
-      ppc440: Remove ppc460ex_pcie_init legacy init function
-      ppc/sam460ex: Remove address_space_mem local variable
-      ppc440_pcix: Don't use iomem for regs
-      ppc440_pcix: Stop using system io region for PCI bus
-      ppc4xx_pci: Rename QOM type name define
-      ppc4xx_pci: Add define for ppc4xx-host-bridge type name
-      ppc440_pcix: Rename QOM type define abd move it to common header
-
-Frederic Barrat (8):
-      pnv/psi: Allow access to PSI registers through xscom
-      pnv/xive2: Allow indirect TIMA accesses of all sizes
-      pnv/xive2: Fix TIMA offset for indirect access
-      pnv/xive: Add property on xive sources to define PQ state on reset
-      pnv/psi: Initialize the PSIHB interrupts to match hardware
-      pnv/xive: Allow mmio operations of any size on the ESB CI pages
-      pnv/xive: Print CPU target in all TIMA traces
-      pnv/xive2: Always pass a presenter object when accessing the TIMA
-
-Joel Stanley (7):
-      ppc/pnv: quad xscom callbacks are P9 specific
-      ppc/pnv: Subclass quad xscom callbacks
-      ppc/pnv: Add P10 quad xscom model
-      ppc/pnv: Add P10 core xscom model
-      ppc/pnv: Return zero for core thread state xscom
-      ppc/pnv: Log all unimp warnings with similar message
-      ppc/pnv: Add QME region for P10
-
-Narayana Murty N (1):
-      target: ppc: Use MSR_HVB bit to get the target endianness for memory dump
-
-Nicholas Piggin (14):
-      target/ppc: Make HDECR underflow edge triggered
-      hw/ppc: Fix clock update drift
-      target/ppc: Tidy POWER book4 SPR registration
-      target/ppc: Add TFMR SPR implementation with read and write helpers
-      sungem: Add WOL MMIO
-      target/ppc: Fix icount access for some hypervisor instructions
-      tests/avocado: record_replay test for ppc powernv machine
-      target/ppc: Add LPAR-per-core vs per-thread mode flag
-      target/ppc: SMT support for the HID SPR
-      ppc/pnv: SMT support for powernv
-      tests/avocado: Add powernv machine test script
-      ppc/pnv: Set P10 core xscom region size to match hardware
-      tests/qtest: Add xscom tests for powernv10 machine
-      target/ppc: Machine check on invalid real address access on POWER9/10
-
-Philippe Mathieu-Daudé (7):
-      target/ppc: Only generate decodetree files when TCG is enabled
-      target/ppc: Have 'kvm_ppc.h' include 'sysemu/kvm.h'
-      target/ppc: Reorder #ifdef'ry in kvm_ppc.h
-      target/ppc: Move CPU QOM definitions to cpu-qom.h
-      target/ppc: Define TYPE_HOST_POWERPC_CPU in cpu-qom.h
-      target/ppc: Restrict 'kvm_ppc.h' to sysemu in cpu_init.c
-      target/ppc: Remove pointless checks of CONFIG_USER_ONLY in 'kvm_ppc.h'
-
-Ravi Bangoria (1):
-      ppc: Enable 2nd DAWR support on p10
-
- docs/system/ppc/powernv.rst    |   5 -
- hw/intc/pnv_xive2.c            |  26 +++-
- hw/intc/trace-events           |   4 +-
- hw/intc/xive.c                 |  20 +--
- hw/intc/xive2.c                |   4 +-
- hw/net/sungem.c                |  52 ++++++++
- hw/net/trace-events            |   2 +
- hw/pci-host/mv64361.c          |   6 +
- hw/pci-host/mv643xx.h          |   3 +
- hw/ppc/pegasos2.c              |  32 ++++-
- hw/ppc/pnv.c                   |  26 +++-
- hw/ppc/pnv_core.c              | 282 ++++++++++++++++++++++++++++++++++-------
- hw/ppc/pnv_psi.c               |  33 +++--
- hw/ppc/ppc.c                   |  49 +++----
- hw/ppc/ppc440.h                |   1 -
- hw/ppc/ppc440_bamboo.c         |   3 +-
- hw/ppc/ppc440_pcix.c           |  28 ++--
- hw/ppc/ppc440_uc.c             | 192 ++++++++++++----------------
- hw/ppc/ppc4xx_pci.c            |  10 +-
- hw/ppc/sam460ex.c              |  33 +++--
- hw/ppc/spapr.c                 |   7 +-
- hw/ppc/spapr_caps.c            |  32 +++++
- hw/ppc/spapr_cpu_core.c        |   2 +
- include/hw/ppc/pnv_core.h      |  18 ++-
- include/hw/ppc/pnv_xscom.h     |  15 ++-
- include/hw/ppc/ppc4xx.h        |   5 +-
- include/hw/ppc/spapr.h         |   6 +-
- include/hw/ppc/xive.h          |   1 +
- target/ppc/arch_dump.c         |   2 +-
- target/ppc/cpu-qom.h           |   6 +
- target/ppc/cpu.h               |   9 +-
- target/ppc/cpu_init.c          | 112 ++++++++++++----
- target/ppc/excp_helper.c       | 206 ++++++++++++++----------------
- target/ppc/helper.h            |   3 +
- target/ppc/internal.h          |   5 +
- target/ppc/kvm.c               |  12 ++
- target/ppc/kvm_ppc.h           |  82 ++++++------
- target/ppc/meson.build         |   2 +-
- target/ppc/misc_helper.c       |  29 +++++
- target/ppc/spr_common.h        |   3 +
- target/ppc/timebase_helper.c   |  13 ++
- target/ppc/translate.c         |  45 ++++++-
- tests/avocado/ppc_powernv.py   |  87 +++++++++++++
- tests/avocado/replay_kernel.py |  17 +++
- tests/qtest/pnv-xscom-test.c   |  45 +++++--
- 45 files changed, 1123 insertions(+), 452 deletions(-)
- create mode 100644 tests/avocado/ppc_powernv.py
 
