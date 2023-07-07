@@ -2,90 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02ED874AB10
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 08:23:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1122E74AB12
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 08:25:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHeqv-0001BF-Aj; Fri, 07 Jul 2023 02:22:01 -0400
+	id 1qHetT-00026j-Uw; Fri, 07 Jul 2023 02:24:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qHeqs-0001AR-UC
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 02:21:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qHetR-00026a-IJ
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 02:24:37 -0400
+Received: from mailout08.t-online.de ([194.25.134.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qHeqr-0006AC-3r
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 02:21:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688710915;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nE8XpTjS3N1TlBB25qFWxi1qN0XGEwLfff9ZuZGceIA=;
- b=c7cy8/D1EUADYWd2TlEzaFc0Jbt1zUOGdrJWxf0mGlkNS77uFAn/qPU/vj9ZZC93hJpNTF
- fjpovMQzJAlem7yfRrQSrCDTIHRM4rQxCR0jxetYJVJXdx6uJRwNhcEW+JLbCb9+Gr8psl
- lQhaAAwo9MX3iFZRJkdamyZnoH2IKi4=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-182-wu5D1qCCMG-NnMRpYknkWg-1; Fri, 07 Jul 2023 02:21:54 -0400
-X-MC-Unique: wu5D1qCCMG-NnMRpYknkWg-1
-Received: by mail-yb1-f198.google.com with SMTP id
- 3f1490d57ef6-c4e77129acfso1791837276.3
- for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 23:21:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688710914; x=1691302914;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nE8XpTjS3N1TlBB25qFWxi1qN0XGEwLfff9ZuZGceIA=;
- b=j93E1Uymns1OsXeBGBGK8fmllCeICJ0cBHGj5G8Oilb3fVnsGqnkG/yBir2yFN7aP4
- fmYI5b4sfdwZHrOqMIZNo3cjWDhbsc3qTnjSSMQuRo7P7/Egi8wNqVYnjYOGSCqdpDAT
- d0YKL2cg3TaaHgSeIamnAN85NPnOy/ryYavlOw/32RA/MRJA5nqRXHtDo+7VElMeuXmC
- yIqX2JClHuKyEJFdgjv30PhpgzRh80hH632N3Ji6f41KZhn1tat3dALqv9ZyHFSVlohM
- o/V007RFHa4IsfnyT2nR/SKXC94AGG+X3sOGl/auzOh5PJfSwwPZguh9/i3Yzc8b6qN8
- z0mg==
-X-Gm-Message-State: ABy/qLbHqW03vCvGPx12FTn+QWiELEYkNveA+sKp7eTiNo/EcpI1eHHx
- IaMU6jktl2u6RWM+cBYbPJMD4Jx2ofLQi3TTnu1JcktWFKMI++uZnK0kygMtyewlkLFF0vdwFyQ
- hr3flFmD3IqslW7nvrnDeWXGL6jhbw70=
-X-Received: by 2002:a25:1856:0:b0:c63:a7fe:6dda with SMTP id
- 83-20020a251856000000b00c63a7fe6ddamr4922242yby.23.1688710913837; 
- Thu, 06 Jul 2023 23:21:53 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHniyTev2vb+YMj2sgVBiGEf4d/TwEOHz0GCuSUTnMRjqZBZjOWGQetEPXCCm1uFa4+ZLoZNsOZ6b4MJjH8TRY=
-X-Received: by 2002:a25:1856:0:b0:c63:a7fe:6dda with SMTP id
- 83-20020a251856000000b00c63a7fe6ddamr4922235yby.23.1688710913602; Thu, 06 Jul
- 2023 23:21:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
+ id 1qHetP-0007Z5-Cc
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 02:24:37 -0400
+Received: from fwd86.dcpf.telekom.de (fwd86.aul.t-online.de [10.223.144.112])
+ by mailout08.t-online.de (Postfix) with SMTP id 3A6C62A4F;
+ Fri,  7 Jul 2023 08:24:31 +0200 (CEST)
+Received: from [192.168.211.200] ([93.236.151.121]) by fwd86.t-online.de
+ with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
+ esmtp id 1qHetK-0GbX6n0; Fri, 7 Jul 2023 08:24:30 +0200
+Message-ID: <a3bfcbd6-733b-169b-6a44-0433ffe34a95@t-online.de>
+Date: Fri, 7 Jul 2023 08:24:30 +0200
 MIME-Version: 1.0
-References: <20230706191227.835526-1-eperezma@redhat.com>
- <20230706160139-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20230706160139-mutt-send-email-mst@kernel.org>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 7 Jul 2023 08:21:17 +0200
-Message-ID: <CAJaqyWdj6idaXo-Yg9nYj_aV-kzoPqPzAEkv68RMcfNS8dH63Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/6] Enable vdpa net migration with features depending
- on CVQ
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
- Cindy Lu <lulu@redhat.com>, 
- si-wei.liu@oracle.com, Stefano Garzarella <sgarzare@redhat.com>, 
- Shannon Nelson <snelson@pensando.io>, Gautam Dawar <gdawar@xilinx.com>, 
- Jason Wang <jasowang@redhat.com>, Harpreet Singh Anand <hanand@xilinx.com>, 
- Parav Pandit <parav@mellanox.com>, Dragos Tatulea <dtatulea@nvidia.com>, 
- Zhu Lingshan <lingshan.zhu@intel.com>, Lei Yang <leiyang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 08/21] asc: generate silence if FIFO empty but engine
+ still running
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu
+References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
+ <20230702154838.722809-9-mark.cave-ayland@ilande.co.uk>
+Cc: qemu-devel@nongnu.org
+From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
+In-Reply-To: <20230702154838.722809-9-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TOI-EXPURGATEID: 150726::1688711070-0492CEBC-7B5DF9E5/0/0 CLEAN NORMAL
+X-TOI-MSGID: e284596e-00dd-47da-a416-3449c74cc7ae
+Received-SPF: none client-ip=194.25.134.20; envelope-from=vr_qemu@t-online.de;
+ helo=mailout08.t-online.de
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,58 +66,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 6, 2023 at 10:02=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
+> MacOS (un)helpfully leaves the FIFO engine running even when all the samples have
+> been written to the hardware, and expects the FIFO status flags and IRQ to be
+> updated continuously.
 >
-> On Thu, Jul 06, 2023 at 09:12:21PM +0200, Eugenio P=C3=A9rez wrote:
-> > At this moment the migration of net features that depends on CVQ is not
-> > possible, as there is no reliable way to restore the device state like =
-mac
-> > address, number of enabled queues, etc to the destination.  This is mai=
-nly
-> > caused because the device must only read CVQ, and process all the comma=
-nds
-> > before resuming the dataplane.
-> >
-> > This RFC lift that requirement, sending the VHOST_VDPA_SET_VRING_ENABLE=
- ioctl
-> > for dataplane vqs only after the device has processed all commands.  If=
- this
-> > method is valid or not, or if it must be signalled by the parent driver
-> > somehow, is still under discussion.  In case it is valid, this code all=
-ows
-> > testing the vDPA device for it.
+> Since not all audio backends guarantee an all-zero output when no data is
+> provided, explicitly generate at least one full output buffer of all-zero output
+> when the FIFO is disabled and continuously if the FIFO is empty. Otherwise some
+> audio backends such as Windows re-use their internal buffers causing the last
+> played sound to loop indefinitely.
 >
-> And you plan to add the reset trick too in a future version?
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>   hw/audio/asc.c         | 43 ++++++++++++++++++++++++++++++++----------
+>   include/hw/audio/asc.h |  1 +
+>   2 files changed, 34 insertions(+), 10 deletions(-)
 >
+> diff --git a/hw/audio/asc.c b/hw/audio/asc.c
+> index ebcb8a97a6..f9bfae5168 100644
+> --- a/hw/audio/asc.c
+> +++ b/hw/audio/asc.c
+> @@ -148,6 +148,20 @@ static uint8_t asc_fifo_get(ASCFIFOState *fs)
+>       return val;
+>   }
 
-I'll try to come with a version today.
+Hi Mark,
 
-At the current state of vDPA devices, it will just serve to enable
-vp_vdpa to be the destination of a migration. But vp_vdpa cannot
-migrate the guest again, so it is a dead end. I can try to add
-_F_RING_RESET to vdpa_sim if that makes sense.
+I don't understand why the flush_zero_samples variable is necessary at all.
 
-Anyway, as HW implement _F_RING_RESET, there should be no need to make
-more changes to qemu, so we should be good.
+>   
+> +static int generate_silence(ASCState *s, int maxsamples)
+> +{
+> +    uint8_t *buf = s->mixbuf;
+> +
+> +    if (s->flush_zero_samples) {
+> +        memset(buf, 0x80, maxsamples << s->shift);
+> +        s->flush_zero_samples -= MIN(maxsamples, s->flush_zero_samples);
+> +
+> +        return maxsamples;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+>   static int generate_fifo(ASCState *s, int maxsamples)
+>   {
+>       uint8_t *buf = s->mixbuf;
+> @@ -156,18 +170,26 @@ static int generate_fifo(ASCState *s, int maxsamples)
+>       limit = MIN(MAX(s->fifos[0].cnt, s->fifos[1].cnt), maxsamples);
+>   
+>       /*
+> -     * If starting a new run with no FIFO data present, update the IRQ and
+> -     * continue
+> +     * MacOS (un)helpfully leaves the FIFO engine running even when it has
+> +     * finished writing out samples. Since not all audio backends guarantee an
+> +     * all-zero output when no data is provided, zero out the sample buffer
+> +     * and then update the FIFO flags and IRQ as normal and continue
+>        */
+> -    if (limit == 0 && s->fifos[0].int_status == 0 &&
+> -            s->fifos[1].int_status == 0) {
+> -        s->fifos[0].int_status |= ASC_FIFO_STATUS_HALF_FULL |
+> -                                  ASC_FIFO_STATUS_FULL_EMPTY;
+> -        s->fifos[1].int_status |= ASC_FIFO_STATUS_HALF_FULL |
+> -                                  ASC_FIFO_STATUS_FULL_EMPTY;
+> +    if (limit == 0) {
+> +        if (s->fifos[0].int_status == 0 && s->fifos[1].int_status == 0) {
+> +            s->fifos[0].int_status |= ASC_FIFO_STATUS_HALF_FULL |
+> +                                      ASC_FIFO_STATUS_FULL_EMPTY;
+> +            s->fifos[1].int_status |= ASC_FIFO_STATUS_HALF_FULL |
+> +                                      ASC_FIFO_STATUS_FULL_EMPTY;
+> +        }
+> +
+> +        if (s->flush_zero_samples == 0) {
+> +            s->flush_zero_samples = s->samples;
+> +        }
 
-> > Eugenio P=C3=A9rez (6):
-> >   vdpa: export vhost_vdpa_set_vring_ready
-> >   vdpa: add should_enable op
-> >   vdpa: use virtio_ops->should_enable at vhost_vdpa_set_vrings_ready
-> >   vdpa: add stub vhost_vdpa_should_enable
-> >   vdpa: delay enable of data vqs
-> >   vdpa: remove net cvq migration blocker
-> >
-> >  include/hw/virtio/vhost-vdpa.h |  9 +++++++
-> >  hw/virtio/vhost-vdpa.c         | 33 +++++++++++++++++++------
-> >  net/vhost-vdpa.c               | 45 +++++++++++++++++++++++++---------
-> >  hw/virtio/trace-events         |  2 +-
-> >  4 files changed, 68 insertions(+), 21 deletions(-)
-> >
-> > --
-> > 2.39.3
-> >
->
+At this point s->flush_zero_samples is != 0 and generate_silence() 
+always generates maxsamples silent audio frames.
+
+>   
+> +        generate_silence(s, maxsamples);
+>           asc_raise_irq(s);
+> -        return 0;
+> +        return maxsamples;
+>       }
+>   
+>       while (count < limit) {
+> @@ -309,7 +331,7 @@ static void asc_out_cb(void *opaque, int free_b)
+>       switch (s->regs[ASC_MODE] & 3) {
+>       default:
+>           /* Off */
+
+This code will not be called for s->regs[ASC_MODE] & 3 == 0 because in 
+asc_write() AUD_set_active_out(s->voice, 0) was called before.
+
+For s->regs[ASC_MODE] & 3 == 3 the code in asc_write() clears 
+s->flush_zero_samples and generate_silence() always returns 0. The audio 
+subsystem is running and expects new audio frames here.
+
+With best regards,
+Volker
+
+> -        samples = 0;
+> +        samples = generate_silence(s, samples);
+>           break;
+>       case 1:
+>           /* FIFO mode */
+> @@ -437,6 +459,7 @@ static void asc_write(void *opaque, hwaddr addr, uint64_t value,
+>               asc_lower_irq(s);
+>               if (value != 0) {
+>                   AUD_set_active_out(s->voice, 1);
+> +                s->flush_zero_samples = 0;
+>               } else {
+>                   AUD_set_active_out(s->voice, 0);
+>               }
+> diff --git a/include/hw/audio/asc.h b/include/hw/audio/asc.h
+> index 41c6cba8fa..918f6ac582 100644
+> --- a/include/hw/audio/asc.h
+> +++ b/include/hw/audio/asc.h
+> @@ -65,6 +65,7 @@ struct ASCState {
+>       uint8_t *mixbuf;
+>       int samples;
+>       int shift;
+> +    uint32_t flush_zero_samples;
+>   
+>       qemu_irq irq;
+>   
 
 
