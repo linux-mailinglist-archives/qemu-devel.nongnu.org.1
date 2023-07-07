@@ -2,68 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC6274AD95
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 11:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6480D74ADB1
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 11:17:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHhQy-0003Or-2v; Fri, 07 Jul 2023 05:07:24 -0400
+	id 1qHhZX-0005GP-Mg; Fri, 07 Jul 2023 05:16:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qHhQv-0003MB-JX
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qHhQu-0007jU-6j
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688720837;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FxFUgctExdBYKoQd/Roa917MSzKU9j0vmahsXPDxgis=;
- b=OgVqseZtBBE5bl4qKANCTyc8SCA5F8pAQHO0UbXNzOBtyYt603b4E5wPvo8HPEsAdbwVIH
- cEsVj7a02BqT2039y6dZp4CsqqXmbzzMCRlD5YWpYHkmrLCY/c/tY6mGLusU/CFRi3/9nM
- bG1dn7ahwEyS5CMWrQS2knQIlkDGrNM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-594-mnSIvoyJNze1j-AmoA1Sog-1; Fri, 07 Jul 2023 05:07:16 -0400
-X-MC-Unique: mnSIvoyJNze1j-AmoA1Sog-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F08EB86F124;
- Fri,  7 Jul 2023 09:07:15 +0000 (UTC)
-Received: from hp-dl380pg8-01.lab.eng.pek2.redhat.com
- (hp-dl380pg8-01.lab.eng.pek2.redhat.com [10.73.8.10])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C77A31121330;
- Fri,  7 Jul 2023 09:07:13 +0000 (UTC)
-From: Jason Wang <jasowang@redhat.com>
-To: qemu-devel@nongnu.org, richard.henderson@linaro.org,
- peter.maydell@linaro.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 15/15] igb: Remove obsolete workaround for Windows
-Date: Fri,  7 Jul 2023 05:06:28 -0400
-Message-Id: <20230707090628.2210346-16-jasowang@redhat.com>
-In-Reply-To: <20230707090628.2210346-1-jasowang@redhat.com>
-References: <20230707090628.2210346-1-jasowang@redhat.com>
+ (Exim 4.90_1) (envelope-from <maobibo@loongson.cn>)
+ id 1qHhZT-0005FV-UU
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:16:11 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <maobibo@loongson.cn>) id 1qHhZP-0007Du-Eu
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:16:11 -0400
+Received: from loongson.cn (unknown [10.2.9.158])
+ by gateway (Coremail) with SMTP id _____8CxNvHN16dk3GQBAA--.5317S3;
+ Fri, 07 Jul 2023 17:15:58 +0800 (CST)
+Received: from kvm-1-158.loongson.cn (unknown [10.2.9.158])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxF83N16dkiu8gAA--.28935S2; 
+ Fri, 07 Jul 2023 17:15:57 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Song Gao <gaosong@loongson.cn>
+Cc: qemu-devel@nongnu.org,
+	Tianrui Zhao <zhaotianrui@loongson.cn>
+Subject: [PATCH] hw/intc/loongarch_pch: fix edge triggered irq handling
+Date: Fri,  7 Jul 2023 17:15:57 +0800
+Message-Id: <20230707091557.1474790-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8CxF83N16dkiu8gAA--.28935S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7uF17XFykXrW3WrWfAF45CFX_yoW8XrWrpF
+ WDu3WYyrWkJr1fXFs5u345WryxZwsrurW3uFZakry2qas8JFyFqF1kJ3y7ZFy8K395GFW2
+ vr4rGr4Yva4UGabCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
+ Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+ 6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MIIYrxkI7VAKI48JMIIF0x
+ vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
+ 42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+ kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UE-erUUUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=maobibo@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,37 +74,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+For edge triggered irq, qemu_irq_pulse is used to inject irq. It will
+set irq with high level and low level soon to simluate pulse irq.
 
-I confirmed it works with Windows even without this workaround. It is
-likely to be a mistake so remove it.
+For edge triggered irq, irq is injected and set as pending at rising
+level, do not clear irq at lowering level. LoongArch pch interrupt will
+clear irq for lowering level irq, there will be problem. ACPI ged deivce
+is edge-triggered irq, it is used for cpu/memory hotplug.
 
-Fixes: 3a977deebe ("Intrdocue igb device emulation")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
+This patch fixes memory hotplug issue on LoongArch virt machine.
+
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
- hw/net/igb_core.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ hw/intc/loongarch_pch_pic.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index d00b1ca..8b6b75c 100644
---- a/hw/net/igb_core.c
-+++ b/hw/net/igb_core.c
-@@ -2678,12 +2678,7 @@ static uint32_t igb_get_status(IGBCore *core, int index)
-         res |= E1000_STATUS_IOV_MODE;
-     }
- 
--    /*
--     * Windows driver 12.18.9.23 resets if E1000_STATUS_GIO_MASTER_ENABLE is
--     * left set after E1000_CTRL_LRST is set.
--     */
--    if (!(core->mac[CTRL] & E1000_CTRL_GIO_MASTER_DISABLE) &&
--        !(core->mac[CTRL] & E1000_CTRL_LRST)) {
-+    if (!(core->mac[CTRL] & E1000_CTRL_GIO_MASTER_DISABLE)) {
-         res |= E1000_STATUS_GIO_MASTER_ENABLE;
-     }
- 
+diff --git a/hw/intc/loongarch_pch_pic.c b/hw/intc/loongarch_pch_pic.c
+index 9208fc4460..6aa4cadfa4 100644
+--- a/hw/intc/loongarch_pch_pic.c
++++ b/hw/intc/loongarch_pch_pic.c
+@@ -30,7 +30,11 @@ static void pch_pic_update_irq(LoongArchPCHPIC *s, uint64_t mask, int level)
+             qemu_set_irq(s->parent_irq[s->htmsi_vector[irq]], 1);
+         }
+     } else {
+-        val = mask & s->intisr;
++        /*
++         * intirr means requested pending irq
++         * do not clear pending irq for edge-triggered on lowering edge
++         */
++        val = mask & s->intisr & ~s->intirr;
+         if (val) {
+             irq = ctz64(val);
+             s->intisr &= ~MAKE_64BIT_MASK(irq, 1);
+@@ -51,6 +55,7 @@ static void pch_pic_irq_handler(void *opaque, int irq, int level)
+         /* Edge triggered */
+         if (level) {
+             if ((s->last_intirr & mask) == 0) {
++                /* marked pending on a rising edge */
+                 s->intirr |= mask;
+             }
+             s->last_intirr |= mask;
 -- 
-2.7.4
+2.27.0
 
 
