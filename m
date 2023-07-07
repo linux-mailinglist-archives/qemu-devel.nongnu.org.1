@@ -2,71 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D86374B3FB
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 17:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4BC774B3F9
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 17:19:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHnDB-0000u5-0J; Fri, 07 Jul 2023 11:17:33 -0400
+	id 1qHnDG-0000wh-5J; Fri, 07 Jul 2023 11:17:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHnD8-0000tY-3j
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:17:30 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHnDD-0000vW-DB
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:17:35 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHnD4-0000b2-9j
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:17:29 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-993d1f899d7so88155166b.2
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 08:17:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHnDA-0000cp-UW
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:17:34 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-98377c5d53eso250651466b.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 08:17:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688743043; x=1691335043;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=iBe6Qvj8pJduQ5hD1fED1nercV0+mcJtB8noLJOhi+Y=;
- b=Fq88KvfNrm3WCyYGBK2AF3ubFdZzZ0qJZr4Wqxilycrdgcs90dQE3Ht0JjXqqJOd+W
- Ki0Inw/OiXr4yN24+H9dRLYPVkhAGD9z823I2SSRJ1TKFqiUqgUa5mJplvMWFd2lJgf/
- 91LoChPq0y8lWyCQzsBWH2o2Dcs+WeA+vnHDuBjrBRLaKWg+4sPZIDG2OAXVfHblzEkn
- 82e0gYePHO9o7kl1ieKNnIl6sv1tvF4OWhf5IEGsjoOpZ4vz9+H2zDgEbhOnoXv1NEu5
- e2TN8eVgTiu6c6h2R0Ckj9fd1ZgRHkh+gf2sUlO8h3zEKbdkcFhgvU5baMV4VMvprS9Q
- /eLg==
+ d=linaro.org; s=google; t=1688743049; x=1691335049;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tEOl601lp/glMFLXL/Pb6sc13gALwOrVo4hgtvYuZtU=;
+ b=Kll5WQn67GmCtCbgfLbz0kZBHaf3DtxlBXW26nBe5Yjus3MKNiDMnx8CBTJwTz1XVi
+ MkjlFtpS+4WOLEXopN/+krO56C/G+3TG6Kf8KY5yK9IU0Q7FQrA1Su/7dMZSpNpfTbIL
+ oFyqjh8H+KbZLKRyVNIHmu3N0m8dKMsd+ZmpqaIoOYKCeOQGoSMgo0DgGDvENd9qfXT/
+ yQaPHAo19xXg8nQdQCrEPIbFvMlKJVChBeaGLdISqg283RHnIH1njEC9H7/Tl1mGSqr2
+ 8pLqTXWHrc5i08/95Ne2dmYEn2t+kAallPfQIKf4sKPwBoxjp+k2Ax5vECrZovyjQ0PZ
+ bS3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688743043; x=1691335043;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iBe6Qvj8pJduQ5hD1fED1nercV0+mcJtB8noLJOhi+Y=;
- b=ZCza0xdQrbVuf0Bv717kZI7bZq5oAZcdrtM+Xx3EAmsYjPpmHF+gKQyuBLW5uAocX2
- wQpVfuBf71bDqeEHqEKtESeJk8ifGdhd/9SbVIgvp+gh91Jrb6IUOKPFtG3hh58oTtr/
- 3LILq6cmoQxmDJYq1tqW1y9PN+4Ftr7jtBvcjTiYb1lROX40Byt0/Cf9mPeP6M744GUI
- nq0c8Q6pJ5ouBtQ4xFgpq6UTj16s8dYgu5yR8tdz0VVIerPTxaTIz03dnA+EyXzLobm1
- PBqfP9TjjXKi6RaJi11Ep0JI/4Qfve62awH3bkjMDJ9O/Vpp1I0Bulql9fEK1P45XQwX
- AxMA==
-X-Gm-Message-State: ABy/qLaWkkw9SSjSAkWsU3IwDLZhq6vCctyru0tqd/SlJpReXmzBYsk8
- n20lRP9weBc/zIgIeNJ36kMYJz0MkpbMNJ0AqLc=
-X-Google-Smtp-Source: APBJJlEnQ+dvzDqYrt1m7xbbzn7HYU0U7LNLk3Yu0dEMYWMRjJNP6YuX89QIfFRl4e71LWixBx4p7w==
-X-Received: by 2002:a17:906:dc:b0:988:f307:aea3 with SMTP id
- 28-20020a17090600dc00b00988f307aea3mr4545571eji.9.1688743043478; 
- Fri, 07 Jul 2023 08:17:23 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688743049; x=1691335049;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=tEOl601lp/glMFLXL/Pb6sc13gALwOrVo4hgtvYuZtU=;
+ b=SB5Brh5YPyzi1TpUuU80VNqUhwzPc2kRG6fsFd8tnX0ItwsGxi/zcKgW3WM/bEkj2o
+ AZXbRCD5ulo3Vcts0Keso+RooWHz6I7nF13x3+3laaMspEXXH5Lp+uXRsuHiEEnUyzAh
+ 3Q//xrgsmx8G5EixabnOZTpNCrO7FfmzQVFi6BARJ59KxgIz9Hx9y0TjQZySLgiIIFNz
+ LIxi+DdyEoZJ654uoerWXUTaHqsJFnKLOBSl2s6C1qxUXFAyb0ezfZnh6IPW9HYtP0Kl
+ IzuWNjBlaUPXGeJjpGGNBdznuen8mLHVDNE3IZaBsXLtCcYB98swFHtKODKfeWoW7Eit
+ gsAg==
+X-Gm-Message-State: ABy/qLaJWPusGbFSQhYkHKo9+8RhSjleON3xF7v9s5gU0Xsk1u+a68GO
+ XM/khgSzKtowdKi+00tlMYlqAMoH0eM+yj4pnwc=
+X-Google-Smtp-Source: APBJJlGP6v/u5trbYJwUq8PMrtqyY1qkLOLkAcgSly8JkY5S1GCSRyqlg1VQNrgQmSE6AJRBgvZc7Q==
+X-Received: by 2002:a17:906:57da:b0:98f:ab82:8893 with SMTP id
+ u26-20020a17090657da00b0098fab828893mr3762991ejr.73.1688743049834; 
+ Fri, 07 Jul 2023 08:17:29 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.215.192])
  by smtp.gmail.com with ESMTPSA id
- h22-20020a170906399600b0099329b3ab67sm2311151eje.71.2023.07.07.08.17.21
+ t3-20020a170906268300b0098e42bef736sm2322459ejc.176.2023.07.07.08.17.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 07 Jul 2023 08:17:23 -0700 (PDT)
+ Fri, 07 Jul 2023 08:17:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/6] hw/virtio: Build vhost-vdpa.o once for all targets
-Date: Fri,  7 Jul 2023 17:17:13 +0200
-Message-Id: <20230707151719.70613-1-philmd@linaro.org>
+Subject: [PATCH v2 1/6] hw/virtio: Propagate page_mask to
+ vhost_vdpa_listener_skipped_section()
+Date: Fri,  7 Jul 2023 17:17:14 +0200
+Message-Id: <20230707151719.70613-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230707151719.70613-1-philmd@linaro.org>
+References: <20230707151719.70613-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,26 +93,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1: https://lore.kernel.org/qemu-devel/20230523163600.83391-12-philmd@linaro.org/
+In order to make vhost-vdpa.c a target-agnostic source unit,
+we need to remove the TARGET_PAGE_SIZE / TARGET_PAGE_MASK /
+TARGET_PAGE_ALIGN uses. TARGET_PAGE_SIZE will be replaced by
+the runtime qemu_target_page_size(). The other ones will be
+deduced from TARGET_PAGE_SIZE.
 
-Since v1:
-- Addressed Richard's review comments
-- Split in multiple patches to KISS
-- Rename system_virtio_ss[]
+Since the 3 macros are used in 3 related functions (sharing
+the same call tree), we'll refactor them to only depend on
+TARGET_PAGE_SIZE.
 
-Philippe Mathieu-Daudé (6):
-  hw/virtio: Propagate page_mask to
-    vhost_vdpa_listener_skipped_section()
-  hw/virtio: Propagate page_mask to vhost_vdpa_section_end()
-  hw/virtio/vhost-vdpa: Inline TARGET_PAGE_ALIGN() macro
-  hw/virtio/vhost-vdpa: Use target-agnostic qemu_target_page_mask()
-  hw/virtio: Build vhost-vdpa.o once
-  hw/virtio/meson: Rename softmmu_virtio_ss[] -> system_virtio_ss[]
+Having the following call tree:
 
- hw/virtio/vhost-vdpa.c | 36 +++++++++++++++++++++---------------
- hw/virtio/meson.build  | 25 +++++++++++++------------
- 2 files changed, 34 insertions(+), 27 deletions(-)
+  vhost_vdpa_listener_region_del()
+    -> vhost_vdpa_listener_skipped_section()
+       -> vhost_vdpa_section_end()
 
+The first step is to propagate TARGET_PAGE_MASK to
+vhost_vdpa_listener_skipped_section().
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/virtio/vhost-vdpa.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index 3c575a9a6e..87653bf841 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -42,7 +42,8 @@ static Int128 vhost_vdpa_section_end(const MemoryRegionSection *section)
+ 
+ static bool vhost_vdpa_listener_skipped_section(MemoryRegionSection *section,
+                                                 uint64_t iova_min,
+-                                                uint64_t iova_max)
++                                                uint64_t iova_max,
++                                                int page_mask)
+ {
+     Int128 llend;
+ 
+@@ -313,7 +314,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+     int ret;
+ 
+     if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
+-                                            v->iova_range.last)) {
++                                            v->iova_range.last, TARGET_PAGE_MASK)) {
+         return;
+     }
+     if (memory_region_is_iommu(section->mr)) {
+@@ -396,7 +397,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
+     int ret;
+ 
+     if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
+-                                            v->iova_range.last)) {
++                                            v->iova_range.last, TARGET_PAGE_MASK)) {
+         return;
+     }
+     if (memory_region_is_iommu(section->mr)) {
 -- 
 2.38.1
 
