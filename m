@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A2474ABBA
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 09:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0773E74ABBB
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 09:20:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHfkr-0003sz-I4; Fri, 07 Jul 2023 03:19:49 -0400
+	id 1qHfkz-0003vB-M6; Fri, 07 Jul 2023 03:19:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHfkm-0003rQ-3F; Fri, 07 Jul 2023 03:19:44 -0400
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
+ id 1qHfkx-0003uM-9w; Fri, 07 Jul 2023 03:19:55 -0400
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHfkj-0005wJ-Ca; Fri, 07 Jul 2023 03:19:43 -0400
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-1b078b34df5so1587733fac.2; 
- Fri, 07 Jul 2023 00:19:40 -0700 (PDT)
+ id 1qHfkv-0006lQ-EX; Fri, 07 Jul 2023 03:19:55 -0400
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3a36b309524so1460987b6e.3; 
+ Fri, 07 Jul 2023 00:19:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688714378; x=1691306378;
+ d=gmail.com; s=20221208; t=1688714392; x=1691306392;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=djlhlMLFUCYNHJTzu9cUmLcInqc0Hn3qYDrDPlMZWao=;
- b=j0VXMBgPTHy0TjvL5AoPKhS0804pXcrii7vuKiC2qzww8dViHbfsG7xU4WBL+Q92L5
- UIMWX9FD6IKC69dF50FOa+5+uGfhCb0sZou4+LPILijCSuhALZppcUDs5aJVuJVrJO0z
- GDSD5ToTFUPI5e54ravvRPUqNj4VKFOOPZ78rdGRfcoWCaL6C+ax7D/mT9mjW2CMGiQO
- Pf0KIWlikgNNACMo5+YWMJ7GvOpw23nW8c310ArAOV3mpJ14XNddzvhxOJxRCU91GLOv
- Xsy6t4nXtPj/xHHNPknohf2ydDwOQb7Ls9+H/h4h8VHHIyOIzA7vZgI5nJTuC82q9U0o
- +/fg==
+ bh=HLoyEcGFP3OeRHinpegdbi9huoY9RipcCCkgUvponis=;
+ b=D4R7CxxLwQpX3dIlSkQB5sMQxNU6+Xxvzj7Ia60j/Yy694QkxwIO6vAAIa0f9z68Te
+ oYEkjbDtICava3mETWA9N0htbceCwLRMqYgo7XcgR6vY47VU4djtXAl8Scqwu89krLn2
+ op/1MEhmDXVvNLv9Fw1Fap+K+zRvAhDaYwRGKeLOqiRBcsHWiGE18IzgVrznu0xOF52J
+ 1V5+0iajbnY+oPA4Zw1mGco7mZa4jO0OuCuFBdKZHgLukgrBEsuh+xW7Co2Kfc3B8Ga5
+ N4z4Om+BwzelV2TBu19xE4qHeGsdlxLc/1/1W3ZazA5u5o6+5O2/RHti+G35QRHLDd1Z
+ uDiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688714378; x=1691306378;
+ d=1e100.net; s=20221208; t=1688714392; x=1691306392;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=djlhlMLFUCYNHJTzu9cUmLcInqc0Hn3qYDrDPlMZWao=;
- b=In+RwfRoSSGkYiY+vbJepZIvQYnICKfpGJzXC5Nd3v/L5YOLil2Q9IVlniv6R+TjE6
- whmIa1skJ6wxOtL+i9tdA0CMjfxVY+qliNCwjbwnPNcUSnSuA4S0iQuEmUYWgdFejY6G
- wNCnjNEygdJhAjgD7wbxPAsNiEVcB3NODFPjXoMihmB4CpQMRkqwXFAgof0D+CdNVl9X
- +hmC2aR5qo3WCV7IOei+Vu9fPAgUO0KwfbmWVIpD6513qyjS0q4J91SsvaxDjCzYqTm4
- aMVR76VPDS4nji0ZPOfQWBdUDXae00UKHwRBc1RXEPeqbwiHO92vyfG0XTUxu8AgsIXz
- r2rQ==
-X-Gm-Message-State: ABy/qLYhshMcxjaKFqZzTqpowZsp/l9Ev7JyiTcXU6i4wr6N/++/qnBc
- 0sxwzhWYM6D+fkuzTsi/MO8=
-X-Google-Smtp-Source: APBJJlF/Wqd1V5yvy0eodPGVELREu5deM1SJH0p7uMlfFrnTBOqZ4J7Gp4WWbWgDtV70GJx7R8gV7Q==
-X-Received: by 2002:a05:6870:a706:b0:1b4:4a6c:ff56 with SMTP id
- g6-20020a056870a70600b001b44a6cff56mr2272268oam.14.1688714378492; 
- Fri, 07 Jul 2023 00:19:38 -0700 (PDT)
+ bh=HLoyEcGFP3OeRHinpegdbi9huoY9RipcCCkgUvponis=;
+ b=MTdhywVGEai0MQsxrzZjXD0EduG/paeFkJt0DpIf8L1RKvxy4fRcveOq6hncSg8sa5
+ pVQl4rNSx0Q8+7OM20s58Bfe3lNTJi7z+iSK7EJt7TTqEV7tf5pf+vrW+u0IqJugCxi8
+ e227ATLcixytY250CO6NQrdfru3UR5KWgbSz8c/6VHKJR66F7bKjfgK+nVLnXI1l5ZZz
+ 08iQtrQYV+sDCaRSwv2FhuZjCmdybX8bI8f3ItDv1JQKg/DD+GG4H7gLpM1VgR7Wb+Oz
+ /9/RuCjy3Rom0tVEnjP/tFx9GQvn6cLWRiZzsmvpd7jQi5qTTlkBGZQbcnIJRU6qWXr3
+ 3vpQ==
+X-Gm-Message-State: ABy/qLZkJ7jXRhxyrriehmI9KqlWn7Q0xzi09dd8BPyxybFmfJ4H5s2C
+ stHit8GUeFnjMHs71oi30UK4DdybUm8=
+X-Google-Smtp-Source: APBJJlEMj5izZOINweHL9pW8QQv3pVEOgWmlbPA7J+DtQd+gIy46mxGOeaGs74IGHc5w9jBkIsimGQ==
+X-Received: by 2002:a54:450f:0:b0:3a3:6f89:5de1 with SMTP id
+ l15-20020a54450f000000b003a36f895de1mr3821653oil.49.1688714391819; 
+ Fri, 07 Jul 2023 00:19:51 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-19.dial-up.telesp.net.br.
  [201.69.66.19]) by smtp.gmail.com with ESMTPSA id
- y82-20020a4a4555000000b005667b061eebsm643275ooa.13.2023.07.07.00.19.36
+ 4-20020a544184000000b003a361fbec60sm1388334oiy.47.2023.07.07.00.19.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 00:19:38 -0700 (PDT)
-Message-ID: <f25113e7-b23d-ebd8-03c3-c5dc9db6e524@gmail.com>
-Date: Fri, 7 Jul 2023 04:19:35 -0300
+ Fri, 07 Jul 2023 00:19:51 -0700 (PDT)
+Message-ID: <7ff056fa-3e01-1d81-da8d-6aa7360fa949@gmail.com>
+Date: Fri, 7 Jul 2023 04:19:48 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] ppc/pnv: Log all unimp warnings with similar message
+Subject: Re: [RESEND PATCH v3 0/4] PPC440 devices misc clean up
 Content-Language: en-US
-To: Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-References: <20230706024528.40065-1-joel@jms.id.au>
+To: BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org,
+ qemu-ppc@nongnu.org
+Cc: philmd@linaro.org
+References: <cover.1688641673.git.balaton@eik.bme.hu>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230706024528.40065-1-joel@jms.id.au>
+In-Reply-To: <cover.1688641673.git.balaton@eik.bme.hu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=danielhb413@gmail.com; helo=mail-oi1-x233.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,125 +99,29 @@ Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
 
 Daniel
 
-On 7/5/23 23:45, Joel Stanley wrote:
-> Add the function name so there's an indication as to where the message
-> is coming from. Change all prints to use the offset instead of the
-> address.
+On 7/6/23 08:16, BALATON Zoltan wrote:
+> These are some small misc clean ups to PPC440 related device models
+> which is all I have ready for now.
 > 
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> ---
-> Happy to use the address instead of the offset (or print both), but I
-> like the idea of being consistent.
-> ---
->   hw/ppc/pnv_core.c | 34 ++++++++++++++++++----------------
->   1 file changed, 18 insertions(+), 16 deletions(-)
+> v3:
+> - rebased on ppc-next moving already reviewed patch to front
 > 
-> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
-> index ffbc29cbf4f9..3eb95670d6a3 100644
-> --- a/hw/ppc/pnv_core.c
-> +++ b/hw/ppc/pnv_core.c
-> @@ -85,8 +85,8 @@ static uint64_t pnv_core_power8_xscom_read(void *opaque, hwaddr addr,
->           val = 0x24f000000000000ull;
->           break;
->       default:
-> -        qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
-> -                  addr);
-> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
-> +                      offset);
->       }
->   
->       return val;
-> @@ -95,8 +95,10 @@ static uint64_t pnv_core_power8_xscom_read(void *opaque, hwaddr addr,
->   static void pnv_core_power8_xscom_write(void *opaque, hwaddr addr, uint64_t val,
->                                           unsigned int width)
->   {
-> -    qemu_log_mask(LOG_UNIMP, "Warning: writing to reg=0x%" HWADDR_PRIx "\n",
-> -                  addr);
-> +    uint32_t offset = addr >> 3;
-> +
-> +    qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
-> +                  offset);
->   }
->   
->   static const MemoryRegionOps pnv_core_power8_xscom_ops = {
-> @@ -140,8 +142,8 @@ static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
->           val = 0;
->           break;
->       default:
-> -        qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
-> -                  addr);
-> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
-> +                      offset);
->       }
->   
->       return val;
-> @@ -157,8 +159,8 @@ static void pnv_core_power9_xscom_write(void *opaque, hwaddr addr, uint64_t val,
->       case PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR:
->           break;
->       default:
-> -        qemu_log_mask(LOG_UNIMP, "Warning: writing to reg=0x%" HWADDR_PRIx "\n",
-> -                      addr);
-> +        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
-> +                      offset);
->       }
->   }
->   
-> @@ -189,8 +191,8 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
->           val = 0;
->           break;
->       default:
-> -        qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
-> -                  addr);
-> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
-> +                      offset);
->       }
->   
->       return val;
-> @@ -203,8 +205,8 @@ static void pnv_core_power10_xscom_write(void *opaque, hwaddr addr,
->   
->       switch (offset) {
->       default:
-> -        qemu_log_mask(LOG_UNIMP, "Warning: writing to reg=0x%" HWADDR_PRIx "\n",
-> -                      addr);
-> +        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
-> +                      offset);
->       }
->   }
->   
-> @@ -421,7 +423,7 @@ static uint64_t pnv_quad_power9_xscom_read(void *opaque, hwaddr addr,
->           val = 0;
->           break;
->       default:
-> -        qemu_log_mask(LOG_UNIMP, "%s: reading @0x%08x\n", __func__,
-> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
->                         offset);
->       }
->   
-> @@ -438,7 +440,7 @@ static void pnv_quad_power9_xscom_write(void *opaque, hwaddr addr, uint64_t val,
->       case P9X_EX_NCU_SPEC_BAR + 0x400: /* Second EX */
->           break;
->       default:
-> -        qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
-> +        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
->                     offset);
->       }
->   }
-> @@ -465,7 +467,7 @@ static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
->   
->       switch (offset) {
->       default:
-> -        qemu_log_mask(LOG_UNIMP, "%s: reading @0x%08x\n", __func__,
-> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
->                         offset);
->       }
->   
-> @@ -479,7 +481,7 @@ static void pnv_quad_power10_xscom_write(void *opaque, hwaddr addr,
->   
->       switch (offset) {
->       default:
-> -        qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
-> +        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
->                         offset);
->       }
->   }
+> v2:
+> - Added R-b tags from Philippe
+> - Addressed review comments
+> - Added new patch to rename parent field of PPC460EXPCIEState to parent_obj
+> 
+> BALATON Zoltan (4):
+>    ppc440_pcix: Stop using system io region for PCI bus
+>    ppc4xx_pci: Rename QOM type name define
+>    ppc4xx_pci: Add define for ppc4xx-host-bridge type name
+>    ppc440_pcix: Rename QOM type define abd move it to common header
+> 
+>   hw/ppc/ppc440_bamboo.c  |  3 +--
+>   hw/ppc/ppc440_pcix.c    | 21 ++++++++++++---------
+>   hw/ppc/ppc4xx_pci.c     | 10 +++++-----
+>   hw/ppc/sam460ex.c       |  8 ++------
+>   include/hw/ppc/ppc4xx.h |  4 +++-
+>   5 files changed, 23 insertions(+), 23 deletions(-)
+> 
 
