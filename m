@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0EB174AEC1
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 12:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B07D74AEC2
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 12:31:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHiix-0005ao-VK; Fri, 07 Jul 2023 06:30:03 -0400
+	id 1qHija-0006Eh-W8; Fri, 07 Jul 2023 06:30:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHiiw-0005aP-Oi
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 06:30:02 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ id 1qHijZ-0006EM-Fe
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 06:30:41 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHiit-0005CP-RD
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 06:30:01 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-4f4b2bc1565so2699858e87.2
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 03:29:59 -0700 (PDT)
+ id 1qHijX-0007Qi-Pk
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 06:30:41 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-4fba8f2197bso2734753e87.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 03:30:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688725798; x=1691317798;
+ d=linaro.org; s=google; t=1688725838; x=1691317838;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Gj130Ggv0CLz7wN97AyXytE/rsONt1PH6rxWlgOhxnM=;
- b=D9WrGahNLmXAIyHcUf+AUi6iRVwhRzm8anDt3lghNJRnfbpOEk2niiuda7x+sQ6892
- 3jwyEyrEhH/G55wVOrB4fAzMHib6L63e0KngMYNWRiSbByx3RrjCjAeVuZm7yJhiuDwV
- ADdrluHGKNdtdkle3T99GICzdBe7nG8y1fMajnYj9STm1YvdODrW+QtiJLi0XPN/3INt
- q0Eo3TG+G35Q8sf0DpdwA0db9d7c74BDZs453kSt76exLFmvclQ5gfLlOd3WTbJtfn0n
- KeuyJcs35DmKKrhXmm5OI+TtfiuH/i/eXEXPf1Vcv1FkVKK3UpPEuH4k4OxV3G97ZkLS
- jffA==
+ bh=9aYAsTwrnIfgMh7N1jotL01ZdurLTw6jZVeOqtLv9YU=;
+ b=D5yVXG0BpDk0AxMxiQkmTYN/enXQhrVa1u6tE9azl/JPn4kff6AHNYmr5/UeL273zL
+ bUNCNGNohf8XPR9skk2cxW5qmLLNfAJIBHbOdoI6VvBVUtWsscLaXSPFnItYwsB6zh61
+ 1scM4Mey4bVkDT60s7JIvJGcvORjN58z+hswDQYdEsRffbARWeX8G5ITElJN3YWK8J+I
+ g9r0TfL60y5p/jm0lUY93ZAIEs+PwBtd5pkLi/K5hgp856q5UOalE/Do851a3EQMfUIP
+ czV3XxLsyo4Kf3HzZEXGZD3LiMaiSHfCo7ZhEAwzmt9sUnCweFuJzNPfL5rUTipdaiCG
+ KhdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688725798; x=1691317798;
+ d=1e100.net; s=20221208; t=1688725838; x=1691317838;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Gj130Ggv0CLz7wN97AyXytE/rsONt1PH6rxWlgOhxnM=;
- b=awMopfWmJNnHnVAw6XwLYyaRnuy0lDwAfQh5l/2Qd3jIiM0iJ7d6wO5CTamn5jdQhk
- q+sk9f3hODRNzE9wl2urUqr7mYv+mp9h396nidBnNiXQ72hZbUnl39VZhsA6GTN8uQRu
- QEHs/Eet57lDujUeqI05Db5ghQj/RIs7e7lEbjAShflknhPK9yNqzBq5Ur00hXpO0TIN
- txKGE1BrCM9J7kK9D36oFzMoU+UIh1Y2KHq+K4OsCr+X/ZjXlAQkTDoWyUNagys/8vWN
- WZVXvs8mPEZ3EqxOneRr2bUniyFytCnIzXqr9HNauzROU8Fzx/2BRFSoGsJuBSd98iUh
- ZsZg==
-X-Gm-Message-State: ABy/qLZp/9/oKQ3KylMQqqnAZTpwJY6BB4bcJFBTDwM/mnIB9nCIPRDs
- LajdHEKl6iRuMOeD7slMni+ViPMxwI3+ZJC/fno=
-X-Google-Smtp-Source: APBJJlGSfANNkyCyh1eYNsf+SIo4NZQRoPNg3xrgUJF/AOT3mEAT8rNVgATL67cdaKyZqlLW0+NBLw==
-X-Received: by 2002:a05:6512:214a:b0:4fa:d194:36be with SMTP id
- s10-20020a056512214a00b004fad19436bemr2975637lfr.65.1688725797965; 
- Fri, 07 Jul 2023 03:29:57 -0700 (PDT)
+ bh=9aYAsTwrnIfgMh7N1jotL01ZdurLTw6jZVeOqtLv9YU=;
+ b=BRcFyEQBdZlbQyBK6TPsUSjNCQ+ViPG57bbIuTW+d7PcL5LxCakehTh/iud1FiScdY
+ 2X4jATsNB19i3FGmS1iTPCYVj77syk1UViHw22G4yfVGC/f/Es7pJpWQrVaJfzMR/LnZ
+ wXzD3C4uwiY69Pnfsq5EU0/O2LbNvn7Gt0BABzmW3ISO9JGsNM7GkddYln3o7QpVOhZT
+ P9/HgxTUixmwzQ7HJW2NGar2SBAyS4P1oRwF4rLRpyeFFmTaGXCsjV/jiozifwSeflCr
+ tMQAlgLNn13umeBGRArxMvc1AunuBvTyepbs3zgR3Sst4jqn0kB0kxsxZr8vg2LvwgkI
+ IPVg==
+X-Gm-Message-State: ABy/qLYtARg6Q6JpRnzzVcJYTQ5VJqxDTWgNx6GB0LjeKJmhnUTsHI8j
+ x6OH34+n14SNNatF8T3XKL1YpGq3MS1YKV/MeqU=
+X-Google-Smtp-Source: APBJJlHtm+IssEO+iljKLNmYi7aF9VxngqqiuWxie3RRo6gA1bYgcGofjFL7gkHWQ8phEM30R7BHUQ==
+X-Received: by 2002:ac2:5b1d:0:b0:4f7:6976:2070 with SMTP id
+ v29-20020ac25b1d000000b004f769762070mr3513737lfn.40.1688725838234; 
+ Fri, 07 Jul 2023 03:30:38 -0700 (PDT)
 Received: from stoup.. ([91.223.100.9]) by smtp.gmail.com with ESMTPSA id
- u21-20020ac248b5000000b004fb73bea65esm629231lfg.25.2023.07.07.03.29.57
+ u7-20020ac243c7000000b004fbb2080185sm625103lfl.213.2023.07.07.03.30.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 03:29:57 -0700 (PDT)
+ Fri, 07 Jul 2023 03:30:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
 	qemu-stable@nongnu.org
-Subject: [PATCH] tcg: Fix info_in_idx increment in layout_arg_by_ref
-Date: Fri,  7 Jul 2023 11:29:55 +0100
-Message-Id: <20230707102955.5607-1-richard.henderson@linaro.org>
+Subject: [PATCH] util/interval-tree: Avoid race conditions without optimization
+Date: Fri,  7 Jul 2023 11:30:36 +0100
+Message-Id: <20230707103036.5647-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x134.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,31 +88,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Off by one error, failing to take into account that layout_arg_1
-already incremeneted info_in_idx for the first piece.  We only
-need care for the n-1 TCG_CALL_ARG_BY_REF_N pieces here.
+Read the left and right trees once, so that the gating
+tests are meaningful.  This was only a problem at -O0,
+where the compiler didn't CSE the two reads.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 313bdea84d2 ("tcg: Add TCG_CALL_{RET,ARG}_BY_REF")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1751
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/tcg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ util/interval-tree.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index a0628fe424..652e8ea6b9 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -1083,7 +1083,7 @@ static void layout_arg_by_ref(TCGCumulativeArgs *cum, TCGHelperInfo *info)
-             .ref_slot = cum->ref_slot + i,
-         };
-     }
--    cum->info_in_idx += n;
-+    cum->info_in_idx += n - 1;  /* i=0 accounted for in layout_arg_1 */
-     cum->ref_slot += n;
- }
+diff --git a/util/interval-tree.c b/util/interval-tree.c
+index 4c0baf108f..31978c32ac 100644
+--- a/util/interval-tree.c
++++ b/util/interval-tree.c
+@@ -741,12 +741,15 @@ static IntervalTreeNode *interval_tree_subtree_search(IntervalTreeNode *node,
+                                                       uint64_t last)
+ {
+     while (true) {
++        RBNode *rb_tmp;
++
+         /*
+          * Loop invariant: start <= node->subtree_last
+          * (Cond2 is satisfied by one of the subtree nodes)
+          */
+-        if (node->rb.rb_left) {
+-            IntervalTreeNode *left = rb_to_itree(node->rb.rb_left);
++        rb_tmp = node->rb.rb_left;
++        if (rb_tmp) {
++            IntervalTreeNode *left = rb_to_itree(rb_tmp);
  
+             if (start <= left->subtree_last) {
+                 /*
+@@ -765,8 +768,10 @@ static IntervalTreeNode *interval_tree_subtree_search(IntervalTreeNode *node,
+             if (start <= node->last) {     /* Cond2 */
+                 return node; /* node is leftmost match */
+             }
+-            if (node->rb.rb_right) {
+-                node = rb_to_itree(node->rb.rb_right);
++
++            rb_tmp = node->rb.rb_right;
++            if (rb_tmp) {
++                node = rb_to_itree(rb_tmp);
+                 if (start <= node->subtree_last) {
+                     continue;
+                 }
 -- 
 2.34.1
 
