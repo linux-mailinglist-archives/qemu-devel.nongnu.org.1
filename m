@@ -2,55 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1122E74AB12
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 08:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 283D874AB9A
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 09:09:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHetT-00026j-Uw; Fri, 07 Jul 2023 02:24:40 -0400
+	id 1qHfZS-000078-JR; Fri, 07 Jul 2023 03:08:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qHetR-00026a-IJ
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 02:24:37 -0400
-Received: from mailout08.t-online.de ([194.25.134.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qHetP-0007Z5-Cc
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 02:24:37 -0400
-Received: from fwd86.dcpf.telekom.de (fwd86.aul.t-online.de [10.223.144.112])
- by mailout08.t-online.de (Postfix) with SMTP id 3A6C62A4F;
- Fri,  7 Jul 2023 08:24:31 +0200 (CEST)
-Received: from [192.168.211.200] ([93.236.151.121]) by fwd86.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1qHetK-0GbX6n0; Fri, 7 Jul 2023 08:24:30 +0200
-Message-ID: <a3bfcbd6-733b-169b-6a44-0433ffe34a95@t-online.de>
-Date: Fri, 7 Jul 2023 08:24:30 +0200
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qHfZL-00006Z-4d; Fri, 07 Jul 2023 03:07:55 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qHfZI-0005ha-3r; Fri, 07 Jul 2023 03:07:54 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-9922d6f003cso198705166b.0; 
+ Fri, 07 Jul 2023 00:07:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=jms.id.au; s=google; t=1688713670; x=1691305670;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qvsBYWi8i/gEb3hsQA9Xu/URk8DZgAbHwgvtgCdzRdk=;
+ b=gfgQtHlhiBekADnlcP1ITHDlPA2wTMPhu4jsVLZilEWdkGqLxYkyWIxac4yNKuYB+e
+ DPyS/YxAuufm9B6XVanVdqlF+5uNDwU4Nu4ZN8ThZgiUYFFfz5Ho1pU28Yh8s8R4bP+U
+ 1XPR3qw/vurDT/hZ0CBjSNGP8H9905wY/Yty8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688713670; x=1691305670;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qvsBYWi8i/gEb3hsQA9Xu/URk8DZgAbHwgvtgCdzRdk=;
+ b=XNs8NEmviIVlQ9Pb8Rd6sIc327VzSuffWiqBLqjtLSdNqsSyslt12IMIuSxwHW3b45
+ v8sJwSu+ljSTd/iZwxcolB5/aDwXpN77reb7CSWeWXVd5+NVpKcR9uywZ2s/N7M7qwAi
+ AkyGw9ioA2iig5oiapBJCqLt31EpmFiyWx7/iVCdSJLFGQBYpAixhcntGDhQdTZn0wEx
+ dBDV6lfJ6u5I1XvaiDR8mlMhD/6yOdL0DWopgYj0muLLOI3Dr6w+8T4YnRLgQCpSXT5u
+ xQOLhMAgiyR6scB7nsQT4zxJ/VTZiR/weSSk8lpp+MX3nRQq+My4Grj04BQ0puB1vsVf
+ FNYA==
+X-Gm-Message-State: ABy/qLahVV1+KIswEvoWMEKp6IfKnwTFVmKDHeTbXoUzP0yWeUZ1jmHf
+ o0Or6Hg74RO69OHldyXCZt2x0ppYXeec/l92B0o=
+X-Google-Smtp-Source: APBJJlHGuG8B8wqZBk0QvYnNm2FKive1DwNjAbQWcYGg2A5TzU6jv8XApWrv2A7K5/TYsqc0sJiqvKCMSPyAuiFcknY=
+X-Received: by 2002:a17:906:297:b0:98d:5293:55f7 with SMTP id
+ 23-20020a170906029700b0098d529355f7mr3282253ejf.6.1688713669786; Fri, 07 Jul
+ 2023 00:07:49 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 08/21] asc: generate silence if FIFO empty but engine
- still running
-Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu
-References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
- <20230702154838.722809-9-mark.cave-ayland@ilande.co.uk>
-Cc: qemu-devel@nongnu.org
-From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <20230702154838.722809-9-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TOI-EXPURGATEID: 150726::1688711070-0492CEBC-7B5DF9E5/0/0 CLEAN NORMAL
-X-TOI-MSGID: e284596e-00dd-47da-a416-3449c74cc7ae
-Received-SPF: none client-ip=194.25.134.20; envelope-from=vr_qemu@t-online.de;
- helo=mailout08.t-online.de
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230707040631.66021-1-joel@jms.id.au>
+ <78344793-d55a-c8fb-bd1d-171064ad9ec7@kaod.org>
+In-Reply-To: <78344793-d55a-c8fb-bd1d-171064ad9ec7@kaod.org>
+From: Joel Stanley <joel@jms.id.au>
+Date: Fri, 7 Jul 2023 07:07:37 +0000
+Message-ID: <CACPK8XfCOA19Nj7bt5L+BRj8fRubgC0rRHmQHhQ9XhYYv-9iBg@mail.gmail.com>
+Subject: Re: [PATCH] ppc/pnv: Add QME region for P10
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=joel.stan@gmail.com; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01, URIBL_CSS=0.1 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,131 +84,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> MacOS (un)helpfully leaves the FIFO engine running even when all the samples have
-> been written to the hardware, and expects the FIFO status flags and IRQ to be
-> updated continuously.
+On Fri, 7 Jul 2023 at 05:04, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+
+> pnv_quad_realize realizes power9 and power10 quad objects but ...
 >
-> Since not all audio backends guarantee an all-zero output when no data is
-> provided, explicitly generate at least one full output buffer of all-zero output
-> when the FIFO is disabled and continuously if the FIFO is empty. Otherwise some
-> audio backends such as Windows re-use their internal buffers causing the last
-> played sound to loop indefinitely.
+> >   }
+> >
+> >   static Property pnv_quad_properties[] =3D {
+> > @@ -528,6 +581,9 @@ static void pnv_quad_power10_class_init(ObjectClass=
+ *oc, void *data)
+> >
+> >       pqc->xscom_ops =3D &pnv_quad_power10_xscom_ops;
+> >       pqc->xscom_size =3D PNV10_XSCOM_EQ_SIZE;
+> > +
+> > +    pqc->xscom_qme_ops =3D &pnv_qme_power10_xscom_ops;
+> > +    pqc->xscom_qme_size =3D PNV10_XSCOM_QME_SIZE;
 >
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/audio/asc.c         | 43 ++++++++++++++++++++++++++++++++----------
->   include/hw/audio/asc.h |  1 +
->   2 files changed, 34 insertions(+), 10 deletions(-)
+> xscom_qme_size is only defined on power10 and it is 0 on power9. The regi=
+on
+> is nevertheless initialized on power9 and never mapped.
 >
-> diff --git a/hw/audio/asc.c b/hw/audio/asc.c
-> index ebcb8a97a6..f9bfae5168 100644
-> --- a/hw/audio/asc.c
-> +++ b/hw/audio/asc.c
-> @@ -148,6 +148,20 @@ static uint8_t asc_fifo_get(ASCFIFOState *fs)
->       return val;
->   }
+> I think we should introduce a specific realize routine for each proc now.
 
-Hi Mark,
+I overlooked the P9 behaviour, thanks for pointing that out. I'll make
+the realise proc specific.
 
-I don't understand why the flush_zero_samples variable is necessary at all.
+Cheers,
 
->   
-> +static int generate_silence(ASCState *s, int maxsamples)
-> +{
-> +    uint8_t *buf = s->mixbuf;
-> +
-> +    if (s->flush_zero_samples) {
-> +        memset(buf, 0x80, maxsamples << s->shift);
-> +        s->flush_zero_samples -= MIN(maxsamples, s->flush_zero_samples);
-> +
-> +        return maxsamples;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
->   static int generate_fifo(ASCState *s, int maxsamples)
->   {
->       uint8_t *buf = s->mixbuf;
-> @@ -156,18 +170,26 @@ static int generate_fifo(ASCState *s, int maxsamples)
->       limit = MIN(MAX(s->fifos[0].cnt, s->fifos[1].cnt), maxsamples);
->   
->       /*
-> -     * If starting a new run with no FIFO data present, update the IRQ and
-> -     * continue
-> +     * MacOS (un)helpfully leaves the FIFO engine running even when it has
-> +     * finished writing out samples. Since not all audio backends guarantee an
-> +     * all-zero output when no data is provided, zero out the sample buffer
-> +     * and then update the FIFO flags and IRQ as normal and continue
->        */
-> -    if (limit == 0 && s->fifos[0].int_status == 0 &&
-> -            s->fifos[1].int_status == 0) {
-> -        s->fifos[0].int_status |= ASC_FIFO_STATUS_HALF_FULL |
-> -                                  ASC_FIFO_STATUS_FULL_EMPTY;
-> -        s->fifos[1].int_status |= ASC_FIFO_STATUS_HALF_FULL |
-> -                                  ASC_FIFO_STATUS_FULL_EMPTY;
-> +    if (limit == 0) {
-> +        if (s->fifos[0].int_status == 0 && s->fifos[1].int_status == 0) {
-> +            s->fifos[0].int_status |= ASC_FIFO_STATUS_HALF_FULL |
-> +                                      ASC_FIFO_STATUS_FULL_EMPTY;
-> +            s->fifos[1].int_status |= ASC_FIFO_STATUS_HALF_FULL |
-> +                                      ASC_FIFO_STATUS_FULL_EMPTY;
-> +        }
-> +
-> +        if (s->flush_zero_samples == 0) {
-> +            s->flush_zero_samples = s->samples;
-> +        }
-
-At this point s->flush_zero_samples is != 0 and generate_silence() 
-always generates maxsamples silent audio frames.
-
->   
-> +        generate_silence(s, maxsamples);
->           asc_raise_irq(s);
-> -        return 0;
-> +        return maxsamples;
->       }
->   
->       while (count < limit) {
-> @@ -309,7 +331,7 @@ static void asc_out_cb(void *opaque, int free_b)
->       switch (s->regs[ASC_MODE] & 3) {
->       default:
->           /* Off */
-
-This code will not be called for s->regs[ASC_MODE] & 3 == 0 because in 
-asc_write() AUD_set_active_out(s->voice, 0) was called before.
-
-For s->regs[ASC_MODE] & 3 == 3 the code in asc_write() clears 
-s->flush_zero_samples and generate_silence() always returns 0. The audio 
-subsystem is running and expects new audio frames here.
-
-With best regards,
-Volker
-
-> -        samples = 0;
-> +        samples = generate_silence(s, samples);
->           break;
->       case 1:
->           /* FIFO mode */
-> @@ -437,6 +459,7 @@ static void asc_write(void *opaque, hwaddr addr, uint64_t value,
->               asc_lower_irq(s);
->               if (value != 0) {
->                   AUD_set_active_out(s->voice, 1);
-> +                s->flush_zero_samples = 0;
->               } else {
->                   AUD_set_active_out(s->voice, 0);
->               }
-> diff --git a/include/hw/audio/asc.h b/include/hw/audio/asc.h
-> index 41c6cba8fa..918f6ac582 100644
-> --- a/include/hw/audio/asc.h
-> +++ b/include/hw/audio/asc.h
-> @@ -65,6 +65,7 @@ struct ASCState {
->       uint8_t *mixbuf;
->       int samples;
->       int shift;
-> +    uint32_t flush_zero_samples;
->   
->       qemu_irq irq;
->   
-
+Joel
 
