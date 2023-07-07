@@ -2,84 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464F774ABB4
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 09:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A2474ABBA
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 09:20:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHfi4-0002uX-2b; Fri, 07 Jul 2023 03:16:56 -0400
+	id 1qHfkr-0003sz-I4; Fri, 07 Jul 2023 03:19:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHfi2-0002u9-25
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 03:16:54 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qHfkm-0003rQ-3F; Fri, 07 Jul 2023 03:19:44 -0400
+Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHfi0-00014e-D9
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 03:16:53 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-56352146799so1092946eaf.3
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 00:16:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qHfkj-0005wJ-Ca; Fri, 07 Jul 2023 03:19:43 -0400
+Received: by mail-oa1-x2e.google.com with SMTP id
+ 586e51a60fabf-1b078b34df5so1587733fac.2; 
+ Fri, 07 Jul 2023 00:19:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688714210; x=1691306210;
+ d=gmail.com; s=20221208; t=1688714378; x=1691306378;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=zv9gIjS82L5+OWY0+arteaIf4C3sR4crycr5MrZ+BUM=;
- b=AIPYH9ivrxNo/SisRpzbXbNoIge2+BjNO7ocSHZoC3BDV3AMf+ETHpbvWJhJnhnOYi
- tzuiDksOQMWb/uzUvwFscyJldHj8TAB+yIv0wRXS/dSOamj8S8SZ70x42d29F7gUKgji
- gMxZptHCEstADgK4+/+ffLd6RMBTGADond2lis9+UyNUhuTZEcEuF44MAIbZRO4Wj04T
- A6uUnIaFyC/p4Ia0Nt4MSFneZVQgCoHsUyykpDbNvhwjBjmafNB7n1T4FAJawFDiUBUl
- pSvQFqlKXbnfgYA5Myct3BgBAtjmSo2GRIlyNN3EUkDhh+yZ/bhDhA7B4udkFBOhTuVd
- 28Kg==
+ bh=djlhlMLFUCYNHJTzu9cUmLcInqc0Hn3qYDrDPlMZWao=;
+ b=j0VXMBgPTHy0TjvL5AoPKhS0804pXcrii7vuKiC2qzww8dViHbfsG7xU4WBL+Q92L5
+ UIMWX9FD6IKC69dF50FOa+5+uGfhCb0sZou4+LPILijCSuhALZppcUDs5aJVuJVrJO0z
+ GDSD5ToTFUPI5e54ravvRPUqNj4VKFOOPZ78rdGRfcoWCaL6C+ax7D/mT9mjW2CMGiQO
+ Pf0KIWlikgNNACMo5+YWMJ7GvOpw23nW8c310ArAOV3mpJ14XNddzvhxOJxRCU91GLOv
+ Xsy6t4nXtPj/xHHNPknohf2ydDwOQb7Ls9+H/h4h8VHHIyOIzA7vZgI5nJTuC82q9U0o
+ +/fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688714210; x=1691306210;
+ d=1e100.net; s=20221208; t=1688714378; x=1691306378;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zv9gIjS82L5+OWY0+arteaIf4C3sR4crycr5MrZ+BUM=;
- b=Mm2dKggmL/Z9TfHbINQ7f0Eq/rmUvuXqAeq2b6ppj6/gduau1TF7VYY6DMEKK/pwzQ
- MIE/HWPmIyIUSrjSywSL4QFWrDlMSaP7jt70aIj8NsGNM350B3WZ456Nh+ihN6pTzJ0x
- wyaQ5t/IM8R3cQXpAnHZFuNTCkFY1XbQ5iF4Awq8qD6bRxQpqOsrowu37rPx94pz/Bc/
- UNNZztgJryHaOWQmiqdmb2vGAQPcOaR0oVrJaTCP6Tae9wmqdUROfXMQVEOAKPTnFYFJ
- gmEbrJ6eSszn4owXx2JulZICWpwRTwfRBeAi/kd2jzHnrKNsM8xsiRP7+P75OTmUpEPS
- aq/g==
-X-Gm-Message-State: ABy/qLba8sgqIojzMpVxIaiAZMok7q+YAM1L+n3bDVLzNzY7SWzDcc2b
- oRFOCVvXl++T6aFUuomWEMMpQw==
-X-Google-Smtp-Source: APBJJlG4lud8+n8QUDPhrJlFA0hLEMwvNl/6xyDqQa5sqZ9WgCFMbPzW0buVWpAJkn7U3gJYTBA9JQ==
-X-Received: by 2002:a4a:4110:0:b0:563:53fa:324f with SMTP id
- x16-20020a4a4110000000b0056353fa324fmr3581280ooa.6.1688714210659; 
- Fri, 07 Jul 2023 00:16:50 -0700 (PDT)
+ bh=djlhlMLFUCYNHJTzu9cUmLcInqc0Hn3qYDrDPlMZWao=;
+ b=In+RwfRoSSGkYiY+vbJepZIvQYnICKfpGJzXC5Nd3v/L5YOLil2Q9IVlniv6R+TjE6
+ whmIa1skJ6wxOtL+i9tdA0CMjfxVY+qliNCwjbwnPNcUSnSuA4S0iQuEmUYWgdFejY6G
+ wNCnjNEygdJhAjgD7wbxPAsNiEVcB3NODFPjXoMihmB4CpQMRkqwXFAgof0D+CdNVl9X
+ +hmC2aR5qo3WCV7IOei+Vu9fPAgUO0KwfbmWVIpD6513qyjS0q4J91SsvaxDjCzYqTm4
+ aMVR76VPDS4nji0ZPOfQWBdUDXae00UKHwRBc1RXEPeqbwiHO92vyfG0XTUxu8AgsIXz
+ r2rQ==
+X-Gm-Message-State: ABy/qLYhshMcxjaKFqZzTqpowZsp/l9Ev7JyiTcXU6i4wr6N/++/qnBc
+ 0sxwzhWYM6D+fkuzTsi/MO8=
+X-Google-Smtp-Source: APBJJlF/Wqd1V5yvy0eodPGVELREu5deM1SJH0p7uMlfFrnTBOqZ4J7Gp4WWbWgDtV70GJx7R8gV7Q==
+X-Received: by 2002:a05:6870:a706:b0:1b4:4a6c:ff56 with SMTP id
+ g6-20020a056870a70600b001b44a6cff56mr2272268oam.14.1688714378492; 
+ Fri, 07 Jul 2023 00:19:38 -0700 (PDT)
 Received: from [192.168.68.107] (201-69-66-19.dial-up.telesp.net.br.
  [201.69.66.19]) by smtp.gmail.com with ESMTPSA id
- x22-20020a4ab916000000b0056082ad01desm1278956ooo.14.2023.07.07.00.16.47
+ y82-20020a4a4555000000b005667b061eebsm643275ooa.13.2023.07.07.00.19.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 00:16:50 -0700 (PDT)
-Message-ID: <fdd959fc-6630-99fe-d5ef-4b6b73998b9c@ventanamicro.com>
-Date: Fri, 7 Jul 2023 04:16:46 -0300
+ Fri, 07 Jul 2023 00:19:38 -0700 (PDT)
+Message-ID: <f25113e7-b23d-ebd8-03c3-c5dc9db6e524@gmail.com>
+Date: Fri, 7 Jul 2023 04:19:35 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] target/riscv KVM_RISCV_SET_TIMER macro is not configured
- correctly
+Subject: Re: [PATCH] ppc/pnv: Log all unimp warnings with similar message
 Content-Language: en-US
-To: "yang.zhang" <gaoshanliukou@163.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- zhiwei_liu@linux.alibaba.com, "yang.zhang" <yang.zhang@hexintek.com>
-References: <20230707032306.4606-1-gaoshanliukou@163.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230707032306.4606-1-gaoshanliukou@163.com>
+To: Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+References: <20230706024528.40065-1-joel@jms.id.au>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <20230706024528.40065-1-joel@jms.id.au>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc29.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+Received-SPF: pass client-ip=2001:4860:4864:20::2e;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,39 +95,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
 
 
-On 7/7/23 00:23, yang.zhang wrote:
-> From: "yang.zhang" <yang.zhang@hexintek.com>
+Daniel
+
+On 7/5/23 23:45, Joel Stanley wrote:
+> Add the function name so there's an indication as to where the message
+> is coming from. Change all prints to use the offset instead of the
+> address.
 > 
-> Should set/get riscv all reg timer,i.e, time/compare/frequency/state.
-
-Nice catch.
-
-The reason why this went under the radar for 18 months is because kvm.c is using
-an external 'time' variable.
-
-> 
-> Signed-off-by:Yang Zhang <yang.zhang@hexintek.com>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1688
+> Signed-off-by: Joel Stanley <joel@jms.id.au>
 > ---
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   target/riscv/kvm.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Happy to use the address instead of the offset (or print both), but I
+> like the idea of being consistent.
+> ---
+>   hw/ppc/pnv_core.c | 34 ++++++++++++++++++----------------
+>   1 file changed, 18 insertions(+), 16 deletions(-)
 > 
-> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-> index 30f21453d6..0c567f668c 100644
-> --- a/target/riscv/kvm.c
-> +++ b/target/riscv/kvm.c
-> @@ -99,7 +99,7 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+> diff --git a/hw/ppc/pnv_core.c b/hw/ppc/pnv_core.c
+> index ffbc29cbf4f9..3eb95670d6a3 100644
+> --- a/hw/ppc/pnv_core.c
+> +++ b/hw/ppc/pnv_core.c
+> @@ -85,8 +85,8 @@ static uint64_t pnv_core_power8_xscom_read(void *opaque, hwaddr addr,
+>           val = 0x24f000000000000ull;
+>           break;
+>       default:
+> -        qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
+> -                  addr);
+> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+> +                      offset);
+>       }
 >   
->   #define KVM_RISCV_SET_TIMER(cs, env, name, reg) \
->       do { \
-> -        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(env, time), &reg); \
-> +        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(env, name), &reg); \
->           if (ret) { \
->               abort(); \
->           } \
+>       return val;
+> @@ -95,8 +95,10 @@ static uint64_t pnv_core_power8_xscom_read(void *opaque, hwaddr addr,
+>   static void pnv_core_power8_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+>                                           unsigned int width)
+>   {
+> -    qemu_log_mask(LOG_UNIMP, "Warning: writing to reg=0x%" HWADDR_PRIx "\n",
+> -                  addr);
+> +    uint32_t offset = addr >> 3;
+> +
+> +    qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+> +                  offset);
+>   }
+>   
+>   static const MemoryRegionOps pnv_core_power8_xscom_ops = {
+> @@ -140,8 +142,8 @@ static uint64_t pnv_core_power9_xscom_read(void *opaque, hwaddr addr,
+>           val = 0;
+>           break;
+>       default:
+> -        qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
+> -                  addr);
+> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+> +                      offset);
+>       }
+>   
+>       return val;
+> @@ -157,8 +159,8 @@ static void pnv_core_power9_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+>       case PNV9_XSCOM_EC_PPM_SPECIAL_WKUP_OTR:
+>           break;
+>       default:
+> -        qemu_log_mask(LOG_UNIMP, "Warning: writing to reg=0x%" HWADDR_PRIx "\n",
+> -                      addr);
+> +        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+> +                      offset);
+>       }
+>   }
+>   
+> @@ -189,8 +191,8 @@ static uint64_t pnv_core_power10_xscom_read(void *opaque, hwaddr addr,
+>           val = 0;
+>           break;
+>       default:
+> -        qemu_log_mask(LOG_UNIMP, "Warning: reading reg=0x%" HWADDR_PRIx "\n",
+> -                  addr);
+> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+> +                      offset);
+>       }
+>   
+>       return val;
+> @@ -203,8 +205,8 @@ static void pnv_core_power10_xscom_write(void *opaque, hwaddr addr,
+>   
+>       switch (offset) {
+>       default:
+> -        qemu_log_mask(LOG_UNIMP, "Warning: writing to reg=0x%" HWADDR_PRIx "\n",
+> -                      addr);
+> +        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+> +                      offset);
+>       }
+>   }
+>   
+> @@ -421,7 +423,7 @@ static uint64_t pnv_quad_power9_xscom_read(void *opaque, hwaddr addr,
+>           val = 0;
+>           break;
+>       default:
+> -        qemu_log_mask(LOG_UNIMP, "%s: reading @0x%08x\n", __func__,
+> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+>                         offset);
+>       }
+>   
+> @@ -438,7 +440,7 @@ static void pnv_quad_power9_xscom_write(void *opaque, hwaddr addr, uint64_t val,
+>       case P9X_EX_NCU_SPEC_BAR + 0x400: /* Second EX */
+>           break;
+>       default:
+> -        qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
+> +        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+>                     offset);
+>       }
+>   }
+> @@ -465,7 +467,7 @@ static uint64_t pnv_quad_power10_xscom_read(void *opaque, hwaddr addr,
+>   
+>       switch (offset) {
+>       default:
+> -        qemu_log_mask(LOG_UNIMP, "%s: reading @0x%08x\n", __func__,
+> +        qemu_log_mask(LOG_UNIMP, "%s: unimp read 0x%08x\n", __func__,
+>                         offset);
+>       }
+>   
+> @@ -479,7 +481,7 @@ static void pnv_quad_power10_xscom_write(void *opaque, hwaddr addr,
+>   
+>       switch (offset) {
+>       default:
+> -        qemu_log_mask(LOG_UNIMP, "%s: writing @0x%08x\n", __func__,
+> +        qemu_log_mask(LOG_UNIMP, "%s: unimp write 0x%08x\n", __func__,
+>                         offset);
+>       }
+>   }
 
