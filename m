@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C958074B724
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 21:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4A774B775
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 21:49:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHrBB-0003Mx-PA; Fri, 07 Jul 2023 15:31:45 -0400
+	id 1qHrR2-0000A4-3D; Fri, 07 Jul 2023 15:48:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHrB9-0003MS-Ic
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 15:31:43 -0400
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qHrQz-00009d-3h
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 15:48:05 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qHrB7-0002Y1-Vq
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 15:31:43 -0400
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-6b7484cbc5dso2042635a34.1
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 12:31:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qHrQw-0002UE-Sh
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 15:48:04 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-4f95bf5c493so3510125e87.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 12:48:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1688758300; x=1691350300;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1688759279; x=1691351279;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ccTiCkLVA/LRJPZjVHRAReNmK/s85i/9qg8fzqvgX8E=;
- b=VZvsl3JZf+mNArvtcn3ht10sC6xpEFZgLEaYluUV0uhOXFhi+cZykwyyCHMqa2Iphm
- ImYSRISE8Gn/8ATbWokLCzLf9kuyXm6dmXvNP71hSRfRsBNcXEd8p/y1Z2NFFoz7NaJa
- 63cBY8G55/c8kiZN9cp27i4WpB5xPwyF617tRljh/3lmZPu8eub17j/3qzdYrmeBXleS
- hmkzUQoFH6FZp2NoxgywXTpwOYdPT8pnap56cFq8VojUmq9Wycczy17oyPdo62JPcrR4
- X7wCsk0lf/LYG7f8wu//TvDLWhXK4473+ikN/rDOp6CGrgsDBeHzC9/JX/K4mppAThMN
- PGCA==
+ bh=Ml2Mvgqa5mTAztRZY7LJCKxNs3hquZ2+1QWYHjyA5oY=;
+ b=DwMLQOfDRgf8uAc5MQXrR8HAS+l7F9SJYJgrkNpVx2A0lXby2l37nU3hpzfX68hlOp
+ e1ek3AqmZLiisdOE6oKeyXBADuJ4DpHKkFGCh1cZYWQvRnLxSnlUirAP7qqbrRCEazQD
+ TVdUUCDkNd2A+JNqnDUsoFk6Ti4NUEtHzmicx5JJT98qQ7hHKW/IkK+2ecvbdzJ1WDXb
+ MGi0uBEf89j2A4iQ5n+icrDuGy2x/q45yPFN04dtWphjgQOMhAIewNdBv8HKtknNG3dH
+ mFnE6oCIprkAL2lbVaIcstdyYkt9aCwQKJGlBviKGiaJnCjOV/Su/qncvCYiUjf3gdRC
+ kArw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688758300; x=1691350300;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1688759279; x=1691351279;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ccTiCkLVA/LRJPZjVHRAReNmK/s85i/9qg8fzqvgX8E=;
- b=G+wJa8fU1tmLl1T6qOTrjdaNOHyjNpLtARSs/6IjxuMqjgYtF7a2J/vfYmerLCzmnh
- 0uVxu80LifAYB1W5CiskHnSJ2BGUiRM4L2QY9vHS//MD6GzgbxuuwnT1qZ+RFlURZoyg
- gstorUotRP+Ahqq0Qt/3rfnXPt3qXrs/6HxYUD1XbQO+46ttV27658bwbgVY4iGqKlJy
- jJhr+gVScNm+h2rP/kwx+sH7xntC05dWR0ilttnPKWrUmk++IRZ1VCSy1QkV6YCl5+mz
- /SYjq6UmWttRQg34Ipyfbdw0eR/Tr1eye2GDE0FZ1f7FG7GmK7ZDshrvFwo9sNwvhQOn
- F56A==
-X-Gm-Message-State: ABy/qLaf6iWsRHw+BxQ1SSfIjfySktw+dHKWFOXTDtXLo7/oEsvaBMkn
- 9ZIbdq38Z3CiXIOQBW62KclgRg==
-X-Google-Smtp-Source: APBJJlEv6mOuKOP4l6srcdwZwhqGFzf3bqoHNG/VX0l7NULTAbWbwvFCjLwiAtkJvyLHIq8CXuItBw==
-X-Received: by 2002:a05:6808:1444:b0:3a1:f18d:2fe8 with SMTP id
- x4-20020a056808144400b003a1f18d2fe8mr5256267oiv.10.1688758300384; 
- Fri, 07 Jul 2023 12:31:40 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-19.dial-up.telesp.net.br.
- [201.69.66.19]) by smtp.gmail.com with ESMTPSA id
- 4-20020a544184000000b003a361fbec60sm1939734oiy.47.2023.07.07.12.31.38
+ bh=Ml2Mvgqa5mTAztRZY7LJCKxNs3hquZ2+1QWYHjyA5oY=;
+ b=ZB0WPJwR0OZHbE8VNXQbqU0/3FANhF/Ddda7+WXilEzzsvSnoAC41LRa3uvya+5nHq
+ p2X8xQa+WSJedsLbu+VRAb/364h0m7OaSRXEyAyEEduW4kAdvAPo9jxxTrymkB+wU6m5
+ zJzrH7axiwVS9ubkDQht+0ISTNcGw3NJD5XvIxcgqTefuxCIGuYmUFL2DY5T15VN9kk9
+ csmAKaEdm/GIDQAeYVoSuEUYKDn8AgYw9XIxTPdVkGjf3FDiPTdBDJ1EB52XOW3SKW+8
+ JoRhM41A63i2gxjEfuUBi3+NBxhP8dY2YBUJIcHgjeJffFqIQUKCueFGRYjAIHHC88Fs
+ hFiw==
+X-Gm-Message-State: ABy/qLZNuprDHvxUIdUkjSNDBF44zZQoPdMVJq7p6YmO+WIyZGSOU0vW
+ Ydwx1oowKh261pKQ/pDQ2M7P/A==
+X-Google-Smtp-Source: APBJJlFMFsThYryTaFuMYlSSW4RUVo7TcH+bFbnCkleZKefmPnDQ1/W0HYzelxO9ONaCU/7YKJKUBw==
+X-Received: by 2002:a19:6504:0:b0:4fb:8b78:4a93 with SMTP id
+ z4-20020a196504000000b004fb8b784a93mr1154385lfb.7.1688759279306; 
+ Fri, 07 Jul 2023 12:47:59 -0700 (PDT)
+Received: from [192.168.1.5] (host-92-23-208-66.as13285.net. [92.23.208.66])
+ by smtp.gmail.com with ESMTPSA id
+ k8-20020a5d5248000000b00313f9a0c521sm5202723wrc.107.2023.07.07.12.47.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 12:31:40 -0700 (PDT)
-Message-ID: <00b01e30-2675-01f7-dc39-19214d6f5197@ventanamicro.com>
-Date: Fri, 7 Jul 2023 16:31:37 -0300
+ Fri, 07 Jul 2023 12:47:58 -0700 (PDT)
+Message-ID: <1147c41d-3bcc-eadf-f625-819caa349e97@linaro.org>
+Date: Fri, 7 Jul 2023 20:47:57 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 1/2] target/riscv: Remove redundant check in
- pmp_is_locked
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 3/4] linux-user: Fix mmap2() syscall on 32-bit targets to
+ allow file mapping beyond 4GB
 Content-Language: en-US
-To: Ruibo Lu <reaperlu@hust.edu.cn>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, luruibo2000@163.com, alistair.francis@wdc.com,
- liweiwei@iscas.ac.cn
-References: <20230704023811.4355-1-reaperlu@hust.edu.cn>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230704023811.4355-1-reaperlu@hust.edu.cn>
+To: Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
+ qemu-devel@nongnu.org
+References: <20230707131928.89500-1-deller@gmx.de>
+ <20230707131928.89500-4-deller@gmx.de>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230707131928.89500-4-deller@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,40 +96,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 7/3/23 23:33, Ruibo Lu wrote:
-> the check of top PMP is redundant and will not influence the return
-> value, so consider remove it
+On 7/7/23 14:19, Helge Deller wrote:
+> The mmap2() syscall allows 32-bit guests to specify the offset into a
+> file in page units (instead of bytes, as done by mmap(2)).
+> On physical machines this allows 32-bit applications to map such parts
+> of large files which are stored beyond the 4GB limit.
 > 
-> Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-> Signed-off-by: Ruibo Lu <reaperlu@hust.edu.cn>
+> Allow the same behaviour when emulating 32-bit guests with qemu.
+> 
+> For that switch the mmap2() function to always take an abi_ullong
+> (64-bit) offset parameter for target_mmap() and mmap_frag() to avoid an
+> arithmetical overflow when shifing a 32-bit offset parameter by
+> 12 bits (=PAGE_SHIFT) and thus possibly overflow the abi_ulong (32-bit)
+> type.
+> 
+> Signed-off-by: Helge Deller<deller@gmx.de>
 > ---
+>   linux-user/mmap.c      | 9 +++++----
+>   linux-user/syscall.c   | 2 +-
+>   linux-user/user-mmap.h | 2 +-
+>   3 files changed, 7 insertions(+), 6 deletions(-)
 
-I believe we might want to add:
+https://patchew.org/QEMU/20230630132159.376995-1-richard.henderson@linaro.org/20230630132159.376995-12-richard.henderson@linaro.org/
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1733
+Wherein I use the host off_t (which must be 64-bits).
+(I'm pretty sure there's an older similar patch, but I couldn't find it.)
 
 
-
->   target/riscv/pmp.c | 5 -----
->   1 file changed, 5 deletions(-)
-> 
-> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-> index 9d8db493e6..1a9279ba88 100644
-> --- a/target/riscv/pmp.c
-> +++ b/target/riscv/pmp.c
-> @@ -49,11 +49,6 @@ static inline int pmp_is_locked(CPURISCVState *env, uint32_t pmp_index)
->           return 1;
->       }
->   
-> -    /* Top PMP has no 'next' to check */
-> -    if ((pmp_index + 1u) >= MAX_RISCV_PMPS) {
-> -        return 0;
-> -    }
-> -
->       return 0;
->   }
->   
+r~
 
