@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB78F74B7AF
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 22:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B3A74B7B3
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 22:16:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHrp3-0002H9-SV; Fri, 07 Jul 2023 16:12:57 -0400
+	id 1qHrre-0003Cn-Hj; Fri, 07 Jul 2023 16:15:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHrp1-0002FT-Q1
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:12:55 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1qHrrc-0003CW-1q
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:15:36 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qHrou-0005ze-Vj
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:12:55 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-313e09a5b19so3083541f8f.0
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 13:12:47 -0700 (PDT)
+ id 1qHrra-0000IY-4R
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 16:15:35 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fb4146e8deso29295145e9.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 13:15:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688760765; x=1691352765;
+ d=linaro.org; s=google; t=1688760932; x=1691352932;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hNKCZf49pb//jdl6pnd+4L6O+4LLaJjDsI33iJbiLZk=;
- b=Ld00U7J8Clc6X38cBf+Pga5Yw1wCDAJhIbMwGMdeczCts5q0mTsOGAYdubBQWT0rFL
- ksvULCqlC6s9ME2Bw8qLfyNH9zN/Sav5JdJj5wRdaRw7Ns16QVyhU9SzdOt2H8cdu4JM
- 4q/e9Bx3ik1XclAzmXZaN7ojjOqPmKK4h02/xMThwvh6CEchhfZH4R4qnt4ntp+mOFmc
- DefykUyUrfLkm3d5buKZMH3/3ytyN06Yk0iogpnBMjQOJ1MdEEqHAUYqpWcSWJpCKGCk
- QIT06j3vSLBIflDsWk7d/GLsTtWxHMiM6Whd/d3w+n46DLM9xMosqNEqwukDc25QzFai
- +COA==
+ bh=2VtQnDPkWTjgtbeFhXTmrbjCfLpQtZRW6ogQQ14a2Yw=;
+ b=I1duePoxxnob2ZrW6+BR9lmyPKDQndUe5YbCAYcwEzvxx2wJT4eJ1FveNpRozMy0dF
+ qt3r7yh7cez/6igW3DSzkbPFxCB14DgzdYqAXb81TKQJq9BEXBd8o+pGEU2r6nvyMzX0
+ f5A6sUJDNL54DGdKTj/Qaa14BaY06KRU5rjT28xiLZw3NUVL9A6sFnksc4V+BnZpXb4F
+ Rr7/IjE47xw90/5ZioTRw6DJ0vQi95+czvfJuvKgMqLitPdV35NK0ddhHG1M9DRW+g6W
+ C1Entj6jz5JoQgdn+EBtO5uE71YL1ZitYH5AKqzaeDSfKChWL942u1Ct+eLumeVXyccu
+ tGUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688760765; x=1691352765;
+ d=1e100.net; s=20221208; t=1688760932; x=1691352932;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hNKCZf49pb//jdl6pnd+4L6O+4LLaJjDsI33iJbiLZk=;
- b=LQAAJ6ed3A3Z2x4oHbUfj2Nv0FNhTB8gRBBIhF2yhDdKo4TvhlOgulQkqiTfrsGrFO
- h8k+WWx9jQb7MfsFyrydKqIh6tVOPVgwY73TewB9v22zGX8yK6JKw5EkoJnGQ1oy1bAp
- 2AqokZwUhvCYAAvIkFiAhBXTQNgs4qC6U8OPRu3u/E6PcKf0ha65SB/uuCNqUQgI7KdK
- vJLhQF6zgMBkJxVhGv18ji7VuqSc7mpXet43h1mI595JEIgx7+X+wZPsYpFWUEn4LmKv
- 64obZEvAYQq1SOMiJKkL3YsT3lrLyY/kPDSmFBShW+ciaakb+/PVFK5E8SAbcPEuZT/P
- f3Pw==
-X-Gm-Message-State: ABy/qLZ6q6RM0YbIbAOGBCy9KnakfNU1blBF+o8F+VhulNkUHg5adoh4
- URqUJ40Qc030MbggJG1VfjHPaw==
-X-Google-Smtp-Source: APBJJlE37WE8GI1xNs4RlkNC/kxnOYwP/TZ1NwkJUpWlT7N1TxryU16nLhAtMVjxXCfdM86dvTet4g==
-X-Received: by 2002:adf:dfd1:0:b0:307:7959:6461 with SMTP id
- q17-20020adfdfd1000000b0030779596461mr6100571wrn.31.1688760764648; 
- Fri, 07 Jul 2023 13:12:44 -0700 (PDT)
+ bh=2VtQnDPkWTjgtbeFhXTmrbjCfLpQtZRW6ogQQ14a2Yw=;
+ b=cIwhsdqx4s4P07Yx+y6sVaF0XTDZKjCfpuklFyZajuZF/+RbF0fG6tfcVTBsLmqjab
+ WdU/1UWxMuaOcjzUcYzuJvDigGb7JMneT9jbLnziQPU4qiLOpPxbghvF7eLb3dCUTIkD
+ DkkPoMN5yuNbtXh/zOQoEKFk3Xruhzp0BSFx5KjJyYdFKFUlNsdQMk3JW0XvBUiC8ATc
+ msc9E4wd+Qi2eRDvX+wUbXx1gGMIGZSod5JSYIlPMhfqHBwE9nrcEaUizEAEItEw/KI1
+ iCaqRTJSJmpm9lP1vwU7hATyDyogrZ2jjwIQWIwr1GONrr0Ve7yeKxoErbW3XygZo8Fr
+ aXWQ==
+X-Gm-Message-State: ABy/qLbUNgXQGXapvVxeriMerdcF2AcTnH1a/Rv0I+oBPgFX/mrArqIx
+ nrTuMPZQcMi4K/zI43NDdYCDOQ==
+X-Google-Smtp-Source: APBJJlFARz2Gt24zStJ9BxSXojYefXwu56W4nqZEh6ROtzz3i6JXp0GbonwbEf3ijFbgtY1Ew+u8WA==
+X-Received: by 2002:adf:dc11:0:b0:311:1b8a:b70e with SMTP id
+ t17-20020adfdc11000000b003111b8ab70emr6920183wri.66.1688760932137; 
+ Fri, 07 Jul 2023 13:15:32 -0700 (PDT)
 Received: from [192.168.1.5] (host-92-23-208-66.as13285.net. [92.23.208.66])
  by smtp.gmail.com with ESMTPSA id
- d4-20020adffd84000000b00311d8c2561bsm5239357wrr.60.2023.07.07.13.12.44
+ u10-20020a7bcb0a000000b003fbb346279dsm3318244wmj.38.2023.07.07.13.15.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 13:12:44 -0700 (PDT)
-Message-ID: <17272422-74ca-7c31-403c-dc13f2f2b1e0@linaro.org>
-Date: Fri, 7 Jul 2023 21:12:43 +0100
+ Fri, 07 Jul 2023 13:15:31 -0700 (PDT)
+Message-ID: <d092563a-772c-773c-3909-48820b189bbc@linaro.org>
+Date: Fri, 7 Jul 2023 21:15:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 1/4] linux-user: Fix fcntl64() to return O_LARGEFILE for
- 32-bit targets
+Subject: Re: [PATCH 2/4] linux-user: Fix accept4(SOCK_NONBLOCK) syscall
 Content-Language: en-US
 To: Helge Deller <deller@gmx.de>, Laurent Vivier <laurent@vivier.eu>,
  qemu-devel@nongnu.org
 References: <20230707131928.89500-1-deller@gmx.de>
- <20230707131928.89500-2-deller@gmx.de>
+ <20230707131928.89500-3-deller@gmx.de>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230707131928.89500-2-deller@gmx.de>
+In-Reply-To: <20230707131928.89500-3-deller@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,52 +96,49 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/7/23 14:19, Helge Deller wrote:
-> On a 64-bit host, O_LARGEFILE has the value 0.
-> When running a 32-bit guest on a 64-bit host, fcntl64(F_GETFL) should
-> return with the O_LARGEFILE flag set, because the 64-bit host supports
-> large files unconditionally.
+> The accept4() syscall takes two flags only: SOCK_NONBLOCK and
+> SOCK_CLOEXEC.
+> Even the real Linux kernel returns -EINVAL if any other bits
+> have been set.
 > 
-> The flag translation should have happened in do_fcntl(), but since O_LARGEFILE
-> is zero for 64-bit hosts, the translation can't be done with the
-> translation table.
-
-But surely add the code to do_fcntl, right after the host_to_target_bitmask, so that it's 
-present for fcntl64 as well?
-
-
-r~
-
+> Change the implementation of accept4() to recognize those two values
+> only, instead of using the fcntl_flags_tbl[] bitmask translation.
 > 
-> Fix it by setting the TARGET_O_LARGEFILE flag unconditionally for
-> 32-bit guests on 64-bit hosts when fcntl64() is called.
+> Beside this correction in behaviour, it actually fixes the accept4()
+> emulation for hppa, mips and alpha targets for which SOCK_NONBLOCK is
+> different than TARGET_SOCK_NONBLOCK.
+> 
+> I noticed this wrong behaviour with the testcase of the debian lwt package
+> which failed (by timeout while hanging in the read() syscall) in qemu but
+> succeeded on real hardware.
 > 
 > Signed-off-by: Helge Deller <deller@gmx.de>
 > ---
->   linux-user/syscall.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
+>   linux-user/syscall.c | 13 ++++++++++++-
+>   1 file changed, 12 insertions(+), 1 deletion(-)
 > 
 > diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index 08162cc966..3f1e8e7ad9 100644
+> index 3f1e8e7ad9..9e9317237d 100644
 > --- a/linux-user/syscall.c
 > +++ b/linux-user/syscall.c
-> @@ -12328,6 +12328,15 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
->           }
+> @@ -3440,7 +3440,18 @@ static abi_long do_accept4(int fd, abi_ulong target_addr,
+>       abi_long ret;
+>       int host_flags;
 > 
->           switch(arg2) {
-> +#if HOST_LONG_BITS == 64 && TARGET_LONG_BITS == 32 && \
-> +    O_LARGEFILE == 0     && TARGET_O_LARGEFILE != 0
-> +        case TARGET_F_GETFL:
-> +            ret = do_fcntl(arg1, arg2, arg3);
-> +            if (ret > 0) {
-> +                ret |= TARGET_O_LARGEFILE;
-> +            }
-> +	    break;
+> -    host_flags = target_to_host_bitmask(flags, fcntl_flags_tbl);
+> +    host_flags = 0;
+> +#if defined(SOCK_NONBLOCK)
+> +    if (flags & ~(TARGET_SOCK_CLOEXEC | TARGET_SOCK_NONBLOCK)) {
+> +        return -TARGET_EINVAL;
+> +    }
+> +    if (flags & TARGET_SOCK_NONBLOCK) {
+> +        host_flags |= SOCK_NONBLOCK;
+> +    }
 > +#endif
->           case TARGET_F_GETLK64:
->               ret = copyfrom(&fl, arg3);
->               if (ret) {
-> --
-> 2.41.0
-> 
 
+Can we avoid the ifdef?  Anyway, surely the TARGET bit check should not be protected by 
+the #ifdef.
+
+
+r~
 
