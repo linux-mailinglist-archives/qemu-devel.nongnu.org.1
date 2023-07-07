@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E1D74B00A
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD58574B024
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:45:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjgi-0001uz-4C; Fri, 07 Jul 2023 07:31:48 -0400
+	id 1qHjgn-0001w8-BT; Fri, 07 Jul 2023 07:31:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjge-0001tO-P0; Fri, 07 Jul 2023 07:31:44 -0400
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
+ id 1qHjgh-0001uw-HF; Fri, 07 Jul 2023 07:31:47 -0400
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjgc-0006XD-LV; Fri, 07 Jul 2023 07:31:44 -0400
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-6b91ad1f9c1so300367a34.3; 
- Fri, 07 Jul 2023 04:31:41 -0700 (PDT)
+ id 1qHjgf-0006Y2-5u; Fri, 07 Jul 2023 07:31:46 -0400
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-6b74faaac3bso1624147a34.1; 
+ Fri, 07 Jul 2023 04:31:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729501; x=1691321501;
+ d=gmail.com; s=20221208; t=1688729503; x=1691321503;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=n3B0dEsTKi6C1+bKxVn+pAxhkb0WjZTs06+ifklla1Q=;
- b=MX0Thb8p0z51ZCgw5d1YblY5GQugqvSnaiEgrcvQ14decPWA3rtT13iIj6KSqINRy4
- Ii6DulbGn814nDimypfVCcSYM3Br7Q7UVOKJBWP2GUkf5YNUeKkE8AwY48NBadLIMFGF
- P6HP2ZllhDMo37GPrf+aexIebdMJSlO90+HoTkBsV6B5Ep17/EXtIhz74BkbwHl40SiA
- 9KoKtLwsW//MJr/GqK5ZcYbqF7lqFFS6+SJ/TPIRYEi8KrmaTSKHPVfaBhZn2/elRB6/
- FGaNt27Q078YI7+FIsfA4L8jZd7xpy5LPtSer+1n9/iMy6xHPIL2gKLjowOimDIvit/s
- wCzQ==
+ bh=ndNoYF/nwDu6Pe/3jyDnKrPjFeIA0wtutwRoW6DvcPc=;
+ b=J45mp95TSKbSTwJIj3uS0KXa49lQw03JiuX72ab67UaS86S7ew57hiFvxIiJH7f0VE
+ gbYsWQK9/Xdn2R31gat5rTu8nMUtRvx2F5Zo5YMS5goRR0f3gpQKXTQLNKtyVpyAaE/P
+ GBzNAdv7nrkICjcQXpI3i+6/5+mxTxCVbOqdVP3wT0xdpv9uoqu/+m7uOXA2AUGFaphI
+ TNHyMsk1m/ePGNgIC4HghnB+xH6gStnKIlIksikbqzCe4ikPMG5W0CXConNxm/7FbTp/
+ onBZ9YfBKa35oeI+1++G9FijQgsRuBchFLDCsbx1ilE0ly0TvT56cSaV9h7nGJ0rXjK4
+ r0Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729501; x=1691321501;
+ d=1e100.net; s=20221208; t=1688729503; x=1691321503;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=n3B0dEsTKi6C1+bKxVn+pAxhkb0WjZTs06+ifklla1Q=;
- b=OkgcQ36qSy8e0LYAd32qveM8oX85lqi2THTmHfGm2xvob9vtglkRCFSTfLOF1VEqWo
- NHWWvPEcFr8pk/0tzfEPXsCIAW2LC3HWqututAbqybH/ND+GrY7EdyTbUFmb7iQLG5AN
- tLThctL4kpAd6N+H5AO1/q4xrp3Ehdh1/Tq08UViRSJHn50jD+b21SsJY5CKNB2R0tNA
- l8EczQNsFdiRfqsvEibE4NPbQ2SJ9KFbx9tzg6l+f2nojVe8LzXYSFpqF9lvYvdPL9Fd
- usO+GoNUqcfMH35p9BVZFJh1rOpfUSDonDMyPsmOBndeEex1TR2aQj8jt672i/zfShr1
- sOlA==
-X-Gm-Message-State: ABy/qLaFtx3iEuh+ihJJ4PmhJx0UfFs3w1l2nGMDVMJpLSfg78lG/rmx
- wH+bL1uHErbwGZVHIrB0Rkreplbk9VQ=
-X-Google-Smtp-Source: APBJJlG/kvkfjhot/MmbEuWDUfIdj9HRqvPUfg3SUE8OTpPb4BNG6fm3ZTwOxbuFzNIzH3S9zuPHng==
-X-Received: by 2002:a05:6830:1511:b0:6b9:231c:7bcc with SMTP id
- k17-20020a056830151100b006b9231c7bccmr200597otp.34.1688729501001; 
- Fri, 07 Jul 2023 04:31:41 -0700 (PDT)
+ bh=ndNoYF/nwDu6Pe/3jyDnKrPjFeIA0wtutwRoW6DvcPc=;
+ b=DpF+XKWiBsr4+gXCy2+28gD7NCP2Ac7e5sgFQwFukxHbmy6lhzRiSNnSZ0Zpe6gVtz
+ s0AMTQLCG2mxNmzANMgfvfLVn4EDLYxvCs8HqY149qapWTrvD5xLmyYjkqv327Q3zfvT
+ 2m0GwPhGuvsiH36tV1zhDiGIQe6WddW9sFcNva04PGGVQmFK0QdTf9Rb3HLfpinGOB0L
+ u3MBWseO5TmGnAc6bZVkx0nvxtouN5J/pYoqRDWxCZpht0AWhLPKToSo65PjqmEeGn74
+ /JzOMXjdgEpMoFYrZ09PMNwqvnBqm2lYsHKWKEuVqAz6ejaCA0INTVoBFaLxjyfd3mWL
+ 5tQg==
+X-Gm-Message-State: ABy/qLYwKyppe+ECKYzskSGsvrcd9TJyVyz7vOq3eCf70IJfEjuEX9D9
+ 3RVxpPTED42BNz4Btf4/QVHdDIwIdnU=
+X-Google-Smtp-Source: APBJJlEVyakrEeq6wGLeGvkHF3Y1bqXSVgIDNp7uzfjMd7ixdqKj+y8OmyodZQs82ceeMdORVWiB/w==
+X-Received: by 2002:a9d:7411:0:b0:6b7:5363:1eea with SMTP id
+ n17-20020a9d7411000000b006b753631eeamr4688702otk.16.1688729503640; 
+ Fri, 07 Jul 2023 04:31:43 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.31.38
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.31.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:31:40 -0700 (PDT)
+ Fri, 07 Jul 2023 04:31:43 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 07/60] target/ppc: Add TFMR SPR implementation with read and
- write helpers
-Date: Fri,  7 Jul 2023 08:30:15 -0300
-Message-ID: <20230707113108.7145-8-danielhb413@gmail.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Joel Stanley <joel@jms.id.au>
+Subject: [PULL 08/60] sungem: Add WOL MMIO
+Date: Fri,  7 Jul 2023 08:30:16 -0300
+Message-ID: <20230707113108.7145-9-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x329.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,109 +96,125 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-TFMR is the Time Facility Management Register which is specific to
-POWER CPUs, and used for the purpose of timebase management (generally
-by firmware, not the OS).
+Apple sungem devices are expected to have WOL MMIO registers.
+Add a region to prevent transaction failures, and implement the
+WOL-disable CSR write because the Linux driver reset writes
+this.
 
-Add helpers for the TFMR register, which will form part of the core
-timebase facility model in future but for now behaviour is unchanged.
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20230625120317.13877-3-npiggin@gmail.com>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+Message-ID: <20230625201628.65231-1-npiggin@gmail.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- target/ppc/cpu_init.c        |  2 +-
- target/ppc/helper.h          |  2 ++
- target/ppc/spr_common.h      |  2 ++
- target/ppc/timebase_helper.c | 13 +++++++++++++
- target/ppc/translate.c       | 10 ++++++++++
- 5 files changed, 28 insertions(+), 1 deletion(-)
+ hw/net/sungem.c     | 52 +++++++++++++++++++++++++++++++++++++++++++++
+ hw/net/trace-events |  2 ++
+ 2 files changed, 54 insertions(+)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index dc93581dd3..5f4969664e 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -5658,7 +5658,7 @@ static void register_power_common_book4_sprs(CPUPPCState *env)
-     spr_register_hv(env, SPR_TFMR, "TFMR",
-                  SPR_NOACCESS, SPR_NOACCESS,
-                  SPR_NOACCESS, SPR_NOACCESS,
--                 &spr_read_generic, &spr_write_generic,
-+                 &spr_read_tfmr, &spr_write_tfmr,
-                  0x00000000);
- #endif
- }
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index fda40b8a60..828f7844c8 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -722,6 +722,8 @@ DEF_HELPER_FLAGS_1(load_dpdes, TCG_CALL_NO_RWG, tl, env)
- DEF_HELPER_FLAGS_2(store_dpdes, TCG_CALL_NO_RWG, void, env, tl)
- DEF_HELPER_2(book3s_msgsndp, void, env, tl)
- DEF_HELPER_2(book3s_msgclrp, void, env, tl)
-+DEF_HELPER_1(load_tfmr, tl, env)
-+DEF_HELPER_2(store_tfmr, void, env, tl)
- #endif
- DEF_HELPER_2(store_sdr1, void, env, tl)
- DEF_HELPER_2(store_pidr, void, env, tl)
-diff --git a/target/ppc/spr_common.h b/target/ppc/spr_common.h
-index 4c0f2bed77..fbf52123b5 100644
---- a/target/ppc/spr_common.h
-+++ b/target/ppc/spr_common.h
-@@ -194,6 +194,8 @@ void spr_write_ebb(DisasContext *ctx, int sprn, int gprn);
- void spr_read_ebb_upper32(DisasContext *ctx, int gprn, int sprn);
- void spr_write_ebb_upper32(DisasContext *ctx, int sprn, int gprn);
- void spr_write_hmer(DisasContext *ctx, int sprn, int gprn);
-+void spr_read_tfmr(DisasContext *ctx, int gprn, int sprn);
-+void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn);
- void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn);
- void spr_read_dexcr_ureg(DisasContext *ctx, int gprn, int sprn);
- #endif
-diff --git a/target/ppc/timebase_helper.c b/target/ppc/timebase_helper.c
-index b80f56af7e..08a6b47ee0 100644
---- a/target/ppc/timebase_helper.c
-+++ b/target/ppc/timebase_helper.c
-@@ -144,6 +144,19 @@ void helper_store_booke_tsr(CPUPPCState *env, target_ulong val)
-     store_booke_tsr(env, val);
- }
+diff --git a/hw/net/sungem.c b/hw/net/sungem.c
+index eb01520790..e0e8e5ae41 100644
+--- a/hw/net/sungem.c
++++ b/hw/net/sungem.c
+@@ -107,6 +107,15 @@ OBJECT_DECLARE_SIMPLE_TYPE(SunGEMState, SUNGEM)
+ #define RXDMA_FTAG        0x0110UL    /* RX FIFO Tag */
+ #define RXDMA_FSZ         0x0120UL    /* RX FIFO Size */
  
-+#if defined(TARGET_PPC64)
-+/* POWER processor Timebase Facility */
-+target_ulong helper_load_tfmr(CPUPPCState *env)
-+{
-+    return env->spr[SPR_TFMR];
-+}
++/* WOL Registers */
++#define SUNGEM_MMIO_WOL_SIZE   0x14
 +
-+void helper_store_tfmr(CPUPPCState *env, target_ulong val)
-+{
-+    env->spr[SPR_TFMR] = val;
-+}
-+#endif
++#define WOL_MATCH0        0x0000UL
++#define WOL_MATCH1        0x0004UL
++#define WOL_MATCH2        0x0008UL
++#define WOL_MCOUNT        0x000CUL
++#define WOL_WAKECSR       0x0010UL
 +
- /*****************************************************************************/
- /* Embedded PowerPC specific helpers */
+ /* MAC Registers */
+ #define SUNGEM_MMIO_MAC_SIZE   0x200
  
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 372ee600b2..599bd4b4f9 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -1175,6 +1175,16 @@ void spr_write_hmer(DisasContext *ctx, int sprn, int gprn)
-     spr_store_dump_spr(sprn);
- }
+@@ -168,6 +177,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(SunGEMState, SUNGEM)
+ #define SUNGEM_MMIO_PCS_SIZE   0x60
+ #define PCS_MIISTAT       0x0004UL    /* PCS MII Status Register */
+ #define PCS_ISTAT         0x0018UL    /* PCS Interrupt Status Reg */
++
+ #define PCS_SSTATE        0x005CUL    /* Serialink State Register */
  
-+void spr_read_tfmr(DisasContext *ctx, int gprn, int sprn)
+ /* Descriptors */
+@@ -200,6 +210,7 @@ struct SunGEMState {
+     MemoryRegion greg;
+     MemoryRegion txdma;
+     MemoryRegion rxdma;
++    MemoryRegion wol;
+     MemoryRegion mac;
+     MemoryRegion mif;
+     MemoryRegion pcs;
+@@ -1076,6 +1087,43 @@ static const MemoryRegionOps sungem_mmio_rxdma_ops = {
+     },
+ };
+ 
++static void sungem_mmio_wol_write(void *opaque, hwaddr addr, uint64_t val,
++                                    unsigned size)
 +{
-+    gen_helper_load_tfmr(cpu_gpr[gprn], cpu_env);
++    trace_sungem_mmio_wol_write(addr, val);
++
++    switch (addr) {
++    case WOL_WAKECSR:
++        if (val != 0) {
++            qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
++        }
++        break;
++    default:
++        qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
++    }
 +}
 +
-+void spr_write_tfmr(DisasContext *ctx, int sprn, int gprn)
++static uint64_t sungem_mmio_wol_read(void *opaque, hwaddr addr, unsigned size)
 +{
-+    gen_helper_store_tfmr(cpu_env, cpu_gpr[gprn]);
++    uint32_t val = -1;
++
++    qemu_log_mask(LOG_UNIMP, "sungem: WOL not supported\n");
++
++    trace_sungem_mmio_wol_read(addr, val);
++
++    return val;
 +}
 +
- void spr_write_lpcr(DisasContext *ctx, int sprn, int gprn)
++static const MemoryRegionOps sungem_mmio_wol_ops = {
++    .read = sungem_mmio_wol_read,
++    .write = sungem_mmio_wol_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .impl = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++};
++
+ static void sungem_mmio_mac_write(void *opaque, hwaddr addr, uint64_t val,
+                                   unsigned size)
  {
-     gen_helper_store_lpcr(cpu_env, cpu_gpr[gprn]);
+@@ -1344,6 +1392,10 @@ static void sungem_realize(PCIDevice *pci_dev, Error **errp)
+                           "sungem.rxdma", SUNGEM_MMIO_RXDMA_SIZE);
+     memory_region_add_subregion(&s->sungem, 0x4000, &s->rxdma);
+ 
++    memory_region_init_io(&s->wol, OBJECT(s), &sungem_mmio_wol_ops, s,
++                          "sungem.wol", SUNGEM_MMIO_WOL_SIZE);
++    memory_region_add_subregion(&s->sungem, 0x3000, &s->wol);
++
+     memory_region_init_io(&s->mac, OBJECT(s), &sungem_mmio_mac_ops, s,
+                           "sungem.mac", SUNGEM_MMIO_MAC_SIZE);
+     memory_region_add_subregion(&s->sungem, 0x6000, &s->mac);
+diff --git a/hw/net/trace-events b/hw/net/trace-events
+index e4a98b2c7d..930e5b4293 100644
+--- a/hw/net/trace-events
++++ b/hw/net/trace-events
+@@ -350,6 +350,8 @@ sungem_mmio_txdma_write(uint64_t addr, uint64_t val) "MMIO txdma write to 0x%"PR
+ sungem_mmio_txdma_read(uint64_t addr, uint64_t val) "MMIO txdma read from 0x%"PRIx64" val=0x%"PRIx64
+ sungem_mmio_rxdma_write(uint64_t addr, uint64_t val) "MMIO rxdma write to 0x%"PRIx64" val=0x%"PRIx64
+ sungem_mmio_rxdma_read(uint64_t addr, uint64_t val) "MMIO rxdma read from 0x%"PRIx64" val=0x%"PRIx64
++sungem_mmio_wol_write(uint64_t addr, uint64_t val) "MMIO wol write to 0x%"PRIx64" val=0x%"PRIx64
++sungem_mmio_wol_read(uint64_t addr, uint64_t val) "MMIO wol read from 0x%"PRIx64" val=0x%"PRIx64
+ sungem_mmio_mac_write(uint64_t addr, uint64_t val) "MMIO mac write to 0x%"PRIx64" val=0x%"PRIx64
+ sungem_mmio_mac_read(uint64_t addr, uint64_t val) "MMIO mac read from 0x%"PRIx64" val=0x%"PRIx64
+ sungem_mmio_mif_write(uint64_t addr, uint64_t val) "MMIO mif write to 0x%"PRIx64" val=0x%"PRIx64
 -- 
 2.41.0
 
