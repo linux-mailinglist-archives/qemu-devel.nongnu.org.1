@@ -2,83 +2,134 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C4674AFEB
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA0F74B017
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:44:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjip-0008Ji-P1; Fri, 07 Jul 2023 07:33:59 -0400
+	id 1qHjgu-000287-IJ; Fri, 07 Jul 2023 07:32:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjin-00085H-Ij; Fri, 07 Jul 2023 07:33:57 -0400
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjil-00076q-CF; Fri, 07 Jul 2023 07:33:57 -0400
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-6b71eef1bc0so1569151a34.2; 
- Fri, 07 Jul 2023 04:33:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729634; x=1691321634;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eMF5D6tAsnTZ2dIaAv+gtADbkYqHuHaELdAgLFyFAGc=;
- b=ZyPXmGsaYztW3eoMgduWV/F6fHP3dLfxI7XyHL4gFLAgQ4O2PvLyoekNNDHTQZQBEJ
- prFUWYF8CvrI7YsPeK729aADqVlN8lcDUW90wRxB6C24XcdgXQmY7ev5QA3jo748mbdF
- T2vMHblx76DAiRA6YxwutMeeJh/mxm9ygzv3qT5q67/2sROVQEv+EPtn57vR3mdpTru+
- DW1tYf05m36CcIEoneCptR2exLlvI5URXK1BEqUNYpzcss7E/LGjGqKfFqs8+GHJ7Uyx
- hNwpbXNUa9T2cc6guFz/wAOyPDO672uW9EkIKnA965fYJDSbL589991vNAInf5FIefRv
- gyfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729634; x=1691321634;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eMF5D6tAsnTZ2dIaAv+gtADbkYqHuHaELdAgLFyFAGc=;
- b=f4MQ++JBr8lGPWsWykNAmFdDkAzpVGXiJKJuNtqxwQjxyigcEh4muz6eqmLOZwFn49
- 5a3mcsjv/zhMs9TWyYZQRjpBKN3But1xP0QWECjN7DtjJtQM29ZtNCSSrYRomG3hLbRY
- DswPGuE5gi/tr8pjvB6+Feody1zfgRak6kcPLgbk+CmlIkTX+ItEEkhNN3pVC4tUUfBa
- Dk9j8K2T3NyQCMzELVgEOgdIQJ7w/uksZyb1cEQq/XmHFqP6PPPczjKrXx9BWFktbbAe
- IN/e+cGDbaoF/dr87rEsBZluZuCeLykBodOV1EA9xdwtQrwsqxS/L7Rohipxj1z1AjMK
- CVUA==
-X-Gm-Message-State: ABy/qLbB22SmaHnYmLf3XZdUHJ7JofzZbWfn6JWaygMCJJ8RtkP9f+UN
- zysIjIf2RCRPLrKkY1gSa7qi60c5Ag8=
-X-Google-Smtp-Source: APBJJlElX0YVqzE4Cl1aBm/I5CDu7ZlncpzkByAd9abcp/M2tbnF2YdQxOFHH2zAF7qzFbOSezLZgg==
-X-Received: by 2002:a05:6830:1299:b0:6b1:6a56:3fb6 with SMTP id
- z25-20020a056830129900b006b16a563fb6mr5546834otp.14.1688729633768; 
- Fri, 07 Jul 2023 04:33:53 -0700 (PDT)
-Received: from grind.. ([2804:14c:f435:9162::1002])
- by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.33.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:33:53 -0700 (PDT)
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
- Greg Kurz <groug@kaod.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Subject: [PULL 60/60] ppc: Enable 2nd DAWR support on p10
-Date: Fri,  7 Jul 2023 08:31:08 -0300
-Message-ID: <20230707113108.7145-61-danielhb413@gmail.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
-References: <20230707113108.7145-1-danielhb413@gmail.com>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qHjgr-000251-1A; Fri, 07 Jul 2023 07:31:57 -0400
+Received: from mail-db3eur04on0719.outbound.protection.outlook.com
+ ([2a01:111:f400:fe0c::719]
+ helo=EUR04-DB3-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qHjgo-0006ZM-Pr; Fri, 07 Jul 2023 07:31:56 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=g3m4h8d266OHNDlonSy9Ftl7CAek6sAnpZ7OFyL026Dxk3KMRYkCd5flZlHyHY2yeYBarbrADTDLt20GqrcyFrL4tiORFs7Hw/8ZD/Qm5zKBEykG7sQMKaK7gGjWRFNy6WO1ESk3m54s1R4dFMDhd0aIN6O8v733T8igEO1PShV4g90rSX8pOIorPqTYi02bcWeP0Jr9csBMY//FNNKbyJaljQsCVlrRG31zCZ0qOEVkis///L61ZoWO3QrSTKfZa1JxRs+yJtnNhox0ktZVPU7T5ZvNfdu6orM2BMVH5drupoPx61vAPM4rLL0a1acKkhVuc1D3kJSxsA9molB32g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2A781UCuanO1PYHMPVf755fY2PmRLs8YYXDjwvqbA2Y=;
+ b=lQeDd1+kVnGblRoywiOjhOCwVXXNh5J0w/avnRfsbw5faPLzi51o0jAmb1I399tZzqjU5AgK6L7jbbbIT37p+qUkuVUCEh7LMSdtttInX2YdEZxlSrhsFhh+jHYn/AbmCebqvz6IKLP/hz1ZBc3caxAAx9VIuubtaQM8mO9meGKkgUF8hylvIKkOwpAI25vZ7hGFfSPoufjNf8mzo/KDyRJgAgcIe3ak4pBJYtS1bECeARk+Y6w6Ua/OISaHhnSo2bIEvLtfZqs7xnij5z9LHZ9xYtYaSZ1g4FhjK0O2soX7+wsn+arvMrar/DlUkfqnKCG17RSJACsFBKDc8iuKAg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2A781UCuanO1PYHMPVf755fY2PmRLs8YYXDjwvqbA2Y=;
+ b=lPVa8awJ7NMON4ang07bcCafoghqcus6XioHH5P3rk04fbV4wlCFf6j/v2EHyiKf/pDr15kX1meZZgWEHEeap5rfHQQqHbK2vCFmWYO30LSQajpCv6XF071s9mxAVVt4QiRwRWiTUYbbPoZnwN1HpAmldc8PlxMVGPHeB930JZEuR7UgFVAtrUDlBZU+6CYsWmbGmFg8Y3rQmSdokoq9+uJanLt2sn+S7R2CH2Yx4nOQgv/iRGs+xqa4vPqLbPGcjS/+DLJJUVpo+/K8aJawlv307KyayYFip1mKyAyYOCz4bBxC0txw9DgQ0RNSQqJX6ii7UNIM9lqpNyQ6livHIA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from AM4PR08MB2932.eurprd08.prod.outlook.com (2603:10a6:205:e::33)
+ by PAWPR08MB9966.eurprd08.prod.outlook.com (2603:10a6:102:35e::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.17; Fri, 7 Jul
+ 2023 11:31:49 +0000
+Received: from AM4PR08MB2932.eurprd08.prod.outlook.com
+ ([fe80::c9c4:b136:a31a:bc35]) by AM4PR08MB2932.eurprd08.prod.outlook.com
+ ([fe80::c9c4:b136:a31a:bc35%4]) with mapi id 15.20.6565.016; Fri, 7 Jul 2023
+ 11:31:49 +0000
+Message-ID: <a55a6ee2-0229-cf83-013b-d9bb5fb855ba@virtuozzo.com>
+Date: Fri, 7 Jul 2023 14:33:02 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 0/3] block: align CoR requests to subclusters
+Content-Language: en-US
+To: qemu-block@nongnu.org, qemu-stable@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
+ vsementsov@yandex-team.ru, eblake@redhat.com, den@virtuozzo.com
+References: <20230626160834.696680-1-andrey.drobyshev@virtuozzo.com>
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20230626160834.696680-1-andrey.drobyshev@virtuozzo.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x332.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0048.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:92::19) To AM4PR08MB2932.eurprd08.prod.outlook.com
+ (2603:10a6:205:e::33)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM4PR08MB2932:EE_|PAWPR08MB9966:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb00af51-3cd5-48a5-dd51-08db7eddc11e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: WgMozGCUrVu5ei09MjqmRX0QTVjlYxenfDZK1yWB2lEL6euipQJYiqiOrju8mQ3IGOOy28N62nvLrdXpSa676F9nCqdKH82jFiYS83lizA7MdPCGuJvv/JjJh4trIPl9dXL/dNLyssCg5nASh5Wqa7JObPKEyqf48vXBOyIsLpakBRgybCxX0gkgAovRNr3YOJRbxWReXTXjSOs1omNfNIlpedW9JesOsj8GoS8uoW0uk73GttR34abmJHSPP6fUgdEfjDhbo3pqQ56T0zTVlMYDSzZrP9aumquDgTV3hyPnuM8c4jn/t+5hAZV63ySrDnQWEAIL8WK81Z1+7f5oKaLflrYmqpFjhhFkDOjsZ4yjvTR82avQzrUbaQq2bd09u+Auw7UtJAxdvV8HHS8A2rM4MTGWqTir6f+qBYTPzlS7kDG8w7egkqM3UJNqSlpiKM8i+V++8FMBDzI19AmlJ/tt/3f/wtZiAcd5m8GzcQSuLqY9o2hbGtxLPcsIXc5UbyvfuDhjKVZE8hSJpNFHsoZOL/uu9jcKnxucQqN+fAZyo9OYKlhndWY2rZgwsL7y9lcFI6XCYHN8qPghnbHVVUTHnNmFol5Qrepc6Xhrout/4r795UL3Xogi6vWGULTsbFRVK51HVsliviNZv4zRIA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM4PR08MB2932.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(136003)(39850400004)(346002)(376002)(366004)(396003)(451199021)(38100700002)(36756003)(31696002)(86362001)(6512007)(6666004)(6486002)(107886003)(186003)(6506007)(53546011)(26005)(8936002)(8676002)(316002)(44832011)(5660300002)(31686004)(66946007)(66476007)(41300700001)(4326008)(2906002)(66556008)(478600001)(2616005)(83380400001)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NDU2MXB5OHBINldxREJBRW02d1N1UlZ5dE9oQ0J4NDN1d2hqMDNDeVhBM0tL?=
+ =?utf-8?B?bnJ5SGZtTEVzV0trOTRQUU1zQUJxSnRzaitTOUlCekszd2l4Wk5tc1ZvTTBR?=
+ =?utf-8?B?RzQyS2pzMVZVUUhKdjdaQnYyZkgxeTYxcEZuUEEvOG4vd0VPS01aa1p0SUc0?=
+ =?utf-8?B?TUFDK200WkJOcms3STNrYkFqSGZuMmJJa0RkMFRYalp3WWdiZlJFTklORlBZ?=
+ =?utf-8?B?NndmOUU3UFJKNlMyTldaSjFIbGlQNGh1OXVucG5QVXhEN0I3amFDclJWSnN2?=
+ =?utf-8?B?QnluOE82ZStqMStPNCsvdHFPVjZDVW1XYUE2SzhMa09DRXRPbjlzN3lJY3lB?=
+ =?utf-8?B?bXYvd1dJWWJhcVFHLzhoQVJUa1Jmd2RFQWNLOTJ0alIwcFpkTFFwblBCVlhW?=
+ =?utf-8?B?S3h3bUhubENQemcxMWpuNkNISDJqNlIyaDQ2eng4QkFLSmhvYlhNQ0FOclZj?=
+ =?utf-8?B?Y0gxeHk3RnB5dlZkQjVvSWRYdG1VRmVKY2RBRm1QUmN3b1lTS2hEdDJKZlJo?=
+ =?utf-8?B?aVZVN21VOGxVUlNCd1E0bjFjQ3lIeE8vb0R0WkZ4eUxzL0trU1FlSHRibkh1?=
+ =?utf-8?B?QkY5UnlsRjU3cENxRmFVeEtxeTQ3eGJNbUxzT254d3FWcEdEWU1qeXNXdjEv?=
+ =?utf-8?B?VVFuTnc2elBLbzNkTE8yZzRTWm1NZityZDVqSzRVYWtsV2xDZWRvSWROUzU4?=
+ =?utf-8?B?WVR3WjBsSHdId2hSVURaS2hoNWFzazZibkNyMS91V1d6Rk5UVEJzTXh0ZjBL?=
+ =?utf-8?B?MXdyRlFPNXF1b0FGSlc4OEJyRUpmekM4VkJ0NEFvRWY0azVZRFFaRFZMdHE3?=
+ =?utf-8?B?MlM5Nmt3TmFOblN5VFRkMUZxdWoxblRCMUNUekhxVFJWT29SbExHaGxCMjdh?=
+ =?utf-8?B?OXlMOTVZZFpaancvemVjemNmVlR1N0swV0RUYWZhdUxNTEsxZ1NHSVNFT0ZJ?=
+ =?utf-8?B?NWtxcVVmZ1BPRHc0eko4SWMyVi9MNkY1UzR3L0FTVnpsWjNWUGZDamlySDYr?=
+ =?utf-8?B?cDVCRnFPZ1VMd3lEQml6SkNWb1JRK0xKdU9nS01xREljOVhkeTY4TCtGUUxL?=
+ =?utf-8?B?MXZNVXVtNlo0SGlPV0o0M21pZXF3cmo1ajdoOVFBZnlpMktmcXhZblE2VDVQ?=
+ =?utf-8?B?YzRiK2FXMkR3RVVETmsrTVBRVENiUWNnaUEybUhvVVlkK3FUTjY5cm5JOENn?=
+ =?utf-8?B?MTlybjlYLzlxUlV1UFdZSlRtN2lKUVRlQ0J3SXRvb0JteWZZUEd5dWZPNlow?=
+ =?utf-8?B?TTdIUW1US2hMZS8xSm5nbzdsayt4dGp5aUpqNFVhRkc4ajRiL05YdDBHMXV3?=
+ =?utf-8?B?OEpoaFJubWhrNjh1c2YrZ3RWUEVWTElrK2xPTEM4UHNHK2RxdWVFOXd4TXlX?=
+ =?utf-8?B?ZFFrQVJQSGp4eDh3K2xKNCtUc1NMWEhzRmxpcHAreGliVEt1N1hrSjN3bjh0?=
+ =?utf-8?B?YzVvT005bjV4ODdMdnRiQWJRWjlHTlFVcnlWVzBoSXljNWI4dXF1cFpERHNp?=
+ =?utf-8?B?ZzVZemVXQWxYMUR2TldQcFhxNzg0dFRJSEZwMDVSYlgxVVhUVWkxZFBXOVVM?=
+ =?utf-8?B?TXBXbWJKYXg3RTg1N3VTRWQ3ckRSNXhYQU4zVVJ0T0N0aSt4R2lzbDFmQ3NZ?=
+ =?utf-8?B?enRmUEx5WFFsWEtqRUh3SjZpTXFPejBvOGQzOTZkeGpCSlB5bXJtcWhuLzhH?=
+ =?utf-8?B?NlMxVnppUGhpWnVtdjU1eUZmWG92K1ZEeFJsdyt5WXZFSENVRGtjY2ViSkVW?=
+ =?utf-8?B?SVhJNEdqamxudFZ3VjEvZkdwc1dxZ2RzNEREZHk1Y3dzclBFMUVpbzdHY1pB?=
+ =?utf-8?B?ZHA1ZnF6eEVPdXVwM2Y2VDhHWE1MV2J6ZFNwK3RWZitkY09xd1pkMFJqd3Qz?=
+ =?utf-8?B?YmNpMmZ5SUxHZ3ZPU1EwRW1qMEM1VklCOHZXc1FmVTBoMmJ1bkNTeDltL2Mv?=
+ =?utf-8?B?S01pU1RzOXRIRk5hby9vR2xGTHFmd3dRSUpaTmpjemcrNUJtZkdWSkwxZmhk?=
+ =?utf-8?B?VFMxc2dzc0tjY3Q4Z0U3L2hjWlorVGczWHBGTTBuWjUzR0pVZUhDYmpZTFN2?=
+ =?utf-8?B?QnZ1VFVwNExRWjd4bjBUK21YeTVXWWF0dWdCbTZ5ajJSemxzRHlaVm01UVZz?=
+ =?utf-8?B?SjFqNCt4Q3p4aFRKR3o0RlVQOGpjQzZhV3pETy9xQ0kvdk9rK1dpN2h6cldo?=
+ =?utf-8?Q?3TmZFvGlvWRVsHLRBU2NHbY=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb00af51-3cd5-48a5-dd51-08db7eddc11e
+X-MS-Exchange-CrossTenant-AuthSource: AM4PR08MB2932.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2023 11:31:49.7555 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fzAruC1L/YsZl9S5Zbrneh/ma6P3PckLUZUNns47V+ydWOajoC8U+S6WrneW06BJ9/jYCU6SU+U5DAah+WZLPshR0xnfuya0fBhYl8sFYgA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB9966
+Received-SPF: pass client-ip=2a01:111:f400:fe0c::719;
+ envelope-from=andrey.drobyshev@virtuozzo.com;
+ helo=EUR04-DB3-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,277 +146,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+On 6/26/23 19:08, Andrey Drobyshev wrote:
+> This series makes IO requests performed with copy-on-read to be aligned
+> to subclusters rather than clusters.  It also affects mirror job requests
+> alignment.
+> 
+> The initial reason for that change is the following crash discovered:
+> 
+> qemu-img create -f qcow2 base.qcow2 64K
+> qemu-img create -f qcow2 -o extended_l2=on,backing_file=base.qcow2,backing_fmt=qcow2 img.qcow2 64K
+> qemu-io -c "write -P 0xaa 0 2K" img.qcow2
+> qemu-io -C -c "read -P 0x00 2K 62K" img.qcow2
+> 
+> qemu-io: ../block/io.c:1236: bdrv_co_do_copy_on_readv: Assertion `skip_bytes < pnum' failed.
+> 
+> This change in alignment fixes the crash and adds test case covering it.
+> 
+> Andrey Drobyshev (3):
+>   block: add subcluster_size field to BlockDriverInfo
+>   block/io: align requests to subcluster_size
+>   tests/qemu-iotests/197: add testcase for CoR with subclusters
+> 
+>  block.c                      |  6 +++++
+>  block/io.c                   | 50 ++++++++++++++++++------------------
+>  block/mirror.c               |  8 +++---
+>  block/qcow2.c                |  1 +
+>  include/block/block-common.h |  4 +++
+>  include/block/block-io.h     |  2 +-
+>  tests/qemu-iotests/197       | 29 +++++++++++++++++++++
+>  tests/qemu-iotests/197.out   | 24 +++++++++++++++++
+>  8 files changed, 94 insertions(+), 30 deletions(-)
+> 
 
-As per the PAPR, bit 0 of byte 64 in pa-features property
-indicates availability of 2nd DAWR registers. i.e. If this bit is set, 2nd
-DAWR is present, otherwise not. Use KVM_CAP_PPC_DAWR1 capability to find
-whether kvm supports 2nd DAWR or not. If it's supported, allow user to set
-the pa-feature bit in guest DT using cap-dawr1 machine capability. Though,
-watchpoint on powerpc TCG guest is not supported and thus 2nd DAWR is not
-enabled for TCG mode.
-
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Message-ID: <168871963321.58984.15628382614621248470.stgit@ltcd89-lp2>
-Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
----
- hw/ppc/spapr.c         |  7 ++++++-
- hw/ppc/spapr_caps.c    | 32 ++++++++++++++++++++++++++++++++
- include/hw/ppc/spapr.h |  6 +++++-
- target/ppc/cpu.h       |  2 ++
- target/ppc/cpu_init.c  | 15 +++++++++++++++
- target/ppc/kvm.c       | 12 ++++++++++++
- target/ppc/kvm_ppc.h   | 12 ++++++++++++
- 7 files changed, 84 insertions(+), 2 deletions(-)
-
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 54dbfd7fe9..1e54e0c719 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -241,7 +241,7 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
-         0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 48 - 53 */
-         /* 54: DecFP, 56: DecI, 58: SHA */
-         0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 54 - 59 */
--        /* 60: NM atomic, 62: RNG */
-+        /* 60: NM atomic, 62: RNG, 64: DAWR1 (ISA 3.1) */
-         0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 60 - 65 */
-     };
-     uint8_t *pa_features = NULL;
-@@ -282,6 +282,9 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
-          * in pa-features. So hide it from them. */
-         pa_features[40 + 2] &= ~0x80; /* Radix MMU */
-     }
-+    if (spapr_get_cap(spapr, SPAPR_CAP_DAWR1)) {
-+        pa_features[66] |= 0x80;
-+    }
- 
-     _FDT((fdt_setprop(fdt, offset, "ibm,pa-features", pa_features, pa_size)));
- }
-@@ -2084,6 +2087,7 @@ static const VMStateDescription vmstate_spapr = {
-         &vmstate_spapr_cap_fwnmi,
-         &vmstate_spapr_fwnmi,
-         &vmstate_spapr_cap_rpt_invalidate,
-+        &vmstate_spapr_cap_dawr1,
-         NULL
-     }
- };
-@@ -4683,6 +4687,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
-     smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] = SPAPR_CAP_ON;
-     smc->default_caps.caps[SPAPR_CAP_FWNMI] = SPAPR_CAP_ON;
-     smc->default_caps.caps[SPAPR_CAP_RPT_INVALIDATE] = SPAPR_CAP_OFF;
-+    smc->default_caps.caps[SPAPR_CAP_DAWR1] = SPAPR_CAP_OFF;
- 
-     /*
-      * This cap specifies whether the AIL 3 mode for
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index 5a0755d34f..2f2cf4a250 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -655,6 +655,28 @@ static void cap_ail_mode_3_apply(SpaprMachineState *spapr,
-     }
- }
- 
-+static void cap_dawr1_apply(SpaprMachineState *spapr, uint8_t val,
-+                               Error **errp)
-+{
-+    ERRP_GUARD();
-+    if (!val) {
-+        return; /* Disable by default */
-+    }
-+
-+    if (tcg_enabled()) {
-+        error_setg(errp, "DAWR1 not supported in TCG.");
-+        error_append_hint(errp, "Try appending -machine cap-dawr1=off\n");
-+    } else if (kvm_enabled()) {
-+        if (!kvmppc_has_cap_dawr1()) {
-+            error_setg(errp, "DAWR1 not supported by KVM.");
-+            error_append_hint(errp, "Try appending -machine cap-dawr1=off\n");
-+        } else if (kvmppc_set_cap_dawr1(val) < 0) {
-+            error_setg(errp, "Error enabling cap-dawr1 with KVM.");
-+            error_append_hint(errp, "Try appending -machine cap-dawr1=off\n");
-+        }
-+    }
-+}
-+
- SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
-     [SPAPR_CAP_HTM] = {
-         .name = "htm",
-@@ -781,6 +803,15 @@ SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
-         .type = "bool",
-         .apply = cap_ail_mode_3_apply,
-     },
-+    [SPAPR_CAP_DAWR1] = {
-+        .name = "dawr1",
-+        .description = "Allow 2nd Data Address Watchpoint Register (DAWR1)",
-+        .index = SPAPR_CAP_DAWR1,
-+        .get = spapr_cap_get_bool,
-+        .set = spapr_cap_set_bool,
-+        .type = "bool",
-+        .apply = cap_dawr1_apply,
-+    },
- };
- 
- static SpaprCapabilities default_caps_with_cpu(SpaprMachineState *spapr,
-@@ -923,6 +954,7 @@ SPAPR_CAP_MIG_STATE(large_decr, SPAPR_CAP_LARGE_DECREMENTER);
- SPAPR_CAP_MIG_STATE(ccf_assist, SPAPR_CAP_CCF_ASSIST);
- SPAPR_CAP_MIG_STATE(fwnmi, SPAPR_CAP_FWNMI);
- SPAPR_CAP_MIG_STATE(rpt_invalidate, SPAPR_CAP_RPT_INVALIDATE);
-+SPAPR_CAP_MIG_STATE(dawr1, SPAPR_CAP_DAWR1);
- 
- void spapr_caps_init(SpaprMachineState *spapr)
- {
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index 538b2dfb89..47fffb921a 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -80,8 +80,10 @@ typedef enum {
- #define SPAPR_CAP_RPT_INVALIDATE        0x0B
- /* Support for AIL modes */
- #define SPAPR_CAP_AIL_MODE_3            0x0C
-+/* DAWR1 */
-+#define SPAPR_CAP_DAWR1                 0x0D
- /* Num Caps */
--#define SPAPR_CAP_NUM                   (SPAPR_CAP_AIL_MODE_3 + 1)
-+#define SPAPR_CAP_NUM                   (SPAPR_CAP_DAWR1 + 1)
- 
- /*
-  * Capability Values
-@@ -407,6 +409,7 @@ struct SpaprMachineState {
- #define H_SET_MODE_RESOURCE_SET_DAWR0           2
- #define H_SET_MODE_RESOURCE_ADDR_TRANS_MODE     3
- #define H_SET_MODE_RESOURCE_LE                  4
-+#define H_SET_MODE_RESOURCE_SET_DAWR1           5
- 
- /* Flags for H_SET_MODE_RESOURCE_LE */
- #define H_SET_MODE_ENDIAN_BIG    0
-@@ -990,6 +993,7 @@ extern const VMStateDescription vmstate_spapr_cap_ccf_assist;
- extern const VMStateDescription vmstate_spapr_cap_fwnmi;
- extern const VMStateDescription vmstate_spapr_cap_rpt_invalidate;
- extern const VMStateDescription vmstate_spapr_wdt;
-+extern const VMStateDescription vmstate_spapr_cap_dawr1;
- 
- static inline uint8_t spapr_get_cap(SpaprMachineState *spapr, int cap)
- {
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 25fac9577a..6f7f9b9d58 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -1587,9 +1587,11 @@ void ppc_compat_add_property(Object *obj, const char *name,
- #define SPR_PSPB              (0x09F)
- #define SPR_DPDES             (0x0B0)
- #define SPR_DAWR0             (0x0B4)
-+#define SPR_DAWR1             (0x0B5)
- #define SPR_RPR               (0x0BA)
- #define SPR_CIABR             (0x0BB)
- #define SPR_DAWRX0            (0x0BC)
-+#define SPR_DAWRX1            (0x0BD)
- #define SPR_HFSCR             (0x0BE)
- #define SPR_VRSAVE            (0x100)
- #define SPR_USPRG0            (0x100)
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 02b7aad9b0..707b4c4c5d 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -5131,6 +5131,20 @@ static void register_book3s_207_dbg_sprs(CPUPPCState *env)
-                         KVM_REG_PPC_CIABR, 0x00000000);
- }
- 
-+static void register_book3s_310_dbg_sprs(CPUPPCState *env)
-+{
-+    spr_register_kvm_hv(env, SPR_DAWR1, "DAWR1",
-+                        SPR_NOACCESS, SPR_NOACCESS,
-+                        SPR_NOACCESS, SPR_NOACCESS,
-+                        &spr_read_generic, &spr_write_generic,
-+                        KVM_REG_PPC_DAWR1, 0x00000000);
-+    spr_register_kvm_hv(env, SPR_DAWRX1, "DAWRX1",
-+                        SPR_NOACCESS, SPR_NOACCESS,
-+                        SPR_NOACCESS, SPR_NOACCESS,
-+                        &spr_read_generic, &spr_write_generic32,
-+                        KVM_REG_PPC_DAWRX1, 0x00000000);
-+}
-+
- static void register_970_dbg_sprs(CPUPPCState *env)
- {
-     /* Breakpoints */
-@@ -6463,6 +6477,7 @@ static void init_proc_POWER10(CPUPPCState *env)
-     /* Common Registers */
-     init_proc_book3s_common(env);
-     register_book3s_207_dbg_sprs(env);
-+    register_book3s_310_dbg_sprs(env);
- 
-     /* Common TCG PMU */
-     init_tcg_pmu_power8(env);
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index a8a935e267..05f68d2d91 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -89,6 +89,7 @@ static int cap_large_decr;
- static int cap_fwnmi;
- static int cap_rpt_invalidate;
- static int cap_ail_mode_3;
-+static int cap_dawr1;
- 
- static uint32_t debug_inst_opcode;
- 
-@@ -138,6 +139,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-     cap_ppc_nested_kvm_hv = kvm_vm_check_extension(s, KVM_CAP_PPC_NESTED_HV);
-     cap_large_decr = kvmppc_get_dec_bits();
-     cap_fwnmi = kvm_vm_check_extension(s, KVM_CAP_PPC_FWNMI);
-+    cap_dawr1 = kvm_vm_check_extension(s, KVM_CAP_PPC_DAWR1);
-     /*
-      * Note: setting it to false because there is not such capability
-      * in KVM at this moment.
-@@ -2109,6 +2111,16 @@ int kvmppc_set_fwnmi(PowerPCCPU *cpu)
-     return kvm_vcpu_enable_cap(cs, KVM_CAP_PPC_FWNMI, 0);
- }
- 
-+bool kvmppc_has_cap_dawr1(void)
-+{
-+    return !!cap_dawr1;
-+}
-+
-+int kvmppc_set_cap_dawr1(int enable)
-+{
-+    return kvm_vm_enable_cap(kvm_state, KVM_CAP_PPC_DAWR1, 0, enable);
-+}
-+
- int kvmppc_smt_threads(void)
- {
-     return cap_ppc_smt ? cap_ppc_smt : 1;
-diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
-index 6a4dd9c560..dc8fbfcae7 100644
---- a/target/ppc/kvm_ppc.h
-+++ b/target/ppc/kvm_ppc.h
-@@ -64,6 +64,8 @@ bool kvmppc_has_cap_htm(void);
- bool kvmppc_has_cap_mmu_radix(void);
- bool kvmppc_has_cap_mmu_hash_v3(void);
- bool kvmppc_has_cap_xive(void);
-+bool kvmppc_has_cap_dawr1(void);
-+int kvmppc_set_cap_dawr1(int enable);
- int kvmppc_get_cap_safe_cache(void);
- int kvmppc_get_cap_safe_bounds_check(void);
- int kvmppc_get_cap_safe_indirect_branch(void);
-@@ -373,6 +375,16 @@ static inline bool kvmppc_has_cap_xive(void)
-     return false;
- }
- 
-+static inline bool kvmppc_has_cap_dawr1(void)
-+{
-+    return false;
-+}
-+
-+static inline int kvmppc_set_cap_dawr1(int enable)
-+{
-+    abort();
-+}
-+
- static inline int kvmppc_get_cap_safe_cache(void)
- {
-     return 0;
--- 
-2.41.0
-
+Ping
 
