@@ -2,162 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4474274A90F
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 04:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B6D74A999
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 06:00:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHbJN-0007jJ-QZ; Thu, 06 Jul 2023 22:35:09 -0400
+	id 1qHccF-00071u-Hv; Thu, 06 Jul 2023 23:58:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qHbJL-0007j6-G3; Thu, 06 Jul 2023 22:35:07 -0400
-Received: from mga11.intel.com ([192.55.52.93])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qHbJE-00069B-Ag; Thu, 06 Jul 2023 22:35:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1688697300; x=1720233300;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=WkemDw7GMCbZ3RcbwseqdnCo3JHjkRFPsHH6K8SymGQ=;
- b=LYkrNr/oDnOtsOqgpoxPULdCnDh9pSm4qbgMLP23rnBoanRP2NSOmsR2
- xWFtUPwojiNyqOHgJ2giojlLs1V8M0be7DkLCx8MFdfJzkkvkuPCT1TtG
- dwwAEZ2cQWp+4sldtDHhiYaO68xsgkb+W3N/EpH8GCYZYnPcvPRRbU1ck
- 3YHtO/IIlFA61tqJBCcA+//mkWQGYU53nuOP1AvPAQwib/BfWBZtDb95Y
- K+tNSA63jYlU4LaIp6LlvFQv2w9vTk0M4hnZZTKSLIzkQKjXPcxk//nPS
- F3jaPht97eFqFP33dicJ0MWj5xn/wKuqdAt+oFdNfOT6dnfisV71bQZWx w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10763"; a="361257168"
-X-IronPort-AV: E=Sophos;i="6.01,187,1684825200"; d="scan'208";a="361257168"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Jul 2023 19:34:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10763"; a="1050352177"
-X-IronPort-AV: E=Sophos;i="6.01,187,1684825200"; d="scan'208";a="1050352177"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmsmga005.fm.intel.com with ESMTP; 06 Jul 2023 19:34:51 -0700
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 6 Jul 2023 19:34:51 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Thu, 6 Jul 2023 19:34:51 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.107)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Thu, 6 Jul 2023 19:34:50 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FMw32JtxUczjk7SyHi/H/2pb20ZjR7foX0NjJf1Ra226uO8JJGqZgayVaVIagjqdEsZpTAWQOi7J/wB7mQ4rZ7qu9Dezmz4Z3XS53XNOO2Xgu/CX+GXFBYatbqeN5D9YGtCqlgmzPtbQm+kDpGJYclTgLq7+Mly0uIdj417WXsVq9y5KHRv2I7dRXV17Rp+Wp2ofA8n7y8jMilqPGZIMcmsm3RYnKorUpOFgXBoU+r0JZ1QLXL/IBtrH73cBo4pD8N45hQ5/S1dCRvqrAozmX0+D67ilQjMsPUmFBZAjIQahuZGm1YXu1UTgy9imSpUhlDedyl3OSmQCRDbcr6e/LA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AtGVN94T5vnxBh/B7ym2YbIMUUMcCyZ46UURgPfafKI=;
- b=b9dxWeqZfi0WGQWYEiD6Ph4aaA2vqCml3AFpiVkN6ERs907RArtZnsrp/buHlvq91zH/FP88GQS0VHEZvYcdL4Zgq1jNNV9Mghu6Z0U0D7BE5cu1Rl8eUOIPGjI9wAxbHfCL+CbqjynU7ueY9yoJ+O/4YDChj1OG9pT88kW/AR64jlb7ccl6SOJ3RLigVrPnMV0xvzigLozF2ZODqhyxryViLVDqbBHPpS1EVB5MynsVUbWI/+NaoNVsMTPxEcB/+eDuahVT2uyAUhuKJOyfNpEF1kl8cCcxlFlO3FSpcVHUi2D6hwzWLZc86NKtTuqYRQ2WjRC0RLXqXnceukJeJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by SJ0PR11MB5117.namprd11.prod.outlook.com (2603:10b6:a03:2d0::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.17; Fri, 7 Jul
- 2023 02:34:49 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::f580:d6a6:47a1:95f0]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::f580:d6a6:47a1:95f0%6]) with mapi id 15.20.6544.024; Fri, 7 Jul 2023
- 02:34:48 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>, Eric Auger
- <eric.auger@redhat.com>
-CC: "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "mst@redhat.com" <mst@redhat.com>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>, "clg@redhap.com"
- <clg@redhap.com>, "bharat.bhushan@nxp.com" <bharat.bhushan@nxp.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>
-Subject: RE: [PATCH 2/2] virtio-iommu: Rework the trace in
- virtio_iommu_set_page_size_mask()
-Thread-Topic: [PATCH 2/2] virtio-iommu: Rework the trace in
- virtio_iommu_set_page_size_mask()
-Thread-Index: AQHZrmjmjixANg4+sU2QQB+pIVxfpK+qnCOwgAA38RCAAFTtgIABqGyAgADH2WA=
-Date: Fri, 7 Jul 2023 02:34:47 +0000
-Message-ID: <SJ0PR11MB67447BB4E421F13B49EDB2A2922DA@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20230704111527.3424992-1-eric.auger@redhat.com>
- <20230704111527.3424992-3-eric.auger@redhat.com>
- <SJ0PR11MB6744FA4E41101F7EED607E9C922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <SJ0PR11MB6744AEDC41BE576A59908A30922FA@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <a11b8c79-9efc-6686-6405-863abb8824ae@redhat.com>
- <20230706143535.GA2570588@myrica>
-In-Reply-To: <20230706143535.GA2570588@myrica>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|SJ0PR11MB5117:EE_
-x-ms-office365-filtering-correlation-id: b4d69d20-b512-4a11-bf84-08db7e92bb54
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: X3V0T69LK9aqAC6kL6lSfHqXcc/TV1evR5qkKkH8jDarrceFD2NPVTRhzsgc1rYbEH9K4H/2pGWXl1R3UyrjcdLGs0eVhrcMx7tW8tBxUchOb3nImdt+DcQsBewbryjBnUFcB8gsZ7hTZ2WvGlB2sEiCxC0E/SsfelpnXi4xvBZJEpiKW2r8fJkXXeDXwSDaO/IQZXb+IUX+b8NvZOCm68y2Ijz8Df5Iy+lvGwOD+rx78htoPkm09NZAzilCpojIBajzcDzBpIaumTICTuX7TGnaMT4UqIcZc+RSlV+ImYIIImfHojsJLXgKtueyzfTJq2MMbhO/vBKr+12EFFQ0blwyz1fsoahvprZsy1p6M5fWmsAfdJX63g2aiDQu/35i2g94nJNULDgGvxQ5SzckplprgnSfLyvL/PLVqxObQcK23YietwQkKYRwOIqDyfeuN+C4K1iDS+1Do2tCcBFoaWyAyTAbkMO30qpG2nQ49rjhBZmtbO1Knxosz6CQUph3xdql/LhgcivDu9FVL96vJ4tP1BzdFOg592tl+nGYfbs+NXbRs7Zf8F/1zoDdu2FG/Sp75v6mGrzrjs3Tmt+kiL7ltQdpZH9XuvRjHYY7o52Yt1DkJ4vj/1MHsTRD+qvJ
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(346002)(39860400002)(396003)(376002)(366004)(136003)(451199021)(5660300002)(7416002)(2906002)(33656002)(86362001)(38070700005)(52536014)(55016003)(186003)(83380400001)(38100700002)(26005)(9686003)(6506007)(4326008)(71200400001)(7696005)(122000001)(66446008)(110136005)(82960400001)(66946007)(66556008)(64756008)(54906003)(76116006)(41300700001)(478600001)(316002)(66476007)(8676002)(8936002);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?0Vlm43D+m+Zxn0fSvuWdYKYun8P7mG/hElfbPtJRvFD+AFGkOgNrQMvdWazI?=
- =?us-ascii?Q?e6LEhly1hX3qcJBUr3EqnJpkfS7njgATL2IfBAekMQ6fXemTbkrlP0fSwVDC?=
- =?us-ascii?Q?iCA1y5Eu9zqR6/LptsBzghoDvcQ4AFAzH6iQMGPuIiC6GNbWY0SyX5BCU6TM?=
- =?us-ascii?Q?Nrep8f78dao+5P3En9H4LL45EhcYNySXwcmeCs4tMmb9uNVmSp5Y645eX8KG?=
- =?us-ascii?Q?iHVG3c6EARjV5qtGuFMz4m4U5pxQMoLPdimhW7GKhcPvKGs3XDV+Tsxo/h01?=
- =?us-ascii?Q?x7BcurZTOzkRB6gYzH+hNs6qzStMBL1gNtkDm+hOHsHfLlVCmnqKkDb5BHLo?=
- =?us-ascii?Q?db81yyamuoH/p6xL+BBKmST6NO07EaQpD7SJXts18CKI9eTWwwBY9yWDktxL?=
- =?us-ascii?Q?tpgXb56B3VnhVFXl7vdU/AnlRFPxjaC/FeyADig5/tgzvItz/tSkCIAn9tfF?=
- =?us-ascii?Q?5JnvipaYwjon6uwkHx7nTYC1fqbCw5mYqsxYwdmxrTl/C4XJ8v1H2WglRB/8?=
- =?us-ascii?Q?6THfnc8nyX1Xts/f8CWBoEFIF2obmyATfXUuhIimN79e57tqWJ1X3RLKQvpX?=
- =?us-ascii?Q?/We/NBJ2jVfetOnzmAgD/gqbCHs2LMMFvMeuM4PrYdA0TUHg9E5LoTLeNyVu?=
- =?us-ascii?Q?NiDgTLHFNl/SFT8/eTfOseHGc3M/adU5PQ2UM+hhTbUx9habSQCks+u36Ygq?=
- =?us-ascii?Q?bnk49PhCNYeBwD4mYtfZT6EtZ3w9JQ0/zbKGWwxLsT9U6EgrZGP16l24MtU7?=
- =?us-ascii?Q?fS7vU0+mEK6yWmz9X5a/ZyHntmEJK7vABJUqo9ODyuwCXxTw76zV0eXnbqwD?=
- =?us-ascii?Q?cUGAR52jGzPVqeVIUszlDfFmJ7aLKeAxiCnsp0rMw4l0dk2vSOGmaaQ1+5NI?=
- =?us-ascii?Q?HPDR2afBQ9IbsZYW+DLS3XJiF5gYnN9bLMtwv742mCjFZaqJYv2v+LZMX4fR?=
- =?us-ascii?Q?i7tD/2mBvPcn4AGuWSUj91EN7v8bhmJz/6y7pCz4cmiBHCXGZTG1O6bpds9Y?=
- =?us-ascii?Q?urGO73iRrBBBH3ZO9H3gORM6SY009t75wdVIHOVL+PE/bJ0WVZYud9DEfg6z?=
- =?us-ascii?Q?WR9ptnGUk6RUjMOBV/9NSE84kF8E9AqYoTUtM7wJg1PEfYU1lKQ74yx/AOE9?=
- =?us-ascii?Q?y2l+3S3H2gRlIgJQbfbez14T0OIhrXbdYGyYBtVBppV5SN+D9o8BykcKhOc7?=
- =?us-ascii?Q?t+jubezAe2b3cW/eUiOLp6cMAs46Yl3EqE4IEH/mHXx8pUulR4+6CX0/BdtS?=
- =?us-ascii?Q?CflrVyrvrsRVWFMa+o28C/1gh2pjoMzihwfFvNYXM83ZPN/iT7HEOiBD7jpZ?=
- =?us-ascii?Q?uGnTfVTyW/xN36Lmran/XjoEIgRYh9NAf/n7wMQfR4pKbWiaTmysHV9GJruC?=
- =?us-ascii?Q?32S/tjO7UbKt/4zzgomtzTLEapJBkr2ekPmMuq7isiuw2vi7gb22ISJeALQD?=
- =?us-ascii?Q?5/MRu966cnLTsTDVR9mEWInOcNXyXUyxV72eXWUsaE3wx+aZzdx7IKpqEzHR?=
- =?us-ascii?Q?QvAJXPY6O0y24rV2Kx+7VLCc7yo73KyP77uCS1yZoyImpFdIVaFRjL1y9Eb7?=
- =?us-ascii?Q?shYwvKkDd7j0L2bGUrxA1kA0Cu7L6RN7nrizrWMp?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qHccC-00071j-TN
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 23:58:40 -0400
+Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qHcc8-00067w-K3
+ for qemu-devel@nongnu.org; Thu, 06 Jul 2023 23:58:40 -0400
+Received: by mail-lj1-x232.google.com with SMTP id
+ 38308e7fff4ca-2b6c5ede714so32527481fa.1
+ for <qemu-devel@nongnu.org>; Thu, 06 Jul 2023 20:56:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1688702192; x=1691294192;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=V9PiSRYhxDcNekpKzswKT4Jz37NmCms/x3JYJ+dF0kg=;
+ b=kNSYsueMApxkDR3OgA8zXlj8yDskxQwT/6NFpII4hEl+tfeVEKkCdz1utwvfU/FjOf
+ 8iNWWEhzfP2L+ygkgAsx7ChYSYP3EiG6YWiOFsTh7A3osqtB62XA1EVMgXYqNiYvNMsF
+ HF7RCPT1wfNx0yT7/iyZRSJopzaN0HWCL47QnNd6ucb5xvzO83B1OrBWAWKgSFZVK9a0
+ t5VeovqeHPcBzLNUXcKXlqwlIXMSH2MR9Ju55l5AcNJ5/kNCT5td49VSdYbljXCDOcHq
+ rtgj9PO2w0lS/GykzkTwK1Ns5jGJjUd7reB1QPCD1POLPNrhhTgRFsD/cPJqeOqFTKT8
+ p4+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688702192; x=1691294192;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=V9PiSRYhxDcNekpKzswKT4Jz37NmCms/x3JYJ+dF0kg=;
+ b=Vikb+f4jN3VFJt/zbq27rmYoWZpwjU3sxAH6Hz4VMORWFViC/bJxC93JOj9BBlYCid
+ 97klcpxTgK5P9pBljrqGOlOsosNI1dbfVN6ZXtXjJKNLVgtjFk3O1hdeogzsOGiICZOw
+ l79oR9xmHjHsWnuDdeI1wSqBrwQUnxDcrpfGCE6na5QA4GoBR1JS6bMzePtEO6/w6ck8
+ nopq2TcBCc6GoD2Cw62fi4D5WyKcXEFamLFvmJ21Zf1he2y8+E/8fvZkBJcwxxPwn1Az
+ CXLtolASSFsf7JKlaU3YXtY/VxCa9UPevEvAeKpgiKCfg40ygXDm4e+UFpwUUfXSMJPj
+ XxSw==
+X-Gm-Message-State: ABy/qLbN0Bs2E7R/mEjrRewCFiYXi1NZn3XUOq3VypJUYLj6QLOtapVZ
+ W5tpQ5ibXK4I/1O4d61AJAdqY7PAkEACgQR6q3hlbQ==
+X-Google-Smtp-Source: APBJJlGwZJ0oeyArmjW7EiUKE9ugIvfovmZp+V7wgmuV8F63wd5HBhYew+PclwLxnvGHiIVca2fb4RmCUc7YH+26va4=
+X-Received: by 2002:a05:651c:482:b0:2b6:98c2:6378 with SMTP id
+ s2-20020a05651c048200b002b698c26378mr2833265ljc.2.1688702192210; Thu, 06 Jul
+ 2023 20:56:32 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4d69d20-b512-4a11-bf84-08db7e92bb54
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Jul 2023 02:34:47.6139 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aD4QF4j4eYD3j+UqfRH/EpbDprcZK/gW2fsUvfaK4Sw9I5RmAbjDPs6cBh/85hOi7SWiV9z2EgAGSiCvwWuh8/PmJGqJxOmQz0NWckorU2U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5117
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=192.55.52.93;
- envelope-from=zhenzhong.duan@intel.com; helo=mga11.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <168853615963.17240.15832775267134683267-4@git.sr.ht>
+ <877crdozls.fsf@pond.sub.org>
+In-Reply-To: <877crdozls.fsf@pond.sub.org>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Fri, 7 Jul 2023 11:56:15 +0800
+Message-ID: <CAK9dgmaunZwAKNU40GpGK=AP5kqvsQMxM3q63Z_h4U8r6P8uaA@mail.gmail.com>
+Subject: Re: [PATCH QEMU v7 4/9] migration: Introduce dirty-limit capability
+To: Markus Armbruster <armbru@redhat.com>
+Cc: "~hyman" <hyman@git.sr.ht>, qemu-devel <qemu-devel@nongnu.org>,
+ Peter Xu <peterx@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Juan Quintela <quintela@redhat.com>, 
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="0000000000004c66ff05ffdd9ecd"
+Received-SPF: none client-ip=2a00:1450:4864:20::232;
+ envelope-from=yong.huang@smartx.com; helo=mail-lj1-x232.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -174,84 +91,293 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->-----Original Message-----
->From: Jean-Philippe Brucker <jean-philippe@linaro.org>
->Sent: Thursday, July 6, 2023 10:36 PM
->Subject: Re: [PATCH 2/2] virtio-iommu: Rework the trace in
->virtio_iommu_set_page_size_mask()
->
->On Wed, Jul 05, 2023 at 03:16:31PM +0200, Eric Auger wrote:
->> >>> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
->> >>> index 1eaf81bab5..0d9f7196fe 100644
->> >>> --- a/hw/virtio/virtio-iommu.c
->> >>> +++ b/hw/virtio/virtio-iommu.c
->> >>> @@ -1101,29 +1101,24 @@ static int
->> >>> virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
->> >>>                                           new_mask);
->> >>>
->> >>>     if ((cur_mask & new_mask) =3D=3D 0) {
->> >>> -        error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
->> >>> -                   " is incompatible with mask 0x%"PRIx64, cur_mask=
-,
->new_mask);
->> >>> +        error_setg(errp, "virtio-iommu %s reports a page size mask
->0x%"PRIx64
->> >>> +                   " incompatible with currently supported mask 0x%=
-"PRIx64,
->> >>> +                   mr->parent_obj.name, new_mask, cur_mask);
->> >>>         return -1;
->> >>>     }
->> >>>
->> >>>     /*
->> >>>      * Once the granule is frozen we can't change the mask anymore. =
-If by
->> >>>      * chance the hotplugged device supports the same granule, we ca=
-n
->still
->> >>> -     * accept it. Having a different masks is possible but the gues=
-t will use
->> >>> -     * sub-optimal block sizes, so warn about it.
->> >>> +     * accept it.
->> >>>      */
->> >>>     if (s->granule_frozen) {
->> >>> -        int new_granule =3D ctz64(new_mask);
->> >>>         int cur_granule =3D ctz64(cur_mask);
->> >>>
->> >>> -        if (new_granule !=3D cur_granule) {
->> >>> -            error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
->> >>> -                       " is incompatible with mask 0x%"PRIx64, cur_=
-mask,
->> >>> -                       new_mask);
->> >>> +        if (!(BIT(cur_granule) & new_mask)) {
->> > Sorry, I read this piece code again and got a question, if new_mask
->> > has finer granularity than cur_granule, should we allow it to pass
->> > even though
->> > BIT(cur_granule) is not set?
->> I think this should work but this is not straightforward to test.
->> virtio-iommu would use the current granule for map/unmap. In
->map/unmap
->> notifiers, this is split into pow2 ranges and cascaded to VFIO through
->> vfio_dma_map/unmap. The iova and size are aligned with the smaller
->> supported granule.
->>
->> Jean, do you share this understanding or do I miss something.
->
->Yes, I also think that would work. The guest would only issue mappings wit=
-h
->the larger granularity, which can be applied by VFIO with a finer granule.
->However I doubt we're going to encounter this case, because seeing a
->cur_granule larger than 4k here means that a VFIO device has already been
->assigned with a large granule like 64k, and we're trying to add a new devi=
-ce
->with 4k. This indicates two HW IOMMUs supporting different granules in the
->same system, which seems unlikely.
+--0000000000004c66ff05ffdd9ecd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Indeed. Another scenario I can think of is migration from src with 64k gran=
-ule
-to dest with 4k, then hotplug a new device with 4k. Not clear if it's allow=
-ed
-to migrate between host with different granule.
+On Thu, Jul 6, 2023 at 10:59=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
 
-Thanks
-Zhenzhong
+> ~hyman <hyman@git.sr.ht> writes:
+>
+> > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> >
+> > Introduce migration dirty-limit capability, which can
+> > be turned on before live migration and limit dirty
+> > page rate durty live migration.
+> >
+> > Introduce migrate_dirty_limit function to help check
+> > if dirty-limit capability enabled during live migration.
+> >
+> > Meanwhile, refactor vcpu_dirty_rate_stat_collect
+> > so that period can be configured instead of hardcoded.
+> >
+> > dirty-limit capability is kind of like auto-converge
+> > but using dirty limit instead of traditional cpu-throttle
+> > to throttle guest down. To enable this feature, turn on
+> > the dirty-limit capability before live migration using
+> > migrate-set-capabilities, and set the parameters
+> > "x-vcpu-dirty-limit-period", "vcpu-dirty-limit" suitably
+> > to speed up convergence.
+> >
+> > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> > Acked-by: Peter Xu <peterx@redhat.com>
+> > Reviewed-by: Juan Quintela <quintela@redhat.com>
+>
+> [...]
+>
+> > diff --git a/migration/options.h b/migration/options.h
+> > index 9aaf363322..b5a950d4e4 100644
+> > --- a/migration/options.h
+> > +++ b/migration/options.h
+> > @@ -24,6 +24,7 @@ extern Property migration_properties[];
+> >  /* capabilities */
+> >
+> >  bool migrate_auto_converge(void);
+> > +bool migrate_dirty_limit(void);
+> >  bool migrate_background_snapshot(void);
+> >  bool migrate_block(void);
+> >  bool migrate_colo(void);
+> > diff --git a/qapi/migration.json b/qapi/migration.json
+> > index aa590dbf0e..cc51835cdd 100644
+> > --- a/qapi/migration.json
+> > +++ b/qapi/migration.json
+> > @@ -497,6 +497,16 @@
+> >  #     are present.  'return-path' capability must be enabled to use
+> >  #     it.  (since 8.1)
+> >  #
+> > +# @dirty-limit: If enabled, migration will use the dirty-limit algo to
+> > +#               throttle down guest instead of auto-converge algo.
+> > +#               Throttle algo only works when vCPU's dirtyrate greater
+> > +#               than 'vcpu-dirty-limit', read processes in guest os
+> > +#               aren't penalized any more, so this algo can improve
+> > +#               performance of vCPU during live migration. This is an
+> > +#               optional performance feature and should not affect the
+> > +#               correctness of the existing auto-converge algo.
+> > +#               (since 8.1)
+> > +#
+>
+> Please format like
+>
+>    # @dirty-limit: If enabled, migration will use the dirty-limit algo to
+>    #     throttle down guest instead of auto-converge algo.  Throttle
+>    #     algo only works when vCPU's dirtyrate greater than
+>    #     'vcpu-dirty-limit', read processes in guest os aren't penalized
+>    #     any more, so this algo can improve performance of vCPU during
+>    #     live migration.  This is an optional performance feature and
+>    #     should not affect the correctness of the existing auto-converge
+>    #     algo.  (since 8.1)
+>
+> to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments
+> to conform to current conventions).
+>
+> "Dirty rate" with a space, because that's how we spell it elsewhere.
+>
+> Moreover, "algo" is not a word, "algorithm" is :)
+>
+> Is "the dirty-limit algorithm" defined anywhere?
+>
+> More word-smithing is needed, but I'd like to get the reference to "the
+> dirty-limit algorithm" clarified first.
+>
+Dirty limit algorithm just uses the existing internal implementation
+ of qmp api "set-vcpu-dirty-limit" to implement the throttle algorithm
+of live migration.  So the capability is named "dirty-limit" :)
+
+More details about dirty-limit algorithm can be referenced as
+following two commits:
+https://lore.kernel.org/qemu-devel/20220719170221.576190-8-dgilbert@redhat.=
+com/
+https://lore.kernel.org/qemu-devel/20220719170221.576190-7-dgilbert@redhat.=
+com/
+
+>
+> >  # Features:
+> >  #
+> >  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+> > @@ -512,7 +522,8 @@
+> >             'dirty-bitmaps', 'postcopy-blocktime', 'late-block-activate=
+',
+> >             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+> >             'validate-uuid', 'background-snapshot',
+> > -           'zero-copy-send', 'postcopy-preempt', 'switchover-ack'] }
+> > +           'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
+> > +           'dirty-limit'] }
+> >
+> >  ##
+> >  # @MigrationCapabilityStatus:
+>
+> [...]
+>
+>
+
+--=20
+Best regards
+
+--0000000000004c66ff05ffdd9ecd
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jul 6, 202=
+3 at 10:59=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat=
+.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-=
+style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">~hyman &lt=
+;<a href=3D"mailto:hyman@git.sr.ht" target=3D"_blank">hyman@git.sr.ht</a>&g=
+t; writes:<br>
+<br>
+&gt; From: Hyman Huang(=E9=BB=84=E5=8B=87) &lt;<a href=3D"mailto:yong.huang=
+@smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
+&gt;<br>
+&gt; Introduce migration dirty-limit capability, which can<br>
+&gt; be turned on before live migration and limit dirty<br>
+&gt; page rate durty live migration.<br>
+&gt;<br>
+&gt; Introduce migrate_dirty_limit function to help check<br>
+&gt; if dirty-limit capability enabled during live migration.<br>
+&gt;<br>
+&gt; Meanwhile, refactor vcpu_dirty_rate_stat_collect<br>
+&gt; so that period can be configured instead of hardcoded.<br>
+&gt;<br>
+&gt; dirty-limit capability is kind of like auto-converge<br>
+&gt; but using dirty limit instead of traditional cpu-throttle<br>
+&gt; to throttle guest down. To enable this feature, turn on<br>
+&gt; the dirty-limit capability before live migration using<br>
+&gt; migrate-set-capabilities, and set the parameters<br>
+&gt; &quot;x-vcpu-dirty-limit-period&quot;, &quot;vcpu-dirty-limit&quot; su=
+itably<br>
+&gt; to speed up convergence.<br>
+&gt;<br>
+&gt; Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) &lt;<a href=3D"mailto:y=
+ong.huang@smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
+&gt; Acked-by: Peter Xu &lt;<a href=3D"mailto:peterx@redhat.com" target=3D"=
+_blank">peterx@redhat.com</a>&gt;<br>
+&gt; Reviewed-by: Juan Quintela &lt;<a href=3D"mailto:quintela@redhat.com" =
+target=3D"_blank">quintela@redhat.com</a>&gt;<br>
+<br>
+[...]<br>
+<br>
+&gt; diff --git a/migration/options.h b/migration/options.h<br>
+&gt; index 9aaf363322..b5a950d4e4 100644<br>
+&gt; --- a/migration/options.h<br>
+&gt; +++ b/migration/options.h<br>
+&gt; @@ -24,6 +24,7 @@ extern Property migration_properties[];<br>
+&gt;=C2=A0 /* capabilities */<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 bool migrate_auto_converge(void);<br>
+&gt; +bool migrate_dirty_limit(void);<br>
+&gt;=C2=A0 bool migrate_background_snapshot(void);<br>
+&gt;=C2=A0 bool migrate_block(void);<br>
+&gt;=C2=A0 bool migrate_colo(void);<br>
+&gt; diff --git a/qapi/migration.json b/qapi/migration.json<br>
+&gt; index aa590dbf0e..cc51835cdd 100644<br>
+&gt; --- a/qapi/migration.json<br>
+&gt; +++ b/qapi/migration.json<br>
+&gt; @@ -497,6 +497,16 @@<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0are present.=C2=A0 &#39;return-path&#39; ca=
+pability must be enabled to use<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0it.=C2=A0 (since 8.1)<br>
+&gt;=C2=A0 #<br>
+&gt; +# @dirty-limit: If enabled, migration will use the dirty-limit algo t=
+o<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0throttle down=
+ guest instead of auto-converge algo.<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Throttle algo=
+ only works when vCPU&#39;s dirtyrate greater<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0than &#39;vcp=
+u-dirty-limit&#39;, read processes in guest os<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0aren&#39;t pe=
+nalized any more, so this algo can improve<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0performance o=
+f vCPU during live migration. This is an<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0optional perf=
+ormance feature and should not affect the<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0correctness o=
+f the existing auto-converge algo.<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0(since 8.1)<b=
+r>
+&gt; +#<br>
+<br>
+Please format like<br>
+<br>
+=C2=A0 =C2=A0# @dirty-limit: If enabled, migration will use the dirty-limit=
+ algo to<br>
+=C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0throttle down guest instead of auto-conve=
+rge algo.=C2=A0 Throttle<br>
+=C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0algo only works when vCPU&#39;s dirtyrate=
+ greater than<br>
+=C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0&#39;vcpu-dirty-limit&#39;, read processe=
+s in guest os aren&#39;t penalized<br>
+=C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0any more, so this algo can improve perfor=
+mance of vCPU during<br>
+=C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0live migration.=C2=A0 This is an optional=
+ performance feature and<br>
+=C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0should not affect the correctness of the =
+existing auto-converge<br>
+=C2=A0 =C2=A0#=C2=A0 =C2=A0 =C2=A0algo.=C2=A0 (since 8.1)<br>
+<br>
+to blend in with recent commit a937b6aa739 (qapi: Reformat doc comments<br>
+to conform to current conventions).<br>
+<br>
+&quot;Dirty rate&quot; with a space, because that&#39;s how we spell it els=
+ewhere.<br>
+<br>
+Moreover, &quot;algo&quot; is not a word, &quot;algorithm&quot; is :)<br>
+<br>
+Is &quot;the dirty-limit algorithm&quot; defined anywhere?=C2=A0 <br>
+<br>
+More word-smithing is needed, but I&#39;d like to get the reference to &quo=
+t;the<br>
+dirty-limit algorithm&quot; clarified first.<br></blockquote><div class=3D"=
+gmail_default"><span style=3D"font-family:&quot;comic sans ms&quot;,sans-se=
+rif"> Dirty limit algorithm just uses the existing internal implementation<=
+/span></div><div class=3D"gmail_default"><span style=3D"font-family:&quot;c=
+omic sans ms&quot;,sans-serif">=C2=A0of qmp api &quot;set-vcpu-dirty-limit&=
+quot; to implement the throttle algorithm</span></div><div class=3D"gmail_d=
+efault"><font face=3D"comic sans ms, sans-serif">of live migration.=C2=A0 S=
+o the capability is named &quot;dirty-limit&quot; :)</font></div><div class=
+=3D"gmail_default"><font face=3D"comic sans ms, sans-serif"><br></font></di=
+v><div class=3D"gmail_default"><font face=3D"comic sans ms, sans-serif">Mor=
+e details about dirty-limit algorithm can be referenced as</font></div><div=
+ class=3D"gmail_default"><font face=3D"comic sans ms, sans-serif">following=
+ two commits:</font></div><div class=3D"gmail_default"><a href=3D"https://l=
+ore.kernel.org/qemu-devel/20220719170221.576190-8-dgilbert@redhat.com/">htt=
+ps://lore.kernel.org/qemu-devel/20220719170221.576190-8-dgilbert@redhat.com=
+/</a><font face=3D"comic sans ms, sans-serif"><br></font></div><div class=
+=3D"gmail_default"><a href=3D"https://lore.kernel.org/qemu-devel/2022071917=
+0221.576190-7-dgilbert@redhat.com/">https://lore.kernel.org/qemu-devel/2022=
+0719170221.576190-7-dgilbert@redhat.com/</a><br></div><blockquote class=3D"=
+gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border=
+-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">
+<br>
+&gt;=C2=A0 # Features:<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # @unstable: Members @x-colo and @x-ignore-shared are experiment=
+al.<br>
+&gt; @@ -512,7 +522,8 @@<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;dirty-bitmaps&#39;=
+, &#39;postcopy-blocktime&#39;, &#39;late-block-activate&#39;,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0{ &#39;name&#39;: &#39;=
+x-ignore-shared&#39;, &#39;features&#39;: [ &#39;unstable&#39; ] },<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;validate-uuid&#39;=
+, &#39;background-snapshot&#39;,<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;zero-copy-send&#39;, &#=
+39;postcopy-preempt&#39;, &#39;switchover-ack&#39;] }<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;zero-copy-send&#39;, &#=
+39;postcopy-preempt&#39;, &#39;switchover-ack&#39;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;dirty-limit&#39;] }<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 ##<br>
+&gt;=C2=A0 # @MigrationCapabilityStatus:<br>
+<br>
+[...]<br>
+<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
+
+--0000000000004c66ff05ffdd9ecd--
 
