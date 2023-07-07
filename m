@@ -2,81 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B18674B1CC
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 15:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B753174B2AA
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 16:06:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHlXf-0003qP-NC; Fri, 07 Jul 2023 09:30:35 -0400
+	id 1qHm4i-0007B8-S7; Fri, 07 Jul 2023 10:04:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHlXc-0003q8-0x
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 09:30:32 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHlXV-00016T-2l
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 09:30:31 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-9922d6f003cso247958566b.0
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 06:30:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688736622; x=1691328622;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=39gMjFsdbEapqGPFg6LByWYl2iaofpkxb3nuwMNFMf0=;
- b=KH+O2sAyXe4P1AQArA9MoeWT1SCcBC9iGM2DyTW3bjMzKcvZvhTgURk5hyhWX9Oldv
- ZLZl2S5AyHJ/ssQWjHL2IfWuXr9+pHPY20QHj9cNHsfgvTPUvIYSe+prEwJ/s4T39Wwd
- BVhmE2q4TuqTeaYHq+SuYRlUx67xjEnUsaJcNSDtFhsgbwD17kuTLJSxngIEF5ziIimj
- PDSwKdteayx4/k7tRvrZevDiLCPO4Ue7RIUZrMr+GQWEaPcQ4tYyGw9COYPPuXIEmS9P
- cqn3e59YOk1DfmpDr7vOKEvhNRUIsReUORR/Mb5lUIQJOFboOV3cGhPTh+7Kg3GI42k/
- yTgg==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qHm4g-0007Ak-3Y
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qHm4d-0006M2-U2
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688738678;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=rBnN1MMNDLoJzaTmRCVkC+Vc41Ac07W6gnA+jLJ/Fm8=;
+ b=GRWmRxRD2PjOx5msaAGCsKAQGK8zshvLOGas9L2SbSoC5QNqbw6w/CeeCqztL0NnkFbLWo
+ ncUSMTMIEID66KKhCo0eZwUyr/eGp1Sl7WH7Y9iGyMics0jk2dARxqi1q1UPnJOSN9aRRe
+ hV6Nw1+gsrPgyLEUaeBE4Fs8NKefTYE=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-194-MFLXmIWuMIyN5PAH8rm_Zg-1; Fri, 07 Jul 2023 10:04:36 -0400
+X-MC-Unique: MFLXmIWuMIyN5PAH8rm_Zg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-99388334de6so129553166b.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 07:04:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688736622; x=1691328622;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=39gMjFsdbEapqGPFg6LByWYl2iaofpkxb3nuwMNFMf0=;
- b=XhQQXNZHQUPildUjl9SRUkTgK8x3aAVU2sDVz1rTHCi9unsxrXYAQTlc8rA2Zxo/pt
- 5QwYFb02nQJBMIaKowj2Av25euovPQpmeuyN6oYfAAzvOgXjXvf6E6igsGFBE9gX2K/+
- n2i6aq/X8Ur9r2TAOycYlcBtjx2kyKFDX0K/Rph9ATgUYsYRs51HMiKkhX19U2UjMIE8
- GzXgqblbSrxrXbylVUNaygVkx98TFLzR/IpJjALG8AMGfFu0/sumdXd9APpeWHF3gG8d
- ZnPoNY+VTABq4uvItDxC0VznFfQdXwYsi/XWEVi+veT9k1kEMk9TV8zjhHV7PBm7N8jr
- qrpA==
-X-Gm-Message-State: ABy/qLZISIAd7azI0VmEG3pTzTvDxcgZSdUCzbAqttygW7vb22aansEW
- fS3QwTLWMdKR2RCRhdp5JuBRpQ==
-X-Google-Smtp-Source: APBJJlGrIxDnTQo01iczscYaLsdkjwv5a96AA6SXDWOW7KM8Tyl92XegPU4Bckzwd/ASpBlgeMmQSA==
-X-Received: by 2002:a17:906:9614:b0:988:9d0f:db52 with SMTP id
- s20-20020a170906961400b009889d0fdb52mr4269133ejx.35.1688736622454; 
- Fri, 07 Jul 2023 06:30:22 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.215.192])
+ d=1e100.net; s=20221208; t=1688738674; x=1691330674;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rBnN1MMNDLoJzaTmRCVkC+Vc41Ac07W6gnA+jLJ/Fm8=;
+ b=OF7yBx7SWmNUgex993PIMx7k/Wk+ERXHnx7Iz4KWWXnl6Y24nHQtyl8lWqXsnJNoya
+ 6jUMwBbEV/CE3HrzJp6OJzu9NFvNefMRs9UJoZ+AgTG9txM8Ujf17L8UeDRpkeRm79vs
+ uw6xxBXB2N2UkUz/MgOwJOfEAe1ahQaKWbWTemX2e/p2KAjq2rS9Q/6ZZOkvo7kf2YqV
+ 9xLAaUwmzn5Dv37aKuI40PUpSJmSm15q9mXt9X1IafLrgXph503AcVEMAZRF1++iUonX
+ N3fC9BcGYx64nTYQwRJQU20MueuMl2/4TwaeDUB7gingY7zF0Yn4NAGkpEYB3cjrTgya
+ MJMA==
+X-Gm-Message-State: ABy/qLacpDpPqThb49GlDTaCJFtBJ6qTUwKzTedpmJBeQfwo353zMztG
+ k+AVFTzNyuF8UTwX+UMfUURV9aoKwff5q0mcEgRXD75sGS6cGjXbczRezprHyXvVK0Y2qpEejJX
+ JKB/CIuIxntmHk5iXDdZ2WEzrTiUILFb9VO+hTBEnvwR4YsQ3j9hS2gZT49a99qLiQK5r1GbDAi
+ 4=
+X-Received: by 2002:a17:907:75db:b0:992:9a5e:3172 with SMTP id
+ jl27-20020a17090775db00b009929a5e3172mr3811522ejc.59.1688738674605; 
+ Fri, 07 Jul 2023 07:04:34 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlG8Q+opWj41nK12as1RXIlKpC7FwzzFCNMkNqztiMS3YZ7mqaQvdKOE85GjHijgM5YQjh93FQ==
+X-Received: by 2002:a17:907:75db:b0:992:9a5e:3172 with SMTP id
+ jl27-20020a17090775db00b009929a5e3172mr3811505ejc.59.1688738674197; 
+ Fri, 07 Jul 2023 07:04:34 -0700 (PDT)
+Received: from [192.168.122.1] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- i12-20020a1709063c4c00b00982a92a849asm2201821ejg.91.2023.07.07.06.30.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 06:30:22 -0700 (PDT)
-Message-ID: <cb08af9f-18b0-3ba3-ab5e-6eaaea84a63c@linaro.org>
-Date: Fri, 7 Jul 2023 15:30:20 +0200
+ j10-20020a17090686ca00b0098e16f8c198sm2272343ejy.18.2023.07.07.07.04.32
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 07 Jul 2023 07:04:33 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/9] Final batch of patches for QEMU 8.1 soft freeze
+Date: Fri,  7 Jul 2023 16:04:23 +0200
+Message-ID: <20230707140432.88073-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH] tcg: Fix info_in_idx increment in layout_arg_by_ref
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, qemu-stable@nongnu.org
-References: <20230707102955.5607-1-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230707102955.5607-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,19 +97,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/7/23 12:29, Richard Henderson wrote:
-> Off by one error, failing to take into account that layout_arg_1
-> already incremeneted info_in_idx for the first piece.  We only
+The following changes since commit 97c81ef4b8e203d9620fd46e7eb77004563e3675:
 
-"incremented"
+  Merge tag 'pull-9p-20230706' of https://github.com/cschoenebeck/qemu into staging (2023-07-06 18:19:42 +0100)
 
-> need care for the n-1 TCG_CALL_ARG_BY_REF_N pieces here.
-> 
-> Cc: qemu-stable@nongnu.org
-> Fixes: 313bdea84d2 ("tcg: Add TCG_CALL_{RET,ARG}_BY_REF")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1751
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/tcg.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+are available in the Git repository at:
+
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+
+for you to fetch changes up to 6d5e9694ef374159072984c0958c3eaab6dd1d52:
+
+  target/i386: Add new CPU model GraniteRapids (2023-07-07 12:52:27 +0200)
+
+----------------------------------------------------------------
+* Granite Rapids CPU model
+* Miscellaneous bugfixes
+
+----------------------------------------------------------------
+Fiona Ebner (1):
+      qemu_cleanup: begin drained section after vm_shutdown()
+
+Lei Wang (1):
+      target/i386: Add few security fix bits in ARCH_CAPABILITIES into SapphireRapids CPU model
+
+Paolo Bonzini (1):
+      python: bump minimum requirements so they are compatible with 3.12
+
+Tao Su (5):
+      target/i386: Adjust feature level according to FEAT_7_1_EDX
+      target/i386: Add support for MCDT_NO in CPUID enumeration
+      target/i386: Allow MCDT_NO if host supports
+      target/i386: Add new bit definitions of MSR_IA32_ARCH_CAPABILITIES
+      target/i386: Add new CPU model GraniteRapids
+
+Thomas Huth (1):
+      meson.build: Remove the logic to link C code with the C++ linker
+
+ meson.build                |  22 ++----
+ python/qemu/qmp/qmp_tui.py |   5 +-
+ python/setup.cfg           |   2 +-
+ python/tests/minreqs.txt   |   9 ++-
+ qga/meson.build            |   2 +-
+ scripts/main.c             |   1 -
+ softmmu/runstate.c         |  20 +++---
+ target/i386/cpu.c          | 172 +++++++++++++++++++++++++++++++++++++++++++++
+ target/i386/cpu.h          |   8 +++
+ target/i386/kvm/kvm.c      |   4 ++
+ 10 files changed, 210 insertions(+), 35 deletions(-)
+ delete mode 100644 scripts/main.c
+-- 
+2.41.0
+
 
