@@ -2,87 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D59974B349
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 16:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D86374B3FB
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 17:19:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHmmX-0003f9-Ov; Fri, 07 Jul 2023 10:50:01 -0400
+	id 1qHnDB-0000u5-0J; Fri, 07 Jul 2023 11:17:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHmmV-0003ea-Cy; Fri, 07 Jul 2023 10:49:59 -0400
-Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHnD8-0000tY-3j
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:17:30 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHmmS-0007wX-Sb; Fri, 07 Jul 2023 10:49:59 -0400
-Received: by mail-oo1-xc2d.google.com with SMTP id
- 006d021491bc7-565a8d9d832so1497000eaf.1; 
- Fri, 07 Jul 2023 07:49:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHnD4-0000b2-9j
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:17:29 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-993d1f899d7so88155166b.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 08:17:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688741395; x=1691333395;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=VB48VkM/L40klivtua+5x0i9lNf9VyujVhagtC2bp/A=;
- b=M3ZZMKnhsG3C8sqp0BAQJqYiSymEq4biptpJYyRZ6U2Gp1nM1fPhaeM9/Gzn8H6Y+8
- Gw6Jen5gQsRGw4w7T2obU6wzs6oOfkqRDFks1Gd/WyS4jrkFnbkGTCnjNPIbto0NJ+TI
- kEiQ9F/JxBvnNDmONULYUg+O5ek+Ua2xo+fiPUKSEGFOjPRIHFxjbEJTIfg4UQfadLTe
- //4TxAz9pX7W25uTWjRHAOtsGEqMmkB257GUqSrXsjGlcgNxDClsT5X0E440Nkmd2/oq
- pyasNGC5G8dxWZ1NCMgWnSnaNQSsXvNm24wFxKsL1CzZ8CXGOnOwmroBK9gOrjskMMiQ
- fU8w==
+ d=linaro.org; s=google; t=1688743043; x=1691335043;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=iBe6Qvj8pJduQ5hD1fED1nercV0+mcJtB8noLJOhi+Y=;
+ b=Fq88KvfNrm3WCyYGBK2AF3ubFdZzZ0qJZr4Wqxilycrdgcs90dQE3Ht0JjXqqJOd+W
+ Ki0Inw/OiXr4yN24+H9dRLYPVkhAGD9z823I2SSRJ1TKFqiUqgUa5mJplvMWFd2lJgf/
+ 91LoChPq0y8lWyCQzsBWH2o2Dcs+WeA+vnHDuBjrBRLaKWg+4sPZIDG2OAXVfHblzEkn
+ 82e0gYePHO9o7kl1ieKNnIl6sv1tvF4OWhf5IEGsjoOpZ4vz9+H2zDgEbhOnoXv1NEu5
+ e2TN8eVgTiu6c6h2R0Ckj9fd1ZgRHkh+gf2sUlO8h3zEKbdkcFhgvU5baMV4VMvprS9Q
+ /eLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688741395; x=1691333395;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VB48VkM/L40klivtua+5x0i9lNf9VyujVhagtC2bp/A=;
- b=aX3DTEuupusMlx4lrE++1PeVokCHGmxx67vigVlf12+0J6jWFYeSkwTo6rA4RyOqao
- FoYoLdsKgytC4vveV1eqWkemHdtCiXNn8Ez+0V1fXY93rXBctSaTDAD97fRhYjGVwK1k
- xpNexnQKECdTsWmFyBxxw+EORg/6xpFBTUhRhdxFQK2ADHdGXMZ0sD5XNHkaJPH4+id5
- 4qkY1jGQFvw6Fn+yX9PeYmFqH2vEZYn9vqzrH65joWK7pQNcbKlYkVMTlCdaINR8pJNa
- YTN7NJ53sRKdu9NGRnewiSA5cvryJECh4QaicNANFFS+TJOhCd3uPJDBeioDSVR0xHTu
- kXTg==
-X-Gm-Message-State: ABy/qLZvw3SVIw+5QfQorToncSva6Zzl+bf0UdJASeVT/W2yUvO2/eQG
- iiMhpoAaLGRGi6P8K/ZsEIc=
-X-Google-Smtp-Source: APBJJlERd252gUFwls7Jw+f1+DKcNA+Bm+xROAQqXs/nu4Qx4MLyCClO3Jla+H1jCWDT3qnhlqwlBw==
-X-Received: by 2002:a4a:4514:0:b0:565:bf28:ee72 with SMTP id
- y20-20020a4a4514000000b00565bf28ee72mr3898275ooa.0.1688741395179; 
- Fri, 07 Jul 2023 07:49:55 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-19.dial-up.telesp.net.br.
- [201.69.66.19]) by smtp.gmail.com with ESMTPSA id
- n17-20020a4ae751000000b0051134f333d3sm1552177oov.16.2023.07.07.07.49.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 07:49:54 -0700 (PDT)
-Message-ID: <8746e61d-631a-4912-935e-1094264e2c5c@gmail.com>
-Date: Fri, 7 Jul 2023 11:49:50 -0300
+ d=1e100.net; s=20221208; t=1688743043; x=1691335043;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iBe6Qvj8pJduQ5hD1fED1nercV0+mcJtB8noLJOhi+Y=;
+ b=ZCza0xdQrbVuf0Bv717kZI7bZq5oAZcdrtM+Xx3EAmsYjPpmHF+gKQyuBLW5uAocX2
+ wQpVfuBf71bDqeEHqEKtESeJk8ifGdhd/9SbVIgvp+gh91Jrb6IUOKPFtG3hh58oTtr/
+ 3LILq6cmoQxmDJYq1tqW1y9PN+4Ftr7jtBvcjTiYb1lROX40Byt0/Cf9mPeP6M744GUI
+ nq0c8Q6pJ5ouBtQ4xFgpq6UTj16s8dYgu5yR8tdz0VVIerPTxaTIz03dnA+EyXzLobm1
+ PBqfP9TjjXKi6RaJi11Ep0JI/4Qfve62awH3bkjMDJ9O/Vpp1I0Bulql9fEK1P45XQwX
+ AxMA==
+X-Gm-Message-State: ABy/qLaWkkw9SSjSAkWsU3IwDLZhq6vCctyru0tqd/SlJpReXmzBYsk8
+ n20lRP9weBc/zIgIeNJ36kMYJz0MkpbMNJ0AqLc=
+X-Google-Smtp-Source: APBJJlEnQ+dvzDqYrt1m7xbbzn7HYU0U7LNLk3Yu0dEMYWMRjJNP6YuX89QIfFRl4e71LWixBx4p7w==
+X-Received: by 2002:a17:906:dc:b0:988:f307:aea3 with SMTP id
+ 28-20020a17090600dc00b00988f307aea3mr4545571eji.9.1688743043478; 
+ Fri, 07 Jul 2023 08:17:23 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.215.192])
+ by smtp.gmail.com with ESMTPSA id
+ h22-20020a170906399600b0099329b3ab67sm2311151eje.71.2023.07.07.08.17.21
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 07 Jul 2023 08:17:23 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 0/6] hw/virtio: Build vhost-vdpa.o once for all targets
+Date: Fri,  7 Jul 2023 17:17:13 +0200
+Message-Id: <20230707151719.70613-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v6] ppc: Enable 2nd DAWR support on p10
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Greg Kurz <groug@kaod.org>
-Cc: Shivaprasad G Bhat <sbhat@linux.ibm.com>, david@gibson.dropbear.id.au,
- harshpb@linux.ibm.com, npiggin@gmail.com, pbonzini@redhat.com,
- qemu-ppc@nongnu.org, qemu-devel@nongnu.org, kvm@vger.kernel.org,
- ravi.bangoria@amd.com
-References: <168871963321.58984.15628382614621248470.stgit@ltcd89-lp2>
- <b0047746-5b36-c39b-c669-055d08ca3164@gmail.com>
- <20230707135909.1b1a89d5@bahia>
- <9c7ca859-f568-9487-0776-a6464edc69b4@kaod.org>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <9c7ca859-f568-9487-0776-a6464edc69b4@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
- envelope-from=danielhb413@gmail.com; helo=mail-oo1-xc2d.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.092,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,379 +89,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+v1: https://lore.kernel.org/qemu-devel/20230523163600.83391-12-philmd@linaro.org/
 
+Since v1:
+- Addressed Richard's review comments
+- Split in multiple patches to KISS
+- Rename system_virtio_ss[]
 
-On 7/7/23 11:24, Cédric Le Goater wrote:
-> On 7/7/23 13:59, Greg Kurz wrote:
->> Hi Daniel and Shiva !
->>
->> On Fri, 7 Jul 2023 08:09:47 -0300
->> Daniel Henrique Barboza <danielhb413@gmail.com> wrote:
->>
->>> This one was a buzzer shot.
->>>
->>
->> Indeed ! :-) I would have appreciated some more time to re-assess
->> my R-b tag on this 2 year old bug though ;-)
-> 
-> We should drop that patch IMO and ask for a resend with more tests
-> but that's a lot of work to build a PR :/
+Philippe Mathieu-Daudé (6):
+  hw/virtio: Propagate page_mask to
+    vhost_vdpa_listener_skipped_section()
+  hw/virtio: Propagate page_mask to vhost_vdpa_section_end()
+  hw/virtio/vhost-vdpa: Inline TARGET_PAGE_ALIGN() macro
+  hw/virtio/vhost-vdpa: Use target-agnostic qemu_target_page_mask()
+  hw/virtio: Build vhost-vdpa.o once
+  hw/virtio/meson: Rename softmmu_virtio_ss[] -> system_virtio_ss[]
 
+ hw/virtio/vhost-vdpa.c | 36 +++++++++++++++++++++---------------
+ hw/virtio/meson.build  | 25 +++++++++++++------------
+ 2 files changed, 34 insertions(+), 27 deletions(-)
 
-I don't mind the extra work.
+-- 
+2.38.1
 
-Patch dropped. Feel free to re-send it for 8.2 with more tests as Cedric
-suggested.
-
-
-
-Thanks,
-
-
-Daniel
-
-> 
-> 
-> C.
-> 
-> 
->>
->> My concerns were that the DAWR1 spapr cap was still not enabled by
->> default but I guess it is because POWER9 is still the default cpu
->> type. Related, the apply function should probably spit a warning
->> with TCG instead of failing, like already done for some other
->> TCG limitations (e.g. cap_safe_bounds_check_apply()). This will
->> be needed for `make test` to succeed when DAWR1 is eventually
->> enabled by default. Not needed right now.
->>
->> My R-b still stands then ! :-)
->>
->> Cheers,
->>
->> -- 
->> Greg
->>
->>>
->>> Queued in gitlab.com/danielhb/qemu/tree/ppc-next. Thanks,
->>>
->>>
->>> Daniel
->>>
->>>
->>> On 7/7/23 05:47, Shivaprasad G Bhat wrote:
->>>> From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
->>>>
->>>> As per the PAPR, bit 0 of byte 64 in pa-features property
->>>> indicates availability of 2nd DAWR registers. i.e. If this bit is set, 2nd
->>>> DAWR is present, otherwise not. Use KVM_CAP_PPC_DAWR1 capability to find
->>>> whether kvm supports 2nd DAWR or not. If it's supported, allow user to set
->>>> the pa-feature bit in guest DT using cap-dawr1 machine capability. Though,
->>>> watchpoint on powerpc TCG guest is not supported and thus 2nd DAWR is not
->>>> enabled for TCG mode.
->>>>
->>>> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
->>>> Reviewed-by: Greg Kurz <groug@kaod.org>
->>>> Reviewed-by: Cédric Le Goater <clg@kaod.org>
->>>> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
->>>> ---
->>>> Changelog:
->>>> v5: https://lore.kernel.org/all/20210412114433.129702-1-ravi.bangoria@linux.ibm.com/
->>>> v5->v6:
->>>>     - The other patches in the original series already merged.
->>>>     - Rebased to the top of the tree. So, the gen_spr_book3s_310_dbg() is renamed
->>>>       to register_book3s_310_dbg_sprs() and moved to cpu_init.c accordingly.
->>>>     - No functional changes.
->>>>
->>>> v4: https://lore.kernel.org/r/20210406053833.282907-1-ravi.bangoria@linux.ibm.com
->>>> v3->v4:
->>>>     - Make error message more proper.
->>>>
->>>> v3: https://lore.kernel.org/r/20210330095350.36309-1-ravi.bangoria@linux.ibm.com
->>>> v3->v4:
->>>>     - spapr_dt_pa_features(): POWER10 processor is compatible with 3.0
->>>>       (PCR_COMPAT_3_00). No need to ppc_check_compat(3_10) for now as
->>>>       ppc_check_compati(3_00) will also be true. ppc_check_compat(3_10)
->>>>       can be added while introducing pa_features_310 in future.
->>>>     - Use error_append_hint() for hints. Also add ERRP_GUARD().
->>>>     - Add kvmppc_set_cap_dawr1() stub function for CONFIG_KVM=n.
->>>>
->>>> v2: https://lore.kernel.org/r/20210329041906.213991-1-ravi.bangoria@linux.ibm.com
->>>> v2->v3:
->>>>     - Don't introduce pa_features_310[], instead, reuse pa_features_300[]
->>>>       for 3.1 guests, as there is no difference between initial values of
->>>>       them atm.
->>>>     - Call gen_spr_book3s_310_dbg() from init_proc_POWER10() instead of
->>>>       init_proc_POWER8(). Also, Don't call gen_spr_book3s_207_dbg() from
->>>>       gen_spr_book3s_310_dbg() as init_proc_POWER10() already calls it.
->>>>
->>>> v1: https://lore.kernel.org/r/20200723104220.314671-1-ravi.bangoria@linux.ibm.com
->>>> v1->v2:
->>>>     - Introduce machine capability cap-dawr1 to enable/disable
->>>>       the feature. By default, 2nd DAWR is OFF for guests even
->>>>       when host kvm supports it. User has to manually enable it
->>>>       with -machine cap-dawr1=on if he wishes to use it.
->>>>     - Split the header file changes into separate patch. (Sync
->>>>       headers from v5.12-rc3)
->>>>
->>>> [1] https://git.kernel.org/torvalds/c/bd1de1a0e6eff
->>>>
->>>>    hw/ppc/spapr.c         |    7 ++++++-
->>>>    hw/ppc/spapr_caps.c    |   32 ++++++++++++++++++++++++++++++++
->>>>    include/hw/ppc/spapr.h |    6 +++++-
->>>>    target/ppc/cpu.h       |    2 ++
->>>>    target/ppc/cpu_init.c  |   15 +++++++++++++++
->>>>    target/ppc/kvm.c       |   12 ++++++++++++
->>>>    target/ppc/kvm_ppc.h   |   12 ++++++++++++
->>>>    7 files changed, 84 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
->>>> index 54dbfd7fe9..1e54e0c719 100644
->>>> --- a/hw/ppc/spapr.c
->>>> +++ b/hw/ppc/spapr.c
->>>> @@ -241,7 +241,7 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
->>>>            0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 48 - 53 */
->>>>            /* 54: DecFP, 56: DecI, 58: SHA */
->>>>            0x80, 0x00, 0x80, 0x00, 0x80, 0x00, /* 54 - 59 */
->>>> -        /* 60: NM atomic, 62: RNG */
->>>> +        /* 60: NM atomic, 62: RNG, 64: DAWR1 (ISA 3.1) */
->>>>            0x80, 0x00, 0x80, 0x00, 0x00, 0x00, /* 60 - 65 */
->>>>        };
->>>>        uint8_t *pa_features = NULL;
->>>> @@ -282,6 +282,9 @@ static void spapr_dt_pa_features(SpaprMachineState *spapr,
->>>>             * in pa-features. So hide it from them. */
->>>>            pa_features[40 + 2] &= ~0x80; /* Radix MMU */
->>>>        }
->>>> +    if (spapr_get_cap(spapr, SPAPR_CAP_DAWR1)) {
->>>> +        pa_features[66] |= 0x80;
->>>> +    }
->>>>
->>>>        _FDT((fdt_setprop(fdt, offset, "ibm,pa-features", pa_features, pa_size)));
->>>>    }
->>>> @@ -2084,6 +2087,7 @@ static const VMStateDescription vmstate_spapr = {
->>>>            &vmstate_spapr_cap_fwnmi,
->>>>            &vmstate_spapr_fwnmi,
->>>>            &vmstate_spapr_cap_rpt_invalidate,
->>>> +        &vmstate_spapr_cap_dawr1,
->>>>            NULL
->>>>        }
->>>>    };
->>>> @@ -4683,6 +4687,7 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
->>>>        smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] = SPAPR_CAP_ON;
->>>>        smc->default_caps.caps[SPAPR_CAP_FWNMI] = SPAPR_CAP_ON;
->>>>        smc->default_caps.caps[SPAPR_CAP_RPT_INVALIDATE] = SPAPR_CAP_OFF;
->>>> +    smc->default_caps.caps[SPAPR_CAP_DAWR1] = SPAPR_CAP_OFF;
->>>>
->>>>        /*
->>>>         * This cap specifies whether the AIL 3 mode for
->>>> diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
->>>> index 5a0755d34f..2f2cf4a250 100644
->>>> --- a/hw/ppc/spapr_caps.c
->>>> +++ b/hw/ppc/spapr_caps.c
->>>> @@ -655,6 +655,28 @@ static void cap_ail_mode_3_apply(SpaprMachineState *spapr,
->>>>        }
->>>>    }
->>>>
->>>> +static void cap_dawr1_apply(SpaprMachineState *spapr, uint8_t val,
->>>> +                               Error **errp)
->>>> +{
->>>> +    ERRP_GUARD();
->>>> +    if (!val) {
->>>> +        return; /* Disable by default */
->>>> +    }
->>>> +
->>>> +    if (tcg_enabled()) {
->>>> +        error_setg(errp, "DAWR1 not supported in TCG.");
->>>> +        error_append_hint(errp, "Try appending -machine cap-dawr1=off\n");
->>>> +    } else if (kvm_enabled()) {
->>>> +        if (!kvmppc_has_cap_dawr1()) {
->>>> +            error_setg(errp, "DAWR1 not supported by KVM.");
->>>> +            error_append_hint(errp, "Try appending -machine cap-dawr1=off\n");
->>>> +        } else if (kvmppc_set_cap_dawr1(val) < 0) {
->>>> +            error_setg(errp, "Error enabling cap-dawr1 with KVM.");
->>>> +            error_append_hint(errp, "Try appending -machine cap-dawr1=off\n");
->>>> +        }
->>>> +    }
->>>> +}
->>>> +
->>>>    SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
->>>>        [SPAPR_CAP_HTM] = {
->>>>            .name = "htm",
->>>> @@ -781,6 +803,15 @@ SpaprCapabilityInfo capability_table[SPAPR_CAP_NUM] = {
->>>>            .type = "bool",
->>>>            .apply = cap_ail_mode_3_apply,
->>>>        },
->>>> +    [SPAPR_CAP_DAWR1] = {
->>>> +        .name = "dawr1",
->>>> +        .description = "Allow 2nd Data Address Watchpoint Register (DAWR1)",
->>>> +        .index = SPAPR_CAP_DAWR1,
->>>> +        .get = spapr_cap_get_bool,
->>>> +        .set = spapr_cap_set_bool,
->>>> +        .type = "bool",
->>>> +        .apply = cap_dawr1_apply,
->>>> +    },
->>>>    };
->>>>
->>>>    static SpaprCapabilities default_caps_with_cpu(SpaprMachineState *spapr,
->>>> @@ -923,6 +954,7 @@ SPAPR_CAP_MIG_STATE(large_decr, SPAPR_CAP_LARGE_DECREMENTER);
->>>>    SPAPR_CAP_MIG_STATE(ccf_assist, SPAPR_CAP_CCF_ASSIST);
->>>>    SPAPR_CAP_MIG_STATE(fwnmi, SPAPR_CAP_FWNMI);
->>>>    SPAPR_CAP_MIG_STATE(rpt_invalidate, SPAPR_CAP_RPT_INVALIDATE);
->>>> +SPAPR_CAP_MIG_STATE(dawr1, SPAPR_CAP_DAWR1);
->>>>
->>>>    void spapr_caps_init(SpaprMachineState *spapr)
->>>>    {
->>>> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
->>>> index 538b2dfb89..47fffb921a 100644
->>>> --- a/include/hw/ppc/spapr.h
->>>> +++ b/include/hw/ppc/spapr.h
->>>> @@ -80,8 +80,10 @@ typedef enum {
->>>>    #define SPAPR_CAP_RPT_INVALIDATE        0x0B
->>>>    /* Support for AIL modes */
->>>>    #define SPAPR_CAP_AIL_MODE_3            0x0C
->>>> +/* DAWR1 */
->>>> +#define SPAPR_CAP_DAWR1                 0x0D
->>>>    /* Num Caps */
->>>> -#define SPAPR_CAP_NUM                   (SPAPR_CAP_AIL_MODE_3 + 1)
->>>> +#define SPAPR_CAP_NUM                   (SPAPR_CAP_DAWR1 + 1)
->>>>
->>>>    /*
->>>>     * Capability Values
->>>> @@ -407,6 +409,7 @@ struct SpaprMachineState {
->>>>    #define H_SET_MODE_RESOURCE_SET_DAWR0           2
->>>>    #define H_SET_MODE_RESOURCE_ADDR_TRANS_MODE     3
->>>>    #define H_SET_MODE_RESOURCE_LE                  4
->>>> +#define H_SET_MODE_RESOURCE_SET_DAWR1           5
->>>>
->>>>    /* Flags for H_SET_MODE_RESOURCE_LE */
->>>>    #define H_SET_MODE_ENDIAN_BIG    0
->>>> @@ -990,6 +993,7 @@ extern const VMStateDescription vmstate_spapr_cap_ccf_assist;
->>>>    extern const VMStateDescription vmstate_spapr_cap_fwnmi;
->>>>    extern const VMStateDescription vmstate_spapr_cap_rpt_invalidate;
->>>>    extern const VMStateDescription vmstate_spapr_wdt;
->>>> +extern const VMStateDescription vmstate_spapr_cap_dawr1;
->>>>
->>>>    static inline uint8_t spapr_get_cap(SpaprMachineState *spapr, int cap)
->>>>    {
->>>> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
->>>> index af12c93ebc..64855935f7 100644
->>>> --- a/target/ppc/cpu.h
->>>> +++ b/target/ppc/cpu.h
->>>> @@ -1588,9 +1588,11 @@ void ppc_compat_add_property(Object *obj, const char *name,
->>>>    #define SPR_PSPB              (0x09F)
->>>>    #define SPR_DPDES             (0x0B0)
->>>>    #define SPR_DAWR0             (0x0B4)
->>>> +#define SPR_DAWR1             (0x0B5)
->>>>    #define SPR_RPR               (0x0BA)
->>>>    #define SPR_CIABR             (0x0BB)
->>>>    #define SPR_DAWRX0            (0x0BC)
->>>> +#define SPR_DAWRX1            (0x0BD)
->>>>    #define SPR_HFSCR             (0x0BE)
->>>>    #define SPR_VRSAVE            (0x100)
->>>>    #define SPR_USPRG0            (0x100)
->>>> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
->>>> index aeff71d063..c688e52928 100644
->>>> --- a/target/ppc/cpu_init.c
->>>> +++ b/target/ppc/cpu_init.c
->>>> @@ -5131,6 +5131,20 @@ static void register_book3s_207_dbg_sprs(CPUPPCState *env)
->>>>                            KVM_REG_PPC_CIABR, 0x00000000);
->>>>    }
->>>>
->>>> +static void register_book3s_310_dbg_sprs(CPUPPCState *env)
->>>> +{
->>>> +    spr_register_kvm_hv(env, SPR_DAWR1, "DAWR1",
->>>> +                        SPR_NOACCESS, SPR_NOACCESS,
->>>> +                        SPR_NOACCESS, SPR_NOACCESS,
->>>> +                        &spr_read_generic, &spr_write_generic,
->>>> +                        KVM_REG_PPC_DAWR1, 0x00000000);
->>>> +    spr_register_kvm_hv(env, SPR_DAWRX1, "DAWRX1",
->>>> +                        SPR_NOACCESS, SPR_NOACCESS,
->>>> +                        SPR_NOACCESS, SPR_NOACCESS,
->>>> +                        &spr_read_generic, &spr_write_generic32,
->>>> +                        KVM_REG_PPC_DAWRX1, 0x00000000);
->>>> +}
->>>> +
->>>>    static void register_970_dbg_sprs(CPUPPCState *env)
->>>>    {
->>>>        /* Breakpoints */
->>>> @@ -6435,6 +6449,7 @@ static void init_proc_POWER10(CPUPPCState *env)
->>>>        /* Common Registers */
->>>>        init_proc_book3s_common(env);
->>>>        register_book3s_207_dbg_sprs(env);
->>>> +    register_book3s_310_dbg_sprs(env);
->>>>
->>>>        /* Common TCG PMU */
->>>>        init_tcg_pmu_power8(env);
->>>> diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
->>>> index a8a935e267..05f68d2d91 100644
->>>> --- a/target/ppc/kvm.c
->>>> +++ b/target/ppc/kvm.c
->>>> @@ -89,6 +89,7 @@ static int cap_large_decr;
->>>>    static int cap_fwnmi;
->>>>    static int cap_rpt_invalidate;
->>>>    static int cap_ail_mode_3;
->>>> +static int cap_dawr1;
->>>>
->>>>    static uint32_t debug_inst_opcode;
->>>>
->>>> @@ -138,6 +139,7 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
->>>>        cap_ppc_nested_kvm_hv = kvm_vm_check_extension(s, KVM_CAP_PPC_NESTED_HV);
->>>>        cap_large_decr = kvmppc_get_dec_bits();
->>>>        cap_fwnmi = kvm_vm_check_extension(s, KVM_CAP_PPC_FWNMI);
->>>> +    cap_dawr1 = kvm_vm_check_extension(s, KVM_CAP_PPC_DAWR1);
->>>>        /*
->>>>         * Note: setting it to false because there is not such capability
->>>>         * in KVM at this moment.
->>>> @@ -2109,6 +2111,16 @@ int kvmppc_set_fwnmi(PowerPCCPU *cpu)
->>>>        return kvm_vcpu_enable_cap(cs, KVM_CAP_PPC_FWNMI, 0);
->>>>    }
->>>>
->>>> +bool kvmppc_has_cap_dawr1(void)
->>>> +{
->>>> +    return !!cap_dawr1;
->>>> +}
->>>> +
->>>> +int kvmppc_set_cap_dawr1(int enable)
->>>> +{
->>>> +    return kvm_vm_enable_cap(kvm_state, KVM_CAP_PPC_DAWR1, 0, enable);
->>>> +}
->>>> +
->>>>    int kvmppc_smt_threads(void)
->>>>    {
->>>>        return cap_ppc_smt ? cap_ppc_smt : 1;
->>>> diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
->>>> index 611debc3ce..584916a6d1 100644
->>>> --- a/target/ppc/kvm_ppc.h
->>>> +++ b/target/ppc/kvm_ppc.h
->>>> @@ -67,6 +67,8 @@ bool kvmppc_has_cap_htm(void);
->>>>    bool kvmppc_has_cap_mmu_radix(void);
->>>>    bool kvmppc_has_cap_mmu_hash_v3(void);
->>>>    bool kvmppc_has_cap_xive(void);
->>>> +bool kvmppc_has_cap_dawr1(void);
->>>> +int kvmppc_set_cap_dawr1(int enable);
->>>>    int kvmppc_get_cap_safe_cache(void);
->>>>    int kvmppc_get_cap_safe_bounds_check(void);
->>>>    int kvmppc_get_cap_safe_indirect_branch(void);
->>>> @@ -352,6 +354,16 @@ static inline bool kvmppc_has_cap_xive(void)
->>>>        return false;
->>>>    }
->>>>
->>>> +static inline bool kvmppc_has_cap_dawr1(void)
->>>> +{
->>>> +    return false;
->>>> +}
->>>> +
->>>> +static inline int kvmppc_set_cap_dawr1(int enable)
->>>> +{
->>>> +    abort();
->>>> +}
->>>> +
->>>>    static inline int kvmppc_get_cap_safe_cache(void)
->>>>    {
->>>>        return 0;
->>>>
->>>>
->>
->>
->>
-> 
 
