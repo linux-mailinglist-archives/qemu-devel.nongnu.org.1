@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACA6F74B1C0
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 15:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E462974B1C6
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 15:29:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHlT8-00027r-Qx; Fri, 07 Jul 2023 09:25:54 -0400
+	id 1qHlWZ-00035J-1t; Fri, 07 Jul 2023 09:29:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHlSx-000226-6q
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 09:25:48 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHlWX-000350-2T
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 09:29:25 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHlSv-0005rh-CI
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 09:25:42 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2b6b98ac328so28498551fa.0
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 06:25:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHlWV-0000Pg-Ha
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 09:29:24 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-51e28cac164so5114318a12.1
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 06:29:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688736339; x=1691328339;
+ d=linaro.org; s=google; t=1688736561; x=1691328561;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=cJ+8OCj3iI+O/WZNhELqK4XTm4vfEKcOADwRPsQaXmg=;
- b=KUvYigYfuPIK9XDybA2+RFJWyh/33NO3BTzxuR0jaLdcUZUU591y/ClF70C/6LJp2m
- vxcpW4xn2uBjsHkOCVvvfC+LY97yRO/klND/3+eH+Bzcv++UQvlMjWh9XsKODgLha4rt
- raWZAlbEnxbL+7gND5j8eV/CuiWJtg35fJm4PMDMO4QsMXJd4dEpDgTRyRvVLh+lg5jE
- tFUzTdpHjiuECBpdd1+KbSRyaQWAFzLb78vLyHnSaZVTIS4HuZWExxHa6XsowzYvEsEx
- 9pi4TM/cGCBupsY1FgmzbWMT4NTO8pS5BY1OWywg6ltS+XJpr99jtAhc5v98zucqYyZi
- kkIQ==
+ bh=9VkJ4Pdq4yUi3J0pZANSENhIls9zz/anwcgwLWOU3JI=;
+ b=ei+mqfdG9RcKZFvsH8E+U508vA0ne79JJsc61H4gFxdX1KEpixHhL/5CCkk2p1emoM
+ 6QHbnl3JUMKkOuYyIN6HOBpkAUbkC3hFvDb/8tP7NcO1M5i743OyQ3nirss2Ex4MkKO5
+ Yg22uPuRgntHQsf8dKucp6EfKSYAvGt9RV+dGGP6XPOp02ws40AhPVHye54UYMNectC2
+ ywzcwGfktLFvnkFSbAGHf4wjz36HEfAMH/Y7HxfGfKmRuZ6Bvn5ZC7RzP5MKFWLquLv4
+ vibWANvut7lI53QEGbJb9VjBMfV2bTI8ZDK+K7UeGhIo63uqmpMe6wdkdHDXgvkh8hL0
+ ERdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688736339; x=1691328339;
+ d=1e100.net; s=20221208; t=1688736561; x=1691328561;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cJ+8OCj3iI+O/WZNhELqK4XTm4vfEKcOADwRPsQaXmg=;
- b=C8Dg6miT0zureOynCykA2d9RUVZ8GqNYOW2XFi1dR0GAWW8AybVu+eIw3z/UIKWnWN
- fVPD65rtxBUVt3hRyiP87EjQdDwopret3IJ5nACRd13CQSUV3oH2l6/L9qEczYySVP7t
- kGm/+W12hjZ1l7DwB0fCqWdLAndXhYe1Mdz09TlYPkdVZlCl/Z4t0fI9ik0ETJGPPweT
- R/XPDX/GrZ6WxZA3nbPeun5PblWYXYGspm0/1r0WefTHdDQFQ9thh4x+awyNlIThzLYF
- CjUlc909Y4xCP2fViJ2KmJ+9GMJUYvlhDHJhF7xnQ5Ebm6OUoBubaiYmmPZwVLmJ153y
- yLgA==
-X-Gm-Message-State: ABy/qLZhgjDQsEu0qY3uIz8WvIp4B5csoS9Z8+rLKN7gTqjlp2BlR6pw
- GVFjzpEScml4RAW36bFXKidPCjrJV+kkDicKfnI=
-X-Google-Smtp-Source: APBJJlHTYRDwy6Tdwdj4LBbAB471Ue53LxO+uHjMcTEDb7rLc5paODH+mC67nYjF9bOquyFfjRDxmQ==
-X-Received: by 2002:a2e:9f14:0:b0:2b6:a841:e686 with SMTP id
- u20-20020a2e9f14000000b002b6a841e686mr3659500ljk.6.1688736339300; 
- Fri, 07 Jul 2023 06:25:39 -0700 (PDT)
+ bh=9VkJ4Pdq4yUi3J0pZANSENhIls9zz/anwcgwLWOU3JI=;
+ b=gfuLWgEZ7YnVGOCk3P2mNXCMaiw/p4MPoAFDuf1CbTF+P/rs7sI6tiD+ccSl4rZUNE
+ yVfjE1r+eHoIaowAXljt9Rl+Bxso8eSp4u0A5G2tr8c5K6ETXyfGLmQHedGsTvRFDoYi
+ WqqcTgQh3tY6pA9Ri7J1JOs8xtnwP7NXpdqV824Ia+WjzS/8ycVsELxCp/A2IB+jnxpZ
+ bNd1OJ1jlOwlN2YO42+Q4EZvDXZWb+sjlkd0EV3OIt1O7C/8grtGuY1YzqjBCccxhFNH
+ IErinPzy+x3eIwRAeXqjytwT4g9xsUTzB8nw1L1bqOvRm0NPGlG4Zw3tn2hgG7+qZ4ES
+ r1Sw==
+X-Gm-Message-State: ABy/qLaagwgEqzvDKPlGE44/ZrGbe465gUzqSPHA/XlsYL2CxAfvNwn6
+ mZwXQVcUdKVx11XA2ErHsxhIZQ==
+X-Google-Smtp-Source: APBJJlH3sfSI0RorF6HEqol3KIIBPZjaSFPFiULXh8LZxGVqcHsWNJw2P0c+8A1EhfIOp9PuP4l1yA==
+X-Received: by 2002:a17:906:77db:b0:992:1ecb:d296 with SMTP id
+ m27-20020a17090677db00b009921ecbd296mr5054620ejn.12.1688736561156; 
+ Fri, 07 Jul 2023 06:29:21 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.215.192])
  by smtp.gmail.com with ESMTPSA id
- i18-20020a170906851200b0098669cc16b2sm2157552ejx.83.2023.07.07.06.25.37
+ rh16-20020a17090720f000b00988be3c1d87sm2196257ejb.116.2023.07.07.06.29.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 06:25:38 -0700 (PDT)
-Message-ID: <1bc798c2-863f-96d8-10c4-18bc2e5d1067@linaro.org>
-Date: Fri, 7 Jul 2023 15:25:36 +0200
+ Fri, 07 Jul 2023 06:29:20 -0700 (PDT)
+Message-ID: <d7095f65-6943-689f-1b25-31f33ba7458a@linaro.org>
+Date: Fri, 7 Jul 2023 15:29:17 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v2 1/2] accel/tcg: Split out cpu_exec_longjmp_cleanup
+Subject: Re: [PATCH] tcg: Fix info_in_idx increment in layout_arg_by_ref
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: rjones@redhat.com, pbonzini@redhat.com
-References: <20230707103611.5906-1-richard.henderson@linaro.org>
- <20230707103611.5906-2-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org, qemu-stable@nongnu.org
+References: <20230707102955.5607-1-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230707103611.5906-2-richard.henderson@linaro.org>
+In-Reply-To: <20230707102955.5607-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,12 +92,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/7/23 12:36, Richard Henderson wrote:
-> Share the setjmp cleanup between cpu_exec_step_atomic
-> and cpu_exec_setjmp.
+On 7/7/23 12:29, Richard Henderson wrote:
+> Off by one error, failing to take into account that layout_arg_1
+> already incremeneted info_in_idx for the first piece.  We only
+> need care for the n-1 TCG_CALL_ARG_BY_REF_N pieces here.
 > 
-> Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
+> Cc: qemu-stable@nongnu.org
+> Fixes: 313bdea84d2 ("tcg: Add TCG_CALL_{RET,ARG}_BY_REF")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1751
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/tcg.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
