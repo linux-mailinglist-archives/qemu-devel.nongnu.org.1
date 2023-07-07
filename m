@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22CB374AC90
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 10:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7558074ACA5
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 10:18:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHgYf-0002ZJ-B5; Fri, 07 Jul 2023 04:11:17 -0400
+	id 1qHgez-0004a4-2S; Fri, 07 Jul 2023 04:17:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHgYe-0002Z1-3L
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:11:16 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHgeu-0004Zm-IP
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:17:44 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHgYc-0006xM-GK
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:11:15 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-51d9128494cso1944193a12.0
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 01:11:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHges-0008IH-CM
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 04:17:44 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-993d1f899d7so34791866b.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 01:17:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688717472; x=1691309472;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1688717859; x=1691309859;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=QaBZtVOgK6LuBIVuOGcFhwUlKUgTAK3ZZXYuQI2MdP0=;
- b=XJV5HDQBou3nJiD1b1IzA1GyTTQgLvbxrkVkArGngdd3ccyjY+uZ7Ci1ndx5FsJZNW
- Bpottu7T0uuEwSWq8eR/W7m/lrBd0BtTkRRnmXPd47C1yj2L8ZlK2WnE8Q1cNhAWZkb7
- mCBVKmRglSQUdsd67ZWuFvliJKpMYaE98tcp2vuKi5XqjcxLfbB/n+AebcprBbZCq+A8
- QuBEVfRuTcc9VwxVLL2puI7Txo1i8thtQ6PzZtbpM0YwgxEEgoiMy7C3cotaqtaTrqyR
- 6roj5td0ZCBLF2OHj5RRARXrR8ZZqgpL+rwHLJn/hOTFy7b5Xgsv4mz8oL7xPYK6cVwI
- e5tA==
+ bh=q4kFfws0fh43l4EdnZ4aEj5x6AtqpydtPPnyOKO9DQA=;
+ b=FJQM5Fx/pDmMQ8aENTxuoZKziGatwM9KF0Y00SWbnGJwe2VMWVNtxPuM2b5mkRD2xJ
+ gOw5UTgYgK6ayfQoEsn7lt+WhySmiGpcRJYqvyL9reUT8teJHgRSymFIN+/uZhXQw5uI
+ koDWwUcEoe7VG7YFS7KLQWYn/2pyYuFu9tdog0dx26YNWb0KPq/qtOsW1LdFM31fAFsN
+ bwQxOXGsMeQYk5SGiMNJz00dj6NJMxeGYbdswvcWSF6BerG2Bz5FmijF0gbqraZLzzGr
+ jpq/Q/ycu67ukDItxlqScAThmYWH7q7nN3QlKX8HRZMtTRUOjwhTIkWWBMdiNGXnL9Td
+ MDWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688717472; x=1691309472;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1688717859; x=1691309859;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QaBZtVOgK6LuBIVuOGcFhwUlKUgTAK3ZZXYuQI2MdP0=;
- b=eqHKeKp2J4kW/Ysc/EaS8lAuXW0AHig40rGIzpMtL3egSWYozOYtuxD04S79zrkpXM
- eRXe0ggojNrmWU2Ji+Ii8Tg5Ye3NJLa6txkv+WiKDplJw+nmkazR4kXA07VDIGH7RZZx
- jLE5kSSJ/aU3nC7q47odmv1b+INzBWQyAZcA/KKoY7kfKtLR7FLsAOP4e/Tzm9xk7vWW
- GrGkJQ/ioNpMj6B7+ZACKJLrrshGr5V9dgDp1jqgl3nhXfk95Mu71ozhCfK5qi3o28Kj
- f1ReOnVYptLZqip5FYP02zms75EzNdnz4obN8X3KQGqb8Ulv2hQv8WU8GZF3vZpqjv1Q
- HoDQ==
-X-Gm-Message-State: ABy/qLb1YNH+RSa/gRfex1hJmj1YKkBBBmK5jAPBjgpgS1ReqFsentZw
- rhkHPt3E2NJEDDhmU3E1vDQbrA==
-X-Google-Smtp-Source: APBJJlGUGOCbVtkoltONT0bpPxb8qup4y0/GRNiLEWlxIj7LF72swZPkJPOj34EqTFCoMCpDL1JSvw==
-X-Received: by 2002:a05:6402:890:b0:51d:d41b:26a5 with SMTP id
- e16-20020a056402089000b0051dd41b26a5mr3990890edy.14.1688717472211; 
- Fri, 07 Jul 2023 01:11:12 -0700 (PDT)
+ bh=q4kFfws0fh43l4EdnZ4aEj5x6AtqpydtPPnyOKO9DQA=;
+ b=CvdwFSOJmRci7UlMleqHRRquEo5ujMcEkbrI6wi5xAXSILdNacAdY8bHqZ8sfKGbUM
+ BR2KlcoROb+2lcaVGRLdd1ufyA3AInQnxDHxPSoMdjzfWenrND900nj4JFBnk2GnH2JY
+ LV14fX1+l74FNZjDxRN09fkfz6MyfmS5dB9oQzNbQGcULAMWUWEcSI21eGyef+014/zp
+ S59FvKmQLgZ7nzeTTIbscd3wIYqibl3in5D1OmOvQDbL8GKPBUNAmNRzrZLK3gGrky4X
+ J+nwWFAtole1eLyeRy+f/PYwkx5jkX6F92MQ721+f9GG+3T0JjmzZCLkc4A0/PvdYivU
+ 5/nw==
+X-Gm-Message-State: ABy/qLboVw2wvdJMbijm0c5awTmmnEhahrvf+f8/nwuzzT3KtJwNj4Tu
+ RkbF+2Z8ErZ9rCitEdx4X8/xRVuOo2c064qi1SM=
+X-Google-Smtp-Source: APBJJlHFgKB8VAxS8/JEckgaFh32TNW/d91Hm9XAFmM3s8QyEG2TG9b5RMiXKqyjQAgcBSvUtk0qSw==
+X-Received: by 2002:a17:906:89a0:b0:98c:cc3c:194e with SMTP id
+ gg32-20020a17090689a000b0098ccc3c194emr2892813ejc.52.1688717859110; 
+ Fri, 07 Jul 2023 01:17:39 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.215.192])
  by smtp.gmail.com with ESMTPSA id
- ay1-20020a056402202100b0051bed498851sm1723824edb.54.2023.07.07.01.11.11
+ u18-20020a1709064ad200b00993cc1242d4sm769497ejt.151.2023.07.07.01.17.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 01:11:11 -0700 (PDT)
-Message-ID: <cdd729e8-6bf7-620f-186b-b816dc0545fe@linaro.org>
-Date: Fri, 7 Jul 2023 10:11:10 +0200
+ Fri, 07 Jul 2023 01:17:38 -0700 (PDT)
+Message-ID: <fc53bdaf-ec58-adbf-da7a-211ec26d13be@linaro.org>
+Date: Fri, 7 Jul 2023 10:17:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 0/6] target/ppc: Few cleanups in kvm_ppc.h
+Subject: Re: [PATCH 02/21] q800: add djMEMC memory controller
 Content-Language: en-US
-To: Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
-Cc: David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Greg Kurz <groug@kaod.org>,
- kvm@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
-References: <20230627115124.19632-1-philmd@linaro.org>
- <bf8cc98d-662b-c4ce-2837-a70c79b0e5e6@gmail.com>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+ qemu-devel@nongnu.org
+References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
+ <20230702154838.722809-3-mark.cave-ayland@ilande.co.uk>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <bf8cc98d-662b-c4ce-2837-a70c79b0e5e6@gmail.com>
+In-Reply-To: <20230702154838.722809-3-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,21 +93,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/7/23 09:24, Daniel Henrique Barboza wrote:
-> Phil,
+On 2/7/23 17:48, Mark Cave-Ayland wrote:
+> The djMEMC controller is used to store information related to the physical memory
+> configuration.
 > 
-> I queued all patches to ppc-next. I fixed up patch 3 to not move the 
-> cpu_list
-> macro as Greg suggested. If you're strongly attached to it let me know and
-> I'll remove it from the queue.
+> Co-developed-by: Laurent Vivier <laurent@vivier.eu>
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>   MAINTAINERS              |   2 +
+>   hw/m68k/Kconfig          |   1 +
+>   hw/m68k/q800.c           |  10 +++
+>   hw/misc/Kconfig          |   3 +
+>   hw/misc/djmemc.c         | 135 +++++++++++++++++++++++++++++++++++++++
+>   hw/misc/meson.build      |   1 +
+>   hw/misc/trace-events     |   4 ++
+>   include/hw/m68k/q800.h   |   2 +
+>   include/hw/misc/djmemc.h |  30 +++++++++
+>   9 files changed, 188 insertions(+)
+>   create mode 100644 hw/misc/djmemc.c
+>   create mode 100644 include/hw/misc/djmemc.h
 
-Sorry for missing that earlier, sure, no problem!
 
-> Greg, feel free to send your R-b in patch 3 if patch 3 with this change 
-> pleases
-> you.
-> 
-> 
-> Daniel
+> diff --git a/include/hw/misc/djmemc.h b/include/hw/misc/djmemc.h
+> new file mode 100644
+> index 0000000000..82d4e4a2fe
+> --- /dev/null
+> +++ b/include/hw/misc/djmemc.h
+> @@ -0,0 +1,30 @@
+> +/*
+> + * djMEMC, macintosh memory and interrupt controller
+> + * (Quadra 610/650/800 & Centris 610/650)
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#ifndef HW_MISC_DJMEMC_H
+> +#define HW_MISC_DJMEMC_H
+> +
+> +#include "hw/sysbus.h"
+> +
+> +#define DJMEMC_SIZE        0x2000
+> +#define DJMEMC_NUM_REGS    (0x38 / sizeof(uint32_t))
+> +
+> +#define DJMEMC_MAXBANKS    10
+
+MAXBANKS doesn't seem used, but not a problem.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
