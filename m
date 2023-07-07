@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BFC74B2A7
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7EA74B2A8
 	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 16:06:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHm4k-0007BP-QY; Fri, 07 Jul 2023 10:04:46 -0400
+	id 1qHm4n-0007By-Be; Fri, 07 Jul 2023 10:04:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qHm4h-0007As-AP
+ id 1qHm4h-0007Az-HB
  for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qHm4f-0006MJ-8Y
+ id 1qHm4f-0006MT-QH
  for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688738680;
+ s=mimecast20190719; t=1688738681;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fSQvtdibzf8kOI4lB3nUm6N/pn4ErguFNC1K35xxW6Y=;
- b=FWwG7Nvvc3FaPCCOPswYABbI5kFYhj6E64JqoPMMseWjW7ourlnP2j1vIwMleI3bbLnW8t
- DY2zk6OhFiiHbfXcPFT9QVsnQtNADlyg/zylwgzR5GzsVc+QFwCwKgG1C7VB52ojBTMtgS
- zwD5HbdFTaR6NqkJiYObNIjLeXVv4KE=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0z06+ySLDI//4HgzANh/bhuBzMpaxFijzGez2Mql6tw=;
+ b=fgEPqIImkghvwu3kNeTZiXM2VXGYOUGGkZ+uxEB2o0loF0Vloat8s9sgLeXI9Ggw3k019j
+ FhiUBiGV7is7p5T4OkJGinRCYnVEAGd5aIxdFsmq/4lvyFcycxXqbciZbQmrWwi+pVKhCK
+ yYjl/ZsZGUM3Llq6cqe8D5UZj1WQ7Mk=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-195-JqkvLsl_PVmMT9QeLsxo3w-1; Fri, 07 Jul 2023 10:04:38 -0400
-X-MC-Unique: JqkvLsl_PVmMT9QeLsxo3w-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4fb9364b320so1903923e87.3
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 07:04:38 -0700 (PDT)
+ us-mta-139-1halClEQN1i77WvsJftSNQ-1; Fri, 07 Jul 2023 10:04:39 -0400
+X-MC-Unique: 1halClEQN1i77WvsJftSNQ-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9879d2fc970so134962166b.0
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 07:04:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688738676; x=1691330676;
+ d=1e100.net; s=20221208; t=1688738677; x=1691330677;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fSQvtdibzf8kOI4lB3nUm6N/pn4ErguFNC1K35xxW6Y=;
- b=Dn396sAcaCJYgQjPW6OkGJWf9NliFQ8bM0N4/jPE5GLmm49ZNIQu0TFWJi6ZcgcOFj
- Ys5n8DBslGSmLrLONu17tFSd6w3n2N8VOFAC29tKLSGt3jb+ph7GR/GqI6AoMn0sMOeV
- joLJTwYa6jMFL7UakhhIRw+3yHIB5oGxa6lHaRbdjHVbR40yIHpAlXw44S83dTkpafxF
- u4QDm1g4UuNuQZe4c0snwk0ggkemj0rZHFYbE+z+bEyjMUhduVde7j+86beNr/ZULvrH
- HlUZpat5gcYWs1JdITTXIeMwmxJHOY/9ZqaE2sW0feYIiA6zFVyzxqpZh0VvnUN9GrFV
- GPrQ==
-X-Gm-Message-State: ABy/qLa6/TGsaWxEX0e8tq0TFWzq56bIU2PzZNGjfLe8ZKKWMsWQHxRm
- GmovZGMhFSbiOfXsLviK+i2FYxBy4YhoYNBZL6DdAUI8LPvaWR+5zwUw+9rpNAmv8CpZWNuDI0L
- 3Ohc3uWmNJGGuxBZ0QFcaTCKSmGjDzDOJ5pXi/kRFezrOiCwftVDVVbKDHKfQ2LU+mjVMEsCKSa
- E=
-X-Received: by 2002:ac2:4e07:0:b0:4f8:5e49:c613 with SMTP id
- e7-20020ac24e07000000b004f85e49c613mr4674520lfr.43.1688738676415; 
- Fri, 07 Jul 2023 07:04:36 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHFX36aggTGOMMyhdRuJ5rG+g7DMvDw5O4YTyyl1RQc+swEEMCSeypDCosr50fexKFSp2CriA==
-X-Received: by 2002:ac2:4e07:0:b0:4f8:5e49:c613 with SMTP id
- e7-20020ac24e07000000b004f85e49c613mr4674480lfr.43.1688738675865; 
- Fri, 07 Jul 2023 07:04:35 -0700 (PDT)
+ bh=0z06+ySLDI//4HgzANh/bhuBzMpaxFijzGez2Mql6tw=;
+ b=CtW+noTkM5MhZdCfV/5zOkG8AierA/moyTfy/vmhng5VmSNC1vmEf0OogH5KpwSGMH
+ CFQiudfSeW/nC2MK4aKKsptfu1crYls6oWAPVKRvUegh/iYIkvDAKRI+UmPr6eGNANz1
+ hlAx9/NLSWaEhiZ7dWwvJHoz63DN+joUsy5cJamwKWX1uvm/onxUkDCgk7/V+qEvw1rO
+ TIQ8e2nHUtnRfkIn43ZL0hA6vZl7r4GcNZTA/a05hJT51XfEB8x5H+oHZoixD3R6aAMj
+ OGZdVhzjFIRhNyXxr4KaTaqo/wC6xuN4HuAJBFQKiN881Dv2W7ISUjRy+JUCqnZiOyUk
+ 6bgQ==
+X-Gm-Message-State: ABy/qLbCT536Fm8Iml4dXAF2vfoaNavniDAQBqCORtmasgG4K/QYd5rQ
+ 8zEpRd9/FqPTKyR/NIcNowsgrxZcilfPC9QsPF7AZhAWcv44JCHBNsn+7nF7M5TxsJ9p85YsRCP
+ 3G142NmcIwZMPaMGMo4FMupNT13Au886ecIVn5tON6QmTz2aE1YxAaqHobNhFTZyLOFs3A+0VIB
+ k=
+X-Received: by 2002:a17:906:72d9:b0:978:6e73:e837 with SMTP id
+ m25-20020a17090672d900b009786e73e837mr4240538ejl.4.1688738677635; 
+ Fri, 07 Jul 2023 07:04:37 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGxogkQhm9tY2fwdcLLAnlh0YpZzg1kOwC5pfhkyyguwwPeNNK+q3xV3ejkXoDHMASSk4vyxg==
+X-Received: by 2002:a17:906:72d9:b0:978:6e73:e837 with SMTP id
+ m25-20020a17090672d900b009786e73e837mr4240515ejl.4.1688738677167; 
+ Fri, 07 Jul 2023 07:04:37 -0700 (PDT)
 Received: from [192.168.122.1] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- m11-20020aa7c2cb000000b0051e2a4edfd5sm2086120edp.21.2023.07.07.07.04.34
- for <qemu-devel@nongnu.org>
+ v1-20020a170906b00100b00993a9a951fasm2283403ejy.11.2023.07.07.07.04.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 07:04:34 -0700 (PDT)
+ Fri, 07 Jul 2023 07:04:36 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 1/9] python: bump minimum requirements so they are compatible
- with 3.12
-Date: Fri,  7 Jul 2023 16:04:24 +0200
-Message-ID: <20230707140432.88073-2-pbonzini@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Subject: [PULL 2/9] meson.build: Remove the logic to link C code with the C++
+ linker
+Date: Fri,  7 Jul 2023 16:04:25 +0200
+Message-ID: <20230707140432.88073-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707140432.88073-1-pbonzini@redhat.com>
 References: <20230707140432.88073-1-pbonzini@redhat.com>
@@ -102,86 +102,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are many Python 3.12 issues right now, but a particularly
-problematic one when debugging them is that one cannot even use
-minreqs.txt in a Python 3.12 virtual environment to test with
-locked package versions.
+From: Thomas Huth <thuth@redhat.com>
 
-Bump the mypy and wrapt versions to fix this, while remaining
-within the realm of versions compatible with Python 3.7.
+We are not mixing C++ with C code anymore, the only remaining
+C++ code in qga/vss-win32/ is used for a plain C++ executable.
+Thus we can remove the hacks for linking C code with the C++ linker
+now to simplify meson.build a little bit, and also to avoid that
+some C++ code sneaks in by accident again.
 
-This requires a workaround for a mypy false positive
-
-    qemu/qmp/qmp_tui.py:350: error: Non-overlapping equality check (left operand type: "Literal[Runstate.DISCONNECTING]", right operand type: "Literal[Runstate.IDLE]")  [comparison-overlap]
-
-where mypy does not realize that self.disconnect() could change
-the value of self.runstate.
-
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20230706064736.178962-1-thuth@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- python/qemu/qmp/qmp_tui.py | 5 ++++-
- python/setup.cfg           | 2 +-
- python/tests/minreqs.txt   | 9 ++++-----
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ meson.build     | 22 ++++++----------------
+ qga/meson.build |  2 +-
+ scripts/main.c  |  1 -
+ 3 files changed, 7 insertions(+), 18 deletions(-)
+ delete mode 100644 scripts/main.c
 
-diff --git a/python/qemu/qmp/qmp_tui.py b/python/qemu/qmp/qmp_tui.py
-index 83691447231..2d9ebbd20bc 100644
---- a/python/qemu/qmp/qmp_tui.py
-+++ b/python/qemu/qmp/qmp_tui.py
-@@ -346,7 +346,10 @@ async def manage_connection(self) -> None:
-                 self._set_status('[Disconnected]')
-                 await self.disconnect()
-                 # check if a retry is needed
--                if self.runstate == Runstate.IDLE:
-+                # mypy 1.4.0 doesn't believe runstate can change after
-+                # disconnect(), hence the cast.
-+                state = cast(Runstate, self.runstate)
-+                if state == Runstate.IDLE:
-                     continue
-             await self.runstate_changed()
+diff --git a/meson.build b/meson.build
+index b82d5b7cd07..c77faa0b6e5 100644
+--- a/meson.build
++++ b/meson.build
+@@ -473,19 +473,10 @@ if targetos != 'darwin'
+   warn_flags += ['-Wthread-safety']
+ endif
  
-diff --git a/python/setup.cfg b/python/setup.cfg
-index 42f0b0be07d..5d7e95f5d24 100644
---- a/python/setup.cfg
-+++ b/python/setup.cfg
-@@ -39,7 +39,7 @@ devel =
-     flake8 >= 5.0.4
-     fusepy >= 2.0.4
-     isort >= 5.1.2
--    mypy >= 0.780
-+    mypy >= 1.4.0
-     pylint >= 2.17.3
-     tox >= 3.18.0
-     urwid >= 2.1.2
-diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt
-index 1ce72cef6d8..979461be6bb 100644
---- a/python/tests/minreqs.txt
-+++ b/python/tests/minreqs.txt
-@@ -28,7 +28,7 @@ avocado-framework==90.0
- # Linters
- flake8==5.0.4
- isort==5.1.2
--mypy==0.780
-+mypy==1.4.0
- pylint==2.17.3
+-# Check that the C++ compiler exists and works with the C compiler.
+-link_language = 'c'
+-linker = cc
++# Set up C++ compiler flags
+ qemu_cxxflags = []
+ if 'cpp' in all_languages
+   qemu_cxxflags = ['-D__STDC_LIMIT_MACROS', '-D__STDC_CONSTANT_MACROS', '-D__STDC_FORMAT_MACROS'] + qemu_cflags
+-  if cxx.links(files('scripts/main.c'), args: qemu_cflags)
+-    link_language = 'cpp'
+-    linker = cxx
+-  else
+-    message('C++ compiler does not work with C compiler')
+-    message('Disabling C++-specific optional code')
+-  endif
+ endif
  
- # Transitive flake8 dependencies
-@@ -37,12 +37,11 @@ pycodestyle==2.9.1
- pyflakes==2.5.0
+ # clang does not support glibc + FORTIFY_SOURCE (is it still true?)
+@@ -1600,7 +1591,7 @@ if not get_option('snappy').auto() or have_system
+   snappy = cc.find_library('snappy', has_headers: ['snappy-c.h'],
+                            required: get_option('snappy'))
+ endif
+-if snappy.found() and not linker.links('''
++if snappy.found() and not cc.links('''
+    #include <snappy-c.h>
+    int main(void) { snappy_max_compressed_length(4096); return 0; }''', dependencies: snappy)
+   snappy = not_found
+@@ -2746,7 +2737,7 @@ config_host_data.set('CONFIG_AF_VSOCK', cc.has_header_symbol(
  
- # Transitive mypy dependencies
--mypy-extensions==0.4.3
--typed-ast==1.4.0
--typing-extensions==4.5.0
-+mypy-extensions==1.0.0
-+typing-extensions==4.7.1
- 
- # Transitive pylint dependencies
- astroid==2.15.4
- lazy-object-proxy==1.4.0
- toml==0.10.0
--wrapt==1.12.1
-+wrapt==1.14.0
+ have_vss = false
+ have_vss_sdk = false # old xp/2003 SDK
+-if targetos == 'windows' and link_language == 'cpp'
++if targetos == 'windows' and 'cpp' in all_languages
+   have_vss = cxx.compiles('''
+     #define __MIDL_user_allocate_free_DEFINED__
+     #include <vss.h>
+@@ -3827,7 +3818,6 @@ foreach target : target_dirs
+                c_args: c_args,
+                dependencies: arch_deps + deps + exe['dependencies'],
+                objects: lib.extract_all_objects(recursive: true),
+-               link_language: link_language,
+                link_depends: [block_syms, qemu_syms] + exe.get('link_depends', []),
+                link_args: link_args,
+                win_subsystem: exe['win_subsystem'])
+@@ -4061,7 +4051,7 @@ summary_info += {'host CPU':          cpu}
+ summary_info += {'host endianness':   build_machine.endian()}
+ summary_info += {'C compiler':        ' '.join(meson.get_compiler('c').cmd_array())}
+ summary_info += {'Host C compiler':   ' '.join(meson.get_compiler('c', native: true).cmd_array())}
+-if link_language == 'cpp'
++if 'cpp' in all_languages
+   summary_info += {'C++ compiler':    ' '.join(meson.get_compiler('cpp').cmd_array())}
+ else
+   summary_info += {'C++ compiler':      false}
+@@ -4074,13 +4064,13 @@ if get_option('optimization') != 'plain'
+   option_cflags += ['-O' + get_option('optimization')]
+ endif
+ summary_info += {'CFLAGS':            ' '.join(get_option('c_args') + option_cflags)}
+-if link_language == 'cpp'
++if 'cpp' in all_languages
+   summary_info += {'CXXFLAGS':        ' '.join(get_option('cpp_args') + option_cflags)}
+ endif
+ if targetos == 'darwin'
+   summary_info += {'OBJCFLAGS':       ' '.join(get_option('objc_args') + option_cflags)}
+ endif
+-link_args = get_option(link_language + '_link_args')
++link_args = get_option('c_link_args')
+ if link_args.length() > 0
+   summary_info += {'LDFLAGS':         ' '.join(link_args)}
+ endif
+diff --git a/qga/meson.build b/qga/meson.build
+index d3291b4376c..dd18092f561 100644
+--- a/qga/meson.build
++++ b/qga/meson.build
+@@ -9,7 +9,7 @@ endif
+ have_qga_vss = get_option('qga_vss') \
+   .require(targetos == 'windows',
+            error_message: 'VSS support requires Windows') \
+-  .require(link_language == 'cpp',
++  .require('cpp' in all_languages,
+            error_message: 'VSS support requires a C++ compiler') \
+   .require(have_vss, error_message: '''VSS support requires VSS headers.
+     If your Visual Studio installation doesn't have the VSS headers,
+diff --git a/scripts/main.c b/scripts/main.c
+deleted file mode 100644
+index b552c8e4ed7..00000000000
+--- a/scripts/main.c
++++ /dev/null
+@@ -1 +0,0 @@
+-int main(void) {}
 -- 
 2.41.0
 
