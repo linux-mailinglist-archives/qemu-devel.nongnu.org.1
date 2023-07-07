@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7267974B44F
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 17:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A87A74B452
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 17:29:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHnND-0000YH-PS; Fri, 07 Jul 2023 11:27:55 -0400
+	id 1qHnNE-0000ZY-AF; Fri, 07 Jul 2023 11:27:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qHnN8-0000VW-47
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:27:51 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1qHnNA-0000Wk-Ew
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:27:52 -0400
+Received: from mail-il1-x129.google.com ([2607:f8b0:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qHnN6-00075q-Aw
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:27:49 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-55b83ae9be2so1412071a12.2
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 08:27:47 -0700 (PDT)
+ id 1qHnN8-00076G-Go
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:27:52 -0400
+Received: by mail-il1-x129.google.com with SMTP id
+ e9e14a558f8ab-34637e55d8dso7411455ab.2
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 08:27:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688743666; x=1691335666;
+ d=gmail.com; s=20221208; t=1688743669; x=1691335669;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1wwNQrzfRieQAWwm33vW9G94BVnPYPQ6wP7L8s8G+8E=;
- b=AasuUtEIEhanRSougg4WYz3NL7SV13kCFYMOHFHDQrjJG45JBb3OE+WPciRAVKYCUG
- G5DJXt/ftDIEvaorJZEUpkIy84f9yRfDsc5FhACDTkOfMMnP0bv+MFoBFX69rTsLSz82
- MlmNkjhYAo9bnM6PJeWRtlft2amDZcKwdLoNNSnkD50A5y/YSetLQct7n30E7Dd0X+mo
- lXdDjV4UbT+KDYGd1oaR+xNbisRaLNnGrnTEVbOwVpsJ8Zyiz5v0vTRcjV+uLx3MeB7H
- H1N9/TPyRzg3j+foIc/CP6KGrvAK9+2b4JxQQsmpmc6/Kpwjiwxd+yRwAE96QcJfUL7W
- Sy6g==
+ bh=aXWfn4pycG91taiVTdMWYdNRBgsjQ7jyxitHpzV6nlc=;
+ b=TaHGgFYRgbwHmjZKlbkTktvd8uZ3PVhxqJMAqb/s0oS6vQ8uOcSkdidoEh8uw99YgD
+ YA1AzPM1zICiFqrvMo6FqJn9BU5g3cSL+Y9x5LHR0qeC3viHSNX2N7GuFunrNfTYZ3/y
+ QKt/L0EoT72ZcG/qmhoGlU55UDcuS+aZFC07pfQB1LN/OwHXTRhGMje6Fsmw4jJSqXPZ
+ PU4Gvvhrzq4aoyARN4DTca8srlivv6Qvf/UR+lc2zCltbC1XByndkuAgow8S7/hWDOY9
+ ksTkF77lo/xVBzaBIHwCyO+4inpmmCHVubFmB9I24Pu75BQpYfXOC+fE438n4+nxdeRf
+ 9qmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688743666; x=1691335666;
+ d=1e100.net; s=20221208; t=1688743669; x=1691335669;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1wwNQrzfRieQAWwm33vW9G94BVnPYPQ6wP7L8s8G+8E=;
- b=RvL2ttAANZVKn43A8IpBnVDsJEpEIo1vH4TgQjBREgT/G5JnqHqUd5KZ5l3+VwN4nK
- kjW4yQ1ksuXJ2cEBvvn4hx/H9vMns7BcbBdkMwFsE32FO6QfErJj9izmt6ScoDhM0JFt
- qJQia5OJcPmu8okxa5gcqzreNtqCJLMJiuImyzS5GPkIku2qfxI4KODGSbidfwYdSq0k
- 4OHMUpWAaMuCSPiiMBMYfww7ow2AqrYqmI64DpPRtM1LjCJd/iOi4OvddL4CUuFiUzgx
- +FZdyuz5X5g2fM+bocQ/im4axHGuaX4s5Gl3Ylje/zq8rCQlyTVVYCOP+16xszo88QRQ
- njfw==
-X-Gm-Message-State: ABy/qLa47qGHkfBerSXwNRbuiwc8Add90Q+EwaO7VPl+Tf4Rmded/uVc
- DBqXotK/nWX9gvcO8dqxWnM=
-X-Google-Smtp-Source: APBJJlEM36AiyJmA41JLOsCUaZhQnZLwt002aWyuffi0nP1lCFXE2l37e3vtsTbzNKZlMLWOjz/qkw==
-X-Received: by 2002:a05:6a21:6d92:b0:12f:9e13:12b1 with SMTP id
- wl18-20020a056a216d9200b0012f9e1312b1mr6517320pzb.15.1688743666115; 
- Fri, 07 Jul 2023 08:27:46 -0700 (PDT)
+ bh=aXWfn4pycG91taiVTdMWYdNRBgsjQ7jyxitHpzV6nlc=;
+ b=EmKGLWNmOvirYwHlWmXFz7U5CGUWycl4Uxqzfe1jCVIyMj2Bc0sp/+n8Dhrn0EPN0C
+ p0fMt2dY2gU1eUIJ9dhpiE5xwMr/AbSRnTREFehv5B2UhaLaAFxf1wfqPiLxWWz11ELO
+ YBqkaeG/gvAzKnXbAPkakEvR1gorYBhI9G8fDHzu7Mte9dDX+q1BOLzaHGJcd2F13H9o
+ 3l5LkKaJWnv+1MuUy25BABgbEKB17Wsv9iXi8qRogesMbIRuW49985qGmOdj0ESYwi3h
+ SYKozg+f4wCR+3AUicjyjpaDFSc7GTkCyWlYhwzaqBMgABNz/g7mleDtlBepBu1hS4Jb
+ 0GoA==
+X-Gm-Message-State: ABy/qLZ0RY+9VLkXrpfzxc/xXGU1fqd8iyuz1FjiB19s4CFnOQo56meU
+ fJ4Xt9tenk4sU4JAva7Hkog=
+X-Google-Smtp-Source: APBJJlG8eQe1+tyARSNhi4wmXmQZDiFW0ndzmlm8nHVgNRWlCe8nhz2/G9x8epqCSD94edMcHIitHA==
+X-Received: by 2002:a92:d486:0:b0:342:8d31:73e5 with SMTP id
+ p6-20020a92d486000000b003428d3173e5mr5277149ilg.19.1688743669244; 
+ Fri, 07 Jul 2023 08:27:49 -0700 (PDT)
 Received: from localhost ([159.226.94.115]) by smtp.gmail.com with ESMTPSA id
- a2-20020aa780c2000000b0064389eab4c8sm3026361pfn.126.2023.07.07.08.27.45
+ l15-20020a63700f000000b0054fa8539681sm3073275pgc.34.2023.07.07.08.27.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 08:27:45 -0700 (PDT)
+ Fri, 07 Jul 2023 08:27:48 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
 To: jasowang@redhat.com,
 	mst@redhat.com,
@@ -62,17 +62,16 @@ To: jasowang@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	yin31149@gmail.com,
 	18801353760@163.com
-Subject: [PATCH v3 3/7] vdpa: Restore packet receive filtering state relative
- with _F_CTRL_RX feature
-Date: Fri,  7 Jul 2023 23:27:30 +0800
-Message-Id: <804cedac93e19ba3b810d52b274ca5ec11469f09.1688743107.git.yin31149@gmail.com>
+Subject: [PATCH v3 4/7] vhost: Fix false positive out-of-bounds
+Date: Fri,  7 Jul 2023 23:27:31 +0800
+Message-Id: <ee31c5420ffc8e6a29705ddd30badb814ddbae1d.1688743107.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1688743107.git.yin31149@gmail.com>
 References: <cover.1688743107.git.yin31149@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=yin31149@gmail.com; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::129;
+ envelope-from=yin31149@gmail.com; helo=mail-il1-x129.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,128 +95,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch introduces vhost_vdpa_net_load_rx_mode()
-and vhost_vdpa_net_load_rx() to restore the packet
-receive filtering state in relation to
-VIRTIO_NET_F_CTRL_RX feature at device's startup.
+QEMU uses vhost_svq_translate_addr() to translate addresses
+between the QEMU's virtual address and the SVQ IOVA. In order
+to validate this translation, QEMU checks whether the translated
+range falls within the mapped range.
 
+Yet the problem is that, the value of `needle_last`, which is calculated
+by `needle.translated_addr + iovec[i].iov_len`, should represent the
+exclusive boundary of the translated range, rather than the last
+inclusive addresses of the range. Consequently, QEMU fails the check
+when the translated range matches the size of the mapped range.
+
+This patch solves this problem by fixing the `needle_last` value to
+the last inclusive address of the translated range.
+
+Note that this bug cannot be triggered at the moment, because QEMU
+is unable to translate such a big range due to the truncation of
+the CVQ command in vhost_vdpa_net_handle_ctrl_avail().
+
+Fixes: 34e3c94eda ("vdpa: Add custom IOTLB translations to SVQ")
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 ---
-v3:
-  - return early if mismatch the condition suggested by Eugenio
-  - remove the `on` variable suggested by Eugenio
+ hw/virtio/vhost-shadow-virtqueue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-v2: https://lore.kernel.org/all/d9d7641ef25d7a4477f8fc4df8cba026380dab76.1688051252.git.yin31149@gmail.com/
-  - avoid sending CVQ command in default state suggested by Eugenio
-
-v1: https://lore.kernel.org/all/86eeddcd6f6b04e5c1e44e901ddea3b1b8b6c183.1687402580.git.yin31149@gmail.com/
-
- net/vhost-vdpa.c | 85 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 85 insertions(+)
-
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 7189ccafaf..e80d4b4ef3 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -788,6 +788,87 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-     return 0;
- }
+diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
+index 1b1d85306c..49e5aed931 100644
+--- a/hw/virtio/vhost-shadow-virtqueue.c
++++ b/hw/virtio/vhost-shadow-virtqueue.c
+@@ -111,7 +111,7 @@ static bool vhost_svq_translate_addr(const VhostShadowVirtqueue *svq,
+         addrs[i] = map->iova + off;
  
-+static int vhost_vdpa_net_load_rx_mode(VhostVDPAState *s,
-+                                       uint8_t cmd,
-+                                       uint8_t on)
-+{
-+    const struct iovec data = {
-+        .iov_base = &on,
-+        .iov_len = sizeof(on),
-+    };
-+    return vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_RX,
-+                                   cmd, &data, 1);
-+}
-+
-+static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
-+                                  const VirtIONet *n)
-+{
-+    ssize_t dev_written;
-+
-+    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_RX)) {
-+        return 0;
-+    }
-+
-+    /*
-+     * According to virtio_net_reset(), device turns promiscuous mode
-+     * on by default.
-+     *
-+     * Addtionally, according to VirtIO standard, "Since there are
-+     * no guarantees, it can use a hash filter or silently switch to
-+     * allmulti or promiscuous mode if it is given too many addresses.".
-+     * QEMU marks `n->mac_table.uni_overflow` if guest sets too many
-+     * non-multicast MAC addresses, indicating that promiscuous mode
-+     * should be enabled.
-+     *
-+     * Therefore, QEMU should only send this CVQ command if the
-+     * `n->mac_table.uni_overflow` is not marked and `n->promisc` is off,
-+     * which sets promiscuous mode on, different from the device's defaults.
-+     *
-+     * Note that the device's defaults can mismatch the driver's
-+     * configuration only at live migration.
-+     */
-+    if (!n->mac_table.uni_overflow && !n->promisc) {
-+        dev_written = vhost_vdpa_net_load_rx_mode(s,
-+                                            VIRTIO_NET_CTRL_RX_PROMISC, 0);
-+        if (unlikely(dev_written < 0)) {
-+            return dev_written;
-+        }
-+        if (*s->status != VIRTIO_NET_OK) {
-+            return -EIO;
-+        }
-+    }
-+
-+    /*
-+     * According to virtio_net_reset(), device turns all-multicast mode
-+     * off by default.
-+     *
-+     * According to VirtIO standard, "Since there are no guarantees,
-+     * it can use a hash filter or silently switch to allmulti or
-+     * promiscuous mode if it is given too many addresses.". QEMU marks
-+     * `n->mac_table.multi_overflow` if guest sets too many
-+     * non-multicast MAC addresses.
-+     *
-+     * Therefore, QEMU should only send this CVQ command if the
-+     * `n->mac_table.multi_overflow` is marked or `n->allmulti` is on,
-+     * which sets all-multicast mode on, different from the device's defaults.
-+     *
-+     * Note that the device's defaults can mismatch the driver's
-+     * configuration only at live migration.
-+     */
-+    if (n->mac_table.multi_overflow || n->allmulti) {
-+        dev_written = vhost_vdpa_net_load_rx_mode(s,
-+                                            VIRTIO_NET_CTRL_RX_ALLMULTI, 1);
-+        if (unlikely(dev_written < 0)) {
-+            return dev_written;
-+        }
-+        if (*s->status != VIRTIO_NET_OK) {
-+            return -EIO;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
- static int vhost_vdpa_net_load(NetClientState *nc)
- {
-     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
-@@ -814,6 +895,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
-     if (unlikely(r)) {
-         return r;
-     }
-+    r = vhost_vdpa_net_load_rx(s, n);
-+    if (unlikely(r)) {
-+        return r;
-+    }
- 
-     return 0;
- }
+         needle_last = int128_add(int128_make64(needle.translated_addr),
+-                                 int128_make64(iovec[i].iov_len));
++                                 int128_makes64(iovec[i].iov_len - 1));
+         map_last = int128_make64(map->translated_addr + map->size);
+         if (unlikely(int128_gt(needle_last, map_last))) {
+             qemu_log_mask(LOG_GUEST_ERROR,
 -- 
 2.25.1
 
