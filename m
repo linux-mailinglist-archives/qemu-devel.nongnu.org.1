@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6811A74AFFB
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:39:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E520B74AFF2
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:37:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHji3-000418-SQ; Fri, 07 Jul 2023 07:33:11 -0400
+	id 1qHji4-0004AF-SI; Fri, 07 Jul 2023 07:33:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHji1-0003pe-BS; Fri, 07 Jul 2023 07:33:09 -0400
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
+ id 1qHji2-0003yN-Qy; Fri, 07 Jul 2023 07:33:10 -0400
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjho-0006oz-Dp; Fri, 07 Jul 2023 07:32:58 -0400
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-6b72c4038b6so1632923a34.0; 
- Fri, 07 Jul 2023 04:32:55 -0700 (PDT)
+ id 1qHjhw-0006pZ-EJ; Fri, 07 Jul 2023 07:33:10 -0400
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6b75637076eso1627667a34.2; 
+ Fri, 07 Jul 2023 04:32:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729575; x=1691321575;
+ d=gmail.com; s=20221208; t=1688729577; x=1691321577;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rFO7Y1HmFXTaq7XKJ3Bg16iAlPuGYGgGp7kxqN+zgMw=;
- b=rct+VkdHoM+Pya6Y+avm9RP8MlEzYt9ZXjc37+EW+G0CcG0hSPDKwdypqkGWzKuKY3
- ucZWomSwuZKVzV93MZIaWaXVRUQmhK6QqYbBwoXWRqiprb+k1+Bq04ADvB1M7usFhumB
- u7ntDdG0CHKpfvCUmd4BCiO/CapA0PTDfMN2PYNaZK/ipodN80JKp6cvjBBtvU/j3S3m
- YaCBNRH4+0KHhgYVW/H9DbG+sGfK7wNad1Pu3pbfeRFgY53Uu91XRP4cPoOdzlKyw+01
- JipQh+QnHGiwd3cBCi81SexomiDgxDh8cwlyxnQK/rlW7dLD9PquEOTqRZd3rVkPDHRM
- wspg==
+ bh=k61BptTOwj98xOgsrzjqXszhqFKZTaKD33+onC34AMU=;
+ b=jJxzL8fmGloo/q+z+E2CdnQZfVbD6a6YD+vqTNyxQnt01Clo/JlgED7Y7e7yiOuaSK
+ cbSM0GPkXGy/lKg62jrd5wdf6OwIaoqTaWEuU1yHN5gD4o0XyF0LEvlEC6bqCGyT1Omy
+ Bqbf3ypNKjQFIa7+bV8qYgTHhqigCwE9EhopzywHtxhiKBRjUREyrUDm5fzUEi0vjbb0
+ d5cU6RjXEbz60rUVyD6xD6q2exBz+j9ygtd7BhOLbWdcWzOb5lim07M/JfKkvtz5XTy/
+ UtYWBf6G7kgU+BV4v7ddse9ZFxbyfDqA2hmXzixD8f9lnu7Wgfxe00IfF7ACHkAyBvZc
+ lqrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729575; x=1691321575;
+ d=1e100.net; s=20221208; t=1688729577; x=1691321577;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rFO7Y1HmFXTaq7XKJ3Bg16iAlPuGYGgGp7kxqN+zgMw=;
- b=XFWhYlVL041nAUE0EapqQT87YZxpeKkmWZq0Z3fPn9INHbIIRYHwz3cqR/BbmEgrHn
- vkhM3TxlvjiLYxoDctSxM1+OEKhOFJcVt3Q8Nq2UvPCYWsSl5BLRp6EGU/eLF7Q+jagQ
- 95x5Le5kzZB0gOGjCQ7atqT68P19CBClMrwGwB/772XF6ZZ7hKsee6G4Slw4zBz8yNbK
- N9uwpSPhbe5l75V25t2rJVCAE0sFfKdYWSbQLyNi7Vy67hUjqP1v6CH/Z0Jl9SFL0E0C
- TO+lvjizKXVFVZT02b5yfas73n3p5m9Lox544vQ4O0YbVXJ82eAUZnlGDoq/Ufh4QyTK
- gXYQ==
-X-Gm-Message-State: ABy/qLZl6FPK48tw1T9cyrj0lRnBqhafRykSKLFqlsvQlsTXCU5yrIXw
- IzaMz0gfnr8LA1pahOT8pS4qDTTmOs8=
-X-Google-Smtp-Source: APBJJlElPm9HrVNkOuUuagVBmzBRABlTtJGHJLrUAKmvlYW0lH7APxsveZdXIrYcB1HMdgN0WwWaTg==
-X-Received: by 2002:a05:6830:1d42:b0:6b5:ddf4:cb59 with SMTP id
- p2-20020a0568301d4200b006b5ddf4cb59mr4801107oth.28.1688729574894; 
- Fri, 07 Jul 2023 04:32:54 -0700 (PDT)
+ bh=k61BptTOwj98xOgsrzjqXszhqFKZTaKD33+onC34AMU=;
+ b=LBaLsW7UYCH9zrA+vU+l3X4+qMmEbwSl1cm7Pea72s6k+bW0NiuvdXdZprvAtuI+Bb
+ 6tmHfA123DMaT+qse8+U6praXyhMKkqiVNuBXWqstL77PiAeebIs7ncmo35wyHDvleE5
+ I4tgVA91MFhd1bQk30ePWQ2fdmuZFVMZKSOCAsnSjWbz4PS4XYaX5HtakWZc4bUg/bc6
+ q43/i6JBTSU3gnSiHqAj5FwDOr3L3NZQjfLMevDrMZ4q+/YRCqUC8giGKR2rp/FDVw1x
+ pD9UovBXpaj9lN6WVkCn0+J6p0Aiq03hk4h2dg6ZonGze5K6R+Z1NmHyzW8O3fCLjTva
+ O86w==
+X-Gm-Message-State: ABy/qLbqQ7rFSXnvVlesoY5AFAqWTYO3PD4aY44QotyC/hPS2QgwpPXn
+ mszUdJ09AmN80//pOCp0GuiK9C/pdZM=
+X-Google-Smtp-Source: APBJJlGfuiB1L3YMJrWeK5s+unKTNbsizK51xZT4Uwn8w1T4p3sR/QMthUaaEID6t3FNBFRIMXbytA==
+X-Received: by 2002:a05:6830:2057:b0:6b7:43eb:c1a with SMTP id
+ f23-20020a056830205700b006b743eb0c1amr4084736otp.36.1688729577228; 
+ Fri, 07 Jul 2023 04:32:57 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.52
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:32:54 -0700 (PDT)
+ Fri, 07 Jul 2023 04:32:57 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  richard.henderson@linaro.org, BALATON Zoltan <balaton@eik.bme.hu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 36/60] ppc440: Add cpu link property to PCIe controller model
-Date: Fri,  7 Jul 2023 08:30:44 -0300
-Message-ID: <20230707113108.7145-37-danielhb413@gmail.com>
+Subject: [PULL 37/60] ppc440: Add a macro to shorten PCIe controller DCR
+ registration
+Date: Fri,  7 Jul 2023 08:30:45 -0300
+Message-ID: <20230707113108.7145-38-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x329.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,121 +96,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-The PCIe controller model uses PPC DCRs but cannot be modeled with
-TYPE_PPC4xx_DCR_DEVICE as it derives from TYPE_PCIE_HOST_BRIDGE. Add a
-cpu link property to it similar to other DCR devices to allow
-registering DCRs from the device model.
+It is shorter and more readable to wrap the complex call to
+ppc_dcr_register() in a macro than to repeat it several times.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <a79796654deaa81a6a1c71efc874e4d88c4cafd4.1688586835.git.balaton@eik.bme.hu>
+Message-ID: <4dec5ef8115791dc67253afdff9a703eb816a2a8.1688586835.git.balaton@eik.bme.hu>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- hw/ppc/ppc440_uc.c | 114 ++++++++++++++++++++++++---------------------
- 1 file changed, 62 insertions(+), 52 deletions(-)
+ hw/ppc/ppc440_uc.c | 76 +++++++++++++++++-----------------------------
+ 1 file changed, 28 insertions(+), 48 deletions(-)
 
 diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
-index 8eb985d714..b26c0cee1b 100644
+index b26c0cee1b..b36dc409d7 100644
 --- a/hw/ppc/ppc440_uc.c
 +++ b/hw/ppc/ppc440_uc.c
-@@ -779,6 +779,7 @@ struct PPC460EXPCIEState {
-     MemoryRegion iomem;
-     qemu_irq irq[4];
-     int32_t dcrn_base;
-+    PowerPCCPU *cpu;
- 
-     uint64_t cfg_base;
-     uint32_t cfg_mask;
-@@ -1001,6 +1002,58 @@ static void ppc460ex_set_irq(void *opaque, int irq_num, int level)
+@@ -1002,56 +1002,36 @@ static void ppc460ex_set_irq(void *opaque, int irq_num, int level)
         qemu_set_irq(s->irq[irq_num], level);
  }
  
-+static void ppc460ex_pcie_register_dcrs(PPC460EXPCIEState *s)
-+{
-+    CPUPPCState *env = &s->cpu->env;
++#define PPC440_PCIE_DCR(s, dcrn) \
++    ppc_dcr_register(&(s)->cpu->env, (s)->dcrn_base + (dcrn), (s), \
++                     &dcr_read_pcie, &dcr_write_pcie)
 +
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_CFGBAH, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_CFGBAL, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_CFGMSK, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_MSGBAH, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_MSGBAL, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_MSGMSK, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR1BAH, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR1BAL, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR1MSKH, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR1MSKL, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR2BAH, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR2BAL, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR2MSKH, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR2MSKL, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR3BAH, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR3BAL, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR3MSKH, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_OMR3MSKL, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_REGBAH, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_REGBAL, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_REGMSK, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_SPECIAL, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+    ppc_dcr_register(env, s->dcrn_base + PEGPL_CFG, s,
-+                     &dcr_read_pcie, &dcr_write_pcie);
-+}
 +
- static void ppc460ex_pcie_realize(DeviceState *dev, Error **errp)
+ static void ppc460ex_pcie_register_dcrs(PPC460EXPCIEState *s)
  {
-     PPC460EXPCIEState *s = PPC460EX_PCIE_HOST(dev);
-@@ -1008,6 +1061,10 @@ static void ppc460ex_pcie_realize(DeviceState *dev, Error **errp)
-     int i, id;
-     char buf[16];
- 
-+    if (!s->cpu) {
-+        error_setg(errp, "cpu link property must be set");
-+        return;
-+    }
-     switch (s->dcrn_base) {
-     case DCRN_PCIE0_BASE:
-         id = 0;
-@@ -1028,10 +1085,13 @@ static void ppc460ex_pcie_realize(DeviceState *dev, Error **errp)
-     pci->bus = pci_register_root_bus(DEVICE(s), buf, ppc460ex_set_irq,
-                                 pci_swizzle_map_irq_fn, s, &s->iomem,
-                                 get_system_io(), 0, 4, TYPE_PCIE_BUS);
-+    ppc460ex_pcie_register_dcrs(s);
- }
- 
- static Property ppc460ex_pcie_props[] = {
-     DEFINE_PROP_INT32("dcrn-base", PPC460EXPCIEState, dcrn_base, -1),
-+    DEFINE_PROP_LINK("cpu", PPC460EXPCIEState, cpu, TYPE_POWERPC_CPU,
-+                     PowerPCCPU *),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-@@ -1059,67 +1119,17 @@ static void ppc460ex_pcie_register(void)
- 
- type_init(ppc460ex_pcie_register)
- 
--static void ppc460ex_pcie_register_dcrs(PPC460EXPCIEState *s, CPUPPCState *env)
--{
+-    CPUPPCState *env = &s->cpu->env;
+-
 -    ppc_dcr_register(env, s->dcrn_base + PEGPL_CFGBAH, s,
 -                     &dcr_read_pcie, &dcr_write_pcie);
 -    ppc_dcr_register(env, s->dcrn_base + PEGPL_CFGBAL, s,
@@ -256,24 +170,32 @@ index 8eb985d714..b26c0cee1b 100644
 -                     &dcr_read_pcie, &dcr_write_pcie);
 -    ppc_dcr_register(env, s->dcrn_base + PEGPL_CFG, s,
 -                     &dcr_read_pcie, &dcr_write_pcie);
--}
--
- void ppc460ex_pcie_init(PowerPCCPU *cpu)
- {
-     DeviceState *dev;
- 
-     dev = qdev_new(TYPE_PPC460EX_PCIE_HOST);
-     qdev_prop_set_int32(dev, "dcrn-base", DCRN_PCIE0_BASE);
-+    object_property_set_link(OBJECT(dev), "cpu", OBJECT(cpu), &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
--    ppc460ex_pcie_register_dcrs(PPC460EX_PCIE_HOST(dev), &cpu->env);
- 
-     dev = qdev_new(TYPE_PPC460EX_PCIE_HOST);
-     qdev_prop_set_int32(dev, "dcrn-base", DCRN_PCIE1_BASE);
-+    object_property_set_link(OBJECT(dev), "cpu", OBJECT(cpu), &error_abort);
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
--    ppc460ex_pcie_register_dcrs(PPC460EX_PCIE_HOST(dev), &cpu->env);
++    PPC440_PCIE_DCR(s, PEGPL_CFGBAH);
++    PPC440_PCIE_DCR(s, PEGPL_CFGBAL);
++    PPC440_PCIE_DCR(s, PEGPL_CFGMSK);
++    PPC440_PCIE_DCR(s, PEGPL_MSGBAH);
++    PPC440_PCIE_DCR(s, PEGPL_MSGBAL);
++    PPC440_PCIE_DCR(s, PEGPL_MSGMSK);
++    PPC440_PCIE_DCR(s, PEGPL_OMR1BAH);
++    PPC440_PCIE_DCR(s, PEGPL_OMR1BAL);
++    PPC440_PCIE_DCR(s, PEGPL_OMR1MSKH);
++    PPC440_PCIE_DCR(s, PEGPL_OMR1MSKL);
++    PPC440_PCIE_DCR(s, PEGPL_OMR2BAH);
++    PPC440_PCIE_DCR(s, PEGPL_OMR2BAL);
++    PPC440_PCIE_DCR(s, PEGPL_OMR2MSKH);
++    PPC440_PCIE_DCR(s, PEGPL_OMR2MSKL);
++    PPC440_PCIE_DCR(s, PEGPL_OMR3BAH);
++    PPC440_PCIE_DCR(s, PEGPL_OMR3BAL);
++    PPC440_PCIE_DCR(s, PEGPL_OMR3MSKH);
++    PPC440_PCIE_DCR(s, PEGPL_OMR3MSKL);
++    PPC440_PCIE_DCR(s, PEGPL_REGBAH);
++    PPC440_PCIE_DCR(s, PEGPL_REGBAL);
++    PPC440_PCIE_DCR(s, PEGPL_REGMSK);
++    PPC440_PCIE_DCR(s, PEGPL_SPECIAL);
++    PPC440_PCIE_DCR(s, PEGPL_CFG);
  }
+ 
+ static void ppc460ex_pcie_realize(DeviceState *dev, Error **errp)
 -- 
 2.41.0
 
