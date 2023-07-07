@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FBD74B035
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89DA474B040
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:48:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjho-0003EU-By; Fri, 07 Jul 2023 07:32:56 -0400
+	id 1qHjhm-0003Et-RQ; Fri, 07 Jul 2023 07:32:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjhf-00032R-BF; Fri, 07 Jul 2023 07:32:49 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ id 1qHjhh-00032x-01; Fri, 07 Jul 2023 07:32:50 -0400
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjhc-0006n7-3j; Fri, 07 Jul 2023 07:32:45 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6b5d5e6b086so1085441a34.1; 
- Fri, 07 Jul 2023 04:32:43 -0700 (PDT)
+ id 1qHjhf-0006nP-Dx; Fri, 07 Jul 2023 07:32:48 -0400
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6b8a6ca994eso1611608a34.1; 
+ Fri, 07 Jul 2023 04:32:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729562; x=1691321562;
+ d=gmail.com; s=20221208; t=1688729565; x=1691321565;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=R3bY1q5kf6/rVmn8/fEVz8+/dHlEPFJNirZ9iDq1UYA=;
- b=S4YIVfglXv1ZSiBnE5CXSpAZxbV7a7em/vI7KbCaKwnOdvyqm8GUV662z3GUgU0mcM
- eUF3SJ4DWETLRL1xfMDkGmhas6+0+ONDpnzhYUxhvruql9MdhPQtfT3jm6kFH4QJFLnk
- tbjcA7BqOEhr7Ot6D9KHiDovrwWDBWvE4ismC0yGpTycsiPu2axSXz1d1TmBFTVWPHbE
- Wuo5Xj9JOWMZvJ9qDWgmetqZq6ZBjPs3K32YCxLJewWFl6ay2Yu8cD4VW5WphxClapJz
- rUpQv5rR1PUf/Am7316Gf+6QwEnQBjCRJ4W1THtSzrpEBLWyU/MNU8CSrh2BRXJ8Rz9w
- pPlA==
+ bh=mbNq/01MgOjIPRTLf1s/y3co3sqpAmHZNoVphu0ZvvY=;
+ b=U4XTCjKa/FrrA8OS2exKRq7UVxkS062OHXmdwYNOWRsUGuyzdvgAUPfKxtZrPYdKe7
+ zs2unnmRs2EY5mycehl4kdBjXaWssMte59Js840Ql/mLYUUewB0a4N/bJPFatpCfXF8d
+ 7OVquMsLmp/y90W9HTqyJvsTXYhiP3taqhJ/iQFDGDCbTkO0qXHdtYQKXD1IKs6hWJDG
+ Lf+u9M3GZUB5sRqk6AWQ2w5Dt3De1lq+XNhKLcrok8HtZ5dL0eY/8hC168wY3NA5Y9oX
+ FFLx2pR1+Ep7vusTWeYqRkFxLXS1dTJs5wfrvxS+PGVfjbYQ9yQix6jAVycGLeptc5qP
+ HHdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729562; x=1691321562;
+ d=1e100.net; s=20221208; t=1688729565; x=1691321565;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R3bY1q5kf6/rVmn8/fEVz8+/dHlEPFJNirZ9iDq1UYA=;
- b=fQfqyMbzmVz46fHOeQ0JRtDGcj0F+fZVN+BeRLwXClZmluBqLezfDgUd8cdFItazz0
- qnoCcmTd1p4dMwdyCN7V+3xaLUy1Y5QqeUKM1VlFAVeRktv4L0jyLPdtDJnemb0Bvz8r
- 6+MgFGzXgmcV3O8kzvADwhKndwpEEXFt+2NdhAyiZSs/3drVKF2UGh9GOoCMbv2QDB0Y
- IE+Snni3wcKOdva+om9hrjBqt56CsEX7KzZJbkjTfKonPpWqPb0jXojrZCUxPCqo3M7y
- 3PVAiuB9OqU6WjyYnR44CypkpluEFNOuAUNyD6knTB6+bfQQbyoTLPk2Ez22F57Nh//x
- /hsw==
-X-Gm-Message-State: ABy/qLZKbLi2K7RY9Vh3Agn04HAcM9ibxol04X7T0SX+JQkj1EkvjPe1
- bDOqzHZS9sYPY+ytYz5ha2G1gdq99rk=
-X-Google-Smtp-Source: APBJJlElP8nyxOViLYoPIfHnS5zOAt+PkWNXfjtTTfF4c1oZcU2ntozcv/roF1JJkEJ4ZWybukkbAw==
-X-Received: by 2002:a05:6830:631c:b0:6b8:78a1:be14 with SMTP id
- cg28-20020a056830631c00b006b878a1be14mr5006286otb.2.1688729562526; 
- Fri, 07 Jul 2023 04:32:42 -0700 (PDT)
+ bh=mbNq/01MgOjIPRTLf1s/y3co3sqpAmHZNoVphu0ZvvY=;
+ b=c8JzJg8SIkBM6c3FuKHQmjcELzDPaVyZLVYZ8y3+Eu59tzOVW04fIM6GjMIEahNvhR
+ WDPsMDkQYevZe9ioqX3GAtBbLTcWcvNhyYk+06T511T6MloRtHw7F6NA8aPyhbjTi0sB
+ G+8o0RB0jYTIihWP7xXoodvYiiXx0n/EXRM6VGuF6BhfjGcSZiUk46DdAL9wIoHYS2Mq
+ z49UeVgGzJEjsx36rZQFIFH3pCVqxDo+xwgWsTAyBea/eVFAZsmJasNegzlC9MyumnOy
+ GpsjXmw6VwLCIXGlRaNEbtKTJYCEd0kgTuOU0a+MFfLKKgQql8NyPf4NBbNAolvbavJD
+ Fong==
+X-Gm-Message-State: ABy/qLZmaTe/wHn9ys421seEg/mzAuc+qkMYE6ZlLZICKDGEb4cAz6xe
+ /C3P3cgXnFdhI8dbWGl24L+znRlgA5A=
+X-Google-Smtp-Source: APBJJlHeuB0h7IR4thIlsj2zUAVfYZDYpyA/EZgra2mTyjJDUCCL5efYSajzK+H98lkV/dn0mrkeuQ==
+X-Received: by 2002:a05:6830:10c:b0:6b2:ab63:6ed with SMTP id
+ i12-20020a056830010c00b006b2ab6306edmr4847997otp.35.1688729565213; 
+ Fri, 07 Jul 2023 04:32:45 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.40
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:32:42 -0700 (PDT)
+ Fri, 07 Jul 2023 04:32:45 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>,
- Joel Stanley <joel@jms.id.au>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 31/60] target/ppc: Add LPAR-per-core vs per-thread mode flag
-Date: Fri,  7 Jul 2023 08:30:39 -0300
-Message-ID: <20230707113108.7145-32-danielhb413@gmail.com>
+Subject: [PULL 32/60] target/ppc: SMT support for the HID SPR
+Date: Fri,  7 Jul 2023 08:30:40 -0300
+Message-ID: <20230707113108.7145-33-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,190 +95,118 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-The Power ISA has the concept of sub-processors:
+HID is a per-core shared register, skiboot sets this (e.g., setting
+HILE) on one thread and that must affect all threads of the core.
 
-  Hardware is allowed to sub-divide a multi-threaded processor into
-  "sub-processors" that appear to privileged programs as multi-threaded
-  processors with fewer threads.
-
-POWER9 and POWER10 have two modes, either every thread is a
-sub-processor or all threads appear as one multi-threaded processor. In
-the user manuals these are known as "LPAR per thread" / "Thread LPAR",
-and "LPAR per core" / "1 LPAR", respectively.
-
-The practical difference is: in thread LPAR mode, non-hypervisor SPRs
-are not shared between threads and msgsndp can not be used to message
-siblings. In 1 LPAR mode, some SPRs are shared and msgsndp is usable.
-Thrad LPAR allows multiple partitions to run concurrently on the same
-core, and is a requirement for KVM to run on POWER9/10 (which does not
-gang-schedule an LPAR on all threads of a core like POWER8 KVM).
-
-Traditionally, SMT in PAPR environments including PowerVM and the
-pseries QEMU machine with KVM acceleration behaves as in 1 LPAR mode.
-In OPAL systems, Thread LPAR is used. When adding SMT to the powernv
-machine, it is therefore preferable to emulate Thread LPAR.
-
-To account for this difference between pseries and powernv, an LPAR mode
-flag is added such that SPRs can be implemented as per-LPAR shared, and
-that becomes either per-thread or per-core depending on the flag.
-
-Reviewed-by: Joel Stanley <joel@jms.id.au>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Tested-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20230705120631.27670-2-npiggin@gmail.com>
+Message-ID: <20230705120631.27670-3-npiggin@gmail.com>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- hw/ppc/spapr_cpu_core.c  |  2 ++
- target/ppc/cpu.h         |  3 +++
- target/ppc/cpu_init.c    | 12 ++++++++++++
- target/ppc/excp_helper.c |  4 ++++
- target/ppc/misc_helper.c |  8 ++++++++
- target/ppc/translate.c   | 11 ++++++-----
- 6 files changed, 35 insertions(+), 5 deletions(-)
+ target/ppc/cpu_init.c    |  2 +-
+ target/ppc/helper.h      |  1 +
+ target/ppc/misc_helper.c | 21 +++++++++++++++++++++
+ target/ppc/spr_common.h  |  1 +
+ target/ppc/translate.c   | 16 ++++++++++++++++
+ 5 files changed, 40 insertions(+), 1 deletion(-)
 
-diff --git a/hw/ppc/spapr_cpu_core.c b/hw/ppc/spapr_cpu_core.c
-index a4e3c2fadd..b482d9754a 100644
---- a/hw/ppc/spapr_cpu_core.c
-+++ b/hw/ppc/spapr_cpu_core.c
-@@ -270,6 +270,8 @@ static bool spapr_realize_vcpu(PowerPCCPU *cpu, SpaprMachineState *spapr,
-     env->spr_cb[SPR_PIR].default_value = cs->cpu_index;
-     env->spr_cb[SPR_TIR].default_value = thread_index;
- 
-+    cpu_ppc_set_1lpar(cpu);
-+
-     /* Set time-base frequency to 512 MHz. vhyp must be set first. */
-     cpu_ppc_tb_init(env, SPAPR_TIMEBASE_FREQ);
- 
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index af12c93ebc..b269b0d090 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -674,6 +674,8 @@ enum {
-     POWERPC_FLAG_SCV      = 0x00200000,
-     /* Has >1 thread per core                                                */
-     POWERPC_FLAG_SMT      = 0x00400000,
-+    /* Using "LPAR per core" mode  (as opposed to per-thread)                */
-+    POWERPC_FLAG_SMT_1LPAR = 0x00800000,
- };
- 
- /*
-@@ -1437,6 +1439,7 @@ void store_booke_tsr(CPUPPCState *env, target_ulong val);
- void ppc_tlb_invalidate_all(CPUPPCState *env);
- void ppc_tlb_invalidate_one(CPUPPCState *env, target_ulong addr);
- void cpu_ppc_set_vhyp(PowerPCCPU *cpu, PPCVirtualHypervisor *vhyp);
-+void cpu_ppc_set_1lpar(PowerPCCPU *cpu);
- int ppcmas_tlb_check(CPUPPCState *env, ppcmas_tlb_t *tlb, hwaddr *raddrp,
-                      target_ulong address, uint32_t pid);
- int ppcemb_tlb_search(CPUPPCState *env, target_ulong address, uint32_t pid);
 diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 5f4969664e..905a59aea9 100644
+index 905a59aea9..720aad9e05 100644
 --- a/target/ppc/cpu_init.c
 +++ b/target/ppc/cpu_init.c
-@@ -6629,6 +6629,18 @@ void cpu_ppc_set_vhyp(PowerPCCPU *cpu, PPCVirtualHypervisor *vhyp)
-     env->msr_mask &= ~MSR_HVB;
- }
+@@ -5638,7 +5638,7 @@ static void register_power_common_book4_sprs(CPUPPCState *env)
+     spr_register_hv(env, SPR_HID0, "HID0",
+                  SPR_NOACCESS, SPR_NOACCESS,
+                  SPR_NOACCESS, SPR_NOACCESS,
+-                 &spr_read_generic, &spr_write_generic,
++                 &spr_read_generic, &spr_core_write_generic,
+                  0x00000000);
+     spr_register_hv(env, SPR_TSCR, "TSCR",
+                  SPR_NOACCESS, SPR_NOACCESS,
+diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+index 828f7844c8..abec6fe341 100644
+--- a/target/ppc/helper.h
++++ b/target/ppc/helper.h
+@@ -704,6 +704,7 @@ DEF_HELPER_3(store_dcr, void, env, tl, tl)
  
-+void cpu_ppc_set_1lpar(PowerPCCPU *cpu)
-+{
-+    CPUPPCState *env = &cpu->env;
-+
-+    /*
-+     * pseries SMT means "LPAR per core" mode, e.g., msgsndp is usable
-+     * between threads.
-+     */
-+    if (env->flags & POWERPC_FLAG_SMT) {
-+        env->flags |= POWERPC_FLAG_SMT_1LPAR;
-+    }
-+}
- #endif /* !defined(CONFIG_USER_ONLY) */
+ DEF_HELPER_2(load_dump_spr, void, env, i32)
+ DEF_HELPER_2(store_dump_spr, void, env, i32)
++DEF_HELPER_3(spr_core_write_generic, void, env, i32, tl)
+ DEF_HELPER_3(spr_write_CTRL, void, env, i32, tl)
  
- #endif /* defined(TARGET_PPC64) */
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 354392668e..7683ea0fc9 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -3130,6 +3130,10 @@ void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
- 
-     helper_hfscr_facility_check(env, HFSCR_MSGP, "msgsndp", HFSCR_IC_MSGP);
- 
-+    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        nr_threads = 1; /* msgsndp behaves as 1-thread in LPAR-per-thread mode*/
-+    }
-+
-     if (!dbell_type_server(rb) || ttir >= nr_threads) {
-         return;
-     }
+ DEF_HELPER_4(fscr_facility_check, void, env, i32, i32, i32)
 diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index 1f1af21f33..26e546cc9c 100644
+index 26e546cc9c..692d058665 100644
 --- a/target/ppc/misc_helper.c
 +++ b/target/ppc/misc_helper.c
-@@ -191,6 +191,10 @@ target_ulong helper_load_dpdes(CPUPPCState *env)
- 
-     helper_hfscr_facility_check(env, HFSCR_MSGP, "load DPDES", HFSCR_IC_MSGP);
- 
-+    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        nr_threads = 1; /* DPDES behaves as 1-thread in LPAR-per-thread mode */
-+    }
-+
-     if (nr_threads == 1) {
-         if (env->pending_interrupts & PPC_INTERRUPT_DOORBELL) {
-             dpdes = 1;
-@@ -222,6 +226,10 @@ void helper_store_dpdes(CPUPPCState *env, target_ulong val)
- 
-     helper_hfscr_facility_check(env, HFSCR_MSGP, "store DPDES", HFSCR_IC_MSGP);
- 
-+    if (!(env->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        nr_threads = 1; /* DPDES behaves as 1-thread in LPAR-per-thread mode */
-+    }
-+
-     if (val & ~(nr_threads - 1)) {
-         qemu_log_mask(LOG_GUEST_ERROR, "Invalid DPDES register value "
-                       TARGET_FMT_lx"\n", val);
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index db0ba49bdc..4556297ab5 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -246,9 +246,9 @@ static inline bool gen_serialize(DisasContext *ctx)
+@@ -43,6 +43,27 @@ void helper_store_dump_spr(CPUPPCState *env, uint32_t sprn)
+              env->spr[sprn]);
  }
  
- #if defined(TARGET_PPC64) && !defined(CONFIG_USER_ONLY)
--static inline bool gen_serialize_core(DisasContext *ctx)
-+static inline bool gen_serialize_core_lpar(DisasContext *ctx)
++void helper_spr_core_write_generic(CPUPPCState *env, uint32_t sprn,
++                                   target_ulong val)
++{
++    CPUState *cs = env_cpu(env);
++    CPUState *ccs;
++    uint32_t nr_threads = cs->nr_threads;
++    uint32_t core_id = env->spr[SPR_PIR] & ~(nr_threads - 1);
++
++    assert(core_id == env->spr[SPR_PIR] - env->spr[SPR_TIR]);
++
++    if (nr_threads == 1) {
++        env->spr[sprn] = val;
++        return;
++    }
++
++    THREAD_SIBLING_FOREACH(cs, ccs) {
++        CPUPPCState *cenv = &POWERPC_CPU(ccs)->env;
++        cenv->spr[sprn] = val;
++    }
++}
++
+ void helper_spr_write_CTRL(CPUPPCState *env, uint32_t sprn,
+                            target_ulong val)
  {
--    if (ctx->flags & POWERPC_FLAG_SMT) {
-+    if (ctx->flags & POWERPC_FLAG_SMT_1LPAR) {
-         return gen_serialize(ctx);
-     }
+diff --git a/target/ppc/spr_common.h b/target/ppc/spr_common.h
+index fbf52123b5..5995070eaf 100644
+--- a/target/ppc/spr_common.h
++++ b/target/ppc/spr_common.h
+@@ -82,6 +82,7 @@ void spr_noaccess(DisasContext *ctx, int gprn, int sprn);
+ void spr_read_generic(DisasContext *ctx, int gprn, int sprn);
+ void spr_write_generic(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_generic32(DisasContext *ctx, int sprn, int gprn);
++void spr_core_write_generic(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_MMCR0(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_MMCR1(DisasContext *ctx, int sprn, int gprn);
+ void spr_write_PMC(DisasContext *ctx, int sprn, int gprn);
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 4556297ab5..e6a0709066 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -438,6 +438,22 @@ void spr_write_generic32(DisasContext *ctx, int sprn, int gprn)
+ #endif
+ }
  
-@@ -451,7 +451,8 @@ static void spr_write_CTRL_ST(DisasContext *ctx, int sprn, int gprn)
- 
- void spr_write_CTRL(DisasContext *ctx, int sprn, int gprn)
++void spr_core_write_generic(DisasContext *ctx, int sprn, int gprn)
++{
++    if (!(ctx->flags & POWERPC_FLAG_SMT)) {
++        spr_write_generic(ctx, sprn, gprn);
++        return;
++    }
++
++    if (!gen_serialize(ctx)) {
++        return;
++    }
++
++    gen_helper_spr_core_write_generic(cpu_env, tcg_constant_i32(sprn),
++                                      cpu_gpr[gprn]);
++    spr_store_dump_spr(sprn);
++}
++
+ static void spr_write_CTRL_ST(DisasContext *ctx, int sprn, int gprn)
  {
--    if (!(ctx->flags & POWERPC_FLAG_SMT)) {
-+    if (!(ctx->flags & POWERPC_FLAG_SMT_1LPAR)) {
-+        /* CTRL behaves as 1-thread in LPAR-per-thread mode */
-         spr_write_CTRL_ST(ctx, sprn, gprn);
-         goto out;
-     }
-@@ -815,7 +816,7 @@ void spr_write_pcr(DisasContext *ctx, int sprn, int gprn)
- /* DPDES */
- void spr_read_dpdes(DisasContext *ctx, int gprn, int sprn)
- {
--    if (!gen_serialize_core(ctx)) {
-+    if (!gen_serialize_core_lpar(ctx)) {
-         return;
-     }
- 
-@@ -824,7 +825,7 @@ void spr_read_dpdes(DisasContext *ctx, int gprn, int sprn)
- 
- void spr_write_dpdes(DisasContext *ctx, int sprn, int gprn)
- {
--    if (!gen_serialize_core(ctx)) {
-+    if (!gen_serialize_core_lpar(ctx)) {
-         return;
-     }
- 
+     /* This does not implement >1 thread */
 -- 
 2.41.0
 
