@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2D074B016
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DDBF74AFF9
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:39:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjgc-0001r3-Gw; Fri, 07 Jul 2023 07:31:42 -0400
+	id 1qHjge-0001t1-CA; Fri, 07 Jul 2023 07:31:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjgZ-0001pr-6j; Fri, 07 Jul 2023 07:31:39 -0400
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
+ id 1qHjga-0001qJ-EK; Fri, 07 Jul 2023 07:31:41 -0400
+Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjgU-0006Ub-6o; Fri, 07 Jul 2023 07:31:38 -0400
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-1b06ea7e7beso1760661fac.0; 
- Fri, 07 Jul 2023 04:31:32 -0700 (PDT)
+ id 1qHjgV-0006Ur-8w; Fri, 07 Jul 2023 07:31:40 -0400
+Received: by mail-ot1-x334.google.com with SMTP id
+ 46e09a7af769-6b8baa72c71so1619261a34.2; 
+ Fri, 07 Jul 2023 04:31:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729491; x=1691321491;
+ d=gmail.com; s=20221208; t=1688729493; x=1691321493;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FgKKBWxZMCJRKCaR8JiHD05/gWc9p7lXQhJ7yvY3HXE=;
- b=B6MX/I3RHcbFLvPvsarUYSSQ9KjcAsJzfd8ZGfNaYfvIWCdOIiU5+1KEYx1xczj5OY
- 8vJrvThycAIbYKacf5VxtKswxWxUrAqA6zPIZxEe+KqB12yKBpB5aKosSHkseIvnhREu
- wIWtuG7RV/h+o02/nAsV7sEqruUp/F2T26b0tOAsX0fOY1fazCctEO3xut/8sytgkm4i
- hv2RyEcP92WUxUxEkaL6iKSndWoiEiWl3NcJbWrnkUC2Q+BkvNYVkH0pGlM8iEAgvo2c
- +GgATnqgDQwOb19vu2Jd81ET2NWq3jMmEJTdQ8XTqPnebWW3aWO6bTSHdqFhXWRhsC3f
- /ZcA==
+ bh=U1HJUmepcou8YNKRL7zfbfphizzPHWU+xLkX0u2RLvI=;
+ b=osrH/ptxXM+lrtsnfQ37YciVTNyamSTe0vvQLTyGiDLc66KQAsYObaRJhYglLfJ15u
+ KLE59QyStI3yLAgcECmAvZgetNmxe2FqLINoggBjy21l+v8ijD0lshnqikRihG47sAqZ
+ EefH6Jgrd8nkaWo99hnzahS6MQa6LnseeRusFUxdncHPdqR2ZWfLLMFJ9PxACDCq76dn
+ ztf03p9LG9ab0nUePkgtb4a4jZX1WwhfVZSx54uNK0fmqQ3mgQtkdWK8X8b3laIhzs1v
+ cbwJjjRKugoL7A5JFyFWNr/gHlS+sVaB+quqPTZKPs7iSOd/GbLhMEVfsE8w1ET9m99o
+ KuSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729491; x=1691321491;
+ d=1e100.net; s=20221208; t=1688729493; x=1691321493;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FgKKBWxZMCJRKCaR8JiHD05/gWc9p7lXQhJ7yvY3HXE=;
- b=A65foVWR6eaRXuqEBwLteOrWeJFZhw2q36frLweR5I01rcvfOn8RwrLqPKU6SJWe1x
- SaY1dBQ2V3C5tfxSGoH3u3f+A/vuutFG2qrgzQuuj5Nq3nSlq9OTKsiLxUIu4qRwSvDQ
- MUAKLlvbH1Gc74R59mP5x/BxZau+JzLcK/8/BHIXtV/RECZASpsan1T44ByHLK1q2z1i
- e9ekY/CrVTrJ/Ozr/57UHMG88FPimS3PPkR/hTJKFCpynrOxpJWvdSrjEn+oNCOktArW
- sGVpSELniJetUV5LTQsvlmj0ZrLQ6cHHqRehWvurTgfywXljv8DYE39CLSGTWVFde1OV
- ZTew==
-X-Gm-Message-State: ABy/qLZx6UFindwx2zeD9Q3iMu4Ox0HRwVRye9gachdUWfVbupcwPR2y
- TotPCBRQrKf2d9rwiR6iDhmwv2alppg=
-X-Google-Smtp-Source: APBJJlGJEAiLoV+NJ/eNhMCBHHZJhXrvH645LNfSaVONd9uY5nvyKBXx0z564kXB3asKp8zj7Ivltg==
-X-Received: by 2002:a05:6870:63a9:b0:1ad:3204:1d4b with SMTP id
- t41-20020a05687063a900b001ad32041d4bmr6517772oap.22.1688729491263; 
- Fri, 07 Jul 2023 04:31:31 -0700 (PDT)
+ bh=U1HJUmepcou8YNKRL7zfbfphizzPHWU+xLkX0u2RLvI=;
+ b=T7AWIG24dGZLNVx7oZNDxpo+MFCZ7XLgx7yc5y+dGG1og9TPOHMW0RLJtSLx36Bl7c
+ sjBJod54M3OLdDGFbaalZ7a6DnI3PT2ShuE3tLVXCCxgFvOSiMIBxvLxWGjt25myuC/j
+ LAKcqW6VdV5OlxDgiSXR/zTiQfFGPycYevhIiXu2sEubycsEcrkg5XnLUp5yjxRFH4QL
+ w9peqdZATy8V68Xf/XPO4+MUKucjhdjYB5oeH4/B2gxq6B9bwy35kALZhr9XjJJJZi/i
+ +TwXp6H6DgKDdhrMjLfCQ4bsZl5byqj3qdTM9M6SILPKZjHZEeiBROFLyhmXlGAWXp+I
+ M75A==
+X-Gm-Message-State: ABy/qLZ3x/QP4fi0he9qKAfNkypRo7XkroTI+NhqIgIhK3vn+kwQ+G7e
+ +l48k65IecIENZFWa5k/dbiLrzkdCmo=
+X-Google-Smtp-Source: APBJJlF5FW/plR13WrffUVQMXxjMQ+S2natNmwpVnYl4zcQR8jgGdIDFgFlwvxKKobpfRgjB7Te+bw==
+X-Received: by 2002:a05:6871:b2b:b0:1b4:56ed:eb88 with SMTP id
+ fq43-20020a0568710b2b00b001b456edeb88mr1588690oab.45.1688729493689; 
+ Fri, 07 Jul 2023 04:31:33 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.31.28
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.31.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:31:31 -0700 (PDT)
+ Fri, 07 Jul 2023 04:31:33 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>,
- qemu-stable@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>
-Subject: [PULL 03/60] hw/ppc: Fix clock update drift
-Date: Fri,  7 Jul 2023 08:30:11 -0300
-Message-ID: <20230707113108.7145-4-danielhb413@gmail.com>
+ richard.henderson@linaro.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Greg Kurz <groug@kaod.org>
+Subject: [PULL 04/60] target/ppc: Only generate decodetree files when TCG is
+ enabled
+Date: Fri,  7 Jul 2023 08:30:12 -0300
+Message-ID: <20230707113108.7145-5-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=danielhb413@gmail.com; helo=mail-oa1-x2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x334.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,114 +95,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The clock update logic reads the clock twice to compute the new clock
-value, with a value derived from the later time subtracted from a value
-derived from the earlier time. The delta causes time to be lost.
+No need to generate TCG-specific decodetree files
+when TCG is disabled.
 
-This can ultimately result in time becoming unsynchronized between CPUs
-and that can cause OS lockups, timeouts, watchdogs, etc. This can be
-seen running a KVM guest (that causes lots of TB updates) on a powernv
-SMP machine.
-
-Fix this by reading the clock once.
-
-Cc: qemu-stable@nongnu.org
-Fixes: dbdd25065e90 ("Implement time-base start/stop helpers.")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Message-ID: <20230629020713.327745-1-npiggin@gmail.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20230626140100.67941-1-philmd@linaro.org>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- hw/ppc/ppc.c | 33 +++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ target/ppc/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index 0fc82bb175..0e0a3d93c3 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -535,23 +535,24 @@ static inline void cpu_ppc_store_tb(ppc_tb_t *tb_env, uint64_t vmclk,
- void cpu_ppc_store_tbl (CPUPPCState *env, uint32_t value)
- {
-     ppc_tb_t *tb_env = env->tb_env;
-+    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-     uint64_t tb;
+diff --git a/target/ppc/meson.build b/target/ppc/meson.build
+index a69f174f41..4c2635039e 100644
+--- a/target/ppc/meson.build
++++ b/target/ppc/meson.build
+@@ -28,7 +28,7 @@ gen = [
+                      extra_args: ['--static-decode=decode_insn64',
+                                   '--insnwidth=64']),
+ ]
+-ppc_ss.add(gen)
++ppc_ss.add(when: 'CONFIG_TCG', if_true: gen)
  
--    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->tb_offset);
-+    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->tb_offset);
-     tb &= 0xFFFFFFFF00000000ULL;
--    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
--                     &tb_env->tb_offset, tb | (uint64_t)value);
-+    cpu_ppc_store_tb(tb_env, clock, &tb_env->tb_offset, tb | (uint64_t)value);
- }
- 
- static inline void _cpu_ppc_store_tbu(CPUPPCState *env, uint32_t value)
- {
-     ppc_tb_t *tb_env = env->tb_env;
-+    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-     uint64_t tb;
- 
--    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->tb_offset);
-+    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->tb_offset);
-     tb &= 0x00000000FFFFFFFFULL;
--    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
--                     &tb_env->tb_offset, ((uint64_t)value << 32) | tb);
-+    cpu_ppc_store_tb(tb_env, clock, &tb_env->tb_offset,
-+                     ((uint64_t)value << 32) | tb);
- }
- 
- void cpu_ppc_store_tbu (CPUPPCState *env, uint32_t value)
-@@ -584,23 +585,24 @@ uint32_t cpu_ppc_load_atbu (CPUPPCState *env)
- void cpu_ppc_store_atbl (CPUPPCState *env, uint32_t value)
- {
-     ppc_tb_t *tb_env = env->tb_env;
-+    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-     uint64_t tb;
- 
--    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->atb_offset);
-+    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->atb_offset);
-     tb &= 0xFFFFFFFF00000000ULL;
--    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
--                     &tb_env->atb_offset, tb | (uint64_t)value);
-+    cpu_ppc_store_tb(tb_env, clock, &tb_env->atb_offset, tb | (uint64_t)value);
- }
- 
- void cpu_ppc_store_atbu (CPUPPCState *env, uint32_t value)
- {
-     ppc_tb_t *tb_env = env->tb_env;
-+    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-     uint64_t tb;
- 
--    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL), tb_env->atb_offset);
-+    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->atb_offset);
-     tb &= 0x00000000FFFFFFFFULL;
--    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
--                     &tb_env->atb_offset, ((uint64_t)value << 32) | tb);
-+    cpu_ppc_store_tb(tb_env, clock, &tb_env->atb_offset,
-+                     ((uint64_t)value << 32) | tb);
- }
- 
- uint64_t cpu_ppc_load_vtb(CPUPPCState *env)
-@@ -622,14 +624,13 @@ void cpu_ppc_store_vtb(CPUPPCState *env, uint64_t value)
- void cpu_ppc_store_tbu40(CPUPPCState *env, uint64_t value)
- {
-     ppc_tb_t *tb_env = env->tb_env;
-+    int64_t clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-     uint64_t tb;
- 
--    tb = cpu_ppc_get_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
--                        tb_env->tb_offset);
-+    tb = cpu_ppc_get_tb(tb_env, clock, tb_env->tb_offset);
-     tb &= 0xFFFFFFUL;
-     tb |= (value & ~0xFFFFFFUL);
--    cpu_ppc_store_tb(tb_env, qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL),
--                     &tb_env->tb_offset, tb);
-+    cpu_ppc_store_tb(tb_env, clock, &tb_env->tb_offset, tb);
- }
- 
- static void cpu_ppc_tb_stop (CPUPPCState *env)
+ ppc_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'), if_false: files('kvm-stub.c'))
+ ppc_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user_only_helper.c'))
 -- 
 2.41.0
 
