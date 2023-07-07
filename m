@@ -2,63 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C7874AD9A
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 11:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C23F274AD8B
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 11:07:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHhQn-0003LO-Bv; Fri, 07 Jul 2023 05:07:13 -0400
+	id 1qHhQn-0003LY-UP; Fri, 07 Jul 2023 05:07:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qHhQk-0003KK-HQ
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qHhQl-0003Ko-IY
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qHhQi-0007LF-Te
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:10 -0400
+ id 1qHhQj-0007LO-JO
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688720828;
+ s=mimecast20190719; t=1688720829;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eW8lLnijUFFZA9pyxKB/SNw992FyPtUl4bZEjwywaUg=;
- b=XjWSL2jZw3j+4IctJyAcbEBhB9+3XQ43NZZi3Kdc9tLUPftBZhSWvQzt/esn0UZNyzknu8
- cNv4AgnWhpz0uOlS+8/iB6rGUTGBNBGj2PTwzLagOKn+m8x9gN+ieuVd46Smsjvuzr0Rlg
- WswUsqdjnrm39D0IppUMmTtq8K64DDo=
+ bh=s2nqPTnByoUXJ2Ayk7layeEfQQVQnjbe1XGBvW+jvSw=;
+ b=OF6CjoYk9N0l+yqTPWfK8izNQ01F/zgFwZFNviBIagszpaJBrlJ5nOWmfJ+ikO8qyYm83X
+ 3I22Uiw8dmRlbc06jw8vjEjdhMNBegTarMcYUKBaFhvcSTnrQaqKcRp13zAGx9Jd/nHeTw
+ tYFvy7M4x0TIg6qsInmM78+vvRuphWY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-673-ozkWR6CrMp2cTZ6vFfp4DA-1; Fri, 07 Jul 2023 05:07:01 -0400
-X-MC-Unique: ozkWR6CrMp2cTZ6vFfp4DA-1
+ us-mta-424-ol6AUobLN-yh_qX3iW1xVA-1; Fri, 07 Jul 2023 05:07:04 -0400
+X-MC-Unique: ol6AUobLN-yh_qX3iW1xVA-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3844D805951;
- Fri,  7 Jul 2023 09:07:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F41E8101A54E;
+ Fri,  7 Jul 2023 09:07:03 +0000 (UTC)
 Received: from hp-dl380pg8-01.lab.eng.pek2.redhat.com
  (hp-dl380pg8-01.lab.eng.pek2.redhat.com [10.73.8.10])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0F5D61121330;
- Fri,  7 Jul 2023 09:06:58 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CB8131121330;
+ Fri,  7 Jul 2023 09:07:01 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org, richard.henderson@linaro.org,
  peter.maydell@linaro.org
-Cc: Bin Meng <bmeng@tinylab.org>,
+Cc: Laurent Vivier <lvivier@redhat.com>,
 	Jason Wang <jasowang@redhat.com>
-Subject: [PULL 10/15] hw/net: ftgmac100: Drop the small packet check in the
- receive path
-Date: Fri,  7 Jul 2023 05:06:23 -0400
-Message-Id: <20230707090628.2210346-11-jasowang@redhat.com>
+Subject: [PULL 11/15] net: socket: prepare to cleanup net_init_socket()
+Date: Fri,  7 Jul 2023 05:06:24 -0400
+Message-Id: <20230707090628.2210346-12-jasowang@redhat.com>
 In-Reply-To: <20230707090628.2210346-1-jasowang@redhat.com>
 References: <20230707090628.2210346-1-jasowang@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-type: text/plain
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,38 +80,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bin Meng <bmeng@tinylab.org>
+From: Laurent Vivier <lvivier@redhat.com>
 
-Now that we have implemented unified short frames padding in the
-QEMU networking codes, the small packet check logic in the receive
-path is no longer needed.
+Use directly net_socket_fd_init_stream() and net_socket_fd_init_dgram()
+when the socket type is already known.
 
-Suggested-by: Cédric Le Goater <clg@kaod.org>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Bin Meng <bmeng@tinylab.org>
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/net/ftgmac100.c | 8 --------
- 1 file changed, 8 deletions(-)
+ net/socket.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/net/ftgmac100.c b/hw/net/ftgmac100.c
-index d3bf14b..702b001 100644
---- a/hw/net/ftgmac100.c
-+++ b/hw/net/ftgmac100.c
-@@ -968,14 +968,6 @@ static ssize_t ftgmac100_receive(NetClientState *nc, const uint8_t *buf,
+diff --git a/net/socket.c b/net/socket.c
+index ba6e5b0..24dcaa5 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -587,7 +587,7 @@ static int net_socket_connect_init(NetClientState *peer,
+             break;
+         }
+     }
+-    s = net_socket_fd_init(peer, model, name, fd, connected, NULL, errp);
++    s = net_socket_fd_init_stream(peer, model, name, fd, connected);
+     if (!s) {
+         return -1;
+     }
+@@ -629,7 +629,7 @@ static int net_socket_mcast_init(NetClientState *peer,
          return -1;
      }
  
--    /* TODO : Pad to minimum Ethernet frame length */
--    /* handle small packets.  */
--    if (size < 10) {
--        qemu_log_mask(LOG_GUEST_ERROR, "%s: dropped frame of %zd bytes\n",
--                      __func__, size);
--        return size;
--    }
--
-     if (!ftgmac100_filter(s, buf, size)) {
-         return size;
+-    s = net_socket_fd_init(peer, model, name, fd, 0, NULL, errp);
++    s = net_socket_fd_init_dgram(peer, model, name, fd, 0, NULL, errp);
+     if (!s) {
+         return -1;
+     }
+@@ -683,7 +683,7 @@ static int net_socket_udp_init(NetClientState *peer,
+     }
+     qemu_socket_set_nonblock(fd);
+ 
+-    s = net_socket_fd_init(peer, model, name, fd, 0, NULL, errp);
++    s = net_socket_fd_init_dgram(peer, model, name, fd, 0, NULL, errp);
+     if (!s) {
+         return -1;
      }
 -- 
 2.7.4
