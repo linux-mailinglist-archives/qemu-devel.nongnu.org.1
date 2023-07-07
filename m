@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8949174AD99
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 11:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF8074AD97
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 11:08:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHhQd-0003Dl-4z; Fri, 07 Jul 2023 05:07:03 -0400
+	id 1qHhQg-0003FR-NU; Fri, 07 Jul 2023 05:07:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qHhQa-0003Bz-Tc
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:00 -0400
+ id 1qHhQe-0003Ey-1n
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qHhQZ-0006f7-Dl
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:00 -0400
+ id 1qHhQc-0006vL-Kw
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 05:07:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688720818;
+ s=mimecast20190719; t=1688720822;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=fJ6gLhLPLx8ltArEQwPzVntmjj2KHV+d/O/rmTF5Tcc=;
- b=h1SaC/9aBTxmN9fZp2/EL7/0IHglnTRRvd+jZZehmGtAJGZQ0n2TVw3kRdZc5Eh6K5InDw
- bN9+2PBLliqIB/PYH7n4dKrwP/jLtuQ+5vt2Mc8aSmq458+08BIBbHUuWY+PdIdRWqWhlw
- I48FB2S694BXWwqkUAOTmoM4sH1OSfc=
+ bh=UB3IDNhWk0GME5aP6Y5dRZF+LxxnUyt/AX8UE6EQO+c=;
+ b=LglElT6NEML2eQ6/8kD6XJ3BBrYNEDdqYSfZ8vW0hRj1VLl1rW4IN/uxUF7kg01e0xNdLr
+ c5nJvblL9o1Jq+GvfJ+nOXcXvk9dort4CMHozJb93hmMMpVIW7Jj2NEiUC0eLulbfRPI4E
+ MAC4xUM5kZazN/T17NrEP6TYhWCEpKE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-112-Fygo2QnCNeGBTxOoUJUqtg-1; Fri, 07 Jul 2023 05:06:56 -0400
-X-MC-Unique: Fygo2QnCNeGBTxOoUJUqtg-1
+ us-mta-156-iwItxA2rPlKe-j-suYqnmg-1; Fri, 07 Jul 2023 05:06:58 -0400
+X-MC-Unique: iwItxA2rPlKe-j-suYqnmg-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7E2B10504AA;
- Fri,  7 Jul 2023 09:06:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F9FB101A54E;
+ Fri,  7 Jul 2023 09:06:58 +0000 (UTC)
 Received: from hp-dl380pg8-01.lab.eng.pek2.redhat.com
  (hp-dl380pg8-01.lab.eng.pek2.redhat.com [10.73.8.10])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7F1AE1121330;
- Fri,  7 Jul 2023 09:06:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 47C451121330;
+ Fri,  7 Jul 2023 09:06:55 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org, richard.henderson@linaro.org,
  peter.maydell@linaro.org
 Cc: Bin Meng <bmeng@tinylab.org>,
 	Jason Wang <jasowang@redhat.com>
-Subject: [PULL 08/15] hw/net: sungem: Remove the logic of padding short frames
+Subject: [PULL 09/15] hw/net: sunhme: Remove the logic of padding short frames
  in the receive path
-Date: Fri,  7 Jul 2023 05:06:21 -0400
-Message-Id: <20230707090628.2210346-9-jasowang@redhat.com>
+Date: Fri,  7 Jul 2023 05:06:22 -0400
+Message-Id: <20230707090628.2210346-10-jasowang@redhat.com>
 In-Reply-To: <20230707090628.2210346-1-jasowang@redhat.com>
 References: <20230707090628.2210346-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -89,41 +89,45 @@ QEMU networking codes, remove the same logic in the NIC codes.
 Signed-off-by: Bin Meng <bmeng@tinylab.org>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/net/sungem.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ hw/net/sunhme.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/hw/net/sungem.c b/hw/net/sungem.c
-index eb01520..103376c 100644
---- a/hw/net/sungem.c
-+++ b/hw/net/sungem.c
-@@ -550,7 +550,6 @@ static ssize_t sungem_receive(NetClientState *nc, const uint8_t *buf,
-     PCIDevice *d = PCI_DEVICE(s);
-     uint32_t mac_crc, done, kick, max_fsize;
-     uint32_t fcs_size, ints, rxdma_cfg, rxmac_cfg, csum, coff;
--    uint8_t smallbuf[60];
-     struct gem_rxd desc;
-     uint64_t dbase, baddr;
-     unsigned int rx_cond;
-@@ -584,19 +583,6 @@ static ssize_t sungem_receive(NetClientState *nc, const uint8_t *buf,
-         return size;
-     }
+diff --git a/hw/net/sunhme.c b/hw/net/sunhme.c
+index 1f3d801..391d26f 100644
+--- a/hw/net/sunhme.c
++++ b/hw/net/sunhme.c
+@@ -714,8 +714,6 @@ static inline void sunhme_set_rx_ring_nr(SunHMEState *s, int i)
+     s->erxregs[HME_ERXI_RING >> 2] = ring;
+ }
  
--    /* We don't drop too small frames since we get them in qemu, we pad
--     * them instead. We should probably use the min frame size register
--     * but I don't want to use a variable size staging buffer and I
--     * know both MacOS and Linux use the default 64 anyway. We use 60
--     * here to account for the non-existent FCS.
--     */
--    if (size < 60) {
--        memcpy(smallbuf, buf, size);
--        memset(&smallbuf[size], 0, 60 - size);
--        buf = smallbuf;
--        size = 60;
+-#define MIN_BUF_SIZE 60
+-
+ static ssize_t sunhme_receive(NetClientState *nc, const uint8_t *buf,
+                               size_t size)
+ {
+@@ -724,7 +722,6 @@ static ssize_t sunhme_receive(NetClientState *nc, const uint8_t *buf,
+     dma_addr_t rb, addr;
+     uint32_t intstatus, status, buffer, buffersize, sum;
+     uint16_t csum;
+-    uint8_t buf1[60];
+     int nr, cr, len, rxoffset, csum_offset;
+ 
+     trace_sunhme_rx_incoming(size);
+@@ -775,14 +772,6 @@ static ssize_t sunhme_receive(NetClientState *nc, const uint8_t *buf,
+ 
+     trace_sunhme_rx_filter_accept();
+ 
+-    /* If too small buffer, then expand it */
+-    if (size < MIN_BUF_SIZE) {
+-        memcpy(buf1, buf, size);
+-        memset(buf1 + size, 0, MIN_BUF_SIZE - size);
+-        buf = buf1;
+-        size = MIN_BUF_SIZE;
 -    }
 -
-     /* Get MAC crc */
-     mac_crc = net_crc32_le(buf, ETH_ALEN);
- 
+     rb = s->erxregs[HME_ERXI_RING >> 2] & HME_ERXI_RING_ADDR;
+     nr = sunhme_get_rx_ring_count(s);
+     cr = sunhme_get_rx_ring_nr(s);
 -- 
 2.7.4
 
