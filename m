@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF2174B32A
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED4B74B329
 	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 16:42:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHmdt-00079p-Su; Fri, 07 Jul 2023 10:41:05 -0400
+	id 1qHme3-0007Cn-S8; Fri, 07 Jul 2023 10:41:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHmds-00079U-7m
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:41:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qHmdq-0003VU-LI
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:41:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688740862;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=hYIyBZ+rUb67sVKnRW6QZK8ToqbojqvpWsJwzkm4McE=;
- b=XyjVqBkwMHgeB0bIfg8cUyAdN38+7EGnADVS9G0ov45BVRtdoR7ZOAncmBKgF2Ow1AaG0x
- dVtrDTV2CfDk5XlmNVn1mSBKt0VKHPzZaBL4zOTmXhK9tLYSSS+u4Tfuq+crROfmRRzmW8
- lnu0Z3iJMncR9ZMxPqVxbfh1pEQHl8c=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-674-z1hHXmPpOf2c-5bra258BQ-1; Fri, 07 Jul 2023 10:40:57 -0400
-X-MC-Unique: z1hHXmPpOf2c-5bra258BQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A3AA988D06E;
- Fri,  7 Jul 2023 14:40:56 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 81C78C52D9C;
- Fri,  7 Jul 2023 14:40:56 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 895A421E6A1F; Fri,  7 Jul 2023 16:40:55 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Bin Meng <bmeng@tinylab.org>
-Cc: qemu-devel@nongnu.org,  Richard Henderson
- <richard.henderson@linaro.org>,  Zhangjin Wu <falcon@tinylab.org>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,  "Michael S. Tsirkin"
- <mst@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,  Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v4 5/6] util/async-teardown: Use qemu_close_range() to
- close fds
-References: <20230628152726.110295-1-bmeng@tinylab.org>
- <20230628152726.110295-6-bmeng@tinylab.org>
-Date: Fri, 07 Jul 2023 16:40:55 +0200
-In-Reply-To: <20230628152726.110295-6-bmeng@tinylab.org> (Bin Meng's message
- of "Wed, 28 Jun 2023 23:27:25 +0800")
-Message-ID: <875y6vg4y0.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qHme1-0007CF-DG; Fri, 07 Jul 2023 10:41:13 -0400
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qHmdv-0003Wk-Tw; Fri, 07 Jul 2023 10:41:13 -0400
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3a3a8d21208so1804144b6e.0; 
+ Fri, 07 Jul 2023 07:41:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688740866; x=1691332866;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=aSO2qSj4xRNAf3xYlOxyXHzPC7RkOuvJKxlGLNbjXtc=;
+ b=HLnjHAORLvgl2Q9+tShHO4IrPqRecBwJgHIQj3DDInS8b75JdbfJa2AeGR7TWfrjDo
+ 7SjvPCgFYK6TCpI/fKsURvQ3mbV+jFYa0wKcw/AuJ/X/RDY491DPDeR1V/ffvv72Z3CO
+ cRLA074ZaL6c9OLeevRFer+MxP3PnSdPuwnrYjERqqu/sAjyjPIP7t4xzxZGSYNdLVrs
+ m+Y86Pv3IHYJBXF3RZRmjQLYt9qWPowuH64C651ItB4VhUovwOXvhAvW1Gs6ihPXxX9B
+ LIeRtuhLHAosT4c5Eju9H1CxWL5DETIsfkY9xCUFu8ZztZ4P19x5ILKlGyqjcOmSNMug
+ M24Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688740866; x=1691332866;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aSO2qSj4xRNAf3xYlOxyXHzPC7RkOuvJKxlGLNbjXtc=;
+ b=WUvBVc75of0F4FzQLag/T/EjzNo4n8f8O/pIFZuSwOI3VI8rYWGLoxQbS0zR0TbBxl
+ SmdqaBa8YSFDeKopZwgVZK2nc9R2lnMJmZFSpk9uKFlqZ+pothXpRWM9C609WJObKDtZ
+ CtAuXMgbjj1P2HfTR87h7h+pJfB5/IdD3R/RLzXiuabax6UiIBfv5cnJ71guNQtVsLCN
+ QLuGpZo15J8xB352tyrqMRVp0qz16IVuP0szrUpkSBC9WqjMBq1lrlPhAHbVHrQBW6Ry
+ SgBpu8YLU+cE0+W/B8/3MEmnpcrf/ix7/bzJHQggd00eR1pdPRjlWylQ/d07VSSgEFf4
+ EHsg==
+X-Gm-Message-State: ABy/qLZwXoLnpdH0EpcXOLGkq/PdlSA7m2ONx3aucBYsCYs9cgJmOU7O
+ E8TUUaASjf4xozqMznOncMj/lL5HPPY=
+X-Google-Smtp-Source: APBJJlE79JvO7M48UV/nftFFggSDb6bUjutCFAR5SG8h/cOb9Xz7pIDeDehAI+bC0+MQioSiiKHj8Q==
+X-Received: by 2002:a05:6808:1302:b0:3a1:df16:2eed with SMTP id
+ y2-20020a056808130200b003a1df162eedmr6929468oiv.30.1688740866142; 
+ Fri, 07 Jul 2023 07:41:06 -0700 (PDT)
+Received: from grind.. (201-69-66-19.dial-up.telesp.net.br. [201.69.66.19])
+ by smtp.gmail.com with ESMTPSA id
+ 15-20020aca100f000000b00398031b1014sm1670913oiq.26.2023.07.07.07.41.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 07 Jul 2023 07:41:05 -0700 (PDT)
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
+ richard.henderson@linaro.org
+Subject: [PULL v2 00/59] ppc queue
+Date: Fri,  7 Jul 2023 11:41:00 -0300
+Message-ID: <20230707144100.25389-1-danielhb413@gmail.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=danielhb413@gmail.com; helo=mail-oi1-x22a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,94 +89,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Bin Meng <bmeng@tinylab.org> writes:
+Changes v1->v2:
+ * Dropped patch 60 "ppc: Enable 2nd DAWR support on p10"
 
-> From: Zhangjin Wu <falcon@tinylab.org>
->
-> Based on the old close_all_open_fd() of util/async-teardown.c, a new
-> generic qemu_close_range() has been added in osdep.c.
->
-> Now, let's switch over to use the generic qemu_close_range().
->
-> Signed-off-by: Zhangjin Wu <falcon@tinylab.org>
-> Signed-off-by: Bin Meng <bmeng@tinylab.org>
->
-> ---
->
-> Changes in v4:
-> - call sysconf directly instead of using a variable
->
-> Changes in v3:
-> - limit the last_fd of qemu_close_range() to sysconf(_SC_OPEN_MAX)
->
-> Changes in v2:
-> - new patch: "util/async-teardown: Use qemu_close_range() to close fds"
->
->  util/async-teardown.c | 41 +----------------------------------------
->  1 file changed, 1 insertion(+), 40 deletions(-)
->
-> diff --git a/util/async-teardown.c b/util/async-teardown.c
-> index 7e0177a8da..a038a255ff 100644
-> --- a/util/async-teardown.c
-> +++ b/util/async-teardown.c
-> @@ -29,44 +29,6 @@
->  
->  static pid_t the_ppid;
->  
-> -/*
-> - * Close all open file descriptors.
-> - */
-> -static void close_all_open_fd(void)
-> -{
-> -    struct dirent *de;
-> -    int fd, dfd;
-> -    DIR *dir;
-> -
-> -#ifdef CONFIG_CLOSE_RANGE
-> -    int r = close_range(0, ~0U, 0);
-> -    if (!r) {
-> -        /* Success, no need to try other ways. */
-> -        return;
-> -    }
-> -#endif
-> -
-> -    dir = opendir("/proc/self/fd");
-> -    if (!dir) {
-> -        /* If /proc is not mounted, close fds one by one. */
-> -        int open_max = sysconf(_SC_OPEN_MAX), i;
-> -        for (i = 0; i < open_max; i++) {
-> -                close(i);
-> -        }
-> -        return;
-> -    }
-> -    /* Avoid closing the directory. */
-> -    dfd = dirfd(dir);
-> -
-> -    for (de = readdir(dir); de; de = readdir(dir)) {
-> -        fd = atoi(de->d_name);
-> -        if (fd != dfd) {
-> -            close(fd);
-> -        }
-> -    }
-> -    closedir(dir);
-> -}
-> -
->  static void hup_handler(int signal)
->  {
->      /* Check every second if this process has been reparented. */
-> @@ -92,9 +54,8 @@ static int async_teardown_fn(void *arg)
->      /*
->       * Close all file descriptors that might have been inherited from the
->       * main qemu process when doing clone, needed to make libvirt happy.
-> -     * Not using close_range for increased compatibility with older kernels.
->       */
-> -    close_all_open_fd();
-> +    qemu_close_range(0, sysconf(_SC_OPEN_MAX) - 1);
+Thanks,
 
-Why do you change the upper bound from ~0U to sysconf(_SC_OPEN_MAX) - 1?
+Daniel
 
->  
->      /* Set up a handler for SIGHUP and unblock SIGHUP. */
->      sigaction(SIGHUP, &sa, NULL);
+The following changes since commit 97c81ef4b8e203d9620fd46e7eb77004563e3675:
 
+  Merge tag 'pull-9p-20230706' of https://github.com/cschoenebeck/qemu into staging (2023-07-06 18:19:42 +0100)
+
+are available in the Git repository at:
+
+  https://gitlab.com/danielhb/qemu.git tags/pull-ppc-20230707-1
+
+for you to fetch changes up to bdb97596f663e9af9741353417c651f0d581de29:
+
+  ppc/pnv: Add QME region for P10 (2023-07-07 06:32:53 -0300)
+
+----------------------------------------------------------------
+ppc patch queue for 2023-07-07:
+
+In this last queue for 8.1 we have a lot of fixes and improvements all
+around: SMT support for powerNV, XIVE fixes, PPC440 cleanups, exception
+handling cleanups and kvm_pph.h cleanups just to name a few.
+
+Thanks everyone in the qemu-ppc community for all the contributions for
+the next QEMU 8.1 release.
+
+----------------------------------------------------------------
+BALATON Zoltan (22):
+      mv64361: Add dummy gigabit ethernet PHY access registers
+      target/ppc: Remove some superfluous parentheses
+      target/ppc: Remove unneeded parameter from powerpc_reset_wakeup()
+      target/ppc: Move common check in exception handlers to a function
+      target/ppc: Remove some more local CPUState variables only used once
+      target/ppd: Remove unused define
+      target/ppc: Get CPUState in one step
+      ppc/pegasos2: Add support for -initrd command line option
+      ppc440: Change ppc460ex_pcie_init() parameter type
+      ppc440: Add cpu link property to PCIe controller model
+      ppc440: Add a macro to shorten PCIe controller DCR registration
+      ppc440: Rename parent field of PPC460EXPCIEState to match code style
+      ppc440: Rename local variable in dcr_read_pcie()
+      ppc440: Stop using system io region for PCIe buses
+      ppc440: Add busnum property to PCIe controller model
+      ppc440: Remove ppc460ex_pcie_init legacy init function
+      ppc/sam460ex: Remove address_space_mem local variable
+      ppc440_pcix: Don't use iomem for regs
+      ppc440_pcix: Stop using system io region for PCI bus
+      ppc4xx_pci: Rename QOM type name define
+      ppc4xx_pci: Add define for ppc4xx-host-bridge type name
+      ppc440_pcix: Rename QOM type define abd move it to common header
+
+Frederic Barrat (8):
+      pnv/psi: Allow access to PSI registers through xscom
+      pnv/xive2: Allow indirect TIMA accesses of all sizes
+      pnv/xive2: Fix TIMA offset for indirect access
+      pnv/xive: Add property on xive sources to define PQ state on reset
+      pnv/psi: Initialize the PSIHB interrupts to match hardware
+      pnv/xive: Allow mmio operations of any size on the ESB CI pages
+      pnv/xive: Print CPU target in all TIMA traces
+      pnv/xive2: Always pass a presenter object when accessing the TIMA
+
+Joel Stanley (7):
+      ppc/pnv: quad xscom callbacks are P9 specific
+      ppc/pnv: Subclass quad xscom callbacks
+      ppc/pnv: Add P10 quad xscom model
+      ppc/pnv: Add P10 core xscom model
+      ppc/pnv: Return zero for core thread state xscom
+      ppc/pnv: Log all unimp warnings with similar message
+      ppc/pnv: Add QME region for P10
+
+Narayana Murty N (1):
+      target: ppc: Use MSR_HVB bit to get the target endianness for memory dump
+
+Nicholas Piggin (14):
+      target/ppc: Make HDECR underflow edge triggered
+      hw/ppc: Fix clock update drift
+      target/ppc: Tidy POWER book4 SPR registration
+      target/ppc: Add TFMR SPR implementation with read and write helpers
+      sungem: Add WOL MMIO
+      target/ppc: Fix icount access for some hypervisor instructions
+      tests/avocado: record_replay test for ppc powernv machine
+      target/ppc: Add LPAR-per-core vs per-thread mode flag
+      target/ppc: SMT support for the HID SPR
+      ppc/pnv: SMT support for powernv
+      tests/avocado: Add powernv machine test script
+      ppc/pnv: Set P10 core xscom region size to match hardware
+      tests/qtest: Add xscom tests for powernv10 machine
+      target/ppc: Machine check on invalid real address access on POWER9/10
+
+Philippe Mathieu-Daudé (7):
+      target/ppc: Only generate decodetree files when TCG is enabled
+      target/ppc: Have 'kvm_ppc.h' include 'sysemu/kvm.h'
+      target/ppc: Reorder #ifdef'ry in kvm_ppc.h
+      target/ppc: Move CPU QOM definitions to cpu-qom.h
+      target/ppc: Define TYPE_HOST_POWERPC_CPU in cpu-qom.h
+      target/ppc: Restrict 'kvm_ppc.h' to sysemu in cpu_init.c
+      target/ppc: Remove pointless checks of CONFIG_USER_ONLY in 'kvm_ppc.h'
+
+ docs/system/ppc/powernv.rst    |   5 -
+ hw/intc/pnv_xive2.c            |  26 +++-
+ hw/intc/trace-events           |   4 +-
+ hw/intc/xive.c                 |  20 +--
+ hw/intc/xive2.c                |   4 +-
+ hw/net/sungem.c                |  52 ++++++++
+ hw/net/trace-events            |   2 +
+ hw/pci-host/mv64361.c          |   6 +
+ hw/pci-host/mv643xx.h          |   3 +
+ hw/ppc/pegasos2.c              |  32 ++++-
+ hw/ppc/pnv.c                   |  26 +++-
+ hw/ppc/pnv_core.c              | 282 ++++++++++++++++++++++++++++++++++-------
+ hw/ppc/pnv_psi.c               |  33 +++--
+ hw/ppc/ppc.c                   |  49 +++----
+ hw/ppc/ppc440.h                |   1 -
+ hw/ppc/ppc440_bamboo.c         |   3 +-
+ hw/ppc/ppc440_pcix.c           |  28 ++--
+ hw/ppc/ppc440_uc.c             | 192 ++++++++++++----------------
+ hw/ppc/ppc4xx_pci.c            |  10 +-
+ hw/ppc/sam460ex.c              |  33 +++--
+ hw/ppc/spapr_cpu_core.c        |   2 +
+ include/hw/ppc/pnv_core.h      |  18 ++-
+ include/hw/ppc/pnv_xscom.h     |  15 ++-
+ include/hw/ppc/ppc4xx.h        |   5 +-
+ include/hw/ppc/xive.h          |   1 +
+ target/ppc/arch_dump.c         |   2 +-
+ target/ppc/cpu-qom.h           |   6 +
+ target/ppc/cpu.h               |   7 +-
+ target/ppc/cpu_init.c          |  97 ++++++++++----
+ target/ppc/excp_helper.c       | 206 ++++++++++++++----------------
+ target/ppc/helper.h            |   3 +
+ target/ppc/internal.h          |   5 +
+ target/ppc/kvm_ppc.h           |  70 +++++-----
+ target/ppc/meson.build         |   2 +-
+ target/ppc/misc_helper.c       |  29 +++++
+ target/ppc/spr_common.h        |   3 +
+ target/ppc/timebase_helper.c   |  13 ++
+ target/ppc/translate.c         |  45 ++++++-
+ tests/avocado/ppc_powernv.py   |  87 +++++++++++++
+ tests/avocado/replay_kernel.py |  17 +++
+ tests/qtest/pnv-xscom-test.c   |  45 +++++--
+ 41 files changed, 1039 insertions(+), 450 deletions(-)
+ create mode 100644 tests/avocado/ppc_powernv.py
 
