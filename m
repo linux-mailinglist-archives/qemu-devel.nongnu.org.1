@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F4574B008
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B9374AFFF
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:39:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjhv-0003PS-FS; Fri, 07 Jul 2023 07:33:03 -0400
+	id 1qHjhw-0003Yx-53; Fri, 07 Jul 2023 07:33:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjhp-0003O8-6p; Fri, 07 Jul 2023 07:32:57 -0400
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ id 1qHjhp-0003OM-De; Fri, 07 Jul 2023 07:32:57 -0400
+Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjhl-0006oD-8t; Fri, 07 Jul 2023 07:32:56 -0400
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-6b74b37fbe0so1690016a34.1; 
- Fri, 07 Jul 2023 04:32:50 -0700 (PDT)
+ id 1qHjhm-0006oh-J7; Fri, 07 Jul 2023 07:32:57 -0400
+Received: by mail-ot1-x333.google.com with SMTP id
+ 46e09a7af769-6b72c4038b6so1632892a34.0; 
+ Fri, 07 Jul 2023 04:32:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729570; x=1691321570;
+ d=gmail.com; s=20221208; t=1688729572; x=1691321572;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CRvRXA7Kh7MmoEvnAsBLLz4TkYuG2taDUOr4AOTd1gE=;
- b=iVavzohH2BB6L+iLZfg6l+lg7aFpFk9X+n6dyPQZ/T4L8WGtx9oFn1Z/MX3bk2vV8s
- ckAOhpLKA+HSg6Ok/+Urwcwr5wVmXKC83iWg3kWt3bE7AZJdRfPXBM+yjDA6LqPAFcai
- VxQw1lEDp85CiTk7cFUIaZl5lm8kEPS7mJntN9EdlPsstZe1U6HTOV04azEAeVOfLFdJ
- t/ZnUrR2SzfhEWNPdqT5EmWPR+gOMqymK/gFjXYUNUF5AWMbm9ZfnSHikQYttBqzWev+
- nZJn+EbTwXR/TJbcSjkUtnWxqJDjNPvnS7B9qgX2Wp+ht8TOUltCH3yl39L3bcoiw2A5
- kvJQ==
+ bh=fxHUJP19vs3SHivnjWffL5x3eI6sdELVD8/aW9X8H70=;
+ b=Vak/LgXxMxsFXQB3BztiEWjchNi8TmYt1enSaAzs5pBcDBBoXhNSkIL/trG/lR/SwF
+ N9ZkwjvEsujqAX1cWTX8Uid2ruEMkUsQZRY8vKK88iu0myx8GVsy7XlI9DlmCCI6kQkv
+ HqBMKPnkkwb0tvyEbQoR4XfT2gONT81R2fwFIko7rsusvSYcq0+VtMpiOLA5pMdZ7Zw3
+ L2jZzbWSnBfeEHgy+nFS6aVYqrYjCaWtakIipM/MYb27ZuruvZKwMg/l0BG1tQYWQp+o
+ Pbo33v83LLmvv4VoOLcmMf5DQM6B+XfpnoDZUG9/lo+A/aB3tOHT2DfbgrqdnTbpXEt4
+ XjeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729570; x=1691321570;
+ d=1e100.net; s=20221208; t=1688729572; x=1691321572;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CRvRXA7Kh7MmoEvnAsBLLz4TkYuG2taDUOr4AOTd1gE=;
- b=Dar8M0I/mp71Zm0Oc0gdkMv7XYYdJceLwGH+qJsm1EFvyUOhsv6x5Vby9HTE8JYHNI
- yPI2dlv9rxegYfDom9QfL67keENfsGToMB9UiYqJ/oR2Srs32opOuJ0BUgmUBMb8ESgr
- FNqDAaUIX+/f3fcz1L8iHtc3c4rej/epaWsEC8bBJYdTaK4MAmajHwP107YoQF9QlxSP
- ItazVqn3w681jtkJ+JSfoqtnzOfVz0fCRQ9bSzpNLXF4WKc+sS03cYb6RFI5GhvwbZuS
- Gg6YXBXZ1BnxK74g4qU2dQcORx+056nBiv2DVw7JqW3U9xRSIaEJEitTar3q1WW3OO1N
- OovQ==
-X-Gm-Message-State: ABy/qLbHqH5YAtIbSuNeBAW0Y7beuAyM7a/8b1SL4vN4TknGzLe0WNAJ
- t5VybmSk+8HqLdwq7hzohVB9gfOiWA4=
-X-Google-Smtp-Source: APBJJlHxRxsxr8vHvEvSik4XJTEWKQzHogDovrNf6URItz6SjNEyOcWUvxmq7BSlcLnHjijRUlrrLw==
-X-Received: by 2002:a9d:7391:0:b0:6b7:4c0a:5de7 with SMTP id
- j17-20020a9d7391000000b006b74c0a5de7mr4602390otk.33.1688729570148; 
- Fri, 07 Jul 2023 04:32:50 -0700 (PDT)
+ bh=fxHUJP19vs3SHivnjWffL5x3eI6sdELVD8/aW9X8H70=;
+ b=U8ZkT84uLdHVcXjyPmG69mE87jIjlvs9mQ7pM1JlhMJ7V4cHbuZMcv7XbViiGeI6Y8
+ aU63AD82iDmfpg+JIx40ibgZkSUQT3ORSbsESjKHoBE2WyCTx0Lisb1HKTq11ulSIRe3
+ T1XL/aMmAoOnptBKPx4RavUR+nqNieNrXp8o+5xGBGF0qb8wja58JkELqqQWm2uzRx7C
+ JiyA00LYcBPmQGxnuLSUiLhQTRU2qKfvUsV0qy4NK02toK98r8vhx6mjMQSwxkP1fFMX
+ 6+4wyd3jYadrRILEqmreCNXyfYlu0W6q32pEADAL77duao7CsnaUC2ndGzZoACUBmX3D
+ RdYA==
+X-Gm-Message-State: ABy/qLalim0TiuAo2oyW1P6kZM0J/p1IdgjUX6hheLALqMIlkryfxZAq
+ apQeKG1TkoTNrroY5TJU/kZg1Lu6Kc0=
+X-Google-Smtp-Source: APBJJlEEPqCVkceqhzIaJkPzT/v9v1yk3raYkfOgf8fHz/cvMavgFCZMiw17Z4U+0/ctYJvukd2O4A==
+X-Received: by 2002:a9d:73c4:0:b0:6b8:7576:e695 with SMTP id
+ m4-20020a9d73c4000000b006b87576e695mr5157985otk.4.1688729572598; 
+ Fri, 07 Jul 2023 04:32:52 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.48
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.32.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:32:49 -0700 (PDT)
+ Fri, 07 Jul 2023 04:32:52 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PULL 34/60] tests/avocado: Add powernv machine test script
-Date: Fri,  7 Jul 2023 08:30:42 -0300
-Message-ID: <20230707113108.7145-35-danielhb413@gmail.com>
+ richard.henderson@linaro.org, BALATON Zoltan <balaton@eik.bme.hu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 35/60] ppc440: Change ppc460ex_pcie_init() parameter type
+Date: Fri,  7 Jul 2023 08:30:43 -0300
+Message-ID: <20230707113108.7145-36-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x332.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x333.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,113 +93,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-This copies ppc_pseries.py to start a set of powernv tests, including
-a Linux boot test for the newly added SMT mode.
+Change parameter of ppc460ex_pcie_init() from env to cpu to allow
+further refactoring.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20230705120631.27670-5-npiggin@gmail.com>
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <1695d7cc1a9f1070ab498c078916e2389d6e9469.1688586835.git.balaton@eik.bme.hu>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- tests/avocado/ppc_powernv.py | 87 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 87 insertions(+)
- create mode 100644 tests/avocado/ppc_powernv.py
+ hw/ppc/ppc440.h    | 2 +-
+ hw/ppc/ppc440_uc.c | 7 ++++---
+ hw/ppc/sam460ex.c  | 2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/tests/avocado/ppc_powernv.py b/tests/avocado/ppc_powernv.py
-new file mode 100644
-index 0000000000..d0e5c07bde
---- /dev/null
-+++ b/tests/avocado/ppc_powernv.py
-@@ -0,0 +1,87 @@
-+# Test that Linux kernel boots on ppc powernv machines and check the console
-+#
-+# Copyright (c) 2018, 2020 Red Hat, Inc.
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
-+
-+from avocado.utils import archive
-+from avocado_qemu import QemuSystemTest
-+from avocado_qemu import wait_for_console_pattern
-+
-+class powernvMachine(QemuSystemTest):
-+
-+    timeout = 90
-+    KERNEL_COMMON_COMMAND_LINE = 'printk.time=0 '
-+    panic_message = 'Kernel panic - not syncing'
-+    good_message = 'VFS: Cannot open root device'
-+
-+    def do_test_linux_boot(self):
-+        self.require_accelerator("tcg")
-+        kernel_url = ('https://archives.fedoraproject.org/pub/archive'
-+                      '/fedora-secondary/releases/29/Everything/ppc64le/os'
-+                      '/ppc/ppc64/vmlinuz')
-+        kernel_hash = '3fe04abfc852b66653b8c3c897a59a689270bc77'
-+        kernel_path = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-+
-+        self.vm.set_console()
-+        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE + 'console=hvc0'
-+        self.vm.add_args('-kernel', kernel_path,
-+                         '-append', kernel_command_line)
-+        self.vm.launch()
-+
-+    def test_linux_boot(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:powernv
-+        :avocado: tags=accel:tcg
-+        """
-+
-+        self.do_test_linux_boot()
-+        console_pattern = 'VFS: Cannot open root device'
-+        wait_for_console_pattern(self, console_pattern, self.panic_message)
-+
-+    def test_linux_smp_boot(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:powernv
-+        :avocado: tags=accel:tcg
-+        """
-+
-+        self.vm.add_args('-smp', '4')
-+        self.do_test_linux_boot()
-+        console_pattern = 'smp: Brought up 1 node, 4 CPUs'
-+        wait_for_console_pattern(self, console_pattern, self.panic_message)
-+        wait_for_console_pattern(self, self.good_message, self.panic_message)
-+
-+    def test_linux_smt_boot(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:powernv
-+        :avocado: tags=accel:tcg
-+        """
-+
-+        self.vm.add_args('-smp', '4,threads=4')
-+        self.do_test_linux_boot()
-+        console_pattern = 'CPU maps initialized for 4 threads per core'
-+        wait_for_console_pattern(self, console_pattern, self.panic_message)
-+        console_pattern = 'smp: Brought up 1 node, 4 CPUs'
-+        wait_for_console_pattern(self, console_pattern, self.panic_message)
-+        wait_for_console_pattern(self, self.good_message, self.panic_message)
-+
-+    def test_linux_big_boot(self):
-+        """
-+        :avocado: tags=arch:ppc64
-+        :avocado: tags=machine:powernv
-+        :avocado: tags=accel:tcg
-+        """
-+
-+        self.vm.add_args('-smp', '16,threads=4,cores=2,sockets=2')
-+
-+        # powernv does not support NUMA
-+        self.do_test_linux_boot()
-+        console_pattern = 'CPU maps initialized for 4 threads per core'
-+        wait_for_console_pattern(self, console_pattern, self.panic_message)
-+        console_pattern = 'smp: Brought up 2 nodes, 16 CPUs'
-+        wait_for_console_pattern(self, console_pattern, self.panic_message)
-+        wait_for_console_pattern(self, self.good_message, self.panic_message)
+diff --git a/hw/ppc/ppc440.h b/hw/ppc/ppc440.h
+index 7c24db8504..ae42bcf0c8 100644
+--- a/hw/ppc/ppc440.h
++++ b/hw/ppc/ppc440.h
+@@ -18,6 +18,6 @@ void ppc4xx_cpr_init(CPUPPCState *env);
+ void ppc4xx_sdr_init(CPUPPCState *env);
+ void ppc4xx_ahb_init(CPUPPCState *env);
+ void ppc4xx_dma_init(CPUPPCState *env, int dcr_base);
+-void ppc460ex_pcie_init(CPUPPCState *env);
++void ppc460ex_pcie_init(PowerPCCPU *cpu);
+ 
+ #endif /* PPC440_H */
+diff --git a/hw/ppc/ppc440_uc.c b/hw/ppc/ppc440_uc.c
+index 651263926e..8eb985d714 100644
+--- a/hw/ppc/ppc440_uc.c
++++ b/hw/ppc/ppc440_uc.c
+@@ -17,6 +17,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/pci/pci.h"
+ #include "sysemu/reset.h"
++#include "cpu.h"
+ #include "ppc440.h"
+ 
+ /*****************************************************************************/
+@@ -1108,17 +1109,17 @@ static void ppc460ex_pcie_register_dcrs(PPC460EXPCIEState *s, CPUPPCState *env)
+                      &dcr_read_pcie, &dcr_write_pcie);
+ }
+ 
+-void ppc460ex_pcie_init(CPUPPCState *env)
++void ppc460ex_pcie_init(PowerPCCPU *cpu)
+ {
+     DeviceState *dev;
+ 
+     dev = qdev_new(TYPE_PPC460EX_PCIE_HOST);
+     qdev_prop_set_int32(dev, "dcrn-base", DCRN_PCIE0_BASE);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+-    ppc460ex_pcie_register_dcrs(PPC460EX_PCIE_HOST(dev), env);
++    ppc460ex_pcie_register_dcrs(PPC460EX_PCIE_HOST(dev), &cpu->env);
+ 
+     dev = qdev_new(TYPE_PPC460EX_PCIE_HOST);
+     qdev_prop_set_int32(dev, "dcrn-base", DCRN_PCIE1_BASE);
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+-    ppc460ex_pcie_register_dcrs(PPC460EX_PCIE_HOST(dev), env);
++    ppc460ex_pcie_register_dcrs(PPC460EX_PCIE_HOST(dev), &cpu->env);
+ }
+diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
+index cf065aae0e..aaa8d2f4a5 100644
+--- a/hw/ppc/sam460ex.c
++++ b/hw/ppc/sam460ex.c
+@@ -422,7 +422,7 @@ static void sam460ex_init(MachineState *machine)
+     usb_create_simple(usb_bus_find(-1), "usb-mouse");
+ 
+     /* PCI bus */
+-    ppc460ex_pcie_init(env);
++    ppc460ex_pcie_init(cpu);
+     /* All PCI irqs are connected to the same UIC pin (cf. UBoot source) */
+     dev = sysbus_create_simple("ppc440-pcix-host", 0xc0ec00000,
+                                qdev_get_gpio_in(uic[1], 0));
 -- 
 2.41.0
 
