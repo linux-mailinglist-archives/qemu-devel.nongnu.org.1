@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9CB74B014
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A834D74B031
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 13:46:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHjii-0007gZ-E7; Fri, 07 Jul 2023 07:33:52 -0400
+	id 1qHjij-0007k5-D9; Fri, 07 Jul 2023 07:33:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjif-0007SU-Ij; Fri, 07 Jul 2023 07:33:49 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ id 1qHjih-0007ee-DY; Fri, 07 Jul 2023 07:33:51 -0400
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qHjid-000755-W9; Fri, 07 Jul 2023 07:33:49 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6b5d7e60015so1679805a34.0; 
- Fri, 07 Jul 2023 04:33:46 -0700 (PDT)
+ id 1qHjif-00075z-UV; Fri, 07 Jul 2023 07:33:51 -0400
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6b5ef64bca6so1625248a34.3; 
+ Fri, 07 Jul 2023 04:33:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688729626; x=1691321626;
+ d=gmail.com; s=20221208; t=1688729628; x=1691321628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kCkdRPqEQAxVr0sy/Rwt/MUSqIIx/LRBpxLUD+vaQdM=;
- b=rkj2TyiFNZO/2Vv1H5XdTPzGg5/XhIplcXjArMCj8u2AANTwmcFMN3t/wDewfAT3Gn
- 5nvn45d5wbv+cdidVYY8uGISzFZZ4A/rvyLDGjDbjvBAmphNsBvEXzKglerKYL0ekdHT
- 7L6/vHFoGHJs8/8xZ/EXqZ2ufT70iVoy2bd0lzXLL4BI5K2G2p18ZiDWGqyua2SL+0n9
- tNEvC0nVs2aILq0pvad3pLt9kx2py8ujkx9DcV0uI5lQDgB5vb7rl+r4rm2a5oU7ZTkS
- 6C1ext0Vh5ceUzzo7C88L+vk1y643zh4qbxKtbfbtrn4ZmpXbrpmVbeasGUqtBdZ+2al
- ZVug==
+ bh=QkjDD2MyIJf1W+5sZdfrx7JqdlOzHwifJlixrav+Tr8=;
+ b=dQyKtjvKEcFGqWzBWIZD9lhfBZYeck+bO9PxtEv6fqGCcYkSIBXAC6h1FT0ipEO8O0
+ vHd61JMgcy8x6dRRtSjFNmtpujrk8n0xU/T1b4+sKOMQsPYhIo5hbZAna1EUZHGlhYkw
+ 3vztgGbQiK7sIODC8M2WUxdBNfuMGa2xUaf8bZ4skiWxrhLLBNrPd9Xi5zXazhRdHuQK
+ n57rHd3v8HD3zBuzFjLeGxI8mNJe331qlaskTooSaRCHINX2wqkDVPQDIJDk/JIh7rux
+ DemJAQXkhUFJ8b4vs/lb9npy5rgcudXdgIms5dEE8eEwOsbY2XySJybqM9aHPlDBmKp9
+ 1Mhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688729626; x=1691321626;
+ d=1e100.net; s=20221208; t=1688729628; x=1691321628;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kCkdRPqEQAxVr0sy/Rwt/MUSqIIx/LRBpxLUD+vaQdM=;
- b=THMQQH8fenBMe/kAUfm94LaZfOWGt2z8ll3SoybnJLXxUg6os/WIHK0Be4LXWX/n1N
- 8J+DpLEm7mXL7XUnQHDXuhuQFWMAh7HCZm7FLplDYcHgZD7Z94CdJDoxbKD/87Lg21EY
- KiIW26hpUWnRzallhvcoJRBfl+pk1Sieb4/uKJfgQ8lFpvmIdEROYF3NOZh4gEdDQMJU
- QeLr1W6uLD+VRpDSVs+/4tGkuWQRBjaPXglIeWdeujyacTJGG6aMFUQJlHjc1UHybihv
- MVMRny0dWr1rtWBq9G8q5rYOBHPjuuSKzhhrKwUFt+n6dW8mXYpkTj+5NYmJAYHUZ2Pt
- SMTw==
-X-Gm-Message-State: ABy/qLbiTh+OBtqR2xjvyF6i8o0I1zYd6fY9nxI6xKCGPSmieEvAryF8
- pjHm0Qhl1N3Gxa/XoAN8JR3J3/HPA8c=
-X-Google-Smtp-Source: APBJJlFAYyxpCzBZHIA8zeUg1M2iuwOOQiXoWuL9idI0F9FlTyvFz8kIVMoX5UQkRx5bgmrw+mmjJg==
-X-Received: by 2002:a9d:7515:0:b0:6b8:6b70:4848 with SMTP id
- r21-20020a9d7515000000b006b86b704848mr5810116otk.29.1688729625958; 
- Fri, 07 Jul 2023 04:33:45 -0700 (PDT)
+ bh=QkjDD2MyIJf1W+5sZdfrx7JqdlOzHwifJlixrav+Tr8=;
+ b=NyvGpjaasBkjoquB0P7Kx3zpksMqoLCdMVA521C6VLgJiGWTxdsK7K3X4S36kvNSRN
+ fif6/hDBJbNq9edHbOrmKKbel3i4rny8sViJSzU/Sx6jxcVa9k2gF20H/4cnWsbUdHFE
+ R9yV6/XRWc0aLL9rtRQLj8Lh4pEmHLSgy8MEIxmf/bq7lyC/J5kEeWeySwYMR7mO+zfU
+ 1MJKs8UwUKECx0KhFEZJXL4GwTo1aHtfsB/vFDe3am1vvlqAp6dQgfVbVQ2JA2Lwis9O
+ OCWMjMZKrtAPSHrZFMsEpFLsnSFrbiQVtzDGmElNgaKZy5MEkR1XHpLLHSWVEyHpD2ly
+ Am3w==
+X-Gm-Message-State: ABy/qLahRx5+w9ZYwtaPeRrGjtft6avbDuKFBspi4DizkKY8RK/xYoAt
+ hf/1AKvnYtTklFzhs6lRGIKm85Zwy6M=
+X-Google-Smtp-Source: APBJJlFhdJiDUNbIEkmw3HoPiHHJlPXxRnfNOwv69vSgzMDLYUODLThV/OMf8o8pulpmFj3679Ginw==
+X-Received: by 2002:a05:6830:1314:b0:6b7:3dab:dbd6 with SMTP id
+ p20-20020a056830131400b006b73dabdbd6mr1305234otq.15.1688729628451; 
+ Fri, 07 Jul 2023 04:33:48 -0700 (PDT)
 Received: from grind.. ([2804:14c:f435:9162::1002])
  by smtp.gmail.com with ESMTPSA id
- g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.33.43
+ g17-20020a9d6c51000000b006b74b37f5e5sm1574859otq.20.2023.07.07.04.33.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 04:33:45 -0700 (PDT)
+ Fri, 07 Jul 2023 04:33:48 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
@@ -61,17 +61,18 @@ Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Greg Kurz <groug@kaod.org>
-Subject: [PULL 57/60] target/ppc: Restrict 'kvm_ppc.h' to sysemu in cpu_init.c
-Date: Fri,  7 Jul 2023 08:31:05 -0300
-Message-ID: <20230707113108.7145-58-danielhb413@gmail.com>
+Subject: [PULL 58/60] target/ppc: Remove pointless checks of CONFIG_USER_ONLY
+ in 'kvm_ppc.h'
+Date: Fri,  7 Jul 2023 08:31:06 -0300
+Message-ID: <20230707113108.7145-59-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707113108.7145-1-danielhb413@gmail.com>
 References: <20230707113108.7145-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x335.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,38 +98,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-User emulation shouldn't need any of the KVM prototypes
-declared in "kvm_ppc.h".
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Greg Kurz <groug@kaod.org>
-Message-ID: <20230627115124.19632-6-philmd@linaro.org>
+Message-ID: <20230627115124.19632-7-philmd@linaro.org>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- target/ppc/cpu_init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/ppc/kvm_ppc.h | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 6ac1765a8d..02b7aad9b0 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -21,7 +21,6 @@
- #include "qemu/osdep.h"
- #include "disas/dis-asm.h"
- #include "gdbstub/helpers.h"
--#include "kvm_ppc.h"
- #include "sysemu/cpus.h"
- #include "sysemu/hw_accel.h"
- #include "sysemu/tcg.h"
-@@ -49,6 +48,7 @@
- #ifndef CONFIG_USER_ONLY
- #include "hw/boards.h"
- #include "hw/intc/intc.h"
-+#include "kvm_ppc.h"
- #endif
+diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
+index 901e188c9a..6a4dd9c560 100644
+--- a/target/ppc/kvm_ppc.h
++++ b/target/ppc/kvm_ppc.h
+@@ -42,7 +42,6 @@ int kvmppc_booke_watchdog_enable(PowerPCCPU *cpu);
+ target_ulong kvmppc_configure_v3_mmu(PowerPCCPU *cpu,
+                                      bool radix, bool gtse,
+                                      uint64_t proc_tbl);
+-#ifndef CONFIG_USER_ONLY
+ bool kvmppc_spapr_use_multitce(void);
+ int kvmppc_spapr_enable_inkernel_multitce(void);
+ void *kvmppc_create_spapr_tce(uint32_t liobn, uint32_t page_shift,
+@@ -52,7 +51,6 @@ int kvmppc_remove_spapr_tce(void *table, int pfd, uint32_t window_size);
+ int kvmppc_reset_htab(int shift_hint);
+ uint64_t kvmppc_vrma_limit(unsigned int hash_shift);
+ bool kvmppc_has_cap_spapr_vfio(void);
+-#endif /* !CONFIG_USER_ONLY */
+ bool kvmppc_has_cap_epr(void);
+ int kvmppc_define_rtas_kernel_token(uint32_t token, const char *function);
+ int kvmppc_get_htab_fd(bool write, uint64_t index, Error **errp);
+@@ -262,7 +260,6 @@ static inline void kvmppc_set_reg_tb_offset(PowerPCCPU *cpu, int64_t tb_offset)
+ {
+ }
  
- /* #define PPC_DEBUG_SPR */
+-#ifndef CONFIG_USER_ONLY
+ static inline bool kvmppc_spapr_use_multitce(void)
+ {
+     return false;
+@@ -322,8 +319,6 @@ static inline void kvmppc_write_hpte(hwaddr ptex, uint64_t pte0, uint64_t pte1)
+     abort();
+ }
+ 
+-#endif /* !CONFIG_USER_ONLY */
+-
+ static inline bool kvmppc_has_cap_epr(void)
+ {
+     return false;
 -- 
 2.41.0
 
