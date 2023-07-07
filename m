@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C35274B2B4
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 16:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C249D74B2B3
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 16:07:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHm4t-0007Do-Pl; Fri, 07 Jul 2023 10:04:55 -0400
+	id 1qHm4u-0007EY-UP; Fri, 07 Jul 2023 10:04:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qHm4o-0007CS-1u
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qHm4p-0007Cs-M5
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qHm4m-0006OY-Mw
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:49 -0400
+ id 1qHm4o-0006P5-Bs
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688738688;
+ s=mimecast20190719; t=1688738689;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IqsJQaftY1Uc5GURCDMxtfHcPTonhG6bpqMWSq1J8Po=;
- b=dQjbAGkFmVam2BFIEVcR142L3IIMjIEULVP4wl7pvIQ2ziPsR+5J/VVKchVi27Kuwg2oL1
- KpVCpX+d7InXSqgkc+w1enfxdjrKGyE+9gkcgbMd02/PGTG5RKAjaLI8ovuvKeV95UtRsa
- aZ5ived6w+MTSQ4CSdflU66LNxGCs/A=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eUGUC4ov6DrmuNFBvNshE7uD0YHJbuDYyq31gljpPZ0=;
+ b=KpEnSWapl438jmIHwehr9SEBPSnOAHS0F4+718AXjo6LauNsldmwy+TEnw3AdYThR2demu
+ ghi4p2BrSN2O5mqYJGJXT7I64rQIneEmL4vQSIqOF4f29+JIgwVkWFYZTnL3IBdDS+DPu7
+ qatkrqkdY8fiTJ2/qGjL91cThLYO05Q=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-VvWSTGDbPLSiRVci6l1r6A-1; Fri, 07 Jul 2023 10:04:46 -0400
-X-MC-Unique: VvWSTGDbPLSiRVci6l1r6A-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-51d91ca5635so1390455a12.3
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 07:04:46 -0700 (PDT)
+ us-mta-587-GxD8IDgLOdid35KRHlVJJQ-1; Fri, 07 Jul 2023 10:04:48 -0400
+X-MC-Unique: GxD8IDgLOdid35KRHlVJJQ-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2b70347bf04so19092511fa.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 07:04:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688738684; x=1691330684;
+ d=1e100.net; s=20221208; t=1688738686; x=1691330686;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IqsJQaftY1Uc5GURCDMxtfHcPTonhG6bpqMWSq1J8Po=;
- b=XSIqcsGPMlDKaU/d4F5PdWiNDWIN5DnZoV4121mDMzNxbp8UjXXo8/y+tvhzZr2ihc
- dGDg65zfU08Nsbteg92chI2XNw0NGhMepmsDgbZjGKsc56DsT/Nuc3VCI6lOmDAAOk4V
- u7hUyV0ESFouKZH72k/O6DK2M5yPzc7mHqnqF7VDrXJAiTbUhXIiQVCQCs4t7DTI8GCr
- yfq38rKAWTFrq4U7HSmvBB3inzP2eJl6Q2F+sC4jnJzjEt8Xk09kqshT/j7kme8ERxAs
- ScLlmQKQ3a/ORdDSlYR9zYYB8LiqGOPYfWk47COP0v9topyYCo6iQ47vby2qbUUppB9g
- 7zyg==
-X-Gm-Message-State: ABy/qLaxam8mIA73fqvWwZVVbbsl5lUkPY8lDh3jiNkc4GM/X25CnoHZ
- WfZbQ5HJ1aGI/lwkneI2Fe2lcnwHZ3xTmIT3g2giX0/GFLcNJSE67zsvIz/KcoGh3v2oC3Lzw+7
- 9sSPLDqGYBm/blLSGsFFO3IKbU2OgFGyAYv+/PKi8EUll4AsRYGsJajTej4Aszvz5635VYF801m
- 4=
-X-Received: by 2002:a17:906:a96:b0:977:eed1:453c with SMTP id
- y22-20020a1709060a9600b00977eed1453cmr2670224ejf.73.1688738684667; 
- Fri, 07 Jul 2023 07:04:44 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGExnWn/CUp6+JOnqGY3/jJcL/CSZrS2DhPr783frwm1/dLHuCP1moiMjdQlvZ/eGc8PuOYPg==
-X-Received: by 2002:a17:906:a96:b0:977:eed1:453c with SMTP id
- y22-20020a1709060a9600b00977eed1453cmr2670214ejf.73.1688738684404; 
- Fri, 07 Jul 2023 07:04:44 -0700 (PDT)
+ bh=eUGUC4ov6DrmuNFBvNshE7uD0YHJbuDYyq31gljpPZ0=;
+ b=mHDr0WsqY4lM5YCAZrSSX61XdEEmp3gKcGtDml+8SJNE/WFUUZDMMACMBx7SmTvX+n
+ wI3YW8ynWMMzCPpCrSWFjcXFjxTPI7RtYOLOEscyOMk4/d0i6lT9eNif7RQgIpC3/p5R
+ Y9v5fONlQzcp0pvvI4qxOK6fqvqkLGQh/+6lsxV3cBJTCYnn1pTdSdI3VD23EUQhlSLN
+ d6JHYMYN/0OFgHOSBtui1mS25IKndnha5SwAm01O15uax+38Rm/Wd6ka+QOe4mJdKBAN
+ szjT5NYLcv/ZZtCSUYgLcYXS7lNUOpeMkYOoonvOJaoAD/lblsPAD/RvsQhYbHJRUZIN
+ bNHg==
+X-Gm-Message-State: ABy/qLYj2VETB7V1lRsswzvY1SRM/SLf4EPqKcN8ybbWHkU/mngJbIpK
+ HI1+nz34RAKABdsri3Ao2I5RH4PMU+YWRyrphFvsTAV/QiNNNPocUfkMqOuAUXHbAPQkkeECkI9
+ dFSvsqM1M9NGd1FQlMVmnseL8LVTrE83SrrTeqDrEhC3B9j5CU+X2GmYVy3sROx7GPj3eyO0NkV
+ k=
+X-Received: by 2002:a2e:9959:0:b0:2b6:d495:9467 with SMTP id
+ r25-20020a2e9959000000b002b6d4959467mr3674604ljj.6.1688738686232; 
+ Fri, 07 Jul 2023 07:04:46 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlG5e1LjyO7+MHsEhv6ys3VkfuPQs+TMBOHIEjS0+Fdgjk+WcB90gGm8yguMxeNqeRt46c5MIw==
+X-Received: by 2002:a2e:9959:0:b0:2b6:d495:9467 with SMTP id
+ r25-20020a2e9959000000b002b6d4959467mr3674575ljj.6.1688738685833; 
+ Fri, 07 Jul 2023 07:04:45 -0700 (PDT)
 Received: from [192.168.122.1] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- x9-20020a170906148900b009786c8249d6sm2258010ejc.175.2023.07.07.07.04.43
+ e25-20020a1709067e1900b0098de7d28c34sm2218540ejr.193.2023.07.07.07.04.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 07:04:43 -0700 (PDT)
+ Fri, 07 Jul 2023 07:04:45 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Tao Su <tao1.su@linux.intel.com>,
-	Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 6/9] target/i386: Allow MCDT_NO if host supports
-Date: Fri,  7 Jul 2023 16:04:29 +0200
-Message-ID: <20230707140432.88073-7-pbonzini@redhat.com>
+	Igor Mammedov <imammedo@redhat.com>
+Subject: [PULL 7/9] target/i386: Add new bit definitions of
+ MSR_IA32_ARCH_CAPABILITIES
+Date: Fri,  7 Jul 2023 16:04:30 +0200
+Message-ID: <20230707140432.88073-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230707140432.88073-1-pbonzini@redhat.com>
 References: <20230707140432.88073-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,34 +105,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Tao Su <tao1.su@linux.intel.com>
 
-MCDT_NO bit indicates HW contains the security fix and doesn't need to
-be mitigated to avoid data-dependent behaviour for certain instructions.
-It needs no hypervisor support. Treat it as supported regardless of what
-KVM reports.
+Currently, bit 13, 14, 15 and 24 of MSR_IA32_ARCH_CAPABILITIES are
+disclosed for fixing security issues, so add those bit definitions.
 
 Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-ID: <20230706054949.66556-4-tao1.su@linux.intel.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Message-ID: <20230706054949.66556-5-tao1.su@linux.intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm.c | 4 ++++
+ target/i386/cpu.h | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index de531842f6b..ebfaf3d24c7 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -432,6 +432,10 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
-         uint32_t eax;
-         host_cpuid(7, 1, &eax, &unused, &unused, &unused);
-         ret |= eax & (CPUID_7_1_EAX_FZRM | CPUID_7_1_EAX_FSRS | CPUID_7_1_EAX_FSRC);
-+    } else if (function == 7 && index == 2 && reg == R_EDX) {
-+        uint32_t edx;
-+        host_cpuid(7, 2, &unused, &unused, &unused, &edx);
-+        ret |= edx & CPUID_7_2_EDX_MCDT_NO;
-     } else if (function == 0xd && index == 0 &&
-                (reg == R_EAX || reg == R_EDX)) {
-         /*
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index c196b0a4826..e0771a10433 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1022,7 +1022,11 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+ #define MSR_ARCH_CAP_PSCHANGE_MC_NO     (1U << 6)
+ #define MSR_ARCH_CAP_TSX_CTRL_MSR       (1U << 7)
+ #define MSR_ARCH_CAP_TAA_NO             (1U << 8)
++#define MSR_ARCH_CAP_SBDR_SSDP_NO       (1U << 13)
++#define MSR_ARCH_CAP_FBSDP_NO           (1U << 14)
++#define MSR_ARCH_CAP_PSDP_NO            (1U << 15)
+ #define MSR_ARCH_CAP_FB_CLEAR           (1U << 17)
++#define MSR_ARCH_CAP_PBRSB_NO           (1U << 24)
+ 
+ #define MSR_CORE_CAP_SPLIT_LOCK_DETECT  (1U << 5)
+ 
 -- 
 2.41.0
 
