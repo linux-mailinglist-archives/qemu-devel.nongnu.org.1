@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B753174B2AA
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 16:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19BFC74B2A7
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 16:06:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHm4i-0007B8-S7; Fri, 07 Jul 2023 10:04:44 -0400
+	id 1qHm4k-0007BP-QY; Fri, 07 Jul 2023 10:04:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qHm4g-0007Ak-3Y
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qHm4h-0007As-AP
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qHm4d-0006M2-U2
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:41 -0400
+ id 1qHm4f-0006MJ-8Y
+ for qemu-devel@nongnu.org; Fri, 07 Jul 2023 10:04:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688738678;
+ s=mimecast20190719; t=1688738680;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=rBnN1MMNDLoJzaTmRCVkC+Vc41Ac07W6gnA+jLJ/Fm8=;
- b=GRWmRxRD2PjOx5msaAGCsKAQGK8zshvLOGas9L2SbSoC5QNqbw6w/CeeCqztL0NnkFbLWo
- ncUSMTMIEID66KKhCo0eZwUyr/eGp1Sl7WH7Y9iGyMics0jk2dARxqi1q1UPnJOSN9aRRe
- hV6Nw1+gsrPgyLEUaeBE4Fs8NKefTYE=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fSQvtdibzf8kOI4lB3nUm6N/pn4ErguFNC1K35xxW6Y=;
+ b=FWwG7Nvvc3FaPCCOPswYABbI5kFYhj6E64JqoPMMseWjW7ourlnP2j1vIwMleI3bbLnW8t
+ DY2zk6OhFiiHbfXcPFT9QVsnQtNADlyg/zylwgzR5GzsVc+QFwCwKgG1C7VB52ojBTMtgS
+ zwD5HbdFTaR6NqkJiYObNIjLeXVv4KE=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-194-MFLXmIWuMIyN5PAH8rm_Zg-1; Fri, 07 Jul 2023 10:04:36 -0400
-X-MC-Unique: MFLXmIWuMIyN5PAH8rm_Zg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-99388334de6so129553166b.0
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 07:04:35 -0700 (PDT)
+ us-mta-195-JqkvLsl_PVmMT9QeLsxo3w-1; Fri, 07 Jul 2023 10:04:38 -0400
+X-MC-Unique: JqkvLsl_PVmMT9QeLsxo3w-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-4fb9364b320so1903923e87.3
+ for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 07:04:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688738674; x=1691330674;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rBnN1MMNDLoJzaTmRCVkC+Vc41Ac07W6gnA+jLJ/Fm8=;
- b=OF7yBx7SWmNUgex993PIMx7k/Wk+ERXHnx7Iz4KWWXnl6Y24nHQtyl8lWqXsnJNoya
- 6jUMwBbEV/CE3HrzJp6OJzu9NFvNefMRs9UJoZ+AgTG9txM8Ujf17L8UeDRpkeRm79vs
- uw6xxBXB2N2UkUz/MgOwJOfEAe1ahQaKWbWTemX2e/p2KAjq2rS9Q/6ZZOkvo7kf2YqV
- 9xLAaUwmzn5Dv37aKuI40PUpSJmSm15q9mXt9X1IafLrgXph503AcVEMAZRF1++iUonX
- N3fC9BcGYx64nTYQwRJQU20MueuMl2/4TwaeDUB7gingY7zF0Yn4NAGkpEYB3cjrTgya
- MJMA==
-X-Gm-Message-State: ABy/qLacpDpPqThb49GlDTaCJFtBJ6qTUwKzTedpmJBeQfwo353zMztG
- k+AVFTzNyuF8UTwX+UMfUURV9aoKwff5q0mcEgRXD75sGS6cGjXbczRezprHyXvVK0Y2qpEejJX
- JKB/CIuIxntmHk5iXDdZ2WEzrTiUILFb9VO+hTBEnvwR4YsQ3j9hS2gZT49a99qLiQK5r1GbDAi
- 4=
-X-Received: by 2002:a17:907:75db:b0:992:9a5e:3172 with SMTP id
- jl27-20020a17090775db00b009929a5e3172mr3811522ejc.59.1688738674605; 
- Fri, 07 Jul 2023 07:04:34 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlG8Q+opWj41nK12as1RXIlKpC7FwzzFCNMkNqztiMS3YZ7mqaQvdKOE85GjHijgM5YQjh93FQ==
-X-Received: by 2002:a17:907:75db:b0:992:9a5e:3172 with SMTP id
- jl27-20020a17090775db00b009929a5e3172mr3811505ejc.59.1688738674197; 
- Fri, 07 Jul 2023 07:04:34 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688738676; x=1691330676;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fSQvtdibzf8kOI4lB3nUm6N/pn4ErguFNC1K35xxW6Y=;
+ b=Dn396sAcaCJYgQjPW6OkGJWf9NliFQ8bM0N4/jPE5GLmm49ZNIQu0TFWJi6ZcgcOFj
+ Ys5n8DBslGSmLrLONu17tFSd6w3n2N8VOFAC29tKLSGt3jb+ph7GR/GqI6AoMn0sMOeV
+ joLJTwYa6jMFL7UakhhIRw+3yHIB5oGxa6lHaRbdjHVbR40yIHpAlXw44S83dTkpafxF
+ u4QDm1g4UuNuQZe4c0snwk0ggkemj0rZHFYbE+z+bEyjMUhduVde7j+86beNr/ZULvrH
+ HlUZpat5gcYWs1JdITTXIeMwmxJHOY/9ZqaE2sW0feYIiA6zFVyzxqpZh0VvnUN9GrFV
+ GPrQ==
+X-Gm-Message-State: ABy/qLa6/TGsaWxEX0e8tq0TFWzq56bIU2PzZNGjfLe8ZKKWMsWQHxRm
+ GmovZGMhFSbiOfXsLviK+i2FYxBy4YhoYNBZL6DdAUI8LPvaWR+5zwUw+9rpNAmv8CpZWNuDI0L
+ 3Ohc3uWmNJGGuxBZ0QFcaTCKSmGjDzDOJ5pXi/kRFezrOiCwftVDVVbKDHKfQ2LU+mjVMEsCKSa
+ E=
+X-Received: by 2002:ac2:4e07:0:b0:4f8:5e49:c613 with SMTP id
+ e7-20020ac24e07000000b004f85e49c613mr4674520lfr.43.1688738676415; 
+ Fri, 07 Jul 2023 07:04:36 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHFX36aggTGOMMyhdRuJ5rG+g7DMvDw5O4YTyyl1RQc+swEEMCSeypDCosr50fexKFSp2CriA==
+X-Received: by 2002:ac2:4e07:0:b0:4f8:5e49:c613 with SMTP id
+ e7-20020ac24e07000000b004f85e49c613mr4674480lfr.43.1688738675865; 
+ Fri, 07 Jul 2023 07:04:35 -0700 (PDT)
 Received: from [192.168.122.1] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- j10-20020a17090686ca00b0098e16f8c198sm2272343ejy.18.2023.07.07.07.04.32
+ m11-20020aa7c2cb000000b0051e2a4edfd5sm2086120edp.21.2023.07.07.07.04.34
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 07 Jul 2023 07:04:33 -0700 (PDT)
+ Fri, 07 Jul 2023 07:04:34 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/9] Final batch of patches for QEMU 8.1 soft freeze
-Date: Fri,  7 Jul 2023 16:04:23 +0200
-Message-ID: <20230707140432.88073-1-pbonzini@redhat.com>
+Subject: [PULL 1/9] python: bump minimum requirements so they are compatible
+ with 3.12
+Date: Fri,  7 Jul 2023 16:04:24 +0200
+Message-ID: <20230707140432.88073-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230707140432.88073-1-pbonzini@redhat.com>
+References: <20230707140432.88073-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,54 +102,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 97c81ef4b8e203d9620fd46e7eb77004563e3675:
+There are many Python 3.12 issues right now, but a particularly
+problematic one when debugging them is that one cannot even use
+minreqs.txt in a Python 3.12 virtual environment to test with
+locked package versions.
 
-  Merge tag 'pull-9p-20230706' of https://github.com/cschoenebeck/qemu into staging (2023-07-06 18:19:42 +0100)
+Bump the mypy and wrapt versions to fix this, while remaining
+within the realm of versions compatible with Python 3.7.
 
-are available in the Git repository at:
+This requires a workaround for a mypy false positive
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+    qemu/qmp/qmp_tui.py:350: error: Non-overlapping equality check (left operand type: "Literal[Runstate.DISCONNECTING]", right operand type: "Literal[Runstate.IDLE]")  [comparison-overlap]
 
-for you to fetch changes up to 6d5e9694ef374159072984c0958c3eaab6dd1d52:
+where mypy does not realize that self.disconnect() could change
+the value of self.runstate.
 
-  target/i386: Add new CPU model GraniteRapids (2023-07-07 12:52:27 +0200)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ python/qemu/qmp/qmp_tui.py | 5 ++++-
+ python/setup.cfg           | 2 +-
+ python/tests/minreqs.txt   | 9 ++++-----
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
-----------------------------------------------------------------
-* Granite Rapids CPU model
-* Miscellaneous bugfixes
-
-----------------------------------------------------------------
-Fiona Ebner (1):
-      qemu_cleanup: begin drained section after vm_shutdown()
-
-Lei Wang (1):
-      target/i386: Add few security fix bits in ARCH_CAPABILITIES into SapphireRapids CPU model
-
-Paolo Bonzini (1):
-      python: bump minimum requirements so they are compatible with 3.12
-
-Tao Su (5):
-      target/i386: Adjust feature level according to FEAT_7_1_EDX
-      target/i386: Add support for MCDT_NO in CPUID enumeration
-      target/i386: Allow MCDT_NO if host supports
-      target/i386: Add new bit definitions of MSR_IA32_ARCH_CAPABILITIES
-      target/i386: Add new CPU model GraniteRapids
-
-Thomas Huth (1):
-      meson.build: Remove the logic to link C code with the C++ linker
-
- meson.build                |  22 ++----
- python/qemu/qmp/qmp_tui.py |   5 +-
- python/setup.cfg           |   2 +-
- python/tests/minreqs.txt   |   9 ++-
- qga/meson.build            |   2 +-
- scripts/main.c             |   1 -
- softmmu/runstate.c         |  20 +++---
- target/i386/cpu.c          | 172 +++++++++++++++++++++++++++++++++++++++++++++
- target/i386/cpu.h          |   8 +++
- target/i386/kvm/kvm.c      |   4 ++
- 10 files changed, 210 insertions(+), 35 deletions(-)
- delete mode 100644 scripts/main.c
+diff --git a/python/qemu/qmp/qmp_tui.py b/python/qemu/qmp/qmp_tui.py
+index 83691447231..2d9ebbd20bc 100644
+--- a/python/qemu/qmp/qmp_tui.py
++++ b/python/qemu/qmp/qmp_tui.py
+@@ -346,7 +346,10 @@ async def manage_connection(self) -> None:
+                 self._set_status('[Disconnected]')
+                 await self.disconnect()
+                 # check if a retry is needed
+-                if self.runstate == Runstate.IDLE:
++                # mypy 1.4.0 doesn't believe runstate can change after
++                # disconnect(), hence the cast.
++                state = cast(Runstate, self.runstate)
++                if state == Runstate.IDLE:
+                     continue
+             await self.runstate_changed()
+ 
+diff --git a/python/setup.cfg b/python/setup.cfg
+index 42f0b0be07d..5d7e95f5d24 100644
+--- a/python/setup.cfg
++++ b/python/setup.cfg
+@@ -39,7 +39,7 @@ devel =
+     flake8 >= 5.0.4
+     fusepy >= 2.0.4
+     isort >= 5.1.2
+-    mypy >= 0.780
++    mypy >= 1.4.0
+     pylint >= 2.17.3
+     tox >= 3.18.0
+     urwid >= 2.1.2
+diff --git a/python/tests/minreqs.txt b/python/tests/minreqs.txt
+index 1ce72cef6d8..979461be6bb 100644
+--- a/python/tests/minreqs.txt
++++ b/python/tests/minreqs.txt
+@@ -28,7 +28,7 @@ avocado-framework==90.0
+ # Linters
+ flake8==5.0.4
+ isort==5.1.2
+-mypy==0.780
++mypy==1.4.0
+ pylint==2.17.3
+ 
+ # Transitive flake8 dependencies
+@@ -37,12 +37,11 @@ pycodestyle==2.9.1
+ pyflakes==2.5.0
+ 
+ # Transitive mypy dependencies
+-mypy-extensions==0.4.3
+-typed-ast==1.4.0
+-typing-extensions==4.5.0
++mypy-extensions==1.0.0
++typing-extensions==4.7.1
+ 
+ # Transitive pylint dependencies
+ astroid==2.15.4
+ lazy-object-proxy==1.4.0
+ toml==0.10.0
+-wrapt==1.12.1
++wrapt==1.14.0
 -- 
 2.41.0
 
