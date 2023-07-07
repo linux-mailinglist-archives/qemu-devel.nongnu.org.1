@@ -2,88 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47D774B472
-	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 17:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D3E74B47D
+	for <lists+qemu-devel@lfdr.de>; Fri,  7 Jul 2023 17:44:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qHnVx-0007O0-GA; Fri, 07 Jul 2023 11:36:57 -0400
+	id 1qHnbz-0001WI-Hq; Fri, 07 Jul 2023 11:43:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHnVv-0007KW-82
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:36:55 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qHnVt-00044e-AY
- for qemu-devel@nongnu.org; Fri, 07 Jul 2023 11:36:55 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9922d6f003cso265713266b.0
- for <qemu-devel@nongnu.org>; Fri, 07 Jul 2023 08:36:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688744210; x=1691336210;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ibOdgAOdoZn2hvTsqFBAGP7hHtWJkh62FldR6WP6f44=;
- b=rTE4LJpxtWm817JkYvAAXjRPacZVtvjoiOKEG9km8boEwIErgKFTxvKSLFQNqCxdxR
- RgOayAJjC6IZC3jCzG2txKPL8bWqB9/aySBOY6iENVNf3nHpeLCV9A3ZloEvBu49M1it
- VtAWIKqR9jZ8hYXrwm2Kf7P5M59xQXG78rSdNd82cITtf6EUT0sEv6+c/aOfJcLKLy/V
- hDXceUGwrv9Ou+tZji33ZH0qUn9ThAM9sc3AQwr11B5DHd+iCKiB9zVAWcumEz49XZX7
- XCgnZYGgDKlytzt8o6GQC6S3KDCTFQcYo4XrJ60k3hjyOPhZ513R75Q/j/oEfiPhhglU
- D0Dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688744210; x=1691336210;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ibOdgAOdoZn2hvTsqFBAGP7hHtWJkh62FldR6WP6f44=;
- b=Zfl07vhM49/uXk5ZK3ZVXJ3jtwPELhkTGCXG6ykpJomqx+tkjUuFGuTLaFzhVpaosC
- EdBHI2gtRDsZkMP+lIZOaPolxQ3Ke35ASHtYSKg4G2UlLwt0J/VrO4vMfIkFWvC+iCO1
- UTGi5XePlQmOLf+I0erJzpsbvypRz5cb/RaNhHVDXgh7P3WYnOLyC7LB7TKkvlVc9RFD
- dpOyCI8phju9ClBhMf3f4lGWlwiMOhwPDdOcsxIL5lWZlQ7Nwd1BzAY7hm7XtYLCuhE2
- Z/JPpZhf673AaKIZYmRxqi7SMSBMdmAI6d4F7sEgzx7MJiJh3xO1vltJhazvh3CicYAP
- c34g==
-X-Gm-Message-State: ABy/qLaO0zRw5lHtcmSvgq+4jvoRIxLPSkjZ8OjujcXMnQ9mXWjlXASc
- jNXblNubPRsPxcE9R1rSu9zIig==
-X-Google-Smtp-Source: APBJJlHVtFFljtCNFFrY46qKd/wc5OaJcVsd9bqh531DKZJp1rXHkZsF7Cqyu4FfNMmacerYGQ1trg==
-X-Received: by 2002:a17:906:208c:b0:993:d7fe:7f1d with SMTP id
- 12-20020a170906208c00b00993d7fe7f1dmr992943ejq.28.1688744210592; 
- Fri, 07 Jul 2023 08:36:50 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.215.192])
- by smtp.gmail.com with ESMTPSA id
- qu14-20020a170907110e00b00977ca5de275sm2382057ejb.13.2023.07.07.08.36.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 07 Jul 2023 08:36:50 -0700 (PDT)
-Message-ID: <20f5fded-a486-c184-9ee0-1e91c178d5fd@linaro.org>
-Date: Fri, 7 Jul 2023 17:36:48 +0200
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qHnbx-0001Vq-Ml; Fri, 07 Jul 2023 11:43:10 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qHnbi-0003xK-SQ; Fri, 07 Jul 2023 11:43:09 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 367FUBM8008142; Fri, 7 Jul 2023 15:42:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=2Yzl2lOCMGuFmZBlaFBiqRx/gCjjOMejyF5NVeX1hqU=;
+ b=cQfbSA7s8V97+NCOZIDLNPPS9uFka02TxWcKqcTogmPHKOBTYuXSYkPbSLr/B06ypZCT
+ RZCSC7EHf/iosaYSuCqcLl52InSqtlyIL7VNUt+oHY3PsP6FSW/7elTVIco2g5pQ7xEw
+ /zcA0Cs9XzKfITLUzT9XWJOeTIG4HDhQshfmKC08cAwPuPrRmpqvgN0UsTiQJ4PwzlzY
+ R92abmyAG3ASqtBMHpvgZ/4Ln+w9Mbhv/D6A7hAP0Y/MDwZ4w++K7xv4vD+u2HlyGWL/
+ DFmSHNDViB+ufC9VQLtf2ZKOSRPDi/HZEJJrHATVcojPqYi3fFLbMmsTxkN6mYWBgLca Gw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rpndcrmdc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 07 Jul 2023 15:42:49 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 367FUxrN012237;
+ Fri, 7 Jul 2023 15:42:48 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rpndcrmd1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 07 Jul 2023 15:42:48 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 366NsORB031301;
+ Fri, 7 Jul 2023 15:42:47 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma05fra.de.ibm.com (PPS) with ESMTPS id 3rjbs4u0hw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 07 Jul 2023 15:42:46 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
+ [10.20.54.102])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 367Fgisr57147856
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 7 Jul 2023 15:42:44 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 87DC020043;
+ Fri,  7 Jul 2023 15:42:44 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 173AA20040;
+ Fri,  7 Jul 2023 15:42:44 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.83.128])
+ by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  7 Jul 2023 15:42:44 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH] tests/tcg/s390x: Fix test-svc with clang
+Date: Fri,  7 Jul 2023 17:42:21 +0200
+Message-ID: <20230707154242.457706-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v3 1/4] QGA VSS: Add wrapper to send log to debugger and
- stderr
-Content-Language: en-US
-To: Konstantin Kostiuk <kkostiuk@redhat.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Eric Blake <eblake@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-References: <20230707092258.768420-1-kkostiuk@redhat.com>
- <20230707092258.768420-2-kkostiuk@redhat.com>
- <c540330e-0adb-52a2-ab12-ba098212ce6f@linaro.org>
- <CAPMcbCrr6DxbNYRxm1uztaA7GG2A_MDb49VHuy26Cs7XA3bAuw@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAPMcbCrr6DxbNYRxm1uztaA7GG2A_MDb49VHuy26Cs7XA3bAuw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: lXB9tYu8o3BF3BbX46p5grbFMre_3HKi
+X-Proofpoint-GUID: HoACYBMqX7Vm3tfnP8XpeuhhdDRCD-D0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-07_10,2023-07-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015
+ mlxscore=0 spamscore=0 priorityscore=1501 mlxlogscore=996
+ lowpriorityscore=0 phishscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307070144
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.092,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,131 +108,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/7/23 16:24, Konstantin Kostiuk wrote:
-> 
-> 
-> On Fri, Jul 7, 2023 at 1:33 PM Philippe Mathieu-Daudé <philmd@linaro.org 
-> <mailto:philmd@linaro.org>> wrote:
-> 
->     On 7/7/23 11:22, Konstantin Kostiuk wrote:
->      > Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com
->     <mailto:kkostiuk@redhat.com>>
->      > ---
->      >   qga/vss-win32/meson.build   |  2 +-
->      >   qga/vss-win32/vss-debug.cpp | 31 +++++++++++++++++++++++++++++++
->      >   qga/vss-win32/vss-debug.h   | 25 +++++++++++++++++++++++++
->      >   3 files changed, 57 insertions(+), 1 deletion(-)
->      >   create mode 100644 qga/vss-win32/vss-debug.cpp
->      >   create mode 100644 qga/vss-win32/vss-debug.h
-> 
-> 
->      > diff --git a/qga/vss-win32/vss-debug.cpp
->     b/qga/vss-win32/vss-debug.cpp
->      > new file mode 100644
->      > index 0000000000..5d6f37944b
->      > --- /dev/null
->      > +++ b/qga/vss-win32/vss-debug.cpp
->      > @@ -0,0 +1,31 @@
->      > +/*
->      > + * QEMU Guest Agent VSS debug declarations
->      > + *
->      > + * Copyright (C) 2023 Red Hat Inc
->      > + *
->      > + * Authors:
->      > + *  Konstantin Kostiuk <kkostiuk@redhat.com
->     <mailto:kkostiuk@redhat.com>>
->      > + *
->      > + * This work is licensed under the terms of the GNU GPL, version
->     2 or later.
->      > + * See the COPYING file in the top-level directory.
->      > + */
->      > +
->      > +#include "qemu/osdep.h"
->      > +#include "vss-debug.h"
->      > +#include "vss-common.h"
->      > +
->      > +void qga_debug_internal(const char *funcname, const char *fmt,
->     ...)  {
->      > +    char user_sting[512] = {0};
-> 
->     "user_string"
-> 
->      > +    char full_string[640] = {0};
->      > +
->      > +    va_list args;
->      > +    va_start(args, fmt);
->      > +    vsnprintf(user_sting, 512, fmt, args);
-> 
->     ARRAY_SIZE(user_string)
-> 
-> 
-> I have a problem with ARRAY_SIZE define.
-> 
-> ../qga/vss-win32/vss-debug.cpp: In function 'void 
-> qga_debug_internal(const char*, const char*, ...)':
-> /src/include/qemu/compiler.h:70:12: error: types may not be defined in 
-> 'sizeof' expressions
->     70 |     struct { \
->        |            ^
-> /src/include/qemu/compiler.h:78:43: note: in expansion of macro 
-> 'QEMU_BUILD_BUG_ON_STRUCT'
->     78 | #define QEMU_BUILD_BUG_ON_ZERO(x) 
-> (sizeof(QEMU_BUILD_BUG_ON_STRUCT(x)) - \
->        |                                           ^~~~~~~~~~~~~~~~~~~~~~~~
-> /src/include/qemu/osdep.h:474:24: note: in expansion of macro 
-> 'QEMU_BUILD_BUG_ON_ZERO'
->    474 |                        QEMU_BUILD_BUG_ON_ZERO(!QEMU_IS_ARRAY(x)))
->        |                        ^~~~~~~~~~~~~~~~~~~~~~
-> ../qga/vss-win32/vss-debug.cpp:23:32: note: in expansion of macro 
-> 'ARRAY_SIZE'
->     23 |     if (vsnprintf(user_string, ARRAY_SIZE(user_string), fmt, 
-> args) <= 0) {
->        |                                ^~~~~~~~~~
-> /src/include/qemu/osdep.h:470:57: error: expected primary-expression 
-> before 'typeof'
->    470 | #define QEMU_IS_ARRAY(x) 
-> (!__builtin_types_compatible_p(typeof(x), \
->        |                                                         ^~~~~~
-> /src/include/qemu/compiler.h:71:14: note: in definition of macro 
-> 'QEMU_BUILD_BUG_ON_STRUCT'
->     71 |         int:(x) ? -1 : 1; \
->        |              ^
-> /src/include/qemu/osdep.h:474:24: note: in expansion of macro 
-> 'QEMU_BUILD_BUG_ON_ZERO'
->    474 |                        QEMU_BUILD_BUG_ON_ZERO(!QEMU_IS_ARRAY(x)))
->        |                        ^~~~~~~~~~~~~~~~~~~~~~
-> /src/include/qemu/osdep.h:474:48: note: in expansion of macro 
-> 'QEMU_IS_ARRAY'
->    474 |                        QEMU_BUILD_BUG_ON_ZERO(!QEMU_IS_ARRAY(x)))
-> 
-> Can you help with this?
+clang does not support expressions involving symbols in instructions
+like lghi yet, so building hello-s390x-asm.S with it fails.
 
-Eh no clue, maybe not C++ compliant?
+Move the expression to the literal pool and load it from there.
 
-Fall back to sizeof() ¯\_(ツ)_/¯
+Reported-by: Thomas Huth <thuth@redhat.com>
+Fixes: be4a4cb42961 ("tests/tcg/s390x: Test single-stepping SVC")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ tests/tcg/s390x/gdbstub/test-svc.py | 2 +-
+ tests/tcg/s390x/hello-s390x-asm.S   | 4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-> 
-> 
->      > +    va_end(args);
->      > +
->      > +    snprintf(full_string, 640, QGA_PROVIDER_NAME "[%lu]: %s %s\n",
->      > +             GetCurrentThreadId(), funcname, user_sting);
-> 
->     if (snprintf() <= 0) { return; }
-> 
->      > +
->      > +    OutputDebugString(full_string);
->      > +    fprintf(stderr, "%s", full_string);
-> 
->     Format unused:
-> 
->     fputs(full_string, stderr);
-> 
->      > +}
-> 
->     With the changes:
->     Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org
->     <mailto:philmd@linaro.org>>
-> 
+diff --git a/tests/tcg/s390x/gdbstub/test-svc.py b/tests/tcg/s390x/gdbstub/test-svc.py
+index 7851ca72846..18fad3f163d 100644
+--- a/tests/tcg/s390x/gdbstub/test-svc.py
++++ b/tests/tcg/s390x/gdbstub/test-svc.py
+@@ -25,7 +25,7 @@ def run_test():
+     gdb.execute("si")
+     report("larl\t" in gdb.execute("x/i $pc", False, True), "insn #2")
+     gdb.execute("si")
+-    report("lghi\t" in gdb.execute("x/i $pc", False, True), "insn #3")
++    report("lgrl\t" in gdb.execute("x/i $pc", False, True), "insn #3")
+     gdb.execute("si")
+     report("svc\t" in gdb.execute("x/i $pc", False, True), "insn #4")
+     gdb.execute("si")
+diff --git a/tests/tcg/s390x/hello-s390x-asm.S b/tests/tcg/s390x/hello-s390x-asm.S
+index 2e9faa16047..4dbda12d35d 100644
+--- a/tests/tcg/s390x/hello-s390x-asm.S
++++ b/tests/tcg/s390x/hello-s390x-asm.S
+@@ -8,7 +8,7 @@ _start:
+ /* puts("Hello, World!"); */
+ lghi %r2,1
+ larl %r3,foo
+-lghi %r4,foo_end-foo
++lgrl %r4,foo_len
+ svc 4
+ 
+ /* exit(0); */
+@@ -18,3 +18,5 @@ svc 1
+ .align 2
+ foo: .asciz "Hello, World!\n"
+ foo_end:
++.align 8
++foo_len: .quad foo_end-foo
+-- 
+2.41.0
 
 
