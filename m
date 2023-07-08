@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC1574BC7C
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 09:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 662D874BC84
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 09:12:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qI217-0000k0-3f; Sat, 08 Jul 2023 03:06:05 -0400
+	id 1qI260-0002qH-2H; Sat, 08 Jul 2023 03:11:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qI210-0000jZ-8i
- for qemu-devel@nongnu.org; Sat, 08 Jul 2023 03:05:59 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1qI25x-0002pg-VV
+ for qemu-devel@nongnu.org; Sat, 08 Jul 2023 03:11:06 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qI20y-0004Pz-Pg
- for qemu-devel@nongnu.org; Sat, 08 Jul 2023 03:05:58 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-3113da5260dso2597815f8f.2
- for <qemu-devel@nongnu.org>; Sat, 08 Jul 2023 00:05:56 -0700 (PDT)
+ id 1qI25w-0000tr-8b
+ for qemu-devel@nongnu.org; Sat, 08 Jul 2023 03:11:05 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3fbc59de0e2so29163445e9.3
+ for <qemu-devel@nongnu.org>; Sat, 08 Jul 2023 00:11:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688799955; x=1691391955;
+ d=linaro.org; s=google; t=1688800261; x=1691392261;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1qVkEwb6moWDUJ+ZW9wfwfaX3iBhCeIO0YiyVVFXkEQ=;
- b=owXoP0Kh/C1Odzbh9IN/ZqyIVToJYwfAsByYm7GQuXkQzSDPhAJUVD6/l90yvxUK0X
- DF4UQj3LGrFuJxHXWg18Sl7MPfiPRFZfZ/hehYYSXJB5lhjxy8XhLceDBakflgI6n2Lm
- KBbT2OVvBedZhJueZjmGG7SWa77tY/83AFZlkods4UVE1h5KYmS2dsgiEksUViBi60GQ
- U4yzLf7CwptfsvdUANNWu4BXlWceQuRmmXgKAZCSYfWR+LZWScmGfib6+6X8OB9NEziZ
- j49BL2DZZxBog2G3ZOLI9k9DCF1GE8dDWbd8vKejhBPJIn7SF0V7h3fR4E/qNlYdN6eE
- 5IhQ==
+ bh=qoi4uub60mCLj+7f1Y9H1tqYquOn2nWNJuD/abSy6gQ=;
+ b=k5oFbkzgu8wg4ux1o34fbJXxjp9LyKVxMYaQqR1fBO8XKn2DLJJN47x3VZM5+M3h8P
+ 0JvOKDY+S8Nf9sgznJFa6xdoUAk1dXwOwxoiWVNwONfoO2sCYgX604Qjv6RjNqUUMQDB
+ +T7Khd7nheri+qwL5D3NpYzJxJYvnzG/oUT2US0pj9OGD56o5TARut9R1sZNQ9YzpAxJ
+ XuphKhS7MrH23jrt8EKB9L6QyVcPrX5avPB49a/sy5ooAFuPdRlliwCZHAiarsY74hNP
+ X42ZybjYqmueq3FFo0/uRXD1o6l2Y56vuXwe0CC84l580UoWJahvDETbfODezhbXyCC/
+ j9OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688799955; x=1691391955;
+ d=1e100.net; s=20221208; t=1688800261; x=1691392261;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1qVkEwb6moWDUJ+ZW9wfwfaX3iBhCeIO0YiyVVFXkEQ=;
- b=kBbaBy/hiDITirProarQmKVxCqq/r86eKBPquohUTw85hmA1SuS0rh24dnOsaJOPHI
- kz3GsS9o8cu9yuB6sw+bsEPqQRGF4DFeKzdP9Ihgt+oRaPwAsLuH3dklmV0Hvo8DvIoT
- KHSaitL/z2LOdg15+COXQRFNc2L180CAYHfcpYUCtOxg4oMUrm9rGwGvuKhuAfMqmzK/
- j0ls5yNpyXwM9peDGP/O6BfBZN07CxUSXOkkN64nYMZLNKI0TxsA0SV39jNqKKs7ETLI
- imaxKtpxH/cHQnq18IGWWAxddS/LyYzgzwc2cfxUOMY8zkNKJ/G5BQpjTB06ENaoEQT3
- mjoQ==
-X-Gm-Message-State: ABy/qLaRmSzwOkMFAWrzfBX0sDa0wCEnNB6/WN+yzVJ2kC9oXfKBaFQR
- BurSHn+H90kPsPTsTzw/5nQIP9vlW2tDv8yo53Sb/Q==
-X-Google-Smtp-Source: APBJJlGSQ1lflQ5eStydXO7NyhapprBX3ni+lCTgp1SaPE15U4lXyoNtILP536jDTk6hPcNj7ro9hQ==
-X-Received: by 2002:a05:6000:1151:b0:315:8a13:ef16 with SMTP id
- d17-20020a056000115100b003158a13ef16mr2278143wrx.69.1688799955432; 
- Sat, 08 Jul 2023 00:05:55 -0700 (PDT)
+ bh=qoi4uub60mCLj+7f1Y9H1tqYquOn2nWNJuD/abSy6gQ=;
+ b=hOFzIi9PYqtSmtpR8amP/h9eYpYfJkdz8oLdKNzcf9Qg0JRcP+d1oSTBY4vsiVmxKm
+ s+O9VD05Ip4v7AHq8DIENafE9x26l5A1jf+jdaEVwSXZU4drkqwN4/vc6S49ULjlWdsK
+ cVEpMg3uBzZ/xO+g1uBlnZfDM4+Ena78Ztb2g2WcCxm1BFZjU5wrXbhyPhZ3wiZ1Z+HD
+ BU6dAugrAKnjeUqrAmsoVav76+lXrVpzaynhCeYNQd4u3Bkhx11PHqg80s3X83zo48/v
+ Mv+t2Sl2A69MMSWhhF6bXDBwF7Ko6GPKa50P82X/X2/Xz8bNtUorgV9WMXx1Rz/axJ6x
+ XsEg==
+X-Gm-Message-State: ABy/qLbS5ZoQLzh2bcvOffoGcRB8lE4/98N8tkuzSAS7q25IVNFIw1MC
+ K/ZYyRSEpx5EoZp5dvPDSioQFx5BRUXLx9ZerC5d4w==
+X-Google-Smtp-Source: APBJJlGKltJrFhlugHVPvZQrhRJ6Pq13KdtXBoVVRrV6UmvkZ097/MzAyDYTTqI2YpJ4jU+MbSaRSA==
+X-Received: by 2002:a7b:c019:0:b0:3fa:9924:1241 with SMTP id
+ c25-20020a7bc019000000b003fa99241241mr6141917wmb.4.1688800261513; 
+ Sat, 08 Jul 2023 00:11:01 -0700 (PDT)
 Received: from [192.168.1.5] (host-92-23-208-66.as13285.net. [92.23.208.66])
  by smtp.gmail.com with ESMTPSA id
- a5-20020adffb85000000b00313e4d02be8sm6269277wrr.55.2023.07.08.00.05.54
+ x18-20020a5d60d2000000b0031435731dfasm6261851wrt.35.2023.07.08.00.11.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 08 Jul 2023 00:05:55 -0700 (PDT)
-Message-ID: <c136b420-5ee1-064f-b04e-0b401d847f66@linaro.org>
-Date: Sat, 8 Jul 2023 08:05:53 +0100
+ Sat, 08 Jul 2023 00:11:01 -0700 (PDT)
+Message-ID: <e2ba4fdd-7242-fa95-4312-028555877811@linaro.org>
+Date: Sat, 8 Jul 2023 08:10:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH v2 25/46] target/loongarch: Implement xvsll xvsrl xvsra
- xvrotr
+Subject: Re: [PATCH v2 26/46] target/loongarch: Implement xvsllwil xvextl
 Content-Language: en-US
 To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
 References: <20230630075904.45940-1-gaosong@loongson.cn>
- <20230630075904.45940-26-gaosong@loongson.cn>
+ <20230630075904.45940-27-gaosong@loongson.cn>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230630075904.45940-26-gaosong@loongson.cn>
+In-Reply-To: <20230630075904.45940-27-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -96,20 +95,40 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 6/30/23 08:58, Song Gao wrote:
-> This patch includes:
-> - XVSLL[I].{B/H/W/D};
-> - XVSRL[I].{B/H/W/D};
-> - XVSRA[I].{B/H/W/D};
-> - XVROTR[I].{B/H/W/D}.
-> 
-> Signed-off-by: Song Gao<gaosong@loongson.cn>
-> ---
->   target/loongarch/disas.c                     | 36 ++++++++++++++++++++
->   target/loongarch/insn_trans/trans_lasx.c.inc | 36 ++++++++++++++++++++
->   target/loongarch/insns.decode                | 33 ++++++++++++++++++
->   3 files changed, 105 insertions(+)
+> +#define VSLLWIL(NAME, BIT, E1, E2)                                     \
+> +void HELPER(NAME)(CPULoongArchState *env, uint32_t oprsz,              \
+> +                  uint32_t vd, uint32_t vj, uint32_t imm)              \
+> +{                                                                      \
+> +    int i, max;                                                        \
+> +    VReg temp;                                                         \
+> +    VReg *Vd = &(env->fpr[vd].vreg);                                   \
+> +    VReg *Vj = &(env->fpr[vj].vreg);                                   \
+> +    typedef __typeof(temp.E1(0)) TD;                                   \
+> +                                                                       \
+> +    temp.Q(0) = int128_zero();                                         \
+> +                                                                       \
+> +    if (oprsz == 32) {                                                 \
+> +        temp.Q(1) = int128_zero();                                     \
+> +    }                                                                  \
+> +                                                                       \
+> +    max = LSX_LEN / BIT;                                               \
+> +    for (i = 0; i < max; i++) {                                        \
+> +        temp.E1(i) = (TD)Vj->E2(i) << (imm % BIT);                     \
+> +        if (oprsz == 32) {                                             \
+> +            temp.E1(i + max) = (TD)Vj->E2(i + max * 2) << (imm % BIT); \
+> +        }                                                              \
+> +    }                                                                  \
+> +    *Vd = temp;                                                        \
+> +}
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Function parameters using void* and desc.
+
+     VReg temp = { };
+
+instead of conditional partial assignment.
+
+Fix iteration, as previously discussed.
+
 
 r~
 
