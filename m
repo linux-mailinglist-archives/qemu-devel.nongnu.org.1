@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E8774BBF6
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 07:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C6574BBF7
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 07:16:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qI0GE-0006O0-FG; Sat, 08 Jul 2023 01:13:34 -0400
+	id 1qI0GE-0006O1-FP; Sat, 08 Jul 2023 01:13:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qI0G7-0006IA-R3; Sat, 08 Jul 2023 01:13:29 -0400
+ id 1qI0GA-0006LQ-VR; Sat, 08 Jul 2023 01:13:31 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qI0G5-0001mO-TG; Sat, 08 Jul 2023 01:13:27 -0400
+ id 1qI0G9-0001n1-5k; Sat, 08 Jul 2023 01:13:30 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 97E2D12688;
+ by isrv.corpit.ru (Postfix) with ESMTP id C4C1812689;
  Sat,  8 Jul 2023 08:13:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C8A80139D6;
+ by tsrv.corpit.ru (Postfix) with SMTP id F3988139D7;
  Sat,  8 Jul 2023 08:13:05 +0300 (MSK)
-Received: (nullmailer pid 3230003 invoked by uid 1000);
+Received: (nullmailer pid 3230006 invoked by uid 1000);
  Sat, 08 Jul 2023 05:13:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Laszlo Ersek <lersek@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/10] migration: unexport migrate_fd_error()
-Date: Sat,  8 Jul 2023 08:12:49 +0300
-Message-Id: <aaf26bd382b84c6d34390d092ff24bc8fa575f78.1688793073.git.mjt@tls.msk.ru>
+Cc: qemu-trivial@nongnu.org, Peng Liang <tcx4c70@gmail.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 10/10] hw/arm/virt-acpi-build.c: Add missing header
+Date: Sat,  8 Jul 2023 08:12:50 +0300
+Message-Id: <13a637430be13bda3e6726752936321a1955bc93.1688793073.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1688793073.git.mjt@tls.msk.ru>
 References: <cover.1688793073.git.mjt@tls.msk.ru>
@@ -62,53 +62,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Laszlo Ersek <lersek@redhat.com>
+From: Peng Liang <tcx4c70@gmail.com>
 
-The only migrate_fd_error() call sites are in "migration/migration.c",
-which is also where we define migrate_fd_error(). Make the function
-static, and remove its declaration from "migration/migration.h".
+virt-acpi-build.c uses warn_report. However, it doesn't include
+qemu/error-report.h directly, it include qemu/error-report.h via trace.h
+if we enable log trace backend. But if we disable the log trace backend
+(e.g., --enable-trace-backends=nop), then virt-acpi-build.c will not
+include qemu/error-report.h any more and it will lead to build errors.
+Include qemu/error-report.h directly in virt-acpi-build.c to avoid the
+errors.
 
-Cc: Juan Quintela <quintela@redhat.com> (maintainer:Migration)
-Cc: Leonardo Bras <leobras@redhat.com> (reviewer:Migration)
-Cc: Peter Xu <peterx@redhat.com> (reviewer:Migration)
-Cc: qemu-trivial@nongnu.org
-Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2018404
-Signed-off-by: Laszlo Ersek <lersek@redhat.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Fixes: 451b157041 ("acpi: Align the size to 128k")
+Signed-off-by: Peng Liang <tcx4c70@gmail.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(mjt: move the #include higher as suggested by Ani Sinha)
 ---
- migration/migration.c | 2 +-
- migration/migration.h | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ hw/arm/virt-acpi-build.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index a60a5acee5..91bba630a8 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1220,7 +1220,7 @@ static void migrate_error_free(MigrationState *s)
-     }
- }
- 
--void migrate_fd_error(MigrationState *s, const Error *error)
-+static void migrate_fd_error(MigrationState *s, const Error *error)
- {
-     trace_migrate_fd_error(error_get_pretty(error));
-     assert(s->to_dst_file == NULL);
-diff --git a/migration/migration.h b/migration/migration.h
-index a80b22b703..b7c8b67542 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -466,7 +466,6 @@ bool  migration_has_all_channels(void);
- uint64_t migrate_max_downtime(void);
- 
- void migrate_set_error(MigrationState *s, const Error *error);
--void migrate_fd_error(MigrationState *s, const Error *error);
- 
- void migrate_fd_connect(MigrationState *s, Error *error_in);
- 
+diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+index 55f2706bc9..6b674231c2 100644
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -29,6 +29,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "qemu/bitmap.h"
++#include "qemu/error-report.h"
+ #include "trace.h"
+ #include "hw/core/cpu.h"
+ #include "target/arm/cpu.h"
 -- 
 2.39.2
 
