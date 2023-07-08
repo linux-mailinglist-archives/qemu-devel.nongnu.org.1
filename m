@@ -2,86 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7482B74BD93
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 15:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD87C74BDEE
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 16:58:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qI7f0-0001lR-4z; Sat, 08 Jul 2023 09:07:38 -0400
+	id 1qI9NO-00060g-B1; Sat, 08 Jul 2023 10:57:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qI7ex-0001l4-Mu
- for qemu-devel@nongnu.org; Sat, 08 Jul 2023 09:07:35 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qI7ew-0007mO-6P
- for qemu-devel@nongnu.org; Sat, 08 Jul 2023 09:07:35 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fc0aecf15bso359835e9.1
- for <qemu-devel@nongnu.org>; Sat, 08 Jul 2023 06:07:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688821652; x=1691413652;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=i9PTafEz+p5H4RxCzNKIJLt+WvAXL9oABrNq8ZxEobg=;
- b=F4Iw4slRS60HcTYLS/8tSz37aK+BqQGRz11A0r+T2ne2bAGTvLa/fDJUrJtiVXt9oX
- 9IklfXla8LgQnURNLu7Vqm9ixN+f8+so71RFKRC00UjDFlfWWI5w5f12JUqmTdIm/w5N
- lh0KXcit9CUkqs0OvRkx9i4js8ORntTfKr6VIeyEjT/rgYf2Ah//iEDhy4W0K/ZTMykH
- ha/7zwM5RcPU+E3Kf/JqI1+p7hueQ5C1WrxZ25MLQZ74OrLhAR+OlaZtTPJVdVclwuuW
- baY4Q9nrlI8boCJ7sXIpxQxmxvCRgFB4kZnD6DrGcaAcNMs8UImYGNP4oWEtrKpxoQUr
- HUnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688821652; x=1691413652;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=i9PTafEz+p5H4RxCzNKIJLt+WvAXL9oABrNq8ZxEobg=;
- b=kIbGjY/cTGJz8w5hQA45fAlo3ekYJkweJcrUu47dhZ80SQKPpfIeliI6+xGoBBuLV9
- Ifotqj/NrxaxNg8upRDJCcIrU2HoQgO75/oqhDvCa/uYlSkAqObnyB1uizBQIlaEj+YP
- RjAosTinsfg3pJ/Pn1EqF8KhBGtP4RrZCYziZiKs4/kwmZ3A3B3Yeuvql0YbfTMDmXCp
- yZ0J12Z6YI+aW9+cX1MyKk+Y83z9u0HIjBubatdOzRK6A/V4hPzmJiI5cjdn6LsWYotm
- YUbT4kF761otaq1nQWK725uriwarbbj06/IMQyTC5Ic6gqmrFBecIlUOak0s94EN+ok6
- N2rg==
-X-Gm-Message-State: ABy/qLbKHy/UtUNh7UXP2kzld+JyWwD4KEAaOoKB+KJ4jvY1WsgqLMWx
- r0nOOnlyReyiKqvNJVALez4q/G0i2kr9oP+Lc5Q=
-X-Google-Smtp-Source: APBJJlGyWr7wZPds5dYPLbYJzAg4Xup0pGiTzXy1CWNki7eD3tvzQ7t+T+OgNJNVywodoaQrNuZ6Vw==
-X-Received: by 2002:a7b:c8d1:0:b0:3fa:8fb1:50fe with SMTP id
- f17-20020a7bc8d1000000b003fa8fb150femr5934064wml.15.1688821651535; 
- Sat, 08 Jul 2023 06:07:31 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- q14-20020a5d658e000000b003140f47224csm6982378wru.15.2023.07.08.06.07.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jul 2023 06:07:31 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id AD2031FFBB;
- Sat,  8 Jul 2023 14:07:30 +0100 (BST)
-References: <20230707204054.8792-1-richard.henderson@linaro.org>
- <20230707204054.8792-2-richard.henderson@linaro.org>
-User-agent: mu4e 1.11.9; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: laurent@vivier.eu, mjt@tls.msk.ru, "Richard W . M . Jones"
- <rjones@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 1/2] accel/tcg: Split out cpu_exec_longjmp_cleanup
-Date: Sat, 08 Jul 2023 14:07:26 +0100
-In-reply-to: <20230707204054.8792-2-richard.henderson@linaro.org>
-Message-ID: <87mt06k0vh.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qI9NH-0005zl-8t
+ for qemu-devel@nongnu.org; Sat, 08 Jul 2023 10:57:27 -0400
+Received: from mout.gmx.net ([212.227.17.22])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qI9NF-00034a-6r
+ for qemu-devel@nongnu.org; Sat, 08 Jul 2023 10:57:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1688828241; x=1689433041; i=deller@gmx.de;
+ bh=MRFWyys/pRDzPL17ehA9v7e55uBsofVk1QAYn28gpu8=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+ b=tsu3Q2zB+ARdvBVLnZEoWfgLvGHUBl7y3kYZa4P5+LRWR4DAuCzYV3Oges2dG8aLQgykJSk
+ N0FUOVJLCv/YyfXLJXkGN311j4z9VamE1+RY0iJ2FOE5fasEij1gGqE7eHJJMQDlSXp/RZZa+
+ SUO+BpcaLh86cDLuoC1S+86Kk87qOZpCQN6X3pDQ8eUGhQ109kBl/ZBTXNXj2F1Q8053xqR4s
+ 6BNHAezCZq2QO88c/f/43COnmUnOFReOBtY1Otb7vCkbGasRzgBgojc4i5oXg9udfbmKNSJTe
+ DlM2MioHr7UKZOYa3DN/1UcH2vy2iNty5jFI0JoKUkuRqFj8UJaA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100.fritz.box ([94.134.155.129]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N6sit-1pvLCg1Uhb-018LnM; Sat, 08
+ Jul 2023 16:57:21 +0200
+From: Helge Deller <deller@gmx.de>
+To: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 0/3] Linux user fcntl64 patches
+Date: Sat,  8 Jul 2023 16:57:17 +0200
+Message-ID: <20230708145720.136671-1-deller@gmx.de>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Provags-ID: V03:K1:2NXq20ATzJ8nseTRT5bSiF6SbVe24QZTjei2WbfOEm2dfLVUd4Z
+ IVQdf4KqI+zOBU80gWKrv78nQT3dI6ZQKikcFZOnBGsVudGxXNIAufpZ9PYLFUZuTf/MPds
+ GbMVje14uMBYPhdLx90zGSN4RbTSuJI2rHBK1qraThIgPtxHRJADbA9hOwFsJnnvRbxnTEn
+ CsnyZAI6GCMP5faqfs9iA==
+UI-OutboundReport: notjunk:1;M01:P0:22JKd3FG/V4=;BKSYqPnxkwrE0dUqlvnUKkYksvW
+ rM06lSTVCo6fhI2Chh/Wku2YQLHiqu8SmqVDcZpd4/IA30V1E9WSCck/xJJjDISOLpIPVZxy5
+ pbuVOM8ICQnFTRpQoHwii4tdtvYB9gpaQ2GdcNX91WjgeMTjFR9Yz/Z/SsK2sj+VJZBoo7gca
+ QyR9AkAtGaFvcQTyyKKkrFFhycmuoclq55siVj/H5OOtmSOJCscqmNzpgaX9wyKfXqoq4GADy
+ tQS3yztl89FnMh8cKWu5oEc822ueR7M44t4XIGTQwJo3OjVbHCIOEu/kBLZ/P3eaImdzpLdK2
+ esPdsn0qO4ZT6QRvsFxBg1FTcWXPfAFn5y0xiqAbPb8BsMK5TjYvZgBDHxlCtpsFlb7ZHzpsn
+ gVPPmRvhl/b6tazXFlW3zh70oP7QJfm4myHVUymkfYVSPDMk3LwhTfQyptCS+cFZQHvMwwcGm
+ MjZ+INcvUmI7UiTOwGnWnGRBFkWJzJ6tusmAF3CtPCBM6y/uZD8Kl3pZwf/eZT9xv8Uw+r9+0
+ tD/xWmf/1UAvkhphaQvDZuUsjHOhBK+kI3oMJeJ88PzhzxYEq6V4TOWr6LHtFTmr8cL+CrqoK
+ W+FisF7diiuKX+2qwjiJhEbJEfnbVDEh1T4CKizEsU7vylWh7u/l+qPlwNpriunVNQVz8y+Nr
+ S5FC3v3V7XPAWiucj+sm6L8x6uUZb88+IKrrmqmRMFEdwDlKUoCL/4G9yg2QfWmOHY63MlvY0
+ v00t+SWvqmQbY4sfniH9fjR0x24F2oQZSHCxsqIiB7UMjQcLKaWmWiwSHRhwkJsZ15YyM+wfR
+ BFnLeeOFhWKAiHTFWlo56hAy30+Jg/3gBxwlp8t78e+H/af1JvqqUSnQyNOEWeZMrRBOFMoKQ
+ JUtfkXCgGfBxIXRD2dzDQfTaH0MFATbtinOKzWosWNc26QUChimemi46reP8mQxDtRtEb56JV
+ 0R2qVFIMoB7ltpTzDWn24gd3xYo=
+Received-SPF: pass client-ip=212.227.17.22; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,18 +83,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit 97c81ef4b8e203d9620fd46e7eb77004563e367=
+5:
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+  Merge tag 'pull-9p-20230706' of https://github.com/cschoenebeck/qemu int=
+o staging (2023-07-06 18:19:42 +0100)
 
-> Share the setjmp cleanup between cpu_exec_step_atomic
-> and cpu_exec_setjmp.
->
-> Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+are available in the Git repository at:
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+  https://github.com/hdeller/qemu-hppa.git tags/linux-user-fcntl64-pull-re=
+quest
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+for you to fetch changes up to 036cf169a3484eeca5e17cfbee1f6988043ddd0e:
+
+  linux-user: Improve strace output of pread64() and pwrite64() (2023-07-0=
+8 16:55:08 +0200)
+
+=2D---------------------------------------------------------------
+linux-user: Fix fcntl64() and accept4() for 32-bit targets
+
+A set of 3 patches:
+The first two patches fix fcntl64() and accept4().
+the 3rd patch enhances the strace output for pread64/pwrite64().
+
+This pull request does not includes Richard's mmap2 patch:
+https://patchew.org/QEMU/20230630132159.376995-1-richard.henderson@linaro.=
+org/20230630132159.376995-12-richard.henderson@linaro.org/
+
+Changes:
+v3:
+- added r-b from Richard to patches #1 and #2
+v2:
+- rephrased commmit logs
+- return O_LARGFILE for fcntl() syscall too
+- dropped #ifdefs in accept4() patch
+- Dropped my mmap2() patch (former patch #3)
+- added r-b from Richard to 3rd patch
+
+Helge
+
+=2D---------------------------------------------------------------
+
+Helge Deller (3):
+  linux-user: Fix fcntl() and fcntl64() to return O_LARGEFILE for 32-bit
+    targets
+  linux-user: Fix accept4(SOCK_NONBLOCK) syscall
+  linux-user: Improve strace output of pread64() and pwrite64()
+
+ linux-user/strace.c    | 19 +++++++++++++++++++
+ linux-user/strace.list |  4 ++--
+ linux-user/syscall.c   | 16 +++++++++++++++-
+ 3 files changed, 36 insertions(+), 3 deletions(-)
+
+=2D-
+2.41.0
+
 
