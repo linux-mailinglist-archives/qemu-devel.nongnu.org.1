@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FDE74BE96
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 19:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F6A774BE97
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 19:27:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIBe1-0003nZ-LP; Sat, 08 Jul 2023 13:22:53 -0400
+	id 1qIBhh-0004jR-MJ; Sat, 08 Jul 2023 13:26:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIBdz-0003nA-Ap
- for qemu-devel@nongnu.org; Sat, 08 Jul 2023 13:22:51 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qIBhf-0004jJ-PR
+ for qemu-devel@nongnu.org; Sat, 08 Jul 2023 13:26:39 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIBdx-0005dV-Rm
- for qemu-devel@nongnu.org; Sat, 08 Jul 2023 13:22:51 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-9939fbb7191so574737266b.0
- for <qemu-devel@nongnu.org>; Sat, 08 Jul 2023 10:22:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qIBhe-0001q1-8X
+ for qemu-devel@nongnu.org; Sat, 08 Jul 2023 13:26:39 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-307d58b3efbso2947176f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 08 Jul 2023 10:26:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688836968; x=1691428968;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1688837196; x=1691429196;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UFXhPbWy61iJtRj+ZuUvFxrT2pwdqr/OArFh6WTMQNs=;
- b=TE/JgFHvOIHB7Qwg/GSY1PUJBVFz/hcIUFfEpxorQv2okNGyu4fFqPWUJfmK9zfoCy
- 1+PtO+PuiFHTpOTAdmYlPJFyzLgl/pkPdtrTDLzTShpvr00T4hV6W8f9EVUh+DUMJ9va
- l0Qa29JsNt/mq0EBfLXyxZ50cqcCIEkuE26PGllOmwqWJcm2Huby+ymysuWj+o2UAFCj
- dG4UgIEHwZI3LC250yFS+Ik3EJ7+RFeLgTe8Czy8TC6cy+nTc9LZw2OGnHNG88Hcz7q6
- rFfBfd+YLtII5RnzH1Wc5ZruGPr/dlDzrrxrI3PNVki5obXgzyPNPp344e1tL5n2IJP4
- Akdg==
+ bh=8YVE9sjUHrgnyVAngHiCymdXEFiamEXqLzlYlxl3xds=;
+ b=bIjM4qwv07UjeJcq3Weldx7U3x9a0eG3kzSmzMekA6fOXV7jZmqcQ7qinHYuEwMKMY
+ OMT2aD6uQZa5LS4ySOyAmLHJXrPQONFzqltB0e2oo95CRVXJbKM0deHeUQdHmevMl2K3
+ 8Gm1Eo9ra4iDJXhaY+reG649vQWeuIpru1Ec2yg+x5tOQMJSof8WR+gfd4f+80sfCShQ
+ IIpQgWm4aV/A/f26SCfkDUN68W516D48V4ZaYI2WGs+an1oEMe4yOqTGbGTmxxZrxG7s
+ whRGOedfHa6QAKrvlrmG4X4RySJZlUoorCTvbHQ3TkBHt4UAx61c16dd2ft25E/jV5ss
+ xqyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688836968; x=1691428968;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1688837196; x=1691429196;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UFXhPbWy61iJtRj+ZuUvFxrT2pwdqr/OArFh6WTMQNs=;
- b=iab7xgu9Y2ecojofgBN8eM8GWJThoEt9CUIzvf+psAD+q9BvpjGN8j9N1w9rhujTMi
- 9sMDTyb2z1TdwD4Tjvr6sW5YFwgV2MOTXCk4LoCZ36qxLyQUjrk8bxXJVw7A276cD8S1
- bNAg131OpsRsBf7Ay4T9ncC9p7QaAcEyaSA7aC0OzvuC5XSxAnuYSDLq4Ff7UiBZ1ZEl
- CgWhV/4qjIaMZzWN+9tKOuONDzH5E/zTaesROSDO7+lD29qiofVKcHQ5nzsarN21iWQ7
- NoJ+bcrot+B6DvP1q5S5R/ZI1gw/dmeDhrC+gyzyb5wUlH+Q+lT0vpsdEHJujZW4El1b
- BJ0g==
-X-Gm-Message-State: ABy/qLaSR6GmhQ4YiGUt8OgNUIZp34bcFMcTWVxl3R3Y3PXFzSanShYv
- qWSMgWUKsnATSoTQP2UhHB0Wiw==
-X-Google-Smtp-Source: APBJJlHx79xtAZ25a+cBV3Yp1LTIdl2Nr9tbSu4eyf2XG7z53LaAxyqp2WgzTPMToVQtL3kO0Un1tw==
-X-Received: by 2002:a17:907:86a3:b0:982:a022:a540 with SMTP id
- qa35-20020a17090786a300b00982a022a540mr12296627ejc.11.1688836968371; 
- Sat, 08 Jul 2023 10:22:48 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.184.32])
+ bh=8YVE9sjUHrgnyVAngHiCymdXEFiamEXqLzlYlxl3xds=;
+ b=VDN8jppIQJ3lKzJM4roTiRvNIdCKvbAxPAFvo3d6x/FLycS0im0/kDuuaVWpWyd4T0
+ oG+wWgYdT6/E6hEaGEq2RLnnRujlqPGfbF4Ws9ml+zx9VwER0yfKGW4SnVXA+mMkTnoD
+ NGl8p5vdqwpAfFMSh/tpbdjuRx9G/Yn3kDPnwK056IyUl7dhQKl99NA02Ewk2/GCvInH
+ /gfTwl1YAu3Dop+rIcLibwS0oDVfhHoCk00QnrEYDVWm6i8+Hif0UeSew7TTNTfvYGRD
+ jWOI4Ip/1Tq87UnwBVvDgxqjRnTASjU8bOqqy9505w1ynyoq5YZ5cIDHPSJok0urGHuy
+ 2YuQ==
+X-Gm-Message-State: ABy/qLYMylWiNDWc8emI2hTYuSSKyqMnk4zuc5ufTncZ9beSYHJHBJij
+ RyKvj/EafojtRvDvXL5V+Iv1RA==
+X-Google-Smtp-Source: APBJJlHS1UjJydR7+KMLnYPZR49XwhejQaKnhhIzBTFDpN71eXe9CbcjYbcg/TB3dkPxvBwg53NQdA==
+X-Received: by 2002:a05:6000:1151:b0:315:8a13:ef16 with SMTP id
+ d17-20020a056000115100b003158a13ef16mr3261265wrx.69.1688837196470; 
+ Sat, 08 Jul 2023 10:26:36 -0700 (PDT)
+Received: from [192.168.8.133] ([148.252.133.210])
  by smtp.gmail.com with ESMTPSA id
- qq28-20020a17090720dc00b0098e38d2e584sm3693408ejb.43.2023.07.08.10.22.47
+ c3-20020adfef43000000b003141e9e2f81sm7442621wrp.4.2023.07.08.10.26.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 08 Jul 2023 10:22:48 -0700 (PDT)
-Message-ID: <ba37fb19-7037-40a3-e5d7-cd6c4e041634@linaro.org>
-Date: Sat, 8 Jul 2023 19:22:45 +0200
+ Sat, 08 Jul 2023 10:26:36 -0700 (PDT)
+Message-ID: <0110c2c4-e9de-a2d0-5c0a-6831415beb9f@linaro.org>
+Date: Sat, 8 Jul 2023 18:26:33 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.12.0
-Subject: Re: [PATCH v4 31/37] target/riscv: Use aesdec_IMC
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] linux-user: make sure brk(0) returns a page-aligned value
+To: Andreas Schwab <schwab@suse.de>, Laurent Vivier <laurent@vivier.eu>
+Cc: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
+References: <mvmpm55qnno.fsf@suse.de>
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org, pbonzini@redhat.com,
- eduardo@habkost.net, alistair.francis@wdc.com, danielhb413@gmail.com
-References: <20230703100520.68224-1-richard.henderson@linaro.org>
- <20230703100520.68224-32-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230703100520.68224-32-richard.henderson@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <mvmpm55qnno.fsf@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,14 +94,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/7/23 12:05, Richard Henderson wrote:
-> This implements the AES64IM instruction.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 7/6/23 12:34, Andreas Schwab wrote:
+> Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
+> Signed-off-by: Andreas Schwab <schwab@suse.de>
 > ---
->   target/riscv/crypto_helper.c | 15 +++++----------
->   1 file changed, 5 insertions(+), 10 deletions(-)
+>   linux-user/syscall.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 08162cc966..e8a17377f5 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -805,7 +805,7 @@ static abi_ulong brk_page;
+>   
+>   void target_set_brk(abi_ulong new_brk)
+>   {
+> -    target_brk = new_brk;
+> +    target_brk = TARGET_PAGE_ALIGN(new_brk);
+>       brk_page = HOST_PAGE_ALIGN(target_brk);
+>   }
+>   
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+It make sense, since that's how do_brk aligns things.
+I'm curious why this error might have produced host memory clobbering, but I'm not going 
+to debug that.
 
+Queuing for tcg/linux-user.
+
+
+r~
 
