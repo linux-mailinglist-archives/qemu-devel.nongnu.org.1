@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0344974BD37
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 12:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7482B74BD93
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 15:09:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qI4uG-0004pv-Np; Sat, 08 Jul 2023 06:11:12 -0400
+	id 1qI7f0-0001lR-4z; Sat, 08 Jul 2023 09:07:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qI4uF-0004pe-33
- for qemu-devel@nongnu.org; Sat, 08 Jul 2023 06:11:11 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1qI7ex-0001l4-Mu
+ for qemu-devel@nongnu.org; Sat, 08 Jul 2023 09:07:35 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qI4uC-00044e-II
- for qemu-devel@nongnu.org; Sat, 08 Jul 2023 06:11:10 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3143ccb0f75so3373318f8f.0
- for <qemu-devel@nongnu.org>; Sat, 08 Jul 2023 03:11:08 -0700 (PDT)
+ id 1qI7ew-0007mO-6P
+ for qemu-devel@nongnu.org; Sat, 08 Jul 2023 09:07:35 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3fc0aecf15bso359835e9.1
+ for <qemu-devel@nongnu.org>; Sat, 08 Jul 2023 06:07:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688811067; x=1691403067;
+ d=linaro.org; s=google; t=1688821652; x=1691413652;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ge3IlNjAw+bE4PJ1Br8Eh7MhXFDmsKrSrMtnqLjGyFw=;
- b=Jm6qFmeN1CT8aki8xfXt7+Siv3Ec6mnJzIR/Fc/VMvs9hZlGYriu9BeC5YcRbCmo15
- oqLy4LdBc1QEALlxN8+PRgbmJCulFN01lGR8RBSSPmxWA1r4lNl30wGXXgQxpXcknGBf
- AHRdU6Fq6/FRPB0ZanKvcA70Td+ufuE1ueQJV+mXdZT/7ZRkgLsCt05TLvL7ZDzLh8ik
- I1shnhlZPdGxbHdeN3tM/Nj36AV//oO509SmACYUEa8XkKmNPE8ivIpESnpsWwZVgF12
- axioQEdQ+l1nNTUQheTbRz0nopsd8LidLkE6H2ESvSDL8RkjELbxWNsZzDn7sRL6KRjC
- 9rDA==
+ bh=i9PTafEz+p5H4RxCzNKIJLt+WvAXL9oABrNq8ZxEobg=;
+ b=F4Iw4slRS60HcTYLS/8tSz37aK+BqQGRz11A0r+T2ne2bAGTvLa/fDJUrJtiVXt9oX
+ 9IklfXla8LgQnURNLu7Vqm9ixN+f8+so71RFKRC00UjDFlfWWI5w5f12JUqmTdIm/w5N
+ lh0KXcit9CUkqs0OvRkx9i4js8ORntTfKr6VIeyEjT/rgYf2Ah//iEDhy4W0K/ZTMykH
+ ha/7zwM5RcPU+E3Kf/JqI1+p7hueQ5C1WrxZ25MLQZ74OrLhAR+OlaZtTPJVdVclwuuW
+ baY4Q9nrlI8boCJ7sXIpxQxmxvCRgFB4kZnD6DrGcaAcNMs8UImYGNP4oWEtrKpxoQUr
+ HUnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688811067; x=1691403067;
+ d=1e100.net; s=20221208; t=1688821652; x=1691413652;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=ge3IlNjAw+bE4PJ1Br8Eh7MhXFDmsKrSrMtnqLjGyFw=;
- b=a85JkB1OxeGkn3zJWuD7Y5x/olr2t4ocbDMhSJ6tUeaVx+8qo6my+EtrpCPKddDD0g
- zh0XK3xXkQ6/+Vlv3Kr1MVeYKPAccfM+zCxWjjZmdnsvMlNK0FsFCJxjjc4sYy2w1JgQ
- ZXo/7LGzZ/cdgIeOSJIEKdGO7LJgaY6EGjNmjjzkgNyyeMmqvARtkrVHMWMJoOG8+3Ms
- sgmWNqgsaBWrJ9jx8NyWXxF7+hmuXQJ60C+ufizkd5CteECy5/SXot08mOzzLkZS9M1z
- cPu2M78FsC7I7iyQgJkDLCdj8Sg4ZFn5pZlrP7v2xr0qR3q9Q5JAv/XdoIC/EHs6EpY1
- PNdg==
-X-Gm-Message-State: ABy/qLZDcnAydgDs3uRzk85jK5ytd3xsOOARyhhpF/xFF48aj9IhgnCu
- i1x7qCWNo7wuRG03ZxidypQgcflupFfxjyeWi78=
-X-Google-Smtp-Source: APBJJlFB5vR0QfMiMevNaWQHh4au6cE/58KsVeVv1SA0l68o+vIThipi/SxRTflyxTsdyxSyowqWRA==
-X-Received: by 2002:a5d:684e:0:b0:315:8fbc:4dd with SMTP id
- o14-20020a5d684e000000b003158fbc04ddmr1536343wrw.50.1688811066782; 
- Sat, 08 Jul 2023 03:11:06 -0700 (PDT)
+ bh=i9PTafEz+p5H4RxCzNKIJLt+WvAXL9oABrNq8ZxEobg=;
+ b=kIbGjY/cTGJz8w5hQA45fAlo3ekYJkweJcrUu47dhZ80SQKPpfIeliI6+xGoBBuLV9
+ Ifotqj/NrxaxNg8upRDJCcIrU2HoQgO75/oqhDvCa/uYlSkAqObnyB1uizBQIlaEj+YP
+ RjAosTinsfg3pJ/Pn1EqF8KhBGtP4RrZCYziZiKs4/kwmZ3A3B3Yeuvql0YbfTMDmXCp
+ yZ0J12Z6YI+aW9+cX1MyKk+Y83z9u0HIjBubatdOzRK6A/V4hPzmJiI5cjdn6LsWYotm
+ YUbT4kF761otaq1nQWK725uriwarbbj06/IMQyTC5Ic6gqmrFBecIlUOak0s94EN+ok6
+ N2rg==
+X-Gm-Message-State: ABy/qLbKHy/UtUNh7UXP2kzld+JyWwD4KEAaOoKB+KJ4jvY1WsgqLMWx
+ r0nOOnlyReyiKqvNJVALez4q/G0i2kr9oP+Lc5Q=
+X-Google-Smtp-Source: APBJJlGyWr7wZPds5dYPLbYJzAg4Xup0pGiTzXy1CWNki7eD3tvzQ7t+T+OgNJNVywodoaQrNuZ6Vw==
+X-Received: by 2002:a7b:c8d1:0:b0:3fa:8fb1:50fe with SMTP id
+ f17-20020a7bc8d1000000b003fa8fb150femr5934064wml.15.1688821651535; 
+ Sat, 08 Jul 2023 06:07:31 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- h5-20020adffd45000000b00313f07ccca4sm6600083wrs.117.2023.07.08.03.11.06
+ q14-20020a5d658e000000b003140f47224csm6982378wru.15.2023.07.08.06.07.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 08 Jul 2023 03:11:06 -0700 (PDT)
+ Sat, 08 Jul 2023 06:07:31 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id BCF371FFBB;
- Sat,  8 Jul 2023 11:11:05 +0100 (BST)
-References: <20230703134427.1389440-1-alex.bennee@linaro.org>
- <20230703134427.1389440-30-alex.bennee@linaro.org>
- <dabe52cc-2f1d-ba3e-64c3-5ae2996da7cb@tls.msk.ru>
+ by zen.linaroharston (Postfix) with ESMTP id AD2031FFBB;
+ Sat,  8 Jul 2023 14:07:30 +0100 (BST)
+References: <20230707204054.8792-1-richard.henderson@linaro.org>
+ <20230707204054.8792-2-richard.henderson@linaro.org>
 User-agent: mu4e 1.11.9; emacs 29.0.92
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, richard.henderson@linaro.org, Nicholas Piggin
- <npiggin@gmail.com>, qemu-stable@nongnu.org, Matheus Tavares Bernardino
- <quic_mathbern@quicinc.com>, Taylor Simpson <tsimpson@quicinc.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PULL 29/38] gdbstub: Permit reverse step/break to provide stop
- response
-Date: Sat, 08 Jul 2023 11:10:40 +0100
-In-reply-to: <dabe52cc-2f1d-ba3e-64c3-5ae2996da7cb@tls.msk.ru>
-Message-ID: <87zg46k91i.fsf@linaro.org>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: laurent@vivier.eu, mjt@tls.msk.ru, "Richard W . M . Jones"
+ <rjones@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 1/2] accel/tcg: Split out cpu_exec_longjmp_cleanup
+Date: Sat, 08 Jul 2023 14:07:26 +0100
+In-reply-to: <20230707204054.8792-2-richard.henderson@linaro.org>
+Message-ID: <87mt06k0vh.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,67 +98,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Michael Tokarev <mjt@tls.msk.ru> writes:
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-> 03.07.2023 16:44, Alex Benn=C3=A9e wrote:
->> From: Nicholas Piggin <npiggin@gmail.com>
->> The final part of the reverse step and break handling is to bring
->> the machine back to a debug stop state. gdb expects a response.
->> A gdb 'rsi' command hangs forever because the gdbstub filters out
->> the response (also observable with reverse_debugging.py avocado
->> tests).
->> Fix by setting allow_stop_reply for the gdb backward packets.
->> Fixes: 758370052fb ("gdbstub: only send stop-reply packets when
->> allowed to")
->> Cc: qemu-stable@nongnu.org
+> Share the setjmp cleanup between cpu_exec_step_atomic
+> and cpu_exec_setjmp.
 >
-> Hi!
->
-> Are you guys sure this needs to be in -stable?
->
-> To me it looks a sort of "partial revert" of a previous commit:
->
-> commit 758370052fb602f9f23c3b8ae26a6133373c78e6
-> Author: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-> Date:   Thu May 4 12:37:31 2023 -0300
-> Subject: gdbstub: only send stop-reply packets when allowed to
->
-> which introduced `allow_stop_reply' field in GdbCmdParseEntry.
-> This change ("gdbstub: Permit..") does not work in 8.0 without
-> the above mentioned "gdbstub: only send" commit, and I guess
-> it is *not* supposed to be in stable. Or is it?
->
-> I'm not applying this one to stable for now.
+> Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Good catch - your right it's purely fixing something that has been
-merged in the current cycle.
-
->
-> Thanks,
->
-> /mjt
->
->> Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
->> Cc: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> Cc: Taylor Simpson <tsimpson@quicinc.com>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->> Acked-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
->> Message-Id: <20230623035304.279833-1-npiggin@gmail.com>
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> Message-Id: <20230630180423.558337-30-alex.bennee@linaro.org>
->> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
->> index be18568d0a..9496d7b175 100644
->> --- a/gdbstub/gdbstub.c
->> +++ b/gdbstub/gdbstub.c
->> @@ -1814,6 +1814,7 @@ static int gdb_handle_packet(const char *line_buf)
->>                   .handler =3D handle_backward,
->>                   .cmd =3D "b",
->>                   .cmd_startswith =3D 1,
->> +                .allow_stop_reply =3D true,
->>                   .schema =3D "o0"
->>               };
->>               cmd_parser =3D &backward_cmd_desc;
-
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
 --=20
 Alex Benn=C3=A9e
