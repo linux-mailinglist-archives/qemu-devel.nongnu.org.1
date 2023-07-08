@@ -2,74 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FD774BC45
-	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 07:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 028B474BC5C
+	for <lists+qemu-devel@lfdr.de>; Sat,  8 Jul 2023 08:18:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qI0ih-0000pk-N5; Sat, 08 Jul 2023 01:42:59 -0400
+	id 1qI1Fp-0003VV-5X; Sat, 08 Jul 2023 02:17:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qI0ie-0000pE-SX
- for qemu-devel@nongnu.org; Sat, 08 Jul 2023 01:42:57 -0400
-Received: from mout.gmx.net ([212.227.17.20])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qI1Fm-0003Up-LT; Sat, 08 Jul 2023 02:17:10 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qI0id-00027O-0z
- for qemu-devel@nongnu.org; Sat, 08 Jul 2023 01:42:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1688794971; x=1689399771; i=deller@gmx.de;
- bh=4vNCKFekNbv+5ANANaDwSKyxfbXdKrgpehQ4Dcc1UMU=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=YRifo0opPTQch8it7T/lnclymZwb0kjazygCvwI1E3MtvfUZlSbmywmcBixaxAuv7ghSFrE
- NzWg3e8voVl3hjhLRV0yRAjbPlSscBQp9RL2tRVMzwtEVdkPGDtuJ9gAQ97WcbbFB3SEOQqmY
- Ky5DffjhnfeaOr4QrwjcmTnFNruhxoSIPVsAFshxLytps/gmI/DMQFEkygz0M07d4ERAePhUe
- 3gpHtQyTdjgc4KVpImsAckgqx0idmUtBt4eMAt9mwbT9E0R+2YjTpBdiIB2qD4NNdYGfUyEq6
- Gj0GeEdY5y4uoKu5b0PGX2+B1nJV3I19HP+h4eRpsjfBviWv69AQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100.fritz.box ([94.134.155.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N5mGB-1puNvc0pXn-017FEZ; Sat, 08
- Jul 2023 07:42:51 +0200
-From: Helge Deller <deller@gmx.de>
-To: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Helge Deller <deller@gmx.de>
-Subject: [PATCH v2 3/3] linux-user: Improve strace output of pread64() and
- pwrite64()
-Date: Sat,  8 Jul 2023 07:42:49 +0200
-Message-ID: <20230708054249.10245-4-deller@gmx.de>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230708054249.10245-1-deller@gmx.de>
-References: <20230708054249.10245-1-deller@gmx.de>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qI1Fk-0006O5-Ma; Sat, 08 Jul 2023 02:17:10 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 5573A126D3;
+ Sat,  8 Jul 2023 09:17:07 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6569813A02;
+ Sat,  8 Jul 2023 09:17:03 +0300 (MSK)
+Message-ID: <dabe52cc-2f1d-ba3e-64c3-5ae2996da7cb@tls.msk.ru>
+Date: Sat, 8 Jul 2023 09:17:03 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:zVAgNptuRKJAjXbmytA4SJCjU7fJDXXD9A0ruIVaJXx08R4ChrV
- nQQvz8MWC4DwLmDUDgmMWJsv0l0OQONCcuQ5R4o95IxcpQntCYH52UEN0XIJ8/UXgpIEDaN
- BDc9jRoHHIg9rrb7CGfqjqK6DuF8e29T0Fkb8SpAP5Gy9nxumskM6pw0xDHAV1foG8vi36l
- av+/zuKhUemS12mkNw40A==
-UI-OutboundReport: notjunk:1;M01:P0:XmsCq6CAPtU=;x5YmTWaWk2Y9ICBi7LTJihC53Vg
- iaxPZ81UDfrEo+gX+f9bdn/zpLVHSsCg3Yfpjcx6AFxHAXioOdyXW8fxsdXVhPqLw7jGHuyk3
- nsSzn+r200Bp2CmqNT0T3meDPWUoZcsJEnFz36ULACg+ADItlxPLiWj92P4otZCViddtNNjTx
- C/Yjcy8Y8LvGHApgV56gP4B4zemXK39YJGdkZJUCiosGNEsPTkD+45DJQ1kGvETvd09iBeSbL
- LPwhDFKd9IgTdTIwUcQQMWO/nSH1OYCE+4JPJzew7ZnnhHwM+vUzz/j/kAG9PidZuilhasOO2
- yaGJbX/Xqf1nkE6qcI3fDnfoMq9D/pPqg92anB0aby9qpijCd8g45p6kjBxlbxHOpMX9XIn2D
- ZJ60DZ86HfPNAcQohxT+pwzmSKTTas4smKdo+VTPat3ERGPbIPsgPtrYdiFLAV+7UA77KQw/F
- hWquBBmzxkXCPZYJPWP9casStoh9X0yZloCa4QhMnJGRm6XupNBcSEjQrQarVBuYid4SCaJ+h
- UdM4QBVUcoiti9uCDq3T9+hc8dTx1LjzUNso1KwkJhk82TvLV22uxIqnn7m4d5ogOBBI6fL5i
- COyt2C7kNeVtg99azJheuaYydBS6MTxjAUNg0hbALyCuXivrpG/kJdI2LBHNlE8b+vtMD273Z
- 2N50w4xnO+vlbszIZAIO8MFj61RaP13MqT3ZyNq+j9LWQtgHMmkcbbing8u7C1r+rYR1H29LU
- yj/HYOG3h3zKORftOfhU6rU1rJbI0J5kRGiqoyLnbXE+Jmx5Gy5WgQJRlKjBZHUsBlP+3CkTb
- RWfhIBvffVDBdjCEnmshgqCzQ86Ro4eVag2lWIa73vXooAlcehvqmlUBMlgHwtlXhchZtiecZ
- iS7nEbYrLEyjKWYelOot2FHC9IKogC/Vy0TXhS4kDKT3WaiZeV6Pho2jcP/k4dcz5YVLjA6nO
- vKe5dF6zIjoMTzAIjPKTo4bmCMY=
-Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PULL 29/38] gdbstub: Permit reverse step/break to provide stop
+ response
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, Nicholas Piggin <npiggin@gmail.com>,
+ qemu-stable@nongnu.org,
+ Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
+ Taylor Simpson <tsimpson@quicinc.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230703134427.1389440-1-alex.bennee@linaro.org>
+ <20230703134427.1389440-30-alex.bennee@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230703134427.1389440-30-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.092,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,69 +66,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make the strace look nicer for those two syscalls.
+03.07.2023 16:44, Alex Bennée wrote:
+> From: Nicholas Piggin <npiggin@gmail.com>
+> 
+> The final part of the reverse step and break handling is to bring
+> the machine back to a debug stop state. gdb expects a response.
+> 
+> A gdb 'rsi' command hangs forever because the gdbstub filters out
+> the response (also observable with reverse_debugging.py avocado
+> tests).
+> 
+> Fix by setting allow_stop_reply for the gdb backward packets.
+> 
+> Fixes: 758370052fb ("gdbstub: only send stop-reply packets when allowed to")
+> Cc: qemu-stable@nongnu.org
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-=2D--
- linux-user/strace.c    | 19 +++++++++++++++++++
- linux-user/strace.list |  4 ++--
- 2 files changed, 21 insertions(+), 2 deletions(-)
+Hi!
 
-diff --git a/linux-user/strace.c b/linux-user/strace.c
-index aad2b62ca4..669200c4a4 100644
-=2D-- a/linux-user/strace.c
-+++ b/linux-user/strace.c
-@@ -3999,6 +3999,25 @@ print_tgkill(CPUArchState *cpu_env, const struct sy=
-scallname *name,
- }
- #endif
+Are you guys sure this needs to be in -stable?
 
-+#if defined(TARGET_NR_pread64) || defined(TARGET_NR_pwrite64)
-+static void
-+print_pread64(CPUArchState *cpu_env, const struct syscallname *name,
-+        abi_long arg0, abi_long arg1, abi_long arg2,
-+        abi_long arg3, abi_long arg4, abi_long arg5)
-+{
-+    if (regpairs_aligned(cpu_env, TARGET_NR_pread64)) {
-+        arg3 =3D arg4;
-+        arg4 =3D arg5;
-+    }
-+    print_syscall_prologue(name);
-+    print_raw_param("%d", arg0, 0);
-+    print_pointer(arg1, 0);
-+    print_raw_param("%d", arg2, 0);
-+    print_raw_param("%" PRIu64, target_offset64(arg3, arg4), 1);
-+    print_syscall_epilogue(name);
-+}
-+#endif
-+
- #ifdef TARGET_NR_statx
- static void
- print_statx(CPUArchState *cpu_env, const struct syscallname *name,
-diff --git a/linux-user/strace.list b/linux-user/strace.list
-index c7808ea118..6655d4f26d 100644
-=2D-- a/linux-user/strace.list
-+++ b/linux-user/strace.list
-@@ -1068,7 +1068,7 @@
- { TARGET_NR_prctl, "prctl" , NULL, NULL, NULL },
- #endif
- #ifdef TARGET_NR_pread64
--{ TARGET_NR_pread64, "pread64" , NULL, NULL, NULL },
-+{ TARGET_NR_pread64, "pread64" , NULL, print_pread64, NULL },
- #endif
- #ifdef TARGET_NR_preadv
- { TARGET_NR_preadv, "preadv" , NULL, NULL, NULL },
-@@ -1099,7 +1099,7 @@
- { TARGET_NR_putpmsg, "putpmsg" , NULL, NULL, NULL },
- #endif
- #ifdef TARGET_NR_pwrite64
--{ TARGET_NR_pwrite64, "pwrite64" , NULL, NULL, NULL },
-+{ TARGET_NR_pwrite64, "pwrite64" , NULL, print_pread64, NULL },
- #endif
- #ifdef TARGET_NR_pwritev
- { TARGET_NR_pwritev, "pwritev" , NULL, NULL, NULL },
-=2D-
-2.41.0
+To me it looks a sort of "partial revert" of a previous commit:
+
+commit 758370052fb602f9f23c3b8ae26a6133373c78e6
+Author: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Date:   Thu May 4 12:37:31 2023 -0300
+Subject: gdbstub: only send stop-reply packets when allowed to
+
+which introduced `allow_stop_reply' field in GdbCmdParseEntry.
+This change ("gdbstub: Permit..") does not work in 8.0 without
+the above mentioned "gdbstub: only send" commit, and I guess
+it is *not* supposed to be in stable. Or is it?
+
+I'm not applying this one to stable for now.
+
+Thanks,
+
+/mjt
+
+> Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> Cc: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Taylor Simpson <tsimpson@quicinc.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Acked-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> Message-Id: <20230623035304.279833-1-npiggin@gmail.com>
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Message-Id: <20230630180423.558337-30-alex.bennee@linaro.org>
+> 
+> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> index be18568d0a..9496d7b175 100644
+> --- a/gdbstub/gdbstub.c
+> +++ b/gdbstub/gdbstub.c
+> @@ -1814,6 +1814,7 @@ static int gdb_handle_packet(const char *line_buf)
+>                   .handler = handle_backward,
+>                   .cmd = "b",
+>                   .cmd_startswith = 1,
+> +                .allow_stop_reply = true,
+>                   .schema = "o0"
+>               };
+>               cmd_parser = &backward_cmd_desc;
 
 
