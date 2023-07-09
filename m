@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6AB74C734
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A939B74C746
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:39:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIZEA-0004Ui-Gz; Sun, 09 Jul 2023 14:33:46 -0400
+	id 1qIZEC-0004b7-9S; Sun, 09 Jul 2023 14:33:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZDu-0003Wp-DC
+ id 1qIZDu-0003Wo-D7
  for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:33:33 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZDq-0004ED-9a
+ id 1qIZDq-0004El-9j
  for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:33:29 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fbfa811667so19654605e9.1
- for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 11:33:24 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbef8ad9bbso42002125e9.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 11:33:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688927604; x=1691519604;
+ d=linaro.org; s=google; t=1688927605; x=1691519605;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QVp7bvOVNX9kOQlZjcnMWNBhc4o39/6I/4Tb+lJViFc=;
- b=Te502nStAJsDxJZLfJsnaWCc+RMx+MF1zCZjPakbbQtsg/Rc1mtz0RnR/0CeANyusO
- gIRnBrABCPxdL14RfGVY/REJR7og2Y+sFJHPF8lIiGVbdbw8B+OGcNQ+pMKEHkHaLkw7
- tzEVrCxNxVq5llKILPE3bSqWAV2en3Q0cy5+XGRXn6z8UTTaCdg5rJdaNQhYqRUAFlto
- VN3WJypkEkEccQH4Lnb14C27MIWW4EF6C08dVQctBJIZSbu9GP6C8U8JozV5BbEG+8Fr
- G5PMvMiirbNzTok0x2PGGmQ9gg9uBdi8zVBWgGq68W4kMlUouNUlzz1dUwavC84g6nbV
- HQig==
+ bh=ZNJt+xQSaKcqRS2slBC4RsFLFu+ocScsUgiRpjPIdes=;
+ b=FxZvPlWTr/jm9Mpm7/6AppNvIqAR9ZwESYc68AEZ4IzHMTdTkKlrkRKx9Bhwg+qUqt
+ d1cUP4dJTd9+164djJcx3bJSNge8d+E/5HBrhYcw+uYbZKjXeGQh49a0kPJtatqfuTIt
+ avnHEL+PNR1dGPvxjUCBvLGphfGqZe/hn0Mi9xrAR6u/ID2//p1wpUdwBxNkYr5UmZoB
+ 8QJcG3OadYA0jaG7z+iobNsW84KEYHm8wDlVS6a/f25EBsWlUMeG+C2R0m4b5LxRLYM6
+ suqyRop0yIiHPb8WHwC1OV1HIW4fMX7UTl/Lg7eF8qQwuGB7Z8P/ovNuEBlA950BcDNJ
+ mixQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688927604; x=1691519604;
+ d=1e100.net; s=20221208; t=1688927605; x=1691519605;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QVp7bvOVNX9kOQlZjcnMWNBhc4o39/6I/4Tb+lJViFc=;
- b=L55pMAj72HiEE7JikmKcs9pUrsr1uzpqJj11/2scs5GxQTuiVyFGDxgU9X5VW8BOMe
- TkKxme/FJBgQH8IHVekdvfRHJbO5n8qEcXePQgCd+FO1eJq5crO2gqdbzxYctlCMT18l
- emHOaBk9cfXhqPXQOdNiua/rGMy+asrtSBD/QJq+ZEEoet8oZ3tpDpYVKvnqPAJjdofb
- q7YWJhleyJdxJRb5Vy9EkAbVBJVg3b/7Rn5iuwMfppw5feBwY5CR/DAFeynAPiQgERjR
- wfwmhn5VAQZyWFTlUVZ0k2ZisAoDAhk+EHeLRhs/vM/U/hovNZMSAfTd4bW5UO5VFPMZ
- 0vvA==
-X-Gm-Message-State: ABy/qLZXdeLIyLctlSzvanNB8v2bBJnVaFY3IVecBnS0fgzOWTFSDJXv
- /3YUrCKpNSObOrZMl48/v5OAHRnS6WUl53EE+R7/fg==
-X-Google-Smtp-Source: APBJJlFZ7htkh0QP1Rqbz+dp/JAzhvbVd0K91B/JFK3zjInJPK/9e4EuxS3C/FK39oTy5Yp1RBZuGQ==
-X-Received: by 2002:a1c:cc02:0:b0:3fb:4064:7e22 with SMTP id
- h2-20020a1ccc02000000b003fb40647e22mr3602869wmb.19.1688927604024; 
+ bh=ZNJt+xQSaKcqRS2slBC4RsFLFu+ocScsUgiRpjPIdes=;
+ b=CN8vrMQsJFt86XrpX9LR2hDiNocdAa0c4mF7Yp37W/id8QsSDnvDWbhOoQXH0/CKI4
+ jfqzzemwfOFlJfedrkwxlLqaceQsY80JbiozRMkxZtNGNibMti6WFYJC5dSlpZeh6Ynm
+ iR+KzLpxqxbCcKZX3wjtJkEGJcaQwEJFan/Cg6anaqbJpfgOTOMaM+UBU256594uv+iI
+ hVQnSJ2PSmFYTlmiNMKZqN8P110nwocuCNP68LV20Vpo2H+wajJweRr54XWDIcQBE5E2
+ pQa27udHLC8e2yCOfjxuHf4LelXGIOVX6oHaM8OwxMO/b0t39tsMpzxu915vIFaG7mRv
+ 9mHg==
+X-Gm-Message-State: ABy/qLYHeDQHwR2De9mMIv3UGAmE4AUlGGMqtLTEWYaHo0J+biuD0kc8
+ 14eXfQLI3r0e1C7NsQdjP1m3gJh38UzTMlvhkhuCKA==
+X-Google-Smtp-Source: APBJJlFn5T/Gs61ECeanKzfzukL+spPIdFAjdEyC8CqaBwbgRYq0sHgCMyKcCQdHYCK8wBdyFQHDNw==
+X-Received: by 2002:a05:600c:294a:b0:3fc:1a9:7900 with SMTP id
+ n10-20020a05600c294a00b003fc01a97900mr3217935wmd.16.1688927604868; 
  Sun, 09 Jul 2023 11:33:24 -0700 (PDT)
 Received: from stoup.. ([148.252.133.210]) by smtp.gmail.com with ESMTPSA id
- e17-20020a5d4e91000000b0031433760a92sm9635256wru.115.2023.07.09.11.33.23
+ e17-20020a5d4e91000000b0031433760a92sm9635256wru.115.2023.07.09.11.33.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Jul 2023 11:33:23 -0700 (PDT)
+ Sun, 09 Jul 2023 11:33:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu
-Subject: [PATCH 28/45] linux-user: Implement MAP_FIXED_NOREPLACE
-Date: Sun,  9 Jul 2023 19:29:07 +0100
-Message-Id: <20230709182934.309468-56-richard.henderson@linaro.org>
+Cc: laurent@vivier.eu,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 28/37] target/arm: Use aesdec_IMC
+Date: Sun,  9 Jul 2023 19:29:08 +0100
+Message-Id: <20230709182934.309468-57-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230709182934.309468-1-richard.henderson@linaro.org>
 References: <20230709182934.309468-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,58 +92,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230707204054.8792-12-richard.henderson@linaro.org>
----
- linux-user/mmap.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+This implements the AESIMC instruction.  We have converted everything
+to crypto/aes-round.h; crypto/aes.h is no longer needed.
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 639921dba0..9dc34fc29d 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -509,7 +509,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-      * If the user is asking for the kernel to find a location, do that
-      * before we truncate the length for mapping files below.
-      */
--    if (!(flags & MAP_FIXED)) {
-+    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-         host_len = len + offset - host_offset;
-         host_len = HOST_PAGE_ALIGN(host_len);
-         start = mmap_find_vma(real_start, host_len, TARGET_PAGE_SIZE);
-@@ -551,7 +551,7 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-         }
-     }
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/arm/tcg/crypto_helper.c | 33 ++++++++++++++-------------------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
+
+diff --git a/target/arm/tcg/crypto_helper.c b/target/arm/tcg/crypto_helper.c
+index 1952aaac58..fdd70abbfd 100644
+--- a/target/arm/tcg/crypto_helper.c
++++ b/target/arm/tcg/crypto_helper.c
+@@ -14,7 +14,6 @@
+ #include "cpu.h"
+ #include "exec/helper-proto.h"
+ #include "tcg/tcg-gvec-desc.h"
+-#include "crypto/aes.h"
+ #include "crypto/aes-round.h"
+ #include "crypto/sm4.h"
+ #include "vec_internal.h"
+@@ -102,23 +101,6 @@ void HELPER(crypto_aesd)(void *vd, void *vn, void *vm, uint32_t desc)
+     clear_tail(vd, opr_sz, simd_maxsz(desc));
+ }
  
--    if (!(flags & MAP_FIXED)) {
-+    if (!(flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))) {
-         unsigned long host_start;
-         void *p;
+-static void do_crypto_aesmc(uint64_t *rd, uint64_t *rm, const uint32_t *mc)
+-{
+-    union CRYPTO_STATE st = { .l = { rm[0], rm[1] } };
+-    int i;
+-
+-    for (i = 0; i < 16; i += 4) {
+-        CR_ST_WORD(st, i >> 2) =
+-            mc[CR_ST_BYTE(st, i)] ^
+-            rol32(mc[CR_ST_BYTE(st, i + 1)], 8) ^
+-            rol32(mc[CR_ST_BYTE(st, i + 2)], 16) ^
+-            rol32(mc[CR_ST_BYTE(st, i + 3)], 24);
+-    }
+-
+-    rd[0] = st.l[0];
+-    rd[1] = st.l[1];
+-}
+-
+ void HELPER(crypto_aesmc)(void *vd, void *vm, uint32_t desc)
+ {
+     intptr_t i, opr_sz = simd_oprsz(desc);
+@@ -147,7 +129,20 @@ void HELPER(crypto_aesimc)(void *vd, void *vm, uint32_t desc)
+     intptr_t i, opr_sz = simd_oprsz(desc);
  
-@@ -600,6 +600,13 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-             goto fail;
-         }
- 
-+        /* Validate that the chosen range is empty. */
-+        if ((flags & MAP_FIXED_NOREPLACE)
-+            && !page_check_range_empty(start, end - 1)) {
-+            errno = EEXIST;
-+            goto fail;
-+        }
+     for (i = 0; i < opr_sz; i += 16) {
+-        do_crypto_aesmc(vd + i, vm + i, AES_imc_rot);
++        AESState *ad = (AESState *)(vd + i);
++        AESState *st = (AESState *)(vm + i);
++        AESState t;
 +
-         /*
-          * worst case: we cannot map the file because the offset is not
-          * aligned, so we read it
-@@ -615,7 +622,8 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
-                 goto fail;
-             }
-             retaddr = target_mmap(start, len, target_prot | PROT_WRITE,
--                                  MAP_FIXED | MAP_PRIVATE | MAP_ANONYMOUS,
-+                                  (flags & (MAP_FIXED | MAP_FIXED_NOREPLACE))
-+                                  | MAP_PRIVATE | MAP_ANONYMOUS,
-                                   -1, 0);
-             if (retaddr == -1) {
-                 goto fail;
++        /* Our uint64_t are in the wrong order for big-endian. */
++        if (HOST_BIG_ENDIAN) {
++            t.d[0] = st->d[1];
++            t.d[1] = st->d[0];
++            aesdec_IMC(&t, &t, false);
++            ad->d[0] = t.d[1];
++            ad->d[1] = t.d[0];
++        } else {
++            aesdec_IMC(ad, st, false);
++        }
+     }
+     clear_tail(vd, opr_sz, simd_maxsz(desc));
+ }
 -- 
 2.34.1
 
