@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D92374C6C0
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0E474C6BF
 	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 19:31:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIYEm-0006JN-4I; Sun, 09 Jul 2023 13:30:32 -0400
+	id 1qIYF1-0006KC-R4; Sun, 09 Jul 2023 13:30:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIYEj-0006HE-0Z
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 13:30:17 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qIYEl-0006J2-3T
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 13:30:19 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIYEX-0008H4-Lw
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 13:30:07 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fbef8ad9bbso41630575e9.0
- for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 10:30:05 -0700 (PDT)
+ id 1qIYEi-0008RI-R3
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 13:30:18 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3fbea14700bso37295285e9.3
+ for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 10:30:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688923804; x=1691515804;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1688923814; x=1691515814;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=uZDIjkZBO/G2zgxR/nP4f3LV1PpzbQ7ZAqEq7oOCqD4=;
- b=kjW9Jh9Xte/w6CAq5Ht+RoTAj+sKFyJ0NJ8XECRnJcqqLogfoPIVXLFXGOgdQpiJBf
- Hz+F1lvE+FUS0sUSQFY3yyNt9oQiUHZM7Qu9DV7QmbPl2MurYGJgPGBzct2RD4fz8ROJ
- WbtDuoqv+/+mMJ/QEFW7jyVNkZ5NhsewKVtedm5VpZ60xIa6eL7/iZl4HWKIYKubbr5i
- 0hvyao0J7GOul5WEsPdvInOAVm+mbLA5IjTPVPXJgchCNOnp202pboaCgjLQuFtU1+8f
- TcAmid1GEhbjb8NrNaDeO+VDs8N1zVdX9WQAiK52jS9fKjFWSdp3qNnMZ+ePULVuduYW
- Nmow==
+ bh=07M1587FEq0sWlOfQNvGLw+Ouq/W1Ksd/L+2eTxyMZ0=;
+ b=q5LvXOpmmIPADKRtKBdZoC84++8uqbaH71rLaZUPTCbk3PLLkIWY3JlJfU5VPovQRh
+ 6BqLqjDHjAwk58DEAvOgWCEAT72DZdPwQN2jUpFSWrso0KoOIMdyYIWxDRyHo7yoq3GH
+ 2iUHmPhEgIBrUbMfELJOTiLZ3le9KSdJ29fjN6fqWCXEJm9hprSpzm08QN/mrYvYq2YB
+ AHqBULzZypgrITd5jUhuuXl1AvAReqIaY3BNs+uQCWCqVmQnEABirazKyDTDw13qSc7B
+ H1lDPHm1nks28o8awt+LUfs49YyXJRl9mtlB/++20jMxwIC5vV5NZGhYpNa8Eg1iBn1m
+ b3JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688923804; x=1691515804;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1688923814; x=1691515814;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uZDIjkZBO/G2zgxR/nP4f3LV1PpzbQ7ZAqEq7oOCqD4=;
- b=S/wU/KHyCVuSQKmmjwvpvjxdffhiXRHEDK1lk5Dn6UJ7EhLU1WKnuD+aPFuOqyOcNe
- r5sv5acw9QQ2NlPoq6yvaRVGLe7ykfvR+bOzGMdmvFACozt2JjlEAFGFYvPzLQm5X+9/
- lvwznl64aKijUquqXA5NT2MMujjVqtL+j0FDJu2++NHgdFOww6gKGq4IPaKzOuI0Wx6E
- dHTZqnewrDdwd7TUvhZDOzUt8U/Udyb6pNyUbu4Fu5foB866Jet8zeFMfB8N+lHO86Sm
- Jlv29M1nd9CxBkYmZLAnkzLeIxxuaN6fKcywv1dqSohvcGlbwrlLrMpuqNZY6F31xPaQ
- P1Qg==
-X-Gm-Message-State: ABy/qLaSg9gVIk5BzkXpTUnI0354Yht5VdEBPyIZHhxv7CXlm0NBwg3P
- f09FHi7i3TfkuDigssOzSRtA7g==
-X-Google-Smtp-Source: APBJJlESBcjuYUVAG7dOMYnKNw9/Ph+0RKfHSAoC7cyly9KtkGTxhXC1P3eESxmCplPfAtIYzjz7aQ==
-X-Received: by 2002:a1c:f712:0:b0:3fb:e643:1225 with SMTP id
- v18-20020a1cf712000000b003fbe6431225mr9309634wmh.13.1688923803918; 
- Sun, 09 Jul 2023 10:30:03 -0700 (PDT)
+ bh=07M1587FEq0sWlOfQNvGLw+Ouq/W1Ksd/L+2eTxyMZ0=;
+ b=LaeUIiaQAqBr3LxuNyb4CvkK01YKhCOcDBXkw3nCwBTCD8yNAPVYms3OvghGWifpKA
+ 3glqI/EORnOmFb/wZC2K1yHfSj2Pc5QvwKAqW+YC3uCTE4wyTwl5KNjvuBP4St3DJacD
+ vEkBJZj8ORwge8W00f35YEEs7ETKk20hxtfq3hpCSiXkG+EaJ/P55G3nIVg99l7DOwCN
+ QXNQzLwq8KEAzTS9hm6yBjKCyTlhPjtheENheoa+ITG9oRdvPjIsuoutg6F+cNGXCBAN
+ tqntpcB2a/EpeAyOzZeRFgIyS+Iugkpt3lMdDyPxwBuJ5Grd29wU7kJRh54Emm14lZHJ
+ ofMw==
+X-Gm-Message-State: ABy/qLZbDGzkyWnvOad2pw9Eh1elk3z1TYpRF+zM6PZGUfK60D5IgRsq
+ 67vxiZDvSrqJe70g6qK/LvBdx8IfiTqPBSwX0Hs5/g==
+X-Google-Smtp-Source: APBJJlF4fhQI3em0Rw+O7SpcWFyXE3WjiOwY5xAL/prcCMoBrYvvDEbXnb5c0F9pBCfY2Kt2sXPiKA==
+X-Received: by 2002:a05:600c:2805:b0:3fc:80a:993e with SMTP id
+ m5-20020a05600c280500b003fc080a993emr3266483wmb.17.1688923813821; 
+ Sun, 09 Jul 2023 10:30:13 -0700 (PDT)
 Received: from [192.168.8.133] ([148.252.133.210])
  by smtp.gmail.com with ESMTPSA id
- t13-20020a7bc3cd000000b003fbaade072dsm8140847wmj.23.2023.07.09.10.30.02
+ c13-20020a7bc00d000000b003fbc0a49b57sm8136220wmb.6.2023.07.09.10.30.12
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 09 Jul 2023 10:30:03 -0700 (PDT)
-Message-ID: <6ba78223-afa2-24f3-a841-6ff7a9cd7a97@linaro.org>
-Date: Sun, 9 Jul 2023 18:30:00 +0100
+ Sun, 09 Jul 2023 10:30:13 -0700 (PDT)
+Message-ID: <8a6ed4d0-cc5a-5a23-2523-8d05b24b57bc@linaro.org>
+Date: Sun, 9 Jul 2023 18:30:11 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PULL 0/3] Linux user fcntl64 patches
+Subject: Re: [PULL 00/37] crypto: Provide aes-round.h and host accel
 Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org,
- Laurent Vivier <laurent@vivier.eu>
-References: <20230708145720.136671-1-deller@gmx.de>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230708145720.136671-1-deller@gmx.de>
+To: qemu-devel@nongnu.org
+References: <20230709135945.250311-1-richard.henderson@linaro.org>
+In-Reply-To: <20230709135945.250311-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,18 +94,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/8/23 15:57, Helge Deller wrote:
-> The following changes since commit 97c81ef4b8e203d9620fd46e7eb77004563e3675:
+On 7/9/23 14:59, Richard Henderson wrote:
+> The following changes since commit 276d72ca1b9017916cadc7c170d0d6b31633a9e5:
 > 
->    Merge tag 'pull-9p-20230706' ofhttps://github.com/cschoenebeck/qemu  into staging (2023-07-06 18:19:42 +0100)
+>    Merge tag 'pull-ppc-20230707-1' ofhttps://gitlab.com/danielhb/qemu  into staging (2023-07-07 22:23:17 +0100)
 > 
 > are available in the Git repository at:
 > 
->    https://github.com/hdeller/qemu-hppa.git  tags/linux-user-fcntl64-pull-request
+>    https://gitlab.com/rth7680/qemu.git  tags/pull-tcg-20230709
 > 
-> for you to fetch changes up to 036cf169a3484eeca5e17cfbee1f6988043ddd0e:
+> for you to fetch changes up to ff494c8e2a4c857dd37fb908d8ac8158f5e4f89b:
 > 
->    linux-user: Improve strace output of pread64() and pwrite64() (2023-07-08 16:55:08 +0200)
+>    crypto: Unexport AES_*_rot, AES_TeN, AES_TdN (2023-07-09 13:48:23 +0100)
+> 
+> ----------------------------------------------------------------
+> crypto: Provide aes-round.h and host accel
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
