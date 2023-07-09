@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A935F74C709
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFABB74C703
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:31:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIZAS-0008HO-91; Sun, 09 Jul 2023 14:29:56 -0400
+	id 1qIZAQ-0008GQ-CA; Sun, 09 Jul 2023 14:29:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZAK-0008ES-86
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:29:49 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qIZAK-0008ET-T8
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:29:50 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZAH-0000EF-Hz
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:29:47 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fb4146e8deso49381985e9.0
+ id 1qIZAI-0000EO-8I
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:29:48 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3fbc5d5742bso41758125e9.2
  for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 11:29:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688927384; x=1691519384;
+ d=linaro.org; s=google; t=1688927385; x=1691519385;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+2eq+Rqw2tfVQv+qv2fSzwIl0ZvbKdHuhOb40v3Ga3s=;
- b=o8uyLtBxem/VrQcJrlPgF8c6HE795+WqaHNlBksfMcs4BuUTKhYsEqDhOLDcn66Rzm
- nD8NxeKUQdhb0uVUZX+LTxaDlBKsrlnBp/GijMnDb9wLtRtsDDcooYZiF59uZ9klR6tn
- 4wN9ZfLgzquPHogODDviwDKMsPAX3Je1IRj8ucWRZNaCizXKFRkaFS9FotQZvn+v2n8S
- o7+WY6wzr6hfc8O7BIgZMuAENCwfiDb3INWwBMk1IRMww2Z3SOpx0ILmWsq4nux2kSho
- QJTP8DFHiwLKKqNKDEpXl0ufmfPt73WfTEeZGpZOeTW1RyBt5IVnBpe8NSZ+h3159Rfo
- QuRg==
+ bh=LO73AWeIHAR2oL9a8MGDntKx1EKSzMSEdZSpHf3WsVU=;
+ b=UuwapAyzwGqXFa/V/y7gjb+mDezUyPb+DxGQAC/ul/nQ4yScL4ekJv8YsBNoDWa5JX
+ e4GdfpJqsh0HUaIBCcTzkpPA0WYcn89SvbDPPHCLcXtSqvpjRUDiDqFc8wFf0ETRXo9I
+ yVTvW1BHkg0BdG9VHcdWhh/UTWG8k5c5qSLE/Rg+TJQ+pO2fMovHxh/eedjTATHghMrG
+ wkydZoexNNwrOdPukNTQMuIYveOeJMFqNo9BLL1arHylnxykrwmUOmyXtqj8j9ibmGFu
+ GmwN3v1l5PpCVIlbuZF1d7TD5T4RO77fc3RYO7hU3DeY9dre08E1P755c/QUiaONFMmT
+ P2yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688927384; x=1691519384;
+ d=1e100.net; s=20221208; t=1688927385; x=1691519385;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+2eq+Rqw2tfVQv+qv2fSzwIl0ZvbKdHuhOb40v3Ga3s=;
- b=ldBrZN5/NX/41pMwhr3sUovqJjlxE/dvosH6elJoPQ7XRyqZ6oaO8qy2zzJhnoQy3E
- cznoDnVkKwhdbt/vRgPS2M1KGWd6fiifBCNtPEl+hD9kq40ZtaHshrf0pvRfwskKedkK
- u1+MCJdpAbJlKMd6YcIEoEzsVdyaS6YmX7j+SVK3/wPzPSScq8EGdUvPzFm2aS0DYbAN
- tS7MT/QKF4y4eJkfBqlAIO1tRjL3r0xDp2y7qEy6d4Rzr45GoT9Dlv91lolQGmYflyfT
- tDICXUAsJb/rW8jhLoJ6Bwl7gSK6ArdpSWt0Mcv98UHVgVCva28df8GkqsYRwH3A+WuM
- XAvA==
-X-Gm-Message-State: ABy/qLYPz5lMcGvzWCAKRXW7M7CY9wHfbS8eQU/n3bDts0q1n4x8bHD+
- 0RAC2vsEFY0AA3bSDAqtZx4WILDc0dx+Si1d4NE7jw==
-X-Google-Smtp-Source: APBJJlH1bB7ShD9al+x7MtvBX2bcq9DY6QMhXuDVP5wX6bH1pRrAYXhANCiX3CNcixsOaUuYDyRHZg==
-X-Received: by 2002:a05:600c:2193:b0:3fb:ff8f:2db0 with SMTP id
- e19-20020a05600c219300b003fbff8f2db0mr9241054wme.39.1688927384198; 
- Sun, 09 Jul 2023 11:29:44 -0700 (PDT)
+ bh=LO73AWeIHAR2oL9a8MGDntKx1EKSzMSEdZSpHf3WsVU=;
+ b=TeXuEGmtDPRh9oIPIM+5eqp4LqIZxli42YXu5sq8CAF+Uncsir5+JcbteIATpP1Esi
+ 3btSjNJWWtHKfXevkQYYA1cKthlxfiua++cEVs8paNYFZLTt67Kir8vO1AURbvXNWf7U
+ UFQyQnGmD+UXxZJUqMihR0M7q3rJfPyi5xHSIgOkcPczmqQWvr7tnAe7ctsX9W9WvNvI
+ acRdNdgDMEsjpQ/2fbbUCjtr2QK152pYTN0xNsljNo3IzKTFwtTOJKi5F5B9nhk9HX/m
+ HDYGZtH3hIvLVscHMlZg/vi3Eeer4ROo813/snoFYtCRnVuCOIYd/92eTenphrOjJMX8
+ UmPg==
+X-Gm-Message-State: ABy/qLZqTcoMwot6ewE/1CUf7z78HZke5gkkC9RG7USRdOxbWCFlw+tn
+ w2Ah0E8xyWMdHQBMLO2g7MOOKb2JyArIXrvr0oHUfg==
+X-Google-Smtp-Source: APBJJlH95ByHo8DO2+hE4VPg5DLTIfz0N99B9J3QYduOfpcyrajoiM386R6Iw+1v6WhSvEuxt45tCA==
+X-Received: by 2002:a05:600c:3785:b0:3fb:a0fc:1ba1 with SMTP id
+ o5-20020a05600c378500b003fba0fc1ba1mr11048130wmr.35.1688927385044; 
+ Sun, 09 Jul 2023 11:29:45 -0700 (PDT)
 Received: from stoup.. ([148.252.133.210]) by smtp.gmail.com with ESMTPSA id
- q15-20020a7bce8f000000b003fbe791a0e8sm8317108wmj.0.2023.07.09.11.29.43
+ q15-20020a7bce8f000000b003fbe791a0e8sm8317108wmj.0.2023.07.09.11.29.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Jul 2023 11:29:43 -0700 (PDT)
+ Sun, 09 Jul 2023 11:29:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 05/37] crypto: Add aesenc_SB_SR_AK
-Date: Sun,  9 Jul 2023 19:28:21 +0100
-Message-Id: <20230709182934.309468-10-richard.henderson@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 05/45] linux-user: Use abi_ullong not uint64_t in
+ syscall_defs.h
+Date: Sun,  9 Jul 2023 19:28:22 +0100
+Message-Id: <20230709182934.309468-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230709182934.309468-1-richard.henderson@linaro.org>
 References: <20230709182934.309468-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,168 +93,219 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Start adding infrastructure for accelerating guest AES.
-Begin with a SubBytes + ShiftRows + AddRoundKey primitive.
+Be careful not to change linux_dirent64, which is a host structure.
 
-Acked-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- MAINTAINERS                                  |  1 +
- host/include/generic/host/crypto/aes-round.h | 16 +++++++
- include/crypto/aes-round.h                   | 44 +++++++++++++++++++
- crypto/aes.c                                 | 46 ++++++++++++++++++++
- 4 files changed, 107 insertions(+)
- create mode 100644 host/include/generic/host/crypto/aes-round.h
- create mode 100644 include/crypto/aes-round.h
+ linux-user/syscall_defs.h | 72 +++++++++++++++++++--------------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d422ce50e3..1817cfc62f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3224,6 +3224,7 @@ M: Daniel P. Berrange <berrange@redhat.com>
- S: Maintained
- F: crypto/
- F: include/crypto/
-+F: host/include/*/host/crypto/
- F: qapi/crypto.json
- F: tests/unit/test-crypto-*
- F: tests/bench/benchmark-crypto-*
-diff --git a/host/include/generic/host/crypto/aes-round.h b/host/include/generic/host/crypto/aes-round.h
-new file mode 100644
-index 0000000000..c5d8066179
---- /dev/null
-+++ b/host/include/generic/host/crypto/aes-round.h
-@@ -0,0 +1,16 @@
-+/*
-+ * No host specific aes acceleration.
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef GENERIC_HOST_CRYPTO_AES_ROUND_H
-+#define GENERIC_HOST_CRYPTO_AES_ROUND_H
-+
-+#define HAVE_AES_ACCEL  false
-+#define ATTR_AES_ACCEL
-+
-+void aesenc_SB_SR_AK_accel(AESState *, const AESState *,
-+                           const AESState *, bool)
-+    QEMU_ERROR("unsupported accel");
-+
-+#endif /* GENERIC_HOST_CRYPTO_AES_ROUND_H */
-diff --git a/include/crypto/aes-round.h b/include/crypto/aes-round.h
-new file mode 100644
-index 0000000000..b85db1a30e
---- /dev/null
-+++ b/include/crypto/aes-round.h
-@@ -0,0 +1,44 @@
-+/*
-+ * AES round fragments, generic version
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ *
-+ * Copyright (C) 2023 Linaro, Ltd.
-+ */
-+
-+#ifndef CRYPTO_AES_ROUND_H
-+#define CRYPTO_AES_ROUND_H
-+
-+/* Hosts with acceleration will usually need a 16-byte vector type. */
-+typedef uint8_t AESStateVec __attribute__((vector_size(16)));
-+
-+typedef union {
-+    uint8_t b[16];
-+    uint32_t w[4];
-+    uint64_t d[2];
-+    AESStateVec v;
-+} AESState;
-+
-+#include "host/crypto/aes-round.h"
-+
-+/*
-+ * Perform SubBytes + ShiftRows + AddRoundKey.
-+ */
-+
-+void aesenc_SB_SR_AK_gen(AESState *ret, const AESState *st,
-+                         const AESState *rk);
-+void aesenc_SB_SR_AK_genrev(AESState *ret, const AESState *st,
-+                            const AESState *rk);
-+
-+static inline void aesenc_SB_SR_AK(AESState *r, const AESState *st,
-+                                   const AESState *rk, bool be)
-+{
-+    if (HAVE_AES_ACCEL) {
-+        aesenc_SB_SR_AK_accel(r, st, rk, be);
-+    } else if (HOST_BIG_ENDIAN == be) {
-+        aesenc_SB_SR_AK_gen(r, st, rk);
-+    } else {
-+        aesenc_SB_SR_AK_genrev(r, st, rk);
-+    }
-+}
-+
-+#endif /* CRYPTO_AES_ROUND_H */
-diff --git a/crypto/aes.c b/crypto/aes.c
-index e65c97e0c1..408d92b81f 100644
---- a/crypto/aes.c
-+++ b/crypto/aes.c
-@@ -29,6 +29,7 @@
-  */
- #include "qemu/osdep.h"
- #include "crypto/aes.h"
-+#include "crypto/aes-round.h"
+diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
+index caaa895bec..0af7249330 100644
+--- a/linux-user/syscall_defs.h
++++ b/linux-user/syscall_defs.h
+@@ -1444,8 +1444,8 @@ struct target_stat64 {
+     unsigned char   __pad0[6];
+     unsigned short  st_dev;
  
- typedef uint32_t u32;
- typedef uint8_t u8;
-@@ -1215,6 +1216,51 @@ static const u32 rcon[] = {
-         0x1B000000, 0x36000000, /* for 128-bit blocks, Rijndael never uses more than 10 rcon values */
+-    uint64_t        st_ino;
+-    uint64_t        st_nlink;
++    abi_ullong      st_ino;
++    abi_ullong      st_nlink;
+ 
+     unsigned int    st_mode;
+ 
+@@ -1501,7 +1501,7 @@ struct target_stat64 {
+     unsigned char   __pad0[6];
+     unsigned short  st_dev;
+ 
+-    uint64_t st_ino;
++    abi_ullong      st_ino;
+ 
+     unsigned int    st_mode;
+     unsigned int    st_nlink;
+@@ -1618,7 +1618,7 @@ struct target_stat {
+ /* FIXME: Microblaze no-mmu user-space has a difference stat64 layout...  */
+ #define TARGET_HAS_STRUCT_STAT64
+ struct QEMU_PACKED target_stat64 {
+-    uint64_t st_dev;
++    abi_ullong st_dev;
+ #define TARGET_STAT64_HAS_BROKEN_ST_INO 1
+     abi_uint pad0;
+     abi_uint __st_ino;
+@@ -1627,8 +1627,8 @@ struct QEMU_PACKED target_stat64 {
+     abi_uint st_nlink;
+     abi_uint st_uid;
+     abi_uint st_gid;
+-    uint64_t st_rdev;
+-    uint64_t __pad1;
++    abi_ullong st_rdev;
++    abi_ullong __pad1;
+ 
+     int64_t  st_size;
+     abi_int  st_blksize;
+@@ -1641,7 +1641,7 @@ struct QEMU_PACKED target_stat64 {
+     unsigned int   target_st_mtime_nsec;
+     int            target_st_ctime;
+     unsigned int   target_st_ctime_nsec;
+-    uint64_t st_ino;
++    abi_ullong st_ino;
  };
  
-+/*
-+ * Perform SubBytes + ShiftRows + AddRoundKey.
-+ */
-+static inline void
-+aesenc_SB_SR_AK_swap(AESState *ret, const AESState *st,
-+                     const AESState *rk, bool swap)
-+{
-+    const int swap_b = swap ? 15 : 0;
-+    AESState t;
-+
-+    t.b[swap_b ^ 0x0] = AES_sbox[st->b[swap_b ^ AES_SH(0x0)]];
-+    t.b[swap_b ^ 0x1] = AES_sbox[st->b[swap_b ^ AES_SH(0x1)]];
-+    t.b[swap_b ^ 0x2] = AES_sbox[st->b[swap_b ^ AES_SH(0x2)]];
-+    t.b[swap_b ^ 0x3] = AES_sbox[st->b[swap_b ^ AES_SH(0x3)]];
-+    t.b[swap_b ^ 0x4] = AES_sbox[st->b[swap_b ^ AES_SH(0x4)]];
-+    t.b[swap_b ^ 0x5] = AES_sbox[st->b[swap_b ^ AES_SH(0x5)]];
-+    t.b[swap_b ^ 0x6] = AES_sbox[st->b[swap_b ^ AES_SH(0x6)]];
-+    t.b[swap_b ^ 0x7] = AES_sbox[st->b[swap_b ^ AES_SH(0x7)]];
-+    t.b[swap_b ^ 0x8] = AES_sbox[st->b[swap_b ^ AES_SH(0x8)]];
-+    t.b[swap_b ^ 0x9] = AES_sbox[st->b[swap_b ^ AES_SH(0x9)]];
-+    t.b[swap_b ^ 0xa] = AES_sbox[st->b[swap_b ^ AES_SH(0xA)]];
-+    t.b[swap_b ^ 0xb] = AES_sbox[st->b[swap_b ^ AES_SH(0xB)]];
-+    t.b[swap_b ^ 0xc] = AES_sbox[st->b[swap_b ^ AES_SH(0xC)]];
-+    t.b[swap_b ^ 0xd] = AES_sbox[st->b[swap_b ^ AES_SH(0xD)]];
-+    t.b[swap_b ^ 0xe] = AES_sbox[st->b[swap_b ^ AES_SH(0xE)]];
-+    t.b[swap_b ^ 0xf] = AES_sbox[st->b[swap_b ^ AES_SH(0xF)]];
-+
-+    /*
-+     * Perform the AddRoundKey with generic vectors.
-+     * This may be expanded to either host integer or host vector code.
-+     * The key and output endianness match, so no bswap required.
-+     */
-+    ret->v = t.v ^ rk->v;
-+}
-+
-+void aesenc_SB_SR_AK_gen(AESState *r, const AESState *s, const AESState *k)
-+{
-+    aesenc_SB_SR_AK_swap(r, s, k, false);
-+}
-+
-+void aesenc_SB_SR_AK_genrev(AESState *r, const AESState *s, const AESState *k)
-+{
-+    aesenc_SB_SR_AK_swap(r, s, k, true);
-+}
-+
- /**
-  * Expand the cipher key into the encryption key schedule.
-  */
+ #elif defined(TARGET_M68K)
+@@ -1753,7 +1753,7 @@ struct target_stat {
+ struct target_stat {
+     abi_ulong    st_dev;
+     abi_ulong    st_pad0[3]; /* Reserved for st_dev expansion */
+-    uint64_t     st_ino;
++    abi_ullong   st_ino;
+     unsigned int st_mode;
+     unsigned int st_nlink;
+     int          st_uid;
+@@ -1813,7 +1813,7 @@ struct target_stat64 {
+     abi_ulong       st_dev;
+     abi_ulong       st_pad0[3];     /* Reserved for st_dev expansion  */
+ 
+-    uint64_t        st_ino;
++    abi_ullong      st_ino;
+ 
+     unsigned int    st_mode;
+     unsigned int    st_nlink;
+@@ -2044,17 +2044,17 @@ struct target_stat {
+ 
+ #define TARGET_HAS_STRUCT_STAT64
+ struct target_stat64  {
+-    uint64_t st_dev;            /* Device */
+-    uint64_t st_ino;            /* File serial number */
++    abi_ullong st_dev;          /* Device */
++    abi_ullong st_ino;          /* File serial number */
+     unsigned int  st_mode;      /* File mode. */
+     unsigned int  st_nlink;     /* Link count. */
+     unsigned int  st_uid;       /* User ID of the file's owner. */
+     unsigned int  st_gid;       /* Group ID of the file's group. */
+-    uint64_t st_rdev;           /* Device number, if device. */
++    abi_ullong st_rdev;         /* Device number, if device. */
+     int64_t st_size;            /* Size of file, in bytes. */
+     abi_ulong st_blksize;       /* Optimal block size for I/O. */
+     abi_ulong __unused2;
+-    uint64_t st_blocks;         /* Number 512-byte blocks allocated. */
++    abi_ullong st_blocks;       /* Number 512-byte blocks allocated. */
+     abi_ulong target_st_atime;  /* Time of last access. */
+     abi_ulong target_st_atime_nsec;
+     abi_ulong target_st_mtime;  /* Time of last modification. */
+@@ -2097,14 +2097,14 @@ struct target_stat {
+ #if !defined(TARGET_RISCV64)
+ #define TARGET_HAS_STRUCT_STAT64
+ struct target_stat64 {
+-    uint64_t st_dev;
+-    uint64_t st_ino;
++    abi_ullong st_dev;
++    abi_ullong st_ino;
+     unsigned int st_mode;
+     unsigned int st_nlink;
+     unsigned int st_uid;
+     unsigned int st_gid;
+-    uint64_t st_rdev;
+-    uint64_t __pad1;
++    abi_ullong st_rdev;
++    abi_ullong __pad1;
+     int64_t st_size;
+     int st_blksize;
+     int __pad2;
+@@ -2156,14 +2156,14 @@ struct target_stat {
+ 
+ #define TARGET_HAS_STRUCT_STAT64
+ struct target_stat64 {
+-    uint64_t   st_dev;
++    abi_ullong st_dev;
+     abi_uint   _pad1;
+     abi_uint   _res1;
+     abi_uint   st_mode;
+     abi_uint   st_nlink;
+     abi_uint   st_uid;
+     abi_uint   st_gid;
+-    uint64_t   st_rdev;
++    abi_ullong st_rdev;
+     abi_uint   _pad2;
+     int64_t    st_size;
+     abi_int    st_blksize;
+@@ -2174,7 +2174,7 @@ struct target_stat64 {
+     abi_uint   target_st_mtime_nsec;
+     abi_int    target_st_ctime;
+     abi_uint   target_st_ctime_nsec;
+-    uint64_t   st_ino;
++    abi_ullong st_ino;
+ };
+ 
+ #elif defined(TARGET_LOONGARCH64)
+@@ -2231,11 +2231,11 @@ struct target_statfs64 {
+     abi_uint        f_bsize;
+     abi_uint        f_frsize;       /* Fragment size - unsupported */
+     abi_uint        __pad;
+-    uint64_t        f_blocks;
+-    uint64_t        f_bfree;
+-    uint64_t        f_files;
+-    uint64_t        f_ffree;
+-    uint64_t        f_bavail;
++    abi_ullong      f_blocks;
++    abi_ullong      f_bfree;
++    abi_ullong      f_files;
++    abi_ullong      f_ffree;
++    abi_ullong      f_bavail;
+     target_fsid_t   f_fsid;
+     abi_uint        f_namelen;
+     abi_uint        f_flags;
+@@ -2324,11 +2324,11 @@ struct target_statfs {
+ struct target_statfs64 {
+     abi_uint f_type;
+     abi_uint f_bsize;
+-    uint64_t f_blocks;
+-    uint64_t f_bfree;
+-    uint64_t f_bavail;
+-    uint64_t f_files;
+-    uint64_t f_ffree;
++    abi_ullong f_blocks;
++    abi_ullong f_bfree;
++    abi_ullong f_bavail;
++    abi_ullong f_files;
++    abi_ullong f_ffree;
+     target_fsid_t f_fsid;
+     abi_uint f_namelen;
+     abi_uint f_frsize;
+@@ -2799,7 +2799,7 @@ struct target_statx {
+     /* 0x00 */
+     abi_uint stx_mask;       /* What results were written [uncond] */
+     abi_uint stx_blksize;    /* Preferred general I/O size [uncond] */
+-    uint64_t stx_attributes; /* Flags conveying information about the file */
++    abi_ullong stx_attributes; /* Flags conveying information about the file */
+     /* 0x10 */
+     abi_uint stx_nlink;      /* Number of hard links */
+     abi_uint stx_uid;        /* User ID of owner */
+@@ -2807,10 +2807,10 @@ struct target_statx {
+     uint16_t stx_mode;       /* File mode */
+     uint16_t __spare0[1];
+     /* 0x20 */
+-    uint64_t stx_ino;        /* Inode number */
+-    uint64_t stx_size;       /* File size */
+-    uint64_t stx_blocks;     /* Number of 512-byte blocks allocated */
+-    uint64_t stx_attributes_mask; /* Mask to show what is supported */
++    abi_ullong stx_ino;      /* Inode number */
++    abi_ullong stx_size;     /* File size */
++    abi_ullong stx_blocks;   /* Number of 512-byte blocks allocated */
++    abi_ullong stx_attributes_mask; /* Mask to show what is supported */
+     /* 0x40 */
+     struct target_statx_timestamp  stx_atime;  /* Last access time */
+     struct target_statx_timestamp  stx_btime;  /* File creation time */
+@@ -2822,7 +2822,7 @@ struct target_statx {
+     abi_uint stx_dev_major; /* ID of device containing file [uncond] */
+     abi_uint stx_dev_minor;
+     /* 0x90 */
+-    uint64_t __spare2[14];  /* Spare space for future expansion */
++    abi_ullong __spare2[14]; /* Spare space for future expansion */
+     /* 0x100 */
+ };
+ 
 -- 
 2.34.1
 
