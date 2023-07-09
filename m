@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE4374C49D
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 16:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97FE574C490
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 16:04:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIUxj-0000cZ-04; Sun, 09 Jul 2023 10:00:31 -0400
+	id 1qIUxl-0000g8-0k; Sun, 09 Jul 2023 10:00:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIUxY-0000Td-8r
+ id 1qIUxb-0000To-7G
  for qemu-devel@nongnu.org; Sun, 09 Jul 2023 10:00:23 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIUxW-0000em-4r
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 10:00:19 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fbea14706eso36337775e9.2
- for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 07:00:15 -0700 (PDT)
+ id 1qIUxY-0000gA-1c
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 10:00:22 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-314319c0d3eso3869740f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 07:00:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688911214; x=1691503214;
+ d=linaro.org; s=google; t=1688911218; x=1691503218;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ehiRk+/4K4ZdSH5tBEmArhhxk2Xw8P4NzuIBcv7dVgQ=;
- b=drfjP0nSnJVGLCG7MaYpaMfCdaKDboTm3RCxwBSKBWUOtrmIIfyFJqx/D/YngHEiGg
- 7Ex7P7mFFQS8WYEiiNbjBB37t70GoRB652M/3tCW6xYluqpOi0Sn075w/BughIXNOI4V
- tbFi5RFIzu/QlbmRdvjW2J47zJsWb8wnug9ob2mQFoHyvsPXT1V/czb6t1ilivajCVB6
- PVpf4TPM4TJCASkqV7oJmFGVVl2KYhyGTgktOb5n0IoP+rlB1rmZtoXkaceqVgAYSjBh
- 6scq/QpCUy+ll3k9Q6gUECYQwqKdDe2rxZcp/lGlyXomqpwu4mhKWAhlgfdtHJDWEw+r
- Wnyg==
+ bh=1F2YVr3IWQtmqpjJeR+MoFqCj9awn2sZVMTfzE1Dbtk=;
+ b=dU2T5oyzhOIeLYfE59gHgiR/qMCRsNxJB2TKzHqlMq4/EtZCcJsYa9HxnLAEku4a5s
+ JKNKVh63mHDzLRoZlsyHjFUXxPkPh/jq++sIdl+n/J5+jL6/sdKSD0mOu2b74MoEyW/l
+ AIfq3eHLKUVLNpavjWn45dsP6dygd3dHq2HK0V26AGqEmaO3FCMc8tqL7Ezqmvs0bkuK
+ EPou5BQz2DRHocgqLkirwqZoys6O3vqvFPmmtAyUGSGzeh/Y8nrCAH+GEeacdCM5TAXG
+ RwLSVpo1UzPg2cJvLtI3pu5P+tiBou+NeuYMAilcfYHbnU0AUwGB+JAVXWSIBbedNRAP
+ DQOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688911214; x=1691503214;
+ d=1e100.net; s=20221208; t=1688911218; x=1691503218;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ehiRk+/4K4ZdSH5tBEmArhhxk2Xw8P4NzuIBcv7dVgQ=;
- b=NVbOiWfffUcg8V56z4kRO1pc3CzSYkZlY8oNGzhGJaKdaUeWB06FHFvgrweEs5FVEK
- ZPC5shRpvF4pw9GfLiwyhmnO7kNev0V/h9k3ruF1adHjEvAw/UegYYBnkXktOEbKbz5H
- 0fpgzUtZw9V1GI/YjnBQmopgoap1u/Kk4gp7rk8/rj3bp47lPK26WBO/gNS0+i2pBkdc
- 24UfFYFb76YkwgKlsMYZpY+ze7G6ihXji11SZvs+Dj8H+OyePuN0Iluz+JunPgqsVCNi
- 5eS4y71RhrNeCiXQiS3emFFeO4PnQ6vRmHVlxa7YM9dSCJ0vEArBnc7Oc0FpS4gKsXy+
- Czfw==
-X-Gm-Message-State: ABy/qLY1dwJpdxtrsuUbo3Lc5JA4gcRFCWP/aehlROEM4eQvA/dhdooq
- 5q5Bcvvtq0bBd4h3ryZUpnHD0FAoJuBv6g/iCJfOOw==
-X-Google-Smtp-Source: APBJJlEEcUesS7QBYE337sY17REbCuGKzycJTD5QoauFbvGnXac99pnKW70OmoVSz3JfwPCGZhkgqw==
-X-Received: by 2002:a7b:ce8e:0:b0:3fb:40ec:9483 with SMTP id
- q14-20020a7bce8e000000b003fb40ec9483mr8028326wmj.16.1688911214647; 
- Sun, 09 Jul 2023 07:00:14 -0700 (PDT)
+ bh=1F2YVr3IWQtmqpjJeR+MoFqCj9awn2sZVMTfzE1Dbtk=;
+ b=cqH4ckAoLI2dIEahe/yRnpn/BxYYyuQ1WEhccvI/EiFkNYEt6YcC9lWY9rNwTpY4SM
+ e8HlE8aXiQJYg04kji1fOrBC33S6iL7MZz2yWLHV1fQgQuFPY7W6rQ6IbiR35kdNKbh+
+ vIJCXA6HPWGba1NxDCqU6LKtNnQ4xmY7Hjmyuk/tTdpQABvgBzbiWv6rOnzqPXziP/ea
+ uu91gXrKGVa7RfxcTbvKByFbYNMRPwhTKTuGDdWlDbabPXTR0wDAa9NI0XcQ/gQIiE7k
+ aJ8x4xTNECCA9pyq8gmPzSAivaWVvmksT+fGpHifsox4ib68hcpp2e2QELiGLUC8apmO
+ EhRw==
+X-Gm-Message-State: ABy/qLbj3teERqtihpJYgsFcocUfshoeTJIa3GptqhcbEVwG6JmK83FZ
+ E5W4mVV7Mku/N+4EA6nOkhwPHdzPsoUntNgY0c+6ww==
+X-Google-Smtp-Source: APBJJlEyPJW+/zoGX/zUTrm/jM0SakcA4nPzFANK+frSGMPEVQJtynFkZi4uHPwvHLgJKT5ESGjJVw==
+X-Received: by 2002:a5d:5913:0:b0:314:350a:6912 with SMTP id
+ v19-20020a5d5913000000b00314350a6912mr8365645wrd.36.1688911218749; 
+ Sun, 09 Jul 2023 07:00:18 -0700 (PDT)
 Received: from stoup.. ([148.252.133.210]) by smtp.gmail.com with ESMTPSA id
- v18-20020a5d6792000000b003063a92bbf5sm9239422wru.70.2023.07.09.07.00.14
+ v18-20020a5d6792000000b003063a92bbf5sm9239422wru.70.2023.07.09.07.00.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Jul 2023 07:00:14 -0700 (PDT)
+ Sun, 09 Jul 2023 07:00:18 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 32/37] target/riscv: Use aesenc_SB_SR_MC_AK
-Date: Sun,  9 Jul 2023 14:59:40 +0100
-Message-Id: <20230709135945.250311-33-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 37/37] crypto: Unexport AES_*_rot, AES_TeN, AES_TdN
+Date: Sun,  9 Jul 2023 14:59:45 +0100
+Message-Id: <20230709135945.250311-38-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230709135945.250311-1-richard.henderson@linaro.org>
 References: <20230709135945.250311-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,32 +92,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This implements the AES64ESM instruction.
+These arrays are no longer used outside of aes.c.
 
+Acked-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/riscv/crypto_helper.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/crypto/aes.h | 25 -------------------------
+ crypto/aes.c         | 33 +++++++++++++++++++++------------
+ 2 files changed, 21 insertions(+), 37 deletions(-)
 
-diff --git a/target/riscv/crypto_helper.c b/target/riscv/crypto_helper.c
-index 505166ce5a..c036fe8632 100644
---- a/target/riscv/crypto_helper.c
-+++ b/target/riscv/crypto_helper.c
-@@ -198,7 +198,12 @@ static inline target_ulong aes64_operation(target_ulong rs1, target_ulong rs2,
+diff --git a/include/crypto/aes.h b/include/crypto/aes.h
+index 99209f51b9..709d4d226b 100644
+--- a/include/crypto/aes.h
++++ b/include/crypto/aes.h
+@@ -30,29 +30,4 @@ void AES_decrypt(const unsigned char *in, unsigned char *out,
+ extern const uint8_t AES_sbox[256];
+ extern const uint8_t AES_isbox[256];
  
- target_ulong HELPER(aes64esm)(target_ulong rs1, target_ulong rs2)
- {
--    return aes64_operation(rs1, rs2, true, true);
-+    AESState t;
+-/* AES MixColumns, for use with rot32. */
+-extern const uint32_t AES_mc_rot[256];
+-
+-/* AES InvMixColumns, for use with rot32. */
+-extern const uint32_t AES_imc_rot[256];
+-
+-/*
+-AES_Te0[x] = S [x].[02, 01, 01, 03];
+-AES_Te1[x] = S [x].[03, 02, 01, 01];
+-AES_Te2[x] = S [x].[01, 03, 02, 01];
+-AES_Te3[x] = S [x].[01, 01, 03, 02];
+-AES_Te4[x] = S [x].[01, 01, 01, 01];
+-
+-AES_Td0[x] = Si[x].[0e, 09, 0d, 0b];
+-AES_Td1[x] = Si[x].[0b, 0e, 09, 0d];
+-AES_Td2[x] = Si[x].[0d, 0b, 0e, 09];
+-AES_Td3[x] = Si[x].[09, 0d, 0b, 0e];
+-AES_Td4[x] = Si[x].[01, 01, 01, 01];
+-*/
+-
+-extern const uint32_t AES_Te0[256], AES_Te1[256], AES_Te2[256],
+-                      AES_Te3[256], AES_Te4[256];
+-extern const uint32_t AES_Td0[256], AES_Td1[256], AES_Td2[256],
+-                      AES_Td3[256], AES_Td4[256];
+-
+ #endif
+diff --git a/crypto/aes.c b/crypto/aes.c
+index 685efbd583..836d7d5c0b 100644
+--- a/crypto/aes.c
++++ b/crypto/aes.c
+@@ -120,7 +120,7 @@ const uint8_t AES_isbox[256] = {
+ /*
+  * MixColumns lookup table, for use with rot32.
+  */
+-const uint32_t AES_mc_rot[256] = {
++static const uint32_t AES_mc_rot[256] = {
+     0x00000000, 0x03010102, 0x06020204, 0x05030306,
+     0x0c040408, 0x0f05050a, 0x0a06060c, 0x0907070e,
+     0x18080810, 0x1b090912, 0x1e0a0a14, 0x1d0b0b16,
+@@ -190,7 +190,7 @@ const uint32_t AES_mc_rot[256] = {
+ /*
+  * Inverse MixColumns lookup table, for use with rot32.
+  */
+-const uint32_t AES_imc_rot[256] = {
++static const uint32_t AES_imc_rot[256] = {
+     0x00000000, 0x0b0d090e, 0x161a121c, 0x1d171b12,
+     0x2c342438, 0x27392d36, 0x3a2e3624, 0x31233f2a,
+     0x58684870, 0x5365417e, 0x4e725a6c, 0x457f5362,
+@@ -272,7 +272,7 @@ AES_Td3[x] = Si[x].[09, 0d, 0b, 0e];
+ AES_Td4[x] = Si[x].[01, 01, 01, 01];
+ */
+ 
+-const uint32_t AES_Te0[256] = {
++static const uint32_t AES_Te0[256] = {
+     0xc66363a5U, 0xf87c7c84U, 0xee777799U, 0xf67b7b8dU,
+     0xfff2f20dU, 0xd66b6bbdU, 0xde6f6fb1U, 0x91c5c554U,
+     0x60303050U, 0x02010103U, 0xce6767a9U, 0x562b2b7dU,
+@@ -338,7 +338,8 @@ const uint32_t AES_Te0[256] = {
+     0x824141c3U, 0x299999b0U, 0x5a2d2d77U, 0x1e0f0f11U,
+     0x7bb0b0cbU, 0xa85454fcU, 0x6dbbbbd6U, 0x2c16163aU,
+ };
+-const uint32_t AES_Te1[256] = {
 +
-+    t.d[HOST_BIG_ENDIAN] = rs1;
-+    t.d[!HOST_BIG_ENDIAN] = rs2;
-+    aesenc_SB_SR_MC_AK(&t, &t, &aes_zero, false);
-+    return t.d[HOST_BIG_ENDIAN];
- }
++static const uint32_t AES_Te1[256] = {
+     0xa5c66363U, 0x84f87c7cU, 0x99ee7777U, 0x8df67b7bU,
+     0x0dfff2f2U, 0xbdd66b6bU, 0xb1de6f6fU, 0x5491c5c5U,
+     0x50603030U, 0x03020101U, 0xa9ce6767U, 0x7d562b2bU,
+@@ -404,7 +405,8 @@ const uint32_t AES_Te1[256] = {
+     0xc3824141U, 0xb0299999U, 0x775a2d2dU, 0x111e0f0fU,
+     0xcb7bb0b0U, 0xfca85454U, 0xd66dbbbbU, 0x3a2c1616U,
+ };
+-const uint32_t AES_Te2[256] = {
++
++static const uint32_t AES_Te2[256] = {
+     0x63a5c663U, 0x7c84f87cU, 0x7799ee77U, 0x7b8df67bU,
+     0xf20dfff2U, 0x6bbdd66bU, 0x6fb1de6fU, 0xc55491c5U,
+     0x30506030U, 0x01030201U, 0x67a9ce67U, 0x2b7d562bU,
+@@ -470,8 +472,8 @@ const uint32_t AES_Te2[256] = {
+     0x41c38241U, 0x99b02999U, 0x2d775a2dU, 0x0f111e0fU,
+     0xb0cb7bb0U, 0x54fca854U, 0xbbd66dbbU, 0x163a2c16U,
+ };
+-const uint32_t AES_Te3[256] = {
  
- target_ulong HELPER(aes64es)(target_ulong rs1, target_ulong rs2)
++static const uint32_t AES_Te3[256] = {
+     0x6363a5c6U, 0x7c7c84f8U, 0x777799eeU, 0x7b7b8df6U,
+     0xf2f20dffU, 0x6b6bbdd6U, 0x6f6fb1deU, 0xc5c55491U,
+     0x30305060U, 0x01010302U, 0x6767a9ceU, 0x2b2b7d56U,
+@@ -537,7 +539,8 @@ const uint32_t AES_Te3[256] = {
+     0x4141c382U, 0x9999b029U, 0x2d2d775aU, 0x0f0f111eU,
+     0xb0b0cb7bU, 0x5454fca8U, 0xbbbbd66dU, 0x16163a2cU,
+ };
+-const uint32_t AES_Te4[256] = {
++
++static const uint32_t AES_Te4[256] = {
+     0x63636363U, 0x7c7c7c7cU, 0x77777777U, 0x7b7b7b7bU,
+     0xf2f2f2f2U, 0x6b6b6b6bU, 0x6f6f6f6fU, 0xc5c5c5c5U,
+     0x30303030U, 0x01010101U, 0x67676767U, 0x2b2b2b2bU,
+@@ -603,7 +606,8 @@ const uint32_t AES_Te4[256] = {
+     0x41414141U, 0x99999999U, 0x2d2d2d2dU, 0x0f0f0f0fU,
+     0xb0b0b0b0U, 0x54545454U, 0xbbbbbbbbU, 0x16161616U,
+ };
+-const uint32_t AES_Td0[256] = {
++
++static const uint32_t AES_Td0[256] = {
+     0x51f4a750U, 0x7e416553U, 0x1a17a4c3U, 0x3a275e96U,
+     0x3bab6bcbU, 0x1f9d45f1U, 0xacfa58abU, 0x4be30393U,
+     0x2030fa55U, 0xad766df6U, 0x88cc7691U, 0xf5024c25U,
+@@ -669,7 +673,8 @@ const uint32_t AES_Td0[256] = {
+     0x39a80171U, 0x080cb3deU, 0xd8b4e49cU, 0x6456c190U,
+     0x7bcb8461U, 0xd532b670U, 0x486c5c74U, 0xd0b85742U,
+ };
+-const uint32_t AES_Td1[256] = {
++
++static const uint32_t AES_Td1[256] = {
+     0x5051f4a7U, 0x537e4165U, 0xc31a17a4U, 0x963a275eU,
+     0xcb3bab6bU, 0xf11f9d45U, 0xabacfa58U, 0x934be303U,
+     0x552030faU, 0xf6ad766dU, 0x9188cc76U, 0x25f5024cU,
+@@ -735,7 +740,8 @@ const uint32_t AES_Td1[256] = {
+     0x7139a801U, 0xde080cb3U, 0x9cd8b4e4U, 0x906456c1U,
+     0x617bcb84U, 0x70d532b6U, 0x74486c5cU, 0x42d0b857U,
+ };
+-const uint32_t AES_Td2[256] = {
++
++static const uint32_t AES_Td2[256] = {
+     0xa75051f4U, 0x65537e41U, 0xa4c31a17U, 0x5e963a27U,
+     0x6bcb3babU, 0x45f11f9dU, 0x58abacfaU, 0x03934be3U,
+     0xfa552030U, 0x6df6ad76U, 0x769188ccU, 0x4c25f502U,
+@@ -802,7 +808,8 @@ const uint32_t AES_Td2[256] = {
+     0x017139a8U, 0xb3de080cU, 0xe49cd8b4U, 0xc1906456U,
+     0x84617bcbU, 0xb670d532U, 0x5c74486cU, 0x5742d0b8U,
+ };
+-const uint32_t AES_Td3[256] = {
++
++static const uint32_t AES_Td3[256] = {
+     0xf4a75051U, 0x4165537eU, 0x17a4c31aU, 0x275e963aU,
+     0xab6bcb3bU, 0x9d45f11fU, 0xfa58abacU, 0xe303934bU,
+     0x30fa5520U, 0x766df6adU, 0xcc769188U, 0x024c25f5U,
+@@ -868,7 +875,8 @@ const uint32_t AES_Td3[256] = {
+     0xa8017139U, 0x0cb3de08U, 0xb4e49cd8U, 0x56c19064U,
+     0xcb84617bU, 0x32b670d5U, 0x6c5c7448U, 0xb85742d0U,
+ };
+-const uint32_t AES_Td4[256] = {
++
++static const uint32_t AES_Td4[256] = {
+     0x52525252U, 0x09090909U, 0x6a6a6a6aU, 0xd5d5d5d5U,
+     0x30303030U, 0x36363636U, 0xa5a5a5a5U, 0x38383838U,
+     0xbfbfbfbfU, 0x40404040U, 0xa3a3a3a3U, 0x9e9e9e9eU,
+@@ -934,6 +942,7 @@ const uint32_t AES_Td4[256] = {
+     0xe1e1e1e1U, 0x69696969U, 0x14141414U, 0x63636363U,
+     0x55555555U, 0x21212121U, 0x0c0c0c0cU, 0x7d7d7d7dU,
+ };
++
+ static const u32 rcon[] = {
+         0x01000000, 0x02000000, 0x04000000, 0x08000000,
+         0x10000000, 0x20000000, 0x40000000, 0x80000000,
 -- 
 2.34.1
 
