@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 128D374C75A
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AFA374C724
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:34:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIZEE-00055q-76; Sun, 09 Jul 2023 14:33:50 -0400
+	id 1qIZEF-0005Jb-Vg; Sun, 09 Jul 2023 14:33:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZDz-0003aB-OB
+ id 1qIZDz-0003aF-T1
  for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:33:35 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZDx-0004Gl-6F
+ id 1qIZDx-0004H1-T2
  for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:33:35 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-31441dfbf97so4314267f8f.1
- for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 11:33:32 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fbc244d384so38097945e9.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 11:33:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1688927612; x=1691519612;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Tw+lHuhQDkl8BHlJVK/TymddlbqOTxzC1UGZ1En8Tes=;
- b=UvYjNgBIl4rFgkHQ+ucXCccsdPHZvz0zzQ2m2UAxjRcoK4Pq7/Zk5hOFe7HF5NEDl/
- F3wIF5YLkaoMC9zrWhYcZpz+8tTXtEf2BV9S78J/905R+6PvsxI0duzG+DdKEJZFLXWF
- BZVpS1xTwzPsV6XlXh1RFREbB4VFm5viAZPwpe1d+HSa6QIA3nLKnU1bNkqC6eAjEj6p
- Z9OUmjB0y6+huTFxGssMdRy+dIgMaGUHZu0GNoJs9p+Tx3KLuvuNO2YQEmT+jVkk7JIt
- SStiweAv69RwjczpvEx+ELjacjmYAnNYgR0WSycwpaXzdc+9QYzEl1jo4uO75dNeU7YG
- CWrg==
+ bh=UNvrPJBGJx5dGrfGxip7sDDn/+xiNFreEIZcy5LuLWI=;
+ b=tWw1yDr184gNGbHwm5grNX7bEX6MfUXs9/p9iqJGvW3lz972IUH9JKjCgGN66O/cx0
+ nZe6TWtt+lhMpU26GDt/gftrlSdT+pkrPStCYTbOiUYNeyBVn///o69CheonPMTeljdY
+ b0L6K+f1RZyv3brTmOJYku4lFUzWWlDOh9eg3V+s62gOjxkW/chKe7O+YK+A1blyxx06
+ pddD4bUnzEonYtKVz0+EqWssMoPe7SsPGnXlouuVa6F1eIwkPme+wwY1Y8ZTqnDW5GQH
+ p9LZThqdsQPDG2/c3gyFVZ0i/eYVXP7rGNoQPGhVK6D48/sxi4EYFlfLzgcggJU3s77N
+ ggZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1688927612; x=1691519612;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Tw+lHuhQDkl8BHlJVK/TymddlbqOTxzC1UGZ1En8Tes=;
- b=RBOw+trl9O2ZC/mqFS/UYYW+4h1kipIsS7P4rdh87co/6o12IQPLYV+V9PWyNNuBVF
- 4ly7V/6bjO7+z+wd9ZOPP5Hs0PQz258F123YoJa9cdtuUzhvjAnAjIxscuyqM9omsZ+I
- R66xuw8xBVosZ6jkXxRwymv/xP4kRb4lK/ApelDzfKxVq/lNNHGK4Pqef9QjYBui7pI9
- FUHVxuq7j2rXnu+pII0CrnxtsZVHuTh0vlSWXjlLjNLqUTb7aVzeVkKbejEHh32Yc4+8
- IG8p0fTwW1lnwpg+eKWhe7X5coxQfrRmRgVif0Ljn2eJPZB+mQa+jD3iN5oulRiGV4eH
- OGXQ==
-X-Gm-Message-State: ABy/qLbVazWtewG4mIX2znqAt+pyBheyuBV0G2+6SgG++t+XKuGhXscI
- Ze2SXfmk23/mynNc4Q92i4QWerCtl0L7LDUeYyCN9Q==
-X-Google-Smtp-Source: APBJJlEFoi90emDeeLOqJVQ6LxOJepZtEw6jNVk2SiusMa1BytxWIIm5VlySZxeUb0r4hLwuSYaiTg==
-X-Received: by 2002:adf:ec90:0:b0:314:545f:6e94 with SMTP id
- z16-20020adfec90000000b00314545f6e94mr9968414wrn.65.1688927611853; 
- Sun, 09 Jul 2023 11:33:31 -0700 (PDT)
+ bh=UNvrPJBGJx5dGrfGxip7sDDn/+xiNFreEIZcy5LuLWI=;
+ b=TqJcwprWDwKjqSvTPVSjPKurDD9QQmrwO18idsJZBO/Wfqwh+DGJErhSWvxxXQPJXY
+ aloWBhNwKM54YZkBLFyW2u4phf1d/zLXBfKTb8dEs/dOb2NzDqdmg3dwiCZI4GkU0HBL
+ AdvtJ6jYFyqL/Lm3mzvk3HCQPiVxDmxGUKISzOgsG/b95s3CA2IvddvvxJCK1iRQEHxx
+ tc2524Us6t45FesapTmwalVdBRDpSFST/fijJVnum5O1mkPUXrHD7vpQJSw+53bCB084
+ ov758089t26rs3ojLHbVBeR5bZ7YkCEl0lC/MZKPprONqxjz4YdocRiri83LclRKHkxD
+ Lxsg==
+X-Gm-Message-State: ABy/qLZMmR9LCEfw2H6X7bt8agtIVGi0vkXkd3nSK5eWAZCgla3kIQ7x
+ VYSaSW7hXc6zqtqKB/M9cDvk4ywHImoZnW74ScVXtg==
+X-Google-Smtp-Source: APBJJlGZdIFgtU/4UC0PLsVVf+IQKkKqxBlOX8PLFEDzad6iaJWA/V/CiSQFmWPkNquP+9S+EFQRhw==
+X-Received: by 2002:adf:ee4a:0:b0:314:11d7:c919 with SMTP id
+ w10-20020adfee4a000000b0031411d7c919mr8866085wro.49.1688927612628; 
+ Sun, 09 Jul 2023 11:33:32 -0700 (PDT)
 Received: from stoup.. ([148.252.133.210]) by smtp.gmail.com with ESMTPSA id
- e17-20020a5d4e91000000b0031433760a92sm9635256wru.115.2023.07.09.11.33.31
+ e17-20020a5d4e91000000b0031433760a92sm9635256wru.115.2023.07.09.11.33.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Jul 2023 11:33:31 -0700 (PDT)
+ Sun, 09 Jul 2023 11:33:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu
-Subject: [PATCH 33/45] accel/tcg: Introduce page_find_range_empty
-Date: Sun,  9 Jul 2023 19:29:17 +0100
-Message-Id: <20230709182934.309468-66-richard.henderson@linaro.org>
+Cc: laurent@vivier.eu,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 33/37] target/riscv: Use aesdec_ISB_ISR_IMC_AK
+Date: Sun,  9 Jul 2023 19:29:18 +0100
+Message-Id: <20230709182934.309468-67-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230709182934.309468-1-richard.henderson@linaro.org>
 References: <20230709182934.309468-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,93 +92,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the interval tree to locate an unused range in the VM.
+This implements the AES64DSM instruction.  This was the last use
+of aes64_operation and its support macros, so remove them all.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230707204054.8792-17-richard.henderson@linaro.org>
 ---
- include/exec/cpu-all.h | 15 +++++++++++++++
- accel/tcg/user-exec.c  | 41 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 56 insertions(+)
+ target/riscv/crypto_helper.c | 101 ++++-------------------------------
+ 1 file changed, 10 insertions(+), 91 deletions(-)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 94f828b109..eb1c54701a 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -236,6 +236,21 @@ int page_check_range(target_ulong start, target_ulong len, int flags);
-  */
- bool page_check_range_empty(target_ulong start, target_ulong last);
- 
-+/**
-+ * page_find_range_empty
-+ * @min: first byte of search range
-+ * @max: last byte of search range
-+ * @len: size of the hole required
-+ * @align: alignment of the hole required (power of 2)
-+ *
-+ * If there is a range [x, x+@len) within [@min, @max] such that
-+ * x % @align == 0, then return x.  Otherwise return -1.
-+ * The memory lock must be held, as the caller will want to ensure
-+ * the returned range stays empty until a new mapping can be installed.
-+ */
-+target_ulong page_find_range_empty(target_ulong min, target_ulong max,
-+                                   target_ulong len, target_ulong align);
-+
- /**
-  * page_get_target_data(address)
-  * @address: guest virtual address
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index ab684a3ea2..e4f9563730 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -605,6 +605,47 @@ bool page_check_range_empty(target_ulong start, target_ulong last)
-     return pageflags_find(start, last) == NULL;
+diff --git a/target/riscv/crypto_helper.c b/target/riscv/crypto_helper.c
+index c036fe8632..99d85a6188 100644
+--- a/target/riscv/crypto_helper.c
++++ b/target/riscv/crypto_helper.c
+@@ -104,98 +104,8 @@ target_ulong HELPER(aes32dsi)(target_ulong rs1, target_ulong rs2,
+     return aes32_operation(shamt, rs1, rs2, false, false);
  }
  
-+target_ulong page_find_range_empty(target_ulong min, target_ulong max,
-+                                   target_ulong len, target_ulong align)
-+{
-+    target_ulong len_m1, align_m1;
-+
-+    assert(min <= max);
-+    assert(max <= GUEST_ADDR_MAX);
-+    assert(len != 0);
-+    assert(is_power_of_2(align));
-+    assert_memory_lock();
-+
-+    len_m1 = len - 1;
-+    align_m1 = align - 1;
-+
-+    /* Iteratively narrow the search region. */
-+    while (1) {
-+        PageFlagsNode *p;
-+
-+        /* Align min and double-check there's enough space remaining. */
-+        min = (min + align_m1) & ~align_m1;
-+        if (min > max) {
-+            return -1;
-+        }
-+        if (len_m1 > max - min) {
-+            return -1;
-+        }
-+
-+        p = pageflags_find(min, min + len_m1);
-+        if (p == NULL) {
-+            /* Found! */
-+            return min;
-+        }
-+        if (max <= p->itree.last) {
-+            /* Existing allocation fills the remainder of the search region. */
-+            return -1;
-+        }
-+        /* Skip across existing allocation. */
-+        min = p->itree.last + 1;
-+    }
-+}
-+
- void page_protect(tb_page_addr_t address)
+-#define BY(X, I) ((X >> (8 * I)) & 0xFF)
+-
+-#define AES_SHIFROWS_LO(RS1, RS2) ( \
+-    (((RS1 >> 24) & 0xFF) << 56) | (((RS2 >> 48) & 0xFF) << 48) | \
+-    (((RS2 >> 8) & 0xFF) << 40) | (((RS1 >> 32) & 0xFF) << 32) | \
+-    (((RS2 >> 56) & 0xFF) << 24) | (((RS2 >> 16) & 0xFF) << 16) | \
+-    (((RS1 >> 40) & 0xFF) << 8) | (((RS1 >> 0) & 0xFF) << 0))
+-
+-#define AES_INVSHIFROWS_LO(RS1, RS2) ( \
+-    (((RS2 >> 24) & 0xFF) << 56) | (((RS2 >> 48) & 0xFF) << 48) | \
+-    (((RS1 >> 8) & 0xFF) << 40) | (((RS1 >> 32) & 0xFF) << 32) | \
+-    (((RS1 >> 56) & 0xFF) << 24) | (((RS2 >> 16) & 0xFF) << 16) | \
+-    (((RS2 >> 40) & 0xFF) << 8) | (((RS1 >> 0) & 0xFF) << 0))
+-
+-#define AES_MIXBYTE(COL, B0, B1, B2, B3) ( \
+-    BY(COL, B3) ^ BY(COL, B2) ^ AES_GFMUL(BY(COL, B1), 3) ^ \
+-    AES_GFMUL(BY(COL, B0), 2))
+-
+-#define AES_MIXCOLUMN(COL) ( \
+-    AES_MIXBYTE(COL, 3, 0, 1, 2) << 24 | \
+-    AES_MIXBYTE(COL, 2, 3, 0, 1) << 16 | \
+-    AES_MIXBYTE(COL, 1, 2, 3, 0) << 8 | AES_MIXBYTE(COL, 0, 1, 2, 3) << 0)
+-
+-#define AES_INVMIXBYTE(COL, B0, B1, B2, B3) ( \
+-    AES_GFMUL(BY(COL, B3), 0x9) ^ AES_GFMUL(BY(COL, B2), 0xd) ^ \
+-    AES_GFMUL(BY(COL, B1), 0xb) ^ AES_GFMUL(BY(COL, B0), 0xe))
+-
+-#define AES_INVMIXCOLUMN(COL) ( \
+-    AES_INVMIXBYTE(COL, 3, 0, 1, 2) << 24 | \
+-    AES_INVMIXBYTE(COL, 2, 3, 0, 1) << 16 | \
+-    AES_INVMIXBYTE(COL, 1, 2, 3, 0) << 8 | \
+-    AES_INVMIXBYTE(COL, 0, 1, 2, 3) << 0)
+-
+ static const AESState aes_zero = { };
+ 
+-static inline target_ulong aes64_operation(target_ulong rs1, target_ulong rs2,
+-                                           bool enc, bool mix)
+-{
+-    uint64_t RS1 = rs1;
+-    uint64_t RS2 = rs2;
+-    uint64_t result;
+-    uint64_t temp;
+-    uint32_t col_0;
+-    uint32_t col_1;
+-
+-    if (enc) {
+-        temp = AES_SHIFROWS_LO(RS1, RS2);
+-        temp = (((uint64_t)AES_sbox[(temp >> 0) & 0xFF] << 0) |
+-                ((uint64_t)AES_sbox[(temp >> 8) & 0xFF] << 8) |
+-                ((uint64_t)AES_sbox[(temp >> 16) & 0xFF] << 16) |
+-                ((uint64_t)AES_sbox[(temp >> 24) & 0xFF] << 24) |
+-                ((uint64_t)AES_sbox[(temp >> 32) & 0xFF] << 32) |
+-                ((uint64_t)AES_sbox[(temp >> 40) & 0xFF] << 40) |
+-                ((uint64_t)AES_sbox[(temp >> 48) & 0xFF] << 48) |
+-                ((uint64_t)AES_sbox[(temp >> 56) & 0xFF] << 56));
+-        if (mix) {
+-            col_0 = temp & 0xFFFFFFFF;
+-            col_1 = temp >> 32;
+-
+-            col_0 = AES_MIXCOLUMN(col_0);
+-            col_1 = AES_MIXCOLUMN(col_1);
+-
+-            result = ((uint64_t)col_1 << 32) | col_0;
+-        } else {
+-            result = temp;
+-        }
+-    } else {
+-        temp = AES_INVSHIFROWS_LO(RS1, RS2);
+-        temp = (((uint64_t)AES_isbox[(temp >> 0) & 0xFF] << 0) |
+-                ((uint64_t)AES_isbox[(temp >> 8) & 0xFF] << 8) |
+-                ((uint64_t)AES_isbox[(temp >> 16) & 0xFF] << 16) |
+-                ((uint64_t)AES_isbox[(temp >> 24) & 0xFF] << 24) |
+-                ((uint64_t)AES_isbox[(temp >> 32) & 0xFF] << 32) |
+-                ((uint64_t)AES_isbox[(temp >> 40) & 0xFF] << 40) |
+-                ((uint64_t)AES_isbox[(temp >> 48) & 0xFF] << 48) |
+-                ((uint64_t)AES_isbox[(temp >> 56) & 0xFF] << 56));
+-        if (mix) {
+-            col_0 = temp & 0xFFFFFFFF;
+-            col_1 = temp >> 32;
+-
+-            col_0 = AES_INVMIXCOLUMN(col_0);
+-            col_1 = AES_INVMIXCOLUMN(col_1);
+-
+-            result = ((uint64_t)col_1 << 32) | col_0;
+-        } else {
+-            result = temp;
+-        }
+-    }
+-
+-    return result;
+-}
+-
+ target_ulong HELPER(aes64esm)(target_ulong rs1, target_ulong rs2)
  {
-     PageFlagsNode *p;
+     AESState t;
+@@ -228,7 +138,16 @@ target_ulong HELPER(aes64ds)(target_ulong rs1, target_ulong rs2)
+ 
+ target_ulong HELPER(aes64dsm)(target_ulong rs1, target_ulong rs2)
+ {
+-    return aes64_operation(rs1, rs2, false, true);
++    AESState t, z = { };
++
++    /*
++     * This instruction does not include a round key,
++     * so supply a zero to our primitive.
++     */
++    t.d[HOST_BIG_ENDIAN] = rs1;
++    t.d[!HOST_BIG_ENDIAN] = rs2;
++    aesdec_ISB_ISR_IMC_AK(&t, &t, &z, false);
++    return t.d[HOST_BIG_ENDIAN];
+ }
+ 
+ target_ulong HELPER(aes64ks2)(target_ulong rs1, target_ulong rs2)
 -- 
 2.34.1
 
