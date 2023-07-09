@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 162CB74C712
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 198B674C714
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:32:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIZAZ-0008Lx-DB; Sun, 09 Jul 2023 14:30:03 -0400
+	id 1qIZAZ-0008Ly-AY; Sun, 09 Jul 2023 14:30:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZAU-0008JH-H1
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:29:58 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1qIZAV-0008Ji-EG
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:29:59 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZAS-0000Hw-Mz
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:29:58 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fbc59de0e2so39208555e9.3
- for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 11:29:56 -0700 (PDT)
+ id 1qIZAT-0000I8-Kt
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:29:59 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbd33a57b6so49168455e9.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 11:29:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688927395; x=1691519395;
+ d=linaro.org; s=google; t=1688927396; x=1691519396;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0axJfNA+Z363BLcyj9VA5KZ1tFbJa96aH9vwiYFI9Ic=;
- b=xRRB06FtD4dX9UYW61/EiF+x3XZccrB4nR0mUY4/GTc2Em1uhXoMEafud47lIltII2
- mgKIvJDGnyDRd7RjT6AJDGpvnSmd4/wDAevPuyQ8LnZ8jOGnH/1RLZsoh3D4Hj76aqqb
- 4SKIA9Ez/Ui34dCedvDVNOWndGHERTfqyk4aJmpFFudMcexACYyx8vLXLyBPiDCAyCXg
- D4Mu9mPyHzhRSINSlGBLojQMFZi1FkLdlI4nifluhukHRj9m03FRcXcSAC8i/hLNTvT0
- 2Z1ERamLjyw4Y0XQTIGBS708gMuw4V/k1MFNfMrYa5wmgLo6KhRhK+TC7bbQRfcy+Smv
- 1x7A==
+ bh=jsF8E0JGJalzWmrX5g2tSojnQQtbBHl3guSmbqu5fKQ=;
+ b=p0HCxIqqViaAJC42f1cxHFCv/wCggEGjE3e+ca0w/+RhOg/tIYAO5IWHL21xupdva5
+ 9dZlMGNzldLUmJ8FWq3BtQN4wnvn7z0YVpFl65sfN7HJgf0q2c7z2APmklRsRVMTVbR8
+ q5p+i+PEyUIMqBHRMCaRoKsSlcL4U+ENjtrynqIIUStSkW+C3NGghc/TEUCnlpM/LDC7
+ CaP+834MpY7r6XHz/U5+UirRVhLiQTqsascGqd4VbBb6H0wp6J65WivhsuTmJ7lTUuwI
+ 43RxFllMqMdu2+EYFUxCPYMJxLjVw2BvUB6OBaVYGdrpZ0yzmtMLxCLXBSqkC2CGFTDg
+ kNIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688927395; x=1691519395;
+ d=1e100.net; s=20221208; t=1688927396; x=1691519396;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0axJfNA+Z363BLcyj9VA5KZ1tFbJa96aH9vwiYFI9Ic=;
- b=hZkU7/yVuv7iN3silGcGkGaccvlVb9SHcSr0NqrpSH4tRfuJ9UdGZ/PIuBnShwxj96
- 5QC8lgyhZxwgNFUsAPnS8W0gFJUciX8Y8TTJJsB4NRzuFQHJQyszHTCxQ45ObR5KUEyd
- VLovaTV7Xj6qcs3bj/27crU81mNCGkNGCSBVrM/yHDQuESnTLjgkeIgnCwTfOhc3P/xE
- UMFaBEKrRFPXmE6jIED3elc6iY+hMEYltBFtSal61gyfN9+rkurf5+Aa/+1KniiX+PlZ
- k3HwdCcsvSkEhdniJpfAtTGv2lTMbH0OLzplzsL4LkzzUVHCbgfz345+XaZ2ZeduWzYK
- IGog==
-X-Gm-Message-State: ABy/qLZPD3+UndPg/+XzPmfom6vDia6S77B1dou1EvmGJr1XoWG2S0bN
- HRfgUwuSfuhIZbTqtrwgvU1HTa0PV4QaRRY0K0ZmuA==
-X-Google-Smtp-Source: APBJJlHDeXQgcEDF+VnKE9YNqRpbsLdr8qjLoppbX9UN99tjrZCXa6bMhcmDLIjVZ+x3hYUN6E3/kA==
-X-Received: by 2002:a7b:c8c9:0:b0:3fc:80a:9948 with SMTP id
- f9-20020a7bc8c9000000b003fc080a9948mr4513052wml.19.1688927395442; 
- Sun, 09 Jul 2023 11:29:55 -0700 (PDT)
+ bh=jsF8E0JGJalzWmrX5g2tSojnQQtbBHl3guSmbqu5fKQ=;
+ b=ETxnvQgk2UlRpfpwABTpqlepflMaF+NiyhxuwROn5Hab6IlTmO9p8rY32WTYcHyhFp
+ grvk8hs96WsxrXaPTPOAHIrzFnWoeRI/kidRZbmS36IUALxpDCySe3tjxe33y2uKFZLh
+ TYQCE6jCUci1VnqbgOw8XcK9ntv+eunC1l3LWpPobel+u5M8hQTE//jtCPGY+55nHbXb
+ nCd9u/Wqj2izcW901trLmFibp0gfRXXdJTCxOKmdXXtrjky2fA1ppzMoc5BIHO/He9Ke
+ K3W9bDBLAtAzJO4inPIjX6yQjILZpWoXyz3ZujuGF87GddhjZlIIi4SEypoRauscIkSy
+ 3BDA==
+X-Gm-Message-State: ABy/qLYbhc1XwrpMBRrL8WpGDcMRC5CbJCQoEdb8IRQF6WurBscONCef
+ hJ+f5jgBk3ACLkXG1SU2zHlkxNntncs7Ins7gtcIKw==
+X-Google-Smtp-Source: APBJJlElQiQYYM5uk2mS+u5TJZRCj7wtsa6gAfcy21Yrqk56JfvLxUxG3HLr3vs/Wx+onfY6CCHHnA==
+X-Received: by 2002:a7b:ce18:0:b0:3fb:b280:f548 with SMTP id
+ m24-20020a7bce18000000b003fbb280f548mr12641117wmc.0.1688927396131; 
+ Sun, 09 Jul 2023 11:29:56 -0700 (PDT)
 Received: from stoup.. ([148.252.133.210]) by smtp.gmail.com with ESMTPSA id
- q15-20020a7bce8f000000b003fbe791a0e8sm8317108wmj.0.2023.07.09.11.29.54
+ q15-20020a7bce8f000000b003fbe791a0e8sm8317108wmj.0.2023.07.09.11.29.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sun, 09 Jul 2023 11:29:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 11/45] linux-user: Use abi_ushort not unsigned short in
- syscall_defs.h
-Date: Sun,  9 Jul 2023 19:28:34 +0100
-Message-Id: <20230709182934.309468-23-richard.henderson@linaro.org>
+Cc: laurent@vivier.eu
+Subject: [PULL 12/37] host/include/i386: Implement aes-round.h
+Date: Sun,  9 Jul 2023 19:28:35 +0100
+Message-Id: <20230709182934.309468-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230709182934.309468-1-richard.henderson@linaro.org>
 References: <20230709182934.309468-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,219 +90,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Detect AES in cpuinfo; implement the accel hooks.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall_defs.h | 90 +++++++++++++++++++--------------------
- 1 file changed, 45 insertions(+), 45 deletions(-)
+ host/include/i386/host/cpuinfo.h            |   1 +
+ host/include/i386/host/crypto/aes-round.h   | 152 ++++++++++++++++++++
+ host/include/x86_64/host/crypto/aes-round.h |   1 +
+ util/cpuinfo-i386.c                         |   3 +
+ 4 files changed, 157 insertions(+)
+ create mode 100644 host/include/i386/host/crypto/aes-round.h
+ create mode 100644 host/include/x86_64/host/crypto/aes-round.h
 
-diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index 442a8aefe3..21ca03b0f4 100644
---- a/linux-user/syscall_defs.h
-+++ b/linux-user/syscall_defs.h
-@@ -432,7 +432,7 @@ typedef struct {
- struct target_dirent {
-     abi_long        d_ino;
-     abi_long        d_off;
--    unsigned short  d_reclen;
-+    abi_ushort      d_reclen;
-     char            d_name[];
- };
+diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+index a6537123cf..073d0a426f 100644
+--- a/host/include/i386/host/cpuinfo.h
++++ b/host/include/i386/host/cpuinfo.h
+@@ -26,6 +26,7 @@
+ #define CPUINFO_AVX512VBMI2     (1u << 15)
+ #define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
+ #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
++#define CPUINFO_AES             (1u << 18)
  
-@@ -1210,19 +1210,19 @@ struct target_rtc_pll_info {
+ /* Initialized with a constructor. */
+ extern unsigned cpuinfo;
+diff --git a/host/include/i386/host/crypto/aes-round.h b/host/include/i386/host/crypto/aes-round.h
+new file mode 100644
+index 0000000000..59a64130f7
+--- /dev/null
++++ b/host/include/i386/host/crypto/aes-round.h
+@@ -0,0 +1,152 @@
++/*
++ * x86 specific aes acceleration.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef X86_HOST_CRYPTO_AES_ROUND_H
++#define X86_HOST_CRYPTO_AES_ROUND_H
++
++#include "host/cpuinfo.h"
++#include <immintrin.h>
++
++#if defined(__AES__) && defined(__SSSE3__)
++# define HAVE_AES_ACCEL  true
++# define ATTR_AES_ACCEL
++#else
++# define HAVE_AES_ACCEL  likely(cpuinfo & CPUINFO_AES)
++# define ATTR_AES_ACCEL  __attribute__((target("aes,ssse3")))
++#endif
++
++static inline __m128i ATTR_AES_ACCEL
++aes_accel_bswap(__m128i x)
++{
++    return _mm_shuffle_epi8(x, _mm_set_epi8(0, 1, 2, 3, 4, 5, 6, 7, 8,
++                                            9, 10, 11, 12, 13, 14, 15));
++}
++
++static inline void ATTR_AES_ACCEL
++aesenc_MC_accel(AESState *ret, const AESState *st, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i z = _mm_setzero_si128();
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        t = _mm_aesdeclast_si128(t, z);
++        t = _mm_aesenc_si128(t, z);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesdeclast_si128(t, z);
++        t = _mm_aesenc_si128(t, z);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesenc_SB_SR_AK_accel(AESState *ret, const AESState *st,
++                      const AESState *rk, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i k = (__m128i)rk->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        k = aes_accel_bswap(k);
++        t = _mm_aesenclast_si128(t, k);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesenclast_si128(t, k);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesenc_SB_SR_MC_AK_accel(AESState *ret, const AESState *st,
++                         const AESState *rk, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i k = (__m128i)rk->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        k = aes_accel_bswap(k);
++        t = _mm_aesenc_si128(t, k);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesenc_si128(t, k);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesdec_IMC_accel(AESState *ret, const AESState *st, bool be)
++{
++    __m128i t = (__m128i)st->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        t = _mm_aesimc_si128(t);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesimc_si128(t);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesdec_ISB_ISR_AK_accel(AESState *ret, const AESState *st,
++                        const AESState *rk, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i k = (__m128i)rk->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        k = aes_accel_bswap(k);
++        t = _mm_aesdeclast_si128(t, k);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesdeclast_si128(t, k);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesdec_ISB_ISR_AK_IMC_accel(AESState *ret, const AESState *st,
++                            const AESState *rk, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i k = (__m128i)rk->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        k = aes_accel_bswap(k);
++        t = _mm_aesdeclast_si128(t, k);
++        t = _mm_aesimc_si128(t);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesdeclast_si128(t, k);
++        t = _mm_aesimc_si128(t);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++static inline void ATTR_AES_ACCEL
++aesdec_ISB_ISR_IMC_AK_accel(AESState *ret, const AESState *st,
++                            const AESState *rk, bool be)
++{
++    __m128i t = (__m128i)st->v;
++    __m128i k = (__m128i)rk->v;
++
++    if (be) {
++        t = aes_accel_bswap(t);
++        k = aes_accel_bswap(k);
++        t = _mm_aesdec_si128(t, k);
++        t = aes_accel_bswap(t);
++    } else {
++        t = _mm_aesdec_si128(t, k);
++    }
++    ret->v = (AESStateVec)t;
++}
++
++#endif /* X86_HOST_CRYPTO_AES_ROUND_H */
+diff --git a/host/include/x86_64/host/crypto/aes-round.h b/host/include/x86_64/host/crypto/aes-round.h
+new file mode 100644
+index 0000000000..2773cc9f10
+--- /dev/null
++++ b/host/include/x86_64/host/crypto/aes-round.h
+@@ -0,0 +1 @@
++#include "host/include/i386/host/crypto/aes-round.h"
+diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
+index ab6143d9e7..3a7b7e0ad1 100644
+--- a/util/cpuinfo-i386.c
++++ b/util/cpuinfo-i386.c
+@@ -40,6 +40,9 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+         info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
+         info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
  
- #define TARGET_NCC 8
- struct target_termio {
--    unsigned short c_iflag;         /* input mode flags */
--    unsigned short c_oflag;         /* output mode flags */
--    unsigned short c_cflag;         /* control mode flags */
--    unsigned short c_lflag;         /* local mode flags */
-+    abi_ushort c_iflag;             /* input mode flags */
-+    abi_ushort c_oflag;             /* output mode flags */
-+    abi_ushort c_cflag;             /* control mode flags */
-+    abi_ushort c_lflag;             /* local mode flags */
-     unsigned char c_line;           /* line discipline */
-     unsigned char c_cc[TARGET_NCC]; /* control characters */
- };
- 
- struct target_winsize {
--    unsigned short ws_row;
--    unsigned short ws_col;
--    unsigned short ws_xpixel;
--    unsigned short ws_ypixel;
-+    abi_ushort ws_row;
-+    abi_ushort ws_col;
-+    abi_ushort ws_xpixel;
-+    abi_ushort ws_ypixel;
- };
- 
- #include "termbits.h"
-@@ -1328,15 +1328,15 @@ struct target_winsize {
-     || defined(TARGET_CRIS)
- #define TARGET_STAT_HAVE_NSEC
- struct target_stat {
--    unsigned short st_dev;
--    unsigned short __pad1;
-+    abi_ushort st_dev;
-+    abi_ushort __pad1;
-     abi_ulong st_ino;
--    unsigned short st_mode;
--    unsigned short st_nlink;
--    unsigned short st_uid;
--    unsigned short st_gid;
--    unsigned short st_rdev;
--    unsigned short __pad2;
-+    abi_ushort st_mode;
-+    abi_ushort st_nlink;
-+    abi_ushort st_uid;
-+    abi_ushort st_gid;
-+    abi_ushort st_rdev;
-+    abi_ushort __pad2;
-     abi_ulong  st_size;
-     abi_ulong  st_blksize;
-     abi_ulong  st_blocks;
-@@ -1355,7 +1355,7 @@ struct target_stat {
-  */
- #define TARGET_HAS_STRUCT_STAT64
- struct target_stat64 {
--    unsigned short  st_dev;
-+    abi_ushort      st_dev;
-     unsigned char   __pad0[10];
- 
- #define TARGET_STAT64_HAS_BROKEN_ST_INO 1
-@@ -1367,7 +1367,7 @@ struct target_stat64 {
-     abi_ulong       st_uid;
-     abi_ulong       st_gid;
- 
--    unsigned short  st_rdev;
-+    abi_ushort      st_rdev;
-     unsigned char   __pad3[10];
- 
-     abi_llong       st_size;
-@@ -1442,7 +1442,7 @@ struct target_stat {
- #define TARGET_HAS_STRUCT_STAT64
- struct target_stat64 {
-     unsigned char   __pad0[6];
--    unsigned short  st_dev;
-+    abi_ushort      st_dev;
- 
-     abi_ullong      st_ino;
-     abi_ullong      st_nlink;
-@@ -1453,7 +1453,7 @@ struct target_stat64 {
-     abi_uint        st_gid;
- 
-     unsigned char   __pad2[6];
--    unsigned short  st_rdev;
-+    abi_ushort      st_rdev;
- 
-     abi_llong       st_size;
-     abi_llong       st_blksize;
-@@ -1477,13 +1477,13 @@ struct target_stat64 {
- 
- #define TARGET_STAT_HAVE_NSEC
- struct target_stat {
--    unsigned short  st_dev;
-+    abi_ushort      st_dev;
-     abi_ulong       st_ino;
--    unsigned short  st_mode;
-+    abi_ushort      st_mode;
-     short           st_nlink;
--    unsigned short  st_uid;
--    unsigned short  st_gid;
--    unsigned short  st_rdev;
-+    abi_ushort      st_uid;
-+    abi_ushort      st_gid;
-+    abi_ushort      st_rdev;
-     abi_long        st_size;
-     abi_long        target_st_atime;
-     abi_ulong       target_st_atime_nsec;
-@@ -1499,7 +1499,7 @@ struct target_stat {
- #define TARGET_HAS_STRUCT_STAT64
- struct target_stat64 {
-     unsigned char   __pad0[6];
--    unsigned short  st_dev;
-+    abi_ushort      st_dev;
- 
-     abi_ullong      st_ino;
- 
-@@ -1510,7 +1510,7 @@ struct target_stat64 {
-     abi_uint        st_gid;
- 
-     unsigned char   __pad2[6];
--    unsigned short  st_rdev;
-+    abi_ushort      st_rdev;
- 
-     unsigned char   __pad3[8];
- 
-@@ -1544,7 +1544,7 @@ struct target_stat {
-     abi_uint  st_mode;
- #else
-     abi_uint  st_mode;
--    unsigned short st_nlink;
-+    abi_ushort st_nlink;
- #endif
-     abi_uint   st_uid;
-     abi_uint   st_gid;
-@@ -1598,7 +1598,7 @@ struct target_stat {
-     abi_ulong st_dev;
-     abi_ulong st_ino;
-     abi_uint st_mode;
--    unsigned short st_nlink;
-+    abi_ushort st_nlink;
-     abi_uint st_uid;
-     abi_uint st_gid;
-     abi_ulong  st_rdev;
-@@ -1647,15 +1647,15 @@ struct QEMU_PACKED target_stat64 {
- #elif defined(TARGET_M68K)
- 
- struct target_stat {
--    unsigned short st_dev;
--    unsigned short __pad1;
--    abi_ulong st_ino;
--    unsigned short st_mode;
--    unsigned short st_nlink;
--    unsigned short st_uid;
--    unsigned short st_gid;
--    unsigned short st_rdev;
--    unsigned short __pad2;
-+    abi_ushort st_dev;
-+    abi_ushort __pad1;
-+    abi_ulong  st_ino;
-+    abi_ushort st_mode;
-+    abi_ushort st_nlink;
-+    abi_ushort st_uid;
-+    abi_ushort st_gid;
-+    abi_ushort st_rdev;
-+    abi_ushort __pad2;
-     abi_ulong  st_size;
-     abi_ulong  st_blksize;
-     abi_ulong  st_blocks;
-@@ -1895,10 +1895,10 @@ struct target_stat64 {
- struct target_stat {
-     abi_ulong  st_dev;
-     abi_ulong  st_ino;
--    unsigned short st_mode;
--    unsigned short st_nlink;
--    unsigned short st_uid;
--    unsigned short st_gid;
-+    abi_ushort st_mode;
-+    abi_ushort st_nlink;
-+    abi_ushort st_uid;
-+    abi_ushort st_gid;
-     abi_ulong  st_rdev;
-     abi_ulong  st_size;
-     abi_ulong  st_blksize;
-@@ -2619,8 +2619,8 @@ struct target_sysinfo {
-     abi_ulong bufferram;            /* Memory used by buffers */
-     abi_ulong totalswap;            /* Total swap space size */
-     abi_ulong freeswap;             /* swap space still available */
--    unsigned short procs;           /* Number of current processes */
--    unsigned short pad;             /* explicit padding for m68k */
-+    abi_ushort procs;               /* Number of current processes */
-+    abi_ushort pad;                 /* explicit padding for m68k */
-     abi_ulong totalhigh;            /* Total high memory size */
-     abi_ulong freehigh;             /* Available high memory size */
-     abi_uint mem_unit;              /* Memory unit size in bytes */
++        /* Our AES support requires PSHUFB as well. */
++        info |= ((c & bit_AES) && (c & bit_SSSE3) ? CPUINFO_AES : 0);
++
+         /* For AVX features, we must check available and usable. */
+         if ((c & bit_AVX) && (c & bit_OSXSAVE)) {
+             unsigned bv = xgetbv_low(0);
 -- 
 2.34.1
 
