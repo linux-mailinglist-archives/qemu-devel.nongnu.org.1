@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C2A74C5B8
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 17:18:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D25A74C612
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 17:25:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIWAl-0008St-8T; Sun, 09 Jul 2023 11:18:03 -0400
+	id 1qIWH1-0001D2-W6; Sun, 09 Jul 2023 11:24:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qIWAg-0008Sd-BW
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 11:17:59 -0400
-Received: from mail-dm6nam10on20626.outbound.protection.outlook.com
- ([2a01:111:f400:7e88::626]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ id 1qIWH0-0001Ct-EO
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 11:24:30 -0400
+Received: from mail-co1nam11on2062b.outbound.protection.outlook.com
+ ([2a01:111:f400:7eab::62b]
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qIWAe-0008WE-9k
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 11:17:58 -0400
+ id 1qIWGy-0002XP-98
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 11:24:30 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k3/djmxDGv/sAhSFUCIgthGbza7UDOZ/k8IFfMITjlgpP7CO3d7RWATi2XoUfUQvoFCskhmJC6g5GnAumas5yTfKM3QzsrwRQZoeQIbYSqzH0sPCHdgr3ll4UKzMGkOHriSsxkfG6KVjc//Nh5pPDBVM1zv+L2DJBg33OJhXLSwmaAiB4hYb7dbpThaIdW/YNlbM+PLN3BNmdu/2Y7XvvQCupQE70MtJIM8mDXebJr2LON0k1ZU2oUb/VbpEfn41ECHUzoLHJqmlmIbYPeRxVddrOrhSS5+k6LJDC0oqPfZv9cxdWqThTDrwg+WRF3/wBT+f5oVl2FLzS09PkfNaBw==
+ b=hGJmpp46iD51c1E5fF0n9e1E5/xRSdOl1mmV2NPzZ+yNBEpu5qlR7OLzis+d6HccMjLlsodsmqDxAi7M0ZPM1ybOEJIMoXNFQDHOJwFAuB1+K1rGSJ6Arg5XPT7z0Pb3u1oq29SFFikn+a/AZBlRaORzQkH93KAC/D3iWfsZb8yJxq4aBOzAES+uRXCOMvWXa2bZMeYhVbYv0SExvpeUxG7qIZ6PbcnznBVgsEXQRpdKLPI9rjtR5FyGT2NGnrz7+B8+wKgliqYB1rHKdvhLZUZGM3ooCBxzxMa5pKqmWP4kRMKM3fXkiri8oKs0i86wGH5kZ7nJ7X5T4chJEC+43Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x33GodbxEhcPKTMDuc5a29BiOuGuwqDwc1i01K3Ymws=;
- b=Xzu/9lMBDbaDme7lK54GtnCyMLTFxAjg7sDRP6jNKeQB7orLMAoP6FJzH4cTvnHX7W5Sz1380W015k5QFXRLvbTkv6cq7wSVS5zMvs37bsAwR7Q58SNdK3305PabMdE5PTjtVjaBIFHCsTkV8+ZP+UvXJpZpDIEmySfwFPPJd+NT7XK/vekuHpQR5KIW3grCHQCqwsC5ui0n4xZDYx5calU3lrmFbBIQ2zgLs8QKPxU6spaSgWwMuRpJBVVSZzHJB9fq8rj+NHQ8tRhxvxZcvgM7yBeL+WEs+TXrjDviS+9rlu3uG9F+hDN0VNyQ/K6qHtmIcn9koit97FCaXPc1xA==
+ bh=uhzjk3bL4V9qvlyhLP3kLzz5OsLgmJAj6rDhmMmxSeM=;
+ b=KYNe2UIs7uDYBF8axjZJB0EsEYGf6DhmrzyIk8p1FG+SJHYRw1Qg2hsVZBNlHWAufjM8v9OaqEnqWhweq1/vwsSQkSztcnjXbzK32hiakieRCvnkU42S4lUrPhi3e6jNv4H1+rmMT5yvX/Nqc58O0PwAagMXKsp/yKCgRCq1D8VEiB1tlJRW/tFxNpoxtfgI0uuJuoZOdzlPrrgA0vxYoNoCiJdj3gPZ8NgMESQnOx7chBdvXKSOq3Q6eSHgX2PVSE52jc7WW6EScHLoe5C3lkxDWk2Q+4lqIPBZ58HXD4eOc+fP7MBTEYcwO5e1pgFH7Kewueu5vr5+R5NIMPoScw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x33GodbxEhcPKTMDuc5a29BiOuGuwqDwc1i01K3Ymws=;
- b=K9R2zJaBjfyOkoultpS9Yh6+oPhEMWH1JlLFyorrrS3Iu25p7wgerzbmtnw9QmWd0spbOkSoZLJdOT24BbDzIrwS5w1L40+RXExlzK6ZBajFYdslNblMDbvP7CGnaQ+eDQAQVw3vtuVMTTBHZNxEMyorSAAYwebBAz7SVqLckHNjpTxg7H1jGiF9+o/rjov3EDu00cDbNkEmMIqsNwzTYz6OWXg/d0XQygsZxvlfoxKlLMmQ6QsI+o9zLkyT+L0UOqnRFmE/udf8W4t/0koG+VjRN8lzBZHRm0jXkdmLWEjRd3pG6esV8P30Tm7mTuQ2LkkVT9+KcCjUNYfe9vZ72g==
+ bh=uhzjk3bL4V9qvlyhLP3kLzz5OsLgmJAj6rDhmMmxSeM=;
+ b=sP5KTedM1NW+hdJKfm3wCp35I6PKSQLzdISSUdKHyDYmDiLenVuu5zIS/3CwRatfet/3qHYlVTzFu9dm+yxKUcbxkaGV76h3H/SVXTPXOonkzRxVSnyoAGsgDm00mBs7e/sCCo287OHXs89jWznst6RqHiJbaINko+zOTeZexIw5IasS/nLb7hO3icADj67kuhVSpl0a4izW56UtD7E1AXqlltAJ8LOJxFIlQURehOVyChygYbEXwnLfxUJlIw4KCiBUMpQy+Lf4AqgtLxu96mkOCePqzgrQTY4ANhBE3KhnDEvYam+dBbuySqEFLzk15ZUtMP5JRODS7LwEl/MWjw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
- by BN9PR12MB5241.namprd12.prod.outlook.com (2603:10b6:408:11e::15) with
+ by SJ2PR12MB8848.namprd12.prod.outlook.com (2603:10b6:a03:537::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.29; Sun, 9 Jul
- 2023 15:17:52 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6544.24; Sun, 9 Jul
+ 2023 15:24:23 +0000
 Received: from DM6PR12MB5549.namprd12.prod.outlook.com
  ([fe80::dbd4:621f:5387:9e2b]) by DM6PR12MB5549.namprd12.prod.outlook.com
  ([fe80::dbd4:621f:5387:9e2b%6]) with mapi id 15.20.6565.026; Sun, 9 Jul 2023
- 15:17:52 +0000
-Message-ID: <d6787c69-e66b-9e09-2efd-8f60129f0ea5@nvidia.com>
-Date: Sun, 9 Jul 2023 18:17:43 +0300
+ 15:24:23 +0000
+Message-ID: <3dd304a7-3ec2-9e6d-1916-adfbb0c417b6@nvidia.com>
+Date: Sun, 9 Jul 2023 18:24:15 +0300
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v4 10/15] intel-iommu: Implement IOMMU_ATTR_MAX_IOVA
- get_attr() attribute
+Subject: Re: [PATCH v4 12/15] vfio/common: Support device dirty page tracking
+ with vIOMMU
 Content-Language: en-US
 To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -64,76 +64,76 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>, Jason Gunthorpe <jgg@nvidia.com>
 References: <20230622214845.3980-1-joao.m.martins@oracle.com>
- <20230622214845.3980-11-joao.m.martins@oracle.com>
+ <20230622214845.3980-13-joao.m.martins@oracle.com>
 From: Avihai Horon <avihaih@nvidia.com>
-In-Reply-To: <20230622214845.3980-11-joao.m.martins@oracle.com>
+In-Reply-To: <20230622214845.3980-13-joao.m.martins@oracle.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0202.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ad::17) To DM6PR12MB5549.namprd12.prod.outlook.com
+X-ClientProxiedBy: FR2P281CA0127.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9e::15) To DM6PR12MB5549.namprd12.prod.outlook.com
  (2603:10b6:5:209::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|BN9PR12MB5241:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8fdcc985-45dd-43e7-c297-08db808fa9e1
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|SJ2PR12MB8848:EE_
+X-MS-Office365-Filtering-Correlation-Id: 616ec27c-d69d-487a-f286-08db809092ad
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 5GyIdPZkqghobTk5Ex+dpaqir54GkInmRNNu8fQ7Kd6CZOmsOaFsEOPBSW9TEe32ZBxI+NmY4UABQ331NqKHKZlJJppo26RfA7BR3pz/TvQ2AlGM4FPjOqOvwLTazWnci9x7AXYJu7vh8ezlV1sgMmTBFVFG4J3Bn12ya/GjS2l7XCPUkS0jo7yapN4uwUwUTXLETdVHjJEzr0M8HU2UCu8jCyXzr4ycQSWEN0DNxS917X3Qoj1kKyeXPMRwdQri/qMvx8gLiNsO+cYMCZFbFm/4vCUMY5HrNv7u1vIfM0tglji/XdFgI08D8jPzP/5MY/d2pgqfjIc0SK7O0CwlIrTruWJfcE3MaWdSvKdVdatjdPFxxi7Tz0RJ5/+iqKbiDiFJxG0eL9g0bOgFzCSmXjCSK99Obvj0SVjH/YbccP2iOuqXVnCJKPTWDMEDQtXPStSuCf9fpJwT8c6ijXmoQPJcv015ZZhKvAQAOL+D4z4BBBAUvs6tZAZTW397Ho2PTjYptSA3PDirDMGW9q47EUHOliwm5MKB9njjvcmKN7jxsCGM0XUamXijrSzwMzbqVzifX8+T5lYCBRc47NQpJWSVg6MOBAEJOUeNhecnx+1Yu+k89kH4kZJxH6sB3XoZ57zPKpHOEHTdPr/G+eIA+Q==
+X-Microsoft-Antispam-Message-Info: bUL6MZQA7kkLo4Fv3woVzr2kvRZJqw27FzGsbe3gCA0aqLKVj5WxA8PVu8PMPdzSBbSFSKN3L+hs0z6Cm3k5mj93byDEPEEOAPzaPgWLCR2NSccu3OrK4ZfST4BbKZ62AclxhEci4chYpjxUvXqynpgSRiZDcQGAYGLMaNgBd80lhdvbsHaFSop0XRkE8LgLvAwxAt3DL9eG86wHNtDhqXZ+j9DTAgqatqLLFXz65DkfnHwUWa+Gwx8lR5XqFcXKOIfauC2J6bpmmfev5pW984QrOi8NM1Xeuslr1Kv9/8fKQGLblEc3C/ghn37FPXjT7EcbltfbqcNVY1mjPn96W9Lv2WsgpEFrbgHMAWtD82jANkLrAVFnRPElff//ww7IASvnBFRt8DPVsoAc/8iNuk64kwWfAKt8lwuhMqFB2zM/p/hgcduK+zpXZx5JcbAbFI+RdtKyFJVWj+h2ozlzwfzy8btsQuJCMgbv7qCwjxtkHuYz9VfWqgpMTnkYhJslIN5aOezqG1Xtpjlq18JwU74wyApFJ8MdImZ8krncti2oIq5wCRYvtdfR1AslcnzAaYE9cPBt0TEdFXivnoZxUEt29exVdzhrtwWeeXX9j2RwURGcN1hgLsJyux88YWTe/C5DtL/WaAWHEK2ShzMZ5vG4iiJpudPN2HFTLgeNR50=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(4636009)(396003)(136003)(346002)(366004)(39860400002)(376002)(451199021)(86362001)(31696002)(38100700002)(31686004)(36756003)(6666004)(6486002)(54906003)(107886003)(6506007)(53546011)(26005)(186003)(6512007)(2616005)(7416002)(2906002)(66556008)(316002)(478600001)(66946007)(8676002)(8936002)(66476007)(5660300002)(4326008)(41300700001)(43740500002)(45980500001);
+ SFS:(13230028)(4636009)(376002)(396003)(39860400002)(346002)(136003)(366004)(451199021)(31686004)(2906002)(7416002)(5660300002)(31696002)(86362001)(2616005)(8676002)(54906003)(8936002)(66556008)(478600001)(6666004)(36756003)(53546011)(26005)(6486002)(6506007)(6512007)(186003)(107886003)(38100700002)(83380400001)(4326008)(66476007)(316002)(66946007)(41300700001)(14143004)(45980500001)(43740500002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?S3FBWXRCbnIzMUR0dW1sN2JEQkNINFZqNm5UQ1JRajhSZTF3WVpGcDcvMmFj?=
- =?utf-8?B?cGR0UHdRQnlVcXpXSTBSSGJMOWFGUEZQMmlhQTd3WDQxMUxURTVVcFdYRFFh?=
- =?utf-8?B?NnRjQUVZMWNNNlhOcjFzc0llMlJhRnhSRUZCRytaTU5LUjNmdzRYeGd5R1kv?=
- =?utf-8?B?SEkxMHJmV0NsTjI2bmNjNFl4ZUFZbDZsa0d6eGY1S1B0VVByTnRKeWoxUVpq?=
- =?utf-8?B?WDZjZ2hKV0MrR242eWs3MlY1cUxKbEYxK0RrNkxnaHlWTTBBc2NONHdwV0JD?=
- =?utf-8?B?OHI1ZW1PdW05MlpzbG84SWhmUEsvbENhNU43bzBBODJKeXpJdXE2WDBsdUZN?=
- =?utf-8?B?RU5Ia0lzcENIWkRweG1IYksyUE5EbGpUTUdGNmZudHpJeWx0MVJCblp0UEh5?=
- =?utf-8?B?RHUzekZiMVZCaEk4YjRlOExMRXJPbW1NY1pTUXZLdFFEeUk1dVBtem44WG1z?=
- =?utf-8?B?Vlo5SktlSFBHa3BSN0tHNDVxMlBLdDJQK1JQb3YwMEI0UDMvTjVBM1pvZ0VF?=
- =?utf-8?B?NkJwOER1NVJBT0FLRTQ4UXdtQnFmbmlMYklPOGE5dXZaN1pRempNeEJGaHo1?=
- =?utf-8?B?WkFJdHoyRzVjc2JUWnk1RDd0d0FSUXpjcmxWK0hoYmFJYXZUMUNLK3J2UFVL?=
- =?utf-8?B?d0xUYUJHak4wVWhVbUY0d2xqZGJra1BFNXhLSkVlL21GN0orL3NGWWJDUGRy?=
- =?utf-8?B?TWMvZWZZSlBnZzlrZ3FIc0Z6MGlIWklUWENkMjg5YWVMWGlBVDBiaVpLbmUv?=
- =?utf-8?B?OTUxMm1HZ3l3YjZXL1l0SlVHblRUSGdwOVB1bGQxOVArSUF3eGhaMmliM2cz?=
- =?utf-8?B?ell6WjZnVSt0bkYveVVOcUw5RnhaOFJqU1J4ZWIrZUtxOE1FR2hiNVlocUJC?=
- =?utf-8?B?N3dWMVVJVFp4eldzenNpY01xbnB3OWQyRVZXZnJaTDhjdVhQOHByMENRaTFq?=
- =?utf-8?B?WGpDUGR1SXVHSHJhcWlCb3RRV0xrT2FoRzZjcUZzeGJDYnZnVDFtUFNYY3hE?=
- =?utf-8?B?RFFFcG9maU5FdjFtWmxYaUJ6NklMR2JxbXhaK3drL1h4R2NnTEROT1BPdjRq?=
- =?utf-8?B?QTBCNVc4eXB1bGNyVnRrMlFBcU1RQWZyUVBkMVUzS3k5SEQ3MXhXRmp4ZnpH?=
- =?utf-8?B?VFJXQ0FtUWVwcS94eWt1WmRDb29JOVNGUkJ5a093UVgzTE9DVGJ1cUNwT3dp?=
- =?utf-8?B?bmJMdkhRbXZIWUM5UEQwRlhyRWhJZDN2TjdiUnIzWHFSU1FDM29QY1FLWFdP?=
- =?utf-8?B?OFFWa1Mvd0dLdWlMQkxTNlliUkJaczVZa2FNZVMrcVprZDZYeGl6WEhXNHlC?=
- =?utf-8?B?Q3ozMXZxZFk0M2dNdk5qZ01zRWMyQUd1L3ZnMEpIRGZvaUxucmVDSjJyM1hm?=
- =?utf-8?B?SUpMcGhQbWdNZVhHVUdPVnFza3AzWTcvL0tkWXNLL2NwaHJLeWFBT3VWcVNn?=
- =?utf-8?B?ajMvaVVrMlR5ZkxHQ3VqRGdnZFk3M0F6Z0ZFL1NhR3pLY1U3L1Z3WlVJK2JF?=
- =?utf-8?B?WHMrWFJjVm1oRnRsS2syeFFCRUJEd2hEeGt6RzJXYmlLbGZkTkoyWTU2c2tW?=
- =?utf-8?B?WHo1MGN6Q29qLzQ1VjJMQk8xUmhsSDFRWDRIT296MHJoUXZLTUVQMXd2U1Y3?=
- =?utf-8?B?MEdCblZZS2pyWVpQa0dmUUJ2R1ltVlQ3U0lxalAwODZmQ2VjT3pZdkM1Q082?=
- =?utf-8?B?R0V0M2VEdnpTTG9SZXVVeU54bXc1UjJMbFozaGNRMTczbldMUTRsbDZpUjBL?=
- =?utf-8?B?THJ0L1NEK2hpdXVWQkxRQ1pGa0VLVFdidjJPbVNzMlE1ZVlnL3RYM3crZlRL?=
- =?utf-8?B?ZXY4bW9MRFY4cDZmdUxibVRPeEwxY0tCQmpaRzNUVXdBMyt1VVI5UlFSdU4v?=
- =?utf-8?B?MklJalk5WUFaY2FrSi9md2xUVEJsazhZYm5TbmpiRFRWeEcrdEJKazViOVdw?=
- =?utf-8?B?VW1FR2RnREM2QmNLZmJLRGI0S3ZMSHVjdjBHSlVMUlBoNHZzSWVtWlFJTy9M?=
- =?utf-8?B?N3pkaHRpbWFvRVNQNTZuZmdrY1NRUVN2MW1SR3pyVlpWZnVVYUh1ODZOOUZN?=
- =?utf-8?B?OWF1Vm5yV1VwNUY5cUV0dkhNbnFZNFJPTjU1STRVMFRjNHFNV3pnQUM4dDRS?=
- =?utf-8?Q?j7X9G165Hp6ayvS/aBt8oyenN?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d1JDOE5hTzNBbUc5VXJxV2d6RUVaWjFjMmZzeE9YNXovWEI2cUNyMEdGcmNl?=
+ =?utf-8?B?OVFCTFdTWkF1Q01ZdnNKY085d3NaaTNZY1VWYUxUeGwzZkpKakRXTkErRnZT?=
+ =?utf-8?B?YXZYcmMzNWxCZ1QxbmovY2JtS2FlTlNNVUhEK1Fubm9WQXBjTlNkLy9pelVi?=
+ =?utf-8?B?RDRkRHhJOXJRNEtWaDdMNnY4ZVk2TCtsZlRlSlFwUDNSdnVKL2NUdnhnWm1Y?=
+ =?utf-8?B?QVZiYTl3RC9XM0lHelRPditmSmNHT2VpNHV2bCt5OXVmVlMyNVNUMlZRbmNN?=
+ =?utf-8?B?ZEJrcGlYdHdVbE00allkUEVTRGJ6czdRMkg2clJ1dFlTRlprZVF0L3o2aUcx?=
+ =?utf-8?B?SWdaaFFVKy9hdFA0bWJZRnBJaXV1b1c5amcveTFWNmxsN2VrMDZqUEdJYlRx?=
+ =?utf-8?B?TlRQeHd0TGZKV3pRVG41MzZidkJwbDFtQW9SMkhRSUxVTER0dHdVZ0I2d0dC?=
+ =?utf-8?B?RFB2Y1BZYW1vMlJJbjJRVCtDQmdTbXJyaTVBbXloZGFObmpmOHRMM0o3bzF2?=
+ =?utf-8?B?V3NWTndkRkVNeUVPbG8wVGFSc1FCOUF4Vjc4dTcyajJFT0VBWVR2K1Yvbkta?=
+ =?utf-8?B?Tkp1MHFxYWNXZ3N0QjBRNm94MDY0bHRvRFdBUmNBK2dIbWQyZVJIbzg4dFFu?=
+ =?utf-8?B?M0hSSFVvVTUzNi9yM2JMZUtoME42RG9JazJmblBha1pUMzNaemlOc1VYUndN?=
+ =?utf-8?B?MGtmN3dUSWhJc1pXKzBNeC9hL0swR2w2cGc4a01CbzZHTkVFcHU0aXhjbFJh?=
+ =?utf-8?B?cVJnbjRHUFVlRXU3bDVMeXpwMHlnanRmbFEzcUFxbTd6ek15eHZSQmhuWllN?=
+ =?utf-8?B?ZFowbU9YdUhTdnhtOG1jU0cyOXB2TFlPOFVlQktVZmhFNG16TmkycWxPU2R2?=
+ =?utf-8?B?c2RxT2h3MXVqOVo5Y1dDZVZFNmE2eWQybUNKTUtJV0ZSeXpKV1gycm9xeWx5?=
+ =?utf-8?B?OHNycGZZRjh3aWs3UFNyMEJnSFFwd0UwcEw1eHJ1aENaRUltclFaUDMvaXR5?=
+ =?utf-8?B?RjI4ZGp6UHlMNVdnejFSL0RWL05qRC9PRUUvMW52ZHZHY2lGdFFkZHB5d0Uy?=
+ =?utf-8?B?OUhaQ3lCMVVzMW0zaTBGaHN6aDZPbjFFNXJBcnhidTlOM3o2aFZ5bjVOeldD?=
+ =?utf-8?B?MWR3VFFjUlU3bEV5UlFvUVBRbkJXU0ZTZm56Y1FOdm02Vm9QbkRXcEtsS3pz?=
+ =?utf-8?B?eUhwMUJNamtDS3NXcVc4a2taUkZ0bEdhdjBjQlNuSEFhOEVFS001VmtWUXFt?=
+ =?utf-8?B?RzIvS3VkMXBBRW9CdzY2MmhXTWNudFhuc0ZhQUZhaldwNC9FZEE5eEJtUlFC?=
+ =?utf-8?B?cHRnTy9hM21uMmozd3U4Y1JyTVNYU3JGb0o1dXNGeVpCVml1c25vRGZoZzds?=
+ =?utf-8?B?Z0JQTjIyL3kvcFRoMFI4T2hSelBQN2I1OVNqczY0TGIvMkRyV3h0MTRWWUc0?=
+ =?utf-8?B?dkNBMnhyYXhSZDYxSE5EcE0rL2dJRjZEaTFaM05wNVVHWTBUaWt3ZXloK2hC?=
+ =?utf-8?B?WktiQTc2S2hDN05xOWdFL1IySDgvMW9peVlDc2NDbUZFaFpCeUdQQThoM2x1?=
+ =?utf-8?B?dDZ2eGk4WWU2QlFPZkoya29UZzRlanB3elRoRjVXQXhGYlpHTXZrSlBBclUv?=
+ =?utf-8?B?Umt1QXdYa3NTWStmN1EwYWFad0llTzFJaFFzOTk2TEkvM0xaTlMrcmdPZDF1?=
+ =?utf-8?B?TnhuWkh1ekZCU3Z3a01ocEI2NFdBWEJmSFFwYlh1MXd3YjJ0d2VnNi9FTUdZ?=
+ =?utf-8?B?czEvWWx5djdFMGNCUDJ4eXNDK1NXdzQ2d1ljd2cwNllGamUzY05VcFBaWWNi?=
+ =?utf-8?B?RHRYQS9kUkl0OHQzczIxbkxhaUc5Zkx1L240RGpZY2t6YUZEL3ZGbFFHd2x0?=
+ =?utf-8?B?QUF5RGttKzlNVUt2eXpwVC82dURjMHlZVnRYYzVXVFR0Wm42WTBuaGlScS94?=
+ =?utf-8?B?dFZ1Rms2QVRKUmFycmRpSEpHMC9TRndWc1dYbEJjenhYL1QvUFhpMFhwK1Nk?=
+ =?utf-8?B?cEFHMHBES3dyNzlQdHBHakgwaGcwNGZONFRkTlNmMFJrSU9uV0htVXBVQVZa?=
+ =?utf-8?B?MXhYenRhNHFNQUtDZnhyZUNLVG1Qc3puNFZJSjBsMGtrMlorTlUzVXQrMDVn?=
+ =?utf-8?Q?gOENzzf9ATsZ+ZvzLLlcJdvHe?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8fdcc985-45dd-43e7-c297-08db808fa9e1
+X-MS-Exchange-CrossTenant-Network-Message-Id: 616ec27c-d69d-487a-f286-08db809092ad
 X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2023 15:17:52.3992 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2023 15:24:22.9782 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0KcyjC5VKNTRYCj8vzyZ29G/U/BTktAvqlQUJrIpzHpSpLjAzwRISxKfQtva7ecnZtcGp/k8xb5MC+rPAht9Fg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5241
-Received-SPF: softfail client-ip=2a01:111:f400:7e88::626;
+X-MS-Exchange-CrossTenant-UserPrincipalName: oianCslKv1QMh+9axyzPPHXI0/xwmqzUJeAaQQkPy8sNI9r2SDgwGDyF9RppIPRQZ4u5ftLFxDa4bxeULa4U0Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8848
+Received-SPF: softfail client-ip=2a01:111:f400:7eab::62b;
  envelope-from=avihaih@nvidia.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -161,42 +161,157 @@ On 23/06/2023 0:48, Joao Martins wrote:
 > External email: Use caution opening links or attachments
 >
 >
-> From: Avihai Horon <avihaih@nvidia.com>
+> Currently, device dirty page tracking with vIOMMU is not supported,
+> and a blocker is added and the migration is prevented.
 >
-> Implement get_attr() method and use the address width property to report
-> the IOMMU_ATTR_MAX_IOVA attribute.
-
-Nit: get_attr() method was already implemented in patch #6.
-Maybe just "Use address width property to report IOMMU_ATTR_MAX_IOVA 
-attribute"?
-
-Thanks.
-
+> When vIOMMU is used, IOVA ranges are DMA mapped/unmapped on the fly as
+> requesting by the vIOMMU. These IOVA ranges can potentially be mapped
+> anywhere in the vIOMMU IOVA space as advertised by the VMM.
+>
+> To support device dirty tracking when vIOMMU enabled instead create the
+> dirty ranges based on the vIOMMU provided limits, which leads to the
+> tracking of the whole IOVA space regardless of what devices use.
 >
 > Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 > Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 > ---
->   hw/i386/intel_iommu.c | 7 +++++++
->   1 file changed, 7 insertions(+)
+>   include/hw/vfio/vfio-common.h |  1 +
+>   hw/vfio/common.c              | 58 +++++++++++++++++++++++++++++------
+>   hw/vfio/pci.c                 |  7 +++++
+>   3 files changed, 56 insertions(+), 10 deletions(-)
 >
-> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> index ed2a46e008df..989993e303a6 100644
-> --- a/hw/i386/intel_iommu.c
-> +++ b/hw/i386/intel_iommu.c
-> @@ -3876,6 +3876,13 @@ static int vtd_iommu_get_attr(IOMMUMemoryRegion *iommu_mr,
->           *enabled = s->dma_translation;
->           break;
->       }
-> +    case IOMMU_ATTR_MAX_IOVA:
-> +    {
-> +        hwaddr *max_iova = (hwaddr *)(uintptr_t) data;
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index f41860988d6b..c4bafad084b4 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -71,6 +71,7 @@ typedef struct VFIOMigration {
+>   typedef struct VFIOAddressSpace {
+>       AddressSpace *as;
+>       bool no_dma_translation;
+> +    hwaddr max_iova;
+>       QLIST_HEAD(, VFIOContainer) containers;
+>       QLIST_ENTRY(VFIOAddressSpace) list;
+>   } VFIOAddressSpace;
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index ecfb9afb3fb6..85fddef24026 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -428,6 +428,25 @@ static bool vfio_viommu_preset(void)
+>       return false;
+>   }
+>
+> +static int vfio_viommu_get_max_iova(hwaddr *max_iova)
+> +{
+> +    VFIOAddressSpace *space;
 > +
-> +        *max_iova = MAKE_64BIT_MASK(0, s->aw_bits);;
-> +        break;
+> +    *max_iova = 0;
+> +
+> +    QLIST_FOREACH(space, &vfio_address_spaces, list) {
+> +        if (space->as == &address_space_memory) {
+> +            continue;
+> +        }
+> +
+> +        if (*max_iova < space->max_iova) {
+> +            *max_iova = space->max_iova;
+> +        }
 > +    }
->       default:
->           ret = -EINVAL;
->           break;
+
+Looks like max_iova is a per VFIOAddressSpace property, so why do we 
+need to iterate over all address spaces?
+
+Thanks.
+
+> +
+> +    return *max_iova == 0;
+> +}
+> +
+>   int vfio_block_giommu_migration(Error **errp)
+>   {
+>       int ret;
+> @@ -1464,10 +1483,11 @@ static const MemoryListener vfio_dirty_tracking_listener = {
+>       .region_add = vfio_listener_dirty_tracking_update,
+>   };
+>
+> -static void vfio_dirty_tracking_init(VFIOContainer *container,
+> +static int vfio_dirty_tracking_init(VFIOContainer *container,
+>                                        VFIODirtyRanges *ranges)
+>   {
+>       VFIODirtyRangesListener dirty;
+> +    int ret;
+>
+>       memset(&dirty, 0, sizeof(dirty));
+>       dirty.ranges.min32 = UINT32_MAX;
+> @@ -1475,17 +1495,29 @@ static void vfio_dirty_tracking_init(VFIOContainer *container,
+>       dirty.listener = vfio_dirty_tracking_listener;
+>       dirty.container = container;
+>
+> -    memory_listener_register(&dirty.listener,
+> -                             container->space->as);
+> +    if (vfio_viommu_preset()) {
+> +        hwaddr iommu_max_iova;
+> +
+> +        ret = vfio_viommu_get_max_iova(&iommu_max_iova);
+> +        if (ret) {
+> +            return -EINVAL;
+> +        }
+> +
+> +        vfio_dirty_tracking_update(0, iommu_max_iova, &dirty.ranges);
+> +    } else {
+> +        memory_listener_register(&dirty.listener,
+> +                                 container->space->as);
+> +        /*
+> +         * The memory listener is synchronous, and used to calculate the range
+> +         * to dirty tracking. Unregister it after we are done as we are not
+> +         * interested in any follow-up updates.
+> +         */
+> +        memory_listener_unregister(&dirty.listener);
+> +    }
+>
+>       *ranges = dirty.ranges;
+>
+> -    /*
+> -     * The memory listener is synchronous, and used to calculate the range
+> -     * to dirty tracking. Unregister it after we are done as we are not
+> -     * interested in any follow-up updates.
+> -     */
+> -    memory_listener_unregister(&dirty.listener);
+> +    return 0;
+>   }
+>
+>   static void vfio_devices_dma_logging_stop(VFIOContainer *container)
+> @@ -1590,7 +1622,13 @@ static int vfio_devices_dma_logging_start(VFIOContainer *container)
+>       VFIOGroup *group;
+>       int ret = 0;
+>
+> -    vfio_dirty_tracking_init(container, &ranges);
+> +    ret = vfio_dirty_tracking_init(container, &ranges);
+> +    if (ret) {
+> +        error_report("Failed to init DMA logging ranges, err %d",
+> +                      ret);
+> +        return -EOPNOTSUPP;
+> +    }
+> +
+>       feature = vfio_device_feature_dma_logging_start_create(container,
+>                                                              &ranges);
+>       if (!feature) {
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 8a98e6ffc480..3bda5618c5b5 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -2974,6 +2974,13 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>                                 &dma_translation);
+>       space->no_dma_translation = !dma_translation;
+>
+> +    /*
+> +     * Support for advertised IOMMU address space boundaries is optional.
+> +     * By default, it is not advertised i.e. space::max_iova is 0.
+> +     */
+> +    pci_device_iommu_get_attr(pdev, IOMMU_ATTR_MAX_IOVA,
+> +                              &space->max_iova);
+> +
+>       QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
+>           if (strcmp(vbasedev_iter->name, vbasedev->name) == 0) {
+>               error_setg(errp, "device is already attached");
 > --
 > 2.17.2
 >
