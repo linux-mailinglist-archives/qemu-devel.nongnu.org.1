@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7B174C1D2
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 12:11:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC86874C47C
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 16:01:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIRMz-0008Bo-3V; Sun, 09 Jul 2023 06:10:21 -0400
+	id 1qIUxA-0000H2-Aq; Sun, 09 Jul 2023 09:59:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shivamvijay543@gmail.com>)
- id 1qIRMx-0008BQ-5R
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 06:10:19 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qIUx7-00007k-WE
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 09:59:54 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shivamvijay543@gmail.com>)
- id 1qIRMv-00010y-Hj
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 06:10:18 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2b69f958ef3so53996351fa.1
- for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 03:10:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qIUx5-0000MJ-Ni
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 09:59:53 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3090d3e9c92so4314030f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 06:59:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688897415; x=1691489415;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=yOZhObTfVt34Ev7QTSPTTZo8ZXQUXnH2rhoYdA3bk1g=;
- b=NjNCSgluJOvxgZ5+MUjeo8wA1AVqCnagCG88n9zQza8wATqg4Z2E12uuBrhyfzqWFO
- 6I8eWEWhSzu0AhLXdGVSRJoL+3WutevkAzugeQ0DJ/2fHc4dM8M4lXBHkVF4jD52FDNL
- nJrhdfHh/fmJOtaMua3OuVQjwZM77sHQTpOuRFQCDC+/PfjbUKiH4RUIwuSUUVZOTHVm
- QTmzIUEqRlTeFUC5PuyaxN9n+Rzjz//khWVWhUk/UNAuadJzYxQOF30U4DeySCCs6aML
- plNKBIyb700BtTJLbK9rPBxRLPZ+lFR3KwKGEyjcdAo/OQWZPLX5sDOBJwiynShMZWfN
- Bf3w==
+ d=linaro.org; s=google; t=1688911187; x=1691503187;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cxG60pRRht55mXW+HQDNPBtKaxqTVIhFVmkAt3gQrCg=;
+ b=G8ElWCq3n1DnPj3c+XLQlJuwzKnxB6oB1duLn6GkfEV77bZuqTDo9prcxNvy2gkydP
+ mNh+sdpKEsgIHMYw4/dyJKfeDQ5WOZUHj9tECpZU/s4f278fEeRLxnxM5l4umBxDarfQ
+ b5zuUV8E4T2fDqCcY1b6OKjuCj8unVi0btOlI37I5Jds3gzu8+DqZKcW8Nn6FSsy7yVz
+ zMDdiOkQoeieeJ4Fm+DwztyWDQr1oIl+5yaBbtyLCzbWjPajsDxNwVbQFXV/ykiiSvp7
+ 1YdF/UN6SSUw8jdtcQ2cvWJq1ZMpmAssPptjr9vSLFJTi7vUq35/zei2MjEoEN5aAPck
+ zf6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688897415; x=1691489415;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=yOZhObTfVt34Ev7QTSPTTZo8ZXQUXnH2rhoYdA3bk1g=;
- b=TuF0PfRY26EN+CXqVLsiSc/X21g7/B3WLJHH2VSXUQv8nZEdlsINUnaRj42JwRA3mB
- AZljFRVZq+pdUiViF2QiShEWQh9hs3RmEhJyw5DPdXl0prMxX4XEq91nDcZu5Jfuw+Wa
- TamBf0TOS/+0NEKRGK4Sdqcfzw62Eq2ydXoezcvYPrWJ+duLtWR9mo3E8Zh3G2W2wr8o
- AYJzs3AjBBKEh6r/WLow4EpAa9dJ88COatIZ/NOsF1rxQ3lQdfokximTXl3ZHxLwCKGs
- xRfTb6nLJMw5lA3up2q17ZgBT00xxESduTp3dH/8ynkU21KubsC4mw4ImKi/m/jTU5ei
- z+XQ==
-X-Gm-Message-State: ABy/qLZB5Fn/hDTF++Y276/nvQIf3d2xtZ/YLPDnyOaueEC5pX5MTnuc
- 7lDpTpgjsxt/uiBUcfKBrAutoJyXiF60hs0XoGTidgfxVtYR4w==
-X-Google-Smtp-Source: APBJJlEIMoLkMBZlepKIEa2heYX0M40vVPpU49XtGKfLShNcjPsjXYlC5/rZgPhaqciv1uMiHWSqK4SnXblbySNp4ho=
-X-Received: by 2002:a2e:7801:0:b0:2b6:fa71:5bae with SMTP id
- t1-20020a2e7801000000b002b6fa715baemr7504240ljc.12.1688897414597; Sun, 09 Jul
- 2023 03:10:14 -0700 (PDT)
-MIME-Version: 1.0
-From: Shivam <shivamvijay543@gmail.com>
-Date: Sun, 9 Jul 2023 15:40:04 +0530
-Message-ID: <CAC583hH=tPw=hdv8tuS1QQ4GcK+bwXB8d21wB7WcVMmnSjKXAw@mail.gmail.com>
-Subject: Request for Assistance: Adding I2C Support in QEMU for Raspberry Pi
- (BCM2835 Peripherals)
+ d=1e100.net; s=20221208; t=1688911187; x=1691503187;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cxG60pRRht55mXW+HQDNPBtKaxqTVIhFVmkAt3gQrCg=;
+ b=IPsLY8JZgm+Yc5PLj8g6E3tCO9JSQS+BBDlZYtdL+oFkxQH9Sz+mE0cL+MaOHVSkGp
+ 0lp3BcsGEHcUoV8loxSQ4Wpl6cQ/wfCTkk6qFW0ehH0b+kj7VU30BmPX5UjQhuqxquvK
+ snEcp/wueRzI6UC5IMxoFBqqTXaxfuqoPzFMQEV1d8vwEnDbpFw0PC3hpwnuVPazu1fV
+ Plrnk+MBILh/cx2L8xt3IgWp+XbJeghkuNDqKjLHrxGcrV7TsC08VGAoj9obQwJzH8ry
+ oXWm1wgPQD8K3FX9OX3y/mQzNSjU3nIm7/l5Vc5/E8zga2hvgg47pXCU8Hy8BLyjYZxk
+ rXdA==
+X-Gm-Message-State: ABy/qLZEuMhJOFb9pO9wTItdq5bh+sygLtmrelxlMIWnojOyKjRjpWmq
+ 6xVA7JEDQSBtDAbTeXBl6wkQBQqHv+NjvDCgoV7Zjg==
+X-Google-Smtp-Source: APBJJlF4h4/R/3D9+9bq+nZ5BZDh7RTZftTZNCK0u1etdtKwaPINWs6ndjx2hA4S+MI/T1gmH+jULg==
+X-Received: by 2002:adf:e309:0:b0:313:f957:bf29 with SMTP id
+ b9-20020adfe309000000b00313f957bf29mr12010713wrj.65.1688911187283; 
+ Sun, 09 Jul 2023 06:59:47 -0700 (PDT)
+Received: from stoup.. ([148.252.133.210]) by smtp.gmail.com with ESMTPSA id
+ v18-20020a5d6792000000b003063a92bbf5sm9239422wru.70.2023.07.09.06.59.46
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 09 Jul 2023 06:59:46 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, stefanha@redhat.com
-Content-Type: multipart/alternative; boundary="00000000000075901e06000b12d2"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=shivamvijay543@gmail.com; helo=mail-lj1-x22b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Subject: [PULL 00/37] crypto: Provide aes-round.h and host accel
+Date: Sun,  9 Jul 2023 14:59:08 +0100
+Message-Id: <20230709135945.250311-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, HTML_MESSAGE=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -83,91 +87,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000075901e06000b12d2
-Content-Type: text/plain; charset="UTF-8"
+The following changes since commit 276d72ca1b9017916cadc7c170d0d6b31633a9e5:
 
-Hi, I have added bcm2835_i2c.c inside the i2c folder and wired up it with
-bcm2835_peripheral.c , I tried to launch qemu with "-device
-pca9552,address=0x60" , and it launches without any error means it can able
-to found the i2c-bus
+  Merge tag 'pull-ppc-20230707-1' of https://gitlab.com/danielhb/qemu into staging (2023-07-07 22:23:17 +0100)
 
+are available in the Git repository at:
 
-But in the emulated rpi terminal I cant able to detect this device
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230709
 
-I tried to enable i2c but it says *Unknown parameter i2c_arm
+for you to fetch changes up to ff494c8e2a4c857dd37fb908d8ac8158f5e4f89b:
 
+  crypto: Unexport AES_*_rot, AES_TeN, AES_TdN (2023-07-09 13:48:23 +0100)
 
-and on i2cdetect -y 1 it throws error
+----------------------------------------------------------------
+crypto: Provide aes-round.h and host accel
 
-Error: Could not open file /dev/i2c-1' or /dev/i2c/1': No such file or
-directory
+----------------------------------------------------------------
+Richard Henderson (37):
+      util: Add cpuinfo-ppc.c
+      tests/multiarch: Add test-aes
+      target/arm: Move aesmc and aesimc tables to crypto/aes.c
+      crypto/aes: Add AES_SH, AES_ISH macros
+      crypto: Add aesenc_SB_SR_AK
+      crypto: Add aesdec_ISB_ISR_AK
+      crypto: Add aesenc_MC
+      crypto: Add aesdec_IMC
+      crypto: Add aesenc_SB_SR_MC_AK
+      crypto: Add aesdec_ISB_ISR_IMC_AK
+      crypto: Add aesdec_ISB_ISR_AK_IMC
+      host/include/i386: Implement aes-round.h
+      host/include/aarch64: Implement aes-round.h
+      host/include/ppc: Implement aes-round.h
+      target/ppc: Use aesenc_SB_SR_AK
+      target/ppc: Use aesdec_ISB_ISR_AK
+      target/ppc: Use aesenc_SB_SR_MC_AK
+      target/ppc: Use aesdec_ISB_ISR_AK_IMC
+      target/i386: Use aesenc_SB_SR_AK
+      target/i386: Use aesdec_ISB_ISR_AK
+      target/i386: Use aesdec_IMC
+      target/i386: Use aesenc_SB_SR_MC_AK
+      target/i386: Use aesdec_ISB_ISR_IMC_AK
+      target/arm: Demultiplex AESE and AESMC
+      target/arm: Use aesenc_SB_SR_AK
+      target/arm: Use aesdec_ISB_ISR_AK
+      target/arm: Use aesenc_MC
+      target/arm: Use aesdec_IMC
+      target/riscv: Use aesenc_SB_SR_AK
+      target/riscv: Use aesdec_ISB_ISR_AK
+      target/riscv: Use aesdec_IMC
+      target/riscv: Use aesenc_SB_SR_MC_AK
+      target/riscv: Use aesdec_ISB_ISR_IMC_AK
+      crypto: Remove AES_shifts, AES_ishifts
+      crypto: Implement aesdec_IMC with AES_imc_rot
+      crypto: Remove AES_imc
+      crypto: Unexport AES_*_rot, AES_TeN, AES_TdN
 
-This is the output for info qtree ( related to i2c) in qemu monitor
-
-dev: bcm2835-i2c, id ""
-
-gpio-out "sysbus-irq" 1mmio ffffffffffffffff/0000000000001000bus: i2c
-type i2c-bus  dev: pca9552, id ""   gpio-out "" 16    description =
-"pca-unspecified"    address = 96 (0x60)`
-
-Thanks & Regards
-Shivam Vijay
-
---00000000000075901e06000b12d2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_signature" data-smart=
-mail=3D"gmail_signature"><div dir=3D"ltr">Hi, I have added bcm2835_i2c.c in=
-side the i2c folder and wired up it with bcm2835_peripheral.c , I tried to =
-launch qemu with &quot;-device pca9552,address=3D0x60&quot; , and it launch=
-es without any error means it can able to found the i2c-bus<span><table cel=
-lpadding=3D"0" cellspacing=3D"0" style=3D"color:rgb(255,255,255);font-size:=
-medium;vertical-align:-webkit-baseline-middle;font-family:Arial"><tbody><tr=
-><td><table cellpadding=3D"0" cellspacing=3D"0" style=3D"vertical-align:-we=
-bkit-baseline-middle;font-family:Arial"><tbody><tr><td style=3D"vertical-al=
-ign:top"><br></td><td width=3D"46"></td><td style=3D"padding:0px;vertical-a=
-lign:middle"><br></td></tr></tbody></table></td></tr></tbody></table></span=
-><div dir=3D"ltr">But in the emulated rpi terminal I cant able to detect th=
-is device</div><div dir=3D"ltr"><br></div><div dir=3D"ltr">I tried to enabl=
-e i2c but it says *Unknown parameter i2c_arm<table cellpadding=3D"0" cellsp=
-acing=3D"0" style=3D"color:rgb(255,255,255);font-size:medium;vertical-align=
-:-webkit-baseline-middle;font-family:Arial"><tbody><tr><td><table cellpaddi=
-ng=3D"0" cellspacing=3D"0" style=3D"vertical-align:-webkit-baseline-middle"=
-><tbody><tr><td style=3D"vertical-align:top"><br></td><td width=3D"46"></td=
-><td style=3D"padding:0px;vertical-align:middle"><br></td></tr></tbody></ta=
-ble></td></tr></tbody></table><p dir=3D"auto">and on i2cdetect -y 1 it thro=
-ws error</p><p dir=3D"auto">Error: Could not open file=C2=A0<code>/dev/i2c-=
-1&#39; or=C2=A0</code>/dev/i2c/1&#39;: No such file or directory</p><p dir=
-=3D"auto">This is the output for info qtree ( related to i2c) in qemu monit=
-or</p><p dir=3D"auto">dev: bcm2835-i2c, id &quot;&quot;</p><div><pre lang=
-=3D"plaintext" id=3D"m_-3609197695166407714gmail-code-61" style=3D"text-wra=
-p: wrap;"><code><span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-=
-LC1">gpio-out &quot;sysbus-irq&quot; 1</span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC2"></span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC3">mmio ffffff=
-ffffffffff/0000000000001000</span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC4"></span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC5">bus: i2c</s=
-pan>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC6"></span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC7">  type i2c-=
-bus</span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC8"></span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC9">  dev: pca9=
-552, id &quot;&quot;</span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC10"></span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC11">   gpio-ou=
-t &quot;&quot; 16</span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC12"></span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC13">    descri=
-ption =3D &quot;pca-unspecified&quot;</span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC14"></span>
-<span lang=3D"plaintext" id=3D"m_-3609197695166407714gmail-LC15">    addres=
-s =3D 96 (0x60)`
-
-Thanks &amp; Regards
-Shivam Vijay</span></code></pre></div></div></div></div></div></div>
-
---00000000000075901e06000b12d2--
+ MAINTAINERS                                  |   1 +
+ meson.build                                  |   9 +
+ host/include/aarch64/host/cpuinfo.h          |   1 +
+ host/include/aarch64/host/crypto/aes-round.h | 205 +++++++
+ host/include/generic/host/crypto/aes-round.h |  33 ++
+ host/include/i386/host/cpuinfo.h             |   1 +
+ host/include/i386/host/crypto/aes-round.h    | 152 ++++++
+ host/include/ppc/host/cpuinfo.h              |  30 ++
+ host/include/ppc/host/crypto/aes-round.h     | 182 +++++++
+ host/include/ppc64/host/cpuinfo.h            |   1 +
+ host/include/ppc64/host/crypto/aes-round.h   |   1 +
+ host/include/x86_64/host/crypto/aes-round.h  |   1 +
+ include/crypto/aes-round.h                   | 164 ++++++
+ include/crypto/aes.h                         |  30 --
+ target/arm/helper.h                          |   2 +
+ target/i386/ops_sse.h                        |  60 +--
+ tcg/ppc/tcg-target.h                         |  16 +-
+ target/arm/tcg/sve.decode                    |   4 +-
+ crypto/aes.c                                 | 780 +++++++++++++++++----------
+ target/arm/tcg/crypto_helper.c               | 249 +++------
+ target/arm/tcg/translate-a64.c               |  13 +-
+ target/arm/tcg/translate-neon.c              |   4 +-
+ target/arm/tcg/translate-sve.c               |   8 +-
+ target/ppc/int_helper.c                      |  50 +-
+ target/riscv/crypto_helper.c                 | 138 ++---
+ tests/tcg/aarch64/test-aes.c                 |  58 ++
+ tests/tcg/i386/test-aes.c                    |  68 +++
+ tests/tcg/ppc64/test-aes.c                   | 116 ++++
+ tests/tcg/riscv64/test-aes.c                 |  81 +++
+ util/cpuinfo-aarch64.c                       |   2 +
+ util/cpuinfo-i386.c                          |   3 +
+ util/cpuinfo-ppc.c                           |  64 +++
+ tcg/ppc/tcg-target.c.inc                     |  44 +-
+ tests/tcg/multiarch/test-aes-main.c.inc      | 183 +++++++
+ tests/tcg/aarch64/Makefile.target            |   4 +
+ tests/tcg/i386/Makefile.target               |   4 +
+ tests/tcg/ppc64/Makefile.target              |   1 +
+ tests/tcg/riscv64/Makefile.target            |   3 +
+ util/meson.build                             |   2 +
+ 39 files changed, 2044 insertions(+), 724 deletions(-)
+ create mode 100644 host/include/aarch64/host/crypto/aes-round.h
+ create mode 100644 host/include/generic/host/crypto/aes-round.h
+ create mode 100644 host/include/i386/host/crypto/aes-round.h
+ create mode 100644 host/include/ppc/host/cpuinfo.h
+ create mode 100644 host/include/ppc/host/crypto/aes-round.h
+ create mode 100644 host/include/ppc64/host/cpuinfo.h
+ create mode 100644 host/include/ppc64/host/crypto/aes-round.h
+ create mode 100644 host/include/x86_64/host/crypto/aes-round.h
+ create mode 100644 include/crypto/aes-round.h
+ create mode 100644 tests/tcg/aarch64/test-aes.c
+ create mode 100644 tests/tcg/i386/test-aes.c
+ create mode 100644 tests/tcg/ppc64/test-aes.c
+ create mode 100644 tests/tcg/riscv64/test-aes.c
+ create mode 100644 util/cpuinfo-ppc.c
+ create mode 100644 tests/tcg/multiarch/test-aes-main.c.inc
 
