@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675C174C753
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 638D974C768
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:45:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIZEE-0005Cy-UR; Sun, 09 Jul 2023 14:33:50 -0400
+	id 1qIZEQ-0005sa-7M; Sun, 09 Jul 2023 14:34:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZDn-0003LQ-QH
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:33:24 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1qIZDm-0003IU-MB
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:33:22 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZDk-0004Aa-RY
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:33:23 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-313fb7f0f80so3705410f8f.2
- for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 11:33:17 -0700 (PDT)
+ id 1qIZDk-0004Ap-Qc
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:33:22 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3143ccb0f75so4500852f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 11:33:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688927596; x=1691519596;
+ d=linaro.org; s=google; t=1688927597; x=1691519597;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ineMFXHMMUsTtHLB4+TRmNQDsbNNDE8LTO9PLI3JgtY=;
- b=yloPZVoeXW1Y9dub8O+N9Q6oI+EOzm/c2NDF5tOIq+sy/vqhSSkItj4XMVMPTQCY0b
- wCt9RPxUoT152hjYGWnWyC09UoewpAvvEKMhvRbYGmfw5maG+xPBdC5wog/v8F9MCmbu
- XsYS/8nLv0w3a+tf+KNu+wej3A1bbiFMb4mX/I1TLvaCTFN9aTe6f/pIInIY2twC7s2c
- WBP9ooE5wAMaSYEzUvFdThV9K/wGzVBKqwISlGV/GQlfk7IY6RbNLiCiyXKoFfO/xhqB
- KtMflNtKTYdOskb80REn0UaOJl+em8lNOO65++vU8ZIOc1juWG6qSWid+zfbqR/7WS4k
- wMxQ==
+ bh=7XT7/zvTpZMeqxSdbndcDLpIQTRXhkVJ5EOXRYsTIYQ=;
+ b=Y3jTRAGhWNlLnjxFvFMZObU7LDmyk1EIlyWJzFIdgT3RszI4UvO45dVU+4BHS2zJmy
+ yFG6Xu4v2b3JXPdYsIvG8+5tT0g5dC744DDnbo9uBz5q5B1nV2xacBL7AKODFSNTu86c
+ p4Zq7Vud8zWagOUY4h3fPSTFSsb/Awh29YXWE0YHXXyN9MufQ64j0bPmAjWQYVtdfgLp
+ u2Pi+uvU1t4inDzcebn8g6QXH2YNXi/NgarIX3p/HaXzThT1d00cyAw9SQo0DGABWGGa
+ lI6F+EscYc91tqODeDQfz02g/jPt/LVEbQ0q0LOrh4OwO7QAgn+hV4d2z7uTvoQGbfGY
+ wSzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688927596; x=1691519596;
+ d=1e100.net; s=20221208; t=1688927597; x=1691519597;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ineMFXHMMUsTtHLB4+TRmNQDsbNNDE8LTO9PLI3JgtY=;
- b=fq9a7nAEuWa+pLHk47j9xIRNvP2yJnCfKHaj9TbGN6meDlg4aMkyPE3JtncL//OLyK
- HB9fcXatnCtGCXWToglrS2rOtVCPEWLv86vmSPoEmpIhvTh0l3w7hokXZ2mjAev4IR5S
- sCgOi4txIyrYe+KwuaJx1rCAUxeFLld9sjG3uUDdGamPS8ztx3k5Fw4DWZajIy8MrAAE
- VCttuArrss7GfRGUhoMgwY0NWU12GpFfQOCd3CaOt6NgADRovrzL6Kk9KHt+AGs6bF//
- cl3mjEtaKrRLj4aXsZgmxyNEBayuJ8qhYmSXuRdUxSmIiKDa2w67+EwAuoYTL1sBvQbV
- sWrA==
-X-Gm-Message-State: ABy/qLarBSoIEWYweGq9rlvIlcKQ5YdxPHqi5fC5v3yLOj7lNRhERXD4
- Pqn4bIT7gjX+HAx4fxZEb0u4ZcOlUq+FCqVTuNT2JA==
-X-Google-Smtp-Source: APBJJlE6vC2CeXnYSN0ZTs90hZrgeJoYGQnhsiE83rHLBDUbOU4RWF379vEYG9t+8iZ80ZKjkDDByA==
-X-Received: by 2002:a5d:404f:0:b0:307:7f38:37f with SMTP id
- w15-20020a5d404f000000b003077f38037fmr9063280wrp.66.1688927596657; 
- Sun, 09 Jul 2023 11:33:16 -0700 (PDT)
+ bh=7XT7/zvTpZMeqxSdbndcDLpIQTRXhkVJ5EOXRYsTIYQ=;
+ b=U2tIt4WpGhwuAuWn7sKRIEMvAwgBPo0k3qOwY/jDPgWCt56YtL0uyXuTJD1TxtpYa9
+ 3YBCf/+/9G+Wbx3Z9jceyJZm4bpoh2KIw6/jwVbDzIQhEaV3RHzOKk1oc16ELqPSIjPb
+ nyiwt9JKc6pLFj764CXYcjDW6wnmLYfszcUBacLl7qlBjSj9vQwsfsc0YEOU7iFtq+zf
+ u7+uip2qTNDYMqogQHhKpDu8Tgsfqg6CAOhZCD/irXSWL8eK7+chmHfytxVnHzBnXC/m
+ o6gfbIh9B+Y9nCkdKekTj9sxBHCZT/1wVtUj7tQEs1Jgl6/cRO/HzDY6muDiNvxsAKn1
+ iWGg==
+X-Gm-Message-State: ABy/qLaflYDH9GsL7bny2tTFf7OXSCW+i3yjCQTuJdsH1zODQqmg2a2I
+ X8m3mKJlv+PhvSkr9+gUTf6XxknsSeW4SW0H/EcrlA==
+X-Google-Smtp-Source: APBJJlFZdq50X/wsOxXKVyYIeK4mCDGzndwoghOQ6SmqQBw+jR6r2W+ybBn/j51Olwj8dnsAiRLWNQ==
+X-Received: by 2002:adf:ee8c:0:b0:314:748:d59d with SMTP id
+ b12-20020adfee8c000000b003140748d59dmr11590079wro.27.1688927597527; 
+ Sun, 09 Jul 2023 11:33:17 -0700 (PDT)
 Received: from stoup.. ([148.252.133.210]) by smtp.gmail.com with ESMTPSA id
  e17-20020a5d4e91000000b0031433760a92sm9635256wru.115.2023.07.09.11.33.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Jul 2023 11:33:16 -0700 (PDT)
+ Sun, 09 Jul 2023 11:33:17 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: laurent@vivier.eu,
+Cc: laurent@vivier.eu, =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 23/37] target/i386: Use aesdec_ISB_ISR_IMC_AK
-Date: Sun,  9 Jul 2023 19:28:58 +0100
-Message-Id: <20230709182934.309468-47-richard.henderson@linaro.org>
+Subject: [PATCH 24/45] linux-user: Split TARGET_PROT_* out of syscall_defs.h
+Date: Sun,  9 Jul 2023 19:28:59 +0100
+Message-Id: <20230709182934.309468-48-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230709182934.309468-1-richard.henderson@linaro.org>
 References: <20230709182934.309468-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,40 +92,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This implements the AESDEC instruction.
+Move the values into the per-target target_mman.h headers
 
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230707204054.8792-8-richard.henderson@linaro.org>
 ---
- target/i386/ops_sse.h | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ linux-user/aarch64/target_mman.h |  8 ++++++++
+ linux-user/generic/target_mman.h |  6 +++++-
+ linux-user/mips/target_mman.h    |  2 ++
+ linux-user/syscall_defs.h        | 11 -----------
+ linux-user/xtensa/target_mman.h  |  2 ++
+ 5 files changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/target/i386/ops_sse.h b/target/i386/ops_sse.h
-index 93a4e0cf16..a0e425733f 100644
---- a/target/i386/ops_sse.h
-+++ b/target/i386/ops_sse.h
-@@ -2162,16 +2162,12 @@ void glue(helper_pclmulqdq, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s,
+diff --git a/linux-user/aarch64/target_mman.h b/linux-user/aarch64/target_mman.h
+index e7ba6070fe..f721295fe1 100644
+--- a/linux-user/aarch64/target_mman.h
++++ b/linux-user/aarch64/target_mman.h
+@@ -1 +1,9 @@
++#ifndef AARCH64_TARGET_MMAN_H
++#define AARCH64_TARGET_MMAN_H
++
++#define TARGET_PROT_BTI         0x10
++#define TARGET_PROT_MTE         0x20
++
+ #include "../generic/target_mman.h"
++
++#endif
+diff --git a/linux-user/generic/target_mman.h b/linux-user/generic/target_mman.h
+index 7b888fb7f8..ec76a91b46 100644
+--- a/linux-user/generic/target_mman.h
++++ b/linux-user/generic/target_mman.h
+@@ -23,7 +23,11 @@
+ #define TARGET_MAP_NORESERVE            0x4000
+ #endif
  
- void glue(helper_aesdec, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
- {
--    int i;
--    Reg st = *v;
--    Reg rk = *s;
-+    for (int i = 0; i < SHIFT; i++) {
-+        AESState *ad = (AESState *)&d->ZMM_X(i);
-+        AESState *st = (AESState *)&v->ZMM_X(i);
-+        AESState *rk = (AESState *)&s->ZMM_X(i);
+-/* Other MAP flags are defined in asm-generic/mman-common.h */
++/* Defined in asm-generic/mman-common.h */
++#ifndef TARGET_PROT_SEM
++#define TARGET_PROT_SEM                 0x08
++#endif
++
+ #ifndef TARGET_MAP_TYPE
+ #define TARGET_MAP_TYPE                 0x0f
+ #endif
+diff --git a/linux-user/mips/target_mman.h b/linux-user/mips/target_mman.h
+index cd566c24b6..e97694aa4e 100644
+--- a/linux-user/mips/target_mman.h
++++ b/linux-user/mips/target_mman.h
+@@ -1,6 +1,8 @@
+ #ifndef MIPS_TARGET_MMAN_H
+ #define MIPS_TARGET_MMAN_H
  
--    for (i = 0 ; i < 2 << SHIFT ; i++) {
--        int j = i & 3;
--        d->L(i) = rk.L(i) ^ bswap32(AES_Td0[st.B(AES_ishifts[4 * j + 0])] ^
--                                    AES_Td1[st.B(AES_ishifts[4 * j + 1])] ^
--                                    AES_Td2[st.B(AES_ishifts[4 * j + 2])] ^
--                                    AES_Td3[st.B(AES_ishifts[4 * j + 3])]);
-+        aesdec_ISB_ISR_IMC_AK(ad, st, rk, false);
-     }
- }
++#define TARGET_PROT_SEM                 0x10
++
+ #define TARGET_MAP_NORESERVE            0x0400
+ #define TARGET_MAP_ANONYMOUS            0x0800
+ #define TARGET_MAP_GROWSDOWN            0x1000
+diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
+index 041105b7a7..77ba343c85 100644
+--- a/linux-user/syscall_defs.h
++++ b/linux-user/syscall_defs.h
+@@ -1227,17 +1227,6 @@ struct target_winsize {
  
+ #include "termbits.h"
+ 
+-#if defined(TARGET_MIPS) || defined(TARGET_XTENSA)
+-#define TARGET_PROT_SEM         0x10
+-#else
+-#define TARGET_PROT_SEM         0x08
+-#endif
+-
+-#ifdef TARGET_AARCH64
+-#define TARGET_PROT_BTI         0x10
+-#define TARGET_PROT_MTE         0x20
+-#endif
+-
+ #include "target_mman.h"
+ 
+ #if (defined(TARGET_I386) && defined(TARGET_ABI32))     \
+diff --git a/linux-user/xtensa/target_mman.h b/linux-user/xtensa/target_mman.h
+index 3891bb5e07..3933771b5b 100644
+--- a/linux-user/xtensa/target_mman.h
++++ b/linux-user/xtensa/target_mman.h
+@@ -1,6 +1,8 @@
+ #ifndef XTENSA_TARGET_MMAN_H
+ #define XTENSA_TARGET_MMAN_H
+ 
++#define TARGET_PROT_SEM                 0x10
++
+ #define TARGET_MAP_NORESERVE            0x0400
+ #define TARGET_MAP_ANONYMOUS            0x0800
+ #define TARGET_MAP_GROWSDOWN            0x1000
 -- 
 2.34.1
 
