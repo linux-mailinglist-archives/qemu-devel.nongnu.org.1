@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3242A74C71D
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5989074C71F
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 20:34:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIZAW-0008Kz-Vd; Sun, 09 Jul 2023 14:30:00 -0400
+	id 1qIZAX-0008L1-Bx; Sun, 09 Jul 2023 14:30:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZAR-0008HP-U0
+ id 1qIZAR-0008HN-RY
  for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:29:55 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIZAQ-0000HM-Bq
+ id 1qIZAQ-0000HH-4q
  for qemu-devel@nongnu.org; Sun, 09 Jul 2023 14:29:55 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fbc244d384so38081695e9.0
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3fbc244d384so38081755e9.0
  for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 11:29:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688927392; x=1691519392;
+ d=linaro.org; s=google; t=1688927393; x=1691519393;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gtm9LlPfPfRyjkKrgBvN2xo7wsnPpDSqZNVUjufgcPA=;
- b=l4rfDr3MjK4RE7wEClaQrlzP3TCQBQ6giKIlb7sWPZqLf6eV16xw59LsNjb2kWDGCQ
- 3Jd2IiF0f9OiyxhKSrixBPTetc7RwTqZsDhTCBnP87w/YE0XcjZRphfspoB8yGT2kboc
- 8RBHfH5LAxJhqjzAQF6QUUsfUXW7oL0n+P2pVmqhjWakUmyUoHehrb3lNFgIBbggZru7
- amduiybTpfQM4lQ4OcMBktvG9RIaenBaggj3da6FX8ilPJhUQR4P50nooGv5qs0wSoOk
- qkTJv4xVbU/6xSAy6KJ3T7NPfS5VFJuQYAqd45khSXGs66AzoOEC14HF+MIy5AW3X6DH
- oFKg==
+ bh=bjel77SnKNWNctLdWi3qeIHBWb+IXzPkj8iWkSio4Cw=;
+ b=z2AcgigWyJgFm1tUG1xzDL7CS9a2LyzJzFS4KxiQPEv65MlsRwfQ2ir6OgVdQ22Jp4
+ MF0X9uPpVKj7l6q6aQmQnTaNROM3TwE8qIO//5qS/XF9/QbMQFyQ3zQqUWWg+713Mtkk
+ F4fl91NFQEOzNTTMqZrxV38+HvNTcx7pbg2/p2FY6tHx5WEZkRJ0WBXUKmOYYZXHu+8Y
+ QfVS/YKIu6uexsMRT96olFD0r2llVM9UBmrexmAmHIjDcjAGxCQhBeWxky/oOxCroI5H
+ lI16wKrg9geknkLD45HmHKWG6UE/Hf2KWJMrLKizLhz+YTexNzFJ3zf+vqpjhmvqFrci
+ JiIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688927392; x=1691519392;
+ d=1e100.net; s=20221208; t=1688927393; x=1691519393;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gtm9LlPfPfRyjkKrgBvN2xo7wsnPpDSqZNVUjufgcPA=;
- b=ZkKRKMm82Wk065NjsfSRc7WPM6jnqFhU2xFwUQRqZ+JyMyEgyh1FBjMDNN3W7ZzGhu
- EpGXYlvD+z4/uh/akY7gEdtS2c9PWy9BTwUgbFqGsorRSG8Qz+wHK02i3OSxKQoSzW5+
- GYFuYDQkLed6Q+RBFxnHjyLmHEI6855jwseVV/k/tTq0ImOneEuigp+jdM17yjJTLcxV
- L/9F+l/JigAMvo67V1YPCMhrIqTf4RawAfx/UfXy68gMbjUpfjjXNSn8/MCCZevJlT6c
- 9CEJoTShVP7PVgxeNqfLyvCQzXBJbt4Ov4SHog8ZXhJPIZs1M5H9oswfTl3bonvA6iUT
- E08w==
-X-Gm-Message-State: ABy/qLb8uJTGJ1MDDoirL1Nig3U6lIEd9pabtcKXZdkd6maKSEAhkwSu
- z2s8IFvM/TBMm7/qMOwnRP4BA8sQNCczZBxb9U7Mpg==
-X-Google-Smtp-Source: APBJJlHOrE2LXwgu/8eWbryzPDQvQd101IfAH1wpA1E7EdoucS+WqZjEPgyfXyy7F4TyA2/CSYfq2g==
-X-Received: by 2002:a05:600c:452:b0:3fc:7d2:e0c0 with SMTP id
- s18-20020a05600c045200b003fc07d2e0c0mr3359044wmb.27.1688927392099; 
+ bh=bjel77SnKNWNctLdWi3qeIHBWb+IXzPkj8iWkSio4Cw=;
+ b=Lky6ue+tnko+tNM8jJzSFDx0ofTsUJHsFf1lgTRyyMwQmO0QlNX2fDHu3WSveh3Iei
+ n8mxZxiMCLdJmDcCKWBZe4tnfb6CSTmHFEXI0UMknxJahE9o6VtUsAdY/BIHF3BWCLlE
+ kL9Cbc3BkzbJgYUJ7e5/smYPXSnJTqcjsqEb9U1/ngBnpFFrSlARTidchTKKqe/mdS4y
+ cZ7uBHLul8/XPq2yx17HamECDPymmr3DvG9sjhcQgh00PH7lmP5pvweMINCarloJ9u6u
+ Zv8Zrb2qV1YTbm+ZmWXkOPIC+PYWxA0oSGmZYRY5q35lM8d1i9qhqzWj9s+3+wH8S1Jw
+ BQrg==
+X-Gm-Message-State: ABy/qLb0B/KD+N5N0RKJUkUbCs+uZSL390OA9lyVAEfuWR4wD7s1CW01
+ RYe1MG3LXD+l5BHqIUKScf7Vgpn1DfoPX5a9zsjvhA==
+X-Google-Smtp-Source: APBJJlGdNCeLI2wsc7jnsLMKZatqfs1UqueLj4GXakgseoalmoW1+M2E3d9z6tNKvcFExnSGtg4k6A==
+X-Received: by 2002:a05:600c:20cb:b0:3fc:f9c:a3e2 with SMTP id
+ y11-20020a05600c20cb00b003fc0f9ca3e2mr1632065wmm.6.1688927392911; 
  Sun, 09 Jul 2023 11:29:52 -0700 (PDT)
 Received: from stoup.. ([148.252.133.210]) by smtp.gmail.com with ESMTPSA id
- q15-20020a7bce8f000000b003fbe791a0e8sm8317108wmj.0.2023.07.09.11.29.51
+ q15-20020a7bce8f000000b003fbe791a0e8sm8317108wmj.0.2023.07.09.11.29.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Jul 2023 11:29:51 -0700 (PDT)
+ Sun, 09 Jul 2023 11:29:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 09/45] linux-user: Use abi_llong not long long in
- syscall_defs.h
-Date: Sun,  9 Jul 2023 19:28:30 +0100
-Message-Id: <20230709182934.309468-19-richard.henderson@linaro.org>
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 10/37] crypto: Add aesdec_ISB_ISR_IMC_AK
+Date: Sun,  9 Jul 2023 19:28:31 +0100
+Message-Id: <20230709182934.309468-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230709182934.309468-1-richard.henderson@linaro.org>
 References: <20230709182934.309468-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,65 +92,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Add a primitive for InvSubBytes + InvShiftRows +
+InvMixColumns + AddRoundKey.
+
+Acked-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall_defs.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ host/include/generic/host/crypto/aes-round.h |  3 +
+ include/crypto/aes-round.h                   | 21 +++++++
+ crypto/aes.c                                 | 58 ++++++++++++++++++++
+ 3 files changed, 82 insertions(+)
 
-diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index 45ebacd4b4..e4fcbd16d2 100644
---- a/linux-user/syscall_defs.h
-+++ b/linux-user/syscall_defs.h
-@@ -1370,7 +1370,7 @@ struct target_stat64 {
-     unsigned short  st_rdev;
-     unsigned char   __pad3[10];
+diff --git a/host/include/generic/host/crypto/aes-round.h b/host/include/generic/host/crypto/aes-round.h
+index 9886e81e50..db8cfe17eb 100644
+--- a/host/include/generic/host/crypto/aes-round.h
++++ b/host/include/generic/host/crypto/aes-round.h
+@@ -23,5 +23,8 @@ void aesdec_IMC_accel(AESState *, const AESState *, bool)
+ void aesdec_ISB_ISR_AK_accel(AESState *, const AESState *,
+                              const AESState *, bool)
+     QEMU_ERROR("unsupported accel");
++void aesdec_ISB_ISR_IMC_AK_accel(AESState *, const AESState *,
++                                 const AESState *, bool)
++    QEMU_ERROR("unsupported accel");
  
--    long long       st_size;
-+    abi_llong       st_size;
-     abi_ulong       st_blksize;
+ #endif /* GENERIC_HOST_CRYPTO_AES_ROUND_H */
+diff --git a/include/crypto/aes-round.h b/include/crypto/aes-round.h
+index 03688c8640..9996f1c219 100644
+--- a/include/crypto/aes-round.h
++++ b/include/crypto/aes-round.h
+@@ -119,4 +119,25 @@ static inline void aesdec_ISB_ISR_AK(AESState *r, const AESState *st,
+     }
+ }
  
-     abi_ulong       st_blocks;      /* Number 512-byte blocks allocated. */
-@@ -1403,7 +1403,7 @@ struct target_eabi_stat64 {
-     abi_ullong   st_rdev;
-     abi_uint     __pad2[2];
++/*
++ * Perform InvSubBytes + InvShiftRows + InvMixColumns + AddRoundKey.
++ */
++
++void aesdec_ISB_ISR_IMC_AK_gen(AESState *ret, const AESState *st,
++                               const AESState *rk);
++void aesdec_ISB_ISR_IMC_AK_genrev(AESState *ret, const AESState *st,
++                                  const AESState *rk);
++
++static inline void aesdec_ISB_ISR_IMC_AK(AESState *r, const AESState *st,
++                                         const AESState *rk, bool be)
++{
++    if (HAVE_AES_ACCEL) {
++        aesdec_ISB_ISR_IMC_AK_accel(r, st, rk, be);
++    } else if (HOST_BIG_ENDIAN == be) {
++        aesdec_ISB_ISR_IMC_AK_gen(r, st, rk);
++    } else {
++        aesdec_ISB_ISR_IMC_AK_genrev(r, st, rk);
++    }
++}
++
+ #endif /* CRYPTO_AES_ROUND_H */
+diff --git a/crypto/aes.c b/crypto/aes.c
+index a193d98d54..c2546ef12e 100644
+--- a/crypto/aes.c
++++ b/crypto/aes.c
+@@ -1484,6 +1484,64 @@ void aesdec_ISB_ISR_AK_genrev(AESState *r, const AESState *s, const AESState *k)
+     aesdec_ISB_ISR_AK_swap(r, s, k, true);
+ }
  
--    long long       st_size;
-+    abi_llong       st_size;
-     abi_ulong    st_blksize;
-     abi_uint     __pad3;
-     abi_ullong   st_blocks;
-@@ -1576,10 +1576,10 @@ struct QEMU_PACKED target_stat64 {
-     abi_uint st_gid;
-     abi_ullong st_rdev;
-     abi_ullong __pad0;
--    long long      st_size;
-+    abi_llong      st_size;
-     int            st_blksize;
-     abi_uint       __pad1;
--    long long      st_blocks;       /* Number 512-byte blocks allocated. */
-+    abi_llong      st_blocks;       /* Number 512-byte blocks allocated. */
-     int            target_st_atime;
-     abi_uint       target_st_atime_nsec;
-     int            target_st_mtime;
-@@ -1689,7 +1689,7 @@ struct target_stat64 {
-     abi_ullong      st_rdev;
-     unsigned char   __pad3[2];
- 
--    long long       st_size;
-+    abi_llong       st_size;
-     abi_ulong       st_blksize;
- 
-     abi_ulong       __pad4;         /* future possible st_blocks high bits */
-@@ -1933,7 +1933,7 @@ struct QEMU_PACKED target_stat64 {
-     abi_ullong      st_rdev;
-     unsigned char   __pad3[4];
- 
--    long long       st_size;
-+    abi_llong       st_size;
-     abi_ulong       st_blksize;
- 
-     abi_ullong      st_blocks;      /* Number 512-byte blocks allocated. */
++/*
++ * Perform InvSubBytes + InvShiftRows + InvMixColumns + AddRoundKey.
++ */
++static inline void
++aesdec_ISB_ISR_IMC_AK_swap(AESState *r, const AESState *st,
++                           const AESState *rk, bool swap)
++{
++    int swap_b = swap * 0xf;
++    int swap_w = swap * 0x3;
++    bool be = HOST_BIG_ENDIAN ^ swap;
++    uint32_t w0, w1, w2, w3;
++
++    w0 = (AES_Td0[st->b[swap_b ^ AES_ISH(0x0)]] ^
++          AES_Td1[st->b[swap_b ^ AES_ISH(0x1)]] ^
++          AES_Td2[st->b[swap_b ^ AES_ISH(0x2)]] ^
++          AES_Td3[st->b[swap_b ^ AES_ISH(0x3)]]);
++
++    w1 = (AES_Td0[st->b[swap_b ^ AES_ISH(0x4)]] ^
++          AES_Td1[st->b[swap_b ^ AES_ISH(0x5)]] ^
++          AES_Td2[st->b[swap_b ^ AES_ISH(0x6)]] ^
++          AES_Td3[st->b[swap_b ^ AES_ISH(0x7)]]);
++
++    w2 = (AES_Td0[st->b[swap_b ^ AES_ISH(0x8)]] ^
++          AES_Td1[st->b[swap_b ^ AES_ISH(0x9)]] ^
++          AES_Td2[st->b[swap_b ^ AES_ISH(0xA)]] ^
++          AES_Td3[st->b[swap_b ^ AES_ISH(0xB)]]);
++
++    w3 = (AES_Td0[st->b[swap_b ^ AES_ISH(0xC)]] ^
++          AES_Td1[st->b[swap_b ^ AES_ISH(0xD)]] ^
++          AES_Td2[st->b[swap_b ^ AES_ISH(0xE)]] ^
++          AES_Td3[st->b[swap_b ^ AES_ISH(0xF)]]);
++
++    /* Note that AES_TdX is encoded for big-endian. */
++    if (!be) {
++        w0 = bswap32(w0);
++        w1 = bswap32(w1);
++        w2 = bswap32(w2);
++        w3 = bswap32(w3);
++    }
++
++    r->w[swap_w ^ 0] = rk->w[swap_w ^ 0] ^ w0;
++    r->w[swap_w ^ 1] = rk->w[swap_w ^ 1] ^ w1;
++    r->w[swap_w ^ 2] = rk->w[swap_w ^ 2] ^ w2;
++    r->w[swap_w ^ 3] = rk->w[swap_w ^ 3] ^ w3;
++}
++
++void aesdec_ISB_ISR_IMC_AK_gen(AESState *r, const AESState *st,
++                               const AESState *rk)
++{
++    aesdec_ISB_ISR_IMC_AK_swap(r, st, rk, false);
++}
++
++void aesdec_ISB_ISR_IMC_AK_genrev(AESState *r, const AESState *st,
++                                  const AESState *rk)
++{
++    aesdec_ISB_ISR_IMC_AK_swap(r, st, rk, true);
++}
++
+ /**
+  * Expand the cipher key into the encryption key schedule.
+  */
 -- 
 2.34.1
 
