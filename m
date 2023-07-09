@@ -2,80 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FE574C490
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 16:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E34A074C587
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 17:17:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIUxl-0000g8-0k; Sun, 09 Jul 2023 10:00:33 -0400
+	id 1qIW8P-0007B5-4Q; Sun, 09 Jul 2023 11:15:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIUxb-0000To-7G
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 10:00:23 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIUxY-0000gA-1c
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 10:00:22 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-314319c0d3eso3869740f8f.0
- for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 07:00:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688911218; x=1691503218;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1F2YVr3IWQtmqpjJeR+MoFqCj9awn2sZVMTfzE1Dbtk=;
- b=dU2T5oyzhOIeLYfE59gHgiR/qMCRsNxJB2TKzHqlMq4/EtZCcJsYa9HxnLAEku4a5s
- JKNKVh63mHDzLRoZlsyHjFUXxPkPh/jq++sIdl+n/J5+jL6/sdKSD0mOu2b74MoEyW/l
- AIfq3eHLKUVLNpavjWn45dsP6dygd3dHq2HK0V26AGqEmaO3FCMc8tqL7Ezqmvs0bkuK
- EPou5BQz2DRHocgqLkirwqZoys6O3vqvFPmmtAyUGSGzeh/Y8nrCAH+GEeacdCM5TAXG
- RwLSVpo1UzPg2cJvLtI3pu5P+tiBou+NeuYMAilcfYHbnU0AUwGB+JAVXWSIBbedNRAP
- DQOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688911218; x=1691503218;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1F2YVr3IWQtmqpjJeR+MoFqCj9awn2sZVMTfzE1Dbtk=;
- b=cqH4ckAoLI2dIEahe/yRnpn/BxYYyuQ1WEhccvI/EiFkNYEt6YcC9lWY9rNwTpY4SM
- e8HlE8aXiQJYg04kji1fOrBC33S6iL7MZz2yWLHV1fQgQuFPY7W6rQ6IbiR35kdNKbh+
- vIJCXA6HPWGba1NxDCqU6LKtNnQ4xmY7Hjmyuk/tTdpQABvgBzbiWv6rOnzqPXziP/ea
- uu91gXrKGVa7RfxcTbvKByFbYNMRPwhTKTuGDdWlDbabPXTR0wDAa9NI0XcQ/gQIiE7k
- aJ8x4xTNECCA9pyq8gmPzSAivaWVvmksT+fGpHifsox4ib68hcpp2e2QELiGLUC8apmO
- EhRw==
-X-Gm-Message-State: ABy/qLbj3teERqtihpJYgsFcocUfshoeTJIa3GptqhcbEVwG6JmK83FZ
- E5W4mVV7Mku/N+4EA6nOkhwPHdzPsoUntNgY0c+6ww==
-X-Google-Smtp-Source: APBJJlEyPJW+/zoGX/zUTrm/jM0SakcA4nPzFANK+frSGMPEVQJtynFkZi4uHPwvHLgJKT5ESGjJVw==
-X-Received: by 2002:a5d:5913:0:b0:314:350a:6912 with SMTP id
- v19-20020a5d5913000000b00314350a6912mr8365645wrd.36.1688911218749; 
- Sun, 09 Jul 2023 07:00:18 -0700 (PDT)
-Received: from stoup.. ([148.252.133.210]) by smtp.gmail.com with ESMTPSA id
- v18-20020a5d6792000000b003063a92bbf5sm9239422wru.70.2023.07.09.07.00.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Jul 2023 07:00:18 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 37/37] crypto: Unexport AES_*_rot, AES_TeN, AES_TdN
-Date: Sun,  9 Jul 2023 14:59:45 +0100
-Message-Id: <20230709135945.250311-38-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230709135945.250311-1-richard.henderson@linaro.org>
-References: <20230709135945.250311-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qIW8I-00077z-My
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 11:15:31 -0400
+Received: from mail-sn1nam02on2076.outbound.protection.outlook.com
+ ([40.107.96.76] helo=NAM02-SN1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1qIW8G-0008Gr-K2
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 11:15:30 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SI7tIt6wcoJ5Z2/j/tFXfTspO8mWUpiKu2PXJ5dyN3dW56RSTf116PuKqhgGqCqi+NrwXbPfKMZYLsIR6gviODzj1nrWBzqTkDaZQzFwwxQGR9VaDYIU+czjwJcZuKVTw1H5V1IxFy0YjCjzilwmZj6wX2trZMIu3I9mKar+7Ben58Ha9j7xlbzIPX6TJ3GltkzIz4J3LNpQVazUifyS7BIpi1vfxinQRa52WtDumYYhv7PITr3+/KVN/U+MKzttvfOUgh38UFgSd+S/Z1IYffFe1PY6ORPxYUdrW8BV9nd6As2TFKaXsKOMj2YaiDN/vU4/I3MbCy/b9vI+II8aIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wpyLZhJwTEzAeVH39wHkNT4NpqwhYqD7izkbVN8GWVs=;
+ b=Yl60DHscwXdvqLkjOZAnD24ehCRTXo6Bn5v4vW5bthMuoRM4MsQC3XBp/oeEcR2CbfY7WPspPicusa7aF56i2IepZq/431BWgz4lUH7fIalFmSDF4prpwh7sLnd+L4LUeUljDUb6ABk5kNsBld0rjtFYZ7eUEwmL8+GrYeJbcSMu/Ei4jZcjHJXkg2JbjH13S8LmG7dI+ldVY8g70A0DNw3uZ0KMk20RI9XIkKBjY9H1yIAJEk4wzV0oymySj7S75Z1e0kAPCzlzhNZXh1wuUltDRJwl04Zej2QbCbuexPvpTUj6j/EdqD+gclWQE6/Gqiqcv8SHiEpXhFhMXIqINw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wpyLZhJwTEzAeVH39wHkNT4NpqwhYqD7izkbVN8GWVs=;
+ b=i7NMx/KvDVmi64h0EQhkv3ndmwYDZzf0WVP7+GoQfkVXMY/WrIOpDBErArStkVueXN38ld0Vr+cLllTXSZlZpQ3qwdhUhuf4cURGexb4+pXB556LkrKa5/5KdheJaGHy1NfTDYPHuzI6N6LJ5D55hAo3mbb28/8qL94dhBhedM0csRkJhC7DXC/MOmqRhg6voTswB8fVVKKCslbeYR3qD0a7ol5OtrBWm8wPqZnYKNN1jfACiXbb5tdHUtnuveu+FAOzBPn0so3ZXJ+asQTTE54FiX3jtrsv3OF4qBfQPRykYmxl6+ROGoxncOZvRcBbTrMqEh4oH+sfaLgpxxrwhQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com (2603:10b6:5:209::13)
+ by DM6PR12MB4561.namprd12.prod.outlook.com (2603:10b6:5:2ac::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.29; Sun, 9 Jul
+ 2023 15:10:23 +0000
+Received: from DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::dbd4:621f:5387:9e2b]) by DM6PR12MB5549.namprd12.prod.outlook.com
+ ([fe80::dbd4:621f:5387:9e2b%6]) with mapi id 15.20.6565.026; Sun, 9 Jul 2023
+ 15:10:22 +0000
+Message-ID: <a9702678-496e-8519-8280-ae003440829e@nvidia.com>
+Date: Sun, 9 Jul 2023 18:10:12 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 07/15] vfio/common: Track whether DMA Translation is
+ enabled on the vIOMMU
+Content-Language: en-US
+To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Jason Gunthorpe <jgg@nvidia.com>
+References: <20230622214845.3980-1-joao.m.martins@oracle.com>
+ <20230622214845.3980-8-joao.m.martins@oracle.com>
+From: Avihai Horon <avihaih@nvidia.com>
+In-Reply-To: <20230622214845.3980-8-joao.m.martins@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0163.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:99::6) To DM6PR12MB5549.namprd12.prod.outlook.com
+ (2603:10b6:5:209::13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB5549:EE_|DM6PR12MB4561:EE_
+X-MS-Office365-Filtering-Correlation-Id: 049f368d-79bd-40d8-10a7-08db808e9da5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: T3mS89dGZpTdDcn/2bvTAQrhtSiYp4uwOh91nMB8FLpWb1YkHCXNQSUeVLjY+zItuIR1tloCkTZexK4vLM+g70IKkWlH97dGHYHUZeTipYEMbRlpw3Q5fZVGvosudpSjcB5UIeNOot/aHqjreerCxQ9Zgfzrf82zComwyB1bqVxHHAbXketZ5NF+Sc3P/7v8GxUU76D678q67XiYBBM1wCdh9emlzTJFwp+WNCcd1Bdvao76krON74a0dqOshurRjeO4KRHWpbJ5mdYZEVPAZYtqbdxltNnsVj61jTYOIAnboDiVC/vyTR62qmHSLCfbDbyWnRJ9YChZd7OVLOs/OxWmk1AqQMOgFRODiQAOpfjtPNYs5ln1ypbw7Asi0QJO1KlVsUUz9XsZoDEdZIxpuiVf1IroXTvt2u8lUVKxiwZdw7KB0Gm4lwzH4DAmA/Z6WXjgnW2bjtRBpClcVKvGw+YUFRARrN/iVDLZ1UuCsKMJVhuvtiPP4+XLQTjO9rMJKVFPI1cDp0XSEk7qmZjPOiFtHedqDCbzBW0Uek8Wh0YH7ekfTyoRMUX7bWFL0vRUbcw6LS6achS2iZKS57bYIPha8YVrThfkXPq1/lDKFsg2PPrnhqlXBRqg9IoC+6M931w6gjrUTz9zox9yOEglhA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR12MB5549.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(396003)(136003)(346002)(366004)(39860400002)(376002)(451199021)(86362001)(31696002)(38100700002)(31686004)(36756003)(6666004)(6486002)(54906003)(107886003)(6506007)(53546011)(26005)(186003)(6512007)(2616005)(7416002)(2906002)(66556008)(316002)(478600001)(66946007)(8676002)(8936002)(66476007)(5660300002)(83380400001)(4326008)(41300700001)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a1VCdTdqMzNIcytHZFN2QXhuV3p5UE5XN1gyTy9IVFFwVE1uQkFHTDZzR1NH?=
+ =?utf-8?B?UDBQSzV3UFlsWC9aKzRvbDVFL25QRHhGTGt1MVUxMWVxc0EwZmhIK3VNSTJ0?=
+ =?utf-8?B?akZ5ZTJ4VXROWndBOUpidmlyMmVaNTZyS0lVeWhEcjhpQmRWMWYvcXd2VWwz?=
+ =?utf-8?B?WEdGRnhiVmtlVlVUTlFQU0w5NHNjM0VLcmdCUXdDdUtWMEhtSVMvckRkTXVX?=
+ =?utf-8?B?UDE0NkdLd2w3VTFwbm91YjlBSGM4RW5IR2hKZFJZa0JQL21nUkkvTWRHbC9a?=
+ =?utf-8?B?b2FRK28xMWd1ZXhRQzhlNkJWRGhLUWYvNFFxelVzSnF2UVJNbnA0YkRaekxW?=
+ =?utf-8?B?aHlYZE16UUYvMEFDVUZoa1dEeWRHbzR4bUNhYVdwVlNYOUZ6ZVRlSWVudHNN?=
+ =?utf-8?B?eFE0c0FwbHl4N2F1UVhHVDZjUHNoNjFiWXNKeENZMG9ibDdpUUNRZm5mQzFn?=
+ =?utf-8?B?MWF4WjJOdkJ4clRhNktCWG9idytSQ3NDV2hLWkVmS0RHUEhDNEsrUE1sbEc1?=
+ =?utf-8?B?Mmt2NEtyL0R4S0l1bW5zVFhJcUNSYmZLV0I3cENQQkNTNGxYN3VKUW9BVjkx?=
+ =?utf-8?B?SURjcWNLN2ZycDZQZC9JT0pXNWlnZDFtRU9kQytvRGhvZm9SK3JWUzdYcHdQ?=
+ =?utf-8?B?aHQxTXBYTzdZajA3QWF3Z2NWUUtkSE81VXlza0JxTElJSUJ1eXBqd01zRWpZ?=
+ =?utf-8?B?SUJ0QjZ5bnNZem1LZGljazM2OFdMbmkxUDk0MGFkd0FxWXNpSUp1Z3lydEdz?=
+ =?utf-8?B?SFhGcEF5VGh6K1ZVeDdFVTFLaXErRXB3eVVzNEIrNm1iQWd1SGJRM051UWM4?=
+ =?utf-8?B?N0lxd3RobFgxd05IRlZ1bllrald0UlpaQWg3ZzF0OTl4WXZkVTN3WURLZU11?=
+ =?utf-8?B?L2R5d2N6eStkcnBRZXV0U0ZueG44dTMvWldHWGYyQ2ZHY3haYmFaRUdRdVRS?=
+ =?utf-8?B?UklraTQ3eXBwWWYyb3VpMmF2bkJWdDFpcEFMU1AzRmlTMG4rRXEwcklUNUoz?=
+ =?utf-8?B?a2NKRXZUS3BTc2xmOTlCeWR2OGsxUWJVbis0cXJDVUtkSUZtOU1vUVpaOFJK?=
+ =?utf-8?B?c1Zub1pSZkZaVnBUQ202ZGJGVmR5VURSWVZoRmE0VlE1RTJxNTRYeGlKUG9L?=
+ =?utf-8?B?dW9veVBoU2RETzN5bUlYd1h5aFVxQjNiUGVrL04wb0JpTGl6Z0x5OUJTL1Rj?=
+ =?utf-8?B?YlJhMmloOEY1Rk9oQ3A1aU0wYkxDcitrdU0yU25GTXZJUi9oZkM3cHdpanNh?=
+ =?utf-8?B?ZE5seXlQY3h6bFZjaWNmdktOVXVNYVVVRFR1dFVBM1o0WjBEN2tOZ09XZU1s?=
+ =?utf-8?B?OURxK3hoTWNjZFNrd1FGaGdTeXJGc0V0M0p2cmNPakFyMHBpbnVTMmVVeFp1?=
+ =?utf-8?B?OS9hWllGUVFvVW9hR3pJZWxaZWtDbU1XV1kyR2dwWU1xdmV0dE1yUDlnVUlk?=
+ =?utf-8?B?RmU0RFl4NHNmR2tXczQyVGpwWTc2dFBJb0VPejJ0OTh4NFNOaVBRRUJ6bmpQ?=
+ =?utf-8?B?UnFwdUhPNFZJTzZ3Q2JTd1MzWWdiL1I2WU1Sb3orZis1YXhJRlhFaXRXaDZ5?=
+ =?utf-8?B?VzZ3MGtqejFrM25weEhPQmhDblhydDZYbnBGNFdnS2NaUzlNZllleWpBVUt6?=
+ =?utf-8?B?TkRrTHMxOGQ2NDRYeGRSRVZWQ2owd1M5UUhMVTFBeC9McmhDd09pTlduK3dx?=
+ =?utf-8?B?M3ZmSUNBTXVrYTdOZ3Z6NHBnRE1yd2xIM0RseGN4ZGE0Nkg2QmQvRWJBYlhF?=
+ =?utf-8?B?VUc3UVNSNmw0VStuT2NaRWlTaEp5QTlLOUdML0tSZytQVU94eFRJZXhsOUdD?=
+ =?utf-8?B?dnpRSUZOYTdnVEtLOUlwUmtuZDE2Y0RJdndYTzJlWk00Z0JwWFppYjIvRVYr?=
+ =?utf-8?B?NGJ5VURvdmZlTDJ5cUdFN2F6Rk54NVU5dVNkMDlJR21teHZIWm9TY1lzZ0Z0?=
+ =?utf-8?B?T0Rkd1EvcmpMaHcwcmdiWEFGR0RBd045Tmt6dlJ5M2h0cm9FcWEyWEhKSnR3?=
+ =?utf-8?B?MVZQclRFUUpuY0FRbXNFYlQvVXJ4YmRCcmxnalQyVVo2UHpndFlEUTNueFFG?=
+ =?utf-8?B?anoxZVd3Y0VqOFhQY0hLQks0NEdqSm5lOU1lcnY2azRhQ0R0VVJTN3lCUFN2?=
+ =?utf-8?Q?EZY1qxmeaC2Bpgrbf8wc2+H6N?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 049f368d-79bd-40d8-10a7-08db808e9da5
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB5549.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2023 15:10:22.4239 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2EBMpNj/IFX8fbiW1bLPM08qTbhGflnJJh6R0ct48QCh057v7ycfCHaAB1yeppJDfQ1kY8aFXhwW1nrQ7wYunQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4561
+Received-SPF: softfail client-ip=40.107.96.76; envelope-from=avihaih@nvidia.com;
+ helo=NAM02-SN1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,180 +155,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These arrays are no longer used outside of aes.c.
 
-Acked-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- include/crypto/aes.h | 25 -------------------------
- crypto/aes.c         | 33 +++++++++++++++++++++------------
- 2 files changed, 21 insertions(+), 37 deletions(-)
+On 23/06/2023 0:48, Joao Martins wrote:
+> External email: Use caution opening links or attachments
+>
+>
+> vfio_get_group() allocates and fills the group/container/space on
+> success which will store the AddressSpace inside the VFIOSpace struct.
+> Use the newly added pci_device_iommu_get_attr() to see if DMA
+> translation is enabled or not. Assume that by default it is enabled.
+>
+> Today, this means only intel-iommu supports it.
+>
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+> ---
+>   include/hw/vfio/vfio-common.h |  1 +
+>   hw/vfio/pci.c                 | 15 ++++++++++++++-
+>   2 files changed, 15 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index eed244f25f34..f41860988d6b 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -70,6 +70,7 @@ typedef struct VFIOMigration {
+>
+>   typedef struct VFIOAddressSpace {
+>       AddressSpace *as;
+> +    bool no_dma_translation;
 
-diff --git a/include/crypto/aes.h b/include/crypto/aes.h
-index 99209f51b9..709d4d226b 100644
---- a/include/crypto/aes.h
-+++ b/include/crypto/aes.h
-@@ -30,29 +30,4 @@ void AES_decrypt(const unsigned char *in, unsigned char *out,
- extern const uint8_t AES_sbox[256];
- extern const uint8_t AES_isbox[256];
- 
--/* AES MixColumns, for use with rot32. */
--extern const uint32_t AES_mc_rot[256];
--
--/* AES InvMixColumns, for use with rot32. */
--extern const uint32_t AES_imc_rot[256];
--
--/*
--AES_Te0[x] = S [x].[02, 01, 01, 03];
--AES_Te1[x] = S [x].[03, 02, 01, 01];
--AES_Te2[x] = S [x].[01, 03, 02, 01];
--AES_Te3[x] = S [x].[01, 01, 03, 02];
--AES_Te4[x] = S [x].[01, 01, 01, 01];
--
--AES_Td0[x] = Si[x].[0e, 09, 0d, 0b];
--AES_Td1[x] = Si[x].[0b, 0e, 09, 0d];
--AES_Td2[x] = Si[x].[0d, 0b, 0e, 09];
--AES_Td3[x] = Si[x].[09, 0d, 0b, 0e];
--AES_Td4[x] = Si[x].[01, 01, 01, 01];
--*/
--
--extern const uint32_t AES_Te0[256], AES_Te1[256], AES_Te2[256],
--                      AES_Te3[256], AES_Te4[256];
--extern const uint32_t AES_Td0[256], AES_Td1[256], AES_Td2[256],
--                      AES_Td3[256], AES_Td4[256];
--
- #endif
-diff --git a/crypto/aes.c b/crypto/aes.c
-index 685efbd583..836d7d5c0b 100644
---- a/crypto/aes.c
-+++ b/crypto/aes.c
-@@ -120,7 +120,7 @@ const uint8_t AES_isbox[256] = {
- /*
-  * MixColumns lookup table, for use with rot32.
-  */
--const uint32_t AES_mc_rot[256] = {
-+static const uint32_t AES_mc_rot[256] = {
-     0x00000000, 0x03010102, 0x06020204, 0x05030306,
-     0x0c040408, 0x0f05050a, 0x0a06060c, 0x0907070e,
-     0x18080810, 0x1b090912, 0x1e0a0a14, 0x1d0b0b16,
-@@ -190,7 +190,7 @@ const uint32_t AES_mc_rot[256] = {
- /*
-  * Inverse MixColumns lookup table, for use with rot32.
-  */
--const uint32_t AES_imc_rot[256] = {
-+static const uint32_t AES_imc_rot[256] = {
-     0x00000000, 0x0b0d090e, 0x161a121c, 0x1d171b12,
-     0x2c342438, 0x27392d36, 0x3a2e3624, 0x31233f2a,
-     0x58684870, 0x5365417e, 0x4e725a6c, 0x457f5362,
-@@ -272,7 +272,7 @@ AES_Td3[x] = Si[x].[09, 0d, 0b, 0e];
- AES_Td4[x] = Si[x].[01, 01, 01, 01];
- */
- 
--const uint32_t AES_Te0[256] = {
-+static const uint32_t AES_Te0[256] = {
-     0xc66363a5U, 0xf87c7c84U, 0xee777799U, 0xf67b7b8dU,
-     0xfff2f20dU, 0xd66b6bbdU, 0xde6f6fb1U, 0x91c5c554U,
-     0x60303050U, 0x02010103U, 0xce6767a9U, 0x562b2b7dU,
-@@ -338,7 +338,8 @@ const uint32_t AES_Te0[256] = {
-     0x824141c3U, 0x299999b0U, 0x5a2d2d77U, 0x1e0f0f11U,
-     0x7bb0b0cbU, 0xa85454fcU, 0x6dbbbbd6U, 0x2c16163aU,
- };
--const uint32_t AES_Te1[256] = {
-+
-+static const uint32_t AES_Te1[256] = {
-     0xa5c66363U, 0x84f87c7cU, 0x99ee7777U, 0x8df67b7bU,
-     0x0dfff2f2U, 0xbdd66b6bU, 0xb1de6f6fU, 0x5491c5c5U,
-     0x50603030U, 0x03020101U, 0xa9ce6767U, 0x7d562b2bU,
-@@ -404,7 +405,8 @@ const uint32_t AES_Te1[256] = {
-     0xc3824141U, 0xb0299999U, 0x775a2d2dU, 0x111e0f0fU,
-     0xcb7bb0b0U, 0xfca85454U, 0xd66dbbbbU, 0x3a2c1616U,
- };
--const uint32_t AES_Te2[256] = {
-+
-+static const uint32_t AES_Te2[256] = {
-     0x63a5c663U, 0x7c84f87cU, 0x7799ee77U, 0x7b8df67bU,
-     0xf20dfff2U, 0x6bbdd66bU, 0x6fb1de6fU, 0xc55491c5U,
-     0x30506030U, 0x01030201U, 0x67a9ce67U, 0x2b7d562bU,
-@@ -470,8 +472,8 @@ const uint32_t AES_Te2[256] = {
-     0x41c38241U, 0x99b02999U, 0x2d775a2dU, 0x0f111e0fU,
-     0xb0cb7bb0U, 0x54fca854U, 0xbbd66dbbU, 0x163a2c16U,
- };
--const uint32_t AES_Te3[256] = {
- 
-+static const uint32_t AES_Te3[256] = {
-     0x6363a5c6U, 0x7c7c84f8U, 0x777799eeU, 0x7b7b8df6U,
-     0xf2f20dffU, 0x6b6bbdd6U, 0x6f6fb1deU, 0xc5c55491U,
-     0x30305060U, 0x01010302U, 0x6767a9ceU, 0x2b2b7d56U,
-@@ -537,7 +539,8 @@ const uint32_t AES_Te3[256] = {
-     0x4141c382U, 0x9999b029U, 0x2d2d775aU, 0x0f0f111eU,
-     0xb0b0cb7bU, 0x5454fca8U, 0xbbbbd66dU, 0x16163a2cU,
- };
--const uint32_t AES_Te4[256] = {
-+
-+static const uint32_t AES_Te4[256] = {
-     0x63636363U, 0x7c7c7c7cU, 0x77777777U, 0x7b7b7b7bU,
-     0xf2f2f2f2U, 0x6b6b6b6bU, 0x6f6f6f6fU, 0xc5c5c5c5U,
-     0x30303030U, 0x01010101U, 0x67676767U, 0x2b2b2b2bU,
-@@ -603,7 +606,8 @@ const uint32_t AES_Te4[256] = {
-     0x41414141U, 0x99999999U, 0x2d2d2d2dU, 0x0f0f0f0fU,
-     0xb0b0b0b0U, 0x54545454U, 0xbbbbbbbbU, 0x16161616U,
- };
--const uint32_t AES_Td0[256] = {
-+
-+static const uint32_t AES_Td0[256] = {
-     0x51f4a750U, 0x7e416553U, 0x1a17a4c3U, 0x3a275e96U,
-     0x3bab6bcbU, 0x1f9d45f1U, 0xacfa58abU, 0x4be30393U,
-     0x2030fa55U, 0xad766df6U, 0x88cc7691U, 0xf5024c25U,
-@@ -669,7 +673,8 @@ const uint32_t AES_Td0[256] = {
-     0x39a80171U, 0x080cb3deU, 0xd8b4e49cU, 0x6456c190U,
-     0x7bcb8461U, 0xd532b670U, 0x486c5c74U, 0xd0b85742U,
- };
--const uint32_t AES_Td1[256] = {
-+
-+static const uint32_t AES_Td1[256] = {
-     0x5051f4a7U, 0x537e4165U, 0xc31a17a4U, 0x963a275eU,
-     0xcb3bab6bU, 0xf11f9d45U, 0xabacfa58U, 0x934be303U,
-     0x552030faU, 0xf6ad766dU, 0x9188cc76U, 0x25f5024cU,
-@@ -735,7 +740,8 @@ const uint32_t AES_Td1[256] = {
-     0x7139a801U, 0xde080cb3U, 0x9cd8b4e4U, 0x906456c1U,
-     0x617bcb84U, 0x70d532b6U, 0x74486c5cU, 0x42d0b857U,
- };
--const uint32_t AES_Td2[256] = {
-+
-+static const uint32_t AES_Td2[256] = {
-     0xa75051f4U, 0x65537e41U, 0xa4c31a17U, 0x5e963a27U,
-     0x6bcb3babU, 0x45f11f9dU, 0x58abacfaU, 0x03934be3U,
-     0xfa552030U, 0x6df6ad76U, 0x769188ccU, 0x4c25f502U,
-@@ -802,7 +808,8 @@ const uint32_t AES_Td2[256] = {
-     0x017139a8U, 0xb3de080cU, 0xe49cd8b4U, 0xc1906456U,
-     0x84617bcbU, 0xb670d532U, 0x5c74486cU, 0x5742d0b8U,
- };
--const uint32_t AES_Td3[256] = {
-+
-+static const uint32_t AES_Td3[256] = {
-     0xf4a75051U, 0x4165537eU, 0x17a4c31aU, 0x275e963aU,
-     0xab6bcb3bU, 0x9d45f11fU, 0xfa58abacU, 0xe303934bU,
-     0x30fa5520U, 0x766df6adU, 0xcc769188U, 0x024c25f5U,
-@@ -868,7 +875,8 @@ const uint32_t AES_Td3[256] = {
-     0xa8017139U, 0x0cb3de08U, 0xb4e49cd8U, 0x56c19064U,
-     0xcb84617bU, 0x32b670d5U, 0x6c5c7448U, 0xb85742d0U,
- };
--const uint32_t AES_Td4[256] = {
-+
-+static const uint32_t AES_Td4[256] = {
-     0x52525252U, 0x09090909U, 0x6a6a6a6aU, 0xd5d5d5d5U,
-     0x30303030U, 0x36363636U, 0xa5a5a5a5U, 0x38383838U,
-     0xbfbfbfbfU, 0x40404040U, 0xa3a3a3a3U, 0x9e9e9e9eU,
-@@ -934,6 +942,7 @@ const uint32_t AES_Td4[256] = {
-     0xe1e1e1e1U, 0x69696969U, 0x14141414U, 0x63636363U,
-     0x55555555U, 0x21212121U, 0x0c0c0c0cU, 0x7d7d7d7dU,
- };
-+
- static const u32 rcon[] = {
-         0x01000000, 0x02000000, 0x04000000, 0x08000000,
-         0x10000000, 0x20000000, 0x40000000, 0x80000000,
--- 
-2.34.1
+I find this negation a bit confusing, especially when below local 
+variable is "dma_translation" (there is also double negation in next patch).
+Maybe rename to "dma_translation" or "have_dma_translation"?
 
+Thanks.
+
+>       QLIST_HEAD(, VFIOContainer) containers;
+>       QLIST_ENTRY(VFIOAddressSpace) list;
+>   } VFIOAddressSpace;
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 73874a94de12..8a98e6ffc480 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -2900,6 +2900,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>       VFIOPCIDevice *vdev = VFIO_PCI(pdev);
+>       VFIODevice *vbasedev = &vdev->vbasedev;
+>       VFIODevice *vbasedev_iter;
+> +    VFIOAddressSpace *space;
+>       VFIOGroup *group;
+>       char *tmp, *subsys, group_path[PATH_MAX], *group_name;
+>       Error *err = NULL;
+> @@ -2907,7 +2908,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>       struct stat st;
+>       int groupid;
+>       int i, ret;
+> -    bool is_mdev;
+> +    bool is_mdev, dma_translation;
+>       char uuid[UUID_FMT_LEN];
+>       char *name;
+>
+> @@ -2961,6 +2962,18 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>           goto error;
+>       }
+>
+> +    space = group->container->space;
+> +
+> +    /*
+> +     * Support for toggling DMA translation is optional.
+> +     * By default, DMA translation is assumed to be enabled i.e.
+> +     * space::no_dma_translation is 0.
+> +     */
+> +    dma_translation = true;
+> +    pci_device_iommu_get_attr(pdev, IOMMU_ATTR_DMA_TRANSLATION,
+> +                              &dma_translation);
+> +    space->no_dma_translation = !dma_translation;
+> +
+>       QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
+>           if (strcmp(vbasedev_iter->name, vbasedev->name) == 0) {
+>               error_setg(errp, "device is already attached");
+> --
+> 2.17.2
+>
 
