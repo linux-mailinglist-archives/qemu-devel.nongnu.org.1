@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7976B74C4A1
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 16:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC2474C48F
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 16:03:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIUxe-0000Un-Hr; Sun, 09 Jul 2023 10:00:26 -0400
+	id 1qIUxi-0000YX-08; Sun, 09 Jul 2023 10:00:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIUxP-0000Ow-9J
+ id 1qIUxP-0000P9-GX
  for qemu-devel@nongnu.org; Sun, 09 Jul 2023 10:00:14 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qIUxM-0000cN-3N
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 10:00:10 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3142ee41fd2so3551866f8f.3
- for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 07:00:07 -0700 (PDT)
+ id 1qIUxN-0000d4-Bj
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 10:00:11 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbc656873eso47235425e9.1
+ for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 07:00:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688911207; x=1691503207;
+ d=linaro.org; s=google; t=1688911208; x=1691503208;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vBbRyJEaYCF6DplERXnYlyOqNcFvmMhKu7a8Ju7Ez3M=;
- b=ChNG7oeBvyoQpH6hcvOBCDY51pQZ7OC+1X1y41WQuo93cWHgTsIHuLW4ulySsd9dVP
- Ha/b8BaySVFZbLR5QvYL12sGGMw+9rYUhrX2Co0Ya27Jt52EunVuhH/yCNdlpi83OIVZ
- Jr9YyjD+i7t7mCaQ1vpOfQvQhiRpr8gT68SXak0XJR7ajQQejcLGDwEQAH31eVV82iXY
- zIvLI0kC7Ou3gBg++U6fPlAKZ5qJRc/fSCSPAvo9ETFwO+3ZIQ6jDYSEF1nzCmepWgmT
- rYnLg+04TZV8o7s0fAHPWUuwUSjDB/7P+CFgl5M4d4Lc5fdeNO7UzWOmFjV9fVZlALGv
- UN5w==
+ bh=ineMFXHMMUsTtHLB4+TRmNQDsbNNDE8LTO9PLI3JgtY=;
+ b=LIL376NngMbnjromVYy3xH1Oq1n7Up3N9FTKjY/aABCKs1ybOMrzr1UUzgvJLfFzFH
+ tq0dOmEQtR5nLSpDLo7a/ryeQ82KCsc8aegr6YWHvEpbXz3N+b7xaAhhCG+vAQefDNdX
+ rHK0GmaDwdFhjugZ4UYpTAK5kDW5cE5B1i6CeEM0fJr7bs1KChRxoMG3kQ3eVQ18w8ny
+ maTV5dzAQCt5jN+vvLMSvuEpDW33Do2Pyzo0wJGj62MWCekuyEColAOKIjC3rORzIBIY
+ /yLKgfDR6//xfhdBcae6byX54Tu5LekHarlQCvwPUakfjfffecMHbsSt1cdatwdpomb9
+ sing==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688911207; x=1691503207;
+ d=1e100.net; s=20221208; t=1688911208; x=1691503208;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vBbRyJEaYCF6DplERXnYlyOqNcFvmMhKu7a8Ju7Ez3M=;
- b=ERafas68AkDAbYFuZLFTU250Rn9vRPLCBhqqGoItrcAMxL+Gh1KhppvxPCD6SArWB1
- aTHiUfndy61v5p2GsIE1eUtXhHBAWhOaPgAe30/B47yz4f6EJfzmPh9m3AmVj3jBfQj/
- d3+ETCo+k7wr7/AgzBzm7G5BSfIY8oV6v0NmfQ2kfebuI/AhZtraN4FgmW85mEWycjnL
- gq1BQhA//5O3xQzJNZPbWJrb3qbULxY9zZFLdOVw59ox1a6n4u23DpPa+y+t21gv6XtT
- yCwWe5JHudEds+/0kzJSqmdXX6ApH/Yssz9CIENkWFsV30zA6AtBAw69tNf1BWdClGm/
- M16Q==
-X-Gm-Message-State: ABy/qLZxcrgCz+4ijdrEJ8JABO7Da3TyzsjrnBNI6Rl6PCzrkzihzXfE
- FXrymK2GY0/U0gw4Cj5a5haclm77MDPrejwPUFSDFw==
-X-Google-Smtp-Source: APBJJlF0Z2xsgyGdZ0O31bTwH7Bqo+6V5YcOODe47fjOD/bhg+2fRXmGnvCDuLucodJURWVjtZ6x1A==
-X-Received: by 2002:a5d:58cf:0:b0:314:77a:c2b2 with SMTP id
- o15-20020a5d58cf000000b00314077ac2b2mr7774527wrf.32.1688911206772; 
- Sun, 09 Jul 2023 07:00:06 -0700 (PDT)
+ bh=ineMFXHMMUsTtHLB4+TRmNQDsbNNDE8LTO9PLI3JgtY=;
+ b=E2JycU+5heetRLAdqpiJj7UFUpKJ/cPrTBfwKbjuo0/ClycKueQbGFyW6TT9IWmYZ+
+ R4AnOhaBC+oIkaXtSQ4g4QYchQPnT2sHsknNOa2Res3XKS4FrCl81fQa55Bp8eJBnzfe
+ pijfJRRPy83yWgExU3waw9+DmN3d9rmrU6KCS04i+yIjNThAMaGo2Vv6eprjsxNuL72o
+ mhJFic1BLq3rxN0aEUsBWbjNmUpNzrbXsZuLUlpy76fy/cmkC75kiCfnfPcSQ0rWG9T4
+ Fiizl2XFBnfC4ie/aI/Ktk8Vk/vpSIKHz8dqKCOpNB/uwLVpPnHNO1HNAgNxJj2iFa+5
+ qtag==
+X-Gm-Message-State: ABy/qLbhHsENy61ftggw9tTHwbKm+M/Xs2A8+OuoncRwjhuRDfijVduI
+ 7JohTSi4iKilsokD/tdNfymNpT2QcGF2aeWJnkpJyQ==
+X-Google-Smtp-Source: APBJJlEl8sfHanHv2sBURpgQkrqprwY0TVASA/A56Qbtr1uORrKdZmmJq4SG3mFVuQwMM6Vw+cdXeg==
+X-Received: by 2002:a05:600c:2105:b0:3fc:3e1:7105 with SMTP id
+ u5-20020a05600c210500b003fc03e17105mr5790195wml.24.1688911207602; 
+ Sun, 09 Jul 2023 07:00:07 -0700 (PDT)
 Received: from stoup.. ([148.252.133.210]) by smtp.gmail.com with ESMTPSA id
  v18-20020a5d6792000000b003063a92bbf5sm9239422wru.70.2023.07.09.07.00.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 09 Jul 2023 07:00:06 -0700 (PDT)
+ Sun, 09 Jul 2023 07:00:07 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 22/37] target/i386: Use aesenc_SB_SR_MC_AK
-Date: Sun,  9 Jul 2023 14:59:30 +0100
-Message-Id: <20230709135945.250311-23-richard.henderson@linaro.org>
+Subject: [PULL 23/37] target/i386: Use aesdec_ISB_ISR_IMC_AK
+Date: Sun,  9 Jul 2023 14:59:31 +0100
+Message-Id: <20230709135945.250311-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230709135945.250311-1-richard.henderson@linaro.org>
 References: <20230709135945.250311-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,7 +91,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This implements the AESENC instruction.
+This implements the AESDEC instruction.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
@@ -100,12 +100,12 @@ Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
  1 file changed, 5 insertions(+), 9 deletions(-)
 
 diff --git a/target/i386/ops_sse.h b/target/i386/ops_sse.h
-index 893913ebf8..93a4e0cf16 100644
+index 93a4e0cf16..a0e425733f 100644
 --- a/target/i386/ops_sse.h
 +++ b/target/i386/ops_sse.h
-@@ -2188,16 +2188,12 @@ void glue(helper_aesdeclast, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
+@@ -2162,16 +2162,12 @@ void glue(helper_pclmulqdq, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s,
  
- void glue(helper_aesenc, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
+ void glue(helper_aesdec, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s)
  {
 -    int i;
 -    Reg st = *v;
@@ -117,11 +117,11 @@ index 893913ebf8..93a4e0cf16 100644
  
 -    for (i = 0 ; i < 2 << SHIFT ; i++) {
 -        int j = i & 3;
--        d->L(i) = rk.L(i) ^ bswap32(AES_Te0[st.B(AES_shifts[4 * j + 0])] ^
--                                    AES_Te1[st.B(AES_shifts[4 * j + 1])] ^
--                                    AES_Te2[st.B(AES_shifts[4 * j + 2])] ^
--                                    AES_Te3[st.B(AES_shifts[4 * j + 3])]);
-+        aesenc_SB_SR_MC_AK(ad, st, rk, false);
+-        d->L(i) = rk.L(i) ^ bswap32(AES_Td0[st.B(AES_ishifts[4 * j + 0])] ^
+-                                    AES_Td1[st.B(AES_ishifts[4 * j + 1])] ^
+-                                    AES_Td2[st.B(AES_ishifts[4 * j + 2])] ^
+-                                    AES_Td3[st.B(AES_ishifts[4 * j + 3])]);
++        aesdec_ISB_ISR_IMC_AK(ad, st, rk, false);
      }
  }
  
