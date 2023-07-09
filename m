@@ -2,74 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2555074C139
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 08:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A54F074C138
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 08:14:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qINfF-0000Pk-Dj; Sun, 09 Jul 2023 02:12:57 -0400
+	id 1qINfD-0000O8-3H; Sun, 09 Jul 2023 02:12:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>)
- id 1qINfB-0000NV-P2; Sun, 09 Jul 2023 02:12:53 -0400
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qINfB-0000Ml-1D
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 02:12:53 -0400
 Received: from mout.gmx.net ([212.227.17.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>)
- id 1qINf9-0004uy-JP; Sun, 09 Jul 2023 02:12:53 -0400
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qINf9-0004v2-C7
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 02:12:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1688883162; x=1689487962; i=deller@gmx.de;
- bh=MP46eJGgmOsVQKva/vc/DskV13RMn3M9zzV3+pJeoIw=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=QpyRBzK9my/gFYjZZr9b6Za7pohBan+oLYYERzcaZnq8IkoxwtA6+LReuCxlCF0XFDsE+Gx
- k+esMYkqWwaqnwK/znlpcbUimlEUgJwoiOsscgcbqogmn1iXLCXyxdMQQmT3wz8ju5LZKMV1s
- 5sMsO8KZncE43COBkd1DKYXZDJ1RzJis9s+K+rE0kT5jHnkFu83CyByxKwRnFVTgzDyCAIh0t
- NNQojqt+R6oVkWy5amsuIhHu6bLU4gPS306pLFR9MuO6Fi7J2702j6IZUggaYFX9Ht0VSmKvO
- QNWcp+8y+u9YihqOUqe/glvFaz7cuSg7Wy/NUh98u3Sp8ktRtqtA==
+ s=s31663417; t=1688883169; x=1689487969; i=deller@gmx.de;
+ bh=Tj0XptSyUBg7oAa1qmjLkGpGO3n8ZdZ+e1mepCexfPI=;
+ h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:In-Reply-To;
+ b=Dkdsl7e9WZQG0IXqWtnvL6odwBbVmICVIYVYk5zn+vi8IwdY5Ij/3BipA7lDDE/tHH6ZJP/
+ XpbwQo364u6Ybj7tLrz36XacFmkAnqcmGR9VzFWLJfVA8jWdNoTtFKOSaMc7xNYH1Usaa9o8N
+ LE5UHDc0+E7HZPrr0uQv5Crl8YN9sElRYhMjYhi4IkBcAVX1jdvJlsrr/E+mfREI6VdpV9HGi
+ 3verVCnDzctJwEEfnXqAT+1beoW7wdVNcnKT+SRKOqWSN5XMhkNU2MHzavzKZyfMd7WzSAo3Z
+ C3G9uq5+hse5EXWYGSfmLx+7ZOm5DrZVZlhGyvdprN01Nhyq6AuA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.150.9]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MYvcG-1qVYvi08ga-00UtnT; Sun, 09
- Jul 2023 08:12:42 +0200
-Message-ID: <d8028a5f-19c4-2b4a-41aa-9c01420005c5@gmx.de>
-Date: Sun, 9 Jul 2023 08:12:40 +0200
+Received: from [192.168.20.60] ([94.134.150.9]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MNsw4-1qc7RZ1oq0-00OCf8; Sun, 09
+ Jul 2023 08:12:49 +0200
+Message-ID: <ce6660a7-e878-0e36-3cc2-ba3de1dbdea6@gmx.de>
+Date: Sun, 9 Jul 2023 08:12:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [RISC-V] ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp:
- assertion failed: (cpu == current_cpu)
+Subject: Re: [PATCH] linux-user: make sure brk(0) returns a page-aligned value
 Content-Language: en-US
-To: Andreas Schwab <schwab@suse.de>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, qemu-riscv@nongnu.org,
- qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-References: <mvmmt0dtosg.fsf@suse.de> <mvma5wdtdiw.fsf@suse.de>
- <87h6qli4au.fsf@linaro.org> <mvm5y71tbdo.fsf@suse.de>
- <mvmlefwrlt2.fsf@suse.de>
 From: Helge Deller <deller@gmx.de>
-In-Reply-To: <mvmlefwrlt2.fsf@suse.de>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Andreas Schwab <schwab@suse.de>, Laurent Vivier <laurent@vivier.eu>
+Cc: qemu-devel@nongnu.org
+References: <mvmpm55qnno.fsf@suse.de>
+ <0110c2c4-e9de-a2d0-5c0a-6831415beb9f@linaro.org>
+ <9bde924d-55c6-9254-e7c9-6cbf7b7c9b5a@gmx.de>
+In-Reply-To: <9bde924d-55c6-9254-e7c9-6cbf7b7c9b5a@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:yFrOaCT1WxRTFRALblQHg+ITz33H1ZX6YO4dwosXY759dGTL+m2
- FH45utszwyuYi2HZlCwNnpd67f2zzhl5KszRYyJfuQlw+QhD5U5WydGt2uCxIjJdQRbuGKy
- pqAHagax93uRz5I8qFNTEhSV+tuqWKFWLXIojjyX4Bqj8AJfRnzMswohBmixO7MEXpoX+xZ
- e3eGv0vLnI517KR31Q5uQ==
-UI-OutboundReport: notjunk:1;M01:P0:EDNaRbnZmMM=;im+U21Ue78hLP6PFuREhCYqtw8o
- XvyrL4GBwmCxkLkpIxsS1f5sAzYUEnIDXh4YO9gU6eSw+/16PXeqyCeF1Y72xZ9GZfAzC1Jqv
- gAfJRqSbBVmk8nnO2TYi5mnrpOc8dXllYV+uPNX9vuJcqNcVE7PlmA52WgB7+IJGHCFuqZVCQ
- oCBI/O9vQ4X16KxL/ouM5+cRjUydRuDQ/22hD6bgtj0YQNRZ6VzCMCGotSAKE2c4bUh8NkfNm
- 64JpQxvih8jHlGIGLETVtNDewG/pE3c0nXTENrvJN9o+Wzlj93fw34n5/mZcsE4X2RPRT7kKt
- sor6ZnMa7Y6Ll2WJoGhguRnE0XYMCVXpFSP2NwBuu8pTKRY3UnXrDNx/l4JZKmvSvD+x+fChA
- kgSpDtnUVKYRi4SxiUCDDuuhEXZLqPiarD8fy/bcsHkm/FAlyS2F2q/GkJfvMLrMafkWNZzKu
- Q0SoZcaQ/dWd+hGVB2YF4jNIpwRS71fwHG+9AElN4pjEJe/1gh9V29OzM8Vd1j3mFL1+TBmbm
- yaFU2IsqA/3JOHXIZeTHSlqPusbATGN5UqP+b0M/qhImAgZFqr+/B5GcMksW3gUL6x6hjPMR5
- vBqRDDY6p5W7+62SJM2NtyIha8zbmXCnZ1MipDKfECFthr6Er7as+FDB0jTPI7sTr/Gwf5DoK
- E/7Gt/jw2nqgPedWsbLTH6y/hvMFHlQRONYvcWJHxFtiPjDGVliLEupnO7tptUTeaD5hLnNRC
- 3RyzvWwFXkVYk1lIMYfatjh11YM/J7uD65suOV8cUAYxPgpanIfp085MEyVzAlE4MNhVOCzbm
- /6VBf3TQSQ42pY4cgvcMSNIAfWxhoK0QRdG0jOGkXLkjX9iPKgaCN03C3fXkKND8pQ/egHFYp
- HZq/SQjWD/TfboltRtJW+qC0wpbhIdOxwiiHsQXxEDQ9WLH8OphEwWZJF4Kn3KH+8Sry2PR2v
- DR4+tA==
+X-Provags-ID: V03:K1:q/cRmDdH3JPOz/rqQ5Q+na6aZEW5LG/o13hQf8dPHCxN1IdS8pd
+ H0o5xIYprBN6fS41wZgB8yuvJqcBbM5L6whGZm0PynwlW5huOvAP+WBIYRaDhWnrblC/shi
+ lfuWBdcEcyaH3MruV+t1IKiokqNCTLh/xenanu4YEBYU8CKL1bMIvgYfYjrKJU8GSjv8Tp+
+ MXhuk8g58dZtoArhvXG/Q==
+UI-OutboundReport: notjunk:1;M01:P0:KTL+2hB8oS0=;sRJZZJzz04sqSYUROxyXnE8r6WV
+ rDuKoy0yWnlQTPyPUXBfjBhy2xvDSwKXGht+G0IJCB8IYOcSfWrkDLRZRKexAnhs35ZypPwyl
+ LMHkYgff9VzXSXlemOw1yFgw7W5Uicqb1eu5EsEmwEpLVsdPbu90uBEIpL3eyF+BiNDhYwhMe
+ rdsIjcRm3JrNxV+mQU7ggCxFUst13vOwA8hNxRyg85scfTButKvLSzWnWBB8QYd/Cp5A1QBYN
+ ujfoNIgWfphRJ48VG0rvhjeuJuobki2w4UfodIMSVtcrdRyG5DgbJU2Tg14MKYq99unZ1NfT6
+ j4lABiDcyKOQHCRsN2maBetOwqnyM7NJi9xEBQ6YdWki5Sd45AFqtQdK+DVgYZt9hKWbiZMIs
+ gFwX92kiNxtyPFjS9vpqPUXqJFNYHOvGGU7AsfPLnkZFEiXJSEbUZUrDw+0pypgezbPqxJHr3
+ +ZzVXlCHrcqqrlkMtXLpWsd68d3V40VfQic4EMbiT+SzdPuPTUQS+TUN/yv0LmAS3nTiGgXgl
+ 6UtPZSW2+laA/fHiRuPtr8ED2GkSEeBM8ZPXbu6onLL7RloBn4N+RkZv9c7YtKCovT1QYDSWB
+ aemMykAsK2YRJTAPTr5D413BMh38Zf1mDKF0T3Mj1HCrPhOZWF/ypCyzPrMF0StQAp1DM6jMr
+ GhEbySe4yUPb0Q4wTPP/PqSWlefLOiMsKWkWFz1Gp7/nSL1LG1d6thTnh65RshfPZjuaUycLx
+ Kg+ReJOmmiI9W7WvtAhNFrDuXNgS0EBtFKLlPzYc+/l3JZ8p01U746BI+NJ7aTAri6Wp3B7qC
+ y6PYu0sBOPLjWYR9P6gmeyanG9AYUBMG8gmABD1wgL8/nYbmEYDFQ8tr+qcAQdmhAQ0c4GMMS
+ 8JC4l9RCMgEMTrkNar973QXZv2f6ThaRXyF4OiVTztD7E10qQk+r+g+fQE7NDVz3TKUSenOea
+ tBRnwQ==
 Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -28
@@ -95,108 +90,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/4/23 12:52, Andreas Schwab wrote:
-> I think the issue is that the value returned from brk(0) is no longer
-> page aligned.
+On 7/8/23 23:36, Helge Deller wrote:
+> On 7/8/23 19:26, Richard Henderson wrote:
+>> On 7/6/23 12:34, Andreas Schwab wrote:
+>>> Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
+>>> Signed-off-by: Andreas Schwab <schwab@suse.de>
+>>> ---
+>>> =C2=A0 linux-user/syscall.c | 2 +-
+>>> =C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+>>> index 08162cc966..e8a17377f5 100644
+>>> --- a/linux-user/syscall.c
+>>> +++ b/linux-user/syscall.c
+>>> @@ -805,7 +805,7 @@ static abi_ulong brk_page;
+>>> =C2=A0 void target_set_brk(abi_ulong new_brk)
+>>> =C2=A0 {
+>>> -=C2=A0=C2=A0=C2=A0 target_brk =3D new_brk;
+>>> +=C2=A0=C2=A0=C2=A0 target_brk =3D TARGET_PAGE_ALIGN(new_brk);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 brk_page =3D HOST_PAGE_ALIGN(target_brk=
+);
+>>> =C2=A0 }
+...
+>> I'm curious why this error might have produced host memory clobbering, =
+but I'm not going to debug that.
+> I don't believe that this un-alignment triggers host memory clobbering e=
+ither.
 
-> $ ./qemu-riscv64 -strace ../exe1
-> 18329 brk(NULL) =3D 0x0000000000303000
-> 18329 faccessat(AT_FDCWD,"/etc/ld.so.preload",R_OK,0x3010d0) =3D -1 errn=
-o=3D2 (No such file or directory)
-> 18329 openat(AT_FDCWD,"/etc/ld.so.cache",O_RDONLY|O_CLOEXEC) =3D 3
-> 18329 newfstatat(3,"",0x00000040007fe900,0x1000) =3D 0
-> 18329 mmap(NULL,8799,PROT_READ,MAP_PRIVATE,3,0) =3D 0x0000004000824000
-> 18329 close(3) =3D 0
-> 18329 openat(AT_FDCWD,"/lib64/lp64d/libc.so.6",O_RDONLY|O_CLOEXEC) =3D 3
-> 18329 read(3,0x7fea70,832) =3D 832
-> 18329 newfstatat(3,"",0x00000040007fe8f0,0x1000) =3D 0
-> 18329 mmap(NULL,1405128,PROT_EXEC|PROT_READ,MAP_PRIVATE|MAP_DENYWRITE,3,=
-0) =3D 0x0000004000827000
-> 18329 mmap(0x000000400096d000,20480,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP=
-_DENYWRITE|MAP_FIXED,3,0x146000) =3D 0x000000400096d000
-> 18329 mmap(0x0000004000972000,49352,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP=
-_ANONYMOUS|MAP_FIXED,-1,0) =3D 0x0000004000972000
-> 18329 close(3) =3D 0
-> 18329 mmap(NULL,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0=
-) =3D 0x000000400097f000
-> 18329 set_tid_address(0x400097f710) =3D 18329
-> 18329 set_robust_list(0x400097f720,24) =3D -1 errno=3D38 (Function not i=
-mplemented)
-> 18329 mprotect(0x000000400096d000,12288,PROT_READ) =3D 0
-> 18329 mprotect(0x0000004000820000,4096,PROT_READ) =3D 0
-> 18329 prlimit64(0,RLIMIT_STACK,NULL,0x00000040007ff4f8) =3D 0 ({rlim_cur=
-=3D8388608,rlim_max=3D-1})
-> 18329 munmap(0x0000004000824000,8799) =3D 0
-> 18329 newfstatat(1,"",0x00000040007ff658,0x1000) =3D 0
-> 18329 getrandom(0x4000976a40,8,1) =3D 8
-> 18329 brk(NULL) =3D 0x0000000000303000
-> 18329 brk(0x0000000000324000) =3D 0x0000000000324000
-> 18329 write(1,0x3032a0,12)Hello world
->   =3D 12
-> 18329 exit_group(0)
-
-> $ qemu-riscv64 -strace ../exe1
-> 18369 brk(NULL) =3D 0x00000000003022e8
-> 18369 faccessat(AT_FDCWD,"/etc/ld.so.preload",R_OK,0x3010d0) =3D -1 errn=
-o=3D2 (No such file or directory)
-> 18369 openat(AT_FDCWD,"/etc/ld.so.cache",O_RDONLY|O_CLOEXEC) =3D 3
-> 18369 newfstatat(3,"",0x00000040007fe8f0,0x1000) =3D 0
-> 18369 mmap(NULL,8799,PROT_READ,MAP_PRIVATE,3,0) =3D 0x0000004000824000
-> 18369 close(3) =3D 0
-> 18369 openat(AT_FDCWD,"/lib64/lp64d/libc.so.6",O_RDONLY|O_CLOEXEC) =3D 3
-> 18369 read(3,0x7fea60,832) =3D 832
-> 18369 newfstatat(3,"",0x00000040007fe8e0,0x1000) =3D 0
-> 18369 mmap(NULL,1405128,PROT_EXEC|PROT_READ,MAP_PRIVATE|MAP_DENYWRITE,3,=
-0) =3D 0x0000004000827000
-> 18369 mmap(0x000000400096d000,20480,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP=
-_DENYWRITE|MAP_FIXED,3,0x146000) =3D 0x000000400096d000
-> 18369 mmap(0x0000004000972000,49352,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP=
-_ANONYMOUS|MAP_FIXED,-1,0) =3D 0x0000004000972000
-> 18369 close(3) =3D 0
-> 18369 mmap(NULL,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0=
-) =3D 0x000000400097f000
-> 18369 set_tid_address(0x400097f710) =3D 18369
-> 18369 set_robust_list(0x400097f720,24) =3D -1 errno=3D38 (Function not i=
-mplemented)
-> 18369 mprotect(0x000000400096d000,12288,PROT_READ) =3D 0
-> 18369 mprotect(0x0000004000820000,4096,PROT_READ) =3D 0
-> 18369 prlimit64(0,RLIMIT_STACK,NULL,0x00000040007ff4e8) =3D 0 ({rlim_cur=
-=3D8388608,rlim_max=3D-1})
-> 18369 munmap(0x0000004000824000,8799) =3D 0
-> 18369 newfstatat(1,"",0x00000040007ff648,0x1000) =3D 0
-> 18369 getrandom(0x4000976a40,8,1) =3D 8
-> 18369 brk(NULL) =3D 0x00000000003022e8
-> 18369 brk(0x00000000003232e8)**
-> ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertion failed: (c=
-pu =3D=3D current_cpu)
-> Bail out! ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertion =
-failed: (cpu =3D=3D current_cpu)
-> **
-> ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertion failed: (c=
-pu =3D=3D current_cpu)
-> Bail out! ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertion =
-failed: (cpu =3D=3D current_cpu)
-
-This reminds me on a failure I once saw on the hppa target.
-See commit bd4b7fd6ba98 ("linux-user/hppa: Fix segfaults on page zero").
-
-Maybe the not-page-aligned brk address triggers the glibc or application i=
-n the
-guest  to jump somewhere else (see cpu_exec_setjmp)?
-The example in my commit message jumped to address 0, which isn't writeabl=
-e
-for applications in the target machine and qemu was missing to trigger/han=
-dle
-the correct target exception handling.
-
-I think your patch to page-align the initial brk() is correct, but it prob=
-ably
-just hides the real problem.
-
-Maybe you are able to test what happens with exe1 on a physical risc-v mac=
-hine
-if the brk-adress wouldn't be page aligned?
-Maybe you are missing some exception handling for risc-v in qemu too?
+See my follow-up in the other mail threadd:
+"Re: [RISC-V] ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertio=
+n failed: (cpu =3D=3D current_cpu)"
 
 Helge
 
