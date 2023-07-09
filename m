@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54F074C138
-	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 08:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F22174C18B
+	for <lists+qemu-devel@lfdr.de>; Sun,  9 Jul 2023 10:11:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qINfD-0000O8-3H; Sun, 09 Jul 2023 02:12:55 -0400
+	id 1qIPUc-00033z-B9; Sun, 09 Jul 2023 04:10:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qINfB-0000Ml-1D
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 02:12:53 -0400
-Received: from mout.gmx.net ([212.227.17.20])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qINf9-0004v2-C7
- for qemu-devel@nongnu.org; Sun, 09 Jul 2023 02:12:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1688883169; x=1689487969; i=deller@gmx.de;
- bh=Tj0XptSyUBg7oAa1qmjLkGpGO3n8ZdZ+e1mepCexfPI=;
- h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:In-Reply-To;
- b=Dkdsl7e9WZQG0IXqWtnvL6odwBbVmICVIYVYk5zn+vi8IwdY5Ij/3BipA7lDDE/tHH6ZJP/
- XpbwQo364u6Ybj7tLrz36XacFmkAnqcmGR9VzFWLJfVA8jWdNoTtFKOSaMc7xNYH1Usaa9o8N
- LE5UHDc0+E7HZPrr0uQv5Crl8YN9sElRYhMjYhi4IkBcAVX1jdvJlsrr/E+mfREI6VdpV9HGi
- 3verVCnDzctJwEEfnXqAT+1beoW7wdVNcnKT+SRKOqWSN5XMhkNU2MHzavzKZyfMd7WzSAo3Z
- C3G9uq5+hse5EXWYGSfmLx+7ZOm5DrZVZlhGyvdprN01Nhyq6AuA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.150.9]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MNsw4-1qc7RZ1oq0-00OCf8; Sun, 09
- Jul 2023 08:12:49 +0200
-Message-ID: <ce6660a7-e878-0e36-3cc2-ba3de1dbdea6@gmx.de>
-Date: Sun, 9 Jul 2023 08:12:48 +0200
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qIPUY-00032E-Ku; Sun, 09 Jul 2023 04:10:02 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qIPUW-0001Ke-Vx; Sun, 09 Jul 2023 04:10:02 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbf1b82d9cso35968655e9.2; 
+ Sun, 09 Jul 2023 01:09:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688890198; x=1691482198;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wJUKUdQraTOTR3cpMkKT33t7dgaHv43fZVpRA2TUHoA=;
+ b=kl54Jejg8Sgk6Vv/9Vf/k+mdM0rBc3oyn0j53UPgf/t2se15PGC5K6fklztDPkEu1K
+ g+w4oZcUoJCqflryxmHYTS7waGFw45j9NFwxpsT+ewfRcwxH/VPkPwUvvN1fOC3OjwsG
+ mDJUZS30cBTbI9QvSwREwfD27cOsWjz0AZwuqqKu3HN92rKc3H3t/yo5jxEKwRLBQXqP
+ Q64KFZ6G65I2yWVWm3fK8F5DB3dJkU0zzw34XoT0bH2x1g/6vnUkULw7c5pPuX7B11Ds
+ H/vYgY46kHtPEljxqX1Qn++i+gbsaORjRpHJ0lK6HvBq+XCiUrTiLtWoll1xvF2t/sC5
+ AkWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688890198; x=1691482198;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wJUKUdQraTOTR3cpMkKT33t7dgaHv43fZVpRA2TUHoA=;
+ b=dblYJ9yuZid5ht6fiETgnhueNTP6LH3Wxq4qhQ9aMXeYuCTJgcjCqxxlz3huogY6Z9
+ J5sDkO63DWVX8thc65fncJySxJwNsY+OGMlHiTcd7WolW1PJ4p80GgXoHY4YdacUK0u/
+ Iv8MyP2pvaxZk2RDr0TZqFwSF87/751yJmSXlmwK8Zoat3E52L825fJB0oVE1qNbMumH
+ pddeAUE69DTwYKjrQnXe8xePIWxwJSRZ8z308b+VK1F15/7sGU3cfvXNDHiIpG0bRs6l
+ 7ocAVTt1D2qcI+33gTLj5tPS/OAdFAGMqRLqjMsYGEyW3l1fEGkpMUBG7zSrfdFo4ob7
+ +4yw==
+X-Gm-Message-State: ABy/qLaUrmutXMTSrmb6cgK6wjUdORmQrYMTQbk/8jG95PIOrIZFGzOu
+ PA7N9qLCFteHH+H4XneHXpJLoSa2C2M=
+X-Google-Smtp-Source: APBJJlFenlhnm+QcjTv+jOs1cYVtRkK0mNHr8RW63I2Re42eFops52ZV/Nh0DtDVT9Zp264+x93g9Q==
+X-Received: by 2002:a7b:c457:0:b0:3fb:739d:27b2 with SMTP id
+ l23-20020a7bc457000000b003fb739d27b2mr8060614wmi.8.1688890198032; 
+ Sun, 09 Jul 2023 01:09:58 -0700 (PDT)
+Received: from archlinux.. (dynamic-077-011-082-039.77.11.pool.telefonica.de.
+ [77.11.82.39]) by smtp.gmail.com with ESMTPSA id
+ z19-20020a1c4c13000000b003fb225d414fsm6944342wmf.21.2023.07.09.01.09.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 09 Jul 2023 01:09:57 -0700 (PDT)
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Guenter Roeck <linux@roeck-us.net>, qemu-block@nongnu.org,
+ Bin Meng <bin.meng@windriver.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH] hw/sd/sdhci: Do not force sdhci_mmio_*_ops onto all SD
+ controllers
+Date: Sun,  9 Jul 2023 10:09:50 +0200
+Message-ID: <20230709080950.92489-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] linux-user: make sure brk(0) returns a page-aligned value
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Andreas Schwab <schwab@suse.de>, Laurent Vivier <laurent@vivier.eu>
-Cc: qemu-devel@nongnu.org
-References: <mvmpm55qnno.fsf@suse.de>
- <0110c2c4-e9de-a2d0-5c0a-6831415beb9f@linaro.org>
- <9bde924d-55c6-9254-e7c9-6cbf7b7c9b5a@gmx.de>
-In-Reply-To: <9bde924d-55c6-9254-e7c9-6cbf7b7c9b5a@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:q/cRmDdH3JPOz/rqQ5Q+na6aZEW5LG/o13hQf8dPHCxN1IdS8pd
- H0o5xIYprBN6fS41wZgB8yuvJqcBbM5L6whGZm0PynwlW5huOvAP+WBIYRaDhWnrblC/shi
- lfuWBdcEcyaH3MruV+t1IKiokqNCTLh/xenanu4YEBYU8CKL1bMIvgYfYjrKJU8GSjv8Tp+
- MXhuk8g58dZtoArhvXG/Q==
-UI-OutboundReport: notjunk:1;M01:P0:KTL+2hB8oS0=;sRJZZJzz04sqSYUROxyXnE8r6WV
- rDuKoy0yWnlQTPyPUXBfjBhy2xvDSwKXGht+G0IJCB8IYOcSfWrkDLRZRKexAnhs35ZypPwyl
- LMHkYgff9VzXSXlemOw1yFgw7W5Uicqb1eu5EsEmwEpLVsdPbu90uBEIpL3eyF+BiNDhYwhMe
- rdsIjcRm3JrNxV+mQU7ggCxFUst13vOwA8hNxRyg85scfTButKvLSzWnWBB8QYd/Cp5A1QBYN
- ujfoNIgWfphRJ48VG0rvhjeuJuobki2w4UfodIMSVtcrdRyG5DgbJU2Tg14MKYq99unZ1NfT6
- j4lABiDcyKOQHCRsN2maBetOwqnyM7NJi9xEBQ6YdWki5Sd45AFqtQdK+DVgYZt9hKWbiZMIs
- gFwX92kiNxtyPFjS9vpqPUXqJFNYHOvGGU7AsfPLnkZFEiXJSEbUZUrDw+0pypgezbPqxJHr3
- +ZzVXlCHrcqqrlkMtXLpWsd68d3V40VfQic4EMbiT+SzdPuPTUQS+TUN/yv0LmAS3nTiGgXgl
- 6UtPZSW2+laA/fHiRuPtr8ED2GkSEeBM8ZPXbu6onLL7RloBn4N+RkZv9c7YtKCovT1QYDSWB
- aemMykAsK2YRJTAPTr5D413BMh38Zf1mDKF0T3Mj1HCrPhOZWF/ypCyzPrMF0StQAp1DM6jMr
- GhEbySe4yUPb0Q4wTPP/PqSWlefLOiMsKWkWFz1Gp7/nSL1LG1d6thTnh65RshfPZjuaUycLx
- Kg+ReJOmmiI9W7WvtAhNFrDuXNgS0EBtFKLlPzYc+/l3JZ8p01U746BI+NJ7aTAri6Wp3B7qC
- y6PYu0sBOPLjWYR9P6gmeyanG9AYUBMG8gmABD1wgL8/nYbmEYDFQ8tr+qcAQdmhAQ0c4GMMS
- 8JC4l9RCMgEMTrkNar973QXZv2f6ThaRXyF4OiVTztD7E10qQk+r+g+fQE7NDVz3TKUSenOea
- tBRnwQ==
-Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.091, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,36 +90,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/8/23 23:36, Helge Deller wrote:
-> On 7/8/23 19:26, Richard Henderson wrote:
->> On 7/6/23 12:34, Andreas Schwab wrote:
->>> Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
->>> Signed-off-by: Andreas Schwab <schwab@suse.de>
->>> ---
->>> =C2=A0 linux-user/syscall.c | 2 +-
->>> =C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
->>> index 08162cc966..e8a17377f5 100644
->>> --- a/linux-user/syscall.c
->>> +++ b/linux-user/syscall.c
->>> @@ -805,7 +805,7 @@ static abi_ulong brk_page;
->>> =C2=A0 void target_set_brk(abi_ulong new_brk)
->>> =C2=A0 {
->>> -=C2=A0=C2=A0=C2=A0 target_brk =3D new_brk;
->>> +=C2=A0=C2=A0=C2=A0 target_brk =3D TARGET_PAGE_ALIGN(new_brk);
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 brk_page =3D HOST_PAGE_ALIGN(target_brk=
-);
->>> =C2=A0 }
-...
->> I'm curious why this error might have produced host memory clobbering, =
-but I'm not going to debug that.
-> I don't believe that this un-alignment triggers host memory clobbering e=
-ither.
+Since commit c0a55a0c9da2 "hw/sd/sdhci: Support big endian SD host controller
+interfaces" sdhci_common_realize() forces all SD card controllers to use either
+sdhci_mmio_le_ops or sdhci_mmio_be_ops, depending on the "endianness" property.
+However, there are device models which use different MMIO ops: TYPE_IMX_USDHC
+uses usdhc_mmio_ops and TYPE_S3C_SDHCI uses sdhci_s3c_mmio_ops.
 
-See my follow-up in the other mail threadd:
-"Re: [RISC-V] ERROR:../accel/tcg/cpu-exec.c:1028:cpu_exec_setjmp: assertio=
-n failed: (cpu =3D=3D current_cpu)"
+Forcing sdhci_mmio_le_ops breaks SD card handling on the "sabrelite" board, for
+example. Fix this by defaulting the io_ops to little endian and switch to big
+endian in sdhci_common_realize() only if there is a matchig big endian variant
+available.
 
-Helge
+Fixes: c0a55a0c9da2 ("hw/sd/sdhci: Support big endian SD host controller
+interfaces")
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ hw/sd/sdhci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+index 6811f0f1a8..362c2c86aa 100644
+--- a/hw/sd/sdhci.c
++++ b/hw/sd/sdhci.c
+@@ -1382,6 +1382,8 @@ void sdhci_initfn(SDHCIState *s)
+ 
+     s->insert_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, sdhci_raise_insertion_irq, s);
+     s->transfer_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, sdhci_data_transfer, s);
++
++    s->io_ops = &sdhci_mmio_le_ops;
+ }
+ 
+ void sdhci_uninitfn(SDHCIState *s)
+@@ -1399,9 +1401,13 @@ void sdhci_common_realize(SDHCIState *s, Error **errp)
+ 
+     switch (s->endianness) {
+     case DEVICE_LITTLE_ENDIAN:
+-        s->io_ops = &sdhci_mmio_le_ops;
++        /* s->io_ops is little endian by default */
+         break;
+     case DEVICE_BIG_ENDIAN:
++        if (s->io_ops != &sdhci_mmio_le_ops) {
++            error_setg(errp, "SD controller doesn't support big endianness");
++            return;
++        }
+         s->io_ops = &sdhci_mmio_be_ops;
+         break;
+     default:
+-- 
+2.41.0
+
 
