@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55CDF74E1A7
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37DE574E1B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:03:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzuQ-0003hl-5K; Mon, 10 Jul 2023 19:03:10 -0400
+	id 1qIzuW-0003za-W9; Mon, 10 Jul 2023 19:03:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzuM-0003gN-PH
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:03:06 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzuS-0003tB-VS
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:03:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzuL-0004Av-DH
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:03:06 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzuR-0004Bn-Hc
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:03:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030184;
+ s=mimecast20190719; t=1689030190;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=SM6HtXV56hI3gJZn0vAaGg3ztZLfzZhW3nxUKN5CA6E=;
- b=NahldwUvRd+BrBI44oSAWkekvhBKDw7VzfscllZdD4GyfGbyFOKWrpQ/X/4iMuFkkcU9Qu
- sCwDg50N6jneO15HV64Bl8QyrksZEVR7UT7sgGuxx0RMv/u6vVc4s8c7WsTM2rwsnE3B07
- hp8RJnGe58Nvb2+QH86V0bm9No4uBQQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Ankrdrqe8uBDyZbVrO/a93nDhI3+nBuaqJDTmGENhZA=;
+ b=Gkz9GGFtYSgPquxboJPwMZvgnTo/TCRPbP/gTkaanA9VwDxCeykeIaqg+hO3+Cf1uBTgvU
+ gXNtW3j98W8qp0QtWFwHVzG52XGFq0yVO5pEdBveUv4gwGnOTE1U39FQuaSSDat8Nc+jvU
+ r0sHKIjhzVeCMNEVJgDJnKfRrXgR1u8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-592-5SCDiTFZOPevRmUsihpSAA-1; Mon, 10 Jul 2023 19:03:03 -0400
-X-MC-Unique: 5SCDiTFZOPevRmUsihpSAA-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-315998d6e7fso1080196f8f.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:03:03 -0700 (PDT)
+ us-mta-624-Uza6_PwZOmyQw2oZu5y8oA-1; Mon, 10 Jul 2023 19:03:06 -0400
+X-MC-Unique: Uza6_PwZOmyQw2oZu5y8oA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fbab56aac7so29564835e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:03:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030182; x=1691622182;
+ d=1e100.net; s=20221208; t=1689030184; x=1691622184;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SM6HtXV56hI3gJZn0vAaGg3ztZLfzZhW3nxUKN5CA6E=;
- b=M6QEEv7+kO/S57tcSb3YS57jvQP4XhuMPCrrbPPojPFNdqCFyC5819ixHtRdka2+FK
- ZQmWXICyxg4BwNfw11jZnkC7K32Fe0EHLMYcCw+2XPJ0a3MJCu5KUftgSYsIPpnSkbl7
- 7ClKhJ20oK5BBZmxSuFdKoo+RqVZaDQik5L6JHPh5ABhsrz6zgQx49PwIjSvBDZvTfJ9
- KXmFivw/lLmmqCU9xHkbYpwMFGtzMAarsOb+61qfK9Elj5RzNyP19dv9q7fTIBH/UhGq
- XvZ6ZiIJTXhNx0lku5N6pcs1W4+zibdTIpCmnL+vL8U+jZvKGaNU7d0GfP0o1TiINiOQ
- 4dmw==
-X-Gm-Message-State: ABy/qLaP1AiQ3cr4OyxeVjNbGPghNR3VX/y6oSSYevdn1aoBG+ScN8OS
- 78pCuS4xMeHTMrBD3VBJCEJFsdGbgXe59PqFyCekMcpitIOu6w2wZAprhNqV5ilMvfEgjR8Lb2H
- 5GeSp0ymHzlCYplpxN8uV2/G/vxB6wFNV38s5g9WuajMJeFJLjsYpLQF9XErJy6X2zPAs
-X-Received: by 2002:a5d:5444:0:b0:314:8d:7eb1 with SMTP id
- w4-20020a5d5444000000b00314008d7eb1mr11284795wrv.55.1689030182045; 
- Mon, 10 Jul 2023 16:03:02 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEvualZyW5BnHDmgPlPuIhijkNWtMlnL85ocKyJFBMVf8svlhNSVyRYm+Wwkyi/95s1pCPm1A==
-X-Received: by 2002:a5d:5444:0:b0:314:8d:7eb1 with SMTP id
- w4-20020a5d5444000000b00314008d7eb1mr11284779wrv.55.1689030181795; 
- Mon, 10 Jul 2023 16:03:01 -0700 (PDT)
+ bh=Ankrdrqe8uBDyZbVrO/a93nDhI3+nBuaqJDTmGENhZA=;
+ b=d+wRK2AQAYFdCcSsRdicwYLPbhNx9VkFDT2Ug6dnhIdCV8qU7cKuJoy+l1W7JL4Hfx
+ Y1LAi2lXPqrtooI/SMhgGpX8K4Zu7o5xZETJBsFW2cDrAkh+6Cb4XJIqJIUO0GGR4aVk
+ pbamlsUvbpc4INxcKvUCsp6Dhfs/2H7wZBzakSDBwi5ZFYyRveO3izTOexHb2jutyFIF
+ CqQoeKiqODw4mWLXgJhgUY9yZdsZV2dXJxIRDESTFN+oR7w/udYRFnNn1b/yiU6ht1pc
+ gGEsIYzHYnZeCgJprUG0rX8I72JYahQtuhQmAvj5aND5LOV8CraEudZIOA2US70UKhEy
+ TGZQ==
+X-Gm-Message-State: ABy/qLZtVW9yrAOQp/E0iHo2p+Daz5aEFrGqjaUNoUzEriM10wWlwQQp
+ hUQqZpFJt+UlQ5wpOgl9wTXwsM8H4VWpu/B9kBRtSmhQBr7MbEdx08L1JuUCqfotkn+HpCtiTXm
+ 9E5QheukbbmemrZFE0qCbl9x4YmbFNnlmsQ+GOYcCtCZPGIy4O7PsoH1l2jgcsJNrM//H
+X-Received: by 2002:a1c:7204:0:b0:3fa:9767:c816 with SMTP id
+ n4-20020a1c7204000000b003fa9767c816mr13024287wmc.39.1689030184726; 
+ Mon, 10 Jul 2023 16:03:04 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHRwitSvNph3vvNBOvYBTEbH/FIplESB2PS4lWC0aygi2kprZsvRs79NHlHAG7hjBb9SEOnlg==
+X-Received: by 2002:a1c:7204:0:b0:3fa:9767:c816 with SMTP id
+ n4-20020a1c7204000000b003fa9767c816mr13024274wmc.39.1689030184407; 
+ Mon, 10 Jul 2023 16:03:04 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- q4-20020adfcd84000000b0031134bcdacdsm594256wrj.42.2023.07.10.16.03.00
+ 18-20020a05600c025200b003fbca942499sm11337838wmj.14.2023.07.10.16.03.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:03:01 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:02:59 -0400
+ Mon, 10 Jul 2023 16:03:03 -0700 (PDT)
+Date: Mon, 10 Jul 2023 19:03:01 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>, Igor Mammedov <imammedo@redhat.com>,
  Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 12/66] hw/smbios: Fix smbios_smp_sockets caculation
-Message-ID: <d79a284a44bb7d88b233fb6bb12ea3723f43469d.1689030052.git.mst@redhat.com>
+Subject: [PULL 13/66] hw/smbios: Fix thread count in type4
+Message-ID: <7298fd7de5551c4501f54381228458e3c21cab4b.1689030052.git.mst@redhat.com>
 References: <cover.1689030052.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -101,48 +101,59 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-smp.sockets is the number of sockets which is configured by "-smp" (
-otherwise, the default is 1). Trying to recalculate it here with another
-rules leads to errors, such as:
+>From SMBIOS 3.0 specification, thread count field means:
 
-1. 003f230e37d7 ("machine: Tweak the order of topology members in struct
-   CpuTopology") changes the meaning of smp.cores but doesn't fix
-   original smp.cores uses.
+Thread Count is the total number of threads detected by the BIOS for
+this processor socket. It is a processor-wide count, not a
+thread-per-core count. [1]
 
-   With the introduction of cluster, now smp.cores means the number of
-   cores in one cluster. So smp.cores * smp.threads just means the
-   threads in a cluster not in a socket.
+So here we should use threads per socket other than threads per core.
 
-2. On the other hand, we shouldn't use smp.cpus here because it
-   indicates the initial number of online CPUs at the boot time, and is
-   not mathematically related to smp.sockets.
+[1] SMBIOS 3.0.0, section 7.5.8, Processor Information - Thread Count
 
-So stop reinventing the another wheel and use the topo values that
-has been calculated.
-
-Fixes: 003f230e37d7 ("machine: Tweak the order of topology members in struct CpuTopology")
+Fixes: c97294ec1b9e ("SMBIOS: Build aggregate smbios tables and entry point")
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20230628135437.1145805-3-zhao1.liu@linux.intel.com>
+Message-Id: <20230628135437.1145805-4-zhao1.liu@linux.intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/smbios/smbios.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/smbios/smbios.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index d2007e70fb..d67415d44d 100644
+index d67415d44d..3aae9328c0 100644
 --- a/hw/smbios/smbios.c
 +++ b/hw/smbios/smbios.c
-@@ -1088,8 +1088,7 @@ void smbios_get_tables(MachineState *ms,
-         smbios_build_type_2_table();
-         smbios_build_type_3_table();
+@@ -713,6 +713,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+ {
+     char sock_str[128];
+     size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
++    unsigned threads_per_socket;
  
--        smbios_smp_sockets = DIV_ROUND_UP(ms->smp.cpus,
--                                          ms->smp.cores * ms->smp.threads);
-+        smbios_smp_sockets = ms->smp.sockets;
-         assert(smbios_smp_sockets >= 1);
+     if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
+         tbl_len = SMBIOS_TYPE_4_LEN_V30;
+@@ -747,17 +748,19 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+     SMBIOS_TABLE_SET_STR(4, asset_tag_number_str, type4.asset);
+     SMBIOS_TABLE_SET_STR(4, part_number_str, type4.part);
  
-         for (i = 0; i < smbios_smp_sockets; i++) {
++    threads_per_socket = machine_topo_get_threads_per_socket(ms);
++
+     t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
+     t->core_enabled = t->core_count;
+ 
+-    t->thread_count = (ms->smp.threads > 255) ? 0xFF : ms->smp.threads;
++    t->thread_count = (threads_per_socket > 255) ? 0xFF : threads_per_socket;
+ 
+     t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
+     t->processor_family2 = cpu_to_le16(0x01); /* Other */
+ 
+     if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
+         t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
+-        t->thread_count2 = cpu_to_le16(ms->smp.threads);
++        t->thread_count2 = cpu_to_le16(threads_per_socket);
+     }
+ 
+     SMBIOS_BUILD_TABLE_POST;
 -- 
 MST
 
