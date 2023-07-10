@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4852774DA00
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 17:37:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE80F74D9FD
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 17:36:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIsvc-0005t9-Pu; Mon, 10 Jul 2023 11:35:56 -0400
+	id 1qIsvK-0005eh-UN; Mon, 10 Jul 2023 11:35:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qIsvQ-0005lo-Vd
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:35:45 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qIsvI-0005d7-3S
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:35:36 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qIsvB-0004jr-JF
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:35:44 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fbea14706eso47804215e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 08:35:29 -0700 (PDT)
+ id 1qIsvG-0004lc-3i
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:35:35 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3fbf7fbe722so53890345e9.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 08:35:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689003328; x=1691595328;
+ d=linaro.org; s=google; t=1689003330; x=1691595330;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A5nrdE1EbWfnKTXnpPgJZ0uBCr/0VA1ZCTtf34qEAwI=;
- b=OrGn7Nwjm+XbE+PNmSMJuXVthHH3ULc6N4kPsnLW92+NTRe49XPenOJcvcj+rac9Pt
- nVKbFaUa4sjJBQ5JMRiOtgrIVvCNWGvOPL1tNcAW4f4tOH/emMZuKxg7rRXyDxt7iER4
- EVh843PUSJyRGBg3xZ2xsIqDnW8rBcSrOAnhBIdapzKLBQsvkCG7acr4Oq+d69200Srw
- WAsJ6ZdhbU8XMqnISdOThSNRm8ngNvfiGC5+pbMHzTRiBD+XPPnMyUiJhMWsDe9+zFNk
- fdGqiHCURsd4iiM3nGDx0bqt3xGWg0iHSBm2E2YXRApK8AGI5dMq9qV0vcb1IsF4Oe5i
- GRWg==
+ bh=/3hOIZ7v+pYUizQmXUU1SDOsTbcl3kinhTlpzgj57Mc=;
+ b=znvx9h/vOjwJwXqi5ZGmg8C5katjfqPtJ83ohhrloNdrhE7ddvfl6XAtl99kL6vihU
+ POgZtencQUmRsz4Jr7073y0c9aKzNxj/6BKpMchtG/+J3oNbqRUjwfFM0QZNsl/Lp60x
+ VEscevGaApVBQqCe2/TeqbhBVh/CWTOq6OFUIcWjSOoSUlvX0WPpKlDoOk5RAgkCBR7V
+ boc0viIgcc9k+Ad3rNKZAkI5njDNjrQ4e3Eowjsax4XdhxoBXwGwpTTn8wQfc1ahvU+h
+ H+f48PNqABorALgtpOXu8LHDcf/VHrTWWdqkka8uiOCn1n3f9wuMtJq7eE04LB6GbG0F
+ u4/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689003328; x=1691595328;
+ d=1e100.net; s=20221208; t=1689003330; x=1691595330;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A5nrdE1EbWfnKTXnpPgJZ0uBCr/0VA1ZCTtf34qEAwI=;
- b=Vkt/evEk+WlNCeWHtndPovCzdkEDQ7jeOmtOoU3RJPql67qFm00fhaiYfs5Seyme45
- FxGsUkKJubGZeO+yNcevQgrVw6NTooU/empc1fT1LNnXI4riWbo0NHrPFesNC1jR2nPR
- myJ5HT1saXyhV5LNCYyYXgH66/ezGn4f+28tDWwphg3/8b5ZgLdchqrEGExg+gg2/dU0
- fm/NWisgnM4iudMaX+8zTo1V+UdbX0R5SJ7odTmlwzCXHJdbavd32Qg2EstWzz60D6vI
- +JA08hCEHEVJ+rQvUNe3SvLL7FdoeSLk/coGIWYGH8OWXGxsE7NF3f8kp+x5O9azJyBE
- QJ1A==
-X-Gm-Message-State: ABy/qLbVKBwRsXAqrU5Tg+8YeXEMGSAz2u/bsa4mSLxEcyTv2WWp1gjY
- /OToef6myA0EA3iln8YpjGnQ4g==
-X-Google-Smtp-Source: APBJJlFS94vJXjvQDDdVVQLTVYH7a8E/Gy9xFX1037O0tVu9QhClYcnwbGbyGPq3m/YAuUQujIjmSA==
-X-Received: by 2002:a05:600c:378b:b0:3fb:ffa8:6d78 with SMTP id
- o11-20020a05600c378b00b003fbffa86d78mr8100846wmr.36.1689003327693; 
- Mon, 10 Jul 2023 08:35:27 -0700 (PDT)
+ bh=/3hOIZ7v+pYUizQmXUU1SDOsTbcl3kinhTlpzgj57Mc=;
+ b=eDCVt9HcXjswXLjnyYOYoX3Y5rpz5txlf161yFkU/QwwJoImQN6/w/D14O76p9D68n
+ 09CKEHTiqhJFRNToTW2CUQM2tAXquQqeYuBERpjNgP1ycxYnbW6D2PGEhSf/z2M6+4Lj
+ 6LYbZ8476288fIWxI36naYOhoKJJxRNBDj+tUtlSirVOe9OGyVxsJYsAPYt1/AeDw6gx
+ /chrm1rBus7LKl+O22B/CnoyCKNtLJiY4NGVRDxVMEf1RrF7yk4oCYH6CsQdDKK9Du/K
+ iQwDtl40eKoWpJbj4wIitTMbYIAXkeJQP3J1L3mNF3dK9PUBINawqSVVCkFhvA3HfIQq
+ 7kVg==
+X-Gm-Message-State: ABy/qLbB3zldLoicnvWi9G54RBT5fnKxeygOQsv6pKt2qgs2ryHYNg45
+ 2XAPwdYM/bqvs1/DG/RKRla/Pw==
+X-Google-Smtp-Source: APBJJlFihed2syp47/eVHJlFU1CTD7aAJYxMMrGkJmN5UCn1E6azntNeYAd599jyJG5TnAIHxyA9lQ==
+X-Received: by 2002:a7b:c390:0:b0:3fb:d1db:5444 with SMTP id
+ s16-20020a7bc390000000b003fbd1db5444mr12350095wmj.19.1689003329863; 
+ Mon, 10 Jul 2023 08:35:29 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- e14-20020a05600c218e00b003fa96fe2bd9sm10643485wme.22.2023.07.10.08.35.22
+ c5-20020a7bc005000000b003fbdbd0a7desm10597836wmb.27.2023.07.10.08.35.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 10 Jul 2023 08:35:23 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 68AF61FFBD;
+ by zen.linaroharston (Postfix) with ESMTP id 8E1561FFBE;
  Mon, 10 Jul 2023 16:35:22 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -78,25 +78,24 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  "Gonglei (Arei)" <arei.gonglei@huawei.com>,
  Eduardo Habkost <eduardo@habkost.net>, Fam Zheng <fam@euphon.net>,
  virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH v3 02/20] include/hw: document the device_class_set_parent_*
- fns
-Date: Mon, 10 Jul 2023 16:35:04 +0100
-Message-Id: <20230710153522.3469097-3-alex.bennee@linaro.org>
+Subject: [PATCH v3 03/20] hw/virtio: fix typo in VIRTIO_CONFIG_IRQ_IDX comments
+Date: Mon, 10 Jul 2023 16:35:05 +0100
+Message-Id: <20230710153522.3469097-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230710153522.3469097-1-alex.bennee@linaro.org>
 References: <20230710153522.3469097-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,55 +111,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These are useful functions for when you want proper inheritance of
-functionality across realize/unrealize calls.
-
+Fixes: 544f0278af (virtio: introduce macro VIRTIO_CONFIG_IRQ_IDX)
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/hw/qdev-core.h | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ hw/display/vhost-user-gpu.c    | 4 ++--
+ hw/net/virtio-net.c            | 4 ++--
+ hw/virtio/vhost-user-fs.c      | 4 ++--
+ hw/virtio/vhost-user-gpio.c    | 2 +-
+ hw/virtio/vhost-vsock-common.c | 4 ++--
+ hw/virtio/virtio-crypto.c      | 4 ++--
+ 6 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 196ebf6d91..884c726a87 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -952,9 +952,36 @@ void device_class_set_props(DeviceClass *dc, Property *props);
- void device_class_set_parent_reset(DeviceClass *dc,
-                                    DeviceReset dev_reset,
-                                    DeviceReset *parent_reset);
-+
-+/**
-+ * device_class_set_parent_realize() - set up for chaining realize fns
-+ * @dc: The device class
-+ * @dev_realize: the device realize function
-+ * @parent_realize: somewhere to save the parents realize function
-+ *
-+ * This is intended to be used when the new realize function will
-+ * eventually call its parent realization function during creation.
-+ * This requires storing the function call somewhere (usually in the
-+ * instance structure) so you can eventually call
-+ * dc->parent_realize(dev, errp)
-+ */
- void device_class_set_parent_realize(DeviceClass *dc,
-                                      DeviceRealize dev_realize,
-                                      DeviceRealize *parent_realize);
-+
-+
-+/**
-+ * device_class_set_parent_unrealize() - set up for chaining unrealize fns
-+ * @dc: The device class
-+ * @dev_unrealize: the device realize function
-+ * @parent_unrealize: somewhere to save the parents unrealize function
-+ *
-+ * This is intended to be used when the new unrealize function will
-+ * eventually call its parent unrealization function during the
-+ * unrealize phase. This requires storing the function call somewhere
-+ * (usually in the instance structure) so you can eventually call
-+ * dc->parent_unrealize(dev);
-+ */
- void device_class_set_parent_unrealize(DeviceClass *dc,
-                                        DeviceUnrealize dev_unrealize,
-                                        DeviceUnrealize *parent_unrealize);
+diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
+index 15f9d99d09..1791797bd7 100644
+--- a/hw/display/vhost-user-gpu.c
++++ b/hw/display/vhost-user-gpu.c
+@@ -489,7 +489,7 @@ vhost_user_gpu_guest_notifier_pending(VirtIODevice *vdev, int idx)
+ 
+     /*
+      * Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX -1
+-     * as the Marco of configure interrupt's IDX, If this driver does not
++     * as the macro of configure interrupt's IDX, If this driver does not
+      * support, the function will return
+      */
+ 
+@@ -506,7 +506,7 @@ vhost_user_gpu_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
+ 
+     /*
+      * Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX -1
+-     * as the Marco of configure interrupt's IDX, If this driver does not
++     * as the macro of configure interrupt's IDX, If this driver does not
+      * support, the function will return
+      */
+ 
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 04783f5b94..493afdd96b 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3362,7 +3362,7 @@ static bool virtio_net_guest_notifier_pending(VirtIODevice *vdev, int idx)
+     }
+     /*
+      * Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX -1
+-     * as the Marco of configure interrupt's IDX, If this driver does not
++     * as the macro of configure interrupt's IDX, If this driver does not
+      * support, the function will return false
+      */
+ 
+@@ -3394,7 +3394,7 @@ static void virtio_net_guest_notifier_mask(VirtIODevice *vdev, int idx,
+     }
+     /*
+      *Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX -1
+-     * as the Marco of configure interrupt's IDX, If this driver does not
++     * as the macro of configure interrupt's IDX, If this driver does not
+      * support, the function will return
+      */
+ 
+diff --git a/hw/virtio/vhost-user-fs.c b/hw/virtio/vhost-user-fs.c
+index 83fc20e49e..49d699ffc2 100644
+--- a/hw/virtio/vhost-user-fs.c
++++ b/hw/virtio/vhost-user-fs.c
+@@ -161,7 +161,7 @@ static void vuf_guest_notifier_mask(VirtIODevice *vdev, int idx,
+ 
+     /*
+      * Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX -1
+-     * as the Marco of configure interrupt's IDX, If this driver does not
++     * as the macro of configure interrupt's IDX, If this driver does not
+      * support, the function will return
+      */
+ 
+@@ -177,7 +177,7 @@ static bool vuf_guest_notifier_pending(VirtIODevice *vdev, int idx)
+ 
+     /*
+      * Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX -1
+-     * as the Marco of configure interrupt's IDX, If this driver does not
++     * as the macro of configure interrupt's IDX, If this driver does not
+      * support, the function will return
+      */
+ 
+diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
+index d6927b610a..3b013f2d0f 100644
+--- a/hw/virtio/vhost-user-gpio.c
++++ b/hw/virtio/vhost-user-gpio.c
+@@ -194,7 +194,7 @@ static void vu_gpio_guest_notifier_mask(VirtIODevice *vdev, int idx, bool mask)
+ 
+     /*
+      * Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX -1
+-     * as the Marco of configure interrupt's IDX, If this driver does not
++     * as the macro of configure interrupt's IDX, If this driver does not
+      * support, the function will return
+      */
+ 
+diff --git a/hw/virtio/vhost-vsock-common.c b/hw/virtio/vhost-vsock-common.c
+index 321262f6b3..12ea87d7a7 100644
+--- a/hw/virtio/vhost-vsock-common.c
++++ b/hw/virtio/vhost-vsock-common.c
+@@ -129,7 +129,7 @@ static void vhost_vsock_common_guest_notifier_mask(VirtIODevice *vdev, int idx,
+ 
+     /*
+      * Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX -1
+-     * as the Marco of configure interrupt's IDX, If this driver does not
++     * as the macro of configure interrupt's IDX, If this driver does not
+      * support, the function will return
+      */
+ 
+@@ -146,7 +146,7 @@ static bool vhost_vsock_common_guest_notifier_pending(VirtIODevice *vdev,
+ 
+     /*
+      * Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX -1
+-     * as the Marco of configure interrupt's IDX, If this driver does not
++     * as the macro of configure interrupt's IDX, If this driver does not
+      * support, the function will return
+      */
+ 
+diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
+index a6d7e1e8ec..44faf5a522 100644
+--- a/hw/virtio/virtio-crypto.c
++++ b/hw/virtio/virtio-crypto.c
+@@ -1210,7 +1210,7 @@ static void virtio_crypto_guest_notifier_mask(VirtIODevice *vdev, int idx,
+ 
+     /*
+      * Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX -1
+-     * as the Marco of configure interrupt's IDX, If this driver does not
++     * as the macro of configure interrupt's IDX, If this driver does not
+      * support, the function will return
+      */
+ 
+@@ -1229,7 +1229,7 @@ static bool virtio_crypto_guest_notifier_pending(VirtIODevice *vdev, int idx)
+ 
+     /*
+      * Add the check for configure interrupt, Use VIRTIO_CONFIG_IRQ_IDX -1
+-     * as the Marco of configure interrupt's IDX, If this driver does not
++     * as the macro of configure interrupt's IDX, If this driver does not
+      * support, the function will return
+      */
+ 
 -- 
 2.39.2
 
