@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4018974DE7C
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 21:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD84874DE84
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 21:50:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIwri-0000mB-Ki; Mon, 10 Jul 2023 15:48:10 -0400
+	id 1qIwts-00020e-QD; Mon, 10 Jul 2023 15:50:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qIwrX-0000fD-VP
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:47:59 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qIwtq-0001yX-9E
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:50:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qIwrW-0005TL-EM
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:47:59 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qIwtn-0006Xh-8s
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:50:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689018477;
+ s=mimecast20190719; t=1689018617;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=kcvxBSBSxDvs53AX++ELmWRenBbMacAHC9NQUCgRUK4=;
- b=BQjQ4/xAxCoo4r5oKxQlu5eic6JXoJ3BjThGbF5rdv6fewieWnubf4Bhz396C2f9oihrJQ
- 4YOn6aP3VSu611Y4COjowBmOzR7RYVK4JAVmugxskOoJ20NDSieCOgq7mHZwzxP5PQqJaS
- rcqDQsW0TZsE401HAlPcwHDs+KX2fac=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=OjBOjKObKkGabxsV3rL4vfM9FTNLwwVS+6FJCypXFGc=;
+ b=iilrdcjdGaztj6QAcGXjJIvvhxAtYKXUU3D3JUKuEfG+H74bPHlQu58+YBFWyhE4PHYYJ/
+ YaAIXlSPssURv+125a60wDNYU6zNnf84WMraKP75kDheU69uFugsOgmWZuJIeGh0ZLo7yp
+ M4NVJFLXoAZUtdQqSXeB88ZrF51Ikbs=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-602-0J6XG97cP4amSpmPutmsbQ-1; Mon, 10 Jul 2023 15:47:54 -0400
-X-MC-Unique: 0J6XG97cP4amSpmPutmsbQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-558-jr-ZKNG-McOEQUZ4gv-fkA-1; Mon, 10 Jul 2023 15:50:14 -0400
+X-MC-Unique: jr-ZKNG-McOEQUZ4gv-fkA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0167C800CAE;
- Mon, 10 Jul 2023 19:47:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0F4B92A59576;
+ Mon, 10 Jul 2023 19:50:14 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.27])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A167B40C206F;
- Mon, 10 Jul 2023 19:47:52 +0000 (UTC)
-Date: Mon, 10 Jul 2023 14:47:50 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 641F6200B415;
+ Mon, 10 Jul 2023 19:50:13 +0000 (UTC)
+Date: Mon, 10 Jul 2023 14:50:11 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 Cc: qemu-block@nongnu.org, qemu-stable@nongnu.org, qemu-devel@nongnu.org, 
  kwolf@redhat.com, hreitz@redhat.com, vsementsov@yandex-team.ru,
  den@virtuozzo.com
-Subject: Re: [PATCH 2/3] block/io: align requests to subcluster_size
-Message-ID: <5ogsrhiwbo5u5k4a4mleyszoolr7stx56kj6bcwysoyfg7crzw@lhm7o3l3wmbn>
+Subject: Re: [PATCH 3/3] tests/qemu-iotests/197: add testcase for CoR with
+ subclusters
+Message-ID: <bvnyf46gv7nyaxioy677cuh2serrigoa3p3paotqxi3j6f5eiq@o7wn3okplkln>
 References: <20230626160834.696680-1-andrey.drobyshev@virtuozzo.com>
- <20230626160834.696680-3-andrey.drobyshev@virtuozzo.com>
+ <20230626160834.696680-4-andrey.drobyshev@virtuozzo.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230626160834.696680-3-andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <20230626160834.696680-4-andrey.drobyshev@virtuozzo.com>
 User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -80,45 +81,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jun 26, 2023 at 07:08:33PM +0300, Andrey Drobyshev via wrote:
-> When target image is using subclusters, and we align the request during
-> copy-on-read, it makes sense to align to subcluster_size rather than
-> cluster_size.  Otherwise we end up with unnecessary allocations.
+On Mon, Jun 26, 2023 at 07:08:34PM +0300, Andrey Drobyshev via wrote:
+> Add testcase which checks that allocations during copy-on-read are
+> performed on the subcluster basis when subclusters are enabled in target
+> image.
 > 
-> This commit renames bdrv_round_to_clusters() to bdrv_round_to_subclusters()
-> and utilizes subcluster_size field of BlockDriverInfo to make necessary
-> alignments.  It affects copy-on-read as well as mirror job (which is
-> using bdrv_round_to_clusters()).
-> 
-> This change also fixes the following bug with failing assert (covered by
-> the test in the subsequent commit):
-> 
-> qemu-img create -f qcow2 base.qcow2 64K
-> qemu-img create -f qcow2 -o extended_l2=on,backing_file=base.qcow2,backing_fmt=qcow2 img.qcow2 64K
-> qemu-io -c "write -P 0xaa 0 2K" img.qcow2
-> qemu-io -C -c "read -P 0x00 2K 62K" img.qcow2
+> This testcase also triggers the following assert with previous commit
+> not being applied, so we check that as well:
 > 
 > qemu-io: ../block/io.c:1236: bdrv_co_do_copy_on_readv: Assertion `skip_bytes < pnum' failed.
 > 
 > Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 > ---
->  block/io.c               | 50 ++++++++++++++++++++--------------------
->  block/mirror.c           |  8 +++----
->  include/block/block-io.h |  2 +-
->  3 files changed, 30 insertions(+), 30 deletions(-)
-> 
-> +++ b/include/block/block-io.h
-> @@ -189,7 +189,7 @@ bdrv_get_info(BlockDriverState *bs, BlockDriverInfo *bdi);
->  ImageInfoSpecific *bdrv_get_specific_info(BlockDriverState *bs,
->                                            Error **errp);
->  BlockStatsSpecific *bdrv_get_specific_stats(BlockDriverState *bs);
-> -void bdrv_round_to_clusters(BlockDriverState *bs,
-> +void bdrv_round_to_subclusters(BlockDriverState *bs,
->                              int64_t offset, int64_t bytes,
->                              int64_t *cluster_offset,
->                              int64_t *cluster_bytes);
-
-Indentation on subsequent lines should be fixed.
+>  tests/qemu-iotests/197     | 29 +++++++++++++++++++++++++++++
+>  tests/qemu-iotests/197.out | 24 ++++++++++++++++++++++++
+>  2 files changed, 53 insertions(+)
+>
 
 Reviewed-by: Eric Blake <eblake@redhat.com>
 
