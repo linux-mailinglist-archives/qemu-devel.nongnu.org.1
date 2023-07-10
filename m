@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E7674D5C3
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F42074D589
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:33:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIq4c-0000UP-NO; Mon, 10 Jul 2023 08:33:02 -0400
+	id 1qIq4d-0000To-QN; Mon, 10 Jul 2023 08:33:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq4T-0000Bc-Jr
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:32:53 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ id 1qIq4X-0000Dz-PX
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:32:57 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq4R-0003Ew-Uq
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:32:53 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-2657d405ad5so2637566a91.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:32:51 -0700 (PDT)
+ id 1qIq4W-0003Gn-6I
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:32:57 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-666eb03457cso2290092b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:32:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688992370; x=1691584370;
+ d=gmail.com; s=20221208; t=1688992374; x=1691584374;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=z0HJ38mvZWdcRPufdY/ppw8c6Oox15uKrnAieTUs0kI=;
- b=HIOfMsdfwp2r2PF70YuL+2KTpA5qVfusi7Iwb2R9/lz/4fK9pPccyEWx/AnDMM/gcz
- bP2mZrZmjmBm2Ppfxi3fDZvt8aaMI/ms637gFv5j3vP+OVMht0Mt9rLirJwEKmGzk9BT
- O8TyP9fb3yRNDh5Z4p8lghjojYOtHMHAqZ5QM6Eo55hoXz8QqoDZ+mxVHLBztuxfX0Np
- bCZx1pHoqKdYsaEIEy1QwfYPPagBrEp7e/AAVu328jToa2F1Bd+BjxrTkR1MGJ4sP6gj
- jnj0k0nFJXQN9kJWTrOkYWFz7j+ddn3L8vM5x9eR6LyptLwIPsSeBqrF5OQJ0OT8MvG0
- rzvQ==
+ bh=OS41ZtAr2+kmDkN+k6c4+K4LKBLzJWMZWSnhTcTuu8c=;
+ b=Q8jYNnKQT+noAtIo7IGPOblAywf2KOyVlw8hMocSoDAoDPdeESsF/F3hJ+yJFsGRn/
+ gn2nhfsLZv7mLPn66M9HHaeDmXTmS5S3OpFpKY+Hw+v9jVhVA2hOcy98Xq4RFAtPZWmu
+ T9MD7yOFi2G+jVIOqhUZuMHIAzdcXrwZSYXQ7FJgMiZVelHYZDmhA2nYqeOFwVmD2tgo
+ kanarg/akUO77/HotWArh86gdOoYCgz4GUYdCHjLWxKlv6q/tVz6k0ikdyD4jg55AAsH
+ AWLjvkhbTEXpSvzF+QQ+H2E/UtwZXcsXwpApC3tknSS73vKkZWBkhAFR079F+bR8E0vw
+ jqHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688992370; x=1691584370;
+ d=1e100.net; s=20221208; t=1688992374; x=1691584374;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=z0HJ38mvZWdcRPufdY/ppw8c6Oox15uKrnAieTUs0kI=;
- b=Jn7JcdpRHEPjeAq7vmk6UHQ1h7EVJW940ZguMPHOsi0OPhrOciBdAuUdI4sT6NgV2J
- jVBepntAbQ7vXpT6+po+UirzOnBXP4Lrt2NLqYjG/o3TuWaJOhRHN611JfZz9JlonKMk
- BufNwcHUYAgIVDk1zBTy2UPaXoa2Fts4CjM8x1rWRDfTDMbeAXI1fy8lfGNnGS4uzQak
- 28/qYMxZhiowvi3/flQTFrFVA2siLZQlrVxk0ezhPWdl8LqtBf6M18Q23AeJ1UpT4Fr+
- uKhIrTN6rHb3JX6O+Ouaa1EQS+nu/v6haz71HAUjhv7ECMWie2cZg3gFHKLlx0x3AumW
- pMPg==
-X-Gm-Message-State: ABy/qLa0bQ6yITw/rPKbOcWjBwv9F7xGPeg1AltdTJRLHoXwoyg8tVon
- Qy9xAFGoiUslYOmu+nhAgWEjD4WmKwKnHw==
-X-Google-Smtp-Source: APBJJlH46s5knuzqOImOMSe1WyuA7JUuhH5+z4uGLD9+nhhQZNBi6IxLyortt2BaUZdeLgkstJrRGw==
-X-Received: by 2002:a17:90a:c285:b0:263:41d2:4e2 with SMTP id
- f5-20020a17090ac28500b0026341d204e2mr13580959pjt.32.1688992370330; 
- Mon, 10 Jul 2023 05:32:50 -0700 (PDT)
+ bh=OS41ZtAr2+kmDkN+k6c4+K4LKBLzJWMZWSnhTcTuu8c=;
+ b=SxTgWyBTR2MWbJY3/iI0eplndnqTiCZOfOjvtprbKjTwl6VAJd/V16ysCqGDAnPbx5
+ TukJS/9zD63RYdhcWzKyEJ5gKyTjxBTD9gIxvv6fjKczznzTsKbMM5HyuTXSuJx1uvSi
+ DIq6eVNYveA4YCV+vM3n/rvlzCV9muzXVjnXR/8UINeZnJmAV1IcpE3/Yowv95r0aVNE
+ r4QgvfxfS6Ok56HvnX3HzmW6hJM6QNWymMAjAozNGWv3wvvMvIPL2ibj0ctkXwe7NfrH
+ ma7F8e4tTRYAlUHAONjMnN3Og2ScyKc2Pl/AwLe4aB1ErqiimN+87AsNJm2OFBFg+qbH
+ MEtg==
+X-Gm-Message-State: ABy/qLYWSDnRAocWeE+pu/O5pqlhf7Rkes2Syb09XO1zqajI+L48TjMg
+ iNo+mdsTKfwq11J+QU3HuHxqUJZMeBHpNg==
+X-Google-Smtp-Source: APBJJlEQeTqfQb0fM45wR+uqfIfmKpgippYBrs7f2EmFmYiW1GfHOUiRKwLJcgxIBmq+ANb5KSVZ/Q==
+X-Received: by 2002:a05:6a00:1910:b0:673:5d1e:6657 with SMTP id
+ y16-20020a056a00191000b006735d1e6657mr11949822pfi.7.1688992373916; 
+ Mon, 10 Jul 2023 05:32:53 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.32.47
+ i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.32.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 05:32:49 -0700 (PDT)
+ Mon, 10 Jul 2023 05:32:53 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
@@ -65,16 +65,17 @@ Cc: alistair23@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>,
  Junqiang Wang <wangjunqiang@iscas.ac.cn>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 09/54] target/riscv: Make MPV only work when MPP != PRV_M
-Date: Mon, 10 Jul 2023 22:31:20 +1000
-Message-Id: <20230710123205.2441106-10-alistair.francis@wdc.com>
+Subject: [PULL 10/54] target/riscv: Support MSTATUS.MPV/GVA only when RVH is
+ enabled
+Date: Mon, 10 Jul 2023 22:31:21 +1000
+Message-Id: <20230710123205.2441106-11-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230710123205.2441106-1-alistair.francis@wdc.com>
 References: <20230710123205.2441106-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=alistair23@gmail.com; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,48 +101,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 
-Upon MRET or explicit memory access with MPRV=1, MPV should be ignored
-when MPP=PRV_M.
+MPV and GVA bits are added by hypervisor extension to mstatus
+and mstatush (if MXLEN=32).
 
 Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230603134236.15719-2-liweiwei@iscas.ac.cn>
+Message-Id: <20230603134236.15719-3-liweiwei@iscas.ac.cn>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 3 ++-
- target/riscv/op_helper.c  | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ target/riscv/csr.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index a944f25694..8e3c73da52 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -47,7 +47,8 @@ int riscv_cpu_mmu_index(CPURISCVState *env, bool ifetch)
- 
-         if (mode == PRV_M && get_field(status, MSTATUS_MPRV)) {
-             mode = get_field(env->mstatus, MSTATUS_MPP);
--            virt = get_field(env->mstatus, MSTATUS_MPV);
-+            virt = get_field(env->mstatus, MSTATUS_MPV) &&
-+                   (mode != PRV_M);
-             if (virt) {
-                 status = env->vsstatus;
-             }
-diff --git a/target/riscv/op_helper.c b/target/riscv/op_helper.c
-index f563dc3981..9cdb9cdd06 100644
---- a/target/riscv/op_helper.c
-+++ b/target/riscv/op_helper.c
-@@ -335,7 +335,8 @@ target_ulong helper_mret(CPURISCVState *env)
-         riscv_raise_exception(env, RISCV_EXCP_INST_ACCESS_FAULT, GETPC());
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 58499b5afc..6ac11d1f11 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -1311,11 +1311,9 @@ static RISCVException write_mstatus(CPURISCVState *env, int csrno,
      }
  
--    target_ulong prev_virt = get_field(env->mstatus, MSTATUS_MPV);
-+    target_ulong prev_virt = get_field(env->mstatus, MSTATUS_MPV) &&
-+                             (prev_priv != PRV_M);
-     mstatus = set_field(mstatus, MSTATUS_MIE,
-                         get_field(mstatus, MSTATUS_MPIE));
-     mstatus = set_field(mstatus, MSTATUS_MPIE, 1);
+     if (xl != MXL_RV32 || env->debugger) {
+-        /*
+-         * RV32: MPV and GVA are not in mstatus. The current plan is to
+-         * add them to mstatush. For now, we just don't support it.
+-         */
+-        mask |= MSTATUS_MPV | MSTATUS_GVA;
++        if (riscv_has_ext(env, RVH)) {
++            mask |= MSTATUS_MPV | MSTATUS_GVA;
++        }
+         if ((val & MSTATUS64_UXL) != 0) {
+             mask |= MSTATUS64_UXL;
+         }
+@@ -1351,7 +1349,7 @@ static RISCVException write_mstatush(CPURISCVState *env, int csrno,
+                                      target_ulong val)
+ {
+     uint64_t valh = (uint64_t)val << 32;
+-    uint64_t mask = MSTATUS_MPV | MSTATUS_GVA;
++    uint64_t mask = riscv_has_ext(env, RVH) ? MSTATUS_MPV | MSTATUS_GVA : 0;
+ 
+     env->mstatus = (env->mstatus & ~mask) | (valh & mask);
+ 
 -- 
 2.40.1
 
