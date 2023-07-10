@@ -2,89 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFCF774E06D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 23:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5605C74E080
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 23:57:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIyk0-0005Nv-Ks; Mon, 10 Jul 2023 17:48:20 -0400
+	id 1qIysD-0006yO-4m; Mon, 10 Jul 2023 17:56:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
- id 1qIyjy-0005Nl-Rj
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:48:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
- id 1qIyjx-0007YD-AP
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:48:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689025696;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DPQ56Iw959TpJdq0C/FpY2Haxyv3PjUmIVEGg5Vz8t8=;
- b=ZHY/S4dqRUOoCeI8cyytGDSI7L23BIrdkzlMNa476D90l+9qyelqmaNq3eX3jxl7xxDIub
- yRNdSA+/V+T1ty5+ezroc17kh6zeN29MTd2MJ8ejPZDB7Jip5Isfi5OozfPEy12d16e6/e
- 7jjUDPDqqDYXZdtd3aatjZ6uZ6pxtso=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-AbiFKac4MOW-RaRhaKALjg-1; Mon, 10 Jul 2023 17:48:14 -0400
-X-MC-Unique: AbiFKac4MOW-RaRhaKALjg-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-767cf9caaa9so104465785a.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 14:48:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIysB-0006xg-1L
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:56:47 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIys8-0000vy-Vk
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:56:46 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3fba8e2aa52so55835945e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 14:56:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689026203; x=1691618203;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=L4q7wMSsasZwArnf0grnmtRUbjmGYHOlhFhUwDDujEY=;
+ b=JEa2pY6WTaAQHamte52sBL/ZJboNAHmIUMYb+VKIQrvD5AQtu0vx+m3N1blQrTeD+j
+ NF5EzSEMDVSnTW/FNHNWSEvD79mbYqI9HqTmUamrrALyEa3Kw690zLhDVLH0vuJQff+h
+ WcxLTgc6vNsqLORZ/TR5neVG1LO+U9JNU+mTxAoDyYFi+PaRdvUGFbcCJRhWLCV7U1Hq
+ Vy8iiD4hRFkiEGv04UU2toWJfgG1x46Rrd5vHHaaEurxayo9hogFXafd6ACEgpPzdvBO
+ 0Ajma5MY5NgXpIGrTjSU1xLvLSwzrD1qknjHKyvcI88yQ2+zyLGmfc5kCi8vKZSh7P/+
+ 3/Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689025694; x=1691617694;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=DPQ56Iw959TpJdq0C/FpY2Haxyv3PjUmIVEGg5Vz8t8=;
- b=ZMzE0dYdDynW9E2dzz/oMkRnpiZh6lwXxq6xvzVhtHtsDtdXYDJ1S5iYWB9ch9i/ba
- j6Kvu9Tcfhl0yGK42IkvocOhyVCowHZCsW7OaSUKaCRf4O+aWJRAeK3dylKhXJRqEfvy
- A+f/9qwhci/fJ5JWoBkZ6H41f5X2RWsMFZyTEvxTTm0UnBpg8HR8vMR37H/KbCFwzKeS
- DEJJglgWdhuGsh0Xxg2QMvtBVp+z1tHhzDqnwIut+S7jETL2mX4zOIuCm4GARgZzUiry
- XI2XTZV27Uth2aD9AvEbOgOTwbPJIDnZ+ny+jtuF/PBoS5ILukmxpnizdgewGfcjqKSf
- FVQw==
-X-Gm-Message-State: ABy/qLYs8FjzE9k/AvhM/zp/IOuXsnRq8HLMPXFifLJ8OJXcv1D8knqy
- bAhCXyAuwPizBSh4/c+d1b9KclzFOX7+Y3B0W8j/WhTVmzmHBaccpGr825JMH4YJ9Rs8hmbhGKg
- SsLVYO8qQSXba/ft23/2qwWwXrHcUU08=
-X-Received: by 2002:ac8:5a95:0:b0:3f8:2a37:20f with SMTP id
- c21-20020ac85a95000000b003f82a37020fmr17698048qtc.34.1689025693985; 
- Mon, 10 Jul 2023 14:48:13 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEe9fB9Jf3DdRzSIc1ai4cgYHBkzOUWHf7wJEtNCRNhhuuRshDzY2wLrZVJvfADeGombp+qgehyQcm1I9H3Uvg=
-X-Received: by 2002:ac8:5a95:0:b0:3f8:2a37:20f with SMTP id
- c21-20020ac85a95000000b003f82a37020fmr17698035qtc.34.1689025693743; Mon, 10
- Jul 2023 14:48:13 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689026203; x=1691618203;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=L4q7wMSsasZwArnf0grnmtRUbjmGYHOlhFhUwDDujEY=;
+ b=MgJYEc/N/xzjo/sEYrKO1exdcA0sKpiLZYfLPm9kUC8fGD5G/nmTzxIlEZ+NBPMWmy
+ uT6PdIywrZsZDMLmFF38jfKPrgIGuCMOM606R7gWdZM2UwAfDYs6O9uQj0UUnHyv0g+y
+ UZHEFhk5dRj/JyWyxVsRYTjW6wSBlFmSHcLIFbOs+dX7g4ALGEKOBcj0TshUpU/SeIXS
+ 5DKz5K2OIppcQrBqY9VkFu+estwjVPxUgl6PGX4ziiZlidP+WvIBwgCVxMGi51nqWNyb
+ OLdqtIPzl0mP0ss6VgbAj/uYk8wdy6M/nb5Gve3OEp+0R+3x/lJHOS8ySijubsD4HuSk
+ zTFA==
+X-Gm-Message-State: ABy/qLbRAX131WTrhoymQoRs2NfOXXKqWh2Dq0CCBPVq6mJy4xextAQN
+ WSyAVQ/HZk+jhN0OdA3/+2Ya/A==
+X-Google-Smtp-Source: APBJJlHSo3NLEcq8EspmiI+lnUawZrPI1L3vPIMeyZZwq/akcGFMHKuU4k869TifJXdE0Dsp2R1r9A==
+X-Received: by 2002:a05:600c:c8:b0:3fb:ce46:c0b3 with SMTP id
+ u8-20020a05600c00c800b003fbce46c0b3mr15198426wmm.35.1689026203231; 
+ Mon, 10 Jul 2023 14:56:43 -0700 (PDT)
+Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
+ [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
+ d3-20020a5d6443000000b0031433443265sm480098wrw.53.2023.07.10.14.56.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 14:56:42 -0700 (PDT)
+Message-ID: <f1b0e780-b3b3-0592-b3da-f7295a0ef800@linaro.org>
+Date: Mon, 10 Jul 2023 23:56:38 +0200
 MIME-Version: 1.0
-References: <20230706045546.593605-3-leobras@redhat.com> <ZKbRRt8ESGsMz+o7@x1n>
- <CAJ6HWG4iUX=+7FTCkXitFfc1zFNJ9aR5PzDRyPLSZVq1Kos8fA@mail.gmail.com>
- <ZKcEjfTDDgDZWu9Q@x1n> <20230706144844-mutt-send-email-mst@kernel.org>
- <ZKcPr3gueuOM4LGY@x1n> <20230706155936-mutt-send-email-mst@kernel.org>
- <CAJ6HWG6hVBCRE3yVF-Yiu8om0YSOiu_iZHPT2KKuOiLbaYtkYw@mail.gmail.com>
- <20230710141622-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20230710141622-mutt-send-email-mst@kernel.org>
-From: Leonardo Bras Soares Passos <leobras@redhat.com>
-Date: Mon, 10 Jul 2023 18:48:02 -0300
-Message-ID: <CAJ6HWG7HHwf2HcDXJYbJgDRPhTWQDv8OF85mEe+Tpfn-cU7WAw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] pcie: Add hotplug detect state register to cmask
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lsoaresp@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH v3 03/20] hw/virtio: fix typo in VIRTIO_CONFIG_IRQ_IDX
+ comments
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, qemu-block@nongnu.org, Eric Blake
+ <eblake@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Hanna Reitz
+ <hreitz@redhat.com>, Erik Schilling <erik.schilling@linaro.org>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Fam Zheng <fam@euphon.net>,
+ virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>
+References: <20230710153522.3469097-1-alex.bennee@linaro.org>
+ <20230710153522.3469097-4-alex.bennee@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230710153522.3469097-4-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,94 +108,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 10, 2023 at 3:16=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
->
-> On Mon, Jul 10, 2023 at 02:49:05PM -0300, Leonardo Bras Soares Passos wro=
-te:
-> > On Thu, Jul 6, 2023 at 5:00=E2=80=AFPM Michael S. Tsirkin <mst@redhat.c=
-om> wrote:
-> > >
-> > > On Thu, Jul 06, 2023 at 03:02:07PM -0400, Peter Xu wrote:
-> > > > On Thu, Jul 06, 2023 at 02:50:20PM -0400, Michael S. Tsirkin wrote:
-> > > > > On Thu, Jul 06, 2023 at 02:14:37PM -0400, Peter Xu wrote:
-> > > > > > On Thu, Jul 06, 2023 at 03:07:40PM -0300, Leonardo Bras Soares =
-Passos wrote:
-> > > > > > > > I asked the same question, and I still keep confused: wheth=
-er there's a
-> > > > > > > > first bad commit?  Starting from when it fails?
-> > > > > > > >
-> > > > > > > > For example, is this broken on 6.0 binaries too with pc-q35=
--6.0?
-> > > > > > >
-> > > > > > > I tested for qemu 6.0, and it still reproduces, but have not =
-pursued
-> > > > > > > this any further.
-> > > > > >
-> > > > > > I see, thanks!
-> > > > > >
-> > > > > > But then do you know why it's never hit before?  I assume it me=
-ans this bug
-> > > > > > has been there for a long time.
-> > > > >
-> > > > > It's a race - you have to migrate after the bit has been set befo=
-re
-> > > > > the bit got cleared.
-> > > > > cmask is exactly for bits that qemu modifies itself.
-> > > >
-> > > > Michael, do you mean that Leo's patch is wrong?
-> > >
-> > >
-> > > I mean his patch is exactly right. cmask was designed with this
-> > > kind of use case in mind.
-> > > Will queue.
-> >
-> > Thanks Michael!
-> >
-> > Any chance this will get in on time for v8.1 ?
->
-> Yes, working on pull request now.
+On 10/7/23 17:35, Alex Bennée wrote:
+> Fixes: 544f0278af (virtio: introduce macro VIRTIO_CONFIG_IRQ_IDX)
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   hw/display/vhost-user-gpu.c    | 4 ++--
+>   hw/net/virtio-net.c            | 4 ++--
+>   hw/virtio/vhost-user-fs.c      | 4 ++--
+>   hw/virtio/vhost-user-gpio.c    | 2 +-
+>   hw/virtio/vhost-vsock-common.c | 4 ++--
+>   hw/virtio/virtio-crypto.c      | 4 ++--
+>   6 files changed, 11 insertions(+), 11 deletions(-)
 
-Thanks!
-
->
->
-> > >
-> > > > I just got understood why it got cleared - I think Leo didn't menti=
-on that
-> > > > the device was actually offlined before migration, IIUC that's why =
-the PDS
-> > > > bit got cleared, if PDS was trying to describe that of the slot.
-> > > >
-> > > > According to:
-> > > >
-> > > >     /* Used to enable checks on load. Note that writable bits are
-> > > >      * never checked even if set in cmask. */
-> > > >     uint8_t *cmask;
-> > > >
-> > > > It does sound reasonable to me to have PDS cleared when device offl=
-ined.
-> > > > Since hypervisor doesn't really know what the condition the slot pr=
-esence
-> > > > bit would be when migrating, it seems we should just clear the bit =
-in
-> > > > cmask.
-> > > >
-> > > > So with the last reply from Leo, the patch looks all right to me.  =
-It's
-> > > > just that as Leo mentioned, we should mention the offline process i=
-f that's
-> > > > the case, because that's definitely an important step to reproduce =
-the issue.
-> > > >
-> > > > Thanks,
-> > >
-> > > If you want to suggest more text to the commit log, for the benefit
-> > > of backporters, that is fine by me.
-> > >
-> > > > --
-> > > > Peter Xu
-> > >
->
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
