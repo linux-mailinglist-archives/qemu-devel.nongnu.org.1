@@ -2,92 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D382374CECA
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFDD574CEF2
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:48:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIlZ7-0002Pa-6N; Mon, 10 Jul 2023 03:44:13 -0400
+	id 1qIlbs-0003Lo-NU; Mon, 10 Jul 2023 03:47:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIlZ5-0002PM-Bn
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:44:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qIlbi-0003Ir-FE
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:46:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIlZ4-0003XU-2c
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:44:11 -0400
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qIlbg-0005Zo-B5
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:46:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688975049;
+ s=mimecast20190719; t=1688975206;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Wy8WA3rf7veCd32aVuVpB3Lbiz77mp+CStvv6eJKBM0=;
- b=FKI/TwgjqLSRPzz+LbIBElN8uVSCExNIDV0XAcvL5MZAcz7bq/rZim9Psa0VWoXeqXFS9N
- ptSOavLVfIB8lOZGpa9edMLk5mUVg9T8nBlVuvJUl8g8t3GpY9N7WBcA0hXLnA/V+OWdiU
- 4FxqXLjFqpxUNr3NWfvwuiCP9xe7DCA=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-290-VX-PPp3KPP2BSrtXo1sBTA-1; Mon, 10 Jul 2023 03:44:07 -0400
-X-MC-Unique: VX-PPp3KPP2BSrtXo1sBTA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-76597a79a0aso618980185a.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 00:44:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688975047; x=1691567047;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wy8WA3rf7veCd32aVuVpB3Lbiz77mp+CStvv6eJKBM0=;
- b=ifCPzuy0hgANA+yOkmVhRuz917ZmuSopEfa9nwgbyfEMB8P/pBd3jRLerrg+c9U6Jo
- KgkrKHVqCfaP++UjsmGSpkt3FqyDhdWOx7YCQ1o/z0S/S1nYCTSsN+8Uz88fvA+2Ng6A
- VEyWMB8KyPiEmKyTY2pUDKGu4LKws2eN6G9+J8Ivg/oVonO8bT2MwzvNdONsevkRW0rs
- ZDYZ8tgCGyxQyhGCMRE2f5QLZA9wucfD9ufIlar7dNuDvARNC74ugbDOV+eKbL0txSnX
- MwJYK+/3DMUOrgiQbvaFyPa7crP/qU3L+UXJhNDd2/ry+Y2D9hFmOJuVRfnYJlNz7pQ/
- nbMw==
-X-Gm-Message-State: ABy/qLb0ajajZOsT+rZJSn9EIPSUH6CqJCEz6TL7MKqNg1+0Su8W+boc
- VaEm15fyWtuiH55kpgXJB/8APELAPzBqHhMlckbrdNzE4fiH+pmYE3h4B6nAcXrTAy9+0V1ysQR
- kko4/GgDJOFEKrfw=
-X-Received: by 2002:a05:620a:29c2:b0:767:14d0:14ff with SMTP id
- s2-20020a05620a29c200b0076714d014ffmr15767050qkp.43.1688975046982; 
- Mon, 10 Jul 2023 00:44:06 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEBT7YGaxXUeZMFEC39lj6HOpUdbBbdNrHqKE2NqGNNbYEEjNzl7OwAyOO8cjccG2d3NF2iPA==
-X-Received: by 2002:a05:620a:29c2:b0:767:14d0:14ff with SMTP id
- s2-20020a05620a29c200b0076714d014ffmr15767041qkp.43.1688975046808; 
- Mon, 10 Jul 2023 00:44:06 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-116.web.vodafone.de.
- [109.43.179.116]) by smtp.gmail.com with ESMTPSA id
- d15-20020a05620a158f00b0076211938e93sm4631134qkk.46.2023.07.10.00.44.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 00:44:06 -0700 (PDT)
-Message-ID: <e64f03e9-d7ba-736c-a8d6-bae03c594f39@redhat.com>
-Date: Mon, 10 Jul 2023 09:44:02 +0200
+ content-transfer-encoding:content-transfer-encoding;
+ bh=j0Ff46ZO72M2RvI4lcnv+6N8MYXG4CA4nX2H9haRN4c=;
+ b=cAHqXh7FzJcAte/G7rltE06COL6umi76LlmelE+K6XwEx8AIeYtI9dI7IZbtjpRi8dL/YC
+ DVW8vHde8TXIhjZktELqdqYxrrfJOZQOUA0HQyjQlm2us9/N83VsAztADYbgHpY1dFYRxd
+ EvL9VvnytTjYxNbGqMRVM+cKyJyrFEY=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-407-xFraNnhTO02ylhg4BgKq5g-1; Mon, 10 Jul 2023 03:46:42 -0400
+X-MC-Unique: xFraNnhTO02ylhg4BgKq5g-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7AE851C17109;
+ Mon, 10 Jul 2023 07:46:42 +0000 (UTC)
+Received: from kostyanf14nb.redhat.com (unknown [10.45.225.233])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 23EC140C206F;
+ Mon, 10 Jul 2023 07:46:40 +0000 (UTC)
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH v4 0/4] QGA VSS Logging
+Date: Mon, 10 Jul 2023 10:46:35 +0300
+Message-Id: <20230710074639.996030-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 1/1] linux-headers: update to v6.5-rc1
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Tony Krowiak <akrowiak@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-References: <20230709212308.370699-1-clg@redhat.com>
- <20230709212308.370699-2-clg@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230709212308.370699-2-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,13 +79,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09/07/2023 23.23, Cédric Le Goater wrote:
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
+Print all VSS error and trace to debugger and stderr.
 
-Looks fine to me (I quickly double-checked that this is the correct update 
-to v6.5-rc1).
+v4 -> v3:
+  Use _countof instead of hardcoded array size
+  Use fputs instead of fprintf without formating
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+v3: https://patchew.org/QEMU/20230707092258.768420-1-kkostiuk@redhat.com/
+
+v3 -> v2:
+  Reformat few log lines
+  Move G_GNUC_PRINTF attribute to the declaration
+
+v2: https://patchew.org/QEMU/20230707083105.746811-1-kkostiuk@redhat.com/
+
+v2 -> v1:
+  Rename debug macro
+  Move log code to function
+
+v1: https://patchew.org/QEMU/20230705141205.525776-1-kkostiuk@redhat.com/
+
+
+Konstantin Kostiuk (4):
+  QGA VSS: Add wrapper to send log to debugger and stderr
+  QGA VSS: Replace 'fprintf(stderr' with PRINT_DEBUG
+  QGA VSS: Print error in err_set
+  QGA VSS: Add log in functions begin/end
+
+ qga/vss-win32/install.cpp   | 45 +++++++++++++++++++++++++++-----
+ qga/vss-win32/meson.build   |  2 +-
+ qga/vss-win32/provider.cpp  |  3 +++
+ qga/vss-win32/requester.cpp | 51 ++++++++++++++++++++++++++++++++-----
+ qga/vss-win32/vss-debug.cpp | 38 +++++++++++++++++++++++++++
+ qga/vss-win32/vss-debug.h   | 25 ++++++++++++++++++
+ 6 files changed, 150 insertions(+), 14 deletions(-)
+ create mode 100644 qga/vss-win32/vss-debug.cpp
+ create mode 100644 qga/vss-win32/vss-debug.h
+
+--
+2.34.1
 
 
