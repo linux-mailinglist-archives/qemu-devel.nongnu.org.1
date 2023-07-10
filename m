@@ -2,101 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3928374D316
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 12:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9FC74D326
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 12:17:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qInuQ-0001yv-Tk; Mon, 10 Jul 2023 06:14:22 -0400
+	id 1qInwo-00039f-La; Mon, 10 Jul 2023 06:16:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qInuL-0001tg-1h
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:14:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qInuI-00064X-VH
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:14:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688984054;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MPmY5uWpV/wIu1/DdPY/Nvq5LfdAzpY1qIIJNZNDJgQ=;
- b=cJhh/Y+KCBWAvNi5Y9fuvhpY7hwZNf6Vmqywvgs84LKJ9Rux1D4tZe6dDS0cdXw/92gsb/
- GHVnp0mo+XV1eXioxankJrVW0SOmo2c08+vV6gqqJJld/IGXS8l8iHWQHIVJo3qJRDI1IS
- nSkQCYE0GS5DfcQEa/FgmC2cw2SsI14=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-tDMSSYbTPxGSp-NQUMUgVw-1; Mon, 10 Jul 2023 06:14:13 -0400
-X-MC-Unique: tDMSSYbTPxGSp-NQUMUgVw-1
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-262ffe98bcfso5146328a91.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 03:14:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qInwi-00039B-IF
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:16:44 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qInwf-0006dj-DH
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:16:43 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-307d58b3efbso4124829f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 03:16:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688984199; x=1691576199;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=XA1NSd1XU3oQYbF2tQtXXAlMDpTgvW5YjFDYuhmiIlI=;
+ b=Nq2lNh1y/HUKpI89VT+Rqh3cF04/1CGzP0lYY4Vz9gLnhHSNX45UVBa0eIQr9hUcF5
+ 90GZHkDNRMsqNip2OKvyEb5fS+ZcVB5XGyfkDb5wSaYPVXct4EDaa4OKQjUlTJ+RvF5z
+ eZ5Hczq5UsFRL8JfwsbUkxM1X+f2E/JOzKKgo+/+UWwiBnkJMJwhndkllq/XN6SdSSAx
+ /o4jPQq9n2tO7aw364zEKgKn8GJFzWFMMcrRA2b4TeTkKG14X4c6THdqnw5AKCd63ip2
+ eeZv/BOZGDyRF73EQJqAeEDW+KxGYFb0WERDz4zo1AqkycfGSqUAckwn7yAbLExSE2q+
+ 6Yrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688984050; x=1691576050;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MPmY5uWpV/wIu1/DdPY/Nvq5LfdAzpY1qIIJNZNDJgQ=;
- b=KqthZw5+pDPIqTY0b4G6hZC8EeSQasju2typrXf0d1G6xPRahSZmmPeV6aRzTg9rIe
- FfGc9wlFhonpF+9dwMj4Au3zoypzNZEWq3XRoPoh+lUXNI+Gfm6zy/nMPg2vm0FyJ6hb
- 8IhIZjYYBCl8CZiyJDs8+ILiddoeJZqfvwINTp0mRv2k+5WWsZnxwkVw9+OGdgz70M/h
- H/md8OR8RD3zeDDyx0HUTo9idDMFn2CwSAEzekL/IB/Y2aolQVlcSoXrv4KnaIpSjlGI
- ucG/VTbJ8l3LXwgNMIl82IKOLjYKZ/7DO6bVJeMYc4l3VMEBEUgpQxpDc6lcINTgpCDU
- jcTQ==
-X-Gm-Message-State: ABy/qLaOlH68WQuGZoF/c1EuFPjH22GVy7NeSkxV9f+LVu5pSsjkR51R
- qy4EqQsLKU7RLqZ31eosmN96E0pwXCNvTsYvVmAjZdWM8huIJ2+JR0vUDzCBvFnm/qltWtUUI3s
- R4mgX8QcFPkrgAeU=
-X-Received: by 2002:a17:90a:d155:b0:263:40e1:d4d9 with SMTP id
- t21-20020a17090ad15500b0026340e1d4d9mr9655492pjw.47.1688984050434; 
- Mon, 10 Jul 2023 03:14:10 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEp6+UKpunt1EqOXqjYVg0oBfIn/byV7XFTv6Di0Rl9MORXYHeZKRi2r8NWBxZAB5TIa3Yk0Q==
-X-Received: by 2002:a17:90a:d155:b0:263:40e1:d4d9 with SMTP id
- t21-20020a17090ad15500b0026340e1d4d9mr9655473pjw.47.1688984049935; 
- Mon, 10 Jul 2023 03:14:09 -0700 (PDT)
-Received: from smtpclient.apple ([203.212.247.118])
- by smtp.gmail.com with ESMTPSA id
- i14-20020a17090acf8e00b0026596b8f33asm4231754pju.40.2023.07.10.03.14.06
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 10 Jul 2023 03:14:09 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v5 2/2] pcie: Specify 0 for ARI next function numbers
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230710054117-mutt-send-email-mst@kernel.org>
-Date: Mon, 10 Jul 2023 15:44:04 +0530
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- qemu-devel <qemu-devel@nongnu.org>, qemu-block@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D311E48F-1283-4A6D-895F-4E466717543B@redhat.com>
-References: <20230705022421.13115-1-akihiko.odaki@daynix.com>
- <20230705022421.13115-3-akihiko.odaki@daynix.com>
- <E8241AB3-F645-4697-A5AC-9B6BC897B432@redhat.com>
- <20230710051539-mutt-send-email-mst@kernel.org>
- <B82575EB-132B-4B15-B9EC-89B947826367@redhat.com>
- <20230710054117-mutt-send-email-mst@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+ d=1e100.net; s=20221208; t=1688984199; x=1691576199;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XA1NSd1XU3oQYbF2tQtXXAlMDpTgvW5YjFDYuhmiIlI=;
+ b=SB/58L4EK2yIlRDjVMbv1yiYTLg2xfF72GaF+HsOpfcNkU1gGkM17/aapq6bBlq+es
+ 9A8jkPGmM/43ualo4pz41woUzu4Q4Zww9In2dBJam/IrBHTPDv1BAdQ8lUKwYEl7uVqa
+ LSfXCrCPAGDzYjspYoi/eylfe/nPcuz+gwrTalAimbyRA69hl5ndquf+TNAzGasZfKrn
+ Cq+VkOg2DJ38JnJe/6+xkShz/W/Q4viHvKaWznJAQbFb+FSoicHyHDjEEPAUxeO9Zhfk
+ YODDtA0Q5zu++YP94nnfCTMkUX2IvN7x8KS7yy0lmlZc1aHHss8/pnQaRKH9uGVteW2l
+ Owtw==
+X-Gm-Message-State: ABy/qLZUv1CwEFBK4WTxxhLZGSty5Zt/IIXoOl2Fod4sl91uNUa9h3cf
+ ijmK0Wlda4xK5iIYlYIVSU4c5EcpDcduzCL15u9MzA==
+X-Google-Smtp-Source: APBJJlEE3e5WhxvgjkpvGQHjxCTYmuHWKCfboE35H0OonPlcerSXkVq/v9ON+FUhAKjJn6khQv13VA==
+X-Received: by 2002:a5d:518e:0:b0:313:f98a:1fd3 with SMTP id
+ k14-20020a5d518e000000b00313f98a1fd3mr9276119wrv.27.1688984199649; 
+ Mon, 10 Jul 2023 03:16:39 -0700 (PDT)
+Received: from [192.168.229.175] (70.red-88-28-30.dynamicip.rima-tde.net.
+ [88.28.30.70]) by smtp.gmail.com with ESMTPSA id
+ i6-20020a5d6306000000b00313de682eb3sm11311305wru.65.2023.07.10.03.16.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 03:16:39 -0700 (PDT)
+Message-ID: <52b5a36a-5744-0ac9-a3f5-0dbd247410ed@linaro.org>
+Date: Mon, 10 Jul 2023 12:16:35 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] hw/sd/sdhci: Do not force sdhci_mmio_*_ops onto all SD
+ controllers
+Content-Language: en-US
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Guenter Roeck <linux@roeck-us.net>, qemu-block@nongnu.org,
+ Bin Meng <bin.meng@windriver.com>
+References: <20230709080950.92489-1-shentey@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230709080950.92489-1-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,148 +94,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 9/7/23 10:09, Bernhard Beschow wrote:
+> Since commit c0a55a0c9da2 "hw/sd/sdhci: Support big endian SD host controller
+> interfaces" sdhci_common_realize() forces all SD card controllers to use either
+> sdhci_mmio_le_ops or sdhci_mmio_be_ops, depending on the "endianness" property.
+> However, there are device models which use different MMIO ops: TYPE_IMX_USDHC
+> uses usdhc_mmio_ops and TYPE_S3C_SDHCI uses sdhci_s3c_mmio_ops.
+> 
+> Forcing sdhci_mmio_le_ops breaks SD card handling on the "sabrelite" board, for
+> example. Fix this by defaulting the io_ops to little endian and switch to big
+> endian in sdhci_common_realize() only if there is a matchig big endian variant
+> available.
+> 
+> Fixes: c0a55a0c9da2 ("hw/sd/sdhci: Support big endian SD host controller
+> interfaces")
+> 
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>   hw/sd/sdhci.c | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
+> index 6811f0f1a8..362c2c86aa 100644
+> --- a/hw/sd/sdhci.c
+> +++ b/hw/sd/sdhci.c
+> @@ -1382,6 +1382,8 @@ void sdhci_initfn(SDHCIState *s)
+>   
+>       s->insert_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, sdhci_raise_insertion_irq, s);
+>       s->transfer_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, sdhci_data_transfer, s);
+> +
+> +    s->io_ops = &sdhci_mmio_le_ops;
+>   }
+>   
+>   void sdhci_uninitfn(SDHCIState *s)
+> @@ -1399,9 +1401,13 @@ void sdhci_common_realize(SDHCIState *s, Error **errp)
+>   
 
+What about simply keeping the same code guarded with 'if (!s->io_ops)'?
 
-> On 10-Jul-2023, at 3:14 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
->=20
-> On Mon, Jul 10, 2023 at 02:49:55PM +0530, Ani Sinha wrote:
->>=20
->>=20
->>> On 10-Jul-2023, at 2:46 PM, Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->>>=20
->>> On Mon, Jul 10, 2023 at 01:21:50PM +0530, Ani Sinha wrote:
->>>>=20
->>>>=20
->>>>> On 05-Jul-2023, at 7:54 AM, Akihiko Odaki =
-<akihiko.odaki@daynix.com> wrote:
->>>>>=20
->>>>> The current implementers of ARI are all SR-IOV devices. The ARI =
-next
->>>>> function number field is undefined for VF according to PCI Express =
-Base
->>>>> Specification Revision 5.0 Version 1.0 section 9.3.7.7. The PF =
-should
->>>>> end the linked list formed with the field by specifying 0 =
-according to
->>>>> section 7.8.7.2.
->>>>=20
->>>> Section 7.8.7.2 ARI Capability Register (Offset 04h), I see only =
-this
->>>>=20
->>>> Next Function Number - This field indicates the Function Number of =
-the next higher numbered Function in the Device, or 00h if there are no =
-higher numbered Functions. Function 0 starts this linked list of =
-Functions.
->>>>=20
->>>> I do not see anything specifically for PF. What am I missing?
->>>=20
->>> This is *only* for PFs.
->>=20
->> I think this covers both SRIOV and non SRIOV cases both. This is a
->> general case for all devices, PF or other non-SRIOV capable devices.
->=20
-> "this" being what?
-
-=E2=80=9Cthis=E2=80=9D is the following line I quoted above:
-
-"Next Function Number - This field indicates the Function Number of the =
-next higher numbered Function in the Device, or 00h if there are no =
-higher numbered Functions. Function 0 starts this linked list of =
-Functions.=E2=80=9D
-
-I think it applies for all devices in general (except VFs).
-
-> I'm talking about the pci spec text
-> you quoted.
->=20
-> check out the sriov spec:
-> Next Function Number =E2=80=93 VFs are located using First
-> VF Offset (see Section 3.3.9) and VF Stride (see
-> Section 3.3.10).
->=20
->=20
->=20
->>> There's separate text explaining that
->>> VFs use NumVFs VFOffset and VFStride.
->>>=20
->>>=20
->>>>>=20
->>>>> For migration, the field will keep having 1 as its value on the =
-old
->>>>> virt models.
->>>>>=20
->>>>> Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in =
-docs/pcie_sriov.txt")
->>>>> Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
->>>>> Fixes: 3a977deebe ("Intrdocue igb device emulation")
->>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>>>> ---
->>>>> include/hw/pci/pci.h | 2 ++
->>>>> hw/core/machine.c    | 1 +
->>>>> hw/pci/pci.c         | 2 ++
->>>>> hw/pci/pcie.c        | 2 +-
->>>>> 4 files changed, 6 insertions(+), 1 deletion(-)
->>>>>=20
->>>>> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
->>>>> index e6d0574a29..9c5b5eb206 100644
->>>>> --- a/include/hw/pci/pci.h
->>>>> +++ b/include/hw/pci/pci.h
->>>>> @@ -209,6 +209,8 @@ enum {
->>>>>   QEMU_PCIE_CAP_CXL =3D (1 << QEMU_PCIE_CXL_BITNR),
->>>>> #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
->>>>>   QEMU_PCIE_ERR_UNC_MASK =3D (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
->>>>> +#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
->>>>> +    QEMU_PCIE_ARI_NEXTFN_1 =3D (1 << =
-QEMU_PCIE_ARI_NEXTFN_1_BITNR),
->>>>> };
->>>>>=20
->>>>> typedef struct PCIINTxRoute {
->>>>> diff --git a/hw/core/machine.c b/hw/core/machine.c
->>>>> index 46f8f9a2b0..f0d35c6401 100644
->>>>> --- a/hw/core/machine.c
->>>>> +++ b/hw/core/machine.c
->>>>> @@ -41,6 +41,7 @@
->>>>>=20
->>>>> GlobalProperty hw_compat_8_0[] =3D {
->>>>>   { "migration", "multifd-flush-after-each-section", "on"},
->>>>> +    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
->>>>> };
->>>>> const size_t hw_compat_8_0_len =3D G_N_ELEMENTS(hw_compat_8_0);
->>>>>=20
->>>>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->>>>> index e2eb4c3b4a..45a9bc0da8 100644
->>>>> --- a/hw/pci/pci.c
->>>>> +++ b/hw/pci/pci.c
->>>>> @@ -82,6 +82,8 @@ static Property pci_props[] =3D {
->>>>>   DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
->>>>>   DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
->>>>>                   QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
->>>>> +    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, =
-cap_present,
->>>>> +                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
->>>>>   DEFINE_PROP_END_OF_LIST()
->>>>> };
->>>>>=20
->>>>> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
->>>>> index 9a3f6430e8..cf09e03a10 100644
->>>>> --- a/hw/pci/pcie.c
->>>>> +++ b/hw/pci/pcie.c
->>>>> @@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice =
-*bridge_dev)
->>>>> /* ARI */
->>>>> void pcie_ari_init(PCIDevice *dev, uint16_t offset)
->>>>> {
->>>>> -    uint16_t nextfn =3D 1;
->>>>> +    uint16_t nextfn =3D dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 =
-? 1 : 0;
->>>>>=20
->>>>>   pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
->>>>>                       offset, PCI_ARI_SIZEOF);
->>>>> --=20
->>>>> 2.41.0
->>>>>=20
->>>=20
->=20
+>       switch (s->endianness) {
+>       case DEVICE_LITTLE_ENDIAN:
+> -        s->io_ops = &sdhci_mmio_le_ops;
+> +        /* s->io_ops is little endian by default */
+>           break;
+>       case DEVICE_BIG_ENDIAN:
+> +        if (s->io_ops != &sdhci_mmio_le_ops) {
+> +            error_setg(errp, "SD controller doesn't support big endianness");
+> +            return;
+> +        }
+>           s->io_ops = &sdhci_mmio_be_ops;
+>           break;
+>       default:
 
 
