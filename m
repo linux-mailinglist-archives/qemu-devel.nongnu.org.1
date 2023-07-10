@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA17574D5DB
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 737FE74D5D8
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:39:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIq6R-0005sl-J7; Mon, 10 Jul 2023 08:34:55 -0400
+	id 1qIq6O-0005g2-Rg; Mon, 10 Jul 2023 08:34:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq63-0004x3-Sj
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:33 -0400
-Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ id 1qIq69-0005QR-Mj
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:38 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq62-0004vG-55
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:31 -0400
-Received: by mail-ot1-x334.google.com with SMTP id
- 46e09a7af769-6b74e2d8c98so3904274a34.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:34:29 -0700 (PDT)
+ id 1qIq65-0004wA-1X
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:37 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-66f5faba829so2362967b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:34:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688992468; x=1691584468;
+ d=gmail.com; s=20221208; t=1688992471; x=1691584471;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9jIQ17HgEAmcxphceY4+zuhODkr/n6TL4LQpN9cQK6Y=;
- b=Wzfiu7oSQAjh/KC4NWRpSJAI+P0/8jeLloFBBseb21eV0VsHWyzNeGAjs2PZTrXSC7
- iYjEg5dtL4vtiRe59QmXwrGQLuEMPaZwjlCZQ+BwyCR0FXF0Nslc0T6zCbMzJaqopj6F
- CF9CBnH9DCjKWjbfLRVYwg8WW0IEBOi+EAtDXeLF0Zz5/0UJo10nQzspQgUSQuOpe2VW
- rLlY55HYGBDS0Ypg+H5h4eaImLjVt1waK+cJQP/wrIgKo3HSlDRp1zuWCSlkMLkUC280
- vyvpdXtIguxAX6F7sYHoPCcTnla5jCiaFBihvaWsC932ehiRedRPhb6GRowMawzTxrmN
- DRjA==
+ bh=iDRmXQvnLdoVOCAI6/ugg5UDxSskc2Ti6OsoBEXNbcQ=;
+ b=k3gkueiftVEaLGUj6g+8PzlQTEC8SJZm3bs/5DlkUZrnGyPATGoGs2FawPxeDTHR14
+ 4wZdaoEczKmyrbf33hQpyFSqCZZ5V1NAY60UPZh+iZawunM3wk6n6Q/JX/SFKQnrGGCq
+ OAcAmg0/owvrLUQ0/+GA17k8WnSVGh3TidvRrdK9QOKkrtCDEhF/cqno1U30bg825D/V
+ FwDeywJTP0ix1pEi1mjoh5hLa2/ZvaM7eKHa4wXKWx48KxMKhSDU7qtm+da6HSxfyIlN
+ JbiYAzDLrAIluUB78igkIfW5nYn6J6ulU2K0f+3RDbpf1/6Dq5B2FqeNz9AG4Zfdx/8P
+ tnsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688992468; x=1691584468;
+ d=1e100.net; s=20221208; t=1688992471; x=1691584471;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9jIQ17HgEAmcxphceY4+zuhODkr/n6TL4LQpN9cQK6Y=;
- b=E49Mo0LtVoGTpEViGiOLpI0ThQqKQdZBjFIersBEi+Glt2J6+bv3un+Ec4IASder/u
- DAZy+aXy5yCouQ7xxl7+gnvzjFJ5voC31uuXZXPri9ZkGHKNsSI3QYtYRUwPSsQpFyhm
- bWH94pk2kZg6fDmVCWQBoFoEdkXbWsBZg1rI6uln6xuTQ/tBWIumLpEPY4xKK2Jm9Kwd
- JkMdlH5GJck8B/TZszEVx1Rvd8wUIStr8mF08ByN4TOFhYNDZTMZZ9Kq6riqPYOD+9zH
- ryUtC+zq9UowEHmQaBOTMcL9zcs6DkAzKJF/jtfAqS4ChkTckFAnZr4B+/uH/hmuLsG/
- r6iQ==
-X-Gm-Message-State: ABy/qLbf8XLnB5EWzwx991qxLiXky+w+518KBXqDIj9jXwhYJhe9y3V4
- gKTpNYAw9Mm8fNayfuvZPq2xz7gJgfx0fg==
-X-Google-Smtp-Source: APBJJlEQg9zmTXjv0R0IhsDdmYsDxC5OIh/wSWKFwuRvPHoFnM8rfJSfUKBvzpG0Xv5u0J1aIngeFw==
-X-Received: by 2002:a9d:481a:0:b0:6b9:1917:b4af with SMTP id
- c26-20020a9d481a000000b006b91917b4afmr8844989otf.33.1688992468353; 
- Mon, 10 Jul 2023 05:34:28 -0700 (PDT)
+ bh=iDRmXQvnLdoVOCAI6/ugg5UDxSskc2Ti6OsoBEXNbcQ=;
+ b=BY2I42sbxPA6eXB8+w/f2P6Z12X1Aar71apNSudWzKLCj9HRVLxjUdtoxC8o0wz1ly
+ EPnCe6JXV8m5zFEk9e2SfkaNVDYbCldZBil1V0bin4ddjqfHgSUdHue7SL9MEqRZxvwn
+ BXY5rK2mtePaK0dW8yYVctxQQCH2OsHLwVzRC/6JXLaC3+Da2IwsyaDpGDPYRrc7X5f+
+ p20vP0FJ+XZG6ON/eU3Pf9ZsdgfLUv9A6m9RJEYHlxq+sGubUbrJ7pdz+oOFxVpR+PWl
+ /uwAqyPWcVFomiPy/vGv/XG4muYoB3dJLUgc0xtRxpAZejvA7yqUDdcQvMWqvO3Lhyjo
+ mtJQ==
+X-Gm-Message-State: ABy/qLZ7rL+vxhLc1u3lr2HqyEppUE+uUBfbRitqDXabCzfzP0iFhtMu
+ XhDs0SBdi4Gn8n5WgoHg5TUmWIB0XZhfww==
+X-Google-Smtp-Source: APBJJlEmCBZqvlrDSsiZArkoMr6+47Xrued66uefYm5UnY8KL/rlI89O73IJhcjTu7YhrnownUkcNg==
+X-Received: by 2002:a05:6a00:2d1c:b0:66b:8d48:8e64 with SMTP id
+ fa28-20020a056a002d1c00b0066b8d488e64mr12268629pfb.12.1688992471546; 
+ Mon, 10 Jul 2023 05:34:31 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.34.25
+ i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.34.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 05:34:27 -0700 (PDT)
+ Mon, 10 Jul 2023 05:34:31 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 37/54] target/riscv/cpu.c: restrict 'mvendorid' value
-Date: Mon, 10 Jul 2023 22:31:48 +1000
-Message-Id: <20230710123205.2441106-38-alistair.francis@wdc.com>
+Subject: [PULL 38/54] target/riscv/cpu.c: restrict 'mimpid' value
+Date: Mon, 10 Jul 2023 22:31:49 +1000
+Message-Id: <20230710123205.2441106-39-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230710123205.2441106-1-alistair.francis@wdc.com>
 References: <20230710123205.2441106-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
- envelope-from=alistair23@gmail.com; helo=mail-ot1-x334.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,80 +99,81 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-We're going to change the handling of mvendorid/marchid/mimpid by the
-KVM driver. Since these are always present in all CPUs let's put the
-same validation for everyone.
+Following the same logic used with 'mvendorid' let's also restrict
+'mimpid' for named CPUs. Generic CPUs keep setting the value freely.
 
-It doesn't make sense to allow 'mvendorid' to be different than it
-is already set in named (vendor) CPUs. Generic (dynamic) CPUs can have
-any 'mvendorid' they want.
+Note that we're getting rid of the default RISCV_CPU_MARCHID value. The
+reason is that this is not a good default since it's dynamic, changing
+with with every QEMU version, regardless of whether the actual
+implementation of the CPU changed from one QEMU version to the other.
+Named CPU should set it to a meaningful value instead and generic CPUs
+can set whatever they want.
 
-Change 'mvendorid' to be a class property created via
-'object_class_property_add', instead of using the DEFINE_PROP_UINT32()
-macro. This allow us to define a custom setter for it that will verify,
-for named CPUs, if mvendorid is different than it is already set by the
-CPU. This is the error thrown for the 'veyron-v1' CPU if 'mvendorid' is
-set to an invalid value:
+This is the error thrown for an invalid 'mimpid' value for the veyron-v1
+CPU:
 
-$ qemu-system-riscv64 -M virt -nographic -cpu veyron-v1,mvendorid=2
-qemu-system-riscv64: can't apply global veyron-v1-riscv-cpu.mvendorid=2:
-    Unable to change veyron-v1-riscv-cpu mvendorid (0x61f)
+$ ./qemu-system-riscv64 -M virt -nographic -cpu veyron-v1,mimpid=2
+qemu-system-riscv64: can't apply global veyron-v1-riscv-cpu.mimpid=2:
+    Unable to change veyron-v1-riscv-cpu mimpid (0x111)
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230706101738.460804-4-dbarboza@ventanamicro.com>
+Message-Id: <20230706101738.460804-5-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ target/riscv/cpu.c | 34 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 6232e6513b..a778241d9f 100644
+index a778241d9f..477f8f8f97 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1812,7 +1812,6 @@ static void riscv_cpu_add_user_properties(Object *obj)
- static Property riscv_cpu_properties[] = {
+@@ -43,7 +43,6 @@
+ #define RISCV_CPU_MARCHID   ((QEMU_VERSION_MAJOR << 16) | \
+                              (QEMU_VERSION_MINOR << 8)  | \
+                              (QEMU_VERSION_MICRO))
+-#define RISCV_CPU_MIMPID    RISCV_CPU_MARCHID
+ 
+ static const char riscv_single_letter_exts[] = "IEMAFDQCPVH";
+ 
+@@ -1813,7 +1812,6 @@ static Property riscv_cpu_properties[] = {
      DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
  
--    DEFINE_PROP_UINT32("mvendorid", RISCVCPU, cfg.mvendorid, 0),
      DEFINE_PROP_UINT64("marchid", RISCVCPU, cfg.marchid, RISCV_CPU_MARCHID),
-     DEFINE_PROP_UINT64("mimpid", RISCVCPU, cfg.mimpid, RISCV_CPU_MIMPID),
+-    DEFINE_PROP_UINT64("mimpid", RISCVCPU, cfg.mimpid, RISCV_CPU_MIMPID),
  
-@@ -1899,6 +1898,40 @@ static const struct TCGCPUOps riscv_tcg_ops = {
- #endif /* !CONFIG_USER_ONLY */
- };
+ #ifndef CONFIG_USER_ONLY
+     DEFINE_PROP_UINT64("resetvec", RISCVCPU, env.resetvec, DEFAULT_RSTVEC),
+@@ -1932,6 +1930,35 @@ static void cpu_get_mvendorid(Object *obj, Visitor *v, const char *name,
+     visit_type_bool(v, name, &value, errp);
+ }
  
-+static bool riscv_cpu_is_dynamic(Object *cpu_obj)
-+{
-+    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
-+}
-+
-+static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
-+                              void *opaque, Error **errp)
++static void cpu_set_mimpid(Object *obj, Visitor *v, const char *name,
++                           void *opaque, Error **errp)
 +{
 +    bool dynamic_cpu = riscv_cpu_is_dynamic(obj);
 +    RISCVCPU *cpu = RISCV_CPU(obj);
-+    uint32_t prev_val = cpu->cfg.mvendorid;
-+    uint32_t value;
++    uint64_t prev_val = cpu->cfg.mimpid;
++    uint64_t value;
 +
-+    if (!visit_type_uint32(v, name, &value, errp)) {
++    if (!visit_type_uint64(v, name, &value, errp)) {
 +        return;
 +    }
 +
 +    if (!dynamic_cpu && prev_val != value) {
-+        error_setg(errp, "Unable to change %s mvendorid (0x%x)",
++        error_setg(errp, "Unable to change %s mimpid (0x%" PRIu64 ")",
 +                   object_get_typename(obj), prev_val);
 +        return;
 +    }
 +
-+    cpu->cfg.mvendorid = value;
++    cpu->cfg.mimpid = value;
 +}
 +
-+static void cpu_get_mvendorid(Object *obj, Visitor *v, const char *name,
-+                              void *opaque, Error **errp)
++static void cpu_get_mimpid(Object *obj, Visitor *v, const char *name,
++                           void *opaque, Error **errp)
 +{
-+    bool value = RISCV_CPU(obj)->cfg.mvendorid;
++    bool value = RISCV_CPU(obj)->cfg.mimpid;
 +
 +    visit_type_bool(v, name, &value, errp);
 +}
@@ -180,12 +181,12 @@ index 6232e6513b..a778241d9f 100644
  static void riscv_cpu_class_init(ObjectClass *c, void *data)
  {
      RISCVCPUClass *mcc = RISCV_CPU_CLASS(c);
-@@ -1930,6 +1963,9 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
-     cc->gdb_get_dynamic_xml = riscv_gdb_get_dynamic_xml;
-     cc->tcg_ops = &riscv_tcg_ops;
+@@ -1966,6 +1993,9 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
+     object_class_property_add(c, "mvendorid", "uint32", cpu_get_mvendorid,
+                               cpu_set_mvendorid, NULL, NULL);
  
-+    object_class_property_add(c, "mvendorid", "uint32", cpu_get_mvendorid,
-+                              cpu_set_mvendorid, NULL, NULL);
++    object_class_property_add(c, "mimpid", "uint64", cpu_get_mimpid,
++                              cpu_set_mimpid, NULL, NULL);
 +
      device_class_set_props(dc, riscv_cpu_properties);
  }
