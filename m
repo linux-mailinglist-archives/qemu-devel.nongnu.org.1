@@ -2,83 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F4B74D9CE
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 17:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7025374DA06
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 17:38:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIshv-0007l4-FJ; Mon, 10 Jul 2023 11:21:47 -0400
+	id 1qIsvI-0005Zs-3I; Mon, 10 Jul 2023 11:35:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qIsho-0007jl-2x
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:21:40 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qIsv9-0005Y4-Vm
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:35:28 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qIshl-0007w0-EB
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:21:39 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fbc5d5742eso51659905e9.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 08:21:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qIsv7-0004hV-OK
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:35:27 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fbc63c2e84so51838725e9.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 08:35:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689002494; x=1691594494;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=d9OpS0FI8bXPcgU4kwQax5JMttcbv9wmKGoxNnD4iVQ=;
- b=VnD6288+t1gQ3MpqRnDe48Mbmr1nJU2clWeTSY4D8Zte9kJMZjAmPWUJ/YxD9OTwOu
- n6Gp60DPU/D0E5AVF/x57WskwT/5uD6YTOuyeFLnFb/qpCNcEyreCQ1uroGkZmX/+jj7
- nFMmbXul+fl9Q8AT9Idxzabvv9MS7cHYiPZPSif+V7PU1824TQxgtHosVZg7HKznzXuY
- Oo61RjESfpc/eDH4c8mPWautzgJaOTMubgitIijo8RPBEmX4/ZUNsmBtKmpH5pvUhITM
- XKPIzLj0zdiQWTgiaD0GST53ikyzhn/6zg/4vDMVqClwrJ3p+4Zj5kZAe0qYF8Ne8D7I
- joyw==
+ d=linaro.org; s=google; t=1689003324; x=1691595324;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XSMILEeS8Isq93UXfxuGWCtLXuOlbMWTCm5hqyU44q8=;
+ b=p3QnVk6XCI1jjoYWAlbDymHSAu4DWDLkyu/t41kl9JmEO64qA0hcSoY3pm/oX0EcvK
+ R5U6rsqyKhXHms1yeU3S9QDPaaka0tsLyZFYjuNpmYRdx0qxu+LuudT9bP7QmjST1Rtk
+ WnPbfBRne/JGnMiL3RVx7vvsTBh01aSi+pGCLTdjBtGdrAzjh0uBzB6zbcxXTQK8PZZF
+ BKuW05FAmVCYtnSvpmncK+luBn4mYo6FloNze/XrvirPzLYzNlCRoEhS3XYaUY5T6o5A
+ VUE2GBMbixCDdzMqUcdlAh+sz7cKbWTzEXVuWm5d1MX9oVMeRVE135r0k24gBzdjsJck
+ U4Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689002494; x=1691594494;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=d9OpS0FI8bXPcgU4kwQax5JMttcbv9wmKGoxNnD4iVQ=;
- b=Z1LHQemDrrNidN3md4PK59G/ZwLPySQ/4KFsuw9VSetD250/BTqp2WM/JuFBAITTWu
- xoRIZbffjtUOuuvs4GEAa40SMtjIFlIS2iTST7nyxQ9ZsF+dLuowoqVRuIPUBIe3MfH/
- Bt+u+iw8pUER01Qhm9NPJtMZYG+YsydEMyd3AmAWjVqRvsuWmNWRq4QTCi2jNeXtKaVy
- LozDEuI4rF6J8T+RUWll36XEMy7Blul0XrXfEnbFZv5wbof3XSjY9FFKqH/yORVMETUy
- Lio8Xy+zHzPz5JMYcRJm8lKnu+kuRr9Jc+rYazd7wsNPZnU/qt5DELSRoDY0pnrT/EMf
- VoZw==
-X-Gm-Message-State: ABy/qLbRSPiaHS6GnvUKghUtKGX3XL7z6jObwc+F5VLCzn7pPaU5Tw7x
- y/VOknTdsdtEUDFo0ZZ2qdQ5cQ==
-X-Google-Smtp-Source: APBJJlEtjQ2TLQI8txoZrcfx4bpl3Lrour7jcaZWOWloQjAza16VXQ3P3qLDbDZuyw/NJlS5sh9kxw==
-X-Received: by 2002:a05:600c:c8:b0:3fb:ce46:c0b3 with SMTP id
- u8-20020a05600c00c800b003fbce46c0b3mr14205833wmm.35.1689002494546; 
- Mon, 10 Jul 2023 08:21:34 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ d=1e100.net; s=20221208; t=1689003324; x=1691595324;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XSMILEeS8Isq93UXfxuGWCtLXuOlbMWTCm5hqyU44q8=;
+ b=U5IIo1kdYQEnMTXN9A1Hf283ixPHERLRzGHOe7hoCKIRIreRJvN7hvpWknUrqL3uPW
+ karjkYsRds8SVe2Avs1jZv5LuXa3AA4sT6JvKQzJlmaaEv9dfjiAv8qEcO5ZwLihGj+m
+ LSmSVbrrqoj5yfaSASEZXYIqTp9a/18j9JFAor8IZTmeeTtv85IlbZHomUNyjVRxZkH6
+ 8xLsx+fWdZItg+LgLAR/nnJHzZI7QQzqsHjJy3uA4TGFhmFrFisLmU/YYMLkSEEB8WXU
+ am6LKVuSuO9MEgp8TfocVvMGgzMGAD85is8OKzuOwRWqj5Kr4a8mEK8yzTTyGCdetxqu
+ KD2Q==
+X-Gm-Message-State: ABy/qLb0F+IYC2gs/hf9kFpdUrNA+bFJMwFHXjbvtsZTRk2qPbMm36qB
+ SXFNoWdzv9vzRNVDhdStGfP4FA==
+X-Google-Smtp-Source: APBJJlGRHnDsdQqGN0VZzOWJ7uSJ4dIlrxGDNY99mxLMW8wH4TW9LMDPKJPpczP13abJvryzlKc/JA==
+X-Received: by 2002:a1c:7712:0:b0:3fa:71db:56ff with SMTP id
+ t18-20020a1c7712000000b003fa71db56ffmr12555990wmi.40.1689003323799; 
+ Mon, 10 Jul 2023 08:35:23 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- v24-20020a05600c215800b003fa95f328afsm10578798wml.29.2023.07.10.08.21.33
+ l15-20020a1c790f000000b003fc01f7b415sm8443935wme.39.2023.07.10.08.35.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 08:21:34 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH for-8.1 3/3] target/arm/ptw.c: Account for FEAT_RME when
- applying {N}SW, SA bits
-Date: Mon, 10 Jul 2023 16:21:30 +0100
-Message-Id: <20230710152130.3928330-4-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230710152130.3928330-1-peter.maydell@linaro.org>
-References: <20230710152130.3928330-1-peter.maydell@linaro.org>
+ Mon, 10 Jul 2023 08:35:22 -0700 (PDT)
+Received: from zen.lan (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 324141FFBB;
+ Mon, 10 Jul 2023 16:35:22 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Erik Schilling <erik.schilling@linaro.org>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Fam Zheng <fam@euphon.net>,
+ virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH v3 00/20] virtio: add vhost-user-generic,
+ reduce c&p and support standalone
+Date: Mon, 10 Jul 2023 16:35:02 +0100
+Message-Id: <20230710153522.3469097-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,56 +109,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In get_phys_addr_twostage() the code that applies the effects of
-VSTCR.{SA,SW} and VTCR.{NSA,NSW} only updates result->f.attrs.secure.
-Now we also have f.attrs.space for FEAT_RME, we need to keep the two
-in sync.
+A lot of our vhost-user stubs are large chunks of boilerplate that do
+(mostly) the same thing. This series attempts to fix that by defining
+a new base class (vhost-user-base) which is used by a generic
+vhost-user-device implementation. Then the rng, gpio and i2c
+vhost-user devices become simple specialisations of the common base
+defining the ID, number of queues and potentially the config handling.
 
-These bits only have an effect for Secure space translations, not
-for Root, so use the input in_space field to determine whether to
-apply them rather than the input is_secure. This doesn't actually
-make a difference because Root translations are never two-stage,
-but it's a little clearer.
+However as of v3 we go a bit further and introduce a new protocol
+feature called F_STANDALONE which adds some messages to vhost-user
+that allow the daemon to fully advertise its capabilities.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
-I noticed this while reading through the ptw code...
----
- target/arm/ptw.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+Example
+=======
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index c0b9cee5843..8f94100c61f 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -3118,6 +3118,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-     hwaddr ipa;
-     int s1_prot, s1_lgpgsz;
-     bool is_secure = ptw->in_secure;
-+    ARMSecuritySpace in_space = ptw->in_space;
-     bool ret, ipa_secure;
-     ARMCacheAttrs cacheattrs1;
-     ARMSecuritySpace ipa_space;
-@@ -3200,11 +3201,13 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-      * Check if IPA translates to secure or non-secure PA space.
-      * Note that VSTCR overrides VTCR and {N}SW overrides {N}SA.
-      */
--    result->f.attrs.secure =
--        (is_secure
--         && !(env->cp15.vstcr_el2 & (VSTCR_SA | VSTCR_SW))
--         && (ipa_secure
--             || !(env->cp15.vtcr_el2 & (VTCR_NSA | VTCR_NSW))));
-+    if (in_space == ARMSS_Secure) {
-+        result->f.attrs.secure =
-+            !(env->cp15.vstcr_el2 & (VSTCR_SA | VSTCR_SW))
-+            && (ipa_secure
-+                || !(env->cp15.vtcr_el2 & (VTCR_NSA | VTCR_NSW)));
-+        result->f.attrs.space = arm_secure_to_space(result->f.attrs.secure);
-+    }
- 
-     return false;
- }
+Using the vhost-device-rng built from this branch (draft PR):
+
+  https://github.com/rust-vmm/vhost-device/pull/394
+
+You can start QEMU with an even simpler command line:
+
+  -chardev socket,id=vus,path=/tmp/vus.sock0 \
+  -device vhost-user-device-pci,chardev=vus \
+  -d trace:vhost_\*,trace:vhost_user\*
+
+which doesn't specify any queues or config space but gets it from the
+daemon as it starts up. This does involve a bit of shuffling around in
+the guts of the vhost code so currently it is RFC status.
+
+Anything for 8.1?
+=================
+
+mst,
+
+I don't know if you want to cherry pick anything up to and including:
+
+  hw/virtio: derive vhost-user-i2c from vhost-user-base
+
+which is at least a cleanup. However I'm on holiday for the next 3 or
+so weeks so it's perfectly ok to leave this as 8.2 material if you
+want.
+
+Alex.
+
+Alex Bennée (20):
+  include: attempt to document device_class_set_props
+  include/hw: document the device_class_set_parent_* fns
+  hw/virtio: fix typo in VIRTIO_CONFIG_IRQ_IDX comments
+  include/hw/virtio: document virtio_notify_config
+  include/hw/virtio: add kerneldoc for virtio_init
+  include/hw/virtio: document some more usage of notifiers
+  virtio: add vhost-user-base and a generic vhost-user-device
+  virtio: add PCI stub for vhost-user-device
+  hw/virtio: derive vhost-user-rng from vhost-user-device
+  hw/virtio: add config support to vhost-user-device
+  hw/virtio: derive vhost-user-gpio from vhost-user-device
+  hw/virtio: derive vhost-user-i2c from vhost-user-base
+  docs/system: add a basic enumeration of vhost-user devices
+  docs/interop: define STANDALONE protocol feature for vhost-user
+  hw/virtio: move vhost_user_init earlier
+  hw/virtio: move virtq initialisation into internal helper
+  hw/virtio: push down allocation responsibility for vhost_dev->vqs
+  hw/virtio: validate F_STANDALONE also supports other protocol features
+  hw/virtio: probe backend for specs if it supports it
+  hw/virtio: allow vhost-user-device to be driven by backend
+
+ docs/interop/vhost-user.rst            |  39 +++
+ docs/system/devices/vhost-user-rng.rst |   2 +
+ docs/system/devices/vhost-user.rst     |  41 +++
+ include/hw/qdev-core.h                 |  36 +++
+ include/hw/virtio/vhost-user-blk.h     |   1 -
+ include/hw/virtio/vhost-user-device.h  |  46 +++
+ include/hw/virtio/vhost-user-gpio.h    |  23 +-
+ include/hw/virtio/vhost-user-i2c.h     |  18 +-
+ include/hw/virtio/vhost-user-rng.h     |  11 +-
+ include/hw/virtio/vhost.h              |  21 ++
+ include/hw/virtio/virtio.h             |  21 ++
+ backends/vhost-user.c                  |   1 -
+ hw/block/vhost-user-blk.c              |   7 +-
+ hw/display/vhost-user-gpu.c            |   4 +-
+ hw/net/virtio-net.c                    |   4 +-
+ hw/scsi/vhost-scsi.c                   |   2 -
+ hw/scsi/vhost-user-scsi.c              |   6 -
+ hw/virtio/vdpa-dev.c                   |   9 +-
+ hw/virtio/vhost-user-device-pci.c      |  71 +++++
+ hw/virtio/vhost-user-device.c          | 396 ++++++++++++++++++++++++
+ hw/virtio/vhost-user-fs.c              |   5 +-
+ hw/virtio/vhost-user-gpio.c            | 400 ++-----------------------
+ hw/virtio/vhost-user-i2c.c             | 271 +----------------
+ hw/virtio/vhost-user-rng.c             | 277 ++---------------
+ hw/virtio/vhost-user.c                 |  84 ++++++
+ hw/virtio/vhost-vsock-common.c         |   4 +-
+ hw/virtio/vhost.c                      |  70 +++--
+ hw/virtio/virtio-crypto.c              |   4 +-
+ hw/virtio/meson.build                  |  20 +-
+ 29 files changed, 898 insertions(+), 996 deletions(-)
+ create mode 100644 include/hw/virtio/vhost-user-device.h
+ create mode 100644 hw/virtio/vhost-user-device-pci.c
+ create mode 100644 hw/virtio/vhost-user-device.c
+
 -- 
-2.34.1
+2.39.2
 
 
