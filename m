@@ -2,82 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23CC74DD38
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 20:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFDBE74DD0C
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 20:05:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIvUS-0007s5-JU; Mon, 10 Jul 2023 14:20:04 -0400
+	id 1qIvF8-00030V-04; Mon, 10 Jul 2023 14:04:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qIvUI-0007ms-90; Mon, 10 Jul 2023 14:19:54 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qIvUG-0001WA-Ep; Mon, 10 Jul 2023 14:19:53 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3128fcd58f3so5278568f8f.1; 
- Mon, 10 Jul 2023 11:19:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689013190; x=1691605190;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ieSYKIWeiAdkCr9IAmKTcBDQKaK52xCMbV2Ei3zD+7o=;
- b=b2i5xBkEIqeBx2nKMQfV4+MdhBYf/t6d/FC1oHcmCsw9oryj5BywTFTqqSR+GFz6YC
- ttNiiNrKUunWlIcSnOnz/s1qhAPtwRENQpZuuxKKOBCbW4WPR2fDhtikOY0WB1HWevYi
- JjOkersLPd0tlK99G+NYvSJPt097x/EvEcnp1/5En9Xk27FWmDp0gQ2Sswx3Sh8k93mF
- wL5uIHc4gkIx6t/FruIixDgN8n/50A9Dsns4eXN+1V7s5xH63WVgnB3efrLJIoiDgMUF
- DBx8IY8ksWFRXt2sEz1MdFiKhmGtH3GVKpwHfg2bU2BHtGNAbzScPcQSDTFNtJYHbATM
- e/iw==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qIvF4-00030I-Ob
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:04:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qIvF2-0004L8-9x
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:04:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689012246;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=lINDu9zF1/xbUwdJTPzcSII+uWRPksrDZTrzUrschKo=;
+ b=c4iZIFRDvbFQFAevYWADsL8fEoHdxn904os9RGkGVENlmip8vEM8cGLI/cM3xk/D1R/khW
+ tMhpImz5mbZOJ3bFMINyW4Pj9W10j7VyhQZ+uup78ujITD7l8RgmbmT4bIpTazUUB2LkwI
+ fAhQIbhwhO1BkntPZ3+uwQ3EBcD88dw=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-662-IXkXL1qQOlmaOSFMZx4_cw-1; Mon, 10 Jul 2023 14:04:04 -0400
+X-MC-Unique: IXkXL1qQOlmaOSFMZx4_cw-1
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-1b8a7e21f15so74409745ad.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 11:04:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689013190; x=1691605190;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ieSYKIWeiAdkCr9IAmKTcBDQKaK52xCMbV2Ei3zD+7o=;
- b=XRXtrm43fp+YqoZet0j1EQvu7NBP4hYcpP+q4eSfOY+b8/ZY9UMpdiDVTOOj+3/GS5
- UiFGmXlddewhA6l5Yc5/pJlJh+LlEgnA0U8NfNVlWnrxerfbwNLOfiNgdaprlEXVpu+5
- kxqVkc9m0Yefw3syhcVNuAvO3Tp8gy+t8icTR5uS56fif+ba8iLSV30UAzq2S4sPmbb2
- Q/N7z2aHZ9eY3F5K/7jwLHNCIYS0rgiX6ZP8foIfEnLS6dMrUGJR96C3kaa/9oGB105j
- JofVrCUJlDHNUinRh+xjjX+L71hxR/RyVKA4/VbgJX9zC3ICkhLttx4hAsw+QGhsW/rj
- +ODA==
-X-Gm-Message-State: ABy/qLZL8qZ2aPhURSgvpHbdEYsVHRZnnJjDhOpqQhduVq1WXwxX18Ta
- R8M1y84rOKnG4oVW4r6EwuA=
-X-Google-Smtp-Source: APBJJlH/lOttY5CgpG8MAj6Xc8y4J/m8D5UJQh/k3kMTzSjTJMtlbmvEy+yW5WJsSAM90l/5gaEiqw==
-X-Received: by 2002:a5d:52c3:0:b0:313:eadf:b82d with SMTP id
- r3-20020a5d52c3000000b00313eadfb82dmr11086886wrv.69.1689013190297; 
- Mon, 10 Jul 2023 11:19:50 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-013-218-005.77.13.pool.telefonica.de.
- [77.13.218.5]) by smtp.gmail.com with ESMTPSA id
- e14-20020a5d65ce000000b0031437ec7ec1sm110327wrw.2.2023.07.10.11.19.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 11:19:49 -0700 (PDT)
-Date: Mon, 10 Jul 2023 16:01:46 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: Guenter Roeck <linux@roeck-us.net>, qemu-block@nongnu.org,
- Bin Meng <bin.meng@windriver.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_hw/sd/sdhci=3A_Do_not_force_s?=
- =?US-ASCII?Q?dhci=5Fmmio=5F*=5Fops_onto_all_SD_controllers?=
-In-Reply-To: <52b5a36a-5744-0ac9-a3f5-0dbd247410ed@linaro.org>
-References: <20230709080950.92489-1-shentey@gmail.com>
- <52b5a36a-5744-0ac9-a3f5-0dbd247410ed@linaro.org>
-Message-ID: <3F4FCDD8-91B3-4331-A336-EB31E0237625@gmail.com>
+ d=1e100.net; s=20221208; t=1689012243; x=1691604243;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lINDu9zF1/xbUwdJTPzcSII+uWRPksrDZTrzUrschKo=;
+ b=OL+R7gP0yOrFUt/9rUlCtiFIBIvDBCr+io+797HbwgGDTOzZ7VFUAbRDwXy6kwrsx8
+ 58PyCwMMtlG2D5tqWK/txwsinsQLk5SbrKJO149fRGIesyE+rTpU++hRIGatfQ6Aa+yS
+ T4Is9dprxp+wsLG5QEsFU3JYf164VTcG5f3FD2IWIKPyGStpIC8RD2PPiYtyS6T7ewJH
+ 1rq0EfbTbGo0GdaJ2fZaKDcN2BhWexN5bwFVCqBk9HpBbqSmys4VluV3JBG3rKISnLm5
+ +HxzP9cYr6waOJswRDcMcbYCOWbbGS9uGuUZLTL3V6Vniw94I5QMrcYXTj7p2dkFTsxw
+ 9BWA==
+X-Gm-Message-State: ABy/qLbmWHk+4TVZXV5EFBPL2SOwOm3ZmaBsZSNlEonHcURKTT2EmOns
+ GNp7M8JLS2UZryIfEDVF+3PtnFVd5Hfn6Jp1o9aKClgaKkUlTUICu687PNwyeDTRk1g72fPDP5A
+ ffqEJ68KZOyfOC7hYJ2yavIvP66Yp2IgkCBvjo/jxsQ==
+X-Received: by 2002:a17:902:ec86:b0:1af:e302:123 with SMTP id
+ x6-20020a170902ec8600b001afe3020123mr20996598plg.3.1689012243150; 
+ Mon, 10 Jul 2023 11:04:03 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFhleEyyIs4LR9x2prLlog2UOoUJUqWPV6eq5rFx7GdkwTl99dmIr8Ebgwjubn32YUPmV0PY1mjveFR+pZq5wo=
+X-Received: by 2002:a17:902:ec86:b0:1af:e302:123 with SMTP id
+ x6-20020a170902ec8600b001afe3020123mr20996568plg.3.1689012242705; Mon, 10 Jul
+ 2023 11:04:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x435.google.com
+From: John Snow <jsnow@redhat.com>
+Date: Mon, 10 Jul 2023 14:03:51 -0400
+Message-ID: <CAFn=p-bgqcMWB3h0bEy2H9zC8sTV1UEov=i430sVaMLKoVQgEw@mail.gmail.com>
+Subject: python qemu.qmp v0.0.3 released
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Daniel Berrange <berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,88 +86,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi all, I've just published qemu.qmp v0.0.3 to PyPI.
 
+PyPI: https://pypi.org/project/qemu.qmp/0.0.3/
+readthedocs: https://qemu.readthedocs.io/projects/python-qemu-qmp/en/latest/
+changelog: https://qemu.readthedocs.io/projects/python-qemu-qmp/en/latest/main.html#changelog
 
-Am 10=2E Juli 2023 10:16:35 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <phi=
-lmd@linaro=2Eorg>:
->On 9/7/23 10:09, Bernhard Beschow wrote:
->> Since commit c0a55a0c9da2 "hw/sd/sdhci: Support big endian SD host cont=
-roller
->> interfaces" sdhci_common_realize() forces all SD card controllers to us=
-e either
->> sdhci_mmio_le_ops or sdhci_mmio_be_ops, depending on the "endianness" p=
-roperty=2E
->> However, there are device models which use different MMIO ops: TYPE_IMX=
-_USDHC
->> uses usdhc_mmio_ops and TYPE_S3C_SDHCI uses sdhci_s3c_mmio_ops=2E
->>=20
->> Forcing sdhci_mmio_le_ops breaks SD card handling on the "sabrelite" bo=
-ard, for
->> example=2E Fix this by defaulting the io_ops to little endian and switc=
-h to big
->> endian in sdhci_common_realize() only if there is a matchig big endian =
-variant
->> available=2E
->>=20
->> Fixes: c0a55a0c9da2 ("hw/sd/sdhci: Support big endian SD host controlle=
-r
->> interfaces")
->>=20
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->> ---
->>   hw/sd/sdhci=2Ec | 8 +++++++-
->>   1 file changed, 7 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/hw/sd/sdhci=2Ec b/hw/sd/sdhci=2Ec
->> index 6811f0f1a8=2E=2E362c2c86aa 100644
->> --- a/hw/sd/sdhci=2Ec
->> +++ b/hw/sd/sdhci=2Ec
->> @@ -1382,6 +1382,8 @@ void sdhci_initfn(SDHCIState *s)
->>         s->insert_timer =3D timer_new_ns(QEMU_CLOCK_VIRTUAL, sdhci_rais=
-e_insertion_irq, s);
->>       s->transfer_timer =3D timer_new_ns(QEMU_CLOCK_VIRTUAL, sdhci_data=
-_transfer, s);
->> +
->> +    s->io_ops =3D &sdhci_mmio_le_ops;
->>   }
->>     void sdhci_uninitfn(SDHCIState *s)
->> @@ -1399,9 +1401,13 @@ void sdhci_common_realize(SDHCIState *s, Error *=
-*errp)
->>  =20
->
->What about simply keeping the same code guarded with 'if (!s->io_ops)'?
+Notably, this release drops support for Python 3.6 and modernizes the
+python packaging infrastructure to be compatible with the forthcoming
+Python 3.12 release expected this October. There is no impact to the
+QEMU codebase at this time which is still using a wholly vendored
+version of the library (that we dropped 3.6 support from earlier this
+development cycle.)
 
-I chose below approach since it provides an error message when one attempt=
-s to set one of the other device models to BE rather than just silently ign=
-oring it=2E
+Thanks,
+--js
 
-Also, I didn't want to make the assumption that `s->io_ops =3D=3D NULL` im=
-plied that sdhci_mmio_*_ops is needed=2E That's similar material the bug fi=
-xed is made of, so I wanted to prevent that in the first place by being mor=
-e explicit=2E
-
-In combination with the new error message the limitations of the current c=
-ode become hopefully very apparent now, and at the same time should provide=
- enough hints for adding BE support to the other device models if ever need=
-ed=2E
-
-Best regards,
-Bernhard
-
->
->>       switch (s->endianness) {
->>       case DEVICE_LITTLE_ENDIAN:
->> -        s->io_ops =3D &sdhci_mmio_le_ops;
->> +        /* s->io_ops is little endian by default */
->>           break;
->>       case DEVICE_BIG_ENDIAN:
->> +        if (s->io_ops !=3D &sdhci_mmio_le_ops) {
->> +            error_setg(errp, "SD controller doesn't support big endian=
-ness");
->> +            return;
->> +        }
->>           s->io_ops =3D &sdhci_mmio_be_ops;
->>           break;
->>       default:
->
 
