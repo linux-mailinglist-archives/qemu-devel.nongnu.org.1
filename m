@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3F274E1F0
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FD774E1DE
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:07:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzwe-0003Ci-JM; Mon, 10 Jul 2023 19:05:28 -0400
+	id 1qIzwf-0003aQ-I3; Mon, 10 Jul 2023 19:05:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwM-0002Vv-TD
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwM-0002Vr-T1
  for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwI-0004Zc-Dn
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwI-0004Zn-E2
  for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030289;
+ s=mimecast20190719; t=1689030292;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xD1AkY/txf5N+3ZJ0BJ1Fs74CaRBbtaK9Vb5NSU/lq4=;
- b=T6VqkFsNJjKK9UoUYpRyXks/43BUdwT1WXIoNPb7ksrcBE1RCOUjooIW7Nv8/HJwDfvHwv
- mutSxiVTvjEiFvcYFku/KC9Y829aB07A+BAvVsZ6w4MRYIc68QZjLuTTy+vO24XeEmCzkV
- nMcWk2d2jK3/LaN8UapqC8Y4SteuwSs=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=prlM+cemIKIm3D7j/eroL0Z9oyt7v5VUTSaZUNi0Drw=;
+ b=b9H9wE5GLw7VqI6BoVuhOnVC+1C22/bqt7zfBrFq4Eg2o+bwiwOOkoJgOP0iCpMRx8nYY+
+ StWbEB21lEcRvl7VNlUzcXxCU5rJ1wxYUxWsZ6UpT1h1pJcaiRinyn8aWbFENkA+ayJVVR
+ YY+36Y7pzXRZYN2HK+VQXroTFGYpSbo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-Q3K-hMeMNkSrygRNgFchAw-1; Mon, 10 Jul 2023 19:04:48 -0400
-X-MC-Unique: Q3K-hMeMNkSrygRNgFchAw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fc07d4c63eso10374685e9.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:04:47 -0700 (PDT)
+ us-mta-341-vgrldHLJORiGWaWblacVQw-1; Mon, 10 Jul 2023 19:04:50 -0400
+X-MC-Unique: vgrldHLJORiGWaWblacVQw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3fa9a282fffso29962645e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:04:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030286; x=1691622286;
+ d=1e100.net; s=20221208; t=1689030289; x=1691622289;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xD1AkY/txf5N+3ZJ0BJ1Fs74CaRBbtaK9Vb5NSU/lq4=;
- b=S+jiRAQ8pxxPhvW18NQnmYl1nDrEcvDMd+qXni8tz2OLfc/LT7YfmdWqKcGgYO952k
- DICRMLUiaalWygQWuIn5QxXXjOvinxVsrB7GqN9lQw5yfbUlgCYHWBDBAgQME2Rsj2AL
- iRkkeAOmgCa3qX8arf3Hi7PeAEizjXPTR3cZQsjJ4m3clyQ2Gn9Z6xwOctFALAzGvjfZ
- QXG6vM8IhpzpwEOZnKS/b27F+qbqajJpEqKHAyFhvI22jf47pnLzafB2vFr3w16memQY
- UpjEeY4cQYy1wzpRjhbSxPI2SGozyUTATvH+3R+2SMkCQaDDJ8ErqSKbk5eEPFsB51SL
- FI7g==
-X-Gm-Message-State: ABy/qLYkmHP/YsJD69h1t9WbLy702GG/VR11Xqxa+8bb8/zgsWG72Emu
- Nr36o2A0T5B7ZH9eXnGGdBvnbyBvScLpeyqVVIfgRQjKLSqmOpTCIuUunVK6iHGD2TSUWbN3SKf
- e+UATxgLAJIQKDFjlORrYjO9BHpA7Yxk+36me1a1uWSpCAwA7+469To74OjorZ4C++cSD
-X-Received: by 2002:a05:6000:8b:b0:30e:56b3:60fe with SMTP id
- m11-20020a056000008b00b0030e56b360femr12727790wrx.4.1689030286387; 
- Mon, 10 Jul 2023 16:04:46 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGhQMsYv7zygab3dCzUEdaW/nT6fijvgaEMfYTmFF4ZiehJ9ZFiUsrLK6LtQ5YpJRpQtlBP8g==
-X-Received: by 2002:a05:6000:8b:b0:30e:56b3:60fe with SMTP id
- m11-20020a056000008b00b0030e56b360femr12727773wrx.4.1689030286101; 
- Mon, 10 Jul 2023 16:04:46 -0700 (PDT)
+ bh=prlM+cemIKIm3D7j/eroL0Z9oyt7v5VUTSaZUNi0Drw=;
+ b=BirTxgP8bq+ChTFgWCRZyPsBRTg4TUvJdgowyRK34beD5KylBMbY7TuSHAAx/1dtB9
+ m+QQwANmGYxaRLwBlS8okMjSU3Jaberx/QCvLW6lL7y/GihXf22sMiI2v1Ic6Knh1NGV
+ zO2MItFlPGwIvOfuFHrcA2JtILwhy4wHBHL7iMIzERm0zJSX4CyAwCrP0JmE5GZX1ENc
+ SgqFxIBhZTSAdZMlal/M1kKOfgtUga+HDsLvo/LIRZOrQdeIbSvjT5yA3/RN2dcSytWE
+ ShOrB7IuLnioLP6HZpB/rwNBGBfg1hDRAMCTHcb0MHp5pxiAmDdEA/MehazEjRVHQgPU
+ fA8A==
+X-Gm-Message-State: ABy/qLZOB1uZC68KQfNNvFVGU/d+L0zwfKRA0a+Rxld5L/0LIkIZTq4X
+ 16r/+/TNHVpWOe5wavmUvAYG2swGSPJaGWYsIXeHUAbtfdd50NcHpaH2PGRsb6UNKT41cakteH9
+ lpUzeyO0Oos6JJDZzM8tasUWSmvEQHloAtxaor9psSCe7Xxln5JJJZvdJ9oIHxjxsIm99
+X-Received: by 2002:a1c:4b19:0:b0:3f8:f382:8e1f with SMTP id
+ y25-20020a1c4b19000000b003f8f3828e1fmr11101428wma.24.1689030289070; 
+ Mon, 10 Jul 2023 16:04:49 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlE7pK4HwH9VcQUu7MupZ4/y7peVFwUDpvI5MeoZC7IYAiempWv1Ic9CAW53V0vg0+WzUTb5GA==
+X-Received: by 2002:a1c:4b19:0:b0:3f8:f382:8e1f with SMTP id
+ y25-20020a1c4b19000000b003f8f3828e1fmr11101412wma.24.1689030288837; 
+ Mon, 10 Jul 2023 16:04:48 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- b16-20020a5d5510000000b0031417b0d338sm574620wrv.87.2023.07.10.16.04.44
+ l4-20020a1ced04000000b003fbe561f6a3sm11449505wmh.37.2023.07.10.16.04.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:04:45 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:04:43 -0400
+ Mon, 10 Jul 2023 16:04:48 -0700 (PDT)
+Date: Mon, 10 Jul 2023 19:04:46 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Leonardo Bras <leobras@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 48/66] pcie: Add hotplug detect state register to cmask
-Message-ID: <625b370c45f4acd155ee625d61c0057d770a5b5e.1689030052.git.mst@redhat.com>
+ Hawkins Jiawei <yin31149@gmail.com>,
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL 49/66] vdpa: Fix possible use-after-free for VirtQueueElement
+Message-ID: <031b1abacbdb3f4e016b6b926f7e7876c05339bb.1689030052.git.mst@redhat.com>
 References: <cover.1689030052.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -76,7 +77,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1689030052.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,75 +102,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leonardo Bras <leobras@redhat.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
 
-When trying to migrate a machine type pc-q35-6.0 or lower, with this
-cmdline options,
+QEMU uses vhost_handle_guest_kick() to forward guest's available
+buffers to the vdpa device in SVQ avail ring.
 
--device driver=pcie-root-port,port=18,chassis=19,id=pcie-root-port18,bus=pcie.0,addr=0x12 \
--device driver=nec-usb-xhci,p2=4,p3=4,id=nex-usb-xhci0,bus=pcie-root-port18,addr=0x12.0x1
+In vhost_handle_guest_kick(), a `g_autofree` `elem` is used to
+iterate through the available VirtQueueElements. This `elem` is
+then passed to `svq->ops->avail_handler`, specifically to the
+vhost_vdpa_net_handle_ctrl_avail(). If this handler fails to
+process the CVQ command, vhost_handle_guest_kick() regains
+ownership of the `elem`, and either frees it or requeues it.
 
-the following bug happens after all ram pages were sent:
+Yet the problem is that, vhost_vdpa_net_handle_ctrl_avail()
+mistakenly frees the `elem`, even if it fails to forward the
+CVQ command to vdpa device. This can result in a use-after-free
+for the `elem` in vhost_handle_guest_kick().
 
-qemu-kvm: get_pci_config_device: Bad config data: i=0x6e read: 0 device: 40 cmask: ff wmask: 0 w1cmask:19
-qemu-kvm: Failed to load PCIDevice:config
-qemu-kvm: Failed to load pcie-root-port:parent_obj.parent_obj.parent_obj
-qemu-kvm: error while loading state for instance 0x0 of device '0000:00:12.0/pcie-root-port'
-qemu-kvm: load of migration failed: Invalid argument
+This patch solves this problem by refactoring
+vhost_vdpa_net_handle_ctrl_avail() to only freeing the `elem` if
+it owns it.
 
-This happens on pc-q35-6.0 or lower because of:
-{ "ICH9-LPC", ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, "off" }
-
-In this scenario, hotplug_handler_plug() calls pcie_cap_slot_plug_cb(),
-which sets dev->config byte 0x6e with bit PCI_EXP_SLTSTA_PDS to signal PCI
-hotplug for the guest. After a while the guest will deal with this hotplug
-and qemu will clear the above bit.
-
-Then, during migration, get_pci_config_device() will compare the
-configs of both the freshly created device and the one that is being
-received via migration, which will differ due to the PCI_EXP_SLTSTA_PDS bit
-and cause the bug to reproduce.
-
-To avoid this fake incompatibility, there are tree fields in PCIDevice that
-can help:
-
-- wmask: Used to implement R/W bytes, and
-- w1cmask: Used to implement RW1C(Write 1 to Clear) bytes
-- cmask: Used to enable config checks on load.
-
-According to PCI Express® Base Specification Revision 5.0 Version 1.0,
-table 7-27 (Slot Status Register) bit 6, the "Presence Detect State" is
-listed as RO (read-only), so it only makes sense to make use of the cmask
-field.
-
-So, clear PCI_EXP_SLTSTA_PDS bit on cmask, so the fake incompatibility on
-get_pci_config_device() does not abort the migration.
-
-Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2215819
-Signed-off-by: Leonardo Bras <leobras@redhat.com>
-Message-Id: <20230706045546.593605-3-leobras@redhat.com>
+Fixes: bd907ae4b0 ("vdpa: manual forward CVQ buffers")
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+Message-Id: <e3f2d7db477734afe5c6a5ab3fa8b8317514ea34.1688746840.git.yin31149@gmail.com>
+Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
 ---
- hw/pci/pcie.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/vhost-vdpa.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index b7f107ed8d..763f65c528 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -666,6 +666,10 @@ void pcie_cap_slot_init(PCIDevice *dev, PCIESlot *s)
-     pci_word_test_and_set_mask(dev->w1cmask + pos + PCI_EXP_SLTSTA,
-                                PCI_EXP_HP_EV_SUPPORTED);
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 679ef4bed0..5542b47a8f 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -831,7 +831,16 @@ out:
+         error_report("Bad device CVQ written length");
+     }
+     vhost_svq_push_elem(svq, elem, MIN(in_len, sizeof(status)));
+-    g_free(elem);
++    /*
++     * `elem` belongs to vhost_vdpa_net_handle_ctrl_avail() only when
++     * the function successfully forwards the CVQ command, indicated
++     * by a non-negative value of `dev_written`. Otherwise, it still
++     * belongs to SVQ.
++     * This function should only free the `elem` when it owns.
++     */
++    if (dev_written >= 0) {
++        g_free(elem);
++    }
+     return dev_written < 0 ? dev_written : 0;
+ }
  
-+    /* Avoid migration abortion when this device hot-removed by guest */
-+    pci_word_test_and_clear_mask(dev->cmask + pos + PCI_EXP_SLTSTA,
-+                                 PCI_EXP_SLTSTA_PDS);
-+
-     dev->exp.hpev_notified = false;
- 
-     qbus_set_hotplug_handler(BUS(pci_bridge_get_sec_bus(PCI_BRIDGE(dev))),
 -- 
 MST
 
