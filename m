@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8C474D5B1
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8508374D593
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:35:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIq63-0004Zb-BR; Mon, 10 Jul 2023 08:34:31 -0400
+	id 1qIq5z-0004N9-Ia; Mon, 10 Jul 2023 08:34:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq5m-0003wG-1I
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:17 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1qIq5q-00040G-8B
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:19 -0400
+Received: from mail-il1-x12d.google.com ([2607:f8b0:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq5k-0004q6-Cl
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:13 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6686ef86110so2206951b3a.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:34:12 -0700 (PDT)
+ id 1qIq5o-0004rF-CA
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:17 -0400
+Received: by mail-il1-x12d.google.com with SMTP id
+ e9e14a558f8ab-345f1e0abf9so15639115ab.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:34:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688992451; x=1691584451;
+ d=gmail.com; s=20221208; t=1688992454; x=1691584454;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HJrzog4DRDfBytRlBHQNkwkXryFnPbhrx8SsbgPyQw0=;
- b=jvvbsT4a4xJvF4V6EuA+loUkzl5h+Jg4vP2/2I8yfXqWMRhtRQii73FKUQcz+pqUIt
- aQnIasW0xE0dAqAe5V7h8Rgg794FOQk+OM6D2u1e12Qq1InopG3kEbgrWntCUPiUDTwn
- cclP/68T24dRrwkKdr8kV+ChsuePEt8cIzlgs6ahClZTFw1dm6mvhM5sgbQO41Katc7J
- KkgnsHk7B5AqkRHSRiJ9LzB/Ys809ZtPkClB5CeRJFJZ3Eo4jA3VfKJCNIej84HVEvER
- 1k4whys4LCfxhG32wcbr7bMaCZTUAiNwgzsOfKA+6jeYEFs69qWVvlvN0jjFH3YQa5Ca
- QBFg==
+ bh=dnVxlrmjfp+ZpMlMfbIQ2HaKzgvgpBLthFySyNg97oQ=;
+ b=IFhhx3R5DSNuvcjpA9CJLL0DYUOVBy7F/BTDeZFO+UC8foCiQYsto+3CPBIQou3gOj
+ zdBkahuiN239dXYjOGgoXNOn4Fbw9lPRZoOh5i8V32PZiasyuKSjcl6w8h94iY/RhJZn
+ /s1qgyraC3PHI02yRfYCTnOFu8gpjTmawvY4cKposWrSsrMc33Y83KbA+mlgdsyFNRGE
+ 2tuVvPc3zxB6LDcFvmvUEm4eYaPYVSnMQ0hYvwa799UyxU6dHyOBZ756CqBO+Cjyk9Bz
+ lR32ZQQO3Tr4k3l6Y1vd3/f9bKtgd7jWXZSJhMWXsbG68yCWaaVJa1JSdK4BCaKf/Iwl
+ CIvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688992451; x=1691584451;
+ d=1e100.net; s=20221208; t=1688992454; x=1691584454;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HJrzog4DRDfBytRlBHQNkwkXryFnPbhrx8SsbgPyQw0=;
- b=esEkMPdZvpP5c+FguPB4dbr6SHdUQRlJJteSXrG5J1GqD9ivp76KyPysjEyi8Oghgw
- 8NfIEqzW8QR2C0vnRaDHWY0ydm0XrguxUAmW+vwyHySmghFovuu2R12d8Zr+AouiC5Kg
- +N/9luixDZ0pUqE3dmWO8lveFfBrlUvboE7WhRkGYjblNGGaGfsz1GQptby9HYrMnJX8
- xlu9mnBwnWeGiJhfMqx/uwWnbw88fI10hc6qJh9+fp+/73T7Pa/2mfamtee6dR8/JPz2
- vR73pkfgYibFPBdfvX1Co0RuZ1OdvSjw9K/MUid52ATkXUT/1xenaC5TKwn4YCbVTLmg
- aHyQ==
-X-Gm-Message-State: ABy/qLacdGVxxGnwwdGbEw48BSy+eZH0ENRHZKC8jvdm1pA5hNb2TQYZ
- zvIDxVcslSzJBs6GISb5clnM0xVzCjKUAg==
-X-Google-Smtp-Source: APBJJlEtZcmNS12xiLT+qzcSU/BlpgtP8DgY4RvjR6w95kjFKNjFW0mx0SAshSg9MpmMfpIh4QQB7w==
-X-Received: by 2002:a05:6a20:6a0f:b0:12e:5fd0:f4af with SMTP id
- p15-20020a056a206a0f00b0012e5fd0f4afmr11944435pzk.28.1688992450719; 
- Mon, 10 Jul 2023 05:34:10 -0700 (PDT)
+ bh=dnVxlrmjfp+ZpMlMfbIQ2HaKzgvgpBLthFySyNg97oQ=;
+ b=kVG1HUuXizaOh8xwgzdFdodRS4MCj7FK9KW899KBFzS8pzAabujl9ar9t82C5kO4iu
+ 5vB3aRi2OZknypI/pc2Vn1g/zunVW561wgBwgkmryaxCtNJLWiPM1oaa7aRkHg4qlFuZ
+ R+66SH04IeZWHpZ42r/Ed1XhjKSLrw9F9reV6TtNFk0Vu3WvjDxtUDoL0AaPryyXbmQr
+ taxfFtt2YqSrGIIYBiMk6TB8fuAz2FOppGzKH76lX7OY7ha3EOAJkcCeThsw9O/G/Iws
+ J70+uqzSjviScvj0sCtv+m5ljg5lSiIl+rnSDbsgQS0y9gUgwKb6e8O/88NkLDKhAf4J
+ dk2g==
+X-Gm-Message-State: ABy/qLaFrLFv1VrIPH/lmv0V/+du6LGWx1WS5agPDFtEJtUdo/botemP
+ Tc8VBTtdD980tf+5/JCMg6ySCMv26RjZaw==
+X-Google-Smtp-Source: APBJJlGO2IkN6J29vsEyW7L9AM9xS8fTSU3v5AsL209jUtUN1jy4GlliQXCD32VLWxRx92/pRefk9A==
+X-Received: by 2002:a92:dccb:0:b0:345:dd77:8ab9 with SMTP id
+ b11-20020a92dccb000000b00345dd778ab9mr11569030ilr.11.1688992454661; 
+ Mon, 10 Jul 2023 05:34:14 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.34.07
+ i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.34.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 05:34:10 -0700 (PDT)
+ Mon, 10 Jul 2023 05:34:14 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, "yang.zhang" <yang.zhang@hexintek.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 32/54] target/riscv KVM_RISCV_SET_TIMER macro is not configured
- correctly
-Date: Mon, 10 Jul 2023 22:31:43 +1000
-Message-Id: <20230710123205.2441106-33-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Guenter Roeck <linux@roeck-us.net>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.c>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 33/54] riscv: Generate devicetree only after machine
+ initialization is complete
+Date: Mon, 10 Jul 2023 22:31:44 +1000
+Message-Id: <20230710123205.2441106-34-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230710123205.2441106-1-alistair.francis@wdc.com>
 References: <20230710123205.2441106-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12d;
+ envelope-from=alistair23@gmail.com; helo=mail-il1-x12d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,33 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "yang.zhang" <yang.zhang@hexintek.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-Should set/get riscv all reg timer,i.e, time/compare/frequency/state.
+If the devicetree is created before machine initialization is complete,
+it misses dynamic devices. Specifically, the tpm device is not added
+to the devicetree file and is therefore not instantiated in Linux.
+Load/create devicetree in virt_machine_done() to solve the problem.
 
-Signed-off-by: Yang Zhang <yang.zhang@hexintek.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1688
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: Alistair Francis <alistair23@gmail.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.c>
+Fixes: 325b7c4e75 hw/riscv: Enable TPM backends
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-Id: <20230707032306.4606-1-gaoshanliukou@163.com>
+Message-Id: <20230706035937.1870483-1-linux@roeck-us.net>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/kvm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/riscv/virt.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 0f932a5b96..c3976a588d 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -99,7 +99,7 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index cdb88a1529..96b01703a9 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1249,6 +1249,17 @@ static void virt_machine_done(Notifier *notifier, void *data)
+     uint64_t kernel_entry = 0;
+     BlockBackend *pflash_blk0;
  
- #define KVM_RISCV_SET_TIMER(cs, env, name, reg) \
-     do { \
--        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(env, time), &reg); \
-+        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(env, name), &reg); \
-         if (ret) { \
-             abort(); \
-         } \
++    /* load/create device tree */
++    if (machine->dtb) {
++        machine->fdt = load_device_tree(machine->dtb, &s->fdt_size);
++        if (!machine->fdt) {
++            error_report("load_device_tree() failed");
++            exit(1);
++        }
++    } else {
++        create_fdt(s, memmap);
++    }
++
+     /*
+      * Only direct boot kernel is currently supported for KVM VM,
+      * so the "-bios" parameter is not supported when KVM is enabled.
+@@ -1509,17 +1520,6 @@ static void virt_machine_init(MachineState *machine)
+     }
+     virt_flash_map(s, system_memory);
+ 
+-    /* load/create device tree */
+-    if (machine->dtb) {
+-        machine->fdt = load_device_tree(machine->dtb, &s->fdt_size);
+-        if (!machine->fdt) {
+-            error_report("load_device_tree() failed");
+-            exit(1);
+-        }
+-    } else {
+-        create_fdt(s, memmap);
+-    }
+-
+     s->machine_done.notify = virt_machine_done;
+     qemu_add_machine_init_done_notifier(&s->machine_done);
+ }
 -- 
 2.40.1
 
