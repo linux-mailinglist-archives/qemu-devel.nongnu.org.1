@@ -2,85 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E8174DE36
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 21:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C428A74DE5F
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 21:42:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIwYn-00023D-2p; Mon, 10 Jul 2023 15:28:37 -0400
+	id 1qIwkJ-0004rF-Nq; Mon, 10 Jul 2023 15:40:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIwYk-00022m-Pt
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:28:34 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIwYY-00079z-4j
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:28:28 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3fc0aecf107so21258595e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 12:28:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689017300; x=1691609300;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zIDqJsTV+5mfm0yiyfFYte0cwrkRPEHjF/Foqt3Dmks=;
- b=azyxuiMsvywq7yxJM57EycAA4PNP2L68GQdR6x+PCGdZbr6Zqc2WDxkj5N7IVqSNHt
- bZ0NytNh5VPHy4hbSjpaszvUAOuB8xbbK6XNaX0ySLiav9L3Ig9mvBFT9GooeZSrOXB3
- e1VZKx9EGR6JteoFCPnBVz2OI129ZyYNTTVeR6okiRkmo2itX8dgKKb8jWgTM0y+W2dF
- G0q6hT3iDWm7jQhT79sZDfbsnW5kgtELIthN0/kInjCV7GLHUwC85pspzNj9OcW5cs0x
- uSaj6cd2OBOdLzCk+U0J7SueZBy1N345R1JzjhqSpXctbURQn5tS0ZYe2CKQC47jHpb+
- WCEw==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIwkI-0004oM-4j
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:40:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIwkG-0003Gn-Fj
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:40:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689018027;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5DwQ5wQQLhXxhY1Oy4FpllmVxZpS53IC9wFjx6Kck8k=;
+ b=EkjVbv2NRcXsplWOIHcJPFxdwcfV55yp79Xp77l/q7n/UASg50kgawnAT7ew9Hg1aFGdDY
+ NhUrJnNww61Z8YRY7WE8HRkPeQ9Eaei0kEg4Z/i2zHzEXPoXi32FYnmjYMo4z438QiGygK
+ W63DK/oSAzMY4EQJE7k5PmLsMR8qNUE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-312-a4fmsTxGM6qKJ-KhRdeSEg-1; Mon, 10 Jul 2023 15:40:26 -0400
+X-MC-Unique: a4fmsTxGM6qKJ-KhRdeSEg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3fbdde92299so28507755e9.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 12:40:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689017300; x=1691609300;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zIDqJsTV+5mfm0yiyfFYte0cwrkRPEHjF/Foqt3Dmks=;
- b=bsmmNOD7p1FbFOzHrU0Bfsvwl9FjWAOuAtPY+vNVP21P+EKWgqhIRmPtiwEcflriS1
- HUSegPNXHeW+tJZZ0PgRWbSWHtkzW8pD5Aee1q5ZHSDW1kXRIHrnHy5+ya5L3SnkGOcL
- kAMqXfkBQBtRM2HPwm+R5vdjXa753cVqfYeVvhA/l6Su9OfGZ9yvUXo2OG7gWvHJX8j6
- 1eBt1fy/SwC77YB8CR+WM5aUTseLLzwEnRMPY1wruh5hYyw5i2A4OpKiC2WNbzSQQu75
- f14Q7YJ5IKA6NTXvRfGfr0VEb6bAhWZJEdFxfk3zuO6odlzg9BDyjkyGMfNHpcarW9Kl
- qGog==
-X-Gm-Message-State: ABy/qLYzJtowiAf+zrGFYQC/Fazlt3/sc4hGchTMIGM512FcyJzvXkmH
- wa2qFxxQTPF51bkD5NQE7DNPrjbIYpNAGadtS5JlHA==
-X-Google-Smtp-Source: APBJJlGUV+Fv2GwKx6mSwZlj2Ns3dtp7jK3guWixyKfoEhNjW46V3P95TpB2gz6Cm+1lCiss0nNMIw==
-X-Received: by 2002:a1c:7c05:0:b0:3fc:500:db7c with SMTP id
- x5-20020a1c7c05000000b003fc0500db7cmr7931294wmc.21.1689017300363; 
- Mon, 10 Jul 2023 12:28:20 -0700 (PDT)
-Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
- [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
- y19-20020a05600c20d300b003fc01f7a42dsm648858wmm.8.2023.07.10.12.28.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 12:28:20 -0700 (PDT)
-Message-ID: <781894e9-2565-b54f-8df3-9cbd1cf68e2a@linaro.org>
-Date: Mon, 10 Jul 2023 21:28:16 +0200
+ d=1e100.net; s=20221208; t=1689018024; x=1691610024;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5DwQ5wQQLhXxhY1Oy4FpllmVxZpS53IC9wFjx6Kck8k=;
+ b=e86cCfLnqb7u/pELKbZtb7eMq1gQ+o+Xs+CDdzH4RZoDARrdBTxD9Gl/rTTZGuYygj
+ ++VDA/Xsnf6218sA+I6EEjLUysmzMb/HjsrTRZw5V37Iyqor5sEb9+6Ms9neOCixJ64Z
+ aNOmW4vubxlIoODdQ7b7qbG0WExa/e2xICdra0SZ5XyTNGc3Sdw4IztiJ4ruNXoyWM1f
+ Jp4CmI/lBRTp1m7tSkJPtQ+dxK36EvXzhAc9nIQ+qy+JXSJbjtbnMS9Ri+oBxYAjAoKD
+ D4R3JbJKIHozbXjmgLYgnupVHQwLQDGNcddFJZe6TSu84mEp2E2ygq28IjH8LiRA9w0i
+ wHoA==
+X-Gm-Message-State: ABy/qLZKCsMnBD83/r2zpT1lgVn7lezGblwdLSea3nSdsgliFRAwAheL
+ HTFoRiFYphScQB5UCW8ux13Ylnr7Lc9tzUKYvSTixqKaymkKzEe9hLw4SWM8fS2scHxrJ16WX8S
+ 4DAWibr+HChMsIulg6vrV9y4=
+X-Received: by 2002:a5d:61cc:0:b0:313:fce9:c568 with SMTP id
+ q12-20020a5d61cc000000b00313fce9c568mr8013140wrv.31.1689018024623; 
+ Mon, 10 Jul 2023 12:40:24 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFkCS9frfL5ZzUNeq7sFv2iAdm0NqYGCW80K4oKYOjhXbEL+9rxzB41EyJ0miWU5et8eWzePg==
+X-Received: by 2002:a5d:61cc:0:b0:313:fce9:c568 with SMTP id
+ q12-20020a5d61cc000000b00313fce9c568mr8013121wrv.31.1689018024291; 
+ Mon, 10 Jul 2023 12:40:24 -0700 (PDT)
+Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
+ m15-20020adfdc4f000000b003142ea7a661sm248222wrj.21.2023.07.10.12.40.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Jul 2023 12:40:23 -0700 (PDT)
+Date: Mon, 10 Jul 2023 15:40:20 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Thomas Huth <thuth@redhat.com>,
+ qemu-stable@nongnu.org, Mark Kanda <mark.kanda@oracle.com>
+Subject: Re: [PATCH] Revert "virtio-scsi: Send "REPORTED LUNS CHANGED" sense
+ data upon disk hotplug events"
+Message-ID: <20230710153942-mutt-send-email-mst@kernel.org>
+References: <20230705071523.15496-1-sgarzare@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH 00/33] target/mips: Finalise the Ingenic MXU ASE support
-Content-Language: en-US
-To: Siarhei Volkau <lis8215@gmail.com>, qemu-devel@nongnu.org
-Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Stefan Markovic <smarkovic@wavecomp.com>,
- Aleksandar Markovic <amarkovic@wavecomp.com>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20230608104222.1520143-1-lis8215@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230608104222.1520143-1-lis8215@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230705071523.15496-1-sgarzare@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,33 +98,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Siarhei,
-
-On 8/6/23 12:41, Siarhei Volkau wrote:
-> This patch series is aimed to add complete support of the
-> Ingenic MXU extensions of version 1 revision 2.
-> The serie doesn't split revision 1 and revision 2 of the
-> MXU ASE as it ought to be, because I have no hardware which
-> supports revision 1 only. The MXU version 2 is not the subject
-> of the patch series either.
+On Wed, Jul 05, 2023 at 09:15:23AM +0200, Stefano Garzarella wrote:
+> This reverts commit 8cc5583abe6419e7faaebc9fbd109f34f4c850f2.
 > 
-> All added/fixed instructions were tested on real hardware
-> via set of fuzz tests written for that purpose, although
-> the tests aren't subject of this patch series.
+> That commit causes several problems in Linux as described in the BZ.
+> In particular, after a while, other devices on the bus are no longer
+> usable even if those devices are not affected by the hotunplug.
+> This may be a problem in Linux, but we have not been able to identify
+> it so far. So better to revert this patch until we find a solution.
+> 
+> Also, Oracle, which initially proposed this patch for a problem with
+> Solaris, seems to have already reversed it downstream:
+>     https://linux.oracle.com/errata/ELSA-2023-12065.html
+> 
+> Suggested-by: Thomas Huth <thuth@redhat.com>
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2176702
+> Cc: qemu-stable@nongnu.org
+> Cc: Mark Kanda <mark.kanda@oracle.com>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 
-Thank you very much for your contribution.
-This is a bit unfortunate that you did'nt implemented these
-opcode using decodetree.
-Also various opcodes are not well optimized, and would benefit
-from using the TCG gvec API.
-I imagine you have been rebasing that for some years now, so I'm
-queuing as is to mips-next.
-I hope you can share the tests so your work doesn't bitrot
-with time (in particular when a good soul converts it to
-decodetree).
 
-Regards,
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-Phil.
+Seems safest to revert, but I'll let storage guys decide whether to
+queue this.
+
+> ---
+>  include/hw/scsi/scsi.h |  1 -
+>  hw/scsi/scsi-bus.c     | 18 ------------------
+>  hw/scsi/virtio-scsi.c  |  2 --
+>  3 files changed, 21 deletions(-)
+> 
+> diff --git a/include/hw/scsi/scsi.h b/include/hw/scsi/scsi.h
+> index e2bb1a2fbf..7c8adf10b1 100644
+> --- a/include/hw/scsi/scsi.h
+> +++ b/include/hw/scsi/scsi.h
+> @@ -198,7 +198,6 @@ SCSIDevice *scsi_bus_legacy_add_drive(SCSIBus *bus, BlockBackend *blk,
+>                                        BlockdevOnError rerror,
+>                                        BlockdevOnError werror,
+>                                        const char *serial, Error **errp);
+> -void scsi_bus_set_ua(SCSIBus *bus, SCSISense sense);
+>  void scsi_bus_legacy_handle_cmdline(SCSIBus *bus);
+>  
+>  SCSIRequest *scsi_req_alloc(const SCSIReqOps *reqops, SCSIDevice *d,
+> diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+> index f80f4cb4fc..42a915f8b7 100644
+> --- a/hw/scsi/scsi-bus.c
+> +++ b/hw/scsi/scsi-bus.c
+> @@ -1617,24 +1617,6 @@ static int scsi_ua_precedence(SCSISense sense)
+>      return (sense.asc << 8) | sense.ascq;
+>  }
+>  
+> -void scsi_bus_set_ua(SCSIBus *bus, SCSISense sense)
+> -{
+> -    int prec1, prec2;
+> -    if (sense.key != UNIT_ATTENTION) {
+> -        return;
+> -    }
+> -
+> -    /*
+> -     * Override a pre-existing unit attention condition, except for a more
+> -     * important reset condition.
+> -     */
+> -    prec1 = scsi_ua_precedence(bus->unit_attention);
+> -    prec2 = scsi_ua_precedence(sense);
+> -    if (prec2 < prec1) {
+> -        bus->unit_attention = sense;
+> -    }
+> -}
+> -
+>  void scsi_device_set_ua(SCSIDevice *sdev, SCSISense sense)
+>  {
+>      int prec1, prec2;
+> diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
+> index 45b95ea070..1f56607100 100644
+> --- a/hw/scsi/virtio-scsi.c
+> +++ b/hw/scsi/virtio-scsi.c
+> @@ -1080,7 +1080,6 @@ static void virtio_scsi_hotplug(HotplugHandler *hotplug_dev, DeviceState *dev,
+>  
+>          virtio_scsi_acquire(s);
+>          virtio_scsi_push_event(s, &info);
+> -        scsi_bus_set_ua(&s->bus, SENSE_CODE(REPORTED_LUNS_CHANGED));
+>          virtio_scsi_release(s);
+>      }
+>  }
+> @@ -1112,7 +1111,6 @@ static void virtio_scsi_hotunplug(HotplugHandler *hotplug_dev, DeviceState *dev,
+>      if (virtio_vdev_has_feature(vdev, VIRTIO_SCSI_F_HOTPLUG)) {
+>          virtio_scsi_acquire(s);
+>          virtio_scsi_push_event(s, &info);
+> -        scsi_bus_set_ua(&s->bus, SENSE_CODE(REPORTED_LUNS_CHANGED));
+>          virtio_scsi_release(s);
+>      }
+>  }
+> -- 
+> 2.41.0
 
 
