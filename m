@@ -2,64 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233B374DD1C
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 20:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF1074DD30
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 20:18:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIvMF-0004PI-3D; Mon, 10 Jul 2023 14:11:36 -0400
+	id 1qIvRK-00064A-DF; Mon, 10 Jul 2023 14:16:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qIvMA-0004Ov-3K
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:11:30 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIvRG-000633-E6
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:16:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qIvM7-0006WA-CN
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:11:29 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIvRE-0008Hu-Lp
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:16:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689012685;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1689013002;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nAjBzspD/Pu4o0rK84lvrCZ6W7zyAgzOxZhYKkm+pow=;
- b=ab7rkiMrdcsFlWK/0+DWfL9ifH/tpMjNHBoPPZUt7ptk7EVB914MSJJjwS97kr3xIk/3ME
- 0XGvjpQtnKIu9dqPvpT6ANEwwuMMRjBx1A5zG5bsJ3TdrM6s9zNi4VrlZIZvhY1YwlqU/A
- UFJErv6Q/7CRG9pt8Bwcs/gUBtYp34E=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-221-r180vhUCNRyNMU63rP8esg-1; Mon, 10 Jul 2023 14:11:22 -0400
-X-MC-Unique: r180vhUCNRyNMU63rP8esg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EACC71C28CE5;
- Mon, 10 Jul 2023 18:11:21 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.121])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 10243200A7CA;
- Mon, 10 Jul 2023 18:11:20 +0000 (UTC)
-Date: Mon, 10 Jul 2023 19:11:18 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH] tests/migration: Restrict initrd-stress.img to Linux
-Message-ID: <ZKxJxkw/zUkgrlr8@redhat.com>
-References: <20230710175607.32818-1-philmd@linaro.org>
+ bh=gJUM4XPgnfoXsI2lwP614aXh7T2XKCBnIRGXXSTypX4=;
+ b=gxUnHGwsxOvFx5oLPOaEzabBgBV18SjojfnLb7CfzuNpdzswVfVrYvg34/bOhUCj3dY70K
+ plEktVcc4MWe+tEAV/+2joLUBl+uWu/AXiRB2PEcacxA+CPqoLBaKGcNu7F+g7HDkvjzNU
+ +Abd2XO4yH/fU/R0DMy9FQzvGSaxqY4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-425-TqUKTstdMjilWOehxXskRA-1; Mon, 10 Jul 2023 14:16:41 -0400
+X-MC-Unique: TqUKTstdMjilWOehxXskRA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fc0627eafbso11704925e9.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 11:16:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689012999; x=1691604999;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gJUM4XPgnfoXsI2lwP614aXh7T2XKCBnIRGXXSTypX4=;
+ b=Zv/KPekDUQlyceSfUVzWIP5yL6T1F2f6dAUhGiO5SgL5Hq0n/y0B93SL5mz5j0q6bP
+ db2vMnydzSB+66qVPVH4roWtM9F2gx8cwNuXjoVf50sUhN34CvfzHqoh/qbxjXI8mzEb
+ jkblSHbYxQUzwO/GWrDWmCtQmMk+UkgfkPFfslpN6Rf2QbFDUBGx+LGo0VFWeD+/612J
+ dWZTzy6wVgoZ9fkJ6qd+3vG45NH6IvJyy0aDwuwsbVz1+DHzHCoyjIXG23FNPJUHe0MJ
+ sZKtbdoDodYDCxBlEHFbSggEXfDRgmtJ6jpzQ2lHlYpXOWNoRGXbqWQfJLIk5/hmUTun
+ QvCA==
+X-Gm-Message-State: ABy/qLYAV++B8MPW8ccz0yZHFjwxcjdzsr4yCSI/sDrfpDae8aSEgrK/
+ i5ZKfbm5IhAcQ3rZ+W9qRrf3z8ckOj3Ux0X2qHjsToJIA8NPvoSPBIzsDLap2Wi2MgyzRIqi2ia
+ G/O/zkfnoEhqeep8=
+X-Received: by 2002:a05:600c:3501:b0:3fa:7c6b:86e with SMTP id
+ h1-20020a05600c350100b003fa7c6b086emr15732925wmq.12.1689012999502; 
+ Mon, 10 Jul 2023 11:16:39 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFIEwB4MP5ioLWfc/USn8VSvAljv7vuMbMkp7oLJsGgOyPQXI5yAPYSaxNPEQWFgFZArXZ7GA==
+X-Received: by 2002:a05:600c:3501:b0:3fa:7c6b:86e with SMTP id
+ h1-20020a05600c350100b003fa7c6b086emr15732916wmq.12.1689012999164; 
+ Mon, 10 Jul 2023 11:16:39 -0700 (PDT)
+Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
+ y18-20020adffa52000000b00313f031876esm82350wrr.43.2023.07.10.11.16.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Jul 2023 11:16:38 -0700 (PDT)
+Date: Mon, 10 Jul 2023 14:16:35 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Leonardo Bras Soares Passos <leobras@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2 1/1] pcie: Add hotplug detect state register to cmask
+Message-ID: <20230710141622-mutt-send-email-mst@kernel.org>
+References: <20230706045546.593605-3-leobras@redhat.com> <ZKbRRt8ESGsMz+o7@x1n>
+ <CAJ6HWG4iUX=+7FTCkXitFfc1zFNJ9aR5PzDRyPLSZVq1Kos8fA@mail.gmail.com>
+ <ZKcEjfTDDgDZWu9Q@x1n>
+ <20230706144844-mutt-send-email-mst@kernel.org>
+ <ZKcPr3gueuOM4LGY@x1n>
+ <20230706155936-mutt-send-email-mst@kernel.org>
+ <CAJ6HWG6hVBCRE3yVF-Yiu8om0YSOiu_iZHPT2KKuOiLbaYtkYw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230710175607.32818-1-philmd@linaro.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+In-Reply-To: <CAJ6HWG6hVBCRE3yVF-Yiu8om0YSOiu_iZHPT2KKuOiLbaYtkYw@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,57 +102,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 10, 2023 at 07:56:07PM +0200, Philippe Mathieu-Daudé wrote:
-> Trying to build initrd-stress.img on Darwin we get:
+On Mon, Jul 10, 2023 at 02:49:05PM -0300, Leonardo Bras Soares Passos wrote:
+> On Thu, Jul 6, 2023 at 5:00 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > On Thu, Jul 06, 2023 at 03:02:07PM -0400, Peter Xu wrote:
+> > > On Thu, Jul 06, 2023 at 02:50:20PM -0400, Michael S. Tsirkin wrote:
+> > > > On Thu, Jul 06, 2023 at 02:14:37PM -0400, Peter Xu wrote:
+> > > > > On Thu, Jul 06, 2023 at 03:07:40PM -0300, Leonardo Bras Soares Passos wrote:
+> > > > > > > I asked the same question, and I still keep confused: whether there's a
+> > > > > > > first bad commit?  Starting from when it fails?
+> > > > > > >
+> > > > > > > For example, is this broken on 6.0 binaries too with pc-q35-6.0?
+> > > > > >
+> > > > > > I tested for qemu 6.0, and it still reproduces, but have not pursued
+> > > > > > this any further.
+> > > > >
+> > > > > I see, thanks!
+> > > > >
+> > > > > But then do you know why it's never hit before?  I assume it means this bug
+> > > > > has been there for a long time.
+> > > >
+> > > > It's a race - you have to migrate after the bit has been set before
+> > > > the bit got cleared.
+> > > > cmask is exactly for bits that qemu modifies itself.
+> > >
+> > > Michael, do you mean that Leo's patch is wrong?
+> >
+> >
+> > I mean his patch is exactly right. cmask was designed with this
+> > kind of use case in mind.
+> > Will queue.
 > 
->   $ ninja tests/migration/initrd-stress.img
->   Compiling C object tests/migration/stress.p/stress.c.o
->   FAILED: tests/migration/stress.p/stress.c.o
->   ../tests/migration/stress.c:24:10: fatal error: 'linux/random.h' file not found
->   #include <linux/random.h>
->            ^~~~~~~~~~~~~~~~
+> Thanks Michael!
+> 
+> Any chance this will get in on time for v8.1 ?
 
-I think that's historical accident, as AFAICT, nothing in stress.c
-needs that include to be present.
+Yes, working on pull request now.
 
->   1 error generated.
->   ninja: build stopped: subcommand failed.
-> 
-> Per the include path, this test is Linux specific.
-> Since this is the single binary built in this directory,
-> restrict the whole meson.build to Linux.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  tests/migration/meson.build | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/tests/migration/meson.build b/tests/migration/meson.build
-> index ac71f13290..56523e0785 100644
-> --- a/tests/migration/meson.build
-> +++ b/tests/migration/meson.build
-> @@ -1,3 +1,7 @@
-> +if targetos != 'linux'
-> +   subdir_done()
-> +endif
-> +
->  sysprof = dependency('sysprof-capture-4', required: false)
->  glib_static = dependency('glib-2.0', version: glib_req_ver, required: false,
->                           method: 'pkg-config', static: true)
-> -- 
-> 2.38.1
-> 
-> 
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> >
+> > > I just got understood why it got cleared - I think Leo didn't mention that
+> > > the device was actually offlined before migration, IIUC that's why the PDS
+> > > bit got cleared, if PDS was trying to describe that of the slot.
+> > >
+> > > According to:
+> > >
+> > >     /* Used to enable checks on load. Note that writable bits are
+> > >      * never checked even if set in cmask. */
+> > >     uint8_t *cmask;
+> > >
+> > > It does sound reasonable to me to have PDS cleared when device offlined.
+> > > Since hypervisor doesn't really know what the condition the slot presence
+> > > bit would be when migrating, it seems we should just clear the bit in
+> > > cmask.
+> > >
+> > > So with the last reply from Leo, the patch looks all right to me.  It's
+> > > just that as Leo mentioned, we should mention the offline process if that's
+> > > the case, because that's definitely an important step to reproduce the issue.
+> > >
+> > > Thanks,
+> >
+> > If you want to suggest more text to the commit log, for the benefit
+> > of backporters, that is fine by me.
+> >
+> > > --
+> > > Peter Xu
+> >
 
 
