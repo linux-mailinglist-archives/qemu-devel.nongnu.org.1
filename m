@@ -2,102 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F12B74DEA7
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 21:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8EC74DEB2
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 22:02:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIx1Z-0004YE-4I; Mon, 10 Jul 2023 15:58:21 -0400
+	id 1qIx4Y-0005lL-QB; Mon, 10 Jul 2023 16:01:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIx1W-0004Xx-F7
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:58:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIx1U-0001Xe-Sq
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:58:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689019095;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MdY1hOSI/ZXoBdkiB4WO0urHhaHtKNZG+DDisbsq/78=;
- b=eDkgqOpJnMm0OmCPDYJV7BeZ+/oJgon0HgOCwTFJ/sq0UbZi/w8t5adgIKscqcABIffWxo
- jzav7K+ciJDKGnZzcEsdSiTZNCeCIWj+fna5DWibWU9PrIaUowWJYvsorW7FNFRFpcz1qY
- fb18WGpffnLuoVQoxpUwwv9RyM+y54s=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507-mBVpMOGiOqGJXmLSQgD5cg-1; Mon, 10 Jul 2023 15:58:14 -0400
-X-MC-Unique: mBVpMOGiOqGJXmLSQgD5cg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f42bcef2acso28949515e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 12:58:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIx4I-0005l6-HO
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:01:14 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIx44-000267-Ph
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:00:58 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-3fc02a92dcfso31737935e9.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 13:00:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689019253; x=1691611253;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=H3W1L54Id1o2QUcIABZJ6sT27o+AxfrR8+Y3NtZRaGU=;
+ b=tKp17UFPm8/3POdhIKdfKaHbtjiBqwjQGsLYQqE0M0SRZEXhuyMrTfa4Y9P+423Bau
+ CFM8o0IwsgwsFujSUM1YHbMtwcw963dXEH2Qqh7n9Q8EgySzmepJU1BcXaYmjaasiLtH
+ zQLEb0RDNL9oLlt+Yq9sdaAkN/c6jCONHlISadlrZxoMX2asJo4+pxylE1FOn82S5z2X
+ rTkJ+xtJlRVz2hx7qMfdXJi0/Dye39aS9PFHYZRk8yPGnQaDhSpbFssUQhK6yN3BVVdz
+ OgJ/6s/19zMzsvA4x6ZycVP1aE8AyDwI/fHX/IcNX7/8NFFeAHf7hrbqQB78EUSUs0MM
+ 2g8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689019093; x=1691611093;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20221208; t=1689019253; x=1691611253;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MdY1hOSI/ZXoBdkiB4WO0urHhaHtKNZG+DDisbsq/78=;
- b=MKJbW9AJtwQ9sqIB5wQNDqLs43JxPMetU4rAml1zmsTDTP7Z7UkI3BrrgZY0T7v3zb
- xt7RCVMjIIoY6YeJCgQH5pm9d/GIx24g8eTPkCY9s4fgNqn/xebMe0EzDoZB878q6wRO
- lFxDIPpFwFuKAnQA7GumA3omMcrqaZNvh+6sVEXmSuDFdrikidlkLEFpYCeeZ39YkVtr
- Hz/YYwLgwhi3vBSuiEdneNBby8LZUkLiIX88VcNjQhyBDbGNsMdX0Zgxnl3UQ5eMAxF0
- jwjNzEDNxvTJX7qZ5qbpFMrgx/mF9cYXJv78NWRXOzqmQcPS9Sjev3JoeyG5L27AK/ld
- CgtQ==
-X-Gm-Message-State: ABy/qLbiTUo4asOmsXJUkX7CLr8tUM+SOj05OKAnXLZYRNN92PARIOjb
- 1UZFI7PCg6BgPJXZ0nfJfLwszlZqN+pdkuT04ojkiF3Fuwa3PjE6x0BYjul325Yc53WeyOGhoGJ
- LGOUeQqoT8MjGAdW4xxS5z1Q=
-X-Received: by 2002:a7b:ce8e:0:b0:3fb:40ec:9483 with SMTP id
- q14-20020a7bce8e000000b003fb40ec9483mr11981372wmj.16.1689019093353; 
- Mon, 10 Jul 2023 12:58:13 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHdFsk+ZT+zXNgugkKCXWqSljOvfUucNbmbL6DrZtP1dGJV9SHhm3eHgUmb8bBMMAItv1mEiw==
-X-Received: by 2002:a7b:ce8e:0:b0:3fb:40ec:9483 with SMTP id
- q14-20020a7bce8e000000b003fb40ec9483mr11981352wmj.16.1689019092976; 
- Mon, 10 Jul 2023 12:58:12 -0700 (PDT)
-Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- c18-20020a7bc012000000b003fb40f5f553sm11223752wmb.31.2023.07.10.12.58.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 12:58:12 -0700 (PDT)
-Date: Mon, 10 Jul 2023 15:58:07 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>,
- Erik Schilling <erik.schilling@linaro.org>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>, Fam Zheng <fam@euphon.net>,
- virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH v3 10/20] hw/virtio: add config support to
- vhost-user-device
-Message-ID: <20230710155653-mutt-send-email-mst@kernel.org>
-References: <20230710153522.3469097-1-alex.bennee@linaro.org>
- <20230710153522.3469097-11-alex.bennee@linaro.org>
+ bh=H3W1L54Id1o2QUcIABZJ6sT27o+AxfrR8+Y3NtZRaGU=;
+ b=MfCqXf2TsOv6eDJbKb9+R1sqDChzgvaLp9QWK6Iv7zQBRj+TBsTJdjKQOki6saVivi
+ W54ea13Ihc7EZQYvWoFMDzUiKoSnzYaRh4OiGpzjWtZACkmrUeLi4AwlDDBurSqtfM5y
+ VC4I19xkbMqVEE8lhg9qW/ufu9JxQerKj64X0ix1JEQV/KcW/3CX2Pi2i3/2Z23PBqxa
+ 1iESaxl5lfVAlF95di4vRQRlm/iaYsgW7I319ax4EOFpxcaMcVl1LKqCL5PP7Cibf3er
+ jewu97idHa5O9Ylye5111/QtJWLIi0RhCO8ni3saJHIBHbXpMcEaGlQPUrtyAk/ZwlED
+ i4Xg==
+X-Gm-Message-State: ABy/qLZ+xK/q05HDKxL38d/uPbhYvvXX/DUzI7iJCZ1tKsOLNslwwjSd
+ xm9wrG9rPPPd++Ydz9Xb+Om5CQ==
+X-Google-Smtp-Source: APBJJlGl9O6Py0zXlSkOBGchni8xIobpV9rY57ggOuOM5x7lbtp1fQNLRsHYW2aYzJQpJ+Nu4YzihA==
+X-Received: by 2002:a1c:e903:0:b0:3fb:41b5:52eb with SMTP id
+ q3-20020a1ce903000000b003fb41b552ebmr12160138wmc.26.1689019253491; 
+ Mon, 10 Jul 2023 13:00:53 -0700 (PDT)
+Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
+ [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
+ m17-20020a05600c281100b003fbca05faa9sm676111wmb.24.2023.07.10.13.00.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 13:00:53 -0700 (PDT)
+Message-ID: <3a7dbf8b-000b-b8dd-69f7-625c8154ad63@linaro.org>
+Date: Mon, 10 Jul 2023 22:00:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230710153522.3469097-11-alex.bennee@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] target/mips: Implement Loongson CSR instructions
+Content-Language: en-US
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: yangxiaojuan@loongson.cn, gaosong@loongson.cn, chenhuacai@kernel.org
+References: <20230521214832.20145-1-jiaxun.yang@flygoat.com>
+ <20230521214832.20145-2-jiaxun.yang@flygoat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230521214832.20145-2-jiaxun.yang@flygoat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,151 +93,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 10, 2023 at 04:35:12PM +0100, Alex Bennée wrote:
-> To use the generic device the user will need to provide the config
-> region size via the command line. We also add a notifier so the guest
-> can be pinged if the remote daemon updates the config.
+On 21/5/23 23:48, Jiaxun Yang wrote:
+> Loongson introduced CSR instructions since 3A4000, which looks
+> similar to IOCSR and CPUCFG instructions we seen in LoongArch.
 > 
-> With these changes:
+> Unfortunately we don't have much document about those instructions,
+> bit fields of CPUCFG instructions and IOCSR registers can be found
+> at 3A4000's user manual, while instruction encodings can be found
+> at arch/mips/include/asm/mach-loongson64/loongson_regs.h from
+> Linux Kernel.
 > 
->   -device vhost-user-device-pci,virtio-id=41,num_vqs=2,config_size=8
+> Our predefined CPUCFG bits are differ from actual 3A4000, since
+> we can't emulate all CPUCFG features present in 3A4000 for now,
+> we just enable bits for what we have in TCG.
 > 
-> is equivalent to:
-> 
->   -device vhost-user-gpio-pci
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-
-
-This one I think it's best to defer until we get a better
-handle on how we want the configuration to look.
-
-
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 > ---
->  include/hw/virtio/vhost-user-device.h |  1 +
->  hw/virtio/vhost-user-device.c         | 58 ++++++++++++++++++++++++++-
->  2 files changed, 58 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/hw/virtio/vhost-user-device.h b/include/hw/virtio/vhost-user-device.h
-> index 9105011e25..3ddf88a146 100644
-> --- a/include/hw/virtio/vhost-user-device.h
-> +++ b/include/hw/virtio/vhost-user-device.h
-> @@ -22,6 +22,7 @@ struct VHostUserBase {
->      CharBackend chardev;
->      uint16_t virtio_id;
->      uint32_t num_vqs;
-> +    uint32_t config_size;
->      /* State tracking */
->      VhostUserState vhost_user;
->      struct vhost_virtqueue *vhost_vq;
-> diff --git a/hw/virtio/vhost-user-device.c b/hw/virtio/vhost-user-device.c
-> index b0239fa033..2b028cae08 100644
-> --- a/hw/virtio/vhost-user-device.c
-> +++ b/hw/virtio/vhost-user-device.c
-> @@ -117,6 +117,42 @@ static uint64_t vub_get_features(VirtIODevice *vdev,
->      return vub->vhost_dev.features & ~(1ULL << VHOST_USER_F_PROTOCOL_FEATURES);
->  }
->  
+>   target/mips/cpu-defs.c.inc           |  9 ++++
+>   target/mips/cpu.c                    |  8 ++++
+>   target/mips/cpu.h                    | 40 ++++++++++++++++
+>   target/mips/helper.h                 |  4 ++
+>   target/mips/internal.h               |  2 +
+>   target/mips/tcg/lcsr.decode          | 17 +++++++
+>   target/mips/tcg/lcsr_translate.c     | 69 ++++++++++++++++++++++++++++
+>   target/mips/tcg/meson.build          |  2 +
+>   target/mips/tcg/op_helper.c          | 16 +++++++
+>   target/mips/tcg/sysemu/lcsr_helper.c | 45 ++++++++++++++++++
+>   target/mips/tcg/sysemu/meson.build   |  4 ++
+>   target/mips/tcg/sysemu_helper.h.inc  |  8 ++++
+>   target/mips/tcg/translate.c          |  3 ++
+>   target/mips/tcg/translate.h          |  7 +++
+>   14 files changed, 234 insertions(+)
+>   create mode 100644 target/mips/tcg/lcsr.decode
+>   create mode 100644 target/mips/tcg/lcsr_translate.c
+>   create mode 100644 target/mips/tcg/sysemu/lcsr_helper.c
+
+
+> diff --git a/target/mips/tcg/lcsr.decode b/target/mips/tcg/lcsr.decode
+> new file mode 100644
+> index 000000000000..960ef8b6f99b
+> --- /dev/null
+> +++ b/target/mips/tcg/lcsr.decode
+> @@ -0,0 +1,17 @@
+> +# Loongson CSR instructions
+> +#
+> +# Copyright (C) 2023 Jiaxun Yang <jiaxun.yang@flygoat.com>
+> +#
+> +# SPDX-License-Identifier: LGPL-2.1-or-later
+> +#
+
+
+> diff --git a/target/mips/tcg/lcsr_translate.c b/target/mips/tcg/lcsr_translate.c
+> new file mode 100644
+> index 000000000000..0ca6f2e7f8db
+> --- /dev/null
+> +++ b/target/mips/tcg/lcsr_translate.c
+> @@ -0,0 +1,69 @@
 > +/*
-> + * To handle VirtIO config we need to know the size of the config
-> + * space. We don't cache the config but re-fetch it from the guest
-> + * every time in case something has changed.
+> + * Loongson CSR instructions translation routines
+> + *
+> + *  Copyright (c) 2023 Jiaxun Yang <jiaxun.yang@flygoat.com>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
 > + */
-> +static void vub_get_config(VirtIODevice *vdev, uint8_t *config)
-> +{
-> +    VHostUserBase *vub = VHOST_USER_BASE(vdev);
-> +    Error *local_err = NULL;
 > +
-> +    /*
-> +     * There will have been a warning during vhost_dev_init, but lets
-> +     * assert here as nothing will go right now.
-> +     */
-> +    g_assert(vub->config_size && vub->vhost_user.supports_config == true);
-> +
-> +    if (vhost_dev_get_config(&vub->vhost_dev, config,
-> +                             vub->config_size, &local_err)) {
-> +        error_report_err(local_err);
-> +    }
-> +}
-> +
+
+
+> diff --git a/target/mips/tcg/sysemu/lcsr_helper.c b/target/mips/tcg/sysemu/lcsr_helper.c
+> new file mode 100644
+> index 000000000000..1152695ba2c1
+> --- /dev/null
+> +++ b/target/mips/tcg/sysemu/lcsr_helper.c
+> @@ -0,0 +1,45 @@
 > +/*
-> + * When the daemon signals an update to the config we just need to
-> + * signal the guest as we re-read the config on demand above.
+> + * Loongson CSR instructions translation routines
+> + *
+> + *  Copyright (c) 2023 Jiaxun Yang <jiaxun.yang@flygoat.com>
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
 > + */
-> +static int vub_config_notifier(struct vhost_dev *dev)
-> +{
-> +    virtio_notify_config(dev->vdev);
-> +    return 0;
-> +}
+
+You have a mix of LGPL/GPL. I suppose you want LGPL.
+
+> diff --git a/target/mips/tcg/sysemu/meson.build b/target/mips/tcg/sysemu/meson.build
+> index 4da2c577b203..098b6069159b 100644
+> --- a/target/mips/tcg/sysemu/meson.build
+> +++ b/target/mips/tcg/sysemu/meson.build
+> @@ -4,3 +4,7 @@ mips_softmmu_ss.add(files(
+>     'special_helper.c',
+>     'tlb_helper.c',
+>   ))
 > +
-> +const VhostDevConfigOps vub_config_ops = {
-> +    .vhost_dev_config_notifier = vub_config_notifier,
-> +};
-> +
->  static void vub_handle_output(VirtIODevice *vdev, VirtQueue *vq)
->  {
->      /*
-> @@ -141,12 +177,21 @@ static int vub_connect(DeviceState *dev)
->  {
->      VirtIODevice *vdev = VIRTIO_DEVICE(dev);
->      VHostUserBase *vub = VHOST_USER_BASE(vdev);
-> +    struct vhost_dev *vhost_dev = &vub->vhost_dev;
->  
->      if (vub->connected) {
->          return 0;
->      }
->      vub->connected = true;
->  
-> +    /*
-> +     * If we support VHOST_USER_GET_CONFIG we must enable the notifier
-> +     * so we can ping the guest when it updates.
-> +     */
-> +    if (vub->vhost_user.supports_config) {
-> +        vhost_dev_set_config_notifier(vhost_dev, &vub_config_ops);
-> +    }
-> +
->      /* restore vhost state */
->      if (virtio_device_started(vdev, vdev->status)) {
->          vub_start(vdev);
-> @@ -214,11 +259,20 @@ static void vub_device_realize(DeviceState *dev, Error **errp)
->          vub->num_vqs = 1; /* reasonable default? */
->      }
->  
-> +    /*
-> +     * We can't handle config requests unless we know the size of the
-> +     * config region, specialisations of the vhost-user-device will be
-> +     * able to set this.
-> +     */
-> +    if (vub->config_size) {
-> +        vub->vhost_user.supports_config = true;
-> +    }
-> +
->      if (!vhost_user_init(&vub->vhost_user, &vub->chardev, errp)) {
->          return;
->      }
->  
-> -    virtio_init(vdev, vub->virtio_id, 0);
-> +    virtio_init(vdev, vub->virtio_id, vub->config_size);
->  
->      /*
->       * Disable guest notifiers, by default all notifications will be via the
-> @@ -268,6 +322,7 @@ static void vub_class_init(ObjectClass *klass, void *data)
->      vdc->realize = vub_device_realize;
->      vdc->unrealize = vub_device_unrealize;
->      vdc->get_features = vub_get_features;
-> +    vdc->get_config = vub_get_config;
->      vdc->set_status = vub_set_status;
->  }
->  
-> @@ -295,6 +350,7 @@ static Property vud_properties[] = {
->      DEFINE_PROP_CHR("chardev", VHostUserBase, chardev),
->      DEFINE_PROP_UINT16("virtio-id", VHostUserBase, virtio_id, 0),
->      DEFINE_PROP_UINT32("num_vqs", VHostUserBase, num_vqs, 1),
-> +    DEFINE_PROP_UINT32("config_size", VHostUserBase, config_size, 0),
->      DEFINE_PROP_END_OF_LIST(),
->  };
->  
-> -- 
-> 2.39.2
+> +mips_softmmu_ss.add(when: 'TARGET_MIPS64', if_true: files(
+
+Now s/mips_softmmu_ss/mips_system_ss/.
+
+> +  'lcsr_helper.c',
+> +))
 
 
