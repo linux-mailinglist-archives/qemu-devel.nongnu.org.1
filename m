@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B229274DD7D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 20:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CDC74DD8B
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 20:43:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIvnH-0005LB-IR; Mon, 10 Jul 2023 14:39:31 -0400
+	id 1qIvqh-0006SW-Hl; Mon, 10 Jul 2023 14:43:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIvn8-0005JV-5e
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:39:23 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIvqe-0006SB-TD
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:43:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIvn4-0007M2-PG
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:39:21 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIvqc-0001EI-Fj
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:43:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689014358;
+ s=mimecast20190719; t=1689014577;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=5y36uEjnU+oe2HyoPgWJgpl0Tu3KXRgATIaWuLOnCAA=;
- b=bBIp5SVksZFg12fA9tFMnQeZx1BXkyRV380c2Ub91NdqirfKtOcGNc0Q7s5hl54212be9v
- eodqWUoPJZcqTTJWoQ+DdeFzPBH9gv9FT5rRD5V6CFpZ9a+LsuFq/6pPTT12heOqRjWFNq
- U6xLqGqdxmsUOZkS0LLoRUVV9W4oTxs=
+ bh=3lvYptRYi+BwG6RQVPzSArWbTc+yFRlbDq0PQkd5K8Q=;
+ b=eIh76D1CuAz9u2BWQjrTuNLk/8GAjYCYpivKmHO3sUBfvqcGkASX0X030LLL8x0Kv42qi7
+ JAByZZP7yGuuNGc159kw7j4gagROXP3sJ7AQVczs8DkZn1jMFe2TcUULqL7GGBHSufHgi2
+ URBmlj/lKm/BMYTLYAJnCvQJTEPzatQ=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-538-II1YRlToMfyFUUWTkZPotw-1; Mon, 10 Jul 2023 14:39:15 -0400
-X-MC-Unique: II1YRlToMfyFUUWTkZPotw-1
+ us-mta-600-O8pe_syxNEqEB5OhQNdfXw-1; Mon, 10 Jul 2023 14:42:56 -0400
+X-MC-Unique: O8pe_syxNEqEB5OhQNdfXw-1
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3141c6f4173so2587659f8f.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 11:39:15 -0700 (PDT)
+ ffacd0b85a97d-30e4943ca7fso2465595f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 11:42:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689014354; x=1691606354;
+ d=1e100.net; s=20221208; t=1689014575; x=1691606575;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5y36uEjnU+oe2HyoPgWJgpl0Tu3KXRgATIaWuLOnCAA=;
- b=l5rqoi12eHFSlRnX6/N0OJcVr2Ef7DzNqX7gMPj9DiXKe5IBivDlY39ranFgvql00h
- p7Q6IRTTW6rlLqFFUMTX7z7eY8hS0wlo2G1patO8LH+jOpD27d0LDtPdiiIVFzndKs47
- UYUtzvgeQNzRD32EfL2HFEleOpvVcN8KYrcy2rLDKELejEfMj3AqFgSaXUO89TjJw2vk
- CS17QvV0OBNq1yUUiw6dFENHZ9XRK8l+JjqBdFlIK9K5xD1lstWdLdJOxP+cnUf9nWcc
- bVFvCqLwoqhQWovLsw/J/26y2BQKGiAT7tVuFmSc+lxmcnYf2J4Huvo2x0t+2AOXPF30
- tgtA==
-X-Gm-Message-State: ABy/qLZWuigwOBUKrQszKBh1p7nTAiYOIZ20nIAdLB/XPmd53C39tU1K
- 0bT7m09Htpv2K3GjGqEoQcqiwiAJP4BGHP8Iwa/Z0RTmV6wA7kvLz4PUtinmJ0LIDpFvkXxXqBk
- dzQOskcKIFvfNr1s=
-X-Received: by 2002:adf:e349:0:b0:313:e9be:24e7 with SMTP id
- n9-20020adfe349000000b00313e9be24e7mr6721919wrj.59.1689014354235; 
- Mon, 10 Jul 2023 11:39:14 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFX/N3L4/DhDIVu0TAjg6OOQMAOfm4jdMymv+raQyPIKUzWQe3c5RN7c7Q8esr5hE+EIyX7Yg==
-X-Received: by 2002:adf:e349:0:b0:313:e9be:24e7 with SMTP id
- n9-20020adfe349000000b00313e9be24e7mr6721894wrj.59.1689014353597; 
- Mon, 10 Jul 2023 11:39:13 -0700 (PDT)
+ bh=3lvYptRYi+BwG6RQVPzSArWbTc+yFRlbDq0PQkd5K8Q=;
+ b=Cg9Ila3ENNuDZKsYj8i2AVqYJDg7YjftHfYZfHYlqi6K5MQDIWezb4dNnU3vB8qEQ9
+ nKFLgTwkcPLNlEg8saLE5SfQ3tRyEbUH19YZOXYCbL6bVNZ5TnGGI38SWxE1Tiqt5Ham
+ LBuNRCFylh3EkorCJZXkyM61L1LwJ9xbiW0kDe0XvB6oonrC7zGNSCygOvocAHElmcrT
+ jUEwWHJvslZfDcO8vy+kJt2PgGyvdUB6X+5GqtOTREhwKuxYixjDxXgXBfCob9D0eIan
+ PuyY4ofxgu2t6/iAZswIW8JlRTl1GQhKTJakGkxhSsa0hD1GXkt7xFDnVrlXYjExCvpC
+ 6Odg==
+X-Gm-Message-State: ABy/qLZ0ZA2kDEy/i84xOdr1lwQZEyRRJCXexCqbMSeF38zbqkumvukf
+ cSlPMMqHT/SnL1Dt5u+s+DJTbqYSZYieXy/B58myimqvsFyw5lGKkQjkajLDixxd+gHO3JcyV8h
+ lsyzPFa3tZtF343k=
+X-Received: by 2002:a5d:6789:0:b0:313:e8bf:a77 with SMTP id
+ v9-20020a5d6789000000b00313e8bf0a77mr12199139wru.5.1689014575108; 
+ Mon, 10 Jul 2023 11:42:55 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHmmTL8KxWP0RHOA945CgLZMWRhAGxf3tdiKVJ0ujs/SYq9FGjZigbau3Dw5ofwP+LsX0Q5lw==
+X-Received: by 2002:a5d:6789:0:b0:313:e8bf:a77 with SMTP id
+ v9-20020a5d6789000000b00313e8bf0a77mr12199127wru.5.1689014574794; 
+ Mon, 10 Jul 2023 11:42:54 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- k10-20020a5d66ca000000b00313f9085119sm97827wrw.113.2023.07.10.11.39.11
+ y3-20020a056000108300b003141f96ed36sm176438wrw.0.2023.07.10.11.42.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 11:39:13 -0700 (PDT)
-Date: Mon, 10 Jul 2023 14:39:09 -0400
+ Mon, 10 Jul 2023 11:42:54 -0700 (PDT)
+Date: Mon, 10 Jul 2023 14:42:50 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Subject: Re: [PATCH v4 0/5] Support x2APIC mode with TCG accelerator
-Message-ID: <20230710143726-mutt-send-email-mst@kernel.org>
-References: <20230522163157.9754-1-minhquangbui99@gmail.com>
+ Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH v2 00/17] Support smp.clusters for x86
+Message-ID: <20230710144242-mutt-send-email-mst@kernel.org>
+References: <20230529123101.411267-1-zhao1.liu@linux.intel.com>
+ <20230622161427-mutt-send-email-mst@kernel.org>
+ <ZJuKTl9RJet6FEO2@liuzhao-OptiPlex-7080>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230522163157.9754-1-minhquangbui99@gmail.com>
+In-Reply-To: <ZJuKTl9RJet6FEO2@liuzhao-OptiPlex-7080>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -101,154 +105,265 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 22, 2023 at 11:31:52PM +0700, Bui Quang Minh wrote:
-> Hi everyone,
+On Wed, Jun 28, 2023 at 09:18:06AM +0800, Zhao Liu wrote:
+> On Thu, Jun 22, 2023 at 04:14:44PM -0400, Michael S. Tsirkin wrote:
+> > Date: Thu, 22 Jun 2023 16:14:44 -0400
+> > From: "Michael S. Tsirkin" <mst@redhat.com>
+> > Subject: Re: [PATCH v2 00/17] Support smp.clusters for x86
+> > 
+> > On Mon, May 29, 2023 at 08:30:44PM +0800, Zhao Liu wrote:
+> > > From: Zhao Liu <zhao1.liu@intel.com>
+> > > 
+> > > Hi list,
+> > > 
+> > > This is the our v2 patch series, rebased on the master branch at the
+> > > commit ac84b57b4d74 ("Merge tag 'for-upstream' of
+> > > https://gitlab.com/bonzini/qemu into staging").
+> > > 
+> > > Comparing with v1 [1], v2 mainly reorganizes patches and does some
+> > > cleanup.
+> > > 
+> > > This series add the cluster support for x86 PC machine, which allows
+> > > x86 can use smp.clusters to configure the modlue level CPU topology
+> > > of x86.
+> > > 
+> > > And since the compatibility issue (see section: ## Why not share L2
+> > > cache in cluster directly), this series also introduce a new command
+> > > to adjust the topology of the x86 L2 cache.
+> > > 
+> > > Welcome your comments!
+> > 
+> > PC things:
+> > 
+> > Acked-by: Michael S. Tsirkin <mst@redhat.com>
+> > 
 > 
-> This series implements x2APIC mode in userspace local APIC and the
-> RDMSR/WRMSR helper to access x2APIC registers in x2APIC mode. Intel iommu
-> and AMD iommu are adjusted to support x2APIC interrupt remapping. With this
-> series, we can now boot Linux kernel into x2APIC mode with TCG accelerator
-> using either Intel or AMD iommu.
+> Thanks Michael!
 > 
-> Testing to boot my own built Linux 6.3.0-rc2, the kernel successfully boot
-> with enabled x2APIC and can enumerate CPU with APIC ID 257
+> Could I double check if I can add your ACK tag to the following patches?
 > 
-> Using Intel IOMMU
+> [PATCH v2 01/17] i386: Fix comment style in topology.h
+> [PATCH v2 02/17] tests: Rename test-x86-cpuid.c to test-x86-topo.c
+> [PATCH v2 07/17] i386: Introduce module-level cpu topology to
+> CPUX86State
+> [PATCH v2 08/17] i386: Support modules_per_die in X86CPUTopoInfo
+> [PATCH v2 09/17] i386: Support module_id in X86CPUTopoIDs
+> [PATCH v2 10/17] i386/cpu: Introduce cluster-id to X86CPU
+> [PATCH v2 11/17] tests: Add test case of APIC ID for module level parsing
+> [PATCH v2 12/17] hw/i386/pc: Support smp.clusters for x86 PC machine
 > 
-> qemu/build/qemu-system-x86_64 \
->   -smp 2,maxcpus=260 \
->   -cpu qemu64,x2apic=on \
->   -machine q35 \
->   -device intel-iommu,intremap=on,eim=on \
->   -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
->   -m 2G \
->   -kernel $KERNEL_DIR \
->   -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
->   -drive file=$IMAGE_DIR,format=raw \
->   -nographic \
->   -s
-> 
-> Using AMD IOMMU
-> 
-> qemu/build/qemu-system-x86_64 \
->   -smp 2,maxcpus=260 \
->   -cpu qemu64,x2apic=on \
->   -machine q35 \
->   -device amd-iommu,intremap=on,xtsup=on \
->   -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
->   -m 2G \
->   -kernel $KERNEL_DIR \
->   -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
->   -drive file=$IMAGE_DIR,format=raw \
->   -nographic \
->   -s
-> 
-> Testing the emulated userspace APIC with kvm-unit-tests, disable test
-> device with this patch
-> 
-> diff --git a/lib/x86/fwcfg.c b/lib/x86/fwcfg.c
-> index 1734afb..f56fe1c 100644
-> --- a/lib/x86/fwcfg.c
-> +++ b/lib/x86/fwcfg.c
-> @@ -27,6 +27,7 @@ static void read_cfg_override(void)
->  
->         if ((str = getenv("TEST_DEVICE")))
->                 no_test_device = !atol(str);
-> +       no_test_device = true;
->  
->         if ((str = getenv("MEMLIMIT")))
->                 fw_override[FW_CFG_MAX_RAM] = atol(str) * 1024 * 1024;
-> 
-> ~ env QEMU=/home/minh/Desktop/oss/qemu/build/qemu-system-x86_64 ACCEL=tcg \
-> ./run_tests.sh -v -g apic 
-> 
-> TESTNAME=apic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/apic.flat -smp 2
-> -cpu qemu64,+x2apic,+tsc-deadline -machine kernel_irqchip=split FAIL
-> apic-split (54 tests, 8 unexpected failures, 1 skipped)
-> TESTNAME=ioapic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/ioapic.flat -smp
-> 1 -cpu qemu64 -machine kernel_irqchip=split PASS ioapic-split (19 tests)
-> TESTNAME=x2apic TIMEOUT=30 ACCEL=tcg ./x86/run x86/apic.flat -smp 2 -cpu
-> qemu64,+x2apic,+tsc-deadline FAIL x2apic (54 tests, 8 unexpected failures,
-> 1 skipped) TESTNAME=xapic TIMEOUT=60 ACCEL=tcg ./x86/run x86/apic.flat -smp
-> 2 -cpu qemu64,-x2apic,+tsc-deadline -machine pit=off FAIL xapic (43 tests,
-> 6 unexpected failures, 2 skipped)
-> 
->   FAIL: apic_disable: *0xfee00030: 50014
->   FAIL: apic_disable: *0xfee00080: f0
->   FAIL: apic_disable: *0xfee00030: 50014
->   FAIL: apic_disable: *0xfee00080: f0 
->   FAIL: apicbase: relocate apic
-> 
-> These errors are because we don't disable MMIO region when switching to
-> x2APIC and don't support relocate MMIO region yet. This is a problem
-> because, MMIO region is the same for all CPUs, in order to support these we
-> need to figure out how to allocate and manage different MMIO regions for
-> each CPUs. This can be an improvement in the future.
-> 
->   FAIL: nmi-after-sti
->   FAIL: multiple nmi
-> 
-> These errors are in the way we handle CPU_INTERRUPT_NMI in core TCG.
-> 
->   FAIL: TMCCT should stay at zero
-> 
-> This error is related to APIC timer which should be addressed in separate
-> patch.
+> Zhao
 
-So, I'm not sure how safe it is to merge as is - are we
-creating a way for users to shoot themselves in the foot?
-Would be better to just fix these issues before we merge.
+Sure
 
-
-> Version 4 changes,
-> - Patch 5:
->   + Instead of replacing IVHD type 0x10 with type 0x11, export both types
->   for backward compatibility with old guest operating system
->   + Flip the xtsup feature check condition in amdvi_int_remap_ga for
->   readability
-> 
-> Version 3 changes,
-> - Patch 2:
->   + Allow APIC ID > 255 only when x2APIC feature is supported on CPU
->   + Make physical destination mode IPI which has destination id 0xffffffff
->   a broadcast to xAPIC CPUs
->   + Make cluster address 0xf in cluster model of xAPIC logical destination
->   mode a broadcast to all clusters
->   + Create new extended_log_dest to store APIC_LDR information in x2APIC
->   instead of extending log_dest for backward compatibility in vmstate
-> 
-> Version 2 changes,
-> - Add support for APIC ID larger than 255
-> - Adjust AMD iommu for x2APIC suuport
-> - Reorganize and split patch 1,2 into patch 1,2,3 in version 2
-> 
-> Thanks,
-> Quang Minh.
-> 
-> Bui Quang Minh (5):
->   i386/tcg: implement x2APIC registers MSR access
->   apic: add support for x2APIC mode
->   apic, i386/tcg: add x2apic transitions
->   intel_iommu: allow Extended Interrupt Mode when using userspace APIC
->   amd_iommu: report x2APIC support to the operating system
-> 
->  hw/i386/acpi-build.c                 | 127 +++++----
->  hw/i386/amd_iommu.c                  |  21 +-
->  hw/i386/amd_iommu.h                  |  16 +-
->  hw/i386/intel_iommu.c                |  11 -
->  hw/i386/x86.c                        |   8 +-
->  hw/intc/apic.c                       | 395 +++++++++++++++++++++------
->  hw/intc/apic_common.c                |  16 +-
->  hw/intc/trace-events                 |   4 +-
->  include/hw/i386/apic.h               |   6 +-
->  include/hw/i386/apic_internal.h      |   7 +-
->  target/i386/cpu-sysemu.c             |  18 +-
->  target/i386/cpu.c                    |   5 +-
->  target/i386/cpu.h                    |   9 +
->  target/i386/tcg/sysemu/misc_helper.c |  31 +++
->  14 files changed, 500 insertions(+), 174 deletions(-)
-> 
-> -- 
-> 2.25.1
+> > 
+> > 
+> > > 
+> > > # Backgroud
+> > > 
+> > > The "clusters" parameter in "smp" is introduced by ARM [2], but x86
+> > > hasn't supported it.
+> > > 
+> > > At present, x86 defaults L2 cache is shared in one core, but this is
+> > > not enough. There're some platforms that multiple cores share the
+> > > same L2 cache, e.g., Alder Lake-P shares L2 cache for one module of
+> > > Atom cores [3], that is, every four Atom cores shares one L2 cache.
+> > > Therefore, we need the new CPU topology level (cluster/module).
+> > > 
+> > > Another reason is for hybrid architecture. cluster support not only
+> > > provides another level of topology definition in x86, but would aslo
+> > > provide required code change for future our hybrid topology support.
+> > > 
+> > > 
+> > > # Overview
+> > > 
+> > > ## Introduction of module level for x86
+> > > 
+> > > "cluster" in smp is the CPU topology level which is between "core" and
+> > > die.
+> > > 
+> > > For x86, the "cluster" in smp is corresponding to the module level [4],
+> > > which is above the core level. So use the "module" other than "cluster"
+> > > in x86 code.
+> > > 
+> > > And please note that x86 already has a cpu topology level also named
+> > > "cluster" [4], this level is at the upper level of the package. Here,
+> > > the cluster in x86 cpu topology is completely different from the
+> > > "clusters" as the smp parameter. After the module level is introduced,
+> > > the cluster as the smp parameter will actually refer to the module level
+> > > of x86.
+> > > 
+> > > 
+> > > ## Why not share L2 cache in cluster directly
+> > > 
+> > > Though "clusters" was introduced to help define L2 cache topology
+> > > [2], using cluster to define x86's L2 cache topology will cause the
+> > > compatibility problem:
+> > > 
+> > > Currently, x86 defaults that the L2 cache is shared in one core, which
+> > > actually implies a default setting "cores per L2 cache is 1" and
+> > > therefore implicitly defaults to having as many L2 caches as cores.
+> > > 
+> > > For example (i386 PC machine):
+> > > -smp 16,sockets=2,dies=2,cores=2,threads=2,maxcpus=16 (*)
+> > > 
+> > > Considering the topology of the L2 cache, this (*) implicitly means "1
+> > > core per L2 cache" and "2 L2 caches per die".
+> > > 
+> > > If we use cluster to configure L2 cache topology with the new default
+> > > setting "clusters per L2 cache is 1", the above semantics will change
+> > > to "2 cores per cluster" and "1 cluster per L2 cache", that is, "2
+> > > cores per L2 cache".
+> > > 
+> > > So the same command (*) will cause changes in the L2 cache topology,
+> > > further affecting the performance of the virtual machine.
+> > > 
+> > > Therefore, x86 should only treat cluster as a cpu topology level and
+> > > avoid using it to change L2 cache by default for compatibility.
+> > > 
+> > > 
+> > > ## module level in CPUID
+> > > 
+> > > Currently, we don't expose module level in CPUID.1FH because currently
+> > > linux (v6.2-rc6) doesn't support module level. And exposing module and
+> > > die levels at the same time in CPUID.1FH will cause linux to calculate
+> > > wrong die_id. The module level should be exposed until the real machine
+> > > has the module level in CPUID.1FH.
+> > > 
+> > > We can configure CPUID.04H.02H (L2 cache topology) with module level by
+> > > a new command:
+> > > 
+> > >         "-cpu,x-l2-cache-topo=cluster"
+> > > 
+> > > More information about this command, please see the section: "## New
+> > > property: x-l2-cache-topo".
+> > > 
+> > > 
+> > > ## New cache topology info in CPUCacheInfo
+> > > 
+> > > Currently, by default, the cache topology is encoded as:
+> > > 1. i/d cache is shared in one core.
+> > > 2. L2 cache is shared in one core.
+> > > 3. L3 cache is shared in one die.
+> > > 
+> > > This default general setting has caused a misunderstanding, that is, the
+> > > cache topology is completely equated with a specific cpu topology, such
+> > > as the connection between L2 cache and core level, and the connection
+> > > between L3 cache and die level.
+> > > 
+> > > In fact, the settings of these topologies depend on the specific
+> > > platform and are not static. For example, on Alder Lake-P, every
+> > > four Atom cores share the same L2 cache [2].
+> > > 
+> > > Thus, in this patch set, we explicitly define the corresponding cache
+> > > topology for different cpu models and this has two benefits:
+> > > 1. Easy to expand to new CPU models in the future, which has different
+> > >    cache topology.
+> > > 2. It can easily support custom cache topology by some command (e.g.,
+> > >    x-l2-cache-topo).
+> > > 
+> > > 
+> > > ## New property: x-l2-cache-topo
+> > > 
+> > > The property l2-cache-topo will be used to change the L2 cache topology
+> > > in CPUID.04H.
+> > > 
+> > > Now it allows user to set the L2 cache is shared in core level or
+> > > cluster level.
+> > > 
+> > > If user passes "-cpu x-l2-cache-topo=[core|cluster]" then older L2 cache
+> > > topology will be overrided by the new topology setting.
+> > > 
+> > > Since CPUID.04H is used by intel cpus, this property is available on
+> > > intel cpus as for now.
+> > > 
+> > > When necessary, it can be extended to CPUID[0x8000001D] for amd cpus.
+> > > 
+> > > 
+> > > # Patch description
+> > > 
+> > > patch 1-2 Cleanups about coding style and test name.
+> > > 
+> > > patch 3-4,15 Fixes about x86 topology, intel l1 cache topology and amd
+> > >              cache topology encoding.
+> > > 
+> > > patch 5-6 Cleanups about topology related CPUID encoding and QEMU
+> > >           topology variables.
+> > > 
+> > > patch 7-12 Add the module as the new CPU topology level in x86, and it
+> > >            is corresponding to the cluster level in generic code.
+> > > 
+> > > patch 13,14,16 Add cache topology infomation in cache models.
+> > > 
+> > > patch 17 Introduce a new command to configure L2 cache topology.
+> > > 
+> > > 
+> > > [1]: https://lists.gnu.org/archive/html/qemu-devel/2023-02/msg03184.html
+> > > [2]: https://patchew.org/QEMU/20211228092221.21068-1-wangyanan55@huawei.com/
+> > > [3]: https://www.intel.com/content/www/us/en/products/platforms/details/alder-lake-p.html
+> > > [4]: SDM, vol.3, ch.9, 9.9.1 Hierarchical Mapping of Shared Resources.
+> > > 
+> > > Best Regards,
+> > > Zhao
+> > > 
+> > > ---
+> > > Changelog:
+> > > 
+> > > Changes since v1:
+> > >  * Reordered patches. (Yanan)
+> > >  * Deprecated the patch to fix comment of machine_parse_smp_config().
+> > >    (Yanan)
+> > >  * Rename test-x86-cpuid.c to test-x86-topo.c. (Yanan)
+> > >  * Split the intel's l1 cache topology fix into a new separate patch.
+> > >    (Yanan)
+> > >  * Combined module_id and APIC ID for module level support into one
+> > >    patch. (Yanan)
+> > >  * Make cache_into_passthrough case of cpuid 0x04 leaf in
+> > >  * cpu_x86_cpuid() use max_processor_ids_for_cache() and
+> > >    max_core_ids_in_package() to encode CPUID[4]. (Yanan)
+> > >  * Add the prefix "CPU_TOPO_LEVEL_*" for CPU topology level names.
+> > >    (Yanan)
+> > >  * Rename the "INVALID" level to "CPU_TOPO_LEVEL_UNKNOW". (Yanan)
+> > > 
+> > > ---
+> > > Zhao Liu (10):
+> > >   i386: Fix comment style in topology.h
+> > >   tests: Rename test-x86-cpuid.c to test-x86-topo.c
+> > >   i386/cpu: Fix i/d-cache topology to core level for Intel CPU
+> > >   i386/cpu: Use APIC ID offset to encode cache topo in CPUID[4]
+> > >   i386/cpu: Consolidate the use of topo_info in cpu_x86_cpuid()
+> > >   i386: Add cache topology info in CPUCacheInfo
+> > >   i386: Use CPUCacheInfo.share_level to encode CPUID[4]
+> > >   i386: Fix NumSharingCache for CPUID[0x8000001D].EAX[bits 25:14]
+> > >   i386: Use CPUCacheInfo.share_level to encode
+> > >     CPUID[0x8000001D].EAX[bits 25:14]
+> > >   i386: Add new property to control L2 cache topo in CPUID.04H
+> > > 
+> > > Zhuocheng Ding (7):
+> > >   softmmu: Fix CPUSTATE.nr_cores' calculation
+> > >   i386: Introduce module-level cpu topology to CPUX86State
+> > >   i386: Support modules_per_die in X86CPUTopoInfo
+> > >   i386: Support module_id in X86CPUTopoIDs
+> > >   i386/cpu: Introduce cluster-id to X86CPU
+> > >   tests: Add test case of APIC ID for module level parsing
+> > >   hw/i386/pc: Support smp.clusters for x86 PC machine
+> > > 
+> > >  MAINTAINERS                                   |   2 +-
+> > >  hw/i386/pc.c                                  |   1 +
+> > >  hw/i386/x86.c                                 |  49 +++++-
+> > >  include/hw/core/cpu.h                         |   2 +-
+> > >  include/hw/i386/topology.h                    |  68 +++++---
+> > >  qemu-options.hx                               |  10 +-
+> > >  softmmu/cpus.c                                |   2 +-
+> > >  target/i386/cpu.c                             | 158 ++++++++++++++----
+> > >  target/i386/cpu.h                             |  25 +++
+> > >  tests/unit/meson.build                        |   4 +-
+> > >  .../{test-x86-cpuid.c => test-x86-topo.c}     |  58 ++++---
+> > >  11 files changed, 280 insertions(+), 99 deletions(-)
+> > >  rename tests/unit/{test-x86-cpuid.c => test-x86-topo.c} (73%)
+> > > 
+> > > -- 
+> > > 2.34.1
+> > 
 
 
