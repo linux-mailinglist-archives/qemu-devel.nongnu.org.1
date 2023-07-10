@@ -2,61 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6BD74D402
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 12:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B3F74D408
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 12:57:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIoYK-0005Bq-OH; Mon, 10 Jul 2023 06:55:36 -0400
+	id 1qIoZn-0006QQ-AP; Mon, 10 Jul 2023 06:57:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qIoYH-0005Av-Qs
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:55:34 -0400
-Received: from relay4-d.mail.gandi.net ([2001:4b98:dc4:8::224])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIoZk-0006Pu-JF
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:57:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qIoYE-0003xN-Ro
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:55:33 -0400
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9C6F9E0004;
- Mon, 10 Jul 2023 10:55:22 +0000 (UTC)
-Message-ID: <8788dbb9-1e6a-9917-65a5-22fc22d7fad9@ovn.org>
-Date: Mon, 10 Jul 2023 12:56:09 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIoZi-0005P1-OP
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:57:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688986621;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pvdk6l0pQOkgAunW+CpQBKT3M0XdWI+dNEx7ZEjvAZU=;
+ b=jPFnLW7UvEqWNwyggc1MabZ+13UJIQqn0mDayJCLyzJKwvBhn/yFSxJlJe9PIMmi7Moa3q
+ hVVW4fcwAhYd10x2RaWhIE002yEZWWtnYWYJvPt/pOe3E0b6XYMww7UKnN72XQTsq3ixL6
+ DUYt9qsKT5NF75d0zllgTotejX/afKg=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-597-_jx_3rgdNQWrIDbzsJH3SA-1; Mon, 10 Jul 2023 06:57:00 -0400
+X-MC-Unique: _jx_3rgdNQWrIDbzsJH3SA-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-763c36d4748so400615285a.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 03:57:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688986620; x=1691578620;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pvdk6l0pQOkgAunW+CpQBKT3M0XdWI+dNEx7ZEjvAZU=;
+ b=PSVl9qxm6TnLZvr9eL3XPEvnV0UM1bCfjlVZVUMEqCGOoBa+wB2iGYhausjXt3pDS3
+ rZqdeD1V6gctHmC/wzdKYIWlIcsW6c8cXz27pNZE3T3loqckhgvQgrj9NC5GEBpbTiJe
+ 31YXO6L8EMTwZviXpBY9lB3e5s5gcSMQdrQllCML7Ozz5Ys4RMyrk30Z8iGyYMn9WtEw
+ 9GjX8DZiIILfI8lSGD5kdmO4RObphQhJxXdGxHhFpf+xesTU2CpsWnasCTVWeLg6nepW
+ P0ViAUup3BFR67zH6htw+B5oVwN1uyAGkgokTOxt/HAbuWsVDJe6yMdE78yE1FFnaskq
+ P9oQ==
+X-Gm-Message-State: ABy/qLYrwtNwfrwRlBaiuhHSCIjwaQ46qYUJJiVGp7iKiijsNrsHgefW
+ cJrrvRgBB49I+UGas7xVAILx6FVSZgIkMUCRFcD2z7vcXfsG6tj/EJQlk7uX81GR1UKAGx/Ig6C
+ jSdNPQXfJFMADaXk=
+X-Received: by 2002:a05:620a:31a3:b0:767:2e2b:b4ff with SMTP id
+ bi35-20020a05620a31a300b007672e2bb4ffmr12413129qkb.52.1688986620115; 
+ Mon, 10 Jul 2023 03:57:00 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGMmuT0z6x9IeecaZslr5Y7pzBOY/BNZP3dZJb/2FcG7fxRA7d/F6xwpsaNP1TZP2U9FQDPGQ==
+X-Received: by 2002:a05:620a:31a3:b0:767:2e2b:b4ff with SMTP id
+ bi35-20020a05620a31a300b007672e2bb4ffmr12413114qkb.52.1688986619846; 
+ Mon, 10 Jul 2023 03:56:59 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-179-116.web.vodafone.de.
+ [109.43.179.116]) by smtp.gmail.com with ESMTPSA id
+ l9-20020ae9f009000000b00767cd764ecfsm1966219qkg.33.2023.07.10.03.56.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 03:56:59 -0700 (PDT)
+Message-ID: <2f176448-5dcf-1093-401f-9205ac5ec61b@redhat.com>
+Date: Mon, 10 Jul 2023 12:56:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Cc: i.maximets@ovn.org, Stefan Hajnoczi <stefanha@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v5 4/4] QGA VSS: Add log in functions begin/end
 Content-Language: en-US
-To: Jason Wang <jasowang@redhat.com>
-References: <20230622215824.2173343-1-i.maximets@ovn.org>
- <CACGkMEuN_PeXZhqaN4EJP8rKRVK=wftpkH3--y267j9+7smCOw@mail.gmail.com>
- <CAJSP0QVg-mmtnMXZpxRKutbdgpdNeawJT45iQSp4cf=MRedZAQ@mail.gmail.com>
- <CACGkMEtdk-Qi+5M+pEa9v=S_ehRs=m7Ux4=Sf6aqk0EqNzyQ5g@mail.gmail.com>
- <CAJSP0QW22f18V0pXTO-w4BXONJ3wLCbczMjKSKCRnxiF+7W=eg@mail.gmail.com>
- <CACGkMEvCV6JcQ3LOQvCx=9KXKqE_SAQwzxFXe1c+PdSMH_KbDg@mail.gmail.com>
- <CAJSP0QUtCnE49YWA6PmVSExMaFf2VZi3St1Wysk9ruDS37ALHg@mail.gmail.com>
- <CACGkMEu1V4HBdP3JFYV-+Uec1s6f0U3fj5f9tV0FApQ+U8rbrw@mail.gmail.com>
- <CAJSP0QU-p_cKCevxTabKhfq9T2=UShLqcced-OCmfCx3dE+6rQ@mail.gmail.com>
- <CACGkMEv2u-pcFY_+Y-r6ODj6hjEDUhVG5VV-cX0Fko7VNPZ=0g@mail.gmail.com>
- <CAJSP0QXbq2s-VoWyPz7wWXCnhrt3nOMeoxdhUL8cerxm1sMfeg@mail.gmail.com>
- <CACGkMEsk65V4OiDB==fKSZ8us=FGz4u3Cj5un+2YYXep+OrQXw@mail.gmail.com>
- <005e9be8-74f6-5d68-f839-4f3b369c1672@ovn.org>
- <CACGkMEth7yqzFoivMZefu0khb2+RfkHAOs8uONwc6qpojXhV6Q@mail.gmail.com>
-From: Ilya Maximets <i.maximets@ovn.org>
-Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
-In-Reply-To: <CACGkMEth7yqzFoivMZefu0khb2+RfkHAOs8uONwc6qpojXhV6Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: i.maximets@ovn.org
-Received-SPF: neutral client-ip=2001:4b98:dc4:8::224;
- envelope-from=i.maximets@ovn.org; helo=relay4-d.mail.gandi.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001, SPF_NEUTRAL=0.779,
+To: Konstantin Kostiuk <kkostiuk@redhat.com>
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+References: <20230710091439.1010553-1-kkostiuk@redhat.com>
+ <20230710091439.1010553-5-kkostiuk@redhat.com>
+ <CAPMcbCq8LcQaaSptFzCaCcBs0qpss72GbLWkvSw22T7hwH9k9A@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <CAPMcbCq8LcQaaSptFzCaCcBs0qpss72GbLWkvSw22T7hwH9k9A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,264 +105,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/10/23 05:51, Jason Wang wrote:
-> On Fri, Jul 7, 2023 at 7:21 PM Ilya Maximets <i.maximets@ovn.org> wrote:
->>
->> On 7/7/23 03:43, Jason Wang wrote:
->>> On Fri, Jul 7, 2023 at 3:08 AM Stefan Hajnoczi <stefanha@gmail.com> wrote:
->>>>
->>>> On Wed, 5 Jul 2023 at 02:02, Jason Wang <jasowang@redhat.com> wrote:
->>>>>
->>>>> On Mon, Jul 3, 2023 at 5:03 PM Stefan Hajnoczi <stefanha@gmail.com> wrote:
->>>>>>
->>>>>> On Fri, 30 Jun 2023 at 09:41, Jason Wang <jasowang@redhat.com> wrote:
->>>>>>>
->>>>>>> On Thu, Jun 29, 2023 at 8:36 PM Stefan Hajnoczi <stefanha@gmail.com> wrote:
->>>>>>>>
->>>>>>>> On Thu, 29 Jun 2023 at 07:26, Jason Wang <jasowang@redhat.com> wrote:
->>>>>>>>>
->>>>>>>>> On Wed, Jun 28, 2023 at 4:25 PM Stefan Hajnoczi <stefanha@gmail.com> wrote:
->>>>>>>>>>
->>>>>>>>>> On Wed, 28 Jun 2023 at 10:19, Jason Wang <jasowang@redhat.com> wrote:
->>>>>>>>>>>
->>>>>>>>>>> On Wed, Jun 28, 2023 at 4:15 PM Stefan Hajnoczi <stefanha@gmail.com> wrote:
->>>>>>>>>>>>
->>>>>>>>>>>> On Wed, 28 Jun 2023 at 09:59, Jason Wang <jasowang@redhat.com> wrote:
->>>>>>>>>>>>>
->>>>>>>>>>>>> On Wed, Jun 28, 2023 at 3:46 PM Stefan Hajnoczi <stefanha@gmail.com> wrote:
->>>>>>>>>>>>>>
->>>>>>>>>>>>>> On Wed, 28 Jun 2023 at 05:28, Jason Wang <jasowang@redhat.com> wrote:
->>>>>>>>>>>>>>>
->>>>>>>>>>>>>>> On Wed, Jun 28, 2023 at 6:45 AM Ilya Maximets <i.maximets@ovn.org> wrote:
->>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>> On 6/27/23 04:54, Jason Wang wrote:
->>>>>>>>>>>>>>>>> On Mon, Jun 26, 2023 at 9:17 PM Ilya Maximets <i.maximets@ovn.org> wrote:
->>>>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>>>> On 6/26/23 08:32, Jason Wang wrote:
->>>>>>>>>>>>>>>>>>> On Sun, Jun 25, 2023 at 3:06 PM Jason Wang <jasowang@redhat.com> wrote:
->>>>>>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>>>>>> On Fri, Jun 23, 2023 at 5:58 AM Ilya Maximets <i.maximets@ovn.org> wrote:
->>>>>>>>>>>>>>>>>> It is noticeably more performant than a tap with vhost=on in terms of PPS.
->>>>>>>>>>>>>>>>>> So, that might be one case.  Taking into account that just rcu lock and
->>>>>>>>>>>>>>>>>> unlock in virtio-net code takes more time than a packet copy, some batching
->>>>>>>>>>>>>>>>>> on QEMU side should improve performance significantly.  And it shouldn't be
->>>>>>>>>>>>>>>>>> too hard to implement.
->>>>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>>>> Performance over virtual interfaces may potentially be improved by creating
->>>>>>>>>>>>>>>>>> a kernel thread for async Tx.  Similarly to what io_uring allows.  Currently
->>>>>>>>>>>>>>>>>> Tx on non-zero-copy interfaces is synchronous, and that doesn't allow to
->>>>>>>>>>>>>>>>>> scale well.
->>>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>>> Interestingly, actually, there are a lot of "duplication" between
->>>>>>>>>>>>>>>>> io_uring and AF_XDP:
->>>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>>> 1) both have similar memory model (user register)
->>>>>>>>>>>>>>>>> 2) both use ring for communication
->>>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>>> I wonder if we can let io_uring talks directly to AF_XDP.
->>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>> Well, if we submit poll() in QEMU main loop via io_uring, then we can
->>>>>>>>>>>>>>>> avoid cost of the synchronous Tx for non-zero-copy modes, i.e. for
->>>>>>>>>>>>>>>> virtual interfaces.  io_uring thread in the kernel will be able to
->>>>>>>>>>>>>>>> perform transmission for us.
->>>>>>>>>>>>>>>
->>>>>>>>>>>>>>> It would be nice if we can use iothread/vhost other than the main loop
->>>>>>>>>>>>>>> even if io_uring can use kthreads. We can avoid the memory translation
->>>>>>>>>>>>>>> cost.
->>>>>>>>>>>>>>
->>>>>>>>>>>>>> The QEMU event loop (AioContext) has io_uring code
->>>>>>>>>>>>>> (utils/fdmon-io_uring.c) but it's disabled at the moment. I'm working
->>>>>>>>>>>>>> on patches to re-enable it and will probably send them in July. The
->>>>>>>>>>>>>> patches also add an API to submit arbitrary io_uring operations so
->>>>>>>>>>>>>> that you can do stuff besides file descriptor monitoring. Both the
->>>>>>>>>>>>>> main loop and IOThreads will be able to use io_uring on Linux hosts.
->>>>>>>>>>>>>
->>>>>>>>>>>>> Just to make sure I understand. If we still need a copy from guest to
->>>>>>>>>>>>> io_uring buffer, we still need to go via memory API for GPA which
->>>>>>>>>>>>> seems expensive.
->>>>>>>>>>>>>
->>>>>>>>>>>>> Vhost seems to be a shortcut for this.
->>>>>>>>>>>>
->>>>>>>>>>>> I'm not sure how exactly you're thinking of using io_uring.
->>>>>>>>>>>>
->>>>>>>>>>>> Simply using io_uring for the event loop (file descriptor monitoring)
->>>>>>>>>>>> doesn't involve an extra buffer, but the packet payload still needs to
->>>>>>>>>>>> reside in AF_XDP umem, so there is a copy between guest memory and
->>>>>>>>>>>> umem.
->>>>>>>>>>>
->>>>>>>>>>> So there would be a translation from GPA to HVA (unless io_uring
->>>>>>>>>>> support 2 stages) which needs to go via qemu memory core. And this
->>>>>>>>>>> part seems to be very expensive according to my test in the past.
->>>>>>>>>>
->>>>>>>>>> Yes, but in the current approach where AF_XDP is implemented as a QEMU
->>>>>>>>>> netdev, there is already QEMU device emulation (e.g. virtio-net)
->>>>>>>>>> happening. So the GPA to HVA translation will happen anyway in device
->>>>>>>>>> emulation.
->>>>>>>>>
->>>>>>>>> Just to make sure we're on the same page.
->>>>>>>>>
->>>>>>>>> I meant, AF_XDP can do more than e.g 10Mpps. So if we still use the
->>>>>>>>> QEMU netdev, it would be very hard to achieve that if we stick to
->>>>>>>>> using the Qemu memory core translations which need to take care about
->>>>>>>>> too much extra stuff. That's why I suggest using vhost in io threads
->>>>>>>>> which only cares about ram so the translation could be very fast.
->>>>>>>>
->>>>>>>> What does using "vhost in io threads" mean?
->>>>>>>
->>>>>>> It means a vhost userspace dataplane that is implemented via io threads.
->>>>>>
->>>>>> AFAIK this does not exist today. QEMU's built-in devices that use
->>>>>> IOThreads don't use vhost code. QEMU vhost code is for vhost kernel,
->>>>>> vhost-user, or vDPA but not built-in devices that use IOThreads. The
->>>>>> built-in devices implement VirtioDeviceClass callbacks directly and
->>>>>> use AioContext APIs to run in IOThreads.
->>>>>
->>>>> Yes.
->>>>>
->>>>>>
->>>>>> Do you have an idea for using vhost code for built-in devices? Maybe
->>>>>> it's fastest if you explain your idea and its advantages instead of me
->>>>>> guessing.
->>>>>
->>>>> It's something like I'd proposed in [1]:
->>>>>
->>>>> 1) a vhost that is implemented via IOThreads
->>>>> 2) memory translation is done via vhost memory table/IOTLB
->>>>>
->>>>> The advantages are:
->>>>>
->>>>> 1) No 3rd application like DPDK application
->>>>> 2) Attack surface were reduced
->>>>> 3) Better understanding/interactions with device model for things like
->>>>> RSS and IOMMU
->>>>>
->>>>> There could be some dis-advantages but it's not obvious to me :)
->>>>
->>>> Why is QEMU's native device emulation API not the natural choice for
->>>> writing built-in devices? I don't understand why the vhost interface
->>>> is desirable for built-in devices.
->>>
->>> Unless the memory helpers (like address translations) were optimized
->>> fully to satisfy this 10M+ PPS.
->>>
->>> Not sure if this is too hard, but last time I benchmark, perf told me
->>> most of the time spent in the translation.
->>>
->>> Using a vhost is a workaround since its memory model is much more
->>> simpler so it can skip lots of memory sections like I/O and ROM etc.
->>
->> So, we can have a thread running as part of QEMU process that implements
->> vhost functionality for a virtio-net device.  And this thread has an
->> optimized way to access memory.  What prevents current virtio-net emulation
->> code accessing memory in the same optimized way?
+On 10/07/2023 12.38, Konstantin Kostiuk wrote:
+> Hi Thomas,
 > 
-> Current emulation using memory core accessors which needs to take care
-> of a lot of stuff like MMIO or even P2P. Such kind of stuff is not
-> considered since day0 of vhost. You can do some experiment on this e.g
-> just dropping packets after fetching it from the TX ring.
+> Do you have any other comments about this commit?
 
-If I'm reading that right, virtio implementation is using address space
-caching by utilizing a memory listener and pre-translated addresses of
-interesting memory regions.  Then it's performing address_space_read_cached,
-which is bypassing all the memory address translation logic on a cache hit.
-That sounds pretty similar to how memory table is prepared for vhost.
+Looks good to me now!
 
-> 
->> i.e. we likely don't
->> actually need to implement the whole vhost-virtio communication protocol
->> in order to have faster memory access from the device emulation code.
->> I mean, if vhost can access device memory faster, why device itself can't?
-> 
-> I'm not saying it can't but it would end up with something similar to
-> vhost. And that's why I'm saying using vhost is a shortcut (at least
-> for a POC).
-> 
-> Thanks
-> 
->>
->> With that we could probably split the "datapath" part of the virtio-net
->> emulation into a separate thread driven by iothread loop.
->>
->> Then add batch API for communication with a network backend (af-xdp) to
->> avoid per-packet calls.
->>
->> These are 3 more or less independent tasks that should allow the similar
->> performance to a full fledged vhost control and dataplane implementation
->> inside QEMU.
->>
->> Or am I missing something? (Probably)
->>
->>>
->>> Thanks
->>>
->>>>
->>>>>
->>>>> It's something like linking SPDK/DPDK to Qemu.
->>>>
->>>> Sergio Lopez tried loading vhost-user devices as shared libraries that
->>>> run in the QEMU process. It worked as an experiment but wasn't pursued
->>>> further.
->>>>
->>>> I think that might make sense in specific cases where there is an
->>>> existing vhost-user codebase that needs to run as part of QEMU.
->>>>
->>>> In this case the AF_XDP code is new, so it's not a case of moving
->>>> existing code into QEMU.
->>>>
->>>>>
->>>>>>
->>>>>>>>>> Regarding pinning - I wonder if that's something that can be refined
->>>>>>>>>> in the kernel by adding an AF_XDP flag that enables on-demand pinning
->>>>>>>>>> of umem. That way only rx and tx buffers that are currently in use
->>>>>>>>>> will be pinned. The disadvantage is the runtime overhead to pin/unpin
->>>>>>>>>> pages. I'm not sure whether it's possible to implement this, I haven't
->>>>>>>>>> checked the kernel code.
->>>>>>>>>
->>>>>>>>> It requires the device to do page faults which is not commonly
->>>>>>>>> supported nowadays.
->>>>>>>>
->>>>>>>> I don't understand this comment. AF_XDP processes each rx/tx
->>>>>>>> descriptor. At that point it can getuserpages() or similar in order to
->>>>>>>> pin the page. When the memory is no longer needed, it can put those
->>>>>>>> pages. No fault mechanism is needed. What am I missing?
->>>>>>>
->>>>>>> Ok, I think I kind of get you, you mean doing pinning while processing
->>>>>>> rx/tx buffers? It's not easy since GUP itself is not very fast, it may
->>>>>>> hit PPS for sure.
->>>>>>
->>>>>> Yes. It's not as fast as permanently pinning rx/tx buffers, but it
->>>>>> supports unpinned guest RAM.
->>>>>
->>>>> Right, it's a balance between pin and PPS. PPS seems to be more
->>>>> important in this case.
->>>>>
->>>>>>
->>>>>> There are variations on this approach, like keeping a certain amount
->>>>>> of pages pinned after they have been used so the cost of
->>>>>> pinning/unpinning can be avoided when the same pages are reused in the
->>>>>> future, but I don't know how effective that is in practice.
->>>>>>
->>>>>> Is there a more efficient approach without relying on hardware page
->>>>>> fault support?
->>>>>
->>>>> I guess so, I see some slides that say device page fault is very slow.
->>>>>
->>>>>>
->>>>>> My understanding is that hardware page fault support is not yet
->>>>>> deployed. We'd be left with pinning guest RAM permanently or using a
->>>>>> runtime pinning/unpinning approach like I've described.
->>>>>
->>>>> Probably.
->>>>>
->>>>> Thanks
->>>>>
->>>>>>
->>>>>> Stefan
->>>>>>
->>>>>
->>>>
->>>
->>
-> 
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
