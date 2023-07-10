@@ -2,147 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC56974D579
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F2774D580
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:32:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIq0G-0008P9-RP; Mon, 10 Jul 2023 08:28:32 -0400
+	id 1qIq42-0007dp-JP; Mon, 10 Jul 2023 08:32:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1qIq0C-0008Mh-92
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:28:28 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1qIq0A-0000nw-LH
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:28:28 -0400
-Received: from pps.filterd (m0127841.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
- 36A6fhdO002035; Mon, 10 Jul 2023 05:28:25 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- from:to:cc:subject:date:message-id:in-reply-to:references
- :content-transfer-encoding:content-type:mime-version; s=
- proofpoint20171006; bh=PZMOLbucO1Z63YRw1BrTgRFraVE6zRGEtvM8yL47G
- 6E=; b=xbsqlTMSEN7OWQ0kbobz0H7g3Q7UV71C50jAX80GaTbrMv0jTHyGKA150
- SjOkDG2IH3A43uGuV2iDE5SMFXev2GVWFPdMLvLmKVdhwdolpqG0s3OUKVOxnOgJ
- VJevR3//zUQDPdRIz0sA2fTlCGFfJJO574vdFHUmayVaMYcJXsoZdIeoKTXtJZfm
- a6IhKBaqj4ijvLXCd3ZXmmBHTWAcNZw9TEb5aS7W4pyl41Gc9rXQqeY7YQuTH3QH
- rXFluG2E3WusRegwRnDDfMFvyCXpmPCOv88NOpI3X3q79WCpY1Bzvj14N1ojhQ/Q
- 52TMgY6VjyPKW7OoRxhyI3iQ7iO5w==
-Received: from nam10-bn7-obe.outbound.protection.outlook.com
- (mail-bn7nam10lp2106.outbound.protection.outlook.com [104.47.70.106])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3rq5b5b2tv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 10 Jul 2023 05:28:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GPix4d/sDTy9u3uUVA22iq1uR6S+/wsjjwXWtDUFNFpAXV8ssDGFTJEYbPMVP9I05FHiw9ozrfAytzvq7qhd7Ydy13y4Cl8dOcysyYdb6uZESSjhbCvh6RvBb/L9T6iawd4aHdninCI1z8mfTx3zCxrEYvUwb9HftZKZkGa8X5GFd9N84SWxIgY6CQnW49k5OpwR1vFnvDtYvQ2IlkdWBNHljf9Lc+HokPqtxh3vhxF6tIreOnq5kBp2KFEMUtnEm6/2AWz1D4BYy3S6oaat+GYEXJdi1OgyaNPFRWiW2GGFPYtfhh1l+NpJpk+q3ilJnen/XAqzln8NDmXvGmSzMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PZMOLbucO1Z63YRw1BrTgRFraVE6zRGEtvM8yL47G6E=;
- b=J3xYodHpa0vwOmRPAeT3CMWOpWnqk3cXNPwBxi8YTdcmQjN/KSVzofctEPwfyxejfvbxWMc9nmUjXSbbGIZjVwU9zjWvXRrPZ7TAcFy1vaYzGS8FAcCpqXhu1HdNTrJfI7kkFJtMNaxUmwaWd8dMhBvEehLR5ixa6JN3QvvzNggxUMSu/QM+j/OSRM5Elvx5tYXur7Hyr2vq6XhFjjXZlhCgWoIM6L6n6W9nZDUmfiScKwh9z+UWYM2lKpXAlJPbY/K+Inymhy8Jqpi4OBcC03JMYe4LPX2e9YkPiF0zHwfrJ9AgTgE9jdxzfIDVxlIpF8CS+oiNyNP0PU2aaIdEvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PZMOLbucO1Z63YRw1BrTgRFraVE6zRGEtvM8yL47G6E=;
- b=FSxGrrqQqNqFUMvyepIHn70IpVFPReXi02J96fygRJ8ouxuBFghV9T79+q47ynp0UKvrpMHU0IvoKtjmSboQW1kwPKN2WenFhTa25Wi1JFQ0sCTRPS7vE3r8E3IpSequ+Dh0sdIkcFgwusGYVg+LjlBsmevgnqbEEaCl/Yk5q47Q85SUajFRWeB70IyzgcoPiCpsXlKcukOtt8SZXsEv6QIwcR0sLmiVGCHirp3NFW27E/EZ/zPyVwf+rBBsM+mkWlumwYFqqjd6BrGR2RRvkrW60W9qLJN0+DWGCjoC3JVOszJAqIM/snmUrPxsPIAOpdIw188avWJMQ4U6lD84jw==
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com (2603:10b6:a03:57::18)
- by CYYPR02MB9688.namprd02.prod.outlook.com (2603:10b6:930:c3::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.17; Mon, 10 Jul
- 2023 12:28:24 +0000
-Received: from BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::26a6:11ae:fb38:5920]) by BYAPR02MB4343.namprd02.prod.outlook.com
- ([fe80::26a6:11ae:fb38:5920%7]) with mapi id 15.20.6588.017; Mon, 10 Jul 2023
- 12:28:24 +0000
-From: Het Gala <het.gala@nutanix.com>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qIq40-0007db-OO
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:32:24 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qIq3x-0002VS-B6
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:32:24 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6687096c6ddso2297467b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:32:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688992339; x=1691584339;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TdtHsOJcF+D5xyXCqcabhwjiyRghNgTmTzEoYZIpTpc=;
+ b=f776sEXGnaim/OusM4SIBCHxKQFaB1CDA2KHHH5OPmUYHf4ZG1GDI7CAlei+VfUgiQ
+ OZQ5IDIPYgLGyr6AlbLe2OGr/4qu+zOFZngBTjEAeA3xxi8UDMER+6y6v3QmSvq2tUFm
+ UXWCXzwgM0NousRYN3SV+VWdARl6617ioC6m8LPZk1v0KFzZts6qladi6sE/MP309DOb
+ vEypQDOing/FPEHRMxlh+1D9BbnjduE+Elqx6l+aTE1Jl+9MBei6gUNIkA5jQSbem9ou
+ MRxjNYzZwSNU6/kH8/JGq1y+EZ8nAA+14IIdmBr6dyKnD/UWHEYFAEzqlJvzE1eupHSP
+ 80fA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688992339; x=1691584339;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TdtHsOJcF+D5xyXCqcabhwjiyRghNgTmTzEoYZIpTpc=;
+ b=kbM62vQQ/BnRHwpCSFvKdYn+o0OlEZrL4mO/MOBJn3ESX25poc/EaRIcappuWw1K9a
+ QM0rOJwwNppg/UIgNGsoM+wfjlLR1QrYUjnlqt7/GIYSde5yeMdZe9MHK2waKzgRZE09
+ G7RFnoD+dKh/cMzJUtG5JidXstqiTM3rtQ2MT2m8TVVpnDl2qUwy5Sl9NkBNtEQl4poa
+ TJa3ktz8u4yKa48waDUwWwJuRixe58grhvJxRn6Et4x8iBLc4+cx8e2oko8slQe2dEP9
+ IZ/luSOar7RA5Wc0uGBQ8FnEIGVqj67B/FvvOPYEZHYkpT+0qUaHfJahvi5XqZixuOda
+ neKA==
+X-Gm-Message-State: ABy/qLbXW2+b+D2qtkw/R0P8zQ8VuUBR+pi+4+KFuKuiLe/CMB1mKeBN
+ JKyNHP4U3tPoM5Faohcje8A0eog3rcJnIg==
+X-Google-Smtp-Source: APBJJlHHTxABWd9j7pqZmGllP1BiMJ6f3lQ/8wAVN8GOKVUHq5xmIphp4GFbt0UlMgQk9fKcinE5WQ==
+X-Received: by 2002:a05:6a00:2e04:b0:682:140c:245b with SMTP id
+ fc4-20020a056a002e0400b00682140c245bmr12310016pfb.5.1688992339489; 
+ Mon, 10 Jul 2023 05:32:19 -0700 (PDT)
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
+ [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
+ by smtp.gmail.com with ESMTPSA id
+ i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.32.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Jul 2023 05:32:18 -0700 (PDT)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
- pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com, Het Gala <het.gala@nutanix.com>
-Subject: [PATCH v7 9/9] migration: adding test case for modified QAPI syntax
-Date: Mon, 10 Jul 2023 12:27:50 +0000
-Message-Id: <20230710122750.69194-10-het.gala@nutanix.com>
-X-Mailer: git-send-email 2.22.3
-In-Reply-To: <20230710122750.69194-1-het.gala@nutanix.com>
-References: <20230710122750.69194-1-het.gala@nutanix.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PH8PR15CA0003.namprd15.prod.outlook.com
- (2603:10b6:510:2d2::25) To BYAPR02MB4343.namprd02.prod.outlook.com
- (2603:10b6:a03:57::18)
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 00/54] riscv-to-apply queue
+Date: Mon, 10 Jul 2023 22:31:11 +1000
+Message-Id: <20230710123205.2441106-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR02MB4343:EE_|CYYPR02MB9688:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3316cf9b-8e96-408e-676b-08db81412780
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: aJKbOk8lO/j+7Z2MFJHyRdrAKRWesE95pl+WHhDkqvcDIjJKeDr27t/elDb53smrtKwP/egXVlD+uAQHRJzdGk2BCwUgtGqA7VGsDHCHIRXgdmPPCk27oFhdYI1cxsBYULS2eJq12DNtTy6IrkrCofHoapgw0eed8bOgyb9UYntBRVy4ckgr9Je20LKtbZ4rJPN+7VItzTYObrJKrXw8fyCDGKoxtXLzSCJktKi/SqN1uAiMQXlmZzp1N0knw85Yio4OQFecMNgWtAVm5aYcjgqfCkKrSWUROOSsVbuhi+0Yge2z/xRmhkVgPQ1WMWEaWR0MWJT67CTE+b1h30wSe+wEIy6Rac7RvU94T4k5Zs1bTS6SxjIWJ0ubeZnAPgJvpFd7/sh0w18y68wJfjjM0x0RjiYdmhuEy16VJZha4AHZF3gl6COFUtCdzGAcsCKMYwm5hhqCpZ5unmmTc4wqX3OhOo5zuZVfSrh/nkXZEYmdzlE3xT5il+Fg+cQWmx3lvS9ATV5LKiGisw4srw4U9+x8mSjl9du+vBNgcVgyOJ7+H7E7dhDkmtmFp7jsVm0gZbvxvK4ESeVrY2cAn+V2w6YlPdne8904vsBJrz96SUROU5wKfZF11FfvTjt5LaU/
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BYAPR02MB4343.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(366004)(39860400002)(136003)(396003)(376002)(346002)(451199021)(66946007)(66476007)(4326008)(66556008)(6916009)(186003)(2616005)(86362001)(26005)(1076003)(6506007)(107886003)(38350700002)(38100700002)(478600001)(52116002)(6512007)(6666004)(6486002)(2906002)(41300700001)(36756003)(8936002)(44832011)(8676002)(5660300002)(316002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7hSM7YRCT6zvEdFo6eJ2fsGWXECUmJFNWMvDtRvVvXpKlrCnY/pqVX4Rdg+H?=
- =?us-ascii?Q?ZPvjAUtjSjQR1MZQdvLXlyRFrwGD+X9PhxqUTzOBUkfRB8lxISrsjKC66gr+?=
- =?us-ascii?Q?QGISVdEe0+LQcU/hCyEKUz6QhEtEv0GYfNd3rbHegDX9grwcPaQXkA4jEPe0?=
- =?us-ascii?Q?r8QQ7ckPELqFmY1OvSyUW+lANl3D1FJqhhlF9hJ8NPFJRKUIGfMpEc90oJrB?=
- =?us-ascii?Q?wDiaxff4sTlnIctNw7arA7ow6jWTbaxNR7haKbG4+JMDsUFc0uC8yosVv8Qu?=
- =?us-ascii?Q?8MMH+twefGzszcOJ9NOoSgNEy+9JvmSaRUQBypX3Wq+LvJyfE1RO146nHSd6?=
- =?us-ascii?Q?By1v5crtdQKBBqD+/zwfq8vLNyFGjnVGNzhj5Z9QvAjrbgDgIADvu7uL4O1N?=
- =?us-ascii?Q?JE0tanmd+N+O/160CJGeG1991J1CporyD4T6ZBPCA/8VyD5WbenG+Wka3xlm?=
- =?us-ascii?Q?6VB6B2E3DKJUC93iWDk7Y9y/lHqVgvOODqpN501LMhhRYNLUhmoBVQDtq0zS?=
- =?us-ascii?Q?6dQlsGNhmugeq4amTRrrO2+swuWBhUv3QWfK/SHrV/Tqf25414/eSSJv3U34?=
- =?us-ascii?Q?PC9Dmp38re8W6K5QhYWMiaFK02uq0yw8REWNg0aJtrTZlOSRNj2C/mbOIF1w?=
- =?us-ascii?Q?OXEpTIC1xFV110cne2npda7p3xlp/2pfIWHGTLNyurfd6DfvBmMZBDi80i4b?=
- =?us-ascii?Q?kJp2zfwqNddgo7d0kD5VB82Y2vRVcghjJLcLASAsiERu1zq+INlltNnqU9kp?=
- =?us-ascii?Q?7j/1WgaKhjMirlwe0QfcYuaIwcjPStB+ly3vLCdzAEC3x7zv0VpbNWapfk+Q?=
- =?us-ascii?Q?kliAy9pruycU8e72mfjPz1q4hqq5mEn+Qd0iYyhrJhh+9QFGTLJCXAgsQICn?=
- =?us-ascii?Q?cvWfu/mPF4++f+S2Qaa/si+rETKUM+fEPhpqZKIvmliA30GMvsH0rWfXSYe3?=
- =?us-ascii?Q?dWV7yV5Bi2A7mCDOmGNVNaOAzmrm19u/EgqJnxjVrCmaG9F2xqJESKgT/qmH?=
- =?us-ascii?Q?aCPRenfHTeUKI3J4R7hHvnGG+q9lRdJZPgWa2XEkYHDiTJEGDfy1Jf0SdHYL?=
- =?us-ascii?Q?Ysj11LG5IIJp/xdml6+zvMPyi3MgIt/bPf+gWqBfVN5ZpJdC8M7AiEWnU+BA?=
- =?us-ascii?Q?vEHXxhAhLxIjdJLlT0zjFtsUVh5X4gIyCtGdOj/3soHpeLdPOqFa5YDgiZeB?=
- =?us-ascii?Q?5RsBWAC6NsutXqEnOGz6TdZLTRZ048IeJjRHeTrH7qIO763DR0h4JZNPinKp?=
- =?us-ascii?Q?oEOOhb74Aswqto9NUmPh0I43+CjD1tDKG+5QUua0czKBKkRgUYb0/uRPNz/P?=
- =?us-ascii?Q?t90MuozyITFdOUW3hQ/HwqGvfhJcQk3XJ0n7ZpGuJQx7f3PC/7PprLdiOtbj?=
- =?us-ascii?Q?IBB9H3eCztWYOKtUJC8KCj4nL9lV77fCr38qsO8PnRr+gQ8fhv7PUlRB1iJ7?=
- =?us-ascii?Q?jGtLHpvaakNpdVr9BVUHLnfXCOOArs1tahpbqJD5gzwpMxrw1UUYJCywuTbF?=
- =?us-ascii?Q?uc/aEnDjGdJH6KyuaHZremRpdsZscy5X0DKnF/8wXKBo6yC5jCcqaBglQCr2?=
- =?us-ascii?Q?fZY0NFKnAsEKXHtHwxfzEs+HfzKeaHF5HkW+TIbRiSNa4C0AXgBpToYTCoEP?=
- =?us-ascii?Q?RA=3D=3D?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3316cf9b-8e96-408e-676b-08db81412780
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR02MB4343.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2023 12:28:23.9858 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Aq86Ck47bXO4TODJ+LqdICbfzPzUNvJIBr4nR/AAUxleF4EWaqqVzIifyEgK9cswH8chLjEsT9ZT6IQEWIjNfw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR02MB9688
-X-Proofpoint-ORIG-GUID: 4yhIp3RDY0ywZ2fGU-TePI8fQP0rjj4X
-X-Proofpoint-GUID: 4yhIp3RDY0ywZ2fGU-TePI8fQP0rjj4X
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-10_09,2023-07-06_02,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
- helo=mx0b-002c1b01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -159,92 +94,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adding multifd tcp common test case for modified QAPI syntax defined.
+The following changes since commit fcb237e64f9d026c03d635579c7b288d0008a6e5:
 
-Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-Signed-off-by: Het Gala <het.gala@nutanix.com>
----
- tests/qtest/migration-test.c | 45 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+  Merge tag 'pull-vfio-20230710' of https://github.com/legoater/qemu into staging (2023-07-10 09:17:06 +0100)
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index b9cc194100..5a876d67e0 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2086,6 +2086,32 @@ test_migrate_precopy_tcp_multifd_start_common(QTestState *from,
-     return NULL;
- }
- 
-+static void *
-+test_migrate_precopy_tcp_multifd_start_new_syntax_common(QTestState *from,
-+                                                         QTestState *to,
-+                                                         const char *method)
-+{
-+    migrate_set_parameter_int(from, "multifd-channels", 16);
-+    migrate_set_parameter_int(to, "multifd-channels", 16);
-+
-+    migrate_set_parameter_str(from, "multifd-compression", method);
-+    migrate_set_parameter_str(to, "multifd-compression", method);
-+
-+    migrate_set_capability(from, "multifd", true);
-+    migrate_set_capability(to, "multifd", true);
-+
-+    /* Start incoming migration from the 1st socket */
-+    qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
-+                             "  'arguments': { "
-+                             "      'channels': [ { 'channeltype': 'main',"
-+                             "      'addr': { 'transport': 'socket',"
-+                             "                'type': 'inet',"
-+                             "                'host': '127.0.0.1',"
-+                             "                'port': '0' } } ] } }");
-+
-+    return NULL;
-+}
-+
- static void *
- test_migrate_precopy_tcp_multifd_start(QTestState *from,
-                                        QTestState *to)
-@@ -2093,6 +2119,14 @@ test_migrate_precopy_tcp_multifd_start(QTestState *from,
-     return test_migrate_precopy_tcp_multifd_start_common(from, to, "none");
- }
- 
-+static void *
-+test_migrate_precopy_tcp_multifd_new_syntax_start(QTestState *from,
-+                                                  QTestState *to)
-+{
-+    return test_migrate_precopy_tcp_multifd_start_new_syntax_common(from,
-+                                                              to, "none");
-+}
-+
- static void *
- test_migrate_precopy_tcp_multifd_zlib_start(QTestState *from,
-                                             QTestState *to)
-@@ -2124,6 +2158,15 @@ static void test_multifd_tcp_none(void)
-     test_precopy_common(&args);
- }
- 
-+static void test_multifd_tcp_new_syntax_none(void)
-+{
-+    MigrateCommon args = {
-+        .listen_uri = "defer",
-+        .start_hook = test_migrate_precopy_tcp_multifd_new_syntax_start,
-+    };
-+    test_precopy_common(&args);
-+}
-+
- static void test_multifd_tcp_zlib(void)
- {
-     MigrateCommon args = {
-@@ -2809,6 +2852,8 @@ int main(int argc, char **argv)
-     }
-     qtest_add_func("/migration/multifd/tcp/plain/none",
-                    test_multifd_tcp_none);
-+    qtest_add_func("/migration/multifd/tcp/plain/none",
-+                   test_multifd_tcp_new_syntax_none);
-     /*
-      * This test is flaky and sometimes fails in CI and otherwise:
-      * don't run unless user opts in via environment variable.
--- 
-2.22.3
+are available in the Git repository at:
 
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20230710-1
+
+for you to fetch changes up to a47842d16653b4f73b5d56ff0c252dd8a329481b:
+
+  riscv: Add support for the Zfa extension (2023-07-10 22:29:20 +1000)
+
+----------------------------------------------------------------
+Third RISC-V PR for 8.1
+
+* Use xl instead of mxl for disassemble
+* Factor out extension tests to cpu_cfg.h
+* disas/riscv: Add vendor extension support
+* disas/riscv: Add support for XVentanaCondOps
+* disas/riscv: Add support for XThead* instructions
+* Fix mstatus related problems
+* Fix veyron-v1 CPU properties
+* Fix the xlen for data address when MPRV=1
+* opensbi: Upgrade from v1.2 to v1.3
+* Enable 32-bit Spike OpenSBI boot testing
+* Support the watchdog timer of HiFive 1 rev b
+* Only build qemu-system-riscv$$ on rv$$ host
+* Add RVV registers to log
+* Restrict ACLINT to TCG
+* Add syscall riscv_hwprobe
+* Add support for BF16 extensions
+* KVM_RISCV_SET_TIMER macro is not configured correctly
+* Generate devicetree only after machine initialization is complete
+* virt: Convert fdt_load_addr to uint64_t
+* KVM: fixes and enhancements
+* Add support for the Zfa extension
+
+----------------------------------------------------------------
+Bin Meng (2):
+      roms/opensbi: Upgrade from v1.2 to v1.3
+      tests/avocado: riscv: Enable 32-bit Spike OpenSBI boot testing
+
+Christoph Müllner (8):
+      target/riscv: Factor out extension tests to cpu_cfg.h
+      disas/riscv: Move types/constants to new header file
+      disas/riscv: Make rv_op_illegal a shared enum value
+      disas/riscv: Encapsulate opcode_data into decode
+      disas/riscv: Provide infrastructure for vendor extensions
+      disas/riscv: Add support for XVentanaCondOps
+      disas/riscv: Add support for XThead* instructions
+      riscv: Add support for the Zfa extension
+
+Daniel Henrique Barboza (20):
+      target/riscv/cpu.c: fix veyron-v1 CPU properties
+      target/riscv: skip features setup for KVM CPUs
+      hw/riscv/virt.c: skip 'mmu-type' FDT if satp mode not set
+      target/riscv/cpu.c: restrict 'mvendorid' value
+      target/riscv/cpu.c: restrict 'mimpid' value
+      target/riscv/cpu.c: restrict 'marchid' value
+      target/riscv: use KVM scratch CPUs to init KVM properties
+      target/riscv: read marchid/mimpid in kvm_riscv_init_machine_ids()
+      target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs
+      target/riscv/kvm.c: init 'misa_ext_mask' with scratch CPU
+      target/riscv/cpu: add misa_ext_info_arr[]
+      target/riscv: add KVM specific MISA properties
+      target/riscv/kvm.c: update KVM MISA bits
+      target/riscv/kvm.c: add multi-letter extension KVM properties
+      target/riscv/cpu.c: add satp_mode properties earlier
+      target/riscv/cpu.c: remove priv_ver check from riscv_isa_string_ext()
+      target/riscv/cpu.c: create KVM mock properties
+      target/riscv: update multi-letter extension KVM properties
+      target/riscv/kvm.c: add kvmconfig_get_cfg_addr() helper
+      target/riscv/kvm.c: read/write (cbom|cboz)_blocksize in KVM
+
+Guenter Roeck (1):
+      riscv: Generate devicetree only after machine initialization is complete
+
+Ivan Klokov (1):
+      target/riscv: Add RVV registers to log
+
+Jason Chien (1):
+      target/riscv: Set the correct exception for implict G-stage translation fail
+
+LIU Zhiwei (1):
+      target/riscv: Use xl instead of mxl for disassemble
+
+Lakshmi Bai Raja Subramanian (1):
+      hw/riscv: virt: Convert fdt_load_addr to uint64_t
+
+Philippe Mathieu-Daudé (3):
+      target/riscv: Only unify 'riscv32/64' -> 'riscv' for host cpu in meson
+      target/riscv: Only build KVM guest with same wordsize as host
+      hw/riscv/virt: Restrict ACLINT to TCG
+
+Robbin Ehn (1):
+      linux-user/riscv: Add syscall riscv_hwprobe
+
+Tommy Wu (3):
+      hw/misc: sifive_e_aon: Support the watchdog timer of HiFive 1 rev b.
+      hw/riscv: sifive_e: Support the watchdog timer of HiFive 1 rev b.
+      tests/qtest: sifive-e-aon-watchdog-test.c: Add QTest of watchdog of sifive_e
+
+Weiwei Li (11):
+      target/riscv: Make MPV only work when MPP != PRV_M
+      target/riscv: Support MSTATUS.MPV/GVA only when RVH is enabled
+      target/riscv: Remove redundant assignment to SXL
+      target/riscv: Add additional xlen for address when MPRV=1
+      target/riscv: update cur_pmbase/pmmask based on mode affected by MPRV
+      target/riscv: Add properties for BF16 extensions
+      target/riscv: Add support for Zfbfmin extension
+      target/riscv: Add support for Zvfbfmin extension
+      target/riscv: Add support for Zvfbfwma extension
+      target/riscv: Expose properties for BF16 extensions
+      target/riscv: Add disas support for BF16 extensions
+
+yang.zhang (1):
+      target/riscv KVM_RISCV_SET_TIMER macro is not configured correctly
+
+ docs/system/riscv/virt.rst                     |   1 +
+ meson.build                                    |  15 +-
+ disas/riscv-xthead.h                           |  28 +
+ disas/riscv-xventana.h                         |  18 +
+ disas/riscv.h                                  | 302 +++++++++++
+ include/hw/misc/sifive_e_aon.h                 |  60 +++
+ include/hw/riscv/sifive_e.h                    |   9 +-
+ linux-user/riscv/syscall32_nr.h                |   1 +
+ linux-user/riscv/syscall64_nr.h                |   1 +
+ target/riscv/cpu.h                             |  56 +-
+ target/riscv/cpu_cfg.h                         |  41 ++
+ target/riscv/helper.h                          |  29 +
+ target/riscv/kvm_riscv.h                       |   1 +
+ target/riscv/insn32.decode                     |  38 ++
+ disas/riscv-xthead.c                           | 707 +++++++++++++++++++++++++
+ disas/riscv-xventana.c                         |  41 ++
+ disas/riscv.c                                  | 559 +++++++++----------
+ hw/misc/sifive_e_aon.c                         | 319 +++++++++++
+ hw/riscv/sifive_e.c                            |  17 +-
+ hw/riscv/virt.c                                |  56 +-
+ linux-user/syscall.c                           | 146 +++++
+ target/riscv/cpu.c                             | 439 +++++++++++++--
+ target/riscv/cpu_helper.c                      |  12 +-
+ target/riscv/csr.c                             |  41 +-
+ target/riscv/fpu_helper.c                      | 166 ++++++
+ target/riscv/kvm.c                             | 501 +++++++++++++++++-
+ target/riscv/op_helper.c                       |   3 +-
+ target/riscv/translate.c                       |  42 +-
+ target/riscv/vector_helper.c                   |  17 +
+ tests/qtest/sifive-e-aon-watchdog-test.c       | 450 ++++++++++++++++
+ tests/tcg/riscv64/test-fcvtmod.c               | 345 ++++++++++++
+ target/riscv/insn_trans/trans_rvbf16.c.inc     | 175 ++++++
+ target/riscv/insn_trans/trans_rvzfa.c.inc      | 521 ++++++++++++++++++
+ target/riscv/insn_trans/trans_rvzfh.c.inc      |  12 +-
+ disas/meson.build                              |   6 +-
+ hw/misc/Kconfig                                |   3 +
+ hw/misc/meson.build                            |   1 +
+ hw/riscv/Kconfig                               |   1 +
+ pc-bios/opensbi-riscv32-generic-fw_dynamic.bin | Bin 123072 -> 135344 bytes
+ pc-bios/opensbi-riscv64-generic-fw_dynamic.bin | Bin 121800 -> 138304 bytes
+ roms/opensbi                                   |   2 +-
+ tests/avocado/riscv_opensbi.py                 |   2 -
+ tests/qtest/meson.build                        |   3 +
+ tests/tcg/riscv64/Makefile.target              |   6 +
+ 44 files changed, 4751 insertions(+), 442 deletions(-)
+ create mode 100644 disas/riscv-xthead.h
+ create mode 100644 disas/riscv-xventana.h
+ create mode 100644 disas/riscv.h
+ create mode 100644 include/hw/misc/sifive_e_aon.h
+ create mode 100644 disas/riscv-xthead.c
+ create mode 100644 disas/riscv-xventana.c
+ create mode 100644 hw/misc/sifive_e_aon.c
+ create mode 100644 tests/qtest/sifive-e-aon-watchdog-test.c
+ create mode 100644 tests/tcg/riscv64/test-fcvtmod.c
+ create mode 100644 target/riscv/insn_trans/trans_rvbf16.c.inc
+ create mode 100644 target/riscv/insn_trans/trans_rvzfa.c.inc
 
