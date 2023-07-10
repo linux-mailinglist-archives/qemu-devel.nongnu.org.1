@@ -2,83 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F5574CCA1
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 08:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 404BC74CD45
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 08:40:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIk3n-0002Bb-RI; Mon, 10 Jul 2023 02:07:47 -0400
+	id 1qIkY5-0008HQ-E8; Mon, 10 Jul 2023 02:39:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qIk3m-0002BS-23
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 02:07:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qIk3h-0001bv-36
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 02:07:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688969254;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=JyghLe8ySD12gm6LLOQqPPVb1CaqSNfRd4Yr5D8+m5o=;
- b=TbuI/HT8zVlAEgkiHyDFEqNJhiYTcx1Pmrip7HZIwEQ17M6/A79S9bOrYzc+IA3cftCmNG
- g1PUbiYX5NoHuF9DlT3e5DXsFuwjkGS4qjLVzItPs/MIk+uj40rAU6sSYcaP22o3fCeqR2
- UeCoygZTAjSZZI+xgA8VZv2oMtpBfAA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-9-idIsnCRNOP-NXj0w2mrn2g-1; Mon, 10 Jul 2023 02:07:33 -0400
-X-MC-Unique: idIsnCRNOP-NXj0w2mrn2g-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9AE91858290;
- Mon, 10 Jul 2023 06:07:32 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E5A2E2166B27;
- Mon, 10 Jul 2023 06:07:31 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E131F21E6A1F; Mon, 10 Jul 2023 08:07:30 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Jason Wang <jasowang@redhat.com>
-Cc: Bin Meng <bmeng.cn@gmail.com>,  Bin Meng <bmeng@tinylab.org>,
- qemu-devel@nongnu.org,  Richard Henderson <richard.henderson@linaro.org>,
- Zhangjin Wu <falcon@tinylab.org>,  Claudio Imbrenda
- <imbrenda@linux.ibm.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,  Kevin Wolf
- <kwolf@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>,  Xuzhou Cheng
- <xuzhou.cheng@windriver.com>
-Subject: Re: [PATCH v4 0/6] net/tap: Fix QEMU frozen issue when the maximum
- number of file descriptors is very large
-References: <20230628152726.110295-1-bmeng@tinylab.org>
- <CAEUhbmVsHqdauwvgvjNY6R65kDJ017vDQ797YuzX7S_XHgS5WQ@mail.gmail.com>
- <CACGkMEsAVQhbdRabLeGiw25Ox4Ze9WRRP3coSKni5WVqFNqYYA@mail.gmail.com>
-Date: Mon, 10 Jul 2023 08:07:30 +0200
-In-Reply-To: <CACGkMEsAVQhbdRabLeGiw25Ox4Ze9WRRP3coSKni5WVqFNqYYA@mail.gmail.com>
- (Jason Wang's message of "Mon, 10 Jul 2023 11:05:38 +0800")
-Message-ID: <87mt04b8pp.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <wangyuquan1236@phytium.com.cn>)
+ id 1qIkY2-0008GO-SO; Mon, 10 Jul 2023 02:39:02 -0400
+Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net ([209.97.181.73])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <wangyuquan1236@phytium.com.cn>)
+ id 1qIkY1-0000J3-4t; Mon, 10 Jul 2023 02:39:02 -0400
+Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
+ by hzbj-icmmx-7 (Coremail) with SMTP id AQAAfwCnMGL8pqtk5U07Aw--.39508S2;
+ Mon, 10 Jul 2023 14:36:44 +0800 (CST)
+Received: from phytium.com.cn (unknown [123.150.8.50])
+ by mail (Coremail) with SMTP id AQAAfwBn0650p6tkw1kAAA--.693S3;
+ Mon, 10 Jul 2023 14:38:45 +0800 (CST)
+From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+To: rad@semihalf.com, peter.maydell@linaro.org, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org,
+ chenbaozi@phytium.com.cn, Yuquan Wang <wangyuquan1236@phytium.com.cn>
+Subject: [PATCH 0/1] hw/arm/sbsa-ref: set 'slots' property of xhci
+Date: Mon, 10 Jul 2023 14:37:49 +0800
+Message-Id: <20230710063750.473510-1-wangyuquan1236@phytium.com.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAfwBn0650p6tkw1kAAA--.693S3
+X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQAQAWSrBqcBqwAEsQ
+Authentication-Results: hzbj-icmmx-7; spf=neutral smtp.mail=wangyuquan
+ 1236@phytium.com.cn;
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU8nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=209.97.181.73;
+ envelope-from=wangyuquan1236@phytium.com.cn;
+ helo=zg8tmja5ljk3lje4ms43mwaa.icoremail.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H3=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,75 +64,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jason Wang <jasowang@redhat.com> writes:
+As the default xhci_sysbus just supports only one usb slot, it can not
+meet the working requirement of this bord. Therefore, we extend the 
+slots of xhci to 64.
 
-> On Sun, Jul 9, 2023 at 11:48=E2=80=AFPM Bin Meng <bmeng.cn@gmail.com> wro=
-te:
->>
->> On Wed, Jun 28, 2023 at 11:29=E2=80=AFPM Bin Meng <bmeng@tinylab.org> wr=
-ote:
->> >
->> >
->> > Current codes using a brute-force traversal of all file descriptors
->> > do not scale on a system where the maximum number of file descriptors
->> > is set to a very large value (e.g.: in a Docker container of Manjaro
->> > distribution it is set to 1073741816). QEMU just looks frozen during
->> > start-up.
->> >
->> > The close-on-exec flag (O_CLOEXEC) was introduced since Linux kernel
->> > 2.6.23, FreeBSD 8.3, OpenBSD 5.0, Solaris 11. While it's true QEMU
->> > doesn't need to manually close the fds for child process as the proper
->> > O_CLOEXEC flag should have been set properly on files with its own
->> > codes, QEMU uses a huge number of 3rd party libraries and we don't
->> > trust them to reliably be using O_CLOEXEC on everything they open.
->> >
->> > Modern Linux and BSDs have the close_range() call we can use to do the
->> > job, and on Linux we have one more way to walk through /proc/self/fd
->> > to complete the task efficiently, which is what qemu_close_range()
->> > does, a new API we add in util/osdep.c.
->> >
->> > V1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bm=
-eng@tinylab.org/
->> >
->> > Changes in v4:
->> > - add 'first > last' check logic
->> > - reorder the ifdefs logic
->> > - change i to unsigned int type
->> > - use qemu_strtoi() instead of atoi()
->> > - limit last upper value to sysconf(_SC_OPEN_MAX) - 1
->> > - call sysconf directly instead of using a variable
->> > - put fd on its own line
->> >
->> > Changes in v3:
->> > - fix win32 build failure
->> > - limit the last_fd of qemu_close_range() to sysconf(_SC_OPEN_MAX)
->> >
->> > Changes in v2:
->> > - new patch: "tests/tcg/cris: Fix the coding style"
->> > - new patch: "tests/tcg/cris: Correct the off-by-one error"
->> > - new patch: "util/async-teardown: Fall back to close fds one by one"
->> > - new patch: "util/osdep: Introduce qemu_close_range()"
->> > - new patch: "util/async-teardown: Use qemu_close_range() to close fds"
->> > - Change to use qemu_close_range() to close fds for child process effi=
-ciently
->> > - v1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-=
-bmeng@tinylab.org/
->> >
->> > Bin Meng (4):
->> >   tests/tcg/cris: Fix the coding style
->> >   tests/tcg/cris: Correct the off-by-one error
->> >   util/async-teardown: Fall back to close fds one by one
->> >   util/osdep: Introduce qemu_close_range()
->> >
->> > Zhangjin Wu (2):
->> >   util/async-teardown: Use qemu_close_range() to close fds
->> >   net: tap: Use qemu_close_range() to close fds
->> >
->>
->> Ping for 8.1?
->
-> Queued.
+Yuquan Wang (1):
+  hw/arm/sbsa-ref: set 'slots' property of xhci
 
-There are review questions open on PATCH 4+5.
+ hw/arm/sbsa-ref.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+-- 
+2.34.1
 
 
