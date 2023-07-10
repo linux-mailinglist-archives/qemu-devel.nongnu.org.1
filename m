@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505F574D132
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C46F74D131
 	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 11:16:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qImz6-0000ZO-Rq; Mon, 10 Jul 2023 05:15:14 -0400
+	id 1qImzR-0000cv-Ez; Mon, 10 Jul 2023 05:15:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qImyt-0000Yp-6F
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:14:55 -0400
+ id 1qImz0-0000bS-PM
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:15:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qImyr-0004HE-Nv
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:14:54 -0400
+ id 1qImyu-0004Hm-Jy
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:14:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688980493;
+ s=mimecast20190719; t=1688980495;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=En7W0aoQWFLEqX/F80maIwXu4Y6ys7QWzGprduAUFtQ=;
- b=afY5BDJiGY0/Xn+JJDTzzGYTpHAJFkuD7xfA7+9FgLvE+vIJ6y5Mk4RrD5hbv7em+sSm7s
- 31yKLELJxzdFK66EqwZEIQgu+mGSIwV1OFhYcQtqE66P7cIPI7CpQq0sArV5KgClDCc4/o
- bQ5KBucbR9omd1TMCTA7cy13wZkju/I=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=QiI65rJFr97wDDSZT8nl8r2OQW8wq7Rpu/vhvsXz9qY=;
+ b=IEUvAGocfz1lhVQ2fVSWWI+A79lwp5rE7UKM6Nw97jljh+VS/gMQN4KY5VK8MR3HZuI4Uf
+ kE8hmDIS77YAyb8IDPTa6WHisP3ZYURzicBdZ3CDGXLHJv4QfjzXit7oqSFawXiW5Doo6o
+ JPI40KcS5363J1v2c7zjgynV9E1gukc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-159-ZK7Ae2KYNm6x8L_maXzxXw-1; Mon, 10 Jul 2023 05:14:50 -0400
-X-MC-Unique: ZK7Ae2KYNm6x8L_maXzxXw-1
+ us-mta-449-oM7r2jh_NV2ZUt53dx5Wcg-1; Mon, 10 Jul 2023 05:14:51 -0400
+X-MC-Unique: oM7r2jh_NV2ZUt53dx5Wcg-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 246C53828883;
- Mon, 10 Jul 2023 09:14:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 856681044593;
+ Mon, 10 Jul 2023 09:14:51 +0000 (UTC)
 Received: from kostyanf14nb.redhat.com (unknown [10.45.225.233])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0D2842017DCB;
- Mon, 10 Jul 2023 09:14:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 70C5A200A7CA;
+ Mon, 10 Jul 2023 09:14:50 +0000 (UTC)
 From: Konstantin Kostiuk <kkostiuk@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Michael Roth <michael.roth@amd.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v5 2/4] QGA VSS: Replace 'fprintf(stderr' with qga_debug
-Date: Mon, 10 Jul 2023 12:14:37 +0300
-Message-Id: <20230710091439.1010553-3-kkostiuk@redhat.com>
+Subject: [PATCH v5 3/4] QGA VSS: Print error in err_set
+Date: Mon, 10 Jul 2023 12:14:38 +0300
+Message-Id: <20230710091439.1010553-4-kkostiuk@redhat.com>
 In-Reply-To: <20230710091439.1010553-1-kkostiuk@redhat.com>
 References: <20230710091439.1010553-1-kkostiuk@redhat.com>
 MIME-Version: 1.0
@@ -84,107 +84,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- qga/vss-win32/install.cpp   | 12 ++++++------
- qga/vss-win32/requester.cpp |  9 +++++----
- 2 files changed, 11 insertions(+), 10 deletions(-)
+ qga/vss-win32/requester.cpp | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
-index ff93b08a9e..e03473d1a8 100644
---- a/qga/vss-win32/install.cpp
-+++ b/qga/vss-win32/install.cpp
-@@ -13,6 +13,7 @@
- #include "qemu/osdep.h"
- 
- #include "vss-common.h"
-+#include "vss-debug.h"
- #ifdef HAVE_VSS_SDK
- #include <vscoordint.h>
- #else
-@@ -54,7 +55,7 @@ void errmsg(DWORD err, const char *text)
-                   FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                   NULL, err, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                   (char *)&msg, 0, NULL);
--    fprintf(stderr, "%.*s. (Error: %lx) %s\n", len, text, err, msg);
-+    qga_debug("%.*s. (Error: %lx) %s", len, text, err, msg);
-     LocalFree(msg);
- }
- 
-@@ -219,7 +220,7 @@ static HRESULT QGAProviderRemove(ICatalogCollection *coll, int i, void *arg)
- {
-     HRESULT hr;
- 
--    fprintf(stderr, "Removing COM+ Application: %s\n", QGA_PROVIDER_NAME);
-+    qga_debug("Removing COM+ Application: %s", QGA_PROVIDER_NAME);
-     chk(coll->Remove(i));
- out:
-     return hr;
-@@ -304,9 +305,8 @@ STDAPI COMRegister(void)
-     }
-     strcpy(tlbPath, dllPath);
-     strcpy(tlbPath+n-3, "tlb");
--    fprintf(stderr, "Registering " QGA_PROVIDER_NAME ":\n");
--    fprintf(stderr, "  %s\n", dllPath);
--    fprintf(stderr, "  %s\n", tlbPath);
-+    qga_debug("Registering " QGA_PROVIDER_NAME ": %s %s",
-+              dllPath, tlbPath);
-     if (!PathFileExists(tlbPath)) {
-         hr = HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND);
-         errmsg(hr, "Failed to lookup tlb");
-@@ -517,7 +517,7 @@ namespace _com_util
-         }
- 
-         if (mbstowcs(bstr, ascii, len) == (size_t)-1) {
--            fprintf(stderr, "Failed to convert string '%s' into BSTR", ascii);
-+            qga_debug("Failed to convert string '%s' into BSTR", ascii);
-             bstr[0] = 0;
-         }
-         return bstr;
 diff --git a/qga/vss-win32/requester.cpp b/qga/vss-win32/requester.cpp
-index 3e998af4a8..e85b9bc633 100644
+index e85b9bc633..f3eafacfc1 100644
 --- a/qga/vss-win32/requester.cpp
 +++ b/qga/vss-win32/requester.cpp
-@@ -12,6 +12,7 @@
+@@ -26,9 +26,11 @@
  
- #include "qemu/osdep.h"
- #include "vss-common.h"
-+#include "vss-debug.h"
- #include "requester.h"
- #include "install.h"
- #include <vswriter.h>
-@@ -59,13 +60,13 @@ STDAPI requester_init(void)
-         NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
-         RPC_C_IMP_LEVEL_IDENTIFY, NULL, EOAC_NONE, NULL);
-     if (FAILED(hr)) {
--        fprintf(stderr, "failed to CoInitializeSecurity (error %lx)\n", hr);
-+        qga_debug("failed to CoInitializeSecurity (error %lx)", hr);
-         return hr;
-     }
+ #define DEFAULT_VSS_BACKUP_TYPE VSS_BT_FULL
  
-     hLib = LoadLibraryA("VSSAPI.DLL");
-     if (!hLib) {
--        fprintf(stderr, "failed to load VSSAPI.DLL\n");
-+        qga_debug("failed to load VSSAPI.DLL");
-         return HRESULT_FROM_WIN32(GetLastError());
-     }
- 
-@@ -78,14 +79,14 @@ STDAPI requester_init(void)
- #endif
-         );
-     if (!pCreateVssBackupComponents) {
--        fprintf(stderr, "failed to get proc address from VSSAPI.DLL\n");
-+        qga_debug("failed to get proc address from VSSAPI.DLL");
-         return HRESULT_FROM_WIN32(GetLastError());
-     }
- 
-     pVssFreeSnapshotProperties = (t_VssFreeSnapshotProperties)
-         GetProcAddress(hLib, "VssFreeSnapshotProperties");
-     if (!pVssFreeSnapshotProperties) {
--        fprintf(stderr, "failed to get proc address from VSSAPI.DLL\n");
-+        qga_debug("failed to get proc address from VSSAPI.DLL");
-         return HRESULT_FROM_WIN32(GetLastError());
-     }
- 
+-#define err_set(e, err, fmt, ...)                                           \
+-    ((e)->error_setg_win32_wrapper((e)->errp, __FILE__, __LINE__, __func__, \
+-                                   err, fmt, ## __VA_ARGS__))
++#define err_set(e, err, fmt, ...) {                                         \
++    (e)->error_setg_win32_wrapper((e)->errp, __FILE__, __LINE__, __func__,  \
++                                   err, fmt, ## __VA_ARGS__);               \
++    qga_debug(fmt, ## __VA_ARGS__);                                         \
++}
+ /* Bad idea, works only when (e)->errp != NULL: */
+ #define err_is_set(e) ((e)->errp && *(e)->errp)
+ /* To lift this restriction, error_propagate(), like we do in QEMU code */
 -- 
 2.34.1
 
