@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C6774D5C4
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C2B74D5D2
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:38:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIq5y-0004JQ-9r; Mon, 10 Jul 2023 08:34:27 -0400
+	id 1qIq5x-0004Gl-E8; Mon, 10 Jul 2023 08:34:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq5Z-0003av-WA
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:06 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1qIq5c-0003eU-42
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:07 -0400
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq5W-0004n7-W9
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:00 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-55ae51a45deso2112284a12.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:33:58 -0700 (PDT)
+ id 1qIq5a-0004nl-E9
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:34:03 -0400
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-6b73c2b6dcfso2667171a34.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:34:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688992437; x=1691584437;
+ d=gmail.com; s=20221208; t=1688992441; x=1691584441;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tdNu/Kt6GrkCzAV4enDm7WHaEjLHO+9pW7gTbgsL+7Y=;
- b=OSLsLcEUzqqM913WmzTD0dY5Z9GRf2rCpHLyGsp5vEw9ISJVP7kn9Y3aqvHjzV15cb
- W+Fw/OLNEm0PBCJ2DneHy1KEhZAjUzkY/f10/ckCKhGKVuXPX4rMITSYXs1BG/ryx726
- zpVwfEaFIb9dcHaHiuG7+rcnRBrq0yRomcEPBTXnHhyQUiG2V9JY6/YFfjRTXOpcnyYu
- BHIJ6E5LrQ0r5d3pu1CRHeVc5IBSYRbMaU5Ce8p0eO/kZ094BAos3SRUWAIUJOLXA2qW
- 7FQL/+E5Cu0H6QFkhY33pNEpFzAzt7oPK9MYQtePQg31eMUoSu6YQRFrLYZCGAghsBlw
- 4luw==
+ bh=qiK96Tz0+VWsWaBPDgHRD91wlyhqNn1V3rKtNqdog3k=;
+ b=DWGMgVsqh16HYKVbZFORk5RWCJXXkyXDwdVjxSw18Z6UQb9pVlmeUuT5CfN/GzzNMq
+ RyNH+PzEoy6xuRTEkbezDsc2ASEDSumelO+GtnKILn7pHXtf8317DreZMqoZWaAeRysn
+ 6HMGd8pEeqCOeEkAQg3uC3mVElQkQW71EI4V156zSlH/J6Bt5JS2qkpiBzCCt4DRE0QD
+ Ltmd7EKBsKCkYKfrh4OfY3t82Xujukn3tQIabwG0DbBdEk1jWAETUBoDJmjL28IUrj5t
+ ofHBvF/GeOpU87+CmvJ5ekZCGWwt1Xlveu2+XC8HgAWDE9Tbgdk0gjWd6j8cr36L1ahR
+ 4s1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688992437; x=1691584437;
+ d=1e100.net; s=20221208; t=1688992441; x=1691584441;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tdNu/Kt6GrkCzAV4enDm7WHaEjLHO+9pW7gTbgsL+7Y=;
- b=SlVa++pn+WugvDzmdrLFys3PwSoYk1zwJb1rRg4JaXpRDSvz2icbbL2DeNNHBzLJpF
- qjle62Wie8AJtiz9l9GfIHEzkGYt0J+L5dFNvsA6hw9/CgsDsR0VnHje04DoCFtX7uIT
- 4g+Hy9/6c4VsacXNo7uEabf7Ci1CUDK/E78Chs9sDtRvcsKOiknI19JraER4Dp77qfeG
- mYcIlKdchDql8z5/K/Q0Pet3xuDuikuWOYhTkIX8J89mky1LJ57d3gSjdeA3lO53hu09
- kWI6uJtxFe7/VLmOI9MKPo4RjCCJnPpFA73BvYAo3j2puosc8rIqRFCjpmAXNOgEUZOE
- xfOQ==
-X-Gm-Message-State: ABy/qLZ2VRXIkwCiRdh5y+6CsoISw9z9SUgjbNgJQm4SDEklCkyTGuu0
- gHv7Ye+gZaQM/WEskXz4mFoae6uX9pe1Zg==
-X-Google-Smtp-Source: APBJJlGAJzSbTVVSfMAo3jw4uIv+Csvzx66dBHwLLSeJ4WCTHSNvAoPgxEUNOcjdlz1TxJUUR0u7xQ==
-X-Received: by 2002:a17:90b:1d87:b0:262:d19c:4fee with SMTP id
- pf7-20020a17090b1d8700b00262d19c4feemr9508799pjb.19.1688992437282; 
- Mon, 10 Jul 2023 05:33:57 -0700 (PDT)
+ bh=qiK96Tz0+VWsWaBPDgHRD91wlyhqNn1V3rKtNqdog3k=;
+ b=G/VHVwuFnAmZQ9jlEkafZBt7Z6ZACU+oJf4GXWKNhgGNyt++gK6zE2MM46sMMo6gNH
+ S9CcjtIm1DpsKVnKp4G1R+MsKAYcT8atJAGMDt2pShUA2ZFvfGhVeZ8M5hIT0L3mRMjS
+ +Dd9ShBbor9yx+qBGypniR0uEC7t95XRCB3AkZGnc22lynOrQK092RljTC4gjzJsaoXs
+ yY130RNn1eSTzidWwEzBEUgtWejaRERwdvFBUEKztlrHnF/mbTxB302LoB6sxaIh74cP
+ lp0w9wIkYa2RZTCoxkONyBcXp/KtTqHl66UNxI1Mz8lmFm1CvYzvrlMhkzh15FqXr1CI
+ T60w==
+X-Gm-Message-State: ABy/qLaTktLu6t2zIUlSeRamwtICAxl1J0zFameOMH3wooE0OAizKUIY
+ sTEx6CmMSEQGsHvohh7ko6J6lpMdmXa05w==
+X-Google-Smtp-Source: APBJJlG6HMcBR2EMeZcRZxbmdbpJ0mbQFm0xymC/3ZEpBaXcgnP8YyF04A9ZEqsR6aVffFMWh+Ra2Q==
+X-Received: by 2002:a05:6830:4d0:b0:6b8:691c:88ae with SMTP id
+ s16-20020a05683004d000b006b8691c88aemr7756502otd.33.1688992440896; 
+ Mon, 10 Jul 2023 05:34:00 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.33.54
+ i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.33.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 05:33:56 -0700 (PDT)
+ Mon, 10 Jul 2023 05:34:00 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>,
  Junqiang Wang <wangjunqiang@iscas.ac.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 28/54] target/riscv: Add support for Zvfbfwma extension
-Date: Mon, 10 Jul 2023 22:31:39 +1000
-Message-Id: <20230710123205.2441106-29-alistair.francis@wdc.com>
+Subject: [PULL 29/54] target/riscv: Expose properties for BF16 extensions
+Date: Mon, 10 Jul 2023 22:31:40 +1000
+Message-Id: <20230710123205.2441106-30-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230710123205.2441106-1-alistair.francis@wdc.com>
 References: <20230710123205.2441106-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=alistair23@gmail.com; helo=mail-ot1-x32b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,138 +100,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 
-Add trans_* and helper function for Zvfbfwma instructions.
-
 Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230615063302.102409-5-liweiwei@iscas.ac.cn>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-Id: <20230615063302.102409-6-liweiwei@iscas.ac.cn>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/helper.h                      |  3 ++
- target/riscv/insn32.decode                 |  4 ++
- target/riscv/vector_helper.c               | 11 ++++
- target/riscv/insn_trans/trans_rvbf16.c.inc | 58 ++++++++++++++++++++++
- 4 files changed, 76 insertions(+)
+ target/riscv/cpu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index fc48853e07..3170b8daa6 100644
---- a/target/riscv/helper.h
-+++ b/target/riscv/helper.h
-@@ -1160,3 +1160,6 @@ DEF_HELPER_FLAGS_2(fcvt_s_bf16, TCG_CALL_NO_RWG, i64, env, i64)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 0272b1d071..fd647534cf 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -94,6 +94,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
+     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
++    ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
+     ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
+     ISA_EXT_DATA_ENTRY(zfhmin, PRIV_VERSION_1_11_0, ext_zfhmin),
+     ISA_EXT_DATA_ENTRY(zfinx, PRIV_VERSION_1_12_0, ext_zfinx),
+@@ -125,6 +126,8 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zve32f, PRIV_VERSION_1_10_0, ext_zve32f),
+     ISA_EXT_DATA_ENTRY(zve64f, PRIV_VERSION_1_10_0, ext_zve64f),
+     ISA_EXT_DATA_ENTRY(zve64d, PRIV_VERSION_1_10_0, ext_zve64d),
++    ISA_EXT_DATA_ENTRY(zvfbfmin, PRIV_VERSION_1_12_0, ext_zvfbfmin),
++    ISA_EXT_DATA_ENTRY(zvfbfwma, PRIV_VERSION_1_12_0, ext_zvfbfwma),
+     ISA_EXT_DATA_ENTRY(zvfh, PRIV_VERSION_1_12_0, ext_zvfh),
+     ISA_EXT_DATA_ENTRY(zvfhmin, PRIV_VERSION_1_12_0, ext_zvfhmin),
+     ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
+@@ -1762,6 +1765,10 @@ static Property riscv_cpu_extensions[] = {
+     DEFINE_PROP_BOOL("x-zvfh", RISCVCPU, cfg.ext_zvfh, false),
+     DEFINE_PROP_BOOL("x-zvfhmin", RISCVCPU, cfg.ext_zvfhmin, false),
  
- DEF_HELPER_5(vfncvtbf16_f_f_w, void, ptr, ptr, ptr, env, i32)
- DEF_HELPER_5(vfwcvtbf16_f_f_v, void, ptr, ptr, ptr, env, i32)
++    DEFINE_PROP_BOOL("x-zfbfmin", RISCVCPU, cfg.ext_zfbfmin, false),
++    DEFINE_PROP_BOOL("x-zvfbfmin", RISCVCPU, cfg.ext_zvfbfmin, false),
++    DEFINE_PROP_BOOL("x-zvfbfwma", RISCVCPU, cfg.ext_zvfbfwma, false),
 +
-+DEF_HELPER_6(vfwmaccbf16_vv, void, ptr, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_6(vfwmaccbf16_vf, void, ptr, ptr, i64, ptr, env, i32)
-diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index 10d001f14d..8c5d293f07 100644
---- a/target/riscv/insn32.decode
-+++ b/target/riscv/insn32.decode
-@@ -916,3 +916,7 @@ fcvt_s_bf16       0100000  00110 ..... ... ..... 1010011 @r2_rm
- # *** Zvfbfmin Standard Extension ***
- vfncvtbf16_f_f_w  010010 . ..... 11101 001 ..... 1010111 @r2_vm
- vfwcvtbf16_f_f_v  010010 . ..... 01101 001 ..... 1010111 @r2_vm
-+
-+# *** Zvfbfwma Standard Extension ***
-+vfwmaccbf16_vv    111011 . ..... ..... 001 ..... 1010111 @r_vm
-+vfwmaccbf16_vf    111011 . ..... ..... 101 ..... 1010111 @r_vm
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 4d2bd42155..71bb9b4457 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -3554,6 +3554,17 @@ RVVCALL(OPFVF3, vfwmacc_vf_w, WOP_UUU_W, H8, H4, fwmacc32)
- GEN_VEXT_VF(vfwmacc_vf_h, 4)
- GEN_VEXT_VF(vfwmacc_vf_w, 8)
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
-+static uint32_t fwmaccbf16(uint16_t a, uint16_t b, uint32_t d, float_status *s)
-+{
-+    return float32_muladd(bfloat16_to_float32(a, s),
-+                          bfloat16_to_float32(b, s), d, 0, s);
-+}
-+
-+RVVCALL(OPFVV3, vfwmaccbf16_vv, WOP_UUU_H, H4, H2, H2, fwmaccbf16)
-+GEN_VEXT_VV_ENV(vfwmaccbf16_vv, 4)
-+RVVCALL(OPFVF3, vfwmaccbf16_vf, WOP_UUU_H, H4, H2, fwmacc16)
-+GEN_VEXT_VF(vfwmaccbf16_vf, 4)
-+
- static uint32_t fwnmacc16(uint16_t a, uint16_t b, uint32_t d, float_status *s)
- {
-     return float32_muladd(float16_to_float32(a, true, s),
-diff --git a/target/riscv/insn_trans/trans_rvbf16.c.inc b/target/riscv/insn_trans/trans_rvbf16.c.inc
-index f794a3f745..911bc29908 100644
---- a/target/riscv/insn_trans/trans_rvbf16.c.inc
-+++ b/target/riscv/insn_trans/trans_rvbf16.c.inc
-@@ -28,6 +28,12 @@
-     } \
- } while (0)
- 
-+#define REQUIRE_ZVFBFWMA(ctx) do { \
-+    if (!ctx->cfg_ptr->ext_zvfbfwma) { \
-+        return false; \
-+    } \
-+} while (0)
-+
- static bool trans_fcvt_bf16_s(DisasContext *ctx, arg_fcvt_bf16_s *a)
- {
-     REQUIRE_FPU;
-@@ -115,3 +121,55 @@ static bool trans_vfwcvtbf16_f_f_v(DisasContext *ctx, arg_vfwcvtbf16_f_f_v *a)
-     }
-     return false;
- }
-+
-+static bool trans_vfwmaccbf16_vv(DisasContext *ctx, arg_vfwmaccbf16_vv *a)
-+{
-+    REQUIRE_FPU;
-+    REQUIRE_ZVFBFWMA(ctx);
-+
-+    if (require_rvv(ctx) && vext_check_isa_ill(ctx) && (ctx->sew == MO_16) &&
-+        vext_check_dss(ctx, a->rd, a->rs1, a->rs2, a->vm)) {
-+        uint32_t data = 0;
-+        TCGLabel *over = gen_new_label();
-+
-+        gen_set_rm_chkfrm(ctx, RISCV_FRM_DYN);
-+        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
-+        tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
-+
-+        data = FIELD_DP32(data, VDATA, VM, a->vm);
-+        data = FIELD_DP32(data, VDATA, LMUL, ctx->lmul);
-+        data = FIELD_DP32(data, VDATA, VTA, ctx->vta);
-+        data = FIELD_DP32(data, VDATA, VMA, ctx->vma);
-+        tcg_gen_gvec_4_ptr(vreg_ofs(ctx, a->rd), vreg_ofs(ctx, 0),
-+                           vreg_ofs(ctx, a->rs1),
-+                           vreg_ofs(ctx, a->rs2), cpu_env,
-+                           ctx->cfg_ptr->vlen / 8,
-+                           ctx->cfg_ptr->vlen / 8, data,
-+                           gen_helper_vfwmaccbf16_vv);
-+        mark_vs_dirty(ctx);
-+        gen_set_label(over);
-+        return true;
-+    }
-+    return false;
-+}
-+
-+static bool trans_vfwmaccbf16_vf(DisasContext *ctx, arg_vfwmaccbf16_vf *a)
-+{
-+    REQUIRE_FPU;
-+    REQUIRE_ZVFBFWMA(ctx);
-+
-+    if (require_rvv(ctx) && (ctx->sew == MO_16) && vext_check_isa_ill(ctx) &&
-+        vext_check_ds(ctx, a->rd, a->rs2, a->vm)) {
-+        uint32_t data = 0;
-+
-+        gen_set_rm(ctx, RISCV_FRM_DYN);
-+        data = FIELD_DP32(data, VDATA, VM, a->vm);
-+        data = FIELD_DP32(data, VDATA, LMUL, ctx->lmul);
-+        data = FIELD_DP32(data, VDATA, VTA, ctx->vta);
-+        data = FIELD_DP32(data, VDATA, VMA, ctx->vma);
-+        return opfvf_trans(a->rd, a->rs1, a->rs2, data,
-+                           gen_helper_vfwmaccbf16_vf, ctx);
-+    }
-+
-+    return false;
-+}
 -- 
 2.40.1
 
