@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E3374D9F8
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 17:36:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4852774DA00
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 17:37:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIsvJ-0005cN-Lt; Mon, 10 Jul 2023 11:35:37 -0400
+	id 1qIsvc-0005t9-Pu; Mon, 10 Jul 2023 11:35:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qIsvB-0005Yn-9s
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:35:29 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qIsvQ-0005lo-Vd
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:35:45 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qIsv8-0004hm-7X
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:35:29 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fbc5d5742bso51841975e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 08:35:25 -0700 (PDT)
+ id 1qIsvB-0004jr-JF
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:35:44 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fbea14706eso47804215e9.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 08:35:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689003324; x=1691595324;
+ d=linaro.org; s=google; t=1689003328; x=1691595328;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2VTCVQrd6KCn5j7u4ggdRsXsalHDUZEasAWYhlhI0Zk=;
- b=j+WDoZ1iK16umdVplpNjyby+C0HXEitODI37kGwJGXP8HLOVKe7rt/a/fw7jXjba2v
- zs1wAHlxk/Q0gaA1/EiJk1gIej/DaDqErNIuRsyn+V1aYx2zPQYHF82wztebpRwOgDdR
- wDqaRu8ZbrT7AmcnqHRt5hh/t3t9ctn/KE0KuSYJ1MRNrZYGPsAaBSC6EWxhxA/ELSah
- ssLutXIIMBRxXlihjutw4bgwVOv+fE2at4V0BKhYv7N3unwblarbHdJ1Zs11Q/JzVm2K
- nGkk3S7WpCKhBVvOhtq0iL4/XKlTn9C4IYBO7y1oNaY9ibZp27R/VNPsJVXR0gDmkWip
- wm2A==
+ bh=A5nrdE1EbWfnKTXnpPgJZ0uBCr/0VA1ZCTtf34qEAwI=;
+ b=OrGn7Nwjm+XbE+PNmSMJuXVthHH3ULc6N4kPsnLW92+NTRe49XPenOJcvcj+rac9Pt
+ nVKbFaUa4sjJBQ5JMRiOtgrIVvCNWGvOPL1tNcAW4f4tOH/emMZuKxg7rRXyDxt7iER4
+ EVh843PUSJyRGBg3xZ2xsIqDnW8rBcSrOAnhBIdapzKLBQsvkCG7acr4Oq+d69200Srw
+ WAsJ6ZdhbU8XMqnISdOThSNRm8ngNvfiGC5+pbMHzTRiBD+XPPnMyUiJhMWsDe9+zFNk
+ fdGqiHCURsd4iiM3nGDx0bqt3xGWg0iHSBm2E2YXRApK8AGI5dMq9qV0vcb1IsF4Oe5i
+ GRWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689003324; x=1691595324;
+ d=1e100.net; s=20221208; t=1689003328; x=1691595328;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2VTCVQrd6KCn5j7u4ggdRsXsalHDUZEasAWYhlhI0Zk=;
- b=AQD3k3NJI4QZDDSXZWhBxuBdCOMOFg1uIOjfFmtT6iFhCMeCbi/ZqmKZ8I7ZoYu0uF
- zA0jGhy8ZF/aQ0B0C2CN9y+s6gl9MK74/Hsi09RB5W0Z2gA5bCJjih9+Iyurx1ouhaRk
- 8ZTvbLij1sq9H0iAmYNqzsHJD5RatWQuERiV2Oi3IjB95e8GXcqUsYWJ3VGXJjv7/U7D
- I5XCetaNfmxxmXNTu/ScdXIQG0TGLoH/p6XZ1nh27zsMbBt9EVJuxJ08To5NYEypXTn7
- XNmIdoPVeS+DUhsoU+vPK7SpHXexSizg31mzIRmJ0vCseKtgyBSR8BcZOdMeDrRC8BmH
- O/Aw==
-X-Gm-Message-State: ABy/qLZOQFYa9ahz9KR5bvVLJgl+V798ywzjpl/rdKvHorpgX6Y5OLir
- lVvekAP0LwC6i+honSiuL6VBEw==
-X-Google-Smtp-Source: APBJJlEThPLrtI5HSKaHJF1TiH1gVbvq3vXCOdS8Kz0qgOEn1E4yhSkoRSWHPcnOasGQn2bBeHeE4w==
-X-Received: by 2002:a1c:7502:0:b0:3f8:fc96:6bfd with SMTP id
- o2-20020a1c7502000000b003f8fc966bfdmr11967928wmc.17.1689003324449; 
- Mon, 10 Jul 2023 08:35:24 -0700 (PDT)
+ bh=A5nrdE1EbWfnKTXnpPgJZ0uBCr/0VA1ZCTtf34qEAwI=;
+ b=Vkt/evEk+WlNCeWHtndPovCzdkEDQ7jeOmtOoU3RJPql67qFm00fhaiYfs5Seyme45
+ FxGsUkKJubGZeO+yNcevQgrVw6NTooU/empc1fT1LNnXI4riWbo0NHrPFesNC1jR2nPR
+ myJ5HT1saXyhV5LNCYyYXgH66/ezGn4f+28tDWwphg3/8b5ZgLdchqrEGExg+gg2/dU0
+ fm/NWisgnM4iudMaX+8zTo1V+UdbX0R5SJ7odTmlwzCXHJdbavd32Qg2EstWzz60D6vI
+ +JA08hCEHEVJ+rQvUNe3SvLL7FdoeSLk/coGIWYGH8OWXGxsE7NF3f8kp+x5O9azJyBE
+ QJ1A==
+X-Gm-Message-State: ABy/qLbVKBwRsXAqrU5Tg+8YeXEMGSAz2u/bsa4mSLxEcyTv2WWp1gjY
+ /OToef6myA0EA3iln8YpjGnQ4g==
+X-Google-Smtp-Source: APBJJlFS94vJXjvQDDdVVQLTVYH7a8E/Gy9xFX1037O0tVu9QhClYcnwbGbyGPq3m/YAuUQujIjmSA==
+X-Received: by 2002:a05:600c:378b:b0:3fb:ffa8:6d78 with SMTP id
+ o11-20020a05600c378b00b003fbffa86d78mr8100846wmr.36.1689003327693; 
+ Mon, 10 Jul 2023 08:35:27 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- f19-20020a7bcc13000000b003fa973e6612sm10709182wmh.44.2023.07.10.08.35.22
+ e14-20020a05600c218e00b003fa96fe2bd9sm10643485wme.22.2023.07.10.08.35.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 10 Jul 2023 08:35:23 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 503791FFBC;
+ by zen.linaroharston (Postfix) with ESMTP id 68AF61FFBD;
  Mon, 10 Jul 2023 16:35:22 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -78,24 +78,25 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  "Gonglei (Arei)" <arei.gonglei@huawei.com>,
  Eduardo Habkost <eduardo@habkost.net>, Fam Zheng <fam@euphon.net>,
  virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH v3 01/20] include: attempt to document device_class_set_props
-Date: Mon, 10 Jul 2023 16:35:03 +0100
-Message-Id: <20230710153522.3469097-2-alex.bennee@linaro.org>
+Subject: [PATCH v3 02/20] include/hw: document the device_class_set_parent_*
+ fns
+Date: Mon, 10 Jul 2023 16:35:04 +0100
+Message-Id: <20230710153522.3469097-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230710153522.3469097-1-alex.bennee@linaro.org>
 References: <20230710153522.3469097-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,52 +112,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm still not sure how I achieve by use case of the parent class
-defining the following properties:
-
-  static Property vud_properties[] = {
-      DEFINE_PROP_CHR("chardev", VHostUserDevice, chardev),
-      DEFINE_PROP_UINT16("id", VHostUserDevice, id, 0),
-      DEFINE_PROP_UINT32("num_vqs", VHostUserDevice, num_vqs, 1),
-      DEFINE_PROP_END_OF_LIST(),
-  };
-
-But for the specialisation of the class I want the id to default to
-the actual device id, e.g.:
-
-  static Property vu_rng_properties[] = {
-      DEFINE_PROP_UINT16("id", VHostUserDevice, id, VIRTIO_ID_RNG),
-      DEFINE_PROP_UINT32("num_vqs", VHostUserDevice, num_vqs, 1),
-      DEFINE_PROP_END_OF_LIST(),
-  };
-
-And so far the API for doing that isn't super clear.
+These are useful functions for when you want proper inheritance of
+functionality across realize/unrealize calls.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/hw/qdev-core.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/hw/qdev-core.h | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 06cadfc492..196ebf6d91 100644
+index 196ebf6d91..884c726a87 100644
 --- a/include/hw/qdev-core.h
 +++ b/include/hw/qdev-core.h
-@@ -926,6 +926,15 @@ BusState *sysbus_get_default(void);
- char *qdev_get_fw_dev_path(DeviceState *dev);
- char *qdev_get_own_fw_dev_path_from_handler(BusState *bus, DeviceState *dev);
- 
+@@ -952,9 +952,36 @@ void device_class_set_props(DeviceClass *dc, Property *props);
+ void device_class_set_parent_reset(DeviceClass *dc,
+                                    DeviceReset dev_reset,
+                                    DeviceReset *parent_reset);
++
 +/**
-+ * device_class_set_props(): add a set of properties to an device
-+ * @dc: the parent DeviceClass all devices inherit
-+ * @props: an array of properties, terminate by DEFINE_PROP_END_OF_LIST()
++ * device_class_set_parent_realize() - set up for chaining realize fns
++ * @dc: The device class
++ * @dev_realize: the device realize function
++ * @parent_realize: somewhere to save the parents realize function
 + *
-+ * This will add a set of properties to the object. It will fault if
-+ * you attempt to add an existing property defined by a parent class.
-+ * To modify an inherited property you need to use????
++ * This is intended to be used when the new realize function will
++ * eventually call its parent realization function during creation.
++ * This requires storing the function call somewhere (usually in the
++ * instance structure) so you can eventually call
++ * dc->parent_realize(dev, errp)
 + */
- void device_class_set_props(DeviceClass *dc, Property *props);
- 
- /**
+ void device_class_set_parent_realize(DeviceClass *dc,
+                                      DeviceRealize dev_realize,
+                                      DeviceRealize *parent_realize);
++
++
++/**
++ * device_class_set_parent_unrealize() - set up for chaining unrealize fns
++ * @dc: The device class
++ * @dev_unrealize: the device realize function
++ * @parent_unrealize: somewhere to save the parents unrealize function
++ *
++ * This is intended to be used when the new unrealize function will
++ * eventually call its parent unrealization function during the
++ * unrealize phase. This requires storing the function call somewhere
++ * (usually in the instance structure) so you can eventually call
++ * dc->parent_unrealize(dev);
++ */
+ void device_class_set_parent_unrealize(DeviceClass *dc,
+                                        DeviceUnrealize dev_unrealize,
+                                        DeviceUnrealize *parent_unrealize);
 -- 
 2.39.2
 
