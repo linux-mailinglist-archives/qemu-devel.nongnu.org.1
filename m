@@ -2,66 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6DD74D7EF
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 15:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BE574D7F1
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 15:42:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIr8S-0007ht-WB; Mon, 10 Jul 2023 09:41:05 -0400
+	id 1qIr9j-0000s3-3V; Mon, 10 Jul 2023 09:42:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIr8R-0007c6-3a
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 09:41:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIr8P-0005ws-Gq
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 09:41:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688996459;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KH08NItNnWqSLGkYIYfPMTfc0SXI7U82y9/qpYVBHh8=;
- b=dxSwNshsKmzIE62p+7lstL0cnYcRant02R8flidkQ37XwNhgulmN2ryq7t/a1lLxd9lYo/
- KV7wk3Zo1SXM0AS/SMa9FlZvszJc2Lo/3iAhI1RrGNj3x/FwO2N22vxklke9oYkKZBJXOu
- aL9pD0uxHRHVoUz0IO+CeLHdG1LerPg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-86-ccSEHbfGNOyNOvbD6m-8VQ-1; Mon, 10 Jul 2023 09:40:56 -0400
-X-MC-Unique: ccSEHbfGNOyNOvbD6m-8VQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1440D8F80E6;
- Mon, 10 Jul 2023 13:40:56 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.192.206])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C868A200A7CA;
- Mon, 10 Jul 2023 13:40:54 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>
-Subject: [PULL v2 13/21] tests/tcg/s390x: Test MVCRL with a large value in R0
-Date: Mon, 10 Jul 2023 15:40:50 +0200
-Message-Id: <20230710134050.209922-2-thuth@redhat.com>
-In-Reply-To: <20230710134050.209922-1-thuth@redhat.com>
-References: <20230710134050.209922-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIr9g-0000r6-L8
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 09:42:20 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIr9d-0006n5-W0
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 09:42:20 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3142ee41fd2so4532243f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 06:42:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688996533; x=1691588533;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vG+Dg364KO9I/c62hB38t2OpronlH4pFKmqX4idIxSU=;
+ b=LDeVt14EbyU061yBD2tbUXviHoCgZw/YERwsch7yFmSfJ0iqSaM6HvS1G2KGx0MYKJ
+ 7z+uR2tCi6o1M5BWzYPXT6AiFss0GV9efyezldCmjO5bLh7ssvReV3YQOBIU3x3WS3ME
+ CiEvWVg3v9hykggE4dAvSVcBDcc6vEE6vgIajE80HH/7YGS02y0CuzA9wvp+3e9a2qQ/
+ +ujcleE6mUEWLD/XhhKDL1QShm2aZCXUq5KQUKLQ7XOdmRxY6+CNyXzZKf/2/KVDCsS0
+ MJ3kXSwH+cEQ7bI7s7cHQt6IiBI803p46K8srysJbX7v7rGI0r/z1H3tlI0IcS8FqHfX
+ mFoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688996533; x=1691588533;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vG+Dg364KO9I/c62hB38t2OpronlH4pFKmqX4idIxSU=;
+ b=VCm67cnAWontdc1sNb0KMgd0tnvMBiquOUlUHVLYVsZ2huD6Ax46gz56uG06KGJLLH
+ 6dCHX1Lr1+yGzUQ4UsPtw3TE/B1O0JcCP/N4Vav73fcxYzizVgJ/Qk7EWD5MCuRqcWrO
+ 0buQOPrPw5bLU1ebe6UnWxFJbVzJrozjdOUfYxCSjgTRVHlokvGpVddqDZ0pv53PnkSa
+ p8hx9TzCjsK2l/XfDjv4KgJfF0gTQALfh1Ai7x8frIgKFR+7pZ3QbO1rQKtfbQcESgCA
+ KazranRvGN9ZBlCMoPdrso5YXKDF7UcDyODgxkfSA8RYtb4B0O4oRBHETgEkyfSavAsj
+ 5ItA==
+X-Gm-Message-State: ABy/qLagtDW2Irr0jg+lOld2I8Vp1bLS8km1Tegacy6R8k5Q8X4pjYDJ
+ +U3FGOvsh1Nvmu+Uugj7YMPvFA==
+X-Google-Smtp-Source: APBJJlGXRgVUyONn6uGtYkRhMxnt6rmTv0JYJTirNNQkwQyvBr45BF03mTFDXYGtjxyyMkmPMWki4g==
+X-Received: by 2002:a5d:4fc5:0:b0:313:ea84:147a with SMTP id
+ h5-20020a5d4fc5000000b00313ea84147amr10327526wrw.64.1688996533306; 
+ Mon, 10 Jul 2023 06:42:13 -0700 (PDT)
+Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
+ [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
+ o5-20020a056000010500b0030c4d8930b1sm11778909wrx.91.2023.07.10.06.42.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 06:42:12 -0700 (PDT)
+Message-ID: <2b7a3ab6-e174-f4a8-e1a8-cf2e5a55ab90@linaro.org>
+Date: Mon, 10 Jul 2023 15:42:09 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH 2/4] chardev/char-fe: Clarify qemu_chr_fe_add_watch
+ 'condition' arg is a mask
+Content-Language: en-US
+To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ Joel Stanley <joel@jms.id.au>, Markus Armbruster <armbru@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>,
+ Laurent Vivier <lvivier@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Amit Shah <amit@kernel.org>,
+ qemu-riscv@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+References: <20230705133139.54419-1-philmd@linaro.org>
+ <20230705133139.54419-3-philmd@linaro.org>
+ <CAJ+F1CJ_vkZRK4F7mYY_+rFZmHMuO6ivB8L=aemJswgrvUhHWA@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAJ+F1CJ_vkZRK4F7mYY_+rFZmHMuO6ivB8L=aemJswgrvUhHWA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,90 +105,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+On 10/7/23 13:19, Marc-André Lureau wrote:
+> 
+> 
+> On Wed, Jul 5, 2023 at 5:33 PM Philippe Mathieu-Daudé <philmd@linaro.org 
+> <mailto:philmd@linaro.org>> wrote:
+> 
+>     qemu_chr_fe_add_watch() can poll for multiple conditions.
+>     It's @cond argument is a combination of all the condition bits.
+> 
+>     Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org
+>     <mailto:philmd@linaro.org>>
+>     ---
+>       include/chardev/char-fe.h | 4 ++--
+>       1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+>     diff --git a/include/chardev/char-fe.h b/include/chardev/char-fe.h
+>     index 8c420fa36e..309960046a 100644
+>     --- a/include/chardev/char-fe.h
+>     +++ b/include/chardev/char-fe.h
+>     @@ -179,8 +179,8 @@ typedef gboolean (*FEWatchFunc)(void
+>     *do_not_use, GIOCondition condition, void *
+> 
+>       /**
+>        * qemu_chr_fe_add_watch:
+>     - * @cond: the condition to poll for
+> 
+>     - * @func: the function to call when the condition happens
+>     + * @cond: bitwise combination of conditions to poll for
+>     + * @func: the function to call when the conditions are satisfied
+> 
+> 
+> Not really worth imo, do you want to also fix all the io/ docs for 
+> @condition? and probably elsewhere...
+> 
+> The rewording of @func isn't much clearer either... "any of the conditions"?
 
-Add a small test to prevent regressions.
-
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20230704081506.276055-13-iii@linux.ibm.com>
-[thuth: Apply fix for compiling with GCC 11]
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- tests/tcg/s390x/mie3-mvcrl.c | 46 ++++++++++++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 10 deletions(-)
-
-diff --git a/tests/tcg/s390x/mie3-mvcrl.c b/tests/tcg/s390x/mie3-mvcrl.c
-index 93c7b0a290..6d3d049f2c 100644
---- a/tests/tcg/s390x/mie3-mvcrl.c
-+++ b/tests/tcg/s390x/mie3-mvcrl.c
-@@ -1,29 +1,55 @@
-+#include <stdbool.h>
- #include <stdint.h>
-+#include <stdlib.h>
- #include <string.h>
- 
--
--static inline void mvcrl_8(const char *dst, const char *src)
-+static void mvcrl(const char *dst, const char *src, size_t len)
- {
-+    register long r0 asm("r0") = len;
-+
-     asm volatile (
--        "llill %%r0, 8\n"
-         ".insn sse, 0xE50A00000000, 0(%[dst]), 0(%[src])"
--        : : [dst] "d" (dst), [src] "d" (src)
--        : "r0", "memory");
-+        : : [dst] "d" (dst), [src] "d" (src), "r" (r0)
-+        : "memory");
- }
- 
--
--int main(int argc, char *argv[])
-+static bool test(void)
- {
-     const char *alpha = "abcdefghijklmnop";
- 
-     /* array missing 'i' */
--    char tstr[17] = "abcdefghjklmnop\0" ;
-+    char tstr[17] = "abcdefghjklmnop\0";
- 
-     /* mvcrl reference use: 'open a hole in an array' */
--    mvcrl_8(tstr + 9, tstr + 8);
-+    mvcrl(tstr + 9, tstr + 8, 8);
- 
-     /* place missing 'i' */
-     tstr[8] = 'i';
- 
--    return strncmp(alpha, tstr, 16ul);
-+    return strncmp(alpha, tstr, 16ul) == 0;
-+}
-+
-+static bool test_bad_r0(void)
-+{
-+    char src[256] = { 0 };
-+
-+    /*
-+     * PoP says: Bits 32-55 of general register 0 should contain zeros;
-+     * otherwise, the program may not operate compatibly in the future.
-+     *
-+     * Try it anyway in order to check whether this would crash QEMU itself.
-+     */
-+    mvcrl(src, src, (size_t)-1);
-+
-+    return true;
-+}
-+
-+int main(void)
-+{
-+    bool ok = true;
-+
-+    ok &= test();
-+    ok &= test_bad_r0();
-+
-+    return ok ? EXIT_SUCCESS : EXIT_FAILURE;
- }
--- 
-2.39.3
-
+Hmm OK I'll just drop this patch for now, thanks.
 
