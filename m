@@ -2,86 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C5A74CF83
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 10:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A4474CF8B
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 10:11:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIlx3-00077R-KR; Mon, 10 Jul 2023 04:08:57 -0400
+	id 1qIlzC-00017H-GP; Mon, 10 Jul 2023 04:11:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qIlwz-00076g-9x
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 04:08:53 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qIlwq-0006tw-B5
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 04:08:45 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-666fb8b1bc8so3719108b3a.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 01:08:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688976523; x=1691568523;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+2CsWidimTPQzosDdC860b+h1kqgtnDYWMVoPP8FDuE=;
- b=JxwHCpUNbwC3tD4uPAxJcNdszadzbYZBYjL12YQGwMBALbcFEzJ3Nh+KxeEEqO5ELx
- /m0MesgpipewP/BlSEFGWg8Y97PYPZctqJMzY2RmZDniI8zfqDo/09eybR7JLmUUx464
- y+ffC/6y0OVOAMJtGAP6i9q/fTu9wec0+A0HHrGbsNako/0vwx0KlzPOywitdQvzl8Zj
- Ga53vIvG4oc230X50kPskxqWRSlzIK6aGcGcXI0bknCLgoXgSeomUR3/6DOhxVR+wEuY
- DdWtyZN/e8Qa3zmMcdEYUxDk6p6ypImx4Ed+ZU4ln4LfXZtRM/JNVASGujFdzQmKJOkc
- lkng==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIlz9-00016s-Ai
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 04:11:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIlz6-0008DZ-2N
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 04:11:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688976663;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=00U4RgzMbJAuVoefdJtwQj8KIV+sfHK8YNhRD99iVqI=;
+ b=PS/E3wsXt+cDzBHPPuAicvBUf/9Spnhs6i3s0TFJ+dedrFlKaIeyy2pao6VhdKr3EXCp9K
+ xySgNUYKOawitGfcAFQOsU1OJ2vU/0W5MxXP5ynJ+rYjp7YrPlZvsu6wL1OQinr01algCI
+ AGDejIDnpf4QU8WGCfl+8w8yIsG0siQ=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-189-OjgJb6rxMQyaFSgn2_xTaw-1; Mon, 10 Jul 2023 04:11:02 -0400
+X-MC-Unique: OjgJb6rxMQyaFSgn2_xTaw-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7659c6caeaeso561352185a.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 01:11:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688976523; x=1691568523;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+2CsWidimTPQzosDdC860b+h1kqgtnDYWMVoPP8FDuE=;
- b=T27q/W/X/rH3IeTFIi7DOO2fC/ydW7x2wlXQSfqKjBbcdBVcjwHpAb3pFP5CBWAaUD
- zDx+PH/i6+eXh95b+kFiG0Ox6kGFw58/kt90fsR9ecvhAFduySOL4HfNJYxXTZWmVZi2
- AxLI/LUEj9tSQEwmVJ+4DE4ocRluGHUiahCKIbLo6f3vEFJIIL8P7RUqrxiAjWYtYOMt
- 0tqEy97wRgWSOv1bjl7yG5wEAWVvn8eUMqediFXdQFaRIZOSAl59TT67UlHD3YIpydq/
- X2Ye1HVBceUUqP39jw5V1IvpeJjGScINdL1MHknhUqNxbKDX4MLqXU7rxBteQumNXdZs
- oEFQ==
-X-Gm-Message-State: ABy/qLaYAFUrg3OkuL2yz8sySIv4ERK6V98zZWxGILOB9CAvUpV69hLT
- NZeBxh2UqCOJSzLChOYob15ggvtmNORuQynByXM=
-X-Google-Smtp-Source: APBJJlGSCec8NjSp5euCXDML44YCNs02r6RrT5HB6k8KYw5p3qA+2VHc07eRd89fOX+tdFL+ZEVjVQ==
-X-Received: by 2002:a05:6a00:a04:b0:682:713e:e510 with SMTP id
- p4-20020a056a000a0400b00682713ee510mr16320378pfh.27.1688976522832; 
- Mon, 10 Jul 2023 01:08:42 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- q21-20020a62ae15000000b00640dbbd7830sm6814073pff.18.2023.07.10.01.08.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 01:08:42 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v6 2/2] pcie: Specify 0 for ARI next function numbers
-Date: Mon, 10 Jul 2023 17:08:29 +0900
-Message-ID: <20230710080830.19053-3-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230710080830.19053-1-akihiko.odaki@daynix.com>
-References: <20230710080830.19053-1-akihiko.odaki@daynix.com>
+ d=1e100.net; s=20221208; t=1688976662; x=1691568662;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=00U4RgzMbJAuVoefdJtwQj8KIV+sfHK8YNhRD99iVqI=;
+ b=JCnr+eCqZFkrCr8cIgdH74nh+o522P2f+Lh3971qW36MtxsTG8pjegwuLLsEhmhH/E
+ Harr3d5P6pnsmH9dn8i9tmnWgGjRHP1Vcj8I9N+JYrvxndGvsLw4XawxT9L4g8zFxI95
+ HW8mUUUqLK6+wyHRBUokFfXL/PjBoxSlSZIspfP8Kia0rB2400P2sjBSWgxBX3OycZ3Y
+ YlxfmCQLS3ljgyQAsnk4EhBf4e+1Yt32vlsxekh9nVYSoU00RF++bSflBAswlaILYWlj
+ kg1kcW+s5bO4CA8l9/W6Ys99zFWkEaLr+XPWc5efylaLJ8xXTS+Z+qzIvggWfui4awB3
+ fvvA==
+X-Gm-Message-State: ABy/qLbet0iSR/WRtacoM4GCJsQqX11OmSG+PAJJ79D2Ob+mz4O8hspn
+ rYcaSBEW4tbfev6HwdZH6WU4vEJcT8EOUBheunuH3Q1c1rpfmLnCBGLX2B10YUUgXZzuzIwXa2j
+ fZAh26HgaHvpOWkY=
+X-Received: by 2002:a05:620a:198f:b0:767:b870:ca9f with SMTP id
+ bm15-20020a05620a198f00b00767b870ca9fmr8236115qkb.31.1688976661943; 
+ Mon, 10 Jul 2023 01:11:01 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEPha8W6wzyu5703r0I998WlmDQNzM0g8ToXN9FiQ/ptemIbR89MN+OOvI8uggr3oUrw3Mw7A==
+X-Received: by 2002:a05:620a:198f:b0:767:b870:ca9f with SMTP id
+ bm15-20020a05620a198f00b00767b870ca9fmr8236099qkb.31.1688976661662; 
+ Mon, 10 Jul 2023 01:11:01 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-179-116.web.vodafone.de.
+ [109.43.179.116]) by smtp.gmail.com with ESMTPSA id
+ v15-20020ae9e30f000000b00767b0c35c15sm3627872qkf.91.2023.07.10.01.11.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 01:11:01 -0700 (PDT)
+Message-ID: <5dddf780-5758-2e30-41f7-0de86b9de89a@redhat.com>
+Date: Mon, 10 Jul 2023 10:10:59 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 4/4] QGA VSS: Add log in functions begin/end
+Content-Language: en-US
+To: Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230710074639.996030-1-kkostiuk@redhat.com>
+ <20230710074639.996030-5-kkostiuk@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230710074639.996030-5-kkostiuk@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,79 +103,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current implementers of ARI are all SR-IOV devices. The ARI next
-function number field is undefined for VF according to PCI Express Base
-Specification Revision 5.0 Version 1.0 section 9.3.7.7. The PF still
-requires some defined value so end the linked list formed with the field
-by specifying 0 as required for any ARI implementation according to
-section 7.8.7.2.
+On 10/07/2023 09.46, Konstantin Kostiuk wrote:
+> Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+> ---
+>   qga/vss-win32/install.cpp   | 33 +++++++++++++++++++++++++++++++++
+>   qga/vss-win32/provider.cpp  |  3 +++
+>   qga/vss-win32/requester.cpp | 34 ++++++++++++++++++++++++++++++++++
+>   3 files changed, 70 insertions(+)
+> 
+> diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
+> index 9bd2c52b70..6865c04d8a 100644
+> --- a/qga/vss-win32/install.cpp
+> +++ b/qga/vss-win32/install.cpp
+...
+> @@ -175,6 +181,8 @@ out:
+>   static HRESULT QGAProviderFind(
+>       HRESULT (*found)(ICatalogCollection *, int, void *), void *arg)
+>   {
+> +    qga_debug_begin;
+> +
+>       HRESULT hr;
+>       COMInitializer initializer;
+>       COMPointer<IUnknown> pUnknown;
+> @@ -205,12 +213,15 @@ static HRESULT QGAProviderFind(
+>       chk(pColl->SaveChanges(&n));
+>   
+>   out:
+> +    qga_debug_end;
+>       return hr;
+>   }
+>   
+>   /* Count QGA VSS provider in COM+ Application Catalog */
+>   static HRESULT QGAProviderCount(ICatalogCollection *coll, int i, void *arg)
+>   {
+> +    qga_debug_begin;
+> +
+>       (*(int *)arg)++;
+>       return S_OK;
+>   }
 
-For migration, the field will keep having 1 as its value on the old
-virt models.
+Missing gqa_debug_end here?
 
-Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in docs/pcie_sriov.txt")
-Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
-Fixes: 3a977deebe ("Intrdocue igb device emulation")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/hw/pci/pci.h | 2 ++
- hw/core/machine.c    | 1 +
- hw/pci/pci.c         | 2 ++
- hw/pci/pcie.c        | 2 +-
- 4 files changed, 6 insertions(+), 1 deletion(-)
+...
+> @@ -277,6 +298,8 @@ VSS_BACKUP_TYPE get_vss_backup_type(
+>   
+>   void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
+>   {
+> +    qga_debug_begin;
+> +
+>       COMPointer<IVssAsync> pAsync;
+>       HANDLE volume;
+>       HRESULT hr;
+> @@ -292,6 +315,7 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
+>   
+>       if (vss_ctx.pVssbc) { /* already frozen */
+>           *num_vols = 0;
+> +        qga_debug("finished, already frozen");
+>           return;
+>       }
+>   
+> @@ -449,6 +473,7 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
+>           }
+>       }
+>   
+> +    qga_debug("preparing for backup");
+>       hr = vss_ctx.pVssbc->PrepareForBackup(pAsync.replace());
+>       if (SUCCEEDED(hr)) {
+>           hr = WaitForAsync(pAsync);
+> @@ -472,6 +497,7 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
+>        * CQGAVssProvider::CommitSnapshots will kick vss_ctx.hEventFrozen
+>        * after the applications and filesystems are frozen.
+>        */
+> +    qga_debug("do snapshot set");
+>       hr = vss_ctx.pVssbc->DoSnapshotSet(&vss_ctx.pAsyncSnapshot);
+>       if (FAILED(hr)) {
+>           err_set(errset, hr, "failed to do snapshot set");
 
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index e6d0574a29..9c5b5eb206 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -209,6 +209,8 @@ enum {
-     QEMU_PCIE_CAP_CXL = (1 << QEMU_PCIE_CXL_BITNR),
- #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
-     QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
-+#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
-+    QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
- };
- 
- typedef struct PCIINTxRoute {
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 46f8f9a2b0..f0d35c6401 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -41,6 +41,7 @@
- 
- GlobalProperty hw_compat_8_0[] = {
-     { "migration", "multifd-flush-after-each-section", "on"},
-+    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
- };
- const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
- 
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index e2eb4c3b4a..45a9bc0da8 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -82,6 +82,8 @@ static Property pci_props[] = {
-     DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
-     DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
-                     QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
-+    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
-+                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
-     DEFINE_PROP_END_OF_LIST()
- };
- 
-diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-index 9a3f6430e8..cf09e03a10 100644
---- a/hw/pci/pcie.c
-+++ b/hw/pci/pcie.c
-@@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
- /* ARI */
- void pcie_ari_init(PCIDevice *dev, uint16_t offset)
- {
--    uint16_t nextfn = 1;
-+    uint16_t nextfn = dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 ? 1 : 0;
- 
-     pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
-                         offset, PCI_ARI_SIZEOF);
--- 
-2.41.0
+You should maybe mention these qga_debug() statements in the commit description.
+
+  Thomas
 
 
