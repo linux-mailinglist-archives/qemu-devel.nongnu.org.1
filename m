@@ -2,112 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F5674D86D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 16:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFFA74D85A
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 16:04:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIrUN-0000mI-H6; Mon, 10 Jul 2023 10:03:43 -0400
+	id 1qIrUF-0000kL-LX; Mon, 10 Jul 2023 10:03:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <francisco.iglesias@amd.com>)
- id 1qIrUJ-0000lV-4P
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:03:39 -0400
-Received: from mail-co1nam11on2060f.outbound.protection.outlook.com
- ([2a01:111:f400:7eab::60f]
- helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qIrU5-0000iz-2t; Mon, 10 Jul 2023 10:03:25 -0400
+Received: from out2-smtp.messagingengine.com ([66.111.4.26])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <francisco.iglesias@amd.com>)
- id 1qIrUG-0003Mc-G2
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:03:38 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Q4ZucwjRMpDQlVTaWuSpQTKjbOFMeHAmKBuev7HTHV16LcJIyr3ASWhTLgY++78G9EgwuZo0t9cVfCyWCagGxtt6Ff8bTd7nX6AlvikajLAU9ti3E8eHfZTRGUXpeUfLcWNtD9UnXmooRUsPBzXPns0nnyJ98RK0eCDSsrlOv4LFSW2ndVGMABKL83Uh5qBYHfWt29zE55K9UMzMUORtHphzmQRAHjF4yjlbkl2Ll9kYvr7wgrUqjP5OqiPS6xgjdl176H86t+NpWp1NbEQbSEWQVRRsxV4zy+8S7XpJxM1nvqp6zp2ahj0DllmigxgX4LonaVcvhhTIQNNHhex5Ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j8I9lcSODJd9ERtdetmUGNHBr3gCHMcsQ+t4DcuIxq4=;
- b=NQ5tLVlBB2LJW21F60EpYaVY8eTFeKk0o5a3Qu1D9TYkC3I1yAhp3fGLI3anYaNLP4Rvuh1669WQwURs0XUpquCWMFR3j0/Ql0JKMGOG//9JnjiSSat8luGVmB0Z+oL6UEgXRaPva/2ENohAZd3HzUPpPR/9uDTCEpyoT+CWLVNlnIzL7ViV2PZcDl0PxNANtBceNY4CvJtlTFiLhzq/SCtxA0JMpM+SGfowvDuuVmT3uylUA1zVzqc/f27bGnOxmANj6xCgAtzJjEwXlTIZUxmAklhAwBIJxvPeP7gSFRtIdsnDOYccadl61Lxp3FHdjy28/MuNRVnScJmb9RV0wA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j8I9lcSODJd9ERtdetmUGNHBr3gCHMcsQ+t4DcuIxq4=;
- b=AtDQcXrnSO8/7XNg9pImzLvtqJ5Z5uN1pudzlCPanMbR3jozeAnTkfq4uTv+ibYrxtLZkGZ65k1BQsX/iDnTHeomYcYO/cHwdWc7ZHiVlAWp82uT+gFlt2YYGd1gmuN7EreLcpOwHHDuAiifHEz3jiajtRwaYtevHXBy64/KAiY=
-Received: from DS7PR03CA0276.namprd03.prod.outlook.com (2603:10b6:5:3ad::11)
- by MW4PR12MB6753.namprd12.prod.outlook.com (2603:10b6:303:1ec::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.31; Mon, 10 Jul
- 2023 14:03:31 +0000
-Received: from DM6NAM11FT092.eop-nam11.prod.protection.outlook.com
- (2603:10b6:5:3ad:cafe::8c) by DS7PR03CA0276.outlook.office365.com
- (2603:10b6:5:3ad::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.30 via Frontend
- Transport; Mon, 10 Jul 2023 14:03:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DM6NAM11FT092.mail.protection.outlook.com (10.13.173.44) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6588.18 via Frontend Transport; Mon, 10 Jul 2023 14:03:31 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Mon, 10 Jul
- 2023 09:03:21 -0500
-Received: from localhost.localdomain (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.23 via Frontend
- Transport; Mon, 10 Jul 2023 09:03:20 -0500
-From: Francisco Iglesias <francisco.iglesias@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <frasse.iglesias@gmail.com>, <alistair@alistair23.me>,
- <edgar.iglesias@gmail.com>, <peter.maydell@linaro.org>, <fkonrad@amd.com>,
- <sai.pavan.boddu@amd.com>, <tong.ho@amd.com>, <vikram.garhwal@amd.com>
-Subject: [PATCH v1 8/8] hw/arm/versal: Connect the CFRAME_REG and
- CFRAME_BCAST_REG
-Date: Mon, 10 Jul 2023 16:02:49 +0200
-Message-ID: <20230710140249.56324-9-francisco.iglesias@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230710140249.56324-1-francisco.iglesias@amd.com>
-References: <20230710140249.56324-1-francisco.iglesias@amd.com>
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qIrU2-0003K8-Jb; Mon, 10 Jul 2023 10:03:24 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+ by mailout.nyi.internal (Postfix) with ESMTP id BAD145C00A2;
+ Mon, 10 Jul 2023 10:03:20 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute6.internal (MEProxy); Mon, 10 Jul 2023 10:03:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm1; t=1688997800; x=
+ 1689084200; bh=C1Q1VU734pAu6OaovfdBpP4uPgPFBkU0ciCrGq3xi6o=; b=S
+ 8QuUfNaOBdcv21wK0u2O0Fb2SOnwBd9pyjTaqgWiaO54hLzodhgdfJd0K0wqRVD1
+ DlI+PVq0Uift5x8wDsOMFkhTbtqyEjAwhgR1XrR2VHt7f9FDuUmAPRH+nqXcsMFh
+ b0hFbMf8jJqp9H7VSBI0MRQ93w8MTm7F/xfprHxU97Fi+kpnuTc80k8gWMbELMtc
+ IaZCtZ+5H7zplC/AvxCI427uvYoSUES19vjTkHzk4PRP8xwBga4UgMLhOUiN+cR4
+ xox6qpEQ5B/kYJ6uaaT/RDEeHpaSBzeZvCQVimblrs3rmMBgnnQQhlp6wuEyKp+d
+ er6vaL3yKeaM1PKwNI6SQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm2; t=1688997800; x=1689084200; bh=C1Q1VU734pAu6
+ OaovfdBpP4uPgPFBkU0ciCrGq3xi6o=; b=M+Gj+Wz1yiMOO0NRwu4DXKLuCjvLy
+ mmERbVrxHMcAv97JR1pwL5BPqorPgARptQkb5GVyX7Dt4HrEM1P5LxpcvepUViHw
+ 206bYsmLsOm3Gf/QD0XEf7nxeCc6zKLFL+AJuEwJH0lEhk17Z0d9StZMXstKNQ9u
+ nJJac5TKo+F1baqoBnwxGcpWvd1Bnrj/5FTvsSBrtvMleFiB/Dn9UcxwnQg+JwZ1
+ aTIhlo7lBJQkVn/y1abVCZ7ck+PDVyTkUm67fhEIuwSLaDnVjMDDTHOM6usoTXv1
+ PBqZqeeCOY/l/+TnnDaJ09ZfTXlcukdAY82yXjv9UMmqjjNaRK1yd2CdQ==
+X-ME-Sender: <xms:pw-sZHFl91ZcMx1wEP14iZSkImpsxfavHCsz0nw5OzcnRbTDq0r32A>
+ <xme:pw-sZEXTmxaWyDb6KQXfVYJ1WVEwPkXzNoQKC2f1-VYQI-Z6V2MPSFB5Ud1cZxeq1
+ Vc0UHeGqBvQRgTkvPg>
+X-ME-Received: <xmr:pw-sZJJKJTEIh_lLOC-rI16sxRimnrKBRSWgDIqU0bQFDviFcCmetZ1STmI9GzAkQ_Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrvdekgdeivdcutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgruhhs
+ ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
+ gvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeevjeevtdduudegieegteffffej
+ veenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehith
+ hssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:pw-sZFFYWw0T20VW_b2rYIa8s1rBxTlYnz3HM6Cz3Ch4GKG1ub9vNQ>
+ <xmx:pw-sZNUkLaYpTHZ5yMNunuiNQXOIUpf9ACc6O2eq9jGhMepeaFTl3A>
+ <xmx:pw-sZAOpknv6F03AlR1bJdXn-_qEr40c1Uu87Cmt1a5TokioKbXUlw>
+ <xmx:qA-sZDxVrMzYU61qmzvLYohChROyJsRZ4O5tr21UrvMtO5k3BDG1-A>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 10 Jul 2023 10:03:18 -0400 (EDT)
+Date: Mon, 10 Jul 2023 16:03:16 +0200
+From: Klaus Jensen <its@irrelevant.dk>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, richard.henderson@linaro.org,
+ qemu-devel@nongnu.org, stefanha@redhat.com
+Subject: Re: [PULL 11/23] Revert "graph-lock: Disable locking for now"
+Message-ID: <ZKwPpO0Eu3tMA6AO@cormorant.local>
+References: <20230628141526.293104-1-kwolf@redhat.com>
+ <20230628141526.293104-12-kwolf@redhat.com>
+ <ZKv4G4A0l8EhMZoy@cormorant.local> <ZKv8UvKOHo6VX5g/@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT092:EE_|MW4PR12MB6753:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2141b30-17eb-474a-30ca-08db814e7191
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /d9bsBICkRUEqAlGXAwvAQO41NEBk8BnmlsN+h9Wn6POh/jBG+MRRSRNSZE/FuI1/rXYMi0rpyeRZVVk8ugzO8v9vZBX6bEoYAEz+EyGxw2xlo2qUB11YloUAQvOHLF15UVUekKozOwIDxn8ye5YSslGdc/HiBgcRhhwJNVEBv9vbMduNrY70xsLHJPnFYu7YatYhMAG156zIiurQ5nzYQVQMbSIIvU+5r83+sgt/pAGBvzXcMULn+Gc0cmi+enAb8UVuDzzNXdeTV46xTrNBGhfwlyWeEGFMAaE/v8nGvSbOVlIKsg5fcok30Q02/z8pg/5R3DNj4BUjaugqmr1ZFawWhABmmA9wPZoAfWkr7HO8gxx5D+GJ26Ii9LtJPM33aoNuT4njG3DhUVcUczpbECxBGAUGjthVojOKlOudrCmE8rO00khHvae7jrZYKKLrLRSv5LneBSaXgV/A4NDt/OdbCHo1CF9nuYDFLyT1PjFSzYYDUzBrd7UUV51S/OUwA8B8aN2oiBAK/gP3xQhm88hFSWRl5zRt+BPMwoHd0RokUGkfSH1CcqOoOfvng1kqLkkn9OGUbA04LFKQ8ikljHNWdSn2uJcTPUsl7dH7s+ow6w506on0JQzoN9Pd8tIMi2BMSBZiUSpj26v8uPCDUDVtkB/9nhIR4RqEEoNHpByBeOhiaMhZOE1tBDfg4jt8NAARmxwBwliXPa8lc+06mwGeVsz4ilzmZ0R817rk8fhc2UwpRkZGC0zahPh4RhkDqJ2pSSdH8ABqIoVQ87jbA==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230028)(4636009)(136003)(346002)(39860400002)(376002)(396003)(451199021)(36840700001)(40470700004)(46966006)(36860700001)(82310400005)(36756003)(86362001)(40480700001)(40460700003)(356005)(81166007)(82740400003)(478600001)(6666004)(54906003)(8936002)(8676002)(44832011)(5660300002)(316002)(2906002)(6916009)(4326008)(70586007)(70206006)(41300700001)(2616005)(336012)(426003)(26005)(47076005)(1076003)(186003)(83380400001)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2023 14:03:31.4892 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2141b30-17eb-474a-30ca-08db814e7191
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT092.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6753
-Received-SPF: softfail client-ip=2a01:111:f400:7eab::60f;
- envelope-from=francisco.iglesias@amd.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="lgxVDyQ2kN1AFUJc"
+Content-Disposition: inline
+In-Reply-To: <ZKv8UvKOHo6VX5g/@redhat.com>
+Received-SPF: pass client-ip=66.111.4.26; envelope-from=its@irrelevant.dk;
+ helo=out2-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,270 +103,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Connect the Configuration Frame controller (CFRAME_REG) and the
-Configuration Frame broadcast controller (CFRAME_BCAST_REG) to the
-Versal machine.
 
-Signed-off-by: Francisco Iglesias <francisco.iglesias@amd.com>
----
- hw/arm/xlnx-versal.c         | 116 ++++++++++++++++++++++++++++++++++-
- include/hw/arm/xlnx-versal.h |  69 +++++++++++++++++++++
- 2 files changed, 184 insertions(+), 1 deletion(-)
+--lgxVDyQ2kN1AFUJc
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
-index 3f4b4b1560..9cd3c7218e 100644
---- a/hw/arm/xlnx-versal.c
-+++ b/hw/arm/xlnx-versal.c
-@@ -27,7 +27,7 @@
- #define XLNX_VERSAL_RCPU_TYPE ARM_CPU_TYPE_NAME("cortex-r5f")
- #define GEM_REVISION        0x40070106
- 
--#define VERSAL_NUM_PMC_APB_IRQS 3
-+#define VERSAL_NUM_PMC_APB_IRQS 18
- #define NUM_OSPI_IRQ_LINES 3
- 
- static void versal_create_apu_cpus(Versal *s)
-@@ -341,6 +341,7 @@ static void versal_create_pmc_apb_irq_orgate(Versal *s, qemu_irq *pic)
-      *  - RTC
-      *  - BBRAM
-      *  - PMC SLCR
-+     *  - CFRAME regs (input 3 - 17 to the orgate)
-      */
-     object_initialize_child(OBJECT(s), "pmc-apb-irq-orgate",
-                             &s->pmc.apb_irq_orgate, TYPE_OR_IRQ);
-@@ -573,6 +574,42 @@ static void versal_create_ospi(Versal *s, qemu_irq *pic)
- static void versal_create_cfu(Versal *s, qemu_irq *pic)
- {
-     SysBusDevice *sbd;
-+    DeviceState *dev;
-+    int i;
-+    const struct {
-+        uint64_t reg_base;
-+        uint64_t fdri_base;
-+    } cframe_addr[] = {
-+        { MM_PMC_CFRAME0_REG, MM_PMC_CFRAME0_FDRI },
-+        { MM_PMC_CFRAME1_REG, MM_PMC_CFRAME1_FDRI },
-+        { MM_PMC_CFRAME2_REG, MM_PMC_CFRAME2_FDRI },
-+        { MM_PMC_CFRAME3_REG, MM_PMC_CFRAME3_FDRI },
-+        { MM_PMC_CFRAME4_REG, MM_PMC_CFRAME4_FDRI },
-+        { MM_PMC_CFRAME5_REG, MM_PMC_CFRAME5_FDRI },
-+        { MM_PMC_CFRAME6_REG, MM_PMC_CFRAME6_FDRI },
-+        { MM_PMC_CFRAME7_REG, MM_PMC_CFRAME7_FDRI },
-+        { MM_PMC_CFRAME8_REG, MM_PMC_CFRAME8_FDRI },
-+        { MM_PMC_CFRAME9_REG, MM_PMC_CFRAME9_FDRI },
-+        { MM_PMC_CFRAME10_REG, MM_PMC_CFRAME10_FDRI },
-+        { MM_PMC_CFRAME11_REG, MM_PMC_CFRAME11_FDRI },
-+        { MM_PMC_CFRAME12_REG, MM_PMC_CFRAME12_FDRI },
-+        { MM_PMC_CFRAME13_REG, MM_PMC_CFRAME13_FDRI },
-+        { MM_PMC_CFRAME14_REG, MM_PMC_CFRAME14_FDRI },
-+    };
-+    const struct {
-+        uint32_t blktype0_frames;
-+        uint32_t blktype1_frames;
-+        uint32_t blktype2_frames;
-+        uint32_t blktype3_frames;
-+        uint32_t blktype4_frames;
-+        uint32_t blktype5_frames;
-+        uint32_t blktype6_frames;
-+    } cframe_cfg[] = {
-+        [0] = { 34111, 3528, 12800, 11, 5, 1, 1 },
-+        [1] = { 38498, 3841, 15361, 13, 7, 3, 1 },
-+        [2] = { 38498, 3841, 15361, 13, 7, 3, 1 },
-+        [3] = { 38498, 3841, 15361, 13, 7, 3, 1 },
-+    };
- 
-     /* CFU FDRO */
-     object_initialize_child(OBJECT(s), "cfu-fdro", &s->pmc.cfu_fdro,
-@@ -583,10 +620,87 @@ static void versal_create_cfu(Versal *s, qemu_irq *pic)
-     memory_region_add_subregion(&s->mr_ps, MM_PMC_CFU_FDRO,
-                                 sysbus_mmio_get_region(sbd, 0));
- 
-+    /* CFRAME REG */
-+    for (i = 0; i < ARRAY_SIZE(s->pmc.cframe); i++) {
-+        char *name = g_strdup_printf("cframe%d", i);
-+
-+        object_initialize_child(OBJECT(s), name, &s->pmc.cframe[i],
-+                                TYPE_XLNX_VERSAL_CFRAME_REG);
-+
-+        sbd = SYS_BUS_DEVICE(&s->pmc.cframe[i]);
-+        dev = DEVICE(&s->pmc.cframe[i]);
-+
-+        if (i < ARRAY_SIZE(cframe_cfg)) {
-+            object_property_set_int(OBJECT(dev), "blktype0-frames",
-+                                    cframe_cfg[i].blktype0_frames,
-+                                    &error_abort);
-+            object_property_set_int(OBJECT(dev), "blktype1-frames",
-+                                    cframe_cfg[i].blktype1_frames,
-+                                    &error_abort);
-+            object_property_set_int(OBJECT(dev), "blktype2-frames",
-+                                    cframe_cfg[i].blktype2_frames,
-+                                    &error_abort);
-+            object_property_set_int(OBJECT(dev), "blktype3-frames",
-+                                    cframe_cfg[i].blktype3_frames,
-+                                    &error_abort);
-+            object_property_set_int(OBJECT(dev), "blktype4-frames",
-+                                    cframe_cfg[i].blktype4_frames,
-+                                    &error_abort);
-+            object_property_set_int(OBJECT(dev), "blktype5-frames",
-+                                    cframe_cfg[i].blktype5_frames,
-+                                    &error_abort);
-+            object_property_set_int(OBJECT(dev), "blktype6-frames",
-+                                    cframe_cfg[i].blktype6_frames,
-+                                    &error_abort);
-+        }
-+        object_property_set_link(OBJECT(dev), "cfu-fdro",
-+                                 OBJECT(&s->pmc.cfu_fdro), &error_fatal);
-+
-+        sysbus_realize(SYS_BUS_DEVICE(dev), &error_fatal);
-+
-+        memory_region_add_subregion(&s->mr_ps, cframe_addr[i].reg_base,
-+                                    sysbus_mmio_get_region(sbd, 0));
-+        memory_region_add_subregion(&s->mr_ps, cframe_addr[i].fdri_base,
-+                                    sysbus_mmio_get_region(sbd, 1));
-+        sysbus_connect_irq(sbd, 0,
-+                           qdev_get_gpio_in(DEVICE(&s->pmc.apb_irq_orgate),
-+                                            3 + i));
-+        g_free(name);
-+    }
-+
-+    /* CFRAME BCAST */
-+    object_initialize_child(OBJECT(s), "cframe_bcast", &s->pmc.cframe_bcast,
-+                            TYPE_XLNX_VERSAL_CFRAME_BCAST_REG);
-+
-+    sbd = SYS_BUS_DEVICE(&s->pmc.cframe_bcast);
-+    dev = DEVICE(&s->pmc.cframe_bcast);
-+
-+    for (i = 0; i < ARRAY_SIZE(s->pmc.cframe); i++) {
-+        char *propname = g_strdup_printf("cframe%d", i);
-+        object_property_set_link(OBJECT(dev), propname,
-+                                 OBJECT(&s->pmc.cframe[i]), &error_fatal);
-+        g_free(propname);
-+    }
-+
-+    sysbus_realize(sbd, &error_fatal);
-+
-+    memory_region_add_subregion(&s->mr_ps, MM_PMC_CFRAME_BCAST_REG,
-+                                sysbus_mmio_get_region(sbd, 0));
-+    memory_region_add_subregion(&s->mr_ps, MM_PMC_CFRAME_BCAST_FDRI,
-+                                sysbus_mmio_get_region(sbd, 1));
-+
-     /* CFU APB */
-     object_initialize_child(OBJECT(s), "cfu-apb", &s->pmc.cfu_apb,
-                             TYPE_XLNX_VERSAL_CFU_APB);
-     sbd = SYS_BUS_DEVICE(&s->pmc.cfu_apb);
-+    dev = DEVICE(&s->pmc.cfu_apb);
-+
-+    for (i = 0; i < ARRAY_SIZE(s->pmc.cframe); i++) {
-+        char *propname = g_strdup_printf("cframe%d", i);
-+        object_property_set_link(OBJECT(dev), propname,
-+                                 OBJECT(&s->pmc.cframe[i]), &error_fatal);
-+        g_free(propname);
-+    }
- 
-     sysbus_realize(sbd, &error_fatal);
-     memory_region_add_subregion(&s->mr_ps, MM_PMC_CFU_APB,
-diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
-index 29b9c60301..7b419f88c2 100644
---- a/include/hw/arm/xlnx-versal.h
-+++ b/include/hw/arm/xlnx-versal.h
-@@ -33,6 +33,7 @@
- #include "hw/misc/xlnx-versal-pmc-iou-slcr.h"
- #include "hw/net/xlnx-versal-canfd.h"
- #include "hw/misc/xlnx-versal-cfu.h"
-+#include "hw/misc/xlnx-versal-cframe-reg.h"
- 
- #define TYPE_XLNX_VERSAL "xlnx-versal"
- OBJECT_DECLARE_SIMPLE_TYPE(Versal, XLNX_VERSAL)
-@@ -47,6 +48,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(Versal, XLNX_VERSAL)
- #define XLNX_VERSAL_NR_IRQS    192
- #define XLNX_VERSAL_NR_CANFD   2
- #define XLNX_VERSAL_CANFD_REF_CLK (24 * 1000 * 1000)
-+#define XLNX_VERSAL_NR_CFRAME  15
- 
- struct Versal {
-     /*< private >*/
-@@ -121,6 +123,8 @@ struct Versal {
-         XlnxVersalCFUAPB cfu_apb;
-         XlnxVersalCFUFDRO cfu_fdro;
-         XlnxVersalCFUSFR cfu_sfr;
-+        XlnxVersalCFrameReg cframe[XLNX_VERSAL_NR_CFRAME];
-+        XlnxVersalCFrameBcastReg cframe_bcast;
- 
-         OrIRQState apb_irq_orgate;
-     } pmc;
-@@ -256,6 +260,71 @@ struct Versal {
- #define MM_PMC_CFU_STREAM_2         0xf1f80000
- #define MM_PMC_CFU_STREAM_2_SIZE    0x40000
- 
-+#define MM_PMC_CFRAME0_REG          0xf12d0000
-+#define MM_PMC_CFRAME0_REG_SIZE     0x1000
-+#define MM_PMC_CFRAME0_FDRI         0xf12d1000
-+#define MM_PMC_CFRAME0_FDRI_SIZE    0x1000
-+#define MM_PMC_CFRAME1_REG          0xf12d2000
-+#define MM_PMC_CFRAME1_REG_SIZE     0x1000
-+#define MM_PMC_CFRAME1_FDRI         0xf12d3000
-+#define MM_PMC_CFRAME1_FDRI_SIZE    0x1000
-+#define MM_PMC_CFRAME2_REG          0xf12d4000
-+#define MM_PMC_CFRAME2_REG_SIZE     0x1000
-+#define MM_PMC_CFRAME2_FDRI         0xf12d5000
-+#define MM_PMC_CFRAME2_FDRI_SIZE    0x1000
-+#define MM_PMC_CFRAME3_REG          0xf12d6000
-+#define MM_PMC_CFRAME3_REG_SIZE     0x1000
-+#define MM_PMC_CFRAME3_FDRI         0xf12d7000
-+#define MM_PMC_CFRAME3_FDRI_SIZE    0x1000
-+#define MM_PMC_CFRAME4_REG          0xf12d8000
-+#define MM_PMC_CFRAME4_REG_SIZE     0x1000
-+#define MM_PMC_CFRAME4_FDRI         0xf12d9000
-+#define MM_PMC_CFRAME4_FDRI_SIZE    0x1000
-+#define MM_PMC_CFRAME5_REG          0xf12da000
-+#define MM_PMC_CFRAME5_REG_SIZE     0x1000
-+#define MM_PMC_CFRAME5_FDRI         0xf12db000
-+#define MM_PMC_CFRAME5_FDRI_SIZE    0x1000
-+#define MM_PMC_CFRAME6_REG          0xf12dc000
-+#define MM_PMC_CFRAME6_REG_SIZE     0x1000
-+#define MM_PMC_CFRAME6_FDRI         0xf12dd000
-+#define MM_PMC_CFRAME6_FDRI_SIZE    0x1000
-+#define MM_PMC_CFRAME7_REG          0xf12de000
-+#define MM_PMC_CFRAME7_REG_SIZE     0x1000
-+#define MM_PMC_CFRAME7_FDRI         0xf12df000
-+#define MM_PMC_CFRAME7_FDRI_SIZE    0x1000
-+#define MM_PMC_CFRAME8_REG          0xf12e0000
-+#define MM_PMC_CFRAME8_REG_SIZE     0x1000
-+#define MM_PMC_CFRAME8_FDRI         0xf12e1000
-+#define MM_PMC_CFRAME8_FDRI_SIZE    0x1000
-+#define MM_PMC_CFRAME9_REG          0xf12e2000
-+#define MM_PMC_CFRAME9_REG_SIZE     0x1000
-+#define MM_PMC_CFRAME9_FDRI         0xf12e3000
-+#define MM_PMC_CFRAME9_FDRI_SIZE    0x1000
-+#define MM_PMC_CFRAME10_REG         0xf12e4000
-+#define MM_PMC_CFRAME10_REG_SIZE    0x1000
-+#define MM_PMC_CFRAME10_FDRI        0xf12e5000
-+#define MM_PMC_CFRAME10_FDRI_SIZE   0x1000
-+#define MM_PMC_CFRAME11_REG         0xf12e6000
-+#define MM_PMC_CFRAME11_REG_SIZE    0x1000
-+#define MM_PMC_CFRAME11_FDRI        0xf12e7000
-+#define MM_PMC_CFRAME11_FDRI_SIZE   0x1000
-+#define MM_PMC_CFRAME12_REG         0xf12e8000
-+#define MM_PMC_CFRAME12_REG_SIZE    0x1000
-+#define MM_PMC_CFRAME12_FDRI        0xf12e9000
-+#define MM_PMC_CFRAME12_FDRI_SIZE   0x1000
-+#define MM_PMC_CFRAME13_REG         0xf12ea000
-+#define MM_PMC_CFRAME13_REG_SIZE    0x1000
-+#define MM_PMC_CFRAME13_FDRI        0xf12eb000
-+#define MM_PMC_CFRAME13_FDRI_SIZE   0x1000
-+#define MM_PMC_CFRAME14_REG         0xf12ec000
-+#define MM_PMC_CFRAME14_REG_SIZE    0x1000
-+#define MM_PMC_CFRAME14_FDRI        0xf12ed000
-+#define MM_PMC_CFRAME14_FDRI_SIZE   0x1000
-+#define MM_PMC_CFRAME_BCAST_REG       0xf12ee000
-+#define MM_PMC_CFRAME_BCAST_REG_SIZE  0x1000
-+#define MM_PMC_CFRAME_BCAST_FDRI      0xf12ef000
-+#define MM_PMC_CFRAME_BCAST_FDRI_SIZE 0x1000
-+
- #define MM_PMC_CRP                  0xf1260000U
- #define MM_PMC_CRP_SIZE             0x10000
- #define MM_PMC_RTC                  0xf12a0000
--- 
-2.34.1
+On Jul 10 14:40, Kevin Wolf wrote:
+> Am 10.07.2023 um 14:22 hat Klaus Jensen geschrieben:
+> > On Jun 28 16:15, Kevin Wolf wrote:
+> > > Now that bdrv_graph_wrlock() temporarily drops the AioContext lock th=
+at
+> > > its caller holds, it can poll without causing deadlocks. We can now
+> > > re-enable graph locking.
+> > >=20
+> > > This reverts commit ad128dff0bf4b6f971d05eb4335a627883a19c1d.
+> > >=20
+> >=20
+> > I'm seeing a pretty major performance regression on iothread-enabled
+> > virtio-blk (and on some on-going iothread hw/nvme work) with this
+> > applied. Something like ~300k iops prior to this vs ~200k after on my
+> > set up. On master, virtio-blk is currently faster without an iothread
+> > (~215k) than with (~200k).
+> >=20
+> > I bisected the change in iops to this revert.
+>=20
+> Is CONFIG_DEBUG_GRAPH_LOCK enabled in your build? If so, this is
+> expected to cost some performance. If not, we need to take a look at
+> what else is causing the regression.
+>=20
+> Kevin
 
+Argh. Doh. Yes, was enabled and made QUITE the difference.
+
+Sorry for the noise. Thanks!
+
+--lgxVDyQ2kN1AFUJc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmSsD6MACgkQTeGvMW1P
+Del0+ggAgFH/bIEbqGL3e+2wAtjtB97GtRHuAToaWVD8yv/uyGRsDRsLOjkP1TxF
+hvyFqlqxVU/EC1BEFSXk18BLF/hwh9YENLBMKlm6HfFH/FPgYvNVSWH7v3whPQ/8
+0pIiL0qiJ9ueqbhTQ7ne+O6w3aIXSm4xymPBYPCsffVU7y9QbST334djvpa74sCA
+uMRJeke5d9Y/or3mFAjQZVMKGUp8jJjPLFHipvz8UM4My6a1j0FojXmZ2pcwUIk4
+8KtTkz+HIiO/YmOnW543d3EezzdOKpREUfDWNV58izIJpWEXLSYZu8TtfZ1G0/lr
+XJcryV5vHJl78Yik0NgyERDdI27BOA==
+=uXSl
+-----END PGP SIGNATURE-----
+
+--lgxVDyQ2kN1AFUJc--
 
