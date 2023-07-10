@@ -2,71 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C53774C96D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 03:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4143774C973
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 03:18:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIfQr-0003aB-9d; Sun, 09 Jul 2023 21:11:17 -0400
+	id 1qIfWk-0004kY-NK; Sun, 09 Jul 2023 21:17:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIfQo-0003Z8-SN; Sun, 09 Jul 2023 21:11:14 -0400
-Received: from mail-ua1-x92c.google.com ([2607:f8b0:4864:20::92c])
+ id 1qIfWi-0004kB-Mk
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 21:17:20 -0400
+Received: from mail-qk1-x72f.google.com ([2607:f8b0:4864:20::72f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIfQn-0002iG-5S; Sun, 09 Jul 2023 21:11:14 -0400
-Received: by mail-ua1-x92c.google.com with SMTP id
- a1e0cc1a2514c-7918b56b1e1so1370331241.2; 
- Sun, 09 Jul 2023 18:11:12 -0700 (PDT)
+ id 1qIfWg-0003l2-OC
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 21:17:20 -0400
+Received: by mail-qk1-x72f.google.com with SMTP id
+ af79cd13be357-766b22593faso279441285a.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 18:17:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688951471; x=1691543471;
+ d=gmail.com; s=20221208; t=1688951837; x=1691543837;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=S5Fo+VHe4JVTJcEFIcDLIKP999Y4yWbgILe3Ib40Pmg=;
- b=VweBS6/Yk+sR3wpyqK5Yb7ppUvICTUHnhj59Ilg5DrAiniq8x07Lv6Qe/fCCZhjH5b
- qxbw9VBYf+B9tFzOkkMB0SnF9WGOeyZRKKkDPw2w0A9r0bt2SQJwi+RGicC1Ed8BhHLd
- d+SUuG0Oim0gNDiJJZpu5qUG67XNMB5MXid9QjtcXCfo8UwEOpitrYDo+LSa2LfQZSSZ
- cZYlpSjFv6kdLYl2qsXbZGkXJEeucOENogNDPabB583hCn7sNXhy+mi1oOjYp4aRkYa1
- 2eIgOJZRkSn2NX0trHi8QBBessUOWh23vsyfSdk2t6lUAKaeVf4ebEhN8/2E+t2EbuJg
- 7IAw==
+ bh=xpItvjgZ9Z1B+hqALco8MqMyvN6/0bRo1NEc6L2e2pU=;
+ b=CY0duINBY5vF8MOXfDOQNk8e7gdneZ2oHnSH7DIeUrq8q6ik9Rc2fW1osIqyzvXycr
+ pRPMZC+mS7UyvyO9tRY3jwZsP+WKhDePyKgdodakS1fTRABj8Hg1RPqJeL2HMR+6EAfY
+ CK6MF3Pzh5HQMSBBJWx0OpD2xxBVEX5n991TUJ5B4YdaWH4cwAHeVd60aqka53pBJXN7
+ LSBEujlOSrjsSHUKq3ak5R5VXkakMukKJ5Iknyyx4cLbaNOUzM+B3rmlyaxzcQDnW0th
+ kR4+W5gDxD3+aHLMp9kFvuxiLPLewTLxdeSkq1hQ6M8Ml7lRm5yNycrKXpF4NjMETXRR
+ rX/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688951471; x=1691543471;
+ d=1e100.net; s=20221208; t=1688951837; x=1691543837;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=S5Fo+VHe4JVTJcEFIcDLIKP999Y4yWbgILe3Ib40Pmg=;
- b=Zfg3xa8/JC7xT7Mgh6c5i+c4Ohp41X/PlJSFApwEn0uEp8yY+vQ1loJeds6pYWsBJb
- w3gUzp0TF31QOYvFaZX90UFBO+eXvVQugPgsfzGxhhGz7vpeSpq0PV5fZ3Yc7i6X+x7X
- nnzrOfI0FwvypaiIGZDISMk+I0ZWDDr4TsNHmzeMeNgVHUU4Olc2JMMuT5QrF0wOyz4B
- iexztou76oyu9GJRdtHg8LzDK7Qy4how0xGEYtvPYK4y1p+Nkn7L20F3uzu+h4+5loSL
- KPdZaWpsNXBt7CCfnLyb46zsiyPgwfiFJruZfIjERVYGMDDWJ57YqkU8C2OPkqyxVj1K
- 3oiA==
-X-Gm-Message-State: ABy/qLaBxGS/OSNaTpEg0OhiroqDzy5RS3BVz9cP4PC+cHL+igrnLUOP
- GLt3gUz+6PYVbJ4/pwEGBSU9N7+F+mwtmFLSXCs=
-X-Google-Smtp-Source: APBJJlGdmfPuhzjQqONKluI4Qmxj1LmscX9ib3KUbGKuNBqgjDQ8pLAP5rXnrLoPi/JvSGQfP6RoMk6+j6W3D787J6k=
-X-Received: by 2002:a67:ea91:0:b0:443:873a:16b8 with SMTP id
- f17-20020a67ea91000000b00443873a16b8mr5385865vso.30.1688951471490; Sun, 09
- Jul 2023 18:11:11 -0700 (PDT)
+ bh=xpItvjgZ9Z1B+hqALco8MqMyvN6/0bRo1NEc6L2e2pU=;
+ b=Y7rbqXpHlIIHnAY00UHZ5q+qpYFm0Wxlw2ldlSYeX1wd2bKdr3XefG9Sr5Mmf8CXdA
+ CBBYMSNHbQLjoK4GWTkCCSb/RwVVolMucUFqTFtyzYLm+u2eBNFgKJ2SnjUWaFP8XFp6
+ RHjop50LUN6GMwjpUseVHrGgl4MUazyUP1+Ypk7uU3EHYjAByD0pASpweNaFFPdcTj6m
+ IyCKC84Cr2FJ3YBNeJx5W0SPbwsUyXnQ4J67GF1UcNKVqkKdhGCTthEVIAf57tUfSs/e
+ x09d5uOyVz4uLvH5i84OyQfEyGjlrOSudbqVXRcaazyJQm5x/5hYy6ggBiGrOwU8fHV6
+ k0Rg==
+X-Gm-Message-State: ABy/qLaJIk/maRoad2/SpdCo546Vs4dgha9pyVX3P0tCzXYiRGC//jvw
+ XUheCXQfmrV87ExN9wc+hZnMmsjVwX7vfaLXea8=
+X-Google-Smtp-Source: APBJJlHRo7pw/K3OCgWq+vvZFE7AwprlLvSPdLPco3nu8skT6h50t2Z/0tCDBbb7LcBSTX8atjaWJxg8XfgJ+JQqGjA=
+X-Received: by 2002:a05:620a:2588:b0:765:604f:3e7 with SMTP id
+ x8-20020a05620a258800b00765604f03e7mr11002957qko.62.1688951837515; Sun, 09
+ Jul 2023 18:17:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230704084013.21749-1-jason.chien@sifive.com>
-In-Reply-To: <20230704084013.21749-1-jason.chien@sifive.com>
+References: <20230625025018.26956-1-18622748025@163.com>
+In-Reply-To: <20230625025018.26956-1-18622748025@163.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 10 Jul 2023 11:10:45 +1000
-Message-ID: <CAKmqyKOGwGcswdXBmMFHjvjBSz3b0-joTAoNf5rW3RvSKFG+8Q@mail.gmail.com>
-Subject: Re: [PATCH] target/riscv: Add Zihintntl extension ISA string to DTS
-To: Jason Chien <jason.chien@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Date: Mon, 10 Jul 2023 11:16:51 +1000
+Message-ID: <CAKmqyKN+USh-38Gzc3vGJYVAw9xThtqx2B8Nf1LAHbrNQ_=EDA@mail.gmail.com>
+Subject: Re: [PATCH] target/riscv: fix the issue of guest reboot then no
+ response or crash in kvm-mode
+To: "liguang.zhang" <18622748025@163.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, 
+ "liguang.zhang" <liguang.zhang@hexintek.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92c;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72f;
+ envelope-from=alistair23@gmail.com; helo=mail-qk1-x72f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -90,82 +89,226 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 4, 2023 at 6:42=E2=80=AFPM Jason Chien <jason.chien@sifive.com>=
- wrote:
+On Sun, Jun 25, 2023 at 12:50=E2=80=AFPM liguang.zhang <18622748025@163.com=
+> wrote:
 >
-> RVA23 Profiles states:
-> The RVA23 profiles are intended to be used for 64-bit application
-> processors that will run rich OS stacks from standard binary OS
-> distributions and with a substantial number of third-party binary user
-> applications that will be supported over a considerable length of time
-> in the field.
+> From: "liguang.zhang" <liguang.zhang@hexintek.com>
 >
-> The chapter 4 of the unprivileged spec introduces the Zihintntl extension
-> and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
-> purpose is to enable application and operating system portability across
-> different implementations. Thus the DTS should contain the Zihintntl ISA
-> string in order to pass to software.
+> There are two issues when rebooting a guest using KVM
+> 1. When the guest initiates a reboot the host is unable to stop the vcpu
+> 2. When running a SMP guest the qemu monitor system_reset causes a vcpu c=
+rash
 >
-> The unprivileged spec states:
-> Like any HINTs, these instructions may be freely ignored. Hence, although
-> they are described in terms of cache-based memory hierarchies, they do no=
-t
-> mandate the provision of caches.
->
-> These instructions are encoded with used opcode, e.g. ADD x0, x0, x2, whi=
-ch
-> QEMU already supports, and QEMU does not emulate cache. Therefore these
-> instructions can be considered as a no-op, and we only need to add a new
-> property for the Zihintntl extension.
->
-> Signed-off-by: Jason Chien <jason.chien@sifive.com>
+> This can be fixed by clearing the CSR values at reset and syncing the
+> MPSTATE with the host.
 
-Thanks for the patch, do you mind rebasing it on
+Thanks for the patch.
+
+I think we should move everything
+
+--- from here ---
+
+>
+> kernel log
+> ```shell
+> $reboot
+>
+> The system is going down NOW!
+> Sent SIGTERM to all processes
+> logout
+> Sent SIGKILL to all processes
+> Requesting system reboot
+>
+> ```
+> then no response
+>
+> for qemu command:
+> $system_reset:
+>
+> kernel log:
+> ```shell
+> [   53.739556] kvm [150]: VCPU exit error -95
+> [   53.739563] kvm [148]: VCPU exit error -95
+> [   53.739557] kvm [149]: VCPU exit error -95
+> [   53.740957] kvm [149]: SEPC=3D0x0 SSTATUS=3D0x200004120 HSTATUS=3D0x20=
+02001c0
+> [   53.740957] kvm [148]: SEPC=3D0x0 SSTATUS=3D0x200004120 HSTATUS=3D0x20=
+02001c0
+> [   53.741054] kvm [148]: SCAUSE=3D0x14 STVAL=3D0x0 HTVAL=3D0x0 HTINST=3D=
+0x0
+> [   53.741058] kvm [149]: SCAUSE=3D0x14 STVAL=3D0x0 HTVAL=3D0x0 HTINST=3D=
+0x0
+> [   53.756187] kvm [150]: SEPC=3D0x0 SSTATUS=3D0x200004120 HSTATUS=3D0x20=
+02001c0
+> [   53.757797] kvm [150]: SCAUSE=3D0x14 STVAL=3D0x0 HTVAL=3D0x0 HTINST=3D=
+0x0
+> ```
+>
+> solution:
+>
+> add reset csr and context for riscv vcpu
+> qemu ioctl reset vcpu->arch.power_off state of kvm
+>
+> tests:
+>
+> qemu-system-riscv64 -M virt -bios none -kernel Image \
+>    -smp 4 -enable-kvm \
+>    -append "rootwait root=3D/dev/vda ro" \
+>    -drive file=3Drootfs.ext2,format=3Draw,id=3Dhd0 \
+>    -device virtio-blk-device,drive=3Dhd0
+>
+> in guest shell:
+> $reboot
+>
+> qemu command:
+> $system_reset
+>
+> ---
+> v3:
+> - change kvm_riscv_set_mpstate_to_kvm to kvm_riscv_sync_mpstate_to_kvm
+> - remove newline after if(cap_has_mp_state)
+> - update submit description
+
+--- to here ---
+
+>
+> Signed-off-by: liguang.zhang <liguang.zhang@hexintek.com>
+> ---
+
+below this line. That way it will be included in the patch submission,
+but won't be included in the git tree.
+
+We never include the patch changelog in the git tree and I don't think
+we need to include the steps as well (they will be preserved on the
+mailing list).
+
+For the patch title (the git commit title) can you explain what the
+patch is doing?
+
+Also, do you mind rebasing on
 https://github.com/alistair23/qemu/tree/riscv-to-apply.next
+
+Then the patch should be good to go!
 
 Alistair
 
-> ---
->  target/riscv/cpu.c     | 2 ++
->  target/riscv/cpu_cfg.h | 1 +
->  2 files changed, 3 insertions(+)
+>  target/riscv/kvm.c       | 44 +++++++++++++++++++++++++++++++++++++++-
+>  target/riscv/kvm_riscv.h |  1 +
+>  2 files changed, 44 insertions(+), 1 deletion(-)
 >
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 881bddf393..6fd21466a4 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -81,6 +81,7 @@ static const struct isa_ext_data isa_edata_arr[] =3D {
->      ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
->      ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
->      ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
-> +    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
->      ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause=
-),
->      ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
->      ISA_EXT_DATA_ENTRY(zfh, PRIV_VERSION_1_11_0, ext_zfh),
-> @@ -1598,6 +1599,7 @@ static Property riscv_cpu_extensions[] =3D {
->      DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
->      DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
->      DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
-> +    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, true),
->      DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true)=
-,
->      DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
->      DEFINE_PROP_BOOL("Zfh", RISCVCPU, cfg.ext_zfh, false),
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index c4a627d335..c7da2facef 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -66,6 +66,7 @@ struct RISCVCPUConfig {
->      bool ext_icbom;
->      bool ext_icboz;
->      bool ext_zicond;
-> +    bool ext_zihintntl;
->      bool ext_zihintpause;
->      bool ext_smstateen;
->      bool ext_sstc;
+> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+> index 0f932a5b96..c478c71905 100644
+> --- a/target/riscv/kvm.c
+> +++ b/target/riscv/kvm.c
+> @@ -42,6 +42,8 @@
+>  #include "migration/migration.h"
+>  #include "sysemu/runstate.h"
+>
+> +static bool cap_has_mp_state;
+> +
+>  static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+>                                   uint64_t idx)
+>  {
+> @@ -99,7 +101,7 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, u=
+int64_t type,
+>
+>  #define KVM_RISCV_SET_TIMER(cs, env, name, reg) \
+>      do { \
+> -        int ret =3D kvm_set_one_reg(cs, RISCV_TIMER_REG(env, time), &reg=
+); \
+> +        int ret =3D kvm_set_one_reg(cs, RISCV_TIMER_REG(env, name), &reg=
+); \
+>          if (ret) { \
+>              abort(); \
+>          } \
+> @@ -335,6 +337,24 @@ int kvm_arch_get_registers(CPUState *cs)
+>      return ret;
+>  }
+>
+> +int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state)
+> +{
+> +    if (cap_has_mp_state) {
+> +        struct kvm_mp_state mp_state =3D {
+> +            .mp_state =3D state
+> +        };
+> +
+> +        int ret =3D kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state=
+);
+> +        if (ret) {
+> +            fprintf(stderr, "%s: failed to sync MP_STATE %d/%s\n",
+> +                    __func__, ret, strerror(-ret));
+> +            return -1;
+> +        }
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+>  int kvm_arch_put_registers(CPUState *cs, int level)
+>  {
+>      int ret =3D 0;
+> @@ -354,6 +374,18 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+>          return ret;
+>      }
+>
+> +    if (KVM_PUT_RESET_STATE =3D=3D level) {
+> +        RISCVCPU *cpu =3D RISCV_CPU(cs);
+> +        if (cs->cpu_index =3D=3D 0) {
+> +            ret =3D kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNN=
+ABLE);
+> +        } else {
+> +            ret =3D kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_STOP=
+PED);
+> +        }
+> +        if (ret) {
+> +            return ret;
+> +        }
+> +    }
+> +
+>      return ret;
+>  }
+>
+> @@ -428,6 +460,7 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routin=
+g_entry *route,
+>
+>  int kvm_arch_init(MachineState *ms, KVMState *s)
+>  {
+> +    cap_has_mp_state =3D kvm_check_extension(s, KVM_CAP_MP_STATE);
+>      return 0;
+>  }
+>
+> @@ -506,10 +539,19 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+>      if (!kvm_enabled()) {
+>          return;
+>      }
+> +    for (int i=3D0; i<32; i++)
+> +        env->gpr[i] =3D 0;
+>      env->pc =3D cpu->env.kernel_addr;
+>      env->gpr[10] =3D kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
+>      env->gpr[11] =3D cpu->env.fdt_addr;          /* a1 */
+>      env->satp =3D 0;
+> +    env->mie =3D 0;
+> +    env->stvec =3D 0;
+> +    env->sscratch =3D 0;
+> +    env->sepc =3D 0;
+> +    env->scause =3D 0;
+> +    env->stval =3D 0;
+> +    env->mip =3D 0;
+>  }
+>
+>  void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
+> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+> index ed281bdce0..88aee902dd 100644
+> --- a/target/riscv/kvm_riscv.h
+> +++ b/target/riscv/kvm_riscv.h
+> @@ -21,5 +21,6 @@
+>
+>  void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+>  void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
+> +int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
+>
+>  #endif
 > --
 > 2.17.1
->
 >
 
