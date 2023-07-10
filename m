@@ -2,91 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D965674CE9B
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:38:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D382374CECA
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:44:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIlTB-0001Q9-NZ; Mon, 10 Jul 2023 03:38:05 -0400
+	id 1qIlZ7-0002Pa-6N; Mon, 10 Jul 2023 03:44:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qIlT9-0001Pl-Cl
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:38:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIlZ5-0002PM-Bn
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:44:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qIlT7-00023Z-UO
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:38:03 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIlZ4-0003XU-2c
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:44:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688974681;
+ s=mimecast20190719; t=1688975049;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4BE4gxu0kEicAnK9dDnmr376xR6mYNsNGvdfzRDuJ08=;
- b=XBqaQWIZ6x2VxBdTN+ducHEkzRzpu+49NtKrl18HL4ltyfJgfzZzBoquguZbguawzYPDwy
- nZEJUVMVYdS9PmOFdR/jKyJoW/UeJlkDAWbenuItBFomR6OQFm2BKgoPBbfrbkB0ah9ExU
- skUPRa0s13WnyI9Bga81Ztx8Y1aXJr4=
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Wy8WA3rf7veCd32aVuVpB3Lbiz77mp+CStvv6eJKBM0=;
+ b=FKI/TwgjqLSRPzz+LbIBElN8uVSCExNIDV0XAcvL5MZAcz7bq/rZim9Psa0VWoXeqXFS9N
+ ptSOavLVfIB8lOZGpa9edMLk5mUVg9T8nBlVuvJUl8g8t3GpY9N7WBcA0hXLnA/V+OWdiU
+ 4FxqXLjFqpxUNr3NWfvwuiCP9xe7DCA=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-bTeXmEMjMFiGAVazll-riw-1; Mon, 10 Jul 2023 03:37:59 -0400
-X-MC-Unique: bTeXmEMjMFiGAVazll-riw-1
-Received: by mail-yb1-f197.google.com with SMTP id
- 3f1490d57ef6-c8f360a07a2so51474276.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 00:37:59 -0700 (PDT)
+ us-mta-290-VX-PPp3KPP2BSrtXo1sBTA-1; Mon, 10 Jul 2023 03:44:07 -0400
+X-MC-Unique: VX-PPp3KPP2BSrtXo1sBTA-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-76597a79a0aso618980185a.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 00:44:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688974679; x=1691566679;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4BE4gxu0kEicAnK9dDnmr376xR6mYNsNGvdfzRDuJ08=;
- b=BsG0ZUX2Tw3hmU6p1eL0w38eGC28aYeDriu52gbx8+oMFhuECOAssNIA+PSXbu0aEQ
- 4bqmBySLU8H29S1qKdaZoXfI6fGIt4Tbsc3WbRkgfoIK8X1sAVxb+I1WzSQS8inxzNo+
- z7Sn7qr2ZkLPw7awFZp3iK6h2ipJDUiPNANDYxWo+2nkDXRR9MQoeFPOQgt/ob5ysWMX
- 29p4nh+TJalvvp/keyvYzzBy+f4wTkYp07sWdxZiNLNdX8X2kkU1KNdLQIc3tYEGgcZ5
- XeSmaat+bM7gG0OWC1vSTaL0zaRERO2t7uz/bYjK6X9mGl2l1nt7DDnaLXvLkGNOXB5v
- fdDw==
-X-Gm-Message-State: ABy/qLahhsARVTBrmxZXV+zV11HBmD5iWWXBVE5Sk4JGXW72z3BQXckm
- Sg/mVW7XxYluUJS6gpJD67g/CF3HEqK1UGR+cZjsZ6626Xkjlrd5QOFjBdbLBQ87x32iN0kcd8T
- K7nJSQ1qrhiD8X9bEkASUBk2wcIrUyBA=
-X-Received: by 2002:a25:b285:0:b0:c73:2015:2d7c with SMTP id
- k5-20020a25b285000000b00c7320152d7cmr4471551ybj.33.1688974678808; 
- Mon, 10 Jul 2023 00:37:58 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGAnNKYqbOcoeFa3tOHTVyV1jtcKDQbsNtNq0+D2LK2eybE1HHEK1mx1EIRASMtecZpGNEMyHrgg75QaUpnUiM=
-X-Received: by 2002:a25:b285:0:b0:c73:2015:2d7c with SMTP id
- k5-20020a25b285000000b00c7320152d7cmr4471542ybj.33.1688974678544; Mon, 10 Jul
- 2023 00:37:58 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688975047; x=1691567047;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Wy8WA3rf7veCd32aVuVpB3Lbiz77mp+CStvv6eJKBM0=;
+ b=ifCPzuy0hgANA+yOkmVhRuz917ZmuSopEfa9nwgbyfEMB8P/pBd3jRLerrg+c9U6Jo
+ KgkrKHVqCfaP++UjsmGSpkt3FqyDhdWOx7YCQ1o/z0S/S1nYCTSsN+8Uz88fvA+2Ng6A
+ VEyWMB8KyPiEmKyTY2pUDKGu4LKws2eN6G9+J8Ivg/oVonO8bT2MwzvNdONsevkRW0rs
+ ZDYZ8tgCGyxQyhGCMRE2f5QLZA9wucfD9ufIlar7dNuDvARNC74ugbDOV+eKbL0txSnX
+ MwJYK+/3DMUOrgiQbvaFyPa7crP/qU3L+UXJhNDd2/ry+Y2D9hFmOJuVRfnYJlNz7pQ/
+ nbMw==
+X-Gm-Message-State: ABy/qLb0ajajZOsT+rZJSn9EIPSUH6CqJCEz6TL7MKqNg1+0Su8W+boc
+ VaEm15fyWtuiH55kpgXJB/8APELAPzBqHhMlckbrdNzE4fiH+pmYE3h4B6nAcXrTAy9+0V1ysQR
+ kko4/GgDJOFEKrfw=
+X-Received: by 2002:a05:620a:29c2:b0:767:14d0:14ff with SMTP id
+ s2-20020a05620a29c200b0076714d014ffmr15767050qkp.43.1688975046982; 
+ Mon, 10 Jul 2023 00:44:06 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEBT7YGaxXUeZMFEC39lj6HOpUdbBbdNrHqKE2NqGNNbYEEjNzl7OwAyOO8cjccG2d3NF2iPA==
+X-Received: by 2002:a05:620a:29c2:b0:767:14d0:14ff with SMTP id
+ s2-20020a05620a29c200b0076714d014ffmr15767041qkp.43.1688975046808; 
+ Mon, 10 Jul 2023 00:44:06 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-179-116.web.vodafone.de.
+ [109.43.179.116]) by smtp.gmail.com with ESMTPSA id
+ d15-20020a05620a158f00b0076211938e93sm4631134qkk.46.2023.07.10.00.44.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 00:44:06 -0700 (PDT)
+Message-ID: <e64f03e9-d7ba-736c-a8d6-bae03c594f39@redhat.com>
+Date: Mon, 10 Jul 2023 09:44:02 +0200
 MIME-Version: 1.0
-References: <20230706191227.835526-1-eperezma@redhat.com>
- <20230706191227.835526-7-eperezma@redhat.com>
- <CACGkMEtjbYCGNLLO+HDhtbA7QqZALr-cEpkjX=ETy=j3eCkTVA@mail.gmail.com>
-In-Reply-To: <CACGkMEtjbYCGNLLO+HDhtbA7QqZALr-cEpkjX=ETy=j3eCkTVA@mail.gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 10 Jul 2023 09:37:22 +0200
-Message-ID: <CAJaqyWcS6O+GNYsjuWo7Z85pq5Ls7_WWjLdM4z8eYGSSUMVc9Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 6/6] vdpa: remove net cvq migration blocker
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Cindy Lu <lulu@redhat.com>,
- si-wei.liu@oracle.com, 
- Stefano Garzarella <sgarzare@redhat.com>, Shannon Nelson <snelson@pensando.io>,
- Gautam Dawar <gdawar@xilinx.com>, Harpreet Singh Anand <hanand@xilinx.com>,
- Parav Pandit <parav@mellanox.com>, 
- Dragos Tatulea <dtatulea@nvidia.com>, Zhu Lingshan <lingshan.zhu@intel.com>, 
- Lei Yang <leiyang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 1/1] linux-headers: update to v6.5-rc1
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Tony Krowiak <akrowiak@linux.ibm.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+References: <20230709212308.370699-1-clg@redhat.com>
+ <20230709212308.370699-2-clg@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230709212308.370699-2-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,100 +104,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 10, 2023 at 5:54=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
-ote:
->
-> On Fri, Jul 7, 2023 at 3:12=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@redha=
-t.com> wrote:
-> >
-> > Now that we have add migration blockers if the device does not support
-> > all the needed features, remove the general blocker applied to all net
-> > devices with CVQ.
-> >
-> > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
->
-> I wonder what's the difference compared if we just start cvq first in
-> vhost_net_start()?
->
+On 09/07/2023 23.23, Cédric Le Goater wrote:
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
 
-That's interesting. It would complicate the for loop in
-vhost_net_start, but I think it's less complicated than
-should_start_op.
+Looks fine to me (I quickly double-checked that this is the correct update 
+to v6.5-rc1).
 
-It would be something like moving from:
-
-for (i =3D 0; i < nvhosts; i++) {
-    if (i < data_queue_pairs) {
-        peer =3D qemu_get_peer(ncs, i);
-    } else {
-        peer =3D qemu_get_peer(ncs, n->max_queue_pairs);
-    }
-
-    ...
-
-    r =3D vhost_net_start_one(get_vhost_net(peer), dev);
-    if (r < 0) {
-        goto err_start;
-    }
-}
-
-To:
-
-for (i =3D 0; i < nvhosts; i++) {
-    if (i =3D=3D 0 && cvq) {
-        peer =3D qemu_get_peer(ncs, n->max_queue_pairs);
-    } else {
-        peer =3D qemu_get_peer(ncs, i - cvq);
-    }
-
-    ...
-
-    r =3D vhost_net_start_one(get_vhost_net(peer), dev);
-    if (r < 0) {
-        goto err_start;
-    }
-}
-
-Is this what you have in mind?
-
-Thanks!
-
-> Thanks
->
-> > ---
-> >  net/vhost-vdpa.c | 12 ------------
-> >  1 file changed, 12 deletions(-)
-> >
-> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> > index d5970e9f06..5432b50498 100644
-> > --- a/net/vhost-vdpa.c
-> > +++ b/net/vhost-vdpa.c
-> > @@ -996,18 +996,6 @@ static NetClientState *net_vhost_vdpa_init(NetClie=
-ntState *peer,
-> >          s->vhost_vdpa.shadow_vq_ops =3D &vhost_vdpa_net_svq_ops;
-> >          s->vhost_vdpa.shadow_vq_ops_opaque =3D s;
-> >          s->cvq_isolated =3D cvq_isolated;
-> > -
-> > -        /*
-> > -         * TODO: We cannot migrate devices with CVQ and no x-svq enabl=
-ed as
-> > -         * there is no way to set the device state (MAC, MQ, etc) befo=
-re
-> > -         * starting the datapath.
-> > -         *
-> > -         * Migration blocker ownership now belongs to s->vhost_vdpa.
-> > -         */
-> > -        if (!svq) {
-> > -            error_setg(&s->vhost_vdpa.migration_blocker,
-> > -                       "net vdpa cannot migrate with CVQ feature");
-> > -        }
-> >      }
-> >      ret =3D vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_inde=
-x, nvqs);
-> >      if (ret) {
-> > --
-> > 2.39.3
-> >
->
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
