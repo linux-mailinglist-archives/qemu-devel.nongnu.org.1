@@ -2,101 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 500AD74DA1C
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 17:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E7B774DA0D
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 17:39:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIt32-0002ZO-Dq; Mon, 10 Jul 2023 11:43:36 -0400
+	id 1qIsyQ-00086v-Ny; Mon, 10 Jul 2023 11:38:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qIt2v-0002Xa-3s
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:43:29 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qIsyN-00083h-Tx
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:38:47 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qIt2q-0006MN-Mn
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:43:27 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fbc5d5742eso51989205e9.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 08:43:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qIsyM-0005PM-3X
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:38:47 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6687466137bso2933911b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 08:38:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689003803; x=1691595803;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=IVoZ+61FKCrNdklMoUuKRwdzJcWCiwu+9oFevqFhgNQ=;
- b=Vr0iX5PBlhO1Adj/4b7VlrHQkVn7GTOo5wyPKAYyOoIZEHmtrmf2CnnHEjUWaj3r5E
- gN1/wrYb3QfFv9cJ7Q+onYHROjTQ7g4Zk2+NvhwEx5lQUiRVDTA3Vspem0wuleZKlBTw
- HxZ5kfqcc4mZ5OGvHc4DKl1bxmJcccfgaf1hFufn/FOtw3wsH314q4Bjfx9ltnd83Dbg
- RvbJfwf39Lt2h6ddlusjcgwbBsceZCUeizDw6Aj5TX5ZaGT/rwtKPWaPWC5SFUqnexVj
- cNOLUD3riwHeX40BdeiIYBWMhiTu09Cv6qL4s4sfSUpe+/RCFyr7dZl0XKiMfrbRFWG9
- 2mtg==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1689003524; x=1691595524;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=OQVG0WczUwFHNB5hIJRSSA6bKrrYeaqnBNBrhJ/4o90=;
+ b=C6atOdX/5rc+m2r/csOp9RwEGk69PBNOzTu8cF3G6XYzf3oevd2b8sa/GO5eI2nD+q
+ 2eHuYB+qJIkzqdAeDpgOxYS3yORxPkIUUwZ6GZI6t14TzVGdD6qyIc8e23LjcCN4qgFf
+ 70NRdp1uGs7YmXN/aCJAqX3b/Qu7BVAXFcldCenkSdggbB7B4MjAFlm6/7YLNYoON0h2
+ 4JNWIiShNVc3maC3ox7y5RGzs5sODX2UNqsGbg+B0d/RBpVpfX2RmPjRtmJ2PwZAa5EC
+ LcLCOdNKbIPm2xZdZWU9GYB74cqCz/Sm0YyS5zkB3g+Me9dg4PQLki1YCX9TvMTDxFPL
+ i1Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689003803; x=1691595803;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IVoZ+61FKCrNdklMoUuKRwdzJcWCiwu+9oFevqFhgNQ=;
- b=M4XFUAq8ZIhWit1Fq4cxgw1uzJngQ5eqtvj8fV5RIkHub6nxswGFJmBPufglyYpwXu
- wv2VUDT6F+gEN78AavQsACpbBul0z7uQ9PWT0wZlnfn09HCblKuQFYj+dpTNaEHlO/zU
- IFN4aIBbhfr+u5fMVaKHMqHuvnivlUqLCsbbwAb2Bme+cs+P1gHsMR+hmSSVopLjUK3g
- FgVY4KBAukLkzSIseBH5AzaHy0aOFfn/9amhdRDwvDv7BededZ7lvprq70DcHGbrn/X6
- P3rRFbH0+1nQKl8ngonVjhh0B8vpwwi1rHL0IsLAn+6BBXl5dFZoN1K1XoslKrN0tEEX
- oRSw==
-X-Gm-Message-State: ABy/qLbyv23JxHEHlR0OFn35V/J8x9RfUP+UIsaPdcUsN6x562Q3f2yc
- 2+6nf1jKEQq/DzcsA8zbdtT1oA==
-X-Google-Smtp-Source: APBJJlFV7i5pJ4Xx1ytDGRxyHvenlKG5RJ/M0Ppqrbw83Wt5Nieq4FrA1qclRRUY+8w123UbxzbeLg==
-X-Received: by 2002:a7b:c5d6:0:b0:3f7:3991:e12e with SMTP id
- n22-20020a7bc5d6000000b003f73991e12emr12593197wmk.1.1689003803383; 
- Mon, 10 Jul 2023 08:43:23 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1689003524; x=1691595524;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OQVG0WczUwFHNB5hIJRSSA6bKrrYeaqnBNBrhJ/4o90=;
+ b=i9XTslLFmD7haagxD+7NDV7OpB2FDlnYIgZ4FRx/G5OXRzHXZGrY1mmr1XtLAg+/Mf
+ 2F8dHARMsEXk3Z+0AfgfIxF/a3eCT7uiekdYJxpfk0jyh7Zh7WtxcxgpOD0CMQN9QOzp
+ 2YWKZQ/N5ReUKa6vKBaWVoAnU1alXcfxckh+ULNd9ABpppXIUddjtIO7cLiUQL7+zMma
+ B2sTtAm5+PRcpwn35e/vcxc8fRcWC3fGlvHwtt0Hc9s6DVWZG3jkOkMHgpDVP+XKZjoX
+ AJ185flW46irvM4dzc1DoqWAjfy8UQWDn40uNyIxRTCe9mOpdFy0dGakzg+cG+Mmj8qx
+ iOPA==
+X-Gm-Message-State: ABy/qLZaPIhPIZecbmxpaxWhRbhSFPF9uWnJ05JCuO1r2fhq30rrRdQV
+ nDa+uvvYSycO+/K+mkzgnT9Iogs4nWcUfN0Yguw=
+X-Google-Smtp-Source: APBJJlGtzxF5jeDYScUkzNayyjPwqxmqRusNdnwO8KAHKVx8ZfwQJH2uCODVvHDYatkVOPMkKOV3Ug==
+X-Received: by 2002:a05:6a20:3b1d:b0:130:e9f5:171 with SMTP id
+ c29-20020a056a203b1d00b00130e9f50171mr5549482pzh.24.1689003524487; 
+ Mon, 10 Jul 2023 08:38:44 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- h5-20020adffd45000000b00313f07ccca4sm12027136wrs.117.2023.07.10.08.43.21
+ b9-20020a170902b60900b001b9e1d5f8e0sm48345pls.91.2023.07.10.08.38.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 08:43:22 -0700 (PDT)
-Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 8AFD81FFBC;
- Mon, 10 Jul 2023 16:35:24 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Erik Schilling <erik.schilling@linaro.org>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>, Fam Zheng <fam@euphon.net>,
- virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [RFC PATCH v3 20/20] hw/virtio: allow vhost-user-device to be driven
- by backend
-Date: Mon, 10 Jul 2023 16:35:22 +0100
-Message-Id: <20230710153522.3469097-21-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230710153522.3469097-1-alex.bennee@linaro.org>
-References: <20230710153522.3469097-1-alex.bennee@linaro.org>
+ Mon, 10 Jul 2023 08:38:44 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v7 0/2] pcie: Fix ARI next function numbers
+Date: Tue, 11 Jul 2023 00:38:34 +0900
+Message-ID: <20230710153838.33917-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,93 +93,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of requiring all the information up front allow the
-vhost_dev_init to complete and then see what information we have from
-the backend.
+The ARI next function number field is undefined for VF. The PF should
+end the linked list formed with the field by specifying 0.
 
-This does change the order around somewhat.
+Supersedes: <20230701070133.24877-1-akihiko.odaki@daynix.com>
+("[PATCH 0/4] pci: Compare function number and ARI next function number")
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- hw/virtio/vhost-user-device.c | 45 +++++++++++++++++++++++++----------
- 1 file changed, 32 insertions(+), 13 deletions(-)
+V6 -> V7:
+  s/old virt models/old virt models/ (Ani Sinha)
 
-diff --git a/hw/virtio/vhost-user-device.c b/hw/virtio/vhost-user-device.c
-index 0109d4829d..b30b6265fb 100644
---- a/hw/virtio/vhost-user-device.c
-+++ b/hw/virtio/vhost-user-device.c
-@@ -243,7 +243,6 @@ static void vub_device_realize(DeviceState *dev, Error **errp)
- {
-     VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-     VHostUserBase *vub = VHOST_USER_BASE(dev);
--    int ret;
- 
-     if (!vub->chardev.chr) {
-         error_setg(errp, "vhost-user-device: missing chardev");
-@@ -254,13 +253,43 @@ static void vub_device_realize(DeviceState *dev, Error **errp)
-         return;
-     }
- 
-+    if (vhost_dev_init(&vub->vhost_dev, &vub->vhost_user,
-+                       VHOST_BACKEND_TYPE_USER, 0, errp)!=0) {
-+        error_setg(errp, "vhost-user-device: unable to start connection");
-+        return;
-+    }
-+
-+    if (vub->vhost_dev.specs.device_id) {
-+        if (vub->virtio_id && vub->virtio_id != vub->vhost_dev.specs.device_id) {
-+            error_setg(errp, "vhost-user-device: backend id %d doesn't match cli %d",
-+                       vub->vhost_dev.specs.device_id, vub->virtio_id);
-+            return;
-+        }
-+        vub->virtio_id = vub->vhost_dev.specs.device_id;
-+    }
-+
-     if (!vub->virtio_id) {
--        error_setg(errp, "vhost-user-device: need to define device id");
-+        error_setg(errp, "vhost-user-device: need to define or be told device id");
-         return;
-     }
- 
-+    if (vub->vhost_dev.specs.min_vqs) {
-+        if (vub->num_vqs) {
-+            if (vub->num_vqs < vub->vhost_dev.specs.min_vqs ||
-+                vub->num_vqs > vub->vhost_dev.specs.max_vqs) {
-+                error_setg(errp,
-+                           "vhost-user-device: selected nvqs (%d) out of bounds (%d->%d)",
-+                           vub->num_vqs,
-+                           vub->vhost_dev.specs.min_vqs, vub->vhost_dev.specs.max_vqs);
-+                return;
-+            }
-+        } else {
-+            vub->num_vqs = vub->vhost_dev.specs.min_vqs;
-+        }
-+    }
-+
-     if (!vub->num_vqs) {
--        vub->num_vqs = 1; /* reasonable default? */
-+        error_setg(errp, "vhost-user-device: need to define number of vqs");
-     }
- 
-     /*
-@@ -287,16 +316,6 @@ static void vub_device_realize(DeviceState *dev, Error **errp)
-                         virtio_add_queue(vdev, 4, vub_handle_output));
-     }
- 
--    vub->vhost_dev.nvqs = vub->num_vqs;
--
--    /* connect to backend */
--    ret = vhost_dev_init(&vub->vhost_dev, &vub->vhost_user,
--                         VHOST_BACKEND_TYPE_USER, 0, errp);
--
--    if (ret < 0) {
--        do_vhost_user_cleanup(vdev, vub);
--    }
--
-     qemu_chr_fe_set_handlers(&vub->chardev, NULL, NULL, vub_event, NULL,
-                              dev, NULL, true);
- }
+V5 -> V6:
+  Clarify that the requirement to end the linked list of Function numbers is
+  not specific to SR-IOV. (Ani Sinha)
+
+V4 -> V5:
+  Added references to the specification. (Igor Mammedov)
+
+V3 -> V4:
+  Corrected the default value of x-pcie-ari-nextfn-1. (Igor Mammedov)
+  Added an explanation for migration compatibility. (Igor Mammedov)
+
+V2 -> V3:
+  Moved the logic to PCI common infrastucture (Michael S. Tsirkin)
+
+V1 -> V2:
+  Fixed migration. (Michael S. Tsirkin)
+  Added a caveat comment. (Michael S. Tsirkin)
+
+Akihiko Odaki (2):
+  pcie: Use common ARI next function number
+  pcie: Specify 0 for ARI next function numbers
+
+ docs/pcie_sriov.txt   | 4 ++--
+ include/hw/pci/pci.h  | 2 ++
+ include/hw/pci/pcie.h | 2 +-
+ hw/core/machine.c     | 1 +
+ hw/net/igb.c          | 2 +-
+ hw/net/igbvf.c        | 2 +-
+ hw/nvme/ctrl.c        | 2 +-
+ hw/pci/pci.c          | 2 ++
+ hw/pci/pcie.c         | 4 +++-
+ 9 files changed, 14 insertions(+), 7 deletions(-)
+
 -- 
-2.39.2
+2.41.0
 
 
