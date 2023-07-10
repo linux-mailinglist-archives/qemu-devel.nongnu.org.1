@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E178E74E1EE
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E75674E1F3
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:09:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzwT-0002lR-Nb; Mon, 10 Jul 2023 19:05:18 -0400
+	id 1qIzwO-0002eo-V4; Mon, 10 Jul 2023 19:05:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwM-0002WF-Uw
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwN-0002Wc-0O
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwI-0004a0-Di
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:08 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwJ-0004aQ-HR
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030294;
+ s=mimecast20190719; t=1689030297;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b1yF9+I+eRXG7++9iT7lOKTZwoXP1PUCE8vxaJW/z4w=;
- b=gmP8WiT4E1fgozuNfqZ+3FbtbRSA22bOfVVMAOx3i4X5YVa7q7IlN+a5ZnM1Zv+rr4fW1d
- 1SeTm1V+2U+vppt9KiRqm61NmVNqKwSeBv+qS+w23CsJ5H+i3MRoMRgY7+GZu67cnczt28
- 2PTPhblHVViGyqaqpCH1IGt3v/DIZUY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gchxlBA+cB22tJPCzqHzEwVhVGuwa/sdVVkoeiXPLUI=;
+ b=G2mU1m/X4XbvivAUIsXsvsYRY+yX0mxuj6Jzu7OUBkkVWyv9pdR4e0EIOwsYAnVd3q9/d9
+ YpaNPtgveE2SXMzGclktkq9d9JfyMSDCqD4wjfBRSv++9SDBuI5ZTienby34kWlIcfKYEd
+ DHqNUU+7Cycy/DLRBtOYttoVrknCHtg=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-I8xdiB1iPoeAMqEPn6qD5Q-1; Mon, 10 Jul 2023 19:04:53 -0400
-X-MC-Unique: I8xdiB1iPoeAMqEPn6qD5Q-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fbfc766a78so24389415e9.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:04:53 -0700 (PDT)
+ us-mta-418-7o4Kbhw3Mta-FYhKux5faw-1; Mon, 10 Jul 2023 19:04:56 -0400
+X-MC-Unique: 7o4Kbhw3Mta-FYhKux5faw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3fbfc766a78so24389635e9.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:04:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030292; x=1691622292;
+ d=1e100.net; s=20221208; t=1689030295; x=1691622295;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=b1yF9+I+eRXG7++9iT7lOKTZwoXP1PUCE8vxaJW/z4w=;
- b=lIGsQjXRSJI8JrmPh9h3CN5HhnifiF+0OMKLf0T2mtvjRcVVglluXIpUDzSPYdssqY
- BraP0VthjOjK8NNRTWLq2Ta9L/MSC26yE4vqnfCvv3stkx5qmsaqtLAioZGuNB4PFSoZ
- X5ehRKmqf0onc3Ft6NTISB9Am8i1eM3fgWcqpuOMYl8ngIJavZleEUTRZy86PodwwWRo
- KJwc9g46bY9DiqkphirXhMwcj4K9ZbSq6cuti2GVjHQdK/s34SpxWjq9l2IJqP1rnA+L
- jy3KpFqoPxSB5P4AyeLXxa2yj0YGJvX9v2L4uqtoeoMGCV8sb/yt4iwUhRchXVGTcUMi
- rdcg==
-X-Gm-Message-State: ABy/qLYyUVt4oNyn5GEKse3qYk4VXFqlk4eIrbHulhk0/hqinTwAfp5Y
- LR0haCyhQI90JuTRYpOj1gSAVj5E6Ge2ZIevtWp4KgDY9fNGUPTLOoMURHugP8RBB6uMNXDKA2Y
- hBZYW8DAm1Z23xypnfIBMnefpwm7AQVI/vrlxDMLOgvsYffttitekPJbQwrzod3kZUT11
-X-Received: by 2002:a1c:e915:0:b0:3fb:b5dc:dab1 with SMTP id
- q21-20020a1ce915000000b003fbb5dcdab1mr11486440wmc.39.1689030291890; 
- Mon, 10 Jul 2023 16:04:51 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHcsOQcBI8OYETib//Ak0I4t52L+vCBxsvExkrcBMFu4ukf+sVc30LL7gnHgJPlFF9oSy83nQ==
-X-Received: by 2002:a1c:e915:0:b0:3fb:b5dc:dab1 with SMTP id
- q21-20020a1ce915000000b003fbb5dcdab1mr11486421wmc.39.1689030291518; 
- Mon, 10 Jul 2023 16:04:51 -0700 (PDT)
+ bh=gchxlBA+cB22tJPCzqHzEwVhVGuwa/sdVVkoeiXPLUI=;
+ b=aGP38018cSoUpKTXNn1rIQ38JFuzRgy/NuqPV5ahUZrA+aWGUCIWi2m/mele0U2hPk
+ qIh/ql+UUiWVRziE2eAcBQwUj3UY++8keHEXNlwACP9iVp3I7wg/UJKUemHPkvxLvuTl
+ 6lKMrDQkO1Wplc8tUhV2MUrUsNaslQwL+SPj/UPxU06/JPDPRSsqankkDiXq8NZiM7bP
+ eZrm2S4kAVLQVgZyl8Jae84XqcsqQhpaBpnSMSTuIm1pOCu3J6qlrKu9cWULrGiAcFyE
+ 23y2erg73bxsWAGZC3/l8EjyeCJCHYpHH8tON4SHX3qMXojvjw7KYx4tMeHd41DqSXGE
+ XWGQ==
+X-Gm-Message-State: ABy/qLZD2CzGctMhNWBX+Y8LKdhQ3okJ5qOoZqySHl1XjV8gPUKTlAlJ
+ 8SDxZUeCI9VKyjC3iaklr43gT8FLSaYe3jFWh6aBINi5h2+68R9AhrXdZdr2WFPah+ShHLdxzD/
+ 5LdVt2WfXhATjxESPGUauE3BGTYrQIKGqqNbYZmy8Y4MrS0jM1Pm7AN+FT/SxFtRYpwXH
+X-Received: by 2002:a7b:cbd8:0:b0:3f9:9a93:217f with SMTP id
+ n24-20020a7bcbd8000000b003f99a93217fmr11257220wmi.3.1689030294797; 
+ Mon, 10 Jul 2023 16:04:54 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlG70jLAfa+GG4erWaNxXLwkJxPxnpjRU9bN9vKPimsTGOTtuhz46IXtj7L3bD+4f/43d0Y1eA==
+X-Received: by 2002:a7b:cbd8:0:b0:3f9:9a93:217f with SMTP id
+ n24-20020a7bcbd8000000b003f99a93217fmr11257202wmi.3.1689030294415; 
+ Mon, 10 Jul 2023 16:04:54 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- f18-20020a7bcd12000000b003fa999cefc0sm919598wmj.36.2023.07.10.16.04.50
+ a25-20020a1cf019000000b003fbb346279dsm919922wmb.38.2023.07.10.16.04.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:04:51 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:04:49 -0400
+ Mon, 10 Jul 2023 16:04:53 -0700 (PDT)
+Date: Mon, 10 Jul 2023 19:04:51 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -68,8 +68,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 50/66] include: attempt to document device_class_set_props
-Message-ID: <e57fc3dec9508cfa81c1bedcaa6b7469995ac6a5.1689030052.git.mst@redhat.com>
+Subject: [PULL 51/66] include/hw: document the device_class_set_parent_* fns
+Message-ID: <c378e88218c9679d7df8230c9f988b22a6cbdc1a.1689030052.git.mst@redhat.com>
 References: <cover.1689030052.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -78,7 +78,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1689030052.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,55 +105,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alex Bennée <alex.bennee@linaro.org>
 
-I'm still not sure how I achieve by use case of the parent class
-defining the following properties:
-
-  static Property vud_properties[] = {
-      DEFINE_PROP_CHR("chardev", VHostUserDevice, chardev),
-      DEFINE_PROP_UINT16("id", VHostUserDevice, id, 0),
-      DEFINE_PROP_UINT32("num_vqs", VHostUserDevice, num_vqs, 1),
-      DEFINE_PROP_END_OF_LIST(),
-  };
-
-But for the specialisation of the class I want the id to default to
-the actual device id, e.g.:
-
-  static Property vu_rng_properties[] = {
-      DEFINE_PROP_UINT16("id", VHostUserDevice, id, VIRTIO_ID_RNG),
-      DEFINE_PROP_UINT32("num_vqs", VHostUserDevice, num_vqs, 1),
-      DEFINE_PROP_END_OF_LIST(),
-  };
-
-And so far the API for doing that isn't super clear.
+These are useful functions for when you want proper inheritance of
+functionality across realize/unrealize calls.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230710153522.3469097-2-alex.bennee@linaro.org>
+Message-Id: <20230710153522.3469097-3-alex.bennee@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/qdev-core.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/hw/qdev-core.h | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index 06cadfc492..196ebf6d91 100644
+index 196ebf6d91..884c726a87 100644
 --- a/include/hw/qdev-core.h
 +++ b/include/hw/qdev-core.h
-@@ -926,6 +926,15 @@ BusState *sysbus_get_default(void);
- char *qdev_get_fw_dev_path(DeviceState *dev);
- char *qdev_get_own_fw_dev_path_from_handler(BusState *bus, DeviceState *dev);
- 
+@@ -952,9 +952,36 @@ void device_class_set_props(DeviceClass *dc, Property *props);
+ void device_class_set_parent_reset(DeviceClass *dc,
+                                    DeviceReset dev_reset,
+                                    DeviceReset *parent_reset);
++
 +/**
-+ * device_class_set_props(): add a set of properties to an device
-+ * @dc: the parent DeviceClass all devices inherit
-+ * @props: an array of properties, terminate by DEFINE_PROP_END_OF_LIST()
++ * device_class_set_parent_realize() - set up for chaining realize fns
++ * @dc: The device class
++ * @dev_realize: the device realize function
++ * @parent_realize: somewhere to save the parents realize function
 + *
-+ * This will add a set of properties to the object. It will fault if
-+ * you attempt to add an existing property defined by a parent class.
-+ * To modify an inherited property you need to use????
++ * This is intended to be used when the new realize function will
++ * eventually call its parent realization function during creation.
++ * This requires storing the function call somewhere (usually in the
++ * instance structure) so you can eventually call
++ * dc->parent_realize(dev, errp)
 + */
- void device_class_set_props(DeviceClass *dc, Property *props);
- 
- /**
+ void device_class_set_parent_realize(DeviceClass *dc,
+                                      DeviceRealize dev_realize,
+                                      DeviceRealize *parent_realize);
++
++
++/**
++ * device_class_set_parent_unrealize() - set up for chaining unrealize fns
++ * @dc: The device class
++ * @dev_unrealize: the device realize function
++ * @parent_unrealize: somewhere to save the parents unrealize function
++ *
++ * This is intended to be used when the new unrealize function will
++ * eventually call its parent unrealization function during the
++ * unrealize phase. This requires storing the function call somewhere
++ * (usually in the instance structure) so you can eventually call
++ * dc->parent_unrealize(dev);
++ */
+ void device_class_set_parent_unrealize(DeviceClass *dc,
+                                        DeviceUnrealize dev_unrealize,
+                                        DeviceUnrealize *parent_unrealize);
 -- 
 MST
 
