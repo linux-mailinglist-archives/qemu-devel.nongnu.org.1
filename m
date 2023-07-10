@@ -2,58 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29EA74CF14
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B198774CF1B
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:52:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIleH-0006Vi-Tr; Mon, 10 Jul 2023 03:49:34 -0400
+	id 1qIlgj-0004u4-7h; Mon, 10 Jul 2023 03:52:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=Zxd8=C4=redhat.com=clg@ozlabs.org>)
- id 1qIleD-0006SV-To
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:49:30 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qIlgh-0004tZ-92
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:52:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=Zxd8=C4=redhat.com=clg@ozlabs.org>)
- id 1qIleB-0006zN-HM
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:49:29 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qzx3S46qbz4wyC;
- Mon, 10 Jul 2023 17:49:24 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qzx3Q40j1z4wyL;
- Mon, 10 Jul 2023 17:49:22 +1000 (AEST)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Robin Voetter <robin@streamhpc.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 11/11] vfio/pci: Enable AtomicOps completers on root ports
-Date: Mon, 10 Jul 2023 09:48:48 +0200
-Message-ID: <20230710074848.456453-12-clg@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230710074848.456453-1-clg@redhat.com>
-References: <20230710074848.456453-1-clg@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=Zxd8=C4=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qIlgf-0007pU-LP
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:52:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688975520;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=6qNKU6DKXTqchAoQDp3grfsPj7vrcxFn7uNM5QL9DWM=;
+ b=AnS7G4gd+21u4bOVvofUOY254aamH8VMI6ovoLt491HbPrHLovZEr9XvLXWAGr5lC9VpxP
+ 3+HlGj6VxHj7Yt1CqTis+fTjS6PQ16j9o7onXBTrJz/fTi5tqb6OcexYyuYPM/LTA89hCa
+ 6CYB78DB0MZmU3/keEw56xseDH3AOiM=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-674-pmg0gVsKNn-hT_TrtvYG_Q-1; Mon, 10 Jul 2023 03:51:58 -0400
+X-MC-Unique: pmg0gVsKNn-hT_TrtvYG_Q-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-55b2ab496ecso4937500a12.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 00:51:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688975516; x=1691567516;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6qNKU6DKXTqchAoQDp3grfsPj7vrcxFn7uNM5QL9DWM=;
+ b=g2CBOXsv+4ieo+gyFNK7MBxFvr9cQd4saLC8yQcIBs52mcRV8sqd3nm8TOvxhSO+Hk
+ QBQC8Nsr5GVi2lwvYrJQgh2Na8sE+1v/fVXiGeWsF8cXUUMcVjZnWSFCmmH9qmucRNBG
+ tu1mKBmdEt1pIeA5zGZQ0Q8JN5ZdX/pHLt69lzodHeXyX1eG56H2Xi+EhlsIoWHCA19e
+ 2jviMn2pO270ht6u0g2cSFkNP9kXvwaE5kpVIxJgr7EotJGKB2e6lPcsO7BiY/GutOmi
+ nped87YoCycFDHiUFOW/vkvFt+pS9XcB63dzNgZzUJN1Uwl69o0LtMklau3Lp0zmDuWY
+ Mj8Q==
+X-Gm-Message-State: ABy/qLZbLI+zC9NOyGZf3dqmEs5nEV7lZcpI35v5GpTWJFi4EE42u4yE
+ 0U4VVIq28wMs/Tylz/GTO1xJ/3P2Mqp8QtPU0e4ZWZkzxy4kU0y3CWLFCUTudfGJF7NT31fUhL3
+ /S5t6llnjbg99MJw=
+X-Received: by 2002:a05:6a20:a11f:b0:12e:4696:efbe with SMTP id
+ q31-20020a056a20a11f00b0012e4696efbemr11893551pzk.50.1688975516511; 
+ Mon, 10 Jul 2023 00:51:56 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFAQ8DlCCyuP1jDiw5sEamJpDmhKsdEro1TRxQYZ+11+oHaVo4fiy1ZKyQ9/+OVjtcUgDyEdA==
+X-Received: by 2002:a05:6a20:a11f:b0:12e:4696:efbe with SMTP id
+ q31-20020a056a20a11f00b0012e4696efbemr11893537pzk.50.1688975516142; 
+ Mon, 10 Jul 2023 00:51:56 -0700 (PDT)
+Received: from smtpclient.apple ([203.212.247.118])
+ by smtp.gmail.com with ESMTPSA id
+ y17-20020a170902b49100b001b54dcd84e2sm7535384plr.240.2023.07.10.00.51.52
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 10 Jul 2023 00:51:55 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH v5 2/2] pcie: Specify 0 for ARI next function numbers
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20230705022421.13115-3-akihiko.odaki@daynix.com>
+Date: Mon, 10 Jul 2023 13:21:50 +0530
+Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-block@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <E8241AB3-F645-4697-A5AC-9B6BC897B432@redhat.com>
+References: <20230705022421.13115-1-akihiko.odaki@daynix.com>
+ <20230705022421.13115-3-akihiko.odaki@daynix.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -70,142 +108,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Williamson <alex.williamson@redhat.com>
 
-Dynamically enable Atomic Ops completer support around realize/exit of
-vfio-pci devices reporting host support for these accesses and adhering
-to a minimal configuration standard.  While the Atomic Ops completer
-bits in the root port device capabilities2 register are read-only, the
-PCIe spec does allow RO bits to change to reflect hardware state.  We
-take advantage of that here around the realize and exit functions of
-the vfio-pci device.
 
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Robin Voetter <robin@streamhpc.com>
-Tested-by: Robin Voetter <robin@streamhpc.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/vfio/pci.h |  1 +
- hw/vfio/pci.c | 78 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 79 insertions(+)
+> On 05-Jul-2023, at 7:54 AM, Akihiko Odaki <akihiko.odaki@daynix.com> =
+wrote:
+>=20
+> The current implementers of ARI are all SR-IOV devices. The ARI next
+> function number field is undefined for VF according to PCI Express =
+Base
+> Specification Revision 5.0 Version 1.0 section 9.3.7.7. The PF should
+> end the linked list formed with the field by specifying 0 according to
+> section 7.8.7.2.
 
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 2674476d6c77..a2771b9ff3cc 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -174,6 +174,7 @@ struct VFIOPCIDevice {
-     bool no_vfio_ioeventfd;
-     bool enable_ramfb;
-     bool defer_kvm_irq_routing;
-+    bool clear_parent_atomics_on_exit;
-     VFIODisplay *dpy;
-     Notifier irqchip_change_notifier;
- };
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index c89fdf7ae6c2..a205c6b1130f 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -1828,6 +1828,81 @@ static void vfio_add_emulated_long(VFIOPCIDevice *vdev, int pos,
-     vfio_set_long_bits(vdev->emulated_config_bits + pos, mask, mask);
- }
- 
-+static void vfio_pci_enable_rp_atomics(VFIOPCIDevice *vdev)
-+{
-+    struct vfio_device_info_cap_pci_atomic_comp *cap;
-+    g_autofree struct vfio_device_info *info = NULL;
-+    PCIBus *bus = pci_get_bus(&vdev->pdev);
-+    PCIDevice *parent = bus->parent_dev;
-+    struct vfio_info_cap_header *hdr;
-+    uint32_t mask = 0;
-+    uint8_t *pos;
-+
-+    /*
-+     * PCIe Atomic Ops completer support is only added automatically for single
-+     * function devices downstream of a root port supporting DEVCAP2.  Support
-+     * is added during realize and, if added, removed during device exit.  The
-+     * single function requirement avoids conflicting requirements should a
-+     * slot be composed of multiple devices with differing capabilities.
-+     */
-+    if (pci_bus_is_root(bus) || !parent || !parent->exp.exp_cap ||
-+        pcie_cap_get_type(parent) != PCI_EXP_TYPE_ROOT_PORT ||
-+        pcie_cap_get_version(parent) != PCI_EXP_FLAGS_VER2 ||
-+        vdev->pdev.devfn ||
-+        vdev->pdev.cap_present & QEMU_PCI_CAP_MULTIFUNCTION) {
-+        return;
-+    }
-+
-+    pos = parent->config + parent->exp.exp_cap + PCI_EXP_DEVCAP2;
-+
-+    /* Abort if there'a already an Atomic Ops configuration on the root port */
-+    if (pci_get_long(pos) & (PCI_EXP_DEVCAP2_ATOMIC_COMP32 |
-+                             PCI_EXP_DEVCAP2_ATOMIC_COMP64 |
-+                             PCI_EXP_DEVCAP2_ATOMIC_COMP128)) {
-+        return;
-+    }
-+
-+    info = vfio_get_device_info(vdev->vbasedev.fd);
-+    if (!info) {
-+        return;
-+    }
-+
-+    hdr = vfio_get_device_info_cap(info, VFIO_DEVICE_INFO_CAP_PCI_ATOMIC_COMP);
-+    if (!hdr) {
-+        return;
-+    }
-+
-+    cap = (void *)hdr;
-+    if (cap->flags & VFIO_PCI_ATOMIC_COMP32) {
-+        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP32;
-+    }
-+    if (cap->flags & VFIO_PCI_ATOMIC_COMP64) {
-+        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP64;
-+    }
-+    if (cap->flags & VFIO_PCI_ATOMIC_COMP128) {
-+        mask |= PCI_EXP_DEVCAP2_ATOMIC_COMP128;
-+    }
-+
-+    if (!mask) {
-+        return;
-+    }
-+
-+    pci_long_test_and_set_mask(pos, mask);
-+    vdev->clear_parent_atomics_on_exit = true;
-+}
-+
-+static void vfio_pci_disable_rp_atomics(VFIOPCIDevice *vdev)
-+{
-+    if (vdev->clear_parent_atomics_on_exit) {
-+        PCIDevice *parent = pci_get_bus(&vdev->pdev)->parent_dev;
-+        uint8_t *pos = parent->config + parent->exp.exp_cap + PCI_EXP_DEVCAP2;
-+
-+        pci_long_test_and_clear_mask(pos, PCI_EXP_DEVCAP2_ATOMIC_COMP32 |
-+                                          PCI_EXP_DEVCAP2_ATOMIC_COMP64 |
-+                                          PCI_EXP_DEVCAP2_ATOMIC_COMP128);
-+    }
-+}
-+
- static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
-                                Error **errp)
- {
-@@ -1931,6 +2006,8 @@ static int vfio_setup_pcie_cap(VFIOPCIDevice *vdev, int pos, uint8_t size,
-                            QEMU_PCI_EXP_LNKCAP_MLS(QEMU_PCI_EXP_LNK_2_5GT), ~0);
-             vfio_add_emulated_word(vdev, pos + PCI_EXP_LNKCTL, 0, ~0);
-         }
-+
-+        vfio_pci_enable_rp_atomics(vdev);
-     }
- 
-     /*
-@@ -3273,6 +3350,7 @@ static void vfio_exitfn(PCIDevice *pdev)
-         timer_free(vdev->intx.mmap_timer);
-     }
-     vfio_teardown_msi(vdev);
-+    vfio_pci_disable_rp_atomics(vdev);
-     vfio_bars_exit(vdev);
-     vfio_migration_exit(&vdev->vbasedev);
- }
--- 
-2.41.0
+Section 7.8.7.2 ARI Capability Register (Offset 04h), I see only this
+
+Next Function Number - This field indicates the Function Number of the =
+next higher numbered Function in the Device, or 00h if there are no =
+higher numbered Functions. Function 0 starts this linked list of =
+Functions.
+
+I do not see anything specifically for PF. What am I missing?
+
+>=20
+> For migration, the field will keep having 1 as its value on the old
+> virt models.
+>=20
+> Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in =
+docs/pcie_sriov.txt")
+> Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
+> Fixes: 3a977deebe ("Intrdocue igb device emulation")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+> include/hw/pci/pci.h | 2 ++
+> hw/core/machine.c    | 1 +
+> hw/pci/pci.c         | 2 ++
+> hw/pci/pcie.c        | 2 +-
+> 4 files changed, 6 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index e6d0574a29..9c5b5eb206 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -209,6 +209,8 @@ enum {
+>     QEMU_PCIE_CAP_CXL =3D (1 << QEMU_PCIE_CXL_BITNR),
+> #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
+>     QEMU_PCIE_ERR_UNC_MASK =3D (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
+> +#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
+> +    QEMU_PCIE_ARI_NEXTFN_1 =3D (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
+> };
+>=20
+> typedef struct PCIINTxRoute {
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index 46f8f9a2b0..f0d35c6401 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -41,6 +41,7 @@
+>=20
+> GlobalProperty hw_compat_8_0[] =3D {
+>     { "migration", "multifd-flush-after-each-section", "on"},
+> +    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
+> };
+> const size_t hw_compat_8_0_len =3D G_N_ELEMENTS(hw_compat_8_0);
+>=20
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index e2eb4c3b4a..45a9bc0da8 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -82,6 +82,8 @@ static Property pci_props[] =3D {
+>     DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
+>     DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
+>                     QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
+> +    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
+> +                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
+>     DEFINE_PROP_END_OF_LIST()
+> };
+>=20
+> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+> index 9a3f6430e8..cf09e03a10 100644
+> --- a/hw/pci/pcie.c
+> +++ b/hw/pci/pcie.c
+> @@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
+> /* ARI */
+> void pcie_ari_init(PCIDevice *dev, uint16_t offset)
+> {
+> -    uint16_t nextfn =3D 1;
+> +    uint16_t nextfn =3D dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 ? 1 =
+: 0;
+>=20
+>     pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
+>                         offset, PCI_ARI_SIZEOF);
+> --=20
+> 2.41.0
+>=20
 
 
