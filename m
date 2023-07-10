@@ -2,83 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942D674D23D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 11:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 801D574D229
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 11:50:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qInYE-00052r-Vg; Mon, 10 Jul 2023 05:51:27 -0400
+	id 1qInWy-0001zR-8W; Mon, 10 Jul 2023 05:50:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qInYC-0004x8-6L
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:51:24 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qInYA-0004Dz-GX
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:51:23 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fbc12181b6so47709515e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 02:51:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688982680; x=1691574680;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Te/381aYxXjbGwK91Z8xo75ztwPRV+rlNTVP8J6hqh8=;
- b=ajHaLvTjqb30kWmcJVPp8PfoJ+pgpSNcMU93ZXOfZVoG6hzI3aFCq/ffboNB6b93Gt
- oDvADTqmt3lZfhgVyxJtypq0+/186kopeuYYa1Gv6aeUpu/ULSGXCno2ODOyxaksO96P
- DslLgj5YZ2snWYzsjIlXg4TYun5yNDyPC3+cbVRW72lbBAS0LYD4SlQgIUogI7izs6Q+
- mkU9D1iTJGPJcLKc88hHH0eeNkKFFfHGlHUhH2X6phVz03ltrBOGNokcidOUpgBd0dMG
- qgyRYhtVlb/KMPN03T85mnwqPM5o35+diS9219DGQXp+7liBCmgDPACoF6RP8/njaVF6
- ZLWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688982680; x=1691574680;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Te/381aYxXjbGwK91Z8xo75ztwPRV+rlNTVP8J6hqh8=;
- b=DNYxvk1nesSw0AG1onHMiQ+Yf1UkpBtVicnjxkqNuB9YxOlnbrzvjbmJLYCjN8nkRs
- B40NQO2w/j2GLx8gqk+9QgPHc1mNVT0ZaV+HCyDwnpx/hgaRXAqQsjx3xeygc8OB0PXS
- PycNoPHAReVNOWzIKKVS7F40zpsCAOb9akzTQRqqPi5IbaZgfaCPC8c9JHsysnvV3ofq
- hMh5aHpUuuHoBHe7NRMhxYeIjGnQOkEkJwCzOc0IhoQWUZCE+naRUUkpAQGSBq19pAzm
- NMxIwI+yt0AINz++ZLwajAWRDekIj5xGknuROU/yTA2cTnVRtvsoahTqmlYH7Ij1uOEk
- 9gvA==
-X-Gm-Message-State: ABy/qLbj+aKF+ScwvwNzxvmu/2hXJBioL0YLH9xGCIMyic93kcI8Wl7a
- O5NwbepA02comgSxYxCu4PAs26fZPJabjl1V/R0z1w==
-X-Google-Smtp-Source: APBJJlGX7VztpPozr9n/7yx3KPrmYivvYC5h6el0dvDpXI/ygGohoFoFyW79RgzHQsSq+c4WufDzYQ==
-X-Received: by 2002:a7b:cc84:0:b0:3fc:a5:2c3a with SMTP id
- p4-20020a7bcc84000000b003fc00a52c3amr7729653wma.41.1688982680527; 
- Mon, 10 Jul 2023 02:51:20 -0700 (PDT)
-Received: from localhost.localdomain (70.red-88-28-30.dynamicip.rima-tde.net.
- [88.28.30.70]) by smtp.gmail.com with ESMTPSA id
- c13-20020a05600c0acd00b003fa96fe2bebsm9830608wmr.41.2023.07.10.02.51.16
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Jul 2023 02:51:20 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 4/6] hw/virtio/vhost-vdpa: Use target-agnostic
- qemu_target_page_mask()
-Date: Mon, 10 Jul 2023 11:49:29 +0200
-Message-Id: <20230710094931.84402-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230710094931.84402-1-philmd@linaro.org>
-References: <20230710094931.84402-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qInWt-0001yY-FG
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:50:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qInWo-0003ai-Iy
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:50:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688982597;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=BY2rz2OYfJrKRqRVVQ6K7pqOp6frMppx8hSX/7UzocU=;
+ b=BiQs43ECTdHJ1Qh501SxH1TCNewXS79b2ZqbEOABlpoHZqR7vxGaX9+rxOQnTOuQJkshWv
+ oR8om1YwTwMC49NYyYhqMT50uSMIjlyf6vuc55PDN2+aIYjPB5kbjUqyIt7Jvkg28kOUrJ
+ xoY6eNdx30/MUs0OOLbSkKTMFTpLMRg=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-632-ZHCBKEpXNXa5AU3HHHBYQw-1; Mon, 10 Jul 2023 05:49:54 -0400
+X-MC-Unique: ZHCBKEpXNXa5AU3HHHBYQw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0BC3D1C28CE3;
+ Mon, 10 Jul 2023 09:49:54 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C590F2166B26;
+ Mon, 10 Jul 2023 09:49:53 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id BD01C21E6A1F; Mon, 10 Jul 2023 11:49:49 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ qemu-trivial@nongnu.org,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>,  Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Juan Quintela
+ <quintela@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>
+Subject: Re: [PATCH] docs/devel: Fix coding style in style.rst
+References: <20230710092638.161625-1-thuth@redhat.com>
+Date: Mon, 10 Jul 2023 11:49:49 +0200
+In-Reply-To: <20230710092638.161625-1-thuth@redhat.com> (Thomas Huth's message
+ of "Mon, 10 Jul 2023 11:26:38 +0200")
+Message-ID: <87mt049juq.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,101 +84,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Similarly to commit e414ed2c47 ("virtio-iommu: Use
-target-agnostic qemu_target_page_mask"), Replace the
-target-specific TARGET_PAGE_SIZE and TARGET_PAGE_MASK
-definitions by a call to the runtime qemu_target_page_size()
-helper which is target agnostic.
+Thomas Huth <thuth@redhat.com> writes:
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/virtio/vhost-vdpa.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+> As defined earlier in this file, the opening curly brace of
+> functions should be placed on a separate line. So we should
+> do it in the examples here, too.
+>
+> Reported-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+> Fixes: 821f296756 ("docs: document use of automatic cleanup functions in glib")
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  docs/devel/style.rst | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+>
+> diff --git a/docs/devel/style.rst b/docs/devel/style.rst
+> index aa5e083ff8..3cfcdeb9cd 100644
+> --- a/docs/devel/style.rst
+> +++ b/docs/devel/style.rst
+> @@ -567,7 +567,8 @@ For example, instead of
+>  
+>  .. code-block:: c
+>  
+> -    int somefunc(void) {
+> +    int somefunc(void)
+> +    {
+>          int ret = -1;
+>          char *foo = g_strdup_printf("foo%", "wibble");
+>          GList *bar = .....
+> @@ -588,7 +589,8 @@ Using g_autofree/g_autoptr enables the code to be written as:
+>  
+>  .. code-block:: c
+>  
+> -    int somefunc(void) {
+> +    int somefunc(void)
+> +    {
+>          g_autofree char *foo = g_strdup_printf("foo%", "wibble");
+>          g_autoptr (GList) bar = .....
+>  
+> @@ -613,7 +615,8 @@ are still some caveats to beware of
+>  
+>  .. code-block:: c
+>  
+> -    char *somefunc(void) {
+> +    char *somefunc(void)
+> +    {
+>          g_autofree char *foo = g_strdup_printf("foo%", "wibble");
+>          g_autoptr (GList) bar = .....
 
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index a3dd7c712a..2717edf51d 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -14,6 +14,7 @@
- #include <linux/vfio.h>
- #include <sys/eventfd.h>
- #include <sys/ioctl.h>
-+#include "exec/target_page.h"
- #include "hw/virtio/vhost.h"
- #include "hw/virtio/vhost-backend.h"
- #include "hw/virtio/virtio-net.h"
-@@ -23,7 +24,6 @@
- #include "migration/blocker.h"
- #include "qemu/cutils.h"
- #include "qemu/main-loop.h"
--#include "cpu.h"
- #include "trace.h"
- #include "qapi/error.h"
- 
-@@ -313,9 +313,11 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-     Int128 llend, llsize;
-     void *vaddr;
-     int ret;
-+    int page_size = qemu_target_page_size();
-+    int page_mask = -page_size;
- 
-     if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
--                                            v->iova_range.last, TARGET_PAGE_MASK)) {
-+                                            v->iova_range.last, page_mask)) {
-         return;
-     }
-     if (memory_region_is_iommu(section->mr)) {
-@@ -323,14 +325,14 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-         return;
-     }
- 
--    if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
--                 (section->offset_within_region & ~TARGET_PAGE_MASK))) {
-+    if (unlikely((section->offset_within_address_space & ~page_mask) !=
-+                 (section->offset_within_region & ~page_mask))) {
-         error_report("%s received unaligned region", __func__);
-         return;
-     }
- 
--    iova = ROUND_UP(section->offset_within_address_space, TARGET_PAGE_SIZE);
--    llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
-+    iova = ROUND_UP(section->offset_within_address_space, page_size);
-+    llend = vhost_vdpa_section_end(section, page_mask);
-     if (int128_ge(int128_make64(iova), llend)) {
-         return;
-     }
-@@ -396,23 +398,25 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
-     hwaddr iova;
-     Int128 llend, llsize;
-     int ret;
-+    int page_size = qemu_target_page_size();
-+    int page_mask = -page_size;
- 
-     if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
--                                            v->iova_range.last, TARGET_PAGE_MASK)) {
-+                                            v->iova_range.last, page_mask)) {
-         return;
-     }
-     if (memory_region_is_iommu(section->mr)) {
-         vhost_vdpa_iommu_region_del(listener, section);
-     }
- 
--    if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
--                 (section->offset_within_region & ~TARGET_PAGE_MASK))) {
-+    if (unlikely((section->offset_within_address_space & ~page_mask) !=
-+                 (section->offset_within_region & ~page_mask))) {
-         error_report("%s received unaligned region", __func__);
-         return;
-     }
- 
--    iova = ROUND_UP(section->offset_within_address_space, TARGET_PAGE_SIZE);
--    llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
-+    iova = ROUND_UP(section->offset_within_address_space, page_size);
-+    llend = vhost_vdpa_section_end(section, page_mask);
- 
-     trace_vhost_vdpa_listener_region_del(v, iova,
-         int128_get64(int128_sub(llend, int128_one())));
--- 
-2.38.1
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 
 
