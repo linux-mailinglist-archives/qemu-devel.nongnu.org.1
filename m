@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A8EC74DEB2
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 22:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B6274DEE3
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 22:12:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIx4Y-0005lL-QB; Mon, 10 Jul 2023 16:01:26 -0400
+	id 1qIxEO-0000ZF-1V; Mon, 10 Jul 2023 16:11:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIx4I-0005l6-HO
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:01:14 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIxEM-0000Ys-4g
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:11:34 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIx44-000267-Ph
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:00:58 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fc02a92dcfso31737935e9.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 13:00:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIxEK-0004Sl-GG
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:11:33 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-31297125334so3617772f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 13:11:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689019253; x=1691611253;
+ d=linaro.org; s=google; t=1689019891; x=1691611891;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=H3W1L54Id1o2QUcIABZJ6sT27o+AxfrR8+Y3NtZRaGU=;
- b=tKp17UFPm8/3POdhIKdfKaHbtjiBqwjQGsLYQqE0M0SRZEXhuyMrTfa4Y9P+423Bau
- CFM8o0IwsgwsFujSUM1YHbMtwcw963dXEH2Qqh7n9Q8EgySzmepJU1BcXaYmjaasiLtH
- zQLEb0RDNL9oLlt+Yq9sdaAkN/c6jCONHlISadlrZxoMX2asJo4+pxylE1FOn82S5z2X
- rTkJ+xtJlRVz2hx7qMfdXJi0/Dye39aS9PFHYZRk8yPGnQaDhSpbFssUQhK6yN3BVVdz
- OgJ/6s/19zMzsvA4x6ZycVP1aE8AyDwI/fHX/IcNX7/8NFFeAHf7hrbqQB78EUSUs0MM
- 2g8Q==
+ bh=+2m2jiox3gWYUlk6XTcjW871O6JDtxnc4eAof0AMb14=;
+ b=iRLecVMQshzNIJr8mVhQqBsxANI0fhOEeW07PbwuBlaES7jxRF5K7cJKu3KzaFIlE+
+ 8U1cHhGeQvZBPTB3U5qbISOgAK5BJ5kmVRdx3hjVfr90ppdWqgeG1pf2tQ9wec4RlJO9
+ gjfQVTREiuGuHCRvIZLj4G5qyztx5uya35wmazdTLYKG12b6Vegp5RT+GfCQLhyrAMu2
+ gYFVa2+3c47RQekg4nLfpWgjYs/O6eKzcpfGR0hrdpxM1Xs3iKZxsBnNssIQ1qCfsYgU
+ Mio95TUySEmihmP7yVduWSAav30dIDnNm3tI3/0XmB7BaBdzwoRF93jy9gZmcmWH0Zbo
+ 9X+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689019253; x=1691611253;
+ d=1e100.net; s=20221208; t=1689019891; x=1691611891;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=H3W1L54Id1o2QUcIABZJ6sT27o+AxfrR8+Y3NtZRaGU=;
- b=MfCqXf2TsOv6eDJbKb9+R1sqDChzgvaLp9QWK6Iv7zQBRj+TBsTJdjKQOki6saVivi
- W54ea13Ihc7EZQYvWoFMDzUiKoSnzYaRh4OiGpzjWtZACkmrUeLi4AwlDDBurSqtfM5y
- VC4I19xkbMqVEE8lhg9qW/ufu9JxQerKj64X0ix1JEQV/KcW/3CX2Pi2i3/2Z23PBqxa
- 1iESaxl5lfVAlF95di4vRQRlm/iaYsgW7I319ax4EOFpxcaMcVl1LKqCL5PP7Cibf3er
- jewu97idHa5O9Ylye5111/QtJWLIi0RhCO8ni3saJHIBHbXpMcEaGlQPUrtyAk/ZwlED
- i4Xg==
-X-Gm-Message-State: ABy/qLZ+xK/q05HDKxL38d/uPbhYvvXX/DUzI7iJCZ1tKsOLNslwwjSd
- xm9wrG9rPPPd++Ydz9Xb+Om5CQ==
-X-Google-Smtp-Source: APBJJlGl9O6Py0zXlSkOBGchni8xIobpV9rY57ggOuOM5x7lbtp1fQNLRsHYW2aYzJQpJ+Nu4YzihA==
-X-Received: by 2002:a1c:e903:0:b0:3fb:41b5:52eb with SMTP id
- q3-20020a1ce903000000b003fb41b552ebmr12160138wmc.26.1689019253491; 
- Mon, 10 Jul 2023 13:00:53 -0700 (PDT)
+ bh=+2m2jiox3gWYUlk6XTcjW871O6JDtxnc4eAof0AMb14=;
+ b=djqkc24i+Q03SW7VODb+uY0SwpqB49ghBHbG6yFSl4HKYAL93iXsv9v/rMAfmlfmmb
+ DuLPcm7oZ84v3KEwhzYaEki84Q/NK8JD/l0XtfG48JkyNrxKCr0ba4RDjvsO0qK1cM6Z
+ dYEVlv09pUIffDw340ub83CDLb+jaDbd5vUag5k5VR2zVOcoNdaD8y1EMwA9qpv3+wXx
+ K3jL4FfPqKK3MXZ3XCIvzFpXHogD+Hd2UCKi7wGRArUz9YrXwXy+il22vRPOQSyeK/3E
+ k8qsFwU/POuRzo5DEd/jNC6bKavN9kxaYWEcu88Gpz0YEDdj/OnTuZdc/ZigTkfP5YoH
+ 2/uA==
+X-Gm-Message-State: ABy/qLZ1KXa4jJUCqzorcmvhkR9/XsKnPqFjICqsV+7uj4TfhfcPhMCQ
+ Pcd4utKEELXKXUeUKkfl501uXsan1QblENlep3mGwQ==
+X-Google-Smtp-Source: APBJJlFamaDBN7f1Jp3tT/piIgpxG/3+8Z+ljxPH47M9yTBgLBAKhzqYQS4e4s221es7jgM3dNCxzA==
+X-Received: by 2002:adf:de83:0:b0:314:3108:500a with SMTP id
+ w3-20020adfde83000000b003143108500amr16911677wrl.0.1689019890815; 
+ Mon, 10 Jul 2023 13:11:30 -0700 (PDT)
 Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
  [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
- m17-20020a05600c281100b003fbca05faa9sm676111wmb.24.2023.07.10.13.00.51
+ o6-20020a05600c378600b003fbb9339b29sm11215608wmr.42.2023.07.10.13.11.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 13:00:53 -0700 (PDT)
-Message-ID: <3a7dbf8b-000b-b8dd-69f7-625c8154ad63@linaro.org>
-Date: Mon, 10 Jul 2023 22:00:49 +0200
+ Mon, 10 Jul 2023 13:11:30 -0700 (PDT)
+Message-ID: <d7fc3f2d-d3ff-a59e-7683-80eccbace371@linaro.org>
+Date: Mon, 10 Jul 2023 22:11:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
@@ -68,9 +68,9 @@ References: <20230521214832.20145-1-jiaxun.yang@flygoat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
 In-Reply-To: <20230521214832.20145-2-jiaxun.yang@flygoat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -129,66 +129,23 @@ On 21/5/23 23:48, Jiaxun Yang wrote:
 >   create mode 100644 target/mips/tcg/sysemu/lcsr_helper.c
 
 
-> diff --git a/target/mips/tcg/lcsr.decode b/target/mips/tcg/lcsr.decode
-> new file mode 100644
-> index 000000000000..960ef8b6f99b
-> --- /dev/null
-> +++ b/target/mips/tcg/lcsr.decode
-> @@ -0,0 +1,17 @@
-> +# Loongson CSR instructions
-> +#
-> +# Copyright (C) 2023 Jiaxun Yang <jiaxun.yang@flygoat.com>
-> +#
-> +# SPDX-License-Identifier: LGPL-2.1-or-later
-> +#
-
-
-> diff --git a/target/mips/tcg/lcsr_translate.c b/target/mips/tcg/lcsr_translate.c
-> new file mode 100644
-> index 000000000000..0ca6f2e7f8db
-> --- /dev/null
-> +++ b/target/mips/tcg/lcsr_translate.c
-> @@ -0,0 +1,69 @@
-> +/*
-> + * Loongson CSR instructions translation routines
-> + *
-> + *  Copyright (c) 2023 Jiaxun Yang <jiaxun.yang@flygoat.com>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
+> @@ -1162,6 +1192,10 @@ typedef struct CPUArchState {
+>       QEMUTimer *timer; /* Internal timer */
+>       Clock *count_clock; /* CP0_Count clock */
+>       target_ulong exception_base; /* ExceptionBase input to the core */
 > +
+> +    /* Loongson IOCSR memory */
+> +    AddressSpace address_space_iocsr;
+> +    MemoryRegion system_iocsr;
+>   } CPUMIPSState;
 
+Guarding to avoid on user emulation:
 
-> diff --git a/target/mips/tcg/sysemu/lcsr_helper.c b/target/mips/tcg/sysemu/lcsr_helper.c
-> new file mode 100644
-> index 000000000000..1152695ba2c1
-> --- /dev/null
-> +++ b/target/mips/tcg/sysemu/lcsr_helper.c
-> @@ -0,0 +1,45 @@
-> +/*
-> + * Loongson CSR instructions translation routines
-> + *
-> + *  Copyright (c) 2023 Jiaxun Yang <jiaxun.yang@flygoat.com>
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-
-You have a mix of LGPL/GPL. I suppose you want LGPL.
-
-> diff --git a/target/mips/tcg/sysemu/meson.build b/target/mips/tcg/sysemu/meson.build
-> index 4da2c577b203..098b6069159b 100644
-> --- a/target/mips/tcg/sysemu/meson.build
-> +++ b/target/mips/tcg/sysemu/meson.build
-> @@ -4,3 +4,7 @@ mips_softmmu_ss.add(files(
->     'special_helper.c',
->     'tlb_helper.c',
->   ))
-> +
-> +mips_softmmu_ss.add(when: 'TARGET_MIPS64', if_true: files(
-
-Now s/mips_softmmu_ss/mips_system_ss/.
-
-> +  'lcsr_helper.c',
-> +))
+../target/mips/cpu.h:1198:22: error: field ‘as’ has incomplete type
+  1198 |         AddressSpace as;
+       |                      ^~
+../target/mips/cpu.h:1199:22: error: field ‘mr’ has incomplete type
+  1199 |         MemoryRegion mr;
+       |                      ^~
 
 
