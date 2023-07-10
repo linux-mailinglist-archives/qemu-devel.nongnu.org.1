@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DA474D5DA
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 359A074D5E2
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:40:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIq5r-0003aW-Hk; Mon, 10 Jul 2023 08:34:19 -0400
+	id 1qIq5W-000348-S7; Mon, 10 Jul 2023 08:33:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq5G-0002hR-Ml
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:33:45 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1qIq5I-0002kP-6W
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:33:46 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq5D-0004gW-AI
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:33:41 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-666683eb028so2210880b3a.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:33:37 -0700 (PDT)
+ id 1qIq5G-0004ie-E7
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:33:43 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-666edfc50deso2797803b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:33:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688992416; x=1691584416;
+ d=gmail.com; s=20221208; t=1688992419; x=1691584419;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3wm85/rp8ngelfAH1JXxJvOyIeMQkVrBvuXH7/PGURM=;
- b=Mn+amNWc1PWm8BfXz4/H2pspkmwsmqmKfFBoRy1fwCK015Emu2pTSMSo2Tb7RkpD1r
- uWPIqX+yYq52IBesT7XquFfKs4WA+QLp927jH6SBtWEqCH6wWjcYBKX0QcnkD3ZlRJi5
- C4iJPdAlz+uy/VYJHCY2iFJ1N/hsEFOURgVkUP30vZEnKa3S1LUAXu/XdsqkFuEjwAsD
- 39EZlhzarPSqEJWij0i98lt9TKVNrZAB5LWem2z2ocl+AnvOq1FtqBPm7FgaEHO6KiQQ
- h48BHsYCMfNMEviNEVHCbAAQsAFY7rq7KSNwCDjg29XXLD+3je+BWpODgJD0KuRDB37+
- HFlQ==
+ bh=wXe+2KFOeGwtoQqJS3myvFCpkWAdqzvjnCRCxb1hkgM=;
+ b=E1VHk0zsk/FZc9qJGUdDEMrR8aBPoWTHLeyc9fTB1KkJfR/CehsgIf+iKSZKEghV3K
+ r8miGqpzL8/AMj4KGtHLADjGI7IqLUNyC/830JmwDvRNFEyuiZTxanAooi/GVNu/LnGt
+ O/KU9V4R3uklKFpt9Pxmr6RsxVXc9V6xwdyySoyOPUyL8mNiwf8qGMSBojX4D2XS02fa
+ 1dCQFsXFVCxZ3UcpqeFWadzgz+DJCx3N3M24aF2lduF4z4/bQOpLktnuGJw7Uc6kgHFt
+ NetaZtVXtMuMP7Qs5oL6o99YdQ+ikO97LTLT9vKCLWlTj1baJDeV/DVdTEbajkGMIY7G
+ 04zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688992416; x=1691584416;
+ d=1e100.net; s=20221208; t=1688992419; x=1691584419;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3wm85/rp8ngelfAH1JXxJvOyIeMQkVrBvuXH7/PGURM=;
- b=DicKpiqpV08hNDZ6zErVq/VDmHS0jdgTBFDpfJER1eVOJIu+b4r18Zc3SU6CbY5b6i
- ryjP3oLjje23YuZYuk1+fsebswdS9PddgjXIY0cTgHQvRAg01oycnZG4f4z27fMbK0pt
- Tzi7iw8AB93IdzqVhSuclH120IUW4aEbd3l+5kPW0T/K7rMqNEI1rrj1Ea6ZSaHXEpje
- ee1KkGVFbWiH9UdKrmeID1myK6BUK+65LjchZd7DIQnguYMeO2wATbkAAoIb9Y/C4W/C
- 6uoaxfcAEfYcX+Q2oJSY3eZyuRp62gZHzUzrAnsUQFjGYD3tsvyUm4eXmPWiYM+22xPF
- l9tg==
-X-Gm-Message-State: ABy/qLbLuctzKhSVhUhoeyvygTaAuWIY6oHaKf9ZnqsHzpJCbdJkIwcW
- ILqzGd8ipCXhANEceI4OSvUwoWjOC5jUDg==
-X-Google-Smtp-Source: APBJJlGjf0wbrgPdhNlgpNyb6nFn57daQYKJLYGc6XTi+I8ftxf2PzKz7Ebv10+Q66mUq5FtZ34DBQ==
-X-Received: by 2002:a05:6a20:1e4e:b0:12e:5d45:b219 with SMTP id
- cy14-20020a056a201e4e00b0012e5d45b219mr10511394pzb.26.1688992416025; 
- Mon, 10 Jul 2023 05:33:36 -0700 (PDT)
+ bh=wXe+2KFOeGwtoQqJS3myvFCpkWAdqzvjnCRCxb1hkgM=;
+ b=bNV4Z+b6NZdR4q5kkWxJMqWFRPyiGz/s2GYMrXxw2jRHWT/i37RL1v5CqpvgOFF/RO
+ IQY+F70T1jBtZQc1iup7dJQOrF+wYlnaAKh5GK380XjbrUpOAyuZOh6M47SRpF5lJzCd
+ wkrYWOEp/Mbi0FzMGfu3+Ea27qesXAort2VSOXhCdM6quW40E4oppwh0+g3bqU2Cw1J7
+ xUFhN7z/26ywP2RUgCRsJ0xrKhwkqdhTnNFAzxwOZBviXzaUnFKgSmfMzp99QKvI+JJu
+ tJT1TWJRkXL5OvyVTbDGMuP1aXtWSKBat7abadIERJhhOHdPW7M80uqzBpuMA5vTKI4t
+ lhOA==
+X-Gm-Message-State: ABy/qLYai668KLKccp3vmd8nESzrSWpmq0MeaQ1VfCemvdP8SQSbN/24
+ qE+cuQwpfi/Om9gN1qqwx9+Sn6/4uOM16Q==
+X-Google-Smtp-Source: APBJJlFv0x5YgUo9TMyKZ6+/jwedEQLv2yDFy1Fu727j8gkjW3SS4SmzLVP40tgAR1AQC2jL0ksUCw==
+X-Received: by 2002:a05:6a20:4325:b0:117:3c00:77ea with SMTP id
+ h37-20020a056a20432500b001173c0077eamr18849681pzk.0.1688992419287; 
+ Mon, 10 Jul 2023 05:33:39 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.33.33
+ i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.33.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 05:33:35 -0700 (PDT)
+ Mon, 10 Jul 2023 05:33:38 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Ivan Klokov <ivan.klokov@syntacore.com>,
+Cc: alistair23@gmail.com,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 22/54] target/riscv: Add RVV registers to log
-Date: Mon, 10 Jul 2023 22:31:33 +1000
-Message-Id: <20230710123205.2441106-23-alistair.francis@wdc.com>
+Subject: [PULL 23/54] hw/riscv/virt: Restrict ACLINT to TCG
+Date: Mon, 10 Jul 2023 22:31:34 +1000
+Message-Id: <20230710123205.2441106-24-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230710123205.2441106-1-alistair.francis@wdc.com>
 References: <20230710123205.2441106-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,108 +99,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ivan Klokov <ivan.klokov@syntacore.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Print RvV extension register to log if VPU option is enabled.
+The Advanced Core Local Interruptor (ACLINT) device can
+only be used with TCG. Check for TCG enabled instead of
+KVM being not. Only add the property when TCG is used.
 
-Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230629083730.386604-1-ivan.klokov@syntacore.com>
+Message-Id: <20230629121103.87733-3-philmd@linaro.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 57 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 56 insertions(+), 1 deletion(-)
+ docs/system/riscv/virt.rst |  1 +
+ hw/riscv/virt.c            | 18 ++++++++++--------
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index b9b3879281..0c9faf4633 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -55,6 +55,17 @@ struct isa_ext_data {
- #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
-     {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop)}
+diff --git a/docs/system/riscv/virt.rst b/docs/system/riscv/virt.rst
+index b33f45e5b3..f9a2eac544 100644
+--- a/docs/system/riscv/virt.rst
++++ b/docs/system/riscv/virt.rst
+@@ -93,6 +93,7 @@ The following machine-specific options are supported:
  
-+/*
-+ * From vector_helper.c
-+ * Note that vector data is stored in host-endian 64-bit chunks,
-+ * so addressing bytes needs a host-endian fixup.
-+ */
-+#if HOST_BIG_ENDIAN
-+#define BYTE(x)   ((x) ^ 7)
-+#else
-+#define BYTE(x)   (x)
-+#endif
-+
- /*
-  * Here are the ordering rules of extension naming defined by RISC-V
-  * specification :
-@@ -183,6 +194,14 @@ const char * const riscv_fpr_regnames[] = {
-     "f30/ft10", "f31/ft11"
- };
+   When this option is "on", ACLINT devices will be emulated instead of
+   SiFive CLINT. When not specified, this option is assumed to be "off".
++  This option is restricted to the TCG accelerator.
  
-+const char * const riscv_rvv_regnames[] = {
-+  "v0",  "v1",  "v2",  "v3",  "v4",  "v5",  "v6",
-+  "v7",  "v8",  "v9",  "v10", "v11", "v12", "v13",
-+  "v14", "v15", "v16", "v17", "v18", "v19", "v20",
-+  "v21", "v22", "v23", "v24", "v25", "v26", "v27",
-+  "v28", "v29", "v30", "v31"
-+};
-+
- static const char * const riscv_excp_names[] = {
-     "misaligned_fetch",
-     "fault_fetch",
-@@ -611,7 +630,8 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
- {
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     CPURISCVState *env = &cpu->env;
--    int i;
-+    int i, j;
-+    uint8_t *p;
+ - aia=[none|aplic|aplic-imsic]
  
- #if !defined(CONFIG_USER_ONLY)
-     if (riscv_has_ext(env, RVH)) {
-@@ -695,6 +715,41 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-             }
-         }
-     }
-+    if (riscv_has_ext(env, RVV) && (flags & CPU_DUMP_VPU)) {
-+        static const int dump_rvv_csrs[] = {
-+                    CSR_VSTART,
-+                    CSR_VXSAT,
-+                    CSR_VXRM,
-+                    CSR_VCSR,
-+                    CSR_VL,
-+                    CSR_VTYPE,
-+                    CSR_VLENB,
-+                };
-+        for (int i = 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
-+            int csrno = dump_rvv_csrs[i];
-+            target_ulong val = 0;
-+            RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
-+
-+            /*
-+             * Rely on the smode, hmode, etc, predicates within csr.c
-+             * to do the filtering of the registers that are present.
-+             */
-+            if (res == RISCV_EXCP_NONE) {
-+                qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
-+                             csr_ops[csrno].name, val);
-+            }
-+        }
-+        uint16_t vlenb = cpu->cfg.vlen >> 3;
-+
-+        for (i = 0; i < 32; i++) {
-+            qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
-+            p = (uint8_t *)env->vreg;
-+            for (j = vlenb - 1 ; j >= 0; j--) {
-+                qemu_fprintf(f, "%02x", *(p + i * vlenb + BYTE(j)));
-+            }
-+            qemu_fprintf(f, "\n");
-+        }
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 68ccd0bde1..cdb88a1529 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -44,6 +44,7 @@
+ #include "chardev/char.h"
+ #include "sysemu/device_tree.h"
+ #include "sysemu/sysemu.h"
++#include "sysemu/tcg.h"
+ #include "sysemu/kvm.h"
+ #include "sysemu/tpm.h"
+ #include "hw/pci/pci.h"
+@@ -776,7 +777,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
+ 
+         g_free(clust_name);
+ 
+-        if (!kvm_enabled()) {
++        if (tcg_enabled()) {
+             if (s->have_aclint) {
+                 create_fdt_socket_aclint(s, memmap, socket,
+                     &intc_phandles[phandle_pos]);
+@@ -1370,7 +1371,7 @@ static void virt_machine_init(MachineState *machine)
+                                 hart_count, &error_abort);
+         sysbus_realize(SYS_BUS_DEVICE(&s->soc[i]), &error_fatal);
+ 
+-        if (!kvm_enabled()) {
++        if (tcg_enabled()) {
+             if (s->have_aclint) {
+                 if (s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC) {
+                     /* Per-socket ACLINT MTIMER */
+@@ -1682,12 +1683,13 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
+     machine_class_allow_dynamic_sysbus_dev(mc, TYPE_TPM_TIS_SYSBUS);
+ #endif
+ 
+-    object_class_property_add_bool(oc, "aclint", virt_get_aclint,
+-                                   virt_set_aclint);
+-    object_class_property_set_description(oc, "aclint",
+-                                          "Set on/off to enable/disable "
+-                                          "emulating ACLINT devices");
+-
++    if (tcg_enabled()) {
++        object_class_property_add_bool(oc, "aclint", virt_get_aclint,
++                                       virt_set_aclint);
++        object_class_property_set_description(oc, "aclint",
++                                              "Set on/off to enable/disable "
++                                              "emulating ACLINT devices");
 +    }
- }
- 
- static void riscv_cpu_set_pc(CPUState *cs, vaddr value)
+     object_class_property_add_str(oc, "aia", virt_get_aia,
+                                   virt_set_aia);
+     object_class_property_set_description(oc, "aia",
 -- 
 2.40.1
 
