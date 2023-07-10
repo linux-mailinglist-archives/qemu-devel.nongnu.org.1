@@ -2,79 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A16774E1A4
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE4474E1D5
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:07:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzu0-0002q1-5W; Mon, 10 Jul 2023 19:02:44 -0400
+	id 1qIzu3-0002qR-Do; Mon, 10 Jul 2023 19:02:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzty-0002pZ-1q
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:02:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzu1-0002qE-7s
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:02:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIztw-000478-MT
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:02:41 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIztz-00047f-Nd
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:02:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030160;
+ s=mimecast20190719; t=1689030163;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jZcq1DYmpi4vNgb1KecH/E6OuJO5OkwSaIFJsUnElEQ=;
- b=DJEomSBFV3Nd5+Tvxl2snBAW7YaM6tKi4H9ZY/q2ej/ypTNFOsavkMWyTREoJc3CETm476
- dvEKyUk0T67qluHz04T23JHz9HN3jzmEGUNvMU7gfQoSZo3T+xUemKnjdPzF9XTT84Svw2
- 4OlHSOLBpUyuHRQrojJO3FPwb1JahMo=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cm7m/d6NYZfBBMZKPgelKWyXoTCCqKJswESWtJrljJw=;
+ b=DjfL1ThvNuLzEMPIbi9jE+jVdcsziSI/VGRp70ITP6qf3YzpEf362pygY8XuO46ejjjk/L
+ LZpA34z7cwKOszTQqznssMPn36Ov7KRZ8PLzhuycJDRde7ak3giRh8uqLOEEqlEiMzHSsq
+ 4kviRaPck5JwhM2BlLIJx6n4bV5uy3I=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-137--YE-EWcVMdm4yPVaa40PSA-1; Mon, 10 Jul 2023 19:02:38 -0400
-X-MC-Unique: -YE-EWcVMdm4yPVaa40PSA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-313c930ee0eso2725106f8f.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:02:38 -0700 (PDT)
+ us-mta-494-fvHJp3PkMJiXcbL7vAB0Tw-1; Mon, 10 Jul 2023 19:02:41 -0400
+X-MC-Unique: fvHJp3PkMJiXcbL7vAB0Tw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-314275b653eso2720543f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:02:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030157; x=1691622157;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jZcq1DYmpi4vNgb1KecH/E6OuJO5OkwSaIFJsUnElEQ=;
- b=H600q21LA/f1tyR5JQ382LQbcqzEASZUjJUcC0x5VCaXA+8aQSlIwKdCT1HkUQhf/3
- 5yCpGKyHZQXwz9fTf8fheTAfYOVJEQgtMUV8BF7+ZrUMtVnbhkZ0tOQaH6+2pWHnuWq9
- hSbvmHhRbALXR3gGyuSX5dj2ExnXGViZHhrt2iSu6BWqSKsKO7fJc1CBoVcBQkYx6bI0
- 4Dxd3Yz/p9URSmCHxwvfxVZihTmiRCd4v4b2yMensZsvIUEf1RYWmmJbPIQHANAPU+ET
- zbT2J7Fy+h9fv9II05nvXyr0vC9LmCDhMbNf7A1iscxO2kSpU6DnPcZ+7gPoR1dpUfdg
- g2ug==
-X-Gm-Message-State: ABy/qLYArrM6hHTr1P4cqYZzf/r4lU32FZkBMn08LbOFedHttDaQtlRL
- Hb11hx9xm+nRfc9QU+4yoWJI8XgGVH6nXpqP7b3zKLn8WPM8zmC12EjlDsQ1FrD04FX/IqyNVOJ
- 79B8amttWlH0fwFLG9y7/7cUPzlbew9JSOw6TfDy51ssfvr5IzQOkFYQ/5+EsO38jXuZo
-X-Received: by 2002:a5d:428c:0:b0:311:db0:8aff with SMTP id
- k12-20020a5d428c000000b003110db08affmr10914590wrq.70.1689030157084; 
- Mon, 10 Jul 2023 16:02:37 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlECt2IhUizJKTo9wXXS7xdGmHGqTODkkBnz/UTzcEJNFDoxmEdtuJ0V3bmZQMhTIYQcILEY4g==
-X-Received: by 2002:a5d:428c:0:b0:311:db0:8aff with SMTP id
- k12-20020a5d428c000000b003110db08affmr10914575wrq.70.1689030156867; 
- Mon, 10 Jul 2023 16:02:36 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689030160; x=1691622160;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cm7m/d6NYZfBBMZKPgelKWyXoTCCqKJswESWtJrljJw=;
+ b=JmWhIE4w/1ou7K05ICJAHnfwlzU2glaYBxCfIcbT7aqo6ZbDu4wAx5tZTBITE4iWCq
+ UvJ2wuKmh5b46ttawxGBXLTdpk1MkEv9A4YwHejNtN1d4KnXiT2YfrJd1PRL/aIzzhcp
+ kJEH8yhx7rY27gUQGy0F5sIidYgUgKUvc/FAnmd1+IV5Sm2fCJkfVsETPsh/f8I3pelr
+ Dd+Quy7mn/GJaseG0GHarlPXowoica906oRaXHNeOq8BFAenQC530XNvuIfZLnP4DuxF
+ 26BDdNZRLBgh69f9gBGm2lZiQf8ynF12aBciRqfkB8d9PgAYK5j2EF86XsB7onWbJrW2
+ zIhw==
+X-Gm-Message-State: ABy/qLa2N2fyGPdJqv0QllYQkl2KWTiBNsGlYvj3A8r8tqiTDLndWO9H
+ FgwtU4kg4uSPk3CjQzec3m/15w+AjuzUG0x/Zxg0zScyJF7RG5OF080Hvwx8fTbeNMULYAxSlqt
+ OGIMJ9CFapjtXZRW+oRGTzOuNnprfV5n+9oFTa0MF53NA4icYZD9xZsIAtxDK+Xz+41vb
+X-Received: by 2002:a5d:6649:0:b0:314:1443:7fbe with SMTP id
+ f9-20020a5d6649000000b0031414437fbemr12713143wrw.36.1689030159899; 
+ Mon, 10 Jul 2023 16:02:39 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGcKqnx2Ds9IOMRCPKdqxz9y183syGJ3LprG5Eqfs0zJMjHDWksESeQXRXJGx1qPsHS2Jf3Gw==
+X-Received: by 2002:a5d:6649:0:b0:314:1443:7fbe with SMTP id
+ f9-20020a5d6649000000b0031414437fbemr12713122wrw.36.1689030159598; 
+ Mon, 10 Jul 2023 16:02:39 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- z8-20020adff1c8000000b003141e86e751sm611531wro.5.2023.07.10.16.02.35
+ f14-20020adfe90e000000b0030647449730sm578463wrm.74.2023.07.10.16.02.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:02:36 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:02:34 -0400
+ Mon, 10 Jul 2023 16:02:38 -0700 (PDT)
+Date: Mon, 10 Jul 2023 19:02:37 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Viktor Prutyanov <viktor@daynix.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 03/66] virtio-net: pass Device-TLB enable/disable events to
- vhost
-Message-ID: <cd9b8346884353ba9ae6560b44b7cccdf00a6633.1689030052.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Erico Nunes <ernunes@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 04/66] virtio-gpu: refactor generate_edid function to
+ virtio_gpu_base
+Message-ID: <ee3729d9b088a1988cd6b0a7738fad644fbbc415.1689030052.git.mst@redhat.com>
 References: <cover.1689030052.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1689030052.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -99,32 +102,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Viktor Prutyanov <viktor@daynix.com>
+From: Erico Nunes <ernunes@redhat.com>
 
-If vhost is enabled for virtio-net, Device-TLB enable/disable events
-must be passed to vhost for proper IOMMU unmap flag selection.
+This functionality can be shared with upcoming use in vhost-user-gpu, so
+move it to the shared file to avoid duplicating it.
 
-Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20230626091258.24453-3-viktor@daynix.com>
+Signed-off-by: Erico Nunes <ernunes@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20230626164708.1163239-2-ernunes@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/net/virtio-net.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/hw/virtio/virtio-gpu.h |  2 ++
+ hw/display/virtio-gpu-base.c   | 17 +++++++++++++++++
+ hw/display/virtio-gpu.c        | 20 +-------------------
+ 3 files changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 04783f5b94..d51067123b 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -3951,6 +3951,7 @@ static void virtio_net_class_init(ObjectClass *klass, void *data)
-     vdc->vmsd = &vmstate_virtio_net_device;
-     vdc->primary_unplug_pending = primary_unplug_pending;
-     vdc->get_vhost = virtio_net_get_vhost;
-+    vdc->toggle_device_iotlb = vhost_toggle_device_iotlb;
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index 7a5f8056ea..7ea8ae2bee 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -242,6 +242,8 @@ void virtio_gpu_base_reset(VirtIOGPUBase *g);
+ void virtio_gpu_base_fill_display_info(VirtIOGPUBase *g,
+                         struct virtio_gpu_resp_display_info *dpy_info);
+ 
++void virtio_gpu_base_generate_edid(VirtIOGPUBase *g, int scanout,
++                                   struct virtio_gpu_resp_edid *edid);
+ /* virtio-gpu.c */
+ void virtio_gpu_ctrl_response(VirtIOGPU *g,
+                               struct virtio_gpu_ctrl_command *cmd,
+diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
+index a29f191aa8..7ab7d08d0a 100644
+--- a/hw/display/virtio-gpu-base.c
++++ b/hw/display/virtio-gpu-base.c
+@@ -17,6 +17,7 @@
+ #include "migration/blocker.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
++#include "hw/display/edid.h"
+ #include "trace.h"
+ 
+ void
+@@ -51,6 +52,22 @@ virtio_gpu_base_fill_display_info(VirtIOGPUBase *g,
+     }
  }
  
- static const TypeInfo virtio_net_info = {
++void
++virtio_gpu_base_generate_edid(VirtIOGPUBase *g, int scanout,
++                              struct virtio_gpu_resp_edid *edid)
++{
++    qemu_edid_info info = {
++        .width_mm = g->req_state[scanout].width_mm,
++        .height_mm = g->req_state[scanout].height_mm,
++        .prefx = g->req_state[scanout].width,
++        .prefy = g->req_state[scanout].height,
++        .refresh_rate = g->req_state[scanout].refresh_rate,
++    };
++
++    edid->size = cpu_to_le32(sizeof(edid->edid));
++    qemu_edid_generate(edid->edid, sizeof(edid->edid), &info);
++}
++
+ static void virtio_gpu_invalidate_display(void *opaque)
+ {
+ }
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index 347e17d490..befa7d6d78 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -24,7 +24,6 @@
+ #include "hw/virtio/virtio-gpu-bswap.h"
+ #include "hw/virtio/virtio-gpu-pixman.h"
+ #include "hw/virtio/virtio-bus.h"
+-#include "hw/display/edid.h"
+ #include "hw/qdev-properties.h"
+ #include "qemu/log.h"
+ #include "qemu/module.h"
+@@ -207,23 +206,6 @@ void virtio_gpu_get_display_info(VirtIOGPU *g,
+                              sizeof(display_info));
+ }
+ 
+-static void
+-virtio_gpu_generate_edid(VirtIOGPU *g, int scanout,
+-                         struct virtio_gpu_resp_edid *edid)
+-{
+-    VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
+-    qemu_edid_info info = {
+-        .width_mm = b->req_state[scanout].width_mm,
+-        .height_mm = b->req_state[scanout].height_mm,
+-        .prefx = b->req_state[scanout].width,
+-        .prefy = b->req_state[scanout].height,
+-        .refresh_rate = b->req_state[scanout].refresh_rate,
+-    };
+-
+-    edid->size = cpu_to_le32(sizeof(edid->edid));
+-    qemu_edid_generate(edid->edid, sizeof(edid->edid), &info);
+-}
+-
+ void virtio_gpu_get_edid(VirtIOGPU *g,
+                          struct virtio_gpu_ctrl_command *cmd)
+ {
+@@ -242,7 +224,7 @@ void virtio_gpu_get_edid(VirtIOGPU *g,
+     trace_virtio_gpu_cmd_get_edid(get_edid.scanout);
+     memset(&edid, 0, sizeof(edid));
+     edid.hdr.type = VIRTIO_GPU_RESP_OK_EDID;
+-    virtio_gpu_generate_edid(g, get_edid.scanout, &edid);
++    virtio_gpu_base_generate_edid(VIRTIO_GPU_BASE(g), get_edid.scanout, &edid);
+     virtio_gpu_ctrl_response(g, cmd, &edid.hdr, sizeof(edid));
+ }
+ 
 -- 
 MST
 
