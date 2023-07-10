@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1134274E132
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 00:33:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0140774E11A
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 00:30:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzO1-00040f-Uc; Mon, 10 Jul 2023 18:29:41 -0400
+	id 1qIzO7-00041b-FL; Mon, 10 Jul 2023 18:29:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzO0-00040F-GV
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:29:40 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzO5-00041B-FJ
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:29:45 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzNz-0002Cl-10
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:29:40 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fc02a92dcfso32946725e9.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 15:29:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzO3-0002DA-Tp
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:29:45 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-31441bc0092so4956293f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 15:29:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689028177; x=1691620177;
+ d=linaro.org; s=google; t=1689028182; x=1691620182;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cspC1pmJKd9x8KtL27yFisUZgwn8qgFbFWAuYt1IY7s=;
- b=JiNtlaFeHEnKDsRcmcT6meSyxoB5WgFk+yv3FTb2RSh2U7kL2afNGN2XxUh4/gShy+
- wHnDxz/7233TjSALL6uBb9oGyPYB+XEfX9HnIxWNsqyvDEjdan+NvZniU6H4cLlSIPPu
- 0wXgzP3XcAuzU7/t9R2h8LWjKNxNRBxSBvb7uSFnmtpdBTv3xqqP3vcpSPMgy6mEd40K
- tmnXLbhW6afvmGjaBr1YH83o6ihQkvvpXotMTeclY2iv/Lh1QIlHjfXhQIuEbDfsqAT4
- a5CIy+ECKpFyt0jf8EsyyK0Hn/P6BjEv4vvXn4IJgyD4sSCiAYMcn9uVl73wtN/nec8a
- 73NA==
+ bh=LuOsTCwPo/F0jCl0d7iU/xlYr9uDvJyyAysToBkVdZo=;
+ b=GU3H3QeG0cYxJ6fVuP3tvIek4HiCbsHISQmjv5JnwDuDN8GSTbhqfiPPnkZpN55ikn
+ n5WYN+Q/EmV9HIJYYpWPIgc4UQLgJkUdpWR7M2qCHSfVBf9qZ6y38dUGxLAnk2GFJ5ed
+ bAxfSvQmL4z0dbm0BxELSCEqr7LpZTM+vht43yu74K6XT8VmxcinWctlUiEOhxrmuJfu
+ o5ituDzRGI9HDSmp9q5EMvJu3vWG015O+9zmYaanwkMZDhtNhmTLNSenv4WX/WF339VY
+ o0cq3M2uE1awVYmlTvk+im/rDUzOL8TXkHOQTDGJO2JYoCMkFDcrvk6F3p1UxewvMUYb
+ 0HNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689028177; x=1691620177;
+ d=1e100.net; s=20221208; t=1689028182; x=1691620182;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cspC1pmJKd9x8KtL27yFisUZgwn8qgFbFWAuYt1IY7s=;
- b=csKLWbPSS7PZneMszHkeHApxWGnRQJWrRnPn4P7EPPfdDFyo6FQ+bzJaWXhyLB7Coi
- f8MRcfDecFKHuO1WSu4gBPguND8P9PXNL0ypSUqG5uHTtbBDFZURPUU2vHrUb0aPK2Xu
- 8E1vgDvP1Nd0sHLS/hV59/1P94qhUwzMJoMtS7aXNVXK8r18Pye5ll7jZzADROhhLkx8
- Qn+SeFULMJp/PbCso5+tyVli+WmqQSE6rRnR68lohPePfvoTGAiz8EDRQ+N6a+bkiKtk
- bO0elLtI3MHSGHnXxT8v3kuPr5YGlCLzujdGoy4R0plnLg1+zlhVl969VXRHuDAGEgXE
- wAEg==
-X-Gm-Message-State: ABy/qLZiHJjtIDPZfI7CS/sOr4NG5Od3cFrUiNprZ8ZoK+sast/FKrmj
- UDjfJ0lojp/Otj9lSSQmaJ4HKa2ccaPnOO92rVv8qg==
-X-Google-Smtp-Source: APBJJlE/LfBVlxp27QPgokF2T4yAiY2mlRsnorEQcQ0o0jt6MDydkXOpIUoYg28cVzkqM9V9F22hwA==
-X-Received: by 2002:a1c:f713:0:b0:3fb:adc0:609b with SMTP id
- v19-20020a1cf713000000b003fbadc0609bmr13258048wmh.13.1689028177270; 
- Mon, 10 Jul 2023 15:29:37 -0700 (PDT)
+ bh=LuOsTCwPo/F0jCl0d7iU/xlYr9uDvJyyAysToBkVdZo=;
+ b=TMChjeeXOkV5AORO5WCcoPP8nJ7QrlbVriIFySkAP7a5sHlCd2URgNsx7buq1KH7u6
+ KkKHvQKmooGem8+Kdzfj5HEEWwHzynFlLaCMmMJfYSy1rO6uXCQUTyDuTWHMWWRLjCCz
+ 3lnsZlWEztAi9f5EQsgYdEmQAGLRdVPTvUjGboJ/fDdb0B8/H07UEmWGCS4YlPIc8/wW
+ qYYuG14XDnRm5XP+0zR73/hIKiEDypdmM2IMc7VNMPd7WkNZAFrieUc84jnFwIqpCPBU
+ EPJNXTyTT1Q1rsj3Cs6rM97z3RtP7lYZg4mzPQobAnAjx0HQ6RnX28df9uroituxs62X
+ ITpw==
+X-Gm-Message-State: ABy/qLZNQGSnJrM1gBAWDMqsIDvCIdjxDAXWwliXY1osrFlDBPxgeA6L
+ 4k71RvzO+X2+0esmlrdOKbF8ngqrHgGxpyP63c1Ymw==
+X-Google-Smtp-Source: APBJJlHCTxcRsNLZ7OiTrCPAFTGPuKq5+1rbjmF+r/Y9WySnrTTO7AnIoCgptON0rbA50QhT7JrxnA==
+X-Received: by 2002:a5d:526d:0:b0:314:1a63:be9a with SMTP id
+ l13-20020a5d526d000000b003141a63be9amr10720254wrc.26.1689028182517; 
+ Mon, 10 Jul 2023 15:29:42 -0700 (PDT)
 Received: from m1x-phil.lan (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
  [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
- v6-20020a05600c444600b003fbb1ce274fsm20965127wmn.0.2023.07.10.15.29.36
+ s15-20020adff80f000000b00313f9a0c521sm512043wrp.107.2023.07.10.15.29.41
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Jul 2023 15:29:37 -0700 (PDT)
+ Mon, 10 Jul 2023 15:29:42 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Siarhei Volkau <lis8215@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
@@ -61,17 +61,17 @@ Cc: Siarhei Volkau <lis8215@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
  Bernhard Beschow <shentey@gmail.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 38/44] hw/ide/pci: Expose legacy interrupts as named GPIOs
-Date: Tue, 11 Jul 2023 00:26:05 +0200
-Message-Id: <20230710222611.50978-39-philmd@linaro.org>
+Subject: [PULL 39/44] hw/ide/via: Wire up IDE legacy interrupts in host device
+Date: Tue, 11 Jul 2023 00:26:06 +0200
+Message-Id: <20230710222611.50978-40-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230710222611.50978-1-philmd@linaro.org>
 References: <20230710222611.50978-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,42 +96,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-Exposing the legacy IDE interrupts as GPIOs allows them to be connected in the
-parent device through qdev_connect_gpio_out(), i.e. without accessing private
-data of TYPE_PCI_IDE.
+Resolves circular depencency between IDE function and south bridge.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-Id: <20230531211043.41724-2-shentey@gmail.com>
+Message-Id: <20230531211043.41724-3-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ide/pci.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ hw/ide/via.c      | 6 ++++--
+ hw/isa/vt82c686.c | 5 +++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/hw/ide/pci.c b/hw/ide/pci.c
-index fc9224bbc9..9a5a7089d4 100644
---- a/hw/ide/pci.c
-+++ b/hw/ide/pci.c
-@@ -522,10 +522,19 @@ void bmdma_init(IDEBus *bus, BMDMAState *bm, PCIIDEState *d)
-     bm->pci_dev = d;
+diff --git a/hw/ide/via.c b/hw/ide/via.c
+index 177baea9a7..0caae52276 100644
+--- a/hw/ide/via.c
++++ b/hw/ide/via.c
+@@ -31,6 +31,7 @@
+ #include "sysemu/dma.h"
+ #include "hw/isa/vt82c686.h"
+ #include "hw/ide/pci.h"
++#include "hw/irq.h"
+ #include "trace.h"
+ 
+ static uint64_t bmdma_read(void *opaque, hwaddr addr,
+@@ -104,7 +105,8 @@ static void bmdma_setup_bar(PCIIDEState *d)
+ 
+ static void via_ide_set_irq(void *opaque, int n, int level)
+ {
+-    PCIDevice *d = PCI_DEVICE(opaque);
++    PCIIDEState *s = opaque;
++    PCIDevice *d = PCI_DEVICE(s);
+ 
+     if (level) {
+         d->config[0x70 + n * 8] |= 0x80;
+@@ -112,7 +114,7 @@ static void via_ide_set_irq(void *opaque, int n, int level)
+         d->config[0x70 + n * 8] &= ~0x80;
+     }
+ 
+-    via_isa_set_irq(pci_get_function_0(d), 14 + n, level);
++    qemu_set_irq(s->isa_irq[n], level);
  }
  
-+static void pci_ide_init(Object *obj)
-+{
-+    PCIIDEState *d = PCI_IDE(obj);
-+
-+    qdev_init_gpio_out_named(DEVICE(d), d->isa_irq, "isa-irq",
-+                             ARRAY_SIZE(d->isa_irq));
-+}
-+
- static const TypeInfo pci_ide_type_info = {
-     .name = TYPE_PCI_IDE,
-     .parent = TYPE_PCI_DEVICE,
-     .instance_size = sizeof(PCIIDEState),
-+    .instance_init = pci_ide_init,
-     .abstract = true,
-     .interfaces = (InterfaceInfo[]) {
-         { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+ static void via_ide_reset(DeviceState *dev)
+diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+index ca89119ce0..8016c71315 100644
+--- a/hw/isa/vt82c686.c
++++ b/hw/isa/vt82c686.c
+@@ -692,6 +692,10 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
+     if (!qdev_realize(DEVICE(&s->ide), BUS(pci_bus), errp)) {
+         return;
+     }
++    for (i = 0; i < 2; i++) {
++        qdev_connect_gpio_out_named(DEVICE(&s->ide), "isa-irq", i,
++                                    s->isa_irqs_in[14 + i]);
++    }
+ 
+     /* Functions 2-3: USB Ports */
+     for (i = 0; i < ARRAY_SIZE(s->uhci); i++) {
+@@ -814,6 +818,7 @@ static void vt8231_isa_reset(DeviceState *dev)
+                  PCI_COMMAND_MASTER | PCI_COMMAND_SPECIAL);
+     pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_DEVSEL_MEDIUM);
+ 
++    pci_conf[0x4c] = 0x04; /* IDE interrupt Routing */
+     pci_conf[0x58] = 0x40; /* Miscellaneous Control 0 */
+     pci_conf[0x67] = 0x08; /* Fast IR Config */
+     pci_conf[0x6b] = 0x01; /* Fast IR I/O Base */
 -- 
 2.38.1
 
