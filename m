@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A1874D515
+	by mail.lfdr.de (Postfix) with ESMTPS id 15AB674D513
 	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:19:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIpoV-0000r5-O7; Mon, 10 Jul 2023 08:16:23 -0400
+	id 1qIpoX-0000rv-Qv; Mon, 10 Jul 2023 08:16:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoE-0000lE-1c
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoE-0000lC-0H
  for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoB-0003RH-Rg
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoB-0003Qv-Qn
  for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1688991362;
@@ -22,31 +22,31 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iOJW22hQ1EPwtqBZ0ASFxS6CsEKLXv3KDbZSFynh3QM=;
- b=bL/GEIFNq8dLiaFnJZ6M1Vl5BkQS+vX110r5JT4IVmJo0tDqWyxMBZH0j70z9QZ9vVUvDj
- kAusXWKwMl4DEnRpNO7L0yJ9QaEBjCP0qbBjbHwHXOG1BqRomMeXo+6sJgASoeFr//ip+e
- GP+yrPEZGyHes/uEayVnm0Z3IF1FVwo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8q9wyGYtWt6HFrbFfTQ4DP9eTVhCTiRGqRc/gf9Y9xk=;
+ b=Me4TpayKPFUWTjUoB/AEztEtDNJ7//zSN2Nq/EmdtpjHQHZoOSkaZ9btj4bQDK3oxKgA5/
+ niJpGFy01pO1uaOb7q0TT/bJct3q0fFOn1T9uZNWNwhFurZrFxOSV0L9bzCJsMYjrwY2xM
+ X6Ll5pttvoRCpqOK9L5ZmQutKWm0IKY=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-65-aOQt-jxMNry5HxIBM0Ycag-1; Mon, 10 Jul 2023 08:15:59 -0400
-X-MC-Unique: aOQt-jxMNry5HxIBM0Ycag-1
+ us-mta-557-nxJx8Jn8NPCOIhLBT2KzNQ-1; Mon, 10 Jul 2023 08:16:00 -0400
+X-MC-Unique: nxJx8Jn8NPCOIhLBT2KzNQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 24AAD810BB4;
- Mon, 10 Jul 2023 12:15:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6ED88380671D;
+ Mon, 10 Jul 2023 12:16:00 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.206])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3B101F66B9;
- Mon, 10 Jul 2023 12:15:58 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 65BD0F5CFA;
+ Mon, 10 Jul 2023 12:15:59 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>
-Subject: [PULL 09/21] tests/tcg/s390x: Test EPSW
-Date: Mon, 10 Jul 2023 14:15:31 +0200
-Message-Id: <20230710121543.197250-10-thuth@redhat.com>
+Subject: [PULL 10/21] tests/tcg/s390x: Test LARL with a large offset
+Date: Mon, 10 Jul 2023 14:15:32 +0200
+Message-Id: <20230710121543.197250-11-thuth@redhat.com>
 In-Reply-To: <20230710121543.197250-1-thuth@redhat.com>
 References: <20230710121543.197250-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,53 +82,51 @@ From: Ilya Leoshkevich <iii@linux.ibm.com>
 Add a small test to prevent regressions.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20230704081506.276055-9-iii@linux.ibm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Message-Id: <20230704081506.276055-10-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/tcg/s390x/epsw.c          | 23 +++++++++++++++++++++++
+ tests/tcg/s390x/larl.c          | 21 +++++++++++++++++++++
  tests/tcg/s390x/Makefile.target |  1 +
- 2 files changed, 24 insertions(+)
- create mode 100644 tests/tcg/s390x/epsw.c
+ 2 files changed, 22 insertions(+)
+ create mode 100644 tests/tcg/s390x/larl.c
 
-diff --git a/tests/tcg/s390x/epsw.c b/tests/tcg/s390x/epsw.c
+diff --git a/tests/tcg/s390x/larl.c b/tests/tcg/s390x/larl.c
 new file mode 100644
-index 0000000000..affb1a5e3a
+index 0000000000..7c95f89be7
 --- /dev/null
-+++ b/tests/tcg/s390x/epsw.c
-@@ -0,0 +1,23 @@
++++ b/tests/tcg/s390x/larl.c
+@@ -0,0 +1,21 @@
 +/*
-+ * Test the EPSW instruction.
++ * Test the LARL instruction.
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
-+#include <assert.h>
 +#include <stdlib.h>
 +
 +int main(void)
 +{
-+    unsigned long r1 = 0x1234567887654321UL, r2 = 0x8765432112345678UL;
++    long algfi = (long)main;
++    long larl;
 +
-+    asm("cr %[r1],%[r2]\n"  /* cc = 1 */
-+        "epsw %[r1],%[r2]"
-+        : [r1] "+r" (r1), [r2] "+r" (r2) : : "cc");
++    /*
++     * The compiler may emit larl for the C addition, so compute the expected
++     * value using algfi.
++     */
++    asm("algfi %[r],0xd0000000" : [r] "+r" (algfi) : : "cc");
++    asm("larl %[r],main+0xd0000000" : [r] "=r" (larl));
 +
-+    /* Do not check the R and RI bits. */
-+    r1 &= ~0x40000008UL;
-+    assert(r1 == 0x1234567807051001UL);
-+    assert(r2 == 0x8765432180000000UL);
-+
-+    return EXIT_SUCCESS;
++    return algfi == larl ? EXIT_SUCCESS : EXIT_FAILURE;
 +}
 diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 85abfbb98c..2ef22c88d9 100644
+index 2ef22c88d9..dbf64c991e 100644
 --- a/tests/tcg/s390x/Makefile.target
 +++ b/tests/tcg/s390x/Makefile.target
-@@ -36,6 +36,7 @@ TESTS+=rxsbg
- TESTS+=ex-relative-long
+@@ -37,6 +37,7 @@ TESTS+=ex-relative-long
  TESTS+=ex-branch
  TESTS+=mxdb
-+TESTS+=epsw
+ TESTS+=epsw
++TESTS+=larl
  
  cdsg: CFLAGS+=-pthread
  cdsg: LDFLAGS+=-pthread
