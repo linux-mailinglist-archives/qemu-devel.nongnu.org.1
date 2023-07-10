@@ -2,96 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0297474E084
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 23:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 897CF74E0E5
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 00:14:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIyti-0007gv-KM; Mon, 10 Jul 2023 17:58:22 -0400
+	id 1qIz7i-0001hr-QZ; Mon, 10 Jul 2023 18:12:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIyth-0007gh-Mb
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:58:21 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIz7c-0001gi-Si
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:12:45 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIytg-0001Mm-8D
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:58:21 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-3fbea14700bso51479565e9.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 14:58:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIz7a-0006YW-7X
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:12:44 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3143b72c5ffso5886693f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 15:12:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689026299; x=1691618299;
+ d=linaro.org; s=google; t=1689027159; x=1691619159;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=JywJx1X809DQXGPFBk5XjtiL5MoqVVxEQC0YC0L3FdQ=;
- b=US4lrRlEgva5RCkuXL93gNr45wRKX9Mla+3sYapxxI39ag4ZQc3S2ZadFLhhDo2aJF
- GOL7WWY8za+JJvcSs1OC/6yKZ5pNIEXHXoHEOWqZDCg4u42mw9mG5jOn9Z2S/m6thTgv
- 8Q+soprEu0j7SqnD5zDt7nmWGUjx56FsxtpT64hdzkNkpCDRaXIfUg4Abhof7+KwGnt1
- +INyrnlsY58PVgt1z5JPGwk1Pznquf2UN9WtPdgbImKMdMZTx4ux13zMRE40dI5zmQEB
- JkKcpoSgpnug2ACb6N801KzBli5kiH+IwkWRVZIhKLTyArPBnPmV2XMAJgEErgLixizM
- LpVg==
+ bh=fL3NNViOUJdtBq+5CvTXHGgoWO2exvz8UvEzOAguTXk=;
+ b=aHu9xIX2TtNyR0vKdhRVyvlMalabBqJwx7iQrWsZQpIjWXA+qrkBtCYLiskiKIN32S
+ 45Hf6obvBxaJx8ilVe9liM0hC3rYB3/wfmmnH4da8E8bECZwM3MYMMoX7LOin4QVGT0t
+ DSHdznVYgpL3fS+Ol9UiV6aqdncQxGXXRlJpgdzG6ofdQD84pNSENV9lgFnou5kkei4Q
+ njzu9o6ieaHnhh2Dr0tmIgFvEoCjx7LxZfidi03NIcQWYvcFKBSVi3wAxStzsY6Lrc/B
+ ONB4V2P9IgLwrVuXwD3xDkiVcr4e9/LgQHSXlDDESz8Y5KjwTbsJJaPRvE43O68sb98L
+ 4mNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689026299; x=1691618299;
+ d=1e100.net; s=20221208; t=1689027159; x=1691619159;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JywJx1X809DQXGPFBk5XjtiL5MoqVVxEQC0YC0L3FdQ=;
- b=j4M2nK6YOO7f612sfWcR9hdId6/g2SyQouTmNVQShHkZc/B2U0Vs7s/NvAkmz79YK+
- fbSp0rr4940dXUTYven/7LNOI2p4gd07jWcq6pbXoUNpG6/Y+D0LP6ffCryV/LptwgOX
- jC0VmKgrfOodSRN/mbGenVRNjXn86S/YN1SgiOTlYuAtdB5b4m+WnoyhxWsjNKVotbDU
- fNJ4ZhFOtO7MTa7m6jEGppACinWRUFzQ5c5BOFPFrP5z84ovfKi1laFvs8DRp78/BrIt
- zEmvljTYhPC8J1amD8dFah0+tdSq+E+eMJKKA6zLQM7eGnNrZq43cP5G3dDyu+HVcr7l
- LlDA==
-X-Gm-Message-State: ABy/qLYoXk0uS5wFMKfQOCERj+60PjZxnfF9cRX0YEzNMLZCcFRDrldJ
- ItGFqsdo0Irz4d4FtDBKNCMRiQ==
-X-Google-Smtp-Source: APBJJlFOHDoY1u69m1uAamRfYo9gzGt2CnENOs0ID7ZHhTHCxOcMsVT9R+sXnNZ1LGt5CwFJAmGvwg==
-X-Received: by 2002:adf:e483:0:b0:314:1bb7:8a19 with SMTP id
- i3-20020adfe483000000b003141bb78a19mr11661766wrm.35.1689026298834; 
- Mon, 10 Jul 2023 14:58:18 -0700 (PDT)
+ bh=fL3NNViOUJdtBq+5CvTXHGgoWO2exvz8UvEzOAguTXk=;
+ b=hnIIu/lKX7DYoRBj9lkO9NmhUIf/GpEi203qJzdGL/GxfD22WnRllDqtgjyP/JLSom
+ ipHY1FB7kUgN+R2TzC05I6ZTI13Pe2YeXGK2bQFUZ3RhCr/Q9GwSvHB+j0USRv3OGtlm
+ ecClY5tIha3oDVxIXGq9WUuYWpZJomlbIQRgWNAsz7j78PNC2XMguh2bSoNkH5an2WsB
+ ZGuZPQFtfU2fh3XN1YiCQ6F2eLbRtB7HXn2Wyso6q+E19ca6IPafIppcFcdffx6gJjee
+ jCQK/6LHxylvlyOzRjdD0tUd/6VGLQDZoph0SRDkP8jywkbrTTYLrUZQpHUUGOuyuIlm
+ hAqg==
+X-Gm-Message-State: ABy/qLYxgPTtpvllPy3r8DpB0aAzPSc0qDDrhahnLXyHXVSr6F9RLkXf
+ YXz6mpNCqP87E+GWia4nQQkrUw==
+X-Google-Smtp-Source: APBJJlGCZ1bURQ7BzAiN6qRRBF6bPFOoddDG8rmQOAfhwvB3M6hZyCUtFZPnlLl6iuUqCG5tKbyyWg==
+X-Received: by 2002:adf:f9c9:0:b0:314:2132:a277 with SMTP id
+ w9-20020adff9c9000000b003142132a277mr15743453wrr.9.1689027159455; 
+ Mon, 10 Jul 2023 15:12:39 -0700 (PDT)
 Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
  [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
- o18-20020adfe812000000b00314417f5272sm472718wrm.64.2023.07.10.14.58.14
+ ay9-20020a170906d28900b00992bea2e9d2sm270951ejb.62.2023.07.10.15.12.38
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 14:58:18 -0700 (PDT)
-Message-ID: <d8555049-c6b9-fb81-0473-71ee87f632d8@linaro.org>
-Date: Mon, 10 Jul 2023 23:58:14 +0200
+ Mon, 10 Jul 2023 15:12:39 -0700 (PDT)
+Message-ID: <c69143aa-0e01-882c-7f02-84e7d1ed3b33@linaro.org>
+Date: Tue, 11 Jul 2023 00:12:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH v3 05/20] include/hw/virtio: add kerneldoc for virtio_init
+Subject: Re: [PATCH v3 0/7] VIA and general PCI IDE cleanup
 Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, qemu-block@nongnu.org, Eric Blake
- <eblake@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Hanna Reitz
- <hreitz@redhat.com>, Erik Schilling <erik.schilling@linaro.org>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>, Fam Zheng <fam@euphon.net>,
- virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>
-References: <20230710153522.3469097-1-alex.bennee@linaro.org>
- <20230710153522.3469097-6-alex.bennee@linaro.org>
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-ppc@nongnu.org,
+ qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
+ Huacai Chen <chenhuacai@kernel.org>, BALATON Zoltan <balaton@eik.bme.hu>
+References: <20230531211043.41724-1-shentey@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230710153522.3469097-6-alex.bennee@linaro.org>
+In-Reply-To: <20230531211043.41724-1-shentey@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,12 +94,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/7/23 17:35, Alex Bennée wrote:
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   include/hw/virtio/virtio.h | 6 ++++++
->   1 file changed, 6 insertions(+)
+On 31/5/23 23:10, Bernhard Beschow wrote:
+> This series is split off from a more general PCI IDE refactoring aiming for a
+> common implementation of the PCI IDE controller specification for all
+> TYPE_PCI_IDE models [1].
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> Bernhard Beschow (7):
+>    hw/ide/pci: Expose legacy interrupts as named GPIOs
+>    hw/ide/via: Wire up IDE legacy interrupts in host device
+>    hw/isa/vt82c686: Remove via_isa_set_irq()
+>    hw/ide: Extract IDEBus assignment into bmdma_init()
+>    hw/ide: Extract bmdma_status_writeb()
+>    hw/ide/pci: Replace some magic numbers by constants
+>    hw/ide/piix: Move registration of VMStateDescription to DeviceClass
+
+Queued to mips-next, thanks!
 
 
