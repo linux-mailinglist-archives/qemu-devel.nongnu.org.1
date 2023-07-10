@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E9D74CC9D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 08:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F5574CCA1
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 08:08:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIk1v-0000ub-E4; Mon, 10 Jul 2023 02:05:51 -0400
+	id 1qIk3n-0002Bb-RI; Mon, 10 Jul 2023 02:07:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qIk1r-0000uP-So
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 02:05:47 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qIk3m-0002BS-23
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 02:07:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qIk1n-0000Cd-1j
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 02:05:47 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qIk3h-0001bv-36
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 02:07:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688969140;
+ s=mimecast20190719; t=1688969254;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LJUmKsDa9EA+ysRT1Gmgcs625eMA+pXzOtK59EBu9Go=;
- b=CgJG+FWim9nm9tL72lP4UdIIYPksTUC56h1fNH/o40b11u1nRuzHYgpfjc9P29tpqghEBE
- R+/5wKMKuUsPPvwHFJqiPygfFS3D4OcXZG/1enlyOr0Fk99ZNluoAVXn/KqbgCsa9IwbSU
- xhzXQENqHTZxZ26v2qKplT9mSrhQHSo=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=JyghLe8ySD12gm6LLOQqPPVb1CaqSNfRd4Yr5D8+m5o=;
+ b=TbuI/HT8zVlAEgkiHyDFEqNJhiYTcx1Pmrip7HZIwEQ17M6/A79S9bOrYzc+IA3cftCmNG
+ g1PUbiYX5NoHuF9DlT3e5DXsFuwjkGS4qjLVzItPs/MIk+uj40rAU6sSYcaP22o3fCeqR2
+ UeCoygZTAjSZZI+xgA8VZv2oMtpBfAA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-343-PlBeqFL7MB2wmk29yW6ChA-1; Mon, 10 Jul 2023 02:05:39 -0400
-X-MC-Unique: PlBeqFL7MB2wmk29yW6ChA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-9-idIsnCRNOP-NXj0w2mrn2g-1; Mon, 10 Jul 2023 02:07:33 -0400
+X-MC-Unique: idIsnCRNOP-NXj0w2mrn2g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C0DD43811803;
- Mon, 10 Jul 2023 06:05:38 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9AE91858290;
+ Mon, 10 Jul 2023 06:07:32 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 82E514067A00;
- Mon, 10 Jul 2023 06:05:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E5A2E2166B27;
+ Mon, 10 Jul 2023 06:07:31 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7E0B721E6A1F; Mon, 10 Jul 2023 08:05:37 +0200 (CEST)
+ id E131F21E6A1F; Mon, 10 Jul 2023 08:07:30 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: "Kim, Dongwon" <dongwon.kim@intel.com>
-Cc: <qemu-devel@nongnu.org>,  <kraxel@redhat.com>,  <berrange@redhat.com>,
- <philmd@linaro.org>,  <marcandre.lureau@redhat.com>,
- <vivek.kasireddy@intel.com>
-Subject: Re: [RFC PATCH 6/9] ui/gtk: Add a new parameter to assign
- connectors/monitors to GFX VCs
-References: <20230621004355.19920-1-dongwon.kim@intel.com>
- <20230621004355.19920-7-dongwon.kim@intel.com>
- <87h6r1mkhc.fsf@pond.sub.org>
- <46dc1ac2-2ab5-48f7-73da-4160c26c3171@intel.com>
- <878rbrizmo.fsf@pond.sub.org>
- <6351a85a-db49-7d6b-2a55-1ea7c65b3a8e@intel.com>
-Date: Mon, 10 Jul 2023 08:05:37 +0200
-In-Reply-To: <6351a85a-db49-7d6b-2a55-1ea7c65b3a8e@intel.com> (Dongwon Kim's
- message of "Fri, 7 Jul 2023 10:16:50 -0700")
-Message-ID: <87r0pgb8su.fsf@pond.sub.org>
+To: Jason Wang <jasowang@redhat.com>
+Cc: Bin Meng <bmeng.cn@gmail.com>,  Bin Meng <bmeng@tinylab.org>,
+ qemu-devel@nongnu.org,  Richard Henderson <richard.henderson@linaro.org>,
+ Zhangjin Wu <falcon@tinylab.org>,  Claudio Imbrenda
+ <imbrenda@linux.ibm.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,  Kevin Wolf
+ <kwolf@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>,  Xuzhou Cheng
+ <xuzhou.cheng@windriver.com>
+Subject: Re: [PATCH v4 0/6] net/tap: Fix QEMU frozen issue when the maximum
+ number of file descriptors is very large
+References: <20230628152726.110295-1-bmeng@tinylab.org>
+ <CAEUhbmVsHqdauwvgvjNY6R65kDJ017vDQ797YuzX7S_XHgS5WQ@mail.gmail.com>
+ <CACGkMEsAVQhbdRabLeGiw25Ox4Ze9WRRP3coSKni5WVqFNqYYA@mail.gmail.com>
+Date: Mon, 10 Jul 2023 08:07:30 +0200
+In-Reply-To: <CACGkMEsAVQhbdRabLeGiw25Ox4Ze9WRRP3coSKni5WVqFNqYYA@mail.gmail.com>
+ (Jason Wang's message of "Mon, 10 Jul 2023 11:05:38 +0800")
+Message-ID: <87mt04b8pp.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,103 +95,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Kim, Dongwon" <dongwon.kim@intel.com> writes:
+Jason Wang <jasowang@redhat.com> writes:
 
-> On 7/7/2023 7:07 AM, Markus Armbruster wrote:
->> "Kim, Dongwon" <dongwon.kim@intel.com> writes:
+> On Sun, Jul 9, 2023 at 11:48=E2=80=AFPM Bin Meng <bmeng.cn@gmail.com> wro=
+te:
 >>
->>> Hi Markus,
->>>
->>> So I've worked on the description of this param. Can you check if this =
-new version looks ok?
->>>
->>> # @connectors:=C2=A0 List of physical monitor/connector names where the=
- GTK
->>> # =C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0=C2=A0 windows containing the respec=
-tive graphics virtual consoles (VCs)
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 are to be=
- placed. Index of the connector name in the array directly
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 indicates=
- the id of the VC.
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 For examp=
-le, with "-device gtk,connectors.0=3DDP-1, connectors.1=3DDP-2",
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 a physica=
-l display connected to DP-1 port will be the target monitor
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for VC0 a=
-nd the one on DP-2 will be the target for VC1. If there is
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 no connec=
-tor associated with a VC, then that VC won't be placed anywhere
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 before th=
-e QEMU is relaunched with a proper connector name set for it.
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 If a conn=
-ector name exists for a VC but the display cable is not plugged
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 in when g=
-uest is launched, the VC will be just hidden but will show up
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 as soon a=
-s the cable is plugged in. If a display is connected in the beginning
->>> #=C2=A0=C2=A0=C2=A0 =C2=A0 =C2=A0=C2=A0 =C2=A0 but later disconnected, =
-VC will immediately be hidden and guest will detect
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 it as a d=
-isconnected display. This option does not force 1 to 1 mapping
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 between t=
-he connector and the VC, which means multiple VCs can be placed
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 on the sa=
-me display but vice versa is not possible (a single VC duplicated
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 on a mult=
-iple displays)
->>> #=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (Since 8.=
-1)
->> Better!
+>> On Wed, Jun 28, 2023 at 11:29=E2=80=AFPM Bin Meng <bmeng@tinylab.org> wr=
+ote:
+>> >
+>> >
+>> > Current codes using a brute-force traversal of all file descriptors
+>> > do not scale on a system where the maximum number of file descriptors
+>> > is set to a very large value (e.g.: in a Docker container of Manjaro
+>> > distribution it is set to 1073741816). QEMU just looks frozen during
+>> > start-up.
+>> >
+>> > The close-on-exec flag (O_CLOEXEC) was introduced since Linux kernel
+>> > 2.6.23, FreeBSD 8.3, OpenBSD 5.0, Solaris 11. While it's true QEMU
+>> > doesn't need to manually close the fds for child process as the proper
+>> > O_CLOEXEC flag should have been set properly on files with its own
+>> > codes, QEMU uses a huge number of 3rd party libraries and we don't
+>> > trust them to reliably be using O_CLOEXEC on everything they open.
+>> >
+>> > Modern Linux and BSDs have the close_range() call we can use to do the
+>> > job, and on Linux we have one more way to walk through /proc/self/fd
+>> > to complete the task efficiently, which is what qemu_close_range()
+>> > does, a new API we add in util/osdep.c.
+>> >
+>> > V1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bm=
+eng@tinylab.org/
+>> >
+>> > Changes in v4:
+>> > - add 'first > last' check logic
+>> > - reorder the ifdefs logic
+>> > - change i to unsigned int type
+>> > - use qemu_strtoi() instead of atoi()
+>> > - limit last upper value to sysconf(_SC_OPEN_MAX) - 1
+>> > - call sysconf directly instead of using a variable
+>> > - put fd on its own line
+>> >
+>> > Changes in v3:
+>> > - fix win32 build failure
+>> > - limit the last_fd of qemu_close_range() to sysconf(_SC_OPEN_MAX)
+>> >
+>> > Changes in v2:
+>> > - new patch: "tests/tcg/cris: Fix the coding style"
+>> > - new patch: "tests/tcg/cris: Correct the off-by-one error"
+>> > - new patch: "util/async-teardown: Fall back to close fds one by one"
+>> > - new patch: "util/osdep: Introduce qemu_close_range()"
+>> > - new patch: "util/async-teardown: Use qemu_close_range() to close fds"
+>> > - Change to use qemu_close_range() to close fds for child process effi=
+ciently
+>> > - v1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-=
+bmeng@tinylab.org/
+>> >
+>> > Bin Meng (4):
+>> >   tests/tcg/cris: Fix the coding style
+>> >   tests/tcg/cris: Correct the off-by-one error
+>> >   util/async-teardown: Fall back to close fds one by one
+>> >   util/osdep: Introduce qemu_close_range()
+>> >
+>> > Zhangjin Wu (2):
+>> >   util/async-teardown: Use qemu_close_range() to close fds
+>> >   net: tap: Use qemu_close_range() to close fds
+>> >
 >>
->> Suggest to replace "that VC won't be placed anywhere" by "that VC won't
->> be displayed".
+>> Ping for 8.1?
 >
-> yeah, I will update it in v2 and send the new patch shortly.
->
->>
->> Ignorant questions:
->>
->> 1. How would I plug / unplug display cables?
->
-> I am not sure if I understood your question correctly but 1 or more guest=
- displays (GTK windows) are bound to a certain physical displays like HDMI =
-or DP monitors. So plug/unplug means we disconnect those physical HDMI or D=
-P cables manually. Or this manual hot plug in can be emulated by you write =
-something to sysfs depending on what display driver you use.
+> Queued.
 
-Let's see whether I understand.
-
-A VC is placed on a *physical* monitor, i.e. a window appears on that
-monitor.  That monitor's plug / unplug state is passed through to the
-guest, i.e. if I physically unplug / plug the monitor, the guest sees an
-unplug / plug of its virtual monitor.  Correct?
-
-Permit me another ignorant question...  Say I have a single monitor.  I
-configured my X windows manager to show four virtual desktops.  Can I
-use your feature to direct on which virtual desktop each VC is placed?
-
->> 2. If I connect multiple VCs to the same display, what will I see?  Are
->> they multiplexed somehow?
->
-> Yeah multiple VCs will be shown on that display. But those could be overl=
-apped since those are all placed at (0, 0) of display in many cases.. but t=
-his all depends on how the windows manager determines the starting location=
-s.
-
-Got it, thanks!
-
->> Old question not yet answered: Using a list for the mapping means the
->> mapping must be dense, e.g. I can't map #0 and #2 but not #1.  Is this
->> what we want?
->
-> No, it doesn't have to be dense. In your example, you can just leave the =
-place for VC1 blank. For example, you could do connectors.0=3DDP-1,connecto=
-rs.2=3DHDMI-1. But in this case, VC1 won't be activated and stay as disconn=
-ected from guest's perspective. I think this info is also needed in v2.
-
-Have you tried this?  I believe it'll fail with something like
-"Parameter 'connectors.1' missing".
-
->> [...]
+There are review questions open on PATCH 4+5.
 
 
