@@ -2,87 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F3774CE87
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:35:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D965674CE9B
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:38:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIlQL-0000TT-LY; Mon, 10 Jul 2023 03:35:09 -0400
+	id 1qIlTB-0001Q9-NZ; Mon, 10 Jul 2023 03:38:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qIlQF-0000RJ-87
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:35:03 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qIlQD-0000rO-Ik
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:35:03 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4f954d7309fso5112823e87.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 00:35:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688974500; x=1691566500;
- h=content-transfer-encoding:in-reply-to:organization:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=X6tQU9slBwhFsnNNlnGvU80p27+NY60RITLusb+xDxI=;
- b=p2im437bWcku/t8a7vAy+m+gYkVqLxt2wzbGJORpvNDG6SfBNybPE3N3FKIQrhy322
- 8kRCAt6vOvJNtNmw7o8ecAQlHcO9HdwDFG3ds81mgQAfZSea/3ZVWNcP4oexw8o+9liy
- CrCEUSAewgUzKvBaxIqOiE06iaFdZ2TXC559j3b8rDXHfo/GDsTtbMXtt719hXSCzfOt
- 1XWRjwnqEVnslJCUKJB3KJzWtbyQIvbduEAGGSpotDq/1aKlZl9XylAkgCplAPOGJ2aP
- dYyyAsbyTdb73zVvBA1pdG728qAgNWf64+zuyMhiWbP+pT0mrcCwQ/P6wY2t0YOCkQtH
- qGqA==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qIlT9-0001Pl-Cl
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:38:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qIlT7-00023Z-UO
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:38:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688974681;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4BE4gxu0kEicAnK9dDnmr376xR6mYNsNGvdfzRDuJ08=;
+ b=XBqaQWIZ6x2VxBdTN+ducHEkzRzpu+49NtKrl18HL4ltyfJgfzZzBoquguZbguawzYPDwy
+ nZEJUVMVYdS9PmOFdR/jKyJoW/UeJlkDAWbenuItBFomR6OQFm2BKgoPBbfrbkB0ah9ExU
+ skUPRa0s13WnyI9Bga81Ztx8Y1aXJr4=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-269-bTeXmEMjMFiGAVazll-riw-1; Mon, 10 Jul 2023 03:37:59 -0400
+X-MC-Unique: bTeXmEMjMFiGAVazll-riw-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-c8f360a07a2so51474276.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 00:37:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688974500; x=1691566500;
- h=content-transfer-encoding:in-reply-to:organization:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=X6tQU9slBwhFsnNNlnGvU80p27+NY60RITLusb+xDxI=;
- b=E93TegZyBu64PKvIMjgDIE8e+Jx64FXUTzvTD+Ab/pKSXK+I+DNwp4o6AEIfXUZ7pl
- bhQuIHYQnwf+l271ItXSNYNM4RDeNXfs8FHY3oM3vc2+utzR9pPO2ielFIScqP6T4gUZ
- 5QzvAsVolBwdkZLreRPFjcT2HxzvJVGb7AD0CamI9KrRxfSGgoso1Aa2OE9AO0mGn9gb
- 0JfQoxsjeCIvGChDwvrFELkPXQ4427piaKeT2jVRgR+eU+8+gFnAGWeSaTz9QNUdZNoP
- 1Ia09Xmd0fyxF4rfw1DrPq157lA9SatS8c+l4gU0JN47Ev0QhjMpdK4N2U4h91nV8hP9
- C5wA==
-X-Gm-Message-State: ABy/qLZ7v6dGj2lG73GNlYkwsQTCW4RitHXcSBROUWpQXMrhGY6tWfkb
- 19WcEu4vn7+ms9W6fHcdmiRTHw==
-X-Google-Smtp-Source: APBJJlG1olaRa1xzCU515dyZHNSFBx7xuF6HO2AVKH+v7ZUBXnXpZuNVLX95DcLkGY7vjxAEca0Aog==
-X-Received: by 2002:a05:6512:3d93:b0:4fb:9f08:2909 with SMTP id
- k19-20020a0565123d9300b004fb9f082909mr6303015lfv.3.1688974499742; 
- Mon, 10 Jul 2023 00:34:59 -0700 (PDT)
-Received: from [192.168.200.206] (83.21.151.197.ipv4.supernova.orange.pl.
- [83.21.151.197]) by smtp.gmail.com with ESMTPSA id
- o5-20020ac24945000000b004fb957ac245sm1592195lfi.59.2023.07.10.00.34.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 00:34:59 -0700 (PDT)
-Message-ID: <6e4d44f9-55d5-b9e9-871f-ac47b7e43f1d@linaro.org>
-Date: Mon, 10 Jul 2023 09:34:58 +0200
+ d=1e100.net; s=20221208; t=1688974679; x=1691566679;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4BE4gxu0kEicAnK9dDnmr376xR6mYNsNGvdfzRDuJ08=;
+ b=BsG0ZUX2Tw3hmU6p1eL0w38eGC28aYeDriu52gbx8+oMFhuECOAssNIA+PSXbu0aEQ
+ 4bqmBySLU8H29S1qKdaZoXfI6fGIt4Tbsc3WbRkgfoIK8X1sAVxb+I1WzSQS8inxzNo+
+ z7Sn7qr2ZkLPw7awFZp3iK6h2ipJDUiPNANDYxWo+2nkDXRR9MQoeFPOQgt/ob5ysWMX
+ 29p4nh+TJalvvp/keyvYzzBy+f4wTkYp07sWdxZiNLNdX8X2kkU1KNdLQIc3tYEGgcZ5
+ XeSmaat+bM7gG0OWC1vSTaL0zaRERO2t7uz/bYjK6X9mGl2l1nt7DDnaLXvLkGNOXB5v
+ fdDw==
+X-Gm-Message-State: ABy/qLahhsARVTBrmxZXV+zV11HBmD5iWWXBVE5Sk4JGXW72z3BQXckm
+ Sg/mVW7XxYluUJS6gpJD67g/CF3HEqK1UGR+cZjsZ6626Xkjlrd5QOFjBdbLBQ87x32iN0kcd8T
+ K7nJSQ1qrhiD8X9bEkASUBk2wcIrUyBA=
+X-Received: by 2002:a25:b285:0:b0:c73:2015:2d7c with SMTP id
+ k5-20020a25b285000000b00c7320152d7cmr4471551ybj.33.1688974678808; 
+ Mon, 10 Jul 2023 00:37:58 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGAnNKYqbOcoeFa3tOHTVyV1jtcKDQbsNtNq0+D2LK2eybE1HHEK1mx1EIRASMtecZpGNEMyHrgg75QaUpnUiM=
+X-Received: by 2002:a25:b285:0:b0:c73:2015:2d7c with SMTP id
+ k5-20020a25b285000000b00c7320152d7cmr4471542ybj.33.1688974678544; Mon, 10 Jul
+ 2023 00:37:58 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: set 'slots' property of xhci
-To: Yuquan Wang <wangyuquan1236@phytium.com.cn>, rad@semihalf.com,
- peter.maydell@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Cc: quic_llindhol@quicinc.com, chenbaozi@phytium.com.cn
-References: <20230710063750.473510-1-wangyuquan1236@phytium.com.cn>
- <20230710063750.473510-2-wangyuquan1236@phytium.com.cn>
-Content-Language: pl-PL, en-GB, en-HK
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <20230710063750.473510-2-wangyuquan1236@phytium.com.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230706191227.835526-1-eperezma@redhat.com>
+ <20230706191227.835526-7-eperezma@redhat.com>
+ <CACGkMEtjbYCGNLLO+HDhtbA7QqZALr-cEpkjX=ETy=j3eCkTVA@mail.gmail.com>
+In-Reply-To: <CACGkMEtjbYCGNLLO+HDhtbA7QqZALr-cEpkjX=ETy=j3eCkTVA@mail.gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 10 Jul 2023 09:37:22 +0200
+Message-ID: <CAJaqyWcS6O+GNYsjuWo7Z85pq5Ls7_WWjLdM4z8eYGSSUMVc9Q@mail.gmail.com>
+Subject: Re: [RFC PATCH 6/6] vdpa: remove net cvq migration blocker
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Cindy Lu <lulu@redhat.com>,
+ si-wei.liu@oracle.com, 
+ Stefano Garzarella <sgarzare@redhat.com>, Shannon Nelson <snelson@pensando.io>,
+ Gautam Dawar <gdawar@xilinx.com>, Harpreet Singh Anand <hanand@xilinx.com>,
+ Parav Pandit <parav@mellanox.com>, 
+ Dragos Tatulea <dtatulea@nvidia.com>, Zhu Lingshan <lingshan.zhu@intel.com>, 
+ Lei Yang <leiyang@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,47 +103,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 10.07.2023 o 08:37, Yuquan Wang pisze:
-> This extends the slots of xhci to 64, since the default xhci_sysbus
-> just supports one slot.
-> 
-> Signed-off-by: Wang Yuquan <wangyuquan1236@phytium.com.cn>
-> Signed-off-by: Chen Baozi <chenbaozi@phytium.com.cn>
-> ---
->   hw/arm/sbsa-ref.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-> index 64e1cbce17..bc89eb4806 100644
-> --- a/hw/arm/sbsa-ref.c
-> +++ b/hw/arm/sbsa-ref.c
-> @@ -611,6 +611,7 @@ static void create_xhci(const SBSAMachineState *sms)
->       hwaddr base = sbsa_ref_memmap[SBSA_XHCI].base;
->       int irq = sbsa_ref_irqmap[SBSA_XHCI];
->       DeviceState *dev = qdev_new(TYPE_XHCI_SYSBUS);
-> +    qdev_prop_set_uint32(dev, "slots", XHCI_MAXSLOTS);
+On Mon, Jul 10, 2023 at 5:54=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
+ote:
+>
+> On Fri, Jul 7, 2023 at 3:12=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@redha=
+t.com> wrote:
+> >
+> > Now that we have add migration blockers if the device does not support
+> > all the needed features, remove the general blocker applied to all net
+> > devices with CVQ.
+> >
+> > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+>
+> I wonder what's the difference compared if we just start cvq first in
+> vhost_net_start()?
+>
 
-Looks like tab instead of spaces.
+That's interesting. It would complicate the for loop in
+vhost_net_start, but I think it's less complicated than
+should_start_op.
 
->   
->       sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
->       sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
+It would be something like moving from:
 
-Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Reviewed-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+for (i =3D 0; i < nvhosts; i++) {
+    if (i < data_queue_pairs) {
+        peer =3D qemu_get_peer(ncs, i);
+    } else {
+        peer =3D qemu_get_peer(ncs, n->max_queue_pairs);
+    }
 
+    ...
 
-Before:
+    r =3D vhost_net_start_one(get_vhost_net(peer), dev);
+    if (r < 0) {
+        goto err_start;
+    }
+}
 
-xhci-hcd PNP0D10:00: Error while assigning device slot ID: No Slots Available Error
-xhci-hcd PNP0D10:00: Max number of devices this xHCI host supports is 1.
-usb usb1-port2: couldn't allocate usb_device
+To:
 
+for (i =3D 0; i < nvhosts; i++) {
+    if (i =3D=3D 0 && cvq) {
+        peer =3D qemu_get_peer(ncs, n->max_queue_pairs);
+    } else {
+        peer =3D qemu_get_peer(ncs, i - cvq);
+    }
 
-After:
+    ...
 
-input: QEMU QEMU USB Keyboard as /devices/platform/PNP0D10:00/usb1/1-1/1-1:1.0/0003:0627:0001.0001/input/input0
-hid-generic 0003:0627:0001.0001: input,hidraw0: USB HID v1.11 Keyboard [QEMU QEMU USB Keyboard] on usb-PNP0D10:00-1/input0
-input: QEMU QEMU USB Tablet as /devices/platform/PNP0D10:00/usb1/1-2/1-2:1.0/0003:0627:0001.0002/input/input1
-hid-generic 0003:0627:0001.0002: input,hidraw1: USB HID v0.01 Mouse [QEMU QEMU USB Tablet] on usb-PNP0D10:00-2/input0
+    r =3D vhost_net_start_one(get_vhost_net(peer), dev);
+    if (r < 0) {
+        goto err_start;
+    }
+}
+
+Is this what you have in mind?
+
+Thanks!
+
+> Thanks
+>
+> > ---
+> >  net/vhost-vdpa.c | 12 ------------
+> >  1 file changed, 12 deletions(-)
+> >
+> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> > index d5970e9f06..5432b50498 100644
+> > --- a/net/vhost-vdpa.c
+> > +++ b/net/vhost-vdpa.c
+> > @@ -996,18 +996,6 @@ static NetClientState *net_vhost_vdpa_init(NetClie=
+ntState *peer,
+> >          s->vhost_vdpa.shadow_vq_ops =3D &vhost_vdpa_net_svq_ops;
+> >          s->vhost_vdpa.shadow_vq_ops_opaque =3D s;
+> >          s->cvq_isolated =3D cvq_isolated;
+> > -
+> > -        /*
+> > -         * TODO: We cannot migrate devices with CVQ and no x-svq enabl=
+ed as
+> > -         * there is no way to set the device state (MAC, MQ, etc) befo=
+re
+> > -         * starting the datapath.
+> > -         *
+> > -         * Migration blocker ownership now belongs to s->vhost_vdpa.
+> > -         */
+> > -        if (!svq) {
+> > -            error_setg(&s->vhost_vdpa.migration_blocker,
+> > -                       "net vdpa cannot migrate with CVQ feature");
+> > -        }
+> >      }
+> >      ret =3D vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_inde=
+x, nvqs);
+> >      if (ret) {
+> > --
+> > 2.39.3
+> >
+>
+
 
