@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE4474E1D5
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:07:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1960474E1D8
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:07:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzu3-0002qR-Do; Mon, 10 Jul 2023 19:02:47 -0400
+	id 1qIzu5-0002rA-UI; Mon, 10 Jul 2023 19:02:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzu1-0002qE-7s
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:02:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzu3-0002qd-P4
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:02:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIztz-00047f-Nd
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:02:45 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzu2-00047w-A1
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:02:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030163;
+ s=mimecast20190719; t=1689030165;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cm7m/d6NYZfBBMZKPgelKWyXoTCCqKJswESWtJrljJw=;
- b=DjfL1ThvNuLzEMPIbi9jE+jVdcsziSI/VGRp70ITP6qf3YzpEf362pygY8XuO46ejjjk/L
- LZpA34z7cwKOszTQqznssMPn36Ov7KRZ8PLzhuycJDRde7ak3giRh8uqLOEEqlEiMzHSsq
- 4kviRaPck5JwhM2BlLIJx6n4bV5uy3I=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jiHSJhGfrExMCfEGSl3IWf42A4x66124Sakgqtwn2N8=;
+ b=GoIY1Gdy28qCltqzLAdYJvWxLT5y/PHaRgVej8pevnGVtrYkBhaP70Cn3Ea10UM5N1P3gb
+ my/OM6hZO30GZBBjR5d7NpPC4w+dMwNRTZbUImFlnqS2CgY+L4h70hk7S6EcMve4RVCg7f
+ fdq3JrVeMC4ezURISep0lfpeNhHnytM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-494-fvHJp3PkMJiXcbL7vAB0Tw-1; Mon, 10 Jul 2023 19:02:41 -0400
-X-MC-Unique: fvHJp3PkMJiXcbL7vAB0Tw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-314275b653eso2720543f8f.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:02:41 -0700 (PDT)
+ us-mta-505-W0bHCzI7M4W_8ClL_5TS_Q-1; Mon, 10 Jul 2023 19:02:44 -0400
+X-MC-Unique: W0bHCzI7M4W_8ClL_5TS_Q-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3fa8cd898e0so34200385e9.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:02:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030160; x=1691622160;
+ d=1e100.net; s=20221208; t=1689030162; x=1691622162;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cm7m/d6NYZfBBMZKPgelKWyXoTCCqKJswESWtJrljJw=;
- b=JmWhIE4w/1ou7K05ICJAHnfwlzU2glaYBxCfIcbT7aqo6ZbDu4wAx5tZTBITE4iWCq
- UvJ2wuKmh5b46ttawxGBXLTdpk1MkEv9A4YwHejNtN1d4KnXiT2YfrJd1PRL/aIzzhcp
- kJEH8yhx7rY27gUQGy0F5sIidYgUgKUvc/FAnmd1+IV5Sm2fCJkfVsETPsh/f8I3pelr
- Dd+Quy7mn/GJaseG0GHarlPXowoica906oRaXHNeOq8BFAenQC530XNvuIfZLnP4DuxF
- 26BDdNZRLBgh69f9gBGm2lZiQf8ynF12aBciRqfkB8d9PgAYK5j2EF86XsB7onWbJrW2
- zIhw==
-X-Gm-Message-State: ABy/qLa2N2fyGPdJqv0QllYQkl2KWTiBNsGlYvj3A8r8tqiTDLndWO9H
- FgwtU4kg4uSPk3CjQzec3m/15w+AjuzUG0x/Zxg0zScyJF7RG5OF080Hvwx8fTbeNMULYAxSlqt
- OGIMJ9CFapjtXZRW+oRGTzOuNnprfV5n+9oFTa0MF53NA4icYZD9xZsIAtxDK+Xz+41vb
-X-Received: by 2002:a5d:6649:0:b0:314:1443:7fbe with SMTP id
- f9-20020a5d6649000000b0031414437fbemr12713143wrw.36.1689030159899; 
- Mon, 10 Jul 2023 16:02:39 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGcKqnx2Ds9IOMRCPKdqxz9y183syGJ3LprG5Eqfs0zJMjHDWksESeQXRXJGx1qPsHS2Jf3Gw==
-X-Received: by 2002:a5d:6649:0:b0:314:1443:7fbe with SMTP id
- f9-20020a5d6649000000b0031414437fbemr12713122wrw.36.1689030159598; 
- Mon, 10 Jul 2023 16:02:39 -0700 (PDT)
+ bh=jiHSJhGfrExMCfEGSl3IWf42A4x66124Sakgqtwn2N8=;
+ b=GorEQtIXSMK4pFYkCN0y3ko7ehKnENI2bEYHB75alqhmHAONQRoH0MDrO6QWIGIQ2n
+ k3s/z5z7HdBRlhOy9YRpr6Hu8GC8J0U8rHC2AHBXI6bV939wIDLAd7gP8sus9A3y+6C3
+ 8ynRYdFtw8m2naoTPz/7oFCLtawDKmoL7ShwZ25vQk3ic4rPggoEfPs5pJ0lM/c+8mlo
+ 7erjvfx3Itkse3M9HPngvrE5FUbdeLYt/OR6hrDg7yQk48Bprv1pu0L+QvKzq0rMHyXR
+ zRmsheJ6uvtRJVaw19TVW1s6hTb9rEbFwX/9HokOv1lbHwVRkW01w9MGO1MQj2Ib+2Lh
+ IULA==
+X-Gm-Message-State: ABy/qLbN220DEIIvm6hAv7su5AOGTRtjpaMP1px6hDIHKP93rJbQy1sy
+ SY49Lho9bfL+Yu/4GuIMZZ7iEnbQAkIcedxuQM6YLBclafpfcGJUWBBFa9ZWsbgGgrYsvYaWv9D
+ l5u6DZtfwjuNCK4xwSpdr7upRjKnmRgxV6Q/ba9o4TN6CYnUYQBjIVPxt76Z4R6I3jFwa
+X-Received: by 2002:a1c:4b17:0:b0:3fb:b008:2003 with SMTP id
+ y23-20020a1c4b17000000b003fbb0082003mr14360472wma.38.1689030162573; 
+ Mon, 10 Jul 2023 16:02:42 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFlYaWrizfsxLZe+Zx/hxlf0IhPkrQdk2DeqS/Cp7SLjpv8dXnNsEi/KDKe5Tu6TMxmn0MSZw==
+X-Received: by 2002:a1c:4b17:0:b0:3fb:b008:2003 with SMTP id
+ y23-20020a1c4b17000000b003fbb0082003mr14360449wma.38.1689030162279; 
+ Mon, 10 Jul 2023 16:02:42 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- f14-20020adfe90e000000b0030647449730sm578463wrm.74.2023.07.10.16.02.38
+ l4-20020a1ced04000000b003fbe561f6a3sm11446797wmh.37.2023.07.10.16.02.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:02:38 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:02:37 -0400
+ Mon, 10 Jul 2023 16:02:41 -0700 (PDT)
+Date: Mon, 10 Jul 2023 19:02:39 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Erico Nunes <ernunes@redhat.com>,
  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 04/66] virtio-gpu: refactor generate_edid function to
- virtio_gpu_base
-Message-ID: <ee3729d9b088a1988cd6b0a7738fad644fbbc415.1689030052.git.mst@redhat.com>
+Subject: [PULL 05/66] docs: vhost-user-gpu: add protocol changes for EDID
+Message-ID: <50cbd5b4b37de3f474495c5fd6a66d5c0e8e49c2.1689030052.git.mst@redhat.com>
 References: <cover.1689030052.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -77,7 +76,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1689030052.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,113 +103,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Erico Nunes <ernunes@redhat.com>
 
-This functionality can be shared with upcoming use in vhost-user-gpu, so
-move it to the shared file to avoid duplicating it.
+VHOST_USER_GPU_GET_EDID is defined as a message from the backend to the
+frontend to retrieve the EDID data for a given scanout.
+
+The VHOST_USER_GPU_PROTOCOL_F_EDID protocol feature is defined as a way
+to check whether this new message is supported or not.
 
 Signed-off-by: Erico Nunes <ernunes@redhat.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-Id: <20230626164708.1163239-2-ernunes@redhat.com>
+Message-Id: <20230626164708.1163239-3-ernunes@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/virtio-gpu.h |  2 ++
- hw/display/virtio-gpu-base.c   | 17 +++++++++++++++++
- hw/display/virtio-gpu.c        | 20 +-------------------
- 3 files changed, 20 insertions(+), 19 deletions(-)
+ docs/interop/vhost-user-gpu.rst | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 7a5f8056ea..7ea8ae2bee 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -242,6 +242,8 @@ void virtio_gpu_base_reset(VirtIOGPUBase *g);
- void virtio_gpu_base_fill_display_info(VirtIOGPUBase *g,
-                         struct virtio_gpu_resp_display_info *dpy_info);
+diff --git a/docs/interop/vhost-user-gpu.rst b/docs/interop/vhost-user-gpu.rst
+index 1640553729..b78806892d 100644
+--- a/docs/interop/vhost-user-gpu.rst
++++ b/docs/interop/vhost-user-gpu.rst
+@@ -124,6 +124,16 @@ VhostUserGpuDMABUFScanout
+ :fourcc: ``i32``, the DMABUF fourcc
  
-+void virtio_gpu_base_generate_edid(VirtIOGPUBase *g, int scanout,
-+                                   struct virtio_gpu_resp_edid *edid);
- /* virtio-gpu.c */
- void virtio_gpu_ctrl_response(VirtIOGPU *g,
-                               struct virtio_gpu_ctrl_command *cmd,
-diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
-index a29f191aa8..7ab7d08d0a 100644
---- a/hw/display/virtio-gpu-base.c
-+++ b/hw/display/virtio-gpu-base.c
-@@ -17,6 +17,7 @@
- #include "migration/blocker.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-+#include "hw/display/edid.h"
- #include "trace.h"
  
- void
-@@ -51,6 +52,22 @@ virtio_gpu_base_fill_display_info(VirtIOGPUBase *g,
-     }
- }
- 
-+void
-+virtio_gpu_base_generate_edid(VirtIOGPUBase *g, int scanout,
-+                              struct virtio_gpu_resp_edid *edid)
-+{
-+    qemu_edid_info info = {
-+        .width_mm = g->req_state[scanout].width_mm,
-+        .height_mm = g->req_state[scanout].height_mm,
-+        .prefx = g->req_state[scanout].width,
-+        .prefy = g->req_state[scanout].height,
-+        .refresh_rate = g->req_state[scanout].refresh_rate,
-+    };
++VhostUserGpuEdidRequest
++^^^^^^^^^^^^^^^^^^^^^^^
 +
-+    edid->size = cpu_to_le32(sizeof(edid->edid));
-+    qemu_edid_generate(edid->edid, sizeof(edid->edid), &info);
-+}
+++------------+
++| scanout-id |
+++------------+
 +
- static void virtio_gpu_invalidate_display(void *opaque)
- {
- }
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 347e17d490..befa7d6d78 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -24,7 +24,6 @@
- #include "hw/virtio/virtio-gpu-bswap.h"
- #include "hw/virtio/virtio-gpu-pixman.h"
- #include "hw/virtio/virtio-bus.h"
--#include "hw/display/edid.h"
- #include "hw/qdev-properties.h"
- #include "qemu/log.h"
- #include "qemu/module.h"
-@@ -207,23 +206,6 @@ void virtio_gpu_get_display_info(VirtIOGPU *g,
-                              sizeof(display_info));
- }
++:scanout-id: ``u32``, the scanout to get edid from
++
++
+ C structure
+ -----------
  
--static void
--virtio_gpu_generate_edid(VirtIOGPU *g, int scanout,
--                         struct virtio_gpu_resp_edid *edid)
--{
--    VirtIOGPUBase *b = VIRTIO_GPU_BASE(g);
--    qemu_edid_info info = {
--        .width_mm = b->req_state[scanout].width_mm,
--        .height_mm = b->req_state[scanout].height_mm,
--        .prefx = b->req_state[scanout].width,
--        .prefy = b->req_state[scanout].height,
--        .refresh_rate = b->req_state[scanout].refresh_rate,
--    };
--
--    edid->size = cpu_to_le32(sizeof(edid->edid));
--    qemu_edid_generate(edid->edid, sizeof(edid->edid), &info);
--}
--
- void virtio_gpu_get_edid(VirtIOGPU *g,
-                          struct virtio_gpu_ctrl_command *cmd)
- {
-@@ -242,7 +224,7 @@ void virtio_gpu_get_edid(VirtIOGPU *g,
-     trace_virtio_gpu_cmd_get_edid(get_edid.scanout);
-     memset(&edid, 0, sizeof(edid));
-     edid.hdr.type = VIRTIO_GPU_RESP_OK_EDID;
--    virtio_gpu_generate_edid(g, get_edid.scanout, &edid);
-+    virtio_gpu_base_generate_edid(VIRTIO_GPU_BASE(g), get_edid.scanout, &edid);
-     virtio_gpu_ctrl_response(g, cmd, &edid.hdr, sizeof(edid));
- }
+@@ -141,6 +151,8 @@ In QEMU the vhost-user-gpu message is implemented with the following struct:
+           VhostUserGpuScanout scanout;
+           VhostUserGpuUpdate update;
+           VhostUserGpuDMABUFScanout dmabuf_scanout;
++          VhostUserGpuEdidRequest edid_req;
++          struct virtio_gpu_resp_edid resp_edid;
+           struct virtio_gpu_resp_display_info display_info;
+           uint64_t u64;
+       } payload;
+@@ -149,10 +161,11 @@ In QEMU the vhost-user-gpu message is implemented with the following struct:
+ Protocol features
+ -----------------
  
+-None yet.
++.. code:: c
+ 
+-As the protocol may need to evolve, new messages and communication
+-changes are negotiated thanks to preliminary
++  #define VHOST_USER_GPU_PROTOCOL_F_EDID 0
++
++New messages and communication changes are negotiated thanks to the
+ ``VHOST_USER_GPU_GET_PROTOCOL_FEATURES`` and
+ ``VHOST_USER_GPU_SET_PROTOCOL_FEATURES`` requests.
+ 
+@@ -241,3 +254,12 @@ Message types
+   Note: there is no data payload, since the scanout is shared thanks
+   to DMABUF, that must have been set previously with
+   ``VHOST_USER_GPU_DMABUF_SCANOUT``.
++
++``VHOST_USER_GPU_GET_EDID``
++  :id: 11
++  :request payload: ``struct VhostUserGpuEdidRequest``
++  :reply payload: ``struct virtio_gpu_resp_edid`` (from virtio specification)
++
++  Retrieve the EDID data for a given scanout.
++  This message requires the ``VHOST_USER_GPU_PROTOCOL_F_EDID`` protocol
++  feature to be supported.
 -- 
 MST
 
