@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F4F874DEFE
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 22:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB8574DF46
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 22:29:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIxIU-0001U6-D8; Mon, 10 Jul 2023 16:15:50 -0400
+	id 1qIxUk-0004UG-Nn; Mon, 10 Jul 2023 16:28:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIxIR-0001TK-Hh
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:15:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIxUi-0004Tq-61
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:28:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIxIQ-0005ed-03
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:15:47 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIxUd-0001RA-QE
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:28:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689020144;
+ s=mimecast20190719; t=1689020902;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=v5Pv3CgfzkkT7rilm0tBJGNo2aPft2S9/Hpo6fIjjks=;
- b=jCnvR7nVxii1QdI5QVbitT04GKuho4WUzGFTpAw7KE0q5zK5QsybLTBR8amIS7MxxNZO9F
- SO7CTfCf/504BUaQ+VpnHuaEFDkkdnzW5XqchEtxVg26IHVfy2FuM1NJXf2wsIvqCUclVd
- ojVMsQQrsOdVqkfzovKXxO3zx60hGOE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jkwGuIFG1SK+UCnr46kX8hPtrp2iQsEAiNCq9TRDIhw=;
+ b=eUNu67+Th9yBeskfA3tX5FMsgAnMFgJFpYndF5hCdtaqXWLTBduWzcaeC6wjNWIcQJGfxB
+ xJQbjpTJcWZHn37AwrI/0UiE7r8o9oU7d/40IGxEnoO1JQLv0g8IlR/t+0+lwpoKGdLWGx
+ TyG6PFgBKAdSTMIt1KCNxPEyiTQLm10=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-hxeWbv_uMbWwoubFecZZAA-1; Mon, 10 Jul 2023 16:15:43 -0400
-X-MC-Unique: hxeWbv_uMbWwoubFecZZAA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fbb0c01e71so29194515e9.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 13:15:42 -0700 (PDT)
+ us-mta-226-MzhAU94kNSeQiX7sRQxTcg-1; Mon, 10 Jul 2023 16:28:20 -0400
+X-MC-Unique: MzhAU94kNSeQiX7sRQxTcg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3fb416d7731so28049225e9.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 13:28:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689020142; x=1691612142;
+ d=1e100.net; s=20221208; t=1689020899; x=1691612899;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v5Pv3CgfzkkT7rilm0tBJGNo2aPft2S9/Hpo6fIjjks=;
- b=REahznP4ie9EsaO27thhZmMZccNWOii9IMCDarb+D5T3Uq0yhr1hBuJka4hPfe/cSS
- q7W2HZyPgwiXa01QJqS2cw9IxqdRG6JqC7vBHEJO9e3arH0OQK7guNuGygXyTnkunbiY
- ESCYkJtR5HRmlRYpp9utCdlpgHzdO5DIxDWRBinEmhvNnSo/r7KjZwm1bcKl3vLGXf9Z
- G1Od3ngCdnIB/f/TyX1s9fCu9XuykEz8U7AJSZJngK7KQ+1/9IX7oEQ8agePBufzRahl
- rrb66wZJ8Bz6GT0oxoi+euwHBiHK6IWeBdwkb2ocbzv4xq1ZdC0tMwkwGQHa0QAeoYfi
- jAWg==
-X-Gm-Message-State: ABy/qLbcEf/irill/IzE+iuUvNOpokzbmjWGpKF0ZMHLNJFPN6RxdOTD
- ntnhhN2ZrF0YRoCU4XUQRA+/HNcOx/ivFl+nehM1upybCDfPYMGlGk0ncNby015ofLUjakUIdOR
- 0ObeplYUD0JWQMYo=
-X-Received: by 2002:a1c:7c17:0:b0:3fb:4055:1ddd with SMTP id
- x23-20020a1c7c17000000b003fb40551dddmr11146630wmc.28.1689020142142; 
- Mon, 10 Jul 2023 13:15:42 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFtNsi5W/l7Zk9a1yx4fr6PdSypvrsDJWFK9gzoFUju1iodVJkQ710XHJE8LF+dgVUtXekE5Q==
-X-Received: by 2002:a1c:7c17:0:b0:3fb:4055:1ddd with SMTP id
- x23-20020a1c7c17000000b003fb40551dddmr11146614wmc.28.1689020141814; 
- Mon, 10 Jul 2023 13:15:41 -0700 (PDT)
+ bh=jkwGuIFG1SK+UCnr46kX8hPtrp2iQsEAiNCq9TRDIhw=;
+ b=clcPeezIg1HpuuRo39+KMpG3n6jXbo549Zfk+Iz45IYd9HeObZsWFaD7RlYg4XxZjF
+ iSEVUYSHQnW2SqkozaWJY0YrorUJLzuVlIIekzPz0Sxk4nh32eExuyzDY8ORqct+75Al
+ ohclklMG0CMgDQUtaLPLuXw9/q6DoXSiYVMw5uhRD5f4fdLDnOLbHYkEubBtyUwwPEo7
+ qlG4za684C87DAPnC5Bs9aaY4K/2seNt3idwZpdne3pEzp+WSfpmxf82krQMC0rGEVL/
+ lZePXHA/Fr3t63KWNE92hyhMeX73M2b87DOswwjA+qsHq1VIxi4SauXeUiqxh3U8i3yF
+ zmEQ==
+X-Gm-Message-State: ABy/qLbUxpu3ABdHrA9Dbufqf4HSvwzl4LAkOGzUGDlCphXeRPosGSMI
+ OQ/gJ+ea84/ABNi/CgQN+xa2Oz5xMqIERv8iBO85vtIcR9CCrY3CeTLU6QdNuxr6hwhMKj/ddbl
+ msV9AzR0lsVdwQ2I=
+X-Received: by 2002:a7b:ca56:0:b0:3f9:b7cc:723 with SMTP id
+ m22-20020a7bca56000000b003f9b7cc0723mr12503517wml.21.1689020899671; 
+ Mon, 10 Jul 2023 13:28:19 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFn9MJIGZ5J7zvoOUSlngeHqYdlX4r3C3gtIWEX/wGiS84dSbvt+bv7qqt7jwtSoAbn/5mCyA==
+X-Received: by 2002:a7b:ca56:0:b0:3f9:b7cc:723 with SMTP id
+ m22-20020a7bca56000000b003f9b7cc0723mr12503501wml.21.1689020899294; 
+ Mon, 10 Jul 2023 13:28:19 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- 18-20020a05600c025200b003fbca942499sm11105118wmj.14.2023.07.10.13.15.38
+ 12-20020a05600c020c00b003f819faff24sm11271958wmi.40.2023.07.10.13.28.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 13:15:41 -0700 (PDT)
-Date: Mon, 10 Jul 2023 16:15:36 -0400
+ Mon, 10 Jul 2023 13:28:18 -0700 (PDT)
+Date: Mon, 10 Jul 2023 16:28:14 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>,
- Erik Schilling <erik.schilling@linaro.org>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Eduardo Habkost <eduardo@habkost.net>, Fam Zheng <fam@euphon.net>,
- virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PATCH v3 07/20] virtio: add vhost-user-base and a generic
- vhost-user-device
-Message-ID: <20230710161447-mutt-send-email-mst@kernel.org>
-References: <20230710153522.3469097-1-alex.bennee@linaro.org>
- <20230710153522.3469097-8-alex.bennee@linaro.org>
+To: Jiqian Chen <Jiqian.Chen@amd.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+ Jan Beulich <jbeulich@suse.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>, qemu-devel@nongnu.org,
+ xen-devel@lists.xenproject.org, Alex Deucher <Alexander.Deucher@amd.com>,
+ Christian Koenig <Christian.Koenig@amd.com>,
+ Stewart Hildebrand <Stewart.Hildebrand@amd.com>,
+ Xenia Ragiadakou <burzalodowa@gmail.com>,
+ Honglei Huang <Honglei1.Huang@amd.com>,
+ Julia Zhang <Julia.Zhang@amd.com>, Huang Rui <Ray.Huang@amd.com>
+Subject: Re: [QEMU PATCH v2 1/1] virtgpu: do not destroy resources when guest
+ suspend
+Message-ID: <20230710162702-mutt-send-email-mst@kernel.org>
+References: <20230630070016.841459-1-Jiqian.Chen@amd.com>
+ <20230630070016.841459-2-Jiqian.Chen@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230710153522.3469097-8-alex.bennee@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+In-Reply-To: <20230630070016.841459-2-Jiqian.Chen@amd.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,7 +94,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,40 +110,308 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> +static const TypeInfo vud_info = {
-> +    .name = TYPE_VHOST_USER_DEVICE,
-> +    .parent = TYPE_VHOST_USER_BASE,
-> +    .instance_size = sizeof(VHostUserBase),
-> +    .class_init = vud_class_init,
-> +    .class_size = sizeof(VHostUserBaseClass),
+On Fri, Jun 30, 2023 at 03:00:16PM +0800, Jiqian Chen wrote:
+> After suspending and resuming guest VM, you will get
+> a black screen, and the display can't come back.
+> 
+> This is because when guest did suspending, it called
+> into qemu to call virtio_gpu_gl_reset. In function
+> virtio_gpu_gl_reset, it destroyed resources and reset
+> renderer, which were used for display. As a result,
+> guest's screen can't come back to the time when it was
+> suspended and only showed black.
+> 
+> So, this patch adds a new ctrl message
+> VIRTIO_GPU_CMD_STATUS_FREEZING to get notification from
+> guest. If guest is during suspending, it sets freezing
+> status of virtgpu to true, this will prevent destroying
+> resources and resetting renderer when guest calls into
+> virtio_gpu_gl_reset. If guest is during resuming, it sets
+> freezing to false, and then virtio_gpu_gl_reset will keep
+> its origin actions and has no other impaction.
+> 
+> Due to this implemention needs cooperation with guest, so
+> it added a new feature flag VIRTIO_GPU_F_FREEZING, so
+> that guest and host can negotiate whenever freezing is
+> supported or not.
+> 
+> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+> ---
+>  hw/display/virtio-gpu-base.c                |  3 ++
+>  hw/display/virtio-gpu-gl.c                  |  9 +++-
+>  hw/display/virtio-gpu-virgl.c               |  7 +++
+>  hw/display/virtio-gpu.c                     | 52 ++++++++++++++++++++-
+>  hw/virtio/virtio.c                          |  3 ++
+>  include/hw/virtio/virtio-gpu.h              |  6 +++
+>  include/standard-headers/linux/virtio_gpu.h | 15 ++++++
+>  7 files changed, 92 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
+> index a29f191aa8..d55dc8fdfc 100644
+> --- a/hw/display/virtio-gpu-base.c
+> +++ b/hw/display/virtio-gpu-base.c
+> @@ -215,6 +215,9 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, uint64_t features,
+>      if (virtio_gpu_blob_enabled(g->conf)) {
+>          features |= (1 << VIRTIO_GPU_F_RESOURCE_BLOB);
+>      }
+> +    if (virtio_gpu_freezing_enabled(g->conf)) {
+> +        features |= (1 << VIRTIO_GPU_F_FREEZING);
+> +    }
+>  
+>      return features;
+>  }
+> diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
+> index e06be60dfb..de108f1502 100644
+> --- a/hw/display/virtio-gpu-gl.c
+> +++ b/hw/display/virtio-gpu-gl.c
+> @@ -100,7 +100,14 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)
+>       */
+>      if (gl->renderer_inited && !gl->renderer_reset) {
+>          virtio_gpu_virgl_reset_scanout(g);
+> -        gl->renderer_reset = true;
+> +        /*
+> +         * If guest is suspending, we shouldn't reset renderer,
+> +         * otherwise, the display can't come back to the time when
+> +         * it was suspended after guest resumed.
+> +         */
+> +        if (!virtio_gpu_freezing_enabled(g->parent_obj.conf) || !g->freezing) {
+> +            gl->renderer_reset = true;
+> +        }
+>      }
+>  }
+>  
+> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+> index 73cb92c8d5..547c4d98ad 100644
+> --- a/hw/display/virtio-gpu-virgl.c
+> +++ b/hw/display/virtio-gpu-virgl.c
+> @@ -464,6 +464,13 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
+>      case VIRTIO_GPU_CMD_GET_EDID:
+>          virtio_gpu_get_edid(g, cmd);
+>          break;
+> +    case VIRTIO_GPU_CMD_STATUS_FREEZING:
+> +        if (virtio_gpu_freezing_enabled(g->parent_obj.conf)) {
+> +            virtio_gpu_cmd_status_freezing(g, cmd);
+> +        } else {
+> +            cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
+> +        }
+> +        break;
+>      default:
+>          cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
+>          break;
+> diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+> index 5e15c79b94..54a5e2e57c 100644
+> --- a/hw/display/virtio-gpu.c
+> +++ b/hw/display/virtio-gpu.c
+> @@ -373,6 +373,16 @@ static void virtio_gpu_resource_create_blob(VirtIOGPU *g,
+>      QTAILQ_INSERT_HEAD(&g->reslist, res, next);
+>  }
+>  
+> +void virtio_gpu_cmd_status_freezing(VirtIOGPU *g,
+> +                         struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    struct virtio_gpu_status_freezing sf;
+> +
+> +    VIRTIO_GPU_FILL_CMD(sf);
+> +    virtio_gpu_bswap_32(&sf, sizeof(sf));
+> +    g->freezing = sf.freezing;
+> +}
+> +
+>  static void virtio_gpu_disable_scanout(VirtIOGPU *g, int scanout_id)
+>  {
+>      struct virtio_gpu_scanout *scanout = &g->parent_obj.scanout[scanout_id];
+> @@ -986,6 +996,13 @@ void virtio_gpu_simple_process_cmd(VirtIOGPU *g,
+>      case VIRTIO_GPU_CMD_RESOURCE_DETACH_BACKING:
+>          virtio_gpu_resource_detach_backing(g, cmd);
+>          break;
+> +    case VIRTIO_GPU_CMD_STATUS_FREEZING:
+> +        if (virtio_gpu_freezing_enabled(g->parent_obj.conf)) {
+> +            virtio_gpu_cmd_status_freezing(g, cmd);
+> +        } else {
+> +            cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
+> +        }
+> +        break;
+>      default:
+>          cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
+>          break;
+> @@ -1344,6 +1361,27 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
+>      QTAILQ_INIT(&g->reslist);
+>      QTAILQ_INIT(&g->cmdq);
+>      QTAILQ_INIT(&g->fenceq);
+> +
+> +    g->freezing = false;
+> +}
+> +
+> +static void virtio_gpu_device_unrealize(DeviceState *qdev)
+> +{
+> +    VirtIOGPU *g = VIRTIO_GPU(qdev);
+> +    struct virtio_gpu_simple_resource *res, *tmp;
+> +
+> +    /*
+> +     * This is to prevent memory leak in the situation that qemu is
+> +     * destroyed when guest is suspended. This also need hot-plug
+> +     * support.
+> +     */
+> +    if (virtio_gpu_freezing_enabled(g->parent_obj.conf) && g->freezing) {
+> +        QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
+> +            virtio_gpu_resource_destroy(g, res);
+> +        }
+> +        virtio_gpu_virgl_reset(g);
+> +    }
+> +
+>  }
+>  
+>  void virtio_gpu_reset(VirtIODevice *vdev)
+> @@ -1352,8 +1390,15 @@ void virtio_gpu_reset(VirtIODevice *vdev)
+>      struct virtio_gpu_simple_resource *res, *tmp;
+>      struct virtio_gpu_ctrl_command *cmd;
+>  
+> -    QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
+> -        virtio_gpu_resource_destroy(g, res);
+> +    /*
+> +     * If guest is suspending, we shouldn't destroy resources,
+> +     * otherwise, the display can't come back to the time when
+> +     * it was suspended after guest resumed.
+> +     */
+> +    if (!virtio_gpu_freezing_enabled(g->parent_obj.conf) || !g->freezing) {
+> +        QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
+> +            virtio_gpu_resource_destroy(g, res);
+> +        }
+>      }
+>  
+>      while (!QTAILQ_EMPTY(&g->cmdq)) {
+> @@ -1425,6 +1470,8 @@ static Property virtio_gpu_properties[] = {
+>                       256 * MiB),
+>      DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
+>                      VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
+> +    DEFINE_PROP_BIT("freezing", VirtIOGPU, parent_obj.conf.flags,
+> +                    VIRTIO_GPU_FLAG_FREEZING_ENABLED, false),
+>      DEFINE_PROP_END_OF_LIST(),
+>  };
+>  
+> @@ -1441,6 +1488,7 @@ static void virtio_gpu_class_init(ObjectClass *klass, void *data)
+>      vgbc->gl_flushed = virtio_gpu_handle_gl_flushed;
+>  
+>      vdc->realize = virtio_gpu_device_realize;
+> +    vdc->unrealize = virtio_gpu_device_unrealize;
+>      vdc->reset = virtio_gpu_reset;
+>      vdc->get_config = virtio_gpu_get_config;
+>      vdc->set_config = virtio_gpu_set_config;
+> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+> index eb6347ab5d..e2ccf50a9e 100644
+> --- a/hw/virtio/virtio.c
+> +++ b/hw/virtio/virtio.c
+> @@ -240,6 +240,9 @@ qmp_virtio_feature_map_t virtio_gpu_feature_map[] = {
+>      FEATURE_ENTRY(VIRTIO_GPU_F_CONTEXT_INIT, \
+>              "VIRTIO_GPU_F_CONTEXT_INIT: Context types and synchronization "
+>              "timelines supported"),
+> +    FEATURE_ENTRY(VIRTIO_GPU_F_FREEZING, \
+> +            "VIRTIO_GPU_F_FREEZING: Freezing virtio-gpu and keeping resources"
+> +            "alive is supported."),
+>      FEATURE_ENTRY(VHOST_F_LOG_ALL, \
+>              "VHOST_F_LOG_ALL: Logging write descriptors supported"),
+>      FEATURE_ENTRY(VHOST_USER_F_PROTOCOL_FEATURES, \
+> diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+> index 2e28507efe..53e06e47cb 100644
+> --- a/include/hw/virtio/virtio-gpu.h
+> +++ b/include/hw/virtio/virtio-gpu.h
+> @@ -90,6 +90,7 @@ enum virtio_gpu_base_conf_flags {
+>      VIRTIO_GPU_FLAG_EDID_ENABLED,
+>      VIRTIO_GPU_FLAG_DMABUF_ENABLED,
+>      VIRTIO_GPU_FLAG_BLOB_ENABLED,
+> +    VIRTIO_GPU_FLAG_FREEZING_ENABLED,
+>  };
+>  
+>  #define virtio_gpu_virgl_enabled(_cfg) \
+> @@ -102,6 +103,8 @@ enum virtio_gpu_base_conf_flags {
+>      (_cfg.flags & (1 << VIRTIO_GPU_FLAG_DMABUF_ENABLED))
+>  #define virtio_gpu_blob_enabled(_cfg) \
+>      (_cfg.flags & (1 << VIRTIO_GPU_FLAG_BLOB_ENABLED))
+> +#define virtio_gpu_freezing_enabled(_cfg) \
+> +    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_FREEZING_ENABLED))
+>  
+>  struct virtio_gpu_base_conf {
+>      uint32_t max_outputs;
+> @@ -173,6 +176,7 @@ struct VirtIOGPU {
+>  
+>      uint64_t hostmem;
+>  
+> +    bool freezing;
+>      bool processing_cmdq;
+>      QEMUTimer *fence_poll;
+>      QEMUTimer *print_stats;
+> @@ -284,5 +288,7 @@ void virtio_gpu_virgl_reset_scanout(VirtIOGPU *g);
+>  void virtio_gpu_virgl_reset(VirtIOGPU *g);
+>  int virtio_gpu_virgl_init(VirtIOGPU *g);
+>  int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g);
+> +void virtio_gpu_cmd_status_freezing(VirtIOGPU *g,
+> +                         struct virtio_gpu_ctrl_command *cmd);
+>  
+>  #endif
+> diff --git a/include/standard-headers/linux/virtio_gpu.h b/include/standard-headers/linux/virtio_gpu.h
+> index 2da48d3d4c..cc9286b30e 100644
+> --- a/include/standard-headers/linux/virtio_gpu.h
+> +++ b/include/standard-headers/linux/virtio_gpu.h
+> @@ -65,6 +65,11 @@
+>   */
+>  #define VIRTIO_GPU_F_CONTEXT_INIT        4
+>  
+> +/*
+> + * VIRTIO_GPU_CMD_STATUS_FREEZING
+> + */
+> +#define VIRTIO_GPU_F_FREEZING            5
+> +
+>  enum virtio_gpu_ctrl_type {
+>  	VIRTIO_GPU_UNDEFINED = 0,
+>  
+> @@ -100,6 +105,9 @@ enum virtio_gpu_ctrl_type {
+>  	VIRTIO_GPU_CMD_UPDATE_CURSOR = 0x0300,
+>  	VIRTIO_GPU_CMD_MOVE_CURSOR,
+>  
+> +	/* status */
+> +	VIRTIO_GPU_CMD_STATUS_FREEZING = 0x0400,
+> +
+>  	/* success responses */
+>  	VIRTIO_GPU_RESP_OK_NODATA = 0x1100,
+>  	VIRTIO_GPU_RESP_OK_DISPLAY_INFO,
+> @@ -116,6 +124,7 @@ enum virtio_gpu_ctrl_type {
+>  	VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID,
+>  	VIRTIO_GPU_RESP_ERR_INVALID_CONTEXT_ID,
+>  	VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER,
+> +
+>  };
+>  
 
-I wish you didn't tie the refactoring in with new functionality.
-I applied but blocked creating these for now with:
 
-Subject: [PATCH] vhost-user-device: block creating instances
-Message-Id: <b10d1e585adf8a5348bd886333a8c55dcdef6048.1689020067.git.mst@redhat.com>
+???
 
-block this until we are ready to commit to this command line.
+>  enum virtio_gpu_shm_id {
+> @@ -453,4 +462,10 @@ struct virtio_gpu_resource_unmap_blob {
+>  	uint32_t padding;
+>  };
+>  
+> +/* VIRTIO_GPU_CMD_STATUS_FREEZING */
+> +struct virtio_gpu_status_freezing {
+> +	struct virtio_gpu_ctrl_hdr hdr;
+> +	__u32 freezing;
+> +};
+> +
 
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/virtio/vhost-user-device.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/hw/virtio/vhost-user-device.c b/hw/virtio/vhost-user-device.c
-index 2b028cae08..ded97b6d70 100644
---- a/hw/virtio/vhost-user-device.c
-+++ b/hw/virtio/vhost-user-device.c
-@@ -369,6 +369,7 @@ static const TypeInfo vud_info = {
-     .instance_size = sizeof(VHostUserBase),
-     .class_init = vud_class_init,
-     .class_size = sizeof(VHostUserBaseClass),
-+    .abstract = true
- };
+Fails build on mingw:
 
- static void vu_register_types(void)
+/scm/qemu/include/standard-headers/linux/virtio_gpu.h:468:9: error: unknown type name '__u32'
+  468 |         __u32 freezing;
+      |         ^~~~~
 
--- 
-MST
+
+Reason is you are not supposed to edit this directly: it has to be edited
+in linux then we import it.
+
+
+
+
+>  #endif
+> -- 
+> 2.34.1
 
 
