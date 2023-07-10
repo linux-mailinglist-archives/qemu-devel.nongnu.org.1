@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627B074FD8A
+	by mail.lfdr.de (Postfix) with ESMTPS id 89CF974FD8B
 	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 05:14:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJQHg-0008Ny-RF; Tue, 11 Jul 2023 23:12:56 -0400
+	id 1qJQHg-0008NS-2a; Tue, 11 Jul 2023 23:12:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
- id 1qJQHc-0008N0-Ay
+ id 1qJQHb-0008Mx-Uu
  for qemu-devel@nongnu.org; Tue, 11 Jul 2023 23:12:52 -0400
 Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
- id 1qJQHV-0002Oq-Jl
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 23:12:52 -0400
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+ id 1qJQHV-0002Op-Jh
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 23:12:51 -0400
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
  by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36C2juXU004535; Wed, 12 Jul 2023 03:12:41 GMT
+ 36C2RLin031131; Wed, 12 Jul 2023 03:12:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
  h=from : to : cc :
  subject : date : message-id : mime-version : content-transfer-encoding;
- s=qcppdkim1; bh=OcPIWmUbmI5mcM3tEJVRQOZTl45JMitBbuuoJvkSjlE=;
- b=PGWoTNJlUFxgoR5SxuM/0rf9JH2u7VmejNOIFZ4W3ZcmNWkquiOL+dNc6vkiqbzPB30s
- xtKqOXVObOK9fgmzXpY+sFh51mJKFyrUzdKp9T45OmhSymXie2RC8vPfc7QC+aPKQFG+
- jUY1IcPiEvy7l76lgH7K2MLg4MWak7b7/hq7Y1Myc7dcZeGS5iCmhTh8lIaiU6NzkUmq
- mxX6dphov9gAkqT9p5CqhHj04arpUBT8fpH7ml+IFSHahu53eP5e6zxQjooMuIrsdoXG
- RVKKKa7fTSqkOzvyOZGLQl7jWxqIBozIvagGHXGntm9QoNzCrWnBlqzfVmZ0w4RfVjif ag== 
+ s=qcppdkim1; bh=O52jFOjTHJqO8Ji3CCK5I6t5YdXewP/nPbIoNTCh88M=;
+ b=WpJaJ+Xz4ffbjsEubdktMzUh+ji4P64FdqtQlj0DFPp/D1riIZ99732wMdVU+SY5FpXT
+ 1AehfmjWQGc7gD5GMHQUigV0BhfAJp6uGiCxQVhNMIJEowQkkfEMu/ZoaK7270KIiT/W
+ jlvHH9A6xZcPeeWU9jeMBZT8MUbC1++haLR9B5tndsP3Ely41p6GOGaYrRN+/SgwZEri
+ B8kcYQYUkk5OyLlUeuJFkgrLQZVwAobfEgZBD3+62M0d31Wr7XcAqsibSQR3qE5fq8xH
+ oy0JBCKjVSPO1lb2FDFtQihPGds6OFke3JWa7QibwLcqUbs6JpYFKNVYVkZlyvZeohlu sA== 
 Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
  [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rseqprg6a-1
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rser0rg6s-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 12 Jul 2023 03:12:40 +0000
 Received: from pps.filterd (NALASPPMTA05.qualcomm.com [127.0.0.1])
- by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 36C3CdCU025077; 
+ by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 36C384uW019420; 
  Wed, 12 Jul 2023 03:12:39 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
- by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 3rrpyeg698-1
+ by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 3rrpyeg699-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 12 Jul 2023 03:12:39 +0000
 Received: from NALASPPMTA05.qualcomm.com (NALASPPMTA05.qualcomm.com
  [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36C38wkw020707;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36C3AeXG023022;
  Wed, 12 Jul 2023 03:12:39 GMT
 Received: from hu-devc-sd-u20-a-1.qualcomm.com (hu-mathbern-lv.qualcomm.com
  [10.47.235.147])
- by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 36C3CdUW024921
+ by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 36C3Cdbx024924
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 12 Jul 2023 03:12:39 +0000
 Received: by hu-devc-sd-u20-a-1.qualcomm.com (Postfix, from userid 4229910)
- id F18D66325; Fri,  7 Jul 2023 09:06:40 -0300 (-03)
+ id F26B364E5; Mon, 10 Jul 2023 10:42:57 -0300 (-03)
 From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 To: qemu-devel@nongnu.org
-Cc: quic_mathbern@quicinc.com, bcain@quicinc.com, ltaylorsimpson@gmail.com,
- quic_mliebel@quicinc.com, richard.henderson@linaro.org
+Cc: bcain@quicinc.com, ltaylorsimpson@gmail.com, quic_mliebel@quicinc.com,
+ richard.henderson@linaro.org, quic_mathbern@quicinc.com
 Subject: [PATCH v3] Hexagon: move GETPC() calls to top level helpers
-Date: Fri,  7 Jul 2023 09:06:38 -0300
-Message-Id: <7101d252bf20bc6bfcb0d2ded9383d047f27b136.1688731504.git.quic_mathbern@quicinc.com>
+Date: Mon, 10 Jul 2023 10:42:55 -0300
+Message-Id: <7937f7ba4c24c3c56601ca5b5c57648679e2b510.1688995341.git.quic_mathbern@quicinc.com>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -69,17 +69,17 @@ X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
-X-Proofpoint-GUID: zNb_Mp4ZUoaZBdgL-PtSrhxf8j5pLJQV
-X-Proofpoint-ORIG-GUID: zNb_Mp4ZUoaZBdgL-PtSrhxf8j5pLJQV
+X-Proofpoint-GUID: SLF3d_LYOVESmNyKCpbwGQoUSr8RsmhC
+X-Proofpoint-ORIG-GUID: SLF3d_LYOVESmNyKCpbwGQoUSr8RsmhC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-11_14,2023-07-11_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0
- bulkscore=0 suspectscore=0 phishscore=0 mlxlogscore=999 clxscore=1015
- impostorscore=0 adultscore=0 malwarescore=0 priorityscore=1501 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2307120026
+ clxscore=1015
+ priorityscore=1501 malwarescore=0 adultscore=0 impostorscore=0 mlxscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=999
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307120026
 Received-SPF: pass client-ip=205.220.180.131;
  envelope-from=mathbern@qualcomm.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -17
@@ -114,7 +114,7 @@ As docs/devel/loads-stores.rst states:
 
 Let's fix the GETPC() usage in Hexagon, making sure it's always called
 from top level helpers and passed down to the places where it's
-needed. There are two snippets where that is not currently the case:
+needed. There are a few snippets where that is not currently the case:
 
 - probe_store(), which is only called from two helpers, so it's easy to
   move GETPC() up.
@@ -126,18 +126,20 @@ needed. There are two snippets where that is not currently the case:
   In this case, we also take this opportunity to simplify the code,
   unifying the mem_load*() functions.
 
+- HELPER(probe_hvx_stores), when called from another helper, ends up
+  using its own GETPC() expansion instead of the top level caller.
+
 Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 ---
 v2: https://lore.kernel.org/qemu-devel/93a2ca786530cbc8a94f7c7a6451f4f1f47c8a9b.1688581908.git.quic_mathbern@quicinc.com/
 
-Changes in v3: refactored fLOAD macro with 'do {...} while(0)' as
-suggested by Taylor and added his Reviewed-by.
+Changes in v3: also included fix for nested helper call in
+probe_hvx_stores, which I had missed in previous iterations.
 
- target/hexagon/macros.h    | 19 ++++++------
- target/hexagon/op_helper.h | 11 ++-----
- target/hexagon/op_helper.c | 62 +++++++++++---------------------------
- 3 files changed, 29 insertions(+), 63 deletions(-)
+ target/hexagon/macros.h    | 19 +++++-----
+ target/hexagon/op_helper.h | 11 ++----
+ target/hexagon/op_helper.c | 74 ++++++++++++++------------------------
+ 3 files changed, 38 insertions(+), 66 deletions(-)
 
 diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
 index 5451b061ee..dafa0df6ed 100644
@@ -200,7 +202,7 @@ index 8f3764d15e..7744e819ef 100644
                   int64_t val, int width, int slot);
  void log_store32(CPUHexagonState *env, target_ulong addr,
 diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
-index 12967ac21e..abc9fc4724 100644
+index 12967ac21e..1150178591 100644
 --- a/target/hexagon/op_helper.c
 +++ b/target/hexagon/op_helper.c
 @@ -95,9 +95,8 @@ void HELPER(debug_check_store_width)(CPUHexagonState *env, int slot, int check)
@@ -208,7 +210,7 @@ index 12967ac21e..abc9fc4724 100644
  }
  
 -void HELPER(commit_store)(CPUHexagonState *env, int slot_num)
-+static void commit_store(CPUHexagonState *env, int slot_num, uintptr_t ra)
++static inline void commit_store(CPUHexagonState *env, int slot_num, uintptr_t ra)
  {
 -    uintptr_t ra = GETPC();
      uint8_t width = env->mem_log_stores[slot_num].width;
@@ -243,7 +245,7 @@ index 12967ac21e..abc9fc4724 100644
      }
  }
  
-@@ -494,7 +498,8 @@ void HELPER(probe_pkt_scalar_store_s0)(CPUHexagonState *env, int args)
+@@ -494,12 +498,13 @@ void HELPER(probe_pkt_scalar_store_s0)(CPUHexagonState *env, int args)
      int mmu_idx = FIELD_EX32(args, PROBE_PKT_SCALAR_STORE_S0, MMU_IDX);
      bool is_predicated =
          FIELD_EX32(args, PROBE_PKT_SCALAR_STORE_S0, IS_PREDICATED);
@@ -252,8 +254,28 @@ index 12967ac21e..abc9fc4724 100644
 +    probe_store(env, 0, mmu_idx, is_predicated, ra);
  }
  
- void HELPER(probe_hvx_stores)(CPUHexagonState *env, int mmu_idx)
-@@ -547,12 +552,13 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
+-void HELPER(probe_hvx_stores)(CPUHexagonState *env, int mmu_idx)
++static inline void probe_hvx_stores(CPUHexagonState *env, int mmu_idx,
++                                    uintptr_t retaddr)
+ {
+-    uintptr_t retaddr = GETPC();
+     int i;
+ 
+     /* Normal (possibly masked) vector store */
+@@ -538,6 +543,12 @@ void HELPER(probe_hvx_stores)(CPUHexagonState *env, int mmu_idx)
+     }
+ }
+ 
++void HELPER(probe_hvx_stores)(CPUHexagonState *env, int mmu_idx)
++{
++    uintptr_t retaddr = GETPC();
++    probe_hvx_stores(env, mmu_idx, retaddr);
++}
++
+ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
+ {
+     bool has_st0 = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, HAS_ST0);
+@@ -547,15 +558,16 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
      bool s0_is_pred = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, S0_IS_PRED);
      bool s1_is_pred = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, S1_IS_PRED);
      int mmu_idx = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, MMU_IDX);
@@ -268,8 +290,12 @@ index 12967ac21e..abc9fc4724 100644
 +        probe_store(env, 1, mmu_idx, s1_is_pred, ra);
      }
      if (has_hvx_stores) {
-         HELPER(probe_hvx_stores)(env, mmu_idx);
-@@ -566,48 +572,16 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
+-        HELPER(probe_hvx_stores)(env, mmu_idx);
++        probe_hvx_stores(env, mmu_idx, ra);
+     }
+ }
+ 
+@@ -566,48 +578,16 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
   * If the load is in slot 0 and there is a store in slot1 (that
   * wasn't cancelled), we have to do the store first.
   */
