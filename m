@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AB674D513
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E7574D514
 	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:19:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIpoX-0000rv-Qv; Mon, 10 Jul 2023 08:16:25 -0400
+	id 1qIpod-0000tf-OP; Mon, 10 Jul 2023 08:16:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoE-0000lC-0H
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:06 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoF-0000mJ-6M
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoB-0003Qv-Qn
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:05 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoC-0003RZ-C1
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688991362;
+ s=mimecast20190719; t=1688991363;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8q9wyGYtWt6HFrbFfTQ4DP9eTVhCTiRGqRc/gf9Y9xk=;
- b=Me4TpayKPFUWTjUoB/AEztEtDNJ7//zSN2Nq/EmdtpjHQHZoOSkaZ9btj4bQDK3oxKgA5/
- niJpGFy01pO1uaOb7q0TT/bJct3q0fFOn1T9uZNWNwhFurZrFxOSV0L9bzCJsMYjrwY2xM
- X6Ll5pttvoRCpqOK9L5ZmQutKWm0IKY=
+ bh=tRn+nYWBLIc8gPki19vBLt67634zD8vshusVJvqYzn4=;
+ b=NEX5dr5151TgYIb+hDN4l1djfqxHdhv9Q4Ll2yAKZUcig2YiQwQCISKXAgC4Te96WJrKOw
+ fQJ0FLw9oP/VMv46RLbWNKf3DU/rRxEOanI541BRYdQ6EDzBz31hhmQzEChGgN44ux0Uqa
+ oxwlG2azeLLPd7rAeVO1fxFF/qsg16A=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-557-nxJx8Jn8NPCOIhLBT2KzNQ-1; Mon, 10 Jul 2023 08:16:00 -0400
-X-MC-Unique: nxJx8Jn8NPCOIhLBT2KzNQ-1
+ us-mta-589-Dvrzig9IP8qkrlpZhUiaYA-1; Mon, 10 Jul 2023 08:16:02 -0400
+X-MC-Unique: Dvrzig9IP8qkrlpZhUiaYA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6ED88380671D;
- Mon, 10 Jul 2023 12:16:00 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D20EB1C0513F;
+ Mon, 10 Jul 2023 12:16:01 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.206])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 65BD0F5CFA;
- Mon, 10 Jul 2023 12:15:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AEEDFF5CFA;
+ Mon, 10 Jul 2023 12:16:00 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>
-Subject: [PULL 10/21] tests/tcg/s390x: Test LARL with a large offset
-Date: Mon, 10 Jul 2023 14:15:32 +0200
-Message-Id: <20230710121543.197250-11-thuth@redhat.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PULL 11/21] tests/tcg/s390x: Test LRA
+Date: Mon, 10 Jul 2023 14:15:33 +0200
+Message-Id: <20230710121543.197250-12-thuth@redhat.com>
 In-Reply-To: <20230710121543.197250-1-thuth@redhat.com>
 References: <20230710121543.197250-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,54 +82,51 @@ From: Ilya Leoshkevich <iii@linux.ibm.com>
 Add a small test to prevent regressions.
 
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20230704081506.276055-10-iii@linux.ibm.com>
+Message-Id: <20230704081506.276055-11-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/tcg/s390x/larl.c          | 21 +++++++++++++++++++++
- tests/tcg/s390x/Makefile.target |  1 +
- 2 files changed, 22 insertions(+)
- create mode 100644 tests/tcg/s390x/larl.c
+ tests/tcg/s390x/Makefile.softmmu-target |  1 +
+ tests/tcg/s390x/lra.S                   | 19 +++++++++++++++++++
+ 2 files changed, 20 insertions(+)
+ create mode 100644 tests/tcg/s390x/lra.S
 
-diff --git a/tests/tcg/s390x/larl.c b/tests/tcg/s390x/larl.c
+diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
+index 44dfd71629..242c7b0f83 100644
+--- a/tests/tcg/s390x/Makefile.softmmu-target
++++ b/tests/tcg/s390x/Makefile.softmmu-target
+@@ -20,6 +20,7 @@ ASM_TESTS =                                                                    \
+     sam                                                                        \
+     lpsw                                                                       \
+     lpswe-early                                                                \
++    lra                                                                        \
+     ssm-early                                                                  \
+     stosm-early                                                                \
+     unaligned-lowcore
+diff --git a/tests/tcg/s390x/lra.S b/tests/tcg/s390x/lra.S
 new file mode 100644
-index 0000000000..7c95f89be7
+index 0000000000..79ab86f36b
 --- /dev/null
-+++ b/tests/tcg/s390x/larl.c
-@@ -0,0 +1,21 @@
-+/*
-+ * Test the LARL instruction.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <stdlib.h>
-+
-+int main(void)
-+{
-+    long algfi = (long)main;
-+    long larl;
-+
-+    /*
-+     * The compiler may emit larl for the C addition, so compute the expected
-+     * value using algfi.
-+     */
-+    asm("algfi %[r],0xd0000000" : [r] "+r" (algfi) : : "cc");
-+    asm("larl %[r],main+0xd0000000" : [r] "=r" (larl));
-+
-+    return algfi == larl ? EXIT_SUCCESS : EXIT_FAILURE;
-+}
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 2ef22c88d9..dbf64c991e 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -37,6 +37,7 @@ TESTS+=ex-relative-long
- TESTS+=ex-branch
- TESTS+=mxdb
- TESTS+=epsw
-+TESTS+=larl
- 
- cdsg: CFLAGS+=-pthread
- cdsg: LDFLAGS+=-pthread
++++ b/tests/tcg/s390x/lra.S
+@@ -0,0 +1,19 @@
++    .org 0x200                         /* lowcore padding */
++    .globl _start
++_start:
++    lgrl %r1,initial_r1
++    lra %r1,0(%r1)
++    cgrl %r1,expected_r1
++    jne 1f
++    lpswe success_psw
++1:
++    lpswe failure_psw
++    .align 8
++initial_r1:
++    .quad 0x8765432112345678
++expected_r1:
++    .quad 0x8765432180000038           /* ASCE type exception */
++success_psw:
++    .quad 0x2000000000000,0xfff        /* see is_special_wait_psw() */
++failure_psw:
++    .quad 0x2000000000000,0            /* disabled wait */
 -- 
 2.39.3
 
