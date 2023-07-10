@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 077B374E1D0
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 571CA74E1EC
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:08:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzvd-0008H0-Jd; Mon, 10 Jul 2023 19:04:25 -0400
+	id 1qIzve-0008NZ-Db; Mon, 10 Jul 2023 19:04:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzvV-0007wO-3P
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:04:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzvX-00080b-Ox
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:04:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzvT-0004Tf-Js
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:04:16 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzvW-0004U3-BT
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:04:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030254;
+ s=mimecast20190719; t=1689030257;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DsnG6X5s9gl0JGqrN3ljzYWE2z5sJ0pUx0PXwD0gJHI=;
- b=Tf0d8m6s6kXv6gWx7xzFv7SAgwpiYKhVdUyr/G3+nrPMwjemoW/N2a7kXmkcbOWINuTn1A
- DfoK3GDvrOeY4BSu8EyDprclvw1NkPB6Tu5Hky21vtUXaJldKmOB1AfJaGHET/YJHEq/0S
- i5vhkzvtx5xm5Sieftcw0fBtFVjwtxo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=O9A8NXPUZ1UAaZ4xg8XGvm2vrnKputB+kT4Xm8amg28=;
+ b=TrzF7LhVmjtXnNJZiCrVWRz2d9byVwiX+XwZ87OVSqFQP4mCKdL+KDvQnH7X8oLxr2bNBp
+ v+jBFwmenPwXKINz6VOJgm7yCn0jKlclvvdKyazmnHqVaxafiE25pPavh4Inkxeb2dCy9+
+ FWbNUgcPfj9qIIMLN7wwxLC1lULklyM=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-417-0lRwuUoWMv2eRDRWZyNIpw-1; Mon, 10 Jul 2023 19:04:13 -0400
-X-MC-Unique: 0lRwuUoWMv2eRDRWZyNIpw-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-314291caa91so2830055f8f.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:04:13 -0700 (PDT)
+ us-mta-556-nJRoKJvVO9yOSBYDPQ5oyg-1; Mon, 10 Jul 2023 19:04:16 -0400
+X-MC-Unique: nJRoKJvVO9yOSBYDPQ5oyg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fc0855dcc5so15721055e9.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:04:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030252; x=1691622252;
+ d=1e100.net; s=20221208; t=1689030255; x=1691622255;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DsnG6X5s9gl0JGqrN3ljzYWE2z5sJ0pUx0PXwD0gJHI=;
- b=DQs9B6TCtIMq37E/OGZaATguMyjqWaWN0mUkwwWYrE+2dXC4lUzJV3BsxmVSXzzzkg
- 5w2WBiQGt0XVN8rm6gGL4Jfu9PbjtDNBCfA9o0PEhsX5G1Ay0Lbw/uxaS2YcRWr11vi9
- i40yw8sbD9oAf9WsGLQ3Ttq8gZ0PbC+adRKr2PjhjHjvVR2QZGmPG8Hpw5daXkn5+EQj
- JDiQ+s8MI0jvRuUB5yrz7A7HYjOY3OIWh7QE9gO7tx5WHjl8UttOwlWnBV1OJu2w1MrR
- 3CKDIGoN/OYzEXy+lxu+kuoi18ERtg7ArLYv39WiinyLMaKoMaYTJH3Pe9MnE1pNdEY6
- 3Eqw==
-X-Gm-Message-State: ABy/qLaL+EswmGkTMEWhOqSz+HJrLnbVDLjYTCOlkN6Rs0rv2kkILRRp
- flWR6+JhhDQebt7z/hSt5+fZt3T5YRsPjFJpGJa2ivsOfDvQlH9q0lyXCelPruz5zUrpktKeEH2
- N1LRT3/fpJVpykVQyzRRxjqYRdv+XiMuoJXIiPJv26ku5X98ujD4LcINpALJXx8m7KLnb
-X-Received: by 2002:a05:6000:1b86:b0:314:34dd:aaec with SMTP id
- r6-20020a0560001b8600b0031434ddaaecmr13486286wru.8.1689030252275; 
- Mon, 10 Jul 2023 16:04:12 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGYMv9RdHe2vGbh2EP7bm8yf+2GKK3I6ZmwMeoiVOYWEUri7/dHpLViUI8VDKgLllGIu089cw==
-X-Received: by 2002:a05:6000:1b86:b0:314:34dd:aaec with SMTP id
- r6-20020a0560001b8600b0031434ddaaecmr13486265wru.8.1689030251961; 
- Mon, 10 Jul 2023 16:04:11 -0700 (PDT)
+ bh=O9A8NXPUZ1UAaZ4xg8XGvm2vrnKputB+kT4Xm8amg28=;
+ b=U7f3+MbDYnKcC9y/+TKdb2fgifS/9nPITIDANwvMWvMF7SavGOt2yUHDS4yr6ane+/
+ u4lejdla5PZRbINWyH4tIYrwayzcoAFiKe9ZHZc6GaG30f3dQiAdY5fcgKXOuzK7aNer
+ sWNuFDMd50HQr06BJo8BlQOxmK5WydmcHbCrMlJaPNmYgpRm2iV++YjyD6WeDJUIZ2O6
+ Bo2FyAtqQuv9xcJB5N0qWXYLuHRxLVtISSqA4Nbnpr+vCEvm9hcUOKLwKChMjh8XBSNA
+ YJOvOvfcqpouKIo/psRGtJjuYyxoEMcrmqjnyvzWt7SMF2lMsOx3aLF7CapLNLV6xra0
+ c1ng==
+X-Gm-Message-State: ABy/qLa1nZf3Y1zAHuG3tHKRMJDTCdK3EuxtkukxBO5TNrZc6QvmayE5
+ RHBNGb5WuIR9+1QoQCKmgupnASGJBTjjNu/6NvhWcL80fcjTRF25+7Kz0KLj8kNKARyGanMpqOw
+ p1OlJ36OM08NL7D6wpVUG9RFuqho7ljuwOcc9T2P6KC3E9uP35sH0kK2HbNWO5KIGluM7
+X-Received: by 2002:a05:600c:21cb:b0:3fb:b8a6:33f9 with SMTP id
+ x11-20020a05600c21cb00b003fbb8a633f9mr12950878wmj.0.1689030255143; 
+ Mon, 10 Jul 2023 16:04:15 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFo/aWJF/1VvEjOsT/dEI91F2r40j5IpMrKg+g/g9PyUU67tkD0G7OXABBETbz2CpIxWUvxPg==
+X-Received: by 2002:a05:600c:21cb:b0:3fb:b8a6:33f9 with SMTP id
+ x11-20020a05600c21cb00b003fbb8a633f9mr12950849wmj.0.1689030254754; 
+ Mon, 10 Jul 2023 16:04:14 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- x6-20020a5d6506000000b003143b14848dsm562689wru.102.2023.07.10.16.04.10
+ w18-20020a5d6812000000b0031416362e23sm610529wru.3.2023.07.10.16.04.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:04:11 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:04:09 -0400
+ Mon, 10 Jul 2023 16:04:14 -0700 (PDT)
+Date: Mon, 10 Jul 2023 19:04:12 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 36/66] pcie: Release references of virtual functions
-Message-ID: <08f632848008544b7e1ab8a8aa50df02c39a26a1.1689030052.git.mst@redhat.com>
+ Hawkins Jiawei <yin31149@gmail.com>, Jason Wang <jasowang@redhat.com>,
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Lei Yang <leiyang@redhat.com>
+Subject: [PULL 37/66] vdpa: Return -EIO if device ack is VIRTIO_NET_ERR in
+ _load_mac()
+Message-ID: <b479bc3c9d5e473553137641fd31069c251f0d6e.1689030052.git.mst@redhat.com>
 References: <cover.1689030052.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -77,7 +78,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1689030052.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,33 +103,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
 
-pci_new() automatically retains a reference to a virtual function when
-registering it so we need to release the reference when unregistering.
+According to VirtIO standard, "The class, command and
+command-specific-data are set by the driver,
+and the device sets the ack byte.
+There is little it can do except issue a diagnostic
+if ack is not VIRTIO_NET_OK."
 
-Fixes: 7c0fa8dff8 ("pcie: Add support for Single Root I/O Virtualization (SR/IOV)")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230411090408.48366-1-akihiko.odaki@daynix.com>
+Therefore, QEMU should stop sending the queued SVQ commands and
+cancel the device startup if the device's ack is not VIRTIO_NET_OK.
+
+Yet the problem is that, vhost_vdpa_net_load_mac() returns 1 based on
+`*s->status != VIRTIO_NET_OK` when the device's ack is VIRTIO_NET_ERR.
+As a result, net->nc->info->load() also returns 1, this makes
+vhost_net_start_one() incorrectly assume the device state is
+successfully loaded by vhost_vdpa_net_load() and return 0, instead of
+goto `fail` label to cancel the device startup, as vhost_net_start_one()
+only cancels the device startup when net->nc->info->load() returns a
+negative value.
+
+This patch fixes this problem by returning -EIO when the device's
+ack is not VIRTIO_NET_OK.
+
+Fixes: f73c0c43ac ("vdpa: extract vhost_vdpa_net_load_mac from vhost_vdpa_net_load")
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <a21731518644abbd0c495c5b7960527c5911f80d.1688438055.git.yin31149@gmail.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/pci/pcie_sriov.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/vhost-vdpa.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index aa5a757b11..76a3b6917e 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -211,6 +211,7 @@ static void unregister_vfs(PCIDevice *dev)
-             error_free(local_err);
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index c0e93ce568..345a301d62 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -652,8 +652,9 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n)
+         if (unlikely(dev_written < 0)) {
+             return dev_written;
          }
-         object_unparent(OBJECT(vf));
-+        object_unref(OBJECT(vf));
+-
+-        return *s->status != VIRTIO_NET_OK;
++        if (*s->status != VIRTIO_NET_OK) {
++            return -EIO;
++        }
      }
-     g_free(dev->exp.sriov_pf.vf);
-     dev->exp.sriov_pf.vf = NULL;
+ 
+     return 0;
 -- 
 MST
 
