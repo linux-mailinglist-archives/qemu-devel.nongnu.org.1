@@ -2,88 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B198774CF1B
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C436874CF27
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:53:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIlgj-0004u4-7h; Mon, 10 Jul 2023 03:52:05 -0400
+	id 1qIlht-0006XI-8v; Mon, 10 Jul 2023 03:53:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qIlgh-0004tZ-92
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:52:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qIlho-0006WV-Lq
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:53:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qIlgf-0007pU-LP
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:52:03 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qIlhl-00081r-2t
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:53:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688975520;
+ s=mimecast20190719; t=1688975588;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6qNKU6DKXTqchAoQDp3grfsPj7vrcxFn7uNM5QL9DWM=;
- b=AnS7G4gd+21u4bOVvofUOY254aamH8VMI6ovoLt491HbPrHLovZEr9XvLXWAGr5lC9VpxP
- 3+HlGj6VxHj7Yt1CqTis+fTjS6PQ16j9o7onXBTrJz/fTi5tqb6OcexYyuYPM/LTA89hCa
- 6CYB78DB0MZmU3/keEw56xseDH3AOiM=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ppCDH5s9hgdvzofUxaKiE1IEcHOw2l2o05wgjuQMJOI=;
+ b=iDZdef/g5w8BLwneivE7MulRWVf+1KQ6DFwWmi80vpZOahqh/yAA/q8b7k/7H6OcT/IfRb
+ djk22PTxfVEoNnxohvasf5Bi4wRhEmbDs2ec2c7ajhrfunMmSDWquhDWTalLyzpz/DQY1u
+ IkdrjxWVSV4l0Llkw/r0BYV5r52avCg=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-674-pmg0gVsKNn-hT_TrtvYG_Q-1; Mon, 10 Jul 2023 03:51:58 -0400
-X-MC-Unique: pmg0gVsKNn-hT_TrtvYG_Q-1
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-55b2ab496ecso4937500a12.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 00:51:58 -0700 (PDT)
+ us-mta-477-xvk_J70CNn-4pCiygDrqUA-1; Mon, 10 Jul 2023 03:53:07 -0400
+X-MC-Unique: xvk_J70CNn-4pCiygDrqUA-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-765986c0521so368268185a.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 00:53:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688975516; x=1691567516;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1688975586; x=1691567586;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6qNKU6DKXTqchAoQDp3grfsPj7vrcxFn7uNM5QL9DWM=;
- b=g2CBOXsv+4ieo+gyFNK7MBxFvr9cQd4saLC8yQcIBs52mcRV8sqd3nm8TOvxhSO+Hk
- QBQC8Nsr5GVi2lwvYrJQgh2Na8sE+1v/fVXiGeWsF8cXUUMcVjZnWSFCmmH9qmucRNBG
- tu1mKBmdEt1pIeA5zGZQ0Q8JN5ZdX/pHLt69lzodHeXyX1eG56H2Xi+EhlsIoWHCA19e
- 2jviMn2pO270ht6u0g2cSFkNP9kXvwaE5kpVIxJgr7EotJGKB2e6lPcsO7BiY/GutOmi
- nped87YoCycFDHiUFOW/vkvFt+pS9XcB63dzNgZzUJN1Uwl69o0LtMklau3Lp0zmDuWY
- Mj8Q==
-X-Gm-Message-State: ABy/qLZbLI+zC9NOyGZf3dqmEs5nEV7lZcpI35v5GpTWJFi4EE42u4yE
- 0U4VVIq28wMs/Tylz/GTO1xJ/3P2Mqp8QtPU0e4ZWZkzxy4kU0y3CWLFCUTudfGJF7NT31fUhL3
- /S5t6llnjbg99MJw=
-X-Received: by 2002:a05:6a20:a11f:b0:12e:4696:efbe with SMTP id
- q31-20020a056a20a11f00b0012e4696efbemr11893551pzk.50.1688975516511; 
- Mon, 10 Jul 2023 00:51:56 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFAQ8DlCCyuP1jDiw5sEamJpDmhKsdEro1TRxQYZ+11+oHaVo4fiy1ZKyQ9/+OVjtcUgDyEdA==
-X-Received: by 2002:a05:6a20:a11f:b0:12e:4696:efbe with SMTP id
- q31-20020a056a20a11f00b0012e4696efbemr11893537pzk.50.1688975516142; 
- Mon, 10 Jul 2023 00:51:56 -0700 (PDT)
-Received: from smtpclient.apple ([203.212.247.118])
- by smtp.gmail.com with ESMTPSA id
- y17-20020a170902b49100b001b54dcd84e2sm7535384plr.240.2023.07.10.00.51.52
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 10 Jul 2023 00:51:55 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v5 2/2] pcie: Specify 0 for ARI next function numbers
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230705022421.13115-3-akihiko.odaki@daynix.com>
-Date: Mon, 10 Jul 2023 13:21:50 +0530
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-block@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>
+ bh=ppCDH5s9hgdvzofUxaKiE1IEcHOw2l2o05wgjuQMJOI=;
+ b=WJExCe9wNc29QILguoFCsokPGi7vmUh85vq/hLAjZQBVuaqXbL38iMOrfjle6AcIGo
+ TRy94tp0Zy0XeokGP1xGlVNWwcEP/3gad/Y9fWjt+ijU4tJsHUMpaIF0JOqp5QUpIz03
+ qUqT5u+3YXYQG0xPvfEUxHjG3Ofs8jNfOWYRtftO1DUGlIoUTx+MGS9tE8gmkJ/kF2qv
+ wW6f6l9Hfvg7ZM7T6AS4eadyP3GIR7z7PZq5lP26KoksG2SIJT82XGTPQWm/cpP21muH
+ ASTsaa3+Czksni4djs6+i7Jm50w1GYSki8/NVkEe/H9964gpPQFnnlh/Sn203NsSekP8
+ C90Q==
+X-Gm-Message-State: ABy/qLaVK1PVEknj2tw4QZMf7DXQOuzJHREKnMyhkxbP6qy7Uc6Zt6U6
+ /bUcZfj32r+NZrjXzdaaKAKUORkkZ8xWdp8vfAg5JEFKS7SEB9g4ZuUysjOZDfnw0zaIC7hFZVV
+ HVJIfieoJnkn+gL+kac1D+ZcjB+voUDE=
+X-Received: by 2002:a37:f613:0:b0:767:2b0d:49e6 with SMTP id
+ y19-20020a37f613000000b007672b0d49e6mr9151592qkj.58.1688975586672; 
+ Mon, 10 Jul 2023 00:53:06 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHDlZv21Gk/3tmG6H52CaUVDXPiZPMiiKXAmj1HHs+wlDtJHHcqiObIaOPv7qGBzw07hr8LI/+ehGSImBmU4lo=
+X-Received: by 2002:a37:f613:0:b0:767:2b0d:49e6 with SMTP id
+ y19-20020a37f613000000b007672b0d49e6mr9151586qkj.58.1688975586469; Mon, 10
+ Jul 2023 00:53:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1688746840.git.yin31149@gmail.com>
+ <e3f2d7db477734afe5c6a5ab3fa8b8317514ea34.1688746840.git.yin31149@gmail.com>
+In-Reply-To: <e3f2d7db477734afe5c6a5ab3fa8b8317514ea34.1688746840.git.yin31149@gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 10 Jul 2023 09:52:30 +0200
+Message-ID: <CAJaqyWd2ExO3MByT-MYEowpBfw5_yGFr+QtxdmYyBduW-Pesmw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] vdpa: Fix possible use-after-free for VirtQueueElement
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-stable@nongnu.org, 
+ qemu-devel@nongnu.org, 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <E8241AB3-F645-4697-A5AC-9B6BC897B432@redhat.com>
-References: <20230705022421.13115-1-akihiko.odaki@daynix.com>
- <20230705022421.13115-3-akihiko.odaki@daynix.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -92,7 +80,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,97 +96,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-> On 05-Jul-2023, at 7:54 AM, Akihiko Odaki <akihiko.odaki@daynix.com> =
+On Fri, Jul 7, 2023 at 6:44=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com> =
 wrote:
->=20
-> The current implementers of ARI are all SR-IOV devices. The ARI next
-> function number field is undefined for VF according to PCI Express =
-Base
-> Specification Revision 5.0 Version 1.0 section 9.3.7.7. The PF should
-> end the linked list formed with the field by specifying 0 according to
-> section 7.8.7.2.
+>
+> QEMU uses vhost_handle_guest_kick() to forward guest's available
+> buffers to the vdpa device in SVQ avail ring.
+>
+> In vhost_handle_guest_kick(), a `g_autofree` `elem` is used to
+> iterate through the available VirtQueueElements. This `elem` is
+> then passed to `svq->ops->avail_handler`, specifically to the
+> vhost_vdpa_net_handle_ctrl_avail(). If this handler fails to
+> process the CVQ command, vhost_handle_guest_kick() regains
+> ownership of the `elem`, and either frees it or requeues it.
+>
+> Yet the problem is that, vhost_vdpa_net_handle_ctrl_avail()
+> mistakenly frees the `elem`, even if it fails to forward the
+> CVQ command to vdpa device. This can result in a use-after-free
+> for the `elem` in vhost_handle_guest_kick().
+>
+> This patch solves this problem by refactoring
+> vhost_vdpa_net_handle_ctrl_avail() to only freeing the `elem` if
+> it owns it.
+>
+> Fixes: bd907ae4b0 ("vdpa: manual forward CVQ buffers")
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 
-Section 7.8.7.2 ARI Capability Register (Offset 04h), I see only this
+Reviewed-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
-Next Function Number - This field indicates the Function Number of the =
-next higher numbered Function in the Device, or 00h if there are no =
-higher numbered Functions. Function 0 starts this linked list of =
-Functions.
+Good catch!
 
-I do not see anything specifically for PF. What am I missing?
-
->=20
-> For migration, the field will keep having 1 as its value on the old
-> virt models.
->=20
-> Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in =
-docs/pcie_sriov.txt")
-> Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
-> Fixes: 3a977deebe ("Intrdocue igb device emulation")
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
-> include/hw/pci/pci.h | 2 ++
-> hw/core/machine.c    | 1 +
-> hw/pci/pci.c         | 2 ++
-> hw/pci/pcie.c        | 2 +-
-> 4 files changed, 6 insertions(+), 1 deletion(-)
->=20
-> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-> index e6d0574a29..9c5b5eb206 100644
-> --- a/include/hw/pci/pci.h
-> +++ b/include/hw/pci/pci.h
-> @@ -209,6 +209,8 @@ enum {
->     QEMU_PCIE_CAP_CXL =3D (1 << QEMU_PCIE_CXL_BITNR),
-> #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
->     QEMU_PCIE_ERR_UNC_MASK =3D (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
-> +#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
-> +    QEMU_PCIE_ARI_NEXTFN_1 =3D (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
-> };
->=20
-> typedef struct PCIINTxRoute {
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index 46f8f9a2b0..f0d35c6401 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -41,6 +41,7 @@
->=20
-> GlobalProperty hw_compat_8_0[] =3D {
->     { "migration", "multifd-flush-after-each-section", "on"},
-> +    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
-> };
-> const size_t hw_compat_8_0_len =3D G_N_ELEMENTS(hw_compat_8_0);
->=20
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index e2eb4c3b4a..45a9bc0da8 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -82,6 +82,8 @@ static Property pci_props[] =3D {
->     DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
->     DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
->                     QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
-> +    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
-> +                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
->     DEFINE_PROP_END_OF_LIST()
-> };
->=20
-> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> index 9a3f6430e8..cf09e03a10 100644
-> --- a/hw/pci/pcie.c
-> +++ b/hw/pci/pcie.c
-> @@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
-> /* ARI */
-> void pcie_ari_init(PCIDevice *dev, uint16_t offset)
-> {
-> -    uint16_t nextfn =3D 1;
-> +    uint16_t nextfn =3D dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 ? 1 =
-: 0;
->=20
->     pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
->                         offset, PCI_ARI_SIZEOF);
-> --=20
-> 2.41.0
->=20
+>  net/vhost-vdpa.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 373609216f..d8f37694ac 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -825,7 +825,16 @@ out:
+>          error_report("Bad device CVQ written length");
+>      }
+>      vhost_svq_push_elem(svq, elem, MIN(in_len, sizeof(status)));
+> -    g_free(elem);
+> +    /*
+> +     * `elem` belongs to vhost_vdpa_net_handle_ctrl_avail() only when
+> +     * the function successfully forwards the CVQ command, indicated
+> +     * by a non-negative value of `dev_written`. Otherwise, it still
+> +     * belongs to SVQ.
+> +     * This function should only free the `elem` when it owns.
+> +     */
+> +    if (dev_written >=3D 0) {
+> +        g_free(elem);
+> +    }
+>      return dev_written < 0 ? dev_written : 0;
+>  }
+>
+> --
+> 2.25.1
+>
 
 
