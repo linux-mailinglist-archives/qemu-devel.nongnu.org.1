@@ -2,75 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823C374CA0F
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 04:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F26E74CA32
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 05:07:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIgxO-0000jR-To; Sun, 09 Jul 2023 22:48:58 -0400
+	id 1qIhDo-0003u9-Rm; Sun, 09 Jul 2023 23:05:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIgxN-0000iy-Iu; Sun, 09 Jul 2023 22:48:57 -0400
-Received: from mail-vk1-xa36.google.com ([2607:f8b0:4864:20::a36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIgxL-0008N4-T7; Sun, 09 Jul 2023 22:48:57 -0400
-Received: by mail-vk1-xa36.google.com with SMTP id
- 71dfb90a1353d-47e106c3f56so1271779e0c.2; 
- Sun, 09 Jul 2023 19:48:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688957334; x=1691549334;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=luMC9DEEgDELzxzsWdzFHrrPltc+xnV8paJjg16n/08=;
- b=lng1XYDj76LUb2LfdxluUzeux951pZICu/BM8MKCiWURpbm1vSsDTiD+U0S2+coicw
- tsjGM2oBoWEpy06BdkDuateKRwNe+heg01G0pxJA0C4bZkS2AOsLKH+nh1wfhrgCv9jT
- LTyRxcjUXFIokNfqWtASGXC5zeAVunDsdAP6F26XucLNycKf44vaexsyK5V5J0b3ab19
- nsueUXUv3zEDPE/LCeHzQPbsd2nkUIXGh7Fgu209tIfGnBfFgk7WpdtvgSBIjrU6y0df
- kib9MMHKrOL0Cbd+4YShbqWjf5PipIEAJEWV3aryBgEZY7eVuJ2c2Y+6rGowE+xlUT4i
- lrkQ==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qIhDn-0003tn-0E
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 23:05:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qIhDl-0005Me-EJ
+ for qemu-devel@nongnu.org; Sun, 09 Jul 2023 23:05:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688958352;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8bWSEmudsgKsWo050I41kqC5yjyHpwLea9rUVRU7w58=;
+ b=BC7LWFu4uVfEJgpB2zay/mmhw5fhWJD/uuaTw0ncymtJEc0QzOVh9wSzmFEzid9Np0uRoi
+ 6/yvh43x9+AxFR50pWD70oknSv7/vDE4xM46K3qcEYQhvjSkTwAvatUy8xJXLHNBYn1sA2
+ UkgnZ43L0UPnUyN1Ssva6txupPiMV1U=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-643-sVqrLI8UMFqnpi_f8XycKg-1; Sun, 09 Jul 2023 23:05:50 -0400
+X-MC-Unique: sVqrLI8UMFqnpi_f8XycKg-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2b704f6bbeaso37401071fa.2
+ for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 20:05:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688957334; x=1691549334;
+ d=1e100.net; s=20221208; t=1688958349; x=1691550349;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=luMC9DEEgDELzxzsWdzFHrrPltc+xnV8paJjg16n/08=;
- b=kKL4b3Hwi7v0jZYi6ZLAGYRqX99nCfVez81PEGIvTsWa0kMYFL55mFf51uqzgkYz8i
- pU1mEdm7r/eB9ia2nXA0yAzYLDaSKw39//znVfc+Yk933nO+8TWM04nKYgpM0gf4lHmW
- 6Z68y3t7e4Vps1EWpaKpzyUZobn/Vquwv5DJRthcRmBOZwjKtD9L1DjLllxQTIuj4X8G
- 7oLOfS5KMnB2fi8SPMOgr0L37Nx+VxMQaPmWvllKcGp32UH9LnTylcjZmck/nStNwHsP
- CCvME73DlZwFdPQcN5NqmPjzB3Ha+BCqKhiCb2awF8eA1UP3b6Ol1CK/ZVIrrCrV6kjo
- QlvA==
-X-Gm-Message-State: ABy/qLaC0zo3RGakRPEtFElWLKnktBuUXWIcD5K+VkbGYWhg+a7xdVNi
- NZVaUdzXkEsFMz48SxSA+58oHjANgO0MrFZTWuJsRa+ZjoMhKQ==
-X-Google-Smtp-Source: APBJJlFgYTbUQ4rRwl6lDPGqHlUBm2TPi/EN4eZVYb8Avefi6UWMyDeod+8u9b2A146FQYQiD+Xv6SoyOT1kIFY6eN8=
-X-Received: by 2002:a1f:4394:0:b0:471:8d3d:512a with SMTP id
- q142-20020a1f4394000000b004718d3d512amr5652049vka.2.1688957334442; Sun, 09
- Jul 2023 19:48:54 -0700 (PDT)
+ bh=8bWSEmudsgKsWo050I41kqC5yjyHpwLea9rUVRU7w58=;
+ b=DeG3+lrkovM03+/2zc1MbM6okvF7xdQfF4FF2A+e1T7wxzATSGVfzp7Qxf4f+lp6Ho
+ ED9aFJSEgFEE+gcTLVZl3qagoMQPYsrfCkM8RtHQSE/wfF3beca6PyPi0cY4fpXxONU3
+ Lg8TwWd//stlTEza74xG+kdGvviA/Cc1E4YTJKHzXJ/2tpcQRPp5utp7FogdOF/iAygp
+ drEURaaf/X05qgy9CjtXD1aS2aYKI+iMUXKQcAcm8KDZkrYezDE59EXHBowidqS/xB1j
+ YNThq55smxcIxB54pvIWPdrPqM7tBzh0g0hA9qvRQXMxReKiS3CFMMWMghjoMcqkBeFh
+ fH0A==
+X-Gm-Message-State: ABy/qLaLYdIT6t7gT19Xa1NHcLIJIGpDO8zg4WjyfbnlHkBY8Uy8OiWa
+ iQ+xN+HBymVlKmSVmIEBp/55JsF5/OCCcz5oIdQ5W04g9qnhwLus1oglKBnkQN9gBBBF8RJRIyk
+ IT3o0f/mIgY9kM/N00aEQNxSsXP5BagQ=
+X-Received: by 2002:a2e:2405:0:b0:2b6:e0d3:45b5 with SMTP id
+ k5-20020a2e2405000000b002b6e0d345b5mr9250515ljk.3.1688958349323; 
+ Sun, 09 Jul 2023 20:05:49 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlE93C6nNh862WaUUg6/H9kYlM2bO8FQwxE6AmhBns6LTjkIANtyFhPgbMc/REvBvQ2NBYHTSdrlYV8Qw+8fU0k=
+X-Received: by 2002:a2e:2405:0:b0:2b6:e0d3:45b5 with SMTP id
+ k5-20020a2e2405000000b002b6e0d345b5mr9250509ljk.3.1688958349032; Sun, 09 Jul
+ 2023 20:05:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230706101738.460804-1-dbarboza@ventanamicro.com>
-In-Reply-To: <20230706101738.460804-1-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 10 Jul 2023 12:48:28 +1000
-Message-ID: <CAKmqyKOqs2Q==wgLVKnhoMv_gknBczyuYtG3sov=svFQS1_QNQ@mail.gmail.com>
-Subject: Re: [PATCH v9 00/20] target/riscv, KVM: fixes and enhancements
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, ajones@ventanamicro.com
+References: <20230628152726.110295-1-bmeng@tinylab.org>
+ <CAEUhbmVsHqdauwvgvjNY6R65kDJ017vDQ797YuzX7S_XHgS5WQ@mail.gmail.com>
+In-Reply-To: <CAEUhbmVsHqdauwvgvjNY6R65kDJ017vDQ797YuzX7S_XHgS5WQ@mail.gmail.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 10 Jul 2023 11:05:38 +0800
+Message-ID: <CACGkMEsAVQhbdRabLeGiw25Ox4Ze9WRRP3coSKni5WVqFNqYYA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/6] net/tap: Fix QEMU frozen issue when the maximum
+ number of file descriptors is very large
+To: Bin Meng <bmeng.cn@gmail.com>
+Cc: Bin Meng <bmeng@tinylab.org>, qemu-devel@nongnu.org, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Zhangjin Wu <falcon@tinylab.org>, 
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, Kevin Wolf <kwolf@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Xuzhou Cheng <xuzhou.cheng@windriver.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a36;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa36.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,89 +105,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 6, 2023 at 8:19=E2=80=AFPM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
+On Sun, Jul 9, 2023 at 11:48=E2=80=AFPM Bin Meng <bmeng.cn@gmail.com> wrote=
+:
 >
-> Hi,
+> On Wed, Jun 28, 2023 at 11:29=E2=80=AFPM Bin Meng <bmeng@tinylab.org> wro=
+te:
+> >
+> >
+> > Current codes using a brute-force traversal of all file descriptors
+> > do not scale on a system where the maximum number of file descriptors
+> > is set to a very large value (e.g.: in a Docker container of Manjaro
+> > distribution it is set to 1073741816). QEMU just looks frozen during
+> > start-up.
+> >
+> > The close-on-exec flag (O_CLOEXEC) was introduced since Linux kernel
+> > 2.6.23, FreeBSD 8.3, OpenBSD 5.0, Solaris 11. While it's true QEMU
+> > doesn't need to manually close the fds for child process as the proper
+> > O_CLOEXEC flag should have been set properly on files with its own
+> > codes, QEMU uses a huge number of 3rd party libraries and we don't
+> > trust them to reliably be using O_CLOEXEC on everything they open.
+> >
+> > Modern Linux and BSDs have the close_range() call we can use to do the
+> > job, and on Linux we have one more way to walk through /proc/self/fd
+> > to complete the task efficiently, which is what qemu_close_range()
+> > does, a new API we add in util/osdep.c.
+> >
+> > V1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-bme=
+ng@tinylab.org/
+> >
+> > Changes in v4:
+> > - add 'first > last' check logic
+> > - reorder the ifdefs logic
+> > - change i to unsigned int type
+> > - use qemu_strtoi() instead of atoi()
+> > - limit last upper value to sysconf(_SC_OPEN_MAX) - 1
+> > - call sysconf directly instead of using a variable
+> > - put fd on its own line
+> >
+> > Changes in v3:
+> > - fix win32 build failure
+> > - limit the last_fd of qemu_close_range() to sysconf(_SC_OPEN_MAX)
+> >
+> > Changes in v2:
+> > - new patch: "tests/tcg/cris: Fix the coding style"
+> > - new patch: "tests/tcg/cris: Correct the off-by-one error"
+> > - new patch: "util/async-teardown: Fall back to close fds one by one"
+> > - new patch: "util/osdep: Introduce qemu_close_range()"
+> > - new patch: "util/async-teardown: Use qemu_close_range() to close fds"
+> > - Change to use qemu_close_range() to close fds for child process effic=
+iently
+> > - v1 link: https://lore.kernel.org/qemu-devel/20230406112041.798585-1-b=
+meng@tinylab.org/
+> >
+> > Bin Meng (4):
+> >   tests/tcg/cris: Fix the coding style
+> >   tests/tcg/cris: Correct the off-by-one error
+> >   util/async-teardown: Fall back to close fds one by one
+> >   util/osdep: Introduce qemu_close_range()
+> >
+> > Zhangjin Wu (2):
+> >   util/async-teardown: Use qemu_close_range() to close fds
+> >   net: tap: Use qemu_close_range() to close fds
+> >
 >
-> In this version we dialed back from our design decision in patch 14,
-> returning to the design we've been using since the first version. The
-> rationale behind is that we can't get rid of EINVAL since it will break
-> extension for all other KVM versions prior to this one where we're
-> adding the first version of the KVM specific capabilities. We'll switch
-> later on for get-reg-list when it's available, but for now we're stuck
-> with EINVAL. Drew provided a detailed explanation here:
->
-> https://lore.kernel.org/qemu-devel/20230706-38ab9f9705448bb10413f1af@orel=
-/T/#m75a5323e76518c02598758fdd6a8943951812875
->
-> As a bonus I also fixed the device-tree binding link satp in patch 2 like
-> Connor suggested.
->
-> I believe we're ready to go.
->
-> Patches missing review: 14
->
-> Changes from v8:
->   - patch 2:
->     - fix device-tree binding link in commit message
->   - patch 14:
->     - use EINVAL instead of ENOENT
-> v8 link: https://lore.kernel.org/qemu-devel/20230706-38ab9f9705448bb10413=
-f1af@orel/T/#m1c889304847598789db313f3e0854ed0d41ce60c
->
-> Daniel Henrique Barboza (20):
->   target/riscv: skip features setup for KVM CPUs
->   hw/riscv/virt.c: skip 'mmu-type' FDT if satp mode not set
->   target/riscv/cpu.c: restrict 'mvendorid' value
->   target/riscv/cpu.c: restrict 'mimpid' value
->   target/riscv/cpu.c: restrict 'marchid' value
->   target/riscv: use KVM scratch CPUs to init KVM properties
->   target/riscv: read marchid/mimpid in kvm_riscv_init_machine_ids()
->   target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs
->   linux-headers: Update to v6.4-rc1
->   target/riscv/kvm.c: init 'misa_ext_mask' with scratch CPU
->   target/riscv/cpu: add misa_ext_info_arr[]
->   target/riscv: add KVM specific MISA properties
->   target/riscv/kvm.c: update KVM MISA bits
->   target/riscv/kvm.c: add multi-letter extension KVM properties
->   target/riscv/cpu.c: add satp_mode properties earlier
->   target/riscv/cpu.c: remove priv_ver check from riscv_isa_string_ext()
->   target/riscv/cpu.c: create KVM mock properties
->   target/riscv: update multi-letter extension KVM properties
->   target/riscv/kvm.c: add kvmconfig_get_cfg_addr() helper
->   target/riscv/kvm.c: read/write (cbom|cboz)_blocksize in KVM
+> Ping for 8.1?
 
-Thanks!
+Queued.
 
-Applied to riscv-to-apply.next
+Thanks
 
-Alistair
-
->
->  hw/riscv/virt.c                               |  14 +-
->  include/standard-headers/linux/const.h        |   2 +-
->  include/standard-headers/linux/virtio_blk.h   |  18 +-
->  .../standard-headers/linux/virtio_config.h    |   6 +
->  include/standard-headers/linux/virtio_net.h   |   1 +
->  linux-headers/asm-arm64/kvm.h                 |  33 ++
->  linux-headers/asm-riscv/kvm.h                 |  53 +-
->  linux-headers/asm-riscv/unistd.h              |   9 +
->  linux-headers/asm-s390/unistd_32.h            |   1 +
->  linux-headers/asm-s390/unistd_64.h            |   1 +
->  linux-headers/asm-x86/kvm.h                   |   3 +
->  linux-headers/linux/const.h                   |   2 +-
->  linux-headers/linux/kvm.h                     |  12 +-
->  linux-headers/linux/psp-sev.h                 |   7 +
->  linux-headers/linux/userfaultfd.h             |  17 +-
->  target/riscv/cpu.c                            | 341 ++++++++++--
->  target/riscv/cpu.h                            |   7 +-
->  target/riscv/kvm.c                            | 499 +++++++++++++++++-
->  target/riscv/kvm_riscv.h                      |   1 +
->  19 files changed, 940 insertions(+), 87 deletions(-)
->
-> --
-> 2.41.0
->
->
 
