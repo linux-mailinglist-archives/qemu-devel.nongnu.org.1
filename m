@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3368274E1EF
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D157C74E1F8
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:09:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzwa-000393-UZ; Mon, 10 Jul 2023 19:05:25 -0400
+	id 1qIzwg-0003jf-KA; Mon, 10 Jul 2023 19:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwO-0002jW-Rg
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwR-000306-OA
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwI-0004b4-45
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:12 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwJ-0004mQ-II
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030303;
+ s=mimecast20190719; t=1689030306;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kvUl4/drtgXBRU9CPKwk/PRPx+0o4aik4MUaSEpTsWY=;
- b=OGoH6s7nZoIoRySJsq9ijNwdg10El6/UvJg04JXN1NG3++wf/9WaSHNIK/DeF4tCjMDZFF
- Ht/9EC5TwWzU3cIobhuoR3tmXWf8LrkkcXv+DoexfU2i908wStkygFqTIwsvRm3UPvesLg
- JJJsoXNAiQOQtfdJ0GkItKU9UrpYumk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Lr23N/kbsARVVr5iF+Jste9DzcTEbZfcy58ahS6NDeE=;
+ b=e5smPRA2/l96QhTLog8h9OPyArZMjwsbfW5DN5S8o0k/xuwfd+6WlhLBRD9L6jyqDso2j6
+ dLnzlMXqYJ44tQLprzFB1jAZfM/ZCYEOVIHe3peoUWyvSa4A5WPkGd+Cd0onSXFirGUHNs
+ F2thQUcsdEfV0RCC6+t5S260UIFEpC8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-395-MdwVQz74M_izAgPUrrNMfg-1; Mon, 10 Jul 2023 19:05:02 -0400
-X-MC-Unique: MdwVQz74M_izAgPUrrNMfg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fbb34f7224so33549135e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:05:01 -0700 (PDT)
+ us-mta-562-lG3QSu20NqCodVKUi7eNGA-1; Mon, 10 Jul 2023 19:05:05 -0400
+X-MC-Unique: lG3QSu20NqCodVKUi7eNGA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fa9a282fffso29964105e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:05:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030300; x=1691622300;
+ d=1e100.net; s=20221208; t=1689030303; x=1691622303;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kvUl4/drtgXBRU9CPKwk/PRPx+0o4aik4MUaSEpTsWY=;
- b=IQKkT9DgYvWGD3c9CJgR3PkVk8yy4JKUrkV2sfz+m7xaRdhtUWOEzI5auGmCXUYvdU
- 2GbMbaXK9aZHbi058MpqtIb95GssEBV+EFHo9W24GY5159lvRhvhG+w3q9f4p+wvFThR
- clz/m7DiSgmyOT6r9HwNhrSaZSdpDNckzXR1HbTpiNW0k/9jdLEbH4ETbDlIlzpJG2Sg
- w1CUkSEA5osaoV596mlTEBc0KPoiqUnRnWgX2ChiZMuPJwRDIP9i6B2SCDL+bKnYSno0
- ZXB63fkjm+8iuhWVIXQXWPCYkR4h3ob2AiW40tm8VqPu66/oQC0VIJ5JqBYVk8sGdKJ9
- YV1g==
-X-Gm-Message-State: ABy/qLZ+lDEOr9LIRqjsVDUmqyjKEhQykh3b9BqMJIn2RpXlWo9FFGAd
- HN2SNy9SZdH2POQRfSSl5ABWgwAdSZmbfGT+E2pL4WZbCTvOZOVI1NWTgukGtbUqJgTbJOI0rv/
- MY5e9ycnkVamRSC6tLoIRYOpnUhpWNzFFxbT1X3zMq3oRPHGF4uVsq9aDbqWPKNEithHv
-X-Received: by 2002:a1c:f712:0:b0:3fb:e643:1225 with SMTP id
- v18-20020a1cf712000000b003fbe6431225mr14193474wmh.13.1689030300437; 
- Mon, 10 Jul 2023 16:05:00 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEbs3QvCHtKoskpiYyQaZ9EwuExgtcstTr9yKZXW1SzYsFCu5KnwvdAGGAZDMKdn0VmfcBQ+A==
-X-Received: by 2002:a1c:f712:0:b0:3fb:e643:1225 with SMTP id
- v18-20020a1cf712000000b003fbe6431225mr14193448wmh.13.1689030300141; 
- Mon, 10 Jul 2023 16:05:00 -0700 (PDT)
+ bh=Lr23N/kbsARVVr5iF+Jste9DzcTEbZfcy58ahS6NDeE=;
+ b=eb5pF/Qwhmt4gJ3TCbBSkk2GjjIj468pJ7X3RuBgz/kAYSzELSxOXtI6lx+JSnPq3i
+ ZwKYCrZjKgqKdakLizRmWSRDe+Cqj2s/REzVyjAsclnHgbZIYFS2nSt1pcbreOh+GOg+
+ +gJZRyjY4NdeIMrXVY4EgKahdXk1HPAN6T2zNrg9KzunKgKK+je582bqAErou4qQthHA
+ /cMgJnWVviYbjDrQhFoOuj191Ya44cQ1BHK7rzODYNhsTVi/NiPoxxMTkonJnZPgVeUe
+ RKdzw0d4+PjRZBtAS7/EFmHR12fyV3crfz3wm5p0rE62ZysuPlWkHif/plRN0lkiEGUG
+ Mmpw==
+X-Gm-Message-State: ABy/qLaVj1EjZ4126OJalhzKpbUHfnWEGGOdKZnuUCWwQ85Xm+QU4CZO
+ Pl9X76GGN+8z6xddVbhfWzP5rf8xUkVV3ezOYRz9eRq18npRqtLN9wvT5chlxMHyqzu464CdWem
+ T2r6mLFySuRdPW2mDRd06m2ZpFuGyAirTtvcm2N46eBW1je/g517+dIGq30jy3HRPUzl0
+X-Received: by 2002:a5d:4d4d:0:b0:313:ed1d:39d5 with SMTP id
+ a13-20020a5d4d4d000000b00313ed1d39d5mr11259275wru.35.1689030303517; 
+ Mon, 10 Jul 2023 16:05:03 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFDJU2buaWcSt8ZU/tuCkUzqbYAWhnEiATIyHNBl4kgNTqJEjaYitvNy1JjG7XCLsoaToF63w==
+X-Received: by 2002:a5d:4d4d:0:b0:313:ed1d:39d5 with SMTP id
+ a13-20020a5d4d4d000000b00313ed1d39d5mr11259264wru.35.1689030303312; 
+ Mon, 10 Jul 2023 16:05:03 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- l15-20020a1c790f000000b003fc01f7b415sm9206642wme.39.2023.07.10.16.04.59
+ q10-20020adfdfca000000b003144b95e1ecsm565441wrn.93.2023.07.10.16.05.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:04:59 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:04:58 -0400
+ Mon, 10 Jul 2023 16:05:02 -0700 (PDT)
+Date: Mon, 10 Jul 2023 19:05:00 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 53/66] include/hw/virtio: document virtio_notify_config
-Message-ID: <a0cc7673ab731794caefed2033d68a2199d6bfaf.1689030052.git.mst@redhat.com>
+Subject: [PULL 54/66] include/hw/virtio: add kerneldoc for virtio_init
+Message-ID: <3b6256c2c57061c365cfad7857e12fd8d15ca3c8.1689030052.git.mst@redhat.com>
 References: <cover.1689030052.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -75,7 +75,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1689030052.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,31 +103,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Alex Bennée <alex.bennee@linaro.org>
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230710153522.3469097-5-alex.bennee@linaro.org>
+Message-Id: <20230710153522.3469097-6-alex.bennee@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/virtio.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/hw/virtio/virtio.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 0492d26900..0671989383 100644
+index 0671989383..631490bda4 100644
 --- a/include/hw/virtio/virtio.h
 +++ b/include/hw/virtio/virtio.h
-@@ -276,6 +276,13 @@ extern const VMStateInfo virtio_vmstate_info;
- 
- int virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id);
+@@ -219,6 +219,12 @@ struct VirtioDeviceClass {
+ void virtio_instance_init_common(Object *proxy_obj, void *data,
+                                  size_t vdev_size, const char *vdev_name);
  
 +/**
-+ * virtio_notify_config() - signal a change to device config
-+ * @vdev: the virtio device
-+ *
-+ * Assuming the virtio device is up (VIRTIO_CONFIG_S_DRIVER_OK) this
-+ * will trigger a guest interrupt and update the config version.
++ * virtio_init() - initialise the common VirtIODevice structure
++ * @vdev: pointer to VirtIODevice
++ * @device_id: the VirtIO device ID (see virtio_ids.h)
++ * @config_size: size of the config space
 + */
- void virtio_notify_config(VirtIODevice *vdev);
+ void virtio_init(VirtIODevice *vdev, uint16_t device_id, size_t config_size);
  
- bool virtio_queue_get_notification(VirtQueue *vq);
+ void virtio_cleanup(VirtIODevice *vdev);
 -- 
 MST
 
