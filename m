@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D777C74E056
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 23:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFCF774E06D
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 23:49:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIyd5-0003U2-35; Mon, 10 Jul 2023 17:41:11 -0400
+	id 1qIyk0-0005Nv-Ks; Mon, 10 Jul 2023 17:48:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIyd2-0003TH-I2
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:41:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
+ id 1qIyjy-0005Nl-Rj
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:48:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIyd0-0005dA-Jd
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:41:08 -0400
+ (Exim 4.90_1) (envelope-from <lsoaresp@redhat.com>)
+ id 1qIyjx-0007YD-AP
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:48:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689025265;
+ s=mimecast20190719; t=1689025696;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KrhPzTDrvhWFpjkK1gs8M6kGNFizrKxZ+k0c9BlLAtw=;
- b=f3FHLwK0eDrdFnqgy5WZZbfZapnfWU7kB1hJ3+r7sZP/avtUHGvPQcedPZXQonBLsw5HZF
- bYK4FBvcEDdCIu2r9sRkMOpGpZWzQ+Ah3SMoEttoKK938u9X+XGUnwBeigovLwjpKKTj0x
- r8hk4i5Cfj+8Bd6qlO9Ya1OPF9Ml1S0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DPQ56Iw959TpJdq0C/FpY2Haxyv3PjUmIVEGg5Vz8t8=;
+ b=ZHY/S4dqRUOoCeI8cyytGDSI7L23BIrdkzlMNa476D90l+9qyelqmaNq3eX3jxl7xxDIub
+ yRNdSA+/V+T1ty5+ezroc17kh6zeN29MTd2MJ8ejPZDB7Jip5Isfi5OozfPEy12d16e6/e
+ 7jjUDPDqqDYXZdtd3aatjZ6uZ6pxtso=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-163-knBCt8XiN_GKVQokc5H2pw-1; Mon, 10 Jul 2023 17:41:01 -0400
-X-MC-Unique: knBCt8XiN_GKVQokc5H2pw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fbcae05906so33127775e9.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 14:41:00 -0700 (PDT)
+ us-mta-196-AbiFKac4MOW-RaRhaKALjg-1; Mon, 10 Jul 2023 17:48:14 -0400
+X-MC-Unique: AbiFKac4MOW-RaRhaKALjg-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-767cf9caaa9so104465785a.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 14:48:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689025259; x=1691617259;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KrhPzTDrvhWFpjkK1gs8M6kGNFizrKxZ+k0c9BlLAtw=;
- b=dd4Au5EaA1thdzW0cQitz7PqJywVrqrkS6N3DQiGXJxMz+h/YQHWqH17lb24VDsmZh
- G3KCdtpftbmuElAUmuW7mfP+eCO8PoVbC0IYE2LB77xJ6Vppmj1Q+IOrQiLVUG2EYxfr
- 5gkqw92X/iGQ7rG7/pLaleGmgngNTlmZDTNfIKmEzeuGiIo4bFoznijE4Wh/sdY77SqP
- v+uTSERi5yHWXDCrC51WiPcl/BoTFIEKSkBxlLrNsPKB0FGUfBpBheUj9ny9Qr/A0SiT
- NDIQn8mq4DautKCryc8zW6qvL9XOAGM7i0YnUBH3bnZOERlG1qDenW3OiWcDJ+IDAVeE
- HyZg==
-X-Gm-Message-State: ABy/qLbgzXIqPg+bnA5xT1p85ztdoQTCskucG1a6yFiJcS18NGgOiyhR
- 0TvDA8P0fRvfS3XXjt1KvlBGjio8hIaavfAo4tNv5UqWLUE1DUhEIesn/itmGBYSiTiKxXIxLgu
- TBfbpHsqXSwSREIFptN2KAT8=
-X-Received: by 2002:a1c:7916:0:b0:3f8:fac0:ad40 with SMTP id
- l22-20020a1c7916000000b003f8fac0ad40mr13616755wme.29.1689025259705; 
- Mon, 10 Jul 2023 14:40:59 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGOvSF/R6eZGV1Ts1L6cKr7ls1ls3IoA4l0g2ccMWBAWn7EIe5cIXZfGDU8C60KAgshPEs5gw==
-X-Received: by 2002:a1c:7916:0:b0:3f8:fac0:ad40 with SMTP id
- l22-20020a1c7916000000b003f8fac0ad40mr13616732wme.29.1689025259292; 
- Mon, 10 Jul 2023 14:40:59 -0700 (PDT)
-Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- a10-20020a1cf00a000000b003fba6a0c881sm11288502wmb.43.2023.07.10.14.40.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 14:40:58 -0700 (PDT)
-Date: Mon, 10 Jul 2023 17:40:55 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
- Gavin Shan <gshan@redhat.com>, Mario Casquero <mcasquer@redhat.com>
-Subject: Re: [PATCH v3 3/7] arm/virt: Use virtio-md-pci (un)plug functions
-Message-ID: <20230710173933-mutt-send-email-mst@kernel.org>
-References: <20230710100714.228867-1-david@redhat.com>
- <20230710100714.228867-4-david@redhat.com>
+ d=1e100.net; s=20221208; t=1689025694; x=1691617694;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=DPQ56Iw959TpJdq0C/FpY2Haxyv3PjUmIVEGg5Vz8t8=;
+ b=ZMzE0dYdDynW9E2dzz/oMkRnpiZh6lwXxq6xvzVhtHtsDtdXYDJ1S5iYWB9ch9i/ba
+ j6Kvu9Tcfhl0yGK42IkvocOhyVCowHZCsW7OaSUKaCRf4O+aWJRAeK3dylKhXJRqEfvy
+ A+f/9qwhci/fJ5JWoBkZ6H41f5X2RWsMFZyTEvxTTm0UnBpg8HR8vMR37H/KbCFwzKeS
+ DEJJglgWdhuGsh0Xxg2QMvtBVp+z1tHhzDqnwIut+S7jETL2mX4zOIuCm4GARgZzUiry
+ XI2XTZV27Uth2aD9AvEbOgOTwbPJIDnZ+ny+jtuF/PBoS5ILukmxpnizdgewGfcjqKSf
+ FVQw==
+X-Gm-Message-State: ABy/qLYs8FjzE9k/AvhM/zp/IOuXsnRq8HLMPXFifLJ8OJXcv1D8knqy
+ bAhCXyAuwPizBSh4/c+d1b9KclzFOX7+Y3B0W8j/WhTVmzmHBaccpGr825JMH4YJ9Rs8hmbhGKg
+ SsLVYO8qQSXba/ft23/2qwWwXrHcUU08=
+X-Received: by 2002:ac8:5a95:0:b0:3f8:2a37:20f with SMTP id
+ c21-20020ac85a95000000b003f82a37020fmr17698048qtc.34.1689025693985; 
+ Mon, 10 Jul 2023 14:48:13 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEe9fB9Jf3DdRzSIc1ai4cgYHBkzOUWHf7wJEtNCRNhhuuRshDzY2wLrZVJvfADeGombp+qgehyQcm1I9H3Uvg=
+X-Received: by 2002:ac8:5a95:0:b0:3f8:2a37:20f with SMTP id
+ c21-20020ac85a95000000b003f82a37020fmr17698035qtc.34.1689025693743; Mon, 10
+ Jul 2023 14:48:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230710100714.228867-4-david@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+References: <20230706045546.593605-3-leobras@redhat.com> <ZKbRRt8ESGsMz+o7@x1n>
+ <CAJ6HWG4iUX=+7FTCkXitFfc1zFNJ9aR5PzDRyPLSZVq1Kos8fA@mail.gmail.com>
+ <ZKcEjfTDDgDZWu9Q@x1n> <20230706144844-mutt-send-email-mst@kernel.org>
+ <ZKcPr3gueuOM4LGY@x1n> <20230706155936-mutt-send-email-mst@kernel.org>
+ <CAJ6HWG6hVBCRE3yVF-Yiu8om0YSOiu_iZHPT2KKuOiLbaYtkYw@mail.gmail.com>
+ <20230710141622-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20230710141622-mutt-send-email-mst@kernel.org>
+From: Leonardo Bras Soares Passos <leobras@redhat.com>
+Date: Mon, 10 Jul 2023 18:48:02 -0300
+Message-ID: <CAJ6HWG7HHwf2HcDXJYbJgDRPhTWQDv8OF85mEe+Tpfn-cU7WAw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] pcie: Add hotplug detect state register to cmask
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lsoaresp@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,7 +84,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,192 +100,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 10, 2023 at 12:07:10PM +0200, David Hildenbrand wrote:
-> Let's use our new helper functions. Note that virtio-pmem-pci is not
-> enabled for arm and, therefore, not compiled in.
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->  hw/arm/virt.c | 81 ++++++++-------------------------------------------
->  1 file changed, 12 insertions(+), 69 deletions(-)
-> 
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 8a4c663735..4ae1996d37 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -73,11 +73,10 @@
->  #include "hw/arm/smmuv3.h"
->  #include "hw/acpi/acpi.h"
->  #include "target/arm/internals.h"
-> -#include "hw/mem/memory-device.h"
->  #include "hw/mem/pc-dimm.h"
->  #include "hw/mem/nvdimm.h"
->  #include "hw/acpi/generic_event_device.h"
-> -#include "hw/virtio/virtio-mem-pci.h"
-> +#include "hw/virtio/virtio-md-pci.h"
->  #include "hw/virtio/virtio-iommu.h"
->  #include "hw/char/pl011.h"
->  #include "qemu/guest-random.h"
-> @@ -2740,64 +2739,6 @@ static void virt_memory_plug(HotplugHandler *hotplug_dev,
->                           dev, &error_abort);
->  }
->  
-> -static void virt_virtio_md_pci_pre_plug(HotplugHandler *hotplug_dev,
-> -                                        DeviceState *dev, Error **errp)
-> -{
-> -    HotplugHandler *hotplug_dev2 = qdev_get_bus_hotplug_handler(dev);
-> -    Error *local_err = NULL;
-> -
-> -    if (!hotplug_dev2 && dev->hotplugged) {
-> -        /*
-> -         * Without a bus hotplug handler, we cannot control the plug/unplug
-> -         * order. We should never reach this point when hotplugging on ARM.
-> -         * However, it's nice to add a safety net, similar to what we have
-> -         * on x86.
-> -         */
-> -        error_setg(errp, "hotplug of virtio based memory devices not supported"
-> -                   " on this bus.");
-> -        return;
-> -    }
-> -    /*
-> -     * First, see if we can plug this memory device at all. If that
-> -     * succeeds, branch of to the actual hotplug handler.
-> -     */
-> -    memory_device_pre_plug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev), NULL,
-> -                           &local_err);
-> -    if (!local_err && hotplug_dev2) {
-> -        hotplug_handler_pre_plug(hotplug_dev2, dev, &local_err);
-> -    }
-> -    error_propagate(errp, local_err);
-> -}
-> -
-> -static void virt_virtio_md_pci_plug(HotplugHandler *hotplug_dev,
-> -                                    DeviceState *dev, Error **errp)
-> -{
-> -    HotplugHandler *hotplug_dev2 = qdev_get_bus_hotplug_handler(dev);
-> -    Error *local_err = NULL;
-> -
-> -    /*
-> -     * Plug the memory device first and then branch off to the actual
-> -     * hotplug handler. If that one fails, we can easily undo the memory
-> -     * device bits.
-> -     */
-> -    memory_device_plug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev));
-> -    if (hotplug_dev2) {
-> -        hotplug_handler_plug(hotplug_dev2, dev, &local_err);
-> -        if (local_err) {
-> -            memory_device_unplug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev));
-> -        }
-> -    }
-> -    error_propagate(errp, local_err);
-> -}
-> -
-> -static void virt_virtio_md_pci_unplug_request(HotplugHandler *hotplug_dev,
-> -                                              DeviceState *dev, Error **errp)
-> -{
-> -    /* We don't support hot unplug of virtio based memory devices */
-> -    error_setg(errp, "virtio based memory devices cannot be unplugged.");
-> -}
-> -
-> -
->  static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
->                                              DeviceState *dev, Error **errp)
->  {
-> @@ -2805,8 +2746,8 @@ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
->  
->      if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
->          virt_memory_pre_plug(hotplug_dev, dev, errp);
-> -    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MEM_PCI)) {
-> -        virt_virtio_md_pci_pre_plug(hotplug_dev, dev, errp);
-> +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-> +        virtio_md_pci_pre_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
->      } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
->          hwaddr db_start = 0, db_end = 0;
->          char *resv_prop_str;
-> @@ -2855,12 +2796,11 @@ static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
->                                       SYS_BUS_DEVICE(dev));
->          }
->      }
-> +
->      if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
->          virt_memory_plug(hotplug_dev, dev, errp);
-> -    }
-> -
-> -    if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MEM_PCI)) {
-> -        virt_virtio_md_pci_plug(hotplug_dev, dev, errp);
-> +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-> +        virtio_md_pci_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
->      }
->  
->      if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
+On Mon, Jul 10, 2023 at 3:16=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
+>
+> On Mon, Jul 10, 2023 at 02:49:05PM -0300, Leonardo Bras Soares Passos wro=
+te:
+> > On Thu, Jul 6, 2023 at 5:00=E2=80=AFPM Michael S. Tsirkin <mst@redhat.c=
+om> wrote:
+> > >
+> > > On Thu, Jul 06, 2023 at 03:02:07PM -0400, Peter Xu wrote:
+> > > > On Thu, Jul 06, 2023 at 02:50:20PM -0400, Michael S. Tsirkin wrote:
+> > > > > On Thu, Jul 06, 2023 at 02:14:37PM -0400, Peter Xu wrote:
+> > > > > > On Thu, Jul 06, 2023 at 03:07:40PM -0300, Leonardo Bras Soares =
+Passos wrote:
+> > > > > > > > I asked the same question, and I still keep confused: wheth=
+er there's a
+> > > > > > > > first bad commit?  Starting from when it fails?
+> > > > > > > >
+> > > > > > > > For example, is this broken on 6.0 binaries too with pc-q35=
+-6.0?
+> > > > > > >
+> > > > > > > I tested for qemu 6.0, and it still reproduces, but have not =
+pursued
+> > > > > > > this any further.
+> > > > > >
+> > > > > > I see, thanks!
+> > > > > >
+> > > > > > But then do you know why it's never hit before?  I assume it me=
+ans this bug
+> > > > > > has been there for a long time.
+> > > > >
+> > > > > It's a race - you have to migrate after the bit has been set befo=
+re
+> > > > > the bit got cleared.
+> > > > > cmask is exactly for bits that qemu modifies itself.
+> > > >
+> > > > Michael, do you mean that Leo's patch is wrong?
+> > >
+> > >
+> > > I mean his patch is exactly right. cmask was designed with this
+> > > kind of use case in mind.
+> > > Will queue.
+> >
+> > Thanks Michael!
+> >
+> > Any chance this will get in on time for v8.1 ?
+>
+> Yes, working on pull request now.
 
+Thanks!
 
-How is this supposed to link if virtio-md is disabled at compile time?
-
-Indeed I see this on mingw:
-
-FAILED: qemu-system-aarch64.exe 
-i686-w64-mingw32-gcc -m32 @qemu-system-aarch64.exe.rsp
-/usr/lib/gcc/i686-w64-mingw32/12.2.1/../../../../i686-w64-mingw32/bin/ld: libqemu-aarch64-softmmu.fa.p/hw_arm_virt.c.obj: in function `virt_machine_device_plug_cb':
-/scm/qemu-mingw32-build/../qemu/hw/arm/virt.c:2803: undefined reference to `virtio_md_pci_plug'
-/usr/lib/gcc/i686-w64-mingw32/12.2.1/../../../../i686-w64-mingw32/bin/ld: libqemu-aarch64-softmmu.fa.p/hw_arm_virt.c.obj: in function `virt_machine_device_unplug_request_cb':
-/scm/qemu-mingw32-build/../qemu/hw/arm/virt.c:2859: undefined reference to `virtio_md_pci_unplug_request'
-/usr/lib/gcc/i686-w64-mingw32/12.2.1/../../../../i686-w64-mingw32/bin/ld: libqemu-aarch64-softmmu.fa.p/hw_arm_virt.c.obj: in function `virt_machine_device_unplug_cb':
-/scm/qemu-mingw32-build/../qemu/hw/arm/virt.c:2873: undefined reference to `virtio_md_pci_unplug'
-/usr/lib/gcc/i686-w64-mingw32/12.2.1/../../../../i686-w64-mingw32/bin/ld: libqemu-aarch64-softmmu.fa.p/hw_arm_virt.c.obj: in function `virt_machine_device_pre_plug_cb':
-/scm/qemu-mingw32-build/../qemu/hw/arm/virt.c:2750: undefined reference to `virtio_md_pci_pre_plug'
-collect2: error: ld returned 1 exit status
-[795/3838] Linking target qemu-system-aarch64w.exe
-FAILED: qemu-system-aarch64w.exe 
-i686-w64-mingw32-gcc -m32 @qemu-system-aarch64w.exe.rsp
-/usr/lib/gcc/i686-w64-mingw32/12.2.1/../../../../i686-w64-mingw32/bin/ld: libqemu-aarch64-softmmu.fa.p/hw_arm_virt.c.obj: in function `virt_machine_device_plug_cb':
-/scm/qemu-mingw32-build/../qemu/hw/arm/virt.c:2803: undefined reference to `virtio_md_pci_plug'
-/usr/lib/gcc/i686-w64-mingw32/12.2.1/../../../../i686-w64-mingw32/bin/ld: libqemu-aarch64-softmmu.fa.p/hw_arm_virt.c.obj: in function `virt_machine_device_unplug_request_cb':
-/scm/qemu-mingw32-build/../qemu/hw/arm/virt.c:2859: undefined reference to `virtio_md_pci_unplug_request'
-/usr/lib/gcc/i686-w64-mingw32/12.2.1/../../../../i686-w64-mingw32/bin/ld: libqemu-aarch64-softmmu.fa.p/hw_arm_virt.c.obj: in function `virt_machine_device_unplug_cb':
-/scm/qemu-mingw32-build/../qemu/hw/arm/virt.c:2873: undefined reference to `virtio_md_pci_unplug'
-/usr/lib/gcc/i686-w64-mingw32/12.2.1/../../../../i686-w64-mingw32/bin/ld: libqemu-aarch64-softmmu.fa.p/hw_arm_virt.c.obj: in function `virt_machine_device_pre_plug_cb':
-/scm/qemu-mingw32-build/../qemu/hw/arm/virt.c:2750: undefined reference to `virtio_md_pci_pre_plug'
-collect2: error: ld returned 1 exit status
-[796/3838] Compiling C object libqemu-cris-softmmu.fa.p/fpu_softfloat.c.obj
-[797/3838] Compiling C object libqemu-hppa-softmmu.fa.p/fpu_softfloat.c.obj
-ninja: build stopped: subcommand failed.
-make: *** [Makefile:162: run-ninja] Error 1
-
-
-
-
-> @@ -2915,8 +2855,9 @@ static void virt_machine_device_unplug_request_cb(HotplugHandler *hotplug_dev,
->  {
->      if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
->          virt_dimm_unplug_request(hotplug_dev, dev, errp);
-> -    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MEM_PCI)) {
-> -        virt_virtio_md_pci_unplug_request(hotplug_dev, dev, errp);
-> +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-> +        virtio_md_pci_unplug_request(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev),
-> +                                     errp);
->      } else {
->          error_setg(errp, "device unplug request for unsupported device"
->                     " type: %s", object_get_typename(OBJECT(dev)));
-> @@ -2928,6 +2869,8 @@ static void virt_machine_device_unplug_cb(HotplugHandler *hotplug_dev,
->  {
->      if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
->          virt_dimm_unplug(hotplug_dev, dev, errp);
-> +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-> +        virtio_md_pci_unplug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
->      } else {
->          error_setg(errp, "virt: device unplug for unsupported device"
->                     " type: %s", object_get_typename(OBJECT(dev)));
-> @@ -2941,7 +2884,7 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
->  
->      if (device_is_dynamic_sysbus(mc, dev) ||
->          object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM) ||
-> -        object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MEM_PCI) ||
-> +        object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI) ||
->          object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
->          return HOTPLUG_HANDLER(machine);
->      }
-> -- 
-> 2.41.0
+>
+>
+> > >
+> > > > I just got understood why it got cleared - I think Leo didn't menti=
+on that
+> > > > the device was actually offlined before migration, IIUC that's why =
+the PDS
+> > > > bit got cleared, if PDS was trying to describe that of the slot.
+> > > >
+> > > > According to:
+> > > >
+> > > >     /* Used to enable checks on load. Note that writable bits are
+> > > >      * never checked even if set in cmask. */
+> > > >     uint8_t *cmask;
+> > > >
+> > > > It does sound reasonable to me to have PDS cleared when device offl=
+ined.
+> > > > Since hypervisor doesn't really know what the condition the slot pr=
+esence
+> > > > bit would be when migrating, it seems we should just clear the bit =
+in
+> > > > cmask.
+> > > >
+> > > > So with the last reply from Leo, the patch looks all right to me.  =
+It's
+> > > > just that as Leo mentioned, we should mention the offline process i=
+f that's
+> > > > the case, because that's definitely an important step to reproduce =
+the issue.
+> > > >
+> > > > Thanks,
+> > >
+> > > If you want to suggest more text to the commit log, for the benefit
+> > > of backporters, that is fine by me.
+> > >
+> > > > --
+> > > > Peter Xu
+> > >
+>
 
 
