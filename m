@@ -2,90 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3EC374D13B
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 11:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B112A74D148
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 11:22:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIn4A-00069j-3v; Mon, 10 Jul 2023 05:20:22 -0400
+	id 1qIn69-00070Y-85; Mon, 10 Jul 2023 05:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qIn42-00069G-NK
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:20:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qIn66-0006zH-JU
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:22:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qIn3v-0006UP-1r
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:20:09 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qIn64-0008Oe-2Q
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:22:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688980806;
+ s=mimecast20190719; t=1688980939;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yltN/0SFfZF3wPcXSIqUhOBoPcKPlLkFHIoSC4DS+2A=;
- b=aP4r2ye8J5tWRhc3+xHEBafwj83pAsMObUUUI3SYB4J2QWhBLNh60eOCK0bsQ20HDidyDU
- qk7qB8P5Bb0UnFOrwRbdT644iM5fYubEYCn4lmNhzgxEz6hTduIrAODWOcXM31qMlou0tR
- dYUZTsp5DDZUSv7YMIoJ5iyNyvthEcQ=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UHeyEQSJ0qco/L/bPYWHx5dcdGMknSthBbZ0OLxdZUI=;
+ b=D9mxo3FXR92EnVGJAMYUtxBagB4TWp40JVwAOtIzIMHWzN1Hr4F7YadrksNv8PpFfzEZLU
+ ldTVGB84NvO542eEFtPHVjCuk78bXd9W6Veb9xfuPnxFflOUBmWWC6mx5NHG/3bgsSFuUb
+ 2pp31RZIW5SKLubMQu2KqABfQTbzAY8=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-38-hMSvlcmeNsK5Eerz6MijHg-1; Mon, 10 Jul 2023 05:20:04 -0400
-X-MC-Unique: hMSvlcmeNsK5Eerz6MijHg-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-26304c2e178so7152401a91.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 02:20:04 -0700 (PDT)
+ us-mta-327-i75kOIDFPSOOcroCdsykdA-1; Mon, 10 Jul 2023 05:22:17 -0400
+X-MC-Unique: i75kOIDFPSOOcroCdsykdA-1
+Received: by mail-yb1-f198.google.com with SMTP id
+ 3f1490d57ef6-c4e0342c50dso5489292276.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 02:22:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688980801; x=1691572801;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1688980937; x=1691572937;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yltN/0SFfZF3wPcXSIqUhOBoPcKPlLkFHIoSC4DS+2A=;
- b=eIpEcSHsPnrK/hNiLPQEtPhcPKLH5ldKqufolh6ZJACBoy2a75FQBUUHSUNahbF+Cs
- wD73/lciq5zmfInewfrMY4q9iu0UfyNObSYdAmETxE7z8loGxZN0MPV7H8cqCmDV2bad
- Pn0zIHrt0ssrPvg+p0VyE6LXZKFEXId4KP59g/kmXxq7DSaHvA6VCNNdG/Fhcrh6VTMa
- gUDmErn1RBbertNIl2moo3CTvNOJYepP/tkvumKmKFhcRqN1rWKBYWxfHpMpH8i3UV84
- rkUhSrzDmfcrC1FZhQWrKjEVBFw3osBYQb9wqpmac+Nuyy/dRutlLZ0/1qfEa0pSeBFe
- l6Wg==
-X-Gm-Message-State: ABy/qLYoS9ZJgTJ56rwCiMOpCQcoxRjTgvUGimIsn9tr+TFHiQ+u5yGR
- dqng8kFwCuNS20vABQe34Q1I2reJ8VkImTWx9dslvxgSqxHBTXh9YbK78ymSw9ggEF82yT0eplz
- pMS1cR3fAujlM0i4=
-X-Received: by 2002:a17:90a:8d0a:b0:262:ecc3:ee6b with SMTP id
- c10-20020a17090a8d0a00b00262ecc3ee6bmr12586488pjo.39.1688980801313; 
- Mon, 10 Jul 2023 02:20:01 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEaMbh9BbvDaXhiPxoXk5U2H+NJbdqYs5kDJOUhrS78g7Zw7RfD7HdkTmrEaQRbvt7e3JOQCQ==
-X-Received: by 2002:a17:90a:8d0a:b0:262:ecc3:ee6b with SMTP id
- c10-20020a17090a8d0a00b00262ecc3ee6bmr12586465pjo.39.1688980800920; 
- Mon, 10 Jul 2023 02:20:00 -0700 (PDT)
-Received: from smtpclient.apple ([203.212.247.118])
- by smtp.gmail.com with ESMTPSA id
- f12-20020a17090ac28c00b00262ff206931sm5785216pjt.42.2023.07.10.02.19.57
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 10 Jul 2023 02:20:00 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
-Subject: Re: [PATCH v5 2/2] pcie: Specify 0 for ARI next function numbers
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230710051539-mutt-send-email-mst@kernel.org>
-Date: Mon, 10 Jul 2023 14:49:55 +0530
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- qemu-devel <qemu-devel@nongnu.org>, qemu-block@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>
+ bh=UHeyEQSJ0qco/L/bPYWHx5dcdGMknSthBbZ0OLxdZUI=;
+ b=GQZ/BExRIjKoQRqyxQMQS9wCO/7ow0C384h/jQkMfSSz47s/6bCG/XA9gTC2S+goRQ
+ PLmGppEvCUnkD4s/QiqAtDJVoPBCKsIiWctBM2wjPNAU/yfqVCUR/M/gBbyf6T5/Q2Q/
+ MK0aJK0nZSuEkvfle3PvRXdrpFfsFlivVr3BfFloK4QaiL9TKONy36dLwmSXgAzHchLv
+ CNI5f1HN2+nBNgV6bU6+8yXJgJsWSW0d3fzk1Iezwmya35uLCw+MnwHw5B0iPtXm9s14
+ 9WIZe6Clq3oU31iSXr15lwQvQDB46CpueF6KsrBZJmROy91/Es7NI61W5WYhHATYU1Sv
+ ggzQ==
+X-Gm-Message-State: ABy/qLbxlNtBSVC6WR5xzWubgvwlX+JA0w1XJZ4pwVZj023L4R1O0n21
+ 10/PNRnEXcWaAtYC5mqA/l1ke4pgERtmzHYcMDDkQtEdAmVY1e1LFHBMBwqYyoFxgEWxkOua7xn
+ jH4SQonOlsL782oJVu5FohKY1oXzkHR0=
+X-Received: by 2002:a25:86c7:0:b0:c85:d8b7:2056 with SMTP id
+ y7-20020a2586c7000000b00c85d8b72056mr1798512ybm.13.1688980937381; 
+ Mon, 10 Jul 2023 02:22:17 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGrD2o0Kr55/iqiFBKwyFHTu6UWgUChM93AYD81uAQnpJ9fOHNnv9c9CWZViW656MFarNVvr0DENtCEgSm2FDg=
+X-Received: by 2002:a25:86c7:0:b0:c85:d8b7:2056 with SMTP id
+ y7-20020a2586c7000000b00c85d8b72056mr1798505ybm.13.1688980937148; Mon, 10 Jul
+ 2023 02:22:17 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230710165333.17506-1-lingshan.zhu@intel.com>
+In-Reply-To: <20230710165333.17506-1-lingshan.zhu@intel.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Mon, 10 Jul 2023 11:21:41 +0200
+Message-ID: <CAJaqyWddhB5F88k_4CZSoHrRhQfp+WhJ89uK0+6Z_eFVmJe+Zw@mail.gmail.com>
+Subject: Re: [PATCH V2] vhost_vdpa: no need to fetch vring base when poweroff
+To: Zhu Lingshan <lingshan.zhu@intel.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <B82575EB-132B-4B15-B9EC-89B947826367@redhat.com>
-References: <20230705022421.13115-1-akihiko.odaki@daynix.com>
- <20230705022421.13115-3-akihiko.odaki@daynix.com>
- <E8241AB3-F645-4697-A5AC-9B6BC897B432@redhat.com>
- <20230710051539-mutt-send-email-mst@kernel.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.3)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -110,115 +94,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Jul 10, 2023 at 10:54=E2=80=AFAM Zhu Lingshan <lingshan.zhu@intel.c=
+om> wrote:
+>
+> In the poweroff routine, no need to fetch last available index.
+>
+> This commit also provides a better debug message in the vhost
+> caller vhost_virtqueue_stop, because if vhost does not fetch
+> the last avail idx successfully, maybe the device does not
+> suspend, vhost will sync last avail idx to vring used idx as a
+> work around, not a failure.
+>
+> Signed-off-by: Zhu Lingshan <lingshan.zhu@intel.com>
 
+Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
-> On 10-Jul-2023, at 2:46 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
->=20
-> On Mon, Jul 10, 2023 at 01:21:50PM +0530, Ani Sinha wrote:
->>=20
->>=20
->>> On 05-Jul-2023, at 7:54 AM, Akihiko Odaki <akihiko.odaki@daynix.com> =
-wrote:
->>>=20
->>> The current implementers of ARI are all SR-IOV devices. The ARI next
->>> function number field is undefined for VF according to PCI Express =
-Base
->>> Specification Revision 5.0 Version 1.0 section 9.3.7.7. The PF =
-should
->>> end the linked list formed with the field by specifying 0 according =
-to
->>> section 7.8.7.2.
->>=20
->> Section 7.8.7.2 ARI Capability Register (Offset 04h), I see only this
->>=20
->> Next Function Number - This field indicates the Function Number of =
-the next higher numbered Function in the Device, or 00h if there are no =
-higher numbered Functions. Function 0 starts this linked list of =
-Functions.
->>=20
->> I do not see anything specifically for PF. What am I missing?
->=20
-> This is *only* for PFs.
+Thanks!
 
-I think this covers both SRIOV and non SRIOV cases both. This is a =
-general case for all devices, PF or other non-SRIOV capable devices.
-
-> There's separate text explaining that
-> VFs use NumVFs VFOffset and VFStride.
->=20
->=20
->>>=20
->>> For migration, the field will keep having 1 as its value on the old
->>> virt models.
->>>=20
->>> Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in =
-docs/pcie_sriov.txt")
->>> Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
->>> Fixes: 3a977deebe ("Intrdocue igb device emulation")
->>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>> ---
->>> include/hw/pci/pci.h | 2 ++
->>> hw/core/machine.c    | 1 +
->>> hw/pci/pci.c         | 2 ++
->>> hw/pci/pcie.c        | 2 +-
->>> 4 files changed, 6 insertions(+), 1 deletion(-)
->>>=20
->>> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
->>> index e6d0574a29..9c5b5eb206 100644
->>> --- a/include/hw/pci/pci.h
->>> +++ b/include/hw/pci/pci.h
->>> @@ -209,6 +209,8 @@ enum {
->>>    QEMU_PCIE_CAP_CXL =3D (1 << QEMU_PCIE_CXL_BITNR),
->>> #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
->>>    QEMU_PCIE_ERR_UNC_MASK =3D (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
->>> +#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
->>> +    QEMU_PCIE_ARI_NEXTFN_1 =3D (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
->>> };
->>>=20
->>> typedef struct PCIINTxRoute {
->>> diff --git a/hw/core/machine.c b/hw/core/machine.c
->>> index 46f8f9a2b0..f0d35c6401 100644
->>> --- a/hw/core/machine.c
->>> +++ b/hw/core/machine.c
->>> @@ -41,6 +41,7 @@
->>>=20
->>> GlobalProperty hw_compat_8_0[] =3D {
->>>    { "migration", "multifd-flush-after-each-section", "on"},
->>> +    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
->>> };
->>> const size_t hw_compat_8_0_len =3D G_N_ELEMENTS(hw_compat_8_0);
->>>=20
->>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->>> index e2eb4c3b4a..45a9bc0da8 100644
->>> --- a/hw/pci/pci.c
->>> +++ b/hw/pci/pci.c
->>> @@ -82,6 +82,8 @@ static Property pci_props[] =3D {
->>>    DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
->>>    DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
->>>                    QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
->>> +    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
->>> +                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
->>>    DEFINE_PROP_END_OF_LIST()
->>> };
->>>=20
->>> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
->>> index 9a3f6430e8..cf09e03a10 100644
->>> --- a/hw/pci/pcie.c
->>> +++ b/hw/pci/pcie.c
->>> @@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice =
-*bridge_dev)
->>> /* ARI */
->>> void pcie_ari_init(PCIDevice *dev, uint16_t offset)
->>> {
->>> -    uint16_t nextfn =3D 1;
->>> +    uint16_t nextfn =3D dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 ? =
-1 : 0;
->>>=20
->>>    pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
->>>                        offset, PCI_ARI_SIZEOF);
->>> --=20
->>> 2.41.0
->>>=20
->=20
+> ---
+>  hw/virtio/vhost-vdpa.c | 10 ++++++++++
+>  hw/virtio/vhost.c      |  2 +-
+>  2 files changed, 11 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> index 3c575a9a6e..10b445f64e 100644
+> --- a/hw/virtio/vhost-vdpa.c
+> +++ b/hw/virtio/vhost-vdpa.c
+> @@ -26,6 +26,7 @@
+>  #include "cpu.h"
+>  #include "trace.h"
+>  #include "qapi/error.h"
+> +#include "sysemu/runstate.h"
+>
+>  /*
+>   * Return one past the end of the end of section. Be careful with uint64=
+_t
+> @@ -1391,6 +1392,15 @@ static int vhost_vdpa_get_vring_base(struct vhost_=
+dev *dev,
+>      struct vhost_vdpa *v =3D dev->opaque;
+>      int ret;
+>
+> +    if (runstate_check(RUN_STATE_SHUTDOWN)) {
+> +        /*
+> +         * Some devices do not support this call properly,
+> +         * and we don't need to retrieve the indexes
+> +         * if it is shutting down
+> +         */
+> +        return 0;
+> +    }
+> +
+>      if (v->shadow_vqs_enabled) {
+>          ring->num =3D virtio_queue_get_last_avail_idx(dev->vdev, ring->i=
+ndex);
+>          return 0;
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index 82394331bf..7dd90cff3a 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -1262,7 +1262,7 @@ void vhost_virtqueue_stop(struct vhost_dev *dev,
+>
+>      r =3D dev->vhost_ops->vhost_get_vring_base(dev, &state);
+>      if (r < 0) {
+> -        VHOST_OPS_DEBUG(r, "vhost VQ %u ring restore failed: %d", idx, r=
+);
+> +        VHOST_OPS_DEBUG(r, "sync last avail idx to the guest used idx fo=
+r vhost VQ %u", idx);
+>          /* Connection to the backend is broken, so let's sync internal
+>           * last avail idx to the device used idx.
+>           */
+> --
+> 2.39.3
+>
 
 
