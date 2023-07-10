@@ -2,66 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFDBE74DD0C
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 20:05:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 233B374DD1C
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 20:12:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIvF8-00030V-04; Mon, 10 Jul 2023 14:04:14 -0400
+	id 1qIvMF-0004PI-3D; Mon, 10 Jul 2023 14:11:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qIvF4-00030I-Ob
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:04:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qIvMA-0004Ov-3K
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:11:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qIvF2-0004L8-9x
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:04:10 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qIvM7-0006WA-CN
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 14:11:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689012246;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type;
- bh=lINDu9zF1/xbUwdJTPzcSII+uWRPksrDZTrzUrschKo=;
- b=c4iZIFRDvbFQFAevYWADsL8fEoHdxn904os9RGkGVENlmip8vEM8cGLI/cM3xk/D1R/khW
- tMhpImz5mbZOJ3bFMINyW4Pj9W10j7VyhQZ+uup78ujITD7l8RgmbmT4bIpTazUUB2LkwI
- fAhQIbhwhO1BkntPZ3+uwQ3EBcD88dw=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-IXkXL1qQOlmaOSFMZx4_cw-1; Mon, 10 Jul 2023 14:04:04 -0400
-X-MC-Unique: IXkXL1qQOlmaOSFMZx4_cw-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1b8a7e21f15so74409745ad.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 11:04:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689012243; x=1691604243;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lINDu9zF1/xbUwdJTPzcSII+uWRPksrDZTrzUrschKo=;
- b=OL+R7gP0yOrFUt/9rUlCtiFIBIvDBCr+io+797HbwgGDTOzZ7VFUAbRDwXy6kwrsx8
- 58PyCwMMtlG2D5tqWK/txwsinsQLk5SbrKJO149fRGIesyE+rTpU++hRIGatfQ6Aa+yS
- T4Is9dprxp+wsLG5QEsFU3JYf164VTcG5f3FD2IWIKPyGStpIC8RD2PPiYtyS6T7ewJH
- 1rq0EfbTbGo0GdaJ2fZaKDcN2BhWexN5bwFVCqBk9HpBbqSmys4VluV3JBG3rKISnLm5
- +HxzP9cYr6waOJswRDcMcbYCOWbbGS9uGuUZLTL3V6Vniw94I5QMrcYXTj7p2dkFTsxw
- 9BWA==
-X-Gm-Message-State: ABy/qLbmWHk+4TVZXV5EFBPL2SOwOm3ZmaBsZSNlEonHcURKTT2EmOns
- GNp7M8JLS2UZryIfEDVF+3PtnFVd5Hfn6Jp1o9aKClgaKkUlTUICu687PNwyeDTRk1g72fPDP5A
- ffqEJ68KZOyfOC7hYJ2yavIvP66Yp2IgkCBvjo/jxsQ==
-X-Received: by 2002:a17:902:ec86:b0:1af:e302:123 with SMTP id
- x6-20020a170902ec8600b001afe3020123mr20996598plg.3.1689012243150; 
- Mon, 10 Jul 2023 11:04:03 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFhleEyyIs4LR9x2prLlog2UOoUJUqWPV6eq5rFx7GdkwTl99dmIr8Ebgwjubn32YUPmV0PY1mjveFR+pZq5wo=
-X-Received: by 2002:a17:902:ec86:b0:1af:e302:123 with SMTP id
- x6-20020a170902ec8600b001afe3020123mr20996568plg.3.1689012242705; Mon, 10 Jul
- 2023 11:04:02 -0700 (PDT)
+ s=mimecast20190719; t=1689012685;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nAjBzspD/Pu4o0rK84lvrCZ6W7zyAgzOxZhYKkm+pow=;
+ b=ab7rkiMrdcsFlWK/0+DWfL9ifH/tpMjNHBoPPZUt7ptk7EVB914MSJJjwS97kr3xIk/3ME
+ 0XGvjpQtnKIu9dqPvpT6ANEwwuMMRjBx1A5zG5bsJ3TdrM6s9zNi4VrlZIZvhY1YwlqU/A
+ UFJErv6Q/7CRG9pt8Bwcs/gUBtYp34E=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-221-r180vhUCNRyNMU63rP8esg-1; Mon, 10 Jul 2023 14:11:22 -0400
+X-MC-Unique: r180vhUCNRyNMU63rP8esg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EACC71C28CE5;
+ Mon, 10 Jul 2023 18:11:21 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.121])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 10243200A7CA;
+ Mon, 10 Jul 2023 18:11:20 +0000 (UTC)
+Date: Mon, 10 Jul 2023 19:11:18 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH] tests/migration: Restrict initrd-stress.img to Linux
+Message-ID: <ZKxJxkw/zUkgrlr8@redhat.com>
+References: <20230710175607.32818-1-philmd@linaro.org>
 MIME-Version: 1.0
-From: John Snow <jsnow@redhat.com>
-Date: Mon, 10 Jul 2023 14:03:51 -0400
-Message-ID: <CAFn=p-bgqcMWB3h0bEy2H9zC8sTV1UEov=i430sVaMLKoVQgEw@mail.gmail.com>
-Subject: python qemu.qmp v0.0.3 released
-To: qemu-devel <qemu-devel@nongnu.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Daniel Berrange <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230710175607.32818-1-philmd@linaro.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,23 +81,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all, I've just published qemu.qmp v0.0.3 to PyPI.
+On Mon, Jul 10, 2023 at 07:56:07PM +0200, Philippe Mathieu-Daudé wrote:
+> Trying to build initrd-stress.img on Darwin we get:
+> 
+>   $ ninja tests/migration/initrd-stress.img
+>   Compiling C object tests/migration/stress.p/stress.c.o
+>   FAILED: tests/migration/stress.p/stress.c.o
+>   ../tests/migration/stress.c:24:10: fatal error: 'linux/random.h' file not found
+>   #include <linux/random.h>
+>            ^~~~~~~~~~~~~~~~
 
-PyPI: https://pypi.org/project/qemu.qmp/0.0.3/
-readthedocs: https://qemu.readthedocs.io/projects/python-qemu-qmp/en/latest/
-changelog: https://qemu.readthedocs.io/projects/python-qemu-qmp/en/latest/main.html#changelog
+I think that's historical accident, as AFAICT, nothing in stress.c
+needs that include to be present.
 
-Notably, this release drops support for Python 3.6 and modernizes the
-python packaging infrastructure to be compatible with the forthcoming
-Python 3.12 release expected this October. There is no impact to the
-QEMU codebase at this time which is still using a wholly vendored
-version of the library (that we dropped 3.6 support from earlier this
-development cycle.)
+>   1 error generated.
+>   ninja: build stopped: subcommand failed.
+> 
+> Per the include path, this test is Linux specific.
+> Since this is the single binary built in this directory,
+> restrict the whole meson.build to Linux.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  tests/migration/meson.build | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/tests/migration/meson.build b/tests/migration/meson.build
+> index ac71f13290..56523e0785 100644
+> --- a/tests/migration/meson.build
+> +++ b/tests/migration/meson.build
+> @@ -1,3 +1,7 @@
+> +if targetos != 'linux'
+> +   subdir_done()
+> +endif
+> +
+>  sysprof = dependency('sysprof-capture-4', required: false)
+>  glib_static = dependency('glib-2.0', version: glib_req_ver, required: false,
+>                           method: 'pkg-config', static: true)
+> -- 
+> 2.38.1
+> 
+> 
 
-Thanks,
---js
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
