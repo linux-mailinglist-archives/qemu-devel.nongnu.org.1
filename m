@@ -2,53 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F82A74D91F
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 16:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 023EF74D943
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 16:45:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIs07-00005d-Lx; Mon, 10 Jul 2023 10:36:33 -0400
+	id 1qIs7O-0003pc-LF; Mon, 10 Jul 2023 10:44:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qIrzx-00005I-RQ
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:36:21 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIs7M-0003p9-M9
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:44:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qIrzv-0007bs-Mc
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:36:21 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AD1F212C69;
- Mon, 10 Jul 2023 17:36:15 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5978113DB8;
- Mon, 10 Jul 2023 17:36:07 +0300 (MSK)
-Message-ID: <4d05ddfe-0e80-bd9e-e0c8-38d6195c9a8a@tls.msk.ru>
-Date: Mon, 10 Jul 2023 17:36:07 +0300
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIs7K-00029f-Pk
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:44:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689000237;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=G9CUH/m+5jlDaSFhHEKdWJHdVH3B8QyEjDC+cZwzD2s=;
+ b=BauxZN/RP9HkBKyjC0vA1cOpDLuJRaUC8PqIQLgUI02zUPPmpLOhxNCHvKi86WJhPgmNuz
+ TMfAuPsNp2Oghk3D37p2KPG1nfc0FRqF84BYh6eHgiF5N7AeBhIrPfMHLZ28M3+yF+IUj1
+ j8ZlWr7c8iA9H6DtxfrbHzREnKYB3vk=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-596-pMJMDJDUPzCcJrVQoHyJ4Q-1; Mon, 10 Jul 2023 10:43:54 -0400
+X-MC-Unique: pMJMDJDUPzCcJrVQoHyJ4Q-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 22DC81C05140;
+ Mon, 10 Jul 2023 14:43:54 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.192.206])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 93BE340C2070;
+ Mon, 10 Jul 2023 14:43:51 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>
+Cc: Beraldo Leal <bleal@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH] tests/avocado: Disable the test_sbsaref_edk2_firmware in the
+ gitlab-CI
+Date: Mon, 10 Jul 2023 16:43:48 +0200
+Message-Id: <20230710144348.239441-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PULL 07/11] vfio: Fix null pointer dereference bug in
- vfio_bars_finalize()
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>
-References: <20230710074848.456453-1-clg@redhat.com>
- <20230710074848.456453-8-clg@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230710074848.456453-8-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.101,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,32 +82,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-10.07.2023 10:48, Cédric Le Goater пишет:
-> From: Avihai Horon <avihaih@nvidia.com>
-> 
-> vfio_realize() has the following flow:
-> 1. vfio_bars_prepare() -- sets VFIOBAR->size.
-> 2. msix_early_setup().
-> 3. vfio_bars_register() -- allocates VFIOBAR->mr.
-> 
-> After vfio_bars_prepare() is called msix_early_setup() can fail. If it
-> does fail, vfio_bars_register() is never called and VFIOBAR->mr is not
-> allocated.
-> 
-> In this case, vfio_bars_finalize() is called as part of the error flow
-> to free the bars' resources. However, vfio_bars_finalize() calls
-> object_unparent() for VFIOBAR->mr after checking only VFIOBAR->size, and
-> thus we get a null pointer dereference.
-> 
-> Fix it by checking VFIOBAR->mr in vfio_bars_finalize().
-> 
-> Fixes: 89d5202edc50 ("vfio/pci: Allow relocating MSI-X MMIO")
-> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+The test fails occasionally, see e.g.:
 
-It looks like it's a -stable material too. Queued this one.
-If it shouldn't go to stable, please let me know.
+ https://gitlab.com/thuth/qemu/-/jobs/4196177756#L489
+ https://gitlab.com/thuth/qemu/-/jobs/4623296271#L290
 
-Thanks,
+Disable it at least in the gitlab-CI to avoid failing CI
+pipelines due to this problem.
 
-/mjt
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ tests/avocado/machine_aarch64_sbsaref.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
+index cce6ef9f65..dbd364b537 100644
+--- a/tests/avocado/machine_aarch64_sbsaref.py
++++ b/tests/avocado/machine_aarch64_sbsaref.py
+@@ -8,8 +8,7 @@
+ 
+ import os
+ 
+-from avocado import skip
+-from avocado import skipUnless
++from avocado import skipIf
+ from avocado.utils import archive
+ 
+ from avocado_qemu import QemuSystemTest
+@@ -76,6 +75,7 @@ def fetch_firmware(self):
+             "sbsa-ref",
+         )
+ 
++    @skipIf(os.getenv('GITLAB_CI'), 'Test does not work reliably')
+     def test_sbsaref_edk2_firmware(self):
+         """
+         :avocado: tags=cpu:cortex-a57
+-- 
+2.39.3
+
 
