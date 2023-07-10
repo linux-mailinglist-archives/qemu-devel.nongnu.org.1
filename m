@@ -2,79 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7FE74CAF1
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 06:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE6174CC59
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 07:45:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIi5E-00049t-QM; Mon, 10 Jul 2023 00:01:08 -0400
+	id 1qIjgW-0006XH-5m; Mon, 10 Jul 2023 01:43:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
- id 1qIi4o-00045q-AM
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 00:00:47 -0400
-Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yongxuan.wang@sifive.com>)
- id 1qIi4h-0002No-Ul
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 00:00:39 -0400
-Received: by mail-oo1-xc2d.google.com with SMTP id
- 006d021491bc7-5661e8f4c45so3204112eaf.1
- for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 21:00:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1688961630; x=1691553630;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6LI7rT/rT8eN97E6MItQ7yPzvCEm9TaqkGYRxdUlylw=;
- b=frN9XaMA4EUv6f/mYIkRne+LMtLbpPIw7zzFlTxo7RvKQzJNI2WxMM/yJchkR66msR
- KCwm0H0kc3B8ArQ/SQyh2Hp0X75QZKCEMXkAX8FVkJ+lgi4BWTSpA4MwjQBouCid9B+a
- gsgrffWLOlNupJh5FkhHN4QOxFezvEScn8tZnVuua+uu27Nf1d1HznwUKxLrSEXwo7cT
- YBsTZWArz++DrGKvEs+mE0Tk1Ii0ZS3gvL7rSSgyo8tlQK1YB3T3C66HKnODp3MbU2VG
- QE3wiw2kHQCWvU8oUPnxqLm0ujiY475u3SPKw+JKw0ttPUPwjRpLsiKx93jhjOAVTYbI
- k9Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688961630; x=1691553630;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6LI7rT/rT8eN97E6MItQ7yPzvCEm9TaqkGYRxdUlylw=;
- b=NpvpjSwOEzUv/uY7HmQENXPL9RlrzpjVvbrN27WdmzvfmZN3qre1gV+hQOPXwCipHC
- 21xqmgOc202CYxfh6JycCaJH2iFRHqVcPqQ+MVwZgLQOaiR3/oxIAuQTD2T85ui+VPa3
- GhyHp7E09Ss8Nuxt60CAVtH2ieHVG9fNUmVkbIdgbUSuv1NeYGS6q4UMw5uOG400RS5U
- MWjAoTvHuY7ZjEsXWIbBz0RTzUOKyiqh+8hzKtcwhI8aJbbBKUtWtsCaUHNqJ27lpvDu
- 7YMs3wZauX5EpGI/tetAJYsNywwEPQzxAS2Ma/0/kWXWT6S/CefjZ30V92sZTsMdZb34
- 4n0g==
-X-Gm-Message-State: ABy/qLbMj4fsypfgZubMPVerCDCqjko+w95UCfQ1tYcuq+Ynou7qL6B5
- PDhz776Av/28142iGph76qU41b/uQllZs2Mf1SGtCw==
-X-Google-Smtp-Source: APBJJlHGq4pKy/OMDYHMI+E44mOJoa+1D4o0cgUvEY9gZBDfvqDapGDBXwTsyo24LrbPJLbtp67I2qknekopA/C8Wa0=
-X-Received: by 2002:a4a:4f0a:0:b0:565:97f9:d2fb with SMTP id
- c10-20020a4a4f0a000000b0056597f9d2fbmr9665441oob.3.1688961629848; Sun, 09 Jul
- 2023 21:00:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
+ id 1qIjgI-0006VO-3P
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 01:43:30 -0400
+Received: from mga07.intel.com ([134.134.136.100])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
+ id 1qIjgC-0000xq-Kj
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 01:43:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1688967804; x=1720503804;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=ZKyWrO4E7c/u9VRXtHO+U2xU5DlZiEKl1Z/Atg4ayKM=;
+ b=htT5YbHMbMzK6cHLbZdnC/ahulBmpOpfn8Ngr0VkJTo6oticLjLZCaxt
+ prQbT/VyKBJ9bJVXnuyfRd0BlbcxaLAXlND5wpxBB3ip5YY21qmCjSD+o
+ o/+In2xDXiLFLGK9Bm95qIeCwsa1d3C9sDUurgND7C5Ik2jB1j1CBSKXc
+ 0WJx0mYFUCiHWKxg4NKR2Cw1h6XaUt2eCMUoOlMBGeFRvYs1JUFPfXNs9
+ 9XJpZTCx4GFMI7DuSui8kRy8bSFnET6Tun9Ntf0R0lxiyavPga0WKTDh5
+ SbWap+9oq/OX82e0/ldLTZAU6DAmGUNOLnYhFvIaLnLdySRMnjV2LJ6v2 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="430333774"
+X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; d="scan'208";a="430333774"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2023 22:43:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10766"; a="750216608"
+X-IronPort-AV: E=Sophos;i="6.01,194,1684825200"; d="scan'208";a="750216608"
+Received: from lingshan-mobl.ccr.corp.intel.com (HELO [10.249.170.243])
+ ([10.249.170.243])
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Jul 2023 22:43:14 -0700
+Message-ID: <dbcfedca-ebeb-3540-b361-706627964668@intel.com>
+Date: Mon, 10 Jul 2023 13:43:12 +0800
 MIME-Version: 1.0
-References: <20230621145500.25624-1-yongxuan.wang@sifive.com>
- <20230705-31abcb5d920f105c9a9ccaa8@orel>
-In-Reply-To: <20230705-31abcb5d920f105c9a9ccaa8@orel>
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Date: Mon, 10 Jul 2023 12:00:19 +0800
-Message-ID: <CAMWQL2g38vnr4p7ByyhGT0WRH-t6TMP3KXb-DFSKHzRrJLs8VA@mail.gmail.com>
-Subject: Re: [PATCH v4 0/6] Add RISC-V KVM AIA Support
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, rkanwal@rivosinc.com, 
- anup@brainfault.org, dbarboza@ventanamicro.com, atishp@atishpatra.org, 
- vincent.chen@sifive.com, greentime.hu@sifive.com, frank.chang@sifive.com, 
- jim.shu@sifive.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
- envelope-from=yongxuan.wang@sifive.com; helo=mail-oo1-xc2d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.12.0
+Subject: Re: [PATCH] vhost_vdpa: no need to fetch vring base when poweroff
+Content-Language: en-US
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: jasowang@redhat.com, qemu-devel@nongnu.org,
+ Michael Tsirkin <mst@redhat.com>
+References: <20230707181826.10946-1-lingshan.zhu@intel.com>
+ <CAJaqyWdp6FvVT3wms39-paqQndLPQwQjqb4Ocua0ja=N3bxvpw@mail.gmail.com>
+From: "Zhu, Lingshan" <lingshan.zhu@intel.com>
+In-Reply-To: <CAJaqyWdp6FvVT3wms39-paqQndLPQwQjqb4Ocua0ja=N3bxvpw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=134.134.136.100;
+ envelope-from=lingshan.zhu@intel.com; helo=mga07.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,44 +82,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Andrew,
 
-I'll add it into patch v5. Thank you!
 
-Regards,
-Yong-Xuan
+On 7/7/2023 7:02 PM, Eugenio Perez Martin wrote:
+> On Fri, Jul 7, 2023 at 12:18 PM Zhu Lingshan <lingshan.zhu@intel.com> wrote:
+>> In the poweroff routine, no need to fetch last available index.
+>>
+>> This commit also provides a better debug message in the vhost
+>> caller vhost_virtqueue_stop, because if vhost does not fetch
+>> the last avail idx successfully, maybe the device does not
+>> suspend, vhost will sync last avail idx to vring used idx as a
+>> work around, not a failure.
+>>
+>> Signed-off-by: Zhu Lingshan <lingshan.zhu@intel.com>
+> CCing MST.
+>
+>> ---
+>>   hw/virtio/vhost-vdpa.c | 4 ++++
+>>   hw/virtio/vhost.c      | 2 +-
+>>   2 files changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+>> index 3c575a9a6e..f62952e1c7 100644
+>> --- a/hw/virtio/vhost-vdpa.c
+>> +++ b/hw/virtio/vhost-vdpa.c
+>> @@ -26,6 +26,7 @@
+>>   #include "cpu.h"
+>>   #include "trace.h"
+>>   #include "qapi/error.h"
+>> +#include "sysemu/runstate.h"
+>>
+>>   /*
+>>    * Return one past the end of the end of section. Be careful with uint64_t
+>> @@ -1391,6 +1392,9 @@ static int vhost_vdpa_get_vring_base(struct vhost_dev *dev,
+>>       struct vhost_vdpa *v = dev->opaque;
+>>       int ret;
+>>
+>> +    if (runstate_check(RUN_STATE_SHUTDOWN))
+>> +        return 0;
+>> +
+> QEMU coding style mandates braces around the "if" body (CODING_STYLE.rst file).
+>
+> Apart from that I think we should add a comment here. Something in the line of:
+>
+> Some devices do not support the call properly, and we don't need to
+> retrieve the indexes if we're not migrating. Skip it in this case.
+V2 will include these changes, thanks!
+>
+>>       if (v->shadow_vqs_enabled) {
+>>           ring->num = virtio_queue_get_last_avail_idx(dev->vdev, ring->index);
+>>           return 0;
+>> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+>> index 82394331bf..84712743e0 100644
+>> --- a/hw/virtio/vhost.c
+>> +++ b/hw/virtio/vhost.c
+>> @@ -1262,7 +1262,7 @@ void vhost_virtqueue_stop(struct vhost_dev *dev,
+>>
+>>       r = dev->vhost_ops->vhost_get_vring_base(dev, &state);
+>>       if (r < 0) {
+>> -        VHOST_OPS_DEBUG(r, "vhost VQ %u ring restore failed: %d", idx, r);
+>> +        VHOST_OPS_DEBUG(r, "sync last avail idx to the used idx for vhost VQ %u", idx);
+> Guest's used idx? Also, maybe it is worth splitting this in a separated patch.
+Yes, guest used idx is much clearer. I am not sure whether this worthy a 
+separated
+patch, this is only a comment.
+>
+> Apart from the nitpicking, I think the general line of the patch is
+> the way to go :).
+Thanks!
+>
+> Thanks!
+>
+>>           /* Connection to the backend is broken, so let's sync internal
+>>            * last avail idx to the device used idx.
+>>            */
+>> --
+>> 2.39.3
+>>
 
-On Wed, Jul 5, 2023 at 4:14=E2=80=AFPM Andrew Jones <ajones@ventanamicro.co=
-m> wrote:
->
-> On Wed, Jun 21, 2023 at 02:54:50PM +0000, Yong-Xuan Wang wrote:
-> > This series adds support for KVM AIA in RISC-V architecture.
-> >
-> > In order to test these patches, we require Linux with KVM AIA support w=
-hich can
-> > be found in the riscv_kvm_aia_hwaccel_v1 branch at
-> > https://github.com/avpatel/linux.git
->
-> Is it possible to add irqfd support? Maybe even as simply as the diff
-> below? If not, can you explain what still needs to be done in order
-> to do so?
->
-> Thanks,
-> drew
->
->
-> diff --git a/hw/intc/riscv_imsic.c b/hw/intc/riscv_imsic.c
-> index 00fdb60fc6ab..b38d9bb5506a 100644
-> --- a/hw/intc/riscv_imsic.c
-> +++ b/hw/intc/riscv_imsic.c
-> @@ -371,6 +371,7 @@ static void riscv_imsic_realize(DeviceState *dev, Err=
-or **errp)
->      }
->
->      msi_nonbroken =3D true;
-> +    kvm_msi_via_irqfd_allowed =3D kvm_irqfds_enabled();
->  }
->
->  static Property riscv_imsic_properties[] =3D {
->
 
