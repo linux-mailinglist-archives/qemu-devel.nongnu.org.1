@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFA574E207
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3F274E1F0
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:09:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzwN-0002WZ-TS; Mon, 10 Jul 2023 19:05:11 -0400
+	id 1qIzwe-0003Ci-JM; Mon, 10 Jul 2023 19:05:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwJ-00028D-SG
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:08 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwM-0002Vv-TD
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwI-0004ZQ-3d
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:07 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwI-0004Zc-Dn
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030286;
+ s=mimecast20190719; t=1689030289;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=e96k/kxAhOznziHvCn8/Sqiu/LbtoiFGXi8Abmjs3vo=;
- b=UWEWoX/5Wr25a6k6kUroE3Kyv6PYkcmrfp17Tvx0p6MKOg4++3hssNyDdyU9arv4aSnOyM
- 3AX5tzm2KH7mjARBqLHlKv70b+kvq0qhcKiHzvVcpA3n3Fy6eFUwbqK4jI6E4n8Zbjhrai
- jUmaBi+gLEIXpT533noG1GrP+RlAN/4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xD1AkY/txf5N+3ZJ0BJ1Fs74CaRBbtaK9Vb5NSU/lq4=;
+ b=T6VqkFsNJjKK9UoUYpRyXks/43BUdwT1WXIoNPb7ksrcBE1RCOUjooIW7Nv8/HJwDfvHwv
+ mutSxiVTvjEiFvcYFku/KC9Y829aB07A+BAvVsZ6w4MRYIc68QZjLuTTy+vO24XeEmCzkV
+ nMcWk2d2jK3/LaN8UapqC8Y4SteuwSs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-YwbQb7NUPFq_DKPfoc0_Vg-1; Mon, 10 Jul 2023 19:04:45 -0400
-X-MC-Unique: YwbQb7NUPFq_DKPfoc0_Vg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fc0094c1bdso24648925e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:04:45 -0700 (PDT)
+ us-mta-608-Q3K-hMeMNkSrygRNgFchAw-1; Mon, 10 Jul 2023 19:04:48 -0400
+X-MC-Unique: Q3K-hMeMNkSrygRNgFchAw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3fc07d4c63eso10374685e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:04:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030283; x=1691622283;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=e96k/kxAhOznziHvCn8/Sqiu/LbtoiFGXi8Abmjs3vo=;
- b=ON/ibZB9QQH1jjyNrQzCCJcr42ptnL7Ac0P41kPnb0ZUv+wpS9Bz/KBPgCjCV223Lp
- aFAlp3svSA7e0g2g1rDuKGkhu3S5JWmETXnrpnHb8HBQkF32q6u/ehKE+XmUj62uTUVJ
- NHs6xwtJp2/M80YPZyZbmmAwKvke75mJ7l4BJf6DpqJmZYJ+LdQcvMV748D+nUMP7mUC
- X7a6w8jpc8SWxvrP5jMs74e3rqZ36H5CTk4GkiFyDkI5Tm7aXb8TvkdwB6N0FsYZ1c6N
- T+Q88MQW1FUVTYlzA4iVIX5b0aBFAQ5Of5sCV3rDkPia0zX10PPSTqLFJ76WICx3FHpc
- M4AA==
-X-Gm-Message-State: ABy/qLbFpf3vExs429oMtOwHpEL34cR8TjOfGW+kohjdc99OzgHPkAtD
- Xo49xA0Q2WPJ86SeGOaWoJRaH3QppLB7y4DcpW2i6Amsy/MmoLg8XkK4Tg1cNpTAgVonUZreBY7
- 5nWzaU0jMRqgjFGGSDmLX/g0kn9IFBpHUIpSSKI9hKfFeGBmimhB2B8O/WW55O2UaNO6V
-X-Received: by 2002:a7b:c389:0:b0:3fc:9f:e75c with SMTP id
- s9-20020a7bc389000000b003fc009fe75cmr10669096wmj.11.1689030283589; 
- Mon, 10 Jul 2023 16:04:43 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHp/2/TOjUyWiaBJxW3lCs74cD2f3zMrKSwa2zGBp+RcRwKa/QcBxYd7/6Prrlqer69OOVgFg==
-X-Received: by 2002:a7b:c389:0:b0:3fc:9f:e75c with SMTP id
- s9-20020a7bc389000000b003fc009fe75cmr10669074wmj.11.1689030283188; 
- Mon, 10 Jul 2023 16:04:43 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689030286; x=1691622286;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xD1AkY/txf5N+3ZJ0BJ1Fs74CaRBbtaK9Vb5NSU/lq4=;
+ b=S+jiRAQ8pxxPhvW18NQnmYl1nDrEcvDMd+qXni8tz2OLfc/LT7YfmdWqKcGgYO952k
+ DICRMLUiaalWygQWuIn5QxXXjOvinxVsrB7GqN9lQw5yfbUlgCYHWBDBAgQME2Rsj2AL
+ iRkkeAOmgCa3qX8arf3Hi7PeAEizjXPTR3cZQsjJ4m3clyQ2Gn9Z6xwOctFALAzGvjfZ
+ QXG6vM8IhpzpwEOZnKS/b27F+qbqajJpEqKHAyFhvI22jf47pnLzafB2vFr3w16memQY
+ UpjEeY4cQYy1wzpRjhbSxPI2SGozyUTATvH+3R+2SMkCQaDDJ8ErqSKbk5eEPFsB51SL
+ FI7g==
+X-Gm-Message-State: ABy/qLYkmHP/YsJD69h1t9WbLy702GG/VR11Xqxa+8bb8/zgsWG72Emu
+ Nr36o2A0T5B7ZH9eXnGGdBvnbyBvScLpeyqVVIfgRQjKLSqmOpTCIuUunVK6iHGD2TSUWbN3SKf
+ e+UATxgLAJIQKDFjlORrYjO9BHpA7Yxk+36me1a1uWSpCAwA7+469To74OjorZ4C++cSD
+X-Received: by 2002:a05:6000:8b:b0:30e:56b3:60fe with SMTP id
+ m11-20020a056000008b00b0030e56b360femr12727790wrx.4.1689030286387; 
+ Mon, 10 Jul 2023 16:04:46 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGhQMsYv7zygab3dCzUEdaW/nT6fijvgaEMfYTmFF4ZiehJ9ZFiUsrLK6LtQ5YpJRpQtlBP8g==
+X-Received: by 2002:a05:6000:8b:b0:30e:56b3:60fe with SMTP id
+ m11-20020a056000008b00b0030e56b360femr12727773wrx.4.1689030286101; 
+ Mon, 10 Jul 2023 16:04:46 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- z9-20020a1c4c09000000b003fa74bff02asm932968wmf.26.2023.07.10.16.04.41
+ b16-20020a5d5510000000b0031417b0d338sm574620wrv.87.2023.07.10.16.04.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:04:42 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:04:40 -0400
+ Mon, 10 Jul 2023 16:04:45 -0700 (PDT)
+Date: Mon, 10 Jul 2023 19:04:43 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eric Auger <eric.auger@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PULL 47/66] virtio-iommu: Rework the traces in
- virtio_iommu_set_page_size_mask()
-Message-ID: <587a7641d53055054d68d67d94c9408ef808f127.1689030052.git.mst@redhat.com>
+ Leonardo Bras <leobras@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 48/66] pcie: Add hotplug detect state register to cmask
+Message-ID: <625b370c45f4acd155ee625d61c0057d770a5b5e.1689030052.git.mst@redhat.com>
 References: <cover.1689030052.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1689030052.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -101,71 +101,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Auger <eric.auger@redhat.com>
+From: Leonardo Bras <leobras@redhat.com>
 
-The current error messages in virtio_iommu_set_page_size_mask()
-sound quite similar for different situations and miss the IOMMU
-memory region that causes the issue.
+When trying to migrate a machine type pc-q35-6.0 or lower, with this
+cmdline options,
 
-Clarify them and rework the comment.
+-device driver=pcie-root-port,port=18,chassis=19,id=pcie-root-port18,bus=pcie.0,addr=0x12 \
+-device driver=nec-usb-xhci,p2=4,p3=4,id=nex-usb-xhci0,bus=pcie-root-port18,addr=0x12.0x1
 
-Also remove the trace when the new page_size_mask is not applied as
-the current frozen granule is kept. This message is rather confusing
-for the end user and anyway the current granule would have been used
-by the driver.
+the following bug happens after all ram pages were sent:
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Message-Id: <20230705165118.28194-3-eric.auger@redhat.com>
+qemu-kvm: get_pci_config_device: Bad config data: i=0x6e read: 0 device: 40 cmask: ff wmask: 0 w1cmask:19
+qemu-kvm: Failed to load PCIDevice:config
+qemu-kvm: Failed to load pcie-root-port:parent_obj.parent_obj.parent_obj
+qemu-kvm: error while loading state for instance 0x0 of device '0000:00:12.0/pcie-root-port'
+qemu-kvm: load of migration failed: Invalid argument
+
+This happens on pc-q35-6.0 or lower because of:
+{ "ICH9-LPC", ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, "off" }
+
+In this scenario, hotplug_handler_plug() calls pcie_cap_slot_plug_cb(),
+which sets dev->config byte 0x6e with bit PCI_EXP_SLTSTA_PDS to signal PCI
+hotplug for the guest. After a while the guest will deal with this hotplug
+and qemu will clear the above bit.
+
+Then, during migration, get_pci_config_device() will compare the
+configs of both the freshly created device and the one that is being
+received via migration, which will differ due to the PCI_EXP_SLTSTA_PDS bit
+and cause the bug to reproduce.
+
+To avoid this fake incompatibility, there are tree fields in PCIDevice that
+can help:
+
+- wmask: Used to implement R/W bytes, and
+- w1cmask: Used to implement RW1C(Write 1 to Clear) bytes
+- cmask: Used to enable config checks on load.
+
+According to PCI Express® Base Specification Revision 5.0 Version 1.0,
+table 7-27 (Slot Status Register) bit 6, the "Presence Detect State" is
+listed as RO (read-only), so it only makes sense to make use of the cmask
+field.
+
+So, clear PCI_EXP_SLTSTA_PDS bit on cmask, so the fake incompatibility on
+get_pci_config_device() does not abort the migration.
+
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2215819
+Signed-off-by: Leonardo Bras <leobras@redhat.com>
+Message-Id: <20230706045546.593605-3-leobras@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Tested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 ---
- hw/virtio/virtio-iommu.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ hw/pci/pcie.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 8d0c5e3f32..201127c488 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -1101,29 +1101,24 @@ static int virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
-                                           new_mask);
+diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+index b7f107ed8d..763f65c528 100644
+--- a/hw/pci/pcie.c
++++ b/hw/pci/pcie.c
+@@ -666,6 +666,10 @@ void pcie_cap_slot_init(PCIDevice *dev, PCIESlot *s)
+     pci_word_test_and_set_mask(dev->w1cmask + pos + PCI_EXP_SLTSTA,
+                                PCI_EXP_HP_EV_SUPPORTED);
  
-     if ((cur_mask & new_mask) == 0) {
--        error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
--                   " is incompatible with mask 0x%"PRIx64, cur_mask, new_mask);
-+        error_setg(errp, "virtio-iommu %s reports a page size mask 0x%"PRIx64
-+                   " incompatible with currently supported mask 0x%"PRIx64,
-+                   mr->parent_obj.name, new_mask, cur_mask);
-         return -1;
-     }
++    /* Avoid migration abortion when this device hot-removed by guest */
++    pci_word_test_and_clear_mask(dev->cmask + pos + PCI_EXP_SLTSTA,
++                                 PCI_EXP_SLTSTA_PDS);
++
+     dev->exp.hpev_notified = false;
  
-     /*
-      * Once the granule is frozen we can't change the mask anymore. If by
-      * chance the hotplugged device supports the same granule, we can still
--     * accept it. Having a different masks is possible but the guest will use
--     * sub-optimal block sizes, so warn about it.
-+     * accept it.
-      */
-     if (s->granule_frozen) {
--        int new_granule = ctz64(new_mask);
-         int cur_granule = ctz64(cur_mask);
- 
--        if (new_granule != cur_granule) {
--            error_setg(errp, "virtio-iommu page mask 0x%"PRIx64
--                       " is incompatible with mask 0x%"PRIx64, cur_mask,
--                       new_mask);
-+        if (!(BIT(cur_granule) & new_mask)) {
-+            error_setg(errp, "virtio-iommu %s does not support frozen granule 0x%llx",
-+                       mr->parent_obj.name, BIT_ULL(cur_granule));
-             return -1;
--        } else if (new_mask != cur_mask) {
--            warn_report("virtio-iommu page mask 0x%"PRIx64
--                        " does not match 0x%"PRIx64, cur_mask, new_mask);
-         }
-         return 0;
-     }
+     qbus_set_hotplug_handler(BUS(pci_bridge_get_sec_bus(PCI_BRIDGE(dev))),
 -- 
 MST
 
