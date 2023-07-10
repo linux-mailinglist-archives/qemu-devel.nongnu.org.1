@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B364074E1FF
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7F974E1EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:08:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzvo-0001H9-0x; Mon, 10 Jul 2023 19:04:36 -0400
+	id 1qIzwK-000238-QK; Mon, 10 Jul 2023 19:05:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzvl-00012i-VC
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:04:33 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzvq-0001Xy-6v
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:04:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzvk-0004XZ-ET
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:04:33 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzvo-0004Y3-FE
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:04:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030271;
+ s=mimecast20190719; t=1689030275;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=CIQfU3WFFO/+csV0ypsEiMeMOH7tqtHxkacd12WBjno=;
- b=R8+FxZXVyKEdz7h0Qv9IjTdPsOMAnShV2nDuBgyGjDZR4Lk2EPkxSYmGuX/bc+N93l5Ws7
- AV9EKjCOCdVzo5X7Cw7PI4WQA4VipqsIlmO3UEzoCQnW6Mhvp6Fsi02TP9+JTo09tPjTLa
- YViNt+jGoUDQVdm75yJ2ep+YZGyKwLc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aBRCyVMXtwE/vLnlZhU8V6LGVN3Foijz8hViuua/bjw=;
+ b=At4FuimgIBDpR2F5Y4lIoYbreyK3WQ4sIxQLtPpelKpJZAoLgfIV+KBF+kipqd2OgG8Ikd
+ kee5qIujys+viZFcY5zmAhJgYA2/izIZY5omRHLDtSaZNw50oSQ6hC/T8BrKtVVxNhWka7
+ sElrYK9s1SOzeFtz8RhMDgStuakoVcs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-208-321VpTNYMuKrgvXW2aB9aQ-1; Mon, 10 Jul 2023 19:04:30 -0400
-X-MC-Unique: 321VpTNYMuKrgvXW2aB9aQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fa979d0c32so31021325e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:04:30 -0700 (PDT)
+ us-mta-480-P1QvxD6sOD-nPmO4dB9sCw-1; Mon, 10 Jul 2023 19:04:34 -0400
+X-MC-Unique: P1QvxD6sOD-nPmO4dB9sCw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3fc0094c1bdso24645065e9.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:04:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030269; x=1691622269;
+ d=1e100.net; s=20221208; t=1689030272; x=1691622272;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CIQfU3WFFO/+csV0ypsEiMeMOH7tqtHxkacd12WBjno=;
- b=d+oWABRsAMDW3WPlyn63nLzaNyZkojHp6N+PiSGwwVhP1aeIFUvrM6UTPaOSA/aNIR
- uB4c+IBVjoRdkm2f/DmMxEqueOCViJ88t/phuKwcpbX8XiBkLKBN9U5CzrCJku91sszt
- QKIKzEHF0knIq+qR8oy8TlzfVKGGNILnYlrxRhfxGO1RxW7Ze2d5zHZzhJqqxhFP/9B/
- 8Ln7cbLJemWY/E4JRjNwPkZ+ambzitUKSLXXREJGLddLSqW4Wuj3cQ8AwfbkVjGZSGTF
- w9txzep/ZVacFl6XvONUQrt3LiE9U4JrMsYAjI9lJUPB6l2OxOh1WvVJfDsYodZdDfKT
- Iz+w==
-X-Gm-Message-State: ABy/qLZvuLIlzYRVi/oGELYFCo7kxWU0JtxIhzfqX4tQw2zbakNX7OY7
- Cfc+4I1EL/NgHxIQoWo++1XwZFee9JzAEDooxd7WVbqHD6RsN+Tp65zcYRzZEdoCNyU6lrtnUzt
- tg2Jx4FyuyqDEMVQbr8M5LemKFSpbLRcqZDXv7xW3MFmCF7IzccSkgF/g7i+vTkyRXBvf
-X-Received: by 2002:a1c:6a09:0:b0:3fc:586:ccb4 with SMTP id
- f9-20020a1c6a09000000b003fc0586ccb4mr7471185wmc.36.1689030269152; 
- Mon, 10 Jul 2023 16:04:29 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEtd8psith3Q/JFLB7Gmf04jVUIDcMl+Na99LBUqCvrAwxSeCsbtqLakfrUvvSkhcoPQa2csg==
-X-Received: by 2002:a1c:6a09:0:b0:3fc:586:ccb4 with SMTP id
- f9-20020a1c6a09000000b003fc0586ccb4mr7471171wmc.36.1689030268862; 
- Mon, 10 Jul 2023 16:04:28 -0700 (PDT)
+ bh=aBRCyVMXtwE/vLnlZhU8V6LGVN3Foijz8hViuua/bjw=;
+ b=cru/dtHrNk9+BQSsgYB2bUFAhCdKthPVbFNBjh8MnO9k3oxVTrabZabARPHFms/xZr
+ DDArTOQXQ9iwkj70iGeo+tfGfHYKFu0NdKqJ2Vsa/4fxdvIMxE0iVS+F6YnEvNi0hUxd
+ Y3qZLKgkrxehW6TctmNGRp5mr9sY4T+D2a7bQP1ZYtyRfdZmO91ysGrPKHJycB5yaWdv
+ Tsxs8qxBycjPu1LIOWs3bWh+iA7PVf1zpZnWyi2KlO51CUUTW+/6PBMfLF8su7v814xc
+ gotnanBkrvuTXii8s8B2TQlbSzqp6fRSO5FkqbJx4n+1hzhI+PtIDXxgE3Pou5X/Cf5s
+ W11g==
+X-Gm-Message-State: ABy/qLaO4OeAlNBi6ArwKZHgUV+UHVJerPdQwi1xlzBxbSQU9ceGwtrc
+ n6SDI6VN2O1fJSm6KQOO/Bc3e63O0VcDKljdMSLLMz5S3H+zGcN6+bm5ka776LqoZ7gfrHiOy0S
+ /92VkpBcanIhfAw3DP79qiWeq6H8Pj+dXTvZJ58dji0HyPTS6YjGaAeKdsqCYgnsVfVnT
+X-Received: by 2002:a1c:6a1a:0:b0:3f8:c70e:7ed1 with SMTP id
+ f26-20020a1c6a1a000000b003f8c70e7ed1mr13627816wmc.20.1689030271861; 
+ Mon, 10 Jul 2023 16:04:31 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlG+QSZUKvpxpkcuTBo1GJ58lfKbe0gtmq3ok6gidV1TRZ4gGct0Y9wZHYEZeA/bGJy17xr/MQ==
+X-Received: by 2002:a1c:6a1a:0:b0:3f8:c70e:7ed1 with SMTP id
+ f26-20020a1c6a1a000000b003f8c70e7ed1mr13627795wmc.20.1689030271559; 
+ Mon, 10 Jul 2023 16:04:31 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- r13-20020a05600c458d00b003fa9a00d74csm20008487wmo.3.2023.07.10.16.04.27
+ f11-20020a7bc8cb000000b003fa98908014sm11534848wml.8.2023.07.10.16.04.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:04:28 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:04:26 -0400
+ Mon, 10 Jul 2023 16:04:31 -0700 (PDT)
+Date: Mon, 10 Jul 2023 19:04:29 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Ani Sinha <anisinha@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>
-Subject: [PULL 42/66] tests/acpi/bios-tables-test: use the correct slot on
- the pcie-root-port
-Message-ID: <7b0ba7b1c8b362a83bfb30170dae6035a71192c2.1689030052.git.mst@redhat.com>
+Subject: [PULL 43/66] tests/acpi/bios-tables-test: update acpi blob
+ q35/DSDT.noacpihp
+Message-ID: <bac4711b07ef92be45628ae7b399a09d850ee596.1689030052.git.mst@redhat.com>
 References: <cover.1689030052.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -101,35 +101,129 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ani Sinha <anisinha@redhat.com>
 
-PCIE ports only have one slot, slot 0. Hence, non-zero slots are not available
-for PCIE devices on PCIE root ports. Fix test_acpi_q35_tcg_no_acpi_hotplug()
-so that the test does not use them.
+Some fixes were committed in bios-tables-test in the previous commit. Update
+the acpi blob and clear bios-tables-test-allowed-diff.h so that the test
+continues to pass with the changes in the bios-tables-test.
+
+Following is the asl diff between the old and the newly updated blob:
+
+@@ -1,30 +1,30 @@
+ /*
+  * Intel ACPI Component Architecture
+  * AML/ASL+ Disassembler version 20210604 (64-bit version)
+  * Copyright (c) 2000 - 2021 Intel Corporation
+  *
+  * Disassembling to symbolic ASL+ operators
+  *
+- * Disassembly of tests/data/acpi/q35/DSDT.noacpihp, Wed Jun 21 18:26:52 2023
++ * Disassembly of /tmp/aml-O8SU61, Wed Jun 21 18:26:52 2023
+  *
+  * Original Table Header:
+  *     Signature        "DSDT"
+- *     Length           0x00002038 (8248)
++ *     Length           0x00002031 (8241)
+  *     Revision         0x01 **** 32-bit table (V1), no 64-bit math support
+- *     Checksum         0x4A
++ *     Checksum         0x89
+  *     OEM ID           "BOCHS "
+  *     OEM Table ID     "BXPC    "
+  *     OEM Revision     0x00000001 (1)
+  *     Compiler ID      "BXPC"
+  *     Compiler Version 0x00000001 (1)
+  */
+ DefinitionBlock ("", "DSDT", 1, "BOCHS ", "BXPC    ", 0x00000001)
+ {
+     Scope (\)
+     {
+         OperationRegion (DBG, SystemIO, 0x0402, One)
+         Field (DBG, ByteAcc, NoLock, Preserve)
+         {
+             DBGB,   8
+         }
+
+@@ -3148,48 +3148,48 @@
+                 {
+                     Name (_ADR, Zero)  // _ADR: Address
+                     Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
+                     {
+                         Local0 = Package (0x01)
+                             {
+                                 0x01F5
+                             }
+                         Return (EDSM (Arg0, Arg1, Arg2, Arg3, Local0))
+                     }
+                 }
+             }
+
+             Device (S40)
+             {
+                 Name (_ADR, 0x00080000)  // _ADR: Address
+-                Device (S41)
++                Device (S01)
+                 {
+-                    Name (_ADR, 0x00080001)  // _ADR: Address
++                    Name (_ADR, One)  // _ADR: Address
+                     Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
+                     {
+                         Local0 = Package (0x01)
+                             {
+                                 0x0259
+                             }
+                         Return (EDSM (Arg0, Arg1, Arg2, Arg3, Local0))
+                     }
+                 }
+
+-                Device (S48)
++                Device (S02)
+                 {
+-                    Name (_ADR, 0x00090000)  // _ADR: Address
++                    Name (_ADR, 0x02)  // _ADR: Address
+                     Device (S00)
+                     {
+                         Name (_ADR, Zero)  // _ADR: Address
+                     }
+                 }
+             }
+
+             Device (SF8)
+             {
+                 Name (_ADR, 0x001F0000)  // _ADR: Address
+                 OperationRegion (PIRQ, PCI_Config, 0x60, 0x0C)
+                 Scope (\_SB)
+                 {
+                     Field (PCI0.SF8.PIRQ, ByteAcc, NoLock, Preserve)
+                     {
+                         PRQA,   8,
 
 Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20230705115925.5339-3-anisinha@redhat.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+Message-Id: <20230705115925.5339-4-anisinha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/qtest/bios-tables-test-allowed-diff.h |   1 -
+ tests/data/acpi/q35/DSDT.noacpihp           | Bin 8248 -> 8241 bytes
+ 2 files changed, 1 deletion(-)
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index ed1c69cf01..47ba20b957 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -1020,9 +1020,9 @@ static void test_acpi_q35_tcg_no_acpi_hotplug(void)
-         " -device pci-testdev,bus=nohprp,acpi-index=501"
-         " -device pcie-root-port,id=nohprpint,port=0x0,chassis=3,hotplug=off,"
-                                  "multifunction=on,addr=8.0"
--        " -device pci-testdev,bus=nohprpint,acpi-index=601,addr=8.1"
-+        " -device pci-testdev,bus=nohprpint,acpi-index=601,addr=0.1"
-         " -device pcie-root-port,id=hprp2,port=0x0,chassis=4,bus=nohprpint,"
--                                 "addr=9.0"
-+                                 "addr=0.2"
-         " -device pci-testdev,bus=hprp2,acpi-index=602"
-         , &data);
-     free_test_data(&data);
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index 31df9c6187..dfb8523c8b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1,2 +1 @@
+ /* List of comma-separated changed AML files to ignore */
+-"tests/data/acpi/q35/DSDT.noacpihp",
+diff --git a/tests/data/acpi/q35/DSDT.noacpihp b/tests/data/acpi/q35/DSDT.noacpihp
+index 6ab1f0e52543fcb7f84a7fd1327fe5aa42010565..8cab2f8eb9ae94e0165f3f17857ec7d080fb0e13 100644
+GIT binary patch
+delta 109
+zcmdntu+f3bCD<jzP=SGgv2!Dri!7J3UQB$jQ@nt;?&b(tDMlAZ)?gEZc#e2SmmnSn
+z1`dYkCY4|VLx=#Qh(x?gurE)65Gx~hBvZl?S0FDVGb=kGx=AwFzzCv>i)r&-xoSoL
+DyqFtK
+
+delta 94
+zcmdn!u)~4NCD<jzLV<yS(Q6}@i!7IyUQB$jQ@nta-sT8dDMm#P)?gEZc#e2SmmnSn
+k1`dYkCXHYdL#O~FP+)SuoHV~ou!#j+5huguZF1F&02bsG6#xJL
+
 -- 
 MST
 
