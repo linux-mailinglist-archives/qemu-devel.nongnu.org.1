@@ -2,64 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF1674D2E0
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 12:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3928374D316
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 12:15:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIno5-0003xi-3N; Mon, 10 Jul 2023 06:07:49 -0400
+	id 1qInuQ-0001yv-Tk; Mon, 10 Jul 2023 06:14:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qIno2-0003uL-R3
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:07:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qInuL-0001tg-1h
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:14:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qIno1-0004p6-BB
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:07:46 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qInuI-00064X-VH
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:14:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688983664;
+ s=mimecast20190719; t=1688984054;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YoxMG4iTkPZLehoWO3OXHc8JLdddwXi1LqzpJbiwRLo=;
- b=Qv9G2rk0+QUgyX8DJjimHhKpENvoo88HpBOnQtmq/RBLQG90ELtQHcJRu+iqrWN9aoVeG9
- Ba929QjLNlkoOd8TcXRznS+/GxaMw9Q7dXEEUUjhYLTS6P/Lql9tY8xjcVTe/psjGA8QPh
- YeVsx3+RYrlq2Qz2vpEw7M9dJNmL6Ys=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-650-Zdvh4be_P5Ko-zHMMenzxQ-1; Mon, 10 Jul 2023 06:07:41 -0400
-X-MC-Unique: Zdvh4be_P5Ko-zHMMenzxQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3E437384CC4D;
- Mon, 10 Jul 2023 10:07:41 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.39.194.160])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 23A88111CA03;
- Mon, 10 Jul 2023 10:07:38 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
+ bh=MPmY5uWpV/wIu1/DdPY/Nvq5LfdAzpY1qIIJNZNDJgQ=;
+ b=cJhh/Y+KCBWAvNi5Y9fuvhpY7hwZNf6Vmqywvgs84LKJ9Rux1D4tZe6dDS0cdXw/92gsb/
+ GHVnp0mo+XV1eXioxankJrVW0SOmo2c08+vV6gqqJJld/IGXS8l8iHWQHIVJo3qJRDI1IS
+ nSkQCYE0GS5DfcQEa/FgmC2cw2SsI14=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-637-tDMSSYbTPxGSp-NQUMUgVw-1; Mon, 10 Jul 2023 06:14:13 -0400
+X-MC-Unique: tDMSSYbTPxGSp-NQUMUgVw-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-262ffe98bcfso5146328a91.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 03:14:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688984050; x=1691576050;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MPmY5uWpV/wIu1/DdPY/Nvq5LfdAzpY1qIIJNZNDJgQ=;
+ b=KqthZw5+pDPIqTY0b4G6hZC8EeSQasju2typrXf0d1G6xPRahSZmmPeV6aRzTg9rIe
+ FfGc9wlFhonpF+9dwMj4Au3zoypzNZEWq3XRoPoh+lUXNI+Gfm6zy/nMPg2vm0FyJ6hb
+ 8IhIZjYYBCl8CZiyJDs8+ILiddoeJZqfvwINTp0mRv2k+5WWsZnxwkVw9+OGdgz70M/h
+ H/md8OR8RD3zeDDyx0HUTo9idDMFn2CwSAEzekL/IB/Y2aolQVlcSoXrv4KnaIpSjlGI
+ ucG/VTbJ8l3LXwgNMIl82IKOLjYKZ/7DO6bVJeMYc4l3VMEBEUgpQxpDc6lcINTgpCDU
+ jcTQ==
+X-Gm-Message-State: ABy/qLaOlH68WQuGZoF/c1EuFPjH22GVy7NeSkxV9f+LVu5pSsjkR51R
+ qy4EqQsLKU7RLqZ31eosmN96E0pwXCNvTsYvVmAjZdWM8huIJ2+JR0vUDzCBvFnm/qltWtUUI3s
+ R4mgX8QcFPkrgAeU=
+X-Received: by 2002:a17:90a:d155:b0:263:40e1:d4d9 with SMTP id
+ t21-20020a17090ad15500b0026340e1d4d9mr9655492pjw.47.1688984050434; 
+ Mon, 10 Jul 2023 03:14:10 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEp6+UKpunt1EqOXqjYVg0oBfIn/byV7XFTv6Di0Rl9MORXYHeZKRi2r8NWBxZAB5TIa3Yk0Q==
+X-Received: by 2002:a17:90a:d155:b0:263:40e1:d4d9 with SMTP id
+ t21-20020a17090ad15500b0026340e1d4d9mr9655473pjw.47.1688984049935; 
+ Mon, 10 Jul 2023 03:14:09 -0700 (PDT)
+Received: from smtpclient.apple ([203.212.247.118])
+ by smtp.gmail.com with ESMTPSA id
+ i14-20020a17090acf8e00b0026596b8f33asm4231754pju.40.2023.07.10.03.14.06
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 10 Jul 2023 03:14:09 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.3\))
+Subject: Re: [PATCH v5 2/2] pcie: Specify 0 for ARI next function numbers
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20230710054117-mutt-send-email-mst@kernel.org>
+Date: Mon, 10 Jul 2023 15:44:04 +0530
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ qemu-devel <qemu-devel@nongnu.org>, qemu-block@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
- Gavin Shan <gshan@redhat.com>, Mario Casquero <mcasquer@redhat.com>
-Subject: [PATCH v3 7/7] virtio-mem-pci: Device unplug support
-Date: Mon, 10 Jul 2023 12:07:14 +0200
-Message-ID: <20230710100714.228867-8-david@redhat.com>
-In-Reply-To: <20230710100714.228867-1-david@redhat.com>
-References: <20230710100714.228867-1-david@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D311E48F-1283-4A6D-895F-4E466717543B@redhat.com>
+References: <20230705022421.13115-1-akihiko.odaki@daynix.com>
+ <20230705022421.13115-3-akihiko.odaki@daynix.com>
+ <E8241AB3-F645-4697-A5AC-9B6BC897B432@redhat.com>
+ <20230710051539-mutt-send-email-mst@kernel.org>
+ <B82575EB-132B-4B15-B9EC-89B947826367@redhat.com>
+ <20230710054117-mutt-send-email-mst@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.3)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -68,7 +96,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,103 +112,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's support device unplug by forwarding the unplug_request_check()
-callback to the virtio-mem device.
 
-Further, disallow changing the requested-size once an unplug request is
-pending.
 
-Disallowing requested-size changes handles corner cases such as
-(1) pausing the VM (2) requesting device unplug and (3) adjusting the
-requested size. If the VM would plug memory (due to the requested size
-change) before processing the unplug request, we would be in trouble.
+> On 10-Jul-2023, at 3:14 PM, Michael S. Tsirkin <mst@redhat.com> wrote:
+>=20
+> On Mon, Jul 10, 2023 at 02:49:55PM +0530, Ani Sinha wrote:
+>>=20
+>>=20
+>>> On 10-Jul-2023, at 2:46 PM, Michael S. Tsirkin <mst@redhat.com> =
+wrote:
+>>>=20
+>>> On Mon, Jul 10, 2023 at 01:21:50PM +0530, Ani Sinha wrote:
+>>>>=20
+>>>>=20
+>>>>> On 05-Jul-2023, at 7:54 AM, Akihiko Odaki =
+<akihiko.odaki@daynix.com> wrote:
+>>>>>=20
+>>>>> The current implementers of ARI are all SR-IOV devices. The ARI =
+next
+>>>>> function number field is undefined for VF according to PCI Express =
+Base
+>>>>> Specification Revision 5.0 Version 1.0 section 9.3.7.7. The PF =
+should
+>>>>> end the linked list formed with the field by specifying 0 =
+according to
+>>>>> section 7.8.7.2.
+>>>>=20
+>>>> Section 7.8.7.2 ARI Capability Register (Offset 04h), I see only =
+this
+>>>>=20
+>>>> Next Function Number - This field indicates the Function Number of =
+the next higher numbered Function in the Device, or 00h if there are no =
+higher numbered Functions. Function 0 starts this linked list of =
+Functions.
+>>>>=20
+>>>> I do not see anything specifically for PF. What am I missing?
+>>>=20
+>>> This is *only* for PFs.
+>>=20
+>> I think this covers both SRIOV and non SRIOV cases both. This is a
+>> general case for all devices, PF or other non-SRIOV capable devices.
+>=20
+> "this" being what?
 
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- hw/virtio/virtio-mem-pci.c | 49 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 46 insertions(+), 3 deletions(-)
+=E2=80=9Cthis=E2=80=9D is the following line I quoted above:
 
-diff --git a/hw/virtio/virtio-mem-pci.c b/hw/virtio/virtio-mem-pci.c
-index 2ef0f07630..c4597e029e 100644
---- a/hw/virtio/virtio-mem-pci.c
-+++ b/hw/virtio/virtio-mem-pci.c
-@@ -93,12 +93,53 @@ static void virtio_mem_pci_size_change_notify(Notifier *notifier, void *data)
-     g_free(qom_path);
- }
- 
-+static void virtio_mem_pci_unplug_request_check(VirtIOMDPCI *vmd, Error **errp)
-+{
-+    VirtIOMEMPCI *pci_mem = VIRTIO_MEM_PCI(vmd);
-+    VirtIOMEM *vmem = &pci_mem->vdev;
-+    VirtIOMEMClass *vpc = VIRTIO_MEM_GET_CLASS(vmem);
-+
-+    vpc->unplug_request_check(vmem, errp);
-+}
-+
-+static void virtio_mem_pci_get_requested_size(Object *obj, Visitor *v,
-+                                              const char *name, void *opaque,
-+                                              Error **errp)
-+{
-+    VirtIOMEMPCI *pci_mem = VIRTIO_MEM_PCI(obj);
-+
-+    object_property_get(OBJECT(&pci_mem->vdev), name, v, errp);
-+}
-+
-+static void virtio_mem_pci_set_requested_size(Object *obj, Visitor *v,
-+                                              const char *name, void *opaque,
-+                                              Error **errp)
-+{
-+    VirtIOMEMPCI *pci_mem = VIRTIO_MEM_PCI(obj);
-+    DeviceState *dev = DEVICE(obj);
-+
-+    /*
-+     * If we passed virtio_mem_pci_unplug_request_check(), making sure that
-+     * the requested size is 0, don't allow modifying the requested size
-+     * anymore, otherwise the VM might end up hotplugging memory before
-+     * handling the unplug request.
-+     */
-+    if (dev->pending_deleted_event) {
-+        error_setg(errp, "'%s' cannot be changed if the device is in the"
-+                   " process of unplug", name);
-+        return;
-+    }
-+
-+    object_property_set(OBJECT(&pci_mem->vdev), name, v, errp);
-+}
-+
- static void virtio_mem_pci_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
-     PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
-     MemoryDeviceClass *mdc = MEMORY_DEVICE_CLASS(klass);
-+    VirtIOMDPCIClass *vmdc = VIRTIO_MD_PCI_CLASS(klass);
- 
-     k->realize = virtio_mem_pci_realize;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-@@ -111,6 +152,8 @@ static void virtio_mem_pci_class_init(ObjectClass *klass, void *data)
-     mdc->get_memory_region = virtio_mem_pci_get_memory_region;
-     mdc->fill_device_info = virtio_mem_pci_fill_device_info;
-     mdc->get_min_alignment = virtio_mem_pci_get_min_alignment;
-+
-+    vmdc->unplug_request_check = virtio_mem_pci_unplug_request_check;
- }
- 
- static void virtio_mem_pci_instance_init(Object *obj)
-@@ -135,9 +178,9 @@ static void virtio_mem_pci_instance_init(Object *obj)
-                               OBJECT(&dev->vdev), VIRTIO_MEM_BLOCK_SIZE_PROP);
-     object_property_add_alias(obj, VIRTIO_MEM_SIZE_PROP, OBJECT(&dev->vdev),
-                               VIRTIO_MEM_SIZE_PROP);
--    object_property_add_alias(obj, VIRTIO_MEM_REQUESTED_SIZE_PROP,
--                              OBJECT(&dev->vdev),
--                              VIRTIO_MEM_REQUESTED_SIZE_PROP);
-+    object_property_add(obj, VIRTIO_MEM_REQUESTED_SIZE_PROP, "size",
-+                        virtio_mem_pci_get_requested_size,
-+                        virtio_mem_pci_set_requested_size, NULL, NULL);
- }
- 
- static const VirtioPCIDeviceTypeInfo virtio_mem_pci_info = {
--- 
-2.41.0
+"Next Function Number - This field indicates the Function Number of the =
+next higher numbered Function in the Device, or 00h if there are no =
+higher numbered Functions. Function 0 starts this linked list of =
+Functions.=E2=80=9D
+
+I think it applies for all devices in general (except VFs).
+
+> I'm talking about the pci spec text
+> you quoted.
+>=20
+> check out the sriov spec:
+> Next Function Number =E2=80=93 VFs are located using First
+> VF Offset (see Section 3.3.9) and VF Stride (see
+> Section 3.3.10).
+>=20
+>=20
+>=20
+>>> There's separate text explaining that
+>>> VFs use NumVFs VFOffset and VFStride.
+>>>=20
+>>>=20
+>>>>>=20
+>>>>> For migration, the field will keep having 1 as its value on the =
+old
+>>>>> virt models.
+>>>>>=20
+>>>>> Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in =
+docs/pcie_sriov.txt")
+>>>>> Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
+>>>>> Fixes: 3a977deebe ("Intrdocue igb device emulation")
+>>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>>> ---
+>>>>> include/hw/pci/pci.h | 2 ++
+>>>>> hw/core/machine.c    | 1 +
+>>>>> hw/pci/pci.c         | 2 ++
+>>>>> hw/pci/pcie.c        | 2 +-
+>>>>> 4 files changed, 6 insertions(+), 1 deletion(-)
+>>>>>=20
+>>>>> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+>>>>> index e6d0574a29..9c5b5eb206 100644
+>>>>> --- a/include/hw/pci/pci.h
+>>>>> +++ b/include/hw/pci/pci.h
+>>>>> @@ -209,6 +209,8 @@ enum {
+>>>>>   QEMU_PCIE_CAP_CXL =3D (1 << QEMU_PCIE_CXL_BITNR),
+>>>>> #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
+>>>>>   QEMU_PCIE_ERR_UNC_MASK =3D (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
+>>>>> +#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
+>>>>> +    QEMU_PCIE_ARI_NEXTFN_1 =3D (1 << =
+QEMU_PCIE_ARI_NEXTFN_1_BITNR),
+>>>>> };
+>>>>>=20
+>>>>> typedef struct PCIINTxRoute {
+>>>>> diff --git a/hw/core/machine.c b/hw/core/machine.c
+>>>>> index 46f8f9a2b0..f0d35c6401 100644
+>>>>> --- a/hw/core/machine.c
+>>>>> +++ b/hw/core/machine.c
+>>>>> @@ -41,6 +41,7 @@
+>>>>>=20
+>>>>> GlobalProperty hw_compat_8_0[] =3D {
+>>>>>   { "migration", "multifd-flush-after-each-section", "on"},
+>>>>> +    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
+>>>>> };
+>>>>> const size_t hw_compat_8_0_len =3D G_N_ELEMENTS(hw_compat_8_0);
+>>>>>=20
+>>>>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+>>>>> index e2eb4c3b4a..45a9bc0da8 100644
+>>>>> --- a/hw/pci/pci.c
+>>>>> +++ b/hw/pci/pci.c
+>>>>> @@ -82,6 +82,8 @@ static Property pci_props[] =3D {
+>>>>>   DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
+>>>>>   DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
+>>>>>                   QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
+>>>>> +    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, =
+cap_present,
+>>>>> +                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
+>>>>>   DEFINE_PROP_END_OF_LIST()
+>>>>> };
+>>>>>=20
+>>>>> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+>>>>> index 9a3f6430e8..cf09e03a10 100644
+>>>>> --- a/hw/pci/pcie.c
+>>>>> +++ b/hw/pci/pcie.c
+>>>>> @@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice =
+*bridge_dev)
+>>>>> /* ARI */
+>>>>> void pcie_ari_init(PCIDevice *dev, uint16_t offset)
+>>>>> {
+>>>>> -    uint16_t nextfn =3D 1;
+>>>>> +    uint16_t nextfn =3D dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 =
+? 1 : 0;
+>>>>>=20
+>>>>>   pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
+>>>>>                       offset, PCI_ARI_SIZEOF);
+>>>>> --=20
+>>>>> 2.41.0
+>>>>>=20
+>>>=20
+>=20
 
 
