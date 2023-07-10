@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935F474DE16
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 21:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E8174DE36
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 21:30:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIwSE-0008Qm-Oi; Mon, 10 Jul 2023 15:21:50 -0400
+	id 1qIwYn-00023D-2p; Mon, 10 Jul 2023 15:28:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIwSC-0008NT-KB
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:21:48 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIwYk-00022m-Pt
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:28:34 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIwSA-0005mY-VB
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:21:48 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fbc63c2e84so54416375e9.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 12:21:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIwYY-00079z-4j
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 15:28:28 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-3fc0aecf107so21258595e9.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 12:28:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689016905; x=1691608905;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1689017300; x=1691609300;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hkLpf3okNxDLwWs28e7kGeNq6piwdo8WQ2zxSFg8Pt8=;
- b=Luydle6aFh10z2i/ULFOKnU6IYZZo4cn/JxNcYBIzpz2RwJaSqUj8hXriiOC8o/naC
- anDXoqwAJ2PMjhYJwkb2lCKuJxj8jusWJGrnvsMFNIDDxnBoT/7CdhppnCMnu4JrafUN
- KA3rxGjTDwBUqc5Qf0QGu5NMTAiKeF+pZst0IlENySLInCUdzGlnvDw4F0AzJIBOSN6h
- xZRUlos9g1/UmZ6Rffzavob+ucCgCuYYR5dVQqPe5b49GrGylFemitmg3LJ6jB/qnKX7
- p1AmV0Z/DhRI7ScHGw+NespuAy4gOpGgIoSuhuecASzDAI8mwQzRIwgbknhvNYKmO75c
- UhjQ==
+ bh=zIDqJsTV+5mfm0yiyfFYte0cwrkRPEHjF/Foqt3Dmks=;
+ b=azyxuiMsvywq7yxJM57EycAA4PNP2L68GQdR6x+PCGdZbr6Zqc2WDxkj5N7IVqSNHt
+ bZ0NytNh5VPHy4hbSjpaszvUAOuB8xbbK6XNaX0ySLiav9L3Ig9mvBFT9GooeZSrOXB3
+ e1VZKx9EGR6JteoFCPnBVz2OI129ZyYNTTVeR6okiRkmo2itX8dgKKb8jWgTM0y+W2dF
+ G0q6hT3iDWm7jQhT79sZDfbsnW5kgtELIthN0/kInjCV7GLHUwC85pspzNj9OcW5cs0x
+ uSaj6cd2OBOdLzCk+U0J7SueZBy1N345R1JzjhqSpXctbURQn5tS0ZYe2CKQC47jHpb+
+ WCEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689016905; x=1691608905;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1689017300; x=1691609300;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hkLpf3okNxDLwWs28e7kGeNq6piwdo8WQ2zxSFg8Pt8=;
- b=EquVSrUeq/oppeX4buBVPXms1uJHDyMEYVsYrsz7fm53dJq1M+U5cKryMHOBPgVpCL
- 2gicBU/aM8B3pWa9xQ0TXOpNbEkqwxyiHOVyGtQIqAKM5zKgSZsQTVn6Vn9qHtPPNw7v
- 2uJC3LB2kUnghAxIJAxJ1HttAZl9aLIS4jXZItDJPYtJsvqwHDOxj9bDZ2SPpvUMyl0a
- zCBfekMplaH7iHE8wi1ysXsOXTcuPlooUTyWBnOk/2Ufm/0rd0XlkHnzqy2x/O0hM9lJ
- Q0bMH/+MN1R/9i70BKkaVVoFhMHonXS/8/T815ODKh84kW2mU1bsj29l9OG9Ztaex7RN
- O7DQ==
-X-Gm-Message-State: ABy/qLbuTJAiMB2r3xxBYFZKyDBGrhxirOe9AKarTy7WfGEXmqq7iA0t
- zJ15ry3jvbPnpJdzbyVpg8/WECyDIzFHmLswH4oP7Q==
-X-Google-Smtp-Source: APBJJlH/ThG8wGkICTzuR+ac0+fXkHNSI9xNxtHAMd7SU+6dRXwBG04O7AirJ7brOY3mbg93KoJfEw==
-X-Received: by 2002:a05:600c:364c:b0:3fb:b5cb:1130 with SMTP id
- y12-20020a05600c364c00b003fbb5cb1130mr13348917wmq.34.1689016905424; 
- Mon, 10 Jul 2023 12:21:45 -0700 (PDT)
+ bh=zIDqJsTV+5mfm0yiyfFYte0cwrkRPEHjF/Foqt3Dmks=;
+ b=bsmmNOD7p1FbFOzHrU0Bfsvwl9FjWAOuAtPY+vNVP21P+EKWgqhIRmPtiwEcflriS1
+ HUSegPNXHeW+tJZZ0PgRWbSWHtkzW8pD5Aee1q5ZHSDW1kXRIHrnHy5+ya5L3SnkGOcL
+ kAMqXfkBQBtRM2HPwm+R5vdjXa753cVqfYeVvhA/l6Su9OfGZ9yvUXo2OG7gWvHJX8j6
+ 1eBt1fy/SwC77YB8CR+WM5aUTseLLzwEnRMPY1wruh5hYyw5i2A4OpKiC2WNbzSQQu75
+ f14Q7YJ5IKA6NTXvRfGfr0VEb6bAhWZJEdFxfk3zuO6odlzg9BDyjkyGMfNHpcarW9Kl
+ qGog==
+X-Gm-Message-State: ABy/qLYzJtowiAf+zrGFYQC/Fazlt3/sc4hGchTMIGM512FcyJzvXkmH
+ wa2qFxxQTPF51bkD5NQE7DNPrjbIYpNAGadtS5JlHA==
+X-Google-Smtp-Source: APBJJlGUV+Fv2GwKx6mSwZlj2Ns3dtp7jK3guWixyKfoEhNjW46V3P95TpB2gz6Cm+1lCiss0nNMIw==
+X-Received: by 2002:a1c:7c05:0:b0:3fc:500:db7c with SMTP id
+ x5-20020a1c7c05000000b003fc0500db7cmr7931294wmc.21.1689017300363; 
+ Mon, 10 Jul 2023 12:28:20 -0700 (PDT)
 Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
  [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
- c18-20020a7bc012000000b003fb40f5f553sm11165125wmb.31.2023.07.10.12.21.44
+ y19-20020a05600c20d300b003fc01f7a42dsm648858wmm.8.2023.07.10.12.28.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 12:21:45 -0700 (PDT)
-Message-ID: <c364a4fe-d849-6173-2cda-3d9d413a65e5@linaro.org>
-Date: Mon, 10 Jul 2023 21:21:43 +0200
+ Mon, 10 Jul 2023 12:28:20 -0700 (PDT)
+Message-ID: <781894e9-2565-b54f-8df3-9cbd1cf68e2a@linaro.org>
+Date: Mon, 10 Jul 2023 21:28:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH] target/mips: enable GINVx support for I6400 and I6500
+Subject: Re: [PATCH 00/33] target/mips: Finalise the Ingenic MXU ASE support
 Content-Language: en-US
-To: Marcin Nowakowski <marcin.nowakowski@fungible.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Jiaxun Yang
- <jiaxun.yang@flygoat.com>, Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-References: <20230630072806.3093704-1-marcin.nowakowski@fungible.com>
+To: Siarhei Volkau <lis8215@gmail.com>, qemu-devel@nongnu.org
+Cc: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Stefan Markovic <smarkovic@wavecomp.com>,
+ Aleksandar Markovic <amarkovic@wavecomp.com>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+References: <20230608104222.1520143-1-lis8215@gmail.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230630072806.3093704-1-marcin.nowakowski@fungible.com>
+In-Reply-To: <20230608104222.1520143-1-lis8215@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,14 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/6/23 09:28, Marcin Nowakowski wrote:
-> GINVI and GINVT operations are supported on MIPS I6400 and I6500 cores,
-> so indicate that properly in CP0.Config5 register bits [16:15].
-> 
-> Signed-off-by: Marcin Nowakowski <marcin.nowakowski@fungible.com>
-> ---
->   target/mips/cpu-defs.c.inc | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+Hi Siarhei,
 
-Thanks, queued to mips-next.
+On 8/6/23 12:41, Siarhei Volkau wrote:
+> This patch series is aimed to add complete support of the
+> Ingenic MXU extensions of version 1 revision 2.
+> The serie doesn't split revision 1 and revision 2 of the
+> MXU ASE as it ought to be, because I have no hardware which
+> supports revision 1 only. The MXU version 2 is not the subject
+> of the patch series either.
+> 
+> All added/fixed instructions were tested on real hardware
+> via set of fuzz tests written for that purpose, although
+> the tests aren't subject of this patch series.
+
+Thank you very much for your contribution.
+This is a bit unfortunate that you did'nt implemented these
+opcode using decodetree.
+Also various opcodes are not well optimized, and would benefit
+from using the TCG gvec API.
+I imagine you have been rebasing that for some years now, so I'm
+queuing as is to mips-next.
+I hope you can share the tests so your work doesn't bitrot
+with time (in particular when a good soul converts it to
+decodetree).
+
+Regards,
+
+Phil.
+
 
