@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3401F74D5B8
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 920A574D595
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:35:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIq5t-0003w9-Pb; Mon, 10 Jul 2023 08:34:21 -0400
+	id 1qIq5w-0004Bx-A0; Mon, 10 Jul 2023 08:34:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq5S-0002sW-Bg
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:33:54 -0400
-Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ id 1qIq5V-00034l-7N
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:33:57 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq5Q-0004lO-7T
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:33:53 -0400
-Received: by mail-ot1-x32d.google.com with SMTP id
- 46e09a7af769-6b71ee710edso3435093a34.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:33:51 -0700 (PDT)
+ id 1qIq5T-0004mL-Ah
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:33:56 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-262e839647eso3365183a91.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:33:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688992430; x=1691584430;
+ d=gmail.com; s=20221208; t=1688992434; x=1691584434;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aQxYbMezeKcP81hnejfiLTemwrNY77nZj5X+R7SzIjI=;
- b=TYkiQhDxOTFjGDo3yGZBTboJeDZcedwkLiRFn7dELDARe23jKojvnR+hXyQlxleMoL
- CRE3kq5CGZHTHiTJiB195LoJFpo+LtbEZdxJRFa3qOWOKgcGZLnRM6lQal9eVpiPQQjk
- i+uKwgRfjFZrll7gqySQdQ+B6EvOdr7UyGNZzvHhj4WJ0bgIo5rkjGaVD8U1piczmYLS
- 1BsHMQrz9Ginrk0YdmAa6EenEWsAGO5YM4ybL8TMsKklPbW6CxGrEY2dtDJk/cOozwYT
- 4bD/JPNeIrEPp9NaL8ccJoJ2j/SgsPnPsIQiiVPah1V4qEMaSRwClRSEkDrsVQrGEeQS
- DI1g==
+ bh=CpEfDyBrVJqDU0QXLq2iInnF0CEU4fJ7tlxiogiIhsU=;
+ b=lSJY/oa6N9nQp533GlUO38w1Z9/7/9D4H3oW4SnOOwWvBXXRRhDJ3SstJZKsYPjvtB
+ cV5PZPNHohTHq+XWuOZyyolgsBSGMrEYrCRLXc82pHWBsjOCDNQ02CdMAAdhko2OAerg
+ gyRuKGfxMkoGoCUc/5Tm2a/5xxAWyrKxOqTrbDxs2sCuPJ0PXQfIITlNLqCou9MZkzP9
+ hhazieDMeKAAtyihLz8xsWCQmUgm2LBFwZvoMgKv0wexDJWQCF66VqZOyziJ1CRSLMac
+ hLE5j5M+CLCK12aMRRl+Q1XLHdCsZLed3ii/SWVRLjaMqUjSf4c8YK789Riujdny/BAn
+ 6aMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688992430; x=1691584430;
+ d=1e100.net; s=20221208; t=1688992434; x=1691584434;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aQxYbMezeKcP81hnejfiLTemwrNY77nZj5X+R7SzIjI=;
- b=UMulO5jAdEkmB9UM8lPZJFP7uIXb826qkb6IHMueSg0hrayuggZlUXHhaAcbj9D1r4
- X6AKezasBAD/UWSNcPGHa4mhTobcJYj3SByjYAKwSFPA1/IEchBlSORB8B0PxymQh36d
- B2iol7o/j3AIq2RcVyh85LSgrJKX7F9VkPJ1fixlbNbdG/3U8VsZWY1qQySTM5al1wFk
- vBpfc2jiJzF0ZewXjHdr9u60HGRZdENdg1YmM8DaC0pksWHbMm4dx8wo5efRcmqrz5ZZ
- tk6d3aHjOxrZjO79vwuTS/ESNH7q/ai/jkTAQHFkz5xlhaxwWVkON5JDUDoxTawcWf7L
- ntjg==
-X-Gm-Message-State: ABy/qLaHOtdc+yPFb7ztlevRa5DJ22xLAyzOBP4Urn8gERWpj/Xj3dsl
- kM8HmSiXH8HxPq97Tswcr5fXOF+CLB6FMw==
-X-Google-Smtp-Source: APBJJlFun4Z8tdBrmwvF5+n3RhwO2aGay6402xuwQ6PHaqkZa5PbhLj6P6hqJn08lKydV72r4zAg3A==
-X-Received: by 2002:a9d:751a:0:b0:6b7:45de:d533 with SMTP id
- r26-20020a9d751a000000b006b745ded533mr10560950otk.9.1688992430009; 
- Mon, 10 Jul 2023 05:33:50 -0700 (PDT)
+ bh=CpEfDyBrVJqDU0QXLq2iInnF0CEU4fJ7tlxiogiIhsU=;
+ b=LmzdrrbKVNZYelOoajCGps+sUa+WyKlWz/32+AGzLsVCbi00mcUMnBKw1rYcLaMmDA
+ xkRo+TRc+KVKeJQj1C78KEXzr6W6X+srfBc2DnOZ4X4z4Y9ZU/1WvLXZX7sYps1+vekI
+ ZFCKxJKp91o//hc3LxzIC792sI1lTGmf0eBIicRWXa+GVX9fC5mOk0ybpOcRgwoXdWBj
+ RVTHIRfn9FingqBF57XsI94XNlHZDnNWlJr5v6vMsfHk8tpYlPqWQcM/PKoC3ciahcxe
+ Ia8Z9oj2FwB+AaFFIQNFqEb3erHCwDAHQy185TsnSiNJw+kb9uMxrE85N/qiYbBmgvuk
+ Azvg==
+X-Gm-Message-State: ABy/qLbS+9EmnzKZyo3QfojDdh/bU0ytVe8NXAGpMbrsYYlfWZbrFqAT
+ YmUtcmWlwFYOAGbECCvMJ9B6HSOdiOLLZg==
+X-Google-Smtp-Source: APBJJlEuWlj0rvcLYYnjkfnu2Dl94tWWEF98gyHs2F47m0nBDBJlTZSeJdQXHsnyjQmD1s8QKiaAOw==
+X-Received: by 2002:a17:90a:fa8c:b0:263:c247:6d1b with SMTP id
+ cu12-20020a17090afa8c00b00263c2476d1bmr12361720pjb.40.1688992433704; 
+ Mon, 10 Jul 2023 05:33:53 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.33.46
+ i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.33.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 05:33:49 -0700 (PDT)
+ Mon, 10 Jul 2023 05:33:53 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
@@ -65,16 +65,16 @@ Cc: alistair23@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>,
  Junqiang Wang <wangjunqiang@iscas.ac.cn>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 26/54] target/riscv: Add support for Zfbfmin extension
-Date: Mon, 10 Jul 2023 22:31:37 +1000
-Message-Id: <20230710123205.2441106-27-alistair.francis@wdc.com>
+Subject: [PULL 27/54] target/riscv: Add support for Zvfbfmin extension
+Date: Mon, 10 Jul 2023 22:31:38 +1000
+Message-Id: <20230710123205.2441106-28-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230710123205.2441106-1-alistair.francis@wdc.com>
 References: <20230710123205.2441106-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
- envelope-from=alistair23@gmail.com; helo=mail-ot1-x32d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,189 +100,146 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Weiwei Li <liweiwei@iscas.ac.cn>
 
-Add trans_* and helper function for Zfbfmin instructions.
+Add trans_* and helper function for Zvfbfmin instructions.
 
 Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230615063302.102409-3-liweiwei@iscas.ac.cn>
+Message-Id: <20230615063302.102409-4-liweiwei@iscas.ac.cn>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/helper.h                      |  4 ++
+ target/riscv/helper.h                      |  3 +
  target/riscv/insn32.decode                 |  4 ++
- target/riscv/fpu_helper.c                  | 12 +++++
- target/riscv/translate.c                   |  1 +
- target/riscv/insn_trans/trans_rvbf16.c.inc | 53 ++++++++++++++++++++++
- target/riscv/insn_trans/trans_rvzfh.c.inc  | 12 ++---
- 6 files changed, 80 insertions(+), 6 deletions(-)
- create mode 100644 target/riscv/insn_trans/trans_rvbf16.c.inc
+ target/riscv/vector_helper.c               |  6 ++
+ target/riscv/insn_trans/trans_rvbf16.c.inc | 64 ++++++++++++++++++++++
+ 4 files changed, 77 insertions(+)
 
 diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index 98e97810fd..ef8487f1ee 100644
+index ef8487f1ee..fc48853e07 100644
 --- a/target/riscv/helper.h
 +++ b/target/riscv/helper.h
-@@ -1153,3 +1153,7 @@ DEF_HELPER_FLAGS_3(sm4ks, TCG_CALL_NO_RWG_SE, tl, tl, tl, tl)
- 
- /* Zce helper */
- DEF_HELPER_FLAGS_2(cm_jalt, TCG_CALL_NO_WG, tl, env, i32)
+@@ -1157,3 +1157,6 @@ DEF_HELPER_FLAGS_2(cm_jalt, TCG_CALL_NO_WG, tl, env, i32)
+ /* BF16 functions */
+ DEF_HELPER_FLAGS_2(fcvt_bf16_s, TCG_CALL_NO_RWG, i64, env, i64)
+ DEF_HELPER_FLAGS_2(fcvt_s_bf16, TCG_CALL_NO_RWG, i64, env, i64)
 +
-+/* BF16 functions */
-+DEF_HELPER_FLAGS_2(fcvt_bf16_s, TCG_CALL_NO_RWG, i64, env, i64)
-+DEF_HELPER_FLAGS_2(fcvt_s_bf16, TCG_CALL_NO_RWG, i64, env, i64)
++DEF_HELPER_5(vfncvtbf16_f_f_w, void, ptr, ptr, ptr, env, i32)
++DEF_HELPER_5(vfwcvtbf16_f_f_v, void, ptr, ptr, ptr, env, i32)
 diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index 73d5d1b045..45fdcad185 100644
+index 45fdcad185..10d001f14d 100644
 --- a/target/riscv/insn32.decode
 +++ b/target/riscv/insn32.decode
-@@ -908,3 +908,7 @@ sm4ks       .. 11010 ..... ..... 000 ..... 0110011 @k_aes
- # *** RV32 Zicond Standard Extension ***
- czero_eqz   0000111  ..... ..... 101 ..... 0110011 @r
- czero_nez   0000111  ..... ..... 111 ..... 0110011 @r
+@@ -912,3 +912,7 @@ czero_nez   0000111  ..... ..... 111 ..... 0110011 @r
+ # *** Zfbfmin Standard Extension ***
+ fcvt_bf16_s       0100010  01000 ..... ... ..... 1010011 @r2_rm
+ fcvt_s_bf16       0100000  00110 ..... ... ..... 1010011 @r2_rm
 +
-+# *** Zfbfmin Standard Extension ***
-+fcvt_bf16_s       0100010  01000 ..... ... ..... 1010011 @r2_rm
-+fcvt_s_bf16       0100000  00110 ..... ... ..... 1010011 @r2_rm
-diff --git a/target/riscv/fpu_helper.c b/target/riscv/fpu_helper.c
-index 5dd14d8390..eb5ee5c4c9 100644
---- a/target/riscv/fpu_helper.c
-+++ b/target/riscv/fpu_helper.c
-@@ -593,3 +593,15 @@ uint64_t helper_fcvt_d_h(CPURISCVState *env, uint64_t rs1)
-     float16 frs1 = check_nanbox_h(env, rs1);
-     return float16_to_float64(frs1, true, &env->fp_status);
- }
++# *** Zvfbfmin Standard Extension ***
++vfncvtbf16_f_f_w  010010 . ..... 11101 001 ..... 1010111 @r2_vm
++vfwcvtbf16_f_f_v  010010 . ..... 01101 001 ..... 1010111 @r2_vm
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 1e06e7447c..4d2bd42155 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -4535,6 +4535,9 @@ RVVCALL(OPFVV1, vfwcvt_f_f_v_w, WOP_UU_W, H8, H4, float32_to_float64)
+ GEN_VEXT_V_ENV(vfwcvt_f_f_v_h, 4)
+ GEN_VEXT_V_ENV(vfwcvt_f_f_v_w, 8)
+ 
++RVVCALL(OPFVV1, vfwcvtbf16_f_f_v, WOP_UU_H, H4, H2, bfloat16_to_float32)
++GEN_VEXT_V_ENV(vfwcvtbf16_f_f_v, 4)
 +
-+uint64_t helper_fcvt_bf16_s(CPURISCVState *env, uint64_t rs1)
-+{
-+    float32 frs1 = check_nanbox_s(env, rs1);
-+    return nanbox_h(env, float32_to_bfloat16(frs1, &env->fp_status));
-+}
+ /* Narrowing Floating-Point/Integer Type-Convert Instructions */
+ /* (TD, T2, TX2) */
+ #define NOP_UU_B uint8_t,  uint16_t, uint32_t
+@@ -4581,6 +4584,9 @@ RVVCALL(OPFVV1, vfncvt_f_f_w_w, NOP_UU_W, H4, H8, float64_to_float32)
+ GEN_VEXT_V_ENV(vfncvt_f_f_w_h, 2)
+ GEN_VEXT_V_ENV(vfncvt_f_f_w_w, 4)
+ 
++RVVCALL(OPFVV1, vfncvtbf16_f_f_w, NOP_UU_H, H2, H4, float32_to_bfloat16)
++GEN_VEXT_V_ENV(vfncvtbf16_f_f_w, 2)
 +
-+uint64_t helper_fcvt_s_bf16(CPURISCVState *env, uint64_t rs1)
-+{
-+    float16 frs1 = check_nanbox_h(env, rs1);
-+    return nanbox_s(env, bfloat16_to_float32(frs1, &env->fp_status));
-+}
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 98d54c5617..621dd99241 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -1095,6 +1095,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
- #include "insn_trans/trans_rvk.c.inc"
- #include "insn_trans/trans_privileged.c.inc"
- #include "insn_trans/trans_svinval.c.inc"
-+#include "insn_trans/trans_rvbf16.c.inc"
- #include "decode-xthead.c.inc"
- #include "insn_trans/trans_xthead.c.inc"
- #include "insn_trans/trans_xventanacondops.c.inc"
+ /*
+  * Vector Reduction Operations
+  */
 diff --git a/target/riscv/insn_trans/trans_rvbf16.c.inc b/target/riscv/insn_trans/trans_rvbf16.c.inc
-new file mode 100644
-index 0000000000..8cafde505f
---- /dev/null
+index 8cafde505f..f794a3f745 100644
+--- a/target/riscv/insn_trans/trans_rvbf16.c.inc
 +++ b/target/riscv/insn_trans/trans_rvbf16.c.inc
-@@ -0,0 +1,53 @@
-+/*
-+ * RISC-V translation routines for the BF16 Standard Extensions.
-+ *
-+ * Copyright (c) 2020-2023 PLCT Lab
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2 or later, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#define REQUIRE_ZFBFMIN(ctx) do { \
-+    if (!ctx->cfg_ptr->ext_zfbfmin) { \
+@@ -22,6 +22,12 @@
+     } \
+ } while (0)
+ 
++#define REQUIRE_ZVFBFMIN(ctx) do { \
++    if (!ctx->cfg_ptr->ext_zvfbfmin) { \
 +        return false; \
 +    } \
 +} while (0)
 +
-+static bool trans_fcvt_bf16_s(DisasContext *ctx, arg_fcvt_bf16_s *a)
-+{
-+    REQUIRE_FPU;
-+    REQUIRE_ZFBFMIN(ctx);
-+
-+    TCGv_i64 dest = dest_fpr(ctx, a->rd);
-+    TCGv_i64 src1 = get_fpr_hs(ctx, a->rs1);
-+
-+    gen_set_rm(ctx, a->rm);
-+    gen_helper_fcvt_bf16_s(dest, cpu_env, src1);
-+    gen_set_fpr_hs(ctx, a->rd, dest);
-+    mark_fs_dirty(ctx);
-+    return true;
-+}
-+
-+static bool trans_fcvt_s_bf16(DisasContext *ctx, arg_fcvt_s_bf16 *a)
-+{
-+    REQUIRE_FPU;
-+    REQUIRE_ZFBFMIN(ctx);
-+
-+    TCGv_i64 dest = dest_fpr(ctx, a->rd);
-+    TCGv_i64 src1 = get_fpr_hs(ctx, a->rs1);
-+
-+    gen_set_rm(ctx, a->rm);
-+    gen_helper_fcvt_s_bf16(dest, cpu_env, src1);
-+    gen_set_fpr_hs(ctx, a->rd, dest);
-+    mark_fs_dirty(ctx);
-+    return true;
-+}
-diff --git a/target/riscv/insn_trans/trans_rvzfh.c.inc b/target/riscv/insn_trans/trans_rvzfh.c.inc
-index 74dde37ff7..8b1e2519bb 100644
---- a/target/riscv/insn_trans/trans_rvzfh.c.inc
-+++ b/target/riscv/insn_trans/trans_rvzfh.c.inc
-@@ -28,8 +28,8 @@
-     }                                  \
- } while (0)
- 
--#define REQUIRE_ZFHMIN(ctx) do {              \
--    if (!ctx->cfg_ptr->ext_zfhmin) {          \
-+#define REQUIRE_ZFHMIN_OR_ZFBFMIN(ctx) do {   \
-+    if (!ctx->cfg_ptr->ext_zfhmin && !ctx->cfg_ptr->ext_zfbfmin) { \
-         return false;                         \
-     }                                         \
- } while (0)
-@@ -46,7 +46,7 @@ static bool trans_flh(DisasContext *ctx, arg_flh *a)
-     TCGv t0;
- 
-     REQUIRE_FPU;
--    REQUIRE_ZFHMIN(ctx);
-+    REQUIRE_ZFHMIN_OR_ZFBFMIN(ctx);
- 
-     decode_save_opc(ctx);
-     t0 = get_gpr(ctx, a->rs1, EXT_NONE);
-@@ -69,7 +69,7 @@ static bool trans_fsh(DisasContext *ctx, arg_fsh *a)
-     TCGv t0;
- 
-     REQUIRE_FPU;
--    REQUIRE_ZFHMIN(ctx);
-+    REQUIRE_ZFHMIN_OR_ZFBFMIN(ctx);
- 
-     decode_save_opc(ctx);
-     t0 = get_gpr(ctx, a->rs1, EXT_NONE);
-@@ -574,7 +574,7 @@ static bool trans_fcvt_h_wu(DisasContext *ctx, arg_fcvt_h_wu *a)
- static bool trans_fmv_x_h(DisasContext *ctx, arg_fmv_x_h *a)
+ static bool trans_fcvt_bf16_s(DisasContext *ctx, arg_fcvt_bf16_s *a)
  {
      REQUIRE_FPU;
--    REQUIRE_ZFHMIN(ctx);
-+    REQUIRE_ZFHMIN_OR_ZFBFMIN(ctx);
- 
-     TCGv dest = dest_gpr(ctx, a->rd);
- 
-@@ -594,7 +594,7 @@ static bool trans_fmv_x_h(DisasContext *ctx, arg_fmv_x_h *a)
- static bool trans_fmv_h_x(DisasContext *ctx, arg_fmv_h_x *a)
- {
-     REQUIRE_FPU;
--    REQUIRE_ZFHMIN(ctx);
-+    REQUIRE_ZFHMIN_OR_ZFBFMIN(ctx);
- 
-     TCGv t0 = get_gpr(ctx, a->rs1, EXT_ZERO);
- 
+@@ -51,3 +57,61 @@ static bool trans_fcvt_s_bf16(DisasContext *ctx, arg_fcvt_s_bf16 *a)
+     mark_fs_dirty(ctx);
+     return true;
+ }
++
++static bool trans_vfncvtbf16_f_f_w(DisasContext *ctx, arg_vfncvtbf16_f_f_w *a)
++{
++    REQUIRE_FPU;
++    REQUIRE_ZVFBFMIN(ctx);
++
++    if (opfv_narrow_check(ctx, a) && (ctx->sew == MO_16)) {
++        uint32_t data = 0;
++        TCGLabel *over = gen_new_label();
++
++        gen_set_rm_chkfrm(ctx, RISCV_FRM_DYN);
++        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
++        tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
++
++        data = FIELD_DP32(data, VDATA, VM, a->vm);
++        data = FIELD_DP32(data, VDATA, LMUL, ctx->lmul);
++        data = FIELD_DP32(data, VDATA, VTA, ctx->vta);
++        data = FIELD_DP32(data, VDATA, VMA, ctx->vma);
++        tcg_gen_gvec_3_ptr(vreg_ofs(ctx, a->rd), vreg_ofs(ctx, 0),
++                           vreg_ofs(ctx, a->rs2), cpu_env,
++                           ctx->cfg_ptr->vlen / 8,
++                           ctx->cfg_ptr->vlen / 8, data,
++                           gen_helper_vfncvtbf16_f_f_w);
++        mark_vs_dirty(ctx);
++        gen_set_label(over);
++        return true;
++    }
++    return false;
++}
++
++static bool trans_vfwcvtbf16_f_f_v(DisasContext *ctx, arg_vfwcvtbf16_f_f_v *a)
++{
++    REQUIRE_FPU;
++    REQUIRE_ZVFBFMIN(ctx);
++
++    if (opfv_widen_check(ctx, a) && (ctx->sew == MO_16)) {
++        uint32_t data = 0;
++        TCGLabel *over = gen_new_label();
++
++        gen_set_rm_chkfrm(ctx, RISCV_FRM_DYN);
++        tcg_gen_brcondi_tl(TCG_COND_EQ, cpu_vl, 0, over);
++        tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
++
++        data = FIELD_DP32(data, VDATA, VM, a->vm);
++        data = FIELD_DP32(data, VDATA, LMUL, ctx->lmul);
++        data = FIELD_DP32(data, VDATA, VTA, ctx->vta);
++        data = FIELD_DP32(data, VDATA, VMA, ctx->vma);
++        tcg_gen_gvec_3_ptr(vreg_ofs(ctx, a->rd), vreg_ofs(ctx, 0),
++                           vreg_ofs(ctx, a->rs2), cpu_env,
++                           ctx->cfg_ptr->vlen / 8,
++                           ctx->cfg_ptr->vlen / 8, data,
++                           gen_helper_vfwcvtbf16_f_f_v);
++        mark_vs_dirty(ctx);
++        gen_set_label(over);
++        return true;
++    }
++    return false;
++}
 -- 
 2.40.1
 
