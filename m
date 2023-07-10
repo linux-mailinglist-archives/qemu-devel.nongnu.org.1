@@ -2,93 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B3F74D408
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 12:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC4E74D42B
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 13:04:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIoZn-0006QQ-AP; Mon, 10 Jul 2023 06:57:07 -0400
+	id 1qIofs-00084T-0t; Mon, 10 Jul 2023 07:03:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIoZk-0006Pu-JF
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:57:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIoZi-0005P1-OP
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:57:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688986621;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pvdk6l0pQOkgAunW+CpQBKT3M0XdWI+dNEx7ZEjvAZU=;
- b=jPFnLW7UvEqWNwyggc1MabZ+13UJIQqn0mDayJCLyzJKwvBhn/yFSxJlJe9PIMmi7Moa3q
- hVVW4fcwAhYd10x2RaWhIE002yEZWWtnYWYJvPt/pOe3E0b6XYMww7UKnN72XQTsq3ixL6
- DUYt9qsKT5NF75d0zllgTotejX/afKg=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-597-_jx_3rgdNQWrIDbzsJH3SA-1; Mon, 10 Jul 2023 06:57:00 -0400
-X-MC-Unique: _jx_3rgdNQWrIDbzsJH3SA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-763c36d4748so400615285a.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 03:57:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIofc-00083Q-Ej
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 07:03:08 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIofa-0007bu-CP
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 07:03:08 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-51e35791a83so4558923a12.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 04:03:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688986984; x=1691578984;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IG7XheuJQGDsZFQTfCkf4wf9j3JZvm+M4kEuHZWmXsE=;
+ b=QsqRt38BE3H6EiDL6D5w7uXR4xMK55QgHO2a5+uc+bETtASEHrkHSN0CWKwdX+NuyH
+ kEdtUMpzw3HFBLoNHjs9+CXR5kmrnddYbbBzPHHkUzVau3g9wNKudbFDz9w3EUH1L5my
+ yEEaYQmB9oqjsbIFWKEetUTrx8d4u7CLhOvXudzHIrxoJ7vwV18qJUUAk/xvtQvTBuOE
+ ixdJUZKsyRkiDhqE18ioeksoh+YHEmUFgZZGkElt8aDNUsP0yQMIsYX7/Mc6210m5dtW
+ hjEDDmVuPFt7lsqqCobcn27DILL40UtxG/DS5NdrbY2dIKeK4beIoHF86iaukfdhXTWa
+ 1iTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688986620; x=1691578620;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1688986984; x=1691578984;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pvdk6l0pQOkgAunW+CpQBKT3M0XdWI+dNEx7ZEjvAZU=;
- b=PSVl9qxm6TnLZvr9eL3XPEvnV0UM1bCfjlVZVUMEqCGOoBa+wB2iGYhausjXt3pDS3
- rZqdeD1V6gctHmC/wzdKYIWlIcsW6c8cXz27pNZE3T3loqckhgvQgrj9NC5GEBpbTiJe
- 31YXO6L8EMTwZviXpBY9lB3e5s5gcSMQdrQllCML7Ozz5Ys4RMyrk30Z8iGyYMn9WtEw
- 9GjX8DZiIILfI8lSGD5kdmO4RObphQhJxXdGxHhFpf+xesTU2CpsWnasCTVWeLg6nepW
- P0ViAUup3BFR67zH6htw+B5oVwN1uyAGkgokTOxt/HAbuWsVDJe6yMdE78yE1FFnaskq
- P9oQ==
-X-Gm-Message-State: ABy/qLYrwtNwfrwRlBaiuhHSCIjwaQ46qYUJJiVGp7iKiijsNrsHgefW
- cJrrvRgBB49I+UGas7xVAILx6FVSZgIkMUCRFcD2z7vcXfsG6tj/EJQlk7uX81GR1UKAGx/Ig6C
- jSdNPQXfJFMADaXk=
-X-Received: by 2002:a05:620a:31a3:b0:767:2e2b:b4ff with SMTP id
- bi35-20020a05620a31a300b007672e2bb4ffmr12413129qkb.52.1688986620115; 
- Mon, 10 Jul 2023 03:57:00 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGMmuT0z6x9IeecaZslr5Y7pzBOY/BNZP3dZJb/2FcG7fxRA7d/F6xwpsaNP1TZP2U9FQDPGQ==
-X-Received: by 2002:a05:620a:31a3:b0:767:2e2b:b4ff with SMTP id
- bi35-20020a05620a31a300b007672e2bb4ffmr12413114qkb.52.1688986619846; 
- Mon, 10 Jul 2023 03:56:59 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-116.web.vodafone.de.
- [109.43.179.116]) by smtp.gmail.com with ESMTPSA id
- l9-20020ae9f009000000b00767cd764ecfsm1966219qkg.33.2023.07.10.03.56.58
+ bh=IG7XheuJQGDsZFQTfCkf4wf9j3JZvm+M4kEuHZWmXsE=;
+ b=j5CSyyfsHeBm0th2beodhzl2igNzRAeLERjqklD3r7lW4hi4uLR7R1/X3/vHJop7XB
+ EMztA/5jquB0bKdiU+QuYrZzYc+PG8Fpf8aZLw4tTwvsxAQGFsuiOYlBW79ij8CPYR+K
+ jSTVEGJbrPJnjXpFtufTRlMM3aQVAAIdZs8QOLP+A2legkzP1tI7Sv0YiJIC/N/7BYnG
+ mNmaz3TMQdbxrjU3fztQrRBgO8xMQ8qdChgvV97j1uvA+zOEs3j8H3jz9spkZ4zk5uDG
+ 49lltNlhJx4/au308Ck4Smu7vqTujmkg1IBxXIzKyBghKNw0Wq6V3SzCWXJMAHqbsA2J
+ w+hQ==
+X-Gm-Message-State: ABy/qLauDN93aNp5jUwcHyvLEbrzs0GCpo/8/BF0Sw1RWMsh3CEBkurZ
+ h/PciNYf9eW6xh5NYeR/dWhkdA==
+X-Google-Smtp-Source: APBJJlEIvuZcCIi1klkElZPXOwEVKDklhzyL35wIgTMcv5Xk77AxWYKiFV88kMTKxgt37h3k71SbCg==
+X-Received: by 2002:a17:907:b9d3:b0:993:6382:6e34 with SMTP id
+ xa19-20020a170907b9d300b0099363826e34mr9664197ejc.72.1688986984473; 
+ Mon, 10 Jul 2023 04:03:04 -0700 (PDT)
+Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
+ [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
+ xo15-20020a170907bb8f00b00982d0563b11sm5954273ejc.197.2023.07.10.04.03.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 03:56:59 -0700 (PDT)
-Message-ID: <2f176448-5dcf-1093-401f-9205ac5ec61b@redhat.com>
-Date: Mon, 10 Jul 2023 12:56:56 +0200
+ Mon, 10 Jul 2023 04:03:04 -0700 (PDT)
+Message-ID: <62d0d9d2-f802-60d4-8e67-645ce1290a68@linaro.org>
+Date: Mon, 10 Jul 2023 13:03:02 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v5 4/4] QGA VSS: Add log in functions begin/end
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] target/mips: Implement Loongson CSR instructions
 Content-Language: en-US
-To: Konstantin Kostiuk <kkostiuk@redhat.com>
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20230710091439.1010553-1-kkostiuk@redhat.com>
- <20230710091439.1010553-5-kkostiuk@redhat.com>
- <CAPMcbCq8LcQaaSptFzCaCcBs0qpss72GbLWkvSw22T7hwH9k9A@mail.gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <CAPMcbCq8LcQaaSptFzCaCcBs0qpss72GbLWkvSw22T7hwH9k9A@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: yangxiaojuan@loongson.cn, gaosong@loongson.cn, chenhuacai@kernel.org
+References: <20230521214832.20145-1-jiaxun.yang@flygoat.com>
+ <20230521214832.20145-2-jiaxun.yang@flygoat.com>
+ <9b8fcbe7-af56-7265-75ea-817460dbf6e8@linaro.org>
+In-Reply-To: <9b8fcbe7-af56-7265-75ea-817460dbf6e8@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,13 +94,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/07/2023 12.38, Konstantin Kostiuk wrote:
-> Hi Thomas,
+On 22/5/23 08:00, Philippe Mathieu-Daudé wrote:
+> Hi Jiaxun,
 > 
-> Do you have any other comments about this commit?
+> On 21/5/23 23:48, Jiaxun Yang wrote:
+>> Loongson introduced CSR instructions since 3A4000, which looks
+>> similar to IOCSR and CPUCFG instructions we seen in LoongArch.
+>>
+>> Unfortunately we don't have much document about those instructions,
+>> bit fields of CPUCFG instructions and IOCSR registers can be found
+>> at 3A4000's user manual, while instruction encodings can be found
+>> at arch/mips/include/asm/mach-loongson64/loongson_regs.h from
+>> Linux Kernel.
+>>
+>> Our predefined CPUCFG bits are differ from actual 3A4000, since
+>> we can't emulate all CPUCFG features present in 3A4000 for now,
+>> we just enable bits for what we have in TCG.
+>>
+>> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>> ---
+>>   target/mips/cpu-defs.c.inc           |  9 ++++
+>>   target/mips/cpu.c                    |  8 ++++
+>>   target/mips/cpu.h                    | 40 ++++++++++++++++
+>>   target/mips/helper.h                 |  4 ++
+>>   target/mips/internal.h               |  2 +
+>>   target/mips/tcg/lcsr.decode          | 17 +++++++
+>>   target/mips/tcg/lcsr_translate.c     | 69 ++++++++++++++++++++++++++++
+>>   target/mips/tcg/meson.build          |  2 +
+>>   target/mips/tcg/op_helper.c          | 16 +++++++
+>>   target/mips/tcg/sysemu/lcsr_helper.c | 45 ++++++++++++++++++
+>>   target/mips/tcg/sysemu/meson.build   |  4 ++
+>>   target/mips/tcg/sysemu_helper.h.inc  |  8 ++++
+>>   target/mips/tcg/translate.c          |  3 ++
+>>   target/mips/tcg/translate.h          |  7 +++
+>>   14 files changed, 234 insertions(+)
+>>   create mode 100644 target/mips/tcg/lcsr.decode
+>>   create mode 100644 target/mips/tcg/lcsr_translate.c
+>>   create mode 100644 target/mips/tcg/sysemu/lcsr_helper.c
 
-Looks good to me now!
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+>> @@ -1281,6 +1315,12 @@ static inline bool 
+>> ase_msa_available(CPUMIPSState *env)
+>>       return env->CP0_Config3 & (1 << CP0C3_MSAP);
+>>   }
+>> +/* Check presence of Loongson CSR instructions */
+>> +static inline bool ase_lcsr_available(CPUMIPSState *env)
+>> +{
+>> +    return env->lcsr_cpucfg1 & (1 << CPUCFG2_LCSRP);
+> 
+> You are checking CPUCFG1_ITLBT. Surely you want lcsr_cpucfg2 instead.
+
+Ping?
+
+Anyhow:
+
+Applying: target/mips: Implement Loongson CSR instructions
+error: patch failed: target/mips/cpu.c:507
+error: target/mips/cpu.c: patch does not apply
+error: patch failed: target/mips/cpu.h:1162
+error: target/mips/cpu.h: patch does not apply
+Patch failed at 0001 target/mips: Implement Loongson CSR instructions
 
 
