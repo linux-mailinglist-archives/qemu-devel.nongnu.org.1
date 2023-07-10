@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136CB74D181
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 11:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E3A74D1A1
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 11:34:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qInFs-0000IV-QZ; Mon, 10 Jul 2023 05:32:28 -0400
+	id 1qInHO-0002UL-FK; Mon, 10 Jul 2023 05:34:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qInFp-0000Be-BF
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:32:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qInFn-0006vt-P2
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:32:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688981543;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8svLrQ0A8+NCtzZRk3+ecgzQXbQ5+iNhU/EnQVbRezw=;
- b=eAPGgolL1ag34RUMqnKCWE7eSfN+MsDOHf1ib+8AvP5sEb1MYYPkNxryXDDdvWcd8LFFag
- lTxYNS9LY7x3e8tqyU5cEAb2hncRQNhL0XMg3/zQW56k4XNcJbtAH3lbNJavv5ZlzXclLe
- 7FDBex9yDQQHf3p8/QOUCOsW9qqvEJM=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-ABbA_-HKOdexwaIovafIUg-1; Mon, 10 Jul 2023 05:32:21 -0400
-X-MC-Unique: ABbA_-HKOdexwaIovafIUg-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2b710c5677eso21200971fa.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 02:32:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qInHJ-0002K9-PA; Mon, 10 Jul 2023 05:33:58 -0400
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
+ id 1qInHI-0007Qo-0T; Mon, 10 Jul 2023 05:33:57 -0400
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6b7279544edso3311417a34.0; 
+ Mon, 10 Jul 2023 02:33:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688981633; x=1691573633;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EFnvFj52HHy5O9y/vfjTFb0gilUusvIfftTWh5seQ7c=;
+ b=Wyv2xmiMYoW4+9Q7P7/9ctdimBJYiHWcP1JfZoETI5S645mfFv3rP6PYhqeKhS3I+A
+ 0XublXW8Hbpu5AAEWnIK1/jdsENAaxqy8mVu6oECpYYkZ+Dr5cERo+uvLRjXwo+DxcMJ
+ qMJ4Cu3T/oXhvMzVjhQehhvQnOc6KntXeZ1YAdJR/GwT2DcE4rRA4ZtilsJU5Xtst8pE
+ usBBdAvj6ZZPGKrYCX5DYHQslGA4JAQjZZ8dZQyR9GJ1yi/D2JJeH89fFORkFFUSZ5lI
+ A2l6nBjXcpYc2bgbNFSdUJ05osN3dGmlICZhjff1LzPjO6DlwlQ/LM/lRFQLTG06c468
+ KcRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688981540; x=1691573540;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8svLrQ0A8+NCtzZRk3+ecgzQXbQ5+iNhU/EnQVbRezw=;
- b=itkG8+uESsWQ+bhBxdv1N6L+o3ladMQA8NCyCYHzDQ70nOX5wrM6OMWRZ0LQeLgBQE
- ER2T4+P7LvdxGncwAc3d3S7X+7rZz/chpJuMm6Bjq14uKPZ4qFmVK5zghHQ37ksCVSP0
- A4vhA4BodgokUXWfoMLp6EV0yf8bYzlVZw5kMoClr7Zs33o+UlkRgyj2axmau9XEHNoj
- xd4/cbpQ0y4vo7EX6ShlulEdi4HkuUiu5Zf8GqpHPwdgClOknJYh3U7zbUcWWRl4Imjw
- I9YVcC0uop+8qJXeISXOo1TdhZCIuUf2XbBcxFCxvHgPMHf1XCcvBy6G/gCQubBoPwpH
- Kmjw==
-X-Gm-Message-State: ABy/qLYyx9HJl5zYpoA8cuq9JBcJXi/SkzPVV+ZNA3VMHgZG5T6rKYER
- DMH8X2kjLxCBNgiGR7rDoY25UbKh1MOQ6kbj+ZYPp0YW6h3KaDkABVTsB9s6gJmZZAlFrK7hHz9
- xwiL63b55FI+hTVr3Z4nynIdElLBea4A=
-X-Received: by 2002:a2e:880a:0:b0:2b6:cc93:4ecb with SMTP id
- x10-20020a2e880a000000b002b6cc934ecbmr10581060ljh.43.1688981540147; 
- Mon, 10 Jul 2023 02:32:20 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGiXwWwp9MdKgBhrZ54b2DJoRx4R6qen8imCNbXCgRR6oM/Xn0Jng89jCJuCAXjX2ygRsai/lbcfqNqp+P0E9I=
-X-Received: by 2002:a2e:880a:0:b0:2b6:cc93:4ecb with SMTP id
- x10-20020a2e880a000000b002b6cc934ecbmr10581036ljh.43.1688981539847; Mon, 10
- Jul 2023 02:32:19 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688981633; x=1691573633;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EFnvFj52HHy5O9y/vfjTFb0gilUusvIfftTWh5seQ7c=;
+ b=kuOj8FAY8pgVra8wZDkEaUxgrRE7+glvXbti1sHl3/XX4bMM+lToZix6XI5E3dmjRn
+ Hot9brEprA5TJEG8ZUCEYDQjrhhZ3Jnj/LiYCYsQrlLSf7JpFS02tGA1zkqutApjQ/hh
+ iZUu6odMauuhQnJ4TgMNpSWbXZZ2y+ew+PMhasLz35yw3fkslLdSZ4uI0qRuJn61w1Hb
+ N4ZWePX0kS9qnCGpXUAvC5gGTAgEtfSK2+y59h14/G9tPC9zBSW48yY9d7hefMR8STQS
+ 0QbSB7M6wE/4UeSez8IesGQGX7y7kk7UjuPDt2UOAoXndGovyp79DzFZmgOtkVualAmm
+ AXZw==
+X-Gm-Message-State: ABy/qLalZtkaSAHcEh6SGMP2lKpSk21ev8HbXliXlH2PrOSNgiiDT2s1
+ tdYAzFL74/Y718zEAtSkSMo=
+X-Google-Smtp-Source: APBJJlG9X+N++rzLM5bieCTg0qp/KMNkryWmdhZeD4dv4ZPPbhZlmHR0eHwNfw6ZRM0ofOmJVyP/Ag==
+X-Received: by 2002:a05:6870:e243:b0:187:e563:77b9 with SMTP id
+ d3-20020a056870e24300b00187e56377b9mr12707499oac.45.1688981633131; 
+ Mon, 10 Jul 2023 02:33:53 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-19.dial-up.telesp.net.br.
+ [201.69.66.19]) by smtp.gmail.com with ESMTPSA id
+ d17-20020a05683018f100b006b94fb2762asm1305922otf.23.2023.07.10.02.33.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 02:33:52 -0700 (PDT)
+Message-ID: <92c81c75-881d-ba11-e864-a78c34b4f451@gmail.com>
+Date: Mon, 10 Jul 2023 06:33:49 -0300
 MIME-Version: 1.0
-References: <20230710092638.161625-1-thuth@redhat.com>
-In-Reply-To: <20230710092638.161625-1-thuth@redhat.com>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Mon, 10 Jul 2023 12:32:08 +0300
-Message-ID: <CAPMcbCrOSA=2G1rrALeoM=S=VwkGE0qOAui4n3XnTi3VjjtbPw@mail.gmail.com>
-Subject: Re: [PATCH] docs/devel: Fix coding style in style.rst
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- qemu-trivial@nongnu.org, =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Juan Quintela <quintela@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000b710fc06001ea8de"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2] ppc/pnv: Add QME region for P10
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, Joel Stanley <joel@jms.id.au>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+References: <20230707071213.9924-1-joel@jms.id.au>
+ <CTWE73ZF1T37.IQUBV31TU3LF@wheely>
+From: Daniel Henrique Barboza <danielhb413@gmail.com>
+In-Reply-To: <CTWE73ZF1T37.IQUBV31TU3LF@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=danielhb413@gmail.com; helo=mail-ot1-x335.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,135 +96,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000b710fc06001ea8de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 
-On Mon, Jul 10, 2023 at 12:26=E2=80=AFPM Thomas Huth <thuth@redhat.com> wro=
-te:
+On 7/7/23 22:16, Nicholas Piggin wrote:
+> On Fri Jul 7, 2023 at 5:12 PM AEST, Joel Stanley wrote:
+>> The Quad Management Engine (QME) manages power related settings for its
+>> quad. The xscom region is separate from the quad xscoms, therefore a new
+>> region is added. The xscoms in a QME select a given core by selecting
+>> the forth nibble.
+>>
+>> Implement dummy reads for the stop state history (SSH) and special
+>> wakeup (SPWU) registers. This quietens some sxcom errors when skiboot
+>> boots on p10.
+>>
+>> Power9 does not have a QME.
+>>
+>> Signed-off-by: Joel Stanley <joel@jms.id.au>
+> 
+> Nice, already merged but looks good to me. Just one thing...
+> 
+>> diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
+>> index a4c9d95dc5d3..9bc64635471e 100644
+>> --- a/include/hw/ppc/pnv_xscom.h
+>> +++ b/include/hw/ppc/pnv_xscom.h
+>> @@ -127,6 +127,17 @@ struct PnvXScomInterfaceClass {
+>>   #define PNV10_XSCOM_EC(proc)                    \
+>>       ((0x2 << 16) | ((1 << (3 - (proc))) << 12))
+>>   
+>> +#define PNV10_XSCOM_QME(chiplet) \
+>> +        (PNV10_XSCOM_EQ(chiplet) | (0xE << 16))
+>> +
+>> +/*
+>> + * Make the region larger by 0x1000 (instead of starting at an offset) so the
+>> + * modelled addresses start from 0
+>> + */
+>> +#define PNV10_XSCOM_QME_BASE(core)     \
+>> +    ((uint64_t) PNV10_XSCOM_QME(PNV10_XSCOM_EQ_CHIPLET(core)))
+>> +#define PNV10_XSCOM_QME_SIZE        (0x8000 + 0x1000)
+> 
+> I couldn't work out this comment.
 
-> As defined earlier in this file, the opening curly brace of
-> functions should be placed on a separate line. So we should
-> do it in the examples here, too.
->
-> Reported-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-> Fixes: 821f296756 ("docs: document use of automatic cleanup functions in
-> glib")
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  docs/devel/style.rst | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/docs/devel/style.rst b/docs/devel/style.rst
-> index aa5e083ff8..3cfcdeb9cd 100644
-> --- a/docs/devel/style.rst
-> +++ b/docs/devel/style.rst
-> @@ -567,7 +567,8 @@ For example, instead of
->
->  .. code-block:: c
->
-> -    int somefunc(void) {
-> +    int somefunc(void)
-> +    {
->          int ret =3D -1;
->          char *foo =3D g_strdup_printf("foo%", "wibble");
->          GList *bar =3D .....
-> @@ -588,7 +589,8 @@ Using g_autofree/g_autoptr enables the code to be
-> written as:
->
->  .. code-block:: c
->
-> -    int somefunc(void) {
-> +    int somefunc(void)
-> +    {
->          g_autofree char *foo =3D g_strdup_printf("foo%", "wibble");
->          g_autoptr (GList) bar =3D .....
->
-> @@ -613,7 +615,8 @@ are still some caveats to beware of
->
->  .. code-block:: c
->
-> -    char *somefunc(void) {
-> +    char *somefunc(void)
-> +    {
->          g_autofree char *foo =3D g_strdup_printf("foo%", "wibble");
->          g_autoptr (GList) bar =3D .....
->
-> --
-> 2.39.3
->
->
+FWIW if a comment is inaccurate/wrong it is OK to fix it during the code
+freeze window. No need to hold it until after 8.1 is released. Thanks,
 
---000000000000b710fc06001ea8de
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a hr=
-ef=3D"mailto:kkostiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>=
-&gt;</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_at=
-tr">On Mon, Jul 10, 2023 at 12:26=E2=80=AFPM Thomas Huth &lt;<a href=3D"mai=
-lto:thuth@redhat.com">thuth@redhat.com</a>&gt; wrote:<br></div><blockquote =
-class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
-id rgb(204,204,204);padding-left:1ex">As defined earlier in this file, the =
-opening curly brace of<br>
-functions should be placed on a separate line. So we should<br>
-do it in the examples here, too.<br>
-<br>
-Reported-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkostiuk@redhat.com" =
-target=3D"_blank">kkostiuk@redhat.com</a>&gt;<br>
-Fixes: 821f296756 (&quot;docs: document use of automatic cleanup functions =
-in glib&quot;)<br>
-Signed-off-by: Thomas Huth &lt;<a href=3D"mailto:thuth@redhat.com" target=
-=3D"_blank">thuth@redhat.com</a>&gt;<br>
----<br>
-=C2=A0docs/devel/style.rst | 9 ++++++---<br>
-=C2=A01 file changed, 6 insertions(+), 3 deletions(-)<br>
-<br>
-diff --git a/docs/devel/style.rst b/docs/devel/style.rst<br>
-index aa5e083ff8..3cfcdeb9cd 100644<br>
---- a/docs/devel/style.rst<br>
-+++ b/docs/devel/style.rst<br>
-@@ -567,7 +567,8 @@ For example, instead of<br>
-<br>
-=C2=A0.. code-block:: c<br>
-<br>
--=C2=A0 =C2=A0 int somefunc(void) {<br>
-+=C2=A0 =C2=A0 int somefunc(void)<br>
-+=C2=A0 =C2=A0 {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0int ret =3D -1;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0char *foo =3D g_strdup_printf(&quot;foo%&=
-quot;, &quot;wibble&quot;);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0GList *bar =3D .....<br>
-@@ -588,7 +589,8 @@ Using g_autofree/g_autoptr enables the code to be writt=
-en as:<br>
-<br>
-=C2=A0.. code-block:: c<br>
-<br>
--=C2=A0 =C2=A0 int somefunc(void) {<br>
-+=C2=A0 =C2=A0 int somefunc(void)<br>
-+=C2=A0 =C2=A0 {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_autofree char *foo =3D g_strdup_printf(=
-&quot;foo%&quot;, &quot;wibble&quot;);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_autoptr (GList) bar =3D .....<br>
-<br>
-@@ -613,7 +615,8 @@ are still some caveats to beware of<br>
-<br>
-=C2=A0.. code-block:: c<br>
-<br>
--=C2=A0 =C2=A0 char *somefunc(void) {<br>
-+=C2=A0 =C2=A0 char *somefunc(void)<br>
-+=C2=A0 =C2=A0 {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_autofree char *foo =3D g_strdup_printf(=
-&quot;foo%&quot;, &quot;wibble&quot;);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_autoptr (GList) bar =3D .....<br>
-<br>
--- <br>
-2.39.3<br>
-<br>
-</blockquote></div></div>
+Daniel
 
---000000000000b710fc06001ea8de--
-
+> 
+> Thanks,
+> Nick
+> 
 
