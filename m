@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8C374E1CA
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D38C74E1C4
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:05:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzuy-0005Wj-I9; Mon, 10 Jul 2023 19:03:44 -0400
+	id 1qIzv1-0005tk-IB; Mon, 10 Jul 2023 19:03:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzuw-0005Lk-K3
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:03:42 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzuy-0005cM-Fo
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:03:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzuu-0004Hk-1J
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:03:42 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzuw-0004JU-RH
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:03:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030219;
+ s=mimecast20190719; t=1689030222;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=elYMoXg9QVwhRNFpbJN9zA3o30arH0LQPiAaoIJj+RU=;
- b=BjbQYZi+H1EH0O5m94QIVxpUE7mmrxR2zddcXbnO8wDuiJTK1Q6yvluiqzwdGyN5A6kQ3j
- N5r/mViKG+rcnRxksPgM+iF2n+Q3gpFecKqzYCvh1T1i5ZrmRwGQrrxp1f9qIh1h5EIFTJ
- VsOGUv5kkbhsPpcreJKW6hUwKzo95HY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dbUuQwrEGr4xi2bvWM77xOceCJpPOzjb+5zsk5++7pk=;
+ b=SNKvXMnav4SXsiuRKjUSIjsyvhKfSuElhodeXlf9D0qsjaFweM1KtFqcHFewEQcJvJ9FFL
+ F9Wt0TZzirExJBJ3QFH9TlYbJ4//d1YVoSABql3rpSX1BxK9g9zfFrx6TQjrC18OTRYjsF
+ whvqFe+Jui23JM2zIgrBU4W6RxbqB3g=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-376-PN2x-NT3Nhyewapxr0s0lg-1; Mon, 10 Jul 2023 19:03:38 -0400
-X-MC-Unique: PN2x-NT3Nhyewapxr0s0lg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-31400956ce8so2831701f8f.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:03:37 -0700 (PDT)
+ us-mta-128-kHRfZt9jMj26DSX6YDzAMA-1; Mon, 10 Jul 2023 19:03:41 -0400
+X-MC-Unique: kHRfZt9jMj26DSX6YDzAMA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fa9a282fffso29957805e9.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:03:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030216; x=1691622216;
+ d=1e100.net; s=20221208; t=1689030219; x=1691622219;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=elYMoXg9QVwhRNFpbJN9zA3o30arH0LQPiAaoIJj+RU=;
- b=jixDnGbjb49E3W4FFzn61AmNVvLDFDX0/YmDAJpDBCYz8J8uXNkG8/g96SutOTEQI9
- 5Ppy8nzJu7TFSO7XGhN3x2CjzmpcJCt/CSjVdfqSHumQBl/h0sJa54shiEpq3/sivr6X
- JZ7rdqI7mPOV/ep74HOOiZBC0WKE+h8xa7TzsMa2g9u4LbZpUypf8vHjf+Wx1YpGmIbO
- jMpZdUJ5OZJY9KF/Ea32kWBh6sI2JFFadI+B35HmCgW+IOf9Nh9UI/vPrMuLblB23wbe
- 4apWnc/2MqBexcOypv065alhsEw8MYh/qiRI86aehy3x2o5/r5WrW7WCaypY9P75JiMK
- suDA==
-X-Gm-Message-State: ABy/qLYH+WGN2h/gYCuM7mWWZ3F8YzwjS6u0hVR3Ql3D8UjjbCG2PEZM
- RjgfdOUt1r4FD1LSJYWz/enTIp2JQuwmjq+fCsbSXO9/D8XEm2is8BZftolH8k4t2K7xMXTBhKN
- VghzJGYgLWef05F/PWkSRmuHtAuOoj4tPjxaWHfc52SHAxZnEFipcxJvWmpwb99/EGCL/
-X-Received: by 2002:adf:ee4a:0:b0:30f:af19:81f3 with SMTP id
- w10-20020adfee4a000000b0030faf1981f3mr12565222wro.41.1689030216414; 
- Mon, 10 Jul 2023 16:03:36 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFelC4me9mv1dP6Ygmt2SzeoiSwkGn6CHefoVqsfb2sKglCfEs1JDWvEguBbVtgXx4qqwzk8A==
-X-Received: by 2002:adf:ee4a:0:b0:30f:af19:81f3 with SMTP id
- w10-20020adfee4a000000b0030faf1981f3mr12565196wro.41.1689030216067; 
- Mon, 10 Jul 2023 16:03:36 -0700 (PDT)
+ bh=dbUuQwrEGr4xi2bvWM77xOceCJpPOzjb+5zsk5++7pk=;
+ b=MT/2ud36+dy2fnzQ5uBDRssxxXwjjAEK/yH64FwXPgU8Nlkcs/HccpZFYClTOQYyAF
+ e4x7wejyGZULYNj4uNLsPjIQzoc3J0UuFypyEn8b518svAdPI4KmiC4yxTCLMGNc0/cj
+ 9GiJhKsP3J5Wii1b1ztPWOS39cm00Xya9jTPgzAl8GVzb4937YGpP3+CL3zCM+srPnmQ
+ 2RR3bivx+EMwZVAfEcngH+dQIUCYzx+28bt0nWYorB/UzLFhjs49mVmqWZtCJerS2g9f
+ HDi9KeUbvZrc3Nbe9iEk5uf8lhwjV+hRzbkbhxMG1cRYkAiA9TnhTtmWRLy4x6uqss5I
+ 07vw==
+X-Gm-Message-State: ABy/qLYejH00xf6Sl2hKBC98mDiflEHHg5WAfYyjrzcXfCYzoC6NY2C9
+ JPwvleRu2pvIDtiJh0aNiXUQfTMzPhvIV9CTjQUrwlpHq8EnqSTGsX74zRhvYFY0PWoi510sRVi
+ 3TSBk2oip2En63bZVCqVT483jfFDMEye4YPuH+fAv+0jfv1DiTLN1jf9ZkiKjdXi9LZ4b
+X-Received: by 2002:a05:600c:ad8:b0:3fb:fa61:a4ed with SMTP id
+ c24-20020a05600c0ad800b003fbfa61a4edmr9451245wmr.26.1689030219514; 
+ Mon, 10 Jul 2023 16:03:39 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGvihms63n2ABlA862hXbtpDhmK9ZIE7P1sSctfVX+/QUkuFip4xLI4LrZy8pQliMqLeU9V0A==
+X-Received: by 2002:a05:600c:ad8:b0:3fb:fa61:a4ed with SMTP id
+ c24-20020a05600c0ad800b003fbfa61a4edmr9451229wmr.26.1689030219151; 
+ Mon, 10 Jul 2023 16:03:39 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- d6-20020adfe846000000b0030fd03e3d25sm580551wrn.75.2023.07.10.16.03.34
+ v15-20020a1cf70f000000b003fa8158135esm11398974wmh.11.2023.07.10.16.03.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:03:35 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:03:33 -0400
+ Mon, 10 Jul 2023 16:03:38 -0700 (PDT)
+Date: Mon, 10 Jul 2023 19:03:36 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>,
+ Bernhard Beschow <shentey@gmail.com>, Igor Mammedov <imammedo@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 24/66] hw/pci-host/i440fx: Add "i440fx" child property in
- board code
-Message-ID: <f00f5e4b00e2cb414927b560cd6a82fad4dfc6e2.1689030052.git.mst@redhat.com>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 25/66] hw/pci-host/i440fx: Replace magic values by existing
+ constants
+Message-ID: <cda39f134ba197e2c8c9660dd3fb8fddf4c8647b.1689030052.git.mst@redhat.com>
 References: <cover.1689030052.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -108,45 +105,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-The parent-child relation is usually established near a child's qdev_new(). For
-i440fx this allows for reusing the machine parameter, thus avoiding
-qdev_get_machine() which relies on a global variable.
-
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Message-Id: <20230630073720.21297-9-shentey@gmail.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230630073720.21297-10-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/pc_piix.c    | 2 ++
- hw/pci-host/i440fx.c | 1 -
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ hw/pci-host/i440fx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 6a5b6dad2f..26e8473a4d 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -202,6 +202,8 @@ static void pc_init1(MachineState *machine,
-         memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
-         rom_memory = pci_memory;
-         i440fx_host = qdev_new(host_type);
-+        object_property_add_child(OBJECT(machine), "i440fx",
-+                                  OBJECT(i440fx_host));
-         hole64_size = object_property_get_uint(OBJECT(i440fx_host),
-                                                PCI_HOST_PROP_PCI_HOLE64_SIZE,
-                                                &error_abort);
 diff --git a/hw/pci-host/i440fx.c b/hw/pci-host/i440fx.c
-index 61e7b97ff4..d95d9229d3 100644
+index d95d9229d3..b7c24a4e1d 100644
 --- a/hw/pci-host/i440fx.c
 +++ b/hw/pci-host/i440fx.c
-@@ -259,7 +259,6 @@ PCIBus *i440fx_init(const char *pci_type,
-     b = pci_root_bus_new(dev, NULL, pci_address_space,
-                          address_space_io, 0, TYPE_PCI_BUS);
-     s->bus = b;
--    object_property_add_child(qdev_get_machine(), "i440fx", OBJECT(dev));
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+@@ -276,8 +276,8 @@ PCIBus *i440fx_init(const char *pci_type,
  
-     d = pci_create_simple(b, 0, pci_type);
+     /* if *disabled* show SMRAM to all CPUs */
+     memory_region_init_alias(&f->smram_region, OBJECT(d), "smram-region",
+-                             f->pci_address_space, 0xa0000, 0x20000);
+-    memory_region_add_subregion_overlap(f->system_memory, 0xa0000,
++                             f->pci_address_space, SMRAM_C_BASE, SMRAM_C_SIZE);
++    memory_region_add_subregion_overlap(f->system_memory, SMRAM_C_BASE,
+                                         &f->smram_region, 1);
+     memory_region_set_enabled(&f->smram_region, true);
+ 
+@@ -285,9 +285,9 @@ PCIBus *i440fx_init(const char *pci_type,
+     memory_region_init(&f->smram, OBJECT(d), "smram", 4 * GiB);
+     memory_region_set_enabled(&f->smram, true);
+     memory_region_init_alias(&f->low_smram, OBJECT(d), "smram-low",
+-                             f->ram_memory, 0xa0000, 0x20000);
++                             f->ram_memory, SMRAM_C_BASE, SMRAM_C_SIZE);
+     memory_region_set_enabled(&f->low_smram, true);
+-    memory_region_add_subregion(&f->smram, 0xa0000, &f->low_smram);
++    memory_region_add_subregion(&f->smram, SMRAM_C_BASE, &f->low_smram);
+     object_property_add_const_link(qdev_get_machine(), "smram",
+                                    OBJECT(&f->smram));
+ 
 -- 
 MST
 
