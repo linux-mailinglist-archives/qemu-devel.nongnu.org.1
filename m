@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2673F74E11C
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 00:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD71974E12D
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 00:32:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzOJ-0004go-6Y; Mon, 10 Jul 2023 18:29:59 -0400
+	id 1qIzOg-0005YW-8h; Mon, 10 Jul 2023 18:30:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzOH-0004Wa-K1
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:29:57 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzOQ-0005IL-K8
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:30:09 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzOF-0002Dr-R0
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:29:57 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3159d75606dso1356320f8f.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 15:29:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzOK-0002EV-Jv
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:30:05 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3143ccb0f75so5910067f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 15:30:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689028193; x=1691620193;
+ d=linaro.org; s=google; t=1689028198; x=1691620198;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=74d72XaIdb+kCGd1hbNsukTmdt2SOlQTd25zIPi+waM=;
- b=wXuBupMrGmVm+dtkpH7RaYfWL9YMYN0jNlE/kEzde+LTeGnBtMUaCRUFye789juOcw
- ozP4K6eep1/sNSm53mEFFMlWqemXRvu6s412MtGHXAajgBMzyxoA3lt3/Vxm43j+MrUd
- hnECW42whWbyyhXc99beYydKR78eH0SROoN3CANTJY6gj14e9UU/VmP3FzyKx01Me/28
- pVdllTsSoflOEYu1qSxgDyUQ+0BiFMT6zrXkWosySf7dPOxb92jcDJ8M+Xo5IVVuITWR
- gZSNxB3OnKPsAFkVePQwXt/ZSDysD06HUSL3rAZjxCMz9GNy+7n7XJf1sqAjFAlcYXUQ
- g4Mg==
+ bh=PvLt4SnnoFbS9lrbdOB+CQ2d7RCt4t40/o8unofp3lw=;
+ b=vsz61TZdVk8RdSKNNseEZK+enFJcn54ttNB409F5B1gqsipW5xi1wbtO4v7sI2gxXJ
+ g4WKdBrilbPHnfQI9EH9E6JaRS9fyGTlM4+F32wMk3dE6a6j+ka0ZRdDC7wd7e1DBdPk
+ bSkpYpDpUiSwxHccZVrbuw6kiJRCRSZ2cL6Z/6JNpuYnI2BugbNxz82HKR0MEUJ2tAzB
+ nIaSg37pQx//AMYEi09eczT1x+Vh91zxWS0EL3s+732+n9aTfXMnFCAvYOum3zm8HQV3
+ 0AwCl+9v3Ocu4DcovrV4dqwuPjHi2AvsTroUBVMddF/GOBjMEtLGkajZGmnstw/9gwtH
+ 88Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689028193; x=1691620193;
+ d=1e100.net; s=20221208; t=1689028198; x=1691620198;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=74d72XaIdb+kCGd1hbNsukTmdt2SOlQTd25zIPi+waM=;
- b=DdRi1DQVlzMsUU1GsG5gnq9VYKg53mlDpJDJcpiXtWML5XHIuxOV+N6zWDCDwbnMiy
- 8yhKJ08VQcs3KvEIoH1C3lmWfYahEEFN1yIKkP3jBtVmY6JjCpePf21ZlRElEqK4jNQ5
- VvIw11qzh67ntJZnKwXq5t8IKE2JvHaAtPh3h5a+CYH3cYeKn/D08DaLaeNA27KnZfBz
- jd+jPrDev5SCia9+k1Rkt1IpZgkt0Hv5mlpu3QPQSso7Nwruou9rwwEcXT3Om/7z1q3u
- Mb4G77LV4QcSnq768LmwwoLgokouH38Vjc66A9YWUcBeQzHvrprhm8939zypdYECg0gE
- rF1w==
-X-Gm-Message-State: ABy/qLZLxcvCD8POz7EOZimU4EuswX78G7rBB+rUEU4x/lBHsI54Z797
- L3x+dXoJug/IAOhFPUcJvOCkbOe5w4pNnGkuWUYVWw==
-X-Google-Smtp-Source: APBJJlFqcW4jV6tjoDLGK8SbowDQoThn+mxJcnNXic0BvFaF1P5GSxlsJhRogo6ekWITQiSj/4ZBLQ==
-X-Received: by 2002:a5d:408b:0:b0:314:1ddc:ecbd with SMTP id
- o11-20020a5d408b000000b003141ddcecbdmr12183874wrp.18.1689028193387; 
- Mon, 10 Jul 2023 15:29:53 -0700 (PDT)
+ bh=PvLt4SnnoFbS9lrbdOB+CQ2d7RCt4t40/o8unofp3lw=;
+ b=B/wubosVsUny8iEDXemGyyEcq3pRtGDZNNVx+KxOOkC4jrT4tmslM3cMWB/9uSwbmS
+ +2QjdCG+uOGSswV2uvrd6itSsM9UQEPRJrxDdIT4N80JsiaFD9Qv0rywE83Yd2hUsmoK
+ UCwF1X+Eg++lqchgt/txSq0hfWpQnvuKB39PmjlEJo9vZQQwdmZSfkk7xpHxqZWpV8H+
+ UowpWLHYsbnUY4feWfYRkbjjDM/2VX7ALP0ZvIfCUIxqTgp4ef0WyFS/vgwcM71vVld1
+ 6Y4E3kYmBeE3fiGpoaTQi0/yARRKR8y3Y0AVZQD9pLxZe8CVZ/Az6pvP4oN9tgvweDER
+ 9liQ==
+X-Gm-Message-State: ABy/qLatAY7+v+loETgs8YC/TBjpWbCDIDcnsNvouEKvvGMb8hCocyDm
+ K+NxlD4Yv81jsxmgtrgMHqTV44ej9aSJkbfETHzuog==
+X-Google-Smtp-Source: APBJJlErZMDKd+rit8woU/2vUaLNlATQlpTf/PDf1QkAzyevlzAxKPwgZbyPZK+sp/1ZQnEwYZjKbg==
+X-Received: by 2002:a05:6000:549:b0:314:1e69:f4b3 with SMTP id
+ b9-20020a056000054900b003141e69f4b3mr15824458wrf.63.1689028198725; 
+ Mon, 10 Jul 2023 15:29:58 -0700 (PDT)
 Received: from m1x-phil.lan (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
  [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
- o6-20020adfeac6000000b00314145e6d61sm560200wrn.6.2023.07.10.15.29.52
+ h25-20020a1ccc19000000b003fbcf032c55sm11455140wmb.7.2023.07.10.15.29.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Jul 2023 15:29:53 -0700 (PDT)
+ Mon, 10 Jul 2023 15:29:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Siarhei Volkau <lis8215@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Bernhard Beschow <shentey@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PULL 41/44] hw/ide: Extract IDEBus assignment into bmdma_init()
-Date: Tue, 11 Jul 2023 00:26:08 +0200
-Message-Id: <20230710222611.50978-42-philmd@linaro.org>
+ Bernhard Beschow <shentey@gmail.com>, BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PULL 42/44] hw/ide: Extract bmdma_status_writeb()
+Date: Tue, 11 Jul 2023 00:26:09 +0200
+Message-Id: <20230710222611.50978-43-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230710222611.50978-1-philmd@linaro.org>
 References: <20230710222611.50978-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,83 +94,114 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-Every invocation of bmdma_init() is followed by `d->bmdma[i].bus = &d->bus[i]`.
-Resolve this redundancy by extracting it into bmdma_init().
+Every TYPE_PCI_IDE device performs the same not-so-trivial bit manipulation by
+copy'n'paste code. Extract this into bmdma_status_writeb(), mirroring
+bmdma_cmd_writeb().
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Message-Id: <20230531211043.41724-5-shentey@gmail.com>
+Message-Id: <20230531211043.41724-6-shentey@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ide/cmd646.c  | 1 -
- hw/ide/pci.c     | 1 +
- hw/ide/piix.c    | 1 -
- hw/ide/sii3112.c | 1 -
- hw/ide/via.c     | 1 -
- 5 files changed, 1 insertion(+), 4 deletions(-)
+ include/hw/ide/pci.h | 1 +
+ hw/ide/cmd646.c      | 2 +-
+ hw/ide/pci.c         | 5 +++++
+ hw/ide/piix.c        | 2 +-
+ hw/ide/sii3112.c     | 6 ++----
+ hw/ide/via.c         | 2 +-
+ 6 files changed, 11 insertions(+), 7 deletions(-)
 
+diff --git a/include/hw/ide/pci.h b/include/hw/ide/pci.h
+index 74c127e32f..1ff469de87 100644
+--- a/include/hw/ide/pci.h
++++ b/include/hw/ide/pci.h
+@@ -58,6 +58,7 @@ struct PCIIDEState {
+ 
+ void bmdma_init(IDEBus *bus, BMDMAState *bm, PCIIDEState *d);
+ void bmdma_cmd_writeb(BMDMAState *bm, uint32_t val);
++void bmdma_status_writeb(BMDMAState *bm, uint32_t val);
+ extern MemoryRegionOps bmdma_addr_ioport_ops;
+ void pci_ide_create_devs(PCIDevice *dev);
+ 
 diff --git a/hw/ide/cmd646.c b/hw/ide/cmd646.c
-index a68357c1c5..a094a6e12a 100644
+index a094a6e12a..cabe9048b1 100644
 --- a/hw/ide/cmd646.c
 +++ b/hw/ide/cmd646.c
-@@ -297,7 +297,6 @@ static void pci_cmd646_ide_realize(PCIDevice *dev, Error **errp)
-         ide_bus_init_output_irq(&d->bus[i], qdev_get_gpio_in(ds, i));
- 
-         bmdma_init(&d->bus[i], &d->bmdma[i], d);
--        d->bmdma[i].bus = &d->bus[i];
-         ide_bus_register_restart_cb(&d->bus[i]);
-     }
- }
+@@ -144,7 +144,7 @@ static void bmdma_write(void *opaque, hwaddr addr,
+         cmd646_update_irq(pci_dev);
+         break;
+     case 2:
+-        bm->status = (val & 0x60) | (bm->status & 1) | (bm->status & ~val & 0x06);
++        bmdma_status_writeb(bm, val);
+         break;
+     case 3:
+         if (bm == &bm->pci_dev->bmdma[0]) {
 diff --git a/hw/ide/pci.c b/hw/ide/pci.c
-index 9a5a7089d4..4cf1e9c679 100644
+index 4cf1e9c679..0b26a4ce9f 100644
 --- a/hw/ide/pci.c
 +++ b/hw/ide/pci.c
-@@ -519,6 +519,7 @@ void bmdma_init(IDEBus *bus, BMDMAState *bm, PCIIDEState *d)
-     bus->dma = &bm->dma;
-     bm->irq = bus->irq;
-     bus->irq = qemu_allocate_irq(bmdma_irq, bm, 0);
-+    bm->bus = bus;
-     bm->pci_dev = d;
+@@ -318,6 +318,11 @@ void bmdma_cmd_writeb(BMDMAState *bm, uint32_t val)
+     bm->cmd = val & 0x09;
  }
  
++void bmdma_status_writeb(BMDMAState *bm, uint32_t val)
++{
++    bm->status = (val & 0x60) | (bm->status & 1) | (bm->status & ~val & 0x06);
++}
++
+ static uint64_t bmdma_addr_read(void *opaque, hwaddr addr,
+                                 unsigned width)
+ {
 diff --git a/hw/ide/piix.c b/hw/ide/piix.c
-index 41d60921e3..a32f7ccece 100644
+index a32f7ccece..47e0b474c3 100644
 --- a/hw/ide/piix.c
 +++ b/hw/ide/piix.c
-@@ -144,7 +144,6 @@ static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
-     ide_bus_init_output_irq(&d->bus[i], isa_get_irq(NULL, port_info[i].isairq));
- 
-     bmdma_init(&d->bus[i], &d->bmdma[i], d);
--    d->bmdma[i].bus = &d->bus[i];
-     ide_bus_register_restart_cb(&d->bus[i]);
- 
-     return true;
+@@ -76,7 +76,7 @@ static void bmdma_write(void *opaque, hwaddr addr,
+         bmdma_cmd_writeb(bm, val);
+         break;
+     case 2:
+-        bm->status = (val & 0x60) | (bm->status & 1) | (bm->status & ~val & 0x06);
++        bmdma_status_writeb(bm, val);
+         break;
+     }
+ }
 diff --git a/hw/ide/sii3112.c b/hw/ide/sii3112.c
-index f9becdff8e..5dd3d03c29 100644
+index 5dd3d03c29..63dc4a0494 100644
 --- a/hw/ide/sii3112.c
 +++ b/hw/ide/sii3112.c
-@@ -287,7 +287,6 @@ static void sii3112_pci_realize(PCIDevice *dev, Error **errp)
-         ide_bus_init_output_irq(&s->bus[i], qdev_get_gpio_in(ds, i));
- 
-         bmdma_init(&s->bus[i], &s->bmdma[i], s);
--        s->bmdma[i].bus = &s->bus[i];
-         ide_bus_register_restart_cb(&s->bus[i]);
-     }
- }
+@@ -149,8 +149,7 @@ static void sii3112_reg_write(void *opaque, hwaddr addr,
+         break;
+     case 0x02:
+     case 0x12:
+-        d->i.bmdma[0].status = (val & 0x60) | (d->i.bmdma[0].status & 1) |
+-                               (d->i.bmdma[0].status & ~val & 6);
++        bmdma_status_writeb(&d->i.bmdma[0], val);
+         break;
+     case 0x04 ... 0x07:
+         bmdma_addr_ioport_ops.write(&d->i.bmdma[0], addr - 4, val, size);
+@@ -165,8 +164,7 @@ static void sii3112_reg_write(void *opaque, hwaddr addr,
+         break;
+     case 0x0a:
+     case 0x1a:
+-        d->i.bmdma[1].status = (val & 0x60) | (d->i.bmdma[1].status & 1) |
+-                               (d->i.bmdma[1].status & ~val & 6);
++        bmdma_status_writeb(&d->i.bmdma[1], val);
+         break;
+     case 0x0c ... 0x0f:
+         bmdma_addr_ioport_ops.write(&d->i.bmdma[1], addr - 12, val, size);
 diff --git a/hw/ide/via.c b/hw/ide/via.c
-index 0caae52276..91253fa4ef 100644
+index 91253fa4ef..fff23803a6 100644
 --- a/hw/ide/via.c
 +++ b/hw/ide/via.c
-@@ -196,7 +196,6 @@ static void via_ide_realize(PCIDevice *dev, Error **errp)
-         ide_bus_init_output_irq(&d->bus[i], qdev_get_gpio_in(ds, i));
- 
-         bmdma_init(&d->bus[i], &d->bmdma[i], d);
--        d->bmdma[i].bus = &d->bus[i];
-         ide_bus_register_restart_cb(&d->bus[i]);
+@@ -75,7 +75,7 @@ static void bmdma_write(void *opaque, hwaddr addr,
+         bmdma_cmd_writeb(bm, val);
+         break;
+     case 2:
+-        bm->status = (val & 0x60) | (bm->status & 1) | (bm->status & ~val & 0x06);
++        bmdma_status_writeb(bm, val);
+         break;
+     default:;
      }
- }
 -- 
 2.38.1
 
