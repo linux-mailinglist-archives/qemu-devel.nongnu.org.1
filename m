@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4570674D52E
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E05B74D540
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:22:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIpoV-0000sa-QU; Mon, 10 Jul 2023 08:16:24 -0400
+	id 1qIpof-0000y3-N2; Mon, 10 Jul 2023 08:16:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoO-0000qP-ET
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoO-0000rD-TS
  for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoM-0003Wj-In
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoN-0003Wv-Ej
  for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1688991374;
@@ -22,41 +22,39 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3BRphK0Bgs5/sopCbWyztf8M45awJy9BVj1+lXDCEtg=;
- b=QOiRRtY6fZluvhZPdeDr16hevyECbtQSo4B4CuoyexjcVLPp3iD9a+ETrzWnkEjWBRxovW
- 7bZ1Ycq7JEykcmUg9A9xC4ddOqvi628bXDOhcJnzrHcSN6FvHVRnb8B4taf2qpq79CbGcR
- /hmbwlrDI8oOEziIk9TMy8vYBceIWAw=
+ bh=cHrfiBeDW824X4qqEZOPPzorW+P2EqUcZ0iy/McGzTo=;
+ b=LNEWdHjXMLzXYBNQyH8yx9FuljR+Bs5wS8A7PtKSlSLF3N5xiOOhE54SGHkwX/iKHz+2Lj
+ mgAWnNVgkUuxn42IyXBNEXV3U8Jl0cays3vBUvofi4Sqm6woFm83Pq09sUAFPXhwBjNP7J
+ ckrYNPlKiIAesGZe+unwRe+HJugat7I=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-271-X0p5VeMSMf6RZcp_7qLP8w-1; Mon, 10 Jul 2023 08:16:10 -0400
-X-MC-Unique: X0p5VeMSMf6RZcp_7qLP8w-1
+ us-mta-166-Qxf2TcdIMy-RMrD2gIqxmg-1; Mon, 10 Jul 2023 08:16:11 -0400
+X-MC-Unique: Qxf2TcdIMy-RMrD2gIqxmg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1DBC8185A792;
- Mon, 10 Jul 2023 12:16:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 426B2856F67;
+ Mon, 10 Jul 2023 12:16:11 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.206])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4FDE0F66BA;
- Mon, 10 Jul 2023 12:16:08 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5EE54F5CFA;
+ Mon, 10 Jul 2023 12:16:10 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?J=C3=A1n=20Tomko?= <jtomko@redhat.com>
-Subject: [PULL 17/21] os-posix: Allow 'chroot' via '-run-with' and deprecate
- the old '-chroot' option
-Date: Mon, 10 Jul 2023 14:15:39 +0200
-Message-Id: <20230710121543.197250-18-thuth@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 18/21] meson.build: Skip C++ detection unless we're targeting
+ Windows
+Date: Mon, 10 Jul 2023 14:15:40 +0200
+Message-Id: <20230710121543.197250-19-thuth@redhat.com>
 In-Reply-To: <20230710121543.197250-1-thuth@redhat.com>
 References: <20230710121543.197250-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,202 +79,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We recently introduced "-run-with" for options that influence the
-runtime behavior of QEMU. This option has the big advantage that it
-can group related options (so that it is easier for the users to spot
-them) and that the options become introspectable via QMP this way.
-So let's start moving more switches into this option group, starting
-with "-chroot" now.
+The only C++ code that we currently still have in the repository
+is the code in qga/vss-win32/ - so we can skip the C++ detection
+unless we are compiling binaries for Windows.
 
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Ján Tomko <jtomko@redhat.com>
-Message-Id: <20230703074447.17044-1-thuth@redhat.com>
+Message-Id: <20230705133639.146073-1-thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- docs/about/deprecated.rst |  5 +++++
- os-posix.c                | 35 ++++++++++++++++++++++++++++++++++-
- util/async-teardown.c     | 21 ---------------------
- qemu-options.hx           | 18 +++++++++++++-----
- 4 files changed, 52 insertions(+), 27 deletions(-)
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index ddc1e48460..02ea5a839f 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -116,6 +116,11 @@ Use "whpx" (on Windows) or "hvf" (on macOS) instead.
+diff --git a/meson.build b/meson.build
+index 58413d44a5..162e664c2b 100644
+--- a/meson.build
++++ b/meson.build
+@@ -20,7 +20,7 @@ config_host = keyval.load(meson.current_build_dir() / 'config-host.mak')
  
- Use ``-run-with async-teardown=on`` instead.
- 
-+``-chroot`` (since 8.1)
-+'''''''''''''''''''''''
-+
-+Use ``-run-with chroot=dir`` instead.
-+
- ``-singlestep`` (since 8.1)
- '''''''''''''''''''''''''''
- 
-diff --git a/os-posix.c b/os-posix.c
-index 90ea71725f..cfcb96533c 100644
---- a/os-posix.c
-+++ b/os-posix.c
-@@ -38,6 +38,7 @@
- #include "qemu/cutils.h"
- #include "qemu/config-file.h"
- #include "qemu/option.h"
-+#include "qemu/module.h"
- 
- #ifdef CONFIG_LINUX
- #include <sys/prctl.h>
-@@ -148,6 +149,7 @@ int os_parse_cmd_args(int index, const char *optarg)
-         }
-         break;
-     case QEMU_OPTION_chroot:
-+        warn_report("option is deprecated, use '-run-with chroot=...' instead");
-         chroot_dir = optarg;
-         break;
-     case QEMU_OPTION_daemonize:
-@@ -158,18 +160,25 @@ int os_parse_cmd_args(int index, const char *optarg)
-     case QEMU_OPTION_asyncteardown:
-         init_async_teardown();
-         break;
-+#endif
-     case QEMU_OPTION_run_with: {
-+        const char *str;
-         QemuOpts *opts = qemu_opts_parse_noisily(qemu_find_opts("run-with"),
-                                                  optarg, false);
-         if (!opts) {
-             exit(1);
-         }
-+#if defined(CONFIG_LINUX)
-         if (qemu_opt_get_bool(opts, "async-teardown", false)) {
-             init_async_teardown();
-         }
-+#endif
-+        str = qemu_opt_get(opts, "chroot");
-+        if (str) {
-+            chroot_dir = str;
-+        }
-         break;
-     }
--#endif
-     default:
-         return -1;
-     }
-@@ -348,3 +357,27 @@ int os_mlock(void)
-     return -ENOSYS;
- #endif
- }
-+
-+static QemuOptsList qemu_run_with_opts = {
-+    .name = "run-with",
-+    .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
-+    .desc = {
-+#if defined(CONFIG_LINUX)
-+        {
-+            .name = "async-teardown",
-+            .type = QEMU_OPT_BOOL,
-+        },
-+#endif
-+        {
-+            .name = "chroot",
-+            .type = QEMU_OPT_STRING,
-+        },
-+        { /* end of list */ }
-+    },
-+};
-+
-+static void register_runwith(void)
-+{
-+    qemu_add_opts(&qemu_run_with_opts);
-+}
-+opts_init(register_runwith);
-diff --git a/util/async-teardown.c b/util/async-teardown.c
-index 3ab19c8740..62cdeb0f20 100644
---- a/util/async-teardown.c
-+++ b/util/async-teardown.c
-@@ -12,9 +12,6 @@
-  */
- 
- #include "qemu/osdep.h"
--#include "qemu/config-file.h"
--#include "qemu/option.h"
--#include "qemu/module.h"
- #include <dirent.h>
- #include <sys/prctl.h>
- #include <sched.h>
-@@ -147,21 +144,3 @@ void init_async_teardown(void)
-     clone(async_teardown_fn, new_stack_for_clone(), CLONE_VM, NULL);
-     sigprocmask(SIG_SETMASK, &old_signals, NULL);
- }
--
--static QemuOptsList qemu_run_with_opts = {
--    .name = "run-with",
--    .head = QTAILQ_HEAD_INITIALIZER(qemu_run_with_opts.head),
--    .desc = {
--        {
--            .name = "async-teardown",
--            .type = QEMU_OPT_BOOL,
--        },
--        { /* end of list */ }
--    },
--};
--
--static void register_teardown(void)
--{
--    qemu_add_opts(&qemu_run_with_opts);
--}
--opts_init(register_teardown);
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 96087505b2..f8f384e551 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -4677,11 +4677,12 @@ ERST
- 
- #ifndef _WIN32
- DEF("chroot", HAS_ARG, QEMU_OPTION_chroot, \
--    "-chroot dir     chroot to dir just before starting the VM\n",
-+    "-chroot dir     chroot to dir just before starting the VM (deprecated)\n",
-     QEMU_ARCH_ALL)
- #endif
- SRST
- ``-chroot dir``
-+    Deprecated, use '-run-with chroot=...' instead.
-     Immediately before starting guest execution, chroot to the specified
-     directory. Especially useful in combination with -runas.
- ERST
-@@ -4868,13 +4869,16 @@ SRST
-     This option is deprecated and should no longer be used. The new option
-     ``-run-with async-teardown=on`` is a replacement.
- ERST
-+#endif
-+#ifdef CONFIG_POSIX
- DEF("run-with", HAS_ARG, QEMU_OPTION_run_with,
--    "-run-with async-teardown[=on|off]\n"
--    "                misc QEMU process lifecycle options\n"
--    "                async-teardown=on enables asynchronous teardown\n",
-+    "-run-with [async-teardown=on|off][,chroot=dir]\n"
-+    "                Set miscellaneous QEMU process lifecycle options:\n"
-+    "                async-teardown=on enables asynchronous teardown (Linux only)\n"
-+    "                chroot=dir chroot to dir just before starting the VM\n",
-     QEMU_ARCH_ALL)
- SRST
--``-run-with``
-+``-run-with [async-teardown=on|off][,chroot=dir]``
-     Set QEMU process lifecycle options.
- 
-     ``async-teardown=on`` enables asynchronous teardown. A new process called
-@@ -4887,6 +4891,10 @@ SRST
-     performed correctly. This only works if the cleanup process is not
-     forcefully killed with SIGKILL before the main QEMU process has
-     terminated completely.
-+
-+    ``chroot=dir`` can be used for doing a chroot to the specified directory
-+    immediately before starting the guest execution. This is especially useful
-+    in combination with -runas.
- ERST
- #endif
- 
+ cc = meson.get_compiler('c')
+ all_languages = ['c']
+-if add_languages('cpp', required: false, native: false)
++if targetos == 'windows' and add_languages('cpp', required: false, native: false)
+   all_languages += ['cpp']
+   cxx = meson.get_compiler('cpp')
+ endif
 -- 
 2.39.3
 
