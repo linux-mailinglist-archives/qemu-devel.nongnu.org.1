@@ -2,92 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFFA74D85A
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 16:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B464A74D8A3
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 16:10:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIrUF-0000kL-LX; Mon, 10 Jul 2023 10:03:35 -0400
+	id 1qIrai-0000Mn-Da; Mon, 10 Jul 2023 10:10:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qIrU5-0000iz-2t; Mon, 10 Jul 2023 10:03:25 -0400
-Received: from out2-smtp.messagingengine.com ([66.111.4.26])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qIrU2-0003K8-Jb; Mon, 10 Jul 2023 10:03:24 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailout.nyi.internal (Postfix) with ESMTP id BAD145C00A2;
- Mon, 10 Jul 2023 10:03:20 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute6.internal (MEProxy); Mon, 10 Jul 2023 10:03:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm1; t=1688997800; x=
- 1689084200; bh=C1Q1VU734pAu6OaovfdBpP4uPgPFBkU0ciCrGq3xi6o=; b=S
- 8QuUfNaOBdcv21wK0u2O0Fb2SOnwBd9pyjTaqgWiaO54hLzodhgdfJd0K0wqRVD1
- DlI+PVq0Uift5x8wDsOMFkhTbtqyEjAwhgR1XrR2VHt7f9FDuUmAPRH+nqXcsMFh
- b0hFbMf8jJqp9H7VSBI0MRQ93w8MTm7F/xfprHxU97Fi+kpnuTc80k8gWMbELMtc
- IaZCtZ+5H7zplC/AvxCI427uvYoSUES19vjTkHzk4PRP8xwBga4UgMLhOUiN+cR4
- xox6qpEQ5B/kYJ6uaaT/RDEeHpaSBzeZvCQVimblrs3rmMBgnnQQhlp6wuEyKp+d
- er6vaL3yKeaM1PKwNI6SQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm2; t=1688997800; x=1689084200; bh=C1Q1VU734pAu6
- OaovfdBpP4uPgPFBkU0ciCrGq3xi6o=; b=M+Gj+Wz1yiMOO0NRwu4DXKLuCjvLy
- mmERbVrxHMcAv97JR1pwL5BPqorPgARptQkb5GVyX7Dt4HrEM1P5LxpcvepUViHw
- 206bYsmLsOm3Gf/QD0XEf7nxeCc6zKLFL+AJuEwJH0lEhk17Z0d9StZMXstKNQ9u
- nJJac5TKo+F1baqoBnwxGcpWvd1Bnrj/5FTvsSBrtvMleFiB/Dn9UcxwnQg+JwZ1
- aTIhlo7lBJQkVn/y1abVCZ7ck+PDVyTkUm67fhEIuwSLaDnVjMDDTHOM6usoTXv1
- PBqZqeeCOY/l/+TnnDaJ09ZfTXlcukdAY82yXjv9UMmqjjNaRK1yd2CdQ==
-X-ME-Sender: <xms:pw-sZHFl91ZcMx1wEP14iZSkImpsxfavHCsz0nw5OzcnRbTDq0r32A>
- <xme:pw-sZEXTmxaWyDb6KQXfVYJ1WVEwPkXzNoQKC2f1-VYQI-Z6V2MPSFB5Ud1cZxeq1
- Vc0UHeGqBvQRgTkvPg>
-X-ME-Received: <xmr:pw-sZJJKJTEIh_lLOC-rI16sxRimnrKBRSWgDIqU0bQFDviFcCmetZ1STmI9GzAkQ_Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrvdekgdeivdcutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgruhhs
- ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
- gvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeevjeevtdduudegieegteffffej
- veenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehith
- hssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:pw-sZFFYWw0T20VW_b2rYIa8s1rBxTlYnz3HM6Cz3Ch4GKG1ub9vNQ>
- <xmx:pw-sZNUkLaYpTHZ5yMNunuiNQXOIUpf9ACc6O2eq9jGhMepeaFTl3A>
- <xmx:pw-sZAOpknv6F03AlR1bJdXn-_qEr40c1Uu87Cmt1a5TokioKbXUlw>
- <xmx:qA-sZDxVrMzYU61qmzvLYohChROyJsRZ4O5tr21UrvMtO5k3BDG1-A>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 10 Jul 2023 10:03:18 -0400 (EDT)
-Date: Mon, 10 Jul 2023 16:03:16 +0200
-From: Klaus Jensen <its@irrelevant.dk>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, richard.henderson@linaro.org,
- qemu-devel@nongnu.org, stefanha@redhat.com
-Subject: Re: [PULL 11/23] Revert "graph-lock: Disable locking for now"
-Message-ID: <ZKwPpO0Eu3tMA6AO@cormorant.local>
-References: <20230628141526.293104-1-kwolf@redhat.com>
- <20230628141526.293104-12-kwolf@redhat.com>
- <ZKv4G4A0l8EhMZoy@cormorant.local> <ZKv8UvKOHo6VX5g/@redhat.com>
+ (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
+ id 1qIraO-0000FE-NS
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:09:56 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
+ id 1qIraL-0007Kc-Id
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:09:56 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-4fb73ba3b5dso7118855e87.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 07:09:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688998191; x=1691590191;
+ h=user-agent:in-reply-to:content-transfer-encoding
+ :content-disposition:mime-version:references:message-id:subject:cc
+ :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=yoI1bLyZSe+qn52yLVAcAPaRHczBcWT8dtYzKKCfCMk=;
+ b=syh0Uqh4j6+4qaX1E0ZVNcNYUxnITPgblPy2dQpKN4OTVxcQ3+wSkGaYF3Xi2Qw7ZG
+ EwoOj6uD2lfsbK3gexwJksqe4G5fT3ybWeIgj4KqiBcTajJnO/ug9zs/lBDLm5FeD9sQ
+ 6J3/hW39OdWmmYzWAjOQhQqyaIkkPmyicakbP9ph3pehSPaQNP678IAaX0uESSby/y2m
+ P73qr+VqDWvTrCLaFGHyD9vMhMdPAt/DFzcCV3NZi96a+Ktr+b403ezqBGaPPLteFHx/
+ xRWryW5AC9JSMuFXhG38iFKqpsJcjUsbsOw5qtyePFPPBlaMySedXsm8DNfAXWIML8iA
+ 7GnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688998191; x=1691590191;
+ h=user-agent:in-reply-to:content-transfer-encoding
+ :content-disposition:mime-version:references:message-id:subject:cc
+ :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yoI1bLyZSe+qn52yLVAcAPaRHczBcWT8dtYzKKCfCMk=;
+ b=kq6sFafS7T+U8v8AlGctyum6wxpivkxNfAgBKLD1z98u/26DwCoR8K7I4hMKaJZ6vN
+ NlRXOUlR6+pjamK7VL3Tkjf1kTCQY2ciqi0yojFVbidJETn2EjHjGcm9Ww+447T0X7UE
+ 9boYWTLXKIXmx3uss/cWO1VVcyb0WZzkcRnKSM2bXgr4O/tyDXNl/UEgmhdtEXEFMkpj
+ iZDkUCAhkivFg1BthujbfyK9553AL/KEbkeKuR7dQ6sp5vhl/HwDKJcDCxIaJFl43ttx
+ j3eQiEPADB1M9pELs6yJVtgK03kGDmOX+iIeachWL4Y9LMXYVsDSsd02+q5uY9kCnjy4
+ ZjCg==
+X-Gm-Message-State: ABy/qLaL5KF61G+axAJ4ztxkHgtmBokZ8hyCmLfPphRVPSIUKMMRGgBu
+ kTd56JmeZdxH61C0hYSKwho=
+X-Google-Smtp-Source: APBJJlGIgRKDSB8xt9+MMphPDYR1ZWcHLQ2nN45AvXyEVnHi+WeKN2ReMGr3PAMYz64SIRRra8qT2A==
+X-Received: by 2002:a05:6512:214f:b0:4f6:3000:94a0 with SMTP id
+ s15-20020a056512214f00b004f6300094a0mr9912805lfr.61.1688998191138; 
+ Mon, 10 Jul 2023 07:09:51 -0700 (PDT)
+Received: from fralle-msi (217-76-87-243.cust.bredband2.com. [217.76.87.243])
+ by smtp.gmail.com with ESMTPSA id
+ d2-20020ac244c2000000b004fbbd81856asm1711727lfm.143.2023.07.10.07.09.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Jul 2023 07:09:50 -0700 (PDT)
+Date: Mon, 10 Jul 2023 16:09:49 +0200
+From: Francisco Iglesias <frasse.iglesias@gmail.com>
+To: peter.maydell@linaro.org
+Cc: Kinsey Moore <kinsey.moore@oarcorp.com>, qemu-devel@nongnu.org,
+ philmd@linaro.org
+Subject: Re: [PATCH v2] hw/arm/xlnx: Connect secondary CGEM IRQs
+Message-ID: <20230710140948.GJ6984@fralle-msi>
+References: <20230616143803.73926-1-kinsey.moore@oarcorp.com>
+ <e36a681f-53e2-8379-078e-25e43fc3966e@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="lgxVDyQ2kN1AFUJc"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ZKv8UvKOHo6VX5g/@redhat.com>
-Received-SPF: pass client-ip=66.111.4.26; envelope-from=its@irrelevant.dk;
- helo=out2-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e36a681f-53e2-8379-078e-25e43fc3966e@linaro.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x136.google.com
+X-Spam_score_int: -1020
+X-Spam_score: -102.1
+X-Spam_bar: ---------------------------------------------------
+X-Spam_report: (-102.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01, USER_IN_WELCOMELIST=-0.01,
+ USER_IN_WHITELIST=-100 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,54 +98,30 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---lgxVDyQ2kN1AFUJc
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
++PMM (I think this one might have fallen throught the cracks)
 
-On Jul 10 14:40, Kevin Wolf wrote:
-> Am 10.07.2023 um 14:22 hat Klaus Jensen geschrieben:
-> > On Jun 28 16:15, Kevin Wolf wrote:
-> > > Now that bdrv_graph_wrlock() temporarily drops the AioContext lock th=
-at
-> > > its caller holds, it can poll without causing deadlocks. We can now
-> > > re-enable graph locking.
-> > >=20
-> > > This reverts commit ad128dff0bf4b6f971d05eb4335a627883a19c1d.
-> > >=20
-> >=20
-> > I'm seeing a pretty major performance regression on iothread-enabled
-> > virtio-blk (and on some on-going iothread hw/nvme work) with this
-> > applied. Something like ~300k iops prior to this vs ~200k after on my
-> > set up. On master, virtio-blk is currently faster without an iothread
-> > (~215k) than with (~200k).
-> >=20
-> > I bisected the change in iops to this revert.
->=20
-> Is CONFIG_DEBUG_GRAPH_LOCK enabled in your build? If so, this is
-> expected to cost some performance. If not, we need to take a look at
-> what else is causing the regression.
->=20
-> Kevin
+Best regards,
+Francisco Iglesias
 
-Argh. Doh. Yes, was enabled and made QUITE the difference.
-
-Sorry for the noise. Thanks!
-
---lgxVDyQ2kN1AFUJc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmSsD6MACgkQTeGvMW1P
-Del0+ggAgFH/bIEbqGL3e+2wAtjtB97GtRHuAToaWVD8yv/uyGRsDRsLOjkP1TxF
-hvyFqlqxVU/EC1BEFSXk18BLF/hwh9YENLBMKlm6HfFH/FPgYvNVSWH7v3whPQ/8
-0pIiL0qiJ9ueqbhTQ7ne+O6w3aIXSm4xymPBYPCsffVU7y9QbST334djvpa74sCA
-uMRJeke5d9Y/or3mFAjQZVMKGUp8jJjPLFHipvz8UM4My6a1j0FojXmZ2pcwUIk4
-8KtTkz+HIiO/YmOnW543d3EezzdOKpREUfDWNV58izIJpWEXLSYZu8TtfZ1G0/lr
-XJcryV5vHJl78Yik0NgyERDdI27BOA==
-=uXSl
------END PGP SIGNATURE-----
-
---lgxVDyQ2kN1AFUJc--
+On [2023 Jun 18] Sun 00:50:47, Philippe Mathieu-Daudé wrote:
+> On 16/6/23 16:38, Kinsey Moore wrote:
+> > The Cadence GEM peripherals as configured for Zynq MPSoC and Versal
+> > platforms have two priority queues with separate interrupt sources for
+> > each. If the interrupt source for the second priority queue is not
+> > connected, they work in polling mode only. This change connects the
+> > second interrupt source for platforms where it is available. This patch
+> > has been tested using the lwIP stack with a Xilinx-supplied driver from
+> > their embeddedsw repository.
+> > 
+> > Signed-off-by: Kinsey Moore <kinsey.moore@oarcorp.com>
+> > ---
+> >   hw/arm/xlnx-versal.c         | 12 +++++++++++-
+> >   hw/arm/xlnx-zynqmp.c         | 11 ++++++++++-
+> >   include/hw/arm/xlnx-versal.h |  1 +
+> >   include/hw/arm/xlnx-zynqmp.h |  1 +
+> >   4 files changed, 23 insertions(+), 2 deletions(-)
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> 
 
