@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD7774D536
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 027B374D53C
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:21:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIpoL-0000nC-Dt; Mon, 10 Jul 2023 08:16:13 -0400
+	id 1qIpoL-0000oQ-UP; Mon, 10 Jul 2023 08:16:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpo7-0000jV-M7
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpo7-0000jU-Lq
  for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:15:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpo4-0003NP-LL
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpo4-0003NQ-Ik
  for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:15:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1688991354;
@@ -22,31 +22,32 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IBnOTau0sM/rczS+SwUa7v/+BiMLL54U3Z+8Vn7Mbxk=;
- b=AWdvWZ4Qqa2D57xn4l49tkMBdzceyALEI6iJ2I2p91kQnv4Pq2xKxA76wV+cNFG0LSji/o
- PkKonOPfCg6o29Z+P75amsT6gDhOQf3lmk1RklHZYZcfE9FFmMqUftl1lm7g6OEzFXBNBL
- IWVCKk2DRkBO7kHCqLvGu2N6BOsXyDA=
+ bh=8BWyNUgZf/ckJUtA2DjMN9hU9NUC24UeFupaRexThXs=;
+ b=TCMwZdI3WMwLecOWC3wJxjlYY4bIj1PkDVQEN3X6nBheTF7aCD4g5AEnshtEh9aJO7Iqmb
+ TgX4FlXvI/FP0JwQyhmmCd8nMm5fGpYF/VlWEXAODn1upjmjUamp2Nm4P/mUHn0evq6pZ5
+ Zyk3cdCMQYaIbqFLl7Qbqz/tyuX5N04=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-336-HBVhL4DhM-KGgmhoRUTTeA-1; Mon, 10 Jul 2023 08:15:50 -0400
-X-MC-Unique: HBVhL4DhM-KGgmhoRUTTeA-1
+ us-mta-220-r7f1j4GePYePmJH3zyvSfg-1; Mon, 10 Jul 2023 08:15:50 -0400
+X-MC-Unique: r7f1j4GePYePmJH3zyvSfg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B6EF08FD7A0;
- Mon, 10 Jul 2023 12:15:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 265F3104458D;
+ Mon, 10 Jul 2023 12:15:50 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.206])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CEAE2F66BB;
- Mon, 10 Jul 2023 12:15:47 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 056A7F5CFA;
+ Mon, 10 Jul 2023 12:15:48 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>
-Subject: [PULL 02/21] linux-user: elfload: Add more initial s390x PSW bits
-Date: Mon, 10 Jul 2023 14:15:24 +0200
-Message-Id: <20230710121543.197250-3-thuth@redhat.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>,
+ qemu-stable@nongnu.org
+Subject: [PULL 03/21] target/s390x: Fix EPSW CC reporting
+Date: Mon, 10 Jul 2023 14:15:25 +0200
+Message-Id: <20230710121543.197250-4-thuth@redhat.com>
 In-Reply-To: <20230710121543.197250-1-thuth@redhat.com>
 References: <20230710121543.197250-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -79,33 +80,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Make the PSW look more similar to the real s390x userspace PSW.
-Except for being there, the newly added bits should not affect the
-userspace code execution.
+EPSW should explicitly calculate and insert CC, like IPM does.
 
+Fixes: e30a9d3fea58 ("target-s390: Implement EPSW")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 Reviewed-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20230704081506.276055-2-iii@linux.ibm.com>
+Cc: qemu-stable@nongnu.org
+Message-Id: <20230704081506.276055-3-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- linux-user/elfload.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/s390x/tcg/translate.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 9a2ec568b0..d3d1352c4e 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -1635,7 +1635,9 @@ const char *elf_hwcap_str(uint32_t bit)
- static inline void init_thread(struct target_pt_regs *regs, struct image_info *infop)
- {
-     regs->psw.addr = infop->entry;
--    regs->psw.mask = PSW_MASK_64 | PSW_MASK_32;
-+    regs->psw.mask = PSW_MASK_DAT | PSW_MASK_IO | PSW_MASK_EXT | \
-+                     PSW_MASK_MCHECK | PSW_MASK_PSTATE | PSW_MASK_64 | \
-+                     PSW_MASK_32;
-     regs->gprs[15] = infop->start_stack;
- }
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index a6ee2d4423..0cef6efbef 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -2383,10 +2383,14 @@ static DisasJumpType op_epsw(DisasContext *s, DisasOps *o)
+     int r1 = get_field(s, r1);
+     int r2 = get_field(s, r2);
+     TCGv_i64 t = tcg_temp_new_i64();
++    TCGv_i64 t_cc = tcg_temp_new_i64();
  
+     /* Note the "subsequently" in the PoO, which implies a defined result
+        if r1 == r2.  Thus we cannot defer these writes to an output hook.  */
++    gen_op_calc_cc(s);
++    tcg_gen_extu_i32_i64(t_cc, cc_op);
+     tcg_gen_shri_i64(t, psw_mask, 32);
++    tcg_gen_deposit_i64(t, t, t_cc, 12, 2);
+     store_reg32_i64(r1, t);
+     if (r2 != 0) {
+         store_reg32_i64(r2, psw_mask);
 -- 
 2.39.3
 
