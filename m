@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20CE74E122
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 00:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB1674E0FF
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 00:27:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzLD-0003UH-Pm; Mon, 10 Jul 2023 18:26:47 -0400
+	id 1qIzLJ-0003VI-G2; Mon, 10 Jul 2023 18:26:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzLB-0003Ts-Oo
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:26:45 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzLH-0003Um-9h
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:26:51 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzLA-0001jK-3b
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:26:45 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3fbef8ad9bbso56156615e9.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 15:26:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzLF-0001k0-Fb
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:26:51 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3fb4146e8fcso36854505e9.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 15:26:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689028002; x=1691620002;
+ d=linaro.org; s=google; t=1689028008; x=1691620008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0DwXvgpuWa6bvmkF5jLlb53TLUXpVmhoMetGx+sUAQ8=;
- b=tnEHyMUU/0zJ1yEietluWgcXhnR+jpDQUWT/NeYoI9bgEfMs2lVB7tmOGXgkpaypPT
- 8onUReObkcCliZ2TU7XoYftV25F6mAToBr4M9uVz6l1yXqAoLHjuU3724PMjlx1i0gxX
- FMRdQK/thSk7DmQ4VM3q9uY2pcpY7O/BdZq0AW7KLDuBRBFFYkjdjBbBu2ZwDw4iwMQl
- /3lMVTmDWfQ7YiXQfS8mQHNzNxIynXUE/pgZyA5Zj50nJvftvKEr16YpM7gf6N71ceMK
- EBaaoeJQcfh6BxsgjFFUbQ8YpJpBuITxyiAkNCDb7nBvWObbFVIMyv8bh5i/qtU84yF6
- UbqQ==
+ bh=/lyTZUrhNR7uCF/B13kcUkqX1idFJLM+1E5/815pBHo=;
+ b=khRRPQ33ejItw3uSB2PfRll6ra5nmHQQaRT1f5IQ5pD6DvVuistWcwzM+aNqA6Ih5b
+ UY7xb1yls7qy15/pssCvYnMefV1Klio3/VzZxT1RBKU8sYRJVrwUqTloplbwR22Pc9QZ
+ XQqaJ8QXVO4IlgjIP0wrZuxXzRykkxG1bXvsoXiM5KlhGhy4HBkURg/6iHFl12T/lK/L
+ EXRDpG5/7u1eh+O/fa/7z3oQApl+vxbN9J82Wh6CfaQxkVb8+rMo8x9so+qo6pPgmzwP
+ lQ3UMuPYydjdWrmCwJLALwa5eBhl4KtomUVraHbOUrp9vw7SNH4FmrVn6Xe8tm2W/klP
+ /h3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689028002; x=1691620002;
+ d=1e100.net; s=20221208; t=1689028008; x=1691620008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0DwXvgpuWa6bvmkF5jLlb53TLUXpVmhoMetGx+sUAQ8=;
- b=YereezTIrFwHf+RXXtlhKTQg5FLdDBO0TV/x1ECVPXW87Ece9ZAR7HtfSvZ605EbFC
- ZJfSOhDEtNNAU7COpjS/m6eV+DU1Ul4bnq2rQjpntA2ZYovxVSccFj3RRHcFT0in9Cc3
- rup+Gm8wA0AC+PG0lFZuRM3gOKkwww/2L9+ZSO5127XglWNqmoFfLXyZaOHwIkuKryuj
- b0TGOZDhPIDmjqZzbdNOx6iwY+eAu7sj2RhRldnfQKSo7T/m5JcCEQyuUoIMFAX/a5by
- T4werMczb48S97iPz8X+R7wH6wN5wTSeIbXHyC9Sbhk3qDw+6HcCK5u7Vi5TD7XFgQlP
- 9oMA==
-X-Gm-Message-State: ABy/qLZe3Z3vF1Z9WwNGYKD3FBL9cr6yDSZYAV1G3mfuqPISlJSx4ydY
- ku+kbrzo/D9Q8xU/gzUznWCylpfBmA5pN+PAKg9xpQ==
-X-Google-Smtp-Source: APBJJlEGs318vxU4GMPNcE2hU9OMREJyD6PUine8YlGrrEU995CzXlbRKt65SMW7/VakFCdfaP3FNA==
-X-Received: by 2002:a1c:4b0a:0:b0:3fb:d1db:545b with SMTP id
- y10-20020a1c4b0a000000b003fbd1db545bmr13812827wma.20.1689028002431; 
- Mon, 10 Jul 2023 15:26:42 -0700 (PDT)
+ bh=/lyTZUrhNR7uCF/B13kcUkqX1idFJLM+1E5/815pBHo=;
+ b=PaJBWbta1eFSKl+zkTg1X5fmnEPo0YjAwUETzQHr4pv5KwnUmrLaW5fbGtEor2X/fW
+ 0BILpCZZ+WLlRiEkx8KuvhYuCEC5MlFW9K6mLyUB3W70zqiGZTVXqmtUvKNUVR4850wN
+ mGvBXjcRGUZfnpkmgu1SRUEgJ3UoxR9XQ6Kq8GgWUnkyyjb/NPeB4LDtodUH7RFhStTT
+ 7uIgzFUOQ28aA7SflBmJdd5Rgp6xX3ccB8b+VTGjEeLWQvau/4Kck37F4vQcNUqlh15D
+ avIvY74uq9uHsn1w9jmKZVxwexF8cqsbQoLABsPhCf/ybkZqF0WwnpU8vB/fb4KGMsUJ
+ pUGQ==
+X-Gm-Message-State: ABy/qLZqvV6FVo+ZfMDdxJQfsSrRCpATY0Q9DZDvJzqPDSNyHH/oGJ0u
+ nidzirmeHx88yVBzNIGCzuyOBnZF4N9lxR4MNOKcNw==
+X-Google-Smtp-Source: APBJJlFpzwrib9BM0wYLbi1zrQ3LeY3Pk8MOertu+MSE49zNtVQexkJu2m+xS1veA+eJDoWlAU4i3w==
+X-Received: by 2002:a05:600c:850a:b0:3fa:8c8b:716 with SMTP id
+ gw10-20020a05600c850a00b003fa8c8b0716mr15550575wmb.1.1689028008065; 
+ Mon, 10 Jul 2023 15:26:48 -0700 (PDT)
 Received: from m1x-phil.lan (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
  [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
- x8-20020a05600c2a4800b003f9bd9e3226sm906042wme.7.2023.07.10.15.26.41
+ p19-20020a1c7413000000b003fba137857esm898974wmc.14.2023.07.10.15.26.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Jul 2023 15:26:42 -0700 (PDT)
+ Mon, 10 Jul 2023 15:26:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Siarhei Volkau <lis8215@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 05/44] target/mips: Add support of two XBurst CPUs
-Date: Tue, 11 Jul 2023 00:25:32 +0200
-Message-Id: <20230710222611.50978-6-philmd@linaro.org>
+Subject: [PULL 06/44] target/mips/mxu: Add LXW LXB LXH LXBU LXHU instructions
+Date: Tue, 11 Jul 2023 00:25:33 +0200
+Message-Id: <20230710222611.50978-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230710222611.50978-1-philmd@linaro.org>
 References: <20230710222611.50978-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,82 +94,145 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Siarhei Volkau <lis8215@gmail.com>
 
-XBurstR1 - is the MIPS32R1 CPU which aims to cover all Ingenic SoCs
-older than JZ4770 and some newer.
-XBurstR2 - is the MIPS32R2 CPU which aims to cover all Ingenic SoCs
-starting from to JZ4770.
+These instructions used to load from memory to GPR via indexed address
+divided by base and index parts in GPR registers.
 
 Signed-off-by: Siarhei Volkau <lis8215@gmail.com>
-Message-Id: <20230608104222.1520143-3-lis8215@gmail.com>
+Message-Id: <20230608104222.1520143-4-lis8215@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/cpu-defs.c.inc | 46 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+ target/mips/tcg/mxu_translate.c | 83 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 82 insertions(+), 1 deletion(-)
 
-diff --git a/target/mips/cpu-defs.c.inc b/target/mips/cpu-defs.c.inc
-index 167c96cb27..05d9ec7125 100644
---- a/target/mips/cpu-defs.c.inc
-+++ b/target/mips/cpu-defs.c.inc
-@@ -117,6 +117,26 @@ const mips_def_t mips_defs[] =
-         .insn_flags = CPU_MIPS32R1,
-         .mmu_type = MMU_TYPE_R4000,
-     },
-+    {
-+        .name = "XBurstR1",
-+        .CP0_PRid = 0x1ed0024f,
-+        .CP0_Config0 = MIPS_CONFIG0 | (MMU_TYPE_R4000 << CP0C0_MT),
-+        .CP0_Config1 = MIPS_CONFIG1 | (15 << CP0C1_MMU) |
-+                       (0 << CP0C1_IS) | (3 << CP0C1_IL) | (1 << CP0C1_IA) |
-+                       (0 << CP0C1_DS) | (3 << CP0C1_DL) | (1 << CP0C1_DA) |
-+                       (0 << CP0C1_CA),
-+        .CP0_Config2 = MIPS_CONFIG2,
-+        .CP0_Config3 = MIPS_CONFIG3,
-+        .CP0_LLAddr_rw_bitmask = 0,
-+        .CP0_LLAddr_shift = 4,
-+        .SYNCI_Step = 32,
-+        .CCRes = 2,
-+        .CP0_Status_rw_bitmask = 0x1278FF17,
-+        .SEGBITS = 32,
-+        .PABITS = 32,
-+        .insn_flags = CPU_MIPS32R1 | ASE_MXU,
-+        .mmu_type = MMU_TYPE_R4000,
-+    },
-     {
-         .name = "4KEmR1",
-         .CP0_PRid = 0x00018500,
-@@ -323,6 +343,32 @@ const mips_def_t mips_defs[] =
-         .insn_flags = CPU_MIPS32R2 | ASE_MIPS16 | ASE_DSP | ASE_DSP_R2,
-         .mmu_type = MMU_TYPE_R4000,
-     },
-+    {
-+        .name = "XBurstR2",
-+        .CP0_PRid = 0x2ed1024f,
-+        .CP0_Config0 = MIPS_CONFIG0 | (0x1 << CP0C0_AR) |
-+                    (MMU_TYPE_R4000 << CP0C0_MT),
-+        .CP0_Config1 = MIPS_CONFIG1 | (1 << CP0C1_FP) | (15 << CP0C1_MMU) |
-+                       (0 << CP0C1_IS) | (3 << CP0C1_IL) | (1 << CP0C1_IA) |
-+                       (0 << CP0C1_DS) | (3 << CP0C1_DL) | (1 << CP0C1_DA) |
-+                       (1 << CP0C1_CA),
-+        .CP0_Config2 = MIPS_CONFIG2,
-+        .CP0_Config3 = MIPS_CONFIG3 | (1 << CP0C3_DSP2P) | (1 << CP0C3_DSPP) |
-+                       (1 << CP0C3_VInt),
-+        .CP0_LLAddr_rw_bitmask = 0,
-+        .CP0_LLAddr_shift = 4,
-+        .SYNCI_Step = 32,
-+        .CCRes = 2,
-+        .CP0_Status_rw_bitmask = 0x3778FF1F,
-+        .CP1_fcr0 = (1 << FCR0_F64) | (1 << FCR0_L) | (1 << FCR0_W) |
-+                    (1 << FCR0_D) | (1 << FCR0_S) | (0x93 << FCR0_PRID),
-+        .CP1_fcr31 = 0,
-+        .CP1_fcr31_rw_bitmask = 0xFF83FFFF,
-+        .SEGBITS = 32,
-+        .PABITS = 32,
-+        .insn_flags = CPU_MIPS32R2 | ASE_MXU,
-+        .mmu_type = MMU_TYPE_R4000,
-+    },
-     {
-         .name = "M14K",
-         .CP0_PRid = 0x00019b00,
+diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
+index c69c5795c9..6703e8aca4 100644
+--- a/target/mips/tcg/mxu_translate.c
++++ b/target/mips/tcg/mxu_translate.c
+@@ -304,7 +304,7 @@
+  *          │                            ├─ 110 ─ OPC_MXU_S32OR
+  *          │                            └─ 111 ─ OPC_MXU_S32XOR
+  *          │
+- *          │                               7..5
++ *          │                               8..6
+  *          ├─ 101000 ─ OPC_MXU__POOL17 ─┬─ 000 ─ OPC_MXU_LXB
+  *          │                            ├─ 001 ─ OPC_MXU_LXH
+  *          ├─ 101001 ─ <not assigned>   ├─ 011 ─ OPC_MXU_LXW
+@@ -366,6 +366,7 @@ enum {
+     OPC_MXU__POOL11  = 0x17,
+     OPC_MXU_S8LDD    = 0x22,
+     OPC_MXU__POOL16  = 0x27,
++    OPC_MXU__POOL17  = 0x28,
+     OPC_MXU_S32M2I   = 0x2E,
+     OPC_MXU_S32I2M   = 0x2F,
+     OPC_MXU__POOL19  = 0x38,
+@@ -403,6 +404,17 @@ enum {
+     OPC_MXU_S32XOR   = 0x07,
+ };
+ 
++/*
++ * MXU pool 17
++ */
++enum {
++    OPC_MXU_LXB      = 0x00,
++    OPC_MXU_LXH      = 0x01,
++    OPC_MXU_LXW      = 0x03,
++    OPC_MXU_LXBU     = 0x04,
++    OPC_MXU_LXHU     = 0x05,
++};
++
+ /*
+  * MXU pool 19
+  */
+@@ -918,6 +930,38 @@ static void gen_mxu_s32ldxvx(DisasContext *ctx, bool reversed,
+     }
+ }
+ 
++/*
++ * LXW  Ra, Rb, Rc, STRD2 - Load a word from memory to GPR
++ * LXB  Ra, Rb, Rc, STRD2 - Load a byte from memory to GPR,
++ *   sign extending to GPR size.
++ * LXH  Ra, Rb, Rc, STRD2 - Load a byte from memory to GPR,
++ *   sign extending to GPR size.
++ * LXBU Ra, Rb, Rc, STRD2 - Load a halfword from memory to GPR,
++ *   zero extending to GPR size.
++ * LXHU Ra, Rb, Rc, STRD2 - Load a halfword from memory to GPR,
++ *   zero extending to GPR size.
++ */
++static void gen_mxu_lxx(DisasContext *ctx, uint32_t strd2, MemOp mop)
++{
++    TCGv t0, t1;
++    uint32_t Ra, Rb, Rc;
++
++    t0 = tcg_temp_new();
++    t1 = tcg_temp_new();
++
++    Ra = extract32(ctx->opcode, 11, 5);
++    Rc = extract32(ctx->opcode, 16, 5);
++    Rb = extract32(ctx->opcode, 21, 5);
++
++    gen_load_gpr(t0, Rb);
++    gen_load_gpr(t1, Rc);
++    tcg_gen_shli_tl(t1, t1, strd2);
++    tcg_gen_add_tl(t0, t0, t1);
++
++    tcg_gen_qemu_ld_tl(t1, t0, ctx->mem_idx, mop | ctx->default_tcg_memop_mask);
++    gen_store_gpr(t1, Ra);
++}
++
+ /*
+  * S32STDV  XRa, Rb, Rc, STRD2 - Load a word from memory to XRF
+  * S32STDVR XRa, Rb, Rc, STRD2 - Load a word from memory to XRF
+@@ -1716,6 +1760,40 @@ static void decode_opc_mxu__pool16(DisasContext *ctx)
+     }
+ }
+ 
++static void decode_opc_mxu__pool17(DisasContext *ctx)
++{
++    uint32_t opcode = extract32(ctx->opcode, 6, 3);
++    uint32_t strd2  = extract32(ctx->opcode, 9, 2);
++
++    if (strd2 > 2) {
++        MIPS_INVAL("decode_opc_mxu");
++        gen_reserved_instruction(ctx);
++        return;
++    }
++
++    switch (opcode) {
++    case OPC_MXU_LXW:
++          gen_mxu_lxx(ctx, strd2, MO_TE | MO_UL);
++          break;
++    case OPC_MXU_LXB:
++          gen_mxu_lxx(ctx, strd2, MO_TE | MO_SB);
++          break;
++    case OPC_MXU_LXH:
++          gen_mxu_lxx(ctx, strd2, MO_TE | MO_SW);
++          break;
++    case OPC_MXU_LXBU:
++          gen_mxu_lxx(ctx, strd2, MO_TE | MO_UB);
++          break;
++    case OPC_MXU_LXHU:
++          gen_mxu_lxx(ctx, strd2, MO_TE | MO_UW);
++          break;
++    default:
++        MIPS_INVAL("decode_opc_mxu");
++        gen_reserved_instruction(ctx);
++        break;
++    }
++}
++
+ static void decode_opc_mxu__pool19(DisasContext *ctx)
+ {
+     uint32_t opcode = extract32(ctx->opcode, 22, 2);
+@@ -1794,6 +1872,9 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
+         case OPC_MXU__POOL16:
+             decode_opc_mxu__pool16(ctx);
+             break;
++        case OPC_MXU__POOL17:
++            decode_opc_mxu__pool17(ctx);
++            break;
+         case OPC_MXU__POOL19:
+             decode_opc_mxu__pool19(ctx);
+             break;
 -- 
 2.38.1
 
