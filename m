@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B3074D95E
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 16:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C71B74D967
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 17:01:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIsI3-0007TS-2z; Mon, 10 Jul 2023 10:55:03 -0400
+	id 1qIsMv-0001VM-Jx; Mon, 10 Jul 2023 11:00:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qIsI1-0007Sf-LU
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:55:01 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIsMr-0001Uy-8Y
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:00:01 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qIsHz-0005u7-WE
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:55:01 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4f76a0a19d4so6891067e87.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 07:54:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIsMp-0007nW-Q3
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 11:00:01 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3fbf1b82dc7so47737645e9.2
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 07:59:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689000898; x=1691592898;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=KuukenZcuC3POp6fp7XZmh0oSDn+VaLz2/wG6xVeHY8=;
- b=S99aeUQtl2K8ci2c6tU58Yyfyb9uFdUYEFhW/qOkMGODvoPSNVWcs4YiRgzgGuLSiY
- ABiXAxZqN/kLzmBR+2osvaZ5ge2TXpOpdlNj6wpH1WFHhFUQEvAQ4J2/CnMk4gIvaFUU
- J3y9kJHkZ5LKFiakJeTheHHBiVqg2l2gZOzDDEAiXAAWcag307WeMxOZc+jmPocS9q8Y
- cS5cQUOub3rjdVB6W5QPi+GM/y1j/sEmCihdesu6klULLaSRZH83c0a3Y5bciXTJuMJs
- PRjIzQsEGo5uROUYJI9yl9Fhx79qez2LlZWy/KCAAdehfZJKwwAfawhst0XXF49Fo2QB
- HDwQ==
+ d=linaro.org; s=google; t=1689001198; x=1691593198;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+u1AUneL/qxmP0Yx90wuzLaJSUrM9K59olbweGOB/78=;
+ b=qiV6ZuY4XoNiwqsGj1D6CZSZxXphLiYBaHtjGBYrvSUtB6YkK06snF9/wVXbXRijd1
+ mIdDvgqHbDe/wKZRd/Mr5YMMLuwU8iZ4AzR7YZ3JsP88aQYdNfHF8pToINyYBrL7MV18
+ p853YoQBEqf/zpvajABNOTLzRxMcNS99jngYHQdhV1SWlegWXb6XVwcAPfjgFPxCXgpj
+ bY317niNvt9eqqRawpkkv2K+2MAYcneKV3sSI+fdHnsY11tOd/ty/T8yxVeJJKtANFeu
+ 4/LP8AqNZzNyvXnwOYZJDvwHD6BfD7iaOm2IwkSKK83SHHOU7DyMENIEbqL7okXUTyGY
+ sgEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689000898; x=1691592898;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KuukenZcuC3POp6fp7XZmh0oSDn+VaLz2/wG6xVeHY8=;
- b=Wbs9WnKQo4fuYOe+KefYfIeLt6++lKyDIJVrv4LLnEjbs/qCVMVim+4V06waCWjzeO
- hq2lT3gmgF3ww9y3RAhW3KhLwWlL1yARWXhRS+NYB7K8+jTo/8K0RhwDNnLjPp6M0UHy
- DOq2UjTjjHZPQgGBXpI0gRBXpymqcrZ9c/ahB1B/DviTeQKhPkhYx16L6bbLukv44r0u
- 5beJwyY4vIVyhd9pqcllDrP4zWU27LtgPPflbv20tFA3wK+4Z00Qm7wkk9bq/RH4q8hI
- tY+sOtFIpQo/IIB9igCDUcQvOfnWgTsk8huE4LpmV9dgZx3DwJDqopIeGC4rA5Kmb2oR
- Reew==
-X-Gm-Message-State: ABy/qLbuskBjIrS8mQ8zKVzPEHKoXrTywSsSC+Zyy+uxRzNiY4HcCfTA
- e9MnLPINXlHV1K0wSmxipdwIAtqdco+CYqMVbwPO/w==
-X-Google-Smtp-Source: APBJJlESX9hEh9WlI8RgcT0e7RZuI0eoBkDlsR4YIhfEPzEBs9wA/GSF096HJnxkVyzpYMCfelO+xyFmGxqMo9fnNPE=
-X-Received: by 2002:a05:6512:3b83:b0:4f6:45af:70b8 with SMTP id
- g3-20020a0565123b8300b004f645af70b8mr12258829lfv.58.1689000898160; Mon, 10
- Jul 2023 07:54:58 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689001198; x=1691593198;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+u1AUneL/qxmP0Yx90wuzLaJSUrM9K59olbweGOB/78=;
+ b=XCmJ+0/IZQEdrbNYNxSJaXh9fRL/Lqub1vdCHPv1ViZlAloN6R+vcMXwsR1lniExu3
+ m33m5MO09AksLIf9ino0hPfJCo7+BPPXeWqk7e0UYNQi6RwZtOZvB8R2fm42LZa1CJGd
+ FUtviSK8Ct9Rp8YBfp5aoqtl7Rp6cMtxT3P1nl939vvPsaI9ABZHoOie0n+7J8liPQlG
+ S2PfvJ3MFzeL8zxTTFmp6c2g6MPkDxz92sqJ/KT8K+zhcjJKbXrGYtmXEjbF4S0k2GpG
+ vSLEW0Cg1oYvCmnuDMdwpWsvFRqYeLhXJIqz43f/LQBuxtwst0wqvPsiRkarslFRzn+1
+ OGiw==
+X-Gm-Message-State: ABy/qLa0glFl/H9ZRHru3h+sDE8mluSYQTx0V0bEu759eJUaQHG1EGzb
+ ai00RUC2wrdXYz0M7hWasFMsH2EKNChYVTEyar9Z0A==
+X-Google-Smtp-Source: APBJJlGynwUxPOSkJeCytHBGcpZrBVOLJcJu//2PwB1sh+KGWXsuEIj12ecPIHMvExKfuwStcuHy6w==
+X-Received: by 2002:a7b:c050:0:b0:3fc:10:b25b with SMTP id
+ u16-20020a7bc050000000b003fc0010b25bmr10117957wmc.21.1689001197963; 
+ Mon, 10 Jul 2023 07:59:57 -0700 (PDT)
+Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
+ [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
+ f21-20020a7bcc15000000b003fbb06af219sm75121wmh.32.2023.07.10.07.59.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 07:59:57 -0700 (PDT)
+Message-ID: <799c0116-0041-d489-c790-0038bc0a5f1d@linaro.org>
+Date: Mon, 10 Jul 2023 16:59:54 +0200
 MIME-Version: 1.0
-References: <20230710144348.239441-1-thuth@redhat.com>
-In-Reply-To: <20230710144348.239441-1-thuth@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 10 Jul 2023 15:54:47 +0100
-Message-ID: <CAFEAcA_QTRJwtQxh1FRHtwjSARAptF-j1ZeyGen8xBfrhq7tww@mail.gmail.com>
-Subject: Re: [PATCH] tests/avocado: Disable the test_sbsaref_edk2_firmware in
- the gitlab-CI
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Leif Lindholm <quic_llindhol@quicinc.com>, 
- Radoslaw Biernacki <rad@semihalf.com>, Beraldo Leal <bleal@redhat.com>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH] target/mips: enable GINVx support for I6400 and I6500
+Content-Language: en-US
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Marcin Nowakowski <marcin.nowakowski@fungible.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+References: <20230630072806.3093704-1-marcin.nowakowski@fungible.com>
+ <ee19d8a2-733a-23c9-cce9-db8b8dc0e253@flygoat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <ee19d8a2-733a-23c9-cce9-db8b8dc0e253@flygoat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,30 +96,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 10 Jul 2023 at 15:43, Thomas Huth <thuth@redhat.com> wrote:
->
-> The test fails occasionally, see e.g.:
->
->  https://gitlab.com/thuth/qemu/-/jobs/4196177756#L489
->  https://gitlab.com/thuth/qemu/-/jobs/4623296271#L290
->
-> Disable it at least in the gitlab-CI to avoid failing CI
-> pipelines due to this problem.
+On 10/7/23 14:58, Jiaxun Yang wrote:
+> 
+> 
+> 在 2023/6/30 15:28, Marcin Nowakowski 写道:
+>> GINVI and GINVT operations are supported on MIPS I6400 and I6500 cores,
+>> so indicate that properly in CP0.Config5 register bits [16:15].
+>>
+>> Signed-off-by: Marcin Nowakowski <marcin.nowakowski@fungible.com>
+> 
+> VZ is unimplemented in TCG so perhaps we should leave them as not 
+> supported?
 
-I'm not really a fan of disabling flaky tests only in the
-gitlab CI. It means that plain "make check-avocado"
-is useless to the average developer because it can
-have all manner of broken or flaky tests in it that
-never get tested by our CI. In fact I've had to develop
-the habit of running "GITLAB_CI=1 make check-avocado"
-so I can run the CI tests that we think work and not
-get distracted by intermittent failures.
-
-If we want "disable this test except for if you're
-trying to investigate why it's flaky" then we should
-have the test be opt-in, not opt-out, the same way
-we do with QEMU_TEST_FLAKY_TESTS in the qtests.
-
-thanks
--- PMM
+GINVI and GINVT instr were implemented in commit 99029be1c2
+("target/mips: Add implementation of GINVT instruction").
 
