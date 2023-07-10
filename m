@@ -2,96 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7921174D4FE
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61DD874D532
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:20:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIpjc-0006Ad-Q5; Mon, 10 Jul 2023 08:11:21 -0400
+	id 1qIpoH-0000ks-84; Mon, 10 Jul 2023 08:16:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpjS-00063H-Hu
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:11:11 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpo0-0000j9-Sw
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:15:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpjQ-0001rV-0C
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:11:09 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpny-0003MM-UX
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:15:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688991065;
+ s=mimecast20190719; t=1688991349;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZhAlYnIhAjvuhmMm+cYmQWN65YRA3JYBO+OgLBOM78c=;
- b=JPxoUnWiPcL+aSyX7FhvVXjIucTXdZvHTyfYfKUqmZ1MYs5VISBg4M/r4UGfl/6lklnHJG
- 1uaAyB77OVXChZCuETmBsrXJrJi/FazQIzgay9LPUqdyQQB7n0FJh/CA36D9K92gboksvd
- NBJYcDlqOeKZrfncRvkR4ae9vpIiUk0=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-379-tMEIEPwUM0q8CYw277i4Mw-1; Mon, 10 Jul 2023 08:11:03 -0400
-X-MC-Unique: tMEIEPwUM0q8CYw277i4Mw-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7659cb9c3b3so405532885a.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:11:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688991063; x=1691583063;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZhAlYnIhAjvuhmMm+cYmQWN65YRA3JYBO+OgLBOM78c=;
- b=g2/VtZCzA9m7SxTPQEeXvy78tIsgzddh9OsFtQDVfuzXgyVP2r3zLJ6dmyWmg428hl
- xHo5xiLnvaF5r4nQe4b7Mc1O75jHZbQLbyer1qpxsI64WwXtQK9sNz/7WOocTlNVJzfP
- 3Kv6GsS9g4kQ9+Yf9QqAoXh2mkiBIdgPPiVpyeiOCr8Ye0nLd17quthUo9Td5dAsAZ/T
- OVGkbVhfEeJAhDTkZvrdMJ69pZsUE9x/TFjhDqLHgnl809rtNV0fO2fQA1jQJy0BdE5T
- K+k7uFzMJuRgb3K2YWBzsw9+gtaaRNI14KZD9cqS6fPlZ0x9Abq1pvugZb7V4YyXLtC0
- 8pGQ==
-X-Gm-Message-State: ABy/qLZoZH+RXCbP13++IWKQa7rtyNEyu2roEuzpr2+BqQEXJHi0QOVG
- m0Mo0W8n1L/Vd5YsHQ0GGvYnuKM94h9BneGKpX6aiIAJ7PSpFSuSY3irWV91C3Uoiv+0Vwl0IcD
- CRNLigzkYCHwEI+o=
-X-Received: by 2002:a37:b605:0:b0:767:4068:1e06 with SMTP id
- g5-20020a37b605000000b0076740681e06mr7404242qkf.78.1688991063460; 
- Mon, 10 Jul 2023 05:11:03 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlETQ6pMmlGsaAQFUimX1hDPE3fkyps3ru3aJYXCRU3vg3Ya2MA3gX2no7l4u1rvtOfKArFqRg==
-X-Received: by 2002:a37:b605:0:b0:767:4068:1e06 with SMTP id
- g5-20020a37b605000000b0076740681e06mr7404220qkf.78.1688991063242; 
- Mon, 10 Jul 2023 05:11:03 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-116.web.vodafone.de.
- [109.43.179.116]) by smtp.gmail.com with ESMTPSA id
- z23-20020ae9c117000000b00765a9f53af0sm4800683qki.128.2023.07.10.05.11.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 05:11:02 -0700 (PDT)
-Message-ID: <f9442f36-fe47-2dfd-2bb6-ae9c007a7511@redhat.com>
-Date: Mon, 10 Jul 2023 14:10:58 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 03/18] tests/avocado: Add set of boot tests on SBSA-ref
-Content-Language: en-US
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ZzGcH2DlRT60QJX3473t7xIfrHIRxW7+i+vLH1zXjVo=;
+ b=Mhy/9wN33Bv983DW+DiK8hKmuZmg6ev9GhfmgOPddqeIMiDOv3wCYk99nBOK93mz51aPfT
+ yYOFa9wgxCbpi7q7wmBOgmv246gNCa5n+cmn/SO2NH30G0/W0O6d6KNjw0vEVjmZbYXY8x
+ I9onJOhMr3dLebzEpUHW+tnff29W8MM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-307-D-NoPU_gPG2uP46UJsWVuQ-1; Mon, 10 Jul 2023 08:15:46 -0400
+X-MC-Unique: D-NoPU_gPG2uP46UJsWVuQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 48BE7908301;
+ Mon, 10 Jul 2023 12:15:46 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.192.206])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6FF8DF66BA;
+ Mon, 10 Jul 2023 12:15:45 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-Cc: richard.henderson@linaro.org, Leif Lindholm <quic_llindhol@quicinc.com>,
- Radoslaw Biernacki <rad@semihalf.com>,
- Peter Maydell <peter.maydell@linaro.org>, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, "open list:SBSA-REF" <qemu-arm@nongnu.org>
-References: <20230427154510.1791273-1-alex.bennee@linaro.org>
- <20230427154510.1791273-4-alex.bennee@linaro.org>
- <e61e3522-2cd4-9e81-e74b-2932a53b8da0@redhat.com>
-In-Reply-To: <e61e3522-2cd4-9e81-e74b-2932a53b8da0@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: qemu-devel@nongnu.org,
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 00/21] s390x, qtest and misc patches before the 8.1 soft freeze
+Date: Mon, 10 Jul 2023 14:15:22 +0200
+Message-Id: <20230710121543.197250-1-thuth@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.101, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,46 +74,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/04/2023 12.33, Thomas Huth wrote:
-> On 27/04/2023 17.44, Alex Bennée wrote:
->> From: Philippe Mathieu-Daudé <philmd@linaro.org>
->>
->> This change adds set of boot tests on SBSA-ref machine:
->>
->> 1. boot firmware up to the EDK2 banner
->> 2. boot Alpine Linux
->>
->> Prebuilt flash volumes are included, built using upstream documentation.
->>
->> To unify tests for AArch64/virt and AArch64/sbsa-ref we boot
->> the same Alpine Linux image on both.
->>
->> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Message-Id: <20230323082813.971535-1-marcin.juszkiewicz@linaro.org>
->> Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
->> Message-Id: <20230328171426.14258-1-philmd@linaro.org>
->> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
->> Message-Id: <20230424092249.58552-4-alex.bennee@linaro.org>
-> ...
->> +    def test_sbsaref_edk2_firmware(self):
->> +        """
->> +        :avocado: tags=cpu:cortex-a57
->> +        """
-> 
-> This is failing for me in the gitlab-CI:
-> 
->   https://gitlab.com/thuth/qemu/-/jobs/4196177756#L489
-> 
-> Could you please have a look?
+The following changes since commit 2ff49e96accc8fd9a38e9abd16f0cfa0adab1605:
 
-This test is still failing for me occasionally:
+  Merge tag 'pull-tcg-20230709' of https://gitlab.com/rth7680/qemu into staging (2023-07-09 15:01:43 +0100)
 
-  https://gitlab.com/thuth/qemu/-/jobs/4623296271#L290
+are available in the Git repository at:
 
-If nobody has a clue how to make it more stable, I'd suggest that we disable 
-it in the gitlab-CI ?
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2023-07-10
 
-  Thomas
+for you to fetch changes up to bd9af678f38be69a7d8eb9c897a6d73bf8229262:
+
+  docs/devel: Fix coding style in style.rst (2023-07-10 12:57:31 +0200)
+
+----------------------------------------------------------------
+* s390x instruction emulation fixes and corresponding TCG tests
+* Extend the readconfig qtest
+* Introduce "-run-with chroot=..." and deprecate the old "-chroot" option
+* Speed up migration tests
+* Fix coding style in the coding style document
+
+----------------------------------------------------------------
+Daniel P. Berrangé (1):
+      tests/qtest: massively speed up migration-test
+
+Ilya Leoshkevich (13):
+      linux-user: elfload: Add more initial s390x PSW bits
+      target/s390x: Fix EPSW CC reporting
+      target/s390x: Fix MDEB and MDEBR
+      target/s390x: Fix MVCRL with a large value in R0
+      target/s390x: Fix LRA overwriting the top 32 bits on DAT error
+      target/s390x: Fix LRA when DAT is off
+      target/s390x: Fix relative long instructions with large offsets
+      tests/tcg/s390x: Test EPSW
+      tests/tcg/s390x: Test LARL with a large offset
+      tests/tcg/s390x: Test LRA
+      tests/tcg/s390x: Test MDEB and MDEBR
+      tests/tcg/s390x: Test MVCRL with a large value in R0
+      tests/tcg/s390x: Fix test-svc with clang
+
+Philippe Mathieu-Daudé (1):
+      hw/s390x: Move KVM specific PV from hw/ to target/s390x/kvm/
+
+Thomas Huth (6):
+      tests/qtest/readconfig-test: Allow testing for arbitrary memory sizes
+      tests/qtest: Move mkimg() and have_qemu_img() from libqos to libqtest
+      tests/qtest/readconfig: Test the docs/config/q35-*.cfg files
+      os-posix: Allow 'chroot' via '-run-with' and deprecate the old '-chroot' option
+      meson.build: Skip C++ detection unless we're targeting Windows
+      docs/devel: Fix coding style in style.rst
+
+ MAINTAINERS                                 |   2 -
+ docs/about/deprecated.rst                   |   5 +
+ docs/devel/style.rst                        |   9 +-
+ meson.build                                 |   2 +-
+ target/s390x/helper.h                       |   2 +-
+ {include/hw/s390x => target/s390x/kvm}/pv.h |   0
+ tests/qtest/libqos/libqos.h                 |   2 -
+ tests/qtest/libqtest.h                      |  20 +++
+ target/s390x/tcg/insn-data.h.inc            |   4 +-
+ hw/s390x/ipl.c                              |   2 +-
+ hw/s390x/s390-pci-kvm.c                     |   2 +-
+ hw/s390x/s390-virtio-ccw.c                  |   2 +-
+ hw/s390x/tod-kvm.c                          |   2 +-
+ linux-user/elfload.c                        |   4 +-
+ os-posix.c                                  |  35 ++++-
+ target/s390x/arch_dump.c                    |   2 +-
+ target/s390x/cpu-sysemu.c                   |   2 +-
+ target/s390x/cpu_features.c                 |   2 +-
+ target/s390x/cpu_models.c                   |   2 +-
+ target/s390x/diag.c                         |   2 +-
+ target/s390x/helper.c                       |   2 +-
+ target/s390x/ioinst.c                       |   2 +-
+ target/s390x/kvm/kvm.c                      |   2 +-
+ {hw/s390x => target/s390x/kvm}/pv.c         |   2 +-
+ target/s390x/mmu_helper.c                   |   2 +-
+ target/s390x/tcg/fpu_helper.c               |   3 +-
+ target/s390x/tcg/mem_helper.c               |   5 +-
+ target/s390x/tcg/translate.c                |   8 +-
+ tests/qtest/libqos/libqos.c                 |  49 +------
+ tests/qtest/libqtest.c                      |  52 +++++++
+ tests/qtest/migration-test.c                | 143 ++++++++++++++++---
+ tests/qtest/readconfig-test.c               | 204 +++++++++++++++++++++++++++-
+ tests/tcg/s390x/epsw.c                      |  23 ++++
+ tests/tcg/s390x/larl.c                      |  21 +++
+ tests/tcg/s390x/mdeb.c                      |  30 ++++
+ tests/tcg/s390x/mie3-mvcrl.c                |  46 +++++--
+ util/async-teardown.c                       |  21 ---
+ hw/s390x/meson.build                        |   1 -
+ qemu-options.hx                             |  18 ++-
+ target/s390x/kvm/meson.build                |   1 +
+ tests/tcg/s390x/Makefile.softmmu-target     |   1 +
+ tests/tcg/s390x/Makefile.target             |   3 +
+ tests/tcg/s390x/gdbstub/test-svc.py         |   2 +-
+ tests/tcg/s390x/hello-s390x-asm.S           |   4 +-
+ tests/tcg/s390x/lra.S                       |  19 +++
+ 45 files changed, 626 insertions(+), 141 deletions(-)
+ rename {include/hw/s390x => target/s390x/kvm}/pv.h (100%)
+ rename {hw/s390x => target/s390x/kvm}/pv.c (99%)
+ create mode 100644 tests/tcg/s390x/epsw.c
+ create mode 100644 tests/tcg/s390x/larl.c
+ create mode 100644 tests/tcg/s390x/mdeb.c
+ create mode 100644 tests/tcg/s390x/lra.S
 
 
