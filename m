@@ -2,45 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C79474CF11
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA0A74CF13
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:51:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIleF-0006T3-2I; Mon, 10 Jul 2023 03:49:31 -0400
+	id 1qIleK-0006li-Qs; Mon, 10 Jul 2023 03:49:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=Zxd8=C4=redhat.com=clg@ozlabs.org>)
- id 1qIldy-0006NH-Ms
+ id 1qIldz-0006NW-Ov
  for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:49:20 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=Zxd8=C4=redhat.com=clg@ozlabs.org>)
- id 1qIldw-0006vN-RD
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:49:14 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qzx3B6BR9z4wyB;
- Mon, 10 Jul 2023 17:49:10 +1000 (AEST)
+ id 1qIldy-0006us-5p
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:49:15 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qzx3F3ql4z4wxx;
+ Mon, 10 Jul 2023 17:49:13 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qzx386314z4wy9;
- Mon, 10 Jul 2023 17:49:08 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qzx3C2cd2z4wy9;
+ Mon, 10 Jul 2023 17:49:11 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Alex Williamson <alex.williamson@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Joao Martins <joao.m.martins@oracle.com>
-Subject: [PULL 06/11] vfio/migration: Return bool type for
- vfio_migration_realize()
-Date: Mon, 10 Jul 2023 09:48:43 +0200
-Message-ID: <20230710074848.456453-7-clg@redhat.com>
+ Avihai Horon <avihaih@nvidia.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 07/11] vfio: Fix null pointer dereference bug in
+ vfio_bars_finalize()
+Date: Mon, 10 Jul 2023 09:48:44 +0200
+Message-ID: <20230710074848.456453-8-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230710074848.456453-1-clg@redhat.com>
 References: <20230710074848.456453-1-clg@redhat.com>
@@ -70,104 +69,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+From: Avihai Horon <avihaih@nvidia.com>
 
-Make vfio_migration_realize() adhere to the convention of other realize()
-callbacks(like qdev_realize) by returning bool instead of int.
+vfio_realize() has the following flow:
+1. vfio_bars_prepare() -- sets VFIOBAR->size.
+2. msix_early_setup().
+3. vfio_bars_register() -- allocates VFIOBAR->mr.
 
-Suggested-by: Cédric Le Goater <clg@redhat.com>
-Suggested-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+After vfio_bars_prepare() is called msix_early_setup() can fail. If it
+does fail, vfio_bars_register() is never called and VFIOBAR->mr is not
+allocated.
+
+In this case, vfio_bars_finalize() is called as part of the error flow
+to free the bars' resources. However, vfio_bars_finalize() calls
+object_unparent() for VFIOBAR->mr after checking only VFIOBAR->size, and
+thus we get a null pointer dereference.
+
+Fix it by checking VFIOBAR->mr in vfio_bars_finalize().
+
+Fixes: 89d5202edc50 ("vfio/pci: Allow relocating MSI-X MMIO")
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h |  2 +-
- hw/vfio/migration.c           | 15 ++++++++++-----
- hw/vfio/pci.c                 |  3 +--
- 3 files changed, 12 insertions(+), 8 deletions(-)
+ hw/vfio/pci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 45167c8a8a54..da43d273524e 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -252,7 +252,7 @@ int vfio_spapr_create_window(VFIOContainer *container,
- int vfio_spapr_remove_window(VFIOContainer *container,
-                              hwaddr offset_within_address_space);
- 
--int vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
-+bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp);
- void vfio_migration_exit(VFIODevice *vbasedev);
- 
- #endif /* HW_VFIO_VFIO_COMMON_H */
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index e3954570c853..2674f4bc472d 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -846,7 +846,12 @@ void vfio_reset_bytes_transferred(void)
-     bytes_transferred = 0;
- }
- 
--int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-+/*
-+ * Return true when either migration initialized or blocker registered.
-+ * Currently only return false when adding blocker fails which will
-+ * de-register vfio device.
-+ */
-+bool vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
- {
-     Error *err = NULL;
-     int ret;
-@@ -854,7 +859,7 @@ int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-     if (vbasedev->enable_migration == ON_OFF_AUTO_OFF) {
-         error_setg(&err, "%s: Migration is disabled for VFIO device",
-                    vbasedev->name);
--        return vfio_block_migration(vbasedev, err, errp);
-+        return !vfio_block_migration(vbasedev, err, errp);
-     }
- 
-     ret = vfio_migration_init(vbasedev);
-@@ -869,7 +874,7 @@ int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-                        vbasedev->name, ret, strerror(-ret));
-         }
- 
--        return vfio_block_migration(vbasedev, err, errp);
-+        return !vfio_block_migration(vbasedev, err, errp);
-     }
- 
-     if (!vbasedev->dirty_pages_supported) {
-@@ -896,7 +901,7 @@ int vfio_migration_realize(VFIODevice *vbasedev, Error **errp)
-     }
- 
-     trace_vfio_migration_realize(vbasedev->name);
--    return 0;
-+    return true;
- 
- add_blocker:
-     ret = vfio_block_migration(vbasedev, err, errp);
-@@ -904,7 +909,7 @@ out_deinit:
-     if (ret) {
-         vfio_migration_deinit(vbasedev);
-     }
--    return ret;
-+    return !ret;
- }
- 
- void vfio_migration_exit(VFIODevice *vbasedev)
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index eefd4ec330d9..68dd99283620 100644
+index 68dd99283620..c89fdf7ae6c2 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -3207,8 +3207,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-     }
+@@ -1752,9 +1752,11 @@ static void vfio_bars_finalize(VFIOPCIDevice *vdev)
  
-     if (!pdev->failover_pair_id) {
--        ret = vfio_migration_realize(vbasedev, errp);
--        if (ret) {
-+        if (!vfio_migration_realize(vbasedev, errp)) {
-             goto out_deregister;
+         vfio_bar_quirk_finalize(vdev, i);
+         vfio_region_finalize(&bar->region);
+-        if (bar->size) {
++        if (bar->mr) {
++            assert(bar->size);
+             object_unparent(OBJECT(bar->mr));
+             g_free(bar->mr);
++            bar->mr = NULL;
          }
      }
+ 
 -- 
 2.41.0
 
