@@ -2,92 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DB974D136
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 11:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0B774D139
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 11:19:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIn0l-0003T9-Uu; Mon, 10 Jul 2023 05:16:51 -0400
+	id 1qIn2T-0005JB-6a; Mon, 10 Jul 2023 05:18:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIn0X-0003CD-M5
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:16:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIn0V-000508-UM
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:16:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688980593;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SLxwdo8XpYp4rc3mCTHP8a6srwBZVAWHNBpDZ8jOUTo=;
- b=Rrs13EeUHOBNATW0pkI+5uLqETJAU61hnDG5OW79wJb9fR8vgMQHRxybzGJGSQLLXs5bzr
- SV+7KN251WZyL4Va0+6+cN8XyDEoS2NZ0CIwBsQ6UM6kKqi2LMr4ZwPAd2dmoq2viifWzL
- DGJTXKtE4We2BXvTb/hsM0Xw/fX0pUM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-283-ihYqOoGTPpK1R3ygz7ewKA-1; Mon, 10 Jul 2023 05:16:32 -0400
-X-MC-Unique: ihYqOoGTPpK1R3ygz7ewKA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-3143ac4a562so2355190f8f.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 02:16:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qIn2L-0005I2-SN
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:18:30 -0400
+Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qIn2I-0005xI-M3
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 05:18:29 -0400
+Received: by mail-qt1-x834.google.com with SMTP id
+ d75a77b69052e-40388dc19ecso18783041cf.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 02:18:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1688980702; x=1691572702;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=PK8jGb+DgT9n49EZtX9PUkDR6Ko1AxCJH7U6KUJV4J4=;
+ b=jxjOLRYLoEdk7oJQxkQFEtZ/HvpQEND+0JKFk0xYoitZnuR/I8z3BNGtVIM3HK/IyN
+ lAuBflV69580m0WbvO8z+FKxXuV1kdIcmbXn5UQ/DOFJ6JjPagIuTuVOkaY0iIpNJpm9
+ o2SDaLXlDvQFKIcCRHphOYCtlon22d5aQVflqDFumBsQBOHz0CoDskMbPxk5bopdNQkF
+ Y/csxWFOftG76izd5+gwpAV41zYvmaaGAD5SR6wJwhWxFhQ3p/nxTPTpxfJhMRg+xfGX
+ +2X4S+61pIVyPp240iEPhWiAN6GxzpDLcoFB9bIekxx6ch/27p/VOqD/iaXYaNYqztEk
+ hapQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688980590; x=1691572590;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SLxwdo8XpYp4rc3mCTHP8a6srwBZVAWHNBpDZ8jOUTo=;
- b=FMDndvHtZJGt0N41OCmTxjXNqQFfWL7a+PLSHaD3Vdk38Vkr0ipi30U4Gt3uAgmfZe
- ASQTE8PSYX3JGkhIivlphlbUvFRK/hId5mNrVMYKLeqSuphQEU5EoNb3NsGK/WedpwK3
- wZ2hgRXyPvUtz4Adu/IceZPkQnljuGl3DFcC1nx2jiFDpqvQjUpSUfKfA5ZLAVLhqdo6
- mlYMIbOVukNLW/5dWDTV7M9Cj3YJFXwvpwVYNUewHf5lBIrwsYzV3HmZlYf9q7jUqpO9
- HHMl2ehk8/zq3UVRP8sKOdER1I1KVHU2jmAEwNaKsy583BtodnOgEmVYsRaQ2YnmT6jA
- NPtw==
-X-Gm-Message-State: ABy/qLaYx1u9VTUssgeqZDNpC3UxkUwwqwIKzY7JZnjuAq0ozbWCbYDq
- kT4Ff4EpSI4se8cd9V84v4T63pHbcmTmEgyacvEnQsAiIHFNjyJsSe8LnfCN48jEBQ71bsgjtio
- JsXr+RN+6+eQHZKM=
-X-Received: by 2002:a5d:6ad0:0:b0:313:fdbb:422 with SMTP id
- u16-20020a5d6ad0000000b00313fdbb0422mr12257377wrw.43.1688980589934; 
- Mon, 10 Jul 2023 02:16:29 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEOomDGr8UYaTg/CbkXPmOHzLm5K8Mgy1S8H0LsME11vOkU0bfkM8aU8mzP2kSpZgjmD6KxuQ==
-X-Received: by 2002:a5d:6ad0:0:b0:313:fdbb:422 with SMTP id
- u16-20020a5d6ad0000000b00313fdbb0422mr12257351wrw.43.1688980589465; 
- Mon, 10 Jul 2023 02:16:29 -0700 (PDT)
-Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- n2-20020a5d6b82000000b0030ae901bc54sm11147945wrx.62.2023.07.10.02.16.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 02:16:28 -0700 (PDT)
-Date: Mon, 10 Jul 2023 05:16:25 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- qemu-devel <qemu-devel@nongnu.org>, qemu-block@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>
-Subject: Re: [PATCH v5 2/2] pcie: Specify 0 for ARI next function numbers
-Message-ID: <20230710051539-mutt-send-email-mst@kernel.org>
-References: <20230705022421.13115-1-akihiko.odaki@daynix.com>
- <20230705022421.13115-3-akihiko.odaki@daynix.com>
- <E8241AB3-F645-4697-A5AC-9B6BC897B432@redhat.com>
+ d=1e100.net; s=20221208; t=1688980702; x=1691572702;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PK8jGb+DgT9n49EZtX9PUkDR6Ko1AxCJH7U6KUJV4J4=;
+ b=TdTMaY67+BDQJ4u/0Z6bqax3/DkW6hGzZ/sJh4X6SwWk8Ez5TcPiIywAb6ua8ydTsK
+ 0Lu5NB++bK5HW5AR/MSFeqUoB0z2yli0fbBvCwSbLtXZ3VQCUuW1YkflZzBoqxqqT0t3
+ eXgCcqiNjnaNSbhlltauWNAVL548sZa+aOepGCREuKp1Jp0elSvTRHOaXdGCi034WWYp
+ sug+Nb9w2zcVaztc0inAampqgfFJLchA3t38aXDbQskE+B2Hwl/jXoJVtmoax8dF0tiW
+ 6tXuoYox4TW+7IQwHNk6mJi/ube7q3cGYijKwq++0Ynlpe8Dwbe8RxOj/8p53KvyW6Ps
+ BOHA==
+X-Gm-Message-State: ABy/qLY/Cpr6LVvkYUEzAA3xSTqP0FmQN7HjFwPWp7QfNUz7FjZk2l3j
+ rWwFf9bBVeyKaHCKd0mwRHRAGpnLXAvJ8OkTQ/BZT8ALSKc=
+X-Google-Smtp-Source: APBJJlE8m5vZb2kEFQaAzyJcRG5Mztdkibf9otIDL8xbY0hgufSdvzLzcHYkK0isNOqwCs1nNHcDkCQGFbc4fv4mvgs=
+X-Received: by 2002:a05:622a:1b9e:b0:3f5:7cfa:f5e9 with SMTP id
+ bp30-20020a05622a1b9e00b003f57cfaf5e9mr12941272qtb.13.1688980702628; Mon, 10
+ Jul 2023 02:18:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E8241AB3-F645-4697-A5AC-9B6BC897B432@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230706083035.623802-1-kkostiuk@redhat.com>
+ <20230706083035.623802-4-kkostiuk@redhat.com>
+In-Reply-To: <20230706083035.623802-4-kkostiuk@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 10 Jul 2023 13:18:10 +0400
+Message-ID: <CAJ+F1C+p1F7SewqxGRTqddZPA=W56bxtJPrGkg8j7QSZDpRg8w@mail.gmail.com>
+Subject: Re: [PATCH 3/3] qga: Add tests for --allow-rpcs option
+To: Konstantin Kostiuk <kkostiuk@redhat.com>
+Cc: qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>
+Content-Type: multipart/alternative; boundary="000000000000d0136e06001e76db"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x834.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,95 +85,174 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 10, 2023 at 01:21:50PM +0530, Ani Sinha wrote:
-> 
-> 
-> > On 05-Jul-2023, at 7:54 AM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
-> > 
-> > The current implementers of ARI are all SR-IOV devices. The ARI next
-> > function number field is undefined for VF according to PCI Express Base
-> > Specification Revision 5.0 Version 1.0 section 9.3.7.7. The PF should
-> > end the linked list formed with the field by specifying 0 according to
-> > section 7.8.7.2.
-> 
-> Section 7.8.7.2 ARI Capability Register (Offset 04h), I see only this
-> 
-> Next Function Number - This field indicates the Function Number of the next higher numbered Function in the Device, or 00h if there are no higher numbered Functions. Function 0 starts this linked list of Functions.
-> 
-> I do not see anything specifically for PF. What am I missing?
+--000000000000d0136e06001e76db
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is *only* for PFs. There's separate text explaining that
-VFs use NumVFs VFOffset and VFStride.
+On Thu, Jul 6, 2023 at 12:32=E2=80=AFPM Konstantin Kostiuk <kkostiuk@redhat=
+.com>
+wrote:
+
+> Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+>
 
 
-> > 
-> > For migration, the field will keep having 1 as its value on the old
-> > virt models.
-> > 
-> > Fixes: 2503461691 ("pcie: Add some SR/IOV API documentation in docs/pcie_sriov.txt")
-> > Fixes: 44c2c09488 ("hw/nvme: Add support for SR-IOV")
-> > Fixes: 3a977deebe ("Intrdocue igb device emulation")
-> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > ---
-> > include/hw/pci/pci.h | 2 ++
-> > hw/core/machine.c    | 1 +
-> > hw/pci/pci.c         | 2 ++
-> > hw/pci/pcie.c        | 2 +-
-> > 4 files changed, 6 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-> > index e6d0574a29..9c5b5eb206 100644
-> > --- a/include/hw/pci/pci.h
-> > +++ b/include/hw/pci/pci.h
-> > @@ -209,6 +209,8 @@ enum {
-> >     QEMU_PCIE_CAP_CXL = (1 << QEMU_PCIE_CXL_BITNR),
-> > #define QEMU_PCIE_ERR_UNC_MASK_BITNR 11
-> >     QEMU_PCIE_ERR_UNC_MASK = (1 << QEMU_PCIE_ERR_UNC_MASK_BITNR),
-> > +#define QEMU_PCIE_ARI_NEXTFN_1_BITNR 12
-> > +    QEMU_PCIE_ARI_NEXTFN_1 = (1 << QEMU_PCIE_ARI_NEXTFN_1_BITNR),
-> > };
-> > 
-> > typedef struct PCIINTxRoute {
-> > diff --git a/hw/core/machine.c b/hw/core/machine.c
-> > index 46f8f9a2b0..f0d35c6401 100644
-> > --- a/hw/core/machine.c
-> > +++ b/hw/core/machine.c
-> > @@ -41,6 +41,7 @@
-> > 
-> > GlobalProperty hw_compat_8_0[] = {
-> >     { "migration", "multifd-flush-after-each-section", "on"},
-> > +    { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
-> > };
-> > const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
-> > 
-> > diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> > index e2eb4c3b4a..45a9bc0da8 100644
-> > --- a/hw/pci/pci.c
-> > +++ b/hw/pci/pci.c
-> > @@ -82,6 +82,8 @@ static Property pci_props[] = {
-> >     DEFINE_PROP_UINT32("acpi-index",  PCIDevice, acpi_index, 0),
-> >     DEFINE_PROP_BIT("x-pcie-err-unc-mask", PCIDevice, cap_present,
-> >                     QEMU_PCIE_ERR_UNC_MASK_BITNR, true),
-> > +    DEFINE_PROP_BIT("x-pcie-ari-nextfn-1", PCIDevice, cap_present,
-> > +                    QEMU_PCIE_ARI_NEXTFN_1_BITNR, false),
-> >     DEFINE_PROP_END_OF_LIST()
-> > };
-> > 
-> > diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
-> > index 9a3f6430e8..cf09e03a10 100644
-> > --- a/hw/pci/pcie.c
-> > +++ b/hw/pci/pcie.c
-> > @@ -1030,7 +1030,7 @@ void pcie_sync_bridge_lnk(PCIDevice *bridge_dev)
-> > /* ARI */
-> > void pcie_ari_init(PCIDevice *dev, uint16_t offset)
-> > {
-> > -    uint16_t nextfn = 1;
-> > +    uint16_t nextfn = dev->cap_present & QEMU_PCIE_ARI_NEXTFN_1 ? 1 : 0;
-> > 
-> >     pcie_add_capability(dev, PCI_EXT_CAP_ID_ARI, PCI_ARI_VER,
-> >                         offset, PCI_ARI_SIZEOF);
-> > -- 
-> > 2.41.0
-> > 
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
+
+> ---
+>  tests/unit/test-qga.c | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+>
+> diff --git a/tests/unit/test-qga.c b/tests/unit/test-qga.c
+> index 360b4cab23..671e83cb86 100644
+> --- a/tests/unit/test-qga.c
+> +++ b/tests/unit/test-qga.c
+> @@ -665,6 +665,36 @@ static void test_qga_blockedrpcs(gconstpointer data)
+>      fixture_tear_down(&fix, NULL);
+>  }
+>
+> +static void test_qga_allowedrpcs(gconstpointer data)
+> +{
+> +    TestFixture fix;
+> +    QDict *ret, *error;
+> +    const gchar *class, *desc;
+> +
+> +    fixture_setup(&fix, "-a guest-ping,guest-get-time", NULL);
+> +
+> +    /* check allowed RPCs */
+> +    ret =3D qmp_fd(fix.fd, "{'execute': 'guest-ping'}");
+> +    qmp_assert_no_error(ret);
+> +    qobject_unref(ret);
+> +
+> +    ret =3D qmp_fd(fix.fd, "{'execute': 'guest-get-time'}");
+> +    qmp_assert_no_error(ret);
+> +    qobject_unref(ret);
+> +
+> +    /* check something else */
+> +    ret =3D qmp_fd(fix.fd, "{'execute': 'guest-get-fsinfo'}");
+> +    g_assert_nonnull(ret);
+> +    error =3D qdict_get_qdict(ret, "error");
+> +    class =3D qdict_get_try_str(error, "class");
+> +    desc =3D qdict_get_try_str(error, "desc");
+> +    g_assert_cmpstr(class, =3D=3D, "CommandNotFound");
+> +    g_assert_nonnull(g_strstr_len(desc, -1, "has been disabled"));
+> +    qobject_unref(ret);
+> +
+> +    fixture_tear_down(&fix, NULL);
+> +}
+> +
+>  static void test_qga_config(gconstpointer data)
+>  {
+>      GError *error =3D NULL;
+> @@ -1090,6 +1120,7 @@ int main(int argc, char **argv)
+>                           test_qga_fsfreeze_status);
+>
+>      g_test_add_data_func("/qga/blockedrpcs", NULL, test_qga_blockedrpcs)=
+;
+> +    g_test_add_data_func("/qga/allowedrpcs", NULL, test_qga_allowedrpcs)=
+;
+>      g_test_add_data_func("/qga/config", NULL, test_qga_config);
+>      g_test_add_data_func("/qga/guest-exec", &fix, test_qga_guest_exec);
+>      g_test_add_data_func("/qga/guest-exec-separated", &fix,
+> --
+> 2.34.1
+>
+>
+>
+
+--=20
+Marc-Andr=C3=A9 Lureau
+
+--000000000000d0136e06001e76db
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jul 6, 2023 at 12:32=E2=80=AF=
+PM Konstantin Kostiuk &lt;<a href=3D"mailto:kkostiuk@redhat.com">kkostiuk@r=
+edhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">Signed-off-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkostiuk=
+@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;<br></blockquote>=
+<div><br></div><div><br></div><div><div>Reviewed-by: Marc-Andr=C3=A9 Lureau=
+ &lt;<a href=3D"mailto:marcandre.lureau@redhat.com">marcandre.lureau@redhat=
+.com</a>&gt;</div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"ma=
+rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
+1ex">
+---<br>
+=C2=A0tests/unit/test-qga.c | 31 +++++++++++++++++++++++++++++++<br>
+=C2=A01 file changed, 31 insertions(+)<br>
+<br>
+diff --git a/tests/unit/test-qga.c b/tests/unit/test-qga.c<br>
+index 360b4cab23..671e83cb86 100644<br>
+--- a/tests/unit/test-qga.c<br>
++++ b/tests/unit/test-qga.c<br>
+@@ -665,6 +665,36 @@ static void test_qga_blockedrpcs(gconstpointer data)<b=
+r>
+=C2=A0 =C2=A0 =C2=A0fixture_tear_down(&amp;fix, NULL);<br>
+=C2=A0}<br>
+<br>
++static void test_qga_allowedrpcs(gconstpointer data)<br>
++{<br>
++=C2=A0 =C2=A0 TestFixture fix;<br>
++=C2=A0 =C2=A0 QDict *ret, *error;<br>
++=C2=A0 =C2=A0 const gchar *class, *desc;<br>
++<br>
++=C2=A0 =C2=A0 fixture_setup(&amp;fix, &quot;-a guest-ping,guest-get-time&q=
+uot;, NULL);<br>
++<br>
++=C2=A0 =C2=A0 /* check allowed RPCs */<br>
++=C2=A0 =C2=A0 ret =3D qmp_fd(fix.fd, &quot;{&#39;execute&#39;: &#39;guest-=
+ping&#39;}&quot;);<br>
++=C2=A0 =C2=A0 qmp_assert_no_error(ret);<br>
++=C2=A0 =C2=A0 qobject_unref(ret);<br>
++<br>
++=C2=A0 =C2=A0 ret =3D qmp_fd(fix.fd, &quot;{&#39;execute&#39;: &#39;guest-=
+get-time&#39;}&quot;);<br>
++=C2=A0 =C2=A0 qmp_assert_no_error(ret);<br>
++=C2=A0 =C2=A0 qobject_unref(ret);<br>
++<br>
++=C2=A0 =C2=A0 /* check something else */<br>
++=C2=A0 =C2=A0 ret =3D qmp_fd(fix.fd, &quot;{&#39;execute&#39;: &#39;guest-=
+get-fsinfo&#39;}&quot;);<br>
++=C2=A0 =C2=A0 g_assert_nonnull(ret);<br>
++=C2=A0 =C2=A0 error =3D qdict_get_qdict(ret, &quot;error&quot;);<br>
++=C2=A0 =C2=A0 class =3D qdict_get_try_str(error, &quot;class&quot;);<br>
++=C2=A0 =C2=A0 desc =3D qdict_get_try_str(error, &quot;desc&quot;);<br>
++=C2=A0 =C2=A0 g_assert_cmpstr(class, =3D=3D, &quot;CommandNotFound&quot;);=
+<br>
++=C2=A0 =C2=A0 g_assert_nonnull(g_strstr_len(desc, -1, &quot;has been disab=
+led&quot;));<br>
++=C2=A0 =C2=A0 qobject_unref(ret);<br>
++<br>
++=C2=A0 =C2=A0 fixture_tear_down(&amp;fix, NULL);<br>
++}<br>
++<br>
+=C2=A0static void test_qga_config(gconstpointer data)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0GError *error =3D NULL;<br>
+@@ -1090,6 +1120,7 @@ int main(int argc, char **argv)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 test_qga_fsfreeze_status);<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0g_test_add_data_func(&quot;/qga/blockedrpcs&quot;, NULL=
+, test_qga_blockedrpcs);<br>
++=C2=A0 =C2=A0 g_test_add_data_func(&quot;/qga/allowedrpcs&quot;, NULL, tes=
+t_qga_allowedrpcs);<br>
+=C2=A0 =C2=A0 =C2=A0g_test_add_data_func(&quot;/qga/config&quot;, NULL, tes=
+t_qga_config);<br>
+=C2=A0 =C2=A0 =C2=A0g_test_add_data_func(&quot;/qga/guest-exec&quot;, &amp;=
+fix, test_qga_guest_exec);<br>
+=C2=A0 =C2=A0 =C2=A0g_test_add_data_func(&quot;/qga/guest-exec-separated&qu=
+ot;, &amp;fix,<br>
+-- <br>
+2.34.1<br>
+<br>
+<br>
+</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
+fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
+=A9 Lureau<br></div></div>
+
+--000000000000d0136e06001e76db--
 
