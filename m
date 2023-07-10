@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F3E74D2D1
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 12:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E351874D2D9
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 12:07:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qInln-0001WM-R2; Mon, 10 Jul 2023 06:05:28 -0400
+	id 1qInn2-0002pI-7R; Mon, 10 Jul 2023 06:06:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qInlm-0001WA-6U
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:05:26 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qInmq-0002m3-Ku
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:06:36 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qInlg-0001yd-RT
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:05:23 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-314172bac25so4089510f8f.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 03:05:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qInmm-0003DA-Lf
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 06:06:31 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3143b88faebso4929873f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 03:06:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1688983518; x=1691575518;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iwQW/gq4UyCSctLiWA3Tu8H5hFtvtJMWJauTX+1QKic=;
- b=nIEtX0DT4DxlLF/T9WiXr0t/fiCC83PfonPEivviNBajMMSFQYtHORSX5DOEYyx1lM
- r9RtwSW5X+mBm1eJg6Ue4phP8Cre9I53ihOumVerO7Ic2PudqGHR3iQ5caXDEKnScOqf
- Z5NK4shvFNzSuVHFRjy/mcY4c5Ahs6skhQWliRkn1AWlqKD3NWsQ8yB/A/MyFI9C0CQt
- USYOsIV8QKLIfo+rRBlBilTBBPNLbwrSZvHMYg+hVCAZE/x+2d1Atsfqijp2gAVnxTsH
- wV88mzAPtB9irh3APc2jzEmGBHoO4heFKihjw+FG19Q5nKOdWZdZ89YQqRyw5RWJSMJ2
- wOwg==
+ d=linaro.org; s=google; t=1688983586; x=1691575586;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=YTzpxqQ3tcZCyathxE1IsYFNxLxQSDOOexQYope2eqs=;
+ b=bym79lapWd+0Zyy8XxJzIP7fyCspr3/J4surZAtKdVEfjRvI8h+xDdBM1CAIj/DJFO
+ Sb0hGY8nEqstkvSVFamiEDSpX7TC6C8o7NWnxqUhCAkgvmBeXrvszGWwbUqf/riob/Or
+ kgUfftwjhIQ9Oo0nAJ0H6N3n9rYychpHp+VucqYbJMZjhqHB/IR8ov9pJhZKuh3aEIdP
+ FAmR1GFp0vNYyj/sTg+08b4fVcvYvj59zeTk6FlO+f9dfXHdW6XTEC6NpCXvDYLE3NDw
+ 54H0HBQmy205V3+JwAJ7AVhO3pbu6kaQrI/33Z3WwQaxsTbyL9L0a1Nb+oJ2ijKLB7sU
+ sGpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688983518; x=1691575518;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iwQW/gq4UyCSctLiWA3Tu8H5hFtvtJMWJauTX+1QKic=;
- b=leoegoYW5DvNDyZrkbVSE2o/ZfW7SmJnr48YFdfQFYKwDym1tB6l3AddhhocyVxKQa
- SxTGyoUVQ/bvfUmkZy9nlBJB480DpV+Y30gNZ3LtFgPNB4XWDYAnqUcBQaRFwBzdSe5y
- qKU14W5SLh0QtXq4MWGC67Mwa3uik3ygALuZeNTMaKSdo912hY0/O2hK3guFfM4Kv+se
- HR/MngvzTTE9xU2HM9KtT+0eOKr4OSSnDuXtJiuR+OiviZntfSDYoC67LHKIbCrIBoTf
- /LzGGhzvKrhq1xLqE6r6O3Bvo4g/gznqUgR/gBGhAheIPU99JYNQP2UtF9lLt2TiCEbR
- J8Qg==
-X-Gm-Message-State: ABy/qLa7Opjici4unT9Vjy/1541inQYaPDCE3vII672kuh5r3TOZZvk3
- qw/02SyQKqNoRuwVwVJeLG9bHQ==
-X-Google-Smtp-Source: APBJJlFgmnuVGGYprIqilGwRnnvZUg9pNcclM9BN/EjJEYLu9++IhtVl+8GSprsDv81PuDCZGHJSBA==
-X-Received: by 2002:a5d:6501:0:b0:313:e456:e64a with SMTP id
- x1-20020a5d6501000000b00313e456e64amr10155707wru.21.1688983518162; 
- Mon, 10 Jul 2023 03:05:18 -0700 (PDT)
-Received: from localhost.localdomain (70.red-88-28-30.dynamicip.rima-tde.net.
+ d=1e100.net; s=20221208; t=1688983586; x=1691575586;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YTzpxqQ3tcZCyathxE1IsYFNxLxQSDOOexQYope2eqs=;
+ b=iMZuaE4/7qmNXhs9F8BaIXQ5+ZvnuOl2q7HT6Kj31yi1A6IFbwdhfme9LpeMDGOHW9
+ VJZXLtj2wmt7SxwZyJ/8PWJ1uRPTCgiR9wA9XnWSTGN95P/WjylmirlRZDDFJd0+S+Dm
+ O9qPSfViWR1qw1TLAqSaSy2dyysk7CqAiMYB0ePfgXzwBmZyVyt4E02oYGQ5j+9aOAkS
+ bNyp8hq9zCakIGAJ4wwzRTES626ikgaK4lg1IJpPZkSsv5Ngd1M5asZ/HgaTaFJp0vAX
+ Drjd19zabCe+EISPJfQJRpF9n+JrH8v7eU8KfatkyoW7sWlQ4Mf62Rf5DhGLhJhIinov
+ rLYg==
+X-Gm-Message-State: ABy/qLaJSYmLjatm1KonD3mP72NO669sdvnrgIVo5WmEx+AZ/yAVCr2Q
+ 6RvI40XqL5wqm2hO9RxsM68kgQ==
+X-Google-Smtp-Source: APBJJlF5l7vEzNxca9/ndr6MlTs2MFlRwegaesLbGp7ScjPWEpibwgsD2uQQ3qTp4pvDor2yDZbfSQ==
+X-Received: by 2002:adf:ee07:0:b0:315:a190:d110 with SMTP id
+ y7-20020adfee07000000b00315a190d110mr329090wrn.28.1688983585966; 
+ Mon, 10 Jul 2023 03:06:25 -0700 (PDT)
+Received: from [192.168.229.175] (70.red-88-28-30.dynamicip.rima-tde.net.
  [88.28.30.70]) by smtp.gmail.com with ESMTPSA id
- f17-20020adfe911000000b0031416362e23sm11295659wrm.3.2023.07.10.03.05.15
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Jul 2023 03:05:17 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: 
-Cc: Thomas Huth <thuth@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- qemu-devel@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 6/6] hw/virtio/meson: Rename softmmu_virtio_ss[] ->
- system_virtio_ss[]
-Date: Mon, 10 Jul 2023 12:05:10 +0200
-Message-Id: <20230710100510.84862-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230710094931.84402-1-philmd@linaro.org>
-References: <20230710094931.84402-1-philmd@linaro.org>
+ o2-20020a5d4742000000b0031434936f0dsm11251899wrs.68.2023.07.10.03.06.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 03:06:25 -0700 (PDT)
+Message-ID: <d12fc73a-1e8d-5234-9b3d-ad2005cff3db@linaro.org>
+Date: Mon, 10 Jul 2023 12:06:19 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH] docs/devel: Fix coding style in style.rst
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: qemu-trivial@nongnu.org, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, Markus Armbruster <armbru@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>
+References: <20230710092638.161625-1-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230710092638.161625-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,71 +95,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Similarly to commit de6cd7599b ("meson: Replace softmmu_ss
--> system_ss"), rename the virtio source set common to all
-system emulation as 'system_virtio_ss[]'. This is clearer
-because softmmu can be used for user emulation.
+On 10/7/23 11:26, Thomas Huth wrote:
+> As defined earlier in this file, the opening curly brace of
+> functions should be placed on a separate line. So we should
+> do it in the examples here, too.
+> 
+> Reported-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+> Fixes: 821f296756 ("docs: document use of automatic cleanup functions in glib")
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   docs/devel/style.rst | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- hw/virtio/meson.build | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index 900864c1be..7a36eabb39 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -1,28 +1,28 @@
--softmmu_virtio_ss = ss.source_set()
--softmmu_virtio_ss.add(files('virtio-bus.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('virtio-pci.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_MMIO', if_true: files('virtio-mmio.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-crypto.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK_COMMON', if_true: files('vhost-vsock-common.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
-+system_virtio_ss = ss.source_set()
-+system_virtio_ss.add(files('virtio-bus.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('virtio-pci.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_MMIO', if_true: files('virtio-mmio.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-crypto.c'))
-+system_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK_COMMON', if_true: files('vhost-vsock-common.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu.c'))
-+system_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
- 
- specific_virtio_ss = ss.source_set()
- specific_virtio_ss.add(files('virtio.c'))
- specific_virtio_ss.add(files('virtio-config-io.c', 'virtio-qmp.c'))
- 
- if have_vhost
--  softmmu_virtio_ss.add(files('vhost.c'))
-+  system_virtio_ss.add(files('vhost.c'))
-   specific_virtio_ss.add(files('vhost-backend.c', 'vhost-iova-tree.c'))
-   if have_vhost_user
-     specific_virtio_ss.add(files('vhost-user.c'))
-   endif
-   if have_vhost_vdpa
--    softmmu_virtio_ss.add(files('vhost-vdpa.c'))
-+    system_virtio_ss.add(files('vhost-vdpa.c'))
-     specific_virtio_ss.add(files('vhost-shadow-virtqueue.c'))
-   endif
- else
--  softmmu_virtio_ss.add(files('vhost-stub.c'))
-+  system_virtio_ss.add(files('vhost-stub.c'))
- endif
- 
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_BALLOON', if_true: files('virtio-balloon.c'))
-@@ -65,7 +65,7 @@ virtio_pci_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev-pci.c'
- 
- specific_virtio_ss.add_all(when: 'CONFIG_VIRTIO_PCI', if_true: virtio_pci_ss)
- 
--system_ss.add_all(when: 'CONFIG_VIRTIO', if_true: softmmu_virtio_ss)
-+system_ss.add_all(when: 'CONFIG_VIRTIO', if_true: system_virtio_ss)
- system_ss.add(when: 'CONFIG_VIRTIO', if_false: files('vhost-stub.c'))
- system_ss.add(when: 'CONFIG_VIRTIO', if_false: files('virtio-stub.c'))
- system_ss.add(when: 'CONFIG_ALL', if_true: files('vhost-stub.c'))
--- 
-2.38.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
