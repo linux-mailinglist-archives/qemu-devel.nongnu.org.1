@@ -2,74 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D2074D910
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 16:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F82A74D91F
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 16:37:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIrvU-000739-52; Mon, 10 Jul 2023 10:31:44 -0400
+	id 1qIs07-00005d-Lx; Mon, 10 Jul 2023 10:36:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <viktor@daynix.com>) id 1qIrv7-000726-RA
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:31:37 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <viktor@daynix.com>) id 1qIruz-0006VT-Oo
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:31:16 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2b717e9d423so19572411fa.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 07:31:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1688999471; x=1691591471;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7BnYYVbqCZbCImwv26l4xwUgYElEOPqCXBIFNONq+aw=;
- b=F/wfsQj4golORjNTs+RSjryAf+mMSkwbp8LdyJV7fFNg/o5cMZUhIWyQI0/gBtD7vr
- 9kqaFOLp7Txl+OC1DlAFdNwC/O6hTMtS4XVliKkbrPPfqwS5l1EGrqnUGBf1IqZU8Q1E
- XgGzywRS3EOTUEMDK9zAAc5S6yhAEAE1BrHK93l9npcnKpStQzeljynOBab/gA7sZkp1
- aJAivDNI+dvgM2XaQu5z/WUPHTkkgVzaIbfwD7yrT7VD0T3si3NSOKlIaqPnRUvqmdm0
- ClfzYw0+0FRbnCq06jyT9ZcSPEFQElZKJwpiHguZhGZu4YNUttg86SuEkqeTLKbAhwjq
- wtkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688999471; x=1691591471;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7BnYYVbqCZbCImwv26l4xwUgYElEOPqCXBIFNONq+aw=;
- b=ixujDJ5X3RB8jX81GiOKN82aEnM5eta8qTN5LwfmP/H9G4DhLQRBwK/TC11+eiNwsn
- DNCn8xlSFAA/cAHp0zesX/boCM6saAnVs70T6LzmC0yM4NLpd/HOReLF50pPJ7CokW0a
- di3IoCVHpYSgSOfh1GUHrVq6zuYgT9WAeGUBVQV+cAQF3ttwbG+Lc+6EluQNCWdwNUTS
- dT77ZC+Rmh1/ENUwmxLqxS2P9WrmgKI6O9BXAceVIPSZPgWiTDuUOpV/HEwD0wrBJdbM
- Acvi69rWNfMTFfHj4fC0uOQ5uFfTBoKz8Xt7OQ4jQBQEwfuTUAZrGFbOKKcBVSe1kkQu
- 0/ww==
-X-Gm-Message-State: ABy/qLZfHPeqJUiMY1bqzW7uBIq5JKHHK8l39oy/w89EVplxQMGmgmHg
- AB1AztAb6qBHVWcmFAoQ6aURrKeq5KUkm45Z+gUThw==
-X-Google-Smtp-Source: APBJJlEVT59iWIhNHygWUpZ9MFAhouQZ1xvhI/DMzQtAaZg749nZ2VUIKiPR3DqlEZ81OTb0/t5n0mhKRRiXeUzGBHA=
-X-Received: by 2002:a05:651c:2059:b0:2b6:dbb3:65a0 with SMTP id
- t25-20020a05651c205900b002b6dbb365a0mr6197565ljo.3.1688999471253; Mon, 10 Jul
- 2023 07:31:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qIrzx-00005I-RQ
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:36:21 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qIrzv-0007bs-Mc
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 10:36:21 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id AD1F212C69;
+ Mon, 10 Jul 2023 17:36:15 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 5978113DB8;
+ Mon, 10 Jul 2023 17:36:07 +0300 (MSK)
+Message-ID: <4d05ddfe-0e80-bd9e-e0c8-38d6195c9a8a@tls.msk.ru>
+Date: Mon, 10 Jul 2023 17:36:07 +0300
 MIME-Version: 1.0
-References: <20230626091258.24453-1-viktor@daynix.com>
- <CAPv0NP5LrA4XzG8xOsQj=7BHJdd=dJf5QMLCf-r6PyWtx4X6hg@mail.gmail.com>
-In-Reply-To: <CAPv0NP5LrA4XzG8xOsQj=7BHJdd=dJf5QMLCf-r6PyWtx4X6hg@mail.gmail.com>
-From: Viktor Prutyanov <viktor@daynix.com>
-Date: Mon, 10 Jul 2023 17:31:00 +0300
-Message-ID: <CAPv0NP46EK1qZPLPKgGxupozXXgV1EXiUxQEG2omQY7cQJYw5A@mail.gmail.com>
-Subject: Re: [PATCH v5 0/2] vhost: register and change IOMMU flag depending on
- ATS state
-To: mst@redhat.com, jasowang@redhat.com
-Cc: qemu-devel@nongnu.org, yan@daynix.com, yuri.benditovich@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: none client-ip=2a00:1450:4864:20::235;
- envelope-from=viktor@daynix.com; helo=mail-lj1-x235.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PULL 07/11] vfio: Fix null pointer dereference bug in
+ vfio_bars_finalize()
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>
+References: <20230710074848.456453-1-clg@redhat.com>
+ <20230710074848.456453-8-clg@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230710074848.456453-8-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.101,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,61 +64,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ping
+10.07.2023 10:48, Cédric Le Goater пишет:
+> From: Avihai Horon <avihaih@nvidia.com>
+> 
+> vfio_realize() has the following flow:
+> 1. vfio_bars_prepare() -- sets VFIOBAR->size.
+> 2. msix_early_setup().
+> 3. vfio_bars_register() -- allocates VFIOBAR->mr.
+> 
+> After vfio_bars_prepare() is called msix_early_setup() can fail. If it
+> does fail, vfio_bars_register() is never called and VFIOBAR->mr is not
+> allocated.
+> 
+> In this case, vfio_bars_finalize() is called as part of the error flow
+> to free the bars' resources. However, vfio_bars_finalize() calls
+> object_unparent() for VFIOBAR->mr after checking only VFIOBAR->size, and
+> thus we get a null pointer dereference.
+> 
+> Fix it by checking VFIOBAR->mr in vfio_bars_finalize().
+> 
+> Fixes: 89d5202edc50 ("vfio/pci: Allow relocating MSI-X MMIO")
+> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 
-On Mon, Jul 3, 2023 at 11:25=E2=80=AFAM Viktor Prutyanov <viktor@daynix.com=
-> wrote:
->
-> On Mon, Jun 26, 2023 at 12:13=E2=80=AFPM Viktor Prutyanov <viktor@daynix.=
-com> wrote:
-> >
-> > When IOMMU and vhost are enabled together, QEMU tracks IOTLB or
-> > Device-TLB unmap events depending on whether Device-TLB is enabled. But
-> > even if Device-TLB and PCI ATS is enabled, the guest can reject to use
-> > it. For example, this situation appears when Windows Server 2022 is
-> > running with intel-iommu with device-iotlb=3Don and virtio-net-pci with
-> > vhost=3Don. The guest implies that no address translation info cached i=
-n
-> > device IOTLB and doesn't send device IOTLB invalidation commands. So,
-> > it leads to irrelevant address translations in vhost-net in the host
-> > kernel. Therefore network frames from the guest in host tap interface
-> > contains wrong payload data.
-> >
-> > This series adds checking of ATS state for proper unmap flag register
-> > (IOMMU_NOTIFIER_UNMAP or IOMMU_NOTIFIER_DEVIOTLB_UNMAP).
-> >
-> > Tested on Windows Server 2022, Windows 11 and Fedora guests with
-> >  -device virtio-net-pci,bus=3Dpci.3,netdev=3Dnd0,iommu_platform=3Don,at=
-s=3Don
-> >  -netdev tap,id=3Dnd0,ifname=3Dtap1,script=3Dno,downscript=3Dno,vhost=
-=3Don
-> >  -device intel-iommu,intremap=3Don,eim=3Don,device-iotlb=3Don/off
-> > Tested on Fedora guest with
-> >  -device virtio-iommu
-> >
-> > Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=3D2001312
-> >
-> > v5: add vhost_toggle_device_iotlb to vhost-stub
-> > v4: call vhost_toggle_device_iotlb regardless of vhost backend,
-> >     move vhost_started check to generic part
-> > v3: call virtio_pci_ats_ctrl_trigger directly, remove
-> >     IOMMU_NOTIFIER_UNMAP fallbacks
-> > v2: remove memory_region_iommu_notify_flags_changed, move trigger to
-> >     VirtioDeviceClass, use vhost_ops, use device_iotlb name
-> >
-> > Viktor Prutyanov (2):
-> >   vhost: register and change IOMMU flag depending on Device-TLB state
-> >   virtio-net: pass Device-TLB enable/disable events to vhost
-> >
-> >  hw/net/virtio-net.c       |  1 +
-> >  hw/virtio/vhost-stub.c    |  4 ++++
-> >  hw/virtio/vhost.c         | 38 ++++++++++++++++++++++++++------------
-> >  include/hw/virtio/vhost.h |  1 +
-> >  4 files changed, 32 insertions(+), 12 deletions(-)
-> >
-> > --
-> > 2.21.0
-> >
->
-> ping
+It looks like it's a -stable material too. Queued this one.
+If it shouldn't go to stable, please let me know.
+
+Thanks,
+
+/mjt
 
