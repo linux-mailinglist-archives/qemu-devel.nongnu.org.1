@@ -2,58 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE1E74D787
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 15:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B4B74D7F0
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 15:42:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIqwL-0005Sr-Al; Mon, 10 Jul 2023 09:28:33 -0400
+	id 1qIr8R-0007cD-Ig; Mon, 10 Jul 2023 09:41:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qIqwI-0005Py-Tn
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 09:28:30 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIr8Q-0007YR-Eb
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 09:41:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qIqwG-0007Dy-FS
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 09:28:30 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIr8N-0005vi-W3
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 09:41:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688995707;
+ s=mimecast20190719; t=1688996457;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LJHRYi1RfEEmkpEtKItI80PBoxeeM40R+SYDspfEND4=;
- b=hlMGWYwvfQFt3yA1a7NNbsNpBi5aXYmbWuh/M2Co28NtX3cBC0H+QNGV6AkuTcz15ljTu3
- aSJE33a9LvpSF7TNymYXBL/pUF1bl0q5fi7wRaRyRpeTEPl05rljc7Wz/6zQzKWFIxe8/A
- HREIUAcIMJVAejKyg1LjpGRPu/mP0Ts=
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/KhNoEP1KB5GG/f3LQj9P59A9YixvYHip1/K6mSGUms=;
+ b=Co1OPCSpvmzHbvsJ0t0PmurNfbU+1qQYsD88x6t1eyNsMvHbGcX6IJdfhKbpGbRT6DJoBh
+ l2MtJZlQRa/N8Dmy2sXYAbuVB6ZS1vTJUw4+KyKKEF7r5qaNTZA/6AaV5uvzPMqXI8KByz
+ 0AThZfRQ5RHWD49ZnKmZRaLsYeEjKXk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-543-8TxJ0M-FNdizTDmk5YFRzg-1; Mon, 10 Jul 2023 09:28:24 -0400
-X-MC-Unique: 8TxJ0M-FNdizTDmk5YFRzg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-267-iglrAX6IMGK0UYmBbBpKyw-1; Mon, 10 Jul 2023 09:40:54 -0400
+X-MC-Unique: iglrAX6IMGK0UYmBbBpKyw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CE7E7185A78F;
- Mon, 10 Jul 2023 13:28:23 +0000 (UTC)
-Received: from kostyanf14nb.redhat.com (unknown [10.45.225.233])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AC41F111E3E4;
- Mon, 10 Jul 2023 13:28:22 +0000 (UTC)
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-To: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 7/7] QGA VSS: Add log in functions begin/end
-Date: Mon, 10 Jul 2023 16:28:10 +0300
-Message-Id: <20230710132810.1049912-8-kkostiuk@redhat.com>
-In-Reply-To: <20230710132810.1049912-1-kkostiuk@redhat.com>
-References: <20230710132810.1049912-1-kkostiuk@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61E618DBB4D;
+ Mon, 10 Jul 2023 13:40:54 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.192.206])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AD06A200A7CA;
+ Mon, 10 Jul 2023 13:40:53 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL v2 00/21] s390x,
+ qtest and misc patches before the 8.1 soft freeze
+Date: Mon, 10 Jul 2023 15:40:49 +0200
+Message-Id: <20230710134050.209922-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -78,414 +75,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add several qga_debug() statements in functions.
+ Hi Richard!
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
----
- qga/vss-win32/install.cpp   | 35 +++++++++++++++++++++++++++++++++++
- qga/vss-win32/provider.cpp  |  3 +++
- qga/vss-win32/requester.cpp | 34 ++++++++++++++++++++++++++++++++++
- 3 files changed, 72 insertions(+)
+The following changes since commit fcb237e64f9d026c03d635579c7b288d0008a6e5:
 
-diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
-index e03473d1a8..ae38662a62 100644
---- a/qga/vss-win32/install.cpp
-+++ b/qga/vss-win32/install.cpp
-@@ -100,6 +100,8 @@ HRESULT put_Value(ICatalogObject *pObj, LPCWSTR name, T val)
- /* Lookup Administrators group name from winmgmt */
- static HRESULT GetAdminName(_bstr_t *name)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr;
-     COMPointer<IWbemLocator> pLoc;
-     COMPointer<IWbemServices> pSvc;
-@@ -142,6 +144,7 @@ static HRESULT GetAdminName(_bstr_t *name)
-     }
- 
- out:
-+    qga_debug_end;
-     return hr;
- }
- 
-@@ -149,6 +152,8 @@ out:
- static HRESULT getNameByStringSID(
-     const wchar_t *sid, LPWSTR buffer, LPDWORD bufferLen)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr = S_OK;
-     PSID psid = NULL;
-     SID_NAME_USE groupType;
-@@ -168,6 +173,7 @@ static HRESULT getNameByStringSID(
-     LocalFree(psid);
- 
- out:
-+    qga_debug_end;
-     return hr;
- }
- 
-@@ -175,6 +181,8 @@ out:
- static HRESULT QGAProviderFind(
-     HRESULT (*found)(ICatalogCollection *, int, void *), void *arg)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr;
-     COMInitializer initializer;
-     COMPointer<IUnknown> pUnknown;
-@@ -205,41 +213,53 @@ static HRESULT QGAProviderFind(
-     chk(pColl->SaveChanges(&n));
- 
- out:
-+    qga_debug_end;
-     return hr;
- }
- 
- /* Count QGA VSS provider in COM+ Application Catalog */
- static HRESULT QGAProviderCount(ICatalogCollection *coll, int i, void *arg)
- {
-+    qga_debug_begin;
-+
-     (*(int *)arg)++;
-+
-+    qga_debug_end;
-     return S_OK;
- }
- 
- /* Remove QGA VSS provider from COM+ Application Catalog Collection */
- static HRESULT QGAProviderRemove(ICatalogCollection *coll, int i, void *arg)
- {
-+    qga_debug_begin;
-     HRESULT hr;
- 
-     qga_debug("Removing COM+ Application: %s", QGA_PROVIDER_NAME);
-     chk(coll->Remove(i));
- out:
-+    qga_debug_end;
-     return hr;
- }
- 
- /* Unregister this module from COM+ Applications Catalog */
- STDAPI COMUnregister(void)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr;
- 
-     DllUnregisterServer();
-     chk(QGAProviderFind(QGAProviderRemove, NULL));
- out:
-+    qga_debug_end;
-     return hr;
- }
- 
- /* Register this module to COM+ Applications Catalog */
- STDAPI COMRegister(void)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr;
-     COMInitializer initializer;
-     COMPointer<IUnknown> pUnknown;
-@@ -259,12 +279,14 @@ STDAPI COMRegister(void)
- 
-     if (!g_hinstDll) {
-         errmsg(E_FAIL, "Failed to initialize DLL");
-+        qga_debug_end;
-         return E_FAIL;
-     }
- 
-     chk(QGAProviderFind(QGAProviderCount, (void *)&count));
-     if (count) {
-         errmsg(E_ABORT, "QGA VSS Provider is already installed");
-+        qga_debug_end;
-         return E_ABORT;
-     }
- 
-@@ -354,6 +376,7 @@ out:
-         COMUnregister();
-     }
- 
-+    qga_debug_end;
-     return hr;
- }
- 
-@@ -369,6 +392,8 @@ STDAPI_(void) CALLBACK DLLCOMUnregister(HWND, HINSTANCE, LPSTR, int)
- 
- static BOOL CreateRegistryKey(LPCTSTR key, LPCTSTR value, LPCTSTR data)
- {
-+    qga_debug_begin;
-+
-     HKEY  hKey;
-     LONG  ret;
-     DWORD size;
-@@ -389,6 +414,7 @@ static BOOL CreateRegistryKey(LPCTSTR key, LPCTSTR value, LPCTSTR data)
-     RegCloseKey(hKey);
- 
- out:
-+    qga_debug_end;
-     if (ret != ERROR_SUCCESS) {
-         /* As we cannot printf within DllRegisterServer(), show a dialog. */
-         errmsg_dialog(ret, "Cannot add registry", key);
-@@ -400,6 +426,8 @@ out:
- /* Register this dll as a VSS provider */
- STDAPI DllRegisterServer(void)
- {
-+    qga_debug_begin;
-+
-     COMInitializer initializer;
-     COMPointer<IVssAdmin> pVssAdmin;
-     HRESULT hr = E_FAIL;
-@@ -478,12 +506,15 @@ out:
-         DllUnregisterServer();
-     }
- 
-+    qga_debug_end;
-     return hr;
- }
- 
- /* Unregister this VSS hardware provider from the system */
- STDAPI DllUnregisterServer(void)
- {
-+    qga_debug_begin;
-+
-     TCHAR key[256];
-     COMInitializer initializer;
-     COMPointer<IVssAdmin> pVssAdmin;
-@@ -501,6 +532,7 @@ STDAPI DllUnregisterServer(void)
-     SHDeleteKey(HKEY_CLASSES_ROOT, key);
-     SHDeleteKey(HKEY_CLASSES_ROOT, g_szProgid);
- 
-+    qga_debug_end;
-     return S_OK; /* Uninstall should never fail */
- }
- 
-@@ -527,6 +559,8 @@ namespace _com_util
- /* Stop QGA VSS provider service using Winsvc API  */
- STDAPI StopService(void)
- {
-+    qga_debug_begin;
-+
-     HRESULT hr = S_OK;
-     SC_HANDLE manager = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
-     SC_HANDLE service = NULL;
-@@ -551,5 +585,6 @@ STDAPI StopService(void)
- out:
-     CloseServiceHandle(service);
-     CloseServiceHandle(manager);
-+    qga_debug_end;
-     return hr;
- }
-diff --git a/qga/vss-win32/provider.cpp b/qga/vss-win32/provider.cpp
-index 1b885e24ee..cc72e5ef1b 100644
---- a/qga/vss-win32/provider.cpp
-+++ b/qga/vss-win32/provider.cpp
-@@ -12,6 +12,7 @@
- 
- #include "qemu/osdep.h"
- #include "vss-common.h"
-+#include "vss-debug.h"
- #ifdef HAVE_VSS_SDK
- #include <vscoordint.h>
- #else
-@@ -529,9 +530,11 @@ STDAPI DllCanUnloadNow()
- EXTERN_C
- BOOL WINAPI DllMain(HINSTANCE hinstDll, DWORD dwReason, LPVOID lpReserved)
- {
-+    qga_debug("begin, reason = %lu", dwReason);
-     if (dwReason == DLL_PROCESS_ATTACH) {
-         g_hinstDll = hinstDll;
-         DisableThreadLibraryCalls(hinstDll);
-     }
-+    qga_debug_end;
-     return TRUE;
- }
-diff --git a/qga/vss-win32/requester.cpp b/qga/vss-win32/requester.cpp
-index f3eafacfc1..9884c65e70 100644
---- a/qga/vss-win32/requester.cpp
-+++ b/qga/vss-win32/requester.cpp
-@@ -57,6 +57,8 @@ static struct QGAVSSContext {
- 
- STDAPI requester_init(void)
- {
-+    qga_debug_begin;
-+
-     COMInitializer initializer; /* to call CoInitializeSecurity */
-     HRESULT hr = CoInitializeSecurity(
-         NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
-@@ -92,11 +94,14 @@ STDAPI requester_init(void)
-         return HRESULT_FROM_WIN32(GetLastError());
-     }
- 
-+    qga_debug_end;
-     return S_OK;
- }
- 
- static void requester_cleanup(void)
- {
-+    qga_debug_begin;
-+
-     if (vss_ctx.hEventFrozen) {
-         CloseHandle(vss_ctx.hEventFrozen);
-         vss_ctx.hEventFrozen = NULL;
-@@ -118,10 +123,13 @@ static void requester_cleanup(void)
-         vss_ctx.pVssbc = NULL;
-     }
-     vss_ctx.cFrozenVols = 0;
-+    qga_debug_end;
- }
- 
- STDAPI requester_deinit(void)
- {
-+    qga_debug_begin;
-+
-     requester_cleanup();
- 
-     pCreateVssBackupComponents = NULL;
-@@ -131,11 +139,14 @@ STDAPI requester_deinit(void)
-         hLib = NULL;
-     }
- 
-+    qga_debug_end;
-     return S_OK;
- }
- 
- static HRESULT WaitForAsync(IVssAsync *pAsync)
- {
-+    qga_debug_begin;
-+
-     HRESULT ret, hr;
- 
-     do {
-@@ -151,11 +162,14 @@ static HRESULT WaitForAsync(IVssAsync *pAsync)
-         }
-     } while (ret == VSS_S_ASYNC_PENDING);
- 
-+    qga_debug_end;
-     return ret;
- }
- 
- static void AddComponents(ErrorSet *errset)
- {
-+    qga_debug_begin;
-+
-     unsigned int cWriters, i;
-     VSS_ID id, idInstance, idWriter;
-     BSTR bstrWriterName = NULL;
-@@ -237,17 +251,21 @@ out:
-     if (pComponent && info) {
-         pComponent->FreeComponentInfo(info);
-     }
-+    qga_debug_end;
- }
- 
- DWORD get_reg_dword_value(HKEY baseKey, LPCSTR subKey, LPCSTR valueName,
-                           DWORD defaultData)
- {
-+    qga_debug_begin;
-+
-     DWORD regGetValueError;
-     DWORD dwordData;
-     DWORD dataSize = sizeof(DWORD);
- 
-     regGetValueError = RegGetValue(baseKey, subKey, valueName, RRF_RT_DWORD,
-                                    NULL, &dwordData, &dataSize);
-+    qga_debug_end;
-     if (regGetValueError  != ERROR_SUCCESS) {
-         return defaultData;
-     }
-@@ -262,6 +280,8 @@ bool is_valid_vss_backup_type(VSS_BACKUP_TYPE vssBT)
- VSS_BACKUP_TYPE get_vss_backup_type(
-     VSS_BACKUP_TYPE defaultVssBT = DEFAULT_VSS_BACKUP_TYPE)
- {
-+    qga_debug_begin;
-+
-     VSS_BACKUP_TYPE vssBackupType;
- 
-     vssBackupType = static_cast<VSS_BACKUP_TYPE>(
-@@ -269,6 +289,7 @@ VSS_BACKUP_TYPE get_vss_backup_type(
-                                                 QGA_PROVIDER_REGISTRY_ADDRESS,
-                                                 "VssOption",
-                                                 defaultVssBT));
-+    qga_debug_end;
-     if (!is_valid_vss_backup_type(vssBackupType)) {
-         return defaultVssBT;
-     }
-@@ -277,6 +298,8 @@ VSS_BACKUP_TYPE get_vss_backup_type(
- 
- void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
- {
-+    qga_debug_begin;
-+
-     COMPointer<IVssAsync> pAsync;
-     HANDLE volume;
-     HRESULT hr;
-@@ -292,6 +315,7 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
- 
-     if (vss_ctx.pVssbc) { /* already frozen */
-         *num_vols = 0;
-+        qga_debug("finished, already frozen");
-         return;
-     }
- 
-@@ -449,6 +473,7 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
-         }
-     }
- 
-+    qga_debug("preparing for backup");
-     hr = vss_ctx.pVssbc->PrepareForBackup(pAsync.replace());
-     if (SUCCEEDED(hr)) {
-         hr = WaitForAsync(pAsync);
-@@ -472,6 +497,7 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
-      * CQGAVssProvider::CommitSnapshots will kick vss_ctx.hEventFrozen
-      * after the applications and filesystems are frozen.
-      */
-+    qga_debug("do snapshot set");
-     hr = vss_ctx.pVssbc->DoSnapshotSet(&vss_ctx.pAsyncSnapshot);
-     if (FAILED(hr)) {
-         err_set(errset, hr, "failed to do snapshot set");
-@@ -518,6 +544,7 @@ void requester_freeze(int *num_vols, void *mountpoints, ErrorSet *errset)
-         *num_vols = vss_ctx.cFrozenVols = num_fixed_drives;
-     }
- 
-+    qga_debug("end successful");
-     return;
- 
- out:
-@@ -528,11 +555,14 @@ out:
- out1:
-     requester_cleanup();
-     CoUninitialize();
-+
-+    qga_debug_end;
- }
- 
- 
- void requester_thaw(int *num_vols, void *mountpints, ErrorSet *errset)
- {
-+    qga_debug_begin;
-     COMPointer<IVssAsync> pAsync;
- 
-     if (!vss_ctx.hEventThaw) {
-@@ -541,6 +571,8 @@ void requester_thaw(int *num_vols, void *mountpints, ErrorSet *errset)
-          * and no volumes must be frozen. We return without an error.
-          */
-         *num_vols = 0;
-+        qga_debug("finished, no volumes were frozen");
-+
-         return;
-     }
- 
-@@ -597,4 +629,6 @@ void requester_thaw(int *num_vols, void *mountpints, ErrorSet *errset)
- 
-     CoUninitialize();
-     StopService();
-+
-+    qga_debug_end;
- }
--- 
-2.34.1
+  Merge tag 'pull-vfio-20230710' of https://github.com/legoater/qemu into staging (2023-07-10 09:17:06 +0100)
+
+are available in the Git repository at:
+
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2023-07-10v2
+
+for you to fetch changes up to 7233bd122370155abfd75a42c86a9087ca5a8dbf:
+
+  docs/devel: Fix coding style in style.rst (2023-07-10 15:34:57 +0200)
+
+----------------------------------------------------------------
+* s390x instruction emulation fixes and corresponding TCG tests
+* Extend the readconfig qtest
+* Introduce "-run-with chroot=..." and deprecate the old "-chroot" option
+* Speed up migration tests
+* Fix coding style in the coding style document
+
+----------------------------------------------------------------
+Daniel P. Berrangé (1):
+      tests/qtest: massively speed up migration-test
+
+Ilya Leoshkevich (13):
+      linux-user: elfload: Add more initial s390x PSW bits
+      target/s390x: Fix EPSW CC reporting
+      target/s390x: Fix MDEB and MDEBR
+      target/s390x: Fix MVCRL with a large value in R0
+      target/s390x: Fix LRA overwriting the top 32 bits on DAT error
+      target/s390x: Fix LRA when DAT is off
+      target/s390x: Fix relative long instructions with large offsets
+      tests/tcg/s390x: Test EPSW
+      tests/tcg/s390x: Test LARL with a large offset
+      tests/tcg/s390x: Test LRA
+      tests/tcg/s390x: Test MDEB and MDEBR
+      tests/tcg/s390x: Test MVCRL with a large value in R0
+      tests/tcg/s390x: Fix test-svc with clang
+
+Philippe Mathieu-Daudé (1):
+      hw/s390x: Move KVM specific PV from hw/ to target/s390x/kvm/
+
+Thomas Huth (6):
+      tests/qtest/readconfig-test: Allow testing for arbitrary memory sizes
+      tests/qtest: Move mkimg() and have_qemu_img() from libqos to libqtest
+      tests/qtest/readconfig: Test the docs/config/q35-*.cfg files
+      os-posix: Allow 'chroot' via '-run-with' and deprecate the old '-chroot' option
+      meson.build: Skip C++ detection unless we're targeting Windows
+      docs/devel: Fix coding style in style.rst
+
+ MAINTAINERS                                 |   2 -
+ docs/about/deprecated.rst                   |   5 +
+ docs/devel/style.rst                        |   9 +-
+ meson.build                                 |   2 +-
+ target/s390x/helper.h                       |   2 +-
+ {include/hw/s390x => target/s390x/kvm}/pv.h |   0
+ tests/qtest/libqos/libqos.h                 |   2 -
+ tests/qtest/libqtest.h                      |  20 +++
+ target/s390x/tcg/insn-data.h.inc            |   4 +-
+ hw/s390x/ipl.c                              |   2 +-
+ hw/s390x/s390-pci-kvm.c                     |   2 +-
+ hw/s390x/s390-virtio-ccw.c                  |   2 +-
+ hw/s390x/tod-kvm.c                          |   2 +-
+ linux-user/elfload.c                        |   4 +-
+ os-posix.c                                  |  35 ++++-
+ target/s390x/arch_dump.c                    |   2 +-
+ target/s390x/cpu-sysemu.c                   |   2 +-
+ target/s390x/cpu_features.c                 |   2 +-
+ target/s390x/cpu_models.c                   |   2 +-
+ target/s390x/diag.c                         |   2 +-
+ target/s390x/helper.c                       |   2 +-
+ target/s390x/ioinst.c                       |   2 +-
+ target/s390x/kvm/kvm.c                      |   2 +-
+ {hw/s390x => target/s390x/kvm}/pv.c         |   2 +-
+ target/s390x/mmu_helper.c                   |   2 +-
+ target/s390x/tcg/fpu_helper.c               |   3 +-
+ target/s390x/tcg/mem_helper.c               |   5 +-
+ target/s390x/tcg/translate.c                |   8 +-
+ tests/qtest/libqos/libqos.c                 |  49 +------
+ tests/qtest/libqtest.c                      |  52 +++++++
+ tests/qtest/migration-test.c                | 143 ++++++++++++++++---
+ tests/qtest/readconfig-test.c               | 204 +++++++++++++++++++++++++++-
+ tests/tcg/s390x/epsw.c                      |  23 ++++
+ tests/tcg/s390x/larl.c                      |  21 +++
+ tests/tcg/s390x/mdeb.c                      |  30 ++++
+ tests/tcg/s390x/mie3-mvcrl.c                |  46 +++++--
+ util/async-teardown.c                       |  21 ---
+ hw/s390x/meson.build                        |   1 -
+ qemu-options.hx                             |  18 ++-
+ target/s390x/kvm/meson.build                |   1 +
+ tests/tcg/s390x/Makefile.softmmu-target     |   1 +
+ tests/tcg/s390x/Makefile.target             |   3 +
+ tests/tcg/s390x/gdbstub/test-svc.py         |   2 +-
+ tests/tcg/s390x/hello-s390x-asm.S           |   4 +-
+ tests/tcg/s390x/lra.S                       |  19 +++
+ 45 files changed, 626 insertions(+), 141 deletions(-)
+ rename {include/hw/s390x => target/s390x/kvm}/pv.h (100%)
+ rename {hw/s390x => target/s390x/kvm}/pv.c (99%)
+ create mode 100644 tests/tcg/s390x/epsw.c
+ create mode 100644 tests/tcg/s390x/larl.c
+ create mode 100644 tests/tcg/s390x/mdeb.c
+ create mode 100644 tests/tcg/s390x/lra.S
 
 
