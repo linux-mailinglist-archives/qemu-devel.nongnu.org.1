@@ -2,56 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E05B74D540
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E53A74D535
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:20:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIpof-0000y3-N2; Mon, 10 Jul 2023 08:16:33 -0400
+	id 1qIpol-0000zP-MQ; Mon, 10 Jul 2023 08:16:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoO-0000rD-TS
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:16 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoQ-0000s4-CL
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoN-0003Wv-Ej
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:16 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoO-0003XU-TF
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688991374;
+ s=mimecast20190719; t=1688991376;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cHrfiBeDW824X4qqEZOPPzorW+P2EqUcZ0iy/McGzTo=;
- b=LNEWdHjXMLzXYBNQyH8yx9FuljR+Bs5wS8A7PtKSlSLF3N5xiOOhE54SGHkwX/iKHz+2Lj
- mgAWnNVgkUuxn42IyXBNEXV3U8Jl0cays3vBUvofi4Sqm6woFm83Pq09sUAFPXhwBjNP7J
- ckrYNPlKiIAesGZe+unwRe+HJugat7I=
+ bh=Wo6HpPaE719qne02JMdMJ84L5Ng2oSgjEWw9yCAACDQ=;
+ b=Ok6FFwGd3ZI/HcTQRLvMlyiCqLElr1Kq2aStfo9HTf+qNDuG2P9zpEgLtu/Tz5vcwlooyZ
+ H+HxqeKaRoh0rWJjcJuFW/wcXJ8LYVSvOqVYcmcFSy6AndTluXh8gS4dS3IhEIn108Eb7p
+ Tk1n7GSFYChf8XKBdkeM1lpkeb5i4dA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-166-Qxf2TcdIMy-RMrD2gIqxmg-1; Mon, 10 Jul 2023 08:16:11 -0400
-X-MC-Unique: Qxf2TcdIMy-RMrD2gIqxmg-1
+ us-mta-78-VAZ6nix1Mw-xOoz11kP2QQ-1; Mon, 10 Jul 2023 08:16:13 -0400
+X-MC-Unique: VAZ6nix1Mw-xOoz11kP2QQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 426B2856F67;
- Mon, 10 Jul 2023 12:16:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9C554185A7A5;
+ Mon, 10 Jul 2023 12:16:12 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.206])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5EE54F5CFA;
- Mon, 10 Jul 2023 12:16:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8F57CF5CFA;
+ Mon, 10 Jul 2023 12:16:11 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/21] meson.build: Skip C++ detection unless we're targeting
- Windows
-Date: Mon, 10 Jul 2023 14:15:40 +0200
-Message-Id: <20230710121543.197250-19-thuth@redhat.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PULL 19/21] tests/tcg/s390x: Fix test-svc with clang
+Date: Mon, 10 Jul 2023 14:15:41 +0200
+Message-Id: <20230710121543.197250-20-thuth@redhat.com>
 In-Reply-To: <20230710121543.197250-1-thuth@redhat.com>
 References: <20230710121543.197250-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -79,30 +77,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The only C++ code that we currently still have in the repository
-is the code in qga/vss-win32/ - so we can skip the C++ detection
-unless we are compiling binaries for Windows.
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Message-Id: <20230705133639.146073-1-thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+clang does not support expressions involving symbols in instructions
+like lghi yet, so building hello-s390x-asm.S with it fails.
+
+Move the expression to the literal pool and load it from there.
+
+Fixes: be4a4cb42961 ("tests/tcg/s390x: Test single-stepping SVC")
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20230707154242.457706-1-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- meson.build | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/tcg/s390x/gdbstub/test-svc.py | 2 +-
+ tests/tcg/s390x/hello-s390x-asm.S   | 4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 58413d44a5..162e664c2b 100644
---- a/meson.build
-+++ b/meson.build
-@@ -20,7 +20,7 @@ config_host = keyval.load(meson.current_build_dir() / 'config-host.mak')
+diff --git a/tests/tcg/s390x/gdbstub/test-svc.py b/tests/tcg/s390x/gdbstub/test-svc.py
+index 7851ca7284..18fad3f163 100644
+--- a/tests/tcg/s390x/gdbstub/test-svc.py
++++ b/tests/tcg/s390x/gdbstub/test-svc.py
+@@ -25,7 +25,7 @@ def run_test():
+     gdb.execute("si")
+     report("larl\t" in gdb.execute("x/i $pc", False, True), "insn #2")
+     gdb.execute("si")
+-    report("lghi\t" in gdb.execute("x/i $pc", False, True), "insn #3")
++    report("lgrl\t" in gdb.execute("x/i $pc", False, True), "insn #3")
+     gdb.execute("si")
+     report("svc\t" in gdb.execute("x/i $pc", False, True), "insn #4")
+     gdb.execute("si")
+diff --git a/tests/tcg/s390x/hello-s390x-asm.S b/tests/tcg/s390x/hello-s390x-asm.S
+index 2e9faa1604..4dbda12d35 100644
+--- a/tests/tcg/s390x/hello-s390x-asm.S
++++ b/tests/tcg/s390x/hello-s390x-asm.S
+@@ -8,7 +8,7 @@ _start:
+ /* puts("Hello, World!"); */
+ lghi %r2,1
+ larl %r3,foo
+-lghi %r4,foo_end-foo
++lgrl %r4,foo_len
+ svc 4
  
- cc = meson.get_compiler('c')
- all_languages = ['c']
--if add_languages('cpp', required: false, native: false)
-+if targetos == 'windows' and add_languages('cpp', required: false, native: false)
-   all_languages += ['cpp']
-   cxx = meson.get_compiler('cpp')
- endif
+ /* exit(0); */
+@@ -18,3 +18,5 @@ svc 1
+ .align 2
+ foo: .asciz "Hello, World!\n"
+ foo_end:
++.align 8
++foo_len: .quad foo_end-foo
 -- 
 2.39.3
 
