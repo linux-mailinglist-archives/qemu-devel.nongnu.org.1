@@ -2,54 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA4974CF4D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 10:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E93474CF53
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 10:00:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIloJ-0001X3-Di; Mon, 10 Jul 2023 03:59:57 -0400
+	id 1qIloe-0002mi-Ht; Mon, 10 Jul 2023 04:00:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=Zxd8=C4=redhat.com=clg@ozlabs.org>)
- id 1qIloF-0001UF-L8
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:59:51 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIlob-0002g2-Ia
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 04:00:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=Zxd8=C4=redhat.com=clg@ozlabs.org>)
- id 1qIloC-0003g0-QP
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:59:51 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4QzxHL40hKz4wxm;
- Mon, 10 Jul 2023 17:59:42 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4QzxHK0Kxbz4wZt;
- Mon, 10 Jul 2023 17:59:40 +1000 (AEST)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL v2 00/11] vfio queue
-Date: Mon, 10 Jul 2023 09:59:37 +0200
-Message-ID: <20230710075937.459263-1-clg@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIloY-0003x7-1T
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 04:00:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1688976009;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+OIg98FGSn97DoGjsh3vISKMlcxZjewM9qOA+D9oNS8=;
+ b=IPciVDjkPSFc/981bygee0PAEL2hr/eLeaEfyna3EY/X5sD65oTCk7qyQ0b8HzMf3lOsb4
+ 7sEzlAGXMCcbD13IqC5+Gd/LSm0argxDXWOw5kIb23Olo0s9PE2GO++6zht1uAPBIhZ957
+ tNI1fGRE7bDrhIy9EJ87+z7TPD/G0LE=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-623-CP3ytQsMP1-pAhzw8PYHyg-1; Mon, 10 Jul 2023 04:00:07 -0400
+X-MC-Unique: CP3ytQsMP1-pAhzw8PYHyg-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-4033e4d51ecso45038231cf.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 01:00:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1688976007; x=1691568007;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+OIg98FGSn97DoGjsh3vISKMlcxZjewM9qOA+D9oNS8=;
+ b=NUGeovhONU31mduRgqCMgHqD98zrbH3I7pAE4dy8w+lOqbvJ3VtWXQbn0paOGfXCpR
+ eVndymGke9BgmjGU3tOFFX2QU3Bt4nOK3leHJtCJ6yCR8aJJh2ZRGP4b38fnF6knNsGF
+ /3rw6Z19k0JU/VDfoVua7JWSGDsHSEcpehqrUE0eIsydKwxXUBD7GvVKnPWLKvGH8Eoj
+ CKkgHEe7Pzf3GYVAoOYs7Xdo4e990dNsDxHF16UYWFQpawTS0UMiQFSgDqb+qm22gmym
+ 2vWuXSD2ikEQ5nKGz6TRDOLqhHA6+UXjOyWQbTCSneRsFB96HSs3+poPkK4gulM325f4
+ lccg==
+X-Gm-Message-State: ABy/qLZxJ6PIYOzF8z5Ce4ymUBkdvEvAEjjgTaaJPASZxqcpztR49xCf
+ Fujf42ReORFZcFeA3Da/Obn227f+BrKtcuwr4gdR4fSPIaoa/mWrDci5e5Q1xEBtV/M5OKuvLFR
+ Il2QiiW9a7bw9yxc=
+X-Received: by 2002:a05:622a:1a23:b0:3fd:dd80:52a6 with SMTP id
+ f35-20020a05622a1a2300b003fddd8052a6mr14181157qtb.16.1688976007290; 
+ Mon, 10 Jul 2023 01:00:07 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEjdswWt5C0FdQdNRS+bEBOzj1IdjGFoKw7BT14iFiQ3fD1S6/g0EJ3+wkNjJecwC0/DceCzg==
+X-Received: by 2002:a05:622a:1a23:b0:3fd:dd80:52a6 with SMTP id
+ f35-20020a05622a1a2300b003fddd8052a6mr14181150qtb.16.1688976007066; 
+ Mon, 10 Jul 2023 01:00:07 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-179-116.web.vodafone.de.
+ [109.43.179.116]) by smtp.gmail.com with ESMTPSA id
+ l29-20020ac8459d000000b004035cf1cc1asm4014537qtn.41.2023.07.10.01.00.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 01:00:06 -0700 (PDT)
+Message-ID: <664eb456-d812-a5e2-4470-534777d0fda4@redhat.com>
+Date: Mon, 10 Jul 2023 10:00:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+To: Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230710074639.996030-1-kkostiuk@redhat.com>
+ <20230710074639.996030-3-kkostiuk@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v4 2/4] QGA VSS: Replace 'fprintf(stderr' with PRINT_DEBUG
+In-Reply-To: <20230710074639.996030-3-kkostiuk@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=Zxd8=C4=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,93 +103,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 2ff49e96accc8fd9a38e9abd16f0cfa0adab1605:
+On 10/07/2023 09.46, Konstantin Kostiuk wrote:
+> Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   qga/vss-win32/install.cpp   | 12 ++++++------
+>   qga/vss-win32/requester.cpp |  9 +++++----
+>   2 files changed, 11 insertions(+), 10 deletions(-)
+> 
+> diff --git a/qga/vss-win32/install.cpp b/qga/vss-win32/install.cpp
+> index ff93b08a9e..9bd2c52b70 100644
+> --- a/qga/vss-win32/install.cpp
+> +++ b/qga/vss-win32/install.cpp
+> @@ -13,6 +13,7 @@
+>   #include "qemu/osdep.h"
+> 
+>   #include "vss-common.h"
+> +#include "vss-debug.h"
+>   #ifdef HAVE_VSS_SDK
+>   #include <vscoordint.h>
+>   #else
+> @@ -54,7 +55,7 @@ void errmsg(DWORD err, const char *text)
+>                     FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+>                     NULL, err, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+>                     (char *)&msg, 0, NULL);
+> -    fprintf(stderr, "%.*s. (Error: %lx) %s\n", len, text, err, msg);
+> +    qga_debug("%.*s. (Error: %lx) %s\n", len, text, err, msg);
 
-  Merge tag 'pull-tcg-20230709' of https://gitlab.com/rth7680/qemu into staging (2023-07-09 15:01:43 +0100)
+Here you kept the "\n" at the end of the string...
 
-are available in the Git repository at:
+>       LocalFree(msg);
+>   }
+> 
+> @@ -219,7 +220,7 @@ static HRESULT QGAProviderRemove(ICatalogCollection *coll, int i, void *arg)
+>   {
+>       HRESULT hr;
+> 
+> -    fprintf(stderr, "Removing COM+ Application: %s\n", QGA_PROVIDER_NAME);
+> +    qga_debug("Removing COM+ Application: %s", QGA_PROVIDER_NAME);
+>       chk(coll->Remove(i));
+>   out:
+>       return hr;
+> @@ -304,9 +305,8 @@ STDAPI COMRegister(void)
+>       }
+>       strcpy(tlbPath, dllPath);
+>       strcpy(tlbPath+n-3, "tlb");
+> -    fprintf(stderr, "Registering " QGA_PROVIDER_NAME ":\n");
+> -    fprintf(stderr, "  %s\n", dllPath);
+> -    fprintf(stderr, "  %s\n", tlbPath);
+> +    qga_debug("Registering " QGA_PROVIDER_NAME ": %s %s",
+> +              dllPath, tlbPath);
 
-  https://github.com/legoater/qemu/ tags/pull-vfio-20230710
+... but here you remove the "\n" ... looks weird. Looking at the first 
+patch, I assume the "\n" should now always be removed from the strings here?
 
-for you to fetch changes up to c00aac6f1428d40a4ca2ab9b89070afc2a5bf979:
+  Thomas
 
-  vfio/pci: Enable AtomicOps completers on root ports (2023-07-10 09:52:52 +0200)
-
-----------------------------------------------------------------
-vfio queue:
-
-* Fixes in error handling paths of VFIO PCI devices
-* Improvements of reported errors for VFIO migration
-* Linux header update
-* Enablement of AtomicOps completers on root ports
-* Fix for unplug of passthrough AP devices
-
-----------------------------------------------------------------
-Alex Williamson (3):
-      hw/vfio/pci-quirks: Sanitize capability pointer
-      pcie: Add a PCIe capability version helper
-      vfio/pci: Enable AtomicOps completers on root ports
-
-Avihai Horon (1):
-      vfio: Fix null pointer dereference bug in vfio_bars_finalize()
-
-Cédric Le Goater (1):
-      linux-headers: update to v6.5-rc1
-
-Tony Krowiak (1):
-      s390x/ap: Wire up the device request notifier interface
-
-Zhenzhong Duan (5):
-      vfio/pci: Disable INTx in vfio_realize error path
-      vfio/migration: Change vIOMMU blocker from global to per device
-      vfio/migration: Free resources when vfio_migration_realize fails
-      vfio/migration: Remove print of "Migration disabled"
-      vfio/migration: Return bool type for vfio_migration_realize()
-
-Changes in v2:
-
- Fixed broken S-o-b in "linux-headers: update to v6.5-rc1" commit
-
- hw/vfio/pci.h                                  |   1 +
- include/hw/pci/pcie.h                          |   1 +
- include/hw/vfio/vfio-common.h                  |   5 +-
- include/standard-headers/drm/drm_fourcc.h      |  43 ++++++++
- include/standard-headers/linux/const.h         |   2 +-
- include/standard-headers/linux/pci_regs.h      |   1 +
- include/standard-headers/linux/vhost_types.h   |  16 +++
- include/standard-headers/linux/virtio_blk.h    |  18 ++--
- include/standard-headers/linux/virtio_config.h |   6 ++
- include/standard-headers/linux/virtio_net.h    |   1 +
- linux-headers/asm-arm64/bitsperlong.h          |  23 -----
- linux-headers/asm-arm64/kvm.h                  |  33 ++++++
- linux-headers/asm-generic/bitsperlong.h        |  13 ++-
- linux-headers/asm-generic/unistd.h             | 134 +++++++------------------
- linux-headers/asm-mips/unistd_n32.h            |   1 +
- linux-headers/asm-mips/unistd_n64.h            |   1 +
- linux-headers/asm-mips/unistd_o32.h            |   1 +
- linux-headers/asm-powerpc/unistd_32.h          |   1 +
- linux-headers/asm-powerpc/unistd_64.h          |   1 +
- linux-headers/asm-riscv/bitsperlong.h          |  13 ---
- linux-headers/asm-riscv/kvm.h                  | 134 ++++++++++++++++++++++++-
- linux-headers/asm-riscv/unistd.h               |   9 ++
- linux-headers/asm-s390/unistd_32.h             |   2 +
- linux-headers/asm-s390/unistd_64.h             |   2 +
- linux-headers/asm-x86/kvm.h                    |   3 +
- linux-headers/asm-x86/unistd_32.h              |   1 +
- linux-headers/asm-x86/unistd_64.h              |   1 +
- linux-headers/asm-x86/unistd_x32.h             |   1 +
- linux-headers/linux/const.h                    |   2 +-
- linux-headers/linux/kvm.h                      |  18 +++-
- linux-headers/linux/mman.h                     |  14 +++
- linux-headers/linux/psp-sev.h                  |   7 ++
- linux-headers/linux/userfaultfd.h              |  17 +++-
- linux-headers/linux/vfio.h                     |  27 +++++
- linux-headers/linux/vhost.h                    |  31 ++++++
- hw/pci/pcie.c                                  |   7 ++
- hw/vfio/ap.c                                   | 113 +++++++++++++++++++++
- hw/vfio/common.c                               |  51 +---------
- hw/vfio/migration.c                            |  51 +++++++---
- hw/vfio/pci-quirks.c                           |  10 +-
- hw/vfio/pci.c                                  |  91 ++++++++++++++++-
- 41 files changed, 678 insertions(+), 229 deletions(-)
 
