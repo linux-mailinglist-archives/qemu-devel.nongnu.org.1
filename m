@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB1974E03A
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 23:29:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0C574E047
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 23:35:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIyQ1-0007lc-5L; Mon, 10 Jul 2023 17:27:41 -0400
+	id 1qIyWS-00015A-Rg; Mon, 10 Jul 2023 17:34:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qIyPz-0007lL-DO; Mon, 10 Jul 2023 17:27:39 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIyWP-00014u-Ru
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:34:18 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qIyPv-0001mt-0o; Mon, 10 Jul 2023 17:27:39 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3fbc244d384so51572365e9.0; 
- Mon, 10 Jul 2023 14:27:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIyWO-0004Hb-3z
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 17:34:17 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fb4146e8fcso36656235e9.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 14:34:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689024451; x=1691616451;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FlZDtAUxorZUjAFvFdKBgpsVq2UqX+aQYXVngrJMv7w=;
- b=gFkWGTpu2ESQS4ZsfSwhoRNQp5wzCuQupGoZXjZJKGjuiyvGfWmzAWuO+KwVlko4zL
- ZIpAR85ET5qrCm00VaMMYRKfAIYYPLbl2GNWLB+3cmKRRM7veXtg/1zzaIVQJxg6x0F8
- G7aI7VPxgEKVdFwv6BVAn2qHxY4QZDB3x1JdYjLGFohIJ1OBPXYii/yUN2bqtQrpg6e6
- QdvM/qKij+OQSK6wDg03V8RvOdLv+wpB/9PBssDWT51KQIjNzAnOrn5hRALApS1B0vNy
- afo3iBSgkZC3A83u7gVQH+d7LOUc94MYoAHvkD5ag2bfSOPRD8VeoD/g8tAcDfoj6OlA
- x6cg==
+ d=linaro.org; s=google; t=1689024854; x=1691616854;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1ej/ZrJKNzRK5fJYVnzzMd3SD9pNqf6Q32kwaKd6UBw=;
+ b=eC2+KVP1GQOqZ0R217mPiUQUbsk4Y98q+Wv4kFe0u5bOI/Rg4QTtgIHIDqfgEXMPRT
+ Z1W+kRaEvyT9r7B2kQFSXjPPNBbv2ysluYPHnySsjK3T27Ts3BoCbL8wjzXx6X1ua7/r
+ mgtPSM/bB3iJqhYicqYrUurwBCL9krUTtDfzXy/Yo/BHRs466uvQoGcvHZyyY9Y5oMqn
+ Mua8ta08p0etCMOg/iqJA0gXIu11COrUsr/Lq1o5ty+/Gd6fP9gKlFK8g60Y8WjHAvu7
+ /GrDvygvZdaPSKOERQ59qQAuM2Gg8oUq9KCOBgoYxWcKlV2fW/gX0sOojqYie2ZGNkUK
+ ODng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689024451; x=1691616451;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FlZDtAUxorZUjAFvFdKBgpsVq2UqX+aQYXVngrJMv7w=;
- b=LoxIqYRBYOlnIZMwSMmulzis+Ej9clDnSKGenUtVErwP2P7Kbd6Rxe77JYFUDU0JJP
- /1Y2Oich8h8tSZirAYOx8JGwoF+s03icwQ7jqAcNgzLix8du7DHExLybn8zNcI45rEEU
- d/x3OK2SzJClDElNq8CGqxFYVy8WgL/11cZSytduZIoVvGO4JtpsyB7HtQtHZ2PAE3Y4
- cea4/yqTzbifKlj8JvY2pW13Sz7s0HPixQYyftGoeWQpEcM25tePPxeibhwBrcX19c6i
- kEmZCHDM9zWhZvekMWc0GNKfHPSiFNgDtTJVKjzbSpAXnKtz6M2b8IveO8WEXrNv/Rqb
- RrvQ==
-X-Gm-Message-State: ABy/qLY+hzizNV4GSwfH4CDRzMpmiH1Qs9O++p4ayTtmlMIzMsd7MZ74
- ZibLkQcQq44IQpV/0lONPeXvSibxuVk=
-X-Google-Smtp-Source: APBJJlHxREfTNXCL5tMVdfSHARVm6ClnGX+f/pU4jZmxWQLPejNrxN/zJDylBCD8KCurnLzEdZZyTA==
-X-Received: by 2002:a1c:e915:0:b0:3fb:b5dc:dab1 with SMTP id
- q21-20020a1ce915000000b003fbb5dcdab1mr11327651wmc.39.1689024450438; 
- Mon, 10 Jul 2023 14:27:30 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-013-218-005.77.13.pool.telefonica.de.
- [77.13.218.5]) by smtp.gmail.com with ESMTPSA id
- x10-20020a05600c21ca00b003fa96fe2bebsm770780wmj.41.2023.07.10.14.27.29
+ d=1e100.net; s=20221208; t=1689024854; x=1691616854;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1ej/ZrJKNzRK5fJYVnzzMd3SD9pNqf6Q32kwaKd6UBw=;
+ b=EzljiKSFOGgGotq2g+SJTo07MnpnHcg1IBfue3H7hN4hRP3DrlNyCdI9+w1WUWSHVe
+ xpqbEY5aLrob51ml1Xt/cQzxfhtDRMEuddLO5xJSJTALOzxLsenOzRboYrWIibkrars4
+ rrAwU2x6Ve3RgqEzdVWhNvrtLX/qQf+DKJ+nsBc+hbU3/uTGURfciX/zxGH9NG0c4AiK
+ HJDxWkg6YNIduOwfJBMms3hCsuMxyMm5l0fH6uOBwgMVOuYiSb4V/USNGKCcVzplz/Qy
+ htX0rahSdz2AXjx55SKFmYRvM5Zi5iax0RIYIb1qqg12tH7o5TEkpOLMHaM6kADx1axq
+ /gqg==
+X-Gm-Message-State: ABy/qLYuGe8x++TbPKTiWySksTyOXjbVk0ICZayHh636hQIVv4I2mQAM
+ FC0bqPlli+mJAAHqVF+VuyKghakAP+smXvOIxKPC4w==
+X-Google-Smtp-Source: APBJJlEpmNYyxJ0L7GJNMaaoY+egkwblzklWtY2qvNQ1Ii6CGlCyFnhPyknuoggRB9EyxsGPRJdmzg==
+X-Received: by 2002:a05:600c:4f85:b0:3fb:ebe2:6f5f with SMTP id
+ n5-20020a05600c4f8500b003fbebe26f5fmr12460848wmq.13.1689024854272; 
+ Mon, 10 Jul 2023 14:34:14 -0700 (PDT)
+Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
+ [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
+ u19-20020a05600c00d300b003fc02e8ea68sm8741427wmm.13.2023.07.10.14.34.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 14:27:29 -0700 (PDT)
-Date: Mon, 10 Jul 2023 21:27:22 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-CC: Jiaxun Yang <jiaxun.yang@flygoat.com>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-ppc@nongnu.org, qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
- Huacai Chen <chenhuacai@kernel.org>, BALATON Zoltan <balaton@eik.bme.hu>
-Subject: Re: [PATCH v3 0/7] VIA and general PCI IDE cleanup
-In-Reply-To: <20230531211043.41724-1-shentey@gmail.com>
-References: <20230531211043.41724-1-shentey@gmail.com>
-Message-ID: <C8104E7E-5DCD-473F-A3E3-AA8773B6B97C@gmail.com>
+ Mon, 10 Jul 2023 14:34:13 -0700 (PDT)
+Message-ID: <bc3e2c9b-a993-f4f1-450f-d3539367a58a@linaro.org>
+Date: Mon, 10 Jul 2023 23:34:10 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] target/mips: Implement Loongson CSR instructions
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: yangxiaojuan@loongson.cn, gaosong@loongson.cn, chenhuacai@kernel.org
+References: <20230521214832.20145-1-jiaxun.yang@flygoat.com>
+ <20230521214832.20145-2-jiaxun.yang@flygoat.com>
+ <d7fc3f2d-d3ff-a59e-7683-80eccbace371@linaro.org>
+In-Reply-To: <d7fc3f2d-d3ff-a59e-7683-80eccbace371@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,136 +94,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 10/7/23 22:11, Philippe Mathieu-Daudé wrote:
+> On 21/5/23 23:48, Jiaxun Yang wrote:
+>> Loongson introduced CSR instructions since 3A4000, which looks
+>> similar to IOCSR and CPUCFG instructions we seen in LoongArch.
+>>
+>> Unfortunately we don't have much document about those instructions,
+>> bit fields of CPUCFG instructions and IOCSR registers can be found
+>> at 3A4000's user manual, while instruction encodings can be found
+>> at arch/mips/include/asm/mach-loongson64/loongson_regs.h from
+>> Linux Kernel.
+>>
+>> Our predefined CPUCFG bits are differ from actual 3A4000, since
+>> we can't emulate all CPUCFG features present in 3A4000 for now,
+>> we just enable bits for what we have in TCG.
+>>
+>> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+>> ---
+>>   target/mips/cpu-defs.c.inc           |  9 ++++
+>>   target/mips/cpu.c                    |  8 ++++
+>>   target/mips/cpu.h                    | 40 ++++++++++++++++
+>>   target/mips/helper.h                 |  4 ++
+>>   target/mips/internal.h               |  2 +
+>>   target/mips/tcg/lcsr.decode          | 17 +++++++
+>>   target/mips/tcg/lcsr_translate.c     | 69 ++++++++++++++++++++++++++++
+>>   target/mips/tcg/meson.build          |  2 +
+>>   target/mips/tcg/op_helper.c          | 16 +++++++
+>>   target/mips/tcg/sysemu/lcsr_helper.c | 45 ++++++++++++++++++
+>>   target/mips/tcg/sysemu/meson.build   |  4 ++
+>>   target/mips/tcg/sysemu_helper.h.inc  |  8 ++++
+>>   target/mips/tcg/translate.c          |  3 ++
+>>   target/mips/tcg/translate.h          |  7 +++
+>>   14 files changed, 234 insertions(+)
+>>   create mode 100644 target/mips/tcg/lcsr.decode
+>>   create mode 100644 target/mips/tcg/lcsr_translate.c
+>>   create mode 100644 target/mips/tcg/sysemu/lcsr_helper.c
+> 
+> 
+>> @@ -1162,6 +1192,10 @@ typedef struct CPUArchState {
+>>       QEMUTimer *timer; /* Internal timer */
+>>       Clock *count_clock; /* CP0_Count clock */
+>>       target_ulong exception_base; /* ExceptionBase input to the core */
+>> +
+>> +    /* Loongson IOCSR memory */
+>> +    AddressSpace address_space_iocsr;
+>> +    MemoryRegion system_iocsr;
+>>   } CPUMIPSState;
+> 
+> Guarding to avoid on user emulation:
+> 
+> ../target/mips/cpu.h:1198:22: error: field ‘as’ has incomplete type
+>   1198 |         AddressSpace as;
+>        |                      ^~
+> ../target/mips/cpu.h:1199:22: error: field ‘mr’ has incomplete type
+>   1199 |         MemoryRegion mr;
+>        |                      ^~
+> 
 
+and:
 
-Am 31=2E Mai 2023 21:10:36 UTC schrieb Bernhard Beschow <shentey@gmail=2Ec=
-om>:
->This series is split off from a more general PCI IDE refactoring aiming f=
-or a
->
->common implementation of the PCI IDE controller specification for all
->
->TYPE_PCI_IDE models [1]=2E
->
->
->
->The first three patches resolve a circular dependency between the VIA IDE=
+../../target/mips/cpu.c: In function ‘mips_cpu_initfn’:
+../../target/mips/cpu.c:513:9: error: implicit declaration of function 
+‘memory_region_init_io’ [-Werror=implicit-function-declaration]
+   513 |         memory_region_init_io(&env->iocsr.mr, OBJECT(cpu), NULL,
+       |         ^~~~~~~~~~~~~~~~~~~~~
+../../target/mips/cpu.c:513:9: error: nested extern declaration of 
+‘memory_region_init_io’ [-Werror=nested-externs]
+../../target/mips/cpu.c:513:35: error: ‘CPUMIPSState’ {aka ‘struct 
+CPUArchState’} has no member named ‘iocsr’
+   513 |         memory_region_init_io(&env->iocsr.mr, OBJECT(cpu), NULL,
+       |                                   ^~
+../../target/mips/cpu.c:515:9: error: implicit declaration of function 
+‘address_space_init’ [-Werror=implicit-function-declaration]
+   515 |         address_space_init(&env->iocsr.as,
+       |         ^~~~~~~~~~~~~~~~~~
+../../target/mips/cpu.c:515:9: error: nested extern declaration of 
+‘address_space_init’ [-Werror=nested-externs]
+../../target/mips/cpu.c:515:32: error: ‘CPUMIPSState’ {aka ‘struct 
+CPUArchState’} has no member named ‘iocsr’
+   515 |         address_space_init(&env->iocsr.as,
+       |                                ^~
+../../target/mips/cpu.c:516:33: error: ‘CPUMIPSState’ {aka ‘struct 
+CPUArchState’} has no member named ‘iocsr’
+   516 |                             &env->iocsr.mr, "IOCSR");
+       |                                 ^~
+cc1: all warnings being treated as errors
 
->
->controller and its south bridge=2E The next three patches resolves redund=
-ant code
->
->accross all TYPE_PCI_IDE models=2E The last patch modernizes VM state set=
-up in
->
->PIIX IDE=2E
->
->
->
->Testing done:
->
->* `make check`
->
->* `make check-avocado`
->
->* `qemu-system-ppc -machine pegasos2 -rtc base=3Dlocaltime -device \
->
->   ati-vga,guest_hwcursor=3Dtrue,romfile=3D"" -cdrom morphos-3=2E17=2Eiso=
- \
->
->   -bios pegasos2=2Erom`
->
->   The machine booted successfully and a startup sound was hearable
->
->* `qemu-system-ppc -machine sam460ex -rtc base=3Dlocaltime -drive \
->
->   if=3Dnone,id=3Dcd,file=3Dmorphos-3=2E17=2Eiso,format=3Draw -device \
->
->   ide-cd,drive=3Dcd,bus=3Dide=2E1`
->
->   The machine booted successfully into graphical desktop environment
->
->
->
->v3:
->
->* Fix formatting (Mark) =2E=2E=2E and split into two commits (Bernhard)
->
->
->
->v2:
->
->* Add missing Signed-off-by tag to last commit (Zoltan)
->
->
->
->Changes since [1]:
->
->* Turn legacy IRQs into named GPIOs (Mark)
->
->* Don't make VIA IDE legacy IRQs routable; just wire up in host device (Z=
-oltan)
->
->* Rename extracted bmdma_clear_status() (Zoltan)
->
->   =2E=2E=2E to bmdma_status_writeb() (Mark)
->
->
->
->[1] https://lore=2Ekernel=2Eorg/qemu-devel/20230422150728=2E176512-1-shen=
-tey@gmail=2Ecom/
->
->
->
->Bernhard Beschow (7):
->
->  hw/ide/pci: Expose legacy interrupts as named GPIOs
->
->  hw/ide/via: Wire up IDE legacy interrupts in host device
->
->  hw/isa/vt82c686: Remove via_isa_set_irq()
->
->  hw/ide: Extract IDEBus assignment into bmdma_init()
->
->  hw/ide: Extract bmdma_status_writeb()
->
->  hw/ide/pci: Replace some magic numbers by constants
->
->  hw/ide/piix: Move registration of VMStateDescription to DeviceClass
->
-
-Ping
-
-AFAICS all patches are reviewed=2E
-
-Best regards,
-Bernhard
-
->
->
-> include/hw/ide/pci=2Eh      |  1 +
->
-> include/hw/isa/vt82c686=2Eh |  2 --
->
-> hw/ide/cmd646=2Ec           |  3 +--
->
-> hw/ide/pci=2Ec              | 16 ++++++++++++++++
->
-> hw/ide/piix=2Ec             |  8 +++-----
->
-> hw/ide/sii3112=2Ec          |  7 ++-----
->
-> hw/ide/via=2Ec              |  9 +++++----
->
-> hw/isa/vt82c686=2Ec         | 11 +++++------
->
-> 8 files changed, 33 insertions(+), 24 deletions(-)
->
->
->
->-- >
->2=2E40=2E1
->
->
->
+:(
 
