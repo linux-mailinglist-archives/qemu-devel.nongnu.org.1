@@ -2,56 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905EC74CF04
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8181D74CF12
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:50:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIle9-0006MU-BW; Mon, 10 Jul 2023 03:49:25 -0400
+	id 1qIleG-0006V3-K9; Mon, 10 Jul 2023 03:49:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=Zxd8=C4=redhat.com=clg@ozlabs.org>)
- id 1qIldr-0006MC-If
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:49:08 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1qIlds-0006MS-R1
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:49:10 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=Zxd8=C4=redhat.com=clg@ozlabs.org>)
- id 1qIldp-0006pM-Gp
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:49:07 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qzx2x716Tz4wy2;
- Mon, 10 Jul 2023 17:48:57 +1000 (AEST)
+ id 1qIldp-0006q1-RA
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:49:08 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Qzx305gzZz4wy3;
+ Mon, 10 Jul 2023 17:49:00 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qzx2w3LXkz4wy1;
- Mon, 10 Jul 2023 17:48:56 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Qzx2y3T4Yz4wy1;
+ Mon, 10 Jul 2023 17:48:58 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Alex Williamson <alex.williamson@redhat.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>,
+ Joao Martins <joao.m.martins@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 01/11] hw/vfio/pci-quirks: Sanitize capability pointer
-Date: Mon, 10 Jul 2023 09:48:38 +0200
-Message-ID: <20230710074848.456453-2-clg@redhat.com>
+Subject: [PULL 02/11] vfio/pci: Disable INTx in vfio_realize error path
+Date: Mon, 10 Jul 2023 09:48:39 +0200
+Message-ID: <20230710074848.456453-3-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230710074848.456453-1-clg@redhat.com>
 References: <20230710074848.456453-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=Zxd8=C4=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,56 +70,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Coverity reports a tained scalar when traversing the capabilities
-chain (CID 1516589).  In practice I've never seen a device with a
-chain so broken as to cause an issue, but it's also pretty easy to
-sanitize.
+When vfio realize fails, INTx isn't disabled if it has been enabled.
+This may confuse host side with unhandled interrupt report.
 
-Fixes: f6b30c1984f7 ("hw/vfio/pci-quirks: Support alternate offset for GPUDirect Cliques")
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: c5478fea27ac ("vfio/pci: Respond to KVM irqchip change notifier")
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/pci-quirks.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ hw/vfio/pci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/vfio/pci-quirks.c b/hw/vfio/pci-quirks.c
-index 0ed2fcd53152..f4ff83680572 100644
---- a/hw/vfio/pci-quirks.c
-+++ b/hw/vfio/pci-quirks.c
-@@ -1530,6 +1530,12 @@ const PropertyInfo qdev_prop_nv_gpudirect_clique = {
-     .set = set_nv_gpudirect_clique_id,
- };
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index ab6645ba60af..31c4ab250fbe 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -3220,6 +3220,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+     return;
  
-+static bool is_valid_std_cap_offset(uint8_t pos)
-+{
-+    return (pos >= PCI_STD_HEADER_SIZEOF &&
-+            pos <= (PCI_CFG_SPACE_SIZE - PCI_CAP_SIZEOF));
-+}
-+
- static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
- {
-     PCIDevice *pdev = &vdev->pdev;
-@@ -1563,7 +1569,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
-      */
-     ret = pread(vdev->vbasedev.fd, &tmp, 1,
-                 vdev->config_offset + PCI_CAPABILITY_LIST);
--    if (ret != 1 || !tmp) {
-+    if (ret != 1 || !is_valid_std_cap_offset(tmp)) {
-         error_setg(errp, "NVIDIA GPUDirect Clique ID: error getting cap list");
-         return -EINVAL;
-     }
-@@ -1575,7 +1581,7 @@ static int vfio_add_nv_gpudirect_cap(VFIOPCIDevice *vdev, Error **errp)
-             d4_conflict = true;
-         }
-         tmp = pdev->config[tmp + PCI_CAP_LIST_NEXT];
--    } while (tmp);
-+    } while (is_valid_std_cap_offset(tmp));
- 
-     if (!c8_conflict) {
-         pos = 0xC8;
+ out_deregister:
++    if (vdev->interrupt == VFIO_INT_INTx) {
++        vfio_intx_disable(vdev);
++    }
+     pci_device_set_intx_routing_notifier(&vdev->pdev, NULL);
+     if (vdev->irqchip_change_notifier.notify) {
+         kvm_irqchip_remove_change_notifier(&vdev->irqchip_change_notifier);
 -- 
 2.41.0
 
