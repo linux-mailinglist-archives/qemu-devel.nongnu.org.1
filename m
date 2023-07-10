@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC0874E1FD
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B42F74E1D9
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:07:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzwo-0004eF-AW; Mon, 10 Jul 2023 19:05:38 -0400
+	id 1qIzwq-0004qq-6y; Mon, 10 Jul 2023 19:05:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwk-0004Tb-RG
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwn-0004YB-A3
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwj-0004uh-5Q
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwl-0004vV-Nl
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030332;
+ s=mimecast20190719; t=1689030335;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IA9Q76kZr4fcEo5oRA3QJtuIiFw5g8VxB1RjNQ65Hy4=;
- b=Vc3PTFVvHffqO2FAeVhePg47edwVOQvJCJnzyQilWSSg5Rg4J/BgFyJreXtN3D6ig6fnUz
- BoFG7UfbLejzeTBp5kq7CAhkTs0lXqt8cl3VDGvIdmiMDWmzbprZsN6qntaoPBhTfqqETR
- ReAew6Xc7pnLnnwcm340tvd+7v+xoDU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7IFqp1H6rwpWHqy0sAsAkOpjQIWvgkCXKQLg3lFhmnQ=;
+ b=O6OGNrIm11Yowt6a+1ws0quehj/jHNaf1EqjbFj/wDptNVQZiISpSIYShsP6+RHbKoNGw/
+ QWIlDGVVJR1VfdhQS6zxfxqKHParHBw/8a0SOKErladoS1dJwhAE5o+++brJT1ENliWpTx
+ /p6x/LovqIZhrGK5HjRO0ATSLbiQqhg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-bpKJyEv5OWC-kNDcLgLVOQ-1; Mon, 10 Jul 2023 19:05:31 -0400
-X-MC-Unique: bpKJyEv5OWC-kNDcLgLVOQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-315a03cae87so488897f8f.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:05:31 -0700 (PDT)
+ us-mta-488-YxgyPDhrPpWNX9snPkN0rg-1; Mon, 10 Jul 2023 19:05:33 -0400
+X-MC-Unique: YxgyPDhrPpWNX9snPkN0rg-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-3113da8b778so2713972f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:05:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030330; x=1691622330;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IA9Q76kZr4fcEo5oRA3QJtuIiFw5g8VxB1RjNQ65Hy4=;
- b=MzvAZtRYajQ4vtQadrSQtGpWkbbjNZRrLWXYEhV2lepBbHgb8qLDNDQyrfWS9LrZ5u
- xbHCuOzQd0M275TaMxRcYHR7Vld2tgb3n90XgtHIFCsmPnE6E9sw+t81KqjkKWTOHw2a
- dAg2CNMLf7mkDpRIkYf6IxVV7RzhZ8BzU8bh55+PUSBXe9TFH5o+Pzr0QGIlZ7pSCCEI
- gFA8hROiWS+OE7YNiMDlNSVt3fOQyNQ1efJQ3vTsvU0ji2Mdt+hITxg+xEnRJwIEYGw3
- j/aKRAbDV+j3sdhnKDJGxO7q80bYsQrzD2epUKvgNyV0l71UlrXJ1QewRhN5SRg0V3YM
- utmQ==
-X-Gm-Message-State: ABy/qLYy1HWDZhELVUl4yunh4yBB1e5O28QMqI+I9tsrwUApGVMMIa1m
- BMn17Jrszypb/Xl2sTCsCa0ckC4VbZE2n9CYLTxPTYZXLuODLHERKO+VxzPeKUHLy8XTRlQYxQ6
- WcOPHggp5Cu5zFYmfiBeHuDanThaVS3JBQD3dL4r2IqdgIxgyctXJTFXnlfq4ovyQVxne
-X-Received: by 2002:adf:fa89:0:b0:314:3f86:dd9f with SMTP id
- h9-20020adffa89000000b003143f86dd9fmr14838048wrr.25.1689030329940; 
- Mon, 10 Jul 2023 16:05:29 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGhVUyEmEBU4jLc+8sJMXd8ha834ZRA98HO1uMkJlnDQw14h+7/dTd57h3RuedLeZ8PZam6FQ==
-X-Received: by 2002:adf:fa89:0:b0:314:3f86:dd9f with SMTP id
- h9-20020adffa89000000b003143f86dd9fmr14838036wrr.25.1689030329750; 
- Mon, 10 Jul 2023 16:05:29 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689030332; x=1691622332;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7IFqp1H6rwpWHqy0sAsAkOpjQIWvgkCXKQLg3lFhmnQ=;
+ b=LbUixos+P3sxUtv4lBpOtILq2wuK1HvtaioQAYhfZKU9TOIYrGKoCNoj+N7YP9PgcS
+ 6Sth3mraeypcevGKX+uHtLm/FLQcFZTVX7P3l10OAnBskHl+gS1h49BUuByAuL+wv2ht
+ XHKUeW3WjMJbtNfQYm/DFVVCbhINZqm+6cQKzDcCzOnlWNNXCq+ilqEQXemrczAbkjiu
+ 5FhRRpnmpYh//Zu0Yky2UqSyI9yuZrXYyttYoU0QBcm2Z88sMrFMf1O+WrWiri+UYvRS
+ XXBXBWfeB2u3c/8ZfqcKcGbB0LFuI2hDC3UDYRbrUEEyydccE+3717+iaVbvhB/r4VMb
+ pTPg==
+X-Gm-Message-State: ABy/qLaqnU0Fie+MROk2atH6LK7FahmNkKtDZVadwe4qQkPXJcmXMckO
+ o828MsvSrnaHczx4tObnP1dqA6SQJdeZsiaMWN9XrWa3stXjKlVhyxvtky5tT837DU4+c9ZzrNa
+ u3tByY1Mb2UINpSOYPNebMaKX1ImhI1Qj8gHUPw+xdOu2RVcFxRLSWOWqTHl29VmFrae3
+X-Received: by 2002:a5d:504d:0:b0:314:38e4:259f with SMTP id
+ h13-20020a5d504d000000b0031438e4259fmr12382617wrt.37.1689030332363; 
+ Mon, 10 Jul 2023 16:05:32 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHcXAgXOwD3VyqE6/cvZAiiXSSEdFZhqHEUDFt6FzIg+tGufiHMRPpr/zwc1B76TYLtuGcNbA==
+X-Received: by 2002:a5d:504d:0:b0:314:38e4:259f with SMTP id
+ h13-20020a5d504d000000b0031438e4259fmr12382601wrt.37.1689030332143; 
+ Mon, 10 Jul 2023 16:05:32 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- v2-20020adfe4c2000000b0031434c08bb7sm567559wrm.105.2023.07.10.16.05.28
+ c3-20020adffb03000000b0031432f1528csm589189wrr.45.2023.07.10.16.05.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:05:29 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:05:27 -0400
+ Mon, 10 Jul 2023 16:05:31 -0700 (PDT)
+Date: Mon, 10 Jul 2023 19:05:29 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Hawkins Jiawei <yin31149@gmail.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 64/66] vdpa: Allow VIRTIO_NET_F_CTRL_RX in SVQ
-Message-ID: <ea6eec497921f9c0db259445fc44429a743d0665.1689030052.git.mst@redhat.com>
+ Hawkins Jiawei <yin31149@gmail.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 65/66] vdpa: Restore packet receive filtering state relative
+ with _F_CTRL_RX_EXTRA feature
+Message-ID: <4fd180c7bb476d0793f3849ae4e6c0f932b6e3ab.1689030052.git.mst@redhat.com>
 References: <cover.1689030052.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1689030052.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -104,29 +101,117 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hawkins Jiawei <yin31149@gmail.com>
 
-Enable SVQ with VIRTIO_NET_F_CTRL_RX feature.
+This patch refactors vhost_vdpa_net_load_rx() to
+restore the packet receive filtering state in relation to
+VIRTIO_NET_F_CTRL_RX_EXTRA feature at device's startup.
 
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <5d6173a6d7c4c514c98362b404c019f52d73b06c.1688743107.git.yin31149@gmail.com>
+Message-Id: <abddc477a476f756de6e3d24c0e9f7b21c99a4c1.1688797728.git.yin31149@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- net/vhost-vdpa.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/vhost-vdpa.c | 88 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 7610589a60..5cd671bfb9 100644
+index 5cd671bfb9..0c1c0760a7 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -110,6 +110,7 @@ static const uint64_t vdpa_svq_device_features =
-     BIT_ULL(VIRTIO_NET_F_MRG_RXBUF) |
-     BIT_ULL(VIRTIO_NET_F_STATUS) |
-     BIT_ULL(VIRTIO_NET_F_CTRL_VQ) |
-+    BIT_ULL(VIRTIO_NET_F_CTRL_RX) |
-     BIT_ULL(VIRTIO_NET_F_MQ) |
-     BIT_ULL(VIRTIO_F_ANY_LAYOUT) |
-     BIT_ULL(VIRTIO_NET_F_CTRL_MAC_ADDR) |
+@@ -873,6 +873,94 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
+         }
+     }
+ 
++    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_RX_EXTRA)) {
++        return 0;
++    }
++
++    /*
++     * According to virtio_net_reset(), device turns all-unicast mode
++     * off by default.
++     *
++     * Therefore, QEMU should only send this CVQ command if the driver
++     * sets all-unicast mode on, different from the device's defaults.
++     *
++     * Note that the device's defaults can mismatch the driver's
++     * configuration only at live migration.
++     */
++    if (n->alluni) {
++        dev_written = vhost_vdpa_net_load_rx_mode(s,
++                                            VIRTIO_NET_CTRL_RX_ALLUNI, 1);
++        if (dev_written < 0) {
++            return dev_written;
++        }
++        if (*s->status != VIRTIO_NET_OK) {
++            return -EIO;
++        }
++    }
++
++    /*
++     * According to virtio_net_reset(), device turns non-multicast mode
++     * off by default.
++     *
++     * Therefore, QEMU should only send this CVQ command if the driver
++     * sets non-multicast mode on, different from the device's defaults.
++     *
++     * Note that the device's defaults can mismatch the driver's
++     * configuration only at live migration.
++     */
++    if (n->nomulti) {
++        dev_written = vhost_vdpa_net_load_rx_mode(s,
++                                            VIRTIO_NET_CTRL_RX_NOMULTI, 1);
++        if (dev_written < 0) {
++            return dev_written;
++        }
++        if (*s->status != VIRTIO_NET_OK) {
++            return -EIO;
++        }
++    }
++
++    /*
++     * According to virtio_net_reset(), device turns non-unicast mode
++     * off by default.
++     *
++     * Therefore, QEMU should only send this CVQ command if the driver
++     * sets non-unicast mode on, different from the device's defaults.
++     *
++     * Note that the device's defaults can mismatch the driver's
++     * configuration only at live migration.
++     */
++    if (n->nouni) {
++        dev_written = vhost_vdpa_net_load_rx_mode(s,
++                                            VIRTIO_NET_CTRL_RX_NOUNI, 1);
++        if (dev_written < 0) {
++            return dev_written;
++        }
++        if (*s->status != VIRTIO_NET_OK) {
++            return -EIO;
++        }
++    }
++
++    /*
++     * According to virtio_net_reset(), device turns non-broadcast mode
++     * off by default.
++     *
++     * Therefore, QEMU should only send this CVQ command if the driver
++     * sets non-broadcast mode on, different from the device's defaults.
++     *
++     * Note that the device's defaults can mismatch the driver's
++     * configuration only at live migration.
++     */
++    if (n->nobcast) {
++        dev_written = vhost_vdpa_net_load_rx_mode(s,
++                                            VIRTIO_NET_CTRL_RX_NOBCAST, 1);
++        if (dev_written < 0) {
++            return dev_written;
++        }
++        if (*s->status != VIRTIO_NET_OK) {
++            return -EIO;
++        }
++    }
++
+     return 0;
+ }
+ 
 -- 
 MST
 
