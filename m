@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F2774D580
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B77874D584
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:33:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIq42-0007dp-JP; Mon, 10 Jul 2023 08:32:26 -0400
+	id 1qIq44-0007eS-6Q; Mon, 10 Jul 2023 08:32:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq40-0007db-OO
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:32:24 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1qIq42-0007ds-3D
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:32:26 -0400
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq3x-0002VS-B6
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:32:24 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6687096c6ddso2297467b3a.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:32:20 -0700 (PDT)
+ id 1qIq40-0002W9-Kq
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:32:25 -0400
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-6b74faaac3bso3438880a34.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:32:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688992339; x=1691584339;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=TdtHsOJcF+D5xyXCqcabhwjiyRghNgTmTzEoYZIpTpc=;
- b=f776sEXGnaim/OusM4SIBCHxKQFaB1CDA2KHHH5OPmUYHf4ZG1GDI7CAlei+VfUgiQ
- OZQ5IDIPYgLGyr6AlbLe2OGr/4qu+zOFZngBTjEAeA3xxi8UDMER+6y6v3QmSvq2tUFm
- UXWCXzwgM0NousRYN3SV+VWdARl6617ioC6m8LPZk1v0KFzZts6qladi6sE/MP309DOb
- vEypQDOing/FPEHRMxlh+1D9BbnjduE+Elqx6l+aTE1Jl+9MBei6gUNIkA5jQSbem9ou
- MRxjNYzZwSNU6/kH8/JGq1y+EZ8nAA+14IIdmBr6dyKnD/UWHEYFAEzqlJvzE1eupHSP
- 80fA==
+ d=gmail.com; s=20221208; t=1688992343; x=1691584343;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XTDP2PG48KWqsuK9vRwIb1bIWG5ubnW3ot9jxTLFPLA=;
+ b=XsLL8Ze3pnb6Zlw/1W4kpFvEQodtchpuyLR8krWDFrV70CPY3Ss/42rcj7Bp3HogP+
+ 88PFqN+l2vuHwwa7r2Q61Q7L5h0+UatfIunwcsLtqDyMZMZ5CcT/OmOWUSE/wXOSKr/D
+ +BWU3ZPmOGwJKYcPzDU2cnbUlB9vhq5U2DL0XxUgyTq2agaIOBVfk05y3eNLSQjhH9QF
+ az/ey6/1RN2bOmlz/Lkf+X66wlwGeMPscNoFRa5OnYg3XYQRtDHVZJeYstvFnCTUeiDE
+ +tegPoaHepHcDsdsMyXaXVgnftobyw+fJE/b2X39haFyWJlKhEpVX0pz8STferZnx+lg
+ JRmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688992339; x=1691584339;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TdtHsOJcF+D5xyXCqcabhwjiyRghNgTmTzEoYZIpTpc=;
- b=kbM62vQQ/BnRHwpCSFvKdYn+o0OlEZrL4mO/MOBJn3ESX25poc/EaRIcappuWw1K9a
- QM0rOJwwNppg/UIgNGsoM+wfjlLR1QrYUjnlqt7/GIYSde5yeMdZe9MHK2waKzgRZE09
- G7RFnoD+dKh/cMzJUtG5JidXstqiTM3rtQ2MT2m8TVVpnDl2qUwy5Sl9NkBNtEQl4poa
- TJa3ktz8u4yKa48waDUwWwJuRixe58grhvJxRn6Et4x8iBLc4+cx8e2oko8slQe2dEP9
- IZ/luSOar7RA5Wc0uGBQ8FnEIGVqj67B/FvvOPYEZHYkpT+0qUaHfJahvi5XqZixuOda
- neKA==
-X-Gm-Message-State: ABy/qLbXW2+b+D2qtkw/R0P8zQ8VuUBR+pi+4+KFuKuiLe/CMB1mKeBN
- JKyNHP4U3tPoM5Faohcje8A0eog3rcJnIg==
-X-Google-Smtp-Source: APBJJlHHTxABWd9j7pqZmGllP1BiMJ6f3lQ/8wAVN8GOKVUHq5xmIphp4GFbt0UlMgQk9fKcinE5WQ==
-X-Received: by 2002:a05:6a00:2e04:b0:682:140c:245b with SMTP id
- fc4-20020a056a002e0400b00682140c245bmr12310016pfb.5.1688992339489; 
- Mon, 10 Jul 2023 05:32:19 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1688992343; x=1691584343;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XTDP2PG48KWqsuK9vRwIb1bIWG5ubnW3ot9jxTLFPLA=;
+ b=DTfbFVh4C8D1RDnqpTtnySnLFiPor9+kg/HBbc8NoDbvTeW5qLhYd4bsh408LkJ+w1
+ 8JycGm2yj4nu3jtwHaGCT0xIJXYEOTl0pMqGozymuQMgD5JFX1madQPu2QWLQe/YUeua
+ UHIpbszeMNjdffRtqv4ejBf/MkOT89BSFcAWYpaWNSnCz2gXsRRSGYBdXTJ6Uv++DvV/
+ 6U6wL5ESp+UoQnN0izFLei9UoJDwiDOF4yW28Dol+hoV1996PE/IOpWu9BC413+3z4uo
+ fqQfhgFYhBXCWaJ2H3RAuf57MZVqFzQTkA+j2C01s1pisqIAxO2d6GI75UUBx4U26fzi
+ CRmA==
+X-Gm-Message-State: ABy/qLbx1Qyoh7+LpOuY8Hyc+W9f8ph40dw/lhZDc3paxPuEvxnughQn
+ OK746XBI7mq7Jan/kCYZRR/4oWl6iW6jAg==
+X-Google-Smtp-Source: APBJJlGgsYcY9fgBjezwx3TSOAvYU7mHdbgnU01KVYfaVN7Ulx+cY4K63xR5VyFMP3SGz/IpHF6Pyw==
+X-Received: by 2002:a05:6830:144d:b0:6b9:6680:ad82 with SMTP id
+ w13-20020a056830144d00b006b96680ad82mr2159270otp.23.1688992343110; 
+ Mon, 10 Jul 2023 05:32:23 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.32.17
+ i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.32.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 05:32:18 -0700 (PDT)
+ Mon, 10 Jul 2023 05:32:22 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 00/54] riscv-to-apply queue
-Date: Mon, 10 Jul 2023 22:31:11 +1000
-Message-Id: <20230710123205.2441106-1-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>
+Subject: [PULL 01/54] target/riscv: Use xl instead of mxl for disassemble
+Date: Mon, 10 Jul 2023 22:31:12 +1000
+Message-Id: <20230710123205.2441106-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230710123205.2441106-1-alistair.francis@wdc.com>
+References: <20230710123205.2441106-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=alistair23@gmail.com; helo=mail-ot1-x329.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,178 +99,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit fcb237e64f9d026c03d635579c7b288d0008a6e5:
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
-  Merge tag 'pull-vfio-20230710' of https://github.com/legoater/qemu into staging (2023-07-10 09:17:06 +0100)
+Disassemble function(plugin_disas, target_disas, monitor_disas) will
+always call set_disas_info before disassembling instructions.
 
-are available in the Git repository at:
+plugin_disas  and target_disas will always be called under a TB, which
+has the same XLEN.
 
-  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20230710-1
+We can't ensure that monitor_disas will always be called under a TB,
+but current XLEN will still be a better choice, thus we can ensure at
+least the disassemble of the nearest one TB is right.
 
-for you to fetch changes up to a47842d16653b4f73b5d56ff0c252dd8a329481b:
+Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
+Message-Id: <20230612111034.3955227-2-christoph.muellner@vrull.eu>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ target/riscv/cpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-  riscv: Add support for the Zfa extension (2023-07-10 22:29:20 +1000)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 4035fe0e62..3faf703131 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -858,9 +858,10 @@ static void riscv_cpu_reset_hold(Object *obj)
+ static void riscv_cpu_disas_set_info(CPUState *s, disassemble_info *info)
+ {
+     RISCVCPU *cpu = RISCV_CPU(s);
++    CPURISCVState *env = &cpu->env;
+     info->target_info = &cpu->cfg;
+ 
+-    switch (riscv_cpu_mxl(&cpu->env)) {
++    switch (env->xl) {
+     case MXL_RV32:
+         info->print_insn = print_insn_riscv32;
+         break;
+-- 
+2.40.1
 
-----------------------------------------------------------------
-Third RISC-V PR for 8.1
-
-* Use xl instead of mxl for disassemble
-* Factor out extension tests to cpu_cfg.h
-* disas/riscv: Add vendor extension support
-* disas/riscv: Add support for XVentanaCondOps
-* disas/riscv: Add support for XThead* instructions
-* Fix mstatus related problems
-* Fix veyron-v1 CPU properties
-* Fix the xlen for data address when MPRV=1
-* opensbi: Upgrade from v1.2 to v1.3
-* Enable 32-bit Spike OpenSBI boot testing
-* Support the watchdog timer of HiFive 1 rev b
-* Only build qemu-system-riscv$$ on rv$$ host
-* Add RVV registers to log
-* Restrict ACLINT to TCG
-* Add syscall riscv_hwprobe
-* Add support for BF16 extensions
-* KVM_RISCV_SET_TIMER macro is not configured correctly
-* Generate devicetree only after machine initialization is complete
-* virt: Convert fdt_load_addr to uint64_t
-* KVM: fixes and enhancements
-* Add support for the Zfa extension
-
-----------------------------------------------------------------
-Bin Meng (2):
-      roms/opensbi: Upgrade from v1.2 to v1.3
-      tests/avocado: riscv: Enable 32-bit Spike OpenSBI boot testing
-
-Christoph Müllner (8):
-      target/riscv: Factor out extension tests to cpu_cfg.h
-      disas/riscv: Move types/constants to new header file
-      disas/riscv: Make rv_op_illegal a shared enum value
-      disas/riscv: Encapsulate opcode_data into decode
-      disas/riscv: Provide infrastructure for vendor extensions
-      disas/riscv: Add support for XVentanaCondOps
-      disas/riscv: Add support for XThead* instructions
-      riscv: Add support for the Zfa extension
-
-Daniel Henrique Barboza (20):
-      target/riscv/cpu.c: fix veyron-v1 CPU properties
-      target/riscv: skip features setup for KVM CPUs
-      hw/riscv/virt.c: skip 'mmu-type' FDT if satp mode not set
-      target/riscv/cpu.c: restrict 'mvendorid' value
-      target/riscv/cpu.c: restrict 'mimpid' value
-      target/riscv/cpu.c: restrict 'marchid' value
-      target/riscv: use KVM scratch CPUs to init KVM properties
-      target/riscv: read marchid/mimpid in kvm_riscv_init_machine_ids()
-      target/riscv: handle mvendorid/marchid/mimpid for KVM CPUs
-      target/riscv/kvm.c: init 'misa_ext_mask' with scratch CPU
-      target/riscv/cpu: add misa_ext_info_arr[]
-      target/riscv: add KVM specific MISA properties
-      target/riscv/kvm.c: update KVM MISA bits
-      target/riscv/kvm.c: add multi-letter extension KVM properties
-      target/riscv/cpu.c: add satp_mode properties earlier
-      target/riscv/cpu.c: remove priv_ver check from riscv_isa_string_ext()
-      target/riscv/cpu.c: create KVM mock properties
-      target/riscv: update multi-letter extension KVM properties
-      target/riscv/kvm.c: add kvmconfig_get_cfg_addr() helper
-      target/riscv/kvm.c: read/write (cbom|cboz)_blocksize in KVM
-
-Guenter Roeck (1):
-      riscv: Generate devicetree only after machine initialization is complete
-
-Ivan Klokov (1):
-      target/riscv: Add RVV registers to log
-
-Jason Chien (1):
-      target/riscv: Set the correct exception for implict G-stage translation fail
-
-LIU Zhiwei (1):
-      target/riscv: Use xl instead of mxl for disassemble
-
-Lakshmi Bai Raja Subramanian (1):
-      hw/riscv: virt: Convert fdt_load_addr to uint64_t
-
-Philippe Mathieu-Daudé (3):
-      target/riscv: Only unify 'riscv32/64' -> 'riscv' for host cpu in meson
-      target/riscv: Only build KVM guest with same wordsize as host
-      hw/riscv/virt: Restrict ACLINT to TCG
-
-Robbin Ehn (1):
-      linux-user/riscv: Add syscall riscv_hwprobe
-
-Tommy Wu (3):
-      hw/misc: sifive_e_aon: Support the watchdog timer of HiFive 1 rev b.
-      hw/riscv: sifive_e: Support the watchdog timer of HiFive 1 rev b.
-      tests/qtest: sifive-e-aon-watchdog-test.c: Add QTest of watchdog of sifive_e
-
-Weiwei Li (11):
-      target/riscv: Make MPV only work when MPP != PRV_M
-      target/riscv: Support MSTATUS.MPV/GVA only when RVH is enabled
-      target/riscv: Remove redundant assignment to SXL
-      target/riscv: Add additional xlen for address when MPRV=1
-      target/riscv: update cur_pmbase/pmmask based on mode affected by MPRV
-      target/riscv: Add properties for BF16 extensions
-      target/riscv: Add support for Zfbfmin extension
-      target/riscv: Add support for Zvfbfmin extension
-      target/riscv: Add support for Zvfbfwma extension
-      target/riscv: Expose properties for BF16 extensions
-      target/riscv: Add disas support for BF16 extensions
-
-yang.zhang (1):
-      target/riscv KVM_RISCV_SET_TIMER macro is not configured correctly
-
- docs/system/riscv/virt.rst                     |   1 +
- meson.build                                    |  15 +-
- disas/riscv-xthead.h                           |  28 +
- disas/riscv-xventana.h                         |  18 +
- disas/riscv.h                                  | 302 +++++++++++
- include/hw/misc/sifive_e_aon.h                 |  60 +++
- include/hw/riscv/sifive_e.h                    |   9 +-
- linux-user/riscv/syscall32_nr.h                |   1 +
- linux-user/riscv/syscall64_nr.h                |   1 +
- target/riscv/cpu.h                             |  56 +-
- target/riscv/cpu_cfg.h                         |  41 ++
- target/riscv/helper.h                          |  29 +
- target/riscv/kvm_riscv.h                       |   1 +
- target/riscv/insn32.decode                     |  38 ++
- disas/riscv-xthead.c                           | 707 +++++++++++++++++++++++++
- disas/riscv-xventana.c                         |  41 ++
- disas/riscv.c                                  | 559 +++++++++----------
- hw/misc/sifive_e_aon.c                         | 319 +++++++++++
- hw/riscv/sifive_e.c                            |  17 +-
- hw/riscv/virt.c                                |  56 +-
- linux-user/syscall.c                           | 146 +++++
- target/riscv/cpu.c                             | 439 +++++++++++++--
- target/riscv/cpu_helper.c                      |  12 +-
- target/riscv/csr.c                             |  41 +-
- target/riscv/fpu_helper.c                      | 166 ++++++
- target/riscv/kvm.c                             | 501 +++++++++++++++++-
- target/riscv/op_helper.c                       |   3 +-
- target/riscv/translate.c                       |  42 +-
- target/riscv/vector_helper.c                   |  17 +
- tests/qtest/sifive-e-aon-watchdog-test.c       | 450 ++++++++++++++++
- tests/tcg/riscv64/test-fcvtmod.c               | 345 ++++++++++++
- target/riscv/insn_trans/trans_rvbf16.c.inc     | 175 ++++++
- target/riscv/insn_trans/trans_rvzfa.c.inc      | 521 ++++++++++++++++++
- target/riscv/insn_trans/trans_rvzfh.c.inc      |  12 +-
- disas/meson.build                              |   6 +-
- hw/misc/Kconfig                                |   3 +
- hw/misc/meson.build                            |   1 +
- hw/riscv/Kconfig                               |   1 +
- pc-bios/opensbi-riscv32-generic-fw_dynamic.bin | Bin 123072 -> 135344 bytes
- pc-bios/opensbi-riscv64-generic-fw_dynamic.bin | Bin 121800 -> 138304 bytes
- roms/opensbi                                   |   2 +-
- tests/avocado/riscv_opensbi.py                 |   2 -
- tests/qtest/meson.build                        |   3 +
- tests/tcg/riscv64/Makefile.target              |   6 +
- 44 files changed, 4751 insertions(+), 442 deletions(-)
- create mode 100644 disas/riscv-xthead.h
- create mode 100644 disas/riscv-xventana.h
- create mode 100644 disas/riscv.h
- create mode 100644 include/hw/misc/sifive_e_aon.h
- create mode 100644 disas/riscv-xthead.c
- create mode 100644 disas/riscv-xventana.c
- create mode 100644 hw/misc/sifive_e_aon.c
- create mode 100644 tests/qtest/sifive-e-aon-watchdog-test.c
- create mode 100644 tests/tcg/riscv64/test-fcvtmod.c
- create mode 100644 target/riscv/insn_trans/trans_rvbf16.c.inc
- create mode 100644 target/riscv/insn_trans/trans_rvzfa.c.inc
 
