@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD2C74D5C1
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5B974D5B4
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:36:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIq6p-0000lA-UV; Mon, 10 Jul 2023 08:35:20 -0400
+	id 1qIq6u-0001L4-4U; Mon, 10 Jul 2023 08:35:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq6l-0000HQ-Io
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:35:15 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qIq6p-0000zO-HG
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:35:19 -0400
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq6j-0005JE-Lg
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:35:15 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-666edfc50deso2798914b3a.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:35:13 -0700 (PDT)
+ id 1qIq6n-0005Jx-GT
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:35:18 -0400
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6b7206f106cso3585498a34.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:35:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688992512; x=1691584512;
+ d=gmail.com; s=20221208; t=1688992515; x=1691584515;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aelGlzCxicTkI9abFumFgqeiN1ZlZb4rkHDRhLOA6K8=;
- b=CqLsb4ckU7qvfPmiFqYzPEhWw5paaCuMEqc5NDVQ66aAJFTaWI0+6VkUlry+Otb07Z
- Jw3ZfVhxEa1trTUtbbiogm6yOo9a6NVH3xsS3CTuaKVMWptygUJ6b3k7gSVuAB6CN7Ns
- xAQeyN/SuXXiHS7gjNmpTpazTD3qCaSz0+09pAgWgBJu815EBfmfH6QlKhKBz8bAeEhM
- TR/5/NXnd/7AaMYGcrapKiCjsuGQ3kaHWdcUnUzv8XZhSx8m8y4hGX4iZ3VBReYOkA4J
- utXkAsSf+U/W8KEqXs7+1UAK1osf81KeI4WuB1SgfGUykpNviSjqryC8DLkrkXEejrcG
- k7FQ==
+ bh=FWymny+SflbK0Ym6RhHcoUeMxfPC5BWDHZ4lHnpRMwo=;
+ b=L77Ld7x1PEag5g8dyIPPR+dHg7e0i2xYyAzgftQfuLHi39afSl5kGz6y+Klqcjseo4
+ LZi5dHb5ir6JoeEqy/pGuVVQ5C0R4FuENiT7x9orUtLUy0RDHKmzfJINmVrkyuPsZgiw
+ dtyBxYbwHfIclX1L0d8iC4fbfijO348qv7I/t+OQ5hrmPzOMmllIFEzb+MIQdL28q0A8
+ UMDN+euWO3qFwS/MkiaVceFjcMFt5KqrxZ5yuZIkZLYnW4n9yFA4Ej4Ftew+cwdkRcev
+ 4SdiQB8Gbfxn6p+XAYLPYHyPVTLp22SR+9I02IWp88vVGPGuZ9l06wjFJ+QwGQa+y7zn
+ d2Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688992512; x=1691584512;
+ d=1e100.net; s=20221208; t=1688992515; x=1691584515;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aelGlzCxicTkI9abFumFgqeiN1ZlZb4rkHDRhLOA6K8=;
- b=eZm3MFF4b5h9FyiZ1f7R0hmrqpVkh6lwJmpWUpUHerXQzGslqc9/MUlwfMnz/Nb2j4
- NvKGQaODDXcxk4EMgmUy44nS1Zfsg5rMzZomxTP+qqa0CFR1jY1pJgEOczKsLfdvPSlY
- 4Ej8CN8FAUA0xreinitnl0vL2OayUJbGuTUCLh5w5+Jq6APIW4m5jCKy4jvswbForcYg
- mJ96/9oB9NWbqpucCxks8xZ7RYhIJpO7paj2I7lij8eiFKwQlC+LN6ebFIDPZrN5Pxnz
- BWtDLObR5ic+Hu1GKjAuQcq4n2OR+aZoC4RouTIqHneanQe5HajgVSEIsYFUC4HkzznE
- 0+fg==
-X-Gm-Message-State: ABy/qLaxk4jr1kDAtQYgOEg8H5BFxYIHaZH1agdyl9W5EW8Zuzm0HajS
- J85JrZylT+BvG8WyYcieHlavFO7E/uhYVA==
-X-Google-Smtp-Source: APBJJlEyGgLtNYbyY4FgpjNGDLMStCX0RzfpNIYdfaFa3jNpvvZxCZDpa2P/YNi/hUdHLHamz0fHpw==
-X-Received: by 2002:a05:6a00:3015:b0:67a:20d0:b9bb with SMTP id
- ay21-20020a056a00301500b0067a20d0b9bbmr23486200pfb.1.1688992511940; 
- Mon, 10 Jul 2023 05:35:11 -0700 (PDT)
+ bh=FWymny+SflbK0Ym6RhHcoUeMxfPC5BWDHZ4lHnpRMwo=;
+ b=B7mY8MrMaTTXEOKC2E54FJp5wCIcyTvrac7xccdVLKfzl3fNkAQeUtfEmpkuDvluIG
+ bP15GCtSHMHzuTukZ6Db4SIxU4yuE/A0yxLA6jttEAi4FfBZxB5OXumJIo2CzvJKB9SX
+ YGM8KSezwDh2LJn6UWQkPV6ZCWSAijAcrpgpBQWZCEyCaWtbCRkKfE91T8DfH20nDuVx
+ JQiByLh8772fpoG9H+pzusfXLB5taMRsBeU1Rwe+Y1XiQr5wKgJnm47Bh/to83vf6unH
+ 20ZLovdqCx6Yl8rrZv2hXWuzAKa8rePD2n4/HtIB2qONjACUWF1RnJ7Roj2IFLsbLl7L
+ ab3Q==
+X-Gm-Message-State: ABy/qLZ/Duu6Wb7HPjNURYLfQRrsCeOWhfwRE3vBMUzeMuFvQc01Q88g
+ g/WQjV5XC/U4cOjEv6F2GhXrZajKdcuPdg==
+X-Google-Smtp-Source: APBJJlHJztAXmJZLwrBOTMjlVyMUPAFo6Zoa3hsrsyXfEVnydOOZdLqqz39jlA5o9gqDf+eBzgYndg==
+X-Received: by 2002:a05:6830:2001:b0:6b9:6287:618b with SMTP id
+ e1-20020a056830200100b006b96287618bmr1951006otp.24.1688992515193; 
+ Mon, 10 Jul 2023 05:35:15 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.35.09
+ i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.35.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 05:35:11 -0700 (PDT)
+ Mon, 10 Jul 2023 05:35:14 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 50/54] target/riscv/cpu.c: create KVM mock properties
-Date: Mon, 10 Jul 2023 22:32:01 +1000
-Message-Id: <20230710123205.2441106-51-alistair.francis@wdc.com>
+Subject: [PULL 51/54] target/riscv: update multi-letter extension KVM
+ properties
+Date: Mon, 10 Jul 2023 22:32:02 +1000
+Message-Id: <20230710123205.2441106-52-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230710123205.2441106-1-alistair.francis@wdc.com>
 References: <20230710123205.2441106-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=alistair23@gmail.com; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,89 +100,71 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-KVM-specific properties are being created inside target/riscv/kvm.c. But
-at this moment we're gathering all the remaining properties from TCG and
-adding them as is when running KVM. This creates a situation where
-non-KVM properties are setting flags to 'true' due to its default
-settings (e.g.  Zawrs). Users can also freely enable them via command
-line.
+We're now ready to update the multi-letter extensions status for KVM.
 
-This doesn't impact runtime per se because KVM doesn't care about these
-flags, but code such as riscv_isa_string_ext() take those flags into
-account. The result is that, for a KVM guest, setting non-KVM properties
-will make them appear in the riscv,isa DT.
+kvm_riscv_update_cpu_cfg_isa_ext() is called called during vcpu creation
+time to verify which user options changes host defaults (via the 'user_set'
+flag) and tries to write them back to KVM.
 
-We want to keep the same API for both TCG and KVM and at the same time,
-when running KVM, forbid non-KVM extensions to be enabled internally. We
-accomplish both by changing riscv_cpu_add_user_properties() to add a
-mock boolean property for every non-KVM extension in
-riscv_cpu_extensions[]. Then, when running KVM, users are still free to
-set extensions at will, but we'll error out if a non-KVM extension is
-enabled. Setting such extension to 'false' will be ignored.
+Failure to commit a change to KVM is only ignored in case KVM doesn't
+know about the extension (-EINVAL error code) and the user wanted to
+disable the given extension. Otherwise we're going to abort the boot
+process.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230706101738.460804-18-dbarboza@ventanamicro.com>
+Message-Id: <20230706101738.460804-19-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ target/riscv/kvm.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 2acf77949f..b2883ca533 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1840,6 +1840,26 @@ static Property riscv_cpu_extensions[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index bd86d8748e..4d7476cf15 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -273,6 +273,32 @@ static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
+     kvm_cpu_cfg_set(cpu, multi_ext_cfg, value);
+ }
  
-+
-+#ifndef CONFIG_USER_ONLY
-+static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
-+                                    const char *name,
-+                                    void *opaque, Error **errp)
++static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
 +{
-+    const char *propname = opaque;
-+    bool value;
++    CPURISCVState *env = &cpu->env;
++    uint64_t id, reg;
++    int i, ret;
 +
-+    if (!visit_type_bool(v, name, &value, errp)) {
-+        return;
-+    }
++    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
++        KVMCPUConfig *multi_ext_cfg = &kvm_multi_ext_cfgs[i];
 +
-+    if (value) {
-+        error_setg(errp, "extension %s is not available with KVM",
-+                   propname);
++        if (!multi_ext_cfg->user_set) {
++            continue;
++        }
++
++        id = kvm_riscv_reg_id(env, KVM_REG_RISCV_ISA_EXT,
++                              multi_ext_cfg->kvm_reg_id);
++        reg = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
++        ret = kvm_set_one_reg(cs, id, &reg);
++        if (ret != 0) {
++            error_report("Unable to %s extension %s in KVM, error %d",
++                         reg ? "enable" : "disable",
++                         multi_ext_cfg->name, ret);
++            exit(EXIT_FAILURE);
++        }
 +    }
 +}
-+#endif
 +
- /*
-  * Add CPU properties with user-facing flags.
-  *
-@@ -1868,6 +1888,22 @@ static void riscv_cpu_add_user_properties(Object *obj)
-             if (object_property_find(obj, prop->name)) {
-                 continue;
-             }
-+
-+            /*
-+             * Set the default to disabled for every extension
-+             * unknown to KVM and error out if the user attempts
-+             * to enable any of them.
-+             *
-+             * We're giving a pass for non-bool properties since they're
-+             * not related to the availability of extensions and can be
-+             * safely ignored as is.
-+             */
-+            if (prop->info == &qdev_prop_bool) {
-+                object_property_add(obj, prop->name, "bool",
-+                                    NULL, cpu_set_cfg_unavailable,
-+                                    NULL, (void *)prop->name);
-+                continue;
-+            }
-         }
- #endif
-         qdev_property_add_static(dev, prop);
+ static void kvm_riscv_add_cpu_user_properties(Object *cpu_obj)
+ {
+     int i;
+@@ -792,6 +818,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+     }
+ 
+     kvm_riscv_update_cpu_misa_ext(cpu, cs);
++    kvm_riscv_update_cpu_cfg_isa_ext(cpu, cs);
+ 
+     return ret;
+ }
 -- 
 2.40.1
 
