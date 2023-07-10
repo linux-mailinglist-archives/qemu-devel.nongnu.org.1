@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C8E74E10F
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 00:29:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B2374E133
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 00:33:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzNB-0001YH-Ax; Mon, 10 Jul 2023 18:28:50 -0400
+	id 1qIzNH-000231-Be; Mon, 10 Jul 2023 18:28:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzNA-0001V3-3C
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:28:48 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzNE-0001n6-VK
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:28:52 -0400
 Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzN8-000247-El
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:28:47 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIzND-00024f-7Z
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 18:28:52 -0400
 Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fbdfda88f4so51776805e9.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 15:28:46 -0700 (PDT)
+ 5b1f17b1804b1-3fbd33a57dcso56177905e9.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 15:28:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689028124; x=1691620124;
+ d=linaro.org; s=google; t=1689028129; x=1691620129;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3MsxiCt5nJiEc6wQO1pDa009vw+SZ+eH48A/Z+HwV3w=;
- b=SEUtmzUbDEhxPF2xY3DCyqGkUHzyxlcmmgZSJz1nncYOzxNdXlZjykpTahJqxUQ07R
- wlaDpaorXkWH1WeHxiyW/CtJTOjbOgeJqNq1ghS3c+5hCZwBJCbZqemzNqiwSqr/NK9+
- gRVvT5QRCGWAnukN4qYMoizo1kcsml8R0jPKyKb2AHf3s2eUls6E22f8nzV13O8FynMT
- XRhGI9AaiAhudTSCT6zKyifpnMxIqugb7kOdRJ5vDrYKC9digN5QGbJnQHJvLWzxsLpd
- DjrMrh4hzgQEJISjkav6dO8sbuMZvvt0Avn2sr5jWxI9nwP+tDWLWGao6eA8u6UAtxf+
- 3nig==
+ bh=w24qCGipOFLgfiJ0fjsZXsRTZKWbqT9NbJtcLXAN6Ok=;
+ b=aQ1PsucQ07ewoyVYYnvmTDM3PLf9s+XEUOASDvuZwBhuerIz/p7qtLN2BJEjw6vDuT
+ bHmQaAXwPcdpV9zAYzGDBp9o6h6Sovny/6+5YiSn5QN4VcJOCwV5RhIVKXmPClWydEts
+ 9v9iOfeiOA0C2Ef7fzSjuUqULZbtGmor5Qg+bfgYdp7DxRX8DQpGMTcJqcSEc3wyS9J7
+ B4N1KHcooYqQ9X2DjzQ1J7NQ1+gb59cvrpo62BCLUsB5K/YHbC9tdvU12irBqBUpoQRY
+ sEpywLBwLxmtppqASkEyH5yVpph4ud2MCSqQ6I1Pg3oHimgnH2l/aWVV/6q7RbsLGHHY
+ ywOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689028124; x=1691620124;
+ d=1e100.net; s=20221208; t=1689028129; x=1691620129;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3MsxiCt5nJiEc6wQO1pDa009vw+SZ+eH48A/Z+HwV3w=;
- b=MSInKqBRY0hPJ+n/mW2eq0kzDv7Zf5Vtwk3TnvQAW809Pl6VHp6ZC0meqamO+cvJPq
- B2i8MnbSzPZN6vfZLpqZ378VyU5Ky3JpLCkSXfXhrugpk360ry6CIy2FEND28yFffMcH
- ZvwqfhZ9IFIy3XqLx/5vDTSwwD2HzoGVMF8P1u7LXwVP9ueLCkPUk/qOMo1Qv8JN650v
- 6MnJR/mKfbX8ifElHcqzbfimizBXptXAWj3k4KdNFBeWW5MUwdNEYwMDIQQAEr2CNGdG
- DfRLe+bS0DeFdMRlgXzDstCa2T2IeqAtlU/R05ZJdNfEUVWopjnX6MP8oTw2uvHFZ7Eq
- HCvA==
-X-Gm-Message-State: ABy/qLbJGQBbVAVmNjlPPbnX8ht75uiyMkDg259sQeZQx2LwqeZTtsJ7
- /URdtMsYKknzO9YkuoceBF9O6O46epiQ0umLl0/Dcw==
-X-Google-Smtp-Source: APBJJlGegwUaYnsRWFcsINNx/uiWQCeO/8YdjX3Oqgk0VCcHK0n7lhMoJU/+q2E2l0xpMlnx2nsB+A==
-X-Received: by 2002:adf:fb07:0:b0:314:d19:fc31 with SMTP id
- c7-20020adffb07000000b003140d19fc31mr12409561wrr.51.1689028124664; 
- Mon, 10 Jul 2023 15:28:44 -0700 (PDT)
+ bh=w24qCGipOFLgfiJ0fjsZXsRTZKWbqT9NbJtcLXAN6Ok=;
+ b=d1/PsPdCFvjUgIC58OXqdJoFHs0Dc+tYi3a1CVcBrqnwTTvfwX25Yy+YwkYzF/K6z2
+ uhIO/dl7mUQ75fYcwdqYrr2/fTK1zK5FxZYWz5RnvVYLvlteisiNxER+Ef6BoD2kW1xd
+ wyqabSW4HPwEnrEWUsQmEjTQcA7e6YM7SR29bLECbrzNvglTpsopWfU4mkojzTNXt+tt
+ rz+48+1c2vuuyBW/q5tcvUTQHVBptsfR6KZj5ZNcyb/SPc0C0aEzZEiuhihJJjWvqhg1
+ 2CKL6bRVhe0+cL9q1+x7VcJ4QVrvTX8CDA3H4sd/4dYDkFZS76C+8JBsGLsCSQYl0N7E
+ M6dQ==
+X-Gm-Message-State: ABy/qLblUJ0Soldj0+qZBUCNNV0nbbU/lS3Wm+hlgBnH62EWd7MBOMji
+ 1AZYbjm/9qa8JL0GcbLqUdoN26CRKOhI1AmSzqSqEQ==
+X-Google-Smtp-Source: APBJJlGjCalkFihAN0S9yYH7ATw02ug1ttn592AxAA3qI144uYtwBXo0zTE54JXiZJ1oPvEFQlAmvQ==
+X-Received: by 2002:a05:600c:378d:b0:3fc:e1:24b5 with SMTP id
+ o13-20020a05600c378d00b003fc00e124b5mr8770498wmr.23.1689028129812; 
+ Mon, 10 Jul 2023 15:28:49 -0700 (PDT)
 Received: from m1x-phil.lan (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
  [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
- cr13-20020a05600004ed00b003143ba62cf4sm524681wrb.86.2023.07.10.15.28.43
+ 13-20020a05600c228d00b003fbe4cecc3bsm11324921wmf.16.2023.07.10.15.28.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 10 Jul 2023 15:28:44 -0700 (PDT)
+ Mon, 10 Jul 2023 15:28:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Siarhei Volkau <lis8215@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 28/44] target/mips/mxu: Add D32SLL D32SLR D32SAR instructions
-Date: Tue, 11 Jul 2023 00:25:55 +0200
-Message-Id: <20230710222611.50978-29-philmd@linaro.org>
+Subject: [PULL 29/44] target/mips/mxu: Add Q16SLL Q16SLR Q16SAR instructions
+Date: Tue, 11 Jul 2023 00:25:56 +0200
+Message-Id: <20230710222611.50978-30-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230710222611.50978-1-philmd@linaro.org>
 References: <20230710222611.50978-1-philmd@linaro.org>
@@ -98,43 +98,42 @@ These instructions are same data shift in various directions, thus one
 generation function is implemented for all three.
 
 Signed-off-by: Siarhei Volkau <lis8215@gmail.com>
-Message-Id: <20230608104222.1520143-26-lis8215@gmail.com>
+Message-Id: <20230608104222.1520143-27-lis8215@gmail.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/mxu_translate.c | 55 +++++++++++++++++++++++++++++++++
- 1 file changed, 55 insertions(+)
+ target/mips/tcg/mxu_translate.c | 78 +++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
 
 diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
-index 36fb4232cd..79263e97c3 100644
+index 79263e97c3..672b0041b5 100644
 --- a/target/mips/tcg/mxu_translate.c
 +++ b/target/mips/tcg/mxu_translate.c
-@@ -394,7 +394,10 @@ enum {
-     OPC_MXU_S16SDI   = 0x2D,
-     OPC_MXU_S32M2I   = 0x2E,
-     OPC_MXU_S32I2M   = 0x2F,
-+    OPC_MXU_D32SLL   = 0x30,
-+    OPC_MXU_D32SLR   = 0x31,
+@@ -398,6 +398,9 @@ enum {
+     OPC_MXU_D32SLR   = 0x31,
      OPC_MXU_D32SARL  = 0x32,
-+    OPC_MXU_D32SAR   = 0x33,
+     OPC_MXU_D32SAR   = 0x33,
++    OPC_MXU_Q16SLL   = 0x34,
++    OPC_MXU_Q16SLR   = 0x35,
++    OPC_MXU_Q16SAR   = 0x37,
      OPC_MXU__POOL19  = 0x38,
  };
  
-@@ -1701,6 +1704,49 @@ static void gen_mxu_S32XOR(DisasContext *ctx)
-  *               Q16SLLV   Q16SLRV   Q16SARV
-  */
+@@ -1789,6 +1792,72 @@ static void gen_mxu_d32sarl(DisasContext *ctx, bool sarw)
+     }
+ }
  
 +/*
-+ *  D32SLL XRa, XRd, XRb, XRc, SFT4
-+ *    Dual 32-bit shift left from XRb and XRc to SFT4
++ *  Q16SLL XRa, XRd, XRb, XRc, SFT4
++ *    Quad 16-bit shift left from XRb and XRc to SFT4
 + *    bits (0..15). Store to XRa and XRd respectively.
-+ *  D32SLR XRa, XRd, XRb, XRc, SFT4
-+ *    Dual 32-bit shift logic right from XRb and XRc
++ *  Q16SLR XRa, XRd, XRb, XRc, SFT4
++ *    Quad 16-bit shift logic right from XRb and XRc
 + *    to SFT4 bits (0..15). Store to XRa and XRd respectively.
-+ *  D32SAR XRa, XRd, XRb, XRc, SFT4
-+ *    Dual 32-bit shift arithmetic right from XRb and XRc
++ *  Q16SAR XRa, XRd, XRb, XRc, SFT4
++ *    Quad 16-bit shift arithmetic right from XRb and XRc
 + *    to SFT4 bits (0..15). Store to XRa and XRd respectively.
 + */
-+static void gen_mxu_d32sxx(DisasContext *ctx, bool right, bool arithmetic)
++static void gen_mxu_q16sxx(DisasContext *ctx, bool right, bool arithmetic)
 +{
 +    uint32_t XRa, XRb, XRc, XRd, sft4;
 +
@@ -146,44 +145,64 @@ index 36fb4232cd..79263e97c3 100644
 +
 +    TCGv t0 = tcg_temp_new();
 +    TCGv t1 = tcg_temp_new();
++    TCGv t2 = tcg_temp_new();
++    TCGv t3 = tcg_temp_new();
 +
 +    gen_load_mxu_gpr(t0, XRb);
-+    gen_load_mxu_gpr(t1, XRc);
++    gen_load_mxu_gpr(t2, XRc);
++
++    if (arithmetic) {
++        tcg_gen_sextract_tl(t1, t0, 16, 16);
++        tcg_gen_sextract_tl(t0, t0,  0, 16);
++        tcg_gen_sextract_tl(t3, t2, 16, 16);
++        tcg_gen_sextract_tl(t2, t2,  0, 16);
++    } else {
++        tcg_gen_extract_tl(t1, t0, 16, 16);
++        tcg_gen_extract_tl(t0, t0,  0, 16);
++        tcg_gen_extract_tl(t3, t2, 16, 16);
++        tcg_gen_extract_tl(t2, t2,  0, 16);
++    }
 +
 +    if (right) {
 +        if (arithmetic) {
 +            tcg_gen_sari_tl(t0, t0, sft4);
 +            tcg_gen_sari_tl(t1, t1, sft4);
++            tcg_gen_sari_tl(t2, t2, sft4);
++            tcg_gen_sari_tl(t3, t3, sft4);
 +        } else {
 +            tcg_gen_shri_tl(t0, t0, sft4);
 +            tcg_gen_shri_tl(t1, t1, sft4);
++            tcg_gen_shri_tl(t2, t2, sft4);
++            tcg_gen_shri_tl(t3, t3, sft4);
 +        }
 +    } else {
 +        tcg_gen_shli_tl(t0, t0, sft4);
 +        tcg_gen_shli_tl(t1, t1, sft4);
++        tcg_gen_shli_tl(t2, t2, sft4);
++        tcg_gen_shli_tl(t3, t3, sft4);
 +    }
++    tcg_gen_deposit_tl(t0, t0, t1, 16, 16);
++    tcg_gen_deposit_tl(t2, t2, t3, 16, 16);
++
 +    gen_store_mxu_gpr(t0, XRa);
-+    gen_store_mxu_gpr(t1, XRd);
++    gen_store_mxu_gpr(t2, XRd);
 +}
 +
  /*
-  *  D32SARL XRa, XRb, XRc, SFT4
-  *    Dual shift arithmetic right 32-bit integers in XRb and XRc
-@@ -4270,9 +4316,18 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
-         case OPC_MXU_S16SDI:
-             gen_mxu_s16std(ctx, true);
+  *                   MXU instruction category max/min/avg
+  *                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+@@ -4328,6 +4397,15 @@ bool decode_ase_mxu(DisasContext *ctx, uint32_t insn)
+         case OPC_MXU_D32SAR:
+             gen_mxu_d32sxx(ctx, true, true);
              break;
-+        case OPC_MXU_D32SLL:
-+            gen_mxu_d32sxx(ctx, false, false);
++        case OPC_MXU_Q16SLL:
++            gen_mxu_q16sxx(ctx, false, false);
 +            break;
-+        case OPC_MXU_D32SLR:
-+            gen_mxu_d32sxx(ctx, true, false);
++        case OPC_MXU_Q16SLR:
++            gen_mxu_q16sxx(ctx, true, false);
 +            break;
-         case OPC_MXU_D32SARL:
-             gen_mxu_d32sarl(ctx, false);
-             break;
-+        case OPC_MXU_D32SAR:
-+            gen_mxu_d32sxx(ctx, true, true);
++        case OPC_MXU_Q16SAR:
++            gen_mxu_q16sxx(ctx, true, true);
 +            break;
          case OPC_MXU__POOL19:
              decode_opc_mxu__pool19(ctx);
