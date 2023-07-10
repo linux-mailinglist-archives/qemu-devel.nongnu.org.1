@@ -2,82 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B6274DEE3
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 22:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F4F874DEFE
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 22:16:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIxEO-0000ZF-1V; Mon, 10 Jul 2023 16:11:36 -0400
+	id 1qIxIU-0001U6-D8; Mon, 10 Jul 2023 16:15:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIxEM-0000Ys-4g
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:11:34 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qIxEK-0004Sl-GG
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:11:33 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-31297125334so3617772f8f.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 13:11:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689019891; x=1691611891;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+2m2jiox3gWYUlk6XTcjW871O6JDtxnc4eAof0AMb14=;
- b=iRLecVMQshzNIJr8mVhQqBsxANI0fhOEeW07PbwuBlaES7jxRF5K7cJKu3KzaFIlE+
- 8U1cHhGeQvZBPTB3U5qbISOgAK5BJ5kmVRdx3hjVfr90ppdWqgeG1pf2tQ9wec4RlJO9
- gjfQVTREiuGuHCRvIZLj4G5qyztx5uya35wmazdTLYKG12b6Vegp5RT+GfCQLhyrAMu2
- gYFVa2+3c47RQekg4nLfpWgjYs/O6eKzcpfGR0hrdpxM1Xs3iKZxsBnNssIQ1qCfsYgU
- Mio95TUySEmihmP7yVduWSAav30dIDnNm3tI3/0XmB7BaBdzwoRF93jy9gZmcmWH0Zbo
- 9X+g==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIxIR-0001TK-Hh
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:15:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIxIQ-0005ed-03
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 16:15:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689020144;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=v5Pv3CgfzkkT7rilm0tBJGNo2aPft2S9/Hpo6fIjjks=;
+ b=jCnvR7nVxii1QdI5QVbitT04GKuho4WUzGFTpAw7KE0q5zK5QsybLTBR8amIS7MxxNZO9F
+ SO7CTfCf/504BUaQ+VpnHuaEFDkkdnzW5XqchEtxVg26IHVfy2FuM1NJXf2wsIvqCUclVd
+ ojVMsQQrsOdVqkfzovKXxO3zx60hGOE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-477-hxeWbv_uMbWwoubFecZZAA-1; Mon, 10 Jul 2023 16:15:43 -0400
+X-MC-Unique: hxeWbv_uMbWwoubFecZZAA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fbb0c01e71so29194515e9.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 13:15:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689019891; x=1691611891;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+2m2jiox3gWYUlk6XTcjW871O6JDtxnc4eAof0AMb14=;
- b=djqkc24i+Q03SW7VODb+uY0SwpqB49ghBHbG6yFSl4HKYAL93iXsv9v/rMAfmlfmmb
- DuLPcm7oZ84v3KEwhzYaEki84Q/NK8JD/l0XtfG48JkyNrxKCr0ba4RDjvsO0qK1cM6Z
- dYEVlv09pUIffDw340ub83CDLb+jaDbd5vUag5k5VR2zVOcoNdaD8y1EMwA9qpv3+wXx
- K3jL4FfPqKK3MXZ3XCIvzFpXHogD+Hd2UCKi7wGRArUz9YrXwXy+il22vRPOQSyeK/3E
- k8qsFwU/POuRzo5DEd/jNC6bKavN9kxaYWEcu88Gpz0YEDdj/OnTuZdc/ZigTkfP5YoH
- 2/uA==
-X-Gm-Message-State: ABy/qLZ1KXa4jJUCqzorcmvhkR9/XsKnPqFjICqsV+7uj4TfhfcPhMCQ
- Pcd4utKEELXKXUeUKkfl501uXsan1QblENlep3mGwQ==
-X-Google-Smtp-Source: APBJJlFamaDBN7f1Jp3tT/piIgpxG/3+8Z+ljxPH47M9yTBgLBAKhzqYQS4e4s221es7jgM3dNCxzA==
-X-Received: by 2002:adf:de83:0:b0:314:3108:500a with SMTP id
- w3-20020adfde83000000b003143108500amr16911677wrl.0.1689019890815; 
- Mon, 10 Jul 2023 13:11:30 -0700 (PDT)
-Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
- [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
- o6-20020a05600c378600b003fbb9339b29sm11215608wmr.42.2023.07.10.13.11.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 13:11:30 -0700 (PDT)
-Message-ID: <d7fc3f2d-d3ff-a59e-7683-80eccbace371@linaro.org>
-Date: Mon, 10 Jul 2023 22:11:26 +0200
+ d=1e100.net; s=20221208; t=1689020142; x=1691612142;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=v5Pv3CgfzkkT7rilm0tBJGNo2aPft2S9/Hpo6fIjjks=;
+ b=REahznP4ie9EsaO27thhZmMZccNWOii9IMCDarb+D5T3Uq0yhr1hBuJka4hPfe/cSS
+ q7W2HZyPgwiXa01QJqS2cw9IxqdRG6JqC7vBHEJO9e3arH0OQK7guNuGygXyTnkunbiY
+ ESCYkJtR5HRmlRYpp9utCdlpgHzdO5DIxDWRBinEmhvNnSo/r7KjZwm1bcKl3vLGXf9Z
+ G1Od3ngCdnIB/f/TyX1s9fCu9XuykEz8U7AJSZJngK7KQ+1/9IX7oEQ8agePBufzRahl
+ rrb66wZJ8Bz6GT0oxoi+euwHBiHK6IWeBdwkb2ocbzv4xq1ZdC0tMwkwGQHa0QAeoYfi
+ jAWg==
+X-Gm-Message-State: ABy/qLbcEf/irill/IzE+iuUvNOpokzbmjWGpKF0ZMHLNJFPN6RxdOTD
+ ntnhhN2ZrF0YRoCU4XUQRA+/HNcOx/ivFl+nehM1upybCDfPYMGlGk0ncNby015ofLUjakUIdOR
+ 0ObeplYUD0JWQMYo=
+X-Received: by 2002:a1c:7c17:0:b0:3fb:4055:1ddd with SMTP id
+ x23-20020a1c7c17000000b003fb40551dddmr11146630wmc.28.1689020142142; 
+ Mon, 10 Jul 2023 13:15:42 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFtNsi5W/l7Zk9a1yx4fr6PdSypvrsDJWFK9gzoFUju1iodVJkQ710XHJE8LF+dgVUtXekE5Q==
+X-Received: by 2002:a1c:7c17:0:b0:3fb:4055:1ddd with SMTP id
+ x23-20020a1c7c17000000b003fb40551dddmr11146614wmc.28.1689020141814; 
+ Mon, 10 Jul 2023 13:15:41 -0700 (PDT)
+Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
+ 18-20020a05600c025200b003fbca942499sm11105118wmj.14.2023.07.10.13.15.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 10 Jul 2023 13:15:41 -0700 (PDT)
+Date: Mon, 10 Jul 2023 16:15:36 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Viresh Kumar <viresh.kumar@linaro.org>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ qemu-block@nongnu.org, Eric Blake <eblake@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Kevin Wolf <kwolf@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Hanna Reitz <hreitz@redhat.com>,
+ Erik Schilling <erik.schilling@linaro.org>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Fam Zheng <fam@euphon.net>,
+ virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: Re: [PATCH v3 07/20] virtio: add vhost-user-base and a generic
+ vhost-user-device
+Message-ID: <20230710161447-mutt-send-email-mst@kernel.org>
+References: <20230710153522.3469097-1-alex.bennee@linaro.org>
+ <20230710153522.3469097-8-alex.bennee@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH 1/2] target/mips: Implement Loongson CSR instructions
-Content-Language: en-US
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
-Cc: yangxiaojuan@loongson.cn, gaosong@loongson.cn, chenhuacai@kernel.org
-References: <20230521214832.20145-1-jiaxun.yang@flygoat.com>
- <20230521214832.20145-2-jiaxun.yang@flygoat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230521214832.20145-2-jiaxun.yang@flygoat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230710153522.3469097-8-alex.bennee@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,59 +112,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/5/23 23:48, Jiaxun Yang wrote:
-> Loongson introduced CSR instructions since 3A4000, which looks
-> similar to IOCSR and CPUCFG instructions we seen in LoongArch.
-> 
-> Unfortunately we don't have much document about those instructions,
-> bit fields of CPUCFG instructions and IOCSR registers can be found
-> at 3A4000's user manual, while instruction encodings can be found
-> at arch/mips/include/asm/mach-loongson64/loongson_regs.h from
-> Linux Kernel.
-> 
-> Our predefined CPUCFG bits are differ from actual 3A4000, since
-> we can't emulate all CPUCFG features present in 3A4000 for now,
-> we just enable bits for what we have in TCG.
-> 
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
->   target/mips/cpu-defs.c.inc           |  9 ++++
->   target/mips/cpu.c                    |  8 ++++
->   target/mips/cpu.h                    | 40 ++++++++++++++++
->   target/mips/helper.h                 |  4 ++
->   target/mips/internal.h               |  2 +
->   target/mips/tcg/lcsr.decode          | 17 +++++++
->   target/mips/tcg/lcsr_translate.c     | 69 ++++++++++++++++++++++++++++
->   target/mips/tcg/meson.build          |  2 +
->   target/mips/tcg/op_helper.c          | 16 +++++++
->   target/mips/tcg/sysemu/lcsr_helper.c | 45 ++++++++++++++++++
->   target/mips/tcg/sysemu/meson.build   |  4 ++
->   target/mips/tcg/sysemu_helper.h.inc  |  8 ++++
->   target/mips/tcg/translate.c          |  3 ++
->   target/mips/tcg/translate.h          |  7 +++
->   14 files changed, 234 insertions(+)
->   create mode 100644 target/mips/tcg/lcsr.decode
->   create mode 100644 target/mips/tcg/lcsr_translate.c
->   create mode 100644 target/mips/tcg/sysemu/lcsr_helper.c
+> +static const TypeInfo vud_info = {
+> +    .name = TYPE_VHOST_USER_DEVICE,
+> +    .parent = TYPE_VHOST_USER_BASE,
+> +    .instance_size = sizeof(VHostUserBase),
+> +    .class_init = vud_class_init,
+> +    .class_size = sizeof(VHostUserBaseClass),
 
+I wish you didn't tie the refactoring in with new functionality.
+I applied but blocked creating these for now with:
 
-> @@ -1162,6 +1192,10 @@ typedef struct CPUArchState {
->       QEMUTimer *timer; /* Internal timer */
->       Clock *count_clock; /* CP0_Count clock */
->       target_ulong exception_base; /* ExceptionBase input to the core */
-> +
-> +    /* Loongson IOCSR memory */
-> +    AddressSpace address_space_iocsr;
-> +    MemoryRegion system_iocsr;
->   } CPUMIPSState;
+Subject: [PATCH] vhost-user-device: block creating instances
+Message-Id: <b10d1e585adf8a5348bd886333a8c55dcdef6048.1689020067.git.mst@redhat.com>
 
-Guarding to avoid on user emulation:
+block this until we are ready to commit to this command line.
 
-../target/mips/cpu.h:1198:22: error: field ‘as’ has incomplete type
-  1198 |         AddressSpace as;
-       |                      ^~
-../target/mips/cpu.h:1199:22: error: field ‘mr’ has incomplete type
-  1199 |         MemoryRegion mr;
-       |                      ^~
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ hw/virtio/vhost-user-device.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hw/virtio/vhost-user-device.c b/hw/virtio/vhost-user-device.c
+index 2b028cae08..ded97b6d70 100644
+--- a/hw/virtio/vhost-user-device.c
++++ b/hw/virtio/vhost-user-device.c
+@@ -369,6 +369,7 @@ static const TypeInfo vud_info = {
+     .instance_size = sizeof(VHostUserBase),
+     .class_init = vud_class_init,
+     .class_size = sizeof(VHostUserBaseClass),
++    .abstract = true
+ };
+
+ static void vu_register_types(void)
+
+-- 
+MST
 
 
