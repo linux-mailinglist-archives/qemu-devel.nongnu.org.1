@@ -2,69 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C61E74D521
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB0774D548
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:23:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIpoo-00010j-Eq; Mon, 10 Jul 2023 08:16:42 -0400
+	id 1qIpvA-0006R4-2j; Mon, 10 Jul 2023 08:23:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoZ-0000wW-5b
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qIpuu-0006QG-AV; Mon, 10 Jul 2023 08:23:00 -0400
+Received: from out2-smtp.messagingengine.com ([66.111.4.26])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIpoT-0003a0-Ri
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:16:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688991380;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=g+gGHQpcHPJRVf5oaZk5qLV4ql27pHvlAHmRqLeyHws=;
- b=KQWHIlpk0h8BdT634F4jqp+KZr0ahEk37GUIBJE/x1JNuqAaTeV+MoR8NhdfkkA/qP9njI
- 6raJ5mJQY6nhjRmY3FaQNYVWlfUxCox9Nyq+P0YdRU9JU9AJERyRM3JlHtp72LwDlEjUr+
- tZJbYC069PONuRgIaJAho2PyAIcv8xo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-511-tpWvKfXrNXCNXCCpc-g7qQ-1; Mon, 10 Jul 2023 08:16:16 -0400
-X-MC-Unique: tpWvKfXrNXCNXCCpc-g7qQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8E1B38B34C3;
- Mon, 10 Jul 2023 12:16:15 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.192.206])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 54B2DF5CFA;
- Mon, 10 Jul 2023 12:16:14 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
-	Richard Henderson <richard.henderson@linaro.org>
-Cc: Konstantin Kostiuk <kkostiuk@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [PULL 21/21] docs/devel: Fix coding style in style.rst
-Date: Mon, 10 Jul 2023 14:15:43 +0200
-Message-Id: <20230710121543.197250-22-thuth@redhat.com>
-In-Reply-To: <20230710121543.197250-1-thuth@redhat.com>
-References: <20230710121543.197250-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qIpus-0006Jf-7O; Mon, 10 Jul 2023 08:23:00 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+ by mailout.nyi.internal (Postfix) with ESMTP id 94F0E5C00B5;
+ Mon, 10 Jul 2023 08:22:54 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute6.internal (MEProxy); Mon, 10 Jul 2023 08:22:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm1; t=1688991774; x=
+ 1689078174; bh=zW95/UqH2Z13Vtnc4lFHKZx1YbUz3kVxrOCLJeJTnXA=; b=T
+ yxtUjKUKx8yrw6Z4mB9VQQiaj+fl/qbKuk4NM+0Lofqs3j2O2wzoXUFpNKjpJ6Ep
+ B92llp82fCoNh5DOQ5BBIoRGI7sU+JC+6ggjD3ewnDN3CV2Qrj28yQa2AO+x6gro
+ PHAye0aAkxZXz0UrlAWB9s9DFhyOFPjlwEuOk+n/CK1uEvZTmtlhSRseXkH/HlCb
+ QuHqpozcpYwGeAUo4eK9hHgxWmqp7jnBWdP3EWFPZHu8iQeY4bzTw8/pApX759Wj
+ RYzaCFeFkNMj/c4VaeY/HjhTHX7SvPZCt3ouarS2z3rw8mbNzsg9pO/vweDFWGNX
+ iOW7CH7pG12qCELm/vv3g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm2; t=1688991774; x=1689078174; bh=zW95/UqH2Z13V
+ tnc4lFHKZx1YbUz3kVxrOCLJeJTnXA=; b=hF4xppa6WHkxDZtekxhN/7DzL7bz8
+ W9rUiDBYAhS4x2jmUwzUZbDvR57bCsPVDq3SBRbc/9pDPaSLpSAm+P9ShrMVu+Qh
+ Lx7QtgwTQc+KCSYl+xZY9IOGnl2SCOxrAOH30qthS86hMuvZrb2YWkkHH+9H5A7+
+ xTNI1xlETVFFlAwGI3SOeIdKJ2IomNyzbtyn31/uk/hGS45ER+odHV68mBT29AiI
+ tm9AdqObwtDqjI11BL1VB0wlL+Y32NgtH5+DuUCe6YtjQ4CO1Cehi5oSbxZExD1Y
+ /qB13tcwLIxdYkU9ypHqKjvSoxZbJB87J3RxNGzXVXfcc61GNxW56yklA==
+X-ME-Sender: <xms:HvirZB6T-Sv0z9_SJqdX8u-ecYnlDYUykwZPAMB_mBFcB52WEyBgOQ>
+ <xme:HvirZO6zDt_rctTjOkLwJ3Yf5hxi32gaI0bSAWZxMMxCjXvrtQcOBZDWonknsSCAD
+ OSiY4_qvpBid8lgbFM>
+X-ME-Received: <xmr:HvirZIfIsmnGDAud6tD7iubWs9d4fCaPtIOTLMUKDtx_RpRvceoBNivJixO_cKR_ZT3rog>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrvdekgdegvdcutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgruhhs
+ ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
+ gvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeevjeevtdduudegieegteffffej
+ veenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehith
+ hssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:HvirZKIXoNT_WeFHD9yoPvx4GPw1oCVHVyqLG9dSht4PVzQO-5LBMw>
+ <xmx:HvirZFJgAd8V8a0N69YWRdYB3XNOEg8GzIJKTG7hN2wMUo2QAXM66w>
+ <xmx:HvirZDxLnpj70mV13-z-A4A6EFmtTIaep_lttjMfJeJad6L7C3V5DA>
+ <xmx:HvirZF1cdgZ1wDWUsadZIH0_6nR9Jhau1g0fSa6unHIQ1LdEzZjJjg>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 10 Jul 2023 08:22:53 -0400 (EDT)
+Date: Mon, 10 Jul 2023 14:22:51 +0200
+From: Klaus Jensen <its@irrelevant.dk>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, richard.henderson@linaro.org, qemu-devel@nongnu.org
+Subject: Re: [PULL 11/23] Revert "graph-lock: Disable locking for now"
+Message-ID: <ZKv4G4A0l8EhMZoy@cormorant.local>
+References: <20230628141526.293104-1-kwolf@redhat.com>
+ <20230628141526.293104-12-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="7fGUxPXFpGi5i+DT"
+Content-Disposition: inline
+In-Reply-To: <20230628141526.293104-12-kwolf@redhat.com>
+Received-SPF: pass client-ip=66.111.4.26; envelope-from=its@irrelevant.dk;
+ helo=out2-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,57 +101,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As defined earlier in this file, the opening curly brace of
-functions should be placed on a separate line. So we should
-do it in the examples here, too.
 
-Fixes: 821f296756 ("docs: document use of automatic cleanup functions in glib")
-Reported-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-Message-Id: <20230710092638.161625-1-thuth@redhat.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- docs/devel/style.rst | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+--7fGUxPXFpGi5i+DT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/docs/devel/style.rst b/docs/devel/style.rst
-index aa5e083ff8..3cfcdeb9cd 100644
---- a/docs/devel/style.rst
-+++ b/docs/devel/style.rst
-@@ -567,7 +567,8 @@ For example, instead of
- 
- .. code-block:: c
- 
--    int somefunc(void) {
-+    int somefunc(void)
-+    {
-         int ret = -1;
-         char *foo = g_strdup_printf("foo%", "wibble");
-         GList *bar = .....
-@@ -588,7 +589,8 @@ Using g_autofree/g_autoptr enables the code to be written as:
- 
- .. code-block:: c
- 
--    int somefunc(void) {
-+    int somefunc(void)
-+    {
-         g_autofree char *foo = g_strdup_printf("foo%", "wibble");
-         g_autoptr (GList) bar = .....
- 
-@@ -613,7 +615,8 @@ are still some caveats to beware of
- 
- .. code-block:: c
- 
--    char *somefunc(void) {
-+    char *somefunc(void)
-+    {
-         g_autofree char *foo = g_strdup_printf("foo%", "wibble");
-         g_autoptr (GList) bar = .....
- 
--- 
-2.39.3
+On Jun 28 16:15, Kevin Wolf wrote:
+> Now that bdrv_graph_wrlock() temporarily drops the AioContext lock that
+> its caller holds, it can poll without causing deadlocks. We can now
+> re-enable graph locking.
+>=20
+> This reverts commit ad128dff0bf4b6f971d05eb4335a627883a19c1d.
+>=20
 
+I'm seeing a pretty major performance regression on iothread-enabled
+virtio-blk (and on some on-going iothread hw/nvme work) with this
+applied. Something like ~300k iops prior to this vs ~200k after on my
+set up. On master, virtio-blk is currently faster without an iothread
+(~215k) than with (~200k).
+
+I bisected the change in iops to this revert.
+
+--7fGUxPXFpGi5i+DT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmSr+BoACgkQTeGvMW1P
+DemAhQf/VHBTEwJa8cgxqU9Rb51fQBGTQuSARDBqqOU7ux/acxdFjIpjqlpgU1+5
+9hDuJeP4RVGn0kY9DcVDtdY21CWvtvmwm7jnzoWuVLE0NsFBGkCk/jUFdTnsfwIf
+0kHYysbElS9GLeOsOkttK5SaWR92cH8Fm5FMWA7mvtqV5y+14zmgL4WsmywCMfpc
+phIprudU8DRlE1qHjDqc9s5E0PgQNx5F43jWsqMJNY0jat8vN5w4qGM7aGsWJAGU
+x5d28kWi+e027jDdg2xF0MUegNnQkAg6PuEXQ6d+DTID/hKHVdab6Xi6Z/WTuadr
+e8D1/OXTmsJIH1HzjXV22LFCGl7z8Q==
+=378U
+-----END PGP SIGNATURE-----
+
+--7fGUxPXFpGi5i+DT--
 
