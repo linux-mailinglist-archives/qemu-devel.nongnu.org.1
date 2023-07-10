@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B3C74D58C
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:34:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8DA474D5DA
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 14:40:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIq5X-000356-7w; Mon, 10 Jul 2023 08:33:59 -0400
+	id 1qIq5r-0003aW-Hk; Mon, 10 Jul 2023 08:34:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq5H-0002kN-Dn
+ id 1qIq5G-0002hR-Ml
  for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:33:45 -0400
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qIq58-0004fb-TC
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:33:43 -0400
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-392116ae103so3397168b6e.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:33:33 -0700 (PDT)
+ id 1qIq5D-0004gW-AI
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 08:33:41 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-666683eb028so2210880b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 05:33:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1688992413; x=1691584413;
+ d=gmail.com; s=20221208; t=1688992416; x=1691584416;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/BxT6mZSvReQNnn/TdB/plDM9sBVaU+QVWT9sBu1Rsc=;
- b=dO848v0GGSCJhdOcATFRONoT9VPkD+4FlVoBgBJEHSpEO3GiLs/ouAIuTglRrx1bXl
- YKwO5egJgKNUIjV6CoiZaYezLUgTZAnbRo/MSMv9iuqMiWCJIVcaeC/4Tlm9y8jB7TF7
- xZxJdF9OzpH5GUysVbARCSNW5hfgyjRjynuLX9KW8p/C/PWNGcc771kOAoEP94k1IGUX
- JOE/sjAuQ5UMANZmKquKtYXh8kLtHBw5cG4TIZCuO25Fv7d/28XiIyDTqmBj8Puzt3mc
- cnsluOyF1DqLAfhIQE3Q8E9KFhkGiJl5uqUjYzFLu7IjNqeTfsE2jlQEema+VxP800eF
- YdYQ==
+ bh=3wm85/rp8ngelfAH1JXxJvOyIeMQkVrBvuXH7/PGURM=;
+ b=Mn+amNWc1PWm8BfXz4/H2pspkmwsmqmKfFBoRy1fwCK015Emu2pTSMSo2Tb7RkpD1r
+ uWPIqX+yYq52IBesT7XquFfKs4WA+QLp927jH6SBtWEqCH6wWjcYBKX0QcnkD3ZlRJi5
+ C4iJPdAlz+uy/VYJHCY2iFJ1N/hsEFOURgVkUP30vZEnKa3S1LUAXu/XdsqkFuEjwAsD
+ 39EZlhzarPSqEJWij0i98lt9TKVNrZAB5LWem2z2ocl+AnvOq1FtqBPm7FgaEHO6KiQQ
+ h48BHsYCMfNMEviNEVHCbAAQsAFY7rq7KSNwCDjg29XXLD+3je+BWpODgJD0KuRDB37+
+ HFlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688992413; x=1691584413;
+ d=1e100.net; s=20221208; t=1688992416; x=1691584416;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/BxT6mZSvReQNnn/TdB/plDM9sBVaU+QVWT9sBu1Rsc=;
- b=ehhdyPLFMp9NRDyI33FKGw+zFQeCDJuP1FqTmeP8yUmuueazGFcaoothfAjl7+zM7r
- FLpjPao3bs/8Vc7kt/KptZHZRiO01zt7f0f1dkkt1quV6m1XkiE2/aKKT1wmeYMPGH4h
- A0F5SKjv7gv4aSGLIXIsyVbrTIaQMld7QwU9clmfSlhnVMoDSbH6DOzqwWaIai5Ns93v
- 5Porv43t8vryoqv1nIjBH8IQpIgy/COIQ4oA/vRdoATd4jERjvDI4+qGiQuAbEGtCftP
- rdc9eGE4WDbwA7yJ4d+rSCgO3/aqh7CtdIE2WhKHADOTvEMwM5If7oHQzP4/NqEagXXT
- Yipw==
-X-Gm-Message-State: ABy/qLb0HCoUr23eXWyyyyaPoVoIBA8wYPpSvvJsxkTG2QB5NRmdfn2d
- 7T1wcQoxkFSkfdExGo10XKZ3eYko7gA3HA==
-X-Google-Smtp-Source: APBJJlGIzkk0IAOuPA/8t7trayFnXMHBWpTzRzJVqagemiYA8eK9Kn3kbkDT7yQGwQtsmuCHjYJQ1A==
-X-Received: by 2002:a05:6808:1a97:b0:3a3:6331:fd6f with SMTP id
- bm23-20020a0568081a9700b003a36331fd6fmr8698567oib.40.1688992412945; 
- Mon, 10 Jul 2023 05:33:32 -0700 (PDT)
+ bh=3wm85/rp8ngelfAH1JXxJvOyIeMQkVrBvuXH7/PGURM=;
+ b=DicKpiqpV08hNDZ6zErVq/VDmHS0jdgTBFDpfJER1eVOJIu+b4r18Zc3SU6CbY5b6i
+ ryjP3oLjje23YuZYuk1+fsebswdS9PddgjXIY0cTgHQvRAg01oycnZG4f4z27fMbK0pt
+ Tzi7iw8AB93IdzqVhSuclH120IUW4aEbd3l+5kPW0T/K7rMqNEI1rrj1Ea6ZSaHXEpje
+ ee1KkGVFbWiH9UdKrmeID1myK6BUK+65LjchZd7DIQnguYMeO2wATbkAAoIb9Y/C4W/C
+ 6uoaxfcAEfYcX+Q2oJSY3eZyuRp62gZHzUzrAnsUQFjGYD3tsvyUm4eXmPWiYM+22xPF
+ l9tg==
+X-Gm-Message-State: ABy/qLbLuctzKhSVhUhoeyvygTaAuWIY6oHaKf9ZnqsHzpJCbdJkIwcW
+ ILqzGd8ipCXhANEceI4OSvUwoWjOC5jUDg==
+X-Google-Smtp-Source: APBJJlGjf0wbrgPdhNlgpNyb6nFn57daQYKJLYGc6XTi+I8ftxf2PzKz7Ebv10+Q66mUq5FtZ34DBQ==
+X-Received: by 2002:a05:6a20:1e4e:b0:12e:5d45:b219 with SMTP id
+ cy14-20020a056a201e4e00b0012e5d45b219mr10511394pzb.26.1688992416025; 
+ Mon, 10 Jul 2023 05:33:36 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.33.30
+ i126-20020a639d84000000b0055b44a901absm181559pgd.70.2023.07.10.05.33.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 05:33:32 -0700 (PDT)
+ Mon, 10 Jul 2023 05:33:35 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: alistair23@gmail.com, Ivan Klokov <ivan.klokov@syntacore.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 21/54] target/riscv: Only build KVM guest with same wordsize as
- host
-Date: Mon, 10 Jul 2023 22:31:32 +1000
-Message-Id: <20230710123205.2441106-22-alistair.francis@wdc.com>
+Subject: [PULL 22/54] target/riscv: Add RVV registers to log
+Date: Mon, 10 Jul 2023 22:31:33 +1000
+Message-Id: <20230710123205.2441106-23-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230710123205.2441106-1-alistair.francis@wdc.com>
 References: <20230710123205.2441106-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=alistair23@gmail.com; helo=mail-oi1-x22d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,49 +97,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Ivan Klokov <ivan.klokov@syntacore.com>
 
-Per Anup Patel in [*]:
+Print RvV extension register to log if VPU option is enabled.
 
- > Currently, we only support running rv64 guest on rv64 host
- > and rv32 guest on rv32 host.
- >
- > In the future, we might support running rv32 guest on rv64
- > host but as of now we don't see a strong push for it.
-
-Therefore, when only using the KVM accelerator it is pointless
-to build qemu-system-riscv32 on a rv64 host (or qemu-system-riscv64
-on a rv32 host). Restrict meson to only build the correct binary,
-avoiding to waste ressources building unusable code.
-
-[*] https://lore.kernel.org/qemu-devel/CAAhSdy2JeRHeeoEc1XKQhPO3aDz4YKeyQsPT4S8yKJcYTA+AiQ@mail.gmail.com/
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Ivan Klokov <ivan.klokov@syntacore.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230627143235.29947-3-philmd@linaro.org>
+Message-Id: <20230629083730.386604-1-ivan.klokov@syntacore.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- meson.build | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ target/riscv/cpu.c | 57 +++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 56 insertions(+), 1 deletion(-)
 
-diff --git a/meson.build b/meson.build
-index 657e01069b..1ed47c779d 100644
---- a/meson.build
-+++ b/meson.build
-@@ -110,8 +110,10 @@ elif cpu in ['ppc', 'ppc64']
-   kvm_targets = ['ppc-softmmu', 'ppc64-softmmu']
- elif cpu in ['mips', 'mips64']
-   kvm_targets = ['mips-softmmu', 'mipsel-softmmu', 'mips64-softmmu', 'mips64el-softmmu']
--elif cpu in ['riscv32', 'riscv64']
--  kvm_targets = ['riscv32-softmmu', 'riscv64-softmmu']
-+elif cpu in ['riscv32']
-+  kvm_targets = ['riscv32-softmmu']
-+elif cpu in ['riscv64']
-+  kvm_targets = ['riscv64-softmmu']
- else
-   kvm_targets = []
- endif
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index b9b3879281..0c9faf4633 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -55,6 +55,17 @@ struct isa_ext_data {
+ #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
+     {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop)}
+ 
++/*
++ * From vector_helper.c
++ * Note that vector data is stored in host-endian 64-bit chunks,
++ * so addressing bytes needs a host-endian fixup.
++ */
++#if HOST_BIG_ENDIAN
++#define BYTE(x)   ((x) ^ 7)
++#else
++#define BYTE(x)   (x)
++#endif
++
+ /*
+  * Here are the ordering rules of extension naming defined by RISC-V
+  * specification :
+@@ -183,6 +194,14 @@ const char * const riscv_fpr_regnames[] = {
+     "f30/ft10", "f31/ft11"
+ };
+ 
++const char * const riscv_rvv_regnames[] = {
++  "v0",  "v1",  "v2",  "v3",  "v4",  "v5",  "v6",
++  "v7",  "v8",  "v9",  "v10", "v11", "v12", "v13",
++  "v14", "v15", "v16", "v17", "v18", "v19", "v20",
++  "v21", "v22", "v23", "v24", "v25", "v26", "v27",
++  "v28", "v29", "v30", "v31"
++};
++
+ static const char * const riscv_excp_names[] = {
+     "misaligned_fetch",
+     "fault_fetch",
+@@ -611,7 +630,8 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cs);
+     CPURISCVState *env = &cpu->env;
+-    int i;
++    int i, j;
++    uint8_t *p;
+ 
+ #if !defined(CONFIG_USER_ONLY)
+     if (riscv_has_ext(env, RVH)) {
+@@ -695,6 +715,41 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+             }
+         }
+     }
++    if (riscv_has_ext(env, RVV) && (flags & CPU_DUMP_VPU)) {
++        static const int dump_rvv_csrs[] = {
++                    CSR_VSTART,
++                    CSR_VXSAT,
++                    CSR_VXRM,
++                    CSR_VCSR,
++                    CSR_VL,
++                    CSR_VTYPE,
++                    CSR_VLENB,
++                };
++        for (int i = 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
++            int csrno = dump_rvv_csrs[i];
++            target_ulong val = 0;
++            RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
++
++            /*
++             * Rely on the smode, hmode, etc, predicates within csr.c
++             * to do the filtering of the registers that are present.
++             */
++            if (res == RISCV_EXCP_NONE) {
++                qemu_fprintf(f, " %-8s " TARGET_FMT_lx "\n",
++                             csr_ops[csrno].name, val);
++            }
++        }
++        uint16_t vlenb = cpu->cfg.vlen >> 3;
++
++        for (i = 0; i < 32; i++) {
++            qemu_fprintf(f, " %-8s ", riscv_rvv_regnames[i]);
++            p = (uint8_t *)env->vreg;
++            for (j = vlenb - 1 ; j >= 0; j--) {
++                qemu_fprintf(f, "%02x", *(p + i * vlenb + BYTE(j)));
++            }
++            qemu_fprintf(f, "\n");
++        }
++    }
+ }
+ 
+ static void riscv_cpu_set_pc(CPUState *cs, vaddr value)
 -- 
 2.40.1
 
