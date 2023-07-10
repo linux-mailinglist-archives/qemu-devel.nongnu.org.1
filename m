@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBEB074CE7D
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2583374CE82
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 09:33:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIlNa-00074G-9A; Mon, 10 Jul 2023 03:32:18 -0400
+	id 1qIlOT-0007nx-Ij; Mon, 10 Jul 2023 03:33:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIlNO-0006zc-KW
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:32:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIlNJ-0007BC-DA
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:32:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688974320;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=06/pO/+pWKetwSH9AlRHMEQzFwZ6mKKx1RhtS9u7Q+k=;
- b=LLOkUcnW9bep7xtH5tissbuXWYjnvMlUmqs69GFO1RcpWe1R6BiyIaKHkgf2N/V8GXvw6Q
- 6SJTp60fQoyoF7ErhZMTzZxllyw7orJp46soT2rKH10MXGqLcFt/0AB38kEUeg08r/BXG1
- CncbrISV0SkpO0xI7ZoKtilr4WIklGE=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-nu1GJt-CPCa_uhySlcDbsw-1; Mon, 10 Jul 2023 03:31:58 -0400
-X-MC-Unique: nu1GJt-CPCa_uhySlcDbsw-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7673e4eee45so367533785a.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 00:31:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qIlOP-0007nS-DJ
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:33:09 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qIlON-00084k-Rq
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 03:33:09 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2b6f9edac8dso61013691fa.3
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 00:33:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1688974385; x=1691566385;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=R9trHrdS1Xn+uVa5c17I4MVCbtAck/un8jjbp4RLqXA=;
+ b=Cvo8I75NE3LGfEFwRYuFIbbqYdy4n0jUdFI2jFsI4JrrBDXMz7tkI/6BMV1inp5klE
+ 46xsarZZbcyhrFZY+VcNg700OthI11huZwIptJAsJP/7TeV/VGyxAdLACKJphruSXPCB
+ NS/LP2sdkwYrGySPx236WgttZosXw0WHZ5m+JF555hgNyN29wI8wGfzYEJrfeqllJKEB
+ a6055AyXCVv2hkdLnGnIiTYc8fElDwSSC+sq6uOvjC8L52+kqdpJaQzv9ZybY5XeZOw0
+ mPnZkEseA5t6+cLWHEgT6JhuDfWUzf8nKKejd0jD6AiXzMIaX7kcqrs56QDvVxlM8KLE
+ gA7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688974317; x=1691566317;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=06/pO/+pWKetwSH9AlRHMEQzFwZ6mKKx1RhtS9u7Q+k=;
- b=BR5/7z/NWBOow49+qMi9cwfyB/VX+JhxojFseZfUFj03vGo3vW7Ti9j7oiFOeMJw2h
- 2gnb3mU6JyqyLXulJfNS65SZUZz8SqLeT0HdzkukIzUSeZ2aBfPMu83ByVEfPvFGiDfl
- mCBTaw2i9codWQfDQDiwHzhQQkvHEiahzBdbFHD6dybGXNZsbghy4RTb3BPyT1e5mdpg
- 86MA8FJcULI/F7FjWSUCwvPPzL7lWrdTxU6o+Y/gyaQRvNv96xBBfG9tvbacw3A1Kc7B
- W46spJBobWi7aTxPbjGT2IyH8GWAzYGEmztpvZgOmTWhNEK8P8z7+csrzVexEcQU+pgV
- dhoA==
-X-Gm-Message-State: ABy/qLav6EryzASxAnX+zy5Jkyh7BuRI/mwOQ1moDD/cMPVKlmsGTsE9
- UMLyx2FKOQEjwpz2v3b19fg9f7XcIxk71l4lxiPJ+BIuPIyyyQl+3NpJa2l3Ml2nF5nk886+5Ex
- v4NNeym0ri6t5+YQ=
-X-Received: by 2002:a37:5a02:0:b0:765:35ec:5ff7 with SMTP id
- o2-20020a375a02000000b0076535ec5ff7mr8117336qkb.20.1688974317588; 
- Mon, 10 Jul 2023 00:31:57 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGkJ2cRq5Le07rJVAwgSjvlSPLrwwxLzPdUfsn9k3dYnvTbpeVwLOw2UQFEvx/bZrtxbdKWsQ==
-X-Received: by 2002:a37:5a02:0:b0:765:35ec:5ff7 with SMTP id
- o2-20020a375a02000000b0076535ec5ff7mr8117330qkb.20.1688974317365; 
- Mon, 10 Jul 2023 00:31:57 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-116.web.vodafone.de.
- [109.43.179.116]) by smtp.gmail.com with ESMTPSA id
- g11-20020a05620a13cb00b007676f3859fasm4604316qkl.30.2023.07.10.00.31.55
+ d=1e100.net; s=20221208; t=1688974385; x=1691566385;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=R9trHrdS1Xn+uVa5c17I4MVCbtAck/un8jjbp4RLqXA=;
+ b=PQjqNMgveg/RqPllAZFU4cYd5h2AGcgBs41gq2ZoJFBt+MKiQZg80i3X9zKpGVrDtU
+ Uck08lvbLBfQxiyEROCu5Dx5XBPM6u6U7+Vutrhu3YHWIJ4HAJD1Ewu9NDxntz1jnxB8
+ gdCMIcD2gFCsasNh5OYeS6EAdqeHFSwoINbRW+gGM9QnYMY9pSC2cMFG1iHy87QDm6tb
+ o7Sb7M7usxVxQR2/A+o/NxBrnar+oE7jAI4EmVywA6wccQGN8369RF+obH/TmSAtUBmb
+ nBthWBRTQH8rSFiuRHzj/6s5EbEWu55xQs+qiaYKhrvO446zDcVZdIAsW4ODuHuZCQh/
+ 1VIg==
+X-Gm-Message-State: ABy/qLZtEXb81fOXLNP5yJFrzqjUyN4kZ9t5gbNIoVE6iyAWzrxFzXiC
+ HR5gCCt5f64zqE8ys1wfdSjVTQ==
+X-Google-Smtp-Source: APBJJlHPycSrkgfb6G/DwHY8mgg5Cmh8orhlM5vuOfBiBhMHYWFRh1XIg45I+u2deO6kjAthoI5KuA==
+X-Received: by 2002:a2e:7d15:0:b0:2b6:d7a0:c27d with SMTP id
+ y21-20020a2e7d15000000b002b6d7a0c27dmr8392149ljc.37.1688974385384; 
+ Mon, 10 Jul 2023 00:33:05 -0700 (PDT)
+Received: from [192.168.200.206] (83.21.151.197.ipv4.supernova.orange.pl.
+ [83.21.151.197]) by smtp.gmail.com with ESMTPSA id
+ o15-20020a2e9b4f000000b002b6ff6e7dccsm1878321ljj.26.2023.07.10.00.33.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 10 Jul 2023 00:31:56 -0700 (PDT)
-Message-ID: <fbb6b6e0-2aec-5be7-7bf7-83c7b0687533@redhat.com>
-Date: Mon, 10 Jul 2023 09:31:54 +0200
+ Mon, 10 Jul 2023 00:33:05 -0700 (PDT)
+Message-ID: <e3050d63-844e-31f7-511d-48d31279be44@linaro.org>
+Date: Mon, 10 Jul 2023 09:33:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] tests/tcg/s390x: Fix test-svc with clang
-Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-References: <20230707154242.457706-1-iii@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230707154242.457706-1-iii@linux.ibm.com>
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/1] hw/arm/sbsa-ref: set 'slots' property of xhci
+Content-Language: pl-PL, en-GB, en-HK
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Yuquan Wang <wangyuquan1236@phytium.com.cn>, rad@semihalf.com,
+ peter.maydell@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Cc: quic_llindhol@quicinc.com, chenbaozi@phytium.com.cn
+References: <20230710063750.473510-1-wangyuquan1236@phytium.com.cn>
+ <20230710063750.473510-2-wangyuquan1236@phytium.com.cn>
+ <6f7e7eb1-0837-58d4-1b6b-4f408150579e@linaro.org>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Organization: Linaro
+In-Reply-To: <6f7e7eb1-0837-58d4-1b6b-4f408150579e@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,55 +100,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07/07/2023 17.42, Ilya Leoshkevich wrote:
-> clang does not support expressions involving symbols in instructions
-> like lghi yet, so building hello-s390x-asm.S with it fails.
+W dniu 10.07.2023 o 09:28, Richard Henderson pisze:
 > 
-> Move the expression to the literal pool and load it from there.
+> hw/usb/hcd-xhci-nec.c:    DEFINE_PROP_UINT32("slots", XHCINecState, 
+> slots, XHCI_MAXSLOTS),
+> hw/usb/hcd-xhci-sysbus.c:    DEFINE_PROP_UINT32("slots", 
+> XHCISysbusState, xhci.numslots, XHCI_MAXSLOTS),
 > 
-> Reported-by: Thomas Huth <thuth@redhat.com>
-> Fixes: be4a4cb42961 ("tests/tcg/s390x: Test single-stepping SVC")
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> ---
->   tests/tcg/s390x/gdbstub/test-svc.py | 2 +-
->   tests/tcg/s390x/hello-s390x-asm.S   | 4 +++-
->   2 files changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/tcg/s390x/gdbstub/test-svc.py b/tests/tcg/s390x/gdbstub/test-svc.py
-> index 7851ca72846..18fad3f163d 100644
-> --- a/tests/tcg/s390x/gdbstub/test-svc.py
-> +++ b/tests/tcg/s390x/gdbstub/test-svc.py
-> @@ -25,7 +25,7 @@ def run_test():
->       gdb.execute("si")
->       report("larl\t" in gdb.execute("x/i $pc", False, True), "insn #2")
->       gdb.execute("si")
-> -    report("lghi\t" in gdb.execute("x/i $pc", False, True), "insn #3")
-> +    report("lgrl\t" in gdb.execute("x/i $pc", False, True), "insn #3")
->       gdb.execute("si")
->       report("svc\t" in gdb.execute("x/i $pc", False, True), "insn #4")
->       gdb.execute("si")
-> diff --git a/tests/tcg/s390x/hello-s390x-asm.S b/tests/tcg/s390x/hello-s390x-asm.S
-> index 2e9faa16047..4dbda12d35d 100644
-> --- a/tests/tcg/s390x/hello-s390x-asm.S
-> +++ b/tests/tcg/s390x/hello-s390x-asm.S
-> @@ -8,7 +8,7 @@ _start:
->   /* puts("Hello, World!"); */
->   lghi %r2,1
->   larl %r3,foo
-> -lghi %r4,foo_end-foo
-> +lgrl %r4,foo_len
->   svc 4
->   
->   /* exit(0); */
-> @@ -18,3 +18,5 @@ svc 1
->   .align 2
->   foo: .asciz "Hello, World!\n"
->   foo_end:
-> +.align 8
-> +foo_len: .quad foo_end-foo
+> The default is XCHI_MAXSLOTS, not 1.  So I can't see why you'd need this.
 
-Thanks, that seems to work! Queued now.
+There are two systems using XHCI: i386/microvm and arm/sbsa. First
+one sets amount of slots already.
 
-Tested-by: Thomas Huth <thuth@redhat.com>
+Without this patch Linux complains that there is only one port and
+refuses to connect second usb device:
 
+xhci-hcd PNP0D10:00: Error while assigning device slot ID: No Slots Available Error
+xhci-hcd PNP0D10:00: Max number of devices this xHCI host supports is 1.
+usb usb1-port2: couldn't allocate usb_device
+
+So it looks like default being XHCI_MAXSLOTS is not applied somewhere.
 
