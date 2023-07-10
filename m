@@ -2,98 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3298174CD54
-	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 08:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D502774CDA1
+	for <lists+qemu-devel@lfdr.de>; Mon, 10 Jul 2023 08:51:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIkaA-0000p1-0c; Mon, 10 Jul 2023 02:41:14 -0400
+	id 1qIkiu-0004Db-Oh; Mon, 10 Jul 2023 02:50:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIka4-0000iI-BC
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 02:41:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qIkir-0004DE-RC
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 02:50:13 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qIka1-0000ve-MM
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 02:41:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1688971262;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/TmdGdncJnnM9h/zhSZ1pC4j+BsFgGEGwlB+ngGyjUQ=;
- b=OrQ6/G2UVqkGrTYeog9gDG7q1mBdv8GPEl0kC/nzbzy7XsPFiiBgIheOZVTVy8kaWdhKfX
- RL08mPsbIFmy4wCC4bcQGXGZESYgtXR++cRsaJsPdN6E+m2O7U0MDqkdcykprin5dXyoV9
- ZEhfM37r/Mt2Lxn1Ih3+0wUH4/axnwU=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-VDJW6rIGNQCg6HzZFT1Uqg-1; Mon, 10 Jul 2023 02:41:01 -0400
-X-MC-Unique: VDJW6rIGNQCg6HzZFT1Uqg-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7675fc3333eso284026985a.0
- for <qemu-devel@nongnu.org>; Sun, 09 Jul 2023 23:41:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1688971261; x=1691563261;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/TmdGdncJnnM9h/zhSZ1pC4j+BsFgGEGwlB+ngGyjUQ=;
- b=hWVuEaz6Np/OoNpdPwmKMxxW/clWJMpgbQMtJAxNnQ8uVnFMITF6O0eWqawbDLXyAa
- Up9WC3JYx+wPADRqrP7HlPwQLGvgSEgyZkuui0lrYIp49lkiXxOCwOshiPExTa5wwb6p
- hnENHKqI9VOmIz18l5YQZ2o7wiEAdaV8uEpaZnp/ZJjnhnfo1Y6+wLzA1fT2Uw9AHcGX
- M+NhyldGipFzhOkE5+CWVdYVYqHQ64VibJT2H4NWU75zWCaGLRE5tVcJHnLtMYnOrs2T
- ND+zM6PxkjBnOjzskOGvfAl3puy1P5soqSY8Gz28Rupcwo1Bek+4s9leXsorxGQXNVQD
- kO2w==
-X-Gm-Message-State: ABy/qLakkJZWQkmLHX5LjpjL6gwkU/IEcrrywb0TLBwxuD+L4fHt6Z3L
- pzPe+axdlDpXUROTlY7OiCyuV4dHFIfNSpnhALS4ByndCB4jwBhwUPF4LZbrrmBNxIgI4Hs3npi
- kjfgrBgsm3ArN4xY=
-X-Received: by 2002:a05:620a:4092:b0:765:591d:9d22 with SMTP id
- f18-20020a05620a409200b00765591d9d22mr18736152qko.0.1688971260918; 
- Sun, 09 Jul 2023 23:41:00 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlECyHUay21Vpo/vbn+L48ZK8s9CNwVt3rpKqQ3R3qMm85xbSz+PRh1WnVnG1oGY1OzQUlvKJA==
-X-Received: by 2002:a05:620a:4092:b0:765:591d:9d22 with SMTP id
- f18-20020a05620a409200b00765591d9d22mr18736143qko.0.1688971260660; 
- Sun, 09 Jul 2023 23:41:00 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-179-116.web.vodafone.de.
- [109.43.179.116]) by smtp.gmail.com with ESMTPSA id
- b6-20020ac86786000000b003f9b9d7f319sm4656865qtp.70.2023.07.09.23.40.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 09 Jul 2023 23:41:00 -0700 (PDT)
-Message-ID: <3c9ced25-4886-1a4a-c711-fe538752495c@redhat.com>
-Date: Mon, 10 Jul 2023 08:40:56 +0200
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qIkiq-0005ur-1e
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 02:50:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=BFvGmypyI5ykBy677fTMqEVPpI7fJ44BNC29wOa8Hso=; b=1prEaeAh3DhanRc/z8H1NKG+gg
+ dBGpp0BEo0DBH3PTRTLntaw/KBeDoaJuuleOhbCjHQfAWyTESEezagRvuNkAJwY5ABRzjDayOrPBS
+ QxWElXu2l6J3XPkzLo8Xe2PnTBmVkjvTK/IOdQ1eyFsZy7NNltipY5gF/rMrBn2BIA88ZkSkxrdZe
+ t4+1FvBZVAh5BQU9V+QAAF3jBI67SeljI6iYUk772Pvk0c6lBljfNL7hVjleTOhGtTCAkjgItfMus
+ EGYeZRIYOoCnvVS1KV45akw05lgPbAWFGutnYk8u/w++isZjPlrz0nb8YDH2h8orbxsg52eXEuTJP
+ 1KQa9cMYX4IvYLsdiY5meVu0CVNXmjD1pz8OJJLLo0LnjSoIhQKq7E76VUaCx/m4PQrREhQBM+gY8
+ WAB//EfOYP9J8kz9bjLVVJ/k8rT1e1taWqe+CukbQOAiUO2AkHsNaznsY3E9MRoP7VZdGpvYBGDtj
+ j4qDF2im+8cLQOJHOabe07z7YIduDw17+X0fGCAG/9f4uvjx95d2NlIcDVeoPs1YQSfTKq8wM5JMk
+ XufSAJqtK3PhPKppl2tNuZJfKSev9YzwgblbgL/E3RK6rlAxoLoH/MtJGAU38ArCNgeJcZY6gMDLv
+ rBThHV8aORcQV7xQHikmsibldBawhUbtMpv8RmMU8=;
+Received: from [2a00:23c4:8bae:1c00:dfd7:380:3565:1db7]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qIkiT-000BQp-NF; Mon, 10 Jul 2023 07:49:53 +0100
+Message-ID: <11ee334f-1a42-3378-0507-7312b4f9ed54@ilande.co.uk>
+Date: Mon, 10 Jul 2023 07:50:01 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 1/4] QGA VSS: Add wrapper to send log to debugger and
- stderr
-To: Konstantin Kostiuk <kkostiuk@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>, Michael Roth <michael.roth@amd.com>,
- Eric Blake <eblake@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20230707092258.768420-1-kkostiuk@redhat.com>
- <20230707092258.768420-2-kkostiuk@redhat.com>
- <c540330e-0adb-52a2-ab12-ba098212ce6f@linaro.org>
- <CAPMcbCrr6DxbNYRxm1uztaA7GG2A_MDb49VHuy26Cs7XA3bAuw@mail.gmail.com>
- <20f5fded-a486-c184-9ee0-1e91c178d5fd@linaro.org>
- <CAPMcbCrnM=1P7rjp+D_ei_R+e3QYSWDwfpJg2=ooC307p_qbBQ@mail.gmail.com>
+ Thunderbird/102.10.0
 Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <CAPMcbCrnM=1P7rjp+D_ei_R+e3QYSWDwfpJg2=ooC307p_qbBQ@mail.gmail.com>
+To: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>, laurent@vivier.eu
+Cc: qemu-devel@nongnu.org
+References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
+ <20230702154838.722809-9-mark.cave-ayland@ilande.co.uk>
+ <a3bfcbd6-733b-169b-6a44-0433ffe34a95@t-online.de>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <a3bfcbd6-733b-169b-6a44-0433ffe34a95@t-online.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-SA-Exim-Connect-IP: 2a00:23c4:8bae:1c00:dfd7:380:3565:1db7
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 08/21] asc: generate silence if FIFO empty but engine
+ still running
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.09,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,134 +83,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07/07/2023 22.22, Konstantin Kostiuk wrote:
-> 
-> 
-> On Fri, Jul 7, 2023 at 6:36 PM Philippe Mathieu-Daudé <philmd@linaro.org 
-> <mailto:philmd@linaro.org>> wrote:
-> 
->     On 7/7/23 16:24, Konstantin Kostiuk wrote:
->      >
->      >
->      > On Fri, Jul 7, 2023 at 1:33 PM Philippe Mathieu-Daudé
->     <philmd@linaro.org <mailto:philmd@linaro.org>
->      > <mailto:philmd@linaro.org <mailto:philmd@linaro.org>>> wrote:
->      >
->      >     On 7/7/23 11:22, Konstantin Kostiuk wrote:
->      >      > Signed-off-by: Konstantin Kostiuk <kkostiuk@redhat.com
->     <mailto:kkostiuk@redhat.com>
->      >     <mailto:kkostiuk@redhat.com <mailto:kkostiuk@redhat.com>>>
->      >      > ---
->      >      >   qga/vss-win32/meson.build   |  2 +-
->      >      >   qga/vss-win32/vss-debug.cpp | 31 +++++++++++++++++++++++++++++++
->      >      >   qga/vss-win32/vss-debug.h   | 25 +++++++++++++++++++++++++
->      >      >   3 files changed, 57 insertions(+), 1 deletion(-)
->      >      >   create mode 100644 qga/vss-win32/vss-debug.cpp
->      >      >   create mode 100644 qga/vss-win32/vss-debug.h
->      >
->      >
->      >      > diff --git a/qga/vss-win32/vss-debug.cpp
->      >     b/qga/vss-win32/vss-debug.cpp
->      >      > new file mode 100644
->      >      > index 0000000000..5d6f37944b
->      >      > --- /dev/null
->      >      > +++ b/qga/vss-win32/vss-debug.cpp
->      >      > @@ -0,0 +1,31 @@
->      >      > +/*
->      >      > + * QEMU Guest Agent VSS debug declarations
->      >      > + *
->      >      > + * Copyright (C) 2023 Red Hat Inc
->      >      > + *
->      >      > + * Authors:
->      >      > + *  Konstantin Kostiuk <kkostiuk@redhat.com
->     <mailto:kkostiuk@redhat.com>
->      >     <mailto:kkostiuk@redhat.com <mailto:kkostiuk@redhat.com>>>
->      >      > + *
->      >      > + * This work is licensed under the terms of the GNU GPL, version
->      >     2 or later.
->      >      > + * See the COPYING file in the top-level directory.
->      >      > + */
->      >      > +
->      >      > +#include "qemu/osdep.h"
->      >      > +#include "vss-debug.h"
->      >      > +#include "vss-common.h"
->      >      > +
->      >      > +void qga_debug_internal(const char *funcname, const char *fmt,
->      >     ...)  {
->      >      > +    char user_sting[512] = {0};
->      >
->      >     "user_string"
->      >
->      >      > +    char full_string[640] = {0};
->      >      > +
->      >      > +    va_list args;
->      >      > +    va_start(args, fmt);
->      >      > +    vsnprintf(user_sting, 512, fmt, args);
->      >
->      >     ARRAY_SIZE(user_string)
->      >
->      >
->      > I have a problem with ARRAY_SIZE define.
->      >
->      > ../qga/vss-win32/vss-debug.cpp: In function 'void
->      > qga_debug_internal(const char*, const char*, ...)':
->      > /src/include/qemu/compiler.h:70:12: error: types may not be defined in
->      > 'sizeof' expressions
->      >     70 |     struct { \
->      >        |            ^
->      > /src/include/qemu/compiler.h:78:43: note: in expansion of macro
->      > 'QEMU_BUILD_BUG_ON_STRUCT'
->      >     78 | #define QEMU_BUILD_BUG_ON_ZERO(x)
->      > (sizeof(QEMU_BUILD_BUG_ON_STRUCT(x)) - \
->      >        |                                          
->     ^~~~~~~~~~~~~~~~~~~~~~~~
->      > /src/include/qemu/osdep.h:474:24: note: in expansion of macro
->      > 'QEMU_BUILD_BUG_ON_ZERO'
->      >    474 |                      
->       QEMU_BUILD_BUG_ON_ZERO(!QEMU_IS_ARRAY(x)))
->      >        |                        ^~~~~~~~~~~~~~~~~~~~~~
->      > ../qga/vss-win32/vss-debug.cpp:23:32: note: in expansion of macro
->      > 'ARRAY_SIZE'
->      >     23 |     if (vsnprintf(user_string, ARRAY_SIZE(user_string), fmt,
->      > args) <= 0) {
->      >        |                                ^~~~~~~~~~
->      > /src/include/qemu/osdep.h:470:57: error: expected primary-expression
->      > before 'typeof'
->      >    470 | #define QEMU_IS_ARRAY(x)
->      > (!__builtin_types_compatible_p(typeof(x), \
->      >        |                                                         ^~~~~~
->      > /src/include/qemu/compiler.h:71:14: note: in definition of macro
->      > 'QEMU_BUILD_BUG_ON_STRUCT'
->      >     71 |         int:(x) ? -1 : 1; \
->      >        |              ^
->      > /src/include/qemu/osdep.h:474:24: note: in expansion of macro
->      > 'QEMU_BUILD_BUG_ON_ZERO'
->      >    474 |                      
->       QEMU_BUILD_BUG_ON_ZERO(!QEMU_IS_ARRAY(x)))
->      >        |                        ^~~~~~~~~~~~~~~~~~~~~~
->      > /src/include/qemu/osdep.h:474:48: note: in expansion of macro
->      > 'QEMU_IS_ARRAY'
->      >    474 |                      
->       QEMU_BUILD_BUG_ON_ZERO(!QEMU_IS_ARRAY(x)))
->      >
->      > Can you help with this?
-> 
->     Eh no clue, maybe not C++ compliant?
-> 
->     Fall back to sizeof() ¯\_(ツ)_/¯
-> 
-> 
-> You are right, When I rename the file to vss-debug.c the error disappears.
-> What is the better solution:
-> 1) use vss-debug.c and extern "C" { #include "vss-debug.h" } in CPP files
-> 2) just use sizeof() in CPP
+On 07/07/2023 07:24, Volker Rümelin wrote:
 
-I recently sent a patch to drop the logic for linking C code with C++ code:
+>> MacOS (un)helpfully leaves the FIFO engine running even when all the samples have
+>> been written to the hardware, and expects the FIFO status flags and IRQ to be
+>> updated continuously.
+>>
+>> Since not all audio backends guarantee an all-zero output when no data is
+>> provided, explicitly generate at least one full output buffer of all-zero output
+>> when the FIFO is disabled and continuously if the FIFO is empty. Otherwise some
+>> audio backends such as Windows re-use their internal buffers causing the last
+>> played sound to loop indefinitely.
+>>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> ---
+>>   hw/audio/asc.c         | 43 ++++++++++++++++++++++++++++++++----------
+>>   include/hw/audio/asc.h |  1 +
+>>   2 files changed, 34 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/hw/audio/asc.c b/hw/audio/asc.c
+>> index ebcb8a97a6..f9bfae5168 100644
+>> --- a/hw/audio/asc.c
+>> +++ b/hw/audio/asc.c
+>> @@ -148,6 +148,20 @@ static uint8_t asc_fifo_get(ASCFIFOState *fs)
+>>       return val;
+>>   }
+> 
+> Hi Mark,
+> 
+> I don't understand why the flush_zero_samples variable is necessary at all.
+> 
+>> +static int generate_silence(ASCState *s, int maxsamples)
+>> +{
+>> +    uint8_t *buf = s->mixbuf;
+>> +
+>> +    if (s->flush_zero_samples) {
+>> +        memset(buf, 0x80, maxsamples << s->shift);
+>> +        s->flush_zero_samples -= MIN(maxsamples, s->flush_zero_samples);
+>> +
+>> +        return maxsamples;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>>   static int generate_fifo(ASCState *s, int maxsamples)
+>>   {
+>>       uint8_t *buf = s->mixbuf;
+>> @@ -156,18 +170,26 @@ static int generate_fifo(ASCState *s, int maxsamples)
+>>       limit = MIN(MAX(s->fifos[0].cnt, s->fifos[1].cnt), maxsamples);
+>>       /*
+>> -     * If starting a new run with no FIFO data present, update the IRQ and
+>> -     * continue
+>> +     * MacOS (un)helpfully leaves the FIFO engine running even when it has
+>> +     * finished writing out samples. Since not all audio backends guarantee an
+>> +     * all-zero output when no data is provided, zero out the sample buffer
+>> +     * and then update the FIFO flags and IRQ as normal and continue
+>>        */
+>> -    if (limit == 0 && s->fifos[0].int_status == 0 &&
+>> -            s->fifos[1].int_status == 0) {
+>> -        s->fifos[0].int_status |= ASC_FIFO_STATUS_HALF_FULL |
+>> -                                  ASC_FIFO_STATUS_FULL_EMPTY;
+>> -        s->fifos[1].int_status |= ASC_FIFO_STATUS_HALF_FULL |
+>> -                                  ASC_FIFO_STATUS_FULL_EMPTY;
+>> +    if (limit == 0) {
+>> +        if (s->fifos[0].int_status == 0 && s->fifos[1].int_status == 0) {
+>> +            s->fifos[0].int_status |= ASC_FIFO_STATUS_HALF_FULL |
+>> +                                      ASC_FIFO_STATUS_FULL_EMPTY;
+>> +            s->fifos[1].int_status |= ASC_FIFO_STATUS_HALF_FULL |
+>> +                                      ASC_FIFO_STATUS_FULL_EMPTY;
+>> +        }
+>> +
+>> +        if (s->flush_zero_samples == 0) {
+>> +            s->flush_zero_samples = s->samples;
+>> +        }
+> 
+> At this point s->flush_zero_samples is != 0 and generate_silence() always generates 
+> maxsamples silent audio frames.
+> 
+>> +        generate_silence(s, maxsamples);
+>>           asc_raise_irq(s);
+>> -        return 0;
+>> +        return maxsamples;
+>>       }
+>>       while (count < limit) {
+>> @@ -309,7 +331,7 @@ static void asc_out_cb(void *opaque, int free_b)
+>>       switch (s->regs[ASC_MODE] & 3) {
+>>       default:
+>>           /* Off */
+> 
+> This code will not be called for s->regs[ASC_MODE] & 3 == 0 because in asc_write() 
+> AUD_set_active_out(s->voice, 0) was called before.
+> 
+> For s->regs[ASC_MODE] & 3 == 3 the code in asc_write() clears s->flush_zero_samples 
+> and generate_silence() always returns 0. The audio subsystem is running and expects 
+> new audio frames here.
+> 
+> With best regards,
+> Volker
 
-  https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg01553.html
+Ooof indeed, thanks - I've been trying to tweak this logic to improve the results on 
+Windows, but clearly missed this obvious flaw. Unfortunately at the moment I have 
+visitors until the end of the week and so I don't have much of an opportunity to 
+revisit this before next week.
 
-So please go with option 2 ;-)
+>> -        samples = 0;
+>> +        samples = generate_silence(s, samples);
+>>           break;
+>>       case 1:
+>>           /* FIFO mode */
+>> @@ -437,6 +459,7 @@ static void asc_write(void *opaque, hwaddr addr, uint64_t value,
+>>               asc_lower_irq(s);
+>>               if (value != 0) {
+>>                   AUD_set_active_out(s->voice, 1);
+>> +                s->flush_zero_samples = 0;
+>>               } else {
+>>                   AUD_set_active_out(s->voice, 0);
+>>               }
+>> diff --git a/include/hw/audio/asc.h b/include/hw/audio/asc.h
+>> index 41c6cba8fa..918f6ac582 100644
+>> --- a/include/hw/audio/asc.h
+>> +++ b/include/hw/audio/asc.h
+>> @@ -65,6 +65,7 @@ struct ASCState {
+>>       uint8_t *mixbuf;
+>>       int samples;
+>>       int shift;
+>> +    uint32_t flush_zero_samples;
+>>       qemu_irq irq;
 
-  Thomas
+
+ATB,
+
+Mark.
 
 
