@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89CF974FD8B
+	by mail.lfdr.de (Postfix) with ESMTPS id 4823F74FD89
 	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 05:14:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJQHg-0008NS-2a; Tue, 11 Jul 2023 23:12:56 -0400
+	id 1qJQHg-0008Nn-Ls; Tue, 11 Jul 2023 23:12:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
- id 1qJQHb-0008Mx-Uu
+ id 1qJQHb-0008My-VD
  for qemu-devel@nongnu.org; Tue, 11 Jul 2023 23:12:52 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mathbern@qualcomm.com>)
- id 1qJQHV-0002Op-Jh
+ id 1qJQHV-0002Ox-O0
  for qemu-devel@nongnu.org; Tue, 11 Jul 2023 23:12:51 -0400
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
  by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36C2RLin031131; Wed, 12 Jul 2023 03:12:41 GMT
+ 36C2SFa7020901; Wed, 12 Jul 2023 03:12:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
  h=from : to : cc :
  subject : date : message-id : mime-version : content-transfer-encoding;
- s=qcppdkim1; bh=O52jFOjTHJqO8Ji3CCK5I6t5YdXewP/nPbIoNTCh88M=;
- b=WpJaJ+Xz4ffbjsEubdktMzUh+ji4P64FdqtQlj0DFPp/D1riIZ99732wMdVU+SY5FpXT
- 1AehfmjWQGc7gD5GMHQUigV0BhfAJp6uGiCxQVhNMIJEowQkkfEMu/ZoaK7270KIiT/W
- jlvHH9A6xZcPeeWU9jeMBZT8MUbC1++haLR9B5tndsP3Ely41p6GOGaYrRN+/SgwZEri
- B8kcYQYUkk5OyLlUeuJFkgrLQZVwAobfEgZBD3+62M0d31Wr7XcAqsibSQR3qE5fq8xH
- oy0JBCKjVSPO1lb2FDFtQihPGds6OFke3JWa7QibwLcqUbs6JpYFKNVYVkZlyvZeohlu sA== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
+ s=qcppdkim1; bh=ME6ypI+dALFLTv/TMe/k/P4GDdBVUpLUIf/kG/XrUvg=;
+ b=br2oygnnsp2WzpywAhHSXNgh6JmKR/E7XUh6Eh9OPxu0p15RKuUNPwXw2f/990krdZSo
+ ajeaxttgVko+e6IefRkrGnV1q+E/A+sSd3cbx73XWT08q/f2Out0h8Syn1qBV+6EibBp
+ Ojy8vTPZzBiSIkYeeYHqf6Kr7Ht3OKi/eEQCk7WYl6cRA2NQsQRcxHHvwPVfr6QKoKTw
+ AidjoxeiC1kIZvWrEAsAn780ZRetYdGaRV1y0cQEFcih2WMDWk1hpKXTyGYMYJyYZbVB
+ KyPi0l8SczWdboyudaXJD1gQl8rWqGBtRoF9yOOWS2Pvj71XFWwBtLmDCozOUKpKx5oC Og== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com
  [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rser0rg6s-1
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rsfeq0dbp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 12 Jul 2023 03:12:40 +0000
-Received: from pps.filterd (NALASPPMTA05.qualcomm.com [127.0.0.1])
- by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 36C384uW019420; 
+Received: from pps.filterd (NALASPPMTA03.qualcomm.com [127.0.0.1])
+ by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 36C383EW029767; 
  Wed, 12 Jul 2023 03:12:39 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
- by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 3rrpyeg699-1
+ by NALASPPMTA03.qualcomm.com (PPS) with ESMTPS id 3rrpxwr6e7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 12 Jul 2023 03:12:39 +0000
-Received: from NALASPPMTA05.qualcomm.com (NALASPPMTA05.qualcomm.com
+Received: from NALASPPMTA03.qualcomm.com (NALASPPMTA03.qualcomm.com
  [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36C3AeXG023022;
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36C38JHU030494;
  Wed, 12 Jul 2023 03:12:39 GMT
 Received: from hu-devc-sd-u20-a-1.qualcomm.com (hu-mathbern-lv.qualcomm.com
  [10.47.235.147])
- by NALASPPMTA05.qualcomm.com (PPS) with ESMTPS id 36C3Cdbx024924
+ by NALASPPMTA03.qualcomm.com (PPS) with ESMTPS id 36C3CdwL003863
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 12 Jul 2023 03:12:39 +0000
 Received: by hu-devc-sd-u20-a-1.qualcomm.com (Postfix, from userid 4229910)
- id F26B364E5; Mon, 10 Jul 2023 10:42:57 -0300 (-03)
+ id F0E136005; Mon, 10 Jul 2023 21:31:43 -0300 (-03)
 From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 To: qemu-devel@nongnu.org
 Cc: bcain@quicinc.com, ltaylorsimpson@gmail.com, quic_mliebel@quicinc.com,
  richard.henderson@linaro.org, quic_mathbern@quicinc.com
 Subject: [PATCH v3] Hexagon: move GETPC() calls to top level helpers
-Date: Mon, 10 Jul 2023 10:42:55 -0300
-Message-Id: <7937f7ba4c24c3c56601ca5b5c57648679e2b510.1688995341.git.quic_mathbern@quicinc.com>
+Date: Mon, 10 Jul 2023 21:31:41 -0300
+Message-Id: <7937f7ba4c24c3c56601ca5b5c57648679e2b510.1689035388.git.quic_mathbern@quicinc.com>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -69,26 +69,26 @@ X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
  signatures=585085
-X-Proofpoint-GUID: SLF3d_LYOVESmNyKCpbwGQoUSr8RsmhC
-X-Proofpoint-ORIG-GUID: SLF3d_LYOVESmNyKCpbwGQoUSr8RsmhC
+X-Proofpoint-ORIG-GUID: A5WKvOoLOX_2Z_6VKNA6dpZneaVdj5l7
+X-Proofpoint-GUID: A5WKvOoLOX_2Z_6VKNA6dpZneaVdj5l7
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-11_14,2023-07-11_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- priorityscore=1501 malwarescore=0 adultscore=0 impostorscore=0 mlxscore=0
- suspectscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=999
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307120026
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=mathbern@qualcomm.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ bulkscore=0 impostorscore=0
+ malwarescore=0 spamscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 mlxlogscore=999 suspectscore=0 mlxscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2307120026
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=mathbern@qualcomm.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,8 +133,8 @@ Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 ---
 v2: https://lore.kernel.org/qemu-devel/93a2ca786530cbc8a94f7c7a6451f4f1f47c8a9b.1688581908.git.quic_mathbern@quicinc.com/
 
-Changes in v3: also included fix for nested helper call in
-probe_hvx_stores, which I had missed in previous iterations.
+Changed in v3: included fix for HELPER(prove_hvx_store), which was being
+called by HELPER(probe_pkt_scalar_hvx_stores).
 
  target/hexagon/macros.h    | 19 +++++-----
  target/hexagon/op_helper.h | 11 ++----
