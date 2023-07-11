@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26A074F613
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 18:50:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30ED574F634
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 18:55:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJGYH-00050M-4M; Tue, 11 Jul 2023 12:49:25 -0400
+	id 1qJGdN-0006xa-Ht; Tue, 11 Jul 2023 12:54:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <palmer@dabbelt.com>)
- id 1qJGYD-0004zz-Nb
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:49:21 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qJGdM-0006xS-GP
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:54:40 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <palmer@dabbelt.com>)
- id 1qJGYB-0006aA-Do
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:49:20 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-668711086f4so3813398b3a.1
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 09:49:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qJGdK-0007dJ-SZ
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:54:40 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fbc5d5742eso64852145e9.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 09:54:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1689094156; x=1691686156; 
- h=content-transfer-encoding:mime-version:message-id:to:from:cc
- :in-reply-to:subject:date:from:to:cc:subject:date:message-id
- :reply-to; bh=PQzjHIHVdvK+jWYBMkEnUbMg8xpPVhzzrho4nDiNl4U=;
- b=DOH5QcCIm5CsCaMF89MJL6idAUk6+Uh8BGlBLjLq8u8r+0B4/CpjpAzbaQD9Yg8i3E
- 3LtN8lEFeU7XiteCnhRwdPOZeArCn+pmrkMmact5ugSH9IRu6XVzFxK8l1xj87qS9cz/
- CuFvsecf7KlC5UlIAbTrdxDahJci3jBrvFPhM/GreuNUn/QGEBuhCsnN6f/Rws56Mv2C
- aEW29fwK+DGtAuwpy0x1UeqC4XrV/bbY1lpfK3hwil2cr4QcGm3uYu9AFrHp06b1GMlA
- m7vJHDWvexLRdcg/+0qTYDO02Cz3IufgVtURi+ETwYmzeWz0cx9g5/H1+lqIYBBhioB+
- vVWA==
+ d=linaro.org; s=google; t=1689094477; x=1691686477;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q0ot/AU4aAn/KFaGSe7U0g3v4djRMr4o+ZJ8G5uOSDg=;
+ b=KAD5ehvCQknQ6+3Fm9/SR400+Ky3/S/ndnEykcfgVx7YaZ4IHifeb8fqxp0399Bagn
+ qPMiwxw6VHrNGQQ9XANURfgV62ZFF7chkDkN+cYy1Ok4pcWHEZySRR5/O6FlQF/eJffR
+ Kqcx52m2X4ROYdlEOkMz2FyIViwhRM51/mMQhCICU8PGQIJugc8C3ou+3SQ7k+27p/ki
+ rM2SITN/Tw4HSksDtTdv3fw6HK6TWC7iEMyvec0rukhnUZbpZDXpinO2UlmGYNSQ3+hf
+ 0VtiMbgyYVKitcWoJNmg9WcppYM5JM7anca4+EcqhFnsPEtop0lea2zXDysUuq8KbiwF
+ mS+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689094156; x=1691686156;
- h=content-transfer-encoding:mime-version:message-id:to:from:cc
- :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PQzjHIHVdvK+jWYBMkEnUbMg8xpPVhzzrho4nDiNl4U=;
- b=i2FLL2rEi3MIROW7ArctbA+2XUcvvinGCyYsvqdxpRo2sA6kZDX9S70llz3RybFw1G
- cRbbWv4WYW8X+BiNKUEAlTmEhC8k3xeTpOdNRGInT/GUNErcml5D+HXf86nCv6U8Q0gc
- Dxr4RtDpnyH789hm+hV4ZX2FfgVgF7DG2BDwudSquVjlKHIHkZafvhv0XhzeaznSjigl
- 0uecai2TJQu7rbzzOFZ0ahet04WqVpQFAevwhlIpvHZ3LzRIOB8vLpNrKluZ6eIVbBkJ
- GjZmrg8CyMPYm8Mtq3zCICVovlgAEQSBepOd+Ipgi2QLyQhqY6HOLVS13ZZltnDtLsTw
- jXRw==
-X-Gm-Message-State: ABy/qLZ7Pyet2pu5P3W+NttX+MYezgQPBAvrBjlGc4bzmJJNDzg3kPSz
- jjd+65hbDHaOyeGW97UyBZdefn7GP3sbwNpw2/g=
-X-Google-Smtp-Source: APBJJlG4WCzIzsBZ/Jcab8rBlsokuhADcYN7j/hgdyq6fuju8btutNUWQmEFvy8z0o4vIjmfz83pqA==
-X-Received: by 2002:a05:6a00:1da8:b0:682:93ce:4825 with SMTP id
- z40-20020a056a001da800b0068293ce4825mr27682093pfw.3.1689094156426; 
- Tue, 11 Jul 2023 09:49:16 -0700 (PDT)
-Received: from localhost ([50.38.6.230]) by smtp.gmail.com with ESMTPSA id
- v13-20020a63b64d000000b0052c3f0ae381sm1676958pgt.78.2023.07.11.09.49.15
+ d=1e100.net; s=20221208; t=1689094477; x=1691686477;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Q0ot/AU4aAn/KFaGSe7U0g3v4djRMr4o+ZJ8G5uOSDg=;
+ b=bB+XzaUnOU0e+yfp9WMMo7zshi1E0eH03xpDFK8Ks6/DIh+1tXKUzrnlhann+YpPU7
+ xyTAdeG01Ow6Dj8bAux+3Za7tSSgwX/3eiZVLfjny6DExRyK4dC4rcuJ6ZCRQ84BB0r6
+ TEw2x8ylYcm/2J7Wmzy6BkReOXXAW5ATKEBjCjFZ/CNWSG8amYGRGzorJ5cXIrpSuYcx
+ WXHaVBGYlJms8hXXWsw4oQ86pfUrbewPFKIeTePL7AhoDhvJ3CrdsAiEA30ZTHoQth0R
+ 1top2fC8ez3GT99jM/1OKuzdGUqv7axzs/f1uDpE25UwsHT4uT6mSu8zxeUbv/URN0mh
+ PALA==
+X-Gm-Message-State: ABy/qLa686sCycv9sl6bwWHF78nLS2DzFzKP5eS4xe2uAVo7JPM0JQpc
+ 3w20C3AxnEQzrA/dFVVVV9OFZp5A6G+9eahPofA=
+X-Google-Smtp-Source: APBJJlGLYT3tGI/dnBl3JK37NgaKH+NVZKc8JgzGUdpq3BdJsY2oG1icVW/yPtbnomBvrXL4G552kQ==
+X-Received: by 2002:a7b:cc84:0:b0:3fc:a5:2c3a with SMTP id
+ p4-20020a7bcc84000000b003fc00a52c3amr11779820wma.41.1689094476880; 
+ Tue, 11 Jul 2023 09:54:36 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ q14-20020a1cf30e000000b003fbb25da65bsm3005822wmq.30.2023.07.11.09.54.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jul 2023 09:49:16 -0700 (PDT)
-Date: Tue, 11 Jul 2023 09:49:16 -0700 (PDT)
-X-Google-Original-Date: Tue, 11 Jul 2023 09:48:25 PDT (-0700)
-Subject: Re: riscv kvm breakage
-In-Reply-To: <629afcc2-ffed-c081-9564-7faa6defc1f4@linaro.org>
-CC: qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- Alistair Francis <Alistair.Francis@wdc.com>, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: Richard Henderson <richard.henderson@linaro.org>, philmd@linaro.org,
- mjt@tls.msk.ru, dbarboza@ventanamicro.com
-Message-ID: <mhng-cc1adc21-625f-4def-bd89-8ccf08c98514@palmer-ri-x1c9a>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
+ Tue, 11 Jul 2023 09:54:36 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Anton Johansson <anjo@rev.ng>
+Subject: [PATCH for-8.1] accel/tcg: Zero-pad PC in TCG CPU exec trace lines
+Date: Tue, 11 Jul 2023 17:54:34 +0100
+Message-Id: <20230711165434.4123674-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=palmer@dabbelt.com; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,50 +89,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 11 Jul 2023 09:43:48 PDT (-0700), Richard Henderson wrote:
-> Hiya,
->
-> This breakage crept in while cross-riscv64-system was otherwise broken in configure:
->
-> https://gitlab.com/qemu-project/qemu/-/jobs/4633277557#L4165
->
-> ../target/riscv/kvm.c:209:38: error: ‘KVM_RISCV_ISA_EXT_ZICBOZ’ undeclared here (not in a
-> function); did you mean ‘KVM_RISCV_ISA_EXT_ZICBOM’?
->    209 |     KVM_EXT_CFG("zicboz", ext_icboz, KVM_RISCV_ISA_EXT_ZICBOZ),
->        |                                      ^~~~~~~~~~~~~~~~~~~~~~~~
-> ../target/riscv/kvm.c:205:20: note: in definition of macro ‘KVM_EXT_CFG’
->    205 |      .kvm_reg_id = _reg_id}
->        |                    ^~~~~~~
-> ../target/riscv/kvm.c:211:33: error: ‘KVM_RISCV_ISA_EXT_ZBB’ undeclared here (not in a
-> function); did you mean ‘KVM_RISCV_ISA_EXT_MAX’?
->    211 |     KVM_EXT_CFG("zbb", ext_zbb, KVM_RISCV_ISA_EXT_ZBB),
->        |                                 ^~~~~~~~~~~~~~~~~~~~~
-> ../target/riscv/kvm.c:205:20: note: in definition of macro ‘KVM_EXT_CFG’
->    205 |      .kvm_reg_id = _reg_id}
->        |                    ^~~~~~~
-> ../target/riscv/kvm.c:212:37: error: ‘KVM_RISCV_ISA_EXT_SSAIA’ undeclared here (not in a
-> function); did you mean ‘KVM_RISCV_ISA_EXT_SSTC’?
->    212 |     KVM_EXT_CFG("ssaia", ext_ssaia, KVM_RISCV_ISA_EXT_SSAIA),
->        |                                     ^~~~~~~~~~~~~~~~~~~~~~~
-> ../target/riscv/kvm.c:205:20: note: in definition of macro ‘KVM_EXT_CFG’
->    205 |      .kvm_reg_id = _reg_id}
->        |                    ^~~~~~~
-> In file included from /usr/riscv64-linux-gnu/include/rpc/netdb.h:42,
->                   from /usr/riscv64-linux-gnu/include/netdb.h:32,
->                   from /builds/qemu-project/qemu/include/sysemu/os-posix.h:34,
->                   from /builds/qemu-project/qemu/include/qemu/osdep.h:151,
->                   from ../target/riscv/kvm.c:19:
-> ../target/riscv/kvm.c:288:44: error: ‘struct kvm_riscv_config’ has no member named
-> ‘zicboz_block_size’; did you mean ‘zicbom_block_size’?
->    288 |     .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicboz_block_size)
->        |                                            ^~~~~~~~~~~~~~~~~
->
-> Can someone have a look asap?  Thanks,
+In commit f0a08b0913befbd we changed the type of the PC from
+target_ulong to vaddr.  In doing so we inadvertently dropped the
+zero-padding on the PC in trace lines (the second item inside the []
+in these lines).  They used to look like this on AArch64, for
+instance:
 
-+Phillippe and Michael, there's already a discussion on IRC and sounds 
-like there's a fix?
+Trace 0: 0x7f2260000100 [00000000/0000000040000000/00000061/ff200000]
 
->
->
-> r~
+and now they look like this:
+Trace 0: 0x7f4f50000100 [00000000/40000000/00000061/ff200000]
+
+and if the PC happens to be somewhere low like 0x5000
+then the field is shown as /5000/.
+
+This is because TARGET_FMT_lx is a "%08x" or "%016x" specifier,
+depending on TARGET_LONG_SIZE, whereas VADDR_PRIx is just PRIx64
+with no width specifier.
+
+Restore the zero-padding by adding an 016 width specifier to
+this tracing and a couple of others that were similarly recently
+changed to use VADDR_PRIx without a width specifier.
+
+We can't unfortunately restore the "32-bit guests are padded to
+8 hex digits and 64-bit guests to 16 hex digits" behaviour so
+easily.
+
+Fixes: f0a08b0913befbd ("accel/tcg/cpu-exec.c: Widen pc to vaddr")
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+I have a workflow that parses log files to get the executed
+PC values; I don't suppose I'm the only one doing that...
+---
+ accel/tcg/cpu-exec.c      | 4 ++--
+ accel/tcg/translate-all.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index ba1890a373d..db1e82811fa 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -298,7 +298,7 @@ static void log_cpu_exec(vaddr pc, CPUState *cpu,
+     if (qemu_log_in_addr_range(pc)) {
+         qemu_log_mask(CPU_LOG_EXEC,
+                       "Trace %d: %p [%08" PRIx64
+-                      "/%" VADDR_PRIx "/%08x/%08x] %s\n",
++                      "/%016" VADDR_PRIx "/%08x/%08x] %s\n",
+                       cpu->cpu_index, tb->tc.ptr, tb->cs_base, pc,
+                       tb->flags, tb->cflags, lookup_symbol(pc));
+ 
+@@ -487,7 +487,7 @@ cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
+         if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
+             vaddr pc = log_pc(cpu, last_tb);
+             if (qemu_log_in_addr_range(pc)) {
+-                qemu_log("Stopped execution of TB chain before %p [%"
++                qemu_log("Stopped execution of TB chain before %p [%016"
+                          VADDR_PRIx "] %s\n",
+                          last_tb->tc.ptr, pc, lookup_symbol(pc));
+             }
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index d3d4fbc1a41..bb225afa04f 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -604,7 +604,7 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
+     if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
+         vaddr pc = log_pc(cpu, tb);
+         if (qemu_log_in_addr_range(pc)) {
+-            qemu_log("cpu_io_recompile: rewound execution of TB to %"
++            qemu_log("cpu_io_recompile: rewound execution of TB to %016"
+                      VADDR_PRIx "\n", pc);
+         }
+     }
+-- 
+2.34.1
+
 
