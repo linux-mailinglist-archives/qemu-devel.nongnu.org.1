@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB4B74EBA0
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 12:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0119E74EBBC
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 12:32:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJARg-0000w7-9O; Tue, 11 Jul 2023 06:18:12 -0400
+	id 1qJAeM-0002ep-A2; Tue, 11 Jul 2023 06:31:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1qJARd-0000vw-QP
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 06:18:09 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1qJARb-0003PA-HY
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 06:18:09 -0400
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36B6XHhj026112; Tue, 11 Jul 2023 10:18:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=PZDOl9TZcNnqbmKFJdZ9UPzsgh6d0CuMdnX8PlKlvFs=;
- b=BqDvamHYVj+u2RlXDhV7KaM8ejkQSyEVyI0ZyOV9uEDXDwF5OEAx75uKULor154D6Q9a
- m1Bezu1E2MVn5C6hfFOPceFmP35WYphxXu7fWzJwI8+ccdmEcMMgP3AQYOHjts7340E/
- 9HRWUA/8L806QsD7JeftWIndAVfgvSVELGGwypP4NevQA2uoSD5F5OQtp/a2oFSnUUgB
- SEnxqXG7ZZQ6li18ljFqQRz03TNkn9vyjUyhnKQbdT9wSoA/tFOgE++smwNV51gZ6SwF
- Y/wGZIs8B3qfka0HNnf5NVVTtfqbm0am465U64MfY7+kp0ILIfeuSiCjMPx1rLnQipp8 +Q== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rs1hw8epe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 11 Jul 2023 10:18:00 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
- [10.47.209.196])
- by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36BAHxPV007583
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 11 Jul 2023 10:17:59 GMT
-Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Tue, 11 Jul 2023 03:17:59 -0700
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: <bcain@quicinc.com>, <ltaylorsimpson@gmail.com>,
- <quic_mliebel@quicinc.com>, <richard.henderson@linaro.org>,
- <quic_mathbern@quicinc.com>
-Subject: [PATCH v3] Hexagon: move GETPC() calls to top level helpers
-Date: Tue, 11 Jul 2023 07:17:48 -0300
-Message-ID: <2c74c3696946edba7cc5b2942cf296a5af532052.1689070412.git.quic_mathbern@quicinc.com>
-X-Mailer: git-send-email 2.37.2
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qJAeD-0002e3-4G; Tue, 11 Jul 2023 06:31:09 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qJAeB-00071E-If; Tue, 11 Jul 2023 06:31:08 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1b9d80e33fbso12840875ad.0; 
+ Tue, 11 Jul 2023 03:31:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1689071465; x=1691663465;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Z2oAf2Qhh2TrdXmZjGFPMLFQej/8J7W2ImL9J5i/284=;
+ b=gf9qh8TRHgpIXmhIEXZD0K6QwxsoC9FT31zNGhL2yTeh2SSxjDJ2Z1JMnsxCt/aOdL
+ AL9uJWGXz62l27WEa9Y1wg8rWlQjzjsZRgYfNlQURi+Rb94SlKAWfGQv3aDDFfCpXuE2
+ RJ6o7IYG++M9GPIDm9AIBUTyJZM14Cvkavi1GgHfwpePWiFZ57isvObX5wYulcnVffMo
+ ldNYTugzVXgegt55tpsMqTqZl18rNmRwWId/Yala6szYWxhkjsmamtYCaWsW0/xD8aFt
+ e+RASI19p6IyQk5JbiL1G51za/J1ocz8i4vL5/aVa8y49B0pymoteOMer+FUku7NqoPl
+ LzAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689071465; x=1691663465;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=Z2oAf2Qhh2TrdXmZjGFPMLFQej/8J7W2ImL9J5i/284=;
+ b=laqv6YlzL+8upbhPaaFztxC1GckyxTxYh4TntyrdXgnxwka88WnibjVakSTDvelZVY
+ B4TUpfX9ta4hmsL6MrtmtN6NhKc3W2utoo4XuYdU8IAowTfaf+TM4FfTlNdg7lxx++0B
+ 1sqIutFC1U8FQ/j+TjtcNhA6bRvi+Q1Px805LdoXvFaHOvZemYT3H5OKE/f+5rqggjBo
+ fKhqERCf9p0zCj4iBaKSDv1OhsrBmHeo9mHWvRdWqIDw8n+7ChjBS4fywdigrx2OLVTm
+ FUMrwl76/d+AdsQtwXJegCvtFb7f0BwVEvRcpg081RbK5b4LoGClQ3z0QJNTHLTZMjON
+ Uxig==
+X-Gm-Message-State: ABy/qLaKn1fPdbTBzwFtIMkXJu69/7o3aYV6m+0mauixB64sk64kIBkV
+ sRc/0+vMyiLJcp1Unk6QMct0xGTD7n6Q5g==
+X-Google-Smtp-Source: APBJJlHJtqbatx7ZT5VGWPA+QQLeg6CG1HdBWNal+C7M2L8a1NcALGvQwabG8luyc/SOlc/4cBv/Uw==
+X-Received: by 2002:a17:902:cec3:b0:1b8:89fd:6213 with SMTP id
+ d3-20020a170902cec300b001b889fd6213mr12408716plg.35.1689071464813; 
+ Tue, 11 Jul 2023 03:31:04 -0700 (PDT)
+Received: from [192.168.0.62] ([218.147.112.168])
+ by smtp.gmail.com with ESMTPSA id
+ i5-20020a1709026ac500b001b8918da8d1sm1541294plt.80.2023.07.11.03.31.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Jul 2023 03:31:04 -0700 (PDT)
+Message-ID: <0e1a269c-0834-7255-1ded-0d37bddd1976@gmail.com>
+Date: Tue, 11 Jul 2023 19:31:02 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: PING: [PATCH v4 0/3] hw/ufs: Add Universal Flash Storage (UFS) support
+To: qemu-devel@nongnu.org
+Cc: fam@euphon.net, hreitz@redhat.com, k.jensen@samsung.com,
+ kwolf@redhat.com, pbonzini@redhat.com, qemu-block@nongnu.org,
+ stefanha@redhat.com, berrange@redhat.com, marcandre.lureau@redhat.com,
+ marcel.apfelbaum@gmail.com, mst@redhat.com, philmd@linaro.org,
+ thuth@redhat.com
+References: <cover.1688459061.git.jeuk20.kim@gmail.com>
+From: Jeuk Kim <jeuk20.kim@gmail.com>
+In-Reply-To: <cover.1688459061.git.jeuk20.kim@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: HxtlK5LNygj0eyDNW2N0zyzhXbxbWHtY
-X-Proofpoint-ORIG-GUID: HxtlK5LNygj0eyDNW2N0zyzhXbxbWHtY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-11_04,2023-07-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- impostorscore=0 adultscore=0 priorityscore=1501 suspectscore=0
- clxscore=1015 mlxlogscore=999 mlxscore=0 phishscore=0 malwarescore=0
- spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307110091
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_mathbern@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,256 +95,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As docs/devel/loads-stores.rst states:
+Hi,
+Any more reviews...?
 
-  ``GETPC()`` should be used with great care: calling
-  it in other functions that are *not* the top level
-  ``HELPER(foo)`` will cause unexpected behavior. Instead, the
-  value of ``GETPC()`` should be read from the helper and passed
-  if needed to the functions that the helper calls.
+Dear Stefan
+If you don't mind, Could you give it "reviewed-by"?
+And is there anything else I should do...?
 
-Let's fix the GETPC() usage in Hexagon, making sure it's always called
-from top level helpers and passed down to the places where it's
-needed. There are a few snippets where that is not currently the case:
+Thanks,
+Jeuk
 
-- probe_store(), which is only called from two helpers, so it's easy to
-  move GETPC() up.
-
-- mem_load*() functions, which are also called directly from helpers,
-  but through the MEM_LOAD*() set of macros. Note that this are only
-  used when compiling with --disable-hexagon-idef-parser.
-
-  In this case, we also take this opportunity to simplify the code,
-  unifying the mem_load*() functions.
-
-- HELPER(probe_hvx_stores), when called from another helper, ends up
-  using its own GETPC() expansion instead of the top level caller.
-
-Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
----
-v2: https://lore.kernel.org/qemu-devel/93a2ca786530cbc8a94f7c7a6451f4f1f47c8a9b.1688581908.git.quic_mathbern@quicinc.com/
-
-Changes since v2:
-- Made check_noshuf static again (thanks, Taylor!)
-- Included fix for nested helper call using wrong GETPC value at
-  HELPER(probe_pkt_scalar_store_s0) -> HELPER(probe_hvx_store)
-- Included Taylor's Reviewed-by.
-
- target/hexagon/macros.h    | 19 +++++-----
- target/hexagon/op_helper.h |  9 -----
- target/hexagon/op_helper.c | 75 +++++++++++++++-----------------------
- 3 files changed, 38 insertions(+), 65 deletions(-)
-
-diff --git a/target/hexagon/macros.h b/target/hexagon/macros.h
-index 5451b061ee..dafa0df6ed 100644
---- a/target/hexagon/macros.h
-+++ b/target/hexagon/macros.h
-@@ -173,15 +173,6 @@
- #define MEM_STORE8(VA, DATA, SLOT) \
-     MEM_STORE8_FUNC(DATA)(cpu_env, VA, DATA, SLOT)
- #else
--#define MEM_LOAD1s(VA) ((int8_t)mem_load1(env, pkt_has_store_s1, slot, VA))
--#define MEM_LOAD1u(VA) ((uint8_t)mem_load1(env, pkt_has_store_s1, slot, VA))
--#define MEM_LOAD2s(VA) ((int16_t)mem_load2(env, pkt_has_store_s1, slot, VA))
--#define MEM_LOAD2u(VA) ((uint16_t)mem_load2(env, pkt_has_store_s1, slot, VA))
--#define MEM_LOAD4s(VA) ((int32_t)mem_load4(env, pkt_has_store_s1, slot, VA))
--#define MEM_LOAD4u(VA) ((uint32_t)mem_load4(env, pkt_has_store_s1, slot, VA))
--#define MEM_LOAD8s(VA) ((int64_t)mem_load8(env, pkt_has_store_s1, slot, VA))
--#define MEM_LOAD8u(VA) ((uint64_t)mem_load8(env, pkt_has_store_s1, slot, VA))
--
- #define MEM_STORE1(VA, DATA, SLOT) log_store32(env, VA, DATA, 1, SLOT)
- #define MEM_STORE2(VA, DATA, SLOT) log_store32(env, VA, DATA, 2, SLOT)
- #define MEM_STORE4(VA, DATA, SLOT) log_store32(env, VA, DATA, 4, SLOT)
-@@ -530,8 +521,16 @@ static inline TCGv gen_read_ireg(TCGv result, TCGv val, int shift)
- #ifdef QEMU_GENERATE
- #define fLOAD(NUM, SIZE, SIGN, EA, DST) MEM_LOAD##SIZE##SIGN(DST, EA)
- #else
-+#define MEM_LOAD1 cpu_ldub_data_ra
-+#define MEM_LOAD2 cpu_lduw_data_ra
-+#define MEM_LOAD4 cpu_ldl_data_ra
-+#define MEM_LOAD8 cpu_ldq_data_ra
-+
- #define fLOAD(NUM, SIZE, SIGN, EA, DST) \
--    DST = (size##SIZE##SIGN##_t)MEM_LOAD##SIZE##SIGN(EA)
-+    do { \
-+        check_noshuf(env, pkt_has_store_s1, slot, EA, SIZE, GETPC()); \
-+        DST = (size##SIZE##SIGN##_t)MEM_LOAD##SIZE(env, EA, GETPC()); \
-+    } while (0)
- #endif
- 
- #define fMEMOP(NUM, SIZE, SIGN, EA, FNTYPE, VALUE)
-diff --git a/target/hexagon/op_helper.h b/target/hexagon/op_helper.h
-index 8f3764d15e..66119cf3d4 100644
---- a/target/hexagon/op_helper.h
-+++ b/target/hexagon/op_helper.h
-@@ -19,15 +19,6 @@
- #define HEXAGON_OP_HELPER_H
- 
- /* Misc functions */
--uint8_t mem_load1(CPUHexagonState *env, bool pkt_has_store_s1,
--                  uint32_t slot, target_ulong vaddr);
--uint16_t mem_load2(CPUHexagonState *env, bool pkt_has_store_s1,
--                   uint32_t slot, target_ulong vaddr);
--uint32_t mem_load4(CPUHexagonState *env, bool pkt_has_store_s1,
--                   uint32_t slot, target_ulong vaddr);
--uint64_t mem_load8(CPUHexagonState *env, bool pkt_has_store_s1,
--                   uint32_t slot, target_ulong vaddr);
--
- void log_store64(CPUHexagonState *env, target_ulong addr,
-                  int64_t val, int width, int slot);
- void log_store32(CPUHexagonState *env, target_ulong addr,
-diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
-index 12967ac21e..06bfe92c7b 100644
---- a/target/hexagon/op_helper.c
-+++ b/target/hexagon/op_helper.c
-@@ -95,9 +95,8 @@ void HELPER(debug_check_store_width)(CPUHexagonState *env, int slot, int check)
-     }
- }
- 
--void HELPER(commit_store)(CPUHexagonState *env, int slot_num)
-+static void commit_store(CPUHexagonState *env, int slot_num, uintptr_t ra)
- {
--    uintptr_t ra = GETPC();
-     uint8_t width = env->mem_log_stores[slot_num].width;
-     target_ulong va = env->mem_log_stores[slot_num].va;
- 
-@@ -119,6 +118,12 @@ void HELPER(commit_store)(CPUHexagonState *env, int slot_num)
-     }
- }
- 
-+void HELPER(commit_store)(CPUHexagonState *env, int slot_num)
-+{
-+    uintptr_t ra = GETPC();
-+    commit_store(env, slot_num, ra);
-+}
-+
- void HELPER(gather_store)(CPUHexagonState *env, uint32_t addr, int slot)
- {
-     mem_gather_store(env, addr, slot);
-@@ -467,13 +472,12 @@ int32_t HELPER(cabacdecbin_pred)(int64_t RssV, int64_t RttV)
- }
- 
- static void probe_store(CPUHexagonState *env, int slot, int mmu_idx,
--                        bool is_predicated)
-+                        bool is_predicated, uintptr_t retaddr)
- {
-     if (!is_predicated || !(env->slot_cancelled & (1 << slot))) {
-         size1u_t width = env->mem_log_stores[slot].width;
-         target_ulong va = env->mem_log_stores[slot].va;
--        uintptr_t ra = GETPC();
--        probe_write(env, va, width, mmu_idx, ra);
-+        probe_write(env, va, width, mmu_idx, retaddr);
-     }
- }
- 
-@@ -494,12 +498,13 @@ void HELPER(probe_pkt_scalar_store_s0)(CPUHexagonState *env, int args)
-     int mmu_idx = FIELD_EX32(args, PROBE_PKT_SCALAR_STORE_S0, MMU_IDX);
-     bool is_predicated =
-         FIELD_EX32(args, PROBE_PKT_SCALAR_STORE_S0, IS_PREDICATED);
--    probe_store(env, 0, mmu_idx, is_predicated);
-+    uintptr_t ra = GETPC();
-+    probe_store(env, 0, mmu_idx, is_predicated, ra);
- }
- 
--void HELPER(probe_hvx_stores)(CPUHexagonState *env, int mmu_idx)
-+static void probe_hvx_stores(CPUHexagonState *env, int mmu_idx,
-+                                    uintptr_t retaddr)
- {
--    uintptr_t retaddr = GETPC();
-     int i;
- 
-     /* Normal (possibly masked) vector store */
-@@ -538,6 +543,12 @@ void HELPER(probe_hvx_stores)(CPUHexagonState *env, int mmu_idx)
-     }
- }
- 
-+void HELPER(probe_hvx_stores)(CPUHexagonState *env, int mmu_idx)
-+{
-+    uintptr_t retaddr = GETPC();
-+    probe_hvx_stores(env, mmu_idx, retaddr);
-+}
-+
- void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
- {
-     bool has_st0 = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, HAS_ST0);
-@@ -547,18 +558,20 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
-     bool s0_is_pred = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, S0_IS_PRED);
-     bool s1_is_pred = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, S1_IS_PRED);
-     int mmu_idx = FIELD_EX32(mask, PROBE_PKT_SCALAR_HVX_STORES, MMU_IDX);
-+    uintptr_t ra = GETPC();
- 
-     if (has_st0) {
--        probe_store(env, 0, mmu_idx, s0_is_pred);
-+        probe_store(env, 0, mmu_idx, s0_is_pred, ra);
-     }
-     if (has_st1) {
--        probe_store(env, 1, mmu_idx, s1_is_pred);
-+        probe_store(env, 1, mmu_idx, s1_is_pred, ra);
-     }
-     if (has_hvx_stores) {
--        HELPER(probe_hvx_stores)(env, mmu_idx);
-+        probe_hvx_stores(env, mmu_idx, ra);
-     }
- }
- 
-+#ifndef CONFIG_HEXAGON_IDEF_PARSER
- /*
-  * mem_noshuf
-  * Section 5.5 of the Hexagon V67 Programmer's Reference Manual
-@@ -567,46 +580,16 @@ void HELPER(probe_pkt_scalar_hvx_stores)(CPUHexagonState *env, int mask)
-  * wasn't cancelled), we have to do the store first.
-  */
- static void check_noshuf(CPUHexagonState *env, bool pkt_has_store_s1,
--                         uint32_t slot, target_ulong vaddr, int size)
-+                         uint32_t slot, target_ulong vaddr, int size,
-+                         uintptr_t ra)
- {
-     if (slot == 0 && pkt_has_store_s1 &&
-         ((env->slot_cancelled & (1 << 1)) == 0)) {
--        HELPER(probe_noshuf_load)(env, vaddr, size, MMU_USER_IDX);
--        HELPER(commit_store)(env, 1);
-+        probe_read(env, vaddr, size, MMU_USER_IDX, ra);
-+        commit_store(env, 1, ra);
-     }
- }
--
--uint8_t mem_load1(CPUHexagonState *env, bool pkt_has_store_s1,
--                  uint32_t slot, target_ulong vaddr)
--{
--    uintptr_t ra = GETPC();
--    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 1);
--    return cpu_ldub_data_ra(env, vaddr, ra);
--}
--
--uint16_t mem_load2(CPUHexagonState *env, bool pkt_has_store_s1,
--                   uint32_t slot, target_ulong vaddr)
--{
--    uintptr_t ra = GETPC();
--    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 2);
--    return cpu_lduw_data_ra(env, vaddr, ra);
--}
--
--uint32_t mem_load4(CPUHexagonState *env, bool pkt_has_store_s1,
--                   uint32_t slot, target_ulong vaddr)
--{
--    uintptr_t ra = GETPC();
--    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 4);
--    return cpu_ldl_data_ra(env, vaddr, ra);
--}
--
--uint64_t mem_load8(CPUHexagonState *env, bool pkt_has_store_s1,
--                   uint32_t slot, target_ulong vaddr)
--{
--    uintptr_t ra = GETPC();
--    check_noshuf(env, pkt_has_store_s1, slot, vaddr, 8);
--    return cpu_ldq_data_ra(env, vaddr, ra);
--}
-+#endif
- 
- /* Floating point */
- float64 HELPER(conv_sf2df)(CPUHexagonState *env, float32 RsV)
--- 
-2.37.2
+On 2023-07-04 오후 5:33, Jeuk Kim wrote:
+> From: Jeuk Kim <jeuk20.kim@samsung.com>
+> 
+> Since v3:
+> - Replace softmmu_ss -> system_ss in meson
+> 
+> Since v2:
+> Addressed review comment from Stefan Hajnoczi. The main fixes are as
+> follows.
+> - Use of SPDX licence identifiers
+> - fixed endianness error
+> - removed memory leak
+> - fixed DMA error handling logic
+> 
+> Since v1:
+> - use macros of "hw/registerfields.h" (Addressed Philippe's review
+>    comments)
+> 
+> This patch series adds support for a new PCI-based UFS device.
+> 
+> The UFS pci device id (PCI_DEVICE_ID_REDHAT_UFS) is not registered
+> in the Linux kernel yet, so it does not work right away, but I confirmed
+> that it works with Linux when the UFS pci device id is registered.
+> 
+> I have also verified that it works with Windows 10.
+> 
+> Jeuk Kim (3):
+>    hw/ufs: Initial commit for emulated Universal-Flash-Storage
+>    hw/ufs: Support for Query Transfer Requests
+>    hw/ufs: Support for UFS logical unit
+> 
+>   MAINTAINERS              |    6 +
+>   docs/specs/pci-ids.rst   |    2 +
+>   hw/Kconfig               |    1 +
+>   hw/meson.build           |    1 +
+>   hw/ufs/Kconfig           |    4 +
+>   hw/ufs/lu.c              | 1441 +++++++++++++++++++++++++++++++++++
+>   hw/ufs/meson.build       |    1 +
+>   hw/ufs/trace-events      |   59 ++
+>   hw/ufs/trace.h           |    1 +
+>   hw/ufs/ufs.c             | 1545 ++++++++++++++++++++++++++++++++++++++
+>   hw/ufs/ufs.h             |  131 ++++
+>   include/block/ufs.h      | 1048 ++++++++++++++++++++++++++
+>   include/hw/pci/pci.h     |    1 +
+>   include/hw/pci/pci_ids.h |    1 +
+>   include/scsi/constants.h |    1 +
+>   meson.build              |    1 +
+>   16 files changed, 4244 insertions(+)
+>   create mode 100644 hw/ufs/Kconfig
+>   create mode 100644 hw/ufs/lu.c
+>   create mode 100644 hw/ufs/meson.build
+>   create mode 100644 hw/ufs/trace-events
+>   create mode 100644 hw/ufs/trace.h
+>   create mode 100644 hw/ufs/ufs.c
+>   create mode 100644 hw/ufs/ufs.h
+>   create mode 100644 include/block/ufs.h
+> 
 
 
