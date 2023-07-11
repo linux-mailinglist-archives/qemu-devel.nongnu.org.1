@@ -2,82 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE9774E67C
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 07:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C781574E771
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 08:38:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJ6EP-0003Ch-NQ; Tue, 11 Jul 2023 01:48:13 -0400
+	id 1qJ6za-0004K1-6p; Tue, 11 Jul 2023 02:36:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qJ6Dn-0003BY-59
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 01:47:35 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qJ6Di-0007nI-PC
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 01:47:34 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-55b1238a013so3818892a12.3
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 22:47:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1689054449; x=1691646449;
- h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=b/77eFVto5A887RQXZN2BqRW+JvaFiGxADJ7e3quoS8=;
- b=Rtw7zG/qAalf2Z/BGOxSESCaArqFnXBPV3pNqqm7/HHF8vrHL4krBn16no6+pJT8fG
- kl/VgM2n2DacQyZ0EwDCSyLQD7a++gxJkQn3SMMffdToBI2hhtBcXH1TVqWzikaAt2xp
- km+QkTgjiroerBUTPDKVlA40C422HQOt9XCLfs8i2sUOivCBBtA4xa1Scjc6oSH3MiMZ
- id1TR/3dMnziiZqFieWxTsufLOFREWMkLPt/DRMEP5j1+grsovf8viYZn4y+GeocxPtn
- TbBs389ux6R/j6mLCjx7gvAygJTKODtnDOieXDnV/6YSQ0iOKcDIWSdHwTrSFo0Nu7zZ
- AwUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689054449; x=1691646449;
- h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=b/77eFVto5A887RQXZN2BqRW+JvaFiGxADJ7e3quoS8=;
- b=AvONffJ9VFSlEPLM+tWzf6ffo/EvZi+OIb1IOs178YgCDN3Ic9O2DsOLioXmnPUMAV
- ThVdXufGGRdORm7uaYFgesmpKaAhZwiTD4WKnj2LXetE8LMYzzQGhEOB6a7SJK+1BCaA
- 2VoIUiz2Ud0d0TO8sOQs56xbqAagTBqvJBxoAxY2KbBQ4NNtLTUK1JtiD9pScDW7jZWu
- vvoUnlqUVfcZbU3BlPBgtgWmkkO3h0HZAl2w4AuHG0WQxgIk8NzbSEZ4xskKHiwIh23V
- L8J5fqEcMOAPQGhLVrBryw+BKUombpJKyud8wdRgt2aMdOJOhe3Y76uS/O8vts9a+4mX
- 4QOg==
-X-Gm-Message-State: ABy/qLbX5kWAQgITBzWpe64/4t2s+HnFl82gvtqveSa2Vnw7lYwZ+JRQ
- V3OiyrKzLnzgmaM3N8nzQv/q0f2X87ARh+iocvxsYLApN+zRXVw3SxSrUDxE7hnIvbqivLYTMiU
- QUjhJYkoKzKLEVST25X3erg5PfqvZlj1U1f+so2Wxo5q7NTi9/NyC9yEy+v2Zbkit97dXdAZps6
- NW7V3g
-X-Google-Smtp-Source: APBJJlE5jodRFgaSe7A1LHCNalNiMTmdzvHXlgPiKmq1uwreVeNZRBJ/zu4eVuo1T43Ax2VwgPd7ZA==
-X-Received: by 2002:a05:6a21:32a2:b0:130:d234:c914 with SMTP id
- yt34-20020a056a2132a200b00130d234c914mr14134883pzb.26.1689054448348; 
- Mon, 10 Jul 2023 22:47:28 -0700 (PDT)
-Received: from hsinchu26.internal.sifive.com
- (59-124-168-89.hinet-ip.hinet.net. [59.124.168.89])
- by smtp.gmail.com with ESMTPSA id
- a2-20020a62bd02000000b00679a4b56e41sm784346pff.43.2023.07.10.22.47.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 22:47:27 -0700 (PDT)
-From: Jason Chien <jason.chien@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Jason Chien <jason.chien@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH v2] target/riscv: Add Zihintntl extension ISA string to DTS
-Date: Tue, 11 Jul 2023 05:47:20 +0000
-Message-Id: <20230711054722.15721-1-jason.chien@sifive.com>
-X-Mailer: git-send-email 2.17.1
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=jason.chien@sifive.com; helo=mail-pg1-x52b.google.com
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qJ6zK-0004I5-Ev
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 02:36:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qJ6zD-0004UH-Mf
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 02:36:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689057392;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qF18PCVin5fjDpmyimvgqhqbqQpjAWXRvTu3RAOwcLA=;
+ b=iP6hOUe5zHeMn+l2EZjBAVHiFctQUC0DbBLAqV9sW4mAo5PieatWc38i3hOaW6ysQcPRP+
+ GksEm8qTy02Cded5GNLPbUBkLI+JqmKRRQkwVY/TFCN1svA5EERp3TKOThj04ILTfm2OW0
+ juWQ0bYQ6MZJtQbD41dG+IcEnndjr04=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-235-rkDNa8MDN1SWeAJEebI8Kg-1; Tue, 11 Jul 2023 02:36:30 -0400
+X-MC-Unique: rkDNa8MDN1SWeAJEebI8Kg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26894830F46;
+ Tue, 11 Jul 2023 06:36:30 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E8BA32166B26;
+ Tue, 11 Jul 2023 06:36:29 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id DB5A721E6A1F; Tue, 11 Jul 2023 08:36:28 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: "Kim, Dongwon" <dongwon.kim@intel.com>
+Cc: <qemu-devel@nongnu.org>,  <kraxel@redhat.com>,  <berrange@redhat.com>,
+ <philmd@linaro.org>,  <marcandre.lureau@redhat.com>,
+ <vivek.kasireddy@intel.com>
+Subject: Re: [RFC PATCH 6/9] ui/gtk: Add a new parameter to assign
+ connectors/monitors to GFX VCs
+References: <20230621004355.19920-1-dongwon.kim@intel.com>
+ <20230621004355.19920-7-dongwon.kim@intel.com>
+ <87h6r1mkhc.fsf@pond.sub.org>
+ <46dc1ac2-2ab5-48f7-73da-4160c26c3171@intel.com>
+ <878rbrizmo.fsf@pond.sub.org>
+ <6351a85a-db49-7d6b-2a55-1ea7c65b3a8e@intel.com>
+ <87r0pgb8su.fsf@pond.sub.org>
+ <ed732fc3-bb1d-42da-e179-0dcd08c663a8@intel.com>
+Date: Tue, 11 Jul 2023 08:36:28 +0200
+In-Reply-To: <ed732fc3-bb1d-42da-e179-0dcd08c663a8@intel.com> (Dongwon Kim's
+ message of "Mon, 10 Jul 2023 13:31:01 -0700")
+Message-ID: <878rbnymxf.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,68 +89,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RVA23 Profiles states:
-The RVA23 profiles are intended to be used for 64-bit application
-processors that will run rich OS stacks from standard binary OS
-distributions and with a substantial number of third-party binary user
-applications that will be supported over a considerable length of time
-in the field.
+"Kim, Dongwon" <dongwon.kim@intel.com> writes:
 
-The chapter 4 of the unprivileged spec introduces the Zihintntl extension
-and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
-purpose is to enable application and operating system portability across
-different implementations. Thus the DTS should contain the Zihintntl ISA
-string in order to pass to software.
+> On 7/9/2023 11:05 PM, Markus Armbruster wrote:
+>> "Kim, Dongwon" <dongwon.kim@intel.com> writes:
+>>
+>>> On 7/7/2023 7:07 AM, Markus Armbruster wrote:
 
-The unprivileged spec states:
-Like any HINTs, these instructions may be freely ignored. Hence, although
-they are described in terms of cache-based memory hierarchies, they do not
-mandate the provision of caches.
+[...]
 
-These instructions are encoded with used opcode, e.g. ADD x0, x0, x2, which
-QEMU already supports, and QEMU does not emulate cache. Therefore these
-instructions can be considered as a no-op, and we only need to add a new
-property for the Zihintntl extension.
+>>>> Ignorant questions:
+>>>>
+>>>> 1. How would I plug / unplug display cables?
+>>>
+>>> I am not sure if I understood your question correctly but 1 or more guest displays (GTK windows) are bound to a certain physical displays like HDMI or DP monitors. So plug/unplug means we disconnect those physical HDMI or DP cables manually. Or this manual hot plug in can be emulated by you write something to sysfs depending on what display driver you use.
+>>
+>> Let's see whether I understand.
+>>
+>> A VC is placed on a *physical* monitor, i.e. a window appears on that
+>> monitor.  That monitor's plug / unplug state is passed through to the
+>> guest, i.e. if I physically unplug / plug the monitor, the guest sees an
+>> unplug / plug of its virtual monitor.  Correct?
+>
+> This is correct. When a display is disconnected, "monitor-changed" GTK event will be triggered then it will call gd_ui_size(0,0) which makes the guest display connection status to "disconnected".
 
-Signed-off-by: Jason Chien <jason.chien@sifive.com>
----
- target/riscv/cpu.c     | 2 ++
- target/riscv/cpu_cfg.h | 1 +
- 2 files changed, 3 insertions(+)
+Thanks!
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 9339c0241d..b7e99cccd9 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -87,6 +87,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
-     ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
-     ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
-+    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
-     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
-     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
-     ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
-@@ -1755,6 +1756,7 @@ static Property riscv_cpu_extensions[] = {
-     DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
-     DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
-     DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
-+    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, true),
-     DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true),
-     DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
-     DEFINE_PROP_BOOL("Zfa", RISCVCPU, cfg.ext_zfa, true),
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index 2bd9510ba3..518686eaa3 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -66,6 +66,7 @@ struct RISCVCPUConfig {
-     bool ext_icbom;
-     bool ext_icboz;
-     bool ext_zicond;
-+    bool ext_zihintntl;
-     bool ext_zihintpause;
-     bool ext_smstateen;
-     bool ext_sstc;
--- 
-2.17.1
+>> Permit me another ignorant question...  Say I have a single monitor.  I
+>> configured my X windows manager to show four virtual desktops.  Can I
+>> use your feature to direct on which virtual desktop each VC is placed?
+>
+> Would those virtual desktops will be their own connector names like HDMI or DP? We use the connector name for the actual physical display you see when running xrandr.
+
+Output of xrandr is identical on different virtual desktops for me.
+
+> I don't know how virtual desktops are created and managed but if they don't have their own connector names that GTK API can read, it won't work within our current implementation.
+
+After searching around a bit...  Virtual desktops, a.k.a. workspaces,
+are a window manager thing.  Completely different from X displays and
+monitors.  Programs can mess with placement (wmctrl does).  No idea
+whether GDK provides an interface for it.  No need to discuss this
+further at this time.
+
+[...]
+
+>>>> Old question not yet answered: Using a list for the mapping means the
+>>>> mapping must be dense, e.g. I can't map #0 and #2 but not #1.  Is this
+>>>> what we want?
+>>>
+>>> No, it doesn't have to be dense. In your example, you can just leave the place for VC1 blank. For example, you could do connectors.0=DP-1,connectors.2=HDMI-1. But in this case, VC1 won't be activated and stay as disconnected from guest's perspective. I think this info is also needed in v2.
+>>
+>> Have you tried this?  I believe it'll fail with something like
+>> "Parameter 'connectors.1' missing".
+>
+> Just tested it. Yeah you are correct. I think I had a bad assumption. Let me take a look to see if I can make it work as I assumed.
+
+If sparse mappings make sense, we should provide for them, I think.
+
+An array like '*connectors': ['str'] maps from integers 0, 1, ...  It
+can't do sparse (you can't omit integers in the middle).
+
+Instead of omitting them, we could map them to null: '*connectors':
+['StrOrNull'].  JSON input looks like [null, "HDMI-A-0"].  Since dotted
+key syntax does not support null at this time, you'd have to use JSON.
+
+Only an object can do sparse.  However, the QAPI schema language can't
+express "object where the keys are integers and the values are strings".
+We'd have to use 'any', and check everything manually.
+
+Hmm.  Thoughts?
+
+>>>> [...]
 
 
