@@ -2,73 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2839074EC3A
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 13:06:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C7F374EC44
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 13:06:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJBBa-0007rO-8x; Tue, 11 Jul 2023 07:05:38 -0400
+	id 1qJBCO-0000Kt-Qr; Tue, 11 Jul 2023 07:06:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qJBBY-0007qZ-2C
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 07:05:36 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJBCM-0000Ki-K7
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 07:06:26 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qJBBW-0008VK-4R
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 07:05:35 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fbea147034so56133925e9.0
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 04:05:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJBCK-0000OT-Rc
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 07:06:26 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-51a52a7d859so13132964a12.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 04:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689073532; x=1691665532;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=VC4By7XtJAhNMlzzeJnWM3UmwzNBCdO6Wa8WUY/BA5U=;
- b=j6wfynPPvngXjj2YnafkHlLNE6kWtXZO0jisf6BCLiGqFlcLcZO8garNVvsgCaxS6w
- MkveB+iujpfAl8u8O3hM44lgD2shVcGhlN0l/xwoM2rfmsX2F+RxCeL0cxvnbEH5B5fV
- RZq2n7oF787LoHUpdRz67LmJWkLyubKBqNuCHU/R+2ieDdHmII/bPZ3mIgUp0HemM0s4
- ftQzTCDMBcJqIFZepxrwnDV2Hy/Ozc0Hf4Sa+nXW++Dr7aXxXocsc/wZZs0QllTfjyhT
- GxPTnSf0s66tFdooqawzPrBuQebsfsBVusASxVKG0gTs1tMQteGZyfugyS1z+NYJEVBV
- ilQA==
+ d=linaro.org; s=google; t=1689073583; x=1691665583;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=khAIgfvJszKXaZe97jz/vSTn0ZRK4fOzAnwv01G4SEA=;
+ b=Go8fpyDYbuHwSo9D5saSpqHCaEBBGeSRltXSZzTEfzBTN7ORs50jw4JHzVYUVzwgkF
+ L0zi7M4cR/jziZvP2uaUblnT0jeNTwwU3gAHDCmEQescQutgOBSlHXa3a1/B3rGPmOSM
+ WyKbgROYj4z+uapCJJ8L045CP6FqDFvCyD+q85WLkpu/Jx8DilsBaXYvG3i26mOvaitH
+ gLCw/P11Hd4ObrdBkAHpSpffhlG9kLNEX8fFAiGJ34NT8sP4myR10vnM4T9+lrfUCNLk
+ swNkWd5Y4yxss7vBjmDPTdJSPBWygNjjnPzAzd1OKif7hriT+flLeVFfHPjX5SDTlUth
+ X6EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689073532; x=1691665532;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VC4By7XtJAhNMlzzeJnWM3UmwzNBCdO6Wa8WUY/BA5U=;
- b=N1yFSMCA4e8Ph91GvLiRQXQtfUhascwmjYcZuGRL/54V47Ik3gL8K0oD/45ylf66If
- RAFSgq9qZqCC5MfiHaOi0HHFcKc6zHuoyc3tgDa/SRTDPnQ07Ez+7lzd+FvIHsDnhJUu
- aGI6s6KTTBZwhGv0OU7BZaMuQuxuYYx/Lcae1MWL9Ck9bJe8T0KMBEfbrTEVepI3FClv
- WYXrelFNEZwG6xOFigu9XEK8ofA+CqfY1kLsSxTk+XHZWe2KG3+nrJZo2nX2N7zXMxun
- s/8zQqmbp80qpaZSZ6boQpMSKaCAPta1Yx6jFSMm0zrxDKdtbSuT3tb+PKvhm88vcas7
- 9Vzw==
-X-Gm-Message-State: ABy/qLaRXGbb+kw+UVTnyYBQs/IlmBPqYIagpBjFuLiIH1ej7GmUB0X8
- r8ctSNgikCs1a1uXZferWgaoMg==
-X-Google-Smtp-Source: APBJJlFh1wGLywIY4E/Wn//w3I0CvVnNcWEvOBxTqzJbh/uI2vhq9E4FE3Y5R2GhH6fv1P6i5GS3Sw==
-X-Received: by 2002:a05:600c:3644:b0:3fc:627:ea31 with SMTP id
- y4-20020a05600c364400b003fc0627ea31mr9227415wmq.38.1689073532149; 
- Tue, 11 Jul 2023 04:05:32 -0700 (PDT)
-Received: from myrica ([2.219.138.198]) by smtp.gmail.com with ESMTPSA id
- h25-20020a1ccc19000000b003fbcf032c55sm12812935wmb.7.2023.07.11.04.05.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jul 2023 04:05:31 -0700 (PDT)
-Date: Tue, 11 Jul 2023 12:05:31 +0100
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ d=1e100.net; s=20221208; t=1689073583; x=1691665583;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=khAIgfvJszKXaZe97jz/vSTn0ZRK4fOzAnwv01G4SEA=;
+ b=JrMDTmaOrpI0zA/MnzsAuhvh60iNemR13k5DjlxtSuaZLsCgVKSROg4Xkn4u4T4qxL
+ im+Z5gnIdp1LtkLaByVkOiXov5xFRfggm8ju3vj/q/S5j/ddFJJKeFK1gU3ySsG06hxj
+ 4h1HQ47YQCV2G7KiArjLglqA0dFgyLrcsZvU4r1Zml7PcqDys+4uosErPrsLXqEC5w1y
+ Uu4CoA6f+Bb842WeffPMUwTMJROTrsbuvKzO5TvC3YeLeN4vBq1HPE3pjbvEoPkL6r7g
+ GUNpqTHtSrngyWKjKC2ckbcpKmSPEqpnT73bG2X39FduRvjPm6T0Nm/7MWh3xfd3uOrU
+ 733g==
+X-Gm-Message-State: ABy/qLbjQcspEoXVPgFChMnoHRPyo6xkK6ZmwXdyYwx27bIu/i5MmaMu
+ cWZhXKOTDkXGSjZPXObzcMco+3bFxs2ihktGIaw=
+X-Google-Smtp-Source: APBJJlHTzO7ZvioMX5oEMdVfHKrxo1y8BN49izCP/eCExBaHwz0AT58DsjJ5CgId7K/7n7KEXbfB+g==
+X-Received: by 2002:a05:6402:40cb:b0:51e:5898:a23d with SMTP id
+ z11-20020a05640240cb00b0051e5898a23dmr10199737edb.5.1689073582964; 
+ Tue, 11 Jul 2023 04:06:22 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.194.156])
+ by smtp.gmail.com with ESMTPSA id
+ y19-20020aa7ccd3000000b0051dd4daf13fsm1101512edt.30.2023.07.11.04.06.21
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 11 Jul 2023 04:06:22 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Warner Losh <imp@bsdimp.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH for-8.1 2/3] target/arm: Fix S1_ptw_translate() debug path
-Message-ID: <20230711110531.GA201871@myrica>
-References: <20230710152130.3928330-1-peter.maydell@linaro.org>
- <20230710152130.3928330-3-peter.maydell@linaro.org>
+Subject: [hotfix PATCH-for-8.1 v4] configure: Fix cross-building for RISCV host
+Date: Tue, 11 Jul 2023 13:06:19 +0200
+Message-Id: <20230711110619.56588-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230710152130.3928330-3-peter.maydell@linaro.org>
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x32e.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,95 +96,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 10, 2023 at 04:21:29PM +0100, Peter Maydell wrote:
-> In commit XXX we rearranged the logic in S1_ptw_translate() so that
-> the debug-access "call get_phys_addr_*" codepath is used both when S1
-> is doing ptw reads from stage 2 and when it is doing ptw reads from
-> physical memory.  However, we didn't update the calculation of
-> s2ptw->in_space and s2ptw->in_secure to account for the "ptw reads
-> from physical memory" case.  This meant that debug accesses when in
-> Secure state broke.
-> 
-> Create a new function S2_security_space() which returns the
-> correct security space to use for the ptw load, and use it to
-> determine the correct .in_secure and .in_space fields for the
-> stage 2 lookup for the ptw load.
-> 
-> Reported-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> Fixes: fe4a5472ccd6 ("target/arm: Use get_phys_addr_with_struct in S1_ptw_translate")
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+While when building on native Linux the host architecture
+is reported as "riscv32" or "riscv64":
 
-Thanks, this fixes tf-a boot with semihosting
+  Host machine cpu family: riscv64
+  Host machine cpu: riscv64
+  Found pkg-config: /usr/bin/pkg-config (0.29.2)
 
-Tested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Since commit ba0e733362 ("configure: Merge riscv32 and riscv64
+host architectures"), when cross-compiling it is detected as
+"riscv". Meson handles the cross-detection but displays a warning:
 
-> ---
->  target/arm/ptw.c | 37 ++++++++++++++++++++++++++++++++-----
->  1 file changed, 32 insertions(+), 5 deletions(-)
-> 
-> diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-> index 21749375f97..c0b9cee5843 100644
-> --- a/target/arm/ptw.c
-> +++ b/target/arm/ptw.c
-> @@ -485,11 +485,39 @@ static bool S2_attrs_are_device(uint64_t hcr, uint8_t attrs)
->      }
->  }
->  
-> +static ARMSecuritySpace S2_security_space(ARMSecuritySpace s1_space,
-> +                                          ARMMMUIdx s2_mmu_idx)
-> +{
-> +    /*
-> +     * Return the security space to use for stage 2 when doing
-> +     * the S1 page table descriptor load.
-> +     */
-> +    if (regime_is_stage2(s2_mmu_idx)) {
-> +        /*
-> +         * The security space for ptw reads is almost always the same
-> +         * as that of the security space of the stage 1 translation.
-> +         * The only exception is when stage 1 is Secure; in that case
-> +         * the ptw read might be to the Secure or the NonSecure space
-> +         * (but never Realm or Root), and the s2_mmu_idx tells us which.
-> +         * Root translations are always single-stage.
-> +         */
-> +        if (s1_space == ARMSS_Secure) {
-> +            return arm_secure_to_space(s2_mmu_idx == ARMMMUIdx_Stage2_S);
-> +        } else {
-> +            assert(s2_mmu_idx != ARMMMUIdx_Stage2_S);
-> +            assert(s1_space != ARMSS_Root);
-> +            return s1_space;
-> +        }
-> +    } else {
-> +        /* ptw loads are from phys: the mmu idx itself says which space */
-> +        return arm_phys_to_space(s2_mmu_idx);
-> +    }
-> +}
-> +
->  /* Translate a S1 pagetable walk through S2 if needed.  */
->  static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
->                               hwaddr addr, ARMMMUFaultInfo *fi)
->  {
-> -    ARMSecuritySpace space = ptw->in_space;
->      bool is_secure = ptw->in_secure;
->      ARMMMUIdx mmu_idx = ptw->in_mmu_idx;
->      ARMMMUIdx s2_mmu_idx = ptw->in_ptw_idx;
-> @@ -502,13 +530,12 @@ static bool S1_ptw_translate(CPUARMState *env, S1Translate *ptw,
->           * From gdbstub, do not use softmmu so that we don't modify the
->           * state of the cpu at all, including softmmu tlb contents.
->           */
-> +        ARMSecuritySpace s2_space = S2_security_space(ptw->in_space, s2_mmu_idx);
->          S1Translate s2ptw = {
->              .in_mmu_idx = s2_mmu_idx,
->              .in_ptw_idx = ptw_idx_for_stage_2(env, s2_mmu_idx),
-> -            .in_secure = s2_mmu_idx == ARMMMUIdx_Stage2_S,
-> -            .in_space = (s2_mmu_idx == ARMMMUIdx_Stage2_S ? ARMSS_Secure
-> -                         : space == ARMSS_Realm ? ARMSS_Realm
-> -                         : ARMSS_NonSecure),
-> +            .in_secure = arm_space_is_secure(s2_space),
-> +            .in_space = s2_space,
->              .in_debug = true,
->          };
->          GetPhysAddrResult s2 = { };
-> -- 
-> 2.34.1
-> 
+  WARNING: Unknown CPU family riscv, please report this at https://github.com/mesonbuild/meson/issues/new
+  Host machine cpu family: riscv
+  Host machine cpu: riscv
+  Target machine cpu family: riscv
+  Target machine cpu: riscv
+  Found pkg-config: /usr/bin/riscv64-linux-gnu-pkg-config (1.8.1)
+
+Now since commit 278c1bcef5 ("target/riscv: Only unify 'riscv32/64'
+-> 'riscv' for host cpu in meson") Meson expects the cpu to be in
+[riscv32, riscv64]. So when cross-building (for example on our
+cross-riscv64-system Gitlab-CI job) we get:
+
+  WARNING: Unknown CPU family riscv, please report this at https://github.com/mesonbuild/meson/issues/new
+  Host machine cpu family: riscv
+  Host machine cpu: riscv
+  Target machine cpu family: riscv
+  Target machine cpu: riscv
+  ../meson.build:684:6: ERROR: Problem encountered: Unsupported CPU riscv, try --enable-tcg-interpreter
+
+Fix by partially revert commit ba0e733362 so when cross-building
+the ./configure script passes the proper host architecture to meson.
+
+Fixes: ba0e733362 ("configure: Merge riscv32 and riscv64 host architectures")
+Fixes: 278c1bcef5 ("target/riscv: Only unify 'riscv32/64' -> 'riscv' for host cpu in meson")
+Reported-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+v4: pass from configure
+---
+ configure | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/configure b/configure
+index 2b41c49c0d..dffd44c059 100755
+--- a/configure
++++ b/configure
+@@ -451,7 +451,11 @@ elif check_define __s390__ ; then
+     cpu="s390"
+   fi
+ elif check_define __riscv ; then
+-  cpu="riscv"
++  if check_define _LP64 ; then
++    cpu="riscv64"
++  else
++    cpu="riscv32"
++  fi
+ elif check_define __arm__ ; then
+   cpu="arm"
+ elif check_define __aarch64__ ; then
+-- 
+2.38.1
+
 
