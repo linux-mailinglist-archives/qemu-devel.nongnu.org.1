@@ -2,69 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7FE74F8FD
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 22:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D7C74F996
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 23:10:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJJtU-0005fz-Lw; Tue, 11 Jul 2023 16:23:32 -0400
+	id 1qJKax-0005Ao-9t; Tue, 11 Jul 2023 17:08:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qJJtS-0005fK-ML
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 16:23:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qJJtR-0005Oz-1c
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 16:23:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689107007;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=I/FhIW2HpA8NS8Ym8AcTIRuJ4/1cJPrT7soTueXP+9g=;
- b=D++nCWsqe2Se9O+aPl/u61xsLluSi/ocSoxmu4Oi6Swjy+QxDF22KVdpWMAaEntHM8I8CV
- 9MgkabLFhxZYnXmTuFxtV2tVJdqmzE0Fx9enivr8xPIyZFu007CK/CcVNK6KNnYCT5s+gB
- qzWAyzxcV6l601yTv5T6QhYVk9xlPjI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-507-0lnq5CKrOx23nNufuqPlWA-1; Tue, 11 Jul 2023 16:23:24 -0400
-X-MC-Unique: 0lnq5CKrOx23nNufuqPlWA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 497B48EBBA6;
- Tue, 11 Jul 2023 20:23:24 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.40])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A3152C09A09;
- Tue, 11 Jul 2023 20:23:23 +0000 (UTC)
-Date: Tue, 11 Jul 2023 16:23:21 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH] block: Fix pad_request's request restriction
-Message-ID: <20230711202321.GB154686@fedora>
-References: <20230609083316.24629-1-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qJKav-0005AW-1s
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 17:08:25 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qJKap-00071Q-T8
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 17:08:24 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3fc02a92dcfso44707045e9.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 14:08:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689109697; x=1691701697;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=zRnvCU7b/U1M1lXqyUEYDfCHJk3iKdwlgTp8puJp12s=;
+ b=XqS7B/n6cl+JPAQw07ubWS0v1NTmGIOSMgh5hgYAPQNkfE8Xy3TmeDcFv0ndZn8Pxs
+ 57FDPvpJFT2xFfkxVnW9OCajePAIgNmlDe2nuJefp9F5s1V3DeJq6WcnXlq2AT/hGgr5
+ 7WdIC1TQwfodEdmBDPP+8ZHatp7eZCKudEr6b2m19V6OUPavVw/aw9wqwkh4ZmbfEnM2
+ AyeJWzvy4ttQeYVfpbXqxxrBgz4N+Z81pFzYn6ARLdthoo+eNyXevTwnC506KTsquCDy
+ p7iRMxM1F5zz0YPWt94h9pPucpqmDW2c/3NsOCW3wEwJdTGbJtGToacpuSVPYNLzczoC
+ cLYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689109697; x=1691701697;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zRnvCU7b/U1M1lXqyUEYDfCHJk3iKdwlgTp8puJp12s=;
+ b=Ii95cHK4lJ6FaE/a9yPxpHwA9pER9fWoB07zdRDw81b+X2EyjWhxyIWroBN+ojf2cp
+ wEh1Lno6DSj3UdEzzl8CwAaO8H5FvYXHlM/X6W5596RX+S3gDg1CsO+d1jXEzA1/CQKN
+ Ngz9u51aFQMCYr0hv2Ynq01ZrvmjPyk2Or30qnbN/l5XDL8ztYoDQbdfk4pXbAr0GcRg
+ /abOJlEszxddHzG6ukxjD6jfL6E0lIoY9iViVp1Zui90PfeRpksPIYlDJpLzVnfiCCQV
+ 3qAW5O1TxW79sydzBQc/xfqLn5qLMg0f46Z9+BB6DHKRuLhsILkpb+e5UXasWkEBIkiX
+ 8j4w==
+X-Gm-Message-State: ABy/qLZJM9JlapuSFie0r2MMyamUkvM1Bvo9ldfvB1UBCtlB9inXnJxQ
+ jjUlRJz2WBU1Y1lwzquDvj6cww==
+X-Google-Smtp-Source: APBJJlHHSDqiAhEZq7Q16gDXMTWxGoURMoACjQCV42g9wkkv+N5ztPOgCgAzlN5Z53f3cy41iKASKw==
+X-Received: by 2002:a05:600c:20cb:b0:3fc:f9c:a3e6 with SMTP id
+ y11-20020a05600c20cb00b003fc0f9ca3e6mr8074736wmm.9.1689109697415; 
+ Tue, 11 Jul 2023 14:08:17 -0700 (PDT)
+Received: from [192.168.11.252] ([185.65.165.31])
+ by smtp.gmail.com with ESMTPSA id
+ s19-20020a1cf213000000b003fc080acf68sm10037446wmc.34.2023.07.11.14.08.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Jul 2023 14:08:16 -0700 (PDT)
+Message-ID: <0e498f85-1573-1d9f-ad72-900776b0eb24@linaro.org>
+Date: Tue, 11 Jul 2023 22:08:15 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="PxMwyC6v7qLLaBSW"
-Content-Disposition: inline
-In-Reply-To: <20230609083316.24629-1-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH-for-8.1] linux-user/arm: Do not allocate a commpage at all
+ for M-profile CPUs
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>,
+ Christophe Lyon <christophe.lyon@linaro.org>
+References: <20230711153408.68389-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230711153408.68389-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,98 +97,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
---PxMwyC6v7qLLaBSW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jun 09, 2023 at 10:33:16AM +0200, Hanna Czenczek wrote:
-> bdrv_pad_request() relies on requests' lengths not to exceed SIZE_MAX,
-> which bdrv_check_qiov_request() does not guarantee.
->=20
-> bdrv_check_request32() however will guarantee this, and both of
-> bdrv_pad_request()'s callers (bdrv_co_preadv_part() and
-> bdrv_co_pwritev_part()) already run it before calling
-> bdrv_pad_request().  Therefore, bdrv_pad_request() can safely call
-> bdrv_check_request32() without expecting error, too.
->=20
-> There is one difference between bdrv_check_qiov_request() and
-> bdrv_check_request32(): The former takes an errp, the latter does not,
-> so we can no longer just pass &error_abort.  Instead, we need to check
-> the returned value.  While we do expect success (because the callers
-> have already run this function), an assert(ret =3D=3D 0) is not much simp=
-ler
-> than just to return an error if it occurs, so let us handle errors by
-> returning them up the stack now.
-
-Is this patch intended to silence a Coverity warning or can this be
-triggered by a guest?
-
-I find this commit description and patch confusing. Instead of checking
-the actual SIZE_MAX value that bdrv_pad_request() relies on, we use a
-32-bit offsets/lengths helper because it checks INT_MAX or SIZE_MAX (but
-really INT_MAX, because that's always smaller on host architectures that
-QEMU supports).
-
-Vladimir: Is this the intended use of bdrv_check_request32()?
-
->=20
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Fixes: 18743311b829cafc1737a5f20bc3248d5f91ee2a
->        ("block: Collapse padded I/O vecs exceeding IOV_MAX")
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+On 7/11/23 16:34, Philippe Mathieu-Daudé wrote:
+> Since commit fbd3c4cff6 ("linux-user/arm: Mark the commpage
+> executable") executing bare-metal (linked with rdimon.specs)
+> cortex-M code fails as:
+> 
+>    $ qemu-arm -cpu cortex-m3 ~/hello.exe.m3
+>    qemu-arm: ../../accel/tcg/user-exec.c:492: page_set_flags: Assertion `last <= GUEST_ADDR_MAX' failed.
+>    Aborted (core dumped)
+> 
+> Commit 4f5c67f8df ("linux-user/arm: Take more care allocating
+> commpage") already took care of not allocating a commpage for
+> M-profile CPUs, however it had to be reverted as commit 6cda41daa2.
+> 
+> Re-introduce the M-profile fix from commit 4f5c67f8df.
+> 
+> Fixes: fbd3c4cff6 ("linux-user/arm: Mark the commpage executable")
+> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/1755
+> Reported-by: Christophe Lyon<christophe.lyon@linaro.org>
+> Suggested-by: Richard Henderson<richard.henderson@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->  block/io.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>   linux-user/elfload.c | 21 +++++++++++++++++----
+>   1 file changed, 17 insertions(+), 4 deletions(-)
 
->=20
-> diff --git a/block/io.c b/block/io.c
-> index 30748f0b59..e43b4ad09b 100644
-> --- a/block/io.c
-> +++ b/block/io.c
-> @@ -1710,7 +1710,11 @@ static int bdrv_pad_request(BlockDriverState *bs,
->      int sliced_niov;
->      size_t sliced_head, sliced_tail;
-> =20
-> -    bdrv_check_qiov_request(*offset, *bytes, *qiov, *qiov_offset, &error=
-_abort);
-> +    /* Should have been checked by the caller already */
-> +    ret =3D bdrv_check_request32(*offset, *bytes, *qiov, *qiov_offset);
-> +    if (ret < 0) {
-> +        return ret;
-> +    }
-> =20
->      if (!bdrv_init_padding(bs, *offset, *bytes, write, pad)) {
->          if (padded) {
-> @@ -1723,7 +1727,7 @@ static int bdrv_pad_request(BlockDriverState *bs,
->                                    &sliced_head, &sliced_tail,
->                                    &sliced_niov);
-> =20
-> -    /* Guaranteed by bdrv_check_qiov_request() */
-> +    /* Guaranteed by bdrv_check_request32() */
->      assert(*bytes <=3D SIZE_MAX);
->      ret =3D bdrv_create_padded_qiov(bs, pad, sliced_iov, sliced_niov,
->                                    sliced_head, *bytes);
-> --=20
-> 2.40.1
->=20
+Thanks.
 
---PxMwyC6v7qLLaBSW
-Content-Type: application/pgp-signature; name="signature.asc"
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmStujkACgkQnKSrs4Gr
-c8gw4gf+Mi8vgMTx+MfQmr0f2mVXldcX/iXtubCz47wof8GakPxNP2kkT0k2N4H/
-CisraqVVkav1ttbexdhG72KPSyfu+Jbr2btkze3XggPDa5/8eN5c7+/2j5BraaI+
-DhyXIiitLEi82ulZ4Cjrmd5lyoASsiw4KvN9p0H64UU8yNiUjfD5XvQgmMigwIZv
-i15Qxn4RdjPJcm9IdQYEonEQ7venWS+EBxDa+X84S6EyFSzJmbFFIjMfgB1ND78K
-tBUphMwkG0R3SpsIzRXXTuHgiKVuEnWWfGtw8FdKq3tUDn6E5aWlWOSTW+oSVx//
-7H4G95dfZvonPYE6pLGAprfWL1+/Cw==
-=02Z+
------END PGP SIGNATURE-----
-
---PxMwyC6v7qLLaBSW--
-
+r~
 
