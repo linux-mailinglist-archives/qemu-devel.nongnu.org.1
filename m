@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3704A74F3AD
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 17:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FAA74F3C6
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 17:39:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJFOg-0007zZ-CM; Tue, 11 Jul 2023 11:35:26 -0400
+	id 1qJFS0-0005fu-Ju; Tue, 11 Jul 2023 11:38:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJFOS-0007sh-1v
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 11:35:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJFRy-0005fI-MP
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 11:38:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJFOQ-0005ps-Kj
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 11:35:11 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJFRx-00071D-6L
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 11:38:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689089709;
+ s=mimecast20190719; t=1689089926;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sWm/aBOMSzPH7fHXQPW3X3aDhTY8xljtSTnrC1sDgKo=;
- b=WrNJt/Y25N4wtRw9L0BXBOrSacNDvCJNJrp19+ZPCQgIiyFKhOTGX0DL+QGykUH1vxPBaR
- NtWJiY7SHs5mGJg9rd1MzuWuNJ/IGVG+n+RS2Fwzvd4n1BpVgDxrkNoPBYLrqqFp1i+G5a
- OjS7i0DwKVxN0vFQ4B5AoFNi6/5hduc=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Fi7JfruppMfky0aOjE2GJMkpq4aLQborK4itS9FQ3VQ=;
+ b=F9d7uyHR9sfYjGduBKk3h1uFKsMU77GbLRXD7Quq5+amaG41X0PF2Eecfww3ROKINZLBsP
+ JNaAnClLGzq9sXiMO3EqAS0/+qXm9yWLM/4Sjw4+WZpE/W3mfmVvsEEYvV0XVbmX+SpDp1
+ xFbcBEhYITNXYXLWSXzKrIWhJIOjCJQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-638-gyDkk9roO4-FPoJ5yF2kcg-1; Tue, 11 Jul 2023 11:35:07 -0400
-X-MC-Unique: gyDkk9roO4-FPoJ5yF2kcg-1
+ us-mta-553-Y1486YujMdiPyXoyhC5OvQ-1; Tue, 11 Jul 2023 11:35:31 -0400
+X-MC-Unique: Y1486YujMdiPyXoyhC5OvQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9227A382C980;
- Tue, 11 Jul 2023 15:35:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 658B5185A794;
+ Tue, 11 Jul 2023 15:35:08 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.39.194.218])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EFFF4C54FB3;
- Tue, 11 Jul 2023 15:35:02 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DAEFDC51488;
+ Tue, 11 Jul 2023 15:35:05 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -51,15 +51,15 @@ Cc: David Hildenbrand <david@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
  Gavin Shan <gshan@redhat.com>, Mario Casquero <mcasquer@redhat.com>
-Subject: [PATCH v4 6/7] virtio-mem: Prepare for device unplug support
-Date: Tue, 11 Jul 2023 17:34:44 +0200
-Message-ID: <20230711153445.514112-7-david@redhat.com>
+Subject: [PATCH v4 7/7] virtio-mem-pci: Device unplug support
+Date: Tue, 11 Jul 2023 17:34:45 +0200
+Message-ID: <20230711153445.514112-8-david@redhat.com>
 In-Reply-To: <20230711153445.514112-1-david@redhat.com>
 References: <20230711153445.514112-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -68,7 +68,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,79 +84,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In many cases, blindly unplugging a virtio-mem device is problematic. We
-can only safely remove a device once:
-* The guest is not expecting to be able to read unplugged memory
-  (unplugged-inaccessible == on)
-* The virtio-mem device does not have memory plugged (size == 0)
-* The virtio-mem device does not have outstanding requests to the VM to
-  plug memory (requested-size == 0)
+Let's support device unplug by forwarding the unplug_request_check()
+callback to the virtio-mem device.
 
-So let's add a callback to the virtio-mem device class to check for that.
-We'll wire-up virtio-mem-pci next.
+Further, disallow changing the requested-size once an unplug request is
+pending.
+
+Disallowing requested-size changes handles corner cases such as
+(1) pausing the VM (2) requesting device unplug and (3) adjusting the
+requested size. If the VM would plug memory (due to the requested size
+change) before processing the unplug request, we would be in trouble.
 
 Tested-by: Mario Casquero <mcasquer@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/virtio/virtio-mem.c         | 25 +++++++++++++++++++++++++
- include/hw/virtio/virtio-mem.h |  1 +
- 2 files changed, 26 insertions(+)
+ hw/virtio/virtio-mem-pci.c | 49 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 46 insertions(+), 3 deletions(-)
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index ec0ae32589..27b3aac87c 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -1483,6 +1483,30 @@ static void virtio_mem_rdm_unregister_listener(RamDiscardManager *rdm,
-     QLIST_REMOVE(rdl, next);
+diff --git a/hw/virtio/virtio-mem-pci.c b/hw/virtio/virtio-mem-pci.c
+index 2ef0f07630..c4597e029e 100644
+--- a/hw/virtio/virtio-mem-pci.c
++++ b/hw/virtio/virtio-mem-pci.c
+@@ -93,12 +93,53 @@ static void virtio_mem_pci_size_change_notify(Notifier *notifier, void *data)
+     g_free(qom_path);
  }
  
-+static void virtio_mem_unplug_request_check(VirtIOMEM *vmem, Error **errp)
++static void virtio_mem_pci_unplug_request_check(VirtIOMDPCI *vmd, Error **errp)
 +{
-+    if (vmem->unplugged_inaccessible == ON_OFF_AUTO_OFF) {
-+        /*
-+         * We could allow it with a usable region size of 0, but let's just
-+         * not care about that legacy setting.
-+         */
-+        error_setg(errp, "virtio-mem device cannot get unplugged while"
-+                   " '" VIRTIO_MEM_UNPLUGGED_INACCESSIBLE_PROP "' != 'on'");
-+        return;
-+    }
++    VirtIOMEMPCI *pci_mem = VIRTIO_MEM_PCI(vmd);
++    VirtIOMEM *vmem = &pci_mem->vdev;
++    VirtIOMEMClass *vpc = VIRTIO_MEM_GET_CLASS(vmem);
 +
-+    if (vmem->size) {
-+        error_setg(errp, "virtio-mem device cannot get unplugged while"
-+                   " '" VIRTIO_MEM_SIZE_PROP "' != '0'");
-+        return;
-+    }
-+    if (vmem->requested_size) {
-+        error_setg(errp, "virtio-mem device cannot get unplugged while"
-+                   " '" VIRTIO_MEM_REQUESTED_SIZE_PROP "' != '0'");
-+        return;
-+    }
++    vpc->unplug_request_check(vmem, errp);
 +}
 +
- static void virtio_mem_class_init(ObjectClass *klass, void *data)
++static void virtio_mem_pci_get_requested_size(Object *obj, Visitor *v,
++                                              const char *name, void *opaque,
++                                              Error **errp)
++{
++    VirtIOMEMPCI *pci_mem = VIRTIO_MEM_PCI(obj);
++
++    object_property_get(OBJECT(&pci_mem->vdev), name, v, errp);
++}
++
++static void virtio_mem_pci_set_requested_size(Object *obj, Visitor *v,
++                                              const char *name, void *opaque,
++                                              Error **errp)
++{
++    VirtIOMEMPCI *pci_mem = VIRTIO_MEM_PCI(obj);
++    DeviceState *dev = DEVICE(obj);
++
++    /*
++     * If we passed virtio_mem_pci_unplug_request_check(), making sure that
++     * the requested size is 0, don't allow modifying the requested size
++     * anymore, otherwise the VM might end up hotplugging memory before
++     * handling the unplug request.
++     */
++    if (dev->pending_deleted_event) {
++        error_setg(errp, "'%s' cannot be changed if the device is in the"
++                   " process of unplug", name);
++        return;
++    }
++
++    object_property_set(OBJECT(&pci_mem->vdev), name, v, errp);
++}
++
+ static void virtio_mem_pci_class_init(ObjectClass *klass, void *data)
  {
      DeviceClass *dc = DEVICE_CLASS(klass);
-@@ -1505,6 +1529,7 @@ static void virtio_mem_class_init(ObjectClass *klass, void *data)
-     vmc->get_memory_region = virtio_mem_get_memory_region;
-     vmc->add_size_change_notifier = virtio_mem_add_size_change_notifier;
-     vmc->remove_size_change_notifier = virtio_mem_remove_size_change_notifier;
-+    vmc->unplug_request_check = virtio_mem_unplug_request_check;
+     VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
+     PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
+     MemoryDeviceClass *mdc = MEMORY_DEVICE_CLASS(klass);
++    VirtIOMDPCIClass *vmdc = VIRTIO_MD_PCI_CLASS(klass);
  
-     rdmc->get_min_granularity = virtio_mem_rdm_get_min_granularity;
-     rdmc->is_populated = virtio_mem_rdm_is_populated;
-diff --git a/include/hw/virtio/virtio-mem.h b/include/hw/virtio/virtio-mem.h
-index f15e561785..ab0fe2b4f2 100644
---- a/include/hw/virtio/virtio-mem.h
-+++ b/include/hw/virtio/virtio-mem.h
-@@ -98,6 +98,7 @@ struct VirtIOMEMClass {
-     MemoryRegion *(*get_memory_region)(VirtIOMEM *vmem, Error **errp);
-     void (*add_size_change_notifier)(VirtIOMEM *vmem, Notifier *notifier);
-     void (*remove_size_change_notifier)(VirtIOMEM *vmem, Notifier *notifier);
-+    void (*unplug_request_check)(VirtIOMEM *vmem, Error **errp);
- };
+     k->realize = virtio_mem_pci_realize;
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+@@ -111,6 +152,8 @@ static void virtio_mem_pci_class_init(ObjectClass *klass, void *data)
+     mdc->get_memory_region = virtio_mem_pci_get_memory_region;
+     mdc->fill_device_info = virtio_mem_pci_fill_device_info;
+     mdc->get_min_alignment = virtio_mem_pci_get_min_alignment;
++
++    vmdc->unplug_request_check = virtio_mem_pci_unplug_request_check;
+ }
  
- #endif
+ static void virtio_mem_pci_instance_init(Object *obj)
+@@ -135,9 +178,9 @@ static void virtio_mem_pci_instance_init(Object *obj)
+                               OBJECT(&dev->vdev), VIRTIO_MEM_BLOCK_SIZE_PROP);
+     object_property_add_alias(obj, VIRTIO_MEM_SIZE_PROP, OBJECT(&dev->vdev),
+                               VIRTIO_MEM_SIZE_PROP);
+-    object_property_add_alias(obj, VIRTIO_MEM_REQUESTED_SIZE_PROP,
+-                              OBJECT(&dev->vdev),
+-                              VIRTIO_MEM_REQUESTED_SIZE_PROP);
++    object_property_add(obj, VIRTIO_MEM_REQUESTED_SIZE_PROP, "size",
++                        virtio_mem_pci_get_requested_size,
++                        virtio_mem_pci_set_requested_size, NULL, NULL);
+ }
+ 
+ static const VirtioPCIDeviceTypeInfo virtio_mem_pci_info = {
 -- 
 2.41.0
 
