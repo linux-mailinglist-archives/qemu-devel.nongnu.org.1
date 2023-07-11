@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB50F74F198
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 16:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E73774F1BE
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 16:21:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJEA9-0001ae-Pj; Tue, 11 Jul 2023 10:16:21 -0400
+	id 1qJEDi-0003Qv-7P; Tue, 11 Jul 2023 10:20:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJE9m-0001Yg-0d
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:16:03 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJE9j-0003XC-Ss
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:15:57 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-51a52a7d859so13553262a12.0
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 07:15:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689084954; x=1691676954;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Gotq3+VEXwQTLCbf4Ht9ewaB4E8ZBaGC0uCrhGixc2o=;
- b=gGo5Pz4pHyHMvplKGxAfcjsVdH58EE1r1bAMRoQp330OMrrYH8go/jhQI7RRirH0zC
- 8RA98l8KtnE+R4cof8IjW7tnn0sfnUCHUSX3u+sSpbfakdm604RiqE6PdY55qNQoBh3/
- 1H1wBfrYS1/oF7a2dSxNWFiSPFxjAfxFkCsUiWb135QbKeG4UMeNOcgu3XzpJoo17lTZ
- qDVa5r/uLIobDGrgdsubvR2YyfcU7diuh61w3AlB1nlipA9zezKqfSqPlrWQglT0JdW1
- GFJeBemJ9Eyye5g3bf8aL+gP0dHyUgc96s975q0RT1bT4kyDvGZJrQjZADzls5dwuw6E
- i7Kw==
+ (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
+ id 1qJEDg-0003Pm-3W
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:20:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mcasquer@redhat.com>)
+ id 1qJEDe-0004Ab-JG
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:19:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689085197;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YqmkekmoG6/keFALgzR4safhPNaxOvsdD6Ucs2CjxfE=;
+ b=DIOrrajUVohsX7loHSrAnD8Q08ztx2ZmY22/JtZwyRVFOEz9RyKzVHQ3zv4o/q6nbFI4AL
+ uxN5edXZjml42qxhhKP1OXjcLdU9Oad9XudOlHQD1G19wxsevUwGAnyV8LyrxwGy7fUL/C
+ E/rZj2t+EPRuvY4Vd4/swPOFKVJbXtY=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-227-HC0i39vnPvafWR3jUK88fw-1; Tue, 11 Jul 2023 10:19:54 -0400
+X-MC-Unique: HC0i39vnPvafWR3jUK88fw-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2b698377ed7so57271011fa.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 07:19:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689084954; x=1691676954;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Gotq3+VEXwQTLCbf4Ht9ewaB4E8ZBaGC0uCrhGixc2o=;
- b=F+7d966e6nO/viaUKcdXIkg4wXIMIAo+9WYa+m3g+jnU3kVbJPc9zEQ865+Gxzqgc+
- aLL0tE9Tvc1Iqb96JO1rzfRJWbMpHPmcsWWsFfAN/G85VdFShP54qcb0bmO/6HaIffcs
- MwvY++2Tqc0JUBKO6789SIQJ3ZW1N3gUYSNMEzrxB+vTNAME7DDSOApnBtHArorjfBPL
- pMwr8YJxAyBpXcDYTS3z5gvnYE6Oy8NLvenrhKLeXqcBvCuzUBpcxfvg/gkPVYgy/CQm
- FcMtK2LnJO28H2Edt2jCRbs+nm1N4aCQPXmtffnvLTF36y0gmeK1DCw7OooZ5doicWem
- j2gw==
-X-Gm-Message-State: ABy/qLYCz57LRTA4CEpfcNYTtQwgFLhcCgobmrW4UNuaAYm/xNEuN/dD
- faHlJxbhGHTLicNNftB1iPNW5Q==
-X-Google-Smtp-Source: APBJJlGTN5E7ixLFlxw2yQltqkvfTz1GFebsJGuEWZwnmopozBDGSeN6M1tK/FTWu7FRVXBPOpTEdg==
-X-Received: by 2002:a17:906:10a:b0:992:ef60:aadd with SMTP id
- 10-20020a170906010a00b00992ef60aaddmr19801508eje.13.1689084953669; 
- Tue, 11 Jul 2023 07:15:53 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.194.156])
- by smtp.gmail.com with ESMTPSA id
- g18-20020a1709064e5200b009930042510csm1204441ejw.222.2023.07.11.07.15.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Jul 2023 07:15:53 -0700 (PDT)
-Message-ID: <279c50d2-41dd-851f-1603-7a2834049208@linaro.org>
-Date: Tue, 11 Jul 2023 16:15:51 +0200
+ d=1e100.net; s=20221208; t=1689085174; x=1691677174;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YqmkekmoG6/keFALgzR4safhPNaxOvsdD6Ucs2CjxfE=;
+ b=j2WXJWVwnNVG/xCJPvqWMe3mPwU8byoagu7BAC2YqiKvkl+OKa+L/ppCLUgkVgPZQJ
+ iZQSp+FyQjEYaXMWrL+KYNg30aXlQqeHTbyFgc5XSVRV8ZtLrCPjkYuE1eYyEF1kUkg8
+ Y7ieQrlz8RiZcLPkG6VGtFUwMX/tjZ0JFav9BvDx8G6bmr6XHIy0hmTHoCtrBtuAARFP
+ ydvaj7faPytbc40OvI/jfwQV3qL7+1tCodLN4/xgMCcOfcTTmqz8iPM6aGLnuTIsRF1l
+ k22p46tzLVtDDgoL6/4KYp83LJJG+XgoRGSiTWTQodAgTngHMfaDC0nRHImrChbHM40d
+ nHcw==
+X-Gm-Message-State: ABy/qLan6cURIt5QguTtMAuqOMP5MdilaX95W0LACOEH0OCihzBH7/kh
+ QdTB8ojLb2ddki9Y+jud3LB9/de1cm+hRj8l6IaC5XbeyuTE41lkLOa+a7duq3vbbm3ypIOKuSD
+ ktf98qpVkcq0zLpsW37+UfcuGwaoat08=
+X-Received: by 2002:a2e:9196:0:b0:2b6:de52:35a with SMTP id
+ f22-20020a2e9196000000b002b6de52035amr14597286ljg.9.1689085174068; 
+ Tue, 11 Jul 2023 07:19:34 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGTpeaSG8CKvvgVlnbIZcer01IOnojXPyKF+qjaAb7HQtxGTMyTI1y8RahC+zwIcU1jIIeew1NkdgtfMAwm+Mo=
+X-Received: by 2002:a2e:9196:0:b0:2b6:de52:35a with SMTP id
+ f22-20020a2e9196000000b002b6de52035amr14597261ljg.9.1689085173734; Tue, 11
+ Jul 2023 07:19:33 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH v2 2/3] tests/vm: Introduce
- get_qemu_packages_from_lcitool_json() helper
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Warner Losh <imp@bsdimp.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Ed Maste <emaste@freebsd.org>, Beraldo Leal <bleal@redhat.com>,
- Li-Wen Hsu <lwhsu@freebsd.org>, Kyle Evans <kevans@freebsd.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Erik Skultety <eskultet@redhat.com>
-References: <20230711140143.65818-1-philmd@linaro.org>
- <20230711140143.65818-3-philmd@linaro.org> <ZK1iRcctZmVJPT5f@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <ZK1iRcctZmVJPT5f@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230710100714.228867-1-david@redhat.com>
+In-Reply-To: <20230710100714.228867-1-david@redhat.com>
+From: Mario Casquero <mcasquer@redhat.com>
+Date: Tue, 11 Jul 2023 16:19:22 +0200
+Message-ID: <CAMXpfWsD9_UvB6cez9oKZt9PREkVALhX0sQ=Qyok78juME78jQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/7] virtio-mem: Device unplug support
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org, 
+ Gavin Shan <gshan@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcasquer@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,36 +100,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/7/23 16:08, Daniel P. Berrangé wrote:
-> On Tue, Jul 11, 2023 at 04:01:42PM +0200, Philippe Mathieu-Daudé wrote:
->> Add the get_qemu_packages_from_lcitool_json() helper which return
->> such package list from a lcitool env var file in JSON format.
->>
->> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   tests/vm/Makefile.include | 4 ++++
->>   tests/vm/basevm.py        | 9 +++++++++
->>   2 files changed, 13 insertions(+)
->>
->> diff --git a/tests/vm/Makefile.include b/tests/vm/Makefile.include
->> index c2a8ca1c17..b021b344b5 100644
->> --- a/tests/vm/Makefile.include
->> +++ b/tests/vm/Makefile.include
->> @@ -106,6 +106,10 @@ $(IMAGES_DIR)/%.img:	$(SRC_PATH)/tests/vm/% \
->>   		--build-image $@, \
->>   		"  VM-IMAGE $*")
->>   
->> +$(SRC_PATH)/tests/vm/%.json:
->> +	$(call quiet-command, \
->> +		make lcitool-refresh)
-> 
-> 'lcitool-refresh' is something we only run explicitly when we
-> change something about the lcitool, and also isn't provided
-> to end users running from tarballs IIRC. So we shouldn't need
-> to wire it up to build targets, just commit its output JSON
-> file.
+This series has been successfully tested by QE. Start a VM, plug a
+virtio-mem device, resize the device (adding memory) and verify that
+the virtio-mem device cannot be unplugged. Finally, resize the device
+(removing all the memory) and check that it can be unplugged
+seamlessly.
 
-Right, simpler. Thanks!
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+
+On Mon, Jul 10, 2023 at 12:07=E2=80=AFPM David Hildenbrand <david@redhat.co=
+m> wrote:
+>
+> Any further comments? IMHO this is pretty straight forward. I'll wait
+> a bit longer for more feedback.
+>
+>
+> One limitation of virtio-mem is that we cannot currently unplug virtio-me=
+m
+> devices that have all memory unplugged from the VM.
+>
+> Let's properly handle forced unplug (as can be triggered by the VM) and
+> add support for ordinary unplug (requests) of virtio-mem devices that are
+> in a compatible state (no legacy mode, no plugged memory, no plug request=
+).
+>
+> Briefly tested on both, x86_64 and aarch64.
+>
+> v2 -> v3:
+> - "virtio-md-pci: New parent type for virtio-mem-pci and virtio-pmem-pci"
+>  -> Add MAINTAINERS entry
+>
+> v1 -> v2:
+> - Reduce code duplication and implement it in a cleaner way using a
+>   new abstract virtio-md-pci parent class
+> - "virtio-md-pci: New parent type for virtio-mem-pci and virtio-pmem-pci"
+>  -> Added, use a new aprent type like virtio-input-pci
+> - "pc: Factor out (un)plug handling of virtio-md-pci devices"
+>  -> Added, factor it cleanly out
+> - "arm/virt: Use virtio-md-pci (un)plug functions"
+>  -> Added, reduce code duplciation
+> - "virtio-md-pci: Handle unplug of virtio based memory devices"
+>  -> More generic without any device-specifics
+> - "virtio-md-pci: Support unplug requests for compatible devices"
+>  -> More generic without any device-specifics
+> - "virtio-mem: Prepare for device unplug support"
+>  -> Use callback, separated from virtio-mem-pci device change
+> - "virtio-mem-pci: Device unplug support"
+>  -> Use callback, separated from virtio-mem device change
+>
+> Cc: Peter Maydell <peter.maydell@linaro.org>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Richard Henderson <richard.henderson@linaro.org>
+> Cc: Eduardo Habkost <eduardo@habkost.net>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+> Cc: Igor Mammedov <imammedo@redhat.com>
+> Cc: qemu-arm@nongnu.org
+> Cc: Gavin Shan <gshan@redhat.com>
+> Cc: Mario Casquero <mcasquer@redhat.com>
+>
+> David Hildenbrand (7):
+>   virtio-md-pci: New parent type for virtio-mem-pci and virtio-pmem-pci
+>   pc: Factor out (un)plug handling of virtio-md-pci devices
+>   arm/virt: Use virtio-md-pci (un)plug functions
+>   virtio-md-pci: Handle unplug of virtio based memory devices
+>   virtio-md-pci: Support unplug requests for compatible devices
+>   virtio-mem: Prepare for device unplug support
+>   virtio-mem-pci: Device unplug support
+>
+>  MAINTAINERS                       |   6 ++
+>  hw/arm/virt.c                     |  81 +++-------------
+>  hw/i386/pc.c                      |  90 +++---------------
+>  hw/virtio/Kconfig                 |   8 +-
+>  hw/virtio/meson.build             |   1 +
+>  hw/virtio/virtio-md-pci.c         | 151 ++++++++++++++++++++++++++++++
+>  hw/virtio/virtio-mem-pci.c        |  54 +++++++++--
+>  hw/virtio/virtio-mem-pci.h        |   6 +-
+>  hw/virtio/virtio-mem.c            |  25 +++++
+>  hw/virtio/virtio-pmem-pci.c       |   5 +-
+>  hw/virtio/virtio-pmem-pci.h       |   6 +-
+>  include/hw/virtio/virtio-md-pci.h |  44 +++++++++
+>  include/hw/virtio/virtio-mem.h    |   1 +
+>  13 files changed, 311 insertions(+), 167 deletions(-)
+>  create mode 100644 hw/virtio/virtio-md-pci.c
+>  create mode 100644 include/hw/virtio/virtio-md-pci.h
+>
+> --
+> 2.41.0
+>
 
 
