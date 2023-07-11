@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5047A74ED48
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 13:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA9E74EDE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 14:17:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJBt1-0001G9-7E; Tue, 11 Jul 2023 07:50:31 -0400
+	id 1qJCGs-0001N9-Ny; Tue, 11 Jul 2023 08:15:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qJBsx-0001Ft-LZ
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 07:50:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qJBsu-00043u-Ub
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 07:50:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689076222;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xOqAy4E7KqVXoNX4Wo2qO/DObfyKiEOOQrC1sr3KvWI=;
- b=g1Dx7GbbDAImh3ljz/V+U+XYBh79cGP/mSqcFJs1VFMbqSUCBXMBoOFStGP0V/yQACtTX1
- t5cEuQwi2uK01WNpVcPgym34hIo7l8aUe6SxuYgVNP/T0BByTDEeaBUrh4pDcUPkAg/tIW
- bVZyrC2tddv2u6hoOMGpRutMnLUT/mY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-553-XSGM8qlOPFC65O8QQVx11w-1; Tue, 11 Jul 2023 07:50:20 -0400
-X-MC-Unique: XSGM8qlOPFC65O8QQVx11w-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3A8B48037BA;
- Tue, 11 Jul 2023 11:50:20 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.121])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E4693492CA6;
- Tue, 11 Jul 2023 11:50:18 +0000 (UTC)
-Date: Tue, 11 Jul 2023 12:50:16 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH] tests/migration: Restrict initrd-stress.img to Linux
-Message-ID: <ZK1B+MnRUvEGb6Pl@redhat.com>
-References: <20230710175607.32818-1-philmd@linaro.org>
- <ZKxJxkw/zUkgrlr8@redhat.com>
- <6564b580-48d7-2ea7-207b-00d583b802e9@linaro.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJCGj-0001MM-J7
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 08:15:02 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJCGh-000568-31
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 08:15:01 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2b6a084a34cso85669331fa.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 05:14:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689077696; x=1691669696;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=s1/TjbYAfFSJ50EXdWkfI4zXmq+X44y5XBsdJS5iKns=;
+ b=bfHdYVgiNYHqnQxm9VCTLYKJmeiZD490KXK4s77Ga9lAmXSBvxNAsaejbsVJDqu8Xw
+ ACqmGhaQHdv4kOT3skYuVANws0Rg+UIqdQI6BmvvPrddv2SGJpuM6tFQRcyCr1eKbD/P
+ yJwI7cAJOjnyIteY3WIw5iaUfv9I6dhAUqx7U821u7EeSZnDeBxAc48vEzeWXSML4Fbw
+ XgUKBHR8HNUk5waaPNJ69O9WvQWWSB3tBjkMQ+1dUUy/djkpWt9NHYAvoEb12f+yUsSY
+ ljkesHEN1bLa+880uEAsf86/Am7V+uay6E9oA9bS36Qe+Hi3HbcYddGzCrRVz2Vo4pIy
+ FVDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689077696; x=1691669696;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=s1/TjbYAfFSJ50EXdWkfI4zXmq+X44y5XBsdJS5iKns=;
+ b=kycpheNxteyF2PD3Ip1hWWEAfgy5l+yGtj/V+Y9uB4KlB1g8d6sEXr0ExEpE8SI5jG
+ qke3AoWDUc8qt7WDB00rkOrGkSk+zwgvQUCnBjnjYqtUS9g3Mxw2S9h6sS0Bo5nx0gHh
+ AWdTuR2ZpBvdkVJ/OvCAefSXNeptKVgLP1RBadoYwp8wv/kJUilfcZSL89oFlP1oXvCN
+ JjKpbLaVLi4+nw3gUSKqZfIsY/czTLd+rDghXAQO3n1MwLaabrMIHR8N6FmDrXFBYQLm
+ coP1Z8XZNUPRYIK388DbwKTB2Ox5bddtHG5ug6auhLtUcC7dTtHihJ2BNPaKOMkRgStM
+ Qq9w==
+X-Gm-Message-State: ABy/qLYpe2wwy/RgV5WDlrQvcCcxRSKmdpYa8eJSjalAhxwzvQ+3aqkx
+ E07sxUQHUUENuTnOUmq9aJh4coF3exX631XiVqs=
+X-Google-Smtp-Source: APBJJlE2cOqgCGsPe9bU4prJ2pKpJ/CKdIgtIjCIdFu1Om/Wg2aq9kHbCh+K6Zm5C37kTK7Olgz7Fg==
+X-Received: by 2002:a2e:9807:0:b0:2b6:e2aa:8fc2 with SMTP id
+ a7-20020a2e9807000000b002b6e2aa8fc2mr11593798ljj.46.1689077696411; 
+ Tue, 11 Jul 2023 05:14:56 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.194.156])
+ by smtp.gmail.com with ESMTPSA id
+ o16-20020a1709062e9000b00992ea405a79sm1072478eji.166.2023.07.11.05.14.55
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 11 Jul 2023 05:14:56 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-8.2 v3 00/16] target/riscv: Allow building without TCG
+ (KVM-only so far)
+Date: Tue, 11 Jul 2023 14:14:37 +0200
+Message-Id: <20230711121453.59138-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6564b580-48d7-2ea7-207b-00d583b802e9@linaro.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,68 +86,113 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 10, 2023 at 09:17:43PM +0200, Philippe Mathieu-Daudé wrote:
-> On 10/7/23 20:11, Daniel P. Berrangé wrote:
-> > On Mon, Jul 10, 2023 at 07:56:07PM +0200, Philippe Mathieu-Daudé wrote:
-> > > Trying to build initrd-stress.img on Darwin we get:
-> > > 
-> > >    $ ninja tests/migration/initrd-stress.img
-> > >    Compiling C object tests/migration/stress.p/stress.c.o
-> > >    FAILED: tests/migration/stress.p/stress.c.o
-> > >    ../tests/migration/stress.c:24:10: fatal error: 'linux/random.h' file not found
-> > >    #include <linux/random.h>
-> > >             ^~~~~~~~~~~~~~~~
-> > 
-> > I think that's historical accident, as AFAICT, nothing in stress.c
-> > needs that include to be present.
-> 
-> Removing I get:
+v3: Rebased on master
+    (commit 94d68c1136, merge tag 'pull-riscv-to-apply-20230710-1')
 
-True, the resulting file is still written to assume Linux userspace.
+Philippe Mathieu-Daudé (16):
+  target/riscv: Remove unuseful KVM stubs
+  target/riscv: Remove unused 'instmap.h' header in translate.c
+  target/riscv: Restrict sysemu specific header to user emulation
+  target/riscv: Restrict 'rv128' machine to TCG accelerator
+  target/riscv: Move sysemu-specific files to target/riscv/sysemu/
+  target/riscv: Restrict riscv_cpu_do_interrupt() to sysemu
+  target/riscv: Move TCG-specific files to target/riscv/tcg/
+  target/riscv: Move TCG-specific cpu_get_tb_cpu_state() to tcg/cpu.c
+  target/riscv: Expose some 'trigger' prototypes from debug.c
+  target/riscv: Extract TCG-specific code from debug.c
+  target/riscv: Move sysemu-specific debug files to target/riscv/sysemu/
+  target/riscv: Expose riscv_cpu_pending_to_irq() from cpu_helper.c
+  target/riscv: Move TCG/sysemu-specific code to tcg/sysemu/cpu_helper.c
+  target/riscv: Move sysemu-specific code to sysemu/cpu_helper.c
+  target/riscv: Restrict TCG-specific prototype declarations
+  gitlab-ci.d/crossbuilds: Add KVM riscv64 cross-build jobs
 
-We can remove the linux/random.h header as it is redundant. Your
-patch is still needed, just with a more general commit message
-saying that many requird features are Linux only.
+ target/riscv/cpu.h                            |   27 +-
+ target/riscv/internals.h                      |    4 +
+ target/riscv/{ => sysemu}/debug.h             |    6 +
+ target/riscv/{ => sysemu}/instmap.h           |    0
+ target/riscv/{ => sysemu}/kvm_riscv.h         |    0
+ target/riscv/{ => sysemu}/pmp.h               |    0
+ target/riscv/{ => sysemu}/pmu.h               |    0
+ target/riscv/{ => sysemu}/time_helper.h       |    0
+ target/riscv/{ => tcg}/XVentanaCondOps.decode |    0
+ target/riscv/{ => tcg}/insn16.decode          |    0
+ target/riscv/{ => tcg}/insn32.decode          |    0
+ target/riscv/{ => tcg}/xthead.decode          |    0
+ hw/riscv/virt.c                               |    2 +-
+ target/riscv/cpu.c                            |   35 +-
+ target/riscv/cpu_helper.c                     | 1692 +----------------
+ target/riscv/csr.c                            |    6 +-
+ target/riscv/{ => sysemu}/arch_dump.c         |    0
+ target/riscv/sysemu/cpu_helper.c              |  863 +++++++++
+ target/riscv/{ => sysemu}/debug.c             |  153 +-
+ target/riscv/{ => sysemu}/kvm-stub.c          |    0
+ target/riscv/{ => sysemu}/kvm.c               |    4 +-
+ target/riscv/{ => sysemu}/machine.c           |    0
+ target/riscv/{ => sysemu}/monitor.c           |    0
+ target/riscv/{ => sysemu}/pmp.c               |    0
+ target/riscv/{ => sysemu}/pmu.c               |    0
+ target/riscv/{ => sysemu}/riscv-qmp-cmds.c    |    0
+ target/riscv/{ => sysemu}/time_helper.c       |    0
+ target/riscv/{ => tcg}/bitmanip_helper.c      |    0
+ target/riscv/tcg/cpu.c                        |   98 +
+ target/riscv/{ => tcg}/crypto_helper.c        |    0
+ target/riscv/{ => tcg}/fpu_helper.c           |    0
+ target/riscv/{ => tcg}/m128_helper.c          |    0
+ target/riscv/{ => tcg}/op_helper.c            |    0
+ target/riscv/tcg/sysemu/cpu_helper.c          |  765 ++++++++
+ target/riscv/tcg/sysemu/debug.c               |  165 ++
+ target/riscv/tcg/tcg-stub.c                   |   31 +
+ target/riscv/{ => tcg}/translate.c            |    1 -
+ target/riscv/{ => tcg}/vector_helper.c        |    0
+ target/riscv/{ => tcg}/zce_helper.c           |    0
+ .gitlab-ci.d/crossbuilds.yml                  |    8 +
+ target/riscv/meson.build                      |   33 +-
+ target/riscv/sysemu/meson.build               |   13 +
+ target/riscv/tcg/meson.build                  |   22 +
+ target/riscv/tcg/sysemu/meson.build           |    4 +
+ 44 files changed, 2038 insertions(+), 1894 deletions(-)
+ rename target/riscv/{ => sysemu}/debug.h (96%)
+ rename target/riscv/{ => sysemu}/instmap.h (100%)
+ rename target/riscv/{ => sysemu}/kvm_riscv.h (100%)
+ rename target/riscv/{ => sysemu}/pmp.h (100%)
+ rename target/riscv/{ => sysemu}/pmu.h (100%)
+ rename target/riscv/{ => sysemu}/time_helper.h (100%)
+ rename target/riscv/{ => tcg}/XVentanaCondOps.decode (100%)
+ rename target/riscv/{ => tcg}/insn16.decode (100%)
+ rename target/riscv/{ => tcg}/insn32.decode (100%)
+ rename target/riscv/{ => tcg}/xthead.decode (100%)
+ rename target/riscv/{ => sysemu}/arch_dump.c (100%)
+ create mode 100644 target/riscv/sysemu/cpu_helper.c
+ rename target/riscv/{ => sysemu}/debug.c (83%)
+ rename target/riscv/{ => sysemu}/kvm-stub.c (100%)
+ rename target/riscv/{ => sysemu}/kvm.c (99%)
+ rename target/riscv/{ => sysemu}/machine.c (100%)
+ rename target/riscv/{ => sysemu}/monitor.c (100%)
+ rename target/riscv/{ => sysemu}/pmp.c (100%)
+ rename target/riscv/{ => sysemu}/pmu.c (100%)
+ rename target/riscv/{ => sysemu}/riscv-qmp-cmds.c (100%)
+ rename target/riscv/{ => sysemu}/time_helper.c (100%)
+ rename target/riscv/{ => tcg}/bitmanip_helper.c (100%)
+ create mode 100644 target/riscv/tcg/cpu.c
+ rename target/riscv/{ => tcg}/crypto_helper.c (100%)
+ rename target/riscv/{ => tcg}/fpu_helper.c (100%)
+ rename target/riscv/{ => tcg}/m128_helper.c (100%)
+ rename target/riscv/{ => tcg}/op_helper.c (100%)
+ create mode 100644 target/riscv/tcg/sysemu/cpu_helper.c
+ create mode 100644 target/riscv/tcg/sysemu/debug.c
+ create mode 100644 target/riscv/tcg/tcg-stub.c
+ rename target/riscv/{ => tcg}/translate.c (99%)
+ rename target/riscv/{ => tcg}/vector_helper.c (100%)
+ rename target/riscv/{ => tcg}/zce_helper.c (100%)
+ create mode 100644 target/riscv/sysemu/meson.build
+ create mode 100644 target/riscv/tcg/meson.build
+ create mode 100644 target/riscv/tcg/sysemu/meson.build
 
-> 
-> ../../tests/migration/stress.c:35:12: error: 'syscall' is deprecated: first
-> deprecated in macOS 10.12 - syscall(2) is unsupported; please switch to a
-> supported interface. For SYS_kdebug_trace use kdebug_signpost().
-> [-Werror,-Wdeprecated-declarations]
->     return syscall(SYS_gettid);
->            ^
-> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/unistd.h:746:6:
-> note: 'syscall' has been explicitly marked deprecated here
-> int      syscall(int, ...);
->          ^
-> ../../tests/migration/stress.c:43:16: error: use of undeclared identifier
-> 'RB_POWER_OFF'
->         reboot(RB_POWER_OFF);
->                ^
-> ../../tests/migration/stress.c:241:39: error: too many arguments to function
-> call, expected 4, have 5
->     if (mount("none", dir, fstype, 0, NULL) < 0) {
->         ~~~~~                         ^~~~
-> /Library/Developer/CommandLineTools/usr/lib/clang/14.0.3/include/stddef.h:89:16:
-> note: expanded from macro 'NULL'
-> #  define NULL ((void*)0)
->                ^~~~~~~~~~
-> /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/mount.h:448:9:
-> note: 'mount' declared here
-> int     mount(const char *, const char *, int, void *);
->         ^
-> 3 errors generated.
-> 
-
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.38.1
 
 
