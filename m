@@ -2,90 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4922374E1FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 01:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2044474E291
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 02:33:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qIzws-00058v-53; Mon, 10 Jul 2023 19:05:42 -0400
+	id 1qJ1IR-0002q3-Lo; Mon, 10 Jul 2023 20:32:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwq-0004zh-DU
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qIzwo-0004vv-Tf
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 19:05:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689030338;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8SuoEmdvJLF1kbhsp7zcp3gnkEzxAK2svLYwoxlfO4Y=;
- b=aUM82acjs9uxU3X2nRr5HL9QOnbkfwRqJct4/qsA0+MVVTEQDn1a/Mt5jfU1onSenbv20O
- sMRT+ofVAXaFZq98sq65D/phK24/XBvTYCDEVkuuikDKpQMS6NWqWKFCdw1Yg9pzrK/aaq
- OjmuHCdz8IgzFqok0o11nfD64SGfh0U=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-182-JzoOHrggNhuiuth2COv3CQ-1; Mon, 10 Jul 2023 19:05:37 -0400
-X-MC-Unique: JzoOHrggNhuiuth2COv3CQ-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f42bcef2acso29885605e9.2
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 16:05:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
+ id 1qJ1IP-0002pg-Aw
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 20:32:01 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
+ id 1qJ1IM-0003fG-8z
+ for qemu-devel@nongnu.org; Mon, 10 Jul 2023 20:32:00 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1b852785a65so33030695ad.0
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 17:31:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1689035512; x=1691627512;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jA/5TBIWumv1LUCuBL6i2fDNoWAiKZFWdmY8JXenSNg=;
+ b=GGFhH1/l0aZrx/3p3WnLYh7zfEX1Fg9TBbW6C0qJlObZrs0DrjjfHTRNMonS92Hyqv
+ s+x72dzPNXDn2aX3P74wXdnBtbS+PE80103c6TTVfH12JZE9xQeclB0FaBEt/86Om/aU
+ ARUusfj22mZp2lWP+60l9uV/sNx1YdKixt21jA5np2A7HzxHCLSMkJu0GeHZGQckVMlQ
+ e7zlrNxgQkKnyzrLYEa17fHKaBG3mG7+ExwP7ukBNrdoOGsphxFpm/YlLQMIcRS+BQqV
+ 6haFP+bvg5FhiVN8TWYjkTMsYKrP4qUMBPfIOgTR2Z+jiRz/q4ltVzHJkcElHoy3D3ks
+ Fb4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689030335; x=1691622335;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20221208; t=1689035512; x=1691627512;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8SuoEmdvJLF1kbhsp7zcp3gnkEzxAK2svLYwoxlfO4Y=;
- b=CMwq9Nnae/OpwoQS6rUByS6Zr1VbGjVVdPm44jlbAatK3EEfh25FGXZJhNxLGLJ3O6
- xZwhKHtVwu067ZpfE5Pd1pBXA7XMM+dcLFTB2kr/TMIHnR+n2E6HcXDP3v3GWnmZJl/f
- 7VVnOv+6i8i4/ICvJgMHbSEEVbxsb07A5xPQHigrD8aj+2BTP3DdCAiOgkLF0vPisWB7
- j0Lgt1101bj/zytAP8T2iAb9HhbQo7wScrfNdklb+HnhdskANwFWFCg9ktmsB9NpvJrk
- /exvUbEZGGu6GvPCqSQihAlKc0MdM716sKU5YfyxSSv3wI+DYBkBJ7T2cSMAeVlMfHNG
- J5RA==
-X-Gm-Message-State: ABy/qLYq0fbQG67g1m38kpT3zvPT+rCk/Z/yziqR6x6riFMABxDHeavT
- 870poOII9ZQecJIT64/0hhlEv//ksuHMp/M0LQ0bgHv9a0UI2gzCAeQMqBpXfm3P7Ru3Z0RA8b/
- mQW67HTmff5sK0Q6SmkemVdDT9/F5bNaOZI+eKXcaMUBMxWKtju3kQx4E/FI3xCe00PpM
-X-Received: by 2002:a7b:c7d1:0:b0:3fa:9590:a365 with SMTP id
- z17-20020a7bc7d1000000b003fa9590a365mr11036862wmk.17.1689030335028; 
- Mon, 10 Jul 2023 16:05:35 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEUncl2xjLuAfv79XMuvzE8Uknd8OnTNCC83EDohK2+6D9aazUuIYwNA+Iv8ICsrZJqquvMnA==
-X-Received: by 2002:a7b:c7d1:0:b0:3fa:9590:a365 with SMTP id
- z17-20020a7bc7d1000000b003fa9590a365mr11036847wmk.17.1689030334748; 
- Mon, 10 Jul 2023 16:05:34 -0700 (PDT)
-Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- w22-20020a1cf616000000b003faef96ee78sm11348818wmc.33.2023.07.10.16.05.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Jul 2023 16:05:34 -0700 (PDT)
-Date: Mon, 10 Jul 2023 19:05:32 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Hawkins Jiawei <yin31149@gmail.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 66/66] vdpa: Allow VIRTIO_NET_F_CTRL_RX_EXTRA in SVQ
-Message-ID: <d669b7bba22d45cb9e5926d63541e52bde1655dd.1689030052.git.mst@redhat.com>
-References: <cover.1689030052.git.mst@redhat.com>
+ bh=jA/5TBIWumv1LUCuBL6i2fDNoWAiKZFWdmY8JXenSNg=;
+ b=lJOX+/tD6TBimlxzgZcZqMQsz0IdA/dmzMpg8soauYgRbzam4xg5NsN9cZpozsPrDB
+ ZIzrDfPeQUm5krpRg1TyT7VNAJv2t0at5wqpdm9HU0y5Ss+Ddd2yFge8KMB/iGhf6v0g
+ lg44OzLRwV+SMjtca4wKxopbfAnOyaqkpfa9hptSqBN/uG4O/F+jIBErj7wnaB7H02qi
+ JQc08YJYVm9g9WTIlz+N4ii7er50PdiOEXDcza4K7+iM74enjQo0T3k7eCUd2+xXBzem
+ GBN7Elh545TZGmSZBjWQQY8qxXEiZbyCeYNfE8/LJP3WzKREH5X5A1nqb5pMTrU9s8aZ
+ MVxw==
+X-Gm-Message-State: ABy/qLaWpXBNhN7CW3swjlOvv0PwtNytmnlHQRlJ3nsUPdyRuhP2HGK+
+ vQRDxRZ9YkqjVfWQJF5BNZHniw==
+X-Google-Smtp-Source: APBJJlEhh+N3M7UeMoMTMEAYv3O0taIs0qW8Aic1SgECTsIpexI/van40b/4W54KGfx+EfJgIK6pIg==
+X-Received: by 2002:a17:903:22cf:b0:1b8:870c:4ce8 with SMTP id
+ y15-20020a17090322cf00b001b8870c4ce8mr22808403plg.18.1689035512097; 
+ Mon, 10 Jul 2023 17:31:52 -0700 (PDT)
+Received: from [10.3.43.196] ([61.213.176.5]) by smtp.gmail.com with ESMTPSA id
+ w19-20020a1709027b9300b001ae3f73b9c1sm477017pll.101.2023.07.10.17.31.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 10 Jul 2023 17:31:51 -0700 (PDT)
+Message-ID: <b98e864d-5371-800c-1271-75e5607c5eb2@bytedance.com>
+Date: Tue, 11 Jul 2023 08:29:25 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1689030052.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: PING: [PATCH v2 0/5] Misc fixes for throttle
+Content-Language: en-US
+To: berto@igalia.com, qemu-devel@nongnu.org
+Cc: arei.gonglei@huawei.com, qemu-block@nongnu.org, berrange@redhat.com
+References: <20230627072431.449171-1-pizhenwei@bytedance.com>
+From: zhenwei pi <pizhenwei@bytedance.com>
+In-Reply-To: <20230627072431.449171-1-pizhenwei@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=pizhenwei@bytedance.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,32 +93,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hawkins Jiawei <yin31149@gmail.com>
+Hi,
 
-Enable SVQ with VIRTIO_NET_F_CTRL_RX_EXTRA feature.
+This series has been reviewed by Alberto, can someone review / merge this?
 
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <15ecc49975f9b8d1316ed4296879564a18abf31e.1688797728.git.yin31149@gmail.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- net/vhost-vdpa.c | 1 +
- 1 file changed, 1 insertion(+)
+On 6/27/23 15:24, zhenwei pi wrote:
+> v1 -> v2:
+> - rename 'ThrottleTimerType' to 'ThrottleType'
+> - add assertion to throttle_schedule_timer
+> 
+> Something remained:
+> - 'bool is_write' is no longer appropriate, the related functions
+>    need to use 'ThrottleType throttle' instead. To avoid changes from
+>    other subsystems in this series, do this work in a followup series
+>    after there patches apply.
+> 
+> 
+> v1:
+> - introduce enum ThrottleTimerType instead of timers[0], timer[1]...
+> - support read-only and write-only for throttle
+> - adapt related test codes
+> - cryptodev uses a write-only throttle timer
+> 
+> Zhenwei Pi (5):
+>    throttle: introduce enum ThrottleType
+>    test-throttle: use enum ThrottleType
+>    throttle: support read-only and write-only
+>    test-throttle: test read only and write only
+>    cryptodev: use NULL throttle timer cb for read direction
+> 
+>   backends/cryptodev.c       |  3 +-
+>   include/qemu/throttle.h    | 11 ++++--
+>   tests/unit/test-throttle.c | 72 ++++++++++++++++++++++++++++++++++++--
+>   util/throttle.c            | 36 +++++++++++++------
+>   4 files changed, 103 insertions(+), 19 deletions(-)
+> 
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 0c1c0760a7..9795306742 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -111,6 +111,7 @@ static const uint64_t vdpa_svq_device_features =
-     BIT_ULL(VIRTIO_NET_F_STATUS) |
-     BIT_ULL(VIRTIO_NET_F_CTRL_VQ) |
-     BIT_ULL(VIRTIO_NET_F_CTRL_RX) |
-+    BIT_ULL(VIRTIO_NET_F_CTRL_RX_EXTRA) |
-     BIT_ULL(VIRTIO_NET_F_MQ) |
-     BIT_ULL(VIRTIO_F_ANY_LAYOUT) |
-     BIT_ULL(VIRTIO_NET_F_CTRL_MAC_ADDR) |
 -- 
-MST
-
+zhenwei pi
 
