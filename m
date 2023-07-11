@@ -2,83 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09FC74F83C
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 21:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD8174F841
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 21:07:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJIf2-0003pT-IN; Tue, 11 Jul 2023 15:04:32 -0400
+	id 1qJIhn-0004tm-K7; Tue, 11 Jul 2023 15:07:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qJIer-0003oX-E7; Tue, 11 Jul 2023 15:04:24 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1qJIha-0004tN-G8; Tue, 11 Jul 2023 15:07:10 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1qJIep-0004G3-PJ; Tue, 11 Jul 2023 15:04:21 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3094910b150so6657193f8f.0; 
- Tue, 11 Jul 2023 12:04:18 -0700 (PDT)
+ id 1qJIhY-0004qr-98; Tue, 11 Jul 2023 15:07:09 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-3fbf1b82d9cso63325115e9.2; 
+ Tue, 11 Jul 2023 12:07:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689102257; x=1691694257;
+ d=gmail.com; s=20221208; t=1689102425; x=1691694425;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KcBlim7/rHIHA+sriYjBeQZC/USVo9EUaR6qmWUn6kw=;
- b=NZOorcZlrMNAqfgcqYy2AvKOgJKyAWL6r7zIaACNJYDIS2eo/Equc8z89VUeyVkJmr
- vDeD3ZXhRAVhjAQO9WhZ/Nhyx/s1Ke26WPT2qX7twfEhCSs8VQ4uuydal0k2ijewMFo4
- F67IJZYzokeMXyd3nKlYiIbhEqdONhrQ6HHWO1kdkN3H07pQtukJwVryOf4VQIKWFrN+
- cEw4CG0HM0P8d+t51yNg2uPp4JzW9bx+0rft470wmUv/yuPqsOl9FIOdjIzQYimHpQeA
- tj2jS/v6Gd2y+MXm+i7aUzgKst/r9s5rIFKd6eJiK2au3GgAoqt6NOLsTQmmqHv0IVq7
- 9HIg==
+ bh=CGJhlKXKWzfcK4ldjlHZQNpIIHqBbbxxZqJpsbQUwQA=;
+ b=gz9WDjmfLSP75xY/QBfP+Bpe7HtakcliDDprWZElOkb8mITcjjMn0vYD1w09XCpN5q
+ MYghUttRaV//DMrCRKkkrGS2zQftzAc9W2Q1ZiS+dzVDmiCK6trFauTScn+8+sBRA2np
+ 8HdwEAuFsqCn9ioBUgLw3lr3+CWRUg2kYzZ7tz51rWnS1iHeLcukOv7/Fz/hInzgtsv5
+ qDH5/mCAby4dKoY5ZVfUhKQREd7yr+cPLT8x4HnUQfEvdybmK/CJimvo12DzDHSRKGF2
+ Axymzm0wHZ+ID2MONTaAc0A3o5zJjf+Jh02eyOu64O7Pnzm10Wx8VAsGkeR+4M5Kx21o
+ ot8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689102257; x=1691694257;
+ d=1e100.net; s=20221208; t=1689102425; x=1691694425;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KcBlim7/rHIHA+sriYjBeQZC/USVo9EUaR6qmWUn6kw=;
- b=AePeymwOu+txsEOiQdYPTcdlALyZfRETQ1MbA0CuoVJsTvEXnj+tC+emti+rmXF6yI
- ruYM9isk2MzrF7vT4c7l8cirG0izM58JlcdSD8U/Fjut69ylWrfrbQQFJ3VeMwdXhm7I
- jlE1o/HC06Q54gsXzTSItj5h9vWACjcpKynDV6Yi68Vf4zMNAkKMES8yjNbYDHxZY57h
- EfXVesIWuTOlsyhJ/KiaLLmcfULheMUlKbkatsydeG9lu3RDelr7ANTPMxChueqyRU8E
- bjef3E50dBO4B9Yo37IV2f/coFAmravM4jhfd73gK/mjujs8ZK9MBtG/yWDrnTjLcTsK
- JgBg==
-X-Gm-Message-State: ABy/qLYkzlExpVF9QZFg9vy9oVQTJE2gxk50FCC9JJzOaNuzp/AsV3AW
- X3VStD8/Kd1gflWVPmtCpRTmW507LTM=
-X-Google-Smtp-Source: APBJJlHv7Fsb8SA13pLYFv6Pq7Q9BCL/s45a96FO8I2nQ6XUsm0EMAU1Y0cs9mj978EUHGXrKqoLdA==
-X-Received: by 2002:a5d:4d8e:0:b0:314:3e77:f210 with SMTP id
- b14-20020a5d4d8e000000b003143e77f210mr15619308wru.59.1689102257095; 
- Tue, 11 Jul 2023 12:04:17 -0700 (PDT)
+ bh=CGJhlKXKWzfcK4ldjlHZQNpIIHqBbbxxZqJpsbQUwQA=;
+ b=GYt9yGyK66PnobPrGG7KRCkmqovcbUCm5Cu/XYrEa4fdDBoGi3Q3OBUaRjnGBwloih
+ wBajQHogpz4Ja3PeVomYsihT3bFO3/qyxRTAWOu6jYQWLMBruZ4bQPQERVEpHpMwtAq6
+ 6N9+WAQUaQ0NHv/wxGnu2oXkKGlvVoYOKdLxDXwpYywv/zIbdXR3F2aQiDkCP2LrXDau
+ nWYEZPJfN2FXqF/qRFYDPW4c6o8DHkdFq8BzEK8gobQa60V12knadbtC3Fr82FxRsbW8
+ up1TI8rPkLfpq8XXI1QzBSEeF8AVDJJSWC1VpqM8Ku3YYObNokhpxy1iCIQATQh2KFQF
+ xxNw==
+X-Gm-Message-State: ABy/qLar4I7I5mjqm/d97FmbJG5KyRWj0MCLHcCvheHHaEop5ZQWnklh
+ efK1a9E6twQPVgvdbVqEvuc=
+X-Google-Smtp-Source: APBJJlG/70yrD3GF8tFgwmMjhSZ2DzlZDkX9/Nyv/qNtlCAOzPx67kZjEXd7ZOsT+VRVufcW7Qr/lw==
+X-Received: by 2002:a7b:ca51:0:b0:3fb:a2b6:8dfd with SMTP id
+ m17-20020a7bca51000000b003fba2b68dfdmr14025513wml.32.1689102424728; 
+ Tue, 11 Jul 2023 12:07:04 -0700 (PDT)
 Received: from [127.0.0.1] (dynamic-077-011-077-090.77.11.pool.telefonica.de.
  [77.11.77.90]) by smtp.gmail.com with ESMTPSA id
- a15-20020a5d508f000000b0031437299fafsm3014440wrt.34.2023.07.11.12.04.16
+ v10-20020a05600c470a00b003f9b3829269sm25011248wmo.2.2023.07.11.12.07.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Jul 2023 12:04:16 -0700 (PDT)
-Date: Tue, 11 Jul 2023 19:04:06 +0000
+ Tue, 11 Jul 2023 12:07:04 -0700 (PDT)
+Date: Tue, 11 Jul 2023 19:06:54 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Olaf Hering <olaf@aepfle.de>,
+To: Olaf Hering <olaf@aepfle.de>
+CC: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
  =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Kevin Wolf <kwolf@redhat.com>, Lev Kujawski <lkujaw@member.fsf.org>,
- qemu-block@nongnu.org
-CC: John Snow <jsnow@redhat.com>
+ qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
 Subject: Re: [PATCH v2] hw/ide/piix: properly initialize the BMIBA register
-In-Reply-To: <20230701174659.10246-1-olaf@aepfle.de>
+In-Reply-To: <20230711110547.20cc57f9.olaf@aepfle.de>
 References: <20230701174659.10246-1-olaf@aepfle.de>
-Message-ID: <4C8D2CE7-89BE-4BF5-9551-E1684573A61A@gmail.com>
+ <62EDA748-11A3-473F-913D-F9464335A382@gmail.com>
+ <20230703095929.6e793dcf.olaf@aepfle.de>
+ <93902CB6-7A6E-49E5-A55F-432C6B4BC00F@gmail.com>
+ <dded4d33-d64f-9369-0742-a57a1e173153@redhat.com>
+ <20230705120121.4f353ba6.olaf@aepfle.de>
+ <3FF0EBC1-F1F8-4D1D-91DC-904DB287C887@gmail.com>
+ <20230711110547.20cc57f9.olaf@aepfle.de>
+Message-ID: <1BC19F3D-BF17-4419-B3CB-C16DA7C47C8F@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,75 +104,23 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 1=2E Juli 2023 17:46:59 UTC schrieb Olaf Hering <olaf@aepfle=2Ede>:
->According to the 82371FB documentation (82371FB=2Epdf, 2=2E3=2E9=2E BMIBA=
-=E2=80=94BUS
->MASTER INTERFACE BASE ADDRESS REGISTER, April 1997), the register is
->32bit wide=2E To properly reset it to default values, all 32bit need to b=
-e
->cleared=2E Bit #0 "Resource Type Indicator (RTE)" needs to be enabled=2E
+Am 11=2E Juli 2023 09:11:33 UTC schrieb Olaf Hering <olaf@aepfle=2Ede>:
+>Wed, 05 Jul 2023 21:52:05 +0000 Bernhard Beschow <shentey@gmail=2Ecom>:
 >
->The initial change wrote just the lower 8 bit, leaving parts of the "Bus
->Master Interface Base Address" address at bit 15:4 unchanged=2E
-
-For v3 you could cut the following paragraphs from this commit message =2E=
-=2E=2E
-
+>> I wonder if we should fix this line rather than dropping it=2E
 >
->This bug went unnoticed until commit ee358e919e38 ("hw/ide/piix: Convert
->reset handler to DeviceReset")=2E After this change, piix_ide_reset is
->exercised after the "unplug" command from a Xen HVM domU, which was not
->the case prior that commit=2E This function resets the command register=
-=2E
->As a result the ata_piix driver inside the domU will see a disabled PCI
->device=2E The generic PCI code will reenable the PCI device=2E On the qem=
-u
->side, this runs pci_default_write_config/pci_update_mappings=2E Here a
->changed address is returned by pci_bar_address, this is the address
->which was truncated in piix_ide_reset=2E In case of a Xen HVM domU, the
->address changes from 0xc120 to 0xc100=2E
+>I think this needs to be fixed, just to fix the initial commit which
+>added this bug=2E This will allow backporting this oneliner=2E
 >
->While the unplug is supposed to hide the IDE disks, the changed BMIBA
->address breaks the UHCI device=2E In case the domU has an USB tablet
->configured, to recive absolute pointer coordinates for the GUI, it will
->cause a hang during device discovery of the partly discovered USB hid
->device=2E Reading the USBSTS word size register will fail=2E The access e=
-nds
->up in the QEMU piix-bmdma device, instead of the expected uhci device=2E
->Here a byte size request is expected, and a value of ~0 is returned=2E As
->a result the UCHI driver sees an error state in the register, and turns
->off the UHCI controller=2E
+>Further changes to pci_xen_ide_unplug will be done in a separate patch=2E
 
-=2E=2E=2E until here and paste them into the patch with the Xen fix=2E
+Sounds good to me=2E You've got my R-b for this patch with small changes i=
+n the commit message=2E
+
+Best regards,
+Bernhard
 
 >
->Fixes: e6a71ae327 ("Add support for 82371FB (Step A1) and Improved suppor=
-t for 82371SB (Function 1)")
 >
->Signed-off-by: Olaf Hering <olaf@aepfle=2Ede>
-
-With the changed commit message:
-
-Reviewed-by: Bernhard Beschow <shentey@gmail=2Ecom>
-
->---
-> hw/ide/piix=2Ec | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->
->diff --git a/hw/ide/piix=2Ec b/hw/ide/piix=2Ec
->index 41d60921e3=2E=2E1e346b1b1d 100644
->--- a/hw/ide/piix=2Ec
->+++ b/hw/ide/piix=2Ec
->@@ -118,7 +118,7 @@ static void piix_ide_reset(DeviceState *dev)
->     pci_set_word(pci_conf + PCI_COMMAND, 0x0000);
->     pci_set_word(pci_conf + PCI_STATUS,
->                  PCI_STATUS_DEVSEL_MEDIUM | PCI_STATUS_FAST_BACK);
->-    pci_set_byte(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
->+    pci_set_long(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
-> }
->=20
-> static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
->
->base-commit: d145c0da22cde391d8c6672d33146ce306e8bf75
->
+>Olaf
 
