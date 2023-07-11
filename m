@@ -2,51 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0F074F26D
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 16:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8844C74F26E
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 16:37:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJESK-0005ym-58; Tue, 11 Jul 2023 10:35:08 -0400
+	id 1qJEUW-0006iS-J9; Tue, 11 Jul 2023 10:37:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=TvwJ=C5=redhat.com=clg@ozlabs.org>)
- id 1qJESC-0005wj-AI; Tue, 11 Jul 2023 10:35:00 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=TvwJ=C5=redhat.com=clg@ozlabs.org>)
- id 1qJERw-0007zt-49; Tue, 11 Jul 2023 10:34:57 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4R0k0T4cy1z4wy4;
- Wed, 12 Jul 2023 00:34:33 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4R0k0R69Lyz4wy9;
- Wed, 12 Jul 2023 00:34:31 +1000 (AEST)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PATCH] s390x: Fix QEMU abort by selecting S390_FLIC_KVM
-Date: Tue, 11 Jul 2023 16:34:26 +0200
-Message-ID: <20230711143426.708978-1-clg@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJEUS-0006i9-2Z
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:37:21 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJEUQ-0000Rn-Iq
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:37:19 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-4fba1288bbdso8502101e87.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 07:37:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689086236; x=1691678236;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Ji68/Oh4J2TtNldtqxEF5x54wYyCk/SRYVelvPIkRYQ=;
+ b=gCBPi30xkmst1vgEJVxBS+Kz09jBGx9cKzqkgfFkv56mCK5WDQ7E5xMXMC63jT0got
+ O6+g4jjLyUWKDa7OyWz0Fey9Fh3THorGViKfw6mcZWbPr/wJ9Sc7Mz87PBJD/pPOkxf/
+ 7zdwo9tz3BchvnOVNKdO4d/H7nOKdVQJJ9sd2aXw9UwYBfRDqPXoPZBGyhtGgzHuCzuK
+ 0Q3vlQ4yrupgd/qGWSck5P6ilcZuDfLE2LMI2XL4VyMow0BpicaNMjdezRUfwL43J0pB
+ bVOL7Bw0BxBVymXGbbQ0fDgwkTt5L+wqxD2HMHipHRgaG1UK8cZD59dl7mR5J0jDgluK
+ 2y+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689086236; x=1691678236;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ji68/Oh4J2TtNldtqxEF5x54wYyCk/SRYVelvPIkRYQ=;
+ b=PaHhTR+ierFV5Qs/LFH7+88FaUuQNRlqSnCMic7m46na0wMW3vTiuWTalolSw26/nJ
+ yMtvBkMt6JB8yUawbzhpSQ1PfxH5Ct7xKd/TO2YUGW4kSEwN+lA7Zhia497kjoN0r/Wc
+ g9sq3wJGcg11IEwj6+qgpXcJJS5LawxM6OLHldS6wUg11pcFRZ7OoLwgyr8aGn56YPBS
+ eO02uRYMD8/3kLsGXaOqrDvn5Y09ZOlTt+/2jUuTvfV+GXPhuSLOcaUMgL82huK7d+qd
+ RVBY5zkCXh5OcNiboNXKWSm/UfuXrBhdspWxjLH05fkhU7ATbGRfckQfZhpizHOgJEZf
+ hyqg==
+X-Gm-Message-State: ABy/qLbu3S7EDD5WkG/ioADThuySy0fjslac95KmuRLRMJeG6KoCtLfY
+ 9cRGGo51kH2R3sacXzMelRxhtfBYGOMEoU80tcI=
+X-Google-Smtp-Source: APBJJlHkXcrbWuh6l/HjATNCRXhyGyW8eq5o3dHhsFOtqFXyuuQIVr2DZ88gn2lO++zuFsmo5y8e0w==
+X-Received: by 2002:a19:6503:0:b0:4f8:5713:7dd5 with SMTP id
+ z3-20020a196503000000b004f857137dd5mr13071058lfb.10.1689086236129; 
+ Tue, 11 Jul 2023 07:37:16 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.194.156])
+ by smtp.gmail.com with ESMTPSA id
+ e3-20020a056402088300b0051e06693590sm1312577edy.91.2023.07.11.07.37.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Jul 2023 07:37:15 -0700 (PDT)
+Message-ID: <f76b44f9-8852-d284-331f-5587ecbd1dcc@linaro.org>
+Date: Tue, 11 Jul 2023 16:37:13 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH v2 1/3] tests/lcitool: Generate distribution packages list
+ in JSON format
+Content-Language: en-US
+To: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
+Cc: Warner Losh <imp@bsdimp.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Ed Maste <emaste@freebsd.org>, Beraldo Leal <bleal@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Li-Wen Hsu <lwhsu@freebsd.org>, Kyle Evans <kevans@freebsd.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Erik Skultety <eskultet@redhat.com>
+References: <20230711140143.65818-1-philmd@linaro.org>
+ <20230711140143.65818-2-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230711140143.65818-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=TvwJ=C5=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,43 +100,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If QEMU is built with --without-default-devices, the s390-flic-kvm
-device is missing and QEMU aborts when started with the KVM accelerator.
-Make sure it's available by selecting S390_FLIC_KVM in Kconfig.
+On 11/7/23 16:01, Philippe Mathieu-Daudé wrote:
+> Add the generate_pkglist() helper to generate a list of packages
+> required by a distribution to build QEMU.
+> 
+> Generate the FreeBSD JSON file (based on FreeBSD 13).
+> 
+> Suggested-by: Erik Skultety <eskultet@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   tests/lcitool/refresh | 11 +++++++++++
+>   1 file changed, 11 insertions(+)
+> 
+> diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+> index b54566edcc..a5df096074 100755
+> --- a/tests/lcitool/refresh
+> +++ b/tests/lcitool/refresh
+> @@ -84,6 +84,12 @@ def generate_cirrus(target, trailer=None):
+>       generate(filename, cmd, trailer)
+>   
+>   
+> +def generate_pkglist(vm, target):
+> +    filename = Path(src_dir, "tests", "vm", vm + ".json")
+> +    cmd = lcitool_cmd + ["variables", "--format", "json", target, "qemu"]
+> +    generate(filename, cmd, None)
 
-Consequently, this also fixes an abort in tests/qtest/migration-test.
-
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/intc/Kconfig  | 1 -
- hw/s390x/Kconfig | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
-index 21441d0a0c43..97d550b06b77 100644
---- a/hw/intc/Kconfig
-+++ b/hw/intc/Kconfig
-@@ -49,7 +49,6 @@ config S390_FLIC
- 
- config S390_FLIC_KVM
-     bool
--    default y
-     depends on S390_FLIC && KVM
- 
- config OMPIC
-diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
-index 5e7d8a2bae8b..0dad184e06d2 100644
---- a/hw/s390x/Kconfig
-+++ b/hw/s390x/Kconfig
-@@ -7,6 +7,7 @@ config S390_CCW_VIRTIO
-     imply WDT_DIAG288
-     select PCI
-     select S390_FLIC
-+    select S390_FLIC_KVM
-     select SCLPCONSOLE
-     select VIRTIO_CCW
-     select MSI_NONBROKEN
--- 
-2.41.0
-
+Note since json files don't have comments, we can't have the
+"THIS IS GENERATED BY A SCRIPT" in header.
 
