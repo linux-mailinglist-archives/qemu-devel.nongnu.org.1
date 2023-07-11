@@ -2,93 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934A374E959
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 10:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B26D74E986
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 10:54:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJ91y-0002KG-J5; Tue, 11 Jul 2023 04:47:34 -0400
+	id 1qJ98U-0003XG-KI; Tue, 11 Jul 2023 04:54:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qJ91w-0002Jt-QZ
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:47:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qJ91p-0006Hv-Dh
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:47:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689065244;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=a0jks4zyzUK5FTWiUbIYHZE5X6iLF/reQlhpFh/ub0s=;
- b=VnmksycEZU0EjLKjpESLKXyalOPuQpcyQq/+HOZLTGfXocfn1DY8qNH0m+rSEKrQ7nnoRx
- 6IOo1PFanfYQT8VAYKRFfQCVOBtaepJOxn9CqfsJt3w7u9xY+i5i0fqNo5zbIsJEa0YLXU
- 5Zhd2PrpVMWILA7Ap9qXGC2qeSztvF8=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-350-DdOT2RGwPmyvJH_FFbfN2Q-1; Tue, 11 Jul 2023 04:47:22 -0400
-X-MC-Unique: DdOT2RGwPmyvJH_FFbfN2Q-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-4fb76659d54so4769677e87.1
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 01:47:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJ98S-0003Wp-EC
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:54:16 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJ98P-0007SK-SE
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:54:16 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3142970df44so5214958f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 01:54:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689065652; x=1691657652;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7fnnFNWYr3hPr5DNLTnD5gyE0kFtGqKbSLcOTRKOYOs=;
+ b=IylcwWqOt1ARVNpLhZwJJFjFNjZ3Zebg/lcfWlcfHigvba+QyFCdEXtDAkn9NtDcCu
+ Ti/Ko7Sf3xNFe2x06ScYfJrlEcHiZITt1r3dNCi7NU4NhC9oAr2o6vIZq/CQKQPoBC+L
+ UfNnp19rBbiRdq+nZaqq2fF87LoybarKdGYJHNSQJS52gYpo3lx6mcm6x+eKtYjqQ/Xr
+ it1W+TfeLUlN0pCoG4IIiCq7L1FDAIbTwAl2onBNJInW2tQ/L1L2wz2CdlSOYUoYo3QL
+ vM0mBYFitXCzDdaN0PrY62zceWGJvpJvABSD6MrhN6oGfxN7DUqVBR9y+LNgT4yTIZXd
+ CZpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689065241; x=1691657241;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=a0jks4zyzUK5FTWiUbIYHZE5X6iLF/reQlhpFh/ub0s=;
- b=CHLYBBHHMYBmrUPe9H7dKCuXiImZcNYIRtKcCbbh2pWlYzBqPQOHuP1AFjqdcv22SF
- Ypmh5NJXi559JfMAH6XwigiH/2il8AZpjrE3BpiNvyzB2pikg9DpwXJW824yL3RNGpvX
- NjRT1SHV+zsDLTRCCdVpvCJIBwJeDaQ+OVJ1X+bcMK2tL4N0JTgCL/w1IZyGgHm9DkIp
- kWRR4H6ic9PQI/6HDqXsZVgGMCwJlGYbHDBgvyTCpOWoWh0hxZtsBRq/QPyigfnMtItU
- Lr0X/YPinBTraXnBpmuJrLGxBWoiMpC5Hmv8IYqX1AoljHzUDf31BWvmX1ggrje6bf3V
- qAdQ==
-X-Gm-Message-State: ABy/qLaH0mV+VmVVmu+EPtW4lpsW6cX/GRFD6xeSQoKz6/ZE6SADlybD
- 44scEcw1oHbpIaG4fcZPtEUrPgCFFEPv2xYvpc3bUJpcV4bziz7fjL/QPi2BU/IUYi6kW6AyFkY
- RymKm46HoM+RXAl4=
-X-Received: by 2002:a05:6512:3157:b0:4f8:7617:6445 with SMTP id
- s23-20020a056512315700b004f876176445mr11589743lfi.48.1689065241191; 
- Tue, 11 Jul 2023 01:47:21 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlE8GVW/09hQ83VODeRdSkWd4WrcNuaTeg4xDUBbeSaKzT0lSMSTDoODT6XIrIj64kX8srqAQw==
-X-Received: by 2002:a05:6512:3157:b0:4f8:7617:6445 with SMTP id
- s23-20020a056512315700b004f876176445mr11589724lfi.48.1689065240821; 
- Tue, 11 Jul 2023 01:47:20 -0700 (PDT)
-Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- v15-20020a1cf70f000000b003fa8158135esm12359147wmh.11.2023.07.11.01.47.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jul 2023 01:47:20 -0700 (PDT)
-Date: Tue, 11 Jul 2023 04:47:17 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
- Gavin Shan <gshan@redhat.com>, Mario Casquero <mcasquer@redhat.com>
-Subject: Re: [PATCH v3 3/7] arm/virt: Use virtio-md-pci (un)plug functions
-Message-ID: <20230711044647-mutt-send-email-mst@kernel.org>
-References: <20230710100714.228867-1-david@redhat.com>
- <20230710100714.228867-4-david@redhat.com>
- <20230710173933-mutt-send-email-mst@kernel.org>
- <b9351bf7-cabd-784c-bebc-a18a9b3f4bc1@redhat.com>
+ d=1e100.net; s=20221208; t=1689065652; x=1691657652;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7fnnFNWYr3hPr5DNLTnD5gyE0kFtGqKbSLcOTRKOYOs=;
+ b=V57vvOKmmUr4iprRKSSjBjlo3CQxR6NDOBsN0XlartbMnoRD42azRBjpchhQ0dW+U1
+ xQg2vMALQdnzVAtw+ZmyaL/Exi0dCQzW1FqZVdQC8/+6m+iujEDBdoVUsZvbEk2agPde
+ IpoIs+fpKUzP4OWLqWdgM/7JIIQEto0sFv4OJPcNWZa+o49noZNamy1I3kfTQbCHvfey
+ RmwOAYDGQ43klRxizNnCqm7j6bKmsHD/vaaaiMbfHpHxmybi3/h12MrVBdgw/FAA6wxT
+ c42GEejclgBvVAqKH23ceZZlwF6/KupYGZ/xKjTvDdB6EGAFtCdSocqxpoRMyRj7BsMi
+ 6CXg==
+X-Gm-Message-State: ABy/qLauDuRYTaSNl/5umF2zQrnVVS5DpWmwv9vto003HoImgShXQDyN
+ I8M4mdNL6AhCu3nJN6A8QGBRTS+Nq6PID6Q3WFNlcw==
+X-Google-Smtp-Source: APBJJlFuv0jQosv24sznVaXCF0cEJeyVBnHdR8kxYOoVKCH3cbCJ+dQK1a2o8Xif/vi1F/pglfDzIQ==
+X-Received: by 2002:a5d:51cc:0:b0:314:121d:8cbf with SMTP id
+ n12-20020a5d51cc000000b00314121d8cbfmr9166498wrv.25.1689065651836; 
+ Tue, 11 Jul 2023 01:54:11 -0700 (PDT)
+Received: from m1x-phil.lan (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
+ [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
+ t12-20020a5d6a4c000000b00314329f7d8asm1658986wrw.29.2023.07.11.01.54.10
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 11 Jul 2023 01:54:11 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [hotfix PATCH-for-8.1] meson: Fix cross-building for RISCV host
+Date: Tue, 11 Jul 2023 10:54:09 +0200
+Message-Id: <20230711085409.53309-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b9351bf7-cabd-784c-bebc-a18a9b3f4bc1@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,40 +91,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 11, 2023 at 10:32:31AM +0200, David Hildenbrand wrote:
-> On 10.07.23 23:40, Michael S. Tsirkin wrote:
-> > > @@ -2855,12 +2796,11 @@ static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
-> > >                                        SYS_BUS_DEVICE(dev));
-> > >           }
-> > >       }
-> > > +
-> > >       if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-> > >           virt_memory_plug(hotplug_dev, dev, errp);
-> > > -    }
-> > > -
-> > > -    if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MEM_PCI)) {
-> > > -        virt_virtio_md_pci_plug(hotplug_dev, dev, errp);
-> > > +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-> > > +        virtio_md_pci_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-> > >       }
-> > >       if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-> > 
-> > 
-> > How is this supposed to link if virtio-md is disabled at compile time?
-> > 
-> 
-> Good point.
-> 
-> The old code unconditionally enabled MEM_DEVICE, so we never required subs
-> for that.
-> 
-> We either need stubs or have to wrap this in #ifdef.
-> 
-> Stubs sound cleaner.
+While when building on native Linux the host architecture
+is reported as "riscv32" or "riscv64", when cross-compiling
+it is detected as "riscv". Meson handles the cross-detection
+but displays a warning:
 
-That is what we usually do, yes.
+  WARNING: Unknown CPU family riscv, please report this at https://github.com/mesonbuild/meson/issues/new
 
+Commit 278c1bcef5 was tested on native host but not under
+cross environment, and now we get there [*]:
+
+  ../meson.build:684:6: ERROR: Problem encountered: Unsupported CPU riscv, try --enable-tcg-interpreter
+
+Instead of:
+
+  Found pkg-config: /usr/bin/riscv64-linux-gnu-pkg-config (1.8.1)
+
+As a kludge, re-introduce "riscv" in the supported_cpus[] array.
+
+Fixes: 278c1bcef5 ("target/riscv: Only unify 'riscv32/64' -> 'riscv' for host cpu in meson")
+Reported-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meson.build b/meson.build
+index 5fcdb37a71..58e35febb9 100644
+--- a/meson.build
++++ b/meson.build
+@@ -55,7 +55,7 @@ qapi_trace_events = []
+ 
+ bsd_oses = ['gnu/kfreebsd', 'freebsd', 'netbsd', 'openbsd', 'dragonfly', 'darwin']
+ supported_oses = ['windows', 'freebsd', 'netbsd', 'openbsd', 'darwin', 'sunos', 'linux']
+-supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv32', 'riscv64', 'x86', 'x86_64',
++supported_cpus = ['ppc', 'ppc64', 's390x', 'riscv', 'riscv32', 'riscv64', 'x86', 'x86_64',
+   'arm', 'aarch64', 'loongarch64', 'mips', 'mips64', 'sparc64']
+ 
+ cpu = host_machine.cpu_family()
 -- 
-MST
+2.38.1
 
 
