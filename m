@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A953974F5B3
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 18:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3386774F5B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 18:41:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJGOd-0000HR-VZ; Tue, 11 Jul 2023 12:39:27 -0400
+	id 1qJGQ3-0000yw-PF; Tue, 11 Jul 2023 12:40:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJGOc-0000GI-5x
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:39:26 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1qJGQ0-0000yY-Ea
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:40:52 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJGOa-0003XQ-Jg
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:39:25 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-51e590a8d0bso3219345a12.2
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 09:39:24 -0700 (PDT)
+ id 1qJGPy-0003y5-SG
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:40:52 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-51e429e1eabso5693909a12.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 09:40:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689093563; x=1691685563;
+ d=linaro.org; s=google; t=1689093649; x=1691685649;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Q304/FRQeotYRiGDNsMplK+tOo7tXr4cUQyn27ARwTE=;
- b=KV6VKRhdEH6cWzRFjEOqGh6MJ6nFoGuHVAdi3NPSWeh/ELtU0isbwMBcnYLEpzmxIx
- k2r2pBi7xkFY5+Ku4RD6XtFVIDTk/XTWRHfi9RgR4qr7l9oGGLY9MoKFX50FivnxE4fT
- vZw41dlKA/edrxbknA/l9+rykKOVraVcDZP30tvrfqXn0GFFoX9i/HpLiqkBwtdeG8aQ
- jcJYmbdfpK2UsK2hJ2/dOFIOfx5Lg03POlU1OAxkOfxvrHSSGqTWRjXbUQV6gs4JIF7Y
- /ldI2efHl41AB4FIrYBIVgH5N179pymAsbaxV30z9/PWORKH3ED+CHtXQoxYPauWEFf+
- /ksg==
+ bh=13nQg2vhp8ED9+RDZ67JJ784+Le9sQq8Ht2lQnNXXG0=;
+ b=wGpJRClGPK2gFVFAmm62SRbGa2b68looD0D2c+g2ahzb5IDFLeTKdA8iApEzmy62Kt
+ 6Qxeqw3uA9xA73fLgxMck/HONw/SHM5qfrS6AnMxId4T3H4grVbTDsWffgPMGocD4OHV
+ Tdi87QybEgtZpt5faQ1Ekbhalh+GfOlF/qZ7mpZj4n6Gf+aUVBLt4v5KS2/G00Knk24y
+ RAvytoFPWjpt+SZzuq9yCddtiRKAFmq66Qm5ySTQT8UVeoQqr0NESv5qtKm0eq2qPLYr
+ 7HV5+jbILXXorSoBNZzFxGvzVDsa13UT3eaYCjWyVYAwecQYSVZLVoc+3iLkgcdr4zn7
+ a7bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689093563; x=1691685563;
+ d=1e100.net; s=20221208; t=1689093649; x=1691685649;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Q304/FRQeotYRiGDNsMplK+tOo7tXr4cUQyn27ARwTE=;
- b=kZNohPnCPt8HMF9AptGwD7Hwsyb71PCj1jVk2/839jDkDXiJ1yzq+Jd2V2RKS2lkPY
- kN2s1pjdCFOCWtEiJPZkz/v+pX/jBzNQG4L6ShORpJdcBcuogKFH/sLCYzi3LZkOEcdl
- HQhEnXjNLfNJ/hny+C1k9slngRl3/6gDjBz9uGmlWkMa5mlB40Vwu1z/lpweIhkwHclF
- 2XAi+WHX0zwkMQSWUJk0S9ZcvtkXs27ESBUWULZ/tWgDLJRtf+gyDfE8vJpKc3kNnnME
- 8mc/HrjefMgZxu1IiPZ/5OXqWw7kona+Uqr6EMdANjt1oG7gg76N7gXRXOQTE5hOgxTo
- y89w==
-X-Gm-Message-State: ABy/qLYuDYhfdVEiDxRqhEvBU8IMINK+ys8E8pxPnKsHc4TPyxHwNOSI
- HP/ypn8t8zEvwTiM+pVuYJI+9FKdN/pVxUNaUVfErw==
-X-Google-Smtp-Source: APBJJlEh/LOGZaUGnKLzgh4VMy7MdaUec4Wj883Brlam94L8k/d6cVmCbToFInxEhKxn/vaumPyTIcfMZ3B7/qUQU3A=
-X-Received: by 2002:aa7:cf08:0:b0:51b:d567:cfed with SMTP id
- a8-20020aa7cf08000000b0051bd567cfedmr18113133edy.5.1689093562926; Tue, 11 Jul
- 2023 09:39:22 -0700 (PDT)
+ bh=13nQg2vhp8ED9+RDZ67JJ784+Le9sQq8Ht2lQnNXXG0=;
+ b=kZt6+VGRWWDq4pozH5KhdyUFnD7jjbYKBCg+brKyNgaLOBnhaZvllED4xQRCo7kZ8Y
+ 7S4YMb25IPXEQriJvB9Kmp6O/xpO8uLutc0931bLp3L6x+7rJAYK52c+3mRd8jyN7pkF
+ eOq44HiCKIjNk+A6Q8bQCMtcWe7A7/jKgLw490MhndqT1eOGt64CeMgD3bu+Ei2gG41c
+ QxAFME5vbn2p6aby7j5t2YWtZa8OG/fDhobxcjihbk9SQUXKvVai2rFz2d77bfu1Z/Hi
+ yOozrzwwj7qve0DI1M/u61rNiLzwHBZLHDKVh8VB7+UloabEufRjRSF7vSo1Rtuz4eeH
+ G0pA==
+X-Gm-Message-State: ABy/qLaOZOg25A4MK7j0DcVPaVyvZlIcir4+zrQCLqBId0+CNWvTvqyo
+ oYBYElj/CIaKMxr+w1a6CUfV0Vcc3jg9Q6nhBLGKcQ==
+X-Google-Smtp-Source: APBJJlFXmLSc5el0jVZk3G1NN/IyKP6w+gIqwwFtUhNHhvOsSpJzTpDE+Ep9F1kyn+Oqa0bh40xm4okvAfKr+Qrab7A=
+X-Received: by 2002:aa7:d741:0:b0:51e:2664:f695 with SMTP id
+ a1-20020aa7d741000000b0051e2664f695mr15576542eds.23.1689093649325; Tue, 11
+ Jul 2023 09:40:49 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230626153945.76180-1-richard.henderson@linaro.org>
- <20230626153945.76180-3-richard.henderson@linaro.org>
-In-Reply-To: <20230626153945.76180-3-richard.henderson@linaro.org>
+ <20230626153945.76180-7-richard.henderson@linaro.org>
+In-Reply-To: <20230626153945.76180-7-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 11 Jul 2023 17:39:12 +0100
-Message-ID: <CAFEAcA9EEqXPa7xoi3rXduBsGUj5wn1aXjBSBHrmdxVPq-aPEQ@mail.gmail.com>
-Subject: Re: [PULL 02/22] accel/tcg/translate-all.c: Widen pc and cs_base
+Date: Tue, 11 Jul 2023 17:40:38 +0100
+Message-ID: <CAFEAcA-VvS_Of9mJNNic3xdrMjEbT6bkNpsyYMdGUOr4gUy_fg@mail.gmail.com>
+Subject: Re: [PULL 06/22] accel/tcg/cpu-exec.c: Widen pc to vaddr
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,33 +85,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 26 Jun 2023 at 16:40, Richard Henderson
+On Mon, 26 Jun 2023 at 16:48, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
 > From: Anton Johansson <anjo@rev.ng>
 >
 > Signed-off-by: Anton Johansson <anjo@rev.ng>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-Id: <20230621135633.1649-3-anjo@rev.ng>
+> Message-Id: <20230621135633.1649-7-anjo@rev.ng>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
 
-> @@ -634,10 +634,10 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
->      cpu->cflags_next_tb = curr_cflags(cpu) | CF_MEMI_ONLY | CF_LAST_IO | n;
->
->      if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
-> -        target_ulong pc = log_pc(cpu, tb);
-> +        vaddr pc = log_pc(cpu, tb);
->          if (qemu_log_in_addr_range(pc)) {
-> -            qemu_log("cpu_io_recompile: rewound execution of TB to "
-> -                     TARGET_FMT_lx "\n", pc);
-> +            qemu_log("cpu_io_recompile: rewound execution of TB to %"
-> +                     VADDR_PRIx "\n", pc);
 
-TARGET_FMT_lx includes a width specifier so the value is
-left-zero-padded to the appropriate width (depending
-on the size of the PC on the target). VADDR_PRIx does
-not zero-pad. Intentional change?
+> -static void log_cpu_exec(target_ulong pc, CPUState *cpu,
+> +static void log_cpu_exec(vaddr pc, CPUState *cpu,
+>                           const TranslationBlock *tb)
+>  {
+>      if (qemu_log_in_addr_range(pc)) {
+>          qemu_log_mask(CPU_LOG_EXEC,
+>                        "Trace %d: %p [%08" PRIx64
+> -                      "/" TARGET_FMT_lx "/%08x/%08x] %s\n",
+> +                      "/%" VADDR_PRIx "/%08x/%08x] %s\n",
+>                        cpu->cpu_index, tb->tc.ptr, tb->cs_base, pc,
+>                        tb->flags, tb->cflags, lookup_symbol(pc));
+
+This again has lost the zero-padding. I noticed this one because
+I have a workflow where I post-process these log files to
+extract the executed PC values.
+
+We've also lost the "PC is padded to the appropriate size
+depending on whether this is a 32-bit or 64-bit guest CPU",
+which is a bit of a shame.
 
 thanks
 -- PMM
