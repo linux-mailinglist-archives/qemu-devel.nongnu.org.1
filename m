@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1165774F102
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 16:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D3974F104
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 16:03:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJDwM-00032T-77; Tue, 11 Jul 2023 10:02:06 -0400
+	id 1qJDwR-00033f-Ry; Tue, 11 Jul 2023 10:02:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJDwL-00032K-21
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:02:05 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJDwO-00033E-Nu
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:02:08 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJDwF-000824-8e
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:02:04 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-99384a80af7so663339166b.2
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 07:01:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJDwG-00083B-L7
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:02:08 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-991f956fb5aso664514066b.0
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 07:02:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689084113; x=1691676113;
+ d=linaro.org; s=google; t=1689084119; x=1691676119;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LsVbQDzTSwp+23NIUM9Hpbj8QGWieQ9A3lfiJDyMzDQ=;
- b=hl0U7FqdHFvQatIk6gV4ujDSFDkmcCg7wWRJ0losznKMW6BVtaUtGyF2Fp+10ZzHMZ
- FvJDFU+73ZRhS8kO6xXWHXeQclQ30bDHPBoQcf4lPOqc+xplG1w0Las9KwmG8YxuBBg9
- CKcMlI11//4xA2W65GiRI6gxCcjwl+qSZb5PJPSLJWOh0osdYCg3GaO4M9lfzwTnQdA3
- GZCv9qycuZTV+MadJfbl0yO9NJGm5MQ7G3wmI71R6EEw5Wq+yU9Pa3EnQNIT6ejfcbAe
- NwfbyPEd15X687B83U+ZKLhJUb358td7H+Wdnke49cWVnACgBTJpfLz5wRm5kSuAKkqp
- Ik4A==
+ bh=w6XJhuOMcFFfDpDirnHeiG77aGS9ai0iI4+kwtvURXQ=;
+ b=TXCtY3rWF5Lb+NBKB5eUj7K/dpSFaV3GPM/BVt/7B0Nnljv6r7d88b3lyRC3FDMX6Y
+ i6V4zupPVY0MSWC+QLQvk+fCwlCR9K0w1UjES0B7VPG3vfpham7HVWbPKfevP4rwl+HK
+ yBp6DIDjh6qJCg6bspgAYLa0fw+J4SLautLTvGzZ6CYoSRTyEYZcHrp76jqEtkZHY46U
+ qmoVO/M9OY25Kn4qpC833yV5MhCEdUXPzPDCKGOZtkAu/9SPdz3K4jFxLNsjuU3HOmHv
+ TXGXuCH7hohYwuvlOxfOVOaMh00EjAYkM1R5E+QE7WC4FGQO3uN+n2OZWd6L8/VDWHtv
+ 48Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689084113; x=1691676113;
+ d=1e100.net; s=20221208; t=1689084119; x=1691676119;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LsVbQDzTSwp+23NIUM9Hpbj8QGWieQ9A3lfiJDyMzDQ=;
- b=EcDJDGIvuG4bnS5IO/Golf8t8AM4Iz+kqZ3+bUO23Sf11GpICZ9j/T+vjDePi0DhmK
- Y4U9V1C3pkRjxMsmPtgC7268Ue7sVzYCdZzNKGjgHZls1C0ZXXC0D11gX0v17FSnPj0a
- 3ckojqDp9EjukYVNwPcR+/x26+gkL5sMUqa3oRoKrYJ3mA0De6y6RoS8VsL/Z/qrgSXG
- qRQHZEn4oJN0nT/tUDlQ5EN36NFLbZJZw5+5V+vdnYqoMTUu59/Dr22uvzVwG8ptY9Qp
- 75b24mvPirAjRjF4vKdNtPqc8QZDBNplf6dyauE8kcMB8YoZWngwpZSnQXo/aEZESrsK
- ztYA==
-X-Gm-Message-State: ABy/qLYK54O3y/tVKEbpP+hcQ34qWEMfuClOgMzghqWobYD2A2MgoXlt
- ZfhIELpRg+6ObmjC3kOmfZb4exNqu9KoOrTMhHY=
-X-Google-Smtp-Source: APBJJlFnUnKs0M2GY7UQ54z06PwCM5U8nXM78V+2YZ9DYDkj3Jhp9FVeTpYa+H7haPgorPCtKey8Ug==
-X-Received: by 2002:a17:906:51cd:b0:993:d6e8:2386 with SMTP id
- v13-20020a17090651cd00b00993d6e82386mr12185713ejk.16.1689084112929; 
- Tue, 11 Jul 2023 07:01:52 -0700 (PDT)
+ bh=w6XJhuOMcFFfDpDirnHeiG77aGS9ai0iI4+kwtvURXQ=;
+ b=JLeccSm1MX1DvHA6hJ5Yvo1G7gSAvX8dkPYOiZjQZ+Hw7ck+ttG+bFvqGKKIBkyH18
+ 7nqCiJAtiQbgwfaLyepnGWgvH78xobX+BzyG+l8ungeV0JnvfelQa/tXSP7T4upatWMG
+ 5n9XSqkYtq713JwEfeQH4gLu1Gq+hYLUoEed1TSeCb39Kr9nay4XQzPF4ku3zXhcY7CU
+ HFS4hTcBljclRtYcex1ZrjtoMvCdo0LEniKteFHX4Fp+hJQKFg3hNzdW0CFRh6QqqNxm
+ aQ553iRvpIyU+RPHW994KRlZYQ/LKmrfx3citl7vEZJVMG2nZyrwyVBc8UNpzi613zQa
+ zBfg==
+X-Gm-Message-State: ABy/qLZ83flIoIhEubUjJE+fneMSzJh7r9Qm7bpx66gnx68o3q51Beyy
+ EYKovaiYY2AZsf41nPZ6tJYe4Z9yrZqB5/kSFLc=
+X-Google-Smtp-Source: APBJJlFCZmblqeUUfSnvb9aMNFiUkxDHa+uWVqofJ7JUdwEZOiqoZLQT8zYg6Rf1Jdi1LxKkzWcQQA==
+X-Received: by 2002:a17:906:253:b0:993:f349:c98c with SMTP id
+ 19-20020a170906025300b00993f349c98cmr10315655ejl.4.1689084118784; 
+ Tue, 11 Jul 2023 07:01:58 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.194.156])
  by smtp.gmail.com with ESMTPSA id
- c3-20020a17090603c300b009931baa0d44sm1229137eja.140.2023.07.11.07.01.51
+ e17-20020a1709062c1100b009930308425csm1214889ejh.31.2023.07.11.07.01.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 11 Jul 2023 07:01:52 -0700 (PDT)
+ Tue, 11 Jul 2023 07:01:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Thomas Huth <thuth@redhat.com>
@@ -65,18 +65,18 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Li-Wen Hsu <lwhsu@freebsd.org>, Kyle Evans <kevans@freebsd.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Erik Skultety <eskultet@redhat.com>
-Subject: [PATCH v2 1/3] tests/lcitool: Generate distribution packages list in
- JSON format
-Date: Tue, 11 Jul 2023 16:01:41 +0200
-Message-Id: <20230711140143.65818-2-philmd@linaro.org>
+Subject: [PATCH v2 2/3] tests/vm: Introduce
+ get_qemu_packages_from_lcitool_json() helper
+Date: Tue, 11 Jul 2023 16:01:42 +0200
+Message-Id: <20230711140143.65818-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230711140143.65818-1-philmd@linaro.org>
 References: <20230711140143.65818-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,46 +99,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the generate_pkglist() helper to generate a list of packages
-required by a distribution to build QEMU.
+Add the get_qemu_packages_from_lcitool_json() helper which return
+such package list from a lcitool env var file in JSON format.
 
-Generate the FreeBSD JSON file (based on FreeBSD 13).
-
-Suggested-by: Erik Skultety <eskultet@redhat.com>
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/lcitool/refresh | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tests/vm/Makefile.include | 4 ++++
+ tests/vm/basevm.py        | 9 +++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
-index b54566edcc..a5df096074 100755
---- a/tests/lcitool/refresh
-+++ b/tests/lcitool/refresh
-@@ -84,6 +84,12 @@ def generate_cirrus(target, trailer=None):
-     generate(filename, cmd, trailer)
+diff --git a/tests/vm/Makefile.include b/tests/vm/Makefile.include
+index c2a8ca1c17..b021b344b5 100644
+--- a/tests/vm/Makefile.include
++++ b/tests/vm/Makefile.include
+@@ -106,6 +106,10 @@ $(IMAGES_DIR)/%.img:	$(SRC_PATH)/tests/vm/% \
+ 		--build-image $@, \
+ 		"  VM-IMAGE $*")
  
++$(SRC_PATH)/tests/vm/%.json:
++	$(call quiet-command, \
++		make lcitool-refresh)
++
+ # Build in VM $(IMAGE)
+ vm-build-%: $(IMAGES_DIR)/%.img $(VM_VENV)
+ 	$(call quiet-command, \
+diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
+index 23229e23d1..cc4cc0a973 100644
+--- a/tests/vm/basevm.py
++++ b/tests/vm/basevm.py
+@@ -27,6 +27,7 @@
+ import multiprocessing
+ import traceback
+ import shlex
++import json
  
-+def generate_pkglist(vm, target):
-+    filename = Path(src_dir, "tests", "vm", vm + ".json")
-+    cmd = lcitool_cmd + ["variables", "--format", "json", target, "qemu"]
-+    generate(filename, cmd, None)
+ from qemu.machine import QEMUMachine
+ from qemu.utils import get_info_usernet_hostfwd_port, kvm_available
+@@ -501,6 +502,14 @@ def gen_cloud_init_iso(self):
+                               stderr=self._stdout)
+         return os.path.join(cidir, "cloud-init.iso")
+ 
++    def get_qemu_packages_from_lcitool_json(self, json_path=None):
++        """Parse a lcitool variables json file and return the PKGS list."""
++        if json_path is None:
++            json_path = os.path.join(os.path.dirname(__file__), self.name + ".json")
++        with open(json_path, "r") as fh:
++            return json.load(fh)["pkgs"]
 +
 +
- # Netmap still needs to be manually built as it is yet to be packaged
- # into a distro. We also add cscope and gtags which are used in the CI
- # test
-@@ -191,6 +197,11 @@ try:
-     generate_cirrus("freebsd-13")
-     generate_cirrus("macos-12")
- 
-+    #
-+    # VM packages lists
-+    #
-+    generate_pkglist("freebsd", "freebsd-13")
-+
-     sys.exit(0)
- except Exception as ex:
-     print(str(ex), file=sys.stderr)
+ def get_qemu_path(arch, build_path=None):
+     """Fetch the path to the qemu binary."""
+     # If QEMU environment variable set, it takes precedence
 -- 
 2.38.1
 
