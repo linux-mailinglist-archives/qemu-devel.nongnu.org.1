@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0119E74EBBC
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 12:32:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C76374EC38
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 13:05:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJAeM-0002ep-A2; Tue, 11 Jul 2023 06:31:18 -0400
+	id 1qJBAP-00074c-Rw; Tue, 11 Jul 2023 07:04:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qJAeD-0002e3-4G; Tue, 11 Jul 2023 06:31:09 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qJAeB-00071E-If; Tue, 11 Jul 2023 06:31:08 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1b9d80e33fbso12840875ad.0; 
- Tue, 11 Jul 2023 03:31:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689071465; x=1691663465;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Z2oAf2Qhh2TrdXmZjGFPMLFQej/8J7W2ImL9J5i/284=;
- b=gf9qh8TRHgpIXmhIEXZD0K6QwxsoC9FT31zNGhL2yTeh2SSxjDJ2Z1JMnsxCt/aOdL
- AL9uJWGXz62l27WEa9Y1wg8rWlQjzjsZRgYfNlQURi+Rb94SlKAWfGQv3aDDFfCpXuE2
- RJ6o7IYG++M9GPIDm9AIBUTyJZM14Cvkavi1GgHfwpePWiFZ57isvObX5wYulcnVffMo
- ldNYTugzVXgegt55tpsMqTqZl18rNmRwWId/Yala6szYWxhkjsmamtYCaWsW0/xD8aFt
- e+RASI19p6IyQk5JbiL1G51za/J1ocz8i4vL5/aVa8y49B0pymoteOMer+FUku7NqoPl
- LzAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689071465; x=1691663465;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Z2oAf2Qhh2TrdXmZjGFPMLFQej/8J7W2ImL9J5i/284=;
- b=laqv6YlzL+8upbhPaaFztxC1GckyxTxYh4TntyrdXgnxwka88WnibjVakSTDvelZVY
- B4TUpfX9ta4hmsL6MrtmtN6NhKc3W2utoo4XuYdU8IAowTfaf+TM4FfTlNdg7lxx++0B
- 1sqIutFC1U8FQ/j+TjtcNhA6bRvi+Q1Px805LdoXvFaHOvZemYT3H5OKE/f+5rqggjBo
- fKhqERCf9p0zCj4iBaKSDv1OhsrBmHeo9mHWvRdWqIDw8n+7ChjBS4fywdigrx2OLVTm
- FUMrwl76/d+AdsQtwXJegCvtFb7f0BwVEvRcpg081RbK5b4LoGClQ3z0QJNTHLTZMjON
- Uxig==
-X-Gm-Message-State: ABy/qLaKn1fPdbTBzwFtIMkXJu69/7o3aYV6m+0mauixB64sk64kIBkV
- sRc/0+vMyiLJcp1Unk6QMct0xGTD7n6Q5g==
-X-Google-Smtp-Source: APBJJlHJtqbatx7ZT5VGWPA+QQLeg6CG1HdBWNal+C7M2L8a1NcALGvQwabG8luyc/SOlc/4cBv/Uw==
-X-Received: by 2002:a17:902:cec3:b0:1b8:89fd:6213 with SMTP id
- d3-20020a170902cec300b001b889fd6213mr12408716plg.35.1689071464813; 
- Tue, 11 Jul 2023 03:31:04 -0700 (PDT)
-Received: from [192.168.0.62] ([218.147.112.168])
- by smtp.gmail.com with ESMTPSA id
- i5-20020a1709026ac500b001b8918da8d1sm1541294plt.80.2023.07.11.03.31.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Jul 2023 03:31:04 -0700 (PDT)
-Message-ID: <0e1a269c-0834-7255-1ded-0d37bddd1976@gmail.com>
-Date: Tue, 11 Jul 2023 19:31:02 +0900
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1qJBAJ-00073w-Q4; Tue, 11 Jul 2023 07:04:20 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1qJBAH-0007wm-R5; Tue, 11 Jul 2023 07:04:19 -0400
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36BAbgLU010960; Tue, 11 Jul 2023 11:04:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding : content-type; s=qcppdkim1;
+ bh=mDhxjq/QmC1z2rGY+oxAtuh2JkMsBXRXmAH9078XYzs=;
+ b=mcFkaPW7BjW0lmZ2GIOe79m4N0OtSIekO2Xawf67l1vjW1sOU8zCkIC+35rvQWoC8v/5
+ iWYxb4VJ04T8F1CiZTOkk322TS0R8HNetNCbDS+wEJnydg9uGrHml2NhRAAFtnbQ2/8M
+ Mj9UbBYDf5CiY2/1er8uXLVNN1jxo+BUJaS+v/oBI22IpiZBGMLpUnLo43G0HTpAV4LT
+ FnX8s6c/yaGfxvL2SAIyB9xsRTD0fh2HSiLPE0wz1uEMJyDnplT+V5IUosLDkRgtijd/
+ NdYXFgPPPBnM+VOKga2Rqwb2lJenWvbAJh9dvuPp88J730y/QE04Lf/O/qUkWw38qPTO 8g== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rs459g6hy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 Jul 2023 11:04:12 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
+ [10.47.209.196])
+ by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36BB49du003609
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 11 Jul 2023 11:04:10 GMT
+Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Tue, 11 Jul 2023 04:03:53 -0700
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+To: <npiggin@gmail.com>
+CC: <alex.bennee@linaro.org>, <fbarrat@linux.ibm.com>, <qemu-devel@nongnu.org>,
+ <qemu-stable@nongnu.org>, <quic_mathbern@quicinc.com>
+Subject: Re: [PATCH] gdbstub: Fix client Ctrl-C handling
+Date: Tue, 11 Jul 2023 08:03:43 -0300
+Message-ID: <a18e346fc0e38f1014f5484e0b1ef27a7bc8cb41.1689073223.git.quic_mathbern@quicinc.com>
+X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20230711085903.304496-1-npiggin@gmail.com>
+References: <20230711085903.304496-1-npiggin@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: PING: [PATCH v4 0/3] hw/ufs: Add Universal Flash Storage (UFS) support
-To: qemu-devel@nongnu.org
-Cc: fam@euphon.net, hreitz@redhat.com, k.jensen@samsung.com,
- kwolf@redhat.com, pbonzini@redhat.com, qemu-block@nongnu.org,
- stefanha@redhat.com, berrange@redhat.com, marcandre.lureau@redhat.com,
- marcel.apfelbaum@gmail.com, mst@redhat.com, philmd@linaro.org,
- thuth@redhat.com
-References: <cover.1688459061.git.jeuk20.kim@gmail.com>
-From: Jeuk Kim <jeuk20.kim@gmail.com>
-In-Reply-To: <cover.1688459061.git.jeuk20.kim@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x633.google.com
+Content-Type: text/plain
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: RKnAF7Xt7Csx42ruYRrbkxksPZMIysrV
+X-Proofpoint-GUID: RKnAF7Xt7Csx42ruYRrbkxksPZMIysrV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-11_05,2023-07-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=589
+ priorityscore=1501 impostorscore=0 spamscore=0 adultscore=0 bulkscore=0
+ mlxscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 clxscore=1011
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307110099
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_mathbern@quicinc.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,72 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-Any more reviews...?
+> Nicholas Piggin <npiggin@gmail.com> wrote:
+>
+> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+> index 6911b73c07..ce8b42eb15 100644
+> --- a/gdbstub/gdbstub.c
+> +++ b/gdbstub/gdbstub.c
+> @@ -2051,8 +2051,17 @@ void gdb_read_byte(uint8_t ch)
+>              return;
+>      }
+>      if (runstate_is_running()) {
+> -        /* when the CPU is running, we cannot do anything except stop
+> -           it when receiving a char */
+> +        /*
+> +         * When the CPU is running, we cannot do anything except stop
+> +         * it when receiving a char. This is expected on a Ctrl-C in the
+> +         * gdb client. Because we are in all-stop mode, gdb sends a
+> +         * 0x03 byte which is not a usual packet, so we handle it specially
+> +         * here, but it does expect a stop reply.
+> +         */
+> +        if (ch != 0x03) {
+> +            warn_report("gdbstub: client sent packet while target running\n");
+> +        }
+> +        gdbserver_state.allow_stop_reply = true;
+>          vm_stop(RUN_STATE_PAUSED);
+>      } else
+>  #endif
 
-Dear Stefan
-If you don't mind, Could you give it "reviewed-by"?
-And is there anything else I should do...?
-
-Thanks,
-Jeuk
-
-On 2023-07-04 오후 5:33, Jeuk Kim wrote:
-> From: Jeuk Kim <jeuk20.kim@samsung.com>
-> 
-> Since v3:
-> - Replace softmmu_ss -> system_ss in meson
-> 
-> Since v2:
-> Addressed review comment from Stefan Hajnoczi. The main fixes are as
-> follows.
-> - Use of SPDX licence identifiers
-> - fixed endianness error
-> - removed memory leak
-> - fixed DMA error handling logic
-> 
-> Since v1:
-> - use macros of "hw/registerfields.h" (Addressed Philippe's review
->    comments)
-> 
-> This patch series adds support for a new PCI-based UFS device.
-> 
-> The UFS pci device id (PCI_DEVICE_ID_REDHAT_UFS) is not registered
-> in the Linux kernel yet, so it does not work right away, but I confirmed
-> that it works with Linux when the UFS pci device id is registered.
-> 
-> I have also verified that it works with Windows 10.
-> 
-> Jeuk Kim (3):
->    hw/ufs: Initial commit for emulated Universal-Flash-Storage
->    hw/ufs: Support for Query Transfer Requests
->    hw/ufs: Support for UFS logical unit
-> 
->   MAINTAINERS              |    6 +
->   docs/specs/pci-ids.rst   |    2 +
->   hw/Kconfig               |    1 +
->   hw/meson.build           |    1 +
->   hw/ufs/Kconfig           |    4 +
->   hw/ufs/lu.c              | 1441 +++++++++++++++++++++++++++++++++++
->   hw/ufs/meson.build       |    1 +
->   hw/ufs/trace-events      |   59 ++
->   hw/ufs/trace.h           |    1 +
->   hw/ufs/ufs.c             | 1545 ++++++++++++++++++++++++++++++++++++++
->   hw/ufs/ufs.h             |  131 ++++
->   include/block/ufs.h      | 1048 ++++++++++++++++++++++++++
->   include/hw/pci/pci.h     |    1 +
->   include/hw/pci/pci_ids.h |    1 +
->   include/scsi/constants.h |    1 +
->   meson.build              |    1 +
->   16 files changed, 4244 insertions(+)
->   create mode 100644 hw/ufs/Kconfig
->   create mode 100644 hw/ufs/lu.c
->   create mode 100644 hw/ufs/meson.build
->   create mode 100644 hw/ufs/trace-events
->   create mode 100644 hw/ufs/trace.h
->   create mode 100644 hw/ufs/ufs.c
->   create mode 100644 hw/ufs/ufs.h
->   create mode 100644 include/block/ufs.h
-> 
-
+Makes sense to me, but shouldn't we send the stop-reply packet only for
+Ctrl+C/0x03?
 
