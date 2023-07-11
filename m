@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6950A74E92D
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 10:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 934A374E959
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 10:49:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJ8p1-0008RK-BG; Tue, 11 Jul 2023 04:34:11 -0400
+	id 1qJ91y-0002KG-J5; Tue, 11 Jul 2023 04:47:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qJ8oy-0008Na-Rs
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:34:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qJ91w-0002Jt-QZ
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:47:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qJ8ou-0002J6-Ka
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:34:05 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qJ91p-0006Hv-Dh
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:47:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689064443;
+ s=mimecast20190719; t=1689065244;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=scegDVuqLniXVBQLTpYvJieYnttyC5KCaPVfOqIJ1t0=;
- b=EVvHURUEpJQgVNRYcTf6Rgng+tNDhhdKd2Z/T/hd9RG/jWCpgLYAgXqycjFpRDPiv9KMx+
- M8hbwPCsAJ+dLXW6sux71/ko8uuymlb5FOe1od/eUQ4BBZUY9TqnsBwTdPzAE2j/oayRBc
- QkcgV60YQcgB6hZZFYldio9szJTPPzQ=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=a0jks4zyzUK5FTWiUbIYHZE5X6iLF/reQlhpFh/ub0s=;
+ b=VnmksycEZU0EjLKjpESLKXyalOPuQpcyQq/+HOZLTGfXocfn1DY8qNH0m+rSEKrQ7nnoRx
+ 6IOo1PFanfYQT8VAYKRFfQCVOBtaepJOxn9CqfsJt3w7u9xY+i5i0fqNo5zbIsJEa0YLXU
+ 5Zhd2PrpVMWILA7Ap9qXGC2qeSztvF8=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-527-mweMG9bdNWOlkIgs2jD_AQ-1; Tue, 11 Jul 2023 04:34:02 -0400
-X-MC-Unique: mweMG9bdNWOlkIgs2jD_AQ-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-98e40d91fdfso345071666b.3
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 01:34:02 -0700 (PDT)
+ us-mta-350-DdOT2RGwPmyvJH_FFbfN2Q-1; Tue, 11 Jul 2023 04:47:22 -0400
+X-MC-Unique: DdOT2RGwPmyvJH_FFbfN2Q-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-4fb76659d54so4769677e87.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 01:47:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689064440; x=1691656440;
+ d=1e100.net; s=20221208; t=1689065241; x=1691657241;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=scegDVuqLniXVBQLTpYvJieYnttyC5KCaPVfOqIJ1t0=;
- b=aWf6ys6kGbCBimpRm/z5XwIpo1UdXUhZTNJnWjLLc24OWhiPeNaSOBnWg/M1hll3av
- Hky4nEy24+TyDuCN26X+Qzx952lnGARa3IZYlSyk4cXYd8+OzjYVtV7vZi7YtHv5AAv9
- J9YqBhVSD5RwJM9ly0F0AWuxEnVSyzw1bESL1SGPtulBKq9KLYf1XXxyASaKm9AXoc6Y
- SCIglBayj39A9fv7qPKz/pdQQLLdWP/52mDRpzRB5pHpHLP/QKplctf6ulp3C1Dmcv0Q
- ZDyox1Zb6DOiSz2jC1ykTbEEtIRJCQ4+Ruqt0ApbwSJH2NYKoThbMqc7FxBzQRwn+5GN
- 8FXA==
-X-Gm-Message-State: ABy/qLaO7GUn0XffwFTII7hUPHICl/EHLaEzgKz1cKaDR0LXMR+0a4TB
- 2rdmkXig/LcvrkgFltftxM5PWUemr7n4iaZ7uun/jOXPDihLJUQy57zHvEKSNxXXTw0oNhXbXYs
- 6wAOQPS9jWCACnlsYTikFCsE=
-X-Received: by 2002:a17:907:a704:b0:992:630f:98b6 with SMTP id
- vw4-20020a170907a70400b00992630f98b6mr15407409ejc.37.1689064440789; 
- Tue, 11 Jul 2023 01:34:00 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGQylfpYgmb0mL4ZJ23qyuUvJaIv4O5VAjRR2VahLIaPjscN6kqEl+UNgAsxW1QgcWDdfuwZQ==
-X-Received: by 2002:a17:907:a704:b0:992:630f:98b6 with SMTP id
- vw4-20020a170907a70400b00992630f98b6mr15407397ejc.37.1689064440477; 
- Tue, 11 Jul 2023 01:34:00 -0700 (PDT)
+ bh=a0jks4zyzUK5FTWiUbIYHZE5X6iLF/reQlhpFh/ub0s=;
+ b=CHLYBBHHMYBmrUPe9H7dKCuXiImZcNYIRtKcCbbh2pWlYzBqPQOHuP1AFjqdcv22SF
+ Ypmh5NJXi559JfMAH6XwigiH/2il8AZpjrE3BpiNvyzB2pikg9DpwXJW824yL3RNGpvX
+ NjRT1SHV+zsDLTRCCdVpvCJIBwJeDaQ+OVJ1X+bcMK2tL4N0JTgCL/w1IZyGgHm9DkIp
+ kWRR4H6ic9PQI/6HDqXsZVgGMCwJlGYbHDBgvyTCpOWoWh0hxZtsBRq/QPyigfnMtItU
+ Lr0X/YPinBTraXnBpmuJrLGxBWoiMpC5Hmv8IYqX1AoljHzUDf31BWvmX1ggrje6bf3V
+ qAdQ==
+X-Gm-Message-State: ABy/qLaH0mV+VmVVmu+EPtW4lpsW6cX/GRFD6xeSQoKz6/ZE6SADlybD
+ 44scEcw1oHbpIaG4fcZPtEUrPgCFFEPv2xYvpc3bUJpcV4bziz7fjL/QPi2BU/IUYi6kW6AyFkY
+ RymKm46HoM+RXAl4=
+X-Received: by 2002:a05:6512:3157:b0:4f8:7617:6445 with SMTP id
+ s23-20020a056512315700b004f876176445mr11589743lfi.48.1689065241191; 
+ Tue, 11 Jul 2023 01:47:21 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlE8GVW/09hQ83VODeRdSkWd4WrcNuaTeg4xDUBbeSaKzT0lSMSTDoODT6XIrIj64kX8srqAQw==
+X-Received: by 2002:a05:6512:3157:b0:4f8:7617:6445 with SMTP id
+ s23-20020a056512315700b004f876176445mr11589724lfi.48.1689065240821; 
+ Tue, 11 Jul 2023 01:47:20 -0700 (PDT)
 Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
- li13-20020a170906f98d00b009887c9b2812sm845935ejb.8.2023.07.11.01.33.58
+ v15-20020a1cf70f000000b003fa8158135esm12359147wmh.11.2023.07.11.01.47.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jul 2023 01:34:00 -0700 (PDT)
-Date: Tue, 11 Jul 2023 04:33:56 -0400
+ Tue, 11 Jul 2023 01:47:20 -0700 (PDT)
+Date: Tue, 11 Jul 2023 04:47:17 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- qemu-devel <qemu-devel@nongnu.org>, qemu-block@nongnu.org,
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>
-Subject: Re: [PATCH 4/4] pci: Compare function number and ARI next function
- number
-Message-ID: <20230711043101-mutt-send-email-mst@kernel.org>
-References: <20230701070133.24877-1-akihiko.odaki@daynix.com>
- <20230701070133.24877-5-akihiko.odaki@daynix.com>
- <805445D0-111B-4D7B-A02F-71A4B90FA848@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
+ Gavin Shan <gshan@redhat.com>, Mario Casquero <mcasquer@redhat.com>
+Subject: Re: [PATCH v3 3/7] arm/virt: Use virtio-md-pci (un)plug functions
+Message-ID: <20230711044647-mutt-send-email-mst@kernel.org>
+References: <20230710100714.228867-1-david@redhat.com>
+ <20230710100714.228867-4-david@redhat.com>
+ <20230710173933-mutt-send-email-mst@kernel.org>
+ <b9351bf7-cabd-784c-bebc-a18a9b3f4bc1@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <805445D0-111B-4D7B-A02F-71A4B90FA848@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+In-Reply-To: <b9351bf7-cabd-784c-bebc-a18a9b3f4bc1@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,64 +104,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 11, 2023 at 12:40:47PM +0530, Ani Sinha wrote:
+On Tue, Jul 11, 2023 at 10:32:31AM +0200, David Hildenbrand wrote:
+> On 10.07.23 23:40, Michael S. Tsirkin wrote:
+> > > @@ -2855,12 +2796,11 @@ static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
+> > >                                        SYS_BUS_DEVICE(dev));
+> > >           }
+> > >       }
+> > > +
+> > >       if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
+> > >           virt_memory_plug(hotplug_dev, dev, errp);
+> > > -    }
+> > > -
+> > > -    if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MEM_PCI)) {
+> > > -        virt_virtio_md_pci_plug(hotplug_dev, dev, errp);
+> > > +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
+> > > +        virtio_md_pci_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
+> > >       }
+> > >       if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
+> > 
+> > 
+> > How is this supposed to link if virtio-md is disabled at compile time?
+> > 
 > 
+> Good point.
 > 
-> > On 01-Jul-2023, at 12:31 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
-> > 
-> > The function number must be lower than the next function number
-> > advertised with ARI.
-> > 
-> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> > ---
-> > hw/pci/pci.c | 15 +++++++++++++++
-> > 1 file changed, 15 insertions(+)
-> > 
-> > diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> > index e2eb4c3b4a..568665ee42 100644
-> > --- a/hw/pci/pci.c
-> > +++ b/hw/pci/pci.c
-> > @@ -2059,6 +2059,8 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
-> >     Error *local_err = NULL;
-> >     bool is_default_rom;
-> >     uint16_t class_id;
-> > +    uint16_t ari;
-> > +    uint16_t nextfn;
-> > 
-> >     /*
-> >      * capped by systemd (see: udev-builtin-net_id.c)
-> > @@ -2121,6 +2123,19 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
-> >         }
-> >     }
-> > 
-> > +    if (pci_is_express(pci_dev)) {
-> > +        ari = pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI);
-> > +        if (ari) {
-> > +            nextfn = (pci_get_long(pci_dev->config + ari + PCI_ARI_CAP) >> 8) & 0xff;
-> > +            if (nextfn && (pci_dev->devfn & 0xff) >= nextfn) {
-> > +                error_setg(errp, "PCI: function number %u is not lower than ARI next function number %u",
-> > +                           pci_dev->devfn & 0xff, nextfn);
-> > +                pci_qdev_unrealize(DEVICE(pci_dev));
-> > +                return;
-> > +            }
-> > +        }
-> > +    }
-> > +
+> The old code unconditionally enabled MEM_DEVICE, so we never required subs
+> for that.
 > 
-> So I kind of got lost in all the patches. What was the ultimate decision regarding checking this?
+> We either need stubs or have to wrap this in #ifdef.
+> 
+> Stubs sound cleaner.
 
-We still need to fix ARI for multi-function PFs.
-I feel the right thing to do is to init Next Function in the ARI
-capability, automatically.
-For now, we have merely changed ARI setting next function to 0.
-At least that's more correct for the common case of ARI PF with VFs.
+That is what we usually do, yes.
 
-
-> >     if (pci_dev->failover_pair_id) {
-> >         if (!pci_bus_is_express(pci_get_bus(pci_dev))) {
-> >             error_setg(errp, "failover primary device must be on "
-> > -- 
-> > 2.41.0
-> > 
+-- 
+MST
 
 
