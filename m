@@ -2,103 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0691274E513
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 05:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A06D374E532
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 05:18:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJ3fp-0004Nh-Df; Mon, 10 Jul 2023 23:04:21 -0400
+	id 1qJ3rU-0006iy-CN; Mon, 10 Jul 2023 23:16:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qJ3fn-0004Lx-QT
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 23:04:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qJ3fl-0006q7-QJ
- for qemu-devel@nongnu.org; Mon, 10 Jul 2023 23:04:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689044657;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2hDssphsll+lAam4B/tMH+B7bVVlq/PMbKg0OqSwL2I=;
- b=BlyhMAjGuMZyaIrZ+3j7YwKHe3jvtu3SBPcfm9quqzje5okWw7IGCpDeqdSlpxlindUHWE
- hSPBfMePH/Eycv17NzTqueWoykNjrRkz8gWaTMZuDfdp3NmEuHhuDYqvexTirDtpLdlVjS
- kFywOS01+lStejsQK18B9CJSQsaPUnE=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-abI84EkhP0SkyKq89J4Q8g-1; Mon, 10 Jul 2023 23:04:15 -0400
-X-MC-Unique: abI84EkhP0SkyKq89J4Q8g-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2b620465d0eso45884481fa.0
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 20:04:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qJ3rS-0006iF-DP; Mon, 10 Jul 2023 23:16:22 -0400
+Received: from mail-vs1-xe32.google.com ([2607:f8b0:4864:20::e32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qJ3rQ-0001S9-2Z; Mon, 10 Jul 2023 23:16:22 -0400
+Received: by mail-vs1-xe32.google.com with SMTP id
+ ada2fe7eead31-440c368b4e2so1609472137.2; 
+ Mon, 10 Jul 2023 20:16:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1689045378; x=1691637378;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IeeWerrXbZriJ/eJOOog9XQClSHx8b4bawswCvDPmtM=;
+ b=bMfnHHaENunwaWcGc91zGt/KlzgtVoGBZUyvXAEUDlwOAsTDl+ox18arBHO2sJny7a
+ wYqchzooYaFNC3o9r65uSyCRQLcC/vMF+JUEgVm+FyHxzXQAFQK4AQLvTV6PROcVasYa
+ vwZNsRfp1KTt0VcY8srq/lonU90AW6Gcq2RWvSFU699w34oUGeaKvI4RzNugGgnyhHm/
+ i7Ggabcyw4BZxHFmDzZO+pk3hrN4iwFqigGEXauk30thTaw3NHIMxkCrbQwgSLLWou1t
+ b2sEubkhSn0AeP5pacutDuxCsL0CHwwrZWIOcWrrYhiLXlZy5djk9diHvK9PrTGeX1iP
+ yrIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689044654; x=1691636654;
+ d=1e100.net; s=20221208; t=1689045378; x=1691637378;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2hDssphsll+lAam4B/tMH+B7bVVlq/PMbKg0OqSwL2I=;
- b=H4JSj8u8FlmliZWXpvyEI6KGrR2Qx381eygEw+eBJfphoeykoXNPkP5t0DH3o0AP9I
- BUSWiiKZ5owhHEg2ogfNtVGuJQT4G8CFOpP3k+b6YVVoUwgJL6aEuTWzydZYM9/k9TDX
- Ff0Q5frXsgzWCb0fJW7RtmIJjvPvostKTu6diWbzjLuWBVTMlucDwG5GMfbboO6bvlHG
- ZHg42k6NeuoeV+HIMaNvv6CT+qX7qr+JS03L2VhQymQLwUy3aHLi6Mdf6FpIzFD29g66
- 1rMMvMbrydjUfPOaVyYBcPLlFQ9HdxiAoP7w+e2MjJTvSt1/La/o/CylTzzQCJek7q4a
- bBYA==
-X-Gm-Message-State: ABy/qLY/7XPDvLTX79s5TMbCiPILA+aDqAjD4c3Z65ZGhMRQr6Yrbuem
- sRmC9o9499AWipcrVDk1VGe4zPD9AxGoDoQ7sOMSTJC+UsmFYAKjg+vsvWX8yDVuI746R4Z8B2c
- 6f8txWND3Ih3X8UoAi6T7BpLFWe1N56U=
-X-Received: by 2002:a2e:7d15:0:b0:2b6:d7a0:c27d with SMTP id
- y21-20020a2e7d15000000b002b6d7a0c27dmr10688306ljc.37.1689044653871; 
- Mon, 10 Jul 2023 20:04:13 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEVPihVcDGxo61Gp4kqNdl9vPb+m+x4yd5bXuS3Iv3/562mcdVKlu5n/U46rBSovgdo6XpSeWrcB45aNlumoQ4=
-X-Received: by 2002:a2e:7d15:0:b0:2b6:d7a0:c27d with SMTP id
- y21-20020a2e7d15000000b002b6d7a0c27dmr10688298ljc.37.1689044653542; Mon, 10
- Jul 2023 20:04:13 -0700 (PDT)
+ bh=IeeWerrXbZriJ/eJOOog9XQClSHx8b4bawswCvDPmtM=;
+ b=JRpRK/95uhtpoGVT2/DB9cT8jDNvPOiGy7z7Xh9FytHz99nFPj3XSdYj8ZG2gVONWh
+ iNExNs4m3iTjWKMDFPxwHha9nf/t/HHh0nhwHQ/US1k8JkpQ1iXFMPLDkMWfFYhbe60U
+ /QoqKuktobY9WMDuYTm7XWHVtC+eiXiexXnnDEO1DlWJ6UYX+bGIU0cvk79uQ0LLHRNU
+ st9fj19xs2BnoyRt9qkgMPXCYV9Miq8IoMwgAVvkrILfRi5MFKQuZkvsKZYO1VQPUUqy
+ uhR3lsrdfm3X9dAH7rBpGx3Ca12jnHDnW3PCTwQmSWeHjx2ZWLNgEngQ+9qLV2ZS3nDA
+ /5aQ==
+X-Gm-Message-State: ABy/qLbDtWZ/UdQ7fjG6L1DJF80m/5yEoAzLSBlOECYZXIlRmHCsHGn2
+ QPxNBqlksBGzFlU+UAEmW/IpYsJ5LhI7Gav3aus=
+X-Google-Smtp-Source: APBJJlF671/N+78HbATC392NfAA/gGKeFu/4bPcGmO4QEZpjfmCoz+y9TwTp2ynDo78cWvbrO1/2CKK4b6r/Y6D4srM=
+X-Received: by 2002:a67:fd4c:0:b0:443:6457:101 with SMTP id
+ g12-20020a67fd4c000000b0044364570101mr7017573vsr.7.1689045378159; Mon, 10 Jul
+ 2023 20:16:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230622215824.2173343-1-i.maximets@ovn.org>
- <CACGkMEsXOb8wiYo9ktgqh8MqD971=ARJ_etL7MBF-uyo6qt1eA@mail.gmail.com>
- <CACGkMEuyq+5_cqx4T03fcaLOGUCrKLZn51sZxNSXyZq8CqLXTg@mail.gmail.com>
- <93a056c4-b6d3-5491-0c1f-7f58e9f9d1ad@ovn.org>
- <CACGkMEuaUTGeCYfH-MbtX_79scN-CkBmFMcY0fwKo4vO_9cn4w@mail.gmail.com>
- <26c03cd4-5582-489c-9f4c-aeaf8e157b42@ovn.org>
- <CACGkMEsE6_91mOhCP5ezT96zz-Tb-bLXQr9ktrLg6zG0TZC3Lg@mail.gmail.com>
- <CAJSP0QXPiNK2rH6_8bB7sjMpdQjT--oX0u4FkdaTj7Ew3qs8CA@mail.gmail.com>
- <CACGkMEuN_PeXZhqaN4EJP8rKRVK=wftpkH3--y267j9+7smCOw@mail.gmail.com>
- <CAJSP0QVg-mmtnMXZpxRKutbdgpdNeawJT45iQSp4cf=MRedZAQ@mail.gmail.com>
- <CACGkMEtdk-Qi+5M+pEa9v=S_ehRs=m7Ux4=Sf6aqk0EqNzyQ5g@mail.gmail.com>
- <CAJSP0QW22f18V0pXTO-w4BXONJ3wLCbczMjKSKCRnxiF+7W=eg@mail.gmail.com>
- <CACGkMEvCV6JcQ3LOQvCx=9KXKqE_SAQwzxFXe1c+PdSMH_KbDg@mail.gmail.com>
- <CAJSP0QUtCnE49YWA6PmVSExMaFf2VZi3St1Wysk9ruDS37ALHg@mail.gmail.com>
- <CACGkMEu1V4HBdP3JFYV-+Uec1s6f0U3fj5f9tV0FApQ+U8rbrw@mail.gmail.com>
- <CAJSP0QU-p_cKCevxTabKhfq9T2=UShLqcced-OCmfCx3dE+6rQ@mail.gmail.com>
- <CACGkMEv2u-pcFY_+Y-r6ODj6hjEDUhVG5VV-cX0Fko7VNPZ=0g@mail.gmail.com>
- <CAJSP0QXbq2s-VoWyPz7wWXCnhrt3nOMeoxdhUL8cerxm1sMfeg@mail.gmail.com>
- <CACGkMEsk65V4OiDB==fKSZ8us=FGz4u3Cj5un+2YYXep+OrQXw@mail.gmail.com>
- <CAJSP0QV1nYMKNkcphaLLH_te3Un_ep5not9pAW17zXEPaw2MsQ@mail.gmail.com>
-In-Reply-To: <CAJSP0QV1nYMKNkcphaLLH_te3Un_ep5not9pAW17zXEPaw2MsQ@mail.gmail.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 11 Jul 2023 11:04:02 +0800
-Message-ID: <CACGkMEtf9Zu9ot=-ae+rcfkzX-z1bdVk8ODibCzp+H0V7R1aSw@mail.gmail.com>
-Subject: Re: [PATCH] net: add initial support for AF_XDP network backend
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Ilya Maximets <i.maximets@ovn.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-devel@nongnu.org
+References: <20230702155354.2478495-1-max.chou@sifive.com>
+ <20230702155354.2478495-13-max.chou@sifive.com>
+ <f943fa94-d105-da53-28e0-04b7afeba165@ventanamicro.com>
+ <9922287f-7852-1167-51ac-53b977c94a94@sifive.com>
+In-Reply-To: <9922287f-7852-1167-51ac-53b977c94a94@sifive.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 11 Jul 2023 13:15:51 +1000
+Message-ID: <CAKmqyKP4_oyqHD+dfBJmKX6nuJA4bfgRSi8LUWYOQG9FQ06DEg@mail.gmail.com>
+Subject: Re: [PATCH v7 12/15] target/riscv: Add Zvkg ISA extension support
+To: Max Chou <max.chou@sifive.com>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, Nazar Kazakov <nazar.kazakov@codethink.co.uk>, 
+ Lawrence Hunter <lawrence.hunter@codethink.co.uk>,
+ Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e32;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe32.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,231 +94,387 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 10, 2023 at 11:14=E2=80=AFPM Stefan Hajnoczi <stefanha@gmail.co=
-m> wrote:
+On Mon, Jul 10, 2023 at 6:37=E2=80=AFPM Max Chou <max.chou@sifive.com> wrot=
+e:
 >
-> On Thu, 6 Jul 2023 at 21:43, Jason Wang <jasowang@redhat.com> wrote:
+> On 2023/7/8 5:25 PM, Daniel Henrique Barboza wrote:
+>
+> > Hi,
 > >
-> > On Fri, Jul 7, 2023 at 3:08=E2=80=AFAM Stefan Hajnoczi <stefanha@gmail.=
-com> wrote:
-> > >
-> > > On Wed, 5 Jul 2023 at 02:02, Jason Wang <jasowang@redhat.com> wrote:
-> > > >
-> > > > On Mon, Jul 3, 2023 at 5:03=E2=80=AFPM Stefan Hajnoczi <stefanha@gm=
-ail.com> wrote:
-> > > > >
-> > > > > On Fri, 30 Jun 2023 at 09:41, Jason Wang <jasowang@redhat.com> wr=
-ote:
-> > > > > >
-> > > > > > On Thu, Jun 29, 2023 at 8:36=E2=80=AFPM Stefan Hajnoczi <stefan=
-ha@gmail.com> wrote:
-> > > > > > >
-> > > > > > > On Thu, 29 Jun 2023 at 07:26, Jason Wang <jasowang@redhat.com=
-> wrote:
-> > > > > > > >
-> > > > > > > > On Wed, Jun 28, 2023 at 4:25=E2=80=AFPM Stefan Hajnoczi <st=
-efanha@gmail.com> wrote:
-> > > > > > > > >
-> > > > > > > > > On Wed, 28 Jun 2023 at 10:19, Jason Wang <jasowang@redhat=
-.com> wrote:
-> > > > > > > > > >
-> > > > > > > > > > On Wed, Jun 28, 2023 at 4:15=E2=80=AFPM Stefan Hajnoczi=
- <stefanha@gmail.com> wrote:
-> > > > > > > > > > >
-> > > > > > > > > > > On Wed, 28 Jun 2023 at 09:59, Jason Wang <jasowang@re=
-dhat.com> wrote:
-> > > > > > > > > > > >
-> > > > > > > > > > > > On Wed, Jun 28, 2023 at 3:46=E2=80=AFPM Stefan Hajn=
-oczi <stefanha@gmail.com> wrote:
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > On Wed, 28 Jun 2023 at 05:28, Jason Wang <jasowan=
-g@redhat.com> wrote:
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > On Wed, Jun 28, 2023 at 6:45=E2=80=AFAM Ilya Ma=
-ximets <i.maximets@ovn.org> wrote:
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > On 6/27/23 04:54, Jason Wang wrote:
-> > > > > > > > > > > > > > > > On Mon, Jun 26, 2023 at 9:17=E2=80=AFPM Ily=
-a Maximets <i.maximets@ovn.org> wrote:
-> > > > > > > > > > > > > > > >>
-> > > > > > > > > > > > > > > >> On 6/26/23 08:32, Jason Wang wrote:
-> > > > > > > > > > > > > > > >>> On Sun, Jun 25, 2023 at 3:06=E2=80=AFPM J=
-ason Wang <jasowang@redhat.com> wrote:
-> > > > > > > > > > > > > > > >>>>
-> > > > > > > > > > > > > > > >>>> On Fri, Jun 23, 2023 at 5:58=E2=80=AFAM =
-Ilya Maximets <i.maximets@ovn.org> wrote:
-> > > > > > > > > > > > > > > >> It is noticeably more performant than a ta=
-p with vhost=3Don in terms of PPS.
-> > > > > > > > > > > > > > > >> So, that might be one case.  Taking into a=
-ccount that just rcu lock and
-> > > > > > > > > > > > > > > >> unlock in virtio-net code takes more time =
-than a packet copy, some batching
-> > > > > > > > > > > > > > > >> on QEMU side should improve performance si=
-gnificantly.  And it shouldn't be
-> > > > > > > > > > > > > > > >> too hard to implement.
-> > > > > > > > > > > > > > > >>
-> > > > > > > > > > > > > > > >> Performance over virtual interfaces may po=
-tentially be improved by creating
-> > > > > > > > > > > > > > > >> a kernel thread for async Tx.  Similarly t=
-o what io_uring allows.  Currently
-> > > > > > > > > > > > > > > >> Tx on non-zero-copy interfaces is synchron=
-ous, and that doesn't allow to
-> > > > > > > > > > > > > > > >> scale well.
-> > > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > > Interestingly, actually, there are a lot of=
- "duplication" between
-> > > > > > > > > > > > > > > > io_uring and AF_XDP:
-> > > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > > 1) both have similar memory model (user reg=
-ister)
-> > > > > > > > > > > > > > > > 2) both use ring for communication
-> > > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > > I wonder if we can let io_uring talks direc=
-tly to AF_XDP.
-> > > > > > > > > > > > > > >
-> > > > > > > > > > > > > > > Well, if we submit poll() in QEMU main loop v=
-ia io_uring, then we can
-> > > > > > > > > > > > > > > avoid cost of the synchronous Tx for non-zero=
--copy modes, i.e. for
-> > > > > > > > > > > > > > > virtual interfaces.  io_uring thread in the k=
-ernel will be able to
-> > > > > > > > > > > > > > > perform transmission for us.
-> > > > > > > > > > > > > >
-> > > > > > > > > > > > > > It would be nice if we can use iothread/vhost o=
-ther than the main loop
-> > > > > > > > > > > > > > even if io_uring can use kthreads. We can avoid=
- the memory translation
-> > > > > > > > > > > > > > cost.
-> > > > > > > > > > > > >
-> > > > > > > > > > > > > The QEMU event loop (AioContext) has io_uring cod=
-e
-> > > > > > > > > > > > > (utils/fdmon-io_uring.c) but it's disabled at the=
- moment. I'm working
-> > > > > > > > > > > > > on patches to re-enable it and will probably send=
- them in July. The
-> > > > > > > > > > > > > patches also add an API to submit arbitrary io_ur=
-ing operations so
-> > > > > > > > > > > > > that you can do stuff besides file descriptor mon=
-itoring. Both the
-> > > > > > > > > > > > > main loop and IOThreads will be able to use io_ur=
-ing on Linux hosts.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Just to make sure I understand. If we still need a =
-copy from guest to
-> > > > > > > > > > > > io_uring buffer, we still need to go via memory API=
- for GPA which
-> > > > > > > > > > > > seems expensive.
-> > > > > > > > > > > >
-> > > > > > > > > > > > Vhost seems to be a shortcut for this.
-> > > > > > > > > > >
-> > > > > > > > > > > I'm not sure how exactly you're thinking of using io_=
-uring.
-> > > > > > > > > > >
-> > > > > > > > > > > Simply using io_uring for the event loop (file descri=
-ptor monitoring)
-> > > > > > > > > > > doesn't involve an extra buffer, but the packet paylo=
-ad still needs to
-> > > > > > > > > > > reside in AF_XDP umem, so there is a copy between gue=
-st memory and
-> > > > > > > > > > > umem.
-> > > > > > > > > >
-> > > > > > > > > > So there would be a translation from GPA to HVA (unless=
- io_uring
-> > > > > > > > > > support 2 stages) which needs to go via qemu memory cor=
-e. And this
-> > > > > > > > > > part seems to be very expensive according to my test in=
- the past.
-> > > > > > > > >
-> > > > > > > > > Yes, but in the current approach where AF_XDP is implemen=
-ted as a QEMU
-> > > > > > > > > netdev, there is already QEMU device emulation (e.g. virt=
-io-net)
-> > > > > > > > > happening. So the GPA to HVA translation will happen anyw=
-ay in device
-> > > > > > > > > emulation.
-> > > > > > > >
-> > > > > > > > Just to make sure we're on the same page.
-> > > > > > > >
-> > > > > > > > I meant, AF_XDP can do more than e.g 10Mpps. So if we still=
- use the
-> > > > > > > > QEMU netdev, it would be very hard to achieve that if we st=
-ick to
-> > > > > > > > using the Qemu memory core translations which need to take =
-care about
-> > > > > > > > too much extra stuff. That's why I suggest using vhost in i=
-o threads
-> > > > > > > > which only cares about ram so the translation could be very=
- fast.
-> > > > > > >
-> > > > > > > What does using "vhost in io threads" mean?
-> > > > > >
-> > > > > > It means a vhost userspace dataplane that is implemented via io=
- threads.
-> > > > >
-> > > > > AFAIK this does not exist today. QEMU's built-in devices that use
-> > > > > IOThreads don't use vhost code. QEMU vhost code is for vhost kern=
-el,
-> > > > > vhost-user, or vDPA but not built-in devices that use IOThreads. =
-The
-> > > > > built-in devices implement VirtioDeviceClass callbacks directly a=
-nd
-> > > > > use AioContext APIs to run in IOThreads.
-> > > >
-> > > > Yes.
-> > > >
-> > > > >
-> > > > > Do you have an idea for using vhost code for built-in devices? Ma=
-ybe
-> > > > > it's fastest if you explain your idea and its advantages instead =
-of me
-> > > > > guessing.
-> > > >
-> > > > It's something like I'd proposed in [1]:
-> > > >
-> > > > 1) a vhost that is implemented via IOThreads
-> > > > 2) memory translation is done via vhost memory table/IOTLB
-> > > >
-> > > > The advantages are:
-> > > >
-> > > > 1) No 3rd application like DPDK application
-> > > > 2) Attack surface were reduced
-> > > > 3) Better understanding/interactions with device model for things l=
-ike
-> > > > RSS and IOMMU
-> > > >
-> > > > There could be some dis-advantages but it's not obvious to me :)
-> > >
-> > > Why is QEMU's native device emulation API not the natural choice for
-> > > writing built-in devices? I don't understand why the vhost interface
-> > > is desirable for built-in devices.
+> > This patch breaks some gitlab runners because of this:
 > >
-> > Unless the memory helpers (like address translations) were optimized
-> > fully to satisfy this 10M+ PPS.
+> > On 7/2/23 12:53, Max Chou wrote:
+> >> From: Nazar Kazakov <nazar.kazakov@codethink.co.uk>
+> >>
+> >> This commit adds support for the Zvkg vector-crypto extension, which
+> >> consists of the following instructions:
+> >>
+> >> * vgmul.vv
+> >> * vghsh.vv
+> >>
+> >> Translation functions are defined in
+> >> `target/riscv/insn_trans/trans_rvvk.c.inc` and helpers are defined in
+> >> `target/riscv/vcrypto_helper.c`.
+> >>
+> >> Co-authored-by: Lawrence Hunter <lawrence.hunter@codethink.co.uk>
+> >> [max.chou@sifive.com: Replaced vstart checking by TCG op]
+> >> Signed-off-by: Lawrence Hunter <lawrence.hunter@codethink.co.uk>
+> >> Signed-off-by: Nazar Kazakov <nazar.kazakov@codethink.co.uk>
+> >> Signed-off-by: Max Chou <max.chou@sifive.com>
+> >> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> >> [max.chou@sifive.com: Exposed x-zvkg property]
+> >> ---
+> >>   target/riscv/cpu.c                       |  6 +-
+> >>   target/riscv/cpu_cfg.h                   |  1 +
+> >>   target/riscv/helper.h                    |  3 +
+> >>   target/riscv/insn32.decode               |  4 ++
+> >>   target/riscv/insn_trans/trans_rvvk.c.inc | 30 ++++++++++
+> >>   target/riscv/vcrypto_helper.c            | 72 ++++++++++++++++++++++=
+++
+> >>   6 files changed, 114 insertions(+), 2 deletions(-)
+> >>
+> >> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> >> index 08b8355f52..699ab5e9fa 100644
+> >> --- a/target/riscv/cpu.c
+> >> +++ b/target/riscv/cpu.c
+> >> @@ -118,6 +118,7 @@ static const struct isa_ext_data isa_edata_arr[] =
+=3D {
+> >>       ISA_EXT_DATA_ENTRY(zve64d, PRIV_VERSION_1_10_0, ext_zve64d),
+> >>       ISA_EXT_DATA_ENTRY(zvfh, PRIV_VERSION_1_12_0, ext_zvfh),
+> >>       ISA_EXT_DATA_ENTRY(zvfhmin, PRIV_VERSION_1_12_0, ext_zvfhmin),
+> >> +    ISA_EXT_DATA_ENTRY(zvkg, PRIV_VERSION_1_12_0, ext_zvkg),
+> >>       ISA_EXT_DATA_ENTRY(zvkned, PRIV_VERSION_1_12_0, ext_zvkned),
+> >>       ISA_EXT_DATA_ENTRY(zvknha, PRIV_VERSION_1_12_0, ext_zvknha),
+> >>       ISA_EXT_DATA_ENTRY(zvknhb, PRIV_VERSION_1_12_0, ext_zvknhb),
+> >> @@ -1194,8 +1195,8 @@ void riscv_cpu_validate_set_extensions(RISCVCPU
+> >> *cpu, Error **errp)
+> >>        * In principle Zve*x would also suffice here, were they support=
+ed
+> >>        * in qemu
+> >>        */
+> >> -    if ((cpu->cfg.ext_zvbb || cpu->cfg.ext_zvkned ||
+> >> cpu->cfg.ext_zvknha ||
+> >> -         cpu->cfg.ext_zvksh) && !cpu->cfg.ext_zve32f) {
+> >> +    if ((cpu->cfg.ext_zvbb || cpu->cfg.ext_zvkg ||
+> >> cpu->cfg.ext_zvkned ||
+> >> +         cpu->cfg.ext_zvknha || cpu->cfg.ext_zvksh) &&
+> >> !cpu->cfg.ext_zve32f) {
+> >>           error_setg(errp,
+> >>                      "Vector crypto extensions require V or Zve*
+> >> extensions");
+> >>           return;
+> >> @@ -1710,6 +1711,7 @@ static Property riscv_cpu_extensions[] =3D {
+> >>       /* Vector cryptography extensions */
+> >>       DEFINE_PROP_BOOL("x-zvbb", RISCVCPU, cfg.ext_zvbb, false),
+> >>       DEFINE_PROP_BOOL("x-zvbc", RISCVCPU, cfg.ext_zvbc, false),
+> >> +    DEFINE_PROP_BOOL("x-zvkg", RISCVCPU, cfg.ext_zvkg, false),
+> >>       DEFINE_PROP_BOOL("x-zvkned", RISCVCPU, cfg.ext_zvkned, false),
+> >>       DEFINE_PROP_BOOL("x-zvknha", RISCVCPU, cfg.ext_zvknha, false),
+> >>       DEFINE_PROP_BOOL("x-zvknhb", RISCVCPU, cfg.ext_zvknhb, false),
+> >> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> >> index 27062b12a8..960761c479 100644
+> >> --- a/target/riscv/cpu_cfg.h
+> >> +++ b/target/riscv/cpu_cfg.h
+> >> @@ -85,6 +85,7 @@ struct RISCVCPUConfig {
+> >>       bool ext_zve64d;
+> >>       bool ext_zvbb;
+> >>       bool ext_zvbc;
+> >> +    bool ext_zvkg;
+> >>       bool ext_zvkned;
+> >>       bool ext_zvknha;
+> >>       bool ext_zvknhb;
+> >> diff --git a/target/riscv/helper.h b/target/riscv/helper.h
+> >> index 172c91c65c..238343cb42 100644
+> >> --- a/target/riscv/helper.h
+> >> +++ b/target/riscv/helper.h
+> >> @@ -1244,3 +1244,6 @@ DEF_HELPER_5(vsha2cl64_vv, void, ptr, ptr, ptr,
+> >> env, i32)
+> >>     DEF_HELPER_5(vsm3me_vv, void, ptr, ptr, ptr, env, i32)
+> >>   DEF_HELPER_5(vsm3c_vi, void, ptr, ptr, i32, env, i32)
+> >> +
+> >> +DEF_HELPER_5(vghsh_vv, void, ptr, ptr, ptr, env, i32)
+> >> +DEF_HELPER_4(vgmul_vv, void, ptr, ptr, env, i32)
+> >> diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
+> >> index 5ca83e8462..b10497afd3 100644
+> >> --- a/target/riscv/insn32.decode
+> >> +++ b/target/riscv/insn32.decode
+> >> @@ -957,3 +957,7 @@ vsha2cl_vv  101111 1 ..... ..... 010 .....
+> >> 1110111 @r_vm_1
+> >>   # *** Zvksh vector crypto extension ***
+> >>   vsm3me_vv   100000 1 ..... ..... 010 ..... 1110111 @r_vm_1
+> >>   vsm3c_vi    101011 1 ..... ..... 010 ..... 1110111 @r_vm_1
+> >> +
+> >> +# *** Zvkg vector crypto extension ***
+> >> +vghsh_vv    101100 1 ..... ..... 010 ..... 1110111 @r_vm_1
+> >> +vgmul_vv    101000 1 ..... 10001 010 ..... 1110111 @r2_vm_1
+> >> diff --git a/target/riscv/insn_trans/trans_rvvk.c.inc
+> >> b/target/riscv/insn_trans/trans_rvvk.c.inc
+> >> index 6469dd2f02..af7cd62e7d 100644
+> >> --- a/target/riscv/insn_trans/trans_rvvk.c.inc
+> >> +++ b/target/riscv/insn_trans/trans_rvvk.c.inc
+> >> @@ -531,3 +531,33 @@ static inline bool vsm3c_check(DisasContext *s,
+> >> arg_rmrr *a)
+> >>     GEN_VV_UNMASKED_TRANS(vsm3me_vv, vsm3me_check, ZVKSH_EGS)
+> >>   GEN_VI_UNMASKED_TRANS(vsm3c_vi, vsm3c_check, ZVKSH_EGS)
+> >> +
+> >> +/*
+> >> + * Zvkg
+> >> + */
+> >> +
+> >> +#define ZVKG_EGS 4
+> >> +
+> >> +static bool vgmul_check(DisasContext *s, arg_rmr *a)
+> >> +{
+> >> +    int egw_bytes =3D ZVKG_EGS << s->sew;
+> >> +    return s->cfg_ptr->ext_zvkg =3D=3D true &&
+> >> +           vext_check_isa_ill(s) &&
+> >> +           require_rvv(s) &&
+> >> +           MAXSZ(s) >=3D egw_bytes &&
+> >> +           vext_check_ss(s, a->rd, a->rs2, a->vm) &&
+> >> +           s->sew =3D=3D MO_32;
+> >> +}
+> >> +
+> >> +GEN_V_UNMASKED_TRANS(vgmul_vv, vgmul_check, ZVKG_EGS)
+> >> +
+> >> +static bool vghsh_check(DisasContext *s, arg_rmrr *a)
+> >> +{
+> >> +    int egw_bytes =3D ZVKG_EGS << s->sew;
+> >> +    return s->cfg_ptr->ext_zvkg =3D=3D true &&
+> >> +           opivv_check(s, a) &&
+> >> +           MAXSZ(s) >=3D egw_bytes &&
+> >> +           s->sew =3D=3D MO_32;
+> >> +}
+> >> +
+> >> +GEN_VV_UNMASKED_TRANS(vghsh_vv, vghsh_check, ZVKG_EGS)
+> >> diff --git a/target/riscv/vcrypto_helper.c
+> >> b/target/riscv/vcrypto_helper.c
+> >> index ff7fb11928..f127fc0d3a 100644
+> >> --- a/target/riscv/vcrypto_helper.c
+> >> +++ b/target/riscv/vcrypto_helper.c
+> >> @@ -769,3 +769,75 @@ void HELPER(vsm3c_vi)(void *vd_vptr, void
+> >> *vs2_vptr, uint32_t uimm,
+> >>       vext_set_elems_1s(vd_vptr, vta, env->vl * esz, total_elems * esz=
+);
+> >>       env->vstart =3D 0;
+> >>   }
+> >> +
+> >> +void HELPER(vghsh_vv)(void *vd_vptr, void *vs1_vptr, void *vs2_vptr,
+> >> +                      CPURISCVState *env, uint32_t desc)
+> >> +{
+> >> +    uint64_t *vd =3D vd_vptr;
+> >> +    uint64_t *vs1 =3D vs1_vptr;
+> >> +    uint64_t *vs2 =3D vs2_vptr;
+> >> +    uint32_t vta =3D vext_vta(desc);
+> >> +    uint32_t total_elems =3D vext_get_total_elems(env, desc, 4);
+> >> +
+> >> +    for (uint32_t i =3D env->vstart / 4; i < env->vl / 4; i++) {
+> >> +        uint64_t Y[2] =3D {vd[i * 2 + 0], vd[i * 2 + 1]};
+> >> +        uint64_t H[2] =3D {brev8(vs2[i * 2 + 0]), brev8(vs2[i * 2 + 1=
+])};
+> >> +        uint64_t X[2] =3D {vs1[i * 2 + 0], vs1[i * 2 + 1]};
+> >> +        uint64_t Z[2] =3D {0, 0};
+> >> +
+> >> +        uint64_t S[2] =3D {brev8(Y[0] ^ X[0]), brev8(Y[1] ^ X[1])};
+> >> +
+> >> +        for (uint j =3D 0; j < 128; j++) {
 > >
-> > Not sure if this is too hard, but last time I benchmark, perf told me
-> > most of the time spent in the translation.
+> > ^
 > >
-> > Using a vhost is a workaround since its memory model is much more
-> > simpler so it can skip lots of memory sections like I/O and ROM etc.
+> > and this
+> >
+> >     FAILED:
+> >     libqemu-riscv64-softmmu.fa.p/target_riscv_vcrypto_helper.c.obj
+> >     i686-w64-mingw32-gcc -m32 -Ilibqemu-riscv64-softmmu.fa.p -I. -I..
+> >     -Itarget/riscv -I../target/riscv -Isubprojects/dtc/libfdt
+> >     -I../subprojects/dtc/libfdt -Iqapi -Itrace -Iui -Iui/shader
+> >     -I/usr/i686-w64-mingw32/sys-root/mingw/include/pixman-1
+> >     -I/usr/i686-w64-mingw32/sys-root/mingw/include/glib-2.0
+> >     -I/usr/i686-w64-mingw32/sys-root/mingw/lib/glib-2.0/include
+> >     -fdiagnostics-color=3Dauto -Wall -Winvalid-pch -Werror -std=3Dgnu11
+> > -O2 -g
+> >     -fstack-protector-strong -Wundef -Wwrite-strings -Wmissing-prototyp=
+es
+> >     -Wstrict-prototypes -Wredundant-decls -Wold-style-declaration
+> >     -Wold-style-definition -Wtype-limits -Wformat-security -Wformat-y2k
+> >     -Winit-self -Wignored-qualifiers -Wempty-body -Wnested-externs
+> >     -Wendif-labels -Wexpansion-to-defined -Wimplicit-fallthrough=3D2
+> >     -Wmissing-format-attribute -Wno-missing-include-dirs
+> >     -Wno-shift-negative-value -Wno-psabi -iquote . -iquote
+> >     /builds/danielhb/qemu -iquote /builds/danielhb/qemu/include -iquote
+> >     /builds/danielhb/qemu/host/include/i386 -iquote
+> >     /builds/danielhb/qemu/host/include/generic -iquote
+> >     /builds/danielhb/qemu/tcg/i386 -mms-bitfields -D_GNU_SOURCE
+> >     -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
+> >     -fno-common -fwrapv -fno-pie -no-pie -DNEED_CPU_H
+> >     '-DCONFIG_TARGET=3D"riscv64-softmmu-config-target.h"'
+> >     '-DCONFIG_DEVICES=3D"riscv64-softmmu-config-devices.h"' -MD -MQ
+> >     libqemu-riscv64-softmmu.fa.p/target_riscv_vcrypto_helper.c.obj -MF
+> > libqemu-riscv64-softmmu.fa.p/target_riscv_vcrypto_helper.c.obj.d -o
+> >     libqemu-riscv64-softmmu.fa.p/target_riscv_vcrypto_helper.c.obj -c
+> >     ../target/riscv/vcrypto_helper.c
+> >     ../target/riscv/vcrypto_helper.c: In function 'helper_vghsh_vv':
+> >     ../target/riscv/vcrypto_helper.c:791:14: error: unknown type name
+> >     'uint'; did you mean 'u_int'?
+> >       791 |         for (uint j =3D 0; j < 128; j++) {
+> >           |              ^~~~
+> >           |              u_int
+> >     ../target/riscv/vcrypto_helper.c: In function 'helper_vgmul_vv':
+> >     ../target/riscv/vcrypto_helper.c:825:14: error: unknown type name
+> >     'uint'; did you mean 'u_int'?
+> >       825 |         for (uint j =3D 0; j < 128; j++) {
+> >           |              ^~~~
+> >           |              u_int
+> >     [2503/3700] Compiling C object
+> >     libqemu-riscv64-softmmu.fa.p/target_riscv_vector_helper.c.obj
+> >
+> >
+> > If you want to take a look yourself:
+> >
+> > https://gitlab.com/danielhb/qemu/-/jobs/4615946161
+> >
+> > The fix is to use 'int' instead of 'uint' in both cases.
+> >
+> > I apologize for noticing the error this late. I haven't had the chance
+> > to run
+> > Gitlab runners in these patches until now.
+> >
+> > Alistair, in case you decide to take this series you'll have to amend
+> > this
+> > in-tree I'm afraid. It's too late to ask for another review.
+> >
+> >
+> > Thanks,
+> >
+> >
+> > Daniel
 >
-> I see, that sounds like a question of optimization. Most DMA transfers
-> will be to/from guest RAM and it seems like QEMU's memory API could be
-> optimized for that case. PIO/MMIO dispatch could use a different API
-> from DMA transfers, if necessary.
+> Hi Daniel,
+>
+> Thanks you for the testing and notification.
+> If this series are not be taken at the 8.1 feature freeze (July 11th),
+> I'll provide the next version with the fix.
 
-Probably.
+Hey Max,
+
+Thanks for the patches. Unfortunately they won't make the feature
+freeze. They depend on other patches and I haven't gotten a chance to
+look at them yet. If you can send a new version I can start reviewing
+and apply them to my tree in preparation of the next release
+
+Alistair
 
 >
-> I don't think there is a fundamental reason why QEMU's own device
-> emulation code cannot translate memory as fast as vhost devices can.
-
-Yes, it can do what vhost can do. Starting from a vhost may help us to
-know where we could go for the optimization of the memory core.
-
-Thanks
-
+> Thanks,
 >
-> Stefan
+> Max
 >
-
+> >
+> >> +            if ((S[j / 64] >> (j % 64)) & 1) {
+> >> +                Z[0] ^=3D H[0];
+> >> +                Z[1] ^=3D H[1];
+> >> +            }
+> >> +            bool reduce =3D ((H[1] >> 63) & 1);
+> >> +            H[1] =3D H[1] << 1 | H[0] >> 63;
+> >> +            H[0] =3D H[0] << 1;
+> >> +            if (reduce) {
+> >> +                H[0] ^=3D 0x87;
+> >> +            }
+> >> +        }
+> >> +
+> >> +        vd[i * 2 + 0] =3D brev8(Z[0]);
+> >> +        vd[i * 2 + 1] =3D brev8(Z[1]);
+> >> +    }
+> >> +    /* set tail elements to 1s */
+> >> +    vext_set_elems_1s(vd, vta, env->vl * 4, total_elems * 4);
+> >> +    env->vstart =3D 0;
+> >> +}
+> >> +
+> >> +void HELPER(vgmul_vv)(void *vd_vptr, void *vs2_vptr, CPURISCVState
+> >> *env,
+> >> +                      uint32_t desc)
+> >> +{
+> >> +    uint64_t *vd =3D vd_vptr;
+> >> +    uint64_t *vs2 =3D vs2_vptr;
+> >> +    uint32_t vta =3D vext_vta(desc);
+> >> +    uint32_t total_elems =3D vext_get_total_elems(env, desc, 4);
+> >> +
+> >> +    for (uint32_t i =3D env->vstart / 4; i < env->vl / 4; i++) {
+> >> +        uint64_t Y[2] =3D {brev8(vd[i * 2 + 0]), brev8(vd[i * 2 + 1])=
+};
+> >> +        uint64_t H[2] =3D {brev8(vs2[i * 2 + 0]), brev8(vs2[i * 2 + 1=
+])};
+> >> +        uint64_t Z[2] =3D {0, 0};
+> >> +
+> >> +        for (uint j =3D 0; j < 128; j++) {
+> >
+> > ^
+> >
+> > The error being thrown:
+> >
+> >     FAILED:
+> >     libqemu-riscv64-softmmu.fa.p/target_riscv_vcrypto_helper.c.obj
+> >     i686-w64-mingw32-gcc -m32 -Ilibqemu-riscv64-softmmu.fa.p -I. -I..
+> >     -Itarget/riscv -I../target/riscv -Isubprojects/dtc/libfdt
+> >     -I../subprojects/dtc/libfdt -Iqapi -Itrace -Iui -Iui/shader
+> >     -I/usr/i686-w64-mingw32/sys-root/mingw/include/pixman-1
+> >     -I/usr/i686-w64-mingw32/sys-root/mingw/include/glib-2.0
+> >     -I/usr/i686-w64-mingw32/sys-root/mingw/lib/glib-2.0/include
+> >     -fdiagnostics-color=3Dauto -Wall -Winvalid-pch -Werror -std=3Dgnu11
+> > -O2 -g
+> >     -fstack-protector-strong -Wundef -Wwrite-strings -Wmissing-prototyp=
+es
+> >     -Wstrict-prototypes -Wredundant-decls -Wold-style-declaration
+> >     -Wold-style-definition -Wtype-limits -Wformat-security -Wformat-y2k
+> >     -Winit-self -Wignored-qualifiers -Wempty-body -Wnested-externs
+> >     -Wendif-labels -Wexpansion-to-defined -Wimplicit-fallthrough=3D2
+> >     -Wmissing-format-attribute -Wno-missing-include-dirs
+> >     -Wno-shift-negative-value -Wno-psabi -iquote . -iquote
+> >     /builds/danielhb/qemu -iquote /builds/danielhb/qemu/include -iquote
+> >     /builds/danielhb/qemu/host/include/i386 -iquote
+> >     /builds/danielhb/qemu/host/include/generic -iquote
+> >     /builds/danielhb/qemu/tcg/i386 -mms-bitfields -D_GNU_SOURCE
+> >     -D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
+> >     -fno-common -fwrapv -fno-pie -no-pie -DNEED_CPU_H
+> >     '-DCONFIG_TARGET=3D"riscv64-softmmu-config-target.h"'
+> >     '-DCONFIG_DEVICES=3D"riscv64-softmmu-config-devices.h"' -MD -MQ
+> >     libqemu-riscv64-softmmu.fa.p/target_riscv_vcrypto_helper.c.obj -MF
+> > libqemu-riscv64-softmmu.fa.p/target_riscv_vcrypto_helper.c.obj.d -o
+> >     libqemu-riscv64-softmmu.fa.p/target_riscv_vcrypto_helper.c.obj -c
+> >     ../target/riscv/vcrypto_helper.c
+> >     ../target/riscv/vcrypto_helper.c: In function 'helper_vghsh_vv':
+> >     ../target/riscv/vcrypto_helper.c:791:14: error: unknown type name
+> >     'uint'; did you mean 'u_int'?
+> >       791 |         for (uint j =3D 0; j < 128; j++) {
+> >           |              ^~~~
+> >           |              u_int
+> >     ../target/riscv/vcrypto_helper.c: In function 'helper_vgmul_vv':
+> >     ../target/riscv/vcrypto_helper.c:825:14: error: unknown type name
+> >     'uint'; did you mean 'u_int'?
+> >       825 |         for (uint j =3D 0; j < 128; j++) {
+> >           |              ^~~~
+> >           |              u_int
+> >     [2503/3700] Compiling C object
+> >     libqemu-riscv64-softmmu.fa.p/target_riscv_vector_helper.c.obj
+> >
+> >
+> >> +            if ((Y[j / 64] >> (j % 64)) & 1) {
+> >> +                Z[0] ^=3D H[0];
+> >> +                Z[1] ^=3D H[1];
+> >> +            }
+> >> +            bool reduce =3D ((H[1] >> 63) & 1);
+> >> +            H[1] =3D H[1] << 1 | H[0] >> 63;
+> >> +            H[0] =3D H[0] << 1;
+> >> +            if (reduce) {
+> >> +                H[0] ^=3D 0x87;
+> >> +            }
+> >> +        }
+> >> +
+> >> +        vd[i * 2 + 0] =3D brev8(Z[0]);
+> >> +        vd[i * 2 + 1] =3D brev8(Z[1]);
+> >> +    }
+> >> +    /* set tail elements to 1s */
+> >> +    vext_set_elems_1s(vd, vta, env->vl * 4, total_elems * 4);
+> >> +    env->vstart =3D 0;
+> >> +}
+>
 
