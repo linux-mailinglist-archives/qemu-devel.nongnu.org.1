@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A314174E9A4
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 11:00:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B81EA74E9C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 11:03:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJ9DK-0004UJ-SO; Tue, 11 Jul 2023 04:59:18 -0400
+	id 1qJ9Gq-0005Rs-N3; Tue, 11 Jul 2023 05:02:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qJ9DJ-0004U2-Mn; Tue, 11 Jul 2023 04:59:17 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJ9Gf-0005Rh-UQ
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 05:02:45 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qJ9DI-0000CQ-1x; Tue, 11 Jul 2023 04:59:17 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1b8ad907ba4so26971355ad.0; 
- Tue, 11 Jul 2023 01:59:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJ9Ge-0001FO-4Y
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 05:02:45 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fbc656873eso67814505e9.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 02:02:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689065952; x=1691657952;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Fknk+nbSM3+5rqIDMu2hb484hZtt8MIJnjlzR1PGkJE=;
- b=eIERUUPhnOsZ621lRNpjhPnxq94rDpdlZ0N8fbJoT6f8WLVMdFb7pg/wqTGpHffmHv
- Nc+AwHrQITdGSOzFY9BABQuG93b0eLyUyHIYxZhpxL7Fnl/PAC20mF0KHRTbKEltXRV7
- thdRtcqrkOuGZxDchkbANlD3bJZfHahOitKYYth5SZN1sDVJglSyvtwRMEfAdtHrw4mz
- ZXdk0NF3Wde7Zs0xv3n+mR9DF1KNSo7FHOyU+LuI3Bx44XxK/w03bnm2d6jL9ZKdbol8
- meFIhtmhq3tlmp9Es7Mk6P12uqakemDFIsK7FTRJTmObxhxj7KAChYauIXYuAzFYtdY7
- 4Hfw==
+ d=linaro.org; s=google; t=1689066161; x=1691658161;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+O3/wEqkLklEEqlF0ZGIFQwFiiKUZGb+YriXJ8Gy0aU=;
+ b=sD8WRVk+L2ehb1A2d0IhAsohYEnNav9PT3sIZWnT+5uNJ64TsZqDp0ZjSSMPDp58gs
+ ej5+XTnPiWgz5T5ASyrydodT+Gz0WXPmXgyQ/sTKyBEEfivEfg8phJMmGnb5Tpp9XYsn
+ s3PjRd3EhqhwZDeNECzQq4CnvrhcyCBLyWBnKWbsq5aSUSDnZMu7DEmfDYAFQAtEOgc5
+ oBnb0aPnSys0hXSz0CYwOj+K60y+wTU5rDxsq+6TgTnbs28IYtuL0KEaZ7doUN6MoNFt
+ Vc0I1TO7EeB9V9ZF4w1N9lwpeNerCdkxUl+TLHNU4Z2+FBHuPV8dLiIZxwnuMT2ATIzW
+ MW4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689065952; x=1691657952;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Fknk+nbSM3+5rqIDMu2hb484hZtt8MIJnjlzR1PGkJE=;
- b=UN5G76Arlz8jdqhunw1tUwIWNEe9psUjHEH10x3YdMAojSYRtybvkkYg7UG9Zdybpb
- MhaiJ9G+Zo7SGgC5N2QNPqKBdLonoycAPcUy4ZzjGZ/LhfWpr/QhcJfMQYeJIqZFX0p5
- jRu+FjgVlrrvy4/fqr84nYDaYq4uqsPHYQatAUscCzl3QQo8jYD+rVpoA0d1RGp1PslZ
- lufhRccQx8fHFFI7GpsIMTif0NNEa6PhNP+zVkRnSG6Th1RgPggwTXiI/5HpeUVD30kz
- lnUcWaxWoHVSnUKQ/iYH6DHY/6eQ+hEGGMYVIo8wStW7Ywu1wlFS+L4SXAUCKalvSmts
- GTzA==
-X-Gm-Message-State: ABy/qLZWByWggB4Jolkwh46uHlN7T2epZ0c6daqOZy4rIOy414O/gFA3
- j/x9Z8goosgcPSvBX2SqALz8L1igZuE=
-X-Google-Smtp-Source: APBJJlG6Oj2bVl80mpz2w6+fWGMLTo0gTyns/O5GMxQ2I5j9LbFmNSO+jEwgiqPDLpz/pT6pM6XwqA==
-X-Received: by 2002:a17:902:ec88:b0:1b7:fef7:d578 with SMTP id
- x8-20020a170902ec8800b001b7fef7d578mr12729803plg.41.1689065952041; 
- Tue, 11 Jul 2023 01:59:12 -0700 (PDT)
-Received: from wheely.local0.net ([220.240.231.96])
- by smtp.gmail.com with ESMTPSA id
- y1-20020a170902ed4100b001b7fa81b145sm1305660plb.265.2023.07.11.01.59.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jul 2023 01:59:11 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-stable@nongnu.org,
- Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Taylor Simpson <tsimpson@quicinc.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>
-Subject: [PATCH] gdbstub: Fix client Ctrl-C handling
-Date: Tue, 11 Jul 2023 18:59:03 +1000
-Message-Id: <20230711085903.304496-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.1
+ d=1e100.net; s=20221208; t=1689066161; x=1691658161;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+O3/wEqkLklEEqlF0ZGIFQwFiiKUZGb+YriXJ8Gy0aU=;
+ b=R9O21iATPq1rBeIvP+SErrZZEWj4XsrfIoF1KknLVKTZERHaoYDMAKjdEom1kgnN0X
+ OZ5zeglOBV9JehSJZCd58oBe6+JMoE2DImGr7lyAZhsGl3nsAEDy1hfcGT1IZNnQ/Krz
+ AhLYL4OyBcyQ8p3jmv9DSECc38/SJ+4SHlvoE4BWL+0THPwiE4PBfraCCIBlC2MS3HOw
+ eVgt553LPvxNQGrD968aehnHSeicJyRwhCyxVCjVPWs1BuJy+3T96eTrKZsss/82M78I
+ 14prI5TcrXXqwXlog9/cqBw9Nh2LXm4wm8ctQ4gSn2eikAx71Zp1EOqos+v11Ot15S7O
+ MBcA==
+X-Gm-Message-State: ABy/qLZJv4K+4YK8Mm3i/qCJMrRyhdtELBKFKkmGlu751Wy761U6q4S2
+ i1ILfANfBxHnaqyYIS8zlCmw7dAr1J29vEdzkL7i2A==
+X-Google-Smtp-Source: APBJJlHJtUxGT9vZ1bAQ11UYMYBokRCbuqBhvebyd6oHYros6t6DAcq5jP5P8PSERdn/Xu365nh8HQ==
+X-Received: by 2002:a5d:4cc5:0:b0:314:7fb:92c2 with SMTP id
+ c5-20020a5d4cc5000000b0031407fb92c2mr18413631wrt.30.1689066161158; 
+ Tue, 11 Jul 2023 02:02:41 -0700 (PDT)
+Received: from [192.168.69.115] (mst45-h01-176-184-47-225.dsl.sta.abo.bbox.fr.
+ [176.184.47.225]) by smtp.gmail.com with ESMTPSA id
+ u2-20020a5d4682000000b00313e2abfb8dsm1668731wrq.92.2023.07.11.02.02.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Jul 2023 02:02:40 -0700 (PDT)
+Message-ID: <45565778-bab4-36dc-bd97-e7fdd13b3b9c@linaro.org>
+Date: Tue, 11 Jul 2023 11:02:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [hotfix PATCH-for-8.1] meson: Fix cross-building for RISCV host
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20230711085409.53309-1-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230711085409.53309-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,62 +95,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The gdb remote protocol has a special interrupt character (0x03) that is
-transmitted outside the regular packet processing, and represents a
-Ctrl-C pressed in the client. Despite not being a regular packet, it
-does expect a regular stop response if the stub successfully stops the
-running program.
+On 11/7/23 10:54, Philippe Mathieu-Daudé wrote:
+> While when building on native Linux the host architecture
+> is reported as "riscv32" or "riscv64", when cross-compiling
+> it is detected as "riscv". Meson handles the cross-detection
+> but displays a warning:
+> 
+>    WARNING: Unknown CPU family riscv, please report this at https://github.com/mesonbuild/meson/issues/new
+> 
+> Commit 278c1bcef5 was tested on native host but not under
+> cross environment, and now we get there [*]:
 
-See: https://sourceware.org/gdb/onlinedocs/gdb/Interrupts.html
+Richard, if this works for you, please scratch this " [*]",
+I meant to list 
+"https://gitlab.com/qemu-project/qemu/-/jobs/4627545569#L128" but then 
+realized this link will
+expire in few days so be irrelevant in the commit desc.
 
-Inhibiting the stop reply packet can lead to gdb client hang. So permit
-a stop response when receiving a character from gdb that stops the vm.
-Additionally, add a warning if that was not a 0x03 character, because
-the gdb session is likely to end up getting confused if this happens.
-
-Cc: qemu-stable@nongnu.org
-Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Cc: Alex Bennée <alex.bennee@linaro.org>
-Cc: Taylor Simpson <tsimpson@quicinc.com>
-Reported-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Fixes: 758370052fb ("gdbstub: only send stop-reply packets when allowed to")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-Hey Fred, I'm not sure if this is the gdb hang you were seeing, but it
-is the one I could reproduce. Could be worth checking there are no more
-corner case hangs after this.
-
-Thanks,
-Nick
-
- gdbstub/gdbstub.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 6911b73c07..ce8b42eb15 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -2051,8 +2051,17 @@ void gdb_read_byte(uint8_t ch)
-             return;
-     }
-     if (runstate_is_running()) {
--        /* when the CPU is running, we cannot do anything except stop
--           it when receiving a char */
-+        /*
-+         * When the CPU is running, we cannot do anything except stop
-+         * it when receiving a char. This is expected on a Ctrl-C in the
-+         * gdb client. Because we are in all-stop mode, gdb sends a
-+         * 0x03 byte which is not a usual packet, so we handle it specially
-+         * here, but it does expect a stop reply.
-+         */
-+        if (ch != 0x03) {
-+            warn_report("gdbstub: client sent packet while target running\n");
-+        }
-+        gdbserver_state.allow_stop_reply = true;
-         vm_stop(RUN_STATE_PAUSED);
-     } else
- #endif
--- 
-2.40.1
-
+> 
+>    ../meson.build:684:6: ERROR: Problem encountered: Unsupported CPU riscv, try --enable-tcg-interpreter
+> 
+> Instead of:
+> 
+>    Found pkg-config: /usr/bin/riscv64-linux-gnu-pkg-config (1.8.1)
+> 
+> As a kludge, re-introduce "riscv" in the supported_cpus[] array.
+> 
+> Fixes: 278c1bcef5 ("target/riscv: Only unify 'riscv32/64' -> 'riscv' for host cpu in meson")
+> Reported-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   meson.build | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
