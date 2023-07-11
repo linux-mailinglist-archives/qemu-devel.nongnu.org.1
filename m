@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6631C74F3B1
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 17:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ADDD74F3AB
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 17:37:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJFQP-0002s4-3x; Tue, 11 Jul 2023 11:37:13 -0400
+	id 1qJFOg-00080U-TL; Tue, 11 Jul 2023 11:35:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJFPo-0002io-MB
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 11:36:41 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJFOa-0007vJ-0U
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 11:35:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJFPm-0006JI-6i
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 11:36:36 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJFOW-0005qU-A7
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 11:35:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689089789;
+ s=mimecast20190719; t=1689089712;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=U3f78T6S05z8KbkTyGOlkA0yT83nXXYOtug9vzpPwgM=;
- b=JEsfKtaEGwj4F3xgCGTeEaLUcgc4ukdEleEK56g8yRQ4jTtT/5CT6Hb8HsP/pMfeGVA9nz
- eDuuSI28N5umse0K3nVCsYfRyLhNGhE/8f48YPI++ILazOZBy2TIqibxWzsghA124lOZQx
- DJPRRTrdLbMIk4bTEEwlmt6idH3VvJI=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=RxEnr9OgTsaxRnNcqrFO9mwEThypEltoPLodmgEnhOw=;
+ b=TMTr2U4ghNXPVm/RD75A4J4x3TfL2/LN7kSEGixX3L6lB9ng6IFMskrAdskXesfuxbQxv0
+ zbfBf6Yb28U3YibuU7nFqCramEVLFzkE9otoezo2qfQxsEu8tcB788+EewkjBqcxzYvVny
+ pdxkzapl6y4387fqzJxfEBfm3/T2dKM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-125-rENx7KDvNLiEg7z3yKnonQ-1; Tue, 11 Jul 2023 11:34:58 -0400
-X-MC-Unique: rENx7KDvNLiEg7z3yKnonQ-1
+ us-mta-113-oaGRBzSlOIiVLgU8Ndupew-1; Tue, 11 Jul 2023 11:35:11 -0400
+X-MC-Unique: oaGRBzSlOIiVLgU8Ndupew-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 785DC2804604;
- Tue, 11 Jul 2023 15:34:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2DA03848185;
+ Tue, 11 Jul 2023 15:18:03 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.39.194.218])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 15309C51488;
- Tue, 11 Jul 2023 15:34:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D024FC09A09;
+ Tue, 11 Jul 2023 15:34:48 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>,
@@ -50,9 +51,12 @@ Cc: David Hildenbrand <david@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Igor Mammedov <imammedo@redhat.com>, qemu-arm@nongnu.org,
  Gavin Shan <gshan@redhat.com>, Mario Casquero <mcasquer@redhat.com>
-Subject: [PATCH v4 0/7] virtio-mem: Device unplug support
-Date: Tue, 11 Jul 2023 17:34:38 +0200
-Message-ID: <20230711153445.514112-1-david@redhat.com>
+Subject: [PATCH v4 1/7] virtio-md-pci: New parent type for virtio-mem-pci and
+ virtio-pmem-pci
+Date: Tue, 11 Jul 2023 17:34:39 +0200
+Message-ID: <20230711153445.514112-2-david@redhat.com>
+In-Reply-To: <20230711153445.514112-1-david@redhat.com>
+References: <20230711153445.514112-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
@@ -65,7 +69,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,82 +85,264 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-One limitation of virtio-mem is that we cannot currently unplug virtio-mem
-devices that have all memory unplugged from the VM.
+Let's add a new abstract "virtio memory device" type, and use it as
+parent class of virtio-mem-pci and virtio-pmem-pci.
 
-Let's properly handle forced unplug (as can be triggered by the VM) and
-add support for ordinary unplug (requests) of virtio-mem devices that are
-in a compatible state (no legacy mode, no plugged memory, no plug request).
-
-Briefly tested on both, x86_64 and aarch64.
-
-v3 -> v4:
-- "pc: Factor out (un)plug handling of virtio-md-pci devices"
- -> Add stubs to fix arm64 compilation under mingw
-- Added Tested-by's
-
-v2 -> v3:
-- "virtio-md-pci: New parent type for virtio-mem-pci and virtio-pmem-pci"
- -> Add MAINTAINERS entry
-
-v1 -> v2:
-- Reduce code duplication and implement it in a cleaner way using a
-  new abstract virtio-md-pci parent class
-- "virtio-md-pci: New parent type for virtio-mem-pci and virtio-pmem-pci"
- -> Added, use a new aprent type like virtio-input-pci
-- "pc: Factor out (un)plug handling of virtio-md-pci devices"
- -> Added, factor it cleanly out
-- "arm/virt: Use virtio-md-pci (un)plug functions"
- -> Added, reduce code duplciation
-- "virtio-md-pci: Handle unplug of virtio based memory devices"
- -> More generic without any device-specifics
-- "virtio-md-pci: Support unplug requests for compatible devices"
- -> More generic without any device-specifics
-- "virtio-mem: Prepare for device unplug support"
- -> Use callback, separated from virtio-mem-pci device change
-- "virtio-mem-pci: Device unplug support"
- -> Use callback, separated from virtio-mem device change
-
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Eduardo Habkost <eduardo@habkost.net>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: Igor Mammedov <imammedo@redhat.com>
-Cc: qemu-arm@nongnu.org
-Cc: Gavin Shan <gshan@redhat.com>
-Cc: Mario Casquero <mcasquer@redhat.com>
-
-David Hildenbrand (7):
-  virtio-md-pci: New parent type for virtio-mem-pci and virtio-pmem-pci
-  pc: Factor out (un)plug handling of virtio-md-pci devices
-  arm/virt: Use virtio-md-pci (un)plug functions
-  virtio-md-pci: Handle unplug of virtio based memory devices
-  virtio-md-pci: Support unplug requests for compatible devices
-  virtio-mem: Prepare for device unplug support
-  virtio-mem-pci: Device unplug support
-
- MAINTAINERS                       |   7 ++
- hw/arm/virt.c                     |  81 +++-------------
- hw/i386/pc.c                      |  90 +++---------------
- hw/virtio/Kconfig                 |   8 +-
- hw/virtio/meson.build             |   1 +
- hw/virtio/virtio-md-pci.c         | 151 ++++++++++++++++++++++++++++++
- hw/virtio/virtio-mem-pci.c        |  54 +++++++++--
- hw/virtio/virtio-mem-pci.h        |   6 +-
- hw/virtio/virtio-mem.c            |  25 +++++
- hw/virtio/virtio-pmem-pci.c       |   5 +-
- hw/virtio/virtio-pmem-pci.h       |   6 +-
- include/hw/virtio/virtio-md-pci.h |  44 +++++++++
- include/hw/virtio/virtio-mem.h    |   1 +
- stubs/meson.build                 |   1 +
- stubs/virtio-md-pci.c             |  24 +++++
- 15 files changed, 337 insertions(+), 167 deletions(-)
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ MAINTAINERS                       |  6 ++++++
+ hw/virtio/Kconfig                 |  8 +++++--
+ hw/virtio/meson.build             |  1 +
+ hw/virtio/virtio-md-pci.c         | 33 +++++++++++++++++++++++++++++
+ hw/virtio/virtio-mem-pci.c        |  5 +----
+ hw/virtio/virtio-mem-pci.h        |  6 +++---
+ hw/virtio/virtio-pmem-pci.c       |  5 +----
+ hw/virtio/virtio-pmem-pci.h       |  6 +++---
+ include/hw/virtio/virtio-md-pci.h | 35 +++++++++++++++++++++++++++++++
+ 9 files changed, 89 insertions(+), 16 deletions(-)
  create mode 100644 hw/virtio/virtio-md-pci.c
  create mode 100644 include/hw/virtio/virtio-md-pci.h
- create mode 100644 stubs/virtio-md-pci.c
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e158a25cfe..bb4626faf7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2229,6 +2229,12 @@ F: hw/virtio/virtio-crypto.c
+ F: hw/virtio/virtio-crypto-pci.c
+ F: include/hw/virtio/virtio-crypto.h
+ 
++virtio based memory device
++M: David Hildenbrand <david@redhat.com>
++S: Supported
++F: hw/virtio/virtio-md-pci.c
++F: include/hw/virtio/virtio-md-pci.h
++
+ virtio-mem
+ M: David Hildenbrand <david@redhat.com>
+ S: Supported
+diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
+index a9ee09062f..92c9cf6c96 100644
+--- a/hw/virtio/Kconfig
++++ b/hw/virtio/Kconfig
+@@ -35,6 +35,10 @@ config VIRTIO_CRYPTO
+     default y
+     depends on VIRTIO
+ 
++config VIRTIO_MD
++    bool
++    select MEM_DEVICE
++
+ config VIRTIO_PMEM_SUPPORTED
+     bool
+ 
+@@ -43,7 +47,7 @@ config VIRTIO_PMEM
+     default y
+     depends on VIRTIO
+     depends on VIRTIO_PMEM_SUPPORTED
+-    select MEM_DEVICE
++    select VIRTIO_MD
+ 
+ config VIRTIO_MEM_SUPPORTED
+     bool
+@@ -54,7 +58,7 @@ config VIRTIO_MEM
+     depends on VIRTIO
+     depends on LINUX
+     depends on VIRTIO_MEM_SUPPORTED
+-    select MEM_DEVICE
++    select VIRTIO_MD
+ 
+ config VHOST_VSOCK_COMMON
+     bool
+diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
+index c4f4fe05fa..13e7c6c272 100644
+--- a/hw/virtio/meson.build
++++ b/hw/virtio/meson.build
+@@ -63,6 +63,7 @@ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_PMEM', if_true: files('virtio-pmem-pci.c'
+ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu-pci.c'))
+ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem-pci.c'))
+ virtio_pci_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev-pci.c'))
++virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MD', if_true: files('virtio-md-pci.c'))
+ 
+ specific_virtio_ss.add_all(when: 'CONFIG_VIRTIO_PCI', if_true: virtio_pci_ss)
+ 
+diff --git a/hw/virtio/virtio-md-pci.c b/hw/virtio/virtio-md-pci.c
+new file mode 100644
+index 0000000000..6b02ff908e
+--- /dev/null
++++ b/hw/virtio/virtio-md-pci.c
+@@ -0,0 +1,33 @@
++/*
++ * Abstract virtio based memory device
++ *
++ * Copyright (C) 2023 Red Hat, Inc.
++ *
++ * Authors:
++ *  David Hildenbrand <david@redhat.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "hw/virtio/virtio-md-pci.h"
++#include "hw/mem/memory-device.h"
++
++static const TypeInfo virtio_md_pci_info = {
++    .name = TYPE_VIRTIO_MD_PCI,
++    .parent = TYPE_VIRTIO_PCI,
++    .instance_size = sizeof(VirtIOMDPCI),
++    .class_size = sizeof(VirtIOMDPCIClass),
++    .abstract = true,
++    .interfaces = (InterfaceInfo[]) {
++        { TYPE_MEMORY_DEVICE },
++        { }
++    },
++};
++
++static void virtio_md_pci_register(void)
++{
++    type_register_static(&virtio_md_pci_info);
++}
++type_init(virtio_md_pci_register)
+diff --git a/hw/virtio/virtio-mem-pci.c b/hw/virtio/virtio-mem-pci.c
+index b85c12668d..2ef0f07630 100644
+--- a/hw/virtio/virtio-mem-pci.c
++++ b/hw/virtio/virtio-mem-pci.c
+@@ -142,14 +142,11 @@ static void virtio_mem_pci_instance_init(Object *obj)
+ 
+ static const VirtioPCIDeviceTypeInfo virtio_mem_pci_info = {
+     .base_name = TYPE_VIRTIO_MEM_PCI,
++    .parent = TYPE_VIRTIO_MD_PCI,
+     .generic_name = "virtio-mem-pci",
+     .instance_size = sizeof(VirtIOMEMPCI),
+     .instance_init = virtio_mem_pci_instance_init,
+     .class_init = virtio_mem_pci_class_init,
+-    .interfaces = (InterfaceInfo[]) {
+-        { TYPE_MEMORY_DEVICE },
+-        { }
+-    },
+ };
+ 
+ static void virtio_mem_pci_register_types(void)
+diff --git a/hw/virtio/virtio-mem-pci.h b/hw/virtio/virtio-mem-pci.h
+index e636e1a48d..c50b51d608 100644
+--- a/hw/virtio/virtio-mem-pci.h
++++ b/hw/virtio/virtio-mem-pci.h
+@@ -13,21 +13,21 @@
+ #ifndef QEMU_VIRTIO_MEM_PCI_H
+ #define QEMU_VIRTIO_MEM_PCI_H
+ 
+-#include "hw/virtio/virtio-pci.h"
++#include "hw/virtio/virtio-md-pci.h"
+ #include "hw/virtio/virtio-mem.h"
+ #include "qom/object.h"
+ 
+ typedef struct VirtIOMEMPCI VirtIOMEMPCI;
+ 
+ /*
+- * virtio-mem-pci: This extends VirtioPCIProxy.
++ * virtio-mem-pci: This extends VirtIOMDPCI.
+  */
+ #define TYPE_VIRTIO_MEM_PCI "virtio-mem-pci-base"
+ DECLARE_INSTANCE_CHECKER(VirtIOMEMPCI, VIRTIO_MEM_PCI,
+                          TYPE_VIRTIO_MEM_PCI)
+ 
+ struct VirtIOMEMPCI {
+-    VirtIOPCIProxy parent_obj;
++    VirtIOMDPCI parent_obj;
+     VirtIOMEM vdev;
+     Notifier size_change_notifier;
+ };
+diff --git a/hw/virtio/virtio-pmem-pci.c b/hw/virtio/virtio-pmem-pci.c
+index 197d219204..cfe7f3b67c 100644
+--- a/hw/virtio/virtio-pmem-pci.c
++++ b/hw/virtio/virtio-pmem-pci.c
+@@ -110,13 +110,10 @@ static void virtio_pmem_pci_instance_init(Object *obj)
+ static const VirtioPCIDeviceTypeInfo virtio_pmem_pci_info = {
+     .base_name             = TYPE_VIRTIO_PMEM_PCI,
+     .generic_name          = "virtio-pmem-pci",
++    .parent                = TYPE_VIRTIO_MD_PCI,
+     .instance_size = sizeof(VirtIOPMEMPCI),
+     .instance_init = virtio_pmem_pci_instance_init,
+     .class_init    = virtio_pmem_pci_class_init,
+-    .interfaces = (InterfaceInfo[]) {
+-        { TYPE_MEMORY_DEVICE },
+-        { }
+-    },
+ };
+ 
+ static void virtio_pmem_pci_register_types(void)
+diff --git a/hw/virtio/virtio-pmem-pci.h b/hw/virtio/virtio-pmem-pci.h
+index 63cfe727f7..88b01ce2db 100644
+--- a/hw/virtio/virtio-pmem-pci.h
++++ b/hw/virtio/virtio-pmem-pci.h
+@@ -14,21 +14,21 @@
+ #ifndef QEMU_VIRTIO_PMEM_PCI_H
+ #define QEMU_VIRTIO_PMEM_PCI_H
+ 
+-#include "hw/virtio/virtio-pci.h"
++#include "hw/virtio/virtio-md-pci.h"
+ #include "hw/virtio/virtio-pmem.h"
+ #include "qom/object.h"
+ 
+ typedef struct VirtIOPMEMPCI VirtIOPMEMPCI;
+ 
+ /*
+- * virtio-pmem-pci: This extends VirtioPCIProxy.
++ * virtio-pmem-pci: This extends VirtIOMDPCI.
+  */
+ #define TYPE_VIRTIO_PMEM_PCI "virtio-pmem-pci-base"
+ DECLARE_INSTANCE_CHECKER(VirtIOPMEMPCI, VIRTIO_PMEM_PCI,
+                          TYPE_VIRTIO_PMEM_PCI)
+ 
+ struct VirtIOPMEMPCI {
+-    VirtIOPCIProxy parent_obj;
++    VirtIOMDPCI parent_obj;
+     VirtIOPMEM vdev;
+ };
+ 
+diff --git a/include/hw/virtio/virtio-md-pci.h b/include/hw/virtio/virtio-md-pci.h
+new file mode 100644
+index 0000000000..a241b54fcd
+--- /dev/null
++++ b/include/hw/virtio/virtio-md-pci.h
+@@ -0,0 +1,35 @@
++/*
++ * Abstract virtio based memory device
++ *
++ * Copyright (C) 2023 Red Hat, Inc.
++ *
++ * Authors:
++ *  David Hildenbrand <david@redhat.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2.
++ * See the COPYING file in the top-level directory.
++ */
++
++#ifndef HW_VIRTIO_MD_PCI_H
++#define HW_VIRTIO_MD_PCI_H
++
++#include "hw/virtio/virtio-pci.h"
++#include "qom/object.h"
++
++/*
++ * virtio-md-pci: This extends VirtioPCIProxy.
++ */
++#define TYPE_VIRTIO_MD_PCI "virtio-md-pci"
++
++OBJECT_DECLARE_TYPE(VirtIOMDPCI, VirtIOMDPCIClass, VIRTIO_MD_PCI)
++
++struct VirtIOMDPCIClass {
++    /* private */
++    VirtioPCIClass parent;
++};
++
++struct VirtIOMDPCI {
++    VirtIOPCIProxy parent_obj;
++};
++
++#endif
 -- 
 2.41.0
 
