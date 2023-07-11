@@ -2,85 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7064474E92B
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 10:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6950A74E92D
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 10:34:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJ8nx-00076n-SY; Tue, 11 Jul 2023 04:33:05 -0400
+	id 1qJ8p1-0008RK-BG; Tue, 11 Jul 2023 04:34:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qJ8nr-00072I-L0
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:32:59 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qJ8np-00026k-LT
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:32:59 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3fbc54cab6fso55583995e9.0
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 01:32:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689064372; x=1691656372;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=e+f/HQUrfmF/f14X1aZYIvQyJzED5OY7kpFSvwgb96U=;
- b=G3iQUwipTaaIgAbULosdw9v93+GjRH5FbupVCRj6/DxV0NzGroy61vttFtW8wRLsd1
- RU+5ZweUcFtF8pvHFH/3w7a42vARXgIqkQ9bf/CK41KHXJ5zDf0Rc3BrKSnSWGdJS2L6
- RYts6tXC7khF8BH/ef2XTPozLkLeUcLuIUrHcDc0HmpZy2GAsD66nVbpXJOMfCh1ommF
- /MWcnINWUWFu2xvy51nnp+ZXjZYHqwg3eipCymWa+HFcmD2updDjKexeRY5qxLury6RI
- kDNhifP0cr5ZN850lOBgC+bK9lqrEIVdJ0/KIPNM2Z0njzLWe6IIoPVofRqVLbHSSIGR
- 9Rsw==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qJ8oy-0008Na-Rs
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:34:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qJ8ou-0002J6-Ka
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 04:34:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689064443;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=scegDVuqLniXVBQLTpYvJieYnttyC5KCaPVfOqIJ1t0=;
+ b=EVvHURUEpJQgVNRYcTf6Rgng+tNDhhdKd2Z/T/hd9RG/jWCpgLYAgXqycjFpRDPiv9KMx+
+ M8hbwPCsAJ+dLXW6sux71/ko8uuymlb5FOe1od/eUQ4BBZUY9TqnsBwTdPzAE2j/oayRBc
+ QkcgV60YQcgB6hZZFYldio9szJTPPzQ=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-527-mweMG9bdNWOlkIgs2jD_AQ-1; Tue, 11 Jul 2023 04:34:02 -0400
+X-MC-Unique: mweMG9bdNWOlkIgs2jD_AQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-98e40d91fdfso345071666b.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 01:34:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689064372; x=1691656372;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=e+f/HQUrfmF/f14X1aZYIvQyJzED5OY7kpFSvwgb96U=;
- b=jb+ObMEuSdEKrKvyYDdOgIvHnPO3b6N9zSBcL+kJmROzXu/MAgMon1Vd6DQX1CKCLE
- 6Jj/etsBcJ8hGnmgWnOMLplJuWthZDqewrVr2FbnwZwTgncnE6ZOnkeQoIVBvTozAWWC
- JYwLHUyzC+migQpRWGtw1OA/Nyr40nB6XzsFsd05c7SuGWl6jZYT+hBVoWW22eEEicxs
- SLK3EpHHOjhXmg+KKWQj4PnLMCvloZRIXJ0S/GIuCYNmBvfOvefC+DT0CR14qGqloVJa
- qWam1Soe7ydYcs9rUgM6oocFWaIN1VLLC/AGBM5ea9Jx2hB0VDrECAYL8hNZuzd4efrV
- kkqQ==
-X-Gm-Message-State: ABy/qLZbbtj1H2cRZmrd/wssgad4QJH/xu4z7kBUE2bO2+ANMd9IiLO6
- JQb39S7QdFywNs34oexvx9T85Q==
-X-Google-Smtp-Source: APBJJlGO8gHvJhlxyBw7fGvNbV+p5De1DSVDgs1/wVqYoIj/5q2CmNVPZnImrSraw6S8eCVT6F9Llg==
-X-Received: by 2002:a7b:c3d5:0:b0:3f6:91c:4e86 with SMTP id
- t21-20020a7bc3d5000000b003f6091c4e86mr12696607wmj.3.1689064372285; 
- Tue, 11 Jul 2023 01:32:52 -0700 (PDT)
-Received: from [192.168.8.133] ([85.255.236.57])
- by smtp.gmail.com with ESMTPSA id
- p19-20020a1c7413000000b003fba137857esm1861865wmc.14.2023.07.11.01.32.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Jul 2023 01:32:51 -0700 (PDT)
-Message-ID: <05fbf7e2-3f74-9d17-f80c-049f327fe911@linaro.org>
-Date: Tue, 11 Jul 2023 09:32:48 +0100
+ d=1e100.net; s=20221208; t=1689064440; x=1691656440;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=scegDVuqLniXVBQLTpYvJieYnttyC5KCaPVfOqIJ1t0=;
+ b=aWf6ys6kGbCBimpRm/z5XwIpo1UdXUhZTNJnWjLLc24OWhiPeNaSOBnWg/M1hll3av
+ Hky4nEy24+TyDuCN26X+Qzx952lnGARa3IZYlSyk4cXYd8+OzjYVtV7vZi7YtHv5AAv9
+ J9YqBhVSD5RwJM9ly0F0AWuxEnVSyzw1bESL1SGPtulBKq9KLYf1XXxyASaKm9AXoc6Y
+ SCIglBayj39A9fv7qPKz/pdQQLLdWP/52mDRpzRB5pHpHLP/QKplctf6ulp3C1Dmcv0Q
+ ZDyox1Zb6DOiSz2jC1ykTbEEtIRJCQ4+Ruqt0ApbwSJH2NYKoThbMqc7FxBzQRwn+5GN
+ 8FXA==
+X-Gm-Message-State: ABy/qLaO7GUn0XffwFTII7hUPHICl/EHLaEzgKz1cKaDR0LXMR+0a4TB
+ 2rdmkXig/LcvrkgFltftxM5PWUemr7n4iaZ7uun/jOXPDihLJUQy57zHvEKSNxXXTw0oNhXbXYs
+ 6wAOQPS9jWCACnlsYTikFCsE=
+X-Received: by 2002:a17:907:a704:b0:992:630f:98b6 with SMTP id
+ vw4-20020a170907a70400b00992630f98b6mr15407409ejc.37.1689064440789; 
+ Tue, 11 Jul 2023 01:34:00 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGQylfpYgmb0mL4ZJ23qyuUvJaIv4O5VAjRR2VahLIaPjscN6kqEl+UNgAsxW1QgcWDdfuwZQ==
+X-Received: by 2002:a17:907:a704:b0:992:630f:98b6 with SMTP id
+ vw4-20020a170907a70400b00992630f98b6mr15407397ejc.37.1689064440477; 
+ Tue, 11 Jul 2023 01:34:00 -0700 (PDT)
+Received: from redhat.com ([2.52.3.112]) by smtp.gmail.com with ESMTPSA id
+ li13-20020a170906f98d00b009887c9b2812sm845935ejb.8.2023.07.11.01.33.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 11 Jul 2023 01:34:00 -0700 (PDT)
+Date: Tue, 11 Jul 2023 04:33:56 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ qemu-devel <qemu-devel@nongnu.org>, qemu-block@nongnu.org,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>
+Subject: Re: [PATCH 4/4] pci: Compare function number and ARI next function
+ number
+Message-ID: <20230711043101-mutt-send-email-mst@kernel.org>
+References: <20230701070133.24877-1-akihiko.odaki@daynix.com>
+ <20230701070133.24877-5-akihiko.odaki@daynix.com>
+ <805445D0-111B-4D7B-A02F-71A4B90FA848@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PULL 00/44] MIPS patches for 2023-07-10
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Siarhei Volkau <lis8215@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20230710222611.50978-1-philmd@linaro.org>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230710222611.50978-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <805445D0-111B-4D7B-A02F-71A4B90FA848@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.101,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,31 +103,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/10/23 23:25, Philippe Mathieu-Daudé wrote:
-> The following changes since commit fcb237e64f9d026c03d635579c7b288d0008a6e5:
+On Tue, Jul 11, 2023 at 12:40:47PM +0530, Ani Sinha wrote:
 > 
->    Merge tag 'pull-vfio-20230710' ofhttps://github.com/legoater/qemu  into staging (2023-07-10 09:17:06 +0100)
 > 
-> are available in the Git repository at:
+> > On 01-Jul-2023, at 12:31 PM, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> > 
+> > The function number must be lower than the next function number
+> > advertised with ARI.
+> > 
+> > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> > ---
+> > hw/pci/pci.c | 15 +++++++++++++++
+> > 1 file changed, 15 insertions(+)
+> > 
+> > diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> > index e2eb4c3b4a..568665ee42 100644
+> > --- a/hw/pci/pci.c
+> > +++ b/hw/pci/pci.c
+> > @@ -2059,6 +2059,8 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
+> >     Error *local_err = NULL;
+> >     bool is_default_rom;
+> >     uint16_t class_id;
+> > +    uint16_t ari;
+> > +    uint16_t nextfn;
+> > 
+> >     /*
+> >      * capped by systemd (see: udev-builtin-net_id.c)
+> > @@ -2121,6 +2123,19 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
+> >         }
+> >     }
+> > 
+> > +    if (pci_is_express(pci_dev)) {
+> > +        ari = pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI);
+> > +        if (ari) {
+> > +            nextfn = (pci_get_long(pci_dev->config + ari + PCI_ARI_CAP) >> 8) & 0xff;
+> > +            if (nextfn && (pci_dev->devfn & 0xff) >= nextfn) {
+> > +                error_setg(errp, "PCI: function number %u is not lower than ARI next function number %u",
+> > +                           pci_dev->devfn & 0xff, nextfn);
+> > +                pci_qdev_unrealize(DEVICE(pci_dev));
+> > +                return;
+> > +            }
+> > +        }
+> > +    }
+> > +
 > 
->    https://github.com/philmd/qemu.git  tags/mips-20230710
-> 
-> for you to fetch changes up to 752dfff5ecf35a38145c2dfbb842224177fd1afd:
-> 
->    hw/ide/piix: Move registration of VMStateDescription to DeviceClass (2023-07-11 00:11:25 +0200)
-> 
-> ----------------------------------------------------------------
-> MIPS patches queue
-> 
-> - Use clock API & divider for cp0_timer to avoid rounding issue (Jiaxun)
-> - Implement Loongson CSR instructions (Jiaxun)
-> - Implement Ingenic MXU ASE v1 rev2 (Siarhei)
-> - Enable GINVx support for I6400 and I6500 cores (Marcin)
-> - Generalize PCI IDE controller models (Bernhard)
+> So I kind of got lost in all the patches. What was the ultimate decision regarding checking this?
 
-Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+We still need to fix ARI for multi-function PFs.
+I feel the right thing to do is to init Next Function in the ARI
+capability, automatically.
+For now, we have merely changed ARI setting next function to 0.
+At least that's more correct for the common case of ARI PF with VFs.
 
 
-r~
+> >     if (pci_dev->failover_pair_id) {
+> >         if (!pci_bus_is_express(pci_get_bus(pci_dev))) {
+> >             error_setg(errp, "failover primary device must be on "
+> > -- 
+> > 2.41.0
+> > 
 
 
