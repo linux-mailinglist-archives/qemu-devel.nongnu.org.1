@@ -2,67 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3386774F5B8
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 18:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C3B974F5C4
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 18:43:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJGQ3-0000yw-PF; Tue, 11 Jul 2023 12:40:55 -0400
+	id 1qJGRs-0001kk-S7; Tue, 11 Jul 2023 12:42:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJGQ0-0000yY-Ea
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:40:52 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1qJGRq-0001kb-Uh
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:42:46 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJGPy-0003y5-SG
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:40:52 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-51e429e1eabso5693909a12.2
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 09:40:50 -0700 (PDT)
+ id 1qJGRp-0004HC-Ae
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:42:46 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-4fb8574a3a1so9189101e87.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 09:42:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689093649; x=1691685649;
+ d=linaro.org; s=google; t=1689093763; x=1691685763;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=13nQg2vhp8ED9+RDZ67JJ784+Le9sQq8Ht2lQnNXXG0=;
- b=wGpJRClGPK2gFVFAmm62SRbGa2b68looD0D2c+g2ahzb5IDFLeTKdA8iApEzmy62Kt
- 6Qxeqw3uA9xA73fLgxMck/HONw/SHM5qfrS6AnMxId4T3H4grVbTDsWffgPMGocD4OHV
- Tdi87QybEgtZpt5faQ1Ekbhalh+GfOlF/qZ7mpZj4n6Gf+aUVBLt4v5KS2/G00Knk24y
- RAvytoFPWjpt+SZzuq9yCddtiRKAFmq66Qm5ySTQT8UVeoQqr0NESv5qtKm0eq2qPLYr
- 7HV5+jbILXXorSoBNZzFxGvzVDsa13UT3eaYCjWyVYAwecQYSVZLVoc+3iLkgcdr4zn7
- a7bQ==
+ bh=eejjKTh5EU8jZjvYvhzAXuEsnzasRJZa3uShskDa7JY=;
+ b=MI0qyfFM1AVVYloICKDrYJ7FMt5xfRC7imMBlUhF79RwrIu5Nt+LtoaLhlCy4Zitnu
+ /lM+4zaC53bh/wSNrfZhF3tEzVNvqdzpLjAtmZxnd3OF/PDcVUJdAmc4gbbLyQPm6T0w
+ trZ3piF9oZTDZFJu87BAh9cmZ4+43Tgz4Ub+RAs3+zMGaFaWGL5fvZky82B5nggJdK9L
+ yiOjiSLCOUNYOoVNiWhsXGf/1YDh6aHatEkLQ0oQj44v5CouZLEpsNZim6T6U0ei62xh
+ u36MLVoIoeQCsH8djYUCm/y8OAg1kh3e7UeqjiQQfbF31LotjE0er3EArjxpfD+2/Qs0
+ wyag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689093649; x=1691685649;
+ d=1e100.net; s=20221208; t=1689093763; x=1691685763;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=13nQg2vhp8ED9+RDZ67JJ784+Le9sQq8Ht2lQnNXXG0=;
- b=kZt6+VGRWWDq4pozH5KhdyUFnD7jjbYKBCg+brKyNgaLOBnhaZvllED4xQRCo7kZ8Y
- 7S4YMb25IPXEQriJvB9Kmp6O/xpO8uLutc0931bLp3L6x+7rJAYK52c+3mRd8jyN7pkF
- eOq44HiCKIjNk+A6Q8bQCMtcWe7A7/jKgLw490MhndqT1eOGt64CeMgD3bu+Ei2gG41c
- QxAFME5vbn2p6aby7j5t2YWtZa8OG/fDhobxcjihbk9SQUXKvVai2rFz2d77bfu1Z/Hi
- yOozrzwwj7qve0DI1M/u61rNiLzwHBZLHDKVh8VB7+UloabEufRjRSF7vSo1Rtuz4eeH
- G0pA==
-X-Gm-Message-State: ABy/qLaOZOg25A4MK7j0DcVPaVyvZlIcir4+zrQCLqBId0+CNWvTvqyo
- oYBYElj/CIaKMxr+w1a6CUfV0Vcc3jg9Q6nhBLGKcQ==
-X-Google-Smtp-Source: APBJJlFXmLSc5el0jVZk3G1NN/IyKP6w+gIqwwFtUhNHhvOsSpJzTpDE+Ep9F1kyn+Oqa0bh40xm4okvAfKr+Qrab7A=
-X-Received: by 2002:aa7:d741:0:b0:51e:2664:f695 with SMTP id
- a1-20020aa7d741000000b0051e2664f695mr15576542eds.23.1689093649325; Tue, 11
- Jul 2023 09:40:49 -0700 (PDT)
+ bh=eejjKTh5EU8jZjvYvhzAXuEsnzasRJZa3uShskDa7JY=;
+ b=Wz1xfew1gtWshHIubvUgNIto95SHLs0vbzLvzXqyeScjQfWHAWJg3RHGmAAR/qsc5a
+ r0nt1z3YcSQ6D3DGr5QEy0/HTLSMOkdZCSiLDpaDJY7wf5RFY0XivV/HwSMIW7+SCZjr
+ CDE6Yzt2Vu3FpmWyupKSCRMtPEsfPfqPyeQW6rDW1Lvh34ogphwDxLMhoKoQZTPhH3h4
+ ol1a/QSgvy6WPQRiW1gcKFLZAFsXxwVGFX5wJsaXNpp4sMJ07L3AyLkZCfEFsba9/b+e
+ /Te6gv9EJXnEArMSz4PZJSZyBQtA6qEQJeDuKfzmL+4roTByjDNyE5kPnJPymKn2wMtB
+ JA9g==
+X-Gm-Message-State: ABy/qLb34qpPIzQUhuj2Ob/a5QMSg85p840cIOqc8HrK343xXMdCZ9s1
+ t8WzFTkun57sjOsSW0D6jHbC6u1d7Cdaf/SRUBYK8Q==
+X-Google-Smtp-Source: APBJJlFRf3Xqj0KTp6aJs4souA64/p32TQWPXKN9rbXPdtZFhLxWyvNUs4nzWm2EKptFGmnfHJWcLjy96Ml2u9sz+60=
+X-Received: by 2002:a19:8c44:0:b0:4fb:89f5:f6d2 with SMTP id
+ i4-20020a198c44000000b004fb89f5f6d2mr12712123lfj.47.1689093763167; Tue, 11
+ Jul 2023 09:42:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230626153945.76180-1-richard.henderson@linaro.org>
- <20230626153945.76180-7-richard.henderson@linaro.org>
-In-Reply-To: <20230626153945.76180-7-richard.henderson@linaro.org>
+References: <20230605201548.1596865-1-richard.henderson@linaro.org>
+ <20230605201548.1596865-33-richard.henderson@linaro.org>
+In-Reply-To: <20230605201548.1596865-33-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 11 Jul 2023 17:40:38 +0100
-Message-ID: <CAFEAcA-VvS_Of9mJNNic3xdrMjEbT6bkNpsyYMdGUOr4gUy_fg@mail.gmail.com>
-Subject: Re: [PULL 06/22] accel/tcg/cpu-exec.c: Widen pc to vaddr
+Date: Tue, 11 Jul 2023 17:42:32 +0100
+Message-ID: <CAFEAcA_x7GZYGd06tSXGh+sXf9R=xyP6UQPcUQgF50fZPx8TOQ@mail.gmail.com>
+Subject: Re: [PULL 32/52] exec-all: Widen TranslationBlock pc and cs_base to
+ 64-bits
 To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,36 +87,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 26 Jun 2023 at 16:48, Richard Henderson
+On Mon, 5 Jun 2023 at 21:27, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
-> From: Anton Johansson <anjo@rev.ng>
->
-> Signed-off-by: Anton Johansson <anjo@rev.ng>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-Id: <20230621135633.1649-7-anjo@rev.ng>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> This makes TranslationBlock agnostic to the address size of the guest.
+> Use vaddr for pc, since that's always a virtual address.
+> Use uint64_t for cs_base, since usage varies between guests.
 
-
-> -static void log_cpu_exec(target_ulong pc, CPUState *cpu,
-> +static void log_cpu_exec(vaddr pc, CPUState *cpu,
->                           const TranslationBlock *tb)
+> index 60ca9e229e..1cf4f1fa22 100644
+> --- a/accel/tcg/cpu-exec.c
+> +++ b/accel/tcg/cpu-exec.c
+> @@ -297,7 +297,7 @@ static void log_cpu_exec(target_ulong pc, CPUState *cpu,
 >  {
 >      if (qemu_log_in_addr_range(pc)) {
 >          qemu_log_mask(CPU_LOG_EXEC,
->                        "Trace %d: %p [%08" PRIx64
-> -                      "/" TARGET_FMT_lx "/%08x/%08x] %s\n",
-> +                      "/%" VADDR_PRIx "/%08x/%08x] %s\n",
+> -                      "Trace %d: %p [" TARGET_FMT_lx
+> +                      "Trace %d: %p [%08" PRIx64
+>                        "/" TARGET_FMT_lx "/%08x/%08x] %s\n",
 >                        cpu->cpu_index, tb->tc.ptr, tb->cs_base, pc,
 >                        tb->flags, tb->cflags, lookup_symbol(pc));
 
-This again has lost the zero-padding. I noticed this one because
-I have a workflow where I post-process these log files to
-extract the executed PC values.
-
-We've also lost the "PC is padded to the appropriate size
-depending on whether this is a 32-bit or 64-bit guest CPU",
-which is a bit of a shame.
+TARGET_FMT_lx zero-pads appropriately to the size of
+target_ulong, which is what cs_base used to be.
+Now we have an explicit %08, which will sometimes
+be too small for cs_base if the guest really uses all
+64 bits of it. Is that intentional ?
 
 thanks
 -- PMM
