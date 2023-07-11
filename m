@@ -2,77 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5336674E786
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 08:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F340374E7A6
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 09:05:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJ796-00060q-8L; Tue, 11 Jul 2023 02:46:48 -0400
+	id 1qJ7PD-0008LF-4H; Tue, 11 Jul 2023 03:03:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qJ792-00060J-VB
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 02:46:45 -0400
-Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1qJ790-0006Ys-Jq
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 02:46:44 -0400
-Received: by mail-qk1-x733.google.com with SMTP id
- af79cd13be357-7659924cd9bso596382385a.1
- for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 23:46:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1689058000; x=1691650000;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=P0TCTtlW8uOZHIeFmg1gAPUeuv7kMtuqFuZ1OZNmtUs=;
- b=Do32wsSIH9RWwLD5QcXbeyROeFcUuj4n48V8xZ75FxXJjS03pBf8BgV2DOoFnMvOTA
- 8X/ortNFkeHqUkTheB6zPfGaO3c0U5KLwCXX3BZlUHRg8yIkO/BykNI7s5ympvllj4Ga
- mNnjBnaoOlRzQFbQflUoU829M+KufJHKDxJyDEg4wVjw3D/u1Z6m4YoXaVu9sszHz/lC
- rlV8sEDU52xQoabpSDXNtQdkT4S/+XSGsRFWlgJtLmyttZDHqq4cAd7jB9yRyvHRfoQO
- UQddIaoCYm8OuxllaqvMAia0ouHhVrEtrI4Z/RReykEZaMr7mB0IUAgQc8kdAqvOneJW
- WdSg==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qJ7PB-0008Kn-UO
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 03:03:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qJ7PA-0002pw-Bx
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 03:03:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689059003;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=BHPnjyolZbfsOfUleXX+gV3drDMtAQhdvjbEBKUdP08=;
+ b=FRBxges60F+HlcdIV9cuDVJMjfkwOrq6Xpi+c/9KgHytThtyqD4oc6fLHbXbYpn7bd9s6p
+ Y6v/CEHTbEG2J4JlC7JHofGGEWMI66d29BvErSNwxjDw+ubh4mPnsIVZWN8FkVeJkKUVfv
+ NSSQdN82Mz4sZi85f8oy9L0pGmK8qDQ=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-218-eGBYs7RdOTmyvQV6q0oTWA-1; Tue, 11 Jul 2023 03:03:21 -0400
+X-MC-Unique: eGBYs7RdOTmyvQV6q0oTWA-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-262e04a6f5aso5787482a91.2
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 00:03:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689058000; x=1691650000;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1689059000; x=1691651000;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=P0TCTtlW8uOZHIeFmg1gAPUeuv7kMtuqFuZ1OZNmtUs=;
- b=geZlZ+g5oqTA+QT7dd7+ElIRGvnNv5LJcEZ33W5EUQq3nptr1PErbBExsXgNiQeQHx
- Hvn7/CTl/4CilTRJiJjGrfHwVBqShDtzOsW6zyupitnUNUTzNcJDrgWpIEHmFb6MCBbq
- GiA5yxJlqJcIKtHHITp9c9/PJx0OHH7hq0JDUHMbkefGWvNZ8nKnyLAUYWIsgEFg202P
- VVsXuIWZVwhqx/+71KKx0W8VTGQ8aEJk+cOdjFAkF4qcPRDTm0mgntFfxQy7nMfA1/Tj
- lSdd8ZQl0nj9WZPCQs3uomGkAnb1u2OzpJE5nkx8l6JnZiT+rtAr+NTQjLIhCQlwVLav
- 1xeQ==
-X-Gm-Message-State: ABy/qLbFpTlqDCGIMthVTMD+ZElZqP3dJ1Gm7ipy4wm9y2tPIz6ZbVue
- RC7H05YqNiciz4BqnhpolxBwbE2/RXDucaUxqeErFy4dmA9y2+uOxm9cQA==
-X-Google-Smtp-Source: APBJJlEXhwO+vArM8x8mGo8q61nsinZHhCIq5oNKh8iF5WxovjOqSdUJYnOasgKjdal8KSkVwEF/hoW5+oeZu9m+/Q4=
-X-Received: by 2002:a05:622a:1492:b0:400:9666:4349 with SMTP id
- t18-20020a05622a149200b0040096664349mr19212074qtx.46.1689058000660; Mon, 10
- Jul 2023 23:46:40 -0700 (PDT)
+ bh=BHPnjyolZbfsOfUleXX+gV3drDMtAQhdvjbEBKUdP08=;
+ b=dOzkCgUCAav29T/fvfcouV398BbryeSr+Vf58aKt3ltuCd1SN+nKDL0Z6zIgyeGX4W
+ XVSyb9qlvLnE/q8BaJtoBFy0Tyk6LvGB5cJEhbKvoMbiqTPdsN0wgUQTCP/Et1JuqO0W
+ yH3+04K/5jsGlxBYZSKhyea3asi3Z0dGp92WsSGKefjweMiAxVV+KIwq8XqJNN3M4d7A
+ UlP8aUaX++HVnTJ8XbYj8sR/HbfMTMGvLJHxbpFMGf0rQ5QyZEc16fxDCQKjbvri5TCZ
+ etDpTmWt9IaMsWsND2eW5H9Es431EZ8O3HiuEWcN1QHYqG+ockonvIKHE6qvw398dyum
+ NX7Q==
+X-Gm-Message-State: ABy/qLY8aApwlU8yVSyZACGWLTv48t45cMqxBcFmYq6G6wI7tyYsrG0Q
+ lJRtxB5gPdzCivQnPaHLv3QZyp9ZZCp8nW549VYr10Uro7W1qsgfEylBNTbuoTWDYtgQexWTbyx
+ 1HPOgN4sBbOovPFo=
+X-Received: by 2002:a17:90b:783:b0:262:cb1c:a782 with SMTP id
+ l3-20020a17090b078300b00262cb1ca782mr11697770pjz.37.1689059000681; 
+ Tue, 11 Jul 2023 00:03:20 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHaRjM2ya5NzePjvpPv3YBqaLDChVCz65i0Takr6kf1QZgguFvyAJbFiE3EzWsYIOtHGhiyIw==
+X-Received: by 2002:a17:90b:783:b0:262:cb1c:a782 with SMTP id
+ l3-20020a17090b078300b00262cb1ca782mr11697750pjz.37.1689059000302; 
+ Tue, 11 Jul 2023 00:03:20 -0700 (PDT)
+Received: from localhost.localdomain ([116.73.134.124])
+ by smtp.googlemail.com with ESMTPSA id
+ l7-20020a17090aaa8700b00264044cca0fsm14339446pjq.1.2023.07.11.00.03.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 11 Jul 2023 00:03:19 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Ani Sinha <anisinha@redhat.com>,
+	mjt@tls.msk.ru,
+	qemu-devel@nongnu.org
+Subject: [PATCH RESEND] hw/pci: add comment to explain checking for available
+ function 0 in pci hotplug
+Date: Tue, 11 Jul 2023 12:33:01 +0530
+Message-Id: <20230711070301.4353-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-References: <20230711054722.15721-1-jason.chien@sifive.com>
-In-Reply-To: <20230711054722.15721-1-jason.chien@sifive.com>
-From: Jason Chien <jason.chien@sifive.com>
-Date: Tue, 11 Jul 2023 14:46:28 +0800
-Message-ID: <CADr__8o949b85jN7oXU1i52Bktm_dBw8wTbsY+X1ReeW6FhnVg@mail.gmail.com>
-Subject: Re: [PATCH v2] target/riscv: Add Zihintntl extension ISA string to DTS
-To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Content-Type: multipart/alternative; boundary="00000000000022830a06003076d2"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
- envelope-from=jason.chien@sifive.com; helo=mail-qk1-x733.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,189 +100,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000022830a06003076d2
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This change is cosmetic. A comment is added explaining why we need to check for
+the availability of function 0 when we hotplug a device.
 
-Hi all,
-I am sorry that I forgot to add "Reviewed-by". I will add "Reviewed-by" and
-send v3 shortly.
+CC: mst@redhat.com
+CC: mjt@tls.msk.ru
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ hw/pci/pci.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-Jason Chien
+diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+index e2eb4c3b4a..6db18dfe46 100644
+--- a/hw/pci/pci.c
++++ b/hw/pci/pci.c
+@@ -1180,9 +1180,14 @@ static PCIDevice *do_pci_register_device(PCIDevice *pci_dev,
+                    PCI_SLOT(devfn), PCI_FUNC(devfn), name,
+                    bus->devices[devfn]->name, bus->devices[devfn]->qdev.id);
+         return NULL;
+-    } else if (dev->hotplugged &&
+-               !pci_is_vf(pci_dev) &&
+-               pci_get_function_0(pci_dev)) {
++    } /*
++       * Populating function 0 triggers a scan from the guest that
++       * exposes other non-zero functions. Hence we need to ensure that
++       * function 0 wasn't added yet.
++       */
++    else if (dev->hotplugged &&
++             !pci_is_vf(pci_dev) &&
++             pci_get_function_0(pci_dev)) {
+         error_setg(errp, "PCI: slot %d function 0 already occupied by %s,"
+                    " new func %s cannot be exposed to guest.",
+                    PCI_SLOT(pci_get_function_0(pci_dev)->devfn),
+-- 
+2.39.1
 
-On Tue, Jul 11, 2023 at 1:47=E2=80=AFPM Jason Chien <jason.chien@sifive.com=
-> wrote:
-
-> RVA23 Profiles states:
-> The RVA23 profiles are intended to be used for 64-bit application
-> processors that will run rich OS stacks from standard binary OS
-> distributions and with a substantial number of third-party binary user
-> applications that will be supported over a considerable length of time
-> in the field.
->
-> The chapter 4 of the unprivileged spec introduces the Zihintntl extension
-> and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
-> purpose is to enable application and operating system portability across
-> different implementations. Thus the DTS should contain the Zihintntl ISA
-> string in order to pass to software.
->
-> The unprivileged spec states:
-> Like any HINTs, these instructions may be freely ignored. Hence, although
-> they are described in terms of cache-based memory hierarchies, they do no=
-t
-> mandate the provision of caches.
->
-> These instructions are encoded with used opcode, e.g. ADD x0, x0, x2, whi=
-ch
-> QEMU already supports, and QEMU does not emulate cache. Therefore these
-> instructions can be considered as a no-op, and we only need to add a new
-> property for the Zihintntl extension.
->
-> Signed-off-by: Jason Chien <jason.chien@sifive.com>
-> ---
->  target/riscv/cpu.c     | 2 ++
->  target/riscv/cpu_cfg.h | 1 +
->  2 files changed, 3 insertions(+)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 9339c0241d..b7e99cccd9 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -87,6 +87,7 @@ static const struct isa_ext_data isa_edata_arr[] =3D {
->      ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
->      ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
->      ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
-> +    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
->      ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause=
-),
->      ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
->      ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
-> @@ -1755,6 +1756,7 @@ static Property riscv_cpu_extensions[] =3D {
->      DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
->      DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
->      DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
-> +    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, true),
->      DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true)=
-,
->      DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
->      DEFINE_PROP_BOOL("Zfa", RISCVCPU, cfg.ext_zfa, true),
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index 2bd9510ba3..518686eaa3 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -66,6 +66,7 @@ struct RISCVCPUConfig {
->      bool ext_icbom;
->      bool ext_icboz;
->      bool ext_zicond;
-> +    bool ext_zihintntl;
->      bool ext_zihintpause;
->      bool ext_smstateen;
->      bool ext_sstc;
-> --
-> 2.17.1
->
->
-
---00000000000022830a06003076d2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi all,<div>I am sorry that I forgot to add &quot;Reviewed=
--by&quot;. I will add &quot;Reviewed-by&quot; and send v3 shortly.</div><di=
-v><br></div><div>Jason Chien</div></div><br><div class=3D"gmail_quote"><div=
- dir=3D"ltr" class=3D"gmail_attr">On Tue, Jul 11, 2023 at 1:47=E2=80=AFPM J=
-ason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com">jason.chien@sifive=
-.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
-ex">RVA23 Profiles states:<br>
-The RVA23 profiles are intended to be used for 64-bit application<br>
-processors that will run rich OS stacks from standard binary OS<br>
-distributions and with a substantial number of third-party binary user<br>
-applications that will be supported over a considerable length of time<br>
-in the field.<br>
-<br>
-The chapter 4 of the unprivileged spec introduces the Zihintntl extension<b=
-r>
-and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose<b=
-r>
-purpose is to enable application and operating system portability across<br=
->
-different implementations. Thus the DTS should contain the Zihintntl ISA<br=
->
-string in order to pass to software.<br>
-<br>
-The unprivileged spec states:<br>
-Like any HINTs, these instructions may be freely ignored. Hence, although<b=
-r>
-they are described in terms of cache-based memory hierarchies, they do not<=
-br>
-mandate the provision of caches.<br>
-<br>
-These instructions are encoded with used opcode, e.g. ADD x0, x0, x2, which=
-<br>
-QEMU already supports, and QEMU does not emulate cache. Therefore these<br>
-instructions can be considered as a no-op, and we only need to add a new<br=
->
-property for the Zihintntl extension.<br>
-<br>
-Signed-off-by: Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com" ta=
-rget=3D"_blank">jason.chien@sifive.com</a>&gt;<br>
----<br>
-=C2=A0target/riscv/cpu.c=C2=A0 =C2=A0 =C2=A0| 2 ++<br>
-=C2=A0target/riscv/cpu_cfg.h | 1 +<br>
-=C2=A02 files changed, 3 insertions(+)<br>
-<br>
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c<br>
-index 9339c0241d..b7e99cccd9 100644<br>
---- a/target/riscv/cpu.c<br>
-+++ b/target/riscv/cpu.c<br>
-@@ -87,6 +87,7 @@ static const struct isa_ext_data isa_edata_arr[] =3D {<br=
->
-=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zic=
-ond),<br>
-=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr=
-),<br>
-=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_i=
-fencei),<br>
-+=C2=A0 =C2=A0 ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihin=
-tntl),<br>
-=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ex=
-t_zihintpause),<br>
-=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawr=
-s),<br>
-=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),<=
-br>
-@@ -1755,6 +1756,7 @@ static Property riscv_cpu_extensions[] =3D {<br>
-=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;sscofpmf&quot;, RISCVCPU, cfg.ex=
-t_sscofpmf, false),<br>
-=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zifencei&quot;, RISCVCPU, cfg.ex=
-t_ifencei, true),<br>
-=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zicsr&quot;, RISCVCPU, cfg.ext_i=
-csr, true),<br>
-+=C2=A0 =C2=A0 DEFINE_PROP_BOOL(&quot;Zihintntl&quot;, RISCVCPU, cfg.ext_zi=
-hintntl, true),<br>
-=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zihintpause&quot;, RISCVCPU, cfg=
-.ext_zihintpause, true),<br>
-=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zawrs&quot;, RISCVCPU, cfg.ext_z=
-awrs, true),<br>
-=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zfa&quot;, RISCVCPU, cfg.ext_zfa=
-, true),<br>
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h<br>
-index 2bd9510ba3..518686eaa3 100644<br>
---- a/target/riscv/cpu_cfg.h<br>
-+++ b/target/riscv/cpu_cfg.h<br>
-@@ -66,6 +66,7 @@ struct RISCVCPUConfig {<br>
-=C2=A0 =C2=A0 =C2=A0bool ext_icbom;<br>
-=C2=A0 =C2=A0 =C2=A0bool ext_icboz;<br>
-=C2=A0 =C2=A0 =C2=A0bool ext_zicond;<br>
-+=C2=A0 =C2=A0 bool ext_zihintntl;<br>
-=C2=A0 =C2=A0 =C2=A0bool ext_zihintpause;<br>
-=C2=A0 =C2=A0 =C2=A0bool ext_smstateen;<br>
-=C2=A0 =C2=A0 =C2=A0bool ext_sstc;<br>
--- <br>
-2.17.1<br>
-<br>
-</blockquote></div>
-
---00000000000022830a06003076d2--
 
