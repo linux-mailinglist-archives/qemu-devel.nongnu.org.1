@@ -2,92 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 310D474F661
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 19:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CDD74F652
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 19:01:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJGjH-0001kl-9L; Tue, 11 Jul 2023 13:00:47 -0400
+	id 1qJGjP-0002BX-Jq; Tue, 11 Jul 2023 13:00:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qJGjE-0001au-Ks
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 13:00:44 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1qJGjL-0001z2-Sq
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 13:00:51 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1qJGjC-0001Ca-3v
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 13:00:43 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-55b5a3915f5so4166846a12.0
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 10:00:40 -0700 (PDT)
+ id 1qJGjK-0001EF-69
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 13:00:51 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-262d33fa37cso2979898a91.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 10:00:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1689094840; x=1691686840;
+ d=sifive.com; s=google; t=1689094848; x=1691686848;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FBifTLJyNVrHXcwQTPdSLju8n+Q3WGNj+ogm/u94S6U=;
- b=lJP78Xd+RYaxGo4GJtgDIqz2uCLgfxaaZdoBPNqrslZbbGNLmJYO27QQFkqLNFPx4e
- +KljWRoOAsvSV0GEWjPuf0D6nDP/+EFwhhUZi7R94th1k5Pz8vt05NaNYfbLxL3Oy/R/
- hH96zmYq6nsmkk39UhOM6lB0Tab7s7pvbtwyjnyDbaXWG1scDrFUHdNuf69acST7Vw2Q
- +7wIPGGhHkwl4E959/UJSKQ194zHpGoGcUiwFgXWisPCbnar6KW/qUlNO4v/8DtR3eCz
- N852er9Mokj5LDmpEVuOcUpI3i9kESkQLH7XkVncOlopH8SzbsiQyTusCdmtRzLOGBdO
- JCug==
+ bh=IHS86pQjMlrcYUtbAnhHB80mR2E9qScpycHOknGfKfE=;
+ b=FBLzQX1y58lvdeBF8KumBXc2vBcSC4DePewdCk6fj4o7Ccb9+4NKS1C3I2PLxqiizs
+ 5qEsLpLYlUn2Y7O3jrL2JPN5xhvQkPf1qsGFI12P8q03jCbuclAGHMBVGXIQX7OrHeez
+ hUTUXXEo2MtS9C6f03HWYYO+KHtBPBZe69+bEgPfEtN58NeAppijMLD8vnQSJBYCgZWF
+ GWIY6LmZuupOOuUbiLUhJH6FpQoFtQ+soDt8ZdVMSyeCqRjySRqU1VN5/us36O8R8pdq
+ 2Ud0BylmHUJcRqWfQJ/4EfAqF5l32/kxYxcIbzHPyAdqyErIH40N0IE5/lZcJaaXjJG1
+ Rm/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689094840; x=1691686840;
+ d=1e100.net; s=20221208; t=1689094848; x=1691686848;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FBifTLJyNVrHXcwQTPdSLju8n+Q3WGNj+ogm/u94S6U=;
- b=TVuHI+Mg6I3qdzq3923NS2lgyCfTSE3K4bsfQsI3F61hJWi5PVcJn6xI2rq8XxHfI1
- oEXi1ZtJqS6Ao0MVVNjwiWzdWnMfgWjLg068exjj3MrjBMl5KB76EdYEZpfIFMon/zB2
- FEOLQaWZ07DR9/B2Hd4zbBStRshrj5a88TtR1aVi/qu62KYjHse2GOmnC4zhr/e4xcSf
- MRTxEg2Z9Bwhv6aG8HlvEkliUaP9NEaHqrppxwZ75nRFE1Ia2fkDlkUqUXEH9LXhqDkP
- +beNMIgIH7oaPl6kb2faWjtVadhG3BZUdZLcsbZzasJYgJfJ/sdRW6EnMJqIJ8EBjU8/
- 1ZSQ==
-X-Gm-Message-State: ABy/qLZ4A3jaD1uNg7j0HmCGzSl02fz88Wo+Rpg/lMrqIrUI6gj9mU8o
- Yqr/YV3JilvTjtIVZMte6ND90+PjqstlbNAllNyPfef9a6gDQFRRaDxg52bHUiG1O89SYd9Q50X
- SqNVNjvAYVbIzwdoAPCc5ZGChun0PbSqfYa/zwVUC6iwoW51YRHBzQloEurMvhH5eHTODQ4Lm9L
- QvCvI=
-X-Google-Smtp-Source: APBJJlFR/m/6NWsFlFk2jiXh/MTt0+GPvuaf0OjhnGlPhvMsPDcCzwJgCS58p3ITTKSuGrOtqas/Tw==
-X-Received: by 2002:a17:90a:c587:b0:25e:935f:8449 with SMTP id
- l7-20020a17090ac58700b0025e935f8449mr12337913pjt.36.1689094839741; 
- Tue, 11 Jul 2023 10:00:39 -0700 (PDT)
+ bh=IHS86pQjMlrcYUtbAnhHB80mR2E9qScpycHOknGfKfE=;
+ b=WG7EFsQTYB1C1KubV9qcWTqyKfmYqE4P2Q1kYNp50VJAnPaodzkWniZJc/Hx4jpWoZ
+ u39jj3Svk4B81yRL+De8+uXYRArutEmxVi9Dgb67HIK4wcSfYyeyZ9uSSgji4VcGlFLX
+ UsP6GItgjwr2t4EmaahUDdX2oWZPXkhXg9Aw6LKqZoB2pFInUNDWDcY8+Rrg6LCplPDT
+ su4elGFQi2fYe4LvgipBDqSZNGwMEGlvMqDVuXlLf7w07TDBiLpg8bSHQmDWwt8jlg5z
+ gi3G/t9yGCzI/j7Bs2751f0A1eaBwwA269S1oYIDKEh+ni0R2U9OOs6tNwc2LyrwspfD
+ 8+xg==
+X-Gm-Message-State: ABy/qLaNpPSlqyqv9+CeRLN77FSWpayjsd2Eq2HaEddDwYwVsFLzpHQu
+ QEnSKhZ84vi2eJcw+Axcvh+WVrbL8qyL6gmN8vdveiJo1MLQJhLrkAue86o5dl9VwGqM7gnI5vp
+ s6krsaPQaxplEiqwURWO/s1VtmovXylihKSAUm+9RXYCUnmG3E0n4AL17Et6LWEZMueDIKgTd3V
+ ZehdU=
+X-Google-Smtp-Source: APBJJlGSkNLVyMXuae14/zmfIkAC9WezwVZW8+NETk7sRx2+26qO1z1IcYHw0mCHUluyYO/f7RiDaw==
+X-Received: by 2002:a17:90b:3109:b0:259:3e2a:b6d8 with SMTP id
+ gc9-20020a17090b310900b002593e2ab6d8mr13419804pjb.17.1689094848247; 
+ Tue, 11 Jul 2023 10:00:48 -0700 (PDT)
 Received: from duncan.localdomain (125-228-20-175.hinet-ip.hinet.net.
  [125.228.20.175]) by smtp.gmail.com with ESMTPSA id
- gw10-20020a17090b0a4a00b00262fc84b931sm8381793pjb.44.2023.07.11.10.00.37
+ gw10-20020a17090b0a4a00b00262fc84b931sm8381793pjb.44.2023.07.11.10.00.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 11 Jul 2023 10:00:39 -0700 (PDT)
+ Tue, 11 Jul 2023 10:00:47 -0700 (PDT)
 From: Max Chou <max.chou@sifive.com>
 To: qemu-devel@nongnu.org,
 	qemu-riscv@nongnu.org
 Cc: dbarboza@ventanamicro.com, alistair23@gmail.com,
- Dickon Hood <dickon.hood@codethink.co.uk>,
- Richard Henderson <richard.henderson@linaro.org>,
+ Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>,
  Weiwei Li <liweiwei@iscas.ac.cn>, Max Chou <max.chou@sifive.com>,
  Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Bin Meng <bin.meng@windriver.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Frank Chang <frank.chang@sifive.com>
-Subject: [PATCH v8 06/15] target/riscv: Refactor translation of
- vector-widening instruction
-Date: Wed, 12 Jul 2023 00:59:05 +0800
-Message-Id: <20230711165917.2629866-7-max.chou@sifive.com>
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH v8 07/15] target/riscv: Refactor some of the generic vector
+ functionality
+Date: Wed, 12 Jul 2023 00:59:06 +0800
+Message-Id: <20230711165917.2629866-8-max.chou@sifive.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230711165917.2629866-1-max.chou@sifive.com>
 References: <20230711165917.2629866-1-max.chou@sifive.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=max.chou@sifive.com; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=max.chou@sifive.com; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,100 +101,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dickon Hood <dickon.hood@codethink.co.uk>
+From: Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
 
-Zvbb (implemented in later commit) has a widening instruction, which
-requires an extra check on the enabled extensions.  Refactor
-GEN_OPIVX_WIDEN_TRANS() to take a check function to avoid reimplementing
-it.
+Move some macros out of `vector_helper` and into `vector_internals`.
+This ensures they can be used by both vector and vector-crypto helpers
+(latter implemented in proceeding commits).
 
-Signed-off-by: Dickon Hood <dickon.hood@codethink.co.uk>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Kiran Ostrolenk <kiran.ostrolenk@codethink.co.uk>
 Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- target/riscv/insn_trans/trans_rvv.c.inc | 52 +++++++++++--------------
- 1 file changed, 23 insertions(+), 29 deletions(-)
+ target/riscv/vector_helper.c    | 42 ------------------------------
+ target/riscv/vector_internals.h | 46 +++++++++++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+), 42 deletions(-)
 
-diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 5dfd524c7d2..a5562505531 100644
---- a/target/riscv/insn_trans/trans_rvv.c.inc
-+++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -1526,30 +1526,24 @@ static bool opivx_widen_check(DisasContext *s, arg_rmrr *a)
-            vext_check_ds(s, a->rd, a->rs2, a->vm);
- }
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 6434fd2f7e8..ae94576f3df 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -635,9 +635,6 @@ GEN_VEXT_ST_WHOLE(vs8r_v, int8_t, ste_b)
+ #define OP_SUS_H int16_t, uint16_t, int16_t, uint16_t, int16_t
+ #define OP_SUS_W int32_t, uint32_t, int32_t, uint32_t, int32_t
+ #define OP_SUS_D int64_t, uint64_t, int64_t, uint64_t, int64_t
+-#define WOP_UUU_B uint16_t, uint8_t, uint8_t, uint16_t, uint16_t
+-#define WOP_UUU_H uint32_t, uint16_t, uint16_t, uint32_t, uint32_t
+-#define WOP_UUU_W uint64_t, uint32_t, uint32_t, uint64_t, uint64_t
+ #define WOP_SSS_B int16_t, int8_t, int8_t, int16_t, int16_t
+ #define WOP_SSS_H int32_t, int16_t, int16_t, int32_t, int32_t
+ #define WOP_SSS_W int64_t, int32_t, int32_t, int64_t, int64_t
+@@ -3437,11 +3434,6 @@ GEN_VEXT_VF(vfwnmsac_vf_h, 4)
+ GEN_VEXT_VF(vfwnmsac_vf_w, 8)
  
--static bool do_opivx_widen(DisasContext *s, arg_rmrr *a,
--                           gen_helper_opivx *fn)
--{
--    if (opivx_widen_check(s, a)) {
--        return opivx_trans(a->rd, a->rs1, a->rs2, a->vm, fn, s);
--    }
--    return false;
+ /* Vector Floating-Point Square-Root Instruction */
+-/* (TD, T2, TX2) */
+-#define OP_UU_H uint16_t, uint16_t, uint16_t
+-#define OP_UU_W uint32_t, uint32_t, uint32_t
+-#define OP_UU_D uint64_t, uint64_t, uint64_t
+-
+ #define OPFVV1(NAME, TD, T2, TX2, HD, HS2, OP)         \
+ static void do_##NAME(void *vd, void *vs2, int i,      \
+                       CPURISCVState *env)              \
+@@ -4138,40 +4130,6 @@ GEN_VEXT_CMP_VF(vmfge_vf_w, uint32_t, H4, vmfge32)
+ GEN_VEXT_CMP_VF(vmfge_vf_d, uint64_t, H8, vmfge64)
+ 
+ /* Vector Floating-Point Classify Instruction */
+-#define OPIVV1(NAME, TD, T2, TX2, HD, HS2, OP)         \
+-static void do_##NAME(void *vd, void *vs2, int i)      \
+-{                                                      \
+-    TX2 s2 = *((T2 *)vs2 + HS2(i));                    \
+-    *((TD *)vd + HD(i)) = OP(s2);                      \
 -}
 -
--#define GEN_OPIVX_WIDEN_TRANS(NAME) \
--static bool trans_##NAME(DisasContext *s, arg_rmrr *a)       \
--{                                                            \
--    static gen_helper_opivx * const fns[3] = {               \
--        gen_helper_##NAME##_b,                               \
--        gen_helper_##NAME##_h,                               \
--        gen_helper_##NAME##_w                                \
--    };                                                       \
--    return do_opivx_widen(s, a, fns[s->sew]);                \
-+#define GEN_OPIVX_WIDEN_TRANS(NAME, CHECK) \
-+static bool trans_##NAME(DisasContext *s, arg_rmrr *a)                    \
-+{                                                                         \
-+    if (CHECK(s, a)) {                                                    \
-+        static gen_helper_opivx * const fns[3] = {                        \
-+            gen_helper_##NAME##_b,                                        \
-+            gen_helper_##NAME##_h,                                        \
-+            gen_helper_##NAME##_w                                         \
-+        };                                                                \
-+        return opivx_trans(a->rd, a->rs1, a->rs2, a->vm, fns[s->sew], s); \
-+    }                                                                     \
-+    return false;                                                         \
+-#define GEN_VEXT_V(NAME, ESZ)                          \
+-void HELPER(NAME)(void *vd, void *v0, void *vs2,       \
+-                  CPURISCVState *env, uint32_t desc)   \
+-{                                                      \
+-    uint32_t vm = vext_vm(desc);                       \
+-    uint32_t vl = env->vl;                             \
+-    uint32_t total_elems =                             \
+-        vext_get_total_elems(env, desc, ESZ);          \
+-    uint32_t vta = vext_vta(desc);                     \
+-    uint32_t vma = vext_vma(desc);                     \
+-    uint32_t i;                                        \
+-                                                       \
+-    for (i = env->vstart; i < vl; i++) {               \
+-        if (!vm && !vext_elem_mask(v0, i)) {           \
+-            /* set masked-off elements to 1s */        \
+-            vext_set_elems_1s(vd, vma, i * ESZ,        \
+-                              (i + 1) * ESZ);          \
+-            continue;                                  \
+-        }                                              \
+-        do_##NAME(vd, vs2, i);                         \
+-    }                                                  \
+-    env->vstart = 0;                                   \
+-    /* set tail elements to 1s */                      \
+-    vext_set_elems_1s(vd, vta, vl * ESZ,               \
+-                      total_elems * ESZ);              \
+-}
+-
+ target_ulong fclass_h(uint64_t frs1)
+ {
+     float16 f = frs1;
+diff --git a/target/riscv/vector_internals.h b/target/riscv/vector_internals.h
+index 749d138bebe..8133111e5f6 100644
+--- a/target/riscv/vector_internals.h
++++ b/target/riscv/vector_internals.h
+@@ -121,12 +121,52 @@ void vext_set_elems_1s(void *base, uint32_t is_agnostic, uint32_t cnt,
+ /* expand macro args before macro */
+ #define RVVCALL(macro, ...)  macro(__VA_ARGS__)
+ 
++/* (TD, T2, TX2) */
++#define OP_UU_B uint8_t, uint8_t, uint8_t
++#define OP_UU_H uint16_t, uint16_t, uint16_t
++#define OP_UU_W uint32_t, uint32_t, uint32_t
++#define OP_UU_D uint64_t, uint64_t, uint64_t
++
+ /* (TD, T1, T2, TX1, TX2) */
+ #define OP_UUU_B uint8_t, uint8_t, uint8_t, uint8_t, uint8_t
+ #define OP_UUU_H uint16_t, uint16_t, uint16_t, uint16_t, uint16_t
+ #define OP_UUU_W uint32_t, uint32_t, uint32_t, uint32_t, uint32_t
+ #define OP_UUU_D uint64_t, uint64_t, uint64_t, uint64_t, uint64_t
+ 
++#define OPIVV1(NAME, TD, T2, TX2, HD, HS2, OP)         \
++static void do_##NAME(void *vd, void *vs2, int i)      \
++{                                                      \
++    TX2 s2 = *((T2 *)vs2 + HS2(i));                    \
++    *((TD *)vd + HD(i)) = OP(s2);                      \
++}
++
++#define GEN_VEXT_V(NAME, ESZ)                          \
++void HELPER(NAME)(void *vd, void *v0, void *vs2,       \
++                  CPURISCVState *env, uint32_t desc)   \
++{                                                      \
++    uint32_t vm = vext_vm(desc);                       \
++    uint32_t vl = env->vl;                             \
++    uint32_t total_elems =                             \
++        vext_get_total_elems(env, desc, ESZ);          \
++    uint32_t vta = vext_vta(desc);                     \
++    uint32_t vma = vext_vma(desc);                     \
++    uint32_t i;                                        \
++                                                       \
++    for (i = env->vstart; i < vl; i++) {               \
++        if (!vm && !vext_elem_mask(v0, i)) {           \
++            /* set masked-off elements to 1s */        \
++            vext_set_elems_1s(vd, vma, i * ESZ,        \
++                              (i + 1) * ESZ);          \
++            continue;                                  \
++        }                                              \
++        do_##NAME(vd, vs2, i);                         \
++    }                                                  \
++    env->vstart = 0;                                   \
++    /* set tail elements to 1s */                      \
++    vext_set_elems_1s(vd, vta, vl * ESZ,               \
++                      total_elems * ESZ);              \
++}
++
+ /* operation of two vector elements */
+ typedef void opivv2_fn(void *vd, void *vs1, void *vs2, int i);
+ 
+@@ -179,4 +219,10 @@ void HELPER(NAME)(void *vd, void *v0, target_ulong s1,    \
+                do_##NAME, ESZ);                           \
  }
  
--GEN_OPIVX_WIDEN_TRANS(vwaddu_vx)
--GEN_OPIVX_WIDEN_TRANS(vwadd_vx)
--GEN_OPIVX_WIDEN_TRANS(vwsubu_vx)
--GEN_OPIVX_WIDEN_TRANS(vwsub_vx)
-+GEN_OPIVX_WIDEN_TRANS(vwaddu_vx, opivx_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwadd_vx, opivx_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwsubu_vx, opivx_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwsub_vx, opivx_widen_check)
- 
- /* WIDEN OPIVV with WIDEN */
- static bool opiwv_widen_check(DisasContext *s, arg_rmrr *a)
-@@ -1997,9 +1991,9 @@ GEN_OPIVX_TRANS(vrem_vx, opivx_check)
- GEN_OPIVV_WIDEN_TRANS(vwmul_vv, opivv_widen_check)
- GEN_OPIVV_WIDEN_TRANS(vwmulu_vv, opivv_widen_check)
- GEN_OPIVV_WIDEN_TRANS(vwmulsu_vv, opivv_widen_check)
--GEN_OPIVX_WIDEN_TRANS(vwmul_vx)
--GEN_OPIVX_WIDEN_TRANS(vwmulu_vx)
--GEN_OPIVX_WIDEN_TRANS(vwmulsu_vx)
-+GEN_OPIVX_WIDEN_TRANS(vwmul_vx, opivx_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwmulu_vx, opivx_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwmulsu_vx, opivx_widen_check)
- 
- /* Vector Single-Width Integer Multiply-Add Instructions */
- GEN_OPIVV_TRANS(vmacc_vv, opivv_check)
-@@ -2015,10 +2009,10 @@ GEN_OPIVX_TRANS(vnmsub_vx, opivx_check)
- GEN_OPIVV_WIDEN_TRANS(vwmaccu_vv, opivv_widen_check)
- GEN_OPIVV_WIDEN_TRANS(vwmacc_vv, opivv_widen_check)
- GEN_OPIVV_WIDEN_TRANS(vwmaccsu_vv, opivv_widen_check)
--GEN_OPIVX_WIDEN_TRANS(vwmaccu_vx)
--GEN_OPIVX_WIDEN_TRANS(vwmacc_vx)
--GEN_OPIVX_WIDEN_TRANS(vwmaccsu_vx)
--GEN_OPIVX_WIDEN_TRANS(vwmaccus_vx)
-+GEN_OPIVX_WIDEN_TRANS(vwmaccu_vx, opivx_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwmacc_vx, opivx_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwmaccsu_vx, opivx_widen_check)
-+GEN_OPIVX_WIDEN_TRANS(vwmaccus_vx, opivx_widen_check)
- 
- /* Vector Integer Merge and Move Instructions */
- static bool trans_vmv_v_v(DisasContext *s, arg_vmv_v_v *a)
++/* Three of the widening shortening macros: */
++/* (TD, T1, T2, TX1, TX2) */
++#define WOP_UUU_B uint16_t, uint8_t, uint8_t, uint16_t, uint16_t
++#define WOP_UUU_H uint32_t, uint16_t, uint16_t, uint32_t, uint32_t
++#define WOP_UUU_W uint64_t, uint32_t, uint32_t, uint64_t, uint64_t
++
+ #endif /* TARGET_RISCV_VECTOR_INTERNALS_H */
 -- 
 2.34.1
 
