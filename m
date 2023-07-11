@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B164574F7AA
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 20:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A095F74F7B2
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 20:00:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJHdy-0001Np-8W; Tue, 11 Jul 2023 13:59:22 -0400
+	id 1qJHep-0002YS-5I; Tue, 11 Jul 2023 14:00:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qJHdv-0001NQ-Ur
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 13:59:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qJHen-0002Ve-3d
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 14:00:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qJHdu-00057L-Gb
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 13:59:19 -0400
+ id 1qJHel-0005iu-BR
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 14:00:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689098357;
+ s=mimecast20190719; t=1689098409;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TxiDdGz2uDhG+0WeB3ykxjN3lGAYiTDy3xAGeY7BWPk=;
- b=RGQhVYLouoy66tT0Ln5PxlfqcvM6Ri8PSLuwZdGvKeEqZbJ3RXQ6tezrlg6YpRoLwktkSA
- yimlgFPVvVAFsibtFduR18CPkklkCyHfqFZZln6BLuohNK3O4uMcyILDWghZhhUBfF2TGg
- 5+hTFdHMGtAq4Z7/lFEVeoliMdz2Hr4=
+ bh=KYOwgCZYs1nS4c9q6mJIIHE7vSujgF1AclQEAyM7lCU=;
+ b=ZobssUpx0saYG7DznLc4j36ZBjK7u/h43hdHamEcGIHbEgYz2CZiAXPLbMqcmXysKMH+S4
+ IzqBKVuLRv40vng1AqJ/nrTzpfkl6G4c6AzUQqUdd9hhYaSINyNA7JOcYLKK8e8ZVz7/Pi
+ MGAYN2VxnQJe1oPFf0yvRg7mSXizzUo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-357-N2cBvq7CP9q-Coqwq8C-Pw-1; Tue, 11 Jul 2023 13:59:13 -0400
-X-MC-Unique: N2cBvq7CP9q-Coqwq8C-Pw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-344-lotOVd1uPh-mTRKhZ4VGmg-1; Tue, 11 Jul 2023 14:00:03 -0400
+X-MC-Unique: lotOVd1uPh-mTRKhZ4VGmg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7779486F122;
- Tue, 11 Jul 2023 17:59:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 89B8C8FBA29;
+ Tue, 11 Jul 2023 18:00:02 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.121])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 227B0492B01;
- Tue, 11 Jul 2023 17:59:11 +0000 (UTC)
-Date: Tue, 11 Jul 2023 18:59:09 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5E7111454145;
+ Tue, 11 Jul 2023 17:59:37 +0000 (UTC)
+Date: Tue, 11 Jul 2023 18:59:35 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
@@ -53,19 +53,19 @@ Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Kyle Evans <kevans@freebsd.org>, Li-Wen Hsu <lwhsu@freebsd.org>,
  Beraldo Leal <bleal@redhat.com>
-Subject: Re: [PATCH v3 3/4] tests/vm: Introduce
- get_qemu_packages_from_lcitool_json() helper
-Message-ID: <ZK2Ybc2LWL3Ew7XE@redhat.com>
+Subject: Re: [PATCH v3 4/4] tests/vm/freebsd: Get up-to-date package list
+ from lcitool vars file
+Message-ID: <ZK2Yhwutr47IU1rG@redhat.com>
 References: <20230711144922.67491-1-philmd@linaro.org>
- <20230711144922.67491-4-philmd@linaro.org>
+ <20230711144922.67491-5-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230711144922.67491-4-philmd@linaro.org>
+In-Reply-To: <20230711144922.67491-5-philmd@linaro.org>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -91,15 +91,15 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 11, 2023 at 04:49:21PM +0200, Philippe Mathieu-Daudé wrote:
-> Add the get_qemu_packages_from_lcitool_json() helper which return
-> such package list from a lcitool env var file in JSON format.
+On Tue, Jul 11, 2023 at 04:49:22PM +0200, Philippe Mathieu-Daudé wrote:
+> Get an up-to-date package list from lcitool, that way we
+> don't need to manually keep this array in sync.
 > 
-> Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
+> Inspired-by: Thomas Huth <thuth@redhat.com>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  tests/vm/basevm.py | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>  tests/vm/freebsd | 42 ++----------------------------------------
+>  1 file changed, 2 insertions(+), 40 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
