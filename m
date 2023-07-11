@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C781574E771
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 08:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5336674E786
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 08:47:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJ6za-0004K1-6p; Tue, 11 Jul 2023 02:36:58 -0400
+	id 1qJ796-00060q-8L; Tue, 11 Jul 2023 02:46:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qJ6zK-0004I5-Ev
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 02:36:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qJ6zD-0004UH-Mf
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 02:36:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689057392;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=qF18PCVin5fjDpmyimvgqhqbqQpjAWXRvTu3RAOwcLA=;
- b=iP6hOUe5zHeMn+l2EZjBAVHiFctQUC0DbBLAqV9sW4mAo5PieatWc38i3hOaW6ysQcPRP+
- GksEm8qTy02Cded5GNLPbUBkLI+JqmKRRQkwVY/TFCN1svA5EERp3TKOThj04ILTfm2OW0
- juWQ0bYQ6MZJtQbD41dG+IcEnndjr04=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-235-rkDNa8MDN1SWeAJEebI8Kg-1; Tue, 11 Jul 2023 02:36:30 -0400
-X-MC-Unique: rkDNa8MDN1SWeAJEebI8Kg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26894830F46;
- Tue, 11 Jul 2023 06:36:30 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E8BA32166B26;
- Tue, 11 Jul 2023 06:36:29 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DB5A721E6A1F; Tue, 11 Jul 2023 08:36:28 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: "Kim, Dongwon" <dongwon.kim@intel.com>
-Cc: <qemu-devel@nongnu.org>,  <kraxel@redhat.com>,  <berrange@redhat.com>,
- <philmd@linaro.org>,  <marcandre.lureau@redhat.com>,
- <vivek.kasireddy@intel.com>
-Subject: Re: [RFC PATCH 6/9] ui/gtk: Add a new parameter to assign
- connectors/monitors to GFX VCs
-References: <20230621004355.19920-1-dongwon.kim@intel.com>
- <20230621004355.19920-7-dongwon.kim@intel.com>
- <87h6r1mkhc.fsf@pond.sub.org>
- <46dc1ac2-2ab5-48f7-73da-4160c26c3171@intel.com>
- <878rbrizmo.fsf@pond.sub.org>
- <6351a85a-db49-7d6b-2a55-1ea7c65b3a8e@intel.com>
- <87r0pgb8su.fsf@pond.sub.org>
- <ed732fc3-bb1d-42da-e179-0dcd08c663a8@intel.com>
-Date: Tue, 11 Jul 2023 08:36:28 +0200
-In-Reply-To: <ed732fc3-bb1d-42da-e179-0dcd08c663a8@intel.com> (Dongwon Kim's
- message of "Mon, 10 Jul 2023 13:31:01 -0700")
-Message-ID: <878rbnymxf.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qJ792-00060J-VB
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 02:46:45 -0400
+Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
+ id 1qJ790-0006Ys-Jq
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 02:46:44 -0400
+Received: by mail-qk1-x733.google.com with SMTP id
+ af79cd13be357-7659924cd9bso596382385a.1
+ for <qemu-devel@nongnu.org>; Mon, 10 Jul 2023 23:46:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1689058000; x=1691650000;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=P0TCTtlW8uOZHIeFmg1gAPUeuv7kMtuqFuZ1OZNmtUs=;
+ b=Do32wsSIH9RWwLD5QcXbeyROeFcUuj4n48V8xZ75FxXJjS03pBf8BgV2DOoFnMvOTA
+ 8X/ortNFkeHqUkTheB6zPfGaO3c0U5KLwCXX3BZlUHRg8yIkO/BykNI7s5ympvllj4Ga
+ mNnjBnaoOlRzQFbQflUoU829M+KufJHKDxJyDEg4wVjw3D/u1Z6m4YoXaVu9sszHz/lC
+ rlV8sEDU52xQoabpSDXNtQdkT4S/+XSGsRFWlgJtLmyttZDHqq4cAd7jB9yRyvHRfoQO
+ UQddIaoCYm8OuxllaqvMAia0ouHhVrEtrI4Z/RReykEZaMr7mB0IUAgQc8kdAqvOneJW
+ WdSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689058000; x=1691650000;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=P0TCTtlW8uOZHIeFmg1gAPUeuv7kMtuqFuZ1OZNmtUs=;
+ b=geZlZ+g5oqTA+QT7dd7+ElIRGvnNv5LJcEZ33W5EUQq3nptr1PErbBExsXgNiQeQHx
+ Hvn7/CTl/4CilTRJiJjGrfHwVBqShDtzOsW6zyupitnUNUTzNcJDrgWpIEHmFb6MCBbq
+ GiA5yxJlqJcIKtHHITp9c9/PJx0OHH7hq0JDUHMbkefGWvNZ8nKnyLAUYWIsgEFg202P
+ VVsXuIWZVwhqx/+71KKx0W8VTGQ8aEJk+cOdjFAkF4qcPRDTm0mgntFfxQy7nMfA1/Tj
+ lSdd8ZQl0nj9WZPCQs3uomGkAnb1u2OzpJE5nkx8l6JnZiT+rtAr+NTQjLIhCQlwVLav
+ 1xeQ==
+X-Gm-Message-State: ABy/qLbFpTlqDCGIMthVTMD+ZElZqP3dJ1Gm7ipy4wm9y2tPIz6ZbVue
+ RC7H05YqNiciz4BqnhpolxBwbE2/RXDucaUxqeErFy4dmA9y2+uOxm9cQA==
+X-Google-Smtp-Source: APBJJlEXhwO+vArM8x8mGo8q61nsinZHhCIq5oNKh8iF5WxovjOqSdUJYnOasgKjdal8KSkVwEF/hoW5+oeZu9m+/Q4=
+X-Received: by 2002:a05:622a:1492:b0:400:9666:4349 with SMTP id
+ t18-20020a05622a149200b0040096664349mr19212074qtx.46.1689058000660; Mon, 10
+ Jul 2023 23:46:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230711054722.15721-1-jason.chien@sifive.com>
+In-Reply-To: <20230711054722.15721-1-jason.chien@sifive.com>
+From: Jason Chien <jason.chien@sifive.com>
+Date: Tue, 11 Jul 2023 14:46:28 +0800
+Message-ID: <CADr__8o949b85jN7oXU1i52Bktm_dBw8wTbsY+X1ReeW6FhnVg@mail.gmail.com>
+Subject: Re: [PATCH v2] target/riscv: Add Zihintntl extension ISA string to DTS
+To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Content-Type: multipart/alternative; boundary="00000000000022830a06003076d2"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
+ envelope-from=jason.chien@sifive.com; helo=mail-qk1-x733.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,76 +88,189 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Kim, Dongwon" <dongwon.kim@intel.com> writes:
+--00000000000022830a06003076d2
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> On 7/9/2023 11:05 PM, Markus Armbruster wrote:
->> "Kim, Dongwon" <dongwon.kim@intel.com> writes:
->>
->>> On 7/7/2023 7:07 AM, Markus Armbruster wrote:
+Hi all,
+I am sorry that I forgot to add "Reviewed-by". I will add "Reviewed-by" and
+send v3 shortly.
 
-[...]
+Jason Chien
 
->>>> Ignorant questions:
->>>>
->>>> 1. How would I plug / unplug display cables?
->>>
->>> I am not sure if I understood your question correctly but 1 or more guest displays (GTK windows) are bound to a certain physical displays like HDMI or DP monitors. So plug/unplug means we disconnect those physical HDMI or DP cables manually. Or this manual hot plug in can be emulated by you write something to sysfs depending on what display driver you use.
->>
->> Let's see whether I understand.
->>
->> A VC is placed on a *physical* monitor, i.e. a window appears on that
->> monitor.  That monitor's plug / unplug state is passed through to the
->> guest, i.e. if I physically unplug / plug the monitor, the guest sees an
->> unplug / plug of its virtual monitor.  Correct?
+On Tue, Jul 11, 2023 at 1:47=E2=80=AFPM Jason Chien <jason.chien@sifive.com=
+> wrote:
+
+> RVA23 Profiles states:
+> The RVA23 profiles are intended to be used for 64-bit application
+> processors that will run rich OS stacks from standard binary OS
+> distributions and with a substantial number of third-party binary user
+> applications that will be supported over a considerable length of time
+> in the field.
 >
-> This is correct. When a display is disconnected, "monitor-changed" GTK event will be triggered then it will call gd_ui_size(0,0) which makes the guest display connection status to "disconnected".
-
-Thanks!
-
->> Permit me another ignorant question...  Say I have a single monitor.  I
->> configured my X windows manager to show four virtual desktops.  Can I
->> use your feature to direct on which virtual desktop each VC is placed?
+> The chapter 4 of the unprivileged spec introduces the Zihintntl extension
+> and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
+> purpose is to enable application and operating system portability across
+> different implementations. Thus the DTS should contain the Zihintntl ISA
+> string in order to pass to software.
 >
-> Would those virtual desktops will be their own connector names like HDMI or DP? We use the connector name for the actual physical display you see when running xrandr.
-
-Output of xrandr is identical on different virtual desktops for me.
-
-> I don't know how virtual desktops are created and managed but if they don't have their own connector names that GTK API can read, it won't work within our current implementation.
-
-After searching around a bit...  Virtual desktops, a.k.a. workspaces,
-are a window manager thing.  Completely different from X displays and
-monitors.  Programs can mess with placement (wmctrl does).  No idea
-whether GDK provides an interface for it.  No need to discuss this
-further at this time.
-
-[...]
-
->>>> Old question not yet answered: Using a list for the mapping means the
->>>> mapping must be dense, e.g. I can't map #0 and #2 but not #1.  Is this
->>>> what we want?
->>>
->>> No, it doesn't have to be dense. In your example, you can just leave the place for VC1 blank. For example, you could do connectors.0=DP-1,connectors.2=HDMI-1. But in this case, VC1 won't be activated and stay as disconnected from guest's perspective. I think this info is also needed in v2.
->>
->> Have you tried this?  I believe it'll fail with something like
->> "Parameter 'connectors.1' missing".
+> The unprivileged spec states:
+> Like any HINTs, these instructions may be freely ignored. Hence, although
+> they are described in terms of cache-based memory hierarchies, they do no=
+t
+> mandate the provision of caches.
 >
-> Just tested it. Yeah you are correct. I think I had a bad assumption. Let me take a look to see if I can make it work as I assumed.
+> These instructions are encoded with used opcode, e.g. ADD x0, x0, x2, whi=
+ch
+> QEMU already supports, and QEMU does not emulate cache. Therefore these
+> instructions can be considered as a no-op, and we only need to add a new
+> property for the Zihintntl extension.
+>
+> Signed-off-by: Jason Chien <jason.chien@sifive.com>
+> ---
+>  target/riscv/cpu.c     | 2 ++
+>  target/riscv/cpu_cfg.h | 1 +
+>  2 files changed, 3 insertions(+)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 9339c0241d..b7e99cccd9 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -87,6 +87,7 @@ static const struct isa_ext_data isa_edata_arr[] =3D {
+>      ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+>      ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
+>      ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
+> +    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
+>      ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause=
+),
+>      ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+>      ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
+> @@ -1755,6 +1756,7 @@ static Property riscv_cpu_extensions[] =3D {
+>      DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
+>      DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+>      DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
+> +    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, true),
+>      DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true)=
+,
+>      DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
+>      DEFINE_PROP_BOOL("Zfa", RISCVCPU, cfg.ext_zfa, true),
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index 2bd9510ba3..518686eaa3 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -66,6 +66,7 @@ struct RISCVCPUConfig {
+>      bool ext_icbom;
+>      bool ext_icboz;
+>      bool ext_zicond;
+> +    bool ext_zihintntl;
+>      bool ext_zihintpause;
+>      bool ext_smstateen;
+>      bool ext_sstc;
+> --
+> 2.17.1
+>
+>
 
-If sparse mappings make sense, we should provide for them, I think.
+--00000000000022830a06003076d2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-An array like '*connectors': ['str'] maps from integers 0, 1, ...  It
-can't do sparse (you can't omit integers in the middle).
+<div dir=3D"ltr">Hi all,<div>I am sorry that I forgot to add &quot;Reviewed=
+-by&quot;. I will add &quot;Reviewed-by&quot; and send v3 shortly.</div><di=
+v><br></div><div>Jason Chien</div></div><br><div class=3D"gmail_quote"><div=
+ dir=3D"ltr" class=3D"gmail_attr">On Tue, Jul 11, 2023 at 1:47=E2=80=AFPM J=
+ason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com">jason.chien@sifive=
+.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"mar=
+gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
+ex">RVA23 Profiles states:<br>
+The RVA23 profiles are intended to be used for 64-bit application<br>
+processors that will run rich OS stacks from standard binary OS<br>
+distributions and with a substantial number of third-party binary user<br>
+applications that will be supported over a considerable length of time<br>
+in the field.<br>
+<br>
+The chapter 4 of the unprivileged spec introduces the Zihintntl extension<b=
+r>
+and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose<b=
+r>
+purpose is to enable application and operating system portability across<br=
+>
+different implementations. Thus the DTS should contain the Zihintntl ISA<br=
+>
+string in order to pass to software.<br>
+<br>
+The unprivileged spec states:<br>
+Like any HINTs, these instructions may be freely ignored. Hence, although<b=
+r>
+they are described in terms of cache-based memory hierarchies, they do not<=
+br>
+mandate the provision of caches.<br>
+<br>
+These instructions are encoded with used opcode, e.g. ADD x0, x0, x2, which=
+<br>
+QEMU already supports, and QEMU does not emulate cache. Therefore these<br>
+instructions can be considered as a no-op, and we only need to add a new<br=
+>
+property for the Zihintntl extension.<br>
+<br>
+Signed-off-by: Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com" ta=
+rget=3D"_blank">jason.chien@sifive.com</a>&gt;<br>
+---<br>
+=C2=A0target/riscv/cpu.c=C2=A0 =C2=A0 =C2=A0| 2 ++<br>
+=C2=A0target/riscv/cpu_cfg.h | 1 +<br>
+=C2=A02 files changed, 3 insertions(+)<br>
+<br>
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c<br>
+index 9339c0241d..b7e99cccd9 100644<br>
+--- a/target/riscv/cpu.c<br>
++++ b/target/riscv/cpu.c<br>
+@@ -87,6 +87,7 @@ static const struct isa_ext_data isa_edata_arr[] =3D {<br=
+>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zic=
+ond),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr=
+),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_i=
+fencei),<br>
++=C2=A0 =C2=A0 ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihin=
+tntl),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ex=
+t_zihintpause),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawr=
+s),<br>
+=C2=A0 =C2=A0 =C2=A0ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),<=
+br>
+@@ -1755,6 +1756,7 @@ static Property riscv_cpu_extensions[] =3D {<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;sscofpmf&quot;, RISCVCPU, cfg.ex=
+t_sscofpmf, false),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zifencei&quot;, RISCVCPU, cfg.ex=
+t_ifencei, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zicsr&quot;, RISCVCPU, cfg.ext_i=
+csr, true),<br>
++=C2=A0 =C2=A0 DEFINE_PROP_BOOL(&quot;Zihintntl&quot;, RISCVCPU, cfg.ext_zi=
+hintntl, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zihintpause&quot;, RISCVCPU, cfg=
+.ext_zihintpause, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zawrs&quot;, RISCVCPU, cfg.ext_z=
+awrs, true),<br>
+=C2=A0 =C2=A0 =C2=A0DEFINE_PROP_BOOL(&quot;Zfa&quot;, RISCVCPU, cfg.ext_zfa=
+, true),<br>
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h<br>
+index 2bd9510ba3..518686eaa3 100644<br>
+--- a/target/riscv/cpu_cfg.h<br>
++++ b/target/riscv/cpu_cfg.h<br>
+@@ -66,6 +66,7 @@ struct RISCVCPUConfig {<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_icbom;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_icboz;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_zicond;<br>
++=C2=A0 =C2=A0 bool ext_zihintntl;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_zihintpause;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_smstateen;<br>
+=C2=A0 =C2=A0 =C2=A0bool ext_sstc;<br>
+-- <br>
+2.17.1<br>
+<br>
+</blockquote></div>
 
-Instead of omitting them, we could map them to null: '*connectors':
-['StrOrNull'].  JSON input looks like [null, "HDMI-A-0"].  Since dotted
-key syntax does not support null at this time, you'd have to use JSON.
-
-Only an object can do sparse.  However, the QAPI schema language can't
-express "object where the keys are integers and the values are strings".
-We'd have to use 'any', and check everything manually.
-
-Hmm.  Thoughts?
-
->>>> [...]
-
+--00000000000022830a06003076d2--
 
