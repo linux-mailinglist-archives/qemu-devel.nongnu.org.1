@@ -2,69 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C3B974F5C4
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 18:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D08F074F5DD
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 18:44:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJGRs-0001kk-S7; Tue, 11 Jul 2023 12:42:48 -0400
+	id 1qJGT2-0002TJ-Kr; Tue, 11 Jul 2023 12:44:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJGRq-0001kb-Uh
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:42:46 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qJGSw-0002Ss-Jk
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:43:56 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJGRp-0004HC-Ae
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:42:46 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-4fb8574a3a1so9189101e87.1
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 09:42:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qJGSu-0004j4-Ap
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:43:53 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3fbea14700bso60722025e9.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 09:43:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689093763; x=1691685763;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=eejjKTh5EU8jZjvYvhzAXuEsnzasRJZa3uShskDa7JY=;
- b=MI0qyfFM1AVVYloICKDrYJ7FMt5xfRC7imMBlUhF79RwrIu5Nt+LtoaLhlCy4Zitnu
- /lM+4zaC53bh/wSNrfZhF3tEzVNvqdzpLjAtmZxnd3OF/PDcVUJdAmc4gbbLyQPm6T0w
- trZ3piF9oZTDZFJu87BAh9cmZ4+43Tgz4Ub+RAs3+zMGaFaWGL5fvZky82B5nggJdK9L
- yiOjiSLCOUNYOoVNiWhsXGf/1YDh6aHatEkLQ0oQj44v5CouZLEpsNZim6T6U0ei62xh
- u36MLVoIoeQCsH8djYUCm/y8OAg1kh3e7UeqjiQQfbF31LotjE0er3EArjxpfD+2/Qs0
- wyag==
+ d=linaro.org; s=google; t=1689093831; x=1691685831;
+ h=content-transfer-encoding:subject:from:cc:to:content-language
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=x9Ybn31T0YcqlPttkNqJSMQTCNNcqd801abGfznEz80=;
+ b=vYb+HP13YfRx3f3BMDIpU+yV5IyPKoJTBI179SHtErYTlWiQL+rteni+MB0WtNH2tA
+ 2/2gcPIQMoUvGBrcL52wbSh40WhptVVZSbabJIdDqAQUZHQ6XItuuPOJycU+w/vH72r1
+ 0GCKJISI+erTILANMrsndubXnQr4m7uliO1wUb+X5WLIuk7TYmjUHMzlfMpvsdsdyraN
+ klIVVul7FOmkyC58CyDk+QHr87jNuwCk2+pEU4ps+cFJY7EtG9CltjjlzmVdWIjkBlE9
+ Dm4Qsq/cdfS0GrpGpbgAJH3L5zGHW/+ZixBGaLw7b8I49nrbXLfdNqr66VzXQ4389MAp
+ hWOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689093763; x=1691685763;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eejjKTh5EU8jZjvYvhzAXuEsnzasRJZa3uShskDa7JY=;
- b=Wz1xfew1gtWshHIubvUgNIto95SHLs0vbzLvzXqyeScjQfWHAWJg3RHGmAAR/qsc5a
- r0nt1z3YcSQ6D3DGr5QEy0/HTLSMOkdZCSiLDpaDJY7wf5RFY0XivV/HwSMIW7+SCZjr
- CDE6Yzt2Vu3FpmWyupKSCRMtPEsfPfqPyeQW6rDW1Lvh34ogphwDxLMhoKoQZTPhH3h4
- ol1a/QSgvy6WPQRiW1gcKFLZAFsXxwVGFX5wJsaXNpp4sMJ07L3AyLkZCfEFsba9/b+e
- /Te6gv9EJXnEArMSz4PZJSZyBQtA6qEQJeDuKfzmL+4roTByjDNyE5kPnJPymKn2wMtB
- JA9g==
-X-Gm-Message-State: ABy/qLb34qpPIzQUhuj2Ob/a5QMSg85p840cIOqc8HrK343xXMdCZ9s1
- t8WzFTkun57sjOsSW0D6jHbC6u1d7Cdaf/SRUBYK8Q==
-X-Google-Smtp-Source: APBJJlFRf3Xqj0KTp6aJs4souA64/p32TQWPXKN9rbXPdtZFhLxWyvNUs4nzWm2EKptFGmnfHJWcLjy96Ml2u9sz+60=
-X-Received: by 2002:a19:8c44:0:b0:4fb:89f5:f6d2 with SMTP id
- i4-20020a198c44000000b004fb89f5f6d2mr12712123lfj.47.1689093763167; Tue, 11
- Jul 2023 09:42:43 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689093831; x=1691685831;
+ h=content-transfer-encoding:subject:from:cc:to:content-language
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=x9Ybn31T0YcqlPttkNqJSMQTCNNcqd801abGfznEz80=;
+ b=g0GXlPsqIWcaqogfWzunqlXpK26Bh/JuyQ/Psc20vaEEmPXSXlZa/XfXbyMl3C9gLN
+ PU0UP9WG1IA9MPHzaj03dhW6k3qgWdzCDhL6zzCRT/Q0HX8mVj4+7RgmrXmpDf1DQE1c
+ HlM1esaE5I1f3OTKjckXux3/oWDynOJPg5+IIrHAFb7XPwwl4rnupQ+9LW5C/z36ftxK
+ I3BxeRaDeTOT3XattcShNu8BaRL7X/PiGJaVwdBELe+O6b+fbiff89dARcrEJNONE0Jg
+ HFlKMK6v4WvwM7hiYr1hpSgXCq2B95Rp+RbJavFGPf01MHHjOGKj8HXzaM6SjzoJ0EKN
+ CIVQ==
+X-Gm-Message-State: ABy/qLbPCg/GG43Xs/NWT/P2gSzwpIxHjMQQ/jy2hb3g8OwyeT3CfM58
+ QwU45EfKWhbsPy5d/e/Vd3eMX8Ok1vbegWgMIR3txQ==
+X-Google-Smtp-Source: APBJJlE1K7SBENvcTmkz1dF8vYmDrHUijeq5xFctxtu/D4K4TVUjMAI3Z4OC6fdDXxx0CQ7cGT1dWg==
+X-Received: by 2002:a5d:58c5:0:b0:314:5f6f:68ce with SMTP id
+ o5-20020a5d58c5000000b003145f6f68cemr14936342wrf.66.1689093830759; 
+ Tue, 11 Jul 2023 09:43:50 -0700 (PDT)
+Received: from [192.168.11.252] ([185.65.165.31])
+ by smtp.gmail.com with ESMTPSA id
+ p7-20020a5d6387000000b003143801f8d8sm2680210wru.103.2023.07.11.09.43.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Jul 2023 09:43:50 -0700 (PDT)
+Message-ID: <629afcc2-ffed-c081-9564-7faa6defc1f4@linaro.org>
+Date: Tue, 11 Jul 2023 17:43:48 +0100
 MIME-Version: 1.0
-References: <20230605201548.1596865-1-richard.henderson@linaro.org>
- <20230605201548.1596865-33-richard.henderson@linaro.org>
-In-Reply-To: <20230605201548.1596865-33-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 11 Jul 2023 17:42:32 +0100
-Message-ID: <CAFEAcA_x7GZYGd06tSXGh+sXf9R=xyP6UQPcUQgF50fZPx8TOQ@mail.gmail.com>
-Subject: Re: [PULL 32/52] exec-all: Widen TranslationBlock pc and cs_base to
- 64-bits
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+To: qemu-devel <qemu-devel@nongnu.org>
+Cc: "qemu-riscv@nongnu.org" <qemu-riscv@nongnu.org>,
+ Alistair Francis <Alistair.Francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, liweiwei <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+Subject: riscv kvm breakage
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,32 +96,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 5 Jun 2023 at 21:27, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> This makes TranslationBlock agnostic to the address size of the guest.
-> Use vaddr for pc, since that's always a virtual address.
-> Use uint64_t for cs_base, since usage varies between guests.
+Hiya,
 
-> index 60ca9e229e..1cf4f1fa22 100644
-> --- a/accel/tcg/cpu-exec.c
-> +++ b/accel/tcg/cpu-exec.c
-> @@ -297,7 +297,7 @@ static void log_cpu_exec(target_ulong pc, CPUState *cpu,
->  {
->      if (qemu_log_in_addr_range(pc)) {
->          qemu_log_mask(CPU_LOG_EXEC,
-> -                      "Trace %d: %p [" TARGET_FMT_lx
-> +                      "Trace %d: %p [%08" PRIx64
->                        "/" TARGET_FMT_lx "/%08x/%08x] %s\n",
->                        cpu->cpu_index, tb->tc.ptr, tb->cs_base, pc,
->                        tb->flags, tb->cflags, lookup_symbol(pc));
+This breakage crept in while cross-riscv64-system was otherwise broken in configure:
 
-TARGET_FMT_lx zero-pads appropriately to the size of
-target_ulong, which is what cs_base used to be.
-Now we have an explicit %08, which will sometimes
-be too small for cs_base if the guest really uses all
-64 bits of it. Is that intentional ?
+https://gitlab.com/qemu-project/qemu/-/jobs/4633277557#L4165
 
-thanks
--- PMM
+../target/riscv/kvm.c:209:38: error: ‘KVM_RISCV_ISA_EXT_ZICBOZ’ undeclared here (not in a 
+function); did you mean ‘KVM_RISCV_ISA_EXT_ZICBOM’?
+   209 |     KVM_EXT_CFG("zicboz", ext_icboz, KVM_RISCV_ISA_EXT_ZICBOZ),
+       |                                      ^~~~~~~~~~~~~~~~~~~~~~~~
+../target/riscv/kvm.c:205:20: note: in definition of macro ‘KVM_EXT_CFG’
+   205 |      .kvm_reg_id = _reg_id}
+       |                    ^~~~~~~
+../target/riscv/kvm.c:211:33: error: ‘KVM_RISCV_ISA_EXT_ZBB’ undeclared here (not in a 
+function); did you mean ‘KVM_RISCV_ISA_EXT_MAX’?
+   211 |     KVM_EXT_CFG("zbb", ext_zbb, KVM_RISCV_ISA_EXT_ZBB),
+       |                                 ^~~~~~~~~~~~~~~~~~~~~
+../target/riscv/kvm.c:205:20: note: in definition of macro ‘KVM_EXT_CFG’
+   205 |      .kvm_reg_id = _reg_id}
+       |                    ^~~~~~~
+../target/riscv/kvm.c:212:37: error: ‘KVM_RISCV_ISA_EXT_SSAIA’ undeclared here (not in a 
+function); did you mean ‘KVM_RISCV_ISA_EXT_SSTC’?
+   212 |     KVM_EXT_CFG("ssaia", ext_ssaia, KVM_RISCV_ISA_EXT_SSAIA),
+       |                                     ^~~~~~~~~~~~~~~~~~~~~~~
+../target/riscv/kvm.c:205:20: note: in definition of macro ‘KVM_EXT_CFG’
+   205 |      .kvm_reg_id = _reg_id}
+       |                    ^~~~~~~
+In file included from /usr/riscv64-linux-gnu/include/rpc/netdb.h:42,
+                  from /usr/riscv64-linux-gnu/include/netdb.h:32,
+                  from /builds/qemu-project/qemu/include/sysemu/os-posix.h:34,
+                  from /builds/qemu-project/qemu/include/qemu/osdep.h:151,
+                  from ../target/riscv/kvm.c:19:
+../target/riscv/kvm.c:288:44: error: ‘struct kvm_riscv_config’ has no member named 
+‘zicboz_block_size’; did you mean ‘zicbom_block_size’?
+   288 |     .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicboz_block_size)
+       |                                            ^~~~~~~~~~~~~~~~~
+
+Can someone have a look asap?  Thanks,
+
+
+r~
+
 
