@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E6074F739
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 19:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A89474F73B
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 19:27:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJH7n-0005yS-Qz; Tue, 11 Jul 2023 13:26:07 -0400
+	id 1qJH7n-0005xj-5X; Tue, 11 Jul 2023 13:26:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qJH7k-0005va-PA; Tue, 11 Jul 2023 13:26:04 -0400
+ id 1qJH7k-0005vK-H8; Tue, 11 Jul 2023 13:26:04 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qJH7h-0006yS-Lg; Tue, 11 Jul 2023 13:26:04 -0400
+ id 1qJH7h-0006yT-NQ; Tue, 11 Jul 2023 13:26:04 -0400
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1qJH6C-008F35-00;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1qJH6C-008F35-0C;
  Tue, 11 Jul 2023 19:25:44 +0200
 To: qemu-block@nongnu.org,
 	qemu-stable@nongnu.org
 Cc: qemu-devel@nongnu.org, kwolf@redhat.com, hreitz@redhat.com,
  vsementsov@yandex-team.ru, eblake@redhat.com,
  andrey.drobyshev@virtuozzo.com, den@openvz.org
-Subject: [PATCH v2 2/3] block/io: align requests to subcluster_size
-Date: Tue, 11 Jul 2023 20:25:52 +0300
-Message-Id: <20230711172553.234055-3-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH v2 3/3] tests/qemu-iotests/197: add testcase for CoR with
+ subclusters
+Date: Tue, 11 Jul 2023 20:25:53 +0300
+Message-Id: <20230711172553.234055-4-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20230711172553.234055-1-andrey.drobyshev@virtuozzo.com>
 References: <20230711172553.234055-1-andrey.drobyshev@virtuozzo.com>
@@ -57,22 +58,12 @@ From:  Andrey Drobyshev via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When target image is using subclusters, and we align the request during
-copy-on-read, it makes sense to align to subcluster_size rather than
-cluster_size.  Otherwise we end up with unnecessary allocations.
+Add testcase which checks that allocations during copy-on-read are
+performed on the subcluster basis when subclusters are enabled in target
+image.
 
-This commit renames bdrv_round_to_clusters() to bdrv_round_to_subclusters()
-and utilizes subcluster_size field of BlockDriverInfo to make necessary
-alignments.  It affects copy-on-read as well as mirror job (which is
-using bdrv_round_to_clusters()).
-
-This change also fixes the following bug with failing assert (covered by
-the test in the subsequent commit):
-
-qemu-img create -f qcow2 base.qcow2 64K
-qemu-img create -f qcow2 -o extended_l2=on,backing_file=base.qcow2,backing_fmt=qcow2 img.qcow2 64K
-qemu-io -c "write -P 0xaa 0 2K" img.qcow2
-qemu-io -C -c "read -P 0x00 2K 62K" img.qcow2
+This testcase also triggers the following assert with previous commit
+not being applied, so we check that as well:
 
 qemu-io: ../block/io.c:1236: bdrv_co_do_copy_on_readv: Assertion `skip_bytes < pnum' failed.
 
@@ -80,184 +71,83 @@ Reviewed-by: Eric Blake <eblake@redhat.com>
 Reviewed-by: Denis V. Lunev <den@openvz.org>
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- block/io.c               | 50 ++++++++++++++++++++--------------------
- block/mirror.c           |  8 +++----
- include/block/block-io.h |  8 +++----
- 3 files changed, 33 insertions(+), 33 deletions(-)
+ tests/qemu-iotests/197     | 29 +++++++++++++++++++++++++++++
+ tests/qemu-iotests/197.out | 24 ++++++++++++++++++++++++
+ 2 files changed, 53 insertions(+)
 
-diff --git a/block/io.c b/block/io.c
-index e8293d6b26..4a2fef6a77 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -728,21 +728,21 @@ BdrvTrackedRequest *coroutine_fn bdrv_co_get_self_request(BlockDriverState *bs)
- }
+diff --git a/tests/qemu-iotests/197 b/tests/qemu-iotests/197
+index a2547bc280..f07a9da136 100755
+--- a/tests/qemu-iotests/197
++++ b/tests/qemu-iotests/197
+@@ -122,6 +122,35 @@ $QEMU_IO -f qcow2 -C -c 'read 0 1024' "$TEST_WRAP" | _filter_qemu_io
+ $QEMU_IO -f qcow2 -c map "$TEST_WRAP"
+ _check_test_img
  
- /**
-- * Round a region to cluster boundaries
-+ * Round a region to subcluster (if supported) or cluster boundaries
-  */
- void coroutine_fn GRAPH_RDLOCK
--bdrv_round_to_clusters(BlockDriverState *bs, int64_t offset, int64_t bytes,
--                       int64_t *cluster_offset, int64_t *cluster_bytes)
-+bdrv_round_to_subclusters(BlockDriverState *bs, int64_t offset, int64_t bytes,
-+                          int64_t *align_offset, int64_t *align_bytes)
- {
-     BlockDriverInfo bdi;
-     IO_CODE();
--    if (bdrv_co_get_info(bs, &bdi) < 0 || bdi.cluster_size == 0) {
--        *cluster_offset = offset;
--        *cluster_bytes = bytes;
-+    if (bdrv_co_get_info(bs, &bdi) < 0 || bdi.subcluster_size == 0) {
-+        *align_offset = offset;
-+        *align_bytes = bytes;
-     } else {
--        int64_t c = bdi.cluster_size;
--        *cluster_offset = QEMU_ALIGN_DOWN(offset, c);
--        *cluster_bytes = QEMU_ALIGN_UP(offset - *cluster_offset + bytes, c);
-+        int64_t c = bdi.subcluster_size;
-+        *align_offset = QEMU_ALIGN_DOWN(offset, c);
-+        *align_bytes = QEMU_ALIGN_UP(offset - *align_offset + bytes, c);
-     }
- }
- 
-@@ -1168,8 +1168,8 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-     void *bounce_buffer = NULL;
- 
-     BlockDriver *drv = bs->drv;
--    int64_t cluster_offset;
--    int64_t cluster_bytes;
-+    int64_t align_offset;
-+    int64_t align_bytes;
-     int64_t skip_bytes;
-     int ret;
-     int max_transfer = MIN_NON_ZERO(bs->bl.max_transfer,
-@@ -1203,28 +1203,28 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-      * BDRV_REQUEST_MAX_BYTES (even when the original read did not), which
-      * is one reason we loop rather than doing it all at once.
-      */
--    bdrv_round_to_clusters(bs, offset, bytes, &cluster_offset, &cluster_bytes);
--    skip_bytes = offset - cluster_offset;
-+    bdrv_round_to_subclusters(bs, offset, bytes, &align_offset, &align_bytes);
-+    skip_bytes = offset - align_offset;
- 
-     trace_bdrv_co_do_copy_on_readv(bs, offset, bytes,
--                                   cluster_offset, cluster_bytes);
-+                                   align_offset, align_bytes);
- 
--    while (cluster_bytes) {
-+    while (align_bytes) {
-         int64_t pnum;
- 
-         if (skip_write) {
-             ret = 1; /* "already allocated", so nothing will be copied */
--            pnum = MIN(cluster_bytes, max_transfer);
-+            pnum = MIN(align_bytes, max_transfer);
-         } else {
--            ret = bdrv_is_allocated(bs, cluster_offset,
--                                    MIN(cluster_bytes, max_transfer), &pnum);
-+            ret = bdrv_is_allocated(bs, align_offset,
-+                                    MIN(align_bytes, max_transfer), &pnum);
-             if (ret < 0) {
-                 /*
-                  * Safe to treat errors in querying allocation as if
-                  * unallocated; we'll probably fail again soon on the
-                  * read, but at least that will set a decent errno.
-                  */
--                pnum = MIN(cluster_bytes, max_transfer);
-+                pnum = MIN(align_bytes, max_transfer);
-             }
- 
-             /* Stop at EOF if the image ends in the middle of the cluster */
-@@ -1242,7 +1242,7 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-             /* Must copy-on-read; use the bounce buffer */
-             pnum = MIN(pnum, MAX_BOUNCE_BUFFER);
-             if (!bounce_buffer) {
--                int64_t max_we_need = MAX(pnum, cluster_bytes - pnum);
-+                int64_t max_we_need = MAX(pnum, align_bytes - pnum);
-                 int64_t max_allowed = MIN(max_transfer, MAX_BOUNCE_BUFFER);
-                 int64_t bounce_buffer_len = MIN(max_we_need, max_allowed);
- 
-@@ -1254,7 +1254,7 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-             }
-             qemu_iovec_init_buf(&local_qiov, bounce_buffer, pnum);
- 
--            ret = bdrv_driver_preadv(bs, cluster_offset, pnum,
-+            ret = bdrv_driver_preadv(bs, align_offset, pnum,
-                                      &local_qiov, 0, 0);
-             if (ret < 0) {
-                 goto err;
-@@ -1266,13 +1266,13 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-                 /* FIXME: Should we (perhaps conditionally) be setting
-                  * BDRV_REQ_MAY_UNMAP, if it will allow for a sparser copy
-                  * that still correctly reads as zero? */
--                ret = bdrv_co_do_pwrite_zeroes(bs, cluster_offset, pnum,
-+                ret = bdrv_co_do_pwrite_zeroes(bs, align_offset, pnum,
-                                                BDRV_REQ_WRITE_UNCHANGED);
-             } else {
-                 /* This does not change the data on the disk, it is not
-                  * necessary to flush even in cache=writethrough mode.
-                  */
--                ret = bdrv_driver_pwritev(bs, cluster_offset, pnum,
-+                ret = bdrv_driver_pwritev(bs, align_offset, pnum,
-                                           &local_qiov, 0,
-                                           BDRV_REQ_WRITE_UNCHANGED);
-             }
-@@ -1301,8 +1301,8 @@ bdrv_co_do_copy_on_readv(BdrvChild *child, int64_t offset, int64_t bytes,
-             }
-         }
- 
--        cluster_offset += pnum;
--        cluster_bytes -= pnum;
-+        align_offset += pnum;
-+        align_bytes -= pnum;
-         progress += pnum - skip_bytes;
-         skip_bytes = 0;
-     }
-diff --git a/block/mirror.c b/block/mirror.c
-index d3cacd1708..e213a892db 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -283,8 +283,8 @@ static int coroutine_fn mirror_cow_align(MirrorBlockJob *s, int64_t *offset,
-     need_cow |= !test_bit((*offset + *bytes - 1) / s->granularity,
-                           s->cow_bitmap);
-     if (need_cow) {
--        bdrv_round_to_clusters(blk_bs(s->target), *offset, *bytes,
--                               &align_offset, &align_bytes);
-+        bdrv_round_to_subclusters(blk_bs(s->target), *offset, *bytes,
-+                                  &align_offset, &align_bytes);
-     }
- 
-     if (align_bytes > max_bytes) {
-@@ -576,8 +576,8 @@ static void coroutine_fn mirror_iteration(MirrorBlockJob *s)
-             int64_t target_offset;
-             int64_t target_bytes;
-             WITH_GRAPH_RDLOCK_GUARD() {
--                bdrv_round_to_clusters(blk_bs(s->target), offset, io_bytes,
--                                       &target_offset, &target_bytes);
-+                bdrv_round_to_subclusters(blk_bs(s->target), offset, io_bytes,
-+                                          &target_offset, &target_bytes);
-             }
-             if (target_offset == offset &&
-                 target_bytes == io_bytes) {
-diff --git a/include/block/block-io.h b/include/block/block-io.h
-index 4415506e40..6db48f2d35 100644
---- a/include/block/block-io.h
-+++ b/include/block/block-io.h
-@@ -189,10 +189,10 @@ bdrv_get_info(BlockDriverState *bs, BlockDriverInfo *bdi);
- ImageInfoSpecific *bdrv_get_specific_info(BlockDriverState *bs,
-                                           Error **errp);
- BlockStatsSpecific *bdrv_get_specific_stats(BlockDriverState *bs);
--void bdrv_round_to_clusters(BlockDriverState *bs,
--                            int64_t offset, int64_t bytes,
--                            int64_t *cluster_offset,
--                            int64_t *cluster_bytes);
-+void bdrv_round_to_subclusters(BlockDriverState *bs,
-+                               int64_t offset, int64_t bytes,
-+                               int64_t *cluster_offset,
-+                               int64_t *cluster_bytes);
- 
- void bdrv_get_backing_filename(BlockDriverState *bs,
-                                char *filename, int filename_size);
++echo
++echo '=== Copy-on-read with subclusters ==='
++echo
++
++# Create base and top images 64K (1 cluster) each.  Make subclusters enabled
++# for the top image
++_make_test_img 64K
++IMGPROTO=file IMGFMT=qcow2 TEST_IMG_FILE="$TEST_WRAP" \
++    _make_test_img --no-opts -o extended_l2=true -F "$IMGFMT" -b "$TEST_IMG" \
++    64K | _filter_img_create
++
++$QEMU_IO -c "write -P 0xaa 0 64k" "$TEST_IMG" | _filter_qemu_io
++
++# Allocate individual subclusters in the top image, and not the whole cluster
++$QEMU_IO -c "write -P 0xbb 28K 2K" -c "write -P 0xcc 34K 2K" "$TEST_WRAP" \
++    | _filter_qemu_io
++
++# Only 2 subclusters should be allocated in the top image at this point
++$QEMU_IMG map "$TEST_WRAP" | _filter_qemu_img_map
++
++# Actual copy-on-read operation
++$QEMU_IO -C -c "read -P 0xaa 30K 4K" "$TEST_WRAP" | _filter_qemu_io
++
++# And here we should have 4 subclusters allocated right in the middle of the
++# top image. Make sure the whole cluster remains unallocated
++$QEMU_IMG map "$TEST_WRAP" | _filter_qemu_img_map
++
++_check_test_img
++
+ # success, all done
+ echo '*** done'
+ status=0
+diff --git a/tests/qemu-iotests/197.out b/tests/qemu-iotests/197.out
+index ad414c3b0e..8f34a30afe 100644
+--- a/tests/qemu-iotests/197.out
++++ b/tests/qemu-iotests/197.out
+@@ -31,4 +31,28 @@ read 1024/1024 bytes at offset 0
+ 1 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ 1 KiB (0x400) bytes     allocated at offset 0 bytes (0x0)
+ No errors were found on the image.
++
++=== Copy-on-read with subclusters ===
++
++Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=65536
++Formatting 'TEST_DIR/t.wrap.IMGFMT', fmt=IMGFMT size=65536 backing_file=TEST_DIR/t.IMGFMT backing_fmt=IMGFMT
++wrote 65536/65536 bytes at offset 0
++64 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 2048/2048 bytes at offset 28672
++2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 2048/2048 bytes at offset 34816
++2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++Offset          Length          File
++0               0x7000          TEST_DIR/t.IMGFMT
++0x7000          0x800           TEST_DIR/t.wrap.IMGFMT
++0x7800          0x1000          TEST_DIR/t.IMGFMT
++0x8800          0x800           TEST_DIR/t.wrap.IMGFMT
++0x9000          0x7000          TEST_DIR/t.IMGFMT
++read 4096/4096 bytes at offset 30720
++4 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++Offset          Length          File
++0               0x7000          TEST_DIR/t.IMGFMT
++0x7000          0x2000          TEST_DIR/t.wrap.IMGFMT
++0x9000          0x7000          TEST_DIR/t.IMGFMT
++No errors were found on the image.
+ *** done
 -- 
 2.39.3
 
