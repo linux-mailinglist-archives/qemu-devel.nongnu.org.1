@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADDF74F59C
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 18:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7687A74F5A3
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 18:37:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJGJK-0006NQ-2t; Tue, 11 Jul 2023 12:33:58 -0400
+	id 1qJGLy-0007Ik-Rm; Tue, 11 Jul 2023 12:36:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJGJI-0006NH-9y
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:33:56 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJGLx-0007I9-0y
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:36:41 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJGJF-0002bj-Gg
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:33:56 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-51e590a8ab5so3186668a12.2
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 09:33:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJGLv-0003BJ-IY
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 12:36:40 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3143b72c5ffso6810556f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 09:36:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689093229; x=1691685229;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=RNp8d3beHsuV71moqKCCgFI5FUfk4k8uHBg+2vDvuX0=;
- b=X8+PCaEDv2CUDJaBJk06HyCxnzVVlWUMCLx0XRLOXW8JgYdEk9zQHwcjBnM4VBqDSF
- zqFt7quUENfPWbxFOeSp82cTnPKAh6PcmWrmmihMeygRGkY28cUiNE35UkavBdxC1P00
- bRDfELRgpsOKvjrW/NwdkN4lmrShHWcFZtQdJGkceMDK4iemuGQYkBBzDqXX2zI69SrB
- WiRrgUZEDNbQlgvRw49qtNuClmdY5XGcn+9f3ygklAG6kRfol+s8XhydMbT0nfevMJm4
- mQ/qL/3mKqzLHBEgF0PanFFLgKnXBkV1taD88NLzQOaX4kMX9mA61tTAC0GhgYAQ1S8E
- IyuA==
+ d=linaro.org; s=google; t=1689093397; x=1691685397;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=zaZyB+gGPCiBOtS5jBYwWmvnGFyFk7ZMSKSdT+Oem+E=;
+ b=DmGJ5nL4JsOwEFJcH3z0oEt3ULFunqGh92BwmzducgX9bAS3jWcJjNaHfljXYfrmFg
+ Radd/3QjzV82mfcDtlp5TGUWzf7Pg8kaOoIBdcHfV2hXTvyFdBamiHxi5shuCBdQL3aW
+ mOrBlR8gpfdvmxyd+coQs7MettAAkg+OFMZwf54rQJExS15kNzY+4Nve/DRwTo3A8gYn
+ Cfo9VmxHjMHgUX4jzo08ThkKVbfE0QoWguGb4liwKlAzKW/7/vV8JAKktPE9Be0D/zZN
+ 5sw1r6och8DOomYEXnHGzLUegLHG7kCuJLeT8emBve/K93phUpVLu5QRLulsf1hgVpJC
+ bsrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689093229; x=1691685229;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RNp8d3beHsuV71moqKCCgFI5FUfk4k8uHBg+2vDvuX0=;
- b=aMdpZFiPHoZ4ex0TimuIC3Dt+58xGUFCOWnZrDeUknjomh8jSM/wMwY11WCg7+YcXW
- l8yL1hIwe/ssdSN3PAI2Q901wzRS4SFZKx7kWKNY1zvir5nHWu/Up4g5YiRihTNTKGyq
- ms5e8XOR9+pGBewn7rLzcjAn4EviidR+WMUXe1iQ+bYSO7OmadJBaYqnYxZEsdrOteqf
- la+0flxa4iWeKxz6ybvlEjdo74SIBdqCy+K2RN24FqADkR3PDbBNXJgDgBxVvfXufvL0
- +uOZcAek1ZNKDUcjZwLPiP13l20h4e7MzunNaoIj/RRmD7xDrJwx2lhllk+2GV5PikY0
- 3hQQ==
-X-Gm-Message-State: ABy/qLZy0wZuB4HoM/b9d2xJ9eqqc7nJis13Hi5apjSnsmKlKcnwJCVD
- l3oLbQ/nmBKop9DeavLAO0Bp7an4I2Affp9G5NY=
-X-Google-Smtp-Source: APBJJlFBCqe0KlmC38xjj7GE2qtv9DiM0c1dww/ru4zYMg4OeHrPsgYzcwbcFiGHLJCOKr45i+hnXg==
-X-Received: by 2002:a05:6402:135a:b0:51d:a124:62cb with SMTP id
- y26-20020a056402135a00b0051da12462cbmr16947935edw.28.1689093229306; 
- Tue, 11 Jul 2023 09:33:49 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.194.156])
+ d=1e100.net; s=20221208; t=1689093397; x=1691685397;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zaZyB+gGPCiBOtS5jBYwWmvnGFyFk7ZMSKSdT+Oem+E=;
+ b=PC5lPUMOaz+UlEXd88juzz59+EbxDL3R6k7x254mQIPkOla4qvvRDU0wbJ7CNaioUu
+ dhuGHY9k8pIFcC8EK0W7AgGKRJq8asEUR+2167hVn6akZSMUmbJMtVUUlNO54Wn7xyGy
+ nsGA5dIK2RCO+2TUbId4lM5hr/yk8ECAUOj1UZk/eZ5LIKIMnwmI5CLi0jQULwJPFG+/
+ a0ICDzUERnIVp3MFUVR0XOs9zVi/5sLuRP12v9PnPQ8RAw+7oPii3NKGsnx9Lez8yWO1
+ tk1T5fPXOiuNvsf0fw29UriovLLGY0ZAUtYANo65xRbvfByC2QpM3SHb3XHwXSs11iZD
+ 2GVQ==
+X-Gm-Message-State: ABy/qLbzSghRXjTb4g2KMcIoT8LLwxFKIIl7th/Xwx/UYDgyhB8RbnBn
+ YxAXkAzgKZZN7PDdKGiklhTNaQ==
+X-Google-Smtp-Source: APBJJlGhbl0P9wKxGSjjz5wb6s0JEkJGVzTtVeA0BquCel7Bu1nNSHwXMMM4cHYytMQh1OOM0tmfbA==
+X-Received: by 2002:a5d:4404:0:b0:314:46cb:880a with SMTP id
+ z4-20020a5d4404000000b0031446cb880amr19880908wrq.28.1689093397453; 
+ Tue, 11 Jul 2023 09:36:37 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.194.156])
  by smtp.gmail.com with ESMTPSA id
- e3-20020a50ec83000000b0051e0ea53eaasm1450294edr.97.2023.07.11.09.33.47
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 11 Jul 2023 09:33:48 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Palmer Dabbelt <palmer@rivosinc.com>, Warner Losh <imp@bsdimp.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [hotfix PATCH-for-8.1 v5] configure: Fix cross-building for RISCV host
-Date: Tue, 11 Jul 2023 18:33:46 +0200
-Message-Id: <20230711163346.69409-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
+ i17-20020adff311000000b003143853590csm2655663wro.104.2023.07.11.09.36.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 11 Jul 2023 09:36:37 -0700 (PDT)
+Message-ID: <c4a48824-ad33-29ce-26d0-fc1cd92b7a7b@linaro.org>
+Date: Tue, 11 Jul 2023 18:36:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH v2] s390x: Fix QEMU abort by selecting S390_FLIC_KVM
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Thomas Huth <thuth@redhat.com>
+References: <20230711151440.716822-1-clg@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230711151440.716822-1-clg@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,80 +93,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-While when building on native Linux the host architecture
-is reported as "riscv32" or "riscv64":
+On 11/7/23 17:14, Cédric Le Goater wrote:
+> If QEMU is built with --without-default-devices, the s390-flic-kvm
+> device is missing and QEMU aborts when started with the KVM accelerator.
+> Make sure it's available by selecting S390_FLIC_KVM in Kconfig.
+> 
+> Consequently, this also fixes an abort in tests/qtest/migration-test.
+> 
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>   hw/intc/Kconfig  | 1 -
+>   hw/s390x/Kconfig | 1 +
+>   2 files changed, 1 insertion(+), 1 deletion(-)
 
-  Host machine cpu family: riscv64
-  Host machine cpu: riscv64
-  Found pkg-config: /usr/bin/pkg-config (0.29.2)
-
-Since commit ba0e733362 ("configure: Merge riscv32 and riscv64
-host architectures"), when cross-compiling it is detected as
-"riscv". Meson handles the cross-detection but displays a warning:
-
-  WARNING: Unknown CPU family riscv, please report this at https://github.com/mesonbuild/meson/issues/new
-  Host machine cpu family: riscv
-  Host machine cpu: riscv
-  Target machine cpu family: riscv
-  Target machine cpu: riscv
-  Found pkg-config: /usr/bin/riscv64-linux-gnu-pkg-config (1.8.1)
-
-Now since commit 278c1bcef5 ("target/riscv: Only unify 'riscv32/64'
--> 'riscv' for host cpu in meson") Meson expects the cpu to be in
-[riscv32, riscv64]. So when cross-building (for example on our
-cross-riscv64-system Gitlab-CI job) we get:
-
-  WARNING: Unknown CPU family riscv, please report this at https://github.com/mesonbuild/meson/issues/new
-  Host machine cpu family: riscv
-  Host machine cpu: riscv
-  Target machine cpu family: riscv
-  Target machine cpu: riscv
-  ../meson.build:684:6: ERROR: Problem encountered: Unsupported CPU riscv, try --enable-tcg-interpreter
-
-Fix by partially revert commit ba0e733362 so when cross-building
-the ./configure script passes the proper host architecture to meson.
-
-Update $linux_arch to keep using the shared linux-headers/asm-riscv/
-include path.
-
-Fixes: ba0e733362 ("configure: Merge riscv32 and riscv64 host architectures")
-Fixes: 278c1bcef5 ("target/riscv: Only unify 'riscv32/64' -> 'riscv' for host cpu in meson")
-Reported-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-v5: fix linux-headers path
----
- configure | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/configure b/configure
-index 2b41c49c0d..26ec5e4f54 100755
---- a/configure
-+++ b/configure
-@@ -451,7 +451,11 @@ elif check_define __s390__ ; then
-     cpu="s390"
-   fi
- elif check_define __riscv ; then
--  cpu="riscv"
-+  if check_define _LP64 ; then
-+    cpu="riscv64"
-+  else
-+    cpu="riscv32"
-+  fi
- elif check_define __arm__ ; then
-   cpu="arm"
- elif check_define __aarch64__ ; then
-@@ -1722,6 +1726,9 @@ if test "$linux" = "yes" ; then
-   mips64)
-     linux_arch=mips
-     ;;
-+  riscv32|riscv64)
-+    linux_arch=riscv
-+    ;;
-   *)
-     # For most CPUs the kernel architecture name and QEMU CPU name match.
-     linux_arch="$cpu"
--- 
-2.38.1
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
