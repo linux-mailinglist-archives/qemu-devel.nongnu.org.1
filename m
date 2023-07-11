@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6672874F2B1
-	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 16:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8EBD74F2AB
+	for <lists+qemu-devel@lfdr.de>; Tue, 11 Jul 2023 16:50:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJEgL-0001FH-Fd; Tue, 11 Jul 2023 10:49:37 -0400
+	id 1qJEgL-0001FW-UY; Tue, 11 Jul 2023 10:49:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJEgK-0001F4-57
- for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:49:36 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJEgB-0002lp-KZ
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJEgJ-0001Ev-Ef
  for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:49:35 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-9891c73e0fbso1161808466b.1
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 07:49:26 -0700 (PDT)
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJEgH-0002mU-L9
+ for qemu-devel@nongnu.org; Tue, 11 Jul 2023 10:49:35 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2b69f958ef3so92874621fa.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 07:49:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689086965; x=1691678965;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=NHLYfddFrDHe9BYhSsUCaksnly4CgTJQNI6D1iAoT2c=;
- b=eqIxfdWCjHHbUfEx+jMGZ2raAgAy9thC04Ybz31kG3LxgOz76D3UqAV9AN0zePJ0aC
- 8TzFPuB1uuPOgQXhYiiDGo+XWhN0s2DUSkU7eiL85J90jmGWcIDQxFvGzsVV8y2LrTkx
- 8aMAvcQP1yo1W1HWUQRsPFURkJBv4NXVpfGonoDpaLjP9x0kdZ5xNqa1tnCGOqsLIocq
- +Cnz1rdxFGMU6Qc/ofnBTeOYGtKNtABJokd6NPKKrzjSTUodZwGFDN7irMSqbpxhRIBx
- kDYIWJw4PYC9uNEsLCQx9UhX/SJKvDqz8Pw+hAvKaPjAfO31KqH5yNqMFvGiOC7COqZ1
- QoSA==
+ d=linaro.org; s=google; t=1689086971; x=1691678971;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=a3Kb8EGzX+FYyoa01i/LLklvXAPWnwahDSy93HfoU3M=;
+ b=h7AJPPbAtRR0fgeagkHwflPaWZjBjeBYN1x+wmn5GLEKcc3fCVLLJ3TYvZaJJyzloH
+ ROj3hrKTXiCKVoeBKCLHFvC04g3jxXkGdqrgVeTT1CFMVwqI74gGOikLMrOoKZ6zF3Tb
+ EpFHs+EeYcnhM2t0JElWavAhqRYHuXLl3Xd1+lpPDn8QBhu5GELDqrbSiuknOEeosJkF
+ IXbjDOlJTcVzrcC8N3xJmtU2EZ5ROsNGb0SNDkP9kIVq4Ct23siNaP+IlWFPowWpuARC
+ XHn0kCNTE4+ZdNdwFy5tDxVJJEha4GzOsui8fM81qin9NcXnS4chc7nnREBvOP1E1nIK
+ mpgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689086965; x=1691678965;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NHLYfddFrDHe9BYhSsUCaksnly4CgTJQNI6D1iAoT2c=;
- b=OuEdVJXuFkzXg8kowgGHqbWT07ngSiEeRRcV1DxGXSHWFy1GHYLRCFB3mPcJglmuT4
- QBUSlQ/Hf6DlW2iFd/d+GF5VAkOQw0PPfcV/Q/Y5AmU/BV0a1wAesOyBRh4pDTzovl7s
- buHCiVg+Kev953covZxrGKphZbBO+FlDsPJiPJvQctJTB1G6CQEY+X/yXVAv02q4nmSJ
- 0Xl86BZ+NFtZY+sCP0hlnDLbC1uIcK0gxTsBmkhy4AUojpizrxzz5/NALTWYPxqbTYjB
- ewCPVfCNcJWwNt1+86fMwsSxFz2/QOfbc2tHkh6moyDxM2e5T4ArLrfgb2sEplXq6g/f
- AHWg==
-X-Gm-Message-State: ABy/qLYKFYe1SbUMJO7jBRXFS8mYSV9tlh+ur7mPXQT3EyUvrSwnvV3d
- GTrzWv+dNIAMaSOgt9Kk3ow5rr+KSXdabvrYPu8=
-X-Google-Smtp-Source: APBJJlEAeBtqdGYX0XAUgAxLf87TYnVQCN15jDNesxov6G25WAyY+BG2+cmVVzoftke3mxc/2IFkag==
-X-Received: by 2002:a17:906:7952:b0:98e:4f1:f987 with SMTP id
- l18-20020a170906795200b0098e04f1f987mr23994419ejo.3.1689086965486; 
- Tue, 11 Jul 2023 07:49:25 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689086971; x=1691678971;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=a3Kb8EGzX+FYyoa01i/LLklvXAPWnwahDSy93HfoU3M=;
+ b=eSnYJLLtT4isUswcp5s77FPYHz6LPV6fbHqIWR2MQ9WfpXs60RlpxogS1+72OxN72A
+ egZG9u9C5RQ9rWZx3+2caKOd9zWgvSwEFb/cp2gsxfh0Vp27ooXoG5hSRFV+S5A6sRni
+ 2ngC9zP+RJzZrHrPDt1D3aHnySR86XpQLEE4L4WSi82vIYLw7lSlDT3BfYL99HISlt0s
+ 9KJqbPYjp7hpCIxAwM+tpjaqEfFX2+xOJetPIYmNSmgHK0W0ItPbTIr7sMFZUJl5cDVx
+ N4lCnYs38YC0J4fCKXjVyjZ9e3y2cc9u1gt+LYygmgxWQgX0QJ81Zp8ca/6gME0ArJ9r
+ 7rdQ==
+X-Gm-Message-State: ABy/qLY0PHX/hqhsrHiXCd2Lv10nz9vt3B2i704dYn7l5rAN240T7Wp0
+ nHDp4YIh+Xs35kou0l0/msW2PuUWd57aOrTlVXI=
+X-Google-Smtp-Source: APBJJlEWe2n4zLwD3LbXK1gD2JwPKIRqKDLofAiaokd8kzCE7JJdAZ5cGpbyruDpOSzhXHDnvFyxcQ==
+X-Received: by 2002:a2e:b04a:0:b0:2b6:d0fc:ee18 with SMTP id
+ d10-20020a2eb04a000000b002b6d0fcee18mr11620888ljl.19.1689086971524; 
+ Tue, 11 Jul 2023 07:49:31 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.194.156])
  by smtp.gmail.com with ESMTPSA id
- w25-20020a170906481900b00992ddf46e65sm1260200ejq.46.2023.07.11.07.49.23
+ j8-20020a170906830800b009927d4d7a6bsm1260851ejx.53.2023.07.11.07.49.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 11 Jul 2023 07:49:25 -0700 (PDT)
+ Tue, 11 Jul 2023 07:49:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Thomas Huth <thuth@redhat.com>
@@ -65,22 +66,25 @@ Cc: Warner Losh <imp@bsdimp.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Kyle Evans <kevans@freebsd.org>, Li-Wen Hsu <lwhsu@freebsd.org>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH v3 0/4] tests/vm/freebsd: Get up-to-date package list from
- lcitool
-Date: Tue, 11 Jul 2023 16:49:18 +0200
-Message-Id: <20230711144922.67491-1-philmd@linaro.org>
+Subject: [PATCH v3 1/4] tests/lcitool: Generate distribution packages list in
+ JSON format
+Date: Tue, 11 Jul 2023 16:49:19 +0200
+Message-Id: <20230711144922.67491-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230711144922.67491-1-philmd@linaro.org>
+References: <20230711144922.67491-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,35 +100,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Inspired by this patch from Thomas:
-https://lore.kernel.org/qemu-devel/20230531090415.40421-1-thuth@redhat.com/
+Add the generate_pkglist() helper to generate a list of packages
+required by a distribution to build QEMU.
 
-Instead of updating the package list manually, use lcitool vars file.
+Since we can not add a "THIS FILE WAS AUTO-GENERATED" comment in
+JSON, create the files under tests/vm/generated/ sub-directory;
+add a README mentioning the files are generated.
 
-Since v2:
-- Commit generated json (Daniel)
-
-Since v1:
-- Addressed Erik & Daniel comments (generate in JSON)
-
-Philippe Mathieu-Daudé (4):
-  tests/lcitool: Generate distribution packages list in JSON format
-  tests/lcitool: Refresh generated files
-  tests/vm: Introduce get_qemu_packages_from_lcitool_json() helper
-  tests/vm/freebsd: Get up-to-date package list from lcitool vars file
-
- tests/docker/dockerfiles/debian-amd64.docker |  2 -
- tests/docker/dockerfiles/ubuntu2004.docker   |  2 -
- tests/docker/dockerfiles/ubuntu2204.docker   |  2 -
- tests/lcitool/refresh                        | 11 +++
- tests/vm/basevm.py                           | 11 +++
- tests/vm/freebsd                             | 42 +----------
- tests/vm/generated/README                    |  5 ++
- tests/vm/generated/freebsd.json              | 77 ++++++++++++++++++++
- 8 files changed, 106 insertions(+), 46 deletions(-)
+Suggested-by: Erik Skultety <eskultet@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tests/lcitool/refresh     | 11 +++++++++++
+ tests/vm/generated/README |  5 +++++
+ 2 files changed, 16 insertions(+)
  create mode 100644 tests/vm/generated/README
- create mode 100644 tests/vm/generated/freebsd.json
 
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index b54566edcc..4584870ea1 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -84,6 +84,12 @@ def generate_cirrus(target, trailer=None):
+     generate(filename, cmd, trailer)
+ 
+ 
++def generate_pkglist(vm, target):
++    filename = Path(src_dir, "tests", "vm", "generated", vm + ".json")
++    cmd = lcitool_cmd + ["variables", "--format", "json", target, "qemu"]
++    generate(filename, cmd, None)
++
++
+ # Netmap still needs to be manually built as it is yet to be packaged
+ # into a distro. We also add cscope and gtags which are used in the CI
+ # test
+@@ -191,6 +197,11 @@ try:
+     generate_cirrus("freebsd-13")
+     generate_cirrus("macos-12")
+ 
++    #
++    # VM packages lists
++    #
++    generate_pkglist("freebsd", "freebsd-13")
++
+     sys.exit(0)
+ except Exception as ex:
+     print(str(ex), file=sys.stderr)
+diff --git a/tests/vm/generated/README b/tests/vm/generated/README
+new file mode 100644
+index 0000000000..7ccc6ffd3d
+--- /dev/null
++++ b/tests/vm/generated/README
+@@ -0,0 +1,5 @@
++# FILES IN THIS FOLDER WERE AUTO-GENERATED
++#
++#  $ make lcitool-refresh
++#
++# https://gitlab.com/libvirt/libvirt-ci
 -- 
 2.38.1
 
