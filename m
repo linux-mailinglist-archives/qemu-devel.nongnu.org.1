@@ -2,68 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 641CD750142
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB64750143
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:21:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJV3d-0004Us-Tt; Wed, 12 Jul 2023 04:18:45 -0400
+	id 1qJV5m-00042E-R3; Wed, 12 Jul 2023 04:20:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3Z-0004Kn-IH
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qJV5e-0003sc-Ly
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:20:53 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.22])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3X-0000aT-Ul
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689149918;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ybJtn0Ub197U3Uug50tNQDhYP39WGBtJQdnFdyy0Rt4=;
- b=JXUSx2Rq+IU0bH+u3w6rN3Uin/8QxxnHqJnTL5nO26HltbU+C8zT5KOybDGxhz9wNWniMY
- gwv07l9iQHFD2nErK98e9txaMlm7WAdXXmnZoxFibOgYmF9RCMe811dZya4KTVJo5m6OMR
- w5/yZNZ41nzd41ve0SoWCZ6g6+TqFxY=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-127-bbmkw9haNXGW4cq6ay_gzQ-1; Wed, 12 Jul 2023 04:18:35 -0400
-X-MC-Unique: bbmkw9haNXGW4cq6ay_gzQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CDAAE1C08974;
- Wed, 12 Jul 2023 08:18:34 +0000 (UTC)
-Received: from t14s.fritz.box (unknown [10.39.193.77])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 60367492C13;
- Wed, 12 Jul 2023 08:18:33 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Mario Casquero <mcasquer@redhat.com>
-Subject: [GIT PULL 21/21] virtio-mem-pci: Device unplug support
-Date: Wed, 12 Jul 2023 10:17:50 +0200
-Message-ID: <20230712081750.80852-22-david@redhat.com>
-In-Reply-To: <20230712081750.80852-1-david@redhat.com>
-References: <20230712081750.80852-1-david@redhat.com>
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qJV5c-0003Vu-S1
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:20:50 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1689150044; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=IYdAjgbdg/uhZAPzi6Ae1ahI0DgsVc9o1VrphoF7zSeMTK04+YfN+06fKblqYnvWms
+ klwYdJE+h+K5DAFr16ZfbkEVZofB5OS6vedJgtYQJjoy8IPon3vk4IJwjQ1llme7DoX8
+ HD6TEDXaHStoPz/oyldVhL22GnJ/8qZLHzpfIbBqTwjfKBu+NyphstnJ+5cySP3asT59
+ tM6NGbXcJ3sxTnvGNMxeLmKU+FoVt6y4NA+mRXRMVBYKCO5dB/hceQLM8p5f0CvqRpmv
+ 7o2xzS4rd7Gt9gs0snaVsv6KciQTgD+BoeP6+l8UWVBaDR50RsI6oEg0hQoPMeWOYj34
+ oh2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1689150044;
+ s=strato-dkim-0002; d=strato.com;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=6Kk79mCDPtijU6pwihqcMvyA9gLfe1ha1lKS1grzta8=;
+ b=VRWoQFo2KZcH14PAvfnwx8WU3pA49fdTjf0dva15g9bO6xYLGOe2IUiL/7g6mxZ+6/
+ vn9dU8TqshpmyfTfI5m80vv7/LMYTmhKRqRS+AVogQAzjraVprJV+JWn3VzfkqYWqze6
+ 9nLXVKbxdP7YfRlyeJoSgWqirhQpQPF25AiNKgkvppxV44efaF25vDUZWF1O1JdcKsoc
+ /GoMYxnabJKJ1CSUJ0ee3RRlhJQE1ItC9SCqXJsQrRc1vvIaYQfwBRS77+/y1whUkBnT
+ O4MSNxHKmtin2PKoN7VtygvMRaKIRzn58gs0ky1jIYjcpyUC2yuXho4tyVfB2jgYrZ7I
+ keqA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1689150044;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=6Kk79mCDPtijU6pwihqcMvyA9gLfe1ha1lKS1grzta8=;
+ b=hVQg7u5pvidIwiPPXbQkF7OrU84ywZOT6M8ohPfh2i4UkhV7Qo9+w+zJ6ik0S/c3WC
+ L5SqY4Bsg6NMIvXWQWsV1YTtHzUvM7RY21INjGiEtAG4sQzQ/8cReFopcfse0Ne0fPqU
+ aooyzLX3qvwr+z7YFMukqBtBdIegTpF9T1/N5alc2Vc9vBPXEXFx9/OS6wXtVTtrjI6n
+ EDAyQhrNe1QFQC29HRBivTIj6lneCLlgLqIRbzFvoBOy+4vx952xjliAXSXm3BM+7HKS
+ gqP/fyxWuMkvwnE1tBlC4tU4KGsJLsp9NcWM5xDmCVrr/1tirNrdsEb9nM5hY882Z/ky
+ PK4A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1689150044;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=6Kk79mCDPtijU6pwihqcMvyA9gLfe1ha1lKS1grzta8=;
+ b=V3Iy7SJzHlgb8VCwVhluGqq/QUBgHildyJore+2wQIgrYhWcDH2zR3qqnSpskRUrE4
+ GPcwwotHW9/Es559WQDA==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4U0aIaxvssIT1j+tCLlX5OhVr5AfLfzW6HQdmLA=="
+Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
+ with ESMTPSA id y5401az6C8Kifk4
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Wed, 12 Jul 2023 10:20:44 +0200 (CEST)
+Date: Wed, 12 Jul 2023 10:20:33 +0200
+From: Olaf Hering <olaf@aepfle.de>
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] roms: add back edk2-basetools target
+Message-ID: <20230712102033.771e2092.olaf@aepfle.de>
+In-Reply-To: <20230411101709.445259-1-kraxel@redhat.com>
+References: <20230411101709.445259-1-kraxel@redhat.com>
+X-Mailer: Claws Mail 20230706T114334.0dc50f72 hat ein Softwareproblem,
+ kann man nichts machen.
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: multipart/signed; boundary="Sig_/lNeE4kK0oH0Pqq=A=NvLyzS";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=85.215.255.22; envelope-from=olaf@aepfle.de;
+ helo=mo4-p00-ob.smtp.rzone.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,106 +102,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's support device unplug by forwarding the unplug_request_check()
-callback to the virtio-mem device.
+--Sig_/lNeE4kK0oH0Pqq=A=NvLyzS
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Further, disallow changing the requested-size once an unplug request is
-pending.
+Tue, 11 Apr 2023 12:17:09 +0200 Gerd Hoffmann <kraxel@redhat.com>:
 
-Disallowing requested-size changes handles corner cases such as
-(1) pausing the VM (2) requesting device unplug and (3) adjusting the
-requested size. If the VM would plug memory (due to the requested size
-change) before processing the unplug request, we would be in trouble.
+> +++ b/roms/Makefile
+> +edk2-basetools:
+> +	python3 edk2-build.py --config edk2-build.config -m none
 
-Message-ID: <20230711153445.514112-8-david@redhat.com>
-Tested-by: Mario Casquero <mcasquer@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- hw/virtio/virtio-mem-pci.c | 49 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 46 insertions(+), 3 deletions(-)
+I think that needs to be $(PYTHON), because plain 'python3' may not be the =
+required python version.
 
-diff --git a/hw/virtio/virtio-mem-pci.c b/hw/virtio/virtio-mem-pci.c
-index 2ef0f07630..c4597e029e 100644
---- a/hw/virtio/virtio-mem-pci.c
-+++ b/hw/virtio/virtio-mem-pci.c
-@@ -93,12 +93,53 @@ static void virtio_mem_pci_size_change_notify(Notifier *notifier, void *data)
-     g_free(qom_path);
- }
- 
-+static void virtio_mem_pci_unplug_request_check(VirtIOMDPCI *vmd, Error **errp)
-+{
-+    VirtIOMEMPCI *pci_mem = VIRTIO_MEM_PCI(vmd);
-+    VirtIOMEM *vmem = &pci_mem->vdev;
-+    VirtIOMEMClass *vpc = VIRTIO_MEM_GET_CLASS(vmem);
-+
-+    vpc->unplug_request_check(vmem, errp);
-+}
-+
-+static void virtio_mem_pci_get_requested_size(Object *obj, Visitor *v,
-+                                              const char *name, void *opaque,
-+                                              Error **errp)
-+{
-+    VirtIOMEMPCI *pci_mem = VIRTIO_MEM_PCI(obj);
-+
-+    object_property_get(OBJECT(&pci_mem->vdev), name, v, errp);
-+}
-+
-+static void virtio_mem_pci_set_requested_size(Object *obj, Visitor *v,
-+                                              const char *name, void *opaque,
-+                                              Error **errp)
-+{
-+    VirtIOMEMPCI *pci_mem = VIRTIO_MEM_PCI(obj);
-+    DeviceState *dev = DEVICE(obj);
-+
-+    /*
-+     * If we passed virtio_mem_pci_unplug_request_check(), making sure that
-+     * the requested size is 0, don't allow modifying the requested size
-+     * anymore, otherwise the VM might end up hotplugging memory before
-+     * handling the unplug request.
-+     */
-+    if (dev->pending_deleted_event) {
-+        error_setg(errp, "'%s' cannot be changed if the device is in the"
-+                   " process of unplug", name);
-+        return;
-+    }
-+
-+    object_property_set(OBJECT(&pci_mem->vdev), name, v, errp);
-+}
-+
- static void virtio_mem_pci_class_init(ObjectClass *klass, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(klass);
-     VirtioPCIClass *k = VIRTIO_PCI_CLASS(klass);
-     PCIDeviceClass *pcidev_k = PCI_DEVICE_CLASS(klass);
-     MemoryDeviceClass *mdc = MEMORY_DEVICE_CLASS(klass);
-+    VirtIOMDPCIClass *vmdc = VIRTIO_MD_PCI_CLASS(klass);
- 
-     k->realize = virtio_mem_pci_realize;
-     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
-@@ -111,6 +152,8 @@ static void virtio_mem_pci_class_init(ObjectClass *klass, void *data)
-     mdc->get_memory_region = virtio_mem_pci_get_memory_region;
-     mdc->fill_device_info = virtio_mem_pci_fill_device_info;
-     mdc->get_min_alignment = virtio_mem_pci_get_min_alignment;
-+
-+    vmdc->unplug_request_check = virtio_mem_pci_unplug_request_check;
- }
- 
- static void virtio_mem_pci_instance_init(Object *obj)
-@@ -135,9 +178,9 @@ static void virtio_mem_pci_instance_init(Object *obj)
-                               OBJECT(&dev->vdev), VIRTIO_MEM_BLOCK_SIZE_PROP);
-     object_property_add_alias(obj, VIRTIO_MEM_SIZE_PROP, OBJECT(&dev->vdev),
-                               VIRTIO_MEM_SIZE_PROP);
--    object_property_add_alias(obj, VIRTIO_MEM_REQUESTED_SIZE_PROP,
--                              OBJECT(&dev->vdev),
--                              VIRTIO_MEM_REQUESTED_SIZE_PROP);
-+    object_property_add(obj, VIRTIO_MEM_REQUESTED_SIZE_PROP, "size",
-+                        virtio_mem_pci_get_requested_size,
-+                        virtio_mem_pci_set_requested_size, NULL, NULL);
- }
- 
- static const VirtioPCIDeviceTypeInfo virtio_mem_pci_info = {
--- 
-2.41.0
+In addition, a global EDK2_OPTIONS may allow to pass arbitrary options to t=
+heir build wrapper, like -j1.
 
+
+Olaf
+
+--Sig_/lNeE4kK0oH0Pqq=A=NvLyzS
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmSuYlEACgkQ86SN7mm1
+DoBQWBAAgV7YiDGPMjBETWla1sUf4vXW49t37dDDzX14+ZNYdnF6SRDE1Y94OOqo
+6EF+866EbLqnqRAjqFbfKRh5LTLtOF7XqvV9bFTQtlfPRRkmrgzv7KFROnSJlLb9
+WYZ9TodApGPMFmhSHw/GLapb5HFKQbAcpsFXafLh9CTyRQJvVeSKPz6pbjtneAvB
++qhvXN2M1Yl+DWzzMn1qXpgyBulay08oq0uDGCzdCv1XM1tLMSvj/iF9POrBFVjp
+sehamiLT0tS9kBrGQAgl8AmrXgJXNPU5GuLiI0E/QugGoxYxZTGmMftloRaFhtFP
+e4LvW2IS4BOFAJCQWtxRB+SglVCz/DAm0DaC6yF/HeznV1re34dqnKbDgES9aike
+BQM+SY88KZuxflstcDH8op+k+or7MqaHMCB3g2YQn2oYaXxGpIeXe53PTOvgLvIM
+npf83SuCjwnHuq1a7xV13dlrU0HEPPDNchX+WB1k5azjUPsFYlgFYJ7fkXRh4QX8
+3OmPpIrSIjqI4HqzeRwql/0eoq9ehwm8q0QIHzg+sIOLiKoU2E2puKr5Hu5DAjRb
+iHJsT9iYxwUSlCppDJ4BW9AziUl/Ci7llwbS3xdqQn/hXFWXV1csYxNCPEsl2LG8
+zo4aewBYugLYO3GNSRSGeuMyijZN104TOyc+N+Nq0ZRh4tD0eEw=
+=NpjJ
+-----END PGP SIGNATURE-----
+
+--Sig_/lNeE4kK0oH0Pqq=A=NvLyzS--
 
