@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0437F750134
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:19:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD8F750136
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:19:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJV3X-0004Dk-K4; Wed, 12 Jul 2023 04:18:40 -0400
+	id 1qJV3Z-0004GH-9O; Wed, 12 Jul 2023 04:18:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3S-0004Cj-1R
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:34 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3U-0004Dl-T2
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3Q-0000ZT-DV
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:33 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3T-0000Zw-FF
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689149911;
+ s=mimecast20190719; t=1689149914;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yR5531fqkyXPWK7cf414dTS91ida85cSee1+Zs/ZUqo=;
- b=PIxTFefK09J1CtnxP6wclljiyrrsa2WVdFPb20ATfwlDGKAx4053C/J7RGd0Lin/mo8Rck
- VpyFEmUp5geRVTsJ2HBW87ayH7jZWGueomFeOHyC2KH/YRulGdHdejmA5iX5tjv8J2xDRU
- TBauQYOlP0UTU9xZSHc1ntB3l7Un3+A=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-251-5PDvF-PHNauj4s2_U6jqzA-1; Wed, 12 Jul 2023 04:18:28 -0400
-X-MC-Unique: 5PDvF-PHNauj4s2_U6jqzA-1
+ bh=2fioYkiIAzhRx3ixQ3Fo/lgPI9RBLO4AWjhICpt2jbc=;
+ b=FQfy5GW+yo+KQPH4WRe/RwDYHntcYowbrmmpuj6kCifljLUqWaHt7txEs6VUNvCJW339p2
+ k/9Uw5LOYaQ2yvnm0PMtlmT17dkKy1Uv8ipUfSOOS9ZR2dpC9gNnfhnKbapuRButbGJKtB
+ YyYouYGvobBzcQOP27jNwWIXXKPYt1I=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-333-qsd7p0hCNjCJzP9MJ8HqZQ-1; Wed, 12 Jul 2023 04:18:30 -0400
+X-MC-Unique: qsd7p0hCNjCJzP9MJ8HqZQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D4063C100A1;
- Wed, 12 Jul 2023 08:18:28 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C1E9486F122;
+ Wed, 12 Jul 2023 08:18:29 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.193.77])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D02D44CD0C6;
- Wed, 12 Jul 2023 08:18:26 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7A5D74CD0C1;
+ Wed, 12 Jul 2023 08:18:28 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -47,9 +47,10 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Mario Casquero <mcasquer@redhat.com>
-Subject: [GIT PULL 17/21] arm/virt: Use virtio-md-pci (un)plug functions
-Date: Wed, 12 Jul 2023 10:17:46 +0200
-Message-ID: <20230712081750.80852-18-david@redhat.com>
+Subject: [GIT PULL 18/21] virtio-md-pci: Handle unplug of virtio based memory
+ devices
+Date: Wed, 12 Jul 2023 10:17:47 +0200
+Message-ID: <20230712081750.80852-19-david@redhat.com>
 In-Reply-To: <20230712081750.80852-1-david@redhat.com>
 References: <20230712081750.80852-1-david@redhat.com>
 MIME-Version: 1.0
@@ -80,156 +81,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's use our new helper functions. Note that virtio-pmem-pci is not
-enabled for arm and, therefore, not compiled in.
+While we fence unplug requests from the outside, the VM can still
+trigger unplug of virtio based memory devices, for example, in Linux
+doing on a virtio-mem-pci device:
+    # echo 0 > /sys/bus/pci/slots/3/power
 
-Message-ID: <20230711153445.514112-4-david@redhat.com>
+While doing that is not really expected to work without harming the
+guest OS (e.g., removing a virtio-mem device while it still provides
+memory), let's make sure that we properly handle it on the QEMU side.
+
+We'll add support for unplugging of virtio-mem devices in some
+configurations next.
+
+Message-ID: <20230711153445.514112-5-david@redhat.com>
 Tested-by: Mario Casquero <mcasquer@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/arm/virt.c | 81 ++++++++-------------------------------------------
- 1 file changed, 12 insertions(+), 69 deletions(-)
+ hw/virtio/virtio-md-pci.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 0546e43448..7d9dbc2663 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -73,11 +73,10 @@
- #include "hw/arm/smmuv3.h"
- #include "hw/acpi/acpi.h"
- #include "target/arm/internals.h"
--#include "hw/mem/memory-device.h"
- #include "hw/mem/pc-dimm.h"
- #include "hw/mem/nvdimm.h"
- #include "hw/acpi/generic_event_device.h"
--#include "hw/virtio/virtio-mem-pci.h"
-+#include "hw/virtio/virtio-md-pci.h"
- #include "hw/virtio/virtio-iommu.h"
- #include "hw/char/pl011.h"
- #include "qemu/guest-random.h"
-@@ -2733,64 +2732,6 @@ static void virt_memory_plug(HotplugHandler *hotplug_dev,
-                          dev, &error_abort);
+diff --git a/hw/virtio/virtio-md-pci.c b/hw/virtio/virtio-md-pci.c
+index e849c3131d..a22a259e2d 100644
+--- a/hw/virtio/virtio-md-pci.c
++++ b/hw/virtio/virtio-md-pci.c
+@@ -14,6 +14,7 @@
+ #include "hw/virtio/virtio-md-pci.h"
+ #include "hw/mem/memory-device.h"
+ #include "qapi/error.h"
++#include "qemu/error-report.h"
+ 
+ void virtio_md_pci_pre_plug(VirtIOMDPCI *vmd, MachineState *ms, Error **errp)
+ {
+@@ -74,7 +75,27 @@ void virtio_md_pci_unplug_request(VirtIOMDPCI *vmd, MachineState *ms,
+ 
+ void virtio_md_pci_unplug(VirtIOMDPCI *vmd, MachineState *ms, Error **errp)
+ {
+-    /* We don't support hot unplug of virtio based memory devices */
++    DeviceState *dev = DEVICE(vmd);
++    HotplugHandler *bus_handler = qdev_get_bus_hotplug_handler(dev);
++    MemoryDeviceState *md = MEMORY_DEVICE(vmd);
++    Error *local_err = NULL;
++
++    /* Unplug the memory device while it is still realized. */
++    memory_device_unplug(md, ms);
++
++    if (bus_handler) {
++        hotplug_handler_unplug(bus_handler, dev, &local_err);
++        if (local_err) {
++            /* Not expected to fail ... but still try to recover. */
++            memory_device_plug(md, ms);
++            error_propagate(errp, local_err);
++            return;
++        }
++    } else {
++        /* Very unexpected, but let's just try to do the right thing. */
++        warn_report("Unexpected unplug of virtio based memory device");
++        qdev_unrealize(dev);
++    }
  }
  
--static void virt_virtio_md_pci_pre_plug(HotplugHandler *hotplug_dev,
--                                        DeviceState *dev, Error **errp)
--{
--    HotplugHandler *hotplug_dev2 = qdev_get_bus_hotplug_handler(dev);
--    Error *local_err = NULL;
--
--    if (!hotplug_dev2 && dev->hotplugged) {
--        /*
--         * Without a bus hotplug handler, we cannot control the plug/unplug
--         * order. We should never reach this point when hotplugging on ARM.
--         * However, it's nice to add a safety net, similar to what we have
--         * on x86.
--         */
--        error_setg(errp, "hotplug of virtio based memory devices not supported"
--                   " on this bus.");
--        return;
--    }
--    /*
--     * First, see if we can plug this memory device at all. If that
--     * succeeds, branch of to the actual hotplug handler.
--     */
--    memory_device_pre_plug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev), NULL,
--                           &local_err);
--    if (!local_err && hotplug_dev2) {
--        hotplug_handler_pre_plug(hotplug_dev2, dev, &local_err);
--    }
--    error_propagate(errp, local_err);
--}
--
--static void virt_virtio_md_pci_plug(HotplugHandler *hotplug_dev,
--                                    DeviceState *dev, Error **errp)
--{
--    HotplugHandler *hotplug_dev2 = qdev_get_bus_hotplug_handler(dev);
--    Error *local_err = NULL;
--
--    /*
--     * Plug the memory device first and then branch off to the actual
--     * hotplug handler. If that one fails, we can easily undo the memory
--     * device bits.
--     */
--    memory_device_plug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev));
--    if (hotplug_dev2) {
--        hotplug_handler_plug(hotplug_dev2, dev, &local_err);
--        if (local_err) {
--            memory_device_unplug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev));
--        }
--    }
--    error_propagate(errp, local_err);
--}
--
--static void virt_virtio_md_pci_unplug_request(HotplugHandler *hotplug_dev,
--                                              DeviceState *dev, Error **errp)
--{
--    /* We don't support hot unplug of virtio based memory devices */
--    error_setg(errp, "virtio based memory devices cannot be unplugged.");
--}
--
--
- static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-                                             DeviceState *dev, Error **errp)
- {
-@@ -2798,8 +2739,8 @@ static void virt_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
- 
-     if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-         virt_memory_pre_plug(hotplug_dev, dev, errp);
--    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MEM_PCI)) {
--        virt_virtio_md_pci_pre_plug(hotplug_dev, dev, errp);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-+        virtio_md_pci_pre_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-     } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-         hwaddr db_start = 0, db_end = 0;
-         char *resv_prop_str;
-@@ -2848,12 +2789,11 @@ static void virt_machine_device_plug_cb(HotplugHandler *hotplug_dev,
-                                      SYS_BUS_DEVICE(dev));
-         }
-     }
-+
-     if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-         virt_memory_plug(hotplug_dev, dev, errp);
--    }
--
--    if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MEM_PCI)) {
--        virt_virtio_md_pci_plug(hotplug_dev, dev, errp);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-+        virtio_md_pci_plug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-     }
- 
-     if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-@@ -2908,8 +2848,9 @@ static void virt_machine_device_unplug_request_cb(HotplugHandler *hotplug_dev,
- {
-     if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-         virt_dimm_unplug_request(hotplug_dev, dev, errp);
--    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MEM_PCI)) {
--        virt_virtio_md_pci_unplug_request(hotplug_dev, dev, errp);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-+        virtio_md_pci_unplug_request(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev),
-+                                     errp);
-     } else {
-         error_setg(errp, "device unplug request for unsupported device"
-                    " type: %s", object_get_typename(OBJECT(dev)));
-@@ -2921,6 +2862,8 @@ static void virt_machine_device_unplug_cb(HotplugHandler *hotplug_dev,
- {
-     if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
-         virt_dimm_unplug(hotplug_dev, dev, errp);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI)) {
-+        virtio_md_pci_unplug(VIRTIO_MD_PCI(dev), MACHINE(hotplug_dev), errp);
-     } else {
-         error_setg(errp, "virt: device unplug for unsupported device"
-                    " type: %s", object_get_typename(OBJECT(dev)));
-@@ -2934,7 +2877,7 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
- 
-     if (device_is_dynamic_sysbus(mc, dev) ||
-         object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM) ||
--        object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MEM_PCI) ||
-+        object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MD_PCI) ||
-         object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_IOMMU_PCI)) {
-         return HOTPLUG_HANDLER(machine);
-     }
+ static const TypeInfo virtio_md_pci_info = {
 -- 
 2.41.0
 
