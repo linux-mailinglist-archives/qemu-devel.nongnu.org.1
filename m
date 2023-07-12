@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1D175003C
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD1F75003D
 	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 09:40:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJURR-00046Q-5Y; Wed, 12 Jul 2023 03:39:17 -0400
+	id 1qJURT-00046k-8F; Wed, 12 Jul 2023 03:39:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qJURI-00045e-TV
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 03:39:09 -0400
+ id 1qJURQ-00046S-6J
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 03:39:17 -0400
 Received: from mga07.intel.com ([134.134.136.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qJURE-0005wb-OX
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 03:39:08 -0400
+ id 1qJURM-0005wb-LK
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 03:39:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1689147544; x=1720683544;
+ t=1689147552; x=1720683552;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0vPcXzbW+xtBsQ1t7oGOUVRSpPWWbLyZVk+03TEhR1k=;
- b=J5kdrQM+1JW0L1S3yBnrlgJby+nwzJMmCtUNo1CIHwMgbE45iYh6US1Q
- 58PFEizJ8kR2M9k0CihJuY9ejIy9+/S2YB3R4qnCf6yMXQOTteOF/D49y
- lpcjXM0Q8qZ640ssP5YgJtuzUNe8lI+jeeBbvHdI50p7MJRsUNcpZHaik
- qukeT5FDkZfJ30DNiugfSTEFZ/LwnDg+SfSGOHpFB3iLoA8W/IbBMhCFh
- tlc8Sk4GU0M55WyRmR5aEdQldCdulQ1HVr+aaLpoB/LmPlPF72aQv1Ye3
- Y17sMQQuaX1cMgdJkYFJN12Ohwax6FMhHwP2Y5jpejI6Ewvqc6Lgh8aTh A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="430953571"
-X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; d="scan'208";a="430953571"
+ bh=mAxINrmbhPPumv/EnDokLXHI5hJ3vUqibb7HnMNAodQ=;
+ b=MhhnEFOAwxlaV3pl6P/JDzPIpqY4dHctZ2biV4ir9Q8vcnvMHSDfRRAG
+ dc8MU4F0bK5X8HrUJ9f3LUipxQbjWECq3kgsSzLQiCXTdM/qhKoKrymn0
+ GNnXjPdWJpgmVbD2Ihp5+JT0Tp25O2EFmmdabirGaeuiqWqw7jiYqoRAy
+ X2ECZULi5PoUfwkIQKcv3gALdJB+2zVIHujlNDFEyk7QdzdsWjytflN1L
+ JFUPKp8H9iqYvzMpanhllDILpTXuu/9dxua8pZOgyGt1QiQGqITnkxt5l
+ VG/R3KVcgZaQr9gQ7ZAr1WCjubJ8aaQW+/vRCxPGZ7WfRRnvyoFhhA57C A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="430953589"
+X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; d="scan'208";a="430953589"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jul 2023 00:39:01 -0700
+ 12 Jul 2023 00:39:05 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="835023942"
-X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; d="scan'208";a="835023942"
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="835023952"
+X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; d="scan'208";a="835023952"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jul 2023 00:38:57 -0700
+ 12 Jul 2023 00:39:02 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, eric.auger@redhat.com, peterx@redhat.com,
  jasonwang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  yi.y.sun@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- kvm@vger.kernel.org (open list:Overall KVM CPUs)
-Subject: [RFC PATCH v4 02/24] Update linux-header per VFIO device cdev v14
-Date: Wed, 12 Jul 2023 15:25:06 +0800
-Message-Id: <20230712072528.275577-3-zhenzhong.duan@intel.com>
+ Yi Sun <yi.y.sun@linux.intel.com>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [RFC PATCH v4 03/24] vfio/common: Move IOMMU agnostic helpers to a
+ separate file
+Date: Wed, 12 Jul 2023 15:25:07 +0800
+Message-Id: <20230712072528.275577-4-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230712072528.275577-1-zhenzhong.duan@intel.com>
 References: <20230712072528.275577-1-zhenzhong.duan@intel.com>
@@ -83,569 +82,1267 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Yi Liu <yi.l.liu@intel.com>
+
+Move low-level iommu agnostic helpers to a separate helpers.c
+file. They relate to regions, interrupts and device/region
+capabilities.
+
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- linux-headers/linux/iommufd.h | 347 ++++++++++++++++++++++++++++++++++
- linux-headers/linux/kvm.h     |  13 +-
- linux-headers/linux/vfio.h    | 142 +++++++++++++-
- 3 files changed, 498 insertions(+), 4 deletions(-)
- create mode 100644 linux-headers/linux/iommufd.h
+ hw/vfio/common.c              | 569 --------------------------------
+ hw/vfio/helpers.c             | 598 ++++++++++++++++++++++++++++++++++
+ hw/vfio/meson.build           |   1 +
+ include/hw/vfio/vfio-common.h |   2 +
+ 4 files changed, 601 insertions(+), 569 deletions(-)
+ create mode 100644 hw/vfio/helpers.c
 
-diff --git a/linux-headers/linux/iommufd.h b/linux-headers/linux/iommufd.h
-new file mode 100644
-index 0000000000..396ee7fe01
---- /dev/null
-+++ b/linux-headers/linux/iommufd.h
-@@ -0,0 +1,347 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+/* Copyright (c) 2021-2022, NVIDIA CORPORATION & AFFILIATES.
-+ */
-+#ifndef _IOMMUFD_H
-+#define _IOMMUFD_H
-+
-+#include <linux/types.h>
-+#include <linux/ioctl.h>
-+
-+#define IOMMUFD_TYPE (';')
-+
-+/**
-+ * DOC: General ioctl format
-+ *
-+ * The ioctl interface follows a general format to allow for extensibility. Each
-+ * ioctl is passed in a structure pointer as the argument providing the size of
-+ * the structure in the first u32. The kernel checks that any structure space
-+ * beyond what it understands is 0. This allows userspace to use the backward
-+ * compatible portion while consistently using the newer, larger, structures.
-+ *
-+ * ioctls use a standard meaning for common errnos:
-+ *
-+ *  - ENOTTY: The IOCTL number itself is not supported at all
-+ *  - E2BIG: The IOCTL number is supported, but the provided structure has
-+ *    non-zero in a part the kernel does not understand.
-+ *  - EOPNOTSUPP: The IOCTL number is supported, and the structure is
-+ *    understood, however a known field has a value the kernel does not
-+ *    understand or support.
-+ *  - EINVAL: Everything about the IOCTL was understood, but a field is not
-+ *    correct.
-+ *  - ENOENT: An ID or IOVA provided does not exist.
-+ *  - ENOMEM: Out of memory.
-+ *  - EOVERFLOW: Mathematics overflowed.
-+ *
-+ * As well as additional errnos, within specific ioctls.
-+ */
-+enum {
-+	IOMMUFD_CMD_BASE = 0x80,
-+	IOMMUFD_CMD_DESTROY = IOMMUFD_CMD_BASE,
-+	IOMMUFD_CMD_IOAS_ALLOC,
-+	IOMMUFD_CMD_IOAS_ALLOW_IOVAS,
-+	IOMMUFD_CMD_IOAS_COPY,
-+	IOMMUFD_CMD_IOAS_IOVA_RANGES,
-+	IOMMUFD_CMD_IOAS_MAP,
-+	IOMMUFD_CMD_IOAS_UNMAP,
-+	IOMMUFD_CMD_OPTION,
-+	IOMMUFD_CMD_VFIO_IOAS,
-+};
-+
-+/**
-+ * struct iommu_destroy - ioctl(IOMMU_DESTROY)
-+ * @size: sizeof(struct iommu_destroy)
-+ * @id: iommufd object ID to destroy. Can be any destroyable object type.
-+ *
-+ * Destroy any object held within iommufd.
-+ */
-+struct iommu_destroy {
-+	__u32 size;
-+	__u32 id;
-+};
-+#define IOMMU_DESTROY _IO(IOMMUFD_TYPE, IOMMUFD_CMD_DESTROY)
-+
-+/**
-+ * struct iommu_ioas_alloc - ioctl(IOMMU_IOAS_ALLOC)
-+ * @size: sizeof(struct iommu_ioas_alloc)
-+ * @flags: Must be 0
-+ * @out_ioas_id: Output IOAS ID for the allocated object
-+ *
-+ * Allocate an IO Address Space (IOAS) which holds an IO Virtual Address (IOVA)
-+ * to memory mapping.
-+ */
-+struct iommu_ioas_alloc {
-+	__u32 size;
-+	__u32 flags;
-+	__u32 out_ioas_id;
-+};
-+#define IOMMU_IOAS_ALLOC _IO(IOMMUFD_TYPE, IOMMUFD_CMD_IOAS_ALLOC)
-+
-+/**
-+ * struct iommu_iova_range - ioctl(IOMMU_IOVA_RANGE)
-+ * @start: First IOVA
-+ * @last: Inclusive last IOVA
-+ *
-+ * An interval in IOVA space.
-+ */
-+struct iommu_iova_range {
-+	__aligned_u64 start;
-+	__aligned_u64 last;
-+};
-+
-+/**
-+ * struct iommu_ioas_iova_ranges - ioctl(IOMMU_IOAS_IOVA_RANGES)
-+ * @size: sizeof(struct iommu_ioas_iova_ranges)
-+ * @ioas_id: IOAS ID to read ranges from
-+ * @num_iovas: Input/Output total number of ranges in the IOAS
-+ * @__reserved: Must be 0
-+ * @allowed_iovas: Pointer to the output array of struct iommu_iova_range
-+ * @out_iova_alignment: Minimum alignment required for mapping IOVA
-+ *
-+ * Query an IOAS for ranges of allowed IOVAs. Mapping IOVA outside these ranges
-+ * is not allowed. num_iovas will be set to the total number of iovas and
-+ * the allowed_iovas[] will be filled in as space permits.
-+ *
-+ * The allowed ranges are dependent on the HW path the DMA operation takes, and
-+ * can change during the lifetime of the IOAS. A fresh empty IOAS will have a
-+ * full range, and each attached device will narrow the ranges based on that
-+ * device's HW restrictions. Detaching a device can widen the ranges. Userspace
-+ * should query ranges after every attach/detach to know what IOVAs are valid
-+ * for mapping.
-+ *
-+ * On input num_iovas is the length of the allowed_iovas array. On output it is
-+ * the total number of iovas filled in. The ioctl will return -EMSGSIZE and set
-+ * num_iovas to the required value if num_iovas is too small. In this case the
-+ * caller should allocate a larger output array and re-issue the ioctl.
-+ *
-+ * out_iova_alignment returns the minimum IOVA alignment that can be given
-+ * to IOMMU_IOAS_MAP/COPY. IOVA's must satisfy::
-+ *
-+ *   starting_iova % out_iova_alignment == 0
-+ *   (starting_iova + length) % out_iova_alignment == 0
-+ *
-+ * out_iova_alignment can be 1 indicating any IOVA is allowed. It cannot
-+ * be higher than the system PAGE_SIZE.
-+ */
-+struct iommu_ioas_iova_ranges {
-+	__u32 size;
-+	__u32 ioas_id;
-+	__u32 num_iovas;
-+	__u32 __reserved;
-+	__aligned_u64 allowed_iovas;
-+	__aligned_u64 out_iova_alignment;
-+};
-+#define IOMMU_IOAS_IOVA_RANGES _IO(IOMMUFD_TYPE, IOMMUFD_CMD_IOAS_IOVA_RANGES)
-+
-+/**
-+ * struct iommu_ioas_allow_iovas - ioctl(IOMMU_IOAS_ALLOW_IOVAS)
-+ * @size: sizeof(struct iommu_ioas_allow_iovas)
-+ * @ioas_id: IOAS ID to allow IOVAs from
-+ * @num_iovas: Input/Output total number of ranges in the IOAS
-+ * @__reserved: Must be 0
-+ * @allowed_iovas: Pointer to array of struct iommu_iova_range
-+ *
-+ * Ensure a range of IOVAs are always available for allocation. If this call
-+ * succeeds then IOMMU_IOAS_IOVA_RANGES will never return a list of IOVA ranges
-+ * that are narrower than the ranges provided here. This call will fail if
-+ * IOMMU_IOAS_IOVA_RANGES is currently narrower than the given ranges.
-+ *
-+ * When an IOAS is first created the IOVA_RANGES will be maximally sized, and as
-+ * devices are attached the IOVA will narrow based on the device restrictions.
-+ * When an allowed range is specified any narrowing will be refused, ie device
-+ * attachment can fail if the device requires limiting within the allowed range.
-+ *
-+ * Automatic IOVA allocation is also impacted by this call. MAP will only
-+ * allocate within the allowed IOVAs if they are present.
-+ *
-+ * This call replaces the entire allowed list with the given list.
-+ */
-+struct iommu_ioas_allow_iovas {
-+	__u32 size;
-+	__u32 ioas_id;
-+	__u32 num_iovas;
-+	__u32 __reserved;
-+	__aligned_u64 allowed_iovas;
-+};
-+#define IOMMU_IOAS_ALLOW_IOVAS _IO(IOMMUFD_TYPE, IOMMUFD_CMD_IOAS_ALLOW_IOVAS)
-+
-+/**
-+ * enum iommufd_ioas_map_flags - Flags for map and copy
-+ * @IOMMU_IOAS_MAP_FIXED_IOVA: If clear the kernel will compute an appropriate
-+ *                             IOVA to place the mapping at
-+ * @IOMMU_IOAS_MAP_WRITEABLE: DMA is allowed to write to this mapping
-+ * @IOMMU_IOAS_MAP_READABLE: DMA is allowed to read from this mapping
-+ */
-+enum iommufd_ioas_map_flags {
-+	IOMMU_IOAS_MAP_FIXED_IOVA = 1 << 0,
-+	IOMMU_IOAS_MAP_WRITEABLE = 1 << 1,
-+	IOMMU_IOAS_MAP_READABLE = 1 << 2,
-+};
-+
-+/**
-+ * struct iommu_ioas_map - ioctl(IOMMU_IOAS_MAP)
-+ * @size: sizeof(struct iommu_ioas_map)
-+ * @flags: Combination of enum iommufd_ioas_map_flags
-+ * @ioas_id: IOAS ID to change the mapping of
-+ * @__reserved: Must be 0
-+ * @user_va: Userspace pointer to start mapping from
-+ * @length: Number of bytes to map
-+ * @iova: IOVA the mapping was placed at. If IOMMU_IOAS_MAP_FIXED_IOVA is set
-+ *        then this must be provided as input.
-+ *
-+ * Set an IOVA mapping from a user pointer. If FIXED_IOVA is specified then the
-+ * mapping will be established at iova, otherwise a suitable location based on
-+ * the reserved and allowed lists will be automatically selected and returned in
-+ * iova.
-+ *
-+ * If IOMMU_IOAS_MAP_FIXED_IOVA is specified then the iova range must currently
-+ * be unused, existing IOVA cannot be replaced.
-+ */
-+struct iommu_ioas_map {
-+	__u32 size;
-+	__u32 flags;
-+	__u32 ioas_id;
-+	__u32 __reserved;
-+	__aligned_u64 user_va;
-+	__aligned_u64 length;
-+	__aligned_u64 iova;
-+};
-+#define IOMMU_IOAS_MAP _IO(IOMMUFD_TYPE, IOMMUFD_CMD_IOAS_MAP)
-+
-+/**
-+ * struct iommu_ioas_copy - ioctl(IOMMU_IOAS_COPY)
-+ * @size: sizeof(struct iommu_ioas_copy)
-+ * @flags: Combination of enum iommufd_ioas_map_flags
-+ * @dst_ioas_id: IOAS ID to change the mapping of
-+ * @src_ioas_id: IOAS ID to copy from
-+ * @length: Number of bytes to copy and map
-+ * @dst_iova: IOVA the mapping was placed at. If IOMMU_IOAS_MAP_FIXED_IOVA is
-+ *            set then this must be provided as input.
-+ * @src_iova: IOVA to start the copy
-+ *
-+ * Copy an already existing mapping from src_ioas_id and establish it in
-+ * dst_ioas_id. The src iova/length must exactly match a range used with
-+ * IOMMU_IOAS_MAP.
-+ *
-+ * This may be used to efficiently clone a subset of an IOAS to another, or as a
-+ * kind of 'cache' to speed up mapping. Copy has an efficiency advantage over
-+ * establishing equivalent new mappings, as internal resources are shared, and
-+ * the kernel will pin the user memory only once.
-+ */
-+struct iommu_ioas_copy {
-+	__u32 size;
-+	__u32 flags;
-+	__u32 dst_ioas_id;
-+	__u32 src_ioas_id;
-+	__aligned_u64 length;
-+	__aligned_u64 dst_iova;
-+	__aligned_u64 src_iova;
-+};
-+#define IOMMU_IOAS_COPY _IO(IOMMUFD_TYPE, IOMMUFD_CMD_IOAS_COPY)
-+
-+/**
-+ * struct iommu_ioas_unmap - ioctl(IOMMU_IOAS_UNMAP)
-+ * @size: sizeof(struct iommu_ioas_unmap)
-+ * @ioas_id: IOAS ID to change the mapping of
-+ * @iova: IOVA to start the unmapping at
-+ * @length: Number of bytes to unmap, and return back the bytes unmapped
-+ *
-+ * Unmap an IOVA range. The iova/length must be a superset of a previously
-+ * mapped range used with IOMMU_IOAS_MAP or IOMMU_IOAS_COPY. Splitting or
-+ * truncating ranges is not allowed. The values 0 to U64_MAX will unmap
-+ * everything.
-+ */
-+struct iommu_ioas_unmap {
-+	__u32 size;
-+	__u32 ioas_id;
-+	__aligned_u64 iova;
-+	__aligned_u64 length;
-+};
-+#define IOMMU_IOAS_UNMAP _IO(IOMMUFD_TYPE, IOMMUFD_CMD_IOAS_UNMAP)
-+
-+/**
-+ * enum iommufd_option - ioctl(IOMMU_OPTION_RLIMIT_MODE) and
-+ *                       ioctl(IOMMU_OPTION_HUGE_PAGES)
-+ * @IOMMU_OPTION_RLIMIT_MODE:
-+ *    Change how RLIMIT_MEMLOCK accounting works. The caller must have privilege
-+ *    to invoke this. Value 0 (default) is user based accouting, 1 uses process
-+ *    based accounting. Global option, object_id must be 0
-+ * @IOMMU_OPTION_HUGE_PAGES:
-+ *    Value 1 (default) allows contiguous pages to be combined when generating
-+ *    iommu mappings. Value 0 disables combining, everything is mapped to
-+ *    PAGE_SIZE. This can be useful for benchmarking.  This is a per-IOAS
-+ *    option, the object_id must be the IOAS ID.
-+ */
-+enum iommufd_option {
-+	IOMMU_OPTION_RLIMIT_MODE = 0,
-+	IOMMU_OPTION_HUGE_PAGES = 1,
-+};
-+
-+/**
-+ * enum iommufd_option_ops - ioctl(IOMMU_OPTION_OP_SET) and
-+ *                           ioctl(IOMMU_OPTION_OP_GET)
-+ * @IOMMU_OPTION_OP_SET: Set the option's value
-+ * @IOMMU_OPTION_OP_GET: Get the option's value
-+ */
-+enum iommufd_option_ops {
-+	IOMMU_OPTION_OP_SET = 0,
-+	IOMMU_OPTION_OP_GET = 1,
-+};
-+
-+/**
-+ * struct iommu_option - iommu option multiplexer
-+ * @size: sizeof(struct iommu_option)
-+ * @option_id: One of enum iommufd_option
-+ * @op: One of enum iommufd_option_ops
-+ * @__reserved: Must be 0
-+ * @object_id: ID of the object if required
-+ * @val64: Option value to set or value returned on get
-+ *
-+ * Change a simple option value. This multiplexor allows controlling options
-+ * on objects. IOMMU_OPTION_OP_SET will load an option and IOMMU_OPTION_OP_GET
-+ * will return the current value.
-+ */
-+struct iommu_option {
-+	__u32 size;
-+	__u32 option_id;
-+	__u16 op;
-+	__u16 __reserved;
-+	__u32 object_id;
-+	__aligned_u64 val64;
-+};
-+#define IOMMU_OPTION _IO(IOMMUFD_TYPE, IOMMUFD_CMD_OPTION)
-+
-+/**
-+ * enum iommufd_vfio_ioas_op - IOMMU_VFIO_IOAS_* ioctls
-+ * @IOMMU_VFIO_IOAS_GET: Get the current compatibility IOAS
-+ * @IOMMU_VFIO_IOAS_SET: Change the current compatibility IOAS
-+ * @IOMMU_VFIO_IOAS_CLEAR: Disable VFIO compatibility
-+ */
-+enum iommufd_vfio_ioas_op {
-+	IOMMU_VFIO_IOAS_GET = 0,
-+	IOMMU_VFIO_IOAS_SET = 1,
-+	IOMMU_VFIO_IOAS_CLEAR = 2,
-+};
-+
-+/**
-+ * struct iommu_vfio_ioas - ioctl(IOMMU_VFIO_IOAS)
-+ * @size: sizeof(struct iommu_vfio_ioas)
-+ * @ioas_id: For IOMMU_VFIO_IOAS_SET the input IOAS ID to set
-+ *           For IOMMU_VFIO_IOAS_GET will output the IOAS ID
-+ * @op: One of enum iommufd_vfio_ioas_op
-+ * @__reserved: Must be 0
-+ *
-+ * The VFIO compatibility support uses a single ioas because VFIO APIs do not
-+ * support the ID field. Set or Get the IOAS that VFIO compatibility will use.
-+ * When VFIO_GROUP_SET_CONTAINER is used on an iommufd it will get the
-+ * compatibility ioas, either by taking what is already set, or auto creating
-+ * one. From then on VFIO will continue to use that ioas and is not effected by
-+ * this ioctl. SET or CLEAR does not destroy any auto-created IOAS.
-+ */
-+struct iommu_vfio_ioas {
-+	__u32 size;
-+	__u32 ioas_id;
-+	__u16 op;
-+	__u16 __reserved;
-+};
-+#define IOMMU_VFIO_IOAS _IO(IOMMUFD_TYPE, IOMMUFD_CMD_VFIO_IOAS)
-+#endif
-diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
-index 1f3f3333a4..0d74ee999a 100644
---- a/linux-headers/linux/kvm.h
-+++ b/linux-headers/linux/kvm.h
-@@ -1414,9 +1414,16 @@ struct kvm_device_attr {
- 	__u64	addr;		/* userspace address of attr data */
- };
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 9aac21abb7..9ca695837f 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -61,84 +61,6 @@ static QLIST_HEAD(, VFIOAddressSpace) vfio_address_spaces =
+ static int vfio_kvm_device_fd = -1;
+ #endif
  
--#define  KVM_DEV_VFIO_GROUP			1
--#define   KVM_DEV_VFIO_GROUP_ADD			1
--#define   KVM_DEV_VFIO_GROUP_DEL			2
-+#define  KVM_DEV_VFIO_FILE			1
-+
-+#define   KVM_DEV_VFIO_FILE_ADD			1
-+#define   KVM_DEV_VFIO_FILE_DEL			2
-+
-+/* KVM_DEV_VFIO_GROUP aliases are for compile time uapi compatibility */
-+#define  KVM_DEV_VFIO_GROUP	KVM_DEV_VFIO_FILE
-+
-+#define   KVM_DEV_VFIO_GROUP_ADD	KVM_DEV_VFIO_FILE_ADD
-+#define   KVM_DEV_VFIO_GROUP_DEL	KVM_DEV_VFIO_FILE_DEL
- #define   KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE		3
+-/*
+- * Common VFIO interrupt disable
+- */
+-void vfio_disable_irqindex(VFIODevice *vbasedev, int index)
+-{
+-    struct vfio_irq_set irq_set = {
+-        .argsz = sizeof(irq_set),
+-        .flags = VFIO_IRQ_SET_DATA_NONE | VFIO_IRQ_SET_ACTION_TRIGGER,
+-        .index = index,
+-        .start = 0,
+-        .count = 0,
+-    };
+-
+-    ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, &irq_set);
+-}
+-
+-void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index)
+-{
+-    struct vfio_irq_set irq_set = {
+-        .argsz = sizeof(irq_set),
+-        .flags = VFIO_IRQ_SET_DATA_NONE | VFIO_IRQ_SET_ACTION_UNMASK,
+-        .index = index,
+-        .start = 0,
+-        .count = 1,
+-    };
+-
+-    ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, &irq_set);
+-}
+-
+-void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index)
+-{
+-    struct vfio_irq_set irq_set = {
+-        .argsz = sizeof(irq_set),
+-        .flags = VFIO_IRQ_SET_DATA_NONE | VFIO_IRQ_SET_ACTION_MASK,
+-        .index = index,
+-        .start = 0,
+-        .count = 1,
+-    };
+-
+-    ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, &irq_set);
+-}
+-
+-static inline const char *action_to_str(int action)
+-{
+-    switch (action) {
+-    case VFIO_IRQ_SET_ACTION_MASK:
+-        return "MASK";
+-    case VFIO_IRQ_SET_ACTION_UNMASK:
+-        return "UNMASK";
+-    case VFIO_IRQ_SET_ACTION_TRIGGER:
+-        return "TRIGGER";
+-    default:
+-        return "UNKNOWN ACTION";
+-    }
+-}
+-
+-static const char *index_to_str(VFIODevice *vbasedev, int index)
+-{
+-    if (vbasedev->type != VFIO_DEVICE_TYPE_PCI) {
+-        return NULL;
+-    }
+-
+-    switch (index) {
+-    case VFIO_PCI_INTX_IRQ_INDEX:
+-        return "INTX";
+-    case VFIO_PCI_MSI_IRQ_INDEX:
+-        return "MSI";
+-    case VFIO_PCI_MSIX_IRQ_INDEX:
+-        return "MSIX";
+-    case VFIO_PCI_ERR_IRQ_INDEX:
+-        return "ERR";
+-    case VFIO_PCI_REQ_IRQ_INDEX:
+-        return "REQ";
+-    default:
+-        return NULL;
+-    }
+-}
+-
+ static int vfio_ram_block_discard_disable(VFIOContainer *container, bool state)
+ {
+     switch (container->iommu_type) {
+@@ -162,160 +84,6 @@ static int vfio_ram_block_discard_disable(VFIOContainer *container, bool state)
+     }
+ }
  
- enum kvm_device_type {
-diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
-index 16db89071e..6a0e55ff70 100644
---- a/linux-headers/linux/vfio.h
-+++ b/linux-headers/linux/vfio.h
-@@ -677,11 +677,60 @@ enum {
-  * VFIO_DEVICE_GET_PCI_HOT_RESET_INFO - _IOWR(VFIO_TYPE, VFIO_BASE + 12,
-  *					      struct vfio_pci_hot_reset_info)
-  *
-+ * This command is used to query the affected devices in the hot reset for
-+ * a given device.
-+ *
-+ * This command always reports the segment, bus, and devfn information for
-+ * each affected device, and selectively reports the group_id or devid per
-+ * the way how the calling device is opened.
-+ *
-+ *	- If the calling device is opened via the traditional group/container
-+ *	  API, group_id is reported.  User should check if it has owned all
-+ *	  the affected devices and provides a set of group fds to prove the
-+ *	  ownership in VFIO_DEVICE_PCI_HOT_RESET ioctl.
-+ *
-+ *	- If the calling device is opened as a cdev, devid is reported.
-+ *	  Flag VFIO_PCI_HOT_RESET_FLAG_DEV_ID is set to indicate this
-+ *	  data type.  All the affected devices should be represented in
-+ *	  the dev_set, ex. bound to a vfio driver, and also be owned by
-+ *	  this interface which is determined by the following conditions:
-+ *	  1) Has a valid devid within the iommufd_ctx of the calling device.
-+ *	     Ownership cannot be determined across separate iommufd_ctx and
-+ *	     the cdev calling conventions do not support a proof-of-ownership
-+ *	     model as provided in the legacy group interface.  In this case
-+ *	     valid devid with value greater than zero is provided in the return
-+ *	     structure.
-+ *	  2) Does not have a valid devid within the iommufd_ctx of the calling
-+ *	     device, but belongs to the same IOMMU group as the calling device
-+ *	     or another opened device that has a valid devid within the
-+ *	     iommufd_ctx of the calling device.  This provides implicit ownership
-+ *	     for devices within the same DMA isolation context.  In this case
-+ *	     the devid value of VFIO_PCI_DEVID_OWNED is provided in the return
-+ *	     structure.
-+ *
-+ *	  A devid value of VFIO_PCI_DEVID_NOT_OWNED is provided in the return
-+ *	  structure for affected devices where device is NOT represented in the
-+ *	  dev_set or ownership is not available.  Such devices prevent the use
-+ *	  of VFIO_DEVICE_PCI_HOT_RESET ioctl outside of the proof-of-ownership
-+ *	  calling conventions (ie. via legacy group accessed devices).  Flag
-+ *	  VFIO_PCI_HOT_RESET_FLAG_DEV_ID_OWNED would be set when all the
-+ *	  affected devices are represented in the dev_set and also owned by
-+ *	  the user.  This flag is available only when
-+ *	  flag VFIO_PCI_HOT_RESET_FLAG_DEV_ID is set, otherwise reserved.
-+ *	  When set, user could invoke VFIO_DEVICE_PCI_HOT_RESET with a zero
-+ *	  length fd array on the calling device as the ownership is validated
-+ *	  by iommufd_ctx.
-+ *
-  * Return: 0 on success, -errno on failure:
-  *	-enospc = insufficient buffer, -enodev = unsupported for device.
-  */
- struct vfio_pci_dependent_device {
--	__u32	group_id;
-+	union {
-+		__u32   group_id;
-+		__u32	devid;
-+#define VFIO_PCI_DEVID_OWNED		0
-+#define VFIO_PCI_DEVID_NOT_OWNED	-1
-+	};
- 	__u16	segment;
- 	__u8	bus;
- 	__u8	devfn; /* Use PCI_SLOT/PCI_FUNC */
-@@ -690,6 +739,8 @@ struct vfio_pci_dependent_device {
- struct vfio_pci_hot_reset_info {
- 	__u32	argsz;
- 	__u32	flags;
-+#define VFIO_PCI_HOT_RESET_FLAG_DEV_ID		(1 << 0)
-+#define VFIO_PCI_HOT_RESET_FLAG_DEV_ID_OWNED	(1 << 1)
- 	__u32	count;
- 	struct vfio_pci_dependent_device	devices[];
- };
-@@ -700,6 +751,24 @@ struct vfio_pci_hot_reset_info {
-  * VFIO_DEVICE_PCI_HOT_RESET - _IOW(VFIO_TYPE, VFIO_BASE + 13,
-  *				    struct vfio_pci_hot_reset)
-  *
-+ * A PCI hot reset results in either a bus or slot reset which may affect
-+ * other devices sharing the bus/slot.  The calling user must have
-+ * ownership of the full set of affected devices as determined by the
-+ * VFIO_DEVICE_GET_PCI_HOT_RESET_INFO ioctl.
-+ *
-+ * When called on a device file descriptor acquired through the vfio
-+ * group interface, the user is required to provide proof of ownership
-+ * of those affected devices via the group_fds array in struct
-+ * vfio_pci_hot_reset.
-+ *
-+ * When called on a direct cdev opened vfio device, the flags field of
-+ * struct vfio_pci_hot_reset_info reports the ownership status of the
-+ * affected devices and this ioctl must be called with an empty group_fds
-+ * array.  See above INFO ioctl definition for ownership requirements.
-+ *
-+ * Mixed usage of legacy groups and cdevs across the set of affected
-+ * devices is not supported.
-+ *
-  * Return: 0 on success, -errno on failure.
-  */
- struct vfio_pci_hot_reset {
-@@ -828,6 +897,77 @@ struct vfio_device_feature {
- 
- #define VFIO_DEVICE_FEATURE		_IO(VFIO_TYPE, VFIO_BASE + 17)
- 
-+/*
-+ * VFIO_DEVICE_BIND_IOMMUFD - _IOR(VFIO_TYPE, VFIO_BASE + 18,
-+ *				   struct vfio_device_bind_iommufd)
-+ * @argsz:	 User filled size of this data.
-+ * @flags:	 Must be 0.
-+ * @iommufd:	 iommufd to bind.
-+ * @out_devid:	 The device id generated by this bind. devid is a handle for
-+ *		 this device/iommufd bond and can be used in IOMMUFD commands.
-+ *
-+ * Bind a vfio_device to the specified iommufd.
-+ *
-+ * User is restricted from accessing the device before the binding operation
-+ * is completed.  Only allowed on cdev fds.
-+ *
-+ * Unbind is automatically conducted when device fd is closed.
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+struct vfio_device_bind_iommufd {
-+	__u32		argsz;
-+	__u32		flags;
-+	__s32		iommufd;
-+	__u32		out_devid;
-+};
-+
-+#define VFIO_DEVICE_BIND_IOMMUFD	_IO(VFIO_TYPE, VFIO_BASE + 18)
-+
-+/*
-+ * VFIO_DEVICE_ATTACH_IOMMUFD_PT - _IOW(VFIO_TYPE, VFIO_BASE + 19,
-+ *					struct vfio_device_attach_iommufd_pt)
-+ * @argsz:	User filled size of this data.
-+ * @flags:	Must be 0.
-+ * @pt_id:	Input the target id which can represent an ioas or a hwpt
-+ *		allocated via iommufd subsystem.
-+ *		Output the input ioas id or the attached hwpt id which could
-+ *		be the specified hwpt itself or a hwpt automatically created
-+ *		for the specified ioas by kernel during the attachment.
-+ *
-+ * Associate the device with an address space within the bound iommufd.
-+ * Undo by VFIO_DEVICE_DETACH_IOMMUFD_PT or device fd close.  This is only
-+ * allowed on cdev fds.
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+struct vfio_device_attach_iommufd_pt {
-+	__u32	argsz;
-+	__u32	flags;
-+	__u32	pt_id;
-+};
-+
-+#define VFIO_DEVICE_ATTACH_IOMMUFD_PT		_IO(VFIO_TYPE, VFIO_BASE + 19)
-+
-+/*
-+ * VFIO_DEVICE_DETACH_IOMMUFD_PT - _IOW(VFIO_TYPE, VFIO_BASE + 20,
-+ *					struct vfio_device_detach_iommufd_pt)
-+ * @argsz:	User filled size of this data.
-+ * @flags:	Must be 0.
-+ *
-+ * Remove the association of the device and its current associated address
-+ * space.  After it, the device should be in a blocking DMA state.  This is only
-+ * allowed on cdev fds.
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+struct vfio_device_detach_iommufd_pt {
-+	__u32	argsz;
-+	__u32	flags;
-+};
-+
-+#define VFIO_DEVICE_DETACH_IOMMUFD_PT		_IO(VFIO_TYPE, VFIO_BASE + 20)
-+
+-int vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
+-                           int action, int fd, Error **errp)
+-{
+-    struct vfio_irq_set *irq_set;
+-    int argsz, ret = 0;
+-    const char *name;
+-    int32_t *pfd;
+-
+-    argsz = sizeof(*irq_set) + sizeof(*pfd);
+-
+-    irq_set = g_malloc0(argsz);
+-    irq_set->argsz = argsz;
+-    irq_set->flags = VFIO_IRQ_SET_DATA_EVENTFD | action;
+-    irq_set->index = index;
+-    irq_set->start = subindex;
+-    irq_set->count = 1;
+-    pfd = (int32_t *)&irq_set->data;
+-    *pfd = fd;
+-
+-    if (ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, irq_set)) {
+-        ret = -errno;
+-    }
+-    g_free(irq_set);
+-
+-    if (!ret) {
+-        return 0;
+-    }
+-
+-    error_setg_errno(errp, -ret, "VFIO_DEVICE_SET_IRQS failure");
+-
+-    name = index_to_str(vbasedev, index);
+-    if (name) {
+-        error_prepend(errp, "%s-%d: ", name, subindex);
+-    } else {
+-        error_prepend(errp, "index %d-%d: ", index, subindex);
+-    }
+-    error_prepend(errp,
+-                  "Failed to %s %s eventfd signaling for interrupt ",
+-                  fd < 0 ? "tear down" : "set up", action_to_str(action));
+-    return ret;
+-}
+-
+-/*
+- * IO Port/MMIO - Beware of the endians, VFIO is always little endian
+- */
+-void vfio_region_write(void *opaque, hwaddr addr,
+-                       uint64_t data, unsigned size)
+-{
+-    VFIORegion *region = opaque;
+-    VFIODevice *vbasedev = region->vbasedev;
+-    union {
+-        uint8_t byte;
+-        uint16_t word;
+-        uint32_t dword;
+-        uint64_t qword;
+-    } buf;
+-
+-    switch (size) {
+-    case 1:
+-        buf.byte = data;
+-        break;
+-    case 2:
+-        buf.word = cpu_to_le16(data);
+-        break;
+-    case 4:
+-        buf.dword = cpu_to_le32(data);
+-        break;
+-    case 8:
+-        buf.qword = cpu_to_le64(data);
+-        break;
+-    default:
+-        hw_error("vfio: unsupported write size, %u bytes", size);
+-        break;
+-    }
+-
+-    if (pwrite(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
+-        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", 0x%"PRIx64
+-                     ",%d) failed: %m",
+-                     __func__, vbasedev->name, region->nr,
+-                     addr, data, size);
+-    }
+-
+-    trace_vfio_region_write(vbasedev->name, region->nr, addr, data, size);
+-
+-    /*
+-     * A read or write to a BAR always signals an INTx EOI.  This will
+-     * do nothing if not pending (including not in INTx mode).  We assume
+-     * that a BAR access is in response to an interrupt and that BAR
+-     * accesses will service the interrupt.  Unfortunately, we don't know
+-     * which access will service the interrupt, so we're potentially
+-     * getting quite a few host interrupts per guest interrupt.
+-     */
+-    vbasedev->ops->vfio_eoi(vbasedev);
+-}
+-
+-uint64_t vfio_region_read(void *opaque,
+-                          hwaddr addr, unsigned size)
+-{
+-    VFIORegion *region = opaque;
+-    VFIODevice *vbasedev = region->vbasedev;
+-    union {
+-        uint8_t byte;
+-        uint16_t word;
+-        uint32_t dword;
+-        uint64_t qword;
+-    } buf;
+-    uint64_t data = 0;
+-
+-    if (pread(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
+-        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", %d) failed: %m",
+-                     __func__, vbasedev->name, region->nr,
+-                     addr, size);
+-        return (uint64_t)-1;
+-    }
+-    switch (size) {
+-    case 1:
+-        data = buf.byte;
+-        break;
+-    case 2:
+-        data = le16_to_cpu(buf.word);
+-        break;
+-    case 4:
+-        data = le32_to_cpu(buf.dword);
+-        break;
+-    case 8:
+-        data = le64_to_cpu(buf.qword);
+-        break;
+-    default:
+-        hw_error("vfio: unsupported read size, %u bytes", size);
+-        break;
+-    }
+-
+-    trace_vfio_region_read(vbasedev->name, region->nr, addr, size, data);
+-
+-    /* Same as write above */
+-    vbasedev->ops->vfio_eoi(vbasedev);
+-
+-    return data;
+-}
+-
+-const MemoryRegionOps vfio_region_ops = {
+-    .read = vfio_region_read,
+-    .write = vfio_region_write,
+-    .endianness = DEVICE_LITTLE_ENDIAN,
+-    .valid = {
+-        .min_access_size = 1,
+-        .max_access_size = 8,
+-    },
+-    .impl = {
+-        .min_access_size = 1,
+-        .max_access_size = 8,
+-    },
+-};
+-
  /*
-  * Provide support for setting a PCI VF Token, which is used as a shared
-  * secret between PF and VF drivers.  This feature may only be set on a
+  * Device state interfaces
+  */
+@@ -1916,30 +1684,6 @@ static void vfio_listener_release(VFIOContainer *container)
+     }
+ }
+ 
+-static struct vfio_info_cap_header *
+-vfio_get_cap(void *ptr, uint32_t cap_offset, uint16_t id)
+-{
+-    struct vfio_info_cap_header *hdr;
+-
+-    for (hdr = ptr + cap_offset; hdr != ptr; hdr = ptr + hdr->next) {
+-        if (hdr->id == id) {
+-            return hdr;
+-        }
+-    }
+-
+-    return NULL;
+-}
+-
+-struct vfio_info_cap_header *
+-vfio_get_region_info_cap(struct vfio_region_info *info, uint16_t id)
+-{
+-    if (!(info->flags & VFIO_REGION_INFO_FLAG_CAPS)) {
+-        return NULL;
+-    }
+-
+-    return vfio_get_cap((void *)info, info->cap_offset, id);
+-}
+-
+ static struct vfio_info_cap_header *
+ vfio_get_iommu_type1_info_cap(struct vfio_iommu_type1_info *info, uint16_t id)
+ {
+@@ -1950,16 +1694,6 @@ vfio_get_iommu_type1_info_cap(struct vfio_iommu_type1_info *info, uint16_t id)
+     return vfio_get_cap((void *)info, info->cap_offset, id);
+ }
+ 
+-struct vfio_info_cap_header *
+-vfio_get_device_info_cap(struct vfio_device_info *info, uint16_t id)
+-{
+-    if (!(info->flags & VFIO_DEVICE_FLAGS_CAPS)) {
+-        return NULL;
+-    }
+-
+-    return vfio_get_cap((void *)info, info->cap_offset, id);
+-}
+-
+ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
+                              unsigned int *avail)
+ {
+@@ -1981,232 +1715,6 @@ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
+     return true;
+ }
+ 
+-static int vfio_setup_region_sparse_mmaps(VFIORegion *region,
+-                                          struct vfio_region_info *info)
+-{
+-    struct vfio_info_cap_header *hdr;
+-    struct vfio_region_info_cap_sparse_mmap *sparse;
+-    int i, j;
+-
+-    hdr = vfio_get_region_info_cap(info, VFIO_REGION_INFO_CAP_SPARSE_MMAP);
+-    if (!hdr) {
+-        return -ENODEV;
+-    }
+-
+-    sparse = container_of(hdr, struct vfio_region_info_cap_sparse_mmap, header);
+-
+-    trace_vfio_region_sparse_mmap_header(region->vbasedev->name,
+-                                         region->nr, sparse->nr_areas);
+-
+-    region->mmaps = g_new0(VFIOMmap, sparse->nr_areas);
+-
+-    for (i = 0, j = 0; i < sparse->nr_areas; i++) {
+-        if (sparse->areas[i].size) {
+-            trace_vfio_region_sparse_mmap_entry(i, sparse->areas[i].offset,
+-                                            sparse->areas[i].offset +
+-                                            sparse->areas[i].size - 1);
+-            region->mmaps[j].offset = sparse->areas[i].offset;
+-            region->mmaps[j].size = sparse->areas[i].size;
+-            j++;
+-        }
+-    }
+-
+-    region->nr_mmaps = j;
+-    region->mmaps = g_realloc(region->mmaps, j * sizeof(VFIOMmap));
+-
+-    return 0;
+-}
+-
+-int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
+-                      int index, const char *name)
+-{
+-    struct vfio_region_info *info;
+-    int ret;
+-
+-    ret = vfio_get_region_info(vbasedev, index, &info);
+-    if (ret) {
+-        return ret;
+-    }
+-
+-    region->vbasedev = vbasedev;
+-    region->flags = info->flags;
+-    region->size = info->size;
+-    region->fd_offset = info->offset;
+-    region->nr = index;
+-
+-    if (region->size) {
+-        region->mem = g_new0(MemoryRegion, 1);
+-        memory_region_init_io(region->mem, obj, &vfio_region_ops,
+-                              region, name, region->size);
+-
+-        if (!vbasedev->no_mmap &&
+-            region->flags & VFIO_REGION_INFO_FLAG_MMAP) {
+-
+-            ret = vfio_setup_region_sparse_mmaps(region, info);
+-
+-            if (ret) {
+-                region->nr_mmaps = 1;
+-                region->mmaps = g_new0(VFIOMmap, region->nr_mmaps);
+-                region->mmaps[0].offset = 0;
+-                region->mmaps[0].size = region->size;
+-            }
+-        }
+-    }
+-
+-    g_free(info);
+-
+-    trace_vfio_region_setup(vbasedev->name, index, name,
+-                            region->flags, region->fd_offset, region->size);
+-    return 0;
+-}
+-
+-static void vfio_subregion_unmap(VFIORegion *region, int index)
+-{
+-    trace_vfio_region_unmap(memory_region_name(&region->mmaps[index].mem),
+-                            region->mmaps[index].offset,
+-                            region->mmaps[index].offset +
+-                            region->mmaps[index].size - 1);
+-    memory_region_del_subregion(region->mem, &region->mmaps[index].mem);
+-    munmap(region->mmaps[index].mmap, region->mmaps[index].size);
+-    object_unparent(OBJECT(&region->mmaps[index].mem));
+-    region->mmaps[index].mmap = NULL;
+-}
+-
+-int vfio_region_mmap(VFIORegion *region)
+-{
+-    int i, prot = 0;
+-    char *name;
+-
+-    if (!region->mem) {
+-        return 0;
+-    }
+-
+-    prot |= region->flags & VFIO_REGION_INFO_FLAG_READ ? PROT_READ : 0;
+-    prot |= region->flags & VFIO_REGION_INFO_FLAG_WRITE ? PROT_WRITE : 0;
+-
+-    for (i = 0; i < region->nr_mmaps; i++) {
+-        region->mmaps[i].mmap = mmap(NULL, region->mmaps[i].size, prot,
+-                                     MAP_SHARED, region->vbasedev->fd,
+-                                     region->fd_offset +
+-                                     region->mmaps[i].offset);
+-        if (region->mmaps[i].mmap == MAP_FAILED) {
+-            int ret = -errno;
+-
+-            trace_vfio_region_mmap_fault(memory_region_name(region->mem), i,
+-                                         region->fd_offset +
+-                                         region->mmaps[i].offset,
+-                                         region->fd_offset +
+-                                         region->mmaps[i].offset +
+-                                         region->mmaps[i].size - 1, ret);
+-
+-            region->mmaps[i].mmap = NULL;
+-
+-            for (i--; i >= 0; i--) {
+-                vfio_subregion_unmap(region, i);
+-            }
+-
+-            return ret;
+-        }
+-
+-        name = g_strdup_printf("%s mmaps[%d]",
+-                               memory_region_name(region->mem), i);
+-        memory_region_init_ram_device_ptr(&region->mmaps[i].mem,
+-                                          memory_region_owner(region->mem),
+-                                          name, region->mmaps[i].size,
+-                                          region->mmaps[i].mmap);
+-        g_free(name);
+-        memory_region_add_subregion(region->mem, region->mmaps[i].offset,
+-                                    &region->mmaps[i].mem);
+-
+-        trace_vfio_region_mmap(memory_region_name(&region->mmaps[i].mem),
+-                               region->mmaps[i].offset,
+-                               region->mmaps[i].offset +
+-                               region->mmaps[i].size - 1);
+-    }
+-
+-    return 0;
+-}
+-
+-void vfio_region_unmap(VFIORegion *region)
+-{
+-    int i;
+-
+-    if (!region->mem) {
+-        return;
+-    }
+-
+-    for (i = 0; i < region->nr_mmaps; i++) {
+-        if (region->mmaps[i].mmap) {
+-            vfio_subregion_unmap(region, i);
+-        }
+-    }
+-}
+-
+-void vfio_region_exit(VFIORegion *region)
+-{
+-    int i;
+-
+-    if (!region->mem) {
+-        return;
+-    }
+-
+-    for (i = 0; i < region->nr_mmaps; i++) {
+-        if (region->mmaps[i].mmap) {
+-            memory_region_del_subregion(region->mem, &region->mmaps[i].mem);
+-        }
+-    }
+-
+-    trace_vfio_region_exit(region->vbasedev->name, region->nr);
+-}
+-
+-void vfio_region_finalize(VFIORegion *region)
+-{
+-    int i;
+-
+-    if (!region->mem) {
+-        return;
+-    }
+-
+-    for (i = 0; i < region->nr_mmaps; i++) {
+-        if (region->mmaps[i].mmap) {
+-            munmap(region->mmaps[i].mmap, region->mmaps[i].size);
+-            object_unparent(OBJECT(&region->mmaps[i].mem));
+-        }
+-    }
+-
+-    object_unparent(OBJECT(region->mem));
+-
+-    g_free(region->mem);
+-    g_free(region->mmaps);
+-
+-    trace_vfio_region_finalize(region->vbasedev->name, region->nr);
+-
+-    region->mem = NULL;
+-    region->mmaps = NULL;
+-    region->nr_mmaps = 0;
+-    region->size = 0;
+-    region->flags = 0;
+-    region->nr = 0;
+-}
+-
+-void vfio_region_mmaps_set_enabled(VFIORegion *region, bool enabled)
+-{
+-    int i;
+-
+-    if (!region->mem) {
+-        return;
+-    }
+-
+-    for (i = 0; i < region->nr_mmaps; i++) {
+-        if (region->mmaps[i].mmap) {
+-            memory_region_set_enabled(&region->mmaps[i].mem, enabled);
+-        }
+-    }
+-
+-    trace_vfio_region_mmaps_set_enabled(memory_region_name(region->mem),
+-                                        enabled);
+-}
+-
+ void vfio_reset_handler(void *opaque)
+ {
+     VFIOGroup *group;
+@@ -2905,83 +2413,6 @@ void vfio_put_base_device(VFIODevice *vbasedev)
+     close(vbasedev->fd);
+ }
+ 
+-int vfio_get_region_info(VFIODevice *vbasedev, int index,
+-                         struct vfio_region_info **info)
+-{
+-    size_t argsz = sizeof(struct vfio_region_info);
+-
+-    *info = g_malloc0(argsz);
+-
+-    (*info)->index = index;
+-retry:
+-    (*info)->argsz = argsz;
+-
+-    if (ioctl(vbasedev->fd, VFIO_DEVICE_GET_REGION_INFO, *info)) {
+-        g_free(*info);
+-        *info = NULL;
+-        return -errno;
+-    }
+-
+-    if ((*info)->argsz > argsz) {
+-        argsz = (*info)->argsz;
+-        *info = g_realloc(*info, argsz);
+-
+-        goto retry;
+-    }
+-
+-    return 0;
+-}
+-
+-int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
+-                             uint32_t subtype, struct vfio_region_info **info)
+-{
+-    int i;
+-
+-    for (i = 0; i < vbasedev->num_regions; i++) {
+-        struct vfio_info_cap_header *hdr;
+-        struct vfio_region_info_cap_type *cap_type;
+-
+-        if (vfio_get_region_info(vbasedev, i, info)) {
+-            continue;
+-        }
+-
+-        hdr = vfio_get_region_info_cap(*info, VFIO_REGION_INFO_CAP_TYPE);
+-        if (!hdr) {
+-            g_free(*info);
+-            continue;
+-        }
+-
+-        cap_type = container_of(hdr, struct vfio_region_info_cap_type, header);
+-
+-        trace_vfio_get_dev_region(vbasedev->name, i,
+-                                  cap_type->type, cap_type->subtype);
+-
+-        if (cap_type->type == type && cap_type->subtype == subtype) {
+-            return 0;
+-        }
+-
+-        g_free(*info);
+-    }
+-
+-    *info = NULL;
+-    return -ENODEV;
+-}
+-
+-bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
+-{
+-    struct vfio_region_info *info = NULL;
+-    bool ret = false;
+-
+-    if (!vfio_get_region_info(vbasedev, region, &info)) {
+-        if (vfio_get_region_info_cap(info, cap_type)) {
+-            ret = true;
+-        }
+-        g_free(info);
+-    }
+-
+-    return ret;
+-}
+-
+ /*
+  * Interfaces for IBM EEH (Enhanced Error Handling)
+  */
+diff --git a/hw/vfio/helpers.c b/hw/vfio/helpers.c
+new file mode 100644
+index 0000000000..4338456b08
+--- /dev/null
++++ b/hw/vfio/helpers.c
+@@ -0,0 +1,598 @@
++/*
++ * low level and IOMMU backend agnostic helpers used by VFIO devices,
++ * related to regions, interrupts, capabilities
++ *
++ * Copyright Red Hat, Inc. 2012
++ *
++ * Authors:
++ *  Alex Williamson <alex.williamson@redhat.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2.  See
++ * the COPYING file in the top-level directory.
++ *
++ * Based on qemu-kvm device-assignment:
++ *  Adapted for KVM by Qumranet.
++ *  Copyright (c) 2007, Neocleus, Alex Novik (alex@neocleus.com)
++ *  Copyright (c) 2007, Neocleus, Guy Zana (guy@neocleus.com)
++ *  Copyright (C) 2008, Qumranet, Amit Shah (amit.shah@qumranet.com)
++ *  Copyright (C) 2008, Red Hat, Amit Shah (amit.shah@redhat.com)
++ *  Copyright (C) 2008, IBM, Muli Ben-Yehuda (muli@il.ibm.com)
++ */
++
++#include "qemu/osdep.h"
++#include <sys/ioctl.h>
++
++#include "hw/vfio/vfio-common.h"
++#include "hw/vfio/vfio.h"
++#include "hw/hw.h"
++#include "trace.h"
++#include "qapi/error.h"
++
++/*
++ * Common VFIO interrupt disable
++ */
++void vfio_disable_irqindex(VFIODevice *vbasedev, int index)
++{
++    struct vfio_irq_set irq_set = {
++        .argsz = sizeof(irq_set),
++        .flags = VFIO_IRQ_SET_DATA_NONE | VFIO_IRQ_SET_ACTION_TRIGGER,
++        .index = index,
++        .start = 0,
++        .count = 0,
++    };
++
++    ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, &irq_set);
++}
++
++void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index)
++{
++    struct vfio_irq_set irq_set = {
++        .argsz = sizeof(irq_set),
++        .flags = VFIO_IRQ_SET_DATA_NONE | VFIO_IRQ_SET_ACTION_UNMASK,
++        .index = index,
++        .start = 0,
++        .count = 1,
++    };
++
++    ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, &irq_set);
++}
++
++void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index)
++{
++    struct vfio_irq_set irq_set = {
++        .argsz = sizeof(irq_set),
++        .flags = VFIO_IRQ_SET_DATA_NONE | VFIO_IRQ_SET_ACTION_MASK,
++        .index = index,
++        .start = 0,
++        .count = 1,
++    };
++
++    ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, &irq_set);
++}
++
++static inline const char *action_to_str(int action)
++{
++    switch (action) {
++    case VFIO_IRQ_SET_ACTION_MASK:
++        return "MASK";
++    case VFIO_IRQ_SET_ACTION_UNMASK:
++        return "UNMASK";
++    case VFIO_IRQ_SET_ACTION_TRIGGER:
++        return "TRIGGER";
++    default:
++        return "UNKNOWN ACTION";
++    }
++}
++
++static const char *index_to_str(VFIODevice *vbasedev, int index)
++{
++    if (vbasedev->type != VFIO_DEVICE_TYPE_PCI) {
++        return NULL;
++    }
++
++    switch (index) {
++    case VFIO_PCI_INTX_IRQ_INDEX:
++        return "INTX";
++    case VFIO_PCI_MSI_IRQ_INDEX:
++        return "MSI";
++    case VFIO_PCI_MSIX_IRQ_INDEX:
++        return "MSIX";
++    case VFIO_PCI_ERR_IRQ_INDEX:
++        return "ERR";
++    case VFIO_PCI_REQ_IRQ_INDEX:
++        return "REQ";
++    default:
++        return NULL;
++    }
++}
++
++int vfio_set_irq_signaling(VFIODevice *vbasedev, int index, int subindex,
++                           int action, int fd, Error **errp)
++{
++    struct vfio_irq_set *irq_set;
++    int argsz, ret = 0;
++    const char *name;
++    int32_t *pfd;
++
++    argsz = sizeof(*irq_set) + sizeof(*pfd);
++
++    irq_set = g_malloc0(argsz);
++    irq_set->argsz = argsz;
++    irq_set->flags = VFIO_IRQ_SET_DATA_EVENTFD | action;
++    irq_set->index = index;
++    irq_set->start = subindex;
++    irq_set->count = 1;
++    pfd = (int32_t *)&irq_set->data;
++    *pfd = fd;
++
++    if (ioctl(vbasedev->fd, VFIO_DEVICE_SET_IRQS, irq_set)) {
++        ret = -errno;
++    }
++    g_free(irq_set);
++
++    if (!ret) {
++        return 0;
++    }
++
++    error_setg_errno(errp, -ret, "VFIO_DEVICE_SET_IRQS failure");
++
++    name = index_to_str(vbasedev, index);
++    if (name) {
++        error_prepend(errp, "%s-%d: ", name, subindex);
++    } else {
++        error_prepend(errp, "index %d-%d: ", index, subindex);
++    }
++    error_prepend(errp,
++                  "Failed to %s %s eventfd signaling for interrupt ",
++                  fd < 0 ? "tear down" : "set up", action_to_str(action));
++    return ret;
++}
++
++/*
++ * IO Port/MMIO - Beware of the endians, VFIO is always little endian
++ */
++void vfio_region_write(void *opaque, hwaddr addr,
++                       uint64_t data, unsigned size)
++{
++    VFIORegion *region = opaque;
++    VFIODevice *vbasedev = region->vbasedev;
++    union {
++        uint8_t byte;
++        uint16_t word;
++        uint32_t dword;
++        uint64_t qword;
++    } buf;
++
++    switch (size) {
++    case 1:
++        buf.byte = data;
++        break;
++    case 2:
++        buf.word = cpu_to_le16(data);
++        break;
++    case 4:
++        buf.dword = cpu_to_le32(data);
++        break;
++    case 8:
++        buf.qword = cpu_to_le64(data);
++        break;
++    default:
++        hw_error("vfio: unsupported write size, %u bytes", size);
++        break;
++    }
++
++    if (pwrite(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
++        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", 0x%"PRIx64
++                     ",%d) failed: %m",
++                     __func__, vbasedev->name, region->nr,
++                     addr, data, size);
++    }
++
++    trace_vfio_region_write(vbasedev->name, region->nr, addr, data, size);
++
++    /*
++     * A read or write to a BAR always signals an INTx EOI.  This will
++     * do nothing if not pending (including not in INTx mode).  We assume
++     * that a BAR access is in response to an interrupt and that BAR
++     * accesses will service the interrupt.  Unfortunately, we don't know
++     * which access will service the interrupt, so we're potentially
++     * getting quite a few host interrupts per guest interrupt.
++     */
++    vbasedev->ops->vfio_eoi(vbasedev);
++}
++
++uint64_t vfio_region_read(void *opaque,
++                          hwaddr addr, unsigned size)
++{
++    VFIORegion *region = opaque;
++    VFIODevice *vbasedev = region->vbasedev;
++    union {
++        uint8_t byte;
++        uint16_t word;
++        uint32_t dword;
++        uint64_t qword;
++    } buf;
++    uint64_t data = 0;
++
++    if (pread(vbasedev->fd, &buf, size, region->fd_offset + addr) != size) {
++        error_report("%s(%s:region%d+0x%"HWADDR_PRIx", %d) failed: %m",
++                     __func__, vbasedev->name, region->nr,
++                     addr, size);
++        return (uint64_t)-1;
++    }
++    switch (size) {
++    case 1:
++        data = buf.byte;
++        break;
++    case 2:
++        data = le16_to_cpu(buf.word);
++        break;
++    case 4:
++        data = le32_to_cpu(buf.dword);
++        break;
++    case 8:
++        data = le64_to_cpu(buf.qword);
++        break;
++    default:
++        hw_error("vfio: unsupported read size, %u bytes", size);
++        break;
++    }
++
++    trace_vfio_region_read(vbasedev->name, region->nr, addr, size, data);
++
++    /* Same as write above */
++    vbasedev->ops->vfio_eoi(vbasedev);
++
++    return data;
++}
++
++const MemoryRegionOps vfio_region_ops = {
++    .read = vfio_region_read,
++    .write = vfio_region_write,
++    .endianness = DEVICE_LITTLE_ENDIAN,
++    .valid = {
++        .min_access_size = 1,
++        .max_access_size = 8,
++    },
++    .impl = {
++        .min_access_size = 1,
++        .max_access_size = 8,
++    },
++};
++
++struct vfio_info_cap_header *
++vfio_get_cap(void *ptr, uint32_t cap_offset, uint16_t id)
++{
++    struct vfio_info_cap_header *hdr;
++
++    for (hdr = ptr + cap_offset; hdr != ptr; hdr = ptr + hdr->next) {
++        if (hdr->id == id) {
++            return hdr;
++        }
++    }
++
++    return NULL;
++}
++
++struct vfio_info_cap_header *
++vfio_get_region_info_cap(struct vfio_region_info *info, uint16_t id)
++{
++    if (!(info->flags & VFIO_REGION_INFO_FLAG_CAPS)) {
++        return NULL;
++    }
++
++    return vfio_get_cap((void *)info, info->cap_offset, id);
++}
++
++struct vfio_info_cap_header *
++vfio_get_device_info_cap(struct vfio_device_info *info, uint16_t id)
++{
++    if (!(info->flags & VFIO_DEVICE_FLAGS_CAPS)) {
++        return NULL;
++    }
++
++    return vfio_get_cap((void *)info, info->cap_offset, id);
++}
++
++static int vfio_setup_region_sparse_mmaps(VFIORegion *region,
++                                          struct vfio_region_info *info)
++{
++    struct vfio_info_cap_header *hdr;
++    struct vfio_region_info_cap_sparse_mmap *sparse;
++    int i, j;
++
++    hdr = vfio_get_region_info_cap(info, VFIO_REGION_INFO_CAP_SPARSE_MMAP);
++    if (!hdr) {
++        return -ENODEV;
++    }
++
++    sparse = container_of(hdr, struct vfio_region_info_cap_sparse_mmap, header);
++
++    trace_vfio_region_sparse_mmap_header(region->vbasedev->name,
++                                         region->nr, sparse->nr_areas);
++
++    region->mmaps = g_new0(VFIOMmap, sparse->nr_areas);
++
++    for (i = 0, j = 0; i < sparse->nr_areas; i++) {
++        if (sparse->areas[i].size) {
++            trace_vfio_region_sparse_mmap_entry(i, sparse->areas[i].offset,
++                                            sparse->areas[i].offset +
++                                            sparse->areas[i].size - 1);
++            region->mmaps[j].offset = sparse->areas[i].offset;
++            region->mmaps[j].size = sparse->areas[i].size;
++            j++;
++        }
++    }
++
++    region->nr_mmaps = j;
++    region->mmaps = g_realloc(region->mmaps, j * sizeof(VFIOMmap));
++
++    return 0;
++}
++
++int vfio_region_setup(Object *obj, VFIODevice *vbasedev, VFIORegion *region,
++                      int index, const char *name)
++{
++    struct vfio_region_info *info;
++    int ret;
++
++    ret = vfio_get_region_info(vbasedev, index, &info);
++    if (ret) {
++        return ret;
++    }
++
++    region->vbasedev = vbasedev;
++    region->flags = info->flags;
++    region->size = info->size;
++    region->fd_offset = info->offset;
++    region->nr = index;
++
++    if (region->size) {
++        region->mem = g_new0(MemoryRegion, 1);
++        memory_region_init_io(region->mem, obj, &vfio_region_ops,
++                              region, name, region->size);
++
++        if (!vbasedev->no_mmap &&
++            region->flags & VFIO_REGION_INFO_FLAG_MMAP) {
++
++            ret = vfio_setup_region_sparse_mmaps(region, info);
++
++            if (ret) {
++                region->nr_mmaps = 1;
++                region->mmaps = g_new0(VFIOMmap, region->nr_mmaps);
++                region->mmaps[0].offset = 0;
++                region->mmaps[0].size = region->size;
++            }
++        }
++    }
++
++    g_free(info);
++
++    trace_vfio_region_setup(vbasedev->name, index, name,
++                            region->flags, region->fd_offset, region->size);
++    return 0;
++}
++
++static void vfio_subregion_unmap(VFIORegion *region, int index)
++{
++    trace_vfio_region_unmap(memory_region_name(&region->mmaps[index].mem),
++                            region->mmaps[index].offset,
++                            region->mmaps[index].offset +
++                            region->mmaps[index].size - 1);
++    memory_region_del_subregion(region->mem, &region->mmaps[index].mem);
++    munmap(region->mmaps[index].mmap, region->mmaps[index].size);
++    object_unparent(OBJECT(&region->mmaps[index].mem));
++    region->mmaps[index].mmap = NULL;
++}
++
++int vfio_region_mmap(VFIORegion *region)
++{
++    int i, prot = 0;
++    char *name;
++
++    if (!region->mem) {
++        return 0;
++    }
++
++    prot |= region->flags & VFIO_REGION_INFO_FLAG_READ ? PROT_READ : 0;
++    prot |= region->flags & VFIO_REGION_INFO_FLAG_WRITE ? PROT_WRITE : 0;
++
++    for (i = 0; i < region->nr_mmaps; i++) {
++        region->mmaps[i].mmap = mmap(NULL, region->mmaps[i].size, prot,
++                                     MAP_SHARED, region->vbasedev->fd,
++                                     region->fd_offset +
++                                     region->mmaps[i].offset);
++        if (region->mmaps[i].mmap == MAP_FAILED) {
++            int ret = -errno;
++
++            trace_vfio_region_mmap_fault(memory_region_name(region->mem), i,
++                                         region->fd_offset +
++                                         region->mmaps[i].offset,
++                                         region->fd_offset +
++                                         region->mmaps[i].offset +
++                                         region->mmaps[i].size - 1, ret);
++
++            region->mmaps[i].mmap = NULL;
++
++            for (i--; i >= 0; i--) {
++                vfio_subregion_unmap(region, i);
++            }
++
++            return ret;
++        }
++
++        name = g_strdup_printf("%s mmaps[%d]",
++                               memory_region_name(region->mem), i);
++        memory_region_init_ram_device_ptr(&region->mmaps[i].mem,
++                                          memory_region_owner(region->mem),
++                                          name, region->mmaps[i].size,
++                                          region->mmaps[i].mmap);
++        g_free(name);
++        memory_region_add_subregion(region->mem, region->mmaps[i].offset,
++                                    &region->mmaps[i].mem);
++
++        trace_vfio_region_mmap(memory_region_name(&region->mmaps[i].mem),
++                               region->mmaps[i].offset,
++                               region->mmaps[i].offset +
++                               region->mmaps[i].size - 1);
++    }
++
++    return 0;
++}
++
++void vfio_region_unmap(VFIORegion *region)
++{
++    int i;
++
++    if (!region->mem) {
++        return;
++    }
++
++    for (i = 0; i < region->nr_mmaps; i++) {
++        if (region->mmaps[i].mmap) {
++            vfio_subregion_unmap(region, i);
++        }
++    }
++}
++
++void vfio_region_exit(VFIORegion *region)
++{
++    int i;
++
++    if (!region->mem) {
++        return;
++    }
++
++    for (i = 0; i < region->nr_mmaps; i++) {
++        if (region->mmaps[i].mmap) {
++            memory_region_del_subregion(region->mem, &region->mmaps[i].mem);
++        }
++    }
++
++    trace_vfio_region_exit(region->vbasedev->name, region->nr);
++}
++
++void vfio_region_finalize(VFIORegion *region)
++{
++    int i;
++
++    if (!region->mem) {
++        return;
++    }
++
++    for (i = 0; i < region->nr_mmaps; i++) {
++        if (region->mmaps[i].mmap) {
++            munmap(region->mmaps[i].mmap, region->mmaps[i].size);
++            object_unparent(OBJECT(&region->mmaps[i].mem));
++        }
++    }
++
++    object_unparent(OBJECT(region->mem));
++
++    g_free(region->mem);
++    g_free(region->mmaps);
++
++    trace_vfio_region_finalize(region->vbasedev->name, region->nr);
++
++    region->mem = NULL;
++    region->mmaps = NULL;
++    region->nr_mmaps = 0;
++    region->size = 0;
++    region->flags = 0;
++    region->nr = 0;
++}
++
++void vfio_region_mmaps_set_enabled(VFIORegion *region, bool enabled)
++{
++    int i;
++
++    if (!region->mem) {
++        return;
++    }
++
++    for (i = 0; i < region->nr_mmaps; i++) {
++        if (region->mmaps[i].mmap) {
++            memory_region_set_enabled(&region->mmaps[i].mem, enabled);
++        }
++    }
++
++    trace_vfio_region_mmaps_set_enabled(memory_region_name(region->mem),
++                                        enabled);
++}
++
++int vfio_get_region_info(VFIODevice *vbasedev, int index,
++                         struct vfio_region_info **info)
++{
++    size_t argsz = sizeof(struct vfio_region_info);
++
++    *info = g_malloc0(argsz);
++
++    (*info)->index = index;
++retry:
++    (*info)->argsz = argsz;
++
++    if (ioctl(vbasedev->fd, VFIO_DEVICE_GET_REGION_INFO, *info)) {
++        g_free(*info);
++        *info = NULL;
++        return -errno;
++    }
++
++    if ((*info)->argsz > argsz) {
++        argsz = (*info)->argsz;
++        *info = g_realloc(*info, argsz);
++
++        goto retry;
++    }
++
++    return 0;
++}
++
++int vfio_get_dev_region_info(VFIODevice *vbasedev, uint32_t type,
++                             uint32_t subtype, struct vfio_region_info **info)
++{
++    int i;
++
++    for (i = 0; i < vbasedev->num_regions; i++) {
++        struct vfio_info_cap_header *hdr;
++        struct vfio_region_info_cap_type *cap_type;
++
++        if (vfio_get_region_info(vbasedev, i, info)) {
++            continue;
++        }
++
++        hdr = vfio_get_region_info_cap(*info, VFIO_REGION_INFO_CAP_TYPE);
++        if (!hdr) {
++            g_free(*info);
++            continue;
++        }
++
++        cap_type = container_of(hdr, struct vfio_region_info_cap_type, header);
++
++        trace_vfio_get_dev_region(vbasedev->name, i,
++                                  cap_type->type, cap_type->subtype);
++
++        if (cap_type->type == type && cap_type->subtype == subtype) {
++            return 0;
++        }
++
++        g_free(*info);
++    }
++
++    *info = NULL;
++    return -ENODEV;
++}
++
++bool vfio_has_region_cap(VFIODevice *vbasedev, int region, uint16_t cap_type)
++{
++    struct vfio_region_info *info = NULL;
++    bool ret = false;
++
++    if (!vfio_get_region_info(vbasedev, region, &info)) {
++        if (vfio_get_region_info_cap(info, cap_type)) {
++            ret = true;
++        }
++        g_free(info);
++    }
++
++    return ret;
++}
+diff --git a/hw/vfio/meson.build b/hw/vfio/meson.build
+index da9af297a0..3746c9f984 100644
+--- a/hw/vfio/meson.build
++++ b/hw/vfio/meson.build
+@@ -1,5 +1,6 @@
+ vfio_ss = ss.source_set()
+ vfio_ss.add(files(
++  'helpers.c',
+   'common.c',
+   'spapr.c',
+   'migration.c',
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index da43d27352..5e376c436e 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -243,6 +243,8 @@ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
+                              unsigned int *avail);
+ struct vfio_info_cap_header *
+ vfio_get_device_info_cap(struct vfio_device_info *info, uint16_t id);
++struct vfio_info_cap_header *
++vfio_get_cap(void *ptr, uint32_t cap_offset, uint16_t id);
+ #endif
+ extern const MemoryListener vfio_prereg_listener;
+ 
 -- 
 2.34.1
 
