@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED50750146
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC63750140
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:20:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJV35-00045Y-Nw; Wed, 12 Jul 2023 04:18:11 -0400
+	id 1qJV36-00046I-9e; Wed, 12 Jul 2023 04:18:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV2w-0003zz-L8
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV2x-00040L-GO
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV2v-0000Se-3x
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:02 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV2v-0000Sh-FV
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1689149880;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nGZhN9p0YRedVNfi5ybmdpSXVwbtn1c5VHObWJT5VPs=;
- b=cLkSME4I+xnIIDRO5exQYawlNxrRftySAfQm6EN89joo92LCvyo29UO0HLqCZ93OgHZ1jx
- jfojuB33fWy8XjZRcU9ER5w6sOz8gGhudfDH2xE7vb21soQN/B33f79hK2H3NtgwuuO1LI
- rGpFtsB9Fj8x3ulicoCEdqNnhr2cy3o=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-202-QW12bvKaOaSU91Rj6C8U7Q-1; Wed, 12 Jul 2023 04:17:55 -0400
-X-MC-Unique: QW12bvKaOaSU91Rj6C8U7Q-1
+ bh=zPKlaWBxhjkNwDiHCo8F1jXm4AfoNRFxt2k1WzFDnF0=;
+ b=OTEBSeBI+5TF8BfmQhThVA0ckgLBClV8Kli4g8zuZ1qFPh835sft5lCs9eZHTTkUN1Ui0U
+ goPBnx/RadzJTdNm+z7TfIU+/43tqUoxZOHnDHgxsEKu325fBYrFtUhs28eti3dDAjvjBy
+ FYfrzfR65d6qJC0PRuSqfjeM2WO1vQQ=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-93-q9OXFhRZNVKxesFhoUU1lA-1; Wed, 12 Jul 2023 04:17:57 -0400
+X-MC-Unique: q9OXFhRZNVKxesFhoUU1lA-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C390A8FBA21;
- Wed, 12 Jul 2023 08:17:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C143A3C025A2;
+ Wed, 12 Jul 2023 08:17:56 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.193.77])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 32FEE492C13;
- Wed, 12 Jul 2023 08:17:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2EFB4492C13;
+ Wed, 12 Jul 2023 08:17:54 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -47,17 +47,17 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [GIT PULL 01/21] memory-device: Unify enabled vs. supported error
- messages
-Date: Wed, 12 Jul 2023 10:17:30 +0200
-Message-ID: <20230712081750.80852-2-david@redhat.com>
+Subject: [GIT PULL 02/21] memory-device: Introduce
+ machine_memory_devices_init()
+Date: Wed, 12 Jul 2023 10:17:31 +0200
+Message-ID: <20230712081750.80852-3-david@redhat.com>
 In-Reply-To: <20230712081750.80852-1-david@redhat.com>
 References: <20230712081750.80852-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,46 +82,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's unify the error messages, such that we can simply stop allocating
-ms->device_memory if the size would be 0 (and there are no memory
-devices ever).
+Let's intrduce a new helper that we will use to replace existing memory
+device setup code during machine initialization. We'll enforce that the
+size has to be > 0.
 
-The case of "not supported by the machine" should barely pop up either
-way: if the machine doesn't support memory devices, it usually doesn't
-call the pre_plug handler ...
+Once all machines were converted, we'll only allocate ms->device_memory
+if the size > 0.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20230623124553.400585-2-david@redhat.com>
+Message-Id: <20230623124553.400585-3-david@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/mem/memory-device.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ hw/mem/memory-device.c | 14 ++++++++++++++
+ include/hw/boards.h    |  1 +
+ 2 files changed, 15 insertions(+)
 
 diff --git a/hw/mem/memory-device.c b/hw/mem/memory-device.c
-index 1636db9679..49f86ec8a8 100644
+index 49f86ec8a8..bb9d7c2a20 100644
 --- a/hw/mem/memory-device.c
 +++ b/hw/mem/memory-device.c
-@@ -104,15 +104,10 @@ static uint64_t memory_device_get_free_addr(MachineState *ms,
-     GSList *list = NULL, *item;
-     Range as, new = range_empty;
+@@ -17,6 +17,7 @@
+ #include "qemu/range.h"
+ #include "hw/virtio/vhost.h"
+ #include "sysemu/kvm.h"
++#include "exec/address-spaces.h"
+ #include "trace.h"
  
--    if (!ms->device_memory) {
--        error_setg(errp, "memory devices (e.g. for memory hotplug) are not "
--                         "supported by the machine");
--        return 0;
--    }
--
--    if (!memory_region_size(&ms->device_memory->mr)) {
--        error_setg(errp, "memory devices (e.g. for memory hotplug) are not "
--                         "enabled, please specify the maxmem option");
-+    if (!ms->device_memory || !memory_region_size(&ms->device_memory->mr)) {
-+        error_setg(errp, "the configuration is not prepared for memory devices"
-+                         " (e.g., for memory hotplug), consider specifying the"
-+                         " maxmem option");
-         return 0;
-     }
-     range_init_nofail(&as, ms->device_memory->base,
+ static gint memory_device_addr_sort(gconstpointer a, gconstpointer b)
+@@ -328,6 +329,19 @@ uint64_t memory_device_get_region_size(const MemoryDeviceState *md,
+     return memory_region_size(mr);
+ }
+ 
++void machine_memory_devices_init(MachineState *ms, hwaddr base, uint64_t size)
++{
++    g_assert(size);
++    g_assert(!ms->device_memory);
++    ms->device_memory = g_new0(DeviceMemoryState, 1);
++    ms->device_memory->base = base;
++
++    memory_region_init(&ms->device_memory->mr, OBJECT(ms), "device-memory",
++                       size);
++    memory_region_add_subregion(get_system_memory(), ms->device_memory->base,
++                                &ms->device_memory->mr);
++}
++
+ static const TypeInfo memory_device_info = {
+     .name          = TYPE_MEMORY_DEVICE,
+     .parent        = TYPE_INTERFACE,
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 12d9e9d17c..3b7c30e853 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -37,6 +37,7 @@ void machine_parse_smp_config(MachineState *ms,
+                               const SMPConfiguration *config, Error **errp);
+ unsigned int machine_topo_get_cores_per_socket(const MachineState *ms);
+ unsigned int machine_topo_get_threads_per_socket(const MachineState *ms);
++void machine_memory_devices_init(MachineState *ms, hwaddr base, uint64_t size);
+ 
+ /**
+  * machine_class_allow_dynamic_sysbus_dev: Add type to list of valid devices
 -- 
 2.41.0
 
