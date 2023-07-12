@@ -2,98 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4C67511B8
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 22:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3FD67511BB
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 22:15:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJgBy-0006E3-Nm; Wed, 12 Jul 2023 16:12:06 -0400
+	id 1qJgF1-0007AQ-TK; Wed, 12 Jul 2023 16:15:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qJgBr-0006DO-5q
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 16:12:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qJgEy-0007AE-0z
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 16:15:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qJgBk-0002qW-TS
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 16:11:56 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qJgEs-0003Iq-PI
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 16:15:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689192709;
+ s=mimecast20190719; t=1689192905;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Etu2k6zwAG9Me27JlIKcIeXqzfl+VhnaqZBcAwslO4o=;
- b=S7CngY5oetCPc/c5ingoFtndLVImuU4LtjucS7xSHJaiGc08kdohRrbXyvl0LQ0DrSrNzh
- AjQKnO8rEwue8wvhhFaC3obSxlc9qkZZseXGiuxroUm7CRVdd9ShTvKKEqNNhvWY0KRCR0
- dYrA1h0t4Qy5Vjz4065H7lbx4Rcgwfk=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rjXct6QyHMgUfqhtTgEk0R9CeSHqsm0bJ7QiO4uTmfE=;
+ b=OWV7D5gelP/B8+BYl2JW6fiGaEvzJ8wmDxedCb+tW4AZ8mA//Bv9KEDmhC18s4yFXg1PCW
+ fFX0ilRGrNQWGnZK85N2qHOkVn9UWkrGOpBIVQVj+i7e8fR50Iz1P418DB+cR6gEA+5N/B
+ Q1LvMaF+XV84TwJp4DKsIr2vUS+Thr4=
+Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
+ [209.85.222.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-454-a40IMha2P3KJh-9UgqZFFA-1; Wed, 12 Jul 2023 16:11:47 -0400
-X-MC-Unique: a40IMha2P3KJh-9UgqZFFA-1
-Received: by mail-ot1-f69.google.com with SMTP id
- 46e09a7af769-6b7c5c7c843so8237640a34.0
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 13:11:47 -0700 (PDT)
+ us-mta-597-8Eiwhlh_OHamCFbKCK7a1A-1; Wed, 12 Jul 2023 16:15:04 -0400
+X-MC-Unique: 8Eiwhlh_OHamCFbKCK7a1A-1
+Received: by mail-ua1-f69.google.com with SMTP id
+ a1e0cc1a2514c-793fbd392c2so1381842241.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 13:15:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689192707; x=1691784707;
- h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
- :content-language:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1689192904; x=1691784904;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Etu2k6zwAG9Me27JlIKcIeXqzfl+VhnaqZBcAwslO4o=;
- b=DycCbD2u6ELa0NL3NpMLiXwLZlfq4sSJdqElhy8wUp7Ykf3exrlq8qyklVzdxTsQlu
- JO16eup51nAII+WZPhcaiIMtKcATBnkowhX8ALiWc16c2GAacyHPNYTUtuFugO1jGwiR
- wSPXsvfvdNUQUDOlTblInyN88Zd5E9ylKn1XkJor7J+dN9RnmjLCTNeRikaq3ByetPBg
- gQa/H5beBQ7H37mUMQYWcQOOPwYPJEIaoQjvrjSDUw6KZyLPQtF1vdTH4UPeoGwSEDxI
- funNkdhfXPPKgAUak/tcRokAmKFKLGAsm1EYkX3BCL8VmuXOP+ecNH++9Ho811ubfsOC
- 9z1Q==
-X-Gm-Message-State: ABy/qLZt+a6CDp5ZRAKzK9f2XPxVB1FClqYdR2AH2lojrg/Ju/j+tC5n
- MGijnYbGBvSQuI/O2i1fVUfov4Hw2K6rEsGjmpsMF2C4yEHcFwbou5/jzMJRYOhMo00ybYciq6V
- vHe0EYfBrTjghISc=
-X-Received: by 2002:a9d:6451:0:b0:6b7:54cd:2115 with SMTP id
- m17-20020a9d6451000000b006b754cd2115mr17043491otl.3.1689192706970; 
- Wed, 12 Jul 2023 13:11:46 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH+sazM801XOOJtQYqWIKxx0R77N3fs10T9jRDTeix2fq2bXvU1kvzcIS4DHtUCKxuYz0P0uA==
-X-Received: by 2002:a9d:6451:0:b0:6b7:54cd:2115 with SMTP id
- m17-20020a9d6451000000b006b754cd2115mr17043463otl.3.1689192706732; 
- Wed, 12 Jul 2023 13:11:46 -0700 (PDT)
+ bh=rjXct6QyHMgUfqhtTgEk0R9CeSHqsm0bJ7QiO4uTmfE=;
+ b=SK7VVVD/4EYaP27iDFMJxUB4Yf+qyE0JJHAwG1+JLZsaDuxSyaJaA2xMkJ46G952Lr
+ ttHcGolu+0n3qmKrEcZAgTWJEu/J3y0Rdh6BniHy/7oXoE2LQU1NWN5Vyr8CiQ5tgUd1
+ cjdBhw/Kkxe/cDBqTO4U53ozUoPs86NlzYrJSXYAnb7T5kzB7a0yXJ9zOCbNfP1i/KFQ
+ kdhqM6t/MSPY0wj2oDMcjSeKCQbjkJ6G7/fJI0x94GAYpJmDHfJQSLRUO2phplI6EK8/
+ /zcS2mGsRbJuuYRa4TF4Fmc7S6TU7f3DbgNFwbOw6XVTrKDRhHZxjGxFLeYh/xXE7W3p
+ AtkQ==
+X-Gm-Message-State: ABy/qLaJfPT2TuOA9hNLfuAnKCa5Q30lVow1Y1NsT6mUa/HW1v9vqZed
+ PGLM+eCRI2IG8oWrHaWESifQ/NL5q9t+X7BnvPYOoeICTURP3hdp0Dhd5hWmCptWOZnVUZStqaE
+ vVUXhirQZU7VbY5A=
+X-Received: by 2002:a05:6102:34e8:b0:444:17aa:df60 with SMTP id
+ bi8-20020a05610234e800b0044417aadf60mr11395493vsb.13.1689192904107; 
+ Wed, 12 Jul 2023 13:15:04 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFVtFy0Lt61ytlue3Jw7sp5oSlCsS3zt2wE42+BBpCVNmjdJZmcZFIAIfS/ZBqq5gpdlFT53w==
+X-Received: by 2002:a05:6102:34e8:b0:444:17aa:df60 with SMTP id
+ bi8-20020a05610234e800b0044417aadf60mr11395473vsb.13.1689192903776; 
+ Wed, 12 Jul 2023 13:15:03 -0700 (PDT)
 Received: from [192.168.8.101] (tmo-097-78.customers.d1-online.com.
  [80.187.97.78]) by smtp.gmail.com with ESMTPSA id
- x12-20020ae9e90c000000b00767d8e12ce3sm2407027qkf.49.2023.07.12.13.11.42
+ t10-20020a0ce2ca000000b0062618962ec0sm2435777qvl.133.2023.07.12.13.14.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Jul 2023 13:11:46 -0700 (PDT)
-Message-ID: <88070b30-36ea-8112-41c4-0d93fc76cf80@redhat.com>
-Date: Wed, 12 Jul 2023 22:11:39 +0200
+ Wed, 12 Jul 2023 13:15:03 -0700 (PDT)
+Message-ID: <6a302f29-9b46-2a5f-c1e2-7f72b38f0f6d@redhat.com>
+Date: Wed, 12 Jul 2023 22:14:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
+Subject: Re: [PATCH v21 03/20] target/s390x/cpu topology: handle STSI(15) and
+ build the SYSIB
 Content-Language: en-US
-To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
- Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
+To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org,
+ frankja@linux.ibm.com, Claudio Imbrenda <imbrenda@linux.ibm.com>
 Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
  richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
  mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
  ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
  armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
- frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
+ nsg@linux.ibm.com, berrange@redhat.com, clg@kaod.org
 References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-17-pmorel@linux.ibm.com>
- <dfeeeaa1-0994-9e1e-1f10-6c6618daacff@redhat.com>
- <aa1fbe820f23bc487752ee29ee114f5d4185352a.camel@linux.ibm.com>
+ <20230630091752.67190-4-pmorel@linux.ibm.com>
+ <aef8accb-3576-2b10-a946-191a6be3e3e0@redhat.com>
+ <b1768b7b-301d-8208-8b31-8ddef378f216@linux.ibm.com>
 From: Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v21 16/20] tests/avocado: s390x cpu topology entitlement
- tests
-In-Reply-To: <aa1fbe820f23bc487752ee29ee114f5d4185352a.camel@linux.ibm.com>
+In-Reply-To: <b1768b7b-301d-8208-8b31-8ddef378f216@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.11, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.11, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,63 +110,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/07/2023 21.37, Nina Schoetterl-Glausch wrote:
-> On Wed, 2023-07-05 at 12:22 +0200, Thomas Huth wrote:
+On 12/07/2023 16.24, Pierre Morel wrote:
+> 
+> On 7/4/23 13:40, Thomas Huth wrote:
 >> On 30/06/2023 11.17, Pierre Morel wrote:
->>> This test takes care to check the changes on different entitlements
->>> when the guest requests a polarization change.
+>>> On interception of STSI(15.1.x) the System Information Block
+>>> (SYSIB) is built from the list of pre-ordered topology entries.
 >>>
 >>> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
 >>> ---
->>>    tests/avocado/s390_topology.py | 47
->>> ++++++++++++++++++++++++++++++++++
->>>    1 file changed, 47 insertions(+)
->>>
->>> diff --git a/tests/avocado/s390_topology.py
->>> b/tests/avocado/s390_topology.py
->>> index 2cf731cb1d..4855e5d7e4 100644
->>> --- a/tests/avocado/s390_topology.py
->>> +++ b/tests/avocado/s390_topology.py
->>> @@ -240,3 +240,50 @@ def test_polarisation(self):
->>>            res = self.vm.qmp('query-cpu-polarization')
->>>            self.assertEqual(res['return']['polarization'],
->>> 'horizontal')
->>>            self.check_topology(0, 0, 0, 0, 'medium', False)
->>> +
->>> +    def test_entitlement(self):
->>> +        """
->>> +        This test verifies that QEMU modifies the polarization
->>> +        after a guest request.
 >> ...
->>> +        self.check_topology(0, 0, 0, 0, 'low', False)
->>> +        self.check_topology(1, 0, 0, 0, 'medium', False)
->>> +        self.check_topology(2, 1, 0, 0, 'high', False)
->>> +        self.check_topology(3, 1, 0, 0, 'high', False)
+>>> diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+>>> index 7ebd5e05b6..6e7d041b01 100644
+>>> --- a/target/s390x/cpu.h
+>>> +++ b/target/s390x/cpu.h
+>>> @@ -569,6 +569,29 @@ typedef struct SysIB_322 {
+>>>   } SysIB_322;
+>>>   QEMU_BUILD_BUG_ON(sizeof(SysIB_322) != 4096);
+>>>   +/*
+>>> + * Topology Magnitude fields (MAG) indicates the maximum number of
+>>> + * topology list entries (TLE) at the corresponding nesting level.
+>>> + */
+>>> +#define S390_TOPOLOGY_MAG  6
+>>> +#define S390_TOPOLOGY_MAG6 0
+>>> +#define S390_TOPOLOGY_MAG5 1
+>>> +#define S390_TOPOLOGY_MAG4 2
+>>> +#define S390_TOPOLOGY_MAG3 3
+>>> +#define S390_TOPOLOGY_MAG2 4
+>>> +#define S390_TOPOLOGY_MAG1 5
+>>> +/* Configuration topology */
+>>> +typedef struct SysIB_151x {
+>>> +    uint8_t  reserved0[2];
+>>> +    uint16_t length;
+>>> +    uint8_t  mag[S390_TOPOLOGY_MAG];
+>>> +    uint8_t  reserved1;
+>>> +    uint8_t  mnest;
+>>> +    uint32_t reserved2;
+>>> +    char tle[];
+>>> +} SysIB_151x;
+>>> +QEMU_BUILD_BUG_ON(sizeof(SysIB_151x) != 16);
 >>> +
->>> +        self.guest_set_dispatching('1');
->>> +
->>> +        self.check_topology(0, 0, 0, 0, 'low', False)
->>> +        self.check_topology(1, 0, 0, 0, 'medium', False)
->>> +        self.check_topology(2, 1, 0, 0, 'high', False)
->>> +        self.check_topology(3, 1, 0, 0, 'high', False)
->>> +
->>> +        self.guest_set_dispatching('0');
->>> +
->>> +        self.check_topology(0, 0, 0, 0, 'low', False)
->>> +        self.check_topology(1, 0, 0, 0, 'medium', False)
->>> +        self.check_topology(2, 1, 0, 0, 'high', False)
->>> +        self.check_topology(3, 1, 0, 0, 'high', False)
+>>>   typedef union SysIB {
+>>>       SysIB_111 sysib_111;
+>>>       SysIB_121 sysib_121;
+>>> @@ -576,9 +599,62 @@ typedef union SysIB {
+>>>       SysIB_221 sysib_221;
+>>>       SysIB_222 sysib_222;
+>>>       SysIB_322 sysib_322;
+>>> +    SysIB_151x sysib_151x;
+>>>   } SysIB;
+>>>   QEMU_BUILD_BUG_ON(sizeof(SysIB) != 4096);
+>>>   +/*
+>>> + * CPU Topology List provided by STSI with fc=15 provides a list
+>>> + * of two different Topology List Entries (TLE) types to specify
+>>> + * the topology hierarchy.
+>>> + *
+>>> + * - Container Topology List Entry
+>>> + *   Defines a container to contain other Topology List Entries
+>>> + *   of any type, nested containers or CPU.
+>>> + * - CPU Topology List Entry
+>>> + *   Specifies the CPUs position, type, entitlement and polarization
+>>> + *   of the CPUs contained in the last Container TLE.
+>>> + *
+>>> + * There can be theoretically up to five levels of containers, QEMU
+>>> + * uses only three levels, the drawer's, book's and socket's level.
+>>> + *
+>>> + * A container with a nesting level (NL) greater than 1 can only
+>>> + * contain another container of nesting level NL-1.
+>>> + *
+>>> + * A container of nesting level 1 (socket), contains as many CPU TLE
+>>> + * as needed to describe the position and qualities of all CPUs inside
+>>> + * the container.
+>>> + * The qualities of a CPU are polarization, entitlement and type.
+>>> + *
+>>> + * The CPU TLE defines the position of the CPUs of identical qualities
+>>> + * using a 64bits mask which first bit has its offset defined by
+>>> + * the CPU address orgin field of the CPU TLE like in:
+>>> + * CPU address = origin * 64 + bit position within the mask
+>>> + *
+>>> + */
+>>> +/* Container type Topology List Entry */
+>>> +typedef struct SysIBTl_container {
+>>> +        uint8_t nl;
+>>> +        uint8_t reserved[6];
+>>> +        uint8_t id;
+>>> +} SysIBTl_container;
 >>
->> Sorry, I think I'm too blind to see it, but what has changed after
->> the guest
->> changed the polarization?
+>> Why mixing CamelCase with underscore-style here? SysIBTlContainer would 
+>> look more natural, I think?
 > 
-> Nothing, the values are retained, they're just not active.
-> The guest will see a horizontal polarization until it changes back to
-> vertical.
+> 
+> OK, what about SYSIBContainerListEntry ?
 
-But then the comment in front of it ("This test verifies that QEMU 
-*modifies* the polarization...") does not quite match, does it?
+Sounds fine!
+
+> 
+>>
+>>> +QEMU_BUILD_BUG_ON(sizeof(SysIBTl_container) != 8);
+>>> +
+>>> +/* CPU type Topology List Entry */
+>>> +typedef struct SysIBTl_cpu {
+>>> +        uint8_t nl;
+>>> +        uint8_t reserved0[3];
+>>> +#define SYSIB_TLE_POLARITY_MASK 0x03
+>>> +#define SYSIB_TLE_DEDICATED     0x04
+>>> +        uint8_t flags;
+>>> +        uint8_t type;
+>>> +        uint16_t origin;
+>>> +        uint64_t mask;
+>>> +} SysIBTl_cpu;
+>>
+>> dito, maybe better SysIBTlCpu ?
+> 
+> 
+> What about SysIBCPUListEntry ?
+
+Ack.
 
   Thomas
 
