@@ -2,91 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB64750143
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C4B75017F
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:29:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJV5m-00042E-R3; Wed, 12 Jul 2023 04:20:58 -0400
+	id 1qJVCR-0002rJ-9O; Wed, 12 Jul 2023 04:27:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qJV5e-0003sc-Ly
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:20:53 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.22])
+ (Exim 4.90_1) (envelope-from <SRS0=/n7z=C6=kaod.org=clg@ozlabs.org>)
+ id 1qJVCO-0002nP-GD; Wed, 12 Jul 2023 04:27:48 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qJV5c-0003Vu-S1
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:20:50 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1689150044; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=IYdAjgbdg/uhZAPzi6Ae1ahI0DgsVc9o1VrphoF7zSeMTK04+YfN+06fKblqYnvWms
- klwYdJE+h+K5DAFr16ZfbkEVZofB5OS6vedJgtYQJjoy8IPon3vk4IJwjQ1llme7DoX8
- HD6TEDXaHStoPz/oyldVhL22GnJ/8qZLHzpfIbBqTwjfKBu+NyphstnJ+5cySP3asT59
- tM6NGbXcJ3sxTnvGNMxeLmKU+FoVt6y4NA+mRXRMVBYKCO5dB/hceQLM8p5f0CvqRpmv
- 7o2xzS4rd7Gt9gs0snaVsv6KciQTgD+BoeP6+l8UWVBaDR50RsI6oEg0hQoPMeWOYj34
- oh2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1689150044;
- s=strato-dkim-0002; d=strato.com;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=6Kk79mCDPtijU6pwihqcMvyA9gLfe1ha1lKS1grzta8=;
- b=VRWoQFo2KZcH14PAvfnwx8WU3pA49fdTjf0dva15g9bO6xYLGOe2IUiL/7g6mxZ+6/
- vn9dU8TqshpmyfTfI5m80vv7/LMYTmhKRqRS+AVogQAzjraVprJV+JWn3VzfkqYWqze6
- 9nLXVKbxdP7YfRlyeJoSgWqirhQpQPF25AiNKgkvppxV44efaF25vDUZWF1O1JdcKsoc
- /GoMYxnabJKJ1CSUJ0ee3RRlhJQE1ItC9SCqXJsQrRc1vvIaYQfwBRS77+/y1whUkBnT
- O4MSNxHKmtin2PKoN7VtygvMRaKIRzn58gs0ky1jIYjcpyUC2yuXho4tyVfB2jgYrZ7I
- keqA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1689150044;
- s=strato-dkim-0002; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=6Kk79mCDPtijU6pwihqcMvyA9gLfe1ha1lKS1grzta8=;
- b=hVQg7u5pvidIwiPPXbQkF7OrU84ywZOT6M8ohPfh2i4UkhV7Qo9+w+zJ6ik0S/c3WC
- L5SqY4Bsg6NMIvXWQWsV1YTtHzUvM7RY21INjGiEtAG4sQzQ/8cReFopcfse0Ne0fPqU
- aooyzLX3qvwr+z7YFMukqBtBdIegTpF9T1/N5alc2Vc9vBPXEXFx9/OS6wXtVTtrjI6n
- EDAyQhrNe1QFQC29HRBivTIj6lneCLlgLqIRbzFvoBOy+4vx952xjliAXSXm3BM+7HKS
- gqP/fyxWuMkvwnE1tBlC4tU4KGsJLsp9NcWM5xDmCVrr/1tirNrdsEb9nM5hY882Z/ky
- PK4A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1689150044;
- s=strato-dkim-0003; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=6Kk79mCDPtijU6pwihqcMvyA9gLfe1ha1lKS1grzta8=;
- b=V3Iy7SJzHlgb8VCwVhluGqq/QUBgHildyJore+2wQIgrYhWcDH2zR3qqnSpskRUrE4
- GPcwwotHW9/Es559WQDA==
-X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4U0aIaxvssIT1j+tCLlX5OhVr5AfLfzW6HQdmLA=="
-Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
- with ESMTPSA id y5401az6C8Kifk4
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Wed, 12 Jul 2023 10:20:44 +0200 (CEST)
-Date: Wed, 12 Jul 2023 10:20:33 +0200
-From: Olaf Hering <olaf@aepfle.de>
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] roms: add back edk2-basetools target
-Message-ID: <20230712102033.771e2092.olaf@aepfle.de>
-In-Reply-To: <20230411101709.445259-1-kraxel@redhat.com>
-References: <20230411101709.445259-1-kraxel@redhat.com>
-X-Mailer: Claws Mail 20230706T114334.0dc50f72 hat ein Softwareproblem,
- kann man nichts machen.
+ (Exim 4.90_1) (envelope-from <SRS0=/n7z=C6=kaod.org=clg@ozlabs.org>)
+ id 1qJVCL-0005lh-QS; Wed, 12 Jul 2023 04:27:48 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4R19pf1kZ2z4wy7;
+ Wed, 12 Jul 2023 18:27:38 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4R19pb60tyz4wxR;
+ Wed, 12 Jul 2023 18:27:35 +1000 (AEST)
+Message-ID: <f89abc5c-6356-1124-b6be-7cdb0c3e280c@kaod.org>
+Date: Wed, 12 Jul 2023 10:27:32 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/lNeE4kK0oH0Pqq=A=NvLyzS";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] target/ppc: Generate storage interrupts for radix RC
+ changes
+Content-Language: en-US
+To: Shawn Anastasio <sanastasio@raptorengineering.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ Greg Kurz <groug@kaod.org>, David Gibson <david@gibson.dropbear.id.au>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Timothy Pearson <tpearson@raptorengineering.com>
+References: <20230711222405.2712188-1-sanastasio@raptorengineering.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230711222405.2712188-1-sanastasio@raptorengineering.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=85.215.255.22; envelope-from=olaf@aepfle.de;
- helo=mo4-p00-ob.smtp.rzone.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=/n7z=C6=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.089, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,45 +67,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/lNeE4kK0oH0Pqq=A=NvLyzS
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Hello Shawn,
 
-Tue, 11 Apr 2023 12:17:09 +0200 Gerd Hoffmann <kraxel@redhat.com>:
+On 7/12/23 00:24, Shawn Anastasio wrote:
+> Change radix64_set_rc to always generate a storage interrupt when the
+> R/C bits are not set appropriately instead of setting the bits itself.
+> According to the ISA both behaviors are valid, but in practice this
+> change more closely matches behavior observed on the POWER9 CPU.
+> 
+>  From the POWER9 Processor User's Manual, Section 4.10.13.1: "When
+> performing Radix translation, the POWER9 hardware triggers the
+> appropriate interrupt ... for the mode and type of access whenever
+> Reference (R) and Change (C) bits require setting in either the guest or
+> host page-table entry (PTE)."
+> 
+> Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+> ---
+>   target/ppc/mmu-radix64.c | 57 ++++++++++++++++++++++++++++------------
+>   1 file changed, 40 insertions(+), 17 deletions(-)
+> 
+> diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
+> index 920084bd8f..06e1cced31 100644
+> --- a/target/ppc/mmu-radix64.c
+> +++ b/target/ppc/mmu-radix64.c
+> @@ -219,27 +219,48 @@ static bool ppc_radix64_check_prot(PowerPCCPU *cpu, MMUAccessType access_type,
+>       return false;
+>   }
+>   
+> -static void ppc_radix64_set_rc(PowerPCCPU *cpu, MMUAccessType access_type,
+> -                               uint64_t pte, hwaddr pte_addr, int *prot)
+> +static int ppc_radix64_check_rc(PowerPCCPU *cpu, MMUAccessType access_type,
+> +                               uint64_t pte, vaddr eaddr, bool partition_scoped,
+> +                               hwaddr g_raddr)
+>   {
+> -    CPUState *cs = CPU(cpu);
+> -    uint64_t npte;
+> +    uint64_t lpid = 0;
+> +    uint64_t pid = 0;
+>   
+> -    npte = pte | R_PTE_R; /* Always set reference bit */
+> +    switch (access_type) {
+> +    case MMU_DATA_STORE:
+> +        if (!(pte & R_PTE_C)) {
+> +            break;
+> +        }
+> +        /* fall through */
+> +    case MMU_INST_FETCH:
+> +    case MMU_DATA_LOAD:
+> +        if (!(pte & R_PTE_R)) {
+> +            break;
+> +        }
+>   
+> -    if (access_type == MMU_DATA_STORE) { /* Store/Write */
+> -        npte |= R_PTE_C; /* Set change bit */
+> -    } else {
+> -        /*
+> -         * Treat the page as read-only for now, so that a later write
+> -         * will pass through this function again to set the C bit.
+> -         */
+> -        *prot &= ~PAGE_WRITE;
+> +        /* R/C bits are already set appropriately for this access */
+> +        return 0;
+>       }
+>   
+> -    if (pte ^ npte) { /* If pte has changed then write it back */
+> -        stq_phys(cs->as, pte_addr, npte);
+> +    /* Obtain effLPID */
+> +    (void)ppc_radix64_get_fully_qualified_addr(&cpu->env, eaddr, &lpid, &pid);
+> +
+> +    /*
+> +     * Per ISA 3.1 Book III, 7.5.3 and 7.5.5, failure to set R/C during
+> +     * partition-scoped translation when effLPID = 0 results in normal
+> +     * (non-Hypervisor) Data and Instruction Storage Interrupts respectively.
+> +     *
+> +     * ISA 3.0 is ambiguous about this, but tests on POWER9 hardware seem to
+> +     * exhibit the same behavior.
+> +     */
+> +    if (partition_scoped && lpid > 0) {
+> +        ppc_radix64_raise_hsi(cpu, access_type, eaddr, g_raddr,
+> +                              DSISR_ATOMIC_RC);
+> +    } else {
+> +        ppc_radix64_raise_si(cpu, access_type, eaddr, DSISR_ATOMIC_RC);
+>       }
 
-> +++ b/roms/Makefile
-> +edk2-basetools:
-> +	python3 edk2-build.py --config edk2-build.config -m none
+I would raise the exception in the callers :
 
-I think that needs to be $(PYTHON), because plain 'python3' may not be the =
-required python version.
+   ppc_radix64_partition_scoped_xlate()
+   ppc_radix64_process_scoped_xlate()
 
-In addition, a global EDK2_OPTIONS may allow to pass arbitrary options to t=
-heir build wrapper, like -j1.
+lpid could be passed to these routines also, this to avoid the call to
+ppc_radix64_get_fully_qualified_addr().
 
+This requires a little more changes but would be cleaner I think.
 
-Olaf
+Thanks,
 
---Sig_/lNeE4kK0oH0Pqq=A=NvLyzS
-Content-Type: application/pgp-signature
-Content-Description: Digitale Signatur von OpenPGP
+C.
 
------BEGIN PGP SIGNATURE-----
+> +    return 1;
+>   }
+>   
+>   static bool ppc_radix64_is_valid_level(int level, int psize, uint64_t nls)
+> @@ -418,7 +439,8 @@ static int ppc_radix64_partition_scoped_xlate(PowerPCCPU *cpu,
+>       }
+>   
+>       if (guest_visible) {
+> -        ppc_radix64_set_rc(cpu, access_type, pte, pte_addr, h_prot);
+> +        return ppc_radix64_check_rc(cpu, access_type, pte, eaddr, true,
+> +                                    g_raddr);
+>       }
+>   
+>       return 0;
+> @@ -580,7 +602,8 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCPU *cpu,
+>       }
+>   
+>       if (guest_visible) {
+> -        ppc_radix64_set_rc(cpu, access_type, pte, pte_addr, g_prot);
+> +        return ppc_radix64_check_rc(cpu, access_type, pte, eaddr, false,
+> +                                    *g_raddr);
+>       }
+>   
+>       return 0;
 
-iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmSuYlEACgkQ86SN7mm1
-DoBQWBAAgV7YiDGPMjBETWla1sUf4vXW49t37dDDzX14+ZNYdnF6SRDE1Y94OOqo
-6EF+866EbLqnqRAjqFbfKRh5LTLtOF7XqvV9bFTQtlfPRRkmrgzv7KFROnSJlLb9
-WYZ9TodApGPMFmhSHw/GLapb5HFKQbAcpsFXafLh9CTyRQJvVeSKPz6pbjtneAvB
-+qhvXN2M1Yl+DWzzMn1qXpgyBulay08oq0uDGCzdCv1XM1tLMSvj/iF9POrBFVjp
-sehamiLT0tS9kBrGQAgl8AmrXgJXNPU5GuLiI0E/QugGoxYxZTGmMftloRaFhtFP
-e4LvW2IS4BOFAJCQWtxRB+SglVCz/DAm0DaC6yF/HeznV1re34dqnKbDgES9aike
-BQM+SY88KZuxflstcDH8op+k+or7MqaHMCB3g2YQn2oYaXxGpIeXe53PTOvgLvIM
-npf83SuCjwnHuq1a7xV13dlrU0HEPPDNchX+WB1k5azjUPsFYlgFYJ7fkXRh4QX8
-3OmPpIrSIjqI4HqzeRwql/0eoq9ehwm8q0QIHzg+sIOLiKoU2E2puKr5Hu5DAjRb
-iHJsT9iYxwUSlCppDJ4BW9AziUl/Ci7llwbS3xdqQn/hXFWXV1csYxNCPEsl2LG8
-zo4aewBYugLYO3GNSRSGeuMyijZN104TOyc+N+Nq0ZRh4tD0eEw=
-=NpjJ
------END PGP SIGNATURE-----
-
---Sig_/lNeE4kK0oH0Pqq=A=NvLyzS--
 
