@@ -2,70 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5A0751116
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 21:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C729751117
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 21:23:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJfOQ-0007eE-Ir; Wed, 12 Jul 2023 15:20:54 -0400
+	id 1qJfQO-0000GM-HZ; Wed, 12 Jul 2023 15:22:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qJfOO-0007dd-Sb
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 15:20:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qJfQN-0000GA-C5; Wed, 12 Jul 2023 15:22:55 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qJfON-0005iG-BL
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 15:20:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689189649;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dv8a+tl6wvmjsVbnRUpa8U9dS9lLPLu4bP06haY/BKc=;
- b=dK0i5HOxPkuiIatzMZig2CXwNlgl/CbNf1YrDEq9+3gMK+rGH47m2j7xnmLg0eWVhfgAii
- 5o2Q1tIbppMPqbSb7RC4J9DpuLbJP4GBvn4VMyBVSGT3dTFAGHSyIKW2cyIkpYmeBWlmYM
- ou3obBuuNy6Jra++abWq6GgilkCd92Q=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-515-b-SCytvWPVOaNHB9oD8yZw-1; Wed, 12 Jul 2023 15:20:45 -0400
-X-MC-Unique: b-SCytvWPVOaNHB9oD8yZw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qJfQL-0005uz-Ro; Wed, 12 Jul 2023 15:22:55 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4768438035AC;
- Wed, 12 Jul 2023 19:20:45 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B8657200A7CA;
- Wed, 12 Jul 2023 19:20:44 +0000 (UTC)
-Date: Wed, 12 Jul 2023 15:20:43 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>,
- =?utf-8?B?THVrw6HFoQ==?= Doktor <ldoktor@redhat.com>
-Subject: Re: [PATCH] virtio-blk: fix host notifier issues during dataplane
- start/stop
-Message-ID: <20230712192043.GA254238@fedora>
-References: <20230704151527.193586-1-stefanha@redhat.com>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 0D0AB618D9;
+ Wed, 12 Jul 2023 19:22:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5BEC433C8;
+ Wed, 12 Jul 2023 19:22:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1689189762;
+ bh=+HaO3J1LQWoLd8P0Xm0PiJeskp3VP8VLRhuQhm2BVL0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=XBiRkZIMjbwaEnRU8xl3p52qo0DEbERpB4v/Vj/VqDtk/O7KQl7osVWhzCK0DbNOU
+ 4Mp0pGMBEpx/jtb8HFaRAuyRSMDqS32N0TXVGADntDjti+7wCi36c+NvFFX5XsIw8s
+ xm7gSmXJgNLV9Vil6rQYJODN7VAe2W6J6K35WjRTaTi8lG9gekBCmNaTLT0ZYxZVtO
+ WsAIha9XvjD0EPrC9vD1epgg6clfmLSHrBokgQN8FgPuPhUhWnVzZKpTSnojLex8FD
+ K8abXvV3XQ1vtt4GM/rKcvw8UQ1JMVFZ4k5J8/znjOdLq42nWDw4oTUijBAqzqNV8W
+ ChRUB0oTbT++w==
+Date: Wed, 12 Jul 2023 20:22:38 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn,
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+Subject: Re: [PATCH for-8.2 6/7] target/riscv: add 'max' CPU type
+Message-ID: <20230712-stench-happiness-40c2ea831257@spud>
+References: <20230712190149.424675-1-dbarboza@ventanamicro.com>
+ <20230712190149.424675-7-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="OPx8EE6Kag9bN5jm"
+ protocol="application/pgp-signature"; boundary="wrnHX3yXnPnAqpT4"
 Content-Disposition: inline
-In-Reply-To: <20230704151527.193586-1-stefanha@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <20230712190149.424675-7-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=conor@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,69 +74,45 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---OPx8EE6Kag9bN5jm
-Content-Type: text/plain; charset=utf-8
+--wrnHX3yXnPnAqpT4
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 04, 2023 at 05:15:27PM +0200, Stefan Hajnoczi wrote:
-> The main loop thread can consume 100% CPU when using --device
-> virtio-blk-pci,iothread=3D<iothread>. ppoll() constantly returns but
-> reading virtqueue host notifiers fails with EAGAIN. The file descriptors
-> are stale and remain registered with the AioContext because of bugs in
-> the virtio-blk dataplane start/stop code.
+On Wed, Jul 12, 2023 at 04:01:48PM -0300, Daniel Henrique Barboza wrote:
+> The 'max' CPU type is used by tooling to determine what's the most
+> capable CPU a current QEMU version implements. Other archs such as ARM
+> implements this type. Let's add it to RISC-V.
 >=20
-> The problem is that the dataplane start/stop code involves drain
-> operations, which call virtio_blk_drained_begin() and
-> virtio_blk_drained_end() at points where the host notifier is not
-> operational:
-> - In virtio_blk_data_plane_start(), blk_set_aio_context() drains after
->   vblk->dataplane_started has been set to true but the host notifier has
->   not been attached yet.
-> - In virtio_blk_data_plane_stop(), blk_drain() and blk_set_aio_context()
->   drain after the host notifier has already been detached but with
->   vblk->dataplane_started still set to true.
+> What we consider "most capable CPU" in this context are related to
+> ratified, non-vendor extensions. This means that we want the 'max' CPU
+> to enable all (possible) ratified extensions by default. The reasoning
+> behind this design is (1) vendor extensions can conflict with each other
+> and we won't play favorities deciding which one is default or not and
+> (2) non-ratified extensions are always prone to changes, not being
+> stable enough to be enabled by default.
 >=20
-> I would like to simplify ->ioeventfd_start/stop() to avoid interactions
-> with drain entirely, but couldn't find a way to do that. Instead, this
-> patch accepts the fragile nature of the code and reorders it so that
-> vblk->dataplane_started is false during drain operations. This way the
-> virtio_blk_drained_begin() and virtio_blk_drained_end() calls don't
-> touch the host notifier. The result is that
-> virtio_blk_data_plane_start() and virtio_blk_data_plane_stop() have
-> complete control over the host notifier and stale file descriptors are
-> no longer left in the AioContext.
+> All this said, we're still not able to enable all ratified extensions
+> due to conflicts between them. Zfinx and all its dependencies aren't
+> enabled because of a conflict with RVF. zce, zcmp and zcmt are also
+> disabled due to RVD conflicts. When running with 64 bits we're also
+> disabling zcf.
 >=20
-> This patch fixes the 100% CPU consumption in the main loop thread and
-> correctly moves host notifier processing to the IOThread.
->=20
-> Fixes: 1665d9326fd2 ("virtio-blk: implement BlockDevOps->drained_begin()")
-> Reported-by: Luk=C3=A1=C5=A1 Doktor <ldoktor@redhat.com>
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->  hw/block/dataplane/virtio-blk.c | 67 +++++++++++++++++++--------------
->  1 file changed, 38 insertions(+), 29 deletions(-)
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-Thanks, applied to my block tree:
-https://gitlab.com/stefanha/qemu/commits/block
+This seems like it will be super helpful for CI stuff etc, thanks for
+doing it.
 
-Stefan
-
---OPx8EE6Kag9bN5jm
+--wrnHX3yXnPnAqpT4
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSu/QsACgkQnKSrs4Gr
-c8hgZQf7BcKZFfawjfArb4ePBGhr9PXQbnmJmUa1XKOTkovUiULyZm19uTpexvs7
-mkfnpF2jRMcRYqEN46v/xhdTy20u9zXWrQsEONMBpKFysXbEiSEuHFdJf+wtYqOs
-sBoOoFLJaFP1jCJ1rQO/p9vauBL0YLQ1lQKFDYQxYKvYFzZjtFN/LNfBaSiFeTcc
-b4lutNUN390fIS3UPNtTp1BrBh24gPKci8vTCkHSQ4hXqRbI3uibXDp5ehagEQAm
-wi/F8Yd6CXVP+SdiH/5c2pZTSilHcbSc9PaNJd79aL7jXQpoP+evZbTVmrL4HoV6
-mgqaMDAFL+eGFH/YpqNDyz6VQXOXqQ==
-=rCFw
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZK79fgAKCRB4tDGHoIJi
+0i2eAQDRWaOxyj6I83sUeQuL3P+nrivVPbpbjpXcO5w8T6JxkwEAqcjjb+luUYrZ
+Ax5JzRJiDk12Un6zlbsdSlGpKedTTwI=
+=EpYL
 -----END PGP SIGNATURE-----
 
---OPx8EE6Kag9bN5jm--
-
+--wrnHX3yXnPnAqpT4--
 
