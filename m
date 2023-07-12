@@ -2,96 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B973D750B26
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 16:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C6A750B30
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 16:41:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJaz6-00017q-9n; Wed, 12 Jul 2023 10:38:28 -0400
+	id 1qJb1N-0002aO-Fb; Wed, 12 Jul 2023 10:40:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1qJaz4-00017A-Er
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 10:38:26 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1qJaz2-0006F8-Cd
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 10:38:26 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-55779047021so4906699a12.3
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 07:38:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689172702; x=1691764702;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=iJ8LUHCEDAPt/N9MdOBCc7TIC1zWl/swrY0D/MSc4MU=;
- b=PIMGOh68DhdV39N7TCyMzEj0O+/y5d4eY6lnDaEAnOBZylwlFDEihjfIsKGZhZ3w2K
- 0vqqvBbCw7iZug1bmqZ+fXJkA54WzGjVTEUg+1AzRn2aWgWYduKi+gMzc7NTZjVLFg7S
- 7zzCFd2M5NkRwhzcVJKwHvzsJsIBEsVkMD8RXcImO9dYOF7Sjcj4nD0OPE5BYnqto6+w
- obTvUiEXkag74FSBkyScQ/4SlVTvkKJsSO/YKecS9S7wNUu1cbex8WjWw4G606gj32DF
- v7/yriExyN93m2cc4Fv/ksUv8NLC5OCGONXbQsHj6E7S+m8dirdoAzTjdIXOPO21oqWH
- pOkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689172702; x=1691764702;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iJ8LUHCEDAPt/N9MdOBCc7TIC1zWl/swrY0D/MSc4MU=;
- b=aPwrc3dFXViI7y+ePcmg1CC7DwbJ9uMJLysUTGhD6BzQF/2JQYrGvkQ66M7MsJwvTF
- ddpaEE/eANxbZyoxJ/qRWjMd0c5efRKfU6ynTXTTI16rylqFKuvvE7mA6gvOTqf3Bhdk
- BwL+a9s6/d4SAemPjkgmhlpgbJgumgBUHggwEqVENwRgcx2/daQJbpoHD6wzoAhS5Z5R
- 8flFLrxIbSfvkN2ArCZUSA+VSbfrk+Jk0CNi13x1/VzULlg+F6U3c7W/TlcmICD06FB7
- 3hPf5pZFU7HxR9OX/otax5xrszvQxRTHPHgx+JuSs/7hBdnxeY90qmwbuOYWv/stM9yF
- 3pmQ==
-X-Gm-Message-State: ABy/qLZ+KLJPZ0BGTc41gY5q7mh9RrpYcd8aOpjVn+pqQ8QyTKu5yq19
- uHRu/RkS3C1wCJ5ROfszLtA=
-X-Google-Smtp-Source: APBJJlF62D3fs/W+OWSHuJ5ne1fNgUrj3G0hjvxxeSB8f32inxXnUHych/sc3+Fsj2WoTRA+CWt5qA==
-X-Received: by 2002:a17:90b:3556:b0:263:8eec:550f with SMTP id
- lt22-20020a17090b355600b002638eec550fmr13687776pjb.10.1689172702213; 
- Wed, 12 Jul 2023 07:38:22 -0700 (PDT)
-Received: from ?IPV6:2001:ee0:4fb3:b780:5ea2:5564:750c:fa4e?
- ([2001:ee0:4fb3:b780:5ea2:5564:750c:fa4e])
- by smtp.gmail.com with ESMTPSA id
- x13-20020a17090aa38d00b00263d7c5323dsm3717546pjp.49.2023.07.12.07.38.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Jul 2023 07:38:21 -0700 (PDT)
-Message-ID: <a79c6527-1aac-cf4c-596b-d6b532c8b872@gmail.com>
-Date: Wed, 12 Jul 2023 21:38:16 +0700
+ (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
+ id 1qJb1K-0002aB-CO; Wed, 12 Jul 2023 10:40:46 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
+ id 1qJb1I-0006p0-Hl; Wed, 12 Jul 2023 10:40:46 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36CEeEBS019021; Wed, 12 Jul 2023 14:40:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=CroH0d9eY8sfAInGxE2rMRCWuXQPKYDN+Bq3iU/yqpM=;
+ b=gUyvKmvTsRYqWB0oPPNMDXVykbnYY488Q0uAaNgstzvEcOpCSq8AodblnjugXzfJyzFJ
+ BXjRRbSbsHzh92O/9/Z1jfioLDvB0rrKxhabQggXnI6jOFIlClrht7idkG6bOO0d/RJK
+ DG6IJHU+Xaw1ocZhSBOlUPyLiBV2qP5BAA1KG77MXuHtSICNx79OEQhFbkQgdsoXuoJl
+ hS1oG6QFXvlAGCwkKaSH9TklC24CWL77k75Ksu6+qQBI+JyrmR2sU3NcwkP4R11/u3Ln
+ MH6inSoBD+regtfxEalZ2iKi1/XhDcjbgKIDTYAbWfFo/lNmj7LqGceiw7dXxQvUC34N EQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rswv28h8q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 14:40:34 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36CEeXVn021816;
+ Wed, 12 Jul 2023 14:40:33 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rswv28h5b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 14:40:33 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36CBrhds029558;
+ Wed, 12 Jul 2023 14:40:31 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3rpye5hydx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 14:40:30 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36CEeQWc44696026
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 12 Jul 2023 14:40:26 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7653B20049;
+ Wed, 12 Jul 2023 14:40:26 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E6B7420040;
+ Wed, 12 Jul 2023 14:40:25 +0000 (GMT)
+Received: from [9.152.222.242] (unknown [9.152.222.242])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+ Wed, 12 Jul 2023 14:40:25 +0000 (GMT)
+Message-ID: <cbf9bcf3-223d-39ac-7006-4f8d37e71056@linux.ibm.com>
+Date: Wed, 12 Jul 2023 16:40:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 5/5] amd_iommu: report x2APIC support to the operating
- system
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-References: <20230522163157.9754-1-minhquangbui99@gmail.com>
- <20230522163157.9754-6-minhquangbui99@gmail.com>
- <20230622162602-mutt-send-email-mst@kernel.org>
- <bfa5991d-07d0-84ae-d29c-d467c091343d@gmail.com>
- <20230710143523-mutt-send-email-mst@kernel.org>
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v21 06/20] s390x/cpu topology: interception of PTF
+ instruction
 Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <20230710143523-mutt-send-email-mst@kernel.org>
+To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
+ mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+ ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
+ armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
+ nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
+References: <20230630091752.67190-1-pmorel@linux.ibm.com>
+ <20230630091752.67190-7-pmorel@linux.ibm.com>
+ <ab53c709-964b-452e-9cb2-c4c8d67d318f@redhat.com>
+From: Pierre Morel <pmorel@linux.ibm.com>
+In-Reply-To: <ab53c709-964b-452e-9cb2-c4c8d67d318f@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: MrRWiK20HzOf-XT4bUBUGGCHn3QUfXZ4
+X-Proofpoint-GUID: UQDG8zKQWIg1UaP9oebl8INPoQ_y6hYn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-12_09,2023-07-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 mlxscore=0
+ clxscore=1015 adultscore=0 impostorscore=0 lowpriorityscore=0
+ suspectscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 priorityscore=1501
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307120131
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=pmorel@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.11,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.11,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,319 +121,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/11/23 01:37, Michael S. Tsirkin wrote:
-> On Fri, Jun 23, 2023 at 10:28:43PM +0700, Bui Quang Minh wrote:
->> On 6/23/23 03:26, Michael S. Tsirkin wrote:
->>> On Mon, May 22, 2023 at 11:31:57PM +0700, Bui Quang Minh wrote:
->>>> This commit adds XTSup configuration to let user choose to whether enable
->>>> this feature or not. When XTSup is enabled, additional bytes in IRTE with
->>>> enabled guest virtual VAPIC are used to support 32-bit destination id.
->>>>
->>>> Additionally, this commit exports IVHD type 0x11 besides the old IVHD type
->>>> 0x10 in ACPI table. IVHD type 0x10 does not report full set of IOMMU
->>>> features only the legacy ones, so operating system (e.g. Linux) may only
->>>> detects x2APIC support if IVHD type 0x11 is available. The IVHD type 0x10
->>>> is kept so that old operating system that only parses type 0x10 can detect
->>>> the IOMMU device.
->>>>
->>>> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
->>>> ---
->>>>    hw/i386/acpi-build.c | 127 ++++++++++++++++++++++++++-----------------
->>>>    hw/i386/amd_iommu.c  |  21 ++++++-
->>>>    hw/i386/amd_iommu.h  |  16 ++++--
->>>>    3 files changed, 108 insertions(+), 56 deletions(-)
->>>>
->>>> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
->>>> index 512162003b..4459122e56 100644
->>>> --- a/hw/i386/acpi-build.c
->>>> +++ b/hw/i386/acpi-build.c
->>>> @@ -2339,30 +2339,23 @@ static void
->>>>    build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
->>>>                    const char *oem_table_id)
->>>>    {
->>>> -    int ivhd_table_len = 24;
->>>>        AMDVIState *s = AMD_IOMMU_DEVICE(x86_iommu_get_default());
->>>>        GArray *ivhd_blob = g_array_new(false, true, 1);
->>>>        AcpiTable table = { .sig = "IVRS", .rev = 1, .oem_id = oem_id,
->>>>                            .oem_table_id = oem_table_id };
->>>> +    uint64_t feature_report;
->>>>        acpi_table_begin(&table, table_data);
->>>>        /* IVinfo - IO virtualization information common to all
->>>>         * IOMMU units in a system
->>>>         */
->>>> -    build_append_int_noprefix(table_data, 40UL << 8/* PASize */, 4);
->>>> +    build_append_int_noprefix(table_data,
->>>> +                             (1UL << 0) | /* EFRSup */
->>>> +                             (40UL << 8), /* PASize */
->>>> +                             4);
->>>>        /* reserved */
->>>>        build_append_int_noprefix(table_data, 0, 8);
->>>> -    /* IVHD definition - type 10h */
->>>> -    build_append_int_noprefix(table_data, 0x10, 1);
->>>> -    /* virtualization flags */
->>>> -    build_append_int_noprefix(table_data,
->>>> -                             (1UL << 0) | /* HtTunEn      */
->>>> -                             (1UL << 4) | /* iotblSup     */
->>>> -                             (1UL << 6) | /* PrefSup      */
->>>> -                             (1UL << 7),  /* PPRSup       */
->>>> -                             1);
->>>> -
->>>>        /*
->>>>         * A PCI bus walk, for each PCI host bridge, is necessary to create a
->>>>         * complete set of IVHD entries.  Do this into a separate blob so that we
->>>> @@ -2382,56 +2375,92 @@ build_amd_iommu(GArray *table_data, BIOSLinker *linker, const char *oem_id,
->>>>            build_append_int_noprefix(ivhd_blob, 0x0000001, 4);
->>>>        }
->>>> -    ivhd_table_len += ivhd_blob->len;
->>>> -
->>>>        /*
->>>>         * When interrupt remapping is supported, we add a special IVHD device
->>>> -     * for type IO-APIC.
->>>> -     */
->>>> -    if (x86_iommu_ir_supported(x86_iommu_get_default())) {
->>>> -        ivhd_table_len += 8;
->>>> -    }
->>>> -
->>>> -    /* IVHD length */
->>>> -    build_append_int_noprefix(table_data, ivhd_table_len, 2);
->>>> -    /* DeviceID */
->>>> -    build_append_int_noprefix(table_data,
->>>> -                              object_property_get_int(OBJECT(&s->pci), "addr",
->>>> -                                                      &error_abort), 2);
->>>> -    /* Capability offset */
->>>> -    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
->>>> -    /* IOMMU base address */
->>>> -    build_append_int_noprefix(table_data, s->mmio.addr, 8);
->>>> -    /* PCI Segment Group */
->>>> -    build_append_int_noprefix(table_data, 0, 2);
->>>> -    /* IOMMU info */
->>>> -    build_append_int_noprefix(table_data, 0, 2);
->>>> -    /* IOMMU Feature Reporting */
->>>> -    build_append_int_noprefix(table_data,
->>>> -                             (48UL << 30) | /* HATS   */
->>>> -                             (48UL << 28) | /* GATS   */
->>>> -                             (1UL << 2)   | /* GTSup  */
->>>> -                             (1UL << 6),    /* GASup  */
->>>> -                             4);
->>>> -
->>>> -    /* IVHD entries as found above */
->>>> -    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
->>>> -    g_array_free(ivhd_blob, TRUE);
->>>> -
->>>> -    /*
->>>> -     * Add a special IVHD device type.
->>>> +     * for type IO-APIC
->>>>         * Refer to spec - Table 95: IVHD device entry type codes
->>>>         *
->>>>         * Linux IOMMU driver checks for the special IVHD device (type IO-APIC).
->>>>         * See Linux kernel commit 'c2ff5cf5294bcbd7fa50f7d860e90a66db7e5059'
->>>>         */
->>>>        if (x86_iommu_ir_supported(x86_iommu_get_default())) {
->>>> -        build_append_int_noprefix(table_data,
->>>> +        build_append_int_noprefix(ivhd_blob,
->>>>                                     (0x1ull << 56) |           /* type IOAPIC */
->>>>                                     (IOAPIC_SB_DEVID << 40) |  /* IOAPIC devid */
->>>>                                     0x48,                      /* special device */
->>>>                                     8);
->>>>        }
->>>> +
->>>> +    /* IVHD definition - type 10h */
->>>> +    build_append_int_noprefix(table_data, 0x10, 1);
->>>> +    /* virtualization flags */
->>>> +    build_append_int_noprefix(table_data,
->>>> +                             (1UL << 0) | /* HtTunEn      */
->>>> +                             (1UL << 4) | /* iotblSup     */
->>>> +                             (1UL << 6) | /* PrefSup      */
->>>> +                             (1UL << 7),  /* PPRSup       */
->>>> +                             1);
->>>> +
->>>> +    /* IVHD length */
->>>> +    build_append_int_noprefix(table_data, ivhd_blob->len + 24, 2);
->>>> +    /* DeviceID */
->>>> +    build_append_int_noprefix(table_data,
->>>> +                              object_property_get_int(OBJECT(&s->pci), "addr",
->>>> +                                                      &error_abort), 2);
->>>> +    /* Capability offset */
->>>> +    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
->>>> +    /* IOMMU base address */
->>>> +    build_append_int_noprefix(table_data, s->mmio.addr, 8);
->>>> +    /* PCI Segment Group */
->>>> +    build_append_int_noprefix(table_data, 0, 2);
->>>> +    /* IOMMU info */
->>>> +    build_append_int_noprefix(table_data, 0, 2);
->>>> +    /* IOMMU Feature Reporting */
->>>> +    feature_report = (48UL << 30) | /* HATS   */
->>>> +                     (48UL << 28) | /* GATS   */
->>>> +                     (1UL << 2)   | /* GTSup  */
->>>> +                     (1UL << 6);    /* GASup  */
->>>> +    if (s->xtsup) {
->>>> +        feature_report |= (1UL << 0); /* XTSup */
->>>> +    }
->>>> +    build_append_int_noprefix(table_data, feature_report, 4);
->>>> +
->>>> +    /* IVHD entries as found above */
->>>> +    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
->>>> +
->>>> +   /* IVHD definition - type 11h */
->>>> +    build_append_int_noprefix(table_data, 0x11, 1);
->>>> +    /* virtualization flags */
->>>> +    build_append_int_noprefix(table_data,
->>>> +                             (1UL << 0) | /* HtTunEn      */
->>>> +                             (1UL << 4),  /* iotblSup     */
->>>> +                             1);
->>>> +
->>>> +    /* IVHD length */
->>>> +    build_append_int_noprefix(table_data, ivhd_blob->len + 40, 2);
->>>> +    /* DeviceID */
->>>> +    build_append_int_noprefix(table_data,
->>>> +                              object_property_get_int(OBJECT(&s->pci), "addr",
->>>> +                                                      &error_abort), 2);
->>>> +    /* Capability offset */
->>>> +    build_append_int_noprefix(table_data, s->pci.capab_offset, 2);
->>>> +    /* IOMMU base address */
->>>> +    build_append_int_noprefix(table_data, s->mmio.addr, 8);
->>>> +    /* PCI Segment Group */
->>>> +    build_append_int_noprefix(table_data, 0, 2);
->>>> +    /* IOMMU info */
->>>> +    build_append_int_noprefix(table_data, 0, 2);
->>>> +    /* IOMMU Attributes */
->>>> +    build_append_int_noprefix(table_data, 0, 4);
->>>> +    /* EFR Register Image */
->>>> +    build_append_int_noprefix(table_data, s->efr_reg, 8);
->>>> +    /* EFR Register Image 2 */
->>>> +    build_append_int_noprefix(table_data, 0, 8);
->>>> +
->>>> +    /* IVHD entries as found above */
->>>> +    g_array_append_vals(table_data, ivhd_blob->data, ivhd_blob->len);
->>>> +
->>>> +    g_array_free(ivhd_blob, TRUE);
->>>>        acpi_table_end(linker, &table);
->>>>    }
->>>> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
->>>> index 9c77304438..0e308184d7 100644
->>>> --- a/hw/i386/amd_iommu.c
->>>> +++ b/hw/i386/amd_iommu.c
->>>> @@ -31,6 +31,7 @@
->>>>    #include "hw/i386/apic_internal.h"
->>>>    #include "trace.h"
->>>>    #include "hw/i386/apic-msidef.h"
->>>> +#include "hw/qdev-properties.h"
->>>>    /* used AMD-Vi MMIO registers */
->>>>    const char *amdvi_mmio_low[] = {
->>>> @@ -1155,7 +1156,12 @@ static int amdvi_int_remap_ga(AMDVIState *iommu,
->>>>        irq->vector = irte.hi.fields.vector;
->>>>        irq->dest_mode = irte.lo.fields_remap.dm;
->>>>        irq->redir_hint = irte.lo.fields_remap.rq_eoi;
->>>> -    irq->dest = irte.lo.fields_remap.destination;
->>>> +    if (iommu->xtsup) {
->>>> +        irq->dest = irte.lo.fields_remap.destination |
->>>> +                    (irte.hi.fields.destination_hi << 24);
->>>> +    } else {
->>>> +        irq->dest = irte.lo.fields_remap.destination & 0xff;
->>>> +    }
->>>>        return 0;
->>>>    }
->>>> @@ -1503,10 +1509,15 @@ static void amdvi_init(AMDVIState *s)
->>>>        s->enabled = false;
->>>>        s->ats_enabled = false;
->>>>        s->cmdbuf_enabled = false;
->>>> +    s->efr_reg = AMDVI_DEFAULT_EXT_FEATURES;
->>>> +
->>>> +    if (s->xtsup) {
->>>> +        s->efr_reg |= AMDVI_FEATURE_XT;
->>>> +    }
->>>>        /* reset MMIO */
->>>>        memset(s->mmior, 0, AMDVI_MMIO_SIZE);
->>>> -    amdvi_set_quad(s, AMDVI_MMIO_EXT_FEATURES, AMDVI_EXT_FEATURES,
->>>> +    amdvi_set_quad(s, AMDVI_MMIO_EXT_FEATURES, s->efr_reg,
->>>>                0xffffffffffffffef, 0);
->>>>        amdvi_set_quad(s, AMDVI_MMIO_STATUS, 0, 0x98, 0x67);
->>>>    }
->>>> @@ -1591,6 +1602,11 @@ static void amdvi_sysbus_realize(DeviceState *dev, Error **errp)
->>>>        amdvi_init(s);
->>>>    }
->>>> +static Property amdvi_properties[] = {
->>>> +    DEFINE_PROP_BOOL("xtsup", AMDVIState, xtsup, false),
->>>> +    DEFINE_PROP_END_OF_LIST(),
->>>> +};
->>>> +
->>>>    static const VMStateDescription vmstate_amdvi_sysbus = {
->>>>        .name = "amd-iommu",
->>>>        .unmigratable = 1
->>>> @@ -1617,6 +1633,7 @@ static void amdvi_sysbus_class_init(ObjectClass *klass, void *data)
->>>>        dc->user_creatable = true;
->>>>        set_bit(DEVICE_CATEGORY_MISC, dc->categories);
->>>>        dc->desc = "AMD IOMMU (AMD-Vi) DMA Remapping device";
->>>> +    device_class_set_props(dc, amdvi_properties);
->>>>    }
->>>>    static const TypeInfo amdvi_sysbus = {
->>>> diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
->>>> index 6da893ee57..f3730db990 100644
->>>> --- a/hw/i386/amd_iommu.h
->>>> +++ b/hw/i386/amd_iommu.h
->>>> @@ -154,6 +154,7 @@
->>>>    #define AMDVI_FEATURE_PREFETCH            (1ULL << 0) /* page prefetch       */
->>>>    #define AMDVI_FEATURE_PPR                 (1ULL << 1) /* PPR Support         */
->>>> +#define AMDVI_FEATURE_XT                  (1ULL << 2) /* x2APIC Support      */
->>>>    #define AMDVI_FEATURE_GT                  (1ULL << 4) /* Guest Translation   */
->>>>    #define AMDVI_FEATURE_IA                  (1ULL << 6) /* inval all support   */
->>>>    #define AMDVI_FEATURE_GA                  (1ULL << 7) /* guest VAPIC support */
->>>> @@ -173,8 +174,9 @@
->>>>    #define AMDVI_IOTLB_MAX_SIZE 1024
->>>>    #define AMDVI_DEVID_SHIFT    36
->>>> -/* extended feature support */
->>>> -#define AMDVI_EXT_FEATURES (AMDVI_FEATURE_PREFETCH | AMDVI_FEATURE_PPR | \
->>>> +/* default extended feature */
->>>> +#define AMDVI_DEFAULT_EXT_FEATURES \
->>>> +        (AMDVI_FEATURE_PREFETCH | AMDVI_FEATURE_PPR | \
->>>>            AMDVI_FEATURE_IA | AMDVI_FEATURE_GT | AMDVI_FEATURE_HE | \
->>>>            AMDVI_GATS_MODE | AMDVI_HATS_MODE | AMDVI_FEATURE_GA)
->>>> @@ -278,8 +280,8 @@ union irte_ga_lo {
->>>>                    dm:1,
->>>>                    /* ------ */
->>>>                    guest_mode:1,
->>>> -                destination:8,
->>>> -                rsvd_1:48;
->>>> +                destination:24,
->>>> +                rsvd_1:32;
->>>>      } fields_remap;
->>>>    };
->>>> @@ -287,7 +289,8 @@ union irte_ga_hi {
->>>>      uint64_t val;
->>>>      struct {
->>>>          uint64_t  vector:8,
->>>> -                rsvd_2:56;
->>>> +                rsvd_2:48,
->>>> +                destination_hi:8;
->>>>      } fields;
->>>>    };
->>>> @@ -366,6 +369,9 @@ struct AMDVIState {
->>>>        /* Interrupt remapping */
->>>>        bool ga_enabled;
->>>> +    bool xtsup;
->>>> +
->>>> +    uint64_t efr_reg;            /* extended feature register */
->>>>    };
->>>
->>> It would be cleaner to have efr_reg as a function and just call it
->>> when needed.
->>>
->>> With that addressed:
->>>
->>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
->>
->> You mean function like this
->>
->> uint64_t amdvi_extended_feature_register(AMDVIState *s)
->> {
->> 	uint64_t feature = AMDVI_DEFAULT_EXT_FEATURES;
->> 	if (s->xtsup)
->> 		feature |= AMDVI_FEATURE_XT;
->>
->> 	return feature;
->> }
-> 
-> Yes exactly. going to do that?
 
-Okay, I'll do it.
+On 7/4/23 14:16, Thomas Huth wrote:
+> On 30/06/2023 11.17, Pierre Morel wrote:
+>> When the host supports the CPU topology facility, the PTF
+>> instruction with function code 2 is interpreted by the SIE,
+>> provided that the userland hypervisor activates the interpretation
+>> by using the KVM_CAP_S390_CPU_TOPOLOGY KVM extension.
+>>
+>> The PTF instructions with function code 0 and 1 are intercepted
+>> and must be emulated by the userland hypervisor.
+>>
+>> During RESET all CPU of the configuration are placed in
+>> horizontal polarity.
+>>
+>> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+>> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+>> ---
+>>   include/hw/s390x/s390-virtio-ccw.h |  6 ++++
+>>   hw/s390x/cpu-topology.c            | 54 ++++++++++++++++++++++++++++++
+>>   target/s390x/kvm/kvm.c             | 11 ++++++
+>>   3 files changed, 71 insertions(+)
+>
+>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>
+
+Thanks,
+
+Pierre
+
 
