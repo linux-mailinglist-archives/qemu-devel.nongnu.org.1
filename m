@@ -2,58 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB237500AA
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5967500BD
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:08:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJUng-00088b-4s; Wed, 12 Jul 2023 04:02:16 -0400
+	id 1qJUsT-0000v4-AY; Wed, 12 Jul 2023 04:07:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=PzZY=C6=redhat.com=clg@ozlabs.org>)
- id 1qJUnd-00087m-Ms; Wed, 12 Jul 2023 04:02:13 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qJUsR-0000uZ-2L
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:07:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=PzZY=C6=redhat.com=clg@ozlabs.org>)
- id 1qJUna-0001HZ-9I; Wed, 12 Jul 2023 04:02:13 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4R19Dz6gm5z4wy8;
- Wed, 12 Jul 2023 18:01:55 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4R19Dw5BJdz4wxR;
- Wed, 12 Jul 2023 18:01:52 +1000 (AEST)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v4] kconfig: Add PCIe devices to s390x machines
-Date: Wed, 12 Jul 2023 10:01:46 +0200
-Message-ID: <20230712080146.839113-1-clg@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qJUsO-0002on-Sl
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:07:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689149228;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=O59WCKxUbMfNmDOivxXW/OE1WeT+hJiPQK1AgImH5r8=;
+ b=auUlN1RrAJknTbapptR1B15ksZmkXvFzjs6+eBDkrSRxhEFM5gntsAZH30IC1MbM8WN1ag
+ Za8cf52spa5pkTfHV2Zta3eF4hbEkWtlymFNtV67X6SGOM6VBEKqcaD6udWt2OzlgeP490
+ j0fpixcJ5klOHb5PY1o2jy0ZEEd2VDI=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-414-KNhjHSXNOtqLNLiVzwj9PQ-1; Wed, 12 Jul 2023 04:07:00 -0400
+X-MC-Unique: KNhjHSXNOtqLNLiVzwj9PQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-993eeb3a950so260725366b.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 01:07:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689149219; x=1691741219;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=O59WCKxUbMfNmDOivxXW/OE1WeT+hJiPQK1AgImH5r8=;
+ b=HUSiGxaZ7gFnUzhWtqT08/nUlMMXvkGWVXLfEkFtOMqfSbnoMB982/D2lQfVlEnZMF
+ btqIdmVBs2K1p1AYUCmh9YqTvoLVHCe5GGNpJwk6Do5eJ7omUh+sE68f4syQFuHlDYOr
+ Ao99u+KqZOkS2Bvlu56MYwVPSLgfdgwtA47W6GGMdqcAmeIBngLFwSNJGPE1OBBs1j6n
+ E50D8Ps0ZURZGmtFevH3BlY3EllmT/tc+/EDAC/obP8NI7hjUaprmtu+Pb1//3xWFWk1
+ rCwMe8tIN23kebjpCRdhn/jANfX5sB9+YoGdJgahPpaNUqUNUY3ur4Q6RS7UaEPJUJkF
+ 5DYQ==
+X-Gm-Message-State: ABy/qLZH3zaLhp+VHFXUf6r9ANQ98T/ulNsB3C6Itwq/pVHCDiqqmRQX
+ /DwLbZw4lK5Hm++Ky0DAjlnKA3ULoEL2o+2+6pHdf/dn4BHao/nhLBiTvM7FYvjjK7IyjsO25Ym
+ 6ARLz9rQVE5Anrf8=
+X-Received: by 2002:a17:906:74d6:b0:993:e860:f20 with SMTP id
+ z22-20020a17090674d600b00993e8600f20mr11896935ejl.19.1689149219545; 
+ Wed, 12 Jul 2023 01:06:59 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGuq7PuqcFm5S8HFkqYTOvb4nN21xQh/cSvepQEY3PNGwe/jmsaBmcKV8FXkw8sNp4Dce30IQ==
+X-Received: by 2002:a17:906:74d6:b0:993:e860:f20 with SMTP id
+ z22-20020a17090674d600b00993e8600f20mr11896899ejl.19.1689149219068; 
+ Wed, 12 Jul 2023 01:06:59 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045?
+ ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
+ by smtp.googlemail.com with ESMTPSA id
+ e22-20020a170906249600b00992dcae806bsm2197356ejb.5.2023.07.12.01.06.57
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 12 Jul 2023 01:06:57 -0700 (PDT)
+Message-ID: <10a3d00f-a3a2-91d1-0f94-9758cdc4b969@redhat.com>
+Date: Wed, 12 Jul 2023 10:06:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=PzZY=C6=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] Revert "virtio-scsi: Send "REPORTED LUNS CHANGED" sense
+ data upon disk hotplug events"
+Content-Language: en-US
+To: Mike Christie <michael.christie@oracle.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Fam Zheng <fam@euphon.net>, Thomas Huth <thuth@redhat.com>,
+ Mark Kanda <mark.kanda@oracle.com>, linux-scsi@vger.kernel.org,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-stable@nongnu.org,
+ qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>
+References: <20230705071523.15496-1-sgarzare@redhat.com>
+ <i3od362o6unuimlqna3aaedliaabauj6g545esg7txidd4s44e@bkx5des6zytx>
+ <765f14c5-a938-ebd9-6383-4fe3d5c812ca@oracle.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <765f14c5-a938-ebd9-6383-4fe3d5c812ca@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,105 +113,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is useful to extend the number of available PCIe devices to KVM guests
-for passthrough scenarios and also to expose these models to a different
-(big endian) architecture. Introduce a new config PCIE_DEVICES to select
-models, Intel Ethernet adapters and one USB controller. These devices all
-support MSI-X which is a requirement on s390x as legacy INTx are not
-supported.
+On 7/11/23 22:21, Mike Christie wrote:
+> What was the issue you are seeing?
+> 
+> Was it something like you get the UA. We retry then on one of the
+> retries the sense is not setup correctly, so the scsi error handler
+> runs? That fails and the device goes offline?
+> 
+> If you turn on scsi debugging you would see:
+> 
+> 
+> [  335.445922] sd 0:0:0:0: [sda] tag#15 Add. Sense: Reported luns data has changed
+> [  335.445922] sd 0:0:0:0: [sda] tag#16 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [  335.445925] sd 0:0:0:0: [sda] tag#16 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [  335.445929] sd 0:0:0:0: [sda] tag#17 Done: FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
+> [  335.445932] sd 0:0:0:0: [sda] tag#17 CDB: Write(10) 2a 00 00 db 4f c0 00 00 20 00
+> [  335.445934] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [  335.445936] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [  335.445938] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [  335.445940] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [  335.445942] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [  335.445945] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> [  335.451447] scsi host0: scsi_eh_0: waking up 0/2/2
+> [  335.451453] scsi host0: Total of 2 commands on 1 devices require eh work
+> [  335.451457] sd 0:0:0:0: [sda] tag#16 scsi_eh_0: requesting sense
 
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
+Does this log come from internal discussions within Oracle?
 
- There could be a more general use of PCIE_DEVICES
+> I don't know the qemu scsi code well, but I scanned the code for my co-worker
+> and my guess was commit 8cc5583abe6419e7faaebc9fbd109f34f4c850f2 had a race in it.
+> 
+> How is locking done? when it is a bus level UA but there are multiple devices
+> on the bus?
 
- v4: Introduce PCIE_DEVICES
- v3: PCI -> PCI_EXPRESS
- v2: select -> imply
- 
- configs/devices/s390x-softmmu/default.mak | 1 +
- hw/net/Kconfig                            | 4 ++--
- hw/pci/Kconfig                            | 3 +++
- hw/s390x/Kconfig                          | 3 ++-
- hw/usb/Kconfig                            | 2 +-
- 5 files changed, 9 insertions(+), 4 deletions(-)
+No locking should be necessary, the code is single threaded.  However, 
+what can happen is that two consecutive calls to 
+virtio_scsi_handle_cmd_req_prepare use the unit attention ReqOps, and 
+then the second virtio_scsi_handle_cmd_req_submit finds no unit 
+attention (see the loop in virtio_scsi_handle_cmd_vq).  That can 
+definitely explain the log above.
 
-diff --git a/configs/devices/s390x-softmmu/default.mak b/configs/devices/s390x-softmmu/default.mak
-index f2287a133f36..2d5ff476e32a 100644
---- a/configs/devices/s390x-softmmu/default.mak
-+++ b/configs/devices/s390x-softmmu/default.mak
-@@ -7,6 +7,7 @@
- #CONFIG_VFIO_CCW=n
- #CONFIG_VIRTIO_PCI=n
- #CONFIG_WDT_DIAG288=n
-+#CONFIG_PCIE_DEVICE=n
- 
- # Boards:
- #
-diff --git a/hw/net/Kconfig b/hw/net/Kconfig
-index 98e00be4f937..7fcc0d7faa29 100644
---- a/hw/net/Kconfig
-+++ b/hw/net/Kconfig
-@@ -41,12 +41,12 @@ config E1000_PCI
- 
- config E1000E_PCI_EXPRESS
-     bool
--    default y if PCI_DEVICES
-+    default y if PCI_DEVICES || PCIE_DEVICES
-     depends on PCI_EXPRESS && MSI_NONBROKEN
- 
- config IGB_PCI_EXPRESS
-     bool
--    default y if PCI_DEVICES
-+    default y if PCI_DEVICES || PCIE_DEVICES
-     depends on PCI_EXPRESS && MSI_NONBROKEN
- 
- config RTL8139_PCI
-diff --git a/hw/pci/Kconfig b/hw/pci/Kconfig
-index 77f8b005ffb1..fe70902cd821 100644
---- a/hw/pci/Kconfig
-+++ b/hw/pci/Kconfig
-@@ -8,6 +8,9 @@ config PCI_EXPRESS
- config PCI_DEVICES
-     bool
- 
-+config PCIE_DEVICES
-+    bool
-+
- config MSI_NONBROKEN
-     # selected by interrupt controllers that do not support MSI,
-     # or support it and have a good implementation. See commit
-diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
-index 454e0ff4b613..4c068d7960b9 100644
---- a/hw/s390x/Kconfig
-+++ b/hw/s390x/Kconfig
-@@ -5,7 +5,8 @@ config S390_CCW_VIRTIO
-     imply VFIO_AP
-     imply VFIO_CCW
-     imply WDT_DIAG288
--    select PCI
-+    imply PCIE_DEVICES
-+    select PCI_EXPRESS
-     select S390_FLIC
-     select S390_FLIC_KVM if KVM
-     select SCLPCONSOLE
-diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
-index 0ec6def4b8b8..0f486764ed69 100644
---- a/hw/usb/Kconfig
-+++ b/hw/usb/Kconfig
-@@ -36,7 +36,7 @@ config USB_XHCI
- 
- config USB_XHCI_PCI
-     bool
--    default y if PCI_DEVICES
-+    default y if PCI_DEVICES || PCIE_DEVICES
-     depends on PCI
-     select USB_XHCI
- 
--- 
-2.41.0
+Paolo
 
 
