@@ -2,93 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5967500BD
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7677500E5
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:13:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJUsT-0000v4-AY; Wed, 12 Jul 2023 04:07:13 -0400
+	id 1qJUxU-0002BU-E9; Wed, 12 Jul 2023 04:12:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qJUsR-0000uZ-2L
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:07:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qJUxS-0002AG-5q
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:12:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qJUsO-0002on-Sl
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:07:10 -0400
+ id 1qJUxQ-0006mF-Pw
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:12:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689149228;
+ s=mimecast20190719; t=1689149540;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=O59WCKxUbMfNmDOivxXW/OE1WeT+hJiPQK1AgImH5r8=;
- b=auUlN1RrAJknTbapptR1B15ksZmkXvFzjs6+eBDkrSRxhEFM5gntsAZH30IC1MbM8WN1ag
- Za8cf52spa5pkTfHV2Zta3eF4hbEkWtlymFNtV67X6SGOM6VBEKqcaD6udWt2OzlgeP490
- j0fpixcJ5klOHb5PY1o2jy0ZEEd2VDI=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=C76iMcGXKVEuzArDEweATQkflplYGS0ilAvmdCwTwww=;
+ b=UtC3AFvx64ArY+t3ulgTO2QVgQYRrUvFlcQ3dOGJfniaU0u16gyMbdpn0TqbNFzRbQWTM4
+ YEduTF2vqPyFMf3Vd4yISPisvfe4m4KFCIYeG1n7cq0+X9+EqrU9d9xyrAI8soK4NzVaN6
+ 3WiqirTy7p0S2Ccozbtk+HWCMgaT8bQ=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-KNhjHSXNOtqLNLiVzwj9PQ-1; Wed, 12 Jul 2023 04:07:00 -0400
-X-MC-Unique: KNhjHSXNOtqLNLiVzwj9PQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-993eeb3a950so260725366b.2
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 01:07:00 -0700 (PDT)
+ us-mta-207-HVrcBw4tN8S9_yVBPyu77A-1; Wed, 12 Jul 2023 04:12:18 -0400
+X-MC-Unique: HVrcBw4tN8S9_yVBPyu77A-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-98df34aa83aso63402966b.1
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 01:12:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689149219; x=1691741219;
+ d=1e100.net; s=20221208; t=1689149535; x=1691741535;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=O59WCKxUbMfNmDOivxXW/OE1WeT+hJiPQK1AgImH5r8=;
- b=HUSiGxaZ7gFnUzhWtqT08/nUlMMXvkGWVXLfEkFtOMqfSbnoMB982/D2lQfVlEnZMF
- btqIdmVBs2K1p1AYUCmh9YqTvoLVHCe5GGNpJwk6Do5eJ7omUh+sE68f4syQFuHlDYOr
- Ao99u+KqZOkS2Bvlu56MYwVPSLgfdgwtA47W6GGMdqcAmeIBngLFwSNJGPE1OBBs1j6n
- E50D8Ps0ZURZGmtFevH3BlY3EllmT/tc+/EDAC/obP8NI7hjUaprmtu+Pb1//3xWFWk1
- rCwMe8tIN23kebjpCRdhn/jANfX5sB9+YoGdJgahPpaNUqUNUY3ur4Q6RS7UaEPJUJkF
- 5DYQ==
-X-Gm-Message-State: ABy/qLZH3zaLhp+VHFXUf6r9ANQ98T/ulNsB3C6Itwq/pVHCDiqqmRQX
- /DwLbZw4lK5Hm++Ky0DAjlnKA3ULoEL2o+2+6pHdf/dn4BHao/nhLBiTvM7FYvjjK7IyjsO25Ym
- 6ARLz9rQVE5Anrf8=
-X-Received: by 2002:a17:906:74d6:b0:993:e860:f20 with SMTP id
- z22-20020a17090674d600b00993e8600f20mr11896935ejl.19.1689149219545; 
- Wed, 12 Jul 2023 01:06:59 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGuq7PuqcFm5S8HFkqYTOvb4nN21xQh/cSvepQEY3PNGwe/jmsaBmcKV8FXkw8sNp4Dce30IQ==
-X-Received: by 2002:a17:906:74d6:b0:993:e860:f20 with SMTP id
- z22-20020a17090674d600b00993e8600f20mr11896899ejl.19.1689149219068; 
- Wed, 12 Jul 2023 01:06:59 -0700 (PDT)
+ bh=C76iMcGXKVEuzArDEweATQkflplYGS0ilAvmdCwTwww=;
+ b=CiKxRo3J7mQmjjpRfVLrZ83r0YLfmEFC+YWosqh51E3H/ZiNI1ARclLa4HYSMv2WGB
+ oyB5EVNFLcd1xTkD2eyT+KUGMMFsttXyEn42odPVbAtObMk5x51o4dT81XI8mnT7XQWm
+ lE2lv1ffvFU3Dg5UVRGEtSTl6RNVgxuLNb1XB7giugKd5rEfJoSmzqlCYy4xSl7EQMs1
+ 05+09IeZGXXxDbx8tzZ0Im08xJV3l2L2rqzBt3OOdoGLQJCHHTBq7etxGJbjWlK2PdNs
+ Njh7XLBAfqEynaDAV5UuBKk5FOk/NbOGkhTRTV9LM5r3rhiZf+PUdORLtGIY9zO4i6ZX
+ svUw==
+X-Gm-Message-State: ABy/qLYDr2r8L2mqSFnFnp1nObwVFIG6KzgTtpttOb5fsLATT5lNcUxu
+ 6F7pdAZ6dxLZBplIEk7tgPMyyceR6WScbiSV262S4dZwJeAiSn+Yb/ygjr5d2WoGv/XJ7PUzOe0
+ Eq8JqCVAyULeecvt++CVBXxY=
+X-Received: by 2002:a17:907:a410:b0:993:da5f:5a9b with SMTP id
+ sg16-20020a170907a41000b00993da5f5a9bmr1474015ejc.8.1689149535188; 
+ Wed, 12 Jul 2023 01:12:15 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlH0bMElyudhhfgGyn8m0QOHES6sr4tUUss8j8hsIPSFz5RIw4p8Funzxz5SdWCB3oz7ggiRow==
+X-Received: by 2002:a17:907:a410:b0:993:da5f:5a9b with SMTP id
+ sg16-20020a170907a41000b00993da5f5a9bmr1473992ejc.8.1689149534866; 
+ Wed, 12 Jul 2023 01:12:14 -0700 (PDT)
 Received: from ?IPV6:2001:b07:6468:f312:63a7:c72e:ea0e:6045?
  ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.googlemail.com with ESMTPSA id
- e22-20020a170906249600b00992dcae806bsm2197356ejb.5.2023.07.12.01.06.57
+ i27-20020a170906265b00b00992076f4a01sm2201400ejc.190.2023.07.12.01.12.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Jul 2023 01:06:57 -0700 (PDT)
-Message-ID: <10a3d00f-a3a2-91d1-0f94-9758cdc4b969@redhat.com>
-Date: Wed, 12 Jul 2023 10:06:56 +0200
+ Wed, 12 Jul 2023 01:12:14 -0700 (PDT)
+Message-ID: <2ec62ac2-763b-1211-7c25-f0513f99dd2c@redhat.com>
+Date: Wed, 12 Jul 2023 10:12:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
 Subject: Re: [PATCH] Revert "virtio-scsi: Send "REPORTED LUNS CHANGED" sense
  data upon disk hotplug events"
 Content-Language: en-US
-To: Mike Christie <michael.christie@oracle.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Fam Zheng <fam@euphon.net>, Thomas Huth <thuth@redhat.com>,
- Mark Kanda <mark.kanda@oracle.com>, linux-scsi@vger.kernel.org,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-stable@nongnu.org,
- qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org,
- "James E.J. Bottomley" <jejb@linux.ibm.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Cc: qemu-devel@nongnu.org, Fam Zheng <fam@euphon.net>,
+ Thomas Huth <thuth@redhat.com>, qemu-stable@nongnu.org,
+ Mark Kanda <mark.kanda@oracle.com>
 References: <20230705071523.15496-1-sgarzare@redhat.com>
- <i3od362o6unuimlqna3aaedliaabauj6g545esg7txidd4s44e@bkx5des6zytx>
- <765f14c5-a938-ebd9-6383-4fe3d5c812ca@oracle.com>
+ <20230710153942-mutt-send-email-mst@kernel.org>
 From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <765f14c5-a938-ebd9-6383-4fe3d5c812ca@oracle.com>
+In-Reply-To: <20230710153942-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -113,45 +108,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/11/23 22:21, Mike Christie wrote:
-> What was the issue you are seeing?
+On 7/10/23 21:40, Michael S. Tsirkin wrote:
 > 
-> Was it something like you get the UA. We retry then on one of the
-> retries the sense is not setup correctly, so the scsi error handler
-> runs? That fails and the device goes offline?
+> Acked-by: Michael S. Tsirkin<mst@redhat.com>
 > 
-> If you turn on scsi debugging you would see:
-> 
-> 
-> [  335.445922] sd 0:0:0:0: [sda] tag#15 Add. Sense: Reported luns data has changed
-> [  335.445922] sd 0:0:0:0: [sda] tag#16 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [  335.445925] sd 0:0:0:0: [sda] tag#16 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [  335.445929] sd 0:0:0:0: [sda] tag#17 Done: FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=0s
-> [  335.445932] sd 0:0:0:0: [sda] tag#17 CDB: Write(10) 2a 00 00 db 4f c0 00 00 20 00
-> [  335.445934] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [  335.445936] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [  335.445938] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [  335.445940] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [  335.445942] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [  335.445945] sd 0:0:0:0: [sda] tag#17 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-> [  335.451447] scsi host0: scsi_eh_0: waking up 0/2/2
-> [  335.451453] scsi host0: Total of 2 commands on 1 devices require eh work
-> [  335.451457] sd 0:0:0:0: [sda] tag#16 scsi_eh_0: requesting sense
+> Seems safest to revert, but I'll let storage guys decide whether to
+> queue this.
 
-Does this log come from internal discussions within Oracle?
+There are multiple possibilities:
 
-> I don't know the qemu scsi code well, but I scanned the code for my co-worker
-> and my guess was commit 8cc5583abe6419e7faaebc9fbd109f34f4c850f2 had a race in it.
-> 
-> How is locking done? when it is a bus level UA but there are multiple devices
-> on the bus?
+1) it's a QEMU bug that can be fixed, so no need to revert.
 
-No locking should be necessary, the code is single threaded.  However, 
-what can happen is that two consecutive calls to 
-virtio_scsi_handle_cmd_req_prepare use the unit attention ReqOps, and 
-then the second virtio_scsi_handle_cmd_req_submit finds no unit 
-attention (see the loop in virtio_scsi_handle_cmd_vq).  That can 
-definitely explain the log above.
+2) there's both a QEMU and a Linux bug, but fixing the QEMU side is 
+enough to hide the Linux bug.  The Linux bug can be fixed leisurely.
+
+3) it's a Linux bug that is hard to fix, so we need to revert
+
+4) it's a Linux bug that is worth fixing, but depending on how easy it 
+is to trigger the issue we may or may not need to revert
+
+But yeah, reverting is on the table.
+
+Thanks,
 
 Paolo
 
