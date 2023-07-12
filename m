@@ -2,97 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1437875017E
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CADF7501BB
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:37:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJVCr-00037I-Ut; Wed, 12 Jul 2023 04:28:18 -0400
+	id 1qJVKL-0007hR-N3; Wed, 12 Jul 2023 04:36:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qJVCl-00034o-UR
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:28:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <anushree.mathur@linux.vnet.ibm.com>)
+ id 1qJVKI-0007gY-MG; Wed, 12 Jul 2023 04:35:58 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qJVCk-0005sr-1U
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:28:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689150488;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Ft77lorj+s2P25VAIDS7kNl8SOhboxm+h8Bgo4H0PZo=;
- b=Pf34cqWXaDsHPzQ6ljhVlphEdcnt68AFclWH+VrBAvtW8NMNk6RdMSm6WzDfQBoLiusICE
- WIKAWaKIYJrjqicMQB3rWi7yXSQ0JMyBKwRwFLMQJm3Xkd7jIv4ecZxaXRH7tMKfvVoQpJ
- +K7CeUvzQVDCrn2uq3RMDhtQUgHX3Cg=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-534-K0p6cNZOMvKI2BdvPvVEgg-1; Wed, 12 Jul 2023 04:28:07 -0400
-X-MC-Unique: K0p6cNZOMvKI2BdvPvVEgg-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-765de3a3404so886691785a.2
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 01:28:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689150487; x=1691742487;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ft77lorj+s2P25VAIDS7kNl8SOhboxm+h8Bgo4H0PZo=;
- b=JR5iWOxpxcicUfGNe5Pk7e2+cINwZi03MfwcMRAbjmTzRmKjYAt7P7/rlviEdAMQhB
- e+zCCEuHctjWHzQkBl2ejTBmVlWvqculX4TODULqYRRhkT2G3cqewMlQjhMTsm0/KTCY
- ylATqgR7v+O6Co64dN5L9yofwXRX5tzrsbNHwC9Nsb68Gv4Ex4cyWuWxCTtIWhLvxRFo
- /utLqujLZuVBTlQs9fumawfIy5hQltSfhucF6V6iAa9/NAFRwCEgKZVSTWcjL2vzFOZ9
- +Lr4t8p1zkKhN0u3KkUWOhVPGk9Dsh3YIBLECMAEuzDevo+93Yjm+c6yJrhrVr92d+Fn
- 3osA==
-X-Gm-Message-State: ABy/qLbG5mDwUAGUdcffO0aYRWBF7jCKqb1PeiebWF2AR6asghr8XbLZ
- MTlOxBTYbWdPHK+wNF7fmEpD9wi9x6V5+7QBwkbPiTF9irosaiVzq5hhQGaxB4NI5KqgCyD5ePI
- 1qDm+om5jQQYiAU8=
-X-Received: by 2002:a37:2c81:0:b0:767:29c9:c647 with SMTP id
- s123-20020a372c81000000b0076729c9c647mr15297895qkh.28.1689150487016; 
- Wed, 12 Jul 2023 01:28:07 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHCMxGd3FqAHhYi1J0QB6yKcMGoqDkeMZFSBQlJdK2/+s7Yle4fe+XU3U2z7dv77pMeVxMJ6g==
-X-Received: by 2002:a37:2c81:0:b0:767:29c9:c647 with SMTP id
- s123-20020a372c81000000b0076729c9c647mr15297866qkh.28.1689150486449; 
- Wed, 12 Jul 2023 01:28:06 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-134-6.retail.telecomitalia.it.
- [82.53.134.6]) by smtp.gmail.com with ESMTPSA id
- x21-20020a05620a01f500b007678ee16016sm1975987qkn.45.2023.07.12.01.28.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jul 2023 01:28:04 -0700 (PDT)
-Date: Wed, 12 Jul 2023 10:28:00 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
- Thomas Huth <thuth@redhat.com>, 
- Mark Kanda <mark.kanda@oracle.com>, linux-scsi@vger.kernel.org, 
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-stable@nongnu.org, 
- qemu-devel@nongnu.org, virtualization@lists.linux-foundation.org, 
- "James E.J. Bottomley" <jejb@linux.ibm.com>
-Subject: Re: [PATCH] Revert "virtio-scsi: Send "REPORTED LUNS CHANGED" sense
- data upon disk hotplug events"
-Message-ID: <v6xzholcgdem3c2jkkuhqtmhzo4wflvkh53nohcgtjpgkh5y2e@bb7vliper2f3>
-References: <20230705071523.15496-1-sgarzare@redhat.com>
- <i3od362o6unuimlqna3aaedliaabauj6g545esg7txidd4s44e@bkx5des6zytx>
- <CAJSP0QX5bf1Gp6mnQ0620FS61n=cY6n_ca7O-cAcH7pYCV2frw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <anushree.mathur@linux.vnet.ibm.com>)
+ id 1qJVKG-0007eM-8l; Wed, 12 Jul 2023 04:35:58 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36C8VXBw024287; Wed, 12 Jul 2023 08:34:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=L0SVpxriRWMFKVEd/sctR26ekFXxiBYM1e6DHYPpnR0=;
+ b=DmCCTnyXzyV6z4JgjLQbsuOX+/WOD5n35Pdp0Sd/ZX8UYlIO6jjOo0wahNux35bXTxRN
+ g4LR0TRx40iuJ1Lq7ZRm+nWfBIeAq0I2Krhi/6iOnvimcb/Dr4gBscTHNtMuOm57iXfb
+ OaAMwDGg/IpcTo3La36ywYC/twCU8Gs7sg3UQW/toaR6PkXZLFHvf+PzIfIUJzpq4vJP
+ 5rqI6CZ69m34MaU+Jw5AfDa/FQmiY/5s9FqGqmedodeIa+D+ozrkwYPXpSdv18rGLQXo
+ Ez6uGYW++G7aQWXwaaYMq6SBc4otBwnWuU/UaJC2adNrF6wG/wgO2hT+h01bnkwKvRrU Cg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rsrr8r2un-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 08:34:45 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36C8VspK025260;
+ Wed, 12 Jul 2023 08:34:44 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rsrr8r2uc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 08:34:44 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36C2MaNL011484; Wed, 12 Jul 2023 08:34:44 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rqk4mh9f7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 08:34:43 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36C8Yh8831719978
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 12 Jul 2023 08:34:43 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 419035803F;
+ Wed, 12 Jul 2023 08:34:43 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 222895805A;
+ Wed, 12 Jul 2023 08:34:40 +0000 (GMT)
+Received: from [9.171.52.107] (unknown [9.171.52.107])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 12 Jul 2023 08:34:39 +0000 (GMT)
+Message-ID: <a213011e-9dc7-194f-47c2-696ee867e0f1@linux.vnet.ibm.com>
+Date: Wed, 12 Jul 2023 14:04:38 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: qemu-system-ppc64 option -smp 2 broken with commit
+ 20b6643324a79860dcdfe811ffe4a79942bca21e
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, richard.henderson@linaro.org, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Nicholas Piggin <npiggin@gmail.com>, harshpb@linux.ibm.com
+References: <8780abd9-59ef-c452-bfee-c3bfbf275e51@linux.vnet.ibm.com>
+ <a474146f-cd1d-b91a-eefd-596a1d08f772@kaod.org> <87y1kadwqz.fsf@linaro.org>
+From: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+In-Reply-To: <87y1kadwqz.fsf@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: fmdtspU7paul-r_0efzWVNK8LtqMJqt8
+X-Proofpoint-GUID: nzLYcHE6HGKDwkyJf4JZ9ksvpEEiUorL
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <CAJSP0QX5bf1Gp6mnQ0620FS61n=cY6n_ca7O-cAcH7pYCV2frw@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-12_05,2023-07-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011
+ lowpriorityscore=0 suspectscore=0 mlxscore=0 spamscore=0 malwarescore=0
+ priorityscore=1501 phishscore=0 mlxlogscore=999 adultscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307120075
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=anushree.mathur@linux.vnet.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,170 +120,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 11, 2023 at 01:41:31PM -0400, Stefan Hajnoczi wrote:
->On Tue, 11 Jul 2023 at 13:06, Stefano Garzarella <sgarzare@redhat.com> wrote:
->>
->> CCing `./scripts/get_maintainer.pl -f drivers/scsi/virtio_scsi.c`,
->> since I found a few things in the virtio-scsi driver...
->>
->> FYI we have seen that Linux has problems with a QEMU patch for the
->> virtio-scsi device (details at the bottom of this email in the revert
->> commit message and BZ).
->>
->>
->> This is what I found when I looked at the Linux code:
->>
->> In scsi_report_sense() in linux/drivers/scsi/scsi_error.c linux calls
->> scsi_report_lun_change() that set `sdev_target->expecting_lun_change =
->> 1` when we receive a UNIT ATTENTION with REPORT LUNS CHANGED
->> (sshdr->asc == 0x3f && sshdr->ascq == 0x0e).
->>
->> When `sdev_target->expecting_lun_change = 1` is set and we call
->> scsi_check_sense(), for example to check the next UNIT ATTENTION, it
->> will return NEEDS_RETRY, that I think will cause the issues we are
->> seeing.
->>
->> `sdev_target->expecting_lun_change` is reset only in
->> scsi_decide_disposition() when `REPORT_LUNS` command returns with
->> SAM_STAT_GOOD.
->> That command is issued in scsi_report_lun_scan() called by
->> __scsi_scan_target(), called for example by scsi_scan_target(),
->> scsi_scan_host(), etc.
->>
->> So, checking QEMU, we send VIRTIO_SCSI_EVT_RESET_RESCAN during hotplug
->> and VIRTIO_SCSI_EVT_RESET_REMOVED during hotunplug. In both cases now we
->> send also the UNIT ATTENTION.
->>
->> In the virtio-scsi driver, when we receive VIRTIO_SCSI_EVT_RESET_RESCAN
->> (hotplug) we call scsi_scan_target() or scsi_add_device(). Both of them
->> will call __scsi_scan_target() at some points, sending `REPORT_LUNS`
->> command to the device. This does not happen for
->> VIRTIO_SCSI_EVT_RESET_REMOVED (hotunplug). Indeed if I remove the
->> UNIT ATTENTION from the hotunplug in QEMU, everything works well.
->>
->> So, I tried to add a scan also for VIRTIO_SCSI_EVT_RESET_REMOVED:
->>
->> diff --git a/drivers/scsi/virtio_scsi.c b/drivers/scsi/virtio_scsi.c
->> index bd5633667d01..c57658a63097 100644
->> --- a/drivers/scsi/virtio_scsi.c
->> +++ b/drivers/scsi/virtio_scsi.c
->> @@ -291,6 +291,7 @@ static void virtscsi_handle_transport_reset(struct virtio_scsi *vscsi,
->>                  }
->>                  break;
->>          case VIRTIO_SCSI_EVT_RESET_REMOVED:
->> +               scsi_scan_host(shost);
->>                  sdev = scsi_device_lookup(shost, 0, target, lun);
->>                  if (sdev) {
->>                          scsi_remove_device(sdev);
->>
->> This somehow helps, now linux only breaks if the plug/unplug frequency
->> is really high. If I put a 5 second sleep between plug/unplug events, it
->> doesn't break (at least for the duration of my test which has been
->> running for about 30 minutes, before it used to break after about a
->> minute).
->>
->> Another thing I noticed is that in QEMU maybe we should set the UNIT
->> ATTENTION first and then send the event on the virtqueue, because the
->> scan should happen after the unit attention, but I don't know if in any
->> case the unit attention is processed before the virtqueue.
->>
->> I mean something like this:
->>
->> diff --git a/hw/scsi/virtio-scsi.c b/hw/scsi/virtio-scsi.c
->> index 45b95ea070..13db40f4f3 100644
->> --- a/hw/scsi/virtio-scsi.c
->> +++ b/hw/scsi/virtio-scsi.c
->> @@ -1079,8 +1079,8 @@ static void virtio_scsi_hotplug(HotplugHandler *hotplug_dev, DeviceState *dev,
->>           };
->>
->>           virtio_scsi_acquire(s);
->> -        virtio_scsi_push_event(s, &info);
->>           scsi_bus_set_ua(&s->bus, SENSE_CODE(REPORTED_LUNS_CHANGED));
->> +        virtio_scsi_push_event(s, &info);
->>           virtio_scsi_release(s);
->>       }
->>   }
->> @@ -1111,8 +1111,8 @@ static void virtio_scsi_hotunplug(HotplugHandler *hotplug_dev, DeviceState *dev,
->>
->>       if (virtio_vdev_has_feature(vdev, VIRTIO_SCSI_F_HOTPLUG)) {
->>           virtio_scsi_acquire(s);
->> -        virtio_scsi_push_event(s, &info);
->>           scsi_bus_set_ua(&s->bus, SENSE_CODE(REPORTED_LUNS_CHANGED));
->> +        virtio_scsi_push_event(s, &info);
->>           virtio_scsi_release(s);
->>       }
->>   }
+Hi Alex,
+
+On 6/23/23 20:52, Alex Bennée wrote:
+> Cédric Le Goater <clg@kaod.org> writes:
 >
->That is racy. It's up to the guest whether the event virtqueue or the
->UNIT ATTENTION will be processed first.
-
-Yep, agree. I wrote above that UA could be processed in a different
-order. It was just another potential problem.
-
->
->If the device wants to ensure ordering then it must withhold the event
->until the driver has responded to the UNIT ATTENTION. That may not be
->a good idea though.
->
->I'd like to understand the root cause before choosing a solution.
-
-This last patch is not the solution.
-
-I think the root cause is in the Linux driver and SCSI subsystem.
-When the SCSI code receive an UA with REPORTED LUN CHANGED, it seems
-it expects that `REPORT_LUNS` command is issued (I tried to describe it
-in the first part).
-
-The problem is that the SCSI stack does not send this command, so we
-should do it in the driver. In fact we do it for
-VIRTIO_SCSI_EVT_RESET_RESCAN (hotplug), but not for
-VIRTIO_SCSI_EVT_RESET_REMOVED (hotunplug).
-
-I think that's where the problem is, but I don't know if that's what the
-specification expects, I haven't found much information on that :-(
-
->
->> At this point I think the problem is on the handling of the
->> VIRTIO_SCSI_EVT_RESET_REMOVED event in the virtio-scsi driver, where
->> somehow we have to redo the bus scan, but scsi_scan_host() doesn't seem
->> to be enough when the event rate is very high.
->
->Why is it necessary to rescan the whole bus instead of removing just
->the device that has been unplugged?
-
-I hope I covered in the previous answer.
-
->
->> I don't know if along with this fix, we also need to limit the rate in
->> QEMU somehow.
->
->Why is a high rate problematic?
-
-Could be related on the race that you mention before (also without that
-untested diff there should be the race)
-
->
->> Sorry for the length of this email, but I'm not familiar with SCSI and
->> wanted some suggestions on how to proceed.
+>> Hello Anushree,
 >>
->> Paolo, Stefan, Linux SCSI maintainers, any suggestion?
+>> On 6/23/23 13:09, Anushree Mathur wrote:
+>>> Hi everyone,
+>>> I was trying to boot rhel9.3 image with upstream qemu-system-ppc64
+>>> -smp 2 option and observed a segfault (qemu crash).
+>>> qemu command line used:
+>>> qemu-system-ppc64 -name Rhel9.3.ppc64le -smp 2 -m 16G -vga none
+>>> -nographic -machine pseries -cpu POWER10 -accel tcg -device
+>>> virtio-scsi-pci -drive
+>>> file=/home/rh93.qcow2,if=none,format=qcow2,id=hd0 -device
+>>> scsi-hd,drive=hd0 -boot c
+>>> After doing a git bisect, I found the first bad commit which
+>>> introduced this issue is below:
+>> Could you please open a gitlab issue on QEMU project ?
+>>
+>>   https://gitlab.com/qemu-project/qemu/-/issues
+> Is it broken generated code that faults or does the goto_tb code break
+> the execution sequence in some subtle way further down the line?
 >
->I don't know the Linux SCSI code well enough to say, sorry. I think we
->need input from someone familiar with the code.
-
-Thank you very much for the suggestions!
-I will try to ping the SCSI maintainers.
-
+> If you can isolate the guest address the output from:
 >
->However, QEMU is not at liberty to make changes that break existing
->guests. So even if it turns out the specs allow something or there is
->an existing bug in virtio_scsi.ko, we still can't break existing
->guests.
+>    -dfilter 0xBADADDR+0x100 -d in_asm,op,out_asm
 
-Yes, I can see that. We need to revert or somehow fix the device in
-QEMU.
+I tried as suggested above but didn't get much info collected.
+
+I have shared my observation on the gitlab issue page.
+
+https://gitlab.com/qemu-project/qemu/-/issues/1726
+
 
 Thanks,
-Stefano
 
+Anushree-Mathur
+
+> would be useful for the bug report. Although conceivably the out_asm
+> output might make sense at translation time and then be broken when it
+> is patched. Having rr on power would be really useful to debug this sort
+> of thing.
+>
+>> Thanks,
+>>
+>> C.
+>>
+>>> [qemu]# git bisect good
+>>> 20b6643324a79860dcdfe811ffe4a79942bca21e is the first bad commit
+>>> commit 20b6643324a79860dcdfe811ffe4a79942bca21e
+>>> Author: Richard Henderson <richard.henderson@linaro.org>
+>>> Date:   Mon Dec 5 17:45:02 2022 -0600
+>>>       tcg/ppc: Reorg goto_tb implementation
+>>>       The old ppc64 implementation replaces 2 or 4 insns, which
+>>> leaves a race
+>>>       condition in which a thread could be stopped at a PC in the middle of
+>>>       the sequence, and when restarted does not see the complete address
+>>>       computation and branches to nowhere.
+>>>       The new implemetation replaces only one insn, swapping between
+>>>               b       <dest>
+>>>       and
+>>>               mtctr   r31
+>>>       falling through to a general-case indirect branch.
+>>>       Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+>>>       Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>>    tcg/ppc/tcg-target.c.inc | 152
+>>> +++++++++++++----------------------------------
+>>>    tcg/ppc/tcg-target.h     |   3 +-
+>>>    2 files changed, 41 insertions(+), 114 deletions(-)
+>>> [qemu]#
+>>> Can someone please take a look and suggest a fix to resolve this
+>>> issue?
+>>> Thanks in advance.
+>>> Regards,
+>>> Anushree-Mathur
+>>>
+>
 
