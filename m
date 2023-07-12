@@ -2,79 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ADC7750A6D
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 16:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3BB9750AAD
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 16:18:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJaSs-0000Ip-I4; Wed, 12 Jul 2023 10:05:10 -0400
+	id 1qJaek-0002Z4-0o; Wed, 12 Jul 2023 10:17:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qJaSo-0000Ib-0w; Wed, 12 Jul 2023 10:05:06 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qJaSm-0007Az-87; Wed, 12 Jul 2023 10:05:05 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2b6a084a34cso108910101fa.1; 
- Wed, 12 Jul 2023 07:05:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689170701; x=1691762701;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pXsrLA553mcDwr35AuRdOwTzPIYa2mIwAS8Mw4v/BRQ=;
- b=otxNButNE+CSNMvaUqXaCFJQcWKaLnfoN4dLE/NeJ2N2C5gcMYj99+5lTGN2T6IuGX
- 2UwDSCDhLIBtLB1KKWvRKmiCq2qKM5krik+vclBHCe+wtpgWtR809d5Syxyf0ZPmpZKX
- d99Tb5YtKf7tyoxu/fNOMhAmASDLbc7XVB0KAWT2JA1GgCpHcQdCXzB2bp8zBZ/Wmf3i
- cZeIXIpeTR6kcKixVFhHH1Ky/6w1MyjdXazO7/NSvr8XHUJyDg/aGlUtvPdHzF/nJTC5
- Lr1hz6Q20QJoj5O+6pxY79xEcDxa4sXE7OIa1gljuWdu/VqygU+PP2hIViWvmqEvHVHD
- g3qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689170701; x=1691762701;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pXsrLA553mcDwr35AuRdOwTzPIYa2mIwAS8Mw4v/BRQ=;
- b=Jgy2/GbHU4672qvvx8+jKygf2bdp/ZjvTfssFttAmeaeqUslO0G/PSorR1szRdOxto
- 1oNFm+bPulSWYl1CvTTEA/JMXF23ATUrmIjeucfajy6wm0IiPWo9EONsuXLDHNQQjSA1
- hiQhx42KpOYc6VXVzoGrxJ6Qg+DjmerM8slaMim194F2E5edDgdtH4jKGCqnu4Kvv8F2
- O6GBMucCRC7tbf6+D5GNSC3+Rm47BQmvV4iEiQDpEgypr6NCWjM9Rpu2gl7LRluk6hGq
- kLdeJRJeqm4qQKP+qBYPvZycVemq/J47UbyxCc69SlKWSJzHSmCvoKpGwQhJkO7EeF71
- XqAg==
-X-Gm-Message-State: ABy/qLZLnUzc+oT44+HUlNStyT8pKkMzd+YC4On9BBANu9NptHlGNJY5
- gx9kmbD17nkdGeyWLd09vONbBGh/1Z8NBm+IL74=
-X-Google-Smtp-Source: APBJJlHf4vO6M+og0d8vTcSQz4oo2Yxvtu5QghQ7H4GQ3tW8htorIqIiSwEUDtbjQArmA5at1aghtvQggOnrgcCOocE=
-X-Received: by 2002:a2e:9909:0:b0:2b6:eefc:3e4f with SMTP id
- v9-20020a2e9909000000b002b6eefc3e4fmr16483313lji.21.1689170700941; Wed, 12
- Jul 2023 07:05:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qJaeh-0002We-2o
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 10:17:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qJaef-0003ff-Ed
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 10:17:22 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689171440;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=T+2JuoXQ/dY5epWWGbCNiK8tTanuvsVR9w6Lf/XxHs8=;
+ b=LCxVYM6b5aXbzczSTJbbe8OmCIumVhllWn11d5fYoLfjQdLTrqKQs3EjwCSEHGiae4yxC/
+ 2tHAYot9siTrfP45OD2gGlBTIRsIiUJk/pKx2bVMrlrHJyydZKe1UyYfYaI3MuEgnvx+0T
+ uf1m4OTql0qjwk42BdbAfodnE9gWfvU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-164-iREUdi0mP9-bLEMnuBnECw-1; Wed, 12 Jul 2023 10:17:18 -0400
+X-MC-Unique: iREUdi0mP9-bLEMnuBnECw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1A70C90EAA1;
+ Wed, 12 Jul 2023 14:15:37 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.162])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9317E40C2063;
+ Wed, 12 Jul 2023 14:15:36 +0000 (UTC)
+Date: Wed, 12 Jul 2023 10:15:35 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH] block: Fix pad_request's request restriction
+Message-ID: <20230712141535.GA215287@fedora>
+References: <20230609083316.24629-1-hreitz@redhat.com>
+ <20230711202321.GB154686@fedora>
+ <d4459ee1-bdea-bff0-ab99-b38de004c2a7@redhat.com>
 MIME-Version: 1.0
-References: <20230622010651.22698-1-yin31149@gmail.com>
- <CAJaqyWfr6XTz7qhMfYR7kJW_A409N7x6hcYQd2ypUD_p6kyc_g@mail.gmail.com>
- <CAKrof1O12p=7zf5jzJca0mtcyoYJHiR-5ubYLD1Q0aszWaKhoQ@mail.gmail.com>
- <20230710145208-mutt-send-email-mst@kernel.org>
- <CAKrof1PCqSKbLUy673eKF19w9_kAh3C6sdMC0nm-4BXUwAmktA@mail.gmail.com>
- <a33441e1-4e29-5e5d-33df-ffb52d3493ef@tls.msk.ru>
-In-Reply-To: <a33441e1-4e29-5e5d-33df-ffb52d3493ef@tls.msk.ru>
-From: Hawkins Jiawei <yin31149@gmail.com>
-Date: Wed, 12 Jul 2023 22:04:49 +0800
-Message-ID: <CAKrof1NUVxD5vajRmUu931gBPLK4utJWB_kVTHhROMv0OhKEiw@mail.gmail.com>
-Subject: Re: [PATCH] vdpa: Increase out buffer size for CVQ commands
-To: Michael Tokarev <mjt@tls.msk.ru>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Eugenio Perez Martin <eperezma@redhat.com>, jasowang@redhat.com,
- qemu-devel@nongnu.org, qemu-stable@nongnu.org, 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
- envelope-from=yin31149@gmail.com; helo=mail-lj1-x22d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="dPUW1oYuH0u0tqS5"
+Content-Disposition: inline
+In-Reply-To: <d4459ee1-bdea-bff0-ab99-b38de004c2a7@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,29 +82,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=E5=9C=A8 2023/7/12 18:45, Michael Tokarev =E5=86=99=E9=81=93:
-> 11.07.2023 04:48, Hawkins Jiawei wrote:
-> ..
->> Sorry for not mentioning that I have moved the patch to the patch series
->> titled "Vhost-vdpa Shadow Virtqueue _F_CTRL_RX commands support" at [1].
->> The reason for this move is that the bug in question should not be
->> triggered until the VIRTIO_NET_CTRL_MAC_TABLE_SET command is exposed by
->> this patch series.
->
-> Does this mean this particular change is not supposed to be applied to
-> -stable,
-> as the other change which exposes the bug isn't in any stable series?
 
-Yes, you are right.
+--dPUW1oYuH0u0tqS5
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This bug is related to the VIRTIO_NET_CTRL_MAC_TABLE_SET command in SVQ,
-and this command is not exposed in SVQ in any stable branch, so we do
-not need to apply the patch to the -stable branch.
+On Wed, Jul 12, 2023 at 09:41:05AM +0200, Hanna Czenczek wrote:
+> On 11.07.23 22:23, Stefan Hajnoczi wrote:
+> > On Fri, Jun 09, 2023 at 10:33:16AM +0200, Hanna Czenczek wrote:
+> > > bdrv_pad_request() relies on requests' lengths not to exceed SIZE_MAX,
+> > > which bdrv_check_qiov_request() does not guarantee.
+> > >=20
+> > > bdrv_check_request32() however will guarantee this, and both of
+> > > bdrv_pad_request()'s callers (bdrv_co_preadv_part() and
+> > > bdrv_co_pwritev_part()) already run it before calling
+> > > bdrv_pad_request().  Therefore, bdrv_pad_request() can safely call
+> > > bdrv_check_request32() without expecting error, too.
+> > >=20
+> > > There is one difference between bdrv_check_qiov_request() and
+> > > bdrv_check_request32(): The former takes an errp, the latter does not,
+> > > so we can no longer just pass &error_abort.  Instead, we need to check
+> > > the returned value.  While we do expect success (because the callers
+> > > have already run this function), an assert(ret =3D=3D 0) is not much =
+simpler
+> > > than just to return an error if it occurs, so let us handle errors by
+> > > returning them up the stack now.
+> > Is this patch intended to silence a Coverity warning or can this be
+> > triggered by a guest?
+>=20
+> Neither.=C2=A0 There was a Coverity warning about the `assert(*bytes <=3D
+> SIZE_MAX)`, which is always true on 32-bit architectures. Regardless of
+> Coverity, Peter inquired how bdrv_check_qiov_request() would guarantee th=
+is
+> condition (as the comments I=E2=80=99ve put above the assertions say).=C2=
+=A0 It doesn=E2=80=99t,
+> only bdrv_check_request32() does, which I was thinking of, and just confu=
+sed
+> the two.
 
-Thanks!
+It's unclear to me whether this patch silences a Coverity warning or
+not? You said "neither", but then you acknowledged there was a Coverity
+warning. Maybe "was" (past-tense) means something else already fixed it
+but I don't see any relevant commits in the git log.
 
->
-> Thanks,
->
-> /mjt
+> As the commit message says, all callers already run bdrv_check_request32(=
+),
+> so I expect this change to functionally be a no-op.=C2=A0 (That is why the
+> pre-patch code runs bdrv_check_qiov_request() with `&error_abort`.)
+
+Okay, this means a guest cannot trigger the assertion failure.
+
+Please mention the intent in the commit description: a code cleanup
+requested by Peter and/or a Coverity warning fix, but definitely not
+guest triggerable assertion failure.
+
+>=20
+> > I find this commit description and patch confusing. Instead of checking
+> > the actual SIZE_MAX value that bdrv_pad_request() relies on, we use a
+> > 32-bit offsets/lengths helper because it checks INT_MAX or SIZE_MAX (but
+> > really INT_MAX, because that's always smaller on host architectures that
+> > QEMU supports).
+>=20
+> I preferred to use a bounds-checking function that we already use for
+> requests, and that happens to be used to limit all I/O that ends up here =
+in
+> bdrv_pad_request() anyway, instead of adding a new specific limit.
+>=20
+> It doesn=E2=80=99t matter to me, though.=C2=A0 The callers already ensure=
+ that everything
+> is in bounds, so I=E2=80=99d be happy with anything, ranging from keeping=
+ the bare
+> assertions with no checks beforehand, over specifically checking SIZE_MAX
+> and returning an error then, to bdrv_check_request32().
+>=20
+> (I thought repeating the simple bounds check that all callers already did
+> for verbosity would be the most robust and obvious way to do it, but now =
+I=E2=80=99m
+> biting myself for not just using bare assertions annotated with =E2=80=9C=
+Caller must
+> guarantee this=E2=80=9D from the start...)
+
+Okay. I looked at the code more and don't see a cleanup for the overall
+problem of duplicated checks and type mismatches (size_t vs int64_t)
+that is appropriate for this patch.
+
+I'm okay with this fix, but please clarify the intent as mentioned above.
+
+>=20
+> Hanna
+>=20
+> > Vladimir: Is this the intended use of bdrv_check_request32()?
+> >=20
+> > > Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> > > Fixes: 18743311b829cafc1737a5f20bc3248d5f91ee2a
+> > >         ("block: Collapse padded I/O vecs exceeding IOV_MAX")
+> > > Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> > > ---
+> > >   block/io.c | 8 ++++++--
+> > >   1 file changed, 6 insertions(+), 2 deletions(-)
+> > > diff --git a/block/io.c b/block/io.c
+> > > index 30748f0b59..e43b4ad09b 100644
+> > > --- a/block/io.c
+> > > +++ b/block/io.c
+> > > @@ -1710,7 +1710,11 @@ static int bdrv_pad_request(BlockDriverState *=
+bs,
+> > >       int sliced_niov;
+> > >       size_t sliced_head, sliced_tail;
+> > > -    bdrv_check_qiov_request(*offset, *bytes, *qiov, *qiov_offset, &e=
+rror_abort);
+> > > +    /* Should have been checked by the caller already */
+> > > +    ret =3D bdrv_check_request32(*offset, *bytes, *qiov, *qiov_offse=
+t);
+> > > +    if (ret < 0) {
+> > > +        return ret;
+> > > +    }
+> > >       if (!bdrv_init_padding(bs, *offset, *bytes, write, pad)) {
+> > >           if (padded) {
+> > > @@ -1723,7 +1727,7 @@ static int bdrv_pad_request(BlockDriverState *b=
+s,
+> > >                                     &sliced_head, &sliced_tail,
+> > >                                     &sliced_niov);
+> > > -    /* Guaranteed by bdrv_check_qiov_request() */
+> > > +    /* Guaranteed by bdrv_check_request32() */
+> > >       assert(*bytes <=3D SIZE_MAX);
+> > >       ret =3D bdrv_create_padded_qiov(bs, pad, sliced_iov, sliced_nio=
+v,
+> > >                                     sliced_head, *bytes);
+> > > --=20
+> > > 2.40.1
+> > >=20
+>=20
+
+--dPUW1oYuH0u0tqS5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSutYYACgkQnKSrs4Gr
+c8gaiAf/YzP/8OoBB+ex0dzig8Vs2+NIk+onBOZDw2VJ6L5ZZGA1KLXgjaKYMnKX
+9odDc195hPN8/3bJ/5aAczOAGf7GPMBrtrO4wkiu6Uu583J641MB+kuxbci2vqgJ
+ztyFVUd2u6hdKoeolKotwAqcnt5xFowB6AmDcqtnqFXBZBKPvUS4BR8doTdxKT97
+w3/6rggJAHCm0tf76A6q0gq3yC/r/WYILQqQc+gBnVVSk0BPbAU3sm9SRXTQaeXv
+4CqIIhe18Jsd4+txOSoduRCuMXClux7SYGXVflqxqZkAKpZqU2bqAmD77RR0rkUQ
+uBdcdgze1LyJhZe5k9N0/rFBXz45Ug==
+=aLlU
+-----END PGP SIGNATURE-----
+
+--dPUW1oYuH0u0tqS5--
+
 
