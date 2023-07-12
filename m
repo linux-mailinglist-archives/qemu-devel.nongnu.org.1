@@ -2,87 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEAFC75063C
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 13:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C1F750681
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 13:44:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJY8p-0002wJ-Av; Wed, 12 Jul 2023 07:36:19 -0400
+	id 1qJYGC-0004l3-6z; Wed, 12 Jul 2023 07:43:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1qJY8m-0002vp-LC
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:36:16 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
- id 1qJY8l-0005JI-0X
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:36:16 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1b8ad356fe4so37325105ad.2
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 04:36:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689161773; x=1691753773;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bvSF4OJBDEjBub38b0B+LTWNUxzYWnJkZFO4j3653KY=;
- b=j1weV4yuLdvpmmR+52mOSDgOecnr5wWIo9ot75EuQDojk1+4OOooi59PxKB3FghO7f
- nG55j1GqnOdz0fqboxTCWtmvJnaiCprDC8lhz4dolt7RAO9qUkI4iYdq9uvzYeBXRqql
- p0e4tufJROcDYaQNEeqtTPwU537eJ2bvLD3nCoO8IrPK82M4qs3Zu09/bOEFA/qS9Z7y
- rBtB88DLoEWqBH0CcjngYsXSUxQzxPnzW1CA44jTRP1XAEBLqQZKB0DWKfau55za9QtL
- 9vpS7/0Up7cvISBejm/FbdVUAulmYQvZlTk6yoapoD+m8Y58m/r2igh+2BHcGWEHgGaN
- R7aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689161773; x=1691753773;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bvSF4OJBDEjBub38b0B+LTWNUxzYWnJkZFO4j3653KY=;
- b=Z5NSsTSp4GiBcNVjyGtYXFcdNKvenyeV/qCchYnLEV/odk2F3ThCx48sQ8tndwMB37
- Helf+rVIZ0E+wM9sVeI/fdcVhAUC46rwIfAo6BgjbxK82uK8mIgCKCP2o4i6dJCLtTXj
- kwVvZuKpjmYVLjQPszdRZ4YVxwuU8kJRLo2amWykV+dhqkGbIB6VhZ83d/HBkDNEugS2
- DP10PzkImKLJSCwwvAirqdw61s5i10DSt4JReVx6EUogZ7Lu/adjFknVDHRDzsSo/u5s
- 7cbE7wKu07r0b8w6NYdv+lB1aAkqB+jupL6FIcFXlBEXkhFaxLQAjiu2rd83MMF00MNF
- in/A==
-X-Gm-Message-State: ABy/qLZcFTyyGs/o8e7IPDpVsSI+B8bDzAPhdvWxRbE6BBMDOTD+wvT8
- q/1x+4idS2g345aDTnmS0Sc=
-X-Google-Smtp-Source: APBJJlHMd5VnbrMUgjcZEJkSxSyxS8OaTfi7NNPNkuPMgbG1844sTsFXXoLZWR7NKghFRUp9/p708w==
-X-Received: by 2002:a17:902:9a4b:b0:1b3:fb75:dd24 with SMTP id
- x11-20020a1709029a4b00b001b3fb75dd24mr14234004plv.48.1689161772933; 
- Wed, 12 Jul 2023 04:36:12 -0700 (PDT)
-Received: from [157.82.204.253] ([157.82.204.253])
- by smtp.gmail.com with ESMTPSA id
- ix13-20020a170902f80d00b001b896686c78sm3751850plb.66.2023.07.12.04.36.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Jul 2023 04:36:12 -0700 (PDT)
-Message-ID: <924819be-9181-7119-5f3e-6df0aa3e432a@gmail.com>
-Date: Wed, 12 Jul 2023 20:36:09 +0900
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1qJYGA-0004jC-BW
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:43:54 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1qJYG8-00079o-5J
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:43:54 -0400
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36C8dfp9005676; Wed, 12 Jul 2023 11:43:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding : content-type; s=qcppdkim1;
+ bh=F4THtZnbdSbiDQ/zjq+LrXDBYTnQ6qecOcSoFdLw1F4=;
+ b=gTVoMvwPAICZgABl9YCiBVZV1AMGVEJxlmscbs7+DBqnUE3D+89xYtLWbTdmvoe5M7RR
+ cUfYB9gMmHNpR48GGCpB64DlZxF/gt/xMVxO4lEyS0yplE1+gR3VYeXtqIuNP8SqIM78
+ ebWTk8GlVBcnVpdtuWXMLazAxQYnz3Sod+6Ng7fWG2lvhqgSQi2kyThFYd13xc2u6q2H
+ itZ0Vth/7x0nUAbTEIvrrep49uSDPA9PRCyy7Nsj5gwRfjCP2FmBcv3qAk/vwRMsiyom
+ /DOJOrqwJh2nobrC03v/H3jcQTg8LUB9Fs2N6Djtfj85kZZB7rZKw72gyyM7XC5KLymc 4A== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rsgar95um-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 11:43:46 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
+ [10.47.209.196])
+ by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 36CBhjdN029291
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 11:43:45 GMT
+Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Wed, 12 Jul 2023 04:43:45 -0700
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+To: <quic_mathbern@quicinc.com>
+CC: <bcain@quicinc.com>, <ltaylorsimpson@gmail.com>, <qemu-devel@nongnu.org>, 
+ <quic_mliebel@quicinc.com>, <richard.henderson@linaro.org>
+Subject: Re: [PATCH v3] Hexagon: move GETPC() calls to top level helpers
+Date: Wed, 12 Jul 2023 08:43:32 -0300
+Message-ID: <a18e346fc0e38f1014f5484e0b1ef27a7bc8cb41.1689162018.git.quic_mathbern@quicinc.com>
+X-Mailer: git-send-email 2.37.2
+In-Reply-To: <2c74c3696946edba7cc5b2942cf296a5af532052.1689070412.git.quic_mathbern@quicinc.com>
+References: <2c74c3696946edba7cc5b2942cf296a5af532052.1689070412.git.quic_mathbern@quicinc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v1 5/9] gfxstream + rutabaga prep: added need defintions, 
- fields, and options
-Content-Language: en-US
-To: Gurchetan Singh <gurchetansingh@chromium.org>, qemu-devel@nongnu.org
-Cc: --cc=kraxel@redhat.com, marcandre.lureau@redhat.com,
- dmitry.osipenko@collabora.com, ray.huang@amd.com, alex.bennee@linaro.org,
- shentey@gmail.com
-References: <20230711025649.708-1-gurchetansingh@chromium.org>
- <20230711025649.708-6-gurchetansingh@chromium.org>
-From: Akihiko Odaki <akihiko.odaki@gmail.com>
-In-Reply-To: <20230711025649.708-6-gurchetansingh@chromium.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=akihiko.odaki@gmail.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: I0nIBWG0jqmeZpmeGR9zmkIhXDFKXUcJ
+X-Proofpoint-ORIG-GUID: I0nIBWG0jqmeZpmeGR9zmkIhXDFKXUcJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-12_06,2023-07-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=0
+ mlxlogscore=694 spamscore=0 priorityscore=1501 impostorscore=0
+ phishscore=0 clxscore=1015 adultscore=0 malwarescore=0 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307120104
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_mathbern@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.11, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,81 +99,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/07/11 11:56, Gurchetan Singh wrote:
-> This modifies the common virtio-gpu.h file have the fields and
-> defintions needed by gfxstream/rutabaga, by VirtioGpuRutabaga.
+Matheus Tavares Bernardino <quic_mathbern@quicinc.com> wrote:
+>
+> Subject: [PATCH v3] Hexagon: move GETPC() calls to top level helpers
 
-s/VirtioGpuRutabaga/VirtIOGPURutabaga/g since VirtIOGPU is spelled this 
-way everywhere else.
+Apologies, I had some problems with my send-email and server
+configuration, thus ended up sending this v3 multiple times. Please
+ignore the others and consider only this one (i.e.
+https://lore.kernel.org/qemu-devel/2c74c3696946edba7cc5b2942cf296a5af532052.1689070412.git.quic_mathbern@quicinc.com/).
 
-> 
-> - a colon separated list of capset names, defined in the virtio spec
-> - a wayland socket path to enable guest Wayland passthrough
-> 
-> The command to run these would be:
-> 
-> -device virtio-vga-rutabaga,capset_names=gfxstream:cross-domain, \
->          wayland_socket_path=/run/user/1000/wayland-0,hostmem=8G  \
-> 
-> Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
-> ---
-> v2: void *rutabaga --> struct rutabaga *rutabaga (Akihiko)
->      have a separate rutabaga device instead of using GL device (Bernard)
-> 
->   include/hw/virtio/virtio-gpu.h | 21 +++++++++++++++++++++
->   1 file changed, 21 insertions(+)
-> 
-> diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-> index 5927ca1864..5a1b15ccb9 100644
-> --- a/include/hw/virtio/virtio-gpu.h
-> +++ b/include/hw/virtio/virtio-gpu.h
-> @@ -38,6 +38,9 @@ OBJECT_DECLARE_SIMPLE_TYPE(VirtIOGPUGL, VIRTIO_GPU_GL)
->   #define TYPE_VHOST_USER_GPU "vhost-user-gpu"
->   OBJECT_DECLARE_SIMPLE_TYPE(VhostUserGPU, VHOST_USER_GPU)
->   
-> +#define TYPE_VIRTIO_GPU_RUTABAGA "virtio-gpu-rutabaga-device"
-> +OBJECT_DECLARE_SIMPLE_TYPE(VirtioGpuRutabaga, VIRTIO_GPU_RUTABAGA)
-> +
->   struct virtio_gpu_simple_resource {
->       uint32_t resource_id;
->       uint32_t width;
-> @@ -94,6 +97,7 @@ enum virtio_gpu_base_conf_flags {
->       VIRTIO_GPU_FLAG_DMABUF_ENABLED,
->       VIRTIO_GPU_FLAG_BLOB_ENABLED,
->       VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
-> +    VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
->   };
->   
->   #define virtio_gpu_virgl_enabled(_cfg) \
-> @@ -108,6 +112,8 @@ enum virtio_gpu_base_conf_flags {
->       (_cfg.flags & (1 << VIRTIO_GPU_FLAG_BLOB_ENABLED))
->   #define virtio_gpu_context_init_enabled(_cfg) \
->       (_cfg.flags & (1 << VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED))
-> +#define virtio_gpu_rutabaga_enabled(_cfg) \
-> +    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
->   #define virtio_gpu_hostmem_enabled(_cfg) \
->       (_cfg.hostmem > 0)
->   
-> @@ -229,6 +235,21 @@ struct VhostUserGPU {
->       bool backend_blocked;
->   };
->   
-> +struct rutabaga;
-> +
-> +struct VirtioGpuRutabaga {
-> +    struct VirtIOGPU parent_obj;
-> +
-> +    bool rutabaga_active;
-> +    char *capset_names;
-> +    char *wayland_socket_path;
-> +    char *wsi;
-> +    bool headless;
-> +    uint32_t num_capsets;
-> +    struct rutabaga *rutabaga;
-> +    AioContext *ctx;
-> +};
-> +
->   #define VIRTIO_GPU_FILL_CMD(out) do {                                   \
->           size_t s;                                                       \
->           s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,          \
+Thanks,
+Matheus
 
