@@ -2,62 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A19750145
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 937FB750127
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:19:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJV3Q-0004Bk-UY; Wed, 12 Jul 2023 04:18:33 -0400
+	id 1qJV3S-0004Cn-N5; Wed, 12 Jul 2023 04:18:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3M-0004BG-OZ
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3P-0004C1-P1
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3L-0000YB-3R
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:28 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3O-0000Yy-5w
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689149906;
+ s=mimecast20190719; t=1689149908;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HMePLPi0gH9WDMdfflO7zekJYOqHKWMTiGF4gUwtF/Q=;
- b=R+6TGshslmbqU9ST13X8b8Y45gh22My+LgtgDFkjV7bSd4xioKovgMThbHoMlkHytPIFgO
- OU8uvgZdF9Kqeux/Vkz7M08lRg9V6bj63rDEszckIuyoovoKK8Wjk/K0K+3BOaadUXKycV
- UTvh0mZxLFmkQaHr/0MUweweWZ36lLE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-57-bBWCkvA_M0CeDcJflePZOw-1; Wed, 12 Jul 2023 04:18:22 -0400
-X-MC-Unique: bBWCkvA_M0CeDcJflePZOw-1
+ bh=VrCfSebggGFbD66fy7MfMP1e1eR5p2C++NNqwGAX5mM=;
+ b=E9MSU1bW+aspFucmkG/Bqdxq/ZUAyVXbMSg85p9FXdZ5IN3EM6J9omq1Nl0EPfABT+qavh
+ WKSmDOBNMNhzfxW67iBUDhjo3m684ymhPKXWg6+14UOolkQu5t0ZFLwq+WMNBEr9+09V3e
+ P2kB/v7oziHjGMQhaNZ7VugHwmXAm7Q=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-384-2A0yn001OYOrHQOZ0q2p_A-1; Wed, 12 Jul 2023 04:18:25 -0400
+X-MC-Unique: 2A0yn001OYOrHQOZ0q2p_A-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 99CF81044589;
- Wed, 12 Jul 2023 08:18:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5ABC22808E65;
+ Wed, 12 Jul 2023 08:18:23 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.193.77])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EB509492C13;
- Wed, 12 Jul 2023 08:18:19 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E1FD04CD0C9;
+ Wed, 12 Jul 2023 08:18:21 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Peter Xu <peterx@redhat.com>, Mario Casquero <mcasquer@redhat.com>,
- Juan Quintela <quintela@redhat.com>
-Subject: [GIT PULL 13/21] migration/ram: Expose ramblock_is_ignored() as
- migrate_ram_is_ignored()
-Date: Wed, 12 Jul 2023 10:17:42 +0200
-Message-ID: <20230712081750.80852-14-david@redhat.com>
+ Mario Casquero <mcasquer@redhat.com>, Juan Quintela <quintela@redhat.com>
+Subject: [GIT PULL 14/21] virtio-mem: Support "x-ignore-shared" migration
+Date: Wed, 12 Jul 2023 10:17:43 +0200
+Message-ID: <20230712081750.80852-15-david@redhat.com>
 In-Reply-To: <20230712081750.80852-1-david@redhat.com>
 References: <20230712081750.80852-1-david@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,134 +80,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virtio-mem wants to know whether it should not mess with the RAMBlock
-content (e.g., discard RAM, preallocate memory) on incoming migration.
+To achieve desired "x-ignore-shared" functionality, we should not
+discard all RAM when realizing the device and not mess with
+preallocation/postcopy when loading device state. In essence, we should
+not touch RAM content.
 
-So let's expose that function as migrate_ram_is_ignored() in
-migration/misc.h
+As "x-ignore-shared" gets set after realizing the device, we cannot
+rely on that. Let's simply skip discarding of RAM on incoming migration.
+Note that virtio_mem_post_load() will call
+virtio_mem_restore_unplugged() -- unless "x-ignore-shared" is set. So
+once migration finished we'll have a consistent state.
 
-Message-ID: <20230706075612.67404-4-david@redhat.com>
-Acked-by: Peter Xu <peterx@redhat.com>
+The initial system reset will also not discard any RAM, because
+virtio_mem_unplug_all() will not call virtio_mem_unplug_all() when no
+memory is plugged (which is the case before loading the device state).
+
+Note that something like VM templating -- see commit b17fbbe55cba
+("migration: allow private destination ram with x-ignore-shared") -- is
+currently incompatible with virtio-mem and ram_block_discard_range() will
+warn in case a private file mapping is supplied by virtio-mem.
+
+For VM templating with virtio-mem, it makes more sense to either
+(a) Create the template without the virtio-mem device and hotplug a
+    virtio-mem device to the new VM instances using proper own memory
+    backend.
+(b) Use a virtio-mem device that doesn't provide any memory in the
+    template (requested-size=0) and use private anonymous memory.
+
+Message-ID: <20230706075612.67404-5-david@redhat.com>
 Tested-by: Mario Casquero <mcasquer@redhat.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/migration/misc.h |  1 +
- migration/postcopy-ram.c |  2 +-
- migration/ram.c          | 14 +++++++-------
- migration/ram.h          |  3 +--
- 4 files changed, 10 insertions(+), 10 deletions(-)
+ hw/virtio/virtio-mem.c | 47 ++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 38 insertions(+), 9 deletions(-)
 
-diff --git a/include/migration/misc.h b/include/migration/misc.h
-index 5ebe13b4b9..7dcc0b5c2c 100644
---- a/include/migration/misc.h
-+++ b/include/migration/misc.h
-@@ -40,6 +40,7 @@ int precopy_notify(PrecopyNotifyReason reason, Error **errp);
- 
- void ram_mig_init(void);
- void qemu_guest_free_page_hint(void *addr, size_t len);
-+bool migrate_ram_is_ignored(RAMBlock *block);
- 
- /* migration/block.c */
- 
-diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index 5615ec29eb..29aea9456d 100644
---- a/migration/postcopy-ram.c
-+++ b/migration/postcopy-ram.c
-@@ -408,7 +408,7 @@ bool postcopy_ram_supported_by_host(MigrationIncomingState *mis, Error **errp)
-     /*
-      * We don't support postcopy with some type of ramblocks.
-      *
--     * NOTE: we explicitly ignored ramblock_is_ignored() instead we checked
-+     * NOTE: we explicitly ignored migrate_ram_is_ignored() instead we checked
-      * all possible ramblocks.  This is because this function can be called
-      * when creating the migration object, during the phase RAM_MIGRATABLE
-      * is not even properly set for all the ramblocks.
-diff --git a/migration/ram.c b/migration/ram.c
-index 5283a75f02..0ada6477e8 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -194,7 +194,7 @@ static bool postcopy_preempt_active(void)
-     return migrate_postcopy_preempt() && migration_in_postcopy();
- }
- 
--bool ramblock_is_ignored(RAMBlock *block)
-+bool migrate_ram_is_ignored(RAMBlock *block)
- {
-     return !qemu_ram_is_migratable(block) ||
-            (migrate_ignore_shared() && qemu_ram_is_shared(block)
-@@ -696,7 +696,7 @@ static void pss_find_next_dirty(PageSearchStatus *pss)
-     unsigned long size = rb->used_length >> TARGET_PAGE_BITS;
-     unsigned long *bitmap = rb->bmap;
- 
--    if (ramblock_is_ignored(rb)) {
-+    if (migrate_ram_is_ignored(rb)) {
-         /* Points directly to the end, so we know no dirty page */
-         pss->page = size;
+diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+index a922c21380..3f41e00e74 100644
+--- a/hw/virtio/virtio-mem.c
++++ b/hw/virtio/virtio-mem.c
+@@ -18,6 +18,7 @@
+ #include "sysemu/numa.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/reset.h"
++#include "sysemu/runstate.h"
+ #include "hw/virtio/virtio.h"
+ #include "hw/virtio/virtio-bus.h"
+ #include "hw/virtio/virtio-mem.h"
+@@ -901,11 +902,23 @@ static void virtio_mem_device_realize(DeviceState *dev, Error **errp)
          return;
-@@ -780,7 +780,7 @@ unsigned long colo_bitmap_find_dirty(RAMState *rs, RAMBlock *rb,
- 
-     *num = 0;
- 
--    if (ramblock_is_ignored(rb)) {
-+    if (migrate_ram_is_ignored(rb)) {
-         return size;
      }
  
-@@ -2260,7 +2260,7 @@ static int ram_save_host_page(RAMState *rs, PageSearchStatus *pss)
-     unsigned long start_page = pss->page;
-     int res;
+-    ret = ram_block_discard_range(rb, 0, qemu_ram_get_used_length(rb));
+-    if (ret) {
+-        error_setg_errno(errp, -ret, "Unexpected error discarding RAM");
+-        ram_block_coordinated_discard_require(false);
+-        return;
++    /*
++     * We don't know at this point whether shared RAM is migrated using
++     * QEMU or migrated using the file content. "x-ignore-shared" will be
++     * configured after realizing the device. So in case we have an
++     * incoming migration, simply always skip the discard step.
++     *
++     * Otherwise, make sure that we start with a clean slate: either the
++     * memory backend might get reused or the shared file might still have
++     * memory allocated.
++     */
++    if (!runstate_check(RUN_STATE_INMIGRATE)) {
++        ret = ram_block_discard_range(rb, 0, qemu_ram_get_used_length(rb));
++        if (ret) {
++            error_setg_errno(errp, -ret, "Unexpected error discarding RAM");
++            ram_block_coordinated_discard_require(false);
++            return;
++        }
+     }
  
--    if (ramblock_is_ignored(pss->block)) {
-+    if (migrate_ram_is_ignored(pss->block)) {
-         error_report("block %s should not be migrated !", pss->block->idstr);
+     virtio_mem_resize_usable_region(vmem, vmem->requested_size, true);
+@@ -977,10 +990,6 @@ static int virtio_mem_post_load(void *opaque, int version_id)
+     RamDiscardListener *rdl;
+     int ret;
+ 
+-    if (vmem->prealloc && !vmem->early_migration) {
+-        warn_report("Proper preallocation with migration requires a newer QEMU machine");
+-    }
+-
+     /*
+      * We started out with all memory discarded and our memory region is mapped
+      * into an address space. Replay, now that we updated the bitmap.
+@@ -993,6 +1002,18 @@ static int virtio_mem_post_load(void *opaque, int version_id)
+         }
+     }
+ 
++    /*
++     * If shared RAM is migrated using the file content and not using QEMU,
++     * don't mess with preallocation and postcopy.
++     */
++    if (migrate_ram_is_ignored(vmem->memdev->mr.ram_block)) {
++        return 0;
++    }
++
++    if (vmem->prealloc && !vmem->early_migration) {
++        warn_report("Proper preallocation with migration requires a newer QEMU machine");
++    }
++
+     if (migration_in_incoming_postcopy()) {
          return 0;
      }
-@@ -3347,7 +3347,7 @@ static inline RAMBlock *ram_block_from_stream(MigrationIncomingState *mis,
-         return NULL;
+@@ -1025,6 +1046,14 @@ static int virtio_mem_post_load_early(void *opaque, int version_id)
+         return 0;
      }
  
--    if (ramblock_is_ignored(block)) {
-+    if (migrate_ram_is_ignored(block)) {
-         error_report("block %s should not be migrated !", id);
-         return NULL;
-     }
-@@ -3958,7 +3958,7 @@ static int ram_load_precopy(QEMUFile *f)
-                     }
-                     if (migrate_ignore_shared()) {
-                         hwaddr addr = qemu_get_be64(f);
--                        if (ramblock_is_ignored(block) &&
-+                        if (migrate_ram_is_ignored(block) &&
-                             block->mr->addr != addr) {
-                             error_report("Mismatched GPAs for block %s "
-                                          "%" PRId64 "!= %" PRId64,
-@@ -4254,7 +4254,7 @@ static void ram_mig_ram_block_resized(RAMBlockNotifier *n, void *host,
-     RAMBlock *rb = qemu_ram_block_from_host(host, false, &offset);
-     Error *err = NULL;
- 
--    if (ramblock_is_ignored(rb)) {
++    /*
++     * If shared RAM is migrated using the file content and not using QEMU,
++     * don't mess with preallocation and postcopy.
++     */
 +    if (migrate_ram_is_ignored(rb)) {
-         return;
-     }
- 
-diff --git a/migration/ram.h b/migration/ram.h
-index ea1f3c25b5..145c915ca7 100644
---- a/migration/ram.h
-+++ b/migration/ram.h
-@@ -36,11 +36,10 @@
- extern XBZRLECacheStats xbzrle_counters;
- extern CompressionStats compression_counters;
- 
--bool ramblock_is_ignored(RAMBlock *block);
- /* Should be holding either ram_list.mutex, or the RCU lock. */
- #define RAMBLOCK_FOREACH_NOT_IGNORED(block)            \
-     INTERNAL_RAMBLOCK_FOREACH(block)                   \
--        if (ramblock_is_ignored(block)) {} else
-+        if (migrate_ram_is_ignored(block)) {} else
- 
- #define RAMBLOCK_FOREACH_MIGRATABLE(block)             \
-     INTERNAL_RAMBLOCK_FOREACH(block)                   \
++        return 0;
++    }
++
+     /*
+      * We restored the bitmap and verified that the basic properties
+      * match on source and destination, so we can go ahead and preallocate
 -- 
 2.41.0
 
