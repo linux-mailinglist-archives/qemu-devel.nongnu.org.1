@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1D574FF0C
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C4F74FF0D
 	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 08:09:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJT1W-0000Z1-Dy; Wed, 12 Jul 2023 02:08:26 -0400
+	id 1qJT1p-0000cu-EP; Wed, 12 Jul 2023 02:08:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJT1N-0000YO-LI
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 02:08:19 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJT1W-0000ZM-B7
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 02:08:27 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJT1M-0007Ad-67
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 02:08:17 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-51cff235226so847340a12.0
- for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 23:08:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJT1T-0007UD-46
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 02:08:25 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-99364ae9596so828508766b.1
+ for <qemu-devel@nongnu.org>; Tue, 11 Jul 2023 23:08:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689142094; x=1691734094;
+ d=linaro.org; s=google; t=1689142100; x=1691734100;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GS0NAFoYmodsd+bnZXz/vhH/Pb85MlJHayRsbvu1zWo=;
- b=johqK0BgGk1RALTvmpHMWxHHDmwvH51EXfVsu7J72qvNUINYJIca1/FNFYpouGjuCg
- LlcmcanRY/dAp3pCZC+y9rx4gluC9dmkGFRdL4o2z0wjnlXLsSMEn4mff5dF/Xx2Z9XT
- xHOvFC9ZwGyEkb12SD4gE6YHHc9a6W2RllLIpckkQynZr8XOvKN/IDbjT6QWmVrFKHWG
- QtZDJECh2//pjWmeYHTNGtjYnO7jO6+cnD2kZlo8BxCZj7zyZOvKuhOmyIHZqQuXaN4T
- OAwuGPoCbBTgzV810RTzAjR0ntO5DzjaplfcdPjzJ/yDiS2fU0L5C2f50+ktw9YQQH2f
- x80Q==
+ bh=23kT9O/dEUBttMJdXxI9Sf+c95dROPXelirqaPaxH6I=;
+ b=OU4N2bYIe4wYQngzhBzLF7fkqJ68gGY0NLQUTNLija0WDiTqZgL9SUzQ0aiZzJ3riO
+ JDbFw07t7mIYE4BTdKCJlsZ6uSAoOiPsxoxBnz4kuejNxedOHJyWwu+fxacncAByRBAr
+ PjlzgGRWo9WX1Dl2X9eyxUHWwHppyI/al3Usb6C8oYsh7QX14UoQC/IPacB6az6tXYH/
+ YzvfyUDT5DjXHLn7z8qKjLXoGe3Y1+TXMZgAiQD4jQQcvaDnwM+0O+iXluy2yoqeE1pI
+ A+iwf2N/dssSlGL3zUa9RaCux79U9Ar71XvT6Pu3rqEH9Lb/qTfc1Gn+3IOk2BxszF0J
+ mezA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689142094; x=1691734094;
+ d=1e100.net; s=20221208; t=1689142100; x=1691734100;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GS0NAFoYmodsd+bnZXz/vhH/Pb85MlJHayRsbvu1zWo=;
- b=dleZ4+lvXoEfpeWNIGUmAY5RvAUamY30kOFszKT7xiVPqUKaTDmDOtLgJF1D6Aftlx
- 2KuvvZuy3DtCxHSmPq88apGphl6xAP5kWKj3kbuAdK4nelcfrNhS13USenZfHsch/7v2
- IKrMBRgeXaPy92OI1gTpcMZLIKLsL3U0XO55SQT0hWOnkuX8RPf9L7S2SRBRsYyoLhyI
- GPl7/th/B8g/FusHLy4+BLZahentKtHLWHkveaET6zu1EjggHSQv4ZH+Ln3UFzjW2489
- qRF1XOfz351KPXN168ERSOkQ9O7vU6ggzWyA6y4eNw94fvoZqARJyj03ZILVNunRsL3G
- ty6w==
-X-Gm-Message-State: ABy/qLaFAOW5MZ2BfvzUs7WDEfUHT8dDsMyX0kgA/fyDPHsAxWvdZKXC
- cc5H5li4b/NWksOvB0cF4nn/tMbHrC27D8JSiLs=
-X-Google-Smtp-Source: APBJJlE69iLa4F4eokqbXTQdKEAr4n6s2/CgR4JXlp8vWkLQy1KNOY1Xfd1BcB7GR5SKfzLlc3q1sg==
-X-Received: by 2002:aa7:c98a:0:b0:51e:227c:9492 with SMTP id
- c10-20020aa7c98a000000b0051e227c9492mr1045019edt.20.1689142094464; 
- Tue, 11 Jul 2023 23:08:14 -0700 (PDT)
+ bh=23kT9O/dEUBttMJdXxI9Sf+c95dROPXelirqaPaxH6I=;
+ b=SfwM6PmgspUDeZqTh1NHGEEv5lD+jK7HsQ5VkPNsOiX/+LL8pSAGgCiPVbFAziORNL
+ 8HKFNIRF+I4pubWCG42l2jaqjcf9Bj5TMSfcw6AmtWBJk8d/c/7kPQZK63/A4XA8DsHv
+ I9kPc6kB3FvG5Cwlk4Rb13ZoQJ/hQ4ouIfiatMbGpI+vZ9Zs2ixRjG9nJWNVGkwXW/9C
+ NGdUYhJIzjwq5y5QDGkbWcsYdt+6StEDDuzI0+B/pnu9YB5qLA2VWLihEVjbcAfHe4sC
+ HCqkJHemMhgx55wKxSsdBzUfanT2ZkTAzNpOjw0W44StaGSTauyd9ijIn5Za/jiglqEM
+ ZPNA==
+X-Gm-Message-State: ABy/qLYHSgul/OMZnd6FGwolbjQ2nJBFCXkMzFfc65gktj0ktU1Zm4ec
+ 6dftC0UaeQdYw15/5SU51wdd6BoVGzUIX4s/Znw=
+X-Google-Smtp-Source: APBJJlFQIHW4A1PQVWM8XeCWKrBbRdkq65ON24WD3EoEzd6VLedB17Q/sRCuXA03Gwam01lxmW//Kg==
+X-Received: by 2002:a17:906:1114:b0:988:a578:4d65 with SMTP id
+ h20-20020a170906111400b00988a5784d65mr15939574eja.32.1689142100088; 
+ Tue, 11 Jul 2023 23:08:20 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.194.156])
  by smtp.gmail.com with ESMTPSA id
- k2-20020aa7d8c2000000b0051e2809395bsm2216138eds.63.2023.07.11.23.08.13
+ dc21-20020a170906c7d500b00988b86d6c7csm2041132ejb.132.2023.07.11.23.08.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 11 Jul 2023 23:08:14 -0700 (PDT)
+ Tue, 11 Jul 2023 23:08:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Aurelien Jarno <aurelien@aurel32.net>,
@@ -61,18 +61,17 @@ Cc: Aurelien Jarno <aurelien@aurel32.net>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>, Siarhei Volkau <lis8215@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Craig Janeczek <jancraig@amazon.com>
-Subject: [PATCH-for-8.1 1/3] target/mips/mxu: Replace magic array size by its
- definition
-Date: Wed, 12 Jul 2023 08:08:04 +0200
-Message-Id: <20230712060806.82323-2-philmd@linaro.org>
+Subject: [PATCH-for-8.1 2/3] target/mips/mxu: Avoid overrun in gen_mxu_S32SLT()
+Date: Wed, 12 Jul 2023 08:08:05 +0200
+Message-Id: <20230712060806.82323-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230712060806.82323-1-philmd@linaro.org>
 References: <20230712060806.82323-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,24 +94,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Coverity reports a potential overrun (CID 1517769):
+
+  Overrunning array "mxu_gpr" of 15 8-byte elements at
+  element index 4294967295 (byte offset 34359738367)
+  using index "XRb - 1U" (which evaluates to 4294967295).
+
+Use gen_load_mxu_gpr() to safely load MXU registers.
+
+Fixes: ff7936f009 ("target/mips/mxu: Add S32SLT ... insns")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/mxu_translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/mips/tcg/mxu_translate.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/target/mips/tcg/mxu_translate.c b/target/mips/tcg/mxu_translate.c
-index deb8060a17..b007948a73 100644
+index b007948a73..520747a597 100644
 --- a/target/mips/tcg/mxu_translate.c
 +++ b/target/mips/tcg/mxu_translate.c
-@@ -609,7 +609,7 @@ enum {
- static TCGv mxu_gpr[NUMBER_OF_MXU_REGISTERS - 1];
- static TCGv mxu_CR;
+@@ -2434,8 +2434,12 @@ static void gen_mxu_S32SLT(DisasContext *ctx)
+         tcg_gen_movi_tl(mxu_gpr[XRa - 1], 0);
+     } else {
+         /* the most general case */
+-        tcg_gen_setcond_tl(TCG_COND_LT, mxu_gpr[XRa - 1],
+-                           mxu_gpr[XRb - 1], mxu_gpr[XRc - 1]);
++        TCGv t0 = tcg_temp_new();
++        TCGv t1 = tcg_temp_new();
++
++        gen_load_mxu_gpr(t0, XRb);
++        gen_load_mxu_gpr(t1, XRc);
++        tcg_gen_setcond_tl(TCG_COND_LT, mxu_gpr[XRa - 1], t0, t1);
+     }
+ }
  
--static const char mxuregnames[][4] = {
-+static const char mxuregnames[NUMBER_OF_MXU_REGISTERS][4] = {
-     "XR1",  "XR2",  "XR3",  "XR4",  "XR5",  "XR6",  "XR7",  "XR8",
-     "XR9",  "XR10", "XR11", "XR12", "XR13", "XR14", "XR15", "XCR",
- };
 -- 
 2.38.1
 
