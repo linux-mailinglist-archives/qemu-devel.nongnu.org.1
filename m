@@ -2,109 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2C4750DC5
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 18:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D91750DCE
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 18:16:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJcSk-0005s4-W4; Wed, 12 Jul 2023 12:13:11 -0400
+	id 1qJcVL-0006wO-Km; Wed, 12 Jul 2023 12:15:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qJcSi-0005qF-0O; Wed, 12 Jul 2023 12:13:08 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <sanastasio@raptorengineering.com>)
+ id 1qJcVH-0006vx-Cl; Wed, 12 Jul 2023 12:15:47 -0400
+Received: from mail.raptorengineering.com ([23.155.224.40]
+ helo=raptorengineering.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qJcSg-00088Z-E7; Wed, 12 Jul 2023 12:13:07 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36CG31UH004957; Wed, 12 Jul 2023 16:12:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=hL1QscgM8TzuEZOPUOJWa2p8IobIBw8mwwqBPp9Zx6Q=;
- b=A9ho07o6NmWaBgnqRX3APK7ARCNHqfZ/dJ366LswEwBFCoSYB2otHymQiit8NZP3h83D
- 4FpxFjkn5PhfqJYNTMuhX08AIJ0D5Hw6F6a38dLy2tYKRqeVCKl3cZhJ0R3ANLGYl+Hb
- J4+aET4yo83plT6JkMh4IT+9Emb6BPK+Mp0ZWWD1WfumQKdK7rBciQv1pz+l0d5JTrLr
- LuQshxOb3TDdA/PtpTtm62KyvKvXlf9WVmG2Yt7bDttikijHhODb1lTXu4eXMFTpiHmZ
- 6V8toZBCR5+DjGazpbtTCaZyHgvy8dmNsiR2JIpjXr6dEJGFHGJOqQwYExQ1E/HekwQo lw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rsybv8cfh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jul 2023 16:12:56 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36CGC4lU019191;
- Wed, 12 Jul 2023 16:12:55 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rsybv8cev-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jul 2023 16:12:55 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36C2jAgf015105;
- Wed, 12 Jul 2023 16:12:52 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rpye5aquk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jul 2023 16:12:52 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36CGCmFI31523158
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 12 Jul 2023 16:12:48 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 22CC420040;
- Wed, 12 Jul 2023 16:12:48 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 88F1A20043;
- Wed, 12 Jul 2023 16:12:47 +0000 (GMT)
-Received: from [9.152.222.242] (unknown [9.152.222.242])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Wed, 12 Jul 2023 16:12:47 +0000 (GMT)
-Message-ID: <47a7518e-2ca6-e2a1-2130-ddf21163ba5e@linux.ibm.com>
-Date: Wed, 12 Jul 2023 18:12:47 +0200
+ (Exim 4.90_1) (envelope-from <sanastasio@raptorengineering.com>)
+ id 1qJcVF-0000UT-IA; Wed, 12 Jul 2023 12:15:47 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by mail.rptsys.com (Postfix) with ESMTP id EE231828546E;
+ Wed, 12 Jul 2023 11:15:43 -0500 (CDT)
+Received: from mail.rptsys.com ([127.0.0.1])
+ by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+ with ESMTP id apBH8_26uJ3z; Wed, 12 Jul 2023 11:15:42 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+ by mail.rptsys.com (Postfix) with ESMTP id 96FCB82856DE;
+ Wed, 12 Jul 2023 11:15:42 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 96FCB82856DE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+ t=1689178542; bh=zPQhauFsoaOCYYYe5STkWG10WGAQCF5tpTaB5fxeL54=;
+ h=From:To:Date:Message-Id:MIME-Version;
+ b=og6S/BzKs165l7j9WMC2/sNYZ2GBFWJCpQzONcZOu/4fI4nr/gcailLGUWBHCbsgM
+ tgNlycaC1ssyCdw9ZevScZeNd7V7N31LVBsUnmvBDdoSgplXyNS0FPb/gz6STFRpsi
+ EG4iPWkgd1PrK3RAu6xtKkMDbGPRDEnliKKpO88A=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+ by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+ with ESMTP id tmZnWWhhCuZ0; Wed, 12 Jul 2023 11:15:42 -0500 (CDT)
+Received: from raptor-ewks-026.lan (5.edge.rptsys.com [23.155.224.38])
+ by mail.rptsys.com (Postfix) with ESMTPSA id E635C828546E;
+ Wed, 12 Jul 2023 11:15:41 -0500 (CDT)
+From: Shawn Anastasio <sanastasio@raptorengineering.com>
+To: qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ Greg Kurz <groug@kaod.org>, David Gibson <david@gibson.dropbear.id.au>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Timothy Pearson <tpearson@raptorengineering.com>,
+ Shawn Anastasio <sanastasio@raptorengineering.com>
+Subject: [PATCH v2] target/ppc: Generate storage interrupts for radix RC
+ changes
+Date: Wed, 12 Jul 2023 11:13:22 -0500
+Message-Id: <20230712161322.2729950-1-sanastasio@raptorengineering.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v21 12/20] qapi/s390x/cpu topology: query-cpu-polarization
- qmp command
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
- mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
- armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
- nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
-References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-13-pmorel@linux.ibm.com>
- <3d4d0349-45c1-28c7-1da1-3c66f03025a0@redhat.com>
-From: Pierre Morel <pmorel@linux.ibm.com>
-In-Reply-To: <3d4d0349-45c1-28c7-1da1-3c66f03025a0@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: yI3WLEd3lB3400EyHay7aRzl37KU9K5z
-X-Proofpoint-ORIG-GUID: RbsFEQxUxlM4QMvoo8OCVmdPuXbNI-3E
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-12_11,2023-07-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0
- lowpriorityscore=0 mlxlogscore=999 phishscore=0 clxscore=1015 mlxscore=0
- impostorscore=0 suspectscore=0 malwarescore=0 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307120144
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=pmorel@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=23.155.224.40;
+ envelope-from=sanastasio@raptorengineering.com; helo=raptorengineering.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.11,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,69 +79,211 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Change radix model to always generate a storage interrupt when the R/C
+bits are not set appropriately in a PTE instead of setting the bits
+itself.  According to the ISA both behaviors are valid, but in practice
+this change more closely matches behavior observed on the POWER9 CPU.
 
-On 7/5/23 09:58, Thomas Huth wrote:
-> On 30/06/2023 11.17, Pierre Morel wrote:
->> The query-cpu-polarization qmp command returns the current
->> CPU polarization of the machine.
->>
->> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
->> ---
->>   qapi/machine-target.json | 29 +++++++++++++++++++++++++++++
->>   hw/s390x/cpu-topology.c  |  8 ++++++++
->>   2 files changed, 37 insertions(+)
->>
->> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
->> index 1362e43983..1e4b8976aa 100644
->> --- a/qapi/machine-target.json
->> +++ b/qapi/machine-target.json
->> @@ -445,3 +445,32 @@
->>     'features': [ 'unstable' ],
->>     'if': { 'all': [ 'TARGET_S390X', 'CONFIG_KVM' ] }
->>   }
->> +
->> +##
->> +# @CpuPolarizationInfo:
->> +#
->> +# The result of a cpu polarization
->> +#
->> +# @polarization: the CPU polarization
->> +#
->> +# Since: 8.1
->> +##
->> +{ 'struct': 'CpuPolarizationInfo',
->> +  'data': { 'polarization': 'CpuS390Polarization' },
->> +  'if': { 'all': [ 'TARGET_S390X', 'CONFIG_KVM' ] }
->> +}
->> +
->> +##
->> +# @query-cpu-polarization:
->> +#
->> +# Features:
->> +# @unstable: This command may still be modified.
->> +#
->> +# Returns: the machine polarization
->> +#
->> +# Since: 8.1
->> +##
->> +{ 'command': 'query-cpu-polarization', 'returns': 
->> 'CpuPolarizationInfo',
->
-> Since this is very specific to s390x, I wonder whether we want to have 
-> a "s390x" in the command name? 'query-s390x-cpu-polarization'? ... or 
-> is this getting too long already?
->
-> Anyway,
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
->
-I do not know.I prefer short commands but the interface will mostly be 
-used by a program, so...
+From the POWER9 Processor User's Manual, Section 4.10.13.1: "When
+performing Radix translation, the POWER9 hardware triggers the
+appropriate interrupt ... for the mode and type of access whenever
+Reference (R) and Change (C) bits require setting in either the guest or
+host page-table entry (PTE)."
 
-I let it like that unless there is more pressure to change it.
+Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+---
+Changes in v2:
+  - Raise interrupt in ppc_radix64_process_scoped_xlate and
+    ppc_radix64_partition_scoped_xlate instead of ppc_radix64_check_rc
 
-Thanks,
+ target/ppc/mmu-radix64.c | 74 ++++++++++++++++++++++++++--------------
+ 1 file changed, 49 insertions(+), 25 deletions(-)
 
-Pierre
+diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
+index 920084bd8f..5823e039e6 100644
+--- a/target/ppc/mmu-radix64.c
++++ b/target/ppc/mmu-radix64.c
+@@ -219,27 +219,25 @@ static bool ppc_radix64_check_prot(PowerPCCPU *cpu,=
+ MMUAccessType access_type,
+     return false;
+ }
 
+-static void ppc_radix64_set_rc(PowerPCCPU *cpu, MMUAccessType access_typ=
+e,
+-                               uint64_t pte, hwaddr pte_addr, int *prot)
++static int ppc_radix64_check_rc(MMUAccessType access_type, uint64_t pte)
+ {
+-    CPUState *cs =3D CPU(cpu);
+-    uint64_t npte;
+-
+-    npte =3D pte | R_PTE_R; /* Always set reference bit */
++    switch (access_type) {
++    case MMU_DATA_STORE:
++        if (!(pte & R_PTE_C)) {
++            break;
++        }
++        /* fall through */
++    case MMU_INST_FETCH:
++    case MMU_DATA_LOAD:
++        if (!(pte & R_PTE_R)) {
++            break;
++        }
+
+-    if (access_type =3D=3D MMU_DATA_STORE) { /* Store/Write */
+-        npte |=3D R_PTE_C; /* Set change bit */
+-    } else {
+-        /*
+-         * Treat the page as read-only for now, so that a later write
+-         * will pass through this function again to set the C bit.
+-         */
+-        *prot &=3D ~PAGE_WRITE;
++        /* R/C bits are already set appropriately for this access */
++        return 0;
+     }
+
+-    if (pte ^ npte) { /* If pte has changed then write it back */
+-        stq_phys(cs->as, pte_addr, npte);
+-    }
++    return 1;
+ }
+
+ static bool ppc_radix64_is_valid_level(int level, int psize, uint64_t nl=
+s)
+@@ -380,7 +378,8 @@ static int ppc_radix64_partition_scoped_xlate(PowerPC=
+CPU *cpu,
+                                               ppc_v3_pate_t pate,
+                                               hwaddr *h_raddr, int *h_pr=
+ot,
+                                               int *h_page_size, bool pde=
+_addr,
+-                                              int mmu_idx, bool guest_vi=
+sible)
++                                              int mmu_idx, uint64_t lpid=
+,
++                                              bool guest_visible)
+ {
+     MMUAccessType access_type =3D orig_access_type;
+     int fault_cause =3D 0;
+@@ -418,7 +417,24 @@ static int ppc_radix64_partition_scoped_xlate(PowerP=
+CCPU *cpu,
+     }
+
+     if (guest_visible) {
+-        ppc_radix64_set_rc(cpu, access_type, pte, pte_addr, h_prot);
++        if (ppc_radix64_check_rc(access_type, pte)) {
++            /*
++             * Per ISA 3.1 Book III, 7.5.3 and 7.5.5, failure to set R/C=
+ during
++             * partition-scoped translation when effLPID =3D 0 results i=
+n normal
++             * (non-Hypervisor) Data and Instruction Storage Interrupts
++             * respectively.
++             *
++             * ISA 3.0 is ambiguous about this, but tests on POWER9 hard=
+ware
++             * seem to exhibit the same behavior.
++             */
++            if (lpid > 0) {
++                ppc_radix64_raise_hsi(cpu, access_type, eaddr, g_raddr,
++                                      DSISR_ATOMIC_RC);
++            } else {
++                ppc_radix64_raise_si(cpu, access_type, eaddr, DSISR_ATOM=
+IC_RC);
++            }
++            return 1;
++        }
+     }
+
+     return 0;
+@@ -447,7 +463,8 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCP=
+U *cpu,
+                                             vaddr eaddr, uint64_t pid,
+                                             ppc_v3_pate_t pate, hwaddr *=
+g_raddr,
+                                             int *g_prot, int *g_page_siz=
+e,
+-                                            int mmu_idx, bool guest_visi=
+ble)
++                                            int mmu_idx, uint64_t lpid,
++                                            bool guest_visible)
+ {
+     CPUState *cs =3D CPU(cpu);
+     CPUPPCState *env =3D &cpu->env;
+@@ -497,7 +514,7 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCP=
+U *cpu,
+         ret =3D ppc_radix64_partition_scoped_xlate(cpu, access_type, ead=
+dr,
+                                                  prtbe_addr, pate, &h_ra=
+ddr,
+                                                  &h_prot, &h_page_size, =
+true,
+-                                                 5, guest_visible);
++                                                 5, lpid, guest_visible)=
+;
+         if (ret) {
+             return ret;
+         }
+@@ -539,7 +556,8 @@ static int ppc_radix64_process_scoped_xlate(PowerPCCP=
+U *cpu,
+             ret =3D ppc_radix64_partition_scoped_xlate(cpu, access_type,=
+ eaddr,
+                                                      pte_addr, pate, &h_=
+raddr,
+                                                      &h_prot, &h_page_si=
+ze,
+-                                                     true, 5, guest_visi=
+ble);
++                                                     true, 5, lpid,
++                                                     guest_visible);
+             if (ret) {
+                 return ret;
+             }
+@@ -580,7 +598,11 @@ static int ppc_radix64_process_scoped_xlate(PowerPCC=
+PU *cpu,
+     }
+
+     if (guest_visible) {
+-        ppc_radix64_set_rc(cpu, access_type, pte, pte_addr, g_prot);
++        /* R/C bits not appropriately set for access */
++        if (ppc_radix64_check_rc(access_type, pte)) {
++            ppc_radix64_raise_si(cpu, access_type, eaddr, DSISR_ATOMIC_R=
+C);
++            return 1;
++        }
+     }
+
+     return 0;
+@@ -695,7 +717,8 @@ static bool ppc_radix64_xlate_impl(PowerPCCPU *cpu, v=
+addr eaddr,
+     if (relocation) {
+         int ret =3D ppc_radix64_process_scoped_xlate(cpu, access_type, e=
+addr, pid,
+                                                    pate, &g_raddr, &prot=
+,
+-                                                   &psize, mmu_idx, gues=
+t_visible);
++                                                   &psize, mmu_idx, lpid=
+,
++                                                   guest_visible);
+         if (ret) {
+             return false;
+         }
+@@ -719,7 +742,8 @@ static bool ppc_radix64_xlate_impl(PowerPCCPU *cpu, v=
+addr eaddr,
+             ret =3D ppc_radix64_partition_scoped_xlate(cpu, access_type,=
+ eaddr,
+                                                      g_raddr, pate, radd=
+r,
+                                                      &prot, &psize, fals=
+e,
+-                                                     mmu_idx, guest_visi=
+ble);
++                                                     mmu_idx, lpid,
++                                                     guest_visible);
+             if (ret) {
+                 return false;
+             }
+--
+2.30.2
 
 
