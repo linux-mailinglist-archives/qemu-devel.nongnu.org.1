@@ -2,89 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6EC750718
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 13:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEAD75076F
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 14:04:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJYMh-0000KV-VR; Wed, 12 Jul 2023 07:50:40 -0400
+	id 1qJXqJ-0003E3-5T; Wed, 12 Jul 2023 07:17:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qJYMg-0000KG-EE
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:50:38 -0400
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qJYMe-0002PG-MS
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:50:38 -0400
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-1b0719dd966so6226584fac.1
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 04:50:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1689162635; x=1691754635;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AHg0UMbJ3dJmTdgblzro2RfS4qjVNY2sbZw1yCj4LLk=;
- b=hAYhzVjZMIW1A0dCcr0j2k5H80+Sxz7aAZ8VhW849kV/2RJLvBXZOmWhp7DyjO8asw
- MjVhVSHJZiNWgwzOOqIjYh5Pe2rBXPVvcNV4iwJNixRNxWhfBOUTybJWL4jb3R9dLbHB
- DT0u80ia3W6jvkqwNRAUk24bGDtLbE5nrpl8T+085gh1E/+2iNo9RlZTBybNZNsDQLll
- CFnNeOx+ZK/DMrO7VwcdnH7n7vO5VOOchJGkcPuVM/0r2gzcDqM6LmoSxzjlUq7T3ohb
- xULrUAknth5YbGWa54/2xO7Qj2YhmnuZ6h4BJ/m/gX5TfNvOedITg4x+/GMCyPm+HgkN
- iVUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689162635; x=1691754635;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AHg0UMbJ3dJmTdgblzro2RfS4qjVNY2sbZw1yCj4LLk=;
- b=MXv/zOQ0bDRINnUyUiKIR7gJ/yvaG9tkDsyKXeUhOIy8bphi9Sczn5tbcpVcGGergA
- Zl+OFM5UDQ7tm4E9g8romRtAjnyAK8uQiCFcPxzXeSWrph/DTsXgynnGI77hDaWjFr1s
- xrgIo4QJmtm35PW9FDNwhrBbDUcyXd4JPZe3xxst/ArLSWpBKKVYiCJhuLk0g3uQx8l3
- 5BaPNdOgJOBYQaZBUtPMEsCkjxGaIxebLWT7FjxELJgFUSdYsX7eZUfE93sbz9sy8kRi
- htE5RN3hY7sw9BoF5rbngGUoIHpLk/mA8EfoG3w1bgwreWlvxZozYJGVcL+uXEyeftiP
- I3Tw==
-X-Gm-Message-State: ABy/qLZbQ8KgJYbKmblEO6hJgsHuGXYSJjDxkwwJ1x7pcj2JvyyKUwS3
- ZD1S7YPFTNToql7+FaUg1AzbKg==
-X-Google-Smtp-Source: APBJJlHfd4RCYvOrmX2FSJKox6arzRU4C8Y15/FUrxnJ0CA9WRabIeCHLxJjQP/rPnzQvqyzc3xKiw==
-X-Received: by 2002:a05:6870:c142:b0:1b0:60ff:b73f with SMTP id
- g2-20020a056870c14200b001b060ffb73fmr18912013oad.8.1689162635151; 
- Wed, 12 Jul 2023 04:50:35 -0700 (PDT)
-Received: from [157.82.204.253] ([157.82.204.253])
- by smtp.gmail.com with ESMTPSA id
- c12-20020a170902b68c00b001b87c1c762fsm3580488pls.123.2023.07.12.04.50.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Jul 2023 04:50:34 -0700 (PDT)
-Message-ID: <e8be9581-2308-7fe6-f407-2ce54557dbd0@daynix.com>
-Date: Wed, 12 Jul 2023 20:50:32 +0900
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qJXqH-0003CB-CB
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:17:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qJXqF-0002yt-O2
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:17:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689160627;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=M6WT+TqF2nYoosQ8gnVJkd7oHwzbXkqZ1JSPgKy2pE0=;
+ b=V+KFXXvra5iknoAVzqknzb2Ywm2cB5ZvYZvH3x5GrqE1He0xjoizq3ow6Z5aPXlhGeeJzP
+ fYPx+76A+vBOE7swuSdvlHFwS3FsCk21cqBejSahwIxdJq7x0Rc4YgLy0jeln0CjOJhR/X
+ oEHkvQbJMi2H93weT+DShg/vHeAexHw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-191-wMssugD0NiWNHO9D_UzfxQ-1; Wed, 12 Jul 2023 07:17:05 -0400
+X-MC-Unique: wMssugD0NiWNHO9D_UzfxQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0E5D9185A792
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 11:17:05 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.231])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 83FFE1454142;
+ Wed, 12 Jul 2023 11:17:04 +0000 (UTC)
+From: Hanna Czenczek <hreitz@redhat.com>
+To: qemu-devel@nongnu.org,
+	virtio-fs@redhat.com
+Cc: Hanna Czenczek <hreitz@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ German Maglione <gmaglione@redhat.com>,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+Subject: [PATCH v2 0/4] vhost-user: Back-end state migration
+Date: Wed, 12 Jul 2023 13:16:58 +0200
+Message-ID: <20230712111703.28031-1-hreitz@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] hw/pci: Warn when ARI/SR-IOV device has non-zero Function
- number
-Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
- qemu-block@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>
-References: <20230712112732.18617-1-akihiko.odaki@daynix.com>
- <20230712073523-mutt-send-email-mst@kernel.org>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230712073523-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2001:4860:4864:20::2a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oa1-x2a.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.11, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,107 +78,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/07/12 20:46, Michael S. Tsirkin wrote:
-> On Wed, Jul 12, 2023 at 08:27:32PM +0900, Akihiko Odaki wrote:
->> Current SR/IOV implementations assume that hardcoded Function numbers
->> are always available and will not conflict. It is somewhat non-trivial
->> to make the Function numbers to use controllable to avoid Function
->> number conflicts so ensure there is only one PF to make the assumption
->> hold true.
->> Also warn when non-SR/IOV multifunction was attempted with ARI enabled;
->> ARI has the next Function number field register, and currently it's
->> hardcoded to 0, which prevents non-SR/IOV multifunction. It is
->> certainly possible to add a logic to determine the correct next Function
->> number according to the configuration, but it's not worth since all
->> ARI-capable devices are also SR/IOV devices, which do not support
->> multiple PFs as stated above.
->>
->> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> 
-> I am not really interested in adding this stuff.
-> The real thing to focus on is fixing ARI emulation, not
-> warning users about ways in which it's broken.
+RFC:
+https://lists.nongnu.org/archive/html/qemu-devel/2023-03/msg04263.html
 
-What do you think about multiple SR/IOV PFs? Do you think it's 
-worth/easy enough to fix SR/IOV code to support it? Otherwise it's not 
-worth fixing ARI since currently only SR/IOV devices implement it.
+v1:
+https://lists.nongnu.org/archive/html/qemu-devel/2023-04/msg01575.html
 
-> 
->> ---
->>   hw/pci/pci.c | 59 +++++++++++++++++++++++++++++++++++++---------------
->>   1 file changed, 42 insertions(+), 17 deletions(-)
->>
->> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->> index 784c02a182..50359a0f3a 100644
->> --- a/hw/pci/pci.c
->> +++ b/hw/pci/pci.c
->> @@ -2124,23 +2124,48 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
->>           }
->>       }
->>   
->> -    /*
->> -     * A PCIe Downstream Port that do not have ARI Forwarding enabled must
->> -     * associate only Device 0 with the device attached to the bus
->> -     * representing the Link from the Port (PCIe base spec rev 4.0 ver 0.3,
->> -     * sec 7.3.1).
->> -     * With ARI, PCI_SLOT() can return non-zero value as the traditional
->> -     * 5-bit Device Number and 3-bit Function Number fields in its associated
->> -     * Routing IDs, Requester IDs and Completer IDs are interpreted as a
->> -     * single 8-bit Function Number. Hence, ignore ARI capable devices.
->> -     */
->> -    if (pci_is_express(pci_dev) &&
->> -        !pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
->> -        pcie_has_upstream_port(pci_dev) &&
->> -        PCI_SLOT(pci_dev->devfn)) {
->> -        warn_report("PCI: slot %d is not valid for %s,"
->> -                    " parent device only allows plugging into slot 0.",
->> -                    PCI_SLOT(pci_dev->devfn), pci_dev->name);
->> +    if (pci_is_express(pci_dev)) {
->> +        /*
->> +         * A PCIe Downstream Port that do not have ARI Forwarding enabled must
->> +         * associate only Device 0 with the device attached to the bus
->> +         * representing the Link from the Port (PCIe base spec rev 4.0 ver 0.3,
->> +         * sec 7.3.1).
->> +         * With ARI, PCI_SLOT() can return non-zero value as the traditional
->> +         * 5-bit Device Number and 3-bit Function Number fields in its
->> +         * associated Routing IDs, Requester IDs and Completer IDs are
->> +         * interpreted as a single 8-bit Function Number. Hence, ignore ARI
->> +         * capable devices.
->> +         */
->> +        if (!pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
->> +            pcie_has_upstream_port(pci_dev) &&
->> +            PCI_SLOT(pci_dev->devfn)) {
->> +            warn_report("PCI: slot %d is not valid for %s,"
->> +                        " parent device only allows plugging into slot 0.",
->> +                        PCI_SLOT(pci_dev->devfn), pci_dev->name);
->> +        }
->> +
->> +        /*
->> +         * Current SR/IOV implementations assume that hardcoded Function numbers
->> +         * are always available. Ensure there is only one PF to make the
->> +         * assumption hold true.
->> +         */
->> +        if (pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_SRIOV) &&
->> +            PCI_FUNC(pci_dev->devfn)) {
->> +            warn_report("PCI: function %d is not valid for %s,"
->> +                        " currently PF can only be assigned to function 0.",
->> +                        PCI_FUNC(pci_dev->devfn), pci_dev->name);
->> +        }
->> +
->> +        /*
->> +         * ARI has the next Function number field register, and currently it's
->> +         * hardcoded to 0, which prevents non-SR/IOV multifunction.
->> +         */
->> +        if (pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
->> +            !pci_is_vf(pci_dev) && (pci_dev->devfn & 0xff)) {
->> +            warn_report("PCI: function %d is not valid for %s,"
->> +                        " non-SR/IOV multifunction is not supported with ARI enabled.",
->> +                        pci_dev->devfn & 0xff, pci_dev->name);
->> +        }
->>       }
->>   
->>       if (pci_dev->failover_pair_id) {
->> -- 
->> 2.41.0
-> 
+Based-on: <20230711155230.64277-1-hreitz@redhat.com>
+          (“[PATCH 0/6] vhost-user: Add suspend/resume”)
+https://lists.nongnu.org/archive/html/qemu-devel/2023-07/msg02450.html
+
+
+Hi,
+
+Most of the feedback on v1 focused on how to properly stop a device that
+has internal state, both for the purpose of migration and just plainly
+for VM stop/cont.  I hope this is resolved by my vhost-user
+suspend/resume series, which this series here is based on (linked
+above).
+
+Therefore, these patches here for the actual state transfer have changed
+only little since v1:
+
+- I’ve removed the original patch 1 that would explicitly re-enable all
+  vrings every time after using SET_FEATURES with
+  VHOST_USER_F_PROTOCOL_FEATURES, replacing it with the stand-alone
+  patch “[PATCH] vhost-user.rst: Clarify enabling/disabling vrings”
+  (20230712091704.15589-1-hreitz@redhat.com), which does not change
+  behavior but only documentation
+
+- In its place, I’ve added a patch that adds documentation on the
+  protocol additions.
+
+- Patch 2: Drastically shortened the commit message, this documentation
+  is now where it should be, namely in vhost-user.rst (added by patch
+  1).  Also rebased on the “Add suspend/resume” series, which adds
+  feature bits and vhost-user operations of its own.
+
+- Patch 3: Instead of checking dev->started to see that the device is
+  stopped, we might now want to check dev->suspended instead.  However,
+  this is only set if the device actually supports suspending, so in
+  fact we cannot use it.  Added documentation on this fact.
+  (Dropped checking enable_vqs, because this variable had been added
+  only by the old patch 1, which I dropped.)
+
+
+Hanna Czenczek (4):
+  vhost-user.rst: Migrating back-end-internal state
+  vhost-user: Interface for migration state transfer
+  vhost: Add high-level state save/load functions
+  vhost-user-fs: Implement internal migration
+
+ docs/interop/vhost-user.rst       |  87 +++++++++++
+ include/hw/virtio/vhost-backend.h |  24 +++
+ include/hw/virtio/vhost.h         | 114 ++++++++++++++
+ hw/virtio/vhost-user-fs.c         | 101 ++++++++++++-
+ hw/virtio/vhost-user.c            | 147 ++++++++++++++++++
+ hw/virtio/vhost.c                 | 241 ++++++++++++++++++++++++++++++
+ 6 files changed, 713 insertions(+), 1 deletion(-)
+
+-- 
+2.41.0
+
 
