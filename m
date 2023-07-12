@@ -2,92 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D1C6750ED1
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 18:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E59750F18
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 18:57:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJctY-0004kP-IR; Wed, 12 Jul 2023 12:40:52 -0400
+	id 1qJd8G-0006UV-9s; Wed, 12 Jul 2023 12:56:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qJctP-0004Ir-9k
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 12:40:44 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1qJctM-00052Z-QB
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 12:40:42 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1b89b75dc1cso6795465ad.1
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 09:40:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1689180039; x=1691772039;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HCnT2erG14TplFxKPNlJjsum3jqHKotnhwDdjImqCi0=;
- b=JPDcoo62wB3nOg0EBfCAz+85clN+JmEiH50Sq2p6UK1BS92ZVTTZmU0BjO0bp00VSo
- 1TmLyYp60HIJ1ouKImn0foywn1VPmXkHTOk3m3T9EQDlr3GB7WtwMUuN/UKWrBsCiBTL
- StZ41wbpmioxffRxyu6aN1ne+RyAW8LFsqoPrj2QaTh/e5tnHLqrkS5w/Kuk594rnceQ
- 9F5xC8isT/JFdoP8fdplOFyspT4bmRhRxVdjFe/baHGcUNH/dcRkuiPskMY5HgzD9NT6
- EkhC9J6vm+gnNrbvRt7b3L0RKRXWTlJpvf8JHhUxxidpDJFuV4eSodNwXsBNHyCb2Yr6
- mNjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689180039; x=1691772039;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HCnT2erG14TplFxKPNlJjsum3jqHKotnhwDdjImqCi0=;
- b=MXCEySrK/6+0FRD+G5WwQfH49A3LRBiuvMVj9KjCDjlyWb7QBb50pE8Sc/Zm2ZTXko
- nM/LNrJx1YxmItlj4H3hbIDu6YjQoDt1PWsgAkZfQ33sPpy2ndbi5clYc9/KvRZTRR8U
- m1yxzHguo0tCVuKCQRQgyiSn3JwwWdJXJiWvidox6Cy1zxIT7ke4abuV3RMDAE6KrZcU
- 7J6bSyVrDvWkCaM4sP4G1TIfdigMbAdcHVXklZO7CZ/cFt6S/mIYrEK2wHyBx9HcVvLF
- H40g4P02tnOjY+a652ndnT5R/U39orCPHS2fUxcSFi7YDZopUERL3F67TT9vIMJEvj9x
- XYQw==
-X-Gm-Message-State: ABy/qLYP/5bfbvQ/ce14DmSv+O23vlyT97ruSLh+wI0f4HkMDxa9DAHa
- fGOAUVjBTey+5Pw6Cj4i9itDfRXNBRsHJKud5eU=
-X-Google-Smtp-Source: APBJJlHsUV2lcZ2sJh7K971L8wqznT80vho7nnOH0jxv7Sqjn1/1R2WaUMD0oP36KCwgTEYOT8g8bw==
-X-Received: by 2002:a17:903:41c2:b0:1b8:8728:d776 with SMTP id
- u2-20020a17090341c200b001b88728d776mr3654293ple.0.1689180039374; 
- Wed, 12 Jul 2023 09:40:39 -0700 (PDT)
-Received: from sunil-pc.Dlink ([106.51.190.25])
- by smtp.gmail.com with ESMTPSA id
- a18-20020a1709027d9200b001ac7f583f72sm4172824plm.209.2023.07.12.09.40.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jul 2023 09:40:39 -0700 (PDT)
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: qemu-devel@nongnu.org,
-	qemu-arm@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Shannon Zhao <shannon.zhaosl@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- Anup Patel <apatel@ventanamicro.com>, Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH 10/10] hw/riscv/virt-acpi-build.c: Add IO controllers and
- devices
-Date: Wed, 12 Jul 2023 22:09:43 +0530
-Message-Id: <20230712163943.98994-11-sunilvl@ventanamicro.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230712163943.98994-1-sunilvl@ventanamicro.com>
-References: <20230712163943.98994-1-sunilvl@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qJd8B-0006Tj-3s
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 12:55:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qJd89-0001sB-CJ
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 12:55:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689180955;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ra56vMkxgABRkPMRUmVOVwZlA9RZFJA4MPgmP/GVtPM=;
+ b=ejZpX0mIk5xhuEHqCA+S3WU+oEygwgRB7FPO+45KuWZrrRq6ddCSUN6QLVLZBxoe3CzcP8
+ x4mfK5AtPP2ckjnpf1gj9vYU4PkonugqFHJhlS3d3FcU54B8XvPYTmrl3kY7VJAZaEkXY3
+ XPuY9+UDzrW6XLD+n503MgF01GNp2fc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-487-cbss29blO1OISvZJZsj-Gg-1; Wed, 12 Jul 2023 12:55:50 -0400
+X-MC-Unique: cbss29blO1OISvZJZsj-Gg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7F108F2987;
+ Wed, 12 Jul 2023 16:55:49 +0000 (UTC)
+Received: from localhost.localdomain.com (unknown [10.42.28.36])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A4A69111E3EA;
+ Wed, 12 Jul 2023 16:55:48 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
+ qemu-stable@nongnu.org, Mauro Matteo Cascella <mcascell@redhat.com>,
+ jiangyegen <jiangyegen@huawei.com>
+Subject: [PATCH v2] io: remove io watch if TLS channel is closed during
+ handshake
+Date: Wed, 12 Jul 2023 17:55:47 +0100
+Message-ID: <20230712165547.584157-1-berrange@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=sunilvl@ventanamicro.com; helo=mail-pl1-x632.google.com
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,161 +81,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add basic IO controllers and devices like PCI, VirtIO and UART
-in the ACPI namespace.
+The TLS handshake make take some time to complete, during which time an
+I/O watch might be registered with the main loop. If the owner of the
+I/O channel invokes qio_channel_close() while the handshake is waiting
+to continue the I/O watch must be removed. Failing to remove it will
+later trigger the completion callback which the owner is not expecting
+to receive. In the case of the VNC server, this results in a SEGV as
+vnc_disconnect_start() tries to shutdown a client connection that is
+already gone / NULL.
 
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+CVE-2023-3354
+Reported-by: jiangyegen <jiangyegen@huawei.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- hw/riscv/Kconfig           |  1 +
- hw/riscv/virt-acpi-build.c | 87 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 88 insertions(+)
 
-diff --git a/hw/riscv/Kconfig b/hw/riscv/Kconfig
-index b6a5eb4452..a50717be87 100644
---- a/hw/riscv/Kconfig
-+++ b/hw/riscv/Kconfig
-@@ -45,6 +45,7 @@ config RISCV_VIRT
-     select FW_CFG_DMA
-     select PLATFORM_BUS
-     select ACPI
-+    select ACPI_PCI
+In v2:
+
+ - Use g_clear_handle_id to set source ID to zero
+
+ include/io/channel-tls.h |  1 +
+ io/channel-tls.c         | 18 ++++++++++++------
+ 2 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/include/io/channel-tls.h b/include/io/channel-tls.h
+index 5672479e9e..26c67f17e2 100644
+--- a/include/io/channel-tls.h
++++ b/include/io/channel-tls.h
+@@ -48,6 +48,7 @@ struct QIOChannelTLS {
+     QIOChannel *master;
+     QCryptoTLSSession *session;
+     QIOChannelShutdown shutdown;
++    guint hs_ioc_tag;
+ };
  
- config SHAKTI_C
-     bool
-diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-index 25745eee4c..91f06fdc97 100644
---- a/hw/riscv/virt-acpi-build.c
-+++ b/hw/riscv/virt-acpi-build.c
-@@ -27,6 +27,7 @@
- #include "hw/acpi/acpi-defs.h"
- #include "hw/acpi/acpi.h"
- #include "hw/acpi/aml-build.h"
-+#include "hw/acpi/pci.h"
- #include "hw/acpi/utils.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-@@ -35,6 +36,7 @@
- #include "hw/riscv/virt.h"
- #include "hw/riscv/numa.h"
- #include "hw/intc/riscv_aclint.h"
-+#include "hw/pci-host/gpex.h"
+ /**
+diff --git a/io/channel-tls.c b/io/channel-tls.c
+index 9805dd0a3f..847d5297c3 100644
+--- a/io/channel-tls.c
++++ b/io/channel-tls.c
+@@ -198,12 +198,13 @@ static void qio_channel_tls_handshake_task(QIOChannelTLS *ioc,
+         }
  
- #define ACPI_BUILD_TABLE_SIZE             0x20000
- #define ACPI_BUILD_INTC_ID(socket, index) ((socket << 24) | (index))
-@@ -138,6 +140,55 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
+         trace_qio_channel_tls_handshake_pending(ioc, status);
+-        qio_channel_add_watch_full(ioc->master,
+-                                   condition,
+-                                   qio_channel_tls_handshake_io,
+-                                   data,
+-                                   NULL,
+-                                   context);
++        ioc->hs_ioc_tag =
++            qio_channel_add_watch_full(ioc->master,
++                                       condition,
++                                       qio_channel_tls_handshake_io,
++                                       data,
++                                       NULL,
++                                       context);
      }
  }
  
-+static void
-+acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
-+                    uint32_t uart_irq)
-+{
-+    Aml *dev = aml_device("COM0");
-+    aml_append(dev, aml_name_decl("_HID", aml_string("PNP0501")));
-+    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
-+
-+    Aml *crs = aml_resource_template();
-+    aml_append(crs, aml_memory32_fixed(uart_memmap->base,
-+                                         uart_memmap->size, AML_READ_WRITE));
-+    aml_append(crs,
-+                aml_interrupt(AML_CONSUMER, AML_LEVEL, AML_ACTIVE_HIGH,
-+                               AML_EXCLUSIVE, &uart_irq, 1));
-+    aml_append(dev, aml_name_decl("_CRS", crs));
-+
-+    Aml *pkg = aml_package(2);
-+    aml_append(pkg, aml_string("clock-frequency"));
-+    aml_append(pkg, aml_int(3686400));
-+
-+    Aml *UUID = aml_touuid("DAFFD814-6EBA-4D8C-8A91-BC9BBF4AA301");
-+
-+    Aml *pkg1 = aml_package(1);
-+    aml_append(pkg1, pkg);
-+
-+    Aml *package = aml_package(2);
-+    aml_append(package, UUID);
-+    aml_append(package, pkg1);
-+
-+    aml_append(dev, aml_name_decl("_DSD", package));
-+    aml_append(scope, dev);
-+}
-+
-+static void
-+acpi_dsdt_add_pci(Aml *scope, const MemMapEntry *memmap,
-+                   uint32_t irq, RISCVVirtState *s)
-+{
-+    struct GPEXConfig cfg = {
-+        .mmio32 = memmap[VIRT_PCIE_MMIO],
-+        .mmio64 = memmap[VIRT_HIGH_PCIE_MMIO],
-+        .pio = memmap[VIRT_PCIE_PIO],
-+        .ecam = memmap[VIRT_PCIE_ECAM],
-+        .irq = irq,
-+        .bus = s->bus,
-+    };
-+
-+    acpi_dsdt_add_gpex(scope, &cfg);
-+}
-+
- /* RHCT Node[N] starts at offset 56 */
- #define RHCT_NODE_ARRAY_OFFSET 56
+@@ -218,6 +219,7 @@ static gboolean qio_channel_tls_handshake_io(QIOChannel *ioc,
+     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(
+         qio_task_get_source(task));
  
-@@ -318,6 +369,8 @@ static void build_dsdt(GArray *table_data,
-                        RISCVVirtState *s)
++    tioc->hs_ioc_tag = 0;
+     g_free(data);
+     qio_channel_tls_handshake_task(tioc, task, context);
+ 
+@@ -378,6 +380,10 @@ static int qio_channel_tls_close(QIOChannel *ioc,
  {
-     Aml *scope, *dsdt;
-+    MachineState *ms = MACHINE(s);
-+    uint8_t socket_count;
-     const MemMapEntry *memmap = s->memmap;
-     AcpiTable table = { .sig = "DSDT", .rev = 2, .oem_id = s->oem_id,
-                         .oem_table_id = s->oem_table_id };
-@@ -337,6 +390,30 @@ static void build_dsdt(GArray *table_data,
+     QIOChannelTLS *tioc = QIO_CHANNEL_TLS(ioc);
  
-     acpi_dsdt_add_fw_cfg(scope, &memmap[VIRT_FW_CFG]);
- 
-+    socket_count = riscv_socket_count(ms);
-+
-+    acpi_dsdt_add_uart(scope, &memmap[VIRT_UART0], UART0_IRQ);
-+
-+    if (socket_count == 1) {
-+        acpi_dsdt_add_virtio(scope, &memmap[VIRT_VIRTIO],
-+                             VIRTIO_IRQ, VIRTIO_COUNT);
-+        acpi_dsdt_add_pci(scope, memmap, PCIE_IRQ, s);
-+    } else if (socket_count == 2) {
-+        acpi_dsdt_add_virtio(scope, &memmap[VIRT_VIRTIO],
-+                             VIRTIO_IRQ + VIRT_IRQCHIP_NUM_SOURCES,
-+                             VIRTIO_COUNT);
-+        acpi_dsdt_add_pci(scope, memmap,
-+                          PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES,
-+                          s);
-+    } else {
-+        acpi_dsdt_add_virtio(scope, &memmap[VIRT_VIRTIO],
-+                             VIRTIO_IRQ + VIRT_IRQCHIP_NUM_SOURCES,
-+                             VIRTIO_COUNT);
-+        acpi_dsdt_add_pci(scope, memmap,
-+                          PCIE_IRQ + VIRT_IRQCHIP_NUM_SOURCES * 2,
-+                          s);
++    if (tioc->hs_ioc_tag) {
++        g_clear_handle_id(&tioc->hs_ioc_tag, g_source_remove);
 +    }
 +
-     aml_append(dsdt, scope);
+     return qio_channel_close(tioc->master, errp);
+ }
  
-     /* copy AML table into ACPI tables blob and patch header there */
-@@ -486,6 +563,16 @@ static void virt_acpi_build(RISCVVirtState *s, AcpiBuildTables *tables)
-     acpi_add_table(table_offsets, tables_blob);
-     build_rhct(tables_blob, tables->linker, s);
- 
-+    acpi_add_table(table_offsets, tables_blob);
-+    {
-+        AcpiMcfgInfo mcfg = {
-+           .base = s->memmap[VIRT_PCIE_MMIO].base,
-+           .size = s->memmap[VIRT_PCIE_MMIO].size,
-+        };
-+        build_mcfg(tables_blob, tables->linker, &mcfg, s->oem_id,
-+                   s->oem_table_id);
-+    }
-+
-     /* XSDT is pointed to by RSDP */
-     xsdt = tables_blob->len;
-     build_xsdt(tables_blob, tables->linker, table_offsets, s->oem_id,
 -- 
-2.39.2
+2.41.0
 
 
