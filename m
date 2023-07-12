@@ -2,84 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD44750062
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 09:48:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 288A3750068
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 09:49:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJUZh-00049N-BT; Wed, 12 Jul 2023 03:47:49 -0400
+	id 1qJUb2-0005Et-N4; Wed, 12 Jul 2023 03:49:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
- id 1qJUZc-000493-6X; Wed, 12 Jul 2023 03:47:44 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.160])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1qJUb0-0005Dq-SF
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 03:49:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
- id 1qJUZZ-0002Ja-S3; Wed, 12 Jul 2023 03:47:43 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1689148056; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=eBBEfrSXi8XpC/6+whWLs0Ijtn2HRuhKbmrYdinn4Ma7HOkp/roRhEOh/olVVT7GrU
- kOupRXU5YYkWuzIDUYkA6106DdrwRJngJgI0Pq0CfVWmwLP/O9ZnRkF2ETleETf1i8y4
- ZdTNIpYMHyZUrS6r6cw9fIM9AEZIyq0MrQSWm31vq/Au3RxGvc9a/Z5zKeZ56zGBwmVU
- CVaGR6rw71kmk5fbQB6WNFhyVUVd2EmP37sOOw/WF+sFRpr06OPAcS8/fi5AzBYsUIeM
- f7d1NplUtiWEff58EvWxXz1cGRlweHpiockGcbMQRXoG8EcPEyUpJWKOigR07ko5o5t+
- 45WA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1689148056;
- s=strato-dkim-0002; d=strato.com;
- h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
- bh=Vo5Hv5s5+r7WZaEFYbVAXHsCg/WzZA8RZzq/ymUBu4E=;
- b=WdL63lgflRnmHWBm/jjbZQKUnphmsMjqGrx3BgRriMHI42FdddYLRUbq5iPYwMZQdV
- C/Zk+Aau4eiEnxGjTTkOYkEqxrtuAIMa1cPiwTF6KjcXEdZilH0dEbTS0XETmIzms9ey
- Kw7iKYecs7tbezKDt6UcSV8CmHGKb2yh/BtWgZzM1E3u7qBKJEH2zBznlltNTjoexxyg
- 3H1JQyJQGc23wP/+xWBxU8POCzyM9enAi5Hz4McimUxPp45giWcn5p0RoyI0wUBojRHm
- qW2UL56Jv2k7sIcOUIaBzHR0GViB6fuXmI6Rum90W0z115Nq2RdtPSUXIaEA1UcKqKP/
- wgXg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1689148056;
- s=strato-dkim-0002; d=aepfle.de;
- h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
- bh=Vo5Hv5s5+r7WZaEFYbVAXHsCg/WzZA8RZzq/ymUBu4E=;
- b=j+jyhs70WOec+uPtM4EygQE96LOwHCsucztflYo6sW14ZMx6qphGcW38vU5M9PNjO2
- eqKm+PMcg6EG5peN/tJLRpihtj6JfQfs//BhutDNf18MRzKYPtLdtgHKyU6qbAkgGBXw
- VjKBZmvcFrchGav4xeivqRgJLmCCkFCTe9qPP2FI1TDyXkJgxswZ09aC2mABi1V4NNrc
- vFV8KeZsUAfRPzM1LjspAHnKTVOsKFA/P8A0NRxW6GnsAZMei2dzPoeQe6sZuDm76wlB
- NYvQgQixshZLiGZGQ72f2MVIECy9KKpZFGixCYCSDgS6sA+RJkFk7tvBCgZ9ypZBYvRK
- Kfgg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1689148056;
- s=strato-dkim-0003; d=aepfle.de;
- h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
- bh=Vo5Hv5s5+r7WZaEFYbVAXHsCg/WzZA8RZzq/ymUBu4E=;
- b=7qWNWv2LiV6+76Hu7JOlwWQaIG6XjEgDcP19k5D37mLJGRwH3gNgxA2Ttb+q2l17TI
- HBvbjuQzyoby+dsD4BAg==
-X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QXkBR9MXjAuzpIG0mv9coXAg4x/Q77Ep0tacRDpd3C7x0fRU/XAhBUWjct55BrKA=="
-Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
- with ESMTPSA id y5401az6C7lafVE
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Wed, 12 Jul 2023 09:47:36 +0200 (CEST)
-From: Olaf Hering <olaf@aepfle.de>
-To: Bernhard Beschow <shentey@gmail.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>
-Subject: [PATCH v3] hw/ide/piix: properly initialize the BMIBA register
-Date: Wed, 12 Jul 2023 09:47:22 +0200
-Message-Id: <20230712074721.14728-1-olaf@aepfle.de>
-X-Mailer: git-send-email 2.35.3
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1qJUaz-0003C9-G1
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 03:49:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689148148;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=TI8sMo9dcspBHPFjOtplyLd7Y+0Eky95LPprMfjsfxk=;
+ b=hYck5FROZXKCOoSSBVHyFBsRhJNLkdnrFM0p5f91giIZYrSvEVFxNXi12GItdw6IF2tmYk
+ iKHN8Y8EcraJ5pAGfHQu6UxKQeQ9UsbCdvJxON6Wojr4VjvEHaD97UGqVoiMkEXMKekrrg
+ FN5K7pDs/HjQwn4hLXPtE1oNWXnyh3s=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-395-jtxp9N1cO0KZx57ioc8AZw-1; Wed, 12 Jul 2023 03:49:04 -0400
+X-MC-Unique: jtxp9N1cO0KZx57ioc8AZw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0786D384CC4C;
+ Wed, 12 Jul 2023 07:49:04 +0000 (UTC)
+Received: from localhost (dhcp-192-239.str.redhat.com [10.33.192.239])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9179B492B01;
+ Wed, 12 Jul 2023 07:49:03 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com, Zhenzhong Duan
+ <zhenzhong.duan@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, "open list:Overall KVM CPUs"
+ <kvm@vger.kernel.org>
+Subject: Re: [RFC PATCH v4 02/24] Update linux-header per VFIO device cdev v14
+In-Reply-To: <20230712072528.275577-3-zhenzhong.duan@intel.com>
+Organization: Red Hat GmbH
+References: <20230712072528.275577-1-zhenzhong.duan@intel.com>
+ <20230712072528.275577-3-zhenzhong.duan@intel.com>
+User-Agent: Notmuch/0.37 (https://notmuchmail.org)
+Date: Wed, 12 Jul 2023 09:49:02 +0200
+Message-ID: <87v8epk1sh.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
-Received-SPF: none client-ip=81.169.146.160; envelope-from=olaf@aepfle.de;
- helo=mo4-p00-ob.smtp.rzone.de
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=cohuck@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,38 +84,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the 82371FB documentation (82371FB.pdf, 2.3.9. BMIBA-BUS
-MASTER INTERFACE BASE ADDRESS REGISTER, April 1997), the register is
-32bit wide. To properly reset it to default values, all 32bit need to be
-cleared. Bit #0 "Resource Type Indicator (RTE)" needs to be enabled.
+On Wed, Jul 12 2023, Zhenzhong Duan <zhenzhong.duan@intel.com> wrote:
 
-The initial change wrote just the lower 8 bit, leaving parts of the "Bus
-Master Interface Base Address" address at bit 15:4 unchanged.
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>  linux-headers/linux/iommufd.h | 347 ++++++++++++++++++++++++++++++++++
+>  linux-headers/linux/kvm.h     |  13 +-
+>  linux-headers/linux/vfio.h    | 142 +++++++++++++-
+>  3 files changed, 498 insertions(+), 4 deletions(-)
+>  create mode 100644 linux-headers/linux/iommufd.h
 
-Fixes: e6a71ae327 ("Add support for 82371FB (Step A1) and Improved support for 82371SB (Function 1)")
+Hi,
 
-Signed-off-by: Olaf Hering <olaf@aepfle.de>
-Reviewed-by: Bernhard Beschow <shentey@gmail.com>
----
- hw/ide/piix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+if this patch is intending to pull code that is not yet integrated in
+the Linux kernel, please mark this as a placeholder patch. If the code
+is already integrated, please run a full headers update against a
+released version (can be -rc) and note that version in the patch
+description.
 
-diff --git a/hw/ide/piix.c b/hw/ide/piix.c
-index 151f206046..4e5e12935f 100644
---- a/hw/ide/piix.c
-+++ b/hw/ide/piix.c
-@@ -117,7 +117,7 @@ static void piix_ide_reset(DeviceState *dev)
-     pci_set_word(pci_conf + PCI_COMMAND, 0x0000);
-     pci_set_word(pci_conf + PCI_STATUS,
-                  PCI_STATUS_DEVSEL_MEDIUM | PCI_STATUS_FAST_BACK);
--    pci_set_byte(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
-+    pci_set_long(pci_conf + 0x20, 0x1);  /* BMIBA: 20-23h */
- }
- 
- static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
+Thanks!
 
-base-commit: 887cba855bb6ff4775256f7968409281350b568c
-prerequisite-patch-id: daed167f888bd89b010a2e890e3edd97872cfc05
-prerequisite-patch-id: 532640812ba7cd0303414c77450923f6abcb5119
-prerequisite-patch-id: abf2f4ed52b072599c49d993de902e6dd7f2b560
 
