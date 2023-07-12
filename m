@@ -2,88 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09962750008
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 09:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C8B75004A
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 09:42:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJUBq-0001Bn-JA; Wed, 12 Jul 2023 03:23:10 -0400
+	id 1qJURK-00045O-JZ; Wed, 12 Jul 2023 03:39:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qJUBi-00017f-12
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 03:23:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qJURE-000452-O8
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 03:39:05 -0400
+Received: from mga07.intel.com ([134.134.136.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qJUBf-0008SF-Cr
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 03:23:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689146577;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=HJIttYOjVHLDsucX+nTeduLw9dBHc6XLslUh5SPwghA=;
- b=UcB7M/+aT/DofKz8RPiZW8uklqtaNMNeSGGIAUM9GNz+l8aAk8Yf2+v0rlDjIEKOgwvAvq
- DUmW3b1zHoJ0GmA7oIr3CiW8B9XW/SqlV50B3ZOoh0UeVfZnRWZqklnl8NN+SgdAhL6Q9Q
- A8PZGVBsPkqG7FrZv7ueLPmycz8yS84=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-AleDqXeKNACO3OLoJLyI-g-1; Wed, 12 Jul 2023 03:22:50 -0400
-X-MC-Unique: AleDqXeKNACO3OLoJLyI-g-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2b70347bf04so59446931fa.3
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 00:22:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689146569; x=1691738569;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HJIttYOjVHLDsucX+nTeduLw9dBHc6XLslUh5SPwghA=;
- b=aKPDKfDAkucQPkt74a5kbTqu0AtZnzC2ezXV+hvjxDXVw1u0TMvIarhuEjSAyLpWFF
- 7+Qn4x6GULnDIjBePTIkGu1M/ugnCXvBmbsUNxHge+shm9yyudLNi0wn1O77vOsUSazl
- BjIk93vLQYj07Nh2XTptGAc4vymLQgJdkwsPHVpNiDS0g00swZPZhRA1CoRMT9/TeC7z
- 2GmexDv6BQX5te5J2040fkLPt1pSm3oU7AGgB1pSOG+j3aEj3O7uZuad9MenO9+F0QHA
- Hs5xiuzQvmpxmwQ5OeRuCcepDs1XtSs0dL+8UIwXFuBWaaaEiQvu/P4g2QI0KJb9mUya
- WKwA==
-X-Gm-Message-State: ABy/qLYQd0P36qosYBlgHdZc1oxf5doF7ve0q52r504U/o/ueniMzT2n
- srtGRzXOsg+Vql5+aEOxeg5NzrxO2szz0I5QNHWrKk5znG1J5UgflCvTOgimmYPrn0sumJasQz6
- DB8NL9+P3KryukekN2amOqJb2Fc2uXLc=
-X-Received: by 2002:a2e:7013:0:b0:2b6:d536:1bba with SMTP id
- l19-20020a2e7013000000b002b6d5361bbamr15817814ljc.18.1689146568859; 
- Wed, 12 Jul 2023 00:22:48 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH58pg5+E+Bcm1tMDHXJ8Hb113KkHYfbpcNOrupzVy9+wshVqvWM3rxXXJTUwGzwwF1nOInA3uY+nbFI8/88kY=
-X-Received: by 2002:a2e:7013:0:b0:2b6:d536:1bba with SMTP id
- l19-20020a2e7013000000b002b6d5361bbamr15817799ljc.18.1689146568526; Wed, 12
- Jul 2023 00:22:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qJURB-0005sl-0W
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 03:39:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1689147541; x=1720683541;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=N254egRX2Ps4ghMfc1dXRKh+XUjBO2BcAmjztDox/bg=;
+ b=NmkhAxk5BLhgnSo29pCHbcIkVlpsAvJMEPw/36MkiF/zqbRdZkWpLrRC
+ CMeU8/AQCNPPcikWhNWVu1Ea7XJkxq0iTUUnw0QAIt4wG2g++lyBIAVPb
+ mRExs0dtvO01ftI5CAhLXqwrnfS/c9lsMm+NN77RXVFsQnjf51WioRote
+ pxvNUgMEvg8XYJM0xdfwIxZfJ4ru/tHmosOJiSqlSOKmSZ+JG3KzfV56I
+ b06okDGrPv2DkaxoqQiaKz5nsUXNtiLtMId0qtLJ2is086wRpT3lqMV/m
+ VCbhM3CCfGdl1yBUbNTTRq5n2GLEM/wj0HsPTYmsUUwdbJ1VeVeEp0PaG g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="430953535"
+X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; d="scan'208";a="430953535"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jul 2023 00:38:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10768"; a="835023920"
+X-IronPort-AV: E=Sophos;i="6.01,199,1684825200"; d="scan'208";a="835023920"
+Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
+ by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jul 2023 00:38:50 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasonwang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [RFC PATCH v4 00/24] vfio: Adopt iommufd
+Date: Wed, 12 Jul 2023 15:25:04 +0800
+Message-Id: <20230712072528.275577-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230710165333.17506-1-lingshan.zhu@intel.com>
- <CACGkMEsNE995Z-TE8wiPc3TwLd3N4Rd+hGMGNfR-d1tFdwOM-Q@mail.gmail.com>
- <23e1b6fe-2f87-47d3-b66c-71fa30e6421b@intel.com>
- <CACGkMEu6JQp-KHgoiz=3o=mNb1hkivGUb9WMHSATC_aLo58HnA@mail.gmail.com>
- <CAJaqyWdM2FR1kT6DWtVxcmc=_bNA9k9A-qZXb_kJFkcpHRW2Kg@mail.gmail.com>
- <CACGkMEsGL7kcx4g-ZVHYTE9cyw3+YWDxWFxYdsRTA9zUi6G_dQ@mail.gmail.com>
- <a6e2fca0-11af-915f-20ec-31df80fa665d@intel.com>
-In-Reply-To: <a6e2fca0-11af-915f-20ec-31df80fa665d@intel.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 12 Jul 2023 15:22:37 +0800
-Message-ID: <CACGkMEsnq0kKFKaT2V+QB28pU5GBSjpXA2i0BePV8qXgJTB4Xw@mail.gmail.com>
-Subject: Re: [PATCH V2] vhost_vdpa: no need to fetch vring base when poweroff
-To: "Zhu, Lingshan" <lingshan.zhu@intel.com>
-Cc: Eugenio Perez Martin <eperezma@redhat.com>, mst@redhat.com,
- qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="00000000000030e2320600451559"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=134.134.136.100;
+ envelope-from=zhenzhong.duan@intel.com; helo=mga07.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,561 +78,277 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000030e2320600451559
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+With the introduction of iommufd, the Linux kernel provides a generic
+interface for userspace drivers to propagate their DMA mappings to kernel
+for assigned devices. This series does the porting of the VFIO devices
+onto the /dev/iommu uapi and let it coexist with the legacy implementation.
 
-On Wed, Jul 12, 2023 at 2:54=E2=80=AFPM Zhu, Lingshan <lingshan.zhu@intel.c=
-om>
-wrote:
+This QEMU integration is the result of a collaborative work between
+Yi Liu, Yi Sun, Nicolin Chen and Eric Auger.
 
->
->
-> On 7/11/2023 3:34 PM, Jason Wang wrote:
->
->
->
-> On Tue, Jul 11, 2023 at 3:25=E2=80=AFPM Eugenio Perez Martin <eperezma@re=
-dhat.com>
-> wrote:
->
->> On Tue, Jul 11, 2023 at 9:05=E2=80=AFAM Jason Wang <jasowang@redhat.com>=
- wrote:
->> >
->> > On Tue, Jul 11, 2023 at 12:09=E2=80=AFPM Zhu, Lingshan <lingshan.zhu@i=
-ntel.com>
->> wrote:
->> > >
->> > >
->> > >
->> > > On 7/11/2023 10:50 AM, Jason Wang wrote:
->> > > > On Mon, Jul 10, 2023 at 4:53=E2=80=AFPM Zhu Lingshan <
->> lingshan.zhu@intel.com> wrote:
->> > > >> In the poweroff routine, no need to fetch last available index.
->> > > >>
->> > > > This is because there's no concept of shutdown in the vhost layer,
->> it
->> > > > only knows start and stop.
->> > > >
->> > > >> This commit also provides a better debug message in the vhost
->> > > >> caller vhost_virtqueue_stop,
->> > > > A separate patch is better.
->> > > OK
->> > > >
->> > > >> because if vhost does not fetch
->> > > >> the last avail idx successfully, maybe the device does not
->> > > >> suspend, vhost will sync last avail idx to vring used idx as a
->> > > >> work around, not a failure.
->> > > > This only happens if we return a negative value?
->> > > Yes
->> > > >
->> > > >> Signed-off-by: Zhu Lingshan <lingshan.zhu@intel.com>
->> > > >> ---
->> > > >>   hw/virtio/vhost-vdpa.c | 10 ++++++++++
->> > > >>   hw/virtio/vhost.c      |  2 +-
->> > > >>   2 files changed, 11 insertions(+), 1 deletion(-)
->> > > >>
->> > > >> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
->> > > >> index 3c575a9a6e..10b445f64e 100644
->> > > >> --- a/hw/virtio/vhost-vdpa.c
->> > > >> +++ b/hw/virtio/vhost-vdpa.c
->> > > >> @@ -26,6 +26,7 @@
->> > > >>   #include "cpu.h"
->> > > >>   #include "trace.h"
->> > > >>   #include "qapi/error.h"
->> > > >> +#include "sysemu/runstate.h"
->> > > >>
->> > > >>   /*
->> > > >>    * Return one past the end of the end of section. Be careful
->> with uint64_t
->> > > >> @@ -1391,6 +1392,15 @@ static int vhost_vdpa_get_vring_base(struc=
-t
->> vhost_dev *dev,
->> > > >>       struct vhost_vdpa *v =3D dev->opaque;
->> > > >>       int ret;
->> > > >>
->> > > >> +    if (runstate_check(RUN_STATE_SHUTDOWN)) {
->> > > >> +        /*
->> > > >> +         * Some devices do not support this call properly,
->> > > >> +         * and we don't need to retrieve the indexes
->> > > >> +         * if it is shutting down
->> > > >> +         */
->> > > >> +        return 0;
->> > > > Checking runstate in the vhost code seems like a layer violation.
->> > > >
->> > > > What happens without this patch?
->> > > vhost tries to fetch vring base,
->> > > vhost_vdpa needs suspend the device before retrieving last_avail_idx=
-.
->> > > However not all devices can support .suspend properly so this call
->> > > may fail.
->> >
->> > I think this is where I'm lost. If the device doesn't support
->> > suspending, any reason we only try to fix the case of shutdown?
->> >
->> > Btw, the fail is intended:
->> >
->> >     if (!v->suspended) {
->> >         /*
->> >          * Cannot trust in value returned by device, let vhost recover
->> used
->> >          * idx from guest.
->> >          */
->> >         return -1;
->> >     }
->> >
->>
->> The fail is intended, but to recover the last used idx, either from
->> device or from the guest, is only useful in the case of migration.
->>
->
-> Note that we had userspace devices like VDUSE now, so it could be useful
-> in the case of a VDUSE daemon crash or reconnect.
->
-> This code blcok is for vhost_vdpa backend, and I think vduse is another
-> code path.
->
+At QEMU level, interactions with the /dev/iommu are abstracted by a new
+iommufd object (compiled in with the CONFIG_IOMMUFD option).
 
-I'm not sure I understand here, I meant vhost_vdpa + vduse. It works
-similar to vhost-user.
+Any QEMU device (e.g. vfio device) wishing to use /dev/iommu must be
+linked with an iommufd object. In this series, the vfio-pci device is
+granted with such capability (other VFIO devices are not yet ready):
 
+It gets a new optional parameter named iommufd which allows to pass
+an iommufd object:
 
-> Return a guest used idx may be a good idea but as Eugenio pointed out tha=
-t
-> may duplicate the code.
->
->
->
->> I think the main problem is the error message, actually. But I think
->> it has no use either to recover last_avail_idx or print a debug
->> message if we're not migrating. Another solution would be to recover
->> it from the guest at vhost_vdpa_get_vring_base, but I don't like the
->> duplication.
->>
->> > And if we return to success here, will we go to set an uninitialized
->> > last avail idx?
->> >
->>
->> It will be either the default value (is set to 0 at
->> __virtio_queue_reset) or the one received from a migration (at
->> virtio_load).
->>
->
-> 0 is even sub-optimal than the index used. Anyhow, VHOST_DEBUG should not
-> be enabled for production environments.
->
-> Returning 0 sounds like a queue reset, yes we can reset a queue if failed
-> to suspend it, I am not sure whther
-> 0 is better than guest used idx.
->
-> I think we are not able to disable VHOST_DEBUG because customers can buil=
-d
-> QEMU by their own.
->
+    -object iommufd,id=iommufd0
+    -device vfio-pci,host=0000:02:00.0,iommufd=iommufd0
 
-Well, disabling debug information is a common practice in any distribution.
+Note the /dev/iommu and vfio cdev can be externally opened by a
+management layer. In such a case the fd is passed:
+  
+    -object iommufd,id=iommufd0,fd=22
+    -device vfio-pci,iommufd=iommufd0,fd=23
 
-Or if you worry about the default, let's have a patch to undef VHOST_DEBUG
-by defualt.
+If the fd parameter is not passed, the fd is opened by QEMU.
+See https://www.mail-archive.com/qemu-devel@nongnu.org/msg937155.html
+for detailed discuss on this requirement.
 
-Thanks
+If no iommufd option is passed to the vfio-pci device, iommufd is not
+used and the end-user gets the behavior based on the legacy vfio iommu
+interfaces:
+
+    -device vfio-pci,host=0000:02:00.0
+
+While the legacy kernel interface is group-centric, the new iommufd
+interface is device-centric, relying on device fd and iommufd.
+
+To support both interfaces in the QEMU VFIO device we reworked the vfio
+container abstraction so that the generic VFIO code can use either
+backend.
+
+The VFIOContainer object becomes a base object derived into
+a) the legacy VFIO container and
+b) the new iommufd based container.
+
+The base object implements generic code such as code related to
+memory_listener and address space management whereas the derived
+objects implement callbacks specific to either BE, legacy and
+iommufd. Indeed each backend has its own way to setup secure context
+and dma management interface. The below diagram shows how it looks
+like with both BEs.
+
+                    VFIO                           AddressSpace/Memory
+    +-------+  +----------+  +-----+  +-----+
+    |  pci  |  | platform |  |  ap |  | ccw |
+    +---+---+  +----+-----+  +--+--+  +--+--+     +----------------------+
+        |           |           |        |        |   AddressSpace       |
+        |           |           |        |        +------------+---------+
+    +---V-----------V-----------V--------V----+               /
+    |           VFIOAddressSpace              | <------------+
+    |                  |                      |  MemoryListener
+    |          VFIOContainer list             |
+    +-------+----------------------------+----+
+            |                            |
+            |                            |
+    +-------V------+            +--------V----------+
+    |   iommufd    |            |    vfio legacy    |
+    |  container   |            |     container     |
+    +-------+------+            +--------+----------+
+            |                            |
+            | /dev/iommu                 | /dev/vfio/vfio
+            | /dev/vfio/devices/vfioX    | /dev/vfio/$group_id
+Userspace   |                            |
+============+============================+===========================
+Kernel      |  device fd                 |
+            +---------------+            | group/container fd
+            | (BIND_IOMMUFD |            | (SET_CONTAINER/SET_IOMMU)
+            |  ATTACH_IOAS) |            | device fd
+            |               |            |
+            |       +-------V------------V-----------------+
+    iommufd |       |                vfio                  |
+(map/unmap  |       +---------+--------------------+-------+
+ioas_copy)  |                 |                    | map/unmap
+            |                 |                    |
+     +------V------+    +-----V------+      +------V--------+
+     | iommfd core |    |  device    |      |  vfio iommu   |
+     +-------------+    +------------+      +---------------+
+
+[Secure Context setup]
+- iommufd BE: uses device fd and iommufd to setup secure context
+              (bind_iommufd, attach_ioas)
+- vfio legacy BE: uses group fd and container fd to setup secure context
+                  (set_container, set_iommu)
+[Device access]
+- iommufd BE: device fd is opened through /dev/vfio/devices/vfioX
+- vfio legacy BE: device fd is retrieved from group fd ioctl
+[DMA Mapping flow]
+1. VFIOAddressSpace receives MemoryRegion add/del via MemoryListener
+2. VFIO populates DMA map/unmap via the container BEs
+   *) iommufd BE: uses iommufd
+   *) vfio legacy BE: uses container fd
+
+This series depends on Yi's kernel series:
+"[PATCH v14 00/26] Add vfio_device cdev for iommufd support"
+https://lore.kernel.org/all/20230711025928.6438-1-yi.l.liu@intel.com/
+and
+"[PATCH v9 00/10] Enhance vfio PCI hot reset for vfio cdev device"
+https://lore.kernel.org/kvm/20230711023126.5531-1-yi.l.liu@intel.com/
+
+which can be found at:
+https://github.com/yiliu1765/iommufd/tree/vfio_device_cdev_v14
+
+This qemu series can be found at:
+https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_rfcv4
+
+Test done:
+- PCI device were tested
+- platform, ccw and ap were only compile-tested
+- FD passing and hot reset with some trick.
+- device hotplug test with legacy and iommufd backends (limited tests)
+- vIOMMU test run for both legacy and iommufd backends (limited tests)
 
 
->
-> Thanks
->
->
-> Thanks
->
->
->>
->> Thanks!
->>
->> >     r =3D dev->vhost_ops->vhost_get_vring_base(dev, &state);
->> >     if (r < 0) {
->> >     ...
->> >     }.else {
->> >         virtio_queue_set_last_avail_idx(vdev, idx, state.num);
->> >     }
->> >
->> > Thanks
->> >
->> > > Then vhost will print an error shows something failed.
->> > >
->> > > The error msg is confused, as stated in the commit log, restoring
->> > > last_avail_idx with guest used idx
->> > > is a workaround rather than a failure. And no needs to fetch
->> last_avail_idx
->> > > when power off.
->> > >
->> > > Thanks
->> > > >
->> > > > Thanks
->> > > >
->> > > >> +    }
->> > > >> +
->> > > >>       if (v->shadow_vqs_enabled) {
->> > > >>           ring->num =3D virtio_queue_get_last_avail_idx(dev->vdev=
-,
->> ring->index);
->> > > >>           return 0;
->> > > >> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
->> > > >> index 82394331bf..7dd90cff3a 100644
->> > > >> --- a/hw/virtio/vhost.c
->> > > >> +++ b/hw/virtio/vhost.c
->> > > >> @@ -1262,7 +1262,7 @@ void vhost_virtqueue_stop(struct vhost_dev
->> *dev,
->> > > >>
->> > > >>       r =3D dev->vhost_ops->vhost_get_vring_base(dev, &state);
->> > > >>       if (r < 0) {
->> > > >> -        VHOST_OPS_DEBUG(r, "vhost VQ %u ring restore failed: %d"=
-,
->> idx, r);
->> > > >> +        VHOST_OPS_DEBUG(r, "sync last avail idx to the guest use=
-d
->> idx for vhost VQ %u", idx);
->> > > >>           /* Connection to the backend is broken, so let's sync
->> internal
->> > > >>            * last avail idx to the device used idx.
->> > > >>            */
->> > > >> --
->> > > >> 2.39.3
->> > > >>
->> > >
->> >
->>
->>
->
+Given some iommufd kernel limitations, the iommufd backend is
+not yet fully on par with the legacy backend w.r.t. features like:
+- p2p mappings (you will see related error traces)
+- live migration
+- and etc.
 
---00000000000030e2320600451559
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+About TODOs in rfcv3:
+- Add DMA alias check for iommufd BE (group level)
+attach_ioas will fail for aliased device, so I think that's not a problem.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jul 12, 2023 at 2:54=E2=80=AF=
-PM Zhu, Lingshan &lt;<a href=3D"mailto:lingshan.zhu@intel.com">lingshan.zhu=
-@intel.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">
- =20
-   =20
- =20
-  <div>
-    <font face=3D"monospace"><br>
-      <br>
-    </font>
-    <div><font face=3D"monospace">On 7/11/2023
-        3:34 PM, Jason Wang wrote:<br>
-      </font></div>
-    <blockquote type=3D"cite">
-     =20
-      <div dir=3D"ltr">
-        <div dir=3D"ltr"><font face=3D"monospace"><br>
-          </font></div>
-        <font face=3D"monospace"><br>
-        </font>
-        <div class=3D"gmail_quote">
-          <div dir=3D"ltr" class=3D"gmail_attr"><font face=3D"monospace">On
-              Tue, Jul 11, 2023 at 3:25=E2=80=AFPM Eugenio Perez Martin &lt=
-;<a href=3D"mailto:eperezma@redhat.com" target=3D"_blank">eperezma@redhat.c=
-om</a>&gt;
-              wrote:<br>
-            </font></div>
-          <blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
-ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><font face=3D"m=
-onospace">On
-              Tue, Jul 11, 2023 at 9:05=E2=80=AFAM Jason Wang &lt;<a href=
-=3D"mailto:jasowang@redhat.com" target=3D"_blank">jasowang@redhat.com</a>&g=
-t;
-              wrote:<br>
-              &gt;<br>
-              &gt; On Tue, Jul 11, 2023 at 12:09=E2=80=AFPM Zhu, Lingshan &=
-lt;<a href=3D"mailto:lingshan.zhu@intel.com" target=3D"_blank">lingshan.zhu=
-@intel.com</a>&gt;
-              wrote:<br>
-              &gt; &gt;<br>
-              &gt; &gt;<br>
-              &gt; &gt;<br>
-              &gt; &gt; On 7/11/2023 10:50 AM, Jason Wang wrote:<br>
-              &gt; &gt; &gt; On Mon, Jul 10, 2023 at 4:53=E2=80=AFPM Zhu
-              Lingshan &lt;<a href=3D"mailto:lingshan.zhu@intel.com" target=
-=3D"_blank">lingshan.zhu@intel.com</a>&gt;
-              wrote:<br>
-              &gt; &gt; &gt;&gt; In the poweroff routine, no need to
-              fetch last available index.<br>
-              &gt; &gt; &gt;&gt;<br>
-              &gt; &gt; &gt; This is because there&#39;s no concept of
-              shutdown in the vhost layer, it<br>
-              &gt; &gt; &gt; only knows start and stop.<br>
-              &gt; &gt; &gt;<br>
-              &gt; &gt; &gt;&gt; This commit also provides a better
-              debug message in the vhost<br>
-              &gt; &gt; &gt;&gt; caller vhost_virtqueue_stop,<br>
-              &gt; &gt; &gt; A separate patch is better.<br>
-              &gt; &gt; OK<br>
-              &gt; &gt; &gt;<br>
-              &gt; &gt; &gt;&gt; because if vhost does not fetch<br>
-              &gt; &gt; &gt;&gt; the last avail idx successfully, maybe
-              the device does not<br>
-              &gt; &gt; &gt;&gt; suspend, vhost will sync last avail idx
-              to vring used idx as a<br>
-              &gt; &gt; &gt;&gt; work around, not a failure.<br>
-              &gt; &gt; &gt; This only happens if we return a negative
-              value?<br>
-              &gt; &gt; Yes<br>
-              &gt; &gt; &gt;<br>
-              &gt; &gt; &gt;&gt; Signed-off-by: Zhu Lingshan &lt;<a href=3D=
-"mailto:lingshan.zhu@intel.com" target=3D"_blank">lingshan.zhu@intel.com</a=
->&gt;<br>
-              &gt; &gt; &gt;&gt; ---<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0hw/virtio/vhost-vdpa.c | 10
-              ++++++++++<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0hw/virtio/vhost.c=C2=A0 =C2=A0=
- =C2=A0 |=C2=A0 2 +-<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A02 files changed, 11 insertions=
-(+), 1
-              deletion(-)<br>
-              &gt; &gt; &gt;&gt;<br>
-              &gt; &gt; &gt;&gt; diff --git a/hw/virtio/vhost-vdpa.c
-              b/hw/virtio/vhost-vdpa.c<br>
-              &gt; &gt; &gt;&gt; index 3c575a9a6e..10b445f64e 100644<br>
-              &gt; &gt; &gt;&gt; --- a/hw/virtio/vhost-vdpa.c<br>
-              &gt; &gt; &gt;&gt; +++ b/hw/virtio/vhost-vdpa.c<br>
-              &gt; &gt; &gt;&gt; @@ -26,6 +26,7 @@<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0#include &quot;cpu.h&quot;<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0#include &quot;trace.h&quot;<b=
-r>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0#include &quot;qapi/error.h&qu=
-ot;<br>
-              &gt; &gt; &gt;&gt; +#include &quot;sysemu/runstate.h&quot;<br=
->
-              &gt; &gt; &gt;&gt;<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0/*<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0 * Return one past the end of =
-the end
-              of section. Be careful with uint64_t<br>
-              &gt; &gt; &gt;&gt; @@ -1391,6 +1392,15 @@ static int
-              vhost_vdpa_get_vring_base(struct vhost_dev *dev,<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0struct vhost_vdp=
-a *v =3D
-              dev-&gt;opaque;<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0int ret;<br>
-              &gt; &gt; &gt;&gt;<br>
-              &gt; &gt; &gt;&gt; +=C2=A0 =C2=A0 if
-              (runstate_check(RUN_STATE_SHUTDOWN)) {<br>
-              &gt; &gt; &gt;&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>
-              &gt; &gt; &gt;&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* Some =
-devices do not support
-              this call properly,<br>
-              &gt; &gt; &gt;&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* and w=
-e don&#39;t need to
-              retrieve the indexes<br>
-              &gt; &gt; &gt;&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* if it=
- is shutting down<br>
-              &gt; &gt; &gt;&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
-              &gt; &gt; &gt;&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
-              &gt; &gt; &gt; Checking runstate in the vhost code seems
-              like a layer violation.<br>
-              &gt; &gt; &gt;<br>
-              &gt; &gt; &gt; What happens without this patch?<br>
-              &gt; &gt; vhost tries to fetch vring base,<br>
-              &gt; &gt; vhost_vdpa needs suspend the device before
-              retrieving last_avail_idx.<br>
-              &gt; &gt; However not all devices can support .suspend
-              properly so this call<br>
-              &gt; &gt; may fail.<br>
-              &gt;<br>
-              &gt; I think this is where I&#39;m lost. If the device doesn&=
-#39;t
-              support<br>
-              &gt; suspending, any reason we only try to fix the case of
-              shutdown?<br>
-              &gt;<br>
-              &gt; Btw, the fail is intended:<br>
-              &gt;<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0if (!v-&gt;suspended) {<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/*<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * Cannot trust in valu=
-e returned by device,
-              let vhost recover used<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * idx from guest.<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -1;<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0}<br>
-              &gt;<br>
-            </font>
-            <font face=3D"monospace"><br>
-              The fail is intended, but to recover the last used idx,
-              either from<br>
-              device or from the guest, is only useful in the case of
-              migration.<br>
-            </font></blockquote>
-          <div><font face=3D"monospace"><br>
-            </font></div>
-          <div><font face=3D"monospace">Note that we had userspace devices
-              like VDUSE now, so it could be useful in the case of a
-              VDUSE daemon crash or reconnect.</font></div>
-        </div>
-      </div>
-    </blockquote>
-    <font face=3D"monospace">This code blcok is for vhost_vdpa backend,
-      and I think vduse is another code path.<br></font></div></blockquote>=
-<div><br></div><div>I&#39;m not sure I understand here, I meant vhost_vdpa=
-=C2=A0+ vduse. It works similar to vhost-user.</div><div>=C2=A0</div><block=
-quote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1=
-px solid rgb(204,204,204);padding-left:1ex"><div><font face=3D"monospace">
-      Return a guest used idx may be a good idea but as Eugenio pointed
-      out that may duplicate the code.<br>
-    </font>
-    <blockquote type=3D"cite">
-      <div dir=3D"ltr">
-        <div class=3D"gmail_quote">
-          <div><font face=3D"monospace"><br>
-            </font></div>
-          <blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
-ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-            <font face=3D"monospace"><br>
-              I think the main problem is the error message, actually.
-              But I think<br>
-              it has no use either to recover last_avail_idx or print a
-              debug<br>
-              message if we&#39;re not migrating. Another solution would be
-              to recover<br>
-              it from the guest at vhost_vdpa_get_vring_base, but I
-              don&#39;t like the<br>
-              duplication.<br>
-            </font>
-            <font face=3D"monospace"><br>
-              &gt; And if we return to success here, will we go to set
-              an uninitialized<br>
-              &gt; last avail idx?<br>
-              &gt;<br>
-            </font>
-            <font face=3D"monospace"><br>
-              It will be either the default value (is set to 0 at<br>
-              __virtio_queue_reset) or the one received from a migration
-              (at<br>
-              virtio_load).<br>
-            </font></blockquote>
-          <div><font face=3D"monospace"><br>
-            </font></div>
-          <div><font face=3D"monospace">0 is even sub-optimal than the
-              index used. Anyhow, VHOST_DEBUG should not be enabled for
-              production environments.</font></div>
-        </div>
-      </div>
-    </blockquote>
-    <font face=3D"monospace">Returning 0 sounds like a queue reset, yes we
-      can reset a queue if failed to suspend it, I am not sure whther<br>
-      0 is better than guest used idx.<br>
-      <br>
-      I think we are not able to disable VHOST_DEBUG because customers
-      can build QEMU by their own.<br></font></div></blockquote><div><br></=
-div><div>Well, disabling debug information is a common practice in any dist=
-ribution.</div><div><br></div><div>Or if you worry about the default, let&#=
-39;s have a patch to undef VHOST_DEBUG by defualt.</div><div><br></div><div=
->Thanks</div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"ma=
-rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
-1ex"><div><font face=3D"monospace">
-      <br>
-      Thanks <br>
-    </font>
-    <blockquote type=3D"cite">
-      <div dir=3D"ltr">
-        <div class=3D"gmail_quote">
-          <div><font face=3D"monospace"><br>
-            </font></div>
-          <div><font face=3D"monospace">Thanks</font></div>
-          <div><font face=3D"monospace">=C2=A0</font></div>
-          <blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
-ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-            <font face=3D"monospace"><br>
-              Thanks!<br>
-            </font>
-            <font face=3D"monospace"><br>
-              &gt;=C2=A0 =C2=A0 =C2=A0r =3D
-              dev-&gt;vhost_ops-&gt;vhost_get_vring_base(dev,
-              &amp;state);<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0if (r &lt; 0) {<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0...<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0}.else {<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0virtio_queue_set_last_a=
-vail_idx(vdev, idx,
-              state.num);<br>
-              &gt;=C2=A0 =C2=A0 =C2=A0}<br>
-              &gt;<br>
-              &gt; Thanks<br>
-              &gt;<br>
-              &gt; &gt; Then vhost will print an error shows something
-              failed.<br>
-              &gt; &gt;<br>
-              &gt; &gt; The error msg is confused, as stated in the
-              commit log, restoring<br>
-              &gt; &gt; last_avail_idx with guest used idx<br>
-              &gt; &gt; is a workaround rather than a failure. And no
-              needs to fetch last_avail_idx<br>
-              &gt; &gt; when power off.<br>
-              &gt; &gt;<br>
-              &gt; &gt; Thanks<br>
-              &gt; &gt; &gt;<br>
-              &gt; &gt; &gt; Thanks<br>
-              &gt; &gt; &gt;<br>
-              &gt; &gt; &gt;&gt; +=C2=A0 =C2=A0 }<br>
-              &gt; &gt; &gt;&gt; +<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (v-&gt;shadow=
-_vqs_enabled) {<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ri=
-ng-&gt;num =3D
-              virtio_queue_get_last_avail_idx(dev-&gt;vdev,
-              ring-&gt;index);<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0re=
-turn 0;<br>
-              &gt; &gt; &gt;&gt; diff --git a/hw/virtio/vhost.c
-              b/hw/virtio/vhost.c<br>
-              &gt; &gt; &gt;&gt; index 82394331bf..7dd90cff3a 100644<br>
-              &gt; &gt; &gt;&gt; --- a/hw/virtio/vhost.c<br>
-              &gt; &gt; &gt;&gt; +++ b/hw/virtio/vhost.c<br>
-              &gt; &gt; &gt;&gt; @@ -1262,7 +1262,7 @@ void
-              vhost_virtqueue_stop(struct vhost_dev *dev,<br>
-              &gt; &gt; &gt;&gt;<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0r =3D
-              dev-&gt;vhost_ops-&gt;vhost_get_vring_base(dev,
-              &amp;state);<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (r &lt; 0) {<=
-br>
-              &gt; &gt; &gt;&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 VHOST_OPS_DEB=
-UG(r, &quot;vhost VQ
-              %u ring restore failed: %d&quot;, idx, r);<br>
-              &gt; &gt; &gt;&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 VHOST_OPS_DEB=
-UG(r, &quot;sync last
-              avail idx to the guest used idx for vhost VQ %u&quot;, idx);<=
-br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/*=
- Connection to the backend
-              is broken, so let&#39;s sync internal<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 *=
- last avail idx to the
-              device used idx.<br>
-              &gt; &gt; &gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 *=
-/<br>
-              &gt; &gt; &gt;&gt; --<br>
-              &gt; &gt; &gt;&gt; 2.39.3<br>
-              &gt; &gt; &gt;&gt;<br>
-              &gt; &gt;<br>
-              &gt;<br>
-            </font>
-            <font face=3D"monospace"><br>
-            </font>
-          </blockquote>
-        </div>
-      </div>
-    </blockquote>
-    <font face=3D"monospace"><br>
-    </font>
-  </div>
+- Make pci.c to be BE agnostic. Needs kernel change as well to fix the
+  VFIO_DEVICE_PCI_HOT_RESET gap
+I didn't make pci.c fully group agnostic because pci device reset is
+device scope operation, force mapping it to container scope callback
+isn't a good idea. Instead I added iommufd code in pci.c and fixed
+VFIO_DEVICE_PCI_HOT_RESET gap there.
 
-</blockquote></div></div>
+- Cleanup the VFIODevice fields as it's used in both backends
+- Replace list with g_tree
+This TODO is not viable due to iterator callback depending on list element.
 
---00000000000030e2320600451559--
+- Add locks
+I think it's not necessory as BQL already ensure that.
+
+base-commit: 887cba855b
+
+Change log:
+v3 -> v4:
+- rebase on top of v8.0.3
+- Add one patch from Yi which is about vfio device add in kvm
+- Remove IOAS_COPY optimization and focus on functions in this patchset
+- Fix wrong name issue reported and fix suggested by Matthew
+- Fix compilation issue reported and fix sugggsted by Nicolin
+- Use query_dirty_bitmap callback to replace get_dirty_bitmap for better granularity
+- Add dev_iter_next() callback to avoid adding so many callback
+  at container scope, add VFIODevice.hwpt to support that
+- Restore all functions back to common from container whenever possible,
+  mainly migration and reset related functions
+- Add --enable/disable-iommufd config option, enabled by default in linux
+- Remove VFIODevice.hwpt_next as it's redundant with VFIODevice.next
+- Adapt new VFIO_DEVICE_PCI_HOT_RESET uAPI for IOMMUFD backed device
+- vfio_kvm_device_add/del_group call vfio_kvm_device_add/del_fd to remove redundant code
+- Add FD passing support for vfio device backed by IOMMUFD
+- Fix hot unplug resource leak issue in vfio_legacy_detach_device()
+- Fix FD leak in vfio_get_devicefd()
+
+v3: https://lists.nongnu.org/archive/html/qemu-devel/2023-01/msg07189.html
+
+v2 -> v3:
+- rebase on top of v7.2.0
+- Fix the compilation with CONFIG_IOMMUFD unset by using true classes for
+  VFIO backends
+- Fix use after free in error path, reported by Alister
+- Split common.c in several steps to ease the review
+
+v1 -> v2:
+- remove the first three patches of rfcv1
+- add open cdev helper suggested by Jason
+- remove the QOMification of the VFIOContainer and simply use standard ops (David)
+- add "-object iommufd" suggested by Alex
+
+v1: https://lore.kernel.org/qemu-devel/20220414104710.28534-1-yi.l.liu@intel.com/
+
+Thanks,
+Yi, Yi, Eric, Zhenzhong
+
+Eric Auger (9):
+  scripts/update-linux-headers: Add iommufd.h
+  vfio/common: Introduce vfio_container_add|del_section_window()
+  vfio/container: Introduce vfio_[attach/detach]_device
+  vfio/platform: Use vfio_[attach/detach]_device
+  vfio/ap: Use vfio_[attach/detach]_device
+  vfio/ccw: Use vfio_[attach/detach]_device
+  vfio/container-base: Introduce [attach/detach]_device container
+    callbacks
+  backends/iommufd: Introduce the iommufd object
+  vfio/as: Allow the selection of a given iommu backend
+
+Yi Liu (6):
+  vfio/common: Move IOMMU agnostic helpers to a separate file
+  vfio/common: Move legacy VFIO backend code into separate container.c
+  vfio/common: Rename into as.c
+  vfio: Add base container
+  util/char_dev: Add open_cdev()
+  vfio/iommufd: Implement the iommufd backend
+
+Zhenzhong Duan (9):
+  Update linux-header per VFIO device cdev v14
+  vfio/common: Extract out vfio_kvm_device_[add/del]_fd
+  vfio/common: Add a vfio device iterator
+  vfio/common: Refactor vfio_viommu_preset() to be group agnostic
+  vfio/as: Simplify vfio_viommu_preset()
+  Add iommufd configure option
+  vfio/as: Add vfio device iterator callback for iommufd
+  vfio/pci: Adapt vfio pci hot reset support with iommufd BE
+  vfio/iommufd: Make vfio cdev pre-openable by passing a file handle
+
+ MAINTAINERS                           |   13 +
+ backends/Kconfig                      |    4 +
+ backends/iommufd.c                    |  268 +++
+ backends/meson.build                  |    3 +
+ backends/trace-events                 |   12 +
+ hw/vfio/ap.c                          |   66 +-
+ hw/vfio/as.c                          | 1555 +++++++++++++
+ hw/vfio/ccw.c                         |  122 +-
+ hw/vfio/common.c                      | 3078 -------------------------
+ hw/vfio/container-base.c              |  146 ++
+ hw/vfio/container.c                   | 1218 ++++++++++
+ hw/vfio/helpers.c                     |  598 +++++
+ hw/vfio/iommufd.c                     |  546 +++++
+ hw/vfio/meson.build                   |    8 +-
+ hw/vfio/pci.c                         |  354 ++-
+ hw/vfio/platform.c                    |   43 +-
+ hw/vfio/spapr.c                       |   22 +-
+ hw/vfio/trace-events                  |   16 +-
+ include/hw/vfio/vfio-common.h         |  109 +-
+ include/hw/vfio/vfio-container-base.h |  158 ++
+ include/qemu/char_dev.h               |   16 +
+ include/sysemu/iommufd.h              |   47 +
+ linux-headers/linux/iommufd.h         |  347 +++
+ linux-headers/linux/kvm.h             |   13 +-
+ linux-headers/linux/vfio.h            |  142 +-
+ meson.build                           |    6 +
+ meson_options.txt                     |    2 +
+ qapi/qom.json                         |   18 +-
+ qemu-options.hx                       |   13 +
+ scripts/meson-buildoptions.sh         |    3 +
+ scripts/update-linux-headers.sh       |    3 +-
+ util/chardev_open.c                   |   61 +
+ util/meson.build                      |    1 +
+ 33 files changed, 5601 insertions(+), 3410 deletions(-)
+ create mode 100644 backends/iommufd.c
+ create mode 100644 hw/vfio/as.c
+ delete mode 100644 hw/vfio/common.c
+ create mode 100644 hw/vfio/container-base.c
+ create mode 100644 hw/vfio/container.c
+ create mode 100644 hw/vfio/helpers.c
+ create mode 100644 hw/vfio/iommufd.c
+ create mode 100644 include/hw/vfio/vfio-container-base.h
+ create mode 100644 include/qemu/char_dev.h
+ create mode 100644 include/sysemu/iommufd.h
+ create mode 100644 linux-headers/linux/iommufd.h
+ create mode 100644 util/chardev_open.c
+
+-- 
+2.34.1
 
 
