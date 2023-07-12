@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E407504F3
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 12:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8098D750506
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 12:46:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJXFa-0000dK-0B; Wed, 12 Jul 2023 06:39:14 -0400
+	id 1qJXLd-0002fM-T1; Wed, 12 Jul 2023 06:45:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qJXFX-0000d2-DH; Wed, 12 Jul 2023 06:39:11 -0400
+ id 1qJXLW-0002ez-8y; Wed, 12 Jul 2023 06:45:22 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qJXFU-0000PZ-Dq; Wed, 12 Jul 2023 06:39:11 -0400
+ id 1qJXLS-0003t7-Pb; Wed, 12 Jul 2023 06:45:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8D1E913434;
- Wed, 12 Jul 2023 13:39:15 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 583BA13438;
+ Wed, 12 Jul 2023 13:45:27 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 93D10145EB;
- Wed, 12 Jul 2023 13:39:03 +0300 (MSK)
-Message-ID: <d902daf3-68ff-71ae-a849-8cd131f1210a@tls.msk.ru>
-Date: Wed, 12 Jul 2023 13:39:03 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 56B5B145EF;
+ Wed, 12 Jul 2023 13:45:15 +0300 (MSK)
+Message-ID: <a33441e1-4e29-5e5d-33df-ffb52d3493ef@tls.msk.ru>
+Date: Wed, 12 Jul 2023 13:45:15 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] gdbstub: Fix client Ctrl-C handling
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- Matheus Tavares Bernardino <quic_mathbern@quicinc.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Taylor Simpson <tsimpson@quicinc.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>
-References: <20230711085903.304496-1-npiggin@gmail.com>
- <CTZTWJ73RQFY.1ZX05ZTD1FIWA@wheely>
+Subject: Re: [PATCH] vdpa: Increase out buffer size for CVQ commands
 Content-Language: en-US
+To: Hawkins Jiawei <yin31149@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Eugenio Perez Martin <eperezma@redhat.com>, jasowang@redhat.com,
+ qemu-devel@nongnu.org, qemu-stable@nongnu.org, 18801353760@163.com
+References: <20230622010651.22698-1-yin31149@gmail.com>
+ <CAJaqyWfr6XTz7qhMfYR7kJW_A409N7x6hcYQd2ypUD_p6kyc_g@mail.gmail.com>
+ <CAKrof1O12p=7zf5jzJca0mtcyoYJHiR-5ubYLD1Q0aszWaKhoQ@mail.gmail.com>
+ <20230710145208-mutt-send-email-mst@kernel.org>
+ <CAKrof1PCqSKbLUy673eKF19w9_kAh3C6sdMC0nm-4BXUwAmktA@mail.gmail.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <CTZTWJ73RQFY.1ZX05ZTD1FIWA@wheely>
+In-Reply-To: <CAKrof1PCqSKbLUy673eKF19w9_kAh3C6sdMC0nm-4BXUwAmktA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -64,31 +64,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-12.07.2023 05:13, Nicholas Piggin wrote:
-> On Tue Jul 11, 2023 at 6:59 PM AEST, Nicholas Piggin wrote:
->> The gdb remote protocol has a special interrupt character (0x03) that is
->> transmitted outside the regular packet processing, and represents a
->> Ctrl-C pressed in the client. Despite not being a regular packet, it
->> does expect a regular stop response if the stub successfully stops the
->> running program.
->>
->> See: https://sourceware.org/gdb/onlinedocs/gdb/Interrupts.html
->>
->> Inhibiting the stop reply packet can lead to gdb client hang. So permit
->> a stop response when receiving a character from gdb that stops the vm.
->> Additionally, add a warning if that was not a 0x03 character, because
->> the gdb session is likely to end up getting confused if this happens.
->>
->> Cc: qemu-stable@nongnu.org
-> 
-> Oh, I should note that this doesn't apply to any stable
-> branches I'm sorry. Will be more careful with the tag...
+11.07.2023 04:48, Hawkins Jiawei wrote:
+..
+> Sorry for not mentioning that I have moved the patch to the patch series
+> titled "Vhost-vdpa Shadow Virtqueue _F_CTRL_RX commands support" at [1].
+> The reason for this move is that the bug in question should not be
+> triggered until the VIRTIO_NET_CTRL_MAC_TABLE_SET command is exposed by
+> this patch series.
 
-That's entirely Okay, since the Fixes: tag helps to determine if it fits
-or not, and 758370052fb is v8.0.0-803-g758370052f.  It's worse to miss
-something important :)
+Does this mean this particular change is not supposed to be applied to -stable,
+as the other change which exposes the bug isn't in any stable series?
 
-Thank you!
+Thanks,
 
 /mjt
 
