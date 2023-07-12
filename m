@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8361574FCFA
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 04:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FBE74FD08
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 04:24:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJPMD-0003Mp-Pq; Tue, 11 Jul 2023 22:13:33 -0400
+	id 1qJPV7-0005bu-O5; Tue, 11 Jul 2023 22:22:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qJPMC-0003Mb-33; Tue, 11 Jul 2023 22:13:32 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1qJPU3-0005Na-5Y; Tue, 11 Jul 2023 22:21:40 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qJPM9-0000HD-Ib; Tue, 11 Jul 2023 22:13:31 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-55ba5fae2e6so4709863a12.0; 
- Tue, 11 Jul 2023 19:13:28 -0700 (PDT)
+ id 1qJPTl-0002tJ-PW; Tue, 11 Jul 2023 22:21:37 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1b8ad907ba4so33265405ad.0; 
+ Tue, 11 Jul 2023 19:21:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689128007; x=1691720007;
+ d=gmail.com; s=20221208; t=1689128479; x=1691720479;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CMEK6PyWFyZJG+UEe4/8cdH0mTVQ10OBz8JGtqScqLM=;
- b=FWuGmnx7RlH0E4QVFWF/exn2RV5+7s7mF2UGnkPBH3juzOk4PbEP5JWjE5adRItPVU
- RBaCBPtB1lzwtwi2ESC75qhA6oJyb3f6fvcT7XOSI12LG1yYqoEtoPZCBlGFkt1T+hd9
- YPiVgSnmbFQRYZsulxrEzQCFXQ9JhhVuO/ozttGbx82OaZwB50yTUfHC3Bsuzfv6n9At
- e+oS+KDaWH1mhoI31KDnuPDiDeEYO2wtlzDrma1oZiN4biYWNUYwsOhph5uv9KsHqrhX
- aJ45f4vPdK+Um+Vy/jBTTgpzA6noxXc/WQtk8UvEFYjDLx71sEQg4bmos9D0SjhZ9qZC
- GOpQ==
+ bh=oZ6sMFT4SV39lw3tLW+ciyXeP0LWgHxhcP6X9eKggF0=;
+ b=CrOSs50L2nZBJeazNMBd/8Em5uxFDK/SnrZnLd4kHO+3Ylp5T0hRnLztTdsmlji2zG
+ nLjgq2DXk9RKilEiF6T22RscrzQQcaoPsN+hzFJ5AlQZrIDKJN1e5NwucoELq0Vcxw8f
+ eIZldUjyhRL+4zmeZpnU2cyaDOC1R5mVB9Vr6jN035+JGFivjkwd1KdDXNqL/6yc8W65
+ +XayfctpKrqDChf0k98Bg4zyiXwCYj+k8yq7dBJb0N7IC8jeed+Ggfu2YwPoJMEI8F8W
+ tX3cJM7eatxXndbmJYiM9e76eoGiuQB4i3QHQp3JaXhUNH19mNp6EhUtxqvGPHGjuTEl
+ CgWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689128007; x=1691720007;
+ d=1e100.net; s=20221208; t=1689128479; x=1691720479;
  h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=CMEK6PyWFyZJG+UEe4/8cdH0mTVQ10OBz8JGtqScqLM=;
- b=FZVEEncUVEqPiUfjju/WeOyzk4HxvDt7xUGGfHVZjtVCmm/nxzjlQH2gNxsS3VHFOV
- e9t+3MaXRPJOZz0V7xpQY/5Ep2YsZ7j1v2O4wrRmyNUMhOK1o7Ie1FcetDvlR7D3uv00
- 2ugX0RDlj9+8D7DDaL2v6vCetWqtpw7krrJs/YmgDmprtN52QqtvSBy8Hd6f+MqfEuRm
- zE0Oa/SiJN7Tugfwg3VbljRj2FiN/DqbRRexg65oyJWvQXpC1G/+PyX00fcX5S6JHs2r
- XIgKY+InNIM+ocRZBGSYfDCJETBilj74wEc0kts/RTtKK6HXolkAtj9UQnz8fYmKMxx2
- x8TA==
-X-Gm-Message-State: ABy/qLZsUG6NnFyoJdpGVDOMn07Vk61Geuk76p0K7XF45YPwgFw0rdUK
- OgKPEN3Sou/kgQGwiCC68EU=
-X-Google-Smtp-Source: APBJJlELnquw3cVUv2UjPOhERQ/rd5pRdFy0zzor8MZFtL80VZ6iL9RfP/f/V41EXYJ5vWchenZIAQ==
-X-Received: by 2002:a05:6a20:728a:b0:11f:626e:15b4 with SMTP id
- o10-20020a056a20728a00b0011f626e15b4mr21947999pzk.44.1689128007614; 
- Tue, 11 Jul 2023 19:13:27 -0700 (PDT)
+ bh=oZ6sMFT4SV39lw3tLW+ciyXeP0LWgHxhcP6X9eKggF0=;
+ b=cjDOpRcQtHEcyqk4v+OP11G89PJtg/xBECbiWE40jne6bQhnqT+P96YuqO2wABPPIw
+ uCdumcJWLkBNGA2VEVSsoryKft7iK8bPQWwd4fnlEUPYof55hKCpLP8OjrPAJfrykt8l
+ up5nEbm7uq8IAioI15EJZQmpO+/BxUVa30pVyqI7K3c/kEPQlfHqtPyAyr9qlOP4hKi5
+ 4+9x4V8/xmW+764sIIRqvMqlkcexPYHX3DZty/vl0FbPxoFBAgjU4mXCti9L/zAB2Wuz
+ O74nd9HTQhcaT9uZmf8bH3RkqJ1oKy3fhzv+u4tXRwW9fMyD7WgqKhmAY3CmFZbigCoQ
+ cqXg==
+X-Gm-Message-State: ABy/qLagfkDJfaw0t15hiDTK68+7sDvkKLN434cfRSW7FgekPpchWuth
+ wrQMB/JmQdajwkUV/f3HiRbxeEjaMiE=
+X-Google-Smtp-Source: APBJJlGzOA2gmm4/zqwxunPhz5bWm9dXO+5RDbcE6Wyb9OtOW/mAQiDg29mgdgg3PaCVQx48fZAtDA==
+X-Received: by 2002:a17:902:a38b:b0:1b9:e913:b585 with SMTP id
+ x11-20020a170902a38b00b001b9e913b585mr3499944pla.13.1689128478842; 
+ Tue, 11 Jul 2023 19:21:18 -0700 (PDT)
 Received: from localhost (193-116-64-199.tpgi.com.au. [193.116.64.199])
  by smtp.gmail.com with ESMTPSA id
- s17-20020aa78291000000b006827c26f148sm2342134pfm.195.2023.07.11.19.13.24
+ ji2-20020a170903324200b001b89536974bsm2632407plb.202.2023.07.11.19.21.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 11 Jul 2023 19:13:27 -0700 (PDT)
+ Tue, 11 Jul 2023 19:21:18 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 12 Jul 2023 12:13:20 +1000
-Message-Id: <CTZTWJ73RQFY.1ZX05ZTD1FIWA@wheely>
-Cc: <qemu-stable@nongnu.org>, "Matheus Tavares Bernardino"
- <quic_mathbern@quicinc.com>, =?utf-8?q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, "Taylor Simpson" <tsimpson@quicinc.com>,
- "Frederic Barrat" <fbarrat@linux.ibm.com>
-Subject: Re: [PATCH] gdbstub: Fix client Ctrl-C handling
+Date: Wed, 12 Jul 2023 12:21:13 +1000
+Message-Id: <CTZU2K7ZUGT5.1OWRLPBN4PE1O@wheely>
+Cc: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ =?utf-8?q?Fr=C3=A9d=C3=A9ric_Barrat?= <fbarrat@linux.ibm.com>,
+ <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v2] ppc/pnv: Add QME region for P10
 From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Nicholas Piggin" <npiggin@gmail.com>, <qemu-devel@nongnu.org>
+To: "Joel Stanley" <joel@jms.id.au>
 X-Mailer: aerc 0.15.2
-References: <20230711085903.304496-1-npiggin@gmail.com>
-In-Reply-To: <20230711085903.304496-1-npiggin@gmail.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x52a.google.com
+References: <20230707071213.9924-1-joel@jms.id.au>
+ <CTWE73ZF1T37.IQUBV31TU3LF@wheely>
+ <CACPK8Xd_qdxy1Z28X70fcDE9xOtBORuqRD23d6VmAOuAKy=_LQ@mail.gmail.com>
+In-Reply-To: <CACPK8Xd_qdxy1Z28X70fcDE9xOtBORuqRD23d6VmAOuAKy=_LQ@mail.gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,24 +94,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Jul 11, 2023 at 6:59 PM AEST, Nicholas Piggin wrote:
-> The gdb remote protocol has a special interrupt character (0x03) that is
-> transmitted outside the regular packet processing, and represents a
-> Ctrl-C pressed in the client. Despite not being a regular packet, it
-> does expect a regular stop response if the stub successfully stops the
-> running program.
+On Mon Jul 10, 2023 at 10:25 AM AEST, Joel Stanley wrote:
+> On Sat, 8 Jul 2023 at 01:17, Nicholas Piggin <npiggin@gmail.com> wrote:
 >
-> See: https://sourceware.org/gdb/onlinedocs/gdb/Interrupts.html
+> > > --- a/include/hw/ppc/pnv_xscom.h
+> > > +++ b/include/hw/ppc/pnv_xscom.h
+> > > @@ -127,6 +127,17 @@ struct PnvXScomInterfaceClass {
+> > >  #define PNV10_XSCOM_EC(proc)                    \
+> > >      ((0x2 << 16) | ((1 << (3 - (proc))) << 12))
+> > >
+> > > +#define PNV10_XSCOM_QME(chiplet) \
+> > > +        (PNV10_XSCOM_EQ(chiplet) | (0xE << 16))
+> > > +
+> > > +/*
+> > > + * Make the region larger by 0x1000 (instead of starting at an offse=
+t) so the
+> > > + * modelled addresses start from 0
+> > > + */
+> > > +#define PNV10_XSCOM_QME_BASE(core)     \
+> > > +    ((uint64_t) PNV10_XSCOM_QME(PNV10_XSCOM_EQ_CHIPLET(core)))
+> > > +#define PNV10_XSCOM_QME_SIZE        (0x8000 + 0x1000)
+> >
+> > I couldn't work out this comment.
 >
-> Inhibiting the stop reply packet can lead to gdb client hang. So permit
-> a stop response when receiving a character from gdb that stops the vm.
-> Additionally, add a warning if that was not a 0x03 character, because
-> the gdb session is likely to end up getting confused if this happens.
+> I was trying to describe why we have the + 0x1000.
 >
-> Cc: qemu-stable@nongnu.org
+> Each core sets a bit in the xscom address space, with the first core
+> setting bit 12, second bit 13, etc. So there's actually no registers
+> at PNV10_XSCOM_QME_BASE, but so the addressing is easier to follow, I
+> chose to start the base where we do, and make the region 0x1000
+> bigger.
+>
+> That was my understanding at least.
 
-Oh, I should note that this doesn't apply to any stable
-branches I'm sorry. Will be more careful with the tag...
+Ah okay that does make sense. Because you have the core number in the
+address and core number encoding is one-hot, you don't start at zero
+or end at 0x4000.
+
+It makes sense after you stare at QME model, but maybe could comment
+the scheme briefly there... and now I think about it, I wonder if QME
+can actually do broadcast ops to the cores. We don't use that in
+skiboot but ISTR it could be done, so size might be 0x10000.
 
 Thanks,
 Nick
