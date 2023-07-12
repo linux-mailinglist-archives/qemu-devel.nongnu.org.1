@@ -2,110 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F8B750E89
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 18:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8A0750EBA
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 18:39:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJcgW-0000iM-LP; Wed, 12 Jul 2023 12:27:24 -0400
+	id 1qJcr9-0002hP-MB; Wed, 12 Jul 2023 12:38:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qJcgT-0000hp-Uk; Wed, 12 Jul 2023 12:27:21 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qJcr7-0002gv-KZ
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 12:38:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qJcgR-0006SR-6T; Wed, 12 Jul 2023 12:27:21 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36CGHP8A003170; Wed, 12 Jul 2023 16:27:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=pdr7lHbeaN0C+o/eXzY0JJHAKqOpaaUp7zshfivyUSE=;
- b=Iyb898CHukP0AsjaFYXwBd6Wtl/+TN4WAc0i7Jvi7F5xmK9qsKxSIhuAQqClCFLnKRgg
- hqnzFEjJhdA4Y0ccojuprZzf5xzyvJ1ODCAbW4UQld6rwMXxGpnMRPKuqjVBraewBM9v
- GmgMx1HzoK+nMxkri33cPGSSzI8dgn6Ya0zxq2TPrZuZ8eSLcIUDTn9HxoL3XEQ/1Jl+
- o+36F/raOp6Ni4yY/wbTfiM5IpkHfKOkJfXM7CeNqjFTbPv3/Bq1zD/hW5jCXFbGepFf
- ikSKjKS5elKYfCDvIy4hVspRBEBQTw4hsUo29mw4Lt90ZhEBcLRpegA0mcaA3egSSmXx gQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rsyjkr9p0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jul 2023 16:27:14 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36CGITD8006499;
- Wed, 12 Jul 2023 16:27:14 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rsyjkr9nk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jul 2023 16:27:14 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36C4aiMt000620;
- Wed, 12 Jul 2023 16:27:12 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma03fra.de.ibm.com (PPS) with ESMTPS id 3rpye5206e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jul 2023 16:27:12 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36CGR7uA24969976
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 12 Jul 2023 16:27:07 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2583F20043;
- Wed, 12 Jul 2023 16:27:07 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8DD4520049;
- Wed, 12 Jul 2023 16:27:06 +0000 (GMT)
-Received: from [9.152.222.242] (unknown [9.152.222.242])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Wed, 12 Jul 2023 16:27:06 +0000 (GMT)
-Message-ID: <22b387bb-6bed-7045-5ecc-6d74e0729d7c@linux.ibm.com>
-Date: Wed, 12 Jul 2023 18:27:06 +0200
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qJcr5-0004Pk-OP
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 12:38:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689179898;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lICL8+3kj1DVjaaJZ3TfPqI82BUScpk7OfZrv40Cpmo=;
+ b=CA8uFScEpZbHp5W5aMjPEvl1jSR88i4a8gCbJDZST19N0UkZdJjSQRJVXlMbV19Vt6o4he
+ 91uvwMVRJf97pzoE0t4paYUgIY5AdCN3RpdM1lddRxWsf0v63D1ANznXOq2JEpSVJV6hhC
+ fMUG7TfX8FKWgizigvtViWOJPqr7gkA=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-578-O86_5LU3Ny-9rjoOPTlIQQ-1; Wed, 12 Jul 2023 12:38:17 -0400
+X-MC-Unique: O86_5LU3Ny-9rjoOPTlIQQ-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-51e2497eeefso4589944a12.3
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 09:38:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689179896; x=1691771896;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lICL8+3kj1DVjaaJZ3TfPqI82BUScpk7OfZrv40Cpmo=;
+ b=CNA5dquVyT2tNLMbiJfrXEJ/zf4Ro8fKuNmcaEue7bnMaoPPLhhpDysKItmgnXEKUd
+ uNw0yKORghtmXMMmkmTBjMHuX1+W3EoWegzZeK8/S2v3sh03WFguB59TWAhkVcAFtOLg
+ R5JOhOfN/FlGRnNhnyTZB9GLPWzRFSppPGS/SxzIyDIHUIJsmFyjT7cHMgfNW1bgFqXb
+ lvvcQiTwFapHEcxRIkSSZ8AUr5yc4IjfKobacdIHvlZKVk7CHrj9/HLX3pCXxBY/m9/j
+ p9nv1/FyH0haN1WzNwqbMsuPhERbSEGCUKeqEj4oGxZ9RJydVzS8A6KoC1TG6KazzgRu
+ NnCQ==
+X-Gm-Message-State: ABy/qLYCYCv4D+b4cDmY1OU0u51k2Yfbm+7f5ioj72j6/qIeBexQv/GY
+ 4F8CSnQpSOhhVCQFGroCYZw/JVgaOt4CfhgEq/ouRFd4WARpdt2AxZzwekb2s2XlbjCo7o9CyPu
+ zm8iG43xVs04AoNc=
+X-Received: by 2002:aa7:d052:0:b0:51d:a02d:f8fe with SMTP id
+ n18-20020aa7d052000000b0051da02df8femr15825462edo.29.1689179896145; 
+ Wed, 12 Jul 2023 09:38:16 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFw4g6yFUIe3dsEcITItugUp53vcEGer9oqlZF4qnjhbx50XO0/wkNWcWnTS0ThOYBqUIMF+A==
+X-Received: by 2002:aa7:d052:0:b0:51d:a02d:f8fe with SMTP id
+ n18-20020aa7d052000000b0051da02df8femr15825445edo.29.1689179895817; 
+ Wed, 12 Jul 2023 09:38:15 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:1c09:f536:3de6:228c?
+ ([2001:b07:6468:f312:1c09:f536:3de6:228c])
+ by smtp.googlemail.com with ESMTPSA id
+ dy23-20020a05640231f700b0051e22d3f328sm2956044edb.96.2023.07.12.09.38.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 12 Jul 2023 09:38:15 -0700 (PDT)
+Message-ID: <602625fe-f971-8843-88b6-a63dbe52befe@redhat.com>
+Date: Wed, 12 Jul 2023 18:38:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v21 13/20] docs/s390x/cpu topology: document s390x cpu
- topology
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/3] scsi: fetch unit attention when creating the request
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
- mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
- armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
- nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
-References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-14-pmorel@linux.ibm.com>
- <a4fe8fe8-c71e-931b-b86b-94c8673c3236@redhat.com>
-From: Pierre Morel <pmorel@linux.ibm.com>
-In-Reply-To: <a4fe8fe8-c71e-931b-b86b-94c8673c3236@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>, qemu-devel@nongnu.org
+Cc: Mike Christie <michael.christie@oracle.com>,
+ Stefan Hajnoczi <stefanha@gmail.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Mark Kanda <mark.kanda@oracle.com>, Fam Zheng <fam@euphon.net>
+References: <20230712134352.118655-1-sgarzare@redhat.com>
+ <20230712134352.118655-2-sgarzare@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20230712134352.118655-2-sgarzare@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SQFL8aTu8HOFZJ25_YPR2c_5JK8_Wgs_
-X-Proofpoint-ORIG-GUID: B0JnH8SZ9QVisYG6EkQloPkEDyDR5rO8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-12_11,2023-07-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 spamscore=0
- malwarescore=0 bulkscore=0 priorityscore=1501 impostorscore=0 phishscore=0
- clxscore=1015 adultscore=0 suspectscore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307120144
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=pmorel@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.11,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.11, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,417 +107,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 7/12/23 15:43, Stefano Garzarella wrote:
+> Commit 1880ad4f4e ("virtio-scsi: Batched prepare for cmd reqs") split
+> calls to scsi_req_new() and scsi_req_enqueue() in the virtio-scsi device.
+> This had no drawback, until commit 8cc5583abe ("virtio-scsi: Send
 
-On 7/5/23 10:41, Thomas Huth wrote:
-> On 30/06/2023 11.17, Pierre Morel wrote:
->> Add some basic examples for the definition of cpu topology
->> in s390x.
->>
->> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
->> ---
->>   MAINTAINERS                        |   2 +
->>   docs/devel/index-internals.rst     |   1 +
->>   docs/devel/s390-cpu-topology.rst   | 170 ++++++++++++++++++++
->>   docs/system/s390x/cpu-topology.rst | 240 +++++++++++++++++++++++++++++
->>   docs/system/target-s390x.rst       |   1 +
->>   5 files changed, 414 insertions(+)
->>   create mode 100644 docs/devel/s390-cpu-topology.rst
->>   create mode 100644 docs/system/s390x/cpu-topology.rst
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index b8d3e8815c..76f236564c 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -1703,6 +1703,8 @@ S: Supported
->>   F: include/hw/s390x/cpu-topology.h
->>   F: hw/s390x/cpu-topology.c
->>   F: target/s390x/kvm/stsi-topology.c
->> +F: docs/devel/s390-cpu-topology.rst
->> +F: docs/system/s390x/cpu-topology.rst
->>     X86 Machines
->>   ------------
->> diff --git a/docs/devel/index-internals.rst 
->> b/docs/devel/index-internals.rst
->> index e1a93df263..6f81df92bc 100644
->> --- a/docs/devel/index-internals.rst
->> +++ b/docs/devel/index-internals.rst
->> @@ -14,6 +14,7 @@ Details about QEMU's various subsystems including 
->> how to add features to them.
->>      migration
->>      multi-process
->>      reset
->> +   s390-cpu-topology
->>      s390-dasd-ipl
->>      tracing
->>      vfio-migration
->> diff --git a/docs/devel/s390-cpu-topology.rst 
->> b/docs/devel/s390-cpu-topology.rst
->> new file mode 100644
->> index 0000000000..cd36476011
->> --- /dev/null
->> +++ b/docs/devel/s390-cpu-topology.rst
->> @@ -0,0 +1,170 @@
->> +QAPI interface for S390 CPU topology
->> +====================================
->> +
->> +Let's start QEMU with the following command defining 4 CPUs,
->
-> Maybe better something like this:
->
-> The following sections will explain the S390 CPU topology with the 
-> help of exemplary output. For this, let's assume that QEMU has been 
-> started with the following command, defining 4 CPUs.
->
-> ?
+More precisely, it was pretty hard to trigger it; it might be possible 
+using a CD-ROM, as it can report a MEDIUM_CHANGED unit attention.  I 
+will change "This had no drawback" to "No ill effect was reported"
 
-Absolutely better.
+> "REPORTED LUNS CHANGED" sense data upon disk hotplug events") added a
+> bus unit attention.
 
-Thanks
+... that was fairly easy to trigger via SCSI device hotplug/hot-unplug.
 
+Queued the series, thanks for the tests and for applying the cleanups on 
+top.
 
->
->> +CPU[0] defined by the -smp argument will have default values:
->> +
->> +.. code-block:: bash
->> +
->> + qemu-system-s390x \
->> +    -enable-kvm \
->> +    -cpu z14,ctop=on \
->> +    -smp 1,drawers=3,books=3,sockets=2,cores=2,maxcpus=36 \
->> +    \
->> +    -device z14-s390x-cpu,core-id=19,entitlement=high \
->> +    -device z14-s390x-cpu,core-id=11,entitlement=low \
->> +    -device z14-s390x-cpu,core-id=112,entitlement=high \
->> +   ...
->> +
->> +and see the result when using the QAPI interface.
-> ...
->> +QAPI command: set-cpu-topology
->> +------------------------------
->> +
->> +The command set-cpu-topology allows to modify the topology tree
->> +or the topology modifiers of a vCPU in the configuration.
->> +
->> +.. code-block:: QMP
->> +
->> +    { "execute": "set-cpu-topology",
->> +      "arguments": {
->> +         "core-id": 11,
->> +         "socket-id": 0,
->> +         "book-id": 0,
->> +         "drawer-id": 0,
->> +         "entitlement": "low",
->> +         "dedicated": false
->> +      }
->> +    }
->> +    {"return": {}}
->> +
->> +The core-id parameter is the only non optional parameter and every
->> +unspecified parameter keeps its previous value.
->> +
->> +QAPI event CPU_POLARIZATION_CHANGE
->> +----------------------------------
->> +
->> +When a guest is requests a modification of the polarization,
->
-> Scratch the word "is".
+> Co-developed-by: Paolo Bonzini <pbonzini@redhat.com>
 
+Heh, I basically only wrote the "if (req->init_req)" statement so that's 
+pretty generous, but I'll keep it anyway. :)
 
-yes
+Paolo
 
-
->
->> +QEMU sends a CPU_POLARIZATION_CHANGE event.
-> ...
->> diff --git a/docs/system/s390x/cpu-topology.rst 
->> b/docs/system/s390x/cpu-topology.rst
->> new file mode 100644
->> index 0000000000..0535a5d883
->> --- /dev/null
->> +++ b/docs/system/s390x/cpu-topology.rst
->> @@ -0,0 +1,240 @@
->> +CPU topology on s390x
->> +=====================
->> +
->> +Since QEMU 8.1, CPU topology on s390x provides up to 3 levels of
->> +topology containers: drawers, books, sockets, defining a tree shaped
->> +hierarchy.
->
-> "drawers, books and sockets. They define a tree-shaped hierarchy."
->
-> ?
->
-yes, thx
-
-
->> +The socket container contains one or more CPU entries.
->
-> "The socket container has one or more CPU entries." ?
-
-
-yes thx
-
-
->
->> +Each of these CPU entries consists of a bitmap and three CPU 
->> attributes:
->> +
->> +- CPU type
->> +- entitlement
->> +- dedication
->> +
->> +Each bit set in the bitmap correspond to the core-id of a vCPU with
->> +matching the three attribute.
->> +
->> +This documentation provide general information on S390 CPU topology,
->> +how to enable it and on the new CPU attributes.
->> +For information on how to modify the S390 CPU topology and on how to
->> +monitor the polarization change see ``Developer Information``.
->
-> It would be nicer to have a proper link here instead. See commit 
-> d6359e150dbdf84f67add786473fd277a9a442bb for example how to do this in 
-> our .rst files.
->
->> +Prerequisites
->> +-------------
->> +
->> +To use the CPU topology, you need to run with KVM on a s390x host that
->> +uses the Linux kernel v6.0 or newer (which provide the so-called
->> +``KVM_CAP_S390_CPU_TOPOLOGY`` capability that allows QEMU to signal the
->> +CPU topology facility via the so-called STFLE bit 11 to the VM).
->> +
->> +Enabling CPU topology
->> +---------------------
->> +
->> +Currently, CPU topology is only enabled in the host model by default.
->> +
->> +Enabling CPU topology in a CPU model is done by setting the CPU flag
->> +``ctop`` to ``on`` like in:
->> +
->> +.. code-block:: bash
->> +
->> +   -cpu gen16b,ctop=on
->> +
->> +Having the topology disabled by default allows migration between
->> +old and new QEMU without adding new flags.
->> +
->> +Default topology usage
->> +----------------------
->> +
->> +The CPU topology can be specified on the QEMU command line
->> +with the ``-smp`` or the ``-device`` QEMU command arguments.
->> +
->> +Note also that since 7.2 threads are no longer supported in the 
->> topology
->> +and the ``-smp`` command line argument accepts only ``threads=1``.
->> +
->> +If none of the containers attributes (drawers, books, sockets) are
->> +specified for the ``-smp`` flag, the number of these containers
->> +is ``1`` .
->
-> "Thus the following two options will result in the same topology, for 
-> example:" ?
-
-
-Yes thanks
-
-
->
->> +.. code-block:: bash
->> +
->> +    -smp cpus=5,drawer=1,books=1,sockets=8,cores=4,maxcpus=32
->> +
->> +or
->> +
->> +.. code-block:: bash
->> +
->> +    -smp cpus=5,sockets=8,cores=4,maxcpus=32
->> +
->> +When a CPU is defined by the ``-smp`` command argument, its position
->> +inside the topology is calculated by adding the CPUs to the topology
->> +based on the core-id starting with core-0 at position 0 of socket-0,
->> +book-0, drawer-0 and filling all CPUs of socket-0 before to fill 
->> socket-1
->> +of book-0 and so on up to the last socket of the last book of the last
->> +drawer.
->> +
->> +When a CPU is defined by the ``-device`` command argument, the
->> +tree topology attributes must be all defined or all not defined.
->> +
->> +.. code-block:: bash
->> +
->> +    -device 
->> gen16b-s390x-cpu,drawer-id=1,book-id=1,socket-id=2,core-id=1
->> +
->> +or
->> +
->> +.. code-block:: bash
->> +
->> +    -device gen16b-s390x-cpu,core-id=1,dedicated=true
->> +
->> +If none of the tree attributes (drawer, book, sockets), are specified
->> +for the ``-device`` argument, as for all CPUs defined with the ``-smp``
->> +command argument the topology tree attributes will be set by simply
->> +adding the CPUs to the topology based on the core-id starting with
->> +core-0 at position 0 of socket-0, book-0, drawer-0.
->> +
->> +QEMU will not try to solve collisions and will report an error if the
->> +CPU topology, explicitly or implicitly defined on a ``-device``
->> +argument collides with the definition of a CPU implicitely defined
->
-> s/implicitely/implicitly/
-
-
-thx
-
-
->
->> +on the ``-smp`` argument.
->> +
->> +When the topology modifier attributes are not defined for the
->> +``-device`` command argument they takes following default values:
->> +
->> +- dedicated: ``false``
->> +- entitlement: ``medium``
->> +
->> +
->> +Hot plug
->> +++++++++
->> +
->> +New CPUs can be plugged using the device_add hmp command as in:
->> +
->> +.. code-block:: bash
->> +
->> +  (qemu) device_add gen16b-s390x-cpu,core-id=9
->> +
->> +The same placement of the CPU is derived from the core-id as 
->> described above.
->> +
->> +The topology can of course be fully defined:
->> +
->> +.. code-block:: bash
->> +
->> +    (qemu) device_add 
->> gen16b-s390x-cpu,drawer-id=1,book-id=1,socket-id=2,core-id=1
->> +
->> +
->> +Examples
->> +++++++++
->> +
->> +In the following machine we define 8 sockets with 4 cores each.
->> +
->> +.. code-block:: bash
->> +
->> +  $ qemu-system-s390x -m 2G \
->> +    -cpu gen16b,ctop=on \
->> +    -smp cpus=5,sockets=8,cores=4,maxcpus=32 \
->> +    -device host-s390x-cpu,core-id=14 \
->> +
->> +A new CPUs can be plugged using the device_add hmp command as before:
->> +
->> +.. code-block:: bash
->> +
->> +  (qemu) device_add gen16b-s390x-cpu,core-id=9
->> +
->> +The core-id defines the placement of the core in the topology by
->> +starting with core 0 in socket 0 up to maxcpus.
->> +
->> +In the example above:
->> +
->> +* There are 5 CPUs provided to the guest with the ``-smp`` command line
->> +  They will take the core-ids 0,1,2,3,4
->> +  As we have 4 cores in a socket, we have 4 CPUs provided
->> +  to the guest in socket 0, with core-ids 0,1,2,3.
->> +  The last cpu, with core-id 4, will be on socket 1.
->> +
->> +* the core with ID 14 provided by the ``-device`` command line will
->> +  be placed in socket 3, with core-id 14
->> +
->> +* the core with ID 9 provided by the ``device_add`` qmp command will
->> +  be placed in socket 2, with core-id 9
->> +
->> +
->> +Polarization, entitlement and dedication
->> +----------------------------------------
->> +
->> +Polarization
->> +++++++++++++
->> +
->> +The polarization is an indication given by the ``guest`` to the host
->
-> Why quoting guest, but not host? I'd remove the quotes from guest here.
-
-
-OK
-
-
->
->> +that it is able to make use of CPU provisioning information.
->> +The guest indicates the polarization by using the PTF instruction.
->> +
->> +Polarization is define two models of CPU provisioning: horizontal
->
-> "Polarization defines ..." ? ... or "Polarization is defined by ..." ?
-
-
-thx
-
-
->
->> +and vertical.
->> +
->> +The horizontal polarization is the default model on boot and after
->> +subsystem reset in which the guest considers all vCPUs being having
->
-> scratch "being" ?
-
-Thx
-
-
->
->> +an equal provisioning of CPUs by the host.
->> +
->> +In the vertical polarization model the guest can make use of the
->> +vCPU entitlement information provided by the host to optimize
->> +kernel thread scheduling.
->> +
->> +A subsystem reset puts all vCPU of the configuration into the
->> +horizontal polarization.
->> +
->> +Entitlement
->> ++++++++++++
->> +
->> +The vertical polarization specifies that the guest's vCPU can get
->> +different real CPU provisions:
->> +
->> +- a vCPU with vertical high entitlement specifies that this
->> +  vCPU gets 100% of the real CPU provisioning.
->> +
->> +- a vCPU with vertical medium entitlement specifies that this
->> +  vCPU shares the real CPU with other vCPUs.
->> +
->> +- a vCPU with vertical low entitlement specifies that this
->> +  vCPU only gets real CPU provisioning when no other vCPUs needs it.
->> +
->> +In the case a vCPU with vertical high entitlement does not use
->> +the real CPU, the unused "slack" can be dispatched to other vCPU
->> +with medium or low entitlement.
->> +
->> +The upper level specifies a vCPU as ``dedicated`` when the vCPU is
->
-> Using `` quotes will print "dedicated" in monotyped font ... is that 
-> what you wanted here? AFAIK we're mainly doing that for things that 
-> can be typed in the terminal, e.g. command line options. So should 
-> this use normal quotes instead?
-
-
-No, I think we do not need quotes here.
-
-Thanks
-
-regards,
-
-Pierre
-
+> Having the two calls separated, all requests in the batch were prepared
+> calling scsi_req_new() to report a sense.
+> Then only the first one submitted calling scsi_req_enqueue() reported the
+> right sense and reset it to NO_SENSE.
+> The others reported NO_SENSE, causing SCSI errors in Linux.
 
 
