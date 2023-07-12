@@ -2,75 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F2775052E
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 12:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DFA75055A
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 13:01:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJXT2-0004V4-K5; Wed, 12 Jul 2023 06:53:08 -0400
+	id 1qJXaY-0006D1-1y; Wed, 12 Jul 2023 07:00:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJXT0-0004Un-QZ
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 06:53:06 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJXaS-0006Ci-H9
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:00:48 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJXSy-0001IC-Dk
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 06:53:06 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-51d95aed33aso8265967a12.3
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 03:53:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJXaP-0003q0-Kd
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:00:48 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2b702319893so109364911fa.3
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 04:00:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689159182; x=1691751182;
+ d=linaro.org; s=google; t=1689159642; x=1691751642;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=IPrsB1cjDmxELL3Zsliu6sUQYWBBz6iBkC3Z5Q1d4yE=;
- b=wElixkBDDA+xlevW52nyqEhrlxkdzOCJK5DVB+26WcsT7qNJ9cFRLpX/fKDs1cfQuv
- PDC28KrAZiyQSNQiF9a/iKJmSmLLkuKG0zQU4c8AleVO63tWxaTfKsXk/sfrKfdmZjr+
- pKkcO0GNa0CkBk0lQiut/mukpinPGQ1obL5l0p3Me02PPywu651ZXKS6WXvDu098B4Kg
- vcr4omdy1ntBjhsUCxGAge+nvm1ip1IgMF9javaYyTfJGwrl2odY2OwT/wzyPTMEt19X
- U2Up7rrW4t61t8VoHqtIv/mId6/IX3s5DdAhc+/dVDnVFQNbU0h7Y6zdHPkvwg5coA9s
- HJ2Q==
+ bh=9xBKGOZYKqsydlI1Ngt0A9payrS9zcffaq2RMRVVoLM=;
+ b=B2+V2Ok5GM/DSs1GNxaC4ug698p9PkxeCmLjGNeHe4g+5qPaDHezfWa17ogsJGa6JV
+ 4p6/N5oHqyXP5vHguzs8DYBZQcS5Q0acy5P8kXUeAloGoftdEBch0nNBbJX/lDqndeJU
+ Op5AcPFlULT2ZNE4fOAhKZmJStXqS/VWtF85mYy2rOYZpCB2BjHwXBktl2BsPI+beZok
+ Z1HCt4GRg1cXoWdUGnjNNs1osx0gAPHVQZKOAagXDGkKOSmOWSEx8DAnBNUJVaEOJRYG
+ 5ESrjrZzeX46BG0i5WCq55yUszLPtRMAswIY32K8dHxlkRoO9t6rNsjsAx1nlMy94G+y
+ nLJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689159182; x=1691751182;
+ d=1e100.net; s=20221208; t=1689159642; x=1691751642;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IPrsB1cjDmxELL3Zsliu6sUQYWBBz6iBkC3Z5Q1d4yE=;
- b=Fhv64dItLSIAfEfHObrx37zp72Kt11RKgyt0WM5xtg6ebxF63klH0F/5J3WPg4WA84
- R2xaxeI/vsmvVivEn32mOtw1irnONewA84BQnaNhf7kCY+o0+lIXo7yp3fkkFe/x8FfQ
- +GRS34qeZZD/yohrAah9BkyEJZWvlJ4qZ8WJUYxwDMMNh0Kvd4sngGblxcZRdc/KNy6l
- PZ+l60x6Ii5ay/Vo6hh/YXOcbGb9kVRmyeET/50aN1iJnr/yhMNQbkk1tc4atqzduvQN
- WaQ+2a/wG4+ql0G4Xtj6fDzcZLrpazlPcE8N7pAvpNp4eETkQcpm5NO14mzbw+No5CbG
- Bqjw==
-X-Gm-Message-State: ABy/qLaEUj0I7X5/ZIMTf77xOHboYm71ugU3+0v12EGvXKlmceltrZWR
- RJn0xKIhZH6tt7xxgXf+jyU9Ng==
-X-Google-Smtp-Source: APBJJlFmx0AXGTX+6cIGDwmBCx4zpBC73acSj7eWXj6Dv2sg9S2UzPhvMsT9jiWFpau0OYHN+y2PJg==
-X-Received: by 2002:aa7:d68d:0:b0:51d:9ddf:f0f3 with SMTP id
- d13-20020aa7d68d000000b0051d9ddff0f3mr15635962edr.31.1689159182644; 
- Wed, 12 Jul 2023 03:53:02 -0700 (PDT)
+ bh=9xBKGOZYKqsydlI1Ngt0A9payrS9zcffaq2RMRVVoLM=;
+ b=H4sMfGLOAioBcG0jrqvO8AGwgJY0v7tZe6trjxNcM/2BCjC8AHp4P1usUCifNLPcGO
+ +RNHpIdW1p52OZzjttQkdCgbS5w5HUTFAJYZS4iALLTN0Mbxhv9UOUmVSptfWjUmBNyC
+ jQHGTVVulgLxo9WLSRV5jPE8qu4IH5yJytp8EsljIH6TVcwMvXGMYOllFYqc5lYkdTRR
+ udobY3ZQkXpTqSWcX9OaAjmjx4uTP0mfLPe313N4iOAcTps6uKj0YhJwHDbAvZmPP4dK
+ nJiVG2gbV0OtatjY5iGB2OYOYqZcM17SlOuwl5Avdk3SPl+/2wre8CgteS29z0lLchUu
+ cq6Q==
+X-Gm-Message-State: ABy/qLYYMsvx7N+jvPbRh/LXxwC27x4CVKVaG/CaxshEmhW230aBmuae
+ U1jSLW16wciGjxcVkDrS/mtdVw==
+X-Google-Smtp-Source: APBJJlF/MKnheovbV5SqITRWhvCX75XfP3zwbKPwrAB1zGfrmV0GXEGGZcshzLQZRuxKoOuXZtntZA==
+X-Received: by 2002:a2e:9206:0:b0:2b5:8eae:7846 with SMTP id
+ k6-20020a2e9206000000b002b58eae7846mr15995572ljg.18.1689159641764; 
+ Wed, 12 Jul 2023 04:00:41 -0700 (PDT)
 Received: from [192.168.69.115] ([176.176.150.242])
  by smtp.gmail.com with ESMTPSA id
- f20-20020a056402069400b0051da8fd7570sm2565445edy.41.2023.07.12.03.53.01
+ s7-20020a1709064d8700b00993004239a4sm2369924eju.215.2023.07.12.04.00.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Jul 2023 03:53:02 -0700 (PDT)
-Message-ID: <62d2e306-c5a7-a639-22a9-3ed664b2fa0a@linaro.org>
-Date: Wed, 12 Jul 2023 12:53:00 +0200
+ Wed, 12 Jul 2023 04:00:41 -0700 (PDT)
+Message-ID: <41ae7db7-8d80-1749-c89d-025ee30bd73d@linaro.org>
+Date: Wed, 12 Jul 2023 13:00:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH v3] hw/ide/piix: properly initialize the BMIBA register
+Subject: Re: [PATCH v3 2/4] tests/lcitool: Refresh generated files
 Content-Language: en-US
-To: Olaf Hering <olaf@aepfle.de>, Bernhard Beschow <shentey@gmail.com>,
- qemu-block@nongnu.org, qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>
-References: <20230712074721.14728-1-olaf@aepfle.de>
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Erik Skultety <eskultet@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Warner Losh <imp@bsdimp.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, Ed Maste <emaste@freebsd.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Kyle Evans <kevans@freebsd.org>, Li-Wen Hsu <lwhsu@freebsd.org>,
+ Beraldo Leal <bleal@redhat.com>
+References: <20230711144922.67491-1-philmd@linaro.org>
+ <20230711144922.67491-3-philmd@linaro.org> <ZK2YS0v5G3iKyXwJ@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230712074721.14728-1-olaf@aepfle.de>
+In-Reply-To: <ZK2YS0v5G3iKyXwJ@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -93,25 +99,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/7/23 09:47, Olaf Hering wrote:
-> According to the 82371FB documentation (82371FB.pdf, 2.3.9. BMIBA-BUS
-> MASTER INTERFACE BASE ADDRESS REGISTER, April 1997), the register is
-> 32bit wide. To properly reset it to default values, all 32bit need to be
-> cleared. Bit #0 "Resource Type Indicator (RTE)" needs to be enabled.
+On 11/7/23 19:58, Daniel P. Berrangé wrote:
+> On Tue, Jul 11, 2023 at 04:49:20PM +0200, Philippe Mathieu-Daudé wrote:
+>> Refresh the generated files by running:
+>>
+>>    $ make lcitool-refresh
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   tests/docker/dockerfiles/debian-amd64.docker |  2 -
+>>   tests/docker/dockerfiles/ubuntu2004.docker   |  2 -
+>>   tests/docker/dockerfiles/ubuntu2204.docker   |  2 -
 > 
-> The initial change wrote just the lower 8 bit, leaving parts of the "Bus
-> Master Interface Base Address" address at bit 15:4 unchanged.
+> I don't know why this would be removing xen/pmem from these files. If
+> I run 'lcitool-refresh' on current git master that doesn't happen
 > 
-> Fixes: e6a71ae327 ("Add support for 82371FB (Step A1) and Improved support for 82371SB (Function 1)")
-> 
-> Signed-off-by: Olaf Hering <olaf@aepfle.de>
-> Reviewed-by: Bernhard Beschow <shentey@gmail.com>
-> ---
->   hw/ide/piix.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Do you have any other local changes on top ?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+No...
 
-I can take this patch via mips-fixes.
+$ git checkout origin/master
+((887cba855b...))$ git submodule sync
+Synchronizing submodule url for 'roms/QemuMacDrivers'
+Synchronizing submodule url for 'roms/SLOF'
+Synchronizing submodule url for 'roms/edk2'
+Synchronizing submodule url for 'roms/ipxe'
+Synchronizing submodule url for 'roms/openbios'
+Synchronizing submodule url for 'roms/opensbi'
+Synchronizing submodule url for 'roms/qboot'
+Synchronizing submodule url for 'roms/qemu-palcode'
+Synchronizing submodule url for 'roms/seabios'
+Synchronizing submodule url for 'roms/seabios-hppa'
+Synchronizing submodule url for 'roms/skiboot'
+Synchronizing submodule url for 'roms/u-boot'
+Synchronizing submodule url for 'roms/u-boot-sam460ex'
+Synchronizing submodule url for 'roms/vbootrom'
+Synchronizing submodule url for 'tests/lcitool/libvirt-ci'
+((887cba855b...))$ git submodule update
+((887cba855b...))$ git submodule status
+  90c488d5f4a407342247b9ea869df1c2d9c8e266 roms/QemuMacDrivers 
+(heads/master)
+  6b6c16b4b40763507cf1f518096f3c3883c5cf2d roms/SLOF 
+(qemu-slof-20190703-109-g6b6c16b)
+  f80f052277c88a67c55e107b550f504eeea947d3 roms/edk2 
+(edk2-stable201903-5245-gf80f052277)
+  4bd064de239dab2426b31c9789a1f4d78087dc63 roms/ipxe (v1.20.1-70-g4bd064de)
+  af97fd7af5e7c18f591a7b987291d3db4ffb28b5 roms/openbios 
+(remotes/origin/HEAD)
+  2552799a1df30a3dcd2321a8b75d61d06f5fb9fc roms/opensbi (v1.3)
+  8ca302e86d685fa05b16e2b208888243da319941 roms/qboot (remotes/origin/HEAD)
+  99d9b4dcf27d7fbcbadab71bdc88ef6531baf6bf roms/qemu-palcode (heads/master)
+  ea1b7a0733906b8425d948ae94fba63c32b1d425 roms/seabios (rel-1.16.2)
+  673d2595d4f773cc266cbf8dbaf2f475a6adb949 roms/seabios-hppa 
+(seabios-hppa-v8)
+  24a7eb35966d93455520bc2debdd7954314b638b roms/skiboot (v7.0)
+  840658b093976390e9537724f802281c9c8439f5 roms/u-boot (v2021.07)
+  60b3916f33e617a815973c5a6df77055b2e3a588 roms/u-boot-sam460ex 
+(heads/master)
+  0c37a43527f0ee2b9584e7fb2fdc805e902635ac roms/vbootrom (heads/master)
+  b0f44f929a81c0a604fb7fbf8afc34d37ab0eae9 tests/lcitool/libvirt-ci 
+(heads/master-555-gb0f44f92)
+((887cba855b...))$ make -C build lcitool-refresh
+Generate tests/docker/dockerfiles/alpine.docker
+Generate tests/docker/dockerfiles/centos8.docker
+Generate tests/docker/dockerfiles/debian-amd64.docker
+Generate tests/docker/dockerfiles/fedora.docker
+Generate tests/docker/dockerfiles/opensuse-leap.docker
+Generate tests/docker/dockerfiles/ubuntu2004.docker
+Generate tests/docker/dockerfiles/ubuntu2204.docker
+Generate tests/docker/dockerfiles/debian-amd64-cross.docker
+Generate tests/docker/dockerfiles/debian-arm64-cross.docker
+Generate tests/docker/dockerfiles/debian-armel-cross.docker
+Generate tests/docker/dockerfiles/debian-armhf-cross.docker
+Generate tests/docker/dockerfiles/debian-mips64el-cross.docker
+Generate tests/docker/dockerfiles/debian-mipsel-cross.docker
+Generate tests/docker/dockerfiles/debian-ppc64el-cross.docker
+Generate tests/docker/dockerfiles/debian-riscv64-cross.docker
+Generate tests/docker/dockerfiles/debian-s390x-cross.docker
+Generate tests/docker/dockerfiles/fedora-win32-cross.docker
+Generate tests/docker/dockerfiles/fedora-win64-cross.docker
+Generate .gitlab-ci.d/cirrus/freebsd-13.vars
+Generate .gitlab-ci.d/cirrus/macos-12.vars
+((887cba855b...))$ git diff -U0
+diff --git a/tests/docker/dockerfiles/debian-amd64.docker 
+b/tests/docker/dockerfiles/debian-amd64.docker
+index e39871c7bb..8f7521fdc2 100644
+--- a/tests/docker/dockerfiles/debian-amd64.docker
++++ b/tests/docker/dockerfiles/debian-amd64.docker
+@@ -73 +72,0 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+-                      libpmem-dev \
+@@ -99 +97,0 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+-                      libxen-dev \
+diff --git a/tests/docker/dockerfiles/ubuntu2004.docker 
+b/tests/docker/dockerfiles/ubuntu2004.docker
+index 8f864d19e6..7f60143cbb 100644
+--- a/tests/docker/dockerfiles/ubuntu2004.docker
++++ b/tests/docker/dockerfiles/ubuntu2004.docker
+@@ -72 +71,0 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+-                      libpmem-dev \
+@@ -97 +95,0 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+-                      libxen-dev \
+diff --git a/tests/docker/dockerfiles/ubuntu2204.docker 
+b/tests/docker/dockerfiles/ubuntu2204.docker
+index 1d442cdfe6..5162927016 100644
+--- a/tests/docker/dockerfiles/ubuntu2204.docker
++++ b/tests/docker/dockerfiles/ubuntu2204.docker
+@@ -73 +72,0 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+-                      libpmem-dev \
+@@ -99 +97,0 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+-                      libxen-dev \
+((887cba855b...))$
 
+🤷
 
