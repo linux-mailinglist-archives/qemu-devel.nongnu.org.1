@@ -2,72 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E5E751158
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 21:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF13E75115A
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 21:38:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJfeG-0004Ps-0j; Wed, 12 Jul 2023 15:37:16 -0400
+	id 1qJfep-0004gy-I8; Wed, 12 Jul 2023 15:37:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qJfe9-0004M8-Jn
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 15:37:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1qJfej-0004cl-89; Wed, 12 Jul 2023 15:37:46 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qJfe7-0005Vw-Jg
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 15:37:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689190626;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Y4ySrccUg5zcQvoQQ7hsJ4pytFTcCgR4GbSUc4Abkuw=;
- b=APjP49JnBZUE8n7RecfhlhC86Sm7/OIdVQ3WU9FK4Hg2UfQinqU2LFIsppZlahbxVCfM/k
- QHAlz2100akfq8y6/njpM5LrLgNI6IJyoZOHWwjGXHBqXzm7K/O7VcRD1t5K9smZfuvRXF
- JM+fLkDE59QgInlh9W41EUoIZ8eXAGA=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-25-qS6CUCToOUWHHdon4Ik0Lg-1; Wed, 12 Jul 2023 15:37:03 -0400
-X-MC-Unique: qS6CUCToOUWHHdon4Ik0Lg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C4D541C06914;
- Wed, 12 Jul 2023 19:37:02 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 28DC3111E3EC;
- Wed, 12 Jul 2023 19:37:01 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Richard Henderson <rth@twiddle.net>,
- =?UTF-8?q?Luk=C3=A1=C5=A1=20Doktor?= <ldoktor@redhat.com>
-Subject: [PULL 1/1] virtio-blk: fix host notifier issues during dataplane
- start/stop
-Date: Wed, 12 Jul 2023 15:36:58 -0400
-Message-Id: <20230712193658.255676-2-stefanha@redhat.com>
-In-Reply-To: <20230712193658.255676-1-stefanha@redhat.com>
-References: <20230712193658.255676-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1qJfeh-0005ca-2Q; Wed, 12 Jul 2023 15:37:45 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36CJHDhk001199; Wed, 12 Jul 2023 19:37:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=S8TmN3JruplAu93H9Aij54Zafnd3YvROvnSvHc0Oh9o=;
+ b=WuNwk7kTaKr3HV/zSAnulBfiEXye4z9VNXgBZq+bFfeQpRMc/RxlzyiIv9b9JnxXsbiA
+ S5OAtm79Y7O90W3yHazPAjIcQCY9UlCOj1s9t0eivKShyUN4uAeI9NT+FK4gUDeab2wC
+ ZWPH3iLP85FyoSqx02dtMxWZKT9eY/68+hgsBbnHrqnQQZxLedthFoXuphCNNhxCA7Hd
+ 9KQ+b1RNlRBtH/D6rhv21FhHBcsB4SwRK2KmPI4rUHrG5699uoWSvhlOaIqBGZa9mNIT
+ z+UkBLGoYFU1h4vvW5gHhZAKbSzz+3JRyFWMv/7eRfpcbitFl6EoEy5V/2aPBY+aJp68 Vg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rt26s0ccy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 19:37:34 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36CJZriQ019582;
+ Wed, 12 Jul 2023 19:37:34 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rt26s0cc1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 19:37:34 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36CBKL8U004228;
+ Wed, 12 Jul 2023 19:37:31 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3rpy2e2vg4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 12 Jul 2023 19:37:31 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36CJbRE145154644
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 12 Jul 2023 19:37:27 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2D2FD20043;
+ Wed, 12 Jul 2023 19:37:27 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D7C5920040;
+ Wed, 12 Jul 2023 19:37:26 +0000 (GMT)
+Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
+ [9.152.224.238])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 12 Jul 2023 19:37:26 +0000 (GMT)
+Message-ID: <aa1fbe820f23bc487752ee29ee114f5d4185352a.camel@linux.ibm.com>
+Subject: Re: [PATCH v21 16/20] tests/avocado: s390x cpu topology entitlement
+ tests
+From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: Thomas Huth <thuth@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>,
+ qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
+ mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+ ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
+ armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
+ frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
+Date: Wed, 12 Jul 2023 21:37:26 +0200
+In-Reply-To: <dfeeeaa1-0994-9e1e-1f10-6c6618daacff@redhat.com>
+References: <20230630091752.67190-1-pmorel@linux.ibm.com>
+ <20230630091752.67190-17-pmorel@linux.ibm.com>
+ <dfeeeaa1-0994-9e1e-1f10-6c6618daacff@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 5wvqs-Q5Ab3KTL8sAoyrp1cjVQSNQvKV
+X-Proofpoint-GUID: -JHsTeiiiWQiRTR1UeKaNscABoezdi3j
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-12_14,2023-07-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1011
+ priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 adultscore=0
+ bulkscore=0 phishscore=0 suspectscore=0 mlxscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307120174
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,158 +121,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The main loop thread can consume 100% CPU when using --device
-virtio-blk-pci,iothread=<iothread>. ppoll() constantly returns but
-reading virtqueue host notifiers fails with EAGAIN. The file descriptors
-are stale and remain registered with the AioContext because of bugs in
-the virtio-blk dataplane start/stop code.
+On Wed, 2023-07-05 at 12:22 +0200, Thomas Huth wrote:
+> On 30/06/2023 11.17, Pierre Morel wrote:
+> > This test takes care to check the changes on different entitlements
+> > when the guest requests a polarization change.
+> >=20
+> > Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> > ---
+> > =C2=A0 tests/avocado/s390_topology.py | 47
+> > ++++++++++++++++++++++++++++++++++
+> > =C2=A0 1 file changed, 47 insertions(+)
+> >=20
+> > diff --git a/tests/avocado/s390_topology.py
+> > b/tests/avocado/s390_topology.py
+> > index 2cf731cb1d..4855e5d7e4 100644
+> > --- a/tests/avocado/s390_topology.py
+> > +++ b/tests/avocado/s390_topology.py
+> > @@ -240,3 +240,50 @@ def test_polarisation(self):
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 res =3D self.vm.=
+qmp('query-cpu-polarization')
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.assertEqual=
+(res['return']['polarization'],
+> > 'horizontal')
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topol=
+ogy(0, 0, 0, 0, 'medium', False)
+> > +
+> > +=C2=A0=C2=A0=C2=A0 def test_entitlement(self):
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 """
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 This test verifies that QEM=
+U modifies the polarization
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 after a guest request.
+> ...
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(0, 0, 0=
+, 0, 'low', False)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(1, 0, 0=
+, 0, 'medium', False)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(2, 1, 0=
+, 0, 'high', False)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(3, 1, 0=
+, 0, 'high', False)
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.guest_set_dispatching(=
+'1');
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(0, 0, 0=
+, 0, 'low', False)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(1, 0, 0=
+, 0, 'medium', False)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(2, 1, 0=
+, 0, 'high', False)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(3, 1, 0=
+, 0, 'high', False)
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.guest_set_dispatching(=
+'0');
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(0, 0, 0=
+, 0, 'low', False)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(1, 0, 0=
+, 0, 'medium', False)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(2, 1, 0=
+, 0, 'high', False)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 self.check_topology(3, 1, 0=
+, 0, 'high', False)
+>=20
+> Sorry, I think I'm too blind to see it, but what has changed after
+> the guest=20
+> changed the polarization?
 
-The problem is that the dataplane start/stop code involves drain
-operations, which call virtio_blk_drained_begin() and
-virtio_blk_drained_end() at points where the host notifier is not
-operational:
-- In virtio_blk_data_plane_start(), blk_set_aio_context() drains after
-  vblk->dataplane_started has been set to true but the host notifier has
-  not been attached yet.
-- In virtio_blk_data_plane_stop(), blk_drain() and blk_set_aio_context()
-  drain after the host notifier has already been detached but with
-  vblk->dataplane_started still set to true.
+Nothing, the values are retained, they're just not active.
+The guest will see a horizontal polarization until it changes back to
+vertical.
 
-I would like to simplify ->ioeventfd_start/stop() to avoid interactions
-with drain entirely, but couldn't find a way to do that. Instead, this
-patch accepts the fragile nature of the code and reorders it so that
-vblk->dataplane_started is false during drain operations. This way the
-virtio_blk_drained_begin() and virtio_blk_drained_end() calls don't
-touch the host notifier. The result is that
-virtio_blk_data_plane_start() and virtio_blk_data_plane_stop() have
-complete control over the host notifier and stale file descriptors are
-no longer left in the AioContext.
-
-This patch fixes the 100% CPU consumption in the main loop thread and
-correctly moves host notifier processing to the IOThread.
-
-Fixes: 1665d9326fd2 ("virtio-blk: implement BlockDevOps->drained_begin()")
-Reported-by: Lukáš Doktor <ldoktor@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Tested-by: Lukas Doktor <ldoktor@redhat.com>
-Message-id: 20230704151527.193586-1-stefanha@redhat.com
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- hw/block/dataplane/virtio-blk.c | 67 +++++++++++++++++++--------------
- 1 file changed, 38 insertions(+), 29 deletions(-)
-
-diff --git a/hw/block/dataplane/virtio-blk.c b/hw/block/dataplane/virtio-blk.c
-index c227b39408..da36fcfd0b 100644
---- a/hw/block/dataplane/virtio-blk.c
-+++ b/hw/block/dataplane/virtio-blk.c
-@@ -219,13 +219,6 @@ int virtio_blk_data_plane_start(VirtIODevice *vdev)
- 
-     memory_region_transaction_commit();
- 
--    /*
--     * These fields are visible to the IOThread so we rely on implicit barriers
--     * in aio_context_acquire() on the write side and aio_notify_accept() on
--     * the read side.
--     */
--    s->starting = false;
--    vblk->dataplane_started = true;
-     trace_virtio_blk_data_plane_start(s);
- 
-     old_context = blk_get_aio_context(s->conf->conf.blk);
-@@ -244,6 +237,18 @@ int virtio_blk_data_plane_start(VirtIODevice *vdev)
-         event_notifier_set(virtio_queue_get_host_notifier(vq));
-     }
- 
-+    /*
-+     * These fields must be visible to the IOThread when it processes the
-+     * virtqueue, otherwise it will think dataplane has not started yet.
-+     *
-+     * Make sure ->dataplane_started is false when blk_set_aio_context() is
-+     * called above so that draining does not cause the host notifier to be
-+     * detached/attached prematurely.
-+     */
-+    s->starting = false;
-+    vblk->dataplane_started = true;
-+    smp_wmb(); /* paired with aio_notify_accept() on the read side */
-+
-     /* Get this show started by hooking up our callbacks */
-     if (!blk_in_drain(s->conf->conf.blk)) {
-         aio_context_acquire(s->ctx);
-@@ -273,7 +278,6 @@ int virtio_blk_data_plane_start(VirtIODevice *vdev)
-   fail_guest_notifiers:
-     vblk->dataplane_disabled = true;
-     s->starting = false;
--    vblk->dataplane_started = true;
-     return -ENOSYS;
- }
- 
-@@ -327,6 +331,32 @@ void virtio_blk_data_plane_stop(VirtIODevice *vdev)
-         aio_wait_bh_oneshot(s->ctx, virtio_blk_data_plane_stop_bh, s);
-     }
- 
-+    /*
-+     * Batch all the host notifiers in a single transaction to avoid
-+     * quadratic time complexity in address_space_update_ioeventfds().
-+     */
-+    memory_region_transaction_begin();
-+
-+    for (i = 0; i < nvqs; i++) {
-+        virtio_bus_set_host_notifier(VIRTIO_BUS(qbus), i, false);
-+    }
-+
-+    /*
-+     * The transaction expects the ioeventfds to be open when it
-+     * commits. Do it now, before the cleanup loop.
-+     */
-+    memory_region_transaction_commit();
-+
-+    for (i = 0; i < nvqs; i++) {
-+        virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus), i);
-+    }
-+
-+    /*
-+     * Set ->dataplane_started to false before draining so that host notifiers
-+     * are not detached/attached anymore.
-+     */
-+    vblk->dataplane_started = false;
-+
-     aio_context_acquire(s->ctx);
- 
-     /* Wait for virtio_blk_dma_restart_bh() and in flight I/O to complete */
-@@ -340,32 +370,11 @@ void virtio_blk_data_plane_stop(VirtIODevice *vdev)
- 
-     aio_context_release(s->ctx);
- 
--    /*
--     * Batch all the host notifiers in a single transaction to avoid
--     * quadratic time complexity in address_space_update_ioeventfds().
--     */
--    memory_region_transaction_begin();
--
--    for (i = 0; i < nvqs; i++) {
--        virtio_bus_set_host_notifier(VIRTIO_BUS(qbus), i, false);
--    }
--
--    /*
--     * The transaction expects the ioeventfds to be open when it
--     * commits. Do it now, before the cleanup loop.
--     */
--    memory_region_transaction_commit();
--
--    for (i = 0; i < nvqs; i++) {
--        virtio_bus_cleanup_host_notifier(VIRTIO_BUS(qbus), i);
--    }
--
-     qemu_bh_cancel(s->bh);
-     notify_guest_bh(s); /* final chance to notify guest */
- 
-     /* Clean up guest notifier (irq) */
-     k->set_guest_notifiers(qbus->parent, nvqs, false);
- 
--    vblk->dataplane_started = false;
-     s->stopping = false;
- }
--- 
-2.40.1
+>=20
+> =C2=A0 Thomas
+>=20
 
 
