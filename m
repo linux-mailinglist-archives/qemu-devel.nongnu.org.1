@@ -2,105 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C31D750AF1
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 16:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA88750B27
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 16:39:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJao1-0006Y5-ET; Wed, 12 Jul 2023 10:27:01 -0400
+	id 1qJayM-0000lR-Ix; Wed, 12 Jul 2023 10:37:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qJanx-0006Xg-9O
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 10:26:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qJanu-0006Kf-6b
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 10:26:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689172013;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RxadBZ/e9+iHxmAJkMx44y3xAiAtBYZJ7/ie6q6tPng=;
- b=W3r/nmvD0H+4muI1dhNo/vIGgkPsHfAD05/Rrw91173eOfvvpUAgTyc2Idc6wWqZ1xlicE
- I8CKD5u1oiVkmEGJ41ZM7r/kLd1cYcVUj8u54HC1unVUWb2sAv2McJwB/eaHIB3CFqQiRQ
- wXN+WPjm3zLSHqaBWGZRkrgQEy+QcMs=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435-HCxHGrwCNbCsL1CRkSq1Ew-1; Wed, 12 Jul 2023 10:26:52 -0400
-X-MC-Unique: HCxHGrwCNbCsL1CRkSq1Ew-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-4fb9364b320so6442742e87.3
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 07:26:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qJayI-0000km-Pw
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 10:37:38 -0400
+Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qJayG-0005qc-Ok
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 10:37:38 -0400
+Received: by mail-ot1-x329.google.com with SMTP id
+ 46e09a7af769-6b8decf09e1so6160911a34.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 07:37:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1689172654; x=1691764654;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XvA/EW8bgL9rBEB5uuntP1wRIt5rz95dfXHcblCouLk=;
+ b=HOyvcmOn0PvoikoQYkhLmnnyOjEm2NdTRFFCj9EkZUEjxCKVYXf3sDyuOuqDMsABQf
+ /BR3lmFvAKlBH9spBzcI+g+IM/84AXMXicpvA8Igmm9cCx5bBAORVKWLfZj+50GhAegt
+ 48v1+4wJ/S9GR9p6Q6JnmyrB/NucHaa4HngBiumbof1Cz2JmPR2dX6qkjTz4CaAC5jF+
+ WbWGRk1T0E5hrli8MW6Mu5R0yAfSpWFW80fETO3vEewSlUFds7v06dU7OfRynZEuWzKM
+ u67IPy8SDdGLSZhAI6DRL/Wsnt2/W1AYZ6KyiZCcbwdeMsPFIBdI4DBvLHEUjo4FUo3r
+ 8lqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689172010; x=1691764010;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RxadBZ/e9+iHxmAJkMx44y3xAiAtBYZJ7/ie6q6tPng=;
- b=da5P6uFrsK3b0ekWbjEq20T/qVk//Ay4MAc+gg9dFTaCaohzfzXPHuq3pz01gmPO55
- ed4rXixMGSSPc2p61nOLspXSXYhjsZLHrVhZuUsMCQe/hQru9nm5yK+XgAjJ0gUbbq6a
- zRnNyS8QANcNe67dOaQIOzKWYt0Zhmilv2kM65qsDeyHeO8ALpRJIO0S5mPxqzb2tEgU
- Rlad2qphhc0VX9TvW+ZZptVIjKDlWFtSGDivShY6wai/+LIz4rmhZYRqMSA1tC+nT7Pz
- gXfMkt1XPd7J1sGWU4eUXW2KiidxyuuqLwNngcBW4eJ693Lk6Gw+0dKuH9PXjfPWqQRv
- nPCg==
-X-Gm-Message-State: ABy/qLZgMtcnVrZxsJfNgBBV5MdsPE8sJpiqeUlbT4cpwKO5qDT66PA7
- MC8JDPUK9sQndBnPzZwFeiiC5aeGN7YLq2CpUj2jKKcLz2Woyve5HAtphFkzfRSm32zQxt4TJQU
- 9dQYb52KnrxqRujY=
-X-Received: by 2002:a05:6512:1289:b0:4fb:745e:dd01 with SMTP id
- u9-20020a056512128900b004fb745edd01mr19236033lfs.45.1689172010763; 
- Wed, 12 Jul 2023 07:26:50 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFkNsKPYxzyCKFBFzT2Ba1WmnPb2DW9qQiaMClrU8mrzLR7F2hdclCVyqYRAUgqznT8iViyTw==
-X-Received: by 2002:a05:6512:1289:b0:4fb:745e:dd01 with SMTP id
- u9-20020a056512128900b004fb745edd01mr19235999lfs.45.1689172010429; 
- Wed, 12 Jul 2023 07:26:50 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:1c09:f536:3de6:228c?
- ([2001:b07:6468:f312:1c09:f536:3de6:228c])
- by smtp.googlemail.com with ESMTPSA id
- v6-20020aa7cd46000000b0051e3385a395sm2904335edw.3.2023.07.12.07.26.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Jul 2023 07:26:49 -0700 (PDT)
-Message-ID: <07672031-3e89-a221-b580-40fed4bce394@redhat.com>
-Date: Wed, 12 Jul 2023 16:26:48 +0200
+ d=1e100.net; s=20221208; t=1689172654; x=1691764654;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XvA/EW8bgL9rBEB5uuntP1wRIt5rz95dfXHcblCouLk=;
+ b=gsK2tTSNOhKxXOOQnS++ky9M56qjRaA8Cg363R57fiETrak35FNu9hlR5Qh/ZbPlcn
+ kEd9gVCNNlx5Pd6xDXGdOsX9y53Z9Lns++UldUCT7INXn/POEZl0R3/66Vs7cvx+XUkX
+ YfQRETRl3hOyEtxUc2c27TO+J5WqtvxcsK+n49YTmffufkYXqPWKceauUk9H62h+Q2Q8
+ ueE/SYkp4RpsMgXQW2ImKuYVEUkQvx1qGbB0EHUm4rmHK4HtfIOcoTqQC9n6LDx/9Ft1
+ N7D6X4BJBBdqwLZguWDwIXGSDuFW3CpO/MJqleX4cObR0sxvJhcwijOir53HqsD0+bv7
+ buNw==
+X-Gm-Message-State: ABy/qLaoTFCojyrZ89kYeV17hh0/1ysBNgkPe4YSeFhD9pTjf8rQ3Bd6
+ I4hgOSPWmAExsvTxSNKpMS5HAsL9AJ1kzktek/o=
+X-Google-Smtp-Source: APBJJlHMU/S80yWZsdYvRzBj9tKDMKxDb8D8kg/I8Lr7/ELbM5QZu6wD1UzcY84a6Wr9PK8RPvowsA==
+X-Received: by 2002:a05:6830:328e:b0:6b8:7e53:e7c3 with SMTP id
+ m14-20020a056830328e00b006b87e53e7c3mr17519659ott.31.1689172654308; 
+ Wed, 12 Jul 2023 07:37:34 -0700 (PDT)
+Received: from grind.. (201-69-66-19.dial-up.telesp.net.br. [201.69.66.19])
+ by smtp.gmail.com with ESMTPSA id
+ s5-20020a9d7585000000b006b29947160csm1953388otk.30.2023.07.12.07.37.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 12 Jul 2023 07:37:34 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-trivial@nongnu.org
+Subject: [PATCH] docs/system/target-riscv.rst: tidy CPU firmware section
+Date: Wed, 12 Jul 2023 11:37:28 -0300
+Message-ID: <20230712143728.383528-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] Revert "virtio-scsi: Send "REPORTED LUNS CHANGED" sense
- data upon disk hotplug events"
-Content-Language: en-US
-To: Christoph Hellwig <hch@infradead.org>,
- Stefano Garzarella <sgarzare@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@gmail.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
- Thomas Huth <thuth@redhat.com>, Mark Kanda <mark.kanda@oracle.com>,
- linux-scsi@vger.kernel.org, "Martin K. Petersen"
- <martin.petersen@oracle.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-stable@nongnu.org, qemu-devel@nongnu.org,
- virtualization@lists.linux-foundation.org,
- "James E.J. Bottomley" <jejb@linux.ibm.com>
-References: <20230705071523.15496-1-sgarzare@redhat.com>
- <i3od362o6unuimlqna3aaedliaabauj6g545esg7txidd4s44e@bkx5des6zytx>
- <CAJSP0QX5bf1Gp6mnQ0620FS61n=cY6n_ca7O-cAcH7pYCV2frw@mail.gmail.com>
- <v6xzholcgdem3c2jkkuhqtmhzo4wflvkh53nohcgtjpgkh5y2e@bb7vliper2f3>
- <ZK6tRDwxgbyYfv2v@infradead.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <ZK6tRDwxgbyYfv2v@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.11, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,24 +91,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/12/23 15:40, Christoph Hellwig wrote:
->> The problem is that the SCSI stack does not send this command, so we
->> should do it in the driver. In fact we do it for
->> VIRTIO_SCSI_EVT_RESET_RESCAN (hotplug), but not for
->> VIRTIO_SCSI_EVT_RESET_REMOVED (hotunplug).
->
-> No, you should absolutely no do it in the driver.  The fact that
-> virtio-scsi even tries to do some of its own LUN scanning is
-> problematic and should have never happened.
+This is how the content of the "RISC-V CPU firmware" section is
+displayed after the html is generated:
 
-I agree that it should not do it for hot-unplug.  However, for hot-plug 
-the spec says that a hotplug event for LUN 0 represents the addition of 
-an entire target, so why is it incorrect to start a REPORT LUNS scan if 
-the host doesn't tell you the exact LUN(s) that have been added?
+"When using the sifive_u or virt machine there are three different
+firmware boot options: 1. -bios default - This is the default behaviour
+if no -bios option is included. (...) 3. -bios <file> - Tells QEMU to
+load the specified file as the firmware."
 
-There is a similar case in mpi3mr/mpi3mr_os.c, though it's only scanning 
-for newly added devices after a controller reset.
+It's all in the same paragraph, in a numbered list, and no special
+formatting for the options.
 
-Paolo
+Tidy it a bit by adding line breaks between items and its description.
+Remove the numbered list. And apply formatting for the options cited in
+the middle of the text.
+
+Cc: qemu-trivial@nongnu.org
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ docs/system/target-riscv.rst | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
+
+diff --git a/docs/system/target-riscv.rst b/docs/system/target-riscv.rst
+index 89a866e4f4..ba195f1518 100644
+--- a/docs/system/target-riscv.rst
++++ b/docs/system/target-riscv.rst
+@@ -76,11 +76,19 @@ RISC-V CPU firmware
+ 
+ When using the ``sifive_u`` or ``virt`` machine there are three different
+ firmware boot options:
+-1. ``-bios default`` - This is the default behaviour if no -bios option
+-is included. This option will load the default OpenSBI firmware automatically.
+-The firmware is included with the QEMU release and no user interaction is
+-required. All a user needs to do is specify the kernel they want to boot
+-with the -kernel option
+-2. ``-bios none`` - QEMU will not automatically load any firmware. It is up
+-to the user to load all the images they need.
+-3. ``-bios <file>`` - Tells QEMU to load the specified file as the firmware.
++
++* ``-bios default``
++
++This is the default behaviour if no ``-bios`` option is included. This option
++will load the default OpenSBI firmware automatically. The firmware is included
++with the QEMU release and no user interaction is required. All a user needs to
++do is specify the kernel they want to boot with the ``-kernel`` option
++
++* ``-bios none``
++
++QEMU will not automatically load any firmware. It is up to the user to load all
++the images they need.
++
++* ``-bios <file>``
++
++Tells QEMU to load the specified file as the firmware.
+-- 
+2.41.0
 
 
