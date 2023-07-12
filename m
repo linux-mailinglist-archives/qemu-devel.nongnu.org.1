@@ -2,74 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F39F750813
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 14:22:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D1B750854
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 14:33:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJYpc-0002mK-Kl; Wed, 12 Jul 2023 08:20:32 -0400
+	id 1qJZ0C-0005iI-W0; Wed, 12 Jul 2023 08:31:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1qJYpa-0002lD-AO
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 08:20:30 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1qJZ02-0005cq-J5
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 08:31:18 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1qJYpY-0002Rm-AP
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 08:20:30 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4fa16c6a85cso10761700e87.3
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 05:20:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1qJYzy-0007AE-0Z
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 08:31:18 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-68336d06620so402072b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 05:31:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689164426; x=1691756426;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=fuU7PCAIX9UdLStzuZ57VdQenVeNz0CGZgIZn5NbJVs=;
- b=mWwFb1nG6WPO6p5uWLKEDekaN17EqFsj4UsDcTX342qsMdJWIxA2sRQMe2/ERbxGoP
- deFcsAU1VFoTOIaJf8Uav93jklStYeK1dAWX9pGtzjh6p1Ub80yUZfJ52ENWUnmEBJ9F
- MNhFYzNio2yDpk2NG6ypBCswK5s8g++RYpKGQFGnE1jtUAB8fk8fINIzNJF+A94AXxba
- iH7PumOm7Gdd2R6IUHzYKPu5r/QqlUlICgT4HfI75zNiY6xAJ8ahY8KW2/P/ggErSlQN
- C2lgTia92+duNTaZx4TVz/KbOztob0e5vdU7geG5UmUgAEMz+5NF53te7+9UkcZqW2dU
- 9tBA==
+ d=gmail.com; s=20221208; t=1689165072; x=1691757072;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=7eAJ7MRyvN0im9PR4oOfnO6h4InGORDAsKHQinPdtIQ=;
+ b=Zi/7DOVI4Ly5rrCqWQLfq75UuVrUnPAK+V91BbSaDbMXZPFFG4IUxeR0+J4/NMAZY6
+ 0uaBUNyGkVR9DzTYhK+kvQ24iwgv/JjXpamX/lHZpTvl6E5uCSaDLzx08vcgUmYqwLsv
+ n9yVq/H3bm2/JXP8aeM+sQsHZvP/Sf28KoOr97lfLFMEYvtMkoNdlxlGfhzdQgZPac8X
+ DA147SumSSTw+ISRbRqqIlXwhcyXzmGCQFQRUXcRE7e1iv2XkBsqGizJ7BeZS/STF3o8
+ ZE6Mco4IiAHloTGw/Iy+ZYx02/NhhbigiICOuBrSOSnzUVRaGgMylZuQxn3k38T64mzV
+ zcuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689164426; x=1691756426;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=fuU7PCAIX9UdLStzuZ57VdQenVeNz0CGZgIZn5NbJVs=;
- b=KnG6fFii1FpEhjJoyFD1mCVABaALr6zN7a9130vo4sRCdhf4+bE/+MLnFC2/hF/ZN8
- jcuAFiuQ1IbTyiWxVqQukI4rJSGLYxlzWAK3kU0U8TBpf93slgRqziRxVIYMveS+us3i
- tYpNRZjijO7K2SlIGCrFrVL/P7ACOjd3Ownb4Uhw4BM+PTJusM76iuzgUc0FEDGgA/+q
- 9lOm7zri3mkb8Jf0YaCZOyeY/I6h8/7UeXGOomhC3gynr3T1D5i/EfDDjp7h3gVoMh4e
- gcbFGIKfHbJtPGKjSywJuaQjr/jgcoiDjpSI8NneShFSsFLE1D3r65+pEGXVVKapCd7s
- s8eQ==
-X-Gm-Message-State: ABy/qLb7oDj791QZtNXt7N0CleFAFvxAablMC9OkMCFJ7Jpc9Z0KhhIi
- f3b6ua0L/ff+BnihB4saJA32COcNSBzNLC+UIj1owMW3rJCltw==
-X-Google-Smtp-Source: APBJJlFCS5PG2oIM+mjgEV7pq2hUeOSxFqQHYvlQHwla4LcZRNlUMR+W+odcp5n+E43Y/r3TSoQ7rLuZcWvgjlGZeQU=
-X-Received: by 2002:a05:6512:238f:b0:4fb:c881:be5b with SMTP id
- c15-20020a056512238f00b004fbc881be5bmr18958736lfv.2.1689164425493; Wed, 12
- Jul 2023 05:20:25 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689165072; x=1691757072;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7eAJ7MRyvN0im9PR4oOfnO6h4InGORDAsKHQinPdtIQ=;
+ b=KMaq0zLx7POocCCXSebmVEkQkhFMkb7eFZxnTlQnbEjJ6drxpBP0/d4gPx3kAc1MrW
+ 6gT6/JFQgl6sBU+pz4ObNUZxOTNC1QuRC1IQCRmp5RH2774kLtfP0GZbpgrGOkuorKfj
+ D8Ak5m1d1mYJeJdhg8gU6NEgJDSs2OvmRdSR2r2hZCphSujjMEeXqi9dfRsuskwJX94n
+ 74+UPFX6Fw09UfWV4dAfzjAlmvdZs3aCJntoUGEJ8HZ4BwpoesoOQZFGz2n23D6wYfBp
+ iJF7+GIZGE127KgAVBbRLxlv29n5zx12xnT0xPPfO+qHA8gkylqgqMq9XGpsNlzE6Bdt
+ zbPA==
+X-Gm-Message-State: ABy/qLbanZXYyMX3Bw99PhA1/942PPZGAKuBKSgn5JTy13poWm7ynn+O
+ +mrf5EJ07AMcy7IQLckgdzE=
+X-Google-Smtp-Source: APBJJlEGwlhGcAaTWRlEJCDehdI72prIkhqSRrNjFUCm8VcR9PSubAgQXZ+IqcvyBP3WiHRluX25fA==
+X-Received: by 2002:a05:6a00:1587:b0:666:ad0c:c0f4 with SMTP id
+ u7-20020a056a00158700b00666ad0cc0f4mr27216103pfk.23.1689165071874; 
+ Wed, 12 Jul 2023 05:31:11 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
+ by smtp.gmail.com with ESMTPSA id
+ z21-20020aa785d5000000b00653fe2d527esm3522713pfn.32.2023.07.12.05.31.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 12 Jul 2023 05:31:11 -0700 (PDT)
+Message-ID: <4cbb7eca-1735-6627-2a85-4b8b61296e9a@gmail.com>
+Date: Wed, 12 Jul 2023 21:31:08 +0900
 MIME-Version: 1.0
-References: <20230710140249.56324-1-francisco.iglesias@amd.com>
-In-Reply-To: <20230710140249.56324-1-francisco.iglesias@amd.com>
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Date: Wed, 12 Jul 2023 14:20:14 +0200
-Message-ID: <CAJy5ezoYVFBhrZFm=vjO6KDeEJFp-ZYLhVLR2Gh=cxSVtDp5KA@mail.gmail.com>
-Subject: Re: [PATCH v1 0/8] Xilinx Versal CFI support
-To: Francisco Iglesias <francisco.iglesias@amd.com>
-Cc: qemu-devel@nongnu.org, frasse.iglesias@gmail.com, alistair@alistair23.me, 
- peter.maydell@linaro.org, fkonrad@amd.com, sai.pavan.boddu@amd.com, 
- tong.ho@amd.com, vikram.garhwal@amd.com
-Content-Type: multipart/alternative; boundary="0000000000008c82d00600493d4c"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x12d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v1 6/9] gfxstream + rutabaga: add initial support for
+ gfxstream
+To: Gurchetan Singh <gurchetansingh@chromium.org>, qemu-devel@nongnu.org
+Cc: kraxel@redhat.com, marcandre.lureau@redhat.com,
+ dmitry.osipenko@collabora.com, ray.huang@amd.com, alex.bennee@linaro.org,
+ shentey@gmail.com
+References: <20230711025649.708-1-gurchetansingh@chromium.org>
+ <20230711025649.708-7-gurchetansingh@chromium.org>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@gmail.com>
+In-Reply-To: <20230711025649.708-7-gurchetansingh@chromium.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=akihiko.odaki@gmail.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ NICE_REPLY_A=-0.11, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,161 +98,1330 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008c82d00600493d4c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 2023/07/11 11:56, Gurchetan Singh wrote:
+> This adds initial support for gfxstream and cross-domain.  Both
+> features rely on virtio-gpu blob resources and context types, which
+> are also implemented in this patch.
+> 
+> gfxstream has a long and illustrious history in Android graphics
+> paravirtualization.  It has been powering graphics in the Android
+> Studio Emulator for more than a decade, which is the main developer
+> platform.
+> 
+> Originally conceived by Jesse Hall, it was first known as "EmuGL" [a].
+> The key design characteristic was a 1:1 threading model and
+> auto-generation, which fit nicely with the OpenGLES spec.  It also
+> allowed easy layering with ANGLE on the host, which provides the GLES
+> implementations on Windows or MacOS enviroments.
+> 
+> gfxstream has traditionally been maintained by a single engineer, and
+> between 2015 to 2021, the goldfish throne passed to Frank Yang.
+> Historians often remark this glorious reign ("pax gfxstreama" is the
+> academic term) was comparable to that of Augustus and the both Queen
+> Elizabeths.  Just to name a few accomplishments in a resplendent
+> panoply: higher versions of GLES, address space graphics, snapshot
+> support and CTS compliant Vulkan [b].
+> 
+> One major drawback was the use of out-of-tree goldfish drivers.
+> Android engineers didn't know much about DRM/KMS and especially TTM so
+> a simple guest to host pipe was conceived.
+> 
+> Luckily, virtio-gpu 3D started to emerge in 2016 due to the work of
+> the Mesa/virglrenderer communities.  In 2018, the initial virtio-gpu
+> port of gfxstream was done by Cuttlefish enthusiast Alistair Delva.
+> It was a symbol compatible replacement of virglrenderer [c] and named
+> "AVDVirglrenderer".  This implementation forms the basis of the
+> current gfxstream host implementation still in use today.
+> 
+> cross-domain support follows a similar arc.  Originally conceived by
+> Wayland aficionado David Reveman and crosvm enjoyer Zach Reizner in
+> 2018, it initially relied on the downstream "virtio-wl" device.
+> 
+> In 2020 and 2021, virtio-gpu was extended to include blob resources
+> and multiple timelines by yours truly, features gfxstream/cross-domain
+> both require to function correctly.
+> 
+> Right now, we stand at the precipice of a truly fantastic possibility:
+> the Android Emulator powered by upstream QEMU and upstream Linux
+> kernel.  gfxstream will then be packaged properfully, and app
+> developers can even fix gfxstream bugs on their own if they encounter
+> them.
+> 
+> It's been quite the ride, my friends.  Where will gfxstream head next,
+> nobody really knows.  I wouldn't be surprised if it's around for
+> another decade, maintained by a new generation of Android graphics
+> enthusiasts.
+> 
+> Technical details:
+>    - Very simple initial display integration: just used Pixman
+>    - Largely, 1:1 mapping of virtio-gpu hypercalls to rutabaga function
+>      calls
+> 
+> [a] https://android-review.googlesource.com/c/platform/development/+/34470
+> [b] https://android-review.googlesource.com/q/topic:%22vulkan-hostconnection-start%22
+> [c] https://android-review.googlesource.com/c/device/generic/goldfish-opengl/+/761927
+> 
+> Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
+> ---
+> v2: Incorported various suggestions by Akihiko Odaki and Bernard Berschow
+>      - Removed GET_VIRTIO_GPU_GL / GET_RUTABAGA macros
+>      - Used error_report(..)
+>      - Used g_autofree to fix leaks on error paths
+>      - Removed unnecessary casts
+>      - added virtio-gpu-pci-rutabaga.c + virtio-vga-rutabaga.c files
+> 
+>   hw/display/virtio-gpu-pci-rutabaga.c |   48 ++
+>   hw/display/virtio-gpu-rutabaga.c     | 1088 ++++++++++++++++++++++++++
+>   hw/display/virtio-vga-rutabaga.c     |   52 ++
+>   3 files changed, 1188 insertions(+)
+>   create mode 100644 hw/display/virtio-gpu-pci-rutabaga.c
+>   create mode 100644 hw/display/virtio-gpu-rutabaga.c
+>   create mode 100644 hw/display/virtio-vga-rutabaga.c
+> 
+> diff --git a/hw/display/virtio-gpu-pci-rutabaga.c b/hw/display/virtio-gpu-pci-rutabaga.c
+> new file mode 100644
+> index 0000000000..5765bef266
+> --- /dev/null
+> +++ b/hw/display/virtio-gpu-pci-rutabaga.c
+> @@ -0,0 +1,48 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include "qemu/osdep.h"
+> +#include "qapi/error.h"
+> +#include "qemu/module.h"
+> +#include "hw/pci/pci.h"
+> +#include "hw/qdev-properties.h"
+> +#include "hw/virtio/virtio.h"
+> +#include "hw/virtio/virtio-bus.h"
+> +#include "hw/virtio/virtio-gpu-pci.h"
+> +#include "qom/object.h"
+> +
+> +#define TYPE_VIRTIO_GPU_RUTABAGA_PCI "virtio-gpu-rutabaga-pci"
+> +typedef struct VirtIOGPURUTABAGAPCI VirtIOGPURUTABAGAPCI;
 
-On Mon, Jul 10, 2023 at 4:02=E2=80=AFPM Francisco Iglesias <
-francisco.iglesias@amd.com> wrote:
+s/VirtIOGPURUTABAGAPCI/VirtIOGPURutabagaPCI/g
 
-> Hi,
->
-> This series adds support for the Configuration Frame Unit (CFU) and the
-> Configuration Frame controllers (CFRAME) to the Xilinx Versal machine
-> ([1], chapter 21) for emulaing bitstream loading and readback.
->
-> The series starts by introducing the Xilinx CFI interface that is
-> thereafter used by the Xilinx CFU components, the Xilinx CFRAME and Xilin=
-x
-> CFRAME broadcast models for transfering CFI packets between each other.
-> Thereafter a model of the CFU_APB, CFU_FDRO and CFU_SFR are introduced an=
-d
-> also models of the CFRAME controller and CFRAME broadcast controller.
->
-> The series thereafter ends with connecting the models to Xilinx Versal
-> machine.
->
+> +DECLARE_INSTANCE_CHECKER(VirtIOGPURUTABAGAPCI, VIRTIO_GPU_RUTABAGA_PCI,
+> +                         TYPE_VIRTIO_GPU_RUTABAGA_PCI)
+> +
+> +struct VirtIOGPURUTABAGAPCI {
+> +    VirtIOGPUPCIBase parent_obj;
+> +    VirtioGpuRutabaga   vdev;
+> +};
+> +
+> +static void virtio_gpu_rutabaga_initfn(Object *obj)
+> +{
+> +    VirtIOGPURUTABAGAPCI *dev = VIRTIO_GPU_RUTABAGA_PCI(obj);
+> +
+> +    virtio_instance_init_common(obj, &dev->vdev, sizeof(dev->vdev),
+> +                                TYPE_VIRTIO_GPU_RUTABAGA);
+> +    VIRTIO_GPU_PCI_BASE(obj)->vgpu = VIRTIO_GPU_BASE(&dev->vdev);
+> +}
+> +
+> +static const VirtioPCIDeviceTypeInfo virtio_gpu_rutabaga_pci_info = {
+> +    .generic_name = TYPE_VIRTIO_GPU_RUTABAGA_PCI,
+> +    .parent = TYPE_VIRTIO_GPU_PCI_BASE,
+> +    .instance_size = sizeof(VirtIOGPURUTABAGAPCI),
+> +    .instance_init = virtio_gpu_rutabaga_initfn,
+> +};
+> +module_obj(TYPE_VIRTIO_GPU_RUTABAGA_PCI);
+> +module_kconfig(VIRTIO_PCI);
+> +
+> +static void virtio_gpu_rutabaga_pci_register_types(void)
+> +{
+> +    virtio_pci_types_register(&virtio_gpu_rutabaga_pci_info);
+> +}
+> +
+> +type_init(virtio_gpu_rutabaga_pci_register_types)
+> +
+> +module_dep("hw-display-virtio-gpu-pci");
+> diff --git a/hw/display/virtio-gpu-rutabaga.c b/hw/display/virtio-gpu-rutabaga.c
+> new file mode 100644
+> index 0000000000..b60a30a093
+> --- /dev/null
+> +++ b/hw/display/virtio-gpu-rutabaga.c
+> @@ -0,0 +1,1088 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include "qemu/osdep.h"
+> +#include "qemu/error-report.h"
+> +#include "qemu/iov.h"
+> +#include "trace.h"
+> +#include "hw/virtio/virtio.h"
+> +#include "hw/virtio/virtio-gpu.h"
+> +#include "hw/virtio/virtio-gpu-pixman.h"
+> +#include "hw/virtio/virtio-iommu.h"
+> +
+> +#include <glib/gmem.h>
+> +#include <rutabaga_gfx/rutabaga_gfx_ffi.h>
+> +
+> +#define CHECK(condition, cmd)                                                 \
+> +    do {                                                                      \
+> +        if (!condition) {                                                     \
 
-I just had a quick look and the series LGTM!
-Acked-by: Edgar E. Iglesias <edgar@zeroasic.com>
+Please wrap the parameter with parentheses: if (!(condition))
+It will break CHECK_RESULT() without them. Add parentheses to cmd too 
+just for safety.
 
+> +            error_report("CHECK failed in %s() %s:" "%d", __func__,           \
+> +                         __FILE__, __LINE__);                                 \
+> +            cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;                          \
+> +            return;                                                           \
+> +       }                                                                      \
+> +    } while (0)
+> +
+> +#define CHECK_RESULT(result, cmd) CHECK(result == 0, cmd)
 
+CHECK() and CHECK_RESULT() are somewhat confusing though I do understand 
+the intention.
+Instead of defining a dedicated macro, I think you can just write 
+CHECK(!result, cmd) everywhere.
 
->
-> Best regards,
-> Francisco Iglesias
->
-> References:
-> [1]
-> https://docs.xilinx.com/r/en-US/am011-versal-acap-trm/PSM-Local-Registers
->
->
-> Francisco Iglesias (8):
->   hw/misc: Introduce the Xilinx CFI interface
->   hw/misc: Introduce a model of Xilinx Versal's CFU_APB
->   hw/misc/xlnx-versal-cfu: Introduce a model of Xilinx Versal CFU_FDRO
->   hw/misc/xlnx-versal-cfu: Introduce a model of Xilinx Versal's CFU_SFR
->   hw/misc: Introduce a model of Xilinx Versal's CFRAME_REG
->   hw/misc: Introduce a model of Xilinx Versal's CFRAME_BCAST_REG
->   hw/arm/xlnx-versal: Connect the CFU_APB, CFU_FDRO and CFU_SFR
->   hw/arm/versal: Connect the CFRAME_REG and CFRAME_BCAST_REG
->
->  MAINTAINERS                              |  10 +
->  hw/arm/xlnx-versal.c                     | 158 +++-
->  hw/misc/meson.build                      |   3 +
->  hw/misc/xlnx-cfi-if.c                    |  34 +
->  hw/misc/xlnx-versal-cframe-reg.c         | 887 +++++++++++++++++++++++
->  hw/misc/xlnx-versal-cfu.c                | 566 +++++++++++++++
->  include/hw/arm/xlnx-versal.h             |  85 +++
->  include/hw/misc/xlnx-cfi-if.h            |  59 ++
->  include/hw/misc/xlnx-versal-cframe-reg.h | 305 ++++++++
->  include/hw/misc/xlnx-versal-cfu.h        | 238 ++++++
->  10 files changed, 2344 insertions(+), 1 deletion(-)
->  create mode 100644 hw/misc/xlnx-cfi-if.c
->  create mode 100644 hw/misc/xlnx-versal-cframe-reg.c
->  create mode 100644 hw/misc/xlnx-versal-cfu.c
->  create mode 100644 include/hw/misc/xlnx-cfi-if.h
->  create mode 100644 include/hw/misc/xlnx-versal-cframe-reg.h
->  create mode 100644 include/hw/misc/xlnx-versal-cfu.h
->
-> --
-> 2.34.1
->
->
+> +
+> +#define MAX_SLOTS 4096
+> +
+> +struct MemoryRegionInfo {
+> +    int used;
+> +    MemoryRegion mr;
+> +    uint32_t resource_id;
+> +};
+> +
+> +static struct MemoryRegionInfo memory_regions[MAX_SLOTS];
 
---0000000000008c82d00600493d4c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I don't think it's OK to use a static variable, considering that there 
+can be multiple instances of this device.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 10, 2023 at 4:02=E2=80=AF=
-PM Francisco Iglesias &lt;<a href=3D"mailto:francisco.iglesias@amd.com">fra=
-ncisco.iglesias@amd.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
-quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
-204);padding-left:1ex">Hi,<br>
-<br>
-This series adds support for the Configuration Frame Unit (CFU) and the<br>
-Configuration Frame controllers (CFRAME) to the Xilinx Versal machine<br>
-([1], chapter 21) for emulaing bitstream loading and readback.<br>
-<br>
-The series starts by introducing the Xilinx CFI interface that is<br>
-thereafter used by the Xilinx CFU components, the Xilinx CFRAME and Xilinx<=
-br>
-CFRAME broadcast models for transfering CFI packets between each other.<br>
-Thereafter a model of the CFU_APB, CFU_FDRO and CFU_SFR are introduced and<=
-br>
-also models of the CFRAME controller and CFRAME broadcast controller.<br>
-<br>
-The series thereafter ends with connecting the models to Xilinx Versal<br>
-machine.<br></blockquote><div><br></div><div>I just had a quick look and th=
-e series LGTM!</div><div>Acked-by: Edgar E. Iglesias &lt;<a href=3D"mailto:=
-edgar@zeroasic.com">edgar@zeroasic.com</a>&gt;<br></div><div><br></div><div=
->=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
-0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-Best regards,<br>
-Francisco Iglesias<br>
-<br>
-References:<br>
-[1] <a href=3D"https://docs.xilinx.com/r/en-US/am011-versal-acap-trm/PSM-Lo=
-cal-Registers" rel=3D"noreferrer" target=3D"_blank">https://docs.xilinx.com=
-/r/en-US/am011-versal-acap-trm/PSM-Local-Registers</a><br>
-<br>
-<br>
-Francisco Iglesias (8):<br>
-=C2=A0 hw/misc: Introduce the Xilinx CFI interface<br>
-=C2=A0 hw/misc: Introduce a model of Xilinx Versal&#39;s CFU_APB<br>
-=C2=A0 hw/misc/xlnx-versal-cfu: Introduce a model of Xilinx Versal CFU_FDRO=
-<br>
-=C2=A0 hw/misc/xlnx-versal-cfu: Introduce a model of Xilinx Versal&#39;s CF=
-U_SFR<br>
-=C2=A0 hw/misc: Introduce a model of Xilinx Versal&#39;s CFRAME_REG<br>
-=C2=A0 hw/misc: Introduce a model of Xilinx Versal&#39;s CFRAME_BCAST_REG<b=
-r>
-=C2=A0 hw/arm/xlnx-versal: Connect the CFU_APB, CFU_FDRO and CFU_SFR<br>
-=C2=A0 hw/arm/versal: Connect the CFRAME_REG and CFRAME_BCAST_REG<br>
-<br>
-=C2=A0MAINTAINERS=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 10 +<br>
-=C2=A0hw/arm/xlnx-versal.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0| 158 +++-<br>
-=C2=A0hw/misc/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A03 +<br>
-=C2=A0hw/misc/xlnx-cfi-if.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 |=C2=A0 34 +<br>
-=C2=A0hw/misc/xlnx-versal-cframe-reg.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 8=
-87 +++++++++++++++++++++++<br>
-=C2=A0hw/misc/xlnx-versal-cfu.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 | 566 +++++++++++++++<br>
-=C2=A0include/hw/arm/xlnx-versal.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0|=C2=A0 85 +++<br>
-=C2=A0include/hw/misc/xlnx-cfi-if.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 |=C2=A0 59 ++<br>
-=C2=A0include/hw/misc/xlnx-versal-cframe-reg.h | 305 ++++++++<br>
-=C2=A0include/hw/misc/xlnx-versal-cfu.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 | 238 ++=
-++++<br>
-=C2=A010 files changed, 2344 insertions(+), 1 deletion(-)<br>
-=C2=A0create mode 100644 hw/misc/xlnx-cfi-if.c<br>
-=C2=A0create mode 100644 hw/misc/xlnx-versal-cframe-reg.c<br>
-=C2=A0create mode 100644 hw/misc/xlnx-versal-cfu.c<br>
-=C2=A0create mode 100644 include/hw/misc/xlnx-cfi-if.h<br>
-=C2=A0create mode 100644 include/hw/misc/xlnx-versal-cframe-reg.h<br>
-=C2=A0create mode 100644 include/hw/misc/xlnx-versal-cfu.h<br>
-<br>
--- <br>
-2.34.1<br>
-<br>
-</blockquote></div></div>
+> +
+> +struct rutabaga_aio_data {
+> +    struct VirtioGpuRutabaga *vr;
+> +    struct rutabaga_fence fence;
+> +};
+> +
+> +static void
+> +virtio_gpu_rutabaga_update_cursor(VirtIOGPU *g, struct virtio_gpu_scanout *s,
+> +                                  uint32_t resource_id)
+> +{
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct rutabaga_transfer transfer = { 0 };
+> +    struct iovec transfer_iovec;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    res = virtio_gpu_find_resource(g, resource_id);
+> +    if (!res) {
+> +        return;
+> +    }
+> +
+> +    if (res->width != s->current_cursor->width ||
+> +        res->height != s->current_cursor->height) {
+> +        return;
+> +    }
+> +
+> +    transfer.x = 0;
+> +    transfer.y = 0;
+> +    transfer.z = 0;
+> +    transfer.w = res->width;
+> +    transfer.h = res->height;
+> +    transfer.d = 1;
+> +
+> +    transfer_iovec.iov_base = (void *)s->current_cursor->data;
+> +    transfer_iovec.iov_len = res->width * res->height * 4;
+> +
+> +    rutabaga_resource_transfer_read(vr->rutabaga, 0,
+> +                                    resource_id, &transfer,
+> +                                    &transfer_iovec);
+> +}
+> +
+> +static void
+> +virtio_gpu_rutabaga_gl_flushed(VirtIOGPUBase *b)
+> +{
+> +    VirtIOGPU *g = VIRTIO_GPU(b);
+> +    virtio_gpu_process_cmdq(g);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_create_resource_2d(VirtIOGPU *g,
+> +                                struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct rutabaga_create_3d rc_3d = { 0 };
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct virtio_gpu_resource_create_2d c2d;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(c2d);
+> +    trace_virtio_gpu_cmd_res_create_2d(c2d.resource_id, c2d.format,
+> +                                       c2d.width, c2d.height);
+> +
+> +    rc_3d.target = 2;
+> +    rc_3d.format = c2d.format;
+> +    rc_3d.bind = (1 << 1);
+> +    rc_3d.width = c2d.width;
+> +    rc_3d.height = c2d.height;
+> +    rc_3d.depth = 1;
+> +    rc_3d.array_size = 1;
+> +    rc_3d.last_level = 0;
+> +    rc_3d.nr_samples = 0;
+> +    rc_3d.flags = VIRTIO_GPU_RESOURCE_FLAG_Y_0_TOP;
+> +
+> +    result = rutabaga_resource_create_3d(vr->rutabaga, c2d.resource_id, &rc_3d);
+> +    CHECK_RESULT(result, cmd);
+> +
+> +    res = g_new0(struct virtio_gpu_simple_resource, 1);
+> +    res->width = c2d.width;
+> +    res->height = c2d.height;
+> +    res->format = c2d.format;
+> +    res->resource_id = c2d.resource_id;
+> +
+> +    QTAILQ_INSERT_HEAD(&g->reslist, res, next);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_create_resource_3d(VirtIOGPU *g,
+> +                                struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct rutabaga_create_3d rc_3d = { 0 };
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct virtio_gpu_resource_create_3d c3d;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(c3d);
+> +
+> +    trace_virtio_gpu_cmd_res_create_3d(c3d.resource_id, c3d.format,
+> +                                       c3d.width, c3d.height, c3d.depth);
+> +
+> +    rc_3d.target = c3d.target;
+> +    rc_3d.format = c3d.format;
+> +    rc_3d.bind = c3d.bind;
+> +    rc_3d.width = c3d.width;
+> +    rc_3d.height = c3d.height;
+> +    rc_3d.depth = c3d.depth;
+> +    rc_3d.array_size = c3d.array_size;
+> +    rc_3d.last_level = c3d.last_level;
+> +    rc_3d.nr_samples = c3d.nr_samples;
+> +    rc_3d.flags = c3d.flags;
+> +
+> +    result = rutabaga_resource_create_3d(vr->rutabaga, c3d.resource_id, &rc_3d);
+> +    CHECK_RESULT(result, cmd);
+> +
+> +    res = g_new0(struct virtio_gpu_simple_resource, 1);
+> +    res->width = c3d.width;
+> +    res->height = c3d.height;
+> +    res->format = c3d.format;
+> +    res->resource_id = c3d.resource_id;
+> +
+> +    QTAILQ_INSERT_HEAD(&g->reslist, res, next);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_resource_unref(VirtIOGPU *g,
+> +                            struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct virtio_gpu_resource_unref unref;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(unref);
+> +
+> +    trace_virtio_gpu_cmd_res_unref(unref.resource_id);
+> +
+> +    res = virtio_gpu_find_resource(g, unref.resource_id);
+> +    CHECK(res, cmd);
+> +
+> +    result = rutabaga_resource_unref(vr->rutabaga, unref.resource_id);
+> +    CHECK_RESULT(result, cmd);
+> +
+> +    if (res->image) {
+> +        pixman_image_unref(res->image);
+> +    }
+> +
+> +    QTAILQ_REMOVE(&g->reslist, res, next);
+> +    g_free(res);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_context_create(VirtIOGPU *g,
+> +                            struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct virtio_gpu_ctx_create cc;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(cc);
+> +    trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
+> +                                    cc.debug_name);
+> +
+> +    result = rutabaga_context_create(vr->rutabaga, cc.hdr.ctx_id,
+> +                                     cc.context_init, cc.debug_name, cc.nlen);
+> +    CHECK_RESULT(result, cmd);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_context_destroy(VirtIOGPU *g,
+> +                             struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct virtio_gpu_ctx_destroy cd;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(cd);
+> +    trace_virtio_gpu_cmd_ctx_destroy(cd.hdr.ctx_id);
+> +
+> +    result = rutabaga_context_destroy(vr->rutabaga, cd.hdr.ctx_id);
+> +    CHECK_RESULT(result, cmd);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_resource_flush(VirtIOGPU *g, struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result, i;
+> +    struct virtio_gpu_scanout *scanout = NULL;
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct rutabaga_transfer transfer = { 0 };
+> +    struct iovec transfer_iovec;
+> +    struct virtio_gpu_resource_flush rf;
+> +    bool found = false;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +    if (vr->headless) {
+> +        return;
+> +    }
+> +
+> +    VIRTIO_GPU_FILL_CMD(rf);
+> +    trace_virtio_gpu_cmd_res_flush(rf.resource_id,
+> +                                   rf.r.width, rf.r.height, rf.r.x, rf.r.y);
+> +
+> +    res = virtio_gpu_find_resource(g, rf.resource_id);
+> +    CHECK(res, cmd);
+> +
+> +    for (i = 0; i < g->parent_obj.conf.max_outputs; i++) {
+> +        scanout = &g->parent_obj.scanout[i];
+> +        if (i == res->scanout_bitmask) {
+> +            found = true;
+> +            break;
+> +        }
+> +    }
+> +
+> +    if (!found) {
+> +        return;
+> +    }
+> +
+> +    transfer.x = 0;
+> +    transfer.y = 0;
+> +    transfer.z = 0;
+> +    transfer.w = res->width;
+> +    transfer.h = res->height;
+> +    transfer.d = 1;
+> +
+> +    transfer_iovec.iov_base = (void *)pixman_image_get_data(res->image);
+> +    transfer_iovec.iov_len = res->width * res->height * 4;
+> +
+> +    result = rutabaga_resource_transfer_read(vr->rutabaga, 0,
+> +                                             rf.resource_id, &transfer,
+> +                                             &transfer_iovec);
+> +    CHECK_RESULT(result, cmd);
+> +    dpy_gfx_update_full(scanout->con);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_set_scanout(VirtIOGPU *g, struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct virtio_gpu_scanout *scanout = NULL;
+> +    struct virtio_gpu_set_scanout ss;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +    if (vr->headless) {
+> +        return;
+> +    }
+> +
+> +    VIRTIO_GPU_FILL_CMD(ss);
+> +    trace_virtio_gpu_cmd_set_scanout(ss.scanout_id, ss.resource_id,
+> +                                     ss.r.width, ss.r.height, ss.r.x, ss.r.y);
+> +
+> +    scanout = &g->parent_obj.scanout[ss.scanout_id];
+> +    g->parent_obj.enable = 1;
 
---0000000000008c82d00600493d4c--
+I think it's safer to delay this assignment until all CHECK() are done.
+
+> +
+> +    if (ss.resource_id == 0) {
+> +        return;
+> +    }
+> +
+> +    res = virtio_gpu_find_resource(g, ss.resource_id);
+> +    CHECK(res, cmd);
+> +
+> +    if (!res->image) {
+> +        pixman_format_code_t pformat;
+> +        pformat = virtio_gpu_get_pixman_format(res->format);
+> +        CHECK(pformat, cmd);
+> +
+> +        res->image = pixman_image_create_bits(pformat,
+> +                                              res->width,
+> +                                              res->height,
+> +                                              NULL, 0);
+> +        CHECK(res->image, cmd);
+> +        pixman_image_ref(res->image);
+> +    }
+> +
+> +    /* realloc the surface ptr */
+> +    scanout->ds = qemu_create_displaysurface_pixman(res->image);
+> +    dpy_gfx_replace_surface(scanout->con, NULL);
+> +    dpy_gfx_replace_surface(scanout->con, scanout->ds);
+> +    res->scanout_bitmask = ss.scanout_id;
+> +}
+> +
+> +static void
+> +rutabaga_cmd_submit_3d(VirtIOGPU *g,
+> +                       struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct virtio_gpu_cmd_submit cs;
+> +    g_autofree uint8_t *buf = NULL;
+> +    size_t s;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(cs);
+> +    trace_virtio_gpu_cmd_ctx_submit(cs.hdr.ctx_id, cs.size);
+> +
+> +    buf = g_new0(uint8_t, cs.size);
+> +    s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num,
+> +                   sizeof(cs), buf, cs.size);
+> +    CHECK((s == cs.size), cmd);
+> +
+> +    result = rutabaga_submit_command(vr->rutabaga, cs.hdr.ctx_id, buf, cs.size);
+> +    CHECK_RESULT(result, cmd);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_transfer_to_host_2d(VirtIOGPU *g,
+> +                                 struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct rutabaga_transfer transfer = { 0 };
+> +    struct virtio_gpu_transfer_to_host_2d t2d;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(t2d);
+> +    trace_virtio_gpu_cmd_res_xfer_toh_2d(t2d.resource_id);
+> +
+> +    transfer.x = t2d.r.x;
+> +    transfer.y = t2d.r.y;
+> +    transfer.z = 0;
+> +    transfer.w = t2d.r.width;
+> +    transfer.h = t2d.r.height;
+> +    transfer.d = 1;
+> +
+> +    result = rutabaga_resource_transfer_write(vr->rutabaga, 0, t2d.resource_id,
+> +                                              &transfer);
+> +    CHECK_RESULT(result, cmd);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_transfer_to_host_3d(VirtIOGPU *g,
+> +                                 struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct rutabaga_transfer transfer = { 0 };
+> +    struct virtio_gpu_transfer_host_3d t3d;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(t3d);
+> +    trace_virtio_gpu_cmd_res_xfer_toh_3d(t3d.resource_id);
+> +
+> +    transfer.x = t3d.box.x;
+> +    transfer.y = t3d.box.y;
+> +    transfer.z = t3d.box.z;
+> +    transfer.w = t3d.box.w;
+> +    transfer.h = t3d.box.h;
+> +    transfer.d = t3d.box.d;
+> +    transfer.level = t3d.level;
+> +    transfer.stride = t3d.stride;
+> +    transfer.layer_stride = t3d.layer_stride;
+> +    transfer.offset = t3d.offset;
+> +
+> +    result = rutabaga_resource_transfer_write(vr->rutabaga, t3d.hdr.ctx_id,
+> +                                              t3d.resource_id, &transfer);
+> +    CHECK_RESULT(result, cmd);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_transfer_from_host_3d(VirtIOGPU *g,
+> +                                   struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct rutabaga_transfer transfer = { 0 };
+> +    struct virtio_gpu_transfer_host_3d t3d;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(t3d);
+> +    trace_virtio_gpu_cmd_res_xfer_fromh_3d(t3d.resource_id);
+> +
+> +    transfer.x = t3d.box.x;
+> +    transfer.y = t3d.box.y;
+> +    transfer.z = t3d.box.z;
+> +    transfer.w = t3d.box.w;
+> +    transfer.h = t3d.box.h;
+> +    transfer.d = t3d.box.d;
+> +    transfer.level = t3d.level;
+> +    transfer.stride = t3d.stride;
+> +    transfer.layer_stride = t3d.layer_stride;
+> +    transfer.offset = t3d.offset;
+> +
+> +    result = rutabaga_resource_transfer_read(vr->rutabaga, t3d.hdr.ctx_id,
+> +                                             t3d.resource_id, &transfer, NULL);
+> +    CHECK_RESULT(result, cmd);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_attach_backing(VirtIOGPU *g, struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    struct rutabaga_iovecs vecs = { 0 };
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct virtio_gpu_resource_attach_backing att_rb;
+> +    struct iovec *res_iovs;
+> +    uint32_t res_niov;
+> +    int ret;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(att_rb);
+> +    trace_virtio_gpu_cmd_res_back_attach(att_rb.resource_id);
+> +
+> +    res = virtio_gpu_find_resource(g, att_rb.resource_id);
+> +    CHECK(res, cmd);
+> +    CHECK(!res->iov, cmd);
+> +
+> +    ret = virtio_gpu_create_mapping_iov(g, att_rb.nr_entries, sizeof(att_rb),
+> +                                        cmd, NULL, &res_iovs, &res_niov);
+> +    CHECK_RESULT(ret, cmd);
+> +
+> +    vecs.iovecs = res_iovs;
+> +    vecs.num_iovecs = res_niov;
+> +
+> +    ret = rutabaga_resource_attach_backing(vr->rutabaga, att_rb.resource_id,
+> +                                           &vecs);
+> +    if (ret != 0) {
+> +        virtio_gpu_cleanup_mapping_iov(g, res_iovs, res_niov);
+
+The error should be propagated.
+
+> +    }
+> +}
+> +
+> +static void
+> +rutabaga_cmd_detach_backing(VirtIOGPU *g, struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct virtio_gpu_resource_detach_backing detach_rb;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(detach_rb);
+> +    trace_virtio_gpu_cmd_res_back_detach(detach_rb.resource_id);
+> +
+> +    res = virtio_gpu_find_resource(g, detach_rb.resource_id);
+> +    CHECK(res, cmd);
+> +
+> +    rutabaga_resource_detach_backing(vr->rutabaga,
+> +                                     detach_rb.resource_id);
+> +
+> +    virtio_gpu_cleanup_mapping(g, res);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_ctx_attach_resource(VirtIOGPU *g,
+> +                                 struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct virtio_gpu_ctx_resource att_res;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(att_res);
+> +    trace_virtio_gpu_cmd_ctx_res_attach(att_res.hdr.ctx_id,
+> +                                        att_res.resource_id);
+> +
+> +    result = rutabaga_context_attach_resource(vr->rutabaga, att_res.hdr.ctx_id,
+> +                                              att_res.resource_id);
+> +    CHECK_RESULT(result, cmd);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_ctx_detach_resource(VirtIOGPU *g,
+> +                                 struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct virtio_gpu_ctx_resource det_res;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(det_res);
+> +    trace_virtio_gpu_cmd_ctx_res_detach(det_res.hdr.ctx_id,
+> +                                        det_res.resource_id);
+> +
+> +    result = rutabaga_context_detach_resource(vr->rutabaga, det_res.hdr.ctx_id,
+> +                                              det_res.resource_id);
+> +    CHECK_RESULT(result, cmd);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_get_capset_info(VirtIOGPU *g, struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct virtio_gpu_get_capset_info info;
+> +    struct virtio_gpu_resp_capset_info resp;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(info);
+> +
+> +    result = rutabaga_get_capset_info(vr->rutabaga, info.capset_index,
+> +                                      &resp.capset_id, &resp.capset_max_version,
+> +                                      &resp.capset_max_size);
+> +    CHECK_RESULT(result, cmd);
+> +
+> +    resp.hdr.type = VIRTIO_GPU_RESP_OK_CAPSET_INFO;
+> +    virtio_gpu_ctrl_response(g, cmd, &resp.hdr, sizeof(resp));
+> +}
+> +
+> +static void
+> +rutabaga_cmd_get_capset(VirtIOGPU *g, struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    struct virtio_gpu_get_capset gc;
+> +    struct virtio_gpu_resp_capset *resp;
+> +    uint32_t capset_size;
+> +    uint32_t current_id;
+> +    bool found = false;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(gc);
+> +    for (uint32_t i = 0; i < vr->num_capsets; i++) {
+> +        result = rutabaga_get_capset_info(vr->rutabaga, i,
+> +                                          &current_id, &capset_size,
+> +                                          &capset_size);
+> +        CHECK_RESULT(result, cmd);
+> +
+> +        if (current_id == gc.capset_id) {
+> +            found = true;
+> +            break;
+> +        }
+> +    }
+> +
+> +    if (!found) {
+> +        error_report("capset not found!");
+> +        return;
+> +    }
+> +
+> +    resp = g_malloc0(sizeof(*resp) + capset_size);
+> +    resp->hdr.type = VIRTIO_GPU_RESP_OK_CAPSET;
+> +    rutabaga_get_capset(vr->rutabaga, gc.capset_id, gc.capset_version,
+> +                       (uint8_t *)resp->capset_data, capset_size);
+
+I think this cast is unnecessary.
+
+> +
+> +    virtio_gpu_ctrl_response(g, cmd, &resp->hdr, sizeof(*resp) + capset_size);
+> +    g_free(resp);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_resource_create_blob(VirtIOGPU *g,
+> +                                  struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int result;
+> +    struct rutabaga_iovecs vecs = { 0 };
+> +    g_autofree struct virtio_gpu_simple_resource *res = NULL;
+> +    struct virtio_gpu_simple_resource *resource;
+> +    struct virtio_gpu_resource_create_blob cblob;
+> +    struct rutabaga_create_blob rc_blob = { 0 };
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(cblob);
+> +    trace_virtio_gpu_cmd_res_create_blob(cblob.resource_id, cblob.size);
+> +
+> +    CHECK(cblob.resource_id != 0, cmd);
+> +
+> +    res = g_new0(struct virtio_gpu_simple_resource, 1);
+> +
+> +    res->resource_id = cblob.resource_id;
+> +    res->blob_size = cblob.size;
+> +
+> +    if (cblob.blob_mem != VIRTIO_GPU_BLOB_MEM_HOST3D) {
+> +        result = virtio_gpu_create_mapping_iov(g, cblob.nr_entries,
+> +                                               sizeof(cblob), cmd, &res->addrs,
+> +                                               &res->iov, &res->iov_cnt);
+> +        CHECK_RESULT(result, cmd);
+> +    }
+> +
+> +    rc_blob.blob_id = cblob.blob_id;
+> +    rc_blob.blob_mem = cblob.blob_mem;
+> +    rc_blob.blob_flags = cblob.blob_flags;
+> +    rc_blob.size = cblob.size;
+> +
+> +    vecs.iovecs = res->iov;
+> +    vecs.num_iovecs = res->iov_cnt;
+> +
+> +    result = rutabaga_resource_create_blob(vr->rutabaga, cblob.hdr.ctx_id,
+> +                                           cblob.resource_id, &rc_blob, &vecs,
+> +                                           NULL);
+> +    CHECK_RESULT(result, cmd);
+> +    resource = g_steal_pointer(&res);
+> +    QTAILQ_INSERT_HEAD(&g->reslist, resource, next);
+> +}
+> +
+> +static void
+> +rutabaga_cmd_resource_map_blob(VirtIOGPU *g,
+> +                               struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    uint32_t slot = 0;
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct rutabaga_mapping mapping = { 0 };
+> +    struct virtio_gpu_resource_map_blob mblob;
+> +    struct virtio_gpu_resp_map_info resp;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(mblob);
+> +
+> +    CHECK(mblob.resource_id != 0, cmd);
+> +
+> +    res = virtio_gpu_find_resource(g, mblob.resource_id);
+> +    CHECK(res, cmd);
+> +
+> +    result = rutabaga_resource_map(vr->rutabaga, mblob.resource_id, &mapping);
+> +    CHECK_RESULT(result, cmd);
+> +
+> +    for (slot = 0; slot < MAX_SLOTS; slot++) {
+> +        if (memory_regions[slot].used) {
+> +            continue;
+> +        }
+> +
+> +        MemoryRegion *mr = &(memory_regions[slot].mr);
+> +        memory_region_init_ram_ptr(mr, NULL, "blob", mapping.size,
+> +                                   (void *)mapping.ptr);
+> +        memory_region_add_subregion(&g->parent_obj.hostmem,
+> +                                    mblob.offset, mr);
+> +        memory_regions[slot].resource_id = mblob.resource_id;
+> +        memory_regions[slot].used = 1;
+> +        break;
+> +    }
+> +
+> +    CHECK((slot < MAX_SLOTS), cmd);
+> +
+> +    memset(&resp, 0, sizeof(resp));
+> +    resp.hdr.type = VIRTIO_GPU_RESP_OK_MAP_INFO;
+> +    result = rutabaga_resource_map_info(vr->rutabaga, mblob.resource_id,
+> +                                        &resp.map_info);
+> +
+> +    CHECK_RESULT(result, cmd);
+> +    virtio_gpu_ctrl_response(g, cmd, &resp.hdr, sizeof(resp));
+> +}
+> +
+> +static void
+> +rutabaga_cmd_resource_unmap_blob(VirtIOGPU *g,
+> +                                 struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    int32_t result;
+> +    uint32_t slot = 0;
+> +    struct virtio_gpu_simple_resource *res;
+> +    struct virtio_gpu_resource_unmap_blob ublob;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(ublob);
+> +
+> +    CHECK(ublob.resource_id != 0, cmd);
+> +
+> +    res = virtio_gpu_find_resource(g, ublob.resource_id);
+> +    CHECK(res, cmd);
+> +
+> +    for (slot = 0; slot < MAX_SLOTS; slot++) {
+> +        if (memory_regions[slot].resource_id != ublob.resource_id) {
+> +            continue;
+> +        }
+> +
+> +        MemoryRegion *mr = &(memory_regions[slot].mr);
+> +        memory_region_del_subregion(&g->parent_obj.hostmem, mr);
+> +
+> +        memory_regions[slot].resource_id = 0;
+> +        memory_regions[slot].used = 0;
+> +        break;
+> +    }
+> +
+> +    CHECK((slot < MAX_SLOTS), cmd);
+> +    result = rutabaga_resource_unmap(vr->rutabaga, res->resource_id);
+> +    CHECK_RESULT(result, cmd);
+> +}
+> +
+> +static void
+> +virtio_gpu_rutabaga_process_cmd(VirtIOGPU *g,
+> +                                struct virtio_gpu_ctrl_command *cmd)
+> +{
+> +    struct rutabaga_fence fence = { 0 };
+> +    int32_t result;
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    VIRTIO_GPU_FILL_CMD(cmd->cmd_hdr);
+> +
+> +    switch (cmd->cmd_hdr.type) {
+> +    case VIRTIO_GPU_CMD_CTX_CREATE:
+> +        rutabaga_cmd_context_create(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_CTX_DESTROY:
+> +        rutabaga_cmd_context_destroy(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_RESOURCE_CREATE_2D:
+> +        rutabaga_cmd_create_resource_2d(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_RESOURCE_CREATE_3D:
+> +        rutabaga_cmd_create_resource_3d(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_SUBMIT_3D:
+> +        rutabaga_cmd_submit_3d(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_TRANSFER_TO_HOST_2D:
+> +        rutabaga_cmd_transfer_to_host_2d(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_TRANSFER_TO_HOST_3D:
+> +        rutabaga_cmd_transfer_to_host_3d(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_TRANSFER_FROM_HOST_3D:
+> +        rutabaga_cmd_transfer_from_host_3d(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_RESOURCE_ATTACH_BACKING:
+> +        rutabaga_cmd_attach_backing(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_RESOURCE_DETACH_BACKING:
+> +        rutabaga_cmd_detach_backing(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_SET_SCANOUT:
+> +        rutabaga_cmd_set_scanout(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_RESOURCE_FLUSH:
+> +        rutabaga_cmd_resource_flush(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_RESOURCE_UNREF:
+> +        rutabaga_cmd_resource_unref(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_CTX_ATTACH_RESOURCE:
+> +        rutabaga_cmd_ctx_attach_resource(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_CTX_DETACH_RESOURCE:
+> +        rutabaga_cmd_ctx_detach_resource(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_GET_CAPSET_INFO:
+> +        rutabaga_cmd_get_capset_info(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_GET_CAPSET:
+> +        rutabaga_cmd_get_capset(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_GET_DISPLAY_INFO:
+> +        virtio_gpu_get_display_info(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_GET_EDID:
+> +        virtio_gpu_get_edid(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_RESOURCE_CREATE_BLOB:
+> +        rutabaga_cmd_resource_create_blob(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_RESOURCE_MAP_BLOB:
+> +        rutabaga_cmd_resource_map_blob(g, cmd);
+> +        break;
+> +    case VIRTIO_GPU_CMD_RESOURCE_UNMAP_BLOB:
+> +        rutabaga_cmd_resource_unmap_blob(g, cmd);
+> +        break;
+> +    default:
+> +        cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
+> +        break;
+> +    }
+> +
+> +    if (cmd->finished) {
+> +        return;
+> +    }
+> +    if (cmd->error) {
+> +        error_report("%s: ctrl 0x%x, error 0x%x", __func__,
+> +                     cmd->cmd_hdr.type, cmd->error);
+> +        virtio_gpu_ctrl_response_nodata(g, cmd, cmd->error);
+> +        return;
+> +    }
+> +    if (!(cmd->cmd_hdr.flags & VIRTIO_GPU_FLAG_FENCE)) {
+> +        virtio_gpu_ctrl_response_nodata(g, cmd, VIRTIO_GPU_RESP_OK_NODATA);
+> +        return;
+> +    }
+> +
+> +    fence.flags = cmd->cmd_hdr.flags;
+> +    fence.ctx_id = cmd->cmd_hdr.ctx_id;
+> +    fence.fence_id = cmd->cmd_hdr.fence_id;
+> +    fence.ring_idx = cmd->cmd_hdr.ring_idx;
+> +
+> +    trace_virtio_gpu_fence_ctrl(cmd->cmd_hdr.fence_id, cmd->cmd_hdr.type);
+> +
+> +    result = rutabaga_create_fence(vr->rutabaga, &fence);
+> +    CHECK_RESULT(result, cmd);
+> +}
+> +
+> +static void
+> +virtio_gpu_rutabaga_aio_cb(void *opaque)
+> +{
+> +    struct rutabaga_aio_data *data =  (struct rutabaga_aio_data *)opaque;
+
+It's C; you don't need cast here.
+
+> +    VirtIOGPU *g = (VirtIOGPU *)data->vr;
+
+Use: VIRTIO_GPU()
+
+> +    struct rutabaga_fence fence_data = data->fence;
+> +    struct virtio_gpu_ctrl_command *cmd, *tmp;
+> +
+> +    uint32_t signaled_ctx_specific = fence_data.flags &
+> +                                     RUTABAGA_FLAG_INFO_RING_IDX;
+> +
+> +    QTAILQ_FOREACH_SAFE(cmd, &g->fenceq, next, tmp) {
+> +        /*
+> +         * Due to context specific timelines.
+> +         */
+> +        uint32_t target_ctx_specific = cmd->cmd_hdr.flags &
+> +                                       RUTABAGA_FLAG_INFO_RING_IDX;
+> +
+> +        if (signaled_ctx_specific != target_ctx_specific) {
+> +            continue;
+> +        }
+> +
+> +        if (signaled_ctx_specific &&
+> +           (cmd->cmd_hdr.ring_idx != fence_data.ring_idx)) {
+> +            continue;
+> +        }
+> +
+> +        if (cmd->cmd_hdr.fence_id > fence_data.fence_id) {
+> +            continue;
+> +        }
+> +
+> +        trace_virtio_gpu_fence_resp(cmd->cmd_hdr.fence_id);
+> +        virtio_gpu_ctrl_response_nodata(g, cmd, VIRTIO_GPU_RESP_OK_NODATA);
+> +        QTAILQ_REMOVE(&g->fenceq, cmd, next);
+> +        g_free(cmd);
+> +    }
+> +
+> +    g_free(data);
+> +}
+> +
+> +static void
+> +virtio_gpu_rutabaga_fence_cb(uint64_t user_data,
+> +                             struct rutabaga_fence fence_data) {
+> +    struct rutabaga_aio_data *data;
+> +    VirtIOGPU *g = (VirtIOGPU *)user_data;
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    /*
+> +     * gfxstream and both cross-domain (and even newer versions virglrenderer:
+> +     * see VIRGL_RENDERER_ASYNC_FENCE_CB) like to signal fence completion on
+> +     * threads ("callback threads") that are different from the thread that
+> +     * processes the command queue ("main thread").
+> +     *
+> +     * crosvm and other virtio-gpu 1.1implementations enable callback threads
+
+Missing space between "1.1" and "implementations".
+
+> +     * via locking.  However, on QEMU a deadlock is observed if
+> +     * virtio_gpu_ctrl_response_nodata(..) [used in the fence callback] is used
+> +     * from a thread that is not the main thread.
+> +     *
+> +     * The reason is QEMU's internal locking is designed to work with QEMU
+> +     * threads (see rcu_register_thread()) and not generic C/C++/Rust threads.
+> +     * For now, we can workaround this by scheduling the return of the
+> +     * fence descriptors on the main thread.
+> +     */
+> +
+> +    data = g_new0(struct rutabaga_aio_data, 1);
+> +    data->vr = vr;
+> +    data->fence = fence_data;
+> +    aio_bh_schedule_oneshot_full(vr->ctx, virtio_gpu_rutabaga_aio_cb,
+> +                                 (void *)data, "aio");
+> +}
+> +
+> +static int virtio_gpu_rutabaga_init(VirtIOGPU *g)
+> +{
+> +    int result;
+> +    uint64_t capset_mask;
+> +    struct rutabaga_channels channels = { 0 };
+> +    struct rutabaga_builder builder = { 0 };
+> +
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +    vr->rutabaga = NULL;
+> +
+> +    if (!vr->capset_names) {
+> +        return -EINVAL;
+> +    }
+> +
+> +    builder.wsi = RUTABAGA_WSI_SURFACELESS;
+> +    /*
+> +     * Currently, if WSI is specified, the only valid strings are "surfaceless"
+> +     * or "headless".  Surfaceless doesn't create a native window surface, but
+> +     * does copy from the render target to the Pixman buffer if a virtio-gpu
+> +     * 2D hypercall is issued.  Surfacless is the default.
+> +     *
+> +     * Headless is like surfaceless, but doesn't copy to the Pixman buffer. The
+> +     * use case is automated testing environments where there is no need to view
+> +     * results.
+> +     *
+> +     * In the future, more performant virtio-gpu 2D UI integration may be added.
+> +     */
+> +    if (vr->wsi) {
+> +        if (!strcmp(vr->wsi, "surfaceless")) {
+> +            vr->headless = false;
+> +        } else if (strcmp(vr->wsi, "headless")) {
+> +            vr->headless = true;
+> +        } else {
+> +            return -EINVAL;
+> +        }
+> +    }
+> +
+> +    result = rutabaga_calculate_capset_mask(vr->capset_names, &capset_mask);
+> +    if (result) {
+> +        return result;
+> +    }
+> +
+> +    /*
+> +     * rutabaga-0.1.1 is only compiled/tested with gfxstream and cross-domain
+> +     * support. Future versions may change this to have more context types if
+> +     * there is any interest.
+> +     */
+> +    if (capset_mask & (BIT(RUTABAGA_CAPSET_VIRGL) |
+> +                       BIT(RUTABAGA_CAPSET_VIRGL2) |
+> +                       BIT(RUTABAGA_CAPSET_VENUS) |
+> +                       BIT(RUTABAGA_CAPSET_DRM))) {
+> +        return -EINVAL;
+> +    }
+> +
+> +    builder.user_data = (uint64_t)(uintptr_t *)(void *)g;
+> +    builder.fence_cb = virtio_gpu_rutabaga_fence_cb;
+> +    builder.capset_mask = capset_mask;
+> +
+> +    if (vr->wayland_socket_path) {
+> +        if ((builder.capset_mask & (1 << RUTABAGA_CAPSET_CROSS_DOMAIN)) == 0) {
+> +            return -EINVAL;
+> +        }
+> +
+> +        channels.channels =
+> +          (struct rutabaga_channel *)calloc(1, sizeof(struct rutabaga_channel));
+> +        channels.num_channels = 1;
+> +        channels.channels[0].channel_name = vr->wayland_socket_path;
+> +        channels.channels[0].channel_type = RUTABAGA_CHANNEL_TYPE_WAYLAND;
+> +        builder.channels = &channels;
+> +    }
+> +
+> +    result = rutabaga_init(&builder, &vr->rutabaga);
+> +    if (builder.capset_mask & (1 << RUTABAGA_CAPSET_CROSS_DOMAIN)) {
+> +        free(channels.channels);
+> +    }
+> +
+> +    memset(&memory_regions, 0, MAX_SLOTS * sizeof(struct MemoryRegionInfo));
+> +    vr->ctx = qemu_get_aio_context();
+
+You don't need to store the result of qemu_get_aio_context(); this 
+function is always available as far as I know.
+
+> +    return result;
+> +}
+> +
+> +static int virtio_gpu_rutabaga_get_num_capsets(VirtIOGPU *g)
+> +{
+> +    int result;
+> +    uint32_t num_capsets;
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +
+> +    if (!vr->rutabaga_active) {
+> +        result = virtio_gpu_rutabaga_init(g);
+> +        if (result) {
+> +            error_report("Failed to init rutabaga");
+> +            return 0;
+> +        }
+> +
+> +        vr->rutabaga_active = true;
+> +    }
+> +
+> +    result = rutabaga_get_num_capsets(vr->rutabaga, &num_capsets);
+> +    if (result) {
+> +        error_report("Failed to get capsets");
+> +        return 0;
+> +    }
+> +    vr->num_capsets = num_capsets;
+> +    return num_capsets;
+> +}
+> +
+> +static void virtio_gpu_rutabaga_handle_ctrl(VirtIODevice *vdev, VirtQueue *vq)
+> +{
+> +    VirtIOGPU *g = VIRTIO_GPU(vdev);
+> +    VirtioGpuRutabaga *vr = VIRTIO_GPU_RUTABAGA(g);
+> +    struct virtio_gpu_ctrl_command *cmd;
+> +
+> +    if (!virtio_queue_ready(vq)) {
+> +        return;
+> +    }
+> +
+> +    if (!vr->rutabaga_active) {
+> +        int result = virtio_gpu_rutabaga_init(g);
+> +        if (!result) {
+> +            vr->rutabaga_active = true;
+> +        }
+> +    }
+> +
+> +    if (!vr->rutabaga_active) {
+> +        return;
+> +    }
+> +
+> +    cmd = virtqueue_pop(vq, sizeof(struct virtio_gpu_ctrl_command));
+> +    while (cmd) {
+> +        cmd->vq = vq;
+> +        cmd->error = 0;
+> +        cmd->finished = false;
+> +        QTAILQ_INSERT_TAIL(&g->cmdq, cmd, next);
+> +        cmd = virtqueue_pop(vq, sizeof(struct virtio_gpu_ctrl_command));
+> +    }
+> +
+> +    virtio_gpu_process_cmdq(g);
+> +}
+> +
+> +static void virtio_gpu_rutabaga_realize(DeviceState *qdev, Error **errp)
+> +{
+> +    int num_capsets;
+> +    VirtIOGPUBase *bdev = VIRTIO_GPU_BASE(qdev);
+> +    VirtIOGPU *gpudev = VIRTIO_GPU(qdev);
+> +
+> +    num_capsets = virtio_gpu_rutabaga_get_num_capsets(gpudev);
+> +    if (!num_capsets) {
+> +        return;
+> +    }
+> +
+> +#if HOST_BIG_ENDIAN
+> +    error_setg(errp, "rutabaga is not supported on bigendian platforms");
+> +    return;
+> +#endif
+> +
+> +    bdev->conf.flags |= (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED);
+> +    bdev->conf.flags |= (1 << VIRTIO_GPU_FLAG_BLOB_ENABLED);
+> +    bdev->conf.flags |= (1 << VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED);
+> +
+> +    bdev->virtio_config.num_capsets = num_capsets;
+> +    virtio_gpu_device_realize(qdev, errp);
+> +}
+> +
+> +static Property virtio_gpu_rutabaga_properties[] = {
+> +    DEFINE_PROP_STRING("capset_names", VirtioGpuRutabaga, capset_names),
+> +    DEFINE_PROP_STRING("wayland_socket_path", VirtioGpuRutabaga,
+> +                       wayland_socket_path),
+> +    DEFINE_PROP_STRING("wsi", VirtioGpuRutabaga, wsi),
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+> +
+> +static void virtio_gpu_rutabaga_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +    VirtioDeviceClass *vdc = VIRTIO_DEVICE_CLASS(klass);
+> +    VirtIOGPUBaseClass *vbc = VIRTIO_GPU_BASE_CLASS(klass);
+> +    VirtIOGPUClass *vgc = VIRTIO_GPU_CLASS(klass);
+> +
+> +    vbc->gl_flushed = virtio_gpu_rutabaga_gl_flushed;
+> +    vgc->handle_ctrl = virtio_gpu_rutabaga_handle_ctrl;
+> +    vgc->process_cmd = virtio_gpu_rutabaga_process_cmd;
+> +    vgc->update_cursor_data = virtio_gpu_rutabaga_update_cursor;
+> +
+> +    vdc->realize = virtio_gpu_rutabaga_realize;
+> +    device_class_set_props(dc, virtio_gpu_rutabaga_properties);
+> +}
+> +
+> +static const TypeInfo virtio_gpu_rutabaga_info = {
+> +    .name = TYPE_VIRTIO_GPU_RUTABAGA,
+> +    .parent = TYPE_VIRTIO_GPU,
+> +    .instance_size = sizeof(VirtioGpuRutabaga),
+> +    .class_init = virtio_gpu_rutabaga_class_init,
+> +};
+> +module_obj(TYPE_VIRTIO_GPU_RUTABAGA);
+> +module_kconfig(VIRTIO_GPU);
+> +
+> +static void virtio_register_types(void)
+> +{
+> +    type_register_static(&virtio_gpu_rutabaga_info);
+> +}
+> +
+> +type_init(virtio_register_types)
+> +
+> +module_dep("hw-display-virtio-gpu");
+> diff --git a/hw/display/virtio-vga-rutabaga.c b/hw/display/virtio-vga-rutabaga.c
+> new file mode 100644
+> index 0000000000..01831bd03f
+> --- /dev/null
+> +++ b/hw/display/virtio-vga-rutabaga.c
+> @@ -0,0 +1,52 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include "qemu/osdep.h"
+> +#include "hw/pci/pci.h"
+> +#include "hw/qdev-properties.h"
+> +#include "hw/virtio/virtio-gpu.h"
+> +#include "hw/display/vga.h"
+> +#include "qapi/error.h"
+> +#include "qemu/module.h"
+> +#include "virtio-vga.h"
+> +#include "qom/object.h"
+> +
+> +#define TYPE_VIRTIO_VGA_RUTABAGA "virtio-vga-rutabaga"
+> +
+> +typedef struct VirtIOVGARUTABAGA VirtIOVGARUTABAGA;
+> +DECLARE_INSTANCE_CHECKER(VirtIOVGARUTABAGA, VIRTIO_VGA_RUTABAGA,
+> +                         TYPE_VIRTIO_VGA_RUTABAGA)
+> +
+> +struct VirtIOVGARUTABAGA {
+> +    VirtIOVGABase parent_obj;
+> +
+> +    VirtioGpuRutabaga   vdev;
+> +};
+> +
+> +static void virtio_vga_rutabaga_inst_initfn(Object *obj)
+> +{
+> +    VirtIOVGARUTABAGA *dev = VIRTIO_VGA_RUTABAGA(obj);
+> +
+> +    virtio_instance_init_common(obj, &dev->vdev, sizeof(dev->vdev),
+> +                                TYPE_VIRTIO_GPU_RUTABAGA);
+> +    VIRTIO_VGA_BASE(dev)->vgpu = VIRTIO_GPU_BASE(&dev->vdev);
+> +}
+> +
+> +static VirtioPCIDeviceTypeInfo virtio_vga_rutabaga_info = {
+> +    .generic_name  = TYPE_VIRTIO_VGA_RUTABAGA,
+> +    .parent        = TYPE_VIRTIO_VGA_BASE,
+> +    .instance_size = sizeof(VirtIOVGARUTABAGA),
+> +    .instance_init = virtio_vga_rutabaga_inst_initfn,
+> +};
+> +module_obj(TYPE_VIRTIO_VGA_RUTABAGA);
+> +module_kconfig(VIRTIO_VGA);
+> +
+> +static void virtio_vga_register_types(void)
+> +{
+> +    if (have_vga) {
+> +        virtio_pci_types_register(&virtio_vga_rutabaga_info);
+> +    }
+> +}
+> +
+> +type_init(virtio_vga_register_types)
+> +
+> +module_dep("hw-display-virtio-vga");
 
