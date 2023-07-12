@@ -2,107 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37EE75119D
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 22:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED4C67511B8
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 22:13:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJg0c-0003Qr-Gl; Wed, 12 Jul 2023 16:00:22 -0400
+	id 1qJgBy-0006E3-Nm; Wed, 12 Jul 2023 16:12:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qJg0a-0003QS-0s; Wed, 12 Jul 2023 16:00:20 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qJgBr-0006DO-5q
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 16:12:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qJg0Y-0007yE-11; Wed, 12 Jul 2023 16:00:19 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36CJnl9X007291; Wed, 12 Jul 2023 20:00:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=KK+PTdac+UFw5bmygdVAAJyc9LNNlbgI1x+tJ7aEXPI=;
- b=tfYTv8fnjsoePigO1u/SYd/utXsUgfmsir+B0h7Ao/00KPxu3fuS9jNwgDGied//cjjI
- 5NSewI12s60uA62DdwCR8jCwJveAE6yGllnuFaRFTw5JHV4Uwa0DpU50LCgB2/spr+8G
- n82fdmI755uH2OvzE5x+o1XtbKMnMw2toqL2yIMRq1rObVmIQcgLEQD2FSrtHDGDm+Ku
- SQvsEAbYPrW3oj/ZlVEWKjrVw6jCewGCMrufT84AheG2g7hySlVmNHEwQ/6v7RswQFbC
- VklpkDuXeDRc74gTJROxFRhD3ydrfpwnAlE8Ec0kXtx6kp1pTlFPn0acVDyLlb0zQYSE EQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rt2nwr6w7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jul 2023 20:00:11 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36CJo3Cc008613;
- Wed, 12 Jul 2023 20:00:11 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rt2nwr6up-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jul 2023 20:00:11 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36C4dLaN017376;
- Wed, 12 Jul 2023 20:00:08 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma04ams.nl.ibm.com (PPS) with ESMTPS id 3rpye5avbg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 12 Jul 2023 20:00:08 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36CK035345547986
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 12 Jul 2023 20:00:03 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 366532004D;
- Wed, 12 Jul 2023 20:00:03 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D711820040;
- Wed, 12 Jul 2023 20:00:02 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.152.224.238])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 12 Jul 2023 20:00:02 +0000 (GMT)
-Message-ID: <5dc552e7e4fc65b867cf26c65afb42fa9ee13752.camel@linux.ibm.com>
-Subject: Re: [PATCH v21 14/20] tests/avocado: s390x cpu topology core
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, thuth@redhat.com,
- cohuck@redhat.com, mst@redhat.com, pbonzini@redhat.com,
- kvm@vger.kernel.org, ehabkost@redhat.com, marcel.apfelbaum@gmail.com,
- eblake@redhat.com, armbru@redhat.com, seiden@linux.ibm.com,
- nrb@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
-Date: Wed, 12 Jul 2023 22:00:02 +0200
-In-Reply-To: <20230630091752.67190-15-pmorel@linux.ibm.com>
-References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-15-pmorel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qJgBk-0002qW-TS
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 16:11:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689192709;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Etu2k6zwAG9Me27JlIKcIeXqzfl+VhnaqZBcAwslO4o=;
+ b=S7CngY5oetCPc/c5ingoFtndLVImuU4LtjucS7xSHJaiGc08kdohRrbXyvl0LQ0DrSrNzh
+ AjQKnO8rEwue8wvhhFaC3obSxlc9qkZZseXGiuxroUm7CRVdd9ShTvKKEqNNhvWY0KRCR0
+ dYrA1h0t4Qy5Vjz4065H7lbx4Rcgwfk=
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
+ [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-454-a40IMha2P3KJh-9UgqZFFA-1; Wed, 12 Jul 2023 16:11:47 -0400
+X-MC-Unique: a40IMha2P3KJh-9UgqZFFA-1
+Received: by mail-ot1-f69.google.com with SMTP id
+ 46e09a7af769-6b7c5c7c843so8237640a34.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 13:11:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689192707; x=1691784707;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Etu2k6zwAG9Me27JlIKcIeXqzfl+VhnaqZBcAwslO4o=;
+ b=DycCbD2u6ELa0NL3NpMLiXwLZlfq4sSJdqElhy8wUp7Ykf3exrlq8qyklVzdxTsQlu
+ JO16eup51nAII+WZPhcaiIMtKcATBnkowhX8ALiWc16c2GAacyHPNYTUtuFugO1jGwiR
+ wSPXsvfvdNUQUDOlTblInyN88Zd5E9ylKn1XkJor7J+dN9RnmjLCTNeRikaq3ByetPBg
+ gQa/H5beBQ7H37mUMQYWcQOOPwYPJEIaoQjvrjSDUw6KZyLPQtF1vdTH4UPeoGwSEDxI
+ funNkdhfXPPKgAUak/tcRokAmKFKLGAsm1EYkX3BCL8VmuXOP+ecNH++9Ho811ubfsOC
+ 9z1Q==
+X-Gm-Message-State: ABy/qLZt+a6CDp5ZRAKzK9f2XPxVB1FClqYdR2AH2lojrg/Ju/j+tC5n
+ MGijnYbGBvSQuI/O2i1fVUfov4Hw2K6rEsGjmpsMF2C4yEHcFwbou5/jzMJRYOhMo00ybYciq6V
+ vHe0EYfBrTjghISc=
+X-Received: by 2002:a9d:6451:0:b0:6b7:54cd:2115 with SMTP id
+ m17-20020a9d6451000000b006b754cd2115mr17043491otl.3.1689192706970; 
+ Wed, 12 Jul 2023 13:11:46 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlH+sazM801XOOJtQYqWIKxx0R77N3fs10T9jRDTeix2fq2bXvU1kvzcIS4DHtUCKxuYz0P0uA==
+X-Received: by 2002:a9d:6451:0:b0:6b7:54cd:2115 with SMTP id
+ m17-20020a9d6451000000b006b754cd2115mr17043463otl.3.1689192706732; 
+ Wed, 12 Jul 2023 13:11:46 -0700 (PDT)
+Received: from [192.168.8.101] (tmo-097-78.customers.d1-online.com.
+ [80.187.97.78]) by smtp.gmail.com with ESMTPSA id
+ x12-20020ae9e90c000000b00767d8e12ce3sm2407027qkf.49.2023.07.12.13.11.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 12 Jul 2023 13:11:46 -0700 (PDT)
+Message-ID: <88070b30-36ea-8112-41c4-0d93fc76cf80@redhat.com>
+Date: Wed, 12 Jul 2023 22:11:39 +0200
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aYaXZGRld0eOUWHCZikqvnBjQMDsbcBy
-X-Proofpoint-ORIG-GUID: ZsOvllFaBLzM-YbRyR4kHQtbslZUwVz1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-12_14,2023-07-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
- mlxlogscore=999 bulkscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
- spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307120174
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+ Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
+ mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+ ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
+ armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
+ frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
+References: <20230630091752.67190-1-pmorel@linux.ibm.com>
+ <20230630091752.67190-17-pmorel@linux.ibm.com>
+ <dfeeeaa1-0994-9e1e-1f10-6c6618daacff@redhat.com>
+ <aa1fbe820f23bc487752ee29ee114f5d4185352a.camel@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v21 16/20] tests/avocado: s390x cpu topology entitlement
+ tests
+In-Reply-To: <aa1fbe820f23bc487752ee29ee114f5d4185352a.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.11, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,66 +110,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2023-06-30 at 11:17 +0200, Pierre Morel wrote:
-> Introduction of the s390x cpu topology core functions and
-> basic tests.
->=20
-> We test the corelation between the command line and
+On 12/07/2023 21.37, Nina Schoetterl-Glausch wrote:
+> On Wed, 2023-07-05 at 12:22 +0200, Thomas Huth wrote:
+>> On 30/06/2023 11.17, Pierre Morel wrote:
+>>> This test takes care to check the changes on different entitlements
+>>> when the guest requests a polarization change.
+>>>
+>>> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+>>> ---
+>>>    tests/avocado/s390_topology.py | 47
+>>> ++++++++++++++++++++++++++++++++++
+>>>    1 file changed, 47 insertions(+)
+>>>
+>>> diff --git a/tests/avocado/s390_topology.py
+>>> b/tests/avocado/s390_topology.py
+>>> index 2cf731cb1d..4855e5d7e4 100644
+>>> --- a/tests/avocado/s390_topology.py
+>>> +++ b/tests/avocado/s390_topology.py
+>>> @@ -240,3 +240,50 @@ def test_polarisation(self):
+>>>            res = self.vm.qmp('query-cpu-polarization')
+>>>            self.assertEqual(res['return']['polarization'],
+>>> 'horizontal')
+>>>            self.check_topology(0, 0, 0, 0, 'medium', False)
+>>> +
+>>> +    def test_entitlement(self):
+>>> +        """
+>>> +        This test verifies that QEMU modifies the polarization
+>>> +        after a guest request.
+>> ...
+>>> +        self.check_topology(0, 0, 0, 0, 'low', False)
+>>> +        self.check_topology(1, 0, 0, 0, 'medium', False)
+>>> +        self.check_topology(2, 1, 0, 0, 'high', False)
+>>> +        self.check_topology(3, 1, 0, 0, 'high', False)
+>>> +
+>>> +        self.guest_set_dispatching('1');
+>>> +
+>>> +        self.check_topology(0, 0, 0, 0, 'low', False)
+>>> +        self.check_topology(1, 0, 0, 0, 'medium', False)
+>>> +        self.check_topology(2, 1, 0, 0, 'high', False)
+>>> +        self.check_topology(3, 1, 0, 0, 'high', False)
+>>> +
+>>> +        self.guest_set_dispatching('0');
+>>> +
+>>> +        self.check_topology(0, 0, 0, 0, 'low', False)
+>>> +        self.check_topology(1, 0, 0, 0, 'medium', False)
+>>> +        self.check_topology(2, 1, 0, 0, 'high', False)
+>>> +        self.check_topology(3, 1, 0, 0, 'high', False)
+>>
+>> Sorry, I think I'm too blind to see it, but what has changed after
+>> the guest
+>> changed the polarization?
+> 
+> Nothing, the values are retained, they're just not active.
+> The guest will see a horizontal polarization until it changes back to
+> vertical.
 
-corRelation
+But then the comment in front of it ("This test verifies that QEMU 
+*modifies* the polarization...") does not quite match, does it?
 
-> the QMP results in query-cpus-fast for various CPU topology.
->=20
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+  Thomas
 
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> ---
 
-[...]
-
-> diff --git a/tests/avocado/s390_topology.py
-> b/tests/avocado/s390_topology.py
-> new file mode 100644
-> index 0000000000..1758ec1f13
-> --- /dev/null
-> +++ b/tests/avocado/s390_topology.py
-> @@ -0,0 +1,196 @@
-
-[...]
-
-> +class S390CPUTopology(QemuSystemTest):
-> +=C2=A0=C2=A0=C2=A0 """
-> +=C2=A0=C2=A0=C2=A0 S390x CPU topology consist of 4 topology layers, from=
- bottom to
-
-consistS
-
-> top,
-> +=C2=A0=C2=A0=C2=A0 the cores, sockets, books and drawers and 2 modifiers
-> attributes,
-> +=C2=A0=C2=A0=C2=A0 the entitlement and the dedication.
-> +=C2=A0=C2=A0=C2=A0 See: docs/system/s390x/cpu-topology.rst.
-> +
-> +=C2=A0=C2=A0=C2=A0 S390x CPU topology is setup in different ways:
-> +=C2=A0=C2=A0=C2=A0 - implicitely from the '-smp' argument by completing =
-each
-> topology
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 level one after the other begining with d=
-rawer 0, book 0 and
-> socket 0.
-> +=C2=A0=C2=A0=C2=A0 - explicitely from the '-device' argument on the QEMU=
- command
-> line
-> +=C2=A0=C2=A0=C2=A0 - explicitely by hotplug of a new CPU using QMP or HM=
-P
-> +=C2=A0=C2=A0=C2=A0 - it is modified by using QMP 'set-cpu-topology'
-> +
-> +=C2=A0=C2=A0=C2=A0 The S390x modifier attribute entitlement depends on t=
-he machine
-> +=C2=A0=C2=A0=C2=A0 polarization, which can be horizontal or vertical.
-> +=C2=A0=C2=A0=C2=A0 The polarization is changed on a request from the gue=
-st.
-> +=C2=A0=C2=A0=C2=A0 """
-
-[...]
 
