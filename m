@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C6D75110E
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 21:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5A0751116
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 21:22:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJfKJ-0005md-Lm; Wed, 12 Jul 2023 15:16:39 -0400
+	id 1qJfOQ-0007eE-Ir; Wed, 12 Jul 2023 15:20:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qJfKH-0005mF-Nu
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 15:16:37 -0400
+ id 1qJfOO-0007dd-Sb
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 15:20:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qJfKG-0001wW-9K
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 15:16:37 -0400
+ id 1qJfON-0005iG-BL
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 15:20:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689189394;
+ s=mimecast20190719; t=1689189649;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=dsryfDy6LjagDRiliXIP3B2Rbyb/hrR3RC0ewdhj+4c=;
- b=TZwT0bFtNULrz/Qq1Z45WZPb6IPqGj+6FuwsuF+bQ8vmYJdO3FxFAa1O339IXTICwxftQ9
- 8taZ4WQ5qoKmNB9joeli7JDNpfuzbYHm2ztoOXmmitpfDUCoNa7dpKG7xz60gioGE7gr6f
- FJKGg4037tR76L6FJQAR+cNY2wPPfPs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-117-FfPUmKHQOpCOsikadt37pQ-1; Wed, 12 Jul 2023 15:16:31 -0400
-X-MC-Unique: FfPUmKHQOpCOsikadt37pQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ in-reply-to:in-reply-to:references:references;
+ bh=dv8a+tl6wvmjsVbnRUpa8U9dS9lLPLu4bP06haY/BKc=;
+ b=dK0i5HOxPkuiIatzMZig2CXwNlgl/CbNf1YrDEq9+3gMK+rGH47m2j7xnmLg0eWVhfgAii
+ 5o2Q1tIbppMPqbSb7RC4J9DpuLbJP4GBvn4VMyBVSGT3dTFAGHSyIKW2cyIkpYmeBWlmYM
+ ou3obBuuNy6Jra++abWq6GgilkCd92Q=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-515-b-SCytvWPVOaNHB9oD8yZw-1; Wed, 12 Jul 2023 15:20:45 -0400
+X-MC-Unique: b-SCytvWPVOaNHB9oD8yZw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 00802185A7A8;
- Wed, 12 Jul 2023 19:16:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4768438035AC;
+ Wed, 12 Jul 2023 19:20:45 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 153C2C1ED96;
- Wed, 12 Jul 2023 19:16:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B8657200A7CA;
+ Wed, 12 Jul 2023 19:20:44 +0000 (UTC)
+Date: Wed, 12 Jul 2023 15:20:43 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Luk=C3=A1=C5=A1=20Doktor?= <ldoktor@redhat.com>
-Subject: [PATCH] block/nvme: invoke blk_io_plug_call() outside q->lock
-Date: Wed, 12 Jul 2023 15:16:28 -0400
-Message-Id: <20230712191628.252806-1-stefanha@redhat.com>
+Cc: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org,
+ Hanna Reitz <hreitz@redhat.com>,
+ =?utf-8?B?THVrw6HFoQ==?= Doktor <ldoktor@redhat.com>
+Subject: Re: [PATCH] virtio-blk: fix host notifier issues during dataplane
+ start/stop
+Message-ID: <20230712192043.GA254238@fedora>
+References: <20230704151527.193586-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="OPx8EE6Kag9bN5jm"
+Content-Disposition: inline
+In-Reply-To: <20230704151527.193586-1-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -80,61 +82,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-blk_io_plug_call() is invoked outside a blk_io_plug()/blk_io_unplug()
-section while opening the NVMe drive from:
 
-  nvme_file_open() ->
-  nvme_init() ->
-  nvme_identify() ->
-  nvme_admin_cmd_sync() ->
-  nvme_submit_command() ->
-  blk_io_plug_call()
+--OPx8EE6Kag9bN5jm
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-blk_io_plug_call() immediately invokes the given callback when the
-current thread is not plugged, as is the case during nvme_file_open().
+On Tue, Jul 04, 2023 at 05:15:27PM +0200, Stefan Hajnoczi wrote:
+> The main loop thread can consume 100% CPU when using --device
+> virtio-blk-pci,iothread=3D<iothread>. ppoll() constantly returns but
+> reading virtqueue host notifiers fails with EAGAIN. The file descriptors
+> are stale and remain registered with the AioContext because of bugs in
+> the virtio-blk dataplane start/stop code.
+>=20
+> The problem is that the dataplane start/stop code involves drain
+> operations, which call virtio_blk_drained_begin() and
+> virtio_blk_drained_end() at points where the host notifier is not
+> operational:
+> - In virtio_blk_data_plane_start(), blk_set_aio_context() drains after
+>   vblk->dataplane_started has been set to true but the host notifier has
+>   not been attached yet.
+> - In virtio_blk_data_plane_stop(), blk_drain() and blk_set_aio_context()
+>   drain after the host notifier has already been detached but with
+>   vblk->dataplane_started still set to true.
+>=20
+> I would like to simplify ->ioeventfd_start/stop() to avoid interactions
+> with drain entirely, but couldn't find a way to do that. Instead, this
+> patch accepts the fragile nature of the code and reorders it so that
+> vblk->dataplane_started is false during drain operations. This way the
+> virtio_blk_drained_begin() and virtio_blk_drained_end() calls don't
+> touch the host notifier. The result is that
+> virtio_blk_data_plane_start() and virtio_blk_data_plane_stop() have
+> complete control over the host notifier and stale file descriptors are
+> no longer left in the AioContext.
+>=20
+> This patch fixes the 100% CPU consumption in the main loop thread and
+> correctly moves host notifier processing to the IOThread.
+>=20
+> Fixes: 1665d9326fd2 ("virtio-blk: implement BlockDevOps->drained_begin()")
+> Reported-by: Luk=C3=A1=C5=A1 Doktor <ldoktor@redhat.com>
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>  hw/block/dataplane/virtio-blk.c | 67 +++++++++++++++++++--------------
+>  1 file changed, 38 insertions(+), 29 deletions(-)
 
-Unfortunately, nvme_submit_command() calls blk_io_plug_call() with
-q->lock still held:
+Thanks, applied to my block tree:
+https://gitlab.com/stefanha/qemu/commits/block
 
-    ...
-    q->sq.tail = (q->sq.tail + 1) % NVME_QUEUE_SIZE;
-    q->need_kick++;
-    blk_io_plug_call(nvme_unplug_fn, q);
-    qemu_mutex_unlock(&q->lock);
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Stefan
 
-nvme_unplug_fn() deadlocks trying to acquire q->lock because the lock is
-already acquired by the same thread. The symptom is that QEMU hangs
-during startup while opening the NVMe drive.
+--OPx8EE6Kag9bN5jm
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Fix this by moving the blk_io_plug_call() outside q->lock. This is safe
-because no other thread runs code related to this queue and
-blk_io_plug_call()'s internal state is immune to thread safety issues
-since it is thread-local.
+-----BEGIN PGP SIGNATURE-----
 
-Reported-by: Lukáš Doktor <ldoktor@redhat.com>
-Fixes: f2e590002bd6 ("block/nvme: convert to blk_io_plug_call() API")
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- block/nvme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSu/QsACgkQnKSrs4Gr
+c8hgZQf7BcKZFfawjfArb4ePBGhr9PXQbnmJmUa1XKOTkovUiULyZm19uTpexvs7
+mkfnpF2jRMcRYqEN46v/xhdTy20u9zXWrQsEONMBpKFysXbEiSEuHFdJf+wtYqOs
+sBoOoFLJaFP1jCJ1rQO/p9vauBL0YLQ1lQKFDYQxYKvYFzZjtFN/LNfBaSiFeTcc
+b4lutNUN390fIS3UPNtTp1BrBh24gPKci8vTCkHSQ4hXqRbI3uibXDp5ehagEQAm
+wi/F8Yd6CXVP+SdiH/5c2pZTSilHcbSc9PaNJd79aL7jXQpoP+evZbTVmrL4HoV6
+mgqaMDAFL+eGFH/YpqNDyz6VQXOXqQ==
+=rCFw
+-----END PGP SIGNATURE-----
 
-diff --git a/block/nvme.c b/block/nvme.c
-index 7ca85bc44a..b6e95f0b7e 100644
---- a/block/nvme.c
-+++ b/block/nvme.c
-@@ -501,8 +501,9 @@ static void nvme_submit_command(NVMeQueuePair *q, NVMeRequest *req,
-            q->sq.tail * NVME_SQ_ENTRY_BYTES, cmd, sizeof(*cmd));
-     q->sq.tail = (q->sq.tail + 1) % NVME_QUEUE_SIZE;
-     q->need_kick++;
-+    qemu_mutex_unlock(&q->lock);
-+
-     blk_io_plug_call(nvme_unplug_fn, q);
--    qemu_mutex_unlock(&q->lock);
- }
- 
- static void nvme_admin_cmd_sync_cb(void *opaque, int ret)
--- 
-2.40.1
+--OPx8EE6Kag9bN5jm--
 
 
