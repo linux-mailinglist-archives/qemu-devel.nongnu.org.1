@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1592C750610
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 13:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEAFC75063C
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 13:37:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJY1I-0000Mc-OK; Wed, 12 Jul 2023 07:28:32 -0400
+	id 1qJY8p-0002wJ-Av; Wed, 12 Jul 2023 07:36:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qJY1A-0000KV-Pa
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:28:25 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1qJY8m-0002vp-LC
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:36:16 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qJY17-0008JK-4I
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:28:24 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1b9cd6a0051so24759385ad.1
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 04:28:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1qJY8l-0005JI-0X
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 07:36:16 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1b8ad356fe4so37325105ad.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 04:36:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1689161299; x=1691753299;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VpKQhHd/VFqWS0RsyM+OoF6OxbyIaaVUjA1go6bYLkg=;
- b=AyL2KliVr83Ud//MoBThU8edExD14H9/UY59x5DbqedP7F8pUmqqQtnESfNORTFHe7
- Qj1UX1cgUl1WCiLb9uFaKpua+SSzASAS+K5vZntV59i+KPjwirRcjuuWULuzWffyPb4m
- 2aRsiCDXagzYc73gU9fYSdPOpirhjHfqicAyqKv26pVtixQ0NrvBGgpNsSg8lMsFhU2g
- /geFr8qWNF/NJBbWbD4Younu2kU1ODg8Rocj1xRFA0n9173nPscz3HTkzBW/OFYWn7Cq
- fI/THL8x+9Z3iJuVFapI6hOYjq1xW0L3NaIkPcU69ZGsFKbOpDOaSaSzKEE0m3NCC6Eg
- ysxw==
+ d=gmail.com; s=20221208; t=1689161773; x=1691753773;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bvSF4OJBDEjBub38b0B+LTWNUxzYWnJkZFO4j3653KY=;
+ b=j1weV4yuLdvpmmR+52mOSDgOecnr5wWIo9ot75EuQDojk1+4OOooi59PxKB3FghO7f
+ nG55j1GqnOdz0fqboxTCWtmvJnaiCprDC8lhz4dolt7RAO9qUkI4iYdq9uvzYeBXRqql
+ p0e4tufJROcDYaQNEeqtTPwU537eJ2bvLD3nCoO8IrPK82M4qs3Zu09/bOEFA/qS9Z7y
+ rBtB88DLoEWqBH0CcjngYsXSUxQzxPnzW1CA44jTRP1XAEBLqQZKB0DWKfau55za9QtL
+ 9vpS7/0Up7cvISBejm/FbdVUAulmYQvZlTk6yoapoD+m8Y58m/r2igh+2BHcGWEHgGaN
+ R7aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689161299; x=1691753299;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VpKQhHd/VFqWS0RsyM+OoF6OxbyIaaVUjA1go6bYLkg=;
- b=MgJn/604W2Tiy3teW7Pn8pDklOhxy5EZwySOsSDFNNtCcqLEURW43SXESiNEuxYNPi
- q7EC6hzoN16a8xTttvgeRgBmo8kuGfFCYOiHHt3tU9V+UBCEo+Q6eEBqIFzjsnxUkMUQ
- CDbLD2bjfP0Nmf0knUlA0myvqyEZN5lOB2qHiARg1cdm+rcX6Gqtfem8a1aT3TRikSeV
- NMS1gHcaa3BHhko2dXR/7oYKOqXWQSahRbIM2YVbU3WITql47zFoGG1PEJnRL7OhIuTV
- RUazFI7z5vnC2eKpzmzm+2WroO/6U9wmPfpB/q+kQN3QcfGBLmip8VFcsDUEwiN6YrxN
- xwVw==
-X-Gm-Message-State: ABy/qLahmiZ82D3CmvOa55iLMf9abYbONAD4JGrxctysMowgxdB2N6W6
- pezieLd/q7kuUyFba9a02WFldg==
-X-Google-Smtp-Source: APBJJlH/ErCiLfMGG06GL9Qljk+pqSvt0BASOkaTP6mL//KoxX4SZvMzfUCcVTvH+V3iRjGMYoR8Yg==
-X-Received: by 2002:a17:902:e5ce:b0:1b7:ed6a:d8a5 with SMTP id
- u14-20020a170902e5ce00b001b7ed6ad8a5mr16092149plf.61.1689161298998; 
- Wed, 12 Jul 2023 04:28:18 -0700 (PDT)
-Received: from alarm.. ([157.82.204.253]) by smtp.gmail.com with ESMTPSA id
- je11-20020a170903264b00b001b85a56597bsm3714766plb.185.2023.07.12.04.28.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 12 Jul 2023 04:28:18 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>,
-	Ani Sinha <anisinha@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-block@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>, Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH] hw/pci: Warn when ARI/SR-IOV device has non-zero Function
- number
-Date: Wed, 12 Jul 2023 20:27:32 +0900
-Message-ID: <20230712112732.18617-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20221208; t=1689161773; x=1691753773;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bvSF4OJBDEjBub38b0B+LTWNUxzYWnJkZFO4j3653KY=;
+ b=Z5NSsTSp4GiBcNVjyGtYXFcdNKvenyeV/qCchYnLEV/odk2F3ThCx48sQ8tndwMB37
+ Helf+rVIZ0E+wM9sVeI/fdcVhAUC46rwIfAo6BgjbxK82uK8mIgCKCP2o4i6dJCLtTXj
+ kwVvZuKpjmYVLjQPszdRZ4YVxwuU8kJRLo2amWykV+dhqkGbIB6VhZ83d/HBkDNEugS2
+ DP10PzkImKLJSCwwvAirqdw61s5i10DSt4JReVx6EUogZ7Lu/adjFknVDHRDzsSo/u5s
+ 7cbE7wKu07r0b8w6NYdv+lB1aAkqB+jupL6FIcFXlBEXkhFaxLQAjiu2rd83MMF00MNF
+ in/A==
+X-Gm-Message-State: ABy/qLZcFTyyGs/o8e7IPDpVsSI+B8bDzAPhdvWxRbE6BBMDOTD+wvT8
+ q/1x+4idS2g345aDTnmS0Sc=
+X-Google-Smtp-Source: APBJJlHMd5VnbrMUgjcZEJkSxSyxS8OaTfi7NNPNkuPMgbG1844sTsFXXoLZWR7NKghFRUp9/p708w==
+X-Received: by 2002:a17:902:9a4b:b0:1b3:fb75:dd24 with SMTP id
+ x11-20020a1709029a4b00b001b3fb75dd24mr14234004plv.48.1689161772933; 
+ Wed, 12 Jul 2023 04:36:12 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
+ by smtp.gmail.com with ESMTPSA id
+ ix13-20020a170902f80d00b001b896686c78sm3751850plb.66.2023.07.12.04.36.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 12 Jul 2023 04:36:12 -0700 (PDT)
+Message-ID: <924819be-9181-7119-5f3e-6df0aa3e432a@gmail.com>
+Date: Wed, 12 Jul 2023 20:36:09 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v1 5/9] gfxstream + rutabaga prep: added need defintions, 
+ fields, and options
+Content-Language: en-US
+To: Gurchetan Singh <gurchetansingh@chromium.org>, qemu-devel@nongnu.org
+Cc: --cc=kraxel@redhat.com, marcandre.lureau@redhat.com,
+ dmitry.osipenko@collabora.com, ray.huang@amd.com, alex.bennee@linaro.org,
+ shentey@gmail.com
+References: <20230711025649.708-1-gurchetansingh@chromium.org>
+ <20230711025649.708-6-gurchetansingh@chromium.org>
+From: Akihiko Odaki <akihiko.odaki@gmail.com>
+In-Reply-To: <20230711025649.708-6-gurchetansingh@chromium.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=akihiko.odaki@gmail.com; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.11, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,96 +98,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current SR/IOV implementations assume that hardcoded Function numbers
-are always available and will not conflict. It is somewhat non-trivial
-to make the Function numbers to use controllable to avoid Function
-number conflicts so ensure there is only one PF to make the assumption
-hold true.
+On 2023/07/11 11:56, Gurchetan Singh wrote:
+> This modifies the common virtio-gpu.h file have the fields and
+> defintions needed by gfxstream/rutabaga, by VirtioGpuRutabaga.
 
-Also warn when non-SR/IOV multifunction was attempted with ARI enabled;
-ARI has the next Function number field register, and currently it's
-hardcoded to 0, which prevents non-SR/IOV multifunction. It is
-certainly possible to add a logic to determine the correct next Function
-number according to the configuration, but it's not worth since all
-ARI-capable devices are also SR/IOV devices, which do not support
-multiple PFs as stated above.
+s/VirtioGpuRutabaga/VirtIOGPURutabaga/g since VirtIOGPU is spelled this 
+way everywhere else.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- hw/pci/pci.c | 59 +++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 42 insertions(+), 17 deletions(-)
-
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 784c02a182..50359a0f3a 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -2124,23 +2124,48 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
-         }
-     }
- 
--    /*
--     * A PCIe Downstream Port that do not have ARI Forwarding enabled must
--     * associate only Device 0 with the device attached to the bus
--     * representing the Link from the Port (PCIe base spec rev 4.0 ver 0.3,
--     * sec 7.3.1).
--     * With ARI, PCI_SLOT() can return non-zero value as the traditional
--     * 5-bit Device Number and 3-bit Function Number fields in its associated
--     * Routing IDs, Requester IDs and Completer IDs are interpreted as a
--     * single 8-bit Function Number. Hence, ignore ARI capable devices.
--     */
--    if (pci_is_express(pci_dev) &&
--        !pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
--        pcie_has_upstream_port(pci_dev) &&
--        PCI_SLOT(pci_dev->devfn)) {
--        warn_report("PCI: slot %d is not valid for %s,"
--                    " parent device only allows plugging into slot 0.",
--                    PCI_SLOT(pci_dev->devfn), pci_dev->name);
-+    if (pci_is_express(pci_dev)) {
-+        /*
-+         * A PCIe Downstream Port that do not have ARI Forwarding enabled must
-+         * associate only Device 0 with the device attached to the bus
-+         * representing the Link from the Port (PCIe base spec rev 4.0 ver 0.3,
-+         * sec 7.3.1).
-+         * With ARI, PCI_SLOT() can return non-zero value as the traditional
-+         * 5-bit Device Number and 3-bit Function Number fields in its
-+         * associated Routing IDs, Requester IDs and Completer IDs are
-+         * interpreted as a single 8-bit Function Number. Hence, ignore ARI
-+         * capable devices.
-+         */
-+        if (!pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
-+            pcie_has_upstream_port(pci_dev) &&
-+            PCI_SLOT(pci_dev->devfn)) {
-+            warn_report("PCI: slot %d is not valid for %s,"
-+                        " parent device only allows plugging into slot 0.",
-+                        PCI_SLOT(pci_dev->devfn), pci_dev->name);
-+        }
-+
-+        /*
-+         * Current SR/IOV implementations assume that hardcoded Function numbers
-+         * are always available. Ensure there is only one PF to make the
-+         * assumption hold true.
-+         */
-+        if (pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_SRIOV) &&
-+            PCI_FUNC(pci_dev->devfn)) {
-+            warn_report("PCI: function %d is not valid for %s,"
-+                        " currently PF can only be assigned to function 0.",
-+                        PCI_FUNC(pci_dev->devfn), pci_dev->name);
-+        }
-+
-+        /*
-+         * ARI has the next Function number field register, and currently it's
-+         * hardcoded to 0, which prevents non-SR/IOV multifunction.
-+         */
-+        if (pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
-+            !pci_is_vf(pci_dev) && (pci_dev->devfn & 0xff)) {
-+            warn_report("PCI: function %d is not valid for %s,"
-+                        " non-SR/IOV multifunction is not supported with ARI enabled.",
-+                        pci_dev->devfn & 0xff, pci_dev->name);
-+        }
-     }
- 
-     if (pci_dev->failover_pair_id) {
--- 
-2.41.0
-
+> 
+> - a colon separated list of capset names, defined in the virtio spec
+> - a wayland socket path to enable guest Wayland passthrough
+> 
+> The command to run these would be:
+> 
+> -device virtio-vga-rutabaga,capset_names=gfxstream:cross-domain, \
+>          wayland_socket_path=/run/user/1000/wayland-0,hostmem=8G  \
+> 
+> Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
+> ---
+> v2: void *rutabaga --> struct rutabaga *rutabaga (Akihiko)
+>      have a separate rutabaga device instead of using GL device (Bernard)
+> 
+>   include/hw/virtio/virtio-gpu.h | 21 +++++++++++++++++++++
+>   1 file changed, 21 insertions(+)
+> 
+> diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+> index 5927ca1864..5a1b15ccb9 100644
+> --- a/include/hw/virtio/virtio-gpu.h
+> +++ b/include/hw/virtio/virtio-gpu.h
+> @@ -38,6 +38,9 @@ OBJECT_DECLARE_SIMPLE_TYPE(VirtIOGPUGL, VIRTIO_GPU_GL)
+>   #define TYPE_VHOST_USER_GPU "vhost-user-gpu"
+>   OBJECT_DECLARE_SIMPLE_TYPE(VhostUserGPU, VHOST_USER_GPU)
+>   
+> +#define TYPE_VIRTIO_GPU_RUTABAGA "virtio-gpu-rutabaga-device"
+> +OBJECT_DECLARE_SIMPLE_TYPE(VirtioGpuRutabaga, VIRTIO_GPU_RUTABAGA)
+> +
+>   struct virtio_gpu_simple_resource {
+>       uint32_t resource_id;
+>       uint32_t width;
+> @@ -94,6 +97,7 @@ enum virtio_gpu_base_conf_flags {
+>       VIRTIO_GPU_FLAG_DMABUF_ENABLED,
+>       VIRTIO_GPU_FLAG_BLOB_ENABLED,
+>       VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
+> +    VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
+>   };
+>   
+>   #define virtio_gpu_virgl_enabled(_cfg) \
+> @@ -108,6 +112,8 @@ enum virtio_gpu_base_conf_flags {
+>       (_cfg.flags & (1 << VIRTIO_GPU_FLAG_BLOB_ENABLED))
+>   #define virtio_gpu_context_init_enabled(_cfg) \
+>       (_cfg.flags & (1 << VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED))
+> +#define virtio_gpu_rutabaga_enabled(_cfg) \
+> +    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
+>   #define virtio_gpu_hostmem_enabled(_cfg) \
+>       (_cfg.hostmem > 0)
+>   
+> @@ -229,6 +235,21 @@ struct VhostUserGPU {
+>       bool backend_blocked;
+>   };
+>   
+> +struct rutabaga;
+> +
+> +struct VirtioGpuRutabaga {
+> +    struct VirtIOGPU parent_obj;
+> +
+> +    bool rutabaga_active;
+> +    char *capset_names;
+> +    char *wayland_socket_path;
+> +    char *wsi;
+> +    bool headless;
+> +    uint32_t num_capsets;
+> +    struct rutabaga *rutabaga;
+> +    AioContext *ctx;
+> +};
+> +
+>   #define VIRTIO_GPU_FILL_CMD(out) do {                                   \
+>           size_t s;                                                       \
+>           s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,          \
 
