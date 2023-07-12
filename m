@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937FB750127
-	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 114BB750128
+	for <lists+qemu-devel@lfdr.de>; Wed, 12 Jul 2023 10:19:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJV3S-0004Cn-N5; Wed, 12 Jul 2023 04:18:34 -0400
+	id 1qJV3R-0004Bl-3g; Wed, 12 Jul 2023 04:18:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3P-0004C1-P1
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:32 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3M-0004BI-Sb
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3O-0000Yy-5w
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:31 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qJV3L-0000YD-4h
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 04:18:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689149908;
+ s=mimecast20190719; t=1689149906;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VrCfSebggGFbD66fy7MfMP1e1eR5p2C++NNqwGAX5mM=;
- b=E9MSU1bW+aspFucmkG/Bqdxq/ZUAyVXbMSg85p9FXdZ5IN3EM6J9omq1Nl0EPfABT+qavh
- WKSmDOBNMNhzfxW67iBUDhjo3m684ymhPKXWg6+14UOolkQu5t0ZFLwq+WMNBEr9+09V3e
- P2kB/v7oziHjGMQhaNZ7VugHwmXAm7Q=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-384-2A0yn001OYOrHQOZ0q2p_A-1; Wed, 12 Jul 2023 04:18:25 -0400
-X-MC-Unique: 2A0yn001OYOrHQOZ0q2p_A-1
+ bh=f1aa3yAawvRtT95GIBwCxzghPcfIMv1aPZhIK2F5Irk=;
+ b=P7qDjvWeH5HGOvL/bfD5xZq+lJeXSf9on7hcjydZs66RVJXvbOZp+0xtEtxkHaFgOb6Tfj
+ rBlY2/dVsgTYU0ixbqrR17eHHh5rJ28iYTwAV9bCQ2k/Pb5Knb6c+dU8wbe9DP53bH5DLM
+ 2HdLf2dzkce8b4U92ksJShUQbmqgVbs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-402-i1x5OSZsNq-tlEeQtDowjA-1; Wed, 12 Jul 2023 04:18:25 -0400
+X-MC-Unique: i1x5OSZsNq-tlEeQtDowjA-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5ABC22808E65;
- Wed, 12 Jul 2023 08:18:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D4E2C185A795;
+ Wed, 12 Jul 2023 08:18:24 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.193.77])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E1FD04CD0C9;
- Wed, 12 Jul 2023 08:18:21 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9707E492C13;
+ Wed, 12 Jul 2023 08:18:23 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Mario Casquero <mcasquer@redhat.com>, Juan Quintela <quintela@redhat.com>
-Subject: [GIT PULL 14/21] virtio-mem: Support "x-ignore-shared" migration
-Date: Wed, 12 Jul 2023 10:17:43 +0200
-Message-ID: <20230712081750.80852-15-david@redhat.com>
+ Mario Casquero <mcasquer@redhat.com>
+Subject: [GIT PULL 15/21] virtio-md-pci: New parent type for virtio-mem-pci
+ and virtio-pmem-pci
+Date: Wed, 12 Jul 2023 10:17:44 +0200
+Message-ID: <20230712081750.80852-16-david@redhat.com>
 In-Reply-To: <20230712081750.80852-1-david@redhat.com>
 References: <20230712081750.80852-1-david@redhat.com>
 MIME-Version: 1.0
@@ -80,128 +81,266 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To achieve desired "x-ignore-shared" functionality, we should not
-discard all RAM when realizing the device and not mess with
-preallocation/postcopy when loading device state. In essence, we should
-not touch RAM content.
+Let's add a new abstract "virtio memory device" type, and use it as
+parent class of virtio-mem-pci and virtio-pmem-pci.
 
-As "x-ignore-shared" gets set after realizing the device, we cannot
-rely on that. Let's simply skip discarding of RAM on incoming migration.
-Note that virtio_mem_post_load() will call
-virtio_mem_restore_unplugged() -- unless "x-ignore-shared" is set. So
-once migration finished we'll have a consistent state.
-
-The initial system reset will also not discard any RAM, because
-virtio_mem_unplug_all() will not call virtio_mem_unplug_all() when no
-memory is plugged (which is the case before loading the device state).
-
-Note that something like VM templating -- see commit b17fbbe55cba
-("migration: allow private destination ram with x-ignore-shared") -- is
-currently incompatible with virtio-mem and ram_block_discard_range() will
-warn in case a private file mapping is supplied by virtio-mem.
-
-For VM templating with virtio-mem, it makes more sense to either
-(a) Create the template without the virtio-mem device and hotplug a
-    virtio-mem device to the new VM instances using proper own memory
-    backend.
-(b) Use a virtio-mem device that doesn't provide any memory in the
-    template (requested-size=0) and use private anonymous memory.
-
-Message-ID: <20230706075612.67404-5-david@redhat.com>
+Message-ID: <20230711153445.514112-2-david@redhat.com>
 Tested-by: Mario Casquero <mcasquer@redhat.com>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/virtio/virtio-mem.c | 47 ++++++++++++++++++++++++++++++++++--------
- 1 file changed, 38 insertions(+), 9 deletions(-)
+ MAINTAINERS                       |  6 ++++++
+ hw/virtio/Kconfig                 |  8 +++++--
+ hw/virtio/meson.build             |  1 +
+ hw/virtio/virtio-md-pci.c         | 33 +++++++++++++++++++++++++++++
+ hw/virtio/virtio-mem-pci.c        |  5 +----
+ hw/virtio/virtio-mem-pci.h        |  6 +++---
+ hw/virtio/virtio-pmem-pci.c       |  5 +----
+ hw/virtio/virtio-pmem-pci.h       |  6 +++---
+ include/hw/virtio/virtio-md-pci.h | 35 +++++++++++++++++++++++++++++++
+ 9 files changed, 89 insertions(+), 16 deletions(-)
+ create mode 100644 hw/virtio/virtio-md-pci.c
+ create mode 100644 include/hw/virtio/virtio-md-pci.h
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index a922c21380..3f41e00e74 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -18,6 +18,7 @@
- #include "sysemu/numa.h"
- #include "sysemu/sysemu.h"
- #include "sysemu/reset.h"
-+#include "sysemu/runstate.h"
- #include "hw/virtio/virtio.h"
- #include "hw/virtio/virtio-bus.h"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e158a25cfe..bb4626faf7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2229,6 +2229,12 @@ F: hw/virtio/virtio-crypto.c
+ F: hw/virtio/virtio-crypto-pci.c
+ F: include/hw/virtio/virtio-crypto.h
+ 
++virtio based memory device
++M: David Hildenbrand <david@redhat.com>
++S: Supported
++F: hw/virtio/virtio-md-pci.c
++F: include/hw/virtio/virtio-md-pci.h
++
+ virtio-mem
+ M: David Hildenbrand <david@redhat.com>
+ S: Supported
+diff --git a/hw/virtio/Kconfig b/hw/virtio/Kconfig
+index a9ee09062f..92c9cf6c96 100644
+--- a/hw/virtio/Kconfig
++++ b/hw/virtio/Kconfig
+@@ -35,6 +35,10 @@ config VIRTIO_CRYPTO
+     default y
+     depends on VIRTIO
+ 
++config VIRTIO_MD
++    bool
++    select MEM_DEVICE
++
+ config VIRTIO_PMEM_SUPPORTED
+     bool
+ 
+@@ -43,7 +47,7 @@ config VIRTIO_PMEM
+     default y
+     depends on VIRTIO
+     depends on VIRTIO_PMEM_SUPPORTED
+-    select MEM_DEVICE
++    select VIRTIO_MD
+ 
+ config VIRTIO_MEM_SUPPORTED
+     bool
+@@ -54,7 +58,7 @@ config VIRTIO_MEM
+     depends on VIRTIO
+     depends on LINUX
+     depends on VIRTIO_MEM_SUPPORTED
+-    select MEM_DEVICE
++    select VIRTIO_MD
+ 
+ config VHOST_VSOCK_COMMON
+     bool
+diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
+index c4f4fe05fa..13e7c6c272 100644
+--- a/hw/virtio/meson.build
++++ b/hw/virtio/meson.build
+@@ -63,6 +63,7 @@ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_PMEM', if_true: files('virtio-pmem-pci.c'
+ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu-pci.c'))
+ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MEM', if_true: files('virtio-mem-pci.c'))
+ virtio_pci_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev-pci.c'))
++virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MD', if_true: files('virtio-md-pci.c'))
+ 
+ specific_virtio_ss.add_all(when: 'CONFIG_VIRTIO_PCI', if_true: virtio_pci_ss)
+ 
+diff --git a/hw/virtio/virtio-md-pci.c b/hw/virtio/virtio-md-pci.c
+new file mode 100644
+index 0000000000..6b02ff908e
+--- /dev/null
++++ b/hw/virtio/virtio-md-pci.c
+@@ -0,0 +1,33 @@
++/*
++ * Abstract virtio based memory device
++ *
++ * Copyright (C) 2023 Red Hat, Inc.
++ *
++ * Authors:
++ *  David Hildenbrand <david@redhat.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "hw/virtio/virtio-md-pci.h"
++#include "hw/mem/memory-device.h"
++
++static const TypeInfo virtio_md_pci_info = {
++    .name = TYPE_VIRTIO_MD_PCI,
++    .parent = TYPE_VIRTIO_PCI,
++    .instance_size = sizeof(VirtIOMDPCI),
++    .class_size = sizeof(VirtIOMDPCIClass),
++    .abstract = true,
++    .interfaces = (InterfaceInfo[]) {
++        { TYPE_MEMORY_DEVICE },
++        { }
++    },
++};
++
++static void virtio_md_pci_register(void)
++{
++    type_register_static(&virtio_md_pci_info);
++}
++type_init(virtio_md_pci_register)
+diff --git a/hw/virtio/virtio-mem-pci.c b/hw/virtio/virtio-mem-pci.c
+index b85c12668d..2ef0f07630 100644
+--- a/hw/virtio/virtio-mem-pci.c
++++ b/hw/virtio/virtio-mem-pci.c
+@@ -142,14 +142,11 @@ static void virtio_mem_pci_instance_init(Object *obj)
+ 
+ static const VirtioPCIDeviceTypeInfo virtio_mem_pci_info = {
+     .base_name = TYPE_VIRTIO_MEM_PCI,
++    .parent = TYPE_VIRTIO_MD_PCI,
+     .generic_name = "virtio-mem-pci",
+     .instance_size = sizeof(VirtIOMEMPCI),
+     .instance_init = virtio_mem_pci_instance_init,
+     .class_init = virtio_mem_pci_class_init,
+-    .interfaces = (InterfaceInfo[]) {
+-        { TYPE_MEMORY_DEVICE },
+-        { }
+-    },
+ };
+ 
+ static void virtio_mem_pci_register_types(void)
+diff --git a/hw/virtio/virtio-mem-pci.h b/hw/virtio/virtio-mem-pci.h
+index e636e1a48d..c50b51d608 100644
+--- a/hw/virtio/virtio-mem-pci.h
++++ b/hw/virtio/virtio-mem-pci.h
+@@ -13,21 +13,21 @@
+ #ifndef QEMU_VIRTIO_MEM_PCI_H
+ #define QEMU_VIRTIO_MEM_PCI_H
+ 
+-#include "hw/virtio/virtio-pci.h"
++#include "hw/virtio/virtio-md-pci.h"
  #include "hw/virtio/virtio-mem.h"
-@@ -901,11 +902,23 @@ static void virtio_mem_device_realize(DeviceState *dev, Error **errp)
-         return;
-     }
+ #include "qom/object.h"
  
--    ret = ram_block_discard_range(rb, 0, qemu_ram_get_used_length(rb));
--    if (ret) {
--        error_setg_errno(errp, -ret, "Unexpected error discarding RAM");
--        ram_block_coordinated_discard_require(false);
--        return;
-+    /*
-+     * We don't know at this point whether shared RAM is migrated using
-+     * QEMU or migrated using the file content. "x-ignore-shared" will be
-+     * configured after realizing the device. So in case we have an
-+     * incoming migration, simply always skip the discard step.
-+     *
-+     * Otherwise, make sure that we start with a clean slate: either the
-+     * memory backend might get reused or the shared file might still have
-+     * memory allocated.
-+     */
-+    if (!runstate_check(RUN_STATE_INMIGRATE)) {
-+        ret = ram_block_discard_range(rb, 0, qemu_ram_get_used_length(rb));
-+        if (ret) {
-+            error_setg_errno(errp, -ret, "Unexpected error discarding RAM");
-+            ram_block_coordinated_discard_require(false);
-+            return;
-+        }
-     }
+ typedef struct VirtIOMEMPCI VirtIOMEMPCI;
  
-     virtio_mem_resize_usable_region(vmem, vmem->requested_size, true);
-@@ -977,10 +990,6 @@ static int virtio_mem_post_load(void *opaque, int version_id)
-     RamDiscardListener *rdl;
-     int ret;
+ /*
+- * virtio-mem-pci: This extends VirtioPCIProxy.
++ * virtio-mem-pci: This extends VirtIOMDPCI.
+  */
+ #define TYPE_VIRTIO_MEM_PCI "virtio-mem-pci-base"
+ DECLARE_INSTANCE_CHECKER(VirtIOMEMPCI, VIRTIO_MEM_PCI,
+                          TYPE_VIRTIO_MEM_PCI)
  
--    if (vmem->prealloc && !vmem->early_migration) {
--        warn_report("Proper preallocation with migration requires a newer QEMU machine");
--    }
--
-     /*
-      * We started out with all memory discarded and our memory region is mapped
-      * into an address space. Replay, now that we updated the bitmap.
-@@ -993,6 +1002,18 @@ static int virtio_mem_post_load(void *opaque, int version_id)
-         }
-     }
+ struct VirtIOMEMPCI {
+-    VirtIOPCIProxy parent_obj;
++    VirtIOMDPCI parent_obj;
+     VirtIOMEM vdev;
+     Notifier size_change_notifier;
+ };
+diff --git a/hw/virtio/virtio-pmem-pci.c b/hw/virtio/virtio-pmem-pci.c
+index 197d219204..cfe7f3b67c 100644
+--- a/hw/virtio/virtio-pmem-pci.c
++++ b/hw/virtio/virtio-pmem-pci.c
+@@ -110,13 +110,10 @@ static void virtio_pmem_pci_instance_init(Object *obj)
+ static const VirtioPCIDeviceTypeInfo virtio_pmem_pci_info = {
+     .base_name             = TYPE_VIRTIO_PMEM_PCI,
+     .generic_name          = "virtio-pmem-pci",
++    .parent                = TYPE_VIRTIO_MD_PCI,
+     .instance_size = sizeof(VirtIOPMEMPCI),
+     .instance_init = virtio_pmem_pci_instance_init,
+     .class_init    = virtio_pmem_pci_class_init,
+-    .interfaces = (InterfaceInfo[]) {
+-        { TYPE_MEMORY_DEVICE },
+-        { }
+-    },
+ };
  
-+    /*
-+     * If shared RAM is migrated using the file content and not using QEMU,
-+     * don't mess with preallocation and postcopy.
-+     */
-+    if (migrate_ram_is_ignored(vmem->memdev->mr.ram_block)) {
-+        return 0;
-+    }
+ static void virtio_pmem_pci_register_types(void)
+diff --git a/hw/virtio/virtio-pmem-pci.h b/hw/virtio/virtio-pmem-pci.h
+index 63cfe727f7..88b01ce2db 100644
+--- a/hw/virtio/virtio-pmem-pci.h
++++ b/hw/virtio/virtio-pmem-pci.h
+@@ -14,21 +14,21 @@
+ #ifndef QEMU_VIRTIO_PMEM_PCI_H
+ #define QEMU_VIRTIO_PMEM_PCI_H
+ 
+-#include "hw/virtio/virtio-pci.h"
++#include "hw/virtio/virtio-md-pci.h"
+ #include "hw/virtio/virtio-pmem.h"
+ #include "qom/object.h"
+ 
+ typedef struct VirtIOPMEMPCI VirtIOPMEMPCI;
+ 
+ /*
+- * virtio-pmem-pci: This extends VirtioPCIProxy.
++ * virtio-pmem-pci: This extends VirtIOMDPCI.
+  */
+ #define TYPE_VIRTIO_PMEM_PCI "virtio-pmem-pci-base"
+ DECLARE_INSTANCE_CHECKER(VirtIOPMEMPCI, VIRTIO_PMEM_PCI,
+                          TYPE_VIRTIO_PMEM_PCI)
+ 
+ struct VirtIOPMEMPCI {
+-    VirtIOPCIProxy parent_obj;
++    VirtIOMDPCI parent_obj;
+     VirtIOPMEM vdev;
+ };
+ 
+diff --git a/include/hw/virtio/virtio-md-pci.h b/include/hw/virtio/virtio-md-pci.h
+new file mode 100644
+index 0000000000..a241b54fcd
+--- /dev/null
++++ b/include/hw/virtio/virtio-md-pci.h
+@@ -0,0 +1,35 @@
++/*
++ * Abstract virtio based memory device
++ *
++ * Copyright (C) 2023 Red Hat, Inc.
++ *
++ * Authors:
++ *  David Hildenbrand <david@redhat.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2.
++ * See the COPYING file in the top-level directory.
++ */
 +
-+    if (vmem->prealloc && !vmem->early_migration) {
-+        warn_report("Proper preallocation with migration requires a newer QEMU machine");
-+    }
++#ifndef HW_VIRTIO_MD_PCI_H
++#define HW_VIRTIO_MD_PCI_H
 +
-     if (migration_in_incoming_postcopy()) {
-         return 0;
-     }
-@@ -1025,6 +1046,14 @@ static int virtio_mem_post_load_early(void *opaque, int version_id)
-         return 0;
-     }
- 
-+    /*
-+     * If shared RAM is migrated using the file content and not using QEMU,
-+     * don't mess with preallocation and postcopy.
-+     */
-+    if (migrate_ram_is_ignored(rb)) {
-+        return 0;
-+    }
++#include "hw/virtio/virtio-pci.h"
++#include "qom/object.h"
 +
-     /*
-      * We restored the bitmap and verified that the basic properties
-      * match on source and destination, so we can go ahead and preallocate
++/*
++ * virtio-md-pci: This extends VirtioPCIProxy.
++ */
++#define TYPE_VIRTIO_MD_PCI "virtio-md-pci"
++
++OBJECT_DECLARE_TYPE(VirtIOMDPCI, VirtIOMDPCIClass, VIRTIO_MD_PCI)
++
++struct VirtIOMDPCIClass {
++    /* private */
++    VirtioPCIClass parent;
++};
++
++struct VirtIOMDPCI {
++    VirtIOPCIProxy parent_obj;
++};
++
++#endif
 -- 
 2.41.0
 
