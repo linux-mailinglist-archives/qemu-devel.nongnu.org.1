@@ -2,84 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0D67529B6
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 19:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E55BC7529BB
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 19:20:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJzyD-0000RX-AP; Thu, 13 Jul 2023 13:19:13 -0400
+	id 1qJzzB-000169-Ct; Thu, 13 Jul 2023 13:20:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJzyB-0000RE-4C
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 13:19:11 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJzy8-0007e2-Ft
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 13:19:10 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4fc8049fd8bso1629178e87.2
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 10:19:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689268746; x=1691860746;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=mrhJp7tgiras5q9Lx+eXgQee4fQCartEnaD60a2vQoc=;
- b=S+wY3400znzrcVqxSMBs7m13MVmiKvLLeNHX6UyPK2ALX75gVWWVZJIVPdXN9RBJUz
- 5lCcwDREOfNZ7fR2AtG4mA6bJt2KybO85wfDS2v4wfoEUVxL11ctxNHPEaf8bneB3jpE
- C5DxUuLGKOitI8pTVGZfZLTqDLucXMMJWauEFJxdcGGIHA8eeMhBhfiC08qT96BbuB++
- ipd0RDVdO5vnRhzQoaLGsaM31K90OZlN/mgHlhb0vX3XyiD9H+A5sfMR81yA2ahMK5XK
- uj34+p6GkiwUmjPriWEMgob/eHwOAM0fV6bXC4CueoYuGSNtyiyeFgKO5TKPhkhp0zI5
- 9NVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689268746; x=1691860746;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=mrhJp7tgiras5q9Lx+eXgQee4fQCartEnaD60a2vQoc=;
- b=YyDqqpbZrXF6Rq9yF0WwVA/c/lYddRiiWCXt6Wk7/FbVL8OZ5b0q1Q0vX1XLGZ/p4i
- m4oB6/TsQpDAnh9bqhtz2vz8YwCNtI6agAEf+hR1fyu8Q8JqJGAoUDTDTIeLYYiCSVLn
- 2FmpNgI3cR3DmQPO2Q+4TSZZZODaXmaRWOpbpSsYHVqZqIhbyj/7SABhx3rNVEdtsWXF
- qqHdaSczfht8d6kELxLUGNRN6sz/T2asbH328mnzagWgaaRWJbgXjp3dSFTMfPnZ2kWU
- L4Xl3zbJGZbTEdLWUO8Z0iNB1Nir0FBXP51YcR6/mwbVTjjpO/xoAfBy7Nld6aSPYBol
- a3bA==
-X-Gm-Message-State: ABy/qLYK6CjC2/mfmEJdQeEhWhVXjIBGS6JdrBAe4DeBGLUmhckpw9kz
- NFz6j5bruqF9DiKXTplzC9Uv7bdM8w7zXjqg+2+Mng==
-X-Google-Smtp-Source: APBJJlGQsEQ4SEO/qOxEkpH8YnE+3e4amF2jcJORc/4P7KZ8TmeTbvwpv1Yn1BpLh50mYpUzqSXui2NNUMz080/9YO0=
-X-Received: by 2002:ac2:4f16:0:b0:4f8:4255:16ca with SMTP id
- k22-20020ac24f16000000b004f8425516camr3131393lfr.38.1689268746500; Thu, 13
- Jul 2023 10:19:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qJzz7-00015x-37
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 13:20:09 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qJzz2-0000cg-VE
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 13:20:08 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36DHGufN007298; Thu, 13 Jul 2023 17:20:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=tdluAVXHCJlCJkeR8dQRXgiBzr3/lgRWy5/MdhOVPN8=;
+ b=tKrWmZrzXs6Z30k3wGqBxqIyz1M60dlIXxl1OgnVpkzJpoqaBlhzi8du2QidX6Kt4b0u
+ BZXlJNfjvFUDFp+ctPw7wKh0RcSRTw9paaPvth7LOoX0NimWZBhJdb0gvMUu0tmsneoZ
+ Aa9brsC6/UcFL31FjDa2FvzsNyZipq5mhCV2kMnmaGaKPRRp0kuOZqZnNIdnchf0XxIU
+ 1odtZucKO0qv2K+ejOS7sphaILu0p/XaFbO8NAQolxUT2rIAbuUuEwllksDvj6ZdPkPe
+ Xo3KEX8INlDjS/tVowLaT9ILhnWyXMjvtdGPUHctscs04aedXhUkSHEFsSpv+mWbyBgP +g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtnhh81gn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 17:20:00 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36DHHaH7008854;
+ Thu, 13 Jul 2023 17:19:59 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtnhh81gf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 17:19:59 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36DDtqRi005046; Thu, 13 Jul 2023 17:19:59 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rqj4rrhwc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 17:19:59 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36DHJwtk35258712
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 13 Jul 2023 17:19:58 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0BB0858056;
+ Thu, 13 Jul 2023 17:19:58 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9769B58052;
+ Thu, 13 Jul 2023 17:19:57 +0000 (GMT)
+Received: from sbct-2.pok.ibm.com (unknown [9.47.158.152])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 13 Jul 2023 17:19:57 +0000 (GMT)
+From: Stefan Berger <stefanb@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, eric.auger@redhat.com,
+ ard.biesheuvel@linaro.org, j@getutm.app,
+ Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH] hw/tpm: TIS on sysbus: Remove unsupport ppi command line
+ option
+Date: Thu, 13 Jul 2023 13:19:55 -0400
+Message-ID: <20230713171955.149236-1-stefanb@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230713035232.48406-1-j@getutm.app>
- <20230713035232.48406-5-j@getutm.app>
- <4a49285e-0d91-93a0-2f8e-e76c71ed89f8@linux.ibm.com>
- <CAFEAcA-r_VOc18-jm99asYQQk4TJMBW_7oJMzFQofEHqVdF50A@mail.gmail.com>
- <ab339186-1af7-171c-eb11-fe124f12b4a2@linux.ibm.com>
- <CAFEAcA9nad4H3MgitMyVsZjNZdY-n9d65Yz4Gtbz2wPYA4fbsg@mail.gmail.com>
- <e2340c41-1d77-3406-001c-4dcce544af74@linux.ibm.com>
- <CAFEAcA-WtwcckNO=kDP8HbY53qV3mTtYysH2Lw8FSJsrWO2tdQ@mail.gmail.com>
- <afb324e8-d65a-12b3-e591-65133087689b@linux.ibm.com>
- <CAFEAcA9Z5wHRuMmeogoyrN=C4OtoKObxNu58nQaOXdYwzq_gpw@mail.gmail.com>
- <c5b44af5-e737-d899-5ea1-3d7debe760a4@linux.ibm.com>
-In-Reply-To: <c5b44af5-e737-d899-5ea1-3d7debe760a4@linux.ibm.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 13 Jul 2023 18:18:55 +0100
-Message-ID: <CAFEAcA-igpEHJOxw8mCV=em6FRUT8BuNRPCiVMvQ7moaasSmLw@mail.gmail.com>
-Subject: Re: [PATCH 04/11] tpm_crb: use a single read-as-mem/write-as-mmio
- mapping
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mdtZTzwZRhCNg3Lr9Yz85NH_tafOTe1Q
+X-Proofpoint-GUID: d4mIpyqdB_Ud8qk8LcziWqFhyj7USbKh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-13_06,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ suspectscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0 spamscore=0
+ mlxscore=0 clxscore=1011 malwarescore=0 phishscore=0 priorityscore=1501
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307130151
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,15 +112,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 13 Jul 2023 at 18:16, Stefan Berger <stefanb@linux.ibm.com> wrote:
-> I guess the first point would be to decide whether to support an i2c bus on the virt board and then whether we can use the aspeed bus that we know that the tpm_tis_i2c device model works with but we don't know how Windows may react to it.
->
-> It seems sysbus is already supported there so ... we may have a 'match'?
+The ppi command line option for the TIS device on sysbus never worked
+and caused an immediate segfault. Remove support for it since it also
+needs support in the firmware and needs testing inside the VM.
 
-You can use sysbus devices anywhere -- they're just
-"this is a memory mapped device". The question is whether
-we should, or whether an i2c controller is more like
-what the real world uses (and if so, what i2c controller).
+Reproducer with the ppi=on option passed:
 
--- PMM
+qemu-system-aarch64 \
+   -machine virt,gic-version=3 \
+   -m 4G  \
+   -nographic -no-acpi \
+   -chardev socket,id=chrtpm,path=/tmp/mytpm1/swtpm-sock \
+   -tpmdev emulator,id=tpm0,chardev=chrtpm \
+   -device tpm-tis-device,tpmdev=tpm0,ppi=on
+[...]
+Segmentation fault (core dumped)
+
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+---
+ hw/tpm/tpm_tis_sysbus.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/hw/tpm/tpm_tis_sysbus.c b/hw/tpm/tpm_tis_sysbus.c
+index 45e63efd63..6724b3d4f6 100644
+--- a/hw/tpm/tpm_tis_sysbus.c
++++ b/hw/tpm/tpm_tis_sysbus.c
+@@ -93,7 +93,6 @@ static void tpm_tis_sysbus_reset(DeviceState *dev)
+ static Property tpm_tis_sysbus_properties[] = {
+     DEFINE_PROP_UINT32("irq", TPMStateSysBus, state.irq_num, TPM_TIS_IRQ),
+     DEFINE_PROP_TPMBE("tpmdev", TPMStateSysBus, state.be_driver),
+-    DEFINE_PROP_BOOL("ppi", TPMStateSysBus, state.ppi_enabled, false),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+-- 
+2.41.0
+
 
