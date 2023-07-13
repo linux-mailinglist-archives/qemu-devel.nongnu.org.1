@@ -2,89 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7299E752170
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 14:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 383CB752171
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 14:45:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJvgA-0005vL-W4; Thu, 13 Jul 2023 08:44:19 -0400
+	id 1qJvgU-000608-Qd; Thu, 13 Jul 2023 08:44:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qJvg6-0005tO-6e
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 08:44:14 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qJvg3-0008UI-IA
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 08:44:13 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-4fba8f2197bso1182008e87.3
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 05:44:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689252249; x=1691844249;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=j88jH9gnh+BoCMNRYsnGWu2hi6OKAvAf3yG1Gh9uI1Q=;
- b=PXG7MhmPk3mqv7qN6ZPuwoRPldNNYTmwLU+sZRZYlnvWCe/ygsbJq88sY1unhn5VQy
- d0LmTtZ4DSvlKObCZwtGetyseBYmsOdxiIzAxrt/A+czjkOuJSfXxwvu6cT5jv3bEIEd
- HjN1siwgycJxLyY7BYfBo8A/RTlQZfgNdaw05s8Kb/qFHu2vmUPBpfYtrIgC9RIUH2++
- HAwqmWBwduJe6fLwGVnwtqsnsMZO5mKZFE2SPzAA+mRJxm/1JFwokKcU4LU+iezISYhH
- Y8eOr9moQGJ0rpC0dfcX7QrE0Lkw7vbbXf9do+B+1z+S65i6CaKEwfXJKTTZMRkrvjBh
- jZEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689252249; x=1691844249;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=j88jH9gnh+BoCMNRYsnGWu2hi6OKAvAf3yG1Gh9uI1Q=;
- b=VVnVjBlVjh6/BoCwZEz/bSBeR7jW2fMSwE2ziGtR2JItzg2eBLe3XYwk0OWfvSIsi9
- rWrlDNfbYBKnujc2X1Zc0mJzUKjjIui7AGc0zS9/d04mHLnb8RlnOadSda9Ztv8JII7I
- eFyOQtPWM7qkcjXLbQvl0PY29iSIRR6X5rCgKj0kxBHi+ApEY2x7FNXPJ7oOaAEzLBi1
- 1+d7yWxLsq6XIFWe2s8EYILo5EL15Nm75HFC1nRDfLLptbMmDo5UAML4M2QBxlpah2ZK
- 2jPVf4KbH6ROby4dpDkiJrLaq0vIEwFwhO2/poftePXl8gIce14gzme8nUOFH5O/HPVf
- NLPQ==
-X-Gm-Message-State: ABy/qLYY5Ju+IPc61yfMR09MbxW5UbFG+KcrayqKl+EbZ0jAP/Djz5Ws
- 6n3TKilRbmqzyQzEYzDRlHrzIw==
-X-Google-Smtp-Source: APBJJlF4eygHadEzoZQDGW+6559KZYdNnXLZH6W3YbpRJ4KifzeoE6Idtt/CvQ4g8L9sqJoVyr9SjA==
-X-Received: by 2002:ac2:58d1:0:b0:4fb:81f2:4228 with SMTP id
- u17-20020ac258d1000000b004fb81f24228mr997882lfo.31.1689252248986; 
- Thu, 13 Jul 2023 05:44:08 -0700 (PDT)
-Received: from [192.168.200.206] (83.21.150.147.ipv4.supernova.orange.pl.
- [83.21.150.147]) by smtp.gmail.com with ESMTPSA id
- x11-20020ac259cb000000b004fba5c20ab1sm1104826lfn.167.2023.07.13.05.44.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 05:44:08 -0700 (PDT)
-Message-ID: <2e1fbb6c-e7b4-df42-c64c-59de47f05981@linaro.org>
-Date: Thu, 13 Jul 2023 14:44:07 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qJvgQ-0005zw-4l
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 08:44:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qJvgO-00005J-Jo
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 08:44:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689252272;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z/+UnFbHqHWy1L8krN9R4YnEwm/b6aq2oDnvee89AU4=;
+ b=fVOBW83NnfpzogHVeO4AZ5l12UbCxe6SUcyhBR3fhtAQPuZkCFcErU3UI62JnWXTa9O3TJ
+ Snjd479VhI5zzIwVqeoQFWAImjZzd9nFDP8chmFhN+JQK5NqE/LMGoFCUHJ2DiuAvtXrOI
+ /yHKdUiY4MTfftAG+/f5EB6yNi2AsWU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-467-JXtJcl44MtaBhYWWLGAhxQ-1; Thu, 13 Jul 2023 08:44:30 -0400
+X-MC-Unique: JXtJcl44MtaBhYWWLGAhxQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 50654858290;
+ Thu, 13 Jul 2023 12:44:30 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.65])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2D00B492C13;
+ Thu, 13 Jul 2023 12:44:30 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1FDEB21E6A1F; Thu, 13 Jul 2023 14:44:29 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: ~hyman <hyman@git.sr.ht>
+Cc: qemu-devel <qemu-devel@nongnu.org>,  ~hyman <yong.huang@smartx.com>,
+ Peter Xu <peterx@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Juan
+ Quintela <quintela@redhat.com>,  "Dr. David Alan Gilbert"
+ <dgilbert@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
+ <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Richard
+ Henderson <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Dau?=
+ =?utf-8?Q?d=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH QEMU v8 4/9] migration: Introduce dirty-limit capability
+References: <168870305868.29142.5121604177475325995-4@git.sr.ht>
+Date: Thu, 13 Jul 2023 14:44:29 +0200
+In-Reply-To: <168870305868.29142.5121604177475325995-4@git.sr.ht>
+ (hyman@git.sr.ht's message of "Wed, 07 Jun 2023 23:30:50 +0800")
+Message-ID: <875y6oj80i.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 0/3] hw/arm/virt: Use generic CPU invalidation
-Content-Language: pl-PL, en-GB, en-HK
-To: Gavin Shan <gshan@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, pbonzini@redhat.com,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, shan.gavin@gmail.com
-References: <20230713054502.410911-1-gshan@redhat.com>
- <CAFEAcA8197FCwfNZrnxfO-87RveOko0Ju-KcTJOEi0vfjVtDKg@mail.gmail.com>
- <2d21e89f-c965-e8f1-3705-dfea8367fc7e@linaro.org>
- <3a392615-5aca-f384-197f-84beb3086a29@redhat.com>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <3a392615-5aca-f384-197f-84beb3086a29@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,32 +87,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 13.07.2023 o 14:34, Gavin Shan pisze:
-> On 7/13/23 21:52, Marcin Juszkiewicz wrote:
->> W dniu 13.07.2023 o 13:44, Peter Maydell pisze:
->> 
->>> I see this isn't a change in this patch, but given that what the 
->>> user specifies is not "cortex-a8-arm-cpu" but "cortex-a8", why
->>> do we include the "-arm-cpu" suffix in the error messages? It's
->>> not valid syntax to say "-cpu cortex-a8-arm-cpu", so it's a bit 
->>> misleading...
+~hyman <hyman@git.sr.ht> writes:
 
->> I like the change but it (IMHO) needs to cut "-{TYPE_*_CPU}"
->> string from names:
+> From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+>
+> Introduce migration dirty-limit capability, which can
+> be turned on before live migration and limit dirty
+> page rate durty live migration.
+>
+> Introduce migrate_dirty_limit function to help check
+> if dirty-limit capability enabled during live migration.
+>
+> Meanwhile, refactor vcpu_dirty_rate_stat_collect
+> so that period can be configured instead of hardcoded.
+>
+> dirty-limit capability is kind of like auto-converge
+> but using dirty limit instead of traditional cpu-throttle
+> to throttle guest down. To enable this feature, turn on
+> the dirty-limit capability before live migration using
+> migrate-set-capabilities, and set the parameters
+> "x-vcpu-dirty-limit-period", "vcpu-dirty-limit" suitably
+> to speed up convergence.
+>
+> Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> Acked-by: Peter Xu <peterx@redhat.com>
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-> Peter and Marcin, how about to split the CPU types to two fields, as 
-> below? In this way, the complete CPU type will be used for validation
-> and the 'internal' names will be used for the error messages.
+[...]
 
-Note that it should probably propagate to all architectures handled in 
-QEMU, not only Arm ones. I do not know which machines have list of 
-supported cpu types like arm/virt or arm/sbsa-ref ones.
->> I can change sbsa-ref to follow that change but let it be 
->> userfriendly.
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index e43371955a..031832cde5 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -497,6 +497,15 @@
+>  #     are present.  'return-path' capability must be enabled to use
+>  #     it.  (since 8.1)
+>  #
+> +# @dirty-limit: If enabled, migration will use the dirty-limit
+> +#     algorithm to throttle down guest instead of auto-converge
+> +#     algorithm. This algorithm only works when vCPU's dirtyrate
 
-> Yes, sbsa-ref needs an extra patch to use the generic invalidation.
-> I can add one patch on the top for that in next revision if you
-> agree, Marcin.
+Two spaces after sentence-ending punctuation, please.
 
-I am fine with it.
+"dirty rate" with a space, because that's how we spell it elsewhere.
+
+> +#     greater than 'vcpu-dirty-limit', read processes in guest os
+> +#     aren't penalized any more, so the algorithm can improve
+> +#     performance of vCPU during live migration. This is an optional
+> +#     performance feature and should not affect the correctness of the
+> +#     existing auto-converge algorithm. (since 8.1)
+> +#
+
+I'm still confused.
+
+The text suggests there are two separate algorithms "to throttle down
+guest": "auto converge" and "dirty limit", and we get to pick one.
+Correct?
+
+If it is correct, then the last sentence feels redundant: picking
+another algorithm can't affect the algorithm we're *not* using.  What
+are you trying to express here?
+
+When do we use "auto converge", and when do we use "dirty limit"?
+
+What does the user really need to know about these algorithms?  Enough
+to pick one, I guess.  That means advantages and disadvantages of the
+two algorithms.  Which are?
+
+>  # Features:
+>  #
+>  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+> @@ -512,7 +521,8 @@
+>             'dirty-bitmaps', 'postcopy-blocktime', 'late-block-activate',
+>             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+>             'validate-uuid', 'background-snapshot',
+> -           'zero-copy-send', 'postcopy-preempt', 'switchover-ack'] }
+> +           'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
+> +           'dirty-limit'] }
+>=20=20
+>  ##
+>  # @MigrationCapabilityStatus:
+
+[...]
+
 
