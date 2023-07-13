@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508DF752BEE
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 23:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4860A752BF1
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 23:17:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK3eO-0000Jw-9p; Thu, 13 Jul 2023 17:15:00 -0400
+	id 1qK3eO-0000Ju-8U; Thu, 13 Jul 2023 17:15:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qK3eI-0000I9-FO
+ id 1qK3eI-0000Ib-U9
  for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:14:54 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qK3eG-00017U-Pq
+ id 1qK3eH-00017Y-9c
  for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:14:54 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fbca8935bfso11255705e9.3
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3fbc63c2e84so9863475e9.3
  for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 14:14:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689282891; x=1691874891;
+ d=linaro.org; s=google; t=1689282892; x=1691874892;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/VchOJmp/PdkjGrWpO7FtoJjXcBbpTQPyllwuZ+9STU=;
- b=kQIxRxw+RpNmTfB3c1AJOyZkE7mchlHaPAT2bg6WzywfUo8ez/Yd7xbPK/RVIX57sH
- NJIme9uP6JJ7Crj2jt9tWtynUR0XvMF9szTlWYQ1HNLvadNUBlmf9aheVhCJwWpK0IMa
- JZ8ka0+8liKeZYqjQOYO0HRRPSFxosYlqD34hx4LpXsMKpF0AqwILFzVWeZgaKFJEYiT
- CTyrxJB66E49ypDteL2SDkN7vv5J/zVB7rM/lXH0C1IeKoemmJx+sY8y8E/j3JMCSyTv
- pO7sli3LScNCQ77N6oJd0zC69LRIyAOgJrXqCOfa9IBpLhMczH6ozD4+Lz2wVYiXrA2F
- Uozg==
+ bh=Fnmyc9DudD/G12QVt/hdI4bqnT7KT3GDxNaZP+FHbB4=;
+ b=ROlyrFZuJgP+QGcoz0Wqn0TvnKcKqg4P2HwOCGvUzbpwlwS+VAIhC0sH8CJyeSw2MH
+ EW4W7P6iFwgVadlbtoL+o2GSrLs7XSep3PQPRwAxtyS7f4Xyv/+w3BrNpbB29DTWqLMJ
+ 2sCzWtAyVcNkgHZTcs8uTCPUDvc9taur65X/o/Xz3sSte5R3f8qXTjbGFga9251n/y6l
+ hgOyUKE7NuPJeaZpNRw7m/RhUhS6R/P5JbrywP97QOgpZCJPWh4yPHNbE/zniuN8ss/i
+ Ro5zjycV6Vudwld7BT/7JA9lPylDxkqvaxEYSpX/kwE4KhEVWcS/iRKnQ+CDSD4jxZw+
+ UGqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689282891; x=1691874891;
+ d=1e100.net; s=20221208; t=1689282892; x=1691874892;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/VchOJmp/PdkjGrWpO7FtoJjXcBbpTQPyllwuZ+9STU=;
- b=eN2seIlvjbkXJhLlKbQnzTEsG3S4DmSedpzt5aEKqombqvDPtqcuLETK6HTMkIwV2i
- X1YHONrlZjNsa0NxHxj69BHSrWmuPEABd1CDI72ZUmiUtuyVOUbJuLZ5Jhw3Jyp6mdiu
- x2FiEosbt1Cb6QD76H8aP5GB0pWNY4EO1AdcD6J04L2U8Fe/HADTIjhSBL7ONaTX0GDF
- 1TYQTXlP0g0yrV4bkrw5Q9MrC+YBWDVgGRUsqLS5QJIwMjItaWRCLBKo8EuWJ4f5v3Nv
- nYSW33dH64ccQTND4q7LinORj8q+QnXBX5+ROg1/DhwGvQ4Aq7vEkei1Ai5Yv/X2V3XE
- S/OQ==
-X-Gm-Message-State: ABy/qLZ1PZzP5w4hq01twc9e4a5MkaLHod+AOBuUXUEIxcXNGX127k03
- kGEVXVEglDmuFce3rDP0Usq/D3dEXSPLRlYBxNW1vvBw
-X-Google-Smtp-Source: APBJJlHDEipIKDhO/g4zqlPkUSItrrOZYlvlAUFl5J5Eww8fSCdXruewHQZcuJwnzE9HfousdjqqOw==
-X-Received: by 2002:adf:ed4c:0:b0:313:f347:eea0 with SMTP id
- u12-20020adfed4c000000b00313f347eea0mr2351551wro.60.1689282891100; 
+ bh=Fnmyc9DudD/G12QVt/hdI4bqnT7KT3GDxNaZP+FHbB4=;
+ b=MhrXTeJoje/HjmVA3kSR2Z4TXF9T5Ywc7G1zKfT1bCRZDnMHogJ2MWXYnxLkwrpbXM
+ zlIzKU+4X7PheuSztEkSzxyqcRwCioBODbC02/TTPO4tyb/6GZfLn6/ETK6f4fBo2wni
+ Tv2g3Ietr9pHhU7Cs8T4bEklBjG7CWQhjVWzp/YRPAN+SVqq/B6mFkw1EPSQ9nu3kGRx
+ pIjxcw+JdSWdRy3EDWfYTEbcYCdQcC0+4M/1bP2EXgnlnzv6iGH24pza9J/mWvnJ5rWM
+ hEzy+84wWXcIX2fpoBJMmqQY/Bil16eMpcJd8VHxvDidY6F6mXRMVisBIt/G9kOFqytZ
+ zSZA==
+X-Gm-Message-State: ABy/qLYNYdrNsQU2oG79A7gQrLnZEejtbEVjdR4CxITAh7MTPyN2YFQL
+ IRkuIjbRJNtdUnOmJ5K3k0p4E80AYnnXj+QtKBPqxmtu
+X-Google-Smtp-Source: APBJJlG2U3Mldu2DVl9Zw400lCdchxL7QdXbl+wwOnLN8+cLNQMzccR87CL/lFdEpMBj7BaaV+4Iqg==
+X-Received: by 2002:a7b:ce0f:0:b0:3fa:964e:e85 with SMTP id
+ m15-20020a7bce0f000000b003fa964e0e85mr2810554wmc.5.1689282891832; 
  Thu, 13 Jul 2023 14:14:51 -0700 (PDT)
 Received: from stoup.. ([85.193.156.66]) by smtp.gmail.com with ESMTPSA id
- n12-20020adff08c000000b0030ada01ca78sm8973747wro.10.2023.07.13.14.14.50
+ n12-20020adff08c000000b0030ada01ca78sm8973747wro.10.2023.07.13.14.14.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jul 2023 14:14:50 -0700 (PDT)
+ Thu, 13 Jul 2023 14:14:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	ardb@kernel.org
-Subject: [PATCH 09/18] crypto: Add generic 32-bit carry-less multiply routines
-Date: Thu, 13 Jul 2023 22:14:26 +0100
-Message-Id: <20230713211435.13505-10-richard.henderson@linaro.org>
+Subject: [PATCH 10/18] target/arm: Use clmul_32* routines
+Date: Thu, 13 Jul 2023 22:14:27 +0100
+Message-Id: <20230713211435.13505-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230713211435.13505-1-richard.henderson@linaro.org>
 References: <20230713211435.13505-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,99 +91,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Use generic routines for 32-bit carry-less multiply.
+Remove our local version of pmull_d.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- host/include/generic/host/crypto/clmul.h |  4 +++
- include/crypto/clmul.h                   | 23 ++++++++++++++++++
- crypto/clmul.c                           | 31 ++++++++++++++++++++++++
- 3 files changed, 58 insertions(+)
+ target/arm/tcg/vec_helper.c | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
 
-diff --git a/host/include/generic/host/crypto/clmul.h b/host/include/generic/host/crypto/clmul.h
-index cba8bbf3e4..3fbb1576cf 100644
---- a/host/include/generic/host/crypto/clmul.h
-+++ b/host/include/generic/host/crypto/clmul.h
-@@ -19,4 +19,8 @@
- #define clmul_16x4_even         clmul_16x4_even_gen
- #define clmul_16x4_odd          clmul_16x4_odd_gen
- 
-+#define clmul_32                clmul_32_gen
-+#define clmul_32x2_even         clmul_32x2_even_gen
-+#define clmul_32x2_odd          clmul_32x2_odd_gen
-+
- #endif /* GENERIC_HOST_CRYPTO_CLMUL_H */
-diff --git a/include/crypto/clmul.h b/include/crypto/clmul.h
-index b701bac9d6..ce43c9aeb1 100644
---- a/include/crypto/clmul.h
-+++ b/include/crypto/clmul.h
-@@ -88,6 +88,29 @@ Int128 clmul_16x4_even_gen(Int128, Int128);
-  */
- Int128 clmul_16x4_odd_gen(Int128, Int128);
- 
-+/**
-+ * clmul_32:
-+ *
-+ * Perform a 32x32->64 carry-less multiply.
-+ */
-+uint64_t clmul_32_gen(uint32_t, uint32_t);
-+
-+/**
-+ * clmul_32x2_even:
-+ *
-+ * Perform two 32x32->64 carry-less multiplies.
-+ * The odd words of the inputs are ignored.
-+ */
-+Int128 clmul_32x2_even_gen(Int128, Int128);
-+
-+/**
-+ * clmul_32x2_odd:
-+ *
-+ * Perform two 32x32->64 carry-less multiplies.
-+ * The even words of the inputs are ignored.
-+ */
-+Int128 clmul_32x2_odd_gen(Int128, Int128);
-+
- #include "host/crypto/clmul.h"
- 
- #endif /* CRYPTO_CLMUL_H */
-diff --git a/crypto/clmul.c b/crypto/clmul.c
-index 69a3b6f7ff..c197cd5f21 100644
---- a/crypto/clmul.c
-+++ b/crypto/clmul.c
-@@ -113,3 +113,34 @@ Int128 clmul_16x4_odd_gen(Int128 n, Int128 m)
-     rh = clmul_16x2_odd_gen(int128_gethi(n), int128_gethi(m));
-     return int128_make128(rl, rh);
+diff --git a/target/arm/tcg/vec_helper.c b/target/arm/tcg/vec_helper.c
+index 1b1d5fccbc..c81447e674 100644
+--- a/target/arm/tcg/vec_helper.c
++++ b/target/arm/tcg/vec_helper.c
+@@ -2057,18 +2057,6 @@ void HELPER(sve2_pmull_h)(void *vd, void *vn, void *vm, uint32_t desc)
+     }
  }
-+
-+uint64_t clmul_32_gen(uint32_t n, uint32_t m32)
-+{
-+    uint64_t r = 0;
-+    uint64_t m = m32;
-+
-+    for (int i = 0; i < 32; ++i) {
-+        r ^= n & 1 ? m : 0;
-+        n >>= 1;
-+        m <<= 1;
-+    }
-+    return r;
-+}
-+
-+Int128 clmul_32x2_even_gen(Int128 n, Int128 m)
-+{
-+    uint64_t rl, rh;
-+
-+    rl = clmul_32_gen(int128_getlo(n), int128_getlo(m));
-+    rh = clmul_32_gen(int128_gethi(n), int128_gethi(m));
-+    return int128_make128(rl, rh);
-+}
-+
-+Int128 clmul_32x2_odd_gen(Int128 n, Int128 m)
-+{
-+    uint64_t rl, rh;
-+
-+    rl = clmul_32_gen(int128_getlo(n) >> 32, int128_getlo(m) >> 32);
-+    rh = clmul_32_gen(int128_gethi(n) >> 32, int128_gethi(m) >> 32);
-+    return int128_make128(rl, rh);
-+}
+ 
+-static uint64_t pmull_d(uint64_t op1, uint64_t op2)
+-{
+-    uint64_t result = 0;
+-    int i;
+-
+-    for (i = 0; i < 32; ++i) {
+-        uint64_t mask = -((op1 >> i) & 1);
+-        result ^= (op2 << i) & mask;
+-    }
+-    return result;
+-}
+-
+ void HELPER(sve2_pmull_d)(void *vd, void *vn, void *vm, uint32_t desc)
+ {
+     intptr_t sel = H4(simd_data(desc));
+@@ -2077,7 +2065,7 @@ void HELPER(sve2_pmull_d)(void *vd, void *vn, void *vm, uint32_t desc)
+     uint64_t *d = vd;
+ 
+     for (i = 0; i < opr_sz / 8; ++i) {
+-        d[i] = pmull_d(n[2 * i + sel], m[2 * i + sel]);
++        d[i] = clmul_32(n[2 * i + sel], m[2 * i + sel]);
+     }
+ }
+ #endif
 -- 
 2.34.1
 
