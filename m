@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A1C752BE7
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 23:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11927752C00
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 23:18:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK3eC-0000H0-1C; Thu, 13 Jul 2023 17:14:48 -0400
+	id 1qK3eZ-0000PW-PX; Thu, 13 Jul 2023 17:15:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qK3eA-0000Go-B8
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:14:46 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1qK3eK-0000JL-Q7
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:14:56 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qK3e8-00015j-DR
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:14:46 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-315adee6ac8so1320124f8f.2
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 14:14:43 -0700 (PDT)
+ id 1qK3eA-00015n-Ee
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:14:56 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-314172bac25so1314823f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 14:14:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689282882; x=1691874882;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=d+9R5NyTIFI6KqlmcxMZxFnF7d0GQBj40E/YXtuiUsM=;
- b=Q3+N6eTPU0sbzDAT8CwABIMU8zq+USkeQhxnHUe4WMVd9YzJmoExPWZ+ZDda8QxBra
- aNdXSiEB6ew3ilYnuYi1YBtte9S+tlFi4vknh4zjI2Pyg28k1OzYCmxyx0q2ovnnLf6V
- GAL1CUMrammiXqEGk9AAZ/Imu5ldIu0itLHK9f2J6P8XcKb9bQ87uFDWyccXPcXuSemS
- 1iv6QhJwtB6O2GJbizFgBw/Z3IgNVtQ8auRVfzHiryA0peh1fopGWv6yPCNgV1Z04Pkf
- DF5RceSqwUoJ6hVeVlxLqgkxJgDjh602zyKGPnQYkxop9Iwnks357NRj8/gHqoASqKua
- UfKg==
+ d=linaro.org; s=google; t=1689282883; x=1691874883;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=l0ncNfWBAGzw2Z/9Y0q3EwyOwTxxOZI+c9r6426RCJU=;
+ b=BsC33UBaPd62v8wYZAzibIOrEqPjHaemGFzIHaluNLbbFA7PoVDhbQLxiIoP4ZKeGN
+ a5d+shms0krmastJj2MsGiqJccH64HeMgkmg/r/L4o/cysFOuDS3DiSXy/l5IAIbKCEc
+ c7elm1Z0+GXa43d6h+j9DTHCTX0Hp8NGgXAS1G91HaCVs6jpBE6n6j1LNRnPs0DNFxV2
+ eDgobUC7ePWtXLhgyPwcimFTBPSgs56NOQ7WcClekv+EybQsRZ8AJ9gdkDRJevUqgMqZ
+ qFzvMQDPIESuLqs12gjxMRCe/os6+Zf6TvfftQwB0kGNwFxN8pVNuPPfZgZP3MLdKXkn
+ TRmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689282882; x=1691874882;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=d+9R5NyTIFI6KqlmcxMZxFnF7d0GQBj40E/YXtuiUsM=;
- b=DfeK/aCdgLQ4DA/Ms1ROBO6s7/AGah/5nVz1Z80oUWIxYSrNYQhhd71HhJ18UyBH1o
- Ib58Xq5Iz6RjoIE1HztDHNBL5Emfc/26uPLCNJJVLCObI8S9OVYu3Gt+VG9xF+pZWXqy
- fpLblZX/xlL7YBYurJ81+uc7cVdzMS8HRvoq3xXx7mdu2EcITGm/Ggl32hVokvo1HZV4
- 1433wrJrY3lxsGzxTmA8ezDoBlSK1zYXrd3/j+gF4CVzvO2JSpWnynB8I/rBjSnb7c3J
- wq36MAfmLutLtCXB+iCFQVMOyrD8piG8kfOruanluGhDIwmYEs5cahKJSwbvfJIu9Sb3
- YQ3Q==
-X-Gm-Message-State: ABy/qLbnHU55VwPX0zDT9nQ5/1CxhbEsxcG+uTJ+zUWhds9N8BXov/Ai
- pI7BzQC7uJKHDTG57NTVmIxLlvfhgNz4IV9mePuGb6CW
-X-Google-Smtp-Source: APBJJlHb5et0L9wVfG8B8KVUr/QKPTnzZQ2l9fd0hBUHobpgp0FhCHzWYGqx1YC/P5q+6c/pmTXsqw==
-X-Received: by 2002:a5d:5304:0:b0:314:de6:3200 with SMTP id
- e4-20020a5d5304000000b003140de63200mr2577210wrv.41.1689282882101; 
- Thu, 13 Jul 2023 14:14:42 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689282883; x=1691874883;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=l0ncNfWBAGzw2Z/9Y0q3EwyOwTxxOZI+c9r6426RCJU=;
+ b=ZJSbULchtjy0ow+2aqVNRlaWAXlJ7NUyUSyyNmPxTHfRfdgBrmy0JEVMs+0vl69uBo
+ quAI5grjm+4uPM4h+0aH1yEJleiIelQb2Jl9aeqOcrR6zaNA1/cEmbu740g35DxC1lx9
+ GMxmW2W8Bo7kaEwRnTzR5xD5zjRl30LAYpKqgqLd03rbpcSx/jEjyKm8oYnX0TeXb6zg
+ dphxSxhL9tvZCjWVvcJiY0G9tRw9ANXeLLdFry1zcLYhKnVE/7W9bbXD4ZqlIZNGkqeX
+ TsoMevdwHNjsztIrs6hdDIbVCnwtBbA59zghXOWMFdmGRM5rYvXrLy+p1q605qrNi6/P
+ 9EZg==
+X-Gm-Message-State: ABy/qLYNRryCFC9prB87Hf8vsl0FOJhqpNb0/8ZBwOmZKwEMfUjWJIk5
+ yP49UvXN2XxOIqHTlg6DQkjcy4UuJhmsdfjOQPWGFXJb
+X-Google-Smtp-Source: APBJJlHVgKXQalPDHUCiHqcn/EPZ6vm60u4xcvs0eQ/UvqiYbDqe6q9RwQ7zKR5lo7VqqYI3NPvPmA==
+X-Received: by 2002:adf:ecc9:0:b0:314:182a:3d96 with SMTP id
+ s9-20020adfecc9000000b00314182a3d96mr2662392wro.28.1689282883414; 
+ Thu, 13 Jul 2023 14:14:43 -0700 (PDT)
 Received: from stoup.. ([85.193.156.66]) by smtp.gmail.com with ESMTPSA id
- n12-20020adff08c000000b0030ada01ca78sm8973747wro.10.2023.07.13.14.14.41
+ n12-20020adff08c000000b0030ada01ca78sm8973747wro.10.2023.07.13.14.14.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jul 2023 14:14:41 -0700 (PDT)
+ Thu, 13 Jul 2023 14:14:43 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	ardb@kernel.org
-Subject: [RFC PATCH for-8.2 00/18] crypto: Provide clmul.h and host accel
-Date: Thu, 13 Jul 2023 22:14:17 +0100
-Message-Id: <20230713211435.13505-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/18] crypto: Add generic 8-bit carry-less multiply routines
+Date: Thu, 13 Jul 2023 22:14:18 +0100
+Message-Id: <20230713211435.13505-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230713211435.13505-1-richard.henderson@linaro.org>
+References: <20230713211435.13505-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,78 +91,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Inspired by Ard Biesheuvel's RFC patches [1] for accelerating
-carry-less multiply under emulation.
-
-This is less polished than the AES patch set:
-
-(1) Should I split HAVE_CLMUL_ACCEL into per-width HAVE_CLMUL{N}_ACCEL?
-    The "_generic" and "_accel" split is different from aes-round.h
-    because of the difference in support for different widths, and it
-    means that each host accel has more boilerplate.
-
-(2) Should I bother trying to accelerate anything other than 64x64->128?
-    That seems to be the one that GSM really wants anyway.  I'd keep all
-    of the sizes implemented generically, since that centralizes the 3
-    target implementations.
-
-(3) The use of Int128 isn't fantastic -- better would be a vector type,
-    though that has its own special problems for ppc64le (see the
-    endianness hoops within aes-round.h).  Perhaps leave things in
-    env memory, like I was mostly able to do with AES?
-
-(4) No guest test case(s).
-
-
-r~
-
-
-[1] https://patchew.org/QEMU/20230601123332.3297404-1-ardb@kernel.org/
-
-Richard Henderson (18):
-  crypto: Add generic 8-bit carry-less multiply routines
-  target/arm: Use clmul_8* routines
-  target/s390x: Use clmul_8* routines
-  target/ppc: Use clmul_8* routines
-  crypto: Add generic 16-bit carry-less multiply routines
-  target/arm: Use clmul_16* routines
-  target/s390x: Use clmul_16* routines
-  target/ppc: Use clmul_16* routines
-  crypto: Add generic 32-bit carry-less multiply routines
-  target/arm: Use clmul_32* routines
-  target/s390x: Use clmul_32* routines
-  target/ppc: Use clmul_32* routines
-  crypto: Add generic 64-bit carry-less multiply routine
-  target/arm: Use clmul_64
-  target/s390x: Use clmul_64
-  target/ppc: Use clmul_64
-  host/include/i386: Implement clmul.h
-  host/include/aarch64: Implement clmul.h
-
- host/include/aarch64/host/cpuinfo.h      |   1 +
- host/include/aarch64/host/crypto/clmul.h | 230 +++++++++++++++++++++++
- host/include/generic/host/crypto/clmul.h |  28 +++
- host/include/i386/host/cpuinfo.h         |   1 +
- host/include/i386/host/crypto/clmul.h    | 187 ++++++++++++++++++
- host/include/x86_64/host/crypto/clmul.h  |   1 +
- include/crypto/clmul.h                   | 123 ++++++++++++
- target/arm/tcg/vec_internal.h            |  11 --
- crypto/clmul.c                           | 163 ++++++++++++++++
- target/arm/tcg/mve_helper.c              |  16 +-
- target/arm/tcg/vec_helper.c              | 112 ++---------
- target/ppc/int_helper.c                  |  63 +++----
- target/s390x/tcg/vec_int_helper.c        | 175 +++++++----------
- util/cpuinfo-aarch64.c                   |   4 +-
- util/cpuinfo-i386.c                      |   1 +
- crypto/meson.build                       |   9 +-
- 16 files changed, 865 insertions(+), 260 deletions(-)
- create mode 100644 host/include/aarch64/host/crypto/clmul.h
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ host/include/generic/host/crypto/clmul.h | 17 ++++++
+ include/crypto/clmul.h                   | 61 +++++++++++++++++++
+ crypto/clmul.c                           | 76 ++++++++++++++++++++++++
+ crypto/meson.build                       |  9 ++-
+ 4 files changed, 160 insertions(+), 3 deletions(-)
  create mode 100644 host/include/generic/host/crypto/clmul.h
- create mode 100644 host/include/i386/host/crypto/clmul.h
- create mode 100644 host/include/x86_64/host/crypto/clmul.h
  create mode 100644 include/crypto/clmul.h
  create mode 100644 crypto/clmul.c
 
+diff --git a/host/include/generic/host/crypto/clmul.h b/host/include/generic/host/crypto/clmul.h
+new file mode 100644
+index 0000000000..694705f703
+--- /dev/null
++++ b/host/include/generic/host/crypto/clmul.h
+@@ -0,0 +1,17 @@
++/*
++ * No host specific carry-less multiply acceleration.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#ifndef GENERIC_HOST_CRYPTO_CLMUL_H
++#define GENERIC_HOST_CRYPTO_CLMUL_H
++
++/* Defer everything to the generic routines. */
++#define clmul_8x8_low           clmul_8x8_low_gen
++#define clmul_8x4_even          clmul_8x4_even_gen
++#define clmul_8x4_odd           clmul_8x4_odd_gen
++#define clmul_8x8_even          clmul_8x8_even_gen
++#define clmul_8x8_odd           clmul_8x8_odd_gen
++#define clmul_8x8_packed        clmul_8x8_packed_gen
++
++#endif /* GENERIC_HOST_CRYPTO_CLMUL_H */
+diff --git a/include/crypto/clmul.h b/include/crypto/clmul.h
+new file mode 100644
+index 0000000000..7f19205d6f
+--- /dev/null
++++ b/include/crypto/clmul.h
+@@ -0,0 +1,61 @@
++/*
++ * Carry-less multiply
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Copyright (C) 2023 Linaro, Ltd.
++ */
++
++#ifndef CRYPTO_CLMUL_H
++#define CRYPTO_CLMUL_H
++
++#include "qemu/int128.h"
++
++/**
++ * clmul_8x8_low:
++ *
++ * Perform eight 8x8->8 carry-less multiplies.
++ */
++uint64_t clmul_8x8_low_gen(uint64_t, uint64_t);
++
++/**
++ * clmul_8x4_even:
++ *
++ * Perform four 8x8->16 carry-less multiplies.
++ * The odd bytes of the inputs are ignored.
++ */
++uint64_t clmul_8x4_even_gen(uint64_t, uint64_t);
++
++/**
++ * clmul_8x4_odd:
++ *
++ * Perform four 8x8->16 carry-less multiplies.
++ * The even bytes of the inputs are ignored.
++ */
++uint64_t clmul_8x4_odd_gen(uint64_t, uint64_t);
++
++/**
++ * clmul_8x8_even:
++ *
++ * Perform eight 8x8->16 carry-less multiplies.
++ * The odd bytes of the inputs are ignored.
++ */
++Int128 clmul_8x8_even_gen(Int128, Int128);
++
++/**
++ * clmul_8x8_odd:
++ *
++ * Perform eight 8x8->16 carry-less multiplies.
++ * The even bytes of the inputs are ignored.
++ */
++Int128 clmul_8x8_odd_gen(Int128, Int128);
++
++/**
++ * clmul_8x8_packed:
++ *
++ * Perform eight 8x8->16 carry-less multiplies.
++ */
++Int128 clmul_8x8_packed_gen(uint64_t, uint64_t);
++
++#include "host/crypto/clmul.h"
++
++#endif /* CRYPTO_CLMUL_H */
+diff --git a/crypto/clmul.c b/crypto/clmul.c
+new file mode 100644
+index 0000000000..866704e751
+--- /dev/null
++++ b/crypto/clmul.c
+@@ -0,0 +1,76 @@
++/*
++ * No host specific carry-less multiply acceleration.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "crypto/clmul.h"
++
++uint64_t clmul_8x8_low_gen(uint64_t n, uint64_t m)
++{
++    uint64_t r = 0;
++
++    for (int i = 0; i < 8; ++i) {
++        uint64_t mask = (n & 0x0101010101010101ull) * 0xff;
++        r ^= m & mask;
++        m = (m << 1) & 0xfefefefefefefefeull;
++        n >>= 1;
++    }
++    return r;
++}
++
++uint64_t clmul_8x4_even_gen(uint64_t n, uint64_t m)
++{
++    uint64_t r = 0;
++
++    n &= 0x00ff00ff00ff00ffull;
++    m &= 0x00ff00ff00ff00ffull;
++
++    for (int i = 0; i < 8; ++i) {
++        uint64_t mask = (n & 0x0001000100010001ull) * 0xffff;
++        r ^= m & mask;
++        n >>= 1;
++        m <<= 1;
++    }
++    return r;
++}
++
++uint64_t clmul_8x4_odd_gen(uint64_t n, uint64_t m)
++{
++    return clmul_8x4_even_gen(n >> 8, m >> 8);
++}
++
++Int128 clmul_8x8_even_gen(Int128 n, Int128 m)
++{
++    uint64_t rl, rh;
++
++    rl = clmul_8x4_even_gen(int128_getlo(n), int128_getlo(m));
++    rh = clmul_8x4_even_gen(int128_gethi(n), int128_gethi(m));
++    return int128_make128(rl, rh);
++}
++
++Int128 clmul_8x8_odd_gen(Int128 n, Int128 m)
++{
++    uint64_t rl, rh;
++
++    rl = clmul_8x4_odd_gen(int128_getlo(n), int128_getlo(m));
++    rh = clmul_8x4_odd_gen(int128_gethi(n), int128_gethi(m));
++    return int128_make128(rl, rh);
++}
++
++static uint64_t unpack_8_to_16(uint64_t x)
++{
++    return  (x & 0x000000ff)
++         | ((x & 0x0000ff00) << 8)
++         | ((x & 0x00ff0000) << 16)
++         | ((x & 0xff000000) << 24);
++}
++
++Int128 clmul_8x8_packed_gen(uint64_t n, uint64_t m)
++{
++    uint64_t rl, rh;
++
++    rl = clmul_8x4_even_gen(unpack_8_to_16(n), unpack_8_to_16(m));
++    rh = clmul_8x4_even_gen(unpack_8_to_16(n >> 32), unpack_8_to_16(m >> 32));
++    return int128_make128(rl, rh);
++}
+diff --git a/crypto/meson.build b/crypto/meson.build
+index 5f03a30d34..9ac1a89802 100644
+--- a/crypto/meson.build
++++ b/crypto/meson.build
+@@ -48,9 +48,12 @@ if have_afalg
+ endif
+ crypto_ss.add(when: gnutls, if_true: files('tls-cipher-suites.c'))
+ 
+-util_ss.add(files('sm4.c'))
+-util_ss.add(files('aes.c'))
+-util_ss.add(files('init.c'))
++util_ss.add(files(
++  'aes.c',
++  'clmul.c',
++  'init.c',
++  'sm4.c',
++))
+ if gnutls.found()
+   util_ss.add(gnutls)
+ endif
 -- 
 2.34.1
 
