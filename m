@@ -2,109 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3FC752752
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 17:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C40752729
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 17:33:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJyKw-0006h7-4Q; Thu, 13 Jul 2023 11:34:34 -0400
+	id 1qJyId-0005hD-5y; Thu, 13 Jul 2023 11:32:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qJyKt-0006gX-00
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:34:31 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qJyKq-0003bB-T6
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:34:30 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36DFYGA8016621; Thu, 13 Jul 2023 15:34:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=k6nSgXK+l51J4V3dyAWwJZ92tLbuRPZdItpyGW2PAxA=;
- b=nVY+qqFEdNrIoc7r1oXxAefJcJtfXSkAeJw75iz9Ibpt1Ry6nuHGRPk3ChgeymjEGXQz
- KKhsPjYE2AkZkCxhOG+0kH9EivT9+qq5p6GSccGdHef9QQ0O0kPynTLxxu42n8X+P2r0
- yrRnRpT0YPp1k2OJiHtgTRMk00sANsu68OvrvPVL9UjUL/BWMWafCCrfYAzTy5Y4YfbV
- GXGe40P1CqfHddOqV85CQ5GzZtWZ9Nu2Z1MEDM0MFj5qi5BK8Mq7WlLrNW2KNyDQoxBr
- 9V68uRu3zlV2ZgA4jQ/uONEXdK0KQUOsLXm26PBNuiwn3COzJ+ymep5fj/FYQ3ll8D8r 7g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtkse8csk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 15:34:23 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36DFIjAa001836;
- Thu, 13 Jul 2023 15:34:21 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtkse8brr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 15:34:21 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36DDujrR005820; Thu, 13 Jul 2023 15:31:26 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rqj4rr8hc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 15:31:26 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36DFVPZ936438520
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Jul 2023 15:31:25 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8721658043;
- Thu, 13 Jul 2023 15:31:25 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 030CD58055;
- Thu, 13 Jul 2023 15:31:25 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 13 Jul 2023 15:31:24 +0000 (GMT)
-Message-ID: <8c5e1d5b-16be-e391-11d1-b4272cd8a69d@linux.ibm.com>
-Date: Thu, 13 Jul 2023 11:31:24 -0400
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qJyIU-0005ft-H8
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:32:02 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qJyIS-0002dP-Sb
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:32:02 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4f96d680399so1462756e87.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 08:31:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689262318; x=1691854318;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=XmtRfAaCOEvHnZJlQJO9UyKPNDs6p09uMlOOyI7uQBk=;
+ b=c3L2j7z9Nk8a+4RupE7dqWGo3JoNChMcfhVHvmSkk6PNIuSPDgKQrRQEwV/AwgJEbC
+ /uxUf/LZ0j/H0yiPcplLaNcGioSZYH01ZEqxHj590HZTPfJztKZ4ieN219tIz8Lcc8YM
+ YVtmGnU3F3QT4/4fttbdzew2nQprjBmOVeuV0L8CgSzV6KbZAjeW8drXL4ZGtt/tJNZC
+ NlhWXGubgE6hHvcb23ILbn39ZSh2SC8NB3Oeywh1JTPq0VeGECl0y1Aja4Udp7bgTWer
+ LJoEBXtrFlVEJ0px0r/EJ7LUKRl9vmdj4YgoDDtVf0EmhwLQsJITbyzMpKPlDTBtjcc8
+ mkcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689262318; x=1691854318;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XmtRfAaCOEvHnZJlQJO9UyKPNDs6p09uMlOOyI7uQBk=;
+ b=Y3dUetYbt1nP23qhl2rRcKVEYt5FFkPhRmZNK4bMTACRMNMRPtwFqCGddoKbkr+cQc
+ EyY5qcSjtPgiUw1VJJI64jPzu2Guh2ITC0kFhyMwK9UC+s3Hftt8z9uB2GYo3vEV9JXG
+ oAL6Tnzky3ldz7H+lddYHBbF3k/sYULrY2WEThKQV4RHc61gT3+8RboarRNUhrs3wRxZ
+ 1IsgjeUZlnyb5Juo910164TIdKRXF6C+UfuPnApXqUyyRmJnnoQAHM7EiF4JdFOybalu
+ SJasffSYxadNthr7t9ywjMJ6fGTCauH3nmXayfqFjxlr9b9RTRFuvHJtNXTb5C9fNc4v
+ iimQ==
+X-Gm-Message-State: ABy/qLYOYIFZAJ8Vm/ta3UmFDAPnHwEuIiM0pRcek5YWrZdAPnum86gr
+ DkWvWSesrHlUIEf0wrxiCCLeQ19qhuvYRNWKStMu0g==
+X-Google-Smtp-Source: APBJJlEIjEIXLZb5+XdqoUoCNdp+yMclNJ8ZsrRgEaZX8dfFq3p9BO25fkbfJzn7PLth/RyIUGHCqWqzGjZY42e6XiY=
+X-Received: by 2002:a05:6512:53b:b0:4fb:89bb:bcc5 with SMTP id
+ o27-20020a056512053b00b004fb89bbbcc5mr1659168lfc.50.1689262318116; Thu, 13
+ Jul 2023 08:31:58 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 02/11] tpm_crb: CTRL_RSP_ADDR is 64-bits wide
-Content-Language: en-US
-To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
-Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
 References: <20230713035232.48406-1-j@getutm.app>
- <20230713035232.48406-3-j@getutm.app>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20230713035232.48406-3-j@getutm.app>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: uhRBg2JpueyF5B1g_3VZ-Ja6w_jBUE88
-X-Proofpoint-ORIG-GUID: xUxeXOOqXVnR7u-Ip7ryuJQovbE2sUfB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-13_06,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0
- mlxscore=0 adultscore=0 suspectscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 clxscore=1015 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307130132
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ <20230713035232.48406-8-j@getutm.app>
+In-Reply-To: <20230713035232.48406-8-j@getutm.app>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 13 Jul 2023 16:31:47 +0100
+Message-ID: <CAFEAcA_hKao=-kadeKjZMGOugtSGLHzhzTLiva5aZP7PHQN3xQ@mail.gmail.com>
+Subject: Re: [PATCH 07/11] hw/arm/virt: add plug handler for TPM on SysBus
+To: Joelle van Dyne <j@getutm.app>
+Cc: qemu-devel@nongnu.org, "open list:Virt" <qemu-arm@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,81 +85,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 7/12/23 23:51, Joelle van Dyne wrote:
-> The register is actually 64-bits but in order to make this more clear
-> than the specification, we define two 32-bit registers:
-> CTRL_RSP_LADDR and CTRL_RSP_HADDR to match the CTRL_CMD_* naming. This
-> deviates from the specs but is way more clear.
-> 
-> Previously, the only CRB device uses a fixed system address so this
-> was not an issue. However, once we support SysBus CRB device, the
-> address can be anywhere in 64-bit space.
-> 
+On Thu, 13 Jul 2023 at 04:52, Joelle van Dyne <j@getutm.app> wrote:
+>
+> TPM needs to know its own base address in order to generate its DSDT
+> device entry.
+>
 > Signed-off-by: Joelle van Dyne <j@getutm.app>
-
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-
 > ---
->   include/hw/acpi/tpm.h      | 3 ++-
->   hw/tpm/tpm_crb_common.c    | 3 ++-
->   tests/qtest/tpm-crb-test.c | 2 +-
->   tests/qtest/tpm-util.c     | 2 +-
->   4 files changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/hw/acpi/tpm.h b/include/hw/acpi/tpm.h
-> index 579c45f5ba..f60bfe2789 100644
-> --- a/include/hw/acpi/tpm.h
-> +++ b/include/hw/acpi/tpm.h
-> @@ -174,7 +174,8 @@ REG32(CRB_CTRL_CMD_SIZE, 0x58)
->   REG32(CRB_CTRL_CMD_LADDR, 0x5C)
->   REG32(CRB_CTRL_CMD_HADDR, 0x60)
->   REG32(CRB_CTRL_RSP_SIZE, 0x64)
-> -REG32(CRB_CTRL_RSP_ADDR, 0x68)
-> +REG32(CRB_CTRL_RSP_LADDR, 0x68)
-> +REG32(CRB_CTRL_RSP_HADDR, 0x6C)
->   REG32(CRB_DATA_BUFFER, 0x80)
-> 
->   #define TPM_CRB_ADDR_BASE           0xFED40000
-> diff --git a/hw/tpm/tpm_crb_common.c b/hw/tpm/tpm_crb_common.c
-> index 4c173affb6..228e2d0faf 100644
-> --- a/hw/tpm/tpm_crb_common.c
-> +++ b/hw/tpm/tpm_crb_common.c
-> @@ -199,7 +199,8 @@ void tpm_crb_reset(TPMCRBState *s, uint64_t baseaddr)
->       s->regs[R_CRB_CTRL_CMD_LADDR] = (uint32_t)baseaddr;
->       s->regs[R_CRB_CTRL_CMD_HADDR] = (uint32_t)(baseaddr >> 32);
->       s->regs[R_CRB_CTRL_RSP_SIZE] = CRB_CTRL_CMD_SIZE;
-> -    s->regs[R_CRB_CTRL_RSP_ADDR] = (uint32_t)baseaddr;
-> +    s->regs[R_CRB_CTRL_RSP_LADDR] = (uint32_t)baseaddr;
-> +    s->regs[R_CRB_CTRL_RSP_HADDR] = (uint32_t)(baseaddr >> 32);
-> 
->       s->be_buffer_size = MIN(tpm_backend_get_buffer_size(s->tpmbe),
->                               CRB_CTRL_CMD_SIZE);
-> diff --git a/tests/qtest/tpm-crb-test.c b/tests/qtest/tpm-crb-test.c
-> index 396ae3f91c..9d30fe8293 100644
-> --- a/tests/qtest/tpm-crb-test.c
-> +++ b/tests/qtest/tpm-crb-test.c
-> @@ -28,7 +28,7 @@ static void tpm_crb_test(const void *data)
->       uint32_t csize = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_CMD_SIZE);
->       uint64_t caddr = readq(TPM_CRB_ADDR_BASE + A_CRB_CTRL_CMD_LADDR);
->       uint32_t rsize = readl(TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_SIZE);
-> -    uint64_t raddr = readq(TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_ADDR);
-> +    uint64_t raddr = readq(TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_LADDR);
->       uint8_t locstate = readb(TPM_CRB_ADDR_BASE + A_CRB_LOC_STATE);
->       uint32_t locctrl = readl(TPM_CRB_ADDR_BASE + A_CRB_LOC_CTRL);
->       uint32_t locsts = readl(TPM_CRB_ADDR_BASE + A_CRB_LOC_STS);
-> diff --git a/tests/qtest/tpm-util.c b/tests/qtest/tpm-util.c
-> index 1c0319e6e7..dd02057fc0 100644
-> --- a/tests/qtest/tpm-util.c
-> +++ b/tests/qtest/tpm-util.c
-> @@ -25,7 +25,7 @@ void tpm_util_crb_transfer(QTestState *s,
->                              unsigned char *rsp, size_t rsp_size)
->   {
->       uint64_t caddr = qtest_readq(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_CMD_LADDR);
-> -    uint64_t raddr = qtest_readq(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_ADDR);
-> +    uint64_t raddr = qtest_readq(s, TPM_CRB_ADDR_BASE + A_CRB_CTRL_RSP_LADDR);
-> 
->       qtest_writeb(s, TPM_CRB_ADDR_BASE + A_CRB_LOC_CTRL, 1);
-> 
+>  hw/arm/virt.c | 37 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
+>
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 7d9dbc2663..432148ef47 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -2732,6 +2732,37 @@ static void virt_memory_plug(HotplugHandler *hotplug_dev,
+>                           dev, &error_abort);
+>  }
+>
+> +#ifdef CONFIG_TPM
+> +static void virt_tpm_plug(VirtMachineState *vms, TPMIf *tpmif)
+> +{
+> +    PlatformBusDevice *pbus = PLATFORM_BUS_DEVICE(vms->platform_bus_dev);
+> +    hwaddr pbus_base = vms->memmap[VIRT_PLATFORM_BUS].base;
+> +    SysBusDevice *sbdev = SYS_BUS_DEVICE(tpmif);
+> +    MemoryRegion *sbdev_mr;
+> +    hwaddr tpm_base;
+> +    uint64_t tpm_size;
+> +
+> +    if (!sbdev || !object_dynamic_cast(OBJECT(sbdev), TYPE_SYS_BUS_DEVICE)) {
+> +        return;
+> +    }
+> +
+> +    tpm_base = platform_bus_get_mmio_addr(pbus, sbdev, 0);
+> +    assert(tpm_base != -1);
+> +
+> +    tpm_base += pbus_base;
+> +
+> +    sbdev_mr = sysbus_mmio_get_region(sbdev, 0);
+> +    tpm_size = memory_region_size(sbdev_mr);
+> +
+> +    if (object_property_find(OBJECT(sbdev), "baseaddr")) {
+> +        object_property_set_uint(OBJECT(sbdev), "baseaddr", tpm_base, NULL);
+> +    }
+> +    if (object_property_find(OBJECT(sbdev), "size")) {
+> +        object_property_set_uint(OBJECT(sbdev), "size", tpm_size, NULL);
+> +    }
+> +}
+> +#endif
+
+I do not like the "platform bus" at all -- it is a nasty hack.
+If the virt board needs a memory mapped TPM device it should probably
+just create one, the same way we create our other memory mapped
+devices. But...
+
+How are TPM devices typically set up/visible to the guest on
+real Arm server hardware ? Should this be a sysbus device at all?
+
+thanks
+-- PMM
 
