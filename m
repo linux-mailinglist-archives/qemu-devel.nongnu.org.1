@@ -2,79 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB7B752A3D
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 20:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B202752A4E
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 20:30:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK0qw-0004xP-Tm; Thu, 13 Jul 2023 14:15:46 -0400
+	id 1qK13n-0007nU-Ur; Thu, 13 Jul 2023 14:29:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qK0qu-0004xG-Rf
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:15:44 -0400
-Received: from mail-il1-f171.google.com ([209.85.166.171])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qK13m-0007nG-5r
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:29:02 -0400
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qK0qt-0001md-Cd
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:15:44 -0400
-Received: by mail-il1-f171.google.com with SMTP id
- e9e14a558f8ab-345a76c3a2eso4214855ab.2
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 11:15:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qK13k-00075O-Ce
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:29:01 -0400
+Received: by mail-qt1-x82c.google.com with SMTP id
+ d75a77b69052e-403c653d934so7928251cf.2
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 11:28:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689272938; x=1691864938;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=17j90EH8n7nIALhhxhY9RcLMseNefN+FfaJAuNQXiDQ=;
+ b=BQihItzTb77krOw7tKkCNb4VE6fvWdOksQMzkPVdAmInO/6AwsoydFCbveBiwI0mWT
+ tG42BxKwksqePhu0uGW/LcY4O/MPZEPkh8pq/yw7gvcJVCp9TUqdq7Jr4gjtXFpFJ1gQ
+ bBxPgptGcW3lFKkR8TGprjONC7GIN3qM16BFu7nq5hubo46+fN3Mu39uAZe09BVNtaeY
+ JEogpcWto1H8dcM6+p4w3yQcbKWVbyUImTE6YPB+XIuCCSR3sJP0hBNchRhSYeYGfUMJ
+ 3+iij33bXRrRG5BajY2JBmAIJnC9SKRDeKI3ujaaTewZQWUCk9dkvmT4a/jrh0e/yjWs
+ /orw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689272142; x=1691864142;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pBrSewqnDnU2j+HNkbFUuogXg7pBxGZSOSqYBUnF0Ao=;
- b=Hglvz5JsehzHdIaSwr7Y49VgJ44Cbbf9P5AyPMX8h9gk0C34xCNEk2IxmAWW6hnKO6
- O/Y8EQq0OS2q9/FEWEMCk4x8U5yYlvai9f5BOIr6dOXpiIe5xHY9+QhbLkFTWeDDDJoW
- 0GIZigFNJmAg7PlcA19WFxmHJJzMTwsCaEYYzXB+raJcXMXyGmUZYbT6my8F+Yk5s1az
- I1IKUu/we9vTWfJudko7AIYyfp50ARe1vWfLnuJmIWdyDQsSURtflHINL4tsmXUaFeuu
- pykET+Vu8DPz2ra3rntdMyB79ta5nvBukloKxs0tgKAMXGIHM4+iGrVbZE/DdLwaB22P
- sjnA==
-X-Gm-Message-State: ABy/qLbbeomVN5dsW19jWYNx6zq3O26lU0PGF9oLnpP3kdb9+FzZCoR5
- RhXh93lwHw2fE4PRQSraRtEX99Qk3yw=
-X-Google-Smtp-Source: APBJJlEirXTHHKndWBQ70HPw7VjmDmPbDEPWm8iYL/S1VdOSBa+qI7C7t3wPszV3bwLSdP3SUoUnjA==
-X-Received: by 2002:a92:cf51:0:b0:32c:9c5e:900c with SMTP id
- c17-20020a92cf51000000b0032c9c5e900cmr2185118ilr.8.1689272141751; 
- Thu, 13 Jul 2023 11:15:41 -0700 (PDT)
-Received: from mail-il1-f173.google.com (mail-il1-f173.google.com.
- [209.85.166.173]) by smtp.gmail.com with ESMTPSA id
- y4-20020a920904000000b00346097ca74dsm2135698ilg.71.2023.07.13.11.15.41
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20221208; t=1689272938; x=1691864938;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=17j90EH8n7nIALhhxhY9RcLMseNefN+FfaJAuNQXiDQ=;
+ b=cjypMCFSmaWDb0WXCuxZUmea6ykffSjkqmU60o66/1srCjbnJKXvf0KkCfZ6ObcEu8
+ L1SXIzUXHJjKk5tX5fmDUijyS3iL06eb5dA0RGyZ7eWdlHVy82GOdtOTWE1I2KnPzYNw
+ Z/yDWdr9MVcfZObm+0xT112QfpSS7sVcWy/6v6FLaorNyVrUhsF5uAQ02eKWJBBLesXp
+ G8IglrQ/L1C8Ks/8g8dvuccR3yK789RLcbLUKZfSZFJqZgL2m3Tahv2xB8xnwYc2BR75
+ 7Ebxkvl+cFSWkmXJ6desZFLKB2ZG484cDB8AViMs7zDF0H7pieQGezi0jBvt1aZIC0xS
+ I0eA==
+X-Gm-Message-State: ABy/qLZ1cfEeyUB+ZR2+SFeIlcwwR2z+T/nKAL7upEo4TO94eP+mUz6Z
+ e8LaFC+dWVsYOYRcjBltTUa//g==
+X-Google-Smtp-Source: APBJJlG6SkSid0U5gsp6a9P4vv7leybID7nSvC3xvJ9uqcYLqkw4ty+APnB/dIQlLikmCMEasWAYFQ==
+X-Received: by 2002:ac8:7d10:0:b0:401:e29c:b1b6 with SMTP id
+ g16-20020ac87d10000000b00401e29cb1b6mr3146955qtb.39.1689272937801; 
+ Thu, 13 Jul 2023 11:28:57 -0700 (PDT)
+Received: from [192.168.88.227] ([172.58.139.107])
+ by smtp.gmail.com with ESMTPSA id
+ r18-20020ac87ef2000000b003ef189ffa82sm3246825qtc.90.2023.07.13.11.28.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 11:15:41 -0700 (PDT)
-Received: by mail-il1-f173.google.com with SMTP id
- e9e14a558f8ab-345a76c3a2eso4214815ab.2
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 11:15:41 -0700 (PDT)
-X-Received: by 2002:a92:d1cf:0:b0:347:712c:dc9 with SMTP id
- u15-20020a92d1cf000000b00347712c0dc9mr1805862ilg.22.1689272141320; Thu, 13
- Jul 2023 11:15:41 -0700 (PDT)
+ Thu, 13 Jul 2023 11:28:57 -0700 (PDT)
+Message-ID: <e0d55ddb-3960-6ff3-e480-6f2fdf2d1407@linaro.org>
+Date: Thu, 13 Jul 2023 19:28:51 +0100
 MIME-Version: 1.0
-References: <20230713035232.48406-1-j@getutm.app>
- <20230713035232.48406-10-j@getutm.app>
- <78bd19ff-709e-d152-ffe0-5d50ecb693c5@linux.ibm.com>
-In-Reply-To: <78bd19ff-709e-d152-ffe0-5d50ecb693c5@linux.ibm.com>
-From: Joelle van Dyne <j@getutm.app>
-Date: Thu, 13 Jul 2023 11:15:30 -0700
-X-Gmail-Original-Message-ID: <CA+E+eSC0M2CnOyX_EpF=FZX5yeKBsj=vh6+9T_sNV-NtGLs20A@mail.gmail.com>
-Message-ID: <CA+E+eSC0M2CnOyX_EpF=FZX5yeKBsj=vh6+9T_sNV-NtGLs20A@mail.gmail.com>
-Subject: Re: [PATCH 09/11] tpm_tis_sysbus: fix crash when PPI is enabled
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=209.85.166.171; envelope-from=osy86dev@gmail.com;
- helo=mail-il1-f171.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.1 2/3] target/arm: Fix S1_ptw_translate() debug path
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
+References: <20230710152130.3928330-1-peter.maydell@linaro.org>
+ <20230710152130.3928330-3-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230710152130.3928330-3-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x82c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,30 +96,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 13, 2023 at 9:49=E2=80=AFAM Stefan Berger <stefanb@linux.ibm.co=
-m> wrote:
->
->
-> The tpm-tis-device doesn't work for x86_64 but for aarch64.
->
->
-> We have this here in this file:
->
->      DEFINE_PROP_BOOL("ppi", TPMStateSysBus, state.ppi_enabled, false),
->
-> I don't know whether ppi would work on aarch64. It needs firmware support=
- like in edk2.
-> I think the best solution is to remove this DEFINE_PROP_BOOL() and if som=
-eone wants
-> to enable it they would have to add firmware support and test it before r=
-e-enabling it.
->
->     Stefan
->
-> >   static void tpm_tis_sysbus_class_init(ObjectClass *klass, void *data)
+On 7/10/23 16:21, Peter Maydell wrote:
+> In commit XXX we rearranged the logic in S1_ptw_translate() so that
+> the debug-access "call get_phys_addr_*" codepath is used both when S1
+> is doing ptw reads from stage 2 and when it is doing ptw reads from
+> physical memory.  However, we didn't update the calculation of
+> s2ptw->in_space and s2ptw->in_secure to account for the "ptw reads
+> from physical memory" case.  This meant that debug accesses when in
+> Secure state broke.
+> 
+> Create a new function S2_security_space() which returns the
+> correct security space to use for the ptw load, and use it to
+> determine the correct .in_secure and .in_space fields for the
+> stage 2 lookup for the ptw load.
+> 
+> Reported-by: Jean-Philippe Brucker<jean-philippe@linaro.org>
+> Fixes: fe4a5472ccd6 ("target/arm: Use get_phys_addr_with_struct in S1_ptw_translate")
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+>   target/arm/ptw.c | 37 ++++++++++++++++++++++++++++++++-----
+>   1 file changed, 32 insertions(+), 5 deletions(-)
 
-Yeah, I'm not sure if PPI works with AARCH64 since I didn't bother to
-change it to not use hard coded addresses. However, isn't that "ppi"
-overridable from the command line? If so, should we add a check in
-"realize" to error if PPI=3Dtrue? Otherwise, it will just crash.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+r~
 
