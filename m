@@ -2,94 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC5F75206A
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E75775206B
 	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 13:52:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJurU-00068c-JV; Thu, 13 Jul 2023 07:51:56 -0400
+	id 1qJurp-0006AP-Cp; Thu, 13 Jul 2023 07:52:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qJurS-00068L-3z
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:51:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qJurQ-0002e0-H9
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:51:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689249111;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZC31GdCHW6wkhcoUhkkI9YDNYn1ED8WDqWcICTi5k64=;
- b=SSv2iCT/jHP75LbNwSMe0tUz1iFMmioAU/3ZR5bkm3VfpNBSq4bGgASNaTlU4HvNbWRDYQ
- 4dS68FZDYit1GOtZb26m3BmN8xdBH6+cuNF4Q0JIvUiyEiW+Up8p2F3X275D+GUxHfpnmq
- 3b0n6B2BPftb2qkKt9mUsH5Idw327MI=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-169-_S6RWwBeOayxl0KKYfFW1A-1; Thu, 13 Jul 2023 07:51:50 -0400
-X-MC-Unique: _S6RWwBeOayxl0KKYfFW1A-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-621257e86daso6957666d6.1
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 04:51:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qJurn-00069s-Kz
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:52:15 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qJurm-0002hC-1U
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:52:15 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-51e99584a82so771780a12.1
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 04:52:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689249131; x=1691841131;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=XFjNfn7R1H5fhzbWuvnUMECb004rySEmdgokQIdNG2I=;
+ b=d3sMBqKSkPAkcXxeoNeOS+2SRLayWFJx+KBP4IpXEqBgP39JllcLr0mQDGIBmiZFEc
+ 06DgsryXUMbkcIRwDUU5HRRRt97enz+MWjUM/GZIjtS7rnlsIZtc7R5E5NN7DbEmLVYw
+ 0skSZ+2kiDyuUH96XR5KVMWTj/jgrGCBxJgapexboi9vyyHhaXTw9y1CDifAsN63K2eS
+ q7+VJSYEmS9idyOcyySxmBMrcCSKvHR/2+AJFoAdSZYGEi0vHj9q4ypA27pN7gQitOh4
+ oUh7bU69awt7cgoUUH1Hjxfak70x2OHJZ+aM39KMQAAow5eF1CPQ2fkPl7IhXA9nDSZM
+ FllA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689249109; x=1691841109;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZC31GdCHW6wkhcoUhkkI9YDNYn1ED8WDqWcICTi5k64=;
- b=K0ABgHFkf/WEOPqnSXb+WV7/ZPnpYyY/mYmoa2q/k7/OaloaKWXGaewD40p2pHrwKR
- pZh7L2VXGuUFSxjHrivsNm6eZN2JFFtYDmgCX91I2kulWYlaL2O9kqoyrwgQg1MuIx09
- 7rMjobxnrPr63B6ciH3f4b5E5xNkiiP7QnQpZ2sRjdwOsQsPdtP0wYzw8o3Km7rke+72
- Iz4A9eEaAuaHVn1GfdaUhkhS4pL5yZJszkYyfb+7wsLBZiyOGl1fIH1/Hnv/g66CdjS5
- WbVP4YJJgE3UdIxSwxIpOlcqYbRDivG5NmL9ljkxHcWUK3fq6B40oIEbBGb0Tq0thTxf
- T0YA==
-X-Gm-Message-State: ABy/qLYkkyl5wbr8iLT4QNF8oqot0YrhAcJTGRIBTkU5FR26hJP3Nbdi
- P4ydjGnvnIEjbSzAN9bhopGeFBl0Tx68iMU6nMUo0Z7OlYz1WOsLRlEUNsM70IS891Vppa9896X
- 3LvwWZsE5ywMDXNw=
-X-Received: by 2002:a0c:e001:0:b0:637:5742:e370 with SMTP id
- j1-20020a0ce001000000b006375742e370mr1181230qvk.50.1689249109811; 
- Thu, 13 Jul 2023 04:51:49 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGcIAbs1FFFQJoJlxJOkEmoLcZqDHXuFhhwoYlSLz5cC4pc6uzggsofn12t/0zsUZTWxJABKw==
-X-Received: by 2002:a0c:e001:0:b0:637:5742:e370 with SMTP id
- j1-20020a0ce001000000b006375742e370mr1181212qvk.50.1689249109463; 
- Thu, 13 Jul 2023 04:51:49 -0700 (PDT)
-Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- a12-20020a0ce38c000000b0062de6537febsm2999898qvl.58.2023.07.13.04.51.48
+ d=1e100.net; s=20221208; t=1689249131; x=1691841131;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XFjNfn7R1H5fhzbWuvnUMECb004rySEmdgokQIdNG2I=;
+ b=bmaBX1Uu7DgeXsK11SFlYxpLfxM5TiXc07j14qjuvb+ANpW/CizP4B5wV9umjY7Xg5
+ xzJpvMvyUuOlRNQtMhV/UG7Mu+XJEd2NzdJkusn/TPtKFI7RbpKU0UMCNg8k9t+LE+Ih
+ zmwc+ZNtfS9il1ZIpHMOdA7NcSqlWjpsUnhyO9fHBEZwDXwFxApf6vXqGlo9EpMyRqM8
+ HwC1GMsvvIQ0YQV4BIWM+TxjXPEbokEffkQcL8Fz4oltgE42jCWmxrEo+1+X2tKSeWU9
+ M4mMSRNg26xO4PsJhzSljvGKTanDq///1kDQNoo/4xCwh6CmIYtCc1YlD4uZgc4lOltv
+ A0eQ==
+X-Gm-Message-State: ABy/qLaXi5yRiyfmmrep85a/aO+rTkqICp5tVKjPQUx6/IFZBzyRid/z
+ WB/RMTOHcAtPF+CNiEuj50di+Q==
+X-Google-Smtp-Source: APBJJlGSznKYsseOC3RvQoPWu+rvEYT5QYC2Mx6bM/7DitBKZfDRTggdML/3vQBkpW3H1EPtnE65Jg==
+X-Received: by 2002:a50:fb17:0:b0:51e:26c8:25f7 with SMTP id
+ d23-20020a50fb17000000b0051e26c825f7mr1434379edq.42.1689249131414; 
+ Thu, 13 Jul 2023 04:52:11 -0700 (PDT)
+Received: from [192.168.200.206] (83.21.150.147.ipv4.supernova.orange.pl.
+ [83.21.150.147]) by smtp.gmail.com with ESMTPSA id
+ w13-20020a50fa8d000000b0051dfa2e30b2sm4147837edr.9.2023.07.13.04.52.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 04:51:48 -0700 (PDT)
-Message-ID: <652f313b-ff67-1579-b3e5-b1550847a363@redhat.com>
-Date: Thu, 13 Jul 2023 13:51:46 +0200
+ Thu, 13 Jul 2023 04:52:11 -0700 (PDT)
+Message-ID: <2d21e89f-c965-e8f1-3705-dfea8367fc7e@linaro.org>
+Date: Thu, 13 Jul 2023 13:52:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2] hw/mips: Improve the default USB settings in the
- loongson3-virt machine
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- qemu-devel@nongnu.org
-References: <20230621074134.82781-1-thuth@redhat.com>
- <062e8b3b-dcdd-8f87-d245-ea9e16b1c276@linaro.org>
- <512d2664-5464-a502-391a-bf41491926fe@tls.msk.ru>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <512d2664-5464-a502-391a-bf41491926fe@tls.msk.ru>
+Subject: Re: [PATCH 0/3] hw/arm/virt: Use generic CPU invalidation
+Content-Language: pl-PL, en-GB, en-HK
+To: Peter Maydell <peter.maydell@linaro.org>, Gavin Shan <gshan@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, pbonzini@redhat.com,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, shan.gavin@gmail.com
+References: <20230713054502.410911-1-gshan@redhat.com>
+ <CAFEAcA8197FCwfNZrnxfO-87RveOko0Ju-KcTJOEi0vfjVtDKg@mail.gmail.com>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Organization: Linaro
+In-Reply-To: <CAFEAcA8197FCwfNZrnxfO-87RveOko0Ju-KcTJOEi0vfjVtDKg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,49 +99,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/07/2023 13.47, Michael Tokarev wrote:
-> 13.07.2023 13:09, Philippe Mathieu-Daudé wrote:
->> Hi Thomas,
->>
->> On 21/6/23 09:41, Thomas Huth wrote:
->>> It's possible to compile QEMU without the USB devices (e.g. when using
->>> "--without-default-devices" as option for the "configure" script).
->>> To be still able to run the loongson3-virt machine in default mode with
->>> such a QEMU binary, we have to check here for the availability of the
->>> USB devices first before instantiating them.
->>>
->>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>> ---
->>>   v2: Use #ifdef instead of runtime check
->>>
->>>   hw/mips/loongson3_virt.c | 3 +++
->>>   1 file changed, 3 insertions(+)
->>>
->>> diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
->>> index 216812f660..3094413eea 100644
->>> --- a/hw/mips/loongson3_virt.c
->>> +++ b/hw/mips/loongson3_virt.c
->>> @@ -51,6 +51,7 @@
->>>   #include "sysemu/reset.h"
->>>   #include "sysemu/runstate.h"
->>>   #include "qemu/error-report.h"
->>> +#include CONFIG_DEVICES
->>
->> I'm a but reluctant to include CONFIG_DEVICES.
->>
->>> +#ifdef CONFIG_USB_OHCI_PCI
->>>       if (defaults_enabled()) {
->>
->> What about:
->>
->>    if (defaults_enabled() && object_class_by_name(TYPE_PCI_OHCI)) {
-> 
-> I think it was a v1 like this :)
+W dniu 13.07.2023 o 13:44, Peter Maydell pisze:
 
-Yes, that's how I did it in v1:
+> I see this isn't a change in this patch, but given that
+> what the user specifies is not "cortex-a8-arm-cpu" but
+> "cortex-a8", why do we include the "-arm-cpu" suffix in
+> the error messages? It's not valid syntax to say
+> "-cpu cortex-a8-arm-cpu", so it's a bit misleading...
 
-  https://lore.kernel.org/qemu-devel/20230525064731.1854107-1-thuth@redhat.com/
+Internally those cpu names are "max-{TYPE_ARM_CPU}" and similar for 
+other architectures.
 
-  Thomas
+I like the change but it (IMHO) needs to cut "-{TYPE_*_CPU}" string from 
+names:
 
+13:37 marcin@applejack:qemu$ ./build/aarch64-softmmu/qemu-system-aarch64 
+-M virt -cpu cortex-r5
+qemu-system-aarch64: Invalid CPU type: cortex-r5-arm-cpu
+The valid types are: cortex-a7-arm-cpu, cortex-a15-arm-cpu, 
+cortex-a35-arm-cpu, cortex-a55-arm-cpu, cortex-a72-arm-cpu, 
+cortex-a76-arm-cpu, a64fx-arm-cpu, neoverse-n1-arm-cpu, 
+neoverse-v1-arm-cpu, cortex-a53-arm-cpu, cortex-a57-arm-cpu, 
+host-arm-cpu, max-arm-cpu
+
+13:37 marcin@applejack:qemu$ ./build/aarch64-softmmu/qemu-system-aarch64 
+-M virt -cpu cortex-a57-arm-cpu
+qemu-system-aarch64: unable to find CPU model 'cortex-a57-arm-cpu'
+
+
+I can change sbsa-ref to follow that change but let it be userfriendly.
 
