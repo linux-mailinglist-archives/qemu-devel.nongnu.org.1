@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2FC752BFF
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 23:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5AC752BE9
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 23:16:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK3ed-0000Ri-AR; Thu, 13 Jul 2023 17:15:15 -0400
+	id 1qK3ek-0000S1-3U; Thu, 13 Jul 2023 17:15:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qK3eQ-0000Mq-6g
+ id 1qK3eR-0000NA-2g
  for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:15:04 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qK3eN-00019J-KF
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:15:01 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-314417861b9so1313929f8f.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 14:14:59 -0700 (PDT)
+ id 1qK3eO-00019U-PW
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:15:02 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3141c3a7547so1322340f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 14:15:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689282898; x=1691874898;
+ d=linaro.org; s=google; t=1689282899; x=1691874899;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FzGMoLNjkDe1yX7tuu779EsO1joTMqPUtVQXclt+8ac=;
- b=LqnqEjsRBK+opcPjBUcVbLDs0MsRdBOa+vWNDBuLiRd2zpYFGNEAJDY1WLcw7FO3KA
- wbeWXcW0X4bjpo4l+1rH1bicn27nH2HdsRjA9s/8mPwkiNZivilBHw01z8GkaMcKbVvU
- bk02Y5NEp2m7opNdxZmhN22D6rW0tHamYXF+Yx8BtrlYmM1axdtkvvgBEI1x7iDyNoV/
- uyHxz9MA+8mdg6cHoe4HC1JpuZeyHZg7tx3KenzhCObzymvvhdTQX3S7MmBwYaobS/E9
- U28mBwB5b7wjwQFzSni2wRyUAuQxmX/UJ/PHU+2y9y30JNW50159U6lIkrBB0k+TfwRW
- GgAw==
+ bh=epV34O9DTR5ZBAxnORvbfiEcBH2IbFQIc3x2ZASYHbI=;
+ b=LW96DSsnnHGNraV3OFF6ViK62/0drwKKRdgpzRMf2YZdyoXcrNke52sWyhtlzxcVBd
+ 5W+O8XrO2LyPSr3fKecKWD0e0VLhMNggjUr3bWcRrMPDU4e7J+hyM2jGaReftGTfNfgC
+ EYCTaG6qQJ7DXAYK71SYj4jPq4nYyJNwWN7P2fQ+4NLmiwxJdMortOaHpm+T4jckG9gY
+ dRbqPu7E8hium8P6Z9d5MbdLqHWaoyXnmzX08Bp5xAQVp+gmfeAisK8TB+eCHx3WONh8
+ e0uu6tCUSSPBj8yFQ1axLRvw8K6qCdeFvguhm+7gxkAgp12ilLDydUPj8bmsya7TW4Ak
+ J5AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689282898; x=1691874898;
+ d=1e100.net; s=20221208; t=1689282899; x=1691874899;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FzGMoLNjkDe1yX7tuu779EsO1joTMqPUtVQXclt+8ac=;
- b=VV0NOir2DXSIgLkfsJ18b1Bg0MhdB1sVJSDkGnI0EO7ZO2nSUQ2TSchsCG+bLMOpaT
- ZkOKhUFjctJxVKTZG1uyu+rLI8s8BZFU2tBrA0F15Q8gdx1R47XquFuEfZ8/Ec2J8xKa
- Ro7El9smB0e0in0464c2WvfZkLYcfgwKERAuKmuu9+D0VeQl7xcsZkguxnLT6WFtAKFj
- c2r29W86Sw1BaDlMDmlxc3t0tyN2jVaD7FLtO+CvZDIcvu/ijzren8BY49YshUxgivV+
- iFdqIqesNtZYSIxJh9Zz9hPlpHjm3eRYlossoHsuPu0f/bONv50IbVDa9mf75PidKWJ9
- 7vUA==
-X-Gm-Message-State: ABy/qLYiaMkVfE018/a1flcf+Gw31T1g5r8BosGlBo9XlbpTJsIIWnFc
- fr++BUSJTyleseVU0FjyJWECRpPaOrXAZW9yBW+kyDZI
-X-Google-Smtp-Source: APBJJlFKaEOJd9sssaxCAFfVImxCrJUzv19zmN9zSRkhbbfM9e8VNv9vlxmGIQwcPCmnuqke/NJi7g==
-X-Received: by 2002:a5d:6b8f:0:b0:316:ee41:f1bf with SMTP id
- n15-20020a5d6b8f000000b00316ee41f1bfmr213435wrx.12.1689282898299; 
- Thu, 13 Jul 2023 14:14:58 -0700 (PDT)
+ bh=epV34O9DTR5ZBAxnORvbfiEcBH2IbFQIc3x2ZASYHbI=;
+ b=FgJlkQZMbzqMgqOnZtXy3ubXoAedPVos3o+jIByGDmETXhwVskNmp6oV7+b4oO61Vk
+ Lnem5RBCXTBM7YhvcmeKFvRsaW5zixn502+dQvp5DrD9VaD4s2afCZwePvdTDG2YzjzZ
+ SZQA5Ksuo1uh9ZD7utBQqU/KQd90IYhzoVIOXVQq6ww+sHr93KmNQVQR3+eKxwF5XLfQ
+ /aZjOU2oIOipeH8JsZQDFHiAF9RbiO4NIlTpABPj5wbKvvUZqxFU3mzoAPpeMPmr8SWX
+ DsvOn736aw4eMz96ngFKrmBbLwqd5/sOLwUHnaaWIy/HtaazFDO2LjrPiaMAITKUa5B8
+ 29mw==
+X-Gm-Message-State: ABy/qLYMzZjUAmYzJ1cawAEugECTRcyl+jfbx0BglVtyWt5ou/8AurT2
+ lhuPPVBeUmjZtN+e9IITLwOYN4gPKwgwIIzAnEcWCkdm
+X-Google-Smtp-Source: APBJJlG+KZPUWl9pKI6Z9vaUwhe0CNeIFRQ8R+rHpLW2Vz1kojmEANFgdZDfpK1rXHi7imfHxa/0iw==
+X-Received: by 2002:a5d:4e4d:0:b0:313:eee0:89a4 with SMTP id
+ r13-20020a5d4e4d000000b00313eee089a4mr2051943wrt.12.1689282899379; 
+ Thu, 13 Jul 2023 14:14:59 -0700 (PDT)
 Received: from stoup.. ([85.193.156.66]) by smtp.gmail.com with ESMTPSA id
- n12-20020adff08c000000b0030ada01ca78sm8973747wro.10.2023.07.13.14.14.57
+ n12-20020adff08c000000b0030ada01ca78sm8973747wro.10.2023.07.13.14.14.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jul 2023 14:14:58 -0700 (PDT)
+ Thu, 13 Jul 2023 14:14:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	ardb@kernel.org
-Subject: [PATCH 17/18] host/include/i386: Implement clmul.h
-Date: Thu, 13 Jul 2023 22:14:34 +0100
-Message-Id: <20230713211435.13505-18-richard.henderson@linaro.org>
+Subject: [PATCH 18/18] host/include/aarch64: Implement clmul.h
+Date: Thu, 13 Jul 2023 22:14:35 +0100
+Message-Id: <20230713211435.13505-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230713211435.13505-1-richard.henderson@linaro.org>
 References: <20230713211435.13505-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,86 +91,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Detect PCLMUL in cpuinfo; implement the accel hooks.
+Detect PMULL in cpuinfo; implement the accel hooks.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- host/include/i386/host/cpuinfo.h        |   1 +
- host/include/i386/host/crypto/clmul.h   | 187 ++++++++++++++++++++++++
- host/include/x86_64/host/crypto/clmul.h |   1 +
- util/cpuinfo-i386.c                     |   1 +
- 4 files changed, 190 insertions(+)
- create mode 100644 host/include/i386/host/crypto/clmul.h
- create mode 100644 host/include/x86_64/host/crypto/clmul.h
+ host/include/aarch64/host/cpuinfo.h      |   1 +
+ host/include/aarch64/host/crypto/clmul.h | 230 +++++++++++++++++++++++
+ util/cpuinfo-aarch64.c                   |   4 +-
+ 3 files changed, 234 insertions(+), 1 deletion(-)
+ create mode 100644 host/include/aarch64/host/crypto/clmul.h
 
-diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-index 073d0a426f..7ae21568f7 100644
---- a/host/include/i386/host/cpuinfo.h
-+++ b/host/include/i386/host/cpuinfo.h
-@@ -27,6 +27,7 @@
- #define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
- #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
- #define CPUINFO_AES             (1u << 18)
-+#define CPUINFO_PCLMUL          (1u << 19)
+diff --git a/host/include/aarch64/host/cpuinfo.h b/host/include/aarch64/host/cpuinfo.h
+index 05feeb4f43..da268dce13 100644
+--- a/host/include/aarch64/host/cpuinfo.h
++++ b/host/include/aarch64/host/cpuinfo.h
+@@ -10,6 +10,7 @@
+ #define CPUINFO_LSE             (1u << 1)
+ #define CPUINFO_LSE2            (1u << 2)
+ #define CPUINFO_AES             (1u << 3)
++#define CPUINFO_PMULL           (1u << 4)
  
  /* Initialized with a constructor. */
  extern unsigned cpuinfo;
-diff --git a/host/include/i386/host/crypto/clmul.h b/host/include/i386/host/crypto/clmul.h
+diff --git a/host/include/aarch64/host/crypto/clmul.h b/host/include/aarch64/host/crypto/clmul.h
 new file mode 100644
-index 0000000000..0877d65ab6
+index 0000000000..7fd827898b
 --- /dev/null
-+++ b/host/include/i386/host/crypto/clmul.h
-@@ -0,0 +1,187 @@
++++ b/host/include/aarch64/host/crypto/clmul.h
+@@ -0,0 +1,230 @@
 +/*
-+ * x86 specific clmul acceleration.
++ * AArch64 specific clmul acceleration.
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
-+#ifndef X86_HOST_CRYPTO_CLMUL_H
-+#define X86_HOST_CRYPTO_CLMUL_H
++#ifndef AARCH64_HOST_CRYPTO_CLMUL_H
++#define AARCH64_HOST_CRYPTO_CLMUL_H
 +
 +#include "host/cpuinfo.h"
-+#include <immintrin.h>
++#include <arm_neon.h>
 +
-+#if defined(__PCLMUL__)
++/* Both FEAT_AES and FEAT_PMULL are covered under the same macro. */
++#ifdef __ARM_FEATURE_AES
 +# define HAVE_CLMUL_ACCEL  true
-+# define ATTR_CLMUL_ACCEL
 +#else
-+# define HAVE_CLMUL_ACCEL  likely(cpuinfo & CPUINFO_PCLMUL)
-+# define ATTR_CLMUL_ACCEL  __attribute__((target("pclmul")))
++# define HAVE_CLMUL_ACCEL  likely(cpuinfo & CPUINFO_PMULL)
 +#endif
++#if !defined(__ARM_FEATURE_AES) && defined(CONFIG_ARM_AES_BUILTIN)
++# define ATTR_CLMUL_ACCEL  __attribute__((target("+crypto")))
++#else
++# define ATTR_CLMUL_ACCEL
++#endif
++
++/*
++ * The 8x8->8 pmul and 8x8->16 pmull are available unconditionally.
++ */
++
++static inline uint64_t clmul_8x8_low(uint64_t n, uint64_t m)
++{
++    return (uint64_t)vmul_p8((poly8x8_t)n, (poly8x8_t)m);
++}
++
++static inline Int128 clmul_8x8_packed(uint64_t n, uint64_t m)
++{
++    union { poly16x8_t v; Int128 s; } u;
++    u.v = vmull_p8((poly8x8_t)n, (poly8x8_t)m);
++    return u.s;
++}
++
++static inline Int128 clmul_8x8_even(Int128 n, Int128 m)
++{
++    union { uint16x8_t v; Int128 s; } un, um;
++    uint8x8_t pn, pm;
++
++    un.s = n;
++    um.s = m;
++    pn = vmovn_u16(un.v);
++    pm = vmovn_u16(um.v);
++    return clmul_8x8_packed((uint64_t)pn, (uint64_t)pm);
++}
++
++static inline Int128 clmul_8x8_odd(Int128 n, Int128 m)
++{
++    union { uint8x16_t v; Int128 s; } un, um;
++    uint8x8_t pn, pm;
++
++    un.s = n;
++    um.s = m;
++    pn = vqtbl1_u8(un.v, (uint8x8_t){ 1, 3, 5, 7, 9, 11, 13, 15 });
++    pm = vqtbl1_u8(um.v, (uint8x8_t){ 1, 3, 5, 7, 9, 11, 13, 15 });
++    return clmul_8x8_packed((uint64_t)pn, (uint64_t)pm);
++}
++
++static inline uint64_t clmul_8x4_even(uint64_t n, uint64_t m)
++{
++    return int128_getlo(clmul_8x8_even(int128_make64(n), int128_make64(m)));
++}
++
++static inline uint64_t clmul_8x4_odd(uint64_t n, uint64_t m)
++{
++    return int128_getlo(clmul_8x8_odd(int128_make64(n), int128_make64(m)));
++}
++
++static inline Int128 clmul_16x4_packed_accel(uint16x4_t n, uint16x4_t m)
++{
++    union { uint32x4_t v; Int128 s; } u;
++    uint32x4_t r0, r1, r2;
++
++    /*
++     * Considering the per-byte multiplication:
++     *       ab
++     *       cd
++     *    -----
++     *       bd  << 0
++     *      bc   << 8
++     *      ad   << 8
++     *     ac    << 16
++     *
++     * We get the ac and bd rows of the result for free from the expanding
++     * packed multiply.  Reverse the two bytes in M, repeat, and we get the
++     * ad and bc results, but in the wrong column; shift to fix and sum all.
++     */
++    r0 = (uint32x4_t)vmull_p8((poly8x8_t)n, (poly8x8_t)m);
++    r1 = (uint32x4_t)vmull_p8((poly8x8_t)n, vrev16_p8((poly8x8_t)m));
++    r2 = r1 << 8; /* bc */
++    r1 = r1 >> 8; /* ad */
++    r1 &= (uint32x4_t){ 0x00ffff00, 0x00ffff00, 0x00ffff00, 0x00ffff00 };
++    r2 &= (uint32x4_t){ 0x00ffff00, 0x00ffff00, 0x00ffff00, 0x00ffff00 };
++    r0 = r0 ^ r1 ^ r2;
++
++    u.v = r0;
++    return u.s;
++}
++
++static inline Int128 clmul_16x4_even(Int128 n, Int128 m)
++{
++    union { uint32x4_t v; Int128 s; } um, un;
++    uint16x4_t pn, pm;
++
++    /* Extract even uint16_t. */
++    un.s = n;
++    um.s = m;
++    pn = vmovn_u32(un.v);
++    pm = vmovn_u32(um.v);
++    return clmul_16x4_packed_accel(pn, pm);
++}
++
++static inline Int128 clmul_16x4_odd(Int128 n, Int128 m)
++{
++    union { uint8x16_t v; Int128 s; } um, un;
++    uint16x4_t pn, pm;
++
++    /* Extract odd uint16_t. */
++    un.s = n;
++    um.s = m;
++    pn = (uint16x4_t)vqtbl1_u8(un.v, (uint8x8_t){ 2, 3, 6, 7, 10, 11, 14, 15 });
++    pm = (uint16x4_t)vqtbl1_u8(um.v, (uint8x8_t){ 2, 3, 6, 7, 10, 11, 14, 15 });
++    return clmul_16x4_packed_accel(pn, pm);
++}
++
++static inline uint64_t clmul_16x2_even(uint64_t n, uint64_t m)
++{
++    return int128_getlo(clmul_16x4_even(int128_make64(n), int128_make64(m)));
++}
++
++static inline uint64_t clmul_16x2_odd(uint64_t n, uint64_t m)
++{
++    return int128_getlo(clmul_16x4_odd(int128_make64(n), int128_make64(m)));
++}
++
++/*
++ * The 64x64->128 pmull is available with FEAT_PMULL.
++ */
 +
 +static inline Int128 ATTR_CLMUL_ACCEL
 +clmul_64(uint64_t n, uint64_t m)
 +{
-+    union { __m128i v; Int128 s; } u;
++    union { poly128_t v; Int128 s; } u;
 +
 +    if (!HAVE_CLMUL_ACCEL) {
 +        return clmul_64_gen(n, m);
 +    }
 +
-+    u.v = _mm_clmulepi64_si128(_mm_set_epi64x(0, n), _mm_set_epi64x(0, m), 0);
++#ifdef CONFIG_ARM_AES_BUILTIN
++    u.v = vmull_p64((poly64_t)n, (poly64_t)m);
++#else
++    asm(".arch_extension aes\n\t"
++        "pmull %0.1q, %1.1d, %2.1d" : "=w"(u.v) : "w"(n), "w"(m));
++#endif
 +    return u.s;
 +}
 +
 +static inline uint64_t ATTR_CLMUL_ACCEL
 +clmul_32(uint32_t n, uint32_t m)
 +{
-+    __m128i r;
-+
 +    if (!HAVE_CLMUL_ACCEL) {
 +        return clmul_32_gen(n, m);
 +    }
-+
-+    r = _mm_clmulepi64_si128(_mm_cvtsi32_si128(n), _mm_cvtsi32_si128(m), 0);
-+    return ((__v2di)r)[0];
++    return int128_getlo(clmul_64(n, m));
 +}
 +
 +static inline Int128 ATTR_CLMUL_ACCEL
 +clmul_32x2_even(Int128 n, Int128 m)
 +{
-+    union { __m128i v; Int128 s; } ur, un, um;
-+    __m128i n02, m02, r0, r2;
++    union { uint64x2_t v; poly64_t h; Int128 s; } um, un, ur;
++    uint64x2_t r0, r2;
 +
 +    if (!HAVE_CLMUL_ACCEL) {
 +        return clmul_32x2_even_gen(n, m);
@@ -178,19 +302,28 @@ index 0000000000..0877d65ab6
 +
 +    un.s = n;
 +    um.s = m;
-+    n02 = _mm_slli_epi64(un.v, 32);
-+    m02 = _mm_slli_epi64(um.v, 32);
-+    r0  = _mm_clmulepi64_si128(n02, m02, 0x00);
-+    r2  = _mm_clmulepi64_si128(n02, m02, 0x11);
-+    ur.v = _mm_unpackhi_epi64(r0, r2);
++    un.v &= (uint64x2_t){ 0xffffffffu, 0xffffffffu };
++    um.v &= (uint64x2_t){ 0xffffffffu, 0xffffffffu };
++
++#ifdef CONFIG_ARM_AES_BUILTIN
++    r0 = (uint64x2_t)vmull_p64(un.h, um.h);
++    r2 = (uint64x2_t)vmull_high_p64((poly64x2_t)un.v, (poly64x2_t)um.v);
++#else
++    asm(".arch_extension aes\n\t"
++        "pmull %0.1q, %2.1d, %3.1d\n\t"
++        "pmull2 %1.1q, %2.2d, %3.2d"
++        : "=&w"(r0), "=w"(r2) : "w"(un.v), "w"(um.v));
++#endif
++
++    ur.v = vzip1q_u64(r0, r2);
 +    return ur.s;
 +}
 +
 +static inline Int128 ATTR_CLMUL_ACCEL
 +clmul_32x2_odd(Int128 n, Int128 m)
 +{
-+    union { __m128i v; Int128 s; } ur, un, um;
-+    __m128i n13, m13, r1, r3;
++    union { uint64x2_t v; poly64_t h; Int128 s; } um, un, ur;
++    uint64x2_t r0, r2;
 +
 +    if (!HAVE_CLMUL_ACCEL) {
 +        return clmul_32x2_odd_gen(n, m);
@@ -198,135 +331,44 @@ index 0000000000..0877d65ab6
 +
 +    un.s = n;
 +    um.s = m;
-+    n13 = _mm_srli_epi64(un.v, 32);
-+    m13 = _mm_srli_epi64(um.v, 32);
-+    r1  = _mm_clmulepi64_si128(n13, m13, 0x00);
-+    r3  = _mm_clmulepi64_si128(n13, m13, 0x11);
-+    ur.v = _mm_unpacklo_epi64(r1, r3);
++    un.v &= (uint64x2_t){ 0xffffffff00000000ull, 0xffffffff00000000ull };
++    um.v &= (uint64x2_t){ 0xffffffff00000000ull, 0xffffffff00000000ull };
++
++#ifdef CONFIG_ARM_AES_BUILTIN
++    r0 = (uint64x2_t)vmull_p64(un.h, um.h);
++    r2 = (uint64x2_t)vmull_high_p64((poly64x2_t)un.v, (poly64x2_t)um.v);
++#else
++    asm(".arch_extension aes\n\t"
++        "pmull %0.1q, %2.1d, %3.1d\n\t"
++        "pmull2 %1.1q, %2.2d, %3.2d"
++        : "=&w"(r0), "=w"(r2) : "w"(un.v), "w"(um.v));
++#endif
++
++    ur.v = vzip2q_u64(r0, r2);
 +    return ur.s;
 +}
 +
-+static inline uint64_t ATTR_CLMUL_ACCEL
-+clmul_16x2_even(uint64_t n, uint64_t m)
-+{
-+    __m128i r0, r2;
-+
-+    if (!HAVE_CLMUL_ACCEL) {
-+        return clmul_16x2_even_gen(n, m);
-+    }
-+
-+    r0 = _mm_clmulepi64_si128(_mm_cvtsi32_si128(n & 0xffff),
-+                              _mm_cvtsi32_si128(m & 0xffff), 0);
-+    r2 = _mm_clmulepi64_si128(_mm_cvtsi32_si128((n >> 32) & 0xffff),
-+                              _mm_cvtsi32_si128((m >> 32) & 0xffff), 0);
-+    r0 = _mm_unpacklo_epi32(r0, r2);
-+    return ((__v2di)r0)[0];
-+}
-+
-+static inline uint64_t ATTR_CLMUL_ACCEL
-+clmul_16x2_odd(uint64_t n, uint64_t m)
-+{
-+    __m128i r1, r3;
-+
-+    if (!HAVE_CLMUL_ACCEL) {
-+        return clmul_16x2_even_gen(n, m);
-+    }
-+
-+    r1 = _mm_clmulepi64_si128(_mm_cvtsi32_si128((n >> 16) & 0xffff),
-+                              _mm_cvtsi32_si128((m >> 16) & 0xffff), 0);
-+    r3 = _mm_clmulepi64_si128(_mm_cvtsi32_si128((n >> 48) & 0xffff),
-+                              _mm_cvtsi32_si128((m >> 48) & 0xffff), 0);
-+    r1 = _mm_unpacklo_epi32(r1, r3);
-+    return ((__v2di)r1)[0];
-+}
-+
-+static inline Int128 ATTR_CLMUL_ACCEL
-+clmul_16x4_even(Int128 n, Int128 m)
-+{
-+    union { __m128i v; Int128 s; } ur, un, um;
-+    __m128i mask = _mm_set_epi16(0, 0, 0, -1, 0, 0, 0, -1);
-+    __m128i n04, m04, n26, m26, r0, r2, r4, r6;
-+
-+    if (!HAVE_CLMUL_ACCEL) {
-+        return clmul_16x4_even_gen(n, m);
-+    }
-+
-+    un.s = n;
-+    um.s = m;
-+    n04 = _mm_and_si128(un.v, mask);
-+    m04 = _mm_and_si128(um.v, mask);
-+    r0  = _mm_clmulepi64_si128(n04, m04, 0x00);
-+    r4  = _mm_clmulepi64_si128(n04, m04, 0x11);
-+    n26 = _mm_and_si128(_mm_srli_epi64(un.v, 32), mask);
-+    m26 = _mm_and_si128(_mm_srli_epi64(um.v, 32), mask);
-+    r2  = _mm_clmulepi64_si128(n26, m26, 0x00);
-+    r6  = _mm_clmulepi64_si128(n26, m26, 0x11);
-+
-+    r0   = _mm_unpacklo_epi32(r0, r2);
-+    r4   = _mm_unpacklo_epi32(r4, r6);
-+    ur.v = _mm_unpacklo_epi64(r0, r4);
-+    return ur.s;
-+}
-+
-+static inline Int128 ATTR_CLMUL_ACCEL
-+clmul_16x4_odd(Int128 n, Int128 m)
-+{
-+    union { __m128i v; Int128 s; } ur, un, um;
-+    __m128i mask = _mm_set_epi16(0, 0, 0, -1, 0, 0, 0, -1);
-+    __m128i n15, m15, n37, m37, r1, r3, r5, r7;
-+
-+    if (!HAVE_CLMUL_ACCEL) {
-+        return clmul_16x4_odd_gen(n, m);
-+    }
-+
-+    un.s = n;
-+    um.s = m;
-+    n15 = _mm_and_si128(_mm_srli_epi64(un.v, 16), mask);
-+    m15 = _mm_and_si128(_mm_srli_epi64(um.v, 16), mask);
-+    r1  = _mm_clmulepi64_si128(n15, m15, 0x00);
-+    r5  = _mm_clmulepi64_si128(n15, m15, 0x11);
-+    n37 = _mm_srli_epi64(un.v, 48);
-+    m37 = _mm_srli_epi64(um.v, 48);
-+    r3  = _mm_clmulepi64_si128(n37, m37, 0x00);
-+    r7  = _mm_clmulepi64_si128(n37, m37, 0x11);
-+
-+    r1   = _mm_unpacklo_epi32(r1, r3);
-+    r5   = _mm_unpacklo_epi32(r5, r7);
-+    ur.v = _mm_unpacklo_epi64(r1, r5);
-+    return ur.s;
-+}
-+
-+/*
-+ * Defer everything else to the generic routines.
-+ * We could implement them with even more element manipulation.
-+ */
-+#define clmul_8x8_low           clmul_8x8_low_gen
-+#define clmul_8x4_even          clmul_8x4_even_gen
-+#define clmul_8x4_odd           clmul_8x4_odd_gen
-+#define clmul_8x8_even          clmul_8x8_even_gen
-+#define clmul_8x8_odd           clmul_8x8_odd_gen
-+#define clmul_8x8_packed        clmul_8x8_packed_gen
-+
-+#endif /* X86_HOST_CRYPTO_CLMUL_H */
-diff --git a/host/include/x86_64/host/crypto/clmul.h b/host/include/x86_64/host/crypto/clmul.h
-new file mode 100644
-index 0000000000..f25eced416
---- /dev/null
-+++ b/host/include/x86_64/host/crypto/clmul.h
-@@ -0,0 +1 @@
-+#include "host/include/i386/host/crypto/clmul.h"
-diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
-index 3a7b7e0ad1..c6f6364826 100644
---- a/util/cpuinfo-i386.c
-+++ b/util/cpuinfo-i386.c
-@@ -39,6 +39,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
-         info |= (c & bit_SSE4_1 ? CPUINFO_SSE4 : 0);
-         info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
-         info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
-+        info |= (c & bit_PCLMULQDQ ? CPUINFO_PCLMUL : 0);
++#endif /* AARCH64_HOST_CRYPTO_CLMUL_H */
+diff --git a/util/cpuinfo-aarch64.c b/util/cpuinfo-aarch64.c
+index ababc39550..1d565b8420 100644
+--- a/util/cpuinfo-aarch64.c
++++ b/util/cpuinfo-aarch64.c
+@@ -56,12 +56,14 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+     unsigned long hwcap = qemu_getauxval(AT_HWCAP);
+     info |= (hwcap & HWCAP_ATOMICS ? CPUINFO_LSE : 0);
+     info |= (hwcap & HWCAP_USCAT ? CPUINFO_LSE2 : 0);
+-    info |= (hwcap & HWCAP_AES ? CPUINFO_AES: 0);
++    info |= (hwcap & HWCAP_AES ? CPUINFO_AES : 0);
++    info |= (hwcap & HWCAP_PMULL ? CPUINFO_PMULL : 0);
+ #endif
+ #ifdef CONFIG_DARWIN
+     info |= sysctl_for_bool("hw.optional.arm.FEAT_LSE") * CPUINFO_LSE;
+     info |= sysctl_for_bool("hw.optional.arm.FEAT_LSE2") * CPUINFO_LSE2;
+     info |= sysctl_for_bool("hw.optional.arm.FEAT_AES") * CPUINFO_AES;
++    info |= sysctl_for_bool("hw.optional.arm.FEAT_PMULL") * CPUINFO_PMULL;
+ #endif
  
-         /* Our AES support requires PSHUFB as well. */
-         info |= ((c & bit_AES) && (c & bit_SSSE3) ? CPUINFO_AES : 0);
+     cpuinfo = info;
 -- 
 2.34.1
 
