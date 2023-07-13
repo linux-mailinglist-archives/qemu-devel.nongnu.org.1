@@ -2,86 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4076751E03
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 11:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E108751E7A
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 12:11:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJt5g-0000OL-Cr; Thu, 13 Jul 2023 05:58:28 -0400
+	id 1qJtGZ-0003uC-Op; Thu, 13 Jul 2023 06:09:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qJt5d-0000Ld-JF
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 05:58:26 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJtGV-0003u3-Ln
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 06:09:39 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qJt5Z-0005TW-K4
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 05:58:25 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-99342a599e9so82328166b.3
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 02:58:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qJtGO-0008Gc-U9
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 06:09:39 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-4fb960b7c9dso977258e87.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 03:09:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1689242300; x=1691834300;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=qdNqFtnDL0Q0NH35NVxgWyeun00RKxskiOrR+zqn88s=;
- b=YmezUQ8F9YqXOORMqNJn+lgZzQcNnDGkWDKHMt5IctS0KLb+Nx+1bzIWnQAAAOnSXG
- sPinHI3ppjd14GIc4JpgK7z7pwFyXIns7mDagK7o/jquAr8XL9ASur5qWj8ltiEcNU3C
- wQ7EDPRWD9K82ylwinYv56iMm2R/IcrTPjfmatECbZN4FqMXZQTP7f21J39Z7fzc86QI
- MWQu0NDDG5WmdaXk6Q7fLAzluUog616HIFW7/fEtdsGE5p5RQn5Ik389CCO8CgX3Dk8R
- jvKAKQeYOH0FN/RgTD+zL5nPEHZk5eJ5aUUyHI187lgvD4uI8O5cMfCsEaX5ugVCwxxp
- oNcg==
+ d=linaro.org; s=google; t=1689242971; x=1691834971;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qbbC2Q8Qam38/9uPDXRQFJ8VzTPw8yBV2VZ2Q2n6k2g=;
+ b=B8bRgUNJrj+dtmkr9/RXsrw8EXSAWOma+UkBkOJh/vRWjes9TbWceT98ZzvnQzNYec
+ dFfrPlvceFJ3UAjMaaIetO2Ad+7AuAYM5WPlhEY8rfXJMkIcxl+dMEQEAjVJh93vzKfG
+ vVItIDxypemJXjBirt4WBH/HxMpG1x0bx9JOBuj/EjeeFrMojeRRCOToHoPZVYDaxTh0
+ bc65FqNVzli7xOsBeIWxtYxTKTkmcJyLhXdNaDMKdLgFvq4NLX3wcm2Nmnpv7ho6Uct2
+ joVsXNcFvhD/BxwDOnwclC+7rZ1MC01+G7nHz6zG/AZPVCYqfsBU3ZcZ7ErWeIXIZYss
+ pUXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689242300; x=1691834300;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qdNqFtnDL0Q0NH35NVxgWyeun00RKxskiOrR+zqn88s=;
- b=Fq/VUCL/lthhZmqWbAklvPpn6+ryZ8ds2SNhmZWBYfJQHXjY4IF8xUKcuokQMkqs3n
- NkHP2sBxH10tc+NqcZRBIlHyLhCQiiMvDXVhYsUTFlte0xrZK/jFNaWXT2jNu/1Dqv0r
- FyOuPuopuneyCVyDR1C28/hw57YhlA1NpUBtSOJiPp244+FTCfF0y/kf3Uby1e6fiTrR
- fXVdwo80St5wENPboHpa1WvlhJjy6SH715bFfu7lcpsOif1Txq8kTRFq/50QgXxsU98C
- T2q31+jSV9Mm/BjjNgw1Oq3Xc2WjpHrSaXNTbtGeJd++ejFcFnE552A1PHs4wvRRmNeP
- z01w==
-X-Gm-Message-State: ABy/qLaQ1S6BHizBlMEE5rAbXM692aG8TJSm/uKhYqa0t7mLUVb2kMCb
- 0f6vTgtxtjEbIi3zsvWksSqifw==
-X-Google-Smtp-Source: APBJJlFBNZ9Qov3K2KQS+b9U1pray8IIWmrg/SIScU4wS7iJb5zLpcZdpMvKYri1lfMvPPycR71C4Q==
-X-Received: by 2002:a17:906:ce23:b0:974:326b:f9b2 with SMTP id
- sd3-20020a170906ce2300b00974326bf9b2mr940225ejb.66.1689242299798; 
- Thu, 13 Jul 2023 02:58:19 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ d=1e100.net; s=20221208; t=1689242971; x=1691834971;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qbbC2Q8Qam38/9uPDXRQFJ8VzTPw8yBV2VZ2Q2n6k2g=;
+ b=PY3gDT1/xnSFO9sWXhiwH0bk0+XJTIJbm2SlAHxGkRt0/jb+QO0ctaGLrgy3Bj7of/
+ 7TIEpW37neAbIpdLnQwwdBiAdToQo5NS6s7Gn2oDsyMArzDd7zDDSfPM94XthuwIdKnp
+ hrot7jqBAjGk0NBO4AhqE1PBlGTMjsEtbCLF1UEa7+Q2edhfP7iGQSfn04upCMcvkO/7
+ UkONmULvMHoTdnn+vJP4LLPGjhLBZAIEYQtSCDUHvpOa4cTup6/K8eUV+w9SaLF/zyzo
+ JOaZeLx0NukKbBKnNmE1fmCd7LH5anoziHcj3xWsgIiwtd86CUlB6oSnwsmTHijgNzd0
+ KVtg==
+X-Gm-Message-State: ABy/qLZKwYR3non6yaAOeSc8vbd2vi8H2HIFLbPPa4q3o/0AEe/BcqpT
+ ZEKcNgWVs/IULxhTslxSzCDpcA==
+X-Google-Smtp-Source: APBJJlGovMRXFqWjzO8O+yBo8aiEYDoyWYIs+gOxk+AjcDRPZp5c1ewQ5DJ8XaDR/jObWKOWcKr19g==
+X-Received: by 2002:a05:6512:304e:b0:4fb:89e3:5ac4 with SMTP id
+ b14-20020a056512304e00b004fb89e35ac4mr1107107lfb.66.1689242970638; 
+ Thu, 13 Jul 2023 03:09:30 -0700 (PDT)
+Received: from [192.168.7.115] (m-109-111-99-24.andorpac.ad. [109.111.99.24])
  by smtp.gmail.com with ESMTPSA id
- qk26-20020a170906d9da00b009890f2c4cf9sm3759852ejb.79.2023.07.13.02.58.19
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jul 2023 02:58:19 -0700 (PDT)
-Date: Thu, 13 Jul 2023 11:58:18 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, rkanwal@rivosinc.com, 
- anup@brainfault.org, dbarboza@ventanamicro.com, atishp@atishpatra.org, 
- vincent.chen@sifive.com, greentime.hu@sifive.com, frank.chang@sifive.com, 
- jim.shu@sifive.com, Palmer Dabbelt <palmer@dabbelt.com>, 
- Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: Re: [PATCH v5 5/5] target/riscv: select KVM AIA in riscv virt machine
-Message-ID: <20230713-10893a6dabf818a023c3c788@orel>
-References: <20230713084405.24545-1-yongxuan.wang@sifive.com>
- <20230713084405.24545-6-yongxuan.wang@sifive.com>
+ y7-20020a5d6147000000b0031412b685d2sm7499036wrt.32.2023.07.13.03.09.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 13 Jul 2023 03:09:30 -0700 (PDT)
+Message-ID: <062e8b3b-dcdd-8f87-d245-ea9e16b1c276@linaro.org>
+Date: Thu, 13 Jul 2023 12:09:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230713084405.24545-6-yongxuan.wang@sifive.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=ajones@ventanamicro.com; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH v2] hw/mips: Improve the default USB settings in the
+ loongson3-virt machine
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+References: <20230621074134.82781-1-thuth@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230621074134.82781-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.11,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,259 +94,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 13, 2023 at 08:43:57AM +0000, Yong-Xuan Wang wrote:
-> Select KVM AIA when the host kernel has in-kernel AIA chip support.
-> Since KVM AIA only has one APLIC instance, we map the QEMU APLIC
-> devices to KVM APLIC.
-> We also extend virt machine to specify the KVM AIA mode. The "kvm-aia"
-> parameter is passed along with machine name in QEMU command-line.
-> 1) "kvm-aia=emul": IMSIC is emulated by hypervisor
-> 2) "kvm-aia=hwaccel": use hardware guest IMSIC
-> 3) "kvm-aia=auto": use the hardware guest IMSICs whenever available
->                    otherwise we fallback to software emulation.
-> 
-> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-> Reviewed-by: Jim Shu <jim.shu@sifive.com>
-> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  hw/riscv/virt.c         | 125 ++++++++++++++++++++++++++++++----------
->  include/hw/riscv/virt.h |   1 +
->  2 files changed, 97 insertions(+), 29 deletions(-)
-> 
-> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> index 26b3aff28e..b74142d978 100644
-> --- a/hw/riscv/virt.c
-> +++ b/hw/riscv/virt.c
-> @@ -35,6 +35,7 @@
->  #include "hw/riscv/virt.h"
->  #include "hw/riscv/boot.h"
->  #include "hw/riscv/numa.h"
-> +#include "kvm_riscv.h"
->  #include "hw/intc/riscv_aclint.h"
->  #include "hw/intc/riscv_aplic.h"
->  #include "hw/intc/riscv_imsic.h"
-> @@ -75,6 +76,12 @@
->  #error "Can't accomodate all IMSIC groups in address space"
->  #endif
->  
-> +/* KVM AIA only supports APLIC MSI. APLIC Wired is always emulated by QEMU. */
-> +static bool virt_use_kvm_aia(RISCVVirtState *s)
-> +{
-> +    return kvm_irqchip_in_kernel() && s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC;
-> +}
-> +
->  static const MemMapEntry virt_memmap[] = {
->      [VIRT_DEBUG] =        {        0x0,         0x100 },
->      [VIRT_MROM] =         {     0x1000,        0xf000 },
-> @@ -609,16 +616,16 @@ static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
->                                   uint32_t *intc_phandles,
->                                   uint32_t aplic_phandle,
->                                   uint32_t aplic_child_phandle,
-> -                                 bool m_mode)
-> +                                 bool m_mode, int num_harts)
->  {
->      int cpu;
->      char *aplic_name;
->      uint32_t *aplic_cells;
->      MachineState *ms = MACHINE(s);
->  
-> -    aplic_cells = g_new0(uint32_t, s->soc[socket].num_harts * 2);
-> +    aplic_cells = g_new0(uint32_t, num_harts * 2);
->  
-> -    for (cpu = 0; cpu < s->soc[socket].num_harts; cpu++) {
-> +    for (cpu = 0; cpu < num_harts; cpu++) {
->          aplic_cells[cpu * 2 + 0] = cpu_to_be32(intc_phandles[cpu]);
->          aplic_cells[cpu * 2 + 1] = cpu_to_be32(m_mode ? IRQ_M_EXT : IRQ_S_EXT);
->      }
-> @@ -632,7 +639,7 @@ static void create_fdt_one_aplic(RISCVVirtState *s, int socket,
->  
->      if (s->aia_type == VIRT_AIA_TYPE_APLIC) {
->          qemu_fdt_setprop(ms->fdt, aplic_name, "interrupts-extended",
-> -            aplic_cells, s->soc[socket].num_harts * sizeof(uint32_t) * 2);
-> +            aplic_cells, num_harts * sizeof(uint32_t) * 2);
->      } else {
->          qemu_fdt_setprop_cell(ms->fdt, aplic_name, "msi-parent", msi_phandle);
->      }
-> @@ -662,7 +669,8 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
->                                      uint32_t msi_s_phandle,
->                                      uint32_t *phandle,
->                                      uint32_t *intc_phandles,
-> -                                    uint32_t *aplic_phandles)
-> +                                    uint32_t *aplic_phandles,
-> +                                    int num_harts)
->  {
->      char *aplic_name;
->      unsigned long aplic_addr;
-> @@ -679,7 +687,7 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
->          create_fdt_one_aplic(s, socket, aplic_addr, memmap[VIRT_APLIC_M].size,
->                               msi_m_phandle, intc_phandles,
->                               aplic_m_phandle, aplic_s_phandle,
-> -                             true);
-> +                             true, num_harts);
->      }
->  
->      /* S-level APLIC node */
-> @@ -688,7 +696,7 @@ static void create_fdt_socket_aplic(RISCVVirtState *s,
->      create_fdt_one_aplic(s, socket, aplic_addr, memmap[VIRT_APLIC_S].size,
->                           msi_s_phandle, intc_phandles,
->                           aplic_s_phandle, 0,
-> -                         false);
-> +                         false, num_harts);
->  
->      aplic_name = g_strdup_printf("/soc/aplic@%lx", aplic_addr);
->  
-> @@ -772,34 +780,48 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
->          *msi_pcie_phandle = msi_s_phandle;
->      }
->  
-> -    phandle_pos = ms->smp.cpus;
-> -    for (socket = (socket_count - 1); socket >= 0; socket--) {
-> -        phandle_pos -= s->soc[socket].num_harts;
-> +    /* KVM AIA only has one APLIC instance */
-> +    if (virt_use_kvm_aia(s)) {
-> +        create_fdt_socket_aplic(s, memmap, 0,
-> +            msi_m_phandle, msi_s_phandle, phandle,
-> +            &intc_phandles[0], xplic_phandles, ms->smp.cpus);
-> +    } else {
-> +        phandle_pos = ms->smp.cpus;
-> +        for (socket = (socket_count - 1); socket >= 0; socket--) {
-> +            phandle_pos -= s->soc[socket].num_harts;
->  
-> -        if (s->aia_type == VIRT_AIA_TYPE_NONE) {
-> -            create_fdt_socket_plic(s, memmap, socket, phandle,
-> -                &intc_phandles[phandle_pos], xplic_phandles);
-> -        } else {
-> -            create_fdt_socket_aplic(s, memmap, socket,
-> -                msi_m_phandle, msi_s_phandle, phandle,
-> -                &intc_phandles[phandle_pos], xplic_phandles);
-> +            if (s->aia_type == VIRT_AIA_TYPE_NONE) {
-> +                create_fdt_socket_plic(s, memmap, socket, phandle,
-> +                    &intc_phandles[phandle_pos], xplic_phandles);
-> +            } else {
-> +                create_fdt_socket_aplic(s, memmap, socket,
-> +                    msi_m_phandle, msi_s_phandle, phandle,
-> +                    &intc_phandles[phandle_pos], xplic_phandles,
-> +                    s->soc[socket].num_harts);
-> +            }
->          }
->      }
->  
->      g_free(intc_phandles);
->  
-> -    for (socket = 0; socket < socket_count; socket++) {
-> -        if (socket == 0) {
-> -            *irq_mmio_phandle = xplic_phandles[socket];
-> -            *irq_virtio_phandle = xplic_phandles[socket];
-> -            *irq_pcie_phandle = xplic_phandles[socket];
-> -        }
-> -        if (socket == 1) {
-> -            *irq_virtio_phandle = xplic_phandles[socket];
-> -            *irq_pcie_phandle = xplic_phandles[socket];
-> -        }
-> -        if (socket == 2) {
-> -            *irq_pcie_phandle = xplic_phandles[socket];
-> +    if (virt_use_kvm_aia(s)) {
-> +        *irq_mmio_phandle = xplic_phandles[0];
-> +        *irq_virtio_phandle = xplic_phandles[0];
-> +        *irq_pcie_phandle = xplic_phandles[0];
-> +    } else {
-> +        for (socket = 0; socket < socket_count; socket++) {
-> +            if (socket == 0) {
-> +                *irq_mmio_phandle = xplic_phandles[socket];
-> +                *irq_virtio_phandle = xplic_phandles[socket];
-> +                *irq_pcie_phandle = xplic_phandles[socket];
-> +            }
-> +            if (socket == 1) {
-> +                *irq_virtio_phandle = xplic_phandles[socket];
-> +                *irq_pcie_phandle = xplic_phandles[socket];
-> +            }
-> +            if (socket == 2) {
-> +                *irq_pcie_phandle = xplic_phandles[socket];
-> +            }
->          }
->      }
->  
-> @@ -1430,6 +1452,14 @@ static void virt_machine_init(MachineState *machine)
->          }
->      }
->  
-> +    if (virt_use_kvm_aia(s)) {
-> +        kvm_riscv_aia_create(
-> +            machine, s->kvm_aia_mode, IMSIC_MMIO_GROUP_MIN_SHIFT,
-> +            VIRT_IRQCHIP_NUM_SOURCES, VIRT_IRQCHIP_NUM_MSIS,
-> +            memmap[VIRT_APLIC_S].base, memmap[VIRT_IMSIC_S].base,
-> +            s->aia_guests);
-> +    }
-> +
->      if (riscv_is_32bit(&s->soc[0])) {
->  #if HOST_LONG_BITS == 64
->          /* limit RAM size in a 32-bit system */
-> @@ -1575,6 +1605,31 @@ static void virt_set_aia(Object *obj, const char *val, Error **errp)
->      }
->  }
->  
-> +#if defined(CONFIG_KVM)
-> +static char *virt_get_kvm_aia(Object *obj, Error **errp)
-> +{
-> +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-> +
-> +    return g_strdup(kvm_aia_mode_str(s->kvm_aia_mode));
-> +}
-> +
-> +static void virt_set_kvm_aia(Object *obj, const char *val, Error **errp)
-> +{
-> +    RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-> +
-> +    if (!strcmp(val, "emul")) {
-> +        s->kvm_aia_mode = KVM_DEV_RISCV_AIA_MODE_EMUL;
-> +    } else if (!strcmp(val, "hwaccel")) {
-> +        s->kvm_aia_mode = KVM_DEV_RISCV_AIA_MODE_HWACCEL;
-> +    } else if (!strcmp(val, "auto")) {
-> +        s->kvm_aia_mode = KVM_DEV_RISCV_AIA_MODE_AUTO;
-> +    } else {
-> +        error_setg(errp, "Invalid KVM AIA mode");
-> +        error_append_hint(errp, "Valid values are emul, hwaccel, and auto.\n");
-> +    }
-> +}
-> +#endif
-> +
->  static bool virt_get_aclint(Object *obj, Error **errp)
->  {
->      RISCVVirtState *s = RISCV_VIRT_MACHINE(obj);
-> @@ -1685,6 +1740,18 @@ static void virt_machine_class_init(ObjectClass *oc, void *data)
->      sprintf(str, "Set number of guest MMIO pages for AIA IMSIC. Valid value "
->                   "should be between 0 and %d.", VIRT_IRQCHIP_MAX_GUESTS);
->      object_class_property_set_description(oc, "aia-guests", str);
-> +
-> +#if defined(CONFIG_KVM)
-> +    object_class_property_add_str(oc, "kvm-aia", virt_get_kvm_aia,
-> +                                  virt_set_kvm_aia);
-> +    object_class_property_set_description(oc, "kvm-aia",
-> +                                          "Set KVM AIA mode. Valid values are "
-> +                                          "emul, hwaccel, and auto. Default "
-> +                                          "is auto.");
-> +    object_property_set_default_str(object_class_property_find(oc, "kvm-aia"),
-> +                                    "auto");
-> +
-> +#endif
->      object_class_property_add(oc, "acpi", "OnOffAuto",
->                                virt_get_acpi, virt_set_acpi,
->                                NULL, NULL);
-> diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
-> index e5c474b26e..d0140feeff 100644
-> --- a/include/hw/riscv/virt.h
-> +++ b/include/hw/riscv/virt.h
-> @@ -56,6 +56,7 @@ struct RISCVVirtState {
->      bool have_aclint;
->      RISCVVirtAIAType aia_type;
->      int aia_guests;
-> +    uint64_t kvm_aia_mode;
->      char *oem_id;
->      char *oem_table_id;
->      OnOffAuto acpi;
-> -- 
-> 2.17.1
->
+Hi Thomas,
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+On 21/6/23 09:41, Thomas Huth wrote:
+> It's possible to compile QEMU without the USB devices (e.g. when using
+> "--without-default-devices" as option for the "configure" script).
+> To be still able to run the loongson3-virt machine in default mode with
+> such a QEMU binary, we have to check here for the availability of the
+> USB devices first before instantiating them.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   v2: Use #ifdef instead of runtime check
+> 
+>   hw/mips/loongson3_virt.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+> index 216812f660..3094413eea 100644
+> --- a/hw/mips/loongson3_virt.c
+> +++ b/hw/mips/loongson3_virt.c
+> @@ -51,6 +51,7 @@
+>   #include "sysemu/reset.h"
+>   #include "sysemu/runstate.h"
+>   #include "qemu/error-report.h"
+> +#include CONFIG_DEVICES
+
+I'm a but reluctant to include CONFIG_DEVICES.
+
+> +#ifdef CONFIG_USB_OHCI_PCI
+>       if (defaults_enabled()) {
+
+What about:
+
+   if (defaults_enabled() && object_class_by_name(TYPE_PCI_OHCI)) {
+
+>           pci_create_simple(pci_bus, -1, "pci-ohci");
+>           usb_create_simple(usb_bus_find(-1), "usb-kbd");
+>           usb_create_simple(usb_bus_find(-1), "usb-tablet");
+>       }
+> +#endif
+
 
