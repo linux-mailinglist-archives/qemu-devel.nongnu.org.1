@@ -2,67 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C40752729
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 17:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC121752751
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 17:35:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJyId-0005hD-5y; Thu, 13 Jul 2023 11:32:11 -0400
+	id 1qJyKq-0006fj-SF; Thu, 13 Jul 2023 11:34:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJyIU-0005ft-H8
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:32:02 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ id 1qJyKf-0006fM-Lu
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:34:19 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJyIS-0002dP-Sb
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:32:02 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4f96d680399so1462756e87.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 08:31:59 -0700 (PDT)
+ id 1qJyKd-0003J0-J3
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:34:17 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-51a52a7d859so4522114a12.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 08:34:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689262318; x=1691854318;
+ d=linaro.org; s=google; t=1689262453; x=1691854453;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=XmtRfAaCOEvHnZJlQJO9UyKPNDs6p09uMlOOyI7uQBk=;
- b=c3L2j7z9Nk8a+4RupE7dqWGo3JoNChMcfhVHvmSkk6PNIuSPDgKQrRQEwV/AwgJEbC
- /uxUf/LZ0j/H0yiPcplLaNcGioSZYH01ZEqxHj590HZTPfJztKZ4ieN219tIz8Lcc8YM
- YVtmGnU3F3QT4/4fttbdzew2nQprjBmOVeuV0L8CgSzV6KbZAjeW8drXL4ZGtt/tJNZC
- NlhWXGubgE6hHvcb23ILbn39ZSh2SC8NB3Oeywh1JTPq0VeGECl0y1Aja4Udp7bgTWer
- LJoEBXtrFlVEJ0px0r/EJ7LUKRl9vmdj4YgoDDtVf0EmhwLQsJITbyzMpKPlDTBtjcc8
- mkcw==
+ bh=/idHrsINrPZDFxxMttH+pz4uwiOtxdQbw2c5cH0SFds=;
+ b=wA9r5RtOwkUoP6cWxK2aESEoe6MjTVutynsmOUWkODHKhlyDQq24ydmp/l1DiKmP5N
+ AgQuJrgPz+jdfC2U71dLyPpqkWjGxx5vlxb7PiHwIXQkvU2ca61eI928oCmg/pyTJxRf
+ tUkRtsiciHFkIscDZxx1CzV8S05cEmIE98Cthoo8FAmb2jSm6esCNbucwDuWu8thzGbF
+ LpDNrzfScp8rIG26k84kcBkJ8sWa0yIAlDtfVmHZi+1KobsZG9Qap1yo7fv92xLwU9Ya
+ MTFG4VMXPPKq/uULwjuTWiaxrbU2NSR7WWgoc173eYegA/CurTV+lJiFFI2A+zcQo3Hw
+ d+4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689262318; x=1691854318;
+ d=1e100.net; s=20221208; t=1689262453; x=1691854453;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=XmtRfAaCOEvHnZJlQJO9UyKPNDs6p09uMlOOyI7uQBk=;
- b=Y3dUetYbt1nP23qhl2rRcKVEYt5FFkPhRmZNK4bMTACRMNMRPtwFqCGddoKbkr+cQc
- EyY5qcSjtPgiUw1VJJI64jPzu2Guh2ITC0kFhyMwK9UC+s3Hftt8z9uB2GYo3vEV9JXG
- oAL6Tnzky3ldz7H+lddYHBbF3k/sYULrY2WEThKQV4RHc61gT3+8RboarRNUhrs3wRxZ
- 1IsgjeUZlnyb5Juo910164TIdKRXF6C+UfuPnApXqUyyRmJnnoQAHM7EiF4JdFOybalu
- SJasffSYxadNthr7t9ywjMJ6fGTCauH3nmXayfqFjxlr9b9RTRFuvHJtNXTb5C9fNc4v
- iimQ==
-X-Gm-Message-State: ABy/qLYOYIFZAJ8Vm/ta3UmFDAPnHwEuIiM0pRcek5YWrZdAPnum86gr
- DkWvWSesrHlUIEf0wrxiCCLeQ19qhuvYRNWKStMu0g==
-X-Google-Smtp-Source: APBJJlEIjEIXLZb5+XdqoUoCNdp+yMclNJ8ZsrRgEaZX8dfFq3p9BO25fkbfJzn7PLth/RyIUGHCqWqzGjZY42e6XiY=
-X-Received: by 2002:a05:6512:53b:b0:4fb:89bb:bcc5 with SMTP id
- o27-20020a056512053b00b004fb89bbbcc5mr1659168lfc.50.1689262318116; Thu, 13
- Jul 2023 08:31:58 -0700 (PDT)
+ bh=/idHrsINrPZDFxxMttH+pz4uwiOtxdQbw2c5cH0SFds=;
+ b=O49O8aYC9JGTNKe7Ibj6SMzZnVRkhfktR7R2WUEtVqR70txmyS0BVuviG6XpXBmZ+F
+ pBY0q9EMNTaZ+uyspwPV40OUm5Z5GeLJBYs8sqa2VxZhwH27WSrf29NG6dMwZQLOu+9r
+ LuAMryeXYsXXCBQGWGscYzMIDe/R+I0CuvLYIlLYHL4kibP+qQ4YsSWS8EPgCcRTncRW
+ BJYGUCp10HO3HDhcJiSpm3Dz9XnLmqaP/8JJ7Fy15D165yjBM2XkvAxVk8pzQOiIGw++
+ nPOG383ckYt2D1GelDKfx64OdzydBAz9E8v+7L17sHt0/ICD46u04xqPtokrSCk9uHWj
+ 8fGw==
+X-Gm-Message-State: ABy/qLb0VPAt027Q3aGV14SArJM46XU74VlQI94bQfBVJe6mGqsqhhby
+ M8wBpEYnpKgcPaKvS2EbAPDK2vCBC1W8yLSljDQygw==
+X-Google-Smtp-Source: APBJJlEsTjt0cc3afsD7L2kNGl/+TxxB7T426cXskItE74TeD4XLdBoAJRS/Xuo0a8j0n27l0GAw/41CMvgEbuXQsVU=
+X-Received: by 2002:a05:6402:2695:b0:51e:5bd5:fe7e with SMTP id
+ w21-20020a056402269500b0051e5bd5fe7emr6373edd.17.1689262453246; Thu, 13 Jul
+ 2023 08:34:13 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230713035232.48406-1-j@getutm.app>
- <20230713035232.48406-8-j@getutm.app>
-In-Reply-To: <20230713035232.48406-8-j@getutm.app>
+ <20230713035232.48406-5-j@getutm.app>
+ <4a49285e-0d91-93a0-2f8e-e76c71ed89f8@linux.ibm.com>
+ <CAFEAcA-r_VOc18-jm99asYQQk4TJMBW_7oJMzFQofEHqVdF50A@mail.gmail.com>
+ <ab339186-1af7-171c-eb11-fe124f12b4a2@linux.ibm.com>
+In-Reply-To: <ab339186-1af7-171c-eb11-fe124f12b4a2@linux.ibm.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 13 Jul 2023 16:31:47 +0100
-Message-ID: <CAFEAcA_hKao=-kadeKjZMGOugtSGLHzhzTLiva5aZP7PHQN3xQ@mail.gmail.com>
-Subject: Re: [PATCH 07/11] hw/arm/virt: add plug handler for TPM on SysBus
-To: Joelle van Dyne <j@getutm.app>
-Cc: qemu-devel@nongnu.org, "open list:Virt" <qemu-arm@nongnu.org>
+Date: Thu, 13 Jul 2023 16:34:02 +0100
+Message-ID: <CAFEAcA9nad4H3MgitMyVsZjNZdY-n9d65Yz4Gtbz2wPYA4fbsg@mail.gmail.com>
+Subject: Re: [PATCH 04/11] tpm_crb: use a single read-as-mem/write-as-mmio
+ mapping
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, 
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,62 +90,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 13 Jul 2023 at 04:52, Joelle van Dyne <j@getutm.app> wrote:
+On Thu, 13 Jul 2023 at 16:28, Stefan Berger <stefanb@linux.ibm.com> wrote:
 >
-> TPM needs to know its own base address in order to generate its DSDT
-> device entry.
 >
-> Signed-off-by: Joelle van Dyne <j@getutm.app>
-> ---
->  hw/arm/virt.c | 37 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
 >
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 7d9dbc2663..432148ef47 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -2732,6 +2732,37 @@ static void virt_memory_plug(HotplugHandler *hotplug_dev,
->                           dev, &error_abort);
->  }
+> On 7/13/23 10:50, Peter Maydell wrote:
+> > On Thu, 13 Jul 2023 at 15:18, Stefan Berger <stefanb@linux.ibm.com> wrote:
+> >>
+> >>
+> >>
+> >> On 7/12/23 23:51, Joelle van Dyne wrote:
+> >>> On Apple Silicon, when Windows performs a LDP on the CRB MMIO space,
+> >>> the exception is not decoded by hardware and we cannot trap the MMIO
+> >>> read. This led to the idea from @agraf to use the same mapping type as
+> >>> ROM devices: namely that reads should be seen as memory type and
+> >>> writes should trap as MMIO.
 >
-> +#ifdef CONFIG_TPM
-> +static void virt_tpm_plug(VirtMachineState *vms, TPMIf *tpmif)
-> +{
-> +    PlatformBusDevice *pbus = PLATFORM_BUS_DEVICE(vms->platform_bus_dev);
-> +    hwaddr pbus_base = vms->memmap[VIRT_PLATFORM_BUS].base;
-> +    SysBusDevice *sbdev = SYS_BUS_DEVICE(tpmif);
-> +    MemoryRegion *sbdev_mr;
-> +    hwaddr tpm_base;
-> +    uint64_t tpm_size;
-> +
-> +    if (!sbdev || !object_dynamic_cast(OBJECT(sbdev), TYPE_SYS_BUS_DEVICE)) {
-> +        return;
-> +    }
-> +
-> +    tpm_base = platform_bus_get_mmio_addr(pbus, sbdev, 0);
-> +    assert(tpm_base != -1);
-> +
-> +    tpm_base += pbus_base;
-> +
-> +    sbdev_mr = sysbus_mmio_get_region(sbdev, 0);
-> +    tpm_size = memory_region_size(sbdev_mr);
-> +
-> +    if (object_property_find(OBJECT(sbdev), "baseaddr")) {
-> +        object_property_set_uint(OBJECT(sbdev), "baseaddr", tpm_base, NULL);
-> +    }
-> +    if (object_property_find(OBJECT(sbdev), "size")) {
-> +        object_property_set_uint(OBJECT(sbdev), "size", tpm_size, NULL);
-> +    }
-> +}
-> +#endif
+> >>> +++ b/hw/tpm/tpm_crb.c
+> >>> @@ -68,7 +68,6 @@ static const VMStateDescription vmstate_tpm_crb_none = {
+> >>>        .name = "tpm-crb",
+> >>>        .pre_save = tpm_crb_none_pre_save,
+> >>>        .fields = (VMStateField[]) {
+> >>> -        VMSTATE_UINT32_ARRAY(state.regs, CRBState, TPM_CRB_R_MAX),
+> >>
+> >> This has to stay here otherwise we cannot restart VMs from saved state once QEMU is upgraded.
+> >>
+> >> 2023-07-13T14:15:43.997718Z qemu-system-x86_64: Unknown ramblock "tpm-crb-cmd", cannot accept migration
+> >> 2023-07-13T14:15:43.997813Z qemu-system-x86_64: error while loading state for instance 0x0 of device 'ram'
+> >> 2023-07-13T14:15:43.997841Z qemu-system-x86_64: load of migration failed: Invalid argument
+> >
+> > More generally, for migration compatibility in the other
+> > direction you need to use memory_region_init_rom_device_nomigrate()
+> > and make sure you keep migrating the data via this, not
+> > via the MemoryRegion.
+> >
+> > I'm not a super-fan of hacking around the fact that LDP
+> > to hardware registers isn't supported in specific device
+> > models, though...
+>
+> What does this mean for this effort here?
 
-I do not like the "platform bus" at all -- it is a nasty hack.
-If the virt board needs a memory mapped TPM device it should probably
-just create one, the same way we create our other memory mapped
-devices. But...
-
-How are TPM devices typically set up/visible to the guest on
-real Arm server hardware ? Should this be a sysbus device at all?
+Usually we say "fix the guest to not try to access hardware
+registers with silly load/store instruction types". The other
+option would be "put in a large amount of effort to support
+emulating those instructions in QEMU userspace when KVM/HVF/etc
+trap and punt them to us". For the last decade or so we have
+taken the first of these approaches :-)
 
 thanks
 -- PMM
