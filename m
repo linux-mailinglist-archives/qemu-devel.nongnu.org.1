@@ -2,91 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2067B7527EE
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 18:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7904075280B
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 18:09:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJykk-0000RT-7V; Thu, 13 Jul 2023 12:01:14 -0400
+	id 1qJyrf-00055h-HW; Thu, 13 Jul 2023 12:08:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qJykb-0000NP-KA
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 12:01:05 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1qJyra-00052V-Ke
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 12:08:18 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qJykY-0005LK-Ck
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 12:01:05 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ id 1qJyrX-0008Tu-B7
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 12:08:18 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36DFthWP015237; Thu, 13 Jul 2023 16:00:57 GMT
+ 36DFnB1u000534; Thu, 13 Jul 2023 16:08:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=d4D4Og/uykT2w3MUXlvrbwdb4Li8upLfuvg3pLPEsfk=;
- b=ESm1J1u0s1ayMJs7dAK0LuUzQE7DEARF94+cuiaSww8nDKptSvxvywK2V456CUKY0ba7
- XHVlDd9VZH3gSG7/+ZwIS9CiOrHuQsShH4Yi4G3/sNMOcc5qMRbrlvcjzaN1PsMkFBKX
- ytrq+PH03UJWz4riKRzstdBGcikFZ646YHTQO4hLCfwekKm/J8ZMsavKPXd/qjWq3gfG
- 83iGWxbHUTSIoHxClI9+HpdqHVlWvTvs9mWp9Y37zcTC6wcK3NtiuOcbj5tODYQCzu0z
- 6xzn6lxKRBBKfybPpPArbbfcMGl5m2PH5X1CkKgI8J+Oh2jSS7BAIkqBuE9FD8MuB5zB bg== 
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=z3d+6DyXWU7WHWgR19GETHuah9MxTv8UHpARsMEnHU4=;
+ b=RlduLpdb9R+4zb/EsF6WOxrmadNeGsgjYPiyWTFOskFXPfUE/7DqvhyLCYcgJ0Uon957
+ 63fVz8K/ugoiczDF7GVCQt+jjjeTqnAn5iQJzzfdiGHY1e50O+rm54FfbwW4vtbh3kee
+ Mu75LRI3BQGitQpLBCQOkG3K7ScA0seOUSiMcSzkZ0egzP1wyd560jKBycAzeUNVGq8r
+ Nf9xJqceQdIzS6mSpw/Y5yZkRTAiwfNZXyB+EkCKhAq8UhCjWO7ywUccx3+jeeehMlud
+ rG9/2rlaYGAWSqxGBi9LtlGmbWAZInwe/VCeWM4ATy0PjrtYSxfH/keABF3M7vBTsOYH hw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtm838ecn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 16:08:11 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36DG7rPD025366;
+ Thu, 13 Jul 2023 16:08:10 GMT
 Received: from ppma12.dal12v.mail.ibm.com
  (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtm73rdcp-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtm838ebw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 16:00:56 +0000
+ Thu, 13 Jul 2023 16:08:10 +0000
 Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
  by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36DDtqCx005046; Thu, 13 Jul 2023 16:00:55 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rqj4rrasn-1
+ 36DDuj0G005820; Thu, 13 Jul 2023 16:08:10 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rqj4rrbmd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 16:00:55 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36DG0sFn64487904
+ Thu, 13 Jul 2023 16:08:10 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36DG89nB3015348
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Jul 2023 16:00:55 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AAFC758063;
- Thu, 13 Jul 2023 16:00:54 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7217358062;
- Thu, 13 Jul 2023 16:00:54 +0000 (GMT)
+ Thu, 13 Jul 2023 16:08:09 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4CDCA5805B;
+ Thu, 13 Jul 2023 16:08:09 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 602C55804B;
+ Thu, 13 Jul 2023 16:08:08 +0000 (GMT)
 Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 13 Jul 2023 16:00:54 +0000 (GMT)
-Message-ID: <b06e0319-676c-e090-abc2-18174aa02905@linux.ibm.com>
-Date: Thu, 13 Jul 2023 12:00:54 -0400
-MIME-Version: 1.0
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 13 Jul 2023 16:08:08 +0000 (GMT)
+Message-ID: <d51ec99a-81d3-76ab-648f-f80550856271@linux.ibm.com>
+Date: Thu, 13 Jul 2023 12:08:07 -0400
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 03/11] tpm_ppi: refactor memory space initialization
+Subject: Re: [PATCH 06/11] tpm_crb: move ACPI table building to device
+ interface
 Content-Language: en-US
 To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
-Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov
+ <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
 References: <20230713035232.48406-1-j@getutm.app>
- <20230713035232.48406-4-j@getutm.app>
+ <20230713035232.48406-7-j@getutm.app>
 From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20230713035232.48406-4-j@getutm.app>
+In-Reply-To: <20230713035232.48406-7-j@getutm.app>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: o0Wm0sSXgk0kVVI1x1oGd5QYYq0ahpev
-X-Proofpoint-ORIG-GUID: o0Wm0sSXgk0kVVI1x1oGd5QYYq0ahpev
+X-Proofpoint-ORIG-GUID: 8oze-fy8k7nam6lS7Xo-Ro79SJWzTC0D
+X-Proofpoint-GUID: iBaqShk9NPS566cx8km_R2kQcMwV4fD6
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-13_06,2023-07-13_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- malwarescore=0 suspectscore=0 lowpriorityscore=0 impostorscore=0
- mlxlogscore=999 phishscore=0 adultscore=0 priorityscore=1501 clxscore=1015
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307130137
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ spamscore=0 malwarescore=0
+ mlxlogscore=999 lowpriorityscore=0 impostorscore=0 phishscore=0 mlxscore=0
+ suspectscore=0 priorityscore=1501 bulkscore=0 clxscore=1011 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2307130142
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,108 +127,126 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 7/12/23 23:51, Joelle van Dyne wrote:
-> Instead of calling `memory_region_add_subregion` directly, we defer to
-> the caller to do it. This allows us to re-use the code for a SysBus
-> device.
+> This logic is similar to TPM TIS ISA device.
 > 
 > Signed-off-by: Joelle van Dyne <j@getutm.app>
-
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-
 > ---
->   hw/tpm/tpm_ppi.h        | 10 +++-------
->   hw/tpm/tpm_crb.c        |  4 ++--
->   hw/tpm/tpm_crb_common.c |  3 +++
->   hw/tpm/tpm_ppi.c        |  5 +----
->   hw/tpm/tpm_tis_isa.c    |  5 +++--
->   5 files changed, 12 insertions(+), 15 deletions(-)
+>   hw/i386/acpi-build.c | 23 -----------------------
+>   hw/tpm/tpm_crb.c     | 28 ++++++++++++++++++++++++++++
+>   2 files changed, 28 insertions(+), 23 deletions(-)
 > 
-> diff --git a/hw/tpm/tpm_ppi.h b/hw/tpm/tpm_ppi.h
-> index bf5d4a300f..30863c6438 100644
-> --- a/hw/tpm/tpm_ppi.h
-> +++ b/hw/tpm/tpm_ppi.h
-> @@ -20,17 +20,13 @@ typedef struct TPMPPI {
->   } TPMPPI;
+> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> index 9c74fa17ad..b767df39df 100644
+> --- a/hw/i386/acpi-build.c
+> +++ b/hw/i386/acpi-build.c
+> @@ -1441,9 +1441,6 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+>       uint32_t nr_mem = machine->ram_slots;
+>       int root_bus_limit = 0xFF;
+>       PCIBus *bus = NULL;
+> -#ifdef CONFIG_TPM
+> -    TPMIf *tpm = tpm_find();
+> -#endif
+>       bool cxl_present = false;
+>       int i;
+>       VMBusBridge *vmbus_bridge = vmbus_bridge_find();
+> @@ -1793,26 +1790,6 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+>           }
+>       }
 > 
->   /**
-> - * tpm_ppi_init:
-> + * tpm_ppi_init_memory:
->    * @tpmppi: a TPMPPI
-> - * @m: the address-space / MemoryRegion to use
-> - * @addr: the address of the PPI region
->    * @obj: the owner object
->    *
-> - * Register the TPM PPI memory region at @addr on the given address
-> - * space for the object @obj.
-> + * Creates the TPM PPI memory region.
->    **/
-> -void tpm_ppi_init(TPMPPI *tpmppi, MemoryRegion *m,
-> -                  hwaddr addr, Object *obj);
-> +void tpm_ppi_init_memory(TPMPPI *tpmppi, Object *obj);
-> 
->   /**
->    * tpm_ppi_reset:
+> -#ifdef CONFIG_TPM
+> -    if (TPM_IS_CRB(tpm)) {
+> -        dev = aml_device("TPM");
+> -        aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")));
+> -        aml_append(dev, aml_name_decl("_STR",
+> -                                      aml_string("TPM 2.0 Device")));
+> -        crs = aml_resource_template();
+> -        aml_append(crs, aml_memory32_fixed(TPM_CRB_ADDR_BASE,
+> -                                           TPM_CRB_ADDR_SIZE, AML_READ_WRITE));
+> -        aml_append(dev, aml_name_decl("_CRS", crs));
+> -
+> -        aml_append(dev, aml_name_decl("_STA", aml_int(0xf)));
+> -        aml_append(dev, aml_name_decl("_UID", aml_int(1)));
+> -
+> -        tpm_build_ppi_acpi(tpm, dev);
+> -
+> -        aml_append(sb_scope, dev);
+> -    }
+> -#endif
+> -
+>       if (pcms->sgx_epc.size != 0) {
+>           uint64_t epc_base = pcms->sgx_epc.base;
+>           uint64_t epc_size = pcms->sgx_epc.size;
 > diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
-> index 3ef4977fb5..598c3e0161 100644
+> index 6144081d30..14feb9857f 100644
 > --- a/hw/tpm/tpm_crb.c
 > +++ b/hw/tpm/tpm_crb.c
-> @@ -107,8 +107,8 @@ static void tpm_crb_none_realize(DeviceState *dev, Error **errp)
->           TPM_CRB_ADDR_BASE + sizeof(s->state.regs), &s->state.cmdmem);
-> 
->       if (s->state.ppi_enabled) {
-> -        tpm_ppi_init(&s->state.ppi, get_system_memory(),
-> -                     TPM_PPI_ADDR_BASE, OBJECT(s));
-> +        memory_region_add_subregion(get_system_memory(),
-> +            TPM_PPI_ADDR_BASE, &s->state.ppi.ram);
+> @@ -19,6 +19,8 @@
+>   #include "qemu/module.h"
+>   #include "qapi/error.h"
+>   #include "exec/address-spaces.h"
+> +#include "hw/acpi/acpi_aml_interface.h"
+> +#include "hw/acpi/tpm.h"
+>   #include "hw/qdev-properties.h"
+>   #include "hw/pci/pci_ids.h"
+>   #include "hw/acpi/tpm.h"
+> @@ -116,10 +118,34 @@ static void tpm_crb_isa_realize(DeviceState *dev, Error **errp)
 >       }
+>   }
 > 
->       if (xen_enabled()) {
-> diff --git a/hw/tpm/tpm_crb_common.c b/hw/tpm/tpm_crb_common.c
-> index 228e2d0faf..e56e910670 100644
-> --- a/hw/tpm/tpm_crb_common.c
-> +++ b/hw/tpm/tpm_crb_common.c
-> @@ -216,4 +216,7 @@ void tpm_crb_init_memory(Object *obj, TPMCRBState *s, Error **errp)
->           "tpm-crb-mmio", sizeof(s->regs));
->       memory_region_init_ram(&s->cmdmem, obj,
->           "tpm-crb-cmd", CRB_CTRL_CMD_SIZE, errp);
-> +    if (s->ppi_enabled) {
-> +        tpm_ppi_init_memory(&s->ppi, obj);
+> +static void build_tpm_crb_isa_aml(AcpiDevAmlIf *adev, Aml *scope)
+> +{
+> +    Aml *dev, *crs;
+> +    CRBState *s = CRB(adev);
+> +    TPMIf *ti = TPM_IF(s);
+> +
+> +    dev = aml_device("TPM");
+> +    if (tpm_crb_isa_get_version(ti) == TPM_VERSION_2_0) {
+> +        aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")));
+> +        aml_append(dev, aml_name_decl("_STR", aml_string("TPM 2.0 Device")));
+> +    } else {
+> +        aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0C31")));
 > +    }
->   }
-> diff --git a/hw/tpm/tpm_ppi.c b/hw/tpm/tpm_ppi.c
-> index 7f74e26ec6..40cab59afa 100644
-> --- a/hw/tpm/tpm_ppi.c
-> +++ b/hw/tpm/tpm_ppi.c
-> @@ -44,14 +44,11 @@ void tpm_ppi_reset(TPMPPI *tpmppi)
->       }
->   }
-> 
-> -void tpm_ppi_init(TPMPPI *tpmppi, MemoryRegion *m,
-> -                  hwaddr addr, Object *obj)
-> +void tpm_ppi_init_memory(TPMPPI *tpmppi, Object *obj)
+
+CRB only exists for TPM 2.0 and that's why we didn't have a different case here before.
+
+CRB only has MSFT0101: https://elixir.bootlin.com/linux/latest/source/drivers/char/tpm/tpm_crb.c#L820
+TIS has PNP0C31: https://elixir.bootlin.com/linux/latest/source/drivers/char/tpm/tpm_tis.c
+
+You should remove the check for TPM_VERSION_2_0.
+
+    Stefan
+> +    aml_append(dev, aml_name_decl("_UID", aml_int(1)));
+> +    aml_append(dev, aml_name_decl("_STA", aml_int(0xF)));
+> +    crs = aml_resource_template();
+> +    aml_append(crs, aml_memory32_fixed(TPM_CRB_ADDR_BASE, TPM_CRB_ADDR_SIZE,
+> +                                      AML_READ_WRITE));
+> +    aml_append(dev, aml_name_decl("_CRS", crs));
+> +    tpm_build_ppi_acpi(ti, dev);
+> +    aml_append(scope, dev);
+> +}
+> +
+>   static void tpm_crb_isa_class_init(ObjectClass *klass, void *data)
 >   {
->       tpmppi->buf = qemu_memalign(qemu_real_host_page_size(),
->                                   HOST_PAGE_ALIGN(TPM_PPI_ADDR_SIZE));
->       memory_region_init_ram_device_ptr(&tpmppi->ram, obj, "tpm-ppi",
->                                         TPM_PPI_ADDR_SIZE, tpmppi->buf);
->       vmstate_register_ram(&tpmppi->ram, DEVICE(obj));
-> -
-> -    memory_region_add_subregion(m, addr, &tpmppi->ram);
->   }
-> diff --git a/hw/tpm/tpm_tis_isa.c b/hw/tpm/tpm_tis_isa.c
-> index 91e3792248..7cd7415f30 100644
-> --- a/hw/tpm/tpm_tis_isa.c
-> +++ b/hw/tpm/tpm_tis_isa.c
-> @@ -134,8 +134,9 @@ static void tpm_tis_isa_realizefn(DeviceState *dev, Error **errp)
->                                   TPM_TIS_ADDR_BASE, &s->mmio);
+>       DeviceClass *dc = DEVICE_CLASS(klass);
+>       TPMIfClass *tc = TPM_IF_CLASS(klass);
+> +    AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(klass);
 > 
->       if (s->ppi_enabled) {
-> -        tpm_ppi_init(&s->ppi, isa_address_space(ISA_DEVICE(dev)),
-> -                     TPM_PPI_ADDR_BASE, OBJECT(dev));
-> +        tpm_ppi_init_memory(&s->ppi, OBJECT(dev));
-> +        memory_region_add_subregion(isa_address_space(ISA_DEVICE(dev)),
-> +                                    TPM_PPI_ADDR_BASE, &s->ppi.ram);
+>       dc->realize = tpm_crb_isa_realize;
+>       device_class_set_props(dc, tpm_crb_isa_properties);
+> @@ -128,6 +154,7 @@ static void tpm_crb_isa_class_init(ObjectClass *klass, void *data)
+>       tc->model = TPM_MODEL_TPM_CRB;
+>       tc->get_version = tpm_crb_isa_get_version;
+>       tc->request_completed = tpm_crb_isa_request_completed;
+> +    adevc->build_dev_aml = build_tpm_crb_isa_aml;
+> 
+>       set_bit(DEVICE_CATEGORY_MISC, dc->categories);
+>   }
+> @@ -139,6 +166,7 @@ static const TypeInfo tpm_crb_isa_info = {
+>       .class_init  = tpm_crb_isa_class_init,
+>       .interfaces = (InterfaceInfo[]) {
+>           { TYPE_TPM_IF },
+> +        { TYPE_ACPI_DEV_AML_IF },
+>           { }
 >       }
->   }
-> 
+>   };
 
