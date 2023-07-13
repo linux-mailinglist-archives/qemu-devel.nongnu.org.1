@@ -2,92 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ABBB7523E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 15:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 731A0752506
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 16:19:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJwRB-0006iJ-Rh; Thu, 13 Jul 2023 09:32:53 -0400
+	id 1qJx8w-0008R5-6n; Thu, 13 Jul 2023 10:18:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qJwQk-0006ep-4E
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 09:32:35 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qJwQe-0001uu-8X
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 09:32:23 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6689430d803so464231b3a.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 06:32:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1689255132; x=1691847132;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AVb5HfXuGgun3v6HQkMveBBCS9Vi/v1+B8ArdC8o3PY=;
- b=gUO65TLbz99Hm5jbdhoO24rm3YUF0iXhtHqkt0NcsCyu+S90+0emZe+3LoLYrJKHS/
- WRjbiju5G+M7pIsytIJ0YAVpYxZPLX3sr2NHk4x9tKC+TTozmU2m3Z8gAfDJJrLRBtSC
- eyWXnyw+BuXz+qGszOSF4EkQ084RorhsyRdJAyX52B49fKVO5nYp9wneOuCiUlLonUKV
- PYEPuNwPwNssM3EW7Yhu3IsC/fjf0M0TqHBp/xlJ5pjLgyZuCTYKzjiGddWY+zcdC39f
- w7Qw/fy9IiMq+70Pmh3yX8lsx9jrGAUlZMbRtKN7wZsJRM+1Baa4rCO/+BYnX/MYdGRG
- L02Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689255132; x=1691847132;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AVb5HfXuGgun3v6HQkMveBBCS9Vi/v1+B8ArdC8o3PY=;
- b=hngVeNgHpQUBC2cVOESiSwvJ5j9D3yHg/xOnmXwI+zu1qIkw8Lw9zto9KNEqwg09eW
- EaaxwXZ+3/Oonskv/jFCMKXyyPzzD2IdNNYnacxR+kJv66rm8v0ArYiQqEgBtIKrok28
- 4rxzGBeAS/o6JWK6gTj0XGNw+SZ9p3elqyu3QMi7ywIjd1ZRubGo0+atwxuwZdVU8rOP
- FwuHjx1q4S8mwkblnoadt2wmd+91/R+yPi2+0cUsoY4RHKEUXC/m9Nu0RgMQVrYnSI3i
- Yf0n3c0sgHGIrHcQcY/L4Ajl39MyRc1rfYBYJeOViswq17dJmMIRDCPaFw45luNIIOpf
- UcKQ==
-X-Gm-Message-State: ABy/qLY33vzmsPjXOoYmrkvP4xgO/CO5NEGxCm29zUA8qdjMEUnneVRK
- AxEon57thDbm8nOqwnzxadX76g==
-X-Google-Smtp-Source: APBJJlEfJsIUPMSXgJutim2aeiJe1XdiEzlXY6Hibmxu7eQE8s72M/1oCFbXP7azbC5bkc0zBCwhjA==
-X-Received: by 2002:a05:6a00:3913:b0:67e:bf65:ae68 with SMTP id
- fh19-20020a056a00391300b0067ebf65ae68mr1308431pfb.3.1689255132342; 
- Thu, 13 Jul 2023 06:32:12 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- h21-20020a62b415000000b0067b24701daasm5395400pfn.86.2023.07.13.06.32.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 06:32:11 -0700 (PDT)
-Message-ID: <5369af1f-4e69-2d2f-431f-dcf1157f4b21@daynix.com>
-Date: Thu, 13 Jul 2023 22:32:07 +0900
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qJx8s-0008QV-7i
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 10:18:02 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qJx8p-0000Q8-VC
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 10:18:02 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36DE6sSP032152; Thu, 13 Jul 2023 14:17:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=er+J+1oEAK+TQVmgcwN/dS3a9+UzAca+6DLI3M4kAis=;
+ b=tcSpJvpOLA4MeysaXvptL2wzSPS6i6EeuNbHf6QlmW7oiTAa+ncPX1/GYd+JT06FUDcX
+ H5DCGGbxSQr6JhOdLm9Cryc3uGYvnoCra84sHNealuM3njXuCZGO7G16DxJpicHYr8CA
+ Q9ERi/tYPx6K2mC1a6Aan0TLoP+1Dfkaydoor96D5cK48q+iaOsnlT41vTtGcqxHTgxj
+ bkxEQ9cWFqehWam9lNWe5wHA1c4Vwv3ncbiTnS3qdH/LMGn7j40q2cugZpFyU4uxRENF
+ Z53qhfI/Uar5n5TqzkbKa9CqDQo6NdcOMq31vf7ewnxB2BM2E0svFOTrVr1QZ05a3VHP ng== 
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtjhprn7h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 14:17:56 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36DDvlPF006619; Thu, 13 Jul 2023 14:17:55 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rqj4rr3ga-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 14:17:55 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36DEHt5f4850416
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 13 Jul 2023 14:17:55 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1AD9358056;
+ Thu, 13 Jul 2023 14:17:55 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AD88358061;
+ Thu, 13 Jul 2023 14:17:54 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 13 Jul 2023 14:17:54 +0000 (GMT)
+Message-ID: <4a49285e-0d91-93a0-2f8e-e76c71ed89f8@linux.ibm.com>
+Date: Thu, 13 Jul 2023 10:17:54 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] hw/pci: Warn when ARI/SR-IOV device has non-zero Function
- number
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
- qemu-block@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>
-References: <20230712112732.18617-1-akihiko.odaki@daynix.com>
- <20230712073523-mutt-send-email-mst@kernel.org>
- <e8be9581-2308-7fe6-f407-2ce54557dbd0@daynix.com>
- <20230712075420-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH 04/11] tpm_crb: use a single read-as-mem/write-as-mmio
+ mapping
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230712075420-mutt-send-email-mst@kernel.org>
+To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
+Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20230713035232.48406-1-j@getutm.app>
+ <20230713035232.48406-5-j@getutm.app>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20230713035232.48406-5-j@getutm.app>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::435;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: wCDWnNrfXXfsjmjN_YiRQiknN8NlgDEL
+X-Proofpoint-GUID: wCDWnNrfXXfsjmjN_YiRQiknN8NlgDEL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-13_05,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 clxscore=1015
+ adultscore=0 malwarescore=0 phishscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 mlxscore=0 spamscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2307130122
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,131 +110,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/07/12 21:06, Michael S. Tsirkin wrote:
-> On Wed, Jul 12, 2023 at 08:50:32PM +0900, Akihiko Odaki wrote:
->> On 2023/07/12 20:46, Michael S. Tsirkin wrote:
->>> On Wed, Jul 12, 2023 at 08:27:32PM +0900, Akihiko Odaki wrote:
->>>> Current SR/IOV implementations assume that hardcoded Function numbers
->>>> are always available and will not conflict. It is somewhat non-trivial
->>>> to make the Function numbers to use controllable to avoid Function
->>>> number conflicts so ensure there is only one PF to make the assumption
->>>> hold true.
->>>> Also warn when non-SR/IOV multifunction was attempted with ARI enabled;
->>>> ARI has the next Function number field register, and currently it's
->>>> hardcoded to 0, which prevents non-SR/IOV multifunction. It is
->>>> certainly possible to add a logic to determine the correct next Function
->>>> number according to the configuration, but it's not worth since all
->>>> ARI-capable devices are also SR/IOV devices, which do not support
->>>> multiple PFs as stated above.
->>>>
->>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>>
->>> I am not really interested in adding this stuff.
->>> The real thing to focus on is fixing ARI emulation, not
->>> warning users about ways in which it's broken.
->>
->> What do you think about multiple SR/IOV PFs? Do you think it's worth/easy
->> enough to fix SR/IOV code to support it? Otherwise it's not worth fixing ARI
->> since currently only SR/IOV devices implement it.
-> 
-> There's nothing especially hard about it. You can in particular just
-> assume the user knows what he's doing and not worry too much about
-> checking. Creating invalid configs might also come handy e.g. for debug.
-> The important thing, and that's missing ATM, is giving management
-> ability to find out TotalVFs, VF offset and VF stride, so it can
-> avoid creating these conflicts.
-> 
-> For igd maybe we should make VF offset and VF stride just 1 unconditionally -
-> I have no idea why it was made 2 ATM - could you check what does
-> real hardware do?
 
-The current igb implementation match with real hardware. It is defined 
-in the datasheet*, section 9.6.4.6. I don't know why it's 2 either.
 
-* 
-https://www.intel.com/content/dam/www/public/us/en/documents/datasheets/82576eg-gbe-datasheet.pdf
+On 7/12/23 23:51, Joelle van Dyne wrote:
+> On Apple Silicon, when Windows performs a LDP on the CRB MMIO space,
+> the exception is not decoded by hardware and we cannot trap the MMIO
+> read. This led to the idea from @agraf to use the same mapping type as
+> ROM devices: namely that reads should be seen as memory type and
+> writes should trap as MMIO.
+> 
+> Once that was done, the second memory mapping of the command buffer
+> region was redundent and was removed.
+> 
+> A note about the removal of the read trap for `CRB_LOC_STATE`:
+> The only usage was to return the most up-to-date value for
+> `tpmEstablished`. However, `tpmEstablished` is only set when a
+> TPM2_HashStart operation is called which only exists for locality 4.
+> Indeed, the comment for the write handler of `CRB_LOC_CTRL` makes the
+> same argument for why it is not calling the backend to reset the
+> `tpmEstablished` bit. As this bit is unused, we do not need to worry
+> about updating it for reads.
+> 
+> Signed-off-by: Joelle van Dyne <j@getutm.app>
+> ---
+>   hw/tpm/tpm_crb.h        |   2 -
+>   hw/tpm/tpm_crb.c        |   3 -
+>   hw/tpm/tpm_crb_common.c | 124 ++++++++++++++++++++--------------------
+>   3 files changed, 63 insertions(+), 66 deletions(-)
+> 
+> diff --git a/hw/tpm/tpm_crb.h b/hw/tpm/tpm_crb.h
+> index da3a0cf256..7cdd37335f 100644
+> --- a/hw/tpm/tpm_crb.h
+> +++ b/hw/tpm/tpm_crb.h
+> @@ -26,9 +26,7 @@
+>   typedef struct TPMCRBState {
+>       TPMBackend *tpmbe;
+>       TPMBackendCmd cmd;
+> -    uint32_t regs[TPM_CRB_R_MAX];
+>       MemoryRegion mmio;
+> -    MemoryRegion cmdmem;
+> 
+>       size_t be_buffer_size;
+> 
+> diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
+> index 598c3e0161..07c6868d8d 100644
+> --- a/hw/tpm/tpm_crb.c
+> +++ b/hw/tpm/tpm_crb.c
+> @@ -68,7 +68,6 @@ static const VMStateDescription vmstate_tpm_crb_none = {
+>       .name = "tpm-crb",
+>       .pre_save = tpm_crb_none_pre_save,
+>       .fields = (VMStateField[]) {
+> -        VMSTATE_UINT32_ARRAY(state.regs, CRBState, TPM_CRB_R_MAX),
 
-> 
-> Yes, warning at least is handy for
-> management debugging. It shouldn't be hard I think, but the
-> logic does tend to be O(n^2). Maybe add a flag to check,
-> and management developers can use that for debugging.
-> 
->>>
->>>> ---
->>>>    hw/pci/pci.c | 59 +++++++++++++++++++++++++++++++++++++---------------
->>>>    1 file changed, 42 insertions(+), 17 deletions(-)
->>>>
->>>> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
->>>> index 784c02a182..50359a0f3a 100644
->>>> --- a/hw/pci/pci.c
->>>> +++ b/hw/pci/pci.c
->>>> @@ -2124,23 +2124,48 @@ static void pci_qdev_realize(DeviceState *qdev, Error **errp)
->>>>            }
->>>>        }
->>>> -    /*
->>>> -     * A PCIe Downstream Port that do not have ARI Forwarding enabled must
->>>> -     * associate only Device 0 with the device attached to the bus
->>>> -     * representing the Link from the Port (PCIe base spec rev 4.0 ver 0.3,
->>>> -     * sec 7.3.1).
->>>> -     * With ARI, PCI_SLOT() can return non-zero value as the traditional
->>>> -     * 5-bit Device Number and 3-bit Function Number fields in its associated
->>>> -     * Routing IDs, Requester IDs and Completer IDs are interpreted as a
->>>> -     * single 8-bit Function Number. Hence, ignore ARI capable devices.
->>>> -     */
->>>> -    if (pci_is_express(pci_dev) &&
->>>> -        !pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
->>>> -        pcie_has_upstream_port(pci_dev) &&
->>>> -        PCI_SLOT(pci_dev->devfn)) {
->>>> -        warn_report("PCI: slot %d is not valid for %s,"
->>>> -                    " parent device only allows plugging into slot 0.",
->>>> -                    PCI_SLOT(pci_dev->devfn), pci_dev->name);
->>>> +    if (pci_is_express(pci_dev)) {
->>>> +        /*
->>>> +         * A PCIe Downstream Port that do not have ARI Forwarding enabled must
->>>> +         * associate only Device 0 with the device attached to the bus
->>>> +         * representing the Link from the Port (PCIe base spec rev 4.0 ver 0.3,
->>>> +         * sec 7.3.1).
->>>> +         * With ARI, PCI_SLOT() can return non-zero value as the traditional
->>>> +         * 5-bit Device Number and 3-bit Function Number fields in its
->>>> +         * associated Routing IDs, Requester IDs and Completer IDs are
->>>> +         * interpreted as a single 8-bit Function Number. Hence, ignore ARI
->>>> +         * capable devices.
->>>> +         */
->>>> +        if (!pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
->>>> +            pcie_has_upstream_port(pci_dev) &&
->>>> +            PCI_SLOT(pci_dev->devfn)) {
->>>> +            warn_report("PCI: slot %d is not valid for %s,"
->>>> +                        " parent device only allows plugging into slot 0.",
->>>> +                        PCI_SLOT(pci_dev->devfn), pci_dev->name);
->>>> +        }
->>>> +
->>>> +        /*
->>>> +         * Current SR/IOV implementations assume that hardcoded Function numbers
->>>> +         * are always available. Ensure there is only one PF to make the
->>>> +         * assumption hold true.
->>>> +         */
->>>> +        if (pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_SRIOV) &&
->>>> +            PCI_FUNC(pci_dev->devfn)) {
->>>> +            warn_report("PCI: function %d is not valid for %s,"
->>>> +                        " currently PF can only be assigned to function 0.",
->>>> +                        PCI_FUNC(pci_dev->devfn), pci_dev->name);
->>>> +        }
->>>> +
->>>> +        /*
->>>> +         * ARI has the next Function number field register, and currently it's
->>>> +         * hardcoded to 0, which prevents non-SR/IOV multifunction.
->>>> +         */
->>>> +        if (pcie_find_capability(pci_dev, PCI_EXT_CAP_ID_ARI) &&
->>>> +            !pci_is_vf(pci_dev) && (pci_dev->devfn & 0xff)) {
->>>> +            warn_report("PCI: function %d is not valid for %s,"
->>>> +                        " non-SR/IOV multifunction is not supported with ARI enabled.",
->>>> +                        pci_dev->devfn & 0xff, pci_dev->name);
->>>> +        }
->>>>        }
->>>>        if (pci_dev->failover_pair_id) {
->>>> -- 
->>>> 2.41.0
->>>
-> 
+This has to stay here otherwise we cannot restart VMs from saved state once QEMU is upgraded.
+
+2023-07-13T14:15:43.997718Z qemu-system-x86_64: Unknown ramblock "tpm-crb-cmd", cannot accept migration
+2023-07-13T14:15:43.997813Z qemu-system-x86_64: error while loading state for instance 0x0 of device 'ram'
+2023-07-13T14:15:43.997841Z qemu-system-x86_64: load of migration failed: Invalid argument
+
+
+    Stefan
 
