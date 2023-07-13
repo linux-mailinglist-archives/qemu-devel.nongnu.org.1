@@ -2,85 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E8975279B
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 17:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE207527A8
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 17:47:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJyTB-0001lO-64; Thu, 13 Jul 2023 11:43:05 -0400
+	id 1qJyWT-0003HC-FM; Thu, 13 Jul 2023 11:46:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qJyT9-0001kt-A4
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:43:03 -0400
-Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qJyT7-0006kF-IR
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:43:03 -0400
-Received: by mail-yw1-x112c.google.com with SMTP id
- 00721157ae682-577412111f0so7960477b3.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 08:43:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689262980; x=1691854980;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bMAjZTjQEslxKdTHIg/iKBDmUcSsVqay8zgynYgRTKM=;
- b=RcqQn0Es8sum+zfeASdAN335LLcB45MkIUna+jshdX656ET23oiox0cr73nDFBg5PX
- nVGcKzRuNeL29id2bIFh+ShtrY4tXxrZK+Kxa6HBpNmDov7BWozEj9WZMwWlgsBBwL+6
- k5VM+UJxoGZ80JL1DV5gkVrquXIgINrsmcORVrdygn1LTWYJaEZelphmLisu7yabdCpK
- Z4TwwFN8kM2qjFcBUjmEhvPPqMeCG3yWHEpGnhYnXAZU4GE4TwJo7r6gGkD0IdWwcy46
- pDvLY1BjdRc8bWI/+JS7dNv8J5J2LnxEfH0TFCGdIVK1ErPrbmUhaRTCixCxBXtSGmE8
- Cn7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689262980; x=1691854980;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bMAjZTjQEslxKdTHIg/iKBDmUcSsVqay8zgynYgRTKM=;
- b=B68mw+dUpt9ztLbddnIYYC75GXTFjAKaR4nSeSpwet3SdK6vntmMmW/fGPF+0Bhb0w
- Jue+2zARkIIa/9i/KIoTGT13Rjkgpwp8JqMSLyw50lZzgqHIHyXtvYX6iwrq9H3xgTHa
- udCiQJOA8Sd/2b7HjMZHcMHPFfCEqbJThqJOjMoY+3XlF/xkeWRUa5y3Y3ODTRGE2TGa
- +z6kK2z7HIGkAtI9UK63kd8c51LSeHHaeF/EBgSLCAKcwuoW7Rv/07T3gZgvxA+S1zQy
- rmFG99KPdYg1exwNVhRD+38qhg3RTl0GoG6XiwPqIQmtQUgqbULMgqpf6aKuemhjUT+Y
- 2B/Q==
-X-Gm-Message-State: ABy/qLZgR7I0dnjbV5qDomF9kIXoPSr2E2gf4nFJ6ihMR2ESGjikyqR3
- 6erVyyerbbh1tsrVKIXT7aj++Q==
-X-Google-Smtp-Source: APBJJlFr4cfVPkLZaB0uDY+OTRBwli2I99ztp2GSVUehdH8sdEOXgr43FvRtJBkn944VmXblEZaQ8Q==
-X-Received: by 2002:a0d:eb0b:0:b0:561:206a:ee52 with SMTP id
- u11-20020a0deb0b000000b00561206aee52mr2068947ywe.24.1689262980191; 
- Thu, 13 Jul 2023 08:43:00 -0700 (PDT)
-Received: from [192.168.88.227] ([172.58.139.107])
- by smtp.gmail.com with ESMTPSA id
- f65-20020a0dc344000000b00565271801b6sm1818380ywd.59.2023.07.13.08.42.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 08:42:59 -0700 (PDT)
-Message-ID: <0c7c6e95-e727-85c9-8fb5-928d9a420de8@linaro.org>
-Date: Thu, 13 Jul 2023 16:42:51 +0100
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qJyWR-0003GP-AB
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:46:27 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qJyWP-0000mU-GC
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:46:27 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36DFadq0007523; Thu, 13 Jul 2023 15:46:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=afSueKlQ38oF0E7j17HGY6ckutl7DlgutghGdcRmrmc=;
+ b=XB9cw5gkahEoaaIX7lky6e13W4++CnVzhR5XBlggaZ/NOjg4xRMV0LBmw1Ae0HzS7qY4
+ acy9L6Knx310sc+O42uEjE2CVkUrvTcG4yRWuYfp8hCpsacBmLZmYgoXqrs6TgddOhOt
+ WLmSQETzFSqdpUCJPvM8jTZRoUPKrLlIDVelEHlcx5LXKVG5ssUk8SSf3fBgj79Ad2c4
+ eOPpdxnab8qYm/tcs+JJWIoAoW7cHbFW/pVNBjAa9wghT7qX8k1vRVcKoMLBRmUL0NfO
+ qbrV3aI+CGTOZr/de+CjxQBN4lJUhwBTw3zduuenw7CcSPs1DS2XsrQcYT7qfJ8knjWX zQ== 
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtksfgtk2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 15:46:21 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36D7VZAf010967; Thu, 13 Jul 2023 15:46:19 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rqk4mk8j9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 15:46:19 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36DFkJR629754086
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 13 Jul 2023 15:46:19 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F207358062;
+ Thu, 13 Jul 2023 15:46:18 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A8CC958059;
+ Thu, 13 Jul 2023 15:46:18 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 13 Jul 2023 15:46:18 +0000 (GMT)
+Message-ID: <e2340c41-1d77-3406-001c-4dcce544af74@linux.ibm.com>
+Date: Thu, 13 Jul 2023 11:46:18 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] util/interval-tree: Avoid race conditions without
- optimization
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-References: <20230707103036.5647-1-richard.henderson@linaro.org>
- <CAFEAcA9LF_7RKSut0=XrLOnWx9ag7b7R0vWongxBb1dUiHjM0g@mail.gmail.com>
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 04/11] tpm_crb: use a single read-as-mem/write-as-mmio
+ mapping
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA9LF_7RKSut0=XrLOnWx9ag7b7R0vWongxBb1dUiHjM0g@mail.gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20230713035232.48406-1-j@getutm.app>
+ <20230713035232.48406-5-j@getutm.app>
+ <4a49285e-0d91-93a0-2f8e-e76c71ed89f8@linux.ibm.com>
+ <CAFEAcA-r_VOc18-jm99asYQQk4TJMBW_7oJMzFQofEHqVdF50A@mail.gmail.com>
+ <ab339186-1af7-171c-eb11-fe124f12b4a2@linux.ibm.com>
+ <CAFEAcA9nad4H3MgitMyVsZjNZdY-n9d65Yz4Gtbz2wPYA4fbsg@mail.gmail.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <CAFEAcA9nad4H3MgitMyVsZjNZdY-n9d65Yz4Gtbz2wPYA4fbsg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
- envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x112c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: GwUy-SuIcEKhq0Lw5CQ07lOUiDFFYhqz
+X-Proofpoint-ORIG-GUID: GwUy-SuIcEKhq0Lw5CQ07lOUiDFFYhqz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-13_06,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ phishscore=0 clxscore=1015 mlxscore=0 mlxlogscore=999 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307130137
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,29 +115,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/13/23 12:32, Peter Maydell wrote:
-> On Fri, 7 Jul 2023 at 11:30, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
+
+
+On 7/13/23 11:34, Peter Maydell wrote:
+> On Thu, 13 Jul 2023 at 16:28, Stefan Berger <stefanb@linux.ibm.com> wrote:
 >>
->> Read the left and right trees once, so that the gating
->> tests are meaningful.  This was only a problem at -O0,
->> where the compiler didn't CSE the two reads.
 >>
->> Cc: qemu-stable@nongnu.org
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>>
+>> On 7/13/23 10:50, Peter Maydell wrote:
+>>> On Thu, 13 Jul 2023 at 15:18, Stefan Berger <stefanb@linux.ibm.com> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 7/12/23 23:51, Joelle van Dyne wrote:
+>>>>> On Apple Silicon, when Windows performs a LDP on the CRB MMIO space,
+>>>>> the exception is not decoded by hardware and we cannot trap the MMIO
+>>>>> read. This led to the idea from @agraf to use the same mapping type as
+>>>>> ROM devices: namely that reads should be seen as memory type and
+>>>>> writes should trap as MMIO.
+>>
+>>>>> +++ b/hw/tpm/tpm_crb.c
+>>>>> @@ -68,7 +68,6 @@ static const VMStateDescription vmstate_tpm_crb_none = {
+>>>>>         .name = "tpm-crb",
+>>>>>         .pre_save = tpm_crb_none_pre_save,
+>>>>>         .fields = (VMStateField[]) {
+>>>>> -        VMSTATE_UINT32_ARRAY(state.regs, CRBState, TPM_CRB_R_MAX),
+>>>>
+>>>> This has to stay here otherwise we cannot restart VMs from saved state once QEMU is upgraded.
+>>>>
+>>>> 2023-07-13T14:15:43.997718Z qemu-system-x86_64: Unknown ramblock "tpm-crb-cmd", cannot accept migration
+>>>> 2023-07-13T14:15:43.997813Z qemu-system-x86_64: error while loading state for instance 0x0 of device 'ram'
+>>>> 2023-07-13T14:15:43.997841Z qemu-system-x86_64: load of migration failed: Invalid argument
+>>>
+>>> More generally, for migration compatibility in the other
+>>> direction you need to use memory_region_init_rom_device_nomigrate()
+>>> and make sure you keep migrating the data via this, not
+>>> via the MemoryRegion.
+>>>
+>>> I'm not a super-fan of hacking around the fact that LDP
+>>> to hardware registers isn't supported in specific device
+>>> models, though...
+>>
+>> What does this mean for this effort here?
 > 
-> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> Usually we say "fix the guest to not try to access hardware
+> registers with silly load/store instruction types". The other
+> option would be "put in a large amount of effort to support
+> emulating those instructions in QEMU userspace when KVM/HVF/etc
+> trap and punt them to us". For the last decade or so we have
+> taken the first of these approaches :-)
+
+Is Microsoft likely to react to use telling them "fix the guest"?
+
+    Stefan
+
 > 
-> If this data structure is intended to support operations
-> being done on it while it's being mutated, shouldn't it
-> be using the atomic accessors, though? That would make
-> it clearer that you can't just undo the transformation
-> made by this patch.
-
-Yes, it probably should.  I use qatomic_set() where the kernel used WRITE_ONCE, but there 
-was no markup for the read side.
-
-
-r~
-
+> thanks
+> -- PMM
 
