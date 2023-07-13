@@ -2,99 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFA1752A5E
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 20:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC3F1752A6C
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 20:45:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK1AE-0003JO-RI; Thu, 13 Jul 2023 14:35:42 -0400
+	id 1qK1IH-00081t-Du; Thu, 13 Jul 2023 14:44:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qK1A9-0003J6-GL
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:35:37 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1qK1IF-00081U-Es
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:43:59 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qK1A5-0001xX-Su
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:35:35 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ id 1qK1ID-0003h0-7s
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:43:59 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36DIHw1T030794; Thu, 13 Jul 2023 18:35:31 GMT
+ 36DILk3t000484; Thu, 13 Jul 2023 18:43:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=6p2YsRvwpmYxWGh3dfCxMZokjm8LXgvF37E8bw78s+I=;
- b=oxEdSmnbpd1rBLKNPyACqdcCZ8M/NQPS1gYR+CIHVStc4T6d4A/vjwj+Z6l7/rYw2iFL
- CdO+5SDwXlNolQSs8QRNwPWzyu0PjLOVIsa38IyA+kSvIJd97LiDiGT+eoSBr+6E/UG6
- JYtNQ7fwF0KAQW3dnbcF4MVHcaJTdfHQhL2jELt4ijykMk3WQ1fil7xf6brXpi634s9L
- w+Vy77gI95EJ/hYeen0jQMCd71JXKwWtfmOdz+7LCo1g+Y3G47DrQkFN602y/sv0CslI
- TmPPJXG9DEvHCgCkmOExqIKiM0acAwwvPwQ4iS5KlkhM3wljwniVSArz0gcdiD3aZJgW qg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtpe4rcc4-1
+ bh=DMZ73jwF9m2Bg535ojeQrVRcl6w9XWA0TbtuE+McojU=;
+ b=iW2HEI/If/zCgP2tgOUtLN5LuCb8IuCj2A6JbVNtwpme8s3JGUQ3la+abvwZ7cVNsnjQ
+ 7oQx8S5rcS/FwTus4xnVIeDLFD9fDCkrT9Kgjekc+BjqxI8PRqw0dASNsuHdPO+lg3pn
+ vV3WgO1qDJTt0i3rj3NrySNrn+tvAIlwGc2kP2v+pX90TDWndb+xbSVVwdRolDJ9qG1f
+ qsl56yEoM53lL5/KDyZlNtknyw1EoFoV9fB7NAqaXljCT43G312dGAhi7KXFPBjtYwwM
+ CvZwtjgyqUmFLFlnfn1PY+CJGYu+wCxZyclaXpdduIuinjguZMcOX9sbJAdOLr35Xh1g eQ== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtpfx8hf2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 18:35:31 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36DIYjAk011059;
- Thu, 13 Jul 2023 18:35:30 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtpe4rcbk-1
+ Thu, 13 Jul 2023 18:43:52 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36DH0CCt014052;
+ Thu, 13 Jul 2023 18:43:51 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([9.208.129.117])
+ by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3rpye61ucv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 18:35:30 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36DDtomL005042; Thu, 13 Jul 2023 18:35:30 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rqj4rrrk1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 18:35:29 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36DIZT6w30933756
+ Thu, 13 Jul 2023 18:43:51 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36DIhorb41484764
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Jul 2023 18:35:29 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DF4C35805C;
- Thu, 13 Jul 2023 18:35:28 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D37C5805A;
- Thu, 13 Jul 2023 18:35:28 +0000 (GMT)
+ Thu, 13 Jul 2023 18:43:50 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 169DA58056;
+ Thu, 13 Jul 2023 18:43:50 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C529658052;
+ Thu, 13 Jul 2023 18:43:49 +0000 (GMT)
 Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 13 Jul 2023 18:35:28 +0000 (GMT)
-Message-ID: <ed67cdd1-3987-7432-960e-36ce59face96@linux.ibm.com>
-Date: Thu, 13 Jul 2023 14:35:28 -0400
+ by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 13 Jul 2023 18:43:49 +0000 (GMT)
+Message-ID: <de9befdf-82ea-6cff-e300-7a9edf3e867b@linux.ibm.com>
+Date: Thu, 13 Jul 2023 14:43:49 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 05/11] tpm_crb: use the ISA bus
+Subject: Re: [PATCH 04/11] tpm_crb: use a single read-as-mem/write-as-mmio
+ mapping
 Content-Language: en-US
-To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org,
  Stefan Berger <stefanb@linux.vnet.ibm.com>
 References: <20230713035232.48406-1-j@getutm.app>
- <20230713035232.48406-6-j@getutm.app>
+ <20230713035232.48406-5-j@getutm.app>
+ <4a49285e-0d91-93a0-2f8e-e76c71ed89f8@linux.ibm.com>
+ <CAFEAcA-r_VOc18-jm99asYQQk4TJMBW_7oJMzFQofEHqVdF50A@mail.gmail.com>
+ <ab339186-1af7-171c-eb11-fe124f12b4a2@linux.ibm.com>
+ <CAFEAcA9nad4H3MgitMyVsZjNZdY-n9d65Yz4Gtbz2wPYA4fbsg@mail.gmail.com>
+ <e2340c41-1d77-3406-001c-4dcce544af74@linux.ibm.com>
+ <CAFEAcA-WtwcckNO=kDP8HbY53qV3mTtYysH2Lw8FSJsrWO2tdQ@mail.gmail.com>
+ <afb324e8-d65a-12b3-e591-65133087689b@linux.ibm.com>
+ <CAFEAcA9Z5wHRuMmeogoyrN=C4OtoKObxNu58nQaOXdYwzq_gpw@mail.gmail.com>
+ <c5b44af5-e737-d899-5ea1-3d7debe760a4@linux.ibm.com>
+ <CAFEAcA-igpEHJOxw8mCV=em6FRUT8BuNRPCiVMvQ7moaasSmLw@mail.gmail.com>
 From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20230713035232.48406-6-j@getutm.app>
+In-Reply-To: <CAFEAcA-igpEHJOxw8mCV=em6FRUT8BuNRPCiVMvQ7moaasSmLw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: weiWVTfClIl_qY38GIxrH484CptuYvOn
-X-Proofpoint-ORIG-GUID: wQRqB8UMpiQWYrRmXpT7x9EijElnvvYZ
+X-Proofpoint-GUID: OJhv8vMcQZ6JJUEzoJ1G3PK9OP5eBHbb
+X-Proofpoint-ORIG-GUID: OJhv8vMcQZ6JJUEzoJ1G3PK9OP5eBHbb
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-13_06,2023-07-13_01,2023-05-22_02
+ definitions=2023-07-13_07,2023-07-13_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 spamscore=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 suspectscore=0 bulkscore=0
- mlxlogscore=999 impostorscore=0 priorityscore=1501 adultscore=0
+ bulkscore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 impostorscore=0 spamscore=0
+ clxscore=1015 priorityscore=1501 mlxscore=0 mlxlogscore=999 adultscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2305260000 definitions=main-2307130165
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -119,180 +123,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 7/12/23 23:51, Joelle van Dyne wrote:
-> Since this device is gated to only build for targets with the PC
-> configuration, we should use the ISA bus like with TPM TIS.
+On 7/13/23 13:18, Peter Maydell wrote:
+> On Thu, 13 Jul 2023 at 18:16, Stefan Berger <stefanb@linux.ibm.com> wrote:
+>> I guess the first point would be to decide whether to support an i2c bus on the virt board and then whether we can use the aspeed bus that we know that the tpm_tis_i2c device model works with but we don't know how Windows may react to it.
+>>
+>> It seems sysbus is already supported there so ... we may have a 'match'?
 > 
-> Signed-off-by: Joelle van Dyne <j@getutm.app>
+> You can use sysbus devices anywhere -- they're just
 
-I think this patch is good but I'd like to try it with resuming and old VM snapshot and for this to work we need 04/11 to have the registers in the VM state.
+'anywhere' also includes aarch64 virt board I suppose.
+
+> "this is a memory mapped device". The question is whether
+> we should, or whether an i2c controller is more like
+> what the real world uses (and if so, what i2c controller).
+> 
+
+> I don't want to accept changes to the virt board that are
+> hard to live with in future, because changing virt in
+> non-backward compatible ways is painful.
+
+Once we have the CRB sysbus device we would keep it around forever and it seems to
+- not require any changes to the virt board (iiuc) since sysbus is already being used
+- works already with Windows and probably also Linux
 
 
     Stefan
-> ---
->   hw/tpm/tpm_crb.c | 52 ++++++++++++++++++++++++------------------------
->   hw/tpm/Kconfig   |  2 +-
->   2 files changed, 27 insertions(+), 27 deletions(-)
-> 
-> diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
-> index 07c6868d8d..6144081d30 100644
-> --- a/hw/tpm/tpm_crb.c
-> +++ b/hw/tpm/tpm_crb.c
-> @@ -22,6 +22,7 @@
->   #include "hw/qdev-properties.h"
->   #include "hw/pci/pci_ids.h"
->   #include "hw/acpi/tpm.h"
-> +#include "hw/isa/isa.h"
->   #include "migration/vmstate.h"
->   #include "sysemu/tpm_backend.h"
->   #include "sysemu/tpm_util.h"
-> @@ -34,7 +35,7 @@
->   #include "tpm_crb.h"
-> 
->   struct CRBState {
-> -    DeviceState parent_obj;
-> +    ISADevice parent_obj;
-> 
->       TPMCRBState state;
->   };
-> @@ -43,49 +44,49 @@ typedef struct CRBState CRBState;
->   DECLARE_INSTANCE_CHECKER(CRBState, CRB,
->                            TYPE_TPM_CRB)
-> 
-> -static void tpm_crb_none_request_completed(TPMIf *ti, int ret)
-> +static void tpm_crb_isa_request_completed(TPMIf *ti, int ret)
->   {
->       CRBState *s = CRB(ti);
-> 
->       tpm_crb_request_completed(&s->state, ret);
->   }
-> 
-> -static enum TPMVersion tpm_crb_none_get_version(TPMIf *ti)
-> +static enum TPMVersion tpm_crb_isa_get_version(TPMIf *ti)
->   {
->       CRBState *s = CRB(ti);
-> 
->       return tpm_crb_get_version(&s->state);
->   }
-> 
-> -static int tpm_crb_none_pre_save(void *opaque)
-> +static int tpm_crb_isa_pre_save(void *opaque)
->   {
->       CRBState *s = opaque;
-> 
->       return tpm_crb_pre_save(&s->state);
->   }
-> 
-> -static const VMStateDescription vmstate_tpm_crb_none = {
-> +static const VMStateDescription vmstate_tpm_crb_isa = {
->       .name = "tpm-crb",
-> -    .pre_save = tpm_crb_none_pre_save,
-> +    .pre_save = tpm_crb_isa_pre_save,
->       .fields = (VMStateField[]) {
->           VMSTATE_END_OF_LIST(),
->       }
->   };
-> 
-> -static Property tpm_crb_none_properties[] = {
-> +static Property tpm_crb_isa_properties[] = {
->       DEFINE_PROP_TPMBE("tpmdev", CRBState, state.tpmbe),
->       DEFINE_PROP_BOOL("ppi", CRBState, state.ppi_enabled, true),
->       DEFINE_PROP_END_OF_LIST(),
->   };
-> 
-> -static void tpm_crb_none_reset(void *dev)
-> +static void tpm_crb_isa_reset(void *dev)
->   {
->       CRBState *s = CRB(dev);
-> 
->       return tpm_crb_reset(&s->state, TPM_CRB_ADDR_BASE);
->   }
-> 
-> -static void tpm_crb_none_realize(DeviceState *dev, Error **errp)
-> +static void tpm_crb_isa_realize(DeviceState *dev, Error **errp)
->   {
->       CRBState *s = CRB(dev);
-> 
-> @@ -100,52 +101,51 @@ static void tpm_crb_none_realize(DeviceState *dev, Error **errp)
-> 
->       tpm_crb_init_memory(OBJECT(s), &s->state, errp);
-> 
-> -    memory_region_add_subregion(get_system_memory(),
-> +    memory_region_add_subregion(isa_address_space(ISA_DEVICE(dev)),
->           TPM_CRB_ADDR_BASE, &s->state.mmio);
-> 
->       if (s->state.ppi_enabled) {
-> -        memory_region_add_subregion(get_system_memory(),
-> +        memory_region_add_subregion(isa_address_space(ISA_DEVICE(dev)),
->               TPM_PPI_ADDR_BASE, &s->state.ppi.ram);
->       }
-> 
->       if (xen_enabled()) {
-> -        tpm_crb_none_reset(dev);
-> +        tpm_crb_isa_reset(dev);
->       } else {
-> -        qemu_register_reset(tpm_crb_none_reset, dev);
-> +        qemu_register_reset(tpm_crb_isa_reset, dev);
->       }
->   }
-> 
-> -static void tpm_crb_none_class_init(ObjectClass *klass, void *data)
-> +static void tpm_crb_isa_class_init(ObjectClass *klass, void *data)
->   {
->       DeviceClass *dc = DEVICE_CLASS(klass);
->       TPMIfClass *tc = TPM_IF_CLASS(klass);
-> 
-> -    dc->realize = tpm_crb_none_realize;
-> -    device_class_set_props(dc, tpm_crb_none_properties);
-> -    dc->vmsd  = &vmstate_tpm_crb_none;
-> +    dc->realize = tpm_crb_isa_realize;
-> +    device_class_set_props(dc, tpm_crb_isa_properties);
-> +    dc->vmsd  = &vmstate_tpm_crb_isa;
->       dc->user_creatable = true;
->       tc->model = TPM_MODEL_TPM_CRB;
-> -    tc->get_version = tpm_crb_none_get_version;
-> -    tc->request_completed = tpm_crb_none_request_completed;
-> +    tc->get_version = tpm_crb_isa_get_version;
-> +    tc->request_completed = tpm_crb_isa_request_completed;
-> 
->       set_bit(DEVICE_CATEGORY_MISC, dc->categories);
->   }
-> 
-> -static const TypeInfo tpm_crb_none_info = {
-> +static const TypeInfo tpm_crb_isa_info = {
->       .name = TYPE_TPM_CRB,
-> -    /* could be TYPE_SYS_BUS_DEVICE (or LPC etc) */
-> -    .parent = TYPE_DEVICE,
-> +    .parent = TYPE_ISA_DEVICE,
->       .instance_size = sizeof(CRBState),
-> -    .class_init  = tpm_crb_none_class_init,
-> +    .class_init  = tpm_crb_isa_class_init,
->       .interfaces = (InterfaceInfo[]) {
->           { TYPE_TPM_IF },
->           { }
->       }
->   };
-> 
-> -static void tpm_crb_none_register(void)
-> +static void tpm_crb_isa_register(void)
->   {
-> -    type_register_static(&tpm_crb_none_info);
-> +    type_register_static(&tpm_crb_isa_info);
->   }
-> 
-> -type_init(tpm_crb_none_register)
-> +type_init(tpm_crb_isa_register)
-> diff --git a/hw/tpm/Kconfig b/hw/tpm/Kconfig
-> index a46663288c..1fd73fe617 100644
-> --- a/hw/tpm/Kconfig
-> +++ b/hw/tpm/Kconfig
-> @@ -22,7 +22,7 @@ config TPM_TIS
-> 
->   config TPM_CRB
->       bool
-> -    depends on TPM && PC
-> +    depends on TPM && ISA_BUS
->       select TPM_BACKEND
-> 
->   config TPM_SPAPR
+
+> -- PMM
 
