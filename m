@@ -2,75 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A1475203E
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 13:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C2175204B
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 13:44:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJufp-0001zY-8q; Thu, 13 Jul 2023 07:39:53 -0400
+	id 1qJujZ-0003K2-7a; Thu, 13 Jul 2023 07:43:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJufM-0001xP-0Q
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:39:24 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJufK-0005Lp-7Z
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:39:23 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2b701e41cd3so8778141fa.3
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 04:39:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689248357; x=1691840357;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=bHuTsab/o2e0GzLe6p+rgYVT0c4HeA2lxQd7Sqvhyqc=;
- b=lHbTDPUAnZjTWDyEc3je1GJ3j+JMvuHnDo5zKwuIi/mRJCjnn5JMIYU7IBNG9hiPuT
- 2ZNyaQQ8kZKU8H0Kqs1K9lNCPg5aXuPhXJJJ9B7SFxgqbQkkSyOrvp64/6H0FYJjaB5/
- uqGzkI8k1kEs8/MZDZKeexyaM8/OAECxR4jugjkGBGEu0lUZzSimEQcWPjqhB0EyUbQq
- sDHEChsbIPc9/GAYR9+nwe88KFz7asjactLLN2XoKCWvfL0SePW0Aj7Y5U8u4ogT/SVw
- Vt9vAzXQp4Lmc40W+zwG6/3vAB7swOrQyT7mUGSGl4xSqTWBcHRB4JLeKOE9QxyAV89h
- cprw==
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qJujW-0003Jb-Lp
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:43:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1qJujO-0006fL-Eq
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:43:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689248600;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+qE5mbuahelVo0JYqul+5Ce1sr3x6+m407H4SspW+E0=;
+ b=HQJ1kSDFfQMXJeqTOKUVZHZOSpBqEcRd+JHmskAszDBZLQIDj6pzqKj6ZNu5SgbAEY6Cn+
+ iHdQ9e8r+IqMov3CF4YUjCvDe75in2edZxXdtP+Z7ptSAqPBWejac5AE5Trhoc624faIDA
+ JLsqZVb94zxxxrWaxt/B4bSWThaVyj4=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-425-HtQImLbEPJ6H2Pwnj3yfJg-1; Thu, 13 Jul 2023 07:43:18 -0400
+X-MC-Unique: HtQImLbEPJ6H2Pwnj3yfJg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-992e684089aso42640866b.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 04:43:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689248357; x=1691840357;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bHuTsab/o2e0GzLe6p+rgYVT0c4HeA2lxQd7Sqvhyqc=;
- b=XNQXcBaMH7REHRPx/lecY2CrosL1QXzw1qzsZ9YgOzx1PkIe2oAfXM74cTRB38J/vk
- u+ILV1RYGIIxRAJYzvWhD5NyZlP7jyvIrBqdWOuLaOVFck9tlLxJ9wrCjViC1kKW/q4j
- 5v2UxIM8bHtEpFXdc39mYwrYRlZ/8LF24oI6Iv4ir3M/NXuJs4Wdps7dPT0krMQzpUFP
- IlbTICDlRiz5jcYB2rMZ70AKJc1+3HjsHcmKr11quPFzOu532+JrqpIbQXBuSco2Djh1
- w/nssrlzlBR22QaU/jRv1JB6IQPWLGsXyPdp5cDWZJrcNgQQehLKaMNy+XP1K5O7TxxY
- +sKg==
-X-Gm-Message-State: ABy/qLaUvKINUycvPtqyBF0BK9+F6NVtsrZ2K+393AImDawsBhDtx/fv
- S6xMeR1eGPFR5zy+m1Cx23oTLFMNIAwaPU8Ww6z+IA==
-X-Google-Smtp-Source: APBJJlHCqLqscNduKXQIxw9iXkp9Bctp6usruch5HB1yXOBsKMV726JCcELff4rkCyr8lyS4KzWevTyy40SMalhDD88=
-X-Received: by 2002:a05:6512:1327:b0:4f8:5600:9e5e with SMTP id
- x39-20020a056512132700b004f856009e5emr1108853lfu.47.1689248357547; Thu, 13
- Jul 2023 04:39:17 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689248597; x=1691840597;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+qE5mbuahelVo0JYqul+5Ce1sr3x6+m407H4SspW+E0=;
+ b=MaZJmCndwjI1f4odDe2Mhuouqerqn299qRBCbuC61VBZ9XBTZ2+7NlJmv7ri2qgKiT
+ uHW9bajPDYywAQX7+TetM3M338sv1sGgLN45TcMh8IgN6NqzD35NS8+0GeEyaoPGvfZ6
+ t4KYRHQz6jJOkNB91f6rfaTd406cwPpi/ZNOJuDwAGoSRTbXOOlywUGxMoYysenvj54f
+ RJfZzJKfeyARrzQ+oh6tVzshaVhDSQN5Uiwo4FLcc1wk5DcyuvAU8XMWmOHuFni00HQ7
+ Sb6D0F4GpMFIj3FigbUaW58nbdOfcOoU/7EZNnYU9fLsulaH1BFtU20e2Oo76mv7xJuo
+ 97PA==
+X-Gm-Message-State: ABy/qLb1rLgC283uhealGsYkJTW8My1gYbSEWcRWmYlLMwOWa0TrlQDm
+ XogGrfQR+tH9onxhuXlSw4OrO5Pd3FwZ4ZV8teNdx1qWTPtF7FkGJgKUJlgWUwYEXhV8jzO25YN
+ eim037a6OG9flQUU=
+X-Received: by 2002:a17:906:5c:b0:993:f349:c98c with SMTP id
+ 28-20020a170906005c00b00993f349c98cmr1299149ejg.4.1689248597579; 
+ Thu, 13 Jul 2023 04:43:17 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHmsKl2x24OtK13d07rOOBpBqhvuYUfsM2+VMXD/BQAEBVjbpTg8VI2ZiOygyIgNaVQvkYpJQ==
+X-Received: by 2002:a17:906:5c:b0:993:f349:c98c with SMTP id
+ 28-20020a170906005c00b00993f349c98cmr1299136ejg.4.1689248597227; 
+ Thu, 13 Jul 2023 04:43:17 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-46-200-94.retail.telecomitalia.it.
+ [79.46.200.94]) by smtp.gmail.com with ESMTPSA id
+ ss25-20020a170907039900b0098921e1b064sm3857947ejb.181.2023.07.13.04.43.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 13 Jul 2023 04:43:16 -0700 (PDT)
+Date: Thu, 13 Jul 2023 13:43:14 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Mike Christie <michael.christie@oracle.com>, 
+ Stefan Hajnoczi <stefanha@gmail.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Mark Kanda <mark.kanda@oracle.com>,
+ Fam Zheng <fam@euphon.net>
+Subject: Re: [PATCH 1/3] scsi: fetch unit attention when creating the request
+Message-ID: <osf4lhgyhpsxajrn2jzz25y6vegjurf7lyxohwh2qout5usun5@vwko2nat3eih>
+References: <20230712134352.118655-1-sgarzare@redhat.com>
+ <20230712134352.118655-2-sgarzare@redhat.com>
+ <602625fe-f971-8843-88b6-a63dbe52befe@redhat.com>
 MIME-Version: 1.0
-References: <20230710063750.473510-1-wangyuquan1236@phytium.com.cn>
-In-Reply-To: <20230710063750.473510-1-wangyuquan1236@phytium.com.cn>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 13 Jul 2023 12:39:06 +0100
-Message-ID: <CAFEAcA_1oRpRKzTYeboxVzkiVErZAgFQRw9sVunXnWUMSf_SOw@mail.gmail.com>
-Subject: Re: [PATCH 0/1] hw/arm/sbsa-ref: set 'slots' property of xhci
-To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-Cc: rad@semihalf.com, qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
- quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org, 
- chenbaozi@phytium.com.cn
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x234.google.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <602625fe-f971-8843-88b6-a63dbe52befe@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,21 +103,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 10 Jul 2023 at 07:38, Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
+On Wed, Jul 12, 2023 at 06:38:14PM +0200, Paolo Bonzini wrote:
+>On 7/12/23 15:43, Stefano Garzarella wrote:
+>>Commit 1880ad4f4e ("virtio-scsi: Batched prepare for cmd reqs") split
+>>calls to scsi_req_new() and scsi_req_enqueue() in the virtio-scsi device.
+>>This had no drawback, until commit 8cc5583abe ("virtio-scsi: Send
 >
-> As the default xhci_sysbus just supports only one usb slot, it can not
-> meet the working requirement of this bord. Therefore, we extend the
-> slots of xhci to 64.
+>More precisely, it was pretty hard to trigger it; it might be possible 
+>using a CD-ROM, as it can report a MEDIUM_CHANGED unit attention.  I 
+>will change "This had no drawback" to "No ill effect was reported"
+
+Yep, agree!
+
 >
-> Yuquan Wang (1):
->   hw/arm/sbsa-ref: set 'slots' property of xhci
+>>"REPORTED LUNS CHANGED" sense data upon disk hotplug events") added a
+>>bus unit attention.
 >
->  hw/arm/sbsa-ref.c | 1 +
->  1 file changed, 1 insertion(+)
+>... that was fairly easy to trigger via SCSI device hotplug/hot-unplug.
+>
+>Queued the series, thanks for the tests and for applying the cleanups 
+>on top.
 
+Thanks for queueing!
 
+>
+>>Co-developed-by: Paolo Bonzini <pbonzini@redhat.com>
+>
+>Heh, I basically only wrote the "if (req->init_req)" statement so 
+>that's pretty generous, but I'll keep it anyway. :)
 
-Applied to target-arm.next, thanks.
+Your help was invaluable ;-)
 
--- PMM
+Thanks,
+Stefano
+
 
