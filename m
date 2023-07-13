@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA12E752C03
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 23:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8213752BEA
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 23:16:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK3eI-0000Hz-Jn; Thu, 13 Jul 2023 17:14:54 -0400
+	id 1qK3eb-0000QP-9B; Thu, 13 Jul 2023 17:15:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qK3eE-0000HN-Dk
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:14:50 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1qK3eQ-0000Mr-7T
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:15:04 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qK3eB-000164-OC
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:14:49 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3fc04692e20so11243125e9.0
+ id 1qK3eC-00016F-Cu
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:15:01 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3141c3a7547so1322193f8f.2
  for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 14:14:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1689282885; x=1691874885;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=H93abcQMfpcVmKf+SmjckREj83SkP9I5kccuQ+f4FCc=;
- b=vsG2NBtkBSfDV6qbPry0b/iRTj8SvYNpBk5CQwGPL5EFCbtfu3JWS11JZb5/u0kgTW
- Xdws6eXl+CV+IIoHhLiD6QPdGvppTYCOIw6zZvPqKtuJok0Ee1Y1LfhtY5YOSFD6OCOy
- YNqOadonC7Fg0Wp52Ti1F/4q7wmzAdyYAW5s30v2h7eG/Uy9GgF+tUHg6IO7ZA6Cj1vG
- KRT6btxSJ4nTiAJ/1yPGUoIr0Vyiyu3yO4I2D2k9/SpJWFVI1SPy+WPI9fKTEckOXC+o
- ewz8V/kCRKsHciyFfI8dARxo+K0ktc0TL0CyuGXT/iQvGJPMcQXhN0eIuMQLxNXyOXQ7
- GlAw==
+ bh=uiRxUWQ/HM/fmJF0BXMvciSYviZrpuPjzgLczxVKcDA=;
+ b=VlDqWrH/ORjSn+/ojaVyuYiDoF8hi91RgmPXuZw1PpXzH3X8nfDlYA6T5NEvvDWpiy
+ Jr8EGE9k1e6CNXDLoBsHF91xGt4kvKLwRKfDHHqQsK9bwFFIbySRS+gBzYnsmrlHJRy9
+ ZYU08Z/9kwbDPOeGGDe3ECNruoQAeACnXGC48DN3+osnWYBR3gm+BOce/xpQ/VqU0Jyj
+ a5j8CYoHiVm4us5EMlcADlZ5KgN4QBwU28RPVd//Xmh7qgDSaqYfewfFLHOJOrNLgT/G
+ 1wVEhU2Is3LKIDmZg7cH11ZqMZdRl7Ursrx1vdSQ+Wk4lcr6bvjS4A9sJ0Mv4mQMboxj
+ ITmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1689282885; x=1691874885;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H93abcQMfpcVmKf+SmjckREj83SkP9I5kccuQ+f4FCc=;
- b=IaWOGogMPftK8MH70dTd65mFSH01vHvUVl/u8Y9W6wVvfQpHwa+jF+iSHZ1zwpMAje
- y37U9P+YbNbz+uyyQUDguJgn6oAMGbNYf5TezhYAYtH4LLDU3aVzv5a1cnwk6LhTs6MA
- 2rGcCQkkR1KmZd6d9nN2kDHD/kUa0tYiN79zBBz0zKCgt9FMykTmRCoc+5B+vIbf1r+N
- 9uZMtfobzz6/+/H39mubm0ezX7kzzMyzk7CtYCfRSDEPogh2w2kM/n4+JxQI/k/ZgrSb
- q/c0TPFtN8GVmALEXsxvcfOwLp0/+xrkJwQVx1bWyLLKgTVBbCyLFARAIpwyWodgmo2m
- rSkg==
-X-Gm-Message-State: ABy/qLZRMpJsVEq7TKQDWAAjqUYAGNqGYF0xtTl62x7+Wk1KZVPLrKpb
- YEvp9ug31nOAtU5ZbDsRu9bhVFd4Y+euUnM7P9pcKhhe
-X-Google-Smtp-Source: APBJJlHH6P0+nBbiHfOJz5IZy9/y3c8Ck3KvQdih/zUCOA19uJfvRIkldk2O6vCwLFrbsAccFzOgyQ==
-X-Received: by 2002:a5d:5650:0:b0:313:e88d:e6cf with SMTP id
- j16-20020a5d5650000000b00313e88de6cfmr2256359wrw.69.1689282885052; 
+ bh=uiRxUWQ/HM/fmJF0BXMvciSYviZrpuPjzgLczxVKcDA=;
+ b=K5MhPdGfWqhKcj9X9T/mhUr3OmPQ1dAD/M0TSVXfdnEVCYFuEVwP6nvPBFofFYwo3j
+ ISnUkSNYirQ7iol2HjCP34CGJeb8oyIREePr9kmsUZmP+I8xSLn3JHfMHo/cTcnA73ZJ
+ HfJ+efUQQpJByeVzBMtwWyMhcjQzCAF0KNOESdjqsOD0BNTkm5GfZk7W5Q98jNyW3m3r
+ vUpbuKlh8wt5mt0VIUKWZkboMGmxwPL20aGb3RWgbIr4injCK34QC+h/Uwt7vFzJpJCf
+ faxY7dEeRCRedBuiI0f3MQnvul9px1JElBcFqjXuP4XfYwOAaYq3kcSnw7tP86KCT+sN
+ 8W8g==
+X-Gm-Message-State: ABy/qLbuJANSXpCTKNwZ4Sd3ziY3ktd5mPovm9YUN0SJfreZd4kr4QqF
+ eZoLPjuUvXbDajiVTOPM5ADkaf1mBQpF9GGe2jN37ZOx
+X-Google-Smtp-Source: APBJJlG0jPqI4l8kGNT7wrzvc6423Sh4Ygla4z4rQZcfykRutyRakYJspZOzBEr+Xz1jFyvYqzZUKA==
+X-Received: by 2002:adf:fa52:0:b0:313:f07b:8025 with SMTP id
+ y18-20020adffa52000000b00313f07b8025mr2404490wrr.47.1689282885800; 
  Thu, 13 Jul 2023 14:14:45 -0700 (PDT)
 Received: from stoup.. ([85.193.156.66]) by smtp.gmail.com with ESMTPSA id
- n12-20020adff08c000000b0030ada01ca78sm8973747wro.10.2023.07.13.14.14.44
+ n12-20020adff08c000000b0030ada01ca78sm8973747wro.10.2023.07.13.14.14.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jul 2023 14:14:44 -0700 (PDT)
+ Thu, 13 Jul 2023 14:14:45 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	ardb@kernel.org
-Subject: [PATCH 03/18] target/s390x: Use clmul_8* routines
-Date: Thu, 13 Jul 2023 22:14:20 +0100
-Message-Id: <20230713211435.13505-4-richard.henderson@linaro.org>
+Subject: [PATCH 04/18] target/ppc: Use clmul_8* routines
+Date: Thu, 13 Jul 2023 22:14:21 +0100
+Message-Id: <20230713211435.13505-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230713211435.13505-1-richard.henderson@linaro.org>
 References: <20230713211435.13505-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,78 +91,47 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Use generic routines for 8-bit carry-less multiply.
-Remove our local version of galois_multiply8.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/tcg/vec_int_helper.c | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ target/ppc/int_helper.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/target/s390x/tcg/vec_int_helper.c b/target/s390x/tcg/vec_int_helper.c
-index 53ab5c5eb3..e110a7581a 100644
---- a/target/s390x/tcg/vec_int_helper.c
-+++ b/target/s390x/tcg/vec_int_helper.c
-@@ -14,6 +14,7 @@
- #include "vec.h"
+diff --git a/target/ppc/int_helper.c b/target/ppc/int_helper.c
+index 834da80fe3..3bf0f5dbe5 100644
+--- a/target/ppc/int_helper.c
++++ b/target/ppc/int_helper.c
+@@ -26,6 +26,7 @@
  #include "exec/helper-proto.h"
- #include "tcg/tcg-gvec-desc.h"
+ #include "crypto/aes.h"
+ #include "crypto/aes-round.h"
 +#include "crypto/clmul.h"
+ #include "fpu/softfloat.h"
+ #include "qapi/error.h"
+ #include "qemu/guest-random.h"
+@@ -1425,6 +1426,15 @@ void helper_vbpermq(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
+ #undef VBPERMQ_INDEX
+ #undef VBPERMQ_DW
  
- static bool s390_vec_is_zero(const S390Vector *v)
- {
-@@ -179,7 +180,6 @@ static uint##TBITS##_t galois_multiply##BITS(uint##TBITS##_t a,                \
-     }                                                                          \
-     return res;                                                                \
- }
--DEF_GALOIS_MULTIPLY(8, 16)
- DEF_GALOIS_MULTIPLY(16, 32)
- DEF_GALOIS_MULTIPLY(32, 64)
- 
-@@ -203,6 +203,29 @@ static S390Vector galois_multiply64(uint64_t a, uint64_t b)
-     return res;
- }
- 
-+static Int128 do_gfm8(Int128 n, Int128 m)
++void helper_vpmsumb(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
 +{
-+    Int128 e = clmul_8x8_even(n, m);
-+    Int128 o = clmul_8x8_odd(n, m);
-+    return int128_xor(e, o);
++    Int128 ia = a->s128;
++    Int128 ib = b->s128;
++    Int128 e = clmul_8x8_even(ia, ib);
++    Int128 o = clmul_8x8_odd(ia, ib);
++    r->s128 = int128_xor(e, o);
 +}
 +
-+void HELPER(gvec_vgfm8)(void *v1, const void *v2, const void *v3, uint32_t d)
-+{
-+    /*
-+     * There is no carry across the two doublewords, so their order
-+     * does not matter, so we need not care for host endianness.
-+     */
-+    *(Int128 *)v1 = do_gfm8(*(const Int128 *)v2, *(const Int128 *)v3);
-+}
-+
-+void HELPER(gvec_vgfma8)(void *v1, const void *v2, const void *v3,
-+                         const void *v4, uint32_t d)
-+{
-+    Int128 r = do_gfm8(*(const Int128 *)v2, *(const Int128 *)v3);
-+    *(Int128 *)v1 = int128_xor(r, *(Int128 *)v4);
-+}
-+
- #define DEF_VGFM(BITS, TBITS)                                                  \
- void HELPER(gvec_vgfm##BITS)(void *v1, const void *v2, const void *v3,         \
-                              uint32_t desc)                                    \
-@@ -220,7 +243,6 @@ void HELPER(gvec_vgfm##BITS)(void *v1, const void *v2, const void *v3,         \
-         s390_vec_write_element##TBITS(v1, i, d);                               \
-     }                                                                          \
+ #define PMSUM(name, srcfld, trgfld, trgtyp)                   \
+ void helper_##name(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)  \
+ {                                                             \
+@@ -1445,7 +1455,6 @@ void helper_##name(ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)  \
+     }                                                         \
  }
--DEF_VGFM(8, 16)
- DEF_VGFM(16, 32)
- DEF_VGFM(32, 64)
  
-@@ -257,7 +279,6 @@ void HELPER(gvec_vgfma##BITS)(void *v1, const void *v2, const void *v3,        \
-         s390_vec_write_element##TBITS(v1, i, d);                               \
-     }                                                                          \
- }
--DEF_VGFMA(8, 16)
- DEF_VGFMA(16, 32)
- DEF_VGFMA(32, 64)
+-PMSUM(vpmsumb, u8, u16, uint16_t)
+ PMSUM(vpmsumh, u16, u32, uint32_t)
+ PMSUM(vpmsumw, u32, u64, uint64_t)
  
 -- 
 2.34.1
