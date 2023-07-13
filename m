@@ -2,86 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C1B752BCD
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 22:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A1C752BE7
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 23:16:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK37e-0003TS-EE; Thu, 13 Jul 2023 16:41:10 -0400
+	id 1qK3eC-0000H0-1C; Thu, 13 Jul 2023 17:14:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qK37c-0003Rj-0g
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 16:41:08 -0400
-Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
+ id 1qK3eA-0000Go-B8
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:14:46 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qK37Y-0001cN-MZ
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 16:41:07 -0400
-Received: by mail-ot1-x32f.google.com with SMTP id
- 46e09a7af769-6b5d5e6b086so704183a34.1
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 13:41:04 -0700 (PDT)
+ id 1qK3e8-00015j-DR
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 17:14:46 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-315adee6ac8so1320124f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 14:14:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689280863; x=1691872863;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3ZHe1yZhpHWI9L1W76hCRW8ggK8BpUEE980E6SLbHhk=;
- b=QiGD0oDM42MHxy+LD9KwHYGRDajaLAUvVPBSebzmSG/+A2pHTCD18//EKRMq6YsW6q
- bx+Tpsth4hNKpz/jLruy8El47ZoyVqjNY22D8xs/W9U4PmLZiU6csIeOvKFY+mrxR4aT
- pl1LTAfKVBDc8++vKeNBRZWBJ9jzOeETfa7U0cCQ3IJCNkGLIXWV0jBdKdGivUe6zQmr
- pLd+fUm1FY7ALcUDdaArFgvJesRlU7Rb3ehYsiqLWvpJQnMtFuMSrxh4NZH+a/FscGYn
- +E1HXnhp3/qDg5u6eYjTw3ZUIFRlXRle9nwDhg2GHuDcN/ItrWMS81m10Eoqm5zluDwo
- VQ5A==
+ d=linaro.org; s=google; t=1689282882; x=1691874882;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=d+9R5NyTIFI6KqlmcxMZxFnF7d0GQBj40E/YXtuiUsM=;
+ b=Q3+N6eTPU0sbzDAT8CwABIMU8zq+USkeQhxnHUe4WMVd9YzJmoExPWZ+ZDda8QxBra
+ aNdXSiEB6ew3ilYnuYi1YBtte9S+tlFi4vknh4zjI2Pyg28k1OzYCmxyx0q2ovnnLf6V
+ GAL1CUMrammiXqEGk9AAZ/Imu5ldIu0itLHK9f2J6P8XcKb9bQ87uFDWyccXPcXuSemS
+ 1iv6QhJwtB6O2GJbizFgBw/Z3IgNVtQ8auRVfzHiryA0peh1fopGWv6yPCNgV1Z04Pkf
+ DF5RceSqwUoJ6hVeVlxLqgkxJgDjh602zyKGPnQYkxop9Iwnks357NRj8/gHqoASqKua
+ UfKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689280863; x=1691872863;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3ZHe1yZhpHWI9L1W76hCRW8ggK8BpUEE980E6SLbHhk=;
- b=U88Ck0VtOwmJHQ9LB+AoRrQYu9giBfhcu2o1QWOFYRBvqhdbEY8h7GEo87hQ8j1j/B
- gdQbhggngMhJdW0UuPhHSfJ7o4oAIJa8bMWO936urMHweBjSEquK2LUWlWfvtGPS4qXX
- WzYf+OSy5fThcfKYWz2Ic6RDBde/7I7IvOcyWGpG0ajhTqNPEQr59vUGyrCdeVzSpXLl
- ihlg1eBMGWGtXCNn/Dp/lrbsQUpeo546HgYV8Tqca4xC+931q7q93e0NpyVsl+6xVSC2
- yI3PlTAhfAasxxoesYCrUzx7+IKsWNI4MoI+bBxK+aaqSvvrimWhiRcoSKCSKEEj4zYS
- TVhQ==
-X-Gm-Message-State: ABy/qLbQuWMyu3Dq+g8k2K9bcdDHGwTd87xh5Rjkos7sLXdaCHSt6vxq
- mXfhFokeXdy+rc91vhNtAzS+bA==
-X-Google-Smtp-Source: APBJJlG5XGIPjZ1coj2+OI59u+rAhwU8nGUBHx4xa8kPskPTrRBo1gnL+buD/UNwfIfYNQClSvYufw==
-X-Received: by 2002:a05:6830:4612:b0:6b8:b83c:a1f8 with SMTP id
- ba18-20020a056830461200b006b8b83ca1f8mr387547otb.19.1689280863291; 
- Thu, 13 Jul 2023 13:41:03 -0700 (PDT)
-Received: from [192.168.88.227] ([172.58.109.82])
- by smtp.gmail.com with ESMTPSA id
- g13-20020a056830160d00b006b93c6c97basm3285447otr.44.2023.07.13.13.41.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 13:41:02 -0700 (PDT)
-Message-ID: <9626ed95-9d50-344b-696a-95998e98e3f4@linaro.org>
-Date: Thu, 13 Jul 2023 21:40:56 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2 v2 5/7] target/riscv/cpu.c: add a
- ADD_CPU_PROPERTIES_ARRAY() macro
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
-References: <20230712205748.446931-1-dbarboza@ventanamicro.com>
- <20230712205748.446931-6-dbarboza@ventanamicro.com>
+ d=1e100.net; s=20221208; t=1689282882; x=1691874882;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=d+9R5NyTIFI6KqlmcxMZxFnF7d0GQBj40E/YXtuiUsM=;
+ b=DfeK/aCdgLQ4DA/Ms1ROBO6s7/AGah/5nVz1Z80oUWIxYSrNYQhhd71HhJ18UyBH1o
+ Ib58Xq5Iz6RjoIE1HztDHNBL5Emfc/26uPLCNJJVLCObI8S9OVYu3Gt+VG9xF+pZWXqy
+ fpLblZX/xlL7YBYurJ81+uc7cVdzMS8HRvoq3xXx7mdu2EcITGm/Ggl32hVokvo1HZV4
+ 1433wrJrY3lxsGzxTmA8ezDoBlSK1zYXrd3/j+gF4CVzvO2JSpWnynB8I/rBjSnb7c3J
+ wq36MAfmLutLtCXB+iCFQVMOyrD8piG8kfOruanluGhDIwmYEs5cahKJSwbvfJIu9Sb3
+ YQ3Q==
+X-Gm-Message-State: ABy/qLbnHU55VwPX0zDT9nQ5/1CxhbEsxcG+uTJ+zUWhds9N8BXov/Ai
+ pI7BzQC7uJKHDTG57NTVmIxLlvfhgNz4IV9mePuGb6CW
+X-Google-Smtp-Source: APBJJlHb5et0L9wVfG8B8KVUr/QKPTnzZQ2l9fd0hBUHobpgp0FhCHzWYGqx1YC/P5q+6c/pmTXsqw==
+X-Received: by 2002:a5d:5304:0:b0:314:de6:3200 with SMTP id
+ e4-20020a5d5304000000b003140de63200mr2577210wrv.41.1689282882101; 
+ Thu, 13 Jul 2023 14:14:42 -0700 (PDT)
+Received: from stoup.. ([85.193.156.66]) by smtp.gmail.com with ESMTPSA id
+ n12-20020adff08c000000b0030ada01ca78sm8973747wro.10.2023.07.13.14.14.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 13 Jul 2023 14:14:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230712205748.446931-6-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32f.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com,
+	ardb@kernel.org
+Subject: [RFC PATCH for-8.2 00/18] crypto: Provide clmul.h and host accel
+Date: Thu, 13 Jul 2023 22:14:17 +0100
+Message-Id: <20230713211435.13505-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,18 +88,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/12/23 21:57, Daniel Henrique Barboza wrote:
-> +#define ADD_CPU_PROPERTIES_ARRAY(_dev, _array) \
-> +    for (prop = _array; prop && prop->name; prop++) { \
-> +        qdev_property_add_static(_dev, prop); \
-> +    } \
+Inspired by Ard Biesheuvel's RFC patches [1] for accelerating
+carry-less multiply under emulation.
 
-do { } while(0)
+This is less polished than the AES patch set:
 
-Watch the \ on the last line of the macro.
-Declare the iterator within the macro, rather than use one defined in the outer scope.
-Why not use ARRAY_SIZE?
+(1) Should I split HAVE_CLMUL_ACCEL into per-width HAVE_CLMUL{N}_ACCEL?
+    The "_generic" and "_accel" split is different from aes-round.h
+    because of the difference in support for different widths, and it
+    means that each host accel has more boilerplate.
+
+(2) Should I bother trying to accelerate anything other than 64x64->128?
+    That seems to be the one that GSM really wants anyway.  I'd keep all
+    of the sizes implemented generically, since that centralizes the 3
+    target implementations.
+
+(3) The use of Int128 isn't fantastic -- better would be a vector type,
+    though that has its own special problems for ppc64le (see the
+    endianness hoops within aes-round.h).  Perhaps leave things in
+    env memory, like I was mostly able to do with AES?
+
+(4) No guest test case(s).
 
 
 r~
+
+
+[1] https://patchew.org/QEMU/20230601123332.3297404-1-ardb@kernel.org/
+
+Richard Henderson (18):
+  crypto: Add generic 8-bit carry-less multiply routines
+  target/arm: Use clmul_8* routines
+  target/s390x: Use clmul_8* routines
+  target/ppc: Use clmul_8* routines
+  crypto: Add generic 16-bit carry-less multiply routines
+  target/arm: Use clmul_16* routines
+  target/s390x: Use clmul_16* routines
+  target/ppc: Use clmul_16* routines
+  crypto: Add generic 32-bit carry-less multiply routines
+  target/arm: Use clmul_32* routines
+  target/s390x: Use clmul_32* routines
+  target/ppc: Use clmul_32* routines
+  crypto: Add generic 64-bit carry-less multiply routine
+  target/arm: Use clmul_64
+  target/s390x: Use clmul_64
+  target/ppc: Use clmul_64
+  host/include/i386: Implement clmul.h
+  host/include/aarch64: Implement clmul.h
+
+ host/include/aarch64/host/cpuinfo.h      |   1 +
+ host/include/aarch64/host/crypto/clmul.h | 230 +++++++++++++++++++++++
+ host/include/generic/host/crypto/clmul.h |  28 +++
+ host/include/i386/host/cpuinfo.h         |   1 +
+ host/include/i386/host/crypto/clmul.h    | 187 ++++++++++++++++++
+ host/include/x86_64/host/crypto/clmul.h  |   1 +
+ include/crypto/clmul.h                   | 123 ++++++++++++
+ target/arm/tcg/vec_internal.h            |  11 --
+ crypto/clmul.c                           | 163 ++++++++++++++++
+ target/arm/tcg/mve_helper.c              |  16 +-
+ target/arm/tcg/vec_helper.c              | 112 ++---------
+ target/ppc/int_helper.c                  |  63 +++----
+ target/s390x/tcg/vec_int_helper.c        | 175 +++++++----------
+ util/cpuinfo-aarch64.c                   |   4 +-
+ util/cpuinfo-i386.c                      |   1 +
+ crypto/meson.build                       |   9 +-
+ 16 files changed, 865 insertions(+), 260 deletions(-)
+ create mode 100644 host/include/aarch64/host/crypto/clmul.h
+ create mode 100644 host/include/generic/host/crypto/clmul.h
+ create mode 100644 host/include/i386/host/crypto/clmul.h
+ create mode 100644 host/include/x86_64/host/crypto/clmul.h
+ create mode 100644 include/crypto/clmul.h
+ create mode 100644 crypto/clmul.c
+
+-- 
+2.34.1
+
 
