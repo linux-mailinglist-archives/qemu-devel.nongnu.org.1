@@ -2,63 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA89752B22
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 21:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC5D752B49
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 22:00:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK2D4-0001MQ-Mz; Thu, 13 Jul 2023 15:42:42 -0400
+	id 1qK2Se-0003vf-Tl; Thu, 13 Jul 2023 15:58:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qK2D2-0001Lv-B5
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 15:42:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qK2Sc-0003vX-Uy
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 15:58:46 -0400
+Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qK2D0-0000tp-Dy
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 15:42:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689277356;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type;
- bh=0ecKY+2hbb9Po0wy4GnfoAUs6cPh0hHtRBDWgSl23E0=;
- b=SZZY+ePbpLCNMfX6g0/LCvNUzmckgSJDU56PH441UfRTModgLjWfPBaqnVPuMKM8wHOnpK
- SxQe/sgCYsYI+HE8ZjcmqjwqD0LB7KTJIF7zxlB5zya4EI4XP4KOm+Yy4aaTHSfL9HN21p
- bFwBfSx6FaBkad3mphR5MHu22n4DCF8=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-67-Fq8i7KbMNb-nc4d4WxruaA-1; Thu, 13 Jul 2023 15:42:34 -0400
-X-MC-Unique: Fq8i7KbMNb-nc4d4WxruaA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D8A929DD990
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 19:42:34 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.106])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B68E0492B01;
- Thu, 13 Jul 2023 19:42:33 +0000 (UTC)
-Date: Thu, 13 Jul 2023 15:42:26 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: pbonzini@redhat.com, kwolf@redhat.com
-Cc: qemu-devel@nongnu.org
-Subject: drain_call_rcu() vs nested event loops
-Message-ID: <20230713194226.GA335220@fedora>
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qK2Sa-0006hC-9R
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 15:58:46 -0400
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qK2SN-0005fS-MT; Thu, 13 Jul 2023 21:58:31 +0200
+Message-ID: <3bd720ec-8f61-d3e9-c998-4873e0c4f778@maciej.szmigiero.name>
+Date: Thu, 13 Jul 2023 21:58:25 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="gg/EnxqYa7Ua1q8f"
-Content-Disposition: inline
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US, pl-PL
+To: David Hildenbrand <david@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Michal Privoznik <mprivozn@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Gavin Shan <gshan@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
+ kvm@vger.kernel.org
+References: <20230616092654.175518-1-david@redhat.com>
+ <20230616092654.175518-14-david@redhat.com>
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Subject: Re: [PATCH v1 13/15] virtio-mem: Expose device memory via multiple
+ memslots if enabled
+In-Reply-To: <20230616092654.175518-14-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.096,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -76,181 +70,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 16.06.2023 11:26, David Hildenbrand wrote:
+> Having large virtio-mem devices that only expose little memory to a VM
+> is currently a problem: we map the whole sparse memory region into the
+> guest using a single memslot, resulting in one gigantic memslot in KVM.
+> KVM allocates metadata for the whole memslot, which can result in quite
+> some memory waste.
+> 
+> Assuming we have a 1 TiB virtio-mem device and only expose little (e.g.,
+> 1 GiB) memory, we would create a single 1 TiB memslot and KVM has to
+> allocate metadata for that 1 TiB memslot: on x86, this implies allocating
+> a significant amount of memory for metadata:
+> 
+> (1) RMAP: 8 bytes per 4 KiB, 8 bytes per 2 MiB, 8 bytes per 1 GiB
+>      -> For 1 TiB: 2147483648 + 4194304 + 8192 = ~ 2 GiB (0.2 %)
+> 
+>      With the TDP MMU (cat /sys/module/kvm/parameters/tdp_mmu) this gets
+>      allocated lazily when required for nested VMs
+> (2) gfn_track: 2 bytes per 4 KiB
+>      -> For 1 TiB: 536870912 = ~512 MiB (0.05 %)
+> (3) lpage_info: 4 bytes per 2 MiB, 4 bytes per 1 GiB
+>      -> For 1 TiB: 2097152 + 4096 = ~2 MiB (0.0002 %)
+> (4) 2x dirty bitmaps for tracking: 2x 1 bit per 4 KiB page
+>      -> For 1 TiB: 536870912 = 64 MiB (0.006 %)
+> 
+> So we primarily care about (1) and (2). The bad thing is, that the
+> memory consumption *doubles* once SMM is enabled, because we create the
+> memslot once for !SMM and once for SMM.
+> 
+> Having a 1 TiB memslot without the TDP MMU consumes around:
+> * With SMM: 5 GiB
+> * Without SMM: 2.5 GiB
+> Having a 1 TiB memslot with the TDP MMU consumes around:
+> * With SMM: 1 GiB
+> * Without SMM: 512 MiB
+> 
+> ... and that's really something we want to optimize, to be able to just
+> start a VM with small boot memory (e.g., 4 GiB) and a virtio-mem device
+> that can grow very large (e.g., 1 TiB).
+> 
+> Consequently, using multiple memslots and only mapping the memslots we
+> really need can significantly reduce memory waste and speed up
+> memslot-related operations. Let's expose the sparse RAM memory region using
+> multiple memslots, mapping only the memslots we currently need into our
+> device memory region container.
+> 
+> * With VIRTIO_MEM_F_UNPLUGGED_INACCESSIBLE, we only map the memslots that
+>    actually have memory plugged, and dynamically (un)map when
+>    (un)plugging memory blocks.
+> 
+> * Without VIRTIO_MEM_F_UNPLUGGED_INACCESSIBLE, we always map the memslots
+>    covered by the usable region, and dynamically (un)map when resizing the
+>    usable region.
+> 
+> We'll auto-determine the number of memslots to use based on the suggested
+> memslot limit provided by the core. We'll use at most 1 memslot per
+> gigabyte. Note that our global limit of memslots accross all memory devices
+> is currently set to 256: even with multiple large virtio-mem devices, we'd
+> still have a sane limit on the number of memslots used.
+> 
+> The default is a single memslot for now ("multiple-memslots=off"). The
+> optimization must be enabled manually using "multiple-memslots=on", because
+> some vhost setups (e.g., hotplug of vhost-user devices) might be
+> problematic until we support more memslots especially in vhost-user
+> backends.
+> 
+> Note that "multiple-memslots=on" is just a hint that multiple memslots
+> *may* be used for internal optimizations, not that multiple memslots
+> *must* be used. The actual number of memslots that are used is an
+> internal detail: for example, once memslot metadata is no longer an
+> issue, we could simply stop optimizing for that. Migration source and
+> destination can differ on the setting of "multiple-memslots".
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   hw/virtio/virtio-mem-pci.c     |  21 +++
+>   hw/virtio/virtio-mem.c         | 265 ++++++++++++++++++++++++++++++++-
+>   include/hw/virtio/virtio-mem.h |  23 ++-
+>   3 files changed, 304 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio-mem-pci.c b/hw/virtio/virtio-mem-pci.c
+> index b85c12668d..8b403e7e78 100644
+> --- a/hw/virtio/virtio-mem-pci.c
+> +++ b/hw/virtio/virtio-mem-pci.c
+(...)
+> @@ -790,6 +921,43 @@ static void virtio_mem_system_reset(void *opaque)
+>       virtio_mem_unplug_all(vmem);
+>   }
+>   
+> +static void virtio_mem_prepare_mr(VirtIOMEM *vmem)
+> +{
+> +    const uint64_t region_size = memory_region_size(&vmem->memdev->mr);
+> +
+> +    g_assert(!vmem->mr);
+> +    vmem->mr = g_new0(MemoryRegion, 1);
+> +    memory_region_init(vmem->mr, OBJECT(vmem), "virtio-mem",
+> +                       region_size);
+> +    vmem->mr->align = memory_region_get_alignment(&vmem->memdev->mr);
+> +}
+> +
+> +static void virtio_mem_prepare_memslots(VirtIOMEM *vmem)
+> +{
+> +    const uint64_t region_size = memory_region_size(&vmem->memdev->mr);
+> +    unsigned int idx;
+> +
+> +    g_assert(!vmem->memslots && vmem->nb_memslots);
+> +    vmem->memslots = g_new0(MemoryRegion, vmem->nb_memslots);
+> +
+> +    /* Initialize our memslots, but don't map them yet. */
+> +    for (idx = 0; idx < vmem->nb_memslots; idx++) {
+> +        const uint64_t memslot_offset = idx * vmem->memslot_size;
+> +        uint64_t memslot_size = vmem->memslot_size;
+> +        char name[20];
+> +
+> +        /* The size of the last memslot might be smaller. */
+> +        if (idx == vmem->nb_memslots) {                       ^
+I guess this should be "vmem->nb_memslots - 1" since that's the last
+memslot index.
 
---gg/EnxqYa7Ua1q8f
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> +            memslot_size = region_size - memslot_offset;
+> +        }
+> +
+> +        snprintf(name, sizeof(name), "memslot-%u", idx);
+> +        memory_region_init_alias(&vmem->memslots[idx], OBJECT(vmem), name,
+> +                                 &vmem->memdev->mr, memslot_offset,
+> +                                 memslot_size);
+> +    }
+> +}
+> +
 
-Hi,
-I've encountered a bug where two vcpu threads enter a device's MMIO
-emulation callback at the same time. This is never supposed to happen
-thanks to the Big QEMU Lock (BQL), but drain_call_rcu() and nested event
-loops make it possible:
-
-1. A device's MMIO emulation callback invokes AIO_WAIT_WHILE().
-2. A device_add monitor command runs in AIO_WAIT_WHILE()'s aio_poll()
-   nested event loop.
-3. qmp_device_add() -> drain_call_rcu() is called and the BQL is
-   temporarily dropped.
-4. Another vcpu thread dispatches the same device's MMIO callback
-   because it is now able to acquire the BQL.
-
-I've included the backtraces below if you want to see the details. They
-are from a RHEL qemu-kvm 6.2.0-35 coredump but I haven't found anything
-in qemu.git/master that would fix this.
-
-One fix is to make qmp_device_add() a coroutine and schedule a BH in the
-iohandler AioContext. That way the coroutine must wait until the nested
-event loop finishes before its BH executes. drain_call_rcu() will never
-be called from a nested event loop and the problem does not occur
-anymore.
-
-Another possibility is to remove the following in monitor_qmp_dispatcher_co=
-():
-
-  /*
-   * Move the coroutine from iohandler_ctx to qemu_aio_context for
-   * executing the command handler so that it can make progress if it
-   * involves an AIO_WAIT_WHILE().
-   */
-  aio_co_schedule(qemu_get_aio_context(), qmp_dispatcher_co);
-  qemu_coroutine_yield();
-
-By executing QMP commands in the iohandler AioContext by default, we can
-prevent issues like this in the future. However, there might be some QMP
-commands that assume they are running in the qemu_aio_context (e.g.
-coroutine commands that yield) and they might need to manually move to
-the qemu_aio_context.
-
-What do you think?
-
-Stefan
----
-Thread 41 (Thread 0x7fdc3dffb700 (LWP 910296)):
-#0  0x00007fde88ac99bd in syscall () from /lib64/libc.so.6
-#1  0x000055bd7a2e066f in qemu_futex_wait (val=3D<optimized out>, f=3D<opti=
-mized out>) at /usr/src/debug/qemu-kvm-6.2.0-35.module+el8.9.0+19024+8193e2=
-ac.x86_64/include/qemu/futex.h:29
-#2  qemu_event_wait (ev=3Dev@entry=3D0x7fdc3dffa2d0) at ../util/qemu-thread=
--posix.c:510
-#3  0x000055bd7a2e8e54 in drain_call_rcu () at ../util/rcu.c:347
-#4  0x000055bd79f63d1e in qmp_device_add (qdict=3D<optimized out>, ret_data=
-=3D<optimized out>, errp=3D<optimized out>) at ../softmmu/qdev-monitor.c:863
-#5  0x000055bd7a2d420d in do_qmp_dispatch_bh (opaque=3D0x7fde8c22aee0) at .=
-=2E/qapi/qmp-dispatch.c:129
-#6  0x000055bd7a2ef3bd in aio_bh_call (bh=3D0x7fdc6015cd50) at ../util/asyn=
-c.c:174
-#7  aio_bh_poll (ctx=3Dctx@entry=3D0x55bd7c910f40) at ../util/async.c:174
-#8  0x000055bd7a2dd3b2 in aio_poll (ctx=3D0x55bd7c910f40, blocking=3Dblocki=
-ng@entry=3Dtrue) at ../util/aio-posix.c:659
-#9  0x000055bd7a2effea in aio_wait_bh_oneshot (ctx=3D0x55bd7ca980e0, cb=3Dc=
-b@entry=3D0x55bd7a11a9c0 <virtio_blk_data_plane_stop_bh>, opaque=3Dopaque@e=
-ntry=3D0x55bd7e585c40) at ../util/aio-wait.c:85
-#10 0x000055bd7a11b30b in virtio_blk_data_plane_stop (vdev=3D<optimized out=
->) at ../hw/block/dataplane/virtio-blk.c:333
-#11 0x000055bd7a0591e0 in virtio_bus_stop_ioeventfd (bus=3Dbus@entry=3D0x55=
-bd7cb57ba8) at ../hw/virtio/virtio-bus.c:258
-#12 0x000055bd7a05995f in virtio_bus_stop_ioeventfd (bus=3Dbus@entry=3D0x55=
-bd7cb57ba8) at ../hw/virtio/virtio-bus.c:250
-#13 0x000055bd7a05b238 in virtio_pci_stop_ioeventfd (proxy=3D0x55bd7cb4f9a0=
-) at ../hw/virtio/virtio-pci.c:1289
-#14 virtio_pci_common_write (opaque=3D0x55bd7cb4f9a0, addr=3D<optimized out=
->, val=3D<optimized out>, size=3D<optimized out>) at ../hw/virtio/virtio-pc=
-i.c:1289
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#15 0x000055bd7a0f6777 in memory_region_write_accessor (mr=3D0x55bd7cb50410=
-, addr=3D<optimized out>, value=3D<optimized out>, size=3D1, shift=3D<optim=
-ized out>, mask=3D<optimized out>, attrs=3D...) at ../softmmu/memory.c:492
-#16 0x000055bd7a0f320e in access_with_adjusted_size (addr=3Daddr@entry=3D20=
-, value=3Dvalue@entry=3D0x7fdc3dffa5c8, size=3Dsize@entry=3D1, access_size_=
-min=3D<optimized out>, access_size_max=3D<optimized out>,=20
-    access_fn=3D0x55bd7a0f6710 <memory_region_write_accessor>, mr=3D0x55bd7=
-cb50410, attrs=3D...) at ../softmmu/memory.c:554
-#17 0x000055bd7a0f62a3 in memory_region_dispatch_write (mr=3Dmr@entry=3D0x5=
-5bd7cb50410, addr=3D20, data=3D<optimized out>, op=3D<optimized out>, attrs=
-=3Dattrs@entry=3D...) at ../softmmu/memory.c:1504
-#18 0x000055bd7a0e7f2e in flatview_write_continue (fv=3Dfv@entry=3D0x55bd7d=
-17cad0, addr=3Daddr@entry=3D4236247060, attrs=3D..., ptr=3Dptr@entry=3D0x7f=
-de84003028, len=3Dlen@entry=3D1, addr1=3D<optimized out>, l=3D<optimized ou=
-t>,=20
-    mr=3D0x55bd7cb50410) at /usr/src/debug/qemu-kvm-6.2.0-35.module+el8.9.0=
-+19024+8193e2ac.x86_64/include/qemu/host-utils.h:165
-#19 0x000055bd7a0e8093 in flatview_write (fv=3D0x55bd7d17cad0, addr=3D42362=
-47060, attrs=3D..., buf=3D0x7fde84003028, len=3D1) at ../softmmu/physmem.c:=
-2856
-#20 0x000055bd7a0ebc6f in address_space_write (as=3D<optimized out>, addr=
-=3D<optimized out>, attrs=3D..., buf=3D<optimized out>, len=3D<optimized ou=
-t>) at ../softmmu/physmem.c:2952
-#21 0x000055bd7a1a28b9 in kvm_cpu_exec (cpu=3Dcpu@entry=3D0x55bd7cc32bf0) a=
-t ../accel/kvm/kvm-all.c:2995
-#22 0x000055bd7a1a36e5 in kvm_vcpu_thread_fn (arg=3D0x55bd7cc32bf0) at ../a=
-ccel/kvm/kvm-accel-ops.c:49
-#23 0x000055bd7a2dfdd4 in qemu_thread_start (args=3D0x55bd7cc41f20) at ../u=
-til/qemu-thread-posix.c:585
-#24 0x00007fde88e5d1ca in start_thread () from /lib64/libpthread.so.0
-#25 0x00007fde88ac9e73 in clone () from /lib64/libc.so.6
-
-Thread 1 (Thread 0x7fdc6f5fe700 (LWP 910286)):
-#0  0x00007fde88adeacf in raise () from /lib64/libc.so.6
-#1  0x00007fde88ab1ea5 in abort () from /lib64/libc.so.6
-#2  0x00007fde88ab1d79 in __assert_fail_base.cold.0 () from /lib64/libc.so.6
-#3  0x00007fde88ad7426 in __assert_fail () from /lib64/libc.so.6
-#4  0x000055bd7a1175c8 in virtio_blk_set_status (vdev=3D0x55bd7cb57c30, sta=
-tus=3D<optimized out>) at ../hw/block/virtio-blk.c:1043
-#5  0x000055bd7a1474e4 in virtio_set_status (vdev=3Dvdev@entry=3D0x55bd7cb5=
-7c30, val=3Dval@entry=3D0 '\000') at ../hw/virtio/virtio.c:1945
-#6  0x000055bd7a05b243 in virtio_pci_common_write (opaque=3D0x55bd7cb4f9a0,=
- addr=3D<optimized out>, val=3D<optimized out>, size=3D<optimized out>) at =
-=2E./hw/virtio/virtio-pci.c:1292
-                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#7  0x000055bd7a0f6777 in memory_region_write_accessor (mr=3D0x55bd7cb50410=
-, addr=3D<optimized out>, value=3D<optimized out>, size=3D1, shift=3D<optim=
-ized out>, mask=3D<optimized out>, attrs=3D...) at ../softmmu/memory.c:492
-#8  0x000055bd7a0f320e in access_with_adjusted_size (addr=3Daddr@entry=3D20=
-, value=3Dvalue@entry=3D0x7fdc6f5fd5c8, size=3Dsize@entry=3D1, access_size_=
-min=3D<optimized out>, access_size_max=3D<optimized out>,=20
-    access_fn=3D0x55bd7a0f6710 <memory_region_write_accessor>, mr=3D0x55bd7=
-cb50410, attrs=3D...) at ../softmmu/memory.c:554
-#9  0x000055bd7a0f62a3 in memory_region_dispatch_write (mr=3Dmr@entry=3D0x5=
-5bd7cb50410, addr=3D20, data=3D<optimized out>, op=3D<optimized out>, attrs=
-=3Dattrs@entry=3D...) at ../softmmu/memory.c:1504
-#10 0x000055bd7a0e7f2e in flatview_write_continue (fv=3Dfv@entry=3D0x7fdad6=
-9b4a90, addr=3Daddr@entry=3D4236247060, attrs=3D..., ptr=3Dptr@entry=3D0x7f=
-de8c05f028, len=3Dlen@entry=3D1, addr1=3D<optimized out>, l=3D<optimized ou=
-t>,=20
-    mr=3D0x55bd7cb50410) at /usr/src/debug/qemu-kvm-6.2.0-35.module+el8.9.0=
-+19024+8193e2ac.x86_64/include/qemu/host-utils.h:165
-#11 0x000055bd7a0e8093 in flatview_write (fv=3D0x7fdad69b4a90, addr=3D42362=
-47060, attrs=3D..., buf=3D0x7fde8c05f028, len=3D1) at ../softmmu/physmem.c:=
-2856
-#12 0x000055bd7a0ebc6f in address_space_write (as=3D<optimized out>, addr=
-=3D<optimized out>, attrs=3D..., buf=3D<optimized out>, len=3D<optimized ou=
-t>) at ../softmmu/physmem.c:2952
-#13 0x000055bd7a1a28b9 in kvm_cpu_exec (cpu=3Dcpu@entry=3D0x55bd7cb953f0) a=
-t ../accel/kvm/kvm-all.c:2995
-#14 0x000055bd7a1a36e5 in kvm_vcpu_thread_fn (arg=3D0x55bd7cb953f0) at ../a=
-ccel/kvm/kvm-accel-ops.c:49
-#15 0x000055bd7a2dfdd4 in qemu_thread_start (args=3D0x55bd7cba4420) at ../u=
-til/qemu-thread-posix.c:585
-#16 0x00007fde88e5d1ca in start_thread () from /lib64/libpthread.so.0
-#17 0x00007fde88ac9e73 in clone () from /lib64/libc.so.6
-
---gg/EnxqYa7Ua1q8f
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmSwU6IACgkQnKSrs4Gr
-c8gENwgAnLe5a73IV1duZ0RU8YZ2ENEja2sBYkeKwrYsOnMba+ZPFldmT+XcLPFP
-UABf67gn1XbfzAcswDZSIgQRxwrI5BHWwUQCj4+3iU6RJIYEp0TNejBTx0PN/Sul
-OG4h1Yp/XUXJ3CRW3yDJp/TEm9272/KahyJVLSQdJAp/XKBqAag1K7vdPXeK0SzY
-mPkeNfkIZ8VUPVZgET3JD6FRlXIwi2cC2sNvbEk5EB4jpAVdFqKCRmfUpG2lT9vu
-h+SXT8T7W0womd3QU62v6LDGApUIVckURNp7jLQsvvaRnSEQqWSQ7dSEL72X3ebb
-n8N2FC2k3B/f0mLcW7Eo1Nk0aQ2lEw==
-=VtYw
------END PGP SIGNATURE-----
-
---gg/EnxqYa7Ua1q8f--
+Thanks,
+Maciej
 
 
