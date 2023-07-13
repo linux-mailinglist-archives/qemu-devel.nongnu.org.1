@@ -2,97 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6C3752216
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 15:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCB9752308
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 15:09:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJvw7-0002y1-7d; Thu, 13 Jul 2023 09:00:47 -0400
+	id 1qJw2u-0004aA-PF; Thu, 13 Jul 2023 09:07:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qJvw3-0002xc-Oq
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 09:00:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qJw2q-0004ZP-QT
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 09:07:45 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qJvw2-00083C-B4
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 09:00:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689253240;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3KVspK4Yi5j3UqTEjGhaqzh33UwKcUOEgAdtql+oH04=;
- b=WZUUIY98Nb2MWbVdkuRfMcAeSc7EPTE2rS7lWH2NOyEZKKn7+nyh9+z02YV1P/CFw6SQbs
- H+G1jGIUyn6rxXScODiBxk4BT7G8ss6bHsT11GIZLEXu6JjgBjhI2EZRIRc6oJE3xVA+QJ
- zQLh4uF8Foq3v0spEyB8MlZydMd/CYs=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-McEl5tsqN0if6QB_JKpzjw-1; Thu, 13 Jul 2023 09:00:38 -0400
-X-MC-Unique: McEl5tsqN0if6QB_JKpzjw-1
-Received: by mail-pl1-f198.google.com with SMTP id
- d9443c01a7336-1b8a7e21f15so4469005ad.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 06:00:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689253236; x=1691845236;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3KVspK4Yi5j3UqTEjGhaqzh33UwKcUOEgAdtql+oH04=;
- b=O1JzOtED/5EsUVwAOGgLKlRMbtrhJD1t+LU7/4/mnfFpTVhMWvxGn3pT7JxdVBai8M
- yQh6ncb8Zw4iXHqTMzB6TDQvaSY7FxuX19Z/6h8W0oeObs/83EbFb/adfT7GSMl1auX4
- r7DKtW2DzwzHwlF8IjvzJh9k/A//10AvSOcoqPc9zHsQCUXPPS/lXQfJLbAhxcAsqPnd
- v5TdYEVmQsMXhLVT34lw0GcPwWhXscAOytTJyJmjZb3+U++kLQA1yK/t8WJ8gxMU7gYV
- TaruCoOfct+QD1+v2iZ1l3AOw0uPB6tu2w3VoypB/rkPFP0ctvFu27Mq+qudT3pQwg9E
- SKtQ==
-X-Gm-Message-State: ABy/qLZz2hEsWy8iIIl7ylVl4I9y2WwkRa5NEXtiAKT4x8VfoKCLS4NJ
- hI6GyFtnjpNp/OatkvQUB8+KmKz/oXpd/ucdhsR/9LmANhdkxObI8U6Gtb659qoRYqjaPBBiVXm
- 2YQIhiAmg4Cmh6JQ=
-X-Received: by 2002:a17:902:e80a:b0:1b0:3d03:4179 with SMTP id
- u10-20020a170902e80a00b001b03d034179mr2195881plg.6.1689253235841; 
- Thu, 13 Jul 2023 06:00:35 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGx7+mZGNERmNbavfbF9qSZd1sD8zXpgzgP5JisK3SLpkfTd9QnNfkf86w6KSj/0/CmJiM2ug==
-X-Received: by 2002:a17:902:e80a:b0:1b0:3d03:4179 with SMTP id
- u10-20020a170902e80a00b001b03d034179mr2195816plg.6.1689253235081; 
- Thu, 13 Jul 2023 06:00:35 -0700 (PDT)
-Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
- ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
- by smtp.gmail.com with ESMTPSA id
- w2-20020a170902904200b001b8013ed362sm5863643plz.96.2023.07.13.06.00.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 06:00:34 -0700 (PDT)
-Message-ID: <12d0c82a-f9d7-03d0-f2cd-0fead92d3156@redhat.com>
-Date: Thu, 13 Jul 2023 23:00:28 +1000
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qJw2n-0000wf-2n
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 09:07:44 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36DCqcp0001391; Thu, 13 Jul 2023 13:07:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=wkorjVBIQ/cotenUnRUBmylu20tzx2KpjgI6eaiCqq4=;
+ b=QJVcfQxihjwVKCE6UmnuwdlA7AuIad+THaElkhvTwN7NRvIyXhwTYJ8Riai8KF2DkS7t
+ mrGedhYEuuDpCXh7DRiuMtuCuGKRaAQ5ObVADHJ7RFqvg8I1z+1Z8gthDm5dbHYgYZK1
+ mtPlkw91j+QItNGfwnC6mg8z+CH7aOT+dn89ESbunHW/uSYjjNKs4rA7dgYbRe8U6E0A
+ eRmEOf6FWOXF5JMl5mlDWTr8OepP7OhLH3h2yDvu/W59natrwgUbn8uZ5UDcRfsqfB6C
+ HKnu6P7hp2qmjA+J/3NQS+Y6FFgRdpn59eRThVl3sca2ZB1FnP1h/XFJNXSRICd9/s6j CQ== 
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rthnf0egd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 13:07:34 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36D9I2xW005862;
+ Thu, 13 Jul 2023 13:07:33 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
+ by ppma03wdc.us.ibm.com (PPS) with ESMTPS id 3rpye68mj0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 13:07:33 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36DD7Wrh3408454
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 13 Jul 2023 13:07:32 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 19D1358043;
+ Thu, 13 Jul 2023 13:07:32 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C81D558059;
+ Thu, 13 Jul 2023 13:07:31 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 13 Jul 2023 13:07:31 +0000 (GMT)
+Message-ID: <c58eea48-413b-d7e8-2a4e-f5b189536e7a@linux.ibm.com>
+Date: Thu, 13 Jul 2023 09:07:31 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 0/3] hw/arm/virt: Use generic CPU invalidation
+Subject: Re: [PATCH 00/11] tpm: introduce TPM CRB SysBus device
+To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
+References: <20230713035232.48406-1-j@getutm.app>
 Content-Language: en-US
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, pbonzini@redhat.com,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, shan.gavin@gmail.com
-References: <20230713054502.410911-1-gshan@redhat.com>
- <CAFEAcA8197FCwfNZrnxfO-87RveOko0Ju-KcTJOEi0vfjVtDKg@mail.gmail.com>
- <2d21e89f-c965-e8f1-3705-dfea8367fc7e@linaro.org>
- <3a392615-5aca-f384-197f-84beb3086a29@redhat.com>
- <2e1fbb6c-e7b4-df42-c64c-59de47f05981@linaro.org>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <2e1fbb6c-e7b4-df42-c64c-59de47f05981@linaro.org>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20230713035232.48406-1-j@getutm.app>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: dEivgZFEDGrSL9-qSLe3AQWCYfHB4C3w
+X-Proofpoint-ORIG-GUID: dEivgZFEDGrSL9-qSLe3AQWCYfHB4C3w
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-13_05,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 suspectscore=0
+ impostorscore=0 mlxscore=0 priorityscore=1501 spamscore=0 malwarescore=0
+ bulkscore=0 phishscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2307130114
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,54 +107,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Marcin,
 
-On 7/13/23 22:44, Marcin Juszkiewicz wrote:
-> W dniu 13.07.2023 o 14:34, Gavin Shan pisze:
->> On 7/13/23 21:52, Marcin Juszkiewicz wrote:
->>> W dniu 13.07.2023 o 13:44, Peter Maydell pisze:
->>>
->>>> I see this isn't a change in this patch, but given that what the user specifies is not "cortex-a8-arm-cpu" but "cortex-a8", why
->>>> do we include the "-arm-cpu" suffix in the error messages? It's
->>>> not valid syntax to say "-cpu cortex-a8-arm-cpu", so it's a bit misleading...
+
+On 7/12/23 23:51, Joelle van Dyne wrote:
+> The impetus for this patch set is to get TPM 2.0 working on Windows 11 ARM64.
+> Windows' tpm.sys does not seem to work on a TPM TIS device (as verified with
+> VMWare's implementation). However, the current TPM CRB device uses a fixed
+> system bus address that is reserved for RAM in ARM64 Virt machines.
+
+Thanks a lot for this work. The last sentence seems to hint at the current issue
+with TPM CRB on ARM64 and seems to be the only way forward there. You may want
+to reformulate it a bit because it's not clear how the 'however' related to
+CRB relates to TIS.
+
 > 
->>> I like the change but it (IMHO) needs to cut "-{TYPE_*_CPU}"
->>> string from names:
+> In the process of adding the TPM CRB SysBus device, we also went ahead and
+> cleaned up some of the existing TPM hardware code and fixed some bugs. We used
+
+Please reorder bugs to the beginning of the series or submit in an extra patch set
+so we can backport them. Ideal would be description(s) for how to trigger the bug(s).
+
+> the TPM TIS devices as a template for the TPM CRB devices and refactored out
+> common code. We moved the ACPI DSDT generation to the device in order to handle
+> dynamic base address requirements as well as reduce redundent code in different
+s/redundent/redundant
+
+
+> machine ACPI generation. We also changed the tpm_crb device to use the ISA bus
+> instead of depending on the default system bus as the device only was built for
+> the PC configuration.
 > 
->> Peter and Marcin, how about to split the CPU types to two fields, as below? In this way, the complete CPU type will be used for validation
->> and the 'internal' names will be used for the error messages.
+> Another change is that the TPM CRB registers are now mapped in the same way that
+> the pflash ROM devices are mapped. It is a memory region whose writes are
+> trapped as MMIO accesses. This was needed because Apple Silicon does not decode
+> LDP caused page faults. @agraf suggested that we do this to avoid having to
+
+Afaik, LDP is an ARM assembly instruction that loads two 32bit or 64bit registers from
+consecutive addresses. May be worth mentioning for those wondering about it...
+
+> do AARCH64 decoding in the HVF fault handler.
+
+What is HVF?
+
+Regards,
+    Stefan
 > 
-> Note that it should probably propagate to all architectures handled in QEMU, not only Arm ones. I do not know which machines have list of supported cpu types like arm/virt or arm/sbsa-ref ones.
-
-Right, there are more boards eligible for this generic CPU type invalidation. I will
-cover all of them in next revision. Currently, the pattern of prefix + suffix, used
-to split the CPU type name, can work well for all cases.
-
-[gshan@gshan hw]$ git grep strcmp.*cpu_type
-arm/bananapi_m2u.c:    if (strcmp(machine->cpu_type, ARM_CPU_TYPE_NAME("cortex-a7")) != 0) {
-arm/cubieboard.c:    if (strcmp(machine->cpu_type, ARM_CPU_TYPE_NAME("cortex-a8")) != 0) {
-arm/mps2-tz.c:    if (strcmp(machine->cpu_type, mc->default_cpu_type) != 0) {
-arm/mps2.c:    if (strcmp(machine->cpu_type, mc->default_cpu_type) != 0) {
-arm/msf2-som.c:    if (strcmp(machine->cpu_type, mc->default_cpu_type) != 0) {
-arm/musca.c:    if (strcmp(machine->cpu_type, mc->default_cpu_type) != 0) {
-arm/npcm7xx_boards.c:    if (strcmp(machine->cpu_type, mc->default_cpu_type) != 0) {
-arm/orangepi.c:    if (strcmp(machine->cpu_type, ARM_CPU_TYPE_NAME("cortex-a7")) != 0) {
-avr/boot.c:        if (strcmp(elf_cpu, mcu_cpu_type)) {                                       <<<<< needsn't CPU type validation
-riscv/shakti_c.c:    if (strcmp(mstate->cpu_type, TYPE_RISCV_CPU_SHAKTI_C) != 0) {
-
-
->>> I can change sbsa-ref to follow that change but let it be userfriendly.
+> Unfortunately, it seems like the LDP fault still happens on HVF but the issue
+> seems to be in the HVF backend which needs to be fixed in a separate patch.
 > 
->> Yes, sbsa-ref needs an extra patch to use the generic invalidation.
->> I can add one patch on the top for that in next revision if you
->> agree, Marcin.
+> One last thing that's needed to get Windows 11 to recognize the TPM 2.0 device
+> is for the OVMF firmware to setup the TPM device. Currently, OVMF for ARM64 Virt
+> only recognizes the TPM TIS device through a FDT entry. A workaround is to
+> falsely identify the TPM CRB device as a TPM TIS device in the FDT node but this
+> causes issues for Linux. A proper fix would involve adding an ACPI device driver
+> in OVMF.
 > 
-> I am fine with it.
+> Joelle van Dyne (11):
+>    tpm_crb: refactor common code
+>    tpm_crb: CTRL_RSP_ADDR is 64-bits wide
+>    tpm_ppi: refactor memory space initialization
+>    tpm_crb: use a single read-as-mem/write-as-mmio mapping
+>    tpm_crb: use the ISA bus
+>    tpm_crb: move ACPI table building to device interface
+>    hw/arm/virt: add plug handler for TPM on SysBus
+>    hw/loongarch/virt: add plug handler for TPM on SysBus
+>    tpm_tis_sysbus: fix crash when PPI is enabled
+>    tpm_tis_sysbus: move DSDT AML generation to device
+>    tpm_crb_sysbus: introduce TPM CRB SysBus device
 > 
-
-Thanks a lot for your confirm, Marcin.
-
-Thanks,
-Gavin
-
+>   docs/specs/tpm.rst          |   2 +
+>   hw/tpm/tpm_crb.h            |  74 +++++++++
+>   hw/tpm/tpm_ppi.h            |  10 +-
+>   include/hw/acpi/aml-build.h |   1 +
+>   include/hw/acpi/tpm.h       |   3 +-
+>   include/sysemu/tpm.h        |   3 +
+>   hw/acpi/aml-build.c         |   7 +-
+>   hw/arm/virt-acpi-build.c    |  38 +----
+>   hw/arm/virt.c               |  38 +++++
+>   hw/core/sysbus-fdt.c        |   1 +
+>   hw/i386/acpi-build.c        |  23 ---
+>   hw/loongarch/acpi-build.c   |  38 +----
+>   hw/loongarch/virt.c         |  38 +++++
+>   hw/riscv/virt.c             |   1 +
+>   hw/tpm/tpm_crb.c            | 307 ++++++++----------------------------
+>   hw/tpm/tpm_crb_common.c     | 224 ++++++++++++++++++++++++++
+>   hw/tpm/tpm_crb_sysbus.c     | 178 +++++++++++++++++++++
+>   hw/tpm/tpm_ppi.c            |   5 +-
+>   hw/tpm/tpm_tis_isa.c        |   5 +-
+>   hw/tpm/tpm_tis_sysbus.c     |  43 +++++
+>   tests/qtest/tpm-crb-test.c  |   2 +-
+>   tests/qtest/tpm-util.c      |   2 +-
+>   hw/arm/Kconfig              |   1 +
+>   hw/riscv/Kconfig            |   1 +
+>   hw/tpm/Kconfig              |   7 +-
+>   hw/tpm/meson.build          |   3 +
+>   hw/tpm/trace-events         |   2 +-
+>   27 files changed, 703 insertions(+), 354 deletions(-)
+>   create mode 100644 hw/tpm/tpm_crb.h
+>   create mode 100644 hw/tpm/tpm_crb_common.c
+>   create mode 100644 hw/tpm/tpm_crb_sysbus.c
+> 
 
