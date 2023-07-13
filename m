@@ -2,81 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224627527D3
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 17:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2067B7527EE
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 18:02:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJyfn-0006YM-3M; Thu, 13 Jul 2023 11:56:07 -0400
+	id 1qJykk-0000RT-7V; Thu, 13 Jul 2023 12:01:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJyfk-0006XY-Bt
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:56:04 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qJyfh-0003k5-6E
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 11:56:04 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-4fb7769f15aso1598975e87.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 08:56:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689263759; x=1691855759;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=zs2s70nWrqBVPnY7VXVmP47hWMbf+IsBMxEw1cvf+Kk=;
- b=l9ZpYv8GqKSLMk2Mc/dxbICGIB6eBnpURtb2iTfyIYlME7Do5pdAVE6qQc+mZeuhji
- K72iOury6uoerg6A4r61UUwLEGaqMOAcE4Cve26TlLlXozE6kTrdkwgAsVc1j25N7E6r
- dn24NKr/DWKroNqHwmII3sowXav7sB0eDR28HXPpcTiYB+SFddrJIt4N+zNNOkPbgFQt
- YiYs9c8qn09q5NjgCNPS6hNYXdcs+vluVAU8r1/sElcrq1u0tMqJK+GAnOAziaoZfF5X
- HLtM9hPJLCTDGTyVIXPBnT4fXOM4x5YBg3lWT99T27GapXnTv6IpcvBFpTIz/hqbY6nQ
- H/JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689263759; x=1691855759;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zs2s70nWrqBVPnY7VXVmP47hWMbf+IsBMxEw1cvf+Kk=;
- b=Odo3qTTqNPYml1EsNwaBGuhgJy52UcXo2Z79LiDySeHLQ7o2RXvFuZjYfHDas2YHVE
- XtQMfa9jvpL1GmGj/NCDXuWyt1hcvA87LwtqR/Rwy2pZ/tm7HLhuEj4VCB6KyVak0KAq
- 40p6Wc6fL8dNUj3WMV0jSHuXiAz/zpJltZPUQ+GGVVHgEtZdQlGhVjdxEdOl01Aahr+w
- KVETAs7LhEdTbgqZuEGN8P6S8PbzhnktSatq6rhta/RDl7bthhbevbxqvlxVTuLbI8zg
- 3mSLvEPxqrvnTirfFa1oXojlbV//d1T0Pc4iyij1mcEmn5eHe4hIRrMg5d2GowaKBmqM
- zvhw==
-X-Gm-Message-State: ABy/qLYf/8JwtCYTJObAB6kjT6kGVvT1RjGatyGchN8DC/SEkRiF7xb9
- yik0CSG29JiV5srujHSZc7cQW4J647ve9IIIypQieA==
-X-Google-Smtp-Source: APBJJlFO4XRnlB72CwJBHAnB72Ph+D6CMi7kL0pGGtYxVF0jmTKDhriBpXux0UEwYJMfB1NhzIl9Ygp4RxHdykRYrh0=
-X-Received: by 2002:a05:6512:74f:b0:4f8:5960:49a9 with SMTP id
- c15-20020a056512074f00b004f8596049a9mr1617245lfs.23.1689263759254; Thu, 13
- Jul 2023 08:55:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qJykb-0000NP-KA
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 12:01:05 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qJykY-0005LK-Ck
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 12:01:05 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36DFthWP015237; Thu, 13 Jul 2023 16:00:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=d4D4Og/uykT2w3MUXlvrbwdb4Li8upLfuvg3pLPEsfk=;
+ b=ESm1J1u0s1ayMJs7dAK0LuUzQE7DEARF94+cuiaSww8nDKptSvxvywK2V456CUKY0ba7
+ XHVlDd9VZH3gSG7/+ZwIS9CiOrHuQsShH4Yi4G3/sNMOcc5qMRbrlvcjzaN1PsMkFBKX
+ ytrq+PH03UJWz4riKRzstdBGcikFZ646YHTQO4hLCfwekKm/J8ZMsavKPXd/qjWq3gfG
+ 83iGWxbHUTSIoHxClI9+HpdqHVlWvTvs9mWp9Y37zcTC6wcK3NtiuOcbj5tODYQCzu0z
+ 6xzn6lxKRBBKfybPpPArbbfcMGl5m2PH5X1CkKgI8J+Oh2jSS7BAIkqBuE9FD8MuB5zB bg== 
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtm73rdcp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 16:00:56 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36DDtqCx005046; Thu, 13 Jul 2023 16:00:55 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rqj4rrasn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 13 Jul 2023 16:00:55 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36DG0sFn64487904
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 13 Jul 2023 16:00:55 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AAFC758063;
+ Thu, 13 Jul 2023 16:00:54 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7217358062;
+ Thu, 13 Jul 2023 16:00:54 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 13 Jul 2023 16:00:54 +0000 (GMT)
+Message-ID: <b06e0319-676c-e090-abc2-18174aa02905@linux.ibm.com>
+Date: Thu, 13 Jul 2023 12:00:54 -0400
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 03/11] tpm_ppi: refactor memory space initialization
+Content-Language: en-US
+To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
+Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>
 References: <20230713035232.48406-1-j@getutm.app>
- <20230713035232.48406-5-j@getutm.app>
- <4a49285e-0d91-93a0-2f8e-e76c71ed89f8@linux.ibm.com>
- <CAFEAcA-r_VOc18-jm99asYQQk4TJMBW_7oJMzFQofEHqVdF50A@mail.gmail.com>
- <ab339186-1af7-171c-eb11-fe124f12b4a2@linux.ibm.com>
- <CAFEAcA9nad4H3MgitMyVsZjNZdY-n9d65Yz4Gtbz2wPYA4fbsg@mail.gmail.com>
- <e2340c41-1d77-3406-001c-4dcce544af74@linux.ibm.com>
-In-Reply-To: <e2340c41-1d77-3406-001c-4dcce544af74@linux.ibm.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 13 Jul 2023 16:55:47 +0100
-Message-ID: <CAFEAcA-WtwcckNO=kDP8HbY53qV3mTtYysH2Lw8FSJsrWO2tdQ@mail.gmail.com>
-Subject: Re: [PATCH 04/11] tpm_crb: use a single read-as-mem/write-as-mmio
- mapping
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12d.google.com
+ <20230713035232.48406-4-j@getutm.app>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20230713035232.48406-4-j@getutm.app>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: o0Wm0sSXgk0kVVI1x1oGd5QYYq0ahpev
+X-Proofpoint-ORIG-GUID: o0Wm0sSXgk0kVVI1x1oGd5QYYq0ahpev
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-13_06,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 bulkscore=0
+ malwarescore=0 suspectscore=0 lowpriorityscore=0 impostorscore=0
+ mlxlogscore=999 phishscore=0 adultscore=0 priorityscore=1501 clxscore=1015
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307130137
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,31 +109,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 13 Jul 2023 at 16:46, Stefan Berger <stefanb@linux.ibm.com> wrote:
-> On 7/13/23 11:34, Peter Maydell wrote:
-> > On Thu, 13 Jul 2023 at 16:28, Stefan Berger <stefanb@linux.ibm.com> wrote:
-> >> On 7/13/23 10:50, Peter Maydell wrote:
-> >>> I'm not a super-fan of hacking around the fact that LDP
-> >>> to hardware registers isn't supported in specific device
-> >>> models, though...
-> >>
-> >> What does this mean for this effort here?
-> >
-> > Usually we say "fix the guest to not try to access hardware
-> > registers with silly load/store instruction types". The other
-> > option would be "put in a large amount of effort to support
-> > emulating those instructions in QEMU userspace when KVM/HVF/etc
-> > trap and punt them to us". For the last decade or so we have
-> > taken the first of these approaches :-)
->
-> Is Microsoft likely to react to use telling them "fix the guest"?
 
-They have on occasion in the past, yes.
 
-The other outstanding question here is if this TPM device
-should be a sysbus one at all (i.e. not i2c), which might
-render this part moot.
+On 7/12/23 23:51, Joelle van Dyne wrote:
+> Instead of calling `memory_region_add_subregion` directly, we defer to
+> the caller to do it. This allows us to re-use the code for a SysBus
+> device.
+> 
+> Signed-off-by: Joelle van Dyne <j@getutm.app>
 
-thanks
--- PMM
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+
+> ---
+>   hw/tpm/tpm_ppi.h        | 10 +++-------
+>   hw/tpm/tpm_crb.c        |  4 ++--
+>   hw/tpm/tpm_crb_common.c |  3 +++
+>   hw/tpm/tpm_ppi.c        |  5 +----
+>   hw/tpm/tpm_tis_isa.c    |  5 +++--
+>   5 files changed, 12 insertions(+), 15 deletions(-)
+> 
+> diff --git a/hw/tpm/tpm_ppi.h b/hw/tpm/tpm_ppi.h
+> index bf5d4a300f..30863c6438 100644
+> --- a/hw/tpm/tpm_ppi.h
+> +++ b/hw/tpm/tpm_ppi.h
+> @@ -20,17 +20,13 @@ typedef struct TPMPPI {
+>   } TPMPPI;
+> 
+>   /**
+> - * tpm_ppi_init:
+> + * tpm_ppi_init_memory:
+>    * @tpmppi: a TPMPPI
+> - * @m: the address-space / MemoryRegion to use
+> - * @addr: the address of the PPI region
+>    * @obj: the owner object
+>    *
+> - * Register the TPM PPI memory region at @addr on the given address
+> - * space for the object @obj.
+> + * Creates the TPM PPI memory region.
+>    **/
+> -void tpm_ppi_init(TPMPPI *tpmppi, MemoryRegion *m,
+> -                  hwaddr addr, Object *obj);
+> +void tpm_ppi_init_memory(TPMPPI *tpmppi, Object *obj);
+> 
+>   /**
+>    * tpm_ppi_reset:
+> diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
+> index 3ef4977fb5..598c3e0161 100644
+> --- a/hw/tpm/tpm_crb.c
+> +++ b/hw/tpm/tpm_crb.c
+> @@ -107,8 +107,8 @@ static void tpm_crb_none_realize(DeviceState *dev, Error **errp)
+>           TPM_CRB_ADDR_BASE + sizeof(s->state.regs), &s->state.cmdmem);
+> 
+>       if (s->state.ppi_enabled) {
+> -        tpm_ppi_init(&s->state.ppi, get_system_memory(),
+> -                     TPM_PPI_ADDR_BASE, OBJECT(s));
+> +        memory_region_add_subregion(get_system_memory(),
+> +            TPM_PPI_ADDR_BASE, &s->state.ppi.ram);
+>       }
+> 
+>       if (xen_enabled()) {
+> diff --git a/hw/tpm/tpm_crb_common.c b/hw/tpm/tpm_crb_common.c
+> index 228e2d0faf..e56e910670 100644
+> --- a/hw/tpm/tpm_crb_common.c
+> +++ b/hw/tpm/tpm_crb_common.c
+> @@ -216,4 +216,7 @@ void tpm_crb_init_memory(Object *obj, TPMCRBState *s, Error **errp)
+>           "tpm-crb-mmio", sizeof(s->regs));
+>       memory_region_init_ram(&s->cmdmem, obj,
+>           "tpm-crb-cmd", CRB_CTRL_CMD_SIZE, errp);
+> +    if (s->ppi_enabled) {
+> +        tpm_ppi_init_memory(&s->ppi, obj);
+> +    }
+>   }
+> diff --git a/hw/tpm/tpm_ppi.c b/hw/tpm/tpm_ppi.c
+> index 7f74e26ec6..40cab59afa 100644
+> --- a/hw/tpm/tpm_ppi.c
+> +++ b/hw/tpm/tpm_ppi.c
+> @@ -44,14 +44,11 @@ void tpm_ppi_reset(TPMPPI *tpmppi)
+>       }
+>   }
+> 
+> -void tpm_ppi_init(TPMPPI *tpmppi, MemoryRegion *m,
+> -                  hwaddr addr, Object *obj)
+> +void tpm_ppi_init_memory(TPMPPI *tpmppi, Object *obj)
+>   {
+>       tpmppi->buf = qemu_memalign(qemu_real_host_page_size(),
+>                                   HOST_PAGE_ALIGN(TPM_PPI_ADDR_SIZE));
+>       memory_region_init_ram_device_ptr(&tpmppi->ram, obj, "tpm-ppi",
+>                                         TPM_PPI_ADDR_SIZE, tpmppi->buf);
+>       vmstate_register_ram(&tpmppi->ram, DEVICE(obj));
+> -
+> -    memory_region_add_subregion(m, addr, &tpmppi->ram);
+>   }
+> diff --git a/hw/tpm/tpm_tis_isa.c b/hw/tpm/tpm_tis_isa.c
+> index 91e3792248..7cd7415f30 100644
+> --- a/hw/tpm/tpm_tis_isa.c
+> +++ b/hw/tpm/tpm_tis_isa.c
+> @@ -134,8 +134,9 @@ static void tpm_tis_isa_realizefn(DeviceState *dev, Error **errp)
+>                                   TPM_TIS_ADDR_BASE, &s->mmio);
+> 
+>       if (s->ppi_enabled) {
+> -        tpm_ppi_init(&s->ppi, isa_address_space(ISA_DEVICE(dev)),
+> -                     TPM_PPI_ADDR_BASE, OBJECT(dev));
+> +        tpm_ppi_init_memory(&s->ppi, OBJECT(dev));
+> +        memory_region_add_subregion(isa_address_space(ISA_DEVICE(dev)),
+> +                                    TPM_PPI_ADDR_BASE, &s->ppi.ram);
+>       }
+>   }
+> 
 
