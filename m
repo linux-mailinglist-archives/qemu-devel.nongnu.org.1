@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9A37516F8
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B427516FA
 	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 05:55:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJnOE-0005S6-74; Wed, 12 Jul 2023 23:53:14 -0400
+	id 1qJnOD-0005RC-JY; Wed, 12 Jul 2023 23:53:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qJnNx-0005OQ-QT
+ id 1qJnNx-0005OR-Qp
  for qemu-devel@nongnu.org; Wed, 12 Jul 2023 23:52:57 -0400
-Received: from mail-pg1-f180.google.com ([209.85.215.180])
+Received: from mail-ot1-f48.google.com ([209.85.210.48])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
- id 1qJnNn-0004bs-0A
+ id 1qJnNn-0004cJ-Jn
  for qemu-devel@nongnu.org; Wed, 12 Jul 2023 23:52:57 -0400
-Received: by mail-pg1-f180.google.com with SMTP id
- 41be03b00d2f7-517ab9a4a13so310786a12.1
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 20:52:46 -0700 (PDT)
+Received: by mail-ot1-f48.google.com with SMTP id
+ 46e09a7af769-6b711c3ad1fso222937a34.0
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 20:52:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689220365; x=1691812365;
+ d=1e100.net; s=20221208; t=1689220366; x=1691812366;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dVodZWmPbd6tvIYq9Kte/pt60hXgGEfBbR021G78AAE=;
- b=Pqk9x83lNdR2M1UorKH40SN05FDkRtpS/7LjmMHdZqDJlgB30tCNjWtNLu0uTMLuB1
- pgMKXIfas+5awP9MFMT4cB4/xCHBeUFLYslye9op3sWj6eQwZxTfXMIfmK2wrf1Mw25d
- f+e4WtU2VTSetoWuojcKg46fU/E+jAvVEBhs3UfNaW/c+3NH4I9AeOffwOjdH8hNwLyY
- ggpH7iWn99z4eG1NjN21jJbbZUiagGa9AQfYStvYVWP81GGNqrazhSo+zJ2Rwpq01+W3
- LwRpNr56vY8VFVyPM9wpKN3l3vthtEFjRd/wsi0OScqKExzJRePZNJQdKoj6XwbOFqfQ
- uPag==
-X-Gm-Message-State: ABy/qLYNKdZi6w98Gdfo09MuJwRUMVJIgF2adsw4K0Rl+Or2qxWep+3c
- tsaxreEmlg/YurasmG2vnDdt0/9zvkjTBw==
-X-Google-Smtp-Source: APBJJlG430oyfYTS4voRI94z2VwNyww8xdqgVN8hMpnGKi3/xy7g1Xec9Nzd0vEIkyhCBBuPD0vIIA==
-X-Received: by 2002:a17:902:da8b:b0:1b8:6a47:705f with SMTP id
- j11-20020a170902da8b00b001b86a47705fmr527086plx.69.1689220365393; 
- Wed, 12 Jul 2023 20:52:45 -0700 (PDT)
+ bh=4VTJlfLzpuxxNKZPxm/qCkrMkuqDPIbMWB1AskfZxJw=;
+ b=ha85q1caz8GfhwvcWdrY3vJeH6z7kJLBsj9MRhrOkF27HpTgTjEZGez+KgoEMf7k/T
+ f+48sgr5tFY74ApzZuEj/4oAsHDzShNOygJlFEQ1i1M2gUPbFdBjcVRaGSZMybTns98m
+ cwSrL3cLGdw16KyWORT7/CbW04MGKTdO4VKOTgBzKisH5H9/bUFMLXm9A7VuGyb5y2HH
+ cn8bXz7Sw95NgaZh5Y/IJhflYtAREWKuASiHLbMOQNyeCjWQPmJZcMND2go/eAdj0wgu
+ 5VLMtyyUvViBFb+wTs8imTsTOQF4d358L+9P0xJKDSn1lRJD6emlEnXOvHsu+my+67Dg
+ V8Ew==
+X-Gm-Message-State: ABy/qLbNkhAqmFB8ZQda3+XvnRBuS79NYiOXpUylrwd+2GrJbSaPkDN8
+ /yvKQgtKjdbeJATMPAbg3I1ZY7F2Ag0JxA==
+X-Google-Smtp-Source: APBJJlHV71HmslCH/ldON2SdfccswbrjVvUdS0WS/hftwOWe+qemYQpACdAEFhO4om+pdrUlfQpB8Q==
+X-Received: by 2002:a05:6830:1506:b0:6b9:924e:b43b with SMTP id
+ k6-20020a056830150600b006b9924eb43bmr615351otp.6.1689220366298; 
+ Wed, 12 Jul 2023 20:52:46 -0700 (PDT)
 Received: from localhost.localdomain ([2607:fb90:8b82:587c:b800:84d:31b7:313d])
  by smtp.gmail.com with ESMTPSA id
- x6-20020a1709027c0600b001b8a37ffb5asm4756199pll.4.2023.07.12.20.52.44
+ x6-20020a1709027c0600b001b8a37ffb5asm4756199pll.4.2023.07.12.20.52.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 12 Jul 2023 20:52:45 -0700 (PDT)
+ Wed, 12 Jul 2023 20:52:46 -0700 (PDT)
 From: Joelle van Dyne <j@getutm.app>
 To: qemu-devel@nongnu.org
-Cc: Joelle van Dyne <j@getutm.app>, Stefan Berger <stefanb@linux.vnet.ibm.com>
-Subject: [PATCH 04/11] tpm_crb: use a single read-as-mem/write-as-mmio mapping
-Date: Wed, 12 Jul 2023 20:51:09 -0700
-Message-ID: <20230713035232.48406-5-j@getutm.app>
+Cc: Joelle van Dyne <j@getutm.app>, Paolo Bonzini <pbonzini@redhat.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+Subject: [PATCH 05/11] tpm_crb: use the ISA bus
+Date: Wed, 12 Jul 2023 20:51:10 -0700
+Message-ID: <20230713035232.48406-6-j@getutm.app>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230713035232.48406-1-j@getutm.app>
 References: <20230713035232.48406-1-j@getutm.app>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.215.180; envelope-from=osy86dev@gmail.com;
- helo=mail-pg1-f180.google.com
+Received-SPF: pass client-ip=209.85.210.48; envelope-from=osy86dev@gmail.com;
+ helo=mail-ot1-f48.google.com
 X-Spam_score_int: -13
 X-Spam_score: -1.4
 X-Spam_bar: -
@@ -80,302 +81,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Apple Silicon, when Windows performs a LDP on the CRB MMIO space,
-the exception is not decoded by hardware and we cannot trap the MMIO
-read. This led to the idea from @agraf to use the same mapping type as
-ROM devices: namely that reads should be seen as memory type and
-writes should trap as MMIO.
-
-Once that was done, the second memory mapping of the command buffer
-region was redundent and was removed.
-
-A note about the removal of the read trap for `CRB_LOC_STATE`:
-The only usage was to return the most up-to-date value for
-`tpmEstablished`. However, `tpmEstablished` is only set when a
-TPM2_HashStart operation is called which only exists for locality 4.
-Indeed, the comment for the write handler of `CRB_LOC_CTRL` makes the
-same argument for why it is not calling the backend to reset the
-`tpmEstablished` bit. As this bit is unused, we do not need to worry
-about updating it for reads.
+Since this device is gated to only build for targets with the PC
+configuration, we should use the ISA bus like with TPM TIS.
 
 Signed-off-by: Joelle van Dyne <j@getutm.app>
 ---
- hw/tpm/tpm_crb.h        |   2 -
- hw/tpm/tpm_crb.c        |   3 -
- hw/tpm/tpm_crb_common.c | 124 ++++++++++++++++++++--------------------
- 3 files changed, 63 insertions(+), 66 deletions(-)
+ hw/tpm/tpm_crb.c | 52 ++++++++++++++++++++++++------------------------
+ hw/tpm/Kconfig   |  2 +-
+ 2 files changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/hw/tpm/tpm_crb.h b/hw/tpm/tpm_crb.h
-index da3a0cf256..7cdd37335f 100644
---- a/hw/tpm/tpm_crb.h
-+++ b/hw/tpm/tpm_crb.h
-@@ -26,9 +26,7 @@
- typedef struct TPMCRBState {
-     TPMBackend *tpmbe;
-     TPMBackendCmd cmd;
--    uint32_t regs[TPM_CRB_R_MAX];
-     MemoryRegion mmio;
--    MemoryRegion cmdmem;
- 
-     size_t be_buffer_size;
- 
 diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
-index 598c3e0161..07c6868d8d 100644
+index 07c6868d8d..6144081d30 100644
 --- a/hw/tpm/tpm_crb.c
 +++ b/hw/tpm/tpm_crb.c
-@@ -68,7 +68,6 @@ static const VMStateDescription vmstate_tpm_crb_none = {
+@@ -22,6 +22,7 @@
+ #include "hw/qdev-properties.h"
+ #include "hw/pci/pci_ids.h"
+ #include "hw/acpi/tpm.h"
++#include "hw/isa/isa.h"
+ #include "migration/vmstate.h"
+ #include "sysemu/tpm_backend.h"
+ #include "sysemu/tpm_util.h"
+@@ -34,7 +35,7 @@
+ #include "tpm_crb.h"
+ 
+ struct CRBState {
+-    DeviceState parent_obj;
++    ISADevice parent_obj;
+ 
+     TPMCRBState state;
+ };
+@@ -43,49 +44,49 @@ typedef struct CRBState CRBState;
+ DECLARE_INSTANCE_CHECKER(CRBState, CRB,
+                          TYPE_TPM_CRB)
+ 
+-static void tpm_crb_none_request_completed(TPMIf *ti, int ret)
++static void tpm_crb_isa_request_completed(TPMIf *ti, int ret)
+ {
+     CRBState *s = CRB(ti);
+ 
+     tpm_crb_request_completed(&s->state, ret);
+ }
+ 
+-static enum TPMVersion tpm_crb_none_get_version(TPMIf *ti)
++static enum TPMVersion tpm_crb_isa_get_version(TPMIf *ti)
+ {
+     CRBState *s = CRB(ti);
+ 
+     return tpm_crb_get_version(&s->state);
+ }
+ 
+-static int tpm_crb_none_pre_save(void *opaque)
++static int tpm_crb_isa_pre_save(void *opaque)
+ {
+     CRBState *s = opaque;
+ 
+     return tpm_crb_pre_save(&s->state);
+ }
+ 
+-static const VMStateDescription vmstate_tpm_crb_none = {
++static const VMStateDescription vmstate_tpm_crb_isa = {
      .name = "tpm-crb",
-     .pre_save = tpm_crb_none_pre_save,
+-    .pre_save = tpm_crb_none_pre_save,
++    .pre_save = tpm_crb_isa_pre_save,
      .fields = (VMStateField[]) {
--        VMSTATE_UINT32_ARRAY(state.regs, CRBState, TPM_CRB_R_MAX),
          VMSTATE_END_OF_LIST(),
      }
  };
-@@ -103,8 +102,6 @@ static void tpm_crb_none_realize(DeviceState *dev, Error **errp)
  
-     memory_region_add_subregion(get_system_memory(),
-         TPM_CRB_ADDR_BASE, &s->state.mmio);
+-static Property tpm_crb_none_properties[] = {
++static Property tpm_crb_isa_properties[] = {
+     DEFINE_PROP_TPMBE("tpmdev", CRBState, state.tpmbe),
+     DEFINE_PROP_BOOL("ppi", CRBState, state.ppi_enabled, true),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+-static void tpm_crb_none_reset(void *dev)
++static void tpm_crb_isa_reset(void *dev)
+ {
+     CRBState *s = CRB(dev);
+ 
+     return tpm_crb_reset(&s->state, TPM_CRB_ADDR_BASE);
+ }
+ 
+-static void tpm_crb_none_realize(DeviceState *dev, Error **errp)
++static void tpm_crb_isa_realize(DeviceState *dev, Error **errp)
+ {
+     CRBState *s = CRB(dev);
+ 
+@@ -100,52 +101,51 @@ static void tpm_crb_none_realize(DeviceState *dev, Error **errp)
+ 
+     tpm_crb_init_memory(OBJECT(s), &s->state, errp);
+ 
 -    memory_region_add_subregion(get_system_memory(),
--        TPM_CRB_ADDR_BASE + sizeof(s->state.regs), &s->state.cmdmem);
++    memory_region_add_subregion(isa_address_space(ISA_DEVICE(dev)),
+         TPM_CRB_ADDR_BASE, &s->state.mmio);
  
      if (s->state.ppi_enabled) {
-         memory_region_add_subregion(get_system_memory(),
-diff --git a/hw/tpm/tpm_crb_common.c b/hw/tpm/tpm_crb_common.c
-index e56e910670..f3e40095e3 100644
---- a/hw/tpm/tpm_crb_common.c
-+++ b/hw/tpm/tpm_crb_common.c
-@@ -33,31 +33,12 @@
- #include "qom/object.h"
- #include "tpm_crb.h"
- 
--static uint64_t tpm_crb_mmio_read(void *opaque, hwaddr addr,
--                                  unsigned size)
-+static uint8_t tpm_crb_get_active_locty(TPMCRBState *s, uint32_t *regs)
- {
--    TPMCRBState *s = opaque;
--    void *regs = (void *)&s->regs + (addr & ~3);
--    unsigned offset = addr & 3;
--    uint32_t val = *(uint32_t *)regs >> (8 * offset);
--
--    switch (addr) {
--    case A_CRB_LOC_STATE:
--        val |= !tpm_backend_get_tpm_established_flag(s->tpmbe);
--        break;
--    }
--
--    trace_tpm_crb_mmio_read(addr, size, val);
--
--    return val;
--}
--
--static uint8_t tpm_crb_get_active_locty(TPMCRBState *s)
--{
--    if (!ARRAY_FIELD_EX32(s->regs, CRB_LOC_STATE, locAssigned)) {
-+    if (!ARRAY_FIELD_EX32(regs, CRB_LOC_STATE, locAssigned)) {
-         return TPM_CRB_NO_LOCALITY;
+-        memory_region_add_subregion(get_system_memory(),
++        memory_region_add_subregion(isa_address_space(ISA_DEVICE(dev)),
+             TPM_PPI_ADDR_BASE, &s->state.ppi.ram);
      }
--    return ARRAY_FIELD_EX32(s->regs, CRB_LOC_STATE, activeLocality);
-+    return ARRAY_FIELD_EX32(regs, CRB_LOC_STATE, activeLocality);
+ 
+     if (xen_enabled()) {
+-        tpm_crb_none_reset(dev);
++        tpm_crb_isa_reset(dev);
+     } else {
+-        qemu_register_reset(tpm_crb_none_reset, dev);
++        qemu_register_reset(tpm_crb_isa_reset, dev);
+     }
  }
  
- static void tpm_crb_mmio_write(void *opaque, hwaddr addr,
-@@ -65,35 +46,47 @@ static void tpm_crb_mmio_write(void *opaque, hwaddr addr,
+-static void tpm_crb_none_class_init(ObjectClass *klass, void *data)
++static void tpm_crb_isa_class_init(ObjectClass *klass, void *data)
  {
-     TPMCRBState *s = opaque;
-     uint8_t locty =  addr >> 12;
-+    uint32_t *regs;
-+    void *mem;
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     TPMIfClass *tc = TPM_IF_CLASS(klass);
  
-     trace_tpm_crb_mmio_write(addr, size, val);
-+    regs = memory_region_get_ram_ptr(&s->mmio);
-+    mem = &regs[R_CRB_DATA_BUFFER];
-+    assert(regs);
-+
-+    if (addr >= A_CRB_DATA_BUFFER) {
-+        assert(addr + size <= TPM_CRB_ADDR_SIZE);
-+        assert(size <= sizeof(val));
-+        memcpy(mem + addr - A_CRB_DATA_BUFFER, &val, size);
-+        memory_region_set_dirty(&s->mmio, addr, size);
-+        return;
-+    }
+-    dc->realize = tpm_crb_none_realize;
+-    device_class_set_props(dc, tpm_crb_none_properties);
+-    dc->vmsd  = &vmstate_tpm_crb_none;
++    dc->realize = tpm_crb_isa_realize;
++    device_class_set_props(dc, tpm_crb_isa_properties);
++    dc->vmsd  = &vmstate_tpm_crb_isa;
+     dc->user_creatable = true;
+     tc->model = TPM_MODEL_TPM_CRB;
+-    tc->get_version = tpm_crb_none_get_version;
+-    tc->request_completed = tpm_crb_none_request_completed;
++    tc->get_version = tpm_crb_isa_get_version;
++    tc->request_completed = tpm_crb_isa_request_completed;
  
-     switch (addr) {
-     case A_CRB_CTRL_REQ:
-         switch (val) {
-         case CRB_CTRL_REQ_CMD_READY:
--            ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
-+            ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
-                              tpmIdle, 0);
-             break;
-         case CRB_CTRL_REQ_GO_IDLE:
--            ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
-+            ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
-                              tpmIdle, 1);
-             break;
-         }
-         break;
-     case A_CRB_CTRL_CANCEL:
-         if (val == CRB_CANCEL_INVOKE &&
--            s->regs[R_CRB_CTRL_START] & CRB_START_INVOKE) {
-+            regs[R_CRB_CTRL_START] & CRB_START_INVOKE) {
-             tpm_backend_cancel_cmd(s->tpmbe);
-         }
-         break;
-     case A_CRB_CTRL_START:
-         if (val == CRB_START_INVOKE &&
--            !(s->regs[R_CRB_CTRL_START] & CRB_START_INVOKE) &&
--            tpm_crb_get_active_locty(s) == locty) {
--            void *mem = memory_region_get_ram_ptr(&s->cmdmem);
-+            !(regs[R_CRB_CTRL_START] & CRB_START_INVOKE) &&
-+            tpm_crb_get_active_locty(s, regs) == locty) {
- 
--            s->regs[R_CRB_CTRL_START] |= CRB_START_INVOKE;
-+            regs[R_CRB_CTRL_START] |= CRB_START_INVOKE;
-             s->cmd = (TPMBackendCmd) {
-                 .in = mem,
-                 .in_len = MIN(tpm_cmd_get_size(mem), s->be_buffer_size),
-@@ -110,26 +103,27 @@ static void tpm_crb_mmio_write(void *opaque, hwaddr addr,
-             /* not loc 3 or 4 */
-             break;
-         case CRB_LOC_CTRL_RELINQUISH:
--            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STATE,
-+            ARRAY_FIELD_DP32(regs, CRB_LOC_STATE,
-                              locAssigned, 0);
--            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STS,
-+            ARRAY_FIELD_DP32(regs, CRB_LOC_STS,
-                              Granted, 0);
-             break;
-         case CRB_LOC_CTRL_REQUEST_ACCESS:
--            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STS,
-+            ARRAY_FIELD_DP32(regs, CRB_LOC_STS,
-                              Granted, 1);
--            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STS,
-+            ARRAY_FIELD_DP32(regs, CRB_LOC_STS,
-                              beenSeized, 0);
--            ARRAY_FIELD_DP32(s->regs, CRB_LOC_STATE,
-+            ARRAY_FIELD_DP32(regs, CRB_LOC_STATE,
-                              locAssigned, 1);
-             break;
-         }
-         break;
-     }
-+
-+    memory_region_set_dirty(&s->mmio, 0, A_CRB_DATA_BUFFER);
+     set_bit(DEVICE_CATEGORY_MISC, dc->categories);
  }
  
- const MemoryRegionOps tpm_crb_memory_ops = {
--    .read = tpm_crb_mmio_read,
-     .write = tpm_crb_mmio_write,
-     .endianness = DEVICE_LITTLE_ENDIAN,
-     .valid = {
-@@ -140,12 +134,16 @@ const MemoryRegionOps tpm_crb_memory_ops = {
- 
- void tpm_crb_request_completed(TPMCRBState *s, int ret)
- {
--    s->regs[R_CRB_CTRL_START] &= ~CRB_START_INVOKE;
-+    uint32_t *regs = memory_region_get_ram_ptr(&s->mmio);
-+
-+    assert(regs);
-+    regs[R_CRB_CTRL_START] &= ~CRB_START_INVOKE;
-     if (ret != 0) {
--        ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
-+        ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
-                          tpmSts, 1); /* fatal error */
+-static const TypeInfo tpm_crb_none_info = {
++static const TypeInfo tpm_crb_isa_info = {
+     .name = TYPE_TPM_CRB,
+-    /* could be TYPE_SYS_BUS_DEVICE (or LPC etc) */
+-    .parent = TYPE_DEVICE,
++    .parent = TYPE_ISA_DEVICE,
+     .instance_size = sizeof(CRBState),
+-    .class_init  = tpm_crb_none_class_init,
++    .class_init  = tpm_crb_isa_class_init,
+     .interfaces = (InterfaceInfo[]) {
+         { TYPE_TPM_IF },
+         { }
      }
--    memory_region_set_dirty(&s->cmdmem, 0, CRB_CTRL_CMD_SIZE);
-+
-+    memory_region_set_dirty(&s->mmio, 0, TPM_CRB_ADDR_SIZE);
+ };
+ 
+-static void tpm_crb_none_register(void)
++static void tpm_crb_isa_register(void)
+ {
+-    type_register_static(&tpm_crb_none_info);
++    type_register_static(&tpm_crb_isa_info);
  }
  
- enum TPMVersion tpm_crb_get_version(TPMCRBState *s)
-@@ -162,45 +160,48 @@ int tpm_crb_pre_save(TPMCRBState *s)
+-type_init(tpm_crb_none_register)
++type_init(tpm_crb_isa_register)
+diff --git a/hw/tpm/Kconfig b/hw/tpm/Kconfig
+index a46663288c..1fd73fe617 100644
+--- a/hw/tpm/Kconfig
++++ b/hw/tpm/Kconfig
+@@ -22,7 +22,7 @@ config TPM_TIS
  
- void tpm_crb_reset(TPMCRBState *s, uint64_t baseaddr)
- {
-+    uint32_t *regs = memory_region_get_ram_ptr(&s->mmio);
-+
-+    assert(regs);
-     if (s->ppi_enabled) {
-         tpm_ppi_reset(&s->ppi);
-     }
-     tpm_backend_reset(s->tpmbe);
+ config TPM_CRB
+     bool
+-    depends on TPM && PC
++    depends on TPM && ISA_BUS
+     select TPM_BACKEND
  
--    memset(s->regs, 0, sizeof(s->regs));
-+    memset(regs, 0, TPM_CRB_ADDR_SIZE);
- 
--    ARRAY_FIELD_DP32(s->regs, CRB_LOC_STATE,
-+    ARRAY_FIELD_DP32(regs, CRB_LOC_STATE,
-                      tpmRegValidSts, 1);
--    ARRAY_FIELD_DP32(s->regs, CRB_CTRL_STS,
-+    ARRAY_FIELD_DP32(regs, CRB_CTRL_STS,
-                      tpmIdle, 1);
--    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
-+    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
-                      InterfaceType, CRB_INTF_TYPE_CRB_ACTIVE);
--    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
-+    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
-                      InterfaceVersion, CRB_INTF_VERSION_CRB);
--    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
-+    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
-                      CapLocality, CRB_INTF_CAP_LOCALITY_0_ONLY);
--    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
-+    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
-                      CapCRBIdleBypass, CRB_INTF_CAP_IDLE_FAST);
--    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
-+    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
-                      CapDataXferSizeSupport, CRB_INTF_CAP_XFER_SIZE_64);
--    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
-+    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
-                      CapFIFO, CRB_INTF_CAP_FIFO_NOT_SUPPORTED);
--    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
-+    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
-                      CapCRB, CRB_INTF_CAP_CRB_SUPPORTED);
--    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
-+    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
-                      InterfaceSelector, CRB_INTF_IF_SELECTOR_CRB);
--    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID,
-+    ARRAY_FIELD_DP32(regs, CRB_INTF_ID,
-                      RID, 0b0000);
--    ARRAY_FIELD_DP32(s->regs, CRB_INTF_ID2,
-+    ARRAY_FIELD_DP32(regs, CRB_INTF_ID2,
-                      VID, PCI_VENDOR_ID_IBM);
- 
-     baseaddr += A_CRB_DATA_BUFFER;
--    s->regs[R_CRB_CTRL_CMD_SIZE] = CRB_CTRL_CMD_SIZE;
--    s->regs[R_CRB_CTRL_CMD_LADDR] = (uint32_t)baseaddr;
--    s->regs[R_CRB_CTRL_CMD_HADDR] = (uint32_t)(baseaddr >> 32);
--    s->regs[R_CRB_CTRL_RSP_SIZE] = CRB_CTRL_CMD_SIZE;
--    s->regs[R_CRB_CTRL_RSP_LADDR] = (uint32_t)baseaddr;
--    s->regs[R_CRB_CTRL_RSP_HADDR] = (uint32_t)(baseaddr >> 32);
-+    regs[R_CRB_CTRL_CMD_SIZE] = CRB_CTRL_CMD_SIZE;
-+    regs[R_CRB_CTRL_CMD_LADDR] = (uint32_t)baseaddr;
-+    regs[R_CRB_CTRL_CMD_HADDR] = (uint32_t)(baseaddr >> 32);
-+    regs[R_CRB_CTRL_RSP_SIZE] = CRB_CTRL_CMD_SIZE;
-+    regs[R_CRB_CTRL_RSP_LADDR] = (uint32_t)baseaddr;
-+    regs[R_CRB_CTRL_RSP_HADDR] = (uint32_t)(baseaddr >> 32);
- 
-     s->be_buffer_size = MIN(tpm_backend_get_buffer_size(s->tpmbe),
-                             CRB_CTRL_CMD_SIZE);
-@@ -208,14 +209,15 @@ void tpm_crb_reset(TPMCRBState *s, uint64_t baseaddr)
-     if (tpm_backend_startup_tpm(s->tpmbe, s->be_buffer_size) < 0) {
-         exit(1);
-     }
-+
-+    memory_region_rom_device_set_romd(&s->mmio, true);
-+    memory_region_set_dirty(&s->mmio, 0, TPM_CRB_ADDR_SIZE);
- }
- 
- void tpm_crb_init_memory(Object *obj, TPMCRBState *s, Error **errp)
- {
--    memory_region_init_io(&s->mmio, obj, &tpm_crb_memory_ops, s,
--        "tpm-crb-mmio", sizeof(s->regs));
--    memory_region_init_ram(&s->cmdmem, obj,
--        "tpm-crb-cmd", CRB_CTRL_CMD_SIZE, errp);
-+    memory_region_init_rom_device(&s->mmio, obj, &tpm_crb_memory_ops, s,
-+        "tpm-crb-mmio", TPM_CRB_ADDR_SIZE, errp);
-     if (s->ppi_enabled) {
-         tpm_ppi_init_memory(&s->ppi, obj);
-     }
+ config TPM_SPAPR
 -- 
 2.39.2 (Apple Git-143)
 
