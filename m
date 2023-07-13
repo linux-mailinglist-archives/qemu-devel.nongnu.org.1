@@ -2,92 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C00D75137F
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 00:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D24751549
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 02:30:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJiFV-0007Id-93; Wed, 12 Jul 2023 18:23:53 -0400
+	id 1qJkBy-0002H8-J3; Wed, 12 Jul 2023 20:28:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qJiFT-0007IH-9h
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 18:23:51 -0400
-Received: from mail-pg1-x536.google.com ([2607:f8b0:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qJiFQ-0001DB-2B
- for qemu-devel@nongnu.org; Wed, 12 Jul 2023 18:23:51 -0400
-Received: by mail-pg1-x536.google.com with SMTP id
- 41be03b00d2f7-55bc29a909dso111079a12.3
- for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 15:23:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1689200626; x=1691792626;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5APNkr9aYCkDU5qu+uY//+tTXkYing4dXHvv4pFgmFk=;
- b=UWY0ftI0jbaxp1LfSxbGvy/KszmsL5sg62JJcLtAus60v+DVxomAvupJ5zgGJA/192
- WBya8+daKZhHaz2TnrcCFQD1nyC4zBNH0kVg5MVBWUZN/GolrxeS9YW4ydiBOrMWT7fT
- VQTv8y+0tBUdRqKWjQSKvjnfP/3KlHNgcDP7T8V24p4AKo2GQXH2JOfHnJRiGZ6pniAg
- l0PQivQBUwuvHBW6hr1WW3Ht9iO04lXToMxI24dZssilEawrvyK5DWUNt7gkou4Z/eLH
- CopebLAUerMeT089h1kkiEMXlfMGgDxGKns24LL/BV57cduIUPsjoR8qIaht5ArVqU9S
- dr8w==
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qJkBw-0002H0-G5
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 20:28:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qJkBm-0000j8-Sr
+ for qemu-devel@nongnu.org; Wed, 12 Jul 2023 20:28:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689208088;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=voWVlpmm7MeCDv7tg7yl30rZqUK9Zw54JqfyPKuCRLo=;
+ b=gyrGSnIXMga9K2ESqHL5/4xbRGvV4VWGQVy5zfkU5/ZS62x5ZnMQeED3QkTdaFHp2MtspH
+ 1pGkrA5fftFZSMJ6Aznguh4ZZ+P4bITrwCMGwFD2XFmxsNV4S6VoHqAsSCe3jUC716rSo4
+ wCEgorlvi4Eva7cK/ghYq8Q83zevyyM=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-203-1yXP_NecPEa2BV_A3GS-_g-1; Wed, 12 Jul 2023 20:28:06 -0400
+X-MC-Unique: 1yXP_NecPEa2BV_A3GS-_g-1
+Received: by mail-pl1-f199.google.com with SMTP id
+ d9443c01a7336-1b8130aceefso1229885ad.2
+ for <qemu-devel@nongnu.org>; Wed, 12 Jul 2023 17:28:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689200626; x=1691792626;
+ d=1e100.net; s=20221208; t=1689208085; x=1691800085;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5APNkr9aYCkDU5qu+uY//+tTXkYing4dXHvv4pFgmFk=;
- b=D+cdbTyvnoqA4k/mogbZ3364PcXDb8zMigvXG2Tldo7uGG6UlsgNkdY4pOOTPTmew7
- Aleu3PTzHg5Dx76OBiTXd2G507XDzUloKGGy/9Ftx0urEcZ70BdVAQTHk6nhCjdkgTaO
- ntGsU47YClcMGHnM83x8boSXkg+jP9KdAyn7OSfk356eRBOGGsNqjkDfXPov+WcNbYDR
- vuKIGSHAhpzhwZfTxw87lLtpbsB96plaZkSi8a65UYJZmP0d/KhIx7VDWgzfxYn3qxru
- xTm8ZA8QMTcDrBB30Mi/HN7Ko334+m1X2WlPy6fi9mmieHRpb7e5LjEszbAIm+R4t47i
- d7pg==
-X-Gm-Message-State: ABy/qLaTRJgZ/NiNjOt/d2QCKAJTjGJqlMwHpdn06NBiyvIlWzVxMvlb
- r/7kqBiHGytyeLDC03v9rCCLJg==
-X-Google-Smtp-Source: APBJJlHXd+MFESHIzdms+t2EDOEwbq7B8WzKXUiq3H/ppnjDdc3Sb2NGBeDe40j7HjhI53lVv8borQ==
-X-Received: by 2002:a17:903:24e:b0:1b6:80f0:d969 with SMTP id
- j14-20020a170903024e00b001b680f0d969mr18015222plh.11.1689200626352; 
- Wed, 12 Jul 2023 15:23:46 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ bh=voWVlpmm7MeCDv7tg7yl30rZqUK9Zw54JqfyPKuCRLo=;
+ b=YODbxp+TjIc9d7uzKp3YIjrUClz/7usQpVohVh1kdWuaP3I6FMhRB1JuBiRXiZ+uVs
+ mc3ZKWG2e05vT/1AhwdZ82x6ZduukhRw1isY7khhwhh6eX9q2ynpomld/t9qKMbMXVzF
+ se2PswFD0WZdzUGs5feycVr1iVfo9cW5/kwZcw5WarmQlUH8o/HrZcTAsKp3bqfYw3ZZ
+ STxgURn17+29Q0rqsRSTGQ9YnVKhKBSuiPiAVo/jwCeOfzEF/amH/W+eu+QRdIMeDjgg
+ rJfBx02vcOBJ4n/s9voPv/WL0RBX5sZg4bMaSlqhvjFDqvQTuG6sHduKqxjqwFb2Mg+x
+ r+Hg==
+X-Gm-Message-State: ABy/qLZ4fhQRKULKtZYfpwNy6w7p9w2k4OJnKu1i29Z2hc3H5GZGlQJ5
+ ckDw6rfp5jmqjPux/RzteTGFvgJXJQtad4K+o8lZ+WusQUo1Ncy7LGtwX+wuhEpZbR7vjaLIvdo
+ sqV9Fd9wDSZgAgAI=
+X-Received: by 2002:a17:902:f68c:b0:1b5:91:4693 with SMTP id
+ l12-20020a170902f68c00b001b500914693mr266233plg.1.1689208085448; 
+ Wed, 12 Jul 2023 17:28:05 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGEjFAvk5eqLeJeEU/3QkGgYzn7vfM7lAYQwnHa5EWYocjBHtJs1x+2EwaaYQfdNtaq2LOoGQ==
+X-Received: by 2002:a17:902:f68c:b0:1b5:91:4693 with SMTP id
+ l12-20020a170902f68c00b001b500914693mr266210plg.1.1689208084952; 
+ Wed, 12 Jul 2023 17:28:04 -0700 (PDT)
+Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
+ ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
  by smtp.gmail.com with ESMTPSA id
- az2-20020a170902a58200b001b8052d58a0sm4411834plb.305.2023.07.12.15.23.42
+ io12-20020a17090312cc00b001b9dfa24523sm4531541plb.213.2023.07.12.17.27.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 12 Jul 2023 15:23:45 -0700 (PDT)
-Message-ID: <d47cca8a-45b6-e3e9-263c-5b6bd24ff8c8@daynix.com>
-Date: Thu, 13 Jul 2023 07:23:41 +0900
+ Wed, 12 Jul 2023 17:28:03 -0700 (PDT)
+Message-ID: <7f524e2a-e773-4de0-09ed-b18eaec8ff16@redhat.com>
+Date: Thu, 13 Jul 2023 10:27:57 +1000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v4] kconfig: Add PCIe devices to s390x machines
+Subject: Re: [PATCH v1 0/5] target/arm: Handle psci calls in userspace
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>, qemu-devel@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-s390x@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Matthew Rosato <mjrosato@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
- Sebastian Mitterle <smitterl@redhat.com>, Cornelia Huck <cohuck@redhat.com>
-References: <20230712080146.839113-1-clg@redhat.com>
- <007f4ae2-c39b-70ad-9e23-9edd543e393c@linaro.org>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <007f4ae2-c39b-70ad-9e23-9edd543e393c@linaro.org>
+To: Salil Mehta <salil.mehta@huawei.com>, Shaoqin Huang
+ <shahuang@redhat.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+Cc: "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "james.morse@arm.com" <james.morse@arm.com>,
+ Cornelia Huck <cohuck@redhat.com>, "kvm@vger.kernel.org"
+ <kvm@vger.kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Salil Mehta <salil.mehta@opnsrc.net>
+References: <20230626064910.1787255-1-shahuang@redhat.com>
+ <9df973ede74e4757b510f26cd5786036@huawei.com>
+ <fb5e8d4d-2388-3ab0-aaac-a1dd91e74b08@redhat.com>
+ <539e6a25b89a45839de37fe92b27d0d3@huawei.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <539e6a25b89a45839de37fe92b27d0d3@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::536;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x536.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, NICE_REPLY_A=-0.11, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.11,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,146 +111,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/07/12 19:48, Philippe Mathieu-Daudé wrote:
-> Hi Cédric,
-> 
-> On 12/7/23 10:01, Cédric Le Goater wrote:
->> It is useful to extend the number of available PCIe devices to KVM guests
->> for passthrough scenarios and also to expose these models to a different
->> (big endian) architecture. Introduce a new config PCIE_DEVICES to select
->> models, Intel Ethernet adapters and one USB controller. These devices all
->> support MSI-X which is a requirement on s390x as legacy INTx are not
->> supported.
->>
->> Cc: Matthew Rosato <mjrosato@linux.ibm.com>
->> Cc: Paolo Bonzini <pbonzini@redhat.com>
->> Cc: Thomas Huth <thuth@redhat.com>
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->> ---
->>
->>   There could be a more general use of PCIE_DEVICES
->>
->>   v4: Introduce PCIE_DEVICES
->>   v3: PCI -> PCI_EXPRESS
->>   v2: select -> imply
->>   configs/devices/s390x-softmmu/default.mak | 1 +
->>   hw/net/Kconfig                            | 4 ++--
->>   hw/pci/Kconfig                            | 3 +++
->>   hw/s390x/Kconfig                          | 3 ++-
->>   hw/usb/Kconfig                            | 2 +-
->>   5 files changed, 9 insertions(+), 4 deletions(-)
->>
->> diff --git a/configs/devices/s390x-softmmu/default.mak 
->> b/configs/devices/s390x-softmmu/default.mak
->> index f2287a133f36..2d5ff476e32a 100644
->> --- a/configs/devices/s390x-softmmu/default.mak
->> +++ b/configs/devices/s390x-softmmu/default.mak
->> @@ -7,6 +7,7 @@
->>   #CONFIG_VFIO_CCW=n
->>   #CONFIG_VIRTIO_PCI=n
->>   #CONFIG_WDT_DIAG288=n
->> +#CONFIG_PCIE_DEVICE=n
->>   # Boards:
->>   #
->> diff --git a/hw/net/Kconfig b/hw/net/Kconfig
->> index 98e00be4f937..7fcc0d7faa29 100644
->> --- a/hw/net/Kconfig
->> +++ b/hw/net/Kconfig
->> @@ -41,12 +41,12 @@ config E1000_PCI
->>   config E1000E_PCI_EXPRESS
->>       bool
->> -    default y if PCI_DEVICES
->> +    default y if PCI_DEVICES || PCIE_DEVICES
-> 
-> There seems to be a pre-existing bug, shouldn't this be
-> 
->         default y if PCIE_DEVICES
-> 
-> ?
+Hi Salil,
 
-I think you should leave this as is and instead add a config selected 
-only when legacy PCI is available and make all legacy PCI devices depend 
-on the config. This will prevent from selecting legacy PCI devices for 
-s390x machines no matter if it's selected due to PCI_DEVICES or selected 
-manually by the user (by mistake).
+On 7/4/23 19:58, Salil Mehta wrote:
 
 > 
-> (Cc'ing maintainers)
+> Latest Qemu Prototype (Pre RFC V2) (Not in the final shape of the patches)
+> https://github.com/salil-mehta/qemu.git   virt-cpuhp-armv8/rfc-v1-port11052023.dev-1
 > 
->>       depends on PCI_EXPRESS && MSI_NONBROKEN
->>   config IGB_PCI_EXPRESS
->>       bool
->> -    default y if PCI_DEVICES
->> +    default y if PCI_DEVICES || PCIE_DEVICES
 > 
-> Similarly:
+> should work against below kernel changes as confirmed by James,
 > 
->         default y if PCIE_DEVICES
+> Latest Kernel Prototype (Pre RFC V2 = RFC V1 + Fixes)
+> https://git.gitlab.arm.com/linux-arm/linux-jm.git   virtual_cpu_hotplug/rfc/v2
 > 
->>       depends on PCI_EXPRESS && MSI_NONBROKEN
->>   config RTL8139_PCI
->> diff --git a/hw/pci/Kconfig b/hw/pci/Kconfig
->> index 77f8b005ffb1..fe70902cd821 100644
->> --- a/hw/pci/Kconfig
->> +++ b/hw/pci/Kconfig
->> @@ -8,6 +8,9 @@ config PCI_EXPRESS
->>   config PCI_DEVICES
->>       bool
->> +config PCIE_DEVICES
->> +    bool
->> +
->>   config MSI_NONBROKEN
->>       # selected by interrupt controllers that do not support MSI,
->>       # or support it and have a good implementation. See commit
->> diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
->> index 454e0ff4b613..4c068d7960b9 100644
->> --- a/hw/s390x/Kconfig
->> +++ b/hw/s390x/Kconfig
->> @@ -5,7 +5,8 @@ config S390_CCW_VIRTIO
->>       imply VFIO_AP
->>       imply VFIO_CCW
->>       imply WDT_DIAG288
->> -    select PCI
->> +    imply PCIE_DEVICES
->> +    select PCI_EXPRESS
-> 
-> I'm confused, TYPE_S390_PCI_HOST_BRIDGE exposes a PCI bus...
-> At a minimum you'd need:
-> 
-> -- >8 --
->   static const TypeInfo s390_pcihost_info = {
->       .name          = TYPE_S390_PCI_HOST_BRIDGE,
-> -    .parent        = TYPE_PCI_HOST_BRIDGE,
-> +    .parent        = TYPE_PCIE_HOST_BRIDGE,
->       .instance_size = sizeof(S390pciState),
->       .class_init    = s390_pcihost_class_init,
->       .interfaces = (InterfaceInfo[]) {
-> ---
-> 
-> Actually I can see:
-> 
->          if (s390_pci_msix_init(pbdev) && !pbdev->interp) {
->              error_setg(errp, "MSI-X support is mandatory "
->                         "in the S390 architecture");
->              return;
->          }
-> 
-> So this must be PCIe, not legacy PCI, right?
-> 
->> diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
->> index 0ec6def4b8b8..0f486764ed69 100644
->> --- a/hw/usb/Kconfig
->> +++ b/hw/usb/Kconfig
->> @@ -36,7 +36,7 @@ config USB_XHCI
->>   config USB_XHCI_PCI
->>       bool
->> -    default y if PCI_DEVICES
->> +    default y if PCI_DEVICES || PCIE_DEVICES
-> 
-> TYPE_XHCI_PCI inherits TYPE_PCI_DEVICE and implements
-> INTERFACE_PCIE_DEVICE, so this is OK.
-> 
->>       depends on PCI
->>       select USB_XHCI
-> 
+
+I think it'd better to have the discussions through maillist. The threads and all
+follow-up replies can be cached somewhere to avoid lost. Besides, other people may
+be intrested in the same points and can join the discussion directly.
+
+I got a chance to give the RFC patchsets some tests. Not all cases are working
+as expected. I know the patchset is being polished. I'm summarize them as below:
+
+(1) coredump is triggered when the topology is out of range. It's the issue we
+     discussed in private. Here I'm just recapping in case other people also blocked
+     by the issue.
+
+     (a) start VM with the following command lines
+      /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64       \
+      -accel kvm -machine virt,gic-version=host,nvdimm=on -cpu host \
+      -smp cpus=1,maxcpus=2,sockets=1,clusters=1,cores=1,threads=2  \
+      -m 512M,slots=16,maxmem=64G                                   \
+      -object memory-backend-ram,id=mem0,size=512M                  \
+      -numa node,nodeid=0,cpus=0-1,memdev=mem0                      \
+
+     (b) hot add CPU whose topology is out of range
+     (qemu) device_add driver=host-arm-cpu,id=cpu1,core-id=1
+
+
+     It's actually caused by typos in hw/arm/virt.c::virt_cpu_pre_plug() where
+     'ms->possible_cpus->len' needs to be replaced with 'ms->smp.cores'. With this,
+     the hot-added CPU object will be rejected.
+
+(2) I don't think TCG has been tested since it seems not working at all.
+
+     (a) start VM with the following command lines
+     /home/gshan/sandbox/src/qemu/main/build/qemu-system-aarch64     \
+     -machine virt,gic-version=3 -cpu max -m 1024                    \
+     -smp maxcpus=2,cpus=1,sockets=1,clusters=1,cores=1,threads=2    \
+
+     (b) failure while hot-adding CPU
+     (qemu) device_add driver=max-arm-cpu,id=cpu1,thread-id=1
+     Error: cpu(id1=0:0:0:1) with arch-id 1 exists
+
+     The error message is printed by hw/arm/virt.c::virt_cpu_pre_plug() where the
+     specific CPU has been presented. For KVM case, the disabled CPUs are detached
+     from 'ms->possible_cpu->cpus[1].cpu' and destroyed. I think we need to do similar
+     thing for TCG case in hw/arm/virt.c::virt_cpu_post_init(). I'm able to add CPU
+     with the following hunk of changes.
+
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2122,6 +2122,18 @@ static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
+                  exit(1);
+              }
+          }
++
++#if 1
++        for (n = 0; n < possible_cpus->len; n++) {
++            cpu = qemu_get_possible_cpu(n);
++            if (!qemu_enabled_cpu(cpu)) {
++                CPUArchId *cpu_slot;
++                cpu_slot = virt_find_cpu_slot(ms, cpu->cpu_index);
++                cpu_slot->cpu = NULL;
++                object_unref(OBJECT(cpu));
++            }
++        }
++#endif
+      }
+  }
+
+(3) Assertion on following the sequence of hot-add, hot-remove and hot-add when TCG mode is enabled.
+
+     (a) Include the hack from (2) and start VM with the following command lines
+     /home/gshan/sandbox/src/qemu/main/build/qemu-system-aarch64     \
+     -machine virt,gic-version=3 -cpu max -m 1024                    \
+     -smp maxcpus=2,cpus=1,sockets=1,clusters=1,cores=1,threads=2    \
+
+     (b) assertion on the sequence of hot-add, hot-remove and hot-add
+     (qemu) device_add driver=max-arm-cpu,id=cpu1,thread-id=1
+     (qemu) device_del cpu1
+     (qemu) device_add driver=max-arm-cpu,id=cpu1,thread-id=1
+     **
+     ERROR:../tcg/tcg.c:669:tcg_register_thread: assertion failed: (n < tcg_max_ctxs)
+     Bail out! ERROR:../tcg/tcg.c:669:tcg_register_thread: assertion failed: (n < tcg_max_ctxs)
+     Aborted (core dumped)
+
+     I'm not sure if x86 has similar issue. It seems the management for TCG contexts, corresponding
+     to variable @tcg_max_ctxs and @tcg_ctxs need some improvements for better TCG context registration
+     and unregistration to accomodate CPU hotplug.
+
+
+Apart from what have been found in the tests, I've started to look into the code changes. I may
+reply with more specific comments. However, it would be ideal to comment on the specific changes
+after the patchset is posted for review. Salil, the plan may have been mentioned by you somewhere.
+As I understood, the QEMU patchset will be posted after James's RFCv2 kernel series is posted.
+Please let me know if my understanding is correct. Again, thanks for your efforts to make vCPU
+hotplug to be supported :)
+
+Thanks,
+Gavin
+
+
+
+     
+
+     
+         
+
 
