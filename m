@@ -2,115 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A37752A54
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A699752A55
 	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 20:32:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK162-0000Ok-Sy; Thu, 13 Jul 2023 14:31:22 -0400
+	id 1qK16M-0000Qb-W4; Thu, 13 Jul 2023 14:31:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qK15y-0000Nt-Jh
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:31:18 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qK15u-0007ex-Je
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:31:18 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36DILpfi022652; Thu, 13 Jul 2023 18:30:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=gnL5nziYBBnmZsGYWmq6viFsuPmZkah3ucPnVr+8AUI=;
- b=GwTFdb8g01CtIWMUS4csDAHOQ3RTBQneWH1WeChSYMPocXivhO78uPAbr1ePuGQUqOaC
- NPGDhBSscJGpbQMT7Xcda5cXleRrBPTQbztBv+o0uWSmyFJ26PFcnCXLrxAy0kqCkpm6
- +4NhhbPQrxLajLubC7G9s5t6rcsXAev3i1iUrXiczI5nql9KXosk8qpjx1SwNZqS/1lT
- PJIk7jIHH8pPMJWchEMALv5/gJUnh8w/XPNvLwLGArVtDT/u1kS8Da/RdZ8GF39qRGzZ
- b3K5yeURnXMKMLYHQJPorVbt/RNM6Ga79qwMttSlyGrExYu2kQU5PSb5W98H/9CvfTy9 Rw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtpfy06b6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 18:30:53 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36DINFlR029633;
- Thu, 13 Jul 2023 18:30:52 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtpfy06ag-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 18:30:52 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36DHnvvj011007; Thu, 13 Jul 2023 18:30:51 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rqk4mkjnj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 18:30:51 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36DIUocH66650474
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Jul 2023 18:30:50 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B9FEB58059;
- Thu, 13 Jul 2023 18:30:50 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CE9A45804B;
- Thu, 13 Jul 2023 18:30:49 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 13 Jul 2023 18:30:49 +0000 (GMT)
-Message-ID: <4a691423-0f3c-e4d4-4581-47d2e4980d23@linux.ibm.com>
-Date: Thu, 13 Jul 2023 14:30:49 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 06/11] tpm_crb: move ACPI table building to device
- interface
-Content-Language: en-US
-To: Joelle van Dyne <j@getutm.app>
-Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-References: <20230713035232.48406-1-j@getutm.app>
- <20230713035232.48406-7-j@getutm.app>
- <d51ec99a-81d3-76ab-648f-f80550856271@linux.ibm.com>
- <CA+E+eSDTa-tsk0a1yx89VFdFQU2hfHfV3f3t2vyW55hQ=+=zzw@mail.gmail.com>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <CA+E+eSDTa-tsk0a1yx89VFdFQU2hfHfV3f3t2vyW55hQ=+=zzw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3wjlSz9cASX6Dpw3CRgllSLodJVj5Z_a
-X-Proofpoint-GUID: 3uHlICQ1EUh-wloy1J5oX4wWPwbPokDd
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qK16B-0000Pf-D6
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:31:31 -0400
+Received: from mail-yw1-x112c.google.com ([2607:f8b0:4864:20::112c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qK167-0007wg-Fw
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 14:31:29 -0400
+Received: by mail-yw1-x112c.google.com with SMTP id
+ 00721157ae682-579e5d54e68so9912987b3.1
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 11:31:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689273085; x=1691865085;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=iM6iGb0VSXlSYidrU73fgZKyui1oYUgUqirpIs+TBmY=;
+ b=EEzmKowvzYAU7uJ+ZjUyLexY90DCdQubm2uhbpxl9CJy4TgATy7mlkTGcGfGwAzFTY
+ SfOhhmY6ili3HQirmSfvZggPVpxZ5f2sXn+uX4Vhuxsc1m/AxN66KMdWMrC0ApkZuNwF
+ Ew21LyK4HG7P9hc0yv17OMiJpNt8Azqfxg9f6eGxig/pnPpEnw6Y92C3SGjFCy7rfJY5
+ qjMC99eHdQJA5UqLAxMqHrZXZMgcbt+8mZqWKNdCSE0QL+EFwnH/C5gcCAAW3ThuOfKD
+ b9J0htEuP4p5dkmBp2qhaJ2fiQ8bLOaWLkBivQwc8sEYUTp1Gc8wxmeFTrwGo2C2cztt
+ 0avg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689273085; x=1691865085;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=iM6iGb0VSXlSYidrU73fgZKyui1oYUgUqirpIs+TBmY=;
+ b=WLelj1fdL66A3Vk+gbStVPyQlH8hjc23ke3pdBnTNgUOYV6jb0mZRWJasrmmWe052t
+ cNYI6DnCSEi57egSuOKkf7V4nxGEQwl6zwKF+khUTFkxw4faxtRldq7xadrp+AhEVUdg
+ 2Sj4YkiHwzJ021aN6Vr32wCbAi+a5G4nuxWzb82+6eoGpnmYRLP2zYD33UKld334uqxC
+ bnal93p5Hgjg/2KBYVi1C0De+GqWtDXcS3eXOfBzoR9LrPfwejCRBm/l1Dozm7m5Zf6M
+ bjJX95aS/TyO3543ToZOBdnhRK6I6kxvtcjF6ku3ybMpAAm17L/F5/hnunhBRxjebprh
+ BpeQ==
+X-Gm-Message-State: ABy/qLaor6ztWKBDTpvNbPHkHfJQ9hpALa8aW1YNxAC5jE6bKdk7DaRe
+ zCnmGs8gmXhAd/RMt4phfK/gxw==
+X-Google-Smtp-Source: APBJJlEXG8Hh06JJ10JMtoQGOkFqJlwHKcJp94L6dbEbS5v8aFgZHfXy8ZOda0kNYFGvQ9RCD19mBA==
+X-Received: by 2002:a0d:c1c2:0:b0:577:bc0:2d55 with SMTP id
+ c185-20020a0dc1c2000000b005770bc02d55mr2846453ywd.33.1689273084971; 
+ Thu, 13 Jul 2023 11:31:24 -0700 (PDT)
+Received: from [192.168.88.227] ([172.58.139.107])
+ by smtp.gmail.com with ESMTPSA id
+ v72-20020a81484b000000b00569ff2d94f6sm1891030ywa.19.2023.07.13.11.31.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 13 Jul 2023 11:31:24 -0700 (PDT)
+Message-ID: <fa2d89b7-8bfa-997a-dcf3-75fdb2ad3b46@linaro.org>
+Date: Thu, 13 Jul 2023 19:31:19 +0100
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-13_06,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0
- priorityscore=1501 spamscore=0 mlxscore=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 adultscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2307130160
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.1 3/3] target/arm/ptw.c: Account for FEAT_RME when
+ applying {N}SW,SA bits
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
+References: <20230710152130.3928330-1-peter.maydell@linaro.org>
+ <20230710152130.3928330-4-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230710152130.3928330-4-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::112c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-yw1-x112c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,141 +97,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 7/13/23 14:10, Joelle van Dyne wrote:
-> In that case, do you think we should have a check in "realize" to make
-> sure the backend is 2.0?
+On 7/10/23 16:21, Peter Maydell wrote:
+> In get_phys_addr_twostage() the code that applies the effects of
+> VSTCR.{SA,SW} and VTCR.{NSA,NSW} only updates result->f.attrs.secure.
+> Now we also have f.attrs.space for FEAT_RME, we need to keep the two
+> in sync.
 > 
-Maybe. I think at the moment it would simply not work (with existing drivers) without terminating QEMU on it due to the misconfiguration. On libvirt level we intercept this case and notify the user that the combination doesn't work. Leaving it like this would be an option...
+> These bits only have an effect for Secure space translations, not
+> for Root, so use the input in_space field to determine whether to
+> apply them rather than the input is_secure. This doesn't actually
+> make a difference because Root translations are never two-stage,
+> but it's a little clearer.
+> 
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+> I noticed this while reading through the ptw code...
+> ---
+>   target/arm/ptw.c | 13 ++++++++-----
+>   1 file changed, 8 insertions(+), 5 deletions(-)
 
-    Stefan
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> On Thu, Jul 13, 2023 at 9:08 AM Stefan Berger <stefanb@linux.ibm.com> wrote:
->>
->>
->>
->> On 7/12/23 23:51, Joelle van Dyne wrote:
->>> This logic is similar to TPM TIS ISA device.
->>>
->>> Signed-off-by: Joelle van Dyne <j@getutm.app>
->>> ---
->>>    hw/i386/acpi-build.c | 23 -----------------------
->>>    hw/tpm/tpm_crb.c     | 28 ++++++++++++++++++++++++++++
->>>    2 files changed, 28 insertions(+), 23 deletions(-)
->>>
->>> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
->>> index 9c74fa17ad..b767df39df 100644
->>> --- a/hw/i386/acpi-build.c
->>> +++ b/hw/i386/acpi-build.c
->>> @@ -1441,9 +1441,6 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->>>        uint32_t nr_mem = machine->ram_slots;
->>>        int root_bus_limit = 0xFF;
->>>        PCIBus *bus = NULL;
->>> -#ifdef CONFIG_TPM
->>> -    TPMIf *tpm = tpm_find();
->>> -#endif
->>>        bool cxl_present = false;
->>>        int i;
->>>        VMBusBridge *vmbus_bridge = vmbus_bridge_find();
->>> @@ -1793,26 +1790,6 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->>>            }
->>>        }
->>>
->>> -#ifdef CONFIG_TPM
->>> -    if (TPM_IS_CRB(tpm)) {
->>> -        dev = aml_device("TPM");
->>> -        aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")));
->>> -        aml_append(dev, aml_name_decl("_STR",
->>> -                                      aml_string("TPM 2.0 Device")));
->>> -        crs = aml_resource_template();
->>> -        aml_append(crs, aml_memory32_fixed(TPM_CRB_ADDR_BASE,
->>> -                                           TPM_CRB_ADDR_SIZE, AML_READ_WRITE));
->>> -        aml_append(dev, aml_name_decl("_CRS", crs));
->>> -
->>> -        aml_append(dev, aml_name_decl("_STA", aml_int(0xf)));
->>> -        aml_append(dev, aml_name_decl("_UID", aml_int(1)));
->>> -
->>> -        tpm_build_ppi_acpi(tpm, dev);
->>> -
->>> -        aml_append(sb_scope, dev);
->>> -    }
->>> -#endif
->>> -
->>>        if (pcms->sgx_epc.size != 0) {
->>>            uint64_t epc_base = pcms->sgx_epc.base;
->>>            uint64_t epc_size = pcms->sgx_epc.size;
->>> diff --git a/hw/tpm/tpm_crb.c b/hw/tpm/tpm_crb.c
->>> index 6144081d30..14feb9857f 100644
->>> --- a/hw/tpm/tpm_crb.c
->>> +++ b/hw/tpm/tpm_crb.c
->>> @@ -19,6 +19,8 @@
->>>    #include "qemu/module.h"
->>>    #include "qapi/error.h"
->>>    #include "exec/address-spaces.h"
->>> +#include "hw/acpi/acpi_aml_interface.h"
->>> +#include "hw/acpi/tpm.h"
->>>    #include "hw/qdev-properties.h"
->>>    #include "hw/pci/pci_ids.h"
->>>    #include "hw/acpi/tpm.h"
->>> @@ -116,10 +118,34 @@ static void tpm_crb_isa_realize(DeviceState *dev, Error **errp)
->>>        }
->>>    }
->>>
->>> +static void build_tpm_crb_isa_aml(AcpiDevAmlIf *adev, Aml *scope)
->>> +{
->>> +    Aml *dev, *crs;
->>> +    CRBState *s = CRB(adev);
->>> +    TPMIf *ti = TPM_IF(s);
->>> +
->>> +    dev = aml_device("TPM");
->>> +    if (tpm_crb_isa_get_version(ti) == TPM_VERSION_2_0) {
->>> +        aml_append(dev, aml_name_decl("_HID", aml_string("MSFT0101")));
->>> +        aml_append(dev, aml_name_decl("_STR", aml_string("TPM 2.0 Device")));
->>> +    } else {
->>> +        aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0C31")));
->>> +    }
->>
->> CRB only exists for TPM 2.0 and that's why we didn't have a different case here before.
->>
->> CRB only has MSFT0101: https://elixir.bootlin.com/linux/latest/source/drivers/char/tpm/tpm_crb.c#L820
->> TIS has PNP0C31: https://elixir.bootlin.com/linux/latest/source/drivers/char/tpm/tpm_tis.c
->>
->> You should remove the check for TPM_VERSION_2_0.
->>
->>      Stefan
->>> +    aml_append(dev, aml_name_decl("_UID", aml_int(1)));
->>> +    aml_append(dev, aml_name_decl("_STA", aml_int(0xF)));
->>> +    crs = aml_resource_template();
->>> +    aml_append(crs, aml_memory32_fixed(TPM_CRB_ADDR_BASE, TPM_CRB_ADDR_SIZE,
->>> +                                      AML_READ_WRITE));
->>> +    aml_append(dev, aml_name_decl("_CRS", crs));
->>> +    tpm_build_ppi_acpi(ti, dev);
->>> +    aml_append(scope, dev);
->>> +}
->>> +
->>>    static void tpm_crb_isa_class_init(ObjectClass *klass, void *data)
->>>    {
->>>        DeviceClass *dc = DEVICE_CLASS(klass);
->>>        TPMIfClass *tc = TPM_IF_CLASS(klass);
->>> +    AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(klass);
->>>
->>>        dc->realize = tpm_crb_isa_realize;
->>>        device_class_set_props(dc, tpm_crb_isa_properties);
->>> @@ -128,6 +154,7 @@ static void tpm_crb_isa_class_init(ObjectClass *klass, void *data)
->>>        tc->model = TPM_MODEL_TPM_CRB;
->>>        tc->get_version = tpm_crb_isa_get_version;
->>>        tc->request_completed = tpm_crb_isa_request_completed;
->>> +    adevc->build_dev_aml = build_tpm_crb_isa_aml;
->>>
->>>        set_bit(DEVICE_CATEGORY_MISC, dc->categories);
->>>    }
->>> @@ -139,6 +166,7 @@ static const TypeInfo tpm_crb_isa_info = {
->>>        .class_init  = tpm_crb_isa_class_init,
->>>        .interfaces = (InterfaceInfo[]) {
->>>            { TYPE_TPM_IF },
->>> +        { TYPE_ACPI_DEV_AML_IF },
->>>            { }
->>>        }
->>>    };
+r~
 
