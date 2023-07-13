@@ -2,91 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C2175204B
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 13:44:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54ED7752055
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 13:45:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJujZ-0003K2-7a; Thu, 13 Jul 2023 07:43:45 -0400
+	id 1qJukt-00044w-89; Thu, 13 Jul 2023 07:45:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qJujW-0003Jb-Lp
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:43:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qJujO-0006fL-Eq
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:43:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689248600;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+qE5mbuahelVo0JYqul+5Ce1sr3x6+m407H4SspW+E0=;
- b=HQJ1kSDFfQMXJeqTOKUVZHZOSpBqEcRd+JHmskAszDBZLQIDj6pzqKj6ZNu5SgbAEY6Cn+
- iHdQ9e8r+IqMov3CF4YUjCvDe75in2edZxXdtP+Z7ptSAqPBWejac5AE5Trhoc624faIDA
- JLsqZVb94zxxxrWaxt/B4bSWThaVyj4=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-425-HtQImLbEPJ6H2Pwnj3yfJg-1; Thu, 13 Jul 2023 07:43:18 -0400
-X-MC-Unique: HtQImLbEPJ6H2Pwnj3yfJg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-992e684089aso42640866b.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 04:43:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qJukp-00044K-74
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:45:03 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qJukn-0007O9-Je
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 07:45:02 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-51f90f713b2so761671a12.1
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 04:45:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689248700; x=1691840700;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=rTNUKy4QVti3eVyce8T/CM16Hk1RMV7WxqXGOsUbJOQ=;
+ b=wdKBoT1e2PrdByc7sIDhnlfnyY2K0wyZi+ORi/m1TccwQHAAqSZ+3XFdAQdLmnKIUK
+ Ne11ifb1E2u6fktjNp7Kcpex4Y9ORrMMn/+KVAuucIv6b51K6lP0x/P7z9bXtuDftPO6
+ PAowo5r8X2YD89QMvaz9yfv5Fjpbn5GswM7c09Aa8aahD0i/BIL0/4vzuAduOpSyZD6A
+ FfRP4K/jQ6Sgz5qJpaUjUHRw6RCaZ90REnOSlaHZI+wdR6DsIPMM/2l5VRybo1iusz9v
+ yyvZIHDRuW+u/puSbXnIxxtleSU8jn4DXj6/zmpfkPT3yyhD5Vf9gF33JPY/Xxf7bKLi
+ GmMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689248597; x=1691840597;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+qE5mbuahelVo0JYqul+5Ce1sr3x6+m407H4SspW+E0=;
- b=MaZJmCndwjI1f4odDe2Mhuouqerqn299qRBCbuC61VBZ9XBTZ2+7NlJmv7ri2qgKiT
- uHW9bajPDYywAQX7+TetM3M338sv1sGgLN45TcMh8IgN6NqzD35NS8+0GeEyaoPGvfZ6
- t4KYRHQz6jJOkNB91f6rfaTd406cwPpi/ZNOJuDwAGoSRTbXOOlywUGxMoYysenvj54f
- RJfZzJKfeyARrzQ+oh6tVzshaVhDSQN5Uiwo4FLcc1wk5DcyuvAU8XMWmOHuFni00HQ7
- Sb6D0F4GpMFIj3FigbUaW58nbdOfcOoU/7EZNnYU9fLsulaH1BFtU20e2Oo76mv7xJuo
- 97PA==
-X-Gm-Message-State: ABy/qLb1rLgC283uhealGsYkJTW8My1gYbSEWcRWmYlLMwOWa0TrlQDm
- XogGrfQR+tH9onxhuXlSw4OrO5Pd3FwZ4ZV8teNdx1qWTPtF7FkGJgKUJlgWUwYEXhV8jzO25YN
- eim037a6OG9flQUU=
-X-Received: by 2002:a17:906:5c:b0:993:f349:c98c with SMTP id
- 28-20020a170906005c00b00993f349c98cmr1299149ejg.4.1689248597579; 
- Thu, 13 Jul 2023 04:43:17 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHmsKl2x24OtK13d07rOOBpBqhvuYUfsM2+VMXD/BQAEBVjbpTg8VI2ZiOygyIgNaVQvkYpJQ==
-X-Received: by 2002:a17:906:5c:b0:993:f349:c98c with SMTP id
- 28-20020a170906005c00b00993f349c98cmr1299136ejg.4.1689248597227; 
- Thu, 13 Jul 2023 04:43:17 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-46-200-94.retail.telecomitalia.it.
- [79.46.200.94]) by smtp.gmail.com with ESMTPSA id
- ss25-20020a170907039900b0098921e1b064sm3857947ejb.181.2023.07.13.04.43.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jul 2023 04:43:16 -0700 (PDT)
-Date: Thu, 13 Jul 2023 13:43:14 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Mike Christie <michael.christie@oracle.com>, 
- Stefan Hajnoczi <stefanha@gmail.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, Mark Kanda <mark.kanda@oracle.com>,
- Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH 1/3] scsi: fetch unit attention when creating the request
-Message-ID: <osf4lhgyhpsxajrn2jzz25y6vegjurf7lyxohwh2qout5usun5@vwko2nat3eih>
-References: <20230712134352.118655-1-sgarzare@redhat.com>
- <20230712134352.118655-2-sgarzare@redhat.com>
- <602625fe-f971-8843-88b6-a63dbe52befe@redhat.com>
+ d=1e100.net; s=20221208; t=1689248700; x=1691840700;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rTNUKy4QVti3eVyce8T/CM16Hk1RMV7WxqXGOsUbJOQ=;
+ b=Z0nB1d70M3k4PUvz80HS2CijN/Zes8O0TnXv+rtDUUGR4AjzBNTuzV6hgVhwgPWKeC
+ YEZiNRg3hbdhOOTQnSliAVT3tUUTryzNeH/xa2PepKkX9rAmi+nbbyu1ZjZayRDzStdE
+ vYGgDhpcFuHqPxymX7IASBXBPuFilkEtZGkurhn4KjcHpinU37AMoP58sggnClATiQ9Y
+ M9X1x8wmhch88cZmowJbxxEyKS5cHEOJ6qTGELxrTUniNJCvMP+v9LaSJ4K9r0yZ3nmp
+ lKoXoeQ3LVYRqpWk/1WjNnJVYX4bfE5vCiZrQ3c2KD934f8SXwerixRC/uiLiPC2ObL7
+ fCgg==
+X-Gm-Message-State: ABy/qLYTD3IIlcIjwij2ZFB4b2k75PQwAQs+81ZMI00PGHIaVke39pEG
+ xXGuhMuiyMqMXvXt3DoduZIRpsZ+n4ObQvxh22Xw0A==
+X-Google-Smtp-Source: APBJJlGDLdznQUSeAyvryFWOMr0V2aMhh0EOm7PFuyREeFef1qZfQ1kDsM9M2DB+lzg0FlIiHYHHv8e5EZdDSfpn318=
+X-Received: by 2002:a05:6402:715:b0:51d:dbb0:fb86 with SMTP id
+ w21-20020a056402071500b0051ddbb0fb86mr1735973edx.11.1689248699865; Thu, 13
+ Jul 2023 04:44:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <602625fe-f971-8843-88b6-a63dbe52befe@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230713054502.410911-1-gshan@redhat.com>
+In-Reply-To: <20230713054502.410911-1-gshan@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 13 Jul 2023 12:44:49 +0100
+Message-ID: <CAFEAcA8197FCwfNZrnxfO-87RveOko0Ju-KcTJOEi0vfjVtDKg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] hw/arm/virt: Use generic CPU invalidation
+To: Gavin Shan <gshan@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, pbonzini@redhat.com, 
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org, 
+ wangyanan55@huawei.com, shan.gavin@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,38 +86,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 12, 2023 at 06:38:14PM +0200, Paolo Bonzini wrote:
->On 7/12/23 15:43, Stefano Garzarella wrote:
->>Commit 1880ad4f4e ("virtio-scsi: Batched prepare for cmd reqs") split
->>calls to scsi_req_new() and scsi_req_enqueue() in the virtio-scsi device.
->>This had no drawback, until commit 8cc5583abe ("virtio-scsi: Send
+On Thu, 13 Jul 2023 at 06:45, Gavin Shan <gshan@redhat.com> wrote:
 >
->More precisely, it was pretty hard to trigger it; it might be possible 
->using a CD-ROM, as it can report a MEDIUM_CHANGED unit attention.  I 
->will change "This had no drawback" to "No ill effect was reported"
-
-Yep, agree!
-
+> There is a generic CPU type invalidation in machine_run_board_init()
+> and we needn't a same and private invalidation for hw/arm/virt machines.
+> This series intends to use the generic CPU type invalidation on the
+> hw/arm/virt machines.
 >
->>"REPORTED LUNS CHANGED" sense data upon disk hotplug events") added a
->>bus unit attention.
+> PATCH[1] factors the CPU type invalidation logic in machine_run_board_init()
+>          to a helper validate_cpu_type().
+> PATCH[2] uses the generic CPU type invalidation for hw/arm/virt machines
+> PATCH[3] support "host-arm-cpu" CPU type only when KVM or HVF is visible
 >
->... that was fairly easy to trigger via SCSI device hotplug/hot-unplug.
+> Testing
+> =======
 >
->Queued the series, thanks for the tests and for applying the cleanups 
->on top.
-
-Thanks for queueing!
-
+> With the following command lines, the output messages are varied before
+> and after the series is applied.
 >
->>Co-developed-by: Paolo Bonzini <pbonzini@redhat.com>
+>   /home/gshan/sandbox/src/qemu/main/build/qemu-system-aarch64 \
+>   -accel tcg -machine virt,gic-version=3,nvdimm=on            \
+>   -cpu cortex-a8 -smp maxcpus=2,cpus=1                        \
+>     :
 >
->Heh, I basically only wrote the "if (req->init_req)" statement so 
->that's pretty generous, but I'll keep it anyway. :)
+> Before the series is applied:
+>
+>   qemu-system-aarch64: mach-virt: CPU type cortex-a8-arm-cpu not supported
+>
+> After the series is applied:
+>
+>   qemu-system-aarch64: Invalid CPU type: cortex-a8-arm-cpu
+>   The valid types are: cortex-a7-arm-cpu, cortex-a15-arm-cpu, \
+>   cortex-a35-arm-cpu, cortex-a55-arm-cpu, cortex-a72-arm-cpu, \
+>   cortex-a76-arm-cpu, a64fx-arm-cpu, neoverse-n1-arm-cpu,     \
+>   neoverse-v1-arm-cpu, cortex-a53-arm-cpu, cortex-a57-arm-cpu, \
+>   max-arm-cpu
 
-Your help was invaluable ;-)
+I see this isn't a change in this patch, but given that
+what the user specifies is not "cortex-a8-arm-cpu" but
+"cortex-a8", why do we include the "-arm-cpu" suffix in
+the error messages? It's not valid syntax to say
+"-cpu cortex-a8-arm-cpu", so it's a bit misleading...
 
-Thanks,
-Stefano
-
+-- PMM
 
