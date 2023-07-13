@@ -2,94 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F33752334
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 15:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A0F75234C
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 15:19:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJwBe-0001cY-JH; Thu, 13 Jul 2023 09:16:50 -0400
+	id 1qJwDk-0002bo-Ap; Thu, 13 Jul 2023 09:19:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qJwBa-0001bh-Om
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 09:16:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qJwBW-0004WA-9U
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 09:16:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689254200;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qJwDV-0002bc-Vy
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 09:18:46 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qJwDU-0004wj-7E
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 09:18:45 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id B78981FD88;
+ Thu, 13 Jul 2023 13:18:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1689254321; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=8eVRSo2tSIKZgDQQHtb1nILbj8XZwK9dV3+NgNbNYkQ=;
- b=ZruM/yXCKm3qkwq+UEoJ7SvTKpVd+XfCPHdOZAbEmOUZ/qD4AVsxju7vux8dBzLKMPgBs+
- Wj//KOSxFlr5ErZ/woPBp7k6+Tk4N6mtv/u8FNAx6Bg5FiQM0OT4/eBs7a37fkj1aHdm0D
- rBMqSWdPUnEvEYpvvM5V4UQPewJDD7U=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-z6M2EfsMNo-cXMYoe8XflA-1; Thu, 13 Jul 2023 09:16:39 -0400
-X-MC-Unique: z6M2EfsMNo-cXMYoe8XflA-1
-Received: by mail-pf1-f198.google.com with SMTP id
- d2e1a72fcca58-67c2f6fb908so322015b3a.0
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 06:16:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689254198; x=1691846198;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8eVRSo2tSIKZgDQQHtb1nILbj8XZwK9dV3+NgNbNYkQ=;
- b=ckL7Gcy+qDu3l+UEBJ47Q3hdJyxmcyUjz1cVtpOdjuQ0I3xdci+T0ZlWtfwRE4wDf6
- OyZHm8WUO2h+gbMk6F2FR++m2DuINr6B6/biSJKzlo8poDFrVzbZLVn7nhQ63EBnNC9B
- u5j0FVV4I7ukH5FQ6cnlxLABFYSl0Qgi5axvM4ha+C4V676AZwi1/5iUKeU2Io8HFf6m
- 1sIVFl8V1teuZCn086BGiyEbkiGc9NsSHhrSmjzXw7W4eI1XDgCwU0CiouWtc7Te75dL
- rApMvy5jKfA0Hdla2sx8T0km5rXaTEQdwTDKGL65rR6M8iyPZsg3oJ+531z4iQ1MWq9L
- TVXw==
-X-Gm-Message-State: ABy/qLanTuhv+e/zjFJvBLOwVOweZa8jkYg7WAn3C2AEV5ruNOfTQhBF
- 5vGWki+WI0RDRXoEPXjCOAzNuHlhBocvCRP2aDrk0N75x6q48k52LMfMGJc6rDBvVxOGAIHIhdS
- hJmazA5VMZIqOyEI=
-X-Received: by 2002:a05:6a20:7348:b0:133:6e6e:2b11 with SMTP id
- v8-20020a056a20734800b001336e6e2b11mr788155pzc.2.1689254198518; 
- Thu, 13 Jul 2023 06:16:38 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEvHOgCIua/9i6Uehfo7kHduz/LEGmL/g6KPijMoBsj9nANKPj746jig9EN2CwmnJuB32Rjaw==
-X-Received: by 2002:a05:6a20:7348:b0:133:6e6e:2b11 with SMTP id
- v8-20020a056a20734800b001336e6e2b11mr788131pzc.2.1689254198212; 
- Thu, 13 Jul 2023 06:16:38 -0700 (PDT)
-Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
- ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
- by smtp.gmail.com with ESMTPSA id
- ff24-20020a056a002f5800b00682562bf477sm5414090pfb.82.2023.07.13.06.16.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 06:16:37 -0700 (PDT)
-Message-ID: <d735c41b-d835-8c35-bb03-6a7a4462210d@redhat.com>
-Date: Thu, 13 Jul 2023 23:16:29 +1000
+ bh=8KoG0O7kibShKQ4/Tn1cHGuAG5nc9iywqYJ8hmF4lIQ=;
+ b=UeFQCNas6HadDXi28I6kKF86i4C5UbTXeBBGC/su/ACE3sTFgmjhHGjMRzT8y11SJr/Puy
+ OWX216CRdkaiJZiIE5ifZmf1f0ff4cdtS0wAbYNU0OL9P3Dmnc/wb0ISnemzR0s/knHFvR
+ UlPHt/R+2b8ixsEpVuAHuKi0NWTaaPY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1689254321;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=8KoG0O7kibShKQ4/Tn1cHGuAG5nc9iywqYJ8hmF4lIQ=;
+ b=Xy8UWwdsdTrtIkXPkbupw5RlMNfayJqOqGZ8p2MhkQAjZ4X0ev/wXS12YkYQjiWo9vRH6n
+ l78PWAbvvUPpiLAQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 492FA13489;
+ Thu, 13 Jul 2023 13:18:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id HDhvBbH5r2S+RgAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 13 Jul 2023 13:18:41 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Peter Xu
+ <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH 2/2] migration: Make it clear that qemu_file_set_error()
+ needs a negative value
+In-Reply-To: <CAFEAcA-_VD5w5ubznavt+5F6q9_LzhmmVFQyEwCj7JYSuxOXbg@mail.gmail.com>
+References: <20230706195201.18595-1-farosas@suse.de>
+ <20230706195201.18595-3-farosas@suse.de>
+ <CAFEAcA-_VD5w5ubznavt+5F6q9_LzhmmVFQyEwCj7JYSuxOXbg@mail.gmail.com>
+Date: Thu, 13 Jul 2023 10:18:38 -0300
+Message-ID: <87v8eogdap.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 3/3] hw/arm/virt: Support host CPU type only when KVM or
- HVF is configured
-Content-Language: en-US
-To: Cornelia Huck <cohuck@redhat.com>, qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, eduardo@habkost.net,
- peter.maydell@linaro.org, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, shan.gavin@gmail.com
-References: <20230713054502.410911-1-gshan@redhat.com>
- <20230713054502.410911-4-gshan@redhat.com> <87o7kgq8rq.fsf@redhat.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <87o7kgq8rq.fsf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,49 +85,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Connie,
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-On 7/13/23 22:46, Cornelia Huck wrote:
-> On Thu, Jul 13 2023, Gavin Shan <gshan@redhat.com> wrote:
-> 
->> The CPU type 'host-arm-cpu' class won't be registered until KVM or
->> HVF is configured in target/arm/cpu64.c. Support the corresponding
->> CPU type only when KVM or HVF is configured.
+> On Thu, 6 Jul 2023 at 20:52, Fabiano Rosas <farosas@suse.de> wrote:
 >>
->> Signed-off-by: Gavin Shan <gshan@redhat.com>
+>> The convention in qemu-file.c is to return a negative value on
+>> error.
+>>
+>> The only place that could use qemu_file_set_error() to store a
+>> positive value to f->last_error was vmstate_save() which has been
+>> fixed in the previous patch.
+>>
+>> bdrv_inactivate_all() already returns a negative value on error.
+>>
+>> Document that qemu_file_set_error() needs -errno and alter the callers
+>> to check ret < 0.
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 >> ---
->>   hw/arm/virt.c | 2 ++
->>   1 file changed, 2 insertions(+)
+>>  migration/qemu-file.c | 2 ++
+>>  migration/savevm.c    | 6 +++---
+>>  2 files changed, 5 insertions(+), 3 deletions(-)
 >>
->> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
->> index 43d7772ffd..ad28634445 100644
->> --- a/hw/arm/virt.c
->> +++ b/hw/arm/virt.c
->> @@ -217,7 +217,9 @@ static const char *valid_cpu_types[] = {
->>   #endif
->>       ARM_CPU_TYPE_NAME("cortex-a53"),
->>       ARM_CPU_TYPE_NAME("cortex-a57"),
->> +#if defined(CONFIG_KVM) || defined(CONFIG_HVF)
->>       ARM_CPU_TYPE_NAME("host"),
->> +#endif
->>       ARM_CPU_TYPE_NAME("max"),
->>       NULL
->>   };
-> 
-> Doesn't the check in parse_cpu_option() already catch the case where
-> the "host" cpu model isn't registered? I might be getting lost in the
-> code flow, though.
-> 
+>> diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+>> index acc282654a..8276bac248 100644
+>> --- a/migration/qemu-file.c
+>> +++ b/migration/qemu-file.c
+>> @@ -222,6 +222,8 @@ int qemu_file_get_error(QEMUFile *f)
+>>
+>>  /*
+>>   * Set the last error for stream f
+>> + *
+>> + * The error ('ret') should be in -errno format.
+>>   */
+>>  void qemu_file_set_error(QEMUFile *f, int ret)
+>>  {
+>> diff --git a/migration/savevm.c b/migration/savevm.c
+>> index 95c2abf47c..f3c303ab74 100644
+>> --- a/migration/savevm.c
+>> +++ b/migration/savevm.c
+>> @@ -1249,7 +1249,7 @@ void qemu_savevm_state_setup(QEMUFile *f)
+>>      QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+>>          if (se->vmsd && se->vmsd->early_setup) {
+>>              ret = vmstate_save(f, se, ms->vmdesc);
+>> -            if (ret) {
+>> +            if (ret < 0) {
+>>                  qemu_file_set_error(f, ret);
+>
+> You say qemu_file_set_error() should take an errno,
+> but vmstate_save() doesn't return one. It will directly
+> return whatever the VMStateInfo put, pre_save, etc hooks
+> return, which isn't necessarily an errno. (Specifically,
+> patch 1 in this series makes a .put hook return -1,
+> rather than an errno. I'm guessing other implementations
+> might too, though it's a bit hard to find them. A
+> coccinelle script could probably locate them.)
+>
 
-Right, it's guranteed that the needed CPU type (class) is registered by parse_cpu_option().
-However, we have different story here. The CPU type invalidation intends to limit the CPU type
-(class) into a range for the specific machine (board). Taking "cortex-a8-arm-cpu" as an example,
-it's not expected by hw/arm/virt machines even it has been registered when we have CONFIG_TCG=y.
-the list of supported CPU type (class) will be dumped by hw/core/machine.c::validate_cpu_type()
-in PATCH[1], "host" is obviously invalid when we have CONFIG_KVM=n and CONFIG_HVF=n. We can't
-tell user that "host" is supported, to confuse user.
+All implementations return either 0, -1 or some errno; that one instance
+from patch 1 returns 1. But you're right, those -1 are not really errno,
+they are just "some negative value".
 
-Thanks,
-Gavin
+Since qemu-file.c puts the error through the error.c functions and those
+call strerror(), all values that will go into qemu_file_set_error()
+should be proper errnos.
 
+I should probably audit users of qemu_file_set_error() instead and stop
+using it for errors that have nothing to do with the actual migration
+stream/QEMUFile. Currently it seems to have morphed into a mechanism to
+record generic migration errors.
 
