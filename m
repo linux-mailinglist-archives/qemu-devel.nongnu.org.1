@@ -2,101 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55BC7529BB
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 19:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 099637529EB
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 19:37:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qJzzB-000169-Ct; Thu, 13 Jul 2023 13:20:13 -0400
+	id 1qK0ES-0003qk-LN; Thu, 13 Jul 2023 13:36:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qJzz7-00015x-37
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 13:20:09 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qJzz2-0000cg-VE
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 13:20:08 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36DHGufN007298; Thu, 13 Jul 2023 17:20:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=tdluAVXHCJlCJkeR8dQRXgiBzr3/lgRWy5/MdhOVPN8=;
- b=tKrWmZrzXs6Z30k3wGqBxqIyz1M60dlIXxl1OgnVpkzJpoqaBlhzi8du2QidX6Kt4b0u
- BZXlJNfjvFUDFp+ctPw7wKh0RcSRTw9paaPvth7LOoX0NimWZBhJdb0gvMUu0tmsneoZ
- Aa9brsC6/UcFL31FjDa2FvzsNyZipq5mhCV2kMnmaGaKPRRp0kuOZqZnNIdnchf0XxIU
- 1odtZucKO0qv2K+ejOS7sphaILu0p/XaFbO8NAQolxUT2rIAbuUuEwllksDvj6ZdPkPe
- Xo3KEX8INlDjS/tVowLaT9ILhnWyXMjvtdGPUHctscs04aedXhUkSHEFsSpv+mWbyBgP +g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtnhh81gn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 17:20:00 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36DHHaH7008854;
- Thu, 13 Jul 2023 17:19:59 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rtnhh81gf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 17:19:59 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36DDtqRi005046; Thu, 13 Jul 2023 17:19:59 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rqj4rrhwc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 13 Jul 2023 17:19:59 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
- [10.241.53.103])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36DHJwtk35258712
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 13 Jul 2023 17:19:58 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0BB0858056;
- Thu, 13 Jul 2023 17:19:58 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9769B58052;
- Thu, 13 Jul 2023 17:19:57 +0000 (GMT)
-Received: from sbct-2.pok.ibm.com (unknown [9.47.158.152])
- by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 13 Jul 2023 17:19:57 +0000 (GMT)
-From: Stefan Berger <stefanb@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, eric.auger@redhat.com,
- ard.biesheuvel@linaro.org, j@getutm.app,
- Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PATCH] hw/tpm: TIS on sysbus: Remove unsupport ppi command line
- option
-Date: Thu, 13 Jul 2023 13:19:55 -0400
-Message-ID: <20230713171955.149236-1-stefanb@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1qK0EQ-0003qM-K5
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 13:35:58 -0400
+Received: from mail-ot1-f50.google.com ([209.85.210.50])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1qK0EO-0006hq-TD
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 13:35:58 -0400
+Received: by mail-ot1-f50.google.com with SMTP id
+ 46e09a7af769-6b91ad1f9c1so826034a34.3
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 10:35:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689269755; x=1691861755;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=TTeMAgU0XuAC/Cu1skzkq3o4FJktkgVmMdzNdC8aocg=;
+ b=A++Z6NHDonyvU4qdQOzZHitg2Uxf4e4Vw+R+SjBl5wuzixvivLKhTtT4SEdEdW8/OE
+ SFBGxLJRNNqTxqIxHbaXb/7xqR27fc22tFs8QaE58T37/PkK1Cg47+9FRSkk/h4fsPvo
+ kpl7rEKSfHpWmNuE9UuT439gfsPMlKUlunrenKeiCEY5zwKg/ws4BWr0L8kGJGyxwNas
+ h4DeT3XNJNqjaphvK87EtXMEP6pl4QKpy7cJYPDZIBblGu/Bc9WrFM3qvDp+R+viloxY
+ 3ICqBXjTTLPFvgWVzLVnb7vSWv6jC4VzWHBwRQrXhFPYNBoRjiDOgXgJMiZdGstmDYUi
+ DjAA==
+X-Gm-Message-State: ABy/qLaJNt2n/+GCqeopHe2Dv4baTj6CHYoIv5/ay12p5SbG/W/wwI7U
+ Q7bKHov7e1awGZgJAmcrEwBmZDhobeM=
+X-Google-Smtp-Source: APBJJlGTlysYVue/Vlg6JJUTlonLHQ0/ibdJcMOjWoRLWL039Vs5TZQ1HzaKSoRqjTsiE65aBHJrmw==
+X-Received: by 2002:a9d:6b93:0:b0:6b7:1fcd:1e22 with SMTP id
+ b19-20020a9d6b93000000b006b71fcd1e22mr1968903otq.29.1689269754990; 
+ Thu, 13 Jul 2023 10:35:54 -0700 (PDT)
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com.
+ [209.85.160.42]) by smtp.gmail.com with ESMTPSA id
+ y7-20020a0568301d8700b006b8e8884f2fsm3050305oti.51.2023.07.13.10.35.54
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 13 Jul 2023 10:35:54 -0700 (PDT)
+Received: by mail-oa1-f42.google.com with SMTP id
+ 586e51a60fabf-1b730eb017bso804739fac.1
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 10:35:54 -0700 (PDT)
+X-Received: by 2002:a05:6871:9b:b0:1b7:4c74:e1af with SMTP id
+ u27-20020a056871009b00b001b74c74e1afmr3381886oaa.59.1689269754089; Thu, 13
+ Jul 2023 10:35:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: mdtZTzwZRhCNg3Lr9Yz85NH_tafOTe1Q
-X-Proofpoint-GUID: d4mIpyqdB_Ud8qk8LcziWqFhyj7USbKh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-13_06,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0 spamscore=0
- mlxscore=0 clxscore=1011 malwarescore=0 phishscore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2307130151
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230713035232.48406-1-j@getutm.app>
+ <c58eea48-413b-d7e8-2a4e-f5b189536e7a@linux.ibm.com>
+In-Reply-To: <c58eea48-413b-d7e8-2a4e-f5b189536e7a@linux.ibm.com>
+From: Joelle van Dyne <j@getutm.app>
+Date: Thu, 13 Jul 2023 10:35:43 -0700
+X-Gmail-Original-Message-ID: <CA+E+eSCNKbSAcgYn9BaZRU_LRvqgo8QGPxH4m1+kNVQO=iqw_g@mail.gmail.com>
+Message-ID: <CA+E+eSCNKbSAcgYn9BaZRU_LRvqgo8QGPxH4m1+kNVQO=iqw_g@mail.gmail.com>
+Subject: Re: [PATCH 00/11] tpm: introduce TPM CRB SysBus device
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=209.85.210.50; envelope-from=osy86dev@gmail.com;
+ helo=mail-ot1-f50.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,40 +89,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The ppi command line option for the TIS device on sysbus never worked
-and caused an immediate segfault. Remove support for it since it also
-needs support in the firmware and needs testing inside the VM.
+On Thu, Jul 13, 2023 at 6:07=E2=80=AFAM Stefan Berger <stefanb@linux.ibm.co=
+m> wrote:
+>
+>
+>
+> On 7/12/23 23:51, Joelle van Dyne wrote:
+> > The impetus for this patch set is to get TPM 2.0 working on Windows 11 =
+ARM64.
+> > Windows' tpm.sys does not seem to work on a TPM TIS device (as verified=
+ with
+> > VMWare's implementation). However, the current TPM CRB device uses a fi=
+xed
+> > system bus address that is reserved for RAM in ARM64 Virt machines.
+>
+> Thanks a lot for this work. The last sentence seems to hint at the curren=
+t issue
+> with TPM CRB on ARM64 and seems to be the only way forward there. You may=
+ want
+> to reformulate it a bit because it's not clear how the 'however' related =
+to
+> CRB relates to TIS.
+>
+> >
+> > In the process of adding the TPM CRB SysBus device, we also went ahead =
+and
+> > cleaned up some of the existing TPM hardware code and fixed some bugs. =
+We used
+>
+> Please reorder bugs to the beginning of the series or submit in an extra =
+patch set
+> so we can backport them. Ideal would be description(s) for how to trigger=
+ the bug(s).
+>
+> > the TPM TIS devices as a template for the TPM CRB devices and refactore=
+d out
+> > common code. We moved the ACPI DSDT generation to the device in order t=
+o handle
+> > dynamic base address requirements as well as reduce redundent code in d=
+ifferent
+> s/redundent/redundant
+>
+>
+> > machine ACPI generation. We also changed the tpm_crb device to use the =
+ISA bus
+> > instead of depending on the default system bus as the device only was b=
+uilt for
+> > the PC configuration.
+> >
+> > Another change is that the TPM CRB registers are now mapped in the same=
+ way that
+> > the pflash ROM devices are mapped. It is a memory region whose writes a=
+re
+> > trapped as MMIO accesses. This was needed because Apple Silicon does no=
+t decode
+> > LDP caused page faults. @agraf suggested that we do this to avoid havin=
+g to
+>
+> Afaik, LDP is an ARM assembly instruction that loads two 32bit or 64bit r=
+egisters from
+> consecutive addresses. May be worth mentioning for those wondering about =
+it...
+>
+> > do AARCH64 decoding in the HVF fault handler.
+>
+> What is HVF?
 
-Reproducer with the ppi=on option passed:
+Sorry, HVF is the QEMU backend for Apple's Hypervisor.framework which
+runs on macOS including on Apple Silicon.
 
-qemu-system-aarch64 \
-   -machine virt,gic-version=3 \
-   -m 4G  \
-   -nographic -no-acpi \
-   -chardev socket,id=chrtpm,path=/tmp/mytpm1/swtpm-sock \
-   -tpmdev emulator,id=tpm0,chardev=chrtpm \
-   -device tpm-tis-device,tpmdev=tpm0,ppi=on
-[...]
-Segmentation fault (core dumped)
-
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
----
- hw/tpm/tpm_tis_sysbus.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/hw/tpm/tpm_tis_sysbus.c b/hw/tpm/tpm_tis_sysbus.c
-index 45e63efd63..6724b3d4f6 100644
---- a/hw/tpm/tpm_tis_sysbus.c
-+++ b/hw/tpm/tpm_tis_sysbus.c
-@@ -93,7 +93,6 @@ static void tpm_tis_sysbus_reset(DeviceState *dev)
- static Property tpm_tis_sysbus_properties[] = {
-     DEFINE_PROP_UINT32("irq", TPMStateSysBus, state.irq_num, TPM_TIS_IRQ),
-     DEFINE_PROP_TPMBE("tpmdev", TPMStateSysBus, state.be_driver),
--    DEFINE_PROP_BOOL("ppi", TPMStateSysBus, state.ppi_enabled, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
--- 
-2.41.0
-
+>
+> Regards,
+>     Stefan
+> >
+> > Unfortunately, it seems like the LDP fault still happens on HVF but the=
+ issue
+> > seems to be in the HVF backend which needs to be fixed in a separate pa=
+tch.
+> >
+> > One last thing that's needed to get Windows 11 to recognize the TPM 2.0=
+ device
+> > is for the OVMF firmware to setup the TPM device. Currently, OVMF for A=
+RM64 Virt
+> > only recognizes the TPM TIS device through a FDT entry. A workaround is=
+ to
+> > falsely identify the TPM CRB device as a TPM TIS device in the FDT node=
+ but this
+> > causes issues for Linux. A proper fix would involve adding an ACPI devi=
+ce driver
+> > in OVMF.
+> >
+> > Joelle van Dyne (11):
+> >    tpm_crb: refactor common code
+> >    tpm_crb: CTRL_RSP_ADDR is 64-bits wide
+> >    tpm_ppi: refactor memory space initialization
+> >    tpm_crb: use a single read-as-mem/write-as-mmio mapping
+> >    tpm_crb: use the ISA bus
+> >    tpm_crb: move ACPI table building to device interface
+> >    hw/arm/virt: add plug handler for TPM on SysBus
+> >    hw/loongarch/virt: add plug handler for TPM on SysBus
+> >    tpm_tis_sysbus: fix crash when PPI is enabled
+> >    tpm_tis_sysbus: move DSDT AML generation to device
+> >    tpm_crb_sysbus: introduce TPM CRB SysBus device
+> >
+> >   docs/specs/tpm.rst          |   2 +
+> >   hw/tpm/tpm_crb.h            |  74 +++++++++
+> >   hw/tpm/tpm_ppi.h            |  10 +-
+> >   include/hw/acpi/aml-build.h |   1 +
+> >   include/hw/acpi/tpm.h       |   3 +-
+> >   include/sysemu/tpm.h        |   3 +
+> >   hw/acpi/aml-build.c         |   7 +-
+> >   hw/arm/virt-acpi-build.c    |  38 +----
+> >   hw/arm/virt.c               |  38 +++++
+> >   hw/core/sysbus-fdt.c        |   1 +
+> >   hw/i386/acpi-build.c        |  23 ---
+> >   hw/loongarch/acpi-build.c   |  38 +----
+> >   hw/loongarch/virt.c         |  38 +++++
+> >   hw/riscv/virt.c             |   1 +
+> >   hw/tpm/tpm_crb.c            | 307 ++++++++---------------------------=
+-
+> >   hw/tpm/tpm_crb_common.c     | 224 ++++++++++++++++++++++++++
+> >   hw/tpm/tpm_crb_sysbus.c     | 178 +++++++++++++++++++++
+> >   hw/tpm/tpm_ppi.c            |   5 +-
+> >   hw/tpm/tpm_tis_isa.c        |   5 +-
+> >   hw/tpm/tpm_tis_sysbus.c     |  43 +++++
+> >   tests/qtest/tpm-crb-test.c  |   2 +-
+> >   tests/qtest/tpm-util.c      |   2 +-
+> >   hw/arm/Kconfig              |   1 +
+> >   hw/riscv/Kconfig            |   1 +
+> >   hw/tpm/Kconfig              |   7 +-
+> >   hw/tpm/meson.build          |   3 +
+> >   hw/tpm/trace-events         |   2 +-
+> >   27 files changed, 703 insertions(+), 354 deletions(-)
+> >   create mode 100644 hw/tpm/tpm_crb.h
+> >   create mode 100644 hw/tpm/tpm_crb_common.c
+> >   create mode 100644 hw/tpm/tpm_crb_sysbus.c
+> >
 
