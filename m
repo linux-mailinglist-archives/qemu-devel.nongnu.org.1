@@ -2,95 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FE07529F8
-	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 19:39:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E72752A31
+	for <lists+qemu-devel@lfdr.de>; Thu, 13 Jul 2023 20:09:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK0H8-0005Sb-Nh; Thu, 13 Jul 2023 13:38:46 -0400
+	id 1qK0is-00029s-ER; Thu, 13 Jul 2023 14:07:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qK0H5-0005SJ-Nr
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 13:38:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qK0H3-0007A8-OP
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 13:38:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689269914;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XsjQwki7XZbc91OAZ+06s4VY5uvkouZS889NYX9gzL0=;
- b=PaKd80jORcJfy15SBU6bmxzJKnoMIgiQSTzcYTIJE9iVQKkD3go101FRL+O0zIW7erG+vS
- HQXm9F6GC4qFAeM9vE+4jbmjISPPkYCnvmFiiJmY+PL+9blAFKyh6lpR7D4QcT0MszA3JP
- Exm1WLUd61o6cwgh/tvdMgnnN99THPc=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-552-EdKoB84hMiGPvyuW0PU7UA-1; Thu, 13 Jul 2023 13:38:33 -0400
-X-MC-Unique: EdKoB84hMiGPvyuW0PU7UA-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-635e3871cf9so7518196d6.1
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 10:38:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1qK0iq-00029b-NW; Thu, 13 Jul 2023 14:07:24 -0400
+Received: from mail-pl1-f172.google.com ([209.85.214.172])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1qK0io-0008C3-VG; Thu, 13 Jul 2023 14:07:24 -0400
+Received: by mail-pl1-f172.google.com with SMTP id
+ d9443c01a7336-1b8b2886364so6082635ad.0; 
+ Thu, 13 Jul 2023 11:07:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689269909; x=1689874709;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XsjQwki7XZbc91OAZ+06s4VY5uvkouZS889NYX9gzL0=;
- b=lSBRKwr/2Cug7NdIeZtGiQiu6LsRJbyN06JfBbrzFLiSIAhzGvPro9WErRGFsVW6+I
- 7el8hCMjQWI/7FzwnJRNWqU3X0rq5n4M9IfZyQJ2mLo1VWbN2t557VMm7Rp3+ixSPtsT
- 7bbblW1ZIS2pF+hsEMufUMcBq/fPCpeifbxrMBssh9ca3JRv9neDLPraUkTrLLc4q2Mb
- 2ZD4ys1eCzjVTFabSdZQh5SutN6L5ALBZGhjtIr7DwtGNgS9RWXpWLab/7FqAHI2IzGQ
- ifvD16Sm49V0MHeVGNgFaqHETBjy4lFKugJKW4TBybNVc0hUhmRn5PSQkjFOSm6KhsXS
- b7CQ==
-X-Gm-Message-State: ABy/qLbPp5OcC+x/m7wy6pE2P9PsX1Km1LCNv40II/HuvCN/DqYExlTP
- cyeJ0RXmyGHHXTR1R/Rd9MEemqgpiQSDPgFIDv8YZZjEdpqw3lUrUnlPp7dkh1AP87yd5Mz9eUw
- 8lFt2goEiPTP7Zn4=
-X-Received: by 2002:a0c:f1c9:0:b0:635:f48d:5b8a with SMTP id
- u9-20020a0cf1c9000000b00635f48d5b8amr1940568qvl.1.1689269909260; 
- Thu, 13 Jul 2023 10:38:29 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEX3ugbrH+eDxrgz7i8i0JfKXrSM7JpgaGH3BOkaUScEjQUtxRDPUymhdFtJ08JgNfw+xLpxg==
-X-Received: by 2002:a0c:f1c9:0:b0:635:f48d:5b8a with SMTP id
- u9-20020a0cf1c9000000b00635f48d5b8amr1940556qvl.1.1689269909043; 
- Thu, 13 Jul 2023 10:38:29 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- r7-20020a0ccc07000000b0063600a119fcsm3251259qvk.37.2023.07.13.10.38.27
+ d=1e100.net; s=20221208; t=1689271640; x=1691863640;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=m8vCN65AWkmfSujxBkeMsv+9E95pnQqPyTWD9zgJRG4=;
+ b=FRg2SY56yYrMN1y3J8M+er4j53VmPRt62NU4TsDE3ZWAFSOi/STVH+MWCiqzEm2HlD
+ gMVLWYHNz+6RVf/J+XNKilMImFyBGNkz+hGPuHxDin/nNGucqRcVs6+Ba48leICJYXn3
+ cB2WML66bPznZx/Ij1oU8HnMm3/oL9+sxGlE3JzEfqP3VFW7ZQddePIhMENyDyJp/HVV
+ lqKAeggfOyWP/ZDo9C4SbKEu3eitUJjb3/sGUWCfzBIAr3IFlTGFaZurkjhE8vjJQvvQ
+ TUXIy2F0Vb/hBTxbIzVtukwTbgNGAwxs27cKI13D/1BUzFZTdlo6GOtMqv8w8WWp6aFL
+ Yy+A==
+X-Gm-Message-State: ABy/qLbyoo0DUwPdJXXsBt8naSohf8UQX3fiPvUbw0OPmRXiLqKrZlMj
+ 9jhXbPE9LtHZhaNKwMZnZxx5zexUgdU=
+X-Google-Smtp-Source: APBJJlFT5VLFEqhAzf4PHi6oaPc4aIKI/hQSsOQbeNwGlRkOgF4WadhtQ1Ww1bKg+iZmDK8UmwUSAQ==
+X-Received: by 2002:a17:902:e54b:b0:1b8:177e:c805 with SMTP id
+ n11-20020a170902e54b00b001b8177ec805mr1726761plf.42.1689271639920; 
+ Thu, 13 Jul 2023 11:07:19 -0700 (PDT)
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com.
+ [209.85.216.54]) by smtp.gmail.com with ESMTPSA id
+ d14-20020a170903230e00b001b864add154sm6229495plh.154.2023.07.13.11.07.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 10:38:28 -0700 (PDT)
-Message-ID: <f683ceff-16af-cacf-d792-a2ee7a60f306@redhat.com>
-Date: Thu, 13 Jul 2023 19:38:25 +0200
+ Thu, 13 Jul 2023 11:07:19 -0700 (PDT)
+Received: by mail-pj1-f54.google.com with SMTP id
+ 98e67ed59e1d1-2674d0e10c4so491688a91.3; 
+ Thu, 13 Jul 2023 11:07:19 -0700 (PDT)
+X-Received: by 2002:a17:90a:e38e:b0:25c:1397:3c0b with SMTP id
+ b14-20020a17090ae38e00b0025c13973c0bmr1394515pjz.37.1689271639448; Thu, 13
+ Jul 2023 11:07:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH] hw/tpm: TIS on sysbus: Remove unsupport ppi command line
- option
-Content-Language: en-US
-To: Stefan Berger <stefanb@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, ard.biesheuvel@linaro.org, j@getutm.app
-References: <20230713171955.149236-1-stefanb@linux.ibm.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20230713171955.149236-1-stefanb@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230713035232.48406-1-j@getutm.app>
+ <20230713035232.48406-8-j@getutm.app>
+ <CAFEAcA_hKao=-kadeKjZMGOugtSGLHzhzTLiva5aZP7PHQN3xQ@mail.gmail.com>
+In-Reply-To: <CAFEAcA_hKao=-kadeKjZMGOugtSGLHzhzTLiva5aZP7PHQN3xQ@mail.gmail.com>
+From: Joelle van Dyne <j@getutm.app>
+Date: Thu, 13 Jul 2023 11:07:08 -0700
+X-Gmail-Original-Message-ID: <CA+E+eSDO-ZVGsEqzja55f9WppKHXkB6ruY4aNgrwWiJySAGY5g@mail.gmail.com>
+Message-ID: <CA+E+eSDO-ZVGsEqzja55f9WppKHXkB6ruY4aNgrwWiJySAGY5g@mail.gmail.com>
+Subject: Re: [PATCH 07/11] hw/arm/virt: add plug handler for TPM on SysBus
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, 
+ "open list:Virt" <qemu-arm@nongnu.org>, Alexander Graf <agraf@csgraf.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=209.85.214.172; envelope-from=osy86dev@gmail.com;
+ helo=mail-pl1-f172.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,50 +84,94 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Stefan,
-
-On 7/13/23 19:19, Stefan Berger wrote:
-> The ppi command line option for the TIS device on sysbus never worked
-> and caused an immediate segfault. Remove support for it since it also
-> needs support in the firmware and needs testing inside the VM.
+On Thu, Jul 13, 2023 at 8:31=E2=80=AFAM Peter Maydell <peter.maydell@linaro=
+.org> wrote:
 >
-> Reproducer with the ppi=on option passed:
+> On Thu, 13 Jul 2023 at 04:52, Joelle van Dyne <j@getutm.app> wrote:
+> >
+> > TPM needs to know its own base address in order to generate its DSDT
+> > device entry.
+> >
+> > Signed-off-by: Joelle van Dyne <j@getutm.app>
+> > ---
+> >  hw/arm/virt.c | 37 +++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 37 insertions(+)
+> >
+> > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> > index 7d9dbc2663..432148ef47 100644
+> > --- a/hw/arm/virt.c
+> > +++ b/hw/arm/virt.c
+> > @@ -2732,6 +2732,37 @@ static void virt_memory_plug(HotplugHandler *hot=
+plug_dev,
+> >                           dev, &error_abort);
+> >  }
+> >
+> > +#ifdef CONFIG_TPM
+> > +static void virt_tpm_plug(VirtMachineState *vms, TPMIf *tpmif)
+> > +{
+> > +    PlatformBusDevice *pbus =3D PLATFORM_BUS_DEVICE(vms->platform_bus_=
+dev);
+> > +    hwaddr pbus_base =3D vms->memmap[VIRT_PLATFORM_BUS].base;
+> > +    SysBusDevice *sbdev =3D SYS_BUS_DEVICE(tpmif);
+> > +    MemoryRegion *sbdev_mr;
+> > +    hwaddr tpm_base;
+> > +    uint64_t tpm_size;
+> > +
+> > +    if (!sbdev || !object_dynamic_cast(OBJECT(sbdev), TYPE_SYS_BUS_DEV=
+ICE)) {
+> > +        return;
+> > +    }
+> > +
+> > +    tpm_base =3D platform_bus_get_mmio_addr(pbus, sbdev, 0);
+> > +    assert(tpm_base !=3D -1);
+> > +
+> > +    tpm_base +=3D pbus_base;
+> > +
+> > +    sbdev_mr =3D sysbus_mmio_get_region(sbdev, 0);
+> > +    tpm_size =3D memory_region_size(sbdev_mr);
+> > +
+> > +    if (object_property_find(OBJECT(sbdev), "baseaddr")) {
+> > +        object_property_set_uint(OBJECT(sbdev), "baseaddr", tpm_base, =
+NULL);
+> > +    }
+> > +    if (object_property_find(OBJECT(sbdev), "size")) {
+> > +        object_property_set_uint(OBJECT(sbdev), "size", tpm_size, NULL=
+);
+> > +    }
+> > +}
+> > +#endif
 >
-> qemu-system-aarch64 \
->    -machine virt,gic-version=3 \
->    -m 4G  \
->    -nographic -no-acpi \
->    -chardev socket,id=chrtpm,path=/tmp/mytpm1/swtpm-sock \
->    -tpmdev emulator,id=tpm0,chardev=chrtpm \
->    -device tpm-tis-device,tpmdev=tpm0,ppi=on
-> [...]
-> Segmentation fault (core dumped)
+> I do not like the "platform bus" at all -- it is a nasty hack.
+> If the virt board needs a memory mapped TPM device it should probably
+> just create one, the same way we create our other memory mapped
+> devices. But...
 >
-> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
+> How are TPM devices typically set up/visible to the guest on
+> real Arm server hardware ? Should this be a sysbus device at all?
 
-Thanks!
++Alexander Graf who may answer this better.
 
-Eric
-> ---
->  hw/tpm/tpm_tis_sysbus.c | 1 -
->  1 file changed, 1 deletion(-)
+My understanding is that we need to do this for the device to know its
+own address which it needs to return in a register. On ISA devices, it
+is always mapped to the same physical address so there's no issues but
+for Virt machines, device addresses are dynamically allocated by the
+PlatformBusDevice so only at this late stage can we tell the device
+what its own address is.
+
 >
-> diff --git a/hw/tpm/tpm_tis_sysbus.c b/hw/tpm/tpm_tis_sysbus.c
-> index 45e63efd63..6724b3d4f6 100644
-> --- a/hw/tpm/tpm_tis_sysbus.c
-> +++ b/hw/tpm/tpm_tis_sysbus.c
-> @@ -93,7 +93,6 @@ static void tpm_tis_sysbus_reset(DeviceState *dev)
->  static Property tpm_tis_sysbus_properties[] = {
->      DEFINE_PROP_UINT32("irq", TPMStateSysBus, state.irq_num, TPM_TIS_IRQ),
->      DEFINE_PROP_TPMBE("tpmdev", TPMStateSysBus, state.be_driver),
-> -    DEFINE_PROP_BOOL("ppi", TPMStateSysBus, state.ppi_enabled, false),
->      DEFINE_PROP_END_OF_LIST(),
->  };
->  
+> thanks
+> -- PMM
 
+Also to Stefan's question on consolidating code: that is ideal but
+currently, it seems like much platform setup code is duplicated
+amongst the various architecture's Virt machines. There would have to
+be a larger effort in de-duplicating a lot of that code. Indeed, we
+try to do this already with some of the ACPI stuff in the other
+patches. For this specifically, we would need to know the platform
+bus' base address which is done differently in ARM64's Virt and in
+Loongarch's Virt. All we did was delete some existing duplicated code
+and replace it with a different duplicated code :)
 
