@@ -2,102 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FCE7542B5
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 20:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E12A37542CE
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 20:50:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKNjJ-0002wF-Rm; Fri, 14 Jul 2023 14:41:25 -0400
+	id 1qKNqz-0004EO-AR; Fri, 14 Jul 2023 14:49:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qKNjH-0002ve-1i
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:41:23 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qKNjF-0007i1-8v
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:41:22 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36EIaetC020024; Fri, 14 Jul 2023 18:41:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=6mzdZ3/UM5LTlWGUVMz3qW7vGOY6QaRJMsQ4EWug/+c=;
- b=ruY+l+Ed2FZkiBt6jSmWbtaXx14XQ7iDdLe9QM2EM7tR68kJNWV2baK5iUMtr6ZDBl/6
- NKrt4UpupbxtTBGyHvepQ0YYVqtKsf7NlGUhVIJJQc9Ifu8MJUcZ053YT0XPAc8VDN2G
- VUsblihhUPl3Qd85vON9KrrPluEmE2AMRoC5/zUYvNKZw+UJNVyfUffPvyH+AOuc/I0r
- sfevMQ1xl4hJS80gVhTmMwRNrmBZ0ekria1YzepN+9ael6Me3/0G5eKPHKoHLzXde7UA
- 8zWku2vTWRMbkF0sdRISFx/4eRfQVxkXn9QXMihdg+2jf2LC1yODfBbtsTwkjvnckmTw Dg== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rubgm8dwj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jul 2023 18:41:17 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36EGCv1V002964;
- Fri, 14 Jul 2023 18:41:16 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([9.208.130.98])
- by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3rtqjkmx4b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jul 2023 18:41:16 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
- [10.39.53.229])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36EIfFmZ65732918
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Jul 2023 18:41:16 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 93C055805B;
- Fri, 14 Jul 2023 18:41:15 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 387DC5805E;
- Fri, 14 Jul 2023 18:41:15 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 14 Jul 2023 18:41:15 +0000 (GMT)
-Message-ID: <562ec838-2714-2bb2-d1a5-7b98bb43a60b@linux.ibm.com>
-Date: Fri, 14 Jul 2023 14:41:14 -0400
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1qKNqw-0004ED-PX
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:49:18 -0400
+Received: from mail-pl1-f181.google.com ([209.85.214.181])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1qKNqv-0002OX-5O
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:49:18 -0400
+Received: by mail-pl1-f181.google.com with SMTP id
+ d9443c01a7336-1b8c81e36c0so14077155ad.0
+ for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 11:49:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689360555; x=1691952555;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XIymPxqneQy5XKqANIsnp72CAbfW7RYeV7M/gmOJuIM=;
+ b=RVb8r+iu+q59cVB7Dg/Krj7KAJss0f+uk38NHtOn7XxYyc2AWkEYKT7xpA+A7doaAG
+ 3nHroBjxLPgzcTU6SPZABGc5sZW1Of0wNRzsRM4Pzq4IM3pbZFOGOf04KavXnyBg8EpW
+ ZtAK+zMtHOQaKXyYlC/AVsOw3feHEbd01edYxm6KK7yYSlu3wSobJcj+LaOGxP6wvD6e
+ hu8QT+9lXZbbOQKwafBaZJSAoeCloET9So13l/uhxol5qXpPBcWAwOXVeWCjNgUpU7Lx
+ IRo6Bc7hCQOzRxMX4gA18Qa4LfQwMxzHWmLqzcWh0VSUDiSJLnUEuBiiCpFGV2xwyJiR
+ 15vQ==
+X-Gm-Message-State: ABy/qLYrpA3I85wMRA8yvM8NK4VARptHtFO+fegyhm7KVVpbX5AJdmGO
+ QRgtMIUjHUpiSKpqOki5sIyUlVSU67k=
+X-Google-Smtp-Source: APBJJlGNxKjTCUbcRItJO4gCSdqPbXvxB+pJ8q7or3Rz/abDD41pFgFB74AsrMncAOvaFBX9vonc3g==
+X-Received: by 2002:a17:902:b218:b0:1b6:4bbd:c3a3 with SMTP id
+ t24-20020a170902b21800b001b64bbdc3a3mr3770265plr.52.1689360555474; 
+ Fri, 14 Jul 2023 11:49:15 -0700 (PDT)
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com.
+ [209.85.216.42]) by smtp.gmail.com with ESMTPSA id
+ y2-20020a1709029b8200b001b86f1b5797sm8042953plp.302.2023.07.14.11.49.14
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 14 Jul 2023 11:49:14 -0700 (PDT)
+Received: by mail-pj1-f42.google.com with SMTP id
+ 98e67ed59e1d1-26304be177fso1195081a91.1
+ for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 11:49:14 -0700 (PDT)
+X-Received: by 2002:a17:90a:9483:b0:262:d661:2963 with SMTP id
+ s3-20020a17090a948300b00262d6612963mr3615060pjo.39.1689360554658; Fri, 14 Jul
+ 2023 11:49:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 11/11] tpm_crb: support restoring older vmstate
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-To: Joelle van Dyne <j@getutm.app>
-Cc: qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>
 References: <20230714070931.23476-1-j@getutm.app>
  <20230714070931.23476-12-j@getutm.app>
  <581b037d-ccb7-8df7-8946-df8198cb04e6@linux.ibm.com>
  <fe8ea892-0690-2308-5036-f31e10da0351@linux.ibm.com>
  <CA+E+eSCC2F-2bsO7OiCoS0weo7bh4daL7M5GYxa=6r-6qKcGmg@mail.gmail.com>
  <67a2b78d-8eea-7c9c-cf1b-50444e481006@linux.ibm.com>
-In-Reply-To: <67a2b78d-8eea-7c9c-cf1b-50444e481006@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: H8wLU32nOh7oCqgZoZYZPSUopjD-Cmx-
-X-Proofpoint-GUID: H8wLU32nOh7oCqgZoZYZPSUopjD-Cmx-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-14_09,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 mlxscore=0 phishscore=0 clxscore=1015
- mlxlogscore=611 lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307140170
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ <562ec838-2714-2bb2-d1a5-7b98bb43a60b@linux.ibm.com>
+In-Reply-To: <562ec838-2714-2bb2-d1a5-7b98bb43a60b@linux.ibm.com>
+From: Joelle van Dyne <j@getutm.app>
+Date: Fri, 14 Jul 2023 11:49:03 -0700
+X-Gmail-Original-Message-ID: <CA+E+eSC_Hg5zxepaeCZTNiYS8oq6hNUqO8Pijft45O7vhD2q6Q@mail.gmail.com>
+Message-ID: <CA+E+eSC_Hg5zxepaeCZTNiYS8oq6hNUqO8Pijft45O7vhD2q6Q@mail.gmail.com>
+Subject: Re: [PATCH v2 11/11] tpm_crb: support restoring older vmstate
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, 
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=209.85.214.181; envelope-from=osy86dev@gmail.com;
+ helo=mail-pl1-f181.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,49 +95,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, Jul 14, 2023 at 11:41=E2=80=AFAM Stefan Berger <stefanb@linux.ibm.c=
+om> wrote:
+>
+>
+>
+> On 7/14/23 14:22, Stefan Berger wrote:
+> > On 7/14/23 13:04, Joelle van Dyne wrote:
+> >> On Fri, Jul 14, 2023 at 7:51=E2=80=AFAM Stefan Berger <stefanb@linux.i=
+bm.com> wrote:
+> >>>
+> >>>
+> >>>
+> >>> On 7/14/23 10:05, Stefan Berger wrote:
+> >>>>
+> >>>>
+> >>>> On 7/14/23 03:09, Joelle van Dyne wrote:
+> >>>>> When we moved to a single mapping and modified TPM CRB's VMState, i=
+t
+> >>>>> broke restoring of VMs that were saved on an older version. This
+> >>>>> change allows those VMs to gracefully migrate to the new memory
+> >>>>> mapping.
+> >>>>
+> >>>> Thanks. This has to be in 4/11 though.
+> >>>>
+> >>>
+> >>> After applying the whole series and trying to resume state taken with=
+ current git
+> >>> master I cannot restore it but it leads to this error here. I would j=
+ust leave it
+> >>> completely untouched in 4/11.
+> >>>
+> >>> 2023-07-14T14:46:34.547550Z qemu-system-x86_64: Unknown ramblock "tpm=
+-crb-cmd", cannot accept migration
+> >>> 2023-07-14T14:46:34.547799Z qemu-system-x86_64: error while loading s=
+tate for instance 0x0 of device 'ram'
+> >>> 2023-07-14T14:46:34.547835Z qemu-system-x86_64: load of migration fai=
+led: Invalid argument
+> >>>
+> >>>      Stefan
+> >>
+> >> To be clear, you are asking to back out of 4/11? That patch changes
+> >> how the registers are mapped so it's impossible to support the old
+> >> style register mapping. This patch attempts to fix that with a
+> >
+> > Why can we not keep the old style register mapping as 'secondary mappin=
+g'?
+>
+> I think the first goal should be for existing TPM CRB device not to chang=
+e anything, they
+> keep their .read and .write behaivor as it.
+>
+> If you need different .read behavior for the sysbus device due to AARCH64=
+ then it may want to use its own MemoryRegionOps.
+>
+> I am fairly sure that you could refactor the core of the existing tpm_crb=
+_mmio_write() and have it work on s->regs and mmio regs.
+> The former would be used by existing code, the latter for CRB sysbus call=
+ing into this new function from a wrapper.
+>
+>     Stefan
 
+I agree that new QEMU should be able to read old QEMU state but vice
+versa is not always true. There's been many changes in the past that
+incremented the vmstate's version_id to indicate that the state format
+has changed. Also, we are not changing the .read behavior because in
+the old code, the only field that gets a dynamic update is
+tpmEstablished which we found is never changed. So effectively, .read
+is just doing a memcpy of the `regs` state. This makes it possible to
+map the page as memory while retaining the same behavior as before.
+(We are changing the code but not the behavior).
 
-On 7/14/23 14:22, Stefan Berger wrote:
-> On 7/14/23 13:04, Joelle van Dyne wrote:
->> On Fri, Jul 14, 2023 at 7:51 AM Stefan Berger <stefanb@linux.ibm.com> wrote:
->>>
->>>
->>>
->>> On 7/14/23 10:05, Stefan Berger wrote:
->>>>
->>>>
->>>> On 7/14/23 03:09, Joelle van Dyne wrote:
->>>>> When we moved to a single mapping and modified TPM CRB's VMState, it
->>>>> broke restoring of VMs that were saved on an older version. This
->>>>> change allows those VMs to gracefully migrate to the new memory
->>>>> mapping.
->>>>
->>>> Thanks. This has to be in 4/11 though.
->>>>
->>>
->>> After applying the whole series and trying to resume state taken with current git
->>> master I cannot restore it but it leads to this error here. I would just leave it
->>> completely untouched in 4/11.
->>>
->>> 2023-07-14T14:46:34.547550Z qemu-system-x86_64: Unknown ramblock "tpm-crb-cmd", cannot accept migration
->>> 2023-07-14T14:46:34.547799Z qemu-system-x86_64: error while loading state for instance 0x0 of device 'ram'
->>> 2023-07-14T14:46:34.547835Z qemu-system-x86_64: load of migration failed: Invalid argument
->>>
->>>      Stefan
->>
->> To be clear, you are asking to back out of 4/11? That patch changes
->> how the registers are mapped so it's impossible to support the old
->> style register mapping. This patch attempts to fix that with a
-> 
-> Why can we not keep the old style register mapping as 'secondary mapping'?
-
-I think the first goal should be for existing TPM CRB device not to change anything, they
-keep their .read and .write behaivor as it.
-
-If you need different .read behavior for the sysbus device due to AARCH64 then it may want to use its own MemoryRegionOps.
-
-I am fairly sure that you could refactor the core of the existing tpm_crb_mmio_write() and have it work on s->regs and mmio regs.
-The former would be used by existing code, the latter for CRB sysbus calling into this new function from a wrapper.
-
-    Stefan
+The issue with Windows's buggy tpm.sys driver is that fundamentally it
+cannot work with MemoryRegionOps. The way MMIO is implemented is that
+a hole is left in the guest memory space so when the device registers
+are accessed, the hypervisor traps it and sends it over to QEMU to
+handle. QEMU looks up the address, sees its a valid MMIO mapping, and
+calls into the MemoryRegionOps implementation. When tpm.sys does a LDP
+instruction access to the hole, the information for QEMU to determine
+if it's a valid access is not provided. Other hypervisors like Apple's
+VZ.framework and VMware will read the guest PC, manually decode the
+AArch64 instruction, determine the type of access, read the guest Rn
+registers, does a TLB lookup to determine the physical address, then
+emulate the MMIO. None of this capability currently exists in QEMU's
+ARM64 backend. That's why we decided the easier path is to tell QEMU
+that this mapping is RAM for read purposes and MMIO only for write
+purposes (thankfully Windows does not do a STP or we'd be hosed).
 
