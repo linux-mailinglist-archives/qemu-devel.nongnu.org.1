@@ -2,98 +2,162 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D00A753664
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 11:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC707536C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 11:37:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKF4S-0001hf-SD; Fri, 14 Jul 2023 05:26:40 -0400
+	id 1qKFDN-0004XZ-4K; Fri, 14 Jul 2023 05:35:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qKF4Q-0001gp-UA
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 05:26:38 -0400
-Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qKF4P-0004SY-6d
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 05:26:38 -0400
-Received: by mail-oa1-x2b.google.com with SMTP id
- 586e51a60fabf-1b0719dd966so1359294fac.1
- for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 02:26:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1689326795; x=1691918795;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4BBIQyuVf8F+qWMWYtLxgzTlmaLQso5Z+CGGXEf0uEM=;
- b=DADJqHBT8dwTD96LyJrlvAqrBJwUy+q5QvgG+mGP+WlC9VnXlwj+6Q5tG2q/2ef6SW
- a2XlnaacbduHIGnygBO2+4SjxgjhxooQ+dTlXQRooHpX41DEQ9pj3ddC39GbvcQl7udP
- LsMWWVbPYTwRts0O+T6w1WWw3gXFedUpPL+jgcUumL/Fubv/oKeDbSGo6LgRlEP+vRn2
- B59yT4Hkq1K7CdQ5KdFIsIgnppdC8aoldeq10AncLyvxt1Yt9/gqBphP0fqv6Fd2THWK
- 2s8gbhydAV5gf+o0ms3wsJg98UHMWtI+3Q9+ZDzIT9h70jxVwnyDEVpL6Gec16X14U1Z
- omxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689326795; x=1691918795;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4BBIQyuVf8F+qWMWYtLxgzTlmaLQso5Z+CGGXEf0uEM=;
- b=EoW2yFaoVgOJTEE41/XrbOp+MFQ71Cjd0brghoMcEZ39BWSteb01pk3pUjbp0Qvh0Y
- p/ow+ltlOHpythT2s8bpStRUairmfBwQ08JEbMtW0n9YIcNBUlNsH/4V3vXFUypqm6Ge
- 3MGY5K8APhbU0JVXUBVHvyLv+dskYFrLUhrghCb9gv72AiwxsPH8LRBXZBpsKJ3Gz+ks
- fwmJB4xpnTbAGJ32CJ5+2ElhK00fQxUDKJCkEa8JxC8b2b4oC4SPdTcSuKcR+0dIfL2U
- m0d73ouKq9AvHN7pjcppB+gmZVbO+2DWX1mc2bIobXnOO4JMz4cleZr9kmcoPTdMLlPs
- d2qw==
-X-Gm-Message-State: ABy/qLa6Uv9vi/zngAgBnZk8qRtS6FZE9YyqZ0uD/fpWLH6a44esMqfe
- kMg47sRDYdsEsXzUvtRZuRHRWg==
-X-Google-Smtp-Source: APBJJlHX5f381MKKttAnXNL3FC7C0qd7zoejtdsTWA6S3VOHfprsC/fIIJH8lEBN4bIjHdABKE5LHg==
-X-Received: by 2002:a05:6870:b507:b0:1b0:81eb:aca0 with SMTP id
- v7-20020a056870b50700b001b081ebaca0mr5371382oap.51.1689326794690; 
- Fri, 14 Jul 2023 02:26:34 -0700 (PDT)
-Received: from [192.168.68.107] (201-69-66-19.dial-up.telesp.net.br.
- [201.69.66.19]) by smtp.gmail.com with ESMTPSA id
- v48-20020a4a8c73000000b00565fbd0d4c0sm3727214ooj.28.2023.07.14.02.26.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 14 Jul 2023 02:26:34 -0700 (PDT)
-Message-ID: <1eb03edb-929c-920f-04d8-eb4d7626a854@ventanamicro.com>
-Date: Fri, 14 Jul 2023 06:26:29 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: Boot failure after QEMU's upgrade to OpenSBI v1.3 (was Re: [PATCH
- for-8.2 6/7] target/riscv: add 'max' CPU type)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qKFDK-0004X3-3N
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 05:35:50 -0400
+Received: from mga11.intel.com ([192.55.52.93])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qKFDG-0006yZ-TL
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 05:35:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1689327346; x=1720863346;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=RPvLhJSM7D2Qxv0M3aEPHHbIGM0InE6Ea0bxc2LnFIk=;
+ b=jQNw/aR3Fq01zC6j8gAgwMfxo1/hOWFBGWJzv300qYZEEvJygOX5x0BE
+ rx+PJOGmif6zjpaCo/9rc4JEVjGGe33mQQCu2KM9To0DKzmZbV2K3RQTZ
+ xNLMrNRiyAn1TOKVNCttAV9H8UGoNsyP53DrSiA6woj/aJeBhmMSh9M9z
+ 22VluuUHf/qw6ayAmHulxXkVXG82/WhUXBz9dfrsLWET5SlIgMh7FCcqX
+ HKQLGCzYs1gOj8A90lRzgM66dSD18dYKN33nAQCH0qpyNYQ3oHdd0Dnhi
+ lVwdIDGE1AdeF5TetqHWPsHu5yAphL2/uXapkOWnRneFzpwe4ffyKeUi3 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="362900749"
+X-IronPort-AV: E=Sophos;i="6.01,204,1684825200"; d="scan'208";a="362900749"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2023 02:35:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10770"; a="812364669"
+X-IronPort-AV: E=Sophos;i="6.01,204,1684825200"; d="scan'208";a="812364669"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+ by FMSMGA003.fm.intel.com with ESMTP; 14 Jul 2023 02:35:42 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Fri, 14 Jul 2023 02:35:42 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27 via Frontend Transport; Fri, 14 Jul 2023 02:35:42 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.41) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.27; Fri, 14 Jul 2023 02:35:39 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AfLrDGA7NABahyqEUN6wVwHMbOTGMzzXQQw4cXOjujHzfQYMsKiFLbBLB/Mc0w7uYDWvv4EUXhjbimnRs+0/ox9K/kMsc9p86rtvLaFjYXqwkPD0y3h5hf1Xv8mpwTG/94QVztq9OX9xz/WVmjUdtV0ohYMzjInSDuOdn2jLUBOz3Z16TQekKHElCxpoIrCzjwtqEj6ptnY1zqVlRvmSGupO341Fh/hXofMeqx6p3zI4UYZhO737w7S/kZGUBePOQOmB9Gguwq6Z+fTt25lzli5vJjCGobhYa9gNd3Szsgt08oNn2EhHBcd3SJR57J16D4MVFeH6SFIfz4IAWmKWTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LkDvHa/1U5aF+tvdCypQtzcLTrFLgi4sAT9yhQ3JNO8=;
+ b=H2tBc8+c9MSdT//kcd7f315cd4HvH5B28BDuHZHx6+XUJMoJWphygYQZz/pJRD4i6i4Ks/wLbDH9qktpe0Dn+biFh3k5zKzC3Z7FXf8i1OIsny8IyCCNi1wpFdbqMhazmXrozI0VNlXdQmctJ8fHWWu6svs1BNhPNDXiGBxYkLt05PdK8ODxmrCWsXrKsfDkzODV9PFYfq04IjSK9gkX/D/Pgzv1PQyKAoWZVRHvc3hB+b78ClFHMvbrqTuNYQnLeIWXIkDNCLAtUBRN5Q0U/cp/ObbkZJDduf9+sXN6AtRMJ1z1swAnxQnYXPGsdjBodoOudtG0X0IR09S88mghpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
+ by DM4PR11MB6166.namprd11.prod.outlook.com (2603:10b6:8:ad::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.27; Fri, 14 Jul
+ 2023 09:35:37 +0000
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::d0e5:1c89:f359:e15d]) by SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::d0e5:1c89:f359:e15d%4]) with mapi id 15.20.6588.025; Fri, 14 Jul 2023
+ 09:35:36 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: Joel Granados <j.granados@samsung.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>, "clg@redhat.com"
+ <clg@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>, "jasonwang@redhat.com"
+ <jasonwang@redhat.com>, "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L"
+ <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P"
+ <chao.p.peng@intel.com>
+Subject: RE: [RFC PATCH v4 20/24] vfio/iommufd: Implement the iommufd backend
+Thread-Topic: [RFC PATCH v4 20/24] vfio/iommufd: Implement the iommufd backend
+Thread-Index: AQHZtJQdq11XmhSd4UKr6+O0URrHh6+5AIOAgAACnsA=
+Date: Fri, 14 Jul 2023 09:35:36 +0000
+Message-ID: <SJ0PR11MB6744F14B3E9E5E96BA6D0DB29234A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+References: <20230712072528.275577-1-zhenzhong.duan@intel.com>
+ <20230712072528.275577-21-zhenzhong.duan@intel.com>
+ <CGME20230714092325eucas1p105978aa928776b6e008e08e793d0ac60@eucas1p1.samsung.com>
+ <20230714092323.lc4puo4rbsmhxce6@localhost>
+In-Reply-To: <20230714092323.lc4puo4rbsmhxce6@localhost>
+Accept-Language: en-US
 Content-Language: en-US
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Conor Dooley <conor@kernel.org>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
-References: <20230712190149.424675-7-dbarboza@ventanamicro.com>
- <20230712-stench-happiness-40c2ea831257@spud>
- <3e9b5be8-d3ca-3a17-bef9-4a6a5bdc0ad0@ventanamicro.com>
- <20230712-tulip-replica-0322e71c3e81@spud>
- <744cbde6-7ce5-c327-3c5a-3858e994cc39@ventanamicro.com>
- <20230712-superhero-rabid-578605f52927@spud>
- <5dd3366d-13ba-c7fb-554f-549d97e7d4f9@ventanamicro.com>
- <20230712-fancied-aviator-270f51166407@spud>
- <20230713-craziness-lankiness-8aec3db24993@spud>
- <f5f76a03-411c-fb7e-5c21-f261a0e0b141@ventanamicro.com>
- <20230713-tank-blubber-2501cf7a0cf1@spud>
- <7a9c1c99-6820-119a-4815-37c166b664ff@ventanamicro.com>
- <CAKmqyKMuo5pnkXf7+V57=ucVWfCo1s7dOSop5f2D1i_xg+GjTQ@mail.gmail.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <CAKmqyKMuo5pnkXf7+V57=ucVWfCo1s7dOSop5f2D1i_xg+GjTQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2b.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|DM4PR11MB6166:EE_
+x-ms-office365-filtering-correlation-id: 881b821c-1adc-4a1a-3bb1-08db844dadf9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: qyKDCQxjmzgfgFMSkTaSS95/hP4e7/D5u2v1b15rRtW2F8TJep9vsyGbyB7ReCjtT9yvWfcfDvh/FnTVK5roma90GWBVt92TGiJ/BsM1uu1kxRQsp5ZrPzKllrFc35lFiFo8t4qYJqFuMdIMZljoq97UP03GesXpPSxo4sVih25T0eXTt8mzMH4hV+ddeg7GpTQiO/ACLPCoZfiWxi8kMtQ7/seY0LfNFj6DqhRzANDpN9/lmhUMcvfba5kGx658D8mWGSBFp4H6Xtx5ODRhUrDuZzYWPrDZ3d+ZbhCKj1+wRtaXzi/8rk470Xw6qR2GU3TLvQdlahkobBUlnn5k+3QoKGAFWKMJDQmvtoLtwPfFWgqoSFL6hy9tT9nJr8kKhqXpL0mTj4olkIWGFbyeaI0OoW6obB1W8HaTgPMoDDTU2j6EYYUAki+bjGFcntuwdQOU3Ji5sE6zpPolSIFTDkuDyahp/HeMbuPrHX7lR+DwfAejpBB4z3NjwhTkskl8XZK30/WL46nyxWMSeSANeKpMdoGokYds/LwLWhucx0wqUNdh/uGzRxdOrek/zKnYzfUNIVxKb/ZY6TprOvXcXe1rjgYkpaGBWsdsC6GQxCOKOIYlRA9zNpPNk8bev4n0
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(366004)(136003)(39860400002)(376002)(396003)(346002)(451199021)(478600001)(7696005)(71200400001)(54906003)(186003)(6506007)(9686003)(26005)(107886003)(76116006)(2906002)(316002)(41300700001)(66946007)(66556008)(66476007)(66446008)(64756008)(6916009)(4326008)(5660300002)(52536014)(8936002)(8676002)(38100700002)(122000001)(82960400001)(86362001)(33656002)(38070700005)(83380400001)(55016003);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?6lgqSfKSEHPSjA7x162hf9y/iZpghJRT/LoItVaHSWCA9LPwXn+xnNt8iigW?=
+ =?us-ascii?Q?Ze/SGDovDF0ZQiWz9+QcqU19jI5yTibvkmLoG0Va+5YHFUij6izAfdzbMoLl?=
+ =?us-ascii?Q?tfriEqpNtSwffPgsWLZ3SBlsRlpuvPQYpo3RhtILR3w7wSed0DGXE5ymH/Ef?=
+ =?us-ascii?Q?3tay5dBku9JT6Zs37OUD+T6jBBZaNOX/0EDQgnqUvk8m++uRH1MYHAAMxt6r?=
+ =?us-ascii?Q?zoEN17f9FB7ampjyW8DDfcyG7A+h+d0pBdBB2/HNug9U1GVyKCgUVYv8iDnq?=
+ =?us-ascii?Q?oY1nPIFdvD60BcWsHyou7sBGUPEbP9rKEqC/iloia3eVF8TJLVicfJk6qNLf?=
+ =?us-ascii?Q?J91MNFp0msLh2tPjdAvSXiuJfMYVf+Vd4gavpZVDrpnjShDnEBVwn5JXqrzx?=
+ =?us-ascii?Q?V1pdsOQEPrsb8/jxoXTMbpdqBHLlEYwfPOArPeFaVKhB/d9Ccx/0a2xt/hX0?=
+ =?us-ascii?Q?pImeLUwmSDKJj5IVfSgckNVA3XvRHaa1X9NfYAWZD7WIzUW12VPKaMtlGhv7?=
+ =?us-ascii?Q?e290g36i1A4LpbqGNQYb5Sy6Tpanvcm0NzMdhZlWimZZFf6gM1RNZkYsJqVJ?=
+ =?us-ascii?Q?jBA6M8wb8t/dQGYSVlBZoM8vfro0PALlZHGrKu8Lmrpo+7tw7VvSrkqeiKtL?=
+ =?us-ascii?Q?AlTQoUYB7Huo5F3jLZGStBklPPdaZdGXV/gbvXXedhcwwKxTK6+3rpTZdGDM?=
+ =?us-ascii?Q?NbY4p/CHOFAzMKjPHXIn1VXYHFiu2jLZncT/KyvG22U9VVXSK2nwmpdgIsFH?=
+ =?us-ascii?Q?TwdAvLmq1C3ZTWFHBE4vRXAvfBe7/L9i9hKFNMIgxukwkZZ3yjeCQ1g8wQv+?=
+ =?us-ascii?Q?f0wsNq34YYwgThlomcYRUNZvPiaDAjwjfItxvFtxiYrMRFhqHRHLOPOKLlZN?=
+ =?us-ascii?Q?BvasToZ7jN1DOvCZXmIz0wLDfBeoYgAmQP7NzD1DTAa3eCa3UJJ3sKw+Ykq9?=
+ =?us-ascii?Q?8YyH1AaI7Fg6QbcoQTW/RLvHO0N8OiEh2bmIheXo+AckG70USnimNw9aSpRo?=
+ =?us-ascii?Q?4l1Vym5c55R/rMpguv+U4Iyka8SwpaEVfDLRylON0dAnr9vzTp6aENjIxUpJ?=
+ =?us-ascii?Q?FdaRupzwIy4LNpDBJBWnBrenZHa23f5eRbTzmDmDONxERaD9gYTZ66+OQxUf?=
+ =?us-ascii?Q?3Nr6z3EcAzxWrmAJpDzbf4ls/t4GkVlzhGnVSlt2dsR+qz53WFt7EwaVF7V0?=
+ =?us-ascii?Q?jnU12Z3ZDLCYYtGkJ8NEvBxwJvQwUzC3DbswLGMog3+bQO1CeC5RZuUUWTAP?=
+ =?us-ascii?Q?7UAJ1DWnLcwj8jgDBP0LPCQ633O9ERyiAMBlUHprmxlAoFpnxWR665AaCV55?=
+ =?us-ascii?Q?9je7EExAIUSIzwtW6Qmr4OJJ7VpQuI8V4gVOE2TrBUtIbi3kvYIeIL8mnN80?=
+ =?us-ascii?Q?wVyf8iTxaiV82ALD4cFWvkX1rQKY7yA19Ti1rWzmeY6GZZYTSEipCKQ6WMuS?=
+ =?us-ascii?Q?qWytbz7KnGE2gJP3udaH+kLO1A20RjOqPm6euK/+dIutUO+yRiuWqzP4MEDy?=
+ =?us-ascii?Q?yRiC+QWt6gs12i9H9nTXfR/TUvdIskGFilh6CfqXOzjtu9eFDs1SHu9sIvhr?=
+ =?us-ascii?Q?r0Hx7kKJmuQVPM/vCCNLSZ+Bbw/n6wUdhfI5XNgj?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 881b821c-1adc-4a1a-3bb1-08db844dadf9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Jul 2023 09:35:36.8797 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JaqheQmhRX4oT3+ZrckbOSH9Zg1ZHH2JgfSYGe2sO5tNLsdqDBtNK5wPsfMimhz7ziro7vS/e7pjeuIsZYSlr4JwBp/cQlk4bJ6FAlTMCM4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6166
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.55.52.93;
+ envelope-from=zhenzhong.duan@intel.com; helo=mga11.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,112 +173,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+>-----Original Message-----
+>From: Joel Granados <j.granados@samsung.com>
+>Sent: Friday, July 14, 2023 5:23 PM
+>Subject: Re: [RFC PATCH v4 20/24] vfio/iommufd: Implement the iommufd
+>backend
+>
+>On Wed, Jul 12, 2023 at 03:25:24PM +0800, Zhenzhong Duan wrote:
+>> From: Yi Liu <yi.l.liu@intel.com>
+...
+>> +static int vfio_get_devicefd(const char *sysfs_path, Error **errp)
+>> +{
+>> +    long int ret =3D -ENOTTY;
+>> +    char *path, *vfio_dev_path =3D NULL, *vfio_path =3D NULL;
+>> +    DIR *dir =3D NULL;
+>> +    struct dirent *dent;
+>> +    gchar *contents;
+>> +    struct stat st;
+>> +    gsize length;
+>> +    int major, minor;
+>> +    dev_t vfio_devt;
+>> +
+>> +    path =3D g_strdup_printf("%s/vfio-dev", sysfs_path);
+>> +    if (stat(path, &st) < 0) {
+>> +        error_setg_errno(errp, errno, "no such host device");
+>> +        goto out_free_path;
+>> +    }
+>> +
+>> +    dir =3D opendir(path);
+>> +    if (!dir) {
+>> +        error_setg_errno(errp, errno, "couldn't open dirrectory %s", pa=
+th);
+>> +        goto out_free_path;
+>> +    }
+>> +
+>> +    while ((dent =3D readdir(dir))) {
+>> +        if (!strncmp(dent->d_name, "vfio", 4)) {
+>> +            vfio_dev_path =3D g_strdup_printf("%s/%s/dev", path, dent->=
+d_name);
+>> +            break;
+>> +        }
+>> +    }
+>> +
+>> +    if (!vfio_dev_path) {
+>> +        error_setg(errp, "failed to find vfio-dev/vfioX/dev");
+>> +        goto out_free_path;
+>> +    }
+>> +
+>> +    if (!g_file_get_contents(vfio_dev_path, &contents, &length, NULL)) =
+{
+>> +        error_setg(errp, "failed to load \"%s\"", vfio_dev_path);
+>> +        goto out_free_dev_path;
+>> +    }
+>> +
+>> +    if (sscanf(contents, "%d:%d", &major, &minor) !=3D 2) {
+>> +        error_setg(errp, "failed to get major:mino for \"%s\"", vfio_de=
+v_path);
+>Very small nit: Should be "minor" here.
+Good catch, will fix.
 
+Thanks
+Zhenzhong
 
-On 7/14/23 00:12, Alistair Francis wrote:
-> On Fri, Jul 14, 2023 at 11:14 AM Daniel Henrique Barboza
-> <dbarboza@ventanamicro.com> wrote:
->>
->>
->>
->> On 7/13/23 19:47, Conor Dooley wrote:
->>> On Thu, Jul 13, 2023 at 07:35:01PM -0300, Daniel Henrique Barboza wrote:
->>>> On 7/13/23 19:12, Conor Dooley wrote:
->>>
->>>>> And a question for you below Daniel.
->>>>>
->>>>> On Wed, Jul 12, 2023 at 11:14:21PM +0100, Conor Dooley wrote:
->>>
->>>
->>>>>
->>>>>> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000000 because privilege spec version does not match
->>>>>> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000001 because privilege spec version does not match
->>>>>> qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000001 because privilege spec version does not match
->>>>>> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000002 because privilege spec version does not match
->>>>>> qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000002 because privilege spec version does not match
->>>>>> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000003 because privilege spec version does not match
->>>>>> qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000003 because privilege spec version does not match
->>>>>> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000004 because privilege spec version does not match
->>>>>> qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000004 because privilege spec version does not match
->>>>>
->>>>> Why am I seeing these warnings? Does the mpfs machine type need to
->>>>> disable some things? It only supports rv64imafdc per the DT, and
->>>>> predates things like Zca existing, so emitting warnings does not seem
->>>>> fair at all to me!
->>>>
->>>> QEMU will disable extensions that are newer than a priv spec version that is set
->>>> by the CPU. IIUC the icicle board is running a sifive_u54 CPU by default. That
->>>> CPU has a priv spec version 1_10_0. The CPU is also enabling C.
->>>>
->>>> We will enable zca if C is enabled. C and D enabled will also enable zcd. But
->>>> then the priv check will disabled both because zca and zcd have priv spec 1_12_0.
->>>>
->>>> This is a side effect for a change that I did a few months ago. Back then we
->>>> weren't disabling stuff correctly.
->>>
->>> Yah, I did check out the blame, hence directing it at you. Thanks for
->>> the explanation.
->>>
->>>> The warnings are annoying but are benign.
->>>
->>> To be honest, benign or not, this is kind of thing is only going to
->>> lead to grief. Even though only the direct kernel boot works, we do
->>> actually have some customers that are using the icicle target in QEMU.
->>>
->>>> And apparently the sifive_u54 CPU is being inconsistent for some time and
->>>> we noticed just now.
->>>> Now, if the icicle board is supposed to have zca and zcd then we have a problem.
->>>
->>> I don't know, this depends on how you see things in QEMU. I would say
->>> that it supports c, and not Zca/Zcf/Zcd, given it predates the
->>> extensions. I have no interest in retrofitting my devicetree stuff with
->>> them, for example.
->>>
->>>> We'll need to discuss whether we move sifive_u54 CPU priv spec to 1_12_0 (I'm not
->>>> sure how this will affect other boards that uses this CPU) or remove this priv spec
->>>> disable code altogether from QEMU.
->>>
->>> I think you should stop warning for this? From my dumb-user perspective,
->>> the warning only "scares" me into thinking something is wrong, when
->>> there isn't. I can see a use case for the warning where someone tries to
->>> enable Zca & Co. in their QEMU incantation for a CPU that does not
->>> have the correct privilege level to support it, but I didn't try to set
->>> any options at all in that way, so the warnings seem unfair?
->>
->>
->> That's a fair criticism. We had similar discussions a few months back. It's weird
->> to send warnings when the user didn't set the extensions manually, but ATM we
->> can't tell whether an extension was user enabled or not.
->>
->> So we can either show unfair warning messages or not show warnings and take the risk
->> of silently disabling extensions that users enabled in the command line. It seems
->> that the former is more annoying to deal with than the latter.
->>
->> I guess I can propose a patch to remove the warnings. We can send warning again
->> when we have a better solution.
-> 
-> A better solution is to just not enable Zca and friends automatically,
-> or at least look at the priv spec before we do
-
-Good idea. In fact we should do that for all extensions that we're enabling
-automatically.
-
-
-I'll work something out. Thanks,
-
-
-Daniel
-
-> 
-> Alistair
-> 
->>
->>
->> Daniel
->>
->>
->>>
->>> Cheers,
->>> Conor.
->>
 
