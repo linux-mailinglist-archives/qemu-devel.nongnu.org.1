@@ -2,66 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA94754285
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 20:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4F775428B
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 20:28:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKNTN-0007Kc-Pk; Fri, 14 Jul 2023 14:24:57 -0400
+	id 1qKNWI-0008LJ-Hx; Fri, 14 Jul 2023 14:27:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qKNTM-0007KH-18
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:24:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qKNTK-0008FH-IZ
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:24:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689359093;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=T6MK5YzOYCNol9ozDKibgbWnFnHIfqfo9K9xoth9Ugw=;
- b=AmLNKzILAlL7sIq34FrjhzN4FWuvF1gq6YPlVnkzFAREy9jsh2PUnB7DHj405MoyonwuWt
- 6Qc1ocdEYmiy2x8DOAnr5EJA7/8+L03xthLqUMonguEL3LPKwvs9LUeS58XsjzhfkgszIG
- O90WEmB5xJiP1/XdZgpexZwQFrMYXN8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-186-U47EfWqaOriHxzRXV0q_PA-1; Fri, 14 Jul 2023 14:24:51 -0400
-X-MC-Unique: U47EfWqaOriHxzRXV0q_PA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B466B101A54E;
- Fri, 14 Jul 2023 18:24:49 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.39.192.21])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3CFF7201EE6E;
- Fri, 14 Jul 2023 18:24:48 +0000 (UTC)
-From: Eric Auger <eric.auger@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org
-Cc: qemu-stable@nongnu.org
-Subject: [PATCH] hw/virtio-iommu: Fix potential OOB access in
- virtio_iommu_handle_command()
-Date: Fri, 14 Jul 2023 20:24:45 +0200
-Message-Id: <20230714182445.877168-1-eric.auger@redhat.com>
+ (Exim 4.90_1) (envelope-from <mborgerson@gmail.com>)
+ id 1qKNWC-0008Kw-7D
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:27:52 -0400
+Received: from mail-lf1-f51.google.com ([209.85.167.51])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mborgerson@gmail.com>)
+ id 1qKNW9-0000em-Ve
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:27:51 -0400
+Received: by mail-lf1-f51.google.com with SMTP id
+ 2adb3069b0e04-4fafe87c6fbso3791805e87.3
+ for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 11:27:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689359267; x=1691951267;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YgF9XKTRh9et8C5ItX0fcZZPcAHn6Qryv81Zukn8CtU=;
+ b=b69u433BxJjmoiNK8ANp+blOsNgyfADUWE81hsaElec8tUkcU1KK2SniAE1d6Mmi9z
+ LZEuLHevkqct5dJohbHBGiTtLr3ZHohGmb/Bn+JEdjiXZCL7RjW9jzI8yUSBwF4Tg2Ak
+ y1C5ul+96JqkKPtK6JSpM1vjDyUsusu6ccy35VYrGZNnJ3SvdlOZ/pqWuV/dHaM6BDnh
+ ROc80JH9hkXacKEhktrCbYqqzVwbtQtwuAjyxeeTLLdsodcUMVKuP7afE3g34FoqW/IT
+ KQn07yV10DrZSde08lMMIIdFNeZ8u0X2fmkbhhXRrc68btBxAy2/Rk/oGdnwKvP6WOHV
+ F54g==
+X-Gm-Message-State: ABy/qLY0eR5LUhkyJcSi2BX5iMaJd68Hrj5mZTU4aZ3iTjLguI26CtjX
+ f75vPun9uCYm3MoV6+3AQ5+NWg/k1vH4rG9R
+X-Google-Smtp-Source: APBJJlHcdaR6kUHDPNzQKRzVDKgwUyAY02AQEhwXzRDRMtM4+I5uVCa2LC41ZQGXqfwNNbavL02scw==
+X-Received: by 2002:a05:6512:368e:b0:4fd:b223:92c with SMTP id
+ d14-20020a056512368e00b004fdb223092cmr46784lfs.60.1689359267192; 
+ Fri, 14 Jul 2023 11:27:47 -0700 (PDT)
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com.
+ [209.85.208.172]) by smtp.gmail.com with ESMTPSA id
+ er24-20020a05651248d800b004fb8f4df9bdsm1583253lfb.226.2023.07.14.11.27.46
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 14 Jul 2023 11:27:46 -0700 (PDT)
+Received: by mail-lj1-f172.google.com with SMTP id
+ 38308e7fff4ca-2b70bfc8db5so34363591fa.2
+ for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 11:27:46 -0700 (PDT)
+X-Received: by 2002:a2e:a410:0:b0:2b6:e7ce:4e7d with SMTP id
+ p16-20020a2ea410000000b002b6e7ce4e7dmr4496772ljn.43.1689359266698; Fri, 14
+ Jul 2023 11:27:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <CADc=-s4Ef9eBV7Z6FKYRT=-5c733ZHQRjvnumV5OwjJh8uFmmA@mail.gmail.com>
+ <598f26c9-af6f-f289-e4a8-5a8f5f3a3db6@linaro.org>
+In-Reply-To: <598f26c9-af6f-f289-e4a8-5a8f5f3a3db6@linaro.org>
+From: Matt Borgerson <contact@mborgerson.com>
+Date: Fri, 14 Jul 2023 11:27:35 -0700
+X-Gmail-Original-Message-ID: <CADc=-s6abXzR1jDCFJ7JaF+J9=osO0uLDivxfYGbvQ05d-V-Qg@mail.gmail.com>
+Message-ID: <CADc=-s6abXzR1jDCFJ7JaF+J9=osO0uLDivxfYGbvQ05d-V-Qg@mail.gmail.com>
+Subject: Re: [PATCH] plugins: Set final instruction count in plugin_gen_tb_end
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: Matt Borgerson <contact@mborgerson.com>, qemu-devel@nongnu.org, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=209.85.167.51; envelope-from=mborgerson@gmail.com;
+ helo=mail-lf1-f51.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,44 +91,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the virtio_iommu_handle_command() when a PROBE request is handled,
-output_size takes a value greater than the tail size and on a subsequent
-iteration we can get a stack out-of-band access. Initialize the
-output_size on each iteration.
+Hi Philippe,
 
-The issue was found with ASAN. Credits to:
-Yiming Tao(Zhejiang University)
-Gaoning Pan(Zhejiang University)
+> num_insns is a 'size_t'.
 
-Fixes: 1733eebb9e7 ("virtio-iommu: Implement RESV_MEM probe request")
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reported-by: Mauro Matteo Cascella <mcascell@redhat.com>
----
- hw/virtio/virtio-iommu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+You are right. I copied the `int` type from `DisasContextBase`, but it
+should really be `size_t`. I'll send an updated patch.
 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 201127c488..4dcf1d5c62 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -728,13 +728,15 @@ static void virtio_iommu_handle_command(VirtIODevice *vdev, VirtQueue *vq)
-     VirtIOIOMMU *s = VIRTIO_IOMMU(vdev);
-     struct virtio_iommu_req_head head;
-     struct virtio_iommu_req_tail tail = {};
--    size_t output_size = sizeof(tail), sz;
-     VirtQueueElement *elem;
-     unsigned int iov_cnt;
-     struct iovec *iov;
-     void *buf = NULL;
-+    size_t sz;
- 
-     for (;;) {
-+        size_t output_size = sizeof(tail);
-+
-         elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
-         if (!elem) {
-             return;
--- 
-2.38.1
+Thanks,
+Matt
 
+On Fri, Jul 14, 2023 at 11:09=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> Hi Matt,
+>
+> On 14/7/23 06:18, Matt Borgerson wrote:
+> > Translation logic may partially decode an instruction, then abort and
+> > remove the instruction from the TB. This can happen for example when an
+> > instruction spans two pages. In this case, plugins may get an incorrect
+> > result when calling qemu_plugin_tb_n_insns to query for the number of
+> > instructions in the TB. This patch updates plugin_gen_tb_end to set the
+> > final instruction count.
+> >
+> > Signed-off-by: Matt Borgerson <contact@mborgerson.com>
+> > ---
+> >   accel/tcg/plugin-gen.c    | 5 ++++-
+> >   accel/tcg/translator.c    | 2 +-
+> >   include/exec/plugin-gen.h | 4 ++--
+> >   3 files changed, 7 insertions(+), 4 deletions(-)
+>
+>
+> > diff --git a/include/exec/plugin-gen.h b/include/exec/plugin-gen.h
+> > index 52828781bc..4feaa47b08 100644
+> > --- a/include/exec/plugin-gen.h
+> > +++ b/include/exec/plugin-gen.h
+> > @@ -20,7 +20,7 @@ struct DisasContextBase;
+> >
+> >   bool plugin_gen_tb_start(CPUState *cpu, const struct DisasContextBase=
+ *db,
+> >                            bool supress);
+> > -void plugin_gen_tb_end(CPUState *cpu);
+> > +void plugin_gen_tb_end(CPUState *cpu, int num_insns);
+>
+> num_insns is a 'size_t'.
 
