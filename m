@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD4975392A
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D65753928
 	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 13:01:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKGX1-0006wH-BX; Fri, 14 Jul 2023 07:00:15 -0400
+	id 1qKGXK-0006xq-OR; Fri, 14 Jul 2023 07:00:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qKGWu-0006vi-Cb
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 07:00:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qKGWw-0006wI-Ce
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 07:00:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qKGWq-0005H7-D9
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 07:00:07 -0400
+ id 1qKGWs-0005Jl-7Z
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 07:00:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689332402;
+ s=mimecast20190719; t=1689332404;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gjHq5pV5Ng8uzkPYy0p5CUtaFNNkTOHcIqNt3429rqY=;
- b=gM++wNo46LWT4O6ZH5CrffGIlKa8YtxD0bQSTSg69Owsr0MvevEye8qvb6lPkVDCKdinyB
- 7/GQiG+gUOUHTmd4KwJwpNN/oPIZGxsJ88CsRMZMe16eMXvZE/4mksvuTW+9Oxft8AtcdI
- oFwRiw/smoVll8OjxWvwRUkSWlyL9do=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=62/T52h0VNBTSRACyMK7y1qz0HsHsDe8s3F7BViE+Lo=;
+ b=HYyJgPt2aLZKKrFEJSlVNrRef8TyVGQIO5BnSOYLAKDgvdKvtTbjzaxqpr429kNDXpFQLn
+ h7v7AQPxIgR4Wf3MewlwaED6QFSkg/lBKXvoMrlAowsbKYvUVz7dVmQUqDoY69yyNvSzzj
+ FMXULNJ2Rvf/Y9uMgLfcInRrgJDgvzY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-sCKZCJT3PRq41TOxSvpXig-1; Fri, 14 Jul 2023 07:00:01 -0400
-X-MC-Unique: sCKZCJT3PRq41TOxSvpXig-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f5df65fa35so9875375e9.3
- for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 04:00:00 -0700 (PDT)
+ us-mta-336--AzEz3lFNf-LYLHrCDwV1w-1; Fri, 14 Jul 2023 07:00:02 -0400
+X-MC-Unique: -AzEz3lFNf-LYLHrCDwV1w-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-314275b653eso1053505f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 04:00:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689332399; x=1691924399;
+ d=1e100.net; s=20221208; t=1689332401; x=1691924401;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gjHq5pV5Ng8uzkPYy0p5CUtaFNNkTOHcIqNt3429rqY=;
- b=f0bN6qf0juiaH/j8w+/3KYCASAgOvUhGOwi4yP/IMm7fY5SM+IgjtYwi0smyruEuC+
- eCiH39Sq6CKJUVOMM40eNevTptjBYqQGJH/QdGDMR4Ey3Me+vHd500OY9c7L8yWZS/Ht
- 358iTMKz1/KNYxOqORiRarKScra9rQtlNP6JA8CApN9fL0c902pEMXGdSJpsflgopis/
- aP/cS/4zw4FtqySe2oA9iGdAzS1EHrFxV7ZaC+px7uJZ0z52B/BqykGRCd82zwKDEJqU
- KVxw2TApK2MIajl6oQgwc8kAMcCpeoVfFKBHncS+44+9MIfowJAkHkQcZrcwvXSiEx1B
- za6w==
-X-Gm-Message-State: ABy/qLYKLnodzwiZKsd6puEkeNEC23uaI2TEQAYGKoxem1y4HPCyCOZB
- xFmlRphTSO6BddEFmkPf2mtPe3F7ETS5gPIpXV2LCKpEAO7/UP8o4e00t1HVbJUnPgmYoXMye1D
- 6I0W2xC1jqyzzar28nvUpJU+wFQxY0oSYdCKIesPCCD0EIc+EasAn41l/eOOgqCdGo1cYDOyGK8
- c=
-X-Received: by 2002:a05:600c:2254:b0:3fa:984d:7e9f with SMTP id
- a20-20020a05600c225400b003fa984d7e9fmr3589895wmm.6.1689332399262; 
- Fri, 14 Jul 2023 03:59:59 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGlZzZ2mqeqQmUYb0Hki51VmOV0qHbdm/hoT6mO6M85AXbAqjUkBQ6TpJSQ9Suk0xrgWGdIcg==
-X-Received: by 2002:a05:600c:2254:b0:3fa:984d:7e9f with SMTP id
- a20-20020a05600c225400b003fa984d7e9fmr3589875wmm.6.1689332398842; 
- Fri, 14 Jul 2023 03:59:58 -0700 (PDT)
+ bh=62/T52h0VNBTSRACyMK7y1qz0HsHsDe8s3F7BViE+Lo=;
+ b=ajFe8DluGpQac6Rje8fcc0pKIYG8DqGsLqfy4EM/BvhUtxKyYCIqD4AxZcDhpjFveL
+ MCN7FxqLYipY+36aNWlqBQViLDdnko2PqUtN00sDDjcF97fwm92ELAfZdBK0hufKTj2y
+ +xLXcpjqqEefqaLsAHASXn7ZiWJe/2ENPjNiEsVIUVtFc87/N+jN6MGaWA+fbdOEeSYy
+ glmwXSRVIGG+jumJ4C/rZbkZ+2hnEOpuu4bDPdD3U5j4gOclPUvARn3s/ak5IINDs63Q
+ 6M/CxqpoR8JlU2sB6I3XS5MIM4LXobQa/LSADdROObJ9Wd9rghnC13Sz80aVTkrtxkxy
+ aW/g==
+X-Gm-Message-State: ABy/qLb5yEYEIWwfeOkNpCO97lX7q0/eaHnWCtIZNAf+T1fJl7T2XfxS
+ TMYTQyDK78LBBt8T9OK1g0cV3+dUUBulvNtrMamDeNma/HaDtBjMMJrwKaZQztYlYo5nkrnX2pM
+ N0oUpSSMfNPp0neqfkZt+yS14ygQG4w3u/MRvwLTiUBYYKZhjHTBLphoy+Xy554ITNsWNy2Q0NR
+ s=
+X-Received: by 2002:a5d:66c5:0:b0:315:a34f:b520 with SMTP id
+ k5-20020a5d66c5000000b00315a34fb520mr3359065wrw.71.1689332400906; 
+ Fri, 14 Jul 2023 04:00:00 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFgs1Ofxo0aMu/qYN9JZtp4wevvNbWovcU7v70J/UD6td8NecV2T6IJOj7VXYgj3cSPsgyzXA==
+X-Received: by 2002:a5d:66c5:0:b0:315:a34f:b520 with SMTP id
+ k5-20020a5d66c5000000b00315a34fb520mr3359053wrw.71.1689332400531; 
+ Fri, 14 Jul 2023 04:00:00 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- v9-20020a1cf709000000b003fc00892c13sm1151415wmh.35.2023.07.14.03.59.57
+ p5-20020a5d4e05000000b003143d80d11dsm10460377wrt.112.2023.07.14.03.59.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Jul 2023 03:59:57 -0700 (PDT)
+ Fri, 14 Jul 2023 03:59:59 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>, Thomas Huth <thuth@redhat.com>
-Subject: [PULL 2/5] kconfig: Add PCIe devices to s390x machines
-Date: Fri, 14 Jul 2023 12:59:50 +0200
-Message-ID: <20230714105953.223485-3-pbonzini@redhat.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+	Thomas Huth <thuth@redhat.com>
+Subject: [PULL 3/5] scsi: fetch unit attention when creating the request
+Date: Fri, 14 Jul 2023 12:59:51 +0200
+Message-ID: <20230714105953.223485-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230714105953.223485-1-pbonzini@redhat.com>
 References: <20230714105953.223485-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -103,101 +102,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@redhat.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-It is useful to extend the number of available PCIe devices to KVM guests
-for passthrough scenarios and also to expose these models to a different
-(big endian) architecture. Introduce a new config PCIE_DEVICES to select
-models, Intel Ethernet adapters and one USB controller. These devices all
-support MSI-X which is a requirement on s390x as legacy INTx are not
-supported.
+Commit 1880ad4f4e ("virtio-scsi: Batched prepare for cmd reqs") split
+calls to scsi_req_new() and scsi_req_enqueue() in the virtio-scsi device.
+No ill effects were observed until commit 8cc5583abe ("virtio-scsi: Send
+"REPORTED LUNS CHANGED" sense data upon disk hotplug events") added a
+unit attention that was easy to trigger with device hotplug and
+hot-unplug.
 
-Cc: Matthew Rosato <mjrosato@linux.ibm.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Message-ID: <20230712080146.839113-1-clg@redhat.com>
+Because the two calls were separated, all requests in the batch were
+prepared calling scsi_req_new() to report a sense.  The first one
+submitted would report the right sense and reset it to NO_SENSE, while
+the others reported CHECK_CONDITION with no sense data.  This caused
+SCSI errors in Linux.
+
+To solve this issue, let's fetch the unit attention as early as possible
+when we prepare the request, so that only the first request in the batch
+will use the unit attention SCSIReqOps and the others will not report
+CHECK CONDITION.
+
+Fixes: 1880ad4f4e ("virtio-scsi: Batched prepare for cmd reqs")
+Fixes: 8cc5583abe ("virtio-scsi: Send "REPORTED LUNS CHANGED" sense data upon disk hotplug events")
+Reported-by: Thomas Huth <thuth@redhat.com>
+Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2176702
+Co-developed-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-ID: <20230712134352.118655-2-sgarzare@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/devices/s390x-softmmu/default.mak | 1 +
- hw/net/Kconfig                            | 4 ++--
- hw/pci/Kconfig                            | 3 +++
- hw/s390x/Kconfig                          | 3 ++-
- hw/usb/Kconfig                            | 2 +-
- 5 files changed, 9 insertions(+), 4 deletions(-)
+ hw/scsi/scsi-bus.c     | 40 +++++++++++++++++++++++++++++++++++-----
+ include/hw/scsi/scsi.h |  1 +
+ 2 files changed, 36 insertions(+), 5 deletions(-)
 
-diff --git a/configs/devices/s390x-softmmu/default.mak b/configs/devices/s390x-softmmu/default.mak
-index f2287a133f3..6d87bc8b4b0 100644
---- a/configs/devices/s390x-softmmu/default.mak
-+++ b/configs/devices/s390x-softmmu/default.mak
-@@ -7,6 +7,7 @@
- #CONFIG_VFIO_CCW=n
- #CONFIG_VIRTIO_PCI=n
- #CONFIG_WDT_DIAG288=n
-+#CONFIG_PCIE_DEVICES=n
+diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
+index f80f4cb4fcf..f083373021c 100644
+--- a/hw/scsi/scsi-bus.c
++++ b/hw/scsi/scsi-bus.c
+@@ -412,19 +412,35 @@ static const struct SCSIReqOps reqops_invalid_opcode = {
  
- # Boards:
- #
-diff --git a/hw/net/Kconfig b/hw/net/Kconfig
-index 98e00be4f93..7fcc0d7faa2 100644
---- a/hw/net/Kconfig
-+++ b/hw/net/Kconfig
-@@ -41,12 +41,12 @@ config E1000_PCI
+ /* SCSIReqOps implementation for unit attention conditions.  */
  
- config E1000E_PCI_EXPRESS
-     bool
--    default y if PCI_DEVICES
-+    default y if PCI_DEVICES || PCIE_DEVICES
-     depends on PCI_EXPRESS && MSI_NONBROKEN
- 
- config IGB_PCI_EXPRESS
-     bool
--    default y if PCI_DEVICES
-+    default y if PCI_DEVICES || PCIE_DEVICES
-     depends on PCI_EXPRESS && MSI_NONBROKEN
- 
- config RTL8139_PCI
-diff --git a/hw/pci/Kconfig b/hw/pci/Kconfig
-index 77f8b005ffb..fe70902cd82 100644
---- a/hw/pci/Kconfig
-+++ b/hw/pci/Kconfig
-@@ -8,6 +8,9 @@ config PCI_EXPRESS
- config PCI_DEVICES
-     bool
- 
-+config PCIE_DEVICES
-+    bool
++static void scsi_fetch_unit_attention_sense(SCSIRequest *req)
++{
++    SCSISense *ua = NULL;
 +
- config MSI_NONBROKEN
-     # selected by interrupt controllers that do not support MSI,
-     # or support it and have a good implementation. See commit
-diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
-index 5e7d8a2bae8..e8d4d68ece0 100644
---- a/hw/s390x/Kconfig
-+++ b/hw/s390x/Kconfig
-@@ -5,7 +5,8 @@ config S390_CCW_VIRTIO
-     imply VFIO_AP
-     imply VFIO_CCW
-     imply WDT_DIAG288
--    select PCI
-+    imply PCIE_DEVICES
-+    select PCI_EXPRESS
-     select S390_FLIC
-     select SCLPCONSOLE
-     select VIRTIO_CCW
-diff --git a/hw/usb/Kconfig b/hw/usb/Kconfig
-index 0ec6def4b8b..0f486764ed6 100644
---- a/hw/usb/Kconfig
-+++ b/hw/usb/Kconfig
-@@ -36,7 +36,7 @@ config USB_XHCI
++    if (req->dev->unit_attention.key == UNIT_ATTENTION) {
++        ua = &req->dev->unit_attention;
++    } else if (req->bus->unit_attention.key == UNIT_ATTENTION) {
++        ua = &req->bus->unit_attention;
++    }
++
++    /*
++     * Fetch the unit attention sense immediately so that another
++     * scsi_req_new does not use reqops_unit_attention.
++     */
++    if (ua) {
++        scsi_req_build_sense(req, *ua);
++        *ua = SENSE_CODE(NO_SENSE);
++    }
++}
++
+ static int32_t scsi_unit_attention(SCSIRequest *req, uint8_t *buf)
+ {
+-    if (req->dev->unit_attention.key == UNIT_ATTENTION) {
+-        scsi_req_build_sense(req, req->dev->unit_attention);
+-    } else if (req->bus->unit_attention.key == UNIT_ATTENTION) {
+-        scsi_req_build_sense(req, req->bus->unit_attention);
+-    }
+     scsi_req_complete(req, CHECK_CONDITION);
+     return 0;
+ }
  
- config USB_XHCI_PCI
-     bool
--    default y if PCI_DEVICES
-+    default y if PCI_DEVICES || PCIE_DEVICES
-     depends on PCI
-     select USB_XHCI
+ static const struct SCSIReqOps reqops_unit_attention = {
+     .size         = sizeof(SCSIRequest),
++    .init_req     = scsi_fetch_unit_attention_sense,
+     .send_command = scsi_unit_attention
+ };
  
+@@ -699,6 +715,11 @@ SCSIRequest *scsi_req_alloc(const SCSIReqOps *reqops, SCSIDevice *d,
+     object_ref(OBJECT(d));
+     object_ref(OBJECT(qbus->parent));
+     notifier_list_init(&req->cancel_notifiers);
++
++    if (reqops->init_req) {
++        reqops->init_req(req);
++    }
++
+     trace_scsi_req_alloc(req->dev->id, req->lun, req->tag);
+     return req;
+ }
+@@ -798,6 +819,15 @@ uint8_t *scsi_req_get_buf(SCSIRequest *req)
+ static void scsi_clear_unit_attention(SCSIRequest *req)
+ {
+     SCSISense *ua;
++
++    /*
++     * scsi_fetch_unit_attention_sense() already cleaned the unit attention
++     * in this case.
++     */
++    if (req->ops == &reqops_unit_attention) {
++        return;
++    }
++
+     if (req->dev->unit_attention.key != UNIT_ATTENTION &&
+         req->bus->unit_attention.key != UNIT_ATTENTION) {
+         return;
+diff --git a/include/hw/scsi/scsi.h b/include/hw/scsi/scsi.h
+index e2bb1a2fbfd..3692ca82f31 100644
+--- a/include/hw/scsi/scsi.h
++++ b/include/hw/scsi/scsi.h
+@@ -108,6 +108,7 @@ int cdrom_read_toc_raw(int nb_sectors, uint8_t *buf, int msf, int session_num);
+ /* scsi-bus.c */
+ struct SCSIReqOps {
+     size_t size;
++    void (*init_req)(SCSIRequest *req);
+     void (*free_req)(SCSIRequest *req);
+     int32_t (*send_command)(SCSIRequest *req, uint8_t *buf);
+     void (*read_data)(SCSIRequest *req);
 -- 
 2.41.0
 
