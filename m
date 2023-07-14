@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9497531DA
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 08:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B597531E2
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 08:24:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKC8m-0004GT-9W; Fri, 14 Jul 2023 02:18:56 -0400
+	id 1qKCDE-0005Qa-6K; Fri, 14 Jul 2023 02:23:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKC8k-0004Fq-4j
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 02:18:54 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1qKCDC-0005QS-Bv
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 02:23:30 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKC8i-0007mm-HS
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 02:18:53 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1b8a8154f9cso9766175ad.1
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 23:18:51 -0700 (PDT)
+ id 1qKCDA-0004Xe-Bx
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 02:23:30 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-55bac17b442so1191446a12.3
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 23:23:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689315530; x=1691907530;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1689315807; x=1691907807;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=H9w7Ft0dUoYjvvhHQxcQZzGKeT3BFrBzQqRHcrWo+gI=;
- b=eHvfIi7VfQG2qh/hD2YR99vtNzSPDpj06NJ1y92yaq3jwr4K9Bag4AgU8gg6F3q2Vd
- nTOpB98gnz/LLWzO1frXsIAQXPhzH82et5cMbEnXOpOdLVInYamCCocez6fPJlZiWf5M
- cflazyPWwVX6cp90DcMyIWwPeHSPXHBVx44jFiAXo5tupaYCv635dTDOZYobhDQpHG9V
- mYLhmB2L6sFumpgtm7d/xktwh8eVUdBcNxCVXOOxO5yAPzLDzZPXAPmpG7+URlXQD6Ux
- MQb5oWzc4jIXpCOYDs5LvUtAymoiOsrfZtiDDPEvdTAHEMXqoCCSbbNux9Vtc/BLqbxo
- +OHg==
+ bh=BLPJ3Cw7QFaADYtcIMkSZMv+kIHoWIbOm4PGvEBvHck=;
+ b=oK/OVNHf881HNTtV7yKWnsnq8tNiQYe2aIbifCDztOPbHvjQFNr5Sb0k3GSKQNIohX
+ Y86atfFUv3VGYCxFH4P5293UKuTZW9MpMHZkYt+U7LQa1Xls/EFw5dIK2d9RgfKfBF1/
+ 7LntFWn4dvM3IIU+i0WutEFEKcotoTaCPcZtTL/0APC5F7ewBSNlaa57JNKCZ0vAtv2h
+ zre6sTz8gXJg7Wj7ecI8ZyBkQ+prEOOTdcFEY2rryHp/1023LEL7KH1fJcjSqUZ4Pxqz
+ c5wx1o0hflYAdw4OuGmcBGuBfOTJ6EclcuNy0jDanD0yNN6oSbQugxl2VmlqPb+HaV1i
+ tYQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689315530; x=1691907530;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1689315807; x=1691907807;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=H9w7Ft0dUoYjvvhHQxcQZzGKeT3BFrBzQqRHcrWo+gI=;
- b=f8iWasXBffe/gNeyOuE+xwwnXXzPve7Y4JKgEarAONaKpOcJth2VxeD0hsFlAHYj/O
- /Qln9hQQl1qh44kR4zc8+jZ3gwhM6CF0JLcQPtGB2IOK8iGvZtor8g54WaTEXxXSFX0h
- I8delEiEBrZ1rwMMb7BNodMXCLJrjP/4LGck0Wh+kG1z9EJ1SKseeOOLHRbrW/bI8vju
- cnTGbPpbCGEtaKMOXl9fJc0JykWDALmIn7blu93/QUYH5PhNP7EqD1vDHa95qPrBXwkX
- /XQ3no42N/YhqKrzvTybuWoCjEiJ6vy89G3uYqTiX55jDiLL4N3dZT3fjBbsxQxsZdu/
- sY2A==
-X-Gm-Message-State: ABy/qLZS+7UjWXxw0DiBmk1wcrYNFJ+4t9gDHfngfOdf7yEQIQtoza6r
- MGs2eDzfSkWZgRm4UXFGQEFoUA==
-X-Google-Smtp-Source: APBJJlEqjSBrcfj3I8HTP73f0hgL2gjsEstVWfnGDSJcXGfTeiPc1cKKVOK47OatGzMKZrR0IZMBUA==
-X-Received: by 2002:a17:902:c245:b0:1b8:5bca:8256 with SMTP id
- 5-20020a170902c24500b001b85bca8256mr2105707plg.31.1689315530342; 
- Thu, 13 Jul 2023 23:18:50 -0700 (PDT)
+ bh=BLPJ3Cw7QFaADYtcIMkSZMv+kIHoWIbOm4PGvEBvHck=;
+ b=N98L8WdFeMiRpGFbXPaZua6i669jXkbUIEHtjBcnhNFuswy6Kuyg3Dg4/i0o3Hh/YZ
+ S0JB4pdQlGq5ALnlMPR8lPcJBQIlz8WiD+xVTpkrkoyumJwbXBhSMC1sRuGs6Dqbu1Lk
+ yRIUldAHeaQvzOn44QX2ntOmluk9og+gzofh2aliPd50FA8bBHYbRqLX1+H7wIdh1pew
+ paloPv7gXYmsxMqa2znS4oEM77JYLh1ME0wpJY4hZLw6fLD+rZGRtvxGVum8zCPVHNYE
+ 85cZ0AjAkJTRNN3nKBuKCr0Tnf24rcwi+7TUSWBN9D3UYMWEyRq2Pj36Uqtj1WGvWlYH
+ fduA==
+X-Gm-Message-State: ABy/qLagEVzzdRrFmDXEWkbPldMvGHLZIe7l3i7OPzC8S8rdJwtqX532
+ /Tpr7zsxY+OPoSWJwM41vQf8rg==
+X-Google-Smtp-Source: APBJJlFhH7iWeI+wh6P36UX6efmSXuHhKC4oEBRymN71DSOqJv3tlrTZjtoHV3UyXWnYqnKCdpC2OQ==
+X-Received: by 2002:a05:6a20:2453:b0:12c:9100:362f with SMTP id
+ t19-20020a056a20245300b0012c9100362fmr4364507pzc.4.1689315806822; 
+ Thu, 13 Jul 2023 23:23:26 -0700 (PDT)
 Received: from [192.168.149.227] ([172.58.27.104])
  by smtp.gmail.com with ESMTPSA id
- e15-20020a170902ed8f00b001b7fd27144dsm6927384plj.40.2023.07.13.23.18.46
+ x28-20020aa793bc000000b0067f11aa76cbsm6385536pff.108.2023.07.13.23.23.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 23:18:49 -0700 (PDT)
-Message-ID: <df0a73d8-8063-4147-e697-6e08085a09c5@linaro.org>
-Date: Fri, 14 Jul 2023 07:18:40 +0100
+ Thu, 13 Jul 2023 23:23:26 -0700 (PDT)
+Message-ID: <c412a56e-0049-f7a6-19b1-12dcfcf0bab4@linaro.org>
+Date: Fri, 14 Jul 2023 07:23:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.1] tcg: Use HAVE_CMPXCHG128 instead of
- CONFIG_CMPXCHG128
+Subject: Re: [PATCH-for-8.1] linux-user/arm: Do not allocate a commpage at all
+ for M-profile CPUs
+Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>
-References: <20230713202327.12662-1-richard.henderson@linaro.org>
- <c99ad0cb-a5b6-3a6b-a256-32aa9028eb2a@linaro.org>
-Content-Language: en-US
+Cc: Laurent Vivier <laurent@vivier.eu>,
+ Christophe Lyon <christophe.lyon@linaro.org>
+References: <20230711153408.68389-1-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <c99ad0cb-a5b6-3a6b-a256-32aa9028eb2a@linaro.org>
+In-Reply-To: <20230711153408.68389-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,47 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/13/23 22:36, Philippe Mathieu-Daudé wrote:
-> Hi Richard,
+On 7/11/23 16:34, Philippe Mathieu-Daudé wrote:
+> Since commit fbd3c4cff6 ("linux-user/arm: Mark the commpage
+> executable") executing bare-metal (linked with rdimon.specs)
+> cortex-M code fails as:
 > 
-> On 13/7/23 22:23, Richard Henderson wrote:
->> We adjust CONFIG_ATOMIC128 and CONFIG_CMPXCHG128 with
->> CONFIG_ATOMIC128_OPT in atomic128.h.  It is difficult
->> to tell when those changes have been applied with the
->> ifdef we must use with CONFIG_CMPXCHG128.  So instead
->> use HAVE_CMPXCHG128, which triggers -Werror-undef when
->> the proper header has not been included.
->>
->> Improves tcg_gen_atomic_cmpxchg_i128 for s390x host, which
->> requires CONFIG_ATOMIC128_OPT.  Without this we fall back
->> to EXCP_ATOMIC to single-step 128-bit atomics, which is
->> slow enough to cause some tests to time out.
->>
->> Reported-by: Thomas Huth <thuth@redhat.com>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>
->> Thomas, this issue does not quite match the one you bisected, but
->> other than the cmpxchg, I don't see any see any qemu_{ld,st}_i128
->> being used in BootLinuxS390X.test_s390_ccw_virtio_tcg.
->>
->> As far as I can see, this wasn't broken by the addition of
->> CONFIG_ATOMIC128_OPT, rather that fix didn't go far enough.
->>
->> Anyway, test_s390_ccw_virtio_tcg now passes in 159s on our host.
+>    $ qemu-arm -cpu cortex-m3 ~/hello.exe.m3
+>    qemu-arm: ../../accel/tcg/user-exec.c:492: page_set_flags: Assertion `last <= GUEST_ADDR_MAX' failed.
+>    Aborted (core dumped)
 > 
-> IIUC:
+> Commit 4f5c67f8df ("linux-user/arm: Take more care allocating
+> commpage") already took care of not allocating a commpage for
+> M-profile CPUs, however it had to be reverted as commit 6cda41daa2.
 > 
-> If we have CONFIG_ATOMIC128, we use qatomic_cmpxchg__nocheck;
-> else if we have CONFIG_CMPXCHG128 we use __sync_val_compare_and_swap_16;
-> in both cases we set HAVE_CMPXCHG128;
-> otherwise we can not use atomic128 cmpxchg().
+> Re-introduce the M-profile fix from commit 4f5c67f8df.
 > 
-> (I'm trying to figure why we need both CONFIGs).
+> Fixes: fbd3c4cff6 ("linux-user/arm: Mark the commpage executable")
+> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/1755
+> Reported-by: Christophe Lyon<christophe.lyon@linaro.org>
+> Suggested-by: Richard Henderson<richard.henderson@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   linux-user/elfload.c | 21 +++++++++++++++++----
+>   1 file changed, 17 insertions(+), 4 deletions(-)
 
-Or sometimes we use inline asm, because there's no compiler support at all.
-Please see host/include/*/host/atomic16-*.h.
-
+Queued to tcg+linux-user.
 
 r~
 
