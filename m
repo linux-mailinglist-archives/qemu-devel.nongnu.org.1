@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B597531E2
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 08:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74664753204
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 08:33:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKCDE-0005Qa-6K; Fri, 14 Jul 2023 02:23:32 -0400
+	id 1qKCL0-0006df-5q; Fri, 14 Jul 2023 02:31:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKCDC-0005QS-Bv
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 02:23:30 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ id 1qKCKM-0006c5-MP
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 02:30:57 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKCDA-0004Xe-Bx
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 02:23:30 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-55bac17b442so1191446a12.3
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 23:23:27 -0700 (PDT)
+ id 1qKCKL-00072l-3D
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 02:30:54 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1b9de2bd0abso8205535ad.0
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 23:30:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689315807; x=1691907807;
+ d=linaro.org; s=google; t=1689316251; x=1691908251;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=BLPJ3Cw7QFaADYtcIMkSZMv+kIHoWIbOm4PGvEBvHck=;
- b=oK/OVNHf881HNTtV7yKWnsnq8tNiQYe2aIbifCDztOPbHvjQFNr5Sb0k3GSKQNIohX
- Y86atfFUv3VGYCxFH4P5293UKuTZW9MpMHZkYt+U7LQa1Xls/EFw5dIK2d9RgfKfBF1/
- 7LntFWn4dvM3IIU+i0WutEFEKcotoTaCPcZtTL/0APC5F7ewBSNlaa57JNKCZ0vAtv2h
- zre6sTz8gXJg7Wj7ecI8ZyBkQ+prEOOTdcFEY2rryHp/1023LEL7KH1fJcjSqUZ4Pxqz
- c5wx1o0hflYAdw4OuGmcBGuBfOTJ6EclcuNy0jDanD0yNN6oSbQugxl2VmlqPb+HaV1i
- tYQg==
+ bh=6J5Db53f6xjvipUdL8t6sRYWt+uYG1taHQ91KoD9xCw=;
+ b=eeHdVOkHr0dxq26I1RFQt/ekAYMMx4qQmOxFBeKFX6OVEMY5B7PirckhAP8pVvAn7/
+ FJB5ogOImosAXeI2S2qjMrgQ3mS7Ks8wa36Qa+0mWHC63d2d8LF9NScIoKC0Lec8piU1
+ m3IauvCdvy8Onh/Wk+V9kO0nraRCScMMq739Zl/F2duI0EFd+kkQaKiIc+zj6bpWyR2O
+ p7ZGUfX1F4t6DGmuX77oN4hLWPq3sy//7AMdZJroh6us6xyd0DwZ514k7MC1gOfhZwRE
+ +laV9yeu8xokarPoJQx+aWEkoE96LnxGbCGoubRCD9jv3HIeXpvMBGi1GQSLqRXUvO3+
+ L0uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689315807; x=1691907807;
+ d=1e100.net; s=20221208; t=1689316251; x=1691908251;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BLPJ3Cw7QFaADYtcIMkSZMv+kIHoWIbOm4PGvEBvHck=;
- b=N98L8WdFeMiRpGFbXPaZua6i669jXkbUIEHtjBcnhNFuswy6Kuyg3Dg4/i0o3Hh/YZ
- S0JB4pdQlGq5ALnlMPR8lPcJBQIlz8WiD+xVTpkrkoyumJwbXBhSMC1sRuGs6Dqbu1Lk
- yRIUldAHeaQvzOn44QX2ntOmluk9og+gzofh2aliPd50FA8bBHYbRqLX1+H7wIdh1pew
- paloPv7gXYmsxMqa2znS4oEM77JYLh1ME0wpJY4hZLw6fLD+rZGRtvxGVum8zCPVHNYE
- 85cZ0AjAkJTRNN3nKBuKCr0Tnf24rcwi+7TUSWBN9D3UYMWEyRq2Pj36Uqtj1WGvWlYH
- fduA==
-X-Gm-Message-State: ABy/qLagEVzzdRrFmDXEWkbPldMvGHLZIe7l3i7OPzC8S8rdJwtqX532
- /Tpr7zsxY+OPoSWJwM41vQf8rg==
-X-Google-Smtp-Source: APBJJlFhH7iWeI+wh6P36UX6efmSXuHhKC4oEBRymN71DSOqJv3tlrTZjtoHV3UyXWnYqnKCdpC2OQ==
-X-Received: by 2002:a05:6a20:2453:b0:12c:9100:362f with SMTP id
- t19-20020a056a20245300b0012c9100362fmr4364507pzc.4.1689315806822; 
- Thu, 13 Jul 2023 23:23:26 -0700 (PDT)
+ bh=6J5Db53f6xjvipUdL8t6sRYWt+uYG1taHQ91KoD9xCw=;
+ b=gNIQ17cgeKsjJolR0CeajXhreC5UlmgcN5XyeMhOCpEwKFNmUjEwMaQlPpdQko4kYt
+ gNMgi8TaFVXzcTtt90zodezOnfyVWW3CSlgLZkBQtNCHSp7nquYtELiCdV0KdF4Iz3SO
+ 2z0DxhpjgOQFrxZYTUKbQOBThHLihsqvN+HZ9FKCSl/Rzi1cFViVV1qKvuQTlTJGgYIJ
+ BJRcqrmRq1z6T5+ETSOdn8LaZu1xHG7Df5j0qvkur1Mc5cQ+mc1oGHPg+Wz9ap/64/D6
+ zzH7Ydiwdx9H6SmZaMc8ChAZ8cEcaumNWE9NmSfScAiOTX1OogryDiwal41+apvAMWmz
+ NlFQ==
+X-Gm-Message-State: ABy/qLZpj06hD5CURjoveAEqIUlqiS0TStAS2hZiiEWcWdv1arO2liDs
+ kYKxkXSdXpA88Eo6qJAdbwijNQ==
+X-Google-Smtp-Source: APBJJlF4PF+9OlQdkKC3Z8Iwf8xJH6oSGgYsSV2Gp36CCytcJ+Xo/naQcY61aefm4Nrb6R9my+pMMA==
+X-Received: by 2002:a17:902:788d:b0:1a9:40d5:b0ae with SMTP id
+ q13-20020a170902788d00b001a940d5b0aemr2580310pll.12.1689316251505; 
+ Thu, 13 Jul 2023 23:30:51 -0700 (PDT)
 Received: from [192.168.149.227] ([172.58.27.104])
  by smtp.gmail.com with ESMTPSA id
- x28-20020aa793bc000000b0067f11aa76cbsm6385536pff.108.2023.07.13.23.23.24
+ c10-20020a1709029d8a00b001b83db0bcf2sm6932354plq.141.2023.07.13.23.30.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 23:23:26 -0700 (PDT)
-Message-ID: <c412a56e-0049-f7a6-19b1-12dcfcf0bab4@linaro.org>
-Date: Fri, 14 Jul 2023 07:23:18 +0100
+ Thu, 13 Jul 2023 23:30:50 -0700 (PDT)
+Message-ID: <ca3da84b-2e4c-ad27-09fc-58aab4a7f39e@linaro.org>
+Date: Fri, 14 Jul 2023 07:30:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH-for-8.1] linux-user/arm: Do not allocate a commpage at all
- for M-profile CPUs
+Subject: Re: [PATCH for-8.2 v2 5/7] target/riscv/cpu.c: add a
+ ADD_CPU_PROPERTIES_ARRAY() macro
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>,
- Christophe Lyon <christophe.lyon@linaro.org>
-References: <20230711153408.68389-1-philmd@linaro.org>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+References: <20230712205748.446931-1-dbarboza@ventanamicro.com>
+ <20230712205748.446931-6-dbarboza@ventanamicro.com>
+ <9626ed95-9d50-344b-696a-95998e98e3f4@linaro.org>
+ <f26e3e23-6c15-9d8d-5750-37d43275a87a@ventanamicro.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230711153408.68389-1-philmd@linaro.org>
+In-Reply-To: <f26e3e23-6c15-9d8d-5750-37d43275a87a@ventanamicro.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,31 +99,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/11/23 16:34, Philippe Mathieu-Daudé wrote:
-> Since commit fbd3c4cff6 ("linux-user/arm: Mark the commpage
-> executable") executing bare-metal (linked with rdimon.specs)
-> cortex-M code fails as:
+On 7/13/23 22:27, Daniel Henrique Barboza wrote:
 > 
->    $ qemu-arm -cpu cortex-m3 ~/hello.exe.m3
->    qemu-arm: ../../accel/tcg/user-exec.c:492: page_set_flags: Assertion `last <= GUEST_ADDR_MAX' failed.
->    Aborted (core dumped)
 > 
-> Commit 4f5c67f8df ("linux-user/arm: Take more care allocating
-> commpage") already took care of not allocating a commpage for
-> M-profile CPUs, however it had to be reverted as commit 6cda41daa2.
+> On 7/13/23 17:40, Richard Henderson wrote:
+>> On 7/12/23 21:57, Daniel Henrique Barboza wrote:
+>>> +#define ADD_CPU_PROPERTIES_ARRAY(_dev, _array) \
+>>> +    for (prop = _array; prop && prop->name; prop++) { \
+>>> +        qdev_property_add_static(_dev, prop); \
+>>> +    } \
+>>
+>> do { } while(0)
+>>
+>> Watch the \ on the last line of the macro.
+>> Declare the iterator within the macro, rather than use one defined in the outer scope.
 > 
-> Re-introduce the M-profile fix from commit 4f5c67f8df.
+> Like this?
 > 
-> Fixes: fbd3c4cff6 ("linux-user/arm: Mark the commpage executable")
-> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/1755
-> Reported-by: Christophe Lyon<christophe.lyon@linaro.org>
-> Suggested-by: Richard Henderson<richard.henderson@linaro.org>
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   linux-user/elfload.c | 21 +++++++++++++++++----
->   1 file changed, 17 insertions(+), 4 deletions(-)
+> #define ADD_CPU_PROPERTIES_ARRAY(_dev, _array) \
+>      do { \
+>          Property *prop; \
+>          for (prop = _array; prop && prop->name; prop++) { \
+>              qdev_property_add_static(_dev, prop); \
+>          } \
+>      } while(0)
 
-Queued to tcg+linux-user.
+Yes, like that, thanks.
+
 
 r~
 
