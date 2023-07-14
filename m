@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1BD75356A
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 10:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D86753577
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 10:49:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKERy-0002gK-Fg; Fri, 14 Jul 2023 04:46:54 -0400
+	id 1qKES1-0002sG-EH; Fri, 14 Jul 2023 04:46:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qKERr-00024Z-FO
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:46:47 -0400
+ id 1qKERs-0002AB-Cr
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:46:48 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qKERo-0004pa-5l
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:46:47 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qKERq-0004pn-7m
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:46:48 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxxPBnC7Fkgs4EAA--.13505S3;
+ by gateway (Coremail) with SMTP id _____8BxIvBnC7FkhM4EAA--.12554S3;
  Fri, 14 Jul 2023 16:46:31 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxzyNYC7FkFOotAA--.22026S25; 
- Fri, 14 Jul 2023 16:46:30 +0800 (CST)
+ AQAAf8AxzyNYC7FkFOotAA--.22026S26; 
+ Fri, 14 Jul 2023 16:46:31 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v3 23/47] target/loongarch: Implement xvmskltz/xvmskgez/xvmsknz
-Date: Fri, 14 Jul 2023 16:45:51 +0800
-Message-Id: <20230714084615.2448038-24-gaosong@loongson.cn>
+Subject: [PATCH v3 24/47] target/loognarch: Implement xvldi
+Date: Fri, 14 Jul 2023 16:45:52 +0800
+Message-Id: <20230714084615.2448038-25-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230714084615.2448038-1-gaosong@loongson.cn>
 References: <20230714084615.2448038-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxzyNYC7FkFOotAA--.22026S25
+X-CM-TRANSID: AQAAf8AxzyNYC7FkFOotAA--.22026S26
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,220 +63,96 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVMSKLTZ.{B/H/W/D};
-- XVMSKGEZ.B;
-- XVMSKNZ.B.
+- XVLDI.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/loongarch/disas.c                     |  7 ++
- target/loongarch/insn_trans/trans_lasx.c.inc |  7 ++
- target/loongarch/insns.decode                |  7 ++
- target/loongarch/vec_helper.c                | 80 ++++++++++++++------
- 4 files changed, 76 insertions(+), 25 deletions(-)
+ target/loongarch/disas.c                     | 7 +++++++
+ target/loongarch/insn_trans/trans_lasx.c.inc | 2 ++
+ target/loongarch/insn_trans/trans_lsx.c.inc  | 6 ++++--
+ target/loongarch/insns.decode                | 2 ++
+ 4 files changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 85e0cb7c8d..1a11153343 100644
+index 1a11153343..8fa2edf007 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -2010,6 +2010,13 @@ INSN_LASX(vext2xv_wu_hu,     vv)
- INSN_LASX(vext2xv_du_hu,     vv)
- INSN_LASX(vext2xv_du_wu,     vv)
+@@ -1703,6 +1703,11 @@ static bool trans_##insn(DisasContext *ctx, arg_##type * a) \
+     return true;                                            \
+ }
  
-+INSN_LASX(xvmskltz_b,        vv)
-+INSN_LASX(xvmskltz_h,        vv)
-+INSN_LASX(xvmskltz_w,        vv)
-+INSN_LASX(xvmskltz_d,        vv)
-+INSN_LASX(xvmskgez_b,        vv)
-+INSN_LASX(xvmsknz_b,         vv)
++static void output_v_i_x(DisasContext *ctx, arg_v_i *a, const char *mnemonic)
++{
++    output(ctx, mnemonic, "x%d, 0x%x", a->vd, a->imm);
++}
 +
- INSN_LASX(xvsigncov_b,       vvv)
- INSN_LASX(xvsigncov_h,       vvv)
+ static void output_vvv_x(DisasContext *ctx, arg_vvv * a, const char *mnemonic)
+ {
+     output(ctx, mnemonic, "x%d, x%d, x%d", a->vd, a->vj, a->vk);
+@@ -2022,6 +2027,8 @@ INSN_LASX(xvsigncov_h,       vvv)
  INSN_LASX(xvsigncov_w,       vvv)
+ INSN_LASX(xvsigncov_d,       vvv)
+ 
++INSN_LASX(xvldi,             v_i)
++
+ INSN_LASX(xvreplgr2vr_b,     vr)
+ INSN_LASX(xvreplgr2vr_h,     vr)
+ INSN_LASX(xvreplgr2vr_w,     vr)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index 7aab6528a7..0a68d9ae61 100644
+index 0a68d9ae61..5e130f9c2e 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -340,6 +340,13 @@ TRANS(xvsigncov_h, gvec_vvv, 32, MO_16, do_vsigncov)
- TRANS(xvsigncov_w, gvec_vvv, 32, MO_32, do_vsigncov)
- TRANS(xvsigncov_d, gvec_vvv, 32, MO_64, do_vsigncov)
+@@ -347,6 +347,8 @@ TRANS(xvmskltz_d, gen_vv, 32, gen_helper_vmskltz_d)
+ TRANS(xvmskgez_b, gen_vv, 32, gen_helper_vmskgez_b)
+ TRANS(xvmsknz_b, gen_vv, 32, gen_helper_vmsknz_b)
  
-+TRANS(xvmskltz_b, gen_vv, 32, gen_helper_vmskltz_b)
-+TRANS(xvmskltz_h, gen_vv, 32, gen_helper_vmskltz_h)
-+TRANS(xvmskltz_w, gen_vv, 32, gen_helper_vmskltz_w)
-+TRANS(xvmskltz_d, gen_vv, 32, gen_helper_vmskltz_d)
-+TRANS(xvmskgez_b, gen_vv, 32, gen_helper_vmskgez_b)
-+TRANS(xvmsknz_b, gen_vv, 32, gen_helper_vmsknz_b)
++TRANS(xvldi, do_vldi, 32)
 +
  TRANS(xvreplgr2vr_b, gvec_dup, 32, MO_8)
  TRANS(xvreplgr2vr_h, gvec_dup, 32, MO_16)
  TRANS(xvreplgr2vr_w, gvec_dup, 32, MO_32)
+diff --git a/target/loongarch/insn_trans/trans_lsx.c.inc b/target/loongarch/insn_trans/trans_lsx.c.inc
+index 08818c08ca..34811720cf 100644
+--- a/target/loongarch/insn_trans/trans_lsx.c.inc
++++ b/target/loongarch/insn_trans/trans_lsx.c.inc
+@@ -3064,7 +3064,7 @@ static uint64_t vldi_get_value(DisasContext *ctx, uint32_t imm)
+     return data;
+ }
+ 
+-static bool trans_vldi(DisasContext *ctx, arg_vldi *a)
++static bool do_vldi(DisasContext *ctx, arg_vldi *a, uint32_t oprsz)
+ {
+     int sel, vece;
+     uint64_t value;
+@@ -3080,11 +3080,13 @@ static bool trans_vldi(DisasContext *ctx, arg_vldi *a)
+         vece = (a->imm >> 10) & 0x3;
+     }
+ 
+-    tcg_gen_gvec_dup_i64(vece, vec_full_offset(a->vd), 16, ctx->vl/8,
++    tcg_gen_gvec_dup_i64(vece, vec_full_offset(a->vd), oprsz, ctx->vl / 8,
+                          tcg_constant_i64(value));
+     return true;
+ }
+ 
++TRANS(vldi, do_vldi, 16)
++
+ TRANS(vand_v, gvec_vvv, 16, MO_64, tcg_gen_gvec_and)
+ TRANS(vor_v, gvec_vvv, 16, MO_64, tcg_gen_gvec_or)
+ TRANS(vxor_v, gvec_vvv, 16, MO_64, tcg_gen_gvec_xor)
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index 7bbda1a142..6a161d6d20 100644
+index 6a161d6d20..edaa756395 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1598,6 +1598,13 @@ xvsigncov_h      0111 01010010 11101 ..... ..... .....    @vvv
- xvsigncov_w      0111 01010010 11110 ..... ..... .....    @vvv
- xvsigncov_d      0111 01010010 11111 ..... ..... .....    @vvv
+@@ -1605,6 +1605,8 @@ xvmskltz_d       0111 01101001 11000 10011 ..... .....    @vv
+ xvmskgez_b       0111 01101001 11000 10100 ..... .....    @vv
+ xvmsknz_b        0111 01101001 11000 11000 ..... .....    @vv
  
-+xvmskltz_b       0111 01101001 11000 10000 ..... .....    @vv
-+xvmskltz_h       0111 01101001 11000 10001 ..... .....    @vv
-+xvmskltz_w       0111 01101001 11000 10010 ..... .....    @vv
-+xvmskltz_d       0111 01101001 11000 10011 ..... .....    @vv
-+xvmskgez_b       0111 01101001 11000 10100 ..... .....    @vv
-+xvmsknz_b        0111 01101001 11000 11000 ..... .....    @vv
++xvldi            0111 01111110 00 ............. .....     @v_i13
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
-diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-index 126b67eea5..9d13b6544c 100644
---- a/target/loongarch/vec_helper.c
-+++ b/target/loongarch/vec_helper.c
-@@ -783,14 +783,19 @@ static uint64_t do_vmskltz_b(int64_t val)
- 
- void HELPER(vmskltz_b)(void *vd, void *vj, uint32_t desc)
- {
-+    int i;
-     uint16_t temp = 0;
-     VReg *Vd = (VReg *)vd;
-     VReg *Vj = (VReg *)vj;
-+    int oprsz = simd_oprsz(desc);
- 
--    temp = do_vmskltz_b(Vj->D(0));
--    temp |= (do_vmskltz_b(Vj->D(1)) << 8);
--    Vd->D(0) = temp;
--    Vd->D(1) = 0;
-+    for (i = 0; i < oprsz / 16; i++) {
-+        temp = 0;
-+        temp = do_vmskltz_b(Vj->D(2 * i));
-+        temp |= (do_vmskltz_b(Vj->D(2 * i  + 1)) << 8);
-+        Vd->D(2 * i) = temp;
-+        Vd->D(2 * i + 1) = 0;
-+    }
- }
- 
- static uint64_t do_vmskltz_h(int64_t val)
-@@ -804,14 +809,19 @@ static uint64_t do_vmskltz_h(int64_t val)
- 
- void HELPER(vmskltz_h)(void *vd, void *vj, uint32_t desc)
- {
-+    int i;
-     uint16_t temp = 0;
-     VReg *Vd = (VReg *)vd;
-     VReg *Vj = (VReg *)vj;
-+    int oprsz = simd_oprsz(desc);
- 
--    temp = do_vmskltz_h(Vj->D(0));
--    temp |= (do_vmskltz_h(Vj->D(1)) << 4);
--    Vd->D(0) = temp;
--    Vd->D(1) = 0;
-+    for (i = 0; i < oprsz / 16; i++) {
-+        temp = 0;
-+        temp = do_vmskltz_h(Vj->D(2 * i));
-+        temp |= (do_vmskltz_h(Vj->D(2 * i + 1)) << 4);
-+        Vd->D(2 * i) = temp;
-+        Vd->D(2 * i + 1) = 0;
-+    }
- }
- 
- static uint64_t do_vmskltz_w(int64_t val)
-@@ -824,14 +834,19 @@ static uint64_t do_vmskltz_w(int64_t val)
- 
- void HELPER(vmskltz_w)(void *vd, void *vj, uint32_t desc)
- {
-+    int i;
-     uint16_t temp = 0;
-     VReg *Vd = (VReg *)vd;
-     VReg *Vj = (VReg *)vj;
-+    int oprsz = simd_oprsz(desc);
- 
--    temp = do_vmskltz_w(Vj->D(0));
--    temp |= (do_vmskltz_w(Vj->D(1)) << 2);
--    Vd->D(0) = temp;
--    Vd->D(1) = 0;
-+    for (i = 0; i < oprsz / 16; i++) {
-+        temp = 0;
-+        temp = do_vmskltz_w(Vj->D(2 * i));
-+        temp |= (do_vmskltz_w(Vj->D(2 * i + 1)) << 2);
-+        Vd->D(2 * i) = temp;
-+        Vd->D(2 * i + 1) = 0;
-+    }
- }
- 
- static uint64_t do_vmskltz_d(int64_t val)
-@@ -840,26 +855,36 @@ static uint64_t do_vmskltz_d(int64_t val)
- }
- void HELPER(vmskltz_d)(void *vd, void *vj, uint32_t desc)
- {
-+    int i;
-     uint16_t temp = 0;
-     VReg *Vd = (VReg *)vd;
-     VReg *Vj = (VReg *)vj;
-+    int oprsz = simd_oprsz(desc);
- 
--    temp = do_vmskltz_d(Vj->D(0));
--    temp |= (do_vmskltz_d(Vj->D(1)) << 1);
--    Vd->D(0) = temp;
--    Vd->D(1) = 0;
-+    for (i = 0; i < oprsz / 16; i++) {
-+        temp = 0;
-+        temp = do_vmskltz_d(Vj->D(2 * i));
-+        temp |= (do_vmskltz_d(Vj->D(2 * i + 1)) << 1);
-+        Vd->D(2 * i) = temp;
-+        Vd->D(2 * i + 1) = 0;
-+    }
- }
- 
- void HELPER(vmskgez_b)(void *vd, void *vj, uint32_t desc)
- {
-+    int i;
-     uint16_t temp = 0;
-     VReg *Vd = (VReg *)vd;
-     VReg *Vj = (VReg *)vj;
-+    int oprsz = simd_oprsz(desc);
- 
--    temp =  do_vmskltz_b(Vj->D(0));
--    temp |= (do_vmskltz_b(Vj->D(1)) << 8);
--    Vd->D(0) = (uint16_t)(~temp);
--    Vd->D(1) = 0;
-+    for (i = 0; i < oprsz / 16; i++) {
-+        temp = 0;
-+        temp =  do_vmskltz_b(Vj->D(2 * i));
-+        temp |= (do_vmskltz_b(Vj->D(2 * i + 1)) << 8);
-+        Vd->D(2 * i) = (uint16_t)(~temp);
-+        Vd->D(2 * i + 1) = 0;
-+    }
- }
- 
- static uint64_t do_vmskez_b(uint64_t a)
-@@ -872,16 +897,21 @@ static uint64_t do_vmskez_b(uint64_t a)
-     return c >> 56;
- }
- 
--void HELPER(vmsknz_b)(void vd, void vj, uint32_t desc)
-+void HELPER(vmsknz_b)(void *vd, void *vj, uint32_t desc)
- {
-+    int i;
-     uint16_t temp = 0;
-     VReg *Vd = (VReg *)vd;
-     VReg *Vj = (VReg *)vj;
-+    int oprsz = simd_oprsz(desc);
- 
--    temp = do_vmskez_b(Vj->D(0));
--    temp |= (do_vmskez_b(Vj->D(1)) << 8);
--    Vd->D(0) = (uint16_t)(~temp);
--    Vd->D(1) = 0;
-+    for (i = 0; i < oprsz / 16; i++) {
-+        temp = 0;
-+        temp = do_vmskez_b(Vj->D(2 * i));
-+        temp |= (do_vmskez_b(Vj->D(2 * i + 1)) << 8);
-+        Vd->D(2 * i) = (uint16_t)(~temp);
-+        Vd->D(2 * i + 1) = 0;
-+    }
- }
- 
- void HELPER(vnori_b)(void *vd, void *vj, uint64_t imm, uint32_t v)
 -- 
 2.39.1
 
