@@ -2,70 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36824753360
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 09:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14DAC7534F8
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 10:22:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKDR4-0004g4-V1; Fri, 14 Jul 2023 03:41:54 -0400
+	id 1qKE2k-00033u-R4; Fri, 14 Jul 2023 04:20:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qKDR2-0004fc-G5
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 03:41:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qKE2i-00033M-5I; Fri, 14 Jul 2023 04:20:48 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qKDQu-0004Lw-ME
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 03:41:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689320502;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=aspo+uzVHIUUZbW0harIoUN2APT6Ijx5wloKb8l+ebk=;
- b=bXOgADphhwYCkIg7Pi6IdExrCHN+SkbwbJI5VjngeI3cT7SLGZPhmA/DrnhX1Ua8nOLuY0
- JkZmVyDYrOs0aYiktoPComDm4v2CCbdAQCVSWjPyENyR/pdySYFjXgajBqteEgXiIC65lm
- nTCIk+o/fJ4Fuyp4MSr6tT3Ik1OIu6Y=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-224-IiChLGhHM9GlHkW60t4b8A-1; Fri, 14 Jul 2023 03:41:38 -0400
-X-MC-Unique: IiChLGhHM9GlHkW60t4b8A-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 730723806703;
- Fri, 14 Jul 2023 07:41:38 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.37])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3560CC57964;
- Fri, 14 Jul 2023 07:41:38 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 2116721E6A1F; Fri, 14 Jul 2023 09:41:37 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Andrew Melnychenko <andrew@daynix.com>
-Cc: jasowang@redhat.com,  mst@redhat.com,  eblake@redhat.com,
- qemu-devel@nongnu.org,  berrange@redhat.com,
- yuri.benditovich@daynix.com,  yan@daynix.com
-Subject: Re: [PATCH v4 5/6] qmp: Added new command to retrieve eBPF blob.
-References: <20230714022358.2438995-1-andrew@daynix.com>
- <20230714022358.2438995-6-andrew@daynix.com>
-Date: Fri, 14 Jul 2023 09:41:37 +0200
-In-Reply-To: <20230714022358.2438995-6-andrew@daynix.com> (Andrew
- Melnychenko's message of "Fri, 14 Jul 2023 05:23:57 +0300")
-Message-ID: <87sf9rey8e.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qKE2f-00004w-VN; Fri, 14 Jul 2023 04:20:47 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 3D54341BE7;
+ Fri, 14 Jul 2023 10:20:33 +0200 (CEST)
+Message-ID: <986473d3-073a-21e7-dc67-6024cf25ce68@proxmox.com>
+Date: Fri, 14 Jul 2023 10:20:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3] migration: hold the BQL during setup
+Content-Language: en-US
+From: Fiona Ebner <f.ebner@proxmox.com>
+To: qemu-devel@nongnu.org
+Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
+ eblake@redhat.com, vsementsov@yandex-team.ru, jsnow@redhat.com,
+ stefanha@redhat.com, fam@euphon.net, qemu-block@nongnu.org,
+ pbonzini@redhat.com, t.lamprecht@proxmox.com
+References: <20230630141846.802759-1-f.ebner@proxmox.com>
+In-Reply-To: <20230630141846.802759-1-f.ebner@proxmox.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.096,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,147 +59,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Andrew Melnychenko <andrew@daynix.com> writes:
+Ping
 
-> Added command "request-ebpf". This command returns
-> eBPF program encoded base64. The program taken from the
-> skeleton and essentially is an ELF object that can be
-> loaded in the future with libbpf.
->
-> The reason to use the command to provide the eBPF object
-> instead of a separate artifact was to avoid issues related
-> to finding the eBPF itself. As the eBPF maps/program should
-> correspond to QEMU, the eBPF cant be used from different
-
-can't
-
-> QEMU build.
-
-Blank line between paragaphs.
-
-> The first solution was a helper that comes with QEMU
-> and loads appropriate eBPF objects. And the issue is
-> to find a proper helper if the system has several
-> different QEMUs installed and/or built from the source,
-> which helpers may not be compatible.
-
-Blank line between paragaphs.
-
-> Another issue is QEMU updating while there is a running
-> QEMU instance. With an updated helper, it may not be
-> possible to hotplug virtio-net device to the already
-> running QEMU. Overall, requesting the eBPF object from
-> QEMU itself solves possible failures with very little effort.
-
-I respectfully disagree with "very little".  But it's your commit
-message, not mine.  "Acceptable effort"?
-
-> Links:
-> [PATCH 3/5] qmp: Added the helper stamp check.
-> https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com/
->
-> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
-> ---
->  qapi/ebpf.json        | 58 +++++++++++++++++++++++++++++++++++++++++++
->  qapi/meson.build      |  1 +
->  qapi/qapi-schema.json |  1 +
->  3 files changed, 60 insertions(+)
->  create mode 100644 qapi/ebpf.json
->
-> diff --git a/qapi/ebpf.json b/qapi/ebpf.json
-> new file mode 100644
-> index 0000000000..3237da69a7
-> --- /dev/null
-> +++ b/qapi/ebpf.json
-> @@ -0,0 +1,58 @@
-> +# -*- Mode: Python -*-
-> +# vim: filetype=python
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2 or later.
-> +# See the COPYING file in the top-level directory.
-> +
-> +##
-> +# = eBPF Objects
-> +##
-> +
-> +{ 'include': 'common.json' }
-> +
-> +##
-> +# @EbpfObject:
-> +#
-> +# Structure that holds eBPF ELF object encoded in base64.
-> +#
-> +# Since: 8.3
-> +#
-> +##
-> +{ 'struct': 'EbpfObject',
-> +  'data': {'object': 'str'},
-> +  'if': 'CONFIG_EBPF' }
-> +
-> +##
-> +# @EbpfProgramID:
-> +#
-> +# The eBPF programs that can be gotten with request-ebpf.
-> +#
-> +# @rss: Receive side scaling, technology that allows steering traffic
-> +# between queues by calculation hash. Users may set up indirection table
-> +# and hash/packet types configurations. Used with virtio-net.
-> +#
-> +# Since: 8.3
-> +##
-> +{ 'enum': 'EbpfProgramID',
-> +  'if': 'CONFIG_EBPF',
-> +  'data': [ { 'name': 'rss' } ] }
-> +
-> +##
-> +# @request-ebpf:
-> +#
-> +# Returns eBPF object that can be loaded with libbpf.
-> +# Management applications (g.e. libvirt) may load it and pass file
-> +# descriptors to QEMU. Which allows running QEMU without BPF capabilities.
-> +# It's crucial that eBPF program/map is compatible with QEMU, so it's
-> +# provided through QMP.
-> +#
-> +# Returns: RSS eBPF object encoded in base64.
-> +#
-> +# Since: 8.3
-> +#
-> +##
-> +{ 'command': 'request-ebpf',
-> +  'data': { 'id': 'EbpfProgramID' },
-> +  'returns': 'EbpfObject',
-> +  'if': 'CONFIG_EBPF' }
-> +
-
-Trim the trailing blank line.
-
-Terminology: you use "eBPF program" and "eBPF object".  What's the
-difference?  If there's none, use only one term, please.  To me,
-"program" feels more clear.
-
-> diff --git a/qapi/meson.build b/qapi/meson.build
-> index 60a668b343..90047dae1c 100644
-> --- a/qapi/meson.build
-> +++ b/qapi/meson.build
-> @@ -33,6 +33,7 @@ qapi_all_modules = [
->    'crypto',
->    'cxl',
->    'dump',
-> +  'ebpf',
->    'error',
->    'introspect',
->    'job',
-> diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
-> index 6594afba31..2c82a49bae 100644
-> --- a/qapi/qapi-schema.json
-> +++ b/qapi/qapi-schema.json
-> @@ -53,6 +53,7 @@
->  { 'include': 'char.json' }
->  { 'include': 'dump.json' }
->  { 'include': 'net.json' }
-> +{ 'include': 'ebpf.json' }
->  { 'include': 'rdma.json' }
->  { 'include': 'rocker.json' }
->  { 'include': 'tpm.json' }
+Am 30.06.23 um 16:18 schrieb Fiona Ebner:
+> This is intended to be a semantic revert of commit 9b09503752
+> ("migration: run setup callbacks out of big lock"). There have been so
+> many changes since that commit (e.g. a new setup callback
+> dirty_bitmap_save_setup() that also needs to be adapted now), it's
+> easier to do the revert manually.
+> 
+> For snapshots, the bdrv_writev_vmstate() function is used during setup
+> (in QIOChannelBlock backing the QEMUFile), but not holding the BQL
+> while calling it could lead to an assertion failure. To understand
+> how, first note the following:
+> 
+> 1. Generated coroutine wrappers for block layer functions spawn the
+> coroutine and use AIO_WAIT_WHILE()/aio_poll() to wait for it.
+> 2. If the host OS switches threads at an inconvenient time, it can
+> happen that a bottom half scheduled for the main thread's AioContext
+> is executed as part of a vCPU thread's aio_poll().
+> 
+> An example leading to the assertion failure is as follows:
+> 
+> main thread:
+> 1. A snapshot-save QMP command gets issued.
+> 2. snapshot_save_job_bh() is scheduled.
+> 
+> vCPU thread:
+> 3. aio_poll() for the main thread's AioContext is called (e.g. when
+> the guest writes to a pflash device, as part of blk_pwrite which is a
+> generated coroutine wrapper).
+> 4. snapshot_save_job_bh() is executed as part of aio_poll().
+> 3. qemu_savevm_state() is called.
+> 4. qemu_mutex_unlock_iothread() is called. Now
+> qemu_get_current_aio_context() returns 0x0.
+> 5. bdrv_writev_vmstate() is executed during the usual savevm setup
+> via qemu_fflush(). But this function is a generated coroutine wrapper,
+> so it uses AIO_WAIT_WHILE. There, the assertion
+> assert(qemu_get_current_aio_context() == qemu_get_aio_context());
+> will fail.
+> 
+> To fix it, ensure that the BQL is held during setup. While it would
+> only be needed for snapshots, adapting migration too avoids additional
+> logic for conditional locking/unlocking in the setup callbacks.
+> Writing the header could (in theory) also trigger qemu_fflush() and
+> thus bdrv_writev_vmstate(), so the locked section also covers the
+> qemu_savevm_state_header() call, even for migration for consistentcy.
+> 
+> The section around multifd_send_sync_main() needs to be unlocked to
+> avoid a deadlock. In particular, the function calls
+> socket_send_channel_create() using multifd_new_send_channel_async() as
+> a callback and then waits for the callback to signal via the
+> channels_ready semaphore. The connection happens via
+> qio_task_run_in_thread(), but the callback is only executed via
+> qio_task_thread_result() which is scheduled for the main event loop.
+> Without unlocking the section, the main thread would never get to
+> process the task result and the callback meaning there would be no
+> signal via the channels_ready semaphore.
+> 
+> The comment in ram_init_bitmaps() was introduced by 4987783400
+> ("migration: fix incorrect memory_global_dirty_log_start outside BQL")
+> and is removed, because it referred to the qemu_mutex_lock_iothread()
+> call.
+> 
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 
 
