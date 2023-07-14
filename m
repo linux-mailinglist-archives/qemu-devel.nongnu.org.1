@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 416E97535A1
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 10:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C32A753572
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 10:48:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKES7-0003cj-2w; Fri, 14 Jul 2023 04:47:04 -0400
+	id 1qKES4-0003JU-Mp; Fri, 14 Jul 2023 04:47:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qKERt-0002JS-Qm
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:46:49 -0400
+ id 1qKERv-0002Ws-R7
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:46:51 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qKERr-0004qC-HO
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:46:49 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qKERs-0004qU-II
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:46:51 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxNvFqC7Fki84EAA--.13493S3;
- Fri, 14 Jul 2023 16:46:34 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Ax1fBrC7Fkjs4EAA--.13353S3;
+ Fri, 14 Jul 2023 16:46:35 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxzyNYC7FkFOotAA--.22026S30; 
+ AQAAf8AxzyNYC7FkFOotAA--.22026S31; 
  Fri, 14 Jul 2023 16:46:34 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v3 28/47] target/loongarch: Implement xvsrlr xvsrar
-Date: Fri, 14 Jul 2023 16:45:56 +0800
-Message-Id: <20230714084615.2448038-29-gaosong@loongson.cn>
+Subject: [PATCH v3 29/47] target/loongarch: Implement xvsrln xvsran
+Date: Fri, 14 Jul 2023 16:45:57 +0800
+Message-Id: <20230714084615.2448038-30-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230714084615.2448038-1-gaosong@loongson.cn>
 References: <20230714084615.2448038-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxzyNYC7FkFOotAA--.22026S30
+X-CM-TRANSID: AQAAf8AxzyNYC7FkFOotAA--.22026S31
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,151 +63,315 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVSRLR[I].{B/H/W/D};
-- XVSRAR[I].{B/H/W/D}.
+- XVSRLN.{B.H/H.W/W.D};
+- XVSRAN.{B.H/H.W/W.D};
+- XVSRLNI.{B.H/H.W/W.D/D.Q};
+- XVSRANI.{B.H/H.W/W.D/D.Q}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/disas.c                     | 18 ++++++++++++++++++
- target/loongarch/insn_trans/trans_lasx.c.inc | 18 ++++++++++++++++++
- target/loongarch/insns.decode                | 17 +++++++++++++++++
- target/loongarch/vec_helper.c                | 12 ++++++++----
- 4 files changed, 61 insertions(+), 4 deletions(-)
+ target/loongarch/disas.c                     |  16 ++
+ target/loongarch/insn_trans/trans_lasx.c.inc |  16 ++
+ target/loongarch/insns.decode                |  16 ++
+ target/loongarch/vec.h                       |   2 +
+ target/loongarch/vec_helper.c                | 168 ++++++++++---------
+ 5 files changed, 141 insertions(+), 77 deletions(-)
 
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 93c205fa32..9109203a05 100644
+index 9109203a05..14b526abd6 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -2086,6 +2086,24 @@ INSN_LASX(xvsllwil_wu_hu,    vv_i)
- INSN_LASX(xvsllwil_du_wu,    vv_i)
- INSN_LASX(xvextl_qu_du,      vv)
+@@ -2104,6 +2104,22 @@ INSN_LASX(xvsrari_h,         vv_i)
+ INSN_LASX(xvsrari_w,         vv_i)
+ INSN_LASX(xvsrari_d,         vv_i)
  
-+INSN_LASX(xvsrlr_b,          vvv)
-+INSN_LASX(xvsrlr_h,          vvv)
-+INSN_LASX(xvsrlr_w,          vvv)
-+INSN_LASX(xvsrlr_d,          vvv)
-+INSN_LASX(xvsrlri_b,         vv_i)
-+INSN_LASX(xvsrlri_h,         vv_i)
-+INSN_LASX(xvsrlri_w,         vv_i)
-+INSN_LASX(xvsrlri_d,         vv_i)
++INSN_LASX(xvsrln_b_h,        vvv)
++INSN_LASX(xvsrln_h_w,        vvv)
++INSN_LASX(xvsrln_w_d,        vvv)
++INSN_LASX(xvsran_b_h,        vvv)
++INSN_LASX(xvsran_h_w,        vvv)
++INSN_LASX(xvsran_w_d,        vvv)
 +
-+INSN_LASX(xvsrar_b,          vvv)
-+INSN_LASX(xvsrar_h,          vvv)
-+INSN_LASX(xvsrar_w,          vvv)
-+INSN_LASX(xvsrar_d,          vvv)
-+INSN_LASX(xvsrari_b,         vv_i)
-+INSN_LASX(xvsrari_h,         vv_i)
-+INSN_LASX(xvsrari_w,         vv_i)
-+INSN_LASX(xvsrari_d,         vv_i)
++INSN_LASX(xvsrlni_b_h,       vv_i)
++INSN_LASX(xvsrlni_h_w,       vv_i)
++INSN_LASX(xvsrlni_w_d,       vv_i)
++INSN_LASX(xvsrlni_d_q,       vv_i)
++INSN_LASX(xvsrani_b_h,       vv_i)
++INSN_LASX(xvsrani_h_w,       vv_i)
++INSN_LASX(xvsrani_w_d,       vv_i)
++INSN_LASX(xvsrani_d_q,       vv_i)
 +
  INSN_LASX(xvreplgr2vr_b,     vr)
  INSN_LASX(xvreplgr2vr_h,     vr)
  INSN_LASX(xvreplgr2vr_w,     vr)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index b51e80dece..aebe384220 100644
+index aebe384220..43ff9b188a 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -405,6 +405,24 @@ TRANS(xvsllwil_wu_hu, gen_vv_i, 32, gen_helper_vsllwil_wu_hu)
- TRANS(xvsllwil_du_wu, gen_vv_i, 32, gen_helper_vsllwil_du_wu)
- TRANS(xvextl_qu_du, gen_vv, 32, gen_helper_vextl_qu_du)
+@@ -423,6 +423,22 @@ TRANS(xvsrari_h, gen_vv_i, 32, gen_helper_vsrari_h)
+ TRANS(xvsrari_w, gen_vv_i, 32, gen_helper_vsrari_w)
+ TRANS(xvsrari_d, gen_vv_i, 32, gen_helper_vsrari_d)
  
-+TRANS(xvsrlr_b, gen_vvv, 32, gen_helper_vsrlr_b)
-+TRANS(xvsrlr_h, gen_vvv, 32, gen_helper_vsrlr_h)
-+TRANS(xvsrlr_w, gen_vvv, 32, gen_helper_vsrlr_w)
-+TRANS(xvsrlr_d, gen_vvv, 32, gen_helper_vsrlr_d)
-+TRANS(xvsrlri_b, gen_vv_i, 32, gen_helper_vsrlri_b)
-+TRANS(xvsrlri_h, gen_vv_i, 32, gen_helper_vsrlri_h)
-+TRANS(xvsrlri_w, gen_vv_i, 32, gen_helper_vsrlri_w)
-+TRANS(xvsrlri_d, gen_vv_i, 32, gen_helper_vsrlri_d)
++TRANS(xvsrln_b_h, gen_vvv, 32, gen_helper_vsrln_b_h)
++TRANS(xvsrln_h_w, gen_vvv, 32, gen_helper_vsrln_h_w)
++TRANS(xvsrln_w_d, gen_vvv, 32, gen_helper_vsrln_w_d)
++TRANS(xvsran_b_h, gen_vvv, 32, gen_helper_vsran_b_h)
++TRANS(xvsran_h_w, gen_vvv, 32, gen_helper_vsran_h_w)
++TRANS(xvsran_w_d, gen_vvv, 32, gen_helper_vsran_w_d)
 +
-+TRANS(xvsrar_b, gen_vvv, 32, gen_helper_vsrar_b)
-+TRANS(xvsrar_h, gen_vvv, 32, gen_helper_vsrar_h)
-+TRANS(xvsrar_w, gen_vvv, 32, gen_helper_vsrar_w)
-+TRANS(xvsrar_d, gen_vvv, 32, gen_helper_vsrar_d)
-+TRANS(xvsrari_b, gen_vv_i, 32, gen_helper_vsrari_b)
-+TRANS(xvsrari_h, gen_vv_i, 32, gen_helper_vsrari_h)
-+TRANS(xvsrari_w, gen_vv_i, 32, gen_helper_vsrari_w)
-+TRANS(xvsrari_d, gen_vv_i, 32, gen_helper_vsrari_d)
++TRANS(xvsrlni_b_h, gen_vv_i, 32, gen_helper_vsrlni_b_h)
++TRANS(xvsrlni_h_w, gen_vv_i, 32, gen_helper_vsrlni_h_w)
++TRANS(xvsrlni_w_d, gen_vv_i, 32, gen_helper_vsrlni_w_d)
++TRANS(xvsrlni_d_q, gen_vv_i, 32, gen_helper_vsrlni_d_q)
++TRANS(xvsrani_b_h, gen_vv_i, 32, gen_helper_vsrani_b_h)
++TRANS(xvsrani_h_w, gen_vv_i, 32, gen_helper_vsrani_h_w)
++TRANS(xvsrani_w_d, gen_vv_i, 32, gen_helper_vsrani_w_d)
++TRANS(xvsrani_d_q, gen_vv_i, 32, gen_helper_vsrani_d_q)
 +
  TRANS(xvreplgr2vr_b, gvec_dup, 32, MO_8)
  TRANS(xvreplgr2vr_h, gvec_dup, 32, MO_16)
  TRANS(xvreplgr2vr_w, gvec_dup, 32, MO_32)
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index 8a7933eccc..ca0951e1cc 100644
+index ca0951e1cc..204dcfa075 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1661,6 +1661,23 @@ xvsllwil_wu_hu   0111 01110000 11000 1 .... ..... .....   @vv_ui4
- xvsllwil_du_wu   0111 01110000 11001 ..... ..... .....    @vv_ui5
- xvextl_qu_du     0111 01110000 11010 00000 ..... .....    @vv
+@@ -1678,6 +1678,22 @@ xvsrari_h        0111 01101010 10000 1 .... ..... .....   @vv_ui4
+ xvsrari_w        0111 01101010 10001 ..... ..... .....    @vv_ui5
+ xvsrari_d        0111 01101010 1001 ...... ..... .....    @vv_ui6
  
-+xvsrlr_b         0111 01001111 00000 ..... ..... .....    @vvv
-+xvsrlr_h         0111 01001111 00001 ..... ..... .....    @vvv
-+xvsrlr_w         0111 01001111 00010 ..... ..... .....    @vvv
-+xvsrlr_d         0111 01001111 00011 ..... ..... .....    @vvv
-+xvsrlri_b        0111 01101010 01000 01 ... ..... .....   @vv_ui3
-+xvsrlri_h        0111 01101010 01000 1 .... ..... .....   @vv_ui4
-+xvsrlri_w        0111 01101010 01001 ..... ..... .....    @vv_ui5
-+xvsrlri_d        0111 01101010 0101 ...... ..... .....    @vv_ui6
-+xvsrar_b         0111 01001111 00100 ..... ..... .....    @vvv
-+xvsrar_h         0111 01001111 00101 ..... ..... .....    @vvv
-+xvsrar_w         0111 01001111 00110 ..... ..... .....    @vvv
-+xvsrar_d         0111 01001111 00111 ..... ..... .....    @vvv
-+xvsrari_b        0111 01101010 10000 01 ... ..... .....   @vv_ui3
-+xvsrari_h        0111 01101010 10000 1 .... ..... .....   @vv_ui4
-+xvsrari_w        0111 01101010 10001 ..... ..... .....    @vv_ui5
-+xvsrari_d        0111 01101010 1001 ...... ..... .....    @vv_ui6
++xvsrln_b_h       0111 01001111 01001 ..... ..... .....    @vvv
++xvsrln_h_w       0111 01001111 01010 ..... ..... .....    @vvv
++xvsrln_w_d       0111 01001111 01011 ..... ..... .....    @vvv
++xvsran_b_h       0111 01001111 01101 ..... ..... .....    @vvv
++xvsran_h_w       0111 01001111 01110 ..... ..... .....    @vvv
++xvsran_w_d       0111 01001111 01111 ..... ..... .....    @vvv
++
++xvsrlni_b_h      0111 01110100 00000 1 .... ..... .....   @vv_ui4
++xvsrlni_h_w      0111 01110100 00001 ..... ..... .....    @vv_ui5
++xvsrlni_w_d      0111 01110100 0001 ...... ..... .....    @vv_ui6
++xvsrlni_d_q      0111 01110100 001 ....... ..... .....    @vv_ui7
++xvsrani_b_h      0111 01110101 10000 1 .... ..... .....   @vv_ui4
++xvsrani_h_w      0111 01110101 10001 ..... ..... .....    @vv_ui5
++xvsrani_w_d      0111 01110101 1001 ...... ..... .....    @vv_ui6
++xvsrani_d_q      0111 01110101 101 ....... ..... .....    @vv_ui7
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
+diff --git a/target/loongarch/vec.h b/target/loongarch/vec.h
+index 681afd842f..67d829f9da 100644
+--- a/target/loongarch/vec.h
++++ b/target/loongarch/vec.h
+@@ -74,4 +74,6 @@
+ 
+ #define DO_SIGNCOV(a, b)  (a == 0 ? 0 : a < 0 ? -b : b)
+ 
++#define R_SHIFT(a, b) (a >> b)
++
+ #endif /* LOONGARCH_VEC_H */
 diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-index dcf75d421c..38b55e00ca 100644
+index 38b55e00ca..dacedc4363 100644
 --- a/target/loongarch/vec_helper.c
 +++ b/target/loongarch/vec_helper.c
-@@ -997,8 +997,9 @@ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)  \
-     VReg *Vd = (VReg *)vd;                                      \
-     VReg *Vj = (VReg *)vj;                                      \
-     VReg *Vk = (VReg *)vk;                                      \
-+    int oprsz = simd_oprsz(desc);                               \
-                                                                 \
+@@ -1079,107 +1079,121 @@ VSRARI(vsrari_h, 16, H)
+ VSRARI(vsrari_w, 32, W)
+ VSRARI(vsrari_d, 64, D)
+ 
+-#define R_SHIFT(a, b) (a >> b)
+-
+-#define VSRLN(NAME, BIT, T, E1, E2)                             \
+-void HELPER(NAME)(void *vd, void *v, void *vk, uint32_t desc)   \
+-{                                                               \
+-    int i;                                                      \
+-    VReg *Vd = (VReg *)vd;                                      \
+-    VReg *Vj = (VReg *)vj;                                      \
+-    VReg *Vk = (VReg *)vk;                                      \
+-                                                                \
 -    for (i = 0; i < LSX_LEN/BIT; i++) {                         \
-+    for (i = 0; i < oprsz / (BIT / 8); i++) {                   \
-         Vd->E(i) = do_vsrlr_ ## E(Vj->E(i), ((T)Vk->E(i))%BIT); \
-     }                                                           \
+-        Vd->E1(i) = R_SHIFT((T)Vj->E2(i),((T)Vk->E2(i)) % BIT); \
+-    }                                                           \
+-    Vd->D(1) = 0;                                               \
++#define VSRLN(NAME, BIT, E1, E2)                                          \
++void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)            \
++{                                                                         \
++    int i, j, ofs;                                                        \
++    VReg *Vd = (VReg *)vd;                                                \
++    VReg *Vj = (VReg *)vj;                                                \
++    VReg *Vk = (VReg *)vk;                                                \
++    int oprsz = simd_oprsz(desc);                                         \
++                                                                          \
++    ofs = LSX_LEN / BIT;                                                  \
++    for (i = 0; i < oprsz / 16; i++) {                                    \
++        for (j = 0; j < ofs; j++) {                                       \
++            Vd->E1(j + ofs * 2 * i) = R_SHIFT(Vj->E2(j + ofs * i),        \
++                                              Vk->E2(j + ofs * i) % BIT); \
++        }                                                                 \
++        Vd->D(2 * i + 1) = 0;                                             \
++    }                                                                     \
  }
-@@ -1014,8 +1015,9 @@ void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
-     int i;                                                         \
-     VReg *Vd = (VReg *)vd;                                         \
-     VReg *Vj = (VReg *)vj;                                         \
-+    int oprsz = simd_oprsz(desc);                                  \
-                                                                    \
--    for (i = 0; i < LSX_LEN/BIT; i++) {                            \
-+    for (i = 0; i < oprsz / (BIT / 8); i++) {                      \
-         Vd->E(i) = do_vsrlr_ ## E(Vj->E(i), imm);                  \
-     }                                                              \
+ 
+-VSRLN(vsrln_b_h, 16, uint16_t, B, H)
+-VSRLN(vsrln_h_w, 32, uint32_t, H, W)
+-VSRLN(vsrln_w_d, 64, uint64_t, W, D)
++VSRLN(vsrln_b_h, 16, B, UH)
++VSRLN(vsrln_h_w, 32, H, UW)
++VSRLN(vsrln_w_d, 64, W, UD)
+ 
+-#define VSRAN(NAME, BIT, T, E1, E2)                            \
+-void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc) \
+-{                                                              \
+-    int i;                                                     \
+-    VReg *Vd = (VReg *)vd;                                     \
+-    VReg *Vj = (VReg *)vj;                                     \
+-    VReg *Vk = (VReg *)vk;                                     \
+-                                                               \
+-    for (i = 0; i < LSX_LEN/BIT; i++) {                        \
+-        Vd->E1(i) = R_SHIFT(Vj->E2(i), ((T)Vk->E2(i)) % BIT);  \
+-    }                                                          \
+-    Vd->D(1) = 0;                                              \
++#define VSRAN(NAME, BIT, E1, E2, E3)                                      \
++void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)            \
++{                                                                         \
++    int i, j, ofs;                                                        \
++    VReg *Vd = (VReg *)vd;                                                \
++    VReg *Vj = (VReg *)vj;                                                \
++    VReg *Vk = (VReg *)vk;                                                \
++    int oprsz = simd_oprsz(desc);                                         \
++                                                                          \
++    ofs = LSX_LEN / BIT;                                                  \
++    for (i = 0; i < oprsz / 16; i++) {                                    \
++        for (j = 0; j < ofs; j++) {                                       \
++            Vd->E1(j + ofs * 2 * i) = R_SHIFT(Vj->E2(j + ofs * i),        \
++                                              Vk->E3(j + ofs * i) % BIT); \
++        }                                                                 \
++        Vd->D(2 * i + 1) = 0;                                             \
++    }                                                                     \
  }
-@@ -1047,8 +1049,9 @@ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)  \
-     VReg *Vd = (VReg *)vd;                                      \
-     VReg *Vj = (VReg *)vj;                                      \
-     VReg *Vk = (VReg *)vk;                                      \
-+    int oprsz = simd_oprsz(desc);                               \
-                                                                 \
--    for (i = 0; i < LSX_LEN/BIT; i++) {                         \
-+    for (i = 0; i < oprsz / (BIT / 8); i++) {                   \
-         Vd->E(i) = do_vsrar_ ## E(Vj->E(i), ((T)Vk->E(i))%BIT); \
-     }                                                           \
+ 
+-VSRAN(vsran_b_h, 16, uint16_t, B, H)
+-VSRAN(vsran_h_w, 32, uint32_t, H, W)
+-VSRAN(vsran_w_d, 64, uint64_t, W, D)
++VSRAN(vsran_b_h, 16, B, H, UH)
++VSRAN(vsran_h_w, 32, H, W, UW)
++VSRAN(vsran_w_d, 64, W, D, UD)
+ 
+-#define VSRLNI(NAME, BIT, T, E1, E2)                               \
+-void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
+-{                                                                  \
+-    int i, max;                                                    \
+-    VReg temp;                                                     \
+-    VReg *Vd = (VReg *)vd;                                         \
+-    VReg *Vj = (VReg *)vj;                                         \
+-                                                                   \
+-    temp.D(0) = 0;                                                 \
+-    temp.D(1) = 0;                                                 \
+-    max = LSX_LEN/BIT;                                             \
+-    for (i = 0; i < max; i++) {                                    \
+-        temp.E1(i) = R_SHIFT((T)Vj->E2(i), imm);                   \
+-        temp.E1(i + max) = R_SHIFT((T)Vd->E2(i), imm);             \
+-    }                                                              \
+-    *Vd = temp;                                                    \
++#define VSRLNI(NAME, BIT, E1, E2)                                         \
++void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc)        \
++{                                                                         \
++    int i, j, ofs;                                                        \
++    VReg temp = {};                                                       \
++    VReg *Vd = (VReg *)vd;                                                \
++    VReg *Vj = (VReg *)vj;                                                \
++    int oprsz = simd_oprsz(desc);                                         \
++                                                                          \
++    ofs = LSX_LEN / BIT;                                                  \
++    for (i = 0; i < oprsz / 16; i++) {                                    \
++        for (j = 0; j < ofs; j++) {                                       \
++            temp.E1(j + ofs * 2 * i) = R_SHIFT(Vj->E2(j + ofs * i), imm); \
++            temp.E1(j + ofs * (2 * i + 1)) = R_SHIFT(Vd->E2(j + ofs * i), \
++                                                     imm);                \
++        }                                                                 \
++    }                                                                     \
++    *Vd = temp;                                                           \
  }
-@@ -1064,8 +1067,9 @@ void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
-     int i;                                                         \
-     VReg *Vd = (VReg *)vd;                                         \
-     VReg *Vj = (VReg *)vj;                                         \
-+    int oprsz = simd_oprsz(desc);                                  \
-                                                                    \
--    for (i = 0; i < LSX_LEN/BIT; i++) {                            \
-+    for (i = 0; i < oprsz / (BIT / 8); i++) {                      \
-         Vd->E(i) = do_vsrar_ ## E(Vj->E(i), imm);                  \
-     }                                                              \
+ 
+ void HELPER(vsrlni_d_q)(void *vd, void *vj, uint64_t imm, uint32_t desc)
+ {
+-    VReg temp;
++    int i;
++    VReg temp = {};
+     VReg *Vd = (VReg *)vd;
+     VReg *Vj = (VReg *)vj;
+ 
+-    temp.D(0) = 0;
+-    temp.D(1) = 0;
+-    temp.D(0) = int128_getlo(int128_urshift(Vj->Q(0), imm % 128));
+-    temp.D(1) = int128_getlo(int128_urshift(Vd->Q(0), imm % 128));
++    for (i = 0; i < 2; i++) {
++        temp.D(2 * i) = int128_getlo(int128_urshift(Vj->Q(i), imm % 128));
++        temp.D(2 * i +1) = int128_getlo(int128_urshift(Vd->Q(i), imm % 128));
++    }
+     *Vd = temp;
  }
+ 
+-VSRLNI(vsrlni_b_h, 16, uint16_t, B, H)
+-VSRLNI(vsrlni_h_w, 32, uint32_t, H, W)
+-VSRLNI(vsrlni_w_d, 64, uint64_t, W, D)
++VSRLNI(vsrlni_b_h, 16, B, UH)
++VSRLNI(vsrlni_h_w, 32, H, UW)
++VSRLNI(vsrlni_w_d, 64, W, UD)
+ 
+-#define VSRANI(NAME, BIT, E1, E2)                                  \
+-void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
+-{                                                                  \
+-    int i, max;                                                    \
+-    VReg temp;                                                     \
+-    VReg *Vd = (VReg *)vd;                                         \
+-    VReg *Vj = (VReg *)vj;                                         \
+-                                                                   \
+-    temp.D(0) = 0;                                                 \
+-    temp.D(1) = 0;                                                 \
+-    max = LSX_LEN/BIT;                                             \
+-    for (i = 0; i < max; i++) {                                    \
+-        temp.E1(i) = R_SHIFT(Vj->E2(i), imm);                      \
+-        temp.E1(i + max) = R_SHIFT(Vd->E2(i), imm);                \
+-    }                                                              \
+-    *Vd = temp;                                                    \
++#define VSRANI(NAME, BIT, E1, E2)                                         \
++void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc)        \
++{                                                                         \
++    int i, j, ofs;                                                        \
++    VReg temp = {};                                                       \
++    VReg *Vd = (VReg *)vd;                                                \
++    VReg *Vj = (VReg *)vj;                                                \
++    int oprsz = simd_oprsz(desc);                                         \
++                                                                          \
++    ofs = LSX_LEN / BIT;                                                  \
++    for (i = 0; i < oprsz / 16; i++) {                                    \
++        for (j = 0; j < ofs; j++) {                                       \
++            temp.E1(j + ofs * 2 * i) = R_SHIFT(Vj->E2(j + ofs * i), imm); \
++            temp.E1(j + ofs * (2 * i + 1)) = R_SHIFT(Vd->E2(j + ofs * i), \
++                                                     imm);                \
++        }                                                                 \
++    }                                                                     \
++    *Vd = temp;                                                           \
+ }
+ 
+ void HELPER(vsrani_d_q)(void *vd, void *vj, uint64_t imm, uint32_t desc)
+ {
+-    VReg temp;
++    int i;
++    VReg temp = {};
+     VReg *Vd = (VReg *)vd;
+     VReg *Vj = (VReg *)vj;
+ 
+-    temp.D(0) = 0;
+-    temp.D(1) = 0;
+-    temp.D(0) = int128_getlo(int128_rshift(Vj->Q(0), imm % 128));
+-    temp.D(1) = int128_getlo(int128_rshift(Vd->Q(0), imm % 128));
++    for (i = 0; i < 2; i++) {
++        temp.D(2 * i) = int128_getlo(int128_rshift(Vj->Q(i), imm % 128));
++        temp.D(2 * i + 1) = int128_getlo(int128_rshift(Vd->Q(i), imm % 128));
++    }
+     *Vd = temp;
+ }
+ 
 -- 
 2.39.1
 
