@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82657752F6E
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 04:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D04FF752F92
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 04:52:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK8ci-0003vL-BU; Thu, 13 Jul 2023 22:33:36 -0400
+	id 1qK8tx-0008LZ-4w; Thu, 13 Jul 2023 22:51:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qK8ce-0003sg-58; Thu, 13 Jul 2023 22:33:32 -0400
-Received: from mail-vs1-xe35.google.com ([2607:f8b0:4864:20::e35])
+ id 1qK8tv-0008L7-Fa; Thu, 13 Jul 2023 22:51:23 -0400
+Received: from mail-vs1-xe29.google.com ([2607:f8b0:4864:20::e29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qK8cc-0002nS-Om; Thu, 13 Jul 2023 22:33:31 -0400
-Received: by mail-vs1-xe35.google.com with SMTP id
- ada2fe7eead31-4438f623370so582704137.3; 
- Thu, 13 Jul 2023 19:33:29 -0700 (PDT)
+ id 1qK8tt-0008KI-Mg; Thu, 13 Jul 2023 22:51:23 -0400
+Received: by mail-vs1-xe29.google.com with SMTP id
+ ada2fe7eead31-440ac4b44a8so574731137.3; 
+ Thu, 13 Jul 2023 19:51:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689302009; x=1691894009;
+ d=gmail.com; s=20221208; t=1689303080; x=1691895080;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cGRniExqQC6zYFPnDBU4gori67Idx3tWnRYJj8sOyr0=;
- b=eeZWE+7mdQPLGwtqPqDx1JQwXWmTKKpQjz9c8zziWbDB6LgFXc8LA6BiWQJ3X+vMnN
- p8nUOa6mtvRF32Wr7IIM3z5mwW1lHNyEovw+H+B0PJdhLfsa2WMnwvsXQs3b5HsL+1lw
- vtJPdw9zyetxVlLacQkq6jhYwSxDWcdgkZ3nitipjCBTbqn7ykQvZwr+LUZcxW6ojjc5
- THepF68/BIoI/kr50wO+AtAefNtebBRvFaXsTvTcw/dRPRklE/wwYJJ0lgC39CN1m9a/
- guOqVG+eweQI5OTMOMptzHDIOsZ689PVNDiE/8bzFjj7G35c6coptjuompWcLNSeukSH
- V+ZQ==
+ bh=gaWxKsU0rnpR6Twn5dlGozrYhvnF+Eh/VjPohLf8mW0=;
+ b=PQ4EMbkxG8WvKQg7WkVPOt3bG9kUtL1utdmGirahDY+k3JDVWHgiwYsjM60vzNQpsr
+ /4A7Vsf7kGpjZ05G04bXgMaG0fKQ1D45OhgFy9OcxPQW89Tg8N/TSQUe6gvlxp9yHM7d
+ DDsLe/0DmxLmgEuVgK6yfNCRZbajjVSyXOcDi34Gk32IBw+o6OO0gVhu4YWiubogBCvF
+ xk64i43zKzcu1x4F+vIBXilnO1MoHZRoQSF8B6fEImr73LAqOHbyPZQGMehuvjHRntnm
+ u4x+3iHsnyvj3N36ICRNur9YEILbkG1Q3Odp3WmDLesFjmJ+ASOlyJ7G0Wi/2eW7hWRV
+ eQpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689302009; x=1691894009;
+ d=1e100.net; s=20221208; t=1689303080; x=1691895080;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cGRniExqQC6zYFPnDBU4gori67Idx3tWnRYJj8sOyr0=;
- b=lbwpNwiJLfoBrEk94IUVLhSU+uW9rC6YQYx/XNH7toT6CkvwaiiOHlPpY8rdp/74wF
- 6MOiKrvXmHlEgftKrayvdsqNDi/CeTtD5LwTKaecV2nrv2k2/PRpQo0P721nAVT+8BdE
- eCO3DplOP2lHNWI8R+xu1qq8jtRVmVSMRpH9buqaxpxA9PFG4NG64s8+wQy9aNe7nquT
- w/mSft4dsMyQd7ByjMn3IeLfHo3uiP8GZd4KS/WckILMAL21kjiT+KwjMQp40waCDU8D
- HQ31EbOzNGD8bOLQhi0vLCPQsghK6K3hrME6YaqFPSV4X9TnGPSWuuNHx7cNCH2HOchh
- Aj5A==
-X-Gm-Message-State: ABy/qLZ7F4J5ILbRdqthv4BuT2JIOf6CmapoMaeRaIpY6NSWluySHuyA
- 3WpQl3pg9DrA8cRmzyjBmq2Tf53He+1vZw5l3y0=
-X-Google-Smtp-Source: APBJJlFx80ki/W/6s/33saOED39SjlDuBe4PBIsCmG+wQp9L3FdUjcB6cEY410nITqJxptQlPXY5tAAo6sNaHA5jk0M=
-X-Received: by 2002:a05:6102:34c2:b0:443:67a0:fb79 with SMTP id
- a2-20020a05610234c200b0044367a0fb79mr2212960vst.21.1689302009033; Thu, 13 Jul
- 2023 19:33:29 -0700 (PDT)
+ bh=gaWxKsU0rnpR6Twn5dlGozrYhvnF+Eh/VjPohLf8mW0=;
+ b=RQGMyVnm926+V6ymCA2p2RD+A13PgGi86H2HBMXECW0ZJ7Mq2CXHgXshnQdA/8JH39
+ pxjq8tvoeWkl9Mi5PBnJ7qBQPrHyvT8pGW1EncGQWEIUDC/Suk6oiy6upMx0DrqOu9ai
+ qDImwZN0nPQl9srhV5ORTCCte33FbEKzlHtuDrfclbp4uObB3pJC1ryRC+BMlNrFKEKQ
+ QTt3w5AnE+mJTvn8XR/6GcXLltbS3fPk0T5AU5xjHQlCNpl/sJcfTzWuj3/aw8XwmEWp
+ +XkGe3rw6BZo6fo984wuxDTqQjjsGG1uxS6AMSgUD1hB7EH9RhCGzZ+Ywe/mAbfkUtEu
+ ppUA==
+X-Gm-Message-State: ABy/qLbfkQZ3v1QOAc6SR7Q2dNg69OyB2NwnOvzh1LddCSW7Xt5sU0Bg
+ Phq5wIrMlHczdbJwbpJ5x+8VMQPwKy/K97ZB/dM5JEd7a7fhAg==
+X-Google-Smtp-Source: APBJJlGkDQAmBQH5uU0xW5Rvt82GxovE1hwogC16zhajkhJgCbW6iL78UT5AqvoV1VFm0IBNZpLec/ka1X8fh1AmO4c=
+X-Received: by 2002:a1f:bdd6:0:b0:471:549e:c1ff with SMTP id
+ n205-20020a1fbdd6000000b00471549ec1ffmr2316503vkf.7.1689303080189; Thu, 13
+ Jul 2023 19:51:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230712143728.383528-1-dbarboza@ventanamicro.com>
- <b0ecaf6e-4639-bc29-fdc5-60a064986352@tls.msk.ru>
-In-Reply-To: <b0ecaf6e-4639-bc29-fdc5-60a064986352@tls.msk.ru>
+References: <20230711075051.1531007-1-christoph.muellner@vrull.eu>
+In-Reply-To: <20230711075051.1531007-1-christoph.muellner@vrull.eu>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 14 Jul 2023 12:33:03 +1000
-Message-ID: <CAKmqyKPBEWRSAcwyeF5SQ7NR00ka7u_hyDgX5yREuP6xuvy6TA@mail.gmail.com>
-Subject: Re: [PATCH] docs/system/target-riscv.rst: tidy CPU firmware section
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, 
- alistair.francis@wdc.com, bmeng@tinylab.org, liweiwei@iscas.ac.cn, 
- zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, qemu-trivial@nongnu.org
+Date: Fri, 14 Jul 2023 12:50:53 +1000
+Message-ID: <CAKmqyKNqUW4CMqbROYBahJN2qSvV6BJCWFsr2FUXdNyyW4aUcg@mail.gmail.com>
+Subject: Re: [PATCH] riscv/disas: Fix disas output of upper immediates
+To: Christoph Muellner <christoph.muellner@vrull.eu>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Richard Henderson <richard.henderson@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e35;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e29;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe29.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -89,44 +88,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 13, 2023 at 4:47=E2=80=AFPM Michael Tokarev <mjt@tls.msk.ru> wr=
-ote:
+On Tue, Jul 11, 2023 at 5:52=E2=80=AFPM Christoph Muellner
+<christoph.muellner@vrull.eu> wrote:
 >
-> 12.07.2023 17:37, Daniel Henrique Barboza wrote:
-> > This is how the content of the "RISC-V CPU firmware" section is
-> > displayed after the html is generated:
-> >
-> > "When using the sifive_u or virt machine there are three different
-> > firmware boot options: 1. -bios default - This is the default behaviour
-> > if no -bios option is included. (...) 3. -bios <file> - Tells QEMU to
-> > load the specified file as the firmware."
-> >
-> > It's all in the same paragraph, in a numbered list, and no special
-> > formatting for the options.
-> >
-> > Tidy it a bit by adding line breaks between items and its description.
-> > Remove the numbered list. And apply formatting for the options cited in
-> > the middle of the text.
-> >
-> > Cc: qemu-trivial@nongnu.org
-> > Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> From: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
 >
-> I'll pick this up for trivial-patches, but since it's the only patch ther=
-e
-> now, it's IMHO better to apply it together with other riscv changes if
-> there will be any for 8.1.  So let's pick it to both trees and the first
-> to apply wins.
+> The GNU assembler produces the following output for instructions
+> with upper immediates:
+>     00002597                auipc   a1,0x2
+>     000024b7                lui     s1,0x2
+>     6409                    lui     s0,0x2 # c.lui
+>
+> The immediate operands of upper immediates are not shifted.
+>
+> However, the QEMU disassembler prints them shifted:
+>     00002597          auipc                   a1,8192
+>     000024b7          lui                     s1,8192
+>     6409              lui                     s0,8192 # c.lui
+>
+> The current implementation extracts the immediate bits and shifts the by =
+12,
+> so the internal representation of the immediate is the actual immediate.
+> However, the immediates are later printed using rv_fmt_rd_imm or
+> rv_fmt_rd_offset, which don't undo the shift.
+>
+> Let's fix this by using specific output formats for instructions
+> with upper immediates, that take care of the shift.
+>
+> Signed-off-by: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
 
-Sounds good to me!
-
-Applied to riscv-to-apply.next
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
 Alistair
 
+> ---
+>  disas/riscv.c | 19 ++++++++++++++++---
+>  disas/riscv.h |  2 ++
+>  2 files changed, 18 insertions(+), 3 deletions(-)
 >
-> Thanks,
+> diff --git a/disas/riscv.c b/disas/riscv.c
+> index cd7b6e86a7..3873a69157 100644
+> --- a/disas/riscv.c
+> +++ b/disas/riscv.c
+> @@ -1135,8 +1135,8 @@ static const rv_comp_data rvcp_fsgnjx_q[] =3D {
 >
-> /mjt
+>  const rv_opcode_data rvi_opcode_data[] =3D {
+>      { "illegal", rv_codec_illegal, rv_fmt_none, NULL, 0, 0, 0 },
+> -    { "lui", rv_codec_u, rv_fmt_rd_imm, NULL, 0, 0, 0 },
+> -    { "auipc", rv_codec_u, rv_fmt_rd_offset, NULL, 0, 0, 0 },
+> +    { "lui", rv_codec_u, rv_fmt_rd_uimm, NULL, 0, 0, 0 },
+> +    { "auipc", rv_codec_u, rv_fmt_rd_uoffset, NULL, 0, 0, 0 },
+>      { "jal", rv_codec_uj, rv_fmt_rd_offset, rvcp_jal, 0, 0, 0 },
+>      { "jalr", rv_codec_i, rv_fmt_rd_rs1_offset, rvcp_jalr, 0, 0, 0 },
+>      { "beq", rv_codec_sb, rv_fmt_rs1_rs2_offset, rvcp_beq, 0, 0, 0 },
+> @@ -1382,7 +1382,7 @@ const rv_opcode_data rvi_opcode_data[] =3D {
+>        rv_op_addi },
+>      { "c.addi16sp", rv_codec_ci_16sp, rv_fmt_rd_rs1_imm, NULL, rv_op_add=
+i,
+>        rv_op_addi, rv_op_addi, rvcd_imm_nz },
+> -    { "c.lui", rv_codec_ci_lui, rv_fmt_rd_imm, NULL, rv_op_lui, rv_op_lu=
+i,
+> +    { "c.lui", rv_codec_ci_lui, rv_fmt_rd_uimm, NULL, rv_op_lui, rv_op_l=
+ui,
+>        rv_op_lui, rvcd_imm_nz },
+>      { "c.srli", rv_codec_cb_sh6, rv_fmt_rd_rs1_imm, NULL, rv_op_srli,
+>        rv_op_srli, rv_op_srli, rvcd_imm_nz },
+> @@ -4694,6 +4694,19 @@ static void format_inst(char *buf, size_t buflen, =
+size_t tab, rv_decode *dec)
+>                  dec->pc + dec->imm);
+>              append(buf, tmp, buflen);
+>              break;
+> +        case 'U':
+> +            fmt++;
+> +            snprintf(tmp, sizeof(tmp), "%d", dec->imm >> 12);
+> +            append(buf, tmp, buflen);
+> +            if (*fmt =3D=3D 'o') {
+> +                while (strlen(buf) < tab * 2) {
+> +                    append(buf, " ", buflen);
+> +                }
+> +                snprintf(tmp, sizeof(tmp), "# 0x%" PRIx64,
+> +                    dec->pc + dec->imm);
+> +                append(buf, tmp, buflen);
+> +            }
+> +            break;
+>          case 'c': {
+>              const char *name =3D csr_name(dec->imm & 0xfff);
+>              if (name) {
+> diff --git a/disas/riscv.h b/disas/riscv.h
+> index 9cf901fc1e..8abb578b51 100644
+> --- a/disas/riscv.h
+> +++ b/disas/riscv.h
+> @@ -227,7 +227,9 @@ enum {
+>  #define rv_fmt_pred_succ              "O\tp,s"
+>  #define rv_fmt_rs1_rs2                "O\t1,2"
+>  #define rv_fmt_rd_imm                 "O\t0,i"
+> +#define rv_fmt_rd_uimm                "O\t0,Ui"
+>  #define rv_fmt_rd_offset              "O\t0,o"
+> +#define rv_fmt_rd_uoffset             "O\t0,Uo"
+>  #define rv_fmt_rd_rs1_rs2             "O\t0,1,2"
+>  #define rv_fmt_frd_rs1                "O\t3,1"
+>  #define rv_fmt_frd_rs1_rs2            "O\t3,1,2"
+> --
+> 2.41.0
 >
 >
 
