@@ -2,91 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E6D753B1A
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 14:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24597753B27
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 14:40:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKI1R-0008Tp-BD; Fri, 14 Jul 2023 08:35:45 -0400
+	id 1qKI5M-0001Mp-5F; Fri, 14 Jul 2023 08:39:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <apatel@ventanamicro.com>)
- id 1qKI1O-0008Tg-Ui
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 08:35:42 -0400
-Received: from mail-yw1-x1129.google.com ([2607:f8b0:4864:20::1129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <apatel@ventanamicro.com>)
- id 1qKI1C-0008V4-SY
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 08:35:42 -0400
-Received: by mail-yw1-x1129.google.com with SMTP id
- 00721157ae682-579ed2829a8so18614817b3.1
- for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 05:35:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1689338128; x=1691930128;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OsM6UU9/c9eXTkLPngWqR2T9oxr+Mb1SvOzh0hDCoZE=;
- b=k0cfRdXOFuY8JVkxPsKVbX9FzbgxcX/xFv8OWrGNODMbJM1hXm1GorfTQdg2wcywcq
- xwwfxaz/0YwHUFjUK7FBG011nWZFGqJRQL2q26ny2EXIDd3vSRS63+TsSqX8PbJTOTZK
- pkXxdGUHuxLVbTIdZil2rLFnbBqkkPztSoyFMS0IG6iFWfYaSg+8daokf5U67Lc5y0gW
- wXUYRqizWpHlUeVDKFSNrlkGE/TQQ0ml/VAmDSaVpEx8FD2nU3vdSYzUdt5KmuAlHuae
- 50PVfyXiM9KIAokexGyNQ7FS84uro+7Nti2flvN07rGwR+LlNiSOpMGOuHEeQKUshNAp
- nPHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689338128; x=1691930128;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OsM6UU9/c9eXTkLPngWqR2T9oxr+Mb1SvOzh0hDCoZE=;
- b=VCcd42Bvw237VQWzj1hXDM7zJ1eUrVpb6hARe7KE3lDHnvB8x5Fg1jzW7mjj2xlkk6
- xmmqtPC8BzZhPtp7GGXTPi5hSUrikQhsKzaHgB8csPbNz3GJbyX1gm55zlkiL1g0lq4E
- DwAqs6gs6Qdpgbdoux0dbEQGCDX31zLD4cXnow5TlN91X64KEyle/Ezryqj28bb2hiEU
- N4L/LxFfZZgiqpxyM6V5DL/ZJMeyrUg5qhBVO5N3mU7ECEKM3LT4JVkwwpqcAuOruCpG
- khkqde7mgIFe5rihB/p72KkeoVvTBqCH5QaNbNq8S+RxDxLDUbjh5C1NSD+1lWgXVi8L
- 1QZQ==
-X-Gm-Message-State: ABy/qLb+y2QjxDT0UD4xC00/HKchUllk9FKVEsms9DJj517j/IsWS2EK
- Zl/HcIGovnwKN4bpsdTxEUw+HkpF/7M/CcICW+1mjg==
-X-Google-Smtp-Source: APBJJlF9PX3Kt22h5iaOmqQbcfxOmoBvjBuFTnGsSYXsbDm2tLPyVfPHm/rKUZzvRhTzYrpOhKKMLDyBptmiVAXzuTU=
-X-Received: by 2002:a81:8906:0:b0:56f:fbc6:3b0 with SMTP id
- z6-20020a818906000000b0056ffbc603b0mr4932184ywf.14.1689338128354; Fri, 14 Jul
- 2023 05:35:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1qKI5J-0001LA-91; Fri, 14 Jul 2023 08:39:45 -0400
+Received: from kylie.crudebyte.com ([5.189.157.229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <qemu_oss@crudebyte.com>)
+ id 1qKI5H-0000xQ-47; Fri, 14 Jul 2023 08:39:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+ MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+ Content-ID:Content-Description;
+ bh=XRwpfbYlu9Z7ZQ+dwkVY01n+FD2CTRH8gJMfm63X2Eg=; b=ezSp7eqc8Yp0qfOnZOLSSLD+yE
+ wZd+gPfUR2jMuK21RmuQSfTfVZP0yhx5UMNEpf7CWZrlqzr4NqUG05wN75SK7By6AT0HnQujiwL/s
+ bmv0wJQDEoj37VUPeyXeay04DOGFonJF+liXxg+C99sWOnvM//ablqnsFvLgJbwanRw2Q+SQY1RWW
+ RELS/HKMtSdt+cmevYwC4NcmS4MoXaWKY4tXq8rh0wDAhs08ewqvP+F6WeM92lz/xL0veCVljhwN9
+ VdYZu3Zs6QDhybN/twKStcp2APsiVXUZNKbEtzx/lnnq5F3kPhQM8r+pcbQbR9mvs1fPtDX9mjwGC
+ AIR6lg34gcG6EouYqEvYhEAI5R2o/MeMC7X+GNx6WxPl9GXCbbBZYQf6NTDKyyYUEuRbibcEpLue5
+ qypW/cP7wKou1ZHY0La2CbNVL4Q4b7ytR9Ao4i+Vwg2tdRpkiQAl2qs6zUg0L0f4HPUXEJSOgJCWk
+ 8R8AnLsrSF/XliawF2z27+XTpPrXrSRrxB/Lm6TmSeucba51sg5ZujknI8tU678dxkmH/eSrfHnTJ
+ Yza7uLtCSuvC5Nejzg8bGow7DECVZo9Zjc5BkchzswcrUCbGzAy+B/x1Mu/1vp6GvfnCqg/+/8Zmn
+ FM8UpiTsgi21u1sC9Oqqm882GYTemEwii5q9OSEbY=;
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: Re: [PATCH,
+ trivial 07/29] tree-wide spelling fixes in comments and some messages:
+ hw/9pfs
+Date: Fri, 14 Jul 2023 14:39:16 +0200
+Message-ID: <5231587.LrHBZLct7H@silver>
+In-Reply-To: <20230714113834.1186117-9-mjt@tls.msk.ru>
+References: <20230714113834.1186117-1-mjt@tls.msk.ru>
+ <20230714113834.1186117-9-mjt@tls.msk.ru>
 MIME-Version: 1.0
-References: <20230712190149.424675-7-dbarboza@ventanamicro.com>
- <20230712-stench-happiness-40c2ea831257@spud>
- <3e9b5be8-d3ca-3a17-bef9-4a6a5bdc0ad0@ventanamicro.com>
- <20230712-tulip-replica-0322e71c3e81@spud>
- <744cbde6-7ce5-c327-3c5a-3858e994cc39@ventanamicro.com>
- <20230712-superhero-rabid-578605f52927@spud>
- <5dd3366d-13ba-c7fb-554f-549d97e7d4f9@ventanamicro.com>
- <20230712-fancied-aviator-270f51166407@spud>
- <20230713-craziness-lankiness-8aec3db24993@spud>
- <CAAhSdy3J5HUoVP21jo11FBuAFSPSxHNKtuL7amn-5t7n_smoSg@mail.gmail.com>
- <20230714-reoccur-confined-4b37494b1201@spud>
-In-Reply-To: <20230714-reoccur-confined-4b37494b1201@spud>
-From: Anup Patel <apatel@ventanamicro.com>
-Date: Fri, 14 Jul 2023 18:05:17 +0530
-Message-ID: <CAK9=C2X4CiXvqE63q=U51o7KcdrMuFu7gg0f66WG=kBscfghGw@mail.gmail.com>
-Subject: Re: Boot failure after QEMU's upgrade to OpenSBI v1.3 (was Re: [PATCH
- for-8.2 6/7] target/riscv: add 'max' CPU type)
-To: Conor Dooley <conor@kernel.org>
-Cc: Anup Patel <anup@brainfault.org>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, 
- alistair.francis@wdc.com, bmeng@tinylab.org, liweiwei@iscas.ac.cn, 
- zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, 
- opensbi@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1129;
- envelope-from=apatel@ventanamicro.com; helo=mail-yw1-x1129.google.com
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: pass client-ip=5.189.157.229;
+ envelope-from=qemu_oss@crudebyte.com; helo=kylie.crudebyte.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,79 +67,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 14, 2023 at 3:50=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
-te:
->
-> On Fri, Jul 14, 2023 at 10:00:19AM +0530, Anup Patel wrote:
->
-> > > > OpenSBI v1.3
-> > > >    ____                    _____ ____ _____
-> > > >   / __ \                  / ____|  _ \_   _|
-> > > >  | |  | |_ __   ___ _ __ | (___ | |_) || |
-> > > >  | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
-> > > >  | |__| | |_) |  __/ | | |____) | |_) || |_
-> > > >   \____/| .__/ \___|_| |_|_____/|___/_____|
-> > > >         | |
-> > > >         |_|
-> > > >
-> > > > init_coldboot: ipi init failed (error -1009)
-> > > >
-> > > > Just to note, because we use our own firmware that vendors in OpenS=
-BI
-> > > > and compiles only a significantly cut down number of files from it,=
- we
-> > > > do not use the fw_dynamic etc flow on our hardware. As a result, we=
- have
-> > > > not tested v1.3, nor do we have any immediate plans to change our
-> > > > platform firmware to vendor v1.3 either.
-> > > >
-> > > > I unless there's something obvious to you, it sounds like I will ne=
-ed to
-> > > > go and bisect OpenSBI. That's a job for another day though, given t=
-he
-> > > > time.
-> > > >
-> >
-> > The real issue is some CPU/HART DT nodes marked as disabled in the
-> > DT passed to OpenSBI 1.3.
-> >
-> > This issue does not exist in any of the DTs generated by QEMU but some
-> > of the DTs in the kernel (such as microchip and SiFive board DTs) have
-> > the E-core disabled.
-> >
-> > I had discovered this issue in a totally different context after the Op=
-enSBI 1.3
-> > release happened. This issue is already fixed in the latest OpenSBI by =
-the
-> > following commit c6a35733b74aeff612398f274ed19a74f81d1f37 ("lib: utils:
-> > Fix sbi_hartid_to_scratch() usage in ACLINT drivers").
->
-> Great, thanks Anup! I thought I had tested tip-of-tree too, but
-> obviously not.
->
-> > I always assumed that Microchip hss.bin is the preferred BIOS for the
-> > QEMU microchip-icicle-kit machine but I guess that's not true.
->
-> Unfortunately the HSS has not worked in QEMU for a long time, and while
-> I would love to fix it, but am pretty stretched for spare time to begin
-> with.
-> I usually just do direct kernel boots, which use the OpenSBI that comes
-> with QEMU, as I am sure you already know :)
->
-> > At this point, you can either:
-> > 1) Use latest OpenSBI on QEMU microchip-icicle-kit machine
->
-> > 2) Ensure CPU0 DT node is enabled in DT when booting on QEMU
-> >     microchip-icicle-kit machine with OpenSBI 1.3
->
-> Will OpenSBI disable it? If not, I think option 2) needs to be remove
-> the DT node. I'll just use tip-of-tree myself & up to the
+On Friday, July 14, 2023 1:38:12 PM CEST Michael Tokarev wrote:
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>  hw/9pfs/9p-local.c | 8 ++++----
+>  hw/9pfs/9p-proxy.c | 2 +-
+>  hw/9pfs/9p-synth.c | 2 +-
+>  hw/9pfs/9p-util.h  | 2 +-
+>  hw/9pfs/9p.c       | 4 ++--
+>  hw/9pfs/9p.h       | 2 +-
+>  6 files changed, 10 insertions(+), 10 deletions(-)
+> 
+> diff --git a/hw/9pfs/9p-local.c b/hw/9pfs/9p-local.c
+> index 9d07620235..1b1f3b9ec8 100644
+> --- a/hw/9pfs/9p-local.c
+> +++ b/hw/9pfs/9p-local.c
+> @@ -626,3 +626,3 @@ static ssize_t local_pwritev(FsContext *ctx, V9fsFidOpenState *fs,
+>           * We want to ensure that we don't leave dirty pages in the cache
+> -         * after write when writeout=immediate is sepcified.
+> +         * after write when writeout=immediate is specified.
+>           */
+> @@ -845,3 +845,3 @@ static int local_open2(FsContext *fs_ctx, V9fsPath *dir_path, const char *name,
+>          if (fs_ctx->export_flags & V9FS_SM_MAPPED) {
+> -            /* Set cleint credentials in xattr */
+> +            /* Set client credentials in xattr */
+>              err = local_set_xattrat(dirfd, name, credp);
+> @@ -914,3 +914,3 @@ static int local_symlink(FsContext *fs_ctx, const char *oldpath,
+>          }
+> -        /* Set cleint credentials in symlink's xattr */
+> +        /* Set client credentials in symlink's xattr */
+>          credp->fc_mode = credp->fc_mode | S_IFLNK;
+> @@ -1420,3 +1420,3 @@ static int local_ioc_getversion_init(FsContext *ctx, LocalData *data, Error **er
+>      /*
+> -     * use ioc_getversion only if the ioctl is definied
+> +     * use ioc_getversion only if the ioctl is defined
+>       */
+> diff --git a/hw/9pfs/9p-proxy.c b/hw/9pfs/9p-proxy.c
+> index 905cae6992..7aac49ad4a 100644
+> --- a/hw/9pfs/9p-proxy.c
+> +++ b/hw/9pfs/9p-proxy.c
+> @@ -769,3 +769,3 @@ static ssize_t proxy_pwritev(FsContext *ctx, V9fsFidOpenState *fs,
+>           * We want to ensure that we don't leave dirty pages in the cache
+> -         * after write when writeout=immediate is sepcified.
+> +         * after write when writeout=immediate is specified.
+>           */
+> diff --git a/hw/9pfs/9p-synth.c b/hw/9pfs/9p-synth.c
+> index f62c40b639..0ac79a500b 100644
+> --- a/hw/9pfs/9p-synth.c
+> +++ b/hw/9pfs/9p-synth.c
+> @@ -495,3 +495,3 @@ static int synth_name_to_path(FsContext *ctx, V9fsPath *dir_path,
+>      }
+> -    /* search for the name in the childern */
+> +    /* search for the name in the children */
+>      rcu_read_lock();
+> diff --git a/hw/9pfs/9p-util.h b/hw/9pfs/9p-util.h
+> index df1b583a5e..51c94b0116 100644
+> --- a/hw/9pfs/9p-util.h
+> +++ b/hw/9pfs/9p-util.h
+> @@ -50,3 +50,3 @@ static inline uint64_t makedev_dotl(uint32_t dev_major, uint32_t dev_minor)
+>   * device number format. As both the size of type dev_t and encoding of
+> - * dev_t is system dependant, we have to convert them for Linux guests if
+> + * dev_t is system dependent, we have to convert them for Linux guests if
+>   * host is not running Linux.
 
-Current, FDT fixup code in OpenSBI will disable any CPU DT node
-which satisfies any of the following:
-1) CPU is not assigned to the current domain
-2) CPU does not have "mmu-type" DT property
+That particular one is American English vs. British English, but OK, patch
+LGTM:
 
-Regards,
-Anup
+Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+
+> diff --git a/hw/9pfs/9p.c b/hw/9pfs/9p.c
+> index 991645adca..323f042e65 100644
+> --- a/hw/9pfs/9p.c
+> +++ b/hw/9pfs/9p.c
+> @@ -646,3 +646,3 @@ static inline uint64_t mirror64bit(uint64_t value)
+>  /*
+> - * Parameter k for the Exponential Golomb algorihm to be used.
+> + * Parameter k for the Exponential Golomb algorithm to be used.
+>   *
+> @@ -1041,3 +1041,3 @@ static void coroutine_fn pdu_complete(V9fsPDU *pdu, ssize_t len)
+>       * rather than a consequence of the cancellation. However, if
+> -     * the operation completed (succesfully or with an error other
+> +     * the operation completed (successfully or with an error other
+>       * than caused be cancellation), we do send out that reply, both
+> diff --git a/hw/9pfs/9p.h b/hw/9pfs/9p.h
+> index 1b0d805b9c..a6f59abccb 100644
+> --- a/hw/9pfs/9p.h
+> +++ b/hw/9pfs/9p.h
+> @@ -306,3 +306,3 @@ typedef struct VariLenAffix {
+>      /*
+> -     * Lenght of the affix, that is how many (of the lowest) bits of ``value``
+> +     * Length of the affix, that is how many (of the lowest) bits of ``value``
+>       * must be used for appending/prepending this affix to its final resulting,
+> 
+
+
 
