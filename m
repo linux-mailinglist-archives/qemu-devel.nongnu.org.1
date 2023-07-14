@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2208752F5E
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 04:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 596F4752F5C
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 04:25:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK8Tb-0005T9-UG; Thu, 13 Jul 2023 22:24:11 -0400
+	id 1qK8Tb-0005T8-RS; Thu, 13 Jul 2023 22:24:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1qK8Ta-0005SZ-10
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1qK8Ta-0005Sa-1e
  for qemu-devel@nongnu.org; Thu, 13 Jul 2023 22:24:10 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1qK8TX-0000Ci-Tf
+ (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1qK8TY-0000D3-H6
  for qemu-devel@nongnu.org; Thu, 13 Jul 2023 22:24:09 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-4fba86f069bso2400361e87.3
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 19:24:07 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2b6f52e1c5cso21362331fa.1
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 19:24:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1689301445; x=1691893445;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1689301446; x=1691893446;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eWjlSZm0M4uujia+IL8noWpkc0qhF8UPaJPfFedH9bY=;
- b=WjA78gtlWvcSlyZcF0pCZTAyw2xsugNkkQ1r1Far7GnPQsmkMTSYkjNcxagRJ2WMem
- dH5qyateHQGJHUS0VMaG85LG4qk7CMokRYRxnjg32qgGUSLnQfeoHUHJAqDJna9CuSvm
- /7lhpdgk1QQzE+jOq86lXyzNZXrWZZsKOjfLVCa48iWD7f6uBMTU5rxsbJcb2atGof9t
- VdWAjTf3hNQ/K0Ol8RQlq9Eo6J79wGCr4FY+NP6ppRV8ubn0rJbwJG2Uo09XAAb2hWRT
- yFx6aEJ8UgqsQdZA4tSlUpcv2j/pNN/INwwBTENrZaVJQSPZYHW3cGlltYinjP2o3yJ2
- NDag==
+ bh=T2JhMFGTujk5geiN04ZoPLCURLKDllK7TTxmiVzVbFk=;
+ b=Q4kqp9lFpgLIv6DdO09fPJrFJcWVtb3o2S+ssPff6cdWZmA9p7WqFfKNOiYWPZE8lX
+ znSYLbGfLuXADrek2eSnaLf6PjK69kPxfUm+iCLYumRtETXFAgCTL4RaVFWiVf5LXS0C
+ R2QeGzblkRzlOZO6GC0/2bbyG3hSDReC6Dfs2asPq6LrTm7Wk+ZSwhohsflp18Xeobze
+ qZqNJd25y0vQMAeUIPtIRI6nR/0U8XmUtJXgRKl+1Hp7ND/6WkI8KgBS+hZSct9dXxkn
+ 8+4DCSL1328CgGET6j5YRCbyZ7kuzo8DezKa7k27GZyEDEBiOhYu942mQYOXxOOtue7S
+ 0KVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689301445; x=1691893445;
+ d=1e100.net; s=20221208; t=1689301446; x=1691893446;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eWjlSZm0M4uujia+IL8noWpkc0qhF8UPaJPfFedH9bY=;
- b=i3Ihpx1uqCMiR/7/HOw2jhNl71Q1qwEgx1j/wOIzLZQeEGk+lrihVa3eulxHYQdQ/a
- UIB81TPUEyi0k3eLgt1xCsMFZDthIGikKNi4fhFRIFmo8Urx+7Pg/FV17cwE3z0qchVi
- JC74QErBGA+XtF8R2K5ltADATz4IqLdXZNtvEcb6Y3HAElamIma0vJd9A37UHGHI2/V1
- Im8W0uVVFWQ52vLIBrDMs/xkoDi/nWXiFFVlns/xVtSR8JL2LC0k/BXLbBEHOSs/cQK3
- hKIIDTEyE1OHpcCDppndMIZYTn0vnFP7DYZKOl9+8ZYFhQajTsTwgd7EmrJsqDl4KokV
- XITg==
-X-Gm-Message-State: ABy/qLYJhGY0zCkPT2JIFvCa3fZC+Zc2SnKjThk2nsQByuJmRS9gUBg2
- yS/ls7OteC/nV47Eb7awM+mjIQ==
-X-Google-Smtp-Source: APBJJlFTZooU0Tdyb33ZykM6a81JEMBBRERnhc3p2VdGxJLqXSyXF0YdkvuohLo6sD20UehL2N6k9A==
-X-Received: by 2002:a05:6512:20c4:b0:4fb:8926:b12f with SMTP id
- u4-20020a05651220c400b004fb8926b12fmr2273946lfr.26.1689301445584; 
- Thu, 13 Jul 2023 19:24:05 -0700 (PDT)
+ bh=T2JhMFGTujk5geiN04ZoPLCURLKDllK7TTxmiVzVbFk=;
+ b=T2NEHuod2veyQgbHU6l2JWftI4DslzZKaQYhgrWYdLtGSMveEft56FJM1zoreh6HQi
+ fZQO5TsPLqIGhHlbxOr0evg/K4ZKKRdOMNR5gSm3ZwGSQGcL7+Lyi+J2KH90fyD8Jgv4
+ epaaM/itrNRafGNg+n013icM4Qtqe33SZKFMrrvhpaqQ/3HbcdIm5L0WWsR1uzVsUebF
+ AqQ+gOyimzJXtAnAnSKmP54xpD2t4IZs6lLgGt+/WWFRGtvdUE3ZbdAvVTH+X2B/22Jy
+ 8Ztq3P7kze2V2pE0tigwPKZZeCBswIrCo6lY/can4ycpIpoZH/ykKBA7Cj6skRB1erps
+ f4MA==
+X-Gm-Message-State: ABy/qLa50s4xSHgJb5N79HhZqFe6jLnDwV1GfH9PoNQHs4hMzkpAzDoj
+ IJVJt+cN2meC9zb44tSHgSrO8Q==
+X-Google-Smtp-Source: APBJJlFT3mMJPvwD3fgvO8FiEq4fs8FG1pUMBEGrd2CyS6ZrC7KMM+1EbJ1Looxti1SGzGHpAbhofQ==
+X-Received: by 2002:a05:6512:238b:b0:4f8:58d3:b7ab with SMTP id
+ c11-20020a056512238b00b004f858d3b7abmr3498425lfv.4.1689301446614; 
+ Thu, 13 Jul 2023 19:24:06 -0700 (PDT)
 Received: from navi.cosmonova.net.ua ([95.67.24.131])
  by smtp.gmail.com with ESMTPSA id
- r24-20020ac24d18000000b004fbe2172f7csm1294765lfi.49.2023.07.13.19.24.04
+ r24-20020ac24d18000000b004fbe2172f7csm1294765lfi.49.2023.07.13.19.24.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 13 Jul 2023 19:24:05 -0700 (PDT)
+ Thu, 13 Jul 2023 19:24:06 -0700 (PDT)
 From: Andrew Melnychenko <andrew@daynix.com>
 To: jasowang@redhat.com, mst@redhat.com, armbru@redhat.com, eblake@redhat.com,
  qemu-devel@nongnu.org, berrange@redhat.com
 Cc: yuri.benditovich@daynix.com,
 	yan@daynix.com
-Subject: [PATCH v4 1/6] ebpf: Added eBPF map update through mmap.
-Date: Fri, 14 Jul 2023 05:23:53 +0300
-Message-Id: <20230714022358.2438995-2-andrew@daynix.com>
+Subject: [PATCH v4 2/6] ebpf: Added eBPF initialization by fds.
+Date: Fri, 14 Jul 2023 05:23:54 +0300
+Message-Id: <20230714022358.2438995-3-andrew@daynix.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230714022358.2438995-1-andrew@daynix.com>
 References: <20230714022358.2438995-1-andrew@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2a00:1450:4864:20::136;
- envelope-from=andrew@daynix.com; helo=mail-lf1-x136.google.com
+Received-SPF: none client-ip=2a00:1450:4864:20::234;
+ envelope-from=andrew@daynix.com; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -90,224 +90,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changed eBPF map updates through mmaped array.
-Mmaped arrays provide direct access to map data.
-It should omit using bpf_map_update_elem() call,
-which may require capabilities that are not present.
+It allows using file descriptors of eBPF provided
+outside of QEMU.
+QEMU may be run without capabilities for eBPF and run
+RSS program provided by management tool(g.e. libvirt).
 
 Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
 ---
- ebpf/ebpf_rss.c | 117 ++++++++++++++++++++++++++++++++++++++----------
- ebpf/ebpf_rss.h |   5 +++
- 2 files changed, 99 insertions(+), 23 deletions(-)
+ ebpf/ebpf_rss-stub.c |  6 ++++++
+ ebpf/ebpf_rss.c      | 27 +++++++++++++++++++++++++++
+ ebpf/ebpf_rss.h      |  5 +++++
+ 3 files changed, 38 insertions(+)
 
+diff --git a/ebpf/ebpf_rss-stub.c b/ebpf/ebpf_rss-stub.c
+index e71e229190..8d7fae2ad9 100644
+--- a/ebpf/ebpf_rss-stub.c
++++ b/ebpf/ebpf_rss-stub.c
+@@ -28,6 +28,12 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx)
+     return false;
+ }
+ 
++bool ebpf_rss_load_fds(struct EBPFRSSContext *ctx, int program_fd,
++                       int config_fd, int toeplitz_fd, int table_fd)
++{
++    return false;
++}
++
+ bool ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *config,
+                       uint16_t *indirections_table, uint8_t *toeplitz_key)
+ {
 diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-index cee658c158..247f5eee1b 100644
+index 247f5eee1b..24bc6cc409 100644
 --- a/ebpf/ebpf_rss.c
 +++ b/ebpf/ebpf_rss.c
-@@ -27,19 +27,83 @@ void ebpf_rss_init(struct EBPFRSSContext *ctx)
- {
-     if (ctx != NULL) {
-         ctx->obj = NULL;
+@@ -146,6 +146,33 @@ error:
+     return false;
+ }
+ 
++bool ebpf_rss_load_fds(struct EBPFRSSContext *ctx, int program_fd,
++                       int config_fd, int toeplitz_fd, int table_fd)
++{
++    if (ctx == NULL || ebpf_rss_is_loaded(ctx)) {
++        return false;
++    }
++
++    if (program_fd < 0 || config_fd < 0 || toeplitz_fd < 0 || table_fd < 0) {
++        return false;
++    }
++
++    ctx->program_fd = program_fd;
++    ctx->map_configuration = config_fd;
++    ctx->map_toeplitz_key = toeplitz_fd;
++    ctx->map_indirections_table = table_fd;
++
++    if (!ebpf_rss_mmap(ctx)) {
 +        ctx->program_fd = -1;
 +        ctx->map_configuration = -1;
 +        ctx->map_toeplitz_key = -1;
 +        ctx->map_indirections_table = -1;
-+
-+        ctx->mmap_configuration = NULL;
-+        ctx->mmap_toeplitz_key = NULL;
-+        ctx->mmap_indirections_table = NULL;
-     }
- }
- 
- bool ebpf_rss_is_loaded(struct EBPFRSSContext *ctx)
- {
--    return ctx != NULL && ctx->obj != NULL;
-+    return ctx != NULL && (ctx->obj != NULL || ctx->program_fd != -1);
-+}
-+
-+static bool ebpf_rss_mmap(struct EBPFRSSContext *ctx)
-+{
-+    if (!ebpf_rss_is_loaded(ctx)) {
 +        return false;
-+    }
-+
-+    ctx->mmap_configuration = mmap(NULL, qemu_real_host_page_size(),
-+                                   PROT_READ | PROT_WRITE, MAP_SHARED,
-+                                   ctx->map_configuration, 0);
-+    if (ctx->mmap_configuration == MAP_FAILED) {
-+        trace_ebpf_error("eBPF RSS", "can not mmap eBPF configuration array");
-+        return false;
-+    }
-+    ctx->mmap_toeplitz_key = mmap(NULL, qemu_real_host_page_size(),
-+                                   PROT_READ | PROT_WRITE, MAP_SHARED,
-+                                   ctx->map_toeplitz_key, 0);
-+    if (ctx->mmap_toeplitz_key == MAP_FAILED) {
-+        trace_ebpf_error("eBPF RSS", "can not mmap eBPF toeplitz key");
-+        goto toeplitz_fail;
-+    }
-+    ctx->mmap_indirections_table = mmap(NULL, qemu_real_host_page_size(),
-+                                   PROT_READ | PROT_WRITE, MAP_SHARED,
-+                                   ctx->map_indirections_table, 0);
-+    if (ctx->mmap_indirections_table == MAP_FAILED) {
-+        trace_ebpf_error("eBPF RSS", "can not mmap eBPF indirection table");
-+        goto indirection_fail;
 +    }
 +
 +    return true;
-+
-+indirection_fail:
-+    munmap(ctx->mmap_toeplitz_key, qemu_real_host_page_size());
-+toeplitz_fail:
-+    munmap(ctx->mmap_configuration, qemu_real_host_page_size());
-+
-+    ctx->mmap_configuration = NULL;
-+    ctx->mmap_toeplitz_key = NULL;
-+    ctx->mmap_indirections_table = NULL;
-+    return false;
 +}
 +
-+static void ebpf_rss_munmap(struct EBPFRSSContext *ctx)
-+{
-+    if (!ebpf_rss_is_loaded(ctx)) {
-+        return;
-+    }
-+
-+    munmap(ctx->mmap_indirections_table, qemu_real_host_page_size());
-+    munmap(ctx->mmap_toeplitz_key, qemu_real_host_page_size());
-+    munmap(ctx->mmap_configuration, qemu_real_host_page_size());
-+
-+    ctx->mmap_configuration = NULL;
-+    ctx->mmap_toeplitz_key = NULL;
-+    ctx->mmap_indirections_table = NULL;
- }
- 
- bool ebpf_rss_load(struct EBPFRSSContext *ctx)
- {
-     struct rss_bpf *rss_bpf_ctx;
- 
--    if (ctx == NULL) {
-+    if (ctx == NULL || ebpf_rss_is_loaded(ctx)) {
-         return false;
-     }
- 
-@@ -66,10 +130,18 @@ bool ebpf_rss_load(struct EBPFRSSContext *ctx)
-     ctx->map_toeplitz_key = bpf_map__fd(
-             rss_bpf_ctx->maps.tap_rss_map_toeplitz_key);
- 
-+    if (!ebpf_rss_mmap(ctx)) {
-+        goto error;
-+    }
-+
-     return true;
- error:
-     rss_bpf__destroy(rss_bpf_ctx);
-     ctx->obj = NULL;
-+    ctx->program_fd = -1;
-+    ctx->map_configuration = -1;
-+    ctx->map_toeplitz_key = -1;
-+    ctx->map_indirections_table = -1;
- 
-     return false;
- }
-@@ -77,15 +149,11 @@ error:
  static bool ebpf_rss_set_config(struct EBPFRSSContext *ctx,
                                  struct EBPFRSSConfig *config)
  {
--    uint32_t map_key = 0;
--
-     if (!ebpf_rss_is_loaded(ctx)) {
-         return false;
-     }
--    if (bpf_map_update_elem(ctx->map_configuration,
--                            &map_key, config, 0) < 0) {
--        return false;
--    }
-+
-+    memcpy(ctx->mmap_configuration, config, sizeof(*config));
-     return true;
- }
- 
-@@ -93,27 +161,19 @@ static bool ebpf_rss_set_indirections_table(struct EBPFRSSContext *ctx,
-                                             uint16_t *indirections_table,
-                                             size_t len)
- {
--    uint32_t i = 0;
--
-     if (!ebpf_rss_is_loaded(ctx) || indirections_table == NULL ||
-        len > VIRTIO_NET_RSS_MAX_TABLE_LEN) {
-         return false;
-     }
- 
--    for (; i < len; ++i) {
--        if (bpf_map_update_elem(ctx->map_indirections_table, &i,
--                                indirections_table + i, 0) < 0) {
--            return false;
--        }
--    }
-+    memcpy(ctx->mmap_indirections_table, indirections_table,
-+            sizeof(*indirections_table) * len);
-     return true;
- }
- 
- static bool ebpf_rss_set_toepliz_key(struct EBPFRSSContext *ctx,
-                                      uint8_t *toeplitz_key)
- {
--    uint32_t map_key = 0;
--
-     /* prepare toeplitz key */
-     uint8_t toe[VIRTIO_NET_RSS_MAX_KEY_SIZE] = {};
- 
-@@ -123,10 +183,7 @@ static bool ebpf_rss_set_toepliz_key(struct EBPFRSSContext *ctx,
-     memcpy(toe, toeplitz_key, VIRTIO_NET_RSS_MAX_KEY_SIZE);
-     *(uint32_t *)toe = ntohl(*(uint32_t *)toe);
- 
--    if (bpf_map_update_elem(ctx->map_toeplitz_key, &map_key, toe,
--                            0) < 0) {
--        return false;
--    }
-+    memcpy(ctx->mmap_toeplitz_key, toe, VIRTIO_NET_RSS_MAX_KEY_SIZE);
-     return true;
- }
- 
-@@ -160,6 +217,20 @@ void ebpf_rss_unload(struct EBPFRSSContext *ctx)
-         return;
-     }
- 
--    rss_bpf__destroy(ctx->obj);
-+    ebpf_rss_munmap(ctx);
-+
-+    if (ctx->obj) {
-+        rss_bpf__destroy(ctx->obj);
-+    } else {
-+        close(ctx->program_fd);
-+        close(ctx->map_configuration);
-+        close(ctx->map_toeplitz_key);
-+        close(ctx->map_indirections_table);
-+    }
-+
-     ctx->obj = NULL;
-+    ctx->program_fd = -1;
-+    ctx->map_configuration = -1;
-+    ctx->map_toeplitz_key = -1;
-+    ctx->map_indirections_table = -1;
- }
 diff --git a/ebpf/ebpf_rss.h b/ebpf/ebpf_rss.h
-index bf3f2572c7..ab08a7266d 100644
+index ab08a7266d..239242b0d2 100644
 --- a/ebpf/ebpf_rss.h
 +++ b/ebpf/ebpf_rss.h
-@@ -20,6 +20,11 @@ struct EBPFRSSContext {
-     int map_configuration;
-     int map_toeplitz_key;
-     int map_indirections_table;
-+
-+    /* mapped eBPF maps for direct access to omit bpf_map_update_elem() */
-+    void *mmap_configuration;
-+    void *mmap_toeplitz_key;
-+    void *mmap_indirections_table;
- };
+@@ -14,6 +14,8 @@
+ #ifndef QEMU_EBPF_RSS_H
+ #define QEMU_EBPF_RSS_H
  
- struct EBPFRSSConfig {
++#define EBPF_RSS_MAX_FDS 4
++
+ struct EBPFRSSContext {
+     void *obj;
+     int program_fd;
+@@ -41,6 +43,9 @@ bool ebpf_rss_is_loaded(struct EBPFRSSContext *ctx);
+ 
+ bool ebpf_rss_load(struct EBPFRSSContext *ctx);
+ 
++bool ebpf_rss_load_fds(struct EBPFRSSContext *ctx, int program_fd,
++                       int config_fd, int toeplitz_fd, int table_fd);
++
+ bool ebpf_rss_set_all(struct EBPFRSSContext *ctx, struct EBPFRSSConfig *config,
+                       uint16_t *indirections_table, uint8_t *toeplitz_key);
+ 
 -- 
 2.40.1
 
