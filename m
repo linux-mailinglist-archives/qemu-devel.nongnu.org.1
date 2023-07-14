@@ -2,86 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44290753771
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 12:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 010E27537DC
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 12:21:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKFfx-0002EU-Tg; Fri, 14 Jul 2023 06:05:25 -0400
+	id 1qKFtp-0005Lu-D5; Fri, 14 Jul 2023 06:19:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qKFfv-0002EI-VF
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 06:05:23 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qKFfu-0005Iz-3L
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 06:05:23 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-4fb7b2e3dacso2956529e87.0
- for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 03:05:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689329120; x=1691921120;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=iGJY+snc6RpF7s9t+Bq8tTAlcDZLV9G6cAs6sBjLTC0=;
- b=TT7ji5OXCgKCLm9GF5JTgiNSOq9Td2pTIyrk7HwwXuuPoEtQMafT0PBjIi/2X5v5/4
- KEe3ypLj6QYvPULUmOhX8NT44rKeKPqDJjvA5AUaWMIcrlOBXvPZGSVJ+iWgr/k9fz+I
- MTUFTihqpomCJ/qDD2/85WHXHzsn9j4bkkGTAqrLVWezRF12vSxsAAPkkvwpZfinUJCe
- JUC3c044bRJj7PB3V0E1BWF6YeTiYwF07BDoS2C+yi+nyj88GawMlo3iPbV5YDHtyGTb
- ld+djPEb80tNBvy+I/It3ilOgklSm1PjKs3GOAKBC9csaJCIpU5WtsrxufFXbZOL97Yh
- dXEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689329120; x=1691921120;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iGJY+snc6RpF7s9t+Bq8tTAlcDZLV9G6cAs6sBjLTC0=;
- b=gBLNIvFMiRrSmbmDew0CtJk9fGEK0Q9xkgrBatXsdQqTWly08lG4nT0kcq3AGjDWPI
- xlh0I9laW5IuCExA3zbEQh6RGI3vD2CuzjvjY/xiOrryE4gOV1HHlKuS+sa5xV9DVjtI
- gJmnvAYDeTEC2CXvqqR7JXuPfmh6ODkdTwqOnox+47dKy4Stky7U1TitLEVNUrXoHwi4
- 2srQh7aa9GRSR2qwYt3AZ5vExfOafISdputaEgJUYtNfuX/GEWVDINYa1/TpPW82h0Ea
- iSMsB6yA6VO2gkQZLa2Bjjh1wD7UY82qMPJ3zig1+7rXKy6Dmxta0JPY8v1HazBFQsRH
- d0Lw==
-X-Gm-Message-State: ABy/qLZdhPWqGQAi/yRkRGIm0pMs6NoXxA9Z6K9Ag6Q8iLkx0mViVM9e
- vBZ80O6jJx5V5YcxiSQP673xUmA1Xl9YahcLml2m3w==
-X-Google-Smtp-Source: APBJJlFX+VbNa1JX9BWve5obXbn+8S1lGxvpEWzac8BjFqAjI3SrlaBlhatmGfuPnCRTmtt64p4tWYWT/Qj8LBptyZ8=
-X-Received: by 2002:a05:6512:3d0a:b0:4f9:58bd:9e5a with SMTP id
- d10-20020a0565123d0a00b004f958bd9e5amr3544590lfv.27.1689329119901; Fri, 14
- Jul 2023 03:05:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qKFtm-0005LC-Vn; Fri, 14 Jul 2023 06:19:42 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qKFtl-0007qM-5W; Fri, 14 Jul 2023 06:19:42 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 1921161BAA;
+ Fri, 14 Jul 2023 10:19:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F61C433C8;
+ Fri, 14 Jul 2023 10:19:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1689329978;
+ bh=HdHHxmTmVAgKajq+7/AKdx0474cVGDh1oU5PQNE7K3g=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=eauA1niL/Tj82HPhwwjfB7g9BvzmE6tVPddJpm+k3uDDiH6mYppzwhL76adZ2rs8M
+ VJ/HUJPh4eYpPzvjxthJ6aWD4hr3jy51XLBmfdAgNkmzdZvEIQSphN+uYzWSyPsA2x
+ RDjGrbQeN8w9R9JbkiXEENYcP1Mgg0ldRhx2Td0nPqbOVYeAhP/7XlFKuUrENJYGhW
+ +4/PtbivEZqlIuVNuseFO6MoJ2qEJQHgNTp5ezl3HyQGR7krlrawPCkmZEq849cpS2
+ SoYGnk+mpdS4LsKkBoN4qNSFEPTEn9ceNAXVA/rTM5xZL208G3Tm+LHoktgr1GDzsP
+ PdD71QRW3gmPw==
+Date: Fri, 14 Jul 2023 11:19:34 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Anup Patel <anup@brainfault.org>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ alistair.francis@wdc.com, bmeng@tinylab.org, liweiwei@iscas.ac.cn,
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ opensbi@lists.infradead.org
+Subject: Re: Boot failure after QEMU's upgrade to OpenSBI v1.3 (was Re:
+ [PATCH for-8.2 6/7] target/riscv: add 'max' CPU type)
+Message-ID: <20230714-reoccur-confined-4b37494b1201@spud>
+References: <20230712190149.424675-7-dbarboza@ventanamicro.com>
+ <20230712-stench-happiness-40c2ea831257@spud>
+ <3e9b5be8-d3ca-3a17-bef9-4a6a5bdc0ad0@ventanamicro.com>
+ <20230712-tulip-replica-0322e71c3e81@spud>
+ <744cbde6-7ce5-c327-3c5a-3858e994cc39@ventanamicro.com>
+ <20230712-superhero-rabid-578605f52927@spud>
+ <5dd3366d-13ba-c7fb-554f-549d97e7d4f9@ventanamicro.com>
+ <20230712-fancied-aviator-270f51166407@spud>
+ <20230713-craziness-lankiness-8aec3db24993@spud>
+ <CAAhSdy3J5HUoVP21jo11FBuAFSPSxHNKtuL7amn-5t7n_smoSg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230713035232.48406-1-j@getutm.app>
- <20230713035232.48406-5-j@getutm.app>
- <4a49285e-0d91-93a0-2f8e-e76c71ed89f8@linux.ibm.com>
- <CAFEAcA-r_VOc18-jm99asYQQk4TJMBW_7oJMzFQofEHqVdF50A@mail.gmail.com>
- <ab339186-1af7-171c-eb11-fe124f12b4a2@linux.ibm.com>
- <CAFEAcA9nad4H3MgitMyVsZjNZdY-n9d65Yz4Gtbz2wPYA4fbsg@mail.gmail.com>
- <e2340c41-1d77-3406-001c-4dcce544af74@linux.ibm.com>
- <CAFEAcA-WtwcckNO=kDP8HbY53qV3mTtYysH2Lw8FSJsrWO2tdQ@mail.gmail.com>
- <afb324e8-d65a-12b3-e591-65133087689b@linux.ibm.com>
- <CAFEAcA9Z5wHRuMmeogoyrN=C4OtoKObxNu58nQaOXdYwzq_gpw@mail.gmail.com>
- <c5b44af5-e737-d899-5ea1-3d7debe760a4@linux.ibm.com>
- <CAFEAcA-igpEHJOxw8mCV=em6FRUT8BuNRPCiVMvQ7moaasSmLw@mail.gmail.com>
- <de9befdf-82ea-6cff-e300-7a9edf3e867b@linux.ibm.com>
-In-Reply-To: <de9befdf-82ea-6cff-e300-7a9edf3e867b@linux.ibm.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 14 Jul 2023 11:05:08 +0100
-Message-ID: <CAFEAcA8KgSsmiCFA51vrYAFrXg6p8x=0_qM0wrZ4yHOWrQKp2A@mail.gmail.com>
-Subject: Re: [PATCH 04/11] tpm_crb: use a single read-as-mem/write-as-mmio
- mapping
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="sXT7JxcnXPXKUE6e"
+Content-Disposition: inline
+In-Reply-To: <CAAhSdy3J5HUoVP21jo11FBuAFSPSxHNKtuL7amn-5t7n_smoSg@mail.gmail.com>
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=conor@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,41 +84,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 13 Jul 2023 at 19:43, Stefan Berger <stefanb@linux.ibm.com> wrote:
->
->
->
-> On 7/13/23 13:18, Peter Maydell wrote:
-> > On Thu, 13 Jul 2023 at 18:16, Stefan Berger <stefanb@linux.ibm.com> wrote:
-> >> I guess the first point would be to decide whether to support an i2c bus on the virt board and then whether we can use the aspeed bus that we know that the tpm_tis_i2c device model works with but we don't know how Windows may react to it.
-> >>
-> >> It seems sysbus is already supported there so ... we may have a 'match'?
-> >
-> > You can use sysbus devices anywhere -- they're just
->
-> 'anywhere' also includes aarch64 virt board I suppose.
 
-Yes. Literally any machine can have memory mapped devices.
+--sXT7JxcnXPXKUE6e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > "this is a memory mapped device". The question is whether
-> > we should, or whether an i2c controller is more like
-> > what the real world uses (and if so, what i2c controller).
-> >
->
-> > I don't want to accept changes to the virt board that are
-> > hard to live with in future, because changing virt in
-> > non-backward compatible ways is painful.
->
-> Once we have the CRB sysbus device we would keep it around forever and it seems to
-> - not require any changes to the virt board (iiuc) since sysbus is already being used
-> - works already with Windows and probably also Linux
+On Fri, Jul 14, 2023 at 10:00:19AM +0530, Anup Patel wrote:
 
-"Add a sysbus device to the virt board" is the kind of
-change I mean -- once you do that it's hard to take it
-out again, and if we decide in 6 months time that actually
-i2c would be the better option then we end up with two
-different ways to do the same thing and trying to
-deprecate the other one is a pain.
+> > > OpenSBI v1.3
+> > >    ____                    _____ ____ _____
+> > >   / __ \                  / ____|  _ \_   _|
+> > >  | |  | |_ __   ___ _ __ | (___ | |_) || |
+> > >  | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+> > >  | |__| | |_) |  __/ | | |____) | |_) || |_
+> > >   \____/| .__/ \___|_| |_|_____/|___/_____|
+> > >         | |
+> > >         |_|
+> > >
+> > > init_coldboot: ipi init failed (error -1009)
+> > >
+> > > Just to note, because we use our own firmware that vendors in OpenSBI
+> > > and compiles only a significantly cut down number of files from it, we
+> > > do not use the fw_dynamic etc flow on our hardware. As a result, we h=
+ave
+> > > not tested v1.3, nor do we have any immediate plans to change our
+> > > platform firmware to vendor v1.3 either.
+> > >
+> > > I unless there's something obvious to you, it sounds like I will need=
+ to
+> > > go and bisect OpenSBI. That's a job for another day though, given the
+> > > time.
+> > >
+>=20
+> The real issue is some CPU/HART DT nodes marked as disabled in the
+> DT passed to OpenSBI 1.3.
+>=20
+> This issue does not exist in any of the DTs generated by QEMU but some
+> of the DTs in the kernel (such as microchip and SiFive board DTs) have
+> the E-core disabled.
+>=20
+> I had discovered this issue in a totally different context after the Open=
+SBI 1.3
+> release happened. This issue is already fixed in the latest OpenSBI by the
+> following commit c6a35733b74aeff612398f274ed19a74f81d1f37 ("lib: utils:
+> Fix sbi_hartid_to_scratch() usage in ACLINT drivers").
 
--- PMM
+Great, thanks Anup! I thought I had tested tip-of-tree too, but
+obviously not.
+
+> I always assumed that Microchip hss.bin is the preferred BIOS for the
+> QEMU microchip-icicle-kit machine but I guess that's not true.
+
+Unfortunately the HSS has not worked in QEMU for a long time, and while
+I would love to fix it, but am pretty stretched for spare time to begin
+with.
+I usually just do direct kernel boots, which use the OpenSBI that comes
+with QEMU, as I am sure you already know :)
+
+> At this point, you can either:
+> 1) Use latest OpenSBI on QEMU microchip-icicle-kit machine
+
+> 2) Ensure CPU0 DT node is enabled in DT when booting on QEMU
+>     microchip-icicle-kit machine with OpenSBI 1.3
+
+Will OpenSBI disable it? If not, I think option 2) needs to be remove
+the DT node. I'll just use tip-of-tree myself & up to the=20
+
+--sXT7JxcnXPXKUE6e
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZLEhMgAKCRB4tDGHoIJi
+0piLAP9dZgB7KPjvsHS1t4BfqeYN089+spdFx5YHRYqaLci2bQEA3TEMcf8JoKwN
+VoJf3bUidPUBzy0IUbPhYgaCUUrEmww=
+=VDUQ
+-----END PGP SIGNATURE-----
+
+--sXT7JxcnXPXKUE6e--
 
