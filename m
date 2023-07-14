@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34CA7539FC
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 13:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED94753A07
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 13:47:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKH9r-0001Uz-Tu; Fri, 14 Jul 2023 07:40:24 -0400
+	id 1qKH9v-0001hV-Fq; Fri, 14 Jul 2023 07:40:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qKH9i-00012T-OX; Fri, 14 Jul 2023 07:40:14 -0400
+ id 1qKH9m-00019j-65; Fri, 14 Jul 2023 07:40:18 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qKH9g-0004ap-SV; Fri, 14 Jul 2023 07:40:14 -0400
+ id 1qKH9k-0004bR-5C; Fri, 14 Jul 2023 07:40:17 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 260B913DA0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 50B9513DA1;
  Fri, 14 Jul 2023 14:38:58 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 209F814BAF;
+ by tsrv.corpit.ru (Postfix) with SMTP id 48ABE14BB0;
  Fri, 14 Jul 2023 14:38:42 +0300 (MSK)
-Received: (nullmailer pid 1186255 invoked by uid 1000);
+Received: (nullmailer pid 1186259 invoked by uid 1000);
  Fri, 14 Jul 2023 11:38:38 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH, trivial 20/29] tree-wide spelling fixes in comments and some
- messages: hw/display
-Date: Fri, 14 Jul 2023 14:38:25 +0300
-Message-Id: <20230714113834.1186117-22-mjt@tls.msk.ru>
+Subject: [PATCH, trivial 21/29] tree-wide spelling fixes in comments and some
+ messages: xen
+Date: Fri, 14 Jul 2023 14:38:26 +0300
+Message-Id: <20230714113834.1186117-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230714113834.1186117-1-mjt@tls.msk.ru>
 References: <20230714113834.1186117-1-mjt@tls.msk.ru>
@@ -61,58 +61,158 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/display/bochs-display.c | 2 +-
- hw/display/qxl.c           | 2 +-
- hw/display/ssd0303.c       | 2 +-
- hw/display/ssd0323.c       | 2 +-
- hw/display/xlnx_dp.c       | 2 +-
- 5 files changed, 5 insertions(+), 5 deletions(-)
+ hw/xen/xen_pvdev.c                             | 2 +-
+ include/hw/xen/interface/arch-x86/xen-x86_64.h | 2 +-
+ include/hw/xen/interface/arch-x86/xen.h        | 2 +-
+ include/hw/xen/interface/event_channel.h       | 2 +-
+ include/hw/xen/interface/grant_table.h         | 2 +-
+ include/hw/xen/interface/hvm/hvm_op.h          | 2 +-
+ include/hw/xen/interface/io/blkif.h            | 6 +++---
+ include/hw/xen/interface/io/fbif.h             | 2 +-
+ include/hw/xen/interface/io/kbdif.h            | 2 +-
+ include/hw/xen/interface/memory.h              | 2 +-
+ include/hw/xen/interface/physdev.h             | 4 ++--
+ include/hw/xen/interface/sched.h               | 2 +-
+ include/hw/xen/interface/xen.h                 | 4 ++--
+ 13 files changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/hw/display/bochs-display.c b/hw/display/bochs-display.c
-index e7ec268184..9138e98c3b 100644
---- a/hw/display/bochs-display.c
-+++ b/hw/display/bochs-display.c
-@@ -166,3 +166,3 @@ static int bochs_display_get_mode(BochsDisplayState *s,
-     case 16:
--        /* best effort: support native endianess only */
-+        /* best effort: support native endianness only */
-         mode->format = PIXMAN_r5g6b5;
-diff --git a/hw/display/qxl.c b/hw/display/qxl.c
-index f1c0eb7dfc..af941fb0c2 100644
---- a/hw/display/qxl.c
-+++ b/hw/display/qxl.c
-@@ -1546,3 +1546,3 @@ static void qxl_create_guest_primary(PCIQXLDevice *qxl, int loadvm,
- 
--/* return 1 if surface destoy was initiated (in QXL_ASYNC case) or
-+/* return 1 if surface destroy was initiated (in QXL_ASYNC case) or
-  * done (in QXL_SYNC case), 0 otherwise. */
-diff --git a/hw/display/ssd0303.c b/hw/display/ssd0303.c
-index d67b0ad7b5..32b32a3044 100644
---- a/hw/display/ssd0303.c
-+++ b/hw/display/ssd0303.c
-@@ -10,3 +10,3 @@
- /* The controller can support a variety of different displays, but we only
--   implement one.  Most of the commends relating to brightness and geometry
-+   implement one.  Most of the commands relating to brightness and geometry
-    setup are ignored. */
-diff --git a/hw/display/ssd0323.c b/hw/display/ssd0323.c
-index ab229d32b7..09b1bbed0a 100644
---- a/hw/display/ssd0323.c
-+++ b/hw/display/ssd0323.c
-@@ -10,3 +10,3 @@
- /* The controller can support a variety of different displays, but we only
--   implement one.  Most of the commends relating to brightness and geometry
-+   implement one.  Most of the commands relating to brightness and geometry
-    setup are ignored. */
-diff --git a/hw/display/xlnx_dp.c b/hw/display/xlnx_dp.c
-index b0828d65aa..822355ecc6 100644
---- a/hw/display/xlnx_dp.c
-+++ b/hw/display/xlnx_dp.c
-@@ -382,3 +382,3 @@ static void xlnx_dp_audio_callback(void *opaque, int avail)
-     /*
--     * Get some data from the DPDMA and compute these datas.
-+     * Get some data from the DPDMA and compute these data.
-      * Then wait for QEMU's audio subsystem to call this callback.
+diff --git a/hw/xen/xen_pvdev.c b/hw/xen/xen_pvdev.c
+index be1504b82c..c5ad71e8dc 100644
+--- a/hw/xen/xen_pvdev.c
++++ b/hw/xen/xen_pvdev.c
+@@ -91,3 +91,3 @@ char *xenstore_read_str(const char *base, const char *node)
+         /* move to qemu-allocated memory to make sure
+-         * callers can savely g_free() stuff. */
++         * callers can safely g_free() stuff. */
+         ret = g_strdup(str);
+diff --git a/include/hw/xen/interface/arch-x86/xen-x86_64.h b/include/hw/xen/interface/arch-x86/xen-x86_64.h
+index 40aed14366..eae96f4f67 100644
+--- a/include/hw/xen/interface/arch-x86/xen-x86_64.h
++++ b/include/hw/xen/interface/arch-x86/xen-x86_64.h
+@@ -108,3 +108,3 @@
+  *   RING3 -> RING3 user mode.
+- * However RING0 indicates that the guest kernel should return to iteself
++ * However RING0 indicates that the guest kernel should return to itself
+  * directly with
+diff --git a/include/hw/xen/interface/arch-x86/xen.h b/include/hw/xen/interface/arch-x86/xen.h
+index 7acd94c8eb..efa67d1499 100644
+--- a/include/hw/xen/interface/arch-x86/xen.h
++++ b/include/hw/xen/interface/arch-x86/xen.h
+@@ -141,3 +141,3 @@ typedef unsigned long xen_ulong_t;
+  * privilege levels as follows:
+- *  Level == 0: Noone may enter
++ *  Level == 0: No one may enter
+  *  Level == 1: Kernel may enter
+diff --git a/include/hw/xen/interface/event_channel.h b/include/hw/xen/interface/event_channel.h
+index 73c9f38ce1..9073d3852f 100644
+--- a/include/hw/xen/interface/event_channel.h
++++ b/include/hw/xen/interface/event_channel.h
+@@ -321,3 +321,3 @@ typedef struct evtchn_set_priority evtchn_set_priority_t;
+  * `
+- * Superceded by new event_channel_op() hypercall since 0x00030202.
++ * Superseded by new event_channel_op() hypercall since 0x00030202.
+  */
+diff --git a/include/hw/xen/interface/grant_table.h b/include/hw/xen/interface/grant_table.h
+index 7934d7b718..f8e4398ecd 100644
+--- a/include/hw/xen/interface/grant_table.h
++++ b/include/hw/xen/interface/grant_table.h
+@@ -626,3 +626,3 @@ DEFINE_XEN_GUEST_HANDLE(gnttab_cache_flush_t);
+   *  0 => This map request contains a host virtual address.
+-  *  1 => This map request contains the machine addess of the PTE to update.
++  *  1 => This map request contains the machine address of the PTE to update.
+   */
+diff --git a/include/hw/xen/interface/hvm/hvm_op.h b/include/hw/xen/interface/hvm/hvm_op.h
+index 870ec52060..188960da7e 100644
+--- a/include/hw/xen/interface/hvm/hvm_op.h
++++ b/include/hw/xen/interface/hvm/hvm_op.h
+@@ -356,3 +356,3 @@ struct xen_hvm_altp2m_op {
+ #define HVMOP_altp2m_get_p2m_idx          14
+-/* Set the "Supress #VE" bit for a range of pages */
++/* Set the "Suppress #VE" bit for a range of pages */
+ #define HVMOP_altp2m_set_suppress_ve_multi 15
+diff --git a/include/hw/xen/interface/io/blkif.h b/include/hw/xen/interface/io/blkif.h
+index 4cdba79aba..507d5170db 100644
+--- a/include/hw/xen/interface/io/blkif.h
++++ b/include/hw/xen/interface/io/blkif.h
+@@ -61,3 +61,3 @@
+  * expressed as fixed sized integer types capable of storing the conversion
+- * of a properly formated node string, without loss of information.
++ * of a properly formatted node string, without loss of information.
+  *
+@@ -260,3 +260,3 @@
+  *      NOTE: Because of implementation bugs in some frontends this must be
+- *            set to 512, unless the frontend advertizes a non-zero value
++ *            set to 512, unless the frontend advertises a non-zero value
+  *            in its "feature-large-sector-size" xenbus node. (See below).
+@@ -417,3 +417,3 @@
+  *     grants that can be persistently mapped in the frontend driver, but
+- *     due to the frontent driver implementation it should never be bigger
++ *     due to the frontend driver implementation it should never be bigger
+  *     than RING_SIZE * BLKIF_MAX_SEGMENTS_PER_REQUEST.
+diff --git a/include/hw/xen/interface/io/fbif.h b/include/hw/xen/interface/io/fbif.h
+index cc25aab32e..098561c55a 100644
+--- a/include/hw/xen/interface/io/fbif.h
++++ b/include/hw/xen/interface/io/fbif.h
+@@ -91,3 +91,3 @@ union xenfb_out_event
+  * those have been requested), then use the update frequency to guide
+- * their periodical refreshs.
++ * their periodical refreshes.
+  */
+diff --git a/include/hw/xen/interface/io/kbdif.h b/include/hw/xen/interface/io/kbdif.h
+index a6b01c52c7..6fb73c8004 100644
+--- a/include/hw/xen/interface/io/kbdif.h
++++ b/include/hw/xen/interface/io/kbdif.h
+@@ -41,3 +41,3 @@
+  * expressed as fixed sized integer types capable of storing the conversion
+- * of a properly formated node string, without loss of information.
++ * of a properly formatted node string, without loss of information.
+  *
+diff --git a/include/hw/xen/interface/memory.h b/include/hw/xen/interface/memory.h
+index 383a9468c3..b5edabf63c 100644
+--- a/include/hw/xen/interface/memory.h
++++ b/include/hw/xen/interface/memory.h
+@@ -186,3 +186,3 @@ struct xen_machphys_mfn_list {
+      * Pointer to buffer to fill with list of extent starts. If there are
+-     * any large discontiguities in the machine address space, 2MB gaps in
++     * any large discontinuities in the machine address space, 2MB gaps in
+      * the machphys table will be represented by an MFN base of zero.
+diff --git a/include/hw/xen/interface/physdev.h b/include/hw/xen/interface/physdev.h
+index d271766ad0..55cd5892ac 100644
+--- a/include/hw/xen/interface/physdev.h
++++ b/include/hw/xen/interface/physdev.h
+@@ -225,3 +225,3 @@ DEFINE_XEN_GUEST_HANDLE(physdev_manage_pci_ext_t);
+ /*
+- * Argument to physdev_op_compat() hypercall. Superceded by new physdev_op()
++ * Argument to physdev_op_compat() hypercall. Superseded by new physdev_op()
+  * hypercall since 0x00030202.
+@@ -351,3 +351,3 @@ DEFINE_XEN_GUEST_HANDLE(physdev_dbgp_op_t);
+ /*
+- * These all-capitals physdev operation names are superceded by the new names
++ * These all-capitals physdev operation names are superseded by the new names
+  * (defined above) since interface version 0x00030202. The guard above was
+diff --git a/include/hw/xen/interface/sched.h b/include/hw/xen/interface/sched.h
+index 811bd87c82..043900b49a 100644
+--- a/include/hw/xen/interface/sched.h
++++ b/include/hw/xen/interface/sched.h
+@@ -68,3 +68,3 @@
+  * If called with event upcalls masked, this operation will atomically
+- * reenable event delivery and check for pending events before blocking the
++ * re-enable event delivery and check for pending events before blocking the
+  * VCPU. This avoids a "wakeup waiting" race.
+diff --git a/include/hw/xen/interface/xen.h b/include/hw/xen/interface/xen.h
+index e373592c33..8c7914bbfb 100644
+--- a/include/hw/xen/interface/xen.h
++++ b/include/hw/xen/interface/xen.h
+@@ -608,3 +608,3 @@ DEFINE_XEN_GUEST_HANDLE(mmuext_op_t);
+ /*
+- * DOMID_COW is used as the owner of sharable pages */
++ * DOMID_COW is used as the owner of shareable pages */
+ #define DOMID_COW            xen_mk_uint(0x7FF3)
+@@ -752,3 +752,3 @@ struct shared_info {
+      *     arrange out-of-band to set up a connection (usually by allocating
+-     *     an unbound 'listener' port and avertising that via a storage service
++     *     an unbound 'listener' port and advertising that via a storage service
+      *     such as xenstore).
 -- 
 2.39.2
 
