@@ -2,90 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6765675328F
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 09:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BB7175329C
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 09:11:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKCsh-0004c7-Iq; Fri, 14 Jul 2023 03:06:23 -0400
+	id 1qKCw9-0006LC-Lv; Fri, 14 Jul 2023 03:09:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKCsf-0004bD-7u
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 03:06:21 -0400
-Received: from mail-qk1-x736.google.com ([2607:f8b0:4864:20::736])
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1qKCw6-0006Ki-FA
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 03:09:54 -0400
+Received: from mail-pg1-f179.google.com ([209.85.215.179])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKCsd-0002bC-OC
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 03:06:20 -0400
-Received: by mail-qk1-x736.google.com with SMTP id
- af79cd13be357-765a311a7a9so70040385a.0
- for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 00:06:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689318379; x=1691910379;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Y/nraKwf4A13m/XOj/qEjRykkBHYdmzAh91OERfh0wM=;
- b=UoOuTGSiclO9/4oz/pCtkwXipqHfLgSO0NM2qh9Y0f6g2sBiXBexT16ocvsT0rLg3o
- f6vmybCBNthY2xQUT2aqyRtuOZH1MasoyyqycpNVN8iQlgSeihs305wr6Hpih7EhftyX
- 1nffKBObe5lE9THPW93myh7TUTpM3NHOLJOOtLasDfHm4r413Lv4YoitMJ4x6CJIi42P
- AWQp+27IQsR+NZNugY37qmLZ331WBXw0+5D6I0QuzWzv5GhNJ1GS9kE/AxL5wST0Dghc
- jrBPt7PLgeMkSc21so/AfzOZxrFuprAEldSK+UTCojfrvdoMrgoLlz0kTzHgAa8/VKp5
- 1PDg==
+ (Exim 4.90_1) (envelope-from <osy86dev@gmail.com>)
+ id 1qKCw4-000588-9l
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 03:09:54 -0400
+Received: by mail-pg1-f179.google.com with SMTP id
+ 41be03b00d2f7-55c85b5321dso919329a12.3
+ for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 00:09:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689318379; x=1691910379;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Y/nraKwf4A13m/XOj/qEjRykkBHYdmzAh91OERfh0wM=;
- b=hWfwB1haqvO7uNb2+xzxn323a9pc/kLgMflha4/oRX4SOZHodayxZR+QzRSQNH8yyf
- E5cBmA7/9JekaXqYKgJl32XNfuBSW06P8e79sKv8E1E8CHRDzJ0orrC+rBxDkaDXFPAG
- 7TeYGZYxtpAYBxKYrvJYZsuQMe7mBKUAATzkS10VwEIRrTCgY9q8ApFS+EWnGjZXdy/H
- pKZV9USW3hKI+K0WRFw9HtOi/PqVlq2AN1OcYd7bSPb8yNy882mRGKx13Mrd4GiYGYgA
- ZEeyy9LuNWIIGcCXS6+kHFvuuu1ZtLcYVyX/Vz8gQAHw7fhehy2HvYtOAE2rF+1wyyMR
- 9mDQ==
-X-Gm-Message-State: ABy/qLYCAv74MLAg7PkctewMvMqctkf6bK4io9qknFxEKoyPPoenqi6P
- wDgf6HqtBXIAdBB/JIqFFXk+3g==
-X-Google-Smtp-Source: APBJJlHOI6PeaEOT3TagzDghdAAMY9hhVqBjoZQeAwpeOZtMelsfHu3afu+KpNPkhro9Kjscv+P7xQ==
-X-Received: by 2002:a05:620a:133c:b0:767:156e:ddaa with SMTP id
- p28-20020a05620a133c00b00767156eddaamr1841732qkj.35.1689318378734; 
- Fri, 14 Jul 2023 00:06:18 -0700 (PDT)
-Received: from [192.168.149.227] ([172.58.27.104])
+ d=1e100.net; s=20221208; t=1689318590; x=1691910590;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=MHjvPHmIDmFZH1P1OHHcrfdWoiYcZMQ4N5O4/AK9/ok=;
+ b=K+63sw/48TehXcZBcJ2I1zPB98Jz8kWBu4aqsp4M04IPb50IJIDU7VqoWP7NKBDuqJ
+ X2lmjQ+Ac1JRNb0IzGttQPAMtSujmRDRDuUnKTUQHgY07+8mLjXcMgpwqKIQz3qkQVXS
+ lY8jj5z7awCx8q8IHavhOFY1TunJ0feNDyXUlt+IBuRLGAm8R7S2rUbQHu0LC0n3c46v
+ gjOpAokT9QKCk01yaDQ0k4/JJ6lqgyPNzsLBLz8zOZfjrLJriiB8K9VPIalO1TXJXvz9
+ i95YvicwBEfFHKhLowVGmsXQrreVjMRNbm7M9nKh+msjgmJHiiPsuI2kMRrFuZv6NkTX
+ gl9w==
+X-Gm-Message-State: ABy/qLbU1W2Wn6AFqqvcQPK/Ldmafahtho50I8a1MMaPUAfdTNcZ/UaY
+ VODhM1dSDkNW1oWqMLK2gYQY3Dc26+SzqQ==
+X-Google-Smtp-Source: APBJJlGz8ZElAyOoShJEOU+eOaB/RNxSa3uVnl0zoD9iHARaWtGJEjCs9atXnkuw2AMvLOeVqC2YYw==
+X-Received: by 2002:a05:6a20:8403:b0:12f:df4:6102 with SMTP id
+ c3-20020a056a20840300b0012f0df46102mr3360853pzd.27.1689318589836; 
+ Fri, 14 Jul 2023 00:09:49 -0700 (PDT)
+Received: from localhost.localdomain
+ ([2607:fb90:dd17:8dad:e558:8948:1ff6:c8c1])
  by smtp.gmail.com with ESMTPSA id
- g7-20020ae9e107000000b0075cd80fde9esm3547613qkm.89.2023.07.14.00.06.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 14 Jul 2023 00:06:18 -0700 (PDT)
-Message-ID: <290271a0-88cd-88b6-a485-3e1a3b9bf3e1@linaro.org>
-Date: Fri, 14 Jul 2023 08:06:10 +0100
+ t8-20020a170902b20800b001b89466a5f4sm7041513plr.105.2023.07.14.00.09.48
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 14 Jul 2023 00:09:49 -0700 (PDT)
+From: Joelle van Dyne <j@getutm.app>
+To: qemu-devel@nongnu.org
+Subject: [PATCH v2 00/11] tpm: introduce TPM CRB SysBus device
+Date: Fri, 14 Jul 2023 00:09:16 -0700
+Message-ID: <20230714070931.23476-1-j@getutm.app>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 10/11] hw/char/pl011: Rename RX FIFO methods
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Evgeny Iakovlev <eiakovlev@linux.microsoft.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org
-References: <20230710175102.32429-1-philmd@linaro.org>
- <20230710175102.32429-11-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230710175102.32429-11-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::736;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x736.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=209.85.215.179; envelope-from=osy86dev@gmail.com;
+ helo=mail-pg1-f179.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,17 +78,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/10/23 18:51, Philippe Mathieu-Daudé wrote:
-> In preparation of having a TX FIFO, rename the RX FIFO methods.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> Reviewed-by: Alex Bennée<alex.bennee@linaro.org>
-> ---
->   hw/char/pl011.c      | 10 +++++-----
->   hw/char/trace-events |  4 ++--
->   2 files changed, 7 insertions(+), 7 deletions(-)
+The impetus for this patch set is to get TPM 2.0 working on Windows 11 ARM64.
+Windows' tpm.sys does not seem to work on a TPM TIS device (as verified with
+VMWare's implementation). However, the current TPM CRB device uses a fixed
+system bus address that is reserved for RAM in ARM64 Virt machines.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+In the process of adding the TPM CRB SysBus device, we also went ahead and
+cleaned up some of the existing TPM hardware code and fixed some bugs. We used
+the TPM TIS devices as a template for the TPM CRB devices and refactored out
+common code. We moved the ACPI DSDT generation to the device in order to handle
+dynamic base address requirements as well as reduce redundent code in different
+machine ACPI generation. We also changed the tpm_crb device to use the ISA bus
+instead of depending on the default system bus as the device only was built for
+the PC configuration.
 
-r~
+Another change is that the TPM CRB registers are now mapped in the same way that
+the pflash ROM devices are mapped. It is a memory region whose writes are
+trapped as MMIO accesses. This was needed because Apple Silicon does not decode
+LDP (AARCH64 load pair of registers) caused page faults. @agraf suggested that
+we do this to avoid having to do AARCH64 decoding in the HVF backend's fault
+handler.
+
+Unfortunately, it seems like the LDP fault still happens on HVF but the issue
+seems to be in the HVF backend which needs to be fixed in a separate patch.
+
+One last thing that's needed to get Windows 11 to recognize the TPM 2.0 device
+is for the OVMF firmware to setup the TPM device. Currently, OVMF for ARM64 Virt
+only recognizes the TPM TIS device through a FDT entry. A workaround is to
+falsely identify the TPM CRB device as a TPM TIS device in the FDT node but this
+causes issues for Linux. A proper fix would involve adding an ACPI device driver
+in OVMF.
+
+v2:
+- Fixed an issue where VMstate restore from an older version failed due to name
+  collision of the memory block.
+- In the ACPI table generation for CRB devices, the check for TPM 2.0 backend is
+  moved to the device realize as CRB does not support TPM 1.0. It will error in
+  that case.
+- Dropped the patch to fix crash when PPI is enabled on TIS SysBus device since
+  a separate patch submitted by Stefan Berger disables such an option.
+- Fixed an issue where we default tpmEstablished=0 when it should be 1.
+- In TPM CRB SysBus's ACPI entry, we accidently changed _UID from 0 to 1. This
+  shouldn't be an issue but we changed it back just in case.
+- Added a patch to migrate saved VMstate from an older version with the regs
+  saved separately instead of as a RAM block.
+
+Joelle van Dyne (11):
+  tpm_crb: refactor common code
+  tpm_crb: CTRL_RSP_ADDR is 64-bits wide
+  tpm_ppi: refactor memory space initialization
+  tpm_crb: use a single read-as-mem/write-as-mmio mapping
+  tpm_crb: use the ISA bus
+  tpm_crb: move ACPI table building to device interface
+  hw/arm/virt: add plug handler for TPM on SysBus
+  hw/loongarch/virt: add plug handler for TPM on SysBus
+  tpm_tis_sysbus: move DSDT AML generation to device
+  tpm_crb_sysbus: introduce TPM CRB SysBus device
+  tpm_crb: support restoring older vmstate
+
+ docs/specs/tpm.rst          |   2 +
+ hw/tpm/tpm_crb.h            |  75 +++++++++
+ hw/tpm/tpm_ppi.h            |  10 +-
+ include/hw/acpi/aml-build.h |   1 +
+ include/hw/acpi/tpm.h       |   3 +-
+ include/sysemu/tpm.h        |   3 +
+ hw/acpi/aml-build.c         |   7 +-
+ hw/arm/virt-acpi-build.c    |  38 +----
+ hw/arm/virt.c               |  38 +++++
+ hw/core/sysbus-fdt.c        |   1 +
+ hw/i386/acpi-build.c        |  23 ---
+ hw/loongarch/acpi-build.c   |  38 +----
+ hw/loongarch/virt.c         |  38 +++++
+ hw/riscv/virt.c             |   1 +
+ hw/tpm/tpm_crb.c            | 314 +++++++++---------------------------
+ hw/tpm/tpm_crb_common.c     | 233 ++++++++++++++++++++++++++
+ hw/tpm/tpm_crb_sysbus.c     | 170 +++++++++++++++++++
+ hw/tpm/tpm_ppi.c            |   5 +-
+ hw/tpm/tpm_tis_isa.c        |   5 +-
+ hw/tpm/tpm_tis_sysbus.c     |  35 ++++
+ tests/qtest/tpm-crb-test.c  |   2 +-
+ tests/qtest/tpm-util.c      |   2 +-
+ hw/arm/Kconfig              |   1 +
+ hw/riscv/Kconfig            |   1 +
+ hw/tpm/Kconfig              |   7 +-
+ hw/tpm/meson.build          |   3 +
+ hw/tpm/trace-events         |   2 +-
+ 27 files changed, 708 insertions(+), 350 deletions(-)
+ create mode 100644 hw/tpm/tpm_crb.h
+ create mode 100644 hw/tpm/tpm_crb_common.c
+ create mode 100644 hw/tpm/tpm_crb_sysbus.c
+
+-- 
+2.39.2 (Apple Git-143)
+
 
