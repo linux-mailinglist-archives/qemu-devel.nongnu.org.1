@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B110F753590
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 10:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94302753562
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 10:47:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKESc-0004NI-2a; Fri, 14 Jul 2023 04:47:36 -0400
+	id 1qKESB-0003jl-Qa; Fri, 14 Jul 2023 04:47:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qKES2-0003BS-Sk
+ id 1qKES2-0003AZ-Is
  for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:46:58 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qKERz-0004vC-K7
+ (envelope-from <gaosong@loongson.cn>) id 1qKES0-0004vW-3c
  for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:46:58 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxIvBzC7Fksc4EAA--.12557S3;
+ by gateway (Coremail) with SMTP id _____8BxHOtzC7Fktc4EAA--.8193S3;
  Fri, 14 Jul 2023 16:46:43 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8AxzyNYC7FkFOotAA--.22026S43; 
- Fri, 14 Jul 2023 16:46:42 +0800 (CST)
+ AQAAf8AxzyNYC7FkFOotAA--.22026S44; 
+ Fri, 14 Jul 2023 16:46:43 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org
-Subject: [PATCH v3 41/47] target/loongarch: Implement xvbitsel xvset
-Date: Fri, 14 Jul 2023 16:46:09 +0800
-Message-Id: <20230714084615.2448038-42-gaosong@loongson.cn>
+Subject: [PATCH v3 42/47] target/loongarch: Implement xvinsgr2vr xvpickve2gr
+Date: Fri, 14 Jul 2023 16:46:10 +0800
+Message-Id: <20230714084615.2448038-43-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230714084615.2448038-1-gaosong@loongson.cn>
 References: <20230714084615.2448038-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8AxzyNYC7FkFOotAA--.22026S43
+X-CM-TRANSID: AQAAf8AxzyNYC7FkFOotAA--.22026S44
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,330 +63,111 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVBITSEL.V;
-- XVBITSELI.B;
-- XVSET{EQZ/NEZ}.V;
-- XVSETANYEQZ.{B/H/W/D};
-- XVSETALLNEZ.{B/H/W/D}.
+- XVINSGR2VR.{W/D};
+- XVPICKVE2GR.{W/D}[U].
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/disas.c                     | 19 +++++++++
- target/loongarch/helper.h                    | 16 ++++----
- target/loongarch/insn_trans/trans_lasx.c.inc | 42 ++++++++++++++++++++
- target/loongarch/insn_trans/trans_lsx.c.inc  | 36 ++++++++++-------
- target/loongarch/insns.decode                | 15 +++++++
- target/loongarch/vec_helper.c                | 40 ++++++++++++-------
- 6 files changed, 130 insertions(+), 38 deletions(-)
+ target/loongarch/disas.c                     | 18 ++++++++++++
+ target/loongarch/insn_trans/trans_lasx.c.inc | 30 ++++++++++++++++++++
+ target/loongarch/insns.decode                |  7 +++++
+ 3 files changed, 55 insertions(+)
 
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 607774375c..3a06b5cb80 100644
+index 3a06b5cb80..0995d9b794 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -1703,6 +1703,11 @@ static bool trans_##insn(DisasContext *ctx, arg_##type * a) \
-     return true;                                            \
+@@ -1738,6 +1738,17 @@ static void output_vr_x(DisasContext *ctx, arg_vr *a, const char *mnemonic)
+     output(ctx, mnemonic, "x%d, r%d", a->vd, a->rj);
  }
  
-+static void output_cv_x(DisasContext *ctx, arg_cv *a, const char *mnemonic)
++static void output_vr_i_x(DisasContext *ctx, arg_vr_i *a, const char *mnemonic)
 +{
-+    output(ctx, mnemonic, "fcc%d, x%d", a->cd, a->vj);
++    output(ctx, mnemonic, "x%d, r%d, 0x%x", a->vd, a->rj, a->imm);
 +}
 +
- static void output_v_i_x(DisasContext *ctx, arg_v_i *a, const char *mnemonic)
- {
-     output(ctx, mnemonic, "x%d, 0x%x", a->vd, a->imm);
-@@ -2479,6 +2484,20 @@ static bool trans_xvfcmp_cond_##suffix(DisasContext *ctx, \
- LASX_FCMP_INSN(s)
- LASX_FCMP_INSN(d)
- 
-+INSN_LASX(xvbitsel_v,        vvvv)
-+INSN_LASX(xvbitseli_b,       vv_i)
++static void output_rv_i_x(DisasContext *ctx, arg_rv_i *a, const char *mnemonic)
++{
++    output(ctx, mnemonic, "r%d, x%d, 0x%x", a->rd, a->vj, a->imm);
++}
 +
-+INSN_LASX(xvseteqz_v,        cv)
-+INSN_LASX(xvsetnez_v,        cv)
-+INSN_LASX(xvsetanyeqz_b,     cv)
-+INSN_LASX(xvsetanyeqz_h,     cv)
-+INSN_LASX(xvsetanyeqz_w,     cv)
-+INSN_LASX(xvsetanyeqz_d,     cv)
-+INSN_LASX(xvsetallnez_b,     cv)
-+INSN_LASX(xvsetallnez_h,     cv)
-+INSN_LASX(xvsetallnez_w,     cv)
-+INSN_LASX(xvsetallnez_d,     cv)
++
+ INSN_LASX(xvadd_b,           vvv)
+ INSN_LASX(xvadd_h,           vvv)
+ INSN_LASX(xvadd_w,           vvv)
+@@ -2498,6 +2509,13 @@ INSN_LASX(xvsetallnez_h,     cv)
+ INSN_LASX(xvsetallnez_w,     cv)
+ INSN_LASX(xvsetallnez_d,     cv)
+ 
++INSN_LASX(xvinsgr2vr_w,      vr_i)
++INSN_LASX(xvinsgr2vr_d,      vr_i)
++INSN_LASX(xvpickve2gr_w,     rv_i)
++INSN_LASX(xvpickve2gr_d,     rv_i)
++INSN_LASX(xvpickve2gr_wu,    rv_i)
++INSN_LASX(xvpickve2gr_du,    rv_i)
 +
  INSN_LASX(xvreplgr2vr_b,     vr)
  INSN_LASX(xvreplgr2vr_h,     vr)
  INSN_LASX(xvreplgr2vr_w,     vr)
-diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-index 31b3caaa96..21993c8987 100644
---- a/target/loongarch/helper.h
-+++ b/target/loongarch/helper.h
-@@ -658,14 +658,14 @@ DEF_HELPER_6(vfcmp_s_d, void, env, i32, i32, i32, i32, i32)
- 
- DEF_HELPER_FLAGS_4(vbitseli_b, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
- 
--DEF_HELPER_3(vsetanyeqz_b, void, env, i32, i32)
--DEF_HELPER_3(vsetanyeqz_h, void, env, i32, i32)
--DEF_HELPER_3(vsetanyeqz_w, void, env, i32, i32)
--DEF_HELPER_3(vsetanyeqz_d, void, env, i32, i32)
--DEF_HELPER_3(vsetallnez_b, void, env, i32, i32)
--DEF_HELPER_3(vsetallnez_h, void, env, i32, i32)
--DEF_HELPER_3(vsetallnez_w, void, env, i32, i32)
--DEF_HELPER_3(vsetallnez_d, void, env, i32, i32)
-+DEF_HELPER_4(vsetanyeqz_b, void, env, i32, i32, i32)
-+DEF_HELPER_4(vsetanyeqz_h, void, env, i32, i32, i32)
-+DEF_HELPER_4(vsetanyeqz_w, void, env, i32, i32, i32)
-+DEF_HELPER_4(vsetanyeqz_d, void, env, i32, i32, i32)
-+DEF_HELPER_4(vsetallnez_b, void, env, i32, i32, i32)
-+DEF_HELPER_4(vsetallnez_h, void, env, i32, i32, i32)
-+DEF_HELPER_4(vsetallnez_w, void, env, i32, i32, i32)
-+DEF_HELPER_4(vsetallnez_d, void, env, i32, i32, i32)
- 
- DEF_HELPER_FLAGS_4(vpackev_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
- DEF_HELPER_FLAGS_4(vpackev_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
 diff --git a/target/loongarch/insn_trans/trans_lasx.c.inc b/target/loongarch/insn_trans/trans_lasx.c.inc
-index 57cab4e056..700cbdc622 100644
+index 700cbdc622..a79f34d280 100644
 --- a/target/loongarch/insn_trans/trans_lasx.c.inc
 +++ b/target/loongarch/insn_trans/trans_lasx.c.inc
-@@ -704,6 +704,48 @@ TRANS(xvslti_du, do_vslti_u, 32, MO_64)
- TRANS(xvfcmp_cond_s, do_vfcmp_cond_s, 32)
- TRANS(xvfcmp_cond_d, do_vfcmp_cond_d, 32)
+@@ -746,6 +746,36 @@ TRANS(xvsetallnez_h, gen_cv, 32, gen_helper_vsetallnez_h)
+ TRANS(xvsetallnez_w, gen_cv, 32, gen_helper_vsetallnez_w)
+ TRANS(xvsetallnez_d, gen_cv, 32, gen_helper_vsetallnez_d)
  
-+TRANS(xvbitsel_v, do_vbitsel_v, 32)
-+TRANS(xvbitseli_b, do_vbitseli_b, 32)
-+
-+#define XVSET(NAME, COND)                                                      \
-+static bool trans_## NAME(DisasContext *ctx, arg_cv * a)                       \
-+{                                                                              \
-+    TCGv_i64 t1, t2, d[4];                                                     \
-+                                                                               \
-+    d[0] = tcg_temp_new_i64();                                                 \
-+    d[1] = tcg_temp_new_i64();                                                 \
-+    d[2] = tcg_temp_new_i64();                                                 \
-+    d[3] = tcg_temp_new_i64();                                                 \
-+    t1 = tcg_temp_new_i64();                                                   \
-+    t2 = tcg_temp_new_i64();                                                   \
-+                                                                               \
-+    get_vreg64(d[0], a->vj, 0);                                                \
-+    get_vreg64(d[1], a->vj, 1);                                                \
-+    get_vreg64(d[2], a->vj, 2);                                                \
-+    get_vreg64(d[3], a->vj, 3);                                                \
-+                                                                               \
-+    CHECK_VEC;                                                                 \
-+    tcg_gen_or_i64(t1, d[0], d[1]);                                            \
-+    tcg_gen_or_i64(t2, d[2], d[3]);                                            \
-+    tcg_gen_or_i64(t1, t2, t1);                                                \
-+    tcg_gen_setcondi_i64(COND, t1, t1, 0);                                     \
-+    tcg_gen_st8_tl(t1, cpu_env, offsetof(CPULoongArchState, cf[a->cd & 0x7])); \
-+                                                                               \
-+    return true;                                                               \
++static bool trans_xvinsgr2vr_w(DisasContext *ctx, arg_vr_i *a)
++{
++    return trans_vinsgr2vr_w(ctx, a);
 +}
 +
-+XVSET(xvseteqz_v, TCG_COND_EQ)
-+XVSET(xvsetnez_v, TCG_COND_NE)
++static bool trans_xvinsgr2vr_d(DisasContext *ctx, arg_vr_i *a)
++{
++    return trans_vinsgr2vr_d(ctx, a);
++}
 +
-+TRANS(xvsetanyeqz_b, gen_cv, 32, gen_helper_vsetanyeqz_b)
-+TRANS(xvsetanyeqz_h, gen_cv, 32, gen_helper_vsetanyeqz_h)
-+TRANS(xvsetanyeqz_w, gen_cv, 32, gen_helper_vsetanyeqz_w)
-+TRANS(xvsetanyeqz_d, gen_cv, 32, gen_helper_vsetanyeqz_d)
-+TRANS(xvsetallnez_b, gen_cv, 32, gen_helper_vsetallnez_b)
-+TRANS(xvsetallnez_h, gen_cv, 32, gen_helper_vsetallnez_h)
-+TRANS(xvsetallnez_w, gen_cv, 32, gen_helper_vsetallnez_w)
-+TRANS(xvsetallnez_d, gen_cv, 32, gen_helper_vsetallnez_d)
++static bool trans_xvpickve2gr_w(DisasContext *ctx, arg_rv_i *a)
++{
++    return trans_vpickve2gr_w(ctx, a);
++}
++
++static bool trans_xvpickve2gr_d(DisasContext *ctx, arg_rv_i *a)
++{
++    return trans_vpickve2gr_d(ctx, a);
++}
++
++static bool trans_xvpickve2gr_wu(DisasContext *ctx, arg_rv_i *a)
++{
++    return trans_vpickve2gr_wu(ctx, a);
++}
++
++static bool trans_xvpickve2gr_du(DisasContext *ctx, arg_rv_i *a)
++{
++    return trans_vpickve2gr_du(ctx, a);
++}
 +
  TRANS(xvreplgr2vr_b, gvec_dup, 32, MO_8)
  TRANS(xvreplgr2vr_h, gvec_dup, 32, MO_16)
  TRANS(xvreplgr2vr_w, gvec_dup, 32, MO_32)
-diff --git a/target/loongarch/insn_trans/trans_lsx.c.inc b/target/loongarch/insn_trans/trans_lsx.c.inc
-index b92f0e5865..2ce7ce7ccb 100644
---- a/target/loongarch/insn_trans/trans_lsx.c.inc
-+++ b/target/loongarch/insn_trans/trans_lsx.c.inc
-@@ -91,14 +91,16 @@ static bool gen_vv_i(DisasContext *ctx, arg_vv_i *a, int oprsz,
-     return true;
- }
- 
--static bool gen_cv(DisasContext *ctx, arg_cv *a,
--                    void (*func)(TCGv_ptr, TCGv_i32, TCGv_i32))
-+static bool gen_cv(DisasContext *ctx, arg_cv *a, uint32_t sz,
-+                    void (*func)(TCGv_ptr, TCGv_i32, TCGv_i32, TCGv_i32))
- {
-     TCGv_i32 vj = tcg_constant_i32(a->vj);
-     TCGv_i32 cd = tcg_constant_i32(a->cd);
-+    TCGv_i32 oprsz = tcg_constant_i32(sz);
- 
-     CHECK_VEC;
--    func(cpu_env, cd, vj);
-+
-+    func(cpu_env, oprsz, cd, vj);
-     return true;
- }
- 
-@@ -3947,22 +3949,24 @@ static bool do_vfcmp_cond_d(DisasContext *ctx, arg_vvv_fcond *a, uint32_t sz)
- TRANS(vfcmp_cond_s, do_vfcmp_cond_s, 16)
- TRANS(vfcmp_cond_d, do_vfcmp_cond_d, 16)
- 
--static bool trans_vbitsel_v(DisasContext *ctx, arg_vvvv *a)
-+static bool do_vbitsel_v(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz)
- {
-     CHECK_VEC;
- 
-     tcg_gen_gvec_bitsel(MO_64, vec_full_offset(a->vd), vec_full_offset(a->va),
-                         vec_full_offset(a->vk), vec_full_offset(a->vj),
--                        16, ctx->vl/8);
-+                        oprsz, ctx->vl / 8);
-     return true;
- }
- 
-+TRANS(vbitsel_v, do_vbitsel_v, 16)
-+
- static void gen_vbitseli(unsigned vece, TCGv_vec a, TCGv_vec b, int64_t imm)
- {
-     tcg_gen_bitsel_vec(vece, a, a, tcg_constant_vec_matching(a, vece, imm), b);
- }
- 
--static bool trans_vbitseli_b(DisasContext *ctx, arg_vv_i *a)
-+static bool do_vbitseli_b(DisasContext *ctx, arg_vv_i *a, uint32_t oprsz)
- {
-     static const GVecGen2i op = {
-        .fniv = gen_vbitseli,
-@@ -3974,10 +3978,12 @@ static bool trans_vbitseli_b(DisasContext *ctx, arg_vv_i *a)
-     CHECK_VEC;
- 
-     tcg_gen_gvec_2i(vec_full_offset(a->vd), vec_full_offset(a->vj),
--                    16, ctx->vl/8, a->imm, &op);
-+                    oprsz, ctx->vl / 8, a->imm, &op);
-     return true;
- }
- 
-+TRANS(vbitseli_b, do_vbitseli_b, 16)
-+
- #define VSET(NAME, COND)                                                       \
- static bool trans_## NAME (DisasContext *ctx, arg_cv *a)                       \
- {                                                                              \
-@@ -4001,14 +4007,14 @@ static bool trans_## NAME (DisasContext *ctx, arg_cv *a)                       \
- VSET(vseteqz_v, TCG_COND_EQ)
- VSET(vsetnez_v, TCG_COND_NE)
- 
--TRANS(vsetanyeqz_b, gen_cv, gen_helper_vsetanyeqz_b)
--TRANS(vsetanyeqz_h, gen_cv, gen_helper_vsetanyeqz_h)
--TRANS(vsetanyeqz_w, gen_cv, gen_helper_vsetanyeqz_w)
--TRANS(vsetanyeqz_d, gen_cv, gen_helper_vsetanyeqz_d)
--TRANS(vsetallnez_b, gen_cv, gen_helper_vsetallnez_b)
--TRANS(vsetallnez_h, gen_cv, gen_helper_vsetallnez_h)
--TRANS(vsetallnez_w, gen_cv, gen_helper_vsetallnez_w)
--TRANS(vsetallnez_d, gen_cv, gen_helper_vsetallnez_d)
-+TRANS(vsetanyeqz_b, gen_cv, 16, gen_helper_vsetanyeqz_b)
-+TRANS(vsetanyeqz_h, gen_cv, 16, gen_helper_vsetanyeqz_h)
-+TRANS(vsetanyeqz_w, gen_cv, 16, gen_helper_vsetanyeqz_w)
-+TRANS(vsetanyeqz_d, gen_cv, 16, gen_helper_vsetanyeqz_d)
-+TRANS(vsetallnez_b, gen_cv, 16, gen_helper_vsetallnez_b)
-+TRANS(vsetallnez_h, gen_cv, 16, gen_helper_vsetallnez_h)
-+TRANS(vsetallnez_w, gen_cv, 16, gen_helper_vsetallnez_w)
-+TRANS(vsetallnez_d, gen_cv, 16, gen_helper_vsetallnez_d)
- 
- static bool trans_vinsgr2vr_b(DisasContext *ctx, arg_vr_i *a)
- {
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index 0d46bd5e5e..ad6751fdfb 100644
+index ad6751fdfb..bb3bb447ae 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1961,6 +1961,21 @@ xvslti_du        0111 01101000 10011 ..... ..... .....    @vv_ui5
- xvfcmp_cond_s    0000 11001001 ..... ..... ..... .....    @vvv_fcond
- xvfcmp_cond_d    0000 11001010 ..... ..... ..... .....    @vvv_fcond
+@@ -1976,6 +1976,13 @@ xvsetallnez_h    0111 01101001 11001 01101 ..... 00 ...   @cv
+ xvsetallnez_w    0111 01101001 11001 01110 ..... 00 ...   @cv
+ xvsetallnez_d    0111 01101001 11001 01111 ..... 00 ...   @cv
  
-+xvbitsel_v       0000 11010010 ..... ..... ..... .....    @vvvv
-+
-+xvbitseli_b      0111 01111100 01 ........ ..... .....    @vv_ui8
-+
-+xvseteqz_v       0111 01101001 11001 00110 ..... 00 ...   @cv
-+xvsetnez_v       0111 01101001 11001 00111 ..... 00 ...   @cv
-+xvsetanyeqz_b    0111 01101001 11001 01000 ..... 00 ...   @cv
-+xvsetanyeqz_h    0111 01101001 11001 01001 ..... 00 ...   @cv
-+xvsetanyeqz_w    0111 01101001 11001 01010 ..... 00 ...   @cv
-+xvsetanyeqz_d    0111 01101001 11001 01011 ..... 00 ...   @cv
-+xvsetallnez_b    0111 01101001 11001 01100 ..... 00 ...   @cv
-+xvsetallnez_h    0111 01101001 11001 01101 ..... 00 ...   @cv
-+xvsetallnez_w    0111 01101001 11001 01110 ..... 00 ...   @cv
-+xvsetallnez_d    0111 01101001 11001 01111 ..... 00 ...   @cv
++xvinsgr2vr_w     0111 01101110 10111 10 ... ..... .....   @vr_ui3
++xvinsgr2vr_d     0111 01101110 10111 110 .. ..... .....   @vr_ui2
++xvpickve2gr_w    0111 01101110 11111 10 ... ..... .....   @rv_ui3
++xvpickve2gr_d    0111 01101110 11111 110 .. ..... .....   @rv_ui2
++xvpickve2gr_wu   0111 01101111 00111 10 ... ..... .....   @rv_ui3
++xvpickve2gr_du   0111 01101111 00111 110 .. ..... .....   @rv_ui2
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
-diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-index 5bc50ee9d4..333afa73af 100644
---- a/target/loongarch/vec_helper.c
-+++ b/target/loongarch/vec_helper.c
-@@ -3025,13 +3025,13 @@ VFCMP(vfcmp_s_s, 32, UW, float32_compare)
- VFCMP(vfcmp_c_d, 64, UD, float64_compare_quiet)
- VFCMP(vfcmp_s_d, 64, UD, float64_compare)
- 
--void HELPER(vbitseli_b)(void *vd, void *vj,  uint64_t imm, uint32_t v)
-+void HELPER(vbitseli_b)(void *vd, void *vj,  uint64_t imm, uint32_t desc)
- {
-     int i;
-     VReg *Vd = (VReg *)vd;
-     VReg *Vj = (VReg *)vj;
- 
--    for (i = 0; i < 16; i++) {
-+    for (i = 0; i < simd_oprsz(desc); i++) {
-         Vd->B(i) = (~Vd->B(i) & Vj->B(i)) | (Vd->B(i) & imm);
-     }
- }
-@@ -3039,7 +3039,7 @@ void HELPER(vbitseli_b)(void *vd, void *vj,  uint64_t imm, uint32_t v)
- /* Copy from target/arm/tcg/sve_helper.c */
- static inline bool do_match2(uint64_t n, uint64_t m0, uint64_t m1, int esz)
- {
--    uint64_t bits = 8 << esz;
-+    int bits = 8 << esz;
-     uint64_t ones = dup_const(esz, 1);
-     uint64_t signs = ones << (bits - 1);
-     uint64_t cmp0, cmp1;
-@@ -3052,24 +3052,34 @@ static inline bool do_match2(uint64_t n, uint64_t m0, uint64_t m1, int esz)
-     return (cmp0 | cmp1) & signs;
- }
- 
--#define SETANYEQZ(NAME, MO)                                         \
--void HELPER(NAME)(CPULoongArchState *env, uint32_t cd, uint32_t vj) \
--{                                                                   \
--    VReg *Vj = &(env->fpr[vj].vreg);                                \
--                                                                    \
--    env->cf[cd & 0x7] = do_match2(0, Vj->D(0), Vj->D(1), MO);       \
-+#define SETANYEQZ(NAME, MO)                                        \
-+void HELPER(NAME)(CPULoongArchState *env,                          \
-+                  uint32_t oprsz, uint32_t cd, uint32_t vj)        \
-+{                                                                  \
-+    VReg *Vj = &(env->fpr[vj].vreg);                               \
-+                                                                   \
-+    env->cf[cd & 0x7] = do_match2(0, Vj->D(0), Vj->D(1), MO);      \
-+    if (oprsz == 32) {                                             \
-+        env->cf[cd & 0x7] =  env->cf[cd & 0x7] ||                  \
-+                             do_match2(0, Vj->D(2), Vj->D(3), MO); \
-+    }                                                              \
- }
- SETANYEQZ(vsetanyeqz_b, MO_8)
- SETANYEQZ(vsetanyeqz_h, MO_16)
- SETANYEQZ(vsetanyeqz_w, MO_32)
- SETANYEQZ(vsetanyeqz_d, MO_64)
- 
--#define SETALLNEZ(NAME, MO)                                         \
--void HELPER(NAME)(CPULoongArchState *env, uint32_t cd, uint32_t vj) \
--{                                                                   \
--    VReg *Vj = &(env->fpr[vj].vreg);                                \
--                                                                    \
--    env->cf[cd & 0x7]= !do_match2(0, Vj->D(0), Vj->D(1), MO);       \
-+#define SETALLNEZ(NAME, MO)                                        \
-+void HELPER(NAME)(CPULoongArchState *env,                          \
-+                  uint32_t oprsz, uint32_t cd, uint32_t vj)        \
-+{                                                                  \
-+    VReg *Vj = &(env->fpr[vj].vreg);                               \
-+                                                                   \
-+    env->cf[cd & 0x7]= !do_match2(0, Vj->D(0), Vj->D(1), MO);      \
-+    if (oprsz == 32) {                                             \
-+        env->cf[cd & 0x7] = env->cf[cd & 0x7] &&                   \
-+                            !do_match2(0, Vj->D(2), Vj->D(3), MO); \
-+    }                                                              \
- }
- SETALLNEZ(vsetallnez_b, MO_8)
- SETALLNEZ(vsetallnez_h, MO_16)
 -- 
 2.39.1
 
