@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D65753928
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBAC753929
 	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 13:01:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKGXK-0006xq-OR; Fri, 14 Jul 2023 07:00:34 -0400
+	id 1qKGXM-0006y7-0n; Fri, 14 Jul 2023 07:00:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qKGWw-0006wI-Ce
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 07:00:12 -0400
+ id 1qKGWy-0006wP-9f
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 07:00:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qKGWs-0005Jl-7Z
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 07:00:09 -0400
+ id 1qKGWu-0005Po-49
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 07:00:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689332404;
+ s=mimecast20190719; t=1689332405;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=62/T52h0VNBTSRACyMK7y1qz0HsHsDe8s3F7BViE+Lo=;
- b=HYyJgPt2aLZKKrFEJSlVNrRef8TyVGQIO5BnSOYLAKDgvdKvtTbjzaxqpr429kNDXpFQLn
- h7v7AQPxIgR4Wf3MewlwaED6QFSkg/lBKXvoMrlAowsbKYvUVz7dVmQUqDoY69yyNvSzzj
- FMXULNJ2Rvf/Y9uMgLfcInRrgJDgvzY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=aUUpVyvem0h6bs6GgVnJulj4BabiP67yC5AwU1dWwBk=;
+ b=VQ9P1jkdYX+wPlXcxppRjGfUeySnr7xQYVmIoDEGyigGzoXSkpvrfcKixNmmZfA7FDg6c6
+ Khy4OSAwfLZ+zfNDZO/jbS2oXPwMMXRHQukChXjlLpyo7SJV5qajOYmxtrDewBGsXEUyIO
+ FFmo8vB6KSw87ak8W/NvNStElxjIZ8g=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-336--AzEz3lFNf-LYLHrCDwV1w-1; Fri, 14 Jul 2023 07:00:02 -0400
-X-MC-Unique: -AzEz3lFNf-LYLHrCDwV1w-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-314275b653eso1053505f8f.1
- for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 04:00:02 -0700 (PDT)
+ us-mta-564-CJIvXzR8MNyj5MLyca2BQQ-1; Fri, 14 Jul 2023 07:00:04 -0400
+X-MC-Unique: CJIvXzR8MNyj5MLyca2BQQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fbcae05906so8810265e9.3
+ for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 04:00:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689332401; x=1691924401;
+ d=1e100.net; s=20221208; t=1689332402; x=1691924402;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=62/T52h0VNBTSRACyMK7y1qz0HsHsDe8s3F7BViE+Lo=;
- b=ajFe8DluGpQac6Rje8fcc0pKIYG8DqGsLqfy4EM/BvhUtxKyYCIqD4AxZcDhpjFveL
- MCN7FxqLYipY+36aNWlqBQViLDdnko2PqUtN00sDDjcF97fwm92ELAfZdBK0hufKTj2y
- +xLXcpjqqEefqaLsAHASXn7ZiWJe/2ENPjNiEsVIUVtFc87/N+jN6MGaWA+fbdOEeSYy
- glmwXSRVIGG+jumJ4C/rZbkZ+2hnEOpuu4bDPdD3U5j4gOclPUvARn3s/ak5IINDs63Q
- 6M/CxqpoR8JlU2sB6I3XS5MIM4LXobQa/LSADdROObJ9Wd9rghnC13Sz80aVTkrtxkxy
- aW/g==
-X-Gm-Message-State: ABy/qLb5yEYEIWwfeOkNpCO97lX7q0/eaHnWCtIZNAf+T1fJl7T2XfxS
- TMYTQyDK78LBBt8T9OK1g0cV3+dUUBulvNtrMamDeNma/HaDtBjMMJrwKaZQztYlYo5nkrnX2pM
- N0oUpSSMfNPp0neqfkZt+yS14ygQG4w3u/MRvwLTiUBYYKZhjHTBLphoy+Xy554ITNsWNy2Q0NR
- s=
-X-Received: by 2002:a5d:66c5:0:b0:315:a34f:b520 with SMTP id
- k5-20020a5d66c5000000b00315a34fb520mr3359065wrw.71.1689332400906; 
- Fri, 14 Jul 2023 04:00:00 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFgs1Ofxo0aMu/qYN9JZtp4wevvNbWovcU7v70J/UD6td8NecV2T6IJOj7VXYgj3cSPsgyzXA==
-X-Received: by 2002:a5d:66c5:0:b0:315:a34f:b520 with SMTP id
- k5-20020a5d66c5000000b00315a34fb520mr3359053wrw.71.1689332400531; 
- Fri, 14 Jul 2023 04:00:00 -0700 (PDT)
+ bh=aUUpVyvem0h6bs6GgVnJulj4BabiP67yC5AwU1dWwBk=;
+ b=IzPaCHPvzFZIhZf+ySZFxQTLpqT0a2X9LFEKOjWM7Te0FH3CHpVpgYwgqO8Alfxogq
+ 1PXaVikHkUT1pveYIblZJxaOdSBChfX+ZOhJTOsH1DHHT9w9LqBWqwrsJkityfrCM5LT
+ JiCO9rFr+NCtyoI07Z9cO7mt6XDdNHProhZkRtP6IigGwX2k+8PxelvT0fWzMxBt3j/5
+ tDMOPkVUWItc8zi2MfPMxrUPWRb6wSWQRdM30sx5Q70uWBQPbcrJbdfQSBnBrlCgiK7i
+ 1UdKr1m7oKn1Srp6dXjKvWir0aXAjLEWhCg2gb0mpBngr8U38sshgCA5be4/4PgmcKZY
+ n4ew==
+X-Gm-Message-State: ABy/qLbymbcQ53ryfRw+WFE4rrR4Av+Dj6NJtE8tyPSOcliBqoHq9rxF
+ WOEBR0PBkApz81gtnanBAoY8aLogMCLntT/ENtxhMIAfn3eEi0lfTsSA4/zGrCtZR2BzYdwpYe/
+ fyznEDzzXEgqk+Nyisab2NgnCPclp7AH3pVYhUvdqHPPEc/d/K2etArqYydcGLYZbrS+kGdofxY
+ w=
+X-Received: by 2002:a5d:5223:0:b0:314:3856:8d99 with SMTP id
+ i3-20020a5d5223000000b0031438568d99mr4672558wra.44.1689332402566; 
+ Fri, 14 Jul 2023 04:00:02 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEYRraS/O1lcOdK6/p/xdZdTisLPYRZcJ3L8o8BSPAmcIJOClInQM51DO/08TffQLB1Idvq8g==
+X-Received: by 2002:a5d:5223:0:b0:314:3856:8d99 with SMTP id
+ i3-20020a5d5223000000b0031438568d99mr4672547wra.44.1689332402285; 
+ Fri, 14 Jul 2023 04:00:02 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
  by smtp.gmail.com with ESMTPSA id
- p5-20020a5d4e05000000b003143d80d11dsm10460377wrt.112.2023.07.14.03.59.59
+ p5-20020a5d4e05000000b003143d80d11dsm10460462wrt.112.2023.07.14.04.00.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Jul 2023 03:59:59 -0700 (PDT)
+ Fri, 14 Jul 2023 04:00:01 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
-	Thomas Huth <thuth@redhat.com>
-Subject: [PULL 3/5] scsi: fetch unit attention when creating the request
-Date: Fri, 14 Jul 2023 12:59:51 +0200
-Message-ID: <20230714105953.223485-4-pbonzini@redhat.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PULL 4/5] scsi: cleanup scsi_clear_unit_attention()
+Date: Fri, 14 Jul 2023 12:59:52 +0200
+Message-ID: <20230714105953.223485-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230714105953.223485-1-pbonzini@redhat.com>
 References: <20230714105953.223485-1-pbonzini@redhat.com>
@@ -104,122 +103,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stefano Garzarella <sgarzare@redhat.com>
 
-Commit 1880ad4f4e ("virtio-scsi: Batched prepare for cmd reqs") split
-calls to scsi_req_new() and scsi_req_enqueue() in the virtio-scsi device.
-No ill effects were observed until commit 8cc5583abe ("virtio-scsi: Send
-"REPORTED LUNS CHANGED" sense data upon disk hotplug events") added a
-unit attention that was easy to trigger with device hotplug and
-hot-unplug.
+The previous commit moved the unit attention clearing when we create
+the request. So now we can clean scsi_clear_unit_attention() to handle
+only the case of the REPORT LUNS command: this is the only case in
+which a UNIT ATTENTION is cleared without having been reported.
 
-Because the two calls were separated, all requests in the batch were
-prepared calling scsi_req_new() to report a sense.  The first one
-submitted would report the right sense and reset it to NO_SENSE, while
-the others reported CHECK_CONDITION with no sense data.  This caused
-SCSI errors in Linux.
-
-To solve this issue, let's fetch the unit attention as early as possible
-when we prepare the request, so that only the first request in the batch
-will use the unit attention SCSIReqOps and the others will not report
-CHECK CONDITION.
-
-Fixes: 1880ad4f4e ("virtio-scsi: Batched prepare for cmd reqs")
-Fixes: 8cc5583abe ("virtio-scsi: Send "REPORTED LUNS CHANGED" sense data upon disk hotplug events")
-Reported-by: Thomas Huth <thuth@redhat.com>
-Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2176702
-Co-developed-by: Paolo Bonzini <pbonzini@redhat.com>
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-ID: <20230712134352.118655-2-sgarzare@redhat.com>
+Message-ID: <20230712134352.118655-3-sgarzare@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/scsi/scsi-bus.c     | 40 +++++++++++++++++++++++++++++++++++-----
- include/hw/scsi/scsi.h |  1 +
- 2 files changed, 36 insertions(+), 5 deletions(-)
+ hw/scsi/scsi-bus.c | 28 ++++++----------------------
+ 1 file changed, 6 insertions(+), 22 deletions(-)
 
 diff --git a/hw/scsi/scsi-bus.c b/hw/scsi/scsi-bus.c
-index f80f4cb4fcf..f083373021c 100644
+index f083373021c..f9c95dfb50d 100644
 --- a/hw/scsi/scsi-bus.c
 +++ b/hw/scsi/scsi-bus.c
-@@ -412,19 +412,35 @@ static const struct SCSIReqOps reqops_invalid_opcode = {
- 
- /* SCSIReqOps implementation for unit attention conditions.  */
- 
-+static void scsi_fetch_unit_attention_sense(SCSIRequest *req)
-+{
-+    SCSISense *ua = NULL;
-+
-+    if (req->dev->unit_attention.key == UNIT_ATTENTION) {
-+        ua = &req->dev->unit_attention;
-+    } else if (req->bus->unit_attention.key == UNIT_ATTENTION) {
-+        ua = &req->bus->unit_attention;
-+    }
-+
-+    /*
-+     * Fetch the unit attention sense immediately so that another
-+     * scsi_req_new does not use reqops_unit_attention.
-+     */
-+    if (ua) {
-+        scsi_req_build_sense(req, *ua);
-+        *ua = SENSE_CODE(NO_SENSE);
-+    }
-+}
-+
- static int32_t scsi_unit_attention(SCSIRequest *req, uint8_t *buf)
- {
--    if (req->dev->unit_attention.key == UNIT_ATTENTION) {
--        scsi_req_build_sense(req, req->dev->unit_attention);
--    } else if (req->bus->unit_attention.key == UNIT_ATTENTION) {
--        scsi_req_build_sense(req, req->bus->unit_attention);
--    }
-     scsi_req_complete(req, CHECK_CONDITION);
-     return 0;
- }
- 
- static const struct SCSIReqOps reqops_unit_attention = {
-     .size         = sizeof(SCSIRequest),
-+    .init_req     = scsi_fetch_unit_attention_sense,
-     .send_command = scsi_unit_attention
- };
- 
-@@ -699,6 +715,11 @@ SCSIRequest *scsi_req_alloc(const SCSIReqOps *reqops, SCSIDevice *d,
-     object_ref(OBJECT(d));
-     object_ref(OBJECT(qbus->parent));
-     notifier_list_init(&req->cancel_notifiers);
-+
-+    if (reqops->init_req) {
-+        reqops->init_req(req);
-+    }
-+
-     trace_scsi_req_alloc(req->dev->id, req->lun, req->tag);
-     return req;
- }
-@@ -798,6 +819,15 @@ uint8_t *scsi_req_get_buf(SCSIRequest *req)
- static void scsi_clear_unit_attention(SCSIRequest *req)
- {
-     SCSISense *ua;
-+
-+    /*
-+     * scsi_fetch_unit_attention_sense() already cleaned the unit attention
-+     * in this case.
-+     */
-+    if (req->ops == &reqops_unit_attention) {
-+        return;
-+    }
-+
-     if (req->dev->unit_attention.key != UNIT_ATTENTION &&
-         req->bus->unit_attention.key != UNIT_ATTENTION) {
+@@ -828,26 +828,12 @@ static void scsi_clear_unit_attention(SCSIRequest *req)
          return;
-diff --git a/include/hw/scsi/scsi.h b/include/hw/scsi/scsi.h
-index e2bb1a2fbfd..3692ca82f31 100644
---- a/include/hw/scsi/scsi.h
-+++ b/include/hw/scsi/scsi.h
-@@ -108,6 +108,7 @@ int cdrom_read_toc_raw(int nb_sectors, uint8_t *buf, int msf, int session_num);
- /* scsi-bus.c */
- struct SCSIReqOps {
-     size_t size;
-+    void (*init_req)(SCSIRequest *req);
-     void (*free_req)(SCSIRequest *req);
-     int32_t (*send_command)(SCSIRequest *req, uint8_t *buf);
-     void (*read_data)(SCSIRequest *req);
+     }
+ 
+-    if (req->dev->unit_attention.key != UNIT_ATTENTION &&
+-        req->bus->unit_attention.key != UNIT_ATTENTION) {
+-        return;
+-    }
+-
+-    /*
+-     * If an INQUIRY command enters the enabled command state,
+-     * the device server shall [not] clear any unit attention condition;
+-     * See also MMC-6, paragraphs 6.5 and 6.6.2.
+-     */
+-    if (req->cmd.buf[0] == INQUIRY ||
+-        req->cmd.buf[0] == GET_CONFIGURATION ||
+-        req->cmd.buf[0] == GET_EVENT_STATUS_NOTIFICATION) {
+-        return;
+-    }
+-
+     if (req->dev->unit_attention.key == UNIT_ATTENTION) {
+         ua = &req->dev->unit_attention;
+-    } else {
++    } else if (req->bus->unit_attention.key == UNIT_ATTENTION) {
+         ua = &req->bus->unit_attention;
++    } else {
++        return;
+     }
+ 
+     /*
+@@ -856,12 +842,10 @@ static void scsi_clear_unit_attention(SCSIRequest *req)
+      * with an additional sense code of REPORTED LUNS DATA HAS CHANGED.
+      */
+     if (req->cmd.buf[0] == REPORT_LUNS &&
+-        !(ua->asc == SENSE_CODE(REPORTED_LUNS_CHANGED).asc &&
+-          ua->ascq == SENSE_CODE(REPORTED_LUNS_CHANGED).ascq)) {
+-        return;
++        ua->asc == SENSE_CODE(REPORTED_LUNS_CHANGED).asc &&
++        ua->ascq == SENSE_CODE(REPORTED_LUNS_CHANGED).ascq) {
++        *ua = SENSE_CODE(NO_SENSE);
+     }
+-
+-    *ua = SENSE_CODE(NO_SENSE);
+ }
+ 
+ int scsi_req_get_sense(SCSIRequest *req, uint8_t *buf, int len)
 -- 
 2.41.0
 
