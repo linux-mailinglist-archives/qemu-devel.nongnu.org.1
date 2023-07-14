@@ -2,102 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4C8753A8C
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 14:17:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 133E3753B03
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 14:30:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKHir-0002mk-53; Fri, 14 Jul 2023 08:16:33 -0400
+	id 1qKHuv-0006cS-Nt; Fri, 14 Jul 2023 08:29:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qKHio-0002mN-AF; Fri, 14 Jul 2023 08:16:30 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qKHut-0006bn-8e; Fri, 14 Jul 2023 08:28:59 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qKHim-0007An-QI; Fri, 14 Jul 2023 08:16:30 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36EBpcFc002834; Fri, 14 Jul 2023 12:16:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=LXdNkA3YDApjh7D4eHkWtEBuJWwINSrtl3RDece7jWo=;
- b=prJ8qxmvvsEcIMX9Xhouc0I71HPnuSFc4YJuH1EaDKu8H3nl5Hkg35yMBf6r3MamPRVT
- iGTOWbAO+HVQogZbZyMUHciyy1pFNhBUb3YjLBo+3pFcnpSRUc5JDn7dZljuHFe374MJ
- NhshW49ug0W1jqgqOE/ERl9aWBHJXmHbCCOaTqMRM6jj7JOqPA2jt/GCos334AizP5Uq
- IjbHQs+AgYOTsF3eh9FfrRcznDn+ZmAbIHcXYQU1C2JC/7ewx6t+aQ8SOik9W37YAYgw
- rZkx0xwSw/dcyZBkfXmc1N0H1mCSI4HHDO/bKglObmmj2mrCtS61SC9vhfBYWSKbOHcX aQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ru5dy10ka-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jul 2023 12:16:25 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36EC8AWM031485;
- Fri, 14 Jul 2023 12:16:24 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ru5dy10k1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jul 2023 12:16:24 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36E4eUNd007411; Fri, 14 Jul 2023 12:16:24 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rtpvs1mny-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jul 2023 12:16:24 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36ECGM2a37421694
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Jul 2023 12:16:22 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 55EE320043;
- Fri, 14 Jul 2023 12:16:22 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 29DF920040;
- Fri, 14 Jul 2023 12:16:22 +0000 (GMT)
-Received: from [9.155.200.166] (unknown [9.155.200.166])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 14 Jul 2023 12:16:22 +0000 (GMT)
-Message-ID: <a55d41f884e6ff50872d389fa1a7c3dcf61afcc1.camel@linux.ibm.com>
-Subject: [PATCH][PING] linux-user/elfload: Fix /proc/cpuinfo features: on s390x
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>, Laurent Vivier
- <laurent@vivier.eu>, David Hildenbrand <david@redhat.com>, Thomas Huth
- <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-Date: Fri, 14 Jul 2023 14:16:22 +0200
-In-Reply-To: <f359dae7-e0a3-42cf-c2cd-fff7f9c3a607@linaro.org>
-References: <20230627151356.273259-1-iii@linux.ibm.com>
- <f359dae7-e0a3-42cf-c2cd-fff7f9c3a607@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qKHur-0006QK-GQ; Fri, 14 Jul 2023 08:28:59 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id F3CB761D01;
+ Fri, 14 Jul 2023 12:28:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E457C433C7;
+ Fri, 14 Jul 2023 12:28:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1689337734;
+ bh=TOb1BpqMY928jii/YOqc3oWB4FMiA1EHC7P8JKRsdOQ=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Wnl6bojwNZtTaHITpQvohpUD8d7jZlCqmatEBd0XTw9lBfEecxtQAQv33Vd3/TvYa
+ Dq8SLtGqXiuoPl9jgyo8YxWOLJQDWNNYddHJdop8wkM2hcFCtBBiu9a+ZDjcnN3JC8
+ sDZLDroY05bEaChDSXdXfIKbdfclF0I9KuayarmF6QPEgeLYf0s/GRPL7Gjv4f/+jH
+ 4eLusOeV5SuX7PUGV7A6+xbiJn/3bhZOFgYOtL/Gve4o6Tc1/XXiFJZZz/ANGUs2a5
+ Y5wixuVUxJmfdy6lm8kseNpvpxq8cG27MocbTe7rcpPPjRBxGeJHbr9nZGNnfeloD/
+ 9sCLLbLgWL54w==
+Date: Fri, 14 Jul 2023 13:28:50 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Anup Patel <anup@brainfault.org>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ alistair.francis@wdc.com, bmeng@tinylab.org, liweiwei@iscas.ac.cn,
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ opensbi@lists.infradead.org
+Subject: Re: Boot failure after QEMU's upgrade to OpenSBI v1.3 (was Re:
+ [PATCH for-8.2 6/7] target/riscv: add 'max' CPU type)
+Message-ID: <20230714-hash-handwrite-339817b93ba1@spud>
+References: <20230712-stench-happiness-40c2ea831257@spud>
+ <3e9b5be8-d3ca-3a17-bef9-4a6a5bdc0ad0@ventanamicro.com>
+ <20230712-tulip-replica-0322e71c3e81@spud>
+ <744cbde6-7ce5-c327-3c5a-3858e994cc39@ventanamicro.com>
+ <20230712-superhero-rabid-578605f52927@spud>
+ <5dd3366d-13ba-c7fb-554f-549d97e7d4f9@ventanamicro.com>
+ <20230712-fancied-aviator-270f51166407@spud>
+ <20230713-craziness-lankiness-8aec3db24993@spud>
+ <CAAhSdy3J5HUoVP21jo11FBuAFSPSxHNKtuL7amn-5t7n_smoSg@mail.gmail.com>
+ <20230714-reoccur-confined-4b37494b1201@spud>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: LVBFIeGYnQqLPHx1EbU5c56sLmOvaTzh
-X-Proofpoint-GUID: 6ugdmt62I46JMHBTVtDokA6jYQc7wSIc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-14_06,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- suspectscore=0 phishscore=0 clxscore=1015 priorityscore=1501 bulkscore=0
- spamscore=0 lowpriorityscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307140109
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="vlW5C8sckzukhKZ+"
+Content-Disposition: inline
+In-Reply-To: <20230714-reoccur-confined-4b37494b1201@spud>
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=conor@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,48 +84,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2023-06-28 at 09:49 +0200, Richard Henderson wrote:
-> On 6/27/23 17:13, Ilya Leoshkevich wrote:
-> > elf_hwcap_str() takes a bit number, but compares it for equality
-> > with
-> > the HWCAP_S390_* masks. This causes /proc/cpuinfo to display
-> > incorrect
-> > hwcaps.
-> >=20
-> > Fix by introducing the HWCAP_S390_NR_* constants and using them in
-> > elf_hwcap_str() instead of the HWCAP_S390_*. While at it, add the
-> > missing nnpa, pcimio and sie hwcaps from the latest kernel.
-> >=20
-> > Output before:
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0features=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0: esan3 zarch stfle msa
-> >=20
-> > Output after:
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0features=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0: esan3 zarch stfle msa ldisp eimm etf3eh
-> > highgprs vx vxe
-> >=20
-> > Fixes: e19807bee357 ("linux-user/elfload: Introduce elf_hwcap_str()
-> > on s390x")
-> > Signed-off-by: Ilya Leoshkevich<iii@linux.ibm.com>
-> > ---
-> > =C2=A0 include/elf.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 66 +++=
-++++++++++++++++++++++++++++--------
-> > -----
-> > =C2=A0 linux-user/elfload.c | 41 ++++++++++++++-------------
-> > =C2=A0 2 files changed, 69 insertions(+), 38 deletions(-)
+
+--vlW5C8sckzukhKZ+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Jul 14, 2023 at 11:19:34AM +0100, Conor Dooley wrote:
+> On Fri, Jul 14, 2023 at 10:00:19AM +0530, Anup Patel wrote:
 >=20
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> > > > OpenSBI v1.3
+> > > >    ____                    _____ ____ _____
+> > > >   / __ \                  / ____|  _ \_   _|
+> > > >  | |  | |_ __   ___ _ __ | (___ | |_) || |
+> > > >  | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+> > > >  | |__| | |_) |  __/ | | |____) | |_) || |_
+> > > >   \____/| .__/ \___|_| |_|_____/|___/_____|
+> > > >         | |
+> > > >         |_|
+> > > >
+> > > > init_coldboot: ipi init failed (error -1009)
+> > > >
+> > > > Just to note, because we use our own firmware that vendors in OpenS=
+BI
+> > > > and compiles only a significantly cut down number of files from it,=
+ we
+> > > > do not use the fw_dynamic etc flow on our hardware. As a result, we=
+ have
+> > > > not tested v1.3, nor do we have any immediate plans to change our
+> > > > platform firmware to vendor v1.3 either.
+> > > >
+> > > > I unless there's something obvious to you, it sounds like I will ne=
+ed to
+> > > > go and bisect OpenSBI. That's a job for another day though, given t=
+he
+> > > > time.
+> > > >
+> >=20
+> > The real issue is some CPU/HART DT nodes marked as disabled in the
+> > DT passed to OpenSBI 1.3.
+> >=20
+> > This issue does not exist in any of the DTs generated by QEMU but some
+> > of the DTs in the kernel (such as microchip and SiFive board DTs) have
+> > the E-core disabled.
+> >=20
+> > I had discovered this issue in a totally different context after the Op=
+enSBI 1.3
+> > release happened. This issue is already fixed in the latest OpenSBI by =
+the
+> > following commit c6a35733b74aeff612398f274ed19a74f81d1f37 ("lib: utils:
+> > Fix sbi_hartid_to_scratch() usage in ACLINT drivers").
 >=20
-> r~
+> Great, thanks Anup! I thought I had tested tip-of-tree too, but
+> obviously not.
+>=20
+> > I always assumed that Microchip hss.bin is the preferred BIOS for the
+> > QEMU microchip-icicle-kit machine but I guess that's not true.
+>=20
+> Unfortunately the HSS has not worked in QEMU for a long time, and while
+> I would love to fix it, but am pretty stretched for spare time to begin
+> with.
+> I usually just do direct kernel boots, which use the OpenSBI that comes
+> with QEMU, as I am sure you already know :)
+>=20
+> > At this point, you can either:
+> > 1) Use latest OpenSBI on QEMU microchip-icicle-kit machine
 
-Hi,
+I forgot to reply to this point, wondering what should be done with
+QEMU. Bumping to v1.3 in QEMU introduces a regression here, regardless
+of whether I can go and build a fixed version of OpenSBI.
 
-I noticed that while the other s390x fixes were picked up and are in
-master, this one wasn't. Is there anything I need to improve here?
+> > 2) Ensure CPU0 DT node is enabled in DT when booting on QEMU
+> >     microchip-icicle-kit machine with OpenSBI 1.3
+>=20
+> Will OpenSBI disable it? If not, I think option 2) needs to be remove
+> the DT node. I'll just use tip-of-tree myself & up to the=20
 
-Best regards,
-Ilya
+Clearly didn't finish this comment. It was meant to say "up to the QEMU
+maintainers what they want to do on the QEMU side of things".
+
+Thanks,
+Conor.
+
+--vlW5C8sckzukhKZ+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZLE/bwAKCRB4tDGHoIJi
+0qMNAQDy6vdbpcaYG+tt2GiNl7ewKLOvGHCSWCTpR/Z1q2xOJQEA9gnz7cxRbfcC
+JG05PyRPCS1lLyCMrUTXLH0AKJXQsAc=
+=wDaJ
+-----END PGP SIGNATURE-----
+
+--vlW5C8sckzukhKZ+--
 
