@@ -2,97 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812AC752E5F
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 02:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 233AD752E7A
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 03:14:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qK755-0008OH-Mt; Thu, 13 Jul 2023 20:54:47 -0400
+	id 1qK7NC-0003Ml-JH; Thu, 13 Jul 2023 21:13:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qK753-0008O9-K2
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 20:54:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qK752-000074-3P
- for qemu-devel@nongnu.org; Thu, 13 Jul 2023 20:54:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689296083;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pZF99bZwxHh+aYHFUkyiI0Ad/SC2kuV7B8NSvKw9bog=;
- b=fnRmxjmR948R0cCSkN41CK+AQr0xmcZb5AZG+ZTVj/ltqri1flfrv6mIi7TilYh4npRjtI
- LS0YamprehcCKx3NfOpeTD+aCWjgQFPXjeK/7fxvX83fG6UJZqVxkrqyWkRWJKGXgX2gEy
- rUe1yqf8aicUQlZ22IEVE2ANy3+RqpQ=
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
- [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-jBbDx6mrOVCnUjUzPKYKKw-1; Thu, 13 Jul 2023 20:54:42 -0400
-X-MC-Unique: jBbDx6mrOVCnUjUzPKYKKw-1
-Received: by mail-oo1-f72.google.com with SMTP id
- 006d021491bc7-5559caee9d3so1879804eaf.2
- for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 17:54:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qK7N8-0003M2-HR
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 21:13:26 -0400
+Received: from mail-oi1-x236.google.com ([2607:f8b0:4864:20::236])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qK7N5-00085K-Ek
+ for qemu-devel@nongnu.org; Thu, 13 Jul 2023 21:13:25 -0400
+Received: by mail-oi1-x236.google.com with SMTP id
+ 5614622812f47-3a3790a0a48so1058798b6e.1
+ for <qemu-devel@nongnu.org>; Thu, 13 Jul 2023 18:13:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1689297202; x=1691889202;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Oqv6QHMV4XaHUNggBPW1D7noH/z5wZMyL0/QRlo+aoA=;
+ b=DcrPvPBM7slQUT1rQC9AOE5WCbCt4142smGlEZa/w29UsOa6EhX/MgG83ccHxXSMhr
+ sJ/uWDB/93ULlnoVH981+X0eRGzXNKIzf6WQPZg16/UJpXFrqzXt6Mg8wzVgqa4uwF5R
+ z65GToDhhHTK0wEXLz+pAYLoNjYVyZj09hQSlZThRJN/W4TpA7ezx4T6UsbbQ2oWCvRA
+ pt+ywMCq/aGqyGTs2L4MMXoT7sByfCSuaO9BqeYvQUGkWs3CZKOf4lu0JrP0oG/PKE50
+ Cw21kTDrjkauLWlVJrahJpJlA869De9ji3tQZBGHGTClh8zPU48J4A6ogfECB1TD4/VX
+ PfKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689296081; x=1691888081;
+ d=1e100.net; s=20221208; t=1689297202; x=1691889202;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pZF99bZwxHh+aYHFUkyiI0Ad/SC2kuV7B8NSvKw9bog=;
- b=h8FsVhITkcpV4+uJAFyZRxauV9p2BL+8C2kaZbYVisXqqQTNqBd0KGqt2rohY9Z/CI
- jxTZZPllQrfGftrtmslEP/UvIfpOEqudIt69RMfEn4bkaeqzFP1R2XirX5ps/nLehrVy
- SVn8PGStWQyckrs85JgBFJKJ/YJWBjhC39LgPsaTV1UViEjQ20rrpc7V61Frg8ye7Uyv
- B2vfrGAbDR6ld7KtRtDliaaQpvMkDn9KDIJnurmZVlxKWsO2b6MxdDqW+ujWfEp9Kb7j
- qn4aluzPuCAH5rJEHydKx8BHqn2l8+1/HuiKW5eycjv0m81VbUOUa1FMWsMQyY1CyDCo
- O9Rg==
-X-Gm-Message-State: ABy/qLYOGWbcWzdWktMg8a7s7fWG2RMHJbiex6syJdYo3/EV8dQGTQ8U
- s8880nbX9UVpD5dOh55nbHvgJU60CQlaAFyyf0USnrmhJhNYZ+ZCjW0DwDFQtgv2Px71OHA9u6h
- k8zkPfG7DQ0lZJSI=
-X-Received: by 2002:a05:6358:9325:b0:134:c4dc:2c43 with SMTP id
- x37-20020a056358932500b00134c4dc2c43mr4206514rwa.28.1689296081392; 
- Thu, 13 Jul 2023 17:54:41 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlE0T8/fo7LO61y9rHTzA3EYRLC4YTMi3M4eB4S12WTt/ij0WHHcMWtm04FeDbWaXakEenzxeQ==
-X-Received: by 2002:a05:6358:9325:b0:134:c4dc:2c43 with SMTP id
- x37-20020a056358932500b00134c4dc2c43mr4206481rwa.28.1689296080797; 
- Thu, 13 Jul 2023 17:54:40 -0700 (PDT)
-Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
- ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
- by smtp.gmail.com with ESMTPSA id
- j7-20020a62e907000000b0067e985d2526sm6171136pfh.149.2023.07.13.17.54.36
+ bh=Oqv6QHMV4XaHUNggBPW1D7noH/z5wZMyL0/QRlo+aoA=;
+ b=fTWKEBxHkn6aucN4dYL+k/KK2wgWChGwJttVAhXO5vM1S7+5MPOlFJKNSuzTJh+hpE
+ gSRh8OWgBvBxMn2BWZzr9KnH6T7jAictzANuVlRl1OqhEZC9CftmK1lSWuPuqVAxvlVy
+ rngmZejwz2fo0oL4G2S44rlGM2Oju4JGxbPMriO3t1LS03fieul5W8Djz/L2VQc84ouI
+ VLTkBR1w2Kaq/BFoJ6S1GmTpVE0+cXMSnVFViEnGs7FvFyKxYgjgQJTOmiMBxqR2dBX/
+ 593Y8HI3ZwWX8aFSRGXvEJzzznnwfX/ZxpQjKlwvz/7vSxpBEEaFc/Y71Y5jqbVcGZ26
+ 6TlQ==
+X-Gm-Message-State: ABy/qLYY6ZIO2ScIUqxoUAg/cXL3oyDuhUsY596UPlQFg3At52H6KyNV
+ q17HfvcSuHeD2r+xx8tnsVLolw==
+X-Google-Smtp-Source: APBJJlENmSz43+CtMjwcHdYLhEAgYKa0rwRuJFcR3Y3qFmD3CumLfBhNCRQ0asVsAg7QzqCcuKLewg==
+X-Received: by 2002:a05:6808:2224:b0:3a4:2485:85a1 with SMTP id
+ bd36-20020a056808222400b003a4248585a1mr4321854oib.3.1689297201963; 
+ Thu, 13 Jul 2023 18:13:21 -0700 (PDT)
+Received: from [192.168.68.107] (201-69-66-19.dial-up.telesp.net.br.
+ [201.69.66.19]) by smtp.gmail.com with ESMTPSA id
+ 26-20020aca121a000000b003a1e38362b7sm3409949ois.25.2023.07.13.18.13.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 13 Jul 2023 17:54:40 -0700 (PDT)
-Message-ID: <c07e5e21-5c31-1aaf-a4c5-0484e47e1739@redhat.com>
-Date: Fri, 14 Jul 2023 10:54:31 +1000
+ Thu, 13 Jul 2023 18:13:21 -0700 (PDT)
+Message-ID: <7a9c1c99-6820-119a-4815-37c166b664ff@ventanamicro.com>
+Date: Thu, 13 Jul 2023 22:13:17 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 0/3] hw/arm/virt: Use generic CPU invalidation
+Subject: Re: Boot failure after QEMU's upgrade to OpenSBI v1.3 (was Re: [PATCH
+ for-8.2 6/7] target/riscv: add 'max' CPU type)
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, pbonzini@redhat.com,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, shan.gavin@gmail.com
-References: <20230713054502.410911-1-gshan@redhat.com>
- <CAFEAcA8197FCwfNZrnxfO-87RveOko0Ju-KcTJOEi0vfjVtDKg@mail.gmail.com>
- <2d21e89f-c965-e8f1-3705-dfea8367fc7e@linaro.org>
- <3a392615-5aca-f384-197f-84beb3086a29@redhat.com>
- <21752231-e869-033f-2a48-d5f06d001a48@linaro.org>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <21752231-e869-033f-2a48-d5f06d001a48@linaro.org>
+To: Conor Dooley <conor@kernel.org>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20230712190149.424675-7-dbarboza@ventanamicro.com>
+ <20230712-stench-happiness-40c2ea831257@spud>
+ <3e9b5be8-d3ca-3a17-bef9-4a6a5bdc0ad0@ventanamicro.com>
+ <20230712-tulip-replica-0322e71c3e81@spud>
+ <744cbde6-7ce5-c327-3c5a-3858e994cc39@ventanamicro.com>
+ <20230712-superhero-rabid-578605f52927@spud>
+ <5dd3366d-13ba-c7fb-554f-549d97e7d4f9@ventanamicro.com>
+ <20230712-fancied-aviator-270f51166407@spud>
+ <20230713-craziness-lankiness-8aec3db24993@spud>
+ <f5f76a03-411c-fb7e-5c21-f261a0e0b141@ventanamicro.com>
+ <20230713-tank-blubber-2501cf7a0cf1@spud>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230713-tank-blubber-2501cf7a0cf1@spud>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::236;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x236.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,65 +107,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
 
-On 7/14/23 05:27, Richard Henderson wrote:
-> On 7/13/23 13:34, Gavin Shan wrote:
->> On 7/13/23 21:52, Marcin Juszkiewicz wrote:
->>> W dniu 13.07.2023 o 13:44, Peter Maydell pisze:
+
+On 7/13/23 19:47, Conor Dooley wrote:
+> On Thu, Jul 13, 2023 at 07:35:01PM -0300, Daniel Henrique Barboza wrote:
+>> On 7/13/23 19:12, Conor Dooley wrote:
+> 
+>>> And a question for you below Daniel.
 >>>
->>>> I see this isn't a change in this patch, but given that
->>>> what the user specifies is not "cortex-a8-arm-cpu" but
->>>> "cortex-a8", why do we include the "-arm-cpu" suffix in
->>>> the error messages? It's not valid syntax to say
->>>> "-cpu cortex-a8-arm-cpu", so it's a bit misleading...
+>>> On Wed, Jul 12, 2023 at 11:14:21PM +0100, Conor Dooley wrote:
+> 
+> 
 >>>
->>> Internally those cpu names are "max-{TYPE_ARM_CPU}" and similar for other architectures.
+>>>> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000000 because privilege spec version does not match
+>>>> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000001 because privilege spec version does not match
+>>>> qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000001 because privilege spec version does not match
+>>>> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000002 because privilege spec version does not match
+>>>> qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000002 because privilege spec version does not match
+>>>> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000003 because privilege spec version does not match
+>>>> qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000003 because privilege spec version does not match
+>>>> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000004 because privilege spec version does not match
+>>>> qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000004 because privilege spec version does not match
 >>>
->>> I like the change but it (IMHO) needs to cut "-{TYPE_*_CPU}" string from names:
->>>
->>> 13:37 marcin@applejack:qemu$ ./build/aarch64-softmmu/qemu-system-aarch64 -M virt -cpu cortex-r5
->>> qemu-system-aarch64: Invalid CPU type: cortex-r5-arm-cpu
->>> The valid types are: cortex-a7-arm-cpu, cortex-a15-arm-cpu, cortex-a35-arm-cpu, cortex-a55-arm-cpu, cortex-a72-arm-cpu, cortex-a76-arm-cpu, a64fx-arm-cpu, neoverse-n1-arm-cpu, neoverse-v1-arm-cpu, cortex-a53-arm-cpu, cortex-a57-arm-cpu, host-arm-cpu, max-arm-cpu
->>>
->>> 13:37 marcin@applejack:qemu$ ./build/aarch64-softmmu/qemu-system-aarch64 -M virt -cpu cortex-a57-arm-cpu
->>> qemu-system-aarch64: unable to find CPU model 'cortex-a57-arm-cpu'
->>>
+>>> Why am I seeing these warnings? Does the mpfs machine type need to
+>>> disable some things? It only supports rv64imafdc per the DT, and
+>>> predates things like Zca existing, so emitting warnings does not seem
+>>> fair at all to me!
 >>
->> The suffix of CPU types are provided in hw/arm/virt.c::valid_cpu_types in PATCH[2].
->> In the generic validation, the complete CPU type is used. The error message also
->> have complete CPU type there.
+>> QEMU will disable extensions that are newer than a priv spec version that is set
+>> by the CPU. IIUC the icicle board is running a sifive_u54 CPU by default. That
+>> CPU has a priv spec version 1_10_0. The CPU is also enabling C.
 >>
->> Peter and Marcin, how about to split the CPU types to two fields, as below? In this
->> way, the complete CPU type will be used for validation and the 'internal' names will
->> be used for the error messages.
+>> We will enable zca if C is enabled. C and D enabled will also enable zcd. But
+>> then the priv check will disabled both because zca and zcd have priv spec 1_12_0.
 >>
->> struct MachineClass {
->>      const char *valid_cpu_type_suffix;
->>      const char **valid_cpu_types;
+>> This is a side effect for a change that I did a few months ago. Back then we
+>> weren't disabling stuff correctly.
 > 
-> While you're changing this:
+> Yah, I did check out the blame, hence directing it at you. Thanks for
+> the explanation.
 > 
-> const char * const *valid_cpu_types;
+>> The warnings are annoying but are benign.
 > 
+> To be honest, benign or not, this is kind of thing is only going to
+> lead to grief. Even though only the direct kernel boot works, we do
+> actually have some customers that are using the icicle target in QEMU.
+> 
+>> And apparently the sifive_u54 CPU is being inconsistent for some time and
+>> we noticed just now.
+>> Now, if the icicle board is supposed to have zca and zcd then we have a problem.
+> 
+> I don't know, this depends on how you see things in QEMU. I would say
+> that it supports c, and not Zca/Zcf/Zcd, given it predates the
+> extensions. I have no interest in retrofitting my devicetree stuff with
+> them, for example.
+> 
+>> We'll need to discuss whether we move sifive_u54 CPU priv spec to 1_12_0 (I'm not
+>> sure how this will affect other boards that uses this CPU) or remove this priv spec
+>> disable code altogether from QEMU.
+> 
+> I think you should stop warning for this? From my dumb-user perspective,
+> the warning only "scares" me into thinking something is wrong, when
+> there isn't. I can see a use case for the warning where someone tries to
+> enable Zca & Co. in their QEMU incantation for a CPU that does not
+> have the correct privilege level to support it, but I didn't try to set
+> any options at all in that way, so the warnings seem unfair?
 
-yes, will do.
 
->> };
->>
->> hw/arm/virt.c
->> -------------
->>
->> static const char *valid_cpu_types[] = {
+That's a fair criticism. We had similar discussions a few months back. It's weird
+to send warnings when the user didn't set the extensions manually, but ATM we
+can't tell whether an extension was user enabled or not.
+
+So we can either show unfair warning messages or not show warnings and take the risk
+of silently disabling extensions that users enabled in the command line. It seems
+that the former is more annoying to deal with than the latter.
+
+I guess I can propose a patch to remove the warnings. We can send warning again
+when we have a better solution.
+
+
+Daniel
+
+
 > 
-> So that you can then do
-> 
-> static const char * const valid_cpu_types[]
-> 
-
-yes, will do.
-
-Thanks,
-Gavin
-
+> Cheers,
+> Conor.
 
