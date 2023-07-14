@@ -2,90 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18BF75332E
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 09:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36824753360
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 09:43:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKDDz-0001bN-B6; Fri, 14 Jul 2023 03:28:24 -0400
+	id 1qKDR4-0004g4-V1; Fri, 14 Jul 2023 03:41:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKDDf-0001aG-KB
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 03:28:04 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKDDc-0002xC-LW
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 03:28:03 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-666edfc50deso1006222b3a.0
- for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 00:27:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689319678; x=1691911678;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IRNkAyYOxaYorrSx+EWNj/GqtvsCdKRzaPD2iT5Y+fs=;
- b=k3MELwL0diu9sAkw/7ETssrEvUmofEJ3yM9GCVw+XeZy1SYc7eZR34heMQzqS7jhHF
- c8t6Q8bx5ylqdx3KBSlJRCwVZaZQiBMzXaiTt8IsXp1rGFmMSihhbeaUGGGhhBV+zmgh
- RagewraqnrTZm7DlRNsTRxIVZ+xxxsk5OmN9oAeUCdcNBSZl2fSH8hE5Kj4iVgg61z3C
- /TBPfwRClEOOFa6fxl4jJsGofNDgDxD4agaQrBkPQPFUPiUuH63YumU19oOyLyWBW+VY
- wHxZAdE/XeulYoxofOX6ATGRbxAyEfZsK2+EKqFmgyjnYBAQfWl+Ztleei10lUhlAW9H
- l7Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689319678; x=1691911678;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IRNkAyYOxaYorrSx+EWNj/GqtvsCdKRzaPD2iT5Y+fs=;
- b=QoWlgK4r05cnQVSCfXws6/8NPXoJyT3BPwA/XiZewP+maneqFyz5pun/MexAgp+8G0
- Mlj6gCVcuxddX+Znc48fZkKL7RHroaZ/WFSLUK4MvJlCQOidnirnE2FkCFrPYb+g3vYk
- yyKEFjfwGH5TKxneouu0bZvpw1R+5NjKaW6Mk8hW47cEVcZEQGlFl0omUIRBfZs4400X
- fiVqp0ehc8n8kX1f50HFm27O+06FVf18MEqbtOXXHnJwX/nZgRLe9ewaFt00hD6UseGy
- pd/6A1XW2mMVviDJfj2m60f6XZjaD6smbaveWYuBAP6rrHCGx6DYfkW1Jar/jSZYDSqT
- HmHw==
-X-Gm-Message-State: ABy/qLbZ+ElzNvfd8He20/rZ7JegbXjkcmAaSwkG8OKSrtkexxG44sq3
- SlfBi+2gU2UgAqZu5RliVqpaWQ==
-X-Google-Smtp-Source: APBJJlFFsOnLXF1j+lTUlJBCrs88c10bHqIA2B+VU4NZ451YAayOrlynIUvPahnUMYa/B5m5NasXaA==
-X-Received: by 2002:a05:6a00:2d20:b0:67a:20d0:b9bb with SMTP id
- fa32-20020a056a002d2000b0067a20d0b9bbmr3009177pfb.1.1689319677878; 
- Fri, 14 Jul 2023 00:27:57 -0700 (PDT)
-Received: from [192.168.149.227] ([172.58.27.104])
- by smtp.gmail.com with ESMTPSA id
- fm12-20020a056a002f8c00b00666b6dc10desm6550256pfb.56.2023.07.14.00.27.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 14 Jul 2023 00:27:57 -0700 (PDT)
-Message-ID: <f9c35a6c-be32-7758-d78a-e63449f864b8@linaro.org>
-Date: Fri, 14 Jul 2023 08:27:48 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qKDR2-0004fc-G5
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 03:41:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qKDQu-0004Lw-ME
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 03:41:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689320502;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=aspo+uzVHIUUZbW0harIoUN2APT6Ijx5wloKb8l+ebk=;
+ b=bXOgADphhwYCkIg7Pi6IdExrCHN+SkbwbJI5VjngeI3cT7SLGZPhmA/DrnhX1Ua8nOLuY0
+ JkZmVyDYrOs0aYiktoPComDm4v2CCbdAQCVSWjPyENyR/pdySYFjXgajBqteEgXiIC65lm
+ nTCIk+o/fJ4Fuyp4MSr6tT3Ik1OIu6Y=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-224-IiChLGhHM9GlHkW60t4b8A-1; Fri, 14 Jul 2023 03:41:38 -0400
+X-MC-Unique: IiChLGhHM9GlHkW60t4b8A-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 730723806703;
+ Fri, 14 Jul 2023 07:41:38 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.37])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3560CC57964;
+ Fri, 14 Jul 2023 07:41:38 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 2116721E6A1F; Fri, 14 Jul 2023 09:41:37 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Andrew Melnychenko <andrew@daynix.com>
+Cc: jasowang@redhat.com,  mst@redhat.com,  eblake@redhat.com,
+ qemu-devel@nongnu.org,  berrange@redhat.com,
+ yuri.benditovich@daynix.com,  yan@daynix.com
+Subject: Re: [PATCH v4 5/6] qmp: Added new command to retrieve eBPF blob.
+References: <20230714022358.2438995-1-andrew@daynix.com>
+ <20230714022358.2438995-6-andrew@daynix.com>
+Date: Fri, 14 Jul 2023 09:41:37 +0200
+In-Reply-To: <20230714022358.2438995-6-andrew@daynix.com> (Andrew
+ Melnychenko's message of "Fri, 14 Jul 2023 05:23:57 +0300")
+Message-ID: <87sf9rey8e.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH v2 11/11] hw/char/pl011: Implement TX FIFO
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Evgeny Iakovlev <eiakovlev@linux.microsoft.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Gavin Shan <gshan@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-arm@nongnu.org, Mikko Rapeli <mikko.rapeli@linaro.org>
-References: <20230710175102.32429-1-philmd@linaro.org>
- <20230710175102.32429-12-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230710175102.32429-12-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,96 +81,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/10/23 18:51, Philippe Mathieu-Daudé wrote:
-> +static gboolean pl011_xmit(void *do_not_use, GIOCondition cond, void *opaque)
-> +{
-> +    PL011State *s = opaque;
-> +    int ret;
-> +    const uint8_t *buf;
-> +    uint32_t buflen;
-> +    uint32_t count;
-> +    bool tx_enabled;
+Andrew Melnychenko <andrew@daynix.com> writes:
+
+> Added command "request-ebpf". This command returns
+> eBPF program encoded base64. The program taken from the
+> skeleton and essentially is an ELF object that can be
+> loaded in the future with libbpf.
+>
+> The reason to use the command to provide the eBPF object
+> instead of a separate artifact was to avoid issues related
+> to finding the eBPF itself. As the eBPF maps/program should
+> correspond to QEMU, the eBPF cant be used from different
+
+can't
+
+> QEMU build.
+
+Blank line between paragaphs.
+
+> The first solution was a helper that comes with QEMU
+> and loads appropriate eBPF objects. And the issue is
+> to find a proper helper if the system has several
+> different QEMUs installed and/or built from the source,
+> which helpers may not be compatible.
+
+Blank line between paragaphs.
+
+> Another issue is QEMU updating while there is a running
+> QEMU instance. With an updated helper, it may not be
+> possible to hotplug virtio-net device to the already
+> running QEMU. Overall, requesting the eBPF object from
+> QEMU itself solves possible failures with very little effort.
+
+I respectfully disagree with "very little".  But it's your commit
+message, not mine.  "Acceptable effort"?
+
+> Links:
+> [PATCH 3/5] qmp: Added the helper stamp check.
+> https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com/
+>
+> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+> ---
+>  qapi/ebpf.json        | 58 +++++++++++++++++++++++++++++++++++++++++++
+>  qapi/meson.build      |  1 +
+>  qapi/qapi-schema.json |  1 +
+>  3 files changed, 60 insertions(+)
+>  create mode 100644 qapi/ebpf.json
+>
+> diff --git a/qapi/ebpf.json b/qapi/ebpf.json
+> new file mode 100644
+> index 0000000000..3237da69a7
+> --- /dev/null
+> +++ b/qapi/ebpf.json
+> @@ -0,0 +1,58 @@
+> +# -*- Mode: Python -*-
+> +# vim: filetype=python
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or later.
+> +# See the COPYING file in the top-level directory.
 > +
-> +    if (!qemu_chr_fe_backend_connected(&s->chr)) {
-> +        /* Instant drain the fifo when there's no back-end */
-> +        return pl011_drain_tx(s);
-> +    }
+> +##
+> +# = eBPF Objects
+> +##
 > +
-> +    tx_enabled = s->cr & CR_UARTEN;
-
-What happened to "Hello, World"?  We ought to be consistent.
-For actual modeling, I think you need TXE too.
-
-Where does UARTFR get updated after successfully transmitting data?
-
->   static void pl011_write_txdata(PL011State *s, const uint8_t *buf, int length)
-> @@ -162,12 +218,32 @@ static void pl011_write_txdata(PL011State *s, const uint8_t *buf, int length)
->       if (!(s->cr & CR_TXE)) {
->           qemu_log_mask(LOG_GUEST_ERROR, "PL011 write data but TX disabled\n");
->       }
-> +    if (!fifo8_is_empty(&s->xmit_fifo)) {
-> +        /*
-> +         * If the UART is disabled in the middle of transmission
-> +         * or reception, it completes the current character before
-> +         * stopping.
-> +         */
-> +        pl011_xmit(NULL, G_IO_OUT, s);
-> +        return;
-> +    }
-
-Why is this in write_txdata?  I would expect to find this with a write to UARTCR.
-You appear to *not* be queuing data unless the fifo is empty.
-
-> +    if (length > fifo8_num_free(&s->xmit_fifo)) {
-> +        /*
-> +         * The FIFO contents remain valid because no more data is
-> +         * written when the FIFO is full, only the contents of the
-> +         * shift register are overwritten. The CPU must now read
-> +         * the data, to empty the FIFO.
-> +         */
-> +        trace_pl011_fifo_tx_overrun();
-> +        s->rsr |= RSR_OE;
-> +        return;
-> +    }
+> +{ 'include': 'common.json' }
 > +
-> +    trace_pl011_fifo_tx_put(length);
-> +    fifo8_push_all(&s->xmit_fifo, buf, length);
-
-Since length will always be 1, probably we should just remove it.
-
-> +static bool pl011_xmit_fifo_state_needed(void *opaque, int version_id)
-> +{
-> +    PL011State* s = opaque;
+> +##
+> +# @EbpfObject:
+> +#
+> +# Structure that holds eBPF ELF object encoded in base64.
+> +#
+> +# Since: 8.3
+> +#
+> +##
+> +{ 'struct': 'EbpfObject',
+> +  'data': {'object': 'str'},
+> +  'if': 'CONFIG_EBPF' }
 > +
-> +    return pl011_is_fifo_enabled(s) && !fifo8_is_empty(&s->xmit_fifo);
-> +}
+> +##
+> +# @EbpfProgramID:
+> +#
+> +# The eBPF programs that can be gotten with request-ebpf.
+> +#
+> +# @rss: Receive side scaling, technology that allows steering traffic
+> +# between queues by calculation hash. Users may set up indirection table
+> +# and hash/packet types configurations. Used with virtio-net.
+> +#
+> +# Since: 8.3
+> +##
+> +{ 'enum': 'EbpfProgramID',
+> +  'if': 'CONFIG_EBPF',
+> +  'data': [ { 'name': 'rss' } ] }
+> +
+> +##
+> +# @request-ebpf:
+> +#
+> +# Returns eBPF object that can be loaded with libbpf.
+> +# Management applications (g.e. libvirt) may load it and pass file
+> +# descriptors to QEMU. Which allows running QEMU without BPF capabilities.
+> +# It's crucial that eBPF program/map is compatible with QEMU, so it's
+> +# provided through QMP.
+> +#
+> +# Returns: RSS eBPF object encoded in base64.
+> +#
+> +# Since: 8.3
+> +#
+> +##
+> +{ 'command': 'request-ebpf',
+> +  'data': { 'id': 'EbpfProgramID' },
+> +  'returns': 'EbpfObject',
+> +  'if': 'CONFIG_EBPF' }
+> +
 
-Ok.
+Trim the trailing blank line.
 
->   static int pl011_post_load(void *opaque, int version_id)
->   {
->       PL011State* s = opaque;
-> @@ -455,6 +538,11 @@ static int pl011_post_load(void *opaque, int version_id)
->           s->read_pos = 0;
->       }
->   
-> +    if (pl011_xmit_fifo_state_needed(s, version_id)) {
-> +        /* Reschedule another transmission */
-> +        qemu_chr_fe_add_watch(&s->chr, G_IO_OUT | G_IO_HUP, pl011_xmit, s);
-> +    }
+Terminology: you use "eBPF program" and "eBPF object".  What's the
+difference?  If there's none, use only one term, please.  To me,
+"program" feels more clear.
 
-Ok.
+> diff --git a/qapi/meson.build b/qapi/meson.build
+> index 60a668b343..90047dae1c 100644
+> --- a/qapi/meson.build
+> +++ b/qapi/meson.build
+> @@ -33,6 +33,7 @@ qapi_all_modules = [
+>    'crypto',
+>    'cxl',
+>    'dump',
+> +  'ebpf',
+>    'error',
+>    'introspect',
+>    'job',
+> diff --git a/qapi/qapi-schema.json b/qapi/qapi-schema.json
+> index 6594afba31..2c82a49bae 100644
+> --- a/qapi/qapi-schema.json
+> +++ b/qapi/qapi-schema.json
+> @@ -53,6 +53,7 @@
+>  { 'include': 'char.json' }
+>  { 'include': 'dump.json' }
+>  { 'include': 'net.json' }
+> +{ 'include': 'ebpf.json' }
+>  { 'include': 'rdma.json' }
+>  { 'include': 'rocker.json' }
+>  { 'include': 'tpm.json' }
 
-> @@ -473,6 +561,7 @@ static const VMStateDescription vmstate_pl011 = {
->           VMSTATE_UINT32(int_enabled, PL011State),
->           VMSTATE_UINT32(int_level, PL011State),
->           VMSTATE_UINT32_ARRAY(read_fifo, PL011State, PL011_FIFO_DEPTH),
-> +        VMSTATE_FIFO8_TEST(xmit_fifo, PL011State, pl011_xmit_fifo_state_needed),
-
-Not ok.
-
-The new data should go in its own VMStateDescription, like vmstate_pl011_clock.
-
-
-r~
 
