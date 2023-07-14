@@ -2,64 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 892BB7535F6
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 11:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4774D753637
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 11:14:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKEeT-0007Pt-ST; Fri, 14 Jul 2023 04:59:49 -0400
+	id 1qKEr6-0003gH-VA; Fri, 14 Jul 2023 05:12:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qKEeR-0007PY-LV
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:59:47 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qKEr1-0003g8-Q3
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 05:12:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qKEeQ-0007TD-AP
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 04:59:47 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qKEqz-00063e-F3
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 05:12:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689325183;
+ s=mimecast20190719; t=1689325963;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=YVYoQXqbAhClYeVOSKCSUuE45ImToUPrk58Cjywvc/0=;
- b=i0of2tL3GEitwUw7w60XAWaCrkNa6jT2th2/FtjA/hQNgUZocVsouS56K0LWkdSOBJIH6i
- ZWZ1dLtkWCtcMAlRGPueAHacucRAuzcMagq7MrSO2NAbcpYUNJ1VOmll+YwqXUAv2b1FSR
- dL+wFHNxZXo/0czGtKTlcZ3PgXgQ8/Y=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-240-SGEQ76CpPBSj1dWHZCO9hQ-1; Fri, 14 Jul 2023 04:59:41 -0400
-X-MC-Unique: SGEQ76CpPBSj1dWHZCO9hQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A8C321C068C1;
- Fri, 14 Jul 2023 08:59:40 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.72])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 40A15492B02;
- Fri, 14 Jul 2023 08:59:40 +0000 (UTC)
-From: Hanna Czenczek <hreitz@redhat.com>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, Hanna Czenczek <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v2] block: Fix pad_request's request restriction
-Date: Fri, 14 Jul 2023 10:59:38 +0200
-Message-ID: <20230714085938.202730-1-hreitz@redhat.com>
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7aPeo5jIwr63l4+tR69b8a/71grYNDjyzmPIULjHpAo=;
+ b=RcJTbZSw6IzWb2NbfYCM0j6ggRaA0F44mw38pAf5WgqJCXDZo4YeBJc9M5AXiAyKeBO5pc
+ v2loQYQXV1vm51CDs+lf9LSrglDSQh61z0FWR5H1B7lPukNjSd9dN4JCZNSEdPsgdN4rPT
+ nSpj9ykCu5vZ6BGfoXfIllW6xewOdAM=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-56-oUmkL2BKOm2E-fYEk3DjDw-1; Fri, 14 Jul 2023 05:12:41 -0400
+X-MC-Unique: oUmkL2BKOm2E-fYEk3DjDw-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7659b44990eso176069385a.1
+ for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 02:12:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689325959; x=1691917959;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7aPeo5jIwr63l4+tR69b8a/71grYNDjyzmPIULjHpAo=;
+ b=RDmXZLR+X+2GfMFvV9GNyIpI6pkvCKN8U5aA9ia3HRfRwUvZegTqLQ1SOY6tnm00fG
+ AcUv/VHJx9+fHIYGv6KlaqfAvRl2HSVlD021UfxVAMDmo9Fe+6RF/CYZHJFZwAz6cNdM
+ KsS8lXwGw/W4VXM+9OUCAkDKMj5qvZQ0S23JODPkQBez/0Rk1RChJdeVpFB8m0PFlEyj
+ I4KpRgYbCCyEkApLaqs12cXi/ioUeLAh3CNNxZ9ZM0fkjv7mlRNQXaBDZdmxgpzNfBU9
+ GIfMlQpei/J6ZEvKQfR89EuRaLIUaor9E6Tnh0fKqe7FkY+J1eP8zfDF66JJ0srB3O5Y
+ ZfhA==
+X-Gm-Message-State: ABy/qLZWA4BZf+ywpDcFDEsSAEa8c53oohEci59hJ1khU2PRWbs2wFyS
+ 0XhRro9eKTWqRe+/DIiHL6a3R7TCi6WOFWDId9s00kVmIuT7sMs+BtBs0tDBhqaSpdH3rK0HBgZ
+ DdlsaEM9Y4prA+9Q=
+X-Received: by 2002:a05:620a:8a83:b0:767:8083:dd44 with SMTP id
+ qu3-20020a05620a8a8300b007678083dd44mr3274854qkn.69.1689325959699; 
+ Fri, 14 Jul 2023 02:12:39 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEuCwaw0lFIIORMWeSg5BmCqOJ8xlvFqf7IhkVbZheVUZPDSA2Fx+SXe9lIPfTPDY/OD3P/fQ==
+X-Received: by 2002:a05:620a:8a83:b0:767:8083:dd44 with SMTP id
+ qu3-20020a05620a8a8300b007678083dd44mr3274847qkn.69.1689325959462; 
+ Fri, 14 Jul 2023 02:12:39 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-177-249.web.vodafone.de.
+ [109.43.177.249]) by smtp.gmail.com with ESMTPSA id
+ s21-20020a05620a16b500b00767ded911a3sm3548907qkj.116.2023.07.14.02.12.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 14 Jul 2023 02:12:39 -0700 (PDT)
+Message-ID: <c9435ba6-25ef-d286-f40c-7e9e0bb449fd@redhat.com>
+Date: Fri, 14 Jul 2023 11:12:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH for-8.1] tcg: Use HAVE_CMPXCHG128 instead of
+ CONFIG_CMPXCHG128
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230713202327.12662-1-richard.henderson@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230713202327.12662-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,68 +100,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-bdrv_pad_request() relies on requests' lengths not to exceed SIZE_MAX,
-which bdrv_check_qiov_request() does not guarantee.
+On 13/07/2023 22.23, Richard Henderson wrote:
+> We adjust CONFIG_ATOMIC128 and CONFIG_CMPXCHG128 with
+> CONFIG_ATOMIC128_OPT in atomic128.h.  It is difficult
+> to tell when those changes have been applied with the
+> ifdef we must use with CONFIG_CMPXCHG128.  So instead
+> use HAVE_CMPXCHG128, which triggers -Werror-undef when
+> the proper header has not been included.
+> 
+> Improves tcg_gen_atomic_cmpxchg_i128 for s390x host, which
+> requires CONFIG_ATOMIC128_OPT.  Without this we fall back
+> to EXCP_ATOMIC to single-step 128-bit atomics, which is
+> slow enough to cause some tests to time out.
+> 
+> Reported-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+> 
+> Thomas, this issue does not quite match the one you bisected, but
+> other than the cmpxchg, I don't see any see any qemu_{ld,st}_i128
+> being used in BootLinuxS390X.test_s390_ccw_virtio_tcg.
+> 
+> As far as I can see, this wasn't broken by the addition of
+> CONFIG_ATOMIC128_OPT, rather that fix didn't go far enough.
+> 
+> Anyway, test_s390_ccw_virtio_tcg now passes in 159s on our host.
 
-bdrv_check_request32() however will guarantee this, and both of
-bdrv_pad_request()'s callers (bdrv_co_preadv_part() and
-bdrv_co_pwritev_part()) already run it before calling
-bdrv_pad_request().  Therefore, bdrv_pad_request() can safely call
-bdrv_check_request32() without expecting error, too.
+Thanks, I can confirm that this fixes the issue for me, too.
 
-In effect, this patch will not change guest-visible behavior.  It is a
-clean-up to tighten a condition to match what is guaranteed by our
-callers, and which exists purely to show clearly why the subsequent
-assertion (`assert(*bytes <= SIZE_MAX)`) is always true.
+Tested-by: Thomas Huth <thuth@redhat.com>
 
-Note there is a difference between the interfaces of
-bdrv_check_qiov_request() and bdrv_check_request32(): The former takes
-an errp, the latter does not, so we can no longer just pass
-&error_abort.  Instead, we need to check the returned value.  While we
-do expect success (because the callers have already run this function),
-an assert(ret == 0) is not much simpler than just to return an error if
-it occurs, so let us handle errors by returning them up the stack now.
-
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Fixes: 18743311b829cafc1737a5f20bc3248d5f91ee2a
-       ("block: Collapse padded I/O vecs exceeding IOV_MAX")
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
----
-v2:
-- Added paragraph to the commit message to express explicitly that this
-  patch will not change guest-visible behavior
-- (No code changes)
----
- block/io.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/block/io.c b/block/io.c
-index e8293d6b26..055fcf7438 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -1710,7 +1710,11 @@ static int bdrv_pad_request(BlockDriverState *bs,
-     int sliced_niov;
-     size_t sliced_head, sliced_tail;
- 
--    bdrv_check_qiov_request(*offset, *bytes, *qiov, *qiov_offset, &error_abort);
-+    /* Should have been checked by the caller already */
-+    ret = bdrv_check_request32(*offset, *bytes, *qiov, *qiov_offset);
-+    if (ret < 0) {
-+        return ret;
-+    }
- 
-     if (!bdrv_init_padding(bs, *offset, *bytes, write, pad)) {
-         if (padded) {
-@@ -1723,7 +1727,7 @@ static int bdrv_pad_request(BlockDriverState *bs,
-                                   &sliced_head, &sliced_tail,
-                                   &sliced_niov);
- 
--    /* Guaranteed by bdrv_check_qiov_request() */
-+    /* Guaranteed by bdrv_check_request32() */
-     assert(*bytes <= SIZE_MAX);
-     ret = bdrv_create_padded_qiov(bs, pad, sliced_iov, sliced_niov,
-                                   sliced_head, *bytes);
--- 
-2.41.0
 
 
