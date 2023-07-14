@@ -2,75 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3C575429C
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 20:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FCE7542B5
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 20:42:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKNbV-0001Bt-BR; Fri, 14 Jul 2023 14:33:21 -0400
+	id 1qKNjJ-0002wF-Rm; Fri, 14 Jul 2023 14:41:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mborgerson@gmail.com>)
- id 1qKNbI-0001BO-TX
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:33:08 -0400
-Received: from mail-lj1-f176.google.com ([209.85.208.176])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mborgerson@gmail.com>)
- id 1qKNbH-0002zy-2z
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:33:08 -0400
-Received: by mail-lj1-f176.google.com with SMTP id
- 38308e7fff4ca-2b702319893so34560171fa.3
- for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 11:33:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689359585; x=1691951585;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MVYnCU9ByQ1XkLYx4ziQPMNPniHHwWI9nIx55LqWA0c=;
- b=O01XnBlQp4dOhobotZnYbXW8Wo9bR+mTfbPl2qPXpd0z9f0PPyxGBpOijFg+MFvKjq
- ffyinti67V+HCAUJQdbYHKLUBWsz623UZsLcyG4yBC2ZYZ3IFYAUWKlVqJF3hubgC+0f
- QCJsFgDeSkbIGqDjK0loCJsDKuEKSrz3vxGoi3zuGm3SsJZ2av91G2LL4GPNjYAQJYoM
- lK0JbMj4UF5x2Or4hAHdlBxFSUXrcu1BgoI2wf3YWwRmlzEpNhI65Y50WlVojh3mz/Xr
- Gxirh6jt+ju8zFV0gddsImr30Xmj1WXyjYUfdfn6MY1HrfI8IS4sELm4eMF/jkAJ28LL
- WV9Q==
-X-Gm-Message-State: ABy/qLalUBN69bPYqAYzX01cXrT6jC4n1h+1zb6EGJiIOF+aziDA8fKj
- Wy5W9GhtVGtYXJujuyhgHF4vVQa8Ox8aThDo
-X-Google-Smtp-Source: APBJJlEwvywEWt/ADiIbnU/n/2Jmxa8jRHq1BumE/tLdsEVS/x06APvnVLsMUC0dXfK7hqSJ2SMBxw==
-X-Received: by 2002:a2e:3503:0:b0:2b7:764:3caf with SMTP id
- z3-20020a2e3503000000b002b707643cafmr4033074ljz.10.1689359584771; 
- Fri, 14 Jul 2023 11:33:04 -0700 (PDT)
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com.
- [209.85.208.172]) by smtp.gmail.com with ESMTPSA id
- l26-20020a2e99da000000b002b6ce06618dsm2104284ljj.21.2023.07.14.11.33.04
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 14 Jul 2023 11:33:04 -0700 (PDT)
-Received: by mail-lj1-f172.google.com with SMTP id
- 38308e7fff4ca-2b702319893so34559921fa.3
- for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 11:33:04 -0700 (PDT)
-X-Received: by 2002:a2e:9252:0:b0:2b6:e296:bd68 with SMTP id
- v18-20020a2e9252000000b002b6e296bd68mr4476063ljg.35.1689359584517; Fri, 14
- Jul 2023 11:33:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qKNjH-0002ve-1i
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:41:23 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qKNjF-0007i1-8v
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 14:41:22 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36EIaetC020024; Fri, 14 Jul 2023 18:41:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : from : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=6mzdZ3/UM5LTlWGUVMz3qW7vGOY6QaRJMsQ4EWug/+c=;
+ b=ruY+l+Ed2FZkiBt6jSmWbtaXx14XQ7iDdLe9QM2EM7tR68kJNWV2baK5iUMtr6ZDBl/6
+ NKrt4UpupbxtTBGyHvepQ0YYVqtKsf7NlGUhVIJJQc9Ifu8MJUcZ053YT0XPAc8VDN2G
+ VUsblihhUPl3Qd85vON9KrrPluEmE2AMRoC5/zUYvNKZw+UJNVyfUffPvyH+AOuc/I0r
+ sfevMQ1xl4hJS80gVhTmMwRNrmBZ0ekria1YzepN+9ael6Me3/0G5eKPHKoHLzXde7UA
+ 8zWku2vTWRMbkF0sdRISFx/4eRfQVxkXn9QXMihdg+2jf2LC1yODfBbtsTwkjvnckmTw Dg== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rubgm8dwj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jul 2023 18:41:17 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36EGCv1V002964;
+ Fri, 14 Jul 2023 18:41:16 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([9.208.130.98])
+ by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3rtqjkmx4b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jul 2023 18:41:16 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36EIfFmZ65732918
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 14 Jul 2023 18:41:16 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 93C055805B;
+ Fri, 14 Jul 2023 18:41:15 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 387DC5805E;
+ Fri, 14 Jul 2023 18:41:15 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 14 Jul 2023 18:41:15 +0000 (GMT)
+Message-ID: <562ec838-2714-2bb2-d1a5-7b98bb43a60b@linux.ibm.com>
+Date: Fri, 14 Jul 2023 14:41:14 -0400
 MIME-Version: 1.0
-From: Matt Borgerson <contact@mborgerson.com>
-Date: Fri, 14 Jul 2023 11:32:53 -0700
-X-Gmail-Original-Message-ID: <CADc=-s5RwGViNTR-h5cq3np673W3RRFfhr4vCGJp0EoDUxvhog@mail.gmail.com>
-Message-ID: <CADc=-s5RwGViNTR-h5cq3np673W3RRFfhr4vCGJp0EoDUxvhog@mail.gmail.com>
-Subject: [PATCH v2] plugins: Set final instruction count in plugin_gen_tb_end
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=209.85.208.176; envelope-from=mborgerson@gmail.com;
- helo=mail-lj1-f176.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 11/11] tpm_crb: support restoring older vmstate
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+To: Joelle van Dyne <j@getutm.app>
+Cc: qemu-devel@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20230714070931.23476-1-j@getutm.app>
+ <20230714070931.23476-12-j@getutm.app>
+ <581b037d-ccb7-8df7-8946-df8198cb04e6@linux.ibm.com>
+ <fe8ea892-0690-2308-5036-f31e10da0351@linux.ibm.com>
+ <CA+E+eSCC2F-2bsO7OiCoS0weo7bh4daL7M5GYxa=6r-6qKcGmg@mail.gmail.com>
+ <67a2b78d-8eea-7c9c-cf1b-50444e481006@linux.ibm.com>
+In-Reply-To: <67a2b78d-8eea-7c9c-cf1b-50444e481006@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: H8wLU32nOh7oCqgZoZYZPSUopjD-Cmx-
+X-Proofpoint-GUID: H8wLU32nOh7oCqgZoZYZPSUopjD-Cmx-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-14_09,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0
+ priorityscore=1501 malwarescore=0 mlxscore=0 phishscore=0 clxscore=1015
+ mlxlogscore=611 lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2307140170
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,76 +113,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Translation logic may partially decode an instruction, then abort and
-remove the instruction from the TB. This can happen for example when an
-instruction spans two pages. In this case, plugins may get an incorrect
-result when calling qemu_plugin_tb_n_insns to query for the number of
-instructions in the TB. This patch updates plugin_gen_tb_end to set the
-final instruction count.
 
-Signed-off-by: Matt Borgerson <contact@mborgerson.com>
----
- accel/tcg/plugin-gen.c    | 5 ++++-
- accel/tcg/translator.c    | 2 +-
- include/exec/plugin-gen.h | 4 ++--
- 3 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 5c13615112..f18ecd6902 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -866,10 +866,13 @@ void plugin_gen_insn_end(void)
-  * do any clean-up here and make sure things are reset in
-  * plugin_gen_tb_start.
-  */
--void plugin_gen_tb_end(CPUState *cpu)
-+void plugin_gen_tb_end(CPUState *cpu, size_t num_insns)
- {
-     struct qemu_plugin_tb *ptb = tcg_ctx->plugin_tb;
+On 7/14/23 14:22, Stefan Berger wrote:
+> On 7/14/23 13:04, Joelle van Dyne wrote:
+>> On Fri, Jul 14, 2023 at 7:51 AM Stefan Berger <stefanb@linux.ibm.com> wrote:
+>>>
+>>>
+>>>
+>>> On 7/14/23 10:05, Stefan Berger wrote:
+>>>>
+>>>>
+>>>> On 7/14/23 03:09, Joelle van Dyne wrote:
+>>>>> When we moved to a single mapping and modified TPM CRB's VMState, it
+>>>>> broke restoring of VMs that were saved on an older version. This
+>>>>> change allows those VMs to gracefully migrate to the new memory
+>>>>> mapping.
+>>>>
+>>>> Thanks. This has to be in 4/11 though.
+>>>>
+>>>
+>>> After applying the whole series and trying to resume state taken with current git
+>>> master I cannot restore it but it leads to this error here. I would just leave it
+>>> completely untouched in 4/11.
+>>>
+>>> 2023-07-14T14:46:34.547550Z qemu-system-x86_64: Unknown ramblock "tpm-crb-cmd", cannot accept migration
+>>> 2023-07-14T14:46:34.547799Z qemu-system-x86_64: error while loading state for instance 0x0 of device 'ram'
+>>> 2023-07-14T14:46:34.547835Z qemu-system-x86_64: load of migration failed: Invalid argument
+>>>
+>>>      Stefan
+>>
+>> To be clear, you are asking to back out of 4/11? That patch changes
+>> how the registers are mapped so it's impossible to support the old
+>> style register mapping. This patch attempts to fix that with a
+> 
+> Why can we not keep the old style register mapping as 'secondary mapping'?
 
-+    /* translator may have removed instructions, update final count */
-+    ptb->n = num_insns;
-+
-     /* collect instrumentation requests */
-     qemu_plugin_tb_trans_cb(cpu, ptb);
+I think the first goal should be for existing TPM CRB device not to change anything, they
+keep their .read and .write behaivor as it.
 
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 0fd9efceba..141f514886 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -215,7 +215,7 @@ void translator_loop(CPUState *cpu,
-TranslationBlock *tb, int *max_insns,
-     gen_tb_end(tb, cflags, icount_start_insn, db->num_insns);
+If you need different .read behavior for the sysbus device due to AARCH64 then it may want to use its own MemoryRegionOps.
 
-     if (plugin_enabled) {
--        plugin_gen_tb_end(cpu);
-+        plugin_gen_tb_end(cpu, db->num_insns);
-     }
+I am fairly sure that you could refactor the core of the existing tpm_crb_mmio_write() and have it work on s->regs and mmio regs.
+The former would be used by existing code, the latter for CRB sysbus calling into this new function from a wrapper.
 
-     /* The disas_log hook may use these values rather than recompute.  */
-diff --git a/include/exec/plugin-gen.h b/include/exec/plugin-gen.h
-index 52828781bc..c4552b5061 100644
---- a/include/exec/plugin-gen.h
-+++ b/include/exec/plugin-gen.h
-@@ -20,7 +20,7 @@ struct DisasContextBase;
-
- bool plugin_gen_tb_start(CPUState *cpu, const struct DisasContextBase *db,
-                          bool supress);
--void plugin_gen_tb_end(CPUState *cpu);
-+void plugin_gen_tb_end(CPUState *cpu, size_t num_insns);
- void plugin_gen_insn_start(CPUState *cpu, const struct DisasContextBase *db);
- void plugin_gen_insn_end(void);
-
-@@ -42,7 +42,7 @@ void plugin_gen_insn_start(CPUState *cpu, const
-struct DisasContextBase *db)
- static inline void plugin_gen_insn_end(void)
- { }
-
--static inline void plugin_gen_tb_end(CPUState *cpu)
-+static inline void plugin_gen_tb_end(CPUState *cpu, size_t num_insns)
- { }
-
- static inline void plugin_gen_disable_mem_helpers(void)
--- 
-2.34.1
+    Stefan
 
