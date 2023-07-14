@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E797539FB
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 13:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E7575399F
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 13:40:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKH8Y-0000IQ-LL; Fri, 14 Jul 2023 07:39:02 -0400
+	id 1qKH8Z-0000Ia-5f; Fri, 14 Jul 2023 07:39:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qKH8V-0000Gd-1V; Fri, 14 Jul 2023 07:38:59 -0400
+ id 1qKH8X-0000IH-5M; Fri, 14 Jul 2023 07:39:01 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qKH8T-00049g-AO; Fri, 14 Jul 2023 07:38:58 -0400
+ id 1qKH8V-0004AB-NN; Fri, 14 Jul 2023 07:39:00 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8FA4113D91;
+ by isrv.corpit.ru (Postfix) with ESMTP id B04F713D92;
  Fri, 14 Jul 2023 14:38:55 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8B83E14BA0;
+ by tsrv.corpit.ru (Postfix) with SMTP id B25DC14BA1;
  Fri, 14 Jul 2023 14:38:39 +0300 (MSK)
-Received: (nullmailer pid 1186210 invoked by uid 1000);
+Received: (nullmailer pid 1186213 invoked by uid 1000);
  Fri, 14 Jul 2023 11:38:38 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH, trivial 05/29] tree-wide spelling fixes in comments and some
- messages: tcg
-Date: Fri, 14 Jul 2023 14:38:10 +0300
-Message-Id: <20230714113834.1186117-7-mjt@tls.msk.ru>
+Subject: [PATCH, trivial 06/29] tree-wide spelling fixes in comments and some
+ messages: docs
+Date: Fri, 14 Jul 2023 14:38:11 +0300
+Message-Id: <20230714113834.1186117-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230714113834.1186117-1-mjt@tls.msk.ru>
 References: <20230714113834.1186117-1-mjt@tls.msk.ru>
@@ -61,48 +61,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- tcg/aarch64/tcg-target.c.inc | 2 +-
- tcg/arm/tcg-target.c.inc     | 4 ++--
- tcg/riscv/tcg-target.c.inc   | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ docs/about/deprecated.rst    | 2 +-
+ docs/devel/qapi-code-gen.rst | 2 +-
+ docs/devel/qom.rst           | 2 +-
+ docs/system/devices/nvme.rst | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tcg/aarch64/tcg-target.c.inc b/tcg/aarch64/tcg-target.c.inc
-index 35ca80cd56..5471523f4c 100644
---- a/tcg/aarch64/tcg-target.c.inc
-+++ b/tcg/aarch64/tcg-target.c.inc
-@@ -3088,3 +3088,3 @@ static void tcg_target_qemu_prologue(TCGContext *s)
-      * Note that XZR cannot be encoded in the address base register slot,
--     * as that actaully encodes SP.  Depending on the guest, we may need
-+     * as that actually encodes SP.  Depending on the guest, we may need
-      * to zero-extend the guest address via the address index register slot,
-diff --git a/tcg/arm/tcg-target.c.inc b/tcg/arm/tcg-target.c.inc
-index 83e286088f..3a14f52c51 100644
---- a/tcg/arm/tcg-target.c.inc
-+++ b/tcg/arm/tcg-target.c.inc
-@@ -1218,3 +1218,3 @@ static TCGCond tcg_out_cmp2(TCGContext *s, const TCGArg *args,
-     case TCG_COND_GEU:
--        /* We perform a conditional comparision.  If the high half is
-+        /* We perform a conditional comparison.  If the high half is
-            equal, then overwrite the flags with the comparison of the
-@@ -1252,3 +1252,3 @@ static TCGCond tcg_out_cmp2(TCGContext *s, const TCGArg *args,
-  * Note that TCGReg references Q-registers.
-- * Q-regno = 2 * D-regno, so shift left by 1 whlie inserting.
-+ * Q-regno = 2 * D-regno, so shift left by 1 while inserting.
-  */
-diff --git a/tcg/riscv/tcg-target.c.inc b/tcg/riscv/tcg-target.c.inc
-index eeaeb6b6e3..e9e5968823 100644
---- a/tcg/riscv/tcg-target.c.inc
-+++ b/tcg/riscv/tcg-target.c.inc
-@@ -71,3 +71,3 @@ static const int tcg_target_reg_alloc_order[] = {
-     /* Call saved registers */
--    /* TCG_REG_S0 reservered for TCG_AREG0 */
-+    /* TCG_REG_S0 reserved for TCG_AREG0 */
-     TCG_REG_S1,
-@@ -262,3 +262,3 @@ typedef enum {
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 02ea5a839f..7dc95dab7a 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -371,3 +371,3 @@ QEMU's ``vhost`` feature, which would eliminate the high latency costs under
+ which the 9p ``proxy`` backend currently suffers. However as of to date nobody
+-has indicated plans for such kind of reimplemention unfortunately.
++has indicated plans for such kind of reimplementation unfortunately.
  
--    /* Zbb: Bit manipulation extension, basic bit manipulaton */
-+    /* Zbb: Bit manipulation extension, basic bit manipulation */
-     OPC_ANDN   = 0x40007033,
+diff --git a/docs/devel/qapi-code-gen.rst b/docs/devel/qapi-code-gen.rst
+index 7f78183cd4..b0852da97b 100644
+--- a/docs/devel/qapi-code-gen.rst
++++ b/docs/devel/qapi-code-gen.rst
+@@ -1369,3 +1369,3 @@ anymore, and return or event data member (enumeration) values that
+ can't be sent anymore makes no difference to clients, except for
+-introspection.  The latter can conceivably confuse clients, so tread
++introspection.  The latter can conceivably confuse clients, so treat
+ carefully.
+diff --git a/docs/devel/qom.rst b/docs/devel/qom.rst
+index 0b506426d7..9918fac7f2 100644
+--- a/docs/devel/qom.rst
++++ b/docs/devel/qom.rst
+@@ -32,3 +32,3 @@ Creating a QOM class
+ 
+-A simple minimal device implementation may look something like bellow:
++A simple minimal device implementation may look something like below:
+ 
+diff --git a/docs/system/devices/nvme.rst b/docs/system/devices/nvme.rst
+index a8bb8d729c..2a3af268f7 100644
+--- a/docs/system/devices/nvme.rst
++++ b/docs/system/devices/nvme.rst
+@@ -234,3 +234,3 @@ parameters:
+ ``fdp.nruh`` (default: ``0``)
+-  Set the number of Reclaim Unit Handles. This is a mandatory paramater and
++  Set the number of Reclaim Unit Handles. This is a mandatory parameter and
+   must be non-zero.
 -- 
 2.39.2
 
