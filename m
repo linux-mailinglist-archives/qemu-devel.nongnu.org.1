@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7F27539ED
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 13:44:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C92E8753A08
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 13:47:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKH9t-0001aV-0y; Fri, 14 Jul 2023 07:40:25 -0400
+	id 1qKH9u-0001ge-3h; Fri, 14 Jul 2023 07:40:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qKH9e-0000yp-B3; Fri, 14 Jul 2023 07:40:10 -0400
+ id 1qKH9e-0000yq-Bc; Fri, 14 Jul 2023 07:40:10 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qKH9a-0004Li-HP; Fri, 14 Jul 2023 07:40:09 -0400
+ id 1qKH9b-0004M8-RU; Fri, 14 Jul 2023 07:40:09 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A220613D9D;
+ by isrv.corpit.ru (Postfix) with ESMTP id CAB3B13D9E;
  Fri, 14 Jul 2023 14:38:57 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9C32614BAC;
+ by tsrv.corpit.ru (Postfix) with SMTP id C47D814BAD;
  Fri, 14 Jul 2023 14:38:41 +0300 (MSK)
-Received: (nullmailer pid 1186246 invoked by uid 1000);
+Received: (nullmailer pid 1186249 invoked by uid 1000);
  Fri, 14 Jul 2023 11:38:38 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH, trivial 17/29] tree-wide spelling fixes in comments and some
- messages: hw/pci
-Date: Fri, 14 Jul 2023 14:38:22 +0300
-Message-Id: <20230714113834.1186117-19-mjt@tls.msk.ru>
+Subject: [PATCH, trivial 18/29] tree-wide spelling fixes in comments and some
+ messages: hw/tpm
+Date: Fri, 14 Jul 2023 14:38:23 +0300
+Message-Id: <20230714113834.1186117-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230714113834.1186117-1-mjt@tls.msk.ru>
 References: <20230714113834.1186117-1-mjt@tls.msk.ru>
@@ -61,156 +61,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/pci-bridge/cxl_downstream.c      | 2 +-
- hw/pci-bridge/pci_expander_bridge.c | 2 +-
- hw/pci-host/bonito.c                | 2 +-
- hw/pci-host/designware.c            | 4 ++--
- hw/pci-host/dino.c                  | 2 +-
- hw/pci-host/gpex-acpi.c             | 2 +-
- hw/pci-host/gt64120.c               | 4 ++--
- hw/pci-host/pnv_phb.c               | 2 +-
- hw/pci-host/pnv_phb3.c              | 2 +-
- hw/pci-host/pnv_phb3_msi.c          | 2 +-
- hw/pci-host/pnv_phb4.c              | 6 +++---
- hw/pci/pcie_aer.c                   | 2 +-
- hw/pci/shpc.c                       | 2 +-
- 13 files changed, 17 insertions(+), 17 deletions(-)
+ hw/tpm/tpm_tis.h        | 2 +-
+ hw/tpm/tpm_tis_common.c | 2 +-
+ hw/tpm/tpm_tis_i2c.c    | 4 ++--
+ hw/tpm/tpm_tis_isa.c    | 2 +-
+ hw/tpm/tpm_tis_sysbus.c | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/pci-bridge/cxl_downstream.c b/hw/pci-bridge/cxl_downstream.c
-index 54f507318f..5a2b749c8e 100644
---- a/hw/pci-bridge/cxl_downstream.c
-+++ b/hw/pci-bridge/cxl_downstream.c
-@@ -44,3 +44,3 @@ static void latch_registers(CXLDownstreamPort *dsp)
- 
--/* TODO: Look at sharing this code acorss all CXL port types */
-+/* TODO: Look at sharing this code across all CXL port types */
- static void cxl_dsp_dvsec_write_config(PCIDevice *dev, uint32_t addr,
-diff --git a/hw/pci-bridge/pci_expander_bridge.c b/hw/pci-bridge/pci_expander_bridge.c
-index 613857b601..535889f7c2 100644
---- a/hw/pci-bridge/pci_expander_bridge.c
-+++ b/hw/pci-bridge/pci_expander_bridge.c
-@@ -265,3 +265,3 @@ static int pxb_map_irq_fn(PCIDevice *pci_dev, int pin)
-      * First carry out normal swizzle to handle
--     * multple root ports on a pxb instance.
-+     * multiple root ports on a pxb instance.
-      */
-diff --git a/hw/pci-host/bonito.c b/hw/pci-host/bonito.c
-index 4701481b9b..ee6cb85e97 100644
---- a/hw/pci-host/bonito.c
-+++ b/hw/pci-host/bonito.c
-@@ -64,3 +64,3 @@
- 
--/* from linux soure code. include/asm-mips/mips-boards/bonito64.h*/
-+/* from linux source code. include/asm-mips/mips-boards/bonito64.h*/
- #define BONITO_BOOT_BASE        0x1fc00000
-diff --git a/hw/pci-host/designware.c b/hw/pci-host/designware.c
-index 9e183caa48..77a1b66d50 100644
---- a/hw/pci-host/designware.c
-+++ b/hw/pci-host/designware.c
-@@ -490,3 +490,3 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
-      * If no inbound iATU windows are configured, HW defaults to
--     * letting inbound TLPs to pass in. We emulate that by exlicitly
-+     * letting inbound TLPs to pass in. We emulate that by explicitly
-      * configuring first inbound window to cover all of target's
-@@ -505,3 +505,3 @@ static void designware_pcie_root_realize(PCIDevice *dev, Error **errp)
+diff --git a/hw/tpm/tpm_tis.h b/hw/tpm/tpm_tis.h
+index 6f29a508dd..6f14896b97 100644
+--- a/hw/tpm/tpm_tis.h
++++ b/hw/tpm/tpm_tis.h
+@@ -21,3 +21,3 @@
+  * TPM TIS for TPM 2 implementation following TCG PC Client Platform
+- * TPM Profile (PTP) Specification, Familiy 2.0, Revision 00.43
++ * TPM Profile (PTP) Specification, Family 2.0, Revision 00.43
+  */
+diff --git a/hw/tpm/tpm_tis_common.c b/hw/tpm/tpm_tis_common.c
+index c07c179dbc..279ce436b5 100644
+--- a/hw/tpm/tpm_tis_common.c
++++ b/hw/tpm/tpm_tis_common.c
+@@ -22,3 +22,3 @@
+  * TPM TIS for TPM 2 implementation following TCG PC Client Platform
+- * TPM Profile (PTP) Specification, Familiy 2.0, Revision 00.43
++ * TPM Profile (PTP) Specification, Family 2.0, Revision 00.43
+  */
+diff --git a/hw/tpm/tpm_tis_i2c.c b/hw/tpm/tpm_tis_i2c.c
+index b695fd3a46..4ecea7fa3e 100644
+--- a/hw/tpm/tpm_tis_i2c.c
++++ b/hw/tpm/tpm_tis_i2c.c
+@@ -15,3 +15,3 @@
+  * TPM TIS for TPM 2 implementation following TCG PC Client Platform
+- * TPM Profile (PTP) Specification, Familiy 2.0, Revision 00.43
++ * TPM Profile (PTP) Specification, Family 2.0, Revision 00.43
+  *
+@@ -509,3 +509,3 @@ static void tpm_tis_i2c_realizefn(DeviceState *dev, Error **errp)
      /*
--     * We initially place MSI interrupt I/O region a adress 0 and
-+     * We initially place MSI interrupt I/O region a address 0 and
-      * disable it. It'll be later moved to correct offset and enabled
-diff --git a/hw/pci-host/dino.c b/hw/pci-host/dino.c
-index e8eaebca54..82503229fa 100644
---- a/hw/pci-host/dino.c
-+++ b/hw/pci-host/dino.c
-@@ -1,3 +1,3 @@
- /*
-- * HP-PARISC Dino PCI chipset emulation, as in B160L and similiar machines
-+ * HP-PARISC Dino PCI chipset emulation, as in B160L and similar machines
-  *
-diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-index 7c7316bc96..87ba074254 100644
---- a/hw/pci-host/gpex-acpi.c
-+++ b/hw/pci-host/gpex-acpi.c
-@@ -179,3 +179,3 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
-             /*
--             * Resources defined for PXBs are composed by the folling parts:
-+             * Resources defined for PXBs are composed by the following parts:
-              * 1. The resources the pci-brige/pcie-root-port need.
-diff --git a/hw/pci-host/gt64120.c b/hw/pci-host/gt64120.c
-index 82c15edb46..143bf053d7 100644
---- a/hw/pci-host/gt64120.c
-+++ b/hw/pci-host/gt64120.c
-@@ -333,5 +333,5 @@ static void gt64120_update_pci_cfgdata_mapping(GT64120State *s)
-      * Command Register determines how data transactions from the CPU to/from
--     * PCI are handled along with the setting of the Endianess bit in the CPU
-+     * PCI are handled along with the setting of the Endianness bit in the CPU
-      * Configuration Register. See:
--     * - Table 16: 32-bit PCI Transaction Endianess
-+     * - Table 16: 32-bit PCI Transaction Endianness
-      * - Table 158: PCI_0 Command, Offset: 0xc00
-diff --git a/hw/pci-host/pnv_phb.c b/hw/pci-host/pnv_phb.c
-index 82332d7a05..157c00782c 100644
---- a/hw/pci-host/pnv_phb.c
-+++ b/hw/pci-host/pnv_phb.c
-@@ -27,3 +27,3 @@
-  *
-- * This helper does both operations at the same time because seting
-+ * This helper does both operations at the same time because setting
-  * a new QOM child will erase the bus parent of the device. This happens
-diff --git a/hw/pci-host/pnv_phb3.c b/hw/pci-host/pnv_phb3.c
-index 7a21497cf8..c5e58f4086 100644
---- a/hw/pci-host/pnv_phb3.c
-+++ b/hw/pci-host/pnv_phb3.c
-@@ -759,3 +759,3 @@ static void pnv_phb3_translate_tve(PnvPhb3DMASpace *ds, hwaddr addr,
-          * TODO: Venice/Murano support it on bottom window above 4G and
--         * Naples suports it on everything
-+         * Naples supports it on everything
-          */
-diff --git a/hw/pci-host/pnv_phb3_msi.c b/hw/pci-host/pnv_phb3_msi.c
-index 41e63b066f..dc8d8637f2 100644
---- a/hw/pci-host/pnv_phb3_msi.c
-+++ b/hw/pci-host/pnv_phb3_msi.c
-@@ -283,3 +283,3 @@ static void phb3_msi_instance_init(Object *obj)
- 
--    /* Will be overriden later */
-+    /* Will be overridden later */
-     ics->offset = 0;
-diff --git a/hw/pci-host/pnv_phb4.c b/hw/pci-host/pnv_phb4.c
-index 6232cbeee1..29cb11a5d9 100644
---- a/hw/pci-host/pnv_phb4.c
-+++ b/hw/pci-host/pnv_phb4.c
-@@ -209,3 +209,3 @@ static void pnv_phb4_check_mbt(PnvPHB4 *phb, uint32_t index)
- 
--    /* TODO: Figure out how to implemet/decode AOMASK */
-+    /* TODO: Figure out how to implement/decode AOMASK */
- 
-@@ -393,3 +393,3 @@ static void pnv_phb4_ioda_write(PnvPHB4 *phb, uint64_t val)
- 
--        /* Copy accross the valid bit to the other half */
-+        /* Copy across the valid bit to the other half */
-         phb->ioda_MBT[idx ^ 1] &= 0x7fffffffffffffffull;
-@@ -1410,3 +1410,3 @@ static void pnv_phb4_msi_write(void *opaque, hwaddr addr,
- 
--    /* TODO: check PE/MSI assignement */
-+    /* TODO: check PE/MSI assignment */
- 
-diff --git a/hw/pci/pcie_aer.c b/hw/pci/pcie_aer.c
-index 374d593ead..b68c7ecb49 100644
---- a/hw/pci/pcie_aer.c
-+++ b/hw/pci/pcie_aer.c
-@@ -326,3 +326,3 @@ static void pcie_aer_msg_root_port(PCIDevice *dev, const PCIEAERMsg *msg)
-          * OS which cares of aer would receive errors via
--         * native aer mechanims, so this wouldn't matter.
-+         * native aer mechanisms, so this wouldn't matter.
-          */
-diff --git a/hw/pci/shpc.c b/hw/pci/shpc.c
-index e7bc7192f1..df7f370111 100644
---- a/hw/pci/shpc.c
-+++ b/hw/pci/shpc.c
-@@ -617,3 +617,3 @@ int shpc_init(PCIDevice *d, PCIBus *sec_bus, MemoryRegion *bar,
-         SHPC_IDX_TO_PCI(nslots) > PCI_SLOT_MAX) {
--        /* TODO: report an error mesage that makes sense. */
-+        /* TODO: report an error message that makes sense. */
-         return -EINVAL;
+-     * Get the backend pointer. It is not initialized propery during
++     * Get the backend pointer. It is not initialized properly during
+      * device_class_set_props
+diff --git a/hw/tpm/tpm_tis_isa.c b/hw/tpm/tpm_tis_isa.c
+index 91e3792248..0367401586 100644
+--- a/hw/tpm/tpm_tis_isa.c
++++ b/hw/tpm/tpm_tis_isa.c
+@@ -21,3 +21,3 @@
+  * TPM TIS for TPM 2 implementation following TCG PC Client Platform
+- * TPM Profile (PTP) Specification, Familiy 2.0, Revision 00.43
++ * TPM Profile (PTP) Specification, Family 2.0, Revision 00.43
+  */
+diff --git a/hw/tpm/tpm_tis_sysbus.c b/hw/tpm/tpm_tis_sysbus.c
+index 45e63efd63..6754ade8bd 100644
+--- a/hw/tpm/tpm_tis_sysbus.c
++++ b/hw/tpm/tpm_tis_sysbus.c
+@@ -21,3 +21,3 @@
+  * TPM TIS for TPM 2 implementation following TCG PC Client Platform
+- * TPM Profile (PTP) Specification, Familiy 2.0, Revision 00.43
++ * TPM Profile (PTP) Specification, Family 2.0, Revision 00.43
+  */
 -- 
 2.39.2
 
