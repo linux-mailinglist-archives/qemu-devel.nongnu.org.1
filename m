@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A37753F3D
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 17:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0831B753F50
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 17:50:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKL0j-0007N1-Rp; Fri, 14 Jul 2023 11:47:14 -0400
+	id 1qKL0r-0007Os-V6; Fri, 14 Jul 2023 11:47:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qKL0d-0007Lj-AE
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 11:47:07 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ id 1qKL0d-0007MG-Tm
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 11:47:08 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qKL0U-00077h-Vi
+ id 1qKL0V-000783-CC
  for qemu-devel@nongnu.org; Fri, 14 Jul 2023 11:47:07 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-307d20548adso2119401f8f.0
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-315adee6ac8so2179507f8f.2
  for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 08:46:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689349617; x=1691941617;
+ d=linaro.org; s=google; t=1689349618; x=1691941618;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=MCCxEvnOoEn5P3Xa8BG9DaZmOIjYscf+/hErEQPjuEY=;
- b=bVKjxHGjIpP1w+t7vzEtqfJ1o6HgEgP2gN/rGsnUY8dD0cvEANTv8WDTXs05iNPM0I
- q2xzu+qZRqHziqUBGPPQ3EuuSayZozHOZCwGmr/lOXYynCiMvGqFhwcRusAG2Y0TCyK1
- kjUNX2lyk9Kh3+8LW+TR8rdsiHHEz3j+VBP74yUEZWjNeOdIP1gjRwbVknZtYCb9CPi0
- OHFJWyhdSgGjD6nJ+k8kIsOfzvHBPDkY2MI7T/wwWJpkbocYzbKqtMuY5HdHoSZaBuww
- NAyOaEpsJ4PqlwsG3x2/lVlWt5Ihddduui+GxyLbqH28EMYSiHxZBAuFRyGC08H9r44j
- +fjA==
+ :reply-to; bh=BuUwbulU5zL9tN4hCYlIE1gc3ZvqjDoeI3CgFmuY05s=;
+ b=K1xbhVUAuJ3hjYDrUvp8TvNkYxIkOhCMjVcqGXw5fqbgbEO62fH0/9sH5BByXWlaa6
+ UZLJHpSHva0rC5fsnO2Wm1U8wk1JxHaNQ+ExSENQDbMw9nNniPsv33WEXUitKGkCnuoH
+ qKs7YDS0HKCwemwhmQXYhqHx7x+XACsEkrf5WAm6qFbiGM3N5lUj0a0/KPjx9C2iDqqf
+ 0agY5PZOd5vyOMfX7Hu2cXGjxYVDF1AUMpqdW5vImUCeKdhjjGWa7ElMAP4EtJpv0YNk
+ Zv7lTJBNSH2MRIjqgLb/cDjYdrbhzyR3tuAPpMgZz6zPSoMIK8cLJxRF/u4d9Hbyc5Dp
+ Ghuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689349617; x=1691941617;
+ d=1e100.net; s=20221208; t=1689349618; x=1691941618;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MCCxEvnOoEn5P3Xa8BG9DaZmOIjYscf+/hErEQPjuEY=;
- b=RsftwtU2BX2Rs57KAkiy8ED+iQsJXh2DhqKVTKNs2x9/i1DWZTuY3S3sVNLnABpFnv
- NnNJi1wdBwpbfKOhipclEbYjG3Ch2iTLN9y6yP2OUIpqolMXsxeZ2ae5etsQSK2p/o7t
- mQDIbjfh7FzsyUFqSBbH8KZXBrYyhBS1AudV2TKlcxnBFOdk8fbX4jp9C5pEvN8ZN9Lr
- badwEZ2ecPuW4nxAvp73gU5YFw3jfn5IQXP+xwbelliuzl5BMHGDtfx86uH8JJs2BgZq
- x+I30tm9yOYZT/4RZmJ8srhx65ddeP4Ek84hfq30uIwFRO5jmj/rsL4zMt8GHSCa0WP2
- ciGg==
-X-Gm-Message-State: ABy/qLbqbwkl74ueo9JPA4m0ZQgoeUrLIVXQAdn57hqofd8r6KUF1YAg
- 8b2jmCD4wOMGD7Pv/8GhDeho8g==
-X-Google-Smtp-Source: APBJJlEWze+o3s+lyFXjXTEixPDmIiPboF1hTcfB/RA7QBFZ1C4eVg69phlBK6HqgohSbc4NXSl3xA==
-X-Received: by 2002:a05:6000:1081:b0:30f:c5b1:23ef with SMTP id
- y1-20020a056000108100b0030fc5b123efmr4186750wrw.41.1689349617371; 
+ bh=BuUwbulU5zL9tN4hCYlIE1gc3ZvqjDoeI3CgFmuY05s=;
+ b=StYF+bt2s5GLKXf1q/jHE3H47jlefqtJ1Fr2h11kqcBBXsg0psdBXNKJYnkQQ7wc2A
+ ze8XhETkHoQT0/96cMFyt+0WCevV3Nnu50aaj/JkbnIdVn+aHFJ5VlbU9RpBfN9QVuhC
+ 0vFD3RD6j2in3RaAGlfpwy8HuXAJwRUG10ILVG4xgyi2bO0tHjjQ4NLMd4ItuOHjILFJ
+ rAqZOYW/UYj6LimEUngoaKKRdD0wF0WUGbh0gMdhHeZi+2ioYsL8R20HCPo8tVM+E2yN
+ AgpIAUGXny6BGfI/idhs3zAX1WhzXrLbzv1tI/oENSdYWBSjf5nrVAvsjhUgFH6gcgrS
+ SIXw==
+X-Gm-Message-State: ABy/qLZ9JPNG9jmZkBBV1IIIY4w7aJ/gt+PLXGqJz8z98eF8mioX+pBW
+ RsMSSFhZI7XOwg1bK1dgmOr1GmOepJiu0hwV+/c=
+X-Google-Smtp-Source: APBJJlHgk+aeDe8DnwQjjvvmKj/zpCJXOBYSY1tz0jLsvv3PWcoicZRSYoqzBbNsWL1caksGzzLUMw==
+X-Received: by 2002:a5d:68c6:0:b0:315:9d61:6e66 with SMTP id
+ p6-20020a5d68c6000000b003159d616e66mr4770217wrw.9.1689349617995; 
  Fri, 14 Jul 2023 08:46:57 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- t16-20020a5d49d0000000b003143bb5ecd5sm11214025wrs.69.2023.07.14.08.46.56
+ t16-20020a5d49d0000000b003143bb5ecd5sm11214025wrs.69.2023.07.14.08.46.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 14 Jul 2023 08:46:57 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH 13/14] target/arm/ptw: Report stage 2 fault level for stage 2
- faults on stage 1 ptw
-Date: Fri, 14 Jul 2023 16:46:47 +0100
-Message-Id: <20230714154648.327466-14-peter.maydell@linaro.org>
+Subject: [PATCH 14/14] target/arm: Adjust PAR_EL1.SH for Device and Normal-NC
+ memory types
+Date: Fri, 14 Jul 2023 16:46:48 +0100
+Message-Id: <20230714154648.327466-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230714154648.327466-1-peter.maydell@linaro.org>
 References: <20230714154648.327466-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,37 +91,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we report faults due to stage 2 faults during a stage 1
-page table walk, the 'level' parameter should be the level
-of the walk in stage 2 that faulted, not the level of the
-walk in stage 1. Correct the reporting of these faults.
+The PAR_EL1.SH field documents that for the cases of:
+ * Device memory
+ * Normal memory with both Inner and Outer Non-Cacheable
+the field should be 0b10 rather than whatever was in the
+translation table descriptor field. (In the pseudocode this
+is handled by PAREncodeShareability().) Perform this
+adjustment when assembling a PAR value.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/ptw.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ target/arm/helper.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index ed46bb82a75..d1de934702d 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -2046,9 +2046,13 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-  do_translation_fault:
-     fi->type = ARMFault_Translation;
-  do_fault:
--    fi->level = level;
--    /* Tag the error as S2 for failed S1 PTW at S2 or ordinary S2.  */
--    fi->stage2 = fi->s1ptw || regime_is_stage2(mmu_idx);
-+    if (fi->s1ptw) {
-+        /* Retain the existing stage 2 fi->level */
-+        assert(fi->stage2);
-+    } else {
-+        fi->level = level;
-+        fi->stage2 = regime_is_stage2(mmu_idx);
-+    }
-     fi->s1ns = fault_s1ns(ptw->in_space, mmu_idx);
-     return true;
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 1e45fdb47c9..f9c00827018 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -3342,6 +3342,19 @@ static CPAccessResult ats_access(CPUARMState *env, const ARMCPRegInfo *ri,
  }
+ 
+ #ifdef CONFIG_TCG
++static int par_el1_shareability(GetPhysAddrResult *res)
++{
++    /*
++     * The PAR_EL1.SH field must be 0b10 for Device or Normal-NC
++     * memory -- see pseudocode PAREncodeShareability().
++     */
++    if (((res->cacheattrs.attrs & 0xf0) == 0) ||
++        res->cacheattrs.attrs == 0x44 || res->cacheattrs.attrs == 0x40) {
++        return 2;
++    }
++    return res->cacheattrs.shareability;
++}
++
+ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
+                              MMUAccessType access_type, ARMMMUIdx mmu_idx,
+                              bool is_secure)
+@@ -3470,7 +3483,7 @@ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
+                 par64 |= (1 << 9); /* NS */
+             }
+             par64 |= (uint64_t)res.cacheattrs.attrs << 56; /* ATTR */
+-            par64 |= res.cacheattrs.shareability << 7; /* SH */
++            par64 |= par_el1_shareability(&res) << 7; /* SH */
+         } else {
+             uint32_t fsr = arm_fi_to_lfsc(&fi);
+ 
 -- 
 2.34.1
 
