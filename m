@@ -2,80 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5B87540CA
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 19:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 054347540C3
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 19:44:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKMpA-0004Sc-E3; Fri, 14 Jul 2023 13:43:24 -0400
+	id 1qKMpJ-0004VU-Kw; Fri, 14 Jul 2023 13:43:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qKMp7-0004Ry-PD
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 13:43:21 -0400
-Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qKMp6-00036y-4n
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 13:43:21 -0400
-Received: by mail-ot1-x330.google.com with SMTP id
- 46e09a7af769-6b7484cbc5dso1993685a34.1
- for <qemu-devel@nongnu.org>; Fri, 14 Jul 2023 10:43:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1689356598; x=1691948598;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cc/DNLO/7rXNwcDNdn2TdG1YzwOl2o4/xBTs+8ptJ+4=;
- b=ElsJrnI1FVd02Wap7Ww/A/I/wYsbid7GOOlLI4zeAcVLl+yy7Nd5oHDTbxD+kS6Exe
- tknz/c7t7i/TIFNQzoPL4wLD/k9YiXdr1WB7KCA7pnG3GDk4UoR5c5DSVunrEl6XTDl7
- 7nVxgdYwL54dmCISnVh5eCK5HCG369XM3V5/ULie0/MHt8ACXyIO4hSqFRY4Cv1OtyIm
- ZKyJLi6GyFhB0wAGh0LCQDc8oX4ljOAEiImtsYozHaZaJrZIVBAW7X6WYNk9uhqsBr5Z
- 7sxb0bDMRpP/WaaDTl9w/EHjFWIMaaGNHdqsAzbX3vPB5IS/ltVd7WVnKKvDW4E7f5qH
- gvVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689356598; x=1691948598;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cc/DNLO/7rXNwcDNdn2TdG1YzwOl2o4/xBTs+8ptJ+4=;
- b=Zji+k7a8FOGLuLcyQD2DCJvJfn3IzE5ugd1RYdeGj3JH+KAUwFHb9u91JZaW5uODz9
- UqyCA/Uzxr6c2kmlqoZFhTWS6omRgB7yPtY68LXpUOU0fwR4MIsDGZDI5l/bgtY0CDFM
- QXBSZ3hDMhO5Q8DvjTYvPdq1QGlrtkEKebwkw3DPGhhWyygyHTK80smQoae0LzjYY+5/
- Q+WKx/pi7luaBBVJMXi4XXc2BDmA+b79suY82zq3IPAzGYzIDyKuWxH5d2kXFErnxgGI
- auThCmk6p2L+eyt9D/cUlsR0J0maruWdva0Huru4UPsu1j5mKMOmLPxxdZSprFW0JdgF
- tCnQ==
-X-Gm-Message-State: ABy/qLYXzLQNAvdvLJXV8pGH0dPfN5jLuGka1tJt/fN1XcOXT6q3oE26
- MMGXqWYWOpwGxQtNmJN/TfJsvBfpe1xTbjFYgJI=
-X-Google-Smtp-Source: APBJJlFWWYDBMa4G21Nui16cqNR1WraPZ7MXI48oFOhaqbRpEe8u1OtMfv6OgG9qHDuaDPXQMUrQTg==
-X-Received: by 2002:a05:6870:b612:b0:1b7:4e91:b8b4 with SMTP id
- cm18-20020a056870b61200b001b74e91b8b4mr2868149oab.15.1689356598378; 
- Fri, 14 Jul 2023 10:43:18 -0700 (PDT)
-Received: from grind.. (201-69-66-19.dial-up.telesp.net.br. [201.69.66.19])
- by smtp.gmail.com with ESMTPSA id
- dw18-20020a056870771200b001b05c4b3b3dsm4240968oab.31.2023.07.14.10.43.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 14 Jul 2023 10:43:18 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- richard.henderson@linaro.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-8.2 v3 0/8] target/riscv: add 'max' CPU, deprecate
-Date: Fri, 14 Jul 2023 14:43:03 -0300
-Message-ID: <20230714174311.672359-1-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qKMpE-0004Tr-St; Fri, 14 Jul 2023 13:43:28 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qKMoz-0002kW-Sq; Fri, 14 Jul 2023 13:43:28 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36EHdlqg011014; Fri, 14 Jul 2023 17:43:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=OuHHw+xOK8VWmOvsMM5THMm6AYVRy9oPgJUwufUy/NA=;
+ b=Ra+HS7RpX7GzUJoyFXvSseQnR7ZCT+B5xMFhq0XtDYEcD7X953Pvk1RvfzuYoTkxP7P0
+ PVPNwM01BNtsI6Xp1oqV5/vlVNah4KVqw6hVHS4gbYwq41RpM53WIi8NL58t/JCCsMyV
+ VyxVbDSK6Xudo4XgGvm8HakywlCDiC1fF0mTz65HNBrNqHRZ8ZCc4W7AwBG+onJAlN5K
+ b+CdbqGm7W0uWFz5XdqWCdC5bunWWGZbjLN/Ccf8LDs162kneMPQzmD/NnFaQF5fm133
+ lkzKP/t1Dn+rWqUkxaXZymbc7SGF9uFJ3Mrm9xAST2OJq+g1M13uyIgT1muXMEfhucQA xg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rua61h08f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jul 2023 17:43:08 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36EHh819020821;
+ Fri, 14 Jul 2023 17:43:08 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rua61h084-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jul 2023 17:43:08 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36EGMDUb008399;
+ Fri, 14 Jul 2023 17:43:07 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
+ by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3rtq33qfvs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jul 2023 17:43:07 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
+ [10.39.53.230])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36EHh6Wb43057490
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 14 Jul 2023 17:43:06 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 12AE758054;
+ Fri, 14 Jul 2023 17:43:06 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 225095805A;
+ Fri, 14 Jul 2023 17:43:05 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 14 Jul 2023 17:43:05 +0000 (GMT)
+Message-ID: <bd034676-1a9b-59a7-0445-129c32daa7b1@linux.ibm.com>
+Date: Fri, 14 Jul 2023 13:43:04 -0400
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 09/11] tpm_tis_sysbus: move DSDT AML generation to
+ device
+Content-Language: en-US
+To: Joelle van Dyne <j@getutm.app>
+Cc: qemu-devel@nongnu.org, Shannon Zhao <shannon.zhaosl@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ "open list:ARM ACPI Subsystem" <qemu-arm@nongnu.org>
+References: <20230714070931.23476-1-j@getutm.app>
+ <20230714070931.23476-10-j@getutm.app>
+ <d3d3d9d0-fb88-9500-34d9-9780f9c2644f@linux.ibm.com>
+ <CA+E+eSDinJuo8xyZTzfqKXr=rf+fyjkvOLVEqam0eapehQ1OYA@mail.gmail.com>
+ <1a394fc6-4a64-5e00-5631-eb5a6aa4ce59@linux.ibm.com>
+ <CA+E+eSCbPXZWk2zst+AunRpL74DOEB437mZqMhpWQ0K+=dvf8A@mail.gmail.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <CA+E+eSCbPXZWk2zst+AunRpL74DOEB437mZqMhpWQ0K+=dvf8A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x330.google.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 2ixc_uyBICGTP7rDDiwYChPXUf3WTvmo
+X-Proofpoint-GUID: DMpeAsoLwCwFehHS2BsnPKO9LYp97sHJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-14_08,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0
+ spamscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 clxscore=1015 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2307140160
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,48 +124,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
 
-This version has changes suggested in v2. The most significant change is
-the deprecation of the 'any' CPU in patch 8.
 
-The reasoning behind it is that Alistair mentioned that the 'any' CPU
-intended to work like the newly added 'max' CPU, so we're better of
-removing the 'any' CPU since it'll be out of place. We can't just
-remove the CPU out of the gate so we'll have to make it do with
-deprecation first.
+On 7/14/23 13:39, Joelle van Dyne wrote:
+> On Fri, Jul 14, 2023 at 10:37 AM Stefan Berger <stefanb@linux.ibm.com> wrote:
+>>
+>>
+>>
+>> On 7/14/23 13:29, Joelle van Dyne wrote:
+>>> On Fri, Jul 14, 2023 at 9:19 AM Stefan Berger <stefanb@linux.ibm.com> wrote:
+>>>>
+>>>>
+>>>>
+>>>>
+>>>> I don't know whether we would want multiple devices. tpm_find() usage is certainly not prepared for multiple devices.
+>>> Sorry, "multiple TPM interfaces" here does not mean "at the same
+>>> time". Will clarify the description.
+>>>
+>>>>
+>>>>
+>>>> Good for the consolidation.
+>>>>
+>>>>
+>>>> Does moving the TIS to a different address help on aarch64?
+>>> That was the first thing we tried and no it doesn't help.
+>>
+>> I would remove it if we don't have a known alternative address that makes it work. If we do, I think we should document it in tpm.rst.
+> "It" is referring to tpm-tis-device? Note that it does work fine with Linux VMs.
 
-Patches missing review: 5,6,7,8
+yes, tpm_tis_sysbus and I know it works with Liunux but I see this discussion here around Win 11 on aarch64. Why do we need to user another address than the standard address if for Win 11 on aarch64 it doesn't get it to work.
 
-Changes from v2:
-- patches 1, 3, 4:
-  - remove "DEFINE_PROP_END_OF_LIST()" at the end of each prop array;
-  - use ARRAY_SIZE() in the for loop
-- patch 5:
-  - remove the trailing '/' in the last line of the macro
-  - wrap the macro in "do {} while (0)"
-- patch 8 (new):
-  - deprecate the 'any' CPU
-- v2 link: https://lore.kernel.org/qemu-riscv/20230712205748.446931-1-dbarboza@ventanamicro.com/
-
-Daniel Henrique Barboza (8):
-  target/riscv/cpu.c: split CPU options from riscv_cpu_extensions[]
-  target/riscv/cpu.c: skip 'bool' check when filtering KVM props
-  target/riscv/cpu.c: split vendor exts from riscv_cpu_extensions[]
-  target/riscv/cpu.c: split non-ratified exts from
-    riscv_cpu_extensions[]
-  target/riscv/cpu.c: add a ADD_CPU_PROPERTIES_ARRAY() macro
-  target/riscv: add 'max' CPU type
-  avocado, risc-v: add opensbi tests for 'max' CPU
-  target/riscv: deprecate the 'any' CPU type
-
- docs/about/deprecated.rst      |  12 ++++
- target/riscv/cpu-qom.h         |   1 +
- target/riscv/cpu.c             | 114 ++++++++++++++++++++++++++-------
- tests/avocado/riscv_opensbi.py |  16 +++++
- 4 files changed, 121 insertions(+), 22 deletions(-)
-
--- 
-2.41.0
-
+> 
+>>
+>>
+>>>>
+>>>> Can the size really be an option? I don't see it useful and if one gave the wrong size it may break things.
+>>> It was added for consistency (otherwise we have to determine the size
+>>> by looking at the interface everywhere). Also, it is possible for the
+>>> size to be larger than the constant. For example, Apple Silicon uses
+>>> 16KiB page sizes and we may decide to force the device to be 16KiB
+>>> aligned (not sure if this is needed yet while we still track down why
+>>> the dual mapping was not working). In that case, we would need to
+>>> inform the OS of the true region size to prevent any overlap issues.
+>>> Both baseaddr and size should be provided only by the plug handler in
+>>> the virt machine, otherwise things may break even if we get rid of
+>>> size and have just an incorrect baseaddr.
+>>>
+>>>>
+>>>>
+>>>>
 
