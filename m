@@ -2,91 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFBF753C8F
-	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 16:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCF0753D1F
+	for <lists+qemu-devel@lfdr.de>; Fri, 14 Jul 2023 16:21:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKJRR-0007Fl-Fp; Fri, 14 Jul 2023 10:06:41 -0400
+	id 1qKJeA-0002UV-6I; Fri, 14 Jul 2023 10:19:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qKJR9-00073k-J9
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 10:06:23 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1qKJdi-0002Sr-F9
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 10:19:23 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qKJR6-0002mU-DT
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 10:06:22 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ id 1qKJdg-0003TV-LG
+ for qemu-devel@nongnu.org; Fri, 14 Jul 2023 10:19:22 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36EDnGDl011701; Fri, 14 Jul 2023 14:05:59 GMT
+ 36EEHmU7031961; Fri, 14 Jul 2023 14:19:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=6OjE0w9eNbUq4FXa+VEINB/k7CiJMD7cdpxPDZ/nQAE=;
- b=lPKNmKr8mHsuP5z5r8ifT7HtdOyp4GqoxUByGLXwS4vk8nt+tMTNFTsO6CORqnlkf1VJ
- ziuPk8qQcIku4jjl5tRRj0y4wwYQO1Qs2EZ6h459DwDzEQHNJ8pyyGLleBW75V9pmUVE
- IwT7k71g7hMsxq9oMbcboI2Jmn+eIA/FHQ4fpe0bt2Zfaa4GNNdnp28vG9ZZUnWsG5iO
- 0Qmd5Kh4zys5oldQ4QG7J3NbJZh3SCzOxtTDNRX5MpRbqqXIyj4fgo+6X8M1JJBe/aFx
- fX6hPzD2UYCLYAsKG5dO7HaM8wxPDyxrRe9XvOBPyEIlYjSGfwu4uTE2YU3bdlcRCPOM jg== 
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ru76d1cqd-1
+ bh=HQdfjd8ZpcrjUIsf35lNszjKUf31LzRsJTL+GDY5Y5g=;
+ b=dwVewO+6hNesorm7FA/f8kJZ6qeqqCzpDShktrfdpDwZN3+MytMm8zTo9gjhPOhjn/Hi
+ 4c9Y9P/i2VF6aVptZ+CpWdY3C1j/tcEBDE9J15KTjuNbgONDmAc+6GB1tpdvTaSdRjTy
+ khFV3wMK0IcMUqMaq5UyVnJ1S0wHtleSg2tx2kXgDTvqSPqGY4VXyx3anUtkl9Bs97ot
+ oKQI4Oh1E5wCmyKuSj6DdumTAcmK5JGt+tD82U9X454lp9Gmhu7vj3n7/y2eCyPOjoqA
+ 8BgFhaPciyw72ePJWzAMI9Zj5k+v4ASpfcJ0WWZ6sBvmIrxh0+W1WVhmUtvS751TXnqx FQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ru804810v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jul 2023 14:05:58 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36E88Eeq031248; Fri, 14 Jul 2023 14:05:57 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rtpvu1bkq-1
+ Fri, 14 Jul 2023 14:19:16 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36EEJF1s005101;
+ Fri, 14 Jul 2023 14:19:15 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ru804810n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jul 2023 14:05:57 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com
- [10.39.53.230])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36EE5vYO36372966
+ Fri, 14 Jul 2023 14:19:15 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36EE1wnf008508;
+ Fri, 14 Jul 2023 14:19:15 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
+ by ppma04dal.us.ibm.com (PPS) with ESMTPS id 3rtq33p9e3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 14 Jul 2023 14:19:15 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36EEJDfx62128456
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Jul 2023 14:05:57 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 195BA5805C;
- Fri, 14 Jul 2023 14:05:57 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BBB915805D;
- Fri, 14 Jul 2023 14:05:56 +0000 (GMT)
+ Fri, 14 Jul 2023 14:19:13 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 707575806C;
+ Fri, 14 Jul 2023 14:19:13 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1FE925806E;
+ Fri, 14 Jul 2023 14:19:13 +0000 (GMT)
 Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 14 Jul 2023 14:05:56 +0000 (GMT)
-Message-ID: <581b037d-ccb7-8df7-8946-df8198cb04e6@linux.ibm.com>
-Date: Fri, 14 Jul 2023 10:05:56 -0400
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 14 Jul 2023 14:19:13 +0000 (GMT)
+Message-ID: <6db33e13-523f-8b03-f668-40fbc7f03729@linux.ibm.com>
+Date: Fri, 14 Jul 2023 10:19:12 -0400
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2 11/11] tpm_crb: support restoring older vmstate
+Subject: Re: [PATCH] hw/tpm: TIS on sysbus: Remove unsupport ppi command line
+ option
 Content-Language: en-US
-To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
-Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>
-References: <20230714070931.23476-1-j@getutm.app>
- <20230714070931.23476-12-j@getutm.app>
+To: eric.auger@redhat.com, Joelle van Dyne <j@getutm.app>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com,
+ ard.biesheuvel@linaro.org
+References: <20230713171955.149236-1-stefanb@linux.ibm.com>
+ <CA+E+eSA1O=39JRjWni1YnVg3uwWATpe2zw8EWgDEBbv+EPgU7w@mail.gmail.com>
+ <56a562bf-5b3d-0914-f530-dd965587a3db@linux.ibm.com>
+ <d1a121d2-b0ec-7928-ff21-ce5389cf7749@redhat.com>
 From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20230714070931.23476-12-j@getutm.app>
+In-Reply-To: <d1a121d2-b0ec-7928-ff21-ce5389cf7749@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: po60sFAx-gIziTwAm7QgfUjhPE8_lg8E
-X-Proofpoint-ORIG-GUID: po60sFAx-gIziTwAm7QgfUjhPE8_lg8E
+X-Proofpoint-ORIG-GUID: ayZ9MZ2CojJPZ4S6k_Sjg7ZRaK-fdUgg
+X-Proofpoint-GUID: eQX-Vc-3kyv5JmLwYjGWkCF98IKCcZVG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-14_06,2023-07-13_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- adultscore=0 impostorscore=0 mlxscore=0 mlxlogscore=594 clxscore=1015
- bulkscore=0 phishscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307140128
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ mlxlogscore=999 spamscore=0
+ bulkscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 mlxscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307140128
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -111,12 +122,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 7/14/23 03:09, Joelle van Dyne wrote:
-> When we moved to a single mapping and modified TPM CRB's VMState, it
-> broke restoring of VMs that were saved on an older version. This
-> change allows those VMs to gracefully migrate to the new memory
-> mapping.
+On 7/14/23 09:51, Eric Auger wrote:
+> Hi Stefan,
+> On 7/14/23 13:51, Stefan Berger wrote:
+>>
+>>
+>> On 7/14/23 02:07, Joelle van Dyne wrote:
+>>> On Thu, Jul 13, 2023 at 10:20 AM Stefan Berger
+>>> <stefanb@linux.ibm.com> wrote:
+>>>>
+>>>> The ppi command line option for the TIS device on sysbus never worked
+>>>> and caused an immediate segfault. Remove support for it since it also
+>>>> needs support in the firmware and needs testing inside the VM.
+>>>>
+>>>> Reproducer with the ppi=on option passed:
+>>>>
+>>>> qemu-system-aarch64 \
+>>>>      -machine virt,gic-version=3 \
+>>>>      -m 4G  \
+>>>>      -nographic -no-acpi \
+>>>>      -chardev socket,id=chrtpm,path=/tmp/mytpm1/swtpm-sock \
+>>>>      -tpmdev emulator,id=tpm0,chardev=chrtpm \
+>>>>      -device tpm-tis-device,tpmdev=tpm0,ppi=on
+>>>> [...]
+>>>> Segmentation fault (core dumped)
+>>>>
+>>>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+>>>
+>>> Do you need to add a VMSTATE_UNUSED_TEST in case a future QEMU version
+>>> introduces a new field in the same position which will cause an issue
+>>> when restoring from an older version?
+>>
+>> Hm, you got a point there. We will have to error-out in case someone
+>> sets ppi=on instead since the expectation that PPI would work is
+>> simply not there. v2 coming soon.
+> as Joelle pointed it out ppi_enabled is not part of
+> vmstate_tpm_tis_sysbus fields. And since it has never worked I suspect
+> we cannot have any existing VM enabling it. So I don't get the issue
+> with this 1st version?
 
-Thanks. This has to be in 4/11 though.
+You are right. I repeated my test with restoring state of a VM taken before the removal of this field and it restored it. So that other patch is good and I am withdrawing this patch here.
 
+     Stefan
+
+> 
+> Thanks
+> 
+> Eric
+>>
+>>      Stefan
+>>
+> 
 
