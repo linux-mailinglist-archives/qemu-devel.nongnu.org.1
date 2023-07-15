@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5F77548F1
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:55:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F4747548EC
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:55:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfjU-0004yk-Uh; Sat, 15 Jul 2023 09:54:49 -0400
+	id 1qKfjU-0004oW-V3; Sat, 15 Jul 2023 09:54:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfib-00048t-R6
+ id 1qKfib-00048s-R0
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:59 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiX-0001KM-JM
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:53 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-316f4abb1e1so479560f8f.3
+ id 1qKfiX-0001KV-JP
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:52 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3158a5e64b6so2838277f8f.0
  for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1689429226; x=1692021226;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=QRxmyw2NI294w3E1OCW/a4A3Z0jUfk7Gsk9X8Q/8iho=;
- b=VC7koQuyjgHQXSPTy9LGtOYxd4WOq0UBnxDbFmrTkJ1ArlrRJmJKREDoqfluyEGd4r
- ScyyC4ah3Js1nFT2XsJFxD38bp9bSl1aMfnN3tdcED6nfWmfgz/x16ADJ6q7YC1T3VeJ
- +mLirTAqWA+Fq8GWt4Qq4MMD/toG7i+MUoyrPqTJQvmI7QTUF4xkyvgIEzGJBYruqyZq
- JnGzePNAkPtha6kRgjfCeaY41uQaq5yi9jLYqepNb9BMlyucj5K33v5xV+8adjt8uOzV
- Ga9ZUIkPCFQSFgacXQF4z45sNFS6E/D/2sY9PEb5Ety7wduhAS8GDsVvTnNqQGHTbSdk
- g0fQ==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=5+vFU351RDeVAwRNg/WDopVOnzTmK+ZtjZmF1Bh7abU=;
+ b=gl8UCtlyjZ+44cSU46EvsZ6D3W6fUiGFIVosIPmVY/yq5QzH+2yS8TzW9HJHyQhhX5
+ ctlh4pp4E9CrrLkMEOLYlop9lsHZAnxryhpCPMrClNS5W4xhM2+ChL6a3mxtOF48mTx8
+ HlwPsnmYNwy7rfbKwx8mbKXO+JsX3LDSIOP+3uKUhYabJKw7GtdMCUb4+Ry8N2reRgJg
+ abA5Ss+WF8Hn334/cwEX/a2QIn2iY7K09eCn90X2Et8ZC96shSdkODyiv+3AXCbrmkCY
+ EcjQ+5QkUJvht470p0uHXG5KRRhvkyF+LHYouag0xGI+6K8iYcWSEVqLRC3L7b/M/4SK
+ a+Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1689429226; x=1692021226;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QRxmyw2NI294w3E1OCW/a4A3Z0jUfk7Gsk9X8Q/8iho=;
- b=MSWKHpTzpUsaUZI/Ftq7cQutz7+/uoSEgknbXGv3l8zml7YdBUuGWcPKXMv7Q7702r
- 0Xj1/eWVfVQuPbyIdr6wxdSws4slpruIjK2OrCi2x86r4QPBq+rYQxEXQxFSVrOThDwQ
- ImxvUCsU+WTG+wjK4rT1tgGL37C43MBvLTG0X5YB0JeSbgNUMsiECDZlXKjtsNJ4XYP0
- Ap5nNumEuR4C66v3q69RLwZaYE4xqbPqzIEoAKD8We48y6XHTN1YTB6uZlJEMnf10gVb
- n3RW2Ae8RCOQxaa0BtzF/T0XCTL6eiCd8dRJMj75S04TJB8Uzi2J35OMy+TXY9ZMkKTe
- UtzA==
-X-Gm-Message-State: ABy/qLa7/i7QZa/E6YZMKI7BIVwGedmiv3kesSj7oi0llppreZt4IYAQ
- yHrQQkO+2Oa1kLJw7Znhx/+Cl/PD8bux4r6xbjKhcA==
-X-Google-Smtp-Source: APBJJlEa6lpCIO9vXY66exIpPkjThliDqiC7C8AOOVxEIEjKORbQO5yR6oVg337ZP5ozFP1LN2lEPA==
-X-Received: by 2002:a5d:4564:0:b0:306:46c4:d313 with SMTP id
- a4-20020a5d4564000000b0030646c4d313mr6321855wrc.28.1689429226122; 
+ bh=5+vFU351RDeVAwRNg/WDopVOnzTmK+ZtjZmF1Bh7abU=;
+ b=GynDokG/71TfYCp0VmTg0G1KsWmZATXA8D+FtR3Bhd7qoQUaQkW1KjcsRcYCSDniNU
+ kG97H7PoC59Yx84Zq7ua9pHtNofgoWs6uUbhr8qdfNSPO/LBsiZd2WHk27zWxSxBVr5P
+ kz7S4tYpqOjfu4RrIE6ue2mrA+VqCwwz6lBc7DrG5aV8iyFh8lFGNnSSzBbzLfXTIbQK
+ XnY4Fr7gKiMwkVqLyNjN7g+y+gYqIUZPU/ydXDoKnnrcuwOXlBlni7NrhmhhvNQX0b3t
+ L/K+69yE3dS5XC3lws66lb+TaIr+AxoM+d6WW/R/9mpyUyUU+tCPgMGXLnkFkh9Exq18
+ Py/w==
+X-Gm-Message-State: ABy/qLZGPUMoQcP6iSFhcnf6Avhhhlt5ggXfLko4atPWUO48iOGAFhao
+ owxm7v3BOji7WZkLzqCgrJJXcR9QUECko7gj0/fkEQ==
+X-Google-Smtp-Source: APBJJlHNxc4ln2nstts4VI3tWYxsa05SYU+4h9W/BAwW+ltLppYPwe4OTdFE4g1nnBZ1RnYXYnWKig==
+X-Received: by 2002:a5d:698a:0:b0:314:35e2:e28d with SMTP id
+ g10-20020a5d698a000000b0031435e2e28dmr5522907wru.13.1689429226689; 
  Sat, 15 Jul 2023 06:53:46 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
- k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.45
+ k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.46
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:53:45 -0700 (PDT)
+ Sat, 15 Jul 2023 06:53:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Warner Losh <imp@bsdimp.com>,
-	Kyle Evans <kevans@freebsd.org>
-Subject: [PULL 34/47] bsd-user: Use page_find_range_empty for
+Subject: [PULL 35/47] linux-user: Use page_find_range_empty for
  mmap_find_vma_reserved
-Date: Sat, 15 Jul 2023 14:53:04 +0100
-Message-Id: <20230715135317.7219-35-richard.henderson@linaro.org>
+Date: Sat, 15 Jul 2023 14:53:05 +0100
+Message-Id: <20230715135317.7219-36-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,73 +93,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Use the interval tree to find empty space, rather than
 probing each page in turn.
 
-Cc: Warner Losh <imp@bsdimp.com>
-Cc: Kyle Evans <kevans@freebsd.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-bt: Warner Losh <imp@bsdimp.com>
-Message-Id: <20230707204054.8792-18-richard.henderson@linaro.org>
+Message-Id: <20230707204054.8792-19-richard.henderson@linaro.org>
 ---
- bsd-user/mmap.c | 48 +++++++-----------------------------------------
- 1 file changed, 7 insertions(+), 41 deletions(-)
+ linux-user/mmap.c | 52 ++++++-----------------------------------------
+ 1 file changed, 6 insertions(+), 46 deletions(-)
 
-diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
-index 07b5b8055e..aca8764356 100644
---- a/bsd-user/mmap.c
-+++ b/bsd-user/mmap.c
-@@ -222,50 +222,16 @@ unsigned long last_brk;
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index c4b2515271..738b9b797d 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -318,55 +318,15 @@ unsigned long last_brk;
  static abi_ulong mmap_find_vma_reserved(abi_ulong start, abi_ulong size,
-                                         abi_ulong alignment)
+                                         abi_ulong align)
  {
--    abi_ulong addr;
--    abi_ulong end_addr;
+-    abi_ulong addr, end_addr, incr = qemu_host_page_size;
 -    int prot;
--    int looped = 0;
-+    abi_ulong ret;
+-    bool looped = false;
++    target_ulong ret;
  
 -    if (size > reserved_va) {
 -        return (abi_ulong)-1;
-+    ret = page_find_range_empty(start, reserved_va, size, alignment);
-+    if (ret == -1 && start > TARGET_PAGE_SIZE) {
++    ret = page_find_range_empty(start, reserved_va, size, align);
++    if (ret == -1 && start > mmap_min_addr) {
 +        /* Restart at the beginning of the address space. */
-+        ret = page_find_range_empty(TARGET_PAGE_SIZE, start - 1,
-+                                    size, alignment);
++        ret = page_find_range_empty(mmap_min_addr, start - 1, size, align);
      }
  
--    size = HOST_PAGE_ALIGN(size) + alignment;
--    end_addr = start + size;
--    if (end_addr > reserved_va) {
--        end_addr = reserved_va + 1;
--    }
--    addr = end_addr - qemu_host_page_size;
+-    /* Note that start and size have already been aligned by mmap_find_vma. */
 -
+-    end_addr = start + size;
+-    /*
+-     * Start at the top of the address space, ignoring the last page.
+-     * If reserved_va == UINT32_MAX, then end_addr wraps to 0,
+-     * throwing the rest of the calculations off.
+-     * TODO: rewrite using last_addr instead.
+-     * TODO: use the interval tree instead of probing every page.
+-     */
+-    if (start > reserved_va - size) {
+-        end_addr = ((reserved_va - size) & -align) + size;
+-        looped = true;
+-    }
+-
+-    /* Search downward from END_ADDR, checking to see if a page is in use.  */
+-    addr = end_addr;
 -    while (1) {
+-        addr -= incr;
 -        if (addr > end_addr) {
 -            if (looped) {
+-                /* Failure.  The entire address space has been searched.  */
 -                return (abi_ulong)-1;
 -            }
--            end_addr = reserved_va + 1;
--            addr = end_addr - qemu_host_page_size;
--            looped = 1;
--            continue;
+-            /* Re-start at the top of the address space (see above). */
+-            addr = end_addr = ((reserved_va - size) & -align) + size;
+-            looped = true;
+-        } else {
+-            prot = page_get_flags(addr);
+-            if (prot) {
+-                /* Page in use.  Restart below this page.  */
+-                addr = end_addr = ((addr - size) & -align) + size;
+-            } else if (addr && addr + size == end_addr) {
+-                /* Success!  All pages between ADDR and END_ADDR are free.  */
+-                if (start == mmap_next_start) {
+-                    mmap_next_start = addr;
+-                }
+-                return addr;
+-            }
 -        }
--        prot = page_get_flags(addr);
--        if (prot) {
--            end_addr = addr;
--        }
--        if (end_addr - addr >= size) {
--            break;
--        }
--        addr -= qemu_host_page_size;
 -    }
--
--    if (start == mmap_next_start) {
--        mmap_next_start = addr;
--    }
--    /* addr is sufficiently low to align it up */
--    if (alignment != 0) {
--        addr = (addr + alignment) & ~(alignment - 1);
--    }
--    return addr;
 +    return ret;
  }
  
