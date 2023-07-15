@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D7C754915
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 16:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B9C754909
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:58:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfm3-0001aj-AG; Sat, 15 Jul 2023 09:57:27 -0400
+	id 1qKfly-0001QQ-Qp; Sat, 15 Jul 2023 09:57:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKflX-00013r-Ax
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:56:55 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1qKflY-00014o-GC
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:56:57 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKflV-0003TE-RU
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:56:55 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3142970df44so2816286f8f.3
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:56:53 -0700 (PDT)
+ id 1qKflW-0003TS-Vy
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:56:56 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3090d3e9c92so3055696f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:56:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689429412; x=1692021412;
+ d=linaro.org; s=google; t=1689429413; x=1692021413;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vXDNUHkoHKMJOTYkZxcm9eNGIwvNIgvNekBczYJkm1c=;
- b=Kdbenx9rp9VTw4UAtVag07OENdIbBrGtxM74t2QdmZdaD01IPFtbiJ3AwsoNmWIJNJ
- vwB2OTOwxpCPPR3oXul96NOG248wt7TQaseKm5XtMs0XvbXkb5vlkP37TKydr2sEXctP
- fql3NP5DxlyccmSnslCOx0/ZwF02aJKlO6xi7a1tyVPbX0qGyuUcqxTftiTdypjsOjMx
- 1SrKwQLQx2+JCqkLBohJUeLczSb0lc1OzIMHW6jtgJQ8xxjCD/wJEIOzpJbM950wnJZl
- W42F3N04k0J3zJ6H/Il1IofyFkF+Mke6lFp8Zd9/k1M7xR2FC2MTG8QLxzdJK+rbwWlj
- kPbQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GxD0O4grkQ8OinpyCeKP/3HLPLmkFCEiNXIpS5ZyOiE=;
+ b=Urm2+Pzf5cJoCZypvWz2GQ96EIZ+cr+s340R01E/qvquJkOysghVaNYEKjHz/Kmrd/
+ SH7U3EyAVofJaAoTJYQkx2WH3kYBYEA344ut00DKtJx0Xy73HhDl6c19UpZTBPDjUw8Q
+ LQ2kfhVkyZxoT67GZaaSKaV5VJOQs59c5SknfQsKtJtPY2TMq2ZthUV3b/y/a+5H1Jkj
+ Ilpzl+AYplYYMM6AvLDUoxXFmYMKDZFrJ5nM3DsaIzCqNH6vCFuDZRHk3YAuauCUGRLV
+ 3jQb+Hhd70WflTnvI8DrpQ0YbXZY5hp/xp3l/hR0mK1VUgckVYi/rTuiNE7pOtx5LJxE
+ VEQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689429412; x=1692021412;
+ d=1e100.net; s=20221208; t=1689429413; x=1692021413;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vXDNUHkoHKMJOTYkZxcm9eNGIwvNIgvNekBczYJkm1c=;
- b=le6Y8KDD6VVrRGjjqhMM9EUKOs3tPkCF/2AdU+0+CYm5biGFhXJfmf+AGAfQBedkVP
- tpGQPNVAV/iOqL9Ne3q/EAi9ot4GdEDCjwdOjjza4yk7fc1WmgLYU054LrrA2DapiWNe
- pJlInC+lozCgZ54zt3+0Gg+ukKYekT1IG3ws4cdXM74ZBy0rKC1qhLwq6I7CMypHnUVI
- eZuAHvt3/aZyBIsOeo4xKKpBJDKQkKmfplCnzp7C+FsWU07+s1sxkqg9R/kvkZIVlkME
- nqWyPSzNLXbz1m1btQh6Qi8/S50M1yCie4CBt1voB46xsYEFSi1PreHqxVGPur0QVrUR
- Iwcg==
-X-Gm-Message-State: ABy/qLYZuRaLb4+WRCQ0T6u1UxwqPsTYZQW1R7wwhueRDGbRaPbI17nd
- hgpLR7ENQ8Ry2V1g0RSkTNWSDMS/T7B9bZrpZnPycg==
-X-Google-Smtp-Source: APBJJlEZ2DsvqdTwWpqp132AR2wkvwoPT9GEcqDW8epL1JTZCtEFiIHJH2788Vbu7Zd0D+ZB/V+XPA==
-X-Received: by 2002:a5d:424a:0:b0:30e:3f54:f8c9 with SMTP id
- s10-20020a5d424a000000b0030e3f54f8c9mr6059908wrr.10.1689429412591; 
- Sat, 15 Jul 2023 06:56:52 -0700 (PDT)
+ bh=GxD0O4grkQ8OinpyCeKP/3HLPLmkFCEiNXIpS5ZyOiE=;
+ b=gY2PtQKD2Ga5yuryJ7/xY65WJuO5LmyJGo92OTTex7gkq6InkA53sbvh6EfUqbG0JI
+ jVZaFv+6rmToybonoeGPcXjPNU4phY+H3u+POw9DTKP9zCxBo/zxfABLfDMfgwmONTn8
+ j0iEL1KErKYEbpCWAG9R9drdN1JpRz6ytnzzT/YoxFdw8y40hcHkhWq8m/H4ziwFkQ/S
+ lJkLTacG28lLBaUcDsxPxLVWE5DsDeWeZJG7Cb2W9dJK3rOCmvunOtpYheM+vKrRN/K4
+ +JAxEcjxJEKTfFAWgS12xJDBHHiquPvbnwUpiyzEVVtGAOb382/vHQJlyiHN5rmCkGd1
+ 44Xg==
+X-Gm-Message-State: ABy/qLaEmwOLlu55xAnoMOtc0alaiOPpgoB19f7OfZsbwPtblllur0Fd
+ KwjfdLvySlEwQthfATv+HV9iPIwVnjVAIPxs1dTgUw==
+X-Google-Smtp-Source: APBJJlHfgrE4yBqdTLzFcPH46Xo9OAQBwgKEBH+H2x4A5so0IeZFII3yD064LJPlW2Im3Z+aYDcGrg==
+X-Received: by 2002:adf:e644:0:b0:316:ef23:9276 with SMTP id
+ b4-20020adfe644000000b00316ef239276mr4886194wrn.52.1689429413496; 
+ Sat, 15 Jul 2023 06:56:53 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
  r8-20020a056000014800b0030fa3567541sm13866651wrx.48.2023.07.15.06.56.52
- for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:56:52 -0700 (PDT)
+ Sat, 15 Jul 2023 06:56:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 43/47] linux-user: Simplify target_madvise
-Date: Sat, 15 Jul 2023 14:53:13 +0100
-Message-Id: <20230715135317.7219-44-richard.henderson@linaro.org>
+Cc: Juan Quintela <quintela@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 44/47] linux-user: Drop uint and ulong
+Date: Sat, 15 Jul 2023 14:53:14 +0100
+Message-Id: <20230715135317.7219-45-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,53 +92,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The trivial length 0 check can be moved up, simplifying some
-of the other cases.  The end < start test is handled by
-guest_range_valid_untagged.
+From: Juan Quintela <quintela@redhat.com>
 
+These are types not used anymore anywhere else.
+
+Signed-off-by: Juan Quintela <quintela@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: <20230511085056.13809-1-quintela@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230707204054.8792-27-richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 19 ++++---------------
- 1 file changed, 4 insertions(+), 15 deletions(-)
+ linux-user/syscall.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 49cfa873e0..44b53bd446 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -900,28 +900,17 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 33bc242e6a..1464151826 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -309,16 +309,16 @@ _syscall0(int, sys_gettid)
+ #endif
  
- abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
- {
--    abi_ulong len, end;
-+    abi_ulong len;
-     int ret = 0;
- 
-     if (start & ~TARGET_PAGE_MASK) {
-         return -TARGET_EINVAL;
-     }
--    len = TARGET_PAGE_ALIGN(len_in);
--
--    if (len_in && !len) {
--        return -TARGET_EINVAL;
--    }
--
--    end = start + len;
--    if (end < start) {
--        return -TARGET_EINVAL;
--    }
--
--    if (end == start) {
-+    if (len_in == 0) {
-         return 0;
-     }
--
--    if (!guest_range_valid_untagged(start, len)) {
-+    len = TARGET_PAGE_ALIGN(len_in);
-+    if (len == 0 || !guest_range_valid_untagged(start, len)) {
-         return -TARGET_EINVAL;
-     }
- 
+ #if defined(TARGET_NR_getdents) && defined(EMULATE_GETDENTS_WITH_GETDENTS)
+-_syscall3(int, sys_getdents, uint, fd, struct linux_dirent *, dirp, uint, count);
++_syscall3(int, sys_getdents, unsigned int, fd, struct linux_dirent *, dirp, unsigned int, count);
+ #endif
+ #if (defined(TARGET_NR_getdents) && \
+       !defined(EMULATE_GETDENTS_WITH_GETDENTS)) || \
+     (defined(TARGET_NR_getdents64) && defined(__NR_getdents64))
+-_syscall3(int, sys_getdents64, uint, fd, struct linux_dirent64 *, dirp, uint, count);
++_syscall3(int, sys_getdents64, unsigned int, fd, struct linux_dirent64 *, dirp, unsigned int, count);
+ #endif
+ #if defined(TARGET_NR__llseek) && defined(__NR_llseek)
+-_syscall5(int, _llseek,  uint,  fd, ulong, hi, ulong, lo,
+-          loff_t *, res, uint, wh);
++_syscall5(int, _llseek,  unsigned int,  fd, unsigned long, hi, unsigned long, lo,
++          loff_t *, res, unsigned int, wh);
+ #endif
+ _syscall3(int, sys_rt_sigqueueinfo, pid_t, pid, int, sig, siginfo_t *, uinfo)
+ _syscall4(int, sys_rt_tgsigqueueinfo, pid_t, pid, pid_t, tid, int, sig,
 -- 
 2.34.1
 
