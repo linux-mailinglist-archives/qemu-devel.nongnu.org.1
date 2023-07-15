@@ -2,55 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445DC754564
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 01:29:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A06B754642
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 04:19:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKSCk-0000sc-6J; Fri, 14 Jul 2023 19:28:06 -0400
+	id 1qKUrM-00070Z-S0; Fri, 14 Jul 2023 22:18:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chris@laplante.io>) id 1qKSCi-0000rw-6K
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 19:28:04 -0400
-Received: from mail-4018.proton.ch ([185.70.40.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chris@laplante.io>) id 1qKSCg-00043S-Al
- for qemu-devel@nongnu.org; Fri, 14 Jul 2023 19:28:03 -0400
-Date: Fri, 14 Jul 2023 23:27:51 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=laplante.io;
- s=protonmail3; t=1689377279; x=1689636479;
- bh=PQsO06m872ZPS3ye7JAZN9jPnnRrY+OuHRHTzT8HnJI=;
- h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
- Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
- Message-ID:BIMI-Selector;
- b=aeUhYacEYXMWkLo4pVxVmuaZVAcmPok43vO8RmvXsh9+qOriHeGzzkBm8DCmAiE83
- 6D99qREbzKNYZZ5Y2QQWsmhaJDeTsSutNEwY54eTjMT/t+sJX79ZjRvEWAOCaVuSqo
- b6RfMxXkGnyH2cfwg+ZhgecHZWyuyEm+Pc1/K9U9syAID3SdgFe6Fueg3SEiflzFgU
- VJdGCY+7rpQky2rYUZVcHu8kyUwNvdmE6Zw4ysbkLkkQLNq1tXxAeulGULGmlVlo5C
- fOQXSZa98xR8Q/nQY44Rk++g4/9U80pi0uhDGFsmzAL6ClsylrBidEsWLfwM469hdy
- 9G2O9mjkvAwlQ==
-To: qemu-devel@nongnu.org
-From: Chris Laplante <chris@laplante.io>
-Cc: Joel Stanley <joel@jms.id.au>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org, Chris Laplante <chris@laplante.io>
-Subject: [PATCH 6/6] qtest: microbit-test: add tests for nRF51 DETECT
-Message-ID: <20230714232659.76434-7-chris@laplante.io>
-In-Reply-To: <20230714232659.76434-1-chris@laplante.io>
-References: <20230714232659.76434-1-chris@laplante.io>
-Feedback-ID: 43500449:user:proton
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1qKUrK-00070N-Ua; Fri, 14 Jul 2023 22:18:10 -0400
+Received: from smtp80.cstnet.cn ([159.226.251.80] helo=cstnet.cn)
+ by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
+ id 1qKUr7-0006dK-OL; Fri, 14 Jul 2023 22:18:10 -0400
+Received: from [192.168.0.120] (unknown [180.175.26.191])
+ by APP-01 (Coremail) with SMTP id qwCowABHT4fDAbJkMiMpCw--.25657S2;
+ Sat, 15 Jul 2023 10:17:39 +0800 (CST)
+Message-ID: <10bfd3f9-956a-d84f-88ea-d58bfc639f22@iscas.ac.cn>
+Date: Sat, 15 Jul 2023 10:17:38 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=185.70.40.18; envelope-from=chris@laplante.io;
- helo=mail-4018.proton.ch
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc: liweiwei@iscas.ac.cn, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ richard.henderson@linaro.org
+Subject: Re: [PATCH for-8.2 v3 5/8] target/riscv/cpu.c: add a
+ ADD_CPU_PROPERTIES_ARRAY() macro
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+References: <20230714174311.672359-1-dbarboza@ventanamicro.com>
+ <20230714174311.672359-6-dbarboza@ventanamicro.com>
+Content-Language: en-US
+From: Weiwei Li <liweiwei@iscas.ac.cn>
+In-Reply-To: <20230714174311.672359-6-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: qwCowABHT4fDAbJkMiMpCw--.25657S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AF48ur47ZF43urW8ZF4rGrg_yoW8AF47pr
+ W5CF4jva4rJF97J347XF4xCw1Utr1DGFWfKw4xKw1xZF45JrZ09r18Ka1aywnruFy09345
+ uw1UuFnIyF47trJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUUkm14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+ 6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+ 4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+ I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+ 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCYjI0SjxkI62AI1cAE67vI
+ Y487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+ 0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
+ 0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+ WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+ IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUoOJ5UUUUU
+X-Originating-IP: [180.175.26.191]
+X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
+Received-SPF: pass client-ip=159.226.251.80; envelope-from=liweiwei@iscas.ac.cn;
+ helo=cstnet.cn
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,78 +78,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Exercise the DETECT mechanism of the GPIO peripheral.
 
-Signed-off-by: Chris Laplante <chris@laplante.io>
----
- tests/qtest/microbit-test.c | 42 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+On 2023/7/15 01:43, Daniel Henrique Barboza wrote:
+> The code inside riscv_cpu_add_user_properties() became quite repetitive
+> after recent changes. Add a macro to hide the repetition away.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
 
-diff --git a/tests/qtest/microbit-test.c b/tests/qtest/microbit-test.c
-index 6022a92b6a..3c85adba37 100644
---- a/tests/qtest/microbit-test.c
-+++ b/tests/qtest/microbit-test.c
-@@ -393,6 +393,47 @@ static void test_nrf51_gpio(void)
-     qtest_quit(qts);
- }
-=20
-+static void test_nrf51_gpio_detect(void) {
-+    QTestState *qts =3D qtest_init("-M microbit");
-+    int i;
-+
-+    // Connect input buffer on pins 1-7, configure SENSE for high level
-+    for (i =3D 1; i <=3D 7; i++) {
-+        qtest_writel(qts, NRF51_GPIO_BASE + NRF51_GPIO_REG_CNF_START + i *=
- 4, deposit32(0, 16, 2, 2));
-+    }
-+
-+    qtest_irq_intercept_out_named(qts, "/machine/nrf51", "detect");
-+
-+    for (i =3D 1; i <=3D 7; i++) {
-+        // Set pin high
-+        qtest_set_irq_in(qts, "/machine/nrf51", "unnamed-gpio-in", i, 1);
-+        uint32_t actual =3D qtest_readl(qts, NRF51_GPIO_BASE + NRF51_GPIO_=
-REG_IN);
-+        g_assert_cmpuint(actual, =3D=3D, 1 << i);
-+
-+        // Check that DETECT is high
-+        g_assert_true(qtest_get_irq(qts, 0));
-+
-+        // Set pin low, check that DETECT goes low.
-+        qtest_set_irq_in(qts, "/machine/nrf51", "unnamed-gpio-in", i, 0);
-+        actual =3D qtest_readl(qts, NRF51_GPIO_BASE + NRF51_GPIO_REG_IN);
-+        g_assert_cmpuint(actual, =3D=3D, 0x0);
-+        g_assert_false(qtest_get_irq(qts, 0));
-+    }
-+
-+    // Set pin 0 high, check that DETECT doesn't fire
-+    qtest_set_irq_in(qts, "/machine/nrf51", "unnamed-gpio-in", 0, 1);
-+    g_assert_false(qtest_get_irq(qts, 0));
-+    qtest_set_irq_in(qts, "/machine/nrf51", "unnamed-gpio-in", 0, 0);
-+
-+    // Set pins 1, 2, and 3 high, then set 3 low. Check that DETECT is sti=
-ll high.
-+    for (i =3D 1; i <=3D 3; i++) {
-+        qtest_set_irq_in(qts, "/machine/nrf51", "unnamed-gpio-in", i, 1);
-+    }
-+    g_assert_true(qtest_get_irq(qts, 0));
-+    qtest_set_irq_in(qts, "/machine/nrf51", "unnamed-gpio-in", 3, 0);
-+    g_assert_true(qtest_get_irq(qts, 0));
-+}
-+
- static void timer_task(QTestState *qts, hwaddr task)
- {
-     qtest_writel(qts, NRF51_TIMER_BASE + task, NRF51_TRIGGER_TASK);
-@@ -499,6 +540,7 @@ int main(int argc, char **argv)
-=20
-     qtest_add_func("/microbit/nrf51/uart", test_nrf51_uart);
-     qtest_add_func("/microbit/nrf51/gpio", test_nrf51_gpio);
-+    qtest_add_func("/microbit/nrf51/gpio_detect", test_nrf51_gpio_detect);
-     qtest_add_func("/microbit/nrf51/nvmc", test_nrf51_nvmc);
-     qtest_add_func("/microbit/nrf51/timer", test_nrf51_timer);
-     qtest_add_func("/microbit/microbit/i2c", test_microbit_i2c);
---=20
-2.39.2
+Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
 
+Weiwei Li
+
+>   target/riscv/cpu.c | 21 ++++++++++-----------
+>   1 file changed, 10 insertions(+), 11 deletions(-)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 5689368f02..f7083b2d5c 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1875,6 +1875,13 @@ static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
+>   }
+>   #endif
+>   
+> +#define ADD_CPU_PROPERTIES_ARRAY(_dev, _array) \
+> +    do { \
+> +        for (int i = 0; i < ARRAY_SIZE(_array); i++) { \
+> +            qdev_property_add_static(_dev, &_array[i]); \
+> +        } \
+> +    } while (0)
+> +
+>   /*
+>    * Add CPU properties with user-facing flags.
+>    *
+> @@ -1918,17 +1925,9 @@ static void riscv_cpu_add_user_properties(Object *obj)
+>           qdev_property_add_static(dev, prop);
+>       }
+>   
+> -    for (int i = 0; i < ARRAY_SIZE(riscv_cpu_options); i++) {
+> -        qdev_property_add_static(dev, &riscv_cpu_options[i]);
+> -    }
+> -
+> -    for (int i = 0; i < ARRAY_SIZE(riscv_cpu_vendor_exts); i++) {
+> -        qdev_property_add_static(dev, &riscv_cpu_vendor_exts[i]);
+> -    }
+> -
+> -    for (int i = 0; i < ARRAY_SIZE(riscv_cpu_experimental_exts); i++) {
+> -        qdev_property_add_static(dev, &riscv_cpu_experimental_exts[i]);
+> -    }
+> +    ADD_CPU_PROPERTIES_ARRAY(dev, riscv_cpu_options);
+> +    ADD_CPU_PROPERTIES_ARRAY(dev, riscv_cpu_vendor_exts);
+> +    ADD_CPU_PROPERTIES_ARRAY(dev, riscv_cpu_experimental_exts);
+>   }
+>   
+>   static Property riscv_cpu_properties[] = {
 
 
