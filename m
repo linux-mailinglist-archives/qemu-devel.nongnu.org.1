@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBEEA7548E9
+	by mail.lfdr.de (Postfix) with ESMTPS id C53817548E8
 	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:55:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfiz-0004Wf-3e; Sat, 15 Jul 2023 09:54:17 -0400
+	id 1qKfiq-0004DC-7Q; Sat, 15 Jul 2023 09:54:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiI-00042c-Am
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:34 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qKfiK-00044H-Oy
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:38 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiG-0001Fk-Ju
+ id 1qKfiH-0001Fw-6E
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:34 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-3fbab0d0b88so24926785e9.0
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbc5d5742bso26494155e9.2
  for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1689429211; x=1692021211;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=TsEvG+VWvCxR8wzqDIyWaXPHqC8uQbp4ZRAeyYSrQhw=;
- b=tV8M2B+W4xFNbzX44m/SvtOMztiCdlRnMo2tzSASbOteqG4sfJXnKK+gQnJqNDRheE
- l0kQLlcytPnXM4zYl22Gp4yEjTmeox3O1/sKPGuq1Z8I60y84oIGfMRaNnesiIW3kNUW
- cmr8QeoCVMPEjYlo/tPgVr/j6wUy0la4onLdoLCkwhezdBovU57LuibA8JKbf7K8P1zS
- lchbZKhrMfbKAKgFiqMZwEvD5fiufaY/zItMaDsY6dn09nUnI9bPKLmyuqXzJ3sS3Y06
- f9pTHPdkwnV6npQdu05qilIjSVGWxuGBXGNNYF4xmn3HrIujGcF8g8D1tU+B0m858B3g
- eNbQ==
+ :reply-to; bh=HWNck64Rdzbsq9/3XcWJpVmBPzEh5+xH4mb3RyYLiec=;
+ b=SO81RTHTX6hAXnhPXH5hUtz7J2K2eXxMhQ3xDDjgxO9Mdo/H+fkAcA5o9Q7hCLGpnj
+ jjs3xTloO6e54r7HLF/nQKasg8zVgwOqIuZnbJzSHxfdJeBHwmIr4sSB4itTraINYwBW
+ uiZ5vPUOeBeL0YhOj3KciJWmldCSjtnYUvtTXEgMRZwlczmyzMx56f+s+VHIZXL9FzjA
+ A+dvdFxBmwG5Sm0b3b5o17vhAER4W83Qe9kt/TlNoBoFwEyjb0b5f1eMl2oTcJRd8RXG
+ R4l0U7whBVo2qhNw8fuThY5hCI9xAQaJ1dFsVfflR9XPOrnk+UuSyJ1k/tQaQjgiG1td
+ ZGKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1689429211; x=1692021211;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TsEvG+VWvCxR8wzqDIyWaXPHqC8uQbp4ZRAeyYSrQhw=;
- b=M3Ej1zwTOw7Cth5FZqrICrvxF6pHqMuxEJWMqTLlLavnCBBr0uUiT8/2HIa1uQvZFG
- 2f9TDS8cH2+1IUKI7B337U2D/cFgjPpLvxNIxDNGmefbH20YsNsKhmMZTi4NmCvC2acv
- UEo6gw9DFBggbjDDO7dkMBqeFtvPJix+kDkMjZzUU2llxDHkR0gYMBWKR/LvjePxvFc/
- zHz5EHS9FEJfeXhpoDog9we21uRDua9XkFVIyfG+pFYBJqBc/E11G/JjYICmnav/63Ug
- eZ8Foq0qZI2e7NTdt4pA0p6BVtAbhQ2GgcGkG/RluPp15c3TjXW5m+vShCeyf1orGESS
- 5y3Q==
-X-Gm-Message-State: ABy/qLaEF6hWvXeFfFcirYUgOIFQWZR3x0rbqiJ5OsoD42+PNKP99HO9
- 33n710DtqmEF1EQoK8waeCX60hs9fUwfG3nVmDjsnw==
-X-Google-Smtp-Source: APBJJlFY8Aq95pSsHrxC+pSoQRTVxMMDftD/I6abyXp10epvk1IICtxhsCzq8V5ARMV2hPPyrSTOWg==
-X-Received: by 2002:a05:600c:20c:b0:3fb:416d:7324 with SMTP id
- 12-20020a05600c020c00b003fb416d7324mr4789756wmi.6.1689429210984; 
- Sat, 15 Jul 2023 06:53:30 -0700 (PDT)
+ bh=HWNck64Rdzbsq9/3XcWJpVmBPzEh5+xH4mb3RyYLiec=;
+ b=eC6Fs8sy7m+CUoPTEmgAAL8GkRcCB8ameAWtYriGBtcnIRpZbO+n2HsOOfzmaKTyr6
+ Qn00yqq1M8EpPveoHms0vv+obUJJnhKwcqlaWJ9yq66nEhXy/G5JsC1WFXFEMR+1yQlj
+ +kuUhs90psWsWsUMfcHZvzpoIXwgeBDXmMmNedxQgcCQMaWqfK/NwRo43QDRsDRrlOb7
+ /+Fh4LBVsFhn+BFpsh1VaensY/ZvSdOAsY5PBE3enWMRm6ofeOc5O6NvkAgvbvuvCnrh
+ 4nMRXzK49kgEAft8WWCVMLrFkoro4nRWYH2Q8Qoq5V3G6qfBw6GVl2AilkNbS9WrSM5R
+ 6RgQ==
+X-Gm-Message-State: ABy/qLZa6yYmSc6pdETIXheCALssHoE6jqidjkTIHSzMuhpJorga42Y5
+ h6ggAtNRhQbcxXfVD1vu8EREj/rUSMjiiGcjRLyNuQ==
+X-Google-Smtp-Source: APBJJlFSAr2Jbg783bkhwFTchGzNT7qyRxN7lO+xs1hXn/CkfWM61gVz9fl8SuKWM9+qMfn0IRVCVA==
+X-Received: by 2002:a05:600c:2310:b0:3fa:8fb1:50fe with SMTP id
+ 16-20020a05600c231000b003fa8fb150femr6652640wmo.15.1689429211687; 
+ Sat, 15 Jul 2023 06:53:31 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
- k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.30
+ k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:53:30 -0700 (PDT)
+ Sat, 15 Jul 2023 06:53:31 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 14/47] include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for
- microblaze
-Date: Sat, 15 Jul 2023 14:52:44 +0100
-Message-Id: <20230715135317.7219-15-richard.henderson@linaro.org>
+Subject: [PULL 15/47] include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for nios2
+Date: Sat, 15 Jul 2023 14:52:45 +0100
+Message-Id: <20230715135317.7219-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,25 +89,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based on gcc's microblaze.h setting BIGGEST_ALIGNMENT to 32 bits.
+Based on gcc's nios2.h setting BIGGEST_ALIGNMENT to 32 bits.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/user/abitypes.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/exec/user/abitypes.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/include/exec/user/abitypes.h b/include/exec/user/abitypes.h
-index 743b8bb9ea..beba0a48c7 100644
+index beba0a48c7..6191ce9f74 100644
 --- a/include/exec/user/abitypes.h
 +++ b/include/exec/user/abitypes.h
-@@ -15,7 +15,9 @@
- #define ABI_LLONG_ALIGNMENT 2
- #endif
+@@ -17,7 +17,8 @@
  
--#if (defined(TARGET_I386) && !defined(TARGET_X86_64)) || defined(TARGET_SH4)
-+#if (defined(TARGET_I386) && !defined(TARGET_X86_64)) \
-+    || defined(TARGET_SH4) \
-+    || defined(TARGET_MICROBLAZE)
+ #if (defined(TARGET_I386) && !defined(TARGET_X86_64)) \
+     || defined(TARGET_SH4) \
+-    || defined(TARGET_MICROBLAZE)
++    || defined(TARGET_MICROBLAZE) \
++    || defined(TARGET_NIOS2)
  #define ABI_LLONG_ALIGNMENT 4
  #endif
  
