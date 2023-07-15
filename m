@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53C5754904
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BEF7548EF
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:55:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfjl-0006Rz-3b; Sat, 15 Jul 2023 09:55:05 -0400
+	id 1qKfj3-0004YD-3h; Sat, 15 Jul 2023 09:54:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiN-00045M-I6
+ id 1qKfiM-00045E-Rc
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:40 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiK-0001Gs-Pa
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:39 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3094910b150so3067963f8f.0
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:35 -0700 (PDT)
+ id 1qKfiK-0001H1-Pb
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:38 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-316eabffaa6so2378501f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689429214; x=1692021214;
+ d=linaro.org; s=google; t=1689429215; x=1692021215;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KPSt9c/ngpAMvKxksu2NUPKStpNSLJ8TjY6ZtwR8h/Q=;
- b=SXRp5ip1qgGnb2AYrM50ZLVsfXoYjtYlbeA+FLdZB1Ek9gWdhuvoxpDD4lqY5GOM7S
- jx8qVgun/qW1/hEIGWK45CtgUNymy8iOEypJFydySVeSyvlOv6gzgmp+pg1LtpyfZu0T
- 8hnX09zPnGMpcKvS9U5wua/VnhOX6nxRvH6CiYcbYXObxyLhifvnR+hNHFZ0MIUtav3/
- k9HXxQRSVNflrTh3dVfGBmkbOB6xDQTqBNGMH7SXBc8m7BWBF1oLpU+P+bbmI/hc8adw
- LU18hEp5f4j/dPcw6lo+VE1NEXQVYs+xJQNoMDlVRJChEwkZ4xEBV6St/UxitPtUvu7t
- FvWw==
+ bh=jzyDMcbYQjI8gvZN9VCzZxgmLv/k9AezEb13MRPeL3k=;
+ b=Fmcyln+ZV6z4yTSqqk0nZ7i+ji8JuvQzRcnLaGEtGvk/z3R0xhffEqwITyGBGBrGp2
+ ESFPM5Zpa3YnysJTGviEBXgxKrQlbDTXAslXvxqlLrNt7lmFObAw/8YBTwkK+q+Rvi8K
+ Mvb9sfCMGu64gdr1oztj+UEfiQOiNZKzdzq7wIkwr903ZYdjR3V80QROK4EvdquXm+pf
+ vZ77EPB0qJ4DKvQ53TrjaJ18wGXad3mA6Hb1KWX8gFkoZj+7FXbLWczKipfK9gP8gZIO
+ yKMbVBNlahgVli9IeuHaoY4mTUfu98olmxh9zmnAUR3fP1It9lPpnEWtJhqoDA9jYS28
+ rXrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689429214; x=1692021214;
+ d=1e100.net; s=20221208; t=1689429215; x=1692021215;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KPSt9c/ngpAMvKxksu2NUPKStpNSLJ8TjY6ZtwR8h/Q=;
- b=O9Bk8lw/piKM9pTL9iHW2NZgB9hv0PD5hFH9bDRSMBwvN0nrttwz/DYtsNtPjm+uCR
- i8gsF76st+bOr5Qd8mI5+tIiwhnRct26QOji0uVsDH0721EqLGiyfx3AxOBAbxbtYtav
- Y/MWbli7pbgmbw44ojusCZeX0JBaRAwmKIPq5gay66bJvFl13bBn+bVf5sVBeHWWC+g4
- ZOBlSgktJ7el76D/x1TRbDtz320wHw/gQswdMYIDlpdZvj/eyO12GJIb11iMYq2kB00p
- Ul4qc/y+p7RK+5ixxyvnQDaPH+uHqU8vTN2NaITumRGhuyjJn3bbqgL1VZxi+5A6vSqm
- 7oSQ==
-X-Gm-Message-State: ABy/qLbV7gFYSEK935SC7qG+tQNWOtYcFx2hJnMZfsPDiQl5gdP8M8uj
- 0je2aAZ1da0MnR7rBvgOu9y7tFKrECxnlrh5rtlnOQ==
-X-Google-Smtp-Source: APBJJlHPfAtmLxUgRx1KXnllskaahA2u0E42lJ/RIEITz3uNqBVXJ2zdLGlwgg0nSi3ev8YjNn+2Vg==
-X-Received: by 2002:a5d:4bd1:0:b0:315:a74c:f627 with SMTP id
- l17-20020a5d4bd1000000b00315a74cf627mr6938552wrt.16.1689429214383; 
- Sat, 15 Jul 2023 06:53:34 -0700 (PDT)
+ bh=jzyDMcbYQjI8gvZN9VCzZxgmLv/k9AezEb13MRPeL3k=;
+ b=k7Ub6rFEJHGVVLSWT407oYggR+xrjeNC09KFPj4cWy6Pm80Xvw2zz12okbdP3GDeBS
+ 9dBR181tRfrGU22kNqSjzHuJhzaVkgIrtKxvp2nPlt15oDw8/++RYoBAV6HD8q+1FtO3
+ vc+umLe+QOXfRXsiqBCs6u5BQQ9nVZJFAXK0CjapAqMhvkmUvJ4PlkViMUTDVReo6wOH
+ u2igKHcSKsfk2L5j81vNv+BGT0V2bsFDohMQ/XKYMJ4trE9WE7Br9BDPa8chdcXjVrtU
+ pHy871pvZGJIFORsCLdO9NGQvKhje6u5RvvM1w0v/fYakmwv5+nQZ3h//2zAdje0wBhE
+ 18wg==
+X-Gm-Message-State: ABy/qLYX03GQjWUAt4BvzvPmfXrZ5tSyk3o+mMHVhvpRq4l92o6eVKs7
+ i1NEtAkoq4eVb/RSPIU4oY8PYqjqWckTpRINbeF/1g==
+X-Google-Smtp-Source: APBJJlECIOfqfGfLSSA4iIohKKxR3C205RYMCiFOtP2LchuSopAZKWyuAJlXXCYA3k3DWIecFGDRTQ==
+X-Received: by 2002:a5d:4d02:0:b0:314:17cc:31d0 with SMTP id
+ z2-20020a5d4d02000000b0031417cc31d0mr5713624wrt.34.1689429215149; 
+ Sat, 15 Jul 2023 06:53:35 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
- k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.33
+ k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:53:33 -0700 (PDT)
+ Sat, 15 Jul 2023 06:53:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Richard W . M . Jones" <rjones@redhat.com>
-Subject: [PULL 18/47] accel/tcg: Split out cpu_exec_longjmp_cleanup
-Date: Sat, 15 Jul 2023 14:52:48 +0100
-Message-Id: <20230715135317.7219-19-richard.henderson@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 19/47] tcg: Fix info_in_idx increment in layout_arg_by_ref
+Date: Sat, 15 Jul 2023 14:52:49 +0100
+Message-Id: <20230715135317.7219-20-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,85 +93,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Share the setjmp cleanup between cpu_exec_step_atomic
-and cpu_exec_setjmp.
+Off by one error, failing to take into account that layout_arg_1
+already incremented info_in_idx for the first piece.  We only
+need care for the n-1 TCG_CALL_ARG_BY_REF_N pieces here.
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
+Cc: qemu-stable@nongnu.org
+Fixes: 313bdea84d2 ("tcg: Add TCG_CALL_{RET,ARG}_BY_REF")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1751
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- accel/tcg/cpu-exec.c | 43 +++++++++++++++++++------------------------
- 1 file changed, 19 insertions(+), 24 deletions(-)
+ tcg/tcg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index ba1890a373..31aa320513 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -526,6 +526,23 @@ static void cpu_exec_exit(CPUState *cpu)
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index a0628fe424..652e8ea6b9 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -1083,7 +1083,7 @@ static void layout_arg_by_ref(TCGCumulativeArgs *cum, TCGHelperInfo *info)
+             .ref_slot = cum->ref_slot + i,
+         };
      }
+-    cum->info_in_idx += n;
++    cum->info_in_idx += n - 1;  /* i=0 accounted for in layout_arg_1 */
+     cum->ref_slot += n;
  }
  
-+static void cpu_exec_longjmp_cleanup(CPUState *cpu)
-+{
-+    /* Non-buggy compilers preserve this; assert the correct value. */
-+    g_assert(cpu == current_cpu);
-+
-+#ifdef CONFIG_USER_ONLY
-+    clear_helper_retaddr();
-+    if (have_mmap_lock()) {
-+        mmap_unlock();
-+    }
-+#endif
-+    if (qemu_mutex_iothread_locked()) {
-+        qemu_mutex_unlock_iothread();
-+    }
-+    assert_no_pages_locked();
-+}
-+
- void cpu_exec_step_atomic(CPUState *cpu)
- {
-     CPUArchState *env = cpu->env_ptr;
-@@ -568,16 +585,7 @@ void cpu_exec_step_atomic(CPUState *cpu)
-         cpu_tb_exec(cpu, tb, &tb_exit);
-         cpu_exec_exit(cpu);
-     } else {
--#ifdef CONFIG_USER_ONLY
--        clear_helper_retaddr();
--        if (have_mmap_lock()) {
--            mmap_unlock();
--        }
--#endif
--        if (qemu_mutex_iothread_locked()) {
--            qemu_mutex_unlock_iothread();
--        }
--        assert_no_pages_locked();
-+        cpu_exec_longjmp_cleanup(cpu);
-     }
- 
-     /*
-@@ -1023,20 +1031,7 @@ static int cpu_exec_setjmp(CPUState *cpu, SyncClocks *sc)
- {
-     /* Prepare setjmp context for exception handling. */
-     if (unlikely(sigsetjmp(cpu->jmp_env, 0) != 0)) {
--        /* Non-buggy compilers preserve this; assert the correct value. */
--        g_assert(cpu == current_cpu);
--
--#ifdef CONFIG_USER_ONLY
--        clear_helper_retaddr();
--        if (have_mmap_lock()) {
--            mmap_unlock();
--        }
--#endif
--        if (qemu_mutex_iothread_locked()) {
--            qemu_mutex_unlock_iothread();
--        }
--
--        assert_no_pages_locked();
-+        cpu_exec_longjmp_cleanup(cpu);
-     }
- 
-     return cpu_exec_loop(cpu, sc);
 -- 
 2.34.1
 
