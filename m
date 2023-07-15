@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C51875490E
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 16:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C553754913
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 16:00:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfli-0001IA-6g; Sat, 15 Jul 2023 09:57:06 -0400
+	id 1qKfm9-0001tb-Cv; Sat, 15 Jul 2023 09:57:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKflW-00013G-N6
+ id 1qKflX-00013Y-0J
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:56:55 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKflU-0003T0-Ov
+ id 1qKflV-0003T7-Ck
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:56:54 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso2973729f8f.0
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:56:52 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3159d75606dso2883846f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:56:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689429411; x=1692021411;
+ d=linaro.org; s=google; t=1689429412; x=1692021412;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=QEksHbEIGb/dJkEjI61KH8a3okCUPZ4jhF0donX/Zds=;
- b=VJQtlDHz1o3uWZNhsB/HhhOF3v4c3YAWYK3rFR4+1v9HT+rls8WzStPRiZq5MToIz9
- +u/xHhkWhRp9bT9UEXclJvpbroLq8lWDV5hlBSXf1xsJGUCeY5NauKNBAtBAcd1yi/rX
- GA78ryVBJuHuXKF09n7PUAXUiuCgZoJ32GiD+xCoyZ4u7q9GdIZoqnRvS23HslIw+krL
- CzOTMA1m3awyjv+QkzRbs3cP1EeSY/5YZ42I4+kVwFMjproqvVmgBEL7OD1SBbCOdHxM
- 05tA3fOeSWgWgnUG1196WSCu1DMRBB5FQruBv3hGAyQsRxFxnDCfA4LdFRLw33RP9zS+
- gCDg==
+ :reply-to; bh=ZRHsYp/A8D0Uk3Tfg/o0B0POYY0J/63KdYiHo0geXzY=;
+ b=pte+MOtVN42ENbTAwjy/o/ISczktsK61lv990xKkvP8IQfOWMuPIHkUanVVmBeVwms
+ xzH1v0wDwHRfv0H3oUF/apw6KkvdbPlq4g1sYs3mmg4dtOu8Bfe00fsst2yYDBrUWU18
+ gwKAUqKHAC2UCRfJgS2cYLOXLIWVoaj33Ea42d2mQIFGZQcl+SagZafh7qfAzeIMAAUd
+ 31tdMFfWNnaw/p1xwqDcoAB0Hx2nTG63uVbfxiWhFpE/Ptux2q6DqARU/tUryK1W+2pV
+ 7X5HhGO5GGWDB8sVwnhiq1o5r7wCfxHQdTltYRCEVVryOfmMo8zf9f+gLPsP3ez1PyzT
+ rJxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689429411; x=1692021411;
+ d=1e100.net; s=20221208; t=1689429412; x=1692021412;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QEksHbEIGb/dJkEjI61KH8a3okCUPZ4jhF0donX/Zds=;
- b=ii93gO5l25rhgT+xSLEZVQKrNB968skncd3m4bCnJChtr+Qi5WHKJ1YIi9HR5r4hvZ
- cU6Hd+2alAcDhA6dCk1UnhyVbNvHH6xgmqWLOOqzB6uF9Ygl7S6DPzAnZS2zun5B9qmr
- hckQCtIodRJr/qfnrhJDFa78ewwWqYgQwM/3sgTbst50qmAI9PsxvSK02S16uEzBVABY
- ApehGoISPG1olvPNTItghBSmChWukR+2nYUhY57WLEO/i5XOwP06Wvhqv7qGRHH15Z4x
- 0XJBC/XGK6ZxghJ0TH+ncIYsdtbMw1Ei5t3k/FBqR0JAzUo/MPt+S4EdCmnvdL4hCahm
- 6dQQ==
-X-Gm-Message-State: ABy/qLapI79F6ybguLOZ6q8G9iQcDLIuKajt/WcCffzPTgR/W/ON9ma/
- raAz5NIImpgG0b+NBQGeOVn5UUygbr57WWt76bwxwg==
-X-Google-Smtp-Source: APBJJlFN50MZHr6hEB5FXC1xFZrwlc3bmim8PfssqpFYf2HlIoaw9uCzazkwV379zhHpcMzxCCZlhw==
-X-Received: by 2002:a05:6000:92:b0:314:35c2:c4aa with SMTP id
- m18-20020a056000009200b0031435c2c4aamr5737694wrx.8.1689429411179; 
+ bh=ZRHsYp/A8D0Uk3Tfg/o0B0POYY0J/63KdYiHo0geXzY=;
+ b=KikzR9R3zgQ/E5aigE+rjOPFj1qlJjGwIyaQMOlwHvXkBvlysoP/vcQEb+NssPvaSU
+ CTyui6ZZVZbwP/G9NjUNrcqgTu5cVTcJE7/aAT1JHYXWO68Us0qR33KzuJ0ns8h+kMV5
+ zzGwWSY0rS/jaqebOQgiQNkffP0+X+d9RXWAMj1C2oCnt8OMAyw1Th4LT3zoLRcQnP0S
+ VXMwS4ybFPQkNRfSHab8YbQPTlOJ6QHS3bNUlAVssver/+WBu3zxCPOsXbxhvrpXwRZW
+ 0/uFHK3y/ugqcm8IxdnzMvMxrOw/iLeKlZtliibunsIiL2n+/FfNRWxyxaoxOg09y24W
+ xzeQ==
+X-Gm-Message-State: ABy/qLa1BA0JINbt1PmU7eRvW2hv6dQLGUDAIX0idjqLXNHh1iGo23Yr
+ APXcIgPQnf0eU0snJmN1KHf06IA+3veI71kka50FVA==
+X-Google-Smtp-Source: APBJJlEp9c/8MuR9FAlZlfkr1sFCIGMgyynXRCOKzepFwx0EiDZX1W6UIWsh4eF2zLG6G7pTe/rY7A==
+X-Received: by 2002:adf:e111:0:b0:316:f25c:d0b3 with SMTP id
+ t17-20020adfe111000000b00316f25cd0b3mr2600437wrz.22.1689429411936; 
  Sat, 15 Jul 2023 06:56:51 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
- r8-20020a056000014800b0030fa3567541sm13866651wrx.48.2023.07.15.06.56.50
+ r8-20020a056000014800b0030fa3567541sm13866651wrx.48.2023.07.15.06.56.51
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:56:50 -0700 (PDT)
+ Sat, 15 Jul 2023 06:56:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 41/47] accel/tcg: Return bool from page_check_range
-Date: Sat, 15 Jul 2023 14:53:11 +0100
-Message-Id: <20230715135317.7219-42-richard.henderson@linaro.org>
+Subject: [PULL 42/47] linux-user: Remove can_passthrough_madvise
+Date: Sat, 15 Jul 2023 14:53:12 +0100
+Message-Id: <20230715135317.7219-43-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,225 +89,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace the 0/-1 result with true/false.
-Invert the sense of the test of all callers.
-Document the function.
+Use page_check_range instead, which uses the interval tree
+instead of checking each page individually.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230707204054.8792-25-richard.henderson@linaro.org>
+Message-Id: <20230707204054.8792-26-richard.henderson@linaro.org>
 ---
- bsd-user/qemu.h                |  2 +-
- include/exec/cpu-all.h         | 13 ++++++++++++-
- linux-user/qemu.h              |  2 +-
- accel/tcg/user-exec.c          | 22 +++++++++++-----------
- linux-user/syscall.c           |  2 +-
- target/hppa/op_helper.c        |  2 +-
- target/riscv/vector_helper.c   |  2 +-
- target/sparc/ldst_helper.c     |  2 +-
- accel/tcg/ldst_atomicity.c.inc |  4 ++--
- 9 files changed, 31 insertions(+), 20 deletions(-)
+ linux-user/mmap.c | 24 +++---------------------
+ 1 file changed, 3 insertions(+), 21 deletions(-)
 
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index 41d84e0b81..edf9602f9b 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -267,7 +267,7 @@ abi_long do_freebsd_sysarch(void *cpu_env, abi_long arg1, abi_long arg2);
- 
- static inline bool access_ok(int type, abi_ulong addr, abi_ulong size)
- {
--    return page_check_range((target_ulong)addr, size, type) == 0;
-+    return page_check_range((target_ulong)addr, size, type);
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index c0946322fb..49cfa873e0 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -898,23 +898,6 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
+     return new_addr;
  }
  
- /*
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index eb1c54701a..94f44f1f59 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -222,7 +222,18 @@ int walk_memory_regions(void *, walk_memory_regions_fn);
- int page_get_flags(target_ulong address);
- void page_set_flags(target_ulong start, target_ulong last, int flags);
- void page_reset_target_data(target_ulong start, target_ulong last);
--int page_check_range(target_ulong start, target_ulong len, int flags);
-+
-+/**
-+ * page_check_range
-+ * @start: first byte of range
-+ * @len: length of range
-+ * @flags: flags required for each page
-+ *
-+ * Return true if every page in [@start, @start+@len) has @flags set.
-+ * Return false if any page is unmapped.  Thus testing flags == 0 is
-+ * equivalent to testing for flags == PAGE_VALID.
-+ */
-+bool page_check_range(target_ulong start, target_ulong last, int flags);
- 
- /**
-  * page_check_range_empty:
-diff --git a/linux-user/qemu.h b/linux-user/qemu.h
-index 9b8e0860d7..802794db63 100644
---- a/linux-user/qemu.h
-+++ b/linux-user/qemu.h
-@@ -182,7 +182,7 @@ static inline bool access_ok_untagged(int type, abi_ulong addr, abi_ulong size)
-         : !guest_range_valid_untagged(addr, size)) {
-         return false;
-     }
--    return page_check_range((target_ulong)addr, size, type) == 0;
-+    return page_check_range((target_ulong)addr, size, type);
- }
- 
- static inline bool access_ok(CPUState *cpu, int type,
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index 1e8fcaf6b0..df60c7d673 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -520,19 +520,19 @@ void page_set_flags(target_ulong start, target_ulong last, int flags)
-     }
- }
- 
--int page_check_range(target_ulong start, target_ulong len, int flags)
-+bool page_check_range(target_ulong start, target_ulong len, int flags)
+-static bool can_passthrough_madvise(abi_ulong start, abi_ulong end)
+-{
+-    ulong addr;
+-
+-    if ((start | end) & ~qemu_host_page_mask) {
+-        return false;
+-    }
+-
+-    for (addr = start; addr < end; addr += TARGET_PAGE_SIZE) {
+-        if (!(page_get_flags(addr) & PAGE_PASSTHROUGH)) {
+-            return false;
+-        }
+-    }
+-
+-    return true;
+-}
+-
+ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
  {
-     target_ulong last;
-     int locked;  /* tri-state: =0: unlocked, +1: global, -1: local */
--    int ret;
-+    bool ret;
- 
-     if (len == 0) {
--        return 0;  /* trivial length */
-+        return true;  /* trivial length */
-     }
- 
-     last = start + len - 1;
-     if (last < start) {
--        return -1; /* wrap around */
-+        return false; /* wrap around */
-     }
- 
-     locked = have_mmap_lock();
-@@ -551,33 +551,33 @@ int page_check_range(target_ulong start, target_ulong len, int flags)
-                 p = pageflags_find(start, last);
-             }
-             if (!p) {
--                ret = -1; /* entire region invalid */
-+                ret = false; /* entire region invalid */
-                 break;
-             }
-         }
-         if (start < p->itree.start) {
--            ret = -1; /* initial bytes invalid */
-+            ret = false; /* initial bytes invalid */
-             break;
-         }
- 
-         missing = flags & ~p->flags;
-         if (missing & ~PAGE_WRITE) {
--            ret = -1; /* page doesn't match */
-+            ret = false; /* page doesn't match */
-             break;
-         }
-         if (missing & PAGE_WRITE) {
-             if (!(p->flags & PAGE_WRITE_ORG)) {
--                ret = -1; /* page not writable */
-+                ret = false; /* page not writable */
-                 break;
-             }
-             /* Asking about writable, but has been protected: undo. */
-             if (!page_unprotect(start, 0)) {
--                ret = -1;
-+                ret = false;
-                 break;
-             }
-             /* TODO: page_unprotect should take a range, not a single page. */
-             if (last - start < TARGET_PAGE_SIZE) {
--                ret = 0; /* ok */
-+                ret = true; /* ok */
-                 break;
-             }
-             start += TARGET_PAGE_SIZE;
-@@ -585,7 +585,7 @@ int page_check_range(target_ulong start, target_ulong len, int flags)
-         }
- 
-         if (last <= p->itree.last) {
--            ret = 0; /* ok */
-+            ret = true; /* ok */
-             break;
-         }
-         start = p->itree.last + 1;
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index a80d33ecf2..33bc242e6a 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8122,7 +8122,7 @@ static int open_self_maps_1(CPUArchState *cpu_env, int fd, bool smaps)
-             max = h2g_valid(max - 1) ?
-                 max : (uintptr_t) g2h_untagged(GUEST_ADDR_MAX) + 1;
- 
--            if (page_check_range(h2g(min), max - min, flags) == -1) {
-+            if (!page_check_range(h2g(min), max - min, flags)) {
-                 continue;
-             }
- 
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index 32c27c66b2..f25a5a72aa 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -168,7 +168,7 @@ target_ureg HELPER(probe)(CPUHPPAState *env, target_ulong addr,
-                           uint32_t level, uint32_t want)
- {
- #ifdef CONFIG_USER_ONLY
--    return (page_check_range(addr, 1, want) == 0) ? 1 : 0;
-+    return page_check_range(addr, 1, want);
- #else
-     int prot, excp;
-     hwaddr phys;
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 71bb9b4457..cfacf2ebba 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -583,7 +583,7 @@ vext_ldff(void *vd, void *v0, target_ulong base,
-                                          cpu_mmu_index(env, false));
-                 if (host) {
- #ifdef CONFIG_USER_ONLY
--                    if (page_check_range(addr, offset, PAGE_READ) < 0) {
-+                    if (page_check_range(addr, offset, PAGE_READ)) {
-                         vl = i;
-                         goto ProbeSuccess;
-                     }
-diff --git a/target/sparc/ldst_helper.c b/target/sparc/ldst_helper.c
-index 981a47d8bb..78b03308ae 100644
---- a/target/sparc/ldst_helper.c
-+++ b/target/sparc/ldst_helper.c
-@@ -1191,7 +1191,7 @@ uint64_t helper_ld_asi(CPUSPARCState *env, target_ulong addr,
-     case ASI_PNFL: /* Primary no-fault LE */
-     case ASI_SNF:  /* Secondary no-fault */
-     case ASI_SNFL: /* Secondary no-fault LE */
--        if (page_check_range(addr, size, PAGE_READ) == -1) {
-+        if (!page_check_range(addr, size, PAGE_READ)) {
-             ret = 0;
-             break;
-         }
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index de70531a7a..4de0a80492 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -159,7 +159,7 @@ static uint64_t load_atomic8_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
-      * another process, because the fallback start_exclusive solution
-      * provides no protection across processes.
-      */
--    if (!page_check_range(h2g(pv), 8, PAGE_WRITE_ORG)) {
-+    if (page_check_range(h2g(pv), 8, PAGE_WRITE_ORG)) {
-         uint64_t *p = __builtin_assume_aligned(pv, 8);
-         return *p;
-     }
-@@ -194,7 +194,7 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
-      * another process, because the fallback start_exclusive solution
-      * provides no protection across processes.
-      */
--    if (!page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
-+    if (page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
-         return *p;
-     }
- #endif
+     abi_ulong len, end;
+@@ -964,9 +947,8 @@ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
+      *
+      * A straight passthrough for those may not be safe because qemu sometimes
+      * turns private file-backed mappings into anonymous mappings.
+-     * can_passthrough_madvise() helps to check if a passthrough is possible by
+-     * comparing mappings that are known to have the same semantics in the host
+-     * and the guest. In this case passthrough is safe.
++     * If all guest pages have PAGE_PASSTHROUGH set, mappings have the
++     * same semantics for the host as for the guest.
+      *
+      * We pass through MADV_WIPEONFORK and MADV_KEEPONFORK if possible and
+      * return failure if not.
+@@ -984,7 +966,7 @@ abi_long target_madvise(abi_ulong start, abi_ulong len_in, int advice)
+         ret = -EINVAL;
+         /* fall through */
+     case MADV_DONTNEED:
+-        if (can_passthrough_madvise(start, end)) {
++        if (page_check_range(start, len, PAGE_PASSTHROUGH)) {
+             ret = get_errno(madvise(g2h_untagged(start), len, advice));
+             if ((advice == MADV_DONTNEED) && (ret == 0)) {
+                 page_reset_target_data(start, start + len - 1);
 -- 
 2.34.1
 
