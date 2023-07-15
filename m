@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091517548FF
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0307548EE
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:55:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfjn-00072z-NA; Sat, 15 Jul 2023 09:55:07 -0400
+	id 1qKfjY-0005g9-2b; Sat, 15 Jul 2023 09:54:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfid-000499-TC
+ id 1qKfid-00049A-TC
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:59 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiZ-0001Km-QG
+ id 1qKfiZ-0001LE-Pq
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:54 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-314319c0d3eso3008516f8f.0
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:49 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-3143b88faebso3164980f8f.3
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1689429229; x=1692021229;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=PG65sHHMcFZxBzSd8xJSgpPdsxuZoeu52o+OB1adTRg=;
- b=KsEzQ2CILNo2bUkSWMRMbIrnUJtdSLfnFKitW97iizEnnzxrHyVe0xaupU5K9GUrEI
- XsRXSDIwY9s9pmSbE7NuaPmxsTV3kIB1M0j5h49vWeI5fHBnovoL6HDXs3JXPS5LPWCF
- qXjtdfTIy0HxjVeVy5DT73z30AojyRYUK2mBtEAsJIhejhzXGrclLVczgoWM1MMlMEX4
- kLYjog0sBS9m7klgyi2XohQPm8dLY17qGRYBaEGmlYuR8zHnQZpGLIefJgG00WFk4qmR
- PamL9aRdtMkCzPTIP8EoaBneFbxkV5+oYcXqunEFsnZAyYcxUMdmXePRCElqrnAO3eFI
- ze2Q==
+ :reply-to; bh=t83L6VQqehKor298fA996V/rrvqxT+XEe+3FbTWkw4k=;
+ b=N/4R3GDos6flYUkfDXuuINj+MwWeqSLkmO5dPE6Qw/ip5eF2hKewx4fUpm0D+RT+FI
+ El4+RwMrBc0aBICbCRZyF7VOkipYBfN1KcdYSWRJL6pX5DQjxlgrv+mYxvwoMAG5Pxpd
+ zaVl3udtP82F/HdLFvgWCWPP1S/2laQ4X22wzLsIOOFA6AE+M6c3/gO5qAWQwEB1/GM/
+ h/kWjKJWeqm2lHKXNT17rud7xFjPiJXMGV1aSVEsAWekmT8Moy+HdAFYSe9rmJ58L7U+
+ 86LGEmXBdDannawlg68H3OiYgVFpg/3Os9CKqDuIz+RjKqDgZKcOYT9OEAU3PB2UaQ+Q
+ /Kmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1689429229; x=1692021229;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PG65sHHMcFZxBzSd8xJSgpPdsxuZoeu52o+OB1adTRg=;
- b=d+4e0dMapynzNKrCVUyyLlrRhwXZ7O/Koyt3AxVS+xhudwtcgpBotLp5GKMWjqL8Jd
- h0+IIkzUvkUx0GS28DVjV21ybQxcWKm5P/AOIC3t91focGkGQYnv3IiWXNT2B0kpiKJD
- Q3OG0sN7uSCNstCLmJA0VU6NjesxO18DElZ+hFZWdbnKWWCD4ltGJUqnuMR4SY5LVu+y
- VtoFZc1c+O7nUe+WBfLE6J9npstA6QJkDA5oCwGwsyWLJ5nLBg/DhGmp99Wq8RjQ3MsF
- aRZmxESRR0QdoUiGHVLojsIGSfUSHXAH7YjXMgmJFQYa8zf21M5WBnPF82w8lzLguHpX
- W7Jg==
-X-Gm-Message-State: ABy/qLYflgu7zfg4bGUEZxMaKb2Pn9HhNnxT6ZFb2V6tIt2hAm9ZYqZK
- YaVDsUcdBJZWwbLNJ5v1rnraMvLy7ZxZYMS4t9lRTw==
-X-Google-Smtp-Source: APBJJlHJO520EMnjPldNz8csnCuchsbYXIeZ5M0qbj8hMDfzbQcaNHvi8G1529AdMuxUQFgef9lwvQ==
-X-Received: by 2002:a5d:66c3:0:b0:313:ffdd:a707 with SMTP id
- k3-20020a5d66c3000000b00313ffdda707mr6758890wrw.35.1689429228812; 
- Sat, 15 Jul 2023 06:53:48 -0700 (PDT)
+ bh=t83L6VQqehKor298fA996V/rrvqxT+XEe+3FbTWkw4k=;
+ b=KzLNTD7h6d9pnEzLyKPwHjNBAQUkoAHT7/g+jGquy6S7E2T8nK5ATFM4Zlpnws5dlu
+ OQZ97LDgu3eXKtohzqo4w+CVqm7n3P2c3uRVwRhwO+u6PYquWIHj8bi8BBr9MNw/W+5i
+ Bfgznxv7AeJepG9tvAtgSMzIVdWridrLDy4bAiWr2m1AJ2qEeH+AIPWgD2znq/bfhqjM
+ YoZtFYzBehwahv0EfM2eD4bmaN3Lmb3nErwMUPKZx16SwmQCTqLRoEzyimkWqJVXnuX6
+ Dp23RgluYn8Ta6No70SoJiRsZkqg2BMr8VT8oxy69n/xGERANanXEPJrZtMkR2uH1BzF
+ aZ3Q==
+X-Gm-Message-State: ABy/qLav4yV0Qmgv6y1ZzUMSeKl0f/agXGgYQVgfDOil6p4fWtMIkjzb
+ 0ASMTwW3JSn97llDXOK6cFxSZqqu7DLgSq5hWTX7UA==
+X-Google-Smtp-Source: APBJJlFlBVdGFQ9CS9QCnSp9ZLiTk/ZdPS6Y2dKpx5abb35fM6flj0IAv/B3Jk+5YsIc8SVQXQegVw==
+X-Received: by 2002:a5d:4844:0:b0:314:10d6:8910 with SMTP id
+ n4-20020a5d4844000000b0031410d68910mr6581195wrs.63.1689429229392; 
+ Sat, 15 Jul 2023 06:53:49 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
  k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:53:48 -0700 (PDT)
+ Sat, 15 Jul 2023 06:53:49 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 38/47] linux-user: Rename mmap_reserve to mmap_reserve_or_unmap
-Date: Sat, 15 Jul 2023 14:53:08 +0100
-Message-Id: <20230715135317.7219-39-richard.henderson@linaro.org>
+Subject: [PULL 39/47] linux-user: Simplify target_munmap
+Date: Sat, 15 Jul 2023 14:53:09 +0100
+Message-Id: <20230715135317.7219-40-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,96 +89,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If !reserved_va, munmap instead and assert success.
-Update all callers.
+All of the guest to host page adjustment is handled by
+mmap_reserve_or_unmap; there is no need to duplicate that.
+There are no failure modes for munmap after alignment and
+guest address range have been validated.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230707204054.8792-22-richard.henderson@linaro.org>
+Message-Id: <20230707204054.8792-23-richard.henderson@linaro.org>
 ---
- linux-user/mmap.c | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ linux-user/mmap.c | 47 ++++-------------------------------------------
+ 1 file changed, 4 insertions(+), 43 deletions(-)
 
 diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index 6308787942..22c2869be8 100644
+index 22c2869be8..c0946322fb 100644
 --- a/linux-user/mmap.c
 +++ b/linux-user/mmap.c
-@@ -722,14 +722,14 @@ fail:
-     return -1;
- }
- 
--static void mmap_reserve(abi_ulong start, abi_ulong len)
-+static void mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
- {
-     abi_ulong real_start;
-     abi_ulong real_last;
-     abi_ulong real_len;
-     abi_ulong last;
-     abi_ulong a;
--    void *host_start, *ptr;
-+    void *host_start;
-     int prot;
- 
-     last = start + len - 1;
-@@ -776,9 +776,15 @@ static void mmap_reserve(abi_ulong start, abi_ulong len)
-     real_len = real_last - real_start + 1;
-     host_start = g2h_untagged(real_start);
- 
--    ptr = mmap(host_start, real_len, PROT_NONE,
--               MAP_FIXED | MAP_ANONYMOUS | MAP_PRIVATE | MAP_NORESERVE, -1, 0);
--    assert(ptr == host_start);
-+    if (reserved_va) {
-+        void *ptr = mmap(host_start, real_len, PROT_NONE,
-+                         MAP_FIXED | MAP_ANONYMOUS
-+                         | MAP_PRIVATE | MAP_NORESERVE, -1, 0);
-+        assert(ptr == host_start);
-+    } else {
-+        int ret = munmap(host_start, real_len);
-+        assert(ret == 0);
-+    }
- }
+@@ -789,9 +789,6 @@ static void mmap_reserve_or_unmap(abi_ulong start, abi_ulong len)
  
  int target_munmap(abi_ulong start, abi_ulong len)
-@@ -830,11 +836,7 @@ int target_munmap(abi_ulong start, abi_ulong len)
-     ret = 0;
-     /* unmap what we can */
-     if (real_start < real_end) {
--        if (reserved_va) {
--            mmap_reserve(real_start, real_end - real_start);
--        } else {
--            ret = munmap(g2h_untagged(real_start), real_end - real_start);
--        }
-+        mmap_reserve_or_unmap(real_start, real_end - real_start);
+ {
+-    abi_ulong end, real_start, real_end, addr;
+-    int prot, ret;
+-
+     trace_target_munmap(start, len);
+ 
+     if (start & ~TARGET_PAGE_MASK) {
+@@ -803,47 +800,11 @@ int target_munmap(abi_ulong start, abi_ulong len)
      }
  
-     if (ret == 0) {
-@@ -871,7 +873,7 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-              * If new and old addresses overlap then the above mremap will
-              * already have failed with EINVAL.
-              */
--            mmap_reserve(old_addr, old_size);
-+            mmap_reserve_or_unmap(old_addr, old_size);
-         }
-     } else if (flags & MREMAP_MAYMOVE) {
-         abi_ulong mmap_start;
-@@ -886,7 +888,7 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-                                flags | MREMAP_FIXED,
-                                g2h_untagged(mmap_start));
-             if (reserved_va) {
--                mmap_reserve(old_addr, old_size);
-+                mmap_reserve_or_unmap(old_addr, old_size);
-             }
-         }
-     } else {
-@@ -912,7 +914,8 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
-                     errno = ENOMEM;
-                     host_addr = MAP_FAILED;
-                 } else if (reserved_va && old_size > new_size) {
--                    mmap_reserve(old_addr + old_size, old_size - new_size);
-+                    mmap_reserve_or_unmap(old_addr + old_size,
-+                                          old_size - new_size);
-                 }
-             }
-         } else {
+     mmap_lock();
+-    end = start + len;
+-    real_start = start & qemu_host_page_mask;
+-    real_end = HOST_PAGE_ALIGN(end);
+-
+-    if (start > real_start) {
+-        /* handle host page containing start */
+-        prot = 0;
+-        for (addr = real_start; addr < start; addr += TARGET_PAGE_SIZE) {
+-            prot |= page_get_flags(addr);
+-        }
+-        if (real_end == real_start + qemu_host_page_size) {
+-            for (addr = end; addr < real_end; addr += TARGET_PAGE_SIZE) {
+-                prot |= page_get_flags(addr);
+-            }
+-            end = real_end;
+-        }
+-        if (prot != 0) {
+-            real_start += qemu_host_page_size;
+-        }
+-    }
+-    if (end < real_end) {
+-        prot = 0;
+-        for (addr = end; addr < real_end; addr += TARGET_PAGE_SIZE) {
+-            prot |= page_get_flags(addr);
+-        }
+-        if (prot != 0) {
+-            real_end -= qemu_host_page_size;
+-        }
+-    }
+-
+-    ret = 0;
+-    /* unmap what we can */
+-    if (real_start < real_end) {
+-        mmap_reserve_or_unmap(real_start, real_end - real_start);
+-    }
+-
+-    if (ret == 0) {
+-        page_set_flags(start, start + len - 1, 0);
+-    }
++    mmap_reserve_or_unmap(start, len);
++    page_set_flags(start, start + len - 1, 0);
+     mmap_unlock();
+-    return ret;
++
++    return 0;
+ }
+ 
+ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
 -- 
 2.34.1
 
