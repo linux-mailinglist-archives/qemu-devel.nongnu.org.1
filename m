@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB7B7548FA
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 142CD75490A
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:58:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfj1-0004Wp-Rn; Sat, 15 Jul 2023 09:54:20 -0400
+	id 1qKfjm-0006WQ-6h; Sat, 15 Jul 2023 09:55:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiR-000465-3E
+ id 1qKfiR-000466-4Y
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:47 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiP-0001Ig-H8
+ id 1qKfiP-0001Is-LZ
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:42 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-31441bc0092so2962726f8f.1
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:40 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-307d58b3efbso2971675f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689429219; x=1692021219;
+ d=linaro.org; s=google; t=1689429220; x=1692021220;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4EchJl5hjgKZgeWYuYg1q+jxNR3MablBrvDvJkqZmCU=;
- b=eNv6KoKlNQZZMsoIMzJoL+ZzExXw342ELL1HrpWXaxhSq1wgs3OdvUrAME6urpVk/s
- NyoP6qRJ0er9XrBvzVrjSGDEb5uVMu5H4nJDKte1H+Abu731gBbDz1p65JuaBgO9ebdO
- mMkORZSBc8WdkkfgqVBfC2jhz6h2dfxIevdPSY8NJd8hq0zbhjn4/ufHSlKWpHT4Bx8u
- aRopsMf24KYiLczFIXnfwnhbiRUe6c5vuZd9qYzA3FwF3EVYM0Varasgqnr9+cQHS3Bs
- U998R2wyexEW9vxtsRIo5iUGZO5DgeRkxh/yh5357H0SAWBPw3nLII8XQLm0KdRSc82e
- 2e3A==
+ bh=viFchcHGsP+nKMHrpwcA4jNmykwjrSvjDrmv/nDVIvw=;
+ b=pnld6Wn9wt7S295hr6wOEUse81Ubsg6JhK81XigM8Ow7P/8V3lj46tf0gVRZZwlBle
+ dvpp8c9bZBagQspOOc+jTqzII+CiVY7L4SI/qWq0+Md6ROon/6B1np7zXF9yAbcJEVg0
+ gCiEGEZpdKddUyy2gMYeHKIxlVC84gy73CcJZ2Pye01k2SfsTAa2UAkTIBHVdLP+STP8
+ 7Fpv7Xz7t00IyJWpsLzHO69iLmP14aiDpFN5fdKDT5oImTfE49a0m+CEdV0C717vwvMA
+ O3I+Qr/l5BOhLIKp+eaI1bviY6woyegSbxcuWfB04t4umgq5a23pGXYko+mixy7sL/29
+ uNPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689429219; x=1692021219;
+ d=1e100.net; s=20221208; t=1689429220; x=1692021220;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4EchJl5hjgKZgeWYuYg1q+jxNR3MablBrvDvJkqZmCU=;
- b=E08KIpcUcmmV8kA+bT3ki8evTMXiOj5H+LwO1XvM2Z/9ABc1k5JAcwW68bJTTkBsMN
- 6L4DJpWd7CERnQGmWM4RK4lN3khBM1ywpPcWD3mzyE17235ZNP+CayIeb6Fq3K90vuE9
- b/kfnBACpEjlComPIK6sXHOFb8OoqT4qgS685H3XVluPP4ZTzRE4aMRV5eqoslDhwsdA
- Lb1ptysBhq3MTcc++mFW2RoZIM29Gz8KLetUp9bKeaeYwWbXSj7NIHn8rpuaqk85bCDN
- Z/qBZ8A4RrHFAVG4Xbj6GRWCx9990NTLbIxxW+OIQ/VuS7tjHU3Vl5D/d7l+vYyBWoC+
- KwIQ==
-X-Gm-Message-State: ABy/qLavtrrKrNiwAo0LvwZ+jPWksCVfhFddR1v1C9eBQKT85rbyKnKb
- KmuhaGKa+q6MPEcbNI1dLM6IBJhAITiD+5NI44PKrA==
-X-Google-Smtp-Source: APBJJlHTcm+vm/IvK7TCIwERWmnXfXvAYLhzbie20HUteHf+IyFimDi5SF2alttYkp5wlDqQpFGqlw==
-X-Received: by 2002:a5d:5505:0:b0:313:f98a:1fd3 with SMTP id
- b5-20020a5d5505000000b00313f98a1fd3mr6977580wrv.27.1689429219290; 
- Sat, 15 Jul 2023 06:53:39 -0700 (PDT)
+ bh=viFchcHGsP+nKMHrpwcA4jNmykwjrSvjDrmv/nDVIvw=;
+ b=B/kboN6ISWH3OpC+HMa8/9UnelDTYZLEXWwk5RRtuZco2UnxRmAkLjBumKkc0gdJL8
+ szvdTcyFdq8+c3GSTnrJmnMJM0IH8rwZUFPYySnF/c6NMNILukn27+oE+P756uTqdLde
+ M/3LOy+siIqCnMHiuMuXZ5prrTs4yiZkaXmaGBP9Av5BaXHYPKJNYtWzvSiVA6XOZJr3
+ 8a/1gNccIqXKSd+ZkmB/QLiIZASmajSA7pjWtN9Ys+bRQfTV/5vdzICghIYJWkOXupID
+ gaBkMUjBJaOfp8pMMCUSAL3/HRl0EVGuJYcYK2ka/Bry0gSDvamnOvuykaz3rZTT3pb+
+ WWsw==
+X-Gm-Message-State: ABy/qLbgqsqoyLSmYUmGAs7/m6OuGIsAK8NuFud+cIgrX0viS6St6E9+
+ awuwMgi4eWx5ABzBDRDNodocJrGU2W528Y1OojTYhQ==
+X-Google-Smtp-Source: APBJJlEtlD66+UJnk1/e99zleawxN6EJ1OnDFoaA/HmgIR5aX/TxXo3XdC8Mi3+YPttOGCWggnUJIA==
+X-Received: by 2002:adf:d84e:0:b0:313:f6bb:ec2b with SMTP id
+ k14-20020adfd84e000000b00313f6bbec2bmr5756555wrl.47.1689429220394; 
+ Sat, 15 Jul 2023 06:53:40 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
- k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.38
+ k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:53:38 -0700 (PDT)
+ Sat, 15 Jul 2023 06:53:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 25/47] linux-user: Populate more bits in mmap_flags_tbl
-Date: Sat, 15 Jul 2023 14:52:55 +0100
-Message-Id: <20230715135317.7219-26-richard.henderson@linaro.org>
+Subject: [PULL 26/47] accel/tcg: Introduce page_check_range_empty
+Date: Sat, 15 Jul 2023 14:52:56 +0100
+Message-Id: <20230715135317.7219-27-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- UPPERCASE_50_75=0.008 autolearn=no autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,104 +91,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix translation of TARGET_MAP_SHARED and TARGET_MAP_PRIVATE,
-which are types not single bits.  Add TARGET_MAP_SHARED_VALIDATE,
-TARGET_MAP_SYNC, TARGET_MAP_NONBLOCK, TARGET_MAP_POPULATE,
-TARGET_MAP_FIXED_NOREPLACE, and TARGET_MAP_UNINITIALIZED.
-
-Update strace to match.
+Examine the interval tree to validate that a region
+has no existing mappings.
 
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230707204054.8792-9-richard.henderson@linaro.org>
+Message-Id: <20230707204054.8792-10-richard.henderson@linaro.org>
 ---
- linux-user/strace.c  | 23 ++++++++++-------------
- linux-user/syscall.c | 21 +++++++++++++++++++--
- 2 files changed, 29 insertions(+), 15 deletions(-)
+ include/exec/cpu-all.h | 12 ++++++++++++
+ accel/tcg/user-exec.c  |  7 +++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/linux-user/strace.c b/linux-user/strace.c
-index 9228b235da..bbd29148d4 100644
---- a/linux-user/strace.c
-+++ b/linux-user/strace.c
-@@ -1094,28 +1094,25 @@ UNUSED static const struct flags mmap_prot_flags[] = {
- };
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index 472fe9ad9c..94f828b109 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -224,6 +224,18 @@ void page_set_flags(target_ulong start, target_ulong last, int flags);
+ void page_reset_target_data(target_ulong start, target_ulong last);
+ int page_check_range(target_ulong start, target_ulong len, int flags);
  
- UNUSED static const struct flags mmap_flags[] = {
--    FLAG_TARGET(MAP_SHARED),
--    FLAG_TARGET(MAP_PRIVATE),
-+    FLAG_TARGET_MASK(MAP_SHARED, MAP_TYPE),
-+    FLAG_TARGET_MASK(MAP_PRIVATE, MAP_TYPE),
-+    FLAG_TARGET_MASK(MAP_SHARED_VALIDATE, MAP_TYPE),
-     FLAG_TARGET(MAP_ANONYMOUS),
-     FLAG_TARGET(MAP_DENYWRITE),
--    FLAG_TARGET(MAP_FIXED),
--    FLAG_TARGET(MAP_GROWSDOWN),
-     FLAG_TARGET(MAP_EXECUTABLE),
--#ifdef MAP_LOCKED
-+    FLAG_TARGET(MAP_FIXED),
-+    FLAG_TARGET(MAP_FIXED_NOREPLACE),
-+    FLAG_TARGET(MAP_GROWSDOWN),
-+    FLAG_TARGET(MAP_HUGETLB),
-     FLAG_TARGET(MAP_LOCKED),
--#endif
--#ifdef MAP_NONBLOCK
-     FLAG_TARGET(MAP_NONBLOCK),
--#endif
-     FLAG_TARGET(MAP_NORESERVE),
--#ifdef MAP_POPULATE
-     FLAG_TARGET(MAP_POPULATE),
--#endif
--#if defined(TARGET_MAP_UNINITIALIZED) && TARGET_MAP_UNINITIALIZED != 0
-+    FLAG_TARGET(MAP_STACK),
-+    FLAG_TARGET(MAP_SYNC),
-+#if TARGET_MAP_UNINITIALIZED != 0
-     FLAG_TARGET(MAP_UNINITIALIZED),
- #endif
--    FLAG_TARGET(MAP_HUGETLB),
--    FLAG_TARGET(MAP_STACK),
-     FLAG_END,
- };
- 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 02d3b6c90a..3a89f6b408 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -6012,9 +6012,19 @@ static const StructEntry struct_termios_def = {
-     .print = print_termios,
- };
- 
-+/* If the host does not provide these bits, they may be safely discarded. */
-+#ifndef MAP_SYNC
-+#define MAP_SYNC 0
-+#endif
-+#ifndef MAP_UNINITIALIZED
-+#define MAP_UNINITIALIZED 0
-+#endif
++/**
++ * page_check_range_empty:
++ * @start: first byte of range
++ * @last: last byte of range
++ * Context: holding mmap lock
++ *
++ * Return true if the entire range [@start, @last] is unmapped.
++ * The memory lock must be held so that the caller will can ensure
++ * the result stays true until a new mapping can be installed.
++ */
++bool page_check_range_empty(target_ulong start, target_ulong last);
 +
- static const bitmask_transtbl mmap_flags_tbl[] = {
--    { TARGET_MAP_SHARED, TARGET_MAP_SHARED, MAP_SHARED, MAP_SHARED },
--    { TARGET_MAP_PRIVATE, TARGET_MAP_PRIVATE, MAP_PRIVATE, MAP_PRIVATE },
-+    { TARGET_MAP_TYPE, TARGET_MAP_SHARED, MAP_TYPE, MAP_SHARED },
-+    { TARGET_MAP_TYPE, TARGET_MAP_PRIVATE, MAP_TYPE, MAP_PRIVATE },
-+    { TARGET_MAP_TYPE, TARGET_MAP_SHARED_VALIDATE,
-+      MAP_TYPE, MAP_SHARED_VALIDATE },
-     { TARGET_MAP_FIXED, TARGET_MAP_FIXED, MAP_FIXED, MAP_FIXED },
-     { TARGET_MAP_ANONYMOUS, TARGET_MAP_ANONYMOUS,
-       MAP_ANONYMOUS, MAP_ANONYMOUS },
-@@ -6032,6 +6042,13 @@ static const bitmask_transtbl mmap_flags_tbl[] = {
-        Recognize it for the target insofar as we do not want to pass
-        it through to the host.  */
-     { TARGET_MAP_STACK, TARGET_MAP_STACK, 0, 0 },
-+    { TARGET_MAP_SYNC, TARGET_MAP_SYNC, MAP_SYNC, MAP_SYNC },
-+    { TARGET_MAP_NONBLOCK, TARGET_MAP_NONBLOCK, MAP_NONBLOCK, MAP_NONBLOCK },
-+    { TARGET_MAP_POPULATE, TARGET_MAP_POPULATE, MAP_POPULATE, MAP_POPULATE },
-+    { TARGET_MAP_FIXED_NOREPLACE, TARGET_MAP_FIXED_NOREPLACE,
-+      MAP_FIXED_NOREPLACE, MAP_FIXED_NOREPLACE },
-+    { TARGET_MAP_UNINITIALIZED, TARGET_MAP_UNINITIALIZED,
-+      MAP_UNINITIALIZED, MAP_UNINITIALIZED },
-     { 0, 0, 0, 0 }
- };
+ /**
+  * page_get_target_data(address)
+  * @address: guest virtual address
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index d95b875a6a..ab684a3ea2 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -598,6 +598,13 @@ int page_check_range(target_ulong start, target_ulong len, int flags)
+     return ret;
+ }
  
++bool page_check_range_empty(target_ulong start, target_ulong last)
++{
++    assert(last >= start);
++    assert_memory_lock();
++    return pageflags_find(start, last) == NULL;
++}
++
+ void page_protect(tb_page_addr_t address)
+ {
+     PageFlagsNode *p;
 -- 
 2.34.1
 
