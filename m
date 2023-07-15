@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BACE754954
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 16:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4158E754955
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 16:30:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKgGK-0008N1-Et; Sat, 15 Jul 2023 10:28:44 -0400
+	id 1qKgGZ-0008Nw-UI; Sat, 15 Jul 2023 10:28:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1qKgGI-0008Mj-Ov
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 10:28:42 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ id 1qKgGX-0008Nf-Ol
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 10:28:57 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1qKgGG-0006q3-Uh
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 10:28:42 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-55c85b5321dso1686026a12.3
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 07:28:40 -0700 (PDT)
+ id 1qKgGV-0007Fd-U5
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 10:28:57 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-262e44b8bf6so1478814a91.1
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 07:28:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689431318; x=1692023318;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=RQjz2TX0XB9TTP2cUF5BpTdR4/BZ7DC7wVHQTAjt1FE=;
- b=Y7z+zHo3DsbBR0gcaiJl0vvuUpX8gZ9PhL5j4k9t3M3xpzXqNGwzeYOfrMBPL0530A
- IhQNm5rr2/Jkek07QEaFlRjB7mYlUE88dNHq96LvryOY9lOzTF5isVJiJZIrIRqUpTei
- dtIja63X136lkdkdIQhXMmJ4fQVt/XfS3P7pzHleLlJagK2yTwDrBVKO84DOT9Ivkfbj
- uN7imcXM4wmnmhO+eNGlWyIrnCc5xyIftxnQdTo2n+7F/LB4sC1uRADAXYgFel958ERT
- DJbspm5ssY4jr5zoA/c9acisKy5sssZYAQzu0xM/Qx4SwYFKU+aOFE5eZNrgX8FQOqUo
- 8B3w==
+ d=gmail.com; s=20221208; t=1689431334; x=1692023334;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WVxiV+HfosOzg8/U+wL0JzZKbEPKyV+77++xvpIROvc=;
+ b=h/zA0p2hfMNByLFmTTIYr/8o7tRDPXzWqJCss7kpLx14Fc7GlMjZN1shmqym839+Wx
+ E4IaVZUob1QxGdEMRGc5a0Z15PcIR7R7Acb8VRREW+Ypg6GBVvfIyimhIbRM/10/BLqf
+ 8VK5k2m4XRQgvwn3evWYM48Q0rL0j3QvCJmwdpOMpwJ8bwEVe/wQRyhnDgbLG6D3VeVD
+ 1rqJ9bgUaqjvjbQtAUU+O60zoHRqegV9kMASBoib23ZaA/MRPQTbmtFQmpqD8DwjDJnm
+ A0pp9Cwo39fm5LdWqKUx0xWfxQ6wv5EjzKnaXYs+EEm7c3jDcXGfW+CHjlwYkLFxNpJs
+ Ypkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689431318; x=1692023318;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=RQjz2TX0XB9TTP2cUF5BpTdR4/BZ7DC7wVHQTAjt1FE=;
- b=hvgii7axhNziBouuLPCn3jo7TwGxPvZ2PV6hjl+YBaRGqBw7EoNlok++yVoYzLo7yZ
- i9mvCwxwTRvDOBIWBbBDO2VaSaj5Z+3kFydtmMbfRwtjk1urwiZGGT1Nnqr+yGxIShPa
- l+nXmPCjZXPx+3eKN1/bMUl4MKrvh4YIkub7U1gOD3+j14s5CKvWoS+Wc5XBsgFP6EA+
- tXVjijG4BGEK2GswVaJnejBb/GCvwDyB9DwT1Ny5sqxEyr8zxG+WBkaTILhNuQ0L8DIX
- oLDZR9Tfjyn9zk4rmaLw7cETJ4FZ18ZnPq0Ea78UVY9Dn4gkvtbsYh5PWwnF5QA3hlfR
- FETw==
-X-Gm-Message-State: ABy/qLbzJO3Kj7ps/36W22yZxFtpBWSee9kin2H1vf984gMaGXyZthRj
- GTJZZn+dfGbJzGoJ4aq7WyKGZTIzcRsV+w==
-X-Google-Smtp-Source: APBJJlE+jUrFxpAcTa7AfhU7P2UR6Z2UAnHxp+iJwHUDIFwCLkrAnxkv7S17tKNB8FIC1wopMWyabQ==
-X-Received: by 2002:a17:90a:4109:b0:262:cb1c:a782 with SMTP id
- u9-20020a17090a410900b00262cb1ca782mr6239760pjf.37.1689431318411; 
- Sat, 15 Jul 2023 07:28:38 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689431334; x=1692023334;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WVxiV+HfosOzg8/U+wL0JzZKbEPKyV+77++xvpIROvc=;
+ b=BwhGnwBwfasDpEPMERmbxTZBUrHdX8kw0TTpMxQxLNyZdSmobwOEO8CcZRp0Lx8okr
+ fDk34y9TavdVcwI6eI/rsw2edzJNPReX0JtxbBLrw8jqwBUCqXWAICnGMbDQxuRZBh48
+ smhrwBCivkJ9kpYPvcvqxKMXV7BiJn5sKQACnyCCeMGHTZtg1TJ8SLloqM6JN/UaH+L4
+ 2efAzoVxzkmwamIO3qfD5KM8kDlFQbNDPsQVxRSoEAgLbVcuXv2KrmOqweRJIutQU4Mu
+ j0NE05JF6/dB2+MdogyJH2+3IUWcK8Sp/64mVJhMsqwnNMQZyry70fdCcjXmNekeGqm4
+ ZPMA==
+X-Gm-Message-State: ABy/qLZSeZDQk8j4fsUI1CKmvOvRy+woio06qdmIFnatiHFEartohb5X
+ iyX1z/f6uCIpQyjqUmhJoOxMDNWLe3uPgw==
+X-Google-Smtp-Source: APBJJlGV3wqlFDGsL9zh9i9CiBRZtZSFmkxaeActqrOUM6JGvByHa+SmoIAS1ak1/pCLORnzgoD6ig==
+X-Received: by 2002:a17:90a:440f:b0:261:688:fd91 with SMTP id
+ s15-20020a17090a440f00b002610688fd91mr6130594pjg.8.1689431333934; 
+ Sat, 15 Jul 2023 07:28:53 -0700 (PDT)
 Received: from localhost.localdomain ([2001:ee0:4fb3:b780:7c3c:1099:10bd:2e8b])
  by smtp.googlemail.com with ESMTPSA id
- 95-20020a17090a0fe800b00263f6687690sm2741396pjz.18.2023.07.15.07.28.35
+ 95-20020a17090a0fe800b00263f6687690sm2741396pjz.18.2023.07.15.07.28.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 07:28:38 -0700 (PDT)
+ Sat, 15 Jul 2023 07:28:53 -0700 (PDT)
 From: Bui Quang Minh <minhquangbui99@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -65,14 +66,16 @@ Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Bui Quang Minh <minhquangbui99@gmail.com>
-Subject: [PATCH v5 0/5] Support x2APIC mode with TCG accelerator
-Date: Sat, 15 Jul 2023 21:28:15 +0700
-Message-Id: <20230715142820.37120-1-minhquangbui99@gmail.com>
+Subject: [PATCH v5 1/5] i386/tcg: implement x2APIC registers MSR access
+Date: Sat, 15 Jul 2023 21:28:16 +0700
+Message-Id: <20230715142820.37120-2-minhquangbui99@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230715142820.37120-1-minhquangbui99@gmail.com>
+References: <20230715142820.37120-1-minhquangbui99@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pg1-x52a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=minhquangbui99@gmail.com; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,154 +99,252 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi everyone,
+This commit refactors apic_mem_read/write to support both MMIO access in
+xAPIC and MSR access in x2APIC.
 
-This series implements x2APIC mode in userspace local APIC and the
-RDMSR/WRMSR helper to access x2APIC registers in x2APIC mode. Intel iommu
-and AMD iommu are adjusted to support x2APIC interrupt remapping. With this
-series, we can now boot Linux kernel into x2APIC mode with TCG accelerator
-using either Intel or AMD iommu.
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+---
+ hw/intc/apic.c                       | 79 ++++++++++++++++++----------
+ hw/intc/trace-events                 |  4 +-
+ include/hw/i386/apic.h               |  3 ++
+ target/i386/cpu.h                    |  3 ++
+ target/i386/tcg/sysemu/misc_helper.c | 27 ++++++++++
+ 5 files changed, 86 insertions(+), 30 deletions(-)
 
-Testing to boot my own built Linux 6.3.0-rc2, the kernel successfully boot
-with enabled x2APIC and can enumerate CPU with APIC ID 257
-
-Using Intel IOMMU
-
-qemu/build/qemu-system-x86_64 \
-  -smp 2,maxcpus=260 \
-  -cpu qemu64,x2apic=on \
-  -machine q35 \
-  -device intel-iommu,intremap=on,eim=on \
-  -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
-  -m 2G \
-  -kernel $KERNEL_DIR \
-  -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
-  -drive file=$IMAGE_DIR,format=raw \
-  -nographic \
-  -s
-
-Using AMD IOMMU
-
-qemu/build/qemu-system-x86_64 \
-  -smp 2,maxcpus=260 \
-  -cpu qemu64,x2apic=on \
-  -machine q35 \
-  -device amd-iommu,intremap=on,xtsup=on \
-  -device qemu64-x86_64-cpu,x2apic=on,core-id=257,socket-id=0,thread-id=0 \
-  -m 2G \
-  -kernel $KERNEL_DIR \
-  -append "nokaslr console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
-  -drive file=$IMAGE_DIR,format=raw \
-  -nographic \
-  -s
-
-Testing the emulated userspace APIC with kvm-unit-tests, disable test
-device with this patch
-
-diff --git a/lib/x86/fwcfg.c b/lib/x86/fwcfg.c
-index 1734afb..f56fe1c 100644
---- a/lib/x86/fwcfg.c
-+++ b/lib/x86/fwcfg.c
-@@ -27,6 +27,7 @@ static void read_cfg_override(void)
+diff --git a/hw/intc/apic.c b/hw/intc/apic.c
+index ac3d47d231..cb8c20de93 100644
+--- a/hw/intc/apic.c
++++ b/hw/intc/apic.c
+@@ -288,6 +288,13 @@ void apic_deliver_irq(uint8_t dest, uint8_t dest_mode, uint8_t delivery_mode,
+     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
+ }
  
-        if ((str = getenv("TEST_DEVICE")))
-                no_test_device = !atol(str);
-+       no_test_device = true;
++bool is_x2apic_mode(DeviceState *dev)
++{
++    APICCommonState *s = APIC(dev);
++
++    return s->apicbase & MSR_IA32_APICBASE_EXTD;
++}
++
+ static void apic_set_base(APICCommonState *s, uint64_t val)
+ {
+     s->apicbase = (val & 0xfffff000) |
+@@ -636,16 +643,11 @@ static void apic_timer(void *opaque)
+     apic_timer_update(s, s->next_time);
+ }
  
-        if ((str = getenv("MEMLIMIT")))
-                fw_override[FW_CFG_MAX_RAM] = atol(str) * 1024 * 1024;
-
-~ env QEMU=/home/minh/Desktop/oss/qemu/build/qemu-system-x86_64 ACCEL=tcg \
-./run_tests.sh -v -g apic 
-
-TESTNAME=apic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/apic.flat -smp 2
--cpu qemu64,+x2apic,+tsc-deadline -machine kernel_irqchip=split FAIL
-apic-split (54 tests, 8 unexpected failures, 1 skipped)
-TESTNAME=ioapic-split TIMEOUT=90s ACCEL=tcg ./x86/run x86/ioapic.flat -smp
-1 -cpu qemu64 -machine kernel_irqchip=split PASS ioapic-split (19 tests)
-TESTNAME=x2apic TIMEOUT=30 ACCEL=tcg ./x86/run x86/apic.flat -smp 2 -cpu
-qemu64,+x2apic,+tsc-deadline FAIL x2apic (54 tests, 8 unexpected failures,
-1 skipped) TESTNAME=xapic TIMEOUT=60 ACCEL=tcg ./x86/run x86/apic.flat -smp
-2 -cpu qemu64,-x2apic,+tsc-deadline -machine pit=off FAIL xapic (43 tests,
-6 unexpected failures, 2 skipped)
-
-  FAIL: apic_disable: *0xfee00030: 50014
-  FAIL: apic_disable: *0xfee00080: f0
-  FAIL: apic_disable: *0xfee00030: 50014
-  FAIL: apic_disable: *0xfee00080: f0 
-  FAIL: apicbase: relocate apic
-
-These errors are because we don't disable MMIO region when switching to
-x2APIC and don't support relocate MMIO region yet. This is a problem
-because, MMIO region is the same for all CPUs, in order to support these we
-need to figure out how to allocate and manage different MMIO regions for
-each CPUs. This can be an improvement in the future.
-
-  FAIL: nmi-after-sti
-  FAIL: multiple nmi
-
-These errors are in the way we handle CPU_INTERRUPT_NMI in core TCG.
-
-  FAIL: TMCCT should stay at zero
-
-This error is related to APIC timer which should be addressed in separate
-patch.
-
-Version 5 changes,
-- Patch 3:
-  + Rebase to master and fix conflict
-- Patch 5:
-  + Create a helper function to get amdvi extended feature register instead
-  of storing it in AMDVIState
-
-Version 4 changes,
-- Patch 5:
-  + Instead of replacing IVHD type 0x10 with type 0x11, export both types
-  for backward compatibility with old guest operating system
-  + Flip the xtsup feature check condition in amdvi_int_remap_ga for
-  readability
-
-Version 3 changes,
-- Patch 2:
-  + Allow APIC ID > 255 only when x2APIC feature is supported on CPU
-  + Make physical destination mode IPI which has destination id 0xffffffff
-  a broadcast to xAPIC CPUs
-  + Make cluster address 0xf in cluster model of xAPIC logical destination
-  mode a broadcast to all clusters
-  + Create new extended_log_dest to store APIC_LDR information in x2APIC
-  instead of extending log_dest for backward compatibility in vmstate
-
-Version 2 changes,
-- Add support for APIC ID larger than 255
-- Adjust AMD iommu for x2APIC suuport
-- Reorganize and split patch 1,2 into patch 1,2,3 in version 2
-
-Thanks,
-Quang Minh.
-
-Bui Quang Minh (5):
-  i386/tcg: implement x2APIC registers MSR access
-  apic: add support for x2APIC mode
-  apic, i386/tcg: add x2apic transitions
-  intel_iommu: allow Extended Interrupt Mode when using userspace APIC
-  amd_iommu: report x2APIC support to the operating system
-
- hw/i386/acpi-build.c                 | 127 +++++----
- hw/i386/amd_iommu.c                  |  30 +-
- hw/i386/amd_iommu.h                  |  16 +-
- hw/i386/intel_iommu.c                |  11 -
- hw/i386/x86.c                        |   8 +-
- hw/intc/apic.c                       | 395 +++++++++++++++++++++------
- hw/intc/apic_common.c                |  16 +-
- hw/intc/trace-events                 |   4 +-
- include/hw/i386/apic.h               |   6 +-
- include/hw/i386/apic_internal.h      |   7 +-
- target/i386/cpu-sysemu.c             |  18 +-
- target/i386/cpu.c                    |   8 +-
- target/i386/cpu.h                    |   9 +
- target/i386/tcg/sysemu/misc_helper.c |  31 +++
- 14 files changed, 510 insertions(+), 176 deletions(-)
-
+-static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
++uint64_t apic_register_read(int index)
+ {
+     DeviceState *dev;
+     APICCommonState *s;
+-    uint32_t val;
+-    int index;
+-
+-    if (size < 4) {
+-        return 0;
+-    }
++    uint64_t val;
+ 
+     dev = cpu_get_current_apic();
+     if (!dev) {
+@@ -653,7 +655,6 @@ static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
+     }
+     s = APIC(dev);
+ 
+-    index = (addr >> 4) & 0xff;
+     switch(index) {
+     case 0x02: /* id */
+         val = s->id << 24;
+@@ -720,7 +721,23 @@ static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
+         val = 0;
+         break;
+     }
+-    trace_apic_mem_readl(addr, val);
++
++    trace_apic_register_read(index, val);
++    return val;
++}
++
++static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
++{
++    uint32_t val;
++    int index;
++
++    if (size < 4) {
++        return 0;
++    }
++
++    index = (addr >> 4) & 0xff;
++    val = (uint32_t)apic_register_read(index);
++
+     return val;
+ }
+ 
+@@ -737,27 +754,10 @@ static void apic_send_msi(MSIMessage *msi)
+     apic_deliver_irq(dest, dest_mode, delivery, vector, trigger_mode);
+ }
+ 
+-static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
+-                           unsigned size)
++void apic_register_write(int index, uint64_t val)
+ {
+     DeviceState *dev;
+     APICCommonState *s;
+-    int index = (addr >> 4) & 0xff;
+-
+-    if (size < 4) {
+-        return;
+-    }
+-
+-    if (addr > 0xfff || !index) {
+-        /* MSI and MMIO APIC are at the same memory location,
+-         * but actually not on the global bus: MSI is on PCI bus
+-         * APIC is connected directly to the CPU.
+-         * Mapping them on the global bus happens to work because
+-         * MSI registers are reserved in APIC MMIO and vice versa. */
+-        MSIMessage msi = { .address = addr, .data = val };
+-        apic_send_msi(&msi);
+-        return;
+-    }
+ 
+     dev = cpu_get_current_apic();
+     if (!dev) {
+@@ -765,7 +765,7 @@ static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
+     }
+     s = APIC(dev);
+ 
+-    trace_apic_mem_writel(addr, val);
++    trace_apic_register_write(index, val);
+ 
+     switch(index) {
+     case 0x02:
+@@ -843,6 +843,29 @@ static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
+     }
+ }
+ 
++static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
++                           unsigned size)
++{
++    int index = (addr >> 4) & 0xff;
++
++    if (size < 4) {
++        return;
++    }
++
++    if (addr > 0xfff || !index) {
++        /* MSI and MMIO APIC are at the same memory location,
++         * but actually not on the global bus: MSI is on PCI bus
++         * APIC is connected directly to the CPU.
++         * Mapping them on the global bus happens to work because
++         * MSI registers are reserved in APIC MMIO and vice versa. */
++        MSIMessage msi = { .address = addr, .data = val };
++        apic_send_msi(&msi);
++        return;
++    }
++
++    apic_register_write(index, val);
++}
++
+ static void apic_pre_save(APICCommonState *s)
+ {
+     apic_sync_vapic(s, SYNC_FROM_VAPIC);
+diff --git a/hw/intc/trace-events b/hw/intc/trace-events
+index 36ff71f947..1ef29d0256 100644
+--- a/hw/intc/trace-events
++++ b/hw/intc/trace-events
+@@ -14,8 +14,8 @@ cpu_get_apic_base(uint64_t val) "0x%016"PRIx64
+ # apic.c
+ apic_local_deliver(int vector, uint32_t lvt) "vector %d delivery mode %d"
+ apic_deliver_irq(uint8_t dest, uint8_t dest_mode, uint8_t delivery_mode, uint8_t vector_num, uint8_t trigger_mode) "dest %d dest_mode %d delivery_mode %d vector %d trigger_mode %d"
+-apic_mem_readl(uint64_t addr, uint32_t val)  "0x%"PRIx64" = 0x%08x"
+-apic_mem_writel(uint64_t addr, uint32_t val) "0x%"PRIx64" = 0x%08x"
++apic_register_read(uint8_t reg, uint64_t val) "register 0x%02x = 0x%"PRIx64
++apic_register_write(uint8_t reg, uint64_t val) "register 0x%02x = 0x%"PRIx64
+ 
+ # ioapic.c
+ ioapic_set_remote_irr(int n) "set remote irr for pin %d"
+diff --git a/include/hw/i386/apic.h b/include/hw/i386/apic.h
+index bdc15a7a73..2cebeb4faf 100644
+--- a/include/hw/i386/apic.h
++++ b/include/hw/i386/apic.h
+@@ -18,6 +18,9 @@ void apic_sipi(DeviceState *s);
+ void apic_poll_irq(DeviceState *d);
+ void apic_designate_bsp(DeviceState *d, bool bsp);
+ int apic_get_highest_priority_irr(DeviceState *dev);
++uint64_t apic_register_read(int index);
++void apic_register_write(int index, uint64_t val);
++bool is_x2apic_mode(DeviceState *d);
+ 
+ /* pc.c */
+ DeviceState *cpu_get_current_apic(void);
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index e0771a1043..7252a5cdeb 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -545,6 +545,9 @@ typedef enum X86Seg {
+ #define MSR_IA32_VMX_TRUE_ENTRY_CTLS     0x00000490
+ #define MSR_IA32_VMX_VMFUNC             0x00000491
+ 
++#define MSR_APIC_START                  0x00000800
++#define MSR_APIC_END                    0x000008ff
++
+ #define XSTATE_FP_BIT                   0
+ #define XSTATE_SSE_BIT                  1
+ #define XSTATE_YMM_BIT                  2
+diff --git a/target/i386/tcg/sysemu/misc_helper.c b/target/i386/tcg/sysemu/misc_helper.c
+index e1528b7f80..1fce2076a3 100644
+--- a/target/i386/tcg/sysemu/misc_helper.c
++++ b/target/i386/tcg/sysemu/misc_helper.c
+@@ -25,6 +25,7 @@
+ #include "exec/address-spaces.h"
+ #include "exec/exec-all.h"
+ #include "tcg/helper-tcg.h"
++#include "hw/i386/apic.h"
+ 
+ void helper_outb(CPUX86State *env, uint32_t port, uint32_t data)
+ {
+@@ -289,6 +290,19 @@ void helper_wrmsr(CPUX86State *env)
+         env->msr_bndcfgs = val;
+         cpu_sync_bndcs_hflags(env);
+         break;
++    case MSR_APIC_START ... MSR_APIC_END: {
++        int index = (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
++
++        if (!is_x2apic_mode(env_archcpu(env)->apic_state)) {
++            goto error;
++        }
++
++        qemu_mutex_lock_iothread();
++        apic_register_write(index, val);
++        qemu_mutex_unlock_iothread();
++
++        break;
++    }
+     default:
+         if ((uint32_t)env->regs[R_ECX] >= MSR_MC0_CTL
+             && (uint32_t)env->regs[R_ECX] < MSR_MC0_CTL +
+@@ -455,6 +469,19 @@ void helper_rdmsr(CPUX86State *env)
+         val = (cs->nr_threads * cs->nr_cores) | (cs->nr_cores << 16);
+         break;
+     }
++    case MSR_APIC_START ... MSR_APIC_END: {
++        int index = (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
++
++        if (!is_x2apic_mode(env_archcpu(env)->apic_state)) {
++            raise_exception_ra(env, EXCP0D_GPF, GETPC());
++        }
++
++        qemu_mutex_lock_iothread();
++        val = apic_register_read(index);
++        qemu_mutex_unlock_iothread();
++
++        break;
++    }
+     default:
+         if ((uint32_t)env->regs[R_ECX] >= MSR_MC0_CTL
+             && (uint32_t)env->regs[R_ECX] < MSR_MC0_CTL +
 -- 
 2.25.1
 
