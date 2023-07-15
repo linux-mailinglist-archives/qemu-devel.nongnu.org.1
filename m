@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC277548ED
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 023FD75490B
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:58:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfjX-0005Su-Aj; Sat, 15 Jul 2023 09:54:51 -0400
+	id 1qKfir-0004EX-Ri; Sat, 15 Jul 2023 09:54:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiG-00042Y-OX
+ id 1qKfiH-00042a-4j
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:34 -0400
 Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiF-0001FE-6O
+ id 1qKfiF-0001FS-Je
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:32 -0400
 Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3fc02a92dcfso26057855e9.0
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:30 -0700 (PDT)
+ 5b1f17b1804b1-3fbc5d5742eso29395465e9.3
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689429209; x=1692021209;
+ d=linaro.org; s=google; t=1689429210; x=1692021210;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gQ2Bxu/rilowTJXaihrKCWkhFlHMy8pQmQA827CvuAY=;
- b=MEGosP0Yy+10uRbZiHvlRDxU3yGa0m7gKvbZJV9Bw2Nl0j2kljDIeE6+rSwv+cshRl
- UvtYJ/zXIu3VmaGHbsR4hvsVLMe3EL5doyaG8jsuNTHDyneBwWCiW6r1CiylDx4+d5fA
- 8R7mvpwJ0LmNwgRJniF87LvKhny1ahYvpLuIGcyKL9oA2lXixBVuI2tYxRbXwN0hP7f7
- TfMfM6CRtBxpvG8tEFzlDXvC1Gq/5iA8Z+pOeulX+MtdS1LRgkKfCegCazve2sGCA2Tn
- 0DZ25T+E4a/tqXxa/z47F7l6s141CbGPMGkEeLbuZqibC+2Ord+pmCRbJOy/WQXN/BZE
- FJVA==
+ bh=NM1xXL81EtFD9ExbvPk3EQKQbkl//TA55SFLIHfjSWw=;
+ b=ZSNp0u33UreTJeB22qnslIsn7ZkAqD/6fW7QNFIp75qmN064npL8vy8OW5Sk3oVxbb
+ vtMMR+W2iRmoDlh8FK0Nb6xNIJKuJXRiAfJvWVcX3IUBcjxYpjL2d2VwGRmSTmNx4P8+
+ qP537i8EQBEUP/1pMhLeSGFzG5ripphJ+X/bDoWrUM6zet2ajoGpsZErmG1ca8JJDytm
+ bQScIx4LBh4ttfPb8S2XyVeTik24aRfc6X5jXcF+IDM5pO69abLo/CcP2dn+xjn/omC5
+ giDCAxPyLBd1X3zxHTGpyE8oBEpMCkDW+/VEaBM514lUvIzPKRsPTwdQ2LmtrqZTa1+e
+ Nd8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689429209; x=1692021209;
+ d=1e100.net; s=20221208; t=1689429210; x=1692021210;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gQ2Bxu/rilowTJXaihrKCWkhFlHMy8pQmQA827CvuAY=;
- b=bruUazsw0vM2fcbzQHvLG0fS+UU9WZECDfnJ0J7OWWzbhXlxZQa0HVzhD00bW2Po+w
- bmMTKKf3iIpi1G10x721OishGNeDogjJRB1yLtWj1fhtKcVYbMJdqsB1M2lbgNqmV3ze
- 3oP++pBmMx117BMzS3my6mGMEwiVf1AfUQqbzi7Mv0PRfQ7v7IaEQmOvd2KGNqRYKJfa
- ot/tt1OqjTl9zX+XhwfUxCDw8kiWodLFUK7MQzGKPz8Vd9GgfVT6gv/o8W4QGvz1+qAJ
- XzG2jUZOvanpoZQ8BDx+fljqot2tqDw9o0Gkn6RzNcI1vU1rr49ATrME9scZ0fG0c5i6
- nZ4w==
-X-Gm-Message-State: ABy/qLaHo4Cpxd1SXi9e7HcyzlHEb0U5lmwO1K50X2+dqKpfdIs50n8/
- 1CzCZ+ZT95Zzq++JHVY454O2O0WMUARaPSJtu/3H8w==
-X-Google-Smtp-Source: APBJJlEdRN059aQVqrSs6mH/WUQ6qu/xuT7UO4WvdCnN06V+WVPbYF8X1lw8kgEgC4YaYsfN09WnRg==
-X-Received: by 2002:adf:cd09:0:b0:314:3f98:a788 with SMTP id
- w9-20020adfcd09000000b003143f98a788mr6379541wrm.7.1689429209650; 
- Sat, 15 Jul 2023 06:53:29 -0700 (PDT)
+ bh=NM1xXL81EtFD9ExbvPk3EQKQbkl//TA55SFLIHfjSWw=;
+ b=XQu8INQ7qoDwisOSnhZr/meetAoEWM9dh6SpcWhkJLvCHfzd1NF0RTkUSXklUNmawK
+ J2CgJWn7+tcqn2eiJFlJtK8Y0u7wrQx96ooesUNw31hMdADN/SE3x9U+c+kLlHjMlGXv
+ t256xB0bQiBQocqs/aqixq4BpqLnG9JDlaVtO3Zfz0bxVQ4vom7IRjpn8UzzfP1SBJ57
+ uOHF3RJYeG0ly/PcaMlwmzi0flC71uziDlezynlX1hw+vCbb2BXiKE7GKrWtRStEjsys
+ bfnM6AyFLKIYTAcZM4PbSMLl2LI6HLN8OkTvkwJwFn4GfRslxWIBI3VJDLLAlnxdKU3q
+ aBdA==
+X-Gm-Message-State: ABy/qLa8bgWZxaYXA1/S6XnsBkAhR7H1LoOPOnSuvm9bjUOxqmBklw54
+ Rq826VILlk3uxKdnBxJu6kTPPTww887A5ZhOCUtb4w==
+X-Google-Smtp-Source: APBJJlEloWOI4ocrvfPGgLjAHMRgWcLD25fj4r4N/25lC1GaMeFB69psyWciPtLjmlIR0mrNKqK5Pg==
+X-Received: by 2002:a7b:cbc6:0:b0:3fc:70:2f76 with SMTP id
+ n6-20020a7bcbc6000000b003fc00702f76mr6605414wmi.20.1689429210308; 
+ Sat, 15 Jul 2023 06:53:30 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
  k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:53:29 -0700 (PDT)
+ Sat, 15 Jul 2023 06:53:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 12/47] linux-user: Use abi_short not short in syscall_defs.h
-Date: Sat, 15 Jul 2023 14:52:42 +0100
-Message-Id: <20230715135317.7219-13-richard.henderson@linaro.org>
+Subject: [PULL 13/47] linux-user: Use abi_uint not unsigned in syscall_defs.h
+Date: Sat, 15 Jul 2023 14:52:43 +0100
+Message-Id: <20230715135317.7219-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
@@ -94,33 +94,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall_defs.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ linux-user/syscall_defs.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index 21ca03b0f4..9dc41828cf 100644
+index 9dc41828cf..c8ffb4f785 100644
 --- a/linux-user/syscall_defs.h
 +++ b/linux-user/syscall_defs.h
-@@ -702,8 +702,8 @@ typedef struct target_siginfo {
+@@ -1776,14 +1776,14 @@ struct target_stat {
  
- struct target_pollfd {
-     abi_int fd;       /* file descriptor */
--    short events;     /* requested events */
--    short revents;    /* returned events */
-+    abi_short events;     /* requested events */
-+    abi_short revents;    /* returned events */
- };
- 
- /* virtual terminal ioctls */
-@@ -1480,7 +1480,7 @@ struct target_stat {
-     abi_ushort      st_dev;
+ #define TARGET_STAT_HAVE_NSEC
+ struct target_stat {
+-    unsigned        st_dev;
++    abi_uint        st_dev;
+     abi_long        st_pad1[3];             /* Reserved for network id */
      abi_ulong       st_ino;
-     abi_ushort      st_mode;
--    short           st_nlink;
-+    abi_short       st_nlink;
-     abi_ushort      st_uid;
-     abi_ushort      st_gid;
-     abi_ushort      st_rdev;
+     abi_uint        st_mode;
+     abi_uint        st_nlink;
+     abi_int         st_uid;
+     abi_int         st_gid;
+-    unsigned        st_rdev;
++    abi_uint        st_rdev;
+     abi_long        st_pad2[2];
+     abi_long        st_size;
+     abi_long        st_pad3;
 -- 
 2.34.1
 
