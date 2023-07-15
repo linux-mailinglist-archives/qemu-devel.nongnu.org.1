@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7257548F9
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 497197548F8
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:56:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfip-000493-Bx; Sat, 15 Jul 2023 09:54:07 -0400
+	id 1qKfiy-0004TJ-4o; Sat, 15 Jul 2023 09:54:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiE-00041U-NP
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:31 -0400
+ id 1qKfiG-00042X-G3
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:34 -0400
 Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiD-0001EH-2k
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:30 -0400
+ id 1qKfiD-0001Ek-EI
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:32 -0400
 Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3fbc63c2e84so26406615e9.3
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:28 -0700 (PDT)
+ 5b1f17b1804b1-3fbea14700bso25694235e9.3
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689429207; x=1692021207;
+ d=linaro.org; s=google; t=1689429208; x=1692021208;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gtm9LlPfPfRyjkKrgBvN2xo7wsnPpDSqZNVUjufgcPA=;
- b=DFt53Ulxvd6K4euDdopprRMIFdeqqC5PGkDk0o+Do6USXwTk+mlpzvgqV+erSITt7J
- cZ9PsRtNzVJCksQJE6Ph0TnM20Dl/w6nznHsO9QalVym0jaKKjB3P7KCmmnmxKzVvVhf
- qJ+lLBgp+cjJfHn5R7f0/aNI8WrGMJuvMPmLfJ5XgnpQe/P0UeAiGW6AjPtTdDYb+Dgv
- zTzxFbS86bdj8DHxLuJkvMJHNT3JgAPzmNVNy3CAWPv40EgUbAC3n2RYWLuWrtkj5Stn
- I4HfyK+y5acbS7G9pkF5B/GNGjYSl/3gdi9PbZ3wlpDAgPWusKVEJL8eFgIXHHUf9uqR
- 8D8A==
+ bh=vXgUJPpmGDw6aWrzATIglyuAQTPw9nlDBqSS3HfZd1c=;
+ b=PJlloNyKfmlgBgvpmjLa6bcePrzD4MQqFkV5Miwqwm1glrfnWDaLdQLLsJGvC2gFvs
+ jjl7ViI6UoXyYkkrFBUl0s/miT2J07Lp0lcGr8ZUBjnSM20wPrpr9XbizMQo9ZUp1BAy
+ ckU4h/LtP1gRRf1vtQ6HwYeuffK1AhhtJfpZww4HtSSxcdA3MnQpsRW1WW5vSmVGJjAM
+ calUcyEtZR8r5W70nIMqwP7Ld/n10Aun5OQP1GSInir39pfkLM9bgeS/SHGCIZTlkOXL
+ 9a3W6hYICWsxseM+/v2YFOzRSgtm1k6Mw0fVT4DBq/19dQ2lnIvDg5EXk0aXG1dpVw2X
+ CS1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689429207; x=1692021207;
+ d=1e100.net; s=20221208; t=1689429208; x=1692021208;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gtm9LlPfPfRyjkKrgBvN2xo7wsnPpDSqZNVUjufgcPA=;
- b=S1C1C8cGKKK/p/Cr3Ja6nkyBvRSAVr7t0y2GKI1/+IsegUVPgK2vqXrpSTp+nHi2I+
- C9rfGswL59xsgQ6X4MuW8X3PNLEm5j5oXq2L8acA3KT8vukJHxWgyRFzbgRefzxAv2w4
- UgWlKe/Hd3U5x8kA2suyF9TpreEooFj4wC1u1oEnlLg/XwpQLEy+0+KrIjpzX24v/fW1
- ickcWODdT+C5bVi94BCS+5u33/mBSzZ8bHXVi4mIYRB8DZI9hBhIZx8Q65a6U5sA+jzB
- LEtMVEYNQCcp23bnFPWtDth/PxUgJri4f1Dsf6rFwAanzCbKLtrdqPnFg0TCQyFjZwcY
- TPBQ==
-X-Gm-Message-State: ABy/qLYI9H9/AA1bTlSnT8hO/FW4cc8Qs2VBIPdx/l/VnSNpG3ynEK6X
- 0Hv7LsTEFpIoJWmA5NJ1tGU9ishVLB8DZTMGQZdKjw==
-X-Google-Smtp-Source: APBJJlEGio/N24RxDZKsxK6RB8wzeEJB0WLwh1wmJ+hRAZtwFqhoJC/sPJD0jGyP4uzb3fNX5Juv3g==
-X-Received: by 2002:a05:600c:22c9:b0:3fa:96ad:5d2e with SMTP id
- 9-20020a05600c22c900b003fa96ad5d2emr6665845wmg.19.1689429207272; 
- Sat, 15 Jul 2023 06:53:27 -0700 (PDT)
+ bh=vXgUJPpmGDw6aWrzATIglyuAQTPw9nlDBqSS3HfZd1c=;
+ b=be4QRZm9GaGoLnHfFedrQMUy2bR3C4sM2HENBLUxYVnz3OXUsVbbWzQbcXrERtldx2
+ HALd6FTTOat0OQCXyjkhFv9i+0tFtZxSFLqw6e8Kb+IET9ASHLVfIdbJfDu9om6CsZq9
+ toFOKo7OVuykGMP7Bbc8Gxdbv8MtJhjJZ9NaLVl40MjBvN7NOyKyUsm2UpktJlYnkhyt
+ hrGzXsoc4hGt6U8dIHlp4eEtltuUQWZNkTu4PAsF0CAj7xw7lJQe/FNg5b9tNu/MAgPt
+ htER+L/ykfUTGImYrK+NzuWhikUGvc+/gJBanlI9GkxoUtIyUfrGb9f6plFoIrMwyuef
+ NcTw==
+X-Gm-Message-State: ABy/qLZYDzJ9DqhtmEXtGYpU3POP75xj07crcPQ2Rv9i3ZYrl2MkIFPW
+ z18mlOsHs4O3TqrjDWK1sXpgOAImVuHNVP+yhGsx9A==
+X-Google-Smtp-Source: APBJJlGRGdYf3d/z7C826TG94dv5/6ikjmmILqCMRufUujMamfu6cgb0pQLxwRtPByxMzWtn7C1dhg==
+X-Received: by 2002:a05:600c:204d:b0:3fc:60:7dbf with SMTP id
+ p13-20020a05600c204d00b003fc00607dbfmr5934404wmg.41.1689429208019; 
+ Sat, 15 Jul 2023 06:53:28 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
- k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.26
+ k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:53:26 -0700 (PDT)
+ Sat, 15 Jul 2023 06:53:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 09/47] linux-user: Use abi_llong not long long in syscall_defs.h
-Date: Sat, 15 Jul 2023 14:52:39 +0100
-Message-Id: <20230715135317.7219-10-richard.henderson@linaro.org>
+Subject: [PULL 10/47] linux-user: Use abi_int not int in syscall_defs.h
+Date: Sat, 15 Jul 2023 14:52:40 +0100
+Message-Id: <20230715135317.7219-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
@@ -94,62 +94,500 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall_defs.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ linux-user/syscall_defs.h | 216 +++++++++++++++++++-------------------
+ 1 file changed, 108 insertions(+), 108 deletions(-)
 
 diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index 45ebacd4b4..e4fcbd16d2 100644
+index e4fcbd16d2..442a8aefe3 100644
 --- a/linux-user/syscall_defs.h
 +++ b/linux-user/syscall_defs.h
-@@ -1370,7 +1370,7 @@ struct target_stat64 {
-     unsigned short  st_rdev;
-     unsigned char   __pad3[10];
+@@ -361,7 +361,7 @@ struct target_iovec {
  
--    long long       st_size;
-+    abi_llong       st_size;
-     abi_ulong       st_blksize;
+ struct target_msghdr {
+     abi_long     msg_name;       /* Socket name                 */
+-    int          msg_namelen;    /* Length of name              */
++    abi_int      msg_namelen;    /* Length of name              */
+     abi_long     msg_iov;        /* Data blocks                 */
+     abi_long     msg_iovlen;     /* Number of blocks            */
+     abi_long     msg_control;    /* Per protocol magic (eg BSD file descriptor passing) */
+@@ -371,8 +371,8 @@ struct target_msghdr {
  
-     abi_ulong       st_blocks;      /* Number 512-byte blocks allocated. */
-@@ -1403,7 +1403,7 @@ struct target_eabi_stat64 {
-     abi_ullong   st_rdev;
-     abi_uint     __pad2[2];
+ struct target_cmsghdr {
+     abi_long     cmsg_len;
+-    int          cmsg_level;
+-    int          cmsg_type;
++    abi_int      cmsg_level;
++    abi_int      cmsg_type;
+ };
  
--    long long       st_size;
-+    abi_llong       st_size;
-     abi_ulong    st_blksize;
-     abi_uint     __pad3;
-     abi_ullong   st_blocks;
-@@ -1576,10 +1576,10 @@ struct QEMU_PACKED target_stat64 {
-     abi_uint st_gid;
+ #define TARGET_CMSG_DATA(cmsg) ((unsigned char *) ((struct target_cmsghdr *) (cmsg) + 1))
+@@ -426,7 +426,7 @@ struct  target_rusage {
+ };
+ 
+ typedef struct {
+-    int     val[2];
++    abi_int val[2];
+ } kernel_fsid_t;
+ 
+ struct target_dirent {
+@@ -544,7 +544,7 @@ struct target_sigaction {
+ #endif
+ 
+ typedef union target_sigval {
+-    int sival_int;
++    abi_int sival_int;
+     abi_ulong sival_ptr;
+ } target_sigval_t;
+ 
+@@ -575,17 +575,17 @@ typedef union target_sigval {
+ 
+ typedef struct target_siginfo {
+ #ifdef TARGET_MIPS
+-    int si_signo;
+-    int si_code;
+-    int si_errno;
++    abi_int si_signo;
++    abi_int si_code;
++    abi_int si_errno;
+ #else
+-    int si_signo;
+-    int si_errno;
+-    int si_code;
++    abi_int si_signo;
++    abi_int si_errno;
++    abi_int si_code;
+ #endif
+ 
+     union {
+-        int _pad[TARGET_SI_PAD_SIZE];
++        abi_int _pad[TARGET_SI_PAD_SIZE];
+ 
+         /* kill() */
+         struct {
+@@ -610,7 +610,7 @@ typedef struct target_siginfo {
+         struct {
+             pid_t _pid;             /* which child */
+             uid_t _uid;             /* sender's uid */
+-            int _status;            /* exit code */
++            abi_int _status;        /* exit code */
+             target_clock_t _utime;
+             target_clock_t _stime;
+         } _sigchld;
+@@ -622,8 +622,8 @@ typedef struct target_siginfo {
+ 
+         /* SIGPOLL */
+         struct {
+-            int _band;      /* POLL_IN, POLL_OUT, POLL_MSG */
+-            int _fd;
++            abi_int _band;   /* POLL_IN, POLL_OUT, POLL_MSG */
++            abi_int _fd;
+         } _sigpoll;
+     } _sifields;
+ } target_siginfo_t;
+@@ -701,7 +701,7 @@ typedef struct target_siginfo {
+ #include "target_resource.h"
+ 
+ struct target_pollfd {
+-    int fd;           /* file descriptor */
++    abi_int fd;       /* file descriptor */
+     short events;     /* requested events */
+     short revents;    /* returned events */
+ };
+@@ -722,12 +722,12 @@ struct target_pollfd {
+ #define TARGET_KDSIGACCEPT     0x4B4E
+ 
+ struct target_rtc_pll_info {
+-    int pll_ctrl;
+-    int pll_value;
+-    int pll_max;
+-    int pll_min;
+-    int pll_posmult;
+-    int pll_negmult;
++    abi_int pll_ctrl;
++    abi_int pll_value;
++    abi_int pll_max;
++    abi_int pll_min;
++    abi_int pll_posmult;
++    abi_int pll_negmult;
+     abi_long pll_clock;
+ };
+ 
+@@ -754,14 +754,14 @@ struct target_rtc_pll_info {
+                                                struct target_rtc_pll_info)
+ #define TARGET_RTC_PLL_SET          TARGET_IOW('p', 0x12,               \
+                                                struct target_rtc_pll_info)
+-#define TARGET_RTC_VL_READ          TARGET_IOR('p', 0x13, int)
++#define TARGET_RTC_VL_READ          TARGET_IOR('p', 0x13, abi_int)
+ #define TARGET_RTC_VL_CLR           TARGET_IO('p', 0x14)
+ 
+ #if defined(TARGET_ALPHA) || defined(TARGET_MIPS) || defined(TARGET_SH4) || \
+     defined(TARGET_XTENSA)
+-#define TARGET_FIOGETOWN       TARGET_IOR('f', 123, int)
+-#define TARGET_FIOSETOWN       TARGET_IOW('f', 124, int)
+-#define TARGET_SIOCATMARK      TARGET_IOR('s', 7, int)
++#define TARGET_FIOGETOWN       TARGET_IOR('f', 123, abi_int)
++#define TARGET_FIOSETOWN       TARGET_IOW('f', 124, abi_int)
++#define TARGET_SIOCATMARK      TARGET_IOR('s', 7, abi_int)
+ #define TARGET_SIOCSPGRP       TARGET_IOW('s', 8, pid_t)
+ #define TARGET_SIOCGPGRP       TARGET_IOR('s', 9, pid_t)
+ #else
+@@ -851,40 +851,40 @@ struct target_rtc_pll_info {
+ 
+ /* From <linux/if_tun.h> */
+ 
+-#define TARGET_TUNSETDEBUG        TARGET_IOW('T', 201, int)
+-#define TARGET_TUNSETIFF          TARGET_IOW('T', 202, int)
+-#define TARGET_TUNSETPERSIST      TARGET_IOW('T', 203, int)
+-#define TARGET_TUNSETOWNER        TARGET_IOW('T', 204, int)
+-#define TARGET_TUNSETLINK         TARGET_IOW('T', 205, int)
+-#define TARGET_TUNSETGROUP        TARGET_IOW('T', 206, int)
++#define TARGET_TUNSETDEBUG        TARGET_IOW('T', 201, abi_int)
++#define TARGET_TUNSETIFF          TARGET_IOW('T', 202, abi_int)
++#define TARGET_TUNSETPERSIST      TARGET_IOW('T', 203, abi_int)
++#define TARGET_TUNSETOWNER        TARGET_IOW('T', 204, abi_int)
++#define TARGET_TUNSETLINK         TARGET_IOW('T', 205, abi_int)
++#define TARGET_TUNSETGROUP        TARGET_IOW('T', 206, abi_int)
+ #define TARGET_TUNGETFEATURES     TARGET_IOR('T', 207, abi_uint)
+ #define TARGET_TUNSETOFFLOAD      TARGET_IOW('T', 208, abi_uint)
+ #define TARGET_TUNSETTXFILTER     TARGET_IOW('T', 209, abi_uint)
+ #define TARGET_TUNGETIFF          TARGET_IOR('T', 210, abi_uint)
+-#define TARGET_TUNGETSNDBUF       TARGET_IOR('T', 211, int)
+-#define TARGET_TUNSETSNDBUF       TARGET_IOW('T', 212, int)
++#define TARGET_TUNGETSNDBUF       TARGET_IOR('T', 211, abi_int)
++#define TARGET_TUNSETSNDBUF       TARGET_IOW('T', 212, abi_int)
+ /*
+  * TUNATTACHFILTER and TUNDETACHFILTER are not supported. Linux kernel keeps a
+  * user pointer in TUNATTACHFILTER, which we are not able to correctly handle.
+  */
+-#define TARGET_TUNGETVNETHDRSZ    TARGET_IOR('T', 215, int)
+-#define TARGET_TUNSETVNETHDRSZ    TARGET_IOW('T', 216, int)
+-#define TARGET_TUNSETQUEUE        TARGET_IOW('T', 217, int)
++#define TARGET_TUNGETVNETHDRSZ    TARGET_IOR('T', 215, abi_int)
++#define TARGET_TUNSETVNETHDRSZ    TARGET_IOW('T', 216, abi_int)
++#define TARGET_TUNSETQUEUE        TARGET_IOW('T', 217, abi_int)
+ #define TARGET_TUNSETIFINDEX      TARGET_IOW('T', 218, abi_uint)
+ /* TUNGETFILTER is not supported: see TUNATTACHFILTER. */
+-#define TARGET_TUNSETVNETLE       TARGET_IOW('T', 220, int)
+-#define TARGET_TUNGETVNETLE       TARGET_IOR('T', 221, int)
+-#define TARGET_TUNSETVNETBE       TARGET_IOW('T', 222, int)
+-#define TARGET_TUNGETVNETBE       TARGET_IOR('T', 223, int)
+-#define TARGET_TUNSETSTEERINGEBPF TARGET_IOR('T', 224, int)
+-#define TARGET_TUNSETFILTEREBPF   TARGET_IOR('T', 225, int)
+-#define TARGET_TUNSETCARRIER      TARGET_IOW('T', 226, int)
++#define TARGET_TUNSETVNETLE       TARGET_IOW('T', 220, abi_int)
++#define TARGET_TUNGETVNETLE       TARGET_IOR('T', 221, abi_int)
++#define TARGET_TUNSETVNETBE       TARGET_IOW('T', 222, abi_int)
++#define TARGET_TUNGETVNETBE       TARGET_IOR('T', 223, abi_int)
++#define TARGET_TUNSETSTEERINGEBPF TARGET_IOR('T', 224, abi_int)
++#define TARGET_TUNSETFILTEREBPF   TARGET_IOR('T', 225, abi_int)
++#define TARGET_TUNSETCARRIER      TARGET_IOW('T', 226, abi_int)
+ #define TARGET_TUNGETDEVNETNS     TARGET_IO('T', 227)
+ 
+ /* From <linux/random.h> */
+ 
+-#define TARGET_RNDGETENTCNT    TARGET_IOR('R', 0x00, int)
+-#define TARGET_RNDADDTOENTCNT  TARGET_IOW('R', 0x01, int)
++#define TARGET_RNDGETENTCNT    TARGET_IOR('R', 0x00, abi_int)
++#define TARGET_RNDADDTOENTCNT  TARGET_IOW('R', 0x01, abi_int)
+ #define TARGET_RNDZAPENTCNT    TARGET_IO('R', 0x04)
+ #define TARGET_RNDCLEARPOOL    TARGET_IO('R', 0x06)
+ #define TARGET_RNDRESEEDCRNG   TARGET_IO('R', 0x07)
+@@ -940,7 +940,7 @@ struct target_rtc_pll_info {
+ #define TARGET_FIBMAP     TARGET_IO(0x00,1)  /* bmap access */
+ #define TARGET_FIGETBSZ   TARGET_IO(0x00,2)  /* get the block size used for bmap */
+ 
+-#define TARGET_FICLONE    TARGET_IOW(0x94, 9, int)
++#define TARGET_FICLONE    TARGET_IOW(0x94, 9, abi_int)
+ #define TARGET_FICLONERANGE TARGET_IOW(0x94, 13, struct file_clone_range)
+ 
+ /*
+@@ -952,10 +952,10 @@ struct target_rtc_pll_info {
+ #define TARGET_FS_IOC_GETVERSION TARGET_IOR('v', 1, abi_long)
+ #define TARGET_FS_IOC_SETVERSION TARGET_IOW('v', 2, abi_long)
+ #define TARGET_FS_IOC_FIEMAP TARGET_IOWR('f',11,struct fiemap)
+-#define TARGET_FS_IOC32_GETFLAGS TARGET_IOR('f', 1, int)
+-#define TARGET_FS_IOC32_SETFLAGS TARGET_IOW('f', 2, int)
+-#define TARGET_FS_IOC32_GETVERSION TARGET_IOR('v', 1, int)
+-#define TARGET_FS_IOC32_SETVERSION TARGET_IOW('v', 2, int)
++#define TARGET_FS_IOC32_GETFLAGS TARGET_IOR('f', 1, abi_int)
++#define TARGET_FS_IOC32_SETFLAGS TARGET_IOW('f', 2, abi_int)
++#define TARGET_FS_IOC32_GETVERSION TARGET_IOR('v', 1, abi_int)
++#define TARGET_FS_IOC32_SETVERSION TARGET_IOW('v', 2, abi_int)
+ 
+ /* btrfs ioctls */
+ #ifdef HAVE_BTRFS_H
+@@ -1577,14 +1577,14 @@ struct QEMU_PACKED target_stat64 {
      abi_ullong st_rdev;
      abi_ullong __pad0;
--    long long      st_size;
-+    abi_llong      st_size;
-     int            st_blksize;
+     abi_llong      st_size;
+-    int            st_blksize;
++    abi_int        st_blksize;
      abi_uint       __pad1;
--    long long      st_blocks;       /* Number 512-byte blocks allocated. */
-+    abi_llong      st_blocks;       /* Number 512-byte blocks allocated. */
-     int            target_st_atime;
+     abi_llong      st_blocks;       /* Number 512-byte blocks allocated. */
+-    int            target_st_atime;
++    abi_int        target_st_atime;
      abi_uint       target_st_atime_nsec;
-     int            target_st_mtime;
-@@ -1689,7 +1689,7 @@ struct target_stat64 {
-     abi_ullong      st_rdev;
-     unsigned char   __pad3[2];
+-    int            target_st_mtime;
++    abi_int        target_st_mtime;
+     abi_uint       target_st_mtime_nsec;
+-    int            target_st_ctime;
++    abi_int        target_st_ctime;
+     abi_uint       target_st_ctime_nsec;
+     abi_uint       __unused4;
+     abi_uint       __unused5;
+@@ -1635,11 +1635,11 @@ struct QEMU_PACKED target_stat64 {
+     abi_uint __pad2;
+     abi_llong st_blocks;
  
--    long long       st_size;
-+    abi_llong       st_size;
-     abi_ulong       st_blksize;
+-    int            target_st_atime;
++    abi_int    target_st_atime;
+     abi_uint   target_st_atime_nsec;
+-    int            target_st_mtime;
++    abi_int    target_st_mtime;
+     abi_uint   target_st_mtime_nsec;
+-    int            target_st_ctime;
++    abi_int    target_st_ctime;
+     abi_uint   target_st_ctime_nsec;
+     abi_ullong st_ino;
+ };
+@@ -1720,8 +1720,8 @@ struct target_stat {
+     abi_uint                st_mode;
+     abi_uint                st_nlink;
  
-     abi_ulong       __pad4;         /* future possible st_blocks high bits */
-@@ -1933,7 +1933,7 @@ struct QEMU_PACKED target_stat64 {
-     abi_ullong      st_rdev;
-     unsigned char   __pad3[4];
+-    int                     st_uid;
+-    int                     st_gid;
++    abi_int                 st_uid;
++    abi_int                 st_gid;
  
--    long long       st_size;
-+    abi_llong       st_size;
-     abi_ulong       st_blksize;
+     abi_uint                st_rdev;
+     abi_uint                st_pad1[3]; /* Reserved for st_rdev expansion */
+@@ -1756,8 +1756,8 @@ struct target_stat {
+     abi_ullong   st_ino;
+     abi_uint     st_mode;
+     abi_uint     st_nlink;
+-    int          st_uid;
+-    int          st_gid;
++    abi_int      st_uid;
++    abi_int      st_gid;
+     abi_ulong    st_rdev;
+     abi_ulong    st_pad1[3]; /* Reserved for st_rdev expansion */
+     abi_llong    st_size;
+@@ -1781,8 +1781,8 @@ struct target_stat {
+     abi_ulong       st_ino;
+     abi_uint        st_mode;
+     abi_uint        st_nlink;
+-    int             st_uid;
+-    int             st_gid;
++    abi_int         st_uid;
++    abi_int         st_gid;
+     unsigned        st_rdev;
+     abi_long        st_pad2[2];
+     abi_long        st_size;
+@@ -1818,8 +1818,8 @@ struct target_stat64 {
+     abi_uint        st_mode;
+     abi_uint        st_nlink;
  
-     abi_ullong      st_blocks;      /* Number 512-byte blocks allocated. */
+-    int             st_uid;
+-    int             st_gid;
++    abi_int         st_uid;
++    abi_int         st_gid;
+ 
+     abi_ulong       st_rdev;
+     abi_ulong       st_pad1[3];     /* Reserved for st_rdev expansion  */
+@@ -2008,8 +2008,8 @@ struct target_stat {
+     abi_ulong  st_rdev;
+     abi_ulong  _pad1;
+     abi_long  st_size;
+-    int        st_blksize;
+-    int        __pad2;
++    abi_int    st_blksize;
++    abi_int    __pad2;
+     abi_long   st_blocks;
+     abi_long  target_st_atime;
+     abi_ulong  target_st_atime_nsec;
+@@ -2081,8 +2081,8 @@ struct target_stat {
+     abi_ulong st_rdev;
+     abi_ulong __pad1;
+     abi_long st_size;
+-    int st_blksize;
+-    int __pad2;
++    abi_int st_blksize;
++    abi_int __pad2;
+     abi_long st_blocks;
+     abi_long target_st_atime;
+     abi_ulong target_st_atime_nsec;
+@@ -2106,14 +2106,14 @@ struct target_stat64 {
+     abi_ullong st_rdev;
+     abi_ullong __pad1;
+     abi_llong st_size;
+-    int st_blksize;
+-    int __pad2;
++    abi_int st_blksize;
++    abi_int __pad2;
+     abi_llong st_blocks;
+-    int target_st_atime;
++    abi_int target_st_atime;
+     abi_uint target_st_atime_nsec;
+-    int target_st_mtime;
++    abi_int target_st_mtime;
+     abi_uint target_st_mtime_nsec;
+-    int target_st_ctime;
++    abi_int target_st_ctime;
+     abi_uint target_st_ctime_nsec;
+     abi_uint __unused4;
+     abi_uint __unused5;
+@@ -2186,7 +2186,7 @@ struct target_stat64 {
+ #endif
+ 
+ typedef struct {
+-    int     val[2];
++    abi_int val[2];
+ } target_fsid_t;
+ 
+ #ifdef TARGET_MIPS
+@@ -2351,7 +2351,7 @@ struct target_statfs64 {
+ 
+ /* soundcard defines */
+ /* XXX: convert them all to arch independent entries */
+-#define TARGET_SNDCTL_COPR_HALT           TARGET_IOWR('C',  7, int);
++#define TARGET_SNDCTL_COPR_HALT           TARGET_IOWR('C',  7, abi_int);
+ #define TARGET_SNDCTL_COPR_LOAD           0xcfb04301
+ #define TARGET_SNDCTL_COPR_RCODE          0xc0144303
+ #define TARGET_SNDCTL_COPR_RCVMSG         0x8fa44309
+@@ -2363,20 +2363,20 @@ struct target_statfs64 {
+ #define TARGET_SNDCTL_COPR_WDATA          0x40144304
+ #define TARGET_SNDCTL_DSP_RESET           TARGET_IO('P', 0)
+ #define TARGET_SNDCTL_DSP_SYNC            TARGET_IO('P', 1)
+-#define TARGET_SNDCTL_DSP_SPEED           TARGET_IOWR('P', 2, int)
+-#define TARGET_SNDCTL_DSP_STEREO          TARGET_IOWR('P', 3, int)
+-#define TARGET_SNDCTL_DSP_GETBLKSIZE      TARGET_IOWR('P', 4, int)
+-#define TARGET_SNDCTL_DSP_SETFMT          TARGET_IOWR('P', 5, int)
+-#define TARGET_SNDCTL_DSP_CHANNELS        TARGET_IOWR('P', 6, int)
+-#define TARGET_SOUND_PCM_WRITE_FILTER     TARGET_IOWR('P', 7, int)
++#define TARGET_SNDCTL_DSP_SPEED           TARGET_IOWR('P', 2, abi_int)
++#define TARGET_SNDCTL_DSP_STEREO          TARGET_IOWR('P', 3, abi_int)
++#define TARGET_SNDCTL_DSP_GETBLKSIZE      TARGET_IOWR('P', 4, abi_int)
++#define TARGET_SNDCTL_DSP_SETFMT          TARGET_IOWR('P', 5, abi_int)
++#define TARGET_SNDCTL_DSP_CHANNELS        TARGET_IOWR('P', 6, abi_int)
++#define TARGET_SOUND_PCM_WRITE_FILTER     TARGET_IOWR('P', 7, abi_int)
+ #define TARGET_SNDCTL_DSP_POST            TARGET_IO('P', 8)
+-#define TARGET_SNDCTL_DSP_SUBDIVIDE       TARGET_IOWR('P', 9, int)
+-#define TARGET_SNDCTL_DSP_SETFRAGMENT     TARGET_IOWR('P',10, int)
+-#define TARGET_SNDCTL_DSP_GETFMTS         TARGET_IOR('P', 11, int)
++#define TARGET_SNDCTL_DSP_SUBDIVIDE       TARGET_IOWR('P', 9, abi_int)
++#define TARGET_SNDCTL_DSP_SETFRAGMENT     TARGET_IOWR('P',10, abi_int)
++#define TARGET_SNDCTL_DSP_GETFMTS         TARGET_IOR('P', 11, abi_int)
+ #define TARGET_SNDCTL_DSP_GETOSPACE       TARGET_IORU('P',12)
+ #define TARGET_SNDCTL_DSP_GETISPACE       TARGET_IORU('P',13)
+-#define TARGET_SNDCTL_DSP_GETCAPS         TARGET_IOR('P', 15, int)
+-#define TARGET_SNDCTL_DSP_GETTRIGGER      TARGET_IOR('P',16, int)
++#define TARGET_SNDCTL_DSP_GETCAPS         TARGET_IOR('P', 15, abi_int)
++#define TARGET_SNDCTL_DSP_GETTRIGGER      TARGET_IOR('P',16, abi_int)
+ #define TARGET_SNDCTL_DSP_GETIPTR         TARGET_IORU('P',17)
+ #define TARGET_SNDCTL_DSP_GETOPTR         TARGET_IORU('P',18)
+ #define TARGET_SNDCTL_DSP_MAPINBUF        TARGET_IORU('P', 19)
+@@ -2424,13 +2424,13 @@ struct target_statfs64 {
+ #define TARGET_SOUND_PCM_READ_FILTER      0x80045007
+ #define TARGET_SOUND_MIXER_INFO           TARGET_IOR ('M', 101, mixer_info)
+ #define TARGET_SOUND_MIXER_ACCESS         0xc0804d66
+-#define TARGET_SOUND_MIXER_PRIVATE1       TARGET_IOWR('M', 111, int)
+-#define TARGET_SOUND_MIXER_PRIVATE2       TARGET_IOWR('M', 112, int)
+-#define TARGET_SOUND_MIXER_PRIVATE3       TARGET_IOWR('M', 113, int)
+-#define TARGET_SOUND_MIXER_PRIVATE4       TARGET_IOWR('M', 114, int)
+-#define TARGET_SOUND_MIXER_PRIVATE5       TARGET_IOWR('M', 115, int)
++#define TARGET_SOUND_MIXER_PRIVATE1       TARGET_IOWR('M', 111, abi_int)
++#define TARGET_SOUND_MIXER_PRIVATE2       TARGET_IOWR('M', 112, abi_int)
++#define TARGET_SOUND_MIXER_PRIVATE3       TARGET_IOWR('M', 113, abi_int)
++#define TARGET_SOUND_MIXER_PRIVATE4       TARGET_IOWR('M', 114, abi_int)
++#define TARGET_SOUND_MIXER_PRIVATE5       TARGET_IOWR('M', 115, abi_int)
+ 
+-#define TARGET_MIXER_READ(dev)  TARGET_IOR('M', dev, int)
++#define TARGET_MIXER_READ(dev)  TARGET_IOR('M', dev, abi_int)
+ 
+ #define TARGET_SOUND_MIXER_READ_VOLUME          TARGET_MIXER_READ(SOUND_MIXER_VOLUME)
+ #define TARGET_SOUND_MIXER_READ_BASS            TARGET_MIXER_READ(SOUND_MIXER_BASS)
+@@ -2461,7 +2461,7 @@ struct target_statfs64 {
+ #define TARGET_SOUND_MIXER_READ_STEREODEVS      TARGET_MIXER_READ(SOUND_MIXER_STEREODEVS)
+ #define TARGET_SOUND_MIXER_READ_CAPS            TARGET_MIXER_READ(SOUND_MIXER_CAPS)
+ 
+-#define TARGET_MIXER_WRITE(dev)         TARGET_IOWR('M', dev, int)
++#define TARGET_MIXER_WRITE(dev)         TARGET_IOWR('M', dev, abi_int)
+ 
+ #define TARGET_SOUND_MIXER_WRITE_VOLUME TARGET_MIXER_WRITE(SOUND_MIXER_VOLUME)
+ #define TARGET_SOUND_MIXER_WRITE_BASS           TARGET_MIXER_WRITE(SOUND_MIXER_BASS)
+@@ -2489,17 +2489,17 @@ struct target_statfs64 {
+ #define TARGET_SOUND_MIXER_WRITE_RECSRC TARGET_MIXER_WRITE(SOUND_MIXER_RECSRC)
+ 
+ struct target_snd_timer_id {
+-    int dev_class;
+-    int dev_sclass;
+-    int card;
+-    int device;
+-    int subdevice;
++    abi_int dev_class;
++    abi_int dev_sclass;
++    abi_int card;
++    abi_int device;
++    abi_int subdevice;
+ };
+ 
+ struct target_snd_timer_ginfo {
+     struct target_snd_timer_id tid;
+     abi_uint flags;
+-    int card;
++    abi_int card;
+     unsigned char id[64];
+     unsigned char name[80];
+     abi_ulong reserved0;
+@@ -2532,7 +2532,7 @@ struct target_snd_timer_select {
+ 
+ struct target_snd_timer_info {
+     abi_uint flags;
+-    int card;
++    abi_int card;
+     unsigned char id[64];
+     unsigned char name[80];
+     abi_ulong reserved0;
+@@ -2550,7 +2550,7 @@ struct target_snd_timer_status {
+ };
+ 
+ /* alsa timer ioctls */
+-#define TARGET_SNDRV_TIMER_IOCTL_PVERSION     TARGET_IOR('T', 0x00, int)
++#define TARGET_SNDRV_TIMER_IOCTL_PVERSION     TARGET_IOR('T', 0x00, abi_int)
+ #define TARGET_SNDRV_TIMER_IOCTL_NEXT_DEVICE  TARGET_IOWR('T', 0x01,    \
+                                                           struct snd_timer_id)
+ #define TARGET_SNDRV_TIMER_IOCTL_GINFO        TARGET_IOWR('T', 0x03,    \
+@@ -2650,9 +2650,9 @@ struct target_mq_attr {
+ };
+ 
+ struct target_drm_version {
+-    int version_major;
+-    int version_minor;
+-    int version_patchlevel;
++    abi_int version_major;
++    abi_int version_minor;
++    abi_int version_patchlevel;
+     abi_ulong name_len;
+     abi_ulong name;
+     abi_ulong date_len;
+@@ -2662,7 +2662,7 @@ struct target_drm_version {
+ };
+ 
+ struct target_drm_i915_getparam {
+-    int param;
++    abi_int param;
+     abi_ulong value;
+ };
+ 
+@@ -2755,7 +2755,7 @@ struct target_sigevent {
+ 
+ struct target_user_cap_header {
+     abi_uint version;
+-    int pid;
++    abi_int  pid;
+ };
+ 
+ struct target_user_cap_data {
 -- 
 2.34.1
 
