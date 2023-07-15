@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C41EC754918
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 16:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45972754917
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 16:03:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfiu-0004EY-2Q; Sat, 15 Jul 2023 09:54:12 -0400
+	id 1qKfiu-0004Ea-DI; Sat, 15 Jul 2023 09:54:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiO-00045V-7L
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:41 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1qKfif-00049O-Ch
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:54:00 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiM-0001Hu-K6
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:40 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fbd33a57dcso29510255e9.0
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:38 -0700 (PDT)
+ id 1qKfiX-0001Kb-JH
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:54 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3110ab7110aso3044055f8f.3
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689429217; x=1692021217;
+ d=linaro.org; s=google; t=1689429227; x=1692021227;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0PrN0L5Atjyx6hFnGJcyTHnWGq2syM21Wu73egPOuXw=;
- b=wmCpZrzt9CW2VaTqz/sExcOWDC0dI3Y9DVSjbnE75X0PnetawVc2bmZT51B7pxbBiO
- 0wAzYchNSSRy25zt+o8mx6p/h2ZFJRV7vcgAuFOEpmIFXLnkPeS+Nrxtea3q401WTXKl
- kFB3lM8XazziLMnH8VkM7f6vRPXIsi+zmfIYnbNVaeysnw+LLjPZNfnC5I6U4lxg1PT4
- x2RceFby1vzjIAmuRzD59ipQFzi0KIlOFKv56JTdyk6FMYr8db/piR2Ym6aLChAclgQx
- LnFG7YUIFWqrLz5jf0W9rzQ4LA/77P6uQxdbbDDQmbz3Xaz2X4MW1FwiPIIn01a/QLiF
- ldpA==
+ bh=jfvLV6T2p9fP56/v/Xia6iQ7yK2dQ6zBkNiykDOKhfw=;
+ b=EMQyNSaeIKeDjVFlaVD5gqYRd55tk+AR81ac1OEKLIKnmiUvIb0xX9oVRez+CgM8NC
+ xNnQkgiPfbsL0cKC+eJRVn8ON5pi6jh1MBH1tpM0NB9485xXe2hrwuDzsJ/JMGXRJkYb
+ vlQphrJbOXT5RB8FkrSdlbxweMEpcwlh38UVd0kVsyR39n4JT10rBub3z9V6AZYlahgt
+ S0O5DJl19Wb9dUelScpBh0bL4hCE4bEmMXKs/nnC/rJpa6wsWnDV/qULyXzQQoPpbvKQ
+ ASp9GG0ahV4n5php7HBCBCJ0rxHqCk0YfaMGjsAbxvLfSgDb8AoyMjD5Brgp8D3bTVjy
+ AjfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689429217; x=1692021217;
+ d=1e100.net; s=20221208; t=1689429227; x=1692021227;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0PrN0L5Atjyx6hFnGJcyTHnWGq2syM21Wu73egPOuXw=;
- b=QhXO7jLMjzfHQVSx/QjWpXJOY7skYYA3bExHcv+XFtagcSewOwoygbq6uQH0rp2imy
- xltJL2YinJhEVd3NC6EGWVsh9Igg+74ARP19LI91ytLIQSDDrfK7FWIBcxPaFaEdnYNG
- NsYafAToZvM3KEFGV8DtiCyEui2+BQgsEVieFEvZDcDwc2Y9nWtpBJhk6Dir66vcxeug
- TcPr7ZEST8aVJLUx46VVu+ugWUWigVcyMay2zluh9eSCpl1HEg454JQONCHGvGJ00a3q
- MY6wYc86/xAC/aDgZecR6292YfiykZepyMl4Oh+vjAq4sz4t34ABEJaq67+xsEgrNUsK
- U9Ew==
-X-Gm-Message-State: ABy/qLaOE7/YI2DxX+bYMdolReSEZ5zAsTD+yQ17Gu301qoeHRymktAl
- SVkevDwt3z0JoHp+cO48qi/7ewNtMvfB2f5rOeE3YQ==
-X-Google-Smtp-Source: APBJJlEr7a8J/IK7ZP8tzKKS76I+JLVKcZ7xlaWT0rmnSD0V+w5kU6h/ooli1NKTGjVtnhf5rLqpOA==
-X-Received: by 2002:a05:600c:2993:b0:3f9:c82e:9d87 with SMTP id
- r19-20020a05600c299300b003f9c82e9d87mr6634743wmd.13.1689429217231; 
- Sat, 15 Jul 2023 06:53:37 -0700 (PDT)
+ bh=jfvLV6T2p9fP56/v/Xia6iQ7yK2dQ6zBkNiykDOKhfw=;
+ b=RP22RhbOWUbkrhiMk9JDuCme8FOv2AIPzwzt7hXI+8f7XwmenR/ExfiFnkPSJF/qoI
+ Oe4wG34q1xwtbbRM2oMiOwJqNFaS4omExysW1sofKikLTfaw4FAFAf4VOOml//2qa5wo
+ Ma5RHi7RK9MLfyrS968ZgZ4DVPYROW8HVQ7L9OfJy73c487gvZ3DfISIydCpQ7oo77Xb
+ +LxiXOR0zsgoaiUJvjfcVOYKWvJ565N3aOTg3I1r09xiBymAblSnSgcOBkd0s8ecc0gf
+ eofDgdynGWUwdgWVtssNB9mh0f8SEofiMlJSYhpFacFSSaXhnTxi7CASAg+IHUjr61Ez
+ Z73w==
+X-Gm-Message-State: ABy/qLYQ9MBhF8oBRisE5M4c0wGiqOmIuQQtlhYThCRLQrIw2DuH3zvB
+ htscNUEmHWiHuOd4FNplp2lptUXT+CCEXAVTGMCHeg==
+X-Google-Smtp-Source: APBJJlE/DwK53V37TtkYSQjc3adoVzPqzNSyPMQAQJdfbdlCgyqqSq3tOc8oahHwv19lEE6QKZYpYA==
+X-Received: by 2002:a5d:5651:0:b0:314:3a3d:5d1f with SMTP id
+ j17-20020a5d5651000000b003143a3d5d1fmr7217201wrw.19.1689429227461; 
+ Sat, 15 Jul 2023 06:53:47 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
- k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.36
+ k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:53:36 -0700 (PDT)
+ Sat, 15 Jul 2023 06:53:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 22/47] linux-user/strace: Expand struct flags to hold a mask
-Date: Sat, 15 Jul 2023 14:52:52 +0100
-Message-Id: <20230715135317.7219-23-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 36/47] linux-user: Use 'last' instead of 'end' in target_mmap
+Date: Sat, 15 Jul 2023 14:53:06 +0100
+Message-Id: <20230715135317.7219-37-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,135 +91,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A zero bit value does not make sense -- it must relate to
-some field in some way.
+Complete the transition within the mmap functions to a formulation
+that does not overflow at the end of the address space.
 
-Define FLAG_BASIC with a build-time sanity check.
-Adjust FLAG_GENERIC and FLAG_TARGET to use it.
-Add FLAG_GENERIC_MASK and FLAG_TARGET_MASK.
-
-Fix up the existing flag definitions for build errors.
-
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230707204054.8792-6-richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230707204054.8792-20-richard.henderson@linaro.org>
 ---
- linux-user/strace.c | 40 ++++++++++++++++++++++------------------
- 1 file changed, 22 insertions(+), 18 deletions(-)
+ linux-user/mmap.c | 45 +++++++++++++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/linux-user/strace.c b/linux-user/strace.c
-index 669200c4a4..9228b235da 100644
---- a/linux-user/strace.c
-+++ b/linux-user/strace.c
-@@ -46,15 +46,21 @@ struct syscallname {
-  */
- struct flags {
-     abi_long    f_value;  /* flag */
-+    abi_long    f_mask;   /* mask */
-     const char  *f_string; /* stringified flag */
- };
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 738b9b797d..bb9cbe52cd 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -456,8 +456,8 @@ abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size, abi_ulong align)
+ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+                      int flags, int fd, off_t offset)
+ {
+-    abi_ulong ret, end, real_start, real_end, retaddr, host_len,
+-              passthrough_start = -1, passthrough_end = -1;
++    abi_ulong ret, last, real_start, real_last, retaddr, host_len;
++    abi_ulong passthrough_start = -1, passthrough_last = 0;
+     int page_flags;
+     off_t host_offset;
  
-+/* No 'struct flags' element should have a zero mask. */
-+#define FLAG_BASIC(V, M, N)      { V, M | QEMU_BUILD_BUG_ON_ZERO(!(M)), N }
-+
- /* common flags for all architectures */
--#define FLAG_GENERIC(name) { name, #name }
-+#define FLAG_GENERIC_MASK(V, M)  FLAG_BASIC(V, M, #V)
-+#define FLAG_GENERIC(V)          FLAG_BASIC(V, V, #V)
- /* target specific flags (syscall_defs.h has TARGET_<flag>) */
--#define FLAG_TARGET(name)  { TARGET_ ## name, #name }
-+#define FLAG_TARGET_MASK(V, M)   FLAG_BASIC(TARGET_##V, TARGET_##M, #V)
-+#define FLAG_TARGET(V)           FLAG_BASIC(TARGET_##V, TARGET_##V, #V)
- /* end of flags array */
--#define FLAG_END           { 0, NULL }
-+#define FLAG_END           { 0, 0, NULL }
- 
- /* Structure used to translate enumerated values into strings */
- struct enums {
-@@ -963,7 +969,7 @@ print_syscall_ret_ioctl(CPUArchState *cpu_env, const struct syscallname *name,
- #endif
- 
- UNUSED static const struct flags access_flags[] = {
--    FLAG_GENERIC(F_OK),
-+    FLAG_GENERIC_MASK(F_OK, R_OK | W_OK | X_OK),
-     FLAG_GENERIC(R_OK),
-     FLAG_GENERIC(W_OK),
-     FLAG_GENERIC(X_OK),
-@@ -999,9 +1005,9 @@ UNUSED static const struct flags mode_flags[] = {
- };
- 
- UNUSED static const struct flags open_access_flags[] = {
--    FLAG_TARGET(O_RDONLY),
--    FLAG_TARGET(O_WRONLY),
--    FLAG_TARGET(O_RDWR),
-+    FLAG_TARGET_MASK(O_RDONLY, O_ACCMODE),
-+    FLAG_TARGET_MASK(O_WRONLY, O_ACCMODE),
-+    FLAG_TARGET_MASK(O_RDWR, O_ACCMODE),
-     FLAG_END,
- };
- 
-@@ -1010,7 +1016,9 @@ UNUSED static const struct flags open_flags[] = {
-     FLAG_TARGET(O_CREAT),
-     FLAG_TARGET(O_DIRECTORY),
-     FLAG_TARGET(O_EXCL),
-+#if TARGET_O_LARGEFILE != 0
-     FLAG_TARGET(O_LARGEFILE),
-+#endif
-     FLAG_TARGET(O_NOCTTY),
-     FLAG_TARGET(O_NOFOLLOW),
-     FLAG_TARGET(O_NONBLOCK),      /* also O_NDELAY */
-@@ -1075,7 +1083,7 @@ UNUSED static const struct flags umount2_flags[] = {
- };
- 
- UNUSED static const struct flags mmap_prot_flags[] = {
--    FLAG_GENERIC(PROT_NONE),
-+    FLAG_GENERIC_MASK(PROT_NONE, PROT_READ | PROT_WRITE | PROT_EXEC),
-     FLAG_GENERIC(PROT_EXEC),
-     FLAG_GENERIC(PROT_READ),
-     FLAG_GENERIC(PROT_WRITE),
-@@ -1103,7 +1111,7 @@ UNUSED static const struct flags mmap_flags[] = {
- #ifdef MAP_POPULATE
-     FLAG_TARGET(MAP_POPULATE),
- #endif
--#ifdef TARGET_MAP_UNINITIALIZED
-+#if defined(TARGET_MAP_UNINITIALIZED) && TARGET_MAP_UNINITIALIZED != 0
-     FLAG_TARGET(MAP_UNINITIALIZED),
- #endif
-     FLAG_TARGET(MAP_HUGETLB),
-@@ -1201,13 +1209,13 @@ UNUSED static const struct flags statx_flags[] = {
-     FLAG_GENERIC(AT_SYMLINK_NOFOLLOW),
- #endif
- #ifdef AT_STATX_SYNC_AS_STAT
--    FLAG_GENERIC(AT_STATX_SYNC_AS_STAT),
-+    FLAG_GENERIC_MASK(AT_STATX_SYNC_AS_STAT, AT_STATX_SYNC_TYPE),
- #endif
- #ifdef AT_STATX_FORCE_SYNC
--    FLAG_GENERIC(AT_STATX_FORCE_SYNC),
-+    FLAG_GENERIC_MASK(AT_STATX_FORCE_SYNC, AT_STATX_SYNC_TYPE),
- #endif
- #ifdef AT_STATX_DONT_SYNC
--    FLAG_GENERIC(AT_STATX_DONT_SYNC),
-+    FLAG_GENERIC_MASK(AT_STATX_DONT_SYNC, AT_STATX_SYNC_TYPE),
- #endif
-     FLAG_END,
- };
-@@ -1481,14 +1489,10 @@ print_flags(const struct flags *f, abi_long flags, int last)
-     const char *sep = "";
-     int n;
- 
--    if ((flags == 0) && (f->f_value == 0)) {
--        qemu_log("%s%s", f->f_string, get_comma(last));
--        return;
--    }
-     for (n = 0; f->f_string != NULL; f++) {
--        if ((f->f_value != 0) && ((flags & f->f_value) == f->f_value)) {
-+        if ((flags & f->f_mask) == f->f_value) {
-             qemu_log("%s%s", sep, f->f_string);
--            flags &= ~f->f_value;
-+            flags &= ~f->f_mask;
-             sep = "|";
-             n++;
+@@ -581,29 +581,30 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+             host_start += offset - host_offset;
          }
+         start = h2g(host_start);
++        last = start + len - 1;
+         passthrough_start = start;
+-        passthrough_end = start + len;
++        passthrough_last = last;
+     } else {
+         if (start & ~TARGET_PAGE_MASK) {
+             errno = EINVAL;
+             goto fail;
+         }
+-        end = start + len;
+-        real_end = HOST_PAGE_ALIGN(end);
++        last = start + len - 1;
++        real_last = HOST_PAGE_ALIGN(last) - 1;
+ 
+         /*
+          * Test if requested memory area fits target address space
+          * It can fail only on 64-bit host with 32-bit target.
+          * On any other target/host host mmap() handles this error correctly.
+          */
+-        if (end < start || !guest_range_valid_untagged(start, len)) {
++        if (last < start || !guest_range_valid_untagged(start, len)) {
+             errno = ENOMEM;
+             goto fail;
+         }
+ 
+         /* Validate that the chosen range is empty. */
+         if ((flags & MAP_FIXED_NOREPLACE)
+-            && !page_check_range_empty(start, end - 1)) {
++            && !page_check_range_empty(start, last)) {
+             errno = EEXIST;
+             goto fail;
+         }
+@@ -642,9 +643,9 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+ 
+         /* handle the start of the mapping */
+         if (start > real_start) {
+-            if (real_end == real_start + qemu_host_page_size) {
++            if (real_last == real_start + qemu_host_page_size - 1) {
+                 /* one single host page */
+-                if (!mmap_frag(real_start, start, end - 1,
++                if (!mmap_frag(real_start, start, last,
+                                target_prot, flags, fd, offset)) {
+                     goto fail;
+                 }
+@@ -658,18 +659,18 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+             real_start += qemu_host_page_size;
+         }
+         /* handle the end of the mapping */
+-        if (end < real_end) {
+-            if (!mmap_frag(real_end - qemu_host_page_size,
+-                           real_end - qemu_host_page_size, end - 1,
++        if (last < real_last) {
++            abi_ulong real_page = real_last - qemu_host_page_size + 1;
++            if (!mmap_frag(real_page, real_page, last,
+                            target_prot, flags, fd,
+-                           offset + real_end - qemu_host_page_size - start)) {
++                           offset + real_page - start)) {
+                 goto fail;
+             }
+-            real_end -= qemu_host_page_size;
++            real_last -= qemu_host_page_size;
+         }
+ 
+         /* map the middle (easier) */
+-        if (real_start < real_end) {
++        if (real_start < real_last) {
+             void *p;
+             off_t offset1;
+ 
+@@ -678,13 +679,13 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+             } else {
+                 offset1 = offset + real_start - start;
+             }
+-            p = mmap(g2h_untagged(real_start), real_end - real_start,
++            p = mmap(g2h_untagged(real_start), real_last - real_start + 1,
+                      target_to_host_prot(target_prot), flags, fd, offset1);
+             if (p == MAP_FAILED) {
+                 goto fail;
+             }
+             passthrough_start = real_start;
+-            passthrough_end = real_end;
++            passthrough_last = real_last;
+         }
+     }
+  the_end1:
+@@ -692,16 +693,16 @@ abi_long target_mmap(abi_ulong start, abi_ulong len, int target_prot,
+         page_flags |= PAGE_ANON;
+     }
+     page_flags |= PAGE_RESET;
+-    if (passthrough_start == passthrough_end) {
+-        page_set_flags(start, start + len - 1, page_flags);
++    if (passthrough_start > passthrough_last) {
++        page_set_flags(start, last, page_flags);
+     } else {
+         if (start < passthrough_start) {
+             page_set_flags(start, passthrough_start - 1, page_flags);
+         }
+-        page_set_flags(passthrough_start, passthrough_end - 1,
++        page_set_flags(passthrough_start, passthrough_last,
+                        page_flags | PAGE_PASSTHROUGH);
+-        if (passthrough_end < start + len) {
+-            page_set_flags(passthrough_end, start + len - 1, page_flags);
++        if (passthrough_last < last) {
++            page_set_flags(passthrough_last + 1, last, page_flags);
+         }
+     }
+  the_end:
 -- 
 2.34.1
 
