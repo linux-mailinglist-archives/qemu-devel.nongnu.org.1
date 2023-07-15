@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD7F7548EB
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05ED77548F3
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:56:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfiv-0004MR-4N; Sat, 15 Jul 2023 09:54:13 -0400
+	id 1qKfjc-0005z9-0Q; Sat, 15 Jul 2023 09:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiD-00041R-KJ
+ id 1qKfiE-00041T-Di
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:31 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiB-0001Df-2J
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:29 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-31438512cafso2993039f8f.2
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:26 -0700 (PDT)
+ id 1qKfiB-0001Dp-OY
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:30 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3128fcd58f3so3057711f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1689429206; x=1692021206;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=WZowV46RDd4UZGFRJaWN3kYV5vNiK42zQttdiJYmLHk=;
- b=LgCb11Mfe5zs6W4nfob0cjmlFcgsmQQevz9bDNO0Fd4l3XGc/pz8H/Hy/La1QanltB
- V+3+G8IQQEXxJ5Kr9EYeUnBdt+ImFU2JHemVVEhbvKsKwmG4uFrnJqz/EpIE3SkiQEXm
- ftngjU9fq8i1XIsranbjpFJvUeX7BoJ3qwOJlfSVsdD2Qw6/1zODiKkYI0TaNSO/rAha
- HzHKEm64YCywQQtDbG8UkbFJeiyoXwwPL59RHZ8rQikYfEqg7arIGChextjB0sPercCB
- IVsQmztyY4ggvBtp8Ip3pK6WKsJq5NaZylxE5l6wpjKkxZ349rXAhDZ4F/J9so/kcBcH
- uyNw==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Bny+QrSk9kOHXY9n7JH/neknIRvMmyCuxL4ghWqdlbg=;
+ b=kvoQjYfsluMHe2RntKm3FJztPFWJbkOJq1VTmqq50O3uXwxHvbJSgj2s7flRMA/iEh
+ Tikwy2maOG8k27PVFfxD+itCPHzou2arVQ7mun64qZtnkiibOt4nAh4Sjswgb5XnUv9P
+ cIyEaSsGD85E6+LU/UvglSJ+F4GM37X+eBVlbkJCllHhtn/I962eBN8ZkwoWQYdserPL
+ hdxEj53b5ekpzTXLHDUj20InJfwGKqSPApW3ykyabBbAizE/mirJp0pwMI8iBodcrBiX
+ Q9/2lxf6R8DURKEMu4NcLwE4BJxRBMZTy/o8zybeT7gJbUH58qwqRdxQhfQc7r70LC0F
+ RlwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1689429206; x=1692021206;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WZowV46RDd4UZGFRJaWN3kYV5vNiK42zQttdiJYmLHk=;
- b=HYOAbDtLanAqKEVXGBw6krVske7a3kmKOxDdtc3XsXppUoWlgX79+XE4EazIudY0MY
- gpht5IzeuvmQE+hkAIzzys+I4kPYS7M3qoA9BGZyjLY/vMzb/yKOjt/L64v44XVunRX8
- lmUA72fwxyUkP9xA3jRxjX+PBpyPh4VNtbBcjEmETUv7XEtYgHnRLRj0SPJKlXJ9gzpe
- BznmJK37uW/tke4lJ61bp0fQsYtVeXBYHBs/iMIztHNgTP8Fms3o8WMdix1cwbrjEWnf
- WsxSFgN3iM6gPdQDTCaonPFgA/GXIfJH0TReqRdhQRSPrwrOSuRQOhh8m7YN5uwOl9s2
- VdaQ==
-X-Gm-Message-State: ABy/qLaH3T+RB6fUDN2UU5jwcjShxj5BVes1kr1siSys7u+R/X0p6BTY
- FJgEImnHnCiKdqNJr6FK+Htbo/88YS7jlzwlY1sPXA==
-X-Google-Smtp-Source: APBJJlH1XWeTxJY6TUGKtGG6ZPiBiG3+CSje/tmKqoks82krR50ACqX4OKbetGNQBPIoytSZCIpIXA==
-X-Received: by 2002:a5d:6102:0:b0:30f:c1c3:8173 with SMTP id
- v2-20020a5d6102000000b0030fc1c38173mr7111445wrt.26.1689429205679; 
- Sat, 15 Jul 2023 06:53:25 -0700 (PDT)
+ bh=Bny+QrSk9kOHXY9n7JH/neknIRvMmyCuxL4ghWqdlbg=;
+ b=agYVQc+BSWcF4gGDkVrAi0o6M64iz3Vkbob0dw0SKSL6416p2ShT8dvprszMd6uvkV
+ 9r+Egb1a3vqjCIhULaWN8RdM0cBAW5SD7u3S81qM5XK345OMZf0uFwHwH59wuaUfZc5r
+ wTlEGaDOXJJc4Pdk7CYrdA48bFSHoByn99dW7iTH9aYPV3Z9TE0H9ZDOEYUDwKxXcnnR
+ AR5TbawBUyLngd78fN5NHFFvqgHi1VDeCkrXUmrCb5XjS1VMtWtyaiOas4vMNbM+CpjE
+ WxfH6W0c7NNBT0Iyw+3aCEpepmXwq33RuQOJBZAvn66bjBwPE8ygP4H9JmEJhOFmjGuE
+ 3hCg==
+X-Gm-Message-State: ABy/qLYMalLJPa444rP6Vh4jb2NXtdfV65uj3+FzJG9Yb2ScILnT4p2l
+ ejvCZXJQKj3j0SV0fW8Y7N4rLsvAsnu3MPc2SRH2jQ==
+X-Google-Smtp-Source: APBJJlG6zCMFJLNgy8eU0dfa5sz/MSU/NFG3f7SJz703zKZ8j+yHNr2OwOcyFc1f5rY8r1RVihh/aw==
+X-Received: by 2002:adf:ff84:0:b0:314:dc0:2fca with SMTP id
+ j4-20020adfff84000000b003140dc02fcamr7173400wrr.29.1689429206385; 
+ Sat, 15 Jul 2023 06:53:26 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
  k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.25
- for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:53:25 -0700 (PDT)
+ Sat, 15 Jul 2023 06:53:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/47] linux-user: Use abi_uint not unsigned int in
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 08/47] linux-user: Use abi_ullong not unsigned long long in
  syscall_defs.h
-Date: Sat, 15 Jul 2023 14:52:37 +0100
-Message-Id: <20230715135317.7219-8-richard.henderson@linaro.org>
+Date: Sat, 15 Jul 2023 14:52:38 +0100
+Message-Id: <20230715135317.7219-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,632 +92,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall_defs.h | 290 +++++++++++++++++++-------------------
- 1 file changed, 145 insertions(+), 145 deletions(-)
+ linux-user/syscall_defs.h | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
 diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index 2846a8cfa5..20986bd1d3 100644
+index 20986bd1d3..45ebacd4b4 100644
 --- a/linux-user/syscall_defs.h
 +++ b/linux-user/syscall_defs.h
-@@ -366,7 +366,7 @@ struct target_msghdr {
-     abi_long     msg_iovlen;     /* Number of blocks            */
-     abi_long     msg_control;    /* Per protocol magic (eg BSD file descriptor passing) */
-     abi_long     msg_controllen; /* Length of cmsg list */
--    unsigned int msg_flags;
-+    abi_uint     msg_flags;
- };
+@@ -1385,13 +1385,13 @@ struct target_stat64 {
+     abi_ulong       target_st_ctime;
+     abi_ulong       target_st_ctime_nsec;
  
- struct target_cmsghdr {
-@@ -403,7 +403,7 @@ __target_cmsg_nxthdr(struct target_msghdr *__mhdr,
+-    unsigned long long      st_ino;
++    abi_ullong      st_ino;
+ } QEMU_PACKED;
  
- struct target_mmsghdr {
-     struct target_msghdr msg_hdr;              /* Message header */
--    unsigned int         msg_len;              /* Number of bytes transmitted */
-+    abi_uint             msg_len;              /* Number of bytes transmitted */
- };
- 
- struct  target_rusage {
-@@ -595,8 +595,8 @@ typedef struct target_siginfo {
- 
-         /* POSIX.1b timers */
-         struct {
--            unsigned int _timer1;
--            unsigned int _timer2;
-+            abi_uint _timer1;
-+            abi_uint _timer2;
-         } _timer;
- 
-         /* POSIX.1b signals */
-@@ -857,10 +857,10 @@ struct target_rtc_pll_info {
- #define TARGET_TUNSETOWNER        TARGET_IOW('T', 204, int)
- #define TARGET_TUNSETLINK         TARGET_IOW('T', 205, int)
- #define TARGET_TUNSETGROUP        TARGET_IOW('T', 206, int)
--#define TARGET_TUNGETFEATURES     TARGET_IOR('T', 207, unsigned int)
--#define TARGET_TUNSETOFFLOAD      TARGET_IOW('T', 208, unsigned int)
--#define TARGET_TUNSETTXFILTER     TARGET_IOW('T', 209, unsigned int)
--#define TARGET_TUNGETIFF          TARGET_IOR('T', 210, unsigned int)
-+#define TARGET_TUNGETFEATURES     TARGET_IOR('T', 207, abi_uint)
-+#define TARGET_TUNSETOFFLOAD      TARGET_IOW('T', 208, abi_uint)
-+#define TARGET_TUNSETTXFILTER     TARGET_IOW('T', 209, abi_uint)
-+#define TARGET_TUNGETIFF          TARGET_IOR('T', 210, abi_uint)
- #define TARGET_TUNGETSNDBUF       TARGET_IOR('T', 211, int)
- #define TARGET_TUNSETSNDBUF       TARGET_IOW('T', 212, int)
- /*
-@@ -870,7 +870,7 @@ struct target_rtc_pll_info {
- #define TARGET_TUNGETVNETHDRSZ    TARGET_IOR('T', 215, int)
- #define TARGET_TUNSETVNETHDRSZ    TARGET_IOW('T', 216, int)
- #define TARGET_TUNSETQUEUE        TARGET_IOW('T', 217, int)
--#define TARGET_TUNSETIFINDEX      TARGET_IOW('T', 218, unsigned int)
-+#define TARGET_TUNSETIFINDEX      TARGET_IOW('T', 218, abi_uint)
- /* TUNGETFILTER is not supported: see TUNATTACHFILTER. */
- #define TARGET_TUNSETVNETLE       TARGET_IOW('T', 220, int)
- #define TARGET_TUNGETVNETLE       TARGET_IOR('T', 221, int)
-@@ -1361,8 +1361,8 @@ struct target_stat64 {
- #define TARGET_STAT64_HAS_BROKEN_ST_INO 1
-     abi_ulong       __st_ino;
- 
--    unsigned int    st_mode;
--    unsigned int    st_nlink;
-+    abi_uint        st_mode;
-+    abi_uint        st_nlink;
- 
-     abi_ulong       st_uid;
-     abi_ulong       st_gid;
-@@ -1392,20 +1392,20 @@ struct target_stat64 {
+ #ifdef TARGET_ARM
  #define TARGET_HAS_STRUCT_STAT64
  struct target_eabi_stat64 {
-     unsigned long long st_dev;
--    unsigned int    __pad1;
-+    abi_uint     __pad1;
+-    unsigned long long st_dev;
++    abi_ullong   st_dev;
+     abi_uint     __pad1;
      abi_ulong    __st_ino;
--    unsigned int    st_mode;
--    unsigned int    st_nlink;
-+    abi_uint     st_mode;
-+    abi_uint     st_nlink;
- 
+     abi_uint     st_mode;
+@@ -1400,13 +1400,13 @@ struct target_eabi_stat64 {
      abi_ulong    st_uid;
      abi_ulong    st_gid;
  
-     unsigned long long st_rdev;
--    unsigned int    __pad2[2];
-+    abi_uint     __pad2[2];
+-    unsigned long long st_rdev;
++    abi_ullong   st_rdev;
+     abi_uint     __pad2[2];
  
      long long       st_size;
      abi_ulong    st_blksize;
--    unsigned int    __pad3;
-+    abi_uint     __pad3;
-     unsigned long long st_blocks;
- 
-     abi_ulong    target_st_atime;
-@@ -1423,13 +1423,13 @@ struct target_eabi_stat64 {
- 
- #elif defined(TARGET_SPARC64) && !defined(TARGET_ABI32)
- struct target_stat {
--    unsigned int    st_dev;
-+    abi_uint        st_dev;
-     abi_ulong       st_ino;
--    unsigned int    st_mode;
--    unsigned int    st_nlink;
--    unsigned int    st_uid;
--    unsigned int    st_gid;
--    unsigned int    st_rdev;
-+    abi_uint        st_mode;
-+    abi_uint        st_nlink;
-+    abi_uint        st_uid;
-+    abi_uint        st_gid;
-+    abi_uint        st_rdev;
-     abi_long        st_size;
-     abi_long        target_st_atime;
-     abi_long        target_st_mtime;
-@@ -1447,10 +1447,10 @@ struct target_stat64 {
-     abi_ullong      st_ino;
-     abi_ullong      st_nlink;
- 
--    unsigned int    st_mode;
-+    abi_uint        st_mode;
- 
--    unsigned int    st_uid;
--    unsigned int    st_gid;
-+    abi_uint        st_uid;
-+    abi_uint        st_gid;
- 
-     unsigned char   __pad2[6];
-     unsigned short  st_rdev;
-@@ -1459,7 +1459,7 @@ struct target_stat64 {
-     abi_llong       st_blksize;
- 
-     unsigned char   __pad4[4];
--    unsigned int    st_blocks;
-+    abi_uint        st_blocks;
- 
-     abi_ulong       target_st_atime;
-     abi_ulong       target_st_atime_nsec;
-@@ -1503,11 +1503,11 @@ struct target_stat64 {
- 
-     abi_ullong      st_ino;
- 
--    unsigned int    st_mode;
--    unsigned int    st_nlink;
-+    abi_uint        st_mode;
-+    abi_uint        st_nlink;
- 
--    unsigned int    st_uid;
--    unsigned int    st_gid;
-+    abi_uint        st_uid;
-+    abi_uint        st_gid;
- 
-     unsigned char   __pad2[6];
-     unsigned short  st_rdev;
-@@ -1515,22 +1515,22 @@ struct target_stat64 {
-     unsigned char   __pad3[8];
- 
-     abi_llong       st_size;
--    unsigned int    st_blksize;
-+    abi_uint        st_blksize;
- 
-     unsigned char   __pad4[8];
--    unsigned int    st_blocks;
-+    abi_uint        st_blocks;
- 
--    unsigned int    target_st_atime;
--    unsigned int    target_st_atime_nsec;
-+    abi_uint        target_st_atime;
-+    abi_uint        target_st_atime_nsec;
- 
--    unsigned int    target_st_mtime;
--    unsigned int    target_st_mtime_nsec;
-+    abi_uint        target_st_mtime;
-+    abi_uint        target_st_mtime_nsec;
- 
--    unsigned int    target_st_ctime;
--    unsigned int    target_st_ctime_nsec;
-+    abi_uint        target_st_ctime;
-+    abi_uint        target_st_ctime_nsec;
- 
--    unsigned int    __unused1;
--    unsigned int    __unused2;
-+    abi_uint        __unused1;
-+    abi_uint        __unused2;
- };
- 
- #elif defined(TARGET_PPC)
-@@ -1541,13 +1541,13 @@ struct target_stat {
-     abi_ulong st_ino;
- #if defined(TARGET_PPC64)
-     abi_ulong st_nlink;
--    unsigned int st_mode;
-+    abi_uint  st_mode;
- #else
--    unsigned int st_mode;
-+    abi_uint  st_mode;
-     unsigned short st_nlink;
- #endif
--    unsigned int st_uid;
--    unsigned int st_gid;
-+    abi_uint   st_uid;
-+    abi_uint   st_gid;
-     abi_ulong  st_rdev;
-     abi_ulong  st_size;
-     abi_ulong  st_blksize;
-@@ -1570,24 +1570,24 @@ struct target_stat {
- struct QEMU_PACKED target_stat64 {
-     unsigned long long st_dev;
-     unsigned long long st_ino;
--    unsigned int st_mode;
--    unsigned int st_nlink;
--    unsigned int st_uid;
--    unsigned int st_gid;
-+    abi_uint st_mode;
-+    abi_uint st_nlink;
-+    abi_uint st_uid;
-+    abi_uint st_gid;
-     unsigned long long st_rdev;
-     unsigned long long __pad0;
-     long long      st_size;
-     int            st_blksize;
--    unsigned int   __pad1;
-+    abi_uint       __pad1;
-     long long      st_blocks;       /* Number 512-byte blocks allocated. */
-     int            target_st_atime;
--    unsigned int   target_st_atime_nsec;
-+    abi_uint       target_st_atime_nsec;
-     int            target_st_mtime;
--    unsigned int   target_st_mtime_nsec;
-+    abi_uint       target_st_mtime_nsec;
-     int            target_st_ctime;
--    unsigned int   target_st_ctime_nsec;
--    unsigned int   __unused4;
--    unsigned int   __unused5;
-+    abi_uint       target_st_ctime_nsec;
-+    abi_uint       __unused4;
-+    abi_uint       __unused5;
- };
- #endif
- 
-@@ -1597,10 +1597,10 @@ struct QEMU_PACKED target_stat64 {
- struct target_stat {
-     abi_ulong st_dev;
-     abi_ulong st_ino;
--    unsigned int st_mode;
-+    abi_uint st_mode;
-     unsigned short st_nlink;
--    unsigned int st_uid;
--    unsigned int st_gid;
-+    abi_uint st_uid;
-+    abi_uint st_gid;
-     abi_ulong  st_rdev;
-     abi_ulong  st_size;
-     abi_ulong  st_blksize;
-@@ -1636,11 +1636,11 @@ struct QEMU_PACKED target_stat64 {
-     abi_llong st_blocks;
- 
-     int            target_st_atime;
--    unsigned int   target_st_atime_nsec;
-+    abi_uint   target_st_atime_nsec;
-     int            target_st_mtime;
--    unsigned int   target_st_mtime_nsec;
-+    abi_uint   target_st_mtime_nsec;
-     int            target_st_ctime;
--    unsigned int   target_st_ctime_nsec;
-+    abi_uint   target_st_ctime_nsec;
-     abi_ullong st_ino;
- };
- 
-@@ -1680,8 +1680,8 @@ struct target_stat64 {
- #define TARGET_STAT64_HAS_BROKEN_ST_INO 1
-     abi_ulong       __st_ino;
- 
--    unsigned int    st_mode;
--    unsigned int    st_nlink;
-+    abi_uint    st_mode;
-+    abi_uint    st_nlink;
- 
-     abi_ulong       st_uid;
-     abi_ulong       st_gid;
-@@ -1712,19 +1712,19 @@ struct target_stat64 {
- #define TARGET_STAT_HAVE_NSEC
- /* The memory layout is the same as of struct stat64 of the 32-bit kernel.  */
- struct target_stat {
--    unsigned int            st_dev;
--    unsigned int            st_pad0[3]; /* Reserved for st_dev expansion */
-+    abi_uint                st_dev;
-+    abi_uint                st_pad0[3]; /* Reserved for st_dev expansion */
- 
-     abi_ulong               st_ino;
- 
--    unsigned int            st_mode;
--    unsigned int            st_nlink;
-+    abi_uint                st_mode;
-+    abi_uint                st_nlink;
- 
-     int                     st_uid;
-     int                     st_gid;
- 
--    unsigned int            st_rdev;
--    unsigned int            st_pad1[3]; /* Reserved for st_rdev expansion */
-+    abi_uint                st_rdev;
-+    abi_uint                st_pad1[3]; /* Reserved for st_rdev expansion */
- 
-     abi_ulong               st_size;
- 
-@@ -1732,17 +1732,17 @@ struct target_stat {
-      * Actually this should be timestruc_t st_atime, st_mtime and st_ctime
-      * but we don't have it under Linux.
-      */
--    unsigned int            target_st_atime;
--    unsigned int            target_st_atime_nsec;
-+    abi_uint                target_st_atime;
-+    abi_uint                target_st_atime_nsec;
- 
--    unsigned int            target_st_mtime;
--    unsigned int            target_st_mtime_nsec;
-+    abi_uint                target_st_mtime;
-+    abi_uint                target_st_mtime_nsec;
- 
--    unsigned int            target_st_ctime;
--    unsigned int            target_st_ctime_nsec;
-+    abi_uint                target_st_ctime;
-+    abi_uint                target_st_ctime_nsec;
- 
--    unsigned int            st_blksize;
--    unsigned int            st_pad2;
-+    abi_uint                st_blksize;
-+    abi_uint                st_pad2;
- 
-     abi_ulong               st_blocks;
- };
-@@ -1754,8 +1754,8 @@ struct target_stat {
-     abi_ulong    st_dev;
-     abi_ulong    st_pad0[3]; /* Reserved for st_dev expansion */
-     abi_ullong   st_ino;
--    unsigned int st_mode;
--    unsigned int st_nlink;
-+    abi_uint     st_mode;
-+    abi_uint     st_nlink;
-     int          st_uid;
-     int          st_gid;
-     abi_ulong    st_rdev;
-@@ -1779,8 +1779,8 @@ struct target_stat {
-     unsigned        st_dev;
-     abi_long        st_pad1[3];             /* Reserved for network id */
-     abi_ulong       st_ino;
--    unsigned int    st_mode;
--    unsigned int    st_nlink;
-+    abi_uint        st_mode;
-+    abi_uint        st_nlink;
-     int             st_uid;
-     int             st_gid;
-     unsigned        st_rdev;
-@@ -1815,8 +1815,8 @@ struct target_stat64 {
- 
-     abi_ullong      st_ino;
- 
--    unsigned int    st_mode;
--    unsigned int    st_nlink;
-+    abi_uint        st_mode;
-+    abi_uint        st_nlink;
- 
-     int             st_uid;
-     int             st_gid;
-@@ -1848,21 +1848,21 @@ struct target_stat64 {
- #elif defined(TARGET_ALPHA)
- 
- struct target_stat {
--    unsigned int    st_dev;
--    unsigned int    st_ino;
--    unsigned int    st_mode;
--    unsigned int    st_nlink;
--    unsigned int    st_uid;
--    unsigned int    st_gid;
--    unsigned int    st_rdev;
-+    abi_uint     st_dev;
-+    abi_uint     st_ino;
-+    abi_uint     st_mode;
-+    abi_uint     st_nlink;
-+    abi_uint     st_uid;
-+    abi_uint     st_gid;
-+    abi_uint     st_rdev;
-     abi_long     st_size;
-     abi_ulong    target_st_atime;
-     abi_ulong    target_st_mtime;
-     abi_ulong    target_st_ctime;
--    unsigned int    st_blksize;
--    unsigned int    st_blocks;
--    unsigned int    st_flags;
--    unsigned int    st_gen;
-+    abi_uint     st_blksize;
-+    abi_uint     st_blocks;
-+    abi_uint     st_flags;
-+    abi_uint     st_gen;
- };
- 
- #define TARGET_HAS_STRUCT_STAT64
-@@ -1873,12 +1873,12 @@ struct target_stat64 {
-     abi_long     st_size;
-     abi_ulong    st_blocks;
- 
--    unsigned int    st_mode;
--    unsigned int    st_uid;
--    unsigned int    st_gid;
--    unsigned int    st_blksize;
--    unsigned int    st_nlink;
--    unsigned int    __pad0;
-+    abi_uint     st_mode;
-+    abi_uint     st_uid;
-+    abi_uint     st_gid;
-+    abi_uint     st_blksize;
-+    abi_uint     st_nlink;
-+    abi_uint     __pad0;
+     abi_uint     __pad3;
+-    unsigned long long st_blocks;
++    abi_ullong   st_blocks;
  
      abi_ulong    target_st_atime;
      abi_ulong    target_st_atime_nsec;
-@@ -1924,8 +1924,8 @@ struct QEMU_PACKED target_stat64 {
- #define TARGET_STAT64_HAS_BROKEN_ST_INO 1
-     abi_ulong       __st_ino;
+@@ -1417,7 +1417,7 @@ struct target_eabi_stat64 {
+     abi_ulong    target_st_ctime;
+     abi_ulong    target_st_ctime_nsec;
  
--    unsigned int    st_mode;
--    unsigned int    st_nlink;
-+    abi_uint        st_mode;
-+    abi_uint        st_nlink;
- 
-     abi_ulong       st_uid;
-     abi_ulong       st_gid;
-@@ -1957,10 +1957,10 @@ struct target_stat {
-     abi_ulong       st_ino;
-     abi_ulong       st_nlink;
- 
--    unsigned int    st_mode;
--    unsigned int    st_uid;
--    unsigned int    st_gid;
--    unsigned int    __pad0;
-+    abi_uint        st_mode;
-+    abi_uint        st_uid;
-+    abi_uint        st_gid;
-+    abi_uint        __pad0;
-     abi_ulong       st_rdev;
-     abi_long        st_size;
-     abi_long        st_blksize;
-@@ -1980,10 +1980,10 @@ struct target_stat {
-     abi_ulong  st_dev;
-     abi_ulong  st_ino;
-     abi_ulong  st_nlink;
--    unsigned int   st_mode;
--    unsigned int   st_uid;
--    unsigned int   st_gid;
--    unsigned int   __pad1;
-+    abi_uint   st_mode;
-+    abi_uint   st_uid;
-+    abi_uint   st_gid;
-+    abi_uint   __pad1;
-     abi_ulong  st_rdev;
-     abi_ulong  st_size;
-     abi_ulong  target_st_atime;
-@@ -2001,10 +2001,10 @@ struct target_stat {
- struct target_stat {
-     abi_ulong  st_dev;
-     abi_ulong  st_ino;
--    unsigned int st_mode;
--    unsigned int st_nlink;
--    unsigned int   st_uid;
--    unsigned int   st_gid;
-+    abi_uint   st_mode;
-+    abi_uint   st_nlink;
-+    abi_uint   st_uid;
-+    abi_uint   st_gid;
-     abi_ulong  st_rdev;
-     abi_ulong  _pad1;
-     abi_long  st_size;
-@@ -2017,17 +2017,17 @@ struct target_stat {
-     abi_ulong  target_st_mtime_nsec;
-     abi_long  target_st_ctime;
-     abi_ulong  target_st_ctime_nsec;
--    unsigned int __unused[2];
-+    abi_uint __unused[2];
- };
- #elif defined(TARGET_XTENSA)
- #define TARGET_STAT_HAVE_NSEC
- struct target_stat {
-     abi_ulong       st_dev;
-     abi_ulong       st_ino;
--    unsigned int    st_mode;
--    unsigned int    st_nlink;
--    unsigned int    st_uid;
--    unsigned int    st_gid;
-+    abi_uint        st_mode;
-+    abi_uint        st_nlink;
-+    abi_uint        st_uid;
-+    abi_uint        st_gid;
-     abi_ulong       st_rdev;
-     abi_long        st_size;
-     abi_ulong       st_blksize;
-@@ -2046,10 +2046,10 @@ struct target_stat {
- struct target_stat64  {
-     abi_ullong st_dev;          /* Device */
-     abi_ullong st_ino;          /* File serial number */
--    unsigned int  st_mode;      /* File mode. */
--    unsigned int  st_nlink;     /* Link count. */
--    unsigned int  st_uid;       /* User ID of the file's owner. */
--    unsigned int  st_gid;       /* Group ID of the file's group. */
-+    abi_uint  st_mode;          /* File mode. */
-+    abi_uint  st_nlink;         /* Link count. */
-+    abi_uint  st_uid;           /* User ID of the file's owner. */
-+    abi_uint  st_gid;           /* Group ID of the file's group. */
-     abi_ullong st_rdev;         /* Device number, if device. */
-     abi_llong st_size;          /* Size of file, in bytes. */
-     abi_ulong st_blksize;       /* Optimal block size for I/O. */
-@@ -2074,10 +2074,10 @@ struct target_stat64  {
- struct target_stat {
-     abi_ulong st_dev;
-     abi_ulong st_ino;
--    unsigned int st_mode;
--    unsigned int st_nlink;
--    unsigned int st_uid;
--    unsigned int st_gid;
-+    abi_uint st_mode;
-+    abi_uint st_nlink;
-+    abi_uint st_uid;
-+    abi_uint st_gid;
-     abi_ulong st_rdev;
-     abi_ulong __pad1;
-     abi_long st_size;
-@@ -2090,8 +2090,8 @@ struct target_stat {
-     abi_ulong target_st_mtime_nsec;
-     abi_long target_st_ctime;
-     abi_ulong target_st_ctime_nsec;
--    unsigned int __unused4;
--    unsigned int __unused5;
-+    abi_uint __unused4;
-+    abi_uint __unused5;
- };
- 
- #if !defined(TARGET_RISCV64)
-@@ -2099,10 +2099,10 @@ struct target_stat {
- struct target_stat64 {
-     abi_ullong st_dev;
-     abi_ullong st_ino;
--    unsigned int st_mode;
--    unsigned int st_nlink;
--    unsigned int st_uid;
--    unsigned int st_gid;
-+    abi_uint st_mode;
-+    abi_uint st_nlink;
-+    abi_uint st_uid;
-+    abi_uint st_gid;
-     abi_ullong st_rdev;
-     abi_ullong __pad1;
-     abi_llong st_size;
-@@ -2110,13 +2110,13 @@ struct target_stat64 {
-     int __pad2;
-     abi_llong st_blocks;
-     int target_st_atime;
--    unsigned int target_st_atime_nsec;
-+    abi_uint target_st_atime_nsec;
-     int target_st_mtime;
--    unsigned int target_st_mtime_nsec;
-+    abi_uint target_st_mtime_nsec;
-     int target_st_ctime;
--    unsigned int target_st_ctime_nsec;
--    unsigned int __unused4;
--    unsigned int __unused5;
-+    abi_uint target_st_ctime_nsec;
-+    abi_uint __unused4;
-+    abi_uint __unused5;
- };
+-    unsigned long long st_ino;
++    abi_ullong   st_ino;
+ } QEMU_PACKED;
  #endif
  
-@@ -2498,7 +2498,7 @@ struct target_snd_timer_id {
+@@ -1568,14 +1568,14 @@ struct target_stat {
+ #if !defined(TARGET_PPC64)
+ #define TARGET_HAS_STRUCT_STAT64
+ struct QEMU_PACKED target_stat64 {
+-    unsigned long long st_dev;
+-    unsigned long long st_ino;
++    abi_ullong st_dev;
++    abi_ullong st_ino;
+     abi_uint st_mode;
+     abi_uint st_nlink;
+     abi_uint st_uid;
+     abi_uint st_gid;
+-    unsigned long long st_rdev;
+-    unsigned long long __pad0;
++    abi_ullong st_rdev;
++    abi_ullong __pad0;
+     long long      st_size;
+     int            st_blksize;
+     abi_uint       __pad1;
+@@ -1674,7 +1674,7 @@ struct target_stat {
+  */
+ #define TARGET_HAS_STRUCT_STAT64
+ struct target_stat64 {
+-    unsigned long long      st_dev;
++    abi_ullong      st_dev;
+     unsigned char   __pad1[2];
  
- struct target_snd_timer_ginfo {
-     struct target_snd_timer_id tid;
--    unsigned int flags;
-+    abi_uint flags;
-     int card;
-     unsigned char id[64];
-     unsigned char name[80];
-@@ -2506,7 +2506,7 @@ struct target_snd_timer_ginfo {
-     abi_ulong resolution;
-     abi_ulong resolution_min;
-     abi_ulong resolution_max;
--    unsigned int clients;
-+    abi_uint clients;
-     unsigned char reserved[32];
+ #define TARGET_STAT64_HAS_BROKEN_ST_INO 1
+@@ -1686,7 +1686,7 @@ struct target_stat64 {
+     abi_ulong       st_uid;
+     abi_ulong       st_gid;
+ 
+-    unsigned long long      st_rdev;
++    abi_ullong      st_rdev;
+     unsigned char   __pad3[2];
+ 
+     long long       st_size;
+@@ -1704,7 +1704,7 @@ struct target_stat64 {
+     abi_ulong       target_st_ctime;
+     abi_ulong       target_st_ctime_nsec;
+ 
+-    unsigned long long      st_ino;
++    abi_ullong      st_ino;
+ } QEMU_PACKED;
+ 
+ #elif defined(TARGET_ABI_MIPSN64)
+@@ -1918,7 +1918,7 @@ struct target_stat {
+  */
+ #define TARGET_HAS_STRUCT_STAT64
+ struct QEMU_PACKED target_stat64 {
+-    unsigned long long      st_dev;
++    abi_ullong      st_dev;
+     unsigned char   __pad0[4];
+ 
+ #define TARGET_STAT64_HAS_BROKEN_ST_INO 1
+@@ -1930,13 +1930,13 @@ struct QEMU_PACKED target_stat64 {
+     abi_ulong       st_uid;
+     abi_ulong       st_gid;
+ 
+-    unsigned long long      st_rdev;
++    abi_ullong      st_rdev;
+     unsigned char   __pad3[4];
+ 
+     long long       st_size;
+     abi_ulong       st_blksize;
+ 
+-    unsigned long long      st_blocks;      /* Number 512-byte blocks allocated. */
++    abi_ullong      st_blocks;      /* Number 512-byte blocks allocated. */
+ 
+     abi_ulong       target_st_atime;
+     abi_ulong       target_st_atime_nsec;
+@@ -1947,7 +1947,7 @@ struct QEMU_PACKED target_stat64 {
+     abi_ulong       target_st_ctime;
+     abi_ulong       target_st_ctime_nsec;
+ 
+-    unsigned long long      st_ino;
++    abi_ullong      st_ino;
  };
  
-@@ -2531,7 +2531,7 @@ struct target_snd_timer_select {
- };
- 
- struct target_snd_timer_info {
--    unsigned int flags;
-+    abi_uint flags;
-     int card;
-     unsigned char id[64];
-     unsigned char name[80];
-@@ -2542,10 +2542,10 @@ struct target_snd_timer_info {
- 
- struct target_snd_timer_status {
-     struct target_timespec tstamp;
--    unsigned int resolution;
--    unsigned int lost;
--    unsigned int overrun;
--    unsigned int queue;
-+    abi_uint resolution;
-+    abi_uint lost;
-+    abi_uint overrun;
-+    abi_uint queue;
-     unsigned char reserved[64];
- };
- 
-@@ -2623,7 +2623,7 @@ struct target_sysinfo {
-     unsigned short pad;             /* explicit padding for m68k */
-     abi_ulong totalhigh;            /* Total high memory size */
-     abi_ulong freehigh;             /* Available high memory size */
--    unsigned int mem_unit;          /* Memory unit size in bytes */
-+    abi_uint mem_unit;              /* Memory unit size in bytes */
-     char _f[20-2*sizeof(abi_long)-sizeof(int)]; /* Padding: libc5 uses this.. */
- };
- 
+ #elif defined(TARGET_I386) && !defined(TARGET_ABI32)
 -- 
 2.34.1
 
