@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53817548E8
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 742777548FD
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:56:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfiq-0004DC-7Q; Sat, 15 Jul 2023 09:54:08 -0400
+	id 1qKfj7-0004ZL-Ra; Sat, 15 Jul 2023 09:54:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiK-00044H-Oy
+ id 1qKfiL-00044I-0H
  for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:38 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKfiH-0001Fw-6E
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:34 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fbc5d5742bso26494155e9.2
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:32 -0700 (PDT)
+ id 1qKfiH-0001GP-RO
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:53:35 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-307d20548adso2876430f8f.0
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689429211; x=1692021211;
+ d=linaro.org; s=google; t=1689429212; x=1692021212;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HWNck64Rdzbsq9/3XcWJpVmBPzEh5+xH4mb3RyYLiec=;
- b=SO81RTHTX6hAXnhPXH5hUtz7J2K2eXxMhQ3xDDjgxO9Mdo/H+fkAcA5o9Q7hCLGpnj
- jjs3xTloO6e54r7HLF/nQKasg8zVgwOqIuZnbJzSHxfdJeBHwmIr4sSB4itTraINYwBW
- uiZ5vPUOeBeL0YhOj3KciJWmldCSjtnYUvtTXEgMRZwlczmyzMx56f+s+VHIZXL9FzjA
- A+dvdFxBmwG5Sm0b3b5o17vhAER4W83Qe9kt/TlNoBoFwEyjb0b5f1eMl2oTcJRd8RXG
- R4l0U7whBVo2qhNw8fuThY5hCI9xAQaJ1dFsVfflR9XPOrnk+UuSyJ1k/tQaQjgiG1td
- ZGKQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WkQYBTdmbAtTnWW2W9s3BK95MSziKUcKtiWY2RX73t0=;
+ b=PptHln31sBhZ5BPAO2orRGKH/Od5By8a2EuS+D8d8AfX+pSxoVzQAlxCC/tERMrQ9Y
+ JHcrFyshgkOXoaTEUxiAgK083lrgzCbeGm1uzW8Dzor/MF76OEPzHvSWIsgF7iEGLrH6
+ eFHInefQd7IBXwoOrBxUeWAEfyUhvaVszrd6mu1HLdh+/9mmh5llMS0nolBNs/Q0TpdJ
+ bTcfegMowBDPU2rAyUSCPw8rm1dCzjkLhYlHRiZguQoctlT1GnOmcKwtpWrp3dvgBWko
+ mrxV0+iGntdjI5QLdEcAl1eltvwFKX4g2hLkvTUYzmwAJMpKhTYwNS6GvE9BTeS4XnbB
+ Rtbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689429211; x=1692021211;
+ d=1e100.net; s=20221208; t=1689429212; x=1692021212;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HWNck64Rdzbsq9/3XcWJpVmBPzEh5+xH4mb3RyYLiec=;
- b=eC6Fs8sy7m+CUoPTEmgAAL8GkRcCB8ameAWtYriGBtcnIRpZbO+n2HsOOfzmaKTyr6
- Qn00yqq1M8EpPveoHms0vv+obUJJnhKwcqlaWJ9yq66nEhXy/G5JsC1WFXFEMR+1yQlj
- +kuUhs90psWsWsUMfcHZvzpoIXwgeBDXmMmNedxQgcCQMaWqfK/NwRo43QDRsDRrlOb7
- /+Fh4LBVsFhn+BFpsh1VaensY/ZvSdOAsY5PBE3enWMRm6ofeOc5O6NvkAgvbvuvCnrh
- 4nMRXzK49kgEAft8WWCVMLrFkoro4nRWYH2Q8Qoq5V3G6qfBw6GVl2AilkNbS9WrSM5R
- 6RgQ==
-X-Gm-Message-State: ABy/qLZa6yYmSc6pdETIXheCALssHoE6jqidjkTIHSzMuhpJorga42Y5
- h6ggAtNRhQbcxXfVD1vu8EREj/rUSMjiiGcjRLyNuQ==
-X-Google-Smtp-Source: APBJJlFSAr2Jbg783bkhwFTchGzNT7qyRxN7lO+xs1hXn/CkfWM61gVz9fl8SuKWM9+qMfn0IRVCVA==
-X-Received: by 2002:a05:600c:2310:b0:3fa:8fb1:50fe with SMTP id
- 16-20020a05600c231000b003fa8fb150femr6652640wmo.15.1689429211687; 
- Sat, 15 Jul 2023 06:53:31 -0700 (PDT)
+ bh=WkQYBTdmbAtTnWW2W9s3BK95MSziKUcKtiWY2RX73t0=;
+ b=Und6NmTJb/rpToM5neOwtP6TEC6g9u1rQRTPAM8BfDQ3yDm2/vYL+LiG8fPLV6VBrx
+ kOFazekyVdMbEB7v+5/6q3UD8UeIwqIKp9rhH9OHBuCsx/h1OdSFW2+J5FYJmwPyvQkm
+ lf4EZnUz0cII9a26XGKeNRkeL4AAyCh8geZbKGqll/y6DX358FdczHkQKcaBmyVHVP6W
+ xmbFBSRZASG5IhWHfKlcWbTJY55UXglp0OZGUkWRzoTNZuvBwErphPWOWBZcFWienGM6
+ TLwFLLXDht/fUrnVxQmPIVcqMWstXkGwMNQbRw4l7x4L92Ifvf/3aPwCCdonUxarU9lb
+ UGzQ==
+X-Gm-Message-State: ABy/qLbnB/9FinpdCpX0hU/PF5/aMm0YUZ4qWJyCLVjYn3BZcKcLYiqa
+ SPjfID11PNCdbYDv8h1fGlfydVtofE+/UhL4OYCyDQ==
+X-Google-Smtp-Source: APBJJlEt1xGF9soNsuuH/EiAMLfEA/8PMzdoYLjrJt7UJZILjdxOJnWU8G5ckhsVVkzXgh5zQIE1JA==
+X-Received: by 2002:a5d:4b10:0:b0:314:1ddc:ecbd with SMTP id
+ v16-20020a5d4b10000000b003141ddcecbdmr6019130wrq.18.1689429212471; 
+ Sat, 15 Jul 2023 06:53:32 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
  k10-20020a5d66ca000000b00313f9085119sm13838014wrw.113.2023.07.15.06.53.31
- for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:53:31 -0700 (PDT)
+ Sat, 15 Jul 2023 06:53:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/47] include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for nios2
-Date: Sat, 15 Jul 2023 14:52:45 +0100
-Message-Id: <20230715135317.7219-16-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 16/47] linux-user/syscall: Implement execve without execveat
+Date: Sat, 15 Jul 2023 14:52:46 +0100
+Message-Id: <20230715135317.7219-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,27 +91,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based on gcc's nios2.h setting BIGGEST_ALIGNMENT to 32 bits.
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
+Support for execveat syscall was implemented in 55bbe4 and is available
+since QEMU 8.0.0. It relies on host execveat, which is widely available
+on most of Linux kernels today.
+
+However, this change breaks qemu-user self emulation, if "host" qemu
+version is less than 8.0.0. Indeed, it does not implement yet execveat.
+This strange use case happens with most of distribution today having
+binfmt support.
+
+With a concrete failing example:
+$ qemu-x86_64-7.2 qemu-x86_64-8.0 /bin/bash -c /bin/ls
+/bin/bash: line 1: /bin/ls: Function not implemented
+-> not implemented means execve returned ENOSYS
+
+qemu-user-static 7.2 and 8.0 can be conveniently grabbed from debian
+packages qemu-user-static* [1].
+
+One usage of this is running wine-arm64 from linux-x64 (details [2]).
+This is by updating qemu embedded in docker image that we ran into this
+issue.
+
+The solution to update host qemu is not always possible. Either it's
+complicated or ask you to recompile it, or simply is not accessible
+(GitLab CI, GitHub Actions). Thus, it could be worth to implement execve
+without relying on execveat, which is the goal of this patch.
+
+This patch was tested with example presented in this commit message.
+
+[1] http://ftp.us.debian.org/debian/pool/main/q/qemu/
+[1] https://www.linaro.org/blog/emulate-windows-on-arm/
+
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-Id: <20230705121023.973284-1-pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/user/abitypes.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ linux-user/syscall.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/include/exec/user/abitypes.h b/include/exec/user/abitypes.h
-index beba0a48c7..6191ce9f74 100644
---- a/include/exec/user/abitypes.h
-+++ b/include/exec/user/abitypes.h
-@@ -17,7 +17,8 @@
- 
- #if (defined(TARGET_I386) && !defined(TARGET_X86_64)) \
-     || defined(TARGET_SH4) \
--    || defined(TARGET_MICROBLAZE)
-+    || defined(TARGET_MICROBLAZE) \
-+    || defined(TARGET_NIOS2)
- #define ABI_LLONG_ALIGNMENT 4
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 420bab7c68..c15d9ad743 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -659,6 +659,7 @@ safe_syscall4(pid_t, wait4, pid_t, pid, int *, status, int, options, \
  #endif
+ safe_syscall5(int, waitid, idtype_t, idtype, id_t, id, siginfo_t *, infop, \
+               int, options, struct rusage *, rusage)
++safe_syscall3(int, execve, const char *, filename, char **, argv, char **, envp)
+ safe_syscall5(int, execveat, int, dirfd, const char *, filename,
+               char **, argv, char **, envp, int, flags)
+ #if defined(TARGET_NR_select) || defined(TARGET_NR__newselect) || \
+@@ -8629,9 +8630,9 @@ ssize_t do_guest_readlink(const char *pathname, char *buf, size_t bufsiz)
+     return ret;
+ }
  
+-static int do_execveat(CPUArchState *cpu_env, int dirfd,
+-                       abi_long pathname, abi_long guest_argp,
+-                       abi_long guest_envp, int flags)
++static int do_execv(CPUArchState *cpu_env, int dirfd,
++                    abi_long pathname, abi_long guest_argp,
++                    abi_long guest_envp, int flags, bool is_execveat)
+ {
+     int ret;
+     char **argp, **envp;
+@@ -8710,11 +8711,14 @@ static int do_execveat(CPUArchState *cpu_env, int dirfd,
+         goto execve_efault;
+     }
+ 
++    const char *exe = p;
+     if (is_proc_myself(p, "exe")) {
+-        ret = get_errno(safe_execveat(dirfd, exec_path, argp, envp, flags));
+-    } else {
+-        ret = get_errno(safe_execveat(dirfd, p, argp, envp, flags));
++        exe = exec_path;
+     }
++    ret = is_execveat
++        ? safe_execveat(dirfd, exe, argp, envp, flags)
++        : safe_execve(exe, argp, envp);
++    ret = get_errno(ret);
+ 
+     unlock_user(p, pathname, 0);
+ 
+@@ -9406,9 +9410,9 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+         return ret;
+ #endif
+     case TARGET_NR_execveat:
+-        return do_execveat(cpu_env, arg1, arg2, arg3, arg4, arg5);
++        return do_execv(cpu_env, arg1, arg2, arg3, arg4, arg5, true);
+     case TARGET_NR_execve:
+-        return do_execveat(cpu_env, AT_FDCWD, arg1, arg2, arg3, 0);
++        return do_execv(cpu_env, AT_FDCWD, arg1, arg2, arg3, 0, false);
+     case TARGET_NR_chdir:
+         if (!(p = lock_user_string(arg1)))
+             return -TARGET_EFAULT;
 -- 
 2.34.1
 
