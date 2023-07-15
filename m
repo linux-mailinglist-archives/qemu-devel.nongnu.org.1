@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B9C754909
-	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55121754902
+	for <lists+qemu-devel@lfdr.de>; Sat, 15 Jul 2023 15:57:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKfly-0001QQ-Qp; Sat, 15 Jul 2023 09:57:24 -0400
+	id 1qKflh-0001Fb-22; Sat, 15 Jul 2023 09:57:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKflY-00014o-GC
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:56:57 -0400
+ id 1qKfla-000188-0U
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:56:59 -0400
 Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qKflW-0003TS-Vy
- for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:56:56 -0400
+ id 1qKflX-0003Tk-S1
+ for qemu-devel@nongnu.org; Sat, 15 Jul 2023 09:56:57 -0400
 Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3090d3e9c92so3055696f8f.2
- for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:56:54 -0700 (PDT)
+ ffacd0b85a97d-3159da54e95so2757167f8f.3
+ for <qemu-devel@nongnu.org>; Sat, 15 Jul 2023 06:56:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689429413; x=1692021413;
+ d=linaro.org; s=google; t=1689429414; x=1692021414;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GxD0O4grkQ8OinpyCeKP/3HLPLmkFCEiNXIpS5ZyOiE=;
- b=Urm2+Pzf5cJoCZypvWz2GQ96EIZ+cr+s340R01E/qvquJkOysghVaNYEKjHz/Kmrd/
- SH7U3EyAVofJaAoTJYQkx2WH3kYBYEA344ut00DKtJx0Xy73HhDl6c19UpZTBPDjUw8Q
- LQ2kfhVkyZxoT67GZaaSKaV5VJOQs59c5SknfQsKtJtPY2TMq2ZthUV3b/y/a+5H1Jkj
- Ilpzl+AYplYYMM6AvLDUoxXFmYMKDZFrJ5nM3DsaIzCqNH6vCFuDZRHk3YAuauCUGRLV
- 3jQb+Hhd70WflTnvI8DrpQ0YbXZY5hp/xp3l/hR0mK1VUgckVYi/rTuiNE7pOtx5LJxE
- VEQg==
+ bh=vpPPTc1J6EP9QJbzcPqiBEK5MSOQgGdVVPldReJi1XE=;
+ b=rajLt5A5MmhNh/+wdqsWpQwhP5NTf9/u5UUI/uim6z5O4eJUd2bfqb3tffHQT5F96u
+ sB65n24brOrqcm3y5xRd1ud4rqLcZ0piF4bKtNnxX9JJF0bPd791D4lHtwKObrkbVdJw
+ qoZgBwHu7rThPa7lhhyVjbt9y7cAtKpLWCPA4nAlu14RA7iEis4qHm5dSmmFHrk8fvTa
+ qbk2uPgI/y2HELfXMOwO0xmb1ko8kP+e08IB15jvKJqWcTeJVKkYhRV0s8FpN8e/2E95
+ 44+F5e6ofOxqS5FLZlZ2gJtngcCCGrNzaQxRyiKTjIF0GRtug/iZLAxT0A9IAd38cuGS
+ 2UHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689429413; x=1692021413;
+ d=1e100.net; s=20221208; t=1689429414; x=1692021414;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GxD0O4grkQ8OinpyCeKP/3HLPLmkFCEiNXIpS5ZyOiE=;
- b=gY2PtQKD2Ga5yuryJ7/xY65WJuO5LmyJGo92OTTex7gkq6InkA53sbvh6EfUqbG0JI
- jVZaFv+6rmToybonoeGPcXjPNU4phY+H3u+POw9DTKP9zCxBo/zxfABLfDMfgwmONTn8
- j0iEL1KErKYEbpCWAG9R9drdN1JpRz6ytnzzT/YoxFdw8y40hcHkhWq8m/H4ziwFkQ/S
- lJkLTacG28lLBaUcDsxPxLVWE5DsDeWeZJG7Cb2W9dJK3rOCmvunOtpYheM+vKrRN/K4
- +JAxEcjxJEKTfFAWgS12xJDBHHiquPvbnwUpiyzEVVtGAOb382/vHQJlyiHN5rmCkGd1
- 44Xg==
-X-Gm-Message-State: ABy/qLaEmwOLlu55xAnoMOtc0alaiOPpgoB19f7OfZsbwPtblllur0Fd
- KwjfdLvySlEwQthfATv+HV9iPIwVnjVAIPxs1dTgUw==
-X-Google-Smtp-Source: APBJJlHfgrE4yBqdTLzFcPH46Xo9OAQBwgKEBH+H2x4A5so0IeZFII3yD064LJPlW2Im3Z+aYDcGrg==
-X-Received: by 2002:adf:e644:0:b0:316:ef23:9276 with SMTP id
- b4-20020adfe644000000b00316ef239276mr4886194wrn.52.1689429413496; 
- Sat, 15 Jul 2023 06:56:53 -0700 (PDT)
+ bh=vpPPTc1J6EP9QJbzcPqiBEK5MSOQgGdVVPldReJi1XE=;
+ b=T3OheNS7Il8EtSJK47GvGKZlAERyKEGu7e9s5+kfyYxaS3gURRiongv9YejER/XwMu
+ pEKi9ogY1nfBzFJqiKkeE7eJB7sygvD1ZM842tKy+E8MLtrqCXsdopbwg9RE4FakAQDg
+ w/yMyWQ7GbRQtZ0t0xlIp08ebb14ZftZPRGdiNfTqV2BvGK2fWhFsu6GHq9+OGceABRd
+ vBZyiTCpcD5oSHH3MAkFw128dHehpWYwxGSA/UQNvyY3xSs9siIrq3t2rbN+pcJsBP8u
+ yLqw/kLaZ9gPEcZVLbMbdgPAgrtedkmOFSiJWd+wvwoh8vH+TU0nCeZJsb4rwdj3cD9A
+ ODTA==
+X-Gm-Message-State: ABy/qLZwBzHGZOKRnlhddjGmK0eY4yhM47U77rAguxlyB69cB5OuCC5H
+ DnqQEaSpvPpKmcnF+b2CtrAX6HsHIdx8PpkoJkOlbg==
+X-Google-Smtp-Source: APBJJlFfw+CQXEgYtcp1dpabmpOfcc0+kHHfXe6uTB/1SmBE4E9NChQ5jZb6WKte+33QdswCiDzSHA==
+X-Received: by 2002:adf:d852:0:b0:314:13e2:2f78 with SMTP id
+ k18-20020adfd852000000b0031413e22f78mr6444223wrl.44.1689429414638; 
+ Sat, 15 Jul 2023 06:56:54 -0700 (PDT)
 Received: from stoup.lan ([51.219.12.49]) by smtp.gmail.com with ESMTPSA id
- r8-20020a056000014800b0030fa3567541sm13866651wrx.48.2023.07.15.06.56.52
+ r8-20020a056000014800b0030fa3567541sm13866651wrx.48.2023.07.15.06.56.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 15 Jul 2023 06:56:53 -0700 (PDT)
+ Sat, 15 Jul 2023 06:56:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 44/47] linux-user: Drop uint and ulong
-Date: Sat, 15 Jul 2023 14:53:14 +0100
-Message-Id: <20230715135317.7219-45-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Christophe Lyon <christophe.lyon@linaro.org>, Anton Johansson <anjo@rev.ng>
+Subject: [PULL 45/47] linux-user/arm: Do not allocate a commpage at all for
+ M-profile CPUs
+Date: Sat, 15 Jul 2023 14:53:15 +0100
+Message-Id: <20230715135317.7219-46-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 References: <20230715135317.7219-1-richard.henderson@linaro.org>
@@ -92,45 +93,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Juan Quintela <quintela@redhat.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-These are types not used anymore anywhere else.
+Since commit fbd3c4cff6 ("linux-user/arm: Mark the commpage
+executable") executing bare-metal (linked with rdimon.specs)
+cortex-M code fails as:
 
-Signed-off-by: Juan Quintela <quintela@redhat.com>
+  $ qemu-arm -cpu cortex-m3 ~/hello.exe.m3
+  qemu-arm: ../../accel/tcg/user-exec.c:492: page_set_flags: Assertion `last <= GUEST_ADDR_MAX' failed.
+  Aborted (core dumped)
+
+Commit 4f5c67f8df ("linux-user/arm: Take more care allocating
+commpage") already took care of not allocating a commpage for
+M-profile CPUs, however it had to be reverted as commit 6cda41daa2.
+
+Re-introduce the M-profile fix from commit 4f5c67f8df.
+
+Fixes: fbd3c4cff6 ("linux-user/arm: Mark the commpage executable")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1755
+Reported-by: Christophe Lyon <christophe.lyon@linaro.org>
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: <20230511085056.13809-1-quintela@redhat.com>
+Message-Id: <20230711153408.68389-1-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ linux-user/elfload.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 33bc242e6a..1464151826 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -309,16 +309,16 @@ _syscall0(int, sys_gettid)
- #endif
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index d3d1352c4e..a26200d9f3 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -424,10 +424,23 @@ enum {
  
- #if defined(TARGET_NR_getdents) && defined(EMULATE_GETDENTS_WITH_GETDENTS)
--_syscall3(int, sys_getdents, uint, fd, struct linux_dirent *, dirp, uint, count);
-+_syscall3(int, sys_getdents, unsigned int, fd, struct linux_dirent *, dirp, unsigned int, count);
- #endif
- #if (defined(TARGET_NR_getdents) && \
-       !defined(EMULATE_GETDENTS_WITH_GETDENTS)) || \
-     (defined(TARGET_NR_getdents64) && defined(__NR_getdents64))
--_syscall3(int, sys_getdents64, uint, fd, struct linux_dirent64 *, dirp, uint, count);
-+_syscall3(int, sys_getdents64, unsigned int, fd, struct linux_dirent64 *, dirp, unsigned int, count);
- #endif
- #if defined(TARGET_NR__llseek) && defined(__NR_llseek)
--_syscall5(int, _llseek,  uint,  fd, ulong, hi, ulong, lo,
--          loff_t *, res, uint, wh);
-+_syscall5(int, _llseek,  unsigned int,  fd, unsigned long, hi, unsigned long, lo,
-+          loff_t *, res, unsigned int, wh);
- #endif
- _syscall3(int, sys_rt_sigqueueinfo, pid_t, pid, int, sig, siginfo_t *, uinfo)
- _syscall4(int, sys_rt_tgsigqueueinfo, pid_t, pid, pid_t, tid, int, sig,
+ static bool init_guest_commpage(void)
+ {
+-    abi_ptr commpage = HI_COMMPAGE & -qemu_host_page_size;
+-    void *want = g2h_untagged(commpage);
+-    void *addr = mmap(want, qemu_host_page_size, PROT_READ | PROT_WRITE,
+-                      MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
++    ARMCPU *cpu = ARM_CPU(thread_cpu);
++    abi_ptr commpage;
++    void *want;
++    void *addr;
++
++    /*
++     * M-profile allocates maximum of 2GB address space, so can never
++     * allocate the commpage.  Skip it.
++     */
++    if (arm_feature(&cpu->env, ARM_FEATURE_M)) {
++        return true;
++    }
++
++    commpage = HI_COMMPAGE & -qemu_host_page_size;
++    want = g2h_untagged(commpage);
++    addr = mmap(want, qemu_host_page_size, PROT_READ | PROT_WRITE,
++                MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+ 
+     if (addr == MAP_FAILED) {
+         perror("Allocating guest commpage");
 -- 
 2.34.1
 
