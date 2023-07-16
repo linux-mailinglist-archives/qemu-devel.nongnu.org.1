@@ -2,48 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09825754E8E
-	for <lists+qemu-devel@lfdr.de>; Sun, 16 Jul 2023 14:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D49754ED4
+	for <lists+qemu-devel@lfdr.de>; Sun, 16 Jul 2023 15:37:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qL0VQ-0001sH-R4; Sun, 16 Jul 2023 08:05:41 -0400
+	id 1qL1ul-0001c6-5f; Sun, 16 Jul 2023 09:35:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qL0VH-0001rt-43; Sun, 16 Jul 2023 08:05:31 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qL0VC-0003yR-A5; Sun, 16 Jul 2023 08:05:29 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D79761425D;
- Sun, 16 Jul 2023 15:05:37 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D973D14F35;
- Sun, 16 Jul 2023 15:05:17 +0300 (MSK)
-Message-ID: <02d123c8-92c6-c7e2-02df-d9ed9d9ba980@tls.msk.ru>
-Date: Sun, 16 Jul 2023 15:05:17 +0300
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qL1uh-0001bn-Ms
+ for qemu-devel@nongnu.org; Sun, 16 Jul 2023 09:35:52 -0400
+Received: from mail-ej1-f42.google.com ([209.85.218.42])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qL1uf-0007IW-FG
+ for qemu-devel@nongnu.org; Sun, 16 Jul 2023 09:35:51 -0400
+Received: by mail-ej1-f42.google.com with SMTP id
+ a640c23a62f3a-99357737980so520555466b.2
+ for <qemu-devel@nongnu.org>; Sun, 16 Jul 2023 06:35:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689514546; x=1692106546;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=We2n9WQvoGrrZmo3ZhgFvy3phFiDh5U7AmKN8h7uQqU=;
+ b=RFdOK+5C9J8L6BJekFJUU/gubjuOvqzVj7Z1AFJxfdbq4rvzwGTQuSCV1sEq1QXTRJ
+ PF9BCdMdyXfkQwBkMTVET0zfdsQUJ6J437G5p5O0PFxMZBUC6XlNCOiDzJCSUhKLxg+G
+ WUvXCy+lTsoVaaZQlJHr5kFX8P6bsPfC7GFiPjV/QZIJDeChCHJFrdGiVOzwjMcKBEKK
+ o7wvtJmVM+I83IEk7c2t7fu3k2K9YP6sgJrqAiFRD/z4B8CMG9Qk1RVrovkk/IVHtvF7
+ 4zAdcG/BP5TUkwY9/PbFrSzpBBgb0HOlmmxA80atfdgvwW7DVUgeGMRJOAuXIplp84IV
+ qeKA==
+X-Gm-Message-State: ABy/qLbDlbppOfkFfcjwC6OiHMhavdct19/wLuhWNeX5wyGCOxSpksde
+ KqXyxRT8mH+hxSeUgZFMAVg=
+X-Google-Smtp-Source: APBJJlGz1Es7Lrz79asB7yVuyTEnpmbO96BE2wC6tcoO/fYZFke67sdXomCv/Kq6XimpGIqonjWzSg==
+X-Received: by 2002:a17:906:225c:b0:993:dd1d:8251 with SMTP id
+ 28-20020a170906225c00b00993dd1d8251mr11141302ejr.28.1689514546176; 
+ Sun, 16 Jul 2023 06:35:46 -0700 (PDT)
+Received: from fedora.. (tmo-097-144.customers.d1-online.com. [80.187.97.144])
+ by smtp.gmail.com with ESMTPSA id
+ t23-20020a1709066bd700b00992025654c1sm7965379ejs.179.2023.07.16.06.35.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 16 Jul 2023 06:35:45 -0700 (PDT)
+From: Thomas Huth <huth@tuxfamily.org>
+To: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PATCH] hw/char/escc: Implement loopback mode
+Date: Sun, 16 Jul 2023 17:35:19 +0200
+Message-ID: <20230716153519.31722-1-huth@tuxfamily.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 0/6] trivial-patches for 2023-07-16
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-References: <20230716115801.1505288-1-mjt@tls.msk.ru>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230716115801.1505288-1-mjt@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=209.85.218.42; envelope-from=th.huth@gmail.com;
+ helo=mail-ej1-f42.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,28 +78,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-16.07.2023 14:57, Michael Tokarev пишет:
-> The following changes since commit 7d07a21ec003724475566073404c5893e36de5e5:
-> 
->    tree-wide spelling fixes in comments and some messages: hw/9pfs (2023-07-16 13:59:17 +0300)
-> 
-> are available in the Git repository at:
-> 
->    https://gitlab.com/mjt0k/qemu.git/ tags/trivial-patches-pull
-> 
-> for you to fetch changes up to 7d07a21ec003724475566073404c5893e36de5e5:
-> 
->    tree-wide spelling fixes in comments and some messages: hw/9pfs (2023-07-16 13:59:17 +0300)
-> 
-> ----------------------------------------------------------------
-> trivial-patches for 2023-07-16
-> 
-> This contains a doc fix for riscv and reviewed spelling fixes.
-> ----------------------------------------------------------------
+The firmware of the m68k next-cube machine uses the loopback mode
+for self-testing the hardware and currently fails during this step.
+By implementing the loopback mode, we can make the firmware pass
+to the next step.
 
-This meant to be a PULL request, not PATCH series.. :)
+Signed-off-by: Thomas Huth <huth@tuxfamily.org>
+---
+ hw/char/escc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Thanks,
+diff --git a/hw/char/escc.c b/hw/char/escc.c
+index 4f3872bfe9..4be66053c1 100644
+--- a/hw/char/escc.c
++++ b/hw/char/escc.c
+@@ -653,7 +653,9 @@ static void escc_mem_write(void *opaque, hwaddr addr,
+         escc_update_irq(s);
+         s->tx = val;
+         if (s->wregs[W_TXCTRL2] & TXCTRL2_TXEN) { /* tx enabled */
+-            if (qemu_chr_fe_backend_connected(&s->chr)) {
++            if (s->wregs[W_MISC2] & MISC2_LCL_LOOP) {
++                serial_receive_byte(s, s->tx);
++            } else if (qemu_chr_fe_backend_connected(&s->chr)) {
+                 /*
+                  * XXX this blocks entire thread. Rewrite to use
+                  * qemu_chr_fe_write and background I/O callbacks
+-- 
+2.41.0
 
-/mjt
 
