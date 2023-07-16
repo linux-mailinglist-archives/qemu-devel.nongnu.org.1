@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AB5754F8C
-	for <lists+qemu-devel@lfdr.de>; Sun, 16 Jul 2023 18:01:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61432754FDD
+	for <lists+qemu-devel@lfdr.de>; Sun, 16 Jul 2023 18:50:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qL4Az-0005QH-O7; Sun, 16 Jul 2023 12:00:49 -0400
+	id 1qL4vi-000554-NU; Sun, 16 Jul 2023 12:49:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qL4Ay-0005Px-4C
- for qemu-devel@nongnu.org; Sun, 16 Jul 2023 12:00:48 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qL4vg-00054f-Dz
+ for qemu-devel@nongnu.org; Sun, 16 Jul 2023 12:49:04 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qL4Aw-0000Nx-DQ
- for qemu-devel@nongnu.org; Sun, 16 Jul 2023 12:00:47 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fbd33a57b6so37311935e9.2
- for <qemu-devel@nongnu.org>; Sun, 16 Jul 2023 09:00:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qL4ve-0005zr-Kc
+ for qemu-devel@nongnu.org; Sun, 16 Jul 2023 12:49:04 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-313e742a787so2189345f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 16 Jul 2023 09:49:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689523243; x=1692115243;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1689526140; x=1692118140;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=6H2pNLG6LXHPWsxar4rALJ1swhVYjlodetN7nFwSJwM=;
- b=KjVIG8S6Xpg9PNMXOEUGJApd75hxgfBxaDNX7sy+y3TSkJQckQcB79ieWOjSk9ev0V
- qO5waoZpKr52dgBYS0daPYjuHHeAl6hp+ofyT4tEIr9tQG/jKPqmtAqTu9UvVvqRfvCL
- ItTOhGxfo+kJdZjArB0ixscP+NTmoT8G3WrDctKDxNY9m6ajOITQXQpHQJ6GDZBftdLE
- f0fMgy1xOWhZtZtQ2TYDP0vnUKVZJfMcNLg1RstIfweXY+R7s/aoULJWqQ61izdSbOCQ
- qDGo4QwvSoGH9X++A1zAuFjuU2SLEDTVlhkKFHtIjihEMKaTgVaAvABW5/X6T2RVzLyu
- aHcw==
+ bh=1MPpyemGwgzB+nKFLOUKSC42RU8xp9x47zLLVYF6Rq8=;
+ b=plRMrJLAudz8Qok9gonA9RK8yUPREGjDYugC0reB7dwM5sDQy1y8z+NHUO01AyVadV
+ RC60dtBKxsS2RgCmvqiLjbz0BOdTKYMWiUz6sv2BZlYERj/dRqcbEqKxrQI6cF1gBWIQ
+ 5Azf6kNu2hn6gOhVANYen8Lx5XLC6ofyIEzqm+AQ94gQQFAxsuVrquDv9LyabWV1yg54
+ +wYVo2Eq+2WMHO2347V0aE/U/zd+0iWKIVXb0mS9vXmkYxycWvqmiR17tEdQQYcbOK0d
+ nmPBG3dE5hhYIQE1epsaVjSgNCJ6PwRkeqg7KYkKm3rYGsenn06Lc+wlynfqpFAa85sB
+ ivcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689523243; x=1692115243;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1689526140; x=1692118140;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6H2pNLG6LXHPWsxar4rALJ1swhVYjlodetN7nFwSJwM=;
- b=kkMDOhC18nF1ow9y6nUoGDsKigwZL35FgeWi7YRIDFozYpamHt425UQ7mSe09gX0hx
- M68QSkYWE/LjZY/hMLZamxQHhDBRrvAMSOwLqYJWgfJY4M7ID+9mqKUSkkbdAEEwGoc/
- Js1iEqzwl4Men1MjS7o8lRcic/iGvDpM09s4iWf0Hl6SBT3pfNafzs8BnrxiGbZaRu+a
- bpeSoBqzE4s5s7DdezUx9fLri4g24KDLDFpsIJGlAnGMo75IIoFPBntlK3v9S27NbxMn
- YdM1vbitHVOQk8VWk2hkOQr99yaE+LLJHzEZofwHwaX0CPhwpNl/Y42CwHJoKF4QMFuH
- yDIA==
-X-Gm-Message-State: ABy/qLaglocQ6RZ3Q7nTt47vQ+kWYHkjO/nQclYZhnC1Vz36VrXh5bX8
- 0laTAriHlTMH+eiSm39hPEi4Gg==
-X-Google-Smtp-Source: APBJJlHlYnI+NbdmWunihgBNgH3yRUnRS2t41UxsA77UmrOFWdSwc+Ya8XPXJNVTOEDln8MEkG+WKQ==
-X-Received: by 2002:adf:ffd2:0:b0:313:eb81:d2f6 with SMTP id
- x18-20020adfffd2000000b00313eb81d2f6mr11045891wrs.4.1689523242915; 
- Sun, 16 Jul 2023 09:00:42 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.218.195])
+ bh=1MPpyemGwgzB+nKFLOUKSC42RU8xp9x47zLLVYF6Rq8=;
+ b=CqgVgL4sJ5HpAMo6ijdb50pdqR0R5vJOPtzpSnob1WRRDD4vFTd8zTtIot6Tc+S+Rm
+ Wcu0gP52J0ksL0Q2Xw+1Bddt8+OZ4I/TXiAmHvqAhpv1c0mcF/sVtlgAuXPgZxnA61bq
+ csTz5Qe2GdSUAGF/6Y5HEjj/09DQbb9tIorlBNJwi8O3R7r4Eqr3m/im5za8k2DKDWKZ
+ RG9CgEwmxWv9WTD9ux2drcMBlSHufKPuY8BgBdFcF6hkOF/A87+owO646Z0bTdSgpyPW
+ 1FH6kDAjNe/wv1pZvO+///6lVfb4yMxQSnn9SuyY84/qc+owdxn86Dx4KcM/93WoIcnO
+ 8WJw==
+X-Gm-Message-State: ABy/qLZLwmxIdhsEUaOsKrpIGUVbtXz9MdDUlUbTu69vRsm8Tn8wCKwO
+ adNJvf4Q3qzCVmY/UOWicp8GEA==
+X-Google-Smtp-Source: APBJJlFsycrSq/D+cegEwVIMKDtCJcfV9/hRcIkKl4SgsMFXyR2D4+wyXnI6usSyjdwqAEJjxA72KA==
+X-Received: by 2002:a05:6000:181:b0:314:2c77:681b with SMTP id
+ p1-20020a056000018100b003142c77681bmr6538066wrx.30.1689526140261; 
+ Sun, 16 Jul 2023 09:49:00 -0700 (PDT)
+Received: from [192.168.1.205] ([51.219.12.49])
  by smtp.gmail.com with ESMTPSA id
- e22-20020a5d5956000000b0031431fb40fasm6139285wri.89.2023.07.16.09.00.41
+ t9-20020a5d5349000000b003143b7449ffsm16820767wrv.25.2023.07.16.09.48.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 16 Jul 2023 09:00:42 -0700 (PDT)
-Message-ID: <88eb5dc7-3254-d760-e375-5349c03f15cd@linaro.org>
-Date: Sun, 16 Jul 2023 18:00:40 +0200
+ Sun, 16 Jul 2023 09:48:59 -0700 (PDT)
+Message-ID: <9c37c504-fd47-ae96-42cc-cf082d984cee@linaro.org>
+Date: Sun, 16 Jul 2023 17:48:57 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH] hw/char/escc: Implement loopback mode
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL v1 0/1] Merge tpm 2023/07/14 v1
+To: Stefan Berger <stefanb@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+References: <20230714154101.184057-1-stefanb@linux.ibm.com>
 Content-Language: en-US
-To: Thomas Huth <huth@tuxfamily.org>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-References: <20230716153519.31722-1-huth@tuxfamily.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230716153519.31722-1-huth@tuxfamily.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230714154101.184057-1-stefanb@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,17 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/7/23 17:35, Thomas Huth wrote:
-> The firmware of the m68k next-cube machine uses the loopback mode
-> for self-testing the hardware and currently fails during this step.
-> By implementing the loopback mode, we can make the firmware pass
-> to the next step.
+On 7/14/23 16:40, Stefan Berger wrote:
+> Hello!
 > 
-> Signed-off-by: Thomas Huth <huth@tuxfamily.org>
-> ---
->   hw/char/escc.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+>    This PR removes the 'ppi' boolean property from the tpm tis sysbus
+> device. It could never be activated since it was leading to a segfault
+> immediatley.
+> 
+>      Stefan
+> 
+> The following changes since commit 3dd9e54703e6ae4f9ab3767f5cecc99edf066668:
+> 
+>    Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-07-12 20:46:10 +0100)
+> 
+> are available in the Git repository at:
+> 
+>    https://github.com/stefanberger/qemu-tpm.git tags/pull-tpm-2023-07-14-1
+> 
+> for you to fetch changes up to 4c46fe2ed492f35f411632c8b5a8442f322bc3f0:
+> 
+>    hw/tpm: TIS on sysbus: Remove unsupport ppi command line option (2023-07-14 11:31:54 -0400)
+> 
+> 
+> Stefan Berger (1):
+>    hw/tpm: TIS on sysbus: Remove unsupport ppi command line option
+> 
+>   hw/tpm/tpm_tis_sysbus.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
+
+
+r~
 
 
