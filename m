@@ -2,31 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D510754DD4
-	for <lists+qemu-devel@lfdr.de>; Sun, 16 Jul 2023 10:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF2D754DD0
+	for <lists+qemu-devel@lfdr.de>; Sun, 16 Jul 2023 10:17:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qKwvO-0007mT-N8; Sun, 16 Jul 2023 04:16:14 -0400
+	id 1qKwvQ-0007o7-7Z; Sun, 16 Jul 2023 04:16:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qKwvN-0007m3-6b
- for qemu-devel@nongnu.org; Sun, 16 Jul 2023 04:16:13 -0400
-Received: from mail-bn8nam12on20621.outbound.protection.outlook.com
- ([2a01:111:f400:fe5b::621]
- helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ id 1qKwvO-0007mR-5X
+ for qemu-devel@nongnu.org; Sun, 16 Jul 2023 04:16:14 -0400
+Received: from mail-bn7nam10on20615.outbound.protection.outlook.com
+ ([2a01:111:f400:7e8a::615]
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
- id 1qKwvK-0000pz-HE
- for qemu-devel@nongnu.org; Sun, 16 Jul 2023 04:16:12 -0400
+ id 1qKwvM-0000qU-FA
+ for qemu-devel@nongnu.org; Sun, 16 Jul 2023 04:16:13 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hbwW3h1Fbu4hfXyh7R+WQjODyJh9GGoELl+xLuhp9HaeWcIdQp7qiMkZcN162M94fYlvsUrkzGJZPVr02GhmTmxQWOvvXtcPLNx1qZcsUu3BzPAbydtUY4yFTUx9JXJo3PcpuM8AfKagWCA+FXjNcQdMUfTOmJRhkG+xTei+uIkHw4nmLec5hvYaHVgJCoNeYaafeK1F2yTkOiHktw1CEedFnELdYMH1oA1Cqn7JHHM1x6cJZbEQRiB575Y8Ai0iSUfvC2WPX3Pd5ddQm/zc/PJNnMrMyMcEVTcK8CuuZ6p5LkXKugo+P9obdmjNlkeeaZl9LykXKuP/4HDqyxK0Wg==
+ b=Pj8yLN9jqDQPdM5VWrtX/b16HQ/2kFck3OvSeeNlzlUdXUQgX+gAoqE2HMczDGInTGRXKtoBWQG6HmZlfg2IqKXVF/w2VRMEGoWHygCW5nQcE9GHhAF6rkTz9HLnx8tMsYldRh7h1voqGPqKdoTHLE45nyzWtTGLwELDCnqev0EQFBwmliHtqN3e5mpSeWZg1t382phECvFjb75YQKFMtVM5bT7+ifIs1qNnJBi4xgyBVa6XVuwZAozm7Lc22tnqpty5XPhYsPEknwYdWAGE3pZPpVFFIYKIUgOBStPk5L7+mQjLMN8PoqQbQ8iHtjyij9u9e5NksByGALb32EutOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N+V0SKQ8fVDS0yFd8IkXWJp2BKGL9A+zyu5Gf2BFCNw=;
- b=QE4cyIVkYwcNeeLB3laTyHacJpW1hfAjCHegzV6kZ4v6XsUuzF0NVB/ZeGNJ4VINxm3lgUyoXT1vnKBHJGDlmqosOVCZiOi0e/rCxojVEcKhAwH7LchKqHqTL7fYSe8JBIfdMaXFucO1FaNkGSPflHARiBk8seYsaSYb2zd2d9kXUq+dJ42nb5PpHztAzUdDM20fw3e6EupNs8j+uaUgnDCRuYd8IHDR5u40/GEr4Sot3nebwsflrIOACR+0Y1movT+fvf0kVohVMvTQGyGZG6KGfuErrJDQTFw/TeEueSifXUKaKJOGJp0wmQvSvtzubw6Zh+47xl6ikMSdFAZXmQ==
+ bh=yQ4xoMPymvJ2qudooBrQWQY1m2eDedjxURwAZ7xsNwc=;
+ b=MulA6NjU2s15HW023gXH7DK+xSLMbrHCdFf3WKSqRouGmyUOnOJ/m9xdmThaBNcFbAKqDPfYM0DRw/VsGhK+M6L9qI0vd5N1GG70CGaDLUscgv5hGTsbGEEP8AvYp182+5wmJeQpgdusbDp/YcrXogPwgrrVx83/vSg/H/AxapBGn8IrvmiD40/SivpQHVu0LqLTm5LfE7nT4a6oDXIMOqV3o455L0DltzjLggif4RtNX3StC41p5q1zWMVvjQOABdMEbE5YyQyXz2qEv8EVnwO2MRJkiMn0hnWAs2VuELE7NULGTIH6BkrQ+6CRuW3dX5kJv0VquE6fUhSRA6h2Ew==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -34,18 +34,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=N+V0SKQ8fVDS0yFd8IkXWJp2BKGL9A+zyu5Gf2BFCNw=;
- b=hBH/qMUouTZd5T6oiWn0St7RDMrF5RdMRHjdMVmsZvot0P80waV8rs42ZnzQLa5gHGeiN1FwExMiiqzhfAEPw43KTG8RZ4QJ+hflILXobhuruWSBpk7Ts5PUv+LLpuJBEjR2wK5jTrLQyoYcA+TsAB6sA59hg1qgwAy4XPjjFxUpa/YzGb60iQWNumXIUQf9uCazWedg2LUDMBr9EVCuFeYfCqGAwLmAvisxJkpIU5geBIqSuCGnw4PhHI+0TwEfvFXqLGvCs+Ud1V8NLqVhWjXfwuRVJAAfubQe3/NlZg8T3SP4MnO8Mgp+Px1gVZqg6b/TdHEwjdzXF6CVCBeEGA==
-Received: from SJ0PR05CA0034.namprd05.prod.outlook.com (2603:10b6:a03:33f::9)
- by CY8PR12MB8065.namprd12.prod.outlook.com (2603:10b6:930:73::16)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=yQ4xoMPymvJ2qudooBrQWQY1m2eDedjxURwAZ7xsNwc=;
+ b=oODUkQiaDW0nM2yeUvPHCMvpDNYkBHtVa/pPhFbsQ3iEgd33tTZ1m+qdz9hjE9jO3rMpZG/nnS0gJph18Lf7QsE5lLnlIwfZt2EI1KD4lDR7jDjjyc2l5bR3g+7fG+STq4nwPFZLlggmoSaahAggDvrM2lNAUPuNENmmfakjORSY7cDp7a9Io/VK0NOYbmjTmvhZ1yD6nj2jeiq8GlR2DMYVe6ljOyIQQtClYgykgsbJPRoJGBC4dnrm8hPgmhaoLLLVgIC4VhL7V33mFZiKY5oPZjQlBhfWeS5a7ww61ZRRYxxJp5bROPO4eLANvrFT8SFOgVXoJyyi3dGK9aZhug==
+Received: from SJ0PR05CA0047.namprd05.prod.outlook.com (2603:10b6:a03:33f::22)
+ by DM6PR12MB4340.namprd12.prod.outlook.com (2603:10b6:5:2a8::7) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Sun, 16 Jul
- 2023 08:16:06 +0000
+ 2023 08:16:08 +0000
 Received: from DM6NAM11FT081.eop-nam11.prod.protection.outlook.com
- (2603:10b6:a03:33f:cafe::d2) by SJ0PR05CA0034.outlook.office365.com
- (2603:10b6:a03:33f::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.17 via Frontend
- Transport; Sun, 16 Jul 2023 08:16:05 +0000
+ (2603:10b6:a03:33f:cafe::f6) by SJ0PR05CA0047.outlook.office365.com
+ (2603:10b6:a03:33f::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.14 via Frontend
+ Transport; Sun, 16 Jul 2023 08:16:08 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
@@ -56,18 +56,18 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
 Received: from mail.nvidia.com (216.228.117.160) by
  DM6NAM11FT081.mail.protection.outlook.com (10.13.172.136) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6588.31 via Frontend Transport; Sun, 16 Jul 2023 08:16:05 +0000
+ 15.20.6588.31 via Frontend Transport; Sun, 16 Jul 2023 08:16:07 +0000
 Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Sun, 16 Jul 2023
- 01:15:52 -0700
+ 01:15:55 -0700
 Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail204.nvidia.com
  (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Sun, 16 Jul
- 2023 01:15:51 -0700
+ 2023 01:15:55 -0700
 Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.7)
  with Microsoft SMTP Server id 15.2.986.37 via Frontend Transport; Sun, 16 Jul
- 2023 01:15:48 -0700
+ 2023 01:15:52 -0700
 From: Avihai Horon <avihaih@nvidia.com>
 To: <qemu-devel@nongnu.org>
 CC: Alex Williamson <alex.williamson@redhat.com>,
@@ -76,9 +76,9 @@ CC: Alex Williamson <alex.williamson@redhat.com>,
  <yishaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb
  <maorg@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta
  <targupta@nvidia.com>, Avihai Horon <avihaih@nvidia.com>
-Subject: [PATCH for-8.2 2/6] sysemu: Add pre VM state change callback
-Date: Sun, 16 Jul 2023 11:15:37 +0300
-Message-ID: <20230716081541.27900-3-avihaih@nvidia.com>
+Subject: [PATCH for-8.2 3/6] qdev: Add qdev_add_vm_change_state_handler_full()
+Date: Sun, 16 Jul 2023 11:15:38 +0300
+Message-ID: <20230716081541.27900-4-avihaih@nvidia.com>
 X-Mailer: git-send-email 2.21.3
 In-Reply-To: <20230716081541.27900-1-avihaih@nvidia.com>
 References: <20230716081541.27900-1-avihaih@nvidia.com>
@@ -88,29 +88,29 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM11FT081:EE_|CY8PR12MB8065:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25adde31-60dc-48de-2fef-08db85d4e6e4
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT081:EE_|DM6PR12MB4340:EE_
+X-MS-Office365-Filtering-Correlation-Id: 87377c0d-ec34-40f6-69b8-08db85d4e828
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TXH0hPaeLmVtp2ICh+SY0ee37Ncwbf8tcJaXglumuPDAR1MSZdd+Dkgzas6PZNxNiA/1wwDGmu/DVmmsYlZdiLv2AB5RbyZQDHUue7jgoK18cxVFGBert7yixvxLTC1STD4Ty6/ATb4w44BmZyjoMTz+oZZIMA0vCF1GdwHhRUxDSs6p0M0zwhvb//QgQINBzrk0Za0vdjV2KO1Cj7wDakaDYq/r6J26tSgvWjt+F4PBjuugXfU1JXZr04/nBAWIrXmnIj+Z7JjU/GHWHQPoQniVbr9damlIDuqaShFjwjTNbtHXOs2xj5zglyRGGuC2Pq6mWKKqb95ZA+ganMUup8XpBdVVybs4bGtVlbfP8sxHi3gGjTs69BNiznS/QdZGVKdkH4BgQgX+Bx4R8uX7N6gXGDJF2zhCGrbnazovZUfhOKKr8WurqIYJq1P8sf8xBtFz23pDBigXp133bcObBFkobXVIBorIfVVSo56oFpCllztPgXCvhZDNqF8vbYZD+OuFYSanZPvmQ0RImkcC+SOlbO0rPGUDZbgc1t+ilL+vOomY7i9avotC61jk2VGAh13m/Ell7ifwdFAEWCX+a1/Xgh9hl6Q5MtD+LFaP2CMYyXDxACfczJiHiGakVFkuntvv5cHHsfhU2XsSV4A41DyD8BmFCxQO8FjNEWf4/7BSXVZ8p6q0CSA8swLRs9XsIWxfiFeNUgiKPomDUDMozpGiZUOyKSoAF5hB8g8TqmsYdeeWSwgiLVtjAGcxrh8v
+X-Microsoft-Antispam-Message-Info: qkBmE7W2lQ9YpCd2WGQl9+mZWd28rsI9KelvOP8d1nk5H2zKvdHLor+BVSmnSjvdwyawcz5BkTpbXFBBamRcTgiwlT8ZnUZYBdoCPz9jsvSD7wtWQZIAighdUl6/Lau273zOCyizM2VB9FwpI23DDCm83113EKfHi3iUpIl5e6cgtlwnJe26yRwUOWoVqQCmgGK7dlOIoFTuIE/FuRRMH0Y4zVFC77Rh69F2X4YpUcKEPYszGk4yb9g+sGOsMKC294aWPw5PBZ/f08UQClU7jzsUHO6XNRKRqhM5tt9wEL9Sa+KdbmRrOAQ+/B4L7z+4G8BxXY0rbfNxGX/pomRapKvlN1UH8TAtyWtaG6CJrqf2kGtt6LTP56/sTE5sKH8a5ZV3IoimWkKcuu35wUMO5Tgu/MxuNg/WLN1o/t9CRvW+zNVEbYskADrWQZHbN3xIZI5zjiu4gQgxbIXFrWgKKHy/PxEDk1ru2aaK983w3/9eE9ERj9jOECMQKDDfrzXnK0T5dSzpYu+BhA/0PCWe2cOcUbRHUj9/ySM5+7jyfiipcWI2Ze6wytWGbUuRJai/B7XUBlvN5OzTHFutNSkmOIB8Z7wxsVbyKoVuvZ+H5b/B5PpW8OOZbx+iSA5ryLA2XdWoT+EhuxSnEI036ou5dhyWV1A7JvWF5LLobvOoSw6+PniD0jVtJ5GlbKuxqBpAbGRgF3a+KBgzRhomvwOZnNezga31X/ut6+0o7NFt34Xb6ibVeedndi5IwFFcFmpH
 X-Forefront-Antispam-Report: CIP:216.228.117.160; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge1.nvidia.com; CAT:NONE;
  SFS:(13230028)(4636009)(136003)(376002)(39860400002)(346002)(396003)(451199021)(82310400008)(40470700004)(46966006)(36840700001)(2906002)(7636003)(356005)(82740400003)(426003)(47076005)(336012)(83380400001)(2616005)(186003)(107886003)(26005)(1076003)(40480700001)(36860700001)(86362001)(40460700003)(5660300002)(8936002)(36756003)(8676002)(478600001)(7696005)(54906003)(6666004)(316002)(41300700001)(4326008)(70206006)(6916009)(70586007);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2023 08:16:05.4769 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25adde31-60dc-48de-2fef-08db85d4e6e4
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2023 08:16:07.6018 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 87377c0d-ec34-40f6-69b8-08db85d4e828
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.160];
  Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT081.eop-nam11.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8065
-Received-SPF: softfail client-ip=2a01:111:f400:fe5b::621;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4340
+Received-SPF: softfail client-ip=2a01:111:f400:7e8a::615;
  envelope-from=avihaih@nvidia.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -133,119 +133,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add pre VM state change callback to struct VMChangeStateEntry.
+Add qdev_add_vm_change_state_handler_full() variant that allows setting
+a pre VM state change callback in addition to the main callback.
 
-The pre VM state change callback is optional and can be set by the new
-function qemu_add_vm_change_state_handler_prio_full() that allows
-setting this callback in addition to the main callback.
-
-The pre VM state change callbacks and main callbacks are called in two
-separate phases: First all pre VM state change callbacks are called and
-only then all main callbacks are called.
-
-The purpose of the new pre VM state change callback is to allow all
-devices to run a preliminary task before calling the devices' main
-callbacks.
-
-This will facilitate adding P2P support for VFIO migration where all
-VFIO devices need to be put in an intermediate P2P quiescent state
-before being stopped or started by the main VM state change callback.
+This will facilitate adding P2P support for VFIO migration in the
+following patches.
 
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 ---
- include/sysemu/runstate.h |  4 ++++
- softmmu/runstate.c        | 39 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ include/sysemu/runstate.h         |  3 +++
+ hw/core/vm-change-state-handler.c | 14 +++++++++++++-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index 7beb29c2e2..bb38a4b4bd 100644
+index bb38a4b4bd..ca97b9dfa7 100644
 --- a/include/sysemu/runstate.h
 +++ b/include/sysemu/runstate.h
-@@ -16,6 +16,10 @@ VMChangeStateEntry *qemu_add_vm_change_state_handler(VMChangeStateHandler *cb,
-                                                      void *opaque);
- VMChangeStateEntry *qemu_add_vm_change_state_handler_prio(
-         VMChangeStateHandler *cb, void *opaque, int priority);
-+VMChangeStateEntry *
-+qemu_add_vm_change_state_handler_prio_full(VMChangeStateHandler *cb,
-+                                           VMChangeStateHandler *pre_change_cb,
-+                                           void *opaque, int priority);
+@@ -23,6 +23,9 @@ qemu_add_vm_change_state_handler_prio_full(VMChangeStateHandler *cb,
  VMChangeStateEntry *qdev_add_vm_change_state_handler(DeviceState *dev,
                                                       VMChangeStateHandler *cb,
                                                       void *opaque);
-diff --git a/softmmu/runstate.c b/softmmu/runstate.c
-index f3bd862818..a1f0653899 100644
---- a/softmmu/runstate.c
-+++ b/softmmu/runstate.c
-@@ -271,6 +271,7 @@ void qemu_system_vmstop_request(RunState state)
- }
- struct VMChangeStateEntry {
-     VMChangeStateHandler *cb;
-+    VMChangeStateHandler *pre_change_cb;
-     void *opaque;
-     QTAILQ_ENTRY(VMChangeStateEntry) entries;
-     int priority;
-@@ -293,12 +294,38 @@ static QTAILQ_HEAD(, VMChangeStateEntry) vm_change_state_head =
-  */
- VMChangeStateEntry *qemu_add_vm_change_state_handler_prio(
-         VMChangeStateHandler *cb, void *opaque, int priority)
++VMChangeStateEntry *qdev_add_vm_change_state_handler_full(
++    DeviceState *dev, VMChangeStateHandler *cb,
++    VMChangeStateHandler *pre_change_cb, void *opaque);
+ void qemu_del_vm_change_state_handler(VMChangeStateEntry *e);
+ /**
+  * vm_state_notify: Notify the state of the VM
+diff --git a/hw/core/vm-change-state-handler.c b/hw/core/vm-change-state-handler.c
+index 1f3630986d..24f155fb62 100644
+--- a/hw/core/vm-change-state-handler.c
++++ b/hw/core/vm-change-state-handler.c
+@@ -55,8 +55,20 @@ static int qdev_get_dev_tree_depth(DeviceState *dev)
+ VMChangeStateEntry *qdev_add_vm_change_state_handler(DeviceState *dev,
+                                                      VMChangeStateHandler *cb,
+                                                      void *opaque)
 +{
-+    return qemu_add_vm_change_state_handler_prio_full(cb, NULL, opaque,
-+                                                      priority);
++    return qdev_add_vm_change_state_handler_full(dev, cb, NULL, opaque);
 +}
 +
-+/**
-+ * qemu_add_vm_change_state_handler_prio_full:
-+ * @cb: the main callback to invoke
-+ * @pre_change_cb: a callback to invoke before the main callback
-+ * @opaque: user data passed to the callbacks
-+ * @priority: low priorities execute first when the vm runs and the reverse is
-+ *            true when the vm stops
-+ *
-+ * Register a main callback function and an optional pre VM state change
-+ * callback function that are invoked when the vm starts or stops running. The
-+ * main callback and the pre VM state change callback are called in two
-+ * separate phases: First all pre VM state change callbacks are called and only
-+ * then all main callbacks are called.
-+ *
-+ * Returns: an entry to be freed using qemu_del_vm_change_state_handler()
++/*
++ * Exactly like qdev_add_vm_change_state_handler() but passes a pre_change_cb
++ * argument too.
 + */
-+VMChangeStateEntry *
-+qemu_add_vm_change_state_handler_prio_full(VMChangeStateHandler *cb,
-+                                           VMChangeStateHandler *pre_change_cb,
-+                                           void *opaque, int priority)
++VMChangeStateEntry *qdev_add_vm_change_state_handler_full(
++    DeviceState *dev, VMChangeStateHandler *cb,
++    VMChangeStateHandler *pre_change_cb, void *opaque)
  {
-     VMChangeStateEntry *e;
-     VMChangeStateEntry *other;
+     int depth = qdev_get_dev_tree_depth(dev);
  
-     e = g_malloc0(sizeof(*e));
-     e->cb = cb;
-+    e->pre_change_cb = pre_change_cb;
-     e->opaque = opaque;
-     e->priority = priority;
- 
-@@ -333,10 +360,22 @@ void vm_state_notify(bool running, RunState state)
-     trace_vm_state_notify(running, state, RunState_str(state));
- 
-     if (running) {
-+        QTAILQ_FOREACH_SAFE(e, &vm_change_state_head, entries, next) {
-+            if (e->pre_change_cb) {
-+                e->pre_change_cb(e->opaque, running, state);
-+            }
-+        }
-+
-         QTAILQ_FOREACH_SAFE(e, &vm_change_state_head, entries, next) {
-             e->cb(e->opaque, running, state);
-         }
-     } else {
-+        QTAILQ_FOREACH_REVERSE_SAFE(e, &vm_change_state_head, entries, next) {
-+            if (e->pre_change_cb) {
-+                e->pre_change_cb(e->opaque, running, state);
-+            }
-+        }
-+
-         QTAILQ_FOREACH_REVERSE_SAFE(e, &vm_change_state_head, entries, next) {
-             e->cb(e->opaque, running, state);
-         }
+-    return qemu_add_vm_change_state_handler_prio(cb, opaque, depth);
++    return qemu_add_vm_change_state_handler_prio_full(cb, pre_change_cb, opaque,
++                                                      depth);
+ }
 -- 
 2.26.3
 
