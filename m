@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61432754FDD
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E81F754FDC
 	for <lists+qemu-devel@lfdr.de>; Sun, 16 Jul 2023 18:50:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qL4vi-000554-NU; Sun, 16 Jul 2023 12:49:06 -0400
+	id 1qL4vr-00055u-Is; Sun, 16 Jul 2023 12:49:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qL4vg-00054f-Dz
- for qemu-devel@nongnu.org; Sun, 16 Jul 2023 12:49:04 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1qL4vp-00055g-Hw
+ for qemu-devel@nongnu.org; Sun, 16 Jul 2023 12:49:13 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qL4ve-0005zr-Kc
- for qemu-devel@nongnu.org; Sun, 16 Jul 2023 12:49:04 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-313e742a787so2189345f8f.1
- for <qemu-devel@nongnu.org>; Sun, 16 Jul 2023 09:49:01 -0700 (PDT)
+ id 1qL4vn-00061f-TL
+ for qemu-devel@nongnu.org; Sun, 16 Jul 2023 12:49:13 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3fbf7fbe722so37562185e9.3
+ for <qemu-devel@nongnu.org>; Sun, 16 Jul 2023 09:49:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689526140; x=1692118140;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1689526150; x=1692118150;
+ h=content-transfer-encoding:in-reply-to:references:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=1MPpyemGwgzB+nKFLOUKSC42RU8xp9x47zLLVYF6Rq8=;
- b=plRMrJLAudz8Qok9gonA9RK8yUPREGjDYugC0reB7dwM5sDQy1y8z+NHUO01AyVadV
- RC60dtBKxsS2RgCmvqiLjbz0BOdTKYMWiUz6sv2BZlYERj/dRqcbEqKxrQI6cF1gBWIQ
- 5Azf6kNu2hn6gOhVANYen8Lx5XLC6ofyIEzqm+AQ94gQQFAxsuVrquDv9LyabWV1yg54
- +wYVo2Eq+2WMHO2347V0aE/U/zd+0iWKIVXb0mS9vXmkYxycWvqmiR17tEdQQYcbOK0d
- nmPBG3dE5hhYIQE1epsaVjSgNCJ6PwRkeqg7KYkKm3rYGsenn06Lc+wlynfqpFAa85sB
- ivcA==
+ bh=A+5UpKE89JuUqv1Mi2cdt98fjmMyB8x1jSoim03pwSo=;
+ b=s7e3ISNMao+5nz/5TLqdbTGKMq2HvuPYxop5B1yRn6gc/v082GHNuYJ1VhfKiXCQpC
+ Fk9NOlqQmRl4wDmVq2TCMziIn0BXUugu9UYhNZDxdPJOV2K50tsa18IhfiBI/xRsK3mG
+ fvvU9XkZYMX08oEASfOdLCv6sSOTuh6L84fnaNDvUBQVrucHVRz8fueiIc1Y6Dj61UB9
+ pb+oLkjMMAA/NYBOvBQW4F5XRCRNsZDDtIoeXmBNcgXAAUSn3VXYbdzfCRrJt0zO5VOO
+ 4ynqJQVACuQTKNKIBUikKyBbhC211CwQpIqH32+cxYVZ0rSSClKVZr9eQ856Q4dDY+eP
+ CXcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689526140; x=1692118140;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1689526150; x=1692118150;
+ h=content-transfer-encoding:in-reply-to:references:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1MPpyemGwgzB+nKFLOUKSC42RU8xp9x47zLLVYF6Rq8=;
- b=CqgVgL4sJ5HpAMo6ijdb50pdqR0R5vJOPtzpSnob1WRRDD4vFTd8zTtIot6Tc+S+Rm
- Wcu0gP52J0ksL0Q2Xw+1Bddt8+OZ4I/TXiAmHvqAhpv1c0mcF/sVtlgAuXPgZxnA61bq
- csTz5Qe2GdSUAGF/6Y5HEjj/09DQbb9tIorlBNJwi8O3R7r4Eqr3m/im5za8k2DKDWKZ
- RG9CgEwmxWv9WTD9ux2drcMBlSHufKPuY8BgBdFcF6hkOF/A87+owO646Z0bTdSgpyPW
- 1FH6kDAjNe/wv1pZvO+///6lVfb4yMxQSnn9SuyY84/qc+owdxn86Dx4KcM/93WoIcnO
- 8WJw==
-X-Gm-Message-State: ABy/qLZLwmxIdhsEUaOsKrpIGUVbtXz9MdDUlUbTu69vRsm8Tn8wCKwO
- adNJvf4Q3qzCVmY/UOWicp8GEA==
-X-Google-Smtp-Source: APBJJlFsycrSq/D+cegEwVIMKDtCJcfV9/hRcIkKl4SgsMFXyR2D4+wyXnI6usSyjdwqAEJjxA72KA==
-X-Received: by 2002:a05:6000:181:b0:314:2c77:681b with SMTP id
- p1-20020a056000018100b003142c77681bmr6538066wrx.30.1689526140261; 
- Sun, 16 Jul 2023 09:49:00 -0700 (PDT)
+ bh=A+5UpKE89JuUqv1Mi2cdt98fjmMyB8x1jSoim03pwSo=;
+ b=WU2X6+s5IzfhwfwyVFVRrTChzc+dPPYTEIcOylEMxWwdRSDUtz4/bSswHMWaKyZq0Q
+ qCe+sCeAEx+O341bl6/S23+vJUF66EsW/d1j+xqMoKcI0NBn06ar5Jomo6UBiUoFuM9o
+ zUPY/iwkxH+xpzDLA8eeioUginqwuqYJZIzC9EFTWpiRv5Ak/QflGrADNWrQFZOyt40h
+ /RtHQnhet9ZfhQbIDoBDv0kCjds51KASd9v9XicPdFTbyJ7a1GIlYLOFf9ERQaUiX+oJ
+ bl3XGYqRQ/xhJ/8k++qaE0PbapM00NDiC5jhDdxD+d5cH2aVg56hk6az2FozKmY8H77P
+ m3nw==
+X-Gm-Message-State: ABy/qLa4Fz3/R7ZWfNZ4YzIL/QhhHOnUvQShYYBJfgokWDL4pusj/Q+T
+ T79pqUWnXDGn4P0Ww+PMwZ5PoQrAzeYZn/VDdK3g6g==
+X-Google-Smtp-Source: APBJJlEMBM4lOcx7ndWcMMaj9Jt/q6CBpzOLMrOFRY45pkGDa2g9H+TvpHP9hQ9HOp2dqEOpg1KBlA==
+X-Received: by 2002:a7b:c38d:0:b0:3fc:f9c:a3ed with SMTP id
+ s13-20020a7bc38d000000b003fc0f9ca3edmr10367786wmj.22.1689526149968; 
+ Sun, 16 Jul 2023 09:49:09 -0700 (PDT)
 Received: from [192.168.1.205] ([51.219.12.49])
  by smtp.gmail.com with ESMTPSA id
- t9-20020a5d5349000000b003143b7449ffsm16820767wrv.25.2023.07.16.09.48.59
+ r7-20020a5d6947000000b00313fd294d6csm17092729wrw.7.2023.07.16.09.49.09
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 16 Jul 2023 09:48:59 -0700 (PDT)
-Message-ID: <9c37c504-fd47-ae96-42cc-cf082d984cee@linaro.org>
-Date: Sun, 16 Jul 2023 17:48:57 +0100
+ Sun, 16 Jul 2023 09:49:09 -0700 (PDT)
+Message-ID: <47b8ab9f-9302-11ce-a6df-179beefce8de@linaro.org>
+Date: Sun, 16 Jul 2023 17:49:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PULL v1 0/1] Merge tpm 2023/07/14 v1
-To: Stefan Berger <stefanb@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-References: <20230714154101.184057-1-stefanb@linux.ibm.com>
+Subject: Re: [PULL 00/47] tcg + linux-user patch queue
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230714154101.184057-1-stefanb@linux.ibm.com>
+To: qemu-devel@nongnu.org
+References: <20230715135317.7219-1-richard.henderson@linaro.org>
+In-Reply-To: <20230715135317.7219-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,34 +94,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/14/23 16:40, Stefan Berger wrote:
-> Hello!
+On 7/15/23 14:52, Richard Henderson wrote:
+> The following changes since commit 4633c1e2c576fbabfe5c8c93f4b842504b69c096:
 > 
->    This PR removes the 'ppi' boolean property from the tpm tis sysbus
-> device. It could never be activated since it was leading to a segfault
-> immediatley.
-> 
->      Stefan
-> 
-> The following changes since commit 3dd9e54703e6ae4f9ab3767f5cecc99edf066668:
-> 
->    Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-07-12 20:46:10 +0100)
+>    Merge tag 'for-upstream' ofhttps://gitlab.com/bonzini/qemu  into staging (2023-07-14 16:39:46 +0100)
 > 
 > are available in the Git repository at:
 > 
->    https://github.com/stefanberger/qemu-tpm.git tags/pull-tpm-2023-07-14-1
+>    https://gitlab.com/rth7680/qemu.git  tags/pull-tcg-20230715
 > 
-> for you to fetch changes up to 4c46fe2ed492f35f411632c8b5a8442f322bc3f0:
+> for you to fetch changes up to 76f9d6ad19494290eb2f00d33c6a582ce3447991:
 > 
->    hw/tpm: TIS on sysbus: Remove unsupport ppi command line option (2023-07-14 11:31:54 -0400)
+>    tcg: Use HAVE_CMPXCHG128 instead of CONFIG_CMPXCHG128 (2023-07-15 08:02:49 +0100)
 > 
-> 
-> Stefan Berger (1):
->    hw/tpm: TIS on sysbus: Remove unsupport ppi command line option
-> 
->   hw/tpm/tpm_tis_sysbus.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
+> ----------------------------------------------------------------
+> tcg: Use HAVE_CMPXCHG128 instead of CONFIG_CMPXCHG128
+> accel/tcg: Introduce page_check_range_empty
+> accel/tcg: Introduce page_find_range_empty
+> accel/tcg: Accept more page flags in page_check_range
+> accel/tcg: Return bool from page_check_range
+> accel/tcg: Always lock pages before translation
+> linux-user: Use abi_* types for target structures in syscall_defs.h
+> linux-user: Fix abi_llong alignment for microblaze and nios2
+> linux-user: Fix do_shmat type errors
+> linux-user: Implement execve without execveat
+> linux-user: Make sure initial brk is aligned
+> linux-user: Use a mask with strace flags
+> linux-user: Implement MAP_FIXED_NOREPLACE
+> linux-user: Widen target_mmap offset argument to off_t
+> linux-user: Use page_find_range_empty for mmap_find_vma_reserved
+> linux-user: Use 'last' instead of 'end' in target_mmap and subroutines
+> linux-user: Remove can_passthrough_madvise
+> linux-user: Simplify target_madvise
+> linux-user: Drop uint and ulong types
+> linux-user/arm: Do not allocate a commpage at all for M-profile CPUs
+> bsd-user: Use page_check_range_empty for MAP_EXCL
+> bsd-user: Use page_find_range_empty for mmap_find_vma_reserved
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
