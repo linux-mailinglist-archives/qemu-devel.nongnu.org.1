@@ -2,90 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE306756219
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 13:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A39756407
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 15:14:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLMln-0004Ku-0c; Mon, 17 Jul 2023 07:52:03 -0400
+	id 1qLO2S-0007Qy-7e; Mon, 17 Jul 2023 09:13:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qLMlk-0004K3-82
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 07:52:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qLMli-0003EH-P5
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 07:51:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689594717;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=l4o9T2ZhHwFqQCH+mitCMb5ubOwOy7xSSjrnqcrvBGo=;
- b=F3pBiHFd6XsBxvckOCLMTwBfRMRTFU6Zr+ENbr2d/sRcQdtdFfHLHv4kAleTbRtD9duTvG
- A4HhoseOjx3e2W7h8XzeNQdyQz1Nf3NN7B7GxCIx1hwUvlWZXWsEoRCRLYOogNooA+oPUf
- XWzp6SoWMzfdRV78VNpGtVM2amQAd3Y=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650-2MUiib1iPm-Zjue1FXy5ng-1; Mon, 17 Jul 2023 07:51:56 -0400
-X-MC-Unique: 2MUiib1iPm-Zjue1FXy5ng-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3142665f122so2724772f8f.0
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 04:51:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
+ id 1qLCyB-0006Na-35; Sun, 16 Jul 2023 21:24:11 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
+ id 1qLCy9-00062T-Az; Sun, 16 Jul 2023 21:24:10 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-666e916b880so2523732b3a.2; 
+ Sun, 16 Jul 2023 18:24:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1689557046; x=1692149046;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=RzCYbYF72t8xRpIzXCWZRuFw3ToPRxhalVp/REmo0hg=;
+ b=kGAB/2wifsek/lM6qKavv8jNMxIwIcH6Kog4hsUQ4txWvDV59xfCjgW8cDcCo/fBW8
+ EtPDSmHkEhgBxjwYwj2q7d+X9s56a4pO949tj+DPI9GRV8S9rheXrK65YdjHSonH/+U1
+ SzRpQ4HgdO7prNhy+cgg2THf0qKu7jo+t83ga5a+9GlTEXL9fEia9iRkroLwm5d9AeZB
+ f1OPBLNc34ob6UVdu3HhZQqgWwJ736h/QEVXIamoLahE3gQbugGJxmGaGZ2Bji7leHiO
+ 7DVRQNIp3k7qsjskuRPhwIeviWqQiDNrhHA/bvsOhYkUTE93+itZkZgiT8wfLHynkld8
+ kazg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689594715; x=1692186715;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=l4o9T2ZhHwFqQCH+mitCMb5ubOwOy7xSSjrnqcrvBGo=;
- b=T8AQ0cP/8z67QGSu0NMDaWTuQ1QVSqcEtYlaSPunLZBibqw33Rh7ADYC1FAGCRPS6o
- UmJRdmkLXMV1Nf2CfTb/83q37jNOKD8YdUMl4rfytOaOPr53kfhmtAC58DdiGKhfRJzo
- jtgulvJ3YHOCK57CDaBJqdNe/KRfQxFnvEwO/SQmXQyLFsGhjtrhKy3kHcDc/OKpDPmd
- un3lgnaoXqiUXdYmebJO6jK/YJu/f39CCUipjgDjAvz61eGcMOqIg4EtD62IB2YgoYZg
- N4zqKeLZ5YLHZmfKDEqLtRlTxtqie9PtFMs1EO7DSVNPgFxBaelhcES43cWUzRiohQ/Y
- vTbw==
-X-Gm-Message-State: ABy/qLaX2LzTEpk53awGGbqKcD5bFzeBPVPzA4bDgekAGM+nV7zr+1lT
- 1jOeWpNAggNPCRwwe+M86cxUFHeaYoJa05L9ncKW5T1OWihU0L4J21IgW76DY90qs+oiqLEkn6Z
- dmf9/LAwFGKz04So=
-X-Received: by 2002:a5d:4fc8:0:b0:313:dfa2:1a85 with SMTP id
- h8-20020a5d4fc8000000b00313dfa21a85mr11755797wrw.27.1689594715218; 
- Mon, 17 Jul 2023 04:51:55 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEHs3/Vk1doL/jnG17c92FzYiUtev180zRExjJ+8mdJ27pBNHSsawMYPXexpDu8lacKdUQPzw==
-X-Received: by 2002:a5d:4fc8:0:b0:313:dfa2:1a85 with SMTP id
- h8-20020a5d4fc8000000b00313dfa21a85mr11755784wrw.27.1689594714872; 
- Mon, 17 Jul 2023 04:51:54 -0700 (PDT)
-Received: from redhat.com ([2.52.146.77]) by smtp.gmail.com with ESMTPSA id
- b5-20020a5d4b85000000b003143add4396sm18961960wrt.22.2023.07.17.04.51.53
+ d=1e100.net; s=20221208; t=1689557046; x=1692149046;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RzCYbYF72t8xRpIzXCWZRuFw3ToPRxhalVp/REmo0hg=;
+ b=V/SDQdIkaa4ehT0/NUPq7rlSNohNXMmOIgLG5bW2YhzS37KiOA9hjESygNNts5fzWL
+ HLyyVfYPlOHqOGHQ7fYa9ba03aq5bkJuE3bRKgaufvC56iJcg2mJN/3qWlUoqfS2U/EO
+ gG42R47v5d+1Ab91osNAIgvOm3HMY4l2Wmrzovp5E8vYqM712jhS1FL+yd7SRLT+DuHY
+ dD/yVUODEGmwAwJrugzudtlOl6m3qyeasP1STQlwr6s2FcmcwO0V4Q7jGqBCTXKrrP3p
+ WAidavnUN+YHj96aePp9ntYO5MXIGvVragSFc7RCqtPzNtzMFR9pc5G5EyQbcV7ysdkG
+ d1Xw==
+X-Gm-Message-State: ABy/qLbJyklJAYYnvPbLiedCS88URvDqhRHKNANskCS8IKGm1ygup9jR
+ jjRGvCWQF7Zsczba9jSFmXROF16ZwRBMLw==
+X-Google-Smtp-Source: APBJJlHmIy9mes3dz1HH71rFXpXnlzKIEm3ZjdmeBOQcRPrV6o38jSVGQH0eZQd8f+stc0ysF/V8dQ==
+X-Received: by 2002:a05:6a00:188d:b0:66a:613f:87e1 with SMTP id
+ x13-20020a056a00188d00b0066a613f87e1mr12926927pfh.8.1689557046407; 
+ Sun, 16 Jul 2023 18:24:06 -0700 (PDT)
+Received: from pwon.ozlabs.ibm.com ([146.112.118.69])
+ by smtp.gmail.com with ESMTPSA id
+ e6-20020aa78c46000000b00682562b1549sm10667731pfd.24.2023.07.16.18.24.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 04:51:54 -0700 (PDT)
-Date: Mon, 17 Jul 2023 07:51:51 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Eric Auger <eric.auger@redhat.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: Re: [PULL 46/66] virtio-iommu: Fix 64kB host page size VFIO device
- assignment
-Message-ID: <20230717075137-mutt-send-email-mst@kernel.org>
-References: <cover.1689030052.git.mst@redhat.com>
- <94df5b2180d61fb2ee2b04cc007981e58b6479a9.1689030052.git.mst@redhat.com>
- <CAFEAcA9JAZrxpcfjyEj8Hj1eYb+9PUxV2i05JTZwe0u+gVSBPg@mail.gmail.com>
+ Sun, 16 Jul 2023 18:24:06 -0700 (PDT)
+From: Jordan Niethe <jniethe5@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, richard.henderson@linaro.org, alex.bennee@linaro.org,
+ dbarboza@ventanamicro.com, npiggin@gmail.com,
+ anushree.mathur@linux.vnet.ibm.com, mjt@tls.msk.ru, clg@kaod.org,
+ bgray@linux.ibm.com, Jordan Niethe <jniethe5@gmail.com>
+Subject: [PATCH] tcg/ppc: Fix race in goto_tb implementation
+Date: Mon, 17 Jul 2023 11:23:26 +1000
+Message-Id: <20230717012327.20149-1-jniethe5@gmail.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA9JAZrxpcfjyEj8Hj1eYb+9PUxV2i05JTZwe0u+gVSBPg@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=jniethe5@gmail.com; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 17 Jul 2023 09:13:03 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,72 +91,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 17, 2023 at 11:50:54AM +0100, Peter Maydell wrote:
-> On Tue, 11 Jul 2023 at 00:04, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > From: Eric Auger <eric.auger@redhat.com>
-> >
-> > When running on a 64kB page size host and protecting a VFIO device
-> > with the virtio-iommu, qemu crashes with this kind of message:
-> >
-> > qemu-kvm: virtio-iommu page mask 0xfffffffffffff000 is incompatible
-> > with mask 0x20010000
-> > qemu: hardware error: vfio: DMA mapping failed, unable to continue
-> >
-> > This is due to the fact the IOMMU MR corresponding to the VFIO device
-> > is enabled very late on domain attach, after the machine init.
-> > The device reports a minimal 64kB page size but it is too late to be
-> > applied. virtio_iommu_set_page_size_mask() fails and this causes
-> > vfio_listener_region_add() to end up with hw_error();
-> >
-> > To work around this issue, we transiently enable the IOMMU MR on
-> > machine init to collect the page size requirements and then restore
-> > the bypass state.
-> >
-> > Fixes: 90519b9053 ("virtio-iommu: Add bypass mode support to assigned device")
-> > Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> 
-> Hi; Coverity complains about this change (CID 1517772):
-> 
-> > +static void virtio_iommu_freeze_granule(Notifier *notifier, void *data)
-> > +{
-> > +    VirtIOIOMMU *s = container_of(notifier, VirtIOIOMMU, machine_done);
-> > +    int granule;
-> > +
-> > +    if (likely(s->config.bypass)) {
-> > +        /*
-> > +         * Transient IOMMU MR enable to collect page_size_mask requirements
-> > +         * through memory_region_iommu_set_page_size_mask() called by
-> > +         * VFIO region_add() callback
-> > +         */
-> > +         s->config.bypass = false;
-> > +         virtio_iommu_switch_address_space_all(s);
-> > +         /* restore default */
-> > +         s->config.bypass = true;
-> > +         virtio_iommu_switch_address_space_all(s);
-> > +    }
-> > +    s->granule_frozen = true;
-> > +    granule = ctz64(s->config.page_size_mask);
-> > +    trace_virtio_iommu_freeze_granule(BIT(granule));
-> 
-> Specifically, in this code, it thinks that ctz64() can
-> return 64, in which case BIT(granule) is shifting off
-> the end of the value, which is undefined behaviour.
-> This can happen if s->config.page_size_mask is 0 -- are
-> there assertions/checks that that can't happen elsewhere?
-> 
-> Secondly, BIT() only works for values up to 32, since
-> it works on type unsigned long, which might be a 32-bit
-> type on some hosts. Since you used ctz64()
-> you probably want BIT_ULL() which uses the ULL type
-> which definitely has 64 bits.
-> 
-> thanks
-> -- PMM
+Commit 20b6643324 ("tcg/ppc: Reorg goto_tb implementation") modified
+goto_tb to ensure only a single instruction was patched to prevent
+incorrect behaviour if a thread was in the middle of multiple
+instructions when they were replaced. However this introduced a race
+between loading the jmp target into TCG_REG_TB and patching and
+executing the direct branch.
 
-Thanks! Eric can you fix pls?
+The relevent part of the goto_tb implementation:
 
+    ld TCG_REG_TB, TARGET_ADDR_LOCATION(TCG_REG_TB)
+  patch_location:
+    mtctr TCG_REG_TB
+    bctr
+
+tb_target_set_jmp_target() will replace 'patch_location' with a direct
+branch if the target is in range. The direct branch now relies on
+TCG_REG_TB being set up correctly by the ld. Prior to this commit
+multiple instructions were patched in for the direct branch case; these
+instructions would initalise TCG_REG_TB to the same value as the branch
+target.
+
+Imagine the following sequence:
+
+1) Thread A is executing the goto_tb sequence and loads the jmp
+   target into TCG_REG_TB.
+
+2) Thread B updates the jmp target address and calls
+   tb_target_set_jmp_target(). This patches a new direct branch into the
+   goto_tb sequence.
+
+3) Thread A executes the newly patched direct branch. The value in
+   TCG_REG_TB still contains the old jmp target.
+
+TCG_REG_TB MUST contain the translation block's tc.ptr. Execution will
+eventually crash after performing memory accesses generated from a
+faulty value in TCG_REG_TB.
+
+This presents as segfaults or illegal instruction exceptions.
+
+Do not revert commit 20b6643324 as it did fix a different race
+condition. Instead remove the direct branch optimization and always use
+indirect branches.
+
+The direct branch optimization can be re-added later with a race free
+sequence.
+
+Gitlab issue: https://gitlab.com/qemu-project/qemu/-/issues/1726
+
+Fixes: 20b6643324 ("tcg/ppc: Reorg goto_tb implementation")
+
+Reported-by: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
+Co-developed-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+---
+ tcg/ppc/tcg-target.c.inc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+index 8d6899cf40..a7323f479b 100644
+--- a/tcg/ppc/tcg-target.c.inc
++++ b/tcg/ppc/tcg-target.c.inc
+@@ -2533,11 +2533,10 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
+         ptrdiff_t offset = tcg_tbrel_diff(s, (void *)ptr);
+         tcg_out_mem_long(s, LD, LDX, TCG_REG_TB, TCG_REG_TB, offset);
+     
+-        /* Direct branch will be patched by tb_target_set_jmp_target. */
++        /* TODO: Use direct branches when possible. */
+         set_jmp_insn_offset(s, which);
+         tcg_out32(s, MTSPR | RS(TCG_REG_TB) | CTR);
+ 
+-        /* When branch is out of range, fall through to indirect. */
+         tcg_out32(s, BCCTR | BO_ALWAYS);
+ 
+         /* For the unlinked case, need to reset TCG_REG_TB.  */
+@@ -2565,10 +2564,11 @@ void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
+     intptr_t diff = addr - jmp_rx;
+     tcg_insn_unit insn;
+ 
++    if (USE_REG_TB)
++        return;
++
+     if (in_range_b(diff)) {
+         insn = B | (diff & 0x3fffffc);
+-    } else if (USE_REG_TB) {
+-        insn = MTSPR | RS(TCG_REG_TB) | CTR;
+     } else {
+         insn = NOP;
+     }
 -- 
-MST
+2.39.3
 
 
