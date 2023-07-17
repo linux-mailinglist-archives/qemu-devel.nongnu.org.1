@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A35756375
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D17D756338
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:52:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLNcU-0005zo-EN; Mon, 17 Jul 2023 08:46:30 -0400
+	id 1qLNcV-00064Q-BO; Mon, 17 Jul 2023 08:46:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qLNcI-0005js-N8
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:20 -0400
+ id 1qLNcP-0005qg-W8
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qLNcF-0008G3-Tc
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:17 -0400
+ id 1qLNcN-0008Gj-A8
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689597975;
+ s=mimecast20190719; t=1689597980;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vIytHURs/QEdgu0hfWQD43vbrrPmr96KHEM9sueWxJ0=;
- b=f/QUtZMUXG/FB/mEeKUqzHDB3HFCc65U9s8tR1s8QrsBrFsEavESKYcxTKudpoJtT6meDF
- 1jLwj8jfj9QkqQHiFW0KWPzxi5tThhnoc1TW88NOR3Ler0H4yjcoe2b4Md9LpRZQxyfRQZ
- 0ZobQ6BRc4Sq5U3Uu7XY/dQKYRBBt+E=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-92-1EJYVD4wPXig_5rtBmcEOA-1; Mon, 17 Jul 2023 08:46:12 -0400
-X-MC-Unique: 1EJYVD4wPXig_5rtBmcEOA-1
+ bh=Ub/E+D8ys9W7BO4mkQPiBOhrxJPXHUZoZBx3FV6N0yc=;
+ b=LIP1wsgpNwcQDEiV1iugiMS3733JxNrEmt9qG0HlM49IUWFCWoPXOo5u7sJyaHapDq8dMh
+ ZGzycxs7Ca+DoVPXwLe7Gdt6OxsBFWNe+UFnq9rd/XTRFbUEEiQGHz1EM0tjbbUPKIm+wK
+ HjFJM8V/mhBbTdgVpABvHeHDEMeJcN8=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-360-snpQZr1tMCCjSGPpbT6I3w-1; Mon, 17 Jul 2023 08:46:16 -0400
+X-MC-Unique: snpQZr1tMCCjSGPpbT6I3w-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 935D1805951;
- Mon, 17 Jul 2023 12:46:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E392B3C147EA;
+ Mon, 17 Jul 2023 12:46:15 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7DB7140C2063;
- Mon, 17 Jul 2023 12:46:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F159640C206F;
+ Mon, 17 Jul 2023 12:46:14 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
@@ -55,10 +55,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
  Dongwon Kim <dongwon.kim@intel.com>,
  Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: [PULL 05/19] virtio-gpu-udmabuf: correct naming of QemuDmaBuf size
- properties
-Date: Mon, 17 Jul 2023 16:45:30 +0400
-Message-ID: <20230717124545.177236-6-marcandre.lureau@redhat.com>
+Subject: [PULL 06/19] ui/gtk: set scanout-mode right before scheduling draw
+Date: Mon, 17 Jul 2023 16:45:31 +0400
+Message-ID: <20230717124545.177236-7-marcandre.lureau@redhat.com>
 In-Reply-To: <20230717124545.177236-1-marcandre.lureau@redhat.com>
 References: <20230717124545.177236-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -93,170 +92,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Dongwon Kim <dongwon.kim@intel.com>
 
-Replace 'width' and 'height' in QemuDmaBuf with 'backing_widht'
-and 'backing_height' as these commonly indicate the size of the
-whole surface (e.g. guest's Xorg extended display). Then use
-'width' and 'height' for sub region in there (e.g. guest's
-scanouts).
+Setting scanout mode is better to be done very last minute
+right because the mode can be reset anytime after it is set in
+dpy_gl_scanout_texture by any asynchronouse dpy_refresh call,
+which eventually cancels drawing of the guest scanout texture.
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20230713040444.32267-1-dongwon.kim@intel.com>
+Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20230706183355.29361-1-dongwon.kim@intel.com>
 ---
- include/ui/console.h            |  4 ++--
- hw/display/virtio-gpu-udmabuf.c | 12 ++++++------
- ui/dbus-listener.c              |  8 ++++----
- ui/egl-helpers.c                |  8 ++++----
- ui/gtk-egl.c                    | 10 ++++++----
- ui/gtk-gl-area.c                |  7 ++++---
- 6 files changed, 26 insertions(+), 23 deletions(-)
+ ui/gtk-egl.c     | 2 +-
+ ui/gtk-gl-area.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index f27b2aad4f..3e8b22d6c6 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -201,8 +201,8 @@ typedef struct QemuDmaBuf {
-     uint32_t  texture;
-     uint32_t  x;
-     uint32_t  y;
--    uint32_t  scanout_width;
--    uint32_t  scanout_height;
-+    uint32_t  backing_width;
-+    uint32_t  backing_height;
-     bool      y0_top;
-     void      *sync;
-     int       fence_fd;
-diff --git a/hw/display/virtio-gpu-udmabuf.c b/hw/display/virtio-gpu-udmabuf.c
-index ef1a740de5..d51184d658 100644
---- a/hw/display/virtio-gpu-udmabuf.c
-+++ b/hw/display/virtio-gpu-udmabuf.c
-@@ -181,13 +181,13 @@ static VGPUDMABuf
-     }
- 
-     dmabuf = g_new0(VGPUDMABuf, 1);
--    dmabuf->buf.width = fb->width;
--    dmabuf->buf.height = fb->height;
-+    dmabuf->buf.width = r->width;
-+    dmabuf->buf.height = r->height;
-     dmabuf->buf.stride = fb->stride;
-     dmabuf->buf.x = r->x;
-     dmabuf->buf.y = r->y;
--    dmabuf->buf.scanout_width = r->width;
--    dmabuf->buf.scanout_height = r->height;
-+    dmabuf->buf.backing_width = fb->width;
-+    dmabuf->buf.backing_height = fb->height;
-     dmabuf->buf.fourcc = qemu_pixman_to_drm_format(fb->format);
-     dmabuf->buf.fd = res->dmabuf_fd;
-     dmabuf->buf.allow_fences = true;
-@@ -218,8 +218,8 @@ int virtio_gpu_update_dmabuf(VirtIOGPU *g,
- 
-     g->dmabuf.primary[scanout_id] = new_primary;
-     qemu_console_resize(scanout->con,
--                        new_primary->buf.scanout_width,
--                        new_primary->buf.scanout_height);
-+                        new_primary->buf.width,
-+                        new_primary->buf.height);
-     dpy_gl_scanout_dmabuf(scanout->con, &new_primary->buf);
- 
-     if (old_primary) {
-diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index 0240c39510..68ff343799 100644
---- a/ui/dbus-listener.c
-+++ b/ui/dbus-listener.c
-@@ -415,13 +415,13 @@ static void dbus_scanout_texture(DisplayChangeListener *dcl,
-                                backing_width, backing_height, x, y, w, h);
- #ifdef CONFIG_GBM
-     QemuDmaBuf dmabuf = {
--        .width = backing_width,
--        .height = backing_height,
-+        .width = w,
-+        .height = h,
-         .y0_top = backing_y_0_top,
-         .x = x,
-         .y = y,
--        .scanout_width = w,
--        .scanout_height = h,
-+        .backing_width = backing_width,
-+        .backing_height = backing_height,
-     };
- 
-     assert(tex_id);
-diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
-index 8f9fbf583e..3d19dbe382 100644
---- a/ui/egl-helpers.c
-+++ b/ui/egl-helpers.c
-@@ -148,8 +148,8 @@ void egl_fb_blit(egl_fb *dst, egl_fb *src, bool flip)
-     if (src->dmabuf) {
-         x1 = src->dmabuf->x;
-         y1 = src->dmabuf->y;
--        w = src->dmabuf->scanout_width;
--        h = src->dmabuf->scanout_height;
-+        w = src->dmabuf->width;
-+        h = src->dmabuf->height;
-     }
- 
-     w = (x1 + w) > src->width ? src->width - x1 : w;
-@@ -314,9 +314,9 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
-     }
- 
-     attrs[i++] = EGL_WIDTH;
--    attrs[i++] = dmabuf->width;
-+    attrs[i++] = dmabuf->backing_width;
-     attrs[i++] = EGL_HEIGHT;
--    attrs[i++] = dmabuf->height;
-+    attrs[i++] = dmabuf->backing_height;
-     attrs[i++] = EGL_LINUX_DRM_FOURCC_EXT;
-     attrs[i++] = dmabuf->fourcc;
- 
 diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-index 42db1bb6cf..eee821d73a 100644
+index eee821d73a..98b3a116bf 100644
 --- a/ui/gtk-egl.c
 +++ b/ui/gtk-egl.c
-@@ -262,9 +262,10 @@ void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
+@@ -242,7 +242,6 @@ void gd_egl_scanout_texture(DisplayChangeListener *dcl,
+     eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
+                    vc->gfx.esurface, vc->gfx.ectx);
+ 
+-    gtk_egl_set_scanout_mode(vc, true);
+     egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
+                          backing_id, false);
+ }
+@@ -353,6 +352,7 @@ void gd_egl_flush(DisplayChangeListener *dcl,
+     if (vc->gfx.guest_fb.dmabuf && !vc->gfx.guest_fb.dmabuf->draw_submitted) {
+         graphic_hw_gl_block(vc->gfx.dcl.con, true);
+         vc->gfx.guest_fb.dmabuf->draw_submitted = true;
++        gtk_egl_set_scanout_mode(vc, true);
+         gtk_widget_queue_draw_area(area, x, y, w, h);
+         return;
      }
- 
-     gd_egl_scanout_texture(dcl, dmabuf->texture,
--                           dmabuf->y0_top, dmabuf->width, dmabuf->height,
--                           dmabuf->x, dmabuf->y, dmabuf->scanout_width,
--                           dmabuf->scanout_height, NULL);
-+                           dmabuf->y0_top,
-+                           dmabuf->backing_width, dmabuf->backing_height,
-+                           dmabuf->x, dmabuf->y, dmabuf->width,
-+                           dmabuf->height, NULL);
- 
-     if (dmabuf->allow_fences) {
-         vc->gfx.guest_fb.dmabuf = dmabuf;
-@@ -284,7 +285,8 @@ void gd_egl_cursor_dmabuf(DisplayChangeListener *dcl,
-         if (!dmabuf->texture) {
-             return;
-         }
--        egl_fb_setup_for_tex(&vc->gfx.cursor_fb, dmabuf->width, dmabuf->height,
-+        egl_fb_setup_for_tex(&vc->gfx.cursor_fb,
-+                             dmabuf->backing_width, dmabuf->backing_height,
-                              dmabuf->texture, false);
-     } else {
-         egl_fb_destroy(&vc->gfx.cursor_fb);
 diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-index a9a7fdf50c..4513d3d059 100644
+index 4513d3d059..28d9e49888 100644
 --- a/ui/gtk-gl-area.c
 +++ b/ui/gtk-gl-area.c
-@@ -301,9 +301,10 @@ void gd_gl_area_scanout_dmabuf(DisplayChangeListener *dcl,
+@@ -264,7 +264,6 @@ void gd_gl_area_scanout_texture(DisplayChangeListener *dcl,
+         return;
      }
  
-     gd_gl_area_scanout_texture(dcl, dmabuf->texture,
--                               dmabuf->y0_top, dmabuf->width, dmabuf->height,
--                               dmabuf->x, dmabuf->y, dmabuf->scanout_width,
--                               dmabuf->scanout_height, NULL);
-+                               dmabuf->y0_top,
-+                               dmabuf->backing_width, dmabuf->backing_height,
-+                               dmabuf->x, dmabuf->y, dmabuf->width,
-+                               dmabuf->height, NULL);
- 
-     if (dmabuf->allow_fences) {
-         vc->gfx.guest_fb.dmabuf = dmabuf;
+-    gtk_gl_area_set_scanout_mode(vc, true);
+     egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
+                          backing_id, false);
+ }
+@@ -284,6 +283,7 @@ void gd_gl_area_scanout_flush(DisplayChangeListener *dcl,
+     if (vc->gfx.guest_fb.dmabuf && !vc->gfx.guest_fb.dmabuf->draw_submitted) {
+         graphic_hw_gl_block(vc->gfx.dcl.con, true);
+         vc->gfx.guest_fb.dmabuf->draw_submitted = true;
++        gtk_gl_area_set_scanout_mode(vc, true);
+     }
+     gtk_gl_area_queue_render(GTK_GL_AREA(vc->gfx.drawing_area));
+ }
 -- 
 2.41.0
 
