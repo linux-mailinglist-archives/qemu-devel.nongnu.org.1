@@ -2,89 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5307565D5
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FD77565EC
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:11:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLOsn-0004NF-BQ; Mon, 17 Jul 2023 10:07:25 -0400
+	id 1qLOwb-0006DV-Tl; Mon, 17 Jul 2023 10:11:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qLOsS-0004Gn-Az
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:07:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qLOwM-0006CP-Px
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:11:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qLOsQ-000772-Nj
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:07:04 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qLOwJ-00088R-Dt
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:11:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689602819;
+ s=mimecast20190719; t=1689603059;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OQmZYLlSbKr48zuQpecmTcFGAvgvUC3EvImMUBOtai4=;
- b=ekcn7OBIq+7txnhnlVBS3koH7nPU6OQ0PrAPA6glDw3535oqA6rMOQRRv9IGi/EXACxDHF
- Jweh/ExprUhy0NycUNPf9Q07QU7kGswmnBUtBmYdht5gcvQ8MwZTgB+7JsK6md1PT7fqZ6
- NNrug29jjka4eIgZThwyFx0x+cEbkDg=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-458-grRaHu9_N-i5_rK2slQ8LQ-1; Mon, 17 Jul 2023 10:06:52 -0400
-X-MC-Unique: grRaHu9_N-i5_rK2slQ8LQ-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-994320959f4so256128766b.2
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 07:06:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689602807; x=1692194807;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OQmZYLlSbKr48zuQpecmTcFGAvgvUC3EvImMUBOtai4=;
- b=bBBCYsm5aScR9fMp5IfoUak+cCQiCpvwuQ7M00UUiCm2i8gVQU49RDpBfdSIEGm6cI
- oFp4WSNrOBKUf7J1Z2feeedM2kD1rob7i4xScvQsDdYOebeRS/Nt7vGaAeq+W4bb3lpM
- UvrweeVQuJ0+GAg54SYMtxkL4faAIknT40Ub1z8DwVWjQm69as98wAywvZwEvYXaH50r
- zn/GIS5gxhbGqWPg5y1tE+1d4yT/k1ISIg4KmGyvJv3pMSZMOb6Ds7hN9Z54uTLsvpmQ
- 9IfD4eNjoiSY/9/4uVw35Sjp7JXHVvCeRxDm3ZZf78jO2zcJWBr4+/4Kf64QoLoknBoP
- hn8g==
-X-Gm-Message-State: ABy/qLY30DqHnohGSuWvm35Bup8VQb/hrc740hOHzbptRZ/OLoXei3W5
- 6uT5GaAidTqV0Drjm2TWDVMeO+BbQtEHzmpx2fDVGij8ahocRy3YN7O7q7hfesKxMtFyDAxSQUv
- +HkVG5QjhW6timP8=
-X-Received: by 2002:a17:906:2d3:b0:997:865a:77e3 with SMTP id
- 19-20020a17090602d300b00997865a77e3mr5765970ejk.11.1689602806902; 
- Mon, 17 Jul 2023 07:06:46 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHEXzQOOUiTnq9sTfwz+V318/U37KUNM9Dx7RF+63HOmCmhE6sj5ewkKc1b5IG1yi+xzmyvcQ==
-X-Received: by 2002:a17:906:2d3:b0:997:865a:77e3 with SMTP id
- 19-20020a17090602d300b00997865a77e3mr5765957ejk.11.1689602806632; 
- Mon, 17 Jul 2023 07:06:46 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- q3-20020a1709066b0300b0099290e2c163sm9141392ejr.204.2023.07.17.07.06.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 07:06:46 -0700 (PDT)
-Date: Mon, 17 Jul 2023 16:06:45 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Joelle van Dyne <j@getutm.app>
-Cc: Stefan Berger <stefanb@linux.ibm.com>, qemu-devel@nongnu.org, Shannon
- Zhao <shannon.zhaosl@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>, Ani
- Sinha <anisinha@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>, "open list:ARM ACPI Subsystem"
- <qemu-arm@nongnu.org>
-Subject: Re: [PATCH v2 09/11] tpm_tis_sysbus: move DSDT AML generation to
- device
-Message-ID: <20230717160645.3416d6f0@imammedo.users.ipa.redhat.com>
-In-Reply-To: <CA+E+eSDinJuo8xyZTzfqKXr=rf+fyjkvOLVEqam0eapehQ1OYA@mail.gmail.com>
-References: <20230714070931.23476-1-j@getutm.app>
- <20230714070931.23476-10-j@getutm.app>
- <d3d3d9d0-fb88-9500-34d9-9780f9c2644f@linux.ibm.com>
- <CA+E+eSDinJuo8xyZTzfqKXr=rf+fyjkvOLVEqam0eapehQ1OYA@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ bh=Jajd5ddbmg+9zomRuViVcFjcOtptx9iN0UkLy+MmMLs=;
+ b=HFHREOFZTzE2ODbgbAxr2N1+kj4kS3VWbRx2sRe3YMyohC0dWsvoWmGAG9wwReUwSUoqas
+ bynMLcv5JqRfIpHEkLCQ960XikzM46j7FRd150RX5ceuJsITxI8ogLFWCrUoDAIyTJ8uEo
+ Y8a5IumCFyZaDboaT81OJuPD6mZJdyE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-377--8Db5E6LMYq0HwT7O0RRDg-1; Mon, 17 Jul 2023 10:10:55 -0400
+X-MC-Unique: -8Db5E6LMYq0HwT7O0RRDg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1824510504B2;
+ Mon, 17 Jul 2023 14:10:54 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.193.170])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D941E4CD0F1;
+ Mon, 17 Jul 2023 14:10:53 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 87E46180078D; Mon, 17 Jul 2023 16:10:52 +0200 (CEST)
+Date: Mon, 17 Jul 2023 16:10:52 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Albert Esteve <aesteve@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org, 
+ marcandre.lureau@gmail.com, cohuck@redhat.com, Fam Zheng <fam@euphon.net>
+Subject: Re: [PATCH v4 3/4] vhost-user: add shared_object msg
+Message-ID: <p5un3r5vrwv45vhv6m22u3wf5za2edding7klna2semi73qxfp@sr6c7adyhm2w>
+References: <20230626073426.285659-1-aesteve@redhat.com>
+ <20230626073426.285659-4-aesteve@redhat.com>
+ <20230710150030-mutt-send-email-mst@kernel.org>
+ <CADSE00+MYYeTto5CCROpynB2p+FjcCASp6azyxb2FVRm7VhBrw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADSE00+MYYeTto5CCROpynB2p+FjcCASp6azyxb2FVRm7VhBrw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -109,49 +82,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 14 Jul 2023 10:29:31 -0700
-Joelle van Dyne <j@getutm.app> wrote:
+On Mon, Jul 17, 2023 at 01:42:02PM +0200, Albert Esteve wrote:
+> Hi Michael,
+> 
+> True. It may be a good idea to impose a limit in the number of entries that
+> can be added to the table.
+> And fail to add new entries once it reaches the limit.
+> 
+> Not sure what would be a good limit though. For example,
+> https://www.kernel.org/doc/html/v4.9/media/uapi/v4l/vidioc-reqbufs.html#c.v4l2_requestbuffers
+> does not limit the number of buffers that can be allocated simultaneously,
+> it is an unsigned 32-bits value.
+> However, I guess 16-bits (65535) would suffice to cover the vast majority
+> of usecases. Or even lower, and
+> can be adjusted later, as this API gets (more) used.
 
-> On Fri, Jul 14, 2023 at 9:19=E2=80=AFAM Stefan Berger <stefanb@linux.ibm.=
-com> wrote:
-> >
-> >
-> >
-> >
-> > I don't know whether we would want multiple devices. tpm_find() usage i=
-s certainly not prepared for multiple devices. =20
-> Sorry, "multiple TPM interfaces" here does not mean "at the same
-> time". Will clarify the description.
->=20
-> >
-> >
-> > Good for the consolidation.
-> >
-> >
-> > Does moving the TIS to a different address help on aarch64? =20
-> That was the first thing we tried and no it doesn't help.
-> >
-> > Can the size really be an option? I don't see it useful and if one gave=
- the wrong size it may break things. =20
-> It was added for consistency (otherwise we have to determine the size
-> by looking at the interface everywhere). Also, it is possible for the
-> size to be larger than the constant. For example, Apple Silicon uses
-> 16KiB page sizes and we may decide to force the device to be 16KiB
-> aligned (not sure if this is needed yet while we still track down why
-> the dual mapping was not working). In that case, we would need to
-> inform the OS of the true region size to prevent any overlap issues.
-> Both baseaddr and size should be provided only by the plug handler in
-> the virt machine, otherwise things may break even if we get rid of
-> size and have just an incorrect baseaddr.
->=20
-if properties  (address/size) are for internal use, it would be better to u=
-se
-x- prefix as not give user false promise that user can expect them working =
-if
-they provided them.
+virtio-gpu does accounting on the total amount of memory (look for
+'hostmem').  That is only used in case virgl is *not* used, with virgl
+it is much harder to figure how much host memory is actually used.
+Probably the virglrenderer library would have to implement that.
 
-> >
-> > =20
->=20
+If we want apply limits to the memory used by buffers it probably makes
+sense to do the same, i.e. account the total amount of memory used.
+dma-bufs have a fixed size, so that should be doable without too much
+trouble.  Might need some changes to the API because that'll give us a
+few new possible failure modes.
+
+take care,
+  Gerd
 
 
