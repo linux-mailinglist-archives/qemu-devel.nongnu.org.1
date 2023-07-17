@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6688F756317
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A35756375
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:56:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLNcS-0005u8-99; Mon, 17 Jul 2023 08:46:28 -0400
+	id 1qLNcU-0005zo-EN; Mon, 17 Jul 2023 08:46:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qLNcC-0005dO-2x
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qLNcI-0005js-N8
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qLNcA-0008FE-Fq
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:11 -0400
+ id 1qLNcF-0008G3-Tc
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689597969;
+ s=mimecast20190719; t=1689597975;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=k6aHtTIAg4kdv6BfFhRmW/dM6P9zqwKpeITi3mITOFE=;
- b=fkDII0TmB2/rxxmYXwhUQfSRE9phe0M3L82Dtr7mV2ccXW+PkLi74dHngLlJjhEO3Ujvg9
- w2pbXB5juRul/Z3rZEN0rZ0xVlI+BYv+qKJfQQtiukTpvIXCJzvXIPN1zGDbh4V+QRpCSX
- 6tm+7U20F4pfFXgv5iXnOi4jFyJzy4g=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-321-xgEDtM8tMcO0OvLNxFsSMQ-1; Mon, 17 Jul 2023 08:46:06 -0400
-X-MC-Unique: xgEDtM8tMcO0OvLNxFsSMQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ bh=vIytHURs/QEdgu0hfWQD43vbrrPmr96KHEM9sueWxJ0=;
+ b=f/QUtZMUXG/FB/mEeKUqzHDB3HFCc65U9s8tR1s8QrsBrFsEavESKYcxTKudpoJtT6meDF
+ 1jLwj8jfj9QkqQHiFW0KWPzxi5tThhnoc1TW88NOR3Ler0H4yjcoe2b4Md9LpRZQxyfRQZ
+ 0ZobQ6BRc4Sq5U3Uu7XY/dQKYRBBt+E=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-92-1EJYVD4wPXig_5rtBmcEOA-1; Mon, 17 Jul 2023 08:46:12 -0400
+X-MC-Unique: 1EJYVD4wPXig_5rtBmcEOA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED3AC1C28CE0;
- Mon, 17 Jul 2023 12:46:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 935D1805951;
+ Mon, 17 Jul 2023 12:46:11 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DE4D64CD0C8;
- Mon, 17 Jul 2023 12:46:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7DB7140C2063;
+ Mon, 17 Jul 2023 12:46:09 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
@@ -55,17 +55,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
  Dongwon Kim <dongwon.kim@intel.com>,
  Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: [PULL 04/19] virtio-gpu: replace the surface with null surface when
- resetting
-Date: Mon, 17 Jul 2023 16:45:29 +0400
-Message-ID: <20230717124545.177236-5-marcandre.lureau@redhat.com>
+Subject: [PULL 05/19] virtio-gpu-udmabuf: correct naming of QemuDmaBuf size
+ properties
+Date: Mon, 17 Jul 2023 16:45:30 +0400
+Message-ID: <20230717124545.177236-6-marcandre.lureau@redhat.com>
 In-Reply-To: <20230717124545.177236-1-marcandre.lureau@redhat.com>
 References: <20230717124545.177236-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -93,88 +93,170 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Dongwon Kim <dongwon.kim@intel.com>
 
-The primary guest scanout shows the booting screen right after reboot
-but additional guest displays (i.e. max_ouptuts > 1) will keep displaying
-the old frames until the guest virtio gpu driver gets initialized, which
-could cause some confusion. A better way is to to replace the surface with
-a place holder that tells the display is not active during the reset of
-virtio-gpu device.
-
-And to immediately update the surface with the place holder image after
-the switch, displaychangelistener_gfx_switch needs to be called with
-'update == TRUE' in dpy_gfx_replace_surface when the new surface is NULL.
+Replace 'width' and 'height' in QemuDmaBuf with 'backing_widht'
+and 'backing_height' as these commonly indicate the size of the
+whole surface (e.g. guest's Xorg extended display). Then use
+'width' and 'height' for sub region in there (e.g. guest's
+scanouts).
 
 Cc: Gerd Hoffmann <kraxel@redhat.com>
 Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
 Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-Acked-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20230627224451.11739-1-dongwon.kim@intel.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20230713040444.32267-1-dongwon.kim@intel.com>
 ---
- hw/display/virtio-gpu.c |  5 +++++
- ui/console.c            | 11 ++++++-----
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ include/ui/console.h            |  4 ++--
+ hw/display/virtio-gpu-udmabuf.c | 12 ++++++------
+ ui/dbus-listener.c              |  8 ++++----
+ ui/egl-helpers.c                |  8 ++++----
+ ui/gtk-egl.c                    | 10 ++++++----
+ ui/gtk-gl-area.c                |  7 ++++---
+ 6 files changed, 26 insertions(+), 23 deletions(-)
 
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index e937c4e348..e8603d78ca 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1397,6 +1397,7 @@ void virtio_gpu_reset(VirtIODevice *vdev)
-     VirtIOGPU *g = VIRTIO_GPU(vdev);
-     struct virtio_gpu_simple_resource *res, *tmp;
-     struct virtio_gpu_ctrl_command *cmd;
-+    int i = 0;
- 
-     QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
-         virtio_gpu_resource_destroy(g, res);
-@@ -1415,6 +1416,10 @@ void virtio_gpu_reset(VirtIODevice *vdev)
-         g_free(cmd);
+diff --git a/include/ui/console.h b/include/ui/console.h
+index f27b2aad4f..3e8b22d6c6 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -201,8 +201,8 @@ typedef struct QemuDmaBuf {
+     uint32_t  texture;
+     uint32_t  x;
+     uint32_t  y;
+-    uint32_t  scanout_width;
+-    uint32_t  scanout_height;
++    uint32_t  backing_width;
++    uint32_t  backing_height;
+     bool      y0_top;
+     void      *sync;
+     int       fence_fd;
+diff --git a/hw/display/virtio-gpu-udmabuf.c b/hw/display/virtio-gpu-udmabuf.c
+index ef1a740de5..d51184d658 100644
+--- a/hw/display/virtio-gpu-udmabuf.c
++++ b/hw/display/virtio-gpu-udmabuf.c
+@@ -181,13 +181,13 @@ static VGPUDMABuf
      }
  
-+    for (i = 0; i < g->parent_obj.conf.max_outputs; i++) {
-+        dpy_gfx_replace_surface(g->parent_obj.scanout[i].con, NULL);
-+    }
-+
-     virtio_gpu_base_reset(VIRTIO_GPU_BASE(vdev));
- }
+     dmabuf = g_new0(VGPUDMABuf, 1);
+-    dmabuf->buf.width = fb->width;
+-    dmabuf->buf.height = fb->height;
++    dmabuf->buf.width = r->width;
++    dmabuf->buf.height = r->height;
+     dmabuf->buf.stride = fb->stride;
+     dmabuf->buf.x = r->x;
+     dmabuf->buf.y = r->y;
+-    dmabuf->buf.scanout_width = r->width;
+-    dmabuf->buf.scanout_height = r->height;
++    dmabuf->buf.backing_width = fb->width;
++    dmabuf->buf.backing_height = fb->height;
+     dmabuf->buf.fourcc = qemu_pixman_to_drm_format(fb->format);
+     dmabuf->buf.fd = res->dmabuf_fd;
+     dmabuf->buf.allow_fences = true;
+@@ -218,8 +218,8 @@ int virtio_gpu_update_dmabuf(VirtIOGPU *g,
  
-diff --git a/ui/console.c b/ui/console.c
-index c1544e0fb8..8da2170a7e 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1898,6 +1898,7 @@ void dpy_gfx_replace_surface(QemuConsole *con,
-     static const char placeholder_msg[] = "Display output is not active.";
-     DisplayState *s = con->ds;
-     DisplaySurface *old_surface = con->surface;
-+    DisplaySurface *new_surface = surface;
-     DisplayChangeListener *dcl;
-     int width;
-     int height;
-@@ -1911,19 +1912,19 @@ void dpy_gfx_replace_surface(QemuConsole *con,
-             height = 480;
+     g->dmabuf.primary[scanout_id] = new_primary;
+     qemu_console_resize(scanout->con,
+-                        new_primary->buf.scanout_width,
+-                        new_primary->buf.scanout_height);
++                        new_primary->buf.width,
++                        new_primary->buf.height);
+     dpy_gl_scanout_dmabuf(scanout->con, &new_primary->buf);
+ 
+     if (old_primary) {
+diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
+index 0240c39510..68ff343799 100644
+--- a/ui/dbus-listener.c
++++ b/ui/dbus-listener.c
+@@ -415,13 +415,13 @@ static void dbus_scanout_texture(DisplayChangeListener *dcl,
+                                backing_width, backing_height, x, y, w, h);
+ #ifdef CONFIG_GBM
+     QemuDmaBuf dmabuf = {
+-        .width = backing_width,
+-        .height = backing_height,
++        .width = w,
++        .height = h,
+         .y0_top = backing_y_0_top,
+         .x = x,
+         .y = y,
+-        .scanout_width = w,
+-        .scanout_height = h,
++        .backing_width = backing_width,
++        .backing_height = backing_height,
+     };
+ 
+     assert(tex_id);
+diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+index 8f9fbf583e..3d19dbe382 100644
+--- a/ui/egl-helpers.c
++++ b/ui/egl-helpers.c
+@@ -148,8 +148,8 @@ void egl_fb_blit(egl_fb *dst, egl_fb *src, bool flip)
+     if (src->dmabuf) {
+         x1 = src->dmabuf->x;
+         y1 = src->dmabuf->y;
+-        w = src->dmabuf->scanout_width;
+-        h = src->dmabuf->scanout_height;
++        w = src->dmabuf->width;
++        h = src->dmabuf->height;
+     }
+ 
+     w = (x1 + w) > src->width ? src->width - x1 : w;
+@@ -314,9 +314,9 @@ void egl_dmabuf_import_texture(QemuDmaBuf *dmabuf)
+     }
+ 
+     attrs[i++] = EGL_WIDTH;
+-    attrs[i++] = dmabuf->width;
++    attrs[i++] = dmabuf->backing_width;
+     attrs[i++] = EGL_HEIGHT;
+-    attrs[i++] = dmabuf->height;
++    attrs[i++] = dmabuf->backing_height;
+     attrs[i++] = EGL_LINUX_DRM_FOURCC_EXT;
+     attrs[i++] = dmabuf->fourcc;
+ 
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index 42db1bb6cf..eee821d73a 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -262,9 +262,10 @@ void gd_egl_scanout_dmabuf(DisplayChangeListener *dcl,
+     }
+ 
+     gd_egl_scanout_texture(dcl, dmabuf->texture,
+-                           dmabuf->y0_top, dmabuf->width, dmabuf->height,
+-                           dmabuf->x, dmabuf->y, dmabuf->scanout_width,
+-                           dmabuf->scanout_height, NULL);
++                           dmabuf->y0_top,
++                           dmabuf->backing_width, dmabuf->backing_height,
++                           dmabuf->x, dmabuf->y, dmabuf->width,
++                           dmabuf->height, NULL);
+ 
+     if (dmabuf->allow_fences) {
+         vc->gfx.guest_fb.dmabuf = dmabuf;
+@@ -284,7 +285,8 @@ void gd_egl_cursor_dmabuf(DisplayChangeListener *dcl,
+         if (!dmabuf->texture) {
+             return;
          }
- 
--        surface = qemu_create_placeholder_surface(width, height, placeholder_msg);
-+        new_surface = qemu_create_placeholder_surface(width, height, placeholder_msg);
+-        egl_fb_setup_for_tex(&vc->gfx.cursor_fb, dmabuf->width, dmabuf->height,
++        egl_fb_setup_for_tex(&vc->gfx.cursor_fb,
++                             dmabuf->backing_width, dmabuf->backing_height,
+                              dmabuf->texture, false);
+     } else {
+         egl_fb_destroy(&vc->gfx.cursor_fb);
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index a9a7fdf50c..4513d3d059 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -301,9 +301,10 @@ void gd_gl_area_scanout_dmabuf(DisplayChangeListener *dcl,
      }
  
--    assert(old_surface != surface);
-+    assert(old_surface != new_surface);
+     gd_gl_area_scanout_texture(dcl, dmabuf->texture,
+-                               dmabuf->y0_top, dmabuf->width, dmabuf->height,
+-                               dmabuf->x, dmabuf->y, dmabuf->scanout_width,
+-                               dmabuf->scanout_height, NULL);
++                               dmabuf->y0_top,
++                               dmabuf->backing_width, dmabuf->backing_height,
++                               dmabuf->x, dmabuf->y, dmabuf->width,
++                               dmabuf->height, NULL);
  
-     con->scanout.kind = SCANOUT_SURFACE;
--    con->surface = surface;
--    dpy_gfx_create_texture(con, surface);
-+    con->surface = new_surface;
-+    dpy_gfx_create_texture(con, new_surface);
-     QLIST_FOREACH(dcl, &s->listeners, next) {
-         if (con != (dcl->con ? dcl->con : active_console)) {
-             continue;
-         }
--        displaychangelistener_gfx_switch(dcl, surface, FALSE);
-+        displaychangelistener_gfx_switch(dcl, new_surface, surface ? FALSE : TRUE);
-     }
-     dpy_gfx_destroy_texture(con, old_surface);
-     qemu_free_displaysurface(old_surface);
+     if (dmabuf->allow_fences) {
+         vc->gfx.guest_fb.dmabuf = dmabuf;
 -- 
 2.41.0
 
