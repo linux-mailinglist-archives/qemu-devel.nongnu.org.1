@@ -2,69 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B3A756E47
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 22:33:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB30756EFE
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 23:36:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLUtO-0000OD-PT; Mon, 17 Jul 2023 16:32:26 -0400
+	id 1qLVsD-0001xd-G1; Mon, 17 Jul 2023 17:35:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qLUtE-0000J0-12
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 16:32:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qLUtB-0002n5-D9
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 16:32:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689625932;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4dQt6PeBorsPiA1WhXvMXdyarmg/h/ueFgzggvKQumw=;
- b=UCk6qggtR4rLrPJ2Fb360cst5qAVlDvJP8cNk9wDIsHJTgGBywtxKunryfiagJNjTMRnkQ
- 97EWYkxCqO+DK9NeYNxUyfMizXwcBZT5asXPDcbo/izQJ346jtXl0U7X+KQWYg8mi2l6d3
- amqBk9AmvqOmDg+Rs3cIWWREdYGW2XY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-339-paMAOM57P-SPBJ7aH83vTw-1; Mon, 17 Jul 2023 16:32:09 -0400
-X-MC-Unique: paMAOM57P-SPBJ7aH83vTw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C9342800B35;
- Mon, 17 Jul 2023 20:32:08 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.125])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 444F640C206F;
- Mon, 17 Jul 2023 20:32:07 +0000 (UTC)
-Date: Mon, 17 Jul 2023 16:32:06 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH v2] block: Fix pad_request's request restriction
-Message-ID: <20230717203206.GA461188@fedora>
-References: <20230714085938.202730-1-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLVs8-0001wx-FX
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:35:14 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLVs6-0007uU-Sg
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:35:12 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-316feb137a7so1762003f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 14:35:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689629708; x=1692221708;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=CkIVAjPbnRqMhnZOipZLpkQ7/XZwRySBWQuizCDexjw=;
+ b=EEz92TuZ7uARSNHf+Q5K6ajiKQxz3t6P9mXo7/UWOPpZjGfcPAOD5WAfuhvkwy8Ui/
+ 7e5dI42LsPuQwe5u4ffyq2wwPpgGTK7BHycuwm1S7748KXVr6qz9Lv5HxsQaVXhT7qjK
+ 23G6p21lYQC4fvQb+q4L+CFHosQiIiUFFW9dkwEN4/94wvOEqjLsEYFlKpZ+7Lm0tcX4
+ OUOSgO8kRZRsItbOKXyMiTSw+GrPI5lJby3TfhhbBWNuTONuSC21bObvan6U9tBIzWZh
+ PVRk1FDP+76xrAYCU1zzjGYF7at5NlkUiHOcONCzhx6O5XwklOB/m2JcnV+cvzOVhNxJ
+ NBeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689629708; x=1692221708;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CkIVAjPbnRqMhnZOipZLpkQ7/XZwRySBWQuizCDexjw=;
+ b=AxsgxBFsEpvWgJw9WzyvpONTVQPNdJtyvbNyqqkyQhB4UGkZ9hUYr3t7Y43Gs+kgO8
+ i8GcPFVhdxaVR7or5Unx4YaTLsNg2Yn3fO4t2Yn8ZgWhDuXVPV49YB5lho9WneVopu/8
+ Y1OjvuxttvQHozVE3jugCBShrLeLZK+7GoM7h0nS+Zw9ji93mTpDf+O7SjWtJ9aHlCnX
+ bH0IbfEghbSU+W9OfE4mkgtHEq1MbEV4+lPp2u2CTZK9By6B4mCU5Q3/ehwEQuw8DsZn
+ 49hdO8oUQxJ/LNPvfULjkaTxhhQNuhEvwHgKBbKXkawKy5mY3QkKuG9cS0kS5VsU5VSJ
+ YKag==
+X-Gm-Message-State: ABy/qLZE+KQqOL4npWRxHHdzDBNNUAvd5Io4kEdSfEoagahPgX9LSn4B
+ J2HoaYrf8lLwKQ7trPvd7d2Tx6V+2yCXOhlHsMo=
+X-Google-Smtp-Source: APBJJlF/uwfacP88Hwtxv2H44i8V1XVXImo5QUl1bi6ZbLfJvBGApg6HGWbtku8t/r8iePx+0k5S+w==
+X-Received: by 2002:a05:6000:114f:b0:316:fb39:e049 with SMTP id
+ d15-20020a056000114f00b00316fb39e049mr5350623wrx.46.1689629708622; 
+ Mon, 17 Jul 2023 14:35:08 -0700 (PDT)
+Received: from localhost.localdomain ([176.176.144.39])
+ by smtp.gmail.com with ESMTPSA id
+ s3-20020a5d6a83000000b003143801f8d8sm455073wru.103.2023.07.17.14.35.07
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 17 Jul 2023 14:35:08 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Aurelien Jarno <aurelien@aurel32.net>
+Subject: [PATCH for-8.1 v2 0/2] target/mips: Avoid shift by negative number in
+ page_table_walk_refill()
+Date: Mon, 17 Jul 2023 23:35:02 +0200
+Message-Id: <20230717213504.24777-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="p7qN2C5FPk6RR9tW"
-Content-Disposition: inline
-In-Reply-To: <20230714085938.202730-1-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,69 +91,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is a respin of Peter's patch, but
+- pass already-evaluated values to walk_directory() instead
+  of an assert(),
+- check 'ptew > 1' instead of directory/leaf_shift == -1,
+- use unsigned type
 
---p7qN2C5FPk6RR9tW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Since v1: walk_directory() doesn't have to rely on the to sanitize
+          the input values.
 
-On Fri, Jul 14, 2023 at 10:59:38AM +0200, Hanna Czenczek wrote:
-> bdrv_pad_request() relies on requests' lengths not to exceed SIZE_MAX,
-> which bdrv_check_qiov_request() does not guarantee.
->=20
-> bdrv_check_request32() however will guarantee this, and both of
-> bdrv_pad_request()'s callers (bdrv_co_preadv_part() and
-> bdrv_co_pwritev_part()) already run it before calling
-> bdrv_pad_request().  Therefore, bdrv_pad_request() can safely call
-> bdrv_check_request32() without expecting error, too.
->=20
-> In effect, this patch will not change guest-visible behavior.  It is a
-> clean-up to tighten a condition to match what is guaranteed by our
-> callers, and which exists purely to show clearly why the subsequent
-> assertion (`assert(*bytes <=3D SIZE_MAX)`) is always true.
->=20
-> Note there is a difference between the interfaces of
-> bdrv_check_qiov_request() and bdrv_check_request32(): The former takes
-> an errp, the latter does not, so we can no longer just pass
-> &error_abort.  Instead, we need to check the returned value.  While we
-> do expect success (because the callers have already run this function),
-> an assert(ret =3D=3D 0) is not much simpler than just to return an error =
-if
-> it occurs, so let us handle errors by returning them up the stack now.
->=20
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Fixes: 18743311b829cafc1737a5f20bc3248d5f91ee2a
->        ("block: Collapse padded I/O vecs exceeding IOV_MAX")
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> ---
-> v2:
-> - Added paragraph to the commit message to express explicitly that this
->   patch will not change guest-visible behavior
-> - (No code changes)
-> ---
->  block/io.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+Peter, if you don't see this as an improvement I'll take your original
+patch.
 
-Thanks, applied to my block-next tree:
-https://gitlab.com/stefanha/qemu/commits/block-next
+Regards,
 
-Stefan
+Phil.
 
---p7qN2C5FPk6RR9tW
-Content-Type: application/pgp-signature; name="signature.asc"
+Supersedes: <20230717162940.814078-1-peter.maydell@linaro.org>
 
------BEGIN PGP SIGNATURE-----
+Philippe Mathieu-Daudé (2):
+  target/mips: Pass directory/leaf shift values to walk_directory()
+  target/mips: Avoid shift by negative number in
+    page_table_walk_refill()
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmS1pUYACgkQnKSrs4Gr
-c8jOhAf+K+krLHr6H/tSOgf6NYmHEZPE7xTtrMdcP9XcwrZnG4w69A9z4JZwjrqg
-iIwMa/SRG4qtgLuY7nb+Vc6izZp7dVa0YkD0LqUCKEOpyQc6LqL+VGD/1QGyh10o
-TpGQClILkwiEiEtMTga06RM5UUp2J2XoEu7eSNKrufRAWU4NHgTQoEXuFYq4+SsT
-DKQIPt0WbhGSm2VV5n9FZ0RIAlhRxJSGvk0JU6NPlmHQnQMHR+PtDKHq9DCG0e8L
-IJq/i1dmDHFjJzg1Ral/mEzLnrtc1A+m0fOuLjdynrNdjrH9ifrt8A4azNlswAoU
-EC9fYqJbKA0ca1MOHfttj8AVblDW8g==
-=JBp6
------END PGP SIGNATURE-----
+ target/mips/tcg/sysemu/tlb_helper.c | 48 ++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 24 deletions(-)
 
---p7qN2C5FPk6RR9tW--
+-- 
+2.38.1
 
 
