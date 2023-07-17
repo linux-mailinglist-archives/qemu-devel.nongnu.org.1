@@ -2,81 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F518755E97
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 10:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00118755EA4
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 10:39:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLJie-0007YY-Lg; Mon, 17 Jul 2023 04:36:36 -0400
+	id 1qLJl8-0000bU-TG; Mon, 17 Jul 2023 04:39:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qLJiM-0007XR-3j
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 04:36:19 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qLJiJ-0008Og-Kv
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 04:36:17 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (Exim 4.90_1) (envelope-from <fweimer@redhat.com>)
+ id 1qLJl1-0000az-T5
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 04:39:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <fweimer@redhat.com>)
+ id 1qLJkz-0000dC-Ei
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 04:39:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689583138;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=kaXs3M3bwOW5qK4t4esxqK02hzuChm6YuEhSl5P/JTg=;
+ b=Kda1HtMSU8zn8wMNrm12Dt0kmP0DrQRDZjUAgMka5BIJbF3ATm+e70VLo/58MDxxwQKWLL
+ b9eo3/R1XNwpdwL7s4p5C98StGds3C8JxAwgl6izOHizebUV2CyEKD0lhjnd/pAPqKdNPC
+ Ta+Ez1WEohFv6LlFTK/eZ/BOqRZaetA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-264-paWaAmuIOheGNfLMT-huXw-1; Mon, 17 Jul 2023 04:38:54 -0400
+X-MC-Unique: paWaAmuIOheGNfLMT-huXw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 58AA81F74C;
- Mon, 17 Jul 2023 08:36:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1689582974; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HHrVkTAl8YgnCYbdhuJPGo+xsQ9r4t/GsxrhesgrSDc=;
- b=zbTmwW8FbCjgrRsorq/aj/N0eKuwkOp+jJJKBoDJDBaGbmmLTetAtLCcV+eynwPdCZlvqN
- hqcJrZI1JW1ox/yFtnXkate7Ixrx0kV0/bw5xe8YG5gxh1YnEJOoE426y36+WQPeBrAaQZ
- 4slMzeIWFmxtEPPE+6BwUvUlpSyD6UU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1689582974;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HHrVkTAl8YgnCYbdhuJPGo+xsQ9r4t/GsxrhesgrSDc=;
- b=+jabRMNUihcc9INOHq5mBf+XDZqK96rbrmmzLewpgGyl35o0bo8bD99urH4EuOj4hB+J8V
- 6qSCL/GdSBuUkWCw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F2B3813276;
- Mon, 17 Jul 2023 08:36:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id IcwxOX39tGTPKgAAMHmgww
- (envelope-from <cfontana@suse.de>); Mon, 17 Jul 2023 08:36:13 +0000
-Message-ID: <c552efe2-e9d5-1a53-86e9-14cd2f86e96b@suse.de>
-Date: Mon, 17 Jul 2023 10:36:13 +0200
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F3103101A54E;
+ Mon, 17 Jul 2023 08:38:53 +0000 (UTC)
+Received: from oldenburg.str.redhat.com (unknown [10.2.16.3])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C775B40C2063;
+ Mon, 17 Jul 2023 08:38:52 +0000 (UTC)
+From: Florian Weimer <fweimer@redhat.com>
+To: libc-alpha@sourceware.org, qemu-devel@nongnu.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>
+Subject: Missing cache information on x86-64 under Intel TDX (glibc bug 30643)
+Date: Mon, 17 Jul 2023 10:38:50 +0200
+Message-ID: <87mszv7x0l.fsf@oldenburg.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: x86 custom apicid assignments [Was: Re: [PATCH v7 0/2] Remove
- EPYC mode apicid decode and use generic decode]
-Content-Language: en-US
-From: Claudio Fontana <cfontana@suse.de>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Babu Moger <babu.moger@amd.com>, pbonzini@redhat.com, rth@twiddle.net,
- ehabkost@redhat.com, qemu-devel@nongnu.org, mst@redhat.com,
- Peter Maydell <peter.maydell@linaro.org>
-References: <159897580089.30750.12581669374705391794.stgit@naples-babu.amd.com>
- <e6f25b8a-2a1e-0b40-c848-bbc2f13fdc5f@suse.de>
- <20230714115107.3d2e99ea@imammedo.users.ipa.redhat.com>
- <cf647180-d562-d986-e2dd-a818f127eb7e@suse.de>
-In-Reply-To: <cf647180-d562-d986-e2dd-a818f127eb7e@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1d;
- envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=fweimer@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,162 +77,231 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/17/23 10:32, Claudio Fontana wrote:
-> Hello Igor,
-> 
-> thanks for getting back to me on this,
-> 
-> On 7/14/23 11:51, Igor Mammedov wrote:
->> On Wed, 5 Jul 2023 10:12:40 +0200
->> Claudio Fontana <cfontana@suse.de> wrote:
->>
->>> Hi all, partially resurrecting an old thread.
->>>
->>> I've seen how for Epyc something special was done in the past in terms of apicid assignments based on topology, which was then reverted apparently,
->>> but I wonder if something more general would be useful to all?
->>>
->>> The QEMU apicid assignments first of all do not seem to match what is happening on real hardware.
->>
->> QEMU typically does generate valid APIC IDs
->> it however doesn't do a good job when using odd number of cores and/or NUMA enabled cases.
-> 
-> 
-> Right, this is what I meant, the QEMU assignment is generally a valid choice, it just seems to differ from what (some) hardware/firmware does.
-> 
-> 
-> 
-> 
->> (That is what Babu have attempted to fix, but eventually that have been dropped for
->> reasons described in quoted cover letter)
->>
->>> Functionally things are ok, but then when trying to investigate issues, specifically in the guest kernel KVM PV code (arch/x86/kernel/kvm.c),
->>> in some cases the actual apicid values in relationship to the topology do matter,
->>
->> Care to point out specific places you are referring to?
-> 
-> 
-> What we wanted to do was to reproduce an issue that only happened when booting our distro in the Cloud,
-> but did not instead appear by booting locally (neither on bare metal nor under QEMU/KVM).
-> 
-> In the end, after a lot of slow-turnaround research, the issue we encountered was the already fixed:
->  
-> commit c15e0ae42c8e5a61e9aca8aac920517cf7b3e94e
-> Author: Li RongQing <lirongqing@baidu.com>
-> Date:   Wed Mar 9 16:35:44 2022 +0800
-> 
->     KVM: x86: fix sending PV IPI
->     
->     If apic_id is less than min, and (max - apic_id) is greater than
->     KVM_IPI_CLUSTER_SIZE, then the third check condition is satisfied but
->     the new apic_id does not fit the bitmask.  In this case __send_ipi_mask
->     should send the IPI.
->     
->     This is mostly theoretical, but it can happen if the apic_ids on three
->     iterations of the loop are for example 1, KVM_IPI_CLUSTER_SIZE, 0.
->     
->     Fixes: aaffcfd1e82 ("KVM: X86: Implement PV IPIs in linux guest")
->     Signed-off-by: Li RongQing <lirongqing@baidu.com>
->     Message-Id: <1646814944-51801-1-git-send-email-lirongqing@baidu.com>
->     Cc: stable@vger.kernel.org
->     Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> 
-> 
-> But this took a very long time to investigate, because the KVM PV code only misbehaves with the old unpatched algorithm during boot
-> if it encounters a specific sequence of ACPI IDs,
-> where countrary to the comment in the commit, the issue can become very practical depending on such ACPI IDs assignments as seen by the guest KVM PV code.
-> 
->>
->> KVM is not the only place where it might matter, it affects topo/numa code on guest side as well. 
->>
->>> and currently there is no way (I know of), of supplying our own apicid assignment, more closely matching what happens on hardware.
->>>
->>> This has been an issue when debugging guest images in the cloud, where being able to reproduce issues locally would be very beneficial as opposed to using cloud images as the feedback loop,
->>> but unfortunately QEMU cannot currently create the right apicid values to associate to the cpus.
->>
->> Indeed EPYC APIC encoding mess increases support cases load downstream,
->> but as long as one has access to similar host hw, one should be able
->> to reproduce the issue locally.
-> 
-> Unfortunately this does not seem to be always the case, with the case in point being the kvm pv code,
-> but I suspect other buggy guest code whose behaviour depends on APICIds and APICId sequences must exist in more areas of the kernel.
-> 
-> In order to properly reproduce these kinds of issues locally, being able to assign desired APICIDs to cpus in VMs would come very handy.
-> 
-> 
->> However I would expect end result on such support end with an advice
->> to change topo/use another CPU model.
->>
->> (what we lack is a documentation what works and what doesn't,
->> perhaps writing guidelines would be sufficient to steer users
->> to the usable EPYC configurations)
-> 
-> 
-> In our case we encountered issues on Intel too.
-> 
-> 
->>
->>> Do I understand the issue correctly, comments, ideas?
->>> How receptive the project would be for changes aimed at providing a custom assignment of apicids to cpus, regardless of Intel or AMD?
->>
->> It's not that simple to just set custom APIC ID in register and be done with it,
-> 
-> 
-> right, I am under no illusion that this is going to be easy.
-> 
-> 
->> you'll likely break (from the top of my head: some CPUID leaves might
->> depend on it, ACPI tables, NUMA mapping, KVM's vcpu_id).
->>
->> Current topo code aims to work on information based on '-smp'/'-numa',
->> all through out QEMU codebase.
-> 
-> 
-> just a thought, that information "-smp, -numa" could be optionally enriched with additional info on apicids assignment
-> 
-> 
->> If however we were let user set APIC ID (which is somehow
->> correct), we would need to take reverse steps to decode that
->> (in vendor specific way) and incorporate resulting topo into other
->> code that uses topology info.
->> That makes it quite messy, not to mention it's x86(AMD specific) and
->> doesn't fit well with generalizing topo handling.
->> So I don't really like this route.
-> 
-> 
-> I don't think I am suggesting something like described in the preceding paragraph,
-> but instead I would think that with the user providing the full apicid assignment map, (in addition / as part of)  to the -smp, -numa options,
-> all other pieces would be derived from that (I suppose ACPI tables, cpuid leaves, and everything that the guest could see, plus the internal
-> QEMU conversion functions between apicids and cpu index in topology.h
-> 
-> 
->>
->> (x86 cpus have apic_id property, so theoretically you can set it
->> and with some minimal hacking lunch a guest, but then
->> expect guest to be unhappy when ACPI ID goes out of sync with
->> everything else. I would do that only for the sake of an experiment
->> and wouldn't try to upstream that)
-> 
-> Right, it would all need to be consistent.
-> 
->>
->> What I wouldn't mind is taking the 2nd stab at what Babu had tried
->> do. Provided it manages to encode APIC ID for EPYC correctly and won't
->> complicate code much (and still using -smp/-numa as the root source for
->> topo configuration).
-> 
-> 
-> For the specific use case I am thinking (debugging with a guest-visible topology that resembles a cloud one),
-> I don't think that the EPYC-specific work would be sufficient, it would need to be complemented in any case with Intel work,
-> 
-> but I suppose that a more general solution of the user providing all mappings would be the best and easiest one for this debugging scenario.
-> 
-> Thanks for your thoughts,
-> 
-> Claudio
+This is a continuation of glibc bug 30037, whose root cause was not
+fixed:
 
-As a PS: I had a lot of typos where I wrote ACPI ID instead of APIC ID, hope it does not cause too much confusion..
+  Missing cache information on x86-64 under Intel TDX
+  <https://sourceware.org/bugzilla/show_bug.cgi?id=3D30643>
 
-Ciao,
+  glibc 2.34 and newer segfault if CPUID leaf 0x2 reports zero=20
+  <https://sourceware.org/bugzilla/show_bug.cgi?id=3D30037>
 
-C
+Not sure if there is a public mailing list yet where TDX enablement is
+discussed.  I'll point a few folks to this thread privately.
+
+The core of the issue is that CPUID.02H comes back as all zero.  Current
+glibc uses CPUID.02H as the starting point to determine cache topology,
+so we get back all zeros:
+
+# getconf -a | grep CACHE
+LEVEL1_ICACHE_SIZE                 0
+LEVEL1_ICACHE_ASSOC=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+LEVEL1_ICACHE_LINESIZE             0
+LEVEL1_DCACHE_SIZE                 0
+LEVEL1_DCACHE_ASSOC                0
+LEVEL1_DCACHE_LINESIZE             0
+LEVEL2_CACHE_SIZE                  0
+LEVEL2_CACHE_ASSOC                 0
+LEVEL2_CACHE_LINESIZE              0
+LEVEL3_CACHE_SIZE                  0
+LEVEL3_CACHE_ASSOC                 0
+LEVEL3_CACHE_LINESIZE              0
+LEVEL4_CACHE_SIZE                  0
+LEVEL4_CACHE_ASSOC=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+LEVEL4_CACHE_LINESIZE=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+
+This will almost certainly cause application hangs and crashes if they
+use the cache line sizes to divide up arrays for processing.  Size 0
+means that either no progress is made, or a division-by-zero trap
+occurs.
+
+(Full =E2=80=9Ccpuid -1 -r=E2=80=9D output below, from an Azure TDX instanc=
+e, shared
+with permission.)
+
+The current all-00H behavior is arguably not within the description of
+the Intel SDM because it lists special FEH and FFH descriptors to
+redirect to other CPUID information sources.  (Current glibc only
+handles 0FFH redirects, apparently.)  Some applications can get the
+cache information using those other means (ignoring CPUID.02H or using
+it as fallback only).  Looking at Debian Code Search results, direct
+CPUID.02H are somewhat common:
+
+<https://codesearch.debian.net/search?q=3Dcpuid%5Cs*%5C%282%2C&literal=3D0&=
+perpkg=3D1>
+
+It looks like a few code snippets were copied around quite a bit.
+(You'd need to look at the context, though, to see if these applications
+are actually impacted.)
+
+I would prefer if this could be fixed in Intel TDX because it's the only
+the way we avoid additional userspace porting of applications, or at
+least impact analysis.  But if TDX can't be fixed for some reason, we
+need to treat the all-00H as an instruction to glibc to gather the cache
+information by some other means.
+
+Thanks,
+Florian
+
+# /usr/bin/cpuid -1 -r=20=20
+CPU:
+   0x00000000 0x00: eax=3D0x00000021 ebx=3D0x756e6547 ecx=3D0x6c65746e edx=
+=3D0x49656e69
+   0x00000001 0x00: eax=3D0x000806f8 ebx=3D0x00020800 ecx=3D0xfffaba17 edx=
+=3D0x1fabfbff
+   0x00000002 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000003 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000004 0x00: eax=3D0x00004121 ebx=3D0x02c0003f ecx=3D0x0000003f edx=
+=3D0x00000000
+   0x00000004 0x01: eax=3D0x00004122 ebx=3D0x01c0003f ecx=3D0x0000003f edx=
+=3D0x00000000
+   0x00000004 0x02: eax=3D0x00004143 ebx=3D0x03c0003f ecx=3D0x000007ff edx=
+=3D0x00000000
+   0x00000004 0x03: eax=3D0x00004163 ebx=3D0x0380003f ecx=3D0x0001bfff edx=
+=3D0x00000000
+   0x00000004 0x04: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000005 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000006 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000007 0x00: eax=3D0x00000001 ebx=3D0xf1bf2ff9 ecx=3D0x1b415fe6 edx=
+=3D0xffd14410
+   0x00000007 0x01: eax=3D0x00001c30 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000008 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000009 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000000a 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000000b 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000000c 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000000d 0x00: eax=3D0x000600e7 ebx=3D0x00002b00 ecx=3D0x00002b00 edx=
+=3D0x00000000
+   0x0000000d 0x01: eax=3D0x0000001f ebx=3D0x000029c0 ecx=3D0x00001800 edx=
+=3D0x00000000
+   0x0000000d 0x02: eax=3D0x00000100 ebx=3D0x00000240 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000000d 0x05: eax=3D0x00000040 ebx=3D0x00000440 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000000d 0x06: eax=3D0x00000200 ebx=3D0x00000480 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000000d 0x07: eax=3D0x00000400 ebx=3D0x00000680 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000000d 0x0b: eax=3D0x00000010 ebx=3D0x00000000 ecx=3D0x00000001 edx=
+=3D0x00000000
+   0x0000000d 0x0c: eax=3D0x00000018 ebx=3D0x00000000 ecx=3D0x00000001 edx=
+=3D0x00000000
+   0x0000000d 0x11: eax=3D0x00000040 ebx=3D0x00000ac0 ecx=3D0x00000002 edx=
+=3D0x00000000
+   0x0000000d 0x12: eax=3D0x00002000 ebx=3D0x00000b00 ecx=3D0x00000006 edx=
+=3D0x00000000
+   0x0000000e 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000000f 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000010 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000011 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000012 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000012 0x01: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000012 0x02: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000013 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000014 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000015 0x00: eax=3D0x00000001 ebx=3D0x00000054 ecx=3D0x017d7840 edx=
+=3D0x00000000
+   0x00000016 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000017 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000018 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000019 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000001a 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000001b 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000001b 0x01: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000001c 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000001d 0x00: eax=3D0x00000001 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000001d 0x01: eax=3D0x04002000 ebx=3D0x00080040 ecx=3D0x00000010 edx=
+=3D0x00000000
+   0x0000001e 0x00: eax=3D0x00000000 ebx=3D0x00004010 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000001f 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x0000001f 0x01: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000020 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x00000021 0x00: eax=3D0x00000000 ebx=3D0x65746e49 ecx=3D0x20202020 edx=
+=3D0x5844546c
+   0x20000000 0x00: eax=3D0x00000000 ebx=3D0x65746e49 ecx=3D0x20202020 edx=
+=3D0x5844546c
+   0x40000000 0x00: eax=3D0x4000000c ebx=3D0x7263694d ecx=3D0x666f736f edx=
+=3D0x76482074
+   0x40000001 0x00: eax=3D0x31237648 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x40000002 0x00: eax=3D0x0000585d ebx=3D0x000a0000 ecx=3D0x00000001 edx=
+=3D0x00000447
+   0x40000003 0x00: eax=3D0x0000ae7f ebx=3D0x00628030 ecx=3D0x00000002 edx=
+=3D0xe0be47a2
+   0x40000004 0x00: eax=3D0x00360e24 ebx=3D0x00000fff ecx=3D0x00000034 edx=
+=3D0x00000000
+   0x40000005 0x00: eax=3D0x00000800 ebx=3D0x00000800 ecx=3D0x00009720 edx=
+=3D0x00000000
+   0x40000006 0x00: eax=3D0x0000000f ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x40000007 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x40000008 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x40000009 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x4000000a 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x4000000b 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x4000000c 0x00: eax=3D0x00000000 ebx=3D0x00000003 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x40000100 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x80000000 0x00: eax=3D0x80000008 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x80000001 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000121 edx=
+=3D0x2c100800
+   0x80000002 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x80000003 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x80000004 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x80000005 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x80000006 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x80000007 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x80000008 0x00: eax=3D0x00003934 ebx=3D0x00000200 ecx=3D0x00000000 edx=
+=3D0x00000000
+   0x80860000 0x00: eax=3D0x00000000 ebx=3D0x65746e49 ecx=3D0x20202020 edx=
+=3D0x5844546c
+   0xc0000000 0x00: eax=3D0x00000000 ebx=3D0x65746e49 ecx=3D0x20202020 edx=
+=3D0x5844546c
+
 
