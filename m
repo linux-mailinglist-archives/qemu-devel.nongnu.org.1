@@ -2,76 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB107568D0
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 18:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B63657568DB
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 18:16:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLQrX-00072r-7V; Mon, 17 Jul 2023 12:14:17 -0400
+	id 1qLQtF-0007xi-3s; Mon, 17 Jul 2023 12:16:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLQr5-0006yn-Ck
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 12:13:48 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLQr3-0006Dn-Jp
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 12:13:47 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-4fba86f069bso7461136e87.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 09:13:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689610423; x=1692202423;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UtoSklhlObPJcwA6KPS2ELA2alA8g5cyLCA0SBsKcbY=;
- b=N8WtfAo7IGgufxPeNSXjEGoflUB0t70B+ak5qV9Qek7fcYz1J3QxNmbMNLj+aYXMKc
- 4bwZYnaZXoUoyxIo3SDH05vrCVJ7mjpMce3x3nkpLKP7A24S6SQ2/Jxoc/dF2bAMWMum
- Z88+0vjcOLm6gqtFyqcd66ROCATw1etJgdHU8qzAsU4uK3k/Bj1j1YLwBOeoP/ENPbEw
- I03siagQQzQLB+Iv62tP5nq5Z/fO6UOdiSNQ2r/SaQu8UR813wQVdnul35pvwPCU0bFr
- qV8xoHSafCYoR1MHU1CY3nLfP5GFYn+UhNfYKDJiAB1nnf0SJe4n9Fiz9X1HcoHYhnal
- sGwA==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qLQsq-0007to-2C
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 12:15:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qLQsn-0006aO-Ly
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 12:15:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689610531;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5o2DsqY4HYqcz+dnGbRVOQ99jJpjBPU/TtdtDBcJeMI=;
+ b=hvS6DAa/I8tmJsdif+gRRsxRAlqbbmvdpKopTmZoRTIWpnr+zAsi4tupGlSzjVOT10L0az
+ sZyIYuPiiorIhUl0CEqRYPTFQ+a5XuMhheAqeigQZEiyt0r94VzR1AUMlimBghTACzl7Dx
+ RKEJLtfj7A/UJ2mHoGryd+smBQnuE74=
+Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
+ [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-252-UiLSe_eCN9uy1scAom05Ug-1; Mon, 17 Jul 2023 12:15:30 -0400
+X-MC-Unique: UiLSe_eCN9uy1scAom05Ug-1
+Received: by mail-vs1-f69.google.com with SMTP id
+ ada2fe7eead31-4409ff60c89so606210137.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 09:15:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689610423; x=1692202423;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UtoSklhlObPJcwA6KPS2ELA2alA8g5cyLCA0SBsKcbY=;
- b=SLUYFjyN4DjCjFXW0GwbPch/tCMy22mzj53n2Fer9IXe/pXNJLxdR+20pX/mYSVFO9
- mCqSZP3UOcmQqzALsIRcCcHtkmg5UuK6DbdcES2J/lBpPsbggDtW1X/f596V4UDXNd/Z
- a9mIZa/QT+CHweCYqrML4wE4CV+xpuAjj87YaHONMEzaHZLpcEu2gCys9VzyAtAs9URV
- jf9WkZcA71QzGqbarFJuuysOJOsba1DEUoFT2aacuMWvDSW5hTmLwoJKod8IOj1Vo3To
- DRIYXYvH+3tGtzG5DURU3ac19KjYeEG+F1hPOw+fxVMRXXsgphMK+vNY2wsTpAUE8VBT
- vRZg==
-X-Gm-Message-State: ABy/qLYPqIvCGln/7M6SgWvjGY5exIglrTCBSuKm0kHM40FU1wF7wTri
- DkMQxZ5NibKNb4o/TXU/kbtUCoJUyELKCx2GgIF77g==
-X-Google-Smtp-Source: APBJJlEL+22JNfjruwSaZFNCYfOvHD+/I+ROW/UgKlJWmZyOMfaHRugH2gjGl2/RkvILbDNEBUSIecKbJeFw+1EvOQY=
-X-Received: by 2002:a05:6512:4002:b0:4f9:69e9:4fa6 with SMTP id
- br2-20020a056512400200b004f969e94fa6mr9428051lfb.23.1689610423242; Mon, 17
- Jul 2023 09:13:43 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689610530; x=1690215330;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5o2DsqY4HYqcz+dnGbRVOQ99jJpjBPU/TtdtDBcJeMI=;
+ b=DAABaWa/I3ip/wofMOumXE6u3YfIWqLjafGv6l7DdBXxdAzs/up9wMY0czCVxzV118
+ uFQoDwf5OoFAZuxAt75OBvjO/SclVjD7oC4/ITkefMJefyonOuJynqjDXpZbWjhfHHjH
+ Tr4+Q9gdwurzj0HL9HLUhPaZhr9to4mSySgrtQA1xmZz/8IkZ60iUXHQ2hZhJYZq+tDb
+ sTY7mY2aqpzNxRxKkQUb2OfKwN+AcD/DI8OORyrh0HH2/ySst9Ofj46nkd+JAvEXUfSC
+ vX32tSmJSPt5zCD/CXDQlhC649amXYiktrlGY1UaBKS9NGLWNwZWk62y81p6NXZcFMsC
+ 0nJA==
+X-Gm-Message-State: ABy/qLZVWJgQ/gen2EEjW7rgATTk2+vLb+4sLi7Kcx9nKuhsrl6vYa8e
+ HyekgzFOWJnlYpH1Rrb6/6jbv08+X2FjmR81IWv00S2ZMrqenZh4PPPknxem7yYNg0ckxTupDz5
+ fnf7NTVh7SOAMYeI=
+X-Received: by 2002:a67:e20b:0:b0:445:175d:680e with SMTP id
+ g11-20020a67e20b000000b00445175d680emr5437106vsa.33.1689610529896; 
+ Mon, 17 Jul 2023 09:15:29 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFEEixLuTRWjymKyPaf0bYAQ+THU2e39uB/SL8IwMlvbTdhFuoCJQyA20gKNcdszeRUBei0+A==
+X-Received: by 2002:a67:e20b:0:b0:445:175d:680e with SMTP id
+ g11-20020a67e20b000000b00445175d680emr5437078vsa.33.1689610529605; 
+ Mon, 17 Jul 2023 09:15:29 -0700 (PDT)
+Received: from [192.168.43.95] ([37.168.249.127])
+ by smtp.gmail.com with ESMTPSA id
+ m6-20020a0cdb86000000b006300e1db3ecsm6396536qvk.141.2023.07.17.09.15.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Jul 2023 09:15:28 -0700 (PDT)
+Message-ID: <be9d45dd-1b51-4ded-cb56-307cd1b241ad@redhat.com>
+Date: Mon, 17 Jul 2023 18:15:25 +0200
 MIME-Version: 1.0
-References: <20230717155316.17714-1-philmd@linaro.org>
-In-Reply-To: <20230717155316.17714-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 17 Jul 2023 17:13:32 +0100
-Message-ID: <CAFEAcA_a66wBE2PYfLLqjR-nXV0fujVws6eNZTpWtuzgBPe55g@mail.gmail.com>
-Subject: Re: [PATCH-for-8.1] hw/sd/sdcard: Allow users to bypass the
- power-of-2 size check
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Bin Meng <bin.meng@windriver.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH for-8.1] hw/arm/smmu: Handle big-endian hosts correctly
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org
+References: <20230717132641.764660-1-peter.maydell@linaro.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20230717132641.764660-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,80 +102,157 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 17 Jul 2023 at 16:53, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Since we committed a9bcedd15a ("hw/sd/sdcard: Do not allow invalid
-> SD card sizes") to preclude some guests to access beyond the size
-> of the card (leading to security issues such CVE-2020-13253), various
-> users complained this prevent them to run guests potencially well
-> behaving with non-power-of-2 card sizes. In order to allow them to
-> experiment with such guests, add a property to disable the pow2
-> check.
->
-> Resolves: https://bugs.launchpad.net/qemu/+bug/1910586
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/297
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1754
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Hi Peter,
 
-I agree with Daniel that this should be an x- property.
-We still need to figure out what's actually going on here.
+On 7/17/23 15:26, Peter Maydell wrote:
+> The implementation of the SMMUv3 has multiple places where it reads a
+> data structure from the guest and directly operates on it without
+> doing a guest-to-host endianness conversion.  Since all SMMU data
+> structures are little-endian, this means that the SMMU doesn't work
+> on a big-endian host.  In particular, this causes the Avocado test
+>   machine_aarch64_virt.py:Aarch64VirtMachine.test_alpine_virt_tcg_gic_max
+> to fail on an s390x host.
+>
+> Add appropriate byte-swapping on reads and writes of guest in-memory
+> data structures so that the device works correctly on big-endian
+> hosts.
+>
+> As part of this we constrain queue_read() to operate only on Cmd
+> structs and queue_write() on Evt structs, because in practice these
+> are the only data structures the two functions are used with, and we
+> need to know what the data structure is to be able to byte-swap its
+> parts correctly.
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Cc: qemu-stable@nongnu.org
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
-> @@ -2151,7 +2155,13 @@ static void sd_realize(DeviceState *dev, Error **e=
-rrp)
+Thanks
+
+Eric
+> ---
+>  hw/arm/smmu-common.c |  3 +--
+>  hw/arm/smmuv3.c      | 39 +++++++++++++++++++++++++++++++--------
+>  2 files changed, 32 insertions(+), 10 deletions(-)
+>
+> diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
+> index 5ab9d45d58a..f35ae9aa22c 100644
+> --- a/hw/arm/smmu-common.c
+> +++ b/hw/arm/smmu-common.c
+> @@ -216,8 +216,7 @@ static int get_pte(dma_addr_t baseaddr, uint32_t index, uint64_t *pte,
+>      dma_addr_t addr = baseaddr + index * sizeof(*pte);
+>  
+>      /* TODO: guarantee 64-bit single-copy atomicity */
+> -    ret = dma_memory_read(&address_space_memory, addr, pte, sizeof(*pte),
+> -                          MEMTXATTRS_UNSPECIFIED);
+> +    ret = ldq_le_dma(&address_space_memory, addr, pte, MEMTXATTRS_UNSPECIFIED);
+>  
+>      if (ret != MEMTX_OK) {
+>          info->type = SMMU_PTW_ERR_WALK_EABT;
+> diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
+> index 932f0096974..1e9be8e89af 100644
+> --- a/hw/arm/smmuv3.c
+> +++ b/hw/arm/smmuv3.c
+> @@ -102,20 +102,34 @@ static void smmuv3_write_gerrorn(SMMUv3State *s, uint32_t new_gerrorn)
+>      trace_smmuv3_write_gerrorn(toggled & pending, s->gerrorn);
+>  }
+>  
+> -static inline MemTxResult queue_read(SMMUQueue *q, void *data)
+> +static inline MemTxResult queue_read(SMMUQueue *q, Cmd *cmd)
+>  {
+>      dma_addr_t addr = Q_CONS_ENTRY(q);
+> +    MemTxResult ret;
+> +    int i;
+>  
+> -    return dma_memory_read(&address_space_memory, addr, data, q->entry_size,
+> -                           MEMTXATTRS_UNSPECIFIED);
+> +    ret = dma_memory_read(&address_space_memory, addr, cmd, sizeof(Cmd),
+> +                          MEMTXATTRS_UNSPECIFIED);
+> +    if (ret != MEMTX_OK) {
+> +        return ret;
+> +    }
+> +    for (i = 0; i < ARRAY_SIZE(cmd->word); i++) {
+> +        le32_to_cpus(&cmd->word[i]);
+> +    }
+> +    return ret;
+>  }
+>  
+> -static MemTxResult queue_write(SMMUQueue *q, void *data)
+> +static MemTxResult queue_write(SMMUQueue *q, Evt *evt_in)
+>  {
+>      dma_addr_t addr = Q_PROD_ENTRY(q);
+>      MemTxResult ret;
+> +    Evt evt = *evt_in;
+> +    int i;
+>  
+> -    ret = dma_memory_write(&address_space_memory, addr, data, q->entry_size,
+> +    for (i = 0; i < ARRAY_SIZE(evt.word); i++) {
+> +        cpu_to_le32s(&evt.word[i]);
+> +    }
+> +    ret = dma_memory_write(&address_space_memory, addr, &evt, sizeof(Evt),
+>                             MEMTXATTRS_UNSPECIFIED);
+>      if (ret != MEMTX_OK) {
+>          return ret;
+> @@ -298,7 +312,7 @@ static void smmuv3_init_regs(SMMUv3State *s)
+>  static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
+>                          SMMUEventInfo *event)
+>  {
+> -    int ret;
+> +    int ret, i;
+>  
+>      trace_smmuv3_get_ste(addr);
+>      /* TODO: guarantee 64-bit single-copy atomicity */
+> @@ -311,6 +325,9 @@ static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
+>          event->u.f_ste_fetch.addr = addr;
+>          return -EINVAL;
+>      }
+> +    for (i = 0; i < ARRAY_SIZE(buf->word); i++) {
+> +        le32_to_cpus(&buf->word[i]);
+> +    }
+>      return 0;
+>  
+>  }
+> @@ -320,7 +337,7 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, uint32_t ssid,
+>                         CD *buf, SMMUEventInfo *event)
+>  {
+>      dma_addr_t addr = STE_CTXPTR(ste);
+> -    int ret;
+> +    int ret, i;
+>  
+>      trace_smmuv3_get_cd(addr);
+>      /* TODO: guarantee 64-bit single-copy atomicity */
+> @@ -333,6 +350,9 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, uint32_t ssid,
+>          event->u.f_ste_fetch.addr = addr;
+>          return -EINVAL;
+>      }
+> +    for (i = 0; i < ARRAY_SIZE(buf->word); i++) {
+> +        le32_to_cpus(&buf->word[i]);
+> +    }
+>      return 0;
+>  }
+>  
+> @@ -569,7 +589,7 @@ static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
+>          return -EINVAL;
+>      }
+>      if (s->features & SMMU_FEATURE_2LVL_STE) {
+> -        int l1_ste_offset, l2_ste_offset, max_l2_ste, span;
+> +        int l1_ste_offset, l2_ste_offset, max_l2_ste, span, i;
+>          dma_addr_t l1ptr, l2ptr;
+>          STEDesc l1std;
+>  
+> @@ -593,6 +613,9 @@ static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
+>              event->u.f_ste_fetch.addr = l1ptr;
+>              return -EINVAL;
 >          }
->
->          blk_size =3D blk_getlength(sd->blk);
-> -        if (blk_size > 0 && !is_power_of_2(blk_size)) {
-> +        if (sd->bypass_pow2_size_check) {
-> +            warn_report_once("Unsupported property '%s' enabled: some gu=
-ests"
-> +                             " might trigger data corruption and/or cras=
-h"
-> +                             " (thus this process is vulnerable to"
-> +                             " CVE-2020-13253).",
-> +                             PROP_NAME_BYPASS_POW2_SIZE_CHECK);
+> +        for (i = 0; i < ARRAY_SIZE(l1std.word); i++) {
+> +            le32_to_cpus(&l1std.word[i]);
+> +        }
+>  
+>          span = L1STD_SPAN(&l1std);
+>  
 
-If the guest really can trigger an overrun of a QEMU buffer,
-then we shouldn't be letting users opt in to this behaviour.
-("Buggy guest might do something odd that causes it to get confused
-or crash or just not get data out of the SD card" is fine.)
-Again, we need to figure out what's actually happening here...
-
-> +        } else if (blk_size > 0 && !is_power_of_2(blk_size)) {
->              int64_t blk_size_aligned =3D pow2ceil(blk_size);
->              char *blk_size_str;
->
-> @@ -2161,11 +2171,15 @@ static void sd_realize(DeviceState *dev, Error **=
-errp)
->
->              blk_size_str =3D size_to_str(blk_size_aligned);
->              error_append_hint(errp,
-> -                              "SD card size has to be a power of 2, e.g.=
- %s.\n"
-> +                              "SD card size should be a power of 2, e.g.=
- %s.\n"
->                                "You can resize disk images with"
->                                " 'qemu-img resize <imagefile> <new-size>'=
-\n"
->                                "(note that this will lose data if you mak=
-e the"
-> -                              " image smaller than it currently is).\n",
-> +                              " image smaller than it currently is).\n"
-> +                              "Note: you can disable this check by setti=
-ng"
-> +                              " the '" PROP_NAME_BYPASS_POW2_SIZE_CHECK =
-"'"
-> +                              " global property but this is DANGEROUS"
-> +                              " and unsupported.\n",
-
-This is overly vague. In particular, we shouldn't
-save the specifics of what the user is opting into
-for when the user has actually enabled the x- option...
-
-thanks
--- PMM
 
