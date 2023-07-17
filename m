@@ -2,72 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1016756693
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B523F7566AE
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:41:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLPM9-0005IG-K5; Mon, 17 Jul 2023 10:37:45 -0400
+	id 1qLPPk-0007VW-Sh; Mon, 17 Jul 2023 10:41:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qLPM7-0005CP-6P
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:37:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qLPM5-0007TN-ME
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:37:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689604661;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vEssm2sLtnnIBDjbvwJOicuz5QFEiJJzhxWCsAGtIT8=;
- b=HMLsPHUNGpPPmmwXALZxStemdOutEqd+p1oSifCT431qQr06CMw3mwIJRDpd5Xa0V+DUOS
- ZghhfH7fP6P9PSsFgmQl8W2mBdw3SHhveHavs5IyaPRxVDO8IADpOOSM9RSZ/Y5lDz4SKI
- yO7dIg4L/eZ4bSZyI5UYgjAebnq+3ew=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-6-xmOd2yuHO4akHmpcqCo3Xg-1; Mon, 17 Jul 2023 10:37:39 -0400
-X-MC-Unique: xmOd2yuHO4akHmpcqCo3Xg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5A99D1044599;
- Mon, 17 Jul 2023 14:37:38 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.125])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CEC1F40C2063;
- Mon, 17 Jul 2023 14:37:37 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Richard Henderson <rth@twiddle.net>,
- qemu-block@nongnu.org, Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Luk=C3=A1=C5=A1=20Doktor?= <ldoktor@redhat.com>
-Subject: [PULL for-8.1 1/1] block/nvme: invoke blk_io_plug_call() outside
- q->lock
-Date: Mon, 17 Jul 2023 10:37:33 -0400
-Message-Id: <20230717143733.448253-2-stefanha@redhat.com>
-In-Reply-To: <20230717143733.448253-1-stefanha@redhat.com>
-References: <20230717143733.448253-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qLPPV-0007Ut-NG
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:41:14 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qLPPT-0008Lx-Mi
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:41:13 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-51e57870becso5994898a12.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 07:41:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689604870; x=1692196870;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=HZBnnMSxdnOCFYuxIjDI0aDpZIA+Qulwy44M3y5FFyM=;
+ b=nUmMUrr9DUE25wRg8PYydZY2YBXLaXLukaK8cMqILFxMNQ+OdN/8i8++vFq2NrX0RM
+ QtUa+XeUaGXkcG7TgbgDZdWtyhIjHcTdx+jdztguLFZm5/+LJwalcqK3tzWlGjoHwkst
+ 7sAbzaDWcZHmxuWey1DswJrP+4YFkEqYKTnX8Zc9JD4gDiVWbEOL1tOJOv07dYWM7q9R
+ zs47VOXGU2zs6AoyAuSMWiEGb/x5jpVCCHUW8TlfSm5aDmH5BM7g3HnvSOQwEJthpsHp
+ eOym4ZqsBk7osGTGOAgjd9mByUNCqxVwgCtkfKBHw3NPHZ6Nx1F9JySi0GhnpNArWJCm
+ uZIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689604870; x=1692196870;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HZBnnMSxdnOCFYuxIjDI0aDpZIA+Qulwy44M3y5FFyM=;
+ b=ZAZvskxn/RSBBvdezTZIecTR7jNIyNdL4cO0oNSyYW59ZSwyPj6oqteVkIGizXpp3q
+ wDK07Zdqk++paDE4ed9Kq/tb+nQE3uDrW8u8kp3snoVw35Emlyp0yRiEVbz2DOomt9it
+ 0xwIfw4yTy4WeK0WiN48RnqV3mI3Xd7TRNjRfIFhzXOBGJxoKJEA7xyqctn7RtlPNrBo
+ aJlX+XTgJohrhnIAW47BQP/vJjMePUOqAdJRL8wLuGyaXpJPT5DbWVfTyfsBdZ32Gj0i
+ bx+2YXKWgwKI52nwDV3xXwkUWxZjP4zq9Bm9HrhjPV1rL+GtsCpfSnAD/bnqALqWGuOJ
+ RV1A==
+X-Gm-Message-State: ABy/qLZFsYLVkknycm9AxI3xpq8GjB1uul//Gunycu+hO75R6yT1QaE+
+ fELnTY2PJu43GBnJ+0U5Y1VNJwDV3Hm0PlTjfrf4dg==
+X-Google-Smtp-Source: APBJJlE6F3Q1062/5VI1bowNP1uZyc1P/YTEMJmaOV0E5j3newzFaRRsQk1RM0l9XLMYhiDauuN3ObSlZ2uHnhvmNT0=
+X-Received: by 2002:aa7:cf8b:0:b0:51d:8aaf:5adc with SMTP id
+ z11-20020aa7cf8b000000b0051d8aaf5adcmr11725280edx.14.1689604870109; Mon, 17
+ Jul 2023 07:41:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230714070931.23476-1-j@getutm.app>
+ <20230714070931.23476-12-j@getutm.app>
+ <581b037d-ccb7-8df7-8946-df8198cb04e6@linux.ibm.com>
+ <fe8ea892-0690-2308-5036-f31e10da0351@linux.ibm.com>
+ <CA+E+eSCC2F-2bsO7OiCoS0weo7bh4daL7M5GYxa=6r-6qKcGmg@mail.gmail.com>
+ <67a2b78d-8eea-7c9c-cf1b-50444e481006@linux.ibm.com>
+ <562ec838-2714-2bb2-d1a5-7b98bb43a60b@linux.ibm.com>
+ <CA+E+eSC_Hg5zxepaeCZTNiYS8oq6hNUqO8Pijft45O7vhD2q6Q@mail.gmail.com>
+ <78cee616-94fa-baba-8dad-1dbcbbbbc45a@linux.ibm.com>
+In-Reply-To: <78cee616-94fa-baba-8dad-1dbcbbbbc45a@linux.ibm.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 17 Jul 2023 15:40:58 +0100
+Message-ID: <CAFEAcA9FKqFs5r2Q_D4FkZEf1j7u4uRD0QS0AwM4L_wtdvZiNg@mail.gmail.com>
+Subject: Re: [PATCH v2 11/11] tpm_crb: support restoring older vmstate
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, 
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,64 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-blk_io_plug_call() is invoked outside a blk_io_plug()/blk_io_unplug()
-section while opening the NVMe drive from:
+On Fri, 14 Jul 2023 at 20:13, Stefan Berger <stefanb@linux.ibm.com> wrote:
+> Unfortunately the CRB device is being used by x86 on some distros
+> and the expectation is that this existing device can also downgrade
+> to a previous version of QEMU I would say. I have read people migrating
+> from RHEL 9.x even to RHEL 8.x and the expectation is that this works.
 
-  nvme_file_open() ->
-  nvme_init() ->
-  nvme_identify() ->
-  nvme_admin_cmd_sync() ->
-  nvme_submit_command() ->
-  blk_io_plug_call()
+If you want both-ways migration compatibility for the
+change of implementation to use a RAM-backed MR rather
+than an MMIO MR:
 
-blk_io_plug_call() immediately invokes the given callback when the
-current thread is not plugged, as is the case during nvme_file_open().
+ * make sure the new RAM-backed memory region is created
+   using a memory_region_init_*_nomigrate() function so that
+   we don't try to migrate the RAM as RAM
+ * keep the regs array in the device struct, and add a comment
+   that it's only used during migration
+ * keep the vmstate entry for the regs array as it is
+ * in the device's vmstate pre_save hook, copy from the
+   backing RAM into the regs array (watch out for
+   endianness issues :-))
+ * in the vmstate post_load hook, copy from the regs
+   array into the backing RAM
 
-Unfortunately, nvme_submit_command() calls blk_io_plug_call() with
-q->lock still held:
-
-    ...
-    q->sq.tail = (q->sq.tail + 1) % NVME_QUEUE_SIZE;
-    q->need_kick++;
-    blk_io_plug_call(nvme_unplug_fn, q);
-    qemu_mutex_unlock(&q->lock);
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-nvme_unplug_fn() deadlocks trying to acquire q->lock because the lock is
-already acquired by the same thread. The symptom is that QEMU hangs
-during startup while opening the NVMe drive.
-
-Fix this by moving the blk_io_plug_call() outside q->lock. This is safe
-because no other thread runs code related to this queue and
-blk_io_plug_call()'s internal state is immune to thread safety issues
-since it is thread-local.
-
-Reported-by: Lukáš Doktor <ldoktor@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Tested-by: Lukas Doktor <ldoktor@redhat.com>
-Message-id: 20230712191628.252806-1-stefanha@redhat.com
-Fixes: f2e590002bd6 ("block/nvme: convert to blk_io_plug_call() API")
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- block/nvme.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/block/nvme.c b/block/nvme.c
-index 7ca85bc44a..b6e95f0b7e 100644
---- a/block/nvme.c
-+++ b/block/nvme.c
-@@ -501,8 +501,9 @@ static void nvme_submit_command(NVMeQueuePair *q, NVMeRequest *req,
-            q->sq.tail * NVME_SQ_ENTRY_BYTES, cmd, sizeof(*cmd));
-     q->sq.tail = (q->sq.tail + 1) % NVME_QUEUE_SIZE;
-     q->need_kick++;
-+    qemu_mutex_unlock(&q->lock);
-+
-     blk_io_plug_call(nvme_unplug_fn, q);
--    qemu_mutex_unlock(&q->lock);
- }
- 
- static void nvme_admin_cmd_sync_cb(void *opaque, int ret)
--- 
-2.40.1
-
+-- PMM
 
