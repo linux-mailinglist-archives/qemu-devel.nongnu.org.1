@@ -2,82 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1639756500
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 15:29:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32479756552
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 15:44:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLOH9-0006wW-2L; Mon, 17 Jul 2023 09:28:31 -0400
+	id 1qLOVc-0003ko-R8; Mon, 17 Jul 2023 09:43:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qLOH6-0006wK-GM
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 09:28:28 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qLOH3-0003Z7-T0
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 09:28:28 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id AC3FC1FDB2;
- Mon, 17 Jul 2023 13:28:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1689600504; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hTLc1UxIIp82SYJGm5WEwdIOzgzqPKyQbYyK55TVapo=;
- b=JIuGVcX9DqyBYgxeYH4YTSCR92L4KPaaL2Emf4pcFxQ9yN0gAHpqb8KJNUZ1Z1B0uVAGPV
- sXgwXtPQaZ7Af+CG1jTHBYPNjrrFCEomlQqBAnA9w05lZfsC5fK790IrIjEn3dVI5SEKpk
- emdwo8Oubakk/0o7/NS78f7BnIUgqLo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1689600504;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hTLc1UxIIp82SYJGm5WEwdIOzgzqPKyQbYyK55TVapo=;
- b=qmbKtNBWimDD7y1UdUVgcyeg94FzILq3csxQe3FUw/gHP19m8FDKK0T1aWVqDnJ8JVNqZ0
- 3uIWXSnOJk691tDA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 573BF13276;
- Mon, 17 Jul 2023 13:28:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id JWllE/hBtWQxTQAAMHmgww
- (envelope-from <cfontana@suse.de>); Mon, 17 Jul 2023 13:28:24 +0000
-Message-ID: <616b2deb-a047-9cd0-8e0f-956dad6466fa@suse.de>
-Date: Mon, 17 Jul 2023 15:28:23 +0200
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1qLOVY-0003kG-Ui
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 09:43:24 -0400
+Received: from mx24.baidu.com ([111.206.215.185] helo=baidu.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1qLOVU-0000VN-6q
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 09:43:24 -0400
+From: "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+To: =?utf-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kraxel@redhat.com"
+ <kraxel@redhat.com>, "mark.cave-ayland@ilande.co.uk"
+ <mark.cave-ayland@ilande.co.uk>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
+ <berrange@redhat.com>
+Subject: Re: [PATCH] vnc,ps2: fix the PS/2 mouse work badly when connect VNC
+Thread-Topic: [PATCH] vnc,ps2: fix the PS/2 mouse work badly when connect VNC
+Thread-Index: AQHZuFrFNlltFg4MfUmGmCXkRR+pm6+9DRuAgACaiID//4BWgIAAwmOA//9/ewCAAI5AAA==
+Date: Mon, 17 Jul 2023 13:41:34 +0000
+Message-ID: <3AC28C88-5682-4EBD-8996-5125FAF5F2A4@baidu.com>
+References: <20230717025936.71456-1-gaoshiyuan@baidu.com>
+ <CAMxuvaz4NwRfCoWGVBofihBsZnBya7cv3Cq7w-Y6Wzd0mPoDQQ@mail.gmail.com>
+ <EF20B207-4AAE-4A30-8D0B-CB208867756A@baidu.com>
+ <CAMxuvaxssGvBLb-gFFEibDcQ+MJyorDJi-xSMTBVRCNyVyFVqA@mail.gmail.com>
+ <F68DBAB0-B1CC-45FC-B1A7-8C62A5885031@baidu.com>
+ <CAMxuvawBOLcS8SQzPiVgMuyMXFadrqrMzcuA1ddB-uaDd1qZgA@mail.gmail.com>
+In-Reply-To: <CAMxuvawBOLcS8SQzPiVgMuyMXFadrqrMzcuA1ddB-uaDd1qZgA@mail.gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.22.192.69]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <FC07B9B9E1D8DA4EB4B0826EB021D1E5@internal.baidu.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: x86 custom apicid assignments [Was: Re: [PATCH v7 0/2] Remove
- EPYC mode apicid decode and use generic decode]
-Content-Language: en-US
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Babu Moger <babu.moger@amd.com>, pbonzini@redhat.com, rth@twiddle.net,
- ehabkost@redhat.com, qemu-devel@nongnu.org, mst@redhat.com,
- Peter Maydell <peter.maydell@linaro.org>
-References: <159897580089.30750.12581669374705391794.stgit@naples-babu.amd.com>
- <e6f25b8a-2a1e-0b40-c848-bbc2f13fdc5f@suse.de>
- <20230714115107.3d2e99ea@imammedo.users.ipa.redhat.com>
- <cf647180-d562-d986-e2dd-a818f127eb7e@suse.de>
- <20230717123753.75050c16@imammedo.users.ipa.redhat.com>
-From: Claudio Fontana <cfontana@suse.de>
-In-Reply-To: <20230717123753.75050c16@imammedo.users.ipa.redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=cfontana@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-FEAS-Client-IP: 172.31.51.20
+X-FE-Last-Public-Client-IP: 100.100.100.60
+X-FE-Policy-ID: 15:10:21:SYSTEM
+Received-SPF: pass client-ip=111.206.215.185;
+ envelope-from=gaoshiyuan@baidu.com; helo=baidu.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,280 +72,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/17/23 12:37, Igor Mammedov wrote:
-> On Mon, 17 Jul 2023 10:32:33 +0200
-> Claudio Fontana <cfontana@suse.de> wrote:
-> 
->> Hello Igor,
->>
->> thanks for getting back to me on this,
->>
->> On 7/14/23 11:51, Igor Mammedov wrote:
->>> On Wed, 5 Jul 2023 10:12:40 +0200
->>> Claudio Fontana <cfontana@suse.de> wrote:
->>>   
->>>> Hi all, partially resurrecting an old thread.
->>>>
->>>> I've seen how for Epyc something special was done in the past in terms of apicid assignments based on topology, which was then reverted apparently,
->>>> but I wonder if something more general would be useful to all?
->>>>
->>>> The QEMU apicid assignments first of all do not seem to match what is happening on real hardware.  
->>>
->>> QEMU typically does generate valid APIC IDs
->>> it however doesn't do a good job when using odd number of cores and/or NUMA enabled cases.  
->>
->>
->> Right, this is what I meant, the QEMU assignment is generally a valid choice, it just seems to differ from what (some) hardware/firmware does.
->>
->>
->>
->>
->>> (That is what Babu have attempted to fix, but eventually that have been dropped for
->>> reasons described in quoted cover letter)
->>>   
->>>> Functionally things are ok, but then when trying to investigate issues, specifically in the guest kernel KVM PV code (arch/x86/kernel/kvm.c),
->>>> in some cases the actual apicid values in relationship to the topology do matter,  
->>>
->>> Care to point out specific places you are referring to?  
->>
->>
->> What we wanted to do was to reproduce an issue that only happened when booting our distro in the Cloud,
->> but did not instead appear by booting locally (neither on bare metal nor under QEMU/KVM).
->>
->> In the end, after a lot of slow-turnaround research, the issue we encountered was the already fixed:
->>  
->> commit c15e0ae42c8e5a61e9aca8aac920517cf7b3e94e
->> Author: Li RongQing <lirongqing@baidu.com>
->> Date:   Wed Mar 9 16:35:44 2022 +0800
->>
->>     KVM: x86: fix sending PV IPI
->>     
->>     If apic_id is less than min, and (max - apic_id) is greater than
->>     KVM_IPI_CLUSTER_SIZE, then the third check condition is satisfied but
->>     the new apic_id does not fit the bitmask.  In this case __send_ipi_mask
->>     should send the IPI.
->>     
->>     This is mostly theoretical, but it can happen if the apic_ids on three
->>     iterations of the loop are for example 1, KVM_IPI_CLUSTER_SIZE, 0.
->>     
->>     Fixes: aaffcfd1e82 ("KVM: X86: Implement PV IPIs in linux guest")
->>     Signed-off-by: Li RongQing <lirongqing@baidu.com>
->>     Message-Id: <1646814944-51801-1-git-send-email-lirongqing@baidu.com>
->>     Cc: stable@vger.kernel.org
->>     Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->>
->>
->> But this took a very long time to investigate, because the KVM PV code only misbehaves with the old unpatched algorithm during boot
->> if it encounters a specific sequence of ACPI IDs,
->> where countrary to the comment in the commit, the issue can become very practical depending on such ACPI IDs assignments as seen by the guest KVM PV code.
->>
->>>
->>> KVM is not the only place where it might matter, it affects topo/numa code on guest side as well. 
->>>   
->>>> and currently there is no way (I know of), of supplying our own apicid assignment, more closely matching what happens on hardware.
->>>>
->>>> This has been an issue when debugging guest images in the cloud, where being able to reproduce issues locally would be very beneficial as opposed to using cloud images as the feedback loop,
->>>> but unfortunately QEMU cannot currently create the right apicid values to associate to the cpus.  
->>>
->>> Indeed EPYC APIC encoding mess increases support cases load downstream,
->>> but as long as one has access to similar host hw, one should be able
->>> to reproduce the issue locally.  
->>
->> Unfortunately this does not seem to be always the case, with the case in point being the kvm pv code,
->> but I suspect other buggy guest code whose behaviour depends on APICIds and APICId sequences must exist in more areas of the kernel.
->>
->> In order to properly reproduce these kinds of issues locally, being able to assign desired APICIDs to cpus in VMs would come very handy.
->>
->>
->>> However I would expect end result on such support end with an advice
->>> to change topo/use another CPU model.
->>>
->>> (what we lack is a documentation what works and what doesn't,
->>> perhaps writing guidelines would be sufficient to steer users
->>> to the usable EPYC configurations)  
->>
->>
->> In our case we encountered issues on Intel too.
-> 
-> on Intel I've seen issues only in cases where specified topo wasn't
-> really supported by given CPU model (Intel CPUs are far from perfect
-> and kernel has a few quirks when it comes to handling topo (
-> the same as it has quirks for AMD cpus)).
-> On QEMU level we hasn't bothered implementing topo quirks
-> (modulo EPYC attempt, which we've later decided not worth of
-> complexity of supporting it)
-> 
-> 
->>>   
->>>> Do I understand the issue correctly, comments, ideas?
->>>> How receptive the project would be for changes aimed at providing a custom assignment of apicids to cpus, regardless of Intel or AMD?  
->>>
->>> It's not that simple to just set custom APIC ID in register and be done with it,  
->>
->>
->> right, I am under no illusion that this is going to be easy.
->>
->>
->>> you'll likely break (from the top of my head: some CPUID leaves might
->>> depend on it, ACPI tables, NUMA mapping, KVM's vcpu_id).
->>>
->>> Current topo code aims to work on information based on '-smp'/'-numa',
->>> all through out QEMU codebase.  
->>
->>
->> just a thought, that information "-smp, -numa" could be optionally enriched with additional info on apicids assignment
->>
->>
->>> If however we were let user set APIC ID (which is somehow
->>> correct), we would need to take reverse steps to decode that
->>> (in vendor specific way) and incorporate resulting topo into other
->>> code that uses topology info.
->>> That makes it quite messy, not to mention it's x86(AMD specific) and
->>> doesn't fit well with generalizing topo handling.
->>> So I don't really like this route.  
->>
->>
->> I don't think I am suggesting something like described in the preceding paragraph,
->> but instead I would think that with the user providing the full apicid assignment map, (in addition / as part of)  to the -smp, -numa options,
->> all other pieces would be derived from that (I suppose ACPI tables, cpuid leaves, and everything that the guest could see, plus the internal
->> QEMU conversion functions between apicids and cpu index in topology.h
-> 
-> As I read it, you described the same approach as me, just in different words.
-> 
-> ACPI ID, is a function of -smp/-numa (and sometimes -cpu, which we ignore atm).
-> Pushing APIC ID up to a user visible interface duplicates that information.
-> That's would be my main objection to the approach.
-
-
-The user would have to provide at least that specific "function", ie how those -smp and -numa map to apicids.
-
-
-> 
-> Also my educated guess tells me that it would even more complicate
-> already not easy to deal with topo code.
-> 
-> If you really wish QEMU emulate FOO hypervisor, create a dedicated
-> board for it, that behaves as FOO and that could generate the same
-> topology based on -smp/-numa. (That approach might be acceptable,
-> assuming it self-containing and doesn't complicate common code a lot)
-
-hmm interesting.
-
-> 
->>> (x86 cpus have apic_id property, so theoretically you can set it
->>> and with some minimal hacking lunch a guest, but then
->>> expect guest to be unhappy when ACPI ID goes out of sync with
->>> everything else. I would do that only for the sake of an experiment
->>> and wouldn't try to upstream that)  
->>
->> Right, it would all need to be consistent.
->>
->>>
->>> What I wouldn't mind is taking the 2nd stab at what Babu had tried
->>> do. Provided it manages to encode APIC ID for EPYC correctly and won't
->>> complicate code much (and still using -smp/-numa as the root source for
->>> topo configuration).  
->>
->>
->> For the specific use case I am thinking (debugging with a guest-visible topology that resembles a cloud one),
->> I don't think that the EPYC-specific work would be sufficient, it would need to be complemented in any case with Intel work,
->>
->> but I suppose that a more general solution of the user providing all mappings would be the best and easiest one for this debugging scenario.
-> 
-> All of that for the sake of debugging some thirdparty hypervisor
-> issues (which in my opinion doesn't benefit QEMU* at all).
-> So do we really need this in QEMU code-base?
-> 
-> I think about this use-case as 1-off thingy, where I can quickly hack
-> QEMU by hardcodding desired specifics to get where I want, but not
-> something that I would try to upstream as it's not useful for the project
-> in general.
-
-I don't think debugging cloud issues will be a one-off, I expect this problem to appear more and more,
-
-in any case thanks,
-
-Claudio
-
-> 
-> * under QEMU here I mean all the folks who have to read/touch/maintain
-> this code. (not to mention poor users who decided use this feature).
-> 
->> Thanks for your thoughts,
->>
->> Claudio
->>>>
->>>>
->>>> On 9/1/20 17:57, Babu Moger wrote:  
->>>>> To support some of the complex topology, we introduced EPYC mode apicid decode.
->>>>> But, EPYC mode decode is running into problems. Also it can become quite a
->>>>> maintenance problem in the future. So, it was decided to remove that code and
->>>>> use the generic decode which works for majority of the topology. Most of the
->>>>> SPECed configuration would work just fine. With some non-SPECed user inputs,
->>>>> it will create some sub-optimal configuration.
->>>>>
->>>>> Here is the discussion thread.
->>>>> https://lore.kernel.org/qemu-devel/c0bcc1a6-1d84-a6e7-e468-d5b437c1b254@amd.com/
->>>>> https://lore.kernel.org/qemu-devel/20200826143849.59f6970b@redhat.com/
->>>>>
->>>>> This series removes all the EPYC mode specific apicid changes and use the generic
->>>>> apicid decode.
->>>>> ---
->>>>> v7:
->>>>>  Eduardo has already queued 1-8 from the v6. Sending rest of the patches.
->>>>>  Fixed CPUID 800000ld based on Igor's comment and few text changes.
->>>>>  
->>>>> v6:
->>>>>  https://lore.kernel.org/qemu-devel/159889924378.21294.16494070903874534542.stgit@naples-babu.amd.com/
->>>>>  Found out that numa configuration is not mandatory for all the EPYC model topology.
->>>>>  We can use the generic decode which works pretty well. Also noticed that
->>>>>  cpuid does not changes when the numa nodes change(NPS- Nodes per socket).
->>>>>  Took care of couple comments from Igor and Eduardo.
->>>>>  Thank you Igor, Daniel, David, Eduardo for your feedback.  
->>>>>
->>>>> v5:
->>>>>  https://lore.kernel.org/qemu-devel/159804762216.39954.15502128500494116468.stgit@naples-babu.amd.com/
->>>>>  Revert EPYC specific decode.
->>>>>  Simplify CPUID_8000_001E
->>>>>
->>>>> v4:
->>>>>   https://lore.kernel.org/qemu-devel/159744083536.39197.13827776633866601278.stgit@naples-babu.amd.com/
->>>>>   Not much of a change. Just added few text changes.
->>>>>   Error out configuration instead of warning if dies are not configured in EPYC.
->>>>>   Few other text changes to clarify the removal of node_id, nr_nodes and nodes_per_pkg.
->>>>>
->>>>> v3:
->>>>>   https://lore.kernel.org/qemu-devel/159681772267.9679.1334429994189974662.stgit@naples-babu.amd.com/#r
->>>>>   Added a new check to pass the dies for EPYC numa configuration.
->>>>>   Added Simplify CPUID_8000_001E patch with some changes suggested by Igor.
->>>>>   Dropped the patch to build the topology from CpuInstanceProperties.
->>>>>   TODO: Not sure if we still need the Autonuma changes Igor mentioned.
->>>>>   Needs more clarity on that.
->>>>>
->>>>> v2:
->>>>>   https://lore.kernel.org/qemu-devel/159362436285.36204.986406297373871949.stgit@naples-babu.amd.com/
->>>>>   Used the numa information from CpuInstanceProperties for building
->>>>>   the apic_id suggested by Igor.
->>>>>   Also did some minor code re-aarangement to take care of changes.
->>>>>   Dropped the patch "Simplify CPUID_8000_001E" from v1. Will send
->>>>>   it later.
->>>>>
->>>>> v1:
->>>>>  https://lore.kernel.org/qemu-devel/159164739269.20543.3074052993891532749.stgit@naples-babu.amd.com
->>>>>
->>>>> Babu Moger (2):
->>>>>       i386: Simplify CPUID_8000_001d for AMD
->>>>>       i386: Simplify CPUID_8000_001E for AMD
->>>>>
->>>>>
->>>>>  target/i386/cpu.c |  226 ++++++++++++++---------------------------------------
->>>>>  1 file changed, 61 insertions(+), 165 deletions(-)
->>>>>
->>>>> --
->>>>>     
->>>>  
->>>   
->>
-> 
-
+PiBIaQ0KPg0KPiBPbiBNb24sIEp1bCAxNywgMjAyMyBhdCA0OjUz4oCvUE0gR2FvLFNoaXl1YW4g
+PGdhb3NoaXl1YW5AYmFpZHUuY29tPiB3cm90ZToNCj4NCj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4g
+U28gbW92ZSB0aGUgZ3Vlc3QgbW91c2UgcG9pbnRlciB0byAoMCwgMCkgb2YgdGhlIHNjcmVlbiB3
+aGVuIGNvbm5lY3QNCj4gPiB0aGUNCj4gPiA+ID4gPiA+IFZOQywgYW5kIHRoZW4gbW92ZSB0aGUg
+bW91c2UgcG9pbnRlciB0byB0aGUgY3Vyc29yIG9mIFZOQyhhYnNvbHV0ZQ0KPiA+ID4gPiA+ID4g
+Y29vcmRpbmF0ZXMgYXJlIGFsc28gcmVsYXRpdmUgY29vcmRpbmF0ZXMpLg0KPiA+ID4gPiA+ID4N
+Cj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gSXQncyBoYXJkbHkgYSBzb2x1dGlvbiwgeW91IHN0aWxs
+IGhhdmUgbm8gY2x1ZSB3aGF0IHdpbGwgYmUgdGhlIGd1ZXN0DQo+ID4gPiA+IG1vdXNlDQo+ID4g
+PiA+ID4gcG9zaXRpb24uDQo+ID4gPiA+DQo+ID4gPiA+IFdlIGhhdmUgbm8gY2x1ZSB3aGF0IHdp
+bGwgYmUgdGhlIGd1ZXN0IG1vdXNlIHBvc2l0aW9uLCB3ZSBjYW4gbW92ZSB0aGUNCj4gPiA+ID4g
+Z3Vlc3QNCj4gPiA+ID4gbW91c2UgdG8gKDAsMCkgZWFjaCBjb25uZWN0IHRoZSBWTkMuIE5vdywg
+dGhlIGN1cnNvciBvZiBWTkMgd2lsbCBiZSB0aGUNCj4gPiA+ID4gcmVsYXRpdmUgY29vcmRpbmF0
+ZXMuIEluIGEgd2F5LCB0aGlzIGlzIGEgcXVpcmsgdG8ga25vdyB0aGUgZ3Vlc3QgbW91c2UNCj4g
+PiA+ID4gcG9zaXRpb24uDQo+ID4gPiA+DQo+ID4gPg0KPiA+ID4gVGhlcmUgaXMgbm8gZ3VhcmFu
+dGVlIHRoZSBndWVzdCBwb2ludGVyIHdpbGwgYmUgYXQgKDAsMCkgdGhvdWdoLCBhbmQgdGhhdA0K
+PiA+ID4gZG9lc24ndCBleHBsYWluIGhvdyB0aGF0IHdvdWxkIGhlbHAuIFdoaWNoIGNsaWVudCBh
+cmUgeW91IHVzaW5nPyBBcmUgeW91DQo+ID4gPiBkcmF3aW5nIHRoZSBndWVzdCBjdXJzb3I/IFRo
+aXMgY2FuJ3QgYmUgZG9uZSBjdXJyZW50bHkgd2l0aCB0aGUgbGFjayBvZiBhDQo+ID4gPiBtZXNz
+YWdlIHRvIHRlbGwgdGhlIGd1ZXN0IG1vdXNlIHBvc2l0aW9uLiAobW92aW5nIC8gc3luYy1pbmcg
+dGhlIGNsaWVudA0KPiA+ID4gY3Vyc29yIHBvc2l0aW9uIHdvdWxkIGJlIGV2ZW4gd29yc2UgaW4g
+bWFueSB3YXlzKQ0KPiA+DQo+ID4gU29ycnksIG15IGRlc2NyaXB0aW9uIGlzbid0IGFjY3VyYXRl
+Lg0KPiA+DQo+ID4gV2hlbiBjb25uZWN0IHRoZSB2bmMgc2VydmVyLA0KPiA+ICAgICB2bmNfY29u
+bmVjdA0KPiA+ICAgICAgIC0+IHZzLT5sYXN0X3ggPSAtMTsNCj4gPiAgICAgICAtPiB2cy0+bGFz
+dF95ID0gLTE7DQo+ID4NCj4gPiBtb3ZlIGNsaWVudCBjdXJzb3IgdG8gdm5jIHNjcmVlbiwNCj4g
+PiAgICAgdm5jX2NsaWVudF9pbw0KPiA+ICAgICAgIC0+dm5jX2NsaWVudF9yZWFkDQo+ID4gICAg
+ICAgICAtPnByb3RvY29sX2NsaWVudF9tc2cNCj4gPiAgICAgICAgICAgLT5wb2ludGVyX2V2ZW50
+KHgseSkNCj4gPiAgICAgICAgICAgICAtPiBxZW11X2lucHV0X3F1ZXVlX3JlbChjb24sIElOUFVU
+X0FYSVNfWCwgMCAtIHdpZHRoKTsNCj4gPiAgICAgICAgICAgICAtPiBxZW11X2lucHV0X3F1ZXVl
+X3JlbChjb24sIElOUFVUX0FYSVNfWSwgMCAtIGhlaWdodCk7DQo+ID4gICAgICAgICAgICAgLT4g
+eD0wLHk9MA0KPiA+ICAgICAgICAgICAgIC0+IHZzLT5sYXN0X3ggPSB4O3ZzLT5sYXN0X3kgPSB5
+Ow0KPiA+ICAgICAgICAgICAgIC0+IHFlbXVfaW5wdXRfZXZlbnRfc3luYyAgIC8vIHRoaXMgd2ls
+bCBpbmZvcm0gdGhlIGd1ZXN0IG1vdmUNCj4gPiB0byAoMCwgMCkNCj4gPg0KPiA+IHRoZSBuZXh0
+IGV2ZW50LA0KPiA+ICAgICAgICAgICAtPnBvaW50ZXJfZXZlbnQoeCx5KQ0KPiA+ICAgICAgICAg
+ICAgIC0+IHFlbXVfaW5wdXRfcXVldWVfcmVsKGNvbiwgSU5QVVRfQVhJU19YLCB4IC0gdnMtPmxh
+c3RfeCk7DQo+ID4gICAgICAgICAgICAgLT4gcWVtdV9pbnB1dF9xdWV1ZV9yZWwoY29uLCBJTlBV
+VF9BWElTX1gsIHggLSB2cy0+bGFzdF94KTsNCj4gPiAgICAgICAgICAgICAtPiBxZW11X2lucHV0
+X2V2ZW50X3N5bmMgICAgLy8gdGhpcyB3aWxsIGluZm9ybSB0aGUgZ3Vlc3QgZnJvbQ0KPiA+ICgw
+LDApIG1vdmUgdG8gKHgseSksDQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAvLyB0aGUNCj4gPiBjbGllbnQgY3Vyc29y
+IGFuZCBndWVzdCBtb3VzZSB3aWxsIHN5bmMuDQo+ID4NCj4NCj4gQWN0dWFsbHksIGl0IHdpbGwg
+YmUgKCB4IC0gdnMtPmxhc3RfeCwgeSAtIHZzLT5sYXN0X3kpLCBub3QgbmVjZXNzYXJpbHkgKHgs
+DQo+IHkpLCB1bmxlc3MgeW91IGFsc28gc2V0IGxhc3RfeCA9IDAgLyBsYXN0X3kgPSAwLg0KDQp5
+ZXMsIHNldCBsYXN0X3ggPSAwIC8gbGFzdF95ID0gMCBhbmQgb25seSB0aGUgZmlyc3QgdGltZSBl
+bnRlciBwb2ludGVyX2V2ZW50Lg0KDQogICAgICAgICBpZiAodnMtPmxhc3RfeCAhPSAtMSkgew0K
+ICAgICAgICAgICAgIHFlbXVfaW5wdXRfcXVldWVfcmVsKGNvbiwgSU5QVVRfQVhJU19YLCB4IC0g
+dnMtPmxhc3RfeCk7DQogICAgICAgICAgICAgcWVtdV9pbnB1dF9xdWV1ZV9yZWwoY29uLCBJTlBV
+VF9BWElTX1ksIHkgLSB2cy0+bGFzdF95KTsNCisgICAgICAgIH0gZWxzZSB7DQorICAgICAgICAg
+ICAgcWVtdV9pbnB1dF9xdWV1ZV9yZWwoY29uLCBJTlBVVF9BWElTX1gsIDAgLSB3aWR0aCk7DQor
+ICAgICAgICAgICAgcWVtdV9pbnB1dF9xdWV1ZV9yZWwoY29uLCBJTlBVVF9BWElTX1ksIDAgLSBo
+ZWlnaHQpOw0KKyAgICAgICAgICAgIHggPSAwOw0KKyAgICAgICAgICAgIHkgPSAwOw0KICAgICAg
+ICAgfQ0KICAgICAgICAgdnMtPmxhc3RfeCA9IHg7DQogICAgICAgICB2cy0+bGFzdF95ID0geTsN
+Cg0KPg0KPiBCdXQgZXZlbiB0aGVuLCB0aGVyZSBpcyBubyBndWFyYW50ZWUgdGhlIGd1ZXN0IHBv
+c2l0aW9uIHdpbGwgYmUgYSB4L3kuLi4NCj4NCg0KRW1tbSwgY29tcGFyZWQgdG8gdGhlIGN1cnJl
+bnQgaW1wbGVtZW50YXRpb24sIGl0IGlzIGF0IGxlYXN0IGdldHRpbmcgY2xvc2VyLg0KVGhlIGN1
+cnJlbnQgc3RhdGUgaXMgc2ltcGx5IHVuYmVhcmFibGUuDQoNCj4gSXQncyBiZWVuIGltcGxlbWVu
+dGVkIG9uIExpbnV4IFZNIGZvciBhIGxvbmcgd2hpbGUgKGZpcnN0IGluIHVzZXJzcGFjZSwNCj4g
+dGhlbiBpbiBrZXJuZWwgc2luY2UgfjIwMTUpLiBCdXQgSSBkb24ndCBrbm93IGFib3V0IHRoZSBX
+aW5kb3dzIHN1cHBvcnQsIGl0DQo+IGxvb2tzIGxpa2UgeW91IG5lZWQgYSBkcml2ZXIgc3VjaCBh
+cyBwcm92aWRlZCBieSBWTVdhdmUsIGJ1dCBpdCBzZWVtcw0KPiBjbG9zZWQtc291cmNlLi4uICBB
+dCB0aGlzIHBvaW50IGl0J3MgcHJvYmFibHkgYmV0dGVyIHRvIHVzZSB2aXJ0aW8taW5wdXQsDQo+
+IHdoaWNoIGhhcyBvcGVuLXNvdXJjZS9mcmVlIHdpbmRvd3MgZHJpdmVycy4NCg0KVGhhbmtzLCBJ
+IHRyaWVkIGluc3RhbGwgdm1tb3VzZSBkcml2ZXIgaW4gd2luZG93cyBzdWNjZXNzIGFuZCByZWJv
+b3QuIEhvd2V2ZXIgJ2luZm8gbWljZScgYXMNCmZvbGxvd3MgYW5kIGRvbid0IGhhdmUgdm1tb3Vz
+ZSAoYWJzb2x1dGUpLg0KDQoqIE1vdXNlICMyOiBRRU1VIFBTLzIgTW91c2UNCg0KVGhlIGd1ZXN0
+IG1vdXNlIGlzbid0IHN5bmMgd2l0aCBjbGllbnQgY3Vyc29yLi4uDQoNCg==
 
