@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DE175636D
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4593756378
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:56:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLNgj-0002QG-Q2; Mon, 17 Jul 2023 08:50:53 -0400
+	id 1qLNhQ-0002VT-5w; Mon, 17 Jul 2023 08:51:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLNdn-0008JK-V0
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:47:52 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1qLNdo-0008Q6-W6
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:47:55 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLNdl-0008T1-L9
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:47:51 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3fbea147034so40886085e9.0
+ id 1qLNdm-0008T3-4H
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:47:52 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-314172bac25so4371172f8f.3
  for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 05:47:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1689598068; x=1692190068;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=lc/JyiyZgpBbRhPJHv6Eck7fC3EzTyvUqeMAeNaID8o=;
- b=m06OfYyocoroxH3beXUbA1s4DD2mHijPyi0wsYU5/+LzvzhSWf2FG3pk9nFkC8iWvI
- 71kL4H+S5vLPqKTIDu2aockE0bTvlfGVZZM46h4kBfKGgDAFG9QQ21fAHwT4q+6yRLRa
- XK1T/Thqk9Qblc1q5hRH6d1NqZZ4BmqAVYB6mQcIvxwjteOS0RKZOqar2/HkPPX2zf2n
- eK1/ccnRXDmDrrYnKHMxZiYOYaP9HLLc4WRmTk681EaKRSFA0R9s15I32lvf0UPjK2aA
- WOKZa+LmtR2eOqjgF+bs1AJLjc5P+sXUITHsL88/icMJt1/xnsyCewqHHE4HLl54Wl2k
- s6YA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=Mgagk+e6MpB3ekgnXPZSkT6Pl5UPW0SEYnhBOt/GBFg=;
+ b=wzCedMEseK9OTNg8QzVTmoGR9agSjno1fRQ1ZAVtbI77K/AV2mrrOrsVLkAeseCvAz
+ fwuT/5ua9E43cEcSRKfI2wRNKLcdCN7/DgpEScZtEwAFbIcdnr6Y2eNkBqodMKoU3wRJ
+ QJaoLvkVqVAcIv3MAcKgRbNyjh8Mgdnak4PfCBKwjJ4xveHAW7Z4MjVaurFv+ho3AFbV
+ i6LP7byXDBVF3cmlVRqC3WEeO5y7i6+y7T44ClcczX1RofbIy8nvQ+EZw7glVZQFK932
+ ImacDfzmJitd7fsvScxs668crL2y5zmWQi7U9HSqF9uNRwRPLD9Tm4i8DsI/YX+fRZun
+ Lz0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1689598068; x=1692190068;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lc/JyiyZgpBbRhPJHv6Eck7fC3EzTyvUqeMAeNaID8o=;
- b=DEh+1vZKSU5lDcRdBSJ6WkbJhhtn5CHRcvhFOCp0MRO+8DJBhLuqd3J34imk5HXfJ5
- B1lr8U8HRulvP+mY4uaXeZXJxURlUBPw8o/yqfPLgFENJo++zngAb723wz+XbrdxSMfc
- AG9TFouCXtta0Vbt9fYWumxBeVhTc4LhaGDM8EfiEkwze/EUXtp38UjZAaBXyCaiL99L
- LiJzgGURMARDuJQuMhlFPKRq0kXnm74OByhzCRau1W3OiJ5UcXdvM8rBmeF8oMonL9MJ
- fAPg9QEPbfAY+++HdFIBSPtfRNMKO+VEwl5EINC6FpPydE5MWOUH6oqM1NKp/J+4cIXi
- 5atQ==
-X-Gm-Message-State: ABy/qLZPXrTxBxJAgPl6vxfiXRzEnr+NpgIPTfirsP9Vx4q5/akuxI8+
- /tC+1J2LC9x/KsZLZfLtsQGmuWX2eTuDDK06Kts=
-X-Google-Smtp-Source: APBJJlG8DPwiv2dfmVoxVRzmzWoZx4lF9GDA9Xgl3oCL0y0zYwAP8l+EbEQn+0k7JR0SxBSegnCtLQ==
-X-Received: by 2002:a5d:4482:0:b0:314:2b0a:dabe with SMTP id
- j2-20020a5d4482000000b003142b0adabemr9067949wrq.30.1689598068035; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Mgagk+e6MpB3ekgnXPZSkT6Pl5UPW0SEYnhBOt/GBFg=;
+ b=J9yegF//1B50ZcEb2hCxwvNzg4dyC8wHvm7xTYHfNhHA6+bjyU225+Sj8WM86U/dsM
+ 02pTokq+XsIph3wtcZzgPSFtC/0wU46XwONdWNx7vJE73DX7jdsqKRTdOBTbsW8Dit70
+ KfCUjS6B5WHxGfxxkX0qs/p4WtexR4ZT8o9B7IBdXWeGD0LZm+O+BVqQaJD06ZghANOa
+ aOUlkn8BbhMe4qhac2snM6usiuGFdc85Vm0BbaEzocoaQWcfYmC3HE83L9kvVyKKF/wr
+ QoEYHFKUuirNtFWhb0mwAT5jtabFCHrTckZ+HsRmM/INEvGAVyQLZfuJdM6kX2ha1vrq
+ dXfQ==
+X-Gm-Message-State: ABy/qLaJUo1YexzeLh8QmHIfK3aKPazAnt6XNJchw9beHy2bLtj+TWnE
+ Naw+zRL1AMCIghonU9wsmhnQVDHYg3TbFgZcJws=
+X-Google-Smtp-Source: APBJJlGOW9EcncmODijF1etGkA8Uu8pvtnwAUGXbJ6fQ+KIxZIhLU5HeSuZ65hATSvONFZSSfbK7Gw==
+X-Received: by 2002:a5d:50c8:0:b0:314:20ee:2de7 with SMTP id
+ f8-20020a5d50c8000000b0031420ee2de7mr9098085wrt.11.1689598068398; 
  Mon, 17 Jul 2023 05:47:48 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- v16-20020a5d6790000000b003112ab916cdsm19337737wru.73.2023.07.17.05.47.47
+ v16-20020a5d6790000000b003112ab916cdsm19337737wru.73.2023.07.17.05.47.48
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 05:47:47 -0700 (PDT)
+ Mon, 17 Jul 2023 05:47:48 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/7] target-arm queue
-Date: Mon, 17 Jul 2023 13:47:39 +0100
-Message-Id: <20230717124746.759085-1-peter.maydell@linaro.org>
+Subject: [PULL 1/7] hw/arm/sbsa-ref: set 'slots' property of xhci
+Date: Mon, 17 Jul 2023 13:47:40 +0100
+Message-Id: <20230717124746.759085-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230717124746.759085-1-peter.maydell@linaro.org>
+References: <20230717124746.759085-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,51 +90,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A last small test of bug fixes before rc1.
+From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
 
-thanks
--- PMM
+This extends the slots of xhci to 64, since the default xhci_sysbus
+just supports one slot.
 
-The following changes since commit ed8ad9728a9c0eec34db9dff61dfa2f1dd625637:
+Signed-off-by: Wang Yuquan <wangyuquan1236@phytium.com.cn>
+Signed-off-by: Chen Baozi <chenbaozi@phytium.com.cn>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Message-id: 20230710063750.473510-2-wangyuquan1236@phytium.com.cn
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ hw/arm/sbsa-ref.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-  Merge tag 'pull-tpm-2023-07-14-1' of https://github.com/stefanberger/qemu-tpm into staging (2023-07-15 14:54:04 +0100)
+diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+index 64e1cbce171..bc89eb48062 100644
+--- a/hw/arm/sbsa-ref.c
++++ b/hw/arm/sbsa-ref.c
+@@ -611,6 +611,7 @@ static void create_xhci(const SBSAMachineState *sms)
+     hwaddr base = sbsa_ref_memmap[SBSA_XHCI].base;
+     int irq = sbsa_ref_irqmap[SBSA_XHCI];
+     DeviceState *dev = qdev_new(TYPE_XHCI_SYSBUS);
++    qdev_prop_set_uint32(dev, "slots", XHCI_MAXSLOTS);
+ 
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
+     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
+-- 
+2.34.1
 
-are available in the Git repository at:
-
-  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20230717
-
-for you to fetch changes up to c2c1c4a35c7c2b1a4140b0942b9797c857e476a4:
-
-  hw/nvram: Avoid unnecessary Xilinx eFuse backstore write (2023-07-17 11:05:52 +0100)
-
-----------------------------------------------------------------
-target-arm queue:
- * hw/arm/sbsa-ref: set 'slots' property of xhci
- * linux-user: Remove pointless NULL check in clock_adjtime handling
- * ptw: Fix S1_ptw_translate() debug path
- * ptw: Account for FEAT_RME when applying {N}SW, SA bits
- * accel/tcg: Zero-pad PC in TCG CPU exec trace lines
- * hw/nvram: Avoid unnecessary Xilinx eFuse backstore write
-
-----------------------------------------------------------------
-Peter Maydell (5):
-      linux-user: Remove pointless NULL check in clock_adjtime handling
-      target/arm/ptw.c: Add comments to S1Translate struct fields
-      target/arm: Fix S1_ptw_translate() debug path
-      target/arm/ptw.c: Account for FEAT_RME when applying {N}SW, SA bits
-      accel/tcg: Zero-pad PC in TCG CPU exec trace lines
-
-Tong Ho (1):
-      hw/nvram: Avoid unnecessary Xilinx eFuse backstore write
-
-Yuquan Wang (1):
-      hw/arm/sbsa-ref: set 'slots' property of xhci
-
- accel/tcg/cpu-exec.c      |  4 +--
- accel/tcg/translate-all.c |  2 +-
- hw/arm/sbsa-ref.c         |  1 +
- hw/nvram/xlnx-efuse.c     | 11 ++++--
- linux-user/syscall.c      | 12 +++----
- target/arm/ptw.c          | 90 +++++++++++++++++++++++++++++++++++++++++------
- 6 files changed, 98 insertions(+), 22 deletions(-)
 
