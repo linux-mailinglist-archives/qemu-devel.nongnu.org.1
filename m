@@ -2,79 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D71D756390
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6EFD75638E
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:57:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLNgr-0002Wx-2x; Mon, 17 Jul 2023 08:51:01 -0400
+	id 1qLNiD-0004UH-0x; Mon, 17 Jul 2023 08:52:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLNdu-0008Th-94
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:48:03 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLNdp-0008TZ-Nh
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:47:57 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-31590e4e27aso4023989f8f.1
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 05:47:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689598071; x=1692190071;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fm7KSG5NrB8kIIZoFYKUbYE9OkMwBur5haFqwy0lLuU=;
- b=LBJBrnKHnBJ7Jkw/hZ3RoZkFVs/VVlV7w4myj8JMR/OTdeBvq0DGXU5/EPp41o3moW
- w/nYN3onsfgiCWPhIJ018C5usmnrjOf1O25YZMl1nyFp7Ug1wLxLm2V3i3geehqmIxt1
- 3xmjFWZgq5pmXjK+xH/dh0XcWNgU3KEMSvdpchZFMm1TXBUD+/XgRbV9P0Nk194K9us6
- Uh97KEkYdQM3ujjIj8bMAzsfwADv7Z/vtJ5BvQjFyhY77ND5U4RtYjyRjbSK3g9MABM3
- mFp4XWU0nHCYKLqNaMByINTbMkH9+bG4kn1iMLO2f53uZzfMaLlRkqxxiJDlTdDqhvRM
- HrnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689598071; x=1692190071;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fm7KSG5NrB8kIIZoFYKUbYE9OkMwBur5haFqwy0lLuU=;
- b=GLGWefEueG6SVPtl+vHQHZCeFlmN6OZb7Ev4O+jqMKFbdkJvQ3J2ITouueDhBpzfpF
- WyzYo3HbBQSEp6ct2cergfZHMT0ylwqCT0u+1wCyiSQ6An6XvLJ/UiRX7RQuyCxkjgPr
- xV5xJ4I9S6eUc2cHMC8r7ioIm+K+kam4aw0B2+1X5y6DxL3Y2/+rLt8bbVKV/EiY2OFT
- uvqEVMFNqSOAtZJyaVNKAIxtuuoGDgnT7LT3CocFmMB5tj2JQxPcz4ttNVwDasgbMZ1y
- 4eBJjZGZYc23aenQ89PKw4lhFfEanlCpAQrOzDjxp0qx3iTKGtHYJkdMVVOHQoL2p1WY
- 96ig==
-X-Gm-Message-State: ABy/qLbb8Uxis9d1hXkVH/c2P356pl9n4U1xKbgrJtfpCEDUdYmJ2IVe
- Z2BKKngSJtFUS3TVxgZMYCajDXQ5f+OFOGVl8po=
-X-Google-Smtp-Source: APBJJlH0bVXCfop2RRBQYpyP9vhuUzMzvgePOOOv0zaS1utNMtdtHAlneFeWQ8c5K5/cYnlHI2LWAQ==
-X-Received: by 2002:adf:d4c4:0:b0:313:e953:65d0 with SMTP id
- w4-20020adfd4c4000000b00313e95365d0mr9147896wrk.28.1689598070913; 
- Mon, 17 Jul 2023 05:47:50 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- v16-20020a5d6790000000b003112ab916cdsm19337737wru.73.2023.07.17.05.47.50
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 05:47:50 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 7/7] hw/nvram: Avoid unnecessary Xilinx eFuse backstore write
-Date: Mon, 17 Jul 2023 13:47:46 +0100
-Message-Id: <20230717124746.759085-8-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230717124746.759085-1-peter.maydell@linaro.org>
-References: <20230717124746.759085-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1qLNgt-0002Yc-R6
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:51:25 -0400
+Received: from mx20.baidu.com ([111.202.115.85] helo=baidu.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1qLNgj-0000tc-Aa
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:50:55 -0400
+From: "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+To: =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kraxel@redhat.com"
+ <kraxel@redhat.com>, "mark.cave-ayland@ilande.co.uk"
+ <mark.cave-ayland@ilande.co.uk>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, =?utf-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?=
+ <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH] vnc,ps2: fix the PS/2 mouse work badly when connect VNC
+Thread-Topic: [PATCH] vnc,ps2: fix the PS/2 mouse work badly when connect VNC
+Thread-Index: AQHZuFrFNlltFg4MfUmGmCXkRR+pm6+9NTOAgAC0aoA=
+Date: Mon, 17 Jul 2023 12:49:46 +0000
+Message-ID: <7B9782E4-0C02-4862-B5B8-06735ABD4D2D@baidu.com>
+References: <20230717025936.71456-1-gaoshiyuan@baidu.com>
+ <ZLUSEb4w0ZtzwB1H@redhat.com>
+In-Reply-To: <ZLUSEb4w0ZtzwB1H@redhat.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.22.192.69]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <DDF718F7A05BFB4D8B86225E3732A61E@internal.baidu.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-FEAS-Client-IP: 172.31.51.20
+X-FE-Last-Public-Client-IP: 100.100.100.60
+X-FE-Policy-ID: 15:10:21:SYSTEM
+Received-SPF: pass client-ip=111.202.115.85; envelope-from=gaoshiyuan@baidu.com;
+ helo=baidu.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,53 +68,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tong Ho <tong.ho@amd.com>
-
-Add a check in the bit-set operation to write the backstore
-only if the affected bit is 0 before.
-
-With this in place, there will be no need for callers to
-do the checking in order to avoid unnecessary writes.
-
-Signed-off-by: Tong Ho <tong.ho@amd.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- hw/nvram/xlnx-efuse.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/hw/nvram/xlnx-efuse.c b/hw/nvram/xlnx-efuse.c
-index fdfffaab99c..655c40b8d1e 100644
---- a/hw/nvram/xlnx-efuse.c
-+++ b/hw/nvram/xlnx-efuse.c
-@@ -143,6 +143,8 @@ static bool efuse_ro_bits_find(XlnxEFuse *s, uint32_t k)
- 
- bool xlnx_efuse_set_bit(XlnxEFuse *s, unsigned int bit)
- {
-+    uint32_t set, *row;
-+
-     if (efuse_ro_bits_find(s, bit)) {
-         g_autofree char *path = object_get_canonical_path(OBJECT(s));
- 
-@@ -152,8 +154,13 @@ bool xlnx_efuse_set_bit(XlnxEFuse *s, unsigned int bit)
-         return false;
-     }
- 
--    s->fuse32[bit / 32] |= 1 << (bit % 32);
--    efuse_bdrv_sync(s, bit);
-+    /* Avoid back-end write unless there is a real update */
-+    row = &s->fuse32[bit / 32];
-+    set = 1 << (bit % 32);
-+    if (!(set & *row)) {
-+        *row |= set;
-+        efuse_bdrv_sync(s, bit);
-+    }
-     return true;
- }
- 
--- 
-2.34.1
-
+PiBPbiBNb24sIEp1bCAxNywgMjAyMyBhdCAxMDo1OTozNkFNICswODAwLCBTaGl5dWFuIEdhbyB3
+cm90ZToNCj4gPiBXaGVuIG9ubHkgdXNlIFBTLzIgbW91c2Ugd2l0aG91dCB1c2ItdGFibGV0LCB0
+aGUgbW91c2UgcG9pbnRlciBvZiB0aGUNCj4gPiBndWVzdCBvbiB0aGUgVk5DIHdpbGwgd29yayBi
+YWRseSB0aGF0IHRoZSBjdXJzb3Igb2YgVk5DIGlzIGluY29uc2lzdGVudA0KPiA+IHdpdGggdGhl
+IG1vdXNlIHBvaW50ZXIgb2YgZ3Vlc3QuDQo+ID4NCj4gPiBUaGUgcmVhc29uIGlzIHRoZSBQUy8y
+IG1vdXNlIHVzZSByZWxhdGl2ZSBjb29yZGluYXRlcyBhbmQgd2UgY2FuJ3Qga25vdw0KPiA+IHRo
+ZSBpbml0aWFsIHBvc2l0aW9uIG9mIHRoZSBndWVzdCBtb3VzZSBwb2ludGVyLg0KPiA+DQo+ID4g
+U28gbW92ZSB0aGUgZ3Vlc3QgbW91c2UgcG9pbnRlciB0byAoMCwgMCkgb2YgdGhlIHNjcmVlbiB3
+aGVuIGNvbm5lY3QgdGhlDQo+ID4gVk5DLCBhbmQgdGhlbiBtb3ZlIHRoZSBtb3VzZSBwb2ludGVy
+IHRvIHRoZSBjdXJzb3Igb2YgVk5DKGFic29sdXRlDQo+ID4gY29vcmRpbmF0ZXMgYXJlIGFsc28g
+cmVsYXRpdmUgY29vcmRpbmF0ZXMpLg0KPg0KPiBUaGlzIGlzIG5vdCBhIHNvbHV0aW9uLCBiZWNh
+dXNlIGV2ZW4gaWYgeW91IGtub3cgdGhlIHN0YXJ0aW5nIHBvc2l0aW9uDQo+IG9mIHRoZSBwb2lu
+dGVyLCB0aGUgaG9zdC9ndWVzdCBwb2ludGVycyBjYW4gaGF2ZSBkaWZmZXJlbnQgbW90aW9uDQo+
+IGFjY2VsZXJhdGlvbiBiZWhhdmlvdXIsIHNvIHRoZXknbGwgbG9vc2Ugc3luYyB3aXRoIGVhY2gg
+b3RoZXIuIFlvdSdsbA0KPiBoYXZlIHByb2JsZW1zIHN1Y2ggYXMgdGhlIGhvc3QgcG9pbnRlciBl
+eGl0aW5nIHRoZSBWTkMgd2luZG93IGJlZm9yZQ0KPiB0aGUgZ3Vlc3QgcG9pbnRlciBoYXMgZ290
+IHRvIHRoZSBmYXIgZWRnZS4NCg0KTWF5YmUgdGhleSB3aWxsIGxvb3NlIHN5bmMgd2l0aCBlYWNo
+IG90aGVyIGFnYWluLiBPbiB3aW5kb3dzIFZNIHN1Y2ggYXMgd2luMTAsDQpkaXNhYmxlICJFbmhh
+bmNlIFBvaW50ZXIgUHJlY2lzaW9uIiBPcHRpb24gaW4gIlBvaW50ZXIgT3B0aW9ucyINCihDb250
+cm9sIFBhbmVsIC0+IE1vdXNlKSwgSSBjYW4ndCBmb3VuZCB0aGlzIHByb2JsZW0uDQoNCj4NCj4g
+VHJ5aW5nIHRvIG1ha2UgYSByZWxhdGl2ZSBwb2ludGVyIHdvcmsgY29ycmVjdGx5IGluIGNvbWJp
+bmF0aW9uIHdpdGgNCj4gYWJzb2x1dGUgaW5wdXQgZXZlbnRzIGZyb20gVk5DIGlzIG5ldmVyIGdv
+aW5nIHRvIHdvcmsuDQo+DQo+DQo+IFRoaXMgaXMgd2h5IFFFTVUgY3JlYXRlZCBhIFZOQyBleHRl
+bnNpb24gdG8gYWxsb3dzIHN3aXRjaGluZyB0aGUgVk5DDQo+IHByb3RvY29sIGZyb20gYWJzb2x1
+dGUgdG8gcmVsYXRpdmUgcG9pbnRlciBtb3Rpb24gZXZlbnRzLg0KPg0KPg0KPiBJZiB5b3UgbmVl
+ZCB0byBydW4gYSBWTSB3aXRoIG9ubHkgdGhlIFBTLzIgcG9pbnRlciwgdGhlbiB5b3UgbmVlZA0K
+PiB0byBiZSB1c2luZyBhIGNsaWVudCB0aGF0IHN1cHBvcnRzIHRoaXMgZXh0ZW5zaW9uOg0KPg0K
+Pg0KPiBodHRwczovL2dpdGh1Yi5jb20vcmZicHJvdG8vcmZicHJvdG8vYmxvYi9tYXN0ZXIvcmZi
+cHJvdG8ucnN0I3FlbXUtcG9pbnRlci1tb3Rpb24tY2hhbmdlLXBzZXVkby1lbmNvZGluZyA8aHR0
+cHM6Ly9naXRodWIuY29tL3JmYnByb3RvL3JmYnByb3RvL2Jsb2IvbWFzdGVyL3JmYnByb3RvLnJz
+dCNxZW11LXBvaW50ZXItbW90aW9uLWNoYW5nZS1wc2V1ZG8tZW5jb2Rpbmc+DQo+DQoNClRoYW5r
+cyBhIGxvdCwgSSB3aWxsIHJlYWQgaXQgZm9yIG1vcmUgaW5mby4NCg0K
 
