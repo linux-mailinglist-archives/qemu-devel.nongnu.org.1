@@ -2,74 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D209756F03
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 23:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA6C756F0A
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 23:39:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLVsr-00025L-W0; Mon, 17 Jul 2023 17:35:58 -0400
+	id 1qLVwK-0000sp-1t; Mon, 17 Jul 2023 17:39:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLVso-00023J-VT
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:35:54 -0400
-Received: from mout.gmx.net ([212.227.15.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLVsk-00083p-NO
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:35:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1689629747; x=1690234547; i=deller@gmx.de;
- bh=jqdGT+3zMzpTvJDkwwWYOMwSvh7bKZAP0NicUIgUqwU=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=ELoEgTJUkLzt+kH/9gZ6rgRHl3vocX3kq3rLJzdt2s984ac79RlPn6CpmK+U5hahbk6dKdF
- hIu/dcnslzpr6MMpUR9k4OTb2SRnfSuGkNGpVi/cS9yjsI9pCLQymfrMf5CbjHaKCF8s5V5qD
- uIk4ElmDFZxU3zG6v9q7Jr0U6xRXn+fll7QYn3BN5GpVvmL33RIkh+Niysz7R15x34e4lcHnc
- zcq6HFMrK9vYJLCBIw7peSHE1WpyVgqs4xd62cKq5pGPExJVziyHLc3hBk1+H6dHuVnCAOHM9
- z4xtZoc31UapRIJ5056nwjTNDay7O3yuXv++ZO/6ZT6vQwnUlOxw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100.fritz.box ([94.134.159.97]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MJmGZ-1qf7EY12oj-00K77A; Mon, 17
- Jul 2023 23:35:47 +0200
-From: Helge Deller <deller@gmx.de>
-To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Helge Deller <deller@gmx.de>
-Subject: [PATCH 6/6] linux-user: Fix qemu-arm to run static armhf binaries
-Date: Mon, 17 Jul 2023 23:35:45 +0200
-Message-ID: <20230717213545.142598-7-deller@gmx.de>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230717213545.142598-1-deller@gmx.de>
-References: <20230717213545.142598-1-deller@gmx.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLVwI-0000sh-1o
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:39:30 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLVwG-00009U-9z
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:39:29 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3159da54e95so4512570f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 14:39:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689629966; x=1692221966;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IsPi6qBNncFss9RMQNak2ay+GwXvvabJa63S7H7q65Q=;
+ b=u1ngW+DNkhaTEW7Jku3f8A4scasiS6Xkr12tz0vA0Nk9Dii//I3eiEmtTmjxGwoswJ
+ MfPulRfYZ+/m8Xana6dFm2pmnSqIRRl6jocdCfxgbHl6RGdjz+QL3aCQ7K7hts2nEA66
+ b7fiYmAo6BbRJaXayNuki1/w2mnxEip8zGzUX0XlG/8nnIdN5mCljrSVY9iHPkTvw/WE
+ 8T98t0KESBgEW0J40HgyOnzbt5+KLtWvAcHStGZHMOH9CEyKkZi5juL1PSb3f/G+Hbcl
+ yxDcJtdcVIdnDCENCbMOwscbNuGhuIqy8pAvqhgGOxmfX9Zyj5s0mY0W4zYlvtlJF+5a
+ Y12Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689629966; x=1692221966;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IsPi6qBNncFss9RMQNak2ay+GwXvvabJa63S7H7q65Q=;
+ b=gn9BmmFxySbgOdpbuopPrcBHZ5MQhoWaffC4mpbrfBiTwzjcqK+r7FC+6tCljQlzCQ
+ wf8DQHTNXOmk6Zatrc1Ur7O1jAmEr6adfIR/Nm11CN3ZbchiYz5EYo1nIqIkm/mecvSt
+ NTY30ekkwUV1Nqq9n8tiQKKFf/JEyR6PtG+DJ/6KM6btm6E6dZimUty5xo5iPmtPzTn3
+ 4prwCq/ja4YdWuApjqsx73P6JsCvzEshjvr2ttDG5JMItyhG0v9PgsrodMBGZAcf8Sct
+ qDeiZsIVqWG2IINwdSPgwH5Met1cLDirHHQMs5cFHQ/JwTD4UkrWT4M3vymrD9BBP7tf
+ rhRA==
+X-Gm-Message-State: ABy/qLYZuEaWwHlZcfTSswhKZd49CqRnBaKqTwAlNabHgNG8BQ+lIWEM
+ Vx4FCkYIAYkVvkm24djkU0V53w==
+X-Google-Smtp-Source: APBJJlF7fHD0ynZ6BtKKp5l8U1GL20w7nh6Nb78tT2t/C3imIKnfoxvngjvmfYdinlGgcCcBXRALFQ==
+X-Received: by 2002:adf:e852:0:b0:314:14be:1004 with SMTP id
+ d18-20020adfe852000000b0031414be1004mr280797wrn.63.1689629966492; 
+ Mon, 17 Jul 2023 14:39:26 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.144.39])
+ by smtp.gmail.com with ESMTPSA id
+ w17-20020adfde91000000b00315a57f1128sm453758wrl.115.2023.07.17.14.39.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Jul 2023 14:39:26 -0700 (PDT)
+Message-ID: <c466671f-2c5a-6c7a-f9ee-cdc2f466b7ae@linaro.org>
+Date: Mon, 17 Jul 2023 23:39:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:biImiLaFmNiZanSayC8FMswgYYfpLL6zfzYnsJcSZSvPwginvgk
- JM497MLp5Fj+9iFLnsHjaMR/6bUZBSge0uvONhJsRoLviURuBxDBGIUqhvbF0IYXXIDRICu
- 3MLseDJAdBS3cYTxss4GUJOhnppouU9OFCjFXafSDZxcplo+K2JSMvNJGkxsEjjNLFRWeZu
- z667qD7+yZ5Lb7GI0b1MA==
-UI-OutboundReport: notjunk:1;M01:P0:7QbaCM7FUlU=;PvHVaAOv426ohvEF/NZKClMQPrM
- LVq8fyLFFv5zw5Y7zHHkf16lW5w3uJ0JQzomC/T53I36uEfKAWRso8usowIqbjX5G64JZT1W3
- cXRl3YZX3vgPmuhQi+PYcgTOHFWtTjmWjSr8z/xx8UmrgkL4jBdVnPzYuDgocDR04qT0FHYzB
- 0HpKsB1GyTrSWIaMDI6Ij5BMYR5g5AD+dgzwQep7JsvdZUlEgQwSaB9/gtlx1MDapv2ck5Pm7
- 4Dtswv45ZHy11E+pKPMKOLMDk8fUhaDcpVCthQh7QKIRl/hiaWYlhyWIwiZPJy8H28ziTpq+s
- lzKtZSFjtoP0Gz5gtSETeCxLdvQfAYOtdh10dAUMJ4Z+xN+t/I732XLEPtJ+7fdxqVw4VBfqF
- khl17SETi3CfnCurxx4ibdNKG7UZf/cVL7y1HV/ncgmDpgrAs4C++AD6VPVW1pUgReXzqgqCk
- zfduvBbh9WiuNLoMTrZ2NHIWtpn3roSReQ/pb5mU5n844gq4FRCMBvODVm3oxGPLxGljTpGnx
- dL2yPx4ADNjyCbiKevjZgZLRtqmlSWL5INOs2UXYZcyOHUPm0bLDhHsU0m8FNP9tHY4q5IjhQ
- K44R7XxSq/gEVf4ce7dom5XfL79r2UBKtzlwCJ7SjAbL477GjOnDFGviJVEKKbQKMQ2lBAmCq
- D/NZqgPro+YN28+4tu+NuJFvN46B5/J4aklEKJURQiwuY1Ywiho7Zv5uBS+ZsHoLo7xD9Ydug
- 26Q97U6+djx95Wnh6blwn3q+ux+vyfC6bp49JIJQiy6Gj5UJhfqscXkHJPLTCLSpykEcSzN97
- uFWOHpYNLq7QxcdquhdSRDNsy0EfxYUDjuv+yEyJ9zZCCCQ1z6JmPlPk6YcaKahJaHVe4ysUF
- AAgldasvl2EmUwAa2+B9sO5EzaRO7KYcucF0GIzdpVLZoybXEPiODbZEIHEHNaqT5z4HaisM3
- Gq0AIQ==
-Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH-for-8.1] i386/xen: fix off-by-one in xen_evtchn_set_gsi()
+To: "Woodhouse, David" <dwmw@amazon.co.uk>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "paul@xen.org" <paul@xen.org>
+References: <20230302123029.153265-1-pbonzini@redhat.com>
+ <20230302123029.153265-57-pbonzini@redhat.com>
+ <CAFEAcA9KXrRscf9QK2Z5Say91KDm7xRLMZGh4A1rQ1+0TCHtcA@mail.gmail.com>
+ <4eb4c9868798cbfd2819c317a80037f4820b0502.camel@amazon.co.uk>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <4eb4c9868798cbfd2819c317a80037f4820b0502.camel@amazon.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,43 +98,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu-user crashes immediately when running static binaries on the armhf
-architecture. The problem is the memory layout where the executable is
-loaded before the interpreter library, in which case the reserved brk
-region clashes with the interpreter code and is released before qemu
-tries to start the program.
+Hi David,
 
-Fix it by ncreasing the brk value to the highest brk value of
-interpreter or executable.
+On 4/7/23 17:12, Woodhouse, David via wrote:
+> Coverity points out (CID 1508128) a bounds checking error. We need to check
+> for gsi >= IOAPIC_NUM_PINS, not just greater-than.
+> 
+> Also fix up an assert() that has the same problem, that Coverity didn't see.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   hw/i386/kvm/xen_evtchn.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by:  Venkata.Pyla@toshiba-tsip.com
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1040981
-=2D--
- linux-user/elfload.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index a26200d9f3..94951630b1 100644
-=2D-- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3615,6 +3615,13 @@ int load_elf_binary(struct linux_binprm *bprm, stru=
-ct image_info *info)
+Better to post new patches as new thread:
 
-     if (elf_interpreter) {
-         load_elf_interp(elf_interpreter, &interp_info, bprm->buf);
-+        /*
-+         * adjust brk address if the interpreter was loaded above the mai=
-n
-+         * executable, e.g. happens with static binaries on armhf
-+         */
-+        if (interp_info.brk > info->brk) {
-+            info->brk =3D interp_info.brk;
-+        }
+   Patches are easier to find if they start a new top-level thread,
+   rather than being buried in-reply-to another existing thread.
 
-         /* If the program interpreter is one of these two, then assume
-            an iBCS2 image.  Otherwise assume a native linux image.  */
-=2D-
-2.41.0
+(Per 
+https://www.qemu.org/docs/master/devel/submitting-a-patch.html#use-git-format-patch)
 
+Regards,
+
+Phil.
 
