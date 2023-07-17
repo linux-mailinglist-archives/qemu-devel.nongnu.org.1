@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8B0756313
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7213875633C
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:52:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLNd7-0007Pd-0y; Mon, 17 Jul 2023 08:47:14 -0400
+	id 1qLNdx-00080g-Nd; Mon, 17 Jul 2023 08:48:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qLNct-0007HU-2t
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:55 -0400
+ id 1qLNcy-0007TY-81
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:47:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qLNcr-0008MN-Ll
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:54 -0400
+ id 1qLNcw-0008Mp-CE
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689598013;
+ s=mimecast20190719; t=1689598017;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Dt1ZK5Q+hUpKLxd8NdpCQ4LNP1XKHpwMbwszUVNWgEc=;
- b=R7fm8Uq9FGbaX1biLG23JX0Oc7mL2gzepths4ikAVamaMMhKwIscA1QVlRDlznC0KnZRGw
- YUuwu2Av7rwFK2E7zvPpvyIJ1a9akOc0oQ7A/IIUEvUZCs/UwCxmMRKfSu2PN5heu/X7Fs
- MLhEQpCLgMD/0Kg3iQVMXPkkGrxcoZ8=
+ bh=1cllmiSG86Yx960rNzc5saZMsutjJXM/EbUt0OszhmI=;
+ b=gGoPZkDZDIJRg1IlkNHn15IPFyCbmQROit35FBgmdRrECB8PXOB8LcITWBObGUy0zkT5bn
+ 4x93Tspyd+2l4EA5rMlWpXOmeIUxd/mdIUPNn8/+uPkhFf1jIbhlz/EA0oy2Za7KGJZz/y
+ WSuWZPuJ8GBrW3Qnj/yaeWx/GoD5VUU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-256-Rtoldcb_PZOJ3oPm_vHSLg-1; Mon, 17 Jul 2023 08:46:49 -0400
-X-MC-Unique: Rtoldcb_PZOJ3oPm_vHSLg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-380-pv_YPxr-OayajYswIngqRQ-1; Mon, 17 Jul 2023 08:46:54 -0400
+X-MC-Unique: pv_YPxr-OayajYswIngqRQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8A76D1044597;
- Mon, 17 Jul 2023 12:46:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F303D101A528;
+ Mon, 17 Jul 2023 12:46:53 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CCB4A40C6F4F;
- Mon, 17 Jul 2023 12:46:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9E43D40C2063;
+ Mon, 17 Jul 2023 12:46:52 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
@@ -53,15 +53,15 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>
-Subject: [PULL 14/19] audio/pw: add more details on error
-Date: Mon, 17 Jul 2023 16:45:39 +0400
-Message-ID: <20230717124545.177236-15-marcandre.lureau@redhat.com>
+Subject: [PULL 15/19] audio/pw: factorize some common code
+Date: Mon, 17 Jul 2023 16:45:40 +0400
+Message-ID: <20230717124545.177236-16-marcandre.lureau@redhat.com>
 In-Reply-To: <20230717124545.177236-1-marcandre.lureau@redhat.com>
 References: <20230717124545.177236-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -90,50 +90,150 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-PipeWire uses errno to report error details.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20230506163735.3481387-8-marcandre.lureau@redhat.com>
+Message-Id: <20230506163735.3481387-9-marcandre.lureau@redhat.com>
 ---
- audio/pwaudio.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ audio/pwaudio.c | 85 ++++++++++++++++++++-----------------------------
+ 1 file changed, 34 insertions(+), 51 deletions(-)
 
 diff --git a/audio/pwaudio.c b/audio/pwaudio.c
-index 2b12b40934..d0bc4680a6 100644
+index d0bc4680a6..70f0c46240 100644
 --- a/audio/pwaudio.c
 +++ b/audio/pwaudio.c
-@@ -750,6 +750,7 @@ static int wait_resync(pwaudio *pw)
-     }
-     return 0;
- }
+@@ -66,6 +66,9 @@ typedef struct PWVoiceIn {
+     PWVoice v;
+ } PWVoiceIn;
+ 
++#define PW_VOICE_IN(v) ((PWVoiceIn *)v)
++#define PW_VOICE_OUT(v) ((PWVoiceOut *)v)
 +
  static void
- on_core_error(void *data, uint32_t id, int seq, int res, const char *message)
+ stream_destroy(void *data)
  {
-@@ -793,19 +794,19 @@ qpw_audio_init(Audiodev *dev)
-     pw->dev = dev;
-     pw->thread_loop = pw_thread_loop_new("PipeWire thread loop", NULL);
-     if (pw->thread_loop == NULL) {
--        error_report("Could not create PipeWire loop");
-+        error_report("Could not create PipeWire loop: %s", g_strerror(errno));
-         goto fail;
-     }
+@@ -630,62 +633,55 @@ qpw_init_in(HWVoiceIn *hw, struct audsettings *as, void *drv_opaque)
+ }
  
-     pw->context =
-         pw_context_new(pw_thread_loop_get_loop(pw->thread_loop), NULL, 0);
-     if (pw->context == NULL) {
--        error_report("Could not create PipeWire context");
-+        error_report("Could not create PipeWire context: %s", g_strerror(errno));
-         goto fail;
-     }
+ static void
+-qpw_fini_out(HWVoiceOut *hw)
++qpw_voice_fini(PWVoice *v)
+ {
+-    PWVoiceOut *pw = (PWVoiceOut *) hw;
+-    PWVoice *v = &pw->v;
++    pwaudio *c = v->g;
  
-     if (pw_thread_loop_start(pw->thread_loop) < 0) {
--        error_report("Could not start PipeWire loop");
-+        error_report("Could not start PipeWire loop: %s", g_strerror(errno));
-         goto fail;
+-    if (v->stream) {
+-        pwaudio *c = v->g;
+-        pw_thread_loop_lock(c->thread_loop);
+-        pw_stream_destroy(v->stream);
+-        v->stream = NULL;
+-        pw_thread_loop_unlock(c->thread_loop);
++    if (!v->stream) {
++        return;
      }
++    pw_thread_loop_lock(c->thread_loop);
++    pw_stream_destroy(v->stream);
++    v->stream = NULL;
++    pw_thread_loop_unlock(c->thread_loop);
+ }
  
+ static void
+-qpw_fini_in(HWVoiceIn *hw)
++qpw_fini_out(HWVoiceOut *hw)
+ {
+-    PWVoiceIn *pw = (PWVoiceIn *) hw;
+-    PWVoice *v = &pw->v;
++    qpw_voice_fini(&PW_VOICE_OUT(hw)->v);
++}
+ 
+-    if (v->stream) {
+-        pwaudio *c = v->g;
+-        pw_thread_loop_lock(c->thread_loop);
+-        pw_stream_destroy(v->stream);
+-        v->stream = NULL;
+-        pw_thread_loop_unlock(c->thread_loop);
+-    }
++static void
++qpw_fini_in(HWVoiceIn *hw)
++{
++    qpw_voice_fini(&PW_VOICE_IN(hw)->v);
+ }
+ 
+ static void
+-qpw_enable_out(HWVoiceOut *hw, bool enable)
++qpw_voice_set_enabled(PWVoice *v, bool enable)
+ {
+-    PWVoiceOut *po = (PWVoiceOut *) hw;
+-    PWVoice *v = &po->v;
+     pwaudio *c = v->g;
+     pw_thread_loop_lock(c->thread_loop);
+     pw_stream_set_active(v->stream, enable);
+     pw_thread_loop_unlock(c->thread_loop);
+ }
+ 
++static void
++qpw_enable_out(HWVoiceOut *hw, bool enable)
++{
++    qpw_voice_set_enabled(&PW_VOICE_OUT(hw)->v, enable);
++}
++
+ static void
+ qpw_enable_in(HWVoiceIn *hw, bool enable)
+ {
+-    PWVoiceIn *pi = (PWVoiceIn *) hw;
+-    PWVoice *v = &pi->v;
+-    pwaudio *c = v->g;
+-    pw_thread_loop_lock(c->thread_loop);
+-    pw_stream_set_active(v->stream, enable);
+-    pw_thread_loop_unlock(c->thread_loop);
++    qpw_voice_set_enabled(&PW_VOICE_IN(hw)->v, enable);
+ }
+ 
+ static void
+-qpw_volume_out(HWVoiceOut *hw, Volume *vol)
++qpw_voice_set_volume(PWVoice *v, Volume *vol)
+ {
+-    PWVoiceOut *pw = (PWVoiceOut *) hw;
+-    PWVoice *v = &pw->v;
+     pwaudio *c = v->g;
+     int i, ret;
+ 
+@@ -707,28 +703,15 @@ qpw_volume_out(HWVoiceOut *hw, Volume *vol)
+ }
+ 
+ static void
+-qpw_volume_in(HWVoiceIn *hw, Volume *vol)
++qpw_volume_out(HWVoiceOut *hw, Volume *vol)
+ {
+-    PWVoiceIn *pw = (PWVoiceIn *) hw;
+-    PWVoice *v = &pw->v;
+-    pwaudio *c = v->g;
+-    int i, ret;
+-
+-    pw_thread_loop_lock(c->thread_loop);
+-    v->volume.channels = vol->channels;
+-
+-    for (i = 0; i < vol->channels; ++i) {
+-        v->volume.values[i] = (float)vol->vol[i] / 255;
+-    }
+-
+-    ret = pw_stream_set_control(v->stream,
+-        SPA_PROP_channelVolumes, v->volume.channels, v->volume.values, 0);
+-    trace_pw_vol(ret == 0 ? "success" : "failed");
++    qpw_voice_set_volume(&PW_VOICE_OUT(hw)->v, vol);
++}
+ 
+-    v->muted = vol->mute;
+-    float val = v->muted ? 1.f : 0.f;
+-    ret = pw_stream_set_control(v->stream, SPA_PROP_mute, 1, &val, 0);
+-    pw_thread_loop_unlock(c->thread_loop);
++static void
++qpw_volume_in(HWVoiceIn *hw, Volume *vol)
++{
++    qpw_voice_set_volume(&PW_VOICE_IN(hw)->v, vol);
+ }
+ 
+ static int wait_resync(pwaudio *pw)
 -- 
 2.41.0
 
