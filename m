@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDDB67566F1
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAAE7566EE
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:58:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLPe2-0002Tn-Ky; Mon, 17 Jul 2023 10:56:14 -0400
+	id 1qLPe2-0002Tf-Fn; Mon, 17 Jul 2023 10:56:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qLPdh-0002Nd-Jw; Mon, 17 Jul 2023 10:55:53 -0400
+ id 1qLPdh-0002NZ-J5; Mon, 17 Jul 2023 10:55:53 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qLPde-0003kW-Cy; Mon, 17 Jul 2023 10:55:53 -0400
+ id 1qLPdd-0003kY-WC; Mon, 17 Jul 2023 10:55:53 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qLPc1-00HTc0-0w;
- Mon, 17 Jul 2023 16:55:38 +0200
+ (envelope-from <den@openvz.org>) id 1qLPc1-00HTc0-2U;
+ Mon, 17 Jul 2023 16:55:39 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: den@openvz.org, Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Hanna Reitz <hreitz@redhat.com>, qemu-stable@nongnu.org
-Subject: [PATCH 2/5] qemu-nbd: fix regression with qemu-nbd --fork run over ssh
-Date: Mon, 17 Jul 2023 16:55:41 +0200
-Message-Id: <20230717145544.194786-3-den@openvz.org>
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PATCH 3/5] qemu-nbd: properly report error on error in dup2() after
+ qemu_daemon()
+Date: Mon, 17 Jul 2023 16:55:42 +0200
+Message-Id: <20230717145544.194786-4-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230717145544.194786-1-den@openvz.org>
 References: <20230717145544.194786-1-den@openvz.org>
@@ -56,98 +56,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit e6df58a5578fee7a50bbf36f4a50a2781cff855d
-    Author: Hanna Reitz <hreitz@redhat.com>
-    Date:   Wed May 8 23:18:18 2019 +0200
-    qemu-nbd: Do not close stderr
-has introduced an interesting regression. Original behavior of
-    ssh somehost qemu-nbd /home/den/tmp/file -f raw --fork
-was the following:
- * qemu-nbd was started as a daemon
- * the command execution is done and ssh exited with success
-
-The patch has changed this behavior and 'ssh' command now hangs forever.
-
-According to the normal specification of the daemon() call, we should
-endup with STDERR pointing to /dev/null. That should be done at the
-very end of the successful startup sequence when the pipe to the
-bootstrap process (used for diagnostics) is no longer needed.
-
-This could be achived in the same way as done for 'qemu-nbd -c' case.
-That was commit 0eaf453e, also fixing up e6df58a5. STDOUT copying to
-STDERR does the trick.
-
-This also leads to proper 'ssh' connection closing which fixes my
-original problem.
+We are trying to temporary redirect stderr of daemonized process to
+a pipe to report a error and get failed. In that case we could not
+use error_report() helper, but should write the message directly into
+the problematic pipe.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 CC: Eric Blake <eblake@redhat.com>
 CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-CC: Hanna Reitz <hreitz@redhat.com>
-CC: <qemu-stable@nongnu.org>
 ---
- qemu-nbd.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ qemu-nbd.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/qemu-nbd.c b/qemu-nbd.c
-index 77f98c736b..186ce9474c 100644
+index 186ce9474c..4450cc826b 100644
 --- a/qemu-nbd.c
 +++ b/qemu-nbd.c
-@@ -274,6 +274,7 @@ static void *show_parts(void *arg)
- 
- struct NbdClientOpts {
-     char *device;
-+    bool fork_process;
- };
- 
- static void *nbd_client_thread(void *arg)
-@@ -317,7 +318,7 @@ static void *nbd_client_thread(void *arg)
-     /* update partition table */
-     pthread_create(&show_parts_thread, NULL, show_parts, opts->device);
- 
--    if (verbose) {
-+    if (verbose && !opts->fork_process) {
-         fprintf(stderr, "NBD device %s is now connected to %s\n",
-                 opts->device, srcpath);
-     } else {
-@@ -579,7 +580,6 @@ int main(int argc, char **argv)
-     bool writethrough = false; /* Client will flush as needed. */
-     bool fork_process = false;
-     bool list = false;
--    int old_stderr = -1;
-     unsigned socket_activation;
-     const char *pid_file_name = NULL;
-     const char *selinux_label = NULL;
-@@ -934,11 +934,6 @@ int main(int argc, char **argv)
-         } else if (pid == 0) {
-             close(stderr_fd[0]);
- 
--            /* Remember parent's stderr if we will be restoring it. */
--            if (fork_process) {
--                old_stderr = dup(STDERR_FILENO);
--            }
--
+@@ -937,7 +937,20 @@ int main(int argc, char **argv)
              ret = qemu_daemon(1, 0);
  
              /* Temporarily redirect stderr to the parent's pipe...  */
-@@ -1131,6 +1126,7 @@ int main(int argc, char **argv)
-         int ret;
-         struct NbdClientOpts opts = {
-             .device = device,
-+            .fork_process = fork_process,
-         };
- 
-         ret = pthread_create(&client_thread, NULL, nbd_client_thread, &opts);
-@@ -1159,8 +1155,7 @@ int main(int argc, char **argv)
-     }
- 
-     if (fork_process) {
--        dup2(old_stderr, STDERR_FILENO);
--        close(old_stderr);
-+        dup2(STDOUT_FILENO, STDERR_FILENO);
-     }
- 
-     state = RUNNING;
+-            dup2(stderr_fd[1], STDERR_FILENO);
++            if (dup2(stderr_fd[1], STDERR_FILENO) < 0) {
++                char str[256];
++                snprintf(str, sizeof(str),
++                         "%s: Failed to link stderr to the pipe: %s\n",
++                         g_get_prgname(), strerror(errno));
++                /*
++                 * We are unable to use error_report() here as we need to get
++                 * stderr pointed to the parent's pipe. Write to that pipe
++                 * manually.
++                 */
++                ret = write(stderr_fd[1], str, strlen(str));
++                exit(EXIT_FAILURE);
++            }
++
+             if (ret < 0) {
+                 error_report("Failed to daemonize: %s", strerror(errno));
+                 exit(EXIT_FAILURE);
 -- 
 2.34.1
 
