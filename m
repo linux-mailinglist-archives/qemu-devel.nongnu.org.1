@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D54CD756D9B
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 21:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E8C756D9C
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 21:49:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLUBz-0006kM-16; Mon, 17 Jul 2023 15:47:35 -0400
+	id 1qLUDL-0007RQ-RN; Mon, 17 Jul 2023 15:48:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qLUBx-0006kB-Mi
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:47:33 -0400
+ id 1qLUDG-0007Ou-BQ
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:48:55 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qLUBv-0007Fo-V0
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:47:33 -0400
+ id 1qLUDF-0007QH-0M
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:48:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=9kpXYcDD4gkcH/+xWPE+pJ3DzigS/su5DfAZl5KvnOU=; b=IqN/FLJt/MGws0xzqYfo3z9w/y
- Hn46XCTiYzUCJCvJ0fp05IwUS3/Mi0Pz1NdHHtRpiXWbUcCNTnLdHV0rptZA8nwFdFNuwpHRe8OEO
- jIOfGdBZc8EHQxy1EtzUUGF1jhxXajtc8kzNnnbikJYmWrS0uOVrEKuclKPYkYMLdHS0vPXwR2yX4
- KqoYsDm3ww2mUksN5mnyIx7Fht2ZNAbOSW2PTsQKwkc3cCc+pmUaltLyyPA8wvoWtGQoWVdPpvawC
- BihZjep0icKVEzCjSzimLmTIc26RAax+iMMO1duYbADlA0P5CnIoVBB7g7xqh0tNqD4j/Ue1txC5w
- j2d74+mKfz6LfhRSPSr5wz6Y6dTkDWGqpzkxTH07poOBlknxpWoceGmw4Jpsg0vl3WRydJHQbwuhL
- 3s72dYOBbBfa8puezuyQFAMr3Oa/VIWB9SmS/GQTtl2wBp7Fqp/+KoypucXoCUl9ileZnT9Yl8T1r
- jAf05Ha1Z6+hSMB7bDqUVkDd2zA0+oUFcsFoQ5u+/9x67GTU3W96ZFMO4Zn2DKEUtKGsIn6Kp2fgn
- d/ZQyCDTBGgZ2GLdcZGD/7a4FBCgTyeZxCBFCiwEUhntMdh2ns/746YIwCaRdY0JPoEvIUqWSyxbJ
- iHxUHMDGYUfFxeHgnmnlQikRpEXvjV8vI9P3dGTCQ=;
+ bh=Rj05NNCg5YTRVB04LyaE6QrXgZDgVibkDvFshLkYG5g=; b=NInxbhzhP5LKZDw3oq7Nq3xdCq
+ qIY66WLO+VaNtpFr59HRgZj0q+BBJjBvU347ods1P8jkcMpJKC7Wi54Tm0dVh1NSJRBzom5X1h3rJ
+ iSFxZB0Yzt8roI45reQbPSWmfef6lrm33PNgzfQTy9XkqPof2G6HkCp6S2BBuUgfrAwtIx/O7lhUn
+ xXxs0BRdQ89Y+bSG+FHNU6XlLkSBJVWbeAF/2o1q2/t5ReOikhh7x0RUZvGhblCmFQr/Qe7k6C4Fh
+ ylAsXZI7IG/QFqJ5bgYrcu3oQcccvKTWpuyMDMV504A/ZIFaqq0wYTTJhZMpa9nQoVIrnwDosIDJ9
+ ODn3QCzOFY4ueB/OfjlZvkD1X9YYmp3mCOzg7t9JA/+F4nNMEIT0LzMDlG82TPRGOQCDkba1+CJYn
+ kWJ7bNU0wiLPWYU7/5IvgKKt+qr5I3fWa2H6yTtlLTkxKh3ITbv70H/DO/TtLpTdH8nRnRUbhhzjB
+ es8dxihgbo870VR6FGWRyYRWHqsDh6dtehPn47ldwVU0MJAQHXJg2a40p1MjT6b3XzfTcgHjIxggy
+ F1/1a52jYNAt6duevCN2SJqA7BogP8nA+PAtkx0yO1MA8haKlEBUHjP06xw+v6gVD0RbtVFDQ+wAV
+ J91IDDBzU9P2yBfHjxxlPGmOO2Yvbi5f2+iRxAV8s=;
 Received: from [2a00:23c4:8bae:1c00:dfd7:380:3565:1db7]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qLUBY-0000Ep-Sl; Mon, 17 Jul 2023 20:47:12 +0100
-Message-ID: <5f723e3a-58f7-5514-94dd-ef219c35bae4@ilande.co.uk>
-Date: Mon, 17 Jul 2023 20:47:20 +0100
+ id 1qLUCt-0000FE-LJ; Mon, 17 Jul 2023 20:48:35 +0100
+Message-ID: <3e95b0d7-412c-91a0-32e9-1793adeefa7a@ilande.co.uk>
+Date: Mon, 17 Jul 2023 20:48:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Artyom Tarasenko <atar4qemu@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20230717103544.637453-1-peter.maydell@linaro.org>
 Content-Language: en-US
+To: Thomas Huth <huth@tuxfamily.org>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <laurent@vivier.eu>
+References: <20230716153519.31722-1-huth@tuxfamily.org>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <20230717103544.637453-1-peter.maydell@linaro.org>
+In-Reply-To: <20230716153519.31722-1-huth@tuxfamily.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bae:1c00:dfd7:380:3565:1db7
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2] target/sparc: Handle FPRS correctly on big-endian hosts
+Subject: Re: [PATCH] hw/char/escc: Implement loopback mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -82,104 +82,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/07/2023 11:35, Peter Maydell wrote:
+On 16/07/2023 16:35, Thomas Huth wrote:
 
-> In CPUSparcState we define the fprs field as uint64_t.  However we
-> then refer to it in translate.c via a TCGv_i32 which we set up with
-> tcg_global_mem_new_ptr().  This means that on a big-endian host when
-> the guest does something to writo te the FPRS register this value
-> ends up in the wrong half of the uint64_t, and the QEMU C code that
-> refers to env->fprs sees the wrong value.  The effect of this is that
-> guest code that enables the FPU crashes with spurious FPU Disabled
-> exceptions.  In particular, this is why
->   tests/avocado/machine_sparc64_sun4u.py:Sun4uMachine.test_sparc64_sun4u
-> times out on an s390 host.
+> The firmware of the m68k next-cube machine uses the loopback mode
+> for self-testing the hardware and currently fails during this step.
+> By implementing the loopback mode, we can make the firmware pass
+> to the next step.
 > 
-> There are multiple ways we could fix this; since there are actually
-> only three bits in the FPRS register and the code in translate.c
-> would be a bit painful to convert to dealing with a TCGv_i64, change
-> the type of the CPU state struct field to match what translate.c is
-> expecting.
-> 
-> (None of the other fields referenced by the r32[] array in
-> sparc_tcg_init() have the wrong type.)
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 > ---
-> Changes v1->v2:
->   * drop unnecessary change to gdbstub.c
->   * put the vmstate fields the correct way around
+>   hw/char/escc.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> NB: I believe the vmstate changes to be correct, but sparc64
-> seems unable to successfully do a savevm/loadvm even before
-> this change due to some other bug (the guest kernel panics
-> immediately after the loadvm).
-> ---
->   target/sparc/cpu.h     | 2 +-
->   target/sparc/cpu.c     | 4 ++--
->   target/sparc/machine.c | 3 ++-
->   target/sparc/monitor.c | 2 +-
->   4 files changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/target/sparc/cpu.h b/target/sparc/cpu.h
-> index 95d2d0da71d..98044572f26 100644
-> --- a/target/sparc/cpu.h
-> +++ b/target/sparc/cpu.h
-> @@ -521,7 +521,7 @@ struct CPUArchState {
->       uint64_t igregs[8]; /* interrupt general registers */
->       uint64_t mgregs[8]; /* mmu general registers */
->       uint64_t glregs[8 * MAXTL_MAX];
-> -    uint64_t fprs;
-> +    uint32_t fprs;
->       uint64_t tick_cmpr, stick_cmpr;
->       CPUTimer *tick, *stick;
->   #define TICK_NPT_MASK        0x8000000000000000ULL
-> diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-> index e329a7aece5..130ab8f5781 100644
-> --- a/target/sparc/cpu.c
-> +++ b/target/sparc/cpu.c
-> @@ -673,8 +673,8 @@ static void sparc_cpu_dump_state(CPUState *cs, FILE *f, int flags)
->                    "cleanwin: %d cwp: %d\n",
->                    env->cansave, env->canrestore, env->otherwin, env->wstate,
->                    env->cleanwin, env->nwindows - 1 - env->cwp);
-> -    qemu_fprintf(f, "fsr: " TARGET_FMT_lx " y: " TARGET_FMT_lx " fprs: "
-> -                 TARGET_FMT_lx "\n", env->fsr, env->y, env->fprs);
-> +    qemu_fprintf(f, "fsr: " TARGET_FMT_lx " y: " TARGET_FMT_lx " fprs: %016x\n",
-> +                 env->fsr, env->y, env->fprs);
->   
->   #else
->       qemu_fprintf(f, "psr: %08x (icc: ", cpu_get_psr(env));
-> diff --git a/target/sparc/machine.c b/target/sparc/machine.c
-> index 44b9e7d75d6..274e1217dfb 100644
-> --- a/target/sparc/machine.c
-> +++ b/target/sparc/machine.c
-> @@ -168,7 +168,8 @@ const VMStateDescription vmstate_sparc_cpu = {
->           VMSTATE_UINT64_ARRAY(env.bgregs, SPARCCPU, 8),
->           VMSTATE_UINT64_ARRAY(env.igregs, SPARCCPU, 8),
->           VMSTATE_UINT64_ARRAY(env.mgregs, SPARCCPU, 8),
-> -        VMSTATE_UINT64(env.fprs, SPARCCPU),
-> +        VMSTATE_UNUSED(4), /* was unused high half of uint64_t fprs */
-> +        VMSTATE_UINT32(env.fprs, SPARCCPU),
->           VMSTATE_UINT64(env.tick_cmpr, SPARCCPU),
->           VMSTATE_UINT64(env.stick_cmpr, SPARCCPU),
->           VMSTATE_CPU_TIMER(env.tick, SPARCCPU),
-> diff --git a/target/sparc/monitor.c b/target/sparc/monitor.c
-> index 318413686aa..73f15aa272d 100644
-> --- a/target/sparc/monitor.c
-> +++ b/target/sparc/monitor.c
-> @@ -154,7 +154,7 @@ const MonitorDef monitor_defs[] = {
->       { "otherwin", offsetof(CPUSPARCState, otherwin) },
->       { "wstate", offsetof(CPUSPARCState, wstate) },
->       { "cleanwin", offsetof(CPUSPARCState, cleanwin) },
-> -    { "fprs", offsetof(CPUSPARCState, fprs) },
-> +    { "fprs", offsetof(CPUSPARCState, fprs), NULL, MD_I32 },
->   #endif
->       { NULL },
->   };
+> diff --git a/hw/char/escc.c b/hw/char/escc.c
+> index 4f3872bfe9..4be66053c1 100644
+> --- a/hw/char/escc.c
+> +++ b/hw/char/escc.c
+> @@ -653,7 +653,9 @@ static void escc_mem_write(void *opaque, hwaddr addr,
+>           escc_update_irq(s);
+>           s->tx = val;
+>           if (s->wregs[W_TXCTRL2] & TXCTRL2_TXEN) { /* tx enabled */
+> -            if (qemu_chr_fe_backend_connected(&s->chr)) {
+> +            if (s->wregs[W_MISC2] & MISC2_LCL_LOOP) {
+> +                serial_receive_byte(s, s->tx);
+> +            } else if (qemu_chr_fe_backend_connected(&s->chr)) {
+>                   /*
+>                    * XXX this blocks entire thread. Rewrite to use
+>                    * qemu_chr_fe_write and background I/O callbacks
 
-To the best of my knowledge there is no-one actively requesting migration 
-compatibility for SPARC, so I'm perfectly fine if any improvements here include a 
-migration version bump if you think it makes life easier/cleaner. Otherwise:
+Yes indeed, that helps things here :)
 
 Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
