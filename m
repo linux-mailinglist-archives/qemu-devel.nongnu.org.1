@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7EF075632F
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA49756310
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:47:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLNco-00077M-Re; Mon, 17 Jul 2023 08:46:50 -0400
+	id 1qLNct-0007Fx-3y; Mon, 17 Jul 2023 08:46:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qLNcm-000725-GX
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:48 -0400
+ id 1qLNcp-0007Bo-Ri
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qLNck-0008K3-Uz
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:48 -0400
+ id 1qLNcn-0008M4-Rq
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:46:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689598006;
+ s=mimecast20190719; t=1689598009;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ozG8C0tRI1xcJGjq4mgkk7rCxE3A2vzX2ZTHq5FZwRE=;
- b=IZUueBoelquusUEm/lleIEUT2S4gGe6G1k+Aq5BIlH29hPadJPgC18I4j+eIn/223B1O5S
- aAxtGIcjv5p8+501Nxdvhz1+bZKc5fFlvCRb1aIyRVAHak0k2f2bZQ+IgeFPkhF7r08cDd
- XqfSBC4bsoQHIFtfSW/udzxNPMCKlmI=
+ bh=lb+yWS3DLhsJsTjBeM+HQ0POpf7hQcpeukXjHOiIT1I=;
+ b=OUf6B+1AX8/9VTewy1IuJUtNNscRpI1iWSSGx8YU9sXfYxeWPiIA/Frf1U4xB6ynQ7+8sI
+ BqvbSSDk653BmexmPB00XynZ5EAtLl6qGu+JWOkz5KewlqbA3JB0Za7I2U0QlHAOOKaqhS
+ p+0FdGEucvj2NKvJGgECRmNJGxb1n9Y=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-91-FdPg6OPWNYKuZB8jyxTL0Q-1; Mon, 17 Jul 2023 08:46:42 -0400
-X-MC-Unique: FdPg6OPWNYKuZB8jyxTL0Q-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-483-zVCkpnKxP_ubrK_m1IXi1Q-1; Mon, 17 Jul 2023 08:46:46 -0400
+X-MC-Unique: zVCkpnKxP_ubrK_m1IXi1Q-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C573B8D1685;
- Mon, 17 Jul 2023 12:46:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A65B0185A7B0;
+ Mon, 17 Jul 2023 12:46:45 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.19])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0D9D940C6F4C;
- Mon, 17 Jul 2023 12:46:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B4FFC40C206F;
+ Mon, 17 Jul 2023 12:46:44 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
@@ -53,15 +53,15 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>
-Subject: [PULL 12/19] audio/pw: needless check for NULL
-Date: Mon, 17 Jul 2023 16:45:37 +0400
-Message-ID: <20230717124545.177236-13-marcandre.lureau@redhat.com>
+Subject: [PULL 13/19] audio/pw: trace during init before calling pipewire API
+Date: Mon, 17 Jul 2023 16:45:38 +0400
+Message-ID: <20230717124545.177236-14-marcandre.lureau@redhat.com>
 In-Reply-To: <20230717124545.177236-1-marcandre.lureau@redhat.com>
 References: <20230717124545.177236-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -90,34 +90,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-g_clear_pointer() already checks for NULL.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Volker Rümelin <vr_qemu@t-online.de>
-Message-Id: <20230506163735.3481387-6-marcandre.lureau@redhat.com>
+Message-Id: <20230506163735.3481387-7-marcandre.lureau@redhat.com>
 ---
- audio/pwaudio.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ audio/pwaudio.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/audio/pwaudio.c b/audio/pwaudio.c
-index 51cfc0b052..6ca4ef4f62 100644
+index 6ca4ef4f62..2b12b40934 100644
 --- a/audio/pwaudio.c
 +++ b/audio/pwaudio.c
-@@ -834,12 +834,8 @@ fail:
-     if (pw->thread_loop) {
-         pw_thread_loop_stop(pw->thread_loop);
-     }
--    if (pw->context) {
--        g_clear_pointer(&pw->context, pw_context_destroy);
--    }
--    if (pw->thread_loop) {
--        g_clear_pointer(&pw->thread_loop, pw_thread_loop_destroy);
--    }
-+    g_clear_pointer(&pw->context, pw_context_destroy);
-+    g_clear_pointer(&pw->thread_loop, pw_thread_loop_destroy);
-     return NULL;
- }
+@@ -784,10 +784,11 @@ static void *
+ qpw_audio_init(Audiodev *dev)
+ {
+     g_autofree pwaudio *pw = g_new0(pwaudio, 1);
+-    pw_init(NULL, NULL);
  
+-    trace_pw_audio_init();
+     assert(dev->driver == AUDIODEV_DRIVER_PIPEWIRE);
++    trace_pw_audio_init();
++
++    pw_init(NULL, NULL);
+ 
+     pw->dev = dev;
+     pw->thread_loop = pw_thread_loop_new("PipeWire thread loop", NULL);
 -- 
 2.41.0
 
