@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777507564F4
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 15:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1639756500
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 15:29:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLOFX-0005vs-S9; Mon, 17 Jul 2023 09:26:51 -0400
+	id 1qLOH9-0006wW-2L; Mon, 17 Jul 2023 09:28:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLOFS-0005vJ-D0
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 09:26:46 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qLOH6-0006wK-GM
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 09:28:28 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLOFQ-0003JX-Fx
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 09:26:46 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-3fbab0d0b88so34384475e9.0
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 06:26:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689600402; x=1692192402;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=jHHNLuXxMyb4d2xXXOlpvCwb+ZTFaCXaYWj7j4hbv5Y=;
- b=qu5/evbBziVwv1AuxKjdmD5AkJJnTn+QLqV/sNP+VlQjYG1wVwOxZe6feIUqBgnu+a
- fsmkAB8FrCJ2bIG/ktEODNszGGSfu0Ls/MjuxvDTzfhokfukXLhAj8W+mkBor2Z6Lr1p
- WKjJb5XuQHhP1X1niXp/anAjTtYrIsJrylccbm+VgRslpDQp0/RQOLR+kTx6iWzQjjU+
- OsAYgA7NyNmYJ05UQ4L+XMI+o8Qy1yKqB4qxj/6zfwLywRrQMFXYJdpTeWnvnxPpDFu9
- fBQaUONdZ6bMnmYrM5kuNXFQowFwSabGzqWrQGNOog5J8+qmAJftXC3QtYa3KRJnOb5z
- nmIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689600402; x=1692192402;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jHHNLuXxMyb4d2xXXOlpvCwb+ZTFaCXaYWj7j4hbv5Y=;
- b=I5HIBMRUsF85Df75OunxS1urexszk0PSyRFnlWNUpSsJ4RnIHU+qMZa0bKiBifzZXR
- cZ/BmgRNQLJN/DquSbHhkeoP7/L9LVCSZWDj1l90Xjn2fCiBOuIlBM7Y50yy64GtTjgP
- XNdJz/jZVzKCkMsUuqAclNvv5aUlZOQCe4Wchje1Udx4kzzc4Vi1m6nIkFozYwo1A9jO
- NOjtMWMv9f7zfK8GhiKc/SY6Y6cfO52DuFWDrALbhhQEWOrDWAOYpilVZNzGaqo7D419
- +MXov5Pw30RSCqo0ct6qjfnPkeTuy5aYY1z85zpycbmK6id+rwpIYJjCgVc0BLBwyuxO
- U9+A==
-X-Gm-Message-State: ABy/qLYUiGGVvdVAyZ5VPCT/f/5SAI4X3KCh8FavII0ROuodACDsQ75X
- WyU+XSWfZRFKo8Hn8IpVKzvXJQ==
-X-Google-Smtp-Source: APBJJlHZ+uXcdjZXJ2MIFZ7aybKfVx7vRWclcQ8mzKNJJjfc+L+nmtUugcZ+vGBPWNnLcjtN5t76iw==
-X-Received: by 2002:a05:600c:3105:b0:3fa:9996:8e03 with SMTP id
- g5-20020a05600c310500b003fa99968e03mr7937260wmo.10.1689600402637; 
- Mon, 17 Jul 2023 06:26:42 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- z13-20020a7bc7cd000000b003fc05b89e5bsm7977646wmk.34.2023.07.17.06.26.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 06:26:42 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
-	Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH for-8.1] hw/arm/smmu: Handle big-endian hosts correctly
-Date: Mon, 17 Jul 2023 14:26:41 +0100
-Message-Id: <20230717132641.764660-1-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qLOH3-0003Z7-T0
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 09:28:28 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id AC3FC1FDB2;
+ Mon, 17 Jul 2023 13:28:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1689600504; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hTLc1UxIIp82SYJGm5WEwdIOzgzqPKyQbYyK55TVapo=;
+ b=JIuGVcX9DqyBYgxeYH4YTSCR92L4KPaaL2Emf4pcFxQ9yN0gAHpqb8KJNUZ1Z1B0uVAGPV
+ sXgwXtPQaZ7Af+CG1jTHBYPNjrrFCEomlQqBAnA9w05lZfsC5fK790IrIjEn3dVI5SEKpk
+ emdwo8Oubakk/0o7/NS78f7BnIUgqLo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1689600504;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hTLc1UxIIp82SYJGm5WEwdIOzgzqPKyQbYyK55TVapo=;
+ b=qmbKtNBWimDD7y1UdUVgcyeg94FzILq3csxQe3FUw/gHP19m8FDKK0T1aWVqDnJ8JVNqZ0
+ 3uIWXSnOJk691tDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 573BF13276;
+ Mon, 17 Jul 2023 13:28:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id JWllE/hBtWQxTQAAMHmgww
+ (envelope-from <cfontana@suse.de>); Mon, 17 Jul 2023 13:28:24 +0000
+Message-ID: <616b2deb-a047-9cd0-8e0f-956dad6466fa@suse.de>
+Date: Mon, 17 Jul 2023 15:28:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: x86 custom apicid assignments [Was: Re: [PATCH v7 0/2] Remove
+ EPYC mode apicid decode and use generic decode]
+Content-Language: en-US
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Babu Moger <babu.moger@amd.com>, pbonzini@redhat.com, rth@twiddle.net,
+ ehabkost@redhat.com, qemu-devel@nongnu.org, mst@redhat.com,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <159897580089.30750.12581669374705391794.stgit@naples-babu.amd.com>
+ <e6f25b8a-2a1e-0b40-c848-bbc2f13fdc5f@suse.de>
+ <20230714115107.3d2e99ea@imammedo.users.ipa.redhat.com>
+ <cf647180-d562-d986-e2dd-a818f127eb7e@suse.de>
+ <20230717123753.75050c16@imammedo.users.ipa.redhat.com>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <20230717123753.75050c16@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=cfontana@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,147 +94,280 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The implementation of the SMMUv3 has multiple places where it reads a
-data structure from the guest and directly operates on it without
-doing a guest-to-host endianness conversion.  Since all SMMU data
-structures are little-endian, this means that the SMMU doesn't work
-on a big-endian host.  In particular, this causes the Avocado test
-  machine_aarch64_virt.py:Aarch64VirtMachine.test_alpine_virt_tcg_gic_max
-to fail on an s390x host.
+On 7/17/23 12:37, Igor Mammedov wrote:
+> On Mon, 17 Jul 2023 10:32:33 +0200
+> Claudio Fontana <cfontana@suse.de> wrote:
+> 
+>> Hello Igor,
+>>
+>> thanks for getting back to me on this,
+>>
+>> On 7/14/23 11:51, Igor Mammedov wrote:
+>>> On Wed, 5 Jul 2023 10:12:40 +0200
+>>> Claudio Fontana <cfontana@suse.de> wrote:
+>>>   
+>>>> Hi all, partially resurrecting an old thread.
+>>>>
+>>>> I've seen how for Epyc something special was done in the past in terms of apicid assignments based on topology, which was then reverted apparently,
+>>>> but I wonder if something more general would be useful to all?
+>>>>
+>>>> The QEMU apicid assignments first of all do not seem to match what is happening on real hardware.  
+>>>
+>>> QEMU typically does generate valid APIC IDs
+>>> it however doesn't do a good job when using odd number of cores and/or NUMA enabled cases.  
+>>
+>>
+>> Right, this is what I meant, the QEMU assignment is generally a valid choice, it just seems to differ from what (some) hardware/firmware does.
+>>
+>>
+>>
+>>
+>>> (That is what Babu have attempted to fix, but eventually that have been dropped for
+>>> reasons described in quoted cover letter)
+>>>   
+>>>> Functionally things are ok, but then when trying to investigate issues, specifically in the guest kernel KVM PV code (arch/x86/kernel/kvm.c),
+>>>> in some cases the actual apicid values in relationship to the topology do matter,  
+>>>
+>>> Care to point out specific places you are referring to?  
+>>
+>>
+>> What we wanted to do was to reproduce an issue that only happened when booting our distro in the Cloud,
+>> but did not instead appear by booting locally (neither on bare metal nor under QEMU/KVM).
+>>
+>> In the end, after a lot of slow-turnaround research, the issue we encountered was the already fixed:
+>>  
+>> commit c15e0ae42c8e5a61e9aca8aac920517cf7b3e94e
+>> Author: Li RongQing <lirongqing@baidu.com>
+>> Date:   Wed Mar 9 16:35:44 2022 +0800
+>>
+>>     KVM: x86: fix sending PV IPI
+>>     
+>>     If apic_id is less than min, and (max - apic_id) is greater than
+>>     KVM_IPI_CLUSTER_SIZE, then the third check condition is satisfied but
+>>     the new apic_id does not fit the bitmask.  In this case __send_ipi_mask
+>>     should send the IPI.
+>>     
+>>     This is mostly theoretical, but it can happen if the apic_ids on three
+>>     iterations of the loop are for example 1, KVM_IPI_CLUSTER_SIZE, 0.
+>>     
+>>     Fixes: aaffcfd1e82 ("KVM: X86: Implement PV IPIs in linux guest")
+>>     Signed-off-by: Li RongQing <lirongqing@baidu.com>
+>>     Message-Id: <1646814944-51801-1-git-send-email-lirongqing@baidu.com>
+>>     Cc: stable@vger.kernel.org
+>>     Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>>
+>>
+>> But this took a very long time to investigate, because the KVM PV code only misbehaves with the old unpatched algorithm during boot
+>> if it encounters a specific sequence of ACPI IDs,
+>> where countrary to the comment in the commit, the issue can become very practical depending on such ACPI IDs assignments as seen by the guest KVM PV code.
+>>
+>>>
+>>> KVM is not the only place where it might matter, it affects topo/numa code on guest side as well. 
+>>>   
+>>>> and currently there is no way (I know of), of supplying our own apicid assignment, more closely matching what happens on hardware.
+>>>>
+>>>> This has been an issue when debugging guest images in the cloud, where being able to reproduce issues locally would be very beneficial as opposed to using cloud images as the feedback loop,
+>>>> but unfortunately QEMU cannot currently create the right apicid values to associate to the cpus.  
+>>>
+>>> Indeed EPYC APIC encoding mess increases support cases load downstream,
+>>> but as long as one has access to similar host hw, one should be able
+>>> to reproduce the issue locally.  
+>>
+>> Unfortunately this does not seem to be always the case, with the case in point being the kvm pv code,
+>> but I suspect other buggy guest code whose behaviour depends on APICIds and APICId sequences must exist in more areas of the kernel.
+>>
+>> In order to properly reproduce these kinds of issues locally, being able to assign desired APICIDs to cpus in VMs would come very handy.
+>>
+>>
+>>> However I would expect end result on such support end with an advice
+>>> to change topo/use another CPU model.
+>>>
+>>> (what we lack is a documentation what works and what doesn't,
+>>> perhaps writing guidelines would be sufficient to steer users
+>>> to the usable EPYC configurations)  
+>>
+>>
+>> In our case we encountered issues on Intel too.
+> 
+> on Intel I've seen issues only in cases where specified topo wasn't
+> really supported by given CPU model (Intel CPUs are far from perfect
+> and kernel has a few quirks when it comes to handling topo (
+> the same as it has quirks for AMD cpus)).
+> On QEMU level we hasn't bothered implementing topo quirks
+> (modulo EPYC attempt, which we've later decided not worth of
+> complexity of supporting it)
+> 
+> 
+>>>   
+>>>> Do I understand the issue correctly, comments, ideas?
+>>>> How receptive the project would be for changes aimed at providing a custom assignment of apicids to cpus, regardless of Intel or AMD?  
+>>>
+>>> It's not that simple to just set custom APIC ID in register and be done with it,  
+>>
+>>
+>> right, I am under no illusion that this is going to be easy.
+>>
+>>
+>>> you'll likely break (from the top of my head: some CPUID leaves might
+>>> depend on it, ACPI tables, NUMA mapping, KVM's vcpu_id).
+>>>
+>>> Current topo code aims to work on information based on '-smp'/'-numa',
+>>> all through out QEMU codebase.  
+>>
+>>
+>> just a thought, that information "-smp, -numa" could be optionally enriched with additional info on apicids assignment
+>>
+>>
+>>> If however we were let user set APIC ID (which is somehow
+>>> correct), we would need to take reverse steps to decode that
+>>> (in vendor specific way) and incorporate resulting topo into other
+>>> code that uses topology info.
+>>> That makes it quite messy, not to mention it's x86(AMD specific) and
+>>> doesn't fit well with generalizing topo handling.
+>>> So I don't really like this route.  
+>>
+>>
+>> I don't think I am suggesting something like described in the preceding paragraph,
+>> but instead I would think that with the user providing the full apicid assignment map, (in addition / as part of)  to the -smp, -numa options,
+>> all other pieces would be derived from that (I suppose ACPI tables, cpuid leaves, and everything that the guest could see, plus the internal
+>> QEMU conversion functions between apicids and cpu index in topology.h
+> 
+> As I read it, you described the same approach as me, just in different words.
+> 
+> ACPI ID, is a function of -smp/-numa (and sometimes -cpu, which we ignore atm).
+> Pushing APIC ID up to a user visible interface duplicates that information.
+> That's would be my main objection to the approach.
 
-Add appropriate byte-swapping on reads and writes of guest in-memory
-data structures so that the device works correctly on big-endian
-hosts.
 
-As part of this we constrain queue_read() to operate only on Cmd
-structs and queue_write() on Evt structs, because in practice these
-are the only data structures the two functions are used with, and we
-need to know what the data structure is to be able to byte-swap its
-parts correctly.
+The user would have to provide at least that specific "function", ie how those -smp and -numa map to apicids.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-stable@nongnu.org
----
- hw/arm/smmu-common.c |  3 +--
- hw/arm/smmuv3.c      | 39 +++++++++++++++++++++++++++++++--------
- 2 files changed, 32 insertions(+), 10 deletions(-)
 
-diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
-index 5ab9d45d58a..f35ae9aa22c 100644
---- a/hw/arm/smmu-common.c
-+++ b/hw/arm/smmu-common.c
-@@ -216,8 +216,7 @@ static int get_pte(dma_addr_t baseaddr, uint32_t index, uint64_t *pte,
-     dma_addr_t addr = baseaddr + index * sizeof(*pte);
- 
-     /* TODO: guarantee 64-bit single-copy atomicity */
--    ret = dma_memory_read(&address_space_memory, addr, pte, sizeof(*pte),
--                          MEMTXATTRS_UNSPECIFIED);
-+    ret = ldq_le_dma(&address_space_memory, addr, pte, MEMTXATTRS_UNSPECIFIED);
- 
-     if (ret != MEMTX_OK) {
-         info->type = SMMU_PTW_ERR_WALK_EABT;
-diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 932f0096974..1e9be8e89af 100644
---- a/hw/arm/smmuv3.c
-+++ b/hw/arm/smmuv3.c
-@@ -102,20 +102,34 @@ static void smmuv3_write_gerrorn(SMMUv3State *s, uint32_t new_gerrorn)
-     trace_smmuv3_write_gerrorn(toggled & pending, s->gerrorn);
- }
- 
--static inline MemTxResult queue_read(SMMUQueue *q, void *data)
-+static inline MemTxResult queue_read(SMMUQueue *q, Cmd *cmd)
- {
-     dma_addr_t addr = Q_CONS_ENTRY(q);
-+    MemTxResult ret;
-+    int i;
- 
--    return dma_memory_read(&address_space_memory, addr, data, q->entry_size,
--                           MEMTXATTRS_UNSPECIFIED);
-+    ret = dma_memory_read(&address_space_memory, addr, cmd, sizeof(Cmd),
-+                          MEMTXATTRS_UNSPECIFIED);
-+    if (ret != MEMTX_OK) {
-+        return ret;
-+    }
-+    for (i = 0; i < ARRAY_SIZE(cmd->word); i++) {
-+        le32_to_cpus(&cmd->word[i]);
-+    }
-+    return ret;
- }
- 
--static MemTxResult queue_write(SMMUQueue *q, void *data)
-+static MemTxResult queue_write(SMMUQueue *q, Evt *evt_in)
- {
-     dma_addr_t addr = Q_PROD_ENTRY(q);
-     MemTxResult ret;
-+    Evt evt = *evt_in;
-+    int i;
- 
--    ret = dma_memory_write(&address_space_memory, addr, data, q->entry_size,
-+    for (i = 0; i < ARRAY_SIZE(evt.word); i++) {
-+        cpu_to_le32s(&evt.word[i]);
-+    }
-+    ret = dma_memory_write(&address_space_memory, addr, &evt, sizeof(Evt),
-                            MEMTXATTRS_UNSPECIFIED);
-     if (ret != MEMTX_OK) {
-         return ret;
-@@ -298,7 +312,7 @@ static void smmuv3_init_regs(SMMUv3State *s)
- static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
-                         SMMUEventInfo *event)
- {
--    int ret;
-+    int ret, i;
- 
-     trace_smmuv3_get_ste(addr);
-     /* TODO: guarantee 64-bit single-copy atomicity */
-@@ -311,6 +325,9 @@ static int smmu_get_ste(SMMUv3State *s, dma_addr_t addr, STE *buf,
-         event->u.f_ste_fetch.addr = addr;
-         return -EINVAL;
-     }
-+    for (i = 0; i < ARRAY_SIZE(buf->word); i++) {
-+        le32_to_cpus(&buf->word[i]);
-+    }
-     return 0;
- 
- }
-@@ -320,7 +337,7 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, uint32_t ssid,
-                        CD *buf, SMMUEventInfo *event)
- {
-     dma_addr_t addr = STE_CTXPTR(ste);
--    int ret;
-+    int ret, i;
- 
-     trace_smmuv3_get_cd(addr);
-     /* TODO: guarantee 64-bit single-copy atomicity */
-@@ -333,6 +350,9 @@ static int smmu_get_cd(SMMUv3State *s, STE *ste, uint32_t ssid,
-         event->u.f_ste_fetch.addr = addr;
-         return -EINVAL;
-     }
-+    for (i = 0; i < ARRAY_SIZE(buf->word); i++) {
-+        le32_to_cpus(&buf->word[i]);
-+    }
-     return 0;
- }
- 
-@@ -569,7 +589,7 @@ static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
-         return -EINVAL;
-     }
-     if (s->features & SMMU_FEATURE_2LVL_STE) {
--        int l1_ste_offset, l2_ste_offset, max_l2_ste, span;
-+        int l1_ste_offset, l2_ste_offset, max_l2_ste, span, i;
-         dma_addr_t l1ptr, l2ptr;
-         STEDesc l1std;
- 
-@@ -593,6 +613,9 @@ static int smmu_find_ste(SMMUv3State *s, uint32_t sid, STE *ste,
-             event->u.f_ste_fetch.addr = l1ptr;
-             return -EINVAL;
-         }
-+        for (i = 0; i < ARRAY_SIZE(l1std.word); i++) {
-+            le32_to_cpus(&l1std.word[i]);
-+        }
- 
-         span = L1STD_SPAN(&l1std);
- 
--- 
-2.34.1
+> 
+> Also my educated guess tells me that it would even more complicate
+> already not easy to deal with topo code.
+> 
+> If you really wish QEMU emulate FOO hypervisor, create a dedicated
+> board for it, that behaves as FOO and that could generate the same
+> topology based on -smp/-numa. (That approach might be acceptable,
+> assuming it self-containing and doesn't complicate common code a lot)
+
+hmm interesting.
+
+> 
+>>> (x86 cpus have apic_id property, so theoretically you can set it
+>>> and with some minimal hacking lunch a guest, but then
+>>> expect guest to be unhappy when ACPI ID goes out of sync with
+>>> everything else. I would do that only for the sake of an experiment
+>>> and wouldn't try to upstream that)  
+>>
+>> Right, it would all need to be consistent.
+>>
+>>>
+>>> What I wouldn't mind is taking the 2nd stab at what Babu had tried
+>>> do. Provided it manages to encode APIC ID for EPYC correctly and won't
+>>> complicate code much (and still using -smp/-numa as the root source for
+>>> topo configuration).  
+>>
+>>
+>> For the specific use case I am thinking (debugging with a guest-visible topology that resembles a cloud one),
+>> I don't think that the EPYC-specific work would be sufficient, it would need to be complemented in any case with Intel work,
+>>
+>> but I suppose that a more general solution of the user providing all mappings would be the best and easiest one for this debugging scenario.
+> 
+> All of that for the sake of debugging some thirdparty hypervisor
+> issues (which in my opinion doesn't benefit QEMU* at all).
+> So do we really need this in QEMU code-base?
+> 
+> I think about this use-case as 1-off thingy, where I can quickly hack
+> QEMU by hardcodding desired specifics to get where I want, but not
+> something that I would try to upstream as it's not useful for the project
+> in general.
+
+I don't think debugging cloud issues will be a one-off, I expect this problem to appear more and more,
+
+in any case thanks,
+
+Claudio
+
+> 
+> * under QEMU here I mean all the folks who have to read/touch/maintain
+> this code. (not to mention poor users who decided use this feature).
+> 
+>> Thanks for your thoughts,
+>>
+>> Claudio
+>>>>
+>>>>
+>>>> On 9/1/20 17:57, Babu Moger wrote:  
+>>>>> To support some of the complex topology, we introduced EPYC mode apicid decode.
+>>>>> But, EPYC mode decode is running into problems. Also it can become quite a
+>>>>> maintenance problem in the future. So, it was decided to remove that code and
+>>>>> use the generic decode which works for majority of the topology. Most of the
+>>>>> SPECed configuration would work just fine. With some non-SPECed user inputs,
+>>>>> it will create some sub-optimal configuration.
+>>>>>
+>>>>> Here is the discussion thread.
+>>>>> https://lore.kernel.org/qemu-devel/c0bcc1a6-1d84-a6e7-e468-d5b437c1b254@amd.com/
+>>>>> https://lore.kernel.org/qemu-devel/20200826143849.59f6970b@redhat.com/
+>>>>>
+>>>>> This series removes all the EPYC mode specific apicid changes and use the generic
+>>>>> apicid decode.
+>>>>> ---
+>>>>> v7:
+>>>>>  Eduardo has already queued 1-8 from the v6. Sending rest of the patches.
+>>>>>  Fixed CPUID 800000ld based on Igor's comment and few text changes.
+>>>>>  
+>>>>> v6:
+>>>>>  https://lore.kernel.org/qemu-devel/159889924378.21294.16494070903874534542.stgit@naples-babu.amd.com/
+>>>>>  Found out that numa configuration is not mandatory for all the EPYC model topology.
+>>>>>  We can use the generic decode which works pretty well. Also noticed that
+>>>>>  cpuid does not changes when the numa nodes change(NPS- Nodes per socket).
+>>>>>  Took care of couple comments from Igor and Eduardo.
+>>>>>  Thank you Igor, Daniel, David, Eduardo for your feedback.  
+>>>>>
+>>>>> v5:
+>>>>>  https://lore.kernel.org/qemu-devel/159804762216.39954.15502128500494116468.stgit@naples-babu.amd.com/
+>>>>>  Revert EPYC specific decode.
+>>>>>  Simplify CPUID_8000_001E
+>>>>>
+>>>>> v4:
+>>>>>   https://lore.kernel.org/qemu-devel/159744083536.39197.13827776633866601278.stgit@naples-babu.amd.com/
+>>>>>   Not much of a change. Just added few text changes.
+>>>>>   Error out configuration instead of warning if dies are not configured in EPYC.
+>>>>>   Few other text changes to clarify the removal of node_id, nr_nodes and nodes_per_pkg.
+>>>>>
+>>>>> v3:
+>>>>>   https://lore.kernel.org/qemu-devel/159681772267.9679.1334429994189974662.stgit@naples-babu.amd.com/#r
+>>>>>   Added a new check to pass the dies for EPYC numa configuration.
+>>>>>   Added Simplify CPUID_8000_001E patch with some changes suggested by Igor.
+>>>>>   Dropped the patch to build the topology from CpuInstanceProperties.
+>>>>>   TODO: Not sure if we still need the Autonuma changes Igor mentioned.
+>>>>>   Needs more clarity on that.
+>>>>>
+>>>>> v2:
+>>>>>   https://lore.kernel.org/qemu-devel/159362436285.36204.986406297373871949.stgit@naples-babu.amd.com/
+>>>>>   Used the numa information from CpuInstanceProperties for building
+>>>>>   the apic_id suggested by Igor.
+>>>>>   Also did some minor code re-aarangement to take care of changes.
+>>>>>   Dropped the patch "Simplify CPUID_8000_001E" from v1. Will send
+>>>>>   it later.
+>>>>>
+>>>>> v1:
+>>>>>  https://lore.kernel.org/qemu-devel/159164739269.20543.3074052993891532749.stgit@naples-babu.amd.com
+>>>>>
+>>>>> Babu Moger (2):
+>>>>>       i386: Simplify CPUID_8000_001d for AMD
+>>>>>       i386: Simplify CPUID_8000_001E for AMD
+>>>>>
+>>>>>
+>>>>>  target/i386/cpu.c |  226 ++++++++++++++---------------------------------------
+>>>>>  1 file changed, 61 insertions(+), 165 deletions(-)
+>>>>>
+>>>>> --
+>>>>>     
+>>>>  
+>>>   
+>>
+> 
 
 
