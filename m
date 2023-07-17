@@ -2,79 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F03997569DB
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 19:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E59756A02
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 19:18:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLRhF-00037h-2b; Mon, 17 Jul 2023 13:07:41 -0400
+	id 1qLRqO-0005nI-SZ; Mon, 17 Jul 2023 13:17:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLRhD-00035i-5f
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:07:39 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLRh9-0001e6-VY
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:07:38 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-4fb863edcb6so7713791e87.0
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 10:07:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689613653; x=1692205653;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+DkjQKAxtsjyjgKk8q2Ve2hZeKhjAYd51K2Tdy9a3iU=;
- b=a3cwgL6ERhwt513fml574g5OjBYZ633gerse1scrKULZ7K5VSBzGkLoWP2IN1E5gIQ
- wPszLJ6mFOkcsBdQmggSDWEgh4OEzw12ds4BT/MPVynv+U7j9J5qQ6P9zCG6/ZJSECXd
- b85gt+T7XIem92sTkGjRSxYibKVwtlqSimesBsC0ABgghX6yOoviz6x296WYdy25LOuJ
- unMjIHn2t9ifOqL4oPsRMvqT0ZUpw6oMJp+URPw/BB0ziKm/zWbNN5XH3w+r05MP3wEB
- 2pjeylKTZnwUFEEOuE121LBO4Uugpt0l2MyO9W4Fj5EoXoS9BCi/2HfJ3ckACE0zJCGI
- avpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689613653; x=1692205653;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+DkjQKAxtsjyjgKk8q2Ve2hZeKhjAYd51K2Tdy9a3iU=;
- b=b9kQqNrNwMSU3yTKpLzSjgLM3CpGeNA3cDBUIrIUYSAZ0HMBDwkV8ZNLK3vGCzaCzD
- iQzjN36QecSyLiKI/LkDjeLGUL1LiNGgakLvJm5zZp0dgS2yKGl3gcQsQ0lP6+cw9jAt
- CfOEX1Bh8sSODvd/Xcs5gUtO/TvJT1iRAsiEzI9PHvx8dZ5oUNqPbA8ENZtqBB89TG5h
- OlSm44/wh8X41krHf15xBJ+kmwkjSVQGcmVzW4X0JU3gkQeZy2+UmtxD6+6KcrYby1VR
- B5JkehYwPszTcJHrnLfu0b1N6v/tsWpAP/GTM4g7gE8uL1z4CIyZXEJxAjYj1U659MBa
- Oriw==
-X-Gm-Message-State: ABy/qLZOyMgksT/NfDWlpPlazthRA/gEvHqF128XTQnvGGJQ3EXiZtrw
- yRa5px1zAd0EAyXyYVzruMlOr99Bn1n6uYcUeqAp/A==
-X-Google-Smtp-Source: APBJJlFBmQiQ0Kh6RUnGgNYvf6BGQT8X3vjrBl0iBYtt4Vukc9lW75bclfaL8qsGlE2mBNY/5W64PK6WnRuMtbNo0yM=
-X-Received: by 2002:ac2:4570:0:b0:4fd:c882:bb42 with SMTP id
- k16-20020ac24570000000b004fdc882bb42mr509262lfm.15.1689613653486; Mon, 17 Jul
- 2023 10:07:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qLRqK-0005mz-5q
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:17:04 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qLRqE-0003wZ-SX
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:17:03 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4R4TDH74Zkz67YXJ;
+ Tue, 18 Jul 2023 01:12:47 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 17 Jul 2023 18:16:43 +0100
+To: <linux-cxl@vger.kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ <qemu-devel@nongnu.org>
+CC: <linuxarm@huawei.com>, Alison Schofield <alison.schofield@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dave Jiang <dave.jiang@intel.com>, Davidlohr
+ Bueso <dave@stgolabs.net>, Viacheslav Dubeyko <slava@dubeyko.com>, Shesha
+ Bhushan Sreenivasamurthy <sheshas@marvell.com>, Fan Ni <fan.ni@samsung.com>,
+ Michael Tsirkin <mst@redhat.com>, Jonathan Zhang <jonzhang@meta.com>, Klaus
+ Jensen <k.jensen@samsung.com>
+Subject: [RFC PATCH 00/17] hw/cxl: hw/cxl: Generic CCI emulation support
+Date: Mon, 17 Jul 2023 18:16:29 +0100
+Message-ID: <20230717171646.8972-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <cover.1689030052.git.mst@redhat.com>
- <94df5b2180d61fb2ee2b04cc007981e58b6479a9.1689030052.git.mst@redhat.com>
- <CAFEAcA9JAZrxpcfjyEj8Hj1eYb+9PUxV2i05JTZwe0u+gVSBPg@mail.gmail.com>
- <e59937b4-6965-2ff3-cc9f-a44ba589a5a3@redhat.com>
-In-Reply-To: <e59937b4-6965-2ff3-cc9f-a44ba589a5a3@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 17 Jul 2023 18:07:22 +0100
-Message-ID: <CAFEAcA-f_e0pKQ8fx5_ELd_snBo55DQ6BO8naBUazZ=nP3KHnA@mail.gmail.com>
-Subject: Re: [PULL 46/66] virtio-iommu: Fix 64kB host page size VFIO device
- assignment
-To: eric.auger@redhat.com
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org, 
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,98 +64,539 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 17 Jul 2023 at 17:56, Eric Auger <eric.auger@redhat.com> wrote:
->
->
-> Hi Peter,
-> On 7/17/23 12:50, Peter Maydell wrote:
-> > On Tue, 11 Jul 2023 at 00:04, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >> From: Eric Auger <eric.auger@redhat.com>
-> >>
-> >> When running on a 64kB page size host and protecting a VFIO device
-> >> with the virtio-iommu, qemu crashes with this kind of message:
-> >>
-> >> qemu-kvm: virtio-iommu page mask 0xfffffffffffff000 is incompatible
-> >> with mask 0x20010000
-> >> qemu: hardware error: vfio: DMA mapping failed, unable to continue
-> >>
-> >> This is due to the fact the IOMMU MR corresponding to the VFIO device
-> >> is enabled very late on domain attach, after the machine init.
-> >> The device reports a minimal 64kB page size but it is too late to be
-> >> applied. virtio_iommu_set_page_size_mask() fails and this causes
-> >> vfio_listener_region_add() to end up with hw_error();
-> >>
-> >> To work around this issue, we transiently enable the IOMMU MR on
-> >> machine init to collect the page size requirements and then restore
-> >> the bypass state.
-> >>
-> >> Fixes: 90519b9053 ("virtio-iommu: Add bypass mode support to assigned device")
-> >> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> > Hi; Coverity complains about this change (CID 1517772):
->
-> thank you for reporting the issue
-> >
-> >> +static void virtio_iommu_freeze_granule(Notifier *notifier, void *data)
-> >> +{
-> >> +    VirtIOIOMMU *s = container_of(notifier, VirtIOIOMMU, machine_done);
-> >> +    int granule;
-> >> +
-> >> +    if (likely(s->config.bypass)) {
-> >> +        /*
-> >> +         * Transient IOMMU MR enable to collect page_size_mask requirements
-> >> +         * through memory_region_iommu_set_page_size_mask() called by
-> >> +         * VFIO region_add() callback
-> >> +         */
-> >> +         s->config.bypass = false;
-> >> +         virtio_iommu_switch_address_space_all(s);
-> >> +         /* restore default */
-> >> +         s->config.bypass = true;
-> >> +         virtio_iommu_switch_address_space_all(s);
-> >> +    }
-> >> +    s->granule_frozen = true;
-> >> +    granule = ctz64(s->config.page_size_mask);
-> >> +    trace_virtio_iommu_freeze_granule(BIT(granule));
-> > Specifically, in this code, it thinks that ctz64() can
-> > return 64, in which case BIT(granule) is shifting off
-> > the end of the value, which is undefined behaviour.
-> > This can happen if s->config.page_size_mask is 0 -- are
-> > there assertions/checks that that can't happen elsewhere?
-> To me this cannot happen. The page_size_mask is initialized with
-> qemu_target_page_mask(), then further constrained with
-> virtio_iommu_set_page_size_mask() which would call error_setg if the new
-> mask is 0 or (cur_mask & new_mask) == 0
->
-> What can I do to give coverity a hint that page_size_mask cannot be NULL?
+Includes addition of I2C-MCTP CCIs and tunnelling via switch-cci.
 
-You can assert() it if you believe it to be true and you
-think an assert() would help a human reader,
-or we could just say "this is a false positive" and
-mark it that way in the Coverity UI. We don't need to
-change things purely to make Coverity happy.
+Base for this series messy, so I'd suggest the tree at
+https://gitlab.com/jic23/qemu cxl-2023-07-17
+which includes this series in the middle.
 
-> > Secondly, BIT() only works for values up to 32, since
-> > it works on type unsigned long, which might be a 32-bit
-> > type on some hosts. Since you used ctz64()
-> > you probably want BIT_ULL() which uses the ULL type
-> > which definitely has 64 bits.
-> agreed.
+RFC for various reasons:
+1 - I have some specification issues to figure out / query.
+2 - The I2C MCTP stuff isn't upstream yet, and it may well change.
+3 - The MCTP I2C controllers might be a tad controversial as currently
+    hacked in :)
 
-Looking more closely at this, the file is not entirely
-consistent about how it handles the page_size_mask:
- * in virtio_iommu_translate() we call ctz32()
-   and then use an open-coded 1 << n on that
- * in virtio_iommu_set_page_size_mask() we call
-   ctz64() and use BIT()
- * in virtio_iommu_freeze_granule() we call ctz64()
-   and then use BIT()
+We have had separate PoCs for the switch CCI and MCTP-I2C, but they
+shared very little of the infrastructure with the main CXL mailbox.
+When looking at adding tunneling support it became clear this was
+unsustainable.
 
-So I suspect it's actually true (or at least assumed)
-that the granule value can never be 32 or higher, as
-well as it being non-zero.
+Tunneling provides access the to MCTP CCIs below a given device -
+initially providing emulation of a message being sent over the
+Switch CCI mailbox (in band PCI mailbox in a BAR) which then routes
+it as MCTP over PCIe VDM to the downstream device. In QEMU at least
+the downstream device is a Type3 device below a switch downstream port.
+Tunnelling is also used to access the various CCIs inside more complex
+devices such as Multi Head Devices (not implemented yet!)
 
-thanks
--- PMM
+The particular test setup I have been using is:
+
+qemu-system-aarch64 -M virt,nvdimm=on,gic-version=3,cxl=on -m 4g,maxmem=8G,slots=8 -cpu max -smp 4 \
+ -kernel Image \
+ -drive if=none,file=full.qcow2,format=qcow2,id=hd \
+ -device pcie-root-port,id=root_port1 -device virtio-blk-pci,drive=hd \
+ -netdev type=user,id=mynet,hostfwd=tcp::5555-:22 \
+ -qmp tcp:localhost:4445,server=on,wait=off \
+ -device virtio-net-pci,netdev=mynet,id=bob \
+ -nographic -no-reboot -append 'earlycon root=/dev/vda2 fsck.mode=skip maxcpus=4 tp_printk' \
+ -monitor telnet:127.0.0.1:1234,server,nowait -bios QEMU_EFI.fd \
+ -object memory-backend-ram,size=4G,id=mem0 \
+ -numa node,nodeid=0,cpus=0-3,memdev=mem0 \
+ -object memory-backend-file,id=cxl-mem1,share=on,mem-path=/tmp/t3_cxl1.raw,size=256M,align=256M \
+ -object memory-backend-file,id=cxl-lsa1,share=on,mem-path=/tmp/t3_lsa1.raw,size=1M,align=1M \
+ -object memory-backend-file,id=cxl-mem2,share=on,mem-path=/tmp/t3_cxl2.raw,size=256M,align=256M \
+ -object memory-backend-file,id=cxl-lsa2,share=on,mem-path=/tmp/t3_lsa2.raw,size=1M,align=1M \
+ -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1,hdm_for_passthrough=true \
+ -device cxl-rp,port=0,bus=cxl.1,id=cxl_rp_port0,chassis=0,slot=2 \
+ -device cxl-upstream,bus=cxl_rp_port0,id=us0,addr=0.0,multifunction=on, \
+ -device cxl-switch-mailbox-cci,bus=cxl_rp_port0,addr=0.1,target=us0 \
+ -device cxl-downstream,port=0,bus=us0,id=swport0,chassis=0,slot=4 \
+ -device cxl-downstream,port=1,bus=us0,id=swport1,chassis=0,slot=5 \
+ -device cxl-type3,bus=swport0,memdev=cxl-mem1,id=cxl-pmem1,lsa=cxl-lsa1,sn=3 \
+ -device cxl-type3,bus=swport1,memdev=cxl-mem2,id=cxl-pmem2,lsa=cxl-lsa2,sn=4 \
+ -machine cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=1k \
+ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=4,target=us0 \
+ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=5,target=cxl-pmem1 \
+ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=6,target=cxl-pmem2
+
+Kernel side needs switch-cci driver support
+https://lore.kernel.org/linux-cxl/20230717162557.8625-1-Jonathan.Cameron@huawei.com/T/#t 
+
+A test program to poke the switch-cci is in the cover letter for that series.
+
+For the MCTP devices:
+
+For ACPI you need the kernel patches from:
+https://lore.kernel.org/linux-cxl/20230525152203.32190-1-Jonathan.Cameron@huawei.com/T/#u
+To make the aspeed i2c controller play nicely with PRP0001 based ACPI description.
+
+Install the MCTP daemon from:
+  https://github.com/CodeConstruct/mctp
+
+Bring up and enumerate the MCTP EPs:
+
+# Bring up the link
+mctp link set mctpi2c0 up
+# Assign an address to the aspeed-i2c controller
+mctp addr add 50 dev mctpi2c0
+# Assign a neetwork ID to the link (11)
+mctp link set mctpi2c0 net 11
+# Start the daemon that uses dbus for configuration.
+systemctl start mctpd.service
+# Assign EIDs to the EPs
+busctl call xyz.openbmc_project.MCTP /xyz/openbmc_project/mctp au.com.CodeConstruct.MCTP AssignEndpoint say mctpi2c0 1 0x5
+busctl introspect xyz.openbmc_project.MCTP /xyz/openbmc_project/mctp/11/8 xyz.openbmc_project.MCTP.Endpoint
+
+busctl call xyz.openbmc_project.MCTP /xyz/openbmc_project/mctp au.com.CodeConstruct.MCTP AssignEndpoint say mctpi2c0 1 0x6
+busctl introspect xyz.openbmc_project.MCTP /xyz/openbmc_project/mctp/11/9 xyz.openbmc_project.MCTP.Endpoint
+
+busctl call xyz.openbmc_project.MCTP /xyz/openbmc_project/mctp au.com.CodeConstruct.MCTP AssignEndpoint say mctpi2c0 1 0x4
+busctl introspect xyz.openbmc_project.MCTP /xyz/openbmc_project/mctp/11/10 xyz.openbmc_project.MCTP.Endpoint
+
+Suitable test program:
+
+/*
+ * Trivial example program to exercise QEMU FMAPI Emulation over MCTP over I2C
+ */
+#include <sys/socket.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include "mctp.h"
+#include "cxl_fmapi.h"
+
+enum cxl_type {
+	cxl_switch,
+	cxl_type3,
+};
+static int query_cci_identify(int sd, struct sockaddr_mctp *addr, int *tag, enum cxl_type *type)
+{
+	struct cxl_cci_infostat_identify_resp_pl *pl;
+	uint8_t buf[1024];
+	struct cxl_fmapi_header *rsp_head = buf;
+
+	int rc;
+	ssize_t len;
+	struct sockaddr_mctp addrrx;
+	socklen_t addrlen = sizeof(addrrx);
+	struct cxl_fmapi_header req = {
+		.category = CXL_MCTP_CATEGORY_REQ,
+		.tag = *tag++,
+		.command = 1,
+		.command_set = 0,
+		.vendor_ext_status = 0xabcd,
+	};
+
+	printf("trying to identify\n");
+	len = sendto(sd, &req, sizeof(req), 0, (struct sockaddr *)addr, sizeof(*addr));
+	if (len != sizeof(req)) {
+		printf("Failed to send whole request for phys switch info %d %d\n", len, sizeof(req));
+		return -1;
+	}
+
+	len = recvfrom(sd, buf, sizeof(buf), 0, (struct sockaddr *)&addrrx, &addrlen);
+	if (len < 0) {
+		printf("Failed to receive response\n");
+		return -1;
+	}
+	printf("length %d\n", len);
+	pl = (void *)(rsp_head + 1);
+	printf("Vendor id  : %04x\n", pl->vendor_id);
+	printf("Device id  : %04x\n", pl->device_id);
+	printf("Subsys vid : %04x\n", pl->subsys_vendor_id);
+	printf("Subsys id  : %04x\n", pl->subsys_id);
+
+	switch (pl->component_type) {
+	case 0x00:
+		printf("Switch!\n");
+		*type = cxl_switch;
+		break;
+	case 0x03:
+		printf("Type3!\n");
+		*type = cxl_type3;
+		break;
+	}
+
+	return 0;
+}
+
+static int parse_physical_switch_identify_switch_device(void *buf, size_t buf_len)
+{
+	struct cxl_fmapi_header *rsp_head = buf;
+	struct cxl_fmapi_ident_switch_dev_resp_pl *pl = (void *)(rsp_head + 1);
+	uint8_t *b;
+	if (rsp_head->return_code != 0) {
+		printf("Error code in response %d\n", rsp_head->return_code);
+		printf("%x %x %x %x %x %x %x %x %x %x %x %x\n", ((uint8_t *)rsp_head)[0],((uint8_t *)rsp_head)[1],
+			((uint8_t *)rsp_head)[2],((uint8_t *)rsp_head)[3],
+			((uint8_t *)rsp_head)[4],((uint8_t *)rsp_head)[5],((uint8_t *)rsp_head)[6],
+			((uint8_t *)rsp_head)[7], ((uint8_t *)rsp_head)[8], ((uint8_t *)rsp_head)[9],
+			((uint8_t *)rsp_head)[10], ((uint8_t *)rsp_head)[11]);
+		return -1;
+	}
+	printf("Num total vppb %d\n", pl->num_total_vppb);
+	printf("Ports %d\n", pl->num_physical_ports);
+	b = pl->active_port_bitmask;
+	printf("ActivePortMask");
+	for (int i = 0; i < 32; i++)
+		printf("%02x", b[i]);
+	printf("\n");
+	return 0;
+}
+
+int query_physical_switch_info(int sd, struct sockaddr_mctp *addr, int *tag)
+{
+	uint8_t buf[1024];
+	int rc;
+	ssize_t len;
+	struct sockaddr_mctp addrrx;
+	socklen_t addrlen = sizeof(addrrx);
+	struct cxl_fmapi_header req = {
+		.category = CXL_MCTP_CATEGORY_REQ,
+		.tag = *tag++,
+		.command = CXL_IDENTIFY_SWITCH_DEVICE,
+		.command_set = CXL_FM_API_CMD_SET_PHYSICAL_SWITCH,
+		.vendor_ext_status = 0xabcd,
+	};
+
+	len = sendto(sd, &req, sizeof(req), 0, (struct sockaddr *)addr, sizeof(*addr));
+	if (len != sizeof(req)) {
+		printf("Failed to send whole request for phys switch info %d %d\n", len, sizeof(req));
+		return -1;
+	}
+
+	len = recvfrom(sd, buf, sizeof(buf), 0, (struct sockaddr *)&addrrx, &addrlen);
+	if (len < 0) {
+		printf("Failed to receive response\n");
+		return -1;
+	}
+	printf("length %d\n", len);
+	rc = parse_physical_switch_identify_switch_device(buf, len);
+	if (rc)
+		return -1;
+
+	return 0;
+}
+
+static int parse_phys_port_state_rsp(void * buf, size_t buf_len, struct cxl_fmapi_header *head)
+{
+	struct cxl_fmapi_header *rsp_head = buf;
+	struct cxl_fmapi_get_phys_port_state_resp_pl *pl = (void *)(rsp_head + 1);
+	uint32_t pl_length = rsp_head->pl_length[0] |
+		(rsp_head->pl_length[1] << 8) |
+		((rsp_head->pl_length[2] & 0xf) << 16);
+
+	if (rsp_head->category != CXL_MCTP_CATEGORY_RESP) {
+		printf("Message not a response\n");
+		return -1;
+	}
+	if (rsp_head->tag != head->tag) {
+		printf("Reply has wrong tag\n");
+		return -1;
+	}
+	if ((rsp_head->command != head->command) ||
+		(rsp_head->command_set != head->command_set)) {
+		printf("Response to wrong command\n");
+		return -1;
+	}
+
+	if (rsp_head->return_code != 0) {
+		printf("Error code in response %d\n", rsp_head->return_code);
+		printf("%x %x %x %x %x %x %x %x %x %x %x %x\n", ((uint8_t *)rsp_head)[0],((uint8_t *)rsp_head)[1],
+			((uint8_t *)rsp_head)[2],((uint8_t *)rsp_head)[3],
+			((uint8_t *)rsp_head)[4],((uint8_t *)rsp_head)[5],((uint8_t *)rsp_head)[6],
+			((uint8_t *)rsp_head)[7], ((uint8_t *)rsp_head)[8], ((uint8_t *)rsp_head)[9],
+			((uint8_t *)rsp_head)[10], ((uint8_t *)rsp_head)[11]);
+		return -1;
+	}
+
+	if (pl_length < 4 ||  pl_length < (pl->num_ports * sizeof(pl->ports[0]))) {
+	  printf("too short %d %d %d\n", pl->num_ports, pl_length, pl->num_ports * sizeof(pl->ports[0]));
+		return -1;
+	}
+
+	for (int i = 0; i < pl->num_ports; i++) {
+		struct cxl_fmapi_port_state_info_block *port = &pl->ports[i];
+		const char *port_states[] = {
+			[0x0] = "Disabled",
+			[0x1] = "Bind in progress",
+			[0x2] = "Unbind in progress",
+			[0x3] = "DSP",
+			[0x4] = "USP",
+			[0x5] = "Reserved",
+			//other values not present.
+			[0xf] = "Invalid Port ID"
+		  };
+		const char *connected_device_modes[] = {
+			[0] = "Not CXL / connected",
+			[1] = "CXL 1.1",
+			[2] = "CXL 2.0",
+		};
+		const char *connected_device_type[] = {
+			[0] = "No device detected",
+			[1] = "PCIe device",
+			[2] = "CXL type 1 device",
+			[3] = "CXL type 2 device",
+			[4] = "CXL type 3 device",
+			[5] = "CXL type 3 pooled device",
+			[6] = "Reserved",
+		};
+		const char *ltssm_states[] = {
+			[0] = "Detect",
+			[1] = "Polling",
+			[2] = "Configuration",
+			[3] = "Recovery",
+			[4] = "L0",
+			[5] = "L0s",
+			[6] = "L1",
+			[7] = "L2",
+			[8] = "Disabled",
+			[9] = "Loop Back",
+			[10] = "Hot Reset",
+		};
+		printf("Port%02d:\n ", port->port_id);
+		printf("\tPort state: ");
+		if (port_states[port->config_state & 0xf])
+			printf("%s\n", port_states[port->config_state]);
+		else
+			printf("Unknown state\n");
+
+		if (port->config_state == 3) { /* DSP so device could be there */
+			printf("\tConnected Device CXL Version: ");
+			if (port->connected_device_cxl_version > 2)
+				printf("Unknown CXL Version\n");
+			else
+				printf("%s\n", connected_device_modes[port->connected_device_cxl_version]);
+
+			printf("\tConnected Device Type: ");
+			if (port->connected_device_type > 7)
+				printf("Unknown\n");
+			else
+				printf("%s\n", connected_device_type[port->connected_device_type]);
+		}
+
+		printf("\tSupported CXL Modes:");
+		if (port->port_cxl_version_bitmask & 0x1)
+			printf(" 1.1");
+		if (port->port_cxl_version_bitmask & 0x2)
+			printf(" 2.0");
+		printf("\n");
+
+		printf("\tMaximum Link Width: %d Negotiated Width %d\n",
+			   port->max_link_width,
+			   port->negotiated_link_width);
+		printf("\tSupported Speeds: ");
+		if (port->supported_link_speeds_vector & 0x1)
+			printf(" 2.5 GT/s");
+		if (port->supported_link_speeds_vector & 0x2)
+			printf(" 5.0 GT/s");
+		if (port->supported_link_speeds_vector & 0x4)
+			printf(" 8.0 GT/s");
+		if (port->supported_link_speeds_vector & 0x8)
+			printf(" 16.0 GT/s");
+		if (port->supported_link_speeds_vector & 0x10)
+			printf(" 32.0 GT/s");
+		if (port->supported_link_speeds_vector & 0x20)
+			printf(" 64.0 GT/s");
+		printf("\n");
+
+		printf("\tLTSSM: ");
+		if (port->ltssm_state >= sizeof(ltssm_states))
+			printf("Unkown\n");
+		else
+			printf("%s\n", ltssm_states[port->ltssm_state]);
+	}
+}
+
+int query_ports(int sd, struct sockaddr_mctp *addr, int *tag)
+{
+	uint8_t buf[1024];
+	ssize_t len;
+	int num_ports = 4;
+	int rc;
+	uint8_t port_list[4] = { 0, 3, 7, 4 };
+	struct sockaddr_mctp addrrx;
+	socklen_t addrlen = sizeof(addrrx);
+	struct cxl_fmapi_header *head;
+	struct cxl_fmapi_get_phys_port_state_req_pl *reqpl;
+	size_t req_sz = sizeof(*reqpl) + num_ports + sizeof(*head) ;
+
+	head = malloc(req_sz);
+	*head = (struct cxl_fmapi_header) {
+		.category = CXL_MCTP_CATEGORY_REQ,
+		.tag = *tag++,
+		.command = CXL_GET_PHYSICAL_PORT_STATE,
+		.command_set = CXL_FM_API_CMD_SET_PHYSICAL_SWITCH,
+		.pl_length = {
+			req_sz & 0xff,
+			(req_sz >> 8) & 0xff,
+			(req_sz >> 16) & 0xf },
+		.vendor_ext_status = 0x1234,
+	};
+	reqpl = (void *)(head + 1);
+	*reqpl = (struct cxl_fmapi_get_phys_port_state_req_pl) {
+		.num_ports = num_ports,
+	};
+	for (int j = 0; j < num_ports; j++)
+		reqpl->ports[j] = port_list[j];
+
+	len = sendto(sd, head, req_sz, 0,
+				 (struct sockaddr *)addr, sizeof(*addr));
+
+	len = recvfrom(sd, buf, sizeof(buf), 0,
+				   (struct sockaddr *)&addrrx, &addrlen);
+	printf("got back %d\n", len);
+	if (len < sizeof(struct cxl_fmapi_header)) {
+		printf("Too short for header\n");
+	}
+	//TODO generic check of reply.
+	if (addrrx.smctp_type != 0x7) {
+		printf("Reply does not match expected message type %x\n", addrrx.smctp_type);
+	}
+
+	rc = parse_phys_port_state_rsp(buf, len, head);
+	if (rc)
+		return rc;
+
+	return 0;
+}
+
+int main(int argv, char **argc)
+{
+	int rc, cci_sd, fmapi_sd;
+	int tag = 0; /* will increment on each use */
+	ssize_t len;
+ 	if (argv < 2) {
+		printf("Give an address\n");
+		return -1;
+	}
+	int dev_addr = atoi(argc[1]);
+	struct sockaddr_mctp cci_addr = {
+		.smctp_family = AF_MCTP,
+		.smctp_network = 11,
+		.smctp_addr.s_addr = dev_addr,
+		.smctp_type = 0x8, /* CXL CCI */
+		.smctp_tag = MCTP_TAG_OWNER,
+	};
+	struct sockaddr_mctp fmapi_addr = {
+		.smctp_family = AF_MCTP,
+		.smctp_network = 11,
+		.smctp_addr.s_addr = dev_addr,
+		.smctp_type = 0x7, /* CXL FMAPI */
+		.smctp_tag = MCTP_TAG_OWNER,
+	};
+	struct sockaddr_mctp addrrx;
+	socklen_t addrlen = sizeof(addrrx);
+	enum cxl_type type;
+
+	cci_sd = socket(AF_MCTP, SOCK_DGRAM, 0);
+	rc = bind(cci_sd, (struct sockaddr *)&cci_addr, sizeof(cci_addr));
+	if (rc) {
+		printf("Bind failed\n");
+		return -1;
+	}
+
+	printf("first query\n");
+	rc = query_cci_identify(cci_sd, &cci_addr, &tag, &type);
+	if (rc)
+		return rc;
+
+	if (type == cxl_switch) {
+		fmapi_sd = socket(AF_MCTP, SOCK_DGRAM, 0);
+		rc = bind(fmapi_sd, (struct sockaddr *)&fmapi_addr, sizeof(fmapi_addr));
+		if (rc) {
+			printf("Bind failed\n");
+			return -1;
+		}
+
+		rc = query_physical_switch_info(fmapi_sd, &fmapi_addr, &tag);
+		if (rc)
+			return rc;
+
+		/* Next query some of the ports */
+		rc = query_ports(fmapi_sd, &fmapi_addr, &tag);
+		if (rc)
+			return rc;
+	}
+
+	return 0;
+}
+
+Jonathan Cameron (15):
+  hw/pci-bridge/cxl_upstream: Move defintion of device to header.
+  hw/cxl/mailbox: Enable mulitple mailbox command sets
+  cxl/mbox: Pull the payload out of struct cxl_cmd and make instances
+    constant
+  hw/mbox: Split mailbox command payload into separate input and output
+  cxl/mbox: Pull the CCI definition out of the CXLDeviceState
+  cxl/mbox: Generalize the CCI command processing
+  hw/acpi/aml-build: add function for i2c slave device serial bus
+    description
+  misc/i2c_mctp_cxl: Initial device emulation
+  HACK: arm/virt: Add aspeed-i2c controller and MCTP EP to enable MCTP
+    testing
+  HACK: hw/arm/virt: Add ACPI support for aspeed-i2c / mctp
+  HACK: hw/i386/pc: Add Aspeed i2c controller + MCTP with ACPI tables
+  docs: cxl: Add example commandline for MCTP CXL CCIs
+  hw/cxl: Add a switch mailbox CCI function.
+  hw/cxl: Implement Physical Ports status retrieval
+  hw/cxl: Add tunneled command support to mailbox for switch cci.
+
+Klaus Jensen (1):
+  hw/i2c: add mctp core
+
+Matt Johnston (1):
+  i2c/mctp: Allow receiving messages to dest eid 0
+
+ MAINTAINERS                               |   7 +
+ docs/system/devices/cxl.rst               |  27 +
+ include/hw/acpi/aml-build.h               |   1 +
+ include/hw/arm/virt.h                     |   2 +
+ include/hw/cxl/cxl.h                      |   6 +
+ include/hw/cxl/cxl_component.h            |   3 +-
+ include/hw/cxl/cxl_device.h               |  81 ++-
+ include/hw/i2c/mctp.h                     | 114 ++++
+ include/hw/i2c/smbus_master.h             |   3 +
+ include/hw/i386/pc.h                      |   1 +
+ include/hw/pci-bridge/cxl_upstream_port.h |  20 +
+ include/net/mctp.h                        |  43 ++
+ hw/acpi/aml-build.c                       |  17 +
+ hw/arm/virt-acpi-build.c                  |  60 ++
+ hw/arm/virt.c                             |  86 +++
+ hw/cxl/cxl-device-utils.c                 |  97 ++-
+ hw/cxl/cxl-events.c                       |   2 +-
+ hw/cxl/cxl-mailbox-utils.c                | 715 +++++++++++++++++-----
+ hw/cxl/i2c_mctp_cxl.c                     | 237 +++++++
+ hw/cxl/switch-mailbox-cci.c               |  98 +++
+ hw/i2c/mctp.c                             | 353 +++++++++++
+ hw/i2c/smbus_master.c                     |  28 +
+ hw/i386/acpi-build.c                      |  65 ++
+ hw/i386/pc.c                              |  20 +-
+ hw/mem/cxl_type3.c                        |   9 +-
+ hw/pci-bridge/cxl_downstream.c            |   5 +-
+ hw/pci-bridge/cxl_upstream.c              |  11 +-
+ hw/arm/Kconfig                            |   3 +
+ hw/cxl/Kconfig                            |   3 +
+ hw/cxl/meson.build                        |   2 +
+ hw/i2c/Kconfig                            |   4 +
+ hw/i2c/meson.build                        |   3 +-
+ hw/i2c/trace-events                       |  12 +
+ hw/i386/Kconfig                           |   2 +
+ 34 files changed, 1956 insertions(+), 184 deletions(-)
+ create mode 100644 include/hw/i2c/mctp.h
+ create mode 100644 include/hw/pci-bridge/cxl_upstream_port.h
+ create mode 100644 include/net/mctp.h
+ create mode 100644 hw/cxl/i2c_mctp_cxl.c
+ create mode 100644 hw/cxl/switch-mailbox-cci.c
+ create mode 100644 hw/i2c/mctp.c
+
+-- 
+2.39.2
+
 
