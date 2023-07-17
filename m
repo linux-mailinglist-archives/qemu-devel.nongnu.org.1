@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5F57565F1
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA777565F0
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:12:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLOxB-0006Lj-SL; Mon, 17 Jul 2023 10:11:58 -0400
+	id 1qLOxJ-0006XN-N6; Mon, 17 Jul 2023 10:12:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qLOx3-0006L2-BC
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:11:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLOx7-0006PC-Mx
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:11:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qLOx1-0008Ky-Uz
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:11:49 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLOx5-0008Mh-LX
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:11:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689603106;
+ s=mimecast20190719; t=1689603110;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pfz5MEi52XqlyxCmQL6gvu+oPooRt7UNHD3hmFmEFnU=;
- b=N5vBITu5RXWrex5AhQbmJQ8gTLRcF9uZWbNK7wrcpMfrrcfZWqBp8bDlc20nlAAJk5GcrL
- yEHeIvtnReEDad5pmgxtsrkk9eWEnT5RxNT5p3nOmuXpJbBG4V4sUkRD1D74/B83fNDMly
- 3k2mWhNo2J0dXHpxATeQFSfc++GYSXg=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GDqb+Yck5FSpqI2m5af3Do3k0WAk4wWd+pHmgZ0EuZg=;
+ b=cyEDlqbbzmaa1YvMa4IKC+vkDiglmNS9wC3amffPBG1lZEyGBPxosMxu1IrZ+vhlvvIU9J
+ qmROZsqtqHnDtQxfCkgbt9W9PwBUpnVlewRpt2mNCs4jeC4Udt89fIX20zCVBv2t70uMhW
+ oNQW7j+GIEGOGMXzg/wrzHNgK9RxalM=
+Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com
+ [209.85.160.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-128-hT4saIQqN5iCqZ9KVDr7Ow-1; Mon, 17 Jul 2023 10:11:45 -0400
-X-MC-Unique: hT4saIQqN5iCqZ9KVDr7Ow-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-4fbcdca90dcso3731194e87.2
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 07:11:44 -0700 (PDT)
+ us-mta-197-jwZ3-UXfNPyfSJVE6a2-gQ-1; Mon, 17 Jul 2023 10:11:48 -0400
+X-MC-Unique: jwZ3-UXfNPyfSJVE6a2-gQ-1
+Received: by mail-oa1-f70.google.com with SMTP id
+ 586e51a60fabf-1a6545aa0e0so6687754fac.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 07:11:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689603103; x=1692195103;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20221208; t=1689603107; x=1692195107;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Pfz5MEi52XqlyxCmQL6gvu+oPooRt7UNHD3hmFmEFnU=;
- b=DMcckY5oNbEJnT3oEHqWYEFhREj/ICjg6FljI+9iA2lVsyWgubQeKNwQprdMsdg82O
- RHYbx8Z55k6ztfSR+BnqYsZbjTtcenppEE2Af2V6pYWu+l+eJbWiRDgv1/I3Gj6jSh+Z
- GpoJbuioQPoN9o1Z7GfG6RleXlHx3EHVb69h5fa7X4xGI7mNmlYuqQpZsdfezVMLq98s
- UuYPu6xN1pr+YwoUxuTzjK3pjIJt53wZS9cee3pft93l/hUxI4j2HztRTt+74sL5CGWz
- jcOWwqrge+rsgplUPP/JDikAF6zljw4vH+gopCXYTfsLdtwH7BFGxzd0UlTEalYOnxBB
- qpEg==
-X-Gm-Message-State: ABy/qLbtz9vFdgTZOPqcMXZFHm16WH8wsP0Bg8E65+FAcS94XNZtcZ+u
- gQjmWMThYYt8X/FwFPkyPMjwazA06fm5Mb1B/A0XLOSRCo5w0NoGZXS6neHVi5QrqZC0RTcUhJi
- plrTf6iTJYS1+nKc=
-X-Received: by 2002:ac2:5b4b:0:b0:4f6:1779:b1c1 with SMTP id
- i11-20020ac25b4b000000b004f61779b1c1mr7677362lfp.48.1689603103629; 
- Mon, 17 Jul 2023 07:11:43 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH/k3GkBI/orPwvE4bn7CDQGxGgXrHncJL/6rniONT0iLIdrH27Ei5cKS5432zPXwHkYdQD4Q==
-X-Received: by 2002:ac2:5b4b:0:b0:4f6:1779:b1c1 with SMTP id
- i11-20020ac25b4b000000b004f61779b1c1mr7677344lfp.48.1689603103277; 
- Mon, 17 Jul 2023 07:11:43 -0700 (PDT)
-Received: from redhat.com ([2.52.146.77]) by smtp.gmail.com with ESMTPSA id
- a12-20020a5d508c000000b00316f9abf073sm5923970wrt.82.2023.07.17.07.11.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 07:11:42 -0700 (PDT)
-Date: Mon, 17 Jul 2023 10:11:39 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Albert Esteve <aesteve@redhat.com>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@gmail.com, cohuck@redhat.com,
- Fam Zheng <fam@euphon.net>, kraxel@redhat.com
-Subject: Re: [PATCH v4 3/4] vhost-user: add shared_object msg
-Message-ID: <20230717100739-mutt-send-email-mst@kernel.org>
-References: <20230626073426.285659-1-aesteve@redhat.com>
- <20230626073426.285659-4-aesteve@redhat.com>
- <20230710150030-mutt-send-email-mst@kernel.org>
- <CADSE00+MYYeTto5CCROpynB2p+FjcCASp6azyxb2FVRm7VhBrw@mail.gmail.com>
+ bh=GDqb+Yck5FSpqI2m5af3Do3k0WAk4wWd+pHmgZ0EuZg=;
+ b=MTZ40U49khBsL+3evmYG91idw0xlV6sWWopRQ1Q0QgiV7EUrtEdchUCcZ0ZqoWUy8r
+ vO6YZsqVqjWiC+BPZ1z4NVVr/TqHSXanX3MyZe0NlsYGgJB5cVsHzugFrmZbA1UcHdlC
+ R8GsxOXigevWLmJbZLri5hjK6UctxaDa0aYpoi1mEMc/sK55R+pdHaT66z1XXO+nZECX
+ b87bYyFgAcWXx5FS4+//HcJGG3N3jNjxPC2KAmblHcPAVUSFjsbscFjtb8a8NTZpg+xf
+ tPQkHt5b5T4Nc2PL01mTa7PMN6SV5hw1mTAIbAWYJjrmiqeOHYyBu6G08cv8HBgqPwbJ
+ bfhw==
+X-Gm-Message-State: ABy/qLZMNg+W7n6aA0ei1xoprlMov22D+jUGRSRQWC15iU6WGm0Fca/y
+ qq0i3dhBRcGu9nBCzMYuPe5G4TAFO02CRV1SCkMQGPAj3vsEnnLN4hG2SdJBlXuDzfJFGg+sgjl
+ gq8nHMvaq5qDv9gU=
+X-Received: by 2002:a05:6870:d1d3:b0:1b7:8836:95c9 with SMTP id
+ b19-20020a056870d1d300b001b7883695c9mr13379545oac.42.1689603107191; 
+ Mon, 17 Jul 2023 07:11:47 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlE5bOS6gn1Qrv4SxctianJhnE3XgTc7ZfAox8wWVye2VwxPaUmhyOQCIrFzqUPhELg4/Ne9bg==
+X-Received: by 2002:a05:6870:d1d3:b0:1b7:8836:95c9 with SMTP id
+ b19-20020a056870d1d300b001b7883695c9mr13379515oac.42.1689603106626; 
+ Mon, 17 Jul 2023 07:11:46 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-177-137.web.vodafone.de.
+ [109.43.177.137]) by smtp.gmail.com with ESMTPSA id
+ c14-20020ac81e8e000000b0040331f93ee0sm6370638qtm.77.2023.07.17.07.11.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Jul 2023 07:11:46 -0700 (PDT)
+Message-ID: <f1ec6d82-af18-b399-4ef3-7a1249e705f4@redhat.com>
+Date: Mon, 17 Jul 2023 16:11:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADSE00+MYYeTto5CCROpynB2p+FjcCASp6azyxb2FVRm7VhBrw@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH for-8.1] hw/arm/smmu: Handle big-endian hosts correctly
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Eric Auger <eric.auger@redhat.com>
+References: <20230717132641.764660-1-peter.maydell@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230717132641.764660-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,43 +101,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-
-
-On Mon, Jul 17, 2023 at 01:42:02PM +0200, Albert Esteve wrote:
-> Hi Michael,
+On 17/07/2023 15.26, Peter Maydell wrote:
+> The implementation of the SMMUv3 has multiple places where it reads a
+> data structure from the guest and directly operates on it without
+> doing a guest-to-host endianness conversion.  Since all SMMU data
+> structures are little-endian, this means that the SMMU doesn't work
+> on a big-endian host.  In particular, this causes the Avocado test
+>    machine_aarch64_virt.py:Aarch64VirtMachine.test_alpine_virt_tcg_gic_max
+> to fail on an s390x host.
 > 
-> True. It may be a good idea to impose a limit in the number of entries that can
-> be added to the table.
-> And fail to add new entries once it reaches the limit.
+> Add appropriate byte-swapping on reads and writes of guest in-memory
+> data structures so that the device works correctly on big-endian
+> hosts.
 > 
-> Not sure what would be a good limit though. For example, https://www.kernel.org
-> /doc/html/v4.9/media/uapi/v4l/vidioc-reqbufs.html#c.v4l2_requestbuffers
-> does not limit the number of buffers that can be allocated simultaneously, it
-> is an unsigned 32-bits value.
-> However, I guess 16-bits (65535) would suffice to cover the vast majority of
-> usecases. Or even lower, and
-> can be adjusted later, as this API gets (more) used.
+> As part of this we constrain queue_read() to operate only on Cmd
+> structs and queue_write() on Evt structs, because in practice these
+> are the only data structures the two functions are used with, and we
+> need to know what the data structure is to be able to byte-swap its
+> parts correctly.
 > 
-> Does that make sense?
-> 
-> Thanks.
-> BR,
-> Albert
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Cc: qemu-stable@nongnu.org
+> ---
+>   hw/arm/smmu-common.c |  3 +--
+>   hw/arm/smmuv3.c      | 39 +++++++++++++++++++++++++++++++--------
+>   2 files changed, 32 insertions(+), 10 deletions(-)
 
-let's not top-post please.
+Thanks, this fixes the alpine test for me:
 
-Maybe. Another concern is qemu running out of FDs with a bad backend.
-
-Question: why does qemu have to maintain these UUIDs in its memory?
-
-Can't it query the backend with UUID and get the fd back?
-
-And then, the hash table in QEMU becomes just a cache
-to speed up lookups.
-
--- 
-MST
+Tested-by: Thomas Huth <thuth@redhat.com>
 
 
