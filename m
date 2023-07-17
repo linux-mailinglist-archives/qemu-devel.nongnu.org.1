@@ -2,86 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9025975636C
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C79E75638F
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:57:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLNi0-0003pj-KC; Mon, 17 Jul 2023 08:52:12 -0400
+	id 1qLNjI-0005pR-1T; Mon, 17 Jul 2023 08:53:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qLNhh-00033G-Ry
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:51:55 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qLNhe-0000zT-9l
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:51:52 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-3fbdfda88f4so39735065e9.1
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 05:51:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689598308; x=1692190308;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=DXkAaa+OPYwbDfKBazm5CN4sZ1VNfj1rMM5SFrk0MrU=;
- b=ndCGlKDKw/pYhosfAnvIKl+4scsc0QY3ssmn6p1NJMzSIH0Y9z8MLayguWVlz/t2Ua
- OlnhcLVtHovz3yuYLokOucwFPhYdgxU4PHpLDUCnQ1mo0jS7Fzhh97nbiFEfki5i8pfr
- Xp3CCGoCD2ocYOG5xy2EeloV5ATc7uJQY8JaN4+mByNFzlw9yYI7q7gsFGq5dxMrQTZR
- yAVTosDNvSZ32tk0Oe45pe0or+Hs0RUINcYhtu2mm8vG6HPlMYmb6q9Dfx2/4P9wditP
- pMy2SZ1AbdG0nvugopgqLeQkFmW9LzYKSdhR9wY8Sc96aP9Sz11l3tBW3deHNggIzLUx
- hG2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689598308; x=1692190308;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=DXkAaa+OPYwbDfKBazm5CN4sZ1VNfj1rMM5SFrk0MrU=;
- b=J7veJIxADmBlFm8p4r75xFSOcdklwmohU1H5k7FpFz6MwzTuLaepsdfuE/aP9/Xwzv
- Ctb+qhoDv/tHENPOVEvTeNG+/fbKhsAGo1nV7d95Yiw2u/xsQSxPBiImFwvT8Bf8tRva
- hDBWbBuqlbneVIaIhobztq8ZsOUayY8eI2AjTIUhJOPZDPbnxSHULt4WXHVxt9543VXz
- ZOo4qrinFBK+31rAWvTFAEwIZH5jAF8k4ci+swGOUgHdVmVa/MS9jjNTlOxCw4YhbW8d
- DCiqlQLbyDUVC5ZEAIaFwFecv4dLSd5FWF+fIJHwJDcQVo0w45b1XlNvev/TWznO6YUp
- m/oA==
-X-Gm-Message-State: ABy/qLbr4bCttgmt7Yi10PyiTj/dSVwz6JiuX9bqWsXG95OqUm0p/jEB
- k2ci1O127RKGQD4y8KJYNYtI8w==
-X-Google-Smtp-Source: APBJJlFN2QIkZ+eUThDIYVGzjR2qxaooQ0NdBXSA/eMuWQQAhxITLMG969CUamrbi0NoWfvcaDbVLg==
-X-Received: by 2002:a1c:7414:0:b0:3fb:ba04:6d5d with SMTP id
- p20-20020a1c7414000000b003fbba046d5dmr9636267wmc.12.1689598308670; 
- Mon, 17 Jul 2023 05:51:48 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- n8-20020a05600c294800b003fbcdba1a63sm8033558wmd.12.2023.07.17.05.51.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 05:51:48 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id D44721FFBB;
- Mon, 17 Jul 2023 13:51:47 +0100 (BST)
-References: <CADc=-s5RwGViNTR-h5cq3np673W3RRFfhr4vCGJp0EoDUxvhog@mail.gmail.com>
-User-agent: mu4e 1.11.9; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Matt Borgerson <contact@mborgerson.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2] plugins: Set final instruction count in
- plugin_gen_tb_end
-Date: Mon, 17 Jul 2023 13:49:50 +0100
-In-reply-to: <CADc=-s5RwGViNTR-h5cq3np673W3RRFfhr4vCGJp0EoDUxvhog@mail.gmail.com>
-Message-ID: <874jm2ya3g.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1qLNic-0005XT-Rz
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:52:51 -0400
+Received: from mx22.baidu.com ([220.181.50.185] helo=baidu.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1qLNiZ-00018Q-N7
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:52:50 -0400
+From: "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+To: =?utf-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kraxel@redhat.com"
+ <kraxel@redhat.com>, "mark.cave-ayland@ilande.co.uk"
+ <mark.cave-ayland@ilande.co.uk>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
+ <berrange@redhat.com>
+Subject: Re: [PATCH] vnc,ps2: fix the PS/2 mouse work badly when connect VNC
+Thread-Topic: [PATCH] vnc,ps2: fix the PS/2 mouse work badly when connect VNC
+Thread-Index: AQHZuFrFNlltFg4MfUmGmCXkRR+pm6+9DRuAgACaiID//4BWgIAAwmOA
+Date: Mon, 17 Jul 2023 12:52:26 +0000
+Message-ID: <F68DBAB0-B1CC-45FC-B1A7-8C62A5885031@baidu.com>
+References: <20230717025936.71456-1-gaoshiyuan@baidu.com>
+ <CAMxuvaz4NwRfCoWGVBofihBsZnBya7cv3Cq7w-Y6Wzd0mPoDQQ@mail.gmail.com>
+ <EF20B207-4AAE-4A30-8D0B-CB208867756A@baidu.com>
+ <CAMxuvaxssGvBLb-gFFEibDcQ+MJyorDJi-xSMTBVRCNyVyFVqA@mail.gmail.com>
+In-Reply-To: <CAMxuvaxssGvBLb-gFFEibDcQ+MJyorDJi-xSMTBVRCNyVyFVqA@mail.gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.22.192.69]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <17D522A6E3815C41AD12AD39C0F9AF1F@internal.baidu.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-FEAS-Client-IP: 10.127.64.17
+X-FE-Last-Public-Client-IP: 100.100.100.60
+X-FE-Policy-ID: 15:10:21:SYSTEM
+Received-SPF: pass client-ip=220.181.50.185; envelope-from=gaoshiyuan@baidu.com;
+ helo=baidu.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,102 +69,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Matt Borgerson <contact@mborgerson.com> writes:
-
-> Translation logic may partially decode an instruction, then abort and
-> remove the instruction from the TB. This can happen for example when an
-> instruction spans two pages. In this case, plugins may get an incorrect
-> result when calling qemu_plugin_tb_n_insns to query for the number of
-> instructions in the TB. This patch updates plugin_gen_tb_end to set the
-> final instruction count.
-
-For some reason this fails to apply cleanly:
-
-  git am ./v2_20230714_contact_plugins_set_final_instruction_count_in_plugi=
-n_gen_tb_end.mbx
-  Applying: plugins: Set final instruction count in plugin_gen_tb_end
-  error: corrupt patch at line 31=20=20=20=20=20=20=20=20=20=20=20
-  Patch failed at 0001 plugins: Set final instruction count in plugin_gen_t=
-b_end
-
->
-> Signed-off-by: Matt Borgerson <contact@mborgerson.com>
-> ---
->  accel/tcg/plugin-gen.c    | 5 ++++-
->  accel/tcg/translator.c    | 2 +-
->  include/exec/plugin-gen.h | 4 ++--
->  3 files changed, 7 insertions(+), 4 deletions(-)
->
-> diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-> index 5c13615112..f18ecd6902 100644
-> --- a/accel/tcg/plugin-gen.c
-> +++ b/accel/tcg/plugin-gen.c
-> @@ -866,10 +866,13 @@ void plugin_gen_insn_end(void)
->   * do any clean-up here and make sure things are reset in
->   * plugin_gen_tb_start.
->   */
-> -void plugin_gen_tb_end(CPUState *cpu)
-> +void plugin_gen_tb_end(CPUState *cpu, size_t num_insns)
->  {
->      struct qemu_plugin_tb *ptb =3D tcg_ctx->plugin_tb;
->
-
-I think it might be worth a:
-
-  g_assert(num_insns <=3D ptb->n);
-
-here to prevent misuse of the API.
-
-
-> +    /* translator may have removed instructions, update final count */
-> +    ptb->n =3D num_insns;
-> +
->      /* collect instrumentation requests */
->      qemu_plugin_tb_trans_cb(cpu, ptb);
->
-> diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-> index 0fd9efceba..141f514886 100644
-> --- a/accel/tcg/translator.c
-> +++ b/accel/tcg/translator.c
-> @@ -215,7 +215,7 @@ void translator_loop(CPUState *cpu,
-> TranslationBlock *tb, int *max_insns,
->      gen_tb_end(tb, cflags, icount_start_insn, db->num_insns);
->
->      if (plugin_enabled) {
-> -        plugin_gen_tb_end(cpu);
-> +        plugin_gen_tb_end(cpu, db->num_insns);
->      }
->
->      /* The disas_log hook may use these values rather than recompute.  */
-> diff --git a/include/exec/plugin-gen.h b/include/exec/plugin-gen.h
-> index 52828781bc..c4552b5061 100644
-> --- a/include/exec/plugin-gen.h
-> +++ b/include/exec/plugin-gen.h
-> @@ -20,7 +20,7 @@ struct DisasContextBase;
->
->  bool plugin_gen_tb_start(CPUState *cpu, const struct DisasContextBase *d=
-b,
->                           bool supress);
-> -void plugin_gen_tb_end(CPUState *cpu);
-> +void plugin_gen_tb_end(CPUState *cpu, size_t num_insns);
->  void plugin_gen_insn_start(CPUState *cpu, const struct DisasContextBase =
-*db);
->  void plugin_gen_insn_end(void);
->
-> @@ -42,7 +42,7 @@ void plugin_gen_insn_start(CPUState *cpu, const
-> struct DisasContextBase *db)
->  static inline void plugin_gen_insn_end(void)
->  { }
->
-> -static inline void plugin_gen_tb_end(CPUState *cpu)
-> +static inline void plugin_gen_tb_end(CPUState *cpu, size_t num_insns)
->  { }
->
->  static inline void plugin_gen_disable_mem_helpers(void)
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+PiA+ID4gPg0KPiA+ID4gU28gbW92ZSB0aGUgZ3Vlc3QgbW91c2UgcG9pbnRlciB0byAoMCwgMCkg
+b2YgdGhlIHNjcmVlbiB3aGVuIGNvbm5lY3QgdGhlDQo+ID4gPiA+IFZOQywgYW5kIHRoZW4gbW92
+ZSB0aGUgbW91c2UgcG9pbnRlciB0byB0aGUgY3Vyc29yIG9mIFZOQyhhYnNvbHV0ZQ0KPiA+ID4g
+PiBjb29yZGluYXRlcyBhcmUgYWxzbyByZWxhdGl2ZSBjb29yZGluYXRlcykuDQo+ID4gPiA+DQo+
+ID4gPiA+DQo+ID4gPiBJdCdzIGhhcmRseSBhIHNvbHV0aW9uLCB5b3Ugc3RpbGwgaGF2ZSBubyBj
+bHVlIHdoYXQgd2lsbCBiZSB0aGUgZ3Vlc3QNCj4gPiBtb3VzZQ0KPiA+ID4gcG9zaXRpb24uDQo+
+ID4NCj4gPiBXZSBoYXZlIG5vIGNsdWUgd2hhdCB3aWxsIGJlIHRoZSBndWVzdCBtb3VzZSBwb3Np
+dGlvbiwgd2UgY2FuIG1vdmUgdGhlDQo+ID4gZ3Vlc3QNCj4gPiBtb3VzZSB0byAoMCwwKSBlYWNo
+IGNvbm5lY3QgdGhlIFZOQy4gTm93LCB0aGUgY3Vyc29yIG9mIFZOQyB3aWxsIGJlIHRoZQ0KPiA+
+IHJlbGF0aXZlIGNvb3JkaW5hdGVzLiBJbiBhIHdheSwgdGhpcyBpcyBhIHF1aXJrIHRvIGtub3cg
+dGhlIGd1ZXN0IG1vdXNlDQo+ID4gcG9zaXRpb24uDQo+ID4NCj4NCj4gVGhlcmUgaXMgbm8gZ3Vh
+cmFudGVlIHRoZSBndWVzdCBwb2ludGVyIHdpbGwgYmUgYXQgKDAsMCkgdGhvdWdoLCBhbmQgdGhh
+dA0KPiBkb2Vzbid0IGV4cGxhaW4gaG93IHRoYXQgd291bGQgaGVscC4gV2hpY2ggY2xpZW50IGFy
+ZSB5b3UgdXNpbmc/IEFyZSB5b3UNCj4gZHJhd2luZyB0aGUgZ3Vlc3QgY3Vyc29yPyBUaGlzIGNh
+bid0IGJlIGRvbmUgY3VycmVudGx5IHdpdGggdGhlIGxhY2sgb2YgYQ0KPiBtZXNzYWdlIHRvIHRl
+bGwgdGhlIGd1ZXN0IG1vdXNlIHBvc2l0aW9uLiAobW92aW5nIC8gc3luYy1pbmcgdGhlIGNsaWVu
+dA0KPiBjdXJzb3IgcG9zaXRpb24gd291bGQgYmUgZXZlbiB3b3JzZSBpbiBtYW55IHdheXMpDQoN
+ClNvcnJ5LCBteSBkZXNjcmlwdGlvbiBpc24ndCBhY2N1cmF0ZS4NCg0KV2hlbiBjb25uZWN0IHRo
+ZSB2bmMgc2VydmVyLA0KICAgIHZuY19jb25uZWN0DQogICAgICAtPiB2cy0+bGFzdF94ID0gLTE7
+DQogICAgICAtPiB2cy0+bGFzdF95ID0gLTE7DQoNCm1vdmUgY2xpZW50IGN1cnNvciB0byB2bmMg
+c2NyZWVuLA0KICAgIHZuY19jbGllbnRfaW8NCiAgICAgIC0+dm5jX2NsaWVudF9yZWFkDQogICAg
+ICAgIC0+cHJvdG9jb2xfY2xpZW50X21zZw0KICAgICAgICAgIC0+cG9pbnRlcl9ldmVudCh4LHkp
+DQogICAgICAgICAgICAtPiBxZW11X2lucHV0X3F1ZXVlX3JlbChjb24sIElOUFVUX0FYSVNfWCwg
+MCAtIHdpZHRoKTsNCiAgICAgICAgICAgIC0+IHFlbXVfaW5wdXRfcXVldWVfcmVsKGNvbiwgSU5Q
+VVRfQVhJU19ZLCAwIC0gaGVpZ2h0KTsNCiAgICAgICAgICAgIC0+IHg9MCx5PTANCiAgICAgICAg
+ICAgIC0+IHZzLT5sYXN0X3ggPSB4O3ZzLT5sYXN0X3kgPSB5Ow0KICAgICAgICAgICAgLT4gcWVt
+dV9pbnB1dF9ldmVudF9zeW5jICAgLy8gdGhpcyB3aWxsIGluZm9ybSB0aGUgZ3Vlc3QgbW92ZSB0
+byAoMCwgMCkNCg0KdGhlIG5leHQgZXZlbnQsDQogICAgICAgICAgLT5wb2ludGVyX2V2ZW50KHgs
+eSkNCiAgICAgICAgICAgIC0+IHFlbXVfaW5wdXRfcXVldWVfcmVsKGNvbiwgSU5QVVRfQVhJU19Y
+LCB4IC0gdnMtPmxhc3RfeCk7DQogICAgICAgICAgICAtPiBxZW11X2lucHV0X3F1ZXVlX3JlbChj
+b24sIElOUFVUX0FYSVNfWCwgeCAtIHZzLT5sYXN0X3gpOw0KICAgICAgICAgICAgLT4gcWVtdV9p
+bnB1dF9ldmVudF9zeW5jICAgIC8vIHRoaXMgd2lsbCBpbmZvcm0gdGhlIGd1ZXN0IGZyb20gKDAs
+MCkgbW92ZSB0byAoeCx5KSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgLy8gdGhlIGNsaWVudCBjdXJzb3IgYW5kIGd1ZXN0
+IG1vdXNlIHdpbGwgc3luYy4NCg0KYW5kIGlmIHRoZSByZXNvbHV0aW9uIGlzIGhpZ2gsIGFsc2Ug
+bmVlZCBpbmNyZWFjZSB0aGUgcXVldWUgc2l6ZSBvZiBwczIgUFMyX1FVRVVFX1NJWkUuDQpPdGhl
+cndpc2UsIGlmIHRoZSBndWVzdCBtb3VzZSBmYXIgZnJvbSB0aGUgKDAsMCkgYmVmb3JlIHZuYyBj
+b25uZWN0LCBpdCBjYW4ndCBtb3ZlIHRvICgwLDApLg0KDQo+DQo+ID4gPg0KPiA+ID4NCj4gPiA+
+ID4gT24gd2luZG93cyBWTSwgYWxzbyBuZWVkIGRpc2FibGUgIkVuaGFuY2UgUG9pbnRlciBQcmVj
+aXNpb24iIE9wdGlvbiBpbg0KPiA+ID4gPiAiUG9pbnRlciBPcHRpb25zIiAoQ29udHJvbCBQYW5l
+bCAtPiBNb3VzZSkuDQo+ID4gPiA+DQo+ID4gPiA+DQo+ID4gPiBBcHBhcmVudGx5LCB0aGlzIG9w
+dGlvbiBkb2Vzbid0IGhhdmUgbXVjaCB0byBkbyB3aXRoIHJlbGF0aXZlIG1vdXNlDQo+ID4gbW90
+aW9uLg0KPiA+ID4gQ2FuIHlvdSBleHBsYWluIHdoYXQgaXQgZG9lcyB3aXRoIHRoaXMgY2hhbmdl
+Pw0KPiA+DQo+ID4gRW1tbSwgSSBkb24ndCBrbm93IHdoeSB0aGlzIGNhbiBzb2x2ZSB0aGUgcHJv
+YmxlbS4gSXQncyBxdWl0ZSBlZmZlY3RpdmUgYW5kDQo+ID4gZ2V0IHRoaXMgd2F5IGZyb20NCj4g
+Pg0KPiA+IGh0dHBzOi8vZm9ydW0ucHJveG1veC5jb20vdGhyZWFkcy9pcy1pdC1wb3NzaWJsZS1u
+b3QtdG8tdXNlLXVzYmRldmljZS10YWJsZXQuMTQ5OC8NCj4gPiAuDQo+ID4NCj4gPiBPbmx5IHVz
+ZSB0aGlzIHdheSwgd2UgbmVlZCB0byBtYW51YWxseSBhbGlnbiB0aGUgVk5DIGN1cnNvciB3aXRo
+IHRoZSBndWVzdA0KPiA+IG1vdXNlLg0KPiA+DQo+DQo+IEl0J3MgYSBiaXQgdmFndWUgd2hhdCB0
+aGUgIlZOQyBjdXJzb3IiIG1lYW4uIElmIHlvdSBtZWFuIHRoZSBjbGllbnQgY3Vyc29yDQo+IHBv
+c2l0aW9uLCB0aGVyZSBpcyBubyB3YXkgdG8gYWxpZ24gLyBzeW5jIHdpdGggdGhlIGd1ZXN0IHdp
+dGhvdXQgYW4gZXh0cmENCj4gbWVzc2FnZSB0byBpbmZvcm0gdGhlIGNsaWVudCBvZiBpdHMgcG9z
+aXRpb24uIFRoZXJlIGlzIGV2ZW4gYSBjb21tZW50IGFib3V0DQo+IHRoYXQgaW4gdm5jLmMgIC8q
+IGNhbiB3ZSBhc2sgdGhlIGNsaWVudChzKSB0byBtb3ZlIHRoZSBwb2ludGVyID8/PyAqLykNCg0K
+U29ycnksIEkgbWVhbiB0aGUgY2xpZW50IGN1cnNvciBwb3NpdGlvbi4gSSBmb3VuZCBkaXNhYmxl
+ICJFbmhhbmNlIFBvaW50ZXIgUHJlY2lzaW9uIg0KT3B0aW9uLCBtb3ZlIGN1cnNvciB0byB0aGUg
+Ym91bmQgb2YgdGhlIFZOQyBzY3JlZW4sIHRoZXkgbWF5YmUgYWxpZ24uDQoNCj4NCj4NCj4gPiA+
+DQo+ID4gPiBXaGljaCBndWVzdCBPUyBhcmUgeW91IHVzaW5nPyBIb3BlZnVsbHkgdGhleSBhbGwg
+c3VwcG9ydCBlaXRoZXINCj4gPiB1c2ItdGFibGV0DQo+ID4gPiBvciB2bW1vdXNlIGV4dGVuc2lv
+biBmb3IgYWJzb2x1dGUgcG9zaXRpb25pbmcuIE90aGVyd2lzZSwgSSdkIHN1Z2dlc3QNCj4gPiB1
+c2luZw0KPiA+ID4gU3BpY2UsIHdoaWNoIGhhcyB0aG9zZSBtZXNzYWdlcyBmb3IgY2xpZW50IHNp
+ZGUgZ3Vlc3QtbW91c2UgZHJhd2luZy4NCj4gPiA+DQo+ID4NCj4gPiBZZWFoLCBJIGtub3cgdGhl
+IGJlc3Qgd2F5IGlzIHVzZSBhIGFic29sdXRlIHBvc2l0aW9uaW5nLiBXZSBuZWVkIHJlbW92ZQ0K
+PiA+IGFsbCB1c2IgZGV2aWNlcywNCj4gPiBJIGNhbiBvbmx5IHVzZSB0aGUgUFMvMiBtb3VzZS4N
+Cj4gPg0KPg0KPiBDYW4ndCB5b3UgdXNlIHZtbW91c2UgZXh0ZW5zaW9uPw0KDQpUaGFua3MsIEkg
+d2lsbCB0cnkgaXQuIEkgY2Fubid0IGZvdW5kIHRoZSBvZmZpY2lhbCBkcml2ZXIgb2Ygdm1tb3Vz
+ZSwgY2FuIEkNCmluc3RhbGwgaXQgZm9yIGZyZWU/DQoNCg==
 
