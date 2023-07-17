@@ -2,80 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B523F7566AE
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:41:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA64C7566B1
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:42:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLPPk-0007VW-Sh; Mon, 17 Jul 2023 10:41:29 -0400
+	id 1qLPQt-0008By-NM; Mon, 17 Jul 2023 10:42:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLPPV-0007Ut-NG
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:41:14 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qLPQr-0008Bj-NE
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:42:37 -0400
+Received: from mail-oa1-x2b.google.com ([2001:4860:4864:20::2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLPPT-0008Lx-Mi
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:41:13 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-51e57870becso5994898a12.2
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 07:41:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qLPQq-0008VD-3D
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 10:42:37 -0400
+Received: by mail-oa1-x2b.google.com with SMTP id
+ 586e51a60fabf-1b06da65bdbso3437276fac.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 07:42:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689604870; x=1692196870;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=HZBnnMSxdnOCFYuxIjDI0aDpZIA+Qulwy44M3y5FFyM=;
- b=nUmMUrr9DUE25wRg8PYydZY2YBXLaXLukaK8cMqILFxMNQ+OdN/8i8++vFq2NrX0RM
- QtUa+XeUaGXkcG7TgbgDZdWtyhIjHcTdx+jdztguLFZm5/+LJwalcqK3tzWlGjoHwkst
- 7sAbzaDWcZHmxuWey1DswJrP+4YFkEqYKTnX8Zc9JD4gDiVWbEOL1tOJOv07dYWM7q9R
- zs47VOXGU2zs6AoyAuSMWiEGb/x5jpVCCHUW8TlfSm5aDmH5BM7g3HnvSOQwEJthpsHp
- eOym4ZqsBk7osGTGOAgjd9mByUNCqxVwgCtkfKBHw3NPHZ6Nx1F9JySi0GhnpNArWJCm
- uZIg==
+ d=linaro.org; s=google; t=1689604954; x=1692196954;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yK6pHY4XgWRV/PmE7dIILMGsbNt+/S4Zj7YKoey/tGA=;
+ b=ZZloRA9xpd0x8bXqrmHKXuHBMnY9QoSXROF0tssKfd8grPw7yPqWfnjIPsFM1iOpb7
+ ze2fY81/lpr5YGOiPX/tmX6ptJAb6AXYwsOJJQTMwUFW/d7Vl99wjiKN4i5woeyTyExo
+ R+u71/MIAe1yoRp3P/s8JVXRDWcdCp2hWngf9eYrmRIejyNT8dfn/6LtLd76WPUu3v7R
+ usdlViyaJVVwogcJ0nWJW3Y7XxRqbSZsejU+I39UGPWFvGsEV8hKjP/uFinDRWsL4bw3
+ HJiQ9wd5g0j0ami/Z0bF/aZRoMquXnmbwIKCdcGUkSikDU0kjBEA01X356/Ggt6eCxga
+ Mmmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689604870; x=1692196870;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=HZBnnMSxdnOCFYuxIjDI0aDpZIA+Qulwy44M3y5FFyM=;
- b=ZAZvskxn/RSBBvdezTZIecTR7jNIyNdL4cO0oNSyYW59ZSwyPj6oqteVkIGizXpp3q
- wDK07Zdqk++paDE4ed9Kq/tb+nQE3uDrW8u8kp3snoVw35Emlyp0yRiEVbz2DOomt9it
- 0xwIfw4yTy4WeK0WiN48RnqV3mI3Xd7TRNjRfIFhzXOBGJxoKJEA7xyqctn7RtlPNrBo
- aJlX+XTgJohrhnIAW47BQP/vJjMePUOqAdJRL8wLuGyaXpJPT5DbWVfTyfsBdZ32Gj0i
- bx+2YXKWgwKI52nwDV3xXwkUWxZjP4zq9Bm9HrhjPV1rL+GtsCpfSnAD/bnqALqWGuOJ
- RV1A==
-X-Gm-Message-State: ABy/qLZFsYLVkknycm9AxI3xpq8GjB1uul//Gunycu+hO75R6yT1QaE+
- fELnTY2PJu43GBnJ+0U5Y1VNJwDV3Hm0PlTjfrf4dg==
-X-Google-Smtp-Source: APBJJlE6F3Q1062/5VI1bowNP1uZyc1P/YTEMJmaOV0E5j3newzFaRRsQk1RM0l9XLMYhiDauuN3ObSlZ2uHnhvmNT0=
-X-Received: by 2002:aa7:cf8b:0:b0:51d:8aaf:5adc with SMTP id
- z11-20020aa7cf8b000000b0051d8aaf5adcmr11725280edx.14.1689604870109; Mon, 17
- Jul 2023 07:41:10 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689604954; x=1692196954;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yK6pHY4XgWRV/PmE7dIILMGsbNt+/S4Zj7YKoey/tGA=;
+ b=KRPdi5ZWYusF/6+Lyy7XNT1tC20t0/8W4kNQLADIy05eNtpRndzlljPpSW+IL/H361
+ ukEPfsf97DHTn5ae6Kf3hFLalgLYrbefb301ZKDu40Iz+oh53+/0LN+waBsCmD2e61Jc
+ wJ+v0gFP65K8P3Y5Nt1lYaT7n6WrMefFxD9VjitwZe5vgnyOnf6Skkq/CWuQF/HetayC
+ VKcIQZIUmutLs5j+j4RJsWBlqwGrjPpb9+To91ZcnSYbMMVH+bjKsgtsOhiw8EyVzSde
+ h9oQSwPEfG/Ua0R3H83pTIXfnshh1bLXM6sXQqZed+oiVjj5xJrQEH4L5WEbPD+2/J5F
+ mrKw==
+X-Gm-Message-State: ABy/qLZWuiA8R/gZNY0M+llmULG1wIfr02bEaVEWw8rjgh+qCkt5AU9c
+ CgPkLL4nxqDHXwe5/dAvq0Rz5A==
+X-Google-Smtp-Source: APBJJlGiKPvyR6LQeoALQBG2f0woopfx8w1NsDJF/c2Yq0AKhvg9OSfZzjMuX+XQjHTLZdESkOwapg==
+X-Received: by 2002:a05:6870:c0c5:b0:1b0:25b4:4b7a with SMTP id
+ e5-20020a056870c0c500b001b025b44b7amr11762292oad.51.1689604954383; 
+ Mon, 17 Jul 2023 07:42:34 -0700 (PDT)
+Received: from [192.168.224.227] ([172.58.109.253])
+ by smtp.gmail.com with ESMTPSA id
+ ef24-20020a0568701a9800b001aaa093932bsm7183778oab.11.2023.07.17.07.42.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Jul 2023 07:42:33 -0700 (PDT)
+Message-ID: <90ee6305-42d5-b045-c854-669521155160@linaro.org>
+Date: Mon, 17 Jul 2023 15:42:29 +0100
 MIME-Version: 1.0
-References: <20230714070931.23476-1-j@getutm.app>
- <20230714070931.23476-12-j@getutm.app>
- <581b037d-ccb7-8df7-8946-df8198cb04e6@linux.ibm.com>
- <fe8ea892-0690-2308-5036-f31e10da0351@linux.ibm.com>
- <CA+E+eSCC2F-2bsO7OiCoS0weo7bh4daL7M5GYxa=6r-6qKcGmg@mail.gmail.com>
- <67a2b78d-8eea-7c9c-cf1b-50444e481006@linux.ibm.com>
- <562ec838-2714-2bb2-d1a5-7b98bb43a60b@linux.ibm.com>
- <CA+E+eSC_Hg5zxepaeCZTNiYS8oq6hNUqO8Pijft45O7vhD2q6Q@mail.gmail.com>
- <78cee616-94fa-baba-8dad-1dbcbbbbc45a@linux.ibm.com>
-In-Reply-To: <78cee616-94fa-baba-8dad-1dbcbbbbc45a@linux.ibm.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 17 Jul 2023 15:40:58 +0100
-Message-ID: <CAFEAcA9FKqFs5r2Q_D4FkZEf1j7u4uRD0QS0AwM4L_wtdvZiNg@mail.gmail.com>
-Subject: Re: [PATCH v2 11/11] tpm_crb: support restoring older vmstate
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org, 
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL 20/47] linux-user: Make sure initial brk(0) is page-aligned
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: Andreas Schwab <schwab@suse.de>
+References: <20230715135317.7219-1-richard.henderson@linaro.org>
+ <20230715135317.7219-21-richard.henderson@linaro.org>
+ <5a2a1941-2e8d-7ebc-b808-d91d27a69f1a@tls.msk.ru>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <5a2a1941-2e8d-7ebc-b808-d91d27a69f1a@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,27 +96,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 14 Jul 2023 at 20:13, Stefan Berger <stefanb@linux.ibm.com> wrote:
-> Unfortunately the CRB device is being used by x86 on some distros
-> and the expectation is that this existing device can also downgrade
-> to a previous version of QEMU I would say. I have read people migrating
-> from RHEL 9.x even to RHEL 8.x and the expectation is that this works.
+On 7/16/23 19:15, Michael Tokarev wrote:
+> 15.07.2023 16:52, Richard Henderson wrote:
+>> From: Andreas Schwab <schwab@suse.de>
+>>
+>> Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
+>> Signed-off-by: Andreas Schwab <schwab@suse.de>
+>> Message-Id: <mvmpm55qnno.fsf@suse.de>
+>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> 
+> This smells like a stable-8.0 material.  Please let me know if it is not.
 
-If you want both-ways migration compatibility for the
-change of implementation to use a RAM-backed MR rather
-than an MMIO MR:
+Yep.
 
- * make sure the new RAM-backed memory region is created
-   using a memory_region_init_*_nomigrate() function so that
-   we don't try to migrate the RAM as RAM
- * keep the regs array in the device struct, and add a comment
-   that it's only used during migration
- * keep the vmstate entry for the regs array as it is
- * in the device's vmstate pre_save hook, copy from the
-   backing RAM into the regs array (watch out for
-   endianness issues :-))
- * in the vmstate post_load hook, copy from the regs
-   array into the backing RAM
 
--- PMM
+r~
+
 
