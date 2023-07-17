@@ -2,95 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01C87562C7
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 098F375630B
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:46:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLNO6-0000zg-Rz; Mon, 17 Jul 2023 08:31:38 -0400
+	id 1qLNbO-0005IS-DJ; Mon, 17 Jul 2023 08:45:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLNNr-0000s9-LZ
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:31:23 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qLNbJ-0005Gx-Mm
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:45:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLNNp-00053d-17
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:31:22 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qLNb4-0007qx-J5
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:45:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689597080;
+ s=mimecast20190719; t=1689597900;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OuwLyyrTv8F/fMx9levYOJ65/NTJOqRuNLnjNMo5BuI=;
- b=YEEuXKgLQ2WMht/KH7BN7E5s6DP4RUuRIJHqjiFGUaAX9u8RzQwZa30c8pJBn+RtGN/7tK
- jvom5o2ZPS+aDJYqsWQwC5dtjLnAKUvLTNVlOsI8p8dRcvDnWq88KPwuPML6YJi0J1VJK6
- UH2ozyHFavoszSZvxfWbGPmcsHrQqdA=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XzLgtVVLHwnmkSSgPouLdLdfVgCpfCTRRRKkOdMq0RQ=;
+ b=SSptDe3J/ZwZR9GLLTOP6qZCUyO5Aq35Xekp+iklM9zhzkIP5zpjoRgT2ZUIzO7TX1nu1Z
+ j9+CcVQEq9zqe+sVs8TW6UAg64yXflcuUzdu0N6sXZxk0XcTxmEzloMcEOMQJX+P9B9GnW
+ TZe6ebcvHJyGnqq6SK8Ct9Idf4pdIas=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-61-F8VedKF1P7Gk-w6AHPd2nw-1; Mon, 17 Jul 2023 08:31:18 -0400
-X-MC-Unique: F8VedKF1P7Gk-w6AHPd2nw-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-635f12395b5so36382896d6.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 05:31:18 -0700 (PDT)
+ us-mta-645-uUFZRNGxPAuJTWIupQNYDg-1; Mon, 17 Jul 2023 08:44:58 -0400
+X-MC-Unique: uUFZRNGxPAuJTWIupQNYDg-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-51bef8bb689so6748946a12.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 05:44:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689597078; x=1692189078;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OuwLyyrTv8F/fMx9levYOJ65/NTJOqRuNLnjNMo5BuI=;
- b=eTkdoJLq/X2SYnk0wr1f1R71AG3e6RzN5Bkfejfg/crzaOl90Egmwgq7ldomBRIPvi
- dDzEzxGlCmN3r3DNjEo3kGmk+fi2t+yQoer0VZ4A8yQxrs8hxpDLzmtUt28oWv3B7A3i
- Fpc4Z3s0Ht6vl2zh43A00lR9lvOIhoitrPEdJaK6Gihus6c7u2TiNbB4Sl9dkqrbxd6X
- JVJTiSSswp1U20Diz4M0bt+vdSBFDcGrDWyN4K3AEqnbawmkVOUzNcZoMoZxZEfO7CeE
- 8EFV9Yv+JidwhetNTqH3GNhA/ttKfgMvf1JPGiDyJmiBIncUnDuLLS+H+A4rQkW5fDem
- 0TgA==
-X-Gm-Message-State: ABy/qLYq5F6pytFMQxRSt2wdUgJqlFfWZVQ8jMbgMyxL24Uytu7ImChU
- d+g1yNpBFFWsehrKEaw9msjJ+/3WSdOTnUaNSNL5VLIgEpKMSj7AIuBhsJSFyxoN2fQ6PvOnyGb
- cs7wJb7bKOMq240k=
-X-Received: by 2002:a0c:b3ce:0:b0:630:22f7:37a7 with SMTP id
- b14-20020a0cb3ce000000b0063022f737a7mr9274443qvf.36.1689597078360; 
- Mon, 17 Jul 2023 05:31:18 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEdS/N+ny8O5C6dL9kp7zWHs80bVDLboyHm2z1oo3dsNEQxk/yGbCdGruY/WJY2zf2aBG1pyw==
-X-Received: by 2002:a0c:b3ce:0:b0:630:22f7:37a7 with SMTP id
- b14-20020a0cb3ce000000b0063022f737a7mr9274432qvf.36.1689597078149; 
- Mon, 17 Jul 2023 05:31:18 -0700 (PDT)
-Received: from [192.168.0.3] (ip-109-43-177-137.web.vodafone.de.
- [109.43.177.137]) by smtp.gmail.com with ESMTPSA id
- t11-20020a0cb38b000000b00632266b569esm6447836qve.87.2023.07.17.05.31.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jul 2023 05:31:17 -0700 (PDT)
-Message-ID: <84a0c2fd-ea14-5bb4-9e1c-669b51085ab4@redhat.com>
-Date: Mon, 17 Jul 2023 14:31:15 +0200
+ d=1e100.net; s=20221208; t=1689597897; x=1692189897;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XzLgtVVLHwnmkSSgPouLdLdfVgCpfCTRRRKkOdMq0RQ=;
+ b=Vl48RUnhawnROe8gfICim3rludhISt3wIL5Ng4QloCoU/El9fJrlA7NQapMn+tAbMB
+ 6nCtdSiVZ6n2xdYPeslKJ++Rn0mDoaTZ2jBEi49BZYlsHRVffcw6i67yCvgA1ALoLdz4
+ 7yuuOckNfc0J3oVt5TurFdZj6ap3ScwS1IcnHWE3wx6zAtwqK9g8EW/MuK8djZF4np75
+ tCIHdGwEsX2S2vRCm2/RZlMEnoZb7ugy8oB0eU5K2MQHHHtVPurUw0LkdNS3wf5v057K
+ M/IJNQAkUBOq5dwkaCWbqHoDzspYlynXwqoomPDFDvUlzLNmIXV1S5oEWoCbXms9vRDD
+ gPuA==
+X-Gm-Message-State: ABy/qLZngE8nJx97+tNeeMEUVEncXAwb9N8kVjyPsOaHtF3PZxnmGXk7
+ BbAWK0XXYQ1sTevZsEAVLd/pAxYVFVVt+Q+QGQBgx/IRDazeEr9++oNKqlHsbaUE2M3WlQ2O4o3
+ rnAPgKSREBKgUs14=
+X-Received: by 2002:a05:6402:3550:b0:51e:5aac:6bad with SMTP id
+ f16-20020a056402355000b0051e5aac6badmr11822744edd.11.1689597897635; 
+ Mon, 17 Jul 2023 05:44:57 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFEiOuTeZ0938bQOav2M8TtirR5YaGyyHNUWmH3RjHoizvMT6Lgbq87N9HOmGWIn7Tq7jJ4cg==
+X-Received: by 2002:a05:6402:3550:b0:51e:5aac:6bad with SMTP id
+ f16-20020a056402355000b0051e5aac6badmr11822730edd.11.1689597897359; 
+ Mon, 17 Jul 2023 05:44:57 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ y21-20020aa7d515000000b0051ff2b6139esm6323294edq.5.2023.07.17.05.44.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Jul 2023 05:44:56 -0700 (PDT)
+Date: Mon, 17 Jul 2023 14:44:55 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, Gavin Shan
+ <gshan@redhat.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ pbonzini@redhat.com, eduardo@habkost.net, marcel.apfelbaum@gmail.com,
+ philmd@linaro.org, wangyanan55@huawei.com, shan.gavin@gmail.com
+Subject: Re: [PATCH 0/3] hw/arm/virt: Use generic CPU invalidation
+Message-ID: <20230717144455.6f02fde9@imammedo.users.ipa.redhat.com>
+In-Reply-To: <CAFEAcA92QFxN0at+5rk7yrfk1sj3tX-GcfZYYY5_=210np_j4g@mail.gmail.com>
+References: <20230713054502.410911-1-gshan@redhat.com>
+ <CAFEAcA8197FCwfNZrnxfO-87RveOko0Ju-KcTJOEi0vfjVtDKg@mail.gmail.com>
+ <2d21e89f-c965-e8f1-3705-dfea8367fc7e@linaro.org>
+ <CAFEAcA-XK0U0bPuAf4K7avdJqnmcibFX_swY1Weo_Tn3wHJ1fw@mail.gmail.com>
+ <20230714135004.230c05b2@imammedo.users.ipa.redhat.com>
+ <CAFEAcA92QFxN0at+5rk7yrfk1sj3tX-GcfZYYY5_=210np_j4g@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH][PING] linux-user/elfload: Fix /proc/cpuinfo features: on
- s390x
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <laurent@vivier.eu>,
- David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
-References: <20230627151356.273259-1-iii@linux.ibm.com>
- <f359dae7-e0a3-42cf-c2cd-fff7f9c3a607@linaro.org>
- <a55d41f884e6ff50872d389fa1a7c3dcf61afcc1.camel@linux.ibm.com>
- <13598a41-d17d-4d8f-ef0c-4bd41677c775@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <13598a41-d17d-4d8f-ef0c-4bd41677c775@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,55 +107,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/07/2023 09.44, Richard Henderson wrote:
-> On 7/14/23 13:16, Ilya Leoshkevich wrote:
->> On Wed, 2023-06-28 at 09:49 +0200, Richard Henderson wrote:
->>> On 6/27/23 17:13, Ilya Leoshkevich wrote:
->>>> elf_hwcap_str() takes a bit number, but compares it for equality
->>>> with
->>>> the HWCAP_S390_* masks. This causes /proc/cpuinfo to display
->>>> incorrect
->>>> hwcaps.
->>>>
->>>> Fix by introducing the HWCAP_S390_NR_* constants and using them in
->>>> elf_hwcap_str() instead of the HWCAP_S390_*. While at it, add the
->>>> missing nnpa, pcimio and sie hwcaps from the latest kernel.
->>>>
->>>> Output before:
->>>>
->>>>          features        : esan3 zarch stfle msa
->>>>
->>>> Output after:
->>>>
->>>>          features        : esan3 zarch stfle msa ldisp eimm etf3eh
->>>> highgprs vx vxe
->>>>
->>>> Fixes: e19807bee357 ("linux-user/elfload: Introduce elf_hwcap_str()
->>>> on s390x")
->>>> Signed-off-by: Ilya Leoshkevich<iii@linux.ibm.com>
->>>> ---
->>>>    include/elf.h        | 66 +++++++++++++++++++++++++++++++--------
->>>> -----
->>>>    linux-user/elfload.c | 41 ++++++++++++++-------------
->>>>    2 files changed, 69 insertions(+), 38 deletions(-)
->>>
->>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->>>
->>> r~
->>
->> Hi,
->>
->> I noticed that while the other s390x fixes were picked up and are in
->> master, this one wasn't. Is there anything I need to improve here?
->>
+On Fri, 14 Jul 2023 13:56:00 +0100
+Peter Maydell <peter.maydell@linaro.org> wrote:
+
+> On Fri, 14 Jul 2023 at 12:50, Igor Mammedov <imammedo@redhat.com> wrote:
+> >
+> > On Thu, 13 Jul 2023 12:59:55 +0100
+> > Peter Maydell <peter.maydell@linaro.org> wrote:
+> >  
+> > > On Thu, 13 Jul 2023 at 12:52, Marcin Juszkiewicz
+> > > <marcin.juszkiewicz@linaro.org> wrote:  
+> > > >
+> > > > W dniu 13.07.2023 o 13:44, Peter Maydell pisze:
+> > > >  
+> > > > > I see this isn't a change in this patch, but given that
+> > > > > what the user specifies is not "cortex-a8-arm-cpu" but
+> > > > > "cortex-a8", why do we include the "-arm-cpu" suffix in
+> > > > > the error messages? It's not valid syntax to say
+> > > > > "-cpu cortex-a8-arm-cpu", so it's a bit misleading...  
+> > > >
+> > > > Internally those cpu names are "max-{TYPE_ARM_CPU}" and similar for
+> > > > other architectures.  
+> > >
+> > > Yes; my question is "why are we not using the user-facing
+> > > string rather than the internal type name?".  
+> >
+> > With other targets full CPU type name can also be valid
+> > user-facing string. Namely we use it with -device/device_add
+> > interface. Considering we would like to have CPU hotplug
+> > on ARM as well, we shouldn't not outlaw full type name.
+> > (QMP/monitor interface also mostly uses full type names)  
 > 
-> I just missed it while collecting patches.  Sorry about that.
-> Queued to tcg-next.
+> You don't seem to be able to use the full type name on
+> x86-64 either:
+> 
+> $ ./build/all/qemu-system-x86_64 -cpu pentium-x86_64-cpu
+> qemu-system-x86_64: unable to find CPU model 'pentium-x86_64-cpu'
 
-If you like, I can also take this through my s390x branch ... I'm currently 
-in progress of assembling a pull request, so if you've got nothing else 
-pending right now, I can put it there.
+that's because it also tied into old cpu_model resolving
+routines, and I haven't added typename lookup the last
+time I've touched it (it was out of topic change anyway).
 
-  Thomas
+but some targets do recognize typename, while some
+do a lot more juggling with cpu_model (alpha/ppc),
+and yet another class (garbage in => cpu type out).
+
+With the last one we could just error,
+while with alpha/ppc we could dumb it down to typenames
+only.
+
+> and '-cpu help' does not list them with the suffix.
+
+both above points are fixable,
+
+I can prepare PoC patches for that if there is
+no opposition to the idea.
+
+> > Instead it might be better to consolidate on what has
+> > been done on making CPU '-device' compatible and
+> > allow to use full CPU type name with '-cpu' on arm machines.
+> >
+> > Then later call suffix-less legacy => deprecate/drop it from
+> > user-facing side including cleanup of all the infra we've
+> > invented to keep mapping between cpu_model and typename.  
+> 
+> This seems to me like a worsening of the user interface,
+> and in practice there is not much likelihood of being
+> able to deprecate-and-drop the nicer user-facing names,
+> because they are baked into so many command lines and
+> scripts.
+Nice names are subjective point, I suspect in a long run
+once users switched to using longer names, they won't care much
+about that either.
+
+Also it's arguable if it is worsening UI or not.
+I see using consolidated typenames across the board (incl. UI)
+as a positive development.
+
+As for scripts/CLI users out there, yes it would be disruptive
+for a while but one can adapt to new naming (or use a wrapper
+around QEMU that does suffix adding/model mapping as a crutch).
+
+It weren't possible to drop anything before we introduced
+deprecation process, but with it we can do it.
+
+
+
+> thanks
+> -- PMM
+> 
 
 
