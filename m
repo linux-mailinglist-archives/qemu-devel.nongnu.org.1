@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A361756C21
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 20:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70277756C1A
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 20:30:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLSyL-0002nu-M2; Mon, 17 Jul 2023 14:29:25 -0400
+	id 1qLSyO-0002qC-20; Mon, 17 Jul 2023 14:29:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qLSy4-0002jt-J5
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:29:09 -0400
+ id 1qLSy5-0002kG-T2
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:29:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qLSy2-0004ny-Ja
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:29:07 -0400
+ id 1qLSy4-0004oC-CI
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:29:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689618546;
+ s=mimecast20190719; t=1689618547;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=KYuJS8fy91XugE8yG0oQjHhyw8Any+M9H3Jklimfpg0=;
- b=ZvY3cYN5m9bqOO42xL6r8EgF1gwHUJmtaUJ+vDq10eQIAUnMyQpPuiQ3Q0B4zcrFF0gw2/
- vZaHAHkGmlc1o7pVfo1X2wQ5lL3klA7A+TEqQUa+9SmANiAix0T/fRvwdcJelIiidymNFs
- W2bbAM8bI4Jgq5kXMqEAL1HqSoMgbwg=
+ bh=ZZLrclQeMIxOECQK+j80CxdIr9YZFIB0g8KFE0A2cYo=;
+ b=TboBxbVTWcwLHiR6NEWdRtL8KzmFKdzKMIFsOzrZ+23NLO4NO1f1ybV1elia9qkWHCOYUA
+ adnIlx974iVETFyMTIl1ygFwzKRzOmHh0b/8PvHk/NOjozDzdpvrc9pL0LlXoIjnHJwa+r
+ qCBEQ+v8gG3iIN+COO8snMPOwocl68s=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-8-MFB3teiKONuZkyadGsdoWQ-1; Mon, 17 Jul 2023 14:29:02 -0400
-X-MC-Unique: MFB3teiKONuZkyadGsdoWQ-1
+ us-mta-298-7wb0rLCEPiSTboLCktrTiA-1; Mon, 17 Jul 2023 14:29:03 -0400
+X-MC-Unique: 7wb0rLCEPiSTboLCktrTiA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3CD5E104458F;
- Mon, 17 Jul 2023 18:29:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 78CF086801C;
+ Mon, 17 Jul 2023 18:29:03 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.42.28.62])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 354E92166B26;
- Mon, 17 Jul 2023 18:29:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6E31A2166B25;
+ Mon, 17 Jul 2023 18:29:02 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
@@ -49,9 +49,9 @@ Cc: Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 01/12] qtest: bump min meson timeout to 60 seconds
-Date: Mon, 17 Jul 2023 19:28:47 +0100
-Message-ID: <20230717182859.707658-2-berrange@redhat.com>
+Subject: [PATCH v2 02/12] qtest: bump migration-test timeout to 5 minutes
+Date: Mon, 17 Jul 2023 19:28:48 +0100
+Message-ID: <20230717182859.707658-3-berrange@redhat.com>
 In-Reply-To: <20230717182859.707658-1-berrange@redhat.com>
 References: <20230717182859.707658-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -83,44 +83,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Even some of the relatively fast qtests can sometimes hit the 30 second
-timeout in GitLab CI under high parallelism/load conditions. Bump the
-min to 60 seconds to give a higher margin for reliability.
+The migration test should take between 1 min 30 and 2 mins on reasonably
+modern hardware. The test is not especially compute bound, rather its
+running time is dominated by the guest RAM size relative to the
+bandwidth cap, which forces each iteration to take at least 30 seconds.
+None the less under high load conditions with multiple QEMU processes
+spawned and competing with other parallel tests, the worst case running
+time might be somewhat extended. Bumping the timeout to 5 minutes gives
+us good headroom, while still catching stuck tests relatively quickly.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/qtest/meson.build | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ tests/qtest/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index b071d400b3..b29d7abc39 100644
+index b29d7abc39..c3f8bf45e4 100644
 --- a/tests/qtest/meson.build
 +++ b/tests/qtest/meson.build
-@@ -1,12 +1,7 @@
+@@ -1,6 +1,6 @@
  slow_qtests = {
--  'ahci-test' : 60,
    'bios-tables-test' : 120,
--  'boot-serial-test' : 60,
-   'migration-test' : 150,
+-  'migration-test' : 150,
++  'migration-test' : 300,
    'npcm7xx_pwm-test': 150,
--  'prom-env-test' : 60,
--  'pxe-test' : 60,
--  'qos-test' : 60,
    'qom-test' : 300,
    'test-hmp' : 120,
- }
-@@ -378,8 +373,8 @@ foreach dir : target_dirs
-          env: qtest_env,
-          args: ['--tap', '-k'],
-          protocol: 'tap',
--         timeout: slow_qtests.get(test, 30),
--         priority: slow_qtests.get(test, 30),
-+         timeout: slow_qtests.get(test, 60),
-+         priority: slow_qtests.get(test, 60),
-          suite: ['qtest', 'qtest-' + target_base])
-   endforeach
- endforeach
 -- 
 2.41.0
 
