@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B82B1756CE4
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 21:13:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7193E756CE6
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 21:14:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLTeq-0006u6-3C; Mon, 17 Jul 2023 15:13:20 -0400
+	id 1qLTey-0007G2-Rn; Mon, 17 Jul 2023 15:13:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qLTee-0006tr-U5
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:13:08 -0400
-Received: from mail-qk1-x734.google.com ([2607:f8b0:4864:20::734])
+ id 1qLTes-00078m-N0
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:13:23 -0400
+Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qLTed-0005n5-Dk
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:13:08 -0400
-Received: by mail-qk1-x734.google.com with SMTP id
- af79cd13be357-765a5b93b5bso456250085a.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 12:13:06 -0700 (PDT)
+ id 1qLTer-0005td-9r
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:13:22 -0400
+Received: by mail-qk1-x733.google.com with SMTP id
+ af79cd13be357-768197bad1cso218974985a.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 12:13:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689621186; x=1692213186;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1689621200; x=1692213200;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=f7n2bV6G5U+HHeAQzNT/JYjWCaGlhoaCKVYZoYb59zA=;
- b=hrdk+1dWb99l7Aggm+yLErxmX3U5jpIOvOBrc3TO+1Bh3YnidObO1IxwW/Hsj/Y30c
- GufyzCxeZYMKYvZiUmpFtBBEvl/9OjvTtAVBNGfe6cQVGcXFfFyz9WLzxd/n0b30lEp6
- rdGGYO0wZcHbhc7/MhKrjjLxD3P8lNO/BvyipnZ6YZ/lsiEtTkRZbFv9wmhopaV5BiPq
- ahKl+issml++OdSrZC/fG+/R1Zx8vDN+XGuhRcdc6zfY7Pb/QioHyliGD8sxjua1Civz
- V1AKBPhOu7h7GNB2rigbLnaXmwNRIox4ipbuAUCSIQ6Ehk2NOy30yD9KCTSVsAspK6pc
- OSbA==
+ bh=CIq0yyaQNKhdyDzmqiwUukNVbgxGJgiY5lXBnt+WyOo=;
+ b=rQRYEUUEDSqTJX6JqP7GiIZ+okEp85QZsUXhKCLq31XTeYdmkwVCPnJ7fER9XKx2tg
+ 95C4n+yDA47dBh+03B8X8prF/fzOSYxCquPMlUaWPuR5OLjV7NpyGF1MEz6+JomiJnl7
+ 2EkEtkdzWD3XccvNPJpuFZEnXUxZMZBN4axsbpyjAwvUTKh7BmFBCu2pAOJzpXta0qTL
+ ijlC8lhJ1cG3lSvu1Z2w7CrUVq9gi4XC5/Z0DCRmQ/f2y/DmoXC0azBmh3eyHSq+R0YV
+ d3EbcDwasND178kJ9NN5hKvimHfzaHjFy4hLQDf0bVlcI9UtRTNzr370iEjpoMq2Vm2T
+ zsOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689621186; x=1692213186;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1689621200; x=1692213200;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=f7n2bV6G5U+HHeAQzNT/JYjWCaGlhoaCKVYZoYb59zA=;
- b=SGzC1xcINql2Qps1BrEhoxhb90FkSu8Rx8b0Wtcz5hHthYEd3TZbYnm/e01xbjn+AX
- Y08/98eGpKxLIcKNgeR807zRp2vJTY52RxJTHPDYpOKaYBPleOm0dBIZKyX4AZVEkvmD
- 57zUMyQreT1D2HrTITrOUqoLTdotXsHxVEa245xWaANN1QheH0s6aaw2NayhUepX9nIP
- bUda972TRqGhYF8dF8AmiuGuJLvY1LmYO5zeOr3GuxLxNr99RRfSlOLxTOsWXi7jjwow
- C8pmIxEFbkQxzsmD0em/uqSTXWTlDLpBMnHaguKTXMpCnIugzomyiQYm8VoSEgUAF4VA
- KRnQ==
-X-Gm-Message-State: ABy/qLbD3BCZKya6COcmTj4AmCzSgdk4OzE2iqj/K4jjdAU/5wnOK7XJ
- VZqbXipCOQWAfXKly9tIZBzN0A==
-X-Google-Smtp-Source: APBJJlEIYEGWfOYinUrXgoj/1q0Yr4ZiFKw9pG2cBPzBAS4N6PkkmwDGOVbyLngHPZealxvBJ2p/eQ==
-X-Received: by 2002:a05:620a:2591:b0:767:1c73:6a06 with SMTP id
- x17-20020a05620a259100b007671c736a06mr16284162qko.0.1689621186136; 
- Mon, 17 Jul 2023 12:13:06 -0700 (PDT)
+ bh=CIq0yyaQNKhdyDzmqiwUukNVbgxGJgiY5lXBnt+WyOo=;
+ b=QhGyoLrnzgnTcfyZ8u/FhWwnlO9SxPv5ZfbkqyFI9am2wOZ/pSv+SOuvXWlRh0CDvm
+ BO/Uu3R/CE8lbIJ6w9Uj2b/yAw74gbduS0k4ub6MxcxtHhF99RzhyR2jC7/yq2QQdwaJ
+ EuJdagNScu90tceNCYfJi7WQ8dM1DjGuU9gkLcWv/q1zJtkGBqsxcCTzS+uSpDZWsEpF
+ UapV7QL8sLTDHjB/sUVSAxGdTsNZ4Bvnl+o8VrtioSe0mARx2e0SanLzpfvpBKMPzOWO
+ xFrsEvWjPc40GvlBGwoiQqnLGO6sWto9BHIe2a9/9pmRhUs5FAVborhXtFUaFpnzoD2I
+ vbUA==
+X-Gm-Message-State: ABy/qLbS97oSAiIWtffB1L8l1rHMBTkS2o8mK7w+LynMmrB4i+F19jqV
+ GRV936DXw0DGDWWPcPL1yQAUzw==
+X-Google-Smtp-Source: APBJJlFwzbzCEx94saEd/dLIpqEp2Inc5WQgjbT3BHLH9FNXlWJDUy46QsH7fzdP6izsC9mwf0fhGg==
+X-Received: by 2002:a05:620a:4151:b0:766:fc47:fa00 with SMTP id
+ k17-20020a05620a415100b00766fc47fa00mr21967144qko.29.1689621200392; 
+ Mon, 17 Jul 2023 12:13:20 -0700 (PDT)
 Received: from [192.168.224.227] ([172.58.27.30])
  by smtp.gmail.com with ESMTPSA id
- d1-20020a05620a136100b00767cfac77c3sm6247971qkl.134.2023.07.17.12.13.03
+ h7-20020a05620a10a700b007677f66b160sm6316578qkk.124.2023.07.17.12.13.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jul 2023 12:13:05 -0700 (PDT)
-Message-ID: <b823ec4e-c5d6-b822-8ca6-c0afe346f6b4@linaro.org>
-Date: Mon, 17 Jul 2023 20:12:45 +0100
+ Mon, 17 Jul 2023 12:13:19 -0700 (PDT)
+Message-ID: <974b78d4-905f-70d9-6c25-7ee409c42437@linaro.org>
+Date: Mon, 17 Jul 2023 20:12:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PULL 0/7] target-arm queue
+Subject: Re: [PULL for-8.1 0/1] Block patches
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20230717124746.759085-1-peter.maydell@linaro.org>
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Richard Henderson <rth@twiddle.net>, qemu-block@nongnu.org,
+ Fam Zheng <fam@euphon.net>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>
+References: <20230717143733.448253-1-stefanha@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230717124746.759085-1-peter.maydell@linaro.org>
+In-Reply-To: <20230717143733.448253-1-stefanha@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::734;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x734.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x733.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -93,38 +97,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/17/23 13:47, Peter Maydell wrote:
-> A last small test of bug fixes before rc1.
-> 
-> thanks
-> -- PMM
-> 
+On 7/17/23 15:37, Stefan Hajnoczi wrote:
 > The following changes since commit ed8ad9728a9c0eec34db9dff61dfa2f1dd625637:
 > 
 >    Merge tag 'pull-tpm-2023-07-14-1' ofhttps://github.com/stefanberger/qemu-tpm  into staging (2023-07-15 14:54:04 +0100)
 > 
 > are available in the Git repository at:
 > 
->    https://git.linaro.org/people/pmaydell/qemu-arm.git  tags/pull-target-arm-20230717
+>    https://gitlab.com/stefanha/qemu.git  tags/block-pull-request
 > 
-> for you to fetch changes up to c2c1c4a35c7c2b1a4140b0942b9797c857e476a4:
+> for you to fetch changes up to 66547f416a61e0cb711dc76821890242432ba193:
 > 
->    hw/nvram: Avoid unnecessary Xilinx eFuse backstore write (2023-07-17 11:05:52 +0100)
+>    block/nvme: invoke blk_io_plug_call() outside q->lock (2023-07-17 09:17:41 -0400)
 > 
 > ----------------------------------------------------------------
-> target-arm queue:
->   * hw/arm/sbsa-ref: set 'slots' property of xhci
->   * linux-user: Remove pointless NULL check in clock_adjtime handling
->   * ptw: Fix S1_ptw_translate() debug path
->   * ptw: Account for FEAT_RME when applying {N}SW, SA bits
->   * accel/tcg: Zero-pad PC in TCG CPU exec trace lines
->   * hw/nvram: Avoid unnecessary Xilinx eFuse backstore write
+> Pull request
+> 
+> Fix the hang in the nvme:// block driver during startup.
 
 Applied, thanks.  Please update https://wiki.qemu.org/ChangeLog/8.1 as appropriate.
 
 
 r~
-
-
 
 
