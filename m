@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029FD756A1D
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 19:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB45756A24
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 19:24:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLRwy-00078x-ND; Mon, 17 Jul 2023 13:23:56 -0400
+	id 1qLRx2-0007AJ-9o; Mon, 17 Jul 2023 13:24:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qLRwm-00076R-ON
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:23:46 -0400
+ id 1qLRx0-00079w-1h
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:23:58 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qLRwi-0005Tn-QU
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:23:44 -0400
+ id 1qLRwy-0005Vy-Gx
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:23:57 -0400
 Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4R4TPf490yz6J74j;
- Tue, 18 Jul 2023 01:20:54 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4R4TNY28xKz67nhP;
+ Tue, 18 Jul 2023 01:19:57 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 17 Jul 2023 18:23:22 +0100
+ 15.1.2507.27; Mon, 17 Jul 2023 18:23:52 +0100
 To: <linux-cxl@vger.kernel.org>, Dan Williams <dan.j.williams@intel.com>,
  <qemu-devel@nongnu.org>
 CC: <linuxarm@huawei.com>, Alison Schofield <alison.schofield@intel.com>, Ira
@@ -33,10 +33,9 @@ CC: <linuxarm@huawei.com>, Alison Schofield <alison.schofield@intel.com>, Ira
  Bhushan Sreenivasamurthy <sheshas@marvell.com>, Fan Ni <fan.ni@samsung.com>,
  Michael Tsirkin <mst@redhat.com>, Jonathan Zhang <jonzhang@meta.com>, Klaus
  Jensen <k.jensen@samsung.com>
-Subject: [RFC PATCH 13/17] HACK: hw/i386/pc: Add Aspeed i2c controller + MCTP
- with ACPI tables
-Date: Mon, 17 Jul 2023 18:16:42 +0100
-Message-ID: <20230717171646.8972-14-Jonathan.Cameron@huawei.com>
+Subject: [RFC PATCH 14/17] docs: cxl: Add example commandline for MCTP CXL CCIs
+Date: Mon, 17 Jul 2023 18:16:43 +0100
+Message-ID: <20230717171646.8972-15-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230717171646.8972-1-Jonathan.Cameron@huawei.com>
 References: <20230717171646.8972-1-Jonathan.Cameron@huawei.com>
@@ -72,260 +71,52 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CXL devices provide a standard Fabric Management API - FM-API.
-See CXL specification r3.0 from https://www.computeexpresslink.org
-In many real setups that will be used by a separate host from the
-one actually using the CXL devices (BMC or similar) but it is
-helpful to be able to use the main CXL emulation and the
-Fabric Management emulation on a single host.  This 'hack' enables
-that (with minor kernel driver changes).
-
-There are many many things wrong with how this is done but for
-now it enables use of this aspeed controller with ACPI FW
-on an x86 host.  That is useful for testing MCTP over I2C.
-
-If anyone has either:
-1) Docs for an I2C controller with MCTP support that might actually
-   appear on an x86 host.
-2) A nice solution for how wrap this up in a device whilst minimising
-   kernel changes.
-3) A guide / reference example to how to do the interrupt 'right'
-   (I'm an ARM focused developer so got lost in the x86 interrupt
-    stuff).
-then let me know.
-
-For now this works and I will carry it out of tree on
-gitlab.com/jic23/qemu.
-
-DSDT blob - as this is a hack I haven't included test updates
-
-Scope (_SB)
-{
-    Device (MCTP)
-    {
-        Name (_HID, "PRP0001")  // _HID: Hardware ID
-        Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
-        {
-            ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301") /* Device Properties for _DSD */,
-            Package (0x03)
-            {
-                Package (0x02)
-                {
-                    "compatible",
-                    "aspeed,ast2600-i2c-bus"
-                },
-
-                Package (0x02)
-                {
-                    "bus-frequency",
-                    0x00061A80
-                },
-
-                Package (0x02)
-                {
-                    "mctp-controller",
-                    One
-                }
-            }
-        })
-        Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
-        {
-            QWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, NonCacheable, ReadWrite,
-                0x0000000000000000, // Granularity
-                0x00000004800FC080, // Range Minimum
-                0x00000004800FC0FF, // Range Maximum
-                0x0000000000000000, // Translation Offset
-                0x0000000000000080, // Length
-                ,, , AddressRangeMemory, TypeStatic)
-            Interrupt (ResourceConsumer, Level, ActiveHigh, Shared, ,, )
-            {
-                0x00000007,
-            }
-        })
-    }
-
-    Device (MCTS)
-    {
-        Name (_HID, "PRP0001")  // _HID: Hardware ID
-        Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
-        {
-            I2cSerialBusV2 (0x0050, DeviceInitiated, 0x000186A0,
-                AddressingMode7Bit, "\\_SB.MCTP",
-                0x00, ResourceProducer, , Exclusive,
-                )
-        })
-        Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
-        {
-            ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301") /* Device Properties for _DSD */,
-            Package (0x01)
-            {
-                Package (0x02)
-                {
-                    "compatible",
-                     "mctp-i2c-controller"
-                }
-            }
-        })
-    }
-}
-
-To add devices to the bus use something like:
- -device i2c_mctp_cxl_switch,bus=aspeed.i2c.bus.0,address=4,target=us0
+A lot more needed here on what these are for and what can be done
+with them.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- include/hw/i386/pc.h |  1 +
- hw/i386/acpi-build.c | 65 ++++++++++++++++++++++++++++++++++++++++++++
- hw/i386/pc.c         | 20 +++++++++++++-
- 3 files changed, 85 insertions(+), 1 deletion(-)
+ docs/system/devices/cxl.rst | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index d54e8b1101..d60c3d44a7 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -56,6 +56,7 @@ typedef struct PCMachineState {
+diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
+index b742120657..62b6161474 100644
+--- a/docs/system/devices/cxl.rst
++++ b/docs/system/devices/cxl.rst
+@@ -406,6 +406,33 @@ OS management of CXL memory devices as described here.
+ * CONFIG_CXL_PORT
+ * CONFIG_CXL_REGION
  
-     SGXEPCState sgx_epc;
-     CXLState cxl_devices_state;
-+    hwaddr i2c_base;
- } PCMachineState;
++
++CCI access via MCTP over I2C
++----------------------------
++
++TODO: Add some more info here on what this actually is.
++
++Both CXL switches and CXL Type 3 devices support configuration via
++MCTP access to Component Command Interfaces (CCIs) on the devices.
++
++Example configuration:
++
++ -device cxl-upstream,port=33,bus=root_port0,id=us0,multifunction=on,addr=0.0,sn=12345678 \
++ -device cxl-downstream,port=0,bus=us0,id=swport0,chassis=0,slot=4 \
++ -device cxl-downstream,port=1,bus=us0,id=swport1,chassis=0,slot=5 \
++ -device cxl-downstream,port=2,bus=us0,id=swport2,chassis=0,slot=6 \
++ -device cxl-type3,bus=swport0,persistent-memdev=cxl-mem1,id=cxl-pmem0,lsa=cxl-lsa1,sn=3 \
++ -device cxl-type3,bus=swport1,persistent-memdev=cxl-mem2,id=cxl-pmem1,lsa=cxl-lsa2,sn=4 \
++ -device cxl-type3,bus=swport2,persistent-memdev=cxl-mem3,id=cxl-pmem2,lsa=cxl-lsa3,sn=5 \
++ -machine cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=1k \
++ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=4,target=us0 \
++ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=5,target=cxl-pmem0 \
++ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=6,target=cxl-pmem1 \
++ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=7,target=cxl-pmem2
++
++Communication with the MCTP CCI can then be established using standard MCTP configuration
++tools.
++
+ References
+ ----------
  
- #define PC_MACHINE_ACPI_DEVICE_PROP "acpi-device"
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index c791fb2760..481ad87438 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -1424,6 +1424,68 @@ static void build_acpi0017(Aml *table)
-     aml_append(table, scope);
- }
- 
-+static void acpi_dsdt_add_mctp(Aml *scope, PCMachineState *pcms)
-+{
-+    uint32_t interrupt = 7;
-+    Aml *main_dev = aml_device("MCTP");
-+    Aml *sub_dev = aml_device("MCTS");
-+    Aml *dsd_pkg = aml_package(2);
-+    Aml *props_pkg = aml_package(3);
-+    Aml *pkg = aml_package(2);
-+    Aml *crs = aml_resource_template();
-+
-+    aml_append(main_dev, aml_name_decl("_HID", aml_string("PRP0001")));
-+
-+    aml_append(pkg, aml_string("compatible"));
-+    aml_append(pkg, aml_string("aspeed,ast2600-i2c-bus"));
-+    aml_append(props_pkg, pkg);
-+
-+    pkg = aml_package(2);
-+    aml_append(pkg, aml_string("bus-frequency"));
-+    aml_append(pkg, aml_int(400000));
-+    aml_append(props_pkg, pkg);
-+
-+    pkg = aml_package(2);
-+    aml_append(pkg, aml_string("mctp-controller"));
-+    aml_append(pkg, aml_int(1));
-+    aml_append(props_pkg, pkg);
-+
-+    aml_append(dsd_pkg, aml_touuid("DAFFD814-6EBA-4D8C-8A91-BC9BBF4AA301"));
-+    aml_append(dsd_pkg, props_pkg);
-+    aml_append(main_dev, aml_name_decl("_DSD", dsd_pkg));
-+
-+    aml_append(crs, aml_qword_memory(AML_POS_DECODE, AML_MIN_FIXED,
-+                                     AML_MAX_FIXED, AML_NON_CACHEABLE,
-+                                     AML_READ_WRITE, 0, pcms->i2c_base + 0x80,
-+                                     pcms->i2c_base + 0x80 + 0x80 - 1,
-+                                     0, 0x80));
-+    aml_append(crs,
-+               aml_interrupt(AML_CONSUMER, AML_LEVEL, AML_ACTIVE_HIGH,
-+                             AML_SHARED, &interrupt, 1));
-+    aml_append(main_dev, aml_name_decl("_CRS", crs));
-+
-+    aml_append(sub_dev, aml_name_decl("_HID", aml_string("PRP0001")));
-+
-+    dsd_pkg = aml_package(2);
-+    aml_append(dsd_pkg, aml_touuid("DAFFD814-6EBA-4D8C-8A91-BC9BBF4AA301"));
-+
-+    props_pkg = aml_package(1);
-+
-+    pkg = aml_package(2);
-+    aml_append(pkg, aml_string("compatible"));
-+    aml_append(pkg, aml_string("mctp-i2c-controller"));
-+    aml_append(props_pkg, pkg);
-+    aml_append(dsd_pkg, props_pkg);
-+
-+    crs = aml_resource_template();
-+    aml_append(crs, aml_i2c_slv_serial_bus_device(0x50, "\\_SB.MCTP"));
-+    aml_append(sub_dev, aml_name_decl("_CRS", crs));
-+    aml_append(sub_dev, aml_name_decl("_DSD", dsd_pkg));
-+
-+    aml_append(scope, main_dev);
-+    aml_append(scope, sub_dev);
-+}
-+
- /*
-  * Precompute the crs ranges and bus numbers that will be used in PXB entries
-  * in PXB SSDT.
-@@ -1652,6 +1714,9 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
-         build_hpet_aml(dsdt);
-     }
- 
-+    sb_scope = aml_scope("_SB");
-+    acpi_dsdt_add_mctp(sb_scope, pcms);
-+    aml_append(dsdt, sb_scope);
-     if (vmbus_bridge) {
-         sb_scope = aml_scope("_SB");
-         aml_append(sb_scope, build_vmbus_device_aml(vmbus_bridge));
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 3109d5e0e0..335b6f1265 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -93,6 +93,7 @@
- #include "hw/i386/kvm/xen_evtchn.h"
- #include "hw/i386/kvm/xen_gnttab.h"
- #include "hw/i386/kvm/xen_xenstore.h"
-+#include "hw/i2c/aspeed_i2c.h"
- #include "sysemu/replay.h"
- #include "target/i386/cpu.h"
- #include "e820_memory_layout.h"
-@@ -1074,6 +1075,8 @@ void pc_memory_init(PCMachineState *pcms,
-         memory_region_init(mr, OBJECT(machine), "cxl_host_reg", cxl_size);
-         memory_region_add_subregion(system_memory, cxl_base, mr);
-         cxl_resv_end = cxl_base + cxl_size;
-+        pcms->i2c_base = cxl_resv_end - 0x4000;
-+
-         if (pcms->cxl_devices_state.fixed_windows) {
-             hwaddr cxl_fmw_base;
-             GList *it;
-@@ -1157,7 +1160,7 @@ uint64_t pc_pci_hole64_start(void)
-     ram_addr_t size = 0;
- 
-     if (pcms->cxl_devices_state.is_enabled) {
--        hole64_start = pc_get_cxl_range_end(pcms);
-+        hole64_start = pc_get_cxl_range_end(pcms) + 0x4000;
-     } else if (pcmc->has_reserved_memory && (ms->ram_size < ms->maxram_size)) {
-         pc_get_device_memory_range(pcms, &hole64_start, &size);
-         if (!pcmc->broken_reserved_end) {
-@@ -1354,6 +1357,21 @@ void pc_basic_device_init(struct PCMachineState *pcms,
-     /* Super I/O */
-     pc_superio_init(isa_bus, create_fdctrl, pcms->i8042_enabled,
-                     pcms->vmport != ON_OFF_AUTO_ON);
-+
-+    {
-+        AspeedI2CState *aspeed_i2c;
-+        struct DeviceState *dev;
-+
-+        dev = qdev_new("aspeed.i2c-ast2600");
-+        aspeed_i2c = ASPEED_I2C(dev);
-+        object_property_set_link(OBJECT(dev), "dram",
-+                                 OBJECT(MACHINE(pcms)->ram), &error_fatal);
-+        sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+        sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, pcms->i2c_base);
-+        /* Hack ;) - Steal unused interrupt 7 */
-+        sysbus_connect_irq(SYS_BUS_DEVICE(&aspeed_i2c->busses[0]), 0,
-+                           x86ms->gsi[7]);
-+    }
- }
- 
- void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus)
 -- 
 2.39.2
 
