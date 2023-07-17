@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CF9756A01
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CA0756A00
 	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 19:18:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLRqg-0005oy-SZ; Mon, 17 Jul 2023 13:17:26 -0400
+	id 1qLRr8-0005u5-LO; Mon, 17 Jul 2023 13:17:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qLRqY-0005oX-5a
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:17:18 -0400
+ id 1qLRr5-0005tZ-6c
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:17:51 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qLRqW-000405-Hf
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:17:17 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4R4TFg1ng8z6J7mn;
- Tue, 18 Jul 2023 01:13:59 +0800 (CST)
+ id 1qLRr2-00042M-FV
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:17:49 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4R4TH92rFwz67g19;
+ Tue, 18 Jul 2023 01:15:17 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 17 Jul 2023 18:17:14 +0100
+ 15.1.2507.27; Mon, 17 Jul 2023 18:17:44 +0100
 To: <linux-cxl@vger.kernel.org>, Dan Williams <dan.j.williams@intel.com>,
  <qemu-devel@nongnu.org>
 CC: <linuxarm@huawei.com>, Alison Schofield <alison.schofield@intel.com>, Ira
@@ -33,10 +33,9 @@ CC: <linuxarm@huawei.com>, Alison Schofield <alison.schofield@intel.com>, Ira
  Bhushan Sreenivasamurthy <sheshas@marvell.com>, Fan Ni <fan.ni@samsung.com>,
  Michael Tsirkin <mst@redhat.com>, Jonathan Zhang <jonzhang@meta.com>, Klaus
  Jensen <k.jensen@samsung.com>
-Subject: [RFC PATCH 01/17] hw/pci-bridge/cxl_upstream: Move defintion of
- device to header.
-Date: Mon, 17 Jul 2023 18:16:30 +0100
-Message-ID: <20230717171646.8972-2-Jonathan.Cameron@huawei.com>
+Subject: [RFC PATCH 02/17] hw/cxl/mailbox: Enable mulitple mailbox command sets
+Date: Mon, 17 Jul 2023 18:16:31 +0100
+Message-ID: <20230717171646.8972-3-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230717171646.8972-1-Jonathan.Cameron@huawei.com>
 References: <20230717171646.8972-1-Jonathan.Cameron@huawei.com>
@@ -44,7 +43,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 Received-SPF: pass client-ip=185.176.79.56;
@@ -72,84 +71,92 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To avoid repitition of switch upstream port specific data in
-the CXLDeviceState structure it will be necessary to call
-access the switch USP specific from mailbox callbacks.
-Hence move it to a header so it is no longer an opaque
-structure.
+Until now, we have supported only a single set of comamnds.
+To allow introduction of switch CCI functions, we need to
+be able to pick between different sets for a given mailbox
+instance.  This patch should make not functional changes, but
+enable them in the following patches.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- include/hw/pci-bridge/cxl_upstream_port.h | 18 ++++++++++++++++++
- hw/cxl/cxl-mailbox-utils.c                |  1 +
- hw/pci-bridge/cxl_upstream.c              | 11 +----------
- 3 files changed, 20 insertions(+), 10 deletions(-)
+ include/hw/cxl/cxl_device.h | 12 ++++++++++++
+ hw/cxl/cxl-mailbox-utils.c  | 17 ++++-------------
+ 2 files changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/include/hw/pci-bridge/cxl_upstream_port.h b/include/hw/pci-bridge/cxl_upstream_port.h
-new file mode 100644
-index 0000000000..b02aa8f659
---- /dev/null
-+++ b/include/hw/pci-bridge/cxl_upstream_port.h
-@@ -0,0 +1,18 @@
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index 887a38bdbc..2c239fca47 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -134,6 +134,17 @@ typedef enum {
+     CXL_MBOX_MAX = 0x17
+ } CXLRetCode;
+ 
++struct cxl_cmd;
++typedef CXLRetCode (*opcode_handler)(struct cxl_cmd *cmd,
++                                     CXLDeviceState *cxl_dstate, uint16_t *len);
++struct cxl_cmd {
++    const char *name;
++    opcode_handler handler;
++    ssize_t in;
++    uint16_t effect; /* Reported in CEL */
++    uint8_t *payload;
++};
 +
-+#ifndef CXL_USP_H
-+#define CXL_USP_H
-+#include "hw/pci/pcie.h"
-+#include "hw/pci/pcie_port.h"
-+#include "hw/cxl/cxl.h"
-+
-+typedef struct CXLUpstreamPort {
-+    /*< private >*/
-+    PCIEPort parent_obj;
-+
-+    /*< public >*/
-+    CXLComponentState cxl_cstate;
-+    DOECap doe_cdat;
-+    uint64_t sn;
-+} CXLUpstreamPort;
-+
-+#endif /* CXL_SUP_H */
+ typedef struct CXLEvent {
+     CXLEventRecordRaw data;
+     QSIMPLEQ_ENTRY(CXLEvent) node;
+@@ -202,6 +213,7 @@ typedef struct cxl_device_state {
+     uint64_t pmem_size;
+     uint64_t vmem_size;
+ 
++    struct cxl_cmd (*cxl_cmd_set)[256];
+     CPMUState cpmu[CXL_NUM_CPMU_INSTANCES];
+     CXLEventLog event_logs[CXL_EVENT_TYPE_MAX];
+ } CXLDeviceState;
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 02f9b5a870..1e0d96f64f 100644
+index 1e0d96f64f..c8feeffbeb 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -11,6 +11,7 @@
- #include "hw/cxl/cxl.h"
- #include "hw/cxl/cxl_events.h"
- #include "hw/pci/pci.h"
-+#include "hw/pci-bridge/cxl_upstream_port.h"
- #include "qemu/cutils.h"
- #include "qemu/log.h"
- #include "qemu/units.h"
-diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-index 96d093add1..f9627f820e 100644
---- a/hw/pci-bridge/cxl_upstream.c
-+++ b/hw/pci-bridge/cxl_upstream.c
-@@ -14,6 +14,7 @@
- #include "hw/pci/msi.h"
- #include "hw/pci/pcie.h"
- #include "hw/pci/pcie_port.h"
-+#include "hw/pci-bridge/cxl_upstream_port.h"
- /*
-  * Null value of all Fs suggested by IEEE RA guidelines for use of
-  * EU, OUI and CID
-@@ -28,16 +29,6 @@
- #define CXL_UPSTREAM_PORT_DVSEC_OFFSET \
-     (CXL_UPSTREAM_PORT_AER_OFFSET + PCI_ERR_SIZEOF)
+@@ -70,16 +70,6 @@ enum {
+         #define CLEAR_POISON           0x2
+ };
  
--typedef struct CXLUpstreamPort {
--    /*< private >*/
--    PCIEPort parent_obj;
--
--    /*< public >*/
--    CXLComponentState cxl_cstate;
--    DOECap doe_cdat;
--    uint64_t sn;
--} CXLUpstreamPort;
--
- CXLComponentState *cxl_usp_to_cstate(CXLUpstreamPort *usp)
+-struct cxl_cmd;
+-typedef CXLRetCode (*opcode_handler)(struct cxl_cmd *cmd,
+-                                   CXLDeviceState *cxl_dstate, uint16_t *len);
+-struct cxl_cmd {
+-    const char *name;
+-    opcode_handler handler;
+-    ssize_t in;
+-    uint16_t effect; /* Reported in CEL */
+-    uint8_t *payload;
+-};
+ 
+ static CXLRetCode cmd_events_get_records(struct cxl_cmd *cmd,
+                                          CXLDeviceState *cxlds,
+@@ -711,7 +701,7 @@ void cxl_process_mailbox(CXLDeviceState *cxl_dstate)
+     uint8_t set = FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAND_SET);
+     uint8_t cmd = FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAND);
+     uint16_t len = FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, LENGTH);
+-    cxl_cmd = &cxl_cmd_set[set][cmd];
++    cxl_cmd = &cxl_dstate->cxl_cmd_set[set][cmd];
+     h = cxl_cmd->handler;
+     if (h) {
+         if (len == cxl_cmd->in || cxl_cmd->in == ~0) {
+@@ -746,10 +736,11 @@ void cxl_process_mailbox(CXLDeviceState *cxl_dstate)
+ 
+ void cxl_initialize_mailbox(CXLDeviceState *cxl_dstate)
  {
-     return &usp->cxl_cstate;
++    cxl_dstate->cxl_cmd_set = cxl_cmd_set;
+     for (int set = 0; set < 256; set++) {
+         for (int cmd = 0; cmd < 256; cmd++) {
+-            if (cxl_cmd_set[set][cmd].handler) {
+-                struct cxl_cmd *c = &cxl_cmd_set[set][cmd];
++            if (cxl_dstate->cxl_cmd_set[set][cmd].handler) {
++                struct cxl_cmd *c = &cxl_dstate->cxl_cmd_set[set][cmd];
+                 struct cel_log *log =
+                     &cxl_dstate->cel_log[cxl_dstate->cel_size];
+ 
 -- 
 2.39.2
 
