@@ -2,50 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C2D755FCE
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 11:50:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8705755FB2
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 11:46:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLKrI-0003B9-Ev; Mon, 17 Jul 2023 05:49:36 -0400
+	id 1qLKmM-00022Q-F7; Mon, 17 Jul 2023 05:44:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qLKrF-0003Av-Ui; Mon, 17 Jul 2023 05:49:34 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
+ id 1qLKmJ-00021p-RU
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 05:44:27 -0400
+Received: from mga11.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qLKrE-0007OX-03; Mon, 17 Jul 2023 05:49:33 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D24D91446C;
- Mon, 17 Jul 2023 12:49:29 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D4C6D1522F;
- Mon, 17 Jul 2023 12:49:26 +0300 (MSK)
-Message-ID: <c4f93386-688e-3e81-4da5-641b053aad35@tls.msk.ru>
-Date: Mon, 17 Jul 2023 12:49:26 +0300
+ (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
+ id 1qLKmH-0006PS-DW
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 05:44:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1689587065; x=1721123065;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=hwdvJ8BR9IZZL/dpbQmOJvAnME6Empxc8mFkr/gOwgs=;
+ b=TLrKkEs0hZEY9TIHR7ODhWtm6BGOJdIXdV2dhPrMhr7cuNi8XxycOAGa
+ jkHT5uGt05FmCDO4gvT76CM+jJlAug85cphgNJH5q4yu39MeH4Rmm2b/i
+ /6SgbfKaiXtDuPop+yLA7omL2RkhqbQxHceOPnLuvPu1WngTY9FhcAbFv
+ jQ+514mPUPM/7Kd7tVO26E7lg6NyC+x0cUoiiADuEDhUR6RP7KcFd9a8D
+ qZtZou2uaq16VmsfUsR+IdiF8xT6/Vt9Bdj5kydI7qt7ZwEEsI5ItM0zr
+ HJC5rqrdr3fgtzM8xy1Wr+EUIcCCiqeYafapguOnZ/MuoiZJ56pXZfTkT Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10773"; a="363353533"
+X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; d="scan'208";a="363353533"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2023 02:44:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10773"; a="813255207"
+X-IronPort-AV: E=Sophos;i="6.01,211,1684825200"; d="scan'208";a="813255207"
+Received: from lingshan-icx.bj.intel.com ([10.240.192.125])
+ by FMSMGA003.fm.intel.com with ESMTP; 17 Jul 2023 02:44:16 -0700
+From: Zhu Lingshan <lingshan.zhu@intel.com>
+To: jasowang@redhat.com,
+	mst@redhat.com,
+	eperezma@redhat.com
+Cc: qemu-devel@nongnu.org,
+	Zhu Lingshan <lingshan.zhu@intel.com>
+Subject: [PATCH] vhost: disable VHOST_OPS_DEBUG by default
+Date: Tue, 18 Jul 2023 01:44:05 +0800
+Message-Id: <20230717174405.293668-1-lingshan.zhu@intel.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 0/6] trivial-patches for 2023-07-16
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org
-References: <20230716115801.1505288-1-mjt@tls.msk.ru>
- <69ff1b09-a795-fcbe-ad0d-52f76f25eba7@linaro.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <69ff1b09-a795-fcbe-ad0d-52f76f25eba7@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=192.55.52.93; envelope-from=lingshan.zhu@intel.com;
+ helo=mga11.intel.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_FUTURE_06_12=1.947,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,52 +76,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-16.07.2023 18:58, Philippe Mathieu-Daudé wrote:
-...
->> Michael Tokarev (5):
->>    tree-wide spelling fixes in comments and some messages: migration/
->>    tree-wide spelling fixes in comments and some messages: s390x
->>    tree-wide spelling fixes in comments and some messages: arm
->>    tree-wide spelling fixes in comments and some messages: other
->>      architectures
->>    tree-wide spelling fixes in comments and some messages: hw/9pfs
-> 
-> FYI patch subject is usually "subsystem: Topic", see
-> https://www.qemu.org/docs/master/devel/submitting-a-patch.html#write-a-meaningful-commit-message:
-> 
->    QEMU follows the usual standard for git commit messages: the first
->    line (which becomes the email subject line) is “subsystem: single
->    line summary of change”.
+This commit disables VHOST_OPS_DEBUG by default
+These information are ususally only required in development
+environment
 
-Yes Philippe, I know. In this case though, it really is "tree-wide". I tried
-to group them by subsystem but it doesn't work that well.  Especially having
-in mind how many changes there are (about 400 in total).
+Signed-off-by: Zhu Lingshan <lingshan.zhu@intel.com>
+---
+ hw/virtio/vhost.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-This particular series is a pull request, not a review request (I just
-forgot to add --subject-prefix=PULL when generating this one).  This is
-the changes which has been reviewed by at least one person, out of the
-other pile. The others are here, for example:
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 82394331bf..ec435a3079 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -29,7 +29,9 @@
+ #include "trace.h"
+ 
+ /* enabled until disconnected backend stabilizes */
+-#define _VHOST_DEBUG 1
++
++/* uncomment macro _VHOST_DEBUG to enable VHOST_OPS_DEBUG */
++/* #define _VHOST_DEBUG 1 */
+ 
+ #ifdef _VHOST_DEBUG
+ #define VHOST_OPS_DEBUG(retval, fmt, ...) \
+@@ -1318,7 +1320,10 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
+     struct vhost_virtqueue *vq = container_of(n, struct vhost_virtqueue,
+                                               error_notifier);
+     struct vhost_dev *dev = vq->dev;
++
++#ifdef _VHOST_DEBUG
+     int index = vq - dev->vqs;
++#endif
+ 
+     if (event_notifier_test_and_clear(n) && dev->vdev) {
+         VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d",
+-- 
+2.39.3
 
-   https://lists.nongnu.org/archive/html/qemu-devel/2023-07/msg03006.html
-
-and see comments by Peter there:
-
-  https://lists.nongnu.org/archive/html/qemu-devel/2023-07/msg03050.html
-
-My plan is to get the reviewed parts applied, and re-send the rest
-once again. This is a huge work already to create the changes to
-begin with, and to review them as well.
-
-The initial RFC:
-
-  https://lists.nongnu.org/archive/html/qemu-devel/2023-07/msg02841.html
-
-> (not really a cosmetics comment, but various developers have mail
->   filters written using this pattern).
-
-It's hardly possible to reliable filter by subsystem, because there's
-no formal subsystems defined and the "subsystem:" prefix in emails is
-really arbitrary.
-
-/mjt
 
