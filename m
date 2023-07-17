@@ -2,68 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A407568FA
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 18:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA27756929
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 18:31:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLQyu-0002ZM-5f; Mon, 17 Jul 2023 12:21:52 -0400
+	id 1qLR6d-0005Ix-D6; Mon, 17 Jul 2023 12:29:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qLQyj-0002JA-IR
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 12:21:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qLQyg-0008MJ-59
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 12:21:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689610897;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=pfxMAgQSsYnpHAASTrWoEi4WGzS35lvo4o0nj+hUXeQ=;
- b=busdq0K4yHo55s+ynYnHc5OJrONNLsS+koLeGrc1KygSiNjLBzoku7uBVKngYQZV1jvCnk
- es167BmropTJ7fJNWNuJHCanZql2TgS3dg6w9y1Fi83CJXFhtoWNXVlQ16xgLDRXsg1nY6
- 73DFkEu/EifOlGb5fSnR8uQsBtlmlbg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-532-PXwDPZi7P6q6LoF9fGwJCQ-1; Mon, 17 Jul 2023 12:21:33 -0400
-X-MC-Unique: PXwDPZi7P6q6LoF9fGwJCQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D1C92857FD3;
- Mon, 17 Jul 2023 16:21:32 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.39.192.118])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 10A371454142;
- Mon, 17 Jul 2023 16:21:29 +0000 (UTC)
-From: Eric Auger <eric.auger@redhat.com>
-To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, mst@redhat.com, jean-philippe@linaro.org
-Cc: qemu-stable@nongnu.org,
-	mcascell@redhat.com,
-	taoym@zju.edu.cn
-Subject: [PATCH for-8.1 v2] hw/virtio-iommu: Fix potential OOB access in
- virtio_iommu_handle_command()
-Date: Mon, 17 Jul 2023 18:21:26 +0200
-Message-Id: <20230717162126.11693-1-eric.auger@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qLR6Y-0005Ic-0j
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 12:29:47 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qLR6W-0001Vy-6Q
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 12:29:45 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-317009c0f9aso1385810f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 09:29:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689611382; x=1692203382;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=GOEC8iPAYYYAzaAMnSoH2HOqZ7oHubARoWtWdFLh2SI=;
+ b=cAJ7QLgjztYG0l93UI1aFPYhhB+7B2z0Z8t5DVy823eAOdBJF0+FGfwq7sGusAekYI
+ Dne3yB0UNvYa6sZdwFyotMeMKGyXyHfq+Fac8xUXfw48qKnNHQEO917SIWy6ul25QQdE
+ b34K9JwEqoIqfo5kj5lS8KvychB2uyunBZO2uo9k73svorCQlUbR8MPoISQbHBH8egUi
+ RADH43mKxj2ssY25roD7eogbUfeeSELsiJ2RWZo6X3JJcIG2TN7T6edWvj1GoELpoaQr
+ 2AF7RTSfBiM3jvApQtSZlFhJSVlAHVy83N1L48Wh0hsGUp0vlvsKiPzz64YfUo3mJpqL
+ E/mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689611382; x=1692203382;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GOEC8iPAYYYAzaAMnSoH2HOqZ7oHubARoWtWdFLh2SI=;
+ b=CIA5kKv/GoPzA/QjjeMfAs8/bmjLXaa5dLC4Ya+ufaaTvTqFTlZ+oJqrKkdkRd0xtx
+ g0QkQDKOnn2a8SRjK5nxwvSZg3z+yjawlMg2XHaB1lgE0ZfgX28Erj7HoGF7vg3T9ONG
+ sZwuywmBH0Zfw/XsWW/VPDIhkTzMyL9pRV4SD/Z24ZREFT5VO0okmXPTNNhW+mxtgSdd
+ OGJ6X9l3W4prfzbTJ6rB/JKxyA0PAOAiMAB6GuJfKtefCuIMOEX8WPQa8Nkwr6hNz1GM
+ dys4V6GGnKIdiLRG0P92NAafm458piRqpYBJaATYI14Av3Q1DvU9JzTNp8kWwWIPTTth
+ Q6yQ==
+X-Gm-Message-State: ABy/qLYLBjVqoelOgq1qC9KnHxv5RqyX7CByeBBuyY3e+NoYkrGV3o2U
+ PcaHigithVlUas4tlqh3U1B4nz/Rq9sfNRza8Dw=
+X-Google-Smtp-Source: APBJJlGbVJRFNEMa42uOOo5Kga3R7Ez684DINrq9gIKcUt/WCeBlepETnlX1hHG4KivDJS0qFFfTUg==
+X-Received: by 2002:adf:df0c:0:b0:317:ec8:6e4 with SMTP id
+ y12-20020adfdf0c000000b003170ec806e4mr287122wrl.43.1689611381993; 
+ Mon, 17 Jul 2023 09:29:41 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ q10-20020adfdfca000000b003144b95e1ecsm19596791wrn.93.2023.07.17.09.29.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Jul 2023 09:29:41 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Subject: [PATCH for-8.1] target/mips: Avoid shift by negative number in
+ page_table_walk_refill()
+Date: Mon, 17 Jul 2023 17:29:40 +0100
+Message-Id: <20230717162940.814078-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,49 +92,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the virtio_iommu_handle_command() when a PROBE request is handled,
-output_size takes a value greater than the tail size and on a subsequent
-iteration we can get a stack out-of-band access. Initialize the
-output_size on each iteration.
+Coverity points out that in page_table_walk_refill() we can shift by
+a negative number, which is undefined behaviour (CID 1452918,
+1452920, 1452922).  We already catch the negative directory_shift and
+leaf_shift as being a "bail out early" case, but not until we've
+already used them to calculated some offset values.
 
-The issue was found with ASAN. Credits to:
-Yiming Tao(Zhejiang University)
-Gaoning Pan(Zhejiang University)
+Move the calculation of the offset values to after we've done the
+"return early if directory_shift or leaf_shift are -1" check.
 
-Fixes: 1733eebb9e7 ("virtio-iommu: Implement RESV_MEM probe request")
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Reported-by: Mauro Matteo Cascella <mcascell@redhat.com>
-Cc: qemu-stable@nongnu.org
+Since walk_directory() re-calculates these shift values, add an
+assert() to tell Coverity that the caller has already ensured they
+won't be negative.
 
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-- added the Cc: qemu-stable@nongnu.org and copied 2 persons involved
-  in the reporting loop
----
- hw/virtio/virtio-iommu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ target/mips/tcg/sysemu/tlb_helper.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-index 201127c488..4dcf1d5c62 100644
---- a/hw/virtio/virtio-iommu.c
-+++ b/hw/virtio/virtio-iommu.c
-@@ -728,13 +728,15 @@ static void virtio_iommu_handle_command(VirtIODevice *vdev, VirtQueue *vq)
-     VirtIOIOMMU *s = VIRTIO_IOMMU(vdev);
-     struct virtio_iommu_req_head head;
-     struct virtio_iommu_req_tail tail = {};
--    size_t output_size = sizeof(tail), sz;
-     VirtQueueElement *elem;
-     unsigned int iov_cnt;
-     struct iovec *iov;
-     void *buf = NULL;
-+    size_t sz;
+diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
+index e5e1e9dd3ff..c67c2b09026 100644
+--- a/target/mips/tcg/sysemu/tlb_helper.c
++++ b/target/mips/tcg/sysemu/tlb_helper.c
+@@ -643,6 +643,9 @@ static int walk_directory(CPUMIPSState *env, uint64_t *vaddr,
+     uint64_t lsb = 0;
+     uint64_t w = 0;
  
-     for (;;) {
-+        size_t output_size = sizeof(tail);
++    /* The caller should have checked this */
++    assert(directory_shift > 0 && leaf_shift > 0);
 +
-         elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
-         if (!elem) {
-             return;
+     if (get_physical_address(env, &paddr, &prot, *vaddr, MMU_DATA_LOAD,
+                              cpu_mmu_index(env, false)) !=
+                              TLBRET_MATCH) {
+@@ -743,13 +746,8 @@ static bool page_table_walk_refill(CPUMIPSState *env, vaddr address,
+             (ptew == 1) ? native_shift + 1 : native_shift;
+ 
+     /* Offsets into tables */
+-    int goffset = gindex << directory_shift;
+-    int uoffset = uindex << directory_shift;
+-    int moffset = mindex << directory_shift;
+-    int ptoffset0 = (ptindex >> 1) << (leaf_shift + 1);
+-    int ptoffset1 = ptoffset0 | (1 << (leaf_shift));
+-
+-    uint32_t leafentry_size = 1 << (leaf_shift + 3);
++    int goffset, uoffset, moffset, ptoffset0, ptoffset1;
++    uint32_t leafentry_size;
+ 
+     /* Starting address - Page Table Base */
+     uint64_t vaddr = env->CP0_PWBase;
+@@ -775,6 +773,14 @@ static bool page_table_walk_refill(CPUMIPSState *env, vaddr address,
+         return false;
+     }
+ 
++    goffset = gindex << directory_shift;
++    uoffset = uindex << directory_shift;
++    moffset = mindex << directory_shift;
++    ptoffset0 = (ptindex >> 1) << (leaf_shift + 1);
++    ptoffset1 = ptoffset0 | (1 << (leaf_shift));
++
++    leafentry_size = 1 << (leaf_shift + 3);
++
+     /* Global Directory */
+     if (gdw > 0) {
+         vaddr |= goffset;
 -- 
-2.38.1
+2.34.1
 
 
