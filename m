@@ -2,84 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A21756BFC
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 20:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9A9756C1B
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 20:30:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLSvA-0000iW-8z; Mon, 17 Jul 2023 14:26:08 -0400
+	id 1qLSyJ-0002l0-Kp; Mon, 17 Jul 2023 14:29:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qLSv6-0000hm-PR
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:26:05 -0400
-Received: from mail-qk1-x731.google.com ([2607:f8b0:4864:20::731])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qLSv4-0004NG-Jc
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:26:03 -0400
-Received: by mail-qk1-x731.google.com with SMTP id
- af79cd13be357-767582c6c72so462904285a.2
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 11:26:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689618361; x=1692210361;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2fcb7Hm8Q+2wyrfsuksV/VNKzvgCqbnJD8JPGLwRQ90=;
- b=JtCX/yJpsjxi0Lmtq0jPahjcmuRvq68sgd0xK8jYalzX8FUqBh4mK5acK5gLRkqhG2
- aW9Xl7AY11v9gFcxq3bcS/FsG/MQnrp55HIOgMJvQfEZ+uHAgmBFAALbO3q/fCFUDMNi
- Q5YfT2wpBuXF7R8lMYMuhMXxvqJg/VyRtmu20YNo+Wbo/X004I7qj1k632+3a6MB1r0m
- X+jQ5vwagRq0PNtDPOh/G8wXckMuenpDMx9mNDyqUzcFE6CeknJsooF4pTq9LuDiLDfI
- AhuMuJ6I35NPZaHWPoJYVgAV4yk9ZuBSzdQjFwbUwk0YnUslZUuwyBIXgMJ+Rl5R1vmY
- k0eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689618361; x=1692210361;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2fcb7Hm8Q+2wyrfsuksV/VNKzvgCqbnJD8JPGLwRQ90=;
- b=YRecoqhypZRVryXmhL+ugUGlVt1Q6Wum3E4fZfeAtyd+mHO8x1jq/ToCcn1xfUT7Ak
- 1nPAbYy/ujwAUda3aK18LGccNjAyyjbITjjk31XilBls/p4ELZby8UBUa3xGNgUBiFza
- YISmaqNRCILRxo+eW40cgL8lrgZyqlD+2wwNXNXAdJH3t8fSuJ84C0I/XyiqMUI8/lPG
- gmd4w+lSEFMfKj+TRIY7VHXtmxiHRloQzK7f7QJXO4WylOtN/IuAyuDT0I5Appz+huYW
- OounW1vewOfMl4lg/vwRnZ4nW7UqVO2DwqrRrYjW2QXcQ0tnYCU85I8S/xSfI14hbu8t
- 35Dg==
-X-Gm-Message-State: ABy/qLb0ZCh1JHqoNLHtj5rRHQhs38k4qx5aXFD7DRvNOAYtSWMFqipn
- 1tCBppi9z7ll3riDZT1lqnwXIA==
-X-Google-Smtp-Source: APBJJlG7uHv/sfTdkxcgZqVQLD9tfpJUYQZ9dhRet1TkGUncgyRIoJgw8tVtYxOUhN991fk4T5/sQA==
-X-Received: by 2002:a0c:df90:0:b0:636:b633:9fd6 with SMTP id
- w16-20020a0cdf90000000b00636b6339fd6mr11795940qvl.17.1689618361010; 
- Mon, 17 Jul 2023 11:26:01 -0700 (PDT)
-Received: from [192.168.224.227] ([172.58.27.30])
- by smtp.gmail.com with ESMTPSA id
- a24-20020a0cb358000000b0062dfdafa0b7sm78178qvf.136.2023.07.17.11.25.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jul 2023 11:26:00 -0700 (PDT)
-Message-ID: <10893737-8628-672d-af7d-7d959d1773f5@linaro.org>
-Date: Mon, 17 Jul 2023 16:07:51 +0100
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qLSy2-0002hW-8M
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:29:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qLSy0-0004mT-0F
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:29:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689618543;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=lH6trQ9jMaZrFsZKHvnYglRDkIxKczBUOX+TamJOO+M=;
+ b=c3iYwdXXE6/x1qM+aAs+9rnRqk2OiVsg7ukgWK1ouLTy9wXiKsmEmMbTPlv+12gE14BE1s
+ u/EEHGTjmzlucIoUO79OWFIaR/enerPplNVawCVSelSiNvhwx58p49Ez44a2cePuBmvFkR
+ +fekjoUOnK18DY/KId2WLDLFWCNKFc4=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-114-xFRyZB55PDKMjt9WTdRPSQ-1; Mon, 17 Jul 2023 14:29:01 -0400
+X-MC-Unique: xFRyZB55PDKMjt9WTdRPSQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 07086280BC98;
+ Mon, 17 Jul 2023 18:29:01 +0000 (UTC)
+Received: from localhost.localdomain.com (unknown [10.42.28.62])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EF5E72166B26;
+ Mon, 17 Jul 2023 18:28:59 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ John Snow <jsnow@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH v2 00/12] tests: enable meson test timeouts to improve
+ debuggability
+Date: Mon, 17 Jul 2023 19:28:46 +0100
+Message-ID: <20230717182859.707658-1-berrange@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.1] accel/tcg: Take mmap_lock in load_atomic16_or_exit
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20230716170150.22398-1-richard.henderson@linaro.org>
- <878rbeyg5m.fsf@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <878rbeyg5m.fsf@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::731;
- envelope-from=richard.henderson@linaro.org; helo=mail-qk1-x731.google.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,22 +81,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/17/23 11:40, Alex Bennée wrote:
-> 
-> Richard Henderson <richard.henderson@linaro.org> writes:
-> 
->> For user-only, the probe for page writability may race with another
->> thread's mprotect.  Take the mmap_lock around the operation.  This
->> is still faster than the start/end_exclusive fallback.
-> 
-> Did we have a bug report or replication for this?
+Perhaps the most painful of all the GitLab CI failures we see are
+the enforced job timeouts:
 
-See the comment:
+   "ERROR: Job failed: execution took longer than 1h15m0s seconds"
 
-> +         * We must take mmap_lock so that the query remains valid until
-> +         * the write is complete -- tests/tcg/multiarch/munmap-pthread.c
-> +         * is an example that can race.
+   https://gitlab.com/qemu-project/qemu/-/jobs/4387047648
 
+when that hits the CI log shows what has *already* run, but figuring
+out what was currently running (or rather stuck) is an horrendously
+difficult.
 
-r~
+The initial meson port disabled the meson test timeouts, in order to
+limit the scope for introducing side effects from the port that would
+complicate adoption.
+
+Now that the meson port is basically finished we can take advantage of
+more of its improved features. It has the ability to set timeouts for
+test programs, defaulting to 30 seconds, but overridable per test. This
+is further helped by fact that we changed the iotests integration so
+that each iotests was a distinct meson test, instead of having one
+single giant (slow) test.
+
+We already set overrides for a bunch of tests, but they've not been
+kept up2date since we had timeouts disabled. So this series first
+updates the timeout overrides such that all tests pass when run in
+my test gitlab CI pipeline. Then it enables use of meson timeouts.
+
+We might still hit timeouts due to non-deterministic performance of
+gitlab CI runners. So we'll probably have to increase a few more
+timeouts in the short term. Fortunately this is going to be massively
+easier to diagnose. For example this job during my testing:
+
+   https://gitlab.com/berrange/qemu/-/jobs/4392029495
+
+we can immediately see  the problem tests
+
+Summary of Failures:
+  6/252 qemu:qtest+qtest-i386 / qtest-i386/bios-tables-test                TIMEOUT        120.02s   killed by signal 15 SIGTERM
+  7/252 qemu:qtest+qtest-aarch64 / qtest-aarch64/bios-tables-test          TIMEOUT        120.03s   killed by signal 15 SIGTERM
+ 64/252 qemu:qtest+qtest-aarch64 / qtest-aarch64/qom-test                  TIMEOUT        300.03s   killed by signal 15 SIGTERM
+
+The full meson testlog.txt will show each individual TAP log output,
+so we can then see exactly which test case we got stuck on.
+
+NB, the artifacts are missing on the job links above, until this
+patch merges:
+
+   https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04668.html
+
+Changed in v2:
+
+ * Increase timeouts for many more tests, such that
+   an --enable-debug build stands a better chance of
+   passing tests too, without the user manually setting
+   a timeout multiplier for meson.
+
+Daniel P. Berrangé (12):
+  qtest: bump min meson timeout to 60 seconds
+  qtest: bump migration-test timeout to 5 minutes
+  qtest: bump qom-test timeout to 15 minutes
+  qtest: bump npcm7xx_pwn-test timeout to 5 minutes
+  qtest: bump test-hmp timeout to 4 minutes
+  qtest: bump pxe-test timeout to 3 minutes
+  qtest: bump prom-env-test timeout to 3 minutes
+  qtest: bump boot-serial-test timeout to 3 minutes
+  qtest: bump qos-test timeout to 2 minutes
+  qtest: bump aspeed_smc-test timeout to 4 minutes
+  qtest: bump bios-table-test timeout to 9 minutes
+  mtest2make: stop disabling meson test timeouts
+
+ scripts/mtest2make.py   |  3 ++-
+ tests/qtest/meson.build | 24 ++++++++++++------------
+ 2 files changed, 14 insertions(+), 13 deletions(-)
+
+-- 
+2.41.0
+
 
