@@ -2,55 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52FF755E4F
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 10:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EAAF755E8E
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 10:35:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLJQA-0000Mn-4Z; Mon, 17 Jul 2023 04:17:32 -0400
+	id 1qLJg3-0005Sb-E4; Mon, 17 Jul 2023 04:33:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=ssoM=DD=kaod.org=clg@ozlabs.org>)
- id 1qLJPe-0000Lb-Bi; Mon, 17 Jul 2023 04:16:58 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=ssoM=DD=kaod.org=clg@ozlabs.org>)
- id 1qLJPb-0002dq-42; Mon, 17 Jul 2023 04:16:57 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4R4FKh3MsGz4wxP;
- Mon, 17 Jul 2023 18:16:40 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qLJer-0004kt-J9
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 04:32:43 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qLJem-0007G0-SE
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 04:32:39 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4R4FKc4TDKz4wb8;
- Mon, 17 Jul 2023 18:16:36 +1000 (AEST)
-Message-ID: <69e30854-79c5-af62-74ee-177daa55af7f@kaod.org>
-Date: Mon, 17 Jul 2023 10:16:32 +0200
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 406811FD9E;
+ Mon, 17 Jul 2023 08:32:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1689582754; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2Ng5EfGY8sxJZfK6epoF40P+LWCheEau+Bd/k377F0o=;
+ b=sj09WBOGP9kj2tTsQGHwurMVNxOHDf2Va4hfC1JqKlozyJtQWpdkPJj6UH1YUw+k8mZ6vq
+ sG33akLB4aPRnADJX6HhM/tNIpaWcTq/wP7rPQnxMZ7Oa6gMBXYDo/nNLGTXId30jto5p4
+ aQ6TfeT0YCtVhkUuOJYQMVyUdpcB260=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1689582754;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2Ng5EfGY8sxJZfK6epoF40P+LWCheEau+Bd/k377F0o=;
+ b=RRKh/NcjJJgpBDV5KBQ5hcyyRnPml3I1qa4D7169A8dFkpmPcu5UXvtunfzhePutA3RpOc
+ p2gNJTaBXODSbeCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D738113276;
+ Mon, 17 Jul 2023 08:32:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id wGVvMqH8tGT3KAAAMHmgww
+ (envelope-from <cfontana@suse.de>); Mon, 17 Jul 2023 08:32:33 +0000
+Message-ID: <cf647180-d562-d986-e2dd-a818f127eb7e@suse.de>
+Date: Mon, 17 Jul 2023 10:32:33 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] tcg/ppc: Fix race in goto_tb implementation
-To: Richard Henderson <richard.henderson@linaro.org>,
- Jordan Niethe <jniethe5@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, alex.bennee@linaro.org, dbarboza@ventanamicro.com,
- npiggin@gmail.com, anushree.mathur@linux.vnet.ibm.com, mjt@tls.msk.ru,
- bgray@linux.ibm.com
-References: <20230717012327.20149-1-jniethe5@gmail.com>
- <504c0ab2-e314-c27b-a119-a310d8b028a1@linaro.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: x86 custom apicid assignments [Was: Re: [PATCH v7 0/2] Remove
+ EPYC mode apicid decode and use generic decode]
 Content-Language: en-US
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <504c0ab2-e314-c27b-a119-a310d8b028a1@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=ssoM=DD=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, NICE_REPLY_A=-0.091, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: Babu Moger <babu.moger@amd.com>, pbonzini@redhat.com, rth@twiddle.net,
+ ehabkost@redhat.com, qemu-devel@nongnu.org, mst@redhat.com,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <159897580089.30750.12581669374705391794.stgit@naples-babu.amd.com>
+ <e6f25b8a-2a1e-0b40-c848-bbc2f13fdc5f@suse.de>
+ <20230714115107.3d2e99ea@imammedo.users.ipa.redhat.com>
+From: Claudio Fontana <cfontana@suse.de>
+In-Reply-To: <20230714115107.3d2e99ea@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:67c:2178:6::1d;
+ envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,103 +92,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/17/23 09:35, Richard Henderson wrote:
-> On 7/17/23 02:23, Jordan Niethe wrote:
->> Commit 20b6643324 ("tcg/ppc: Reorg goto_tb implementation") modified
->> goto_tb to ensure only a single instruction was patched to prevent
->> incorrect behaviour if a thread was in the middle of multiple
->> instructions when they were replaced. However this introduced a race
->> between loading the jmp target into TCG_REG_TB and patching and
->> executing the direct branch.
->>
->> The relevent part of the goto_tb implementation:
->>
->>      ld TCG_REG_TB, TARGET_ADDR_LOCATION(TCG_REG_TB)
->>    patch_location:
->>      mtctr TCG_REG_TB
->>      bctr
->>
->> tb_target_set_jmp_target() will replace 'patch_location' with a direct
->> branch if the target is in range. The direct branch now relies on
->> TCG_REG_TB being set up correctly by the ld. Prior to this commit
->> multiple instructions were patched in for the direct branch case; these
->> instructions would initalise TCG_REG_TB to the same value as the branch
->> target.
->>
->> Imagine the following sequence:
->>
->> 1) Thread A is executing the goto_tb sequence and loads the jmp
->>     target into TCG_REG_TB.
->>
->> 2) Thread B updates the jmp target address and calls
->>     tb_target_set_jmp_target(). This patches a new direct branch into the
->>     goto_tb sequence.
->>
->> 3) Thread A executes the newly patched direct branch. The value in
->>     TCG_REG_TB still contains the old jmp target.
->>
->> TCG_REG_TB MUST contain the translation block's tc.ptr. Execution will
->> eventually crash after performing memory accesses generated from a
->> faulty value in TCG_REG_TB.
->>
->> This presents as segfaults or illegal instruction exceptions.
->>
->> Do not revert commit 20b6643324 as it did fix a different race
->> condition. Instead remove the direct branch optimization and always use
->> indirect branches.
->>
->> The direct branch optimization can be re-added later with a race free
->> sequence.
->>
->> Gitlab issue: https://gitlab.com/qemu-project/qemu/-/issues/1726
+Hello Igor,
 
-Resolves: ...
+thanks for getting back to me on this,
 
-Please send a v2 with updated tags. Run scripts/checkpatch.pl also.
-
-Thanks,
-
-C.
-
-
->>
->> Fixes: 20b6643324 ("tcg/ppc: Reorg goto_tb implementation")
->>
->> Reported-by: Anushree Mathur <anushree.mathur@linux.vnet.ibm.com>
->> Co-developed-by: Benjamin Gray <bgray@linux.ibm.com>
->> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
->> ---
->>   tcg/ppc/tcg-target.c.inc | 8 ++++----
->>   1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
->> index 8d6899cf40..a7323f479b 100644
->> --- a/tcg/ppc/tcg-target.c.inc
->> +++ b/tcg/ppc/tcg-target.c.inc
->> @@ -2533,11 +2533,10 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
->>           ptrdiff_t offset = tcg_tbrel_diff(s, (void *)ptr);
->>           tcg_out_mem_long(s, LD, LDX, TCG_REG_TB, TCG_REG_TB, offset);
->> -        /* Direct branch will be patched by tb_target_set_jmp_target. */
->> +        /* TODO: Use direct branches when possible. */
->>           set_jmp_insn_offset(s, which);
->>           tcg_out32(s, MTSPR | RS(TCG_REG_TB) | CTR);
->> -        /* When branch is out of range, fall through to indirect. */
->>           tcg_out32(s, BCCTR | BO_ALWAYS);
->>           /* For the unlinked case, need to reset TCG_REG_TB.  */
->> @@ -2565,10 +2564,11 @@ void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
->>       intptr_t diff = addr - jmp_rx;
->>       tcg_insn_unit insn;
->> +    if (USE_REG_TB)
->> +        return;
->> +
+On 7/14/23 11:51, Igor Mammedov wrote:
+> On Wed, 5 Jul 2023 10:12:40 +0200
+> Claudio Fontana <cfontana@suse.de> wrote:
 > 
-> Braces.  Otherwise,
+>> Hi all, partially resurrecting an old thread.
+>>
+>> I've seen how for Epyc something special was done in the past in terms of apicid assignments based on topology, which was then reverted apparently,
+>> but I wonder if something more general would be useful to all?
+>>
+>> The QEMU apicid assignments first of all do not seem to match what is happening on real hardware.
 > 
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> QEMU typically does generate valid APIC IDs
+> it however doesn't do a good job when using odd number of cores and/or NUMA enabled cases.
+
+
+Right, this is what I meant, the QEMU assignment is generally a valid choice, it just seems to differ from what (some) hardware/firmware does.
+
+
+
+
+> (That is what Babu have attempted to fix, but eventually that have been dropped for
+> reasons described in quoted cover letter)
 > 
-> This is an excellent reason to add support for power10, and its pc-relative references. We can disable REG_TB for that case.
+>> Functionally things are ok, but then when trying to investigate issues, specifically in the guest kernel KVM PV code (arch/x86/kernel/kvm.c),
+>> in some cases the actual apicid values in relationship to the topology do matter,
 > 
+> Care to point out specific places you are referring to?
+
+
+What we wanted to do was to reproduce an issue that only happened when booting our distro in the Cloud,
+but did not instead appear by booting locally (neither on bare metal nor under QEMU/KVM).
+
+In the end, after a lot of slow-turnaround research, the issue we encountered was the already fixed:
+ 
+commit c15e0ae42c8e5a61e9aca8aac920517cf7b3e94e
+Author: Li RongQing <lirongqing@baidu.com>
+Date:   Wed Mar 9 16:35:44 2022 +0800
+
+    KVM: x86: fix sending PV IPI
+    
+    If apic_id is less than min, and (max - apic_id) is greater than
+    KVM_IPI_CLUSTER_SIZE, then the third check condition is satisfied but
+    the new apic_id does not fit the bitmask.  In this case __send_ipi_mask
+    should send the IPI.
+    
+    This is mostly theoretical, but it can happen if the apic_ids on three
+    iterations of the loop are for example 1, KVM_IPI_CLUSTER_SIZE, 0.
+    
+    Fixes: aaffcfd1e82 ("KVM: X86: Implement PV IPIs in linux guest")
+    Signed-off-by: Li RongQing <lirongqing@baidu.com>
+    Message-Id: <1646814944-51801-1-git-send-email-lirongqing@baidu.com>
+    Cc: stable@vger.kernel.org
+    Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+
+
+But this took a very long time to investigate, because the KVM PV code only misbehaves with the old unpatched algorithm during boot
+if it encounters a specific sequence of ACPI IDs,
+where countrary to the comment in the commit, the issue can become very practical depending on such ACPI IDs assignments as seen by the guest KVM PV code.
+
 > 
-> r~
+> KVM is not the only place where it might matter, it affects topo/numa code on guest side as well. 
+> 
+>> and currently there is no way (I know of), of supplying our own apicid assignment, more closely matching what happens on hardware.
+>>
+>> This has been an issue when debugging guest images in the cloud, where being able to reproduce issues locally would be very beneficial as opposed to using cloud images as the feedback loop,
+>> but unfortunately QEMU cannot currently create the right apicid values to associate to the cpus.
+> 
+> Indeed EPYC APIC encoding mess increases support cases load downstream,
+> but as long as one has access to similar host hw, one should be able
+> to reproduce the issue locally.
+
+Unfortunately this does not seem to be always the case, with the case in point being the kvm pv code,
+but I suspect other buggy guest code whose behaviour depends on APICIds and APICId sequences must exist in more areas of the kernel.
+
+In order to properly reproduce these kinds of issues locally, being able to assign desired APICIDs to cpus in VMs would come very handy.
+
+
+> However I would expect end result on such support end with an advice
+> to change topo/use another CPU model.
+> 
+> (what we lack is a documentation what works and what doesn't,
+> perhaps writing guidelines would be sufficient to steer users
+> to the usable EPYC configurations)
+
+
+In our case we encountered issues on Intel too.
+
+
+> 
+>> Do I understand the issue correctly, comments, ideas?
+>> How receptive the project would be for changes aimed at providing a custom assignment of apicids to cpus, regardless of Intel or AMD?
+> 
+> It's not that simple to just set custom APIC ID in register and be done with it,
+
+
+right, I am under no illusion that this is going to be easy.
+
+
+> you'll likely break (from the top of my head: some CPUID leaves might
+> depend on it, ACPI tables, NUMA mapping, KVM's vcpu_id).
+> 
+> Current topo code aims to work on information based on '-smp'/'-numa',
+> all through out QEMU codebase.
+
+
+just a thought, that information "-smp, -numa" could be optionally enriched with additional info on apicids assignment
+
+
+> If however we were let user set APIC ID (which is somehow
+> correct), we would need to take reverse steps to decode that
+> (in vendor specific way) and incorporate resulting topo into other
+> code that uses topology info.
+> That makes it quite messy, not to mention it's x86(AMD specific) and
+> doesn't fit well with generalizing topo handling.
+> So I don't really like this route.
+
+
+I don't think I am suggesting something like described in the preceding paragraph,
+but instead I would think that with the user providing the full apicid assignment map, (in addition / as part of)  to the -smp, -numa options,
+all other pieces would be derived from that (I suppose ACPI tables, cpuid leaves, and everything that the guest could see, plus the internal
+QEMU conversion functions between apicids and cpu index in topology.h
+
+
+> 
+> (x86 cpus have apic_id property, so theoretically you can set it
+> and with some minimal hacking lunch a guest, but then
+> expect guest to be unhappy when ACPI ID goes out of sync with
+> everything else. I would do that only for the sake of an experiment
+> and wouldn't try to upstream that)
+
+Right, it would all need to be consistent.
+
+> 
+> What I wouldn't mind is taking the 2nd stab at what Babu had tried
+> do. Provided it manages to encode APIC ID for EPYC correctly and won't
+> complicate code much (and still using -smp/-numa as the root source for
+> topo configuration).
+
+
+For the specific use case I am thinking (debugging with a guest-visible topology that resembles a cloud one),
+I don't think that the EPYC-specific work would be sufficient, it would need to be complemented in any case with Intel work,
+
+but I suppose that a more general solution of the user providing all mappings would be the best and easiest one for this debugging scenario.
+
+Thanks for your thoughts,
+
+Claudio
+>>
+>>
+>> On 9/1/20 17:57, Babu Moger wrote:
+>>> To support some of the complex topology, we introduced EPYC mode apicid decode.
+>>> But, EPYC mode decode is running into problems. Also it can become quite a
+>>> maintenance problem in the future. So, it was decided to remove that code and
+>>> use the generic decode which works for majority of the topology. Most of the
+>>> SPECed configuration would work just fine. With some non-SPECed user inputs,
+>>> it will create some sub-optimal configuration.
+>>>
+>>> Here is the discussion thread.
+>>> https://lore.kernel.org/qemu-devel/c0bcc1a6-1d84-a6e7-e468-d5b437c1b254@amd.com/
+>>> https://lore.kernel.org/qemu-devel/20200826143849.59f6970b@redhat.com/
+>>>
+>>> This series removes all the EPYC mode specific apicid changes and use the generic
+>>> apicid decode.
+>>> ---
+>>> v7:
+>>>  Eduardo has already queued 1-8 from the v6. Sending rest of the patches.
+>>>  Fixed CPUID 800000ld based on Igor's comment and few text changes.
+>>>  
+>>> v6:
+>>>  https://lore.kernel.org/qemu-devel/159889924378.21294.16494070903874534542.stgit@naples-babu.amd.com/
+>>>  Found out that numa configuration is not mandatory for all the EPYC model topology.
+>>>  We can use the generic decode which works pretty well. Also noticed that
+>>>  cpuid does not changes when the numa nodes change(NPS- Nodes per socket).
+>>>  Took care of couple comments from Igor and Eduardo.
+>>>  Thank you Igor, Daniel, David, Eduardo for your feedback.  
+>>>
+>>> v5:
+>>>  https://lore.kernel.org/qemu-devel/159804762216.39954.15502128500494116468.stgit@naples-babu.amd.com/
+>>>  Revert EPYC specific decode.
+>>>  Simplify CPUID_8000_001E
+>>>
+>>> v4:
+>>>   https://lore.kernel.org/qemu-devel/159744083536.39197.13827776633866601278.stgit@naples-babu.amd.com/
+>>>   Not much of a change. Just added few text changes.
+>>>   Error out configuration instead of warning if dies are not configured in EPYC.
+>>>   Few other text changes to clarify the removal of node_id, nr_nodes and nodes_per_pkg.
+>>>
+>>> v3:
+>>>   https://lore.kernel.org/qemu-devel/159681772267.9679.1334429994189974662.stgit@naples-babu.amd.com/#r
+>>>   Added a new check to pass the dies for EPYC numa configuration.
+>>>   Added Simplify CPUID_8000_001E patch with some changes suggested by Igor.
+>>>   Dropped the patch to build the topology from CpuInstanceProperties.
+>>>   TODO: Not sure if we still need the Autonuma changes Igor mentioned.
+>>>   Needs more clarity on that.
+>>>
+>>> v2:
+>>>   https://lore.kernel.org/qemu-devel/159362436285.36204.986406297373871949.stgit@naples-babu.amd.com/
+>>>   Used the numa information from CpuInstanceProperties for building
+>>>   the apic_id suggested by Igor.
+>>>   Also did some minor code re-aarangement to take care of changes.
+>>>   Dropped the patch "Simplify CPUID_8000_001E" from v1. Will send
+>>>   it later.
+>>>
+>>> v1:
+>>>  https://lore.kernel.org/qemu-devel/159164739269.20543.3074052993891532749.stgit@naples-babu.amd.com
+>>>
+>>> Babu Moger (2):
+>>>       i386: Simplify CPUID_8000_001d for AMD
+>>>       i386: Simplify CPUID_8000_001E for AMD
+>>>
+>>>
+>>>  target/i386/cpu.c |  226 ++++++++++++++---------------------------------------
+>>>  1 file changed, 61 insertions(+), 165 deletions(-)
+>>>
+>>> --
+>>>   
+>>
+> 
 
 
