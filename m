@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1CD756C1E
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 20:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D2A756C18
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 20:30:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLSyQ-0002rz-6t; Mon, 17 Jul 2023 14:29:30 -0400
+	id 1qLSyW-00031E-Nz; Mon, 17 Jul 2023 14:29:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qLSyF-0002mC-Qa
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:29:21 -0400
+ id 1qLSyI-0002mP-PO
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:29:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qLSyB-0004q5-Pu
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:29:18 -0400
+ id 1qLSyH-0004qY-DW
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 14:29:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689618555;
+ s=mimecast20190719; t=1689618559;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/NocE7kix7RfpmmVV0fOPFZ46PxmFBCCpcG8AARkCF8=;
- b=CuHt81Qe+/TMnrtGikDWFZNMr0vcDhuD6fVu+NIEtIR2QWpEJsfgzD9mZXDdKnqbO+5HFe
- WAA8c9/m3bx1mB7Sy3wWMhdwH721VvvrVKZX/M/PxoJ/1mjC5F/7lewjZHmlClRE0EBEtD
- SDDVNN7AgUX2FCL71f4nHLRT1C4IAM4=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-636-Cl_-VSh1MZ6zLPNPUWl69Q-1; Mon, 17 Jul 2023 14:29:13 -0400
-X-MC-Unique: Cl_-VSh1MZ6zLPNPUWl69Q-1
+ bh=jEKX/9ncdT4M7ZQ8nHU8NBxN/+RbVwvahFgb5UlYZKM=;
+ b=PggccBLP9FmJIA84EXr+MwupZZUfI+Prs/Bw/Xzehd0qZfBZlYXxsY8g/gqowpBLbgZJtl
+ KFZA4R15OVIHkFVQKSQ/K/GESGBW208Fiap/dBolQiVJBb2CpgR6AlVwvBTSHzd38MSJnJ
+ RRo9MRYpMc9D+ge7s6BmvV3uSF4xLOs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-290-y_sw4qXbMIKYtkrm0psEug-1; Mon, 17 Jul 2023 14:29:14 -0400
+X-MC-Unique: y_sw4qXbMIKYtkrm0psEug-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4E4CB280BC98;
- Mon, 17 Jul 2023 18:29:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 854C38008A4;
+ Mon, 17 Jul 2023 18:29:14 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.42.28.62])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 43EE92166B25;
- Mon, 17 Jul 2023 18:29:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7EEA32166B25;
+ Mon, 17 Jul 2023 18:29:13 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
@@ -49,9 +49,9 @@ Cc: Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 10/12] qtest: bump aspeed_smc-test timeout to 4 minutes
-Date: Mon, 17 Jul 2023 19:28:56 +0100
-Message-ID: <20230717182859.707658-11-berrange@redhat.com>
+Subject: [PATCH v2 11/12] qtest: bump bios-table-test timeout to 9 minutes
+Date: Mon, 17 Jul 2023 19:28:57 +0100
+Message-ID: <20230717182859.707658-12-berrange@redhat.com>
 In-Reply-To: <20230717182859.707658-1-berrange@redhat.com>
 References: <20230717182859.707658-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -83,26 +83,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On a reasonably old laptop this test takes 2 minutes 20 seconds with the
-arm emulator. Raising the timeout to 4 minutes gives greater headroom for
-slowdown.
+This is reliably hitting the current 2 minute timeout in GitLab CI,
+and for the TCI job, it even hits a 6 minute timeout.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/qtest/meson.build | 1 +
- 1 file changed, 1 insertion(+)
+ tests/qtest/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 3df9a51b03..25732a1cdb 100644
+index 25732a1cdb..1a5e7f0a15 100644
 --- a/tests/qtest/meson.build
 +++ b/tests/qtest/meson.build
-@@ -1,4 +1,5 @@
+@@ -1,6 +1,6 @@
  slow_qtests = {
-+  'aspeed_smc-test': 240,
-   'bios-tables-test' : 120,
+   'aspeed_smc-test': 240,
+-  'bios-tables-test' : 120,
++  'bios-tables-test' : 540,
    'migration-test' : 300,
    'npcm7xx_pwm-test': 300,
+   'qom-test' : 900,
 -- 
 2.41.0
 
