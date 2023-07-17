@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945F1756F2D
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 23:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6EA756F96
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 00:04:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLWBF-0004xR-Ud; Mon, 17 Jul 2023 17:54:57 -0400
+	id 1qLWJ3-0007az-Hn; Mon, 17 Jul 2023 18:03:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qLWAs-0004qU-Pd
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:54:36 -0400
-Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLWJ1-0007aq-Pw
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 18:02:59 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qLWAq-00042D-Rv
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:54:34 -0400
-Received: by mail-oa1-x2a.google.com with SMTP id
- 586e51a60fabf-1b0156a1c49so3773535fac.0
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 14:54:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLWIz-0006V0-Ol
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 18:02:59 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-3fba8e2aa52so52815295e9.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 15:02:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1689630869; x=1692222869;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OHWcO5WVLseUriAXyyBjp9pT8KS69mNOgRkAabIiLnQ=;
- b=ByA/v5Jo4/EIvSaa2gvA/uRjB31FCd9wTxhZcHJt5iUuib4UngegqZdJzlYbkZbtCJ
- QjWksX+pPqb5+Dy0UpC3FyQQpwamW7YQGM42fP9V2G2uouWqIhAkOXE91XH5pU8LYS3A
- ZdiXS3aHlTmtig4nQ0G3PbK6FK2NEG4i6f6AuAkmuu6VbN/58jNperO5LvfswORhBMxt
- a/1t8aFq9B6rkFMDmX+gDyQySmL64z1bY6zB1xNMBWltffgRh8Eu//1hE941ZQx/ocz0
- aRfTy/+puIS22NUwaDmO0zdIbY6C+mqhV4TCHx5TzZdomVhDSDxKLawCfsyNHq1T7VWh
- fn1g==
+ d=linaro.org; s=google; t=1689631376; x=1692223376;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=3kfZFhr5N5BNs/S/Ku32UVLK9QrfSNsM8fYDTtgogmE=;
+ b=a+gDeQ92Wzoh/gEUuimzNkxhh78U1aK0uVh80a60K3jab0Gyo1Zq+Ry8C5nig43o5F
+ waSoefQmgrX7AiNgnxXhJs7uqcqY9o2I2NTkwzyU4D+5fOXdHe7UDV5B+NM9CURgTbVE
+ v6I/8uOUlsQyUuFdUaOuRKAcx6zuBHl6ncA+kpIBMTk4oycFIVk6sBb3J4qg2DTH2CzO
+ lCmZKmhBRMrJ5QAB8Poz0HUNQ/RfatrzXp+oJiU8yFEc09qv9/0tQSX2BrTtCpVPJ1t/
+ yeYugYLjRXe4rW4Zw2rhlvkzZbIOKsXfOIoSh7J52wJUi+smkT9IWX7F6eKyW5R2slWN
+ REjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689630869; x=1692222869;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OHWcO5WVLseUriAXyyBjp9pT8KS69mNOgRkAabIiLnQ=;
- b=enAh2qpwE6VNjrThaB2FldRdhGIUQ9EBFgH7VvkcqPR9+Dpjeb/uUYSxyDzKUqGOD2
- DotlFmPexI5DuZfIR0pz5Qf9+YyS/mt8CY/w1XGZykT2Agd4AwcMvFofhywfPjtmV8uE
- P4+VRC1xQoX+/+XjuW3IkL17StlXuAkn10nqk4P0hzpOtWFEs5EYAFTTRhApS9+S+Eqa
- 6gNoo5ZRWqG0h4cswjPD3EXqFF1FB2og7N6FjR0ISbzD8afjH6FJbJabXwJmhYcBR8Qn
- FnVfZA6WvPTyaFKNGDpgUIuFtxbdzVYjUJPiJKQGUvw0HFvib7i+5uQ0DIEct49MabAF
- oOvQ==
-X-Gm-Message-State: ABy/qLbW4pefTjSIsSTf+JdjenImZF1hNz4o6tRxg/3nArcwefIHl6hh
- 3mPvas0dbVZL8S9MdtJTE88YC/7+wq81TblsZoPSaw==
-X-Google-Smtp-Source: APBJJlHgl5CVgATxb2xbD0/cposR8FPM2j7MmE2brdrYvNGTy3ytM1geuh6aHzwwBwJwDHvcTLY/Eg==
-X-Received: by 2002:a05:6870:8903:b0:1b0:4b1e:f394 with SMTP id
- i3-20020a056870890300b001b04b1ef394mr13321547oao.11.1689630869538; 
- Mon, 17 Jul 2023 14:54:29 -0700 (PDT)
-Received: from grind.. (201-69-66-211.dial-up.telesp.net.br. [201.69.66.211])
+ d=1e100.net; s=20221208; t=1689631376; x=1692223376;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3kfZFhr5N5BNs/S/Ku32UVLK9QrfSNsM8fYDTtgogmE=;
+ b=YsGZD4YmBgYXBUjkWPtGTJvdca8Bfo2kOW5RnyhxubbTHQXhaYLMixtXLCl1zEzZn/
+ 6LZCO1k+G/5HXJYltTlpzQk2huFVqpRh2RBzXLMwOe+Vvv2/mpksy7Qad8stENEF1n+P
+ WztKUN6Sx/keR7NmijeTqenydv86/6oIpXhXbLUfpvj8jrS7/qIaaN5ya1tqj1B3V6oF
+ Evrl6MZpHctmZEPLasok4KB3MW75ufimn5RFCGp59UArhxCXdLU2hLKK2n/nvJvKJrd1
+ 8Rxujvpz3V/Tc5pUqkI/jLsafracTyU9UkIlUd27uXTxm1BXwX4aIEfKj+TB/BWidfH3
+ hclQ==
+X-Gm-Message-State: ABy/qLb4+MRbeLWadd4KpqL+kZ6KHijhBVN0yEyexuR+Dk/K1I4K+Vol
+ 357nBghw21GOtFfH4YAdpGUOQwEdKaIArb9BVP4=
+X-Google-Smtp-Source: APBJJlE+RfBZKhGN6K34JHsT95zaZwnQjQ2kuLUPRRbm7UrXpee6ioDStIiB/EZ+qsFcc3juWfuDZA==
+X-Received: by 2002:a05:600c:2a53:b0:3fb:b3f8:506b with SMTP id
+ x19-20020a05600c2a5300b003fbb3f8506bmr450751wme.24.1689631375691; 
+ Mon, 17 Jul 2023 15:02:55 -0700 (PDT)
+Received: from [192.168.69.115] ([176.176.144.39])
  by smtp.gmail.com with ESMTPSA id
- a1-20020a056830008100b006b9848f8aa7sm322958oto.45.2023.07.17.14.54.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 14:54:29 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-8.2 2/2] target/riscv/cpu.c: add zihpm extension flag
-Date: Mon, 17 Jul 2023 18:54:19 -0300
-Message-ID: <20230717215419.124258-3-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230717215419.124258-1-dbarboza@ventanamicro.com>
-References: <20230717215419.124258-1-dbarboza@ventanamicro.com>
+ l23-20020a1c7917000000b003fbcdba1a63sm690571wme.12.2023.07.17.15.02.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Jul 2023 15:02:55 -0700 (PDT)
+Message-ID: <238b4fcf-b7ff-f89f-187e-7c52dd6b782f@linaro.org>
+Date: Tue, 18 Jul 2023 00:02:52 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH 4/6] linux-user: Fix signed math overflow in brk() syscall
+Content-Language: en-US
+To: Helge Deller <deller@gmx.de>, Peter Maydell <peter.maydell@linaro.org>
+Cc: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+References: <20230717213545.142598-1-deller@gmx.de>
+ <20230717213545.142598-5-deller@gmx.de>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230717213545.142598-5-deller@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2a;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,106 +95,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-zihpm is the Hardware Performance Counters extension described in
-chapter 12 of the unprivileged spec. It describes support for 29
-unprivileged performance counters, hpmcounter3-hpmcounter21.
+On 17/7/23 23:35, Helge Deller wrote:
+> Fix the math overflow when calculating the new_malloc_size.
+> 
+> new_host_brk_page and brk_page are unsigned integers. If userspace
+> reduces the heap, new_host_brk_page is lower than brk_page which results
+> in a huge positive number (but should actually be negative).
+> 
+> Fix it by adding a proper check and as such make the code more readable.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Tested-by: Markus F.X.J. Oberhumer <notifications@github.com>
 
-As with zicntr, QEMU already implements zihpm before it was even an
-extension. zihpm is also part of the RVA22 profile, so add it to QEMU
-to complement the future future profile implementation.
+Tested-by: Markus F.X.J. Oberhumer <markus@oberhumer.com>
 
-Default it to 'true' since it was always present in the code. Change the
-realize() time validation to disable it in case 'icsr' isn't present and
-if there's no hardware counters (cpu->cfg.pmu_num is zero).
+> Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
 
-There's a small tweak needed in riscv_cpu_realize_tcg() made:
-riscv_cpu_validate_set_extensions() must be executed after the block
-that executes riscv_pmu_init(). The reason is that riscv_pmu_init() will
-do "cpu->cfg.pmu_num = 0" if PMU support cannot be enabled. We want to
-get the latest, definite value of cfg.pmu_num during the validation() to
-ensure we do the right thing.
+Hmm isn't it:
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Fixes: ef4330c23b ("linux-user: Handle brk() attempts with very large 
+sizes")
+
+?
+
+> Buglink: https://github.com/upx/upx/issues/683
+
+Also:
+
+Cc: qemu-stable@nongnu.org
+
+> ---
+>   linux-user/syscall.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index 92d146f8fb..aa906bedcc 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -860,12 +860,13 @@ abi_long do_brk(abi_ulong brk_val)
+>        * itself); instead we treat "mapped but at wrong address" as
+>        * a failure and unmap again.
+>        */
+> -    new_alloc_size = new_host_brk_page - brk_page;
+> -    if (new_alloc_size) {
+> +    if (new_host_brk_page > brk_page) {
+> +        new_alloc_size = new_host_brk_page - brk_page;
+>           mapped_addr = get_errno(target_mmap(brk_page, new_alloc_size,
+>                                           PROT_READ|PROT_WRITE,
+>                                           MAP_ANON|MAP_PRIVATE, 0, 0));
+>       } else {
+> +        new_alloc_size = 0;
+>           mapped_addr = brk_page;
+>       }
+> 
+> --
+> 2.41.0
+
+Alternatively:
+
+-- >8 --
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index 1464151826..aafb13f3b4 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -814,7 +814,7 @@ void target_set_brk(abi_ulong new_brk)
+  abi_long do_brk(abi_ulong brk_val)
+  {
+      abi_long mapped_addr;
+-    abi_ulong new_alloc_size;
++    abi_long new_alloc_size;
+      abi_ulong new_brk, new_host_brk_page;
+
+      /* brk pointers are always untagged */
+@@ -857,8 +857,8 @@ abi_long do_brk(abi_ulong brk_val)
+       * a failure and unmap again.
+       */
+      new_alloc_size = new_host_brk_page - brk_page;
+-    if (new_alloc_size) {
+-        mapped_addr = get_errno(target_mmap(brk_page, new_alloc_size,
++    if (new_alloc_size > 0) {
++        mapped_addr = get_errno(target_mmap(brk_page, 
+(abi_ulong)new_alloc_size,
+                                          PROT_READ|PROT_WRITE,
+                                          MAP_ANON|MAP_PRIVATE, 0, 0));
+      } else {
 ---
- target/riscv/cpu.c     | 20 +++++++++++++-------
- target/riscv/cpu_cfg.h |  1 +
- 2 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 7ec88659be..5836640d5c 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -89,6 +89,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
-     ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
-     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
-+    ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_ihpm),
-     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
-     ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
-     ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
-@@ -1296,6 +1297,10 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         cpu->cfg.ext_icntr = false;
-     }
- 
-+    if (cpu->cfg.ext_ihpm && (!cpu->cfg.ext_icsr || cpu->cfg.pmu_num == 0)) {
-+        cpu->cfg.ext_ihpm = false;
-+    }
-+
-     /*
-      * Disable isa extensions based on priv spec after we
-      * validated and set everything we need.
-@@ -1426,12 +1431,6 @@ static void riscv_cpu_realize_tcg(DeviceState *dev, Error **errp)
-         return;
-     }
- 
--    riscv_cpu_validate_set_extensions(cpu, &local_err);
--    if (local_err != NULL) {
--        error_propagate(errp, local_err);
--        return;
--    }
--
- #ifndef CONFIG_USER_ONLY
-     CPU(dev)->tcg_cflags |= CF_PCREL;
- 
-@@ -1446,6 +1445,12 @@ static void riscv_cpu_realize_tcg(DeviceState *dev, Error **errp)
-         }
-      }
- #endif
-+
-+    riscv_cpu_validate_set_extensions(cpu, &local_err);
-+    if (local_err != NULL) {
-+        error_propagate(errp, local_err);
-+        return;
-+    }
- }
- 
- static void riscv_cpu_realize(DeviceState *dev, Error **errp)
-@@ -1784,10 +1789,11 @@ static Property riscv_cpu_extensions[] = {
-     DEFINE_PROP_BOOL("svpbmt", RISCVCPU, cfg.ext_svpbmt, false),
- 
-     /*
--     * Always default true - we'll disable it during
-+     * Always default true - we'll disable them during
-      * realize() if needed.
-      */
-     DEFINE_PROP_BOOL("zicntr", RISCVCPU, cfg.ext_icntr, true),
-+    DEFINE_PROP_BOOL("zihpm", RISCVCPU, cfg.ext_ihpm, true),
- 
-     DEFINE_PROP_BOOL("zba", RISCVCPU, cfg.ext_zba, true),
-     DEFINE_PROP_BOOL("zbb", RISCVCPU, cfg.ext_zbb, true),
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index d36dc12b92..85c7a71853 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -66,6 +66,7 @@ struct RISCVCPUConfig {
-     bool ext_icsr;
-     bool ext_icbom;
-     bool ext_icboz;
-+    bool ext_ihpm;
-     bool ext_zicond;
-     bool ext_zihintpause;
-     bool ext_smstateen;
--- 
-2.41.0
+Anyhow,
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Thanks!
+
+Phil.
 
 
