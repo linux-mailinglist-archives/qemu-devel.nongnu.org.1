@@ -2,96 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E62756AB0
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 19:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEED756AFE
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 19:53:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLS5a-0004lE-V7; Mon, 17 Jul 2023 13:32:50 -0400
+	id 1qLSO5-0002KV-QE; Mon, 17 Jul 2023 13:51:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qLS5Y-0004j8-BE
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:32:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qLS5W-0000VD-GL
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:32:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689615165;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Hhn400pb7+NEFIHylSRvV/lRvxCONtORbBhhXurrMgQ=;
- b=EZ2HW1yN7+zl905SJJ940aeYPz1aRnT7BHr2EyThlzWzaOiJlOMg5a77H9WOJ/Ke7GXIZd
- EVKmfiQN6Yrghx0oTd9fXQOrXn70GoWZH/x5AEYt/6Xg5hlYQtIZPlYa9kd6B8Si6ewv8R
- sW/Td9XRLTq1OVBOG/U2qnLSyieCZH4=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-456-YqgsiiA8OFy4Rz0CPBeajA-1; Mon, 17 Jul 2023 13:32:43 -0400
-X-MC-Unique: YqgsiiA8OFy4Rz0CPBeajA-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6238c3bf768so49547826d6.0
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 10:32:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qLSO4-0002K8-1b
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:51:56 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qLSO1-0004Px-ES
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 13:51:55 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-5217ad95029so3287369a12.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 10:51:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689616311; x=1692208311;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=zN+VO/fUWek6CwK/1vfciKnmrFOisiX7toF7X5ar/m8=;
+ b=qytZUyyTlDLRIBePdwm9eQYW0F6eo0RjaYNQNxCRQPfJBF7mjGXcBxxTFJJKICvB5x
+ mKek5Wp2DpujRsLYwBMOll7NYVVJCLfSTzHOcn1iY5CVzfYIlcwlBBwQHPNQpe+RdhzL
+ kftN66XqWSgkdWhjw+B7jMD1wKRpv7sGvRI+xRZRBz1WtxAqXjj3DiTym/opNI8SiPh6
+ GzGBFFCBrQDMZGWMuZrWNklAY491NVT1ZCc/zv9PdMg6aQVrR8OpkFBtzI85BiKajSQj
+ cWPTYzZsI4djEDkihujokvjlJxeHxXsawgfRgkv/GPdLSPfZAgbT8x6/CxjuHKMkmUWN
+ SEAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689615163; x=1690219963;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1689616311; x=1692208311;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Hhn400pb7+NEFIHylSRvV/lRvxCONtORbBhhXurrMgQ=;
- b=N5jynteNwnuzfaIoxNKGeLZFqIRLvIFyNO1PJSOEXymLwbCN37o9aMOWb3Rb76xiSx
- KQlWACHv6E3EJbVnuG5XWwhXEt5NJ9gFepmed2b5eQ0ne+gr0XHi9Oq07g6iHqfU0ca0
- OmH7ayEqojrZ+Qa+dd3yvKzPHn5t8ldbIm2fcxpGAuT4vKiESiZ9h4f99l5uhyqHGIoO
- oi6O/yowhBCEwTHoxLJwJwyh1MnMjhmqcYlU7kNcmMLlcMDflMXQlgRugnzXu0u1mKCH
- jx44m0/PkSpfIbvnu68VjUz5La+3fw474KlSeBlb82g4TncqiOFNbvPWAPusPf4UGXuT
- 4kPA==
-X-Gm-Message-State: ABy/qLbQ4ZvhhFgAkrsk72qDBd9AQl7PGRgWzjDx6HQykUvx9/Lkvmpf
- CJHMxdW+2qsH1P2sAemVYr3J5gucoEhdXwHjj1lzYCX0lw0nqCy19PyZtoOhlg8x9+wd1lPS9P4
- 66eXWwqpZDGyJtmU=
-X-Received: by 2002:a0c:ab46:0:b0:632:32ce:7947 with SMTP id
- i6-20020a0cab46000000b0063232ce7947mr10283761qvb.28.1689615163454; 
- Mon, 17 Jul 2023 10:32:43 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFClHVyB8Dt1N97MsFc3X9VVxlwCgby34BnrJitrawVC1HaSoC+1L8tm9Nh+9cmjKH92xsn5Q==
-X-Received: by 2002:a0c:ab46:0:b0:632:32ce:7947 with SMTP id
- i6-20020a0cab46000000b0063232ce7947mr10283747qvb.28.1689615163182; 
- Mon, 17 Jul 2023 10:32:43 -0700 (PDT)
-Received: from [192.168.43.95] ([37.168.249.127])
- by smtp.gmail.com with ESMTPSA id
- x2-20020a05620a14a200b00765a7843382sm6207434qkj.74.2023.07.17.10.32.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jul 2023 10:32:42 -0700 (PDT)
-Message-ID: <8a706e88-ef7c-b914-bd1a-3272f9bee010@redhat.com>
-Date: Mon, 17 Jul 2023 19:32:38 +0200
+ bh=zN+VO/fUWek6CwK/1vfciKnmrFOisiX7toF7X5ar/m8=;
+ b=Vh36WjBf4v/1vn02i8M2QQYuVaSYPz+MvYnUZD15KOUGNO0KAPs8kBHSd8e+b0oov1
+ R/n+GGlYI9u8B63nrCVgjHVt0v0J72NM2KH4y01obyiVfxhdAOwcHHbGlEN3ao2mzHzK
+ Qkau8tPQhntEq7pVzpu+tkRxkWMabWzizOha+4L4DjmVaolW8fkXbvMhBcLZVrv1LclX
+ tVFkghiBQp7kPUT5ospa6koFdFAudIJ5eNeSNk76eR/s3Qn5fs/SoXxzCkyYhQUaktsj
+ 6z5czNr9wSOVEeJ5a1NOV8qsj2rQ6Ywn6GQthPWNWsJNjbHFbyt0FVK3yHlj8j8CFtyc
+ 2UQg==
+X-Gm-Message-State: ABy/qLZ9sYDRpax2jMSxLOp1aD26r2F0uavDPbwep3oFXMUMHOmfdMzn
+ IenhRvJhgyi8j7fydHaa37tyzck9R9ffhNvB3hZMyw==
+X-Google-Smtp-Source: APBJJlGQ/979iQcy50LrxrVgYICHpKgiGx01pfpFqJ8Khikdno4ufDfcUF1gcwlb0OZ3KBt2qfYAfgFC26YB8NysSlA=
+X-Received: by 2002:a05:6402:503:b0:518:721e:f594 with SMTP id
+ m3-20020a056402050300b00518721ef594mr12220674edv.37.1689616310780; Mon, 17
+ Jul 2023 10:51:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH for-8.1 v2] hw/virtio-iommu: Fix potential OOB access in
- virtio_iommu_handle_command()
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- mst@redhat.com, jean-philippe@linaro.org
-Cc: qemu-stable@nongnu.org, mcascell@redhat.com, taoym@zju.edu.cn
-References: <20230717162126.11693-1-eric.auger@redhat.com>
- <d28e1e4c-0c7c-e527-4f35-46ace2daa734@linaro.org>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <d28e1e4c-0c7c-e527-4f35-46ace2daa734@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230302123029.153265-1-pbonzini@redhat.com>
+ <20230302123029.153265-57-pbonzini@redhat.com>
+ <CAFEAcA9KXrRscf9QK2Z5Say91KDm7xRLMZGh4A1rQ1+0TCHtcA@mail.gmail.com>
+ <4eb4c9868798cbfd2819c317a80037f4820b0502.camel@amazon.co.uk>
+In-Reply-To: <4eb4c9868798cbfd2819c317a80037f4820b0502.camel@amazon.co.uk>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 17 Jul 2023 18:51:39 +0100
+Message-ID: <CAFEAcA8MwTGEMYemuSy3xSQuy_we7XWVHPqD+1epTphu1R0prA@mail.gmail.com>
+Subject: Re: [PATCH] i386/xen: fix off-by-one in xen_evtchn_set_gsi()
+To: "Woodhouse, David" <dwmw@amazon.co.uk>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "paul@xen.org" <paul@xen.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,57 +86,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
+On Tue, 4 Jul 2023 at 16:13, Woodhouse, David <dwmw@amazon.co.uk> wrote:
+>
+> Coverity points out (CID 1508128) a bounds checking error. We need to check
+> for gsi >= IOAPIC_NUM_PINS, not just greater-than.
+>
+> Also fix up an assert() that has the same problem, that Coverity didn't see.
+>
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>  hw/i386/kvm/xen_evtchn.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
+> index 3d810dbd59..0e9c108614 100644
+> --- a/hw/i386/kvm/xen_evtchn.c
+> +++ b/hw/i386/kvm/xen_evtchn.c
+> @@ -1587,7 +1587,7 @@ static int allocate_pirq(XenEvtchnState *s, int type, int gsi)
+>   found:
+>      pirq_inuse_word(s, pirq) |= pirq_inuse_bit(pirq);
+>      if (gsi >= 0) {
+> -        assert(gsi <= IOAPIC_NUM_PINS);
+> +        assert(gsi < IOAPIC_NUM_PINS);
+>          s->gsi_pirq[gsi] = pirq;
+>      }
+>      s->pirq[pirq].gsi = gsi;
+> @@ -1601,7 +1601,7 @@ bool xen_evtchn_set_gsi(int gsi, int level)
+>
+>      assert(qemu_mutex_iothread_locked());
+>
+> -    if (!s || gsi < 0 || gsi > IOAPIC_NUM_PINS) {
+> +    if (!s || gsi < 0 || gsi >= IOAPIC_NUM_PINS) {
+>          return false;
+>      }
 
-On 7/17/23 19:26, Philippe Mathieu-Daudé wrote:
-> On 17/7/23 18:21, Eric Auger wrote:
->> In the virtio_iommu_handle_command() when a PROBE request is handled,
->> output_size takes a value greater than the tail size and on a subsequent
->> iteration we can get a stack out-of-band access. Initialize the
->> output_size on each iteration.
->
-> A backtrace would be helpful (or reproducer).
-Well the way to hit it in explained above. PROBE request followed by a
-different request consumed within the same virtio_iommu_handle_command()
-call
->
->> The issue was found with ASAN. Credits to:
->> Yiming Tao(Zhejiang University)
->> Gaoning Pan(Zhejiang University)
->>
->> Fixes: 1733eebb9e7 ("virtio-iommu: Implement RESV_MEM probe request")
->> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->> Reported-by: Mauro Matteo Cascella <mcascell@redhat.com>
->
-> Did you mean:
->
-> Reported-by: Yiming Tao <taoym@zju.edu.cn>
->
-> ?
-If I understand correctly trhe actual people who found the issue using
-the tool were those I mentionned in the credits section in the commit
-msg. but unfortunately I don't have their full address. Mauro Matteo
-forwarded me the report which transited though Yiming Tao. Anyway I will
-be glad to put more precise in the R-b tags if I get some additional info.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-Thanks
-
-Eric
->
->> Cc: qemu-stable@nongnu.org
->>
->> ---
->> - added the Cc: qemu-stable@nongnu.org and copied 2 persons involved
->>    in the reporting loop
->> ---
->>   hw/virtio/virtio-iommu.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->
-
+thanks
+-- PMM
 
