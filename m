@@ -2,51 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DFE756735
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 17:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C89756748
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 17:14:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLPqk-0002JA-QG; Mon, 17 Jul 2023 11:09:23 -0400
+	id 1qLPuc-0003V8-AK; Mon, 17 Jul 2023 11:13:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qLPqe-0002IW-2o
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:09:16 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qLPqb-0006iE-0L
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:09:15 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C3E9814622;
- Mon, 17 Jul 2023 18:09:09 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id DB9BA153BD;
- Mon, 17 Jul 2023 18:09:07 +0300 (MSK)
-Message-ID: <d5e42437-19fe-29fb-7e1f-d83c0668a29b@tls.msk.ru>
-Date: Mon, 17 Jul 2023 18:09:07 +0300
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1qLPuR-0003Ud-Ir
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:13:12 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
+ id 1qLPuN-0007Xt-Td
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:13:10 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3fbc12181b6so48710825e9.2
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 08:13:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1689606785; x=1692198785; 
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=h3o+V93CFEyVod0W339jSGHcaYLMMNPwhfES1kUGhic=;
+ b=WyjZU6Ip6K9dXu8vb057CckEppqaAx7iI8S/XNlcY2VheHp/+OlWsPE8kusswNZU/M
+ X3X4brwrH29qZYHmXtkZzkDLaBu6Z520FKGa7E1dXL55k9UpLj/kL7EoOkYkWbdFJBwL
+ O5KMi9+ZdEtKEDI7dAt95tmh0muLrcbge146pHGTMh9FA3Mm/vZr/ZR1rAxTf6zYjvLn
+ molTrx8GiF+SmyXWB3IOHmIms/HZRGwc8oBxajezNrLoToP47hRU3LJbz4KucfdL6Zng
+ hJyC6zI9FEPrbmB0jbJSIGvhjElQsSuOrqTyKuu5KuNl+UvPNiL7Qje2MBnTkaSY7aLn
+ IofA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689606785; x=1692198785;
+ h=mime-version:user-agent:content-transfer-encoding:references
+ :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=h3o+V93CFEyVod0W339jSGHcaYLMMNPwhfES1kUGhic=;
+ b=N47zFHhnc6ZUSH4SORiMh1S7m0p07MjnEAjCjLzCRNSlZx119t2ap/9dqfnCAqbos7
+ euq87+fOcTzyxM5wCzd4fEdfcTXeC+hmE3IBKZQqGz5TGFj8x0yGl9ntM1J+KaLbNzT3
+ +ZWTavupZmcqADH2zcEoGNRCxMUfm1qbiJed0fzm3yurZ8kAgr6sy9Kgg8nwAvV5o4br
+ aixgSeUw2hgQ1bULVT+nqIwdVkS7ZDrd3Z9Eb4R2W4H4y5JcJfYZmGfLst13vqm/0zkN
+ 0TxEHsbb4l9bSAPLHew4O2k9fJagxvjyIsYqmv42N83pquBF3uEvOItqtNeHpk9UxOvy
+ 6OCA==
+X-Gm-Message-State: ABy/qLYzNilLdQl7NhNS5OpxebX6USlx1yX1gf8RPddrXmuV7NM0bX5H
+ nGhBqEkXMXq3I+JXhKkRTrYb1w==
+X-Google-Smtp-Source: APBJJlF7PjVOtLpUI8BZsSHVAOUYbtwBkbrxrTjudEQneQI4qmilc8G5CC01Pwu4NbhCFmUEJZ6CTA==
+X-Received: by 2002:a05:600c:213:b0:3f7:cb42:fa28 with SMTP id
+ 19-20020a05600c021300b003f7cb42fa28mr10770140wmi.28.1689606785324; 
+ Mon, 17 Jul 2023 08:13:05 -0700 (PDT)
+Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
+ by smtp.gmail.com with ESMTPSA id
+ i10-20020a5d558a000000b0030fb828511csm19389140wrv.100.2023.07.17.08.13.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Jul 2023 08:13:04 -0700 (PDT)
+Message-ID: <7a102598badfaa01b0e0c04e4f59e81eac5a2b81.camel@rivosinc.com>
+Subject: Re: [PATCH] target/riscv: Fix LMUL check to use minimum SEW
+From: Rob Bradford <rbradford@rivosinc.com>
+To: Weiwei Li <liweiwei@iscas.ac.cn>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>, Alistair
+ Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>
+Date: Mon, 17 Jul 2023 16:13:04 +0100
+In-Reply-To: <dfc75d1f-f28d-7d2c-26f9-72086ffb54ca@iscas.ac.cn>
+References: <20230706104433.16264-1-rbradford@rivosinc.com>
+ <dfc75d1f-f28d-7d2c-26f9-72086ffb54ca@iscas.ac.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.3 (3.48.3-1.module_f38+16987+774193ea) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] linux-user: Reserve space for brk
-Content-Language: en-US
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-References: <20200117230245.5040-1-richard.henderson@linaro.org>
- <8df187c5-3445-011d-7128-b6d13133b956@tls.msk.ru>
-In-Reply-To: <8df187c5-3445-011d-7128-b6d13133b956@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.097,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,20 +95,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-See also
+On Thu, 2023-07-06 at 21:22 +0800, Weiwei Li wrote:
+>=20
+> On 2023/7/6 18:44, Rob Bradford wrote:
+> > The previous check was failing with:
+> >=20
+> > ELEN =3D 64 SEW =3D 16 and LMUL =3D 1/8 (encoded as 5) which is a valid
+> > combination.
+> >=20
+> > Fix the check to correctly match the specification by using minimum
+> > SEW
+> > rather than the active SEW.
+> >=20
+> > =C2=A0From the specification:
+> >=20
+> > "In general, the requirement is to support LMUL =E2=89=A5 SEWMIN/ELEN,
+> > where
+> > SEWMIN is the narrowest supported SEW value and ELEN is the widest
+> > supported SEW value. In the standard extensions, SEWMIN=3D8. For
+> > standard
+> > vector extensions with ELEN=3D32, fractional LMULs of 1/2 and 1/4
+> > must be
+> > supported. For standard vector extensions with ELEN=3D64, fractional
+> > LMULs
+> > of 1/2, 1/4, and 1/8 must be supported."
+> >=20
+> > =C2=A0From inspection this new check allows:
+> >=20
+> > ELEN=3D64 1/2, 1/4, 1/8 (encoded as 7, 6, 5 respectfully)
+> > ELEN=3D32 1/2, 1/4 (encoded as 7 and 6 respectfully)
+>=20
 
-  https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1040981#84
+Hi Weiwei Li,
 
-(this and next messages at least)
+Thanks for your reply. Sorry for delay in replying i've been away.
 
-for some additional background and analysis.
+> This is a little confusing.=C2=A0 there is=C2=A0 note in spec to explain =
+why=C2=A0
+> LMUL=20
+> =E2=89=A5 SEW MIN /ELEN:
+>=20
+> "When LMUL < SEW MIN /ELEN, there is no guarantee an implementation=20
+> would have enough bits in the fractional vector register to store
+>=20
+> Note at least one element, as VLEN=3DELEN is a valid implementation=20
+> choice. For example, with VLEN=3DELEN=3D32, and SEW MIN =3D8, an LMUL of
+>=20
+> 1/8 would only provide four bits of storage in a vector register."
+>=20
+> In this way, when VLEN=3DELEN=3D64,=C2=A0 an LMUL of 1/8 would only provi=
+de 8=20
+> bits of storage in a vector register, so it's also not suitable for
+> sew=20
+> =3D 16.
+>=20
+> Maybe we can explain the above description of the spec in another
+> way:=20
+> we must support lmul=3D1/8 when ELEN=3D64, but it's only available when
+> sew =3D 8.
+>=20
 
-There's also
+I'm afraid i'm not sure I agree with this comment.
 
-  https://github.com/hdeller/qemu-hppa/commits/upx-fix
+VLEN=3D128 ELEN=3D64 SEW=3D16 LMUL=3D1/8 is a perfectly reasonable
+configuration and contradicts your statement.
 
-mentioned in subsequent message there.
+The goal of my patch was to ensure that we permit a valid configuration
+not to also reject other invalid configurations.
 
-/mjt
+An extra check that takes into consideration VLEN would also make sense
+to me:
+
+e.g. VLEN=3D64 LMUL=3D1/8 SEW=3D16 should be rejected
+
+Cheers,
+
+Rob
+
+> Regards,
+>=20
+> Weiwei Li
+>=20
+> `
+>=20
+> Regards,
+>=20
+> Weiwei Li
+>=20
+> >=20
+> > Fixes: d9b7609a1fb2 ("target/riscv: rvv-1.0: configure
+> > instructions")
+> >=20
+> > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> > ---
+> > =C2=A0 target/riscv/vector_helper.c | 4 ++--
+> > =C2=A0 1 file changed, 2 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/target/riscv/vector_helper.c
+> > b/target/riscv/vector_helper.c
+> > index 1e06e7447c..8dfd8fe484 100644
+> > --- a/target/riscv/vector_helper.c
+> > +++ b/target/riscv/vector_helper.c
+> > @@ -43,9 +43,9 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env,
+> > target_ulong s1,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xlen - 1 -
+> > R_VTYPE_RESERVED_SHIFT);
+> > =C2=A0=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (lmul & 4) {
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Fractional LMUL. */
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Fractional LMUL - check =
+LMUL >=3D ELEN/SEW_MIN (8) */
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (lmul =3D=3D =
+4 ||
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu=
+->cfg.elen >> (8 - lmul) < sew) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu=
+->cfg.elen >> (8 - lmul) < 8) {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 vill =3D true;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>=20
 
 
