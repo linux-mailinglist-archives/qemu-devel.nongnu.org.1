@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9777756F02
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 23:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3FC756F00
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 23:37:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLVsp-00024F-Qn; Mon, 17 Jul 2023 17:35:55 -0400
+	id 1qLVsq-00024a-FK; Mon, 17 Jul 2023 17:35:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLVsn-00023E-Ts
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLVsn-00023F-Tt
  for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:35:53 -0400
-Received: from mout.gmx.net ([212.227.15.18])
+Received: from mout.gmx.net ([212.227.15.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLVsk-00083g-Gh
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLVsk-00083j-GZ
  for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:35:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1689629746; x=1690234546; i=deller@gmx.de;
- bh=X8cCmtRNuxyGIvbr+KDa1t6PktswG9UGYjkCnXWrFBA=;
+ s=s31663417; t=1689629747; x=1690234547; i=deller@gmx.de;
+ bh=SVEf7aN/7yvN3zNDrj1ViH2aOCzxdiVcivng1Q+RCiA=;
  h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=hCI1+26pyuGXwMmn8Z/v9boxMOe5oQPUGQbqPCDwAMGuH0MtysDIRYEY44Cj/aYHrZM4So+
- Vi3UWXMkZcKdhu4lMFKYFnZzyecpRYtzNvyYrtvKaW7pd8Gu7M57Ha7Erji8Yxd9Hc/4OwQfh
- 2SY6aweFRr1GZdtm+p9k9Z0hmiJNnrxZhBNkGs1JbV+cs+EdCloaBkXWhCqQAGKq7RaFngyg9
- GhaAV6NggqnJKKpdkpTZYv1dnEKs2Xk/d+sb4KE4Z88nxOc5KWIKi4kbg1Ouecyp8r43ml5Nn
- VF+JDZZbLl3lNvvOy3ln0NRYnX2YYo8k3UajgUcgrvPZb7FH5jRg==
+ b=kP/IBOBoESYlWYtWywB22lfkiiqW/Go7tYg7h+t/oBvRSdY3tBfDC+vgnAyVLfaFEmDQ6AR
+ 7y8eP9320uWdkOkjkwro6/xlLj+Ercz/T9RpR1RCYUlwj2uQ4VdpQSUDiAvQY1jk/bDHWEblR
+ aoXdUMj7NfiSCxy1dPyagOvOwq/XjZB1YhDsycHzaybcaWQLHgLkeiLEGzQGwk4DjvPcd/m6g
+ ZhSA3l/9IQ2G6R8QeOIPFzpHNomdOLDbAfPCTiTeozsGPKaC6izZG3Cjme/ek3Ri5vHuYAUxe
+ JO5/4GCoUlVLGtExHmtPs90QRCnSoW0KwJEdFijTQrPL3O86yuLw==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([94.134.159.97]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNKm0-1qbWau34tG-00OnwR; Mon, 17
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N8GQs-1pqayw3q52-014AML; Mon, 17
  Jul 2023 23:35:46 +0200
 From: Helge Deller <deller@gmx.de>
 To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
@@ -35,35 +35,34 @@ To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: Helge Deller <deller@gmx.de>,
  "Markus F . X . J . Oberhumer" <notifications@github.com>
-Subject: [PATCH 3/6] linux-user: Prohibit brk() to to shrink below initial
- heap address
-Date: Mon, 17 Jul 2023 23:35:42 +0200
-Message-ID: <20230717213545.142598-4-deller@gmx.de>
+Subject: [PATCH 4/6] linux-user: Fix signed math overflow in brk() syscall
+Date: Mon, 17 Jul 2023 23:35:43 +0200
+Message-ID: <20230717213545.142598-5-deller@gmx.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230717213545.142598-1-deller@gmx.de>
 References: <20230717213545.142598-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Ubc9Lmcj//WY4Ix6cMYUFlPU+q2CYCBrth9NzgZhvQXagsA5pow
- dPba0y5UM7oj2Dx6xH/4Ak9lziS3z5kho1kEEyHMNrDzBwFEdQyoFJqxg/SoMid3vnh44rf
- imfI7+lJM14ht7amCM5lvbLqtSqWOKzNOkv7cSOllGiRmEQx/DUQmpbSr6RynbN72Kr8oD5
- T/WBSl67j+4rpRFOdZDjQ==
-UI-OutboundReport: notjunk:1;M01:P0:W/2dum31TEQ=;8PjjCIgmrrj4xH3O6/7RVDtP1tn
- KUzSh10T3q9D3rQppCKpMgE6dWkPVJ8o4A7x5N2jGRofF1zrQZ4HTXJV3DFakjPxLEmxxaDZh
- FQUgPIUmaLdbwuqbW9rYXDBD2Yd0nBK1BzKErJg/lOhe7Qp6j8njRvZsfXYUcCc+pPgLHrjt0
- DqP14N8vZm7JB3MRFuxUTxl0JzohDBD+pph8rxloH8dFWbQp1llxPD04VRYCXl2BzB7ws5JeU
- 2F9VfsCkekyExBgUHCg8r2SmwUi65qh3etill4LG5vMoPdsvU7tAqKkhjrU9EdAriU3t56Phz
- FD5o7p6cOuNJpNFlnrgi3JyIOzzUZH+S8Fo5ikSs5isdljzTcI2wMxCKCLO81R7AXsAjOdlM7
- CZvHyKmvRe2GCmcmaCK8bTSb8eJWQP0eVRo2Nb6PqZ2jgEKkH9aMa474KtdLuu4oUQJ3FnS3A
- wsXB04QSV3OI5puG+0+IkRKr8x2ictJw2AjbSbWIWJQ6kk68NbaK6GXw3CeKzKgeLzaajr+zy
- AJFkTIev7YicvJYhiXgiAIGbZn77KE5TkIFKY9a89NrkDvSHZ8odnl+XNGaOqP3HzRQN/C5rl
- IyCmDaNag2MHRkm9HMTZ1nrVSlPmZqaIPPzoETPw7xBRGVMVCUrVHWV/p+ohaoqugBl/YSvWn
- 34g8sHHmmVRvIcLeHbJ+yU/EOfg7QxOwlIqUQ1UR9lCImcc3Me+U7fEOw0qiBLe8pNR282TFq
- a9dNc2VRjaHJjFmiP6G9L1e8V5uRO5c200XpVfBH7/+z92qSP5IKLm4aOcMsNHuyVI0xb0huz
- TUSj+43XYz9/c4ObSvJwIJ5eC+DbyGuGhCFu5QqkALmvnELv7d6Mcl2IJ11VWC4IZxTnz2ha/
- kupsdOyQfPk54EFH8XY8GV9Hm3LIb2MwvXnDGcBECrF5w8q1RQeoB0awZrDgAJLT88hkN920m
- EPwwGxPxARaPw5Sosl7kXJ4ADOo=
-Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
+X-Provags-ID: V03:K1:MIc9Pv/Sd/rhUh2mgW9+pMx7e0VJXG9F6mXc1/V5yrbyCh8Ev4g
+ WaJ7K+vecYXc7zQzPdElr+4O61bCP/5IVBxNA+KxzrnEEopgFgG7YELezLhJUNv5lRdosZH
+ gJRex/MvWxTjEwbuDsCm1Ad8ZTvQU38JXtBKkdRHA4N2FJj/m1xqNfDAXiTZ3CMuwNDQ4Cx
+ z39nWjmROTqyw89hWAdbQ==
+UI-OutboundReport: notjunk:1;M01:P0:NhOvFUn2Ub4=;Q8T5UU9c8MDCENkm7ua3ldbNbhH
+ 9Fd8mQYoI49WKGb35T23kTKSvYmlRkhlxOQw8ijiAVMjz39rRZK+YWgR3JZcnXhU5Cm1L8PzP
+ UQDDu1L9BZ/0C2Xar/b7uD4uVYIkjhswioMesL5BKK2qoeUEf1K1JYPoTEEJ8ThvuCOQDEEO0
+ LMNccsXNx08hkYKLkc249mkBim9qmD/2GKRoHRzCj7XGzsd0WDDRk4FlL791OZdcIlfOHkYAN
+ 1hjCvyVc7rBW1y8Dqgs0Ooxx1lMNaKd7lqf5yU62P3gb8B20O/x99R8IptHLft2Rm+QZp1iWr
+ QDV8T7dm4OnXS80UYLSXvZr/jRN7z/dg1G34N5poAtwTMbKQvYeM1+U3CJ9w1XZQzb8wuaXFB
+ q471wqp5ejAL3PUdYUmWEMlbTjz27KbYRO5jTbP8b78a4mIDdGbXl0NlGZN932WJNib0x37Yn
+ /l/G02XQUct9vh4514EV435au6bNC+ecnvEh5CjCIkVPCcv8gOc9Dtce9xuPuTYKtmeqiWzn8
+ o4okdRJz6Y/gyHaXd+OWISUv0tGG9YhyuZk3fXN+jCmb2oviXbnwlUQbwnzo4j5ylYL9/vftm
+ M7VHp6KlYjd6+UNypuT+HjWJNhXjWIEaiiDJAEc8YM0/HyWM+itjZsIJ3qUZSQ+uyV0RaO2SK
+ Y9BKF6k+ha/Yj+cVIZkKs9IPiksdhY1DaAwPqzrECKFc0SN0SP08lD9hLLadiZchl12YrLN65
+ Y2ie8EsAPeNF47ZpY868nj6/6/xCvbNvM6b5Vcoy9V3HJlshgkdAYTenFAlXMLcSdWRq4gcAh
+ q8wVsiPrP17/8FNu1bvq+JddjoinIOkNaqL6CSMkoH1V/MOZ8IMuMkiHfZAuSa2er99vUpoG7
+ V4nqny14kMQjwJa95oSj0X6sWqktVZa4J4gKvLUHY+o301wIt/3dgKO6okh/l7MG2J+HASn7j
+ ZLCGBGYIjpBhlYb4xfgpuG81NfA=
+Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -87,61 +86,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 86f04735ac ("linux-user: Fix brk() to release pages") it's
-possible for userspace applications to reduce memory footprint by
-calling brk() with a lower address and free up memory. Before that guest
-heap memory never was unmapped.
+Fix the math overflow when calculating the new_malloc_size.
 
-But the Linux kernel prohibits to reduce brk() below the initial memory
-address which is set at startup by the program, while this check was
-missed in commit 86f04735ac.
+new_host_brk_page and brk_page are unsigned integers. If userspace
+reduces the heap, new_host_brk_page is lower than brk_page which results
+in a huge positive number (but should actually be negative).
 
-This patch adds the missing check by storing the initial brk value in
-initial_target_brk and verify new brk addresses against that value.
-
-Tested with the i386 upx binary from
-https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-i386_linux.t=
-ar.xz
+Fix it by adding a proper check and as such make the code more readable.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Tested-by: Markus F.X.J. Oberhumer <notifications@github.com>
 Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
 Buglink: https://github.com/upx/upx/issues/683
 =2D--
- linux-user/syscall.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ linux-user/syscall.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index f877156ed3..92d146f8fb 100644
+index 92d146f8fb..aa906bedcc 100644
 =2D-- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -801,12 +801,13 @@ static inline int host_to_target_sock_type(int host_=
-type)
-     return target_type;
- }
-
--static abi_ulong target_brk;
-+static abi_ulong target_brk, initial_target_brk;
- static abi_ulong brk_page;
-
- void target_set_brk(abi_ulong new_brk)
- {
-     target_brk =3D new_brk;
-+    initial_target_brk =3D new_brk;
-     brk_page =3D HOST_PAGE_ALIGN(target_brk);
- }
-
-@@ -824,6 +825,11 @@ abi_long do_brk(abi_ulong brk_val)
-         return target_brk;
+@@ -860,12 +860,13 @@ abi_long do_brk(abi_ulong brk_val)
+      * itself); instead we treat "mapped but at wrong address" as
+      * a failure and unmap again.
+      */
+-    new_alloc_size =3D new_host_brk_page - brk_page;
+-    if (new_alloc_size) {
++    if (new_host_brk_page > brk_page) {
++        new_alloc_size =3D new_host_brk_page - brk_page;
+         mapped_addr =3D get_errno(target_mmap(brk_page, new_alloc_size,
+                                         PROT_READ|PROT_WRITE,
+                                         MAP_ANON|MAP_PRIVATE, 0, 0));
+     } else {
++        new_alloc_size =3D 0;
+         mapped_addr =3D brk_page;
      }
-
-+    /* do not allow to shrink below initial brk value */
-+    if (brk_val < initial_target_brk) {
-+        brk_val =3D initial_target_brk;
-+    }
-+
-     new_brk =3D TARGET_PAGE_ALIGN(brk_val);
-     new_host_brk_page =3D HOST_PAGE_ALIGN(brk_val);
 
 =2D-
 2.41.0
