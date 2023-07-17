@@ -2,77 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7A67560EB
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 12:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD1475612C
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 13:05:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLLp0-0002Cq-7d; Mon, 17 Jul 2023 06:51:19 -0400
+	id 1qLM1I-000598-4B; Mon, 17 Jul 2023 07:04:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLLov-0002CT-3s
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 06:51:13 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLLor-0005Gh-Fc
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 06:51:12 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-4fdb856482fso1905088e87.1
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 03:51:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689591065; x=1692183065;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=OSfY3MWX5ezkd6M6PYHgP6KJJswEkdvFVedFl2YAGCM=;
- b=Lqp9LPytqzW2wOA1VeXqqHj7VAc2ioPy6nAX5JJIYqusREAefaP8j9zipbG+OncJLm
- HKuSut/u/WxUeHABGH9FQIYe3IrYY0j9010SEuFu+V36dWZldbcXPa1UJcOw1HqYt6T9
- MYjUPlS5d0d7eUAiXYCXE1/OGt6r6BksB8FFrjHlDB2nuUkhGhivkPWh3VFtpZXqNxSW
- yheZ81FkXyxsja6fLsd3JMcw3PaHx5GFBd9BjW7m29FtAoeuwcg/u4nBS8u9KliKtXbC
- NrBIYaz6jHDe3LyXK6lffw7eeaGC1Z6VsisIdOIvnYql+FGz3o7fBohy6QCEgSlGFz7G
- taXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689591065; x=1692183065;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OSfY3MWX5ezkd6M6PYHgP6KJJswEkdvFVedFl2YAGCM=;
- b=gngOLtGsNxzHTxQdlAvy02DaWFivuHK6jSv3mYWQQ2j3rUWxyrtF5pvVGj9dv+6J0E
- dRHwY/ShlSDQyqwreLhz2bO2Bu60SsPAxn9DazuW6jm5HBDnlwkh4TefiJWXDbOu3PTU
- I4FNDOCV8KQ+MrLP4e24eoEsYbY32jXQYpN7jQ6jw7yJTsh/RUwfbD2LpsCG1xf1V63l
- OO2bLbHUESXUB+xSOYduTXpz8UboFWrzBZGqoq+fF2G03zXnkjNDV73P3zwS6pTKVZyZ
- 9QylAki9S3BlWr2jALgYbTSTeIlEZ9m++T6JS4gI0ohTZaQDSknqhbdLkebCCZ+UWONb
- R4BQ==
-X-Gm-Message-State: ABy/qLZ1HgTers0WCwXFpCNSlO9p+OB5zdDvnTfvvLbLdzGY2+1mgIgW
- d2M5IP91xAixkMG9JEBkXv8PyD3zk5ji42eHqFiUjA==
-X-Google-Smtp-Source: APBJJlERsILDj/Qx+GaND5UOUbzd6d04M0WolFxZ8LyCugSgHKntyH+5VQOutDz9v7z+LpyaIsyKHyTrbGSWYfVrWM4=
-X-Received: by 2002:a05:6512:2346:b0:4fb:7447:e71a with SMTP id
- p6-20020a056512234600b004fb7447e71amr7859880lfu.63.1689591065026; Mon, 17 Jul
- 2023 03:51:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qLM1E-00058d-UC
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 07:03:57 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qLM1D-00085D-3y
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 07:03:56 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1689591825; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=cuYpn4D2QOPPPUFvrVUwg3iMd/z/gU+f/+ITTifZ5CpmoXtvMq6brp3v7MKzGF6Sc7
+ 3485mFHM0c574tcL8fs4Z60XQacx/6GP79Qz9ymXWfS/MF7A8P8lVnansx+Q4Xj5aHT1
+ +X+duI859em7SFy4x66IozNrQq2KhwdJu7KOJsIgV6IHcwnKMGrh893BZNzuK5pzkonu
+ 0DRx/XzMKLIzmJAjwRJK9av39VJ0FW0+su0Bw3U3IiMzPw2B7C75hkW2Sidc8FJ/z0YA
+ nnke5LpTh/4YSKGW/4Fd0vY8bNZYjsuKTe8bO0PoAhKbyhQa6y+wiY4xZEUjphuT9uNp
+ 5XsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1689591825;
+ s=strato-dkim-0002; d=strato.com;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=JwlXraZpkgGryz/8myziihb7uRDZrQbjFQfUno2bLjM=;
+ b=AVv+DjOwHidNoR+5i2mVBokCyKoADysoAoeQoFhLfc1HMhPOdns6kbSZjeDVtS9OGy
+ R9NTkqx6kN0bV2ppIapHnxNoKFvTjUvhnI8XjI9a5cdkp3hdFtwwptW6QYNzVcezD/zx
+ B4XVabHnYaLhLR//kf64hifOGuHV5wBEv2w3dLBh4AYxMNkYfmFbdeddOBasETJ4Lssd
+ bqqa+vqwTVjjNW60HxgDu2sDXkhTB/wxeIv7xM4N99jUhM4y8T/4fbH7ZEJh7xZmV047
+ gb4xmBRDaO7VxZsiAceTQmn37bqbNEnpu7RUGQUQ7Q21+1Xyby6nxHrU6TQo5/U/AUWQ
+ i2rg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1689591825;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=JwlXraZpkgGryz/8myziihb7uRDZrQbjFQfUno2bLjM=;
+ b=gMHO5ecl+hM/8mkBKnobCIYHlanV1uobWhxJRIzL9iWIypR0AK0KsaQcPGPKDed/Eu
+ 0oaw2nb0XGv7V+77MLEuohvlDYvrXZ3zszj/xpfn/wo1TRkP0kS6KhOK3fETK5fT8wCr
+ bqppr4XM2Y8oUytxtd7U9d2ENZq+Pod/U4T7SDLWT7Ooo7+saCLMQSqmkJI3O72cpOMi
+ /i5ycnm6CCV6RxQIWMW4g08b/n3Tx+1jRLXVcAzkiWUjn+X5CiHb1/OGBIUchOogzkuw
+ rlje7qnYF2Zn1PXUBmbfRx2laFSYZJaTMEP2X3SQQlmGR0OSkkIr1Xn7LMGbJMdQ2waD
+ dAaA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1689591825;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=JwlXraZpkgGryz/8myziihb7uRDZrQbjFQfUno2bLjM=;
+ b=jl8A1zymFdW/fjFVQetRZdRhkkAkN1DNmYP2SiSpV03C32xxNdTE7+gEInti+Tqy3U
+ sUDSFRv2Z9qsZmoWFfDA==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4U0aIaxvssIT1j+tCLlX5OhVr5AfLfzW6HQdmLA=="
+Received: from sender by smtp.strato.de (RZmta 49.6.0 AUTH)
+ with ESMTPSA id y5401az6HB3jy0S
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Mon, 17 Jul 2023 13:03:45 +0200 (CEST)
+Date: Mon, 17 Jul 2023 13:03:38 +0200
+From: Olaf Hering <olaf@aepfle.de>
+To: Bernhard Beschow <shentey@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, Philippe
+ =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Richard Henderson
+ <richard.henderson@linaro.org>, Kevin Wolf <kwolf@redhat.com>, Lev Kujawski
+ <lkujaw@member.fsf.org>, John Snow <jsnow@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>
+Subject: Re: [PATCH v2] hw/ide/piix: properly initialize the BMIBA register
+Message-ID: <20230717130338.29b7a911.olaf@aepfle.de>
+In-Reply-To: <DA75E02A-FAB3-4262-90B6-37A213ACFA47@gmail.com>
+References: <20230701174659.10246-1-olaf@aepfle.de>
+ <62EDA748-11A3-473F-913D-F9464335A382@gmail.com>
+ <20230703095929.6e793dcf.olaf@aepfle.de>
+ <93902CB6-7A6E-49E5-A55F-432C6B4BC00F@gmail.com>
+ <dded4d33-d64f-9369-0742-a57a1e173153@redhat.com>
+ <20230705120121.4f353ba6.olaf@aepfle.de>
+ <DA75E02A-FAB3-4262-90B6-37A213ACFA47@gmail.com>
+X-Mailer: Claws Mail 20230714T084508.e5e1185f hat ein Softwareproblem,
+ kann man nichts machen.
 MIME-Version: 1.0
-References: <cover.1689030052.git.mst@redhat.com>
- <94df5b2180d61fb2ee2b04cc007981e58b6479a9.1689030052.git.mst@redhat.com>
-In-Reply-To: <94df5b2180d61fb2ee2b04cc007981e58b6479a9.1689030052.git.mst@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 17 Jul 2023 11:50:54 +0100
-Message-ID: <CAFEAcA9JAZrxpcfjyEj8Hj1eYb+9PUxV2i05JTZwe0u+gVSBPg@mail.gmail.com>
-Subject: Re: [PULL 46/66] virtio-iommu: Fix 64kB host page size VFIO device
- assignment
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Eric Auger <eric.auger@redhat.com>, 
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; boundary="Sig_/FVoGBy43rn=2nidx=D5Fnoi";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=81.169.146.167; envelope-from=olaf@aepfle.de;
+ helo=mo4-p01-ob.smtp.rzone.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,65 +112,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 11 Jul 2023 at 00:04, Michael S. Tsirkin <mst@redhat.com> wrote:
->
-> From: Eric Auger <eric.auger@redhat.com>
->
-> When running on a 64kB page size host and protecting a VFIO device
-> with the virtio-iommu, qemu crashes with this kind of message:
->
-> qemu-kvm: virtio-iommu page mask 0xfffffffffffff000 is incompatible
-> with mask 0x20010000
-> qemu: hardware error: vfio: DMA mapping failed, unable to continue
->
-> This is due to the fact the IOMMU MR corresponding to the VFIO device
-> is enabled very late on domain attach, after the machine init.
-> The device reports a minimal 64kB page size but it is too late to be
-> applied. virtio_iommu_set_page_size_mask() fails and this causes
-> vfio_listener_region_add() to end up with hw_error();
->
-> To work around this issue, we transiently enable the IOMMU MR on
-> machine init to collect the page size requirements and then restore
-> the bypass state.
->
-> Fixes: 90519b9053 ("virtio-iommu: Add bypass mode support to assigned device")
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+--Sig_/FVoGBy43rn=2nidx=D5Fnoi
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Hi; Coverity complains about this change (CID 1517772):
+Mon, 17 Jul 2023 08:46:16 +0000 Bernhard Beschow <shentey@gmail.com>:
 
-> +static void virtio_iommu_freeze_granule(Notifier *notifier, void *data)
-> +{
-> +    VirtIOIOMMU *s = container_of(notifier, VirtIOIOMMU, machine_done);
-> +    int granule;
-> +
-> +    if (likely(s->config.bypass)) {
-> +        /*
-> +         * Transient IOMMU MR enable to collect page_size_mask requirements
-> +         * through memory_region_iommu_set_page_size_mask() called by
-> +         * VFIO region_add() callback
-> +         */
-> +         s->config.bypass = false;
-> +         virtio_iommu_switch_address_space_all(s);
-> +         /* restore default */
-> +         s->config.bypass = true;
-> +         virtio_iommu_switch_address_space_all(s);
-> +    }
-> +    s->granule_frozen = true;
-> +    granule = ctz64(s->config.page_size_mask);
-> +    trace_virtio_iommu_freeze_granule(BIT(granule));
+> The PIIX fix alone just fixes the syptom, not the underlying problem. The=
+ underlying problem is that the BAR isn't deactivated, and with the PIIX pa=
+tch it will stay at address zero rather than in the USB function address ra=
+nge.
 
-Specifically, in this code, it thinks that ctz64() can
-return 64, in which case BIT(granule) is shifting off
-the end of the value, which is undefined behaviour.
-This can happen if s->config.page_size_mask is 0 -- are
-there assertions/checks that that can't happen elsewhere?
+Did you mean to say USB will not work now? It actually does with just 230df=
+d9257 backported to v4.2+.
 
-Secondly, BIT() only works for values up to 32, since
-it works on type unsigned long, which might be a 32-bit
-type on some hosts. Since you used ctz64()
-you probably want BIT_ULL() which uses the ULL type
-which definitely has 64 bits.
+Either way, I will test and send the additional change for pci_xen_ide_unpl=
+ug in the next days.
 
-thanks
--- PMM
+
+Olaf
+
+--Sig_/FVoGBy43rn=2nidx=D5Fnoi
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmS1IAoACgkQ86SN7mm1
+DoBknQ/+Ih92UXyXa4imE65pH9xXTD06XW0E9G4RaZGaNBUM0tTJNWtP+ipXP3Au
+slLO9DlWTCTFQfvMFI8HGNYGKkAxx/hWf3gcqPoiibJ0QpYbblvqsnKWUJG+FkRt
+iQpemNWF+rihzXZvykrrjNi1jA4oLkmWzJzdu4sxnLypeOD0/1w1Sy468AKyod0u
+eacpEAVK9woBG4HT2op4pUn3xGoZmDLfPIssWJ+6DPSYcP7dc1NyERZToQq08DPC
+Zy0QNeSCCqAqI9CIj7mpeIUnytQtI1fx9kNiB2Y54Hn2BKulSDP84apGF2wWxuUK
+lteK2GrrA92ReOJjKh9Dtkm2yXfMUCZorYmrJ4OUzrVs0LI41Vu0G1smD7jifBmN
+6Mxh+TDgoUjbnjJrM8Li/cAeMIGweJNWBt1JS4v3WyovRpEgGgpH8pDwqSny1NuQ
+JTbPvCA4TwlkMzrSrlfGymN8hwKQPns+P0gO6FIFXgwE4vzg0zlY6qt/1Fuw+5yc
+OX3hLxtamcoaZfWpIPzMyWj7VpC15bIvS+YWuj9DnfNR1PhwpcQfHDGD/ze46ZJ+
+LWhqlG5fL21kDTMgvFb49HKxcJNusNzChEli9IgmLIfPf6WZze9YaOOWlmZiBJRx
+hBj4X0De6crJL6sZa3mC/Zf/zHqRLi9h1Fj9J9ly2oZQFR3bfTE=
+=CV9U
+-----END PGP SIGNATURE-----
+
+--Sig_/FVoGBy43rn=2nidx=D5Fnoi--
 
