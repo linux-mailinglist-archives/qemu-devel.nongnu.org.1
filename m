@@ -2,83 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDC0756EFF
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 23:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F02756EFB
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 23:36:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLVsN-0001yo-IQ; Mon, 17 Jul 2023 17:35:27 -0400
+	id 1qLVsp-00024G-UI; Mon, 17 Jul 2023 17:35:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLVsL-0001ye-C1
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:35:25 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLVsJ-0007zl-NT
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:35:25 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-31590e4e27aso4523991f8f.1
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 14:35:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689629722; x=1692221722;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4UWwa1uuZikYOyZrtVyQHLSGe/yJoGLD5CEgAH5+Sh8=;
- b=PAvLYQZ7rjAmuseppjocnQrUuVjQO05jar+REvDJa4waB3eIlKi6Mvk80jY9dP1Cwu
- gLx7T6AMEZqGKhakOIgE68Pa/Qb6OvPaCl/q5UoxpA0ttMR2+GDL1wP2pwruCnnQhE15
- u3MZKuaL02YVjxgA97fKtBxztIzAXOWTqR4slj4hAvyTd/I9VYdEqXUmz8+t8S7UsO+L
- sbJKShP5PxYBrhDLupidqMlBLWo6izOpLPk7tTlqOSrmJv9CZ74uT2Vy1fQqRogkBNbY
- lfoeTu+EELCMLo34i34ak2ZPgwecTADHkFihgBFMhqMBBKwUS+SKbsJ4hV1q5aVxKPzL
- kXVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689629722; x=1692221722;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4UWwa1uuZikYOyZrtVyQHLSGe/yJoGLD5CEgAH5+Sh8=;
- b=e3VQAS30Nw7qxN+xAug9t3fFVaqS8RktxmRvVhNVh6aob+hgoMqmZFRjJswS/Ee6hK
- BxiTvEnusg7hX83vHGtocfkwPVYNFpkFhkmWyDsBQU318h7Ce8YgDq1wbRlprOLijqxq
- Dz6cHpWbP/mZtRDMuVYc54Y+0TQEXlOJBQxTYXbUWgZKbU0xolOC2a6mzDoDA1AZrtI1
- hQmwr5Y90BPpo/xlub+n2w7eXij1TvKMDGHqizNqsKRpzVGfmCSGIvv7lBxXi+dG7vag
- u+9swABX1oTVTqlKEj7Gro1DVsEahPwXkgxJwI49QzzFgtTXvVgI2/jS20hU6R3TO9hm
- o5yA==
-X-Gm-Message-State: ABy/qLb4n3l1n7dZjEcIWTqGXlGBu5FOdhpk9H9k5XG6Kd5ihOiviB+4
- pCIo7xBoYFXhxNv0dyHI412jXRtai00tNPzr7X0=
-X-Google-Smtp-Source: APBJJlGLgSYtHg+d8UKceGcpXoAgDOZhhiLNW5W7hy7aQxylwPKhAR2hliynwgfd6vbVz6RvfUWKig==
-X-Received: by 2002:adf:d092:0:b0:314:220d:7 with SMTP id
- y18-20020adfd092000000b00314220d0007mr272277wrh.45.1689629722084; 
- Mon, 17 Jul 2023 14:35:22 -0700 (PDT)
-Received: from localhost.localdomain ([176.176.144.39])
- by smtp.gmail.com with ESMTPSA id
- n16-20020a5d4850000000b00313e4d02be8sm475148wrs.55.2023.07.17.14.35.20
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 17 Jul 2023 14:35:21 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH for-8.1 v2 2/2] target/mips: Avoid shift by negative number in
- page_table_walk_refill()
-Date: Mon, 17 Jul 2023 23:35:04 +0200
-Message-Id: <20230717213504.24777-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20230717213504.24777-1-philmd@linaro.org>
-References: <20230717213504.24777-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLVsn-00023B-QT
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:35:53 -0400
+Received: from mout.gmx.net ([212.227.15.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLVsk-00083c-H8
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 17:35:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1689629746; x=1690234546; i=deller@gmx.de;
+ bh=u5t1oXhIjdla/7PwxCCrpnFZUkuafq+bUKnWh7AGGNU=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+ b=lzKSU8DTeO3IDGVXM3pfpHH6oW6WBQv9h1O/+uX/RGWFtL8Bypq5AukhoIo0dQkScyr7gPC
+ JGF1xpRZ1NDnsk4cw7/jCZoDLh9WPB5tx597cD82Yff0xBeWRdmNHFiCJ5Kr1qJB5AicR6czj
+ PCBjiA+JqE4ypCJwslWLi8eWKMmfxwEv2I7R+SpL/lKLS7qeGs4UUhLfJBGAupdIP36BMKNuf
+ lXYMddRlfsLyB+xvscvD3y38PGFHGbGOeEiBM7HwQha0xgHcLO7CNhTTfwYS6MQOHQlmpZ/wc
+ L9wp8PhcWfb6fsORDjZEeyhEOcCkCZUP3+URqXNsx9Du5OC6hIjQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100.fritz.box ([94.134.159.97]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MvbFs-1q3IJA0Nh0-00scz9; Mon, 17
+ Jul 2023 23:35:46 +0200
+From: Helge Deller <deller@gmx.de>
+To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PATCH 0/6] linux-user: brk() syscall fixes and armhf static binary
+ fix
+Date: Mon, 17 Jul 2023 23:35:39 +0200
+Message-ID: <20230717213545.142598-1-deller@gmx.de>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:gl55BELn0TqNztf4rov+95BjaIEoC0/RGuN2Vpu79o6FA1TJRF/
+ O8nDSndA17XDSCorMKoVR9RZ772rXnWsmnI/ytxwClDmvq3Rkqw7vAhhHeS8FjJpHBWl85s
+ 5WaQK132MH4JwyNn6PAcXGzIagKOuj5hoSqHCCY2NZ4FQKabGCQYrl4ye6HWVX3UKPhqhMm
+ t/lvErCHzXwrOIxN3Ia2Q==
+UI-OutboundReport: notjunk:1;M01:P0:01TBSsL8jkk=;rffnFc1u0dSFfm17TM0rMFRXUXo
+ KjYw6d2xiifR/aFzJEpBt7VilCr8AvTtz6kiPnpQBF/EJhPXBZyaliAWa5Al6Kfoz5RuLGoIW
+ yobeSC/D/0G2lx1IDV9dEqk38FhIvxTbiOLaRLM/371knNyfbt2X4Y2MwKsBoPCaRGk2b3ts6
+ ftHAHud6WbFdBT497W4N4e6AETwQIBXAKuNjEbQ0fQtYIlf9+8f8MAGnsH9mxBW4RvAGT/V7C
+ IIRTtNnC0XyLy+lLzfOrJcYNPUc5mRdHI3BUBvVq8U/gbxaO+mqRZxvqi/hQW7DOVJpazNC71
+ t1wYBtC0LpFZaeKwv3YibjS35IbuGvXsBP0t+uej2ePufGXG2HwvnqDzkQ1hp6mzRkZz6ARFX
+ HjvkFlw+jPMn2s8f0gN0P8pkF2ehqMmNi8KtKBvEVd9oHGWbRE9m06ixD8Icn3CgKD66xOmJQ
+ B+rGVlOP34xEPQdIXJmvZ/tHc5HkWGRy+/eXPLdMLXSW4cpH7SscmwLTQmnjPyUiMkCQpcZlP
+ EVXez+LuBWnVGFSTXaiEEQDEKs5VH2A5WVuyAO81WzVlxDlZzOLdzJ1GXJECNBF3BsUNjadhI
+ hNx+KAQyxooBMOIND+KRpfoKDG6N5nyUesZTiIDUEEM9u2HluV61iBJ8X7EtchIlGnx+wwTik
+ koLcau4y5fWOwbMB5PJOnNGyn+QQnbxg39SeiWsAqjWJ7eahmNfXfF2p5turPV8uj6QHWeKzV
+ 63GLki+RW3RdcYpGPd8jczGJBp/c0+IIalayUY1kvHPHHB3RXhSxfRCf/WTndwtB3M0nvjA2C
+ QJLHTxQJ23qIfotyTwWs0lZNz9Xg2ZYdE/bP2deOtbdizHSlCqnGRm+caUTxgQqbQnwuLErQH
+ uSgZ5uZ8/Jr7EqNr6cUFP695wBj+zLrOd2PBLuShxyKS/apgtslP/Kmsk/GB4DIKUtC5l4C+t
+ ulbXkFbsTwJ0wPRZCzPh5wdlkCU=
+Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,85 +85,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity points out that in page_table_walk_refill() we can shift by
-a negative number, which is undefined behaviour (CID 1452918,
-1452920, 1452922).  We already catch the negative directory_shift and
-leaf_shift as being a "bail out early" case, but not until we've
-already used them to calculated some offset values.
+Commit 86f04735ac ("linux-user: Fix brk() to release pages") introduced th=
+e
+possibility for userspace applications to reduce memory footprint by calli=
+ng
+brk() with a lower address and free up memory.
+This change introduced some failures for applications with errors like
+- accesing bytes above the brk heap address on the same page,
+- freeing memory below the initial brk address,
+and introduced a behaviour which isn't done by the kernel (e.g. zeroing
+memory above brk).
 
-Move the calculation of the offset values to after we've done the
-"return early if ptew > 1" check.
+This patch set fixes those issues and have been tested with existing
+programs (e.g. upx).
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-[PMD: Check for ptew > 1, use unsigned type]
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/mips/tcg/sysemu/tlb_helper.c | 32 +++++++++++++++--------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+Additionally it includes one patch to allow running static armhf executabl=
+es
+(e.g. fstype) which was broken since qemu-8.0.
 
-diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
-index e7be649b02..7dbc2e24c4 100644
---- a/target/mips/tcg/sysemu/tlb_helper.c
-+++ b/target/mips/tcg/sysemu/tlb_helper.c
-@@ -624,7 +624,7 @@ static uint64_t get_tlb_entry_layout(CPUMIPSState *env, uint64_t entry,
- static int walk_directory(CPUMIPSState *env, uint64_t *vaddr,
-         int directory_index, bool *huge_page, bool *hgpg_directory_hit,
-         uint64_t *pw_entrylo0, uint64_t *pw_entrylo1,
--        int directory_shift, int leaf_shift)
-+        unsigned directory_shift, unsigned leaf_shift)
- {
-     int dph = (env->CP0_PWCtl >> CP0PC_DPH) & 0x1;
-     int psn = (env->CP0_PWCtl >> CP0PC_PSN) & 0x3F;
-@@ -730,21 +730,11 @@ static bool page_table_walk_refill(CPUMIPSState *env, vaddr address,
- 
-     /* Other HTW configs */
-     int hugepg = (env->CP0_PWCtl >> CP0PC_HUGEPG) & 0x1;
--
--    /* HTW Shift values (depend on entry size) */
--    int directory_shift = (ptew > 1) ? -1 :
--            (hugepg && (ptew == 1)) ? native_shift + 1 : native_shift;
--    int leaf_shift = (ptew > 1) ? -1 :
--            (ptew == 1) ? native_shift + 1 : native_shift;
-+    unsigned directory_shift, leaf_shift;
- 
-     /* Offsets into tables */
--    int goffset = gindex << directory_shift;
--    int uoffset = uindex << directory_shift;
--    int moffset = mindex << directory_shift;
--    int ptoffset0 = (ptindex >> 1) << (leaf_shift + 1);
--    int ptoffset1 = ptoffset0 | (1 << (leaf_shift));
--
--    uint32_t leafentry_size = 1 << (leaf_shift + 3);
-+    unsigned goffset, uoffset, moffset, ptoffset0, ptoffset1;
-+    uint32_t leafentry_size;
- 
-     /* Starting address - Page Table Base */
-     uint64_t vaddr = env->CP0_PWBase;
-@@ -766,10 +756,22 @@ static bool page_table_walk_refill(CPUMIPSState *env, vaddr address,
-         /* no structure to walk */
-         return false;
-     }
--    if ((directory_shift == -1) || (leaf_shift == -1)) {
-+    if (ptew > 1) {
-         return false;
-     }
- 
-+    /* HTW Shift values (depend on entry size) */
-+    directory_shift = (hugepg && (ptew == 1)) ? native_shift + 1 : native_shift;
-+    leaf_shift = (ptew == 1) ? native_shift + 1 : native_shift;
-+
-+    goffset = gindex << directory_shift;
-+    uoffset = uindex << directory_shift;
-+    moffset = mindex << directory_shift;
-+    ptoffset0 = (ptindex >> 1) << (leaf_shift + 1);
-+    ptoffset1 = ptoffset0 | (1 << (leaf_shift));
-+
-+    leafentry_size = 1 << (leaf_shift + 3);
-+
-     /* Global Directory */
-     if (gdw > 0) {
-         vaddr |= goffset;
--- 
-2.38.1
+Helge
+
+Helge Deller (6):
+  Revert "linux-user: Make sure initial brk(0) is page-aligned"
+  linux-user: Fix qemu brk() to not zero bytes on current page
+  linux-user: Prohibit brk() to to shrink below initial heap address
+  linux-user: Fix signed math overflow in brk() syscall
+  linux-user: Fix strace output for old_mmap
+  linux-user: Fix qemu-arm to run static armhf binaries
+
+ linux-user/elfload.c |  7 +++++++
+ linux-user/strace.c  | 49 ++++++++++++++++++++++++++++++++++++++++----
+ linux-user/syscall.c | 25 +++++++++++++---------
+ 3 files changed, 67 insertions(+), 14 deletions(-)
+
+=2D-
+2.41.0
 
 
