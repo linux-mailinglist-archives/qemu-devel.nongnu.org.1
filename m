@@ -2,73 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9267F756D16
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C845756D17
 	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 21:23:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLTms-0001L0-GD; Mon, 17 Jul 2023 15:21:38 -0400
+	id 1qLTni-0001ll-Fg; Mon, 17 Jul 2023 15:22:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mborgerson@gmail.com>)
- id 1qLTmo-0001KY-Mr
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:21:34 -0400
-Received: from mail-lf1-f44.google.com ([209.85.167.44])
+ id 1qLTng-0001W3-4H
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:22:28 -0400
+Received: from mail-lf1-f42.google.com ([209.85.167.42])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <mborgerson@gmail.com>)
- id 1qLTmn-0008Qa-8d
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:21:34 -0400
-Received: by mail-lf1-f44.google.com with SMTP id
- 2adb3069b0e04-4fba8f2197bso7947535e87.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 12:21:32 -0700 (PDT)
+ id 1qLTnd-000090-NB
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 15:22:27 -0400
+Received: by mail-lf1-f42.google.com with SMTP id
+ 2adb3069b0e04-4fb7373dd35so7544018e87.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 12:22:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689621691; x=1692213691;
+ d=1e100.net; s=20221208; t=1689621743; x=1692213743;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1fqurkKmxmhiR0Kl+zTP5dgSmgnSLzRlQ9mPsV/c11g=;
- b=lz7RgSYARJI8H+uebHcTMGIoWaOXUyF/KG/p2/jnYurxU5HtV5dOB+hrNrDQTsH04p
- cxWV3fOVuzvLizkEeayEblPEsgZ7oQQDOmTVufZQfkxQIz9SIw+kuVqjJQfYPYlnSzwg
- RrOkh64Z3aVj1+/adiER14POQqPrOJBD97v3Kx6wHfa3YOwi0JiBfOGmhbFxwiBgc0bP
- vPNpemC/4T9d8RiiUY6PbPwaEDqPHLZrLjLVVkOL4AnJJeMM1wP0qWNmGnX0ioMopRgR
- wnmdKUI24v5ztohD8+cUpn7xhgbyZNE5lXiTwjpZpzCdVSUFEdRxqSJTwQPQHLXSVInM
- fEvQ==
-X-Gm-Message-State: ABy/qLZEQ0sjkrxLJO9U+soZaV6JBV3TCwCjZPbcqIkW+wka+0lix9s4
- IwBAJ54M6X0Bm4eE+VrO8syr/2o207PAgqsD
-X-Google-Smtp-Source: APBJJlGcepawa3kmUl2scUSD3VGlKw5droNrkpWnJYlRjaGvGfIYU01WiAgnxGQ/VkjGK2E3BmYr7A==
-X-Received: by 2002:a05:6512:ad1:b0:4fd:b7fb:c9e9 with SMTP id
- n17-20020a0565120ad100b004fdb7fbc9e9mr3274487lfu.41.1689621690443; 
- Mon, 17 Jul 2023 12:21:30 -0700 (PDT)
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com.
- [209.85.167.46]) by smtp.gmail.com with ESMTPSA id
- ep3-20020a056512484300b004fb895662d8sm53608lfb.84.2023.07.17.12.21.30
+ bh=0ouxF9qXoWCUDMaFMA3v/SPSOWglngf66rNGtGadaCg=;
+ b=I3xlX6ffBVVUHFz03/7GG83KzLbiN1tmoEXEDLgdzNmPcrIVfvsvFC519QTDLMDf6+
+ S/N88SQArloTm6zzni1nz8zAX7DypZ+oI5EvZ161d3lfKYdA2h9juz6/uXk4qvb9SHzv
+ 8Rdd60pytMcCmEX5XYHIfjD2bAp4u0cP0i0DacVsCj7yvo7aBU2+NOdrZ4Ls/ytliPA3
+ FekLeUUIlFPCHZDwAJVqJag1DUIywFXVxQ3dJSiPPHjRbHbD+AGbPoZlxqtz0jV0XCGC
+ yArD8p2nMww4RvnG8k/WfYooMZd/jFkhlNc35Q4DSrOS3FWo3DCcrxELuZveTfx2wwUW
+ bxNg==
+X-Gm-Message-State: ABy/qLb/oQYbd1IQNqR97KjLOPitnU975126go+G0EKwt3L7lhkf1oiP
+ lrIJNj38RJ/0yopHhyXPzCxwDYStb6jn4FkA
+X-Google-Smtp-Source: APBJJlHABOlgOuiZ84cKvgjlWQ7AULT+WfWnTaIhOVmCi0GoLs8h1eUYyMHtcpXm165v2/vqxmJr2w==
+X-Received: by 2002:a05:6512:3d86:b0:4fb:a5b9:98ef with SMTP id
+ k6-20020a0565123d8600b004fba5b998efmr4504251lfv.26.1689621743654; 
+ Mon, 17 Jul 2023 12:22:23 -0700 (PDT)
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com.
+ [209.85.208.177]) by smtp.gmail.com with ESMTPSA id
+ f25-20020a19ae19000000b004fa039eb84csm49738lfc.198.2023.07.17.12.22.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jul 2023 12:21:30 -0700 (PDT)
-Received: by mail-lf1-f46.google.com with SMTP id
- 2adb3069b0e04-4fba8f2197bso7947499e87.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 12:21:30 -0700 (PDT)
-X-Received: by 2002:a05:651c:120c:b0:2b6:a6e7:5afa with SMTP id
- i12-20020a05651c120c00b002b6a6e75afamr8677613lja.12.1689621690037; Mon, 17
- Jul 2023 12:21:30 -0700 (PDT)
+ Mon, 17 Jul 2023 12:22:23 -0700 (PDT)
+Received: by mail-lj1-f177.google.com with SMTP id
+ 38308e7fff4ca-2b7441bfa9eso60965211fa.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 12:22:23 -0700 (PDT)
+X-Received: by 2002:a2e:88c1:0:b0:2b4:677e:1433 with SMTP id
+ a1-20020a2e88c1000000b002b4677e1433mr3664969ljk.5.1689621743329; Mon, 17 Jul
+ 2023 12:22:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <CADc=-s5RwGViNTR-h5cq3np673W3RRFfhr4vCGJp0EoDUxvhog@mail.gmail.com>
- <874jm2ya3g.fsf@linaro.org> <87sf9mwnzo.fsf@linaro.org>
-In-Reply-To: <87sf9mwnzo.fsf@linaro.org>
+References: <CADc=-s5F10muEhLs4f3mxqsEPAHWj0XFfOC2sfFMVHrk9fcpMg@mail.gmail.com>
+ <20230714142812.244646-1-pbonzini@redhat.com>
+In-Reply-To: <20230714142812.244646-1-pbonzini@redhat.com>
 From: Matt Borgerson <contact@mborgerson.com>
-Date: Mon, 17 Jul 2023 12:21:18 -0700
-X-Gmail-Original-Message-ID: <CADc=-s46VkRZiU--59VdeTcACoir1srxV=eTxPwwwut_tSJESQ@mail.gmail.com>
-Message-ID: <CADc=-s46VkRZiU--59VdeTcACoir1srxV=eTxPwwwut_tSJESQ@mail.gmail.com>
-Subject: Re: [PATCH v2] plugins: Set final instruction count in
- plugin_gen_tb_end
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: Matt Borgerson <contact@mborgerson.com>, qemu-devel@nongnu.org, 
- Richard Henderson <richard.henderson@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Date: Mon, 17 Jul 2023 12:22:12 -0700
+X-Gmail-Original-Message-ID: <CADc=-s5u40OX0DGoxM62-EWyRqgwuxJb6Uojr71ZTfh3RtTyBg@mail.gmail.com>
+Message-ID: <CADc=-s5u40OX0DGoxM62-EWyRqgwuxJb6Uojr71ZTfh3RtTyBg@mail.gmail.com>
+Subject: Re: [PATCH] target/i386: Check CR0.TS before enter_mmx
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Matt Borgerson <contact@mborgerson.com>, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=209.85.167.44; envelope-from=mborgerson@gmail.com;
- helo=mail-lf1-f44.google.com
+Received-SPF: pass client-ip=209.85.167.42; envelope-from=mborgerson@gmail.com;
+ helo=mail-lf1-f42.google.com
 X-Spam_score_int: -13
 X-Spam_score: -1.4
 X-Spam_bar: -
@@ -91,40 +88,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thanks Alex!
+Thanks Paolo!
 
-
-On Mon, Jul 17, 2023 at 8:34=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@linar=
-o.org> wrote:
+On Fri, Jul 14, 2023 at 7:28=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
 >
+> Queued, thanks.
 >
-> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+> Paolo
 >
-> > Matt Borgerson <contact@mborgerson.com> writes:
-> >
-> >> Translation logic may partially decode an instruction, then abort and
-> >> remove the instruction from the TB. This can happen for example when a=
-n
-> >> instruction spans two pages. In this case, plugins may get an incorrec=
-t
-> >> result when calling qemu_plugin_tb_n_insns to query for the number of
-> >> instructions in the TB. This patch updates plugin_gen_tb_end to set th=
-e
-> >> final instruction count.
-> >
-> > For some reason this fails to apply cleanly:
-> >
-> >   git am ./v2_20230714_contact_plugins_set_final_instruction_count_in_p=
-lugin_gen_tb_end.mbx
-> >   Applying: plugins: Set final instruction count in plugin_gen_tb_end
-> >   error: corrupt patch at line 31
-> >   Patch failed at 0001 plugins: Set final instruction count in
-> >   plugin_gen_tb_end
->
-> I think some newlines crept in, I was able to fix. Queued to
-> for-8.1/misc-fixes with the assert added.
->
-> --
-> Alex Benn=C3=A9e
-> Virtualisation Tech Lead @ Linaro
 
