@@ -2,83 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6EA756F96
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 00:04:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B78DB756FE2
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 00:35:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLWJ3-0007az-Hn; Mon, 17 Jul 2023 18:03:01 -0400
+	id 1qLWn8-0003yT-Tg; Mon, 17 Jul 2023 18:34:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLWJ1-0007aq-Pw
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 18:02:59 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLWIz-0006V0-Ol
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 18:02:59 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-3fba8e2aa52so52815295e9.1
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 15:02:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689631376; x=1692223376;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3kfZFhr5N5BNs/S/Ku32UVLK9QrfSNsM8fYDTtgogmE=;
- b=a+gDeQ92Wzoh/gEUuimzNkxhh78U1aK0uVh80a60K3jab0Gyo1Zq+Ry8C5nig43o5F
- waSoefQmgrX7AiNgnxXhJs7uqcqY9o2I2NTkwzyU4D+5fOXdHe7UDV5B+NM9CURgTbVE
- v6I/8uOUlsQyUuFdUaOuRKAcx6zuBHl6ncA+kpIBMTk4oycFIVk6sBb3J4qg2DTH2CzO
- lCmZKmhBRMrJ5QAB8Poz0HUNQ/RfatrzXp+oJiU8yFEc09qv9/0tQSX2BrTtCpVPJ1t/
- yeYugYLjRXe4rW4Zw2rhlvkzZbIOKsXfOIoSh7J52wJUi+smkT9IWX7F6eKyW5R2slWN
- REjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689631376; x=1692223376;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3kfZFhr5N5BNs/S/Ku32UVLK9QrfSNsM8fYDTtgogmE=;
- b=YsGZD4YmBgYXBUjkWPtGTJvdca8Bfo2kOW5RnyhxubbTHQXhaYLMixtXLCl1zEzZn/
- 6LZCO1k+G/5HXJYltTlpzQk2huFVqpRh2RBzXLMwOe+Vvv2/mpksy7Qad8stENEF1n+P
- WztKUN6Sx/keR7NmijeTqenydv86/6oIpXhXbLUfpvj8jrS7/qIaaN5ya1tqj1B3V6oF
- Evrl6MZpHctmZEPLasok4KB3MW75ufimn5RFCGp59UArhxCXdLU2hLKK2n/nvJvKJrd1
- 8Rxujvpz3V/Tc5pUqkI/jLsafracTyU9UkIlUd27uXTxm1BXwX4aIEfKj+TB/BWidfH3
- hclQ==
-X-Gm-Message-State: ABy/qLb4+MRbeLWadd4KpqL+kZ6KHijhBVN0yEyexuR+Dk/K1I4K+Vol
- 357nBghw21GOtFfH4YAdpGUOQwEdKaIArb9BVP4=
-X-Google-Smtp-Source: APBJJlE+RfBZKhGN6K34JHsT95zaZwnQjQ2kuLUPRRbm7UrXpee6ioDStIiB/EZ+qsFcc3juWfuDZA==
-X-Received: by 2002:a05:600c:2a53:b0:3fb:b3f8:506b with SMTP id
- x19-20020a05600c2a5300b003fbb3f8506bmr450751wme.24.1689631375691; 
- Mon, 17 Jul 2023 15:02:55 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.144.39])
- by smtp.gmail.com with ESMTPSA id
- l23-20020a1c7917000000b003fbcdba1a63sm690571wme.12.2023.07.17.15.02.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jul 2023 15:02:55 -0700 (PDT)
-Message-ID: <238b4fcf-b7ff-f89f-187e-7c52dd6b782f@linaro.org>
-Date: Tue, 18 Jul 2023 00:02:52 +0200
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qLWn2-0003yH-Ka; Mon, 17 Jul 2023 18:34:00 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qLWn0-0007hd-Ni; Mon, 17 Jul 2023 18:34:00 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 6AE74612A4;
+ Mon, 17 Jul 2023 22:33:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EB2C433C8;
+ Mon, 17 Jul 2023 22:33:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1689633235;
+ bh=Bs8ypfqh+Ld6RbQLLzlxbA2cVmysdZzX9nCkNkOqOQM=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=SVZMpjIjXp4FwiQjPECzFPuH+Zb2rpF0kpir0j5umgUTSveyYzSY4S7IczcTiZ/wD
+ elyeHntg2BevTt7HNn3OvN0QeCTP8e/8YYv+aI/ledDq5H3YH3G9VmfEwrNfcuvcHo
+ mSC3E45DCnSWJPjJGY/kyCShNqhgLYw9uek/nIQ2YALYZmDwCKL62CVfAoaQSFwBtr
+ mFQCqb5wJ4FORjGLkJD+FQQkU3okHuvUiZbcBP5l+67x5/vrv1BGJ0prlK0Rt/dPxY
+ pYz7Kc+DyQDZdNWg7i3EADt36SC2fb5V7WvZhO4+9+Ovm1mUuczsezjYiD6QydWIAi
+ jRr1WTap52tQA==
+Date: Mon, 17 Jul 2023 23:33:51 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn,
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+Subject: Re: [PATCH for-8.2 0/2] target/riscv: add zicntr and zihpm flags
+Message-ID: <20230717-snugly-pencil-98d62b254a74@spud>
+References: <20230717215419.124258-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH 4/6] linux-user: Fix signed math overflow in brk() syscall
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, Peter Maydell <peter.maydell@linaro.org>
-Cc: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-References: <20230717213545.142598-1-deller@gmx.de>
- <20230717213545.142598-5-deller@gmx.de>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230717213545.142598-5-deller@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="UMOmHF7cXUXLDFq7"
+Content-Disposition: inline
+In-Reply-To: <20230717215419.124258-1-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=conor@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,98 +72,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/7/23 23:35, Helge Deller wrote:
-> Fix the math overflow when calculating the new_malloc_size.
-> 
-> new_host_brk_page and brk_page are unsigned integers. If userspace
-> reduces the heap, new_host_brk_page is lower than brk_page which results
-> in a huge positive number (but should actually be negative).
-> 
-> Fix it by adding a proper check and as such make the code more readable.
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Tested-by: Markus F.X.J. Oberhumer <notifications@github.com>
 
-Tested-by: Markus F.X.J. Oberhumer <markus@oberhumer.com>
+--UMOmHF7cXUXLDFq7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
+Hey,
 
-Hmm isn't it:
+On Mon, Jul 17, 2023 at 06:54:17PM -0300, Daniel Henrique Barboza wrote:
+> Hi,
+>=20
+> I decided to include flags for both timer/counter extensions to make it
+> easier for us later on when dealing with the RVA22 profile (which
+> includes both).=20
+>=20
+> The features were already implemented by Atish Patra some time ago, but
+> back then these 2 extensions weren't introduced yet. This means that,
+> aside from extra stuff in riscv,isa FDT no other functional changes were
+> made.
+>=20
+> Both are defaulted to 'true' since QEMU already implements both
+> features, but the flag can be disabled if Zicsr isn't present or, in
+> the case of zihpm, if pmu_num =3D 0.
 
-Fixes: ef4330c23b ("linux-user: Handle brk() attempts with very large 
-sizes")
+Out of curiosity, since you are allowing them to be disabled, how do you
+intend to communicate to a guest that zicsr or zihpm are not present?
 
-?
+> This means that,
+> aside from extra stuff in riscv,isa FDT no other functional changes were
+> made.
 
-> Buglink: https://github.com/upx/upx/issues/683
+This is barely a "functional" change either, as the presence of these
+extensions has to be assumed, whether they appear in riscv,isa or not :/
 
-Also:
+--UMOmHF7cXUXLDFq7
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Cc: qemu-stable@nongnu.org
+-----BEGIN PGP SIGNATURE-----
 
-> ---
->   linux-user/syscall.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-> index 92d146f8fb..aa906bedcc 100644
-> --- a/linux-user/syscall.c
-> +++ b/linux-user/syscall.c
-> @@ -860,12 +860,13 @@ abi_long do_brk(abi_ulong brk_val)
->        * itself); instead we treat "mapped but at wrong address" as
->        * a failure and unmap again.
->        */
-> -    new_alloc_size = new_host_brk_page - brk_page;
-> -    if (new_alloc_size) {
-> +    if (new_host_brk_page > brk_page) {
-> +        new_alloc_size = new_host_brk_page - brk_page;
->           mapped_addr = get_errno(target_mmap(brk_page, new_alloc_size,
->                                           PROT_READ|PROT_WRITE,
->                                           MAP_ANON|MAP_PRIVATE, 0, 0));
->       } else {
-> +        new_alloc_size = 0;
->           mapped_addr = brk_page;
->       }
-> 
-> --
-> 2.41.0
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZLXBzwAKCRB4tDGHoIJi
+0pqQAP0SkoD8JVHbvb71ofqd7bQSgt7E6C4Jh1ipZDzQIpgZMwEAiTEmlbUnlAc5
+Adu2ZK8sgvN/m3eqWaKa7SAEw0x40A4=
+=SQ8w
+-----END PGP SIGNATURE-----
 
-Alternatively:
-
--- >8 --
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 1464151826..aafb13f3b4 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -814,7 +814,7 @@ void target_set_brk(abi_ulong new_brk)
-  abi_long do_brk(abi_ulong brk_val)
-  {
-      abi_long mapped_addr;
--    abi_ulong new_alloc_size;
-+    abi_long new_alloc_size;
-      abi_ulong new_brk, new_host_brk_page;
-
-      /* brk pointers are always untagged */
-@@ -857,8 +857,8 @@ abi_long do_brk(abi_ulong brk_val)
-       * a failure and unmap again.
-       */
-      new_alloc_size = new_host_brk_page - brk_page;
--    if (new_alloc_size) {
--        mapped_addr = get_errno(target_mmap(brk_page, new_alloc_size,
-+    if (new_alloc_size > 0) {
-+        mapped_addr = get_errno(target_mmap(brk_page, 
-(abi_ulong)new_alloc_size,
-                                          PROT_READ|PROT_WRITE,
-                                          MAP_ANON|MAP_PRIVATE, 0, 0));
-      } else {
----
-
-Anyhow,
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-Thanks!
-
-Phil.
-
+--UMOmHF7cXUXLDFq7--
 
