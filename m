@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90AAE7566EC
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E78297566EB
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 16:57:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLPdl-0002Pw-Ra; Mon, 17 Jul 2023 10:56:01 -0400
+	id 1qLPdz-0002SO-7k; Mon, 17 Jul 2023 10:56:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qLPdh-0002Nb-JX; Mon, 17 Jul 2023 10:55:53 -0400
+ id 1qLPdh-0002Na-JV; Mon, 17 Jul 2023 10:55:53 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qLPde-0003nN-0y; Mon, 17 Jul 2023 10:55:52 -0400
+ id 1qLPde-0003rk-0r; Mon, 17 Jul 2023 10:55:53 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qLPc2-00HTc0-0q;
- Mon, 17 Jul 2023 16:55:39 +0200
+ (envelope-from <den@openvz.org>) id 1qLPc2-00HTc0-2N;
+ Mon, 17 Jul 2023 16:55:40 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: den@openvz.org, Eric Blake <eblake@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH 4/5] qemu-nbd: properly report error if qemu_daemon() is failed
-Date: Mon, 17 Jul 2023 16:55:43 +0200
-Message-Id: <20230717145544.194786-5-den@openvz.org>
+Subject: [PATCH 5/5] qemu-nbd: handle dup2() error when qemu-nbd finished
+ setup process
+Date: Mon, 17 Jul 2023 16:55:44 +0200
+Message-Id: <20230717145544.194786-6-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230717145544.194786-1-den@openvz.org>
 References: <20230717145544.194786-1-den@openvz.org>
@@ -55,42 +56,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-errno has been overwritten by dup2() just below qemu_daemon() and thus
-improperly returned to the caller. Fix accordingly.
+Fail on error, we are in trouble.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 CC: Eric Blake <eblake@redhat.com>
 CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- qemu-nbd.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ qemu-nbd.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/qemu-nbd.c b/qemu-nbd.c
-index 4450cc826b..f27613cb57 100644
+index f27613cb57..cd0e965705 100644
 --- a/qemu-nbd.c
 +++ b/qemu-nbd.c
-@@ -932,9 +932,12 @@ int main(int argc, char **argv)
-             error_report("Failed to fork: %s", strerror(errno));
-             exit(EXIT_FAILURE);
-         } else if (pid == 0) {
-+            int saved_errno;
-+
-             close(stderr_fd[0]);
+@@ -323,7 +323,12 @@ static void *nbd_client_thread(void *arg)
+                 opts->device, srcpath);
+     } else {
+         /* Close stderr so that the qemu-nbd process exits.  */
+-        dup2(STDOUT_FILENO, STDERR_FILENO);
++        int err = dup2(STDOUT_FILENO, STDERR_FILENO);
++        if (err < 0) {
++            error_report("Could not set stderr to /dev/null: %s",
++                         strerror(errno));
++            exit(EXIT_FAILURE);
++        }
+     }
  
-             ret = qemu_daemon(1, 0);
-+            saved_errno = errno;    /* dup2 will overwrite error below */
+     if (nbd_client(fd) < 0) {
+@@ -1171,7 +1176,12 @@ int main(int argc, char **argv)
+     }
  
-             /* Temporarily redirect stderr to the parent's pipe...  */
-             if (dup2(stderr_fd[1], STDERR_FILENO) < 0) {
-@@ -952,7 +955,7 @@ int main(int argc, char **argv)
-             }
+     if (fork_process) {
+-        dup2(STDOUT_FILENO, STDERR_FILENO);
++        ret = dup2(STDOUT_FILENO, STDERR_FILENO);
++        if (ret < 0) {
++            error_report("Could not set stderr to /dev/null: %s",
++                         strerror(errno));
++            exit(EXIT_FAILURE);
++        }
+     }
  
-             if (ret < 0) {
--                error_report("Failed to daemonize: %s", strerror(errno));
-+                error_report("Failed to daemonize: %s", strerror(saved_errno));
-                 exit(EXIT_FAILURE);
-             }
- 
+     state = RUNNING;
 -- 
 2.34.1
 
