@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0D9756819
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 17:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FE6756837
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 17:43:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLQFM-00009K-89; Mon, 17 Jul 2023 11:34:48 -0400
+	id 1qLQMG-0002sb-8g; Mon, 17 Jul 2023 11:41:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qLQFE-000090-Qf
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:34:41 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qLQME-0002pX-Ja
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:41:54 -0400
+Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qLQFD-0006Cl-70
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:34:40 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-3fbc5d5742eso48903115e9.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 08:34:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qLQMC-0008EU-VG
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:41:54 -0400
+Received: by mail-oi1-x22c.google.com with SMTP id
+ 5614622812f47-3a43cbb432aso2604233b6e.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 08:41:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689608077; x=1692200077;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GscuW2O/rqCjfj+OBE3YjdekwMxTZYC8z/BNio7awpc=;
- b=ejpFZ1fzoYu9J9boXNHzVvVuPHhaPfAs8uocq0cb67insP0EftBb1p86cfmTcmt9Hy
- CK3Ftw/ZWPouf2IBVUpE7FA/Iqq4HJ2WG2ReAK+X7O56f/3GZ/VcJDqZH2QzChMViznh
- ko7xKi4focKHjc3hRugeGSP4gEC9le18UuVjEVoIxb5JRmfMnO7SjIQrQHyLuZGlxqlB
- 9YgNZOa2cb+Lvb7UOsFsF0a6l3xLes+ViedwY1oIkXqoZosiijvsWy+mtTdLrdVeVuUv
- DVsz1DFbaBMtk1d9M9uKwl6pmo8UMmidj+Wrl1hLK5vS6oQ7Zu7lmQPbVFKMGpQTooZu
- BZ7Q==
+ d=ventanamicro.com; s=google; t=1689608511; x=1692200511;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Am7ITXKQFOljx/D2CumawP5jQcrbC9JOhJwqTweZbs0=;
+ b=mbxYukwALILqAXBz2kaHG52McAF9qFc4Tze2F805D9lwYtZU2XDtcDwG4rYk2mVVB+
+ 7IBPjfMbKyTyy2DJX0Y+58EiuTz5ciAJRzELHL/6wHkRD2JqYQl4wYRkduozBoueLIHk
+ H1IyrDtZaALaFFkhc1lZO+9XslaGTrMN5b+tojaTfw70L956tlu32R6iS+F9vL+b0vrn
+ /SgPC1exmZulFoXcFgC7XwvlXzJZVqBjxobuPRyqlPPHgVtr1xISol/64LeNXAKv789Q
+ aZmiQmG+cFnvPKq3FmxaHrVLI+lmArM7QRe2wfQmJjQZ6AnMUudmrvfiAoGJNudyjTUM
+ /X1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689608077; x=1692200077;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=GscuW2O/rqCjfj+OBE3YjdekwMxTZYC8z/BNio7awpc=;
- b=SqPF4dYdle5URg0EJzO0urv4obyPJRGJVC46Obv43XW6zUWaB+gpZRyx/OuXAzbAes
- 1qPRPfzzDOSZO13s3UDkiICOnxpkjs2dV4FMZGXkqdiRwNODt3+lSyQBQqNfipw3ktH8
- +4w5KW91pHtOdCoEaD+19pZ/4hFfxLsgn5pkULcwFyCic7/xhRAVs448X4yokji9hL0X
- m8JsYd+Afuq81n2FGIj3SLSh7Y0CqNJJAW4z0xaklMZesHPPPVKum+hqvPDC04kSQ9Sr
- Joc4Sr4Y7qWX3JWfeUNyfSkaXlG+VSGWH23GlRE5jp8eFQwbaLQvYrSIoGBIRMMiRHZz
- +Bvw==
-X-Gm-Message-State: ABy/qLZ827urzQfYiruDSczNRsI08mb8eCoUVJKeTcF3OzBMcayaw1BY
- Zl5BRtgfEKO5A7RO/XT2DW0Ueg==
-X-Google-Smtp-Source: APBJJlE1cXbhxSd5z9VIqSkDOI8JZUKeNctXC5foHZE8k3ZY4D6BUwD09MN/k2O3PWLZP2PoGem1RQ==
-X-Received: by 2002:a7b:cd97:0:b0:3fc:92:73d6 with SMTP id
- y23-20020a7bcd97000000b003fc009273d6mr11194797wmj.11.1689608076798; 
- Mon, 17 Jul 2023 08:34:36 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20221208; t=1689608511; x=1692200511;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Am7ITXKQFOljx/D2CumawP5jQcrbC9JOhJwqTweZbs0=;
+ b=LNu/r87Eyr58qmP+aFz+Sr113p5K+KmZMQmPidKH08kEd1YbT9lfEeW+EzBzh67p8b
+ 5KIA3IwEuvV7apfNV/ra3SkCQtMg02cpxS58ws5RjLvuzWOzKX++aveJeJFicIVm068r
+ qnDAYqqElKWZl6FbkYM/x/Cn3/g8erlsumaqpQ1BnoNIDHHoDVnUjuQxiKglT+Ka5TOV
+ /ULd/85pvXAwpWvCYOmdf/6UYrkHhOtrmIB4gRCAWeSd3T5gI70hD8vrS7FfWLNACpf6
+ bhmIBYToFWRuL251pP7Og39fNOUDzvj/rDePeehWbzamQpiy9jbPbAhjWB50IiFMfPCS
+ 4lAg==
+X-Gm-Message-State: ABy/qLZD5hmlgkdaRcKLLqsYtAAWwYCV3ZsO1ZIRnAxiRob/zrZc0tKf
+ nwI4y+BUeCmoU8daoRBONCokzUxrjoWQ/FxQZ5+3zA==
+X-Google-Smtp-Source: APBJJlGvyak+uCnoVgXDa/t1NGEoGgs24p6AQknuTQvoFbz3wwYf34FzUzrkHx0LTq4f99wqu8yMtA==
+X-Received: by 2002:a05:6808:1914:b0:3a3:e0ad:e332 with SMTP id
+ bf20-20020a056808191400b003a3e0ade332mr15604435oib.38.1689608510724; 
+ Mon, 17 Jul 2023 08:41:50 -0700 (PDT)
+Received: from grind.. (201-69-66-211.dial-up.telesp.net.br. [201.69.66.211])
  by smtp.gmail.com with ESMTPSA id
- p1-20020a05600c204100b003fbdd9c72aasm62957wmg.21.2023.07.17.08.34.36
+ eh1-20020a056808274100b003a1d29f0549sm6934093oib.15.2023.07.17.08.41.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 08:34:36 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 87F321FFBB;
- Mon, 17 Jul 2023 16:34:35 +0100 (BST)
-References: <CADc=-s5RwGViNTR-h5cq3np673W3RRFfhr4vCGJp0EoDUxvhog@mail.gmail.com>
- <874jm2ya3g.fsf@linaro.org>
-User-agent: mu4e 1.11.9; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Matt Borgerson <contact@mborgerson.com>, qemu-devel@nongnu.org, Richard
- Henderson <richard.henderson@linaro.org>, Philippe =?utf-8?Q?Mathieu-Daud?=
- =?utf-8?Q?=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2] plugins: Set final instruction count in
- plugin_gen_tb_end
-Date: Mon, 17 Jul 2023 16:34:02 +0100
-In-reply-to: <874jm2ya3g.fsf@linaro.org>
-Message-ID: <87sf9mwnzo.fsf@linaro.org>
+ Mon, 17 Jul 2023 08:41:50 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Conor Dooley <conor@kernel.org>
+Subject: [PATCH] target/riscv/cpu.c: check priv_ver before auto-enable
+ zca/zcd/zcf
+Date: Mon, 17 Jul 2023 12:41:41 -0300
+Message-ID: <20230717154141.60898-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32f.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x22c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,31 +92,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Commit bd30559568 made changes in how we're checking and disabling
+extensions based on env->priv_ver. One of the changes was to move the
+extension disablement code to the end of realize(), being able to
+disable extensions after we've auto-enabled some of them.
 
-Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
+An unfortunate side effect of this change started to happen with CPUs
+that has an older priv version, like sifive-u54. Starting on commit
+2288a5ce43e5 we're auto-enabling zca, zcd and zcf if RVC is enabled,
+but these extensions are priv version 1.12.0. When running a cpu that
+has an older priv ver (like sifive-u54) the user is spammed with
+warnings like these:
 
-> Matt Borgerson <contact@mborgerson.com> writes:
->
->> Translation logic may partially decode an instruction, then abort and
->> remove the instruction from the TB. This can happen for example when an
->> instruction spans two pages. In this case, plugins may get an incorrect
->> result when calling qemu_plugin_tb_n_insns to query for the number of
->> instructions in the TB. This patch updates plugin_gen_tb_end to set the
->> final instruction count.
->
-> For some reason this fails to apply cleanly:
->
->   git am ./v2_20230714_contact_plugins_set_final_instruction_count_in_plu=
-gin_gen_tb_end.mbx
->   Applying: plugins: Set final instruction count in plugin_gen_tb_end
->   error: corrupt patch at line 31=20=20=20=20=20=20=20=20=20=20=20
->   Patch failed at 0001 plugins: Set final instruction count in
->   plugin_gen_tb_end
+qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000000 because privilege spec version does not match
+qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000000 because privilege spec version does not match
 
-I think some newlines crept in, I was able to fix. Queued to
-for-8.1/misc-fixes with the assert added.
+The warnings are part of the code that disables the extension, but in this
+case we're throwing user warnings for stuff that we enabled on our own,
+without user intervention. Users are left wondering what they did wrong.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+A quick 8.1 fix for this nuisance is to check the CPU priv spec before
+auto-enabling zca/zcd/zcf. A more appropriate fix will include a more
+robust framework that will account for both priv_ver and user choice
+when auto-enabling/disabling extensions, but for 8.1 we'll make it do
+with this simple check.
+
+It's also worth noticing that this is the only case where we're
+auto-enabling extensions based on a criteria (in this case RVC) that
+doesn't match the priv spec of the extensions we're enabling. There's no
+need for more 8.1 band-aids.
+
+Cc: Conor Dooley <conor@kernel.org>
+Fixes: 2288a5ce43e5 ("target/riscv: add cfg properties for Zc* extension")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/cpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 9339c0241d..6b93b04453 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1225,7 +1225,8 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+         }
+     }
+ 
+-    if (riscv_has_ext(env, RVC)) {
++    /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
++    if (riscv_has_ext(env, RVC) && env->priv_ver >= PRIV_VERSION_1_12_0) {
+         cpu->cfg.ext_zca = true;
+         if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
+             cpu->cfg.ext_zcf = true;
+-- 
+2.41.0
+
 
