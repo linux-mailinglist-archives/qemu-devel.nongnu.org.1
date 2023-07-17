@@ -2,73 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E238756836
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 17:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F91075685D
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 17:54:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLQN6-0003Hj-58; Mon, 17 Jul 2023 11:42:48 -0400
+	id 1qLQXO-0006hg-Ki; Mon, 17 Jul 2023 11:53:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLQN4-0003H0-Dh
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:42:46 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLQXM-0006hP-IL
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:53:24 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLQN2-0008MK-FR
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:42:46 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-51e48e1f6d1so6263960a12.1
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 08:42:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLQXJ-0002Qe-SK
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:53:24 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3fbc63c2e84so46405845e9.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 08:53:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689608561; x=1692200561;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=hFUDpA9e2N6LXhWjFJkLb/OKnRq1Se2Oj4JUDP8Fzzk=;
- b=SdX1Af/KhVosGVaRru6pUJRw5LWfAcLbliuJSntR403GLozHCs94NI9h6ut8WSdrmx
- MZa9N00h0h1ANSkOW0q1MQ5a0/Qn29H1q81iZ7YJ1nkhrhNn6zfVHthuRfdg3X6xURsb
- 9cSH13stWPnjbPAU7Dx+UPCQMCn9FlB2h/IsNNShbdCSGheOh2ZKcW6wtD/oxYvr4HZg
- pnRVhaHRdPrNpwF8lO+InVNlet7mPYIl8uuVnV2a+//om/TrLycFtUjUHqL6qsazdNuS
- Eu9rjN61+30acADvtdahsPBHCgtEOhH2jpKFzbaioHXbM7vZOkJ76+engh16xHqEqEyz
- odpQ==
+ d=linaro.org; s=google; t=1689609199; x=1692201199;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WL7MtrxQXeMbdKmKMFYZi+llgqc1OhOhtC1FcVio2QA=;
+ b=ypn1uEoDXQAquJ5pGuhITMulIajFf5zUKNFAq2QPQrlC2AfuV53+xhrTTTn2pRyHyK
+ aeyN74v7wRZq79kkcBsFt+j7Qzmsh+GylQn0IHxvH8N1/Suse09FRjIpcA62ja9O2GMi
+ /2GbXnTMzo/IettSw/wN/LGpwiNzFh97dIMVOmOFjRoYU/U0K4UmJJd9aWkDSOir0LQr
+ OEklcSF9vgwJWlYQpNKcnGlov4onkRJ8s4u09frl3/FlGZNJlZRft/qHHZGgtLlh50UY
+ olcdPQMUI4AKvB7Hv/Y/ePvT/I8MeQFD/jqhnyixllW79fZp6b/yssWDl5wJFJ5v967Q
+ oq7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689608561; x=1692200561;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hFUDpA9e2N6LXhWjFJkLb/OKnRq1Se2Oj4JUDP8Fzzk=;
- b=JBUjt37V7ePzloDSC7CCOyNGof86hmeuO+XcO/+0yYbQq0rRGs8XXgm6TE6dkL5S26
- Au6IYtzR0Uu6DPyVirxOAGUpsg5Npazd7zW9POWkY/szCMCJaFwYEC6FjPQ4HmnnRF7o
- L9P7/XxDlN8q20C59Cz/LfozfPRp9btFF/SwjeEPcPIJej7dhVTjHqMCHFNPT59TXktJ
- S/U1x6+Gp1c4oW0RQtk6gEHn6XAipmsM2YThMXGttR4Tp7/5jsaoKVkJf+8BB2fSGvHu
- gelsMWlfzSDKckUuV0jYJsPhDbecHfHNrxYq9vuU8tskHTQJuTd+1aBOwkeoEr+bSCvZ
- Dpiw==
-X-Gm-Message-State: ABy/qLYaoy2g4cRh6/bzz2eUxmnFy3FcknVBdLyz1GpAnHoz7jHRUEQg
- Wukq+qhQHY5tzIfdJWzW0IoblcAdOIaVuWk7p4ajIafWjSDrkEwB
-X-Google-Smtp-Source: APBJJlHuIDj8tCjDl0D2iJ5+SDDWYxea5uo2icE5AaBe9CMa75HA77/VEpCFAmhdZyqqGbwGh16RmMOdxrYx798k43I=
-X-Received: by 2002:aa7:dacc:0:b0:51e:344f:81ae with SMTP id
- x12-20020aa7dacc000000b0051e344f81aemr11842025eds.14.1689608561499; Mon, 17
- Jul 2023 08:42:41 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689609199; x=1692201199;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WL7MtrxQXeMbdKmKMFYZi+llgqc1OhOhtC1FcVio2QA=;
+ b=HqqR/KvPWcutS8TSXQMglgdsMMb4IeomMpmTxOh/jAH+t5j0tm4JW1oiQ2MaJ8uAFB
+ kOKCyYzEfSO3l1hIWzjp9NoP4UH9JBf1RcTJayf4dNzQvsIfYfkrSZA7ifDEfYBGydec
+ ZUg4OjmNO2Gh3/TqC+f3ctzW5F2mmwBiUNXtW0gpf+DvtGCU0Mj7Yd9z1B/TWzGUvDSW
+ OH5lkEe0Ri7SDhUnFb1la+96/ri2UiOiHMQJZ11nxc9DYGAXDVALWAy4+kV5fvhu0OfQ
+ 8veR2fdF0Ej54A3Kw+8nCR7KAEHeeL9vZYbSn53bQ9xc1bYcT/2tYRq0FT6idRveom1a
+ OwcQ==
+X-Gm-Message-State: ABy/qLYIropaBB8ttsCyct4GtyaURI1xVKVV1qq7cvtCnxVEls+w/XfT
+ 8gA0J2wFp1/8WHd7E5u2G3e/sB8jNv0XMcVYPis=
+X-Google-Smtp-Source: APBJJlFNUwDTfD0v56Q+bNx/+i7x/xF4WyW94x770iIKuDWL71QGFq//PZnrgTp+TWv3QiXMCJnOaw==
+X-Received: by 2002:a5d:6850:0:b0:314:53a4:2d3f with SMTP id
+ o16-20020a5d6850000000b0031453a42d3fmr11362376wrw.63.1689609199542; 
+ Mon, 17 Jul 2023 08:53:19 -0700 (PDT)
+Received: from localhost.localdomain ([176.176.144.39])
+ by smtp.gmail.com with ESMTPSA id
+ o14-20020a5d684e000000b003145559a691sm19532027wrw.41.2023.07.17.08.53.18
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 17 Jul 2023 08:53:19 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Bin Meng <bin.meng@windriver.com>, Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH-for-8.1] hw/sd/sdcard: Allow users to bypass the power-of-2
+ size check
+Date: Mon, 17 Jul 2023 17:53:16 +0200
+Message-Id: <20230717155316.17714-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 17 Jul 2023 16:42:30 +0100
-Message-ID: <CAFEAcA-fos6Agg09mtZJDdcStpCqdnLpyW4=MQnKRkZA_Tt9Zw@mail.gmail.com>
-Subject: avocado test: log shows initial chunk of terminal output is missing
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, John Snow <jsnow@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,133 +90,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm looking at an avocado test that's failing intermittently
-on s390 host:
-machine_aarch64_sbsaref.py:Aarch64SbsarefMachine.test_sbsaref_edk2_firmware
+Since we committed a9bcedd15a ("hw/sd/sdcard: Do not allow invalid
+SD card sizes") to preclude some guests to access beyond the size
+of the card (leading to security issues such CVE-2020-13253), various
+users complained this prevent them to run guests potencially well
+behaving with non-power-of-2 card sizes. In order to allow them to
+experiment with such guests, add a property to disable the pow2
+check.
 
-This test looks for various things on the terminal output,
-and it's failing because it hasn't seen the first thing it looks
-for. The avocado log seems to show that the guest has booted
-past that point and has produced a later chunk of the output,
-and avocado appears to have simply lost the earlier output that
-the test case is trying to match on.
+Resolves: https://bugs.launchpad.net/qemu/+bug/1910586
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/297
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1754
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/sd/sd.c | 31 ++++++++++++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
-Does this "some of the terminal output is missing"
-sound familiar as a bug we already know about ?
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index 77a717d355..feada6607a 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -108,6 +108,7 @@ struct SDState {
+     uint8_t spec_version;
+     BlockBackend *blk;
+     bool spi;
++    bool bypass_pow2_size_check;
+ 
+     /* Runtime changeables */
+ 
+@@ -2126,6 +2127,9 @@ static void sd_instance_finalize(Object *obj)
+     timer_free(sd->ocr_power_timer);
+ }
+ 
++#define PROP_NAME_BYPASS_POW2_SIZE_CHECK \
++    "allow-unsafe-unsupported-not-power-of-2-size"
++
+ static void sd_realize(DeviceState *dev, Error **errp)
+ {
+     SDState *sd = SD_CARD(dev);
+@@ -2151,7 +2155,13 @@ static void sd_realize(DeviceState *dev, Error **errp)
+         }
+ 
+         blk_size = blk_getlength(sd->blk);
+-        if (blk_size > 0 && !is_power_of_2(blk_size)) {
++        if (sd->bypass_pow2_size_check) {
++            warn_report_once("Unsupported property '%s' enabled: some guests"
++                             " might trigger data corruption and/or crash"
++                             " (thus this process is vulnerable to"
++                             " CVE-2020-13253).",
++                             PROP_NAME_BYPASS_POW2_SIZE_CHECK);
++        } else if (blk_size > 0 && !is_power_of_2(blk_size)) {
+             int64_t blk_size_aligned = pow2ceil(blk_size);
+             char *blk_size_str;
+ 
+@@ -2161,11 +2171,15 @@ static void sd_realize(DeviceState *dev, Error **errp)
+ 
+             blk_size_str = size_to_str(blk_size_aligned);
+             error_append_hint(errp,
+-                              "SD card size has to be a power of 2, e.g. %s.\n"
++                              "SD card size should be a power of 2, e.g. %s.\n"
+                               "You can resize disk images with"
+                               " 'qemu-img resize <imagefile> <new-size>'\n"
+                               "(note that this will lose data if you make the"
+-                              " image smaller than it currently is).\n",
++                              " image smaller than it currently is).\n"
++                              "Note: you can disable this check by setting"
++                              " the '" PROP_NAME_BYPASS_POW2_SIZE_CHECK "'"
++                              " global property but this is DANGEROUS"
++                              " and unsupported.\n",
+                               blk_size_str);
+             g_free(blk_size_str);
+ 
+@@ -2190,6 +2204,17 @@ static Property sd_properties[] = {
+      * board to ensure that ssi transfers only occur when the chip select
+      * is asserted.  */
+     DEFINE_PROP_BOOL("spi", SDState, spi, false),
++    /*
++     * Some guests (at least Linux) consider sizes that are not a power
++     * of 2 as a firmware bug and round the card size up to the next
++     * power of 2. For simplicity and security (see CVE-2020-13253) we
++     * only model guest access to the full drive, so we only accept drives
++     * having a power-of-2 size. That said, some guests might behave
++     * correctly with non-power-of-2 cards. Users want to experiment
++     * booting such guests so we provide a way to disable the check.
++     */
++    DEFINE_PROP_BOOL(PROP_NAME_BYPASS_POW2_SIZE_CHECK,
++                     SDState, bypass_pow2_size_check, false),
+     DEFINE_PROP_END_OF_LIST()
+ };
+ 
+-- 
+2.38.1
 
-2023-07-17 15:16:15,461 protocol         L0481 DEBUG| Transitioning
-from 'Runstate.CONNECTING' to 'Runstate.RUNNING'.
-2023-07-17 15:16:19,897 __init__         L0153 DEBUG| 3h
-2023-07-17 15:16:19,929 __init__         L0153 DEBUG|
-2023-07-17 15:16:19,936 __init__         L0153 DEBUG| QEMU SBSA-REF
-Machinearm-virt2.00 GHz1.01024 MB RAM
-2023-07-17 15:16:19,945 __init__         L0153 DEBUG|
-2023-07-17 15:16:19,956 __init__         L0153 DEBUG|
-2023-07-17 15:16:19,971 __init__         L0153 DEBUG| <Standard
-English>            Select Language
-                                    >Device Manager
-                       >Boot Manager
-          >Boot Maintenance Manager
-                                                      Continue
-                                        Reset
-2023-07-17 15:16:19,974 __init__         L0153 DEBUG|
-                                                               ^v=Move
-Highlight                               <Enter>=Select Entry      This
-is the option
-2023-07-17 15:16:19,975 __init__         L0153 DEBUG| one adjusts to change
-2023-07-17 15:16:19,975 __init__         L0153 DEBUG| the language for the
-2023-07-17 15:16:19,975 __init__         L0153 DEBUG| current system
-2023-07-17 15:16:19,976 __init__         L0153 DEBUG|
-2023-07-17 15:16:19,976 __init__         L0153 DEBUG|
-2023-07-17 15:16:19,976 __init__         L0153 DEBUG|
-2023-07-17 15:16:19,977 __init__         L0153 DEBUG|
-2023-07-17 15:16:19,977 __init__         L0153 DEBUG|
-2023-07-17 15:16:19,977 __init__         L0153 DEBUG|
-2023-07-17 15:16:19,978 __init__         L0153 DEBUG|
-2023-07-17 15:16:19,978 __init__         L0153 DEBUG|
-2023-07-17 15:19:11,248 stacktrace       L0039 ERROR|
-2023-07-17 15:19:11,248 stacktrace       L0041 ERROR| Reproduced
-traceback from:
-/home/linux1/qemu/build/all/tests/venv/lib/python3.8/site-packages/avocado/core/test.py:770
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR| Traceback (most
-recent call last):
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/all/tests/avocado/machine_aarch64_sbsaref.py",
-line 95, in test_sbsaref_edk2_firmware
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|
-wait_for_console_pattern(self, "Booting Trusted Firmware")
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/all/tests/avocado/avocado_qemu/__init__.py",
-line 199, in wait_for_console_pattern
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|
-_console_interaction(test, success_message, failure_message, None,
-vm=vm)
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/all/tests/avocado/avocado_qemu/__init__.py",
-line 148, in _console_interaction
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|     msg =
-console.readline().decode().strip()
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|   File
-"/usr/lib/python3.8/socket.py", line 669, in readinto
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|     return
-self._sock.recv_into(b)
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/all/tests/venv/lib/python3.8/site-packages/avocado/plugins/runner.py",
-line 77, in sigterm_handler
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|     raise
-RuntimeError("Test interrupted by SIGTERM")
-2023-07-17 15:19:11,249 stacktrace       L0045 ERROR| RuntimeError:
-Test interrupted by SIGTERM
-
-
-You can tell data has been lost because that '3h' is part
-of the trailing end of an ANSI escape sequence, I think.
-
-Full job.log at
-https://people.linaro.org/~peter.maydell/job.log
-
-The failure is intermittent: when it works the relevant part
-of the job.log looks like this:
-
-2023-07-17 15:37:56,648 protocol         L0481 DEBUG| Transitioning
-from 'Runstate.CONNECTING' to 'Runstate.RUNNING'.
-2023-07-17 15:37:56,650 __init__         L0153 DEBUG| NOTICE:  Booting
-Trusted Firmware
-2023-07-17 15:37:56,650 __init__         L0153 DEBUG| NOTICE:  BL1:
-v2.9(release):v2.9.0-51-gc0d8ee386
-2023-07-17 15:37:56,650 __init__         L0153 DEBUG| NOTICE:  BL1:
-Built : 16:44:16, May 30 2023
-2023-07-17 15:37:56,653 __init__         L0153 DEBUG| NOTICE:  BL1: Booting BL2
-2023-07-17 15:37:56,656 __init__         L0153 DEBUG| NOTICE:  BL2:
-v2.9(release):v2.9.0-51-gc0d8ee386
-2023-07-17 15:37:56,656 __init__         L0153 DEBUG| NOTICE:  BL2:
-Built : 16:44:16, May 30 2023
-2023-07-17 15:37:56,667 __init__         L0153 DEBUG| NOTICE:  BL1: Booting BL31
-2023-07-17 15:37:56,668 __init__         L0153 DEBUG| NOTICE:  BL31:
-v2.9(release):v2.9.0-51-gc0d8ee386
-2023-07-17 15:37:56,668 __init__         L0153 DEBUG| NOTICE:  BL31:
-Built : 16:44:16, May 30 2023
-2023-07-17 15:37:56,671 __init__         L0153 DEBUG| UEFI firmware
-(version 1.0 built at 17:14:57 on Mar 21 2023)
-2023-07-17 15:37:57,593 __init__         L0153 DEBUG|
-ESC[2JESC[04DESC[=3hESC[2JESC[09DESC[2JESC[04DESC[0mESC[30mESC[40m
-2023-07-17 15:37:57,610 __init__         L0153 DEBUG|
-ESC[01;01HESC[0mESC[34mESC[47m
-2023-07-17 15:37:57,616 __init__         L0153 DEBUG|
-ESC[01;01HESC[02;02HQEMU SBSA-REF MachineESC[03;02Harm-virtESC[44C2.00
-GHzESC[04;02H1.0ESC[49C1024 MB RAM
-ESC[05;02HESC[52CESC[06;02HESC[52CESC[0mESC[37mESC[40mESC[21;01H
-2023-07-17 15:37:57,616 machine          L0617 DEBUG| Shutting down VM
-appliance; timeout=30
-2023-07-17 15:37:57,616 machine          L0541 DEBUG| Attempting
-graceful termination
-2023-07-17 15:37:57,616 machine          L0513 DEBUG| Closing console socket
-2023-07-17 15:37:57,616 machine          L0551 DEBUG| Politely asking
-QEMU to terminate
-
-(the test is looking for some of those BL1: BL2: etc lines before it starts
-looking for the "QEMU SBSA-REF Machine" text.)
-
-thanks
--- PMM
 
