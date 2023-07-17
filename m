@@ -2,166 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64AFE756971
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC35756972
 	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 18:45:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLRK2-00012A-Cz; Mon, 17 Jul 2023 12:43:42 -0400
+	id 1qLRK4-00014m-Oq; Mon, 17 Jul 2023 12:43:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
- id 1qLRFj-0008Ip-Sn
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 12:39:16 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
+ id 1qLRK1-000126-1y; Mon, 17 Jul 2023 12:43:41 -0400
+Received: from mail-db8eur05on20723.outbound.protection.outlook.com
+ ([2a01:111:f400:7e1a::723]
+ helo=EUR05-DB8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
- id 1qLRFf-0003fm-DE
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 12:39:15 -0400
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36HF0efp016501; Mon, 17 Jul 2023 16:39:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references :
- content-transfer-encoding : content-type : mime-version;
- s=corp-2023-03-30; bh=Vt0W4cbo4Pe1559QbKuzhjC3+BZUk8oMShwnoZ99/tI=;
- b=uv3rzZrXj5YsuLlvf/YTCOCho2vg2mNPcAS++cz8WdngeNa7gKs+owdjrqurDbNfbR9h
- kQ7Iqb1KDqcJdIToGAjVkvNdw4fb/Rp4x/xinXHsjTkgfoG3+OHFbVV4wkvG23mY1htS
- 73Jqwhya9Zz2gZUE8mrOd4EY1C25RezCGA8iK4TJcTBoJNswPTe4Hkiic+/ys+1gIjKk
- epWP6+FTqQDOx/jGtprQo9UjWPQx6qrXWE1zDcNpbS7vsacbPCga8LDfNB0vavJvPEgt
- k4OpCIzfUp7WGOgapUg1LXZmxyHyiMiGKxTasBnKRz00rF32xJ09xuUaqOOqOfhe8bID sA== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3run77u5mb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Jul 2023 16:39:08 +0000
-Received: from pps.filterd
- (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 36HFbWXB023985; Mon, 17 Jul 2023 16:39:07 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam12lp2174.outbound.protection.outlook.com [104.47.59.174])
- by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3ruhw45d4b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 17 Jul 2023 16:39:07 +0000
+ (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
+ id 1qLRJy-0004st-Fd; Mon, 17 Jul 2023 12:43:40 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NbvrkZ2bzjwGnEav9EE9A6j5im43HdKn97HlMbVGTILLNYQtWqD59QhKbIIJmL+dTe6cO4YIjx5KBH29l58wrM9LuwnfyB+l6C5nzJ/7Vy4SlOeqUmuUBodEgZanwa465KcFOvUOODnz6I72rj2XSdvsu+rUTw0FW6phUukSW4FUG0pgPTwraVV3Tps4ItK7oY4W1jp7hkVSN+ZAyGSXsPffRiCPIr9QBx2DwgB0x7SLFF9emFbH/e3oXvJxp1xngWHF4PYjCU6eJ2XvczzivRPZeLO9oWSIR+2GFYdZt4fjS1A0giorZNERbG59YtqzKIRG3Ggvv1p0aR/Bw+Q6ug==
+ b=D/7m5L45kgB4s6jR/WEjucrQaR0Ifo+KDJRBHEcYlsfAT/L8P/wJwrL8Eo5aCfZbIS3aLM2Okz0/i6qIlxpJjYutKDndjah4tvWcLutoycBbqa5nAiDZM5kEwE2wzGaArJY9DferFr8p9T/gG+gvwfI6hgEMZgOQMdB/pwYHddlpEPlQ06EC8vS7VIKiBsihkj2kri2D4+/21jCiirn0lhUbChztXvFImL/X/YcN0Qr03h7+ElbaFgyKKEY/WgFNnfotucKfKnu+7L9imIcM1s1m56L3v41eZIkbSGkfnQkQqFaG1eXE09mIaX6ZBbAwwJkesW11Etd6aWHmbV/CbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Vt0W4cbo4Pe1559QbKuzhjC3+BZUk8oMShwnoZ99/tI=;
- b=cXa7+Rh7cwcjvYTN0Br/qxmww+TC6NVE0buGScdZIL1D9QuXnFhLc/dwhFZ8QGPkZigpUoff+9XzDsdVZb0ynToqKIGsvnIeetRwSGwSxcdUEVNrQ8sYMprtedwQxpWeWzkoBOMEF1xJkU3eTsPEtq7WGWdYTBYU0V+FbETRs0exnjzzSwGiOZ0vnxkVxKKKoUHHSeWRVcKuP1eOru2SJmrx55EeBhVLTjpnPRQmH621PbDDLg2moXe4/rhzY3BZVRGLG3Dg/i2iZ8eTv+2jZvRyG9+AcMe8uvtxhKm+QCpdBQP8Ruls4k1XZLzNCT+CPk4bssorByCP41Jd30jjzQ==
+ bh=kYKvQEx+zlihAKO6enZZ4WaH91KDYn4eFq37KsowDXg=;
+ b=T4dXxX0izxsT75NA5oPbcO7zPUg26rKI7fmwOfKuHj7LFjiVyx3BJ4RVQE4WlvTxxPLOnPIfFtPMnFovRCgd0eWAqsF3bxCz89PqtzDZnS1stS0BBZUvew+QBBIWSYWUDD3wGYV1fYDpmeNYVYyVY9UtbcKzxa2Angulb96dcUWIjxg2D/fv/sxPUUgXac+Vikmb5Wpbhi/n3Lh3KZ/tH8+PITGZ3P3fwIIPt3rfOtxyZVWnPo2j8LWKqxRl1j5RJDtq/aCLDB+DDRpw5C/tWzzwTAcJKWxRnXFqhassJeM2Ufb1C4/p/Q3SJnr25RhG9RoV6F8UGJYD10OdS5bugw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vt0W4cbo4Pe1559QbKuzhjC3+BZUk8oMShwnoZ99/tI=;
- b=Lfdv2eqmkiRH7ZJeFC/f7oLOYahYrq+JvySsyrGHI8GdvzSWGCAee9Z1ojUE7gRORV+CUKr5OAZlv4fRfZ4uP0uXniV/sWuqzdcjh4DXEeaGiIrGaLb8nn1ddttfoIvMJW2bjVrcDK3Xm9AyFsa/dspnj12B4QLGE2ba1eiQWkE=
-Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
- by CO1PR10MB4788.namprd10.prod.outlook.com (2603:10b6:303:94::18)
+ bh=kYKvQEx+zlihAKO6enZZ4WaH91KDYn4eFq37KsowDXg=;
+ b=wKDy99Y4Vb0qL3AV6CR1UxVjVsmAyaRo1ESLf35MxVixfjf2F5/qV0S6+OcS4aLDAMGn29rHqJ1z7dAJjTDvf+Jm+h88UaW3vLvcXpKafYQHf+R5wv+CcYyeqtFtlvgMKZtAXlC8Cghv/k1bA79Xz3GnDynjhCsUwYheD/o5rCnCIsOOki7l9D2UpUdcfW+6OssY/w80KZWBmKBtG82zt0FvJrnfbkQdBwehrbPdOkaOrBz9NTkPzU1hYze66wkTkEGsGuml2Sw9glFiSpQxAU5SA18Hj3e3+aCN9ULaR6Q8eQTQ1MKycGL7siKdXWK+aVv1nRqTztEoUaNvr2plUA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
+ by AS2PR08MB10295.eurprd08.prod.outlook.com (2603:10a6:20b:647::6)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Mon, 17 Jul
- 2023 16:39:05 +0000
-Received: from PH8PR10MB6597.namprd10.prod.outlook.com
- ([fe80::c89f:f0e5:c5bd:aae5]) by PH8PR10MB6597.namprd10.prod.outlook.com
- ([fe80::c89f:f0e5:c5bd:aae5%4]) with mapi id 15.20.6588.031; Mon, 17 Jul 2023
- 16:39:05 +0000
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- linux-debuggers@vger.kernel.org, stephen.s.brennan@oracle.com,
- joao.m.martins@oracle.com
-Subject: [PATCH qemu 2/2] dump: Only use the makedumpfile flattened format
- when necessary
-Date: Mon, 17 Jul 2023 09:38:55 -0700
-Message-Id: <20230717163855.7383-3-stephen.s.brennan@oracle.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230717163855.7383-1-stephen.s.brennan@oracle.com>
-References: <20230717163855.7383-1-stephen.s.brennan@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR21CA0023.namprd21.prod.outlook.com
- (2603:10b6:a03:114::33) To PH8PR10MB6597.namprd10.prod.outlook.com
- (2603:10b6:510:226::20)
+ 2023 16:43:34 +0000
+Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
+ ([fe80::531a:f96a:fab2:9530]) by PAXPR08MB6956.eurprd08.prod.outlook.com
+ ([fe80::531a:f96a:fab2:9530%4]) with mapi id 15.20.6588.031; Mon, 17 Jul 2023
+ 16:43:34 +0000
+Message-ID: <845f324c-c786-5e58-5dde-514005fbe69e@virtuozzo.com>
+Date: Mon, 17 Jul 2023 18:43:30 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v7 5/8] parallels: Add checking and repairing duplicate
+ offsets in BAT
+Content-Language: en-US
+To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, stefanha@redhat.com, vsementsov@yandex-team.ru,
+ kwolf@redhat.com, hreitz@redhat.com
+References: <20230701100759.261007-1-alexander.ivanov@virtuozzo.com>
+ <20230701100759.261007-6-alexander.ivanov@virtuozzo.com>
+From: "Denis V. Lunev" <den@virtuozzo.com>
+In-Reply-To: <20230701100759.261007-6-alexander.ivanov@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR10CA0097.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:208:e6::14) To PAXPR08MB6956.eurprd08.prod.outlook.com
+ (2603:10a6:102:1db::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|CO1PR10MB4788:EE_
-X-MS-Office365-Filtering-Correlation-Id: ce60714d-d918-4c4e-9fc9-08db86e45576
+X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|AS2PR08MB10295:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2bdf4104-b2d9-4258-21ac-08db86e4f611
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TGwA1W+AhmG3UUjA05F1iXXq//H0CqyIJ+ivWeGCUUoX/iESDQixwNponBbWFZlVxgn6Te99Gf4o2CTWor0RT0fL9slIBM9NuZlLyXBfnYL+wjfoQ9cBf8yAEw3ZKikVZBSHjQO+s3C36Ip23oKrznrWNfkY08JIaf+weBox2sLbc2fk+Do6ApOkrJVWdk6WFuBvjFXuxwQE9Z59GcYx9vlVE9gXGrLx1L8O/p6kDItGkhZgoaXITg5nC/6U3xOLKRyBZWHLUyVcWoV7ZX9RuRlwzYGerLRjMSP8CoNcWBCs0fC05UEOontDgVfv15ZdE42BOToPaIWxjOTzChG5YmAShpHEE0G3suJghFYOw7mRYlSyKpDDF9jDFjdvZvSqBSBlkGuG7iydCnMWAPsK2/bb3GfHscaUqBHT92wG69qst4CkSzcSyq3+G9Bi9/5QhUjEuXDNCgHGmHx1jWJnm7n4CBHcw4AeA0z+EcIHbKP+/a8DM49PcdvvyzdPdO5FHt1SKj3HIExqxipL3EAqmAxjzp8yj4cHmSKkpbesEXA=
+X-Microsoft-Antispam-Message-Info: ntNZoiy5kQJADbvZn1JEIjwcvaRSiwwJUUzE+L1LUfON1t8N0K1VSF6s7iP8x+2RryZ/IMe1U9IJS7HEIUpwcQnaaubLZYazB3rSCMFDXSkCe42gVcXdCMh/J1zzwsbPuB2ZFXz0z194ZiYl7vldhS9C49QoWRX++Kh09hEmPng95gxfqyPvU0fahG7LBJoQxh78QvGVMuUpFOtSsVA7iiIB1VH1wB1yZ2OVyc9s6+WnmJKtVWs+5MIbR3GZr3pVaDf2/KfYwjwNdM6zKop9MFpptDlUwK2teo4nAFd6SGBWtETCL2Tu5N70vOVo3tOEcYSrF52sfBnx5MIW2o+7PTAX6aKOJu4/XJuqyVinNuRiBJhRZpsHcEDC05PKQrgfcw3znXMxPRS/vMhKYRNW+ahmWxSIsxAkfT2yCOLnMEasJmDl3JcezIED0UAuzbIzze+V2uJRdJghCYeoYwV4ToK4BFiG3U1/5CWSjNIiNrsiwLvejLsNwOuIL/E3OHh/0HybRZQUVbjMg5EcgikQMCM3BKgSJAcfnFP67oyTvw8GZdSSLzscKaiEfd6vqaaMv0XX3WazI30XiYErH3Q9aYRVSFxyctgNXOt1FSGYu4BGypMk8h4EO93IGUsiZEEndj11jzvE284IXS6svcKTvQ==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR10MB6597.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(366004)(376002)(136003)(39860400002)(396003)(346002)(451199021)(86362001)(2906002)(103116003)(36756003)(66899021)(966005)(6512007)(186003)(83380400001)(6506007)(1076003)(107886003)(6486002)(6666004)(66556008)(66946007)(316002)(38100700002)(6916009)(4326008)(2616005)(66476007)(5660300002)(478600001)(8936002)(8676002)(41300700001);
- DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(376002)(39850400004)(136003)(396003)(346002)(366004)(451199021)(6512007)(6506007)(53546011)(26005)(66556008)(66476007)(66946007)(36756003)(38100700002)(31696002)(2906002)(316002)(5660300002)(8936002)(8676002)(4326008)(41300700001)(6486002)(86362001)(478600001)(6666004)(31686004)(2616005)(83380400001)(186003)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rtDz0Elyz+yyf0mMGJCK4jmJW0rtajWDy8OB+G5oiQowKgb686bi27SyhA0m?=
- =?us-ascii?Q?4gw4FKfA5J6COEmyNFY5w5e0RTU1y67TFlYtB9iOBf6U3HpwidinNsYY+v9O?=
- =?us-ascii?Q?wUX6hTdh2e6Eji/ql7ZLIL8hDbZrx8GWNZ4bDkDw9ggKQcb3OnFq5EcJXGiK?=
- =?us-ascii?Q?Bup0/lDvMVosX7hO3TLTXJlzZgVb5HQwZvLsj+OHs4GpYoTzSJf6QeOBt70w?=
- =?us-ascii?Q?twO1B04lZhAuZL8qiGEgG+H2/RW/uHYdL2E0xw6JFTjBBghPJupYr+HpWKsR?=
- =?us-ascii?Q?cGMcjZA1qLzJxdZOlccE3OnsT1e0oxFqbkPSzKHPOCSuIKnn09S7fFirirgf?=
- =?us-ascii?Q?tS8jEOgznJ5JWjY384JnHHPzjyV6KHmtUrU28e5IXf85cxRvGDoRRW5DjMaD?=
- =?us-ascii?Q?N1cqFDi7KOUXVZbpihIeiKdfD9aMyl2+5VKb8KTIkjuuUeDobrlKvUo0ZXSj?=
- =?us-ascii?Q?k7bxxGd9imve+hOfdpW95Jeh+ppmMbweRsb6e/ADKzSD34qtCCNvo0XzPAzt?=
- =?us-ascii?Q?bf5RyqRjIOrTgGzqHbMBvkMSPo77tE2DAQpD9Pg27rpsL0pOpCjuxfVDQAjI?=
- =?us-ascii?Q?BlQfLLtlINZUJRE48M+pnLBEUPavB9vxg0NCgEpLKXDWNR4bqy2DOOU1tRk7?=
- =?us-ascii?Q?GlGSRB8lev01zJw6yEfsg0jFfLBV5ZXi8ICFkGbSvsYy9SsCM3qGx2QkP96b?=
- =?us-ascii?Q?zZJdEerjfUl2CJcKxbe4aBi4lrTODlfjjTAvzdOHArLUel04Ie4LiCe8SNqR?=
- =?us-ascii?Q?2kMdABYn0uRNbvDP+h4+ITX57y/jNl0PdmMUUYimhq4nRwIcp14P1QA5PPTK?=
- =?us-ascii?Q?wefXE7y8dHbZrkY+QhVerHvCyuyCOYFuE+kBRvGPFvTqjtCN1y9aJRLsf9/j?=
- =?us-ascii?Q?Jnfc0D9oLVqARMTBQDI712izl4CwP6Abt/3mXDkmJYUOeykd6uG2W8Tg+wNV?=
- =?us-ascii?Q?oZc37OOneOI9oh/M1xQwQhGcLvVAS432TOccDZV8ItVL4EH39eRr0tslqymX?=
- =?us-ascii?Q?CVouu+Xilg52JwCpVjBEB7jQRUz7rkbPxjQ/+mCedKiKDS7FKJAL0P6RGGnI?=
- =?us-ascii?Q?AhmRbTKf5zd2QYfB6llSRVWAubJ8ixsvVmi6wbbPIHMjP59c157IKwkoz2LI?=
- =?us-ascii?Q?m7oPns17MTCIH3AAskdOgCe0GsV2WmZKHnDCnVME6K4Y8L/8yRC1fbjg+lv3?=
- =?us-ascii?Q?XPO5jJZDmy5gLTHb2ST2BnQU+gjqe/HHkgAobf1Y/bbeQ2XG+/B7g2B6hafx?=
- =?us-ascii?Q?bcDuu/8aL3bf9UU75hrHwAf99lZJffXo1bNKU1LUE3qHpN2QcCiaogVz1yUI?=
- =?us-ascii?Q?wbuGcvgHGQ36i1dezU4jEDDvFpdmk3t7GBxOFyvkmgLJAanaheCgQjHLCSI2?=
- =?us-ascii?Q?ZeTdpL3mHZ5xpI6odax2t8GV7l1yHlzUcxzHUZ9jrTZrWBASzBcKLY+/3lpb?=
- =?us-ascii?Q?nsxlirq6vCyqDu7V7l7XNTPpnm7OFTc1b9W36XTRYwwgd5md+c++zW8fqPlo?=
- =?us-ascii?Q?IMbSv0qcTj/Net6OCdISU0Trca8f9fXHzsmYcxFV9cQZPDO8t/MShFdTTnmd?=
- =?us-ascii?Q?PE/uTstvyTdHHWCDJ4qKKAP4fBXiSIm+yJ1/viraufO9Pm7cvwIEfI37Um++?=
- =?us-ascii?Q?OEg5DIj5jrpG7r+juI6e1mY=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: mTpwKg5euGl4d+obIFiV6PmhU5xb7iRA5k2ZTAINnoYaYJu9FVdkUht1xUKyW6bGyFQHYcl8+0x3CrGDgUVybGZh9eVdVpucpwEnYCXN7+rYlvqKq7xYkJ1UmNsrZYcoWt69F3PXC0FnURWCAoLpY9umCpBQNDrWkh0wFCrPre+86ZnMdOXTz9BoxtCjSGrszLjw9f33KSotFNF1LaL9M5QzWCrxxnQlbtntN8JI9bsKn10ZTUFZlCXJZkgPEGYxa8XqiAZqjXdnUIl58j20qPmISq/2HHsErduHn8aEcYY1lcFWTuPzymQJ+Ca76QK8ecLqG2BASWSznM7EUq1Fgyah42mqHgHqYfA7wDAEvmvmGgj/6TCfBKIt9z3GISrNIbIo1tvU4o06zS+q6pBedLc1aY0oUQhDu79wLDbmM8RdnOdi27KXT6MRS772BEJqyzSYgM0XYJvH51JbBTR0WcY6y7U8nCWnOiWhT974UC9Oo4bEoTQK3+pcwxtTgeJ6JC7VehBXPX7pA58wEXmfjtIaAO5UWF0so1ZJeujEa+J2TxOfHG4lmoeMIVF+55ym6jvfTEhBE8SMP9W1cTD9QT2X1CAUHAcumkE0K/CqqICMAaeTL7Up0DaofBokN3/PsW2XtWc6w/qPkCCenl9Nrx7zWolWbok+nAmgH68+g7xkkLhJYRvq4+8icaiUjAbVS4eJC9ITsJCbQv9YkrxHFtb0dELHYfl4WUAu89lwwS6awbgZrn0y2tTFcKba0nmp/pZCi23PPrZG760qkhf8a4fIvbwRFZnx+rSI4zwSze/PS7Cs5fCmdFS5FVzYx61N
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce60714d-d918-4c4e-9fc9-08db86e45576
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?STR2dnlwdjB6U0x5NjJkUjF1OWdmV01rNnhha2F6NjEyVC9pOTIyUFBZSkU1?=
+ =?utf-8?B?TTZzRDFGRGhsSVlqajF3cXJVcVRtVytYL1VJL01rS1puY3NxVUlvcjdUTVVW?=
+ =?utf-8?B?SC9MK1dvR3oyd0RiVExSRmx5dXMyb3p6UkE4WnRTSjQ4ZzlRVVQwbTdpelEx?=
+ =?utf-8?B?N3hubmpiK01kcmF3aWR3azdGb0VaR01HOEVzSHRGYzN4TlpkT0ZWOW5SQTdV?=
+ =?utf-8?B?anBrb0V1WEZiR243TnJlY3NDSFg2Mi8vNnpRdUt6V2NsOHFDYVVzR1pSNW0z?=
+ =?utf-8?B?cVZzaWdVZkYxWGR4bktKWG5NK0ZJaE5yQ2JKaUlLNjR0czY5VFE3UktFeXNG?=
+ =?utf-8?B?QTl5Q0Frd0JZSmhITkVJbjkxQXRLMXZMRVI5aFlsd2MrdGcvMFRVYU9BYnNx?=
+ =?utf-8?B?bnIxeEsyREs3ZFppYUhSQlJURTNBZ1R3WU8ycTl5R05JWWd1N1lPeVBzbnd0?=
+ =?utf-8?B?bThPU3UxTUJpZEFPWDVZUWRCSWpiZTlPblBuQnBGUzZFeG9SSmJMYTlpajRv?=
+ =?utf-8?B?NzhacnZjdXZra1RLdThBUW90Z1k3Q1NkMm11bVN3TW9FYmJQbDBQb0RQdFZ2?=
+ =?utf-8?B?RGhBaXdtdUZCUjVrdlFGaldtOGk3SUdNMnkva3RUdm9aMTVQMENqYzJzcjNS?=
+ =?utf-8?B?a2l1T3BWRDNZWmF0QXBVbVptaTM2ejNXY1ZydW1rTlJlb3QySlp0eDFsZ1A0?=
+ =?utf-8?B?UUhxNUc5SE90ZGlKdE9KaWNOSEJDN1NUVmpRVGtwaEdMa2xwRElSOE12ZHVQ?=
+ =?utf-8?B?cktKeFN0OWs2K0FPV0VWdUlMR1I3STNrSkoxVit4KzcvSDd2UHhZZXhxWUZr?=
+ =?utf-8?B?QllDR3hXMzg2VXFUZFpJMk85cEpqQmlDN29KU0Q2RVhBbmwvRE9HUTg2bXdC?=
+ =?utf-8?B?djNPQlFqR0RZRkpHYWlTbndtMEFMYXZOUWxOVXMzSEJNMjN0d1BXLzFVY1dL?=
+ =?utf-8?B?Q3FDdnRmOUNMRWEyUEcyKzR3aUUyckwwY0lkM01VcDRwaWxMeWtBaVR5NUk0?=
+ =?utf-8?B?Z0Q1dmpSSFFVd25ybmhNamNiLytwUW5PbWxDOFlzZGRsVFhuT1NXNENleFk1?=
+ =?utf-8?B?cEx6WnUwenJGWXhEMDJaU1FRWU5WbG1sQ0dVU01lVzAzTHZ4M1B3N3U5RHF5?=
+ =?utf-8?B?TUsvMWc1b25aWEY3S0hjcWdZNk8xWkdtZXRnZW1kRnRHVm4rV3E0cWl5U01W?=
+ =?utf-8?B?aW5jYUtId0xSSFkwdk1uOHFjN3N2T0FRREZPOXBWMjdHbkFaZXhkeGVQamNL?=
+ =?utf-8?B?QThHaktNSUxQUHp2eU5FUDIydTFxaGRjTEdXVUEvN0Zpc2RkTEd2bkNEUCtG?=
+ =?utf-8?B?WGU2ZlRWY0tYTEVGL0NJc0hDazhMQ3pJcUU3TUMwZUpDYnE2Rmw4QlgxL1RD?=
+ =?utf-8?B?VlF3S1BZUks5ZzFPQks4citiaFZvbW4xN1d2RkYxV1FVMUJsMjhPY1R2Nlpw?=
+ =?utf-8?B?ZmZ1VzlBQlBlZHh0WmppSlVPMmpXSzd1dWVWbGFHQ2QvMXhkR1Y1a09mM2Fk?=
+ =?utf-8?B?cVRZV3J2Q2ZtaUpQS2M5OS9wdy9WMmNIN0REUGgzcUF1REtmdEtlcVUrTktq?=
+ =?utf-8?B?aExwZEEwSnVqR2ZqdHFIRTBmcHZIb0psaGhBRXdJei9GMVE2Rmw3aUtHcTZy?=
+ =?utf-8?B?ZzVmcGZZM0FCWWlKNmw0blRtb25HYnJYZzdZK3RIcUY0NDdyTkkxS3FzY2RB?=
+ =?utf-8?B?REo1M0NZUFE2NlV2dVNwV3JvS0pJK3psY20zVk42ZjVBTzF6VTFwUis2N240?=
+ =?utf-8?B?Vmp6djBRaUFXR1MzMzAxemROVWpiMTRQVCsxOStKeUloTHQ2bzc2L1VUTzM5?=
+ =?utf-8?B?cjBDVHg1Nko1RE1URGhyZUozQ0J1NVpKYnBlMTdUYTdhdk9OSkNzM0Rzdy9N?=
+ =?utf-8?B?TUU0akt5YTloTzhUM0tIWXFPeUxmZVdxbmZxbEh1TC9URThVVHhuSzFHMXFk?=
+ =?utf-8?B?TjZ0SzUrNERFVzhUeVhzZitWMlV6bE1oZTZyMXM0N0R0eW5lNThqUlJ2ZDlN?=
+ =?utf-8?B?Nk1OUUt1dDRlQTdFQ1VEdElkMXlkSXNzOGZ6NmhVWkIyMVBiOTBRaDlaYlVa?=
+ =?utf-8?B?REV5RnZtbHB5bFdEd0poKzVIUkdUd2Fod1Fhd1IvNTdaeXo0eS9MUDRvK0F0?=
+ =?utf-8?Q?IIeCUzA+1F9W1Orqqx8iWGBIp?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2bdf4104-b2d9-4258-21ac-08db86e4f611
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2023 16:39:04.9936 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2023 16:43:34.3256 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: on+dP1xLErPjH4WjQNDyoKxw7NLIw2cphijJME1TGdZWmdVmsTGnSQz1TgixTNAkLEWg4/697e7ebmECpuUhXUNM2Lgd5fgGiMNYnYiLWtY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4788
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-17_13,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- adultscore=0 mlxscore=0
- bulkscore=0 spamscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307170153
-X-Proofpoint-GUID: FiTYzCca1SjlfyM24ecO8GFhWT2Bex1M
-X-Proofpoint-ORIG-GUID: FiTYzCca1SjlfyM24ecO8GFhWT2Bex1M
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=stephen.s.brennan@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-MS-Exchange-CrossTenant-UserPrincipalName: TEWDw3sQvDpCSeyi6vlW7g+IZhSf1We5O96xMOazb0s5Ecw+qHvEptR1HYSanl3uKdqLR5z4otRIPaFNV8w60w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB10295
+Received-SPF: pass client-ip=2a01:111:f400:7e1a::723;
+ envelope-from=den@virtuozzo.com;
+ helo=EUR05-DB8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 17 Jul 2023 12:43:40 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -176,111 +147,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The flattened format is used by makedumpfile only when it is outputting
-a vmcore to a file which is not seekable. The flattened format functions
-essentially as a set of instructions of the form "seek to the given
-offset, then write the given bytes out".
+On 7/1/23 12:07, Alexander Ivanov wrote:
+> Cluster offsets must be unique among all the BAT entries. Find duplicate
+> offsets in the BAT and fix it by copying the content of the relevant
+> cluster to a newly allocated cluster and set the new cluster offset to the
+> duplicated entry.
+>
+> Add host_cluster_index() helper to deduplicate the code.
+>
+> When new clusters are allocated, the file size increases by 128 Mb. Call
+> parallels_check_leak() to fix this leak.
+>
+> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+> ---
+>   block/parallels.c | 144 ++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 144 insertions(+)
+>
+> diff --git a/block/parallels.c b/block/parallels.c
+> index 374c9d17eb..0f207c4b32 100644
+> --- a/block/parallels.c
+> +++ b/block/parallels.c
+> @@ -136,6 +136,12 @@ static int cluster_remainder(BDRVParallelsState *s, int64_t sector_num,
+>       return MIN(nb_sectors, ret);
+>   }
+>   
+> +static uint32_t host_cluster_index(BDRVParallelsState *s, int64_t off)
+> +{
+> +    off -= s->data_start << BDRV_SECTOR_BITS;
+> +    return off / s->cluster_size;
+> +}
+> +
+>   static int64_t block_status(BDRVParallelsState *s, int64_t sector_num,
+>                               int nb_sectors, int *pnum)
+>   {
+> @@ -529,6 +535,139 @@ parallels_check_leak(BlockDriverState *bs, BdrvCheckResult *res,
+>       return 0;
+>   }
+>   
+> +static int coroutine_fn GRAPH_RDLOCK
+> +parallels_check_duplicate(BlockDriverState *bs, BdrvCheckResult *res,
+> +                          BdrvCheckMode fix)
+> +{
+> +    BDRVParallelsState *s = bs->opaque;
+> +    int64_t host_off, host_sector, guest_sector;
+> +    unsigned long *bitmap;
+> +    uint32_t i, bitmap_size, cluster_index, bat_entry;
+> +    int n, ret = 0;
+> +    uint64_t *buf = NULL;
+> +    bool fixed = false;
+> +
+> +    /*
+> +     * Create a bitmap of used clusters.
+> +     * If a bit is set, there is a BAT entry pointing to this cluster.
+> +     * Loop through the BAT entries, check bits relevant to an entry offset.
+> +     * If bit is set, this entry is duplicated. Otherwise set the bit.
+> +     *
+> +     * We shouldn't worry about newly allocated clusters outside the image
+> +     * because they are created higher then any existing cluster pointed by
+> +     * a BAT entry.
+> +     */
+> +    bitmap_size = host_cluster_index(s, res->image_end_offset);
+> +    if (bitmap_size == 0) {
+> +        return 0;
+> +    }
+> +    if (res->image_end_offset % s->cluster_size) {
+> +        /* A not aligned image end leads to a bitmap shorter by 1 */
+> +        bitmap_size++;
+> +    }
+> +
+> +    bitmap = bitmap_new(bitmap_size);
+> +
+> +    buf = qemu_blockalign(bs, s->cluster_size);
+> +
+> +    for (i = 0; i < s->bat_size; i++) {
+> +        host_off = bat2sect(s, i) << BDRV_SECTOR_BITS;
+> +        if (host_off == 0) {
+> +            continue;
+> +        }
+> +
+> +        cluster_index = host_cluster_index(s, host_off);
+> +        assert(cluster_index < bitmap_size);
+> +        if (!test_bit(cluster_index, bitmap)) {
+> +            bitmap_set(bitmap, cluster_index, 1);
+> +            continue;
+> +        }
+> +
+> +        /* this cluster duplicates another one */
+> +        fprintf(stderr, "%s duplicate offset in BAT entry %u\n",
+> +                fix & BDRV_FIX_ERRORS ? "Repairing" : "ERROR", i);
+> +
+> +        res->corruptions++;
+> +
+> +        if (!(fix & BDRV_FIX_ERRORS)) {
+> +            continue;
+> +        }
+> +
+> +        /*
+> +         * Reset the entry and allocate a new cluster
+> +         * for the relevant guest offset. In this way we let
+> +         * the lower layer to place the new cluster properly.
+> +         * Copy the original cluster to the allocated one.
+> +         * But before save the old offset value for repairing
+> +         * if we have an error.
+> +         */
+> +        bat_entry = s->bat_bitmap[i];
+> +        parallels_set_bat_entry(s, i, 0);
+> +
+> +        ret = bdrv_co_pread(bs->file, host_off, s->cluster_size, buf, 0);
+> +        if (ret < 0) {
+> +            res->check_errors++;
+> +            goto out_repare_bat;
+here and below we should use out_repair_bat.
+> +        }
+> +
+> +        guest_sector = (i * (int64_t)s->cluster_size) >> BDRV_SECTOR_BITS;
+> +        host_sector = allocate_clusters(bs, guest_sector, s->tracks, &n);
+> +        if (host_sector < 0) {
+> +            res->check_errors++;
+> +            goto out_repare_bat;
+> +        }
+> +        host_off = host_sector << BDRV_SECTOR_BITS;
+> +
+> +        ret = bdrv_co_pwrite(bs->file, host_off, s->cluster_size, buf, 0);
+> +        if (ret < 0) {
+> +            res->check_errors++;
+> +            goto out_repare_bat;
+> +        }
+> +
+> +        if (host_off + s->cluster_size > res->image_end_offset) {
+> +            res->image_end_offset = host_off + s->cluster_size;
+> +        }
+> +
+> +        /*
+> +         * In the future allocate_cluster() will reuse holed offsets
+> +         * inside the image. Keep the used clusters bitmap content
+> +         * consistent for the new allocated clusters too.
+> +         *
+> +         * Note, clusters allocated outside the current image are not
+> +         * considered, and the bitmap size doesn't change.
+> +         */
+> +        cluster_index = host_cluster_index(s, host_off);
+> +        if (cluster_index < bitmap_size) {
+> +            bitmap_set(bitmap, cluster_index, 1);
+> +        }
+> +
+> +        fixed = true;
+> +        res->corruptions_fixed++;
+> +
+> +    }
+> +
+> +    if (fixed) {
+> +        /*
+> +         * When new clusters are allocated, the file size increases by
+> +         * 128 Mb. We need to truncate the file to the right size. Let
+> +         * the leak fix code make its job without res changing.
+> +         */
+> +        ret = parallels_check_leak(bs, res, fix, false);
+> +    }
+> +
+> +out_free:
+> +    g_free(buf);
+> +    g_free(bitmap);
+> +    return ret;
+> +/*
+> + * We can get here only from places where index and old_offset have
+> + * meaningful values.
+> + */
+> +out_repare_bat:
+> +    s->bat_bitmap[i] = bat_entry;
+> +    goto out_free;
+> +}
+> +
+>   static void parallels_collect_statistics(BlockDriverState *bs,
+>                                            BdrvCheckResult *res,
+>                                            BdrvCheckMode fix)
+> @@ -580,6 +719,11 @@ parallels_co_check(BlockDriverState *bs, BdrvCheckResult *res,
+>               return ret;
+>           }
+>   
+> +        ret = parallels_check_duplicate(bs, res, fix);
+> +        if (ret < 0) {
+> +            return ret;
+> +        }
+> +
+>           parallels_collect_statistics(bs, res, fix);
+>       }
+>   
+with old_repare_bat replaced with old_repair_bat:
 
-The flattened format can be reconstructed using makedumpfile -R, or
-makedumpfile-R.pl, but it is a slow process beacuse it requires copying
-the entire vmcore. The flattened format can also be directly read by
-crash, but still, it requires a lengthy reassembly phase.
-
-To sum up, the flattened format is not an ideal one: it should only be
-used on files which are actually not seekable. This is the exact
-strategy which makedumpfile uses, as seen in the implementation of
-"write_buffer()" in makedumpfile [1].
-
-So, update the "dump-guest-memory" monitor command implementation so
-that it will directly do the seeks and writes, in the same strategy as
-makedumpfile. However, if the file is not seekable, then we can fall
-back to the flattened format.
-
-[1]: https://github.com/makedumpfile/makedumpfile/blob/f23bb943568188a2746dbf9b6692668f5a2ac3b6/makedumpfile.c#L5008-L5040
-
-Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
----
- dump/dump.c           | 30 +++++++++++++++++++++++++-----
- include/sysemu/dump.h |  1 +
- 2 files changed, 26 insertions(+), 5 deletions(-)
-
-diff --git a/dump/dump.c b/dump/dump.c
-index 2708ddc135..384d275e39 100644
---- a/dump/dump.c
-+++ b/dump/dump.c
-@@ -813,6 +813,13 @@ static int write_start_flat_header(DumpState *s)
- {
-     MakedumpfileHeader *mh;
-     int ret = 0;
-+    loff_t offset = lseek(s->fd, 0, SEEK_CUR);
-+
-+    /* If the file is seekable, don't output flattened header */
-+    if (offset == 0) {
-+        s->seekable = true;
-+        return 0;
-+    }
- 
-     QEMU_BUILD_BUG_ON(sizeof *mh > MAX_SIZE_MDF_HEADER);
-     mh = g_malloc0(MAX_SIZE_MDF_HEADER);
-@@ -837,6 +844,10 @@ static int write_end_flat_header(DumpState *s)
- {
-     MakedumpfileDataHeader mdh;
- 
-+    if (s->seekable) {
-+        return 0;
-+    }
-+
-     mdh.offset = END_FLAG_FLAT_HEADER;
-     mdh.buf_size = END_FLAG_FLAT_HEADER;
- 
-@@ -853,13 +864,21 @@ static int write_buffer(DumpState *s, off_t offset, const void *buf, size_t size
- {
-     size_t written_size;
-     MakedumpfileDataHeader mdh;
-+    loff_t seek_loc;
- 
--    mdh.offset = cpu_to_be64(offset);
--    mdh.buf_size = cpu_to_be64(size);
-+    if (s->seekable) {
-+        seek_loc = lseek(s->fd, offset, SEEK_SET);
-+        if (seek_loc == (off_t) -1) {
-+            return -1;
-+        }
-+    } else {
-+        mdh.offset = cpu_to_be64(offset);
-+        mdh.buf_size = cpu_to_be64(size);
- 
--    written_size = qemu_write_full(s->fd, &mdh, sizeof(mdh));
--    if (written_size != sizeof(mdh)) {
--        return -1;
-+        written_size = qemu_write_full(s->fd, &mdh, sizeof(mdh));
-+        if (written_size != sizeof(mdh)) {
-+            return -1;
-+        }
-     }
- 
-     written_size = qemu_write_full(s->fd, buf, size);
-@@ -1786,6 +1805,7 @@ static void dump_init(DumpState *s, int fd, bool has_format,
-     s->has_format = has_format;
-     s->format = format;
-     s->written_size = 0;
-+    s->seekable = false;
- 
-     /* kdump-compressed is conflict with paging and filter */
-     if (has_format && format != DUMP_GUEST_MEMORY_FORMAT_ELF) {
-diff --git a/include/sysemu/dump.h b/include/sysemu/dump.h
-index e27af8fb34..ab703c3a5e 100644
---- a/include/sysemu/dump.h
-+++ b/include/sysemu/dump.h
-@@ -157,6 +157,7 @@ typedef struct DumpState {
-     MemoryMappingList list;
-     bool resume;
-     bool detached;
-+    bool seekable;
-     hwaddr memory_offset;
-     int fd;
- 
--- 
-2.39.2
-
+Reviewed-by: Denis V. Lunev <den@openvz.org>
 
