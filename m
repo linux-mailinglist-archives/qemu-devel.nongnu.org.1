@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DAB0756354
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F13756359
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:54:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLNhp-00031w-TW; Mon, 17 Jul 2023 08:52:02 -0400
+	id 1qLNhX-0002Z3-3e; Mon, 17 Jul 2023 08:51:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLNdu-0008Tn-Ga
+ id 1qLNdu-0008Ti-9X
  for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:48:03 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLNdn-0008TO-Tf
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:47:58 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3141c3a7547so4228516f8f.2
+ id 1qLNdp-0008TT-6c
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:47:57 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-316f589549cso1815919f8f.1
  for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 05:47:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1689598070; x=1692190070;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uo7Bz898x5rT9AwvwOzRLp/mDtj2e+zf8fXMK+RWos4=;
- b=GYUsfFKR9xT2o6l43WZ+dZODQn7mm/uHx8nxfV0ktVv2Aw76+qDzPhPUAOa8M8+x3q
- pvGOGWHzU3y3EBghgd3O+Qk1vw4JPuxvnis3mF0LLunw4PzaXaD+QboYvYG6QLHSyz+N
- D/DB7yXf4PQvnVbIjCydFzdL5hi6045zux4I19i1z8n+gVMPx/YmkH1waOar/PMZriHp
- 531ec87mzNIcTuuUviLokzrTgsH0HArybNwr/tfSQ3oMwUTNrXjcTrMnGe9tgODLelcl
- n3VRvPjzK0e32bBjzHf2H48LRQAWVOzGQYwPpKjJ6/k3O8ex9zy3pFiprfb2NfxQrTZH
- bgoQ==
+ :reply-to; bh=edbJjO1yTMsccjp+1Oi4Tpx97oGTrv0Dg957zzrUT/c=;
+ b=P0wB2kGqlRahKS5nj+YO0xzESU/X7CEd+dj4vYEVMdHuFBD1JUKoqYxzczfFOuxx1B
+ SHOBTYGRUW0YfyLuBXEOVprOH5UjiAqiMn377pNhQ/pu65bXIrxlt39Z0GZ11Biyn8a8
+ oYa43mag87FReeVPeseWbVmFGbjb9hH88DzvUPOdubwQAgyaiau6pD+rxUCBaxKIOkTT
+ 4R8pWMzkF5FPXeIJ5cBlRdKb/Ig/4s9YEZgIRTUyk+UXaKzQ0vvnwKqffBsZSvtrufsO
+ qKoMIxnM/2/5Yqz14nzwru/syR1K5gZwgN6+A9TCtxysmNRryxhymLAWsng5qFFr3UgL
+ uMow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1689598070; x=1692190070;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uo7Bz898x5rT9AwvwOzRLp/mDtj2e+zf8fXMK+RWos4=;
- b=W43XiSl8CEm/qQbzhtbPidhqeUMzlujUfwKs7O+WmVD6wtKozfpL50LD7+fn279A0r
- KuN9NEz6g6Ov1YeYYG2yXKQabt+jxXZ8CpUJUwyPlN2VKK8/6Z1EEv/latVlHgcK9gwh
- cOPc/e/z1ozmEodI8vmkrcH6LfKjNWp8oUlkdgNXzYH3QbncWGuvVaO7AlaBntQF8c9z
- /SxQUyxDmFOewMfwov9NuDzBV/4rICq240BW/1LAHG0zSFDanBBTB7zs6SVbePz6nVph
- zw15TCYWFIte/16bJ58DpmuR0AfJ1gfBjt7Tyd/FSfMPmhIc0Ib3hYwa3HHsMHAuuajp
- TNVg==
-X-Gm-Message-State: ABy/qLYC7AzPRrpos0zPSc20FBZcyCDFAlRf6gN5VDqWvLXPVlW4bIEX
- S6R/vh0FVimaZvYcvZcIGif6TEcFDXdyo+1EM/A=
-X-Google-Smtp-Source: APBJJlFbeKs33+ZHyvIZSW1ie8luuQoBNXAM1/RvegoEDH6Pdi686wLzUMkF8ulJVnjz6cJI2e202g==
-X-Received: by 2002:a5d:4c41:0:b0:316:d887:624a with SMTP id
- n1-20020a5d4c41000000b00316d887624amr9872600wrt.15.1689598070052; 
+ bh=edbJjO1yTMsccjp+1Oi4Tpx97oGTrv0Dg957zzrUT/c=;
+ b=hY4aqKlRsV+FV4oh1IJVYH3Aj+1qgIkTFz0nKQPGd685Dx4+lggv/u0MGBjFl1gliq
+ U2LQ6NniYkKvj7m3vva0AbhUk0OGH4u5Y0I7rK7DvhH2rb8Z1DJuuyePbJEOWk0nCKt9
+ 8tIGqLbWdI4UsCu7EtSSgfgLXqUiW3ZaIGUQW8Eeh93MmXDT8UJkERut6L+kdPO9+neq
+ V33jaFqyKfcyy/bI3q1mjhCDkhwxWrhxcX3e7c4ZVNKew86rcG6rIFY1U27R8Px5ZgIP
+ qt1/cAccTJ5l7vlIfhtJIt7RQvqSs0Z3/Tx2eVnJmV8W9l2f3/f1+Zyd+b4B9FxukwDq
+ oNvg==
+X-Gm-Message-State: ABy/qLaR7g4s66VnxSyznDqZjkh2eBQgITCj+6jRL3se6GotvKVGHASb
+ i5xsqgBMDvTFjSupjiNl37IefSfpS1r5Bm8Gci8=
+X-Google-Smtp-Source: APBJJlHiOyi3ts1gBI8CYYSAHCCfkPvmswl3HQRZDea0dfkH/TVD7faKsiPX7DYaryKTnDQ6YaKraw==
+X-Received: by 2002:a5d:4e46:0:b0:313:e8bf:a77 with SMTP id
+ r6-20020a5d4e46000000b00313e8bf0a77mr9476225wrt.5.1689598070470; 
  Mon, 17 Jul 2023 05:47:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- v16-20020a5d6790000000b003112ab916cdsm19337737wru.73.2023.07.17.05.47.49
+ v16-20020a5d6790000000b003112ab916cdsm19337737wru.73.2023.07.17.05.47.50
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 05:47:49 -0700 (PDT)
+ Mon, 17 Jul 2023 05:47:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 5/7] target/arm/ptw.c: Account for FEAT_RME when applying {N}SW, SA bits
-Date: Mon, 17 Jul 2023 13:47:44 +0100
-Message-Id: <20230717124746.759085-6-peter.maydell@linaro.org>
+Subject: [PULL 6/7] accel/tcg: Zero-pad PC in TCG CPU exec trace lines
+Date: Mon, 17 Jul 2023 13:47:45 +0100
+Message-Id: <20230717124746.759085-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230717124746.759085-1-peter.maydell@linaro.org>
 References: <20230717124746.759085-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,55 +91,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In get_phys_addr_twostage() the code that applies the effects of
-VSTCR.{SA,SW} and VTCR.{NSA,NSW} only updates result->f.attrs.secure.
-Now we also have f.attrs.space for FEAT_RME, we need to keep the two
-in sync.
+In commit f0a08b0913befbd we changed the type of the PC from
+target_ulong to vaddr.  In doing so we inadvertently dropped the
+zero-padding on the PC in trace lines (the second item inside the []
+in these lines).  They used to look like this on AArch64, for
+instance:
 
-These bits only have an effect for Secure space translations, not
-for Root, so use the input in_space field to determine whether to
-apply them rather than the input is_secure. This doesn't actually
-make a difference because Root translations are never two-stage,
-but it's a little clearer.
+Trace 0: 0x7f2260000100 [00000000/0000000040000000/00000061/ff200000]
 
+and now they look like this:
+Trace 0: 0x7f4f50000100 [00000000/40000000/00000061/ff200000]
+
+and if the PC happens to be somewhere low like 0x5000
+then the field is shown as /5000/.
+
+This is because TARGET_FMT_lx is a "%08x" or "%016x" specifier,
+depending on TARGET_LONG_SIZE, whereas VADDR_PRIx is just PRIx64
+with no width specifier.
+
+Restore the zero-padding by adding an 016 width specifier to
+this tracing and a couple of others that were similarly recently
+changed to use VADDR_PRIx without a width specifier.
+
+We can't unfortunately restore the "32-bit guests are padded to
+8 hex digits and 64-bit guests to 16 hex digits" behaviour so
+easily.
+
+Fixes: f0a08b0913befbd ("accel/tcg/cpu-exec.c: Widen pc to vaddr")
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230710152130.3928330-4-peter.maydell@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Anton Johansson <anjo@rev.ng>
+Message-id: 20230711165434.4123674-1-peter.maydell@linaro.org
 ---
- target/arm/ptw.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ accel/tcg/cpu-exec.c      | 4 ++--
+ accel/tcg/translate-all.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index c0b9cee5843..8f94100c61f 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -3118,6 +3118,7 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-     hwaddr ipa;
-     int s1_prot, s1_lgpgsz;
-     bool is_secure = ptw->in_secure;
-+    ARMSecuritySpace in_space = ptw->in_space;
-     bool ret, ipa_secure;
-     ARMCacheAttrs cacheattrs1;
-     ARMSecuritySpace ipa_space;
-@@ -3200,11 +3201,13 @@ static bool get_phys_addr_twostage(CPUARMState *env, S1Translate *ptw,
-      * Check if IPA translates to secure or non-secure PA space.
-      * Note that VSTCR overrides VTCR and {N}SW overrides {N}SA.
-      */
--    result->f.attrs.secure =
--        (is_secure
--         && !(env->cp15.vstcr_el2 & (VSTCR_SA | VSTCR_SW))
--         && (ipa_secure
--             || !(env->cp15.vtcr_el2 & (VTCR_NSA | VTCR_NSW))));
-+    if (in_space == ARMSS_Secure) {
-+        result->f.attrs.secure =
-+            !(env->cp15.vstcr_el2 & (VSTCR_SA | VSTCR_SW))
-+            && (ipa_secure
-+                || !(env->cp15.vtcr_el2 & (VTCR_NSA | VTCR_NSW)));
-+        result->f.attrs.space = arm_secure_to_space(result->f.attrs.secure);
-+    }
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index fdd6d3e0e44..e2c494e75ef 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -298,7 +298,7 @@ static void log_cpu_exec(vaddr pc, CPUState *cpu,
+     if (qemu_log_in_addr_range(pc)) {
+         qemu_log_mask(CPU_LOG_EXEC,
+                       "Trace %d: %p [%08" PRIx64
+-                      "/%" VADDR_PRIx "/%08x/%08x] %s\n",
++                      "/%016" VADDR_PRIx "/%08x/%08x] %s\n",
+                       cpu->cpu_index, tb->tc.ptr, tb->cs_base, pc,
+                       tb->flags, tb->cflags, lookup_symbol(pc));
  
-     return false;
- }
+@@ -487,7 +487,7 @@ cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
+         if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
+             vaddr pc = log_pc(cpu, last_tb);
+             if (qemu_log_in_addr_range(pc)) {
+-                qemu_log("Stopped execution of TB chain before %p [%"
++                qemu_log("Stopped execution of TB chain before %p [%016"
+                          VADDR_PRIx "] %s\n",
+                          last_tb->tc.ptr, pc, lookup_symbol(pc));
+             }
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 4c17474fa22..a1782db5dd7 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -637,7 +637,7 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
+     if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
+         vaddr pc = log_pc(cpu, tb);
+         if (qemu_log_in_addr_range(pc)) {
+-            qemu_log("cpu_io_recompile: rewound execution of TB to %"
++            qemu_log("cpu_io_recompile: rewound execution of TB to %016"
+                      VADDR_PRIx "\n", pc);
+         }
+     }
 -- 
 2.34.1
 
