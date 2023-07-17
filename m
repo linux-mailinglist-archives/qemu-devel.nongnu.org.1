@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBB77561CF
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 13:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE306756219
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 13:53:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLMci-0000zC-PD; Mon, 17 Jul 2023 07:42:40 -0400
+	id 1qLMln-0004Ku-0c; Mon, 17 Jul 2023 07:52:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLMce-0000yo-Em
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 07:42:36 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLMcc-0000kW-Rz
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 07:42:36 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3142970df44so4197511f8f.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 04:42:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689594153; x=1692186153;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5InIicTtMnRfEzI6acmqa8cqpBH6kVWULVpKURy3/bc=;
- b=y0717Z+ga3UwdbLcqxQTXq/F4HmDaRblzFGl3dKztgMZQyKSHVI6N5lWFURDSrfJw7
- mTBY5uOuKgaVzs8Swn4WgzFnTB6znPNfn5JRHXz1tyJaTbBEgFQObBFEuGk43oaoC4n0
- 4nUju6/oh7anb6lVkrrAxXduHiTF3cRaZieNRznnfKHIGbZ7FcC6YBGnv8QzWIqR+KT3
- rWYX0HYBoiznzLyY3ngRNljeSVyVRQiZixi7BKAXzTW5JFfo6JLJ1bshyf9C8CndTMbL
- aYu44PdG73c4CGV2ZslpaEoaaEMRJrBMh6jyuziiD0Owu4d/P6TRLXWo+Z9MX/zwZcr4
- QgNw==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qLMlk-0004K3-82
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 07:52:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qLMli-0003EH-P5
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 07:51:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689594717;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=l4o9T2ZhHwFqQCH+mitCMb5ubOwOy7xSSjrnqcrvBGo=;
+ b=F3pBiHFd6XsBxvckOCLMTwBfRMRTFU6Zr+ENbr2d/sRcQdtdFfHLHv4kAleTbRtD9duTvG
+ A4HhoseOjx3e2W7h8XzeNQdyQz1Nf3NN7B7GxCIx1hwUvlWZXWsEoRCRLYOogNooA+oPUf
+ XWzp6SoWMzfdRV78VNpGtVM2amQAd3Y=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-650-2MUiib1iPm-Zjue1FXy5ng-1; Mon, 17 Jul 2023 07:51:56 -0400
+X-MC-Unique: 2MUiib1iPm-Zjue1FXy5ng-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3142665f122so2724772f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 04:51:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689594153; x=1692186153;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5InIicTtMnRfEzI6acmqa8cqpBH6kVWULVpKURy3/bc=;
- b=HxMUTtRoXw05+B36MMdcSjQ+SOmJ4fTnFKxQvUCrIMqT1uO9pZv+qAnmW5DMAk1vXZ
- K3TUqReNr8mHqGBhxYU8enqtqgbd6QpBdB3YRU+kSrvfv36FMZJJ2DpXd2+3baknCAM2
- IGO2CW53he9VldgpgOjaq5MOBrk6COopu7sasQlHPF+LoYwomcgQh2pf4DWHecGNFJt8
- FQuYyho6ZlyN7V1ykHjnZxfa5tLwqlASoecZLe0obgiWl++KO6sb4m1Ulbl5X1jQlKNv
- 0cqqQiMlaGEzeEUMt3ftBgbUb2FrlGspuiqxo2FXOlfC+andwC1vMQdVT1euna5IbojY
- mwVQ==
-X-Gm-Message-State: ABy/qLb/7wZFZ1/LDXr2GSU5tfS3ZJu1Aybxcsrns8WW6BlBulHOreYy
- MFlzbCqpBzR6vz91q7qfbXOlAA==
-X-Google-Smtp-Source: APBJJlE8M4SiATzh3QLyy/S3perRtcNyCWhjRGJU+uoZO2vvubHBEUlONh2wNnbSmszxZ9pc+tqtSA==
-X-Received: by 2002:adf:f7cb:0:b0:314:11fe:c72e with SMTP id
- a11-20020adff7cb000000b0031411fec72emr10270885wrq.46.1689594153254; 
- Mon, 17 Jul 2023 04:42:33 -0700 (PDT)
-Received: from [192.168.69.115] ([176.176.144.39])
- by smtp.gmail.com with ESMTPSA id
- a4-20020adfeec4000000b0030c4d8930b1sm19039507wrp.91.2023.07.17.04.42.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jul 2023 04:42:32 -0700 (PDT)
-Message-ID: <c29e4e41-f54f-5120-ba0d-d04bd7de1f9c@linaro.org>
-Date: Mon, 17 Jul 2023 13:42:31 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH] target/sparc: Handle FPRS correctly on big-endian hosts
-Content-Language: en-US
+ d=1e100.net; s=20221208; t=1689594715; x=1692186715;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=l4o9T2ZhHwFqQCH+mitCMb5ubOwOy7xSSjrnqcrvBGo=;
+ b=T8AQ0cP/8z67QGSu0NMDaWTuQ1QVSqcEtYlaSPunLZBibqw33Rh7ADYC1FAGCRPS6o
+ UmJRdmkLXMV1Nf2CfTb/83q37jNOKD8YdUMl4rfytOaOPr53kfhmtAC58DdiGKhfRJzo
+ jtgulvJ3YHOCK57CDaBJqdNe/KRfQxFnvEwO/SQmXQyLFsGhjtrhKy3kHcDc/OKpDPmd
+ un3lgnaoXqiUXdYmebJO6jK/YJu/f39CCUipjgDjAvz61eGcMOqIg4EtD62IB2YgoYZg
+ N4zqKeLZ5YLHZmfKDEqLtRlTxtqie9PtFMs1EO7DSVNPgFxBaelhcES43cWUzRiohQ/Y
+ vTbw==
+X-Gm-Message-State: ABy/qLaX2LzTEpk53awGGbqKcD5bFzeBPVPzA4bDgekAGM+nV7zr+1lT
+ 1jOeWpNAggNPCRwwe+M86cxUFHeaYoJa05L9ncKW5T1OWihU0L4J21IgW76DY90qs+oiqLEkn6Z
+ dmf9/LAwFGKz04So=
+X-Received: by 2002:a5d:4fc8:0:b0:313:dfa2:1a85 with SMTP id
+ h8-20020a5d4fc8000000b00313dfa21a85mr11755797wrw.27.1689594715218; 
+ Mon, 17 Jul 2023 04:51:55 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEHs3/Vk1doL/jnG17c92FzYiUtev180zRExjJ+8mdJ27pBNHSsawMYPXexpDu8lacKdUQPzw==
+X-Received: by 2002:a5d:4fc8:0:b0:313:dfa2:1a85 with SMTP id
+ h8-20020a5d4fc8000000b00313dfa21a85mr11755784wrw.27.1689594714872; 
+ Mon, 17 Jul 2023 04:51:54 -0700 (PDT)
+Received: from redhat.com ([2.52.146.77]) by smtp.gmail.com with ESMTPSA id
+ b5-20020a5d4b85000000b003143add4396sm18961960wrt.22.2023.07.17.04.51.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Jul 2023 04:51:54 -0700 (PDT)
+Date: Mon, 17 Jul 2023 07:51:51 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
 To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20230714172602.397267-1-peter.maydell@linaro.org>
- <869d9cf9-003a-b721-651c-b5bb82ed593d@linaro.org>
- <CAFEAcA9UdPwdJpXg3EFUEvvWji-bs_fCok=M+k=Tf_ej9w+j2w@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA9UdPwdJpXg3EFUEvvWji-bs_fCok=M+k=Tf_ej9w+j2w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Cc: qemu-devel@nongnu.org, Eric Auger <eric.auger@redhat.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: Re: [PULL 46/66] virtio-iommu: Fix 64kB host page size VFIO device
+ assignment
+Message-ID: <20230717075137-mutt-send-email-mst@kernel.org>
+References: <cover.1689030052.git.mst@redhat.com>
+ <94df5b2180d61fb2ee2b04cc007981e58b6479a9.1689030052.git.mst@redhat.com>
+ <CAFEAcA9JAZrxpcfjyEj8Hj1eYb+9PUxV2i05JTZwe0u+gVSBPg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA9JAZrxpcfjyEj8Hj1eYb+9PUxV2i05JTZwe0u+gVSBPg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,69 +100,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/7/23 19:32, Peter Maydell wrote:
-> On Fri, 14 Jul 2023 at 18:52, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> Hi Peter,
->>
->> On 14/7/23 19:26, Peter Maydell wrote:
->>> In CPUSparcState we define the fprs field as uint64_t.  However we
->>> then refer to it in translate.c via a TCGv_i32 which we set up with
->>> tcg_global_mem_new_ptr().  This means that on a big-endian host when
->>> the guest does something to writo te the FPRS register this value
->>> ends up in the wrong half of the uint64_t, and the QEMU C code that
->>> refers to env->fprs sees the wrong value.  The effect of this is that
->>> guest code that enables the FPU crashes with spurious FPU Disabled
->>> exceptions.  In particular, this is why
->>>    tests/avocado/machine_sparc64_sun4u.py:Sun4uMachine.test_sparc64_sun4u
->>> times out on an s390 host.
->>>
->>> There are multiple ways we could fix this; since there are actually
->>> only three bits in the FPRS register and the code in translate.c
->>> would be a bit painful to convert to dealing with a TCGv_i64, change
->>> the type of the CPU state struct field to match what translate.c is
->>> expecting.
->>>
->>> (None of the other fields referenced by the r32[] array in
->>> sparc_tcg_init() have the wrong type.)
->>>
->>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->>> ---
->>> Another in my occasional series of "fix an avocado failure on
->>> s390" Friday afternoon patches :-)
->>
->> :)
->>
->>> diff --git a/target/sparc/gdbstub.c b/target/sparc/gdbstub.c
->>> index a1c8fdc4d55..bddb9609b7b 100644
->>> --- a/target/sparc/gdbstub.c
->>> +++ b/target/sparc/gdbstub.c
->>> @@ -96,7 +96,10 @@ int sparc_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
->>>        case 83:
->>>            return gdb_get_regl(mem_buf, env->fsr);
->>>        case 84:
->>> -        return gdb_get_regl(mem_buf, env->fprs);
->>> +    {
->>> +        target_ulong fprs = env->fprs;
->>> +        return gdb_get_regl(mem_buf, fprs);
->>
->> Why not return gdb_get_reg32() ?
+On Mon, Jul 17, 2023 at 11:50:54AM +0100, Peter Maydell wrote:
+> On Tue, 11 Jul 2023 at 00:04, Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > From: Eric Auger <eric.auger@redhat.com>
+> >
+> > When running on a 64kB page size host and protecting a VFIO device
+> > with the virtio-iommu, qemu crashes with this kind of message:
+> >
+> > qemu-kvm: virtio-iommu page mask 0xfffffffffffff000 is incompatible
+> > with mask 0x20010000
+> > qemu: hardware error: vfio: DMA mapping failed, unable to continue
+> >
+> > This is due to the fact the IOMMU MR corresponding to the VFIO device
+> > is enabled very late on domain attach, after the machine init.
+> > The device reports a minimal 64kB page size but it is too late to be
+> > applied. virtio_iommu_set_page_size_mask() fails and this causes
+> > vfio_listener_region_add() to end up with hw_error();
+> >
+> > To work around this issue, we transiently enable the IOMMU MR on
+> > machine init to collect the page size requirements and then restore
+> > the bypass state.
+> >
+> > Fixes: 90519b9053 ("virtio-iommu: Add bypass mode support to assigned device")
+> > Signed-off-by: Eric Auger <eric.auger@redhat.com>
 > 
-> Because that would cause different on-the-wire data to be
-> sent to gdb -- gdb_get_reg32() puts 4 bytes of data into
-> the gdb remote protocol packet, whereas gdb_get_regl() puts
-> either 4 or 8 bytes depending on TARGET_LONG_BITS (as
-> it happens, here we'll always send 8 because this register
-> is sparc64- specific).
+> Hi; Coverity complains about this change (CID 1517772):
+> 
+> > +static void virtio_iommu_freeze_granule(Notifier *notifier, void *data)
+> > +{
+> > +    VirtIOIOMMU *s = container_of(notifier, VirtIOIOMMU, machine_done);
+> > +    int granule;
+> > +
+> > +    if (likely(s->config.bypass)) {
+> > +        /*
+> > +         * Transient IOMMU MR enable to collect page_size_mask requirements
+> > +         * through memory_region_iommu_set_page_size_mask() called by
+> > +         * VFIO region_add() callback
+> > +         */
+> > +         s->config.bypass = false;
+> > +         virtio_iommu_switch_address_space_all(s);
+> > +         /* restore default */
+> > +         s->config.bypass = true;
+> > +         virtio_iommu_switch_address_space_all(s);
+> > +    }
+> > +    s->granule_frozen = true;
+> > +    granule = ctz64(s->config.page_size_mask);
+> > +    trace_virtio_iommu_freeze_granule(BIT(granule));
+> 
+> Specifically, in this code, it thinks that ctz64() can
+> return 64, in which case BIT(granule) is shifting off
+> the end of the value, which is undefined behaviour.
+> This can happen if s->config.page_size_mask is 0 -- are
+> there assertions/checks that that can't happen elsewhere?
+> 
+> Secondly, BIT() only works for values up to 32, since
+> it works on type unsigned long, which might be a 32-bit
+> type on some hosts. Since you used ctz64()
+> you probably want BIT_ULL() which uses the ULL type
+> which definitely has 64 bits.
+> 
+> thanks
+> -- PMM
 
-Right, I missed the TARGET_LONG_BITS part.
+Thanks! Eric can you fix pls?
 
-> Anyway, Richard is correct and we don't need to change this
-> at all, because gdb_get_regl() takes an integer argument,
-> it isn't a magic macro that implicitly takes the address
-> or looks at the type of what it gets passed. So passing
-> it env->fprs will zero-extend that and DTRT.
-
-OK.
+-- 
+MST
 
 
