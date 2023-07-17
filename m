@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F13756359
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D71D756390
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 14:57:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLNhX-0002Z3-3e; Mon, 17 Jul 2023 08:51:43 -0400
+	id 1qLNgr-0002Wx-2x; Mon, 17 Jul 2023 08:51:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLNdu-0008Ti-9X
+ id 1qLNdu-0008Th-94
  for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:48:03 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLNdp-0008TT-6c
+ id 1qLNdp-0008TZ-Nh
  for qemu-devel@nongnu.org; Mon, 17 Jul 2023 08:47:57 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-316f589549cso1815919f8f.1
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-31590e4e27aso4023989f8f.1
  for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 05:47:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689598070; x=1692190070;
+ d=linaro.org; s=google; t=1689598071; x=1692190071;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=edbJjO1yTMsccjp+1Oi4Tpx97oGTrv0Dg957zzrUT/c=;
- b=P0wB2kGqlRahKS5nj+YO0xzESU/X7CEd+dj4vYEVMdHuFBD1JUKoqYxzczfFOuxx1B
- SHOBTYGRUW0YfyLuBXEOVprOH5UjiAqiMn377pNhQ/pu65bXIrxlt39Z0GZ11Biyn8a8
- oYa43mag87FReeVPeseWbVmFGbjb9hH88DzvUPOdubwQAgyaiau6pD+rxUCBaxKIOkTT
- 4R8pWMzkF5FPXeIJ5cBlRdKb/Ig/4s9YEZgIRTUyk+UXaKzQ0vvnwKqffBsZSvtrufsO
- qKoMIxnM/2/5Yqz14nzwru/syR1K5gZwgN6+A9TCtxysmNRryxhymLAWsng5qFFr3UgL
- uMow==
+ :reply-to; bh=fm7KSG5NrB8kIIZoFYKUbYE9OkMwBur5haFqwy0lLuU=;
+ b=LBJBrnKHnBJ7Jkw/hZ3RoZkFVs/VVlV7w4myj8JMR/OTdeBvq0DGXU5/EPp41o3moW
+ w/nYN3onsfgiCWPhIJ018C5usmnrjOf1O25YZMl1nyFp7Ug1wLxLm2V3i3geehqmIxt1
+ 3xmjFWZgq5pmXjK+xH/dh0XcWNgU3KEMSvdpchZFMm1TXBUD+/XgRbV9P0Nk194K9us6
+ Uh97KEkYdQM3ujjIj8bMAzsfwADv7Z/vtJ5BvQjFyhY77ND5U4RtYjyRjbSK3g9MABM3
+ mFp4XWU0nHCYKLqNaMByINTbMkH9+bG4kn1iMLO2f53uZzfMaLlRkqxxiJDlTdDqhvRM
+ HrnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689598070; x=1692190070;
+ d=1e100.net; s=20221208; t=1689598071; x=1692190071;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=edbJjO1yTMsccjp+1Oi4Tpx97oGTrv0Dg957zzrUT/c=;
- b=hY4aqKlRsV+FV4oh1IJVYH3Aj+1qgIkTFz0nKQPGd685Dx4+lggv/u0MGBjFl1gliq
- U2LQ6NniYkKvj7m3vva0AbhUk0OGH4u5Y0I7rK7DvhH2rb8Z1DJuuyePbJEOWk0nCKt9
- 8tIGqLbWdI4UsCu7EtSSgfgLXqUiW3ZaIGUQW8Eeh93MmXDT8UJkERut6L+kdPO9+neq
- V33jaFqyKfcyy/bI3q1mjhCDkhwxWrhxcX3e7c4ZVNKew86rcG6rIFY1U27R8Px5ZgIP
- qt1/cAccTJ5l7vlIfhtJIt7RQvqSs0Z3/Tx2eVnJmV8W9l2f3/f1+Zyd+b4B9FxukwDq
- oNvg==
-X-Gm-Message-State: ABy/qLaR7g4s66VnxSyznDqZjkh2eBQgITCj+6jRL3se6GotvKVGHASb
- i5xsqgBMDvTFjSupjiNl37IefSfpS1r5Bm8Gci8=
-X-Google-Smtp-Source: APBJJlHiOyi3ts1gBI8CYYSAHCCfkPvmswl3HQRZDea0dfkH/TVD7faKsiPX7DYaryKTnDQ6YaKraw==
-X-Received: by 2002:a5d:4e46:0:b0:313:e8bf:a77 with SMTP id
- r6-20020a5d4e46000000b00313e8bf0a77mr9476225wrt.5.1689598070470; 
+ bh=fm7KSG5NrB8kIIZoFYKUbYE9OkMwBur5haFqwy0lLuU=;
+ b=GLGWefEueG6SVPtl+vHQHZCeFlmN6OZb7Ev4O+jqMKFbdkJvQ3J2ITouueDhBpzfpF
+ WyzYo3HbBQSEp6ct2cergfZHMT0ylwqCT0u+1wCyiSQ6An6XvLJ/UiRX7RQuyCxkjgPr
+ xV5xJ4I9S6eUc2cHMC8r7ioIm+K+kam4aw0B2+1X5y6DxL3Y2/+rLt8bbVKV/EiY2OFT
+ uvqEVMFNqSOAtZJyaVNKAIxtuuoGDgnT7LT3CocFmMB5tj2JQxPcz4ttNVwDasgbMZ1y
+ 4eBJjZGZYc23aenQ89PKw4lhFfEanlCpAQrOzDjxp0qx3iTKGtHYJkdMVVOHQoL2p1WY
+ 96ig==
+X-Gm-Message-State: ABy/qLbb8Uxis9d1hXkVH/c2P356pl9n4U1xKbgrJtfpCEDUdYmJ2IVe
+ Z2BKKngSJtFUS3TVxgZMYCajDXQ5f+OFOGVl8po=
+X-Google-Smtp-Source: APBJJlH0bVXCfop2RRBQYpyP9vhuUzMzvgePOOOv0zaS1utNMtdtHAlneFeWQ8c5K5/cYnlHI2LWAQ==
+X-Received: by 2002:adf:d4c4:0:b0:313:e953:65d0 with SMTP id
+ w4-20020adfd4c4000000b00313e95365d0mr9147896wrk.28.1689598070913; 
  Mon, 17 Jul 2023 05:47:50 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,17 +58,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 17 Jul 2023 05:47:50 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 6/7] accel/tcg: Zero-pad PC in TCG CPU exec trace lines
-Date: Mon, 17 Jul 2023 13:47:45 +0100
-Message-Id: <20230717124746.759085-7-peter.maydell@linaro.org>
+Subject: [PULL 7/7] hw/nvram: Avoid unnecessary Xilinx eFuse backstore write
+Date: Mon, 17 Jul 2023 13:47:46 +0100
+Message-Id: <20230717124746.759085-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230717124746.759085-1-peter.maydell@linaro.org>
 References: <20230717124746.759085-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,77 +91,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit f0a08b0913befbd we changed the type of the PC from
-target_ulong to vaddr.  In doing so we inadvertently dropped the
-zero-padding on the PC in trace lines (the second item inside the []
-in these lines).  They used to look like this on AArch64, for
-instance:
+From: Tong Ho <tong.ho@amd.com>
 
-Trace 0: 0x7f2260000100 [00000000/0000000040000000/00000061/ff200000]
+Add a check in the bit-set operation to write the backstore
+only if the affected bit is 0 before.
 
-and now they look like this:
-Trace 0: 0x7f4f50000100 [00000000/40000000/00000061/ff200000]
+With this in place, there will be no need for callers to
+do the checking in order to avoid unnecessary writes.
 
-and if the PC happens to be somewhere low like 0x5000
-then the field is shown as /5000/.
-
-This is because TARGET_FMT_lx is a "%08x" or "%016x" specifier,
-depending on TARGET_LONG_SIZE, whereas VADDR_PRIx is just PRIx64
-with no width specifier.
-
-Restore the zero-padding by adding an 016 width specifier to
-this tracing and a couple of others that were similarly recently
-changed to use VADDR_PRIx without a width specifier.
-
-We can't unfortunately restore the "32-bit guests are padded to
-8 hex digits and 64-bit guests to 16 hex digits" behaviour so
-easily.
-
-Fixes: f0a08b0913befbd ("accel/tcg/cpu-exec.c: Widen pc to vaddr")
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Tong Ho <tong.ho@amd.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-id: 20230711165434.4123674-1-peter.maydell@linaro.org
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- accel/tcg/cpu-exec.c      | 4 ++--
- accel/tcg/translate-all.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ hw/nvram/xlnx-efuse.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index fdd6d3e0e44..e2c494e75ef 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -298,7 +298,7 @@ static void log_cpu_exec(vaddr pc, CPUState *cpu,
-     if (qemu_log_in_addr_range(pc)) {
-         qemu_log_mask(CPU_LOG_EXEC,
-                       "Trace %d: %p [%08" PRIx64
--                      "/%" VADDR_PRIx "/%08x/%08x] %s\n",
-+                      "/%016" VADDR_PRIx "/%08x/%08x] %s\n",
-                       cpu->cpu_index, tb->tc.ptr, tb->cs_base, pc,
-                       tb->flags, tb->cflags, lookup_symbol(pc));
+diff --git a/hw/nvram/xlnx-efuse.c b/hw/nvram/xlnx-efuse.c
+index fdfffaab99c..655c40b8d1e 100644
+--- a/hw/nvram/xlnx-efuse.c
++++ b/hw/nvram/xlnx-efuse.c
+@@ -143,6 +143,8 @@ static bool efuse_ro_bits_find(XlnxEFuse *s, uint32_t k)
  
-@@ -487,7 +487,7 @@ cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
-         if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
-             vaddr pc = log_pc(cpu, last_tb);
-             if (qemu_log_in_addr_range(pc)) {
--                qemu_log("Stopped execution of TB chain before %p [%"
-+                qemu_log("Stopped execution of TB chain before %p [%016"
-                          VADDR_PRIx "] %s\n",
-                          last_tb->tc.ptr, pc, lookup_symbol(pc));
-             }
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 4c17474fa22..a1782db5dd7 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -637,7 +637,7 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
-     if (qemu_loglevel_mask(CPU_LOG_EXEC)) {
-         vaddr pc = log_pc(cpu, tb);
-         if (qemu_log_in_addr_range(pc)) {
--            qemu_log("cpu_io_recompile: rewound execution of TB to %"
-+            qemu_log("cpu_io_recompile: rewound execution of TB to %016"
-                      VADDR_PRIx "\n", pc);
-         }
+ bool xlnx_efuse_set_bit(XlnxEFuse *s, unsigned int bit)
+ {
++    uint32_t set, *row;
++
+     if (efuse_ro_bits_find(s, bit)) {
+         g_autofree char *path = object_get_canonical_path(OBJECT(s));
+ 
+@@ -152,8 +154,13 @@ bool xlnx_efuse_set_bit(XlnxEFuse *s, unsigned int bit)
+         return false;
      }
+ 
+-    s->fuse32[bit / 32] |= 1 << (bit % 32);
+-    efuse_bdrv_sync(s, bit);
++    /* Avoid back-end write unless there is a real update */
++    row = &s->fuse32[bit / 32];
++    set = 1 << (bit % 32);
++    if (!(set & *row)) {
++        *row |= set;
++        efuse_bdrv_sync(s, bit);
++    }
+     return true;
+ }
+ 
 -- 
 2.34.1
 
