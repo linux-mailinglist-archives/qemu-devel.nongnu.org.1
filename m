@@ -2,65 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00118755EA4
-	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 10:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D234755EB7
+	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 10:47:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLJl8-0000bU-TG; Mon, 17 Jul 2023 04:39:11 -0400
+	id 1qLJs9-0002Ux-1E; Mon, 17 Jul 2023 04:46:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fweimer@redhat.com>)
- id 1qLJl1-0000az-T5
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 04:39:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fweimer@redhat.com>)
- id 1qLJkz-0000dC-Ei
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 04:39:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689583138;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=kaXs3M3bwOW5qK4t4esxqK02hzuChm6YuEhSl5P/JTg=;
- b=Kda1HtMSU8zn8wMNrm12Dt0kmP0DrQRDZjUAgMka5BIJbF3ATm+e70VLo/58MDxxwQKWLL
- b9eo3/R1XNwpdwL7s4p5C98StGds3C8JxAwgl6izOHizebUV2CyEKD0lhjnd/pAPqKdNPC
- Ta+Ez1WEohFv6LlFTK/eZ/BOqRZaetA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-264-paWaAmuIOheGNfLMT-huXw-1; Mon, 17 Jul 2023 04:38:54 -0400
-X-MC-Unique: paWaAmuIOheGNfLMT-huXw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F3103101A54E;
- Mon, 17 Jul 2023 08:38:53 +0000 (UTC)
-Received: from oldenburg.str.redhat.com (unknown [10.2.16.3])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C775B40C2063;
- Mon, 17 Jul 2023 08:38:52 +0000 (UTC)
-From: Florian Weimer <fweimer@redhat.com>
-To: libc-alpha@sourceware.org, qemu-devel@nongnu.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>
-Subject: Missing cache information on x86-64 under Intel TDX (glibc bug 30643)
-Date: Mon, 17 Jul 2023 10:38:50 +0200
-Message-ID: <87mszv7x0l.fsf@oldenburg.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qLJs7-0002Uf-2K; Mon, 17 Jul 2023 04:46:23 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1qLJs5-0002Kz-CJ; Mon, 17 Jul 2023 04:46:22 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-993d1f899d7so616371466b.2; 
+ Mon, 17 Jul 2023 01:46:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1689583579; x=1692175579;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ntDOvp0hLY7wfCpnc75OMF0QQc4nvfu9CJfPGufUB/k=;
+ b=nt+7G03U+9oSZAV6s5e2UoyM3zN/ZOQVaSZgAYQNYomfOo1g5Juxr3GcmvujpWDZMy
+ HQgJZT+CLPpb7/lkh+jA92wp5JptDT4QCs1Ae93bAWpr/6XIRo4tcnTLeKqRfxaAf7us
+ hSzKfAksfucnWWnd6fq2A4hzCb64Fe+6dObVRSxg+4qedEtrXpv+BUCVmQJogtU6OHHv
+ 6DLknEkU2/XbWlZZLU0RlWbAX03i0sKhMhdXn/9339oJ3JIxzJ6iUTNIA/OiDsK3t5Iu
+ mAOcJFybwG1sRF0rMuyb9Fq5uLOSKHFGWHC2RGOL0pDuDSs6N1G8B/9xvRR17nM5MXGF
+ qwzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689583579; x=1692175579;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ntDOvp0hLY7wfCpnc75OMF0QQc4nvfu9CJfPGufUB/k=;
+ b=WRtkS52y9mw0J4B1zcqVkd6zdvPSOhj/A4v7viManKKLut+qPOhizxs8dppKo/vlR3
+ MQsabQJ9v7I6YnJWS6p3pZUcJ+jElWeMukMVlnJhGuLzunraxVzIIm0xnsoS06s0vPmu
+ BDYlU361uJL964p2sH7xk3eQwL0K+hcAMUpuZnqqMJ71Z9YxMEJCaWFHaOVnof+7WlSD
+ erJWi2nnpGmHWmwbV0ZKq7btpjxl8l2ftyJXfAbgmlVDGFENL1Spdl0V28HGpPqER3vz
+ IpNEfCyucN0beAK9Y+K9WmxS2pI7+cJ23Le3A/8zSn7BmSFmkkVyzGHNuOTLzE+XQTCi
+ WxzA==
+X-Gm-Message-State: ABy/qLbCLkANo/Qm6vtB5ofLvmXtMpfwMGkFZn5197P3pgLaYVNhL86/
+ WsGv+2GmiqKlBaccxU0CRXc=
+X-Google-Smtp-Source: APBJJlGmZZiHvmKxJvLShSQ/OjmHTEJ4xoyNbduYbbyHs3vZK+sLdsEPW6llNyMvVBmUjkWF8GIsyw==
+X-Received: by 2002:a17:906:5e:b0:994:554b:7f27 with SMTP id
+ 30-20020a170906005e00b00994554b7f27mr7411039ejg.2.1689583578932; 
+ Mon, 17 Jul 2023 01:46:18 -0700 (PDT)
+Received: from [127.0.0.1] ([62.214.191.67]) by smtp.gmail.com with ESMTPSA id
+ l9-20020a170906230900b0099342c87775sm8937245eja.20.2023.07.17.01.46.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Jul 2023 01:46:18 -0700 (PDT)
+Date: Mon, 17 Jul 2023 08:46:16 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Olaf Hering <olaf@aepfle.de>, Paolo Bonzini <pbonzini@redhat.com>
+CC: qemu-devel@nongnu.org,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Lev Kujawski <lkujaw@member.fsf.org>,
+ qemu-block@nongnu.org, John Snow <jsnow@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH v2] hw/ide/piix: properly initialize the BMIBA register
+In-Reply-To: <20230705120121.4f353ba6.olaf@aepfle.de>
+References: <20230701174659.10246-1-olaf@aepfle.de>
+ <62EDA748-11A3-473F-913D-F9464335A382@gmail.com>
+ <20230703095929.6e793dcf.olaf@aepfle.de>
+ <93902CB6-7A6E-49E5-A55F-432C6B4BC00F@gmail.com>
+ <dded4d33-d64f-9369-0742-a57a1e173153@redhat.com>
+ <20230705120121.4f353ba6.olaf@aepfle.de>
+Message-ID: <DA75E02A-FAB3-4262-90B6-37A213ACFA47@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=fweimer@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,231 +99,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a continuation of glibc bug 30037, whose root cause was not
-fixed:
 
-  Missing cache information on x86-64 under Intel TDX
-  <https://sourceware.org/bugzilla/show_bug.cgi?id=3D30643>
 
-  glibc 2.34 and newer segfault if CPUID leaf 0x2 reports zero=20
-  <https://sourceware.org/bugzilla/show_bug.cgi?id=3D30037>
+Am 5=2E Juli 2023 10:01:21 UTC schrieb Olaf Hering <olaf@aepfle=2Ede>:
+>Tue, 4 Jul 2023 08:38:33 +0200 Paolo Bonzini <pbonzini@redhat=2Ecom>:
+>
+>> I agree that calling pci_device_reset() would be a better match for=20
+>> pci_xen_ide_unplug()=2E
+>
+>This change works as well:
+>
+>--- a/hw/i386/xen/xen_platform=2Ec
+>+++ b/hw/i386/xen/xen_platform=2Ec
+>@@ -164,8 +164,9 @@ static void pci_unplug_nics(PCIBus *bus)
+>  *
+>  * [1] https://xenbits=2Exen=2Eorg/gitweb/?p=3Dxen=2Egit;a=3Dblob;f=3Ddo=
+cs/misc/hvm-emulated-unplug=2Epandoc
+>  */
+>-static void pci_xen_ide_unplug(DeviceState *dev, bool aux)
+>+static void pci_xen_ide_unplug(PCIDevice *d, bool aux)
+> {
+>+    DeviceState *dev =3D DEVICE(d);
+>     PCIIDEState *pci_ide;
+>     int i;
+>     IDEDevice *idedev;
+>@@ -195,7 +196,7 @@ static void pci_xen_ide_unplug(DeviceState *dev, bool=
+ aux)
+>             blk_unref(blk);
+>         }
+>     }
+>-    device_cold_reset(dev);
+>+    pci_device_reset(d);
+> }
+>=20
+> static void unplug_disks(PCIBus *b, PCIDevice *d, void *opaque)
+>@@ -210,7 +211,7 @@ static void unplug_disks(PCIBus *b, PCIDevice *d, voi=
+d *opaque)
+>=20
+>     switch (pci_get_word(d->config + PCI_CLASS_DEVICE)) {
+>     case PCI_CLASS_STORAGE_IDE:
+>-        pci_xen_ide_unplug(DEVICE(d), aux);
+>+        pci_xen_ide_unplug(d, aux);
+>         break;
+>=20
+>     case PCI_CLASS_STORAGE_SCSI:
 
-Not sure if there is a public mailing list yet where TDX enablement is
-discussed.  I'll point a few folks to this thread privately.
+Hi Olaf,
 
-The core of the issue is that CPUID.02H comes back as all zero.  Current
-glibc uses CPUID.02H as the starting point to determine cache topology,
-so we get back all zeros:
+Would you mind sending this patch as well? The PIIX fix alone just fixes t=
+he syptom, not the underlying problem=2E The underlying problem is that the=
+ BAR isn't deactivated, and with the PIIX patch it will stay at address zer=
+o rather than in the USB function address range=2E
 
-# getconf -a | grep CACHE
-LEVEL1_ICACHE_SIZE                 0
-LEVEL1_ICACHE_ASSOC=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-LEVEL1_ICACHE_LINESIZE             0
-LEVEL1_DCACHE_SIZE                 0
-LEVEL1_DCACHE_ASSOC                0
-LEVEL1_DCACHE_LINESIZE             0
-LEVEL2_CACHE_SIZE                  0
-LEVEL2_CACHE_ASSOC                 0
-LEVEL2_CACHE_LINESIZE              0
-LEVEL3_CACHE_SIZE                  0
-LEVEL3_CACHE_ASSOC                 0
-LEVEL3_CACHE_LINESIZE              0
-LEVEL4_CACHE_SIZE                  0
-LEVEL4_CACHE_ASSOC=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-LEVEL4_CACHE_LINESIZE=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+I think this patch should ideally land in 8=2E1, and IIUC bug fixes are st=
+ill accepted for it=2E
 
-This will almost certainly cause application hangs and crashes if they
-use the cache line sizes to divide up arrays for processing.  Size 0
-means that either no progress is made, or a division-by-zero trap
-occurs.
+Best regards,
+Bernhard
 
-(Full =E2=80=9Ccpuid -1 -r=E2=80=9D output below, from an Azure TDX instanc=
-e, shared
-with permission.)
-
-The current all-00H behavior is arguably not within the description of
-the Intel SDM because it lists special FEH and FFH descriptors to
-redirect to other CPUID information sources.  (Current glibc only
-handles 0FFH redirects, apparently.)  Some applications can get the
-cache information using those other means (ignoring CPUID.02H or using
-it as fallback only).  Looking at Debian Code Search results, direct
-CPUID.02H are somewhat common:
-
-<https://codesearch.debian.net/search?q=3Dcpuid%5Cs*%5C%282%2C&literal=3D0&=
-perpkg=3D1>
-
-It looks like a few code snippets were copied around quite a bit.
-(You'd need to look at the context, though, to see if these applications
-are actually impacted.)
-
-I would prefer if this could be fixed in Intel TDX because it's the only
-the way we avoid additional userspace porting of applications, or at
-least impact analysis.  But if TDX can't be fixed for some reason, we
-need to treat the all-00H as an instruction to glibc to gather the cache
-information by some other means.
-
-Thanks,
-Florian
-
-# /usr/bin/cpuid -1 -r=20=20
-CPU:
-   0x00000000 0x00: eax=3D0x00000021 ebx=3D0x756e6547 ecx=3D0x6c65746e edx=
-=3D0x49656e69
-   0x00000001 0x00: eax=3D0x000806f8 ebx=3D0x00020800 ecx=3D0xfffaba17 edx=
-=3D0x1fabfbff
-   0x00000002 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000003 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000004 0x00: eax=3D0x00004121 ebx=3D0x02c0003f ecx=3D0x0000003f edx=
-=3D0x00000000
-   0x00000004 0x01: eax=3D0x00004122 ebx=3D0x01c0003f ecx=3D0x0000003f edx=
-=3D0x00000000
-   0x00000004 0x02: eax=3D0x00004143 ebx=3D0x03c0003f ecx=3D0x000007ff edx=
-=3D0x00000000
-   0x00000004 0x03: eax=3D0x00004163 ebx=3D0x0380003f ecx=3D0x0001bfff edx=
-=3D0x00000000
-   0x00000004 0x04: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000005 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000006 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000007 0x00: eax=3D0x00000001 ebx=3D0xf1bf2ff9 ecx=3D0x1b415fe6 edx=
-=3D0xffd14410
-   0x00000007 0x01: eax=3D0x00001c30 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000008 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000009 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000000a 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000000b 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000000c 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000000d 0x00: eax=3D0x000600e7 ebx=3D0x00002b00 ecx=3D0x00002b00 edx=
-=3D0x00000000
-   0x0000000d 0x01: eax=3D0x0000001f ebx=3D0x000029c0 ecx=3D0x00001800 edx=
-=3D0x00000000
-   0x0000000d 0x02: eax=3D0x00000100 ebx=3D0x00000240 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000000d 0x05: eax=3D0x00000040 ebx=3D0x00000440 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000000d 0x06: eax=3D0x00000200 ebx=3D0x00000480 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000000d 0x07: eax=3D0x00000400 ebx=3D0x00000680 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000000d 0x0b: eax=3D0x00000010 ebx=3D0x00000000 ecx=3D0x00000001 edx=
-=3D0x00000000
-   0x0000000d 0x0c: eax=3D0x00000018 ebx=3D0x00000000 ecx=3D0x00000001 edx=
-=3D0x00000000
-   0x0000000d 0x11: eax=3D0x00000040 ebx=3D0x00000ac0 ecx=3D0x00000002 edx=
-=3D0x00000000
-   0x0000000d 0x12: eax=3D0x00002000 ebx=3D0x00000b00 ecx=3D0x00000006 edx=
-=3D0x00000000
-   0x0000000e 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000000f 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000010 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000011 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000012 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000012 0x01: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000012 0x02: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000013 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000014 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000015 0x00: eax=3D0x00000001 ebx=3D0x00000054 ecx=3D0x017d7840 edx=
-=3D0x00000000
-   0x00000016 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000017 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000018 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000019 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000001a 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000001b 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000001b 0x01: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000001c 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000001d 0x00: eax=3D0x00000001 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000001d 0x01: eax=3D0x04002000 ebx=3D0x00080040 ecx=3D0x00000010 edx=
-=3D0x00000000
-   0x0000001e 0x00: eax=3D0x00000000 ebx=3D0x00004010 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000001f 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x0000001f 0x01: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000020 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x00000021 0x00: eax=3D0x00000000 ebx=3D0x65746e49 ecx=3D0x20202020 edx=
-=3D0x5844546c
-   0x20000000 0x00: eax=3D0x00000000 ebx=3D0x65746e49 ecx=3D0x20202020 edx=
-=3D0x5844546c
-   0x40000000 0x00: eax=3D0x4000000c ebx=3D0x7263694d ecx=3D0x666f736f edx=
-=3D0x76482074
-   0x40000001 0x00: eax=3D0x31237648 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x40000002 0x00: eax=3D0x0000585d ebx=3D0x000a0000 ecx=3D0x00000001 edx=
-=3D0x00000447
-   0x40000003 0x00: eax=3D0x0000ae7f ebx=3D0x00628030 ecx=3D0x00000002 edx=
-=3D0xe0be47a2
-   0x40000004 0x00: eax=3D0x00360e24 ebx=3D0x00000fff ecx=3D0x00000034 edx=
-=3D0x00000000
-   0x40000005 0x00: eax=3D0x00000800 ebx=3D0x00000800 ecx=3D0x00009720 edx=
-=3D0x00000000
-   0x40000006 0x00: eax=3D0x0000000f ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x40000007 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x40000008 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x40000009 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x4000000a 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x4000000b 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x4000000c 0x00: eax=3D0x00000000 ebx=3D0x00000003 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x40000100 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x80000000 0x00: eax=3D0x80000008 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x80000001 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000121 edx=
-=3D0x2c100800
-   0x80000002 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x80000003 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x80000004 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x80000005 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x80000006 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x80000007 0x00: eax=3D0x00000000 ebx=3D0x00000000 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x80000008 0x00: eax=3D0x00003934 ebx=3D0x00000200 ecx=3D0x00000000 edx=
-=3D0x00000000
-   0x80860000 0x00: eax=3D0x00000000 ebx=3D0x65746e49 ecx=3D0x20202020 edx=
-=3D0x5844546c
-   0xc0000000 0x00: eax=3D0x00000000 ebx=3D0x65746e49 ecx=3D0x20202020 edx=
-=3D0x5844546c
-
+>--- a/hw/ide/piix=2Ec
+>+++ b/hw/ide/piix=2Ec
+>@@ -118,7 +118,6 @@ static void piix_ide_reset(DeviceState *dev)
+>     pci_set_word(pci_conf + PCI_COMMAND, 0x0000);
+>     pci_set_word(pci_conf + PCI_STATUS,
+>                  PCI_STATUS_DEVSEL_MEDIUM | PCI_STATUS_FAST_BACK);
+>-    pci_set_byte(pci_conf + 0x20, 0x01);  /* BMIBA: 20-23h */
+> }
+>=20
+> static bool pci_piix_init_bus(PCIIDEState *d, unsigned i, Error **errp)
+>
+>
+>Olaf
 
