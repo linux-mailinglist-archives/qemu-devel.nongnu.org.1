@@ -2,81 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FE6756837
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E238756836
 	for <lists+qemu-devel@lfdr.de>; Mon, 17 Jul 2023 17:43:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLQMG-0002sb-8g; Mon, 17 Jul 2023 11:41:56 -0400
+	id 1qLQN6-0003Hj-58; Mon, 17 Jul 2023 11:42:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qLQME-0002pX-Ja
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:41:54 -0400
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qLQN4-0003H0-Dh
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:42:46 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qLQMC-0008EU-VG
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:41:54 -0400
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-3a43cbb432aso2604233b6e.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 08:41:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qLQN2-0008MK-FR
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 11:42:46 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-51e48e1f6d1so6263960a12.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 08:42:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1689608511; x=1692200511;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Am7ITXKQFOljx/D2CumawP5jQcrbC9JOhJwqTweZbs0=;
- b=mbxYukwALILqAXBz2kaHG52McAF9qFc4Tze2F805D9lwYtZU2XDtcDwG4rYk2mVVB+
- 7IBPjfMbKyTyy2DJX0Y+58EiuTz5ciAJRzELHL/6wHkRD2JqYQl4wYRkduozBoueLIHk
- H1IyrDtZaALaFFkhc1lZO+9XslaGTrMN5b+tojaTfw70L956tlu32R6iS+F9vL+b0vrn
- /SgPC1exmZulFoXcFgC7XwvlXzJZVqBjxobuPRyqlPPHgVtr1xISol/64LeNXAKv789Q
- aZmiQmG+cFnvPKq3FmxaHrVLI+lmArM7QRe2wfQmJjQZ6AnMUudmrvfiAoGJNudyjTUM
- /X1g==
+ d=linaro.org; s=google; t=1689608561; x=1692200561;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=hFUDpA9e2N6LXhWjFJkLb/OKnRq1Se2Oj4JUDP8Fzzk=;
+ b=SdX1Af/KhVosGVaRru6pUJRw5LWfAcLbliuJSntR403GLozHCs94NI9h6ut8WSdrmx
+ MZa9N00h0h1ANSkOW0q1MQ5a0/Qn29H1q81iZ7YJ1nkhrhNn6zfVHthuRfdg3X6xURsb
+ 9cSH13stWPnjbPAU7Dx+UPCQMCn9FlB2h/IsNNShbdCSGheOh2ZKcW6wtD/oxYvr4HZg
+ pnRVhaHRdPrNpwF8lO+InVNlet7mPYIl8uuVnV2a+//om/TrLycFtUjUHqL6qsazdNuS
+ Eu9rjN61+30acADvtdahsPBHCgtEOhH2jpKFzbaioHXbM7vZOkJ76+engh16xHqEqEyz
+ odpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689608511; x=1692200511;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Am7ITXKQFOljx/D2CumawP5jQcrbC9JOhJwqTweZbs0=;
- b=LNu/r87Eyr58qmP+aFz+Sr113p5K+KmZMQmPidKH08kEd1YbT9lfEeW+EzBzh67p8b
- 5KIA3IwEuvV7apfNV/ra3SkCQtMg02cpxS58ws5RjLvuzWOzKX++aveJeJFicIVm068r
- qnDAYqqElKWZl6FbkYM/x/Cn3/g8erlsumaqpQ1BnoNIDHHoDVnUjuQxiKglT+Ka5TOV
- /ULd/85pvXAwpWvCYOmdf/6UYrkHhOtrmIB4gRCAWeSd3T5gI70hD8vrS7FfWLNACpf6
- bhmIBYToFWRuL251pP7Og39fNOUDzvj/rDePeehWbzamQpiy9jbPbAhjWB50IiFMfPCS
- 4lAg==
-X-Gm-Message-State: ABy/qLZD5hmlgkdaRcKLLqsYtAAWwYCV3ZsO1ZIRnAxiRob/zrZc0tKf
- nwI4y+BUeCmoU8daoRBONCokzUxrjoWQ/FxQZ5+3zA==
-X-Google-Smtp-Source: APBJJlGvyak+uCnoVgXDa/t1NGEoGgs24p6AQknuTQvoFbz3wwYf34FzUzrkHx0LTq4f99wqu8yMtA==
-X-Received: by 2002:a05:6808:1914:b0:3a3:e0ad:e332 with SMTP id
- bf20-20020a056808191400b003a3e0ade332mr15604435oib.38.1689608510724; 
- Mon, 17 Jul 2023 08:41:50 -0700 (PDT)
-Received: from grind.. (201-69-66-211.dial-up.telesp.net.br. [201.69.66.211])
- by smtp.gmail.com with ESMTPSA id
- eh1-20020a056808274100b003a1d29f0549sm6934093oib.15.2023.07.17.08.41.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 08:41:50 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Conor Dooley <conor@kernel.org>
-Subject: [PATCH] target/riscv/cpu.c: check priv_ver before auto-enable
- zca/zcd/zcf
-Date: Mon, 17 Jul 2023 12:41:41 -0300
-Message-ID: <20230717154141.60898-1-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20221208; t=1689608561; x=1692200561;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hFUDpA9e2N6LXhWjFJkLb/OKnRq1Se2Oj4JUDP8Fzzk=;
+ b=JBUjt37V7ePzloDSC7CCOyNGof86hmeuO+XcO/+0yYbQq0rRGs8XXgm6TE6dkL5S26
+ Au6IYtzR0Uu6DPyVirxOAGUpsg5Npazd7zW9POWkY/szCMCJaFwYEC6FjPQ4HmnnRF7o
+ L9P7/XxDlN8q20C59Cz/LfozfPRp9btFF/SwjeEPcPIJej7dhVTjHqMCHFNPT59TXktJ
+ S/U1x6+Gp1c4oW0RQtk6gEHn6XAipmsM2YThMXGttR4Tp7/5jsaoKVkJf+8BB2fSGvHu
+ gelsMWlfzSDKckUuV0jYJsPhDbecHfHNrxYq9vuU8tskHTQJuTd+1aBOwkeoEr+bSCvZ
+ Dpiw==
+X-Gm-Message-State: ABy/qLYaoy2g4cRh6/bzz2eUxmnFy3FcknVBdLyz1GpAnHoz7jHRUEQg
+ Wukq+qhQHY5tzIfdJWzW0IoblcAdOIaVuWk7p4ajIafWjSDrkEwB
+X-Google-Smtp-Source: APBJJlHuIDj8tCjDl0D2iJ5+SDDWYxea5uo2icE5AaBe9CMa75HA77/VEpCFAmhdZyqqGbwGh16RmMOdxrYx798k43I=
+X-Received: by 2002:aa7:dacc:0:b0:51e:344f:81ae with SMTP id
+ x12-20020aa7dacc000000b0051e344f81aemr11842025eds.14.1689608561499; Mon, 17
+ Jul 2023 08:42:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x22c.google.com
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 17 Jul 2023 16:42:30 +0100
+Message-ID: <CAFEAcA-fos6Agg09mtZJDdcStpCqdnLpyW4=MQnKRkZA_Tt9Zw@mail.gmail.com>
+Subject: avocado test: log shows initial chunk of terminal output is missing
+To: QEMU Developers <qemu-devel@nongnu.org>
+Cc: Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, John Snow <jsnow@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01, WEIRD_PORT=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,58 +84,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit bd30559568 made changes in how we're checking and disabling
-extensions based on env->priv_ver. One of the changes was to move the
-extension disablement code to the end of realize(), being able to
-disable extensions after we've auto-enabled some of them.
+I'm looking at an avocado test that's failing intermittently
+on s390 host:
+machine_aarch64_sbsaref.py:Aarch64SbsarefMachine.test_sbsaref_edk2_firmware
 
-An unfortunate side effect of this change started to happen with CPUs
-that has an older priv version, like sifive-u54. Starting on commit
-2288a5ce43e5 we're auto-enabling zca, zcd and zcf if RVC is enabled,
-but these extensions are priv version 1.12.0. When running a cpu that
-has an older priv ver (like sifive-u54) the user is spammed with
-warnings like these:
+This test looks for various things on the terminal output,
+and it's failing because it hasn't seen the first thing it looks
+for. The avocado log seems to show that the guest has booted
+past that point and has produced a later chunk of the output,
+and avocado appears to have simply lost the earlier output that
+the test case is trying to match on.
 
-qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000000 because privilege spec version does not match
-qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000000 because privilege spec version does not match
+Does this "some of the terminal output is missing"
+sound familiar as a bug we already know about ?
 
-The warnings are part of the code that disables the extension, but in this
-case we're throwing user warnings for stuff that we enabled on our own,
-without user intervention. Users are left wondering what they did wrong.
+2023-07-17 15:16:15,461 protocol         L0481 DEBUG| Transitioning
+from 'Runstate.CONNECTING' to 'Runstate.RUNNING'.
+2023-07-17 15:16:19,897 __init__         L0153 DEBUG| 3h
+2023-07-17 15:16:19,929 __init__         L0153 DEBUG|
+2023-07-17 15:16:19,936 __init__         L0153 DEBUG| QEMU SBSA-REF
+Machinearm-virt2.00 GHz1.01024 MB RAM
+2023-07-17 15:16:19,945 __init__         L0153 DEBUG|
+2023-07-17 15:16:19,956 __init__         L0153 DEBUG|
+2023-07-17 15:16:19,971 __init__         L0153 DEBUG| <Standard
+English>            Select Language
+                                    >Device Manager
+                       >Boot Manager
+          >Boot Maintenance Manager
+                                                      Continue
+                                        Reset
+2023-07-17 15:16:19,974 __init__         L0153 DEBUG|
+                                                               ^v=Move
+Highlight                               <Enter>=Select Entry      This
+is the option
+2023-07-17 15:16:19,975 __init__         L0153 DEBUG| one adjusts to change
+2023-07-17 15:16:19,975 __init__         L0153 DEBUG| the language for the
+2023-07-17 15:16:19,975 __init__         L0153 DEBUG| current system
+2023-07-17 15:16:19,976 __init__         L0153 DEBUG|
+2023-07-17 15:16:19,976 __init__         L0153 DEBUG|
+2023-07-17 15:16:19,976 __init__         L0153 DEBUG|
+2023-07-17 15:16:19,977 __init__         L0153 DEBUG|
+2023-07-17 15:16:19,977 __init__         L0153 DEBUG|
+2023-07-17 15:16:19,977 __init__         L0153 DEBUG|
+2023-07-17 15:16:19,978 __init__         L0153 DEBUG|
+2023-07-17 15:16:19,978 __init__         L0153 DEBUG|
+2023-07-17 15:19:11,248 stacktrace       L0039 ERROR|
+2023-07-17 15:19:11,248 stacktrace       L0041 ERROR| Reproduced
+traceback from:
+/home/linux1/qemu/build/all/tests/venv/lib/python3.8/site-packages/avocado/core/test.py:770
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR| Traceback (most
+recent call last):
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|   File
+"/home/linux1/qemu/build/all/tests/avocado/machine_aarch64_sbsaref.py",
+line 95, in test_sbsaref_edk2_firmware
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|
+wait_for_console_pattern(self, "Booting Trusted Firmware")
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|   File
+"/home/linux1/qemu/build/all/tests/avocado/avocado_qemu/__init__.py",
+line 199, in wait_for_console_pattern
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|
+_console_interaction(test, success_message, failure_message, None,
+vm=vm)
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|   File
+"/home/linux1/qemu/build/all/tests/avocado/avocado_qemu/__init__.py",
+line 148, in _console_interaction
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|     msg =
+console.readline().decode().strip()
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|   File
+"/usr/lib/python3.8/socket.py", line 669, in readinto
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|     return
+self._sock.recv_into(b)
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|   File
+"/home/linux1/qemu/build/all/tests/venv/lib/python3.8/site-packages/avocado/plugins/runner.py",
+line 77, in sigterm_handler
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR|     raise
+RuntimeError("Test interrupted by SIGTERM")
+2023-07-17 15:19:11,249 stacktrace       L0045 ERROR| RuntimeError:
+Test interrupted by SIGTERM
 
-A quick 8.1 fix for this nuisance is to check the CPU priv spec before
-auto-enabling zca/zcd/zcf. A more appropriate fix will include a more
-robust framework that will account for both priv_ver and user choice
-when auto-enabling/disabling extensions, but for 8.1 we'll make it do
-with this simple check.
 
-It's also worth noticing that this is the only case where we're
-auto-enabling extensions based on a criteria (in this case RVC) that
-doesn't match the priv spec of the extensions we're enabling. There's no
-need for more 8.1 band-aids.
+You can tell data has been lost because that '3h' is part
+of the trailing end of an ANSI escape sequence, I think.
 
-Cc: Conor Dooley <conor@kernel.org>
-Fixes: 2288a5ce43e5 ("target/riscv: add cfg properties for Zc* extension")
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/cpu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Full job.log at
+https://people.linaro.org/~peter.maydell/job.log
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 9339c0241d..6b93b04453 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1225,7 +1225,8 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         }
-     }
- 
--    if (riscv_has_ext(env, RVC)) {
-+    /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
-+    if (riscv_has_ext(env, RVC) && env->priv_ver >= PRIV_VERSION_1_12_0) {
-         cpu->cfg.ext_zca = true;
-         if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
-             cpu->cfg.ext_zcf = true;
--- 
-2.41.0
+The failure is intermittent: when it works the relevant part
+of the job.log looks like this:
 
+2023-07-17 15:37:56,648 protocol         L0481 DEBUG| Transitioning
+from 'Runstate.CONNECTING' to 'Runstate.RUNNING'.
+2023-07-17 15:37:56,650 __init__         L0153 DEBUG| NOTICE:  Booting
+Trusted Firmware
+2023-07-17 15:37:56,650 __init__         L0153 DEBUG| NOTICE:  BL1:
+v2.9(release):v2.9.0-51-gc0d8ee386
+2023-07-17 15:37:56,650 __init__         L0153 DEBUG| NOTICE:  BL1:
+Built : 16:44:16, May 30 2023
+2023-07-17 15:37:56,653 __init__         L0153 DEBUG| NOTICE:  BL1: Booting BL2
+2023-07-17 15:37:56,656 __init__         L0153 DEBUG| NOTICE:  BL2:
+v2.9(release):v2.9.0-51-gc0d8ee386
+2023-07-17 15:37:56,656 __init__         L0153 DEBUG| NOTICE:  BL2:
+Built : 16:44:16, May 30 2023
+2023-07-17 15:37:56,667 __init__         L0153 DEBUG| NOTICE:  BL1: Booting BL31
+2023-07-17 15:37:56,668 __init__         L0153 DEBUG| NOTICE:  BL31:
+v2.9(release):v2.9.0-51-gc0d8ee386
+2023-07-17 15:37:56,668 __init__         L0153 DEBUG| NOTICE:  BL31:
+Built : 16:44:16, May 30 2023
+2023-07-17 15:37:56,671 __init__         L0153 DEBUG| UEFI firmware
+(version 1.0 built at 17:14:57 on Mar 21 2023)
+2023-07-17 15:37:57,593 __init__         L0153 DEBUG|
+ESC[2JESC[04DESC[=3hESC[2JESC[09DESC[2JESC[04DESC[0mESC[30mESC[40m
+2023-07-17 15:37:57,610 __init__         L0153 DEBUG|
+ESC[01;01HESC[0mESC[34mESC[47m
+2023-07-17 15:37:57,616 __init__         L0153 DEBUG|
+ESC[01;01HESC[02;02HQEMU SBSA-REF MachineESC[03;02Harm-virtESC[44C2.00
+GHzESC[04;02H1.0ESC[49C1024 MB RAM
+ESC[05;02HESC[52CESC[06;02HESC[52CESC[0mESC[37mESC[40mESC[21;01H
+2023-07-17 15:37:57,616 machine          L0617 DEBUG| Shutting down VM
+appliance; timeout=30
+2023-07-17 15:37:57,616 machine          L0541 DEBUG| Attempting
+graceful termination
+2023-07-17 15:37:57,616 machine          L0513 DEBUG| Closing console socket
+2023-07-17 15:37:57,616 machine          L0551 DEBUG| Politely asking
+QEMU to terminate
+
+(the test is looking for some of those BL1: BL2: etc lines before it starts
+looking for the "QEMU SBSA-REF Machine" text.)
+
+thanks
+-- PMM
 
