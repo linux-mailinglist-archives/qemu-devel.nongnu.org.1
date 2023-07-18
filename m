@@ -2,89 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B67475884D
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 00:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F027588D1
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 01:03:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLsv0-0006Kz-JC; Tue, 18 Jul 2023 18:11:42 -0400
+	id 1qLthP-000668-NI; Tue, 18 Jul 2023 19:01:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qLsuw-0006KD-Cr
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 18:11:38 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qLthO-00065w-E5; Tue, 18 Jul 2023 19:01:42 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qLsuu-0000T2-0J
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 18:11:37 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3144bf65ce9so5809309f8f.3
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 15:11:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qLthN-0001sA-0k; Tue, 18 Jul 2023 19:01:42 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1b8a8154f9cso1460305ad.1; 
+ Tue, 18 Jul 2023 16:01:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689718292; x=1692310292;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1689721299; x=1692313299;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1pbIniCuAroTrClB/qLWwdhneADvaQkuz0++0cnRE4c=;
- b=vuODQ8CRVMgPdFy5fz4uTmIV7Eb6omam63N7uLESXlRhJyNeJWFig9fWrs7s1Nz+Rv
- p9xbTPaIw3u5D6h6J7wjLBF/xRStZ02A0YQHYFCU31OZNN+KEHI7Vbflz7b/LyoxzI0N
- XotXDfucNbtjhg/rc16T2GKaaLIP5P/9v+NBgJoolcjKSPrb5ySNL/0QaQO2EhWYy4s9
- A227xR2mDhgzeOBmNGOqHzbbXku5fRqMc82d4WR9X0rLiMN3DI5XUKPAm9XOF1LHZSpH
- UYUu7QegXjXd+YYMktytgr/pGiLeVuzSsIWQKv1dk3dxsI/J7Pdkz44Q63i9A+7Qy+bZ
- uR9Q==
+ bh=hk+onppxCQFJAmAzZVtVk8kxfI57LiIy6xdHNMa9w/s=;
+ b=KRzrcNetKtGo+6IKHSkNYCgIdC+z/UItq2IbHm2r5KEDQoUJlHgV3mmrk8xOiZRdDW
+ XjlInWK6GbdkEi63PW0ptXng/ZYej7kTvbXSagYba9oAOSRiN7RecFXChqrnNc+9DMEF
+ SjXO7zCTlor2qE3BJ3PoY/Nb2Cgm2qZtdiVhenlLw9gf0MvrtpMFCvvZTKI/eIDk9XfF
+ 0dOp6jAa6UWjA2x4DrxFBB5qHmlj0clOvFNoZn4hM2ChLPz40/ccwoEfaJGjSXxdfuX1
+ tMYuUWxZL2fxs/OZ95UJ2KCni3HS70sJcDJ9OHfpEue03d4OR/JM9H+a7+DEp3caz8Q2
+ 9JeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689718292; x=1692310292;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ d=1e100.net; s=20221208; t=1689721299; x=1692313299;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=1pbIniCuAroTrClB/qLWwdhneADvaQkuz0++0cnRE4c=;
- b=YsT1kfmZlZzharXE284OL+M0Wp7tzZAZHTaB/M9JIkLcS6jipU7njEdzgLf0jYu15p
- MkRgoo6vdHVvMCrnO1wXPQ4d/OIuGDhnjxKG2Ad53pic0zM1acypi+vZLdA0EWCaK9CK
- a31ndmtXk2F4OIjoNrSSFd2sirRwILjA+RYCh/105Xzjf1lttS0E0LIbGZsKqDLAkRoo
- bxnuAnogwAq5eH6SUwejInUIg7xN/addO7EsLhqYlt+HvVw668B4s1mwQK6LeRTbEeaX
- FqXiqtsk+67iITlrWzHRs3YwVZ2Id1/nrKr3wq0sp/aZDKNKn+EL3H1Uvcnx0PcCh7Qk
- AGXQ==
-X-Gm-Message-State: ABy/qLZX8IG1F8Y7A1oEvejRRL+pcLCEm1i3H58DhqyAa+TdYhEvHnEp
- rJc4uZaXiu1bMcyJufhAygOYQQ==
-X-Google-Smtp-Source: APBJJlGa0gSvvQXfxfXmeSlnG3aDQ/PtdmS+JgJG8Ww6Wz/a5kONyJwzpGW0CMeU9LeoxLcFoi/WCg==
-X-Received: by 2002:a5d:4947:0:b0:314:475:bc47 with SMTP id
- r7-20020a5d4947000000b003140475bc47mr654006wrs.69.1689718292260; 
- Tue, 18 Jul 2023 15:11:32 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ bh=hk+onppxCQFJAmAzZVtVk8kxfI57LiIy6xdHNMa9w/s=;
+ b=d0jeRHGDlq1K+1eOFM/AAS3oAMkCfEntP6+GDOBmL+OJG3RS0RVKqAIyp9OvnHdlll
+ MndTgWGZSFwkrO18O/bGJxJyifFAPuT7aLRxGy8XTbHFHUv1L1MWQF3rRLgzJfywZ0pY
+ g2xyztAZyVtvV33CShuzSIBqjZBKTHVt40Xc6Fh4Kq4E2339IpAZdFlqzeySd5clNesi
+ fFoJhw9UJUwNnevpLAZtlc64uURLmmYXKtjb+t9b3NbCca9tIHSgSqwohfFNvTqjbfTn
+ h9IX1qUb5cCmwrpB+neVSKfZB8kqjjAenZEbb1nhgsgpdsPW8Az9K5PCfjBjBbut4+vn
+ mLkw==
+X-Gm-Message-State: ABy/qLayu5P5Q7+FdEfMEkRHepTE2/djh40qJqDfqwG7CdoA0R96/DZG
+ +U9TmqiZxrEi+zdrv5cn+Uk=
+X-Google-Smtp-Source: APBJJlGHjaFbVy43IXdGi3F6D+bRYgnjhxZMOYQTgZUZv5avl9e4YRTBpnTlyjlfzBnLxgmx5KoFFg==
+X-Received: by 2002:a17:902:e84a:b0:1b9:d38d:efb1 with SMTP id
+ t10-20020a170902e84a00b001b9d38defb1mr540461plg.8.1689721298650; 
+ Tue, 18 Jul 2023 16:01:38 -0700 (PDT)
+Received: from [192.168.0.62] ([218.147.112.168])
  by smtp.gmail.com with ESMTPSA id
- f2-20020a7bc8c2000000b003fb225d414fsm166228wml.21.2023.07.18.15.11.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jul 2023 15:11:31 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id B9DF71FFBB;
- Tue, 18 Jul 2023 23:11:30 +0100 (BST)
-References: <CADc=-s5RwGViNTR-h5cq3np673W3RRFfhr4vCGJp0EoDUxvhog@mail.gmail.com>
- <874jm2ya3g.fsf@linaro.org> <87sf9mwnzo.fsf@linaro.org>
- <CADc=-s46VkRZiU--59VdeTcACoir1srxV=eTxPwwwut_tSJESQ@mail.gmail.com>
-User-agent: mu4e 1.11.10; emacs 29.0.92
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Matt Borgerson <contact@mborgerson.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Yoshinori Sato
- <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH v2] plugins: Set final instruction count in
- plugin_gen_tb_end
-Date: Tue, 18 Jul 2023 23:05:16 +0100
-In-reply-to: <CADc=-s46VkRZiU--59VdeTcACoir1srxV=eTxPwwwut_tSJESQ@mail.gmail.com>
-Message-ID: <87cz0o27l9.fsf@linaro.org>
+ n6-20020a170902d2c600b001b88da737c6sm2413685plc.54.2023.07.18.16.01.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 18 Jul 2023 16:01:38 -0700 (PDT)
+Message-ID: <46bf0743-e9a6-218b-0f0f-f8f9226f4494@gmail.com>
+Date: Wed, 19 Jul 2023 08:01:33 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: PING: [PATCH v4 0/3] hw/ufs: Add Universal Flash Storage (UFS)
+ support
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, fam@euphon.net, hreitz@redhat.com,
+ k.jensen@samsung.com, kwolf@redhat.com, pbonzini@redhat.com,
+ qemu-block@nongnu.org, berrange@redhat.com, marcandre.lureau@redhat.com,
+ marcel.apfelbaum@gmail.com, mst@redhat.com, philmd@linaro.org,
+ thuth@redhat.com
+References: <cover.1688459061.git.jeuk20.kim@gmail.com>
+ <0e1a269c-0834-7255-1ded-0d37bddd1976@gmail.com>
+ <20230718185626.GA68526@fedora>
+From: Jeuk Kim <jeuk20.kim@gmail.com>
+In-Reply-To: <20230718185626.GA68526@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-0.095, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,83 +98,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Matt Borgerson <contact@mborgerson.com> writes:
-
-> Thanks Alex!
->
->
-> On Mon, Jul 17, 2023 at 8:34=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@lin=
-aro.org> wrote:
+On 2023-07-19 오전 3:56, Stefan Hajnoczi wrote:
+> On Tue, Jul 11, 2023 at 07:31:02PM +0900, Jeuk Kim wrote:
+>> Hi,
+>> Any more reviews...?
 >>
->>
->> Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
->>
->> > Matt Borgerson <contact@mborgerson.com> writes:
->> >
->> >> Translation logic may partially decode an instruction, then abort and
->> >> remove the instruction from the TB. This can happen for example when =
-an
->> >> instruction spans two pages. In this case, plugins may get an incorre=
-ct
->> >> result when calling qemu_plugin_tb_n_insns to query for the number of
->> >> instructions in the TB. This patch updates plugin_gen_tb_end to set t=
-he
->> >> final instruction count.
->> >
->> > For some reason this fails to apply cleanly:
->> >
->> >   git am ./v2_20230714_contact_plugins_set_final_instruction_count_in_=
-plugin_gen_tb_end.mbx
->> >   Applying: plugins: Set final instruction count in plugin_gen_tb_end
->> >   error: corrupt patch at line 31
->> >   Patch failed at 0001 plugins: Set final instruction count in
->> >   plugin_gen_tb_end
->>
->> I think some newlines crept in, I was able to fix. Queued to
->> for-8.1/misc-fixes with the assert added.
+>> Dear Stefan
+>> If you don't mind, Could you give it "reviewed-by"?
+>> And is there anything else I should do...?
+> 
+> Sorry for the late reply. I was on vacation and am working my way
+> through pending code review and bug reports.
+> 
+> I have started reviewing this series and should be finish on Wednesday
+> or Thursday.
+> 
+> Stefan
 
-Hmm so I ran into an issue:
+Thank you for your review.
+I have seen your comments on PATCH v4.
+I'll send you a patch v5 as soon as I fix the things you commented on.
 
-  ./qemu-sh4 -plugin tests/plugin/libbb.so -d plugin ./tests/tcg/sh4-linux-=
-user/testthread
-  ERROR:../../accel/tcg/plugin-gen.c:874:plugin_gen_tb_end: assertion faile=
-d: (num_insns <=3D ptb->n)
-  Bail out! ERROR:../../accel/tcg/plugin-gen.c:874:plugin_gen_tb_end: asser=
-tion failed: (num_insns <=3D ptb->n)
-  qemu: uncaught target signal 11 (Segmentation fault) - core dumped
-  bb's: 9202, insns: 42264
-  fish: Job 1, './qemu-sh4 -plugin tests/plugin=E2=80=A6' terminated by sig=
-nal SIGSEGV (Address boundary error)
-
-Further investigation shows that gUSA sequences can cause the number of
-instructions to run ahead, which also makes the setting of the ptb->n =3D
-num_insns unsafe, running ahead of the number of instructions signalled
-by plugin_gen_insn_start/plugin_gen_insn_end.
-
-  Thread 1 hit Hardware watchpoint 5: *(int *) 0x7ffd410a2904
-  Old value =3D 4
-  New value =3D 1
-  0x000055f148c00ea8 in decode_gusa (ctx=3D0x7ffd410a28f0, env=3D0x55f14a41=
-06e8) at ../../target/sh4/translate.c:2167
-  2167        ctx->base.num_insns +=3D max_insns - 1;
-  (rr) p max_insns
-  $6 =3D 4
-  (rr) p max_insns -1
-  $7 =3D 3
-  (rr) p ctx->base.num_insns
-  $8 =3D 1
-
-So I think we have to drop this for now until we can either fix
-decode_gusa or find something else.
-
-Richard,
-
-Any ideas?
-
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Thanks again.
+Jeuk
 
