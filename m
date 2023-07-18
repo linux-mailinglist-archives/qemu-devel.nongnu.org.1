@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9EB757BB5
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 14:23:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF3F757BBB
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 14:26:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLjin-0003bE-Ro; Tue, 18 Jul 2023 08:22:31 -0400
+	id 1qLjlK-0004TR-Eh; Tue, 18 Jul 2023 08:25:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <18622748025@163.com>)
- id 1qLjif-0003ar-D3
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:22:23 -0400
-Received: from m12.mail.163.com ([220.181.12.196])
+ id 1qLjlH-0004S3-FK
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:25:03 -0400
+Received: from m12.mail.163.com ([220.181.12.215])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <18622748025@163.com>) id 1qLjiY-0006SI-2y
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:22:18 -0400
+ (envelope-from <18622748025@163.com>) id 1qLjlF-0007MS-4p
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:25:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
  s=s110527; h=From:Subject:Date:Message-Id; bh=4sMGboxBki1joNixHO
- 9o9Dafl0VqbYT7X2KHXVc8DFQ=; b=BXRgpO7LPHgpFQqt7epQgVRWw2m7lmkC2m
- a0J+rXTNT5nCc2n9yAKc2R7Xf+BOESNnQWyCldWFS6d6uHEc8CNXaOAwD7L3trY6
- 6Sgr45jkqEKVHElB0B7T2x2vZ29X9ylRc7HS+ZhQwGNQSGQBcQ0i24Lr+xM2xpjP
- m9ej7R34A=
+ 9o9Dafl0VqbYT7X2KHXVc8DFQ=; b=YoOAUFuyAod6CZ82dCdfrNWiFGa47r7XqL
+ oKAHxGdez+tRCE1IPQy15wUcTyE5cDamPaIom4+WnAl9BMIhVYUj+b7Mevv1lZGu
+ dTD2Z6Zx9f2VMyhRT5ojHkuTfy8HULYUx/ECSaPLYXfGCqR05KG9KwFpqDeSd8kh
+ I0KJRQ5xg=
 Received: from localhost.localdomain (unknown [103.3.97.171])
- by zwqz-smtp-mta-g4-3 (Coremail) with SMTP id _____wBHh+fog7ZkAeOWAg--.37953S2;
- Tue, 18 Jul 2023 20:22:00 +0800 (CST)
+ by zwqz-smtp-mta-g5-1 (Coremail) with SMTP id _____wDHpUaWhLZkskKFAg--.50225S2;
+ Tue, 18 Jul 2023 20:24:55 +0800 (CST)
 From: "liguang.zhang" <18622748025@163.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, alistair23@gmail.com,
  "liguang.zhang" <liguang.zhang@hexintek.com>
 Subject: [PATCH] target/riscv: Clearing the CSR values at reset and syncing
  the MPSTATE with the host
-Date: Tue, 18 Jul 2023 20:21:57 +0800
-Message-Id: <20230718122157.7425-1-18622748025@163.com>
+Date: Tue, 18 Jul 2023 20:24:52 +0800
+Message-Id: <20230718122452.7547-1-18622748025@163.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230625025018.26956-1-18622748025@163.com>
-References: <20230625025018.26956-1-18622748025@163.com>
-X-CM-TRANSID: _____wBHh+fog7ZkAeOWAg--.37953S2
+In-Reply-To: <CAKmqyKNGEdMQY44E-=uTdGcKatBis3Z0AOG8mUoqGGqr9aH2xQ@mail.gmail.com>
+References: <CAKmqyKNGEdMQY44E-=uTdGcKatBis3Z0AOG8mUoqGGqr9aH2xQ@mail.gmail.com>
+X-CM-TRANSID: _____wDHpUaWhLZkskKFAg--.50225S2
 X-Coremail-Antispam: 1Uf129KBjvJXoWxXw1rWF1ktr4kArW8ZFyfXrb_yoW5Cr4kpF
  4kC39xCws7trWxJw1ftFWDJF1ru3yxWrsxA3y7CrWaya15JrW5Xws2g3y2yr95Gry0yFWa
- kF43uFy3Ca1UKFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07j60PfUUUUU=
+ kF43uFy3Ca1UKFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jhdb8UUUUU=
 X-Originating-IP: [103.3.97.171]
-X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/xtbBFQuwWWB9ncQYCAAAsj
-Received-SPF: pass client-ip=220.181.12.196; envelope-from=18622748025@163.com;
+X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbivhmwWVZciC8b2gAAsi
+Received-SPF: pass client-ip=220.181.12.215; envelope-from=18622748025@163.com;
  helo=m12.mail.163.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -52,8 +52,9 @@ X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FROM_LOCAL_DIGITS=0.001,
- FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001,
+ RCVD_IN_MSPIKE_L3=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
