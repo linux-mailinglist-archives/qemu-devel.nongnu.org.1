@@ -2,49 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5AA875781F
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D05757819
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:33:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLh2l-00040O-2p; Tue, 18 Jul 2023 05:30:55 -0400
+	id 1qLh2l-000414-QH; Tue, 18 Jul 2023 05:30:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2h-0003ze-EX
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2f-0003zb-Hm
  for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2e-0004CA-1d
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2d-0004C0-Vp
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1689672646;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ZSRqIOD0azcoMyZMJRZo1U9jaKidHy3IoStzmFZKzxY=;
- b=f6qZKFwxqEFYmpwCjLdYgc2pgKTR+wrKjcf47T6vt0D+F0EbOTHLhdtWcCv8lEieIdHEap
- M/+K7XnP6uDhrjUc5/IVIW1L2YvU733oc46m0L2HQSKEQXDvDrUTaP6IEcOiynFKCdaecr
- 5tKlFRYQnN8ngbhnEn34ouU40fN+Sfs=
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qZeEJXXcsKrADfEPlgmlgoy3efKYccao4IULmLaV7SQ=;
+ b=dyIGU7PLXw60rB3dWBbrZW/qDahiPfKQ8K/zOkgiS9sDCF2EOlGMGtNEujIDWJ9V4gNO0O
+ i+prkFK3h9ySYw9NX49RPXCVUn5EmIPWy518zpeJPkVxuxBX7AZHfHs7ttzQmBIvPT62f0
+ V+W8suIi02Avq4uLvS5h5BSJ7DPJxo4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-423-VINoFLBEOZydnrSataNDYg-1; Tue, 18 Jul 2023 05:30:43 -0400
-X-MC-Unique: VINoFLBEOZydnrSataNDYg-1
+ us-mta-63-xk85MK4mPeahozjIoa8DTg-1; Tue, 18 Jul 2023 05:30:44 -0400
+X-MC-Unique: xk85MK4mPeahozjIoa8DTg-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EE9E689F701;
- Tue, 18 Jul 2023 09:30:42 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3F21185A58A;
+ Tue, 18 Jul 2023 09:30:44 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.89])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4DE402166B26;
- Tue, 18 Jul 2023 09:30:42 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 41A2D2166B25;
+ Tue, 18 Jul 2023 09:30:43 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 0/8] s390x, qtest and misc patches for QEMU 8.1 rc1
-Date: Tue, 18 Jul 2023 11:30:32 +0200
-Message-Id: <20230718093040.172145-1-thuth@redhat.com>
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 1/8] s390x: Fix QEMU abort by selecting S390_FLIC_KVM
+Date: Tue, 18 Jul 2023 11:30:33 +0200
+Message-Id: <20230718093040.172145-2-thuth@redhat.com>
+In-Reply-To: <20230718093040.172145-1-thuth@redhat.com>
+References: <20230718093040.172145-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -74,57 +79,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 361d5397355276e3007825cc17217c1e4d4320f7:
+From: Cédric Le Goater <clg@redhat.com>
 
-  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-07-17 15:49:27 +0100)
+If QEMU is built with --without-default-devices, the s390-flic-kvm
+device is missing and QEMU aborts when started with the KVM accelerator.
+Make sure it's available by selecting S390_FLIC_KVM in Kconfig.
 
-are available in the Git repository at:
+Consequently, this also fixes an abort in tests/qtest/migration-test.
 
-  https://gitlab.com/thuth/qemu.git tags/pull-request-2023-07-18
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Message-Id: <20230711151440.716822-1-clg@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/intc/Kconfig  | 1 -
+ hw/s390x/Kconfig | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-for you to fetch changes up to a5754847e0fc2bc08a414dd381803009e8bca390:
-
-  tests/avocado: Disable the test_sbsaref_edk2_firmware by default (2023-07-18 11:22:51 +0200)
-
-----------------------------------------------------------------
-* Fix s390x KVM guests when compiling with --without-default-devices
-* Fix /proc/cpuinfo features list in s390x linux-user emulation
-* Generate FreeBSD VM package list via lcitool
-* Disable the flaky test_sbsaref_edk2_firmware avocado test by default
-
-----------------------------------------------------------------
-Cédric Le Goater (1):
-      s390x: Fix QEMU abort by selecting S390_FLIC_KVM
-
-Fabiano Rosas (1):
-      tests/qtest: Fix typo in multifd cancel test
-
-Ilya Leoshkevich (1):
-      linux-user/elfload: Fix /proc/cpuinfo features: on s390x
-
-Philippe Mathieu-Daudé (4):
-      tests/lcitool: Generate distribution packages list in JSON format
-      tests/lcitool: Refresh generated files
-      tests/vm: Introduce get_qemu_packages_from_lcitool_json() helper
-      tests/vm/freebsd: Get up-to-date package list from lcitool vars file
-
-Thomas Huth (1):
-      tests/avocado: Disable the test_sbsaref_edk2_firmware by default
-
- docs/devel/testing.rst                   |  5 +++
- include/elf.h                            | 66 +++++++++++++++++++--------
- linux-user/elfload.c                     | 41 +++++++++--------
- tests/qtest/migration-test.c             |  2 +-
- hw/intc/Kconfig                          |  1 -
- hw/s390x/Kconfig                         |  1 +
- tests/avocado/machine_aarch64_sbsaref.py |  2 +-
- tests/lcitool/refresh                    | 11 +++++
- tests/vm/basevm.py                       | 11 +++++
- tests/vm/freebsd                         | 42 +----------------
- tests/vm/generated/README                |  5 +++
- tests/vm/generated/freebsd.json          | 77 ++++++++++++++++++++++++++++++++
- 12 files changed, 183 insertions(+), 81 deletions(-)
- create mode 100644 tests/vm/generated/README
- create mode 100644 tests/vm/generated/freebsd.json
+diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
+index 21441d0a0c..97d550b06b 100644
+--- a/hw/intc/Kconfig
++++ b/hw/intc/Kconfig
+@@ -49,7 +49,6 @@ config S390_FLIC
+ 
+ config S390_FLIC_KVM
+     bool
+-    default y
+     depends on S390_FLIC && KVM
+ 
+ config OMPIC
+diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
+index e8d4d68ece..4c068d7960 100644
+--- a/hw/s390x/Kconfig
++++ b/hw/s390x/Kconfig
+@@ -8,6 +8,7 @@ config S390_CCW_VIRTIO
+     imply PCIE_DEVICES
+     select PCI_EXPRESS
+     select S390_FLIC
++    select S390_FLIC_KVM if KVM
+     select SCLPCONSOLE
+     select VIRTIO_CCW
+     select MSI_NONBROKEN
+-- 
+2.39.3
 
 
