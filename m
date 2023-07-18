@@ -2,72 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED8D758187
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 17:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D83A97581C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 18:11:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLn4a-0005H3-9s; Tue, 18 Jul 2023 11:57:12 -0400
+	id 1qLnGf-0001mp-2t; Tue, 18 Jul 2023 12:09:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qLn4Y-0005FE-2X
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 11:57:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qLn4W-0000pu-4x
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 11:57:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689695826;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=J4Sgs9xaMeCpmsKulbbL3wSd7O+xSt6sahCmw+SSb1Q=;
- b=AAjH9v3vWr6C/lqwXT22Ml3jZzro6gMP7ALuPWvekhJ/+7a3uL81PatcFueZKUeteSZPY/
- spTYn2PBRQ8VeB7mOdr8oNso89rt0vXAJgbFU9pzt2BOzNzaS+pLLzYdyYnZ/V+fH074JQ
- uf5FYzv1/OHKrw6+/eGHGFcfgjW4eFQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-625-i5eINpp7NsC6E8Ge56pnWA-1; Tue, 18 Jul 2023 11:57:03 -0400
-X-MC-Unique: i5eINpp7NsC6E8Ge56pnWA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F31BB85A58A
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 15:57:02 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.253])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 573014087C62;
- Tue, 18 Jul 2023 15:57:02 +0000 (UTC)
-Date: Tue, 18 Jul 2023 11:57:00 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
- "Michael S . Tsirkin" <mst@redhat.com>,
- German Maglione <gmaglione@redhat.com>,
- Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>
-Subject: Re: [PATCH v2 1/4] vhost-user.rst: Migrating back-end-internal state
-Message-ID: <20230718155700.GJ44841@fedora>
-References: <20230712111703.28031-1-hreitz@redhat.com>
- <20230712111703.28031-2-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <qemu@bonslack.org>) id 1qLnGc-0001mc-Ol
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 12:09:39 -0400
+Received: from [2a00:dcc0:1ea5:31f2::1] (helo=bonnix2.bonnix.it)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <qemu@bonslack.org>) id 1qLnGa-0004jS-C9
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 12:09:38 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 bonnix2.bonnix.it 23E1DADCE8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bonslack.org;
+ s=20220805; t=1689696571;
+ bh=S5lMKfDkeUunX1NK+z7qbTuhRXLAPbjB1oBkreCRN1o=;
+ h=Date:Subject:From:To:References:Cc:In-Reply-To;
+ b=sKB9CI7nNT023ATCbdCtpkad385YDYAFsg9+e+hn71pADZ2I6JE50dcR69OQt/TNr
+ aK4O4o7UgNT4QDvY20+6QIhJVba08uJHq5gcTV43vEz7ay83w+OKecxgUmWNhpM4aN
+ VbbqESzfp8xTKNmXwpxHX7bxBHhmPw73e6vDj1Ro=
+Received: from [10.0.0.152] (unknown [82.84.102.14])
+ by bonnix2.bonnix.it (Postfix) with ESMTPSA id 23E1DADCE8;
+ Tue, 18 Jul 2023 18:09:31 +0200 (CEST)
+Message-ID: <b542dcc6-8e74-4790-d8a2-d6c6e60a3a57@bonslack.org>
+Date: Tue, 18 Jul 2023 18:09:30 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="AXsKZLXtib5CKy2E"
-Content-Disposition: inline
-In-Reply-To: <20230712111703.28031-2-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH] Missing CASA instruction handling for SPARC qemu-user
+Content-Language: it, en-US
+From: Luca Bonissi <qemu@bonslack.org>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+References: <4a785697-de37-3a3e-bf38-b20044cb56af@bonslack.org>
+Cc: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
+In-Reply-To: <4a785697-de37-3a3e-bf38-b20044cb56af@bonslack.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 2a00:dcc0:1ea5:31f2::1
+ (failed)
+Received-SPF: pass client-ip=2a00:dcc0:1ea5:31f2::1;
+ envelope-from=qemu@bonslack.org; helo=bonnix2.bonnix.it
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,216 +68,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On qemu-sparc (user-space), the CASA instruction is not handled for 
+SPARC32 even if the selected cpu (e.g. LEON3) supports it.
 
---AXsKZLXtib5CKy2E
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Following the patch that works.
 
-On Wed, Jul 12, 2023 at 01:16:59PM +0200, Hanna Czenczek wrote:
-> For vhost-user devices, qemu can migrate the virtio state, but not the
-> back-end's internal state.  To do so, we need to be able to transfer
-> this internal state between front-end (qemu) and back-end.
->=20
-> At this point, this new feature is added for the purpose of virtio-fs
-> migration.  Because virtiofsd's internal state will not be too large, we
-> believe it is best to transfer it as a single binary blob after the
-> streaming phase.
->=20
-> These are the additions to the protocol:
-> - New vhost-user protocol feature VHOST_USER_PROTOCOL_F_MIGRATORY_STATE
+The patch also include an incorrect cpu-type for 32bit and missing 
+configurable CPU features TA0_SHUTDOWN, ASR17, CACHE_CTRL, POWERDOWN, 
+and CASA.
 
-It's not 100% clear whether "migratory" is related to live migration or
-something else. I don't like the name :P.
+Re-posting to add "signed-off-by" line. Removing also unused functions 
+from qemu-sparc (32bit) building, and consequently removed helper patch 
+(needed only by unused [removed] functions).
 
-The name "VHOST_USER_PROTOCOL_F_DEVICE_STATE" would be more obviously
-associated with SET_DEVICE_STATE_FD and CHECK_DEVICE_STATE than
-"MIGRATORY_STATE".
 
-> - SET_DEVICE_STATE_FD function: Front-end and back-end negotiate a pipe
->   over which to transfer the state.
+Signed-off-by: Luca Bonissi <qemu@bonslack.org>
+---
 
-Does it need to be a pipe or can it be another type of file (e.g. UNIX
-domain socket)?
+diff -urp a/linux-user/syscall.c b/linux-user/syscall.c
+--- a/linux-user/syscall.c	2023-03-27 15:41:42.000000000 +0200
++++ b/linux-user/syscall.c	2023-04-01 13:54:14.709136932 +0200
+@@ -8286,7 +8286,11 @@ static int open_net_route(CPUArchState *
+  #if defined(TARGET_SPARC)
+  static int open_cpuinfo(CPUArchState *cpu_env, int fd)
+  {
++#if defined(TARGET_SPARC64)
+      dprintf(fd, "type\t\t: sun4u\n");
++#else
++    dprintf(fd, "type\t\t: sun4m\n");
++#endif
+      return 0;
+  }
+  #endif
+diff -urp a/target/sparc/cpu.c b/target/sparc/cpu.c
+--- a/target/sparc/cpu.c	2023-03-27 15:41:42.000000000 +0200
++++ b/target/sparc/cpu.c	2023-03-31 21:32:54.927008782 +0200
+@@ -560,6 +560,11 @@ static const char * const feature_name[]
+      "hypv",
+      "cmt",
+      "gl",
++    "ta0shdn",
++    "asr17",
++    "cachectrl",
++    "powerdown",
++    "casa",
+  };
 
-In the future the fd may become bi-directional. Pipes are
-uni-directional on Linux.
+  static void print_features(uint32_t features, const char *prefix)
+@@ -852,6 +857,11 @@ static Property sparc_cpu_properties[] =
+      DEFINE_PROP_BIT("hypv",     SPARCCPU, env.def.features, 11, false),
+      DEFINE_PROP_BIT("cmt",      SPARCCPU, env.def.features, 12, false),
+      DEFINE_PROP_BIT("gl",       SPARCCPU, env.def.features, 13, false),
++    DEFINE_PROP_BIT("ta0shdn",  SPARCCPU, env.def.features, 14, false),
++    DEFINE_PROP_BIT("asr17",    SPARCCPU, env.def.features, 15, false),
++    DEFINE_PROP_BIT("cachectrl",SPARCCPU, env.def.features, 16, false),
++    DEFINE_PROP_BIT("powerdown",SPARCCPU, env.def.features, 17, false),
++    DEFINE_PROP_BIT("casa",     SPARCCPU, env.def.features, 18, false),
+      DEFINE_PROP_UNSIGNED("iu-version", SPARCCPU, env.def.iu_version, 0,
+                           qdev_prop_uint64, target_ulong),
+      DEFINE_PROP_UINT32("fpu-version", SPARCCPU, env.def.fpu_version, 0),
+diff -urp a/target/sparc/translate.c b/target/sparc/translate.c
+--- a/target/sparc/translate.c	2023-03-27 15:41:42.000000000 +0200
++++ b/target/sparc/translate.c	2023-07-18 17:27:30.681134549 +0200
+@@ -1917,7 +1917,6 @@ static void gen_ldstub(DisasContext *dc,
+  }
 
-I suggest calling it a "file descriptor" and not mentioning "pipes"
-explicitly.
+  /* asi moves */
+-#if !defined(CONFIG_USER_ONLY) || defined(TARGET_SPARC64)
+  typedef enum {
+      GET_ASI_HELPER,
+      GET_ASI_EXCP,
+@@ -2149,6 +2148,7 @@ static DisasASI get_asi(DisasContext *dc
+      return (DisasASI){ type, asi, mem_idx, memop };
+  }
 
-> - CHECK_DEVICE_STATE: After the state has been transferred through the
->   pipe, the front-end invokes this function to verify success.  There is
->   no in-band way (through the pipe) to indicate failure, so we need to
->   check explicitly.
->=20
-> Once the transfer pipe has been established via SET_DEVICE_STATE_FD
-> (which includes establishing the direction of transfer and migration
-> phase), the sending side writes its data into the pipe, and the reading
-> side reads it until it sees an EOF.  Then, the front-end will check for
-> success via CHECK_DEVICE_STATE, which on the destination side includes
-> checking for integrity (i.e. errors during deserialization).
->=20
-> Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> ---
->  docs/interop/vhost-user.rst | 87 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 87 insertions(+)
->=20
-> diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-> index ac6be34c4c..c98dfeca25 100644
-> --- a/docs/interop/vhost-user.rst
-> +++ b/docs/interop/vhost-user.rst
-> @@ -334,6 +334,7 @@ in the ancillary data:
->  * ``VHOST_USER_SET_VRING_ERR``
->  * ``VHOST_USER_SET_BACKEND_REQ_FD`` (previous name ``VHOST_USER_SET_SLAV=
-E_REQ_FD``)
->  * ``VHOST_USER_SET_INFLIGHT_FD`` (if ``VHOST_USER_PROTOCOL_F_INFLIGHT_SH=
-MFD``)
-> +* ``VHOST_USER_SET_DEVICE_STATE_FD``
-> =20
->  If *front-end* is unable to send the full message or receives a wrong
->  reply it will close the connection. An optional reconnection mechanism
-> @@ -497,6 +498,44 @@ it performs WAKE ioctl's on the userfaultfd to wake =
-the stalled
->  back-end.  The front-end indicates support for this via the
->  ``VHOST_USER_PROTOCOL_F_PAGEFAULT`` feature.
-> =20
-> +.. _migrating_backend_state:
-> +
-> +Migrating back-end state
-> +^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +If the back-end has internal state that is to be sent from source to
-> +destination,
++#if !defined(CONFIG_USER_ONLY) || defined(TARGET_SPARC64)
+  static void gen_ld_asi(DisasContext *dc, TCGv dst, TCGv addr,
+                         int insn, MemOp memop)
+  {
+@@ -2277,6 +2277,7 @@ static void gen_swap_asi(DisasContext *d
+          break;
+      }
+  }
++#endif // !defined(CONFIG_USER_ONLY) || defined(TARGET_SPARC64)
 
-Migration and the terms "source" and "destination" have not been
-defined. Here is a suggestion for an introductory paragraph:
+  static void gen_cas_asi(DisasContext *dc, TCGv addr, TCGv cmpv,
+                          int insn, int rd)
+@@ -2300,6 +2301,7 @@ static void gen_cas_asi(DisasContext *dc
+      }
+  }
 
-  Migrating device state involves transferring the state from one
-  back-end, called the source, to another back-end, called the
-  destination. After migration, the destination transparently resumes
-  operation without requiring the driver to re-initialize the device at
-  the VIRTIO level. If the migration fails, then the source can
-  transparently resume operation until another migration attempt is
-  made.
-
-> the front-end may be able to store and transfer it via an
-> +internal migration stream.  Support for this is negotiated with the
-> +``VHOST_USER_PROTOCOL_F_MIGRATORY_STATE`` feature.
-> +
-> +First, a channel over which the state is transferred is established on
-> +the source side using the ``VHOST_USER_SET_DEVICE_STATE_FD`` message.
-> +This message has two parameters:
-> +
-> +* Direction of transfer: On the source, the data is saved, transferring
-> +  it from the back-end to the front-end.  On the destination, the data
-> +  is loaded, transferring it from the front-end to the back-end.
-> +
-> +* Migration phase: Currently, only the period after memory transfer
-
-"memory transfer" is vague. This sentence is referring to VM live
-migration and guest RAM but it may be better to focus on just the device
-perspective and not the VM:
-
-  Migration is currently only supported while the device is suspended
-  and all of its rings are stopped. In the future, additional phases
-  might be support to allow iterative migration while the device is
-  running.
-
-> +  before switch-over is supported, in which the device is suspended and
-> +  all of its rings are stopped.
-> +
-> +Then, the writing end will write all the data it has, signalling the end
-> +of data by closing its end of the pipe.  The reading end must read all
-> +of this data and process it:
-> +
-> +* If saving, the front-end will transfer this data to the destination,
-
-To be extra clear:
-
-  ...transfer this data to the destination through some
-  implementation-specific means.
-
-> +  where it is loaded into the destination back-end.
-> +
-> +* If loading, the back-end must deserialize its internal state from the
-> +  transferred data and be set up to resume operation.
-
-"and be set up to resume operation" is a little unclear to me. I guess
-it means "in preparation for VHOST_USER_RESUME".
-
-> +
-> +After the front-end has seen all data transferred (saving: seen an EOF
-> +on the pipe; loading: closed its end of the pipe), it sends the
-> +``VHOST_USER_CHECK_DEVICE_STATE`` message to verify that data transfer
-> +was successful in the back-end, too.  The back-end responds once it
-> +knows whether the tranfer and processing was successful or not.
-> +
->  Memory access
->  -------------
-> =20
-> @@ -891,6 +930,7 @@ Protocol features
->    #define VHOST_USER_PROTOCOL_F_STATUS               16
->    #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
->    #define VHOST_USER_PROTOCOL_F_SUSPEND              18
-> +  #define VHOST_USER_PROTOCOL_F_MIGRATORY_STATE      19
-> =20
->  Front-end message types
->  -----------------------
-> @@ -1471,6 +1511,53 @@ Front-end message types
->    before.  The back-end must again begin processing rings that are not
->    stopped, and it may resume background operations.
-> =20
-> +``VHOST_USER_SET_DEVICE_STATE_FD``
-> +  :id: 43
-> +  :equivalent ioctl: N/A
-> +  :request payload: device state transfer parameters
-> +  :reply payload: ``u64``
-> +
-> +  The front-end negotiates a pipe over which to transfer the back-end=E2=
-=80=99s
-> +  internal state during migration.  For this purpose, this message is
-> +  accompanied by a file descriptor that is to be the back-end=E2=80=99s =
-end of
-> +  the pipe.  If the back-end can provide a more efficient pipe (i.e.
-> +  because it internally already has a pipe into/from which to
-> +  put/receive state), it can ignore this and reply with a different file
-> +  descriptor to serve as the front-end=E2=80=99s end.
-> +
-> +  The request payload contains parameters for the subsequent data
-> +  transfer, as described in the :ref:`Migrating back-end state
-> +  <migrating_backend_state>` section.  That section also explains the
-> +  data transfer itself.
-> +
-> +  The value returned is both an indication for success, and whether a
-> +  new pipe file descriptor is returned: Bits 0=E2=80=937 are 0 on succes=
-s, and
-> +  non-zero on error.  Bit 8 is the invalid FD flag; this flag is set
-> +  when there is no file descriptor returned.  When this flag is not set,
-> +  the front-end must use the returned file descriptor as its end of the
-> +  pipe.  The back-end must not both indicate an error and return a file
-> +  descriptor.
-
-Is the invalid FD flag necessary? The front-end can check whether or not
-an fd was passed along with the result, so I'm not sure why the result
-also needs to communicate this.
-
---AXsKZLXtib5CKy2E
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmS2tkwACgkQnKSrs4Gr
-c8gEiAgAtaMTnqd8Y4gJuYTsWqFbvvqwnexPOt8r1UoRJasG9WmezMM0QN8Tk71O
-fFzDbn5w8ZdiecmWL4tNqHZvd3jBhtY1y9ryguG3tqZpRA4+50kzDr4z7vPTeZm3
-DtJg8wWM+0kW9AZrz6kG/8PLlPPBTTiVXILZVz5ON4TnUluBQiPw+R4oaMruqNxD
-BorHJfdPeyMKfp8lluIqGVoRFRJ9wSUFGonT/bQX/ZHs7/OTm104Hvn5WF1GOnLU
-FpP2bCuEYDYG4kvRlHvLad1WgNABgISWV6O69OOrEFMFBZ/Vt4RPISYybgeg7Cp3
-m3e8kGiSSahwTSWg4MlllvjoSPCHNQ==
-=5I1o
------END PGP SIGNATURE-----
-
---AXsKZLXtib5CKy2E--
-
++#if !defined(CONFIG_USER_ONLY) || defined(TARGET_SPARC64)
+  static void gen_ldstub_asi(DisasContext *dc, TCGv dst, TCGv addr, int 
+insn)
+  {
+      DisasASI da = get_asi(dc, insn, MO_UB);
+@@ -5508,7 +5510,6 @@ static void disas_sparc_insn(DisasContex
+                  case 0x37: /* stdc */
+                      goto ncp_insn;
+  #endif
+-#if !defined(CONFIG_USER_ONLY) || defined(TARGET_SPARC64)
+                  case 0x3c: /* V9 or LEON3 casa */
+  #ifndef TARGET_SPARC64
+                      CHECK_IU_FEATURE(dc, CASA);
+@@ -5517,7 +5518,6 @@ static void disas_sparc_insn(DisasContex
+                      cpu_src2 = gen_load_gpr(dc, rs2);
+                      gen_cas_asi(dc, cpu_addr, cpu_src2, insn, rd);
+                      break;
+-#endif
+                  default:
+                      goto illegal_insn;
+                  }
 
