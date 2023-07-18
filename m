@@ -2,59 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32BA1757C4A
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 14:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD66757C4B
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 14:56:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLkCX-00025O-8N; Tue, 18 Jul 2023 08:53:13 -0400
+	id 1qLkEp-0002u8-Q8; Tue, 18 Jul 2023 08:55:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <18622748025@163.com>)
- id 1qLkCU-00025F-H2
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:53:10 -0400
-Received: from m12.mail.163.com ([220.181.12.217])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <18622748025@163.com>) id 1qLkCR-00005Y-Bq
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:53:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:Subject:Date:Message-Id; bh=4sMGboxBki1joNixHO
- 9o9Dafl0VqbYT7X2KHXVc8DFQ=; b=mIWc/qmtsZiNuSbtwjXdkK9CW/5yK1CScI
- PdsxsmKaRz23mnTCMXrhQGH43WDqjpiefGbbdmw/cpWDP7rgHhw8JYY2kR3pyqG1
- UvBfehpf6OQOlUAzoMTiVwddW4IqzhUx5IblkAdGns4MmL+lDEWESBspj1POeOn1
- QSE2yvC64=
-Received: from localhost.localdomain (unknown [103.3.97.171])
- by zwqz-smtp-mta-g2-3 (Coremail) with SMTP id _____wAHiR0ii7ZkNimQAg--.2617S2; 
- Tue, 18 Jul 2023 20:52:51 +0800 (CST)
-From: "liguang.zhang" <18622748025@163.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, alistair23@gmail.com,
- "liguang.zhang" <liguang.zhang@hexintek.com>
-Subject: [PATCH] target/riscv: fix the issue of guest reboot then no response
- or crash in kvm-mode
-Date: Tue, 18 Jul 2023 20:52:48 +0800
-Message-Id: <20230718125248.9013-1-18622748025@163.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230625025018.26956-1-18622748025@163.com>
-References: <20230625025018.26956-1-18622748025@163.com>
-X-CM-TRANSID: _____wAHiR0ii7ZkNimQAg--.2617S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXw1rWF1ktr4kArW8ZFyfXrb_yoW5Cr4kpF
- 4kC39xCws7trWxJw1ftFWDJF1ru3yxWrsxA3y7CrWaya15JrW5Xws2g3y2yr95Gry0yFWa
- kF43uFy3Ca1UKFDanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jZxhLUUUUU=
-X-Originating-IP: [103.3.97.171]
-X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbiVwiwWVetrpxp-wAAso
-Received-SPF: pass client-ip=220.181.12.217; envelope-from=18622748025@163.com;
- helo=m12.mail.163.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FROM_LOCAL_DIGITS=0.001,
- FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001,
- RCVD_IN_MSPIKE_L4=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1qLkEn-0002tl-EG
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:55:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1qLkEf-0000rl-Mx
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:55:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689684922;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=VqHDFEYauDF1gSdZAi3CcoREI8mCFu+ndywIeceN29M=;
+ b=T9f870zz/JAImHhmC6g3y5yEyPZOhDTUw4kSNudgGBf8Es1j12RrhnHVBCr8QTmn9rSypC
+ OoA6xqr7rxnswkpqO6ZcqDo0Ma6x1PeabkD7tjFOdLjUi83v2oF+f2PfFfZ4k5XCyU0YOH
+ 1XucyHIlRHnSjOHVvMMfpmo5aGGlutA=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-56-z9N7aFaIOyKC48kMtBcxGQ-1; Tue, 18 Jul 2023 08:55:20 -0400
+X-MC-Unique: z9N7aFaIOyKC48kMtBcxGQ-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-51836731bfbso3616466a12.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 05:55:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689684919; x=1692276919;
+ h=mime-version:user-agent:message-id:in-reply-to:date:references
+ :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VqHDFEYauDF1gSdZAi3CcoREI8mCFu+ndywIeceN29M=;
+ b=V3cx4Tj5nZheHypy1xJQiAcDlkyDgI14JrQnIcob1uvYWVmVHwPWO1GMq/PaDjd+tl
+ kWzVJO8LIO2U2BlUVEpdFXhrXs2jQhPu2Bow+mhWbDaSKj0D5T0BHSVeRUnxZ77jSAHg
+ TOqDg0INXUeiqmBCr8+6N6V/H88Zsb88u51XuMx5LqblVfF9/qw4qLRU6zzHlRy5wcd4
+ LTCMgyHxU7pvtPkTHoAnBGDjyHhUzydgnFZeyDJAh3Fqnt4DsUlBcEyPUpk8ngTh0PvE
+ 9JOckMg/pDlPw18DoR85V2RX/rZZ8rDZFOxeismk9CnC6+Krv3L1L6L+rqjL0CugsF6D
+ 0ToA==
+X-Gm-Message-State: ABy/qLZIqvMHH7SwO15IjrlW1yvpbzBw5cj6U89yBP0Rp669ToU3ZDyW
+ v91eXiEmp3FdSDQm5GypTMLWDAAgP8jjRvdRxhIuYeeD7r67LlF0aNPVeBwQl9DKIuXtusEKE9M
+ 6ViWkxF3jaNGq3WE=
+X-Received: by 2002:aa7:d751:0:b0:51f:e92a:62ba with SMTP id
+ a17-20020aa7d751000000b0051fe92a62bamr12570841eds.9.1689684919207; 
+ Tue, 18 Jul 2023 05:55:19 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHeuLmHqeA4yMEbWA3u+q/x8xVxrNH3GB/EeBEXAH3yxNyxAFx4FMojd1SwNscBFoO4OyMbDw==
+X-Received: by 2002:aa7:d751:0:b0:51f:e92a:62ba with SMTP id
+ a17-20020aa7d751000000b0051fe92a62bamr12570827eds.9.1689684918920; 
+ Tue, 18 Jul 2023 05:55:18 -0700 (PDT)
+Received: from nuthatch (nat-pool-brq-t.redhat.com. [213.175.37.10])
+ by smtp.gmail.com with ESMTPSA id
+ t2-20020a05640203c200b0051debcb1fa2sm1203156edw.69.2023.07.18.05.55.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Jul 2023 05:55:18 -0700 (PDT)
+From: Milan Zamazal <mzamazal@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,  qemu-devel@nongnu.org,  Peter
+ Maydell <peter.maydell@linaro.org>,  Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>
+Subject: Re: [PULL 10/66] tests/qtest: enable tests for virtio-scmi
+References: <cover.1689030052.git.mst@redhat.com>
+ <b6f53ae005a1c05034769beebf799e861b82d48a.1689030052.git.mst@redhat.com>
+ <22589b2f-8dcf-b86b-2d77-bf27bf81ce27@redhat.com>
+Date: Tue, 18 Jul 2023 14:55:17 +0200
+In-Reply-To: <22589b2f-8dcf-b86b-2d77-bf27bf81ce27@redhat.com> (Thomas Huth's
+ message of "Tue, 18 Jul 2023 14:42:01 +0200")
+Message-ID: <87pm4pcrbe.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mzamazal@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,119 +104,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "liguang.zhang" <liguang.zhang@hexintek.com>
+Thomas Huth <thuth@redhat.com> writes:
 
-Fix the guest reboot error when using KVM
-There are two issues when rebooting a guest using KVM
-1. When the guest initiates a reboot the host is unable to stop the vcpu
-2. When running a SMP guest the qemu monitor system_reset causes a vcpu crash
+> On 11/07/2023 01.02, Michael S. Tsirkin wrote:
+>> From: Milan Zamazal <mzamazal@redhat.com>
+>> We don't have a virtio-scmi implementation in QEMU and only support
+>
+>> a
+>> vhost-user backend.  This is very similar to virtio-gpio and we add the same
+>> set of tests, just passing some vhost-user messages over the control socket.
+>> Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
+>> Acked-by: Thomas Huth <thuth@redhat.com>
+>> Message-Id: <20230628100524.342666-4-mzamazal@redhat.com>
+>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+>> ---
+>>   tests/qtest/libqos/virtio-scmi.h |  34 ++++++
+>>   tests/qtest/libqos/virtio-scmi.c | 174 +++++++++++++++++++++++++++++++
+>>   tests/qtest/vhost-user-test.c    |  44 ++++++++
+>>   MAINTAINERS                      |   1 +
+>>   tests/qtest/libqos/meson.build   |   1 +
+>>   5 files changed, 254 insertions(+)
+>>   create mode 100644 tests/qtest/libqos/virtio-scmi.h
+>>   create mode 100644 tests/qtest/libqos/virtio-scmi.c
+>
+>  Hi!
+>
+> I'm seeing some random failures with this new scmi test, so far only
+> on non-x86 systems, e.g.:
+>
+>  https://app.travis-ci.com/github/huth/qemu/jobs/606246131#L4774
+>
+> It also reproduces on a s390x host here, but only if I run "make check
+> -j$(nproc)" - if I run the tests single-threaded, the qos-test passes
+> there. Seems like there is a race somewhere in this test?
 
-This can be fixed by clearing the CSR values at reset and syncing the
-MPSTATE with the host.
+Hmm, it's basically the same as virtio-gpio.c test, so it should be OK.
+Is it possible that the two tests (virtio-gpio.c & virtio-scmi.c)
+interfere with each other in some way?  Is there possibly a way to
+serialize them to check?
 
-Signed-off-by: liguang.zhang <liguang.zhang@hexintek.com>
----
- target/riscv/kvm.c       | 42 ++++++++++++++++++++++++++++++++++++++++
- target/riscv/kvm_riscv.h |  1 +
- 2 files changed, 43 insertions(+)
-
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 9d8a8982f9..ecc8ab8238 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -44,6 +44,8 @@
- #include "migration/migration.h"
- #include "sysemu/runstate.h"
- 
-+static bool cap_has_mp_state;
-+
- static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
-                                  uint64_t idx)
- {
-@@ -790,6 +792,24 @@ int kvm_arch_get_registers(CPUState *cs)
-     return ret;
- }
- 
-+int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state)
-+{
-+    if (cap_has_mp_state) {
-+        struct kvm_mp_state mp_state = {
-+            .mp_state = state
-+        };
-+
-+        int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
-+        if (ret) {
-+            fprintf(stderr, "%s: failed to sync MP_STATE %d/%s\n",
-+                    __func__, ret, strerror(-ret));
-+            return -1;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
- int kvm_arch_put_registers(CPUState *cs, int level)
- {
-     int ret = 0;
-@@ -809,6 +829,18 @@ int kvm_arch_put_registers(CPUState *cs, int level)
-         return ret;
-     }
- 
-+    if (KVM_PUT_RESET_STATE == level) {
-+        RISCVCPU *cpu = RISCV_CPU(cs);
-+        if (cs->cpu_index == 0) {
-+            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNNABLE);
-+        } else {
-+            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_STOPPED);
-+        }
-+        if (ret) {
-+            return ret;
-+        }
-+    }
-+
-     return ret;
- }
- 
-@@ -909,6 +941,7 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
- 
- int kvm_arch_init(MachineState *ms, KVMState *s)
- {
-+    cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
-     return 0;
- }
- 
-@@ -987,10 +1020,19 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
-     if (!kvm_enabled()) {
-         return;
-     }
-+    for (int i=0; i<32; i++)
-+        env->gpr[i] = 0;
-     env->pc = cpu->env.kernel_addr;
-     env->gpr[10] = kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
-     env->gpr[11] = cpu->env.fdt_addr;          /* a1 */
-     env->satp = 0;
-+    env->mie = 0;
-+    env->stvec = 0;
-+    env->sscratch = 0;
-+    env->sepc = 0;
-+    env->scause = 0;
-+    env->stval = 0;
-+    env->mip = 0;
- }
- 
- void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
-diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
-index e3ba935808..3ea68c38e3 100644
---- a/target/riscv/kvm_riscv.h
-+++ b/target/riscv/kvm_riscv.h
-@@ -22,5 +22,6 @@
- void kvm_riscv_init_user_properties(Object *cpu_obj);
- void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
- void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
-+int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
- 
- #endif
--- 
-2.17.1
+> No clue how to debug this, but since it currently only happens on
+> non-x86 architectures, maybe we should limit it to x86 hosts for now?
+>
+>  Thomas
 
 
