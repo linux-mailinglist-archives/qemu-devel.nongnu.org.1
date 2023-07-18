@@ -2,61 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D467757CB5
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 15:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D420757CB6
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 15:04:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLkMX-0006Wq-Bc; Tue, 18 Jul 2023 09:03:33 -0400
+	id 1qLkMH-0006Sz-V6; Tue, 18 Jul 2023 09:03:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <18622748025@163.com>)
- id 1qLkMU-0006WX-Ok
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 09:03:30 -0400
-Received: from m12.mail.163.com ([220.181.12.214])
+ (Exim 4.90_1) (envelope-from <qemu@bonslack.org>) id 1qLkMF-0006Sj-KB
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 09:03:15 -0400
+Received: from bonnix2.bonnix.it ([37.247.49.194])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <18622748025@163.com>) id 1qLkMR-0003D4-OH
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 09:03:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
- s=s110527; h=From:Subject:Date:Message-ID:MIME-Version; bh=4sMGb
- oxBki1joNixHO9o9Dafl0VqbYT7X2KHXVc8DFQ=; b=Ap1ZitNL4ykicfAOSN8Be
- sv0MACkSstCYHaka/CQUdndupSigXSU723m1ZV1dBNp62gRakPKCKFc/yxl1t2kr
- grnQ+zPz3y8ntg2TU9tiKJVFJfczH+iEspT9Qjzl27Aqyw0hKc+3NgDqX/cVNwOn
- 1H7j9b4ioHFib9heeaoSSA=
-Received: from localhost.localdomain (unknown [103.3.97.171])
- by zwqz-smtp-mta-g2-3 (Coremail) with SMTP id _____wBHCB2YjbZkn+qQAg--.4828S2; 
- Tue, 18 Jul 2023 21:03:20 +0800 (CST)
-From: "liguang.zhang" <18622748025@163.com>
-To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, alistair23@gmail.com,
- "liguang.zhang" <liguang.zhang@hexintek.com>
-Subject: [PATCH] target/riscv: Clearing the CSR values at reset and syncing
- the MPSTATE with the host
-Date: Tue, 18 Jul 2023 21:02:51 +0800
-Message-ID: <20230718130317.12545-1-18622748025@163.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230625025018.26956-1-18622748025@163.com>
-References: <20230625025018.26956-1-18622748025@163.com>
+ (envelope-from <qemu@bonslack.org>) id 1qLkMD-00039F-FG
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 09:03:15 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 bonnix2.bonnix.it 978C4ADC30
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bonslack.org;
+ s=20220805; t=1689685390;
+ bh=ixXY9hpmzkYQbn+pkOZMs7RFJD+PtCStLusueWMjyAU=;
+ h=Date:To:From:Subject;
+ b=g942uVgfOJn8n3eOaahrA3u7nBvNke1u/h4iNtqx3uXovq+iCXfjhwkmXufXI5gFt
+ T8lLdRBO5pdNXtQECaYJyJ1qxtRU/Do1lLdWajoFSO8q9v4YyjAp+4r8yNlAXCfDpg
+ zrbhfrG5GnfP/zyEBughSA/DSW/38wW+3scxGt7Q=
+Received: from [10.0.0.152] (unknown [82.84.102.14])
+ by bonnix2.bonnix.it (Postfix) with ESMTPSA id 978C4ADC30
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 15:03:10 +0200 (CEST)
+Message-ID: <750c569e-a922-d3bb-1f97-1698960d5b05@bonslack.org>
+Date: Tue, 18 Jul 2023 15:03:10 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wBHCB2YjbZkn+qQAg--.4828S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXw1rWF1ktr4kArW8ZFyfXrb_yoW5Cr4kpF
- 4kC39xCws7trWxJw1ftFWDJF1ru3yxWrsxA3y7CrWaya15JrW5Xws2g3y2yr95Gry0yFWa
- kF43uFy3Ca1UKFDanT9S1TB71UUUUb7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jJJ5rUUUUU=
-X-Originating-IP: [103.3.97.171]
-X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/xtbBFQiwWWB9ncRVOgABse
-Received-SPF: pass client-ip=220.181.12.214; envelope-from=18622748025@163.com;
- helo=m12.mail.163.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FROM_LOCAL_DIGITS=0.001,
- FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001,
- RCVD_IN_MSPIKE_L4=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Content-Language: it, en-GB
+To: qemu-devel@nongnu.org
+From: Luca Bonissi <qemu@bonslack.org>
+Subject: Wrong unpacked structure for epoll_event on qemu-or1k (openrisc
+ user-space)
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=37.247.49.194; envelope-from=qemu@bonslack.org;
+ helo=bonnix2.bonnix.it
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,119 +62,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "liguang.zhang" <liguang.zhang@hexintek.com>
+The or1k epoll_event structure - unlike other architectures - is packed, 
+so we need to define it as packed in qemu-user, otherwise it leads to 
+infinite loop due to missing file descriptor in the returned data:
 
-Fix the guest reboot error when using KVM
-There are two issues when rebooting a guest using KVM
-1. When the guest initiates a reboot the host is unable to stop the vcpu
-2. When running a SMP guest the qemu monitor system_reset causes a vcpu crash
+--- qemu-20230327/linux-user/syscall_defs.h.orig	2023-03-27 
+15:41:42.000000000 +0200
++++ qemu-20230327/linux-user/syscall_defs.h	2023-06-30 
+17:29:39.034322213 +0200
+@@ -2714,7 +2709,7 @@
+  #define FUTEX_CMD_MASK          ~(FUTEX_PRIVATE_FLAG | 
+FUTEX_CLOCK_REALTIME)
 
-This can be fixed by clearing the CSR values at reset and syncing the
-MPSTATE with the host.
-
-Signed-off-by: liguang.zhang <liguang.zhang@hexintek.com>
----
- target/riscv/kvm.c       | 42 ++++++++++++++++++++++++++++++++++++++++
- target/riscv/kvm_riscv.h |  1 +
- 2 files changed, 43 insertions(+)
-
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 9d8a8982f9..ecc8ab8238 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -44,6 +44,8 @@
- #include "migration/migration.h"
- #include "sysemu/runstate.h"
- 
-+static bool cap_has_mp_state;
-+
- static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
-                                  uint64_t idx)
- {
-@@ -790,6 +792,24 @@ int kvm_arch_get_registers(CPUState *cs)
-     return ret;
- }
- 
-+int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state)
-+{
-+    if (cap_has_mp_state) {
-+        struct kvm_mp_state mp_state = {
-+            .mp_state = state
-+        };
-+
-+        int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
-+        if (ret) {
-+            fprintf(stderr, "%s: failed to sync MP_STATE %d/%s\n",
-+                    __func__, ret, strerror(-ret));
-+            return -1;
-+        }
-+    }
-+
-+    return 0;
-+}
-+
- int kvm_arch_put_registers(CPUState *cs, int level)
- {
-     int ret = 0;
-@@ -809,6 +829,18 @@ int kvm_arch_put_registers(CPUState *cs, int level)
-         return ret;
-     }
- 
-+    if (KVM_PUT_RESET_STATE == level) {
-+        RISCVCPU *cpu = RISCV_CPU(cs);
-+        if (cs->cpu_index == 0) {
-+            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNNABLE);
-+        } else {
-+            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_STOPPED);
-+        }
-+        if (ret) {
-+            return ret;
-+        }
-+    }
-+
-     return ret;
- }
- 
-@@ -909,6 +941,7 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
- 
- int kvm_arch_init(MachineState *ms, KVMState *s)
- {
-+    cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
-     return 0;
- }
- 
-@@ -987,10 +1020,19 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
-     if (!kvm_enabled()) {
-         return;
-     }
-+    for (int i=0; i<32; i++)
-+        env->gpr[i] = 0;
-     env->pc = cpu->env.kernel_addr;
-     env->gpr[10] = kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
-     env->gpr[11] = cpu->env.fdt_addr;          /* a1 */
-     env->satp = 0;
-+    env->mie = 0;
-+    env->stvec = 0;
-+    env->sscratch = 0;
-+    env->sepc = 0;
-+    env->scause = 0;
-+    env->stval = 0;
-+    env->mip = 0;
- }
- 
- void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
-diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
-index e3ba935808..3ea68c38e3 100644
---- a/target/riscv/kvm_riscv.h
-+++ b/target/riscv/kvm_riscv.h
-@@ -22,5 +22,6 @@
- void kvm_riscv_init_user_properties(Object *cpu_obj);
- void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
- void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
-+int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
- 
- #endif
--- 
-2.17.1
-
+  #ifdef CONFIG_EPOLL
+-#if defined(TARGET_X86_64)
++#if defined(TARGET_X86_64) || defined(TARGET_OPENRISC)
+  #define TARGET_EPOLL_PACKED QEMU_PACKED
+  #else
+  #define TARGET_EPOLL_PACKED
 
