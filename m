@@ -2,86 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 065B2757380
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 08:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 848127573D5
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 08:13:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLdjs-0002f9-Sk; Tue, 18 Jul 2023 01:59:12 -0400
+	id 1qLdwF-0004Xb-Mg; Tue, 18 Jul 2023 02:11:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLdjq-0002ex-1d
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 01:59:10 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLdjn-0002q4-JC
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 01:59:09 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-4fb761efa7aso8413831e87.0
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 22:59:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689659944; x=1692251944;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5I837Hzy5YrRxOyxRI5WJDkYekV16jxPi4ELcyc3uog=;
- b=A2guvNhJGB/A9ejoEg5W0egtZrdTYqGgiKr1RsCmVW6Ubl1bOnz510V16fUsJXJwRY
- h0oKKBYJom0ndya0EUl+cgadHGUdjbBnLuKf676Lh8k6Nldbwpf4OUr66YEVBTj3Kdfp
- uePwF39qGUBGQy9eHKjhJplhsGQPiX/r9SZO6vcR8YsG0DSygDNF+Wl7j7IeB0LR/sV6
- yKkMNLYayWDfrhPnFa/SUYjPtnvFQBoUGGE3BsCXeSfuHiNQ6bnMWxc14mYvhJeJboo9
- LIT6h5BODlD2zDhT3Pgvc1ZmdVaJZD1ska+zKwW0w/Jgw+om4ApR6O1HHUnIBX/tApva
- 07Zg==
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qLdwC-0004XH-PS
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 02:11:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qLdwA-0005Le-W0
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 02:11:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689660712;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vHRCIhofoweDHT2kk3dm0VqHYPgh/+gcBIxdL+BWBro=;
+ b=MhOszm62UEeZ/GT8ZfoVhYEj52piBlb0AB52AQOwi8IRkB2mwzbOEw4MuHOfe/Y9gnuJUY
+ VV9i6SbhaKvyVZXLEjVuioeX7yfE7L+NBOc89j8fZ4Hd31yRXuJb7r7F9ATgzVnN19uD8J
+ 9+xTyS/OwiBdLJrh5A+apTb7W5/gvOs=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-142-Uxo-fBTpMN2IaPV7u2uPpQ-1; Tue, 18 Jul 2023 02:11:50 -0400
+X-MC-Unique: Uxo-fBTpMN2IaPV7u2uPpQ-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-666e3dad70aso4639209b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 23:11:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689659944; x=1692251944;
+ d=1e100.net; s=20221208; t=1689660709; x=1692252709;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5I837Hzy5YrRxOyxRI5WJDkYekV16jxPi4ELcyc3uog=;
- b=cjkZ5hPYNY70QGhJSQHXyrf4zW9nQI3717jL7fqCCLGGpOomJYPWNNaT+fozFTUiKr
- 8QWw1zexWPcit8g7dSMFiTQccE0wGQ9uK2/VCqb6+5FjlI2wY2jR+1FK8iku2kOCs/18
- wbNsSGKjWHeioMTYWMoc0/QdKtTItpfM4bNpNVAbxv01AscN7OIepgR8h8/JNWEaPwfk
- CuJFiswHhD0HBUfUeO9wycG7O0uvruRKYjJZgbRL/mDkOk1eLrP83n6rC7kmjmB4IxJd
- s/s3eCoaAAudWReWmmsaqO47Iui1mLbL3F5dzvTzLIxGB4ykanyabvf9cbyjAtkIHfDI
- cyfg==
-X-Gm-Message-State: ABy/qLanm4vXTn+eiH5X21lBuYzo8SzYUXXf10Az7YpP8Oj6qaksb4DF
- JRRUACqfajm4PZI7J+rYAv9KGH79X957LSoa9EI=
-X-Google-Smtp-Source: APBJJlEWoMkSp3MP61gunQl1b8e2IA0J9fwSjzrXBJ+eSYpM2mf4yr2OpyzzW2ErFXHFOP5j33p2Jg==
-X-Received: by 2002:a05:6512:2083:b0:4f9:571d:c50e with SMTP id
- t3-20020a056512208300b004f9571dc50emr8589834lfr.36.1689659944261; 
- Mon, 17 Jul 2023 22:59:04 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.222.251])
+ bh=vHRCIhofoweDHT2kk3dm0VqHYPgh/+gcBIxdL+BWBro=;
+ b=etjXcODGEaDm51XKKwKD4M06KsRywn7f5ULwsKaK/iCleHfoSjwHUjJBZr3KMC2qqA
+ /V+qN4rd84r/RwM+lcwXxQ8Oa1bK9jH5lcSIQBTnonuvC9X91pX99a9tJbl90ETq5vyk
+ xUUQAKzmZZg+wZy+1jKlWSbr7PcKD5npBwjOb5PCesFkk63E9K7n5AlWtvb4U6D7Vfzw
+ i1/28kfhftXxs6cnWFdxSbg3fqVm0BcQI7xEGKRpUKNs3Idq0WaQZMB9JBvUibaxGcAA
+ SWXmmCwn7E3gRihd0vAI5hTESRv5kLDf6SAkZGfQ8KHIUImYT0Rtebv6NDX4D8DdVDxW
+ q4rg==
+X-Gm-Message-State: ABy/qLZRaI/ZHMaNR14/7fhcQtC+iTMUvorBMOYiorTCAY2K+/GQuelY
+ kMQC/jBUogsJIHVpSpKpqaJlbrMwS6/dxiQZLljBRnCOdsnVnlqgBnOpPtg+yqjFsDG4StSEr5x
+ Q/sRSs5Z1ZuJOcvc=
+X-Received: by 2002:a05:6a00:14c5:b0:668:83b6:bfe8 with SMTP id
+ w5-20020a056a0014c500b0066883b6bfe8mr18939614pfu.9.1689660709258; 
+ Mon, 17 Jul 2023 23:11:49 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHrB5kEjvrwyM+wapGanm98polCdsJChTNxmV+DPAIrHaDv708abv2PUHYE0hqIDOaYmDDKnw==
+X-Received: by 2002:a05:6a00:14c5:b0:668:83b6:bfe8 with SMTP id
+ w5-20020a056a0014c500b0066883b6bfe8mr18939590pfu.9.1689660708932; 
+ Mon, 17 Jul 2023 23:11:48 -0700 (PDT)
+Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
+ ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
  by smtp.gmail.com with ESMTPSA id
- y20-20020a05600c20d400b003f91e32b1ebsm9519465wmm.17.2023.07.17.22.59.03
+ u3-20020a62ed03000000b006829b27f252sm765051pfh.93.2023.07.17.23.11.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jul 2023 22:59:03 -0700 (PDT)
-Message-ID: <f04db0a8-17dc-8ac1-abd5-433a78ab0b88@linaro.org>
-Date: Tue, 18 Jul 2023 07:59:01 +0200
+ Mon, 17 Jul 2023 23:11:48 -0700 (PDT)
+Message-ID: <9a97da2f-befe-8b5a-aee6-23bb9212abcd@redhat.com>
+Date: Tue, 18 Jul 2023 16:11:42 +1000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.1 v2 2/2] target/mips: Avoid shift by negative
- number in page_table_walk_refill()
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/3] machine: Factor CPU type invalidation out into helper
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230717213504.24777-1-philmd@linaro.org>
- <20230717213504.24777-3-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230717213504.24777-3-philmd@linaro.org>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, pbonzini@redhat.com,
+ eduardo@habkost.net, peter.maydell@linaro.org, marcel.apfelbaum@gmail.com,
+ philmd@linaro.org, wangyanan55@huawei.com, shan.gavin@gmail.com
+References: <20230713054502.410911-1-gshan@redhat.com>
+ <20230713054502.410911-2-gshan@redhat.com>
+ <20230714140707.5c7c2402@imammedo.users.ipa.redhat.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20230714140707.5c7c2402@imammedo.users.ipa.redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x136.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,26 +105,196 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/7/23 23:35, Philippe Mathieu-Daudé wrote:
+Hi Igor,
 
-Oops, invalid authorship, this should be:
-
-From: Peter Maydell <peter.maydell@linaro.org>
-
-> Coverity points out that in page_table_walk_refill() we can shift by
-> a negative number, which is undefined behaviour (CID 1452918,
-> 1452920, 1452922).  We already catch the negative directory_shift and
-> leaf_shift as being a "bail out early" case, but not until we've
-> already used them to calculated some offset values.
+On 7/14/23 22:07, Igor Mammedov wrote:
+> On Thu, 13 Jul 2023 15:45:00 +1000
+> Gavin Shan <gshan@redhat.com> wrote:
 > 
-> Move the calculation of the offset values to after we've done the
-> "return early if ptew > 1" check.
+>> The CPU type invalidation logic in machine_run_board_init() is
+>> independent enough. Lets factor it out into helper validate_cpu_type().
+>> Since we're here, the relevant comments are improved a bit.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Gavin Shan <gshan@redhat.com>
+>> ---
+>>   hw/core/machine.c | 81 +++++++++++++++++++++++++----------------------
+>>   1 file changed, 43 insertions(+), 38 deletions(-)
+>>
+>> diff --git a/hw/core/machine.c b/hw/core/machine.c
+>> index f0d35c6401..68b866c762 100644
+>> --- a/hw/core/machine.c
+>> +++ b/hw/core/machine.c
+>> @@ -1349,12 +1349,52 @@ out:
+>>       return r;
+>>   }
+>>   
+>> +static void validate_cpu_type(MachineState *machine)
+> s/validate_cpu_type/is_cpu_type_valid or better is_cpu_type_supported
 > 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> [PMD: Check for ptew > 1, use unsigned type]
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/mips/tcg/sysemu/tlb_helper.c | 32 +++++++++++++++--------------
->   1 file changed, 17 insertions(+), 15 deletions(-)
+> Is it going to be reused elsewhere (otherwise I don't see much reason to move code around)?
+> 
+
+The logic of checking if the CPU type is supported is independent enough. It's
+the only reason why I factored it out into a standalone helper here. It has
+been explained in the commit log. Lets have an individual helper for this if
+you don't have strong taste. With it, machine_run_board_init() looks a bit more
+clean.
+
+I don't have strong opinion about the function name. Shall we return 'bool'
+with is_cpu_type_supported()? Something like below. The 'bool' return value
+is duplicate to 'local_err' in machine_run_board_init(). So I think the
+function validate_cpu_type(machine, errp) looks good to me. Igor, could you
+please help to confirm?
+
+static bool is_cpu_type_supported(MachineState *machine, Error **errp)
+{
+     bool supported = true;
+
+     :
+
+     if (!machine_class->valid_cpu_types[i]) {
+         error_setg(errp, "Invalid CPU type: %s", machine->cpu_type));
+         error_append_hint(errp, "The valid types are: %s", model);
+         for (i = 1; machine_class->valid_cpu_types[i]; i++) {
+             error_append_hint(errp, ", %s", model);
+         }
+         error_append_hint(errp, "\n");
+
+         supported = false;
+     }
+
+     :
+
+     return supported;
+}
+
+void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp)
+{
+     Error *local_err = NULL;
+
+     :
+
+     /* These two conditions are duplicate to each other! */
+     if (!is_cpu_type_supported(machine, &local_err) && local_err) {
+         error_propagate(errp, local_err);
+     }
+
+     :
+}
+
+>> +{
+>> +    MachineClass *machine_class = MACHINE_GET_CLASS(machine);
+>> +    ObjectClass *oc = object_class_by_name(machine->cpu_type);
+>> +    CPUClass *cc = CPU_CLASS(oc);
+>> +    int i;
+>> +
+>> +    /*
+>> +     * Check if the user-specified CPU type is supported when the valid
+>> +     * CPU types have been determined. Note that the user-specified CPU
+>> +     * type is given by '-cpu' option.
+>> +     */
+>> +    if (!machine->cpu_type || !machine_class->valid_cpu_types) {
+>> +        goto out_no_check;
+> no goto-s please
+> 
+
+Ok. Will be dropped in next revision.
+
+>> +    }
+>> +
+>> +    for (i = 0; machine_class->valid_cpu_types[i]; i++) {
+>> +        if (object_class_dynamic_cast(oc, machine_class->valid_cpu_types[i])) {
+>> +            break;
+>> +        }
+>> +    }
+>> +
+>> +    if (!machine_class->valid_cpu_types[i]) {
+>> +        /* The user-specified CPU type is invalid */
+>> +        error_report("Invalid CPU type: %s", machine->cpu_type);
+>> +        error_printf("The valid types are: %s",
+>> +                     machine_class->valid_cpu_types[0]);
+>> +        for (i = 1; machine_class->valid_cpu_types[i]; i++) {
+>> +            error_printf(", %s", machine_class->valid_cpu_types[i]);
+>> +        }
+>> +        error_printf("\n");
+>> +
+>> +        exit(1);
+> 
+> since you are touching that,
+> turn it in errp handling, in separate patch 1st
+> and only then introduce your helper.
+> 
+
+Right, it's a good idea. I will have a preparatory patch for it where
+the error messages will be accumulated to @local_err and finally propagate
+it to @errp of machine_run_board_init().
+
+>> +    }
+>> +
+>> +    /* Check if CPU type is deprecated and warn if so */
+>> +out_no_check:
+>> +    if (cc && cc->deprecation_note) {
+>> +        warn_report("CPU model %s is deprecated -- %s",
+>> +                    machine->cpu_type, cc->deprecation_note);
+>> +    }
+>> +}
+>>   
+>>   void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp)
+>>   {
+>>       MachineClass *machine_class = MACHINE_GET_CLASS(machine);
+>> -    ObjectClass *oc = object_class_by_name(machine->cpu_type);
+>> -    CPUClass *cc;
+>>   
+>>       /* This checkpoint is required by replay to separate prior clock
+>>          reading from the other reads, because timer polling functions query
+>> @@ -1405,42 +1445,7 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
+>>           machine->ram = machine_consume_memdev(machine, machine->memdev);
+>>       }
+>>   
+>> -    /* If the machine supports the valid_cpu_types check and the user
+>> -     * specified a CPU with -cpu check here that the user CPU is supported.
+>> -     */
+>> -    if (machine_class->valid_cpu_types && machine->cpu_type) {
+>> -        int i;
+>> -
+>> -        for (i = 0; machine_class->valid_cpu_types[i]; i++) {
+>> -            if (object_class_dynamic_cast(oc,
+>> -                                          machine_class->valid_cpu_types[i])) {
+>> -                /* The user specificed CPU is in the valid field, we are
+>> -                 * good to go.
+>> -                 */
+>> -                break;
+>> -            }
+>> -        }
+>> -
+>> -        if (!machine_class->valid_cpu_types[i]) {
+>> -            /* The user specified CPU is not valid */
+>> -            error_report("Invalid CPU type: %s", machine->cpu_type);
+>> -            error_printf("The valid types are: %s",
+>> -                         machine_class->valid_cpu_types[0]);
+>> -            for (i = 1; machine_class->valid_cpu_types[i]; i++) {
+>> -                error_printf(", %s", machine_class->valid_cpu_types[i]);
+>> -            }
+>> -            error_printf("\n");
+>> -
+>> -            exit(1);
+>> -        }
+>> -    }
+>> -
+>> -    /* Check if CPU type is deprecated and warn if so */
+>> -    cc = CPU_CLASS(oc);
+>> -    if (cc && cc->deprecation_note) {
+>> -        warn_report("CPU model %s is deprecated -- %s", machine->cpu_type,
+>> -                    cc->deprecation_note);
+>> -    }
+>> +    validate_cpu_type(machine);
+>>   
+>>       if (machine->cgs) {
+>>           /*
+
+Thanks,
+Gavin
 
 
