@@ -2,92 +2,122 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521F87579E4
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 12:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EBA4757973
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 12:46:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLiND-0004Dj-F7; Tue, 18 Jul 2023 06:56:07 -0400
+	id 1qLiCI-0001zX-3v; Tue, 18 Jul 2023 06:44:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qLiNC-0004DQ-0A
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:56:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qLiCF-0001z8-Sk; Tue, 18 Jul 2023 06:44:48 -0400
+Received: from mail-db3eur04on0703.outbound.protection.outlook.com
+ ([2a01:111:f400:fe0c::703]
+ helo=EUR04-DB3-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qLiNA-00053q-CH
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:56:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689677762;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sZ3jd+QDygSaJaS8tMYgCWnkTPafW0H1bfWvGaTpaTs=;
- b=EFXfsqWYKfV4Keau6jED4JwEg0IEsmk+h9/uf/6jJelm5VcshtKEYErdjfcLyvdhjWtNo8
- 2UrteiJyNZ25WFDWZpC/JgaJYAaOyOrhycPVOlU8GWJwcVOIvGUv+sRjcPFS6B3c70RuKE
- jQBWfNlf3o9nex1Mfj96lj+buq77Nxk=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-266-r2peHfMhO4OmmHKGymoHUA-1; Tue, 18 Jul 2023 06:43:13 -0400
-X-MC-Unique: r2peHfMhO4OmmHKGymoHUA-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-403a4cdbfa2so52462821cf.3
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 03:43:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689676993; x=1690281793;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sZ3jd+QDygSaJaS8tMYgCWnkTPafW0H1bfWvGaTpaTs=;
- b=F4rqtbvED4+FNhbiYSOA1sK9k7h9nvk7TqgOy4uWK7FhqeHdwaFuKlN4hD1q9PkikA
- nQQ0FUmuIIufSm+blX1JkeapgS0a4hYvRkP/trB69PSDfX22TNnVSM9/8QI8xHTtR2z5
- /mCPevLXUvRCFVbPQ9paGJ9QtNAKHNoSpR3gm9r2DVVZplp0NpB7h2+S+ZES9RqiYMyo
- YDH7yoSgvV0/w53RLpaMqJKwf3+rXCXCo31ONMa1IosD6P/VsZOSmaX89Dom7QyRmTx9
- D4pQSLFGs5UXE3Eu8hGFYMUWGSUVrP/vXbfGN9sl5D33F+KpMuPJlE8E6anj8Pjy4XMx
- cyvQ==
-X-Gm-Message-State: ABy/qLad4ZgGs2eg4B0RD+hu2tsTH/TH8EYMLgxuYtIXV3+OmPPNPXKj
- ph8os8QVhoYH6Ln+DxUZi0V3JNxOK6pEXpKmJqzEMGNu7/UV0T4cqitN2kZvTtxRUfkKx6wc/Je
- K0cqCqjB/cljZNt4=
-X-Received: by 2002:a05:622a:2c9:b0:403:a707:4ce8 with SMTP id
- a9-20020a05622a02c900b00403a7074ce8mr20301538qtx.14.1689676992792; 
- Tue, 18 Jul 2023 03:43:12 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEfAc0RAW51Q57+5kHaOjBNY385azWVdgDwm1CpukcUR7H6/nuc2BdE+p3QBn6/yuEdIBWyqA==
-X-Received: by 2002:a05:622a:2c9:b0:403:a707:4ce8 with SMTP id
- a9-20020a05622a02c900b00403a7074ce8mr20301525qtx.14.1689676992513; 
- Tue, 18 Jul 2023 03:43:12 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:2cd2:7ace:8238:f7f4?
- ([2a01:e0a:280:24f0:2cd2:7ace:8238:f7f4])
- by smtp.gmail.com with ESMTPSA id
- ew13-20020a05622a514d00b00403b1fb1f48sm560643qtb.17.2023.07.18.03.43.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Jul 2023 03:43:12 -0700 (PDT)
-Message-ID: <beb86eee-b51e-2e6e-baee-2b562291aefd@redhat.com>
-Date: Tue, 18 Jul 2023 12:43:09 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] hw/nvme: fix endianness issue for shadow doorbells
-Content-Language: en-US
-To: Klaus Jensen <its@irrelevant.dk>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <k.jensen@samsung.com>, qemu-stable@nongnu.org,
- Thomas Huth <thuth@redhat.com>
-References: <20230718103511.53767-2-its@irrelevant.dk>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230718103511.53767-2-its@irrelevant.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qLiCD-0001xm-Nb; Tue, 18 Jul 2023 06:44:47 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UDIxmt2zc2JLbwFpVxlLDKBGfFAcKpC+I1Yvy499VkpgRIgBr5ECwM4q7UAEFFLSwmInJzbyrm9RRqbOSofZE50AU8QTERy0PVL5OzvCE+uiATT5gpPh5lbB/XrRRw67Sx9dC2HPLjM+PWym4bgpQS8zfhNhZV7X1uCcKYLUj0WKPd+dAlOaoYfocNVFL41rwPu6cDWjFt/EyhIaa+Iab4Z/HC47l7P4qDMcvX72lITD6DewiDraeT8UVtu4S6tFTGZ8PxESJkUIrzgiaCcz1VQqm1ZNs1SadbP5QsP2triJDDfDCTFvGoOH3497U1ZPzmr3C69Rnf9NJKt3QVdFlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GSXLTvVmbIzvSoaKyzTiC/qbiA3f72fCep0/b9Olk+M=;
+ b=G0kMafiX+50i/Ax9K2ZuuaaNB9umkIDTgBUZ3D2jWlx6oCFJcVRTreqa6rglu8WOhOkCXni1CCdY5/apJF/Jsg1mfdDrHSd7lW9ULIQcCDON81lu0bcmI0nZkeHW/NBIFtHBC6487uUhmrHCN7CqY6G2b+h9bsgtjADWtaCqSyWRWo874SzqPWvBEW/mFAuFbpclPGtjgje6mN1eXrB0IByvIVELIer43R3SLOWbCOFBITAEMtTDPfuY6uTUo4S+IxDfWTZ0NQqluQ7T13CRhYgWmhywsTOkXZvXUb5keUd2NHD0DN73RTLz8OqZIa1CA0ummGYAotuultuadcZhXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GSXLTvVmbIzvSoaKyzTiC/qbiA3f72fCep0/b9Olk+M=;
+ b=0HnadstLFof6Nc6e8046IzWyqfsQ/poknjQiIxX8npxiiWaOkLnt7fnbwEpfw1VKoW12HFmDA4kfpJrtvWUu9pBAh3WhS/LDQ9OU0151227/bQqwueCzyoorw9n/3IHvzLVV2B+3GFiqV5YzCHJ7T51oRI87psNSuGlqZ6gSrgq35KmOgV+nMTq4DpGzS9fhG+7EOuFzvfObmLhQztscazJ2v1XkZiDvWap9D5LrpGWgIVOEvYgOBnvB0HrX1eADmZwnZmrJ3xaWWmJe0N4/EOIMeclBoMrrxajLtdXh/MLeyvoXT+QOqVudavUb92QyZ/hZjUOFtGuDhzwRNw4nfg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com (2603:10a6:20b:402::11)
+ by PAWPR08MB9784.eurprd08.prod.outlook.com (2603:10a6:102:2ea::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.32; Tue, 18 Jul
+ 2023 10:44:39 +0000
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::f4dc:6db6:8d7b:111f]) by AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::f4dc:6db6:8d7b:111f%3]) with mapi id 15.20.6588.031; Tue, 18 Jul 2023
+ 10:44:39 +0000
+From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
+ vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com
+Subject: [PATCH v8 00/10]  parallels: Add duplication check, repair at open,
+ fix bugs
+Date: Tue, 18 Jul 2023 12:44:22 +0200
+Message-Id: <20230718104432.1130469-1-alexander.ivanov@virtuozzo.com>
+X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain
+X-ClientProxiedBy: VI1PR0202CA0001.eurprd02.prod.outlook.com
+ (2603:10a6:803:14::14) To AS8PR08MB7095.eurprd08.prod.outlook.com
+ (2603:10a6:20b:402::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR08MB7095:EE_|PAWPR08MB9784:EE_
+X-MS-Office365-Filtering-Correlation-Id: 69f11f3b-1e28-438e-03ed-08db877bfc91
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: hpwIUml8CdchfNFlIhmuNqK0s69d2+y7QFY4tc+F0KmIxIxfeegVUFGQeggPVdDf7GJuky4XjIMSnc8OtwmwuijoGaBuFVW8q+VdhndTsgydIFM44IWSjUgCsr/DbHvwwquHahwMVcTzD8JJzkYSD+JfMHiDxEEeCVYP9qohKQFSdWdMvIiGRy1pDWOj1jRqkiD0up6MjdFVLZVk6jDikiTg3Ft4BzgqvIMBZBzzzEIhsXpk7QjJWQO+dO3fdM3SjtTMzFCocPtivYgD0G4mNObGAQjhVQ808tB8NYHdOppRWtH9m07gQkGOshnRctNGJNn4Pok6qhqhJHmRst2olU5uy0Q+45hEyTb0ELvHVJDyS/Su9+zyiVFNEA3VRGD5fovvnGNJkl91lEV0kvnoAkaXAZdVlnWSi324zHPiplxJ+WsnSrLDybBtQ17KF3Ta3+wSek6hPtW89Wj1FEDPFgiY+Pq3jtwEwujTLFE2hE2k+ma6QnBm/iQ4i7YBgIOhg4htFz5UwmNB9BncWPo2iFUFA4ttb8+h5IMiR89IlnFirfWuireEOK5d4Iq87xC8PcmODsjpOKAZPw+ysCjdSvfEDlOQpKuAn0WGuJWdJsTLG/WgJu+pRyreElM9ZjeA
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AS8PR08MB7095.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(4636009)(396003)(39850400004)(136003)(346002)(376002)(366004)(451199021)(478600001)(52116002)(6486002)(6666004)(1076003)(83380400001)(2616005)(36756003)(86362001)(2906002)(44832011)(186003)(26005)(6506007)(6512007)(38350700002)(38100700002)(66476007)(4326008)(66946007)(316002)(66556008)(6916009)(41300700001)(5660300002)(8676002)(8936002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?D/g89AizITwJaFRgO0rxQ9AAa+Fk3jtihU/sYypcOeUxb/nlkGuF/pZj3VLp?=
+ =?us-ascii?Q?2VCWH12tXRZ5h+DYrS129RFog79Pb2jeivVzRPQZBpoatzxRMMgmO3wEw4l/?=
+ =?us-ascii?Q?Bp0x/Bfy7YXtEw0T4zHPqPSfHnHrCbNAOqTd9eSlwU2j86Y57I9PwIv7j0Uz?=
+ =?us-ascii?Q?p+WMxgPU6FX19NeN4L5pQty2HhN5CFU70PqdO/fR43lMmkRWKZiZuLLMs5Hi?=
+ =?us-ascii?Q?llNtgx1yEu2Hika6TA4QI8eoWkeQx/jI1fg0M20QQ1nKEPlb24mTYXfZXOVN?=
+ =?us-ascii?Q?UGfc9lJySm2nA5/bMbh0GPV8ix3whM9Z4R+VCkUAIYPk3mDoc4pnu43QkSDl?=
+ =?us-ascii?Q?duKjXwgzdvohxmuipbjc48JHfo4x7vVqoxRvgr8mpGQ/GDp5cj7th3U0g0qo?=
+ =?us-ascii?Q?kbDMtQwywggCsKSb3I91QeknlyEGCbblZhBm9X1gNCMSTpk47ulPauYD3KBk?=
+ =?us-ascii?Q?1igiL5FSH/zOCXzGyq8oLizFDtPcWEi5Zl2rpRLdAtKuFsarpjC7QBG0E5LR?=
+ =?us-ascii?Q?fxh5eAhW/NRGs6ubO4jMZAuEr+ZWGphxnAka2tH3mSooT6hg6pV5pMrXq+06?=
+ =?us-ascii?Q?cLLHIfVzGCjR0beef9hazFGX2JbJ5C9wa9ckCLvc6xC1ds1NDMz5jIQ+rT6f?=
+ =?us-ascii?Q?PnP+MhDeNUVD09vl5dxYcOgBxTs21X8KE7LtYEgRdFtHIt+qLzJN1D2vgn21?=
+ =?us-ascii?Q?7IXcD+y5KArj/LwHPn8gtH3EFWiKPyxWCEt2QoTioi8KK5jHuE0WhxIisjEu?=
+ =?us-ascii?Q?vRwbKwVo7AjZG3+2m3Qhm4H6VuY7zQad7eW3E/PubhcF9pS78F3jnMoejE9Y?=
+ =?us-ascii?Q?3EnVijokIbumRIah7HWRb4tD90sB0XsNyvF8ywybVft4swGixcxH8Wc4bEZx?=
+ =?us-ascii?Q?PdNK8KruVHG1Zs/g5Jc+Upr4aHa96ZtsnV0y2L7lj7uGptzsMOsFn87rCBEx?=
+ =?us-ascii?Q?zFNLBP29CGWSVIyYipgoMr+4TUeDNBLT+uWxzQ6+tAKFB9CVyNzngVTnpJrK?=
+ =?us-ascii?Q?ENh3P21Chv5S6E6M7gkVEeCwabn732imqyLDqd1XnM/76hcNbqEccLXx0qiU?=
+ =?us-ascii?Q?c/ZjI/1WF1xlHjzAEQo8j0hNdEehJhVXrb10A7rSWyWAjUdQh29qdiZ/NoxF?=
+ =?us-ascii?Q?zX87+t+k7REJZ86PP4yKqTqC4jd+YKW8T9gzcMk9/iJukiqZc7WGLs09G9Wh?=
+ =?us-ascii?Q?rjikAEiCUYarIvHUyiqj3zASwunZVpMzVnQYZzPlAeSypIVwLMwGmLjO3G+x?=
+ =?us-ascii?Q?DaBlK0Lw/KtnKfxX34h5msPUNwSkA6f5Tl+Yjf8oNg/39b4niLIfaCYTtmN9?=
+ =?us-ascii?Q?MujT1UH4z72IunCSCe63NZGoz0zs7FyP9bdVDUCgfFYKTrHgwngsSpVTPf3P?=
+ =?us-ascii?Q?IUWLl+ncUVEBfDyg0LA1MRuKSJAKZH0e6DsyPtAXoHeXM4SgDxpmo9QZDAAr?=
+ =?us-ascii?Q?CGifoCSi7Q6tEd2wmZdiuNsmO37w/f7zzbdy0TahLs0C0IVT/3SiSHVXQJ2/?=
+ =?us-ascii?Q?qpvWyB7RrcYK5Wb/qgC0jX5MK3DK3hjVl2ybQufFzLDHny2CRGTg/l0+YiXh?=
+ =?us-ascii?Q?OM36Rvb7Vc1c/NI82Wl8+62xJaP6XTASotzCiPotapxxHsddOo7qov8SWFt/?=
+ =?us-ascii?Q?aCC1g7sxxrnV4tBbQtOwAW8=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69f11f3b-1e28-438e-03ed-08db877bfc91
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR08MB7095.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2023 10:44:39.2410 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sywv+91anhhVY0lpiuu3o3p/FlKlhicG4lqR7C6sGfRGUuStI89OfQBqE4juE/SH/mpA+iO98naw/+akREUEcpZ/LrZNw0wKB7uUvvtqN7Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB9784
+Received-SPF: pass client-ip=2a01:111:f400:fe0c::703;
+ envelope-from=alexander.ivanov@virtuozzo.com;
+ helo=EUR04-DB3-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,116 +133,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/18/23 12:35, Klaus Jensen wrote:
-> From: Klaus Jensen <k.jensen@samsung.com>
-> 
-> In commit 2fda0726e514 ("hw/nvme: fix missing endian conversions for
-> doorbell buffers"), we fixed shadow doorbells for big-endian guests
-> running on little endian hosts. But I did not fix little-endian guests
-> on big-endian hosts. Fix this.
-> 
-> Solves issue #1765.
+Fix incorrect data end calculation in parallels_open().
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1765
+Check if data_end greater than the file size.
 
-> Fixes: 3f7fe8de3d49 ("hw/nvme: Implement shadow doorbell buffer support")
-> Cc: qemu-stable@nongnu.org
-> Reported-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+Add change_info argument to parallels_check_leak().
 
-Tested-by: Cédric Le Goater <clg@redhat.com>
+Add checking and repairing duplicate offsets in BAT
 
-with a PowerNV QEMU machine running on a s390x LPAR.
+Image repairing in parallels_open().
 
-Thanks,
-
-C.
+v8:
+1: New patch. Fixed comments formatting.
+2: Fixed a comment line length.
+6: Fixed a typo in a label.
+9: Patch was splitted to two patches. This patch only adds data_off check.
+   Function parallels_test_data_off() was changed to return the correct
+   offset in any case.
+10: Added data_off repairing to parallels_open(),
 
 
-> ---
->   hw/nvme/ctrl.c | 18 +++++++++++++-----
->   1 file changed, 13 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-> index 8e8e870b9a80..dadc2dc7da10 100644
-> --- a/hw/nvme/ctrl.c
-> +++ b/hw/nvme/ctrl.c
-> @@ -6801,6 +6801,7 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
->       PCIDevice *pci = PCI_DEVICE(n);
->       uint64_t dbs_addr = le64_to_cpu(req->cmd.dptr.prp1);
->       uint64_t eis_addr = le64_to_cpu(req->cmd.dptr.prp2);
-> +    uint32_t v;
->       int i;
->   
->       /* Address should be page aligned */
-> @@ -6818,6 +6819,8 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
->           NvmeCQueue *cq = n->cq[i];
->   
->           if (sq) {
-> +            v = cpu_to_le32(sq->tail);
-> +
->               /*
->                * CAP.DSTRD is 0, so offset of ith sq db_addr is (i<<3)
->                * nvme_process_db() uses this hard-coded way to calculate
-> @@ -6825,7 +6828,7 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
->                */
->               sq->db_addr = dbs_addr + (i << 3);
->               sq->ei_addr = eis_addr + (i << 3);
-> -            pci_dma_write(pci, sq->db_addr, &sq->tail, sizeof(sq->tail));
-> +            pci_dma_write(pci, sq->db_addr, &v, sizeof(sq->tail));
->   
->               if (n->params.ioeventfd && sq->sqid != 0) {
->                   if (!nvme_init_sq_ioeventfd(sq)) {
-> @@ -6835,10 +6838,12 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
->           }
->   
->           if (cq) {
-> +            v = cpu_to_le32(cq->head);
-> +
->               /* CAP.DSTRD is 0, so offset of ith cq db_addr is (i<<3)+(1<<2) */
->               cq->db_addr = dbs_addr + (i << 3) + (1 << 2);
->               cq->ei_addr = eis_addr + (i << 3) + (1 << 2);
-> -            pci_dma_write(pci, cq->db_addr, &cq->head, sizeof(cq->head));
-> +            pci_dma_write(pci, cq->db_addr, &v, sizeof(cq->head));
->   
->               if (n->params.ioeventfd && cq->cqid != 0) {
->                   if (!nvme_init_cq_ioeventfd(cq)) {
-> @@ -7587,7 +7592,7 @@ static uint64_t nvme_mmio_read(void *opaque, hwaddr addr, unsigned size)
->   static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
->   {
->       PCIDevice *pci = PCI_DEVICE(n);
-> -    uint32_t qid;
-> +    uint32_t qid, v;
->   
->       if (unlikely(addr & ((1 << 2) - 1))) {
->           NVME_GUEST_ERR(pci_nvme_ub_db_wr_misaligned,
-> @@ -7654,7 +7659,8 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
->           start_sqs = nvme_cq_full(cq) ? 1 : 0;
->           cq->head = new_head;
->           if (!qid && n->dbbuf_enabled) {
-> -            pci_dma_write(pci, cq->db_addr, &cq->head, sizeof(cq->head));
-> +            v = cpu_to_le32(cq->head);
-> +            pci_dma_write(pci, cq->db_addr, &v, sizeof(cq->head));
->           }
->           if (start_sqs) {
->               NvmeSQueue *sq;
-> @@ -7714,6 +7720,8 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
->   
->           sq->tail = new_tail;
->           if (!qid && n->dbbuf_enabled) {
-> +            v = cpu_to_le32(sq->tail);
-> +
->               /*
->                * The spec states "the host shall also update the controller's
->                * corresponding doorbell property to match the value of that entry
-> @@ -7727,7 +7735,7 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
->                * including ones that run on Linux, are not updating Admin Queues,
->                * so we can't trust reading it for an appropriate sq tail.
->                */
-> -            pci_dma_write(pci, sq->db_addr, &sq->tail, sizeof(sq->tail));
-> +            pci_dma_write(pci, sq->db_addr, &v, sizeof(sq->tail));
->           }
->   
->           qemu_bh_schedule(sq->bh);
+v7:
+3: Renamed "change_info" argument to "explicit", move info printing under
+   explicit condition.
+4: Different patch. Add data_start field to BDRVParallelsState for future
+   host_cluster_index() function.
+5: Prevously was 4th. Used s->data_start instead of s->header->data_off.
+   Add bitmap size increasing if file length is not cluster aligned. Revert
+   a couple conditions for better readability. Changed sectors calculation
+   for better code transparency. Replaced sector variable by host_sector and
+   guest_sector. Renamed off to host_off. Moved out_repare_bat: below return
+   to get jumps on error path only.
+6: Prevously was 5th.
+7: New patch. Replace bdrv_getlength() by bdrv_co_getlength() in
+   parallels_check_outside_image() because it is used in coroutine context.
+8: New patch. Add data_off check.
+
+v6:
+2: Different patch. Refused to split image leak handling. Instead there is a
+   patch with a data_end check.
+3: Different patch. There is a patch with change_info argument.
+4: Removed changing fprintf by qemu_log from this patchset. Previously 3rd
+   patch became 4th. Replaced qemu_memalign() by qemu_blockalign(). Got
+   rid of iovecs, replaced bdrv_co_pwritev() by bdrv_co_pwrite(). Added
+   assert(cluster_index < bitmap_size). Now BAT changes are reverted if
+   there was an error in the cluster copying process. Simplified a sector
+   calculation.
+5: Moved header magic check to the appropriate place. Added a
+   migrate_del_blocker() call and s->bat_dirty_bmap freeing on error.
+
+v5:
+3: Fixed a byteorder bug, fixed zero-length image handling and fixed uint32
+   truncation.
+
+v4:
+2,5: Rebased.
+
+v3:
+2: Added (size >= res->image_end_offset) assert and changed the comment in
+   parallels_get_leak_size(). Changed error printing and leaks fixing order.
+3: Removed highest_offset() helper, instead image_end_offset field is used.
+5: Moved highest_offset() code to parallels_open() - now it is used only in
+   this function. Fixed data_end update condition. Fixed a leak of
+   s->migration_blocker.
+
+v2:
+2: Moved outsude parallels_check_leak() 2 helpers:
+   parallels_get_leak_size() and parallels_fix_leak().
+   
+3: Used highest_offset() helper in parallels_check_leak(). Fixed a typo.
+   Added comments. Replaced g_malloc() call by qemu_memalign(). Replaced
+   bdrv_pread() call by bdrv_co_pread(). Got rid of keeping bytes and
+   sectors in the same variable. Added setting the bitmap of the used
+   clusters for a new allocated cluster if it isn't out of the bitmap.
+   Moved the leak fix to the end of all the checks. Removed a dependence
+   on image format for the duplicate check.
+   
+4 (old): Merged this patch to the previous.
+4 (former 5): Fixed formatting.
+5 (former 6): Fixed comments. Added O_INACTIVE check in the condition.
+              Replaced inuse detection by header_unclean checking.
+              Replaced playing with corutines by bdrv_check() usage.
+
+Alexander Ivanov (10):
+  parallels: Fix comments formatting inside parallels driver
+  parallels: Incorrect data end calculation in parallels_open()
+  parallels: Check if data_end greater than the file size
+  parallels: Add "explicit" argument to parallels_check_leak()
+  parallels: Add data_start field to BDRVParallelsState
+  parallels: Add checking and repairing duplicate offsets in BAT
+  parallels: Image repairing in parallels_open()
+  parallels: Use bdrv_co_getlength() in parallels_check_outside_image()
+  parallels: Add data_off check
+  parallels: Add data_off repairing to parallels_open()
+
+ block/parallels.c | 346 +++++++++++++++++++++++++++++++++++++++-------
+ block/parallels.h |   1 +
+ 2 files changed, 299 insertions(+), 48 deletions(-)
+
+-- 
+2.34.1
 
 
