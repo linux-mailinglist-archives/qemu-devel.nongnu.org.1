@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD52875734C
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 07:44:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE37175734E
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 07:45:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLdUI-0007pz-Aa; Tue, 18 Jul 2023 01:43:06 -0400
+	id 1qLdVj-0008Pu-S6; Tue, 18 Jul 2023 01:44:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLdUD-0007pX-Fc
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 01:43:01 -0400
-Received: from mout.gmx.net ([212.227.15.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLdUA-00087x-Dt
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 01:43:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1689658970; x=1690263770; i=deller@gmx.de;
- bh=gOSuOvinD9pCC4YOWSuiCcOepxgUwXFp2wjEq4LEVEU=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=jwI0fUZ0YhzUrC5sEbzSewH4u3jLxUWJPXrmZopgmNVOG2PLTKVFnJwWmOFl00Qa0N32DYT
- 5fvylxmTpG76OACoTKZACKq36k1Ot7C+y7c0Y3Gd01pihLdBMKtoiInGFUBHUmcNJ8FkffjTI
- XbIIx3FaqiNEVmd76qglPDSOrRhlUWDQHU8L+GelcPQ6J+SIk+v/3F7YMSo1AsuCw/AnxQPGQ
- wZC3MJqp990nJmLaWDAICQLb9bT5UdhssG4zP+hGc2dxY0v/GBAt1JVHQ+fYgKmSOZB3jrPyJ
- OG9Jiq1tbeI7I60QAuh6ZivMsEOBfXEQQUvNnDUjKHzc8v6JUYug==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.159.74]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MpDNl-1paBiX22BT-00qlZR; Tue, 18
- Jul 2023 07:42:50 +0200
-Message-ID: <bde51a26-4572-67bd-d9e0-58826db9d5fb@gmx.de>
-Date: Tue, 18 Jul 2023 07:42:48 +0200
+ (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
+ id 1qLdVh-0008Pl-F8
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 01:44:34 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <isaku.yamahata@gmail.com>)
+ id 1qLdVf-0008LJ-62
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 01:44:33 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1b89114266dso42587415ad.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 22:44:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1689659068; x=1692251068;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=n0BQPgGm1XIfmC6WD/oW6qUfHz8HQ/vb04ug55Kn+ns=;
+ b=Gm1Zx7Oz/0ByD1fGreXbSPNCxuEqYQbe12gHD4Rag3VHtlAxd3aFIqrajCtA825VB4
+ iaDc0UYdH0++ucL0fDlRfTu359RajgxUCVccZei7ihj5jmFMpMM1XvPBNKmlq6StUPFf
+ I8hl5hrAafB7BA+fjeYlmQtITCHz04TQOnzawavXxhWBPCf54i2xXzqKccBvPYq0IU70
+ j2Z+kHaw+USfL7Kim9GJKfe9LKOHROUuo7XZ49HkDcWCNQV1RnG8U+M3VG8oYdNKPRgz
+ 1dt/2dxjgQpnYQaZ+S7144uFXb7yEz0C+wh+0fYubZS4wSCw+7EIxlz59LFr8PnUwxyH
+ si0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689659068; x=1692251068;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=n0BQPgGm1XIfmC6WD/oW6qUfHz8HQ/vb04ug55Kn+ns=;
+ b=hb7ARIccXR9idMcNaVx6i2fTx24GwCv0wZZIy0fQTrdASTIVUWFiTxuxgq4A47BK49
+ oKBTA7fxOLi4p174dS/YolojjTub001NiJI0uDmkJjN7ufR7oIfReHi/iOE/jLczPren
+ D//nd7yuHjRFldSL7BqgxSnNeZrZRjydBscweLIFuNG8zltPKIAmfkssMN8ja+3BX9Eo
+ VEcJAgtYzbQySb3cf6LttxOF1/JkK8hIlEN0Ke6qgsHEYt+Prj9m1XM9GAkouNgc76pO
+ moRrCMB9UiD5t28bmEnQEhb1/NdGhBWaDZWs3XVgRe938994ulpSYbDWKAOtQ5NKWha7
+ RugA==
+X-Gm-Message-State: ABy/qLZ8wr4KpZ95FZOll6kthfdktfqsmI1zvImiWdDEQhmrp/teqMSF
+ D66G5UBQdoUcxEG6scbz8G0=
+X-Google-Smtp-Source: APBJJlFg0Qyd80sgobDlkN0InonwJco7Dv1EFyDksJrai58vKx60WN1/JxMSo5daTLz51z+eMLmLIA==
+X-Received: by 2002:a17:902:e743:b0:1b8:ac67:c2b with SMTP id
+ p3-20020a170902e74300b001b8ac670c2bmr16109695plf.21.1689659067800; 
+ Mon, 17 Jul 2023 22:44:27 -0700 (PDT)
+Received: from localhost ([192.55.54.50]) by smtp.gmail.com with ESMTPSA id
+ iy3-20020a170903130300b001b246dcffb7sm818648plb.300.2023.07.17.22.44.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Jul 2023 22:44:27 -0700 (PDT)
+Date: Mon, 17 Jul 2023 22:44:25 -0700
+From: Isaku Yamahata <isaku.yamahata@gmail.com>
+To: Wei Wang <wei.w.wang@intel.com>
+Cc: quintela@redhat.com, peterx@redhat.com, qemu-devel@nongnu.org,
+ isaku.yamahata@gmail.com
+Subject: Re: [PATCH v1] migration: refactor migration_completion
+Message-ID: <20230718054425.GA1807130@ls.amr.corp.intel.com>
+References: <20230714124823.25142-1-wei.w.wang@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 0/6] linux-user: brk() syscall fixes and armhf static
- binary fix
-Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
-References: <20230717213545.142598-1-deller@gmx.de>
- <703ab494-1778-c50a-d46f-988fab846da3@loongson.cn>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <703ab494-1778-c50a-d46f-988fab846da3@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:34A89nj/eyaltCifbC5SjdgCaXf25sEk50OY/oFwKFY8J5Zww+6
- XkPWAfp76bqIY0UAVRE/aaMzoa32PAM6R40S6fsiyKfayhSfqbaRDW1Hqt9m0HPcfQz0+Sq
- BpSezUCQiDF+J/ZtQ744Ea1K+aV2HzgANgWMMhE51KUOgK8IgwTfZJ3lKrD5I1cJgAT/NfQ
- 2G+sNu2bygNWOB8mReI8Q==
-UI-OutboundReport: notjunk:1;M01:P0:RiNYILax3Nk=;ygUeAcJWLLkudoASMhGdh47h8WD
- WIF84QSoebLxiSB8RxFJbrHhrkAqzndh4/kQN0+QXz9H/GLomuhOyoVxy29UIC4SHjvt0FHWe
- a9Et7ssyeLeVCtXZzZolmDD1ULb0LWXnupBEuzQJkJLU83tLuxEL/6ZeEEF0hadTWo7oPK7xV
- l5pwvvYF2qBr43T+A057IPvVQT5q1RuMKrRjQNRRm09HViJ9Lo3kvrZQxIpLhhBVzQ8HGvLk7
- 57r55EAR3Rlg644th3CbkdJ3E2w6BtWRBo9jAjDy0ynUzBkCnyPzFgtFHMp1mvfnlizLJfmgb
- VdkF5shKLEm8BzC3yCp0eL7MufWmR9Bx3CtNOsv8Il4foEUc5rZ3DKsf5ur2MbeX7P6PNXSxk
- fX7T/l6HavMEx/TDDpLpo7o3l+KDqZGQqzZKwBnHrYObN0Ksn4CkrFCmDRun/jDWTSULLRz5v
- IqGsOAnj+i22a29kqC1n04J46vjka9evcJw/htg5/sUYLcTyZhl8HTl9gxuEoPZH9mM7xD+RH
- VYUEYM4DbEHgu4rPx78cjqiTVN86VlJvpw66GWMfxEKx5L5a5QKKpkFc9/tcRcphEO9kbzZGX
- 5WGPEsKgaM2OtkxFCTe3G3gWThsjy3hUiTPBGAx55SG/0T3UsxJI+x+Q5qJgSydI8noZn3AOu
- 4l9ruqE5eOScHKrFOB40E88amHZNuyYtZZ4sO2UYiwFXYgmVFww2EXbYyqRfWEH6wqq43W6b0
- NkC1PfcEIuZ5JmVnael4lwrTEOhxzkiNaxe5/AuF6W6HEGgrZDDU9x7TvfMf2MRIt8XElsbNt
- jTTMD0zzI333jvres5eiXFeDKh9XZiLBTTlnFvskuhxMDStiLN7WTiHxrV1aYHzrAUQo+mY9N
- gwmBVfdKvJ3ldWya7LWMMAegdgLYd2RH1GdBwGtvytcLJRLHNghKH4cGGbShdiD4fFv6+KpQn
- bh/baAgMgQ0w9XCj5cKcYUPp3v8=
-Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -28
-X-Spam_score: -2.9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230714124823.25142-1-wei.w.wang@intel.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=isaku.yamahata@gmail.com; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,72 +90,270 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/18/23 05:03, Song Gao wrote:
-> Hi,=C2=A0 Helge
->
-> Could you see the following bugs:
-> https://gitlab.com/qemu-project/qemu/-/issues/1707
->
-> This issue is also caused by=C2=A0 the commit=C2=A0 86f04735ac.
+On Fri, Jul 14, 2023 at 08:48:23PM +0800,
+Wei Wang <wei.w.wang@intel.com> wrote:
 
-I don't have access to such a box (and on an arm64 debian porterbox
-I get unmet build dependencies, e.g. for gcc-powerpc64-linux-gnu).
+> Current migration_completion function is a bit long. Refactor the long
+> implementation into different subfunctions:
+> - migration_completion_precopy: completion code related to precopy
+> - migration_completion_postcopy: completion code related to postcopy
+> - close_return_path_on_source: rp thread related cleanup on migration
+> completion. It is named to match with open_return_path_on_source.
+> 
+> This improves readability and is easier for future updates (e.g. add new
+> subfunctions when completion code related to new features are needed). No
+> functional changes intended.
+> 
+> Signed-off-by: Wei Wang <wei.w.wang@intel.com>
+> ---
+>  migration/migration.c | 181 +++++++++++++++++++++++++-----------------
+>  1 file changed, 106 insertions(+), 75 deletions(-)
+> 
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 91bba630a8..83f1c74f99 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -2058,6 +2058,21 @@ static int await_return_path_close_on_source(MigrationState *ms)
+>      return ms->rp_state.error;
+>  }
+>  
+> +static int close_return_path_on_source(MigrationState *ms)
+> +{
+> +    int ret;
+> +
+> +    if (!ms->rp_state.rp_thread_created) {
+> +        return 0;
+> +    }
+> +
+> +    trace_migration_return_path_end_before();
+> +    ret = await_return_path_close_on_source(ms);
+> +    trace_migration_return_path_end_after(ret);
+> +
+> +    return ret;
+> +}
+> +
 
-If you can provide me with access to a machine I can test,
-otherwise you may simply check out:
-   git pull https://github.com/hdeller/qemu-hppa.git linux-user-brk-fixes
-and test yourself.
-
-Helge
+There is only one caller, migration_completion().  We can consolidate
+two functions, await_return_path_close_on_source() and
+close_return_path_on_source(), into single function.
 
 
->
-> Thanks.
-> Song Gao
->
->
-> =E5=9C=A8 2023/7/18 =E4=B8=8A=E5=8D=885:35, Helge Deller =E5=86=99=E9=81=
-=93:
->> Commit 86f04735ac ("linux-user: Fix brk() to release pages") introduced=
- the
->> possibility for userspace applications to reduce memory footprint by ca=
-lling
->> brk() with a lower address and free up memory.
->> This change introduced some failures for applications with errors like
->> - accesing bytes above the brk heap address on the same page,
->> - freeing memory below the initial brk address,
->> and introduced a behaviour which isn't done by the kernel (e.g. zeroing
->> memory above brk).
->>
->> This patch set fixes those issues and have been tested with existing
->> programs (e.g. upx).
->>
->> Additionally it includes one patch to allow running static armhf execut=
-ables
->> (e.g. fstype) which was broken since qemu-8.0.
->>
->> Helge
->>
->> Helge Deller (6):
->> =C2=A0=C2=A0 Revert "linux-user: Make sure initial brk(0) is page-align=
-ed"
->> =C2=A0=C2=A0 linux-user: Fix qemu brk() to not zero bytes on current pa=
-ge
->> =C2=A0=C2=A0 linux-user: Prohibit brk() to to shrink below initial heap=
- address
->> =C2=A0=C2=A0 linux-user: Fix signed math overflow in brk() syscall
->> =C2=A0=C2=A0 linux-user: Fix strace output for old_mmap
->> =C2=A0=C2=A0 linux-user: Fix qemu-arm to run static armhf binaries
->>
->> =C2=A0 linux-user/elfload.c |=C2=A0 7 +++++++
->> =C2=A0 linux-user/strace.c=C2=A0 | 49 +++++++++++++++++++++++++++++++++=
-+++++++----
->> =C2=A0 linux-user/syscall.c | 25 +++++++++++++---------
->> =C2=A0 3 files changed, 67 insertions(+), 14 deletions(-)
->>
->> --
->> 2.41.0
->>
->
+>  static inline void
+>  migration_wait_main_channel(MigrationState *ms)
+>  {
+> @@ -2288,66 +2303,107 @@ static int migration_maybe_pause(MigrationState *s,
+>      return s->state == new_state ? 0 : -EINVAL;
+>  }
+>  
+> -/**
+> - * migration_completion: Used by migration_thread when there's not much left.
+> - *   The caller 'breaks' the loop when this returns.
+> - *
+> - * @s: Current migration state
+> - */
+> -static void migration_completion(MigrationState *s)
+> +static int migration_completion_precopy(MigrationState *s,
+> +                                        int *current_active_state)
+>  {
+>      int ret;
+> -    int current_active_state = s->state;
+>  
+> -    if (s->state == MIGRATION_STATUS_ACTIVE) {
+> -        qemu_mutex_lock_iothread();
+> -        s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+> -        qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
+> +    qemu_mutex_lock_iothread();
+> +    s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+> +    qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
+>  
+> -        s->vm_old_state = runstate_get();
+> -        global_state_store();
+> +    s->vm_old_state = runstate_get();
+> +    global_state_store();
+>  
+> -        ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
+> -        trace_migration_completion_vm_stop(ret);
+> -        if (ret >= 0) {
+> -            ret = migration_maybe_pause(s, &current_active_state,
+> -                                        MIGRATION_STATUS_DEVICE);
+> -        }
+> -        if (ret >= 0) {
+> -            /*
+> -             * Inactivate disks except in COLO, and track that we
+> -             * have done so in order to remember to reactivate
+> -             * them if migration fails or is cancelled.
+> -             */
+> -            s->block_inactive = !migrate_colo();
+> -            migration_rate_set(RATE_LIMIT_DISABLED);
+> -            ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,
+> -                                                     s->block_inactive);
+> -        }
+> +    ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
+> +    trace_migration_completion_vm_stop(ret);
+> +    if (ret < 0) {
+> +        goto out_unlock;
+> +    }
+>  
+> -        qemu_mutex_unlock_iothread();
+> +    ret = migration_maybe_pause(s, current_active_state,
+> +                                MIGRATION_STATUS_DEVICE);
+> +    if (ret < 0) {
+> +        goto out_unlock;
+> +    }
+>  
+> -        if (ret < 0) {
+> -            goto fail;
+> -        }
+> -    } else if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
+> -        trace_migration_completion_postcopy_end();
+> +    /*
+> +     * Inactivate disks except in COLO, and track that we have done so in order
+> +     * to remember to reactivate them if migration fails or is cancelled.
+> +     */
+> +    s->block_inactive = !migrate_colo();
+> +    migration_rate_set(RATE_LIMIT_DISABLED);
+> +    ret = qemu_savevm_state_complete_precopy(s->to_dst_file, false,
+> +                                             s->block_inactive);
+> +out_unlock:
+> +    qemu_mutex_unlock_iothread();
+> +    return ret;
+> +}
+>  
+> -        qemu_mutex_lock_iothread();
+> -        qemu_savevm_state_complete_postcopy(s->to_dst_file);
+> -        qemu_mutex_unlock_iothread();
+> +static int migration_completion_postcopy(MigrationState *s)
+> +{
+> +    trace_migration_completion_postcopy_end();
+> +
+> +    qemu_mutex_lock_iothread();
+> +    qemu_savevm_state_complete_postcopy(s->to_dst_file);
+> +    qemu_mutex_unlock_iothread();
+> +
+> +    /*
+> +     * Shutdown the postcopy fast path thread.  This is only needed when dest
+> +     * QEMU binary is old (7.1/7.2).  QEMU 8.0+ doesn't need this.
+> +     */
+> +    if (migrate_postcopy_preempt() && s->preempt_pre_7_2) {
+> +        postcopy_preempt_shutdown_file(s);
+> +    }
+> +
+> +    trace_migration_completion_postcopy_end_after_complete();
+> +
+> +    return 0;
 
+Always return 0?  Make it void.
+
+
+> +}
+>  
+> +static void migration_completion_failed(MigrationState *s,
+> +                                        int current_active_state)
+> +{
+> +    if (s->block_inactive && (s->state == MIGRATION_STATUS_ACTIVE ||
+> +                              s->state == MIGRATION_STATUS_DEVICE)) {
+>          /*
+> -         * Shutdown the postcopy fast path thread.  This is only needed
+> -         * when dest QEMU binary is old (7.1/7.2).  QEMU 8.0+ doesn't need
+> -         * this.
+> +         * If not doing postcopy, vm_start() will be called: let's
+> +         * regain control on images.
+>           */
+> -        if (migrate_postcopy_preempt() && s->preempt_pre_7_2) {
+> -            postcopy_preempt_shutdown_file(s);
+> +        Error *local_err = NULL;
+> +
+> +        qemu_mutex_lock_iothread();
+> +        bdrv_activate_all(&local_err);
+> +        if (local_err) {
+> +            error_report_err(local_err);
+> +        } else {
+> +            s->block_inactive = false;
+>          }
+> +        qemu_mutex_unlock_iothread();
+> +    }
+>  
+> -        trace_migration_completion_postcopy_end_after_complete();
+> -    } else {
+> +    migrate_set_state(&s->state, current_active_state,
+> +                      MIGRATION_STATUS_FAILED);
+> +}
+> +
+> +/**
+> + * migration_completion: Used by migration_thread when there's not much left.
+> + *   The caller 'breaks' the loop when this returns.
+> + *
+> + * @s: Current migration state
+> + */
+> +static void migration_completion(MigrationState *s)
+> +{
+> +    int ret = -1;
+> +    int current_active_state = s->state;
+> +
+> +    if (s->state == MIGRATION_STATUS_ACTIVE) {
+> +        ret = migration_completion_precopy(s, &current_active_state);
+> +    } else if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
+> +        ret = migration_completion_postcopy(s);
+
+Here we can set ret = 0.
+
+
+> +    }
+> +
+> +    if (ret < 0) {
+>          goto fail;
+>      }
+>  
+> @@ -2357,14 +2413,8 @@ static void migration_completion(MigrationState *s)
+>       * it will wait for the destination to send it's status in
+>       * a SHUT command).
+>       */
+> -    if (s->rp_state.rp_thread_created) {
+> -        int rp_error;
+> -        trace_migration_return_path_end_before();
+> -        rp_error = await_return_path_close_on_source(s);
+> -        trace_migration_return_path_end_after(rp_error);
+> -        if (rp_error) {
+> -            goto fail;
+> -        }
+> +    if (close_return_path_on_source(s) < 0) {
+> +        goto fail;
+>      }
+>  
+>      if (qemu_file_get_error(s->to_dst_file)) {
+> @@ -2384,26 +2434,7 @@ static void migration_completion(MigrationState *s)
+>      return;
+>  
+>  fail:
+> -    if (s->block_inactive && (s->state == MIGRATION_STATUS_ACTIVE ||
+> -                              s->state == MIGRATION_STATUS_DEVICE)) {
+> -        /*
+> -         * If not doing postcopy, vm_start() will be called: let's
+> -         * regain control on images.
+> -         */
+> -        Error *local_err = NULL;
+> -
+> -        qemu_mutex_lock_iothread();
+> -        bdrv_activate_all(&local_err);
+> -        if (local_err) {
+> -            error_report_err(local_err);
+> -        } else {
+> -            s->block_inactive = false;
+> -        }
+> -        qemu_mutex_unlock_iothread();
+> -    }
+> -
+> -    migrate_set_state(&s->state, current_active_state,
+> -                      MIGRATION_STATUS_FAILED);
+> +    migration_completion_failed(s, current_active_state);
+>  }
+>  
+>  /**
+> -- 
+> 2.27.0
+> 
+> 
+
+-- 
+Isaku Yamahata <isaku.yamahata@gmail.com>
 
