@@ -2,57 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E788757816
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E31DA757814
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:32:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLh2x-000452-32; Tue, 18 Jul 2023 05:31:07 -0400
+	id 1qLh2o-00042A-5E; Tue, 18 Jul 2023 05:30:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2p-00043s-3N
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:59 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2m-00041o-PR
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2m-0004FQ-Gr
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:58 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2l-0004F2-9m
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689672655;
+ s=mimecast20190719; t=1689672654;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=10Hf9TvKlJRB2JDOPZ02jBkzxfqVji3pOM00MBYZzzw=;
- b=PgUXitdI614OMh1JvFPCBEVudaDiUIKm4/VqwTmDvGR+ZJwOLd05suA1t6VqfUPT2eSeUR
- MHQI/6rB6fvq8rPYuN8qLvsCcVVoivuFkgDBNOmg6nmB3J8SJoqqUu02MTBa8P49CvY4Y+
- qmPWJwsjbnLx2VV1X4gCyn2dOESItRw=
+ bh=cwk3Mhat8DF/tpvyGthuyT18eMCpgAbOaTBAvXT9+d0=;
+ b=YnzSpdIlFWHv6cttYe85MnE/dER/vPvs8nOZsoec4dbrgK9zFzDOyE1e0C6ijZct0WBTe1
+ m3N49obpqTTud1KXnBsLQui+Y4o7w+He6QppYv6WmjBaNRkazrpO4yssoH1fYSC56yTXZX
+ 6eSYWpi1LVEBtVIrS76aTZrBwCXp7is=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-6-ueNHjiWHNzW0QdLTtlqOhQ-1; Tue, 18 Jul 2023 05:30:52 -0400
-X-MC-Unique: ueNHjiWHNzW0QdLTtlqOhQ-1
+ us-mta-504-eFAz_GObPDG_uyikGfWByw-1; Tue, 18 Jul 2023 05:30:53 -0400
+X-MC-Unique: eFAz_GObPDG_uyikGfWByw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1C26A3C13920;
- Tue, 18 Jul 2023 09:30:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 13ADF1C34096;
+ Tue, 18 Jul 2023 09:30:53 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.89])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2147F2166B25;
- Tue, 18 Jul 2023 09:30:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 68CBA2166B25;
+ Tue, 18 Jul 2023 09:30:52 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 7/8] tests/vm/freebsd: Get up-to-date package list from lcitool
- vars file
-Date: Tue, 18 Jul 2023 11:30:39 +0200
-Message-Id: <20230718093040.172145-8-thuth@redhat.com>
+Subject: [PULL 8/8] tests/avocado: Disable the test_sbsaref_edk2_firmware by
+ default
+Date: Tue, 18 Jul 2023 11:30:40 +0200
+Message-Id: <20230718093040.172145-9-thuth@redhat.com>
 In-Reply-To: <20230718093040.172145-1-thuth@redhat.com>
 References: <20230718093040.172145-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -80,81 +77,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+The test fails occasionally, see e.g.:
 
-Get an up-to-date package list from lcitool, that way we
-don't need to manually keep this array in sync.
+ https://gitlab.com/thuth/qemu/-/jobs/4196177756#L489
+ https://gitlab.com/thuth/qemu/-/jobs/4623296271#L290
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Inspired-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230711144922.67491-5-philmd@linaro.org>
+It also fails on my laptop in ca. 50% of all runs. Thus disable it by
+default by using the QEMU_TEST_FLAKY_TESTS environment variable to fence
+it (which we also already use in flaky qtests). While we're at it, also
+document this variable in docs/devel/testing.rst.
+
+Message-Id: <20230710170155.7192-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/vm/freebsd | 42 ++----------------------------------------
- 1 file changed, 2 insertions(+), 40 deletions(-)
+ docs/devel/testing.rst                   | 5 +++++
+ tests/avocado/machine_aarch64_sbsaref.py | 2 +-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/vm/freebsd b/tests/vm/freebsd
-index 11de6473f4..ac51376c82 100755
---- a/tests/vm/freebsd
-+++ b/tests/vm/freebsd
-@@ -31,45 +31,6 @@ class FreeBSDVM(basevm.BaseVM):
-     link = "https://download.freebsd.org/releases/CI-IMAGES/13.2-RELEASE/amd64/Latest/FreeBSD-13.2-RELEASE-amd64-BASIC-CI.raw.xz"
-     csum = "a4fb3b6c7b75dd4d58fb0d75e4caf72844bffe0ca00e66459c028b198ffb3c0e"
-     size = "20G"
--    pkgs = [
--        # build tools
--        "git",
--        "pkgconf",
--        "bzip2",
--        "python39",
--        "ninja",
--
--        # gnu tools
--        "bash",
--        "gmake",
--        "gsed",
--        "gettext",
--
--        # libs: crypto
--        "gnutls",
--
--        # libs: images
--        "jpeg-turbo",
--        "png",
--
--        # libs: ui
--        "sdl2",
--        "gtk3",
--        "libxkbcommon",
--
--        # libs: opengl
--        "libepoxy",
--        "mesa-libs",
--
--        # libs: migration
--        "zstd",
--
--        # libs: networking
--        "libslirp",
--
--        # libs: sndio
--        "sndio",
--    ]
+diff --git a/docs/devel/testing.rst b/docs/devel/testing.rst
+index fb651eae11..b6ad21bed1 100644
+--- a/docs/devel/testing.rst
++++ b/docs/devel/testing.rst
+@@ -1384,6 +1384,11 @@ variable as shown on the code snippet below to skip the test:
+   def test(self):
+       do_something()
  
-     BUILD_SCRIPT = """
-         set -e;
-@@ -151,8 +112,9 @@ class FreeBSDVM(basevm.BaseVM):
-         self.console_wait(prompt)
-         self.console_send("echo 'chmod 666 /dev/vtbd1' >> /etc/rc.local\n")
++QEMU_TEST_FLAKY_TESTS
++^^^^^^^^^^^^^^^^^^^^^
++Some tests are not working reliably and thus are disabled by default.
++Set this environment variable to enable them.
++
+ Uninstalling Avocado
+ ~~~~~~~~~~~~~~~~~~~~
  
-+        pkgs = self.get_qemu_packages_from_lcitool_json()
-         self.print_step("Installing packages")
--        self.ssh_root_check("pkg install -y %s\n" % " ".join(self.pkgs))
-+        self.ssh_root_check("pkg install -y %s\n" % " ".join(pkgs))
+diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
+index cce6ef9f65..a794245e7e 100644
+--- a/tests/avocado/machine_aarch64_sbsaref.py
++++ b/tests/avocado/machine_aarch64_sbsaref.py
+@@ -8,7 +8,6 @@
  
-         # shutdown
-         self.ssh_root(self.poweroff)
+ import os
+ 
+-from avocado import skip
+ from avocado import skipUnless
+ from avocado.utils import archive
+ 
+@@ -76,6 +75,7 @@ def fetch_firmware(self):
+             "sbsa-ref",
+         )
+ 
++    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is not reliable')
+     def test_sbsaref_edk2_firmware(self):
+         """
+         :avocado: tags=cpu:cortex-a57
 -- 
 2.39.3
 
