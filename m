@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7596757933
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 12:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA06875793D
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 12:26:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLhp7-0003Lm-8t; Tue, 18 Jul 2023 06:20:53 -0400
+	id 1qLhu4-0005Jo-2G; Tue, 18 Jul 2023 06:26:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLhp5-0003KP-L7
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:20:51 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1qLhtt-0005F7-6f
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:25:49 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLhp4-0004H2-5C
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:20:51 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-51f7fb9a944so7779761a12.3
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 03:20:49 -0700 (PDT)
+ id 1qLhtr-0005YV-30
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:25:48 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-4f122ff663eso8869962e87.2
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 03:25:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689675647; x=1692267647;
+ d=linaro.org; s=google; t=1689675939; x=1692267939;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UoJRYC3MfcZ18P4KVffL2lD9O71DJkppni4a/To86g8=;
- b=azh+Y0DP9GH0QC+odHtuWAN7AoQWELZTVuybHwTLcWntiaHzSLg7QQJ5DbP4dOynP6
- pZX2mFkDPMi2neb1iAG6JArqzdQABSFdjjWeTY+oOINLBBX8B4M6mdJvrA2Q3GSKlt7+
- X58Qibco9tIbRKrVSOy4cJJx2VhgfiTXpSoeqBKv0eZ+E6qgR5wiYD/+5I5bYtqV8WlM
- BoSdzLtvjCGuRczrzNuvQEdDZZVn3GtA4eGIXLeYA6YM7fzrRoM/mF3gLc9wHvPCQibz
- /kI7qGM00vp5T4g61lLXIJbrM5y+5X7vDamuG96EBQGFG5QSgaeoHuYS6P6uMLMDySlK
- vThw==
+ bh=53TxoCa8PwII1f/88lnrKFx7DZcJM0tT7V0/8C7GYuY=;
+ b=S++L/LHeVqoR0v+BbQC/i4/siz/bxwFBocCNXA92O1UgU0dhE1hH9GNzIeT59gPhwu
+ qIJiOJAT3wCrwWprzqTkk5LH3aOcn/iibA4i1yQhGBZHWIK3NiqMrn2ZaZgWE76J1amg
+ 1Re4T3mzo05oT8IpQOAdWc9+gfBkQws2bcqVjiTjD+dLsvAIKpKIVEGM+2HsmdwNW/WC
+ p3T1pe+RJ7jqVNDIoeaXevhezWy+mlh3k/3ifpMG8cKIFaTLQyzU3vibAlAwF1VK3mLR
+ bIMgO5D/qnMqP5UysBjsWi+EkkyJVxzO00as5WB4uC97zuxiKAqmWL1PHIY8Aciz7Tef
+ DPzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689675647; x=1692267647;
+ d=1e100.net; s=20221208; t=1689675939; x=1692267939;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UoJRYC3MfcZ18P4KVffL2lD9O71DJkppni4a/To86g8=;
- b=cp90VhzBimdGED4wCXoJ5ZCW9B1Vi/HFUpt2ga+B9wP+WQbkr0coQvmxKvA279LN1e
- AVOA8CEZpfjepmKQ9lihn5auIln57unjT5HqCsTHThwp2/2nHY8RJQU0Bkn+PoZ0tYY8
- 4hPo5FXRlqiexznfvOuz4B2AgOthGgkl/JrYctpV3iqYltwq2PyCTffGAHZRwDncFZUu
- acO0BkECIzgZD6DeDjqahC/vou0I03ABoMFK1vHaQzH9aVavn3be1khruAdfUQoGMBSa
- 3ptbTx4qDi5EmGu83oCOswvIRXG+FOmLx/Jb44/gFsKdcQp/mdFu6eTN6Rf0Q7m8JGHx
- AMyA==
-X-Gm-Message-State: ABy/qLbXpJADLmq9o4qPjUoF+yM7w+nwtS3j6mAdrvFLO8KmnRNxDGGj
- tm47Cx+Mbr0YTBIcNBqtp/97v+lnP6J9s8NThZL/iw==
-X-Google-Smtp-Source: APBJJlEG0Ej504yYOBHl2kUovQ4qSFTgvuQuGI6qOgxsg6osnVH1w5HJZGvLEXYx6s26bdw7N8hvFQHFkRZgUr8sjys=
-X-Received: by 2002:aa7:c58c:0:b0:51e:f83:6de3 with SMTP id
- g12-20020aa7c58c000000b0051e0f836de3mr10726453edq.17.1689675647141; Tue, 18
- Jul 2023 03:20:47 -0700 (PDT)
+ bh=53TxoCa8PwII1f/88lnrKFx7DZcJM0tT7V0/8C7GYuY=;
+ b=l2PewATeuLki/okO6xbQMLzQmxc5oZshuFFcDUGNHufPQZKHR6XvhuS1EtpNjEP5X6
+ nu5UQVwhmXggE3Cc0O2o4kvPkrMxH/ocfBmn+e0SSvVDN2hWr21MgWpAeV3CpM2OleQ/
+ s/Lmg91UgoK6IPXFikbT3QtvR1iie4z9oSE/aYVfSfvMsMwVqA6G0AlNYSGBt+Ss9qzc
+ eyGBWZ7GOkvv5JJHr4hR31w504MgAthNKA4ffInYIBaZCIZmKxhF/5yinm7NOwI6LJqO
+ e1YN/CLC9+5Bq+vZ73NUKexmi62nKkoSOyKZiQ3gZaIkirBiC7MhFpub9B4H35a+zjXZ
+ CdxQ==
+X-Gm-Message-State: ABy/qLZIteIYrXnJLRfSWnKQFFXTSm8Agp+NBczxepWy8GNy3iVvtzmP
+ n+qKEiGH59+iXQYsCUXO5PRfur9aG/ReSL7+rzA5JQ==
+X-Google-Smtp-Source: APBJJlGpkhulvcqZYNGYMmRDTdM9ejBw5sSb4NgTln5/jIlZGqIjvaM+XVleW+GIcexVt3kVLDcQk7tFa9Gy6FIIsCk=
+X-Received: by 2002:a05:6512:2251:b0:4f8:7568:e948 with SMTP id
+ i17-20020a056512225100b004f87568e948mr10749650lfu.51.1689675938949; Tue, 18
+ Jul 2023 03:25:38 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230717213504.24777-1-philmd@linaro.org>
- <20230717213504.24777-2-philmd@linaro.org>
-In-Reply-To: <20230717213504.24777-2-philmd@linaro.org>
+ <20230717213504.24777-3-philmd@linaro.org>
+In-Reply-To: <20230717213504.24777-3-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 18 Jul 2023 11:20:36 +0100
-Message-ID: <CAFEAcA-NGLFtoso_J3hUpZhLx=g4PxR3D7-j_Foa_kDntSuqUA@mail.gmail.com>
-Subject: Re: [PATCH for-8.1 v2 1/2] target/mips: Pass directory/leaf shift
- values to walk_directory()
+Date: Tue, 18 Jul 2023 11:25:28 +0100
+Message-ID: <CAFEAcA8-nMZxDQNw9d9k2fyx2ZVq_7GQUrkijZK3gPxK2yer0Q@mail.gmail.com>
+Subject: Re: [PATCH for-8.1 v2 2/2] target/mips: Avoid shift by negative
+ number in page_table_walk_refill()
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
  Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
  Aurelien Jarno <aurelien@aurel32.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,18 +90,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 17 Jul 2023 at 22:36, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+On Mon, 17 Jul 2023 at 22:35, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
 g> wrote:
 >
-> We already evaluated directory_shift and leaf_shift in
-> page_table_walk_refill(), no need to do that again: pass
-> as argument.
+> Coverity points out that in page_table_walk_refill() we can shift by
+> a negative number, which is undefined behaviour (CID 1452918,
+> 1452920, 1452922).  We already catch the negative directory_shift and
+> leaf_shift as being a "bail out early" case, but not until we've
+> already used them to calculated some offset values.
 >
+> Move the calculation of the offset values to after we've done the
+> "return early if ptew > 1" check.
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> [PMD: Check for ptew > 1, use unsigned type]
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  target/mips/tcg/sysemu/tlb_helper.c | 18 ++++++++----------
 
-Yeah, this is definitely better.
+I think I would expand the commit message a bit, so instead
+of the current paragraph 2, something like:
+
+The shifts can be negative only if ptew > 1, so make the
+bail-out-early check look directly at that, and only
+calculate the shift amounts and the offsets based on them
+after we have done that check. This allows
+us to simplify the expressions used to calculate the
+shift amounts, use an unsigned type, and avoids the
+undefined behaviour.
+
+
+?
+
+Anyway
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
