@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF47375851E
+	by mail.lfdr.de (Postfix) with ESMTPS id 9138675851C
 	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 20:54:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLpov-0000xQ-3K; Tue, 18 Jul 2023 14:53:13 -0400
+	id 1qLpoo-0000wQ-LN; Tue, 18 Jul 2023 14:53:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <deller@gmx.de>)
- id 1qLpot-0000x2-HN; Tue, 18 Jul 2023 14:53:11 -0400
+ id 1qLpok-0000v7-M0; Tue, 18 Jul 2023 14:53:02 -0400
 Received: from mout.gmx.net ([212.227.15.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <deller@gmx.de>)
- id 1qLpod-0003O6-5L; Tue, 18 Jul 2023 14:53:11 -0400
+ id 1qLpod-0003O7-45; Tue, 18 Jul 2023 14:53:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
  s=s31663417; t=1689706364; x=1690311164; i=deller@gmx.de;
- bh=Y2R6dhX3c4Smt/gWWNK5vjxqVT4qS1UdFbVRJHqxeWA=;
+ bh=QndR1JShYxuIGvq9fxtuUmSM0VG5DS7IN52I1fXIGAw=;
  h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=jS9mtCzJ75znawTzoTZvu/qqUkUuV7VNo09uBqozVKITyHbnJM/gtZTLQJYN07R7pSNaMfJ
- lcYbq8Ec2gnms8b0TBFgw56WOdrSov6Z3ihHYOYJp76KPK29cJuttfoh2SDtZxYLlJt/z9cJz
- pNCME7r3LAIrvmw7a4ArP9N4tdHtt4BWjW9xmEfHBu+0fjjTGLmh7XJnpog1Vc4qn43/vKLdm
- IU7t3MJEQqigKn2nrwaoidVRNh+ofJgTmEie/8kwTBKKWNvAFeExmDXNcjXLq4QtjV9NM01+s
- Fdk3uznQ+Ogr8JW1+u3gDSAGCuDokqR2+oLut3xWvxTwqcEgKd2A==
+ b=X0uYX//QpGBItdWR8W/nkwxs5l7ohmNYDtnoAs91icp6LNHCZ+U3hMiXPB36WHfIBCicCoW
+ rYicHt5hu6Qz/9UuaDcmPuugNyFof+IOkcWk/nx9fR3cUHDBtZ0qX/I9NtdVrttolwjTi/Xej
+ aGzHLJXTF3ZY9Zj1XS0kHb5qnmtthhvgzQF12pnvp6yV0WAB39YtRu9ql5sR+LxJnc957vM9C
+ wwpQjZ/7lZk6LCXRW8FaBKqriHrbEDVCleXHzPzTOPIp9rVMvel/g/CbGvzPY3gezGI3AtpTb
+ BY36DGy0w1H2QS5X8iVNFs4XDIAW2YAfDwMDoAycp1TRDVRLN/GQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([94.134.159.74]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MMofW-1qcGCW0Bjo-00Ikqs; Tue, 18
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N0XCw-1pyVb610r6-00wTJe; Tue, 18
  Jul 2023 20:52:44 +0200
 From: Helge Deller <deller@gmx.de>
 To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>, Andreas Schwab <schwab@suse.de>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: Helge Deller <deller@gmx.de>,
- "Markus F.X.J. Oberhumer" <markus@oberhumer.com>, qemu-stable@nongnu.org
-Subject: [PATCH v2 2/5] linux-user: Prohibit brk() to to shrink below initial
- heap address
-Date: Tue, 18 Jul 2023 20:52:38 +0200
-Message-ID: <20230718185241.11433-3-deller@gmx.de>
+ "Markus F.X.J. Oberhumer" <markus@oberhumer.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-stable@nongnu.org
+Subject: [PATCH v2 3/5] linux-user: Fix signed math overflow in brk() syscall
+Date: Tue, 18 Jul 2023 20:52:39 +0200
+Message-ID: <20230718185241.11433-4-deller@gmx.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230718185241.11433-1-deller@gmx.de>
 References: <20230718185241.11433-1-deller@gmx.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:bN2rE8OD/IFUXJ4lb2S2+6vORvqJCC9LQmfhUWkR4GzxGLgORyX
- In444UrIfupWtIMKp98xIkv3BGfiT8Xg5/V95Q+z8bkbRVE5iypWzePpTgdC1qptJXQt89H
- wRTAI3PhA0BXbw5Ge1ojwXmB6qcBNdmPfb5Z4SYVKoas63MQcCR2EOmMiQJu3Fc5jg6SCev
- OdDeQassOEcg2iupKQzLg==
-UI-OutboundReport: notjunk:1;M01:P0:do2eX0aYYZ8=;c/AlMSPb6/IkqNfagJ9j9mPCo5S
- HqTl7+YGqai0fwuS1GdAoirvECMlvUik3PJ6JGrQwtVmH4VT6UGor2sM1YonI6fBTrG6Kdx3K
- 4FUEq39wgxnNmNxUyXQtfD8rJo46oz+rCYOO/8Ngwq+xKa1XkHpkydtkKRDBFfJimGfFf4kxl
- gk1iyoOxHmdEeHL8IZk/yPKvDTeaqyCAEKwjMfchZzwYbKEa4TvG3uReVsrpKpGtPy0rZMS4m
- Lh/IlvDnzNjlIKsykCvaOnOEwTaNcu/IBliBupL35FEJTS0oBnOA6prXOvx/WuS5GrZT3EoH0
- tE5CXO2WH5DVKXKLviYqcqZSGFTTiuLwtjBM/YFMmWEk+XqlXFU8q2DoOdlDHeNHuxaS5x1Pe
- FI4mNM3G34fPG3Lb5cTgt33mhzOik8LEoh45zhByxi7oh23wAEZEkPpA0R7UAao+fLLSIOHbw
- YUTzj9vxWOvIIv0aT5iumK4Og7cJFoZKLrD5RdRUR0cim6os92o/2TPor1VBoElWTPA+RekF2
- lRhr47fw4TiIvMaV5siy2ggtP9GwMiilEVO2Pn/nZ2tMftWYcGOV+t8ZMIMZ6tKzYVOcNvH+R
- 5AWLCRtyhRZFZQuvWNNFa64Lw0iRFrDRb1g36wY/CxFyn3ovQymdn5IGs4cCXHhO6z9bhRzZ2
- L85HiywEMa491J1NpcUg2NtA8Od+GHpVYnGvgXHrnxQjroGro2MgZlaHJ/OTFwT5HPnDDsXNo
- rFMFztd/nYYod2I+Z2EfI0oeG4V8fKL8ITqhqtATx9mX5z0NW7SMP6mSmFB872/aoCOWChkTE
- u+xybUQVa0EU0hVPIJ1bRPE+tC92C2hyYmfdqbvQ62YMbX3PoXTkUnYnugJpdxg8hZzlZeviC
- Ad6ZyzXuSXMAmisX1yw7u5LfBIFivY56+Vb8qXtvXZz+zpkeU6TEezPjgeOVLIOnZXGad6Rg5
- oZ6REz7/jn02944pEUq6eHSjkyE=
+X-Provags-ID: V03:K1:FnEnS4MBuGuiyF5GalAz3XXr5XaQc9V2PMWB++QvF4nd3A4IcYe
+ NiYT6YW/d/GDgFl0pbRByz2AvJtUt59mBBaK5WUbcqf07RWEMhsymJMv7GBM4qMpNqicyow
+ LGhInJ9oumkM2q4otlUTFBKRqkwBIJmlyUf9dFXJaFiSGePCVUdQQ1og7YagBZ7nj8Y3Ojb
+ Mu4Ky1KGEQ6umqtQy/kig==
+UI-OutboundReport: notjunk:1;M01:P0:V3TWnA8EgoE=;b/RECnGFcxMgtjc/zTdT6BAzQAw
+ Kc46MX0uWHYdWClE9KnKkCpC9pDgq74MhXpPAFdHMeso6jpS39OjbD87blgVwamR0fhk6MTnf
+ h3Jm81vEfiP/414FXCvZOdXAr2h/F5QHFeJeseu95uT2DICr9/7BNafrLc3B1xYF/UMUbsXf0
+ APbJvSvEqvA694LBOEVbQg0a4EeyvlAuCIHAPl3uv/6kRPJXnH3ONndKFJMH/fjauCP/77l3L
+ lGvIy664dZHVgjd+qkXMQl/g7oi5ul35KlCVeJ1Lm8+Gqo2efe+ynAa4OnknOqJXnGoKL2Y3x
+ 2RNkWs4oq8wMwnS9de555WVIDXmSxmcFamn7E30IFykv9YBQQI+P4DINKSDUKr9oAs6AAeJYb
+ H3Y+RitGCRPzkQGSqXnVJ7u7/N2PlXbvWGfBjCLh4gNseXGT6gljlWb/7MgcgZaWviYrR9NRg
+ VkxVcCKmut+sNM5Ng+KrrxSflrDqXSAAdMBCQ8U7KSMxx4RH0nJg9ot3fGAHgIUuPTeEh3/XN
+ Wl1LmBXrLX6PADFbHR1zoHNR9fhQl4/coy0k81TbuSQm79s0q590UfKvXCJyrOK043x206vKH
+ 6CH5GoXSFjtLG0RErVKqrh8bwjk1yiXRBqTQ2heiBiVy6jU9VJkzukWmkwpuxF5ZOBavqdy7u
+ 2VADMDaR8JjrxbbJ5wzGpEDxeYt0Xs8GjdE57HCf195fpUIR8R4ZVeu3Yiv8rpHux17dEkh72
+ 3jNdDGzPqnbmu2cLcFLJ/YqzfbsOAgUFcu+b6EgiRo0L9L/6SxLdbrqmGmNUc6tPO/DHHqMta
+ R6eecw1zcr08nWskzH9zfM1w8MxW2BWnaViLbSEQY9HslQYHoSpkLLrwu3RwaQssEOrNLnOKE
+ WflomhezPkJUkQtHshXKUupWoXFJn1sVm/JxyiFKemT4yPgkGiMA2zr0eM4kszbsrAia//pHj
+ qAR5w28nZJP+QtQpmRjyKq24IH4=
 Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_LOW=-0.7,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,62 +89,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 86f04735ac ("linux-user: Fix brk() to release pages") it's
-possible for userspace applications to reduce their memory footprint by
-calling brk() with a lower address and free up memory. Before that commit
-guest heap memory was never unmapped.
+Fix the math overflow when calculating the new_malloc_size.
 
-But the Linux kernel prohibits to reduce brk() below the initial memory
-address which is set at startup by the set_brk() function in binfmt_elf.c.
-Such a range check was missed in commit 86f04735ac.
+new_host_brk_page and brk_page are unsigned integers. If userspace
+reduces the heap, new_host_brk_page is lower than brk_page which results
+in a huge positive number (but should actually be negative).
 
-This patch adds the missing check by storing the initial brk value in
-initial_target_brk and verify any new brk addresses against that value.
-
-Tested with the i386 upx binary from
-https://github.com/upx/upx/releases/download/v4.0.2/upx-4.0.2-i386_linux.t=
-ar.xz
+Fix it by adding a proper check and as such make the code more readable.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Tested-by: "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
 Cc: qemu-stable@nongnu.org
 Buglink: https://github.com/upx/upx/issues/683
 =2D--
- linux-user/syscall.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ linux-user/syscall.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index ee54eed33b..125fcbe423 100644
+index 125fcbe423..95727a816a 100644
 =2D-- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -801,12 +801,13 @@ static inline int host_to_target_sock_type(int host_=
-type)
-     return target_type;
- }
-
--static abi_ulong target_brk;
-+static abi_ulong target_brk, initial_target_brk;
- static abi_ulong brk_page;
-
- void target_set_brk(abi_ulong new_brk)
- {
-     target_brk =3D TARGET_PAGE_ALIGN(new_brk);
-+    initial_target_brk =3D target_brk;
-     brk_page =3D HOST_PAGE_ALIGN(target_brk);
- }
-
-@@ -824,6 +825,11 @@ abi_long do_brk(abi_ulong brk_val)
-         return target_brk;
+@@ -860,12 +860,13 @@ abi_long do_brk(abi_ulong brk_val)
+      * itself); instead we treat "mapped but at wrong address" as
+      * a failure and unmap again.
+      */
+-    new_alloc_size =3D new_host_brk_page - brk_page;
+-    if (new_alloc_size) {
++    if (new_host_brk_page > brk_page) {
++        new_alloc_size =3D new_host_brk_page - brk_page;
+         mapped_addr =3D get_errno(target_mmap(brk_page, new_alloc_size,
+                                         PROT_READ|PROT_WRITE,
+                                         MAP_ANON|MAP_PRIVATE, 0, 0));
+     } else {
++        new_alloc_size =3D 0;
+         mapped_addr =3D brk_page;
      }
-
-+    /* do not allow to shrink below initial brk value */
-+    if (brk_val < initial_target_brk) {
-+        brk_val =3D initial_target_brk;
-+    }
-+
-     new_brk =3D TARGET_PAGE_ALIGN(brk_val);
-     new_host_brk_page =3D HOST_PAGE_ALIGN(brk_val);
 
 =2D-
 2.41.0
