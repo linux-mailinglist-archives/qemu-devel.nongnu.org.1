@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E076C7585F1
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 22:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F2A7585F4
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 22:11:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLqyA-0003Ic-5q; Tue, 18 Jul 2023 16:06:50 -0400
+	id 1qLr1c-0005Jb-Ho; Tue, 18 Jul 2023 16:10:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qLqxy-0002x4-PI
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 16:06:40 -0400
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ id 1qLr1Y-0005If-N1
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 16:10:21 -0400
+Received: from mail-oi1-x234.google.com ([2607:f8b0:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qLqxu-0004zw-OH
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 16:06:38 -0400
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-1b3c503af99so4299477fac.0
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 13:06:33 -0700 (PDT)
+ id 1qLr1V-0006sk-5u
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 16:10:19 -0400
+Received: by mail-oi1-x234.google.com with SMTP id
+ 5614622812f47-3a40b756eb0so3366360b6e.2
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 13:10:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1689710792; x=1692302792;
+ d=ventanamicro.com; s=google; t=1689711016; x=1692303016;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=PRd7IWM5rspE1xvrWfkPx5TzM3AolKjDz9XgZ7G4ijY=;
- b=Mo9ZJC6csUPCPv1RvFOiaLMJn6IeRihlAt3WlwxzC23LlhALE72kRLe9hrCDjMkxXh
- +LFnFF7ox+f2Q2IvtfuVjmTzij9TTWR2Cfqe0fP342kvIghZKBUdfMzdxqRysImCTCp/
- bFcotu1OUL4P4ovwcH5f2tfQ91dYYFgCzJw/PhyXKS1fVFDDtxfZsz1aRtLtYj2DwwnG
- sY58FO1ErB2I0vlU/ohq5dqnU2GmwZC4NsJPmY5FVOmtdeELcwfewQrfehArzHfspwGK
- D/uzZpCUNvRbYK8mgq+vPFMzd1KdcM0KZ1KbljeR8X5IaTH0uIuHWu9b+OCtDDng4Ijs
- ggPg==
+ bh=DE50H6X4FV7NQZoR57pqaDB50uyCPC5bpdkH+kGW9s4=;
+ b=LAlR/LgyVOje2sRdnRGvOkmf7qH709iGj6QWBa8wRD4TkWn0BVX7DYeG7yQEqieHkS
+ K+irauJxbVzbyWbkdYnj5ZFecD/lwXe4DZh2hV4S5xOX6ZKQPkxSsScysGPUYezOfAeG
+ pQyXXBm9W5az4vbswL5Ey75suEuel4UBP5EZc0+D/D9hRfUn0OKzgK8UyoBNfhglRQCP
+ Vmt044AR2o1U77kIgz+c3yICSN8a05W8POT8Df9mDrjkJDpy+/5JEjf7BoqGrZmMwUCN
+ Oyhii8YVgkrUlvRjegnzpezaMeqQl+YTNegzC23NFH3UKGoh+UyTUMVV37h3gGArFCKp
+ N9VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689710792; x=1692302792;
+ d=1e100.net; s=20221208; t=1689711016; x=1692303016;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PRd7IWM5rspE1xvrWfkPx5TzM3AolKjDz9XgZ7G4ijY=;
- b=ej9CDvxatZvBnIAuScRvXyhIzQbrmHxUjEGCPMT6kkSMTab1g9UbSuEbqbVUMdbe0A
- vvlxS5WePMaAsgtpJg3VnltL3AHSXE0YDSZ2WbjbBsGhByuKPAlV2IN2qGzvioWo34kc
- NEziPvu/7Q/cWf0bkItWUAB1qYw8g3uk007qseoooWbkRow8GWmmRhEo8veXommrK8E7
- E4NgkVwa0uYOphpth58L4aOznf/4Bcqzix7EvlvGiPrjeAZop75Mmj39BAQbsAfnfosI
- mtbjuZ8ZvO+r+GZ1XhGLo5mloewI+48qOMLnUW6G9d11JIR1evW+1SGB00xoQ30cDRQY
- qQaw==
-X-Gm-Message-State: ABy/qLbHgnyJDPKnkKneXaWmn17VgYw14lf0/9mOgfcyYSkandOw2MKC
- CcJSGmTR39NKW9xCvNzufhE9sg==
-X-Google-Smtp-Source: APBJJlHsbZ4It/CYCiIWVQBcRa80H5/wPGgpdY2mou67VKIvnUaiIZXFokPFHE2V2xvNvrpqXsId3w==
-X-Received: by 2002:a05:6870:d14c:b0:1ba:53ed:18c9 with SMTP id
- f12-20020a056870d14c00b001ba53ed18c9mr277335oac.37.1689710792217; 
- Tue, 18 Jul 2023 13:06:32 -0700 (PDT)
+ bh=DE50H6X4FV7NQZoR57pqaDB50uyCPC5bpdkH+kGW9s4=;
+ b=KT9r6xrjnGEQyPCbdWId+1UjAJ8Wg5xJV66jlXpGVEsm1FOODx1rdL1k8AU298+QAQ
+ 8KACxrUAI1/+qyybM0USZAQpC5FL51sVGIvu03tclpLdzvEn+gVAeAQEsbK5TxuZS+cN
+ PzKDIshAemnh5DtgRQhlcdtMUDazNHQWAOGz0bE2VEKIUMCLUGYCpYAtexWHGu45L1aO
+ At21Gy8VTojHNn0upibrcn6HDI+AnBIPnD9ou/VpNb/XLoCeImrgytpi2yNEIUqJK/o0
+ xWhkkmGiCoA8FY0RSlWMIibRX8olEN03gQNasWmCPA+JQkznMU8yjR1sT+Sauvd4omdr
+ EKeA==
+X-Gm-Message-State: ABy/qLYFlNX7u7fQYsqd/zb5oe9YSM7rNidowOqZ1ZfWfJwzFZIzTJXo
+ a08YUN8aCR1oRvhuoaJAs68J1Q==
+X-Google-Smtp-Source: APBJJlHPbCSR51tcnMNZC13WqQvK4B2JkpEprKLQ3F0t6SWbDPitfKzHlz7M5tnKok0YhA0oJBjcsw==
+X-Received: by 2002:a05:6808:1146:b0:3a1:e59f:7582 with SMTP id
+ u6-20020a056808114600b003a1e59f7582mr16538658oiu.49.1689711015821; 
+ Tue, 18 Jul 2023 13:10:15 -0700 (PDT)
 Received: from [192.168.68.108] (201-69-66-211.dial-up.telesp.net.br.
  [201.69.66.211]) by smtp.gmail.com with ESMTPSA id
- g1-20020a056870340100b00172ac40356csm1265432oah.50.2023.07.18.13.06.27
+ s2-20020a056808208200b003a1f359ba4esm1115976oiw.14.2023.07.18.13.10.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Jul 2023 13:06:31 -0700 (PDT)
-Message-ID: <6c3cdd47-4c53-b390-3350-fe112f219ce1@ventanamicro.com>
-Date: Tue, 18 Jul 2023 17:06:24 -0300
+ Tue, 18 Jul 2023 13:10:15 -0700 (PDT)
+Message-ID: <9790a6a4-77a5-6120-ac83-76fcb9394705@ventanamicro.com>
+Date: Tue, 18 Jul 2023 17:10:09 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 06/10] hw/riscv/virt-acpi-build.c: Add IMSIC in the MADT
+Subject: Re: [PATCH 07/10] hw/riscv/virt-acpi-build.c: Add APLIC in the MADT
 Content-Language: en-US
 To: Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org, qemu-riscv@nongnu.org
@@ -75,13 +75,13 @@ Cc: "Michael S . Tsirkin" <mst@redhat.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Andrew Jones <ajones@ventanamicro.com>, Anup Patel <apatel@ventanamicro.com>
 References: <20230712163943.98994-1-sunilvl@ventanamicro.com>
- <20230712163943.98994-7-sunilvl@ventanamicro.com>
+ <20230712163943.98994-8-sunilvl@ventanamicro.com>
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230712163943.98994-7-sunilvl@ventanamicro.com>
+In-Reply-To: <20230712163943.98994-8-sunilvl@ventanamicro.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::234;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x234.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -107,65 +107,68 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 7/12/23 13:39, Sunil V L wrote:
-> Add IMSIC structure in MADT when IMSIC is configured.
+> Add APLIC structures for each socket in the MADT when
+> system is configured with APLIC as the external wired
+> interrupt controller.
 > 
 > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 > ---
 
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
->   hw/riscv/virt-acpi-build.c | 34 ++++++++++++++++++++++++++++++++++
->   1 file changed, 34 insertions(+)
+>   hw/riscv/virt-acpi-build.c | 36 ++++++++++++++++++++++++++++++++++--
+>   1 file changed, 34 insertions(+), 2 deletions(-)
 > 
 > diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
-> index 12b8ef0352..ebdc3bffea 100644
+> index ebdc3bffea..9f2d0c92b0 100644
 > --- a/hw/riscv/virt-acpi-build.c
 > +++ b/hw/riscv/virt-acpi-build.c
-> @@ -280,8 +280,20 @@ static void build_madt(GArray *table_data,
+> @@ -276,9 +276,9 @@ static void build_madt(GArray *table_data,
+>       MachineClass *mc = MACHINE_GET_CLASS(s);
+>       MachineState *ms = MACHINE(s);
+>       const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(ms);
+> -    uint64_t imsic_socket_addr, imsic_addr;
+> +    uint64_t imsic_socket_addr, imsic_addr, aplic_addr;
+> +    uint32_t imsic_size, gsi_base;
 >       uint8_t  guest_index_bits;
->       uint32_t imsic_size;
+> -    uint32_t imsic_size;
 >       uint32_t local_cpu_id, socket_id;
-> +    uint8_t  hart_index_bits, group_index_bits, group_index_shift;
-> +    uint16_t imsic_max_hart_per_socket = 0;
-> +    uint8_t  socket;
-> +
-> +    for (socket = 0; socket < riscv_socket_count(ms); socket++) {
-> +        if (imsic_max_hart_per_socket < s->soc[socket].num_harts) {
-> +            imsic_max_hart_per_socket = s->soc[socket].num_harts;
-> +        }
-> +    }
->   
->       guest_index_bits = imsic_num_bits(s->aia_guests + 1);
-> +    hart_index_bits = imsic_num_bits(imsic_max_hart_per_socket);
-> +    group_index_bits = imsic_num_bits(riscv_socket_count(ms));
-> +    group_index_shift = IMSIC_MMIO_GROUP_MIN_SHIFT;
->   
->       AcpiTable table = { .sig = "APIC", .rev = 6, .oem_id = s->oem_id,
->                           .oem_table_id = s->oem_table_id };
-> @@ -306,6 +318,28 @@ static void build_madt(GArray *table_data,
->                                     s->aia_type, imsic_addr, imsic_size);
+>       uint8_t  hart_index_bits, group_index_bits, group_index_shift;
+>       uint16_t imsic_max_hart_per_socket = 0;
+> @@ -340,6 +340,38 @@ static void build_madt(GArray *table_data,
+>           build_append_int_noprefix(table_data, group_index_shift, 1);
 >       }
 >   
-> +    /* IMSIC */
-> +    if (s->aia_type == VIRT_AIA_TYPE_APLIC_IMSIC) {
-> +        /* IMSIC */
-> +        build_append_int_noprefix(table_data, 0x19, 1);     /* Type */
-> +        build_append_int_noprefix(table_data, 16, 1);       /* Length */
-> +        build_append_int_noprefix(table_data, 1, 1);        /* Version */
-> +        build_append_int_noprefix(table_data, 0, 1);        /* Reserved */
-> +        build_append_int_noprefix(table_data, 0, 4);        /* Flags */
-> +        /* Number of supervisor mode Interrupt Identities */
-> +        build_append_int_noprefix(table_data, VIRT_IRQCHIP_NUM_MSIS, 2);
-> +        /* Number of guest mode Interrupt Identities */
-> +        build_append_int_noprefix(table_data, VIRT_IRQCHIP_NUM_MSIS, 2);
-> +        /* Guest Index Bits */
-> +        build_append_int_noprefix(table_data, guest_index_bits, 1);
-> +        /* Hart Index Bits */
-> +        build_append_int_noprefix(table_data, hart_index_bits, 1);
-> +        /* Group Index Bits */
-> +        build_append_int_noprefix(table_data, group_index_bits, 1);
-> +        /* Group Index Shift */
-> +        build_append_int_noprefix(table_data, group_index_shift, 1);
+> +    if (s->aia_type != VIRT_AIA_TYPE_NONE) {
+> +        /* APLICs */
+> +        for (socket = 0; socket < riscv_socket_count(ms); socket++) {
+> +            aplic_addr = s->memmap[VIRT_APLIC_S].base +
+> +                             s->memmap[VIRT_APLIC_S].size * socket;
+> +            gsi_base = VIRT_IRQCHIP_NUM_SOURCES * socket;
+> +            build_append_int_noprefix(table_data, 0x1A, 1);    /* Type */
+> +            build_append_int_noprefix(table_data, 36, 1);      /* Length */
+> +            build_append_int_noprefix(table_data, 1, 1);       /* Version */
+> +            build_append_int_noprefix(table_data, socket, 1);  /* APLIC ID */
+> +            build_append_int_noprefix(table_data, 0, 4);       /* Flags */
+> +            build_append_int_noprefix(table_data, 0, 8);       /* Hardware ID */
+> +            /* Number of IDCs */
+> +            if (s->aia_type == VIRT_AIA_TYPE_APLIC) {
+> +                build_append_int_noprefix(table_data,
+> +                                          s->soc[socket].num_harts,
+> +                                          2);
+> +            } else {
+> +                build_append_int_noprefix(table_data, 0, 2);
+> +            }
+> +            /* Total External Interrupt Sources Supported */
+> +            build_append_int_noprefix(table_data, VIRT_IRQCHIP_NUM_SOURCES, 2);
+> +            /* Global System Interrupt Base */
+> +            build_append_int_noprefix(table_data, gsi_base, 4);
+> +            /* APLIC Address */
+> +            build_append_int_noprefix(table_data, aplic_addr, 8);
+> +            /* APLIC size */
+> +            build_append_int_noprefix(table_data,
+> +                                      s->memmap[VIRT_APLIC_S].size, 4);
+> +        }
 > +    }
 > +
 >       acpi_table_end(linker, &table);
