@@ -2,92 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B4675874E
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 23:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4E3758751
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 23:38:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLsMO-0007NV-4V; Tue, 18 Jul 2023 17:35:56 -0400
+	id 1qLsMT-0007Q9-TG; Tue, 18 Jul 2023 17:36:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qLsML-0007Md-Tm; Tue, 18 Jul 2023 17:35:53 -0400
+ id 1qLsMP-0007Ot-Rr; Tue, 18 Jul 2023 17:35:59 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qLsMK-0003H5-GZ; Tue, 18 Jul 2023 17:35:53 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ id 1qLsMO-0003O9-Bk; Tue, 18 Jul 2023 17:35:57 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36IL97rj004952; Tue, 18 Jul 2023 21:35:50 GMT
+ 36ILMMGL011361; Tue, 18 Jul 2023 21:35:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=xSJ92/ZauHboQGJqtm1Erhqe6CS5jRYQRyD2VetflJQ=;
- b=Hg5Y8+np+aNJjEYeDhU94Tyx3p2lggBEXXrYqO+LBPYK2Vooeu1huvcJi4BjaXJOqVl1
- nK7mrLCqv1cYtxxCPmBYomOotkLgXdzhebLAgXQxkPiN4dkU9rtjKXGiAWorbCMjuUJw
- 2PpeLt4PsDE1smGlgWCVIToCnpKlC1r28whftp0phNhLuucRpbuS4ppz4PUmUqm9Iu2x
- CVz/+h5KsFOKx8c5AoqJKD0CxtXHtmOAogJlU4KATvjH0rVvKdgUGUNmCdLMzpspX/+N
- 0bCMWW+FL1ebtrRQH1JZtcCHlTNYJY8y1kp880FEwwA/sE/0vr+FNgTz0LblZ/2nkr/Q yQ== 
+ bh=/e6K9p64PQoDoXd2me4sG8psCVOxXc633usEqzR38/0=;
+ b=BtWIU2umjm1uU1BXU+UrkCjtxEH4nmYo/9XadS2yhH7loOEMz7GNi2EQd9iF+Q2Yzdwu
+ BjgRPNvtKcmN5COvZnizhlj8Jg/l0Sku8iX28hUGUmjPnqUNWljrKif8zRmRG0jUgFRo
+ PZsSYZed+Opu0ducLCu2rZprXnjK5N67Qnec2uF3+/u6wNZfYI1Bs5UKpqx62ZIBBCtw
+ 0iC2uTh6B+iJSqgN7xCHq0+4Nu/JLHrFi2ffqZw6ARIrlxYCFd28ODQqJuBjUaqkiJCh
+ HeP/msPGC27tKM9sj0ygqMpDQMmB0ayAmLfQ/EVSyDs6wROnTe0+zbE8Z9LtrrAweaGw xw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwxy3my3f-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rx2k9r7b8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 21:35:50 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36ILUNQb007945;
- Tue, 18 Jul 2023 21:35:49 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwxy3my38-1
+ Tue, 18 Jul 2023 21:35:54 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36ILNgPJ013542;
+ Tue, 18 Jul 2023 21:35:53 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rx2k9r7b3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 21:35:49 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36IJPZmF016862; Tue, 18 Jul 2023 21:35:49 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv5srqgkn-1
+ Tue, 18 Jul 2023 21:35:53 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36IKU6c7004143; Tue, 18 Jul 2023 21:35:52 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv8g0y9py-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 21:35:49 +0000
+ Tue, 18 Jul 2023 21:35:52 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
  [10.20.54.100])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36ILZlel6816366
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36ILZo6943778470
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 18 Jul 2023 21:35:47 GMT
+ Tue, 18 Jul 2023 21:35:51 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2EBC620043;
- Tue, 18 Jul 2023 21:35:47 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id DA2E020043;
+ Tue, 18 Jul 2023 21:35:50 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AF97320040;
- Tue, 18 Jul 2023 21:35:46 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 7089C20040;
+ Tue, 18 Jul 2023 21:35:50 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.14.165])
  by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 18 Jul 2023 21:35:46 +0000 (GMT)
+ Tue, 18 Jul 2023 21:35:50 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
-Subject: [PATCH 04/14] target/s390x: Fix ICM with M3=0
-Date: Tue, 18 Jul 2023 23:21:05 +0200
-Message-ID: <20230718213531.117976-5-iii@linux.ibm.com>
+Subject: [PATCH 05/14] target/s390x: Make MC raise specification exception
+ when class >= 16
+Date: Tue, 18 Jul 2023 23:21:06 +0200
+Message-ID: <20230718213531.117976-6-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230718213531.117976-1-iii@linux.ibm.com>
 References: <20230718213531.117976-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: aBqZBd5Nq4o3vMD7Z6lb-tKYXdkwmAbA
-X-Proofpoint-GUID: ceclGYxqLhxMbWtQ63YDdDxgGhsV5uef
+X-Proofpoint-ORIG-GUID: Hl4gWeSXaTG1iQMnUBnkpvfwhPRmqYbI
+X-Proofpoint-GUID: 8K77MeDPyy6bhwNyCwsi6BxefElKSmts
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-18_16,2023-07-18_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 adultscore=0 phishscore=0 clxscore=1015 impostorscore=0
- mlxscore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0
- malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307180192
+ impostorscore=0 adultscore=0
+ clxscore=1015 phishscore=0 lowpriorityscore=0 spamscore=0 suspectscore=0
+ priorityscore=1501 malwarescore=0 mlxscore=0 mlxlogscore=892 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2307180192
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -112,33 +113,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the mask is zero, access exceptions should still be recognized for
-1 byte at the second-operand address. CC should be set to 0.
+MC requires bit positions 8-11 (upper 4 bits of class) to be zeros,
+otherwise it must raise a specification exception.
 
 Cc: qemu-stable@nongnu.org
-Fixes: e023e832d0ac ("s390x: translate engine for s390x CPU")
+Fixes: 20d143e2cab8 ("s390x/tcg: Implement MONITOR CALL")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- target/s390x/tcg/translate.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/s390x/tcg/excp_helper.c | 2 +-
+ target/s390x/tcg/translate.c   | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
+index 228aa9f2373..3da337f7c72 100644
+--- a/target/s390x/tcg/excp_helper.c
++++ b/target/s390x/tcg/excp_helper.c
+@@ -639,7 +639,7 @@ void monitor_event(CPUS390XState *env,
+ void HELPER(monitor_call)(CPUS390XState *env, uint64_t monitor_code,
+                           uint32_t monitor_class)
+ {
+-    g_assert(monitor_class <= 0xff);
++    g_assert(monitor_class <= 0xf);
+ 
+     if (env->cregs[8] & (0x8000 >> monitor_class)) {
+         monitor_event(env, monitor_code, monitor_class, GETPC());
 diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 2f61e879878..2d7cc8963b4 100644
+index 2d7cc8963b4..4b32c2333c2 100644
 --- a/target/s390x/tcg/translate.c
 +++ b/target/s390x/tcg/translate.c
-@@ -2516,6 +2516,12 @@ static DisasJumpType op_icm(DisasContext *s, DisasOps *o)
-         len = 8;
-         goto one_insert;
+@@ -3184,9 +3184,9 @@ static DisasJumpType op_lcbb(DisasContext *s, DisasOps *o)
  
-+    case 0:
-+        /* Recognize access exceptions for the first byte.  */
-+        tcg_gen_qemu_ld_i64(tmp, o->in2, get_mem_index(s), MO_UB);
-+        gen_op_movi_cc(s, 0);
-+        return DISAS_NEXT;
-+
-     one_insert:
-         pos = base + ctz32(m3) * 8;
-         tcg_gen_deposit_i64(o->out, o->out, tmp, pos, len);
+ static DisasJumpType op_mc(DisasContext *s, DisasOps *o)
+ {
+-    const uint16_t monitor_class = get_field(s, i2);
++    const uint8_t monitor_class = get_field(s, i2);
+ 
+-    if (monitor_class & 0xff00) {
++    if (monitor_class & 0xf0) {
+         gen_program_exception(s, PGM_SPECIFICATION);
+         return DISAS_NORETURN;
+     }
 -- 
 2.41.0
 
