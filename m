@@ -2,63 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E88E7577F6
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5AA875781F
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:33:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLgyk-0000wY-Gu; Tue, 18 Jul 2023 05:26:46 -0400
+	id 1qLh2l-00040O-2p; Tue, 18 Jul 2023 05:30:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qLgyg-0000vW-7k
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:26:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2h-0003ze-EX
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qLgye-0002GN-81
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:26:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2e-0004CA-1d
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689672399;
+ s=mimecast20190719; t=1689672646;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ePCdIpsVVJCIB1wW1N2U7yqgHWMTcQKvcJLOa3oaT+Q=;
- b=D26dKqHK5AWBXYTwf7VnTJixrBOYaDFRb/uSnUF3IZTbt7lMVsvlppTixrtmNdR81Yg8Hy
- s+cLJgqEkTUeBF3zApoHw9O3VZV1V6YY/eSUMc0R0iDFIyfiDhb12BaOqL1j8I/mm+tdia
- rCiS9uz6ee5BD8tjYBWkJq3C7DW2ohI=
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ZSRqIOD0azcoMyZMJRZo1U9jaKidHy3IoStzmFZKzxY=;
+ b=f6qZKFwxqEFYmpwCjLdYgc2pgKTR+wrKjcf47T6vt0D+F0EbOTHLhdtWcCv8lEieIdHEap
+ M/+K7XnP6uDhrjUc5/IVIW1L2YvU733oc46m0L2HQSKEQXDvDrUTaP6IEcOiynFKCdaecr
+ 5tKlFRYQnN8ngbhnEn34ouU40fN+Sfs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-660-AWwCsI-JNCiMyYiKMOyRuQ-1; Tue, 18 Jul 2023 05:26:37 -0400
-X-MC-Unique: AWwCsI-JNCiMyYiKMOyRuQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-423-VINoFLBEOZydnrSataNDYg-1; Tue, 18 Jul 2023 05:30:43 -0400
+X-MC-Unique: VINoFLBEOZydnrSataNDYg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6FB288D168B;
- Tue, 18 Jul 2023 09:26:37 +0000 (UTC)
-Received: from localhost.localdomain.com (unknown [10.42.28.46])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 16CF51454142;
- Tue, 18 Jul 2023 09:26:35 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 3/3] docs: re-generate x86_64 ABI compatibility CSV
-Date: Tue, 18 Jul 2023 10:26:31 +0100
-Message-ID: <20230718092631.730255-4-berrange@redhat.com>
-In-Reply-To: <20230718092631.730255-1-berrange@redhat.com>
-References: <20230718092631.730255-1-berrange@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EE9E689F701;
+ Tue, 18 Jul 2023 09:30:42 +0000 (UTC)
+Received: from thuth.com (unknown [10.39.193.89])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4DE402166B26;
+ Tue, 18 Jul 2023 09:30:42 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 0/8] s390x, qtest and misc patches for QEMU 8.1 rc1
+Date: Tue, 18 Jul 2023 11:30:32 +0200
+Message-Id: <20230718093040.172145-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,82 +74,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This picks up the new EPYC-Genoa, SapphireRapids & GraniteRapids CPUs,
-removes the now deleted Icelake-Client CPU, and adds the newer versions
-of many existing CPUs.
+The following changes since commit 361d5397355276e3007825cc17217c1e4d4320f7:
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- docs/system/cpu-models-x86-abi.csv | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-07-17 15:49:27 +0100)
 
-diff --git a/docs/system/cpu-models-x86-abi.csv b/docs/system/cpu-models-x86-abi.csv
-index f3f3b60be1..38b9bae310 100644
---- a/docs/system/cpu-models-x86-abi.csv
-+++ b/docs/system/cpu-models-x86-abi.csv
-@@ -8,27 +8,37 @@ Cascadelake-Server-v1,✅,✅,✅,✅
- Cascadelake-Server-v2,✅,✅,✅,✅
- Cascadelake-Server-v3,✅,✅,✅,✅
- Cascadelake-Server-v4,✅,✅,✅,✅
-+Cascadelake-Server-v5,✅,✅,✅,✅
- Conroe-v1,✅,,,
- Cooperlake-v1,✅,✅,✅,✅
-+Cooperlake-v2,✅,✅,✅,✅
- Denverton-v1,✅,✅,,
- Denverton-v2,✅,✅,,
-+Denverton-v3,✅,✅,,
- Dhyana-v1,✅,✅,✅,
-+Dhyana-v2,✅,✅,✅,
-+EPYC-Genoa-v1,✅,✅,✅,✅
- EPYC-Milan-v1,✅,✅,✅,
-+EPYC-Milan-v2,✅,✅,✅,
- EPYC-Rome-v1,✅,✅,✅,
- EPYC-Rome-v2,✅,✅,✅,
-+EPYC-Rome-v3,✅,✅,✅,
-+EPYC-Rome-v4,✅,✅,✅,
- EPYC-v1,✅,✅,✅,
- EPYC-v2,✅,✅,✅,
- EPYC-v3,✅,✅,✅,
-+EPYC-v4,✅,✅,✅,
-+GraniteRapids-v1,✅,✅,✅,✅
- Haswell-v1,✅,✅,✅,
- Haswell-v2,✅,✅,✅,
- Haswell-v3,✅,✅,✅,
- Haswell-v4,✅,✅,✅,
--Icelake-Client-v1,✅,✅,✅,
--Icelake-Client-v2,✅,✅,✅,
- Icelake-Server-v1,✅,✅,✅,✅
- Icelake-Server-v2,✅,✅,✅,✅
- Icelake-Server-v3,✅,✅,✅,✅
- Icelake-Server-v4,✅,✅,✅,✅
-+Icelake-Server-v5,✅,✅,✅,✅
-+Icelake-Server-v6,✅,✅,✅,✅
- IvyBridge-v1,✅,✅,,
- IvyBridge-v2,✅,✅,,
- KnightsMill-v1,✅,✅,✅,
-@@ -42,15 +52,21 @@ Opteron_G5-v1,✅,✅,,
- Penryn-v1,✅,,,
- SandyBridge-v1,✅,✅,,
- SandyBridge-v2,✅,✅,,
-+SapphireRapids-v1,✅,✅,✅,✅
-+SapphireRapids-v2,✅,✅,✅,✅
- Skylake-Client-v1,✅,✅,✅,
- Skylake-Client-v2,✅,✅,✅,
- Skylake-Client-v3,✅,✅,✅,
-+Skylake-Client-v4,✅,✅,✅,
- Skylake-Server-v1,✅,✅,✅,✅
- Skylake-Server-v2,✅,✅,✅,✅
- Skylake-Server-v3,✅,✅,✅,✅
- Skylake-Server-v4,✅,✅,✅,✅
-+Skylake-Server-v5,✅,✅,✅,✅
- Snowridge-v1,✅,✅,,
- Snowridge-v2,✅,✅,,
-+Snowridge-v3,✅,✅,,
-+Snowridge-v4,✅,✅,,
- Westmere-v1,✅,✅,,
- Westmere-v2,✅,✅,,
- athlon-v1,,,,
--- 
-2.41.0
+are available in the Git repository at:
+
+  https://gitlab.com/thuth/qemu.git tags/pull-request-2023-07-18
+
+for you to fetch changes up to a5754847e0fc2bc08a414dd381803009e8bca390:
+
+  tests/avocado: Disable the test_sbsaref_edk2_firmware by default (2023-07-18 11:22:51 +0200)
+
+----------------------------------------------------------------
+* Fix s390x KVM guests when compiling with --without-default-devices
+* Fix /proc/cpuinfo features list in s390x linux-user emulation
+* Generate FreeBSD VM package list via lcitool
+* Disable the flaky test_sbsaref_edk2_firmware avocado test by default
+
+----------------------------------------------------------------
+Cédric Le Goater (1):
+      s390x: Fix QEMU abort by selecting S390_FLIC_KVM
+
+Fabiano Rosas (1):
+      tests/qtest: Fix typo in multifd cancel test
+
+Ilya Leoshkevich (1):
+      linux-user/elfload: Fix /proc/cpuinfo features: on s390x
+
+Philippe Mathieu-Daudé (4):
+      tests/lcitool: Generate distribution packages list in JSON format
+      tests/lcitool: Refresh generated files
+      tests/vm: Introduce get_qemu_packages_from_lcitool_json() helper
+      tests/vm/freebsd: Get up-to-date package list from lcitool vars file
+
+Thomas Huth (1):
+      tests/avocado: Disable the test_sbsaref_edk2_firmware by default
+
+ docs/devel/testing.rst                   |  5 +++
+ include/elf.h                            | 66 +++++++++++++++++++--------
+ linux-user/elfload.c                     | 41 +++++++++--------
+ tests/qtest/migration-test.c             |  2 +-
+ hw/intc/Kconfig                          |  1 -
+ hw/s390x/Kconfig                         |  1 +
+ tests/avocado/machine_aarch64_sbsaref.py |  2 +-
+ tests/lcitool/refresh                    | 11 +++++
+ tests/vm/basevm.py                       | 11 +++++
+ tests/vm/freebsd                         | 42 +----------------
+ tests/vm/generated/README                |  5 +++
+ tests/vm/generated/freebsd.json          | 77 ++++++++++++++++++++++++++++++++
+ 12 files changed, 183 insertions(+), 81 deletions(-)
+ create mode 100644 tests/vm/generated/README
+ create mode 100644 tests/vm/generated/freebsd.json
 
 
