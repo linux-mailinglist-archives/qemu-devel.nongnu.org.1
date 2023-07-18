@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A61C757C4F
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 14:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14146757C5A
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 14:59:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLkG1-0003cz-Fi; Tue, 18 Jul 2023 08:56:49 -0400
+	id 1qLkID-0004g0-DZ; Tue, 18 Jul 2023 08:59:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <18622748025@163.com>)
- id 1qLkFu-0003ZT-S1
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:56:44 -0400
-Received: from m12.mail.163.com ([220.181.12.217])
+ id 1qLkIA-0004fV-Vn
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:59:02 -0400
+Received: from m12.mail.163.com ([220.181.12.214])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <18622748025@163.com>) id 1qLkFn-00016p-JU
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:56:40 -0400
+ (envelope-from <18622748025@163.com>) id 1qLkI7-0001mE-3D
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:59:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
  s=s110527; h=From:Subject:Date:Message-Id; bh=4sMGboxBki1joNixHO
- 9o9Dafl0VqbYT7X2KHXVc8DFQ=; b=exqppb2EJNeRBWAdodynHctolqG3K9euur
- TdCoGJR64RfC2D4lovXQL4m1LNWevFu0ZRwqM0mXf1Y8wUCwAJwf5WR36JIKahlg
- 9N1Mc08L8Tf5TswJvYxuPz+8r2YDbH40GW/WaEZYFv/ItZ2psEh7X3heaLQF11u7
- Oc26MXwI4=
+ 9o9Dafl0VqbYT7X2KHXVc8DFQ=; b=CYpdkqgTUsUP+Uqf9qKJo36wjyytArKa23
+ gykZ4pJCMgTdxZJNMmhcbbN4JUek44sCbpkPlTXXdVcoafScob+X1flet9aLy2oy
+ NBYtPJbPS1/4c5i3EkJBi57MwI7Rgi8hkFvAdDlhBme7byWrVM2hg/VJnWhPnZkG
+ ytp7Y0LCk=
 Received: from localhost.localdomain (unknown [103.3.97.171])
- by zwqz-smtp-mta-g5-0 (Coremail) with SMTP id _____wD3y0D2i7ZkxjN6Ag--.36094S2;
- Tue, 18 Jul 2023 20:56:23 +0800 (CST)
+ by zwqz-smtp-mta-g0-4 (Coremail) with SMTP id _____wC3LguDjLZklN2XAg--.54249S2;
+ Tue, 18 Jul 2023 20:58:44 +0800 (CST)
 From: "liguang.zhang" <18622748025@163.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, alistair23@gmail.com,
  "liguang.zhang" <liguang.zhang@hexintek.com>
 Subject: [PATCH] target/riscv: Clearing the CSR values at reset and syncing
  the MPSTATE with the host
-Date: Tue, 18 Jul 2023 20:56:19 +0800
-Message-Id: <20230718125619.9312-1-18622748025@163.com>
+Date: Tue, 18 Jul 2023 20:58:41 +0800
+Message-Id: <20230718125841.9580-1-18622748025@163.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230625025018.26956-1-18622748025@163.com>
 References: <20230625025018.26956-1-18622748025@163.com>
-X-CM-TRANSID: _____wD3y0D2i7ZkxjN6Ag--.36094S2
+X-CM-TRANSID: _____wC3LguDjLZklN2XAg--.54249S2
 X-Coremail-Antispam: 1Uf129KBjvJXoWxXw1rWF1ktr4kArW8ZFyfXrb_yoW5Cr4kpF
  4kC39xCws7trWxJw1ftFWDJF1ru3yxWrsxA3y7CrWaya15JrW5Xws2g3y2yr95Gry0yFWa
- kF43uFy3Ca1UKFDanT9S1TB71UUUUjJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ kF43uFy3Ca1UKFDanT9S1TB71UUUUbUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
  9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jNdb8UUUUU=
 X-Originating-IP: [103.3.97.171]
-X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbiVwiwWVetrpxp-wABsp
-Received-SPF: pass client-ip=220.181.12.217; envelope-from=18622748025@163.com;
+X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/xtbBFQiwWWB9ncRVOgAAsf
+Received-SPF: pass client-ip=220.181.12.214; envelope-from=18622748025@163.com;
  helo=m12.mail.163.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
