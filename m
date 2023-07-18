@@ -2,74 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9ED9758535
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 20:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C4C7585F0
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 22:07:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLpsF-00053C-G3; Tue, 18 Jul 2023 14:56:39 -0400
+	id 1qLqws-00025R-F3; Tue, 18 Jul 2023 16:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qLpsC-00052V-Uf
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 14:56:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qLpsB-0004gP-DE
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 14:56:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689706594;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=15+AVKOPp5LnZGDRq8j15lEJGYl4g+SvsnGxjVYPNco=;
- b=ZmqiAVdcclEg/1TAzi4/up/R9vCKEfVXAZIcChP4Cz9s7e+0gBEBAq7eJgt1vaVAuXRujV
- NSq3bUQJDbJZpkUBXy4elkZl4vz4thptMCoXWZR+FpijCTftFfC60ivScnlpX75TjMG8D8
- 092ir+1cBgL51DJ+D57r+L3aeoDbTws=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-330-16aZI6zxMESrHVtl55Q8ug-1; Tue, 18 Jul 2023 14:56:30 -0400
-X-MC-Unique: 16aZI6zxMESrHVtl55Q8ug-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A012629A9D3C;
- Tue, 18 Jul 2023 18:56:29 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CF23F1454142;
- Tue, 18 Jul 2023 18:56:28 +0000 (UTC)
-Date: Tue, 18 Jul 2023 14:56:26 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Jeuk Kim <jeuk20.kim@gmail.com>
-Cc: qemu-devel@nongnu.org, fam@euphon.net, hreitz@redhat.com,
- k.jensen@samsung.com, kwolf@redhat.com, pbonzini@redhat.com,
- qemu-block@nongnu.org, berrange@redhat.com,
- marcandre.lureau@redhat.com, marcel.apfelbaum@gmail.com,
- mst@redhat.com, philmd@linaro.org, thuth@redhat.com
-Subject: Re: PING: [PATCH v4 0/3] hw/ufs: Add Universal Flash Storage (UFS)
- support
-Message-ID: <20230718185626.GA68526@fedora>
-References: <cover.1688459061.git.jeuk20.kim@gmail.com>
- <0e1a269c-0834-7255-1ded-0d37bddd1976@gmail.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qLqwl-00023q-Cc
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 16:05:23 -0400
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qLqwi-0004MO-QS
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 16:05:23 -0400
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-6b9cf17f69cso63090a34.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 13:05:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1689710718; x=1692302718;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ww+j5eRuOi7Ao9bi3oPbHC3r3QKY75RGn3d66ZUGyJ8=;
+ b=A4Z0VwZ1/qczsg1uSThxhlf83BuC1P4sC/b/OIobsiypSRsE4QrjKH9SiUYJHE2xfw
+ aQpq0tdoD0HlonWn3FI6Sz2tAVgTpDn6F5g8lvyg/s19Hu5AOY4UoRSj3OEq7tdjZ8TO
+ pk3Y5lwM43jPugJ9SGDF1WNvtffeDrmqnA2erWdvBIiOwhgb7yfnsY2hH4FaubOhB4d/
+ TVmCUrPwc72FNxtdPRBO1ZVjQUBLvzaU3yQOpCBcINkhichz+HdwddDyhY3ZOTk5XtWt
+ 4GRhgwQYwIx5LiZ9RV+QEKeN4hcLYSmi13nvlPq9CNYKCYlvsSO56oIZZvMUknmQokkv
+ +3pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689710718; x=1692302718;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ww+j5eRuOi7Ao9bi3oPbHC3r3QKY75RGn3d66ZUGyJ8=;
+ b=EVBJxH8RzAYlS50lFIGD/cUPj/w8MBZu7CTm5t62INkoUsqv5wU776sUrqKhQcmkGN
+ Lg/XPFWuBraLLLpp3NqiFyOGx/+rtbNurFsXV67y4E9JGVbOjEcrQj1A0nEXvs0vhryX
+ VjlV11uprsafhtTxe1QKLB5x1xhS4Pk1j5tDEfMu9LwToLHbAn3BwpsXY+5MvnfNIFIM
+ NYbnr+08522rnCcRX3/lnFAhBlmCQaRVOYJr6LAgmRIdYO2QZNbkToyz2O3t1Ox0dmf2
+ d/6f98B3CiRLEoYHzLMnbXSUnjroStcxEZbb7xyWJUV4o7lBSk6K4top5hh7SSRoODSW
+ zg9A==
+X-Gm-Message-State: ABy/qLaGKGQeLoQa0EEHze2p6p43B3qJDBAYhEXq12uIeZD7l5uVn42I
+ TMWmYzwEm3hJrKfXO4nQpPycMg==
+X-Google-Smtp-Source: APBJJlHyjeewclTlMngfLLh8Ueko/lpUyDD1OrszVgNFzk7u8glR+fbQZQpOSb5AJa0hY+lpg7TsdA==
+X-Received: by 2002:a9d:7b4c:0:b0:6b7:564d:f368 with SMTP id
+ f12-20020a9d7b4c000000b006b7564df368mr94557oto.5.1689710717958; 
+ Tue, 18 Jul 2023 13:05:17 -0700 (PDT)
+Received: from [192.168.68.108] (201-69-66-211.dial-up.telesp.net.br.
+ [201.69.66.211]) by smtp.gmail.com with ESMTPSA id
+ i15-20020a9d68cf000000b006b9734b9fafsm1158308oto.13.2023.07.18.13.05.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 18 Jul 2023 13:05:17 -0700 (PDT)
+Message-ID: <6105a331-7c24-2c8e-a3ce-65c6080fd17f@ventanamicro.com>
+Date: Tue, 18 Jul 2023 17:05:12 -0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="9JeuaV9tHH5HBxCZ"
-Content-Disposition: inline
-In-Reply-To: <0e1a269c-0834-7255-1ded-0d37bddd1976@gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 04/10] hw/riscv: virt: Add PCIe HIGHMEM in memmap
+Content-Language: en-US
+To: Sunil V L <sunilvl@ventanamicro.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, qemu-riscv@nongnu.org
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Andrew Jones <ajones@ventanamicro.com>, Anup Patel <apatel@ventanamicro.com>
+References: <20230712163943.98994-1-sunilvl@ventanamicro.com>
+ <20230712163943.98994-5-sunilvl@ventanamicro.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230712163943.98994-5-sunilvl@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32b.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,42 +105,105 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---9JeuaV9tHH5HBxCZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 11, 2023 at 07:31:02PM +0900, Jeuk Kim wrote:
-> Hi,
-> Any more reviews...?
->=20
-> Dear Stefan
-> If you don't mind, Could you give it "reviewed-by"?
-> And is there anything else I should do...?
+On 7/12/23 13:39, Sunil V L wrote:
+> PCIe High MMIO base is actually dynamic and fixed at
+> run time based on the RAM configured. Currently, this is
+> not part of the memmap and kept in separate static variable
+> in virt.c. However, ACPI code also needs this information
+> to populate DSDT. So, once the base is discovered, merge
+> this into the final memmap which can be used to create
+> ACPI tables later.
+> 
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>   hw/riscv/virt.c         | 31 ++++++++++++++++++++++++++++++-
+>   include/hw/riscv/virt.h |  9 +++++++--
+>   2 files changed, 37 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index f6067db8ec..7aee06f021 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -84,6 +84,22 @@ static const MemMapEntry virt_memmap[] = {
+>   
+>   static MemMapEntry virt_high_pcie_memmap;
+>   
+> +/*
+> + * virt_memmap doesn't include floating High Mem IO address entry. To enable
+> + * code organization in multiple files (ex: ACPI), it is better to have single
+> + * memmap which has complete information.
+> + *
+> + * VIRT_HIGH_PCIE_MMIO is always greater than the last memmap entry and hence
+> + * full_virt_memmap is capable of holding both virt_memmap and
+> + * VIRT_HIGH_PCIE_MMIO entry.
+> + *
+> + * The values for these floating entries will be updated when top of RAM is
+> + * discovered.
+> + */
+> +static MemMapEntry full_virt_memmap[] = {
+> +    [VIRT_HIGH_PCIE_MMIO] =     { 0x0, 0 },
+> +};
+> +
+>   #define VIRT_FLASH_SECTOR_SIZE (256 * KiB)
+>   
+>   static PFlashCFI01 *virt_flash_create1(RISCVVirtState *s,
+> @@ -1444,7 +1460,20 @@ static void virt_machine_init(MachineState *machine)
+>               ROUND_UP(virt_high_pcie_memmap.base, virt_high_pcie_memmap.size);
+>       }
+>   
+> -    s->memmap = virt_memmap;
+> +    /*
+> +     * Initialize the floating values in full memory map
+> +     */
+> +    full_virt_memmap[VIRT_HIGH_PCIE_MMIO].base = virt_high_pcie_memmap.base;
+> +    full_virt_memmap[VIRT_HIGH_PCIE_MMIO].size = virt_high_pcie_memmap.size;
+> +
+> +    s->memmap = full_virt_memmap;
+> +    /*
+> +     * Copy the base virt_memmap entries to full memmap
+> +     */
+> +    for (i = 0; i < ARRAY_SIZE(virt_memmap); i++) {
+> +        s->memmap[i] = virt_memmap[i];
+> +    }
+> +
 
-Sorry for the late reply. I was on vacation and am working my way
-through pending code review and bug reports.
+This change here kind of convinces me of the point I made earlier in patch 2:
+we can simplify gpex_pcie_init() to use just the RISCVVirtState as a parameter
+and get everything else from it.
 
-I have started reviewing this series and should be finish on Wednesday
-or Thursday.
+It's also something for a follow-up. As for this patch:
 
-Stefan
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
---9JeuaV9tHH5HBxCZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmS24FoACgkQnKSrs4Gr
-c8hmTQf9HuEHYR+BROG2xci1qYVu9NtXQp/sOEvjbp72aP9l+tqXax+LtIlqaEYA
-UdJ/hcKqCTN2yFH2pvr+WVwkoPd3qvLc8cLh8soD5iMAmlozsH0cQPkx0sS0kAfr
-Pf4ozoT7sbYWcr5HolfyJ1U5dLMv3YodXhkhS04EscD+zcObsC7tjqm9GBpxrweP
-Fhu4nr2rLTROzzlAVkyrAJl1wEur9hXlP1dpSJJ4lcIwqCPQCpHh3H7ulYjiAsJv
-Pyw/tEEIivJbQ68eDddZYlDmKLu3drSyKvkTTqNsoIF7ROXs2HMiEfoZNxr667uo
-elfw52pS4DS3xeMx7h8LRaxlODVtWg==
-=ZY4e
------END PGP SIGNATURE-----
-
---9JeuaV9tHH5HBxCZ--
-
+>   
+>       /* register system main memory (actual RAM) */
+>       memory_region_add_subregion(system_memory, memmap[VIRT_DRAM].base,
+> diff --git a/include/hw/riscv/virt.h b/include/hw/riscv/virt.h
+> index 00c22492a7..1d7ddf5df0 100644
+> --- a/include/hw/riscv/virt.h
+> +++ b/include/hw/riscv/virt.h
+> @@ -60,7 +60,7 @@ struct RISCVVirtState {
+>       char *oem_id;
+>       char *oem_table_id;
+>       OnOffAuto acpi;
+> -    const MemMapEntry *memmap;
+> +    MemMapEntry *memmap;
+>       PCIBus *bus;
+>   };
+>   
+> @@ -84,7 +84,12 @@ enum {
+>       VIRT_PCIE_MMIO,
+>       VIRT_PCIE_PIO,
+>       VIRT_PLATFORM_BUS,
+> -    VIRT_PCIE_ECAM
+> +    VIRT_PCIE_ECAM,
+> +    VIRT_LAST_MEMMAP /* Keep this entry always last */
+> +};
+> +
+> +enum {
+> +    VIRT_HIGH_PCIE_MMIO = VIRT_LAST_MEMMAP,
+>   };
+>   
+>   enum {
 
