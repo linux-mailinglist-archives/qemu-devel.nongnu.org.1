@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE204757C28
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 14:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32BA1757C4A
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 14:54:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLk74-0007t4-Lx; Tue, 18 Jul 2023 08:47:34 -0400
+	id 1qLkCX-00025O-8N; Tue, 18 Jul 2023 08:53:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <18622748025@163.com>)
- id 1qLk73-0007s3-2I
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:47:33 -0400
-Received: from m12.mail.163.com ([220.181.12.215])
+ id 1qLkCU-00025F-H2
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:53:10 -0400
+Received: from m12.mail.163.com ([220.181.12.217])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <18622748025@163.com>) id 1qLk6x-0006bU-CT
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:47:29 -0400
+ (envelope-from <18622748025@163.com>) id 1qLkCR-00005Y-Bq
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:53:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
  s=s110527; h=From:Subject:Date:Message-Id; bh=4sMGboxBki1joNixHO
- 9o9Dafl0VqbYT7X2KHXVc8DFQ=; b=WXgMNiVhuJdtlgxYZp2Acctp9XJUQYdBoi
- 3RUcvER50IZxxAundgBxqQkNLPRqiztw2Kb9TLK9IWGpcQSg61ANKUldKSiG1ufF
- VP0wTKevIBPq+n2XLzRg2V2CU5xA0dHUZNPKL3dHXlfAFB7ADdUjhrvLjTafpM5e
- EoqqmQrhI=
+ 9o9Dafl0VqbYT7X2KHXVc8DFQ=; b=mIWc/qmtsZiNuSbtwjXdkK9CW/5yK1CScI
+ PdsxsmKaRz23mnTCMXrhQGH43WDqjpiefGbbdmw/cpWDP7rgHhw8JYY2kR3pyqG1
+ UvBfehpf6OQOlUAzoMTiVwddW4IqzhUx5IblkAdGns4MmL+lDEWESBspj1POeOn1
+ QSE2yvC64=
 Received: from localhost.localdomain (unknown [103.3.97.171])
- by zwqz-smtp-mta-g3-1 (Coremail) with SMTP id _____wCHHnfYibZkcTaEAg--.40045S2;
- Tue, 18 Jul 2023 20:47:21 +0800 (CST)
+ by zwqz-smtp-mta-g2-3 (Coremail) with SMTP id _____wAHiR0ii7ZkNimQAg--.2617S2; 
+ Tue, 18 Jul 2023 20:52:51 +0800 (CST)
 From: "liguang.zhang" <18622748025@163.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, alistair23@gmail.com,
  "liguang.zhang" <liguang.zhang@hexintek.com>
 Subject: [PATCH] target/riscv: fix the issue of guest reboot then no response
  or crash in kvm-mode
-Date: Tue, 18 Jul 2023 20:47:18 +0800
-Message-Id: <20230718124718.8644-1-18622748025@163.com>
+Date: Tue, 18 Jul 2023 20:52:48 +0800
+Message-Id: <20230718125248.9013-1-18622748025@163.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230625025018.26956-1-18622748025@163.com>
 References: <20230625025018.26956-1-18622748025@163.com>
-X-CM-TRANSID: _____wCHHnfYibZkcTaEAg--.40045S2
+X-CM-TRANSID: _____wAHiR0ii7ZkNimQAg--.2617S2
 X-Coremail-Antispam: 1Uf129KBjvJXoWxXw1rWF1ktr4kArW8ZFyfXrb_yoW5Cr4kpF
  4kC39xCws7trWxJw1ftFWDJF1ru3yxWrsxA3y7CrWaya15JrW5Xws2g3y2yr95Gry0yFWa
- kF43uFy3Ca1UKFDanT9S1TB71UUUUj7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ kF43uFy3Ca1UKFDanT9S1TB71UUUUjDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
  9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jZxhLUUUUU=
 X-Originating-IP: [103.3.97.171]
-X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbivhuwWVZciC9C-gAAsd
-Received-SPF: pass client-ip=220.181.12.215; envelope-from=18622748025@163.com;
+X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbiVwiwWVetrpxp-wAAso
+Received-SPF: pass client-ip=220.181.12.217; envelope-from=18622748025@163.com;
  helo=m12.mail.163.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -53,7 +53,7 @@ X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FROM_LOCAL_DIGITS=0.001,
  FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001,
- RCVD_IN_MSPIKE_L3=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_MSPIKE_L4=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
