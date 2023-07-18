@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71121758AD0
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 03:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 317F0758ACF
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 03:23:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLvuQ-0004RV-Cb; Tue, 18 Jul 2023 21:23:18 -0400
+	id 1qLvuU-0004Rc-3e; Tue, 18 Jul 2023 21:23:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kaiwenx@rivosinc.com>)
- id 1qLtUj-0003NA-1C
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 18:48:37 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1qLtUp-0003O2-FL
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 18:48:43 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kaiwenx@rivosinc.com>)
- id 1qLtUh-0004xN-1e
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 18:48:36 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-553b2979fceso2639330a12.3
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 15:48:33 -0700 (PDT)
+ id 1qLtUn-0004y6-SC
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 18:48:43 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-666e3b15370so4639582b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 15:48:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1689720512; x=1692312512; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=h0vwFwV4quN6yFVBduC18Yhtf+eVeJGxVojzXHppBW8=;
- b=PEQRnT/qtKclvjBqRIZhp5haRMAZ1Cw/RtF9GaVEuqXKCvpZmgtTqHRONvCgvpUKr3
- XzTVA8P5y2mFkc2xfStlhS+gvDd/uopLQkDMRTVjnD5lm0zD9+C4cy5fTIz71uWRTnMK
- vbmiDY7S54lPckFvsanA5xkK4BUszIPqQpGiX+yIJC8iN0iexT7CLUUu7UzitTPeF62n
- /F9fo0lIEpCIgRb20fGMxuS6jtE8ZPir+6bdN+RZtoqUtX1aqDgodRqSHpb5OG4t7Kv4
- r3tKGWPp10Ldbzy6GlXR2HpZ1roMZs42tz1HQ327CHXlivnMfQllnIXm6IhQbrSpkX0L
- JOOA==
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1689720520; x=1692312520; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jmBntf7xa3Sa8583LrioSnWbCw8LdNAWYw7xgKjdTZs=;
+ b=wRvIdWWNBeCuLcgKC0B7v1oVzj0yL/qM9XltxuQXW1QnsZmXaB3rpjSbCS3GlTiF4a
+ 0OsRyWhQtxmJjp0JCrCjl7W8l7X8eBKJ6Hw2XhHyggUc50NWe3uJ/w39i+FXxCGTPdIF
+ EddADv4S1n3kdeq5LeOKLr+//KCIaLqfs5noRAk4c7k+dHWbubVQYXt3/9sxZJyBQL9x
+ C161uZGAfd2j8J4r+wUbTOGLMhcXMxYGf0KY8kC7S7N+ecqBe61gy+w64cJ9B3+jdq1q
+ YredKVjCnR+SSdQI8EQYVwh+b4zGcgpjf9IObiuFyjtR0D8apKcHf+362t/efMA8psgl
+ JvUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689720512; x=1692312512;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=h0vwFwV4quN6yFVBduC18Yhtf+eVeJGxVojzXHppBW8=;
- b=lawxloE7LZeaCwgqDicmMutDU4JgxbzJ8bNlhtA3plxsVg27bdRi0rG/qW+aN1UoYG
- L2N4qYbq1G7sf1/auTw9R7/sxN8YcJ0NitfVtrJujxkFQ1uxIL6VtpQ1y9roN0LOapcl
- vTE5z7VWXDrVgJkdjD7ThnM1Qs2lg4feSA2Pun1JqfwgDz8OeIy2RzqroyLWvLDDjOyT
- esaOlMO8gOd8UYJCrCU6NJ7KenvqyrVWuIEY+a1XZJJ9kRlQGyy6Pn1y8eX3qm1pc7i0
- 3bSi1ARlFhZPpT8S62ZwqIGLalsJdx+PtyeGX6hl9yHoQjfLC9NHkctF2AXmlAfmkMmu
- 7M9g==
-X-Gm-Message-State: ABy/qLagu+lEvELG+GOU1BijPplGPAfPQH5MwStNLhhn4mJ0HV7AimTj
- 1mTv8RvVBFSU6avqaRooQr3gIA==
-X-Google-Smtp-Source: APBJJlHhu2mfZz9DE/4ai1Y/9u6mj9SETBy+6rZyZvpjvmLA03RBXn1aldE/E+8nuxbLQlPIGOOA6w==
-X-Received: by 2002:a05:6a20:8f18:b0:134:2b31:e2a9 with SMTP id
- b24-20020a056a208f1800b001342b31e2a9mr425217pzk.0.1689720512191; 
- Tue, 18 Jul 2023 15:48:32 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689720520; x=1692312520;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jmBntf7xa3Sa8583LrioSnWbCw8LdNAWYw7xgKjdTZs=;
+ b=USe6OYz/n6ybPfwdcItHJgpAtW/lXLtgk9+Z82jOrfHboGHsSYmu+tMnqs6PPaScTd
+ EoW9r4e6l7V3QJXRDpw4xE/GST3PYxbqsu1Z0lEGykMDnKlIgEA4ks8BpVioIcbC4x0x
+ mnPwY0B+kkh6i93AezwacpkzGuNjw+JcaURYWXQpiLUSIWva1vKQFFn0wnc7TDw0I/Dq
+ Cy2RgHlUYU1P9LWeKG+mfd48RhecjCsI6lweaXWua2RcwduoYRmm1GsaXTo2+137K+xh
+ 5LRJFBcxZV/X1/zQgaA8ks3kwQq2xXfAdMlzxjqozm3eA6Jhk1P45teG1/E+PcWbTC8d
+ zoiA==
+X-Gm-Message-State: ABy/qLbPC75doT/tckoWKMMbU9F/VLfIWMC6fE52X2BXDygbOU8fhpT/
+ PU1FQiSF77slEog79FKZ5o1OOw==
+X-Google-Smtp-Source: APBJJlGqIlG87iJYTN0vokmOLJLA7MLB/3inkZ6UqPX3S7dtCCdbKzpXLjTIjG5Nil1f1mg+BtqU1w==
+X-Received: by 2002:a05:6a00:134e:b0:67f:48a2:5d9f with SMTP id
+ k14-20020a056a00134e00b0067f48a25d9fmr4180811pfu.11.1689720520397; 
+ Tue, 18 Jul 2023 15:48:40 -0700 (PDT)
 Received: from kaiwenx.ba.rivosinc.com ([66.220.2.162])
  by smtp.gmail.com with ESMTPSA id
- i14-20020aa787ce000000b00682669dc19bsm1983312pfo.201.2023.07.18.15.48.31
+ i14-20020aa787ce000000b00682669dc19bsm1983312pfo.201.2023.07.18.15.48.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jul 2023 15:48:31 -0700 (PDT)
+ Tue, 18 Jul 2023 15:48:40 -0700 (PDT)
 From: Kaiwen Xue <kaiwenx@rivosinc.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
@@ -65,14 +66,17 @@ Cc: Kaiwen Xue <kaiwenx@rivosinc.com>, Palmer Dabbelt <palmer@dabbelt.com>,
  Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Atish Kumar Patra <atishp@atishpatra.org>,
  Kaiwen Xue <kaiwenx@andrew.cmu.edu>
-Subject: [PATCH 0/3] risc-v: Add ISA extension smcntrpmf support
-Date: Tue, 18 Jul 2023 15:47:42 -0700
-Message-ID: <cover.1689631639.git.kaiwenx@rivosinc.com>
+Subject: [PATCH 1/3] target/riscv: Add cycle & instret privilege mode
+ filtering properties
+Date: Tue, 18 Jul 2023 15:47:43 -0700
+Message-ID: <d0e7d84180afec116b9fc54ef72fba1d7d8ff345.1689631639.git.kaiwenx@rivosinc.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <cover.1689631639.git.kaiwenx@rivosinc.com>
+References: <cover.1689631639.git.kaiwenx@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=kaiwenx@rivosinc.com; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=kaiwenx@rivosinc.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,28 +99,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch series adds the support for RISC-V ISA extension smcntrpmf (cycle and
-privilege mode filtering) [1]. QEMU only calculates dummy cycles and
-instructions, so there is no actual means to stop the icount in QEMU. Therefore,
-this series only add the read/write behavior of the relevant CSRs such that the
-implemented firmware support [2] can work without causing unnecessary illegal
-instruction exceptions.
+This adds the properties for ISA extension smcntrpmf. Patches
+implementing it will follow.
 
-[1] https://github.com/riscv/riscv-smcntrpmf
-[2] https://github.com/rivosinc/opensbi/tree/dev/kaiwenx/smcntrpmf_upstream
+Signed-off-by: Kaiwen Xue <kaiwenx@andrew.cmu.edu>
+Signed-off-by: Kaiwen Xue <kaiwenx@rivosinc.com>
+---
+ target/riscv/cpu.c     | 2 ++
+ target/riscv/cpu_cfg.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-Kaiwen Xue (3):
-  target/riscv: Add cycle & instret privilege mode filtering properties
-  target/riscv: Add cycle & instret privilege mode filtering definitions
-  target/riscv: Add cycle & instret privilege mode filtering support
-
- target/riscv/cpu.c      |  2 ++
- target/riscv/cpu.h      |  6 ++++
- target/riscv/cpu_bits.h | 29 ++++++++++++++++
- target/riscv/cpu_cfg.h  |  1 +
- target/riscv/csr.c      | 73 +++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 111 insertions(+)
-
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 9339c0241d..31a1862561 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -132,6 +132,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
+     ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
+     ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
++    ISA_EXT_DATA_ENTRY(smcntrpmf, PRIV_VERSION_1_12_0, ext_smcntrpmf),
+     ISA_EXT_DATA_ENTRY(sstc, PRIV_VERSION_1_12_0, ext_sstc),
+     ISA_EXT_DATA_ENTRY(svadu, PRIV_VERSION_1_12_0, ext_svadu),
+     ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+@@ -1753,6 +1754,7 @@ static Property riscv_cpu_extensions[] = {
+     /* Defaults for standard extensions */
+     DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
+     DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
++    DEFINE_PROP_BOOL("smcntrpmf", RISCVCPU, cfg.ext_smcntrpmf, false),
+     DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+     DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
+     DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true),
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 2bd9510ba3..424246cbec 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -69,6 +69,7 @@ struct RISCVCPUConfig {
+     bool ext_zihintpause;
+     bool ext_smstateen;
+     bool ext_sstc;
++    bool ext_smcntrpmf;
+     bool ext_svadu;
+     bool ext_svinval;
+     bool ext_svnapot;
 -- 
 2.34.1
 
