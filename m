@@ -2,69 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED7D757163
+	by mail.lfdr.de (Postfix) with ESMTPS id 56810757164
 	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 03:37:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLZd7-0008Nq-8A; Mon, 17 Jul 2023 21:35:57 -0400
+	id 1qLZe1-0000CS-RI; Mon, 17 Jul 2023 21:36:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mborgerson@gmail.com>)
- id 1qLZd4-0008Lj-QP
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 21:35:54 -0400
-Received: from mail-qk1-f180.google.com ([209.85.222.180])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mborgerson@gmail.com>)
- id 1qLZd3-0007ir-3Z
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 21:35:54 -0400
-Received: by mail-qk1-f180.google.com with SMTP id
- af79cd13be357-7659cb9c42aso421838585a.3
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 18:35:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689644151; x=1692236151;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XSC7TRhF4x/D+7CSA6CQbeJFzO7VmEZkfATTpaM1HK8=;
- b=j2YlCk5mUrIDZPVTL7MimXm2UOIGpELn2rubu+hLFrNbcmzyVDOD0mxkAfjOodUDla
- +PwRxgc9Z3GZ9YDN5MoCN0mITcp76Bo5dYPDZVEw2oeKPO5bg4Jd7TazkvEhdOAwwH5W
- GaXHCGP4v6EG20a1oe3oQHQhi1MNiUnPyYZ6uCcegvqkLmkWxHJY3P8gAc9i6m7PsEWI
- zpmHQ4Qs2JgKlIbHPyZH+aqYkANEism2IJHfq6T9M2liyM3bH1bKBO+P7QXs8/n3ogWN
- fkHqig1e6FZt1f3w+h48PXdAoii0ylBiBwYpkxa9TQ1lZKuUZEUfFt1Q/rKRJenrjUVq
- plQg==
-X-Gm-Message-State: ABy/qLbz3nvDC3Gl1DFYFS8Vhju8Fj9uSwUBFFLF0IFsM1dyUhlXh+J9
- 6b2WZR3crwv8F45mQXl0XAD/i0mvFEXIBUHV
-X-Google-Smtp-Source: APBJJlGPp5fmq4O7tAXt6P9o/dF9AM5EmzUBt2JoRpMTW5pTdKpBnOqKFIimYdEy4Tw8bajML7fNig==
-X-Received: by 2002:a05:620a:430c:b0:765:7a1e:a456 with SMTP id
- u12-20020a05620a430c00b007657a1ea456mr16703462qko.54.1689644151359; 
- Mon, 17 Jul 2023 18:35:51 -0700 (PDT)
-Received: from neon.. (ip68-106-29-136.ph.ph.cox.net. [68.106.29.136])
- by smtp.gmail.com with ESMTPSA id
- s5-20020a17090aad8500b00263b9e75aecsm359956pjq.41.2023.07.17.18.35.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 17 Jul 2023 18:35:50 -0700 (PDT)
-From: Matt Borgerson <contact@mborgerson.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Matt Borgerson <contact@mborgerson.com>
-Subject: [PATCH] accel/tcg: Fix guest instruction address in output assembly
- log
-Date: Mon, 17 Jul 2023 18:35:31 -0700
-Message-Id: <20230718013531.1669100-1-contact@mborgerson.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qLZdx-00006P-BM; Mon, 17 Jul 2023 21:36:49 -0400
+Received: from out30-97.freemail.mail.aliyun.com ([115.124.30.97])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qLZdu-0007md-FW; Mon, 17 Jul 2023 21:36:49 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R101e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046049;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
+ TI=SMTPD_---0VnfYrLx_1689644192; 
+Received: from 30.221.100.194(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0VnfYrLx_1689644192) by smtp.aliyun-inc.com;
+ Tue, 18 Jul 2023 09:36:33 +0800
+Message-ID: <f0f0b1fb-327b-abb8-0262-027c75c76520@linux.alibaba.com>
+Date: Tue, 18 Jul 2023 09:36:00 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] target/riscv/cpu.c: check priv_ver before auto-enable
+ zca/zcd/zcf
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, palmer@rivosinc.com, Conor Dooley <conor@kernel.org>
+References: <20230717154141.60898-1-dbarboza@ventanamicro.com>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20230717154141.60898-1-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.222.180; envelope-from=mborgerson@gmail.com;
- helo=mail-qk1-f180.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.97;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-97.freemail.mail.aliyun.com
+X-Spam_score_int: -99
+X-Spam_score: -10.0
+X-Spam_bar: ----------
+X-Spam_report: (-10.0 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,64 +64,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If CF_PCREL is enabled, generated host assembly logging (command line
-option `-d out_asm`) may incorrectly report guest instruction virtual
-addresses as page offsets instead of absolute addresses. This patch
-corrects the reported guest address.
 
-Signed-off-by: Matt Borgerson <contact@mborgerson.com>
----
- accel/tcg/translate-all.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+On 2023/7/17 23:41, Daniel Henrique Barboza wrote:
+> Commit bd30559568 made changes in how we're checking and disabling
+> extensions based on env->priv_ver. One of the changes was to move the
+> extension disablement code to the end of realize(), being able to
+> disable extensions after we've auto-enabled some of them.
+>
+> An unfortunate side effect of this change started to happen with CPUs
+> that has an older priv version, like sifive-u54. Starting on commit
+> 2288a5ce43e5 we're auto-enabling zca, zcd and zcf if RVC is enabled,
+> but these extensions are priv version 1.12.0. When running a cpu that
+> has an older priv ver (like sifive-u54) the user is spammed with
+> warnings like these:
+>
+> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000000 because privilege spec version does not match
+> qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000000 because privilege spec version does not match
+>
+> The warnings are part of the code that disables the extension, but in this
+> case we're throwing user warnings for stuff that we enabled on our own,
+> without user intervention. Users are left wondering what they did wrong.
+>
+> A quick 8.1 fix for this nuisance is to check the CPU priv spec before
+> auto-enabling zca/zcd/zcf. A more appropriate fix will include a more
+> robust framework that will account for both priv_ver and user choice
+> when auto-enabling/disabling extensions, but for 8.1 we'll make it do
+> with this simple check.
+>
+> It's also worth noticing that this is the only case where we're
+> auto-enabling extensions based on a criteria (in this case RVC) that
+> doesn't match the priv spec of the extensions we're enabling. There's no
+> need for more 8.1 band-aids.
+>
+> Cc: Conor Dooley <conor@kernel.org>
+> Fixes: 2288a5ce43e5 ("target/riscv: add cfg properties for Zc* extension")
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>   target/riscv/cpu.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 9339c0241d..6b93b04453 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1225,7 +1225,8 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+>           }
+>       }
+>   
+> -    if (riscv_has_ext(env, RVC)) {
+> +    /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
 
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index a1782db5dd..859db95cf7 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -283,6 +283,24 @@ static int setjmp_gen_code(CPUArchState *env, TranslationBlock *tb,
-     return tcg_gen_code(tcg_ctx, tb, pc);
- }
- 
-+static vaddr get_guest_insn_vaddr(TranslationBlock *tb, vaddr pc, size_t insn)
-+{
-+    g_assert(insn < tb->icount);
-+
-+    /* FIXME: This replicates the restore_state_to_opc() logic. */
-+    vaddr addr = tcg_ctx->gen_insn_data[insn * TARGET_INSN_START_WORDS];
-+
-+    if (tb_cflags(tb) & CF_PCREL) {
-+        addr |= (pc & TARGET_PAGE_MASK);
-+    } else {
-+#if defined(TARGET_I386)
-+        addr -= tb->cs_base;
-+#endif
-+    }
-+
-+    return addr;
-+}
-+
- /* Called with mmap_lock held for user mode emulation.  */
- TranslationBlock *tb_gen_code(CPUState *cpu,
-                               vaddr pc, uint64_t cs_base,
-@@ -458,7 +476,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
-             fprintf(logfile, "OUT: [size=%d]\n", gen_code_size);
-             fprintf(logfile,
-                     "  -- guest addr 0x%016" PRIx64 " + tb prologue\n",
--                    tcg_ctx->gen_insn_data[insn * TARGET_INSN_START_WORDS]);
-+                    get_guest_insn_vaddr(tb, pc, insn));
-             chunk_start = tcg_ctx->gen_insn_end_off[insn];
-             disas(logfile, tb->tc.ptr, chunk_start);
- 
-@@ -471,7 +489,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
-                 size_t chunk_end = tcg_ctx->gen_insn_end_off[insn];
-                 if (chunk_end > chunk_start) {
-                     fprintf(logfile, "  -- guest addr 0x%016" PRIx64 "\n",
--                            tcg_ctx->gen_insn_data[insn * TARGET_INSN_START_WORDS]);
-+                            get_guest_insn_vaddr(tb, pc, insn));
-                     disas(logfile, tb->tc.ptr + chunk_start,
-                           chunk_end - chunk_start);
-                     chunk_start = chunk_end;
--- 
-2.34.1
+I think the Zca/zcd/zcf doesn't have much relationship with the 
+privilege specification. The privilege specification doesn't define any
+CSR or rules that Zca/zcd/zcf depend on. Maybe I missed something.  Does 
+anyone  know why we should check PRIV_VERSION_1_12_0 for zca/zcf/zcd?
 
+I think we should remove the check for priv_ver for many user mode 
+extensions. We should set the checking privilege specification version 
+for these extensions to PRIV_VERSION_1_10_0.
+
+Zhiwei
+
+> +    if (riscv_has_ext(env, RVC) && env->priv_ver >= PRIV_VERSION_1_12_0) {
+>           cpu->cfg.ext_zca = true;
+>           if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
+>               cpu->cfg.ext_zcf = true;
 
