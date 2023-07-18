@@ -2,91 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718FB758758
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 23:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5ED75874D
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 23:37:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLsMI-0007Hb-3p; Tue, 18 Jul 2023 17:35:50 -0400
+	id 1qLsMJ-0007Kw-Gr; Tue, 18 Jul 2023 17:35:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qLsMD-0007Dv-8B; Tue, 18 Jul 2023 17:35:45 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1qLsMH-0007IF-19; Tue, 18 Jul 2023 17:35:49 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qLsMB-0003CC-40; Tue, 18 Jul 2023 17:35:45 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ id 1qLsMF-0003FE-CE; Tue, 18 Jul 2023 17:35:48 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36ILPgZe021101; Tue, 18 Jul 2023 21:35:39 GMT
+ 36ILX9Nx012468; Tue, 18 Jul 2023 21:35:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=6LNNWxRs9+rwhirrje35jURHF58QPp0zr8OZXxV9K/Y=;
- b=ZmYNmK9T4cJnI+w81gCvuNuK98TRmZEgufC/KFgWi/sikZV8VH/3rVfP6z/QFaWArBrj
- 59QFR7xUpo/h/yBd523T1OevAOW43DbXZ0V2iFj44nhc9Fdb+m0L6NNY9GkH4l3rYviL
- N9gm0sobfWGY1jN5+v8xkIX3aDP8z31HgwjwKB4njm9ecaYy8Tzicp3/Iwye7cR/9lbQ
- 5atnC4tUfkK0vggIooY2RJgM9Vy7zqEkpdVdzYu48wsJLgJXKUlOOU62ZL9LdrpP+ILO
- gVYQsPok5qV1/091ejRhqQ6HSmMbd/3beWddfgJBIhnsXeVcz39OD2mCGJaJTzytxDFx yQ== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=C7Dq1ZVTtH/FB3gKs5xqk+gaafVUk110/O7Ntyyyg48=;
+ b=S8LH6IfH3B1lR09rL2G5AVhlUimOPJnfR9CfZsTY4JH+VG1yb9XG5mbSRzxNxUBqxR8e
+ VjPBsqbSF/tT5P5CoOvISwSNyVoFnS1jkXIsQXLAjiZIveaz4aWJ2lld9U2eSP1Wk0Z5
+ f6jNhF8Us6uajugZ2QT5fR8qUeSgBRy/LGeCbZI0fM56bL51yWB6xKduQH3t97X/MCaq
+ j4cIgUnseTEzTB7yu08r19mSZZKHAmJ+9bpUvnHpBnZ2iIIsjBOuXc519G4nCpWikGSx
+ X9pKgydAgrfMTPw8FZD5x9MXQJ51hh4nm3cQJgPtjLDK3l+3wigjd4pq9Qh2CaHkntf7 CQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rx2n205q5-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rx2rb045p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 21:35:39 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36ILXBnp013133;
- Tue, 18 Jul 2023 21:35:38 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rx2n205q1-1
+ Tue, 18 Jul 2023 21:35:43 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36ILXfJl014447;
+ Tue, 18 Jul 2023 21:35:42 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rx2rb0452-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 21:35:38 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36IISh9B007434; Tue, 18 Jul 2023 21:35:38 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv80j48am-1
+ Tue, 18 Jul 2023 21:35:42 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36IJUGvf005272; Tue, 18 Jul 2023 21:35:41 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv65xekp0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 21:35:37 +0000
+ Tue, 18 Jul 2023 21:35:41 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
  [10.20.54.100])
- by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36ILZaXs43647328
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36ILZdmr62783954
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 18 Jul 2023 21:35:36 GMT
+ Tue, 18 Jul 2023 21:35:39 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3FDD42004B;
- Tue, 18 Jul 2023 21:35:36 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 68AD520043;
+ Tue, 18 Jul 2023 21:35:39 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D1AC620043;
- Tue, 18 Jul 2023 21:35:35 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E867E2004B;
+ Tue, 18 Jul 2023 21:35:38 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.14.165])
  by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 18 Jul 2023 21:35:35 +0000 (GMT)
+ Tue, 18 Jul 2023 21:35:38 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 00/14] target/s390x: Miscellaneous TCG fixes, part 2
-Date: Tue, 18 Jul 2023 23:21:01 +0200
-Message-ID: <20230718213531.117976-1-iii@linux.ibm.com>
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
+Subject: [PATCH 01/14] target/s390x: Make CKSM raise an exception if R2 is odd
+Date: Tue, 18 Jul 2023 23:21:02 +0200
+Message-ID: <20230718213531.117976-2-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230718213531.117976-1-iii@linux.ibm.com>
+References: <20230718213531.117976-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: JTwfdE1AOTGjrQQUXJv17nUYlbuAes1o
-X-Proofpoint-ORIG-GUID: AVz8i8XTy47QIuRKt1JCKitoYkFgf5mh
+X-Proofpoint-ORIG-GUID: QuQ0_RBBpiAqp8bwc79RMcgJKdJrPFYO
+X-Proofpoint-GUID: pfCfh_qqP2IUFp0hpYuUpok4FdCY0Hyj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-18_16,2023-07-18_01,2023-05-22_02
+ definitions=2023-07-18_17,2023-07-18_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0
- priorityscore=1501 mlxscore=0 suspectscore=0 phishscore=0
- lowpriorityscore=0 spamscore=0 malwarescore=0 bulkscore=0 impostorscore=0
- mlxlogscore=699 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307180192
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ impostorscore=0
+ priorityscore=1501 bulkscore=0 mlxscore=0 phishscore=0 clxscore=1015
+ spamscore=0 suspectscore=0 mlxlogscore=641 malwarescore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307180196
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -109,66 +112,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+R2 designates an even-odd register pair; the instruction should raise
+a specification exception when R2 is not even.
 
-Here is another set of fixes for issues found by randomized testing.
+Cc: qemu-stable@nongnu.org
+Fixes: e023e832d0ac ("s390x: translate engine for s390x CPU")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ target/s390x/tcg/translate.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-Most of them have to do with simple insufficient error handling or
-corner cases, but 3/14 and 6/14 took a while to figure out, and
-hopefully I got the fixes right. 13/14 is a test for an issue that
-Richard has already fixed, but I thought it would be helpful to have it
-anyway.
-
-Best regards,
-Ilya
-
-Ilya Leoshkevich (14):
-  target/s390x: Make CKSM raise an exception if R2 is odd
-  target/s390x: Fix CLM with M3=0
-  target/s390x: Fix CONVERT TO LOGICAL/FIXED with out-of-range inputs
-  target/s390x: Fix ICM with M3=0
-  target/s390x: Make MC raise specification exception when class >= 16
-  tcg/{i386,s390x}: Add earlyclobber to the op_add2's first output
-  target/s390x: Fix assertion failure in VFMIN/VFMAX with reserved type
-  tests/tcg/s390x: Test CKSM
-  tests/tcg/s390x: Test CLGEBR and CGEBRA
-  tests/tcg/s390x: Test CLM
-  tests/tcg/s390x: Test ICM
-  tests/tcg/s390x: Test MC
-  tests/tcg/s390x: Test STPQ
-  tests/tcg/s390x: Test VCKSM
-
- target/s390x/tcg/excp_helper.c          |  2 +-
- target/s390x/tcg/fpu_helper.c           |  3 +-
- target/s390x/tcg/mem_helper.c           |  5 +++
- target/s390x/tcg/translate.c            | 21 ++++++++--
- target/s390x/tcg/vec_fpu_helper.c       | 24 +++++++----
- tcg/i386/tcg-target-con-set.h           |  2 +-
- tcg/i386/tcg-target.c.inc               |  2 +-
- tcg/s390x/tcg-target-con-set.h          |  5 +--
- tcg/s390x/tcg-target.c.inc              |  4 +-
- tcg/tcg.c                               |  8 +++-
- tests/tcg/s390x/Makefile.softmmu-target |  5 +++
- tests/tcg/s390x/Makefile.target         |  6 +++
- tests/tcg/s390x/cgebra.c                | 32 ++++++++++++++
- tests/tcg/s390x/cksm.S                  | 29 +++++++++++++
- tests/tcg/s390x/clgebr.c                | 32 ++++++++++++++
- tests/tcg/s390x/clm.S                   | 29 +++++++++++++
- tests/tcg/s390x/icm.S                   | 32 ++++++++++++++
- tests/tcg/s390x/mc.S                    | 56 +++++++++++++++++++++++++
- tests/tcg/s390x/stpq.S                  | 20 +++++++++
- tests/tcg/s390x/vcksm.c                 | 31 ++++++++++++++
- tests/tcg/s390x/vx.h                    |  2 +
- 21 files changed, 327 insertions(+), 23 deletions(-)
- create mode 100644 tests/tcg/s390x/cgebra.c
- create mode 100644 tests/tcg/s390x/cksm.S
- create mode 100644 tests/tcg/s390x/clgebr.c
- create mode 100644 tests/tcg/s390x/clm.S
- create mode 100644 tests/tcg/s390x/icm.S
- create mode 100644 tests/tcg/s390x/mc.S
- create mode 100644 tests/tcg/s390x/stpq.S
- create mode 100644 tests/tcg/s390x/vcksm.c
-
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index 6661b27efa4..2f61e879878 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -1991,11 +1991,18 @@ static DisasJumpType op_cxlgb(DisasContext *s, DisasOps *o)
+ static DisasJumpType op_cksm(DisasContext *s, DisasOps *o)
+ {
+     int r2 = get_field(s, r2);
+-    TCGv_i128 pair = tcg_temp_new_i128();
+-    TCGv_i64 len = tcg_temp_new_i64();
++    TCGv_i128 pair;
++    TCGv_i64 len;
++
++    if (r2 & 1) {
++        gen_program_exception(s, PGM_SPECIFICATION);
++        return DISAS_NORETURN;
++    }
+ 
++    pair = tcg_temp_new_i128();
+     gen_helper_cksm(pair, cpu_env, o->in1, o->in2, regs[r2 + 1]);
+     set_cc_static(s);
++    len = tcg_temp_new_i64();
+     tcg_gen_extr_i128_i64(o->out, len, pair);
+ 
+     tcg_gen_add_i64(regs[r2], regs[r2], len);
 -- 
 2.41.0
 
