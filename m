@@ -2,86 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E311875742F
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 08:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 373EF7574A9
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 08:54:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLeDP-00027A-7S; Tue, 18 Jul 2023 02:29:43 -0400
+	id 1qLeZA-0004qT-R0; Tue, 18 Jul 2023 02:52:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLeDH-00026l-CB
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 02:29:35 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <arpitha.14n@gmail.com>)
+ id 1qLeZ8-0004qL-Vi
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 02:52:11 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qLeDD-0008KL-OE
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 02:29:34 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3fc0aecf107so47949575e9.2
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 23:29:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <arpitha.14n@gmail.com>)
+ id 1qLeZ7-0003pF-HZ
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 02:52:10 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-3fbc656873eso55209685e9.1
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 23:52:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689661767; x=1692253767;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RVinK/DJQP3dAFYeWuBpJgdtmJF3ennXH5vsB4ywhjI=;
- b=tTcnzSGSxqV+fjI4nw8nM6ot+a1QktS5eBMewODH6DfbjtpKdQwHt3gta/rtE1m4jV
- jO1laJa95AnYFf24ZUQIx8Z+kTKO4QfcVVKrxX5fFhH3Y3AHC+PEbfBA4KqrlrKEy/Bp
- LONBEBxyiF/XP/QoG+k9irMFL0owkArNdOPqZUCdwWYT2xoFPhEUeMK+0QwB6WX/BKDd
- rTj2Svg/qKgO9kltONh45AbJdNHqng9txy7xwsCRQKc06zDENL9BSYX0RJYuyUQPO0D1
- dTJuKm9Tv3gQDRl3QoNmtwOKNhlbR4TLfIMRL2IRB3sDH6luODwL8AzrJbKUJWhSksdN
- LYog==
+ d=gmail.com; s=20221208; t=1689663127; x=1692255127;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=jGZVIwFACrgkMdv8Pl8FMmRHa3LIbktK8P+8g/baHUs=;
+ b=gAL+trGRFwa19Cp6/D2/rlf/LzOyAkkrGiLe2z930lZdRIo+SMC7V07yhB2q/vMB6Y
+ JBA+sVPBeOEMxFD6ev/dUXTUIT48gz4vqCscdw0+TsNSV0Q2un4H/mjevT8PWsku6K1b
+ 7K/KdnFiRgLpL4HX3xerkAl5ZhQ7Jyw/s+VQ9eAPS6yrXoSZCEWIsYj9jk1jFM3mcCAu
+ VEAxjqQcF0hU1rAVlrf7FyosRot4oQH5jD5KxuRJezuysEYObydm5GAMsfekg2/IK3y4
+ AAThamFZvDb3DO1z1EGpkDdm03bZvPd4CCDI03ceCmXAswT8jl1WCv7dTOCSfBZW9Xgr
+ HmAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689661767; x=1692253767;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RVinK/DJQP3dAFYeWuBpJgdtmJF3ennXH5vsB4ywhjI=;
- b=g/VHPQg6phyBnNl+m/1n8TOoon8F7Hh//CKDWVcQhgJmDzPCyti89zye/9bhWrKHNZ
- I+uC78f9Z0LX07Vkl8/fAmbUWwvumQbHIDHAdbcz009z3irsFZXEe0z10SgxXQPtbcXW
- OgrSdwyoyRF/IfHJmYwCSJ1QzBGTJZx4Ob8cvqRpp2a3BwT/uYI0BlOZJsnS7jeXlEuy
- M8YtPJFa7NEDmJYh1u2hZfpJnywr/19wn9SWucK6J9fTc20JuyO3ZJffoCxcCDoHMwGr
- Pg5SNHUVokomUbPuN/gjry1k19YjVscPOhtggUh8n8wJXWpq3AqbyxFaSYQs/yBSHWnM
- omjQ==
-X-Gm-Message-State: ABy/qLZtwHbt1AhIf1wVpEjWHCJQ3wGY82yrA9zxMRFNxAUyC6+YOAGB
- Mne8nMv2ssg4PCSq8GDjr+/hAg==
-X-Google-Smtp-Source: APBJJlGW8yoU+epCqObwALsI2MLRFDg3GfI/Qkc1q29+hTjkHUoYxyXtgwe1kJbBPZv7ctavtk+tPA==
-X-Received: by 2002:a05:600c:ad3:b0:3fc:21:2c43 with SMTP id
- c19-20020a05600c0ad300b003fc00212c43mr980447wmr.13.1689661767344; 
- Mon, 17 Jul 2023 23:29:27 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.222.251])
- by smtp.gmail.com with ESMTPSA id
- d12-20020a5d4f8c000000b003141a3c4353sm1383935wru.30.2023.07.17.23.29.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jul 2023 23:29:26 -0700 (PDT)
-Message-ID: <bfe5c146-f943-d1ab-2abc-1ee0fe2d7c2f@linaro.org>
-Date: Tue, 18 Jul 2023 08:29:23 +0200
+ d=1e100.net; s=20221208; t=1689663127; x=1692255127;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jGZVIwFACrgkMdv8Pl8FMmRHa3LIbktK8P+8g/baHUs=;
+ b=BCsw/kzslEZTLosrHBoX0rD9XOjYh94Nl4LILM4ymy4JHfhFYt8w3NGP5kDF35WYKY
+ U6Tb5f5bJgLxsp6HELIblm5c++zfOL7xQkumwnaZeafXiuDJYQSDMCtvTLrI0C/83dGZ
+ 16O+RFkZ2f50FGre/hzrqYaSn9TOzMx2rh7VWxvN+HgY7Ou3SLWCse9HC0tK9IpoB9hJ
+ ElUgZngrfHoQODKiG/Y/1/GaK4UaZ9DaOFZVqShCO0aaF/efJpAUkZdbMu1jN//vEOeS
+ 9u47tIKd5ljzgeneU1QXL6nB5d1LmySaxc4YdEqx7diWkq4CbH0gByKuSxKEaQ3Ha61m
+ N0Og==
+X-Gm-Message-State: ABy/qLZbGKXx6jaiB43/NPebg5XocK3BmTikItTn2qdvc3l4Dq3WH6qw
+ v6T7vBAz+zeVlTbF11gWXiR5oLRuGSv92Lub3Ed3KXPt
+X-Google-Smtp-Source: APBJJlFTS111ojodqWSEJq7mmPbnWo1fGZ/i5KgIsQQemcGlPJKwHdMSSXnCJr326UpcHESyRAbG4t60StLEuJkr6zQ=
+X-Received: by 2002:a5d:456e:0:b0:313:eb34:b23e with SMTP id
+ a14-20020a5d456e000000b00313eb34b23emr13855041wrc.49.1689663126566; Mon, 17
+ Jul 2023 23:52:06 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH v2 12/12] mtest2make: stop disabling meson test timeouts
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Cleber Rosa <crosa@redhat.com>, Thomas Huth <thuth@redhat.com>,
- John Snow <jsnow@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-References: <20230717182859.707658-1-berrange@redhat.com>
- <20230717182859.707658-13-berrange@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230717182859.707658-13-berrange@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+From: Arpitha N <arpitha.14n@gmail.com>
+Date: Tue, 18 Jul 2023 12:21:55 +0530
+Message-ID: <CAAr8dKk353n2CXkvYSxC6JA-hJNZCjYMr0H7L+Tjjz0UapPdhw@mail.gmail.com>
+Subject: Adding fuse compare and write
+To: qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="00000000000072f9940600bd5a80"
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=arpitha.14n@gmail.com; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_05=-0.5, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,79 +80,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/7/23 20:28, Daniel P. Berrangé wrote:
-> The mtest2make.py script passes the arg '-t 0' to 'meson test' which
-> disables all test timeouts. This is a major source of pain when running
-> in GitLab CI and a test gets stuck. It will stall until GitLab kills the
-> CI job. This leaves us with little easily consumable information about
-> the stalled test. The TAP format doesn't show the test name until it is
-> completed, and TAP output from multiple tests it interleaved. So we
-> have to analyse the log to figure out what tests had un-finished TAP
-> output present and thus infer which test case caused the hang. This is
-> very time consuming and error prone.
-> 
-> By allowing meson to kill stalled tests, we get a direct display of what
-> test program got stuck, which lets us more directly focus in on what
-> specific test case within the test program hung.
-> 
-> The other issue with disabling meson test timeouts by default is that it
-> makes it more likely that maintainers inadvertantly introduce slowdowns.
+--00000000000072f9940600bd5a80
+Content-Type: text/plain; charset="UTF-8"
 
-"inadvertently"
+help :
 
-> For example the recent-ish change that accidentally made migrate-test
-> take 15-20 minutes instead of around 1 minute.
-> 
-> The main risk of this change is that the individual test timeouts might
-> be too short to allow completion in high load scenarios. Thus, there is
-> likely to be some short term pain where we have to bump the timeouts for
-> certain tests to make them reliable enough.
+I want a patch for adding fuse compare and write in *nvme*
 
-[*] (see below)
+--00000000000072f9940600bd5a80
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> The preceeding few patches
+<div dir=3D"ltr">help :=C2=A0=C2=A0<div><br></div><div>I want a patch for a=
+dding fuse compare=C2=A0and write in <b><u>nvme</u></b></div></div>
 
-"preceding"
-
-> raised the timeouts for all failures that were immediately apparent
-> in GitLab CI.
-> 
-> Even with the possible short term instability, this should still be a
-> net win for debuggability of failed CI pipelines over the long term.
-> 
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   scripts/mtest2make.py | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/scripts/mtest2make.py b/scripts/mtest2make.py
-> index 179dd54871..eb01a05ddb 100644
-> --- a/scripts/mtest2make.py
-> +++ b/scripts/mtest2make.py
-> @@ -27,7 +27,8 @@ def names(self, base):
->   .speed.slow = $(foreach s,$(sort $(filter-out %-thorough, $1)), --suite $s)
->   .speed.thorough = $(foreach s,$(sort $1), --suite $s)
->   
-> -.mtestargs = --no-rebuild -t 0
-> +TIMEOUT_MULTIPLIER = 1
-
-Maybe:
-
-    MESON_TIMEOUT_MULTIPLIER ?= 1
-
-So one can run:
-
-   $ make check MESON_TIMEOUT_MULTIPLIER=0
-
-to tune a modified test timeout limit in [*]?
-
-Regardless,
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> +.mtestargs = --no-rebuild -t $(TIMEOUT_MULTIPLIER)
->   ifneq ($(SPEED), quick)
->   .mtestargs += --setup $(SPEED)
->   endif
-
+--00000000000072f9940600bd5a80--
 
