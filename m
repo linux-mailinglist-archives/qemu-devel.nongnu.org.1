@@ -2,52 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A36757817
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6F975781E
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:33:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLh2l-00040S-7I; Tue, 18 Jul 2023 05:30:55 -0400
+	id 1qLh2m-00041C-CO; Tue, 18 Jul 2023 05:30:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2h-0003zd-EM
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:52 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2k-00040J-1F
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2f-0004Cr-IR
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2i-0004Dy-DB
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689672648;
+ s=mimecast20190719; t=1689672651;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PW0cxsHdaRd/HPnAOtRW7pHM9BOX/g5nX/sp4AW4FIg=;
- b=DWTM1siATUBvyqVE2oWpAXcG+G71EzoieDY4opAIEDgDoe275c8XHMi+FvWTwqQb5/qTJi
- u4jrzR0zO7+YZYxyc79//EGRxi3f18HzLO0IfpIT5UDRBogFou0z9Dsg0eZzMnVpo7Gh9S
- AaU4iUbYsMZEwS8EnV8m8oi+q330S3A=
+ bh=oJ2ry9OM+YSeiT0vw1kCfc9VhjQsurGiFSlEOnlyqKw=;
+ b=FVASe3rawMHMcqA4qxuxv4ojTxmNOXcBz7KHRNGe+oXzJejOujfFMnN9A+l2+GpkOvYnhV
+ 9KKyJrvnjfvRw2JTYQg6iePyC/xRZmop0t9PqYLMhFZjoDTkmO15k6hSG62Gsb9YOTqv9c
+ NJjJrraQt4OKb9CVsqpX/KAgPYhzV6U=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-265-YCgkPbqBPbyoGfz-EfrLuQ-1; Tue, 18 Jul 2023 05:30:47 -0400
-X-MC-Unique: YCgkPbqBPbyoGfz-EfrLuQ-1
+ us-mta-665-hELKaYECMu2gTCiFKc3MiQ-1; Tue, 18 Jul 2023 05:30:48 -0400
+X-MC-Unique: hELKaYECMu2gTCiFKc3MiQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 91CFE185A78F;
- Tue, 18 Jul 2023 09:30:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4277989F701;
+ Tue, 18 Jul 2023 09:30:48 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.89])
- by smtp.corp.redhat.com (Postfix) with ESMTP id AA1212166B25;
- Tue, 18 Jul 2023 09:30:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D45B02166B25;
+ Tue, 18 Jul 2023 09:30:46 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 3/8] tests/qtest: Fix typo in multifd cancel test
-Date: Tue, 18 Jul 2023 11:30:35 +0200
-Message-Id: <20230718093040.172145-4-thuth@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Erik Skultety <eskultet@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Warner Losh <imp@bsdimp.com>
+Subject: [PULL 4/8] tests/lcitool: Generate distribution packages list in JSON
+ format
+Date: Tue, 18 Jul 2023 11:30:36 +0200
+Message-Id: <20230718093040.172145-5-thuth@redhat.com>
 In-Reply-To: <20230718093040.172145-1-thuth@redhat.com>
 References: <20230718093040.172145-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -79,32 +82,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-This wasn't noticed because the test is currently disabled.
+Add the generate_pkglist() helper to generate a list of packages
+required by a distribution to build QEMU.
 
-Fixes: 02f56e3de ("tests/qtest: massively speed up migration-test")
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Message-Id: <20230711212131.2370-1-farosas@suse.de>
+Since we can not add a "THIS FILE WAS AUTO-GENERATED" comment in
+JSON, create the files under tests/vm/generated/ sub-directory;
+add a README mentioning the files are generated.
+
+Suggested-by: Erik Skultety <eskultet@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+Message-Id: <20230711144922.67491-2-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/migration-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/lcitool/refresh     | 11 +++++++++++
+ tests/vm/generated/README |  5 +++++
+ 2 files changed, 16 insertions(+)
+ create mode 100644 tests/vm/generated/README
 
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index efa8c729db..e256da1216 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2481,7 +2481,7 @@ static void test_multifd_tcp_cancel(void)
+diff --git a/tests/lcitool/refresh b/tests/lcitool/refresh
+index b54566edcc..4584870ea1 100755
+--- a/tests/lcitool/refresh
++++ b/tests/lcitool/refresh
+@@ -84,6 +84,12 @@ def generate_cirrus(target, trailer=None):
+     generate(filename, cmd, trailer)
  
-     migrate_qmp(from, uri, "{}");
  
--    migrate_wait_for_dirty_mem(from, to);
-+    migrate_wait_for_dirty_mem(from, to2);
++def generate_pkglist(vm, target):
++    filename = Path(src_dir, "tests", "vm", "generated", vm + ".json")
++    cmd = lcitool_cmd + ["variables", "--format", "json", target, "qemu"]
++    generate(filename, cmd, None)
++
++
+ # Netmap still needs to be manually built as it is yet to be packaged
+ # into a distro. We also add cscope and gtags which are used in the CI
+ # test
+@@ -191,6 +197,11 @@ try:
+     generate_cirrus("freebsd-13")
+     generate_cirrus("macos-12")
  
-     migrate_ensure_converge(from);
- 
++    #
++    # VM packages lists
++    #
++    generate_pkglist("freebsd", "freebsd-13")
++
+     sys.exit(0)
+ except Exception as ex:
+     print(str(ex), file=sys.stderr)
+diff --git a/tests/vm/generated/README b/tests/vm/generated/README
+new file mode 100644
+index 0000000000..7ccc6ffd3d
+--- /dev/null
++++ b/tests/vm/generated/README
+@@ -0,0 +1,5 @@
++# FILES IN THIS FOLDER WERE AUTO-GENERATED
++#
++#  $ make lcitool-refresh
++#
++# https://gitlab.com/libvirt/libvirt-ci
 -- 
 2.39.3
 
