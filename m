@@ -2,110 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E401757BF5
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 14:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EDAA757C00
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 14:41:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLjvC-00015F-FQ; Tue, 18 Jul 2023 08:35:18 -0400
+	id 1qLjzU-0003yW-Vt; Tue, 18 Jul 2023 08:39:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qLjut-000131-7N; Tue, 18 Jul 2023 08:35:00 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qLjur-0002HB-95; Tue, 18 Jul 2023 08:34:58 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36ICQwHj007372; Tue, 18 Jul 2023 12:34:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=VnbZDPxqB4yd1kRMw9aX83N9UFX0C0DmsMABUvisgK0=;
- b=VOA9i/ZKk5EX7MzNKRuznzfLxRmXOsUJ7BzCUP6fyCdfIrZlfsPDiUTz5u6AAV4mw32M
- aAV1IEwIzaxIGo8wsqGg6JdUor33puGNSGd6FcBaZNj5f03IegwUqWfkrh1p3lPkA2Of
- 9D3HsDAI6dek4jHAOR/qE0bb7N3QJKSbBbh9CYryH3oewfM1eBMy8JVjT0kli6S7w14o
- sDOTSeRDfnik8qm5MRNTL9G8IyPaPeg2lVj61W88tn7oVUz8jXZXEJ6aIfSuoYVnjZlU
- dvk3VONhw/POxKvXEBEbCHooi2H0k4AMtX3EUoIgY54/oxT/dI/nwiWx0mEudQoriI2v rQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwtrc05g4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 12:34:49 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36ICT2k8014408;
- Tue, 18 Jul 2023 12:34:48 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwtrc05eh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 12:34:48 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36ICLxXE030687; Tue, 18 Jul 2023 12:34:46 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv79jjnxf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 12:34:46 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36ICYgZs23659046
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 18 Jul 2023 12:34:42 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 21C022004B;
- Tue, 18 Jul 2023 12:34:42 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D43EF20040;
- Tue, 18 Jul 2023 12:34:40 +0000 (GMT)
-Received: from [9.171.12.30] (unknown [9.171.12.30])
- by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Tue, 18 Jul 2023 12:34:40 +0000 (GMT)
-Message-ID: <4876348b-b540-6d3b-18ae-c8b8894662ce@linux.ibm.com>
-Date: Tue, 18 Jul 2023 14:34:40 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v21 11/20] qapi/s390x/cpu topology:
- CPU_POLARIZATION_CHANGE qapi event
-Content-Language: en-US
-To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, thuth@redhat.com,
- cohuck@redhat.com, mst@redhat.com, pbonzini@redhat.com,
- kvm@vger.kernel.org, ehabkost@redhat.com, marcel.apfelbaum@gmail.com,
- eblake@redhat.com, armbru@redhat.com, seiden@linux.ibm.com,
- nrb@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
-References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-12-pmorel@linux.ibm.com>
- <94f9f61ac3503bed380ce232ca0f5885982ee6e4.camel@linux.ibm.com>
-From: Pierre Morel <pmorel@linux.ibm.com>
-In-Reply-To: <94f9f61ac3503bed380ce232ca0f5885982ee6e4.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5HNMjQtUR1WGbl3dWfATuBZmjhhsVQTe
-X-Proofpoint-ORIG-GUID: urCQxyxCpKCh7hLMBVd2SwSXAwr5FNwn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-18_09,2023-07-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- adultscore=0 malwarescore=0 mlxlogscore=975 mlxscore=0 spamscore=0
- lowpriorityscore=0 phishscore=0 suspectscore=0 priorityscore=1501
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307180115
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=pmorel@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <18622748025@163.com>)
+ id 1qLjzN-0003vG-NB
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:39:39 -0400
+Received: from m12.mail.163.com ([220.181.12.197])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <18622748025@163.com>) id 1qLjzJ-0003Y8-2Q
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 08:39:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:Subject:Date:Message-Id; bh=4sMGboxBki1joNixHO
+ 9o9Dafl0VqbYT7X2KHXVc8DFQ=; b=YDr8+ZXQlEz1sfyX6eFwJkstwMTt8enduD
+ iM+FwZLnXlZnMxHj+XVc7EBhrHwCt7VITaYWx+faFsQtZ5eOfU7HtByrgfEckeon
+ gcOJfz/6F1MgU9VhvX6wY8uwofzSXGw5l1PBz0XQbD9sta3KSWO+Y2YQCG8BZM2L
+ u8QLtuqF8=
+Received: from localhost.localdomain (unknown [103.3.97.171])
+ by zwqz-smtp-mta-g0-4 (Coremail) with SMTP id _____wDHQwH4h7Zk25eWAg--.54426S2;
+ Tue, 18 Jul 2023 20:39:20 +0800 (CST)
+From: "liguang.zhang" <18622748025@163.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, alistair23@gmail.com,
+ "liguang.zhang" <liguang.zhang@hexintek.com>
+Subject: [PATCH] target/riscv: Clearing the CSR values at reset and syncing
+ the MPSTATE with the host
+Date: Tue, 18 Jul 2023 20:39:07 +0800
+Message-Id: <20230718123907.8274-1-18622748025@163.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20230625025018.26956-1-18622748025@163.com>
+References: <20230625025018.26956-1-18622748025@163.com>
+X-CM-TRANSID: _____wDHQwH4h7Zk25eWAg--.54426S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXw1rWF1ktr4kArW8ZFyfXrb_yoW5Cr4kpF
+ 4kC39xCws7trWxJw1ftFWDJF1ru3yxWrsxA3y7CrWaya15JrW5Xws2g3y2yr95Gry0yFWa
+ kF43uFy3Ca1UKFDanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jgnY7UUUUU=
+X-Originating-IP: [103.3.97.171]
+X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbiyB2wWVp7LE0x6QAAsk
+Received-SPF: pass client-ip=220.181.12.197; envelope-from=18622748025@163.com;
+ helo=m12.mail.163.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FROM_LOCAL_DIGITS=0.001,
+ FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001,
+ RCVD_IN_MSPIKE_L4=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,19 +70,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: "liguang.zhang" <liguang.zhang@hexintek.com>
 
-On 7/18/23 09:59, Nina Schoetterl-Glausch wrote:
-> On Fri, 2023-06-30 at 11:17 +0200, Pierre Morel wrote:
->> When the guest asks to change the polarization this change
->> is forwarded to the upper layer using QAPI.
->> The upper layer is supposed to take according decisions concerning
->> CPU provisioning.
->>
->> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
->
-Thanks,
+Fix the guest reboot error when using KVM
+There are two issues when rebooting a guest using KVM
+1. When the guest initiates a reboot the host is unable to stop the vcpu
+2. When running a SMP guest the qemu monitor system_reset causes a vcpu crash
 
-Pierre
+This can be fixed by clearing the CSR values at reset and syncing the
+MPSTATE with the host.
+
+Signed-off-by: liguang.zhang <liguang.zhang@hexintek.com>
+---
+ target/riscv/kvm.c       | 42 ++++++++++++++++++++++++++++++++++++++++
+ target/riscv/kvm_riscv.h |  1 +
+ 2 files changed, 43 insertions(+)
+
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index 9d8a8982f9..ecc8ab8238 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -44,6 +44,8 @@
+ #include "migration/migration.h"
+ #include "sysemu/runstate.h"
+ 
++static bool cap_has_mp_state;
++
+ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+                                  uint64_t idx)
+ {
+@@ -790,6 +792,24 @@ int kvm_arch_get_registers(CPUState *cs)
+     return ret;
+ }
+ 
++int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state)
++{
++    if (cap_has_mp_state) {
++        struct kvm_mp_state mp_state = {
++            .mp_state = state
++        };
++
++        int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
++        if (ret) {
++            fprintf(stderr, "%s: failed to sync MP_STATE %d/%s\n",
++                    __func__, ret, strerror(-ret));
++            return -1;
++        }
++    }
++
++    return 0;
++}
++
+ int kvm_arch_put_registers(CPUState *cs, int level)
+ {
+     int ret = 0;
+@@ -809,6 +829,18 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+         return ret;
+     }
+ 
++    if (KVM_PUT_RESET_STATE == level) {
++        RISCVCPU *cpu = RISCV_CPU(cs);
++        if (cs->cpu_index == 0) {
++            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNNABLE);
++        } else {
++            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_STOPPED);
++        }
++        if (ret) {
++            return ret;
++        }
++    }
++
+     return ret;
+ }
+ 
+@@ -909,6 +941,7 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
+ 
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
++    cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
+     return 0;
+ }
+ 
+@@ -987,10 +1020,19 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+     if (!kvm_enabled()) {
+         return;
+     }
++    for (int i=0; i<32; i++)
++        env->gpr[i] = 0;
+     env->pc = cpu->env.kernel_addr;
+     env->gpr[10] = kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
+     env->gpr[11] = cpu->env.fdt_addr;          /* a1 */
+     env->satp = 0;
++    env->mie = 0;
++    env->stvec = 0;
++    env->sscratch = 0;
++    env->sepc = 0;
++    env->scause = 0;
++    env->stval = 0;
++    env->mip = 0;
+ }
+ 
+ void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
+diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+index e3ba935808..3ea68c38e3 100644
+--- a/target/riscv/kvm_riscv.h
++++ b/target/riscv/kvm_riscv.h
+@@ -22,5 +22,6 @@
+ void kvm_riscv_init_user_properties(Object *cpu_obj);
+ void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+ void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
++int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
+ 
+ #endif
+-- 
+2.17.1
 
 
