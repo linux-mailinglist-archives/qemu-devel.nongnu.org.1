@@ -2,75 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76A07577B6
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6977577D6
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:24:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLgqS-00052e-RP; Tue, 18 Jul 2023 05:18:12 -0400
+	id 1qLgur-000681-Sy; Tue, 18 Jul 2023 05:22:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLgqP-000527-6Q
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:18:09 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLgqN-0007rs-LU
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:18:08 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-51e566b1774so7192085a12.1
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 02:18:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689671886; x=1692263886;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=TIVxhHPGSR5fPDKW9AlCFiTlFMUvN1yxHTDMTpeE4k0=;
- b=n5QAPxBJXC7WAAuE19bVO0hVIUcuptk2+d/aDueXKRySu7NRw59310wy2VeBny+uux
- /reamw4XhVssG2ofYWkYXxzon2ibg85RO884Nbh4q75PzBx7l/tOarzRjg6L2boOxvlw
- FO/yRxzrIO3uUaVazTwN3EBpyYdAdQuYvb+6/a3csnbAUCiBy+j24ciF17jdojhOSORv
- NWof1g335UUJd3rYrmiS9Hie2qDink5EdfgC7lS+A6yiFcHuKh/yUjKUsBqoAodDp7Yp
- T3PgWd6SOHc9G1EmQ3HKbLUIEaTLYS9XZpxJx+YxA7v4hfxb8htACGKbCtMgWcQoSo2o
- lD+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689671886; x=1692263886;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TIVxhHPGSR5fPDKW9AlCFiTlFMUvN1yxHTDMTpeE4k0=;
- b=K7gCnKUFWTvaIzsT+NnMGhWl4CzmSIxmFRkXdmZWLfXwR0l5m85bI+jVx09D808cLE
- VIeQHSrIrLPIt87AQRIaN+FM/5o79VuN/pulQExbSwm9N8VVtdMkRhd5BjoBJgJww9CD
- DZX/y70aFn9kyQZ14JPw45tfHNpbGnRgvIaefCFj9xKbmNRB6RskpyQJyy6IzbxR6c/w
- o5+CgNvS7tlyOWxmWvzwt+ccPpdKum4tXnsCp6lLAhGtmWohRWKOcwzvlVORQ4hZXPTv
- Jyt7ywCfyFkuiDk6ypqpXVC1iLJ2A2HskQpwD2JF5JNp5mXv7am/7vauWDRv2qSEGTrl
- jgNA==
-X-Gm-Message-State: ABy/qLakNYJxsrPEEUbx9xFwP4Fd8GXhi+6zAABWTCSwm/8VFg8nXVLy
- mNfO6Ry7grKrhTxjUs31zrP96lsSKwFPMqBRKCi4VERz8YIzkcXW
-X-Google-Smtp-Source: APBJJlELXetQwWk5liy9wPit51+uWbfxPCBy1O9qlJWVnK0BeYej+WITBE6rt9eTb/hpb/YUitRauoB7ppUKoDKAvus=
-X-Received: by 2002:a05:6402:8d0:b0:51e:1c18:dd99 with SMTP id
- d16-20020a05640208d000b0051e1c18dd99mr12300232edz.38.1689671885773; Tue, 18
- Jul 2023 02:18:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qLguo-00065R-Sw; Tue, 18 Jul 2023 05:22:42 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qLgul-0000pw-AK; Tue, 18 Jul 2023 05:22:42 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36I96dmd009958; Tue, 18 Jul 2023 09:22:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=Xa4ejTs5kL6w6G20JZkqXGuJARUaZk0EvMoL8O++QtI=;
+ b=RV9wpCWaZfQxkzNC6rp1UPdR88jIKkZRJXOfGz9AK8lrJVdPbb34hsMkmf2etF/zCBkB
+ vVx8GDBIyKuq58p94pbdpint8yUq4zdeRKpjOJ7AnIZjQfsHsDta/h5kLu6Br9yp+btf
+ /tVKR9D6fycfNwhZHSGulExj0LtT3j6UIRDBNqnWRQeCfKeDY0rjBoGS78y9FU9lvpJh
+ XDwqJgebE2Orz51xkbYrmHaNZ4zFQAtqGxY7pydD19wxJ8KmHIJIc8lO+O5TkN07Ae/X
+ zeWRM69kzCdjUHAefEOs9BAER9K1x3QDkBbf6xenac0KnLuRwyNGO32kn83QsKD7zCr7 RA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwqf4s45y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Jul 2023 09:22:31 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36I97WSZ015948;
+ Tue, 18 Jul 2023 09:22:31 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rwqf4s45k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Jul 2023 09:22:31 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36I4Ao75031282; Tue, 18 Jul 2023 09:22:30 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv79jjat3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 18 Jul 2023 09:22:29 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
+ [10.20.54.103])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36I9MQRg25363146
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Jul 2023 09:22:26 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A76BA20040;
+ Tue, 18 Jul 2023 09:22:26 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7D5E120063;
+ Tue, 18 Jul 2023 09:22:24 +0000 (GMT)
+Received: from li-1901474c-32f3-11b2-a85c-fc5ff2c001f3.in.ibm.com (unknown
+ [9.109.242.129])
+ by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 18 Jul 2023 09:22:24 +0000 (GMT)
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+To: qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+Cc: mikey@neuling.org, vaibhav@linux.ibm.com, jniethe5@gmail.com,
+ sbhat@linux.ibm.com, kconsul@linux.vnet.ibm.com,
+ dbarboza@ventanamicro.com, npiggin@gmail.com
+Subject: [PATCH 00/15] Nested PAPR API (KVM on PowerVM)
+Date: Tue, 18 Jul 2023 14:52:06 +0530
+Message-Id: <20230718092221.1053686-1-harshpb@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: k8QcZkUEmw2c40OgxejNFq7HmF1DN4SB
+X-Proofpoint-ORIG-GUID: vqZ9haCZC2Q6YhILbuEQE5-X3fpRQBGE
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20230717162940.814078-1-peter.maydell@linaro.org>
-In-Reply-To: <20230717162940.814078-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 18 Jul 2023 10:17:54 +0100
-Message-ID: <CAFEAcA_=O6A36AuXKQOF17-j8Lgek8iQM5gP7yrX1ODtOMKhuA@mail.gmail.com>
-Subject: Re: [PATCH for-8.1] target/mips: Avoid shift by negative number in
- page_table_walk_refill()
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Aurelien Jarno <aurelien@aurel32.net>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-17_15,2023-07-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxlogscore=749
+ lowpriorityscore=0 phishscore=0 mlxscore=0 suspectscore=0 bulkscore=0
+ impostorscore=0 spamscore=0 priorityscore=1501 clxscore=1011
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307180082
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,38 +111,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 17 Jul 2023 at 17:29, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> Coverity points out that in page_table_walk_refill() we can shift by
-> a negative number, which is undefined behaviour (CID 1452918,
-> 1452920, 1452922).  We already catch the negative directory_shift and
-> leaf_shift as being a "bail out early" case, but not until we've
-> already used them to calculated some offset values.
->
-> Move the calculation of the offset values to after we've done the
-> "return early if directory_shift or leaf_shift are -1" check.
->
-> Since walk_directory() re-calculates these shift values, add an
-> assert() to tell Coverity that the caller has already ensured they
-> won't be negative.
->
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->  target/mips/tcg/sysemu/tlb_helper.c | 20 +++++++++++++-------
->  1 file changed, 13 insertions(+), 7 deletions(-)
->
-> diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
-> index e5e1e9dd3ff..c67c2b09026 100644
-> --- a/target/mips/tcg/sysemu/tlb_helper.c
-> +++ b/target/mips/tcg/sysemu/tlb_helper.c
-> @@ -643,6 +643,9 @@ static int walk_directory(CPUMIPSState *env, uint64_t *vaddr,
->      uint64_t lsb = 0;
->      uint64_t w = 0;
->
-> +    /* The caller should have checked this */
-> +    assert(directory_shift > 0 && leaf_shift > 0);
+There is an existing Nested-HV API to enable nested guests on powernv
+machines. However, that is not supported on pseries/PowerVM LPARs.
+This patch series implements required hcall interfaces to enable nested
+guests with KVM on PowerVM.
+Unlike Nested-HV, with this API, entire L2 state is retained by L0
+during guest entry/exit and uses pre-defined Guest State Buffer (GSB)
+format to communicate guest state between L1 and L2 via L0.
 
-Whoops, this should be >= 0 && ... >= 0.
+L0 here refers to the phyp/PowerVM, or launching a Qemu TCG L0 with the
+newly introduced option cap-nested-papr=true (refer patch 5/15).
+L1 refers to the LPAR host on PowerVM or Linux booted on Qemu TCG with
+above mentioned option cap-nested-papr=true.
+L2 refers to nested guest running on top of L1 using KVM.
+No SW changes needed for Qemu running in L1 Linux as well as L2 Kernel.
 
--- PMM
+There is a Linux Kernel side patch series to enable support for Nested
+PAPR in L1 and same can be found at below url:
+
+Linux Kernel RFC PATCH v2:
+- https://lore.kernel.org/linuxppc-dev/20230605064848.12319-1-jpn@linux.vnet.ibm.com/
+
+For more details, documentation can be referred in either of patch series.
+
+There are scripts available to assist in setting up an environment for
+testing nested guests at https://github.com/mikey/kvm-powervm-test
+
+Thanks to Michael Neuling, Shivaprasad Bhat, Kautuk Consul, Vaibhav Jain
+and Jordan Niethe.
+
+Harsh Prateek Bora (15):
+  ppc: spapr: Introduce Nested PAPR API related macros
+  ppc: spapr: Add new/extend structs to support Nested PAPR API
+  ppc: spapr: Use SpaprMachineStateNested's ptcr instead of nested_ptcr
+  ppc: spapr: Start using nested.api for nested kvm-hv api
+  ppc: spapr: Introduce cap-nested-papr for nested PAPR API
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_GET_CAPABILITIES
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_SET_CAPABILITIES
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_CREATE
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_CREATE_VCPU
+  ppc: spapr: Initialize the GSB Elements lookup table.
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_[GET|SET]_STATE
+  ppc: spapr: Use correct source for parttbl info for nested PAPR API.
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_RUN_VCPU
+  ppc: spapr: Implement nested PAPR hcall - H_GUEST_DELETE
+  ppc: spapr: Document Nested PAPR API
+
+ docs/devel/nested-papr.txt      |  500 ++++++++++
+ hw/ppc/spapr.c                  |   28 +-
+ hw/ppc/spapr_caps.c             |   50 +
+ hw/ppc/spapr_hcall.c            |    1 +
+ hw/ppc/spapr_nested.c           | 1504 +++++++++++++++++++++++++++++--
+ include/hw/ppc/ppc.h            |    2 +
+ include/hw/ppc/spapr.h          |   35 +-
+ include/hw/ppc/spapr_cpu_core.h |    7 +-
+ include/hw/ppc/spapr_nested.h   |  378 ++++++++
+ target/ppc/cpu.h                |    2 +
+ 10 files changed, 2433 insertions(+), 74 deletions(-)
+ create mode 100644 docs/devel/nested-papr.txt
+
+-- 
+2.39.3
+
 
