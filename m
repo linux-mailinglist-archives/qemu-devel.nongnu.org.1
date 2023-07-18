@@ -2,71 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234027584FD
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 20:44:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C1C7584FE
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 20:45:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLpgG-0006nU-RR; Tue, 18 Jul 2023 14:44:16 -0400
+	id 1qLpgr-0007Qo-Lf; Tue, 18 Jul 2023 14:44:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qLpgE-0006n3-IV
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 14:44:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qLpgD-0001RY-4i
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 14:44:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689705850;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=tb0DQL+eraw/WsvYWvwJdPSPO3Ql6b99+Rjh67H3D+8=;
- b=iFgCyKggPoshYl78dMwvK80rJ7H8CEG2ddhewakq+WGzCfFuhgMe9xT58CRUXdo/CUtyZZ
- LL6TLHzlFrNXO3tA3ku6hAOCcps3IeuLX9xC0Cc9oQjA+LPy3r5D48301gjymWRK3TMumX
- JrvyGUZ+UcyTbanuZloqs6qYOna+lO4=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-610-GeEif05rPbaurrzhWZQnVA-1; Tue, 18 Jul 2023 14:44:08 -0400
-X-MC-Unique: GeEif05rPbaurrzhWZQnVA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F35291C07545
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 18:44:07 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5AB46F66D0;
- Tue, 18 Jul 2023 18:44:07 +0000 (UTC)
-Date: Tue, 18 Jul 2023 14:44:05 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
- "Michael S . Tsirkin" <mst@redhat.com>,
- German Maglione <gmaglione@redhat.com>,
- Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>
-Subject: Re: [PATCH v2 4/4] vhost-user-fs: Implement internal migration
-Message-ID: <20230718184405.GN44841@fedora>
-References: <20230712111703.28031-1-hreitz@redhat.com>
- <20230712111703.28031-5-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qLpgq-0007LF-3P
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 14:44:52 -0400
+Received: from mail-oa1-x2a.google.com ([2001:4860:4864:20::2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qLpgn-0001UL-0R
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 14:44:51 -0400
+Received: by mail-oa1-x2a.google.com with SMTP id
+ 586e51a60fabf-1b3f281c4e1so4730533fac.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 11:44:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1689705886; x=1692297886;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vX0mLXVfbXrw4mu9HYg9tTPKPDVynlEoMRO9xi/5nGo=;
+ b=SPaQiMA0kQgsKCfXy49uGUsuCWadXQELUsjol3SZ6y68zbCpTUC8FPT4SrunQTOO3I
+ maRTIujVnkVM1PinHTpRilcXzFpkkgxY9szsxzLigwfr6JOk80IT1PLNs+2BeWuIB9/M
+ 5jluvPXy8Q/gLUzPLnvjSLhiuVix+2D9LfDleUU0/d9L+jpbvR7B8ibpLW+5Z4PAGVx+
+ Rub0y4uZTppm2zA6TTM5WcnugBGUnvM+HgdbSfNrkWHcGwJfI5XizDteJESN4SzuFw0J
+ Q3PYue0xTI0mtdHS3Cnq1YFQFvwXJYgXs3B8uyOYjxOFDtHv5yeiYatI1VwbqgQHU+6v
+ u1/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689705886; x=1692297886;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vX0mLXVfbXrw4mu9HYg9tTPKPDVynlEoMRO9xi/5nGo=;
+ b=cepYdeJjmbhvCPusg4r4+dQO0BRNg5y3KWYKgI0jDzJy902r4V/BVZRwKfxFRk7iDb
+ IBqtFTGqcli0KIAs3nV2N4RfKmblRpOWj2G4VmqMR4NAM9apBJSjpSniFCrDANKaYaU1
+ miy1DZhVlNjpryIMApzbcs72hBERSfsn1X8GlmfFmE+dLetAhkagldM52dB1HBhZ8vMv
+ rUc9PgtDZueStY7xB0Zv19yck+u/t5wWxb99q6BZLohHcneEU6cOukGcvkw9mFizpxV4
+ Rhiq0VlxDJxAcnjmCLrsNHQkngB8MPKX+gsmwz93Wz+LWNuRVW9s92HC7dWv3QX+j8oT
+ CuhQ==
+X-Gm-Message-State: ABy/qLaBk1vX9/EqTKF1FKqNd3sJhCALDdipPeGfsfB2qSMNvICWv6nF
+ Bfrvp6n3Ua2xHch3yEFefK115ZsUYpo7DVffdABVyw==
+X-Google-Smtp-Source: APBJJlFz0ikme/YSZFqySJcHNvlZ5WtoxsCD/B9xI1EHkLBafm51Bm6At6H65fzFBMbPcm3gGY2oHA==
+X-Received: by 2002:a05:6870:b4a4:b0:1b7:5ede:b7c3 with SMTP id
+ y36-20020a056870b4a400b001b75edeb7c3mr16796224oap.39.1689705886381; 
+ Tue, 18 Jul 2023 11:44:46 -0700 (PDT)
+Received: from [192.168.68.108] (201-69-66-211.dial-up.telesp.net.br.
+ [201.69.66.211]) by smtp.gmail.com with ESMTPSA id
+ z36-20020a056870c22400b001a697e75260sm1184301oae.58.2023.07.18.11.44.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 18 Jul 2023 11:44:46 -0700 (PDT)
+Message-ID: <50e47339-5a52-0764-8d39-11724694bc79@ventanamicro.com>
+Date: Tue, 18 Jul 2023 15:44:42 -0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="6wa/D7BRPF2G8XTF"
-Content-Disposition: inline
-In-Reply-To: <20230712111703.28031-5-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.2 v3 0/8] target/riscv: add 'max' CPU, deprecate
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ richard.henderson@linaro.org
+References: <20230714174311.672359-1-dbarboza@ventanamicro.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20230714174311.672359-1-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2001:4860:4864:20::2a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x2a.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.095,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,43 +96,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Alistair,
 
---6wa/D7BRPF2G8XTF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm doing some overly complicated stuff here w.r.t to KVM specific code
+that are biting me back in further cleanups I'm working on.
 
-On Wed, Jul 12, 2023 at 01:17:02PM +0200, Hanna Czenczek wrote:
-> A virtio-fs device's VM state consists of:
-> - the virtio device (vring) state (VMSTATE_VIRTIO_DEVICE)
-> - the back-end's (virtiofsd's) internal state
->=20
-> We get/set the latter via the new vhost operations to transfer migratory
-> state.  It is its own dedicated subsection, so that for external
-> migration, it can be disabled.
->=20
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> ---
->  hw/virtio/vhost-user-fs.c | 101 +++++++++++++++++++++++++++++++++++++-
->  1 file changed, 100 insertions(+), 1 deletion(-)
+I'll do some changes in this series and re-send. Thanks,
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
---6wa/D7BRPF2G8XTF
-Content-Type: application/pgp-signature; name="signature.asc"
+Daniel
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmS23XUACgkQnKSrs4Gr
-c8iXVAf+NllGwBz6+X27TWFo5xx0UhMghIuI6ybXbutx9lQSuSTdmc3hwtlKRU7y
-5cxaw9fKGXsYF7zi6LxFn4onRSmjGFe2uAnk5vPmff+idaI5XOV25Vlg6Bb/RbNm
-c8asN3q8B7petk/Jc9x5BZZTgNBhBqezCJoWUCP/L/hgIrs+geh0e2+ARukaK8RV
-GJutJnXg3fxoijcmbmAU/q3NPQ8fr440buDrNaeSlmopeg+ikcHDAD+aneakojbs
-oTvnsAJchJ1GPPQPjZJWpe536j9XhUX7Y40WFd4luRLpkBIUIRQTe+JmiAemSp5u
-xEoHG6dQPLyw1VEcwOD3XzyaRiSrlQ==
-=Awnu
------END PGP SIGNATURE-----
-
---6wa/D7BRPF2G8XTF--
-
+On 7/14/23 14:43, Daniel Henrique Barboza wrote:
+> Hi,
+> 
+> This version has changes suggested in v2. The most significant change is
+> the deprecation of the 'any' CPU in patch 8.
+> 
+> The reasoning behind it is that Alistair mentioned that the 'any' CPU
+> intended to work like the newly added 'max' CPU, so we're better of
+> removing the 'any' CPU since it'll be out of place. We can't just
+> remove the CPU out of the gate so we'll have to make it do with
+> deprecation first.
+> 
+> Patches missing review: 5,6,7,8
+> 
+> Changes from v2:
+> - patches 1, 3, 4:
+>    - remove "DEFINE_PROP_END_OF_LIST()" at the end of each prop array;
+>    - use ARRAY_SIZE() in the for loop
+> - patch 5:
+>    - remove the trailing '/' in the last line of the macro
+>    - wrap the macro in "do {} while (0)"
+> - patch 8 (new):
+>    - deprecate the 'any' CPU
+> - v2 link: https://lore.kernel.org/qemu-riscv/20230712205748.446931-1-dbarboza@ventanamicro.com/
+> 
+> Daniel Henrique Barboza (8):
+>    target/riscv/cpu.c: split CPU options from riscv_cpu_extensions[]
+>    target/riscv/cpu.c: skip 'bool' check when filtering KVM props
+>    target/riscv/cpu.c: split vendor exts from riscv_cpu_extensions[]
+>    target/riscv/cpu.c: split non-ratified exts from
+>      riscv_cpu_extensions[]
+>    target/riscv/cpu.c: add a ADD_CPU_PROPERTIES_ARRAY() macro
+>    target/riscv: add 'max' CPU type
+>    avocado, risc-v: add opensbi tests for 'max' CPU
+>    target/riscv: deprecate the 'any' CPU type
+> 
+>   docs/about/deprecated.rst      |  12 ++++
+>   target/riscv/cpu-qom.h         |   1 +
+>   target/riscv/cpu.c             | 114 ++++++++++++++++++++++++++-------
+>   tests/avocado/riscv_opensbi.py |  16 +++++
+>   4 files changed, 121 insertions(+), 22 deletions(-)
+> 
 
