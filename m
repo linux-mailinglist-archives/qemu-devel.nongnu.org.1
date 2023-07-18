@@ -2,135 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0C717579E2
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 12:56:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2D17579E3
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 12:56:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLiMa-0003u3-Dr; Tue, 18 Jul 2023 06:55:28 -0400
+	id 1qLiMt-00046X-UA; Tue, 18 Jul 2023 06:55:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qLiMY-0003tr-1P; Tue, 18 Jul 2023 06:55:26 -0400
-Received: from mail-dbaeur03on2071d.outbound.protection.outlook.com
- ([2a01:111:f400:fe1a::71d]
- helo=EUR03-DBA-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qLiMs-00046E-ML
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:55:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qLiMG-0004hS-CL; Tue, 18 Jul 2023 06:55:25 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oWe4ejsVd7GNyM1FHKD/Wu8YaYIV3aZWZYt4UOkhJr9U5vcCmYqEeU65riashqr2FS5yWU2hjvHsEWl88PQ+3bqzk73LKGqvcC1P1undlBn07USCDscdbPkLIWpDeUIJ5ssKk0cZt7ophlgZJdsLdT0BXM3NpYbe+1XLd5X1+pgsHF/MRu3i5xvkIvge8cBOxOyee12o1hqWwn912ezEwmtH1AKIJiLco3dhxEOS6EQGe03+QdBiZ3fjkR5YGGtV0d3KnNHGkZFPeezGNd8V2Y6XFVr1IC5C+j+h6uUmBncymAKMWSUqkrF288dVabGgyF+1UKDvaORLGZoDgcoerA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j5UXDUtFXgjftJuTAg+OuAyXtldatJbJmVI9CUeUy9k=;
- b=RdSDSIiTRGs06GPX8VHx3qy8gVz1z6ZjYZj0GO7RPRtOHlPFO1RvLXBdILxuMxsATh4DsYBA0eON7mhKyitJgP3IEDwXNNYstGuY4ZzNOo6SUSRKMtbLHDDbZPiZUji/p9eBc0VHT661t8/oIb9ofp7GuIgkAwiDp+2L3EKFCytzO+nh5g3rvqiX45+0PoNB1eyYAbGv7YhmYr1R6QI+nGuJnJArJG7ymaKvibAgvK5BbUs+aYcdKFggikIIOCV6titMzMG7+lZesl1MlpR9nxYBwHB959U/0+TeN9P224/8lPQqmbZAy5Hf42R9CYjCSYC5zfIxS51runYrIyqbsQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j5UXDUtFXgjftJuTAg+OuAyXtldatJbJmVI9CUeUy9k=;
- b=gREh8xRxoVoijrU+Hc3rHp0fE9wH4WJzOQ+gX4d9nN+Jl4WeTWqriMr2PtHziK4ZX7B2l2SvWxA+DCVGIq3u13WFuLHdXnmT3kRUgQ7gp9GxQJMN8pQugZHjVwA4C5XWzF2tP18gK/KE6jd/WjBKXzvPS/K/JvpltylfjCMal59iseczCxyVkvozoGGGkpRu8/6/aKDKiDoY7Z6X4hQzFpsuueiSqEooOV+ExxkLVKtevtxVfMjhUdb9dSEeB6VtCelvJdoa5QOk7qSJKe62H2YKuOPzhP5DH+fzUgozWRuu9pe8prPUY/2/6zzH5yyW3EGwq4J4UbOH8hKMFpCOhw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from AS8PR08MB7095.eurprd08.prod.outlook.com (2603:10a6:20b:402::11)
- by DB9PR08MB6665.eurprd08.prod.outlook.com (2603:10a6:10:2ad::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Tue, 18 Jul
- 2023 10:55:04 +0000
-Received: from AS8PR08MB7095.eurprd08.prod.outlook.com
- ([fe80::f4dc:6db6:8d7b:111f]) by AS8PR08MB7095.eurprd08.prod.outlook.com
- ([fe80::f4dc:6db6:8d7b:111f%3]) with mapi id 15.20.6588.031; Tue, 18 Jul 2023
- 10:55:04 +0000
-Message-ID: <38ffa0f3-03e7-b412-cc9a-5c86c4b9874a@virtuozzo.com>
-Date: Tue, 18 Jul 2023 12:55:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 0/7] iotests/parallels: Add new tests and fix old
-Content-Language: en-US
-From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
- vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com
-References: <20230701101123.261104-1-alexander.ivanov@virtuozzo.com>
-In-Reply-To: <20230701101123.261104-1-alexander.ivanov@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VE1PR03CA0041.eurprd03.prod.outlook.com
- (2603:10a6:803:118::30) To AS8PR08MB7095.eurprd08.prod.outlook.com
- (2603:10a6:20b:402::11)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qLiMq-0004yV-O2
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:55:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689677744;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LGKvf+HrStHUFLDT/Ab7Ly8KWy/8Oo3rhxjzrq6eDas=;
+ b=YzwZxzWFQFC4VuXUbloO19p1i9odkWQGbZ3sJrVSksQlXvyF8K6KbxNwFJabyZIrK69tL0
+ 2jV0vgMR7ymJqSYTNrZPZ4qhVVqV76Ovzyzi7+ePcbGNot3FJMsdN3J61W16y+tf79NQXS
+ +zoIctUs0T3J27NKv/xE5viIMbQbb0I=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-575-em3PucaWNzyMfJjoC2uPaQ-1; Tue, 18 Jul 2023 06:55:42 -0400
+X-MC-Unique: em3PucaWNzyMfJjoC2uPaQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fc30453231so35057735e9.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 03:55:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689677741; x=1692269741;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LGKvf+HrStHUFLDT/Ab7Ly8KWy/8Oo3rhxjzrq6eDas=;
+ b=KH6O9k/z2wi+LMgAQT9U8pHrXGjTCefg4UcVqr09HcOTw8XYVx8CdlvL3kgUXeM0sC
+ DTHlp6Q0c1AE0DkTatH9n7xAzDi6paqdcv2YvAcpNXESZfjnVMRUzxCCXrh+zuy47twl
+ LSHHiwaVzt9TN+2xiyITba5Ev7EtYBmg93QGZ4qXg6+G8vAdG9wde+qwBrBidbL3+Ecz
+ RBzuJ544ges/CYzly7krLB5WlhIFqWbFoIawtjULwzuoHESL/vBCn+pl+kYB6PMwKhjr
+ RcDDzuP0r2epQuLe4yg45yyU2GpYdfkzNSnyAoatMdh7JXHI6i5ECOjVcKp2iZZU+Dil
+ pnDw==
+X-Gm-Message-State: ABy/qLb8KqrRJYzRwJi06YgfjkuifW2MDGpDeoKPQIvLWRNfwUbFQVLj
+ XO6yKfJAIACw/JHFVtV/JIpdjdMYbPJtdp1MP1Z/9LshXSy/9TMUFs78AKf6ZHxMPvjgTrgNVVk
+ cTh731mXmYbTsh5k=
+X-Received: by 2002:a05:600c:2253:b0:3fb:a937:6024 with SMTP id
+ a19-20020a05600c225300b003fba9376024mr1638927wmm.29.1689677741694; 
+ Tue, 18 Jul 2023 03:55:41 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGZnbsDZgb+uQ/D/UJb/sNVGF3DI1uT+roLvfRF5trpeLDxK/+JIkrSILQGYQBEXguBPXY6JQ==
+X-Received: by 2002:a05:600c:2253:b0:3fb:a937:6024 with SMTP id
+ a19-20020a05600c225300b003fba9376024mr1638912wmm.29.1689677741358; 
+ Tue, 18 Jul 2023 03:55:41 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:174:a216:963c:8e9a:5e99:d745])
+ by smtp.gmail.com with ESMTPSA id
+ q8-20020a1ce908000000b003fc02a410d0sm10035081wmc.48.2023.07.18.03.55.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Jul 2023 03:55:40 -0700 (PDT)
+Date: Tue, 18 Jul 2023 06:55:37 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: Pei Li <peili@andrew.cmu.edu>, Jason Wang <jasowang@redhat.com>,
+ peili.dev@gmail.com, qemu-devel@nongnu.org,
+ Si-Wei Liu <si-wei.liu@oracle.com>
+Subject: Re: [PATCH 1/2] Reduce vdpa initialization / startup overhead
+Message-ID: <20230718065500-mutt-send-email-mst@kernel.org>
+References: <20230418225638.1467969-1-peili.dev@gmail.com>
+ <CAJaqyWebSowMMWh+HCjj7tmbA3Ey6C69T=SPA4k+6fd_-GjfoA@mail.gmail.com>
+ <CACGkMEu0d0y82wo1p2g-ovbUTYJcVon0-t8fvgFQLokZmd7hDQ@mail.gmail.com>
+ <CACCFcFr8rYbM3OF8Hk=WnS7mAUv49aTsYHWnMwkMVg8SWRhp+Q@mail.gmail.com>
+ <CAJaqyWeOuUDKyXd7QAOUhMb-6G+P_q_X4Nz7K+QSJwqdE8UO2Q@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR08MB7095:EE_|DB9PR08MB6665:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1f83c7e-76ac-4144-5bf9-08db877d7102
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: FjhRnJrDlhCaP2R7dUkMFaVd8jJQzegXuxb2F507HQUfVVQz+t33vs0xT9vPas1SLguxi+DpCztgIbJaVOs07oSUOnp+jFyOrlMAzgYZ2WGaX1hxI/BCb1zz/FOEcLI5vKZmxk7pHvnKto6/VoBKi+2QwRcqOv1KFkk+Tl4ZJgVIwvVxCSmi8HV1kA9IPLdBSZ3Gz20WYjn3+yy+QKtZ6pwrF37RQItadS0UsRbo4pHDRN9g3z3+zPEjMpTOp3wSWF0quyMvMeaK6K5czD6ZTierkSpJsqkORXhMcHzWLjF/10CscGA7NH/lzVEyi5tJM/hpyi9A1DX4I/YFhwe1srvWEkpg6vBAk1JTsZtxfg3/bbJM8TCrzRx82wn/Ec8Q8kMKJjaksEaLjkuK2SHEHwVqjc2JWmGGzQ1dv/JdBQABCTXimnPyfRVJ3gsF3iPWbenVWJLKVar7nMPenchyQrhA1RDA/UJgSNfYxpBkpEx17dOB7uFBAcWs7A//sB2M+I3O8U8BDL+yhfdRxQ0qZaLchlc/4KA1wTYkVkqe3sKJLIthv6sUv/AsJ+DfeU7jNC2rP/Ohtq5o7lApfHSuO1uGQ2q/2uq9h3onN7rOYd0FDwqB7LEh9V/2yZwHjweQFwKwR4/+bDVtYR+Pb6KUCMJ/o2s3Yci17vPCDApbgahvTeT9DrM3jI7MLyjJmFGB
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AS8PR08MB7095.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(4636009)(366004)(396003)(376002)(346002)(136003)(39850400004)(451199021)(31686004)(83380400001)(478600001)(52116002)(186003)(2616005)(31696002)(6486002)(86362001)(6512007)(6506007)(53546011)(66946007)(38350700002)(38100700002)(66556008)(41300700001)(44832011)(2906002)(26005)(36756003)(8676002)(6916009)(5660300002)(4326008)(8936002)(66476007)(316002)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N09XVE1wVzMrMjdWM0hNM3BHQlNpMFRDQW9YUE9zRlZpUDIxZXhjOHFUMkhH?=
- =?utf-8?B?dld4V2M4RDhFYmYvRWFUWXBrS2VqZjErNnNnTm5PSFRFcGV3eDJuKzBicHBz?=
- =?utf-8?B?clpCS3Ntamxmb1JrdzI3S3pVbU5NQi9ENXNFWmRONzFGemI5dzhsZ0NZelJq?=
- =?utf-8?B?bWw0eVBBQWRERjNmaTI1NWR0bm4zd1J2NWRmUHdXdFk5Mi9hd3gzL09MNGNu?=
- =?utf-8?B?R1JtaG9qenZvSVBBWXVCRXBjQ21VMUdrYW4ybUd4MDVrNEJFeGNTdGE5cXVO?=
- =?utf-8?B?U21qQ1U4dFo4SW94NTQrblpaYS9VUjJ0N0J1Zlc0OUFPbm1ic3V2aTVONlJ2?=
- =?utf-8?B?WDd2SjFQK3FmbXlXNVZXYzYyRUllRUZnWXk0YU85Z3YrbldLWFpLNEFJcS8x?=
- =?utf-8?B?Rzl0UHVROVZ6MUIrK0JTclNoLzVBZXRiaXlSSGUrRWJRTUIyazBvNlpLZkl2?=
- =?utf-8?B?cVR5cE1UdGlPVmFnMk0zZFFuUnoxUXltUjFsbXpld0NUcWNQcndnVVJJbmtj?=
- =?utf-8?B?TDhnMjQxclNvMmFEc0FlNXZlQ1V1ZUs0LzdjWHNqRlYxdDljZkZyOGJIczN4?=
- =?utf-8?B?aWl6V3pNODhkWVh5dVdYT0VkaWptWXQ2K0krdmszQTlxODMvQlo3WUdNaWd4?=
- =?utf-8?B?R3NLMndyaDNvcm9nMjRENEIzMnkrS2ZIeEVud2YwdUkvUmg0QzFyL0plUWpN?=
- =?utf-8?B?dUt2MnlqU2VuSkNJMGdPcmZRbENISVlTVlhROEI1VURCMVJMR08zRnVycHdU?=
- =?utf-8?B?RTA0K2J1TzMxb3lNdGsrTkdKNkduVjV2ZmVKb09uTHJhYnhtbzNsSUY1aFF3?=
- =?utf-8?B?QmFHWENlbVRxU2ZpSkVQYVBjVGZVRWQySlNmUzVSUUV5VHMrbzdZVVpaTG5O?=
- =?utf-8?B?ZHVSOEJTMFBqTUMvZmdzUTZWTHdGYWN0cVZ3RzJuc1VnZHNOZ1ZUWks4TGhn?=
- =?utf-8?B?aGRiTm42dlhkSE1sNnIyN1dzNHBPSXpOY29DYXROUWliajEza2gvdW9SZWd2?=
- =?utf-8?B?ZkxjcS9EVS9CN0t2bVlmVitURWRySW1tVmdaQUhIYjJyNzBYeStjUEdwTjhT?=
- =?utf-8?B?aTc4WkJid2JDOVF6cEQ0WHlyWlN5NG1yWXE4a1NGR2lnMmY2b1hqZ29TcVMy?=
- =?utf-8?B?MERqTkkvbFVvd1NpZXNFdGZnM3JWdlAyOE1lNHhHRm8xWVhpeVVCRXUzemxs?=
- =?utf-8?B?aXlseUdSMkdkNmNMa3VHNEg0VUUxN3o0THhnUDdGWkRiYURsYW9vODFDdld3?=
- =?utf-8?B?bkx0ajlCVGJmcVdZN3BZcWZEMnNYeFFWWWJUMFRKSFpxRlAxNTMrSEI0RCtK?=
- =?utf-8?B?OTRrZjVhZGFYTkwwN1o4ZFN2a0s2YlNFYnJWQUV2Y0tSU0U1ODRlNlZOOCs5?=
- =?utf-8?B?c2htRHRKSTI5UFlJNDI0bEdvNFZqRy84bUEwZXFaZFNNVGc2VHk2MVdKRFo4?=
- =?utf-8?B?bTJXR0RVSnJlUkdKRzQwVWd6OUF5ZWErWWQ4Rmh4d241SXZtZmVJQ1dYVmFl?=
- =?utf-8?B?eWRWNkxYaGRRL2xsVkFKNE8vYTZzV05KRHE3cXlKbzZqUDBvb2dhK1ljTkVZ?=
- =?utf-8?B?b0VXOGFyVWJQZGd2cWh6SEpBZzg2OGFRa1dVOExyc2QwZnlmM05sSGF3WGkv?=
- =?utf-8?B?QzVwdnhPQm9WQXRvZUF6cFkyOTdOS0k0ckc1WlhUbVBBek9KY0Q2NXFmK24x?=
- =?utf-8?B?Q1JXSjhId2JZTHozVlp3czFrMzdWODZQVWNadkZBNE8wQUpZeU5YSEZCMXc1?=
- =?utf-8?B?bGcwTDJMVGJrc2xqRlZMY3NQUlpFSnNYc1R1Y29UQllNR05jMU9JdTBFK3Ew?=
- =?utf-8?B?TWdOa2ZlWjRQclpNRHo0WDF3SXdJOXVsWVNkOWdVdDlibVJERmdJMk5aTjh5?=
- =?utf-8?B?bmJNakJWQTU5U09pM0RkSEF0UWdmcEc4VU15SEhSQmJ3NVlOZ1VZSWZqNEkv?=
- =?utf-8?B?dVZza2R6RkEvUVJXOXplb2xNOFp0ZkdzdU0rOUR1SUswUEsxQVZ2Z0J3c0Zk?=
- =?utf-8?B?ODZRUXJmaUNhazMwYk1xZng4ZWdMV3VhRU1JcVhsL0pTcXhCTzZsOTJ1dzUr?=
- =?utf-8?B?VFhORjBST3V1U1gvMDJPem9WYmVxc05Paml0UTgzTDZ0UEdWenVIRk9OWk1U?=
- =?utf-8?B?cG1FeGlpYkYzUHpiY2JYUUZlL2pkWlZkYndNR0JwTFlia1BZcGNtbEgwNzRn?=
- =?utf-8?Q?Zn1AbtjrwDyU38cfewVxne4=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1f83c7e-76ac-4144-5bf9-08db877d7102
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR08MB7095.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2023 10:55:04.1075 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 70Njqg9Tc3ovL2fnG4DPZhp5rjkL/zow+ijDtmHbSMmAVmdQW7WOKxLMidjn05eNhGZfekXoRFSRvcqVeBJU9fh9A9GdpVUKX+gq5LrQZb8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB6665
-Received-SPF: pass client-ip=2a01:111:f400:fe1a::71d;
- envelope-from=alexander.ivanov@virtuozzo.com;
- helo=EUR03-DBA-obe.outbound.protection.outlook.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJaqyWeOuUDKyXd7QAOUhMb-6G+P_q_X4Nz7K+QSJwqdE8UO2Q@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
- SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,42 +104,204 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset also could be applied upon [PATCH v8 00/10] parallels: Add 
-duplication check, repair at open, fix bugs.
+On Thu, Apr 20, 2023 at 10:59:56AM +0200, Eugenio Perez Martin wrote:
+> On Thu, Apr 20, 2023 at 7:25 AM Pei Li <peili@andrew.cmu.edu> wrote:
+> >
+> > Hi all,
+> >
+> > My bad, I just submitted the kernel patch. If we are passing some generic command, still we have to add an additional field in the structure to indicate what is the unbatched version of this command, and the struct vhost_ioctls would be some command specific structure. In summary, the structure would be something like
+> > struct vhost_cmd_batch {
+> >     int ncmds;
+> >     int cmd;
+> 
+> The unbatched version should go in each vhost_ioctls. That allows us
+> to send many different commands in one ioctl instead of having to
+> resort to many ioctls, each one for a different task.
+> 
+> The problem with that is the size of that struct vhost_ioctl, so we
+> can build an array. I think it should be enough with the biggest of
+> them (vhost_vring_addr ?) for a long time, but I would like to know if
+> anybody finds a drawback here. We could always resort to pointers if
+> we find we need more space, or start with them from the beginning.
+> 
+> CCing Si-Wei here too, as he is also interested in reducing the startup time.
+> 
+> Thanks!
 
-On 7/1/23 12:11, Alexander Ivanov wrote:
-> This patchset should be applied on top of [PATCH v7 0/8] parallels: Add
-> duplication check, repair at open, fix bugs
->
-> Add out-of-image, leak and BAT entries duplication checks tests.
->
-> Old parallels images check test (131):  Refactor, fix cluster size and fix
-> after repairing was added to parallels_open().
->
-> v2:
-> 5: Fix a typo.
-> 7: Add a test for data_off check.
->
-> Alexander Ivanov (7):
->    iotests: Add out-of-image check test for parallels format
->    iotests: Add leak check test for parallels format
->    iotests: Add test for BAT entries duplication check
->    iotests: Refactor tests of parallels images checks (131)
->    iotests: Fix cluster size in parallels images tests (131)
->    iotests: Fix test 131 after repair was added to parallels_open()
->    iotests: Add test for data_off check
->
->   tests/qemu-iotests/131                        |  36 +++--
->   tests/qemu-iotests/131.out                    |  59 +++----
->   tests/qemu-iotests/tests/parallels-checks     | 145 ++++++++++++++++++
->   tests/qemu-iotests/tests/parallels-checks.out |  75 +++++++++
->   4 files changed, 264 insertions(+), 51 deletions(-)
->   create mode 100755 tests/qemu-iotests/tests/parallels-checks
->   create mode 100644 tests/qemu-iotests/tests/parallels-checks.out
->
+And copying my response too:
+This is all very exciting, but what exactly is the benefit?
+No optimization patches are going to be merged without
+numbers showing performance gains.
+In this case, can you show gains in process startup time?
+Are they significant enough to warrant adding new UAPI?
 
--- 
-Best regards,
-Alexander Ivanov
+
+
+> >     struct vhost_ioctls[];
+> > };
+> >
+> > This is doable. Also, this is my first time submitting patches to open source, sorry about the mess in advance. That being said, feel free to throw questions / comments!
+> >
+> > Thanks and best regards,
+> > Pei
+> >
+> > On Wed, Apr 19, 2023 at 9:19 PM Jason Wang <jasowang@redhat.com> wrote:
+> >>
+> >> On Wed, Apr 19, 2023 at 11:33 PM Eugenio Perez Martin
+> >> <eperezma@redhat.com> wrote:
+> >> >
+> >> > On Wed, Apr 19, 2023 at 12:56 AM <peili.dev@gmail.com> wrote:
+> >> > >
+> >> > > From: Pei Li <peili.dev@gmail.com>
+> >> > >
+> >> > > Currently, part of the vdpa initialization / startup process
+> >> > > needs to trigger many ioctls per vq, which is very inefficient
+> >> > > and causing unnecessary context switch between user mode and
+> >> > > kernel mode.
+> >> > >
+> >> > > This patch creates an additional ioctl() command, namely
+> >> > > VHOST_VDPA_GET_VRING_GROUP_BATCH, that will batching
+> >> > > commands of VHOST_VDPA_GET_VRING_GROUP into a single
+> >> > > ioctl() call.
+> >>
+> >> I'd expect there's a kernel patch but I didn't see that?
+> >>
+> >> If we want to go this way. Why simply have a more generic way, that is
+> >> introducing something like:
+> >>
+> >> VHOST_CMD_BATCH which did something like
+> >>
+> >> struct vhost_cmd_batch {
+> >>     int ncmds;
+> >>     struct vhost_ioctls[];
+> >> };
+> >>
+> >> Then you can batch other ioctls other than GET_VRING_GROUP?
+> >>
+> >> Thanks
+> >>
+> >> > >
+> >> >
+> >> > It seems to me you forgot to send the 0/2 cover letter :).
+> >> >
+> >> > Please include the time we save thanks to avoiding the repetitive
+> >> > ioctls in each patch.
+> >> >
+> >> > CCing Jason and Michael.
+> >> >
+> >> > > Signed-off-by: Pei Li <peili.dev@gmail.com>
+> >> > > ---
+> >> > >  hw/virtio/vhost-vdpa.c                       | 31 +++++++++++++++-----
+> >> > >  include/standard-headers/linux/vhost_types.h |  3 ++
+> >> > >  linux-headers/linux/vhost.h                  |  7 +++++
+> >> > >  3 files changed, 33 insertions(+), 8 deletions(-)
+> >> > >
+> >> > > diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> >> > > index bc6bad23d5..6d45ff8539 100644
+> >> > > --- a/hw/virtio/vhost-vdpa.c
+> >> > > +++ b/hw/virtio/vhost-vdpa.c
+> >> > > @@ -679,7 +679,8 @@ static int vhost_vdpa_set_backend_cap(struct vhost_dev *dev)
+> >> > >      uint64_t f = 0x1ULL << VHOST_BACKEND_F_IOTLB_MSG_V2 |
+> >> > >          0x1ULL << VHOST_BACKEND_F_IOTLB_BATCH |
+> >> > >          0x1ULL << VHOST_BACKEND_F_IOTLB_ASID |
+> >> > > -        0x1ULL << VHOST_BACKEND_F_SUSPEND;
+> >> > > +        0x1ULL << VHOST_BACKEND_F_SUSPEND |
+> >> > > +        0x1ULL << VHOST_BACKEND_F_IOCTL_BATCH;
+> >> > >      int r;
+> >> > >
+> >> > >      if (vhost_vdpa_call(dev, VHOST_GET_BACKEND_FEATURES, &features)) {
+> >> > > @@ -731,14 +732,28 @@ static int vhost_vdpa_get_vq_index(struct vhost_dev *dev, int idx)
+> >> > >
+> >> > >  static int vhost_vdpa_set_vring_ready(struct vhost_dev *dev)
+> >> > >  {
+> >> > > -    int i;
+> >> > > +    int i, nvqs = dev->nvqs;
+> >> > > +    uint64_t backend_features = dev->backend_cap;
+> >> > > +
+> >> > >      trace_vhost_vdpa_set_vring_ready(dev);
+> >> > > -    for (i = 0; i < dev->nvqs; ++i) {
+> >> > > -        struct vhost_vring_state state = {
+> >> > > -            .index = dev->vq_index + i,
+> >> > > -            .num = 1,
+> >> > > -        };
+> >> > > -        vhost_vdpa_call(dev, VHOST_VDPA_SET_VRING_ENABLE, &state);
+> >> > > +
+> >> > > +    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_IOCTL_BATCH))) {
+> >> > > +        for (i = 0; i < nvqs; ++i) {
+> >> > > +            struct vhost_vring_state state = {
+> >> > > +                .index = dev->vq_index + i,
+> >> > > +                .num = 1,
+> >> > > +            };
+> >> > > +            vhost_vdpa_call(dev, VHOST_VDPA_SET_VRING_ENABLE, &state);
+> >> > > +        }
+> >> > > +    } else {
+> >> > > +        struct vhost_vring_state states[nvqs + 1];
+> >> > > +        states[0].num = nvqs;
+> >> > > +        for (i = 1; i <= nvqs; ++i) {
+> >> > > +            states[i].index = dev->vq_index + i - 1;
+> >> > > +            states[i].num = 1;
+> >> > > +        }
+> >> > > +
+> >> >
+> >> > I think it's more clear to share the array of vhost_vring_state
+> >> > states[nvqs + 1], and then fill it either in one shot with
+> >> > VHOST_VDPA_SET_VRING_ENABLE_BATCH or individually with
+> >> > VHOST_VDPA_SET_VRING_ENABLE.
+> >> >
+> >> > The same feedback goes for VHOST_VDPA_GET_VRING_GROUP_BATCH in the next patch.
+> >> >
+> >> > > +        vhost_vdpa_call(dev, VHOST_VDPA_SET_VRING_ENABLE_BATCH, &states[0]);
+> >> > >      }
+> >> > >      return 0;
+> >> >
+> >> > This comment is previous to your patch but I just realized we don't
+> >> > check the return value of vhost_vdpa_call. Maybe it is worth
+> >> > considering addressing that in this series too.
+> >> >
+> >> > >  }
+> >> > > diff --git a/include/standard-headers/linux/vhost_types.h b/include/standard-headers/linux/vhost_types.h
+> >> > > index c41a73fe36..068d0e1ceb 100644
+> >> > > --- a/include/standard-headers/linux/vhost_types.h
+> >> > > +++ b/include/standard-headers/linux/vhost_types.h
+> >> > > @@ -164,4 +164,7 @@ struct vhost_vdpa_iova_range {
+> >> > >  /* Device can be suspended */
+> >> > >  #define VHOST_BACKEND_F_SUSPEND  0x4
+> >> > >
+> >> > > +/* IOCTL requests can be batched */
+> >> > > +#define VHOST_BACKEND_F_IOCTL_BATCH 0x6
+> >> > > +
+> >> > >  #endif
+> >> > > diff --git a/linux-headers/linux/vhost.h b/linux-headers/linux/vhost.h
+> >> > > index f9f115a7c7..4c9ddd0a0e 100644
+> >> > > --- a/linux-headers/linux/vhost.h
+> >> > > +++ b/linux-headers/linux/vhost.h
+> >> > > @@ -180,4 +180,11 @@
+> >> > >   */
+> >> > >  #define VHOST_VDPA_SUSPEND             _IO(VHOST_VIRTIO, 0x7D)
+> >> > >
+> >> > > +/* Batch version of VHOST_VDPA_SET_VRING_ENABLE
+> >> > > + *
+> >> > > + * Enable/disable the ring while batching the commands.
+> >> > > + */
+> >> > > +#define VHOST_VDPA_SET_VRING_ENABLE_BATCH      _IOW(VHOST_VIRTIO, 0x7F, \
+> >> > > +                                            struct vhost_vring_state)
+> >> > > +
+> >> >
+> >> > These headers should be updated with update-linux-headers.sh. To be
+> >> > done that way we need the changes merged in the kernel before.
+> >> >
+> >> > We can signal that the series is not ready for inclusion with the
+> >> > subject [RFC. PATCH], like [1], and note it in the commit message.
+> >> > That way, you can keep updating the header manually for demonstration
+> >> > purposes.
+> >> >
+> >> > Thanks!
+> >> >
+> >> > [1] https://lore.kernel.org/qemu-devel/20220413163206.1958254-23-eperezma@redhat.com/
+> >> >
+> >>
+> >>
+> 
+> 
 
 
