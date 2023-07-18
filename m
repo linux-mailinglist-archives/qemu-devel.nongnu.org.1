@@ -2,86 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4F775786E
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC9575790E
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 12:12:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLhKN-0006IT-5a; Tue, 18 Jul 2023 05:49:07 -0400
+	id 1qLhfm-0001EU-7N; Tue, 18 Jul 2023 06:11:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qLhKJ-0006HQ-Cy
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:49:03 -0400
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qLhfe-0001E7-Rp
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:11:06 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qLhKH-0001b2-CN
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:49:03 -0400
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-1b056276889so3673440fac.2
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 02:49:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qLhfZ-00017K-8y
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:11:06 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3090d3e9c92so5482299f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 03:11:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1689673740; x=1692265740;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=m8bRnx/XRl9oou79Zg/GQAvp3CJy/KTYoJ5xkhD64rc=;
- b=PljMP3EGktNJXypVE/fKL1BUzWHIHxOoSAWuZM3XoReE28N5vZOrPm4Ir/TxvXjIgG
- 5jMphd8p+lofMEtCi/PxFWsD+h6DZggiHY15brzqhkMz07/DFya2b8Qgs4Ukr0TXdAsH
- gmAYlkRCdQK+sS2BadwBD8JVToxzlRgao2uGf1Y3Grc6+C8mYGknkhvZgTwuQ/UWOugR
- rUVkiOIHJkmR4RXGHfSXikUYcFuBfaApItHl6uRkVhVDPCaMUO4tiv6dlz0zmoKgzsdY
- CaPKzPPUEt52lU0htcPo9rPlx+H4rjRt5gWzk4Yzfj61y5ifBw5eEkqD/mdhZHn/Rvpd
- KbNw==
+ d=linaro.org; s=google; t=1689675059; x=1692267059;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Wn3orCfYiQNlOzy4aMUvAr7V1MDijNIj9bBoFb5Tw0g=;
+ b=jH+owpc2YtTKxsdZrpxlld9/j0cWvCD8PVS+FFQdQ3LDYNzgkyOxqTMP3Y8NwaS48e
+ fvOywByhqy7VwUxjvKl6533lGp2xURfFRoI45o4r613Wy67foldvTzts1tL7KJaO/EGW
+ Zi8NUiQFPtKd/EPyG1xKxGHs41FDDLqYapzV5IzTcy69gNz4HtGJFdYmEevBpJRwpJeR
+ S+U8i5eRMEcZkjnudpbBckbvUx4GV+3HA1ZQ/nTApVMP8HaC6USuI9gAV8lJjQJN6KTz
+ 1IAcSOuv6veFjPcJ2/xQgDsd4MznyUTUwaNgKl6pr7m+fzfaMw6VUxWPUZFmfKEjiVp7
+ HgQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689673740; x=1692265740;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=m8bRnx/XRl9oou79Zg/GQAvp3CJy/KTYoJ5xkhD64rc=;
- b=TCS+9xTEjX78LR2Z+XgrioxtfijAU+l1qysKnp4cMzXGP6GzPR9PIju/ZHcVKUmhUz
- VE090Fr8QVakmNjlXdamtKBzLDruIXvAPg1RUELgzGGVOE47GuPK1PMlMW2WWNMUOVLY
- +crgyXSLicGumHZ0JAMcVuLxy1RJ9vH1rJbTax5GT0sDzh+TLfY17SCGvcz5czbWSwal
- Iji9RV6E87sFtOpy+YG00SlEQzMCj8zsjj+jXXWRMZZxLjPql97sBoDm6Irpqs6/990l
- Nxcaty5dYzK9ddFtPUeb80qvGW0cCmsfYd3BOA17W6iaWC3Cu10sI1b3h/S7B7StPGsX
- QqDg==
-X-Gm-Message-State: ABy/qLaqHJ4B+7CAH1UGT2av5wGyd4PjxQmNpKHOUjMFQtOyjdtaUH2U
- Bi4o5BPc/GMO3wgtx3hD0FcCXw==
-X-Google-Smtp-Source: APBJJlGkSxXBk0aMOiP68ZvS0wTKtzUP2ZvyRWv7pbWr+/1uwL6S2AMgTQ2J3BUA7aLEcVGRHnrsXg==
-X-Received: by 2002:a05:6871:a9:b0:1b7:1904:1ad9 with SMTP id
- u41-20020a05687100a900b001b719041ad9mr17243986oaa.53.1689673739733; 
- Tue, 18 Jul 2023 02:48:59 -0700 (PDT)
-Received: from [192.168.68.108] (201-69-66-211.dial-up.telesp.net.br.
- [201.69.66.211]) by smtp.gmail.com with ESMTPSA id
- s7-20020a4a5107000000b0055516447257sm654968ooa.29.2023.07.18.02.48.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Jul 2023 02:48:59 -0700 (PDT)
-Message-ID: <67f0569b-ffe4-5e4c-78eb-73a25aa414fb@ventanamicro.com>
-Date: Tue, 18 Jul 2023 06:48:55 -0300
+ d=1e100.net; s=20221208; t=1689675059; x=1692267059;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Wn3orCfYiQNlOzy4aMUvAr7V1MDijNIj9bBoFb5Tw0g=;
+ b=AAEu2N2CGHIL9k9pwT8lCZZC91FXA+G+u2FSSr3eKJGsAUZXaFtJH2jnBcBvzxzmk5
+ YisQtlxHYNjsKYYBzOYbaujW3+6DWmSoD64Q3VlpD8SnQnczE7ON4+nQfLJkwXsn6EE3
+ 78bT4jEFeEEFPWHatVEJNJEnI6oMRzTBDUnwdICP2iueh47tVHM6Ub4C8XqGBmHGil4V
+ Lo+6h4mkUVlEJfOncmD7Vmc7DPgjmu1NFN6pBCpFuEhATrN4+Su3egVbIO2MOKF5g2mm
+ s0k+pMtuK1/Zu5/ofTkJCKoG/Mtun0OmxwM36tG20/Qw8t5wQ7k8wkhakyFsMKO05Gtd
+ RLPA==
+X-Gm-Message-State: ABy/qLbYH36TGgqKKwVTphplJXZHWAugHzBEnF2sZq39qrL0GutsVZHs
+ jkb9CRxFMAuWIB0GUg0DS98Bai61PtMglSMoI/w=
+X-Google-Smtp-Source: APBJJlFbD+yW8hNBRAKwt42PEnU+DBzn8GtCLLlEJPYE8sgQebIoEhdXvNC7MZ9FXCO1QXJjHlvMXA==
+X-Received: by 2002:a05:6000:90e:b0:314:37ac:c896 with SMTP id
+ cw14-20020a056000090e00b0031437acc896mr15494938wrb.44.1689675059420; 
+ Tue, 18 Jul 2023 03:10:59 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ e16-20020adffc50000000b0031432c2fb95sm1936122wrs.88.2023.07.18.03.10.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Jul 2023 03:10:58 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH for-8.1] xen: Don't pass MemoryListener around by value
+Date: Tue, 18 Jul 2023 11:10:57 +0100
+Message-Id: <20230718101057.1110979-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] target/riscv/cpu.c: check priv_ver before auto-enable
- zca/zcd/zcf
-Content-Language: en-US
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, palmer@rivosinc.com, Conor Dooley <conor@kernel.org>
-References: <20230717154141.60898-1-dbarboza@ventanamicro.com>
- <f0f0b1fb-327b-abb8-0262-027c75c76520@linux.alibaba.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <f0f0b1fb-327b-abb8-0262-027c75c76520@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x29.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.097,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,105 +90,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Coverity points out (CID 1513106, 1513107) that MemoryListener is a
+192 byte struct which we are passing around by value.  Switch to
+passing a const pointer into xen_register_ioreq() and then to
+xen_do_ioreq_register().  We can also make the file-scope
+MemoryListener variables const, since nothing changes them.
 
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+Disclaimer: I have not tested this beyond any testing you
+get from 'make check' and 'make check-avocado', which is likely
+not much.
+---
+ include/hw/xen/xen-hvm-common.h | 2 +-
+ hw/arm/xen_arm.c                | 4 ++--
+ hw/i386/xen/xen-hvm.c           | 4 ++--
+ hw/xen/xen-hvm-common.c         | 8 ++++----
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
-On 7/17/23 22:36, LIU Zhiwei wrote:
-> 
-> On 2023/7/17 23:41, Daniel Henrique Barboza wrote:
->> Commit bd30559568 made changes in how we're checking and disabling
->> extensions based on env->priv_ver. One of the changes was to move the
->> extension disablement code to the end of realize(), being able to
->> disable extensions after we've auto-enabled some of them.
->>
->> An unfortunate side effect of this change started to happen with CPUs
->> that has an older priv version, like sifive-u54. Starting on commit
->> 2288a5ce43e5 we're auto-enabling zca, zcd and zcf if RVC is enabled,
->> but these extensions are priv version 1.12.0. When running a cpu that
->> has an older priv ver (like sifive-u54) the user is spammed with
->> warnings like these:
->>
->> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000000 because privilege spec version does not match
->> qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000000 because privilege spec version does not match
->>
->> The warnings are part of the code that disables the extension, but in this
->> case we're throwing user warnings for stuff that we enabled on our own,
->> without user intervention. Users are left wondering what they did wrong.
->>
->> A quick 8.1 fix for this nuisance is to check the CPU priv spec before
->> auto-enabling zca/zcd/zcf. A more appropriate fix will include a more
->> robust framework that will account for both priv_ver and user choice
->> when auto-enabling/disabling extensions, but for 8.1 we'll make it do
->> with this simple check.
->>
->> It's also worth noticing that this is the only case where we're
->> auto-enabling extensions based on a criteria (in this case RVC) that
->> doesn't match the priv spec of the extensions we're enabling. There's no
->> need for more 8.1 band-aids.
->>
->> Cc: Conor Dooley <conor@kernel.org>
->> Fixes: 2288a5ce43e5 ("target/riscv: add cfg properties for Zc* extension")
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/cpu.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
->> index 9339c0241d..6b93b04453 100644
->> --- a/target/riscv/cpu.c
->> +++ b/target/riscv/cpu.c
->> @@ -1225,7 +1225,8 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->>           }
->>       }
->> -    if (riscv_has_ext(env, RVC)) {
->> +    /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
-> 
-> I think the Zca/zcd/zcf doesn't have much relationship with the privilege specification. The privilege specification doesn't define any
-> CSR or rules that Zca/zcd/zcf depend on. Maybe I missed something.  Does anyone  know why we should check PRIV_VERSION_1_12_0 for zca/zcf/zcd?
+diff --git a/include/hw/xen/xen-hvm-common.h b/include/hw/xen/xen-hvm-common.h
+index f9559e2885b..4e9904f1a65 100644
+--- a/include/hw/xen/xen-hvm-common.h
++++ b/include/hw/xen/xen-hvm-common.h
+@@ -93,7 +93,7 @@ void xen_device_unrealize(DeviceListener *listener, DeviceState *dev);
+ 
+ void xen_hvm_change_state_handler(void *opaque, bool running, RunState rstate);
+ void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
+-                        MemoryListener xen_memory_listener);
++                        const MemoryListener *xen_memory_listener);
+ 
+ void cpu_ioreq_pio(ioreq_t *req);
+ #endif /* HW_XEN_HVM_COMMON_H */
+diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
+index 044093fec75..1d3e6d481a2 100644
+--- a/hw/arm/xen_arm.c
++++ b/hw/arm/xen_arm.c
+@@ -37,7 +37,7 @@
+ #define TYPE_XEN_ARM  MACHINE_TYPE_NAME("xenpvh")
+ OBJECT_DECLARE_SIMPLE_TYPE(XenArmState, XEN_ARM)
+ 
+-static MemoryListener xen_memory_listener = {
++static const MemoryListener xen_memory_listener = {
+     .region_add = xen_region_add,
+     .region_del = xen_region_del,
+     .log_start = NULL,
+@@ -108,7 +108,7 @@ static void xen_arm_init(MachineState *machine)
+ 
+     xam->state =  g_new0(XenIOState, 1);
+ 
+-    xen_register_ioreq(xam->state, machine->smp.cpus, xen_memory_listener);
++    xen_register_ioreq(xam->state, machine->smp.cpus, &xen_memory_listener);
+ 
+ #ifdef CONFIG_TPM
+     if (xam->cfg.tpm_base_addr) {
+diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+index 3da5a2b23f7..f42621e6742 100644
+--- a/hw/i386/xen/xen-hvm.c
++++ b/hw/i386/xen/xen-hvm.c
+@@ -458,7 +458,7 @@ static void xen_log_global_stop(MemoryListener *listener)
+     xen_in_migration = false;
+ }
+ 
+-static MemoryListener xen_memory_listener = {
++static const MemoryListener xen_memory_listener = {
+     .name = "xen-memory",
+     .region_add = xen_region_add,
+     .region_del = xen_region_del,
+@@ -582,7 +582,7 @@ void xen_hvm_init_pc(PCMachineState *pcms, MemoryRegion **ram_memory)
+ 
+     state = g_new0(XenIOState, 1);
+ 
+-    xen_register_ioreq(state, max_cpus, xen_memory_listener);
++    xen_register_ioreq(state, max_cpus, &xen_memory_listener);
+ 
+     QLIST_INIT(&xen_physmap);
+     xen_read_physmap(state);
+diff --git a/hw/xen/xen-hvm-common.c b/hw/xen/xen-hvm-common.c
+index 886c3ee944d..565dc39c8f6 100644
+--- a/hw/xen/xen-hvm-common.c
++++ b/hw/xen/xen-hvm-common.c
+@@ -765,8 +765,8 @@ void xen_shutdown_fatal_error(const char *fmt, ...)
+ }
+ 
+ static void xen_do_ioreq_register(XenIOState *state,
+-                                           unsigned int max_cpus,
+-                                           MemoryListener xen_memory_listener)
++                                  unsigned int max_cpus,
++                                  const MemoryListener *xen_memory_listener)
+ {
+     int i, rc;
+ 
+@@ -824,7 +824,7 @@ static void xen_do_ioreq_register(XenIOState *state,
+ 
+     qemu_add_vm_change_state_handler(xen_hvm_change_state_handler, state);
+ 
+-    state->memory_listener = xen_memory_listener;
++    state->memory_listener = *xen_memory_listener;
+     memory_listener_register(&state->memory_listener, &address_space_memory);
+ 
+     state->io_listener = xen_io_listener;
+@@ -842,7 +842,7 @@ err:
+ }
+ 
+ void xen_register_ioreq(XenIOState *state, unsigned int max_cpus,
+-                        MemoryListener xen_memory_listener)
++                        const MemoryListener *xen_memory_listener)
+ {
+     int rc;
+ 
+-- 
+2.34.1
 
-I always thought about this priv spec filter as a way to determine the time
-window that the extension was ratified/defined. In this example it's been used
-to filter out zca/zcd/zcf from the sifive-u54 chip because this chip is older
-than those extensions, so it doesn't make sense to enable them.
-
-> 
-> I think we should remove the check for priv_ver for many user mode extensions. We should set the checking privilege specification version for these extensions to PRIV_VERSION_1_10_0.
-
-I think it's hard to pick and choose which extensions will have a priv version check
-or not. If we're bothered with the priv spec check per se then we should remove it
-entirely. Here's my plan to do it:
-
-- remove cfg.priv_ver. This is a very old attribute that allow users to set the priv_ver
-for generic CPUs like rv64. I'm doing changes in the user options for TCG flags and the
-very existence of this option forces me to make priv checks for all extensions we're
-auto-enabling during realize() (because I can't be sure whether the user changed the
-priv_ver of rv64 to something older);
-
-- split the realize() functions between generic and vendor CPUs again. It was merged together
-earlier this year (I did it) because, back then, we were doing too much stuff during
-realize() that was needed for named CPUs, but the side effect is what we're seeing now:
-the common code is enabling unwanted extensions for vendor CPUs. The code is very different
-now, and I believe that we can at least skip validate_set_extensions() for vendor CPUs;
-
-- at this point, vendor CPUs aren't auto-enabling any features and generic CPUs are always
-set to PRIV_VER_LATEST. This means that we can remove all code related to disable extensions
-via priv spec, and then all artifacts related to priv spec.
-
-
-However, even if we're all onboard with removing it, this is still 8.2 work. For 8.1 I believe
-this patch is a good fix to relief users from these warnings.
-
-
-Thanks,
-
-Daniel
-
-
-
-> 
-> Zhiwei
-> 
->> +    if (riscv_has_ext(env, RVC) && env->priv_ver >= PRIV_VERSION_1_12_0) {
->>           cpu->cfg.ext_zca = true;
->>           if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
->>               cpu->cfg.ext_zcf = true;
 
