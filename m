@@ -2,88 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F027588D1
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 01:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71121758AD0
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 03:24:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLthP-000668-NI; Tue, 18 Jul 2023 19:01:43 -0400
+	id 1qLvuQ-0004RV-Cb; Tue, 18 Jul 2023 21:23:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qLthO-00065w-E5; Tue, 18 Jul 2023 19:01:42 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <kaiwenx@rivosinc.com>)
+ id 1qLtUj-0003NA-1C
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 18:48:37 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qLthN-0001sA-0k; Tue, 18 Jul 2023 19:01:42 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1b8a8154f9cso1460305ad.1; 
- Tue, 18 Jul 2023 16:01:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kaiwenx@rivosinc.com>)
+ id 1qLtUh-0004xN-1e
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 18:48:36 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-553b2979fceso2639330a12.3
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 15:48:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689721299; x=1692313299;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
- :user-agent:mime-version:date:message-id:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hk+onppxCQFJAmAzZVtVk8kxfI57LiIy6xdHNMa9w/s=;
- b=KRzrcNetKtGo+6IKHSkNYCgIdC+z/UItq2IbHm2r5KEDQoUJlHgV3mmrk8xOiZRdDW
- XjlInWK6GbdkEi63PW0ptXng/ZYej7kTvbXSagYba9oAOSRiN7RecFXChqrnNc+9DMEF
- SjXO7zCTlor2qE3BJ3PoY/Nb2Cgm2qZtdiVhenlLw9gf0MvrtpMFCvvZTKI/eIDk9XfF
- 0dOp6jAa6UWjA2x4DrxFBB5qHmlj0clOvFNoZn4hM2ChLPz40/ccwoEfaJGjSXxdfuX1
- tMYuUWxZL2fxs/OZ95UJ2KCni3HS70sJcDJ9OHfpEue03d4OR/JM9H+a7+DEp3caz8Q2
- 9JeQ==
+ d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1689720512; x=1692312512; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=h0vwFwV4quN6yFVBduC18Yhtf+eVeJGxVojzXHppBW8=;
+ b=PEQRnT/qtKclvjBqRIZhp5haRMAZ1Cw/RtF9GaVEuqXKCvpZmgtTqHRONvCgvpUKr3
+ XzTVA8P5y2mFkc2xfStlhS+gvDd/uopLQkDMRTVjnD5lm0zD9+C4cy5fTIz71uWRTnMK
+ vbmiDY7S54lPckFvsanA5xkK4BUszIPqQpGiX+yIJC8iN0iexT7CLUUu7UzitTPeF62n
+ /F9fo0lIEpCIgRb20fGMxuS6jtE8ZPir+6bdN+RZtoqUtX1aqDgodRqSHpb5OG4t7Kv4
+ r3tKGWPp10Ldbzy6GlXR2HpZ1roMZs42tz1HQ327CHXlivnMfQllnIXm6IhQbrSpkX0L
+ JOOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689721299; x=1692313299;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
- :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=hk+onppxCQFJAmAzZVtVk8kxfI57LiIy6xdHNMa9w/s=;
- b=d0jeRHGDlq1K+1eOFM/AAS3oAMkCfEntP6+GDOBmL+OJG3RS0RVKqAIyp9OvnHdlll
- MndTgWGZSFwkrO18O/bGJxJyifFAPuT7aLRxGy8XTbHFHUv1L1MWQF3rRLgzJfywZ0pY
- g2xyztAZyVtvV33CShuzSIBqjZBKTHVt40Xc6Fh4Kq4E2339IpAZdFlqzeySd5clNesi
- fFoJhw9UJUwNnevpLAZtlc64uURLmmYXKtjb+t9b3NbCca9tIHSgSqwohfFNvTqjbfTn
- h9IX1qUb5cCmwrpB+neVSKfZB8kqjjAenZEbb1nhgsgpdsPW8Az9K5PCfjBjBbut4+vn
- mLkw==
-X-Gm-Message-State: ABy/qLayu5P5Q7+FdEfMEkRHepTE2/djh40qJqDfqwG7CdoA0R96/DZG
- +U9TmqiZxrEi+zdrv5cn+Uk=
-X-Google-Smtp-Source: APBJJlGHjaFbVy43IXdGi3F6D+bRYgnjhxZMOYQTgZUZv5avl9e4YRTBpnTlyjlfzBnLxgmx5KoFFg==
-X-Received: by 2002:a17:902:e84a:b0:1b9:d38d:efb1 with SMTP id
- t10-20020a170902e84a00b001b9d38defb1mr540461plg.8.1689721298650; 
- Tue, 18 Jul 2023 16:01:38 -0700 (PDT)
-Received: from [192.168.0.62] ([218.147.112.168])
+ d=1e100.net; s=20221208; t=1689720512; x=1692312512;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h0vwFwV4quN6yFVBduC18Yhtf+eVeJGxVojzXHppBW8=;
+ b=lawxloE7LZeaCwgqDicmMutDU4JgxbzJ8bNlhtA3plxsVg27bdRi0rG/qW+aN1UoYG
+ L2N4qYbq1G7sf1/auTw9R7/sxN8YcJ0NitfVtrJujxkFQ1uxIL6VtpQ1y9roN0LOapcl
+ vTE5z7VWXDrVgJkdjD7ThnM1Qs2lg4feSA2Pun1JqfwgDz8OeIy2RzqroyLWvLDDjOyT
+ esaOlMO8gOd8UYJCrCU6NJ7KenvqyrVWuIEY+a1XZJJ9kRlQGyy6Pn1y8eX3qm1pc7i0
+ 3bSi1ARlFhZPpT8S62ZwqIGLalsJdx+PtyeGX6hl9yHoQjfLC9NHkctF2AXmlAfmkMmu
+ 7M9g==
+X-Gm-Message-State: ABy/qLagu+lEvELG+GOU1BijPplGPAfPQH5MwStNLhhn4mJ0HV7AimTj
+ 1mTv8RvVBFSU6avqaRooQr3gIA==
+X-Google-Smtp-Source: APBJJlHhu2mfZz9DE/4ai1Y/9u6mj9SETBy+6rZyZvpjvmLA03RBXn1aldE/E+8nuxbLQlPIGOOA6w==
+X-Received: by 2002:a05:6a20:8f18:b0:134:2b31:e2a9 with SMTP id
+ b24-20020a056a208f1800b001342b31e2a9mr425217pzk.0.1689720512191; 
+ Tue, 18 Jul 2023 15:48:32 -0700 (PDT)
+Received: from kaiwenx.ba.rivosinc.com ([66.220.2.162])
  by smtp.gmail.com with ESMTPSA id
- n6-20020a170902d2c600b001b88da737c6sm2413685plc.54.2023.07.18.16.01.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Jul 2023 16:01:38 -0700 (PDT)
-Message-ID: <46bf0743-e9a6-218b-0f0f-f8f9226f4494@gmail.com>
-Date: Wed, 19 Jul 2023 08:01:33 +0900
+ i14-20020aa787ce000000b00682669dc19bsm1983312pfo.201.2023.07.18.15.48.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Jul 2023 15:48:31 -0700 (PDT)
+From: Kaiwen Xue <kaiwenx@rivosinc.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Kaiwen Xue <kaiwenx@rivosinc.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Atish Kumar Patra <atishp@atishpatra.org>,
+ Kaiwen Xue <kaiwenx@andrew.cmu.edu>
+Subject: [PATCH 0/3] risc-v: Add ISA extension smcntrpmf support
+Date: Tue, 18 Jul 2023 15:47:42 -0700
+Message-ID: <cover.1689631639.git.kaiwenx@rivosinc.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: PING: [PATCH v4 0/3] hw/ufs: Add Universal Flash Storage (UFS)
- support
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, fam@euphon.net, hreitz@redhat.com,
- k.jensen@samsung.com, kwolf@redhat.com, pbonzini@redhat.com,
- qemu-block@nongnu.org, berrange@redhat.com, marcandre.lureau@redhat.com,
- marcel.apfelbaum@gmail.com, mst@redhat.com, philmd@linaro.org,
- thuth@redhat.com
-References: <cover.1688459061.git.jeuk20.kim@gmail.com>
- <0e1a269c-0834-7255-1ded-0d37bddd1976@gmail.com>
- <20230718185626.GA68526@fedora>
-From: Jeuk Kim <jeuk20.kim@gmail.com>
-In-Reply-To: <20230718185626.GA68526@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.095, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=kaiwenx@rivosinc.com; helo=mail-pg1-x531.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 18 Jul 2023 21:23:14 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,27 +95,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023-07-19 오전 3:56, Stefan Hajnoczi wrote:
-> On Tue, Jul 11, 2023 at 07:31:02PM +0900, Jeuk Kim wrote:
->> Hi,
->> Any more reviews...?
->>
->> Dear Stefan
->> If you don't mind, Could you give it "reviewed-by"?
->> And is there anything else I should do...?
-> 
-> Sorry for the late reply. I was on vacation and am working my way
-> through pending code review and bug reports.
-> 
-> I have started reviewing this series and should be finish on Wednesday
-> or Thursday.
-> 
-> Stefan
+This patch series adds the support for RISC-V ISA extension smcntrpmf (cycle and
+privilege mode filtering) [1]. QEMU only calculates dummy cycles and
+instructions, so there is no actual means to stop the icount in QEMU. Therefore,
+this series only add the read/write behavior of the relevant CSRs such that the
+implemented firmware support [2] can work without causing unnecessary illegal
+instruction exceptions.
 
-Thank you for your review.
-I have seen your comments on PATCH v4.
-I'll send you a patch v5 as soon as I fix the things you commented on.
+[1] https://github.com/riscv/riscv-smcntrpmf
+[2] https://github.com/rivosinc/opensbi/tree/dev/kaiwenx/smcntrpmf_upstream
 
-Thanks again.
-Jeuk
+Kaiwen Xue (3):
+  target/riscv: Add cycle & instret privilege mode filtering properties
+  target/riscv: Add cycle & instret privilege mode filtering definitions
+  target/riscv: Add cycle & instret privilege mode filtering support
+
+ target/riscv/cpu.c      |  2 ++
+ target/riscv/cpu.h      |  6 ++++
+ target/riscv/cpu_bits.h | 29 ++++++++++++++++
+ target/riscv/cpu_cfg.h  |  1 +
+ target/riscv/csr.c      | 73 +++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 111 insertions(+)
+
+-- 
+2.34.1
+
 
