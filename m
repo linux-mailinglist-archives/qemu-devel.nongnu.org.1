@@ -2,53 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56810757164
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 03:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC1B2757178
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 03:46:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLZe1-0000CS-RI; Mon, 17 Jul 2023 21:36:53 -0400
+	id 1qLZle-0002C9-2f; Mon, 17 Jul 2023 21:44:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qLZdx-00006P-BM; Mon, 17 Jul 2023 21:36:49 -0400
-Received: from out30-97.freemail.mail.aliyun.com ([115.124.30.97])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qLZdu-0007md-FW; Mon, 17 Jul 2023 21:36:49 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R101e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046049;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
- TI=SMTPD_---0VnfYrLx_1689644192; 
-Received: from 30.221.100.194(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VnfYrLx_1689644192) by smtp.aliyun-inc.com;
- Tue, 18 Jul 2023 09:36:33 +0800
-Message-ID: <f0f0b1fb-327b-abb8-0262-027c75c76520@linux.alibaba.com>
-Date: Tue, 18 Jul 2023 09:36:00 +0800
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qLZlb-0002AN-4V
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 21:44:43 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qLZlY-0000M3-DT
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 21:44:42 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-263374f2f17so2741100a91.0
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 18:42:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1689644556; x=1692236556;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=xijtYuiXZr2OnGXXZtkkwchrojmKNQOW9xcDgOAysis=;
+ b=yh767cGE85R8E7i0gdhCWchswBwuMX4RC1q+3wydDW0ee4/fFbKufcQNMKHU5Adn0m
+ +e0PmyR0L7XRUYY/ljMcSoGxg0uK3VMKbFsXhCF27WPpB0iIBWPmYn5IRNmeHCprJMUn
+ suCTWnlzTMxx8uJRmdOEmY2yg4jmNRmrgXjLmhY3zVkGfQEE8BZHtK3RG+2SI/BVhdo6
+ ziWIFEEmlvjQU1soXcGtdcwe1NTK7wjFqy0uGcyo0RLX+ntBurUqW+O1iHYiMEmJgxcP
+ h7AtJDauqoT4XDKSgwGO95DWbNshbOnhgiuYs4gBVtIXAszom7uS+40VSlsMpo/qYY3p
+ 2sdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689644556; x=1692236556;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xijtYuiXZr2OnGXXZtkkwchrojmKNQOW9xcDgOAysis=;
+ b=fCgdAdghIAaKLvqLQUx8K9uR10h3yJ0VxiC6to4qvWok9ahFhRmTJJw7AZffdNxd50
+ Q/Jd09mvN7AdqG0ikgqHz1t5Kz9xHeje9rCAQR6nzv0vaD452cwl7t3i02aiZzlWHQs7
+ OHkkwBbAyDNFULaJ6lNQtIAqbCllf4NuQL73n7F/reXmR5mUGoTxreLLrffdATvydZCg
+ SsmxvcGjKrNqCSwPL13q19x++Gerj7P7iYwFE1XylKAgMu6RrW7X25SiZk6qnJ7TkmK4
+ Z5maC6j8KGgz4J1cda6Jg6WIvx/mmWwCUo3qrc0uwZngc0TVIPfhIlWKmHJoHJSLVFAV
+ fomQ==
+X-Gm-Message-State: ABy/qLbGffERkuVP2qabjKGmj2Cw4cDzE6YFukjjNGmgrST43T7+LjD3
+ nE/W6ELcUx6RpVTtKLmqwGjtnSYR49KJGVvNx0xkoA==
+X-Google-Smtp-Source: APBJJlEkIgpap2nt/Q7wgUS0TRc9bA2CCYdajxLT5zFfETXovRSugRPDhgd5qPh+n0jTevDUxME5XlM5quWvve27mMM=
+X-Received: by 2002:a17:90a:db06:b0:263:8eec:550f with SMTP id
+ g6-20020a17090adb0600b002638eec550fmr10435362pjv.10.1689644555705; Mon, 17
+ Jul 2023 18:42:35 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] target/riscv/cpu.c: check priv_ver before auto-enable
- zca/zcd/zcf
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, palmer@rivosinc.com, Conor Dooley <conor@kernel.org>
-References: <20230717154141.60898-1-dbarboza@ventanamicro.com>
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20230717154141.60898-1-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.97;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-97.freemail.mail.aliyun.com
-X-Spam_score_int: -99
-X-Spam_score: -10.0
-X-Spam_bar: ----------
-X-Spam_report: (-10.0 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+References: <168870305868.29142.5121604177475325995-4@git.sr.ht>
+ <875y6oj80i.fsf@pond.sub.org>
+In-Reply-To: <875y6oj80i.fsf@pond.sub.org>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Tue, 18 Jul 2023 09:42:19 +0800
+Message-ID: <CAK9dgmZ73F2qrD-iM-EBSiARRmwGPPorsLdt8NqmkOSyYaRCVw@mail.gmail.com>
+Subject: Re: [PATCH QEMU v8 4/9] migration: Introduce dirty-limit capability
+To: Markus Armbruster <armbru@redhat.com>
+Cc: "~hyman" <hyman@git.sr.ht>, qemu-devel <qemu-devel@nongnu.org>,
+ Peter Xu <peterx@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Juan Quintela <quintela@redhat.com>, 
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="0000000000008a34970600b90754"
+Received-SPF: none client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1032.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,69 +91,306 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--0000000000008a34970600b90754
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2023/7/17 23:41, Daniel Henrique Barboza wrote:
-> Commit bd30559568 made changes in how we're checking and disabling
-> extensions based on env->priv_ver. One of the changes was to move the
-> extension disablement code to the end of realize(), being able to
-> disable extensions after we've auto-enabled some of them.
->
-> An unfortunate side effect of this change started to happen with CPUs
-> that has an older priv version, like sifive-u54. Starting on commit
-> 2288a5ce43e5 we're auto-enabling zca, zcd and zcf if RVC is enabled,
-> but these extensions are priv version 1.12.0. When running a cpu that
-> has an older priv ver (like sifive-u54) the user is spammed with
-> warnings like these:
->
-> qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000000 because privilege spec version does not match
-> qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000000 because privilege spec version does not match
->
-> The warnings are part of the code that disables the extension, but in this
-> case we're throwing user warnings for stuff that we enabled on our own,
-> without user intervention. Users are left wondering what they did wrong.
->
-> A quick 8.1 fix for this nuisance is to check the CPU priv spec before
-> auto-enabling zca/zcd/zcf. A more appropriate fix will include a more
-> robust framework that will account for both priv_ver and user choice
-> when auto-enabling/disabling extensions, but for 8.1 we'll make it do
-> with this simple check.
->
-> It's also worth noticing that this is the only case where we're
-> auto-enabling extensions based on a criteria (in this case RVC) that
-> doesn't match the priv spec of the extensions we're enabling. There's no
-> need for more 8.1 band-aids.
->
-> Cc: Conor Dooley <conor@kernel.org>
-> Fixes: 2288a5ce43e5 ("target/riscv: add cfg properties for Zc* extension")
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->   target/riscv/cpu.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 9339c0241d..6b93b04453 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1225,7 +1225,8 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
->           }
->       }
->   
-> -    if (riscv_has_ext(env, RVC)) {
-> +    /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
+On Thu, Jul 13, 2023 at 8:44=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
 
-I think the Zca/zcd/zcf doesn't have much relationship with the 
-privilege specification. The privilege specification doesn't define any
-CSR or rules that Zca/zcd/zcf depend on. Maybe I missed something.  Does 
-anyone  know why we should check PRIV_VERSION_1_12_0 for zca/zcf/zcd?
+> ~hyman <hyman@git.sr.ht> writes:
+>
+> > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> >
+> > Introduce migration dirty-limit capability, which can
+> > be turned on before live migration and limit dirty
+> > page rate durty live migration.
+> >
+> > Introduce migrate_dirty_limit function to help check
+> > if dirty-limit capability enabled during live migration.
+> >
+> > Meanwhile, refactor vcpu_dirty_rate_stat_collect
+> > so that period can be configured instead of hardcoded.
+> >
+> > dirty-limit capability is kind of like auto-converge
+> > but using dirty limit instead of traditional cpu-throttle
+> > to throttle guest down. To enable this feature, turn on
+> > the dirty-limit capability before live migration using
+> > migrate-set-capabilities, and set the parameters
+> > "x-vcpu-dirty-limit-period", "vcpu-dirty-limit" suitably
+> > to speed up convergence.
+> >
+> > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> > Acked-by: Peter Xu <peterx@redhat.com>
+> > Reviewed-by: Juan Quintela <quintela@redhat.com>
+>
+> [...]
+>
+> > diff --git a/qapi/migration.json b/qapi/migration.json
+> > index e43371955a..031832cde5 100644
+> > --- a/qapi/migration.json
+> > +++ b/qapi/migration.json
+> > @@ -497,6 +497,15 @@
+> >  #     are present.  'return-path' capability must be enabled to use
+> >  #     it.  (since 8.1)
+> >  #
+> > +# @dirty-limit: If enabled, migration will use the dirty-limit
+> > +#     algorithm to throttle down guest instead of auto-converge
+> > +#     algorithm. This algorithm only works when vCPU's dirtyrate
+>
+> Two spaces after sentence-ending punctuation, please.
+>
+> "dirty rate" with a space, because that's how we spell it elsewhere.
+>
+> > +#     greater than 'vcpu-dirty-limit', read processes in guest os
+> > +#     aren't penalized any more, so the algorithm can improve
+> > +#     performance of vCPU during live migration. This is an optional
+> > +#     performance feature and should not affect the correctness of the
+> > +#     existing auto-converge algorithm. (since 8.1)
+> > +#
+>
+> I'm still confused.
+>
+> The text suggests there are two separate algorithms "to throttle down
+> guest": "auto converge" and "dirty limit", and we get to pick one.
+> Correct?
+>
+Yes, indeed !
 
-I think we should remove the check for priv_ver for many user mode 
-extensions. We should set the checking privilege specification version 
-for these extensions to PRIV_VERSION_1_10_0.
+>
+> If it is correct, then the last sentence feels redundant: picking
+> another algorithm can't affect the algorithm we're *not* using.  What
+> are you trying to express here?
+>
+What i want to express is that the new algorithm implementation does
+not affect the original algorithm, leaving it in the comments seems
+redundant indeed.  I'll drop this in the next version.
 
-Zhiwei
+>
+> When do we use "auto converge", and when do we use "dirty limit"?
+>
+> What does the user really need to know about these algorithms?  Enough
+> to pick one, I guess.  That means advantages and disadvantages of the
+> two algorithms.  Which are?
 
-> +    if (riscv_has_ext(env, RVC) && env->priv_ver >= PRIV_VERSION_1_12_0) {
->           cpu->cfg.ext_zca = true;
->           if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
->               cpu->cfg.ext_zcf = true;
+1. The implementation of dirty-limit is based on dirty-ring, which is
+qualified
+   to big systems with huge memories and can improve huge guest VM
+    responsiveness remarkably during live migration. As a consequence,
+dirty-limit
+    is recommended on platforms with huge guest VMs as is the way with
+dirty-ring.
+2. dirty-limit convergence algorithm does not affect the "read-process" in
+guest
+   VM, so guest VM gains the equal read performance nearly as it runs on
+host
+   during the live migration. As a result, dirty-limit is recommended if
+the guest
+    VM requires a stable read performance.
+The above explanation is about the recommendation of dirty-limit, please
+review,
+if it's ok, i'll place it in the comment of the dirty-limit capability.
+
+>
+> >  # Features:
+> >  #
+> >  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
+> > @@ -512,7 +521,8 @@
+> >             'dirty-bitmaps', 'postcopy-blocktime', 'late-block-activate=
+',
+> >             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
+> >             'validate-uuid', 'background-snapshot',
+> > -           'zero-copy-send', 'postcopy-preempt', 'switchover-ack'] }
+> > +           'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
+> > +           'dirty-limit'] }
+> >
+> >  ##
+> >  # @MigrationCapabilityStatus:
+>
+> [...]
+>
+> Thank Markus again for the attention to this patchset. :)
+Yong
+--=20
+Best regards
+
+--0000000000008a34970600b90754
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><div class=
+=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jul 13, 2023=
+ at 8:44=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.c=
+om">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_qu=
+ote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-st=
+yle:solid;border-left-color:rgb(204,204,204);padding-left:1ex">~hyman &lt;<=
+a href=3D"mailto:hyman@git.sr.ht" target=3D"_blank">hyman@git.sr.ht</a>&gt;=
+ writes:<br>
+<br>
+&gt; From: Hyman Huang(=E9=BB=84=E5=8B=87) &lt;<a href=3D"mailto:yong.huang=
+@smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
+&gt;<br>
+&gt; Introduce migration dirty-limit capability, which can<br>
+&gt; be turned on before live migration and limit dirty<br>
+&gt; page rate durty live migration.<br>
+&gt;<br>
+&gt; Introduce migrate_dirty_limit function to help check<br>
+&gt; if dirty-limit capability enabled during live migration.<br>
+&gt;<br>
+&gt; Meanwhile, refactor vcpu_dirty_rate_stat_collect<br>
+&gt; so that period can be configured instead of hardcoded.<br>
+&gt;<br>
+&gt; dirty-limit capability is kind of like auto-converge<br>
+&gt; but using dirty limit instead of traditional cpu-throttle<br>
+&gt; to throttle guest down. To enable this feature, turn on<br>
+&gt; the dirty-limit capability before live migration using<br>
+&gt; migrate-set-capabilities, and set the parameters<br>
+&gt; &quot;x-vcpu-dirty-limit-period&quot;, &quot;vcpu-dirty-limit&quot; su=
+itably<br>
+&gt; to speed up convergence.<br>
+&gt;<br>
+&gt; Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) &lt;<a href=3D"mailto:y=
+ong.huang@smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
+&gt; Acked-by: Peter Xu &lt;<a href=3D"mailto:peterx@redhat.com" target=3D"=
+_blank">peterx@redhat.com</a>&gt;<br>
+&gt; Reviewed-by: Juan Quintela &lt;<a href=3D"mailto:quintela@redhat.com" =
+target=3D"_blank">quintela@redhat.com</a>&gt;<br>
+<br>
+[...]<br>
+<br>
+&gt; diff --git a/qapi/migration.json b/qapi/migration.json<br>
+&gt; index e43371955a..031832cde5 100644<br>
+&gt; --- a/qapi/migration.json<br>
+&gt; +++ b/qapi/migration.json<br>
+&gt; @@ -497,6 +497,15 @@<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0are present.=C2=A0 &#39;return-path&#39; ca=
+pability must be enabled to use<br>
+&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0it.=C2=A0 (since 8.1)<br>
+&gt;=C2=A0 #<br>
+&gt; +# @dirty-limit: If enabled, migration will use the dirty-limit<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0algorithm to throttle down guest instead of auto=
+-converge<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0algorithm. This algorithm only works when vCPU&#=
+39;s dirtyrate<br>
+<br>
+Two spaces after sentence-ending punctuation, please.<br>
+<br>
+&quot;dirty rate&quot; with a space, because that&#39;s how we spell it els=
+ewhere.<br>
+<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0greater than &#39;vcpu-dirty-limit&#39;, read pr=
+ocesses in guest os<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0aren&#39;t penalized any more, so the algorithm =
+can improve<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0performance of vCPU during live migration. This =
+is an optional<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0performance feature and should not affect the co=
+rrectness of the<br>
+&gt; +#=C2=A0 =C2=A0 =C2=A0existing auto-converge algorithm. (since 8.1)<br=
+>
+&gt; +#<br>
+<br>
+I&#39;m still confused.<br>
+<br>
+The text suggests there are two separate algorithms &quot;to throttle down<=
+br>
+guest&quot;: &quot;auto converge&quot; and &quot;dirty limit&quot;, and we =
+get to pick one.<br>
+Correct?<br></blockquote><div class=3D"gmail_default" style=3D"font-family:=
+&quot;comic sans ms&quot;,sans-serif">Yes, indeed !</div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;bo=
+rder-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">
+<br>
+If it is correct, then the last sentence feels redundant: picking<br>
+another algorithm can&#39;t affect the algorithm we&#39;re *not* using.=C2=
+=A0 What<br>
+are you trying to express here?<br></blockquote><div class=3D"gmail_default=
+" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">What i want to=
+ express is that the new algorithm implementation does</div><div class=3D"g=
+mail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">no=
+t affect the original algorithm, leaving it in the comments seems</div><div=
+ class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,san=
+s-serif">redundant indeed.=C2=A0 I&#39;ll drop this in the next version.</d=
+iv><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bord=
+er-left-width:1px;border-left-style:solid;border-left-color:rgb(204,204,204=
+);padding-left:1ex">
+<br>
+When do we use &quot;auto converge&quot;, and when do we use &quot;dirty li=
+mit&quot;?<br>
+<br>
+What does the user really need to know about these algorithms?=C2=A0 Enough=
+<br>
+to pick one, I guess.=C2=A0 That means advantages and disadvantages of the<=
+br>
+two algorithms.=C2=A0 Which are?</blockquote><span class=3D"gmail_default" =
+style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">1. The implement=
+ation of dirty-limit is based on dirty-ring, which is qualified</span></div=
+><div class=3D"gmail_quote"><font face=3D"comic sans ms, sans-serif"><span =
+class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans=
+-serif"> =C2=A0 =C2=A0to big systems with huge memories and can improve hug=
+e guest VM</span></font></div><div class=3D"gmail_quote"><font face=3D"comi=
+c sans ms, sans-serif"><span class=3D"gmail_default" style=3D"font-family:&=
+quot;comic sans ms&quot;,sans-serif">=C2=A0 =C2=A0 responsiveness remarkabl=
+y during live migration. As a consequence, dirty-limit</span></font></div><=
+div class=3D"gmail_quote"><font face=3D"comic sans ms, sans-serif"><span cl=
+ass=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-s=
+erif">=C2=A0 =C2=A0 is recommended on platforms with huge guest VMs as is t=
+he way with dirty-ring.</span></font></div><div class=3D"gmail_quote"><font=
+ face=3D"comic sans ms, sans-serif"><span class=3D"gmail_default" style=3D"=
+font-family:&quot;comic sans ms&quot;,sans-serif">2. dirty-limit convergenc=
+e algorithm does not affect the &quot;read-process&quot; in guest</span></f=
+ont></div><div class=3D"gmail_quote"><font face=3D"comic sans ms, sans-seri=
+f"><span class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&q=
+uot;,sans-serif"> =C2=A0 =C2=A0VM, so guest VM gains the equal read perform=
+ance nearly as it runs on host</span></font></div><div class=3D"gmail_quote=
+"><font face=3D"comic sans ms, sans-serif"><span class=3D"gmail_default" st=
+yle=3D"font-family:&quot;comic sans ms&quot;,sans-serif"> =C2=A0 =C2=A0duri=
+ng the live migration. As a result, dirty-limit is recommended if the guest=
+</span></font></div><div class=3D"gmail_quote"><font face=3D"comic sans ms,=
+ sans-serif"><span class=3D"gmail_default" style=3D"font-family:&quot;comic=
+ sans ms&quot;,sans-serif">=C2=A0 =C2=A0 VM requires a stable read performa=
+nce.</span></font></div><div class=3D"gmail_quote"><font face=3D"comic sans=
+ ms, sans-serif"><span class=3D"gmail_default" style=3D"font-family:&quot;c=
+omic sans ms&quot;,sans-serif">The above explanation is about the recommend=
+ation of dirty-limit, please review,</span></font></div><div class=3D"gmail=
+_quote"><font face=3D"comic sans ms, sans-serif"><span class=3D"gmail_defau=
+lt" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">if it&#39;s =
+ok, i&#39;ll place it in the comment of the dirty-limit capability.</span><=
+/font></div><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:sol=
+id;border-left-color:rgb(204,204,204);padding-left:1ex"><br>
+&gt;=C2=A0 # Features:<br>
+&gt;=C2=A0 #<br>
+&gt;=C2=A0 # @unstable: Members @x-colo and @x-ignore-shared are experiment=
+al.<br>
+&gt; @@ -512,7 +521,8 @@<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;dirty-bitmaps&#39;=
+, &#39;postcopy-blocktime&#39;, &#39;late-block-activate&#39;,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0{ &#39;name&#39;: &#39;=
+x-ignore-shared&#39;, &#39;features&#39;: [ &#39;unstable&#39; ] },<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;validate-uuid&#39;=
+, &#39;background-snapshot&#39;,<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;zero-copy-send&#39;, &#=
+39;postcopy-preempt&#39;, &#39;switchover-ack&#39;] }<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;zero-copy-send&#39;, &#=
+39;postcopy-preempt&#39;, &#39;switchover-ack&#39;,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;dirty-limit&#39;] }<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 ##<br>
+&gt;=C2=A0 # @MigrationCapabilityStatus:<br>
+<br>
+[...]<br>
+<br>
+</blockquote></div><div><div class=3D"gmail_default" style=3D"font-family:&=
+quot;comic sans ms&quot;,sans-serif">Thank Markus again for the attention t=
+o this patchset.  :)</div></div><div><div style=3D"white-space:pre-wrap"><d=
+iv class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,s=
+ans-serif"></div><div class=3D"gmail_default" style=3D"font-family:&quot;co=
+mic sans ms&quot;,sans-serif">Yong</div></div></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
+
+--0000000000008a34970600b90754--
 
