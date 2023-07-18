@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599DD757818
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E788757816
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:32:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLh2o-00042c-Tg; Tue, 18 Jul 2023 05:30:58 -0400
+	id 1qLh2x-000452-32; Tue, 18 Jul 2023 05:31:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2m-00041m-MK
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2p-00043s-3N
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2l-0004F4-By
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:56 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2m-0004FQ-Gr
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689672654;
+ s=mimecast20190719; t=1689672655;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zHSH2f6sNdUL3OXSLvMYszb1rthfkO1fWtFRariBUVA=;
- b=LecodnJgV7BL/Nsr+Xqf6v9x0wH/K4hTW77FiHfv7HcPPBNdTMmP74F+ZSg5I3WTrGjKqB
- x85y7tHvKYML4Hw4yrHdBb8H64Ons/ocLArr145TY98Xdq0ttDDMMF50+l/UxGZxC2G8IC
- 8LO2HPDHAOjSOR/Ar2goTvTXsWP5Ie0=
+ bh=10Hf9TvKlJRB2JDOPZ02jBkzxfqVji3pOM00MBYZzzw=;
+ b=PgUXitdI614OMh1JvFPCBEVudaDiUIKm4/VqwTmDvGR+ZJwOLd05suA1t6VqfUPT2eSeUR
+ MHQI/6rB6fvq8rPYuN8qLvsCcVVoivuFkgDBNOmg6nmB3J8SJoqqUu02MTBa8P49CvY4Y+
+ qmPWJwsjbnLx2VV1X4gCyn2dOESItRw=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-479-1NP3Kue-NDSFO3gg-_bjBg-1; Tue, 18 Jul 2023 05:30:51 -0400
-X-MC-Unique: 1NP3Kue-NDSFO3gg-_bjBg-1
+ us-mta-6-ueNHjiWHNzW0QdLTtlqOhQ-1; Tue, 18 Jul 2023 05:30:52 -0400
+X-MC-Unique: ueNHjiWHNzW0QdLTtlqOhQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C94202A59542;
- Tue, 18 Jul 2023 09:30:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1C26A3C13920;
+ Tue, 18 Jul 2023 09:30:52 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.89])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D424D2166B25;
- Tue, 18 Jul 2023 09:30:49 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2147F2166B25;
+ Tue, 18 Jul 2023 09:30:50 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 6/8] tests/vm: Introduce get_qemu_packages_from_lcitool_json()
- helper
-Date: Tue, 18 Jul 2023 11:30:38 +0200
-Message-Id: <20230718093040.172145-7-thuth@redhat.com>
+Subject: [PULL 7/8] tests/vm/freebsd: Get up-to-date package list from lcitool
+ vars file
+Date: Tue, 18 Jul 2023 11:30:39 +0200
+Message-Id: <20230718093040.172145-8-thuth@redhat.com>
 In-Reply-To: <20230718093040.172145-1-thuth@redhat.com>
 References: <20230718093040.172145-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,47 +82,79 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Add the get_qemu_packages_from_lcitool_json() helper which return
-such package list from a lcitool env var file in JSON format.
+Get an up-to-date package list from lcitool, that way we
+don't need to manually keep this array in sync.
 
-Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-Id: <20230711144922.67491-4-philmd@linaro.org>
+Inspired-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20230711144922.67491-5-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/vm/basevm.py | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tests/vm/freebsd | 42 ++----------------------------------------
+ 1 file changed, 2 insertions(+), 40 deletions(-)
 
-diff --git a/tests/vm/basevm.py b/tests/vm/basevm.py
-index 23229e23d1..a97e23b0ce 100644
---- a/tests/vm/basevm.py
-+++ b/tests/vm/basevm.py
-@@ -27,6 +27,7 @@
- import multiprocessing
- import traceback
- import shlex
-+import json
+diff --git a/tests/vm/freebsd b/tests/vm/freebsd
+index 11de6473f4..ac51376c82 100755
+--- a/tests/vm/freebsd
++++ b/tests/vm/freebsd
+@@ -31,45 +31,6 @@ class FreeBSDVM(basevm.BaseVM):
+     link = "https://download.freebsd.org/releases/CI-IMAGES/13.2-RELEASE/amd64/Latest/FreeBSD-13.2-RELEASE-amd64-BASIC-CI.raw.xz"
+     csum = "a4fb3b6c7b75dd4d58fb0d75e4caf72844bffe0ca00e66459c028b198ffb3c0e"
+     size = "20G"
+-    pkgs = [
+-        # build tools
+-        "git",
+-        "pkgconf",
+-        "bzip2",
+-        "python39",
+-        "ninja",
+-
+-        # gnu tools
+-        "bash",
+-        "gmake",
+-        "gsed",
+-        "gettext",
+-
+-        # libs: crypto
+-        "gnutls",
+-
+-        # libs: images
+-        "jpeg-turbo",
+-        "png",
+-
+-        # libs: ui
+-        "sdl2",
+-        "gtk3",
+-        "libxkbcommon",
+-
+-        # libs: opengl
+-        "libepoxy",
+-        "mesa-libs",
+-
+-        # libs: migration
+-        "zstd",
+-
+-        # libs: networking
+-        "libslirp",
+-
+-        # libs: sndio
+-        "sndio",
+-    ]
  
- from qemu.machine import QEMUMachine
- from qemu.utils import get_info_usernet_hostfwd_port, kvm_available
-@@ -501,6 +502,16 @@ def gen_cloud_init_iso(self):
-                               stderr=self._stdout)
-         return os.path.join(cidir, "cloud-init.iso")
+     BUILD_SCRIPT = """
+         set -e;
+@@ -151,8 +112,9 @@ class FreeBSDVM(basevm.BaseVM):
+         self.console_wait(prompt)
+         self.console_send("echo 'chmod 666 /dev/vtbd1' >> /etc/rc.local\n")
  
-+    def get_qemu_packages_from_lcitool_json(self, json_path=None):
-+        """Parse a lcitool variables json file and return the PKGS list."""
-+        if json_path is None:
-+            json_path = os.path.join(
-+                os.path.dirname(__file__), "generated", self.name + ".json"
-+            )
-+        with open(json_path, "r") as fh:
-+            return json.load(fh)["pkgs"]
-+
-+
- def get_qemu_path(arch, build_path=None):
-     """Fetch the path to the qemu binary."""
-     # If QEMU environment variable set, it takes precedence
++        pkgs = self.get_qemu_packages_from_lcitool_json()
+         self.print_step("Installing packages")
+-        self.ssh_root_check("pkg install -y %s\n" % " ".join(self.pkgs))
++        self.ssh_root_check("pkg install -y %s\n" % " ".join(pkgs))
+ 
+         # shutdown
+         self.ssh_root(self.poweroff)
 -- 
 2.39.3
 
