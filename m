@@ -2,59 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8D05757819
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FE875781D
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 11:33:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLh2l-000414-QH; Tue, 18 Jul 2023 05:30:55 -0400
+	id 1qLh2l-000411-JV; Tue, 18 Jul 2023 05:30:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2f-0003zb-Hm
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2i-0003zm-Cy
  for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2d-0004C0-Vp
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:49 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qLh2f-0004CR-MD
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 05:30:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689672646;
+ s=mimecast20190719; t=1689672647;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qZeEJXXcsKrADfEPlgmlgoy3efKYccao4IULmLaV7SQ=;
- b=dyIGU7PLXw60rB3dWBbrZW/qDahiPfKQ8K/zOkgiS9sDCF2EOlGMGtNEujIDWJ9V4gNO0O
- i+prkFK3h9ySYw9NX49RPXCVUn5EmIPWy518zpeJPkVxuxBX7AZHfHs7ttzQmBIvPT62f0
- V+W8suIi02Avq4uLvS5h5BSJ7DPJxo4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-63-xk85MK4mPeahozjIoa8DTg-1; Tue, 18 Jul 2023 05:30:44 -0400
-X-MC-Unique: xk85MK4mPeahozjIoa8DTg-1
+ bh=UUeQPtP30wQxP8JoXzo3N+r7lwBqLZRP2oscgHfdIWQ=;
+ b=AkclXmw4Pxxb/v5M0xG9dnKvXLY4H/suGXtIHHAch/pMy8gOm1W5i4bmsN4o0sIFA+nzO1
+ UHt79kqR63srLHJZo4vW8yLxaV0QOxevFOZgt6Kug8mwi4VLEmHl8tbgg7OHcqYKuaP4T7
+ 4a2UAELr7q37Y/FSGp02C4sUaZuKB38=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-42-XkMLJHCEPVubQb8t753U7A-1; Tue, 18 Jul 2023 05:30:45 -0400
+X-MC-Unique: XkMLJHCEPVubQb8t753U7A-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3F21185A58A;
- Tue, 18 Jul 2023 09:30:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 636E12A59542;
+ Tue, 18 Jul 2023 09:30:45 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.193.89])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 41A2D2166B25;
- Tue, 18 Jul 2023 09:30:43 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 85F352166B25;
+ Tue, 18 Jul 2023 09:30:44 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Richard Henderson <richard.henderson@linaro.org>
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 1/8] s390x: Fix QEMU abort by selecting S390_FLIC_KVM
-Date: Tue, 18 Jul 2023 11:30:33 +0200
-Message-Id: <20230718093040.172145-2-thuth@redhat.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PULL 2/8] linux-user/elfload: Fix /proc/cpuinfo features: on s390x
+Date: Tue, 18 Jul 2023 11:30:34 +0200
+Message-Id: <20230718093040.172145-3-thuth@redhat.com>
 In-Reply-To: <20230718093040.172145-1-thuth@redhat.com>
 References: <20230718093040.172145-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -79,47 +77,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@redhat.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-If QEMU is built with --without-default-devices, the s390-flic-kvm
-device is missing and QEMU aborts when started with the KVM accelerator.
-Make sure it's available by selecting S390_FLIC_KVM in Kconfig.
+elf_hwcap_str() takes a bit number, but compares it for equality with
+the HWCAP_S390_* masks. This causes /proc/cpuinfo to display incorrect
+hwcaps.
 
-Consequently, this also fixes an abort in tests/qtest/migration-test.
+Fix by introducing the HWCAP_S390_NR_* constants and using them in
+elf_hwcap_str() instead of the HWCAP_S390_*. While at it, add the
+missing nnpa, pcimio and sie hwcaps from the latest kernel.
 
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Message-Id: <20230711151440.716822-1-clg@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Output before:
+
+	features	: esan3 zarch stfle msa
+
+Output after:
+
+	features	: esan3 zarch stfle msa ldisp eimm etf3eh highgprs vx vxe
+
+Fixes: e19807bee357 ("linux-user/elfload: Introduce elf_hwcap_str() on s390x")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20230627151356.273259-1-iii@linux.ibm.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/intc/Kconfig  | 1 -
- hw/s390x/Kconfig | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ include/elf.h        | 66 +++++++++++++++++++++++++++++++-------------
+ linux-user/elfload.c | 41 ++++++++++++++-------------
+ 2 files changed, 69 insertions(+), 38 deletions(-)
 
-diff --git a/hw/intc/Kconfig b/hw/intc/Kconfig
-index 21441d0a0c..97d550b06b 100644
---- a/hw/intc/Kconfig
-+++ b/hw/intc/Kconfig
-@@ -49,7 +49,6 @@ config S390_FLIC
+diff --git a/include/elf.h b/include/elf.h
+index 2f4d0e56d1..ec9755e73b 100644
+--- a/include/elf.h
++++ b/include/elf.h
+@@ -596,25 +596,53 @@ typedef struct {
  
- config S390_FLIC_KVM
-     bool
--    default y
-     depends on S390_FLIC && KVM
+ /* Bits present in AT_HWCAP for s390.  */
  
- config OMPIC
-diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
-index e8d4d68ece..4c068d7960 100644
---- a/hw/s390x/Kconfig
-+++ b/hw/s390x/Kconfig
-@@ -8,6 +8,7 @@ config S390_CCW_VIRTIO
-     imply PCIE_DEVICES
-     select PCI_EXPRESS
-     select S390_FLIC
-+    select S390_FLIC_KVM if KVM
-     select SCLPCONSOLE
-     select VIRTIO_CCW
-     select MSI_NONBROKEN
+-#define HWCAP_S390_ESAN3        1
+-#define HWCAP_S390_ZARCH        2
+-#define HWCAP_S390_STFLE        4
+-#define HWCAP_S390_MSA          8
+-#define HWCAP_S390_LDISP        16
+-#define HWCAP_S390_EIMM         32
+-#define HWCAP_S390_DFP          64
+-#define HWCAP_S390_HPAGE        128
+-#define HWCAP_S390_ETF3EH       256
+-#define HWCAP_S390_HIGH_GPRS    512
+-#define HWCAP_S390_TE           1024
+-#define HWCAP_S390_VXRS         2048
+-#define HWCAP_S390_VXRS_BCD     4096
+-#define HWCAP_S390_VXRS_EXT     8192
+-#define HWCAP_S390_GS           16384
+-#define HWCAP_S390_VXRS_EXT2    32768
+-#define HWCAP_S390_VXRS_PDE     65536
+-#define HWCAP_S390_SORT         131072
+-#define HWCAP_S390_DFLT         262144
++#define HWCAP_S390_NR_ESAN3      0
++#define HWCAP_S390_NR_ZARCH      1
++#define HWCAP_S390_NR_STFLE      2
++#define HWCAP_S390_NR_MSA        3
++#define HWCAP_S390_NR_LDISP      4
++#define HWCAP_S390_NR_EIMM       5
++#define HWCAP_S390_NR_DFP        6
++#define HWCAP_S390_NR_HPAGE      7
++#define HWCAP_S390_NR_ETF3EH     8
++#define HWCAP_S390_NR_HIGH_GPRS  9
++#define HWCAP_S390_NR_TE        10
++#define HWCAP_S390_NR_VXRS      11
++#define HWCAP_S390_NR_VXRS_BCD  12
++#define HWCAP_S390_NR_VXRS_EXT  13
++#define HWCAP_S390_NR_GS        14
++#define HWCAP_S390_NR_VXRS_EXT2 15
++#define HWCAP_S390_NR_VXRS_PDE  16
++#define HWCAP_S390_NR_SORT      17
++#define HWCAP_S390_NR_DFLT      18
++#define HWCAP_S390_NR_VXRS_PDE2 19
++#define HWCAP_S390_NR_NNPA      20
++#define HWCAP_S390_NR_PCI_MIO   21
++#define HWCAP_S390_NR_SIE       22
++
++#define HWCAP_S390_ESAN3     (1 << HWCAP_S390_NR_ESAN3)
++#define HWCAP_S390_ZARCH     (1 << HWCAP_S390_NR_ZARCH)
++#define HWCAP_S390_STFLE     (1 << HWCAP_S390_NR_STFLE)
++#define HWCAP_S390_MSA       (1 << HWCAP_S390_NR_MSA)
++#define HWCAP_S390_LDISP     (1 << HWCAP_S390_NR_LDISP)
++#define HWCAP_S390_EIMM      (1 << HWCAP_S390_NR_EIMM)
++#define HWCAP_S390_DFP       (1 << HWCAP_S390_NR_DFP)
++#define HWCAP_S390_HPAGE     (1 << HWCAP_S390_NR_HPAGE)
++#define HWCAP_S390_ETF3EH    (1 << HWCAP_S390_NR_ETF3EH)
++#define HWCAP_S390_HIGH_GPRS (1 << HWCAP_S390_NR_HIGH_GPRS)
++#define HWCAP_S390_TE        (1 << HWCAP_S390_NR_TE)
++#define HWCAP_S390_VXRS      (1 << HWCAP_S390_NR_VXRS)
++#define HWCAP_S390_VXRS_BCD  (1 << HWCAP_S390_NR_VXRS_BCD)
++#define HWCAP_S390_VXRS_EXT  (1 << HWCAP_S390_NR_VXRS_EXT)
++#define HWCAP_S390_GS        (1 << HWCAP_S390_NR_GS)
++#define HWCAP_S390_VXRS_EXT2 (1 << HWCAP_S390_NR_VXRS_EXT2)
++#define HWCAP_S390_VXRS_PDE  (1 << HWCAP_S390_NR_VXRS_PDE)
++#define HWCAP_S390_SORT      (1 << HWCAP_S390_NR_SORT)
++#define HWCAP_S390_DFLT      (1 << HWCAP_S390_NR_DFLT)
++#define HWCAP_S390_VXRS_PDE2 (1 << HWCAP_S390_NR_VXRS_PDE2)
++#define HWCAP_S390_NNPA      (1 << HWCAP_S390_NR_NNPA)
++#define HWCAP_S390_PCI_MIO   (1 << HWCAP_S390_NR_PCI_MIO)
++#define HWCAP_S390_SIE       (1 << HWCAP_S390_NR_SIE)
+ 
+ /* M68K specific definitions. */
+ /* We use the top 24 bits to encode information about the
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index a26200d9f3..861ec07abc 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -1621,25 +1621,28 @@ uint32_t get_elf_hwcap(void)
+ const char *elf_hwcap_str(uint32_t bit)
+ {
+     static const char *hwcap_str[] = {
+-        [HWCAP_S390_ESAN3]     = "esan3",
+-        [HWCAP_S390_ZARCH]     = "zarch",
+-        [HWCAP_S390_STFLE]     = "stfle",
+-        [HWCAP_S390_MSA]       = "msa",
+-        [HWCAP_S390_LDISP]     = "ldisp",
+-        [HWCAP_S390_EIMM]      = "eimm",
+-        [HWCAP_S390_DFP]       = "dfp",
+-        [HWCAP_S390_HPAGE]     = "edat",
+-        [HWCAP_S390_ETF3EH]    = "etf3eh",
+-        [HWCAP_S390_HIGH_GPRS] = "highgprs",
+-        [HWCAP_S390_TE]        = "te",
+-        [HWCAP_S390_VXRS]      = "vx",
+-        [HWCAP_S390_VXRS_BCD]  = "vxd",
+-        [HWCAP_S390_VXRS_EXT]  = "vxe",
+-        [HWCAP_S390_GS]        = "gs",
+-        [HWCAP_S390_VXRS_EXT2] = "vxe2",
+-        [HWCAP_S390_VXRS_PDE]  = "vxp",
+-        [HWCAP_S390_SORT]      = "sort",
+-        [HWCAP_S390_DFLT]      = "dflt",
++        [HWCAP_S390_NR_ESAN3]     = "esan3",
++        [HWCAP_S390_NR_ZARCH]     = "zarch",
++        [HWCAP_S390_NR_STFLE]     = "stfle",
++        [HWCAP_S390_NR_MSA]       = "msa",
++        [HWCAP_S390_NR_LDISP]     = "ldisp",
++        [HWCAP_S390_NR_EIMM]      = "eimm",
++        [HWCAP_S390_NR_DFP]       = "dfp",
++        [HWCAP_S390_NR_HPAGE]     = "edat",
++        [HWCAP_S390_NR_ETF3EH]    = "etf3eh",
++        [HWCAP_S390_NR_HIGH_GPRS] = "highgprs",
++        [HWCAP_S390_NR_TE]        = "te",
++        [HWCAP_S390_NR_VXRS]      = "vx",
++        [HWCAP_S390_NR_VXRS_BCD]  = "vxd",
++        [HWCAP_S390_NR_VXRS_EXT]  = "vxe",
++        [HWCAP_S390_NR_GS]        = "gs",
++        [HWCAP_S390_NR_VXRS_EXT2] = "vxe2",
++        [HWCAP_S390_NR_VXRS_PDE]  = "vxp",
++        [HWCAP_S390_NR_SORT]      = "sort",
++        [HWCAP_S390_NR_DFLT]      = "dflt",
++        [HWCAP_S390_NR_NNPA]      = "nnpa",
++        [HWCAP_S390_NR_PCI_MIO]   = "pcimio",
++        [HWCAP_S390_NR_SIE]       = "sie",
+     };
+ 
+     return bit < ARRAY_SIZE(hwcap_str) ? hwcap_str[bit] : NULL;
 -- 
 2.39.3
 
