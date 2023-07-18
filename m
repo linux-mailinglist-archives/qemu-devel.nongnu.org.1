@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 828A075851A
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE1D75851B
 	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 20:54:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLpoe-0000tS-SD; Tue, 18 Jul 2023 14:52:56 -0400
+	id 1qLpoe-0000tl-Bh; Tue, 18 Jul 2023 14:52:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLpoc-0000sr-9J
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 14:52:54 -0400
-Received: from mout.gmx.net ([212.227.15.19])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>)
+ id 1qLpoc-0000sq-95; Tue, 18 Jul 2023 14:52:54 -0400
+Received: from mout.gmx.net ([212.227.15.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qLpoZ-0003Nk-6F
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 14:52:53 -0400
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>)
+ id 1qLpoV-0003NN-OH; Tue, 18 Jul 2023 14:52:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
  s=s31663417; t=1689706364; x=1690311164; i=deller@gmx.de;
- bh=GcJX0PwH05RXdjGqj9MYbykoFQSW3eaMaUjhr3sxux0=;
+ bh=Rx4B0JKQX5xnCv8PHKKcBOIyM5MzrsGvZF5tbMB77Mo=;
  h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=Ztl+Q5uUoRHcolJ0kyOVC9lpWiQjlOOC/WnqClUpvrN3IxY9/8DOMzCLnwr1dAxHPaKjw3/
- Vu91QItsoHAiLavxS3KwpQRR9PKRo3h4msra7nUgsHFhPtOmAOVNc2SUEYON77mFhEBhN/Elo
- 8svQEYAEnIdURpEiMSJzOQyAC312AqLBsinzP8vRsuf2jFtbUAHnq025PfMMr4pRkK3vlAcDf
- hgjOh+tx3akAqN6EXRICpeExSIy4eTgCMw4fdaYFCSTKcoebUM9vE0pkF3ukillbUyqh8vQBR
- KSAoJRnHzZCXV+K2CtrEg5iAXvwovms0iGm2UiWMhtmUyJiaTSgg==
+ b=eoXHds/vxsoNXrLOVhtylLa9K+yFbiLykAqSXD30UGXYnoqJyiGzYshSo5oQhZStiee86GF
+ 5HRxFgTQHdHi9agafm197Ru1lgvnO+iRBpEJ76CP5trTyZi23M4C3HeFSUqgA+qUr61M7ZlhR
+ NupfoF3/oVOtg4T0fuY+rwYmSfD3bEFFiHv8R+yzOVecVCIktl2kQl/eH7610SU8WNd9CL+ub
+ TmvlQOh3xsyafqZc4eM2cutVHJx2QJ/Ii2aku6bNNjCIoU5na+hPe/bPgCTUDJBmfaTnx3IGW
+ 0J6QiG4yi/6mG0Lfsds0J29EchzHM0886QUWun1HqwFlNiSBeySQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([94.134.159.74]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mi2Jn-1piMBx1rur-00e75H; Tue, 18
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mkpav-1peXlT2WoZ-00mMPt; Tue, 18
  Jul 2023 20:52:44 +0200
 From: Helge Deller <deller@gmx.de>
 To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>, Andreas Schwab <schwab@suse.de>,
  Richard Henderson <richard.henderson@linaro.org>
 Cc: Helge Deller <deller@gmx.de>,
-	John Reiser <jreiser@BitWagon.com>
-Subject: [PATCH v2 4/5] linux-user: Fix strace output for old_mmap
-Date: Tue, 18 Jul 2023 20:52:40 +0200
-Message-ID: <20230718185241.11433-5-deller@gmx.de>
+	qemu-stable@nongnu.org
+Subject: [PATCH v2 5/5] linux-user: Fix qemu-arm to run static armhf binaries
+Date: Tue, 18 Jul 2023 20:52:41 +0200
+Message-ID: <20230718185241.11433-6-deller@gmx.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230718185241.11433-1-deller@gmx.de>
 References: <20230718185241.11433-1-deller@gmx.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0dFX3G0Bd6BSsOP4o7TQN4/V/N++S3lfnco+TNsbJ8h9NXzvxju
- 8lB3mb3bl+qO7WODNETNf0CwsEMsPFwiD9Z79+Ax40PR84/NBIE09GEQA1TBaXk2qIKqIBw
- YXyi7vDdloEqfOzgQQAqa6T4HcpuMKQVV0LFcVrXOUl6+q/qtYSO9cvBTKJ7uPuwH7kon94
- 7VQpkV3LEjzm+3M8IUNcw==
-UI-OutboundReport: notjunk:1;M01:P0:yEey5Un+CoU=;pX/9gPDpN4Wi6iVvXsDDqFdSvAO
- e5mNCiuG3fiESOa9BW/PdoHsDryqJi/F/XuZOvydqdNzPFKyLHL8vDd23BeDEqmgR7jHNrpI+
- VSOMbVpLo+g/f8eJRj0EvePQAfGUuoxDyvf/dYBliVzzUSWA6MrxlChxXtvmclnlLsOBtWb8D
- q5whGVG8emsAgiOIXwTEBPstQ3PSraPSnKFoX3zRTyFbW/30lm5QSq/xWcWS178FGZRWlV8fi
- ueVWyS2JeNxtR+iL97iYf/B3ZiXrFPsts4x+GapRR8fD1XExd/7n565BC9Eq1AtdfBTd2AHWq
- DuF1c+0Ys7JfAiC1A6BtytxRH+hghgDGYFPXrJ4SfbwjaQGWIImS1N/tUSBOYQwc18nYPvXd8
- MjRBeRYUCrGSesabXpP1Iy7D9n3RRvBn/hpNOxbxZBh+RSVr7IfZkvY9uTpALZHQadNrJOVOo
- Vq8FI0bCerhtBZxfH8zK6IGW49UUJII9y0UDB400m5meB8KO0Nsdz1bRzW4VzVnzRcOLcXgY6
- o7DpH2MPb1A0g0wFY3j4NWjpre2ilQDse7oU3RF1vYXFZuNPhDwBaJu5gyd0857D8nR9jcIQQ
- vgGuoR1NIPxwHSJw0nCMgqT6QJyNKW+j4pZo4A8DsB07vfhc1rWzwdhqL8OVVKO9ZABC6dljS
- D5o3uQYJznZXxiM5opUxPeDDvKp9DAqxMWQwgcE4dHFL4A0DJIdSPl2TdpeFrKa2uDxD0Aj+e
- +ajG/ZUAEwPgW8+mNlMcRSjR1iIoz52E41Is6OKFBwRMsS8Y5v8S6a4kcGnn/tmkgL/1ogPET
- xspVY/rkF26xcgRBU7x6DHJ2+WJzlk/geN9KvEH/2XXqXUvUlwvqnslKZ1DJFpm6iBhaeR/yG
- gVg+pg/D7FOUcs0mCpdGYrPevOHDfvPcQpSDaw1Yb7aEMwgaC7HvF0zS+kZGUJ6H65lJwmKyi
- EK9K5k3GgnlCs+VcL8g0nJwnhpQ=
-Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
+X-Provags-ID: V03:K1:Uu8rxaudrckdKw3xat1fW6YiGzaEPrChCyZVfu4g/Hd7PmEQYQT
+ qj3a9Yn8Rr1aoaBpYqZm8NhMGyau4DE/XNyIr4b+7lE5ogncRz0XPNrJBZSfOk8rCPIvT4n
+ 4GnKMN+cBfZFhdzgPL4rHdEDWaqOFq8V5Tv2WSRyWgfl5L9KGSmmNaO0IqGoT9YuWLhAN6A
+ Pvx7TsOiwSFHHdy4Iy3hg==
+UI-OutboundReport: notjunk:1;M01:P0:EZd+2tv+q/I=;pU0bylCpK7TdeEHTchkp11B9V62
+ oID3Hoi6pSO6V8mx8qbCCumEkz8/5Zeo0KMbSkt0D/stWJaeFFbKJ6Ky3v9W3daOhIj2rEs2r
+ xZoU/o1639NWn2+hWParotY+4ARGVD+kf7j10Uo5yt6mdNBDT2Ys0VmvvO73uQUfu3JN4uU6+
+ VY0g0JNFjmKVJIXlG3V9m+3VzUHqt28pNJgOz6R11p1oHXGHNzGlWaM59N7s/8FRZpq+326SI
+ PinxhVE/fKpUoYuYCHMMCNdqFv3SMoWxOT/Tzw4f4Z1smEkh0bQz2iDP4/K5eZi+4p+jk1YEo
+ NMKQBKULGADZMjfOGBq5hNk4ftm6fq8Mn9AasNPk6doY4i3iQhx/skI6OVHhf77k2P9BZIV/y
+ 3B3YiCMviT1AAww9EcxcE7ko04Rb0FkBQQVH06Tf4sReW9PxuEHm25kSkmYUpafIr83tHtehp
+ WZMavksfXPwIzSWkKLMYSFQAGas6Gmlm+avIBGj8Zo9fv3vBhWLCVGfpufRTJiB1qn31klo4C
+ WbxCdBRW1YoIoVKrXtHbVV/XS76KCz2sGH2tUNcz4ukWZ7UEqEzEXQqyZin+2VVfsSpfWnzMi
+ wt7HvYEuTzsGCbE4e6liwtXLPtZ/pOLEXVaN3Gqt2gT1fOE1Rj+s4vopUhSNpTZF66VJ9LhXr
+ 83yXZkxeQmIkxQU+W2ZHxJ7SAuA78qnNAi4RwyDV+UBfXCe8cCz6K56ZHAsxeiWxGb7/m3dDP
+ 788G29+sgbl+47tB3YyLY8O/H1gmmnilLVPPubZIrUGI4+ojIyE/MIV+VUyEY1oUFQJDzs0WN
+ Y3S7iKhExFBLa3EtpZPh7pwA5PI33TIRkr7m6kegh+amqwmojRv2f2UnV6fdLMiwiTCDHUNl7
+ 2Zc6LkxdXahgxgqVkAViVcAVpQ6zTSBA2v3+5oLLk/9/ia8EDtN7p/DV3JUIewg3OvJo2p8gr
+ QI0I3L4ucMDOm5OFpka7VhCSI1c=
+Received-SPF: pass client-ip=212.227.15.18; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -86,87 +86,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The old_mmap syscall (e.g. on i386) hands over the parameters in
-a struct. Adjust the strace output to print the correct values.
+qemu-user crashes immediately when running static binaries on the armhf
+architecture. The problem is the memory layout where the executable is
+loaded before the interpreter library, in which case the reserved brk
+region clashes with the interpreter code and is released before qemu
+tries to start the program.
+
+At load time qemu calculates a brk value for interpreter and executable
+each.  The fix is to choose the higher one of both.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: John Reiser <jreiser@BitWagon.com>
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/1760
+Cc: Andreas Schwab <schwab@suse.de>
+Cc: qemu-stable@nongnu.org
+Reported-by:  Venkata.Pyla@toshiba-tsip.com
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1040981
 =2D--
- linux-user/strace.c | 49 +++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 45 insertions(+), 4 deletions(-)
+ linux-user/elfload.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/linux-user/strace.c b/linux-user/strace.c
-index bbd29148d4..e0ab8046ec 100644
-=2D-- a/linux-user/strace.c
-+++ b/linux-user/strace.c
-@@ -3767,10 +3767,24 @@ print_utimensat(CPUArchState *cpu_env, const struc=
-t syscallname *name,
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index a26200d9f3..94951630b1 100644
+=2D-- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3615,6 +3615,13 @@ int load_elf_binary(struct linux_binprm *bprm, stru=
+ct image_info *info)
 
- #if defined(TARGET_NR_mmap) || defined(TARGET_NR_mmap2)
- static void
--print_mmap(CPUArchState *cpu_env, const struct syscallname *name,
-+print_mmap_both(CPUArchState *cpu_env, const struct syscallname *name,
-            abi_long arg0, abi_long arg1, abi_long arg2,
--           abi_long arg3, abi_long arg4, abi_long arg5)
--{
-+           abi_long arg3, abi_long arg4, abi_long arg5,
-+           bool is_old_mmap)
-+{
-+    if (is_old_mmap) {
-+            abi_ulong *v;
-+            abi_ulong argp =3D arg0;
-+            if (!(v =3D lock_user(VERIFY_READ, argp, 6 * sizeof(abi_ulong=
-), 1)))
-+                return;
-+            arg0 =3D tswapal(v[0]);
-+            arg1 =3D tswapal(v[1]);
-+            arg2 =3D tswapal(v[2]);
-+            arg3 =3D tswapal(v[3]);
-+            arg4 =3D tswapal(v[4]);
-+            arg5 =3D tswapal(v[5]);
-+            unlock_user(v, argp, 0);
+     if (elf_interpreter) {
+         load_elf_interp(elf_interpreter, &interp_info, bprm->buf);
++        /*
++         * adjust brk address if the interpreter was loaded above the mai=
+n
++         * executable, e.g. happens with static binaries on armhf
++         */
++        if (interp_info.brk > info->brk) {
++            info->brk =3D interp_info.brk;
 +        }
-     print_syscall_prologue(name);
-     print_pointer(arg0, 0);
-     print_raw_param("%d", arg1, 0);
-@@ -3780,7 +3794,34 @@ print_mmap(CPUArchState *cpu_env, const struct sysc=
-allname *name,
-     print_raw_param("%#x", arg5, 1);
-     print_syscall_epilogue(name);
- }
--#define print_mmap2     print_mmap
-+#endif
-+
-+#if defined(TARGET_NR_mmap)
-+static void
-+print_mmap(CPUArchState *cpu_env, const struct syscallname *name,
-+           abi_long arg0, abi_long arg1, abi_long arg2,
-+           abi_long arg3, abi_long arg4, abi_long arg5)
-+{
-+    return print_mmap_both(cpu_env, name, arg0, arg1, arg2, arg3,
-+                           arg4, arg5,
-+#if defined(TARGET_NR_mmap2)
-+                            true
-+#else
-+                            false
-+#endif
-+                            );
-+}
-+#endif
-+
-+#if defined(TARGET_NR_mmap2)
-+static void
-+print_mmap2(CPUArchState *cpu_env, const struct syscallname *name,
-+           abi_long arg0, abi_long arg1, abi_long arg2,
-+           abi_long arg3, abi_long arg4, abi_long arg5)
-+{
-+    return print_mmap_both(cpu_env, name, arg0, arg1, arg2, arg3,
-+                           arg4, arg5, false);
-+}
- #endif
 
- #ifdef TARGET_NR_mprotect
+         /* If the program interpreter is one of these two, then assume
+            an iBCS2 image.  Otherwise assume a native linux image.  */
 =2D-
 2.41.0
 
