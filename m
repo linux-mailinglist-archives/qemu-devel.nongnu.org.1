@@ -2,71 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5535A757106
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 02:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED7D757163
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 03:37:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLYov-0002hM-Di; Mon, 17 Jul 2023 20:44:05 -0400
+	id 1qLZd7-0008Nq-8A; Mon, 17 Jul 2023 21:35:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1qLYor-0002gX-H7; Mon, 17 Jul 2023 20:44:01 -0400
-Received: from smtp81.cstnet.cn ([159.226.251.81] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1qLYoo-0007B2-L5; Mon, 17 Jul 2023 20:44:01 -0400
-Received: from [192.168.0.120] (unknown [180.175.26.191])
- by APP-03 (Coremail) with SMTP id rQCowAC312RC4LVkZcsbDA--.55003S2;
- Tue, 18 Jul 2023 08:43:47 +0800 (CST)
-Message-ID: <21bd465f-9f27-be77-cb3b-2b44b5f1e837@iscas.ac.cn>
-Date: Tue, 18 Jul 2023 08:43:46 +0800
+ (Exim 4.90_1) (envelope-from <mborgerson@gmail.com>)
+ id 1qLZd4-0008Lj-QP
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 21:35:54 -0400
+Received: from mail-qk1-f180.google.com ([209.85.222.180])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mborgerson@gmail.com>)
+ id 1qLZd3-0007ir-3Z
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 21:35:54 -0400
+Received: by mail-qk1-f180.google.com with SMTP id
+ af79cd13be357-7659cb9c42aso421838585a.3
+ for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 18:35:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689644151; x=1692236151;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XSC7TRhF4x/D+7CSA6CQbeJFzO7VmEZkfATTpaM1HK8=;
+ b=j2YlCk5mUrIDZPVTL7MimXm2UOIGpELn2rubu+hLFrNbcmzyVDOD0mxkAfjOodUDla
+ +PwRxgc9Z3GZ9YDN5MoCN0mITcp76Bo5dYPDZVEw2oeKPO5bg4Jd7TazkvEhdOAwwH5W
+ GaXHCGP4v6EG20a1oe3oQHQhi1MNiUnPyYZ6uCcegvqkLmkWxHJY3P8gAc9i6m7PsEWI
+ zpmHQ4Qs2JgKlIbHPyZH+aqYkANEism2IJHfq6T9M2liyM3bH1bKBO+P7QXs8/n3ogWN
+ fkHqig1e6FZt1f3w+h48PXdAoii0ylBiBwYpkxa9TQ1lZKuUZEUfFt1Q/rKRJenrjUVq
+ plQg==
+X-Gm-Message-State: ABy/qLbz3nvDC3Gl1DFYFS8Vhju8Fj9uSwUBFFLF0IFsM1dyUhlXh+J9
+ 6b2WZR3crwv8F45mQXl0XAD/i0mvFEXIBUHV
+X-Google-Smtp-Source: APBJJlGPp5fmq4O7tAXt6P9o/dF9AM5EmzUBt2JoRpMTW5pTdKpBnOqKFIimYdEy4Tw8bajML7fNig==
+X-Received: by 2002:a05:620a:430c:b0:765:7a1e:a456 with SMTP id
+ u12-20020a05620a430c00b007657a1ea456mr16703462qko.54.1689644151359; 
+ Mon, 17 Jul 2023 18:35:51 -0700 (PDT)
+Received: from neon.. (ip68-106-29-136.ph.ph.cox.net. [68.106.29.136])
+ by smtp.gmail.com with ESMTPSA id
+ s5-20020a17090aad8500b00263b9e75aecsm359956pjq.41.2023.07.17.18.35.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 17 Jul 2023 18:35:50 -0700 (PDT)
+From: Matt Borgerson <contact@mborgerson.com>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Matt Borgerson <contact@mborgerson.com>
+Subject: [PATCH] accel/tcg: Fix guest instruction address in output assembly
+ log
+Date: Mon, 17 Jul 2023 18:35:31 -0700
+Message-Id: <20230718013531.1669100-1-contact@mborgerson.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Cc: liweiwei@iscas.ac.cn, qemu-riscv@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: Re: [PATCH] target/riscv: Fix LMUL check to use minimum SEW
-Content-Language: en-US
-To: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org
-References: <20230706104433.16264-1-rbradford@rivosinc.com>
- <dfc75d1f-f28d-7d2c-26f9-72086ffb54ca@iscas.ac.cn>
- <7a102598badfaa01b0e0c04e4f59e81eac5a2b81.camel@rivosinc.com>
-From: Weiwei Li <liweiwei@iscas.ac.cn>
-In-Reply-To: <7a102598badfaa01b0e0c04e4f59e81eac5a2b81.camel@rivosinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: rQCowAC312RC4LVkZcsbDA--.55003S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxWrWkKw1kKw18uw4rGF1kAFb_yoWrGr15pF
- W8JFW7tFy8X34xZr12q3WDX3y0vF48G3WUJrnYqa4UJws8Gr1qvFn0qF1q9F18AF4fJr1j
- qa4jv3WfZrZ8AFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
- 9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
- rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
- 1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
- 6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
- 4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
- I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
- 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCYjI0SjxkI62AI1cAE67vI
- Y487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
- 0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
- 0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
- W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
- IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU1a9aPUUUU
- U==
-X-Originating-IP: [180.175.26.191]
-X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
-Received-SPF: pass client-ip=159.226.251.81; envelope-from=liweiwei@iscas.ac.cn;
- helo=cstnet.cn
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.097,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=209.85.222.180; envelope-from=mborgerson@gmail.com;
+ helo=mail-qk1-f180.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,126 +80,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+If CF_PCREL is enabled, generated host assembly logging (command line
+option `-d out_asm`) may incorrectly report guest instruction virtual
+addresses as page offsets instead of absolute addresses. This patch
+corrects the reported guest address.
 
-On 2023/7/17 23:13, Rob Bradford wrote:
-> On Thu, 2023-07-06 at 21:22 +0800, Weiwei Li wrote:
->> On 2023/7/6 18:44, Rob Bradford wrote:
->>> The previous check was failing with:
->>>
->>> ELEN = 64 SEW = 16 and LMUL = 1/8 (encoded as 5) which is a valid
->>> combination.
->>>
->>> Fix the check to correctly match the specification by using minimum
->>> SEW
->>> rather than the active SEW.
->>>
->>>   From the specification:
->>>
->>> "In general, the requirement is to support LMUL ≥ SEWMIN/ELEN,
->>> where
->>> SEWMIN is the narrowest supported SEW value and ELEN is the widest
->>> supported SEW value. In the standard extensions, SEWMIN=8. For
->>> standard
->>> vector extensions with ELEN=32, fractional LMULs of 1/2 and 1/4
->>> must be
->>> supported. For standard vector extensions with ELEN=64, fractional
->>> LMULs
->>> of 1/2, 1/4, and 1/8 must be supported."
->>>
->>>   From inspection this new check allows:
->>>
->>> ELEN=64 1/2, 1/4, 1/8 (encoded as 7, 6, 5 respectfully)
->>> ELEN=32 1/2, 1/4 (encoded as 7 and 6 respectfully)
-> Hi Weiwei Li,
->
-> Thanks for your reply. Sorry for delay in replying i've been away.
->
->> This is a little confusing.  there is  note in spec to explain why
->> LMUL
->> ≥ SEW MIN /ELEN:
->>
->> "When LMUL < SEW MIN /ELEN, there is no guarantee an implementation
->> would have enough bits in the fractional vector register to store
->>
->> Note at least one element, as VLEN=ELEN is a valid implementation
->> choice. For example, with VLEN=ELEN=32, and SEW MIN =8, an LMUL of
->>
->> 1/8 would only provide four bits of storage in a vector register."
->>
->> In this way, when VLEN=ELEN=64,  an LMUL of 1/8 would only provide 8
->> bits of storage in a vector register, so it's also not suitable for
->> sew
->> = 16.
->>
->> Maybe we can explain the above description of the spec in another
->> way:
->> we must support lmul=1/8 when ELEN=64, but it's only available when
->> sew = 8.
->>
-> I'm afraid i'm not sure I agree with this comment.
->
-> VLEN=128 ELEN=64 SEW=16 LMUL=1/8 is a perfectly reasonable
-> configuration and contradicts your statement.
->
-> The goal of my patch was to ensure that we permit a valid configuration
-> not to also reject other invalid configurations.
->
-> An extra check that takes into consideration VLEN would also make sense
-> to me:
->
-> e.g. VLEN=64 LMUL=1/8 SEW=16 should be rejected
+Signed-off-by: Matt Borgerson <contact@mborgerson.com>
+---
+ accel/tcg/translate-all.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-Yeah. I agree. But instead of an extra check, I think VLEN is the one 
-that really works instead of ELEN.
-
-Such as when ELEN=32,  LMUL=1/8 with SEW=8 is also a reasonable 
-configuration  if VLEN >= 64.
-
-Regards,
-
-Weiwei Li
-
->
-> Cheers,
->
-> Rob
->
->> Regards,
->>
->> Weiwei Li
->>
->> `
->>
->> Regards,
->>
->> Weiwei Li
->>
->>> Fixes: d9b7609a1fb2 ("target/riscv: rvv-1.0: configure
->>> instructions")
->>>
->>> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
->>> ---
->>>    target/riscv/vector_helper.c | 4 ++--
->>>    1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/target/riscv/vector_helper.c
->>> b/target/riscv/vector_helper.c
->>> index 1e06e7447c..8dfd8fe484 100644
->>> --- a/target/riscv/vector_helper.c
->>> +++ b/target/riscv/vector_helper.c
->>> @@ -43,9 +43,9 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env,
->>> target_ulong s1,
->>>                                                xlen - 1 -
->>> R_VTYPE_RESERVED_SHIFT);
->>>    
->>>        if (lmul & 4) {
->>> -        /* Fractional LMUL. */
->>> +        /* Fractional LMUL - check LMUL >= ELEN/SEW_MIN (8) */
->>>            if (lmul == 4 ||
->>> -            cpu->cfg.elen >> (8 - lmul) < sew) {
->>> +            cpu->cfg.elen >> (8 - lmul) < 8) {
->>>                vill = true;
->>>            }
->>>        }
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index a1782db5dd..859db95cf7 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -283,6 +283,24 @@ static int setjmp_gen_code(CPUArchState *env, TranslationBlock *tb,
+     return tcg_gen_code(tcg_ctx, tb, pc);
+ }
+ 
++static vaddr get_guest_insn_vaddr(TranslationBlock *tb, vaddr pc, size_t insn)
++{
++    g_assert(insn < tb->icount);
++
++    /* FIXME: This replicates the restore_state_to_opc() logic. */
++    vaddr addr = tcg_ctx->gen_insn_data[insn * TARGET_INSN_START_WORDS];
++
++    if (tb_cflags(tb) & CF_PCREL) {
++        addr |= (pc & TARGET_PAGE_MASK);
++    } else {
++#if defined(TARGET_I386)
++        addr -= tb->cs_base;
++#endif
++    }
++
++    return addr;
++}
++
+ /* Called with mmap_lock held for user mode emulation.  */
+ TranslationBlock *tb_gen_code(CPUState *cpu,
+                               vaddr pc, uint64_t cs_base,
+@@ -458,7 +476,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
+             fprintf(logfile, "OUT: [size=%d]\n", gen_code_size);
+             fprintf(logfile,
+                     "  -- guest addr 0x%016" PRIx64 " + tb prologue\n",
+-                    tcg_ctx->gen_insn_data[insn * TARGET_INSN_START_WORDS]);
++                    get_guest_insn_vaddr(tb, pc, insn));
+             chunk_start = tcg_ctx->gen_insn_end_off[insn];
+             disas(logfile, tb->tc.ptr, chunk_start);
+ 
+@@ -471,7 +489,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
+                 size_t chunk_end = tcg_ctx->gen_insn_end_off[insn];
+                 if (chunk_end > chunk_start) {
+                     fprintf(logfile, "  -- guest addr 0x%016" PRIx64 "\n",
+-                            tcg_ctx->gen_insn_data[insn * TARGET_INSN_START_WORDS]);
++                            get_guest_insn_vaddr(tb, pc, insn));
+                     disas(logfile, tb->tc.ptr + chunk_start,
+                           chunk_end - chunk_start);
+                     chunk_start = chunk_end;
+-- 
+2.34.1
 
 
