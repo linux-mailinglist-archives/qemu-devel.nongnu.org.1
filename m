@@ -2,94 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7A7757A86
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 13:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D8C757A95
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 13:40:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLiyc-00059h-7y; Tue, 18 Jul 2023 07:34:46 -0400
+	id 1qLj3J-0006UN-W3; Tue, 18 Jul 2023 07:39:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qLiyZ-00058j-0O; Tue, 18 Jul 2023 07:34:43 -0400
-Received: from out5-smtp.messagingengine.com ([66.111.4.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qLiyW-0002VF-PT; Tue, 18 Jul 2023 07:34:42 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailout.nyi.internal (Postfix) with ESMTP id D01365C00BE;
- Tue, 18 Jul 2023 07:34:37 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute5.internal (MEProxy); Tue, 18 Jul 2023 07:34:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-type:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm2; t=1689680077; x=
- 1689766477; bh=KjzJKVrgUy3DJIlC+R6FBP/T/cCWgdfOjfxttQjI6zw=; b=k
- 7MjYVn7YbqGGdZgWm/Sdpd/wTAgdKta7+b0A5/+sUaScgSyOLD8K7ahBpnB73k7A
- E36m3P8FcU8zeSBZGHLF54/trH3XB1XLUaHhlWTkdm0VrqANsQ+tN9IhBKfQBZuk
- RBnUIuyCMOyVT2Q7VPXnXGNmOhh3IndnLtKQ2EqwRsRFbJ9udIg6rbcHmnF4eO3k
- 9S/6DsO+GsU80TLOagVfEVTJKxy3IfDAh2WOxwRoClR89dhfictCGXPXZbaLkank
- m+yVZgzdOY2riVF3bd8YS86YplrN5z1rQm4TL0wine9vjfQvA4ZQuzJTSNwPQgyU
- CTNwm/EYAd2nUSCfodm/w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm3; t=1689680077; x=1689766477; bh=KjzJKVrgUy3DJ
- IlC+R6FBP/T/cCWgdfOjfxttQjI6zw=; b=U1E6uEALyMMPgIP/3WP+RBQDpiv1A
- UNytdpt5ihDGSxOlCdi/qTDHzeXtnHjdvYhc4z6/9kCWxSdzVWlsYXpFyGFDH1He
- MN5w/HpT0DZLPjTckHoOVt8N+LbP8QlTbW8DBLv2pBcflaWLFHihrL7KGhvvvDE8
- FCQX3famv9yQiKWUglI3eAK5gcGoPPqPWr9BM+5Gm4OOuRU+wxHK9VyZPLXsRYK0
- +PLvh1K9HNmGO25E39yfR1cpS0BFH4D0uNezA/9TR3z1IqtYYSfrpUO4edNB95pT
- 9XjZMXYV4T8BQh8LR0sWPOIvzuijjnixHzHMPf3AEU7/dw54+1vCAlaxw==
-X-ME-Sender: <xms:zXi2ZClvWEt9uZS9sqyn6ttJezda-MPHJBkVPg1tJ7VdtN8KmkM8Dg>
- <xme:zXi2ZJ1GSNgqn2FperVFdLmfEBfMQ5RjEfcE9obo9UHbcFLCMHh1fa21cZafsdBFI
- DLcjvVuUQ5mI9OZhKU>
-X-ME-Received: <xmr:zXi2ZAp3UzwbPlv_TQT0fiPpr3nmpfxMPrkxJUCGSaNKX4bYcC6T9dggKMw7k9cRtEWv>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgeeggdegtdcutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgruhhs
- ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
- gvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeevjeevtdduudegieegteffffej
- veenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehith
- hssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:zXi2ZGkXmFrc55YHlIxjVxdnRayvk1hSlOmtUfEVOw643i45aFdT1w>
- <xmx:zXi2ZA0S2hZrJM1mUaUSuRnXeOVvetrIzu3K_EoOvlCyS3NmnPEQ_g>
- <xmx:zXi2ZNv58xGJ0AFr_DFqBfwhzBpw2Zd656QQ_3mtfb0Z2GlmPQSzJA>
- <xmx:zXi2ZBmydEwskvIDT_JMxQZRIUjQDqULx-_92GO95kD51mr1bD9NUw>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 18 Jul 2023 07:34:36 -0400 (EDT)
-Date: Tue, 18 Jul 2023 13:34:34 +0200
-From: Klaus Jensen <its@irrelevant.dk>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <k.jensen@samsung.com>, qemu-stable@nongnu.org,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH] hw/nvme: fix endianness issue for shadow doorbells
-Message-ID: <ZLZ4yhYyfNzHqoDn@cormorant.local>
-References: <20230718103511.53767-2-its@irrelevant.dk>
- <376e5e45-a3e7-0029-603a-b7ad9673fac4@linaro.org>
+ (Exim 4.90_1) (envelope-from <18622748025@163.com>)
+ id 1qLj3E-0006SX-98
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 07:39:32 -0400
+Received: from m12.mail.163.com ([220.181.12.215])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <18622748025@163.com>) id 1qLj38-0003nQ-2v
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 07:39:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:Subject:Date:Message-Id:MIME-Version:
+ Content-Type; bh=jixGJNCefD6K5ZbUT6QL7jJukF5ZpmFlMqd8Cs8tD2I=;
+ b=a0almZERkAc3TmzfCawGk4edxlXNKS7k8CQ0w08ZX2KzUEtPHOt1PFPZ8VslXB
+ YbDXWXe5ArEMFUbpU8gO6rGeYygD0cMVHgr/rG5F3rxG8gXWEp/Avvqhh1u7jQ5R
+ fKyHn973rfuZP5F347FYqgSg2ms++ukcYPMDr8F/W2tsw=
+Received: from localhost.localdomain (unknown [103.3.97.171])
+ by zwqz-smtp-mta-g3-3 (Coremail) with SMTP id _____wDHVjPhebZkFrR4Ag--.46209S2;
+ Tue, 18 Jul 2023 19:39:13 +0800 (CST)
+From: "liguang.zhang" <18622748025@163.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, alistair23@gmail.com,
+ "liguang.zhang" <liguang.zhang@hexintek.com>
+Subject: Re:Re:[PATCH v3] target/riscv: fix the issue of guest reboot then no
+ response or crash in kvm-mode
+Date: Tue, 18 Jul 2023 19:39:09 +0800
+Message-Id: <20230718113909.3356-1-18622748025@163.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <CAKmqyKNGEdMQY44E-=uTdGcKatBis3Z0AOG8mUoqGGqr9aH2xQ@mail.gmail.com>
+References: <CAKmqyKNGEdMQY44E-=uTdGcKatBis3Z0AOG8mUoqGGqr9aH2xQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="dXrV9f8KrpIPzBH3"
-Content-Disposition: inline
-In-Reply-To: <376e5e45-a3e7-0029-603a-b7ad9673fac4@linaro.org>
-Received-SPF: pass client-ip=66.111.4.29; envelope-from=its@irrelevant.dk;
- helo=out5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: _____wDHVjPhebZkFrR4Ag--.46209S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKr4rKFWfKryDuryUGr45ZFb_yoWxXr17pF
+ 4DCa9xCrs5t34xJw1Sq3WDJF1ruw4IkF45CrW2krWrCan8XrZ8J3Z7KrWUAr98Cry8Cr4I
+ kFWUGF13uw4jyaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbtxDUUUUU=
+X-Originating-IP: [103.3.97.171]
+X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/xtbBFQKwWWB9ncPEOQAAsA
+Received-SPF: pass client-ip=220.181.12.215; envelope-from=18622748025@163.com;
+ helo=m12.mail.163.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FROM_LOCAL_DIGITS=0.001,
+ FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_BL=0.001,
+ RCVD_IN_MSPIKE_L3=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,85 +73,237 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: "liguang.zhang" <liguang.zhang@hexintek.com>
 
---dXrV9f8KrpIPzBH3
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sun, July 18, 2023 at 6:55 PM liguang.zhang <18622748025@163.com> wrote:
 
-On Jul 18 13:18, Philippe Mathieu-Daud=C3=A9 wrote:
-> On 18/7/23 12:35, Klaus Jensen wrote:
-> > From: Klaus Jensen <k.jensen@samsung.com>
-> >=20
-> > In commit 2fda0726e514 ("hw/nvme: fix missing endian conversions for
-> > doorbell buffers"), we fixed shadow doorbells for big-endian guests
-> > running on little endian hosts. But I did not fix little-endian guests
-> > on big-endian hosts. Fix this.
-> >=20
-> > Solves issue #1765.
-> >=20
-> > Fixes: 3f7fe8de3d49 ("hw/nvme: Implement shadow doorbell buffer support=
-")
-> > Cc: qemu-stable@nongnu.org
-> > Reported-by: Thomas Huth <thuth@redhat.com>
-> > Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+> On Sun, July 10, 2023 at 9:17 alistair <alistair23@gmail.com> wrote:
+> 
+> > From: "liguang.zhang" <liguang.zhang@hexintek.com>
+> > 
+> > There are two issues when rebooting a guest using KVM
+> > 1. When the guest initiates a reboot the host is unable to stop the vcpu
+> > 2. When running a SMP guest the qemu monitor system_reset causes a vcpu crash
+> > 
+> > This can be fixed by clearing the CSR values at reset and syncing the
+> > MPSTATE with the host.
+> 
+> Thanks for the patch.
+> 
+> I think we should move everything
+> 
+> --- from here ---
+> 
+> 
+> > kernel log
+> > ```shell
+> > $reboot
+> > 
+> > The system is going down NOW!
+> > Sent SIGTERM to all processes
+> > logout
+> > Sent SIGKILL to all processes
+> > Requesting system reboot
+> > 
+> > ```
+> > then no response
+> > 
+> > for qemu command:
+> > $system_reset:
+> > 
+> > kernel log:
+> > ```shell
+> > [   53.739556] kvm [150]: VCPU exit error -95
+> > [   53.739563] kvm [148]: VCPU exit error -95
+> > [   53.739557] kvm [149]: VCPU exit error -95
+> > [   53.740957] kvm [149]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
+> > [   53.740957] kvm [148]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
+> > [   53.741054] kvm [148]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
+> > [   53.741058] kvm [149]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
+> > [   53.756187] kvm [150]: SEPC=0x0 SSTATUS=0x200004120 HSTATUS=0x2002001c0
+> > [   53.757797] kvm [150]: SCAUSE=0x14 STVAL=0x0 HTVAL=0x0 HTINST=0x0
+> > ```
+> > 
+> > solution:
+> > 
+> > add reset csr and context for riscv vcpu
+> > qemu ioctl reset vcpu->arch.power_off state of kvm
+> > 
+> > tests:
+> > 
+> > qemu-system-riscv64 -M virt -bios none -kernel Image \
+> > -smp 4 -enable-kvm \
+> > -append "rootwait root=/dev/vda ro" \
+> > -drive file=rootfs.ext2,format=raw,id=hd0 \
+> > -device virtio-blk-device,drive=hd0
+> > 
+> > in guest shell:
+> > $reboot
+> > 
+> > qemu command:
+> > $system_reset
+> > 
 > > ---
-> >   hw/nvme/ctrl.c | 18 +++++++++++++-----
-> >   1 file changed, 13 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-> > index 8e8e870b9a80..dadc2dc7da10 100644
-> > --- a/hw/nvme/ctrl.c
-> > +++ b/hw/nvme/ctrl.c
-> > @@ -6801,6 +6801,7 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, co=
-nst NvmeRequest *req)
-> >       PCIDevice *pci =3D PCI_DEVICE(n);
-> >       uint64_t dbs_addr =3D le64_to_cpu(req->cmd.dptr.prp1);
-> >       uint64_t eis_addr =3D le64_to_cpu(req->cmd.dptr.prp2);
-> > +    uint32_t v;
-> >       int i;
-> >       /* Address should be page aligned */
-> > @@ -6818,6 +6819,8 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, co=
-nst NvmeRequest *req)
-> >           NvmeCQueue *cq =3D n->cq[i];
-> >           if (sq) {
-> > +            v =3D cpu_to_le32(sq->tail);
-> > +
-> >               /*
-> >                * CAP.DSTRD is 0, so offset of ith sq db_addr is (i<<3)
-> >                * nvme_process_db() uses this hard-coded way to calculate
-> > @@ -6825,7 +6828,7 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, co=
-nst NvmeRequest *req)
-> >                */
-> >               sq->db_addr =3D dbs_addr + (i << 3);
-> >               sq->ei_addr =3D eis_addr + (i << 3);
-> > -            pci_dma_write(pci, sq->db_addr, &sq->tail, sizeof(sq->tail=
-));
-> > +            pci_dma_write(pci, sq->db_addr, &v, sizeof(sq->tail));
->=20
-> Or use the PCI DMA ldst API which does the swapping for you:
->=20
->   stl_le_pci_dma(pci, sq->db_addr, sq->tail, MEMTXATTRS_UNSPECIFIED);
->=20
+> > v3:
+> > - change kvm_riscv_set_mpstate_to_kvm to kvm_riscv_sync_mpstate_to_kvm
+> > - remove newline after if(cap_has_mp_state)
+> > - update submit description
+> > 
+> --- to here ---
+> 
+> 
+> > Signed-off-by: liguang.zhang <liguang.zhang@hexintek.com>
+> > ---
+> 
+> below this line. That way it will be included in the patch submission,
+> but won't be included in the git tree.
+> 
+> We never include the patch changelog in the git tree and I don't think
+> we need to include the steps as well (they will be preserved on the
+> mailing list).
+> 
 
-Nice! That's definitely preferable. I'll queue that up for next, but
-leave this patch as-is since it's been tested on a real big-endian host
-and gotten its tags ;)
+Ok, It's no problem.
 
---dXrV9f8KrpIPzBH3
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
+> For the patch title (the git commit title) can you explain what the
+> patch is doing?
+> 
+How about the title use:
+"target/riscv: Clearing the CSR values at reset and syncing the MPSTATE with the host"
 
------BEGIN PGP SIGNATURE-----
+And the reason description is
 
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmS2eMkACgkQTeGvMW1P
-Dem8iAf+O5ypu0RWOG6LC0gFGSHZ/vJ+YT6ye5p/67MxYCyWFyDXWa1Xbr3fwO6e
-2Rs5xI4QigJdgLZJXUO70LrusAERFeJ23I3LjusEMtqbmt/RqZWfE4NKBkaJWpfe
-8PxLmGhD+5IKR12UJH6tJ9rggA+npW71bsuruh5+dP2lswIGnT6FzlIo2OFgkfq3
-gfs/G0jxx/r3KJOttW3/4vJXp4XTfJQCljbpHRkjCrKm6V1Ipo/LIATlZRWQ5km2
-aNmFg6KFjUz1k/AcT1VlhJv85DksOcCtg2ZzT42XfNQtfQ5bfU5VAKikG0fZeN1Q
-QZEMZX/d7KRSTFFlVqVG2rqj3Jo4CQ==
-=ZrUx
------END PGP SIGNATURE-----
+Fix the guest reboot error when using KVM
+There are two issues when rebooting a guest using KVM
+1. When the guest initiates a reboot the host is unable to stop the vcpu
+2. When running a SMP guest the qemu monitor system_reset causes a vcpu crash
 
---dXrV9f8KrpIPzBH3--
+This can be fixed by clearing the CSR values at reset and syncing the
+MPSTATE with the host.
+
+> 
+> Also, do you mind rebasing on
+> https://github.com/alistair23/qemu/tree/riscv-to-apply.next
+> 
+I don't remind rebase on it.
+Thanks~
+-- liguang.zhang
+> 
+> Then the patch should be good to go!
+> 
+> Alistair
+> 
+> target/riscv/kvm.c       | 44 +++++++++++++++++++++++++++++++++++++++-
+> target/riscv/kvm_riscv.h |  1 +
+> 2 files changed, 44 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+> index 0f932a5b96..c478c71905 100644
+> --- a/target/riscv/kvm.c
+> +++ b/target/riscv/kvm.c
+> @@ -42,6 +42,8 @@
+> #include "migration/migration.h"
+> #include "sysemu/runstate.h"
+> 
+> +static bool cap_has_mp_state;
+> +
+> static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+> uint64_t idx)
+> {
+> @@ -99,7 +101,7 @@ static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+> 
+> #define KVM_RISCV_SET_TIMER(cs, env, name, reg) \
+> do { \
+> -        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(env, time), &reg); \
+> +        int ret = kvm_set_one_reg(cs, RISCV_TIMER_REG(env, name), &reg); \
+> if (ret) { \
+> abort(); \
+> } \
+> @@ -335,6 +337,24 @@ int kvm_arch_get_registers(CPUState *cs)
+> return ret;
+> }
+> 
+> +int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state)
+> +{
+> +    if (cap_has_mp_state) {
+> +        struct kvm_mp_state mp_state = {
+> +            .mp_state = state
+> +        };
+> +
+> +        int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
+> +        if (ret) {
+> +            fprintf(stderr, "%s: failed to sync MP_STATE %d/%s\n",
+> +                    __func__, ret, strerror(-ret));
+> +            return -1;
+> +        }
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> int kvm_arch_put_registers(CPUState *cs, int level)
+> {
+> int ret = 0;
+> @@ -354,6 +374,18 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+> return ret;
+> }
+> 
+> +    if (KVM_PUT_RESET_STATE == level) {
+> +        RISCVCPU *cpu = RISCV_CPU(cs);
+> +        if (cs->cpu_index == 0) {
+> +            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNNABLE);
+> +        } else {
+> +            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_STOPPED);
+> +        }
+> +        if (ret) {
+> +            return ret;
+> +        }
+> +    }
+> +
+> return ret;
+> }
+> 
+> @@ -428,6 +460,7 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
+> 
+> int kvm_arch_init(MachineState *ms, KVMState *s)
+> {
+> +    cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
+> return 0;
+> }
+> 
+> @@ -506,10 +539,19 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+> if (!kvm_enabled()) {
+> return;
+> }
+> +    for (int i=0; i<32; i++)
+> +        env->gpr[i] = 0;
+> env->pc = cpu->env.kernel_addr;
+> env->gpr[10] = kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
+> env->gpr[11] = cpu->env.fdt_addr;          /* a1 */
+> env->satp = 0;
+> +    env->mie = 0;
+> +    env->stvec = 0;
+> +    env->sscratch = 0;
+> +    env->sepc = 0;
+> +    env->scause = 0;
+> +    env->stval = 0;
+> +    env->mip = 0;
+> }
+> 
+> void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
+> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+> index ed281bdce0..88aee902dd 100644
+> --- a/target/riscv/kvm_riscv.h
+> +++ b/target/riscv/kvm_riscv.h
+> @@ -21,5 +21,6 @@
+> 
+> void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+> void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
+> +int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
+> 
+> #endif
+> --
+> 2.17.1
+
 
