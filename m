@@ -2,78 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA06875793D
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 12:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D681275794B
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 12:32:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLhu4-0005Jo-2G; Tue, 18 Jul 2023 06:26:00 -0400
+	id 1qLhzu-0006j2-Py; Tue, 18 Jul 2023 06:32:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLhtt-0005F7-6f
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:25:49 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qLhtr-0005YV-30
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:25:48 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4f122ff663eso8869962e87.2
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 03:25:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689675939; x=1692267939;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=53TxoCa8PwII1f/88lnrKFx7DZcJM0tT7V0/8C7GYuY=;
- b=S++L/LHeVqoR0v+BbQC/i4/siz/bxwFBocCNXA92O1UgU0dhE1hH9GNzIeT59gPhwu
- qIJiOJAT3wCrwWprzqTkk5LH3aOcn/iibA4i1yQhGBZHWIK3NiqMrn2ZaZgWE76J1amg
- 1Re4T3mzo05oT8IpQOAdWc9+gfBkQws2bcqVjiTjD+dLsvAIKpKIVEGM+2HsmdwNW/WC
- p3T1pe+RJ7jqVNDIoeaXevhezWy+mlh3k/3ifpMG8cKIFaTLQyzU3vibAlAwF1VK3mLR
- bIMgO5D/qnMqP5UysBjsWi+EkkyJVxzO00as5WB4uC97zuxiKAqmWL1PHIY8Aciz7Tef
- DPzQ==
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qLhzp-0006gJ-Ij
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:31:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qLhzm-0007WH-15
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:31:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689676309;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rETFe8jJkQSXqGI75lQYC/IfRjlfSdzlb2a2/I/CK7U=;
+ b=bLhTm4nCMfPZORXrv/SuoWxvyI0MG68Ttd4khDvRkicwewhhktYRvdRSJHqFYQLaMhuLt/
+ lk1x9BaX4hDD2+wUM/h003xh71DvMC07Zp8cfr/nuUOwjzuPoS3DsDtsGBcLlQzchvaAVB
+ uErNCyIK12fSc8LaW2Nxd/AHyFl72+E=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-330-Fa7wNsf7MqKzFNBrjIyx5g-1; Tue, 18 Jul 2023 06:31:48 -0400
+X-MC-Unique: Fa7wNsf7MqKzFNBrjIyx5g-1
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-1b890ca6718so26892065ad.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 03:31:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689675939; x=1692267939;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=53TxoCa8PwII1f/88lnrKFx7DZcJM0tT7V0/8C7GYuY=;
- b=l2PewATeuLki/okO6xbQMLzQmxc5oZshuFFcDUGNHufPQZKHR6XvhuS1EtpNjEP5X6
- nu5UQVwhmXggE3Cc0O2o4kvPkrMxH/ocfBmn+e0SSvVDN2hWr21MgWpAeV3CpM2OleQ/
- s/Lmg91UgoK6IPXFikbT3QtvR1iie4z9oSE/aYVfSfvMsMwVqA6G0AlNYSGBt+Ss9qzc
- eyGBWZ7GOkvv5JJHr4hR31w504MgAthNKA4ffInYIBaZCIZmKxhF/5yinm7NOwI6LJqO
- e1YN/CLC9+5Bq+vZ73NUKexmi62nKkoSOyKZiQ3gZaIkirBiC7MhFpub9B4H35a+zjXZ
- CdxQ==
-X-Gm-Message-State: ABy/qLZIteIYrXnJLRfSWnKQFFXTSm8Agp+NBczxepWy8GNy3iVvtzmP
- n+qKEiGH59+iXQYsCUXO5PRfur9aG/ReSL7+rzA5JQ==
-X-Google-Smtp-Source: APBJJlGpkhulvcqZYNGYMmRDTdM9ejBw5sSb4NgTln5/jIlZGqIjvaM+XVleW+GIcexVt3kVLDcQk7tFa9Gy6FIIsCk=
-X-Received: by 2002:a05:6512:2251:b0:4f8:7568:e948 with SMTP id
- i17-20020a056512225100b004f87568e948mr10749650lfu.51.1689675938949; Tue, 18
- Jul 2023 03:25:38 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689676307; x=1692268307;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rETFe8jJkQSXqGI75lQYC/IfRjlfSdzlb2a2/I/CK7U=;
+ b=fa3iZNaNLeTtmUBq9dqsgqAYGxk/pYyjBTWhh5EjAsVfyXRtlV2tN+qdGKEdZoOy7M
+ Cg7ltuGR7TTJFcQUWO3X7qnkloXgVsnDTevY3xieTybsvPUOqQ0i+FHJVrQ6WeKdma18
+ lNT/6FcQlwtAN5cYz7gdAL/Z4s8TMC3lEmJ8atHnzaXuWEBJQMJiBIE/Ym7zh3EHJQ4v
+ bw+NnGCHGh+ZWShlo3e2DbSOARKCdJlRqRF3rsFqi04JruVK1ZdCFw4AdgsXX7k6bmQv
+ BLphjf2CUqIRcKc/sPhLudLXcjEjwePX3n6bZaFk9pjP/IfgyZZ5lgAvUARGR+QzPTd1
+ 65mA==
+X-Gm-Message-State: ABy/qLZd7cOF1AVfCrg85T2x6uwp1YA2+g5FF4RGBpuzY4A5D9rkIZSo
+ 5mWyoBcVWvMlDv7CHFuTlYEO8+x9SzIYLy4+w9OxkameAyEF6DCFPDzBJEQyTXS7E8PKuJQVrlZ
+ aJbVikv2COXWF5fM=
+X-Received: by 2002:a17:903:32cd:b0:1b8:a936:1905 with SMTP id
+ i13-20020a17090332cd00b001b8a9361905mr16988584plr.38.1689676307519; 
+ Tue, 18 Jul 2023 03:31:47 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGNXJ31VIafTtEEgznYejLJXlJlRfRKbJ18IOIhIOZRdsiO8cQ1VRRh5brRoMMG4SQGYfnI5w==
+X-Received: by 2002:a17:903:32cd:b0:1b8:a936:1905 with SMTP id
+ i13-20020a17090332cd00b001b8a9361905mr16988562plr.38.1689676307113; 
+ Tue, 18 Jul 2023 03:31:47 -0700 (PDT)
+Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
+ ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
+ by smtp.gmail.com with ESMTPSA id
+ jg5-20020a17090326c500b001b9f7bc3e77sm1500705plb.189.2023.07.18.03.31.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 18 Jul 2023 03:31:46 -0700 (PDT)
+Message-ID: <527ed3dc-b723-5c37-37e2-58d4266b1f32@redhat.com>
+Date: Tue, 18 Jul 2023 20:31:39 +1000
 MIME-Version: 1.0
-References: <20230717213504.24777-1-philmd@linaro.org>
- <20230717213504.24777-3-philmd@linaro.org>
-In-Reply-To: <20230717213504.24777-3-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 18 Jul 2023 11:25:28 +0100
-Message-ID: <CAFEAcA8-nMZxDQNw9d9k2fyx2ZVq_7GQUrkijZK3gPxK2yer0Q@mail.gmail.com>
-Subject: Re: [PATCH for-8.1 v2 2/2] target/mips: Avoid shift by negative
- number in page_table_walk_refill()
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Aurelien Jarno <aurelien@aurel32.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 0/3] hw/arm/virt: Use generic CPU invalidation
+Content-Language: en-US
+To: Igor Mammedov <imammedo@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, pbonzini@redhat.com, eduardo@habkost.net,
+ marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com,
+ shan.gavin@gmail.com
+References: <20230713054502.410911-1-gshan@redhat.com>
+ <CAFEAcA8197FCwfNZrnxfO-87RveOko0Ju-KcTJOEi0vfjVtDKg@mail.gmail.com>
+ <2d21e89f-c965-e8f1-3705-dfea8367fc7e@linaro.org>
+ <CAFEAcA-XK0U0bPuAf4K7avdJqnmcibFX_swY1Weo_Tn3wHJ1fw@mail.gmail.com>
+ <20230714135004.230c05b2@imammedo.users.ipa.redhat.com>
+ <CAFEAcA92QFxN0at+5rk7yrfk1sj3tX-GcfZYYY5_=210np_j4g@mail.gmail.com>
+ <20230717144455.6f02fde9@imammedo.users.ipa.redhat.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20230717144455.6f02fde9@imammedo.users.ipa.redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,40 +111,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 17 Jul 2023 at 22:35, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Coverity points out that in page_table_walk_refill() we can shift by
-> a negative number, which is undefined behaviour (CID 1452918,
-> 1452920, 1452922).  We already catch the negative directory_shift and
-> leaf_shift as being a "bail out early" case, but not until we've
-> already used them to calculated some offset values.
->
-> Move the calculation of the offset values to after we've done the
-> "return early if ptew > 1" check.
->
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> [PMD: Check for ptew > 1, use unsigned type]
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Hi Igor,
 
-I think I would expand the commit message a bit, so instead
-of the current paragraph 2, something like:
+On 7/17/23 22:44, Igor Mammedov wrote:
+> On Fri, 14 Jul 2023 13:56:00 +0100
+> Peter Maydell <peter.maydell@linaro.org> wrote:
+> 
+>> On Fri, 14 Jul 2023 at 12:50, Igor Mammedov <imammedo@redhat.com> wrote:
+>>>
+>>> On Thu, 13 Jul 2023 12:59:55 +0100
+>>> Peter Maydell <peter.maydell@linaro.org> wrote:
+>>>   
+>>>> On Thu, 13 Jul 2023 at 12:52, Marcin Juszkiewicz
+>>>> <marcin.juszkiewicz@linaro.org> wrote:
+>>>>>
+>>>>> W dniu 13.07.2023 o 13:44, Peter Maydell pisze:
+>>>>>   
+>>>>>> I see this isn't a change in this patch, but given that
+>>>>>> what the user specifies is not "cortex-a8-arm-cpu" but
+>>>>>> "cortex-a8", why do we include the "-arm-cpu" suffix in
+>>>>>> the error messages? It's not valid syntax to say
+>>>>>> "-cpu cortex-a8-arm-cpu", so it's a bit misleading...
+>>>>>
+>>>>> Internally those cpu names are "max-{TYPE_ARM_CPU}" and similar for
+>>>>> other architectures.
+>>>>
+>>>> Yes; my question is "why are we not using the user-facing
+>>>> string rather than the internal type name?".
+>>>
+>>> With other targets full CPU type name can also be valid
+>>> user-facing string. Namely we use it with -device/device_add
+>>> interface. Considering we would like to have CPU hotplug
+>>> on ARM as well, we shouldn't not outlaw full type name.
+>>> (QMP/monitor interface also mostly uses full type names)
+>>
+>> You don't seem to be able to use the full type name on
+>> x86-64 either:
+>>
+>> $ ./build/all/qemu-system-x86_64 -cpu pentium-x86_64-cpu
+>> qemu-system-x86_64: unable to find CPU model 'pentium-x86_64-cpu'
+> 
+> that's because it also tied into old cpu_model resolving
+> routines, and I haven't added typename lookup the last
+> time I've touched it (it was out of topic change anyway).
+> 
+> but some targets do recognize typename, while some
+> do a lot more juggling with cpu_model (alpha/ppc),
+> and yet another class (garbage in => cpu type out).
+> 
+> With the last one we could just error,
+> while with alpha/ppc we could dumb it down to typenames
+> only.
+> 
 
-The shifts can be negative only if ptew > 1, so make the
-bail-out-early check look directly at that, and only
-calculate the shift amounts and the offsets based on them
-after we have done that check. This allows
-us to simplify the expressions used to calculate the
-shift amounts, use an unsigned type, and avoids the
-undefined behaviour.
+Your summary here is correct to me. However, I don't quiet understand
+the issue you're trying to resolve. As you mentioned, there are two
+cases where the users need to specify CPU typename: (1) In the command
+lines to start VM; (2) When CPU is hot added.
 
+For (1), the list of all available CPU is provided by each individual
+target. It's to say, each individual target is responsible for correlating
+the name (typename, CPU model name, or whatever else). Each individual
+target has its own rules for this correlation. Why do we bother to unify
+the rules so that only the typename is allowed?
 
-?
+   //
+   // The output can be directly used in the command lines to start VM.
+   // I don't see any problems we have. Note that the list of available
+   // CPU names is printed by cpu_list(), which is a target specific
+   // implementation.
+   //
+   # aarch64-softmmu/qemu-system-aarch64 -cpu help
+   Available CPUs:
+     a64fx
+     arm1026
+     arm1136
+     arm1136-r2
+     arm1176
+     arm11mpcore
+     arm926
+     arm946
+     cortex-a15
+     cortex-a35
+     cortex-a53
 
-Anyway
+For (2) where CPU is hot added, the help option can also be used to dump
+the available CPUs. Nothing went to wrong as I can see. The rule used here
+to correlate names with CPUs is global: typename <-> CPU
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+   //
+   // The printed CPU typenames can be taken as the driver directly
+   //
+   (qemu) device_add driver=?
+      :
+   CPU devices:
+   name "a64fx-arm-cpu"
+   name "cortex-a35-arm-cpu"
+   name "cortex-a53-arm-cpu"
+   name "cortex-a55-arm-cpu"
+   name "cortex-a57-arm-cpu"
+   name "cortex-a72-arm-cpu"
+   name "cortex-a76-arm-cpu"
+   name "max-arm-cpu"
+   name "neoverse-n1-arm-cpu"
 
-thanks
--- PMM
+>> and '-cpu help' does not list them with the suffix.
+> 
+> both above points are fixable,
+> 
+> I can prepare PoC patches for that if there is
+> no opposition to the idea.
+> 
+
+Please refer to above for the argument. If I'm correct, there is nothing
+to be resolved or improved.
+
+>>> Instead it might be better to consolidate on what has
+>>> been done on making CPU '-device' compatible and
+>>> allow to use full CPU type name with '-cpu' on arm machines.
+>>>
+>>> Then later call suffix-less legacy => deprecate/drop it from
+>>> user-facing side including cleanup of all the infra we've
+>>> invented to keep mapping between cpu_model and typename.
+>>
+>> This seems to me like a worsening of the user interface,
+>> and in practice there is not much likelihood of being
+>> able to deprecate-and-drop the nicer user-facing names,
+>> because they are baked into so many command lines and
+>> scripts.
+> Nice names are subjective point, I suspect in a long run
+> once users switched to using longer names, they won't care much
+> about that either.
+> 
+> Also it's arguable if it is worsening UI or not.
+> I see using consolidated typenames across the board (incl. UI)
+> as a positive development.
+> 
+> As for scripts/CLI users out there, yes it would be disruptive
+> for a while but one can adapt to new naming (or use a wrapper
+> around QEMU that does suffix adding/model mapping as a crutch).
+> 
+> It weren't possible to drop anything before we introduced
+> deprecation process, but with it we can do it.
+> 
+
+Thanks,
+Gavin
+
 
