@@ -2,79 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC1B2757178
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 03:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F39757199
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 04:10:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLZle-0002C9-2f; Mon, 17 Jul 2023 21:44:46 -0400
+	id 1qLa8z-0005bD-7v; Mon, 17 Jul 2023 22:08:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qLZlb-0002AN-4V
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 21:44:43 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
- id 1qLZlY-0000M3-DT
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 21:44:42 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-263374f2f17so2741100a91.0
- for <qemu-devel@nongnu.org>; Mon, 17 Jul 2023 18:42:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1689644556; x=1692236556;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=xijtYuiXZr2OnGXXZtkkwchrojmKNQOW9xcDgOAysis=;
- b=yh767cGE85R8E7i0gdhCWchswBwuMX4RC1q+3wydDW0ee4/fFbKufcQNMKHU5Adn0m
- +e0PmyR0L7XRUYY/ljMcSoGxg0uK3VMKbFsXhCF27WPpB0iIBWPmYn5IRNmeHCprJMUn
- suCTWnlzTMxx8uJRmdOEmY2yg4jmNRmrgXjLmhY3zVkGfQEE8BZHtK3RG+2SI/BVhdo6
- ziWIFEEmlvjQU1soXcGtdcwe1NTK7wjFqy0uGcyo0RLX+ntBurUqW+O1iHYiMEmJgxcP
- h7AtJDauqoT4XDKSgwGO95DWbNshbOnhgiuYs4gBVtIXAszom7uS+40VSlsMpo/qYY3p
- 2sdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689644556; x=1692236556;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xijtYuiXZr2OnGXXZtkkwchrojmKNQOW9xcDgOAysis=;
- b=fCgdAdghIAaKLvqLQUx8K9uR10h3yJ0VxiC6to4qvWok9ahFhRmTJJw7AZffdNxd50
- Q/Jd09mvN7AdqG0ikgqHz1t5Kz9xHeje9rCAQR6nzv0vaD452cwl7t3i02aiZzlWHQs7
- OHkkwBbAyDNFULaJ6lNQtIAqbCllf4NuQL73n7F/reXmR5mUGoTxreLLrffdATvydZCg
- SsmxvcGjKrNqCSwPL13q19x++Gerj7P7iYwFE1XylKAgMu6RrW7X25SiZk6qnJ7TkmK4
- Z5maC6j8KGgz4J1cda6Jg6WIvx/mmWwCUo3qrc0uwZngc0TVIPfhIlWKmHJoHJSLVFAV
- fomQ==
-X-Gm-Message-State: ABy/qLbGffERkuVP2qabjKGmj2Cw4cDzE6YFukjjNGmgrST43T7+LjD3
- nE/W6ELcUx6RpVTtKLmqwGjtnSYR49KJGVvNx0xkoA==
-X-Google-Smtp-Source: APBJJlEkIgpap2nt/Q7wgUS0TRc9bA2CCYdajxLT5zFfETXovRSugRPDhgd5qPh+n0jTevDUxME5XlM5quWvve27mMM=
-X-Received: by 2002:a17:90a:db06:b0:263:8eec:550f with SMTP id
- g6-20020a17090adb0600b002638eec550fmr10435362pjv.10.1689644555705; Mon, 17
- Jul 2023 18:42:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1qLa8u-0005ax-67
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 22:08:49 -0400
+Received: from mx24.baidu.com ([111.206.215.185] helo=baidu.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
+ id 1qLa8q-0005bv-HL
+ for qemu-devel@nongnu.org; Mon, 17 Jul 2023 22:08:47 -0400
+From: "Gao,Shiyuan" <gaoshiyuan@baidu.com>
+To: =?utf-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kraxel@redhat.com"
+ <kraxel@redhat.com>, "mark.cave-ayland@ilande.co.uk"
+ <mark.cave-ayland@ilande.co.uk>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
+ <berrange@redhat.com>
+Subject: Re: [PATCH] vnc,ps2: fix the PS/2 mouse work badly when connect VNC
+Thread-Topic: [PATCH] vnc,ps2: fix the PS/2 mouse work badly when connect VNC
+Thread-Index: AQHZuFrFNlltFg4MfUmGmCXkRR+pm6+9DRuAgACaiID//4BWgIAAwmOA//9/ewCAAI5AAP//gJQAACn944A=
+Date: Tue, 18 Jul 2023 02:07:51 +0000
+Message-ID: <57634FEE-D9E5-459C-A32E-6371685A9EDE@baidu.com>
+References: <20230717025936.71456-1-gaoshiyuan@baidu.com>
+ <CAMxuvaz4NwRfCoWGVBofihBsZnBya7cv3Cq7w-Y6Wzd0mPoDQQ@mail.gmail.com>
+ <EF20B207-4AAE-4A30-8D0B-CB208867756A@baidu.com>
+ <CAMxuvaxssGvBLb-gFFEibDcQ+MJyorDJi-xSMTBVRCNyVyFVqA@mail.gmail.com>
+ <F68DBAB0-B1CC-45FC-B1A7-8C62A5885031@baidu.com>
+ <CAMxuvawBOLcS8SQzPiVgMuyMXFadrqrMzcuA1ddB-uaDd1qZgA@mail.gmail.com>
+ <3AC28C88-5682-4EBD-8996-5125FAF5F2A4@baidu.com>
+ <CAMxuvazXYgKeaBoJxqxEEM2opiYAqQA=2Zg_6K2kUFUTSmjwog@mail.gmail.com>
+In-Reply-To: <CAMxuvazXYgKeaBoJxqxEEM2opiYAqQA=2Zg_6K2kUFUTSmjwog@mail.gmail.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.22.192.69]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C2DDD51435CF914DB3D62D41D29FCD16@internal.baidu.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <168870305868.29142.5121604177475325995-4@git.sr.ht>
- <875y6oj80i.fsf@pond.sub.org>
-In-Reply-To: <875y6oj80i.fsf@pond.sub.org>
-From: Yong Huang <yong.huang@smartx.com>
-Date: Tue, 18 Jul 2023 09:42:19 +0800
-Message-ID: <CAK9dgmZ73F2qrD-iM-EBSiARRmwGPPorsLdt8NqmkOSyYaRCVw@mail.gmail.com>
-Subject: Re: [PATCH QEMU v8 4/9] migration: Introduce dirty-limit capability
-To: Markus Armbruster <armbru@redhat.com>
-Cc: "~hyman" <hyman@git.sr.ht>, qemu-devel <qemu-devel@nongnu.org>,
- Peter Xu <peterx@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Juan Quintela <quintela@redhat.com>, 
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>, Eric Blake <eblake@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: multipart/alternative; boundary="0000000000008a34970600b90754"
-Received-SPF: none client-ip=2607:f8b0:4864:20::1032;
- envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1032.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-FEAS-Client-IP: 172.31.51.47
+X-FE-Last-Public-Client-IP: 100.100.100.60
+X-FE-Policy-ID: 15:10:21:SYSTEM
+Received-SPF: pass client-ip=111.206.215.185;
+ envelope-from=gaoshiyuan@baidu.com; helo=baidu.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
+X-Spam_bar: --
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,306 +74,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000008a34970600b90754
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Jul 13, 2023 at 8:44=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
-m> wrote:
-
-> ~hyman <hyman@git.sr.ht> writes:
->
-> > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-> >
-> > Introduce migration dirty-limit capability, which can
-> > be turned on before live migration and limit dirty
-> > page rate durty live migration.
-> >
-> > Introduce migrate_dirty_limit function to help check
-> > if dirty-limit capability enabled during live migration.
-> >
-> > Meanwhile, refactor vcpu_dirty_rate_stat_collect
-> > so that period can be configured instead of hardcoded.
-> >
-> > dirty-limit capability is kind of like auto-converge
-> > but using dirty limit instead of traditional cpu-throttle
-> > to throttle guest down. To enable this feature, turn on
-> > the dirty-limit capability before live migration using
-> > migrate-set-capabilities, and set the parameters
-> > "x-vcpu-dirty-limit-period", "vcpu-dirty-limit" suitably
-> > to speed up convergence.
-> >
-> > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-> > Acked-by: Peter Xu <peterx@redhat.com>
-> > Reviewed-by: Juan Quintela <quintela@redhat.com>
->
-> [...]
->
-> > diff --git a/qapi/migration.json b/qapi/migration.json
-> > index e43371955a..031832cde5 100644
-> > --- a/qapi/migration.json
-> > +++ b/qapi/migration.json
-> > @@ -497,6 +497,15 @@
-> >  #     are present.  'return-path' capability must be enabled to use
-> >  #     it.  (since 8.1)
-> >  #
-> > +# @dirty-limit: If enabled, migration will use the dirty-limit
-> > +#     algorithm to throttle down guest instead of auto-converge
-> > +#     algorithm. This algorithm only works when vCPU's dirtyrate
->
-> Two spaces after sentence-ending punctuation, please.
->
-> "dirty rate" with a space, because that's how we spell it elsewhere.
->
-> > +#     greater than 'vcpu-dirty-limit', read processes in guest os
-> > +#     aren't penalized any more, so the algorithm can improve
-> > +#     performance of vCPU during live migration. This is an optional
-> > +#     performance feature and should not affect the correctness of the
-> > +#     existing auto-converge algorithm. (since 8.1)
-> > +#
->
-> I'm still confused.
->
-> The text suggests there are two separate algorithms "to throttle down
-> guest": "auto converge" and "dirty limit", and we get to pick one.
-> Correct?
->
-Yes, indeed !
-
->
-> If it is correct, then the last sentence feels redundant: picking
-> another algorithm can't affect the algorithm we're *not* using.  What
-> are you trying to express here?
->
-What i want to express is that the new algorithm implementation does
-not affect the original algorithm, leaving it in the comments seems
-redundant indeed.  I'll drop this in the next version.
-
->
-> When do we use "auto converge", and when do we use "dirty limit"?
->
-> What does the user really need to know about these algorithms?  Enough
-> to pick one, I guess.  That means advantages and disadvantages of the
-> two algorithms.  Which are?
-
-1. The implementation of dirty-limit is based on dirty-ring, which is
-qualified
-   to big systems with huge memories and can improve huge guest VM
-    responsiveness remarkably during live migration. As a consequence,
-dirty-limit
-    is recommended on platforms with huge guest VMs as is the way with
-dirty-ring.
-2. dirty-limit convergence algorithm does not affect the "read-process" in
-guest
-   VM, so guest VM gains the equal read performance nearly as it runs on
-host
-   during the live migration. As a result, dirty-limit is recommended if
-the guest
-    VM requires a stable read performance.
-The above explanation is about the recommendation of dirty-limit, please
-review,
-if it's ok, i'll place it in the comment of the dirty-limit capability.
-
->
-> >  # Features:
-> >  #
-> >  # @unstable: Members @x-colo and @x-ignore-shared are experimental.
-> > @@ -512,7 +521,8 @@
-> >             'dirty-bitmaps', 'postcopy-blocktime', 'late-block-activate=
-',
-> >             { 'name': 'x-ignore-shared', 'features': [ 'unstable' ] },
-> >             'validate-uuid', 'background-snapshot',
-> > -           'zero-copy-send', 'postcopy-preempt', 'switchover-ack'] }
-> > +           'zero-copy-send', 'postcopy-preempt', 'switchover-ack',
-> > +           'dirty-limit'] }
-> >
-> >  ##
-> >  # @MigrationCapabilityStatus:
->
-> [...]
->
-> Thank Markus again for the attention to this patchset. :)
-Yong
---=20
-Best regards
-
---0000000000008a34970600b90754
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
-t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><div class=
-=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jul 13, 2023=
- at 8:44=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.c=
-om">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_qu=
-ote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-st=
-yle:solid;border-left-color:rgb(204,204,204);padding-left:1ex">~hyman &lt;<=
-a href=3D"mailto:hyman@git.sr.ht" target=3D"_blank">hyman@git.sr.ht</a>&gt;=
- writes:<br>
-<br>
-&gt; From: Hyman Huang(=E9=BB=84=E5=8B=87) &lt;<a href=3D"mailto:yong.huang=
-@smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
-&gt;<br>
-&gt; Introduce migration dirty-limit capability, which can<br>
-&gt; be turned on before live migration and limit dirty<br>
-&gt; page rate durty live migration.<br>
-&gt;<br>
-&gt; Introduce migrate_dirty_limit function to help check<br>
-&gt; if dirty-limit capability enabled during live migration.<br>
-&gt;<br>
-&gt; Meanwhile, refactor vcpu_dirty_rate_stat_collect<br>
-&gt; so that period can be configured instead of hardcoded.<br>
-&gt;<br>
-&gt; dirty-limit capability is kind of like auto-converge<br>
-&gt; but using dirty limit instead of traditional cpu-throttle<br>
-&gt; to throttle guest down. To enable this feature, turn on<br>
-&gt; the dirty-limit capability before live migration using<br>
-&gt; migrate-set-capabilities, and set the parameters<br>
-&gt; &quot;x-vcpu-dirty-limit-period&quot;, &quot;vcpu-dirty-limit&quot; su=
-itably<br>
-&gt; to speed up convergence.<br>
-&gt;<br>
-&gt; Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) &lt;<a href=3D"mailto:y=
-ong.huang@smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&gt;<br>
-&gt; Acked-by: Peter Xu &lt;<a href=3D"mailto:peterx@redhat.com" target=3D"=
-_blank">peterx@redhat.com</a>&gt;<br>
-&gt; Reviewed-by: Juan Quintela &lt;<a href=3D"mailto:quintela@redhat.com" =
-target=3D"_blank">quintela@redhat.com</a>&gt;<br>
-<br>
-[...]<br>
-<br>
-&gt; diff --git a/qapi/migration.json b/qapi/migration.json<br>
-&gt; index e43371955a..031832cde5 100644<br>
-&gt; --- a/qapi/migration.json<br>
-&gt; +++ b/qapi/migration.json<br>
-&gt; @@ -497,6 +497,15 @@<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0are present.=C2=A0 &#39;return-path&#39; ca=
-pability must be enabled to use<br>
-&gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0it.=C2=A0 (since 8.1)<br>
-&gt;=C2=A0 #<br>
-&gt; +# @dirty-limit: If enabled, migration will use the dirty-limit<br>
-&gt; +#=C2=A0 =C2=A0 =C2=A0algorithm to throttle down guest instead of auto=
--converge<br>
-&gt; +#=C2=A0 =C2=A0 =C2=A0algorithm. This algorithm only works when vCPU&#=
-39;s dirtyrate<br>
-<br>
-Two spaces after sentence-ending punctuation, please.<br>
-<br>
-&quot;dirty rate&quot; with a space, because that&#39;s how we spell it els=
-ewhere.<br>
-<br>
-&gt; +#=C2=A0 =C2=A0 =C2=A0greater than &#39;vcpu-dirty-limit&#39;, read pr=
-ocesses in guest os<br>
-&gt; +#=C2=A0 =C2=A0 =C2=A0aren&#39;t penalized any more, so the algorithm =
-can improve<br>
-&gt; +#=C2=A0 =C2=A0 =C2=A0performance of vCPU during live migration. This =
-is an optional<br>
-&gt; +#=C2=A0 =C2=A0 =C2=A0performance feature and should not affect the co=
-rrectness of the<br>
-&gt; +#=C2=A0 =C2=A0 =C2=A0existing auto-converge algorithm. (since 8.1)<br=
->
-&gt; +#<br>
-<br>
-I&#39;m still confused.<br>
-<br>
-The text suggests there are two separate algorithms &quot;to throttle down<=
-br>
-guest&quot;: &quot;auto converge&quot; and &quot;dirty limit&quot;, and we =
-get to pick one.<br>
-Correct?<br></blockquote><div class=3D"gmail_default" style=3D"font-family:=
-&quot;comic sans ms&quot;,sans-serif">Yes, indeed !</div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;bo=
-rder-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">
-<br>
-If it is correct, then the last sentence feels redundant: picking<br>
-another algorithm can&#39;t affect the algorithm we&#39;re *not* using.=C2=
-=A0 What<br>
-are you trying to express here?<br></blockquote><div class=3D"gmail_default=
-" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">What i want to=
- express is that the new algorithm implementation does</div><div class=3D"g=
-mail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">no=
-t affect the original algorithm, leaving it in the comments seems</div><div=
- class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,san=
-s-serif">redundant indeed.=C2=A0 I&#39;ll drop this in the next version.</d=
-iv><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bord=
-er-left-width:1px;border-left-style:solid;border-left-color:rgb(204,204,204=
-);padding-left:1ex">
-<br>
-When do we use &quot;auto converge&quot;, and when do we use &quot;dirty li=
-mit&quot;?<br>
-<br>
-What does the user really need to know about these algorithms?=C2=A0 Enough=
-<br>
-to pick one, I guess.=C2=A0 That means advantages and disadvantages of the<=
-br>
-two algorithms.=C2=A0 Which are?</blockquote><span class=3D"gmail_default" =
-style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">1. The implement=
-ation of dirty-limit is based on dirty-ring, which is qualified</span></div=
-><div class=3D"gmail_quote"><font face=3D"comic sans ms, sans-serif"><span =
-class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans=
--serif"> =C2=A0 =C2=A0to big systems with huge memories and can improve hug=
-e guest VM</span></font></div><div class=3D"gmail_quote"><font face=3D"comi=
-c sans ms, sans-serif"><span class=3D"gmail_default" style=3D"font-family:&=
-quot;comic sans ms&quot;,sans-serif">=C2=A0 =C2=A0 responsiveness remarkabl=
-y during live migration. As a consequence, dirty-limit</span></font></div><=
-div class=3D"gmail_quote"><font face=3D"comic sans ms, sans-serif"><span cl=
-ass=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-s=
-erif">=C2=A0 =C2=A0 is recommended on platforms with huge guest VMs as is t=
-he way with dirty-ring.</span></font></div><div class=3D"gmail_quote"><font=
- face=3D"comic sans ms, sans-serif"><span class=3D"gmail_default" style=3D"=
-font-family:&quot;comic sans ms&quot;,sans-serif">2. dirty-limit convergenc=
-e algorithm does not affect the &quot;read-process&quot; in guest</span></f=
-ont></div><div class=3D"gmail_quote"><font face=3D"comic sans ms, sans-seri=
-f"><span class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&q=
-uot;,sans-serif"> =C2=A0 =C2=A0VM, so guest VM gains the equal read perform=
-ance nearly as it runs on host</span></font></div><div class=3D"gmail_quote=
-"><font face=3D"comic sans ms, sans-serif"><span class=3D"gmail_default" st=
-yle=3D"font-family:&quot;comic sans ms&quot;,sans-serif"> =C2=A0 =C2=A0duri=
-ng the live migration. As a result, dirty-limit is recommended if the guest=
-</span></font></div><div class=3D"gmail_quote"><font face=3D"comic sans ms,=
- sans-serif"><span class=3D"gmail_default" style=3D"font-family:&quot;comic=
- sans ms&quot;,sans-serif">=C2=A0 =C2=A0 VM requires a stable read performa=
-nce.</span></font></div><div class=3D"gmail_quote"><font face=3D"comic sans=
- ms, sans-serif"><span class=3D"gmail_default" style=3D"font-family:&quot;c=
-omic sans ms&quot;,sans-serif">The above explanation is about the recommend=
-ation of dirty-limit, please review,</span></font></div><div class=3D"gmail=
-_quote"><font face=3D"comic sans ms, sans-serif"><span class=3D"gmail_defau=
-lt" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">if it&#39;s =
-ok, i&#39;ll place it in the comment of the dirty-limit capability.</span><=
-/font></div><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:sol=
-id;border-left-color:rgb(204,204,204);padding-left:1ex"><br>
-&gt;=C2=A0 # Features:<br>
-&gt;=C2=A0 #<br>
-&gt;=C2=A0 # @unstable: Members @x-colo and @x-ignore-shared are experiment=
-al.<br>
-&gt; @@ -512,7 +521,8 @@<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;dirty-bitmaps&#39;=
-, &#39;postcopy-blocktime&#39;, &#39;late-block-activate&#39;,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0{ &#39;name&#39;: &#39;=
-x-ignore-shared&#39;, &#39;features&#39;: [ &#39;unstable&#39; ] },<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;validate-uuid&#39;=
-, &#39;background-snapshot&#39;,<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;zero-copy-send&#39;, &#=
-39;postcopy-preempt&#39;, &#39;switchover-ack&#39;] }<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;zero-copy-send&#39;, &#=
-39;postcopy-preempt&#39;, &#39;switchover-ack&#39;,<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0&#39;dirty-limit&#39;] }<br>
-&gt;=C2=A0 <br>
-&gt;=C2=A0 ##<br>
-&gt;=C2=A0 # @MigrationCapabilityStatus:<br>
-<br>
-[...]<br>
-<br>
-</blockquote></div><div><div class=3D"gmail_default" style=3D"font-family:&=
-quot;comic sans ms&quot;,sans-serif">Thank Markus again for the attention t=
-o this patchset.  :)</div></div><div><div style=3D"white-space:pre-wrap"><d=
-iv class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,s=
-ans-serif"></div><div class=3D"gmail_default" style=3D"font-family:&quot;co=
-mic sans ms&quot;,sans-serif">Yong</div></div></div><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
-iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
-</div></div></div>
-
---0000000000008a34970600b90754--
+PiBIaQ0KPg0KPiBPbiBNb24sIEp1bCAxNywgMjAyMyBhdCA1OjQz4oCvUE0gR2FvLFNoaXl1YW4g
+PGdhb3NoaXl1YW5AYmFpZHUuY29tPiB3cm90ZToNCj4NCj4gPiA+IEhpDQo+ID4gPg0KPiA+ID4g
+T24gTW9uLCBKdWwgMTcsIDIwMjMgYXQgNDo1M+KAr1BNIEdhbyxTaGl5dWFuIDxnYW9zaGl5dWFu
+QGJhaWR1LmNvbT4NCj4gPiB3cm90ZToNCj4gPiA+DQo+ID4gPiA+ID4gPiA+ID4NCj4gPiA+ID4g
+PiA+ID4gU28gbW92ZSB0aGUgZ3Vlc3QgbW91c2UgcG9pbnRlciB0byAoMCwgMCkgb2YgdGhlIHNj
+cmVlbiB3aGVuDQo+ID4gY29ubmVjdA0KPiA+ID4gPiB0aGUNCj4gPiA+ID4gPiA+ID4gPiBWTkMs
+IGFuZCB0aGVuIG1vdmUgdGhlIG1vdXNlIHBvaW50ZXIgdG8gdGhlIGN1cnNvciBvZg0KPiA+IFZO
+QyhhYnNvbHV0ZQ0KPiA+ID4gPiA+ID4gPiA+IGNvb3JkaW5hdGVzIGFyZSBhbHNvIHJlbGF0aXZl
+IGNvb3JkaW5hdGVzKS4NCj4gPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPiA+DQo+ID4gPiA+
+ID4gPiA+IEl0J3MgaGFyZGx5IGEgc29sdXRpb24sIHlvdSBzdGlsbCBoYXZlIG5vIGNsdWUgd2hh
+dCB3aWxsIGJlIHRoZQ0KPiA+IGd1ZXN0DQo+ID4gPiA+ID4gPiBtb3VzZQ0KPiA+ID4gPiA+ID4g
+PiBwb3NpdGlvbi4NCj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiBXZSBoYXZlIG5vIGNsdWUgd2hh
+dCB3aWxsIGJlIHRoZSBndWVzdCBtb3VzZSBwb3NpdGlvbiwgd2UgY2FuIG1vdmUNCj4gPiB0aGUN
+Cj4gPiA+ID4gPiA+IGd1ZXN0DQo+ID4gPiA+ID4gPiBtb3VzZSB0byAoMCwwKSBlYWNoIGNvbm5l
+Y3QgdGhlIFZOQy4gTm93LCB0aGUgY3Vyc29yIG9mIFZOQyB3aWxsDQo+ID4gYmUgdGhlDQo+ID4g
+PiA+ID4gPiByZWxhdGl2ZSBjb29yZGluYXRlcy4gSW4gYSB3YXksIHRoaXMgaXMgYSBxdWlyayB0
+byBrbm93IHRoZSBndWVzdA0KPiA+IG1vdXNlDQo+ID4gPiA+ID4gPiBwb3NpdGlvbi4NCj4gPiA+
+ID4gPiA+DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBUaGVyZSBpcyBubyBndWFyYW50ZWUgdGhlIGd1
+ZXN0IHBvaW50ZXIgd2lsbCBiZSBhdCAoMCwwKSB0aG91Z2gsIGFuZA0KPiA+IHRoYXQNCj4gPiA+
+ID4gPiBkb2Vzbid0IGV4cGxhaW4gaG93IHRoYXQgd291bGQgaGVscC4gV2hpY2ggY2xpZW50IGFy
+ZSB5b3UgdXNpbmc/IEFyZQ0KPiA+IHlvdQ0KPiA+ID4gPiA+IGRyYXdpbmcgdGhlIGd1ZXN0IGN1
+cnNvcj8gVGhpcyBjYW4ndCBiZSBkb25lIGN1cnJlbnRseSB3aXRoIHRoZSBsYWNrDQo+ID4gb2Yg
+YQ0KPiA+ID4gPiA+IG1lc3NhZ2UgdG8gdGVsbCB0aGUgZ3Vlc3QgbW91c2UgcG9zaXRpb24uICht
+b3ZpbmcgLyBzeW5jLWluZyB0aGUNCj4gPiBjbGllbnQNCj4gPiA+ID4gPiBjdXJzb3IgcG9zaXRp
+b24gd291bGQgYmUgZXZlbiB3b3JzZSBpbiBtYW55IHdheXMpDQo+ID4gPiA+DQo+ID4gPiA+IFNv
+cnJ5LCBteSBkZXNjcmlwdGlvbiBpc24ndCBhY2N1cmF0ZS4NCj4gPiA+ID4NCj4gPiA+ID4gV2hl
+biBjb25uZWN0IHRoZSB2bmMgc2VydmVyLA0KPiA+ID4gPiAgICAgdm5jX2Nvbm5lY3QNCj4gPiA+
+ID4gICAgICAgLT4gdnMtPmxhc3RfeCA9IC0xOw0KPiA+ID4gPiAgICAgICAtPiB2cy0+bGFzdF95
+ID0gLTE7DQo+ID4gPiA+DQo+ID4gPiA+IG1vdmUgY2xpZW50IGN1cnNvciB0byB2bmMgc2NyZWVu
+LA0KPiA+ID4gPiAgICAgdm5jX2NsaWVudF9pbw0KPiA+ID4gPiAgICAgICAtPnZuY19jbGllbnRf
+cmVhZA0KPiA+ID4gPiAgICAgICAgIC0+cHJvdG9jb2xfY2xpZW50X21zZw0KPiA+ID4gPiAgICAg
+ICAgICAgLT5wb2ludGVyX2V2ZW50KHgseSkNCj4gPiA+ID4gICAgICAgICAgICAgLT4gcWVtdV9p
+bnB1dF9xdWV1ZV9yZWwoY29uLCBJTlBVVF9BWElTX1gsIDAgLSB3aWR0aCk7DQo+ID4gPiA+ICAg
+ICAgICAgICAgIC0+IHFlbXVfaW5wdXRfcXVldWVfcmVsKGNvbiwgSU5QVVRfQVhJU19ZLCAwIC0g
+aGVpZ2h0KTsNCj4gPiA+ID4gICAgICAgICAgICAgLT4geD0wLHk9MA0KPiA+ID4gPiAgICAgICAg
+ICAgICAtPiB2cy0+bGFzdF94ID0geDt2cy0+bGFzdF95ID0geTsNCj4gPiA+ID4gICAgICAgICAg
+ICAgLT4gcWVtdV9pbnB1dF9ldmVudF9zeW5jICAgLy8gdGhpcyB3aWxsIGluZm9ybSB0aGUgZ3Vl
+c3QNCj4gPiBtb3ZlDQo+ID4gPiA+IHRvICgwLCAwKQ0KPiA+ID4gPg0KPiA+ID4gPiB0aGUgbmV4
+dCBldmVudCwNCj4gPiA+ID4gICAgICAgICAgIC0+cG9pbnRlcl9ldmVudCh4LHkpDQo+ID4gPiA+
+ICAgICAgICAgICAgIC0+IHFlbXVfaW5wdXRfcXVldWVfcmVsKGNvbiwgSU5QVVRfQVhJU19YLCB4
+IC0gdnMtPmxhc3RfeCk7DQo+ID4gPiA+ICAgICAgICAgICAgIC0+IHFlbXVfaW5wdXRfcXVldWVf
+cmVsKGNvbiwgSU5QVVRfQVhJU19YLCB4IC0gdnMtPmxhc3RfeCk7DQo+ID4gPiA+ICAgICAgICAg
+ICAgIC0+IHFlbXVfaW5wdXRfZXZlbnRfc3luYyAgICAvLyB0aGlzIHdpbGwgaW5mb3JtIHRoZSBn
+dWVzdA0KPiA+IGZyb20NCj4gPiA+ID4gKDAsMCkgbW92ZSB0byAoeCx5KSwNCj4gPiA+ID4gICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAvLyB0aGUNCj4gPiA+ID4gY2xpZW50IGN1cnNvciBhbmQgZ3Vlc3QgbW91c2Ugd2lsbCBz
+eW5jLg0KPiA+ID4gPg0KPiA+ID4NCj4gPiA+IEFjdHVhbGx5LCBpdCB3aWxsIGJlICggeCAtIHZz
+LT5sYXN0X3gsIHkgLSB2cy0+bGFzdF95KSwgbm90IG5lY2Vzc2FyaWx5DQo+ID4gKHgsDQo+ID4g
+PiB5KSwgdW5sZXNzIHlvdSBhbHNvIHNldCBsYXN0X3ggPSAwIC8gbGFzdF95ID0gMC4NCj4gPg0K
+PiA+IHllcywgc2V0IGxhc3RfeCA9IDAgLyBsYXN0X3kgPSAwIGFuZCBvbmx5IHRoZSBmaXJzdCB0
+aW1lIGVudGVyDQo+ID4gcG9pbnRlcl9ldmVudC4NCj4gPg0KPiA+ICAgICAgICAgIGlmICh2cy0+
+bGFzdF94ICE9IC0xKSB7DQo+ID4gICAgICAgICAgICAgIHFlbXVfaW5wdXRfcXVldWVfcmVsKGNv
+biwgSU5QVVRfQVhJU19YLCB4IC0gdnMtPmxhc3RfeCk7DQo+ID4gICAgICAgICAgICAgIHFlbXVf
+aW5wdXRfcXVldWVfcmVsKGNvbiwgSU5QVVRfQVhJU19ZLCB5IC0gdnMtPmxhc3RfeSk7DQo+ID4g
+KyAgICAgICAgfSBlbHNlIHsNCj4gPiArICAgICAgICAgICAgcWVtdV9pbnB1dF9xdWV1ZV9yZWwo
+Y29uLCBJTlBVVF9BWElTX1gsIDAgLSB3aWR0aCk7DQo+ID4gKyAgICAgICAgICAgIHFlbXVfaW5w
+dXRfcXVldWVfcmVsKGNvbiwgSU5QVVRfQVhJU19ZLCAwIC0gaGVpZ2h0KTsNCj4gPiArICAgICAg
+ICAgICAgeCA9IDA7DQo+ID4gKyAgICAgICAgICAgIHkgPSAwOw0KPiA+ICAgICAgICAgIH0NCj4g
+PiAgICAgICAgICB2cy0+bGFzdF94ID0geDsNCj4gPiAgICAgICAgICB2cy0+bGFzdF95ID0geTsN
+Cj4gPg0KPiA+ID4NCj4gPiA+IEJ1dCBldmVuIHRoZW4sIHRoZXJlIGlzIG5vIGd1YXJhbnRlZSB0
+aGUgZ3Vlc3QgcG9zaXRpb24gd2lsbCBiZSBhIHgveS4uLg0KPiA+ID4NCj4gPg0KPiA+IEVtbW0s
+IGNvbXBhcmVkIHRvIHRoZSBjdXJyZW50IGltcGxlbWVudGF0aW9uLCBpdCBpcyBhdCBsZWFzdCBn
+ZXR0aW5nDQo+ID4gY2xvc2VyLg0KPiA+IFRoZSBjdXJyZW50IHN0YXRlIGlzIHNpbXBseSB1bmJl
+YXJhYmxlLg0KPiA+DQo+ID4gPiBJdCdzIGJlZW4gaW1wbGVtZW50ZWQgb24gTGludXggVk0gZm9y
+IGEgbG9uZyB3aGlsZSAoZmlyc3QgaW4gdXNlcnNwYWNlLA0KPiA+ID4gdGhlbiBpbiBrZXJuZWwg
+c2luY2UgfjIwMTUpLiBCdXQgSSBkb24ndCBrbm93IGFib3V0IHRoZSBXaW5kb3dzIHN1cHBvcnQs
+DQo+ID4gaXQNCj4gPiA+IGxvb2tzIGxpa2UgeW91IG5lZWQgYSBkcml2ZXIgc3VjaCBhcyBwcm92
+aWRlZCBieSBWTVdhdmUsIGJ1dCBpdCBzZWVtcw0KPiA+ID4gY2xvc2VkLXNvdXJjZS4uLiAgQXQg
+dGhpcyBwb2ludCBpdCdzIHByb2JhYmx5IGJldHRlciB0byB1c2UgdmlydGlvLWlucHV0LA0KPiA+
+ID4gd2hpY2ggaGFzIG9wZW4tc291cmNlL2ZyZWUgd2luZG93cyBkcml2ZXJzLg0KPiA+DQo+ID4g
+VGhhbmtzLCBJIHRyaWVkIGluc3RhbGwgdm1tb3VzZSBkcml2ZXIgaW4gd2luZG93cyBzdWNjZXNz
+IGFuZCByZWJvb3QuDQo+ID4gSG93ZXZlciAnaW5mbyBtaWNlJyBhcw0KPiA+IGZvbGxvd3MgYW5k
+IGRvbid0IGhhdmUgdm1tb3VzZSAoYWJzb2x1dGUpLg0KPiA+DQo+ID4gKiBNb3VzZSAjMjogUUVN
+VSBQUy8yIE1vdXNlDQo+ID4NCj4gPiBUaGUgZ3Vlc3QgbW91c2UgaXNuJ3Qgc3luYyB3aXRoIGNs
+aWVudCBjdXJzb3IuLi4NCj4gPg0KPg0KPiBMb29rIGlmIHlvdSBoYXZlICJkZXY6IHZtbW91c2Us
+IGlkICIgaW4gImluZm8gcXRyZWUiIG9yIHNldCAtbWFjaGluZQ0KPiB2bXBvcnQ9b24uDQoNCiJp
+bmZvIHF0cmVlIiBhcyBmb2xsb3dzLCB0aGUgY2xpZW50IGN1cnNvciBhbmQgZ3Vlc3QgbW91c2Ug
+Y2Fubid0IGFsaWduLi4uDQoNCiAgICAgICAgICBkZXY6IHZtbW91c2UsIGlkICIiDQogICAgICAg
+ICAgZGV2OiB2bXBvcnQsIGlkICIiDQogICAgICAgICAgICB4LXJlYWQtc2V0LWVheCA9IHRydWUN
+CiAgICAgICAgICAgIHgtc2lnbmFsLXVuc3VwcG9ydGVkLWNtZCA9IHRydWUNCiAgICAgICAgICAg
+IHgtcmVwb3J0LXZteC10eXBlID0gdHJ1ZQ0KICAgICAgICAgICAgeC1jbWRzLXYyID0gdHJ1ZQ0K
+ICAgICAgICAgICAgdm13YXJlLXZteC12ZXJzaW9uID0gNiAoMHg2KQ0KICAgICAgICAgICAgdm13
+YXJlLXZteC10eXBlID0gMiAoMHgyKQ0KICAgICAgICAgIGRldjogaTgwNDIsIGlkICIiDQogICAg
+ICAgICAgICBncGlvLW91dCAiYTIwIiAxDQogICAgICAgICAgICBleHRlbmRlZC1zdGF0ZSA9IHRy
+dWUNCiAgICAgICAgICAgIGtiZC10aHJvdHRsZSA9IGZhbHNlDQogICAgICAgICAgICBpc2EgaXJx
+cyAxLDEyDQoNCkkgaGF2ZSBkZWNpZGVkIHRvIHN0aWxsIHVzZSB0aGUgbWV0aG9kIGluIHRoaXMg
+cGF0Y2guIA0KDQpUaGFua3MgTWFyYy1BbmRyw6kuDQoNCg==
 
