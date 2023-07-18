@@ -2,101 +2,132 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12F475875A
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 23:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9B7758752
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 23:38:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLsMt-0007em-Jz; Tue, 18 Jul 2023 17:36:27 -0400
+	id 1qLsMs-0007dK-3x; Tue, 18 Jul 2023 17:36:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qLsMq-0007dH-FC; Tue, 18 Jul 2023 17:36:24 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1qLsMn-0007aP-00
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 17:36:21 -0400
+Received: from mail-mw2nam10on2065.outbound.protection.outlook.com
+ ([40.107.94.65] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qLsMo-0004Bh-LB; Tue, 18 Jul 2023 17:36:24 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36ILWDtU002519; Tue, 18 Jul 2023 21:36:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=Dy97RmEP1rH6BkWOws0g2ZoPPbyHVVdARrzNn1bWBgE=;
- b=ngd21FTnfmvAqHmVLFyqyFa4eTiam5av/0A9lLJIjjNjzSxYRt62nrLM9Bi1klQO1Fb9
- W3iTy33I5RlP+8uN4tguf3dXP57M20z9HPxNmxO/TF0Tw9IK1EY+i21axpJxSf5UtLEQ
- Nkf/BcWVD9JCnEQI6sh/k6of+qW8Da5UzxxlWxswpYGpjXfXPKn7dPVs8vxDbd7P7f5t
- c/hDx5zi6jDQzueD7mKyFzeZ0EOPN7o/bQ7dGUrIOsAVXVAh8WP1OSdFVuGuILa5FjdT
- abO922KUWKIFIHUZhMapnyXoPnBAETfddRQlvc/Yl3mY3SeDaJGaomeWPMMkBgzcUU5a IA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rx2qyg4yv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 21:36:19 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36ILY4Hc009075;
- Tue, 18 Jul 2023 21:36:19 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rx2qyg4xq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 21:36:18 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36IJUGvo005272; Tue, 18 Jul 2023 21:36:17 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv65xekqu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 18 Jul 2023 21:36:17 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36ILaFdm16712352
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 18 Jul 2023 21:36:15 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AC08D20040;
- Tue, 18 Jul 2023 21:36:15 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4F53020043;
- Tue, 18 Jul 2023 21:36:15 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.14.165])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 18 Jul 2023 21:36:15 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 14/14] tests/tcg/s390x: Test VCKSM
-Date: Tue, 18 Jul 2023 23:21:15 +0200
-Message-ID: <20230718213531.117976-15-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230718213531.117976-1-iii@linux.ibm.com>
-References: <20230718213531.117976-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1qLsMk-00044j-2s
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 17:36:20 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Tg1vCoy8KLOWNVh1DVYvXAbG3AUaYoTxOpZWqI+ycVa37T5aZ/61FBuG0ymMK67V51+QCOv1RpCzT+5CNZYmg1FuCWLw3z8BSVJDQlVKJ3R/HAKXVFY6nmjC/fna9wdWo//GuOH8z3cBg5H1dYAm0aESjKzDluLPfprdHxTsucDr0s8I1F2an8aPqXrmsHnYgMNuwz4xmt1ymtxPnSXjbzHxWCfZcTQGSndD448JMBIGVAbOcZiEGeNs0qUiXqFCWVdRGWvxutRU3T1jCaiNCGZL//DYX+4uUlfwmIETX3CsA/a2FMOTEbzZ/rjY9nAtGS5+/XFksl0+9XowdOAruQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2jtr7xc9qWJuyjbnFRYnbSOWXadxQfCGOzKhiVK4opI=;
+ b=FmZkCZqfyFx5YST/BRFqjhzf3xSeFUb61ok0ATnAqcilosc08yJs128BnIyb1xGC9TCuy6ImhY1PJcoI1D5j7iWVUhpzrihX5gSu58HhOMXup0fK71GYR80LXuSyUK1rBMQc1A79VZv8lRWccLOlgoU0PhmVoWCLLCVpe24mAOibeMqjk9NS/bOFvBoALy0tyFS261DucyEHbYfQgOyzwtcxQQ29B9s1/sJOp9Uwu9CzSJNsq1gNp27S6EHTtw6ENNHp80BV+rJaomgNhGFGkSH6H4ZeI9T+vXxQBmGq1Ra7jZpC9HPjWoPogKHJeZmlHn+pFV/raO5XWv7y2KJdsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
+ dkim=pass header.d=memverge.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2jtr7xc9qWJuyjbnFRYnbSOWXadxQfCGOzKhiVK4opI=;
+ b=BWUkbK5MXoksQs/JgScuagH1iOSOwnhE7skGDlqSMiOruPbRxiXDxj9USvYSYhWE+nssv0q1FtPbtzT5ISrkHFmANlhw1hMxHkZnJeoHUUBlNIcCopX7mOiFV91E4P13s1knD7YeGR1j/nbyQ9eWzxO5fduwM0eMExtunNwcpgI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=memverge.com;
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
+ by PH7PR17MB7075.namprd17.prod.outlook.com (2603:10b6:510:2f6::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Tue, 18 Jul
+ 2023 21:31:07 +0000
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::4434:5ccb:5b13:592c]) by SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::4434:5ccb:5b13:592c%6]) with mapi id 15.20.6588.031; Tue, 18 Jul 2023
+ 21:31:06 +0000
+Date: Tue, 18 Jul 2023 17:30:57 -0400
+From: Gregory Price <gregory.price@memverge.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-cxl@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ qemu-devel@nongnu.org, linuxarm@huawei.com,
+ Alison Schofield <alison.schofield@intel.com>,
+ Ira Weiny <ira.weiny@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Viacheslav Dubeyko <slava@dubeyko.com>,
+ Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com>,
+ Fan Ni <fan.ni@samsung.com>, Michael Tsirkin <mst@redhat.com>,
+ Jonathan Zhang <jonzhang@meta.com>, Klaus Jensen <k.jensen@samsung.com>
+Subject: Re: [RFC PATCH 10/17] misc/i2c_mctp_cxl: Initial device emulation
+Message-ID: <ZLcEkSLAj5yXVOVc@memverge.com>
+References: <20230717171646.8972-1-Jonathan.Cameron@huawei.com>
+ <20230717171646.8972-11-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230717171646.8972-11-Jonathan.Cameron@huawei.com>
+X-ClientProxiedBy: SJ0PR13CA0072.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c4::17) To SJ0PR17MB5512.namprd17.prod.outlook.com
+ (2603:10b6:a03:394::19)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5h88gmZkrgqZ_2nt10eQFNVKJ_plUWdT
-X-Proofpoint-ORIG-GUID: 01Fkq6jhmcuxy4ORy7A6bKCU30NTuedY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-18_17,2023-07-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 malwarescore=0 mlxscore=0 priorityscore=1501 bulkscore=0
- spamscore=0 adultscore=0 clxscore=1015 phishscore=0 mlxlogscore=902
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307180196
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|PH7PR17MB7075:EE_
+X-MS-Office365-Filtering-Correlation-Id: 25cc0350-529c-4923-f095-08db87d64ba6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: X2fPGGcbqx1eD6evU9VqrSAPPy9eYWq17H0Df/rNiGz1fcxrrRzwIj9z34ivVCODMPAabcxQaTYdBEgvdrhdwMC7mMBehdnhKy2RBkRBq5rHWFZJ5AHr66IrrsmXOZUTJEYz3WEvMX3AnEz7/FNyeeDvH+hphGtJFEWhXyh8KwHrQN2otCV2OBEgxYu0RPaGXkfHRwoR9DK8IcwYor/pO4SAB8YeGk2i4fFDG4kfxS9l3NrbjcVKTbAE1RDICnhE7o7P6NgD29sGW131DDCztbtIsdqhBqmSVaLCH27MLwao7U2PinNBPL7NfyMclqHEYrJdbr80q49r8ZSZHRntKaQBOFsUvnV4jgNDuvIFcHS235lpXVJL0xZCKrkWN/eeTt/weh5oH+ASPSuT1Q+FaupziVsOnLtM6b8JC5KWqWA8r5yQRTkBe0Wm1uq6+NZgCXOzwn1XbrsF/2+mqQ8ce1mEwFxPBlUvSC667bWsyByLUy5744lbdYwfwExdnIY/aMNBZI4BqDZSPwVnEmmIRsyNKKRXBkjpOtCueiyx3Ca8/3ON3hL3hKzeGgcRYUhQ
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(136003)(396003)(366004)(376002)(346002)(39840400004)(451199021)(6486002)(478600001)(54906003)(6666004)(6506007)(6512007)(26005)(36756003)(2906002)(5660300002)(66946007)(66476007)(4326008)(6916009)(41300700001)(316002)(7416002)(8676002)(8936002)(66556008)(38100700002)(44832011)(186003)(86362001)(2616005)(83380400001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zxkR3wvJda+tLRHGXwBQxumWhYv6ApSJr4vsPia4U8xxqREe7ZYIJqRQVDUw?=
+ =?us-ascii?Q?NMgLMkAJeqIU2Rr2U302GWjC7/8uql1IglP3If/kUoBQoJzNPMXOdFvCwR9N?=
+ =?us-ascii?Q?879yFZOxpANiXGNNU/oHqfZB/WD6NdkfY293c77DYyHEtSqa9XgrbysBwR/I?=
+ =?us-ascii?Q?8dkWeGSNARB6RT/ekdcIBgTkK7gnK/mFyszjphzFBtsHTMrh3Oa72Pp1yHcQ?=
+ =?us-ascii?Q?aU/tj1I6xt4xxMEw6WyscwnrAjwNYhuzlYJ+lXuKdK7FvDA1oT+iSIwTtpTt?=
+ =?us-ascii?Q?fwmWjKAdHODPvo5JmmsmDWVoNcuSE6SCVM88BEdXKizxq7gY0tgiKEtUuP4v?=
+ =?us-ascii?Q?L/PuHZWWtUcTgvBmQlaspbMX6rDOeqANV2vbU1eMXF8Y4gZW2Y9sLjsoBlrx?=
+ =?us-ascii?Q?EoEc34Y+54rIOVl5YNCo7e3qgdX6c1+vGuzP5kR5EIEuh4sHt3TEZ32/6mcG?=
+ =?us-ascii?Q?U0J/vFNP9RbaPtL9BLuxgq74hDsrT+oELhTUAbHonGi8whttg5KTVLjjdGsu?=
+ =?us-ascii?Q?hl6ibcCmdYLpzaON6Yf1A3cWC5JqbSr90DYDk6GF0T0R6d5+W57pv4/Vk9Ka?=
+ =?us-ascii?Q?5m2/MJfMBhOge6kv21gs62DCRzOtEkRBK7cU3zjGEW+MjweLTBTB0YxWwJ4D?=
+ =?us-ascii?Q?5zfJXJOQ2f0J+sfTklnLVm+8gzmRKK29jBdlYc4tm37h6LED409temqNquEW?=
+ =?us-ascii?Q?SBjC9D8RuM7Poxfp+F5YUYYG7rk0q+KMk07JFmsMR8po2NJ5cxkknacf0PTh?=
+ =?us-ascii?Q?zLFYuYUwrwLad91X+gFY4OZv0ZkIU3+iwcep86qO0ZdvVnVV/fPQ9iiyypwa?=
+ =?us-ascii?Q?MEAGn9KqjXG6f/3ouElMw3snOq0rqUFv/P5NlS49VYg880SMtd6b1EtCNuTP?=
+ =?us-ascii?Q?tfzfmDF1m0UYzIL77u/MYcLFDcZk+iX+KPMmNASaDrb4m9bdL6pETuiwL/nT?=
+ =?us-ascii?Q?ffZviwNN/3PeOkfJMXKTM5SHHyVW+/ZZEEdeZpqZSX+VtxOFYVyZ0lv233Qx?=
+ =?us-ascii?Q?+tQHcT6MOQq+DpI3tr7FBvLDMil4TKH2KKzsq3tqm6dxnW96LXi9ByNQp7ao?=
+ =?us-ascii?Q?BaSb/kNdW4iLo2eFE7nhPWPx4UWk/YLokPIjv21RqLv5SHwvsyqRxl7nWMVj?=
+ =?us-ascii?Q?rDa9SxPxrvd7oAfENC67CHmEJDH51fPZQE1YOW3eIyKG18coNv8m4YNacKh0?=
+ =?us-ascii?Q?EJHEOm+lLwQg+ziRtEitwHHe4lE7cpBW4vEsZuhvYmuUSzcyC8GYa5B9DeqD?=
+ =?us-ascii?Q?LrFEgTsnNGN9nKzh0D8f88CpFeUtiWkDyWsDhvqOVt7bfNnUuEgC6BZ5EmnE?=
+ =?us-ascii?Q?1Fb8YSt0ucZUUN/jyHUx6Jor+v3tTj7MbLjO1UBD3z2ZJmzAFPYrhzje9nIk?=
+ =?us-ascii?Q?44hO0IhbwtHGH64nE1Ixm2lwkCug3oxglksUjm6kGdyY5fdMBl1vkKKkiC3u?=
+ =?us-ascii?Q?zYVwK4nf2jG/fNIsmU5DQ+KtOHtBXuhPl0MysUYsB7LavuXD0Jdfx+4K1NRl?=
+ =?us-ascii?Q?4PoQ/krg0S+HbUc4E2IHtf6Ird8ETarMjLY5r/3LXjrVRFYdzC6mKx7jLz2f?=
+ =?us-ascii?Q?0WSaYg804EjL3BE16h3O7wN7c8gabRJYJ6CM1y2nEaNyPKD3btfwACaTYztp?=
+ =?us-ascii?Q?gA=3D=3D?=
+X-OriginatorOrg: memverge.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25cc0350-529c-4923-f095-08db87d64ba6
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2023 21:31:06.7688 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: O9vNMQDyAf76o68rZsRZoQFpcEadwXNT/aV+OA6CYjyh1BLA5ik0h/IA0utZqCqEtCLGI3vQ42M9ZUi7/cA4YoU4S6li4sENyYtaG5WEPkI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR17MB7075
+Received-SPF: none client-ip=40.107.94.65;
+ envelope-from=gregory.price@memverge.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,79 +143,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a small test to prevent regressions.
+On Mon, Jul 17, 2023 at 06:16:39PM +0100, Jonathan Cameron wrote:
+> @@ -397,8 +401,9 @@ struct CXLType3Dev {
+>      AddressSpace hostpmem_as;
+>      CXLComponentState cxl_cstate;
+>      CXLDeviceState cxl_dstate;
+> -    CXLCCI cci;
+> -    
+> +    CXLCCI cci; /* Primary PCI mailbox CCI */
+> +    CXLCCI oob_mctp_cci; /* Initialized only if targetted */
+> +
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/s390x/Makefile.target |  1 +
- tests/tcg/s390x/vcksm.c         | 31 +++++++++++++++++++++++++++++++
- tests/tcg/s390x/vx.h            |  2 ++
- 3 files changed, 34 insertions(+)
- create mode 100644 tests/tcg/s390x/vcksm.c
+I've been humming and hawing over this on the MHD stuff because I wanted
+to figure out how to "add a CCI command" to a type-3 device without
+either having a billion definitions for CCI command sets - or doing
+something like this.
 
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 71bf39b78d3..1fc98099070 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -58,6 +58,7 @@ TESTS += $(PGM_SPECIFICATION_TESTS)
- Z13_TESTS=vistr
- Z13_TESTS+=lcbb
- Z13_TESTS+=locfhr
-+Z13_TESTS+=vcksm
- $(Z13_TESTS): CFLAGS+=-march=z13 -O2
- TESTS+=$(Z13_TESTS)
- 
-diff --git a/tests/tcg/s390x/vcksm.c b/tests/tcg/s390x/vcksm.c
-new file mode 100644
-index 00000000000..452daaae6ce
---- /dev/null
-+++ b/tests/tcg/s390x/vcksm.c
-@@ -0,0 +1,31 @@
-+/*
-+ * Test the VCKSM instruction.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include "vx.h"
-+
-+int main(void)
-+{
-+    S390Vector v1;
-+    S390Vector v2 = {
-+        .d[0] = 0xb2261c8140edce49ULL,
-+        .d[1] = 0x387bf5a433af39d1ULL,
-+    };
-+    S390Vector v3 = {
-+        .d[0] = 0x73b03d2c7f9e654eULL,
-+        .d[1] = 0x23d74e51fb479877ULL,
-+    };
-+    S390Vector exp = {.d[0] = 0xdedd7f8eULL, .d[1] = 0ULL};
-+
-+    asm volatile("vcksm %[v1],%[v2],%[v3]"
-+                 : [v1] "=v" (v1.v)
-+                 : [v2] "v" (v2.v)
-+                 , [v3] "v" (v3.v));
-+    assert(memcmp(&v1, &exp, sizeof(v1)) == 0);
-+
-+    return EXIT_SUCCESS;
-+}
-diff --git a/tests/tcg/s390x/vx.h b/tests/tcg/s390x/vx.h
-index 02e7fd518a8..00701dbe35f 100644
---- a/tests/tcg/s390x/vx.h
-+++ b/tests/tcg/s390x/vx.h
-@@ -1,6 +1,8 @@
- #ifndef QEMU_TESTS_S390X_VX_H
- #define QEMU_TESTS_S390X_VX_H
- 
-+#include <stdint.h>
-+
- typedef union S390Vector {
-     uint64_t d[2];  /* doubleword */
-     uint32_t w[4];  /* word */
--- 
-2.41.0
+I don't hate this design pattern, I just want to ask whether your
+intent is to end up with CXLType3Dev hosting many CXLCCI's based on what
+wrapper types you have. 
 
+Example: a type-3 device with mctp pass through and the MHD command set
+
+CXLType3Dev {
+    ...
+    CXLCCI cci;
+    CXLCCI oob_mctp_cci;
+    CXLCCI mhd_cci;
+    ...
+}
+
+Instantiate:
+-device cxl-type3,bus=swport0,memdev=cxl-mem1,id=cxl-pmem1,lsa=cxl-lsa1,sn=3 
+-device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=5,target=cxl-pmem1
+-device cxl-mhd,target=cxl-pmem1,...whatever else...
+
+where the MHD code is contained within its own type/file, and the type3
+device hosts the CCI for it.  Similar to how you've implemented the MTCP
+stuff here.
+
+The reason I ask is because certain CCI's don't necessarily get
+associated with "a bus" so much as "a device".  the MHD example - it's
+still part of "the device", but it's optional.   So does it make sense
+to create this wrapper without a bus association, or to just pile it on
+top CXLType3Dev and have to duplicate the code across any other
+multi-headed devices that folks may conjur up?
+
+~Gregory
 
