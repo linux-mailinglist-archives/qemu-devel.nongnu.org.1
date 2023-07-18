@@ -2,87 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32708757953
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 12:33:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FD7075795B
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 12:36:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLi0t-0007Wj-8N; Tue, 18 Jul 2023 06:33:03 -0400
+	id 1qLi3G-00009H-Dh; Tue, 18 Jul 2023 06:35:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qLi0p-0007UE-F8
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:33:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qLi39-00005e-AE; Tue, 18 Jul 2023 06:35:24 -0400
+Received: from out5-smtp.messagingengine.com ([66.111.4.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1qLi0n-0007iB-Jw
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 06:32:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689676375;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LJ9VjFOAX7KEpsqx+3rsCh7QB66sbTgBmRj0i8t7LUg=;
- b=cnLTzrudeYeQsBCnLZxLqMWpdR4XGyVqPXgFSIrI+OKtH6uzA0RyML63xU+67F0Tn+5q2T
- tB87+wFn03cL45XhP6jStcRkoQRGyVnLz1uqTMWiEqjKOto/JMRZNQq6zB+Ufgrr07VNbH
- SsqYqnIgOG3y9rSPJr6d/+FqIZI3ZFg=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-37-ReOdZIOFMhy6XpWnrRX_fg-1; Tue, 18 Jul 2023 06:32:54 -0400
-X-MC-Unique: ReOdZIOFMhy6XpWnrRX_fg-1
-Received: by mail-yw1-f198.google.com with SMTP id
- 00721157ae682-579dd7e77f5so53222057b3.0
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 03:32:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689676373; x=1690281173;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LJ9VjFOAX7KEpsqx+3rsCh7QB66sbTgBmRj0i8t7LUg=;
- b=ScSx7hkFcxhGvOLuPb+k9jJhBg3BgpIq38Igo/9Jtln7JFnaYpRo1hY+lfOplyFHvE
- z+I4peaQ22Y98mVGYBrIu1DlnkjhOTttEITGipx/uZdwbNTBemo+ZYu5wkJYmqpuN6QL
- 5FZIDFLXMtnjRPX/bZQ3fJKvATPJBUN7tQMdd5+24EZl0JhSN+MgrxT0Wj7nPvKgLWsd
- NBS1A2LU5h8US9KADaigxGS+aLnwcH+p4H/b2KqG53/YXBytordhfpTdZstSDuvOWr+2
- l2mO2Ev82nk4Aw2EMx1NOpXMg6QWB/1MuM1DfWxfJMZfcBi351d26bWNCOalfSoxuCNO
- i6pA==
-X-Gm-Message-State: ABy/qLaClIdtCXH2ezGFIhf1g5NeDWAB0HwWtWbg5xmHHYZvFfFa9PFf
- nyXNkqiNpZundfw7eUpw8rRvWG2cHXHkF70iPg/bYM/HInLV5I+88wt9KLuakMAoQQg6WZaQbSm
- TqdqSw9HZIIYWrXTRwmDyU3a02i7Mlsc=
-X-Received: by 2002:a0d:d8c9:0:b0:56d:2490:7cde with SMTP id
- a192-20020a0dd8c9000000b0056d24907cdemr14789756ywe.50.1689676373083; 
- Tue, 18 Jul 2023 03:32:53 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHh8k3t3IqzzvYl1s7LPsoKr9b2R0bmumUYFEbPNxabAWjebYIVQ+sEo+6VeMyB0kSsryVx8PoR+hEwPIikfak=
-X-Received: by 2002:a0d:d8c9:0:b0:56d:2490:7cde with SMTP id
- a192-20020a0dd8c9000000b0056d24907cdemr14789740ywe.50.1689676372798; Tue, 18
- Jul 2023 03:32:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qLi35-0008Pp-TZ; Tue, 18 Jul 2023 06:35:23 -0400
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.nyi.internal (Postfix) with ESMTP id E83E45C00EB;
+ Tue, 18 Jul 2023 06:35:15 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute1.internal (MEProxy); Tue, 18 Jul 2023 06:35:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:date:date:from
+ :from:in-reply-to:message-id:mime-version:reply-to:sender
+ :subject:subject:to:to; s=fm2; t=1689676515; x=1689762915; bh=TG
+ DSfLIpAEQULuSW+Zah99oyYcaEYBQVIpO8VZeaHBE=; b=FcVWsgCkn7qln7+8pM
+ 33RdKO+Vgj5ckU36YzzNBWXsC+KuSWXRTb4G3eMsbkGSeEx93g55o9zOV2bALTSI
+ yJMFQzw0yEvvMfxIhkOfkFO8TJ+28zAcNG8/5PIuQDu7VHjF0tOv7neHTZ97Taog
+ AgN2Pkmfm3lxVGG4804KL8He2m4A27kqblj3auEEQZlc5wOEIx5+RjEMLmUSTTi1
+ zGi4C78P7LaTdQ3eV7iSDLUgA5nQgXMo3JGS9Z2E8gJKngPO9umRnzGBH058OevO
+ zRqpwdic7hR0Dh78Elji3TL+lWSMPuKzII69/RtIQRkle54ExHuEtp7MwwMpQfJG
+ V/mg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm3; t=1689676515; x=1689762915; bh=TGDSfLIpAEQUL
+ uSW+Zah99oyYcaEYBQVIpO8VZeaHBE=; b=X6wRUdSVZ/MYoXLsYNpo8OST7XnuN
+ zYDfyrPZSZw43r95L8HEPtVxu9o+wczXpj9P9OqcL1o6WMG4j8m57xD/MBxUyLjv
+ xEryAIrDaSrKARq2PFo3EeewRcJWwKNZQrf9M60zFRuCVaMExGfPZKTpCjzHtIqh
+ 6oNzmt4Z5WH7jk2rtOs8WR1GP82orcfDU28U8bgSxAEGrDHuMrLD5aoRH20t+8dG
+ 3ysbidP7JotS9e28LXrTRBgIXwQ2bc5sxdH9DQhIilwCdUFwuI7/R0QOEH5annJM
+ mige8AKheh2ebct/knbNtaaY9zNmF5QhZm1P6SqlsEEPK1pm9RKcdsIJQ==
+X-ME-Sender: <xms:4mq2ZEWaFIDm9gKm-ypM_ulv2l-QvAi-3BfH1kNGrnJ3Ty8ysBCmOQ>
+ <xme:4mq2ZInJ8WA8JqLeR24Qs-4xAx0eV6r3pRRD91S_-P8G9aqjWwm2BKrug3UcmBV1N
+ P_XgQEiv6hNfROVGVI>
+X-ME-Received: <xmr:4mq2ZIY9sBEcd0R1l7Mv8Tsi1F-9j-wYkvMiqRQTVzurr-aa0hfTdol2HWHGV6GORKBO2dk5SnOF>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgeeggddvlecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpefmlhgruhhsucfl
+ vghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtthgvrh
+ hnpedtleduhfegleehleeltdejffefjedtleeuvdfgteevffegtedvveekheeiieekteen
+ ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehithhsse
+ hirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:4mq2ZDUCvA-CYDft0LT3M5W9ejwE6VqHxr0RQnhrJWSra3or43U5kw>
+ <xmx:4mq2ZOlSKNg6WFB9UNuMTZYIL6RkLHvktgrRYLRmcJZbF-FxweAaSw>
+ <xmx:4mq2ZIc_W0HmX7zoNhZaz_eSHDuJENzATiVTgpMPMMg9lt7WNEe6Xg>
+ <xmx:42q2ZMYaISFKgCYRXzfrFz3GP1xS63sUB1BaVkxslo2bmfb4b2QPkg>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 18 Jul 2023 06:35:13 -0400 (EDT)
+From: Klaus Jensen <its@irrelevant.dk>
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Klaus Jensen <its@irrelevant.dk>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <k.jensen@samsung.com>, qemu-stable@nongnu.org,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PATCH] hw/nvme: fix endianness issue for shadow doorbells
+Date: Tue, 18 Jul 2023 12:35:12 +0200
+Message-ID: <20230718103511.53767-2-its@irrelevant.dk>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230418225638.1467969-1-peili.dev@gmail.com>
- <CAJaqyWebSowMMWh+HCjj7tmbA3Ey6C69T=SPA4k+6fd_-GjfoA@mail.gmail.com>
- <CACGkMEu0d0y82wo1p2g-ovbUTYJcVon0-t8fvgFQLokZmd7hDQ@mail.gmail.com>
-In-Reply-To: <CACGkMEu0d0y82wo1p2g-ovbUTYJcVon0-t8fvgFQLokZmd7hDQ@mail.gmail.com>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Tue, 18 Jul 2023 12:32:41 +0200
-Message-ID: <CAGxU2F4N+xAM0gRh2dHDLSujkJ4Ek--Hk+PoTHOsxe4k+GTrrA@mail.gmail.com>
-Subject: vdpa: use io_uring passthrough command for IOCTLs [was Re: [PATCH
- 1/2] Reduce vdpa initialization / startup overhead]
-To: Jason Wang <jasowang@redhat.com>, Michael Tsirkin <mst@redhat.com>, 
- Eugenio Perez Martin <eperezma@redhat.com>
-Cc: peili.dev@gmail.com, qemu devel list <qemu-devel@nongnu.org>, 
- Linux Virtualization <virtualization@lists.linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4151; i=k.jensen@samsung.com;
+ h=from:subject; bh=JLX0T/UUDiTrLEHKzSUkx4ASSjCLvhLDa8u8tkPD5Z0=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGS2at+IwfWnWvd4aK+tOQQHay0gg+2TikFH/
+ 82Zpkq84KbwOokBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJktmrfAAoJEE3hrzFt
+ Tw3p3yUIAJDo/4ckkiKurJNCd5y63jRxMY8h4GAK67YlZnhHcpRqTFqP0uUh6sPj5AsbwgYmQr7
+ 8Lw//gYSR15v5quuqOITD+FuaLQeXTPwc1yFQWGSfa8AWG9SAcfmlJ+K+Zmiy/l5Pdi5wNPTtbp
+ XHouYNVISbrlOOq90/4S/hCCZiWbg2wEnAJamiJJ21VbqgFWW6lvhnMW36GICCXTfvsK7Uw/Pt2
+ tFXVoaIiOY+GJc8gKJ4y5g7O+eMtJjFbV8rVVseun21p8e9Z1ZOLGB4nsvvwsDO+QFBQpONOGbU
+ qIwQe7vH0Q2NQ2dRNeIvqCy8pBoINWAVXrIV7hU+64tpe390xD+Fa67e
+X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
+ fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=66.111.4.29; envelope-from=its@irrelevant.dk;
+ helo=out5-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,75 +112,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 20, 2023 at 6:20=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
-ote:
->
-> On Wed, Apr 19, 2023 at 11:33=E2=80=AFPM Eugenio Perez Martin
-> <eperezma@redhat.com> wrote:
-> >
-> > On Wed, Apr 19, 2023 at 12:56=E2=80=AFAM <peili.dev@gmail.com> wrote:
-> > >
-> > > From: Pei Li <peili.dev@gmail.com>
-> > >
-> > > Currently, part of the vdpa initialization / startup process
-> > > needs to trigger many ioctls per vq, which is very inefficient
-> > > and causing unnecessary context switch between user mode and
-> > > kernel mode.
-> > >
-> > > This patch creates an additional ioctl() command, namely
-> > > VHOST_VDPA_GET_VRING_GROUP_BATCH, that will batching
-> > > commands of VHOST_VDPA_GET_VRING_GROUP into a single
-> > > ioctl() call.
->
-> I'd expect there's a kernel patch but I didn't see that?
->
-> If we want to go this way. Why simply have a more generic way, that is
-> introducing something like:
->
-> VHOST_CMD_BATCH which did something like
->
-> struct vhost_cmd_batch {
->     int ncmds;
->     struct vhost_ioctls[];
-> };
->
-> Then you can batch other ioctls other than GET_VRING_GROUP?
->
+From: Klaus Jensen <k.jensen@samsung.com>
 
-Just restarting this discussion, since I recently worked more with
-io_uring passthrough commands and I think it can help here.
+In commit 2fda0726e514 ("hw/nvme: fix missing endian conversions for
+doorbell buffers"), we fixed shadow doorbells for big-endian guests
+running on little endian hosts. But I did not fix little-endian guests
+on big-endian hosts. Fix this.
 
-The NVMe guys had a similar problem (ioctl too slow for their use
-case)[1][2], so they developed a new feature in io_uring that
-basically allows you to do IOCTLs asynchronously and in batches using
-io_uring.
+Solves issue #1765.
 
-The same feature is also used by ublk [3] and I recently talked about
-this at DevConf with German [4].
+Fixes: 3f7fe8de3d49 ("hw/nvme: Implement shadow doorbell buffer support")
+Cc: qemu-stable@nongnu.org
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+---
+ hw/nvme/ctrl.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-Basically, there's a new callback in fops (struct file_operations.uring_cmd=
-).
-IIUC for NVMe (drivers/nvme/host/ioctl.c) they used exactly the same
-values used for IOCTLs also for the new uring_cmd callback.
-
-We could do the same. The changes in the vhost-vdpa kernel module
-should be simple, and we could share the code for handling ioctl and
-uring_cmd.
-That way any new command can be supported with both for compatibility.
-
-In QEMU then we can start using it to optimize the control path.
-
-What do you think?
-
-If it's interesting, I could throw down an RFC with the changes or if
-anyone is interested in working on it, I can help with the details.
-
-Thanks,
-Stefano
-
-[1] https://lpc.events/event/11/contributions/989/
-[2] https://lpc.events/event/16/contributions/1382/
-[3] https://lwn.net/Articles/903855/
-[4] https://www.youtube.com/watch?v=3D6JqNPirreoY
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 8e8e870b9a80..dadc2dc7da10 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -6801,6 +6801,7 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
+     PCIDevice *pci = PCI_DEVICE(n);
+     uint64_t dbs_addr = le64_to_cpu(req->cmd.dptr.prp1);
+     uint64_t eis_addr = le64_to_cpu(req->cmd.dptr.prp2);
++    uint32_t v;
+     int i;
+ 
+     /* Address should be page aligned */
+@@ -6818,6 +6819,8 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
+         NvmeCQueue *cq = n->cq[i];
+ 
+         if (sq) {
++            v = cpu_to_le32(sq->tail);
++
+             /*
+              * CAP.DSTRD is 0, so offset of ith sq db_addr is (i<<3)
+              * nvme_process_db() uses this hard-coded way to calculate
+@@ -6825,7 +6828,7 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
+              */
+             sq->db_addr = dbs_addr + (i << 3);
+             sq->ei_addr = eis_addr + (i << 3);
+-            pci_dma_write(pci, sq->db_addr, &sq->tail, sizeof(sq->tail));
++            pci_dma_write(pci, sq->db_addr, &v, sizeof(sq->tail));
+ 
+             if (n->params.ioeventfd && sq->sqid != 0) {
+                 if (!nvme_init_sq_ioeventfd(sq)) {
+@@ -6835,10 +6838,12 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
+         }
+ 
+         if (cq) {
++            v = cpu_to_le32(cq->head);
++
+             /* CAP.DSTRD is 0, so offset of ith cq db_addr is (i<<3)+(1<<2) */
+             cq->db_addr = dbs_addr + (i << 3) + (1 << 2);
+             cq->ei_addr = eis_addr + (i << 3) + (1 << 2);
+-            pci_dma_write(pci, cq->db_addr, &cq->head, sizeof(cq->head));
++            pci_dma_write(pci, cq->db_addr, &v, sizeof(cq->head));
+ 
+             if (n->params.ioeventfd && cq->cqid != 0) {
+                 if (!nvme_init_cq_ioeventfd(cq)) {
+@@ -7587,7 +7592,7 @@ static uint64_t nvme_mmio_read(void *opaque, hwaddr addr, unsigned size)
+ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
+ {
+     PCIDevice *pci = PCI_DEVICE(n);
+-    uint32_t qid;
++    uint32_t qid, v;
+ 
+     if (unlikely(addr & ((1 << 2) - 1))) {
+         NVME_GUEST_ERR(pci_nvme_ub_db_wr_misaligned,
+@@ -7654,7 +7659,8 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
+         start_sqs = nvme_cq_full(cq) ? 1 : 0;
+         cq->head = new_head;
+         if (!qid && n->dbbuf_enabled) {
+-            pci_dma_write(pci, cq->db_addr, &cq->head, sizeof(cq->head));
++            v = cpu_to_le32(cq->head);
++            pci_dma_write(pci, cq->db_addr, &v, sizeof(cq->head));
+         }
+         if (start_sqs) {
+             NvmeSQueue *sq;
+@@ -7714,6 +7720,8 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
+ 
+         sq->tail = new_tail;
+         if (!qid && n->dbbuf_enabled) {
++            v = cpu_to_le32(sq->tail);
++
+             /*
+              * The spec states "the host shall also update the controller's
+              * corresponding doorbell property to match the value of that entry
+@@ -7727,7 +7735,7 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
+              * including ones that run on Linux, are not updating Admin Queues,
+              * so we can't trust reading it for an appropriate sq tail.
+              */
+-            pci_dma_write(pci, sq->db_addr, &sq->tail, sizeof(sq->tail));
++            pci_dma_write(pci, sq->db_addr, &v, sizeof(sq->tail));
+         }
+ 
+         qemu_bh_schedule(sq->bh);
+-- 
+2.41.0
 
 
