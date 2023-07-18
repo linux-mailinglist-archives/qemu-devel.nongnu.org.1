@@ -2,63 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F39757199
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 04:10:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7C27571B4
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 04:19:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLa8z-0005bD-7v; Mon, 17 Jul 2023 22:08:53 -0400
+	id 1qLaHd-00077N-43; Mon, 17 Jul 2023 22:17:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1qLa8u-0005ax-67
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 22:08:49 -0400
-Received: from mx24.baidu.com ([111.206.215.185] helo=baidu.com)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qLaHT-00076g-32; Mon, 17 Jul 2023 22:17:39 -0400
+Received: from out30-131.freemail.mail.aliyun.com ([115.124.30.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaoshiyuan@baidu.com>)
- id 1qLa8q-0005bv-HL
- for qemu-devel@nongnu.org; Mon, 17 Jul 2023 22:08:47 -0400
-From: "Gao,Shiyuan" <gaoshiyuan@baidu.com>
-To: =?utf-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "kraxel@redhat.com"
- <kraxel@redhat.com>, "mark.cave-ayland@ilande.co.uk"
- <mark.cave-ayland@ilande.co.uk>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
- <berrange@redhat.com>
-Subject: Re: [PATCH] vnc,ps2: fix the PS/2 mouse work badly when connect VNC
-Thread-Topic: [PATCH] vnc,ps2: fix the PS/2 mouse work badly when connect VNC
-Thread-Index: AQHZuFrFNlltFg4MfUmGmCXkRR+pm6+9DRuAgACaiID//4BWgIAAwmOA//9/ewCAAI5AAP//gJQAACn944A=
-Date: Tue, 18 Jul 2023 02:07:51 +0000
-Message-ID: <57634FEE-D9E5-459C-A32E-6371685A9EDE@baidu.com>
-References: <20230717025936.71456-1-gaoshiyuan@baidu.com>
- <CAMxuvaz4NwRfCoWGVBofihBsZnBya7cv3Cq7w-Y6Wzd0mPoDQQ@mail.gmail.com>
- <EF20B207-4AAE-4A30-8D0B-CB208867756A@baidu.com>
- <CAMxuvaxssGvBLb-gFFEibDcQ+MJyorDJi-xSMTBVRCNyVyFVqA@mail.gmail.com>
- <F68DBAB0-B1CC-45FC-B1A7-8C62A5885031@baidu.com>
- <CAMxuvawBOLcS8SQzPiVgMuyMXFadrqrMzcuA1ddB-uaDd1qZgA@mail.gmail.com>
- <3AC28C88-5682-4EBD-8996-5125FAF5F2A4@baidu.com>
- <CAMxuvazXYgKeaBoJxqxEEM2opiYAqQA=2Zg_6K2kUFUTSmjwog@mail.gmail.com>
-In-Reply-To: <CAMxuvazXYgKeaBoJxqxEEM2opiYAqQA=2Zg_6K2kUFUTSmjwog@mail.gmail.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.22.192.69]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <C2DDD51435CF914DB3D62D41D29FCD16@internal.baidu.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qLaHQ-0006zL-09; Mon, 17 Jul 2023 22:17:38 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R191e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046049;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=8; SR=0;
+ TI=SMTPD_---0Vnfj.mK_1689646644; 
+Received: from 30.221.100.194(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0Vnfj.mK_1689646644) by smtp.aliyun-inc.com;
+ Tue, 18 Jul 2023 10:17:25 +0800
+Content-Type: multipart/alternative;
+ boundary="------------0Z0ykRfNzhR1u4loeKdT9jmJ"
+Message-ID: <035b6d20-daa0-eac1-afa1-21ccf775a1f4@linux.alibaba.com>
+Date: Tue, 18 Jul 2023 10:16:53 +0800
 MIME-Version: 1.0
-X-FEAS-Client-IP: 172.31.51.47
-X-FE-Last-Public-Client-IP: 100.100.100.60
-X-FE-Policy-ID: 15:10:21:SYSTEM
-Received-SPF: pass client-ip=111.206.215.185;
- envelope-from=gaoshiyuan@baidu.com; helo=baidu.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
-X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] target/riscv: Fix LMUL check to use minimum SEW
+Content-Language: en-US
+To: Weiwei Li <liweiwei@iscas.ac.cn>, Rob Bradford <rbradford@rivosinc.com>,
+ qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+References: <20230706104433.16264-1-rbradford@rivosinc.com>
+ <dfc75d1f-f28d-7d2c-26f9-72086ffb54ca@iscas.ac.cn>
+ <7a102598badfaa01b0e0c04e4f59e81eac5a2b81.camel@rivosinc.com>
+ <21bd465f-9f27-be77-cb3b-2b44b5f1e837@iscas.ac.cn>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <21bd465f-9f27-be77-cb3b-2b44b5f1e837@iscas.ac.cn>
+Received-SPF: pass client-ip=115.124.30.131;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-131.freemail.mail.aliyun.com
+X-Spam_score_int: -99
+X-Spam_score: -10.0
+X-Spam_bar: ----------
+X-Spam_report: (-10.0 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ HTML_MESSAGE=0.001, NICE_REPLY_A=-0.097, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,91 +70,405 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBIaQ0KPg0KPiBPbiBNb24sIEp1bCAxNywgMjAyMyBhdCA1OjQz4oCvUE0gR2FvLFNoaXl1YW4g
-PGdhb3NoaXl1YW5AYmFpZHUuY29tPiB3cm90ZToNCj4NCj4gPiA+IEhpDQo+ID4gPg0KPiA+ID4g
-T24gTW9uLCBKdWwgMTcsIDIwMjMgYXQgNDo1M+KAr1BNIEdhbyxTaGl5dWFuIDxnYW9zaGl5dWFu
-QGJhaWR1LmNvbT4NCj4gPiB3cm90ZToNCj4gPiA+DQo+ID4gPiA+ID4gPiA+ID4NCj4gPiA+ID4g
-PiA+ID4gU28gbW92ZSB0aGUgZ3Vlc3QgbW91c2UgcG9pbnRlciB0byAoMCwgMCkgb2YgdGhlIHNj
-cmVlbiB3aGVuDQo+ID4gY29ubmVjdA0KPiA+ID4gPiB0aGUNCj4gPiA+ID4gPiA+ID4gPiBWTkMs
-IGFuZCB0aGVuIG1vdmUgdGhlIG1vdXNlIHBvaW50ZXIgdG8gdGhlIGN1cnNvciBvZg0KPiA+IFZO
-QyhhYnNvbHV0ZQ0KPiA+ID4gPiA+ID4gPiA+IGNvb3JkaW5hdGVzIGFyZSBhbHNvIHJlbGF0aXZl
-IGNvb3JkaW5hdGVzKS4NCj4gPiA+ID4gPiA+ID4gPg0KPiA+ID4gPiA+ID4gPiA+DQo+ID4gPiA+
-ID4gPiA+IEl0J3MgaGFyZGx5IGEgc29sdXRpb24sIHlvdSBzdGlsbCBoYXZlIG5vIGNsdWUgd2hh
-dCB3aWxsIGJlIHRoZQ0KPiA+IGd1ZXN0DQo+ID4gPiA+ID4gPiBtb3VzZQ0KPiA+ID4gPiA+ID4g
-PiBwb3NpdGlvbi4NCj4gPiA+ID4gPiA+DQo+ID4gPiA+ID4gPiBXZSBoYXZlIG5vIGNsdWUgd2hh
-dCB3aWxsIGJlIHRoZSBndWVzdCBtb3VzZSBwb3NpdGlvbiwgd2UgY2FuIG1vdmUNCj4gPiB0aGUN
-Cj4gPiA+ID4gPiA+IGd1ZXN0DQo+ID4gPiA+ID4gPiBtb3VzZSB0byAoMCwwKSBlYWNoIGNvbm5l
-Y3QgdGhlIFZOQy4gTm93LCB0aGUgY3Vyc29yIG9mIFZOQyB3aWxsDQo+ID4gYmUgdGhlDQo+ID4g
-PiA+ID4gPiByZWxhdGl2ZSBjb29yZGluYXRlcy4gSW4gYSB3YXksIHRoaXMgaXMgYSBxdWlyayB0
-byBrbm93IHRoZSBndWVzdA0KPiA+IG1vdXNlDQo+ID4gPiA+ID4gPiBwb3NpdGlvbi4NCj4gPiA+
-ID4gPiA+DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiBUaGVyZSBpcyBubyBndWFyYW50ZWUgdGhlIGd1
-ZXN0IHBvaW50ZXIgd2lsbCBiZSBhdCAoMCwwKSB0aG91Z2gsIGFuZA0KPiA+IHRoYXQNCj4gPiA+
-ID4gPiBkb2Vzbid0IGV4cGxhaW4gaG93IHRoYXQgd291bGQgaGVscC4gV2hpY2ggY2xpZW50IGFy
-ZSB5b3UgdXNpbmc/IEFyZQ0KPiA+IHlvdQ0KPiA+ID4gPiA+IGRyYXdpbmcgdGhlIGd1ZXN0IGN1
-cnNvcj8gVGhpcyBjYW4ndCBiZSBkb25lIGN1cnJlbnRseSB3aXRoIHRoZSBsYWNrDQo+ID4gb2Yg
-YQ0KPiA+ID4gPiA+IG1lc3NhZ2UgdG8gdGVsbCB0aGUgZ3Vlc3QgbW91c2UgcG9zaXRpb24uICht
-b3ZpbmcgLyBzeW5jLWluZyB0aGUNCj4gPiBjbGllbnQNCj4gPiA+ID4gPiBjdXJzb3IgcG9zaXRp
-b24gd291bGQgYmUgZXZlbiB3b3JzZSBpbiBtYW55IHdheXMpDQo+ID4gPiA+DQo+ID4gPiA+IFNv
-cnJ5LCBteSBkZXNjcmlwdGlvbiBpc24ndCBhY2N1cmF0ZS4NCj4gPiA+ID4NCj4gPiA+ID4gV2hl
-biBjb25uZWN0IHRoZSB2bmMgc2VydmVyLA0KPiA+ID4gPiAgICAgdm5jX2Nvbm5lY3QNCj4gPiA+
-ID4gICAgICAgLT4gdnMtPmxhc3RfeCA9IC0xOw0KPiA+ID4gPiAgICAgICAtPiB2cy0+bGFzdF95
-ID0gLTE7DQo+ID4gPiA+DQo+ID4gPiA+IG1vdmUgY2xpZW50IGN1cnNvciB0byB2bmMgc2NyZWVu
-LA0KPiA+ID4gPiAgICAgdm5jX2NsaWVudF9pbw0KPiA+ID4gPiAgICAgICAtPnZuY19jbGllbnRf
-cmVhZA0KPiA+ID4gPiAgICAgICAgIC0+cHJvdG9jb2xfY2xpZW50X21zZw0KPiA+ID4gPiAgICAg
-ICAgICAgLT5wb2ludGVyX2V2ZW50KHgseSkNCj4gPiA+ID4gICAgICAgICAgICAgLT4gcWVtdV9p
-bnB1dF9xdWV1ZV9yZWwoY29uLCBJTlBVVF9BWElTX1gsIDAgLSB3aWR0aCk7DQo+ID4gPiA+ICAg
-ICAgICAgICAgIC0+IHFlbXVfaW5wdXRfcXVldWVfcmVsKGNvbiwgSU5QVVRfQVhJU19ZLCAwIC0g
-aGVpZ2h0KTsNCj4gPiA+ID4gICAgICAgICAgICAgLT4geD0wLHk9MA0KPiA+ID4gPiAgICAgICAg
-ICAgICAtPiB2cy0+bGFzdF94ID0geDt2cy0+bGFzdF95ID0geTsNCj4gPiA+ID4gICAgICAgICAg
-ICAgLT4gcWVtdV9pbnB1dF9ldmVudF9zeW5jICAgLy8gdGhpcyB3aWxsIGluZm9ybSB0aGUgZ3Vl
-c3QNCj4gPiBtb3ZlDQo+ID4gPiA+IHRvICgwLCAwKQ0KPiA+ID4gPg0KPiA+ID4gPiB0aGUgbmV4
-dCBldmVudCwNCj4gPiA+ID4gICAgICAgICAgIC0+cG9pbnRlcl9ldmVudCh4LHkpDQo+ID4gPiA+
-ICAgICAgICAgICAgIC0+IHFlbXVfaW5wdXRfcXVldWVfcmVsKGNvbiwgSU5QVVRfQVhJU19YLCB4
-IC0gdnMtPmxhc3RfeCk7DQo+ID4gPiA+ICAgICAgICAgICAgIC0+IHFlbXVfaW5wdXRfcXVldWVf
-cmVsKGNvbiwgSU5QVVRfQVhJU19YLCB4IC0gdnMtPmxhc3RfeCk7DQo+ID4gPiA+ICAgICAgICAg
-ICAgIC0+IHFlbXVfaW5wdXRfZXZlbnRfc3luYyAgICAvLyB0aGlzIHdpbGwgaW5mb3JtIHRoZSBn
-dWVzdA0KPiA+IGZyb20NCj4gPiA+ID4gKDAsMCkgbW92ZSB0byAoeCx5KSwNCj4gPiA+ID4gICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAvLyB0aGUNCj4gPiA+ID4gY2xpZW50IGN1cnNvciBhbmQgZ3Vlc3QgbW91c2Ugd2lsbCBz
-eW5jLg0KPiA+ID4gPg0KPiA+ID4NCj4gPiA+IEFjdHVhbGx5LCBpdCB3aWxsIGJlICggeCAtIHZz
-LT5sYXN0X3gsIHkgLSB2cy0+bGFzdF95KSwgbm90IG5lY2Vzc2FyaWx5DQo+ID4gKHgsDQo+ID4g
-PiB5KSwgdW5sZXNzIHlvdSBhbHNvIHNldCBsYXN0X3ggPSAwIC8gbGFzdF95ID0gMC4NCj4gPg0K
-PiA+IHllcywgc2V0IGxhc3RfeCA9IDAgLyBsYXN0X3kgPSAwIGFuZCBvbmx5IHRoZSBmaXJzdCB0
-aW1lIGVudGVyDQo+ID4gcG9pbnRlcl9ldmVudC4NCj4gPg0KPiA+ICAgICAgICAgIGlmICh2cy0+
-bGFzdF94ICE9IC0xKSB7DQo+ID4gICAgICAgICAgICAgIHFlbXVfaW5wdXRfcXVldWVfcmVsKGNv
-biwgSU5QVVRfQVhJU19YLCB4IC0gdnMtPmxhc3RfeCk7DQo+ID4gICAgICAgICAgICAgIHFlbXVf
-aW5wdXRfcXVldWVfcmVsKGNvbiwgSU5QVVRfQVhJU19ZLCB5IC0gdnMtPmxhc3RfeSk7DQo+ID4g
-KyAgICAgICAgfSBlbHNlIHsNCj4gPiArICAgICAgICAgICAgcWVtdV9pbnB1dF9xdWV1ZV9yZWwo
-Y29uLCBJTlBVVF9BWElTX1gsIDAgLSB3aWR0aCk7DQo+ID4gKyAgICAgICAgICAgIHFlbXVfaW5w
-dXRfcXVldWVfcmVsKGNvbiwgSU5QVVRfQVhJU19ZLCAwIC0gaGVpZ2h0KTsNCj4gPiArICAgICAg
-ICAgICAgeCA9IDA7DQo+ID4gKyAgICAgICAgICAgIHkgPSAwOw0KPiA+ICAgICAgICAgIH0NCj4g
-PiAgICAgICAgICB2cy0+bGFzdF94ID0geDsNCj4gPiAgICAgICAgICB2cy0+bGFzdF95ID0geTsN
-Cj4gPg0KPiA+ID4NCj4gPiA+IEJ1dCBldmVuIHRoZW4sIHRoZXJlIGlzIG5vIGd1YXJhbnRlZSB0
-aGUgZ3Vlc3QgcG9zaXRpb24gd2lsbCBiZSBhIHgveS4uLg0KPiA+ID4NCj4gPg0KPiA+IEVtbW0s
-IGNvbXBhcmVkIHRvIHRoZSBjdXJyZW50IGltcGxlbWVudGF0aW9uLCBpdCBpcyBhdCBsZWFzdCBn
-ZXR0aW5nDQo+ID4gY2xvc2VyLg0KPiA+IFRoZSBjdXJyZW50IHN0YXRlIGlzIHNpbXBseSB1bmJl
-YXJhYmxlLg0KPiA+DQo+ID4gPiBJdCdzIGJlZW4gaW1wbGVtZW50ZWQgb24gTGludXggVk0gZm9y
-IGEgbG9uZyB3aGlsZSAoZmlyc3QgaW4gdXNlcnNwYWNlLA0KPiA+ID4gdGhlbiBpbiBrZXJuZWwg
-c2luY2UgfjIwMTUpLiBCdXQgSSBkb24ndCBrbm93IGFib3V0IHRoZSBXaW5kb3dzIHN1cHBvcnQs
-DQo+ID4gaXQNCj4gPiA+IGxvb2tzIGxpa2UgeW91IG5lZWQgYSBkcml2ZXIgc3VjaCBhcyBwcm92
-aWRlZCBieSBWTVdhdmUsIGJ1dCBpdCBzZWVtcw0KPiA+ID4gY2xvc2VkLXNvdXJjZS4uLiAgQXQg
-dGhpcyBwb2ludCBpdCdzIHByb2JhYmx5IGJldHRlciB0byB1c2UgdmlydGlvLWlucHV0LA0KPiA+
-ID4gd2hpY2ggaGFzIG9wZW4tc291cmNlL2ZyZWUgd2luZG93cyBkcml2ZXJzLg0KPiA+DQo+ID4g
-VGhhbmtzLCBJIHRyaWVkIGluc3RhbGwgdm1tb3VzZSBkcml2ZXIgaW4gd2luZG93cyBzdWNjZXNz
-IGFuZCByZWJvb3QuDQo+ID4gSG93ZXZlciAnaW5mbyBtaWNlJyBhcw0KPiA+IGZvbGxvd3MgYW5k
-IGRvbid0IGhhdmUgdm1tb3VzZSAoYWJzb2x1dGUpLg0KPiA+DQo+ID4gKiBNb3VzZSAjMjogUUVN
-VSBQUy8yIE1vdXNlDQo+ID4NCj4gPiBUaGUgZ3Vlc3QgbW91c2UgaXNuJ3Qgc3luYyB3aXRoIGNs
-aWVudCBjdXJzb3IuLi4NCj4gPg0KPg0KPiBMb29rIGlmIHlvdSBoYXZlICJkZXY6IHZtbW91c2Us
-IGlkICIgaW4gImluZm8gcXRyZWUiIG9yIHNldCAtbWFjaGluZQ0KPiB2bXBvcnQ9b24uDQoNCiJp
-bmZvIHF0cmVlIiBhcyBmb2xsb3dzLCB0aGUgY2xpZW50IGN1cnNvciBhbmQgZ3Vlc3QgbW91c2Ug
-Y2Fubid0IGFsaWduLi4uDQoNCiAgICAgICAgICBkZXY6IHZtbW91c2UsIGlkICIiDQogICAgICAg
-ICAgZGV2OiB2bXBvcnQsIGlkICIiDQogICAgICAgICAgICB4LXJlYWQtc2V0LWVheCA9IHRydWUN
-CiAgICAgICAgICAgIHgtc2lnbmFsLXVuc3VwcG9ydGVkLWNtZCA9IHRydWUNCiAgICAgICAgICAg
-IHgtcmVwb3J0LXZteC10eXBlID0gdHJ1ZQ0KICAgICAgICAgICAgeC1jbWRzLXYyID0gdHJ1ZQ0K
-ICAgICAgICAgICAgdm13YXJlLXZteC12ZXJzaW9uID0gNiAoMHg2KQ0KICAgICAgICAgICAgdm13
-YXJlLXZteC10eXBlID0gMiAoMHgyKQ0KICAgICAgICAgIGRldjogaTgwNDIsIGlkICIiDQogICAg
-ICAgICAgICBncGlvLW91dCAiYTIwIiAxDQogICAgICAgICAgICBleHRlbmRlZC1zdGF0ZSA9IHRy
-dWUNCiAgICAgICAgICAgIGtiZC10aHJvdHRsZSA9IGZhbHNlDQogICAgICAgICAgICBpc2EgaXJx
-cyAxLDEyDQoNCkkgaGF2ZSBkZWNpZGVkIHRvIHN0aWxsIHVzZSB0aGUgbWV0aG9kIGluIHRoaXMg
-cGF0Y2guIA0KDQpUaGFua3MgTWFyYy1BbmRyw6kuDQoNCg==
+This is a multi-part message in MIME format.
+--------------0Z0ykRfNzhR1u4loeKdT9jmJ
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+
+On 2023/7/18 8:43, Weiwei Li wrote:
+>
+> On 2023/7/17 23:13, Rob Bradford wrote:
+>> On Thu, 2023-07-06 at 21:22 +0800, Weiwei Li wrote:
+>>> On 2023/7/6 18:44, Rob Bradford wrote:
+>>>> The previous check was failing with:
+>>>>
+>>>> ELEN = 64 SEW = 16 and LMUL = 1/8 (encoded as 5) which is a valid
+>>>> combination.
+>>>>
+>>>> Fix the check to correctly match the specification by using minimum
+>>>> SEW
+>>>> rather than the active SEW.
+>>>>
+>>>>   From the specification:
+>>>>
+>>>> "In general, the requirement is to support LMUL ≥ SEWMIN/ELEN,
+>>>> where
+>>>> SEWMIN is the narrowest supported SEW value and ELEN is the widest
+>>>> supported SEW value. In the standard extensions, SEWMIN=8. For
+>>>> standard
+>>>> vector extensions with ELEN=32, fractional LMULs of 1/2 and 1/4
+>>>> must be
+>>>> supported. For standard vector extensions with ELEN=64, fractional
+>>>> LMULs
+>>>> of 1/2, 1/4, and 1/8 must be supported."
+>>>>
+>>>>   From inspection this new check allows:
+>>>>
+>>>> ELEN=64 1/2, 1/4, 1/8 (encoded as 7, 6, 5 respectfully)
+>>>> ELEN=32 1/2, 1/4 (encoded as 7 and 6 respectfully)
+>> Hi Weiwei Li,
+>>
+>> Thanks for your reply. Sorry for delay in replying i've been away.
+>>
+>>> This is a little confusing.  there is note in spec to explain why
+>>> LMUL
+>>> ≥ SEW MIN /ELEN:
+>>>
+>>> "When LMUL < SEW MIN /ELEN, there is no guarantee an implementation
+>>> would have enough bits in the fractional vector register to store
+>>>
+>>> Note at least one element, as VLEN=ELEN is a valid implementation
+>>> choice. For example, with VLEN=ELEN=32, and SEW MIN =8, an LMUL of
+>>>
+>>> 1/8 would only provide four bits of storage in a vector register."
+>>>
+>>> In this way, when VLEN=ELEN=64,  an LMUL of 1/8 would only provide 8
+>>> bits of storage in a vector register, so it's also not suitable for
+>>> sew
+>>> = 16.
+>>>
+>>> Maybe we can explain the above description of the spec in another
+>>> way:
+>>> we must support lmul=1/8 when ELEN=64, but it's only available when
+>>> sew = 8.
+>>>
+>> I'm afraid i'm not sure I agree with this comment.
+>>
+>> VLEN=128 ELEN=64 SEW=16 LMUL=1/8 is a perfectly reasonable
+>> configuration and contradicts your statement.
+>>
+>> The goal of my patch was to ensure that we permit a valid configuration
+>> not to also reject other invalid configurations.
+>>
+>> An extra check that takes into consideration VLEN would also make sense
+>> to me:
+>>
+>> e.g. VLEN=64 LMUL=1/8 SEW=16 should be rejected
+>
+> Yeah. I agree. But instead of an extra check, I think VLEN is the one 
+> that really works instead of ELEN.
+
+Yes.  Currently,  we only check sew <= cpu.cfg->elen. We should also add 
+a check
+
+SEW <= VLEN * LMUL
+
+Zhiwei
+
+>
+> Such as when ELEN=32,  LMUL=1/8 with SEW=8 is also a reasonable 
+> configuration  if VLEN >= 64.
+>
+> Regards,
+>
+> Weiwei Li
+>
+>>
+>> Cheers,
+>>
+>> Rob
+>>
+>>> Regards,
+>>>
+>>> Weiwei Li
+>>>
+>>> `
+>>>
+>>> Regards,
+>>>
+>>> Weiwei Li
+>>>
+>>>> Fixes: d9b7609a1fb2 ("target/riscv: rvv-1.0: configure
+>>>> instructions")
+>>>>
+>>>> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+>>>> ---
+>>>>    target/riscv/vector_helper.c | 4 ++--
+>>>>    1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/target/riscv/vector_helper.c
+>>>> b/target/riscv/vector_helper.c
+>>>> index 1e06e7447c..8dfd8fe484 100644
+>>>> --- a/target/riscv/vector_helper.c
+>>>> +++ b/target/riscv/vector_helper.c
+>>>> @@ -43,9 +43,9 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env,
+>>>> target_ulong s1,
+>>>>                                                xlen - 1 -
+>>>> R_VTYPE_RESERVED_SHIFT);
+>>>>           if (lmul & 4) {
+>>>> -        /* Fractional LMUL. */
+>>>> +        /* Fractional LMUL - check LMUL >= ELEN/SEW_MIN (8) */
+>>>>            if (lmul == 4 ||
+>>>> -            cpu->cfg.elen >> (8 - lmul) < sew) {
+>>>> +            cpu->cfg.elen >> (8 - lmul) < 8) {
+>>>>                vill = true;
+>>>>            }
+>>>>        }
+--------------0Z0ykRfNzhR1u4loeKdT9jmJ
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 2023/7/18 8:43, Weiwei Li wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:21bd465f-9f27-be77-cb3b-2b44b5f1e837@iscas.ac.cn">
+      <br>
+      On 2023/7/17 23:13, Rob Bradford wrote:
+      <br>
+      <blockquote type="cite">On Thu, 2023-07-06 at 21:22 +0800, Weiwei
+        Li wrote:
+        <br>
+        <blockquote type="cite">On 2023/7/6 18:44, Rob Bradford wrote:
+          <br>
+          <blockquote type="cite">The previous check was failing with:
+            <br>
+            <br>
+            ELEN = 64 SEW = 16 and LMUL = 1/8 (encoded as 5) which is a
+            valid
+            <br>
+            combination.
+            <br>
+            <br>
+            Fix the check to correctly match the specification by using
+            minimum
+            <br>
+            SEW
+            <br>
+            rather than the active SEW.
+            <br>
+            <br>
+              From the specification:
+            <br>
+            <br>
+            "In general, the requirement is to support LMUL ≥
+            SEWMIN/ELEN,
+            <br>
+            where
+            <br>
+            SEWMIN is the narrowest supported SEW value and ELEN is the
+            widest
+            <br>
+            supported SEW value. In the standard extensions, SEWMIN=8.
+            For
+            <br>
+            standard
+            <br>
+            vector extensions with ELEN=32, fractional LMULs of 1/2 and
+            1/4
+            <br>
+            must be
+            <br>
+            supported. For standard vector extensions with ELEN=64,
+            fractional
+            <br>
+            LMULs
+            <br>
+            of 1/2, 1/4, and 1/8 must be supported."
+            <br>
+            <br>
+              From inspection this new check allows:
+            <br>
+            <br>
+            ELEN=64 1/2, 1/4, 1/8 (encoded as 7, 6, 5 respectfully)
+            <br>
+            ELEN=32 1/2, 1/4 (encoded as 7 and 6 respectfully)
+            <br>
+          </blockquote>
+        </blockquote>
+        Hi Weiwei Li,
+        <br>
+        <br>
+        Thanks for your reply. Sorry for delay in replying i've been
+        away.
+        <br>
+        <br>
+        <blockquote type="cite">This is a little confusing.  there is 
+          note in spec to explain why
+          <br>
+          LMUL
+          <br>
+          ≥ SEW MIN /ELEN:
+          <br>
+          <br>
+          "When LMUL &lt; SEW MIN /ELEN, there is no guarantee an
+          implementation
+          <br>
+          would have enough bits in the fractional vector register to
+          store
+          <br>
+          <br>
+          Note at least one element, as VLEN=ELEN is a valid
+          implementation
+          <br>
+          choice. For example, with VLEN=ELEN=32, and SEW MIN =8, an
+          LMUL of
+          <br>
+          <br>
+          1/8 would only provide four bits of storage in a vector
+          register."
+          <br>
+          <br>
+          In this way, when VLEN=ELEN=64,  an LMUL of 1/8 would only
+          provide 8
+          <br>
+          bits of storage in a vector register, so it's also not
+          suitable for
+          <br>
+          sew
+          <br>
+          = 16.
+          <br>
+          <br>
+          Maybe we can explain the above description of the spec in
+          another
+          <br>
+          way:
+          <br>
+          we must support lmul=1/8 when ELEN=64, but it's only available
+          when
+          <br>
+          sew = 8.
+          <br>
+          <br>
+        </blockquote>
+        I'm afraid i'm not sure I agree with this comment.
+        <br>
+        <br>
+        VLEN=128 ELEN=64 SEW=16 LMUL=1/8 is a perfectly reasonable
+        <br>
+        configuration and contradicts your statement.
+        <br>
+        <br>
+        The goal of my patch was to ensure that we permit a valid
+        configuration
+        <br>
+        not to also reject other invalid configurations.
+        <br>
+        <br>
+        An extra check that takes into consideration VLEN would also
+        make sense
+        <br>
+        to me:
+        <br>
+        <br>
+        e.g. VLEN=64 LMUL=1/8 SEW=16 should be rejected
+        <br>
+      </blockquote>
+      <br>
+      Yeah. I agree. But instead of an extra check, I think VLEN is the
+      one that really works instead of ELEN.
+      <br>
+    </blockquote>
+    <p>Yes.  Currently,  we only check sew &lt;= cpu.cfg-&gt;elen. We
+      should also add a check</p>
+    <pre>SEW &lt;= VLEN * LMUL
+</pre>
+    <p>Zhiwei<br>
+    </p>
+    <blockquote type="cite"
+      cite="mid:21bd465f-9f27-be77-cb3b-2b44b5f1e837@iscas.ac.cn">
+      <br>
+      Such as when ELEN=32,  LMUL=1/8 with SEW=8 is also a reasonable
+      configuration  if VLEN &gt;= 64.
+      <br>
+      <br>
+      Regards,
+      <br>
+      <br>
+      Weiwei Li
+      <br>
+      <br>
+      <blockquote type="cite">
+        <br>
+        Cheers,
+        <br>
+        <br>
+        Rob
+        <br>
+        <br>
+        <blockquote type="cite">Regards,
+          <br>
+          <br>
+          Weiwei Li
+          <br>
+          <br>
+          `
+          <br>
+          <br>
+          Regards,
+          <br>
+          <br>
+          Weiwei Li
+          <br>
+          <br>
+          <blockquote type="cite">Fixes: d9b7609a1fb2 ("target/riscv:
+            rvv-1.0: configure
+            <br>
+            instructions")
+            <br>
+            <br>
+            Signed-off-by: Rob Bradford <a class="moz-txt-link-rfc2396E" href="mailto:rbradford@rivosinc.com">&lt;rbradford@rivosinc.com&gt;</a>
+            <br>
+            ---
+            <br>
+               target/riscv/vector_helper.c | 4 ++--
+            <br>
+               1 file changed, 2 insertions(+), 2 deletions(-)
+            <br>
+            <br>
+            diff --git a/target/riscv/vector_helper.c
+            <br>
+            b/target/riscv/vector_helper.c
+            <br>
+            index 1e06e7447c..8dfd8fe484 100644
+            <br>
+            --- a/target/riscv/vector_helper.c
+            <br>
+            +++ b/target/riscv/vector_helper.c
+            <br>
+            @@ -43,9 +43,9 @@ target_ulong HELPER(vsetvl)(CPURISCVState
+            *env,
+            <br>
+            target_ulong s1,
+            <br>
+                                                           xlen - 1 -
+            <br>
+            R_VTYPE_RESERVED_SHIFT);
+            <br>
+                      if (lmul &amp; 4) {
+            <br>
+            -        /* Fractional LMUL. */
+            <br>
+            +        /* Fractional LMUL - check LMUL &gt;= ELEN/SEW_MIN
+            (8) */
+            <br>
+                       if (lmul == 4 ||
+            <br>
+            -            cpu-&gt;cfg.elen &gt;&gt; (8 - lmul) &lt; sew)
+            {
+            <br>
+            +            cpu-&gt;cfg.elen &gt;&gt; (8 - lmul) &lt; 8) {
+            <br>
+                           vill = true;
+            <br>
+                       }
+            <br>
+                   }
+            <br>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </body>
+</html>
+
+--------------0Z0ykRfNzhR1u4loeKdT9jmJ--
 
