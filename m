@@ -2,65 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1285A7575E3
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 09:58:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A37757680
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 10:25:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLfaA-0006u4-Ne; Tue, 18 Jul 2023 03:57:18 -0400
+	id 1qLg09-0003sD-Nm; Tue, 18 Jul 2023 04:24:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qLfa4-0006te-F8; Tue, 18 Jul 2023 03:57:12 -0400
-Received: from mga14.intel.com ([192.55.52.115])
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qLg07-0003ri-GO; Tue, 18 Jul 2023 04:24:07 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qLfa1-0003tD-Oj; Tue, 18 Jul 2023 03:57:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1689667029; x=1721203029;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=fuVikuyFfzCnsckFD1CKC9effXoHqWwq5hNoHr/oHg8=;
- b=IZNQVQ/nnbbNUCxSNlfitC8q3F+cgb1Gzk5H8Hc4mjKfqXYLGcvDMRk8
- vz5589rlbr3rbpIyOuKCEqleSeRmGcjT7DkO7WtQKCQ8Xo1eYgr9O4Xzo
- GcpK40HEhk0rgNNRzlOB+pgYE3SPDl5Cqc5kvXnKExL3V/mO6sOHRI7RZ
- uD+M4KBvB+cWn3IfpEf7D6Uxl6y2+TyA7EcSpU8HTpD7DWC38TUkEcUAz
- yHq3L5LdNOlZb8bbD5ytAKi8wPqXpOJ2K8Z7jvd3R6Hp3u6q4tgZ4IJOs
- Dmge8pXDdsMJNPM6yHXBGSoK9wdU35jYJjhkvkhvKvHXNrq0OgaeeRpY/ A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10774"; a="366181561"
-X-IronPort-AV: E=Sophos;i="6.01,213,1684825200"; d="scan'208";a="366181561"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2023 00:57:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10774"; a="813653664"
-X-IronPort-AV: E=Sophos;i="6.01,213,1684825200"; d="scan'208";a="813653664"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.28])
- by FMSMGA003.fm.intel.com with ESMTP; 18 Jul 2023 00:56:59 -0700
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] hw/riscv: Fix topo field in error_report
-Date: Tue, 18 Jul 2023 16:07:12 +0800
-Message-Id: <20230718080712.503333-1-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <conor@kernel.org>)
+ id 1qLg05-0004vI-RF; Tue, 18 Jul 2023 04:24:07 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 9517C61341;
+ Tue, 18 Jul 2023 08:24:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C69C433C8;
+ Tue, 18 Jul 2023 08:24:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1689668643;
+ bh=e+jLmT7QNeeriktU/tIBKhPQlwHBu/kJoAe12vTjtCI=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=FlTjKF4nHtPk0WzpLbOWKs+T/piiib6wAVX2TVriQjQbWVlwwMH0wOdKO//CUNAwI
+ AGpypCCcqsiMWhOlnXnQtd39tvoT/R31ZTLkyAQ7ULX3PMQ6/nz6R4gmBY8n744fz+
+ OO8SuST9d1TBY63FMzjKnfW5fTiAnXsAxIH+76UP+8frB27Wq5dY7jVpSju8Ux1CgA
+ vU68RIQLgX4/iIl0WNmJ6mvJ0tpgaVgYwR5bqCluo6Zm9c3qpbVfII6WNrNQtpDTaB
+ KZm5R27ViwMvDy0saXQprnSXnW9Lrb4SPrKvR9EjcR8j3NwA+ARDj8o19K1q+lZeSI
+ H5Ttv3HYsiJwA==
+Date: Tue, 18 Jul 2023 09:23:59 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn,
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
+Subject: Re: [PATCH for-8.2 0/2] target/riscv: add zicntr and zihpm flags
+Message-ID: <20230718-freedom-subway-0b5d2083b474@spud>
+References: <20230717215419.124258-1-dbarboza@ventanamicro.com>
+ <20230717-snugly-pencil-98d62b254a74@spud>
+ <2f123883-3064-28af-649f-2bbc8c52a60a@ventanamicro.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.55.52.115;
- envelope-from=zhao1.liu@linux.intel.com; helo=mga14.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="tm2idzwlOWRcHRMG"
+Content-Disposition: inline
+In-Reply-To: <2f123883-3064-28af-649f-2bbc8c52a60a@ventanamicro.com>
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=conor@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,40 +74,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
 
-"smp.cpus" means the number of online CPUs and "smp.max_cpus" means the
-total number of CPUs.
+--tm2idzwlOWRcHRMG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-riscv_numa_get_default_cpu_node_id() checks "smp.cpus" and the
-"available CPUs" description in the next error message also indicates
-online CPUs.
+On Mon, Jul 17, 2023 at 08:11:09PM -0300, Daniel Henrique Barboza wrote:
+> On 7/17/23 19:33, Conor Dooley wrote:
 
-So report "smp.cpus" in error_report() instand of "smp.max_cpus".
+> > On Mon, Jul 17, 2023 at 06:54:17PM -0300, Daniel Henrique Barboza wrote:
+> > > Hi,
+> > >=20
+> > > I decided to include flags for both timer/counter extensions to make =
+it
+> > > easier for us later on when dealing with the RVA22 profile (which
+> > > includes both).
+> > >=20
+> > > The features were already implemented by Atish Patra some time ago, b=
+ut
+> > > back then these 2 extensions weren't introduced yet. This means that,
+> > > aside from extra stuff in riscv,isa FDT no other functional changes w=
+ere
+> > > made.
+> > >=20
+> > > Both are defaulted to 'true' since QEMU already implements both
+> > > features, but the flag can be disabled if Zicsr isn't present or, in
+> > > the case of zihpm, if pmu_num =3D 0.
+> >=20
+> > Out of curiosity, since you are allowing them to be disabled, how do you
+> > intend to communicate to a guest that zicsr or zihpm are not present?
+>=20
+> At this point I'd say that existing guests are using other ways of checki=
+ng
+> if these timers and counters are available.
 
-Since "smp.cpus" is "unsigned int", use "%u".
+Or they just assume they're there as part of their baseline requirements
+;)
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- hw/riscv/numa.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> After this patches OSes can confirm
+> if these timers are available via riscv,isa, but they can't assume that
+> they are not available if riscv,isa doesn't display them.
+>=20
+> There's a chance that guests will continue ignoring these 2 extensions re=
+gardless
+> of whether the platform exposes them or not.
+>=20
+> >=20
+> > > This means that,
+> > > aside from extra stuff in riscv,isa FDT no other functional changes w=
+ere
+> > > made.
+> >=20
+> > This is barely a "functional" change either, as the presence of these
+> > extensions has to be assumed, whether they appear in riscv,isa or not :/
+>=20
+> It's more of an organizational change for the sake of QEMU internals beca=
+use the
+> RVA22 profile happens to include zicntr and zihpm as mandatory extensions=
+=2E It's
+> easier to add the flags than to document why we're claiming RVA22 support=
+ but
+> aren't displaying these 2 in riscv,isa.
 
-diff --git a/hw/riscv/numa.c b/hw/riscv/numa.c
-index e0414d5b1b73..d319aefb4511 100644
---- a/hw/riscv/numa.c
-+++ b/hw/riscv/numa.c
-@@ -209,8 +209,8 @@ int64_t riscv_numa_get_default_cpu_node_id(const MachineState *ms, int idx)
- 
-     if (ms->numa_state->num_nodes > ms->smp.cpus) {
-         error_report("Number of NUMA nodes (%d)"
--                     " cannot exceed the number of available CPUs (%d).",
--                     ms->numa_state->num_nodes, ms->smp.max_cpus);
-+                     " cannot exceed the number of available CPUs (%u).",
-+                     ms->numa_state->num_nodes, ms->smp.cpus);
-         exit(EXIT_FAILURE);
-     }
-     if (ms->numa_state->num_nodes) {
--- 
-2.34.1
+Possibly you should call out ACPI here too, since that does not suffer
+=66rom the same issues as riscv,isa in DT, and putting zicntr/zihpm et al
+in the ISA string there is needed.
 
+--tm2idzwlOWRcHRMG
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZLZMHgAKCRB4tDGHoIJi
+0o/TAQD18ERkZ7TKDHmu1TjNd0ztBLoIIzWuKSfyyVXlMwweNAD/UA+z+r+tor+T
+VNFgDg4PQrPgldYTqBu1bgUu6gym7gI=
+=0J0e
+-----END PGP SIGNATURE-----
+
+--tm2idzwlOWRcHRMG--
 
