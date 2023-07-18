@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E7A7583CE
-	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 19:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A1307583DC
+	for <lists+qemu-devel@lfdr.de>; Tue, 18 Jul 2023 19:51:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLolm-0005xf-QA; Tue, 18 Jul 2023 13:45:54 -0400
+	id 1qLoqO-00076i-HN; Tue, 18 Jul 2023 13:50:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qLolb-0005qT-NU
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 13:45:53 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qLoqL-00076F-Tf
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 13:50:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qLolY-0005tF-Ho
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 13:45:42 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qLoqJ-0007t9-V0
+ for qemu-devel@nongnu.org; Tue, 18 Jul 2023 13:50:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689702338;
+ s=mimecast20190719; t=1689702634;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=JGtJA6JLQsBwarJzfkotuySobzXPpOLwOUG+u5ge+QM=;
- b=Zdul9klTZvwsa5nxdCjqXUwxJYbHmCjFlYT0/jKGru0IZgmVAjipVAPv6aa+WLVDjUFeLA
- h7+3yENMvf4FttaWDuzotRgt8LGx6NkjVmekOeapJH5KT2ZtxAX2Ujm1ILJO0m+52tqT+Q
- 7teXYCHLTqXVcwvm3ON0tMhtXQzqDMU=
+ bh=WwPT11CmzUrDiON9ylTL7vVu5g5PkgH4JRja5t4Y43o=;
+ b=TV+j26STl0QjIUBI9ys2nGM1O9SCsCLMQMLuqLWGY3HiDswPApZ0jjQYVN5c8cKTedPDkc
+ QQ9SPgAairJfE1UaZKHdJCrIEfYGkqYdAapPYBgi1xxKscbH4cTHXhFUr7723XW3g+0zqY
+ oElmwDeL98dN1PDnkZNYJqR+i/82YQY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-449-eK2qiFllOqKci7rMxw4hZw-1; Tue, 18 Jul 2023 13:45:37 -0400
-X-MC-Unique: eK2qiFllOqKci7rMxw4hZw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-343-3xiaYSJTPJ2hDvm9MIx9Tg-1; Tue, 18 Jul 2023 13:50:31 -0400
+X-MC-Unique: 3xiaYSJTPJ2hDvm9MIx9Tg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C03D41044592;
- Tue, 18 Jul 2023 17:45:36 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ACC75101A528;
+ Tue, 18 Jul 2023 17:50:30 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.192])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 23C21F66D0;
- Tue, 18 Jul 2023 17:45:35 +0000 (UTC)
-Date: Tue, 18 Jul 2023 12:45:34 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C40541121314;
+ Tue, 18 Jul 2023 17:50:29 +0000 (UTC)
+Date: Tue, 18 Jul 2023 12:50:28 -0500
 From: Eric Blake <eblake@redhat.com>
 To: "Denis V. Lunev" <den@openvz.org>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: Re: [PATCH 3/5] qemu-nbd: properly report error on error in dup2()
- after qemu_daemon()
-Message-ID: <pkdgj4m5ym6sgql546sy6uq4jea3o5wcwbsbwpu3mmhf6um5jf@nid5h3seqq5v>
+Subject: Re: [PATCH 4/5] qemu-nbd: properly report error if qemu_daemon() is
+ failed
+Message-ID: <l4vdyny2u3xpgn5wuhbvmqxoqdmedtvromzzvt47azflxpw3nl@46tv7ocro6cb>
 References: <20230717145544.194786-1-den@openvz.org>
- <20230717145544.194786-4-den@openvz.org>
+ <20230717145544.194786-5-den@openvz.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230717145544.194786-4-den@openvz.org>
+In-Reply-To: <20230717145544.194786-5-den@openvz.org>
 User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -80,60 +80,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 17, 2023 at 04:55:42PM +0200, Denis V. Lunev wrote:
-> We are trying to temporary redirect stderr of daemonized process to
-
-temporarily
-
-> a pipe to report a error and get failed. In that case we could not
-> use error_report() helper, but should write the message directly into
-> the problematic pipe.
+On Mon, Jul 17, 2023 at 04:55:43PM +0200, Denis V. Lunev wrote:
+> errno has been overwritten by dup2() just below qemu_daemon() and thus
+> improperly returned to the caller. Fix accordingly.
 > 
 > Signed-off-by: Denis V. Lunev <den@openvz.org>
 > CC: Eric Blake <eblake@redhat.com>
 > CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->  qemu-nbd.c | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/qemu-nbd.c b/qemu-nbd.c
-> index 186ce9474c..4450cc826b 100644
-> --- a/qemu-nbd.c
-> +++ b/qemu-nbd.c
-> @@ -937,7 +937,20 @@ int main(int argc, char **argv)
->              ret = qemu_daemon(1, 0);
->
-
-errno from qemu_daemon...
-
->              /* Temporarily redirect stderr to the parent's pipe...  */
-> -            dup2(stderr_fd[1], STDERR_FILENO);
-> +            if (dup2(stderr_fd[1], STDERR_FILENO) < 0) {
-
-...is still potentially lost here...
-
-> +                char str[256];
-> +                snprintf(str, sizeof(str),
-> +                         "%s: Failed to link stderr to the pipe: %s\n",
-> +                         g_get_prgname(), strerror(errno));
-> +                /*
-> +                 * We are unable to use error_report() here as we need to get
-> +                 * stderr pointed to the parent's pipe. Write to that pipe
-> +                 * manually.
-> +                 */
-> +                ret = write(stderr_fd[1], str, strlen(str));
-> +                exit(EXIT_FAILURE);
-> +            }
-> +
->              if (ret < 0) {
->                  error_report("Failed to daemonize: %s", strerror(errno));
-
-...before use here.
-
-Patch 4/5 addresses that, but I'm inclined to just swap the order of
-the two patches when applying the series in my NBD tree.
+>  qemu-nbd.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 
 Reviewed-by: Eric Blake <eblake@redhat.com>
+
+> 
+> diff --git a/qemu-nbd.c b/qemu-nbd.c
+> index 4450cc826b..f27613cb57 100644
+> --- a/qemu-nbd.c
+> +++ b/qemu-nbd.c
+> @@ -932,9 +932,12 @@ int main(int argc, char **argv)
+>              error_report("Failed to fork: %s", strerror(errno));
+>              exit(EXIT_FAILURE);
+>          } else if (pid == 0) {
+> +            int saved_errno;
+> +
+>              close(stderr_fd[0]);
+>  
+>              ret = qemu_daemon(1, 0);
+> +            saved_errno = errno;    /* dup2 will overwrite error below */
+
+I would have written 'may', not 'will'; but that's a triviality not
+worth changing.
+
 
 -- 
 Eric Blake, Principal Software Engineer
