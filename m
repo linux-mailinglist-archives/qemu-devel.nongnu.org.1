@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BEDD75923E
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 12:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01047759256
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 12:03:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM40R-0000JS-NA; Wed, 19 Jul 2023 06:02:03 -0400
+	id 1qM41c-00014F-1y; Wed, 19 Jul 2023 06:03:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qM40P-0000JD-BN
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 06:02:01 -0400
+ id 1qM41Y-000142-J3
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 06:03:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qM40M-0003PR-UJ
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 06:02:01 -0400
+ id 1qM41M-0003ZZ-Bf
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 06:03:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689760917;
+ s=mimecast20190719; t=1689760979;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=q7m3bLROX2mjUeaBlJVfzJiOHaH3FPuN191Hy9MLfTw=;
- b=FW8wYh2xmTV0eT73+SJAhjcIhGGutIt3utARpfKiPHXCUKEvnmOvinyvqkKQIfXlfcMlFB
- UzQi46smHqLyJGr/2ns7c/G4p3JEynOD5MEFOzYTsSVZNoTnnVofepihKnfF1FZq090g/7
- 3yoR0bB49ned7cr0gqOqm6NqwCTH7Bs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-517-653d-LINMM-mMwvovewJNg-1; Wed, 19 Jul 2023 06:01:54 -0400
-X-MC-Unique: 653d-LINMM-mMwvovewJNg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ bh=AGByLvfg+IF0NUTZWJUorZ1Del+EjT1hD/7TGsThqRk=;
+ b=X+YtjvEBZMKH1TyYq9kAIm/oFSLeAQjvG/WJwdPRHL03srE5floMG8L5UpDGYXiucsogZ7
+ 2sFn7EPm5m9CeETPnwpAsMz2c8KohHF9OgxT2TMawqhT2OBcxriTP+OQeveMNOEKtBf035
+ VTx1cRn1aQTb7wj4aDoBJuMK1x5rFF0=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-147-7vV1OmK5NNCSer4SRtNp9A-1; Wed, 19 Jul 2023 06:02:58 -0400
+X-MC-Unique: 7vV1OmK5NNCSer4SRtNp9A-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1A9761869B6C;
- Wed, 19 Jul 2023 10:01:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DD90B2808B21;
+ Wed, 19 Jul 2023 10:02:57 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.67])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B3A82C33178;
- Wed, 19 Jul 2023 10:01:49 +0000 (UTC)
-Date: Wed, 19 Jul 2023 11:01:47 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8145AF6CCA;
+ Wed, 19 Jul 2023 10:02:56 +0000 (UTC)
+Date: Wed, 19 Jul 2023 11:02:54 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Het Gala <het.gala@nutanix.com>
 Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
  dgilbert@redhat.com, pbonzini@redhat.com, armbru@redhat.com,
  eblake@redhat.com, manish.mishra@nutanix.com,
  aravind.retnakaran@nutanix.com
-Subject: Re: [PATCH v8 4/9] migration: convert rdma backend to accept
- MigrateAddress
-Message-ID: <ZLe0i1ch7261LNRx@redhat.com>
+Subject: Re: [PATCH v8 5/9] migration: convert exec backend to accept
+ MigrateAddress.
+Message-ID: <ZLe0zifcdhA4E9D/@redhat.com>
 References: <20230713105713.236883-1-het.gala@nutanix.com>
- <20230713105713.236883-5-het.gala@nutanix.com>
+ <20230713105713.236883-6-het.gala@nutanix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230713105713.236883-5-het.gala@nutanix.com>
+In-Reply-To: <20230713105713.236883-6-het.gala@nutanix.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -69,9 +69,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,23 +87,22 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 13, 2023 at 10:57:08AM +0000, Het Gala wrote:
-> RDMA based transport backend for 'migrate'/'migrate-incoming' QAPIs
-> accept new wire protocol of MigrateAddress struct.
+On Thu, Jul 13, 2023 at 10:57:09AM +0000, Het Gala wrote:
+> Exec transport backend for 'migrate'/'migrate-incoming' QAPIs accept
+> new wire protocol of MigrateAddress struct.
 > 
 > It is achived by parsing 'uri' string and storing migration parameters
-> required for RDMA connection into well defined InetSocketAddress struct.
+> required for exec connection into strList struct.
 > 
 > Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
 > Signed-off-by: Het Gala <het.gala@nutanix.com>
 > ---
->  migration/migration.c |  8 ++++----
->  migration/rdma.c      | 34 ++++++++++++----------------------
->  migration/rdma.h      |  6 ++++--
->  3 files changed, 20 insertions(+), 28 deletions(-)
+>  migration/exec.c      | 70 ++++++++++++++++++++++++++++++-------------
+>  migration/exec.h      |  4 +--
+>  migration/migration.c | 10 +++----
+>  3 files changed, 56 insertions(+), 28 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
 
 With regards,
 Daniel
