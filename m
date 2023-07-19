@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21FD759925
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0055475993E
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:12:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM8kt-000525-R9; Wed, 19 Jul 2023 11:06:19 -0400
+	id 1qM8qd-0006lW-JB; Wed, 19 Jul 2023 11:12:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qM8kr-0004x0-Gu
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:06:17 -0400
-Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qM8qb-0006lF-3O
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:12:13 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qM8kp-0003dD-Kp
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:06:17 -0400
-Received: by mail-oa1-x32.google.com with SMTP id
- 586e51a60fabf-1b0249f1322so5301995fac.3
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:06:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qM8qY-0005M6-NJ
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:12:12 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2b703a0453fso114346111fa.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:12:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689779174; x=1690383974;
+ d=gmail.com; s=20221208; t=1689779529; x=1692371529;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k7m11GWqv1S0maEtX067fxtJsV5kkSay0znnC3lOix8=;
- b=A3y0YfTYVF9eYO2T31krXE8kXR7Ud5E/kFr0HqV/s/lb4/G46dDZ+elzDMBaGrhOLT
- oeL5qvxRJnpPwLEchhYzdS+tcMy52mdR80VArcCoKvWDi5E0ZFYF8hT1JHsbaKDc1yvp
- lrGpbsHZbW0mgXXtEHzSm1wrMlQEIaL4DVM3ZLNsO5QMUl/+yrmsaozM4AMYWHOrKHQ1
- FolfAld6KR7dhq1rnrZzJIiVfGfA+eXfTa2eobvYM6GQ/Q8yl3iyiZfthNIb3Zx2HbtG
- pBAacqPbPpHhfhfbHwcj5QFf84G2ZrWz7YZRpCSNTTlf8jsDqh96Ll2PAb9fp1xLPlAp
- p1cA==
+ bh=SydZG41XiMgTddoYtv03apSidvUujJWDayi7uqS0zW4=;
+ b=jwRbalezvEyIxXvmU4vDwIjegEBSq7KmsaytP2V/905n6B+zLzymR7Jpkin6cw/PD+
+ wMHJDBwU+iiUFqUa7jKOkXr5/NMzR87jM9691cop23qYGzd054IoNAt8mb0IpwitqwCl
+ P1t0VpEdflBexRuPqgvrCTwcOQQgJBRBu5bEQCSQ/wPDaZ1GPF4jN+xhbNGRbquUCB+n
+ 8dVxvLq8Pr9wreTWvueE1HahuuWZuw5gcO4shhb5s/+vjiTYG1zHtz6MppJsx0JKU/2z
+ oqdaJIaN6AEgZKRw2E+pLEnETbk+ksweLpDvD+hRH9pZkCe9qdL8rtGxzpAzTN1AXpjl
+ Drdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689779174; x=1690383974;
+ d=1e100.net; s=20221208; t=1689779529; x=1692371529;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k7m11GWqv1S0maEtX067fxtJsV5kkSay0znnC3lOix8=;
- b=dPhgX8Zf6sOtZW4Ez1aiHQXKt/JJpBJtmE+hQqoduzsbqbQS/aGTo0ku6wjtHWXV9J
- c4Dpvc3rqgN6p/uuEQAnx5GqKXbYqvKTG6iEvqllDCS8Giacn+JzBsBrTQc5mExnGs9o
- xItC5GSRm6zQjjlo9zpA6fACgaZj7q8ykbfmo+ZJ1JjCT/WrKAA8wJCQ1J3weNtcqQTP
- mdHQJK8/PO+mMaWJvsUFsoEPnVPM5WjTRCdIUHZDJ2v5zTFJzfaFemBsdJ4mMNHVEmbM
- t+iourQlzWtklO2No6nICOCm+gJdx/ob3IWoBmbggyp+R0U4uUbCASUBRaGN/TAppr9X
- 5GPw==
-X-Gm-Message-State: ABy/qLbZRo+rsUFPCCmFo9hr4gzCsteT9yOKqndpo0/q2k/bVeahNRDx
- ymG6azxtWiYEtTXn9BkUJFGT2xLY+TTqLoQwiO4=
-X-Google-Smtp-Source: APBJJlGh7UzkeqGOvzQ/zfcSk/CSfRyemwcKFuVmfC7Tl/NT97WGZDboAlrDzb7f68D4ngbd1uS6dnqdSt5LXsnZLEs=
-X-Received: by 2002:a05:6870:96a6:b0:1b3:8d35:c85f with SMTP id
- o38-20020a05687096a600b001b38d35c85fmr2605795oaq.1.1689779174307; Wed, 19 Jul
- 2023 08:06:14 -0700 (PDT)
+ bh=SydZG41XiMgTddoYtv03apSidvUujJWDayi7uqS0zW4=;
+ b=BxxZJrCfqOm3uul4/rnyb7ZoC9EkrwjVnAZZlN/zA6W5mKeU7Ij1TAFFcOPUAKrNmY
+ Dh5qFYtyp20kxOgo9Zz25+rASjX15j3ekSLCTze6WnzPIg66k0i4oEEZ9HiPDfNo+q2U
+ 99i3usTeEIAYzAAtFJQwQs0M6+wiMFG5rK9KB1wdvMd3PMXQOrKL3gIoTJ+S8EhSzzvx
+ ERCuoAeWEG1LM1rmmoSr3J9nBmTcVNjtdWZJyOsaktsbJnxFNMhvTq/E4ELgO4fe0Rb1
+ XZX+Usly8PnXhxLSFGCX9vFWUZZCwbOCbWmVxAOBRfuob/g5eD59O+2U/I6olpm4L31L
+ 0aCw==
+X-Gm-Message-State: ABy/qLbMgAkSoyFkdsv361I/v0N0waNvzplyV8thY97GsgZ/OMcb8y+7
+ B/Fn5jlGOdsWLNUK/RQEld4jGAcvVpbgnr941dQ=
+X-Google-Smtp-Source: APBJJlFfOeCHC1EJTXzEfV3mnDCg16N5JZ5TiFomYTJSn8tOJ7d6bOYMH0PrqDCIDOD7AxqMnJ9uLFtl/3qebeEubD4=
+X-Received: by 2002:a2e:93d7:0:b0:2b9:4492:1226 with SMTP id
+ p23-20020a2e93d7000000b002b944921226mr141331ljh.11.1689779528114; Wed, 19 Jul
+ 2023 08:12:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230711155230.64277-1-hreitz@redhat.com>
- <20230711155230.64277-6-hreitz@redhat.com>
- <20230718145032.GF44841@fedora>
- <82796f23-c9a7-7a52-96c4-f70d10a06d0a@redhat.com>
-In-Reply-To: <82796f23-c9a7-7a52-96c4-f70d10a06d0a@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 19 Jul 2023 11:06:02 -0400
-Message-ID: <CAJSP0QWd4nSL=M8Yb59dMbrO8Lj7YXgh72=Wn9THXDQ90wLQsg@mail.gmail.com>
-Subject: Re: [PATCH 5/6] vhost-vdpa: Match vhost-user's status reset
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- "Michael S . Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- German Maglione <gmaglione@redhat.com>
+References: <cover.1689748694.git.yin31149@gmail.com>
+ <20230719045858-mutt-send-email-mst@kernel.org>
+ <CAKrof1Nu+Y26=ubQKNmjdSaHTUM7Q5HRwwN_BqG4mZTsAY=CiA@mail.gmail.com>
+ <20230719083730-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20230719083730-mutt-send-email-mst@kernel.org>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Wed, 19 Jul 2023 23:11:56 +0800
+Message-ID: <CAKrof1Mj3qYxa2a0woH+O5fjCLRTznXjTzR0wmfL7BeZOii+LA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/8] vdpa: Send all CVQ state load commands in parallel
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: jasowang@redhat.com, eperezma@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::32;
- envelope-from=stefanha@gmail.com; helo=mail-oa1-x32.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=yin31149@gmail.com; helo=mail-lj1-x230.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,139 +91,240 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 19 Jul 2023 at 10:10, Hanna Czenczek <hreitz@redhat.com> wrote:
+=E5=9C=A8 2023/7/19 20:46, Michael S. Tsirkin =E5=86=99=E9=81=93:
+> On Wed, Jul 19, 2023 at 08:35:50PM +0800, Hawkins Jiawei wrote:
+>> =E5=9C=A8 2023/7/19 17:11, Michael S. Tsirkin =E5=86=99=E9=81=93:
+>>> On Wed, Jul 19, 2023 at 03:53:45PM +0800, Hawkins Jiawei wrote:
+>>>> This patchset allows QEMU to delay polling and checking the device
+>>>> used buffer until either the SVQ is full or control commands shadow
+>>>> buffers are full, instead of polling and checking immediately after
+>>>> sending each SVQ control command, so that QEMU can send all the SVQ
+>>>> control commands in parallel, which have better performance improvemen=
+t.
+>>>>
+>>>> I use vp_vdpa device to simulate vdpa device, and create 4094 VLANS in
+>>>> guest to build a test environment for sending multiple CVQ state load
+>>>> commands. This patch series can improve latency from 10023 us to
+>>>> 8697 us for about 4099 CVQ state load commands, about 0.32 us per comm=
+and.
+>>>
+>>> Looks like a tiny improvement.
+>>> At the same time we have O(n^2) behaviour with memory mappings.
+>>
+>> Hi Michael,
+>>
+>> Thanks for your review.
+>>
+>> I wonder why you say "we have O(n^2) behaviour on memory mappings" here?
 >
-> On 18.07.23 16:50, Stefan Hajnoczi wrote:
-> > On Tue, Jul 11, 2023 at 05:52:27PM +0200, Hanna Czenczek wrote:
-> >> vhost-vdpa and vhost-user differ in how they reset the status in their
-> >> respective vhost_reset_status implementations: vhost-vdpa zeroes it,
-> >> then re-adds the S_ACKNOWLEDGE and S_DRIVER config bits.  S_DRIVER_OK =
-is
-> >> then set in vhost_vdpa_dev_start().
-> >>
-> >> vhost-user in contrast just zeroes the status, and does no re-add any
-> >> config bits until vhost_user_dev_start() (where it does re-add all of
-> >> S_ACKNOWLEDGE, S_DRIVER, and S_DRIVER_OK).
-> >>
-> >> There is no documentation for vhost_reset_status, but its only caller =
-is
-> >> vhost_dev_stop().  So apparently, the device is to be stopped after
-> >> vhost_reset_status, and therefore it makes more sense to keep the stat=
-us
-> >> field fully cleared until the back-end is re-started, which is how
-> >> vhost-user does it.  Make vhost-vdpa do the same -- if nothing else it=
-'s
-> >> confusing to have both vhost implementations handle this differently.
-> >>
-> >> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> >> ---
-> >>   hw/virtio/vhost-vdpa.c | 6 +++---
-> >>   1 file changed, 3 insertions(+), 3 deletions(-)
-> > Hi Hanna,
-> > The VIRTIO spec lists the Device Initialization sequence including the
-> > bits set in the Device Status Register here:
-> > https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.=
-html#x1-1070001
-> >
-> > ACKNOWLEDGE and DRIVER must be set before FEATURES_OK. DRIVER_OK is set
-> > after FEATURES_OK.
-> >
-> > The driver may read the Device Configuration Space once ACKNOWLEDGE and
-> > DRIVER are set.
-> >
-> > QEMU's vhost code should follow this sequence (especially for vDPA wher=
+> it's not specific to virtio - it's related to device init.
+> generally each device has some memory. during boot bios
+> enables each individually O(n) where n is # of devices.
+> memory maps has to be updated and in qemu this update
+> is at least superlinear with n (more like O(n log n) I think).
+> This gets up > O(n^2) with n number of devices.
+
+Thanks for your explanation.
+
+
+>
+>>   From my understanding, QEMU maps two page-size buffers as control
+>> commands shadow buffers at device startup. These buffers then are used
+>> to cache SVQ control commands, where QEMU fills them with multiple SVQ c=
+ontrol
+>> commands bytes, flushes them when SVQ descriptors are full or these
+>> control commands shadow buffers reach their capacity.
+>>
+>> QEMU repeats this process until all CVQ state load commands have been
+>> sent in loading.
+>>
+>> In this loading process, only control commands shadow buffers
+>> translation should be relative to memory mappings, which should be
+>> O(log n) behaviour to my understanding(Please correct me if I am wrong).
+>>
+>>> Not saying we must not do this but I think it's worth
+>>> checking where the bottleneck is. My guess would be
+>>> vp_vdpa is not doing things in parallel. Want to try fixing that
+>>
+>> As for "vp_vdpa is not doing things in parallel.", do you mean
+>> the vp_vdpa device cannot process QEMU's SVQ control commands
+>> in parallel?
+>>
+>> In this situation, I will try to use real vdpa hardware to
+>> test the patch series performance.
+>
+> yea, pls do that.
+>
+>>> to see how far it can be pushed?
+>>
+>> Currently, I am involved in the "Add virtio-net Control Virtqueue state
+>> restore support" project in Google Summer of Code now. Because I am
+>> uncertain about the time it will take to fix that problem in the vp_vdpa
+>> device, I prefer to complete the gsoc project first.
+>>
+>> Thanks!
+>>
+>>
+>>>
+>>>
+>>>> Note that this patch should be based on
+>>>> patch "Vhost-vdpa Shadow Virtqueue VLAN support" at [1].
+>>>>
+>>>> [1]. https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg03719.ht=
+ml
+>>>>
+>>>> TestStep
+>>>> =3D=3D=3D=3D=3D=3D=3D=3D
+>>>> 1. regression testing using vp-vdpa device
+>>>>     - For L0 guest, boot QEMU with two virtio-net-pci net device with
+>>>> `ctrl_vq`, `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
+>>>>         -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Dof=
+f,
+>>>> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
+>>>> indirect_desc=3Doff,queue_reset=3Doff,ctrl_rx=3Don,ctrl_rx_extra=3Don,=
+...
+>>>>
+>>>>     - For L1 guest, apply the patch series and compile the source code=
+,
+>>>> start QEMU with two vdpa device with svq mode on, enable the `ctrl_vq`=
+,
+>>>> `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
+>>>>         -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
+>>>>         -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3D=
+on,
+>>>> ctrl_rx=3Don,ctrl_rx_extra=3Don...
+>>>>
+>>>>     - For L2 source guest, run the following bash command:
+>>>> ```bash
+>>>> #!/bin/sh
+>>>>
+>>>> for idx1 in {0..9}
+>>>> do
+>>>>     for idx2 in {0..9}
+>>>>     do
+>>>>       for idx3 in {0..6}
+>>>>       do
+>>>>         ip link add macvlan$idx1$idx2$idx3 link eth0
+>>>> address 4a:30:10:19:$idx1$idx2:1$idx3 type macvlan mode bridge
+>>>>         ip link set macvlan$idx1$idx2$idx3 up
+>>>>       done
+>>>>     done
+>>>> done
+>>>> ```
+>>>>     - Execute the live migration in L2 source monitor
+>>>>
+>>>>     - Result
+>>>>       * with this series, QEMU should not trigger any error or warning=
+.
+>>>>
+>>>>
+>>>>
+>>>> 2. perf using vp-vdpa device
+>>>>     - For L0 guest, boot QEMU with two virtio-net-pci net device with
+>>>> `ctrl_vq`, `ctrl_vlan` features on, command line like:
+>>>>         -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Dof=
+f,
+>>>> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
+>>>> indirect_desc=3Doff,queue_reset=3Doff,ctrl_vlan=3Don,...
+>>>>
+>>>>     - For L1 guest, apply the patch series, then apply an addtional
+>>>> patch to record the load time in microseconds as following:
+>>>> ```diff
+>>>> diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+>>>> index 6b958d6363..501b510fd2 100644
+>>>> --- a/hw/net/vhost_net.c
+>>>> +++ b/hw/net/vhost_net.c
+>>>> @@ -295,7 +295,10 @@ static int vhost_net_start_one(struct vhost_net *=
+net,
+>>>>        }
+>>>>
+>>>>        if (net->nc->info->load) {
+>>>> +        int64_t start_us =3D g_get_monotonic_time();
+>>>>            r =3D net->nc->info->load(net->nc);
+>>>> +        error_report("vhost_vdpa_net_load() =3D %ld us",
+>>>> +                     g_get_monotonic_time() - start_us);
+>>>>            if (r < 0) {
+>>>>                goto fail;
+>>>>            }
+>>>> ```
+>>>>
+>>>>     - For L1 guest, compile the code, and start QEMU with two vdpa dev=
+ice
+>>>> with svq mode on, enable the `ctrl_vq`, `ctrl_vlan` features on,
+>>>> command line like:
+>>>>         -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
+>>>>         -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3D=
+on,
+>>>> ctrl_vlan=3Don...
+>>>>
+>>>>     - For L2 source guest, run the following bash command:
+>>>> ```bash
+>>>> #!/bin/sh
+>>>>
+>>>> for idx in {1..4094}
+>>>> do
+>>>>     ip link add link eth0 name vlan$idx type vlan id $idx
+>>>> done
+>>>> ```
+>>>>
+>>>>     - wait for some time, then execute the live migration in L2 source=
+ monitor
+>>>>
+>>>>     - Result
+>>>>       * with this series, QEMU should not trigger any warning
+>>>> or error except something like "vhost_vdpa_net_load() =3D 8697 us"
+>>>>       * without this series, QEMU should not trigger any warning
+>>>> or error except something like "vhost_vdpa_net_load() =3D 10023 us"
+>>>>
+>>>> ChangeLog
+>>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>>> v3:
+>>>>     - refactor vhost_svq_poll() to accept cmds_in_flight
+>>>> suggested by Jason and Eugenio
+>>>>     - refactor vhost_vdpa_net_cvq_add() to make control commands buffe=
+rs
+>>>> is not tied to `s->cvq_cmd_out_buffer` and `s->status`, so we can reus=
 e
-> > full VIRTIO devices are implemented).
-> >
-> > vhost-user is not faithful to the VIRTIO spec here. That's probably due
-> > to the fact that vhost-user didn't have the concept of the Device Statu=
-s
-> > Register until recently and back-ends mostly ignore it.
-> >
-> > Please do the opposite of this patch: bring vhost-user in line with the
-> > VIRTIO specification so that the Device Initialization sequence is
-> > followed correctly. I think vhost-vdpa already does the right thing.
->
-> Hm.  This sounds all very good, but what leaves me lost is the fact that
-> we never actually expose the status field to the guest, as far as I can
-> see.  We have no set_status callback, and as written in the commit
-> message, the only caller of reset_status is vhost_dev_stop().  So the
-> status field seems completely artificial in vhost right now.  That is
-> why I=E2=80=99m wondering what the flags even really mean.
-
-vhost (including vDPA and vhost-user) is not a 100% passthrough
-solution. The VMM emulates a VIRTIO device (e.g. virtio-fs-pci) that
-has some separate state from the vhost back-end, including the Device
-Status Register. This is analogous to how passthrough PCI devices
-still have emulated PCI registers that are not passed through to the
-physical PCI device.
-
-However, just because the vDPA, and now vhost-user with the SET_STATUS
-message, back-end is not directly exposed to the guest does not mean
-it should diverge from the VIRTIO specification for no reason.
-
-> Another point I made in the commit message is that it is strange that we
-> reset the status to 0, and then add the ACKNOWLEDGE and DRIVER while the
-> VM is still stopped.  It doesn=E2=80=99t make sense to me to set these fl=
-ags
-> while the guest driver is not operative.
-
-While there is no harm in setting those bits, I agree that leaving the
-Device Status Register at 0 while the VM is stopped would be nicer.
-
-> If what you=E2=80=99re saying is that we must set FEATURES_OK only after
-> ACKNOWLEDGE and DRIVER, wouldn=E2=80=99t it be still better to set all of=
- these
-> flags only in vhost_*_dev_start(), but do it in two separate SET_STATUS
-> calls?
-
-The device initialization sequence could be put into vhost_dev_start():
-1. ACKNOWLEDGE | DRIVER
-2. FEATURES_OK via vhost_dev_set_features()
-3. DRIVER_OK via ->vhost_dev_start()
-
-But note that the ->vhost_dev_start() callback is too late to set
-ACKNOWLEDGE | DRIVER because feature negotiation happens earlier.
-
-> (You mentioned the configuration space =E2=80=93 is that accessed while b=
-etween
-> vhost_dev_stop and vhost_dev_start?)
-
-I don't think so.
-
->
-> Hanna
->
-> >> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> >> index f7fd19a203..0cde8b40de 100644
-> >> --- a/hw/virtio/vhost-vdpa.c
-> >> +++ b/hw/virtio/vhost-vdpa.c
-> >> @@ -1294,8 +1294,6 @@ static void vhost_vdpa_reset_status(struct vhost=
-_dev *dev)
-> >>       }
-> >>
-> >>       vhost_vdpa_reset_device(dev);
-> >> -    vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
-> >> -                               VIRTIO_CONFIG_S_DRIVER);
-> >>       memory_listener_unregister(&v->listener);
-> >>   }
-> >>
-> >> @@ -1334,7 +1332,9 @@ static int vhost_vdpa_dev_start(struct vhost_dev=
- *dev, bool started)
-> >>           }
-> >>           memory_listener_register(&v->listener, dev->vdev->dma_as);
-> >>
-> >> -        return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_DRIVER_OK);
-> >> +        return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE=
- |
-> >> +                                          VIRTIO_CONFIG_S_DRIVER |
-> >> +                                          VIRTIO_CONFIG_S_DRIVER_OK);
-> >>       }
-> >>
-> >>       return 0;
-> >> --
-> >> 2.41.0
-> >>
->
+>>>> it suggested by Eugenio
+>>>>     - poll and check when SVQ is full or control commands shadow buffe=
+rs is
+>>>> full
+>>>>
+>>>> v2: https://lore.kernel.org/all/cover.1683371965.git.yin31149@gmail.co=
+m/
+>>>>     - recover accidentally deleted rows
+>>>>     - remove extra newline
+>>>>     - refactor `need_poll_len` to `cmds_in_flight`
+>>>>     - return -EINVAL when vhost_svq_poll() return 0 or check
+>>>> on buffers written by device fails
+>>>>     - change the type of `in_cursor`, and refactor the
+>>>> code for updating cursor
+>>>>     - return directly when vhost_vdpa_net_load_{mac,mq}()
+>>>> returns a failure in vhost_vdpa_net_load()
+>>>>
+>>>> v1: https://lore.kernel.org/all/cover.1681732982.git.yin31149@gmail.co=
+m/
+>>>>
+>>>> Hawkins Jiawei (8):
+>>>>     vhost: Add argument to vhost_svq_poll()
+>>>>     vdpa: Use iovec for vhost_vdpa_net_cvq_add()
+>>>>     vhost: Expose vhost_svq_available_slots()
+>>>>     vdpa: Avoid using vhost_vdpa_net_load_*() outside
+>>>>       vhost_vdpa_net_load()
+>>>>     vdpa: Check device ack in vhost_vdpa_net_load_rx_mode()
+>>>>     vdpa: Move vhost_svq_poll() to the caller of vhost_vdpa_net_cvq_ad=
+d()
+>>>>     vdpa: Add cursors to vhost_vdpa_net_loadx()
+>>>>     vdpa: Send cvq state load commands in parallel
+>>>>
+>>>>    hw/virtio/vhost-shadow-virtqueue.c |  38 ++--
+>>>>    hw/virtio/vhost-shadow-virtqueue.h |   3 +-
+>>>>    net/vhost-vdpa.c                   | 354 ++++++++++++++++++--------=
+---
+>>>>    3 files changed, 249 insertions(+), 146 deletions(-)
+>>>>
+>>>> --
+>>>> 2.25.1
+>>>
 >
 
