@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C974375989F
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 16:40:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 181077598A6
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 16:41:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM8LI-0005Jj-V4; Wed, 19 Jul 2023 10:39:52 -0400
+	id 1qM8MC-0006QR-Tx; Wed, 19 Jul 2023 10:40:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qM8LF-0005C6-F6
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 10:39:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qM8MA-0006Px-NH
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 10:40:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qM8LD-0000JU-TS
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 10:39:49 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qM8M8-0000q4-AE
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 10:40:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689777587;
+ s=mimecast20190719; t=1689777643;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PP8zxcYqTGkleZnyDv+4d2w4ytLvEGWzCpS3UpXSQwY=;
- b=UTHonXmJtkzhmlmnowMKN8cV+2BdFsIDgVQq6Vc6QM3EEtTmBXBPUrJe6pKz2kPAGOzdQM
- 5OHfmhnALuqrSAYO1MtpXjgYLbzxzRmgEHIZKHxR7yMeg6hidpX98OZK3CmynhXjCYUkVE
- YHm7K4qAxC83VGNBsrVhgE/d7cPex5U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=oQM4omtIX032wHeWEte4BKfaloDdmGz4VlMwAQDBa7c=;
+ b=SikDxprgv32BzI0QNVrfdXuX5xjXIrlP/DgZNTOuqCp90BjnZ64IDTFGB0lHl6oa/rg9lR
+ DRc/nllg9vKVYw33tb21a1a+SgCUMmfPY7m6bCR4RtfA1C1QRTTIMbA27GC3jxL9jA4jOa
+ VyOnPJ1tiXBm6eqMm/tu56NRm4OQD3o=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-510-NokbQKVXNFq0v9-HtkWL9A-1; Wed, 19 Jul 2023 10:39:46 -0400
-X-MC-Unique: NokbQKVXNFq0v9-HtkWL9A-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fc0094c1bdso43395165e9.2
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 07:39:45 -0700 (PDT)
+ us-mta-373-gtOMfeBmNPCeNQUO3voMtw-1; Wed, 19 Jul 2023 10:40:42 -0400
+X-MC-Unique: gtOMfeBmNPCeNQUO3voMtw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-316f24a72e9so3129414f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 07:40:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689777585; x=1692369585;
+ d=1e100.net; s=20221208; t=1689777641; x=1692369641;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PP8zxcYqTGkleZnyDv+4d2w4ytLvEGWzCpS3UpXSQwY=;
- b=itxvtbMxGH/3l7KYrJ2zNwbc1Q3Gr8GmwWnqEns6ov8Up/HCYQBlHClq99lIGw79AY
- uQiu25lSSVMWtCckYILd0jQ1v36e3wbyCdbmIzAmKQ9Ia4aBAv1P+yKhyc4gV7pLH3h3
- zRXf2zCzGSWPzrVBOTLeMkFk5aZnFSZOGYDhllrChxf3vGPt8B4tvna66WMu5YPQcnhc
- zY1Cl9B0YVxhuCO7eabe0DGdnspEt4x4uts8Qd02wT7oW0D0ulDXB1mzwOTt1p+FQEOW
- koKjHdng3smN3VIAJGKQfAdHTWQ7e49U511CLoqkMgTfxgjV+XEYSXrH5+JVeDsieErT
- v3hA==
-X-Gm-Message-State: ABy/qLYn688qtvsefJpcqDHNR0Is/t7dJQwdTdzYLGPbBF1WmzjkvBMo
- QMlKtIW0Ynpk3UPaSashy0gxH+PaqfPG+0w4nDNHfLn4r5VR9R3snqbC92BVTaDUTOchbfaOhKG
- vhDUPY+ZB+0qwXjU=
-X-Received: by 2002:a1c:7506:0:b0:3fc:55b:9f6b with SMTP id
- o6-20020a1c7506000000b003fc055b9f6bmr4626087wmc.19.1689777584919; 
- Wed, 19 Jul 2023 07:39:44 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFjAn4NvLhTPz89Ufej6mSg6IyMOiJEl1O3VIyo4UCbKMzBe+e5uu1dQsM4V5P2un7uAUT7+w==
-X-Received: by 2002:a1c:7506:0:b0:3fc:55b:9f6b with SMTP id
- o6-20020a1c7506000000b003fc055b9f6bmr4626076wmc.19.1689777584722; 
- Wed, 19 Jul 2023 07:39:44 -0700 (PDT)
+ bh=oQM4omtIX032wHeWEte4BKfaloDdmGz4VlMwAQDBa7c=;
+ b=DPWM6eQsDmYqSPc1gvlOy52glJl9FpkI6sy/42EvolIKr/yxoHl/FFISqX7dVvbXY3
+ l/LHowzbXQRPWwmAdQBMeqqqooJ8+4atkSecqZrLryuRlS0N6a19ObjBBe/SSKZysqag
+ 2FmTJekL2tWlRFv8jHJufVAoEAAJ7THOEZRNwMiQhLz+gqfak5ji70h2HTE2eKPiHKmW
+ S7nlX+Q/Y4wHiMq7ENnDflm656/e6CavS/0HvDMhWzI6j6qv7HLynFV18rc9+P9BEVeN
+ HRSJHvOlxVpwmQucSxWWr6s8HJiAk2FBrV9bYO0AwyrNv6Sz2TX0a2sRXokkQHvUW6RI
+ Rq9A==
+X-Gm-Message-State: ABy/qLY/QwEswLgDZnkxhKwXHAcJqXyJQD3yUKVZMcIq4rLTwhOQXIWH
+ BrJ5cNvlrs+9qy+tPrApSWs4Ebyzu26gZry/8msovf93jzwYWj+wnigNohcjwzqnWkN6aMqaiQC
+ mi7Ihuh+qOmfTe7c=
+X-Received: by 2002:adf:ef87:0:b0:313:dee2:e052 with SMTP id
+ d7-20020adfef87000000b00313dee2e052mr61533wro.26.1689777641172; 
+ Wed, 19 Jul 2023 07:40:41 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFi7bUqIMizDDoxmXiY3zSHRWoRsf2FeHbtFqagm1KJB242OmLqC5RWJVNFGyHAzl1vAs8ymg==
+X-Received: by 2002:adf:ef87:0:b0:313:dee2:e052 with SMTP id
+ d7-20020adfef87000000b00313dee2e052mr61521wro.26.1689777640914; 
+ Wed, 19 Jul 2023 07:40:40 -0700 (PDT)
 Received: from [192.168.0.3] (ip-109-43-177-60.web.vodafone.de.
  [109.43.177.60]) by smtp.gmail.com with ESMTPSA id
- c16-20020a5d4150000000b0031411e46af3sm5464565wrq.97.2023.07.19.07.39.43
+ m16-20020adff390000000b003063a92bbf5sm5534618wro.70.2023.07.19.07.40.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Jul 2023 07:39:44 -0700 (PDT)
-Message-ID: <6da7eb7d-4dfb-ebcd-701e-894844851ab5@redhat.com>
-Date: Wed, 19 Jul 2023 16:39:43 +0200
+ Wed, 19 Jul 2023 07:40:40 -0700 (PDT)
+Message-ID: <470ce12b-7ac8-b8b3-59ef-c5a8142bd865@redhat.com>
+Date: Wed, 19 Jul 2023 16:40:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2 13/14] tests/tcg/s390x: Test STPQ
+Subject: Re: [PATCH v2 14/14] tests/tcg/s390x: Test VCKSM
 Content-Language: en-US
 To: Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
 References: <20230719094620.363206-1-iii@linux.ibm.com>
- <20230719094620.363206-14-iii@linux.ibm.com>
+ <20230719094620.363206-15-iii@linux.ibm.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230719094620.363206-14-iii@linux.ibm.com>
+In-Reply-To: <20230719094620.363206-15-iii@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -87,7 +87,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,10 +108,11 @@ On 19/07/2023 11.44, Ilya Leoshkevich wrote:
 > 
 > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 > ---
->   tests/tcg/s390x/Makefile.softmmu-target |  1 +
->   tests/tcg/s390x/stpq.S                  | 20 ++++++++++++++++++++
->   2 files changed, 21 insertions(+)
->   create mode 100644 tests/tcg/s390x/stpq.S
+>   tests/tcg/s390x/Makefile.target |  1 +
+>   tests/tcg/s390x/vcksm.c         | 31 +++++++++++++++++++++++++++++++
+>   tests/tcg/s390x/vx.h            |  2 ++
+>   3 files changed, 34 insertions(+)
+>   create mode 100644 tests/tcg/s390x/vcksm.c
 
 Tested-by: Thomas Huth <thuth@redhat.com>
 
