@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A71C759040
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 10:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE28759058
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 10:33:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM2Y3-0001RX-Vi; Wed, 19 Jul 2023 04:28:39 -0400
+	id 1qM2bz-0002Y6-Bk; Wed, 19 Jul 2023 04:32:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qM2Y2-0001Qo-CR
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:28:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qM2bw-0002XB-Ni
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:32:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qM2Y0-0003Mc-BZ
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:28:38 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qM2bu-0005Xe-OO
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:32:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689755315;
+ s=mimecast20190719; t=1689755558;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JdaUsERgXqeAn4uQo9ztWWzVIuNW8HbeEbB+KWwSYfA=;
- b=NjtGE7brD440IfWQKJ915x32Zo7mQAQbunG/IUDSka1iqgRIiyqRACLO1FfIvGXrm8TfoW
- va99QEUGDjzho8WCDj2vp1DU4R3Eh05MRm1dfd/hT/mNM3MjojcbQ2eUt4hk8w1+hWrh4Z
- H5gYxWRBzHnaCkBTCCm1GJrCB12YNes=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/APXFK6RT7rQOw7NY2jixNHfFahauIugIDGBaeW0u0Y=;
+ b=WAbML5K67FbDMJJOYFJILT/lAhEWa4emT1EXf4i+wc+LXeBtsnMky3wRQSdeaW7yqTP83B
+ d5MlCD4Lq5vPHFUxIWUqQHrYrzwqDUDd75w9q0JxWr+kTWMj9duJSljBc2FBTzVKAEm9Dy
+ N1QUWYWfECgzCIV1/k720OWeO9LJgBI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-h2uu8vFdOda4ZnocE0GrgA-1; Wed, 19 Jul 2023 04:28:33 -0400
-X-MC-Unique: h2uu8vFdOda4ZnocE0GrgA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f5df65fa35so37961335e9.3
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 01:28:33 -0700 (PDT)
+ us-mta-269-qzvagpaoPWiNVCfa058Y_A-1; Wed, 19 Jul 2023 04:32:36 -0400
+X-MC-Unique: qzvagpaoPWiNVCfa058Y_A-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fa8f8fb7b3so38575265e9.2
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 01:32:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689755313; x=1692347313;
+ d=1e100.net; s=20221208; t=1689755555; x=1692347555;
  h=content-transfer-encoding:in-reply-to:organization:from:references
  :cc:to:content-language:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=JdaUsERgXqeAn4uQo9ztWWzVIuNW8HbeEbB+KWwSYfA=;
- b=ZuNjLMF3i1FxsxK6EBxZ4FOCaa0Ye/JtL06RVE8YIE5GIVRgCNBnqWpSJbS6p5zCQq
- d0pGvGH7mvD8YELOWDsZ7rDYuG36aRNuog7EweVAEXOfSOH8jgPBEaWxF/8BCJBErPA8
- 7tZt/k/IKe3ai/sCfVRwRm9HkyaNNb/hW72gSmy36gluexPvZXzdxnhb8B2S7BDO6fnE
- X30jcmWNsgBrsHl849/yQg7vu8VaxacTT5n90sTb/tbTcUi3r37KI4VRCwW+1Zs97oER
- svuC8RpABPPciD93Kquhqd3II912wtkxXg7x0+uP2l8jD62Gc4LkJ1YbNjFTpFDc7QuU
- epWQ==
-X-Gm-Message-State: ABy/qLYMIt2idKK+ICIXGna60QPXg+4cPEAP5j9EqQwM5wnWhdrcTp0l
- J81vNxo6dgFKXlii7bBkv8HBdtIuTEcqQlYkbEERt1nIpgXJ7jJyAnZaGFdXh38aFyxhaY4ktZU
- NeS+z6NrRpHP9M5k=
-X-Received: by 2002:a1c:7703:0:b0:3fb:403d:90c5 with SMTP id
- t3-20020a1c7703000000b003fb403d90c5mr3441002wmi.39.1689755312794; 
- Wed, 19 Jul 2023 01:28:32 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGmTDYo2Xa+zvdDIZERgDC4jd5fj9+0xFLt1wu99vNu+Bs7lthDvAOmrY4jSal4C9jMHNaGQQ==
-X-Received: by 2002:a1c:7703:0:b0:3fb:403d:90c5 with SMTP id
- t3-20020a1c7703000000b003fb403d90c5mr3440989wmi.39.1689755312468; 
- Wed, 19 Jul 2023 01:28:32 -0700 (PDT)
+ bh=/APXFK6RT7rQOw7NY2jixNHfFahauIugIDGBaeW0u0Y=;
+ b=KUsty5K7NDs+a/+uZY47bxUdcAQLO2YBfEgzx5aSeMUC+YSOCyh1y3j3jnJsGONAxK
+ a+eLOh64o26oUj2qUerOP0kGjbcDzkCBVhaVxMyKCq0OyVs5UVKgeSYMiaubxZixDJ4/
+ wMeNgQVrH5cWfCgixo0C+vfETEcMV1Fp16JOlYHxYHdSv8Bs41khh5haMFfCDcFUeceb
+ MSOW+yAFhAL5mqBDj/FbF7kcvRjU2gAodlAnb0VvNzgLo/kzu5zsnqWErEBMQ6wy4EgA
+ IOyfb66yoBi2UcjWV0V8zHpaATQRYw+7bMsYmR+SulAza6wAE/2Pa7Ups96nZRupnMrD
+ bItQ==
+X-Gm-Message-State: ABy/qLb6VODFslsrjRH7QPAmwhIexLBrHYuB7j4Tyh3mp/ZWbrcq+Gwk
+ NFradlPQ61ySycALCsay11zKvYla8giN4G1CmjrBIA7X5j9LR11Ik41M4G3SnN3J959JFiT38ME
+ z2sAeKAMDpF+kZVo=
+X-Received: by 2002:a1c:4b0e:0:b0:3fc:855:db42 with SMTP id
+ y14-20020a1c4b0e000000b003fc0855db42mr4098781wma.34.1689755555604; 
+ Wed, 19 Jul 2023 01:32:35 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGxcUQdomNVkfGZpSma6Vj4hp48etGDESEi4cev3mCLQruwD3T1Y1PsDsS+uLIaC5MDbH4CzQ==
+X-Received: by 2002:a1c:4b0e:0:b0:3fc:855:db42 with SMTP id
+ y14-20020a1c4b0e000000b003fc0855db42mr4098767wma.34.1689755555222; 
+ Wed, 19 Jul 2023 01:32:35 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c74b:4f00:b030:1632:49f2:63?
  (p200300cbc74b4f00b030163249f20063.dip0.t-ipconnect.de.
  [2003:cb:c74b:4f00:b030:1632:49f2:63])
  by smtp.gmail.com with ESMTPSA id
- z19-20020a1c4c13000000b003fbe791a0e8sm1113058wmf.0.2023.07.19.01.28.31
+ b7-20020a5d5507000000b003142ea7a661sm4605230wrv.21.2023.07.19.01.32.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Jul 2023 01:28:32 -0700 (PDT)
-Message-ID: <286ec1fd-e71c-363a-7a60-63f561429f25@redhat.com>
-Date: Wed, 19 Jul 2023 10:28:31 +0200
+ Wed, 19 Jul 2023 01:32:34 -0700 (PDT)
+Message-ID: <227c0023-068a-6d18-560b-cd096de87311@redhat.com>
+Date: Wed, 19 Jul 2023 10:32:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH 03/14] target/s390x: Fix CONVERT TO LOGICAL/FIXED with
- out-of-range inputs
+Subject: Re: [PATCH 04/14] target/s390x: Fix ICM with M3=0
 Content-Language: en-US
 To: Ilya Leoshkevich <iii@linux.ibm.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
 References: <20230718213531.117976-1-iii@linux.ibm.com>
- <20230718213531.117976-4-iii@linux.ibm.com>
+ <20230718213531.117976-5-iii@linux.ibm.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <20230718213531.117976-4-iii@linux.ibm.com>
+In-Reply-To: <20230718213531.117976-5-iii@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -92,7 +91,7 @@ X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  NICE_REPLY_A=-0.095, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,32 +108,39 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 18.07.23 23:21, Ilya Leoshkevich wrote:
-> CONVERT TO LOGICAL/FIXED deviate from IEEE 754 in that they raise an
-> inexact exception on out-of-range inputs. float_flag_invalid_cvti
-> aligns nicely with that behavior, so convert it to
-> S390_IEEE_MASK_INEXACT.
+> When the mask is zero, access exceptions should still be recognized for
+> 1 byte at the second-operand address. CC should be set to 0.
 > 
 > Cc: qemu-stable@nongnu.org
-> Fixes: defb0e3157af ("s390x: Implement opcode helpers")
+> Fixes: e023e832d0ac ("s390x: translate engine for s390x CPU")
 > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 > ---
->   target/s390x/tcg/fpu_helper.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   target/s390x/tcg/translate.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> diff --git a/target/s390x/tcg/fpu_helper.c b/target/s390x/tcg/fpu_helper.c
-> index 4b7fa58af3e..3d941ed2d28 100644
-> --- a/target/s390x/tcg/fpu_helper.c
-> +++ b/target/s390x/tcg/fpu_helper.c
-> @@ -52,7 +52,8 @@ uint8_t s390_softfloat_exc_to_ieee(unsigned int exc)
->       s390_exc |= (exc & float_flag_divbyzero) ? S390_IEEE_MASK_DIVBYZERO : 0;
->       s390_exc |= (exc & float_flag_overflow) ? S390_IEEE_MASK_OVERFLOW : 0;
->       s390_exc |= (exc & float_flag_underflow) ? S390_IEEE_MASK_UNDERFLOW : 0;
-> -    s390_exc |= (exc & float_flag_inexact) ? S390_IEEE_MASK_INEXACT : 0;
-> +    s390_exc |= (exc & (float_flag_inexact | float_flag_invalid_cvti)) ?
-> +                S390_IEEE_MASK_INEXACT : 0;
+> diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+> index 2f61e879878..2d7cc8963b4 100644
+> --- a/target/s390x/tcg/translate.c
+> +++ b/target/s390x/tcg/translate.c
+> @@ -2516,6 +2516,12 @@ static DisasJumpType op_icm(DisasContext *s, DisasOps *o)
+>           len = 8;
+>           goto one_insert;
 >   
->       return s390_exc;
->   }
+> +    case 0:
+> +        /* Recognize access exceptions for the first byte.  */
+> +        tcg_gen_qemu_ld_i64(tmp, o->in2, get_mem_index(s), MO_UB);
+> +        gen_op_movi_cc(s, 0);
+> +        return DISAS_NEXT;
+> +
+>       one_insert:
+>           pos = base + ctz32(m3) * 8;
+>           tcg_gen_deposit_i64(o->out, o->out, tmp, pos, len);
+
+That label in there is really nasty.
+
+I would just have but the "case 0" right at the top (or right in front 
+of the "default") and left all of that nasty stuff involving that label 
+alone.
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
 
