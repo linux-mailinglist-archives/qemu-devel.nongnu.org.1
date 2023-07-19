@@ -2,86 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BA6759F1D
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 21:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD84759F5E
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 22:10:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMDHb-0004dZ-EY; Wed, 19 Jul 2023 15:56:23 -0400
+	id 1qMDTe-0008ID-7q; Wed, 19 Jul 2023 16:08:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
- id 1qMDHZ-0004b1-70
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 15:56:21 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qMDTc-0008Hq-RS
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:08:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
- id 1qMDHX-0004pF-0p
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 15:56:20 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qMDTa-0000oq-6b
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:08:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689796576;
+ s=mimecast20190719; t=1689797324;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=NXE64z5yd9ECPUGYAydL1K9ddDdHA34gbyW/hPb6vZo=;
- b=ZlZHl8ZfDRrxpj7CvPkh3MzVYP0icOGJvhZfyqXIZivQOExytu5n+lyMmaaPCtnvk2Dsf/
- 2cHvYjEGgWQryDt6d7WxT78dK7ZsbCxEN09MlXn11rZWkxZG7YBzCfsSYQP6fAvXMyH+gK
- +nGofzbMcMTvOnfND8yjPHtgHZkxIeU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=pQnseqF6Xuip4hd7ivXTR6czYLS7Rs1naN6RZfJ15Mo=;
+ b=E1GYLNG0XKtQpCnYgIlE2FxW5YiNpesLIOEF2cbJgbXUvWPdS+CfkFxmf3iQXq1LHZLh2r
+ Oeq1IzZu4Iu0IzISVHavf6fo8y4yQTyuiUMKtDcZSQllVQjVvzf+e8cRCB4UviFBHt9vVs
+ kJfVHAtD3yT2mWqRx1N4rAZ3LzE7cFs=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-yBHDq6K3Ml6kouJ_TvXlQg-1; Wed, 19 Jul 2023 15:56:14 -0400
-X-MC-Unique: yBHDq6K3Ml6kouJ_TvXlQg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-316f5d82bf4so7493f8f.3
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 12:56:14 -0700 (PDT)
+ us-mta-132-Im3sZtesM0iq8W2gbUe5AQ-1; Wed, 19 Jul 2023 16:08:43 -0400
+X-MC-Unique: Im3sZtesM0iq8W2gbUe5AQ-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-635de6f75e0so123906d6.1
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 13:08:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689796573; x=1690401373;
- h=mime-version:user-agent:message-id:in-reply-to:date:references
- :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+ d=1e100.net; s=20221208; t=1689797323; x=1690402123;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NXE64z5yd9ECPUGYAydL1K9ddDdHA34gbyW/hPb6vZo=;
- b=K20AsOAu460AloLGVuna2KJjjIKXPIwoyRoDXkBrV3JAt7guQXY0/JYHdp2btvipij
- rMqAWUOSzKqQyKHP+ScV9teRY9Ir1DtJtLn1pEEa0M2AwgW0E6BqQ860NZCv7w+tWIjW
- nrr+0FLpRJPy1aTuX4aL8UUUEsh0cdni/wRsuQS+69Y0AZelydibueKnmavBBlM0JWB2
- gTsfWWRaHu8JSK9k0D3x0mzeVlTMQsThCwmtDREcDifs86sLwFViKz3lp5ltbkygR5mR
- INhhoMsO5JbSTOudO0YFSJbFlf1DybVvCkER07iNsBl7tZTRi43jXXuIpUz+VvaOvy+d
- 4XYA==
-X-Gm-Message-State: ABy/qLZAjqOfVtJuoa5RlNvX7IuawIgAM61qC8b9OlcqGnfDef3rnSCN
- mub6yZfOVAD4X32k6DEPT07qylwhd1MV+bsQIxIUyWdDVBghCvCL0S2/vSCrRqs8d6697mLpZEm
- BGEvzWQw0XLZfgVg=
-X-Received: by 2002:adf:e84b:0:b0:314:3ac8:c277 with SMTP id
- d11-20020adfe84b000000b003143ac8c277mr365243wrn.9.1689796573154; 
- Wed, 19 Jul 2023 12:56:13 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGqa+tidjZe/3E1kKqy48p/6+TiKqjb6cBKpcUXT5vSgzruTqmY89lQJclk3MqdaSjyOkiFQg==
-X-Received: by 2002:adf:e84b:0:b0:314:3ac8:c277 with SMTP id
- d11-20020adfe84b000000b003143ac8c277mr365232wrn.9.1689796572800; 
- Wed, 19 Jul 2023 12:56:12 -0700 (PDT)
-Received: from nuthatch (ip-77-48-47-2.net.vodafone.cz. [77.48.47.2])
- by smtp.gmail.com with ESMTPSA id
- t18-20020a5d49d2000000b0030647449730sm6103895wrs.74.2023.07.19.12.56.11
+ bh=pQnseqF6Xuip4hd7ivXTR6czYLS7Rs1naN6RZfJ15Mo=;
+ b=QgZ26zW2yVntw4lbkJtJGlCCgfhDmNNBbJ1um0eLsONfc8S9wL6wGWZaBD5hhgBrOL
+ UMwoO7B1KBRSIVLB8ovbngiaLjBA9yyZAEDjg+PAe7iTK1TtDPtBagxOw4UiBXMG+jEl
+ 0oiychcQ56GabNeGV3MoVCfznAp2ThZUhnZmOMA0BddxoJ4uUx0O3YV+dO35fa3z3RrE
+ 7wO3SE7rbhXlAyw7pl6rzvQhgvFMUqF4IkY2RX6XhecG6L46XFsi5S2YXpd8DNp57gLN
+ 9x3cxigfXwMQRarnJM+dINeKyF/h8wGXHjMRfn+IfnwMEjrEskL+1uvP+1bm4KKaE3L9
+ kCmA==
+X-Gm-Message-State: ABy/qLaaKy3g0OexYhf7V75TLkGLxkCYdyT55XyEfbIs/Qm5fKuK+6K7
+ BrwEC/S3qFjNBvJZLr+jf1F7MMoa4Kw85NRKlXEU34m9fcsaL35KAaf2lsXNcn24k6jPe2l4C3v
+ Qlq0iOav1verA7Lk=
+X-Received: by 2002:a05:6214:f69:b0:625:86ed:8ab4 with SMTP id
+ iy9-20020a0562140f6900b0062586ed8ab4mr357811qvb.3.1689797323062; 
+ Wed, 19 Jul 2023 13:08:43 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHd/B1iYX0XqwpK4J9nZyHYSOTCRpnnIDxneaSQKDyy+PkFa6daTYJTfvETIkInt961HBhbIQ==
+X-Received: by 2002:a05:6214:f69:b0:625:86ed:8ab4 with SMTP id
+ iy9-20020a0562140f6900b0062586ed8ab4mr357793qvb.3.1689797322797; 
+ Wed, 19 Jul 2023 13:08:42 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ kh18-20020a056214515200b0062fffa42cc5sm1671713qvb.79.2023.07.19.13.08.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jul 2023 12:56:11 -0700 (PDT)
-From: Milan Zamazal <mzamazal@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,  qemu-devel@nongnu.org,  Peter
- Maydell <peter.maydell@linaro.org>,  Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>
-Subject: Re: [PULL 10/66] tests/qtest: enable tests for virtio-scmi
-References: <cover.1689030052.git.mst@redhat.com>
- <b6f53ae005a1c05034769beebf799e861b82d48a.1689030052.git.mst@redhat.com>
- <22589b2f-8dcf-b86b-2d77-bf27bf81ce27@redhat.com>
- <87pm4pcrbe.fsf@redhat.com>
- <373f7d28-788b-99d1-1606-b73db45720c1@redhat.com>
-Date: Wed, 19 Jul 2023 21:56:11 +0200
-In-Reply-To: <373f7d28-788b-99d1-1606-b73db45720c1@redhat.com> (Thomas Huth's
- message of "Wed, 19 Jul 2023 15:02:11 +0200")
-Message-ID: <87mszrptes.fsf@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ Wed, 19 Jul 2023 13:08:42 -0700 (PDT)
+Date: Wed, 19 Jul 2023 16:08:39 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Steve Sistare <steven.sistare@oracle.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v5 6/6] tests/qtest: migration-test: Add tests for
+ file-based migration
+Message-ID: <ZLhCxynbbTYvLb/c@x1n>
+References: <20230712190742.22294-1-farosas@suse.de>
+ <20230712190742.22294-7-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mzamazal@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230712190742.22294-7-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -106,125 +102,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+On Wed, Jul 12, 2023 at 04:07:42PM -0300, Fabiano Rosas wrote:
+> Add basic tests for file-based migration.
+> 
+> Note that we cannot use test_precopy_common because that routine
+> expects it to be possible to run the migration live. With the file
+> transport there is no live migration because we must wait for the
+> source to finish writing the migration data to the file before the
+> destination can start reading. Add a new migration function
+> specifically to handle the file migration.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-> On 18/07/2023 14.55, Milan Zamazal wrote:
->> Thomas Huth <thuth@redhat.com> writes:
->> 
->
->>> On 11/07/2023 01.02, Michael S. Tsirkin wrote:
->>>> From: Milan Zamazal <mzamazal@redhat.com>
->>>> We don't have a virtio-scmi implementation in QEMU and only support
->>>
->>>> a
->>>> vhost-user backend.  This is very similar to virtio-gpio and we add the same
->>>> set of tests, just passing some vhost-user messages over the control socket.
->>>> Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
->>>> Acked-by: Thomas Huth <thuth@redhat.com>
->>>> Message-Id: <20230628100524.342666-4-mzamazal@redhat.com>
->>>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
->>>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->>>> ---
->>>>    tests/qtest/libqos/virtio-scmi.h |  34 ++++++
->>>>    tests/qtest/libqos/virtio-scmi.c | 174 +++++++++++++++++++++++++++++++
->>>>    tests/qtest/vhost-user-test.c    |  44 ++++++++
->>>>    MAINTAINERS                      |   1 +
->>>>    tests/qtest/libqos/meson.build   |   1 +
->>>>    5 files changed, 254 insertions(+)
->>>>    create mode 100644 tests/qtest/libqos/virtio-scmi.h
->>>>    create mode 100644 tests/qtest/libqos/virtio-scmi.c
->>>
->>>   Hi!
->>>
->>> I'm seeing some random failures with this new scmi test, so far only
->>> on non-x86 systems, e.g.:
->>>
->>>   https://app.travis-ci.com/github/huth/qemu/jobs/606246131#L4774
->>>
->>> It also reproduces on a s390x host here, but only if I run "make check
->>> -j$(nproc)" - if I run the tests single-threaded, the qos-test passes
->>> there. Seems like there is a race somewhere in this test?
->> Hmm, it's basically the same as virtio-gpio.c test, so it should be
->> OK.
->> Is it possible that the two tests (virtio-gpio.c & virtio-scmi.c)
->> interfere with each other in some way?  Is there possibly a way to
->> serialize them to check?
->
-> I think within one qos-test, the sub-tests are already run
-> serialized. 
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-I see, OK.
-
-> But there might be multiple qos-tests running in parallel, e.g. one
-> for the aarch64 target and one for the ppc64 target. And indeed, I can
-> reproduce the problem on my x86 laptop by running this in one terminal
-> window:
->
-> for ((x=0;x<1000;x++)); do \
->  QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon \
->  G_TEST_DBUS_DAEMON=.tests/dbus-vmstate-daemon.sh \
->  QTEST_QEMU_BINARY=./qemu-system-ppc64 \
->  MALLOC_PERTURB_=188 QTEST_QEMU_IMG=./qemu-img \
->  tests/qtest/qos-test -p \
->  /ppc64/pseries/spapr-pci-host-bridge/pci-bus-spapr/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile
-> \
->  || break ; \
-> done
->
-> And this in another terminal window at the same time:
->
-> for ((x=0;x<1000;x++)); do \
->  QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon \
->  G_TEST_DBUS_DAEMON=.tests/dbus-vmstate-daemon.sh \
->  QTEST_QEMU_BINARY=./qemu-system-aarch64 \
->  MALLOC_PERTURB_=188 QTEST_QEMU_IMG=./qemu-img \
->  tests/qtest/qos-test -p \
->  /aarch64/virt/generic-pcihost/pci-bus-generic/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile
-> \
->  || break ; \
-> done
->
-> After a while, the aarch64 test broke with:
->
-> /aarch64/virt/generic-pcihost/pci-bus-generic/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile:
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost VQ 0 ring restore failed: -22: Invalid argument (22)
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost VQ 1 ring restore failed: -22: Invalid argument (22)
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost_set_vring_call failed 22
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost_set_vring_call failed 22
-> qemu-system-aarch64: Failed to write msg. Wrote -1 instead of 20.
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost VQ 0 ring restore failed: -22: Invalid argument (22)
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost VQ 1 ring restore failed: -22: Invalid argument (22)
-> qemu-system-aarch64: ../../devel/qemu/hw/pci/msix.c:659:
-> msix_unset_vector_notifiers: Assertion `dev->msix_vector_use_notifier
-> && dev->msix_vector_release_notifier' failed.
-> ../../devel/qemu/tests/qtest/libqtest.c:200: kill_qemu() detected QEMU
-> death from signal 6 (Aborted) (core dumped)
-> **
-> ERROR:../../devel/qemu/tests/qtest/qos-test.c:191:subprocess_run_one_test:
-> child process
-> (/aarch64/virt/generic-pcihost/pci-bus-generic/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile/subprocess
-> [488457]) failed unexpectedly
-> Aborted (core dumped)
-
-Interesting, good discovery.
-
-> Can you also reproduce it this way?
-
-Unfortunately not.  I ran the loops several times and everything passed.
-I tried to compile and run it in a different distro container and it
-passed too.  I also haven't been successful in getting any idea how the
-processes could influence each other.
-
-What OS and what QEMU configure flags did you use to compile and run it?
-
-Thanks,
-Milan
+-- 
+Peter Xu
 
 
