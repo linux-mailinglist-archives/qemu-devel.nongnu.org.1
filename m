@@ -2,65 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F48759A3D
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD7D759A3A
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:54:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM9Tv-0006zh-OD; Wed, 19 Jul 2023 11:52:51 -0400
+	id 1qM9Ty-00072K-Jx; Wed, 19 Jul 2023 11:52:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qM9Tq-0006zC-6S
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:52:46 -0400
-Received: from mout.gmx.net ([212.227.15.15])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>)
+ id 1qM9Tw-00070Y-5g; Wed, 19 Jul 2023 11:52:52 -0400
+Received: from mout.gmx.net ([212.227.15.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qM9To-0006NJ-2Z
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:52:45 -0400
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>)
+ id 1qM9Tt-0006Ph-NV; Wed, 19 Jul 2023 11:52:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
  s=s31663417; t=1689781957; x=1690386757; i=deller@gmx.de;
- bh=RExEh8gbKD44Bsl7EWTuRgemBQGP5ogRpAJ78Yqde6c=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
- b=ZrsnSkyTiSyMoTPBFl6Fju2L2WMWafaanaJBKPA2sR9p4ISXIAwTJhkgTggkxYOim2d1B4Q
- PSciwplDC3B/e/mneif5gOWhw4sSiBn01XyG2XMJTdcUXE0NvezA2t6Y8osZYLje9pv0hYtVh
- Qw+XHvi2CQU4afF6xNn06S4pVyzFOPnXLn4JmCIqD4ERRQEIgzOwSfmlR0CY0xGDcFLnAfncr
- 7pTiGFxwRqSc9CUTTBV/ZR1HZRnDzxO2N43yt9TKeUJuIHSInYo9hPl3dysuiwjL9rLSpWMkI
- JdkWVFia++rsSGRJvNLoEJ7HcwGt6sCDNL8w8xfbqyj4S3cwuldw==
+ bh=efVESnAW6H7a8ZymmHelPG4JpfCKaU44b+i4/YpA37k=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
+ b=gIz+3yIxdFbiIKTyacrbDX9wwLMoWCSAFgm0qZy1TnIYo3wJ11BW15dDFxfB1okVDNrzoyH
+ NJuISt8tpK174S8/EyaTZbtC6I5vktVHpNn5uv+IYDKIKkvjflmlDR97JT/FRt6BfsG4V7f+6
+ V+7d4ypMQV4AbXtoGBvwBvrcHgoEi6vo8bjSuKq9LoAJ2GVD15lPogPtAlLZZ6IVnVOCI5Z38
+ Z7QANSeyuYFclZi885/gv7gT95u25aJw7DoRChV/Cn3Qw2KStwEQmal/FwJZ+QNjPZgzeqvA8
+ 6mfXn7KJGMPXCO47Wzq35SOGAgv7HBfDNQjtG9q9+p/FdIw0aAkg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([94.134.145.157]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MQMyZ-1qZiFw18gD-00MOGN; Wed, 19
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1McH5a-1plzmT2ExQ-00cgbC; Wed, 19
  Jul 2023 17:52:37 +0200
 From: Helge Deller <deller@gmx.de>
 To: Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, Andreas Schwab <schwab@suse.de>,
  Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 0/5] Linux user brk fixes patches
-Date: Wed, 19 Jul 2023 17:52:30 +0200
-Message-ID: <20230719155235.244478-1-deller@gmx.de>
+Cc: Helge Deller <deller@gmx.de>,
+ "Markus F.X.J. Oberhumer" <markus@oberhumer.com>, qemu-stable@nongnu.org
+Subject: [PULL 1/5] linux-user: Fix qemu brk() to not zero bytes on current
+ page
+Date: Wed, 19 Jul 2023 17:52:31 +0200
+Message-ID: <20230719155235.244478-2-deller@gmx.de>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230719155235.244478-1-deller@gmx.de>
+References: <20230719155235.244478-1-deller@gmx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tfzl/fP+REA+v07VDzA5sTFxwMD6LkcPje0Xwho0e1P0rZRDRSF
- YdZfKXcKb6stM661uglZEj1LV6cZZjG6WxAq7JUBNfyezpsM7duxV6WVMS9522xs9LsV7pA
- HsiqNUXEbqIevk6Hg+ZiW6xRAjOUBODJKXrgiDn9h0jM/K8+vrzn+sZLD5YxtTakSFEOJag
- k7Jaasmy64Il0EwStP5mA==
-UI-OutboundReport: notjunk:1;M01:P0:NAb3rbDrLyQ=;vv8oS3A/iyIHU6FqCPQinodXTTH
- ipY0mNcRdgjrKS+YgK6t2R0gr8SgLjLVOquERPqg94haXkhagHxd+nxp1MBnSACR1WPkBtx99
- HXwoCv8+/EuBAUNoSSF6X4+TaxbKh/ZjUFNURGrhFDQJHdrSuOPhWg6Bb6S8i1lM2ymG6WlMy
- wjJX7XLwDRq/EQp7RPXnmo4WQw2/a/T2bGfMrMgi8RVVAyinS9cazdWAJNQAB/AVQHjVR7lSh
- GFeCxMITSrHD+aHzuLDDy2LHKEYQzkkZIndLFNYO7m4YkMs1SNY/sk6EuUIivsW2ESj/No/fx
- D4tXWH5c2nFbnOdh+6GXrYXp/pNTNidn7P71zkazOBIgAYCEcU8mWJxiNwBmW75fjXX4t9wK7
- dsulYWnTaO61XQkeAyAkK8nbvDFf+S/9NEPd7LYtToI1CI9zD9yk5/Mc0IppC8myubPEnvIE2
- nqTBuI98PlyTWCNBPlXMhplqrwyhEPXG+/hA4g7+dVaQtetBZZoZTk9bZib0LJLF95H+BA4Lj
- lTJEVz8l5tsSpZNthzI1jlX6DbBQ2JNn+Jugzfk1nvfl5yJA3bJJtMgh2tc1TIx5Gfui3Kjhw
- ka1g1NlP6xrXqjft+UxnuWgQVi+LAIM5LnmOyoQktUtrV9VmcSswp3e4ImmmDdU0l8zrwEQ9S
- ZfkYgpR2etnqfz+S5rJ1KKhGvKy3K78i3TOlot+OgkU/XCXH8pmS5JD+ebbeemUv9Dv7QpjIh
- tZc0VP1s1pDi1tP15D3mlBbR68yVnKaF+m+lcGq5Hff0U/lYkqNDJe96Rj5lfvtyivJ+EuIIU
- SLasMKFILRYwlSYXimlwqqXIerI/xgDmZWQ4sRckSC3xpmNoNFxItpLdamd6QW9etM7enKF67
- 4b0hp9WC6DIrII0fZ8dc522Ye8JigTqqBEYvNVn/6OrUe2bYMiKdn5Fw9oYcbfsx5XLG61WgU
- n/1EjMS3KPVr51PuF3Y14I0syV0=
-Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
+X-Provags-ID: V03:K1:9ki5GeoyYFsDmXulyMlR7W48fzzEaB85Bx6bs6KtGYaneKENyCU
+ eVOokJLxVu9yJYhwrWuA+yTgatY5rTYxcbNWozvoK0iepV7sEJQP6U+vu3hEo4heZd9XinK
+ plSu+Ad9wDmr/i6tJLEw/1mg1vlllGET6z3k8hLAWAhMuPusBJseR+V5KaTxFruKC3HZx2l
+ gigu35h0sXys34uLrVtxQ==
+UI-OutboundReport: notjunk:1;M01:P0:NdG3xE/qhxI=;Oi3/a6d/YL3rRDXPdA6e7l6CDTN
+ p4FOj0pjPf9UO3AZ6roKgdsoGwVEdzwNmSh1p38AGCwPhPo0jUNHLd3EBjKVAHnr32mw6sq3+
+ ps3+YXNWblIuWYMuZO2EdZ/cn6cuLv7+vyrpwfwX/eejnO3Z5ahBgWZOkHEmikY2NcNEL8G2w
+ hVUP3CXyEsdymeuT8GKo8TaolPELECHDyK5AZeimY/Q5VPzobVh5soZBP4/TDUiKPmUrgDKNJ
+ OKcglEGC8oup71IJw2Srf6Xw09kyed9UpyoWx2QOb7NyZJ/pHn5Yr5lxLbeOXA4b57f2IB6yz
+ bOtjJ7LOk1z7n4PbohY+Vt/+Idr9XtwinJAm+m5alIy5IQHH0gZaf+Ro5sgEEFhLjfkpv91fM
+ FBYRPEKZGlI4HhFRwP4fLPIqB1oJzXm/c+N6HKJ7rDDtXcH3VTrrVMMNzfnuVkTZwBfONvLOU
+ NwjhSu0rgIj+PYp9fQ1l6o2dDN0O4JVOZ5zIpNR/pgZu1Fyf3/pD8ZiiNBk62IvlIoWXrq+IQ
+ g/VdHWVYjjTEYCN0ScdGZmqTvh1nKVLmD77LRp0cPIQroQglr6Hs3W4iIzX6FdzrmL+TET/s+
+ m54nsfKZFN8+kYWcIKsmFZqwgmY4qeMV2YQnToA3+lmVeYWOPT3OsjHF4zH0iJKE0m2rHTkmE
+ zIgK+3TIbBQ0YvO5sOZIgfbkM9X078dM249wB9nLXiucDF9lZzqkVcEBfIkH+AOS7yqmt0DY/
+ hFzAfUESgnsj/rNglBtiBvfumorc+xqTMh/k/necczyH9JdsdXOpXwMCEWtUXajowtK0yf0hW
+ +EpMTT5HaiAHhVuxTm61DG7L2/5Fz6oTgbt3YJjENB5jDF1zNnq2x+wUMT41qHmQp95rX309X
+ zhBZne+MGK1aIHvPn4m/snkuxUoE/atHZ7/dr2JEGg7f3zguW1VzS8b+FJDHBzf8LPxSQ1sQh
+ yu0p+XKDQSZ9bVMlDC83UD8uGf0=
+Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -84,67 +87,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 361d5397355276e3007825cc17217c1e4d4320f=
-7:
+The qemu brk() implementation is too aggressive and cleans remaining bytes
+on the current page above the last brk address.
 
-  Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into =
-staging (2023-07-17 15:49:27 +0100)
+But some existing applications are buggy and read/write bytes above their
+current heap address. On a phyiscal machine this does not trigger a
+runtime error as long as the access happens on the same page. Additionally
+the Linux kernel allocates only full pages and does no zeroing on already
+allocated pages, even if the brk address is lowered.
 
-are available in the Git repository at:
+Fix qemu to behave the same way as the kernel does. Do not touch already
+allocated pages, and - when running with different page sizes of guest and
+host - zero out only those memory areas where the host page size is bigger
+than the guest page size.
 
-  https://github.com/hdeller/qemu-hppa.git tags/linux-user-brk-fixes-pull-=
-request
+Signed-off-by: Helge Deller <deller@gmx.de>
+Tested-by: "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
+Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
+Cc: qemu-stable@nongnu.org
+Buglink: https://github.com/upx/upx/issues/683
+=2D--
+ linux-user/syscall.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-for you to fetch changes up to 518f32221af759a29500ac172c4c857bef142067:
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index c99ef9c01e..ee54eed33b 100644
+=2D-- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -829,10 +829,8 @@ abi_long do_brk(abi_ulong brk_val)
 
-  linux-user: Fix qemu-arm to run static armhf binaries (2023-07-18 20:42:=
-05 +0200)
+     /* brk_val and old target_brk might be on the same page */
+     if (new_brk =3D=3D TARGET_PAGE_ALIGN(target_brk)) {
+-        if (brk_val > target_brk) {
+-            /* empty remaining bytes in (possibly larger) host page */
+-            memset(g2h_untagged(target_brk), 0, new_host_brk_page - targe=
+t_brk);
+-        }
++        /* empty remaining bytes in (possibly larger) host page */
++        memset(g2h_untagged(new_brk), 0, new_host_brk_page - new_brk);
+         target_brk =3D brk_val;
+         return target_brk;
+     }
+@@ -840,7 +838,7 @@ abi_long do_brk(abi_ulong brk_val)
+     /* Release heap if necesary */
+     if (new_brk < target_brk) {
+         /* empty remaining bytes in (possibly larger) host page */
+-        memset(g2h_untagged(brk_val), 0, new_host_brk_page - brk_val);
++        memset(g2h_untagged(new_brk), 0, new_host_brk_page - new_brk);
 
-=2D---------------------------------------------------------------
-linux-user: brk() syscall fixes and armhf static binary fix
+         /* free unused host pages and set new brk_page */
+         target_munmap(new_host_brk_page, brk_page - new_host_brk_page);
+@@ -873,7 +871,7 @@ abi_long do_brk(abi_ulong brk_val)
+          * come from the remaining part of the previous page: it may
+          * contains garbage data due to a previous heap usage (grown
+          * then shrunken).  */
+-        memset(g2h_untagged(target_brk), 0, brk_page - target_brk);
++        memset(g2h_untagged(brk_page), 0, HOST_PAGE_ALIGN(brk_page) - brk=
+_page);
 
-Commit 86f04735ac ("linux-user: Fix brk() to release pages") introduced
-the possibility for userspace applications to reduce memory footprint by
-calling brk() with a lower address and as such free up memory, the same
-way as the Linux kernel allows on physical machines.
-
-This change introduced some failures for applications with errors like
-- accesing bytes above the brk heap address on the same page,
-- freeing memory below the initial brk address,
-and introduced a behaviour which isn't done by the kernel (e.g. zeroing
-memory above brk).
-
-This patch series fixes those issues and has been tested with existing
-programs (e.g. upx).
-
-Additionally one patch fixes running static armhf executables (e.g. fstype=
-)
-which was broken since qemu-8.0.
-
-Changes in v2:
-- dropped patch to revert d28b3c90cfad ("linux-user: Make sure initial brk=
-(0)
-  is page-aligned")
-- rephrased some commit messages
-- fixed Cc email addresses, added new ones
-- added R-b tags
-
-Helge
-
-=2D---------------------------------------------------------------
-
-Helge Deller (5):
-  linux-user: Fix qemu brk() to not zero bytes on current page
-  linux-user: Prohibit brk() to to shrink below initial heap address
-  linux-user: Fix signed math overflow in brk() syscall
-  linux-user: Fix strace output for old_mmap
-  linux-user: Fix qemu-arm to run static armhf binaries
-
- linux-user/elfload.c |  7 +++++++
- linux-user/strace.c  | 49 ++++++++++++++++++++++++++++++++++++++++----
- linux-user/syscall.c | 23 +++++++++++++--------
- 3 files changed, 66 insertions(+), 13 deletions(-)
-
+         target_brk =3D brk_val;
+         brk_page =3D new_host_brk_page;
 =2D-
 2.41.0
 
