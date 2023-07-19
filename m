@@ -2,104 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C97175952E
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 14:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC7475953D
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 14:37:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM6KN-0005is-CP; Wed, 19 Jul 2023 08:30:47 -0400
+	id 1qM6PZ-00085V-63; Wed, 19 Jul 2023 08:36:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qM6KB-0005gV-G8; Wed, 19 Jul 2023 08:30:35 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qM6K5-0004VX-Uw; Wed, 19 Jul 2023 08:30:33 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36JC8xIb019566; Wed, 19 Jul 2023 12:30:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=vaVQSOXN6VLR1MjHv8EYevnK0jBbur+ueDu1DIVZ0Kg=;
- b=jTRU6yVWuakKUktTgj92Rx4cA9zX6WVcrb1RQnOTyizEsaCIuxsQflHSur/hT25l8iEs
- dmWWHJZ2bJkvedfnDSd9LVv7xFGVk7mPYm8o5dObjNlRll1BbToFUtKEBidkOsWbPP2N
- io2/nJI3CX3Y1x/pP3lyd+tzhPrCsgf0XeXvh9ARJ+44ND2hM3sTtUFKJxRtl771p5na
- K7HXsMIQZvnrps2xfWteckeOCImMrwoKVevJr3x01iCo4fI0yrtK4iJKbvhZqlKfJ+ch
- dJMh8mEAajpr1S6QZFjGmYnPEPIyD02kay0ZkokpkV4p1VR0Z03Y3r6YkrSkIkgGcn8y dA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxesh1med-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 12:30:27 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36JC9NLE023108;
- Wed, 19 Jul 2023 12:30:26 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxesh1me1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 12:30:26 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36J8O7LA003362; Wed, 19 Jul 2023 12:30:25 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv65xhm9v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 12:30:25 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
- [10.20.54.106])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36JCUN2h26018406
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jul 2023 12:30:23 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7795A2004B;
- Wed, 19 Jul 2023 12:30:23 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3F87520040;
- Wed, 19 Jul 2023 12:30:23 +0000 (GMT)
-Received: from [9.155.200.166] (unknown [9.155.200.166])
- by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 19 Jul 2023 12:30:23 +0000 (GMT)
-Message-ID: <ddf29fdedb5dbbe10a0204ed0d3714315e33174d.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 06/14] tcg/{i386, s390x}: Add earlyclobber to the
- op_add2's first output
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Richard
- Henderson <richard.henderson@linaro.org>, David Hildenbrand
- <david@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Date: Wed, 19 Jul 2023 14:30:23 +0200
-In-Reply-To: <61be191f-c1b1-cfbc-d50a-1ee9cdd7d667@linaro.org>
-References: <20230719094620.363206-1-iii@linux.ibm.com>
- <20230719094620.363206-7-iii@linux.ibm.com>
- <61be191f-c1b1-cfbc-d50a-1ee9cdd7d667@linaro.org>
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qM6PW-00085L-KQ
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:36:06 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qM6PU-0000iA-9f
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:36:06 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2b71ae5fa2fso102160741fa.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 05:36:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1689770162; x=1692362162;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HhO0MwuFVt6bGt/ZGk+Vd46SBoS4IeTqL4JU5yzxfEw=;
+ b=qyRXNHSd8j32GYRZfjP4LBGNMf2objdZJmbL7gV4stDAy0l+QhIwOTrCdlusEDxitC
+ BRUUGugK6CPwgatowIH681l1BdthaBHSMkxlM0lk4fjzv7amV+itthGj+dpQxBMo6/+V
+ rtsBz5iYe2/2al+bKFc+47K0hzJ1iEVFxuqvAUMqYOlVYrgMeKK3y7bpJ4Y+XPxAlmF0
+ 6IhG9KyCUBm79HeZDtQ1dGu0Q8SFHYKiT/fSqqHXU27Q8Q5otNubZFj3It8Tlduf1eYd
+ 2yBg7Hxmj8femtuamfbVgbJswxUpkReQGT/AOc0EwiQqcOEYGrEj1CEtwmwaPSr4jpYU
+ xdzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689770162; x=1692362162;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=HhO0MwuFVt6bGt/ZGk+Vd46SBoS4IeTqL4JU5yzxfEw=;
+ b=V3P1aMIEr9IUFEmiZIO1Pbr1uJz7eaLSjpiYT/B1EtXMkdhgTCg2qDKZrwtl2a/1No
+ zU1q5nV/0VmokAylDDk6pS3Vt+Wrv/49tiODRrKUUdckKfyddO00yrDL6q9twfg+VAc+
+ GlcCZ9hGCjcNgLDDSBogM5qLvPpjIYbRSI/gSagCIEBMy6rEKbQIXdD7+rrIUg81NHTI
+ EeF6I5fOG34GydY1BxmyTtfnuyj6mcMADjP30Yl5JCKnVVtLeo0IUL0XvhMrIWtF543A
+ YewLYJUX1C1/guxbdbmK7wopys5BVQm2jBV2mqBihP1IAB+1N+g6cMOZXMUQ3SD3e8RU
+ dkqw==
+X-Gm-Message-State: ABy/qLayqPx2JCkj0nh2nxlu+YcqLiLnyFHMajONXJ5cIi//Xge7Exlr
+ /3/taWoCJt+/HyhlzBmNhMuGzos9yXeaHRWp0bk=
+X-Google-Smtp-Source: APBJJlEHj01JOyuBosNerxFXEzkQmwlqZcfInMQF5QbkcL8MyRg99h+zIi22iBbc8uLKUxuTksID0Krxs09d0mZNgjM=
+X-Received: by 2002:a05:651c:94:b0:2b9:5d2e:7f9 with SMTP id
+ 20-20020a05651c009400b002b95d2e07f9mr920145ljq.29.1689770161779; Wed, 19 Jul
+ 2023 05:36:01 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1689748694.git.yin31149@gmail.com>
+ <20230719045858-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20230719045858-mutt-send-email-mst@kernel.org>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Wed, 19 Jul 2023 20:35:50 +0800
+Message-ID: <CAKrof1Nu+Y26=ubQKNmjdSaHTUM7Q5HRwwN_BqG4mZTsAY=CiA@mail.gmail.com>
+Subject: Re: [PATCH v3 0/8] vdpa: Send all CVQ state load commands in parallel
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: jasowang@redhat.com, eperezma@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: d6Nb2X5bBpD3LpY_3SumL3saPx4T1OPz
-X-Proofpoint-GUID: wzhE5gfUB1oH4noLZ8eAv8mpMwCXC_xR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-19_08,2023-07-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0
- lowpriorityscore=0 priorityscore=1501 mlxlogscore=999 clxscore=1015
- malwarescore=0 spamscore=0 impostorscore=0 suspectscore=0 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307190108
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=yin31149@gmail.com; helo=mail-lj1-x22f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,90 +89,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 2023-07-19 at 14:08 +0200, Philippe Mathieu-Daud=C3=A9 wrote:
-> Hi Ilya,
->=20
-> On 19/7/23 11:44, Ilya Leoshkevich wrote:
-> > i386 and s390x implementations of op_add2 require an earlyclobber,
-> > which is currently missing. This breaks VCKSM in s390x guests.
-> > E.g., on
-> > x86_64 the following op:
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0 add2_i32 tmp2,tmp3,tmp2,tmp3,tmp3,tmp2=C2=A0=
-=C2=A0 dead: 0 2 3 4 5=C2=A0
-> > pref=3Dnone,0xffff
-> >=20
-> > is translated to:
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0 addl=C2=A0=C2=A0=C2=A0=C2=A0 %ebx, %r12d
-> > =C2=A0=C2=A0=C2=A0=C2=A0 adcl=C2=A0=C2=A0=C2=A0=C2=A0 %r12d, %ebx
-> >=20
-> > Introduce a new C_N1_O1_I4 constraint, and make sure that
-> > earlyclobber
-> > of aliased outputs is honored.
-> >=20
-> > Cc: qemu-stable@nongnu.org
-> > Fixes: 82790a870992 ("tcg: Add markup for output requires new
-> > register")
-> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> > ---
-> > =C2=A0 tcg/i386/tcg-target-con-set.h=C2=A0 | 2 +-
-> > =C2=A0 tcg/i386/tcg-target.c.inc=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
-> > =C2=A0 tcg/s390x/tcg-target-con-set.h | 5 ++---
-> > =C2=A0 tcg/s390x/tcg-target.c.inc=C2=A0=C2=A0=C2=A0=C2=A0 | 4 ++--
-> > =C2=A0 tcg/tcg.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
-8 +++++++-
-> > =C2=A0 5 files changed, 13 insertions(+), 8 deletions(-)
->=20
->=20
-> > diff --git a/tcg/tcg.c b/tcg/tcg.c
-> > index 652e8ea6b93..ddfe9a96cb7 100644
-> > --- a/tcg/tcg.c
-> > +++ b/tcg/tcg.c
-> > @@ -648,6 +648,7 @@ static void tcg_out_movext3(TCGContext *s,
-> > const TCGMovExtend *i1,
-> > =C2=A0 #define C_O2_I2(O1, O2, I1, I2)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 C_PFX4(c_o2_i2_, O1, O2,
-> > I1, I2),
-> > =C2=A0 #define C_O2_I3(O1, O2, I1, I2, I3)=C2=A0=C2=A0=C2=A0=C2=A0 C_PF=
-X5(c_o2_i3_, O1, O2,
-> > I1, I2, I3),
-> > =C2=A0 #define C_O2_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_o2_i4_, O1, O2,
-> > I1, I2, I3, I4),
-> > +#define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_n1_o1_i4_, O1,
-> > O2, I1, I2, I3, I4),
->=20
-> No need for O2. Also can you place it earlier just after C_N1_I2?
+=E5=9C=A8 2023/7/19 17:11, Michael S. Tsirkin =E5=86=99=E9=81=93:
+> On Wed, Jul 19, 2023 at 03:53:45PM +0800, Hawkins Jiawei wrote:
+>> This patchset allows QEMU to delay polling and checking the device
+>> used buffer until either the SVQ is full or control commands shadow
+>> buffers are full, instead of polling and checking immediately after
+>> sending each SVQ control command, so that QEMU can send all the SVQ
+>> control commands in parallel, which have better performance improvement.
+>>
+>> I use vp_vdpa device to simulate vdpa device, and create 4094 VLANS in
+>> guest to build a test environment for sending multiple CVQ state load
+>> commands. This patch series can improve latency from 10023 us to
+>> 8697 us for about 4099 CVQ state load commands, about 0.32 us per comman=
+d.
+>
+> Looks like a tiny improvement.
+> At the same time we have O(n^2) behaviour with memory mappings.
 
-Shouldn't it still be a 6-argument constraint?
-INDEX_op_add2_i32 and friends take 6 arguments after all.
+Hi Michael,
 
-> -- >8 --
-> @@ -643,6 +643,7 @@ static void tcg_out_movext3(TCGContext *s, const=20
-> TCGMovExtend *i1,
-> =C2=A0 #define C_O1_I4(O1, I1, I2, I3, I4)=C2=A0=C2=A0=C2=A0=C2=A0 C_PFX5=
-(c_o1_i4_, O1, I1,
-> I2,=20
-> I3, I4),
->=20
-> =C2=A0 #define C_N1_I2(O1, I1, I2)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 C_PFX3(c_n1_i2_, O1, I1,
-> I2),
-> +#define C_N1_O1_I4(O1, I1, I2, I3, I4)=C2=A0 C_PFX5(c_n1_o1_i4_, O1, I1,
-> I2,=20
-> I3, I4),
->=20
-> =C2=A0 #define C_O2_I1(O1, O2, I1)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 C_PFX3(c_o2_i1_, O1, O2,
-> I1),
-> =C2=A0 #define C_O2_I2(O1, O2, I1, I2)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 C_PFX4(c_o2_i2_, O1, O2,
-> I1, I2),
-> ---
->=20
-> Thanks,
->=20
-> Phil.
+Thanks for your review.
 
+I wonder why you say "we have O(n^2) behaviour on memory mappings" here?
+
+ From my understanding, QEMU maps two page-size buffers as control
+commands shadow buffers at device startup. These buffers then are used
+to cache SVQ control commands, where QEMU fills them with multiple SVQ cont=
+rol
+commands bytes, flushes them when SVQ descriptors are full or these
+control commands shadow buffers reach their capacity.
+
+QEMU repeats this process until all CVQ state load commands have been
+sent in loading.
+
+In this loading process, only control commands shadow buffers
+translation should be relative to memory mappings, which should be
+O(log n) behaviour to my understanding(Please correct me if I am wrong).
+
+> Not saying we must not do this but I think it's worth
+> checking where the bottleneck is. My guess would be
+> vp_vdpa is not doing things in parallel. Want to try fixing that
+
+As for "vp_vdpa is not doing things in parallel.", do you mean
+the vp_vdpa device cannot process QEMU's SVQ control commands
+in parallel?
+
+In this situation, I will try to use real vdpa hardware to
+test the patch series performance.
+
+> to see how far it can be pushed?
+
+Currently, I am involved in the "Add virtio-net Control Virtqueue state
+restore support" project in Google Summer of Code now. Because I am
+uncertain about the time it will take to fix that problem in the vp_vdpa
+device, I prefer to complete the gsoc project first.
+
+Thanks!
+
+
+>
+>
+>> Note that this patch should be based on
+>> patch "Vhost-vdpa Shadow Virtqueue VLAN support" at [1].
+>>
+>> [1]. https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg03719.html
+>>
+>> TestStep
+>> =3D=3D=3D=3D=3D=3D=3D=3D
+>> 1. regression testing using vp-vdpa device
+>>    - For L0 guest, boot QEMU with two virtio-net-pci net device with
+>> `ctrl_vq`, `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
+>>        -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Doff,
+>> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
+>> indirect_desc=3Doff,queue_reset=3Doff,ctrl_rx=3Don,ctrl_rx_extra=3Don,..=
+.
+>>
+>>    - For L1 guest, apply the patch series and compile the source code,
+>> start QEMU with two vdpa device with svq mode on, enable the `ctrl_vq`,
+>> `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
+>>        -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
+>>        -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3Don,
+>> ctrl_rx=3Don,ctrl_rx_extra=3Don...
+>>
+>>    - For L2 source guest, run the following bash command:
+>> ```bash
+>> #!/bin/sh
+>>
+>> for idx1 in {0..9}
+>> do
+>>    for idx2 in {0..9}
+>>    do
+>>      for idx3 in {0..6}
+>>      do
+>>        ip link add macvlan$idx1$idx2$idx3 link eth0
+>> address 4a:30:10:19:$idx1$idx2:1$idx3 type macvlan mode bridge
+>>        ip link set macvlan$idx1$idx2$idx3 up
+>>      done
+>>    done
+>> done
+>> ```
+>>    - Execute the live migration in L2 source monitor
+>>
+>>    - Result
+>>      * with this series, QEMU should not trigger any error or warning.
+>>
+>>
+>>
+>> 2. perf using vp-vdpa device
+>>    - For L0 guest, boot QEMU with two virtio-net-pci net device with
+>> `ctrl_vq`, `ctrl_vlan` features on, command line like:
+>>        -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Doff,
+>> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
+>> indirect_desc=3Doff,queue_reset=3Doff,ctrl_vlan=3Don,...
+>>
+>>    - For L1 guest, apply the patch series, then apply an addtional
+>> patch to record the load time in microseconds as following:
+>> ```diff
+>> diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+>> index 6b958d6363..501b510fd2 100644
+>> --- a/hw/net/vhost_net.c
+>> +++ b/hw/net/vhost_net.c
+>> @@ -295,7 +295,10 @@ static int vhost_net_start_one(struct vhost_net *ne=
+t,
+>>       }
+>>
+>>       if (net->nc->info->load) {
+>> +        int64_t start_us =3D g_get_monotonic_time();
+>>           r =3D net->nc->info->load(net->nc);
+>> +        error_report("vhost_vdpa_net_load() =3D %ld us",
+>> +                     g_get_monotonic_time() - start_us);
+>>           if (r < 0) {
+>>               goto fail;
+>>           }
+>> ```
+>>
+>>    - For L1 guest, compile the code, and start QEMU with two vdpa device
+>> with svq mode on, enable the `ctrl_vq`, `ctrl_vlan` features on,
+>> command line like:
+>>        -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
+>>        -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3Don,
+>> ctrl_vlan=3Don...
+>>
+>>    - For L2 source guest, run the following bash command:
+>> ```bash
+>> #!/bin/sh
+>>
+>> for idx in {1..4094}
+>> do
+>>    ip link add link eth0 name vlan$idx type vlan id $idx
+>> done
+>> ```
+>>
+>>    - wait for some time, then execute the live migration in L2 source mo=
+nitor
+>>
+>>    - Result
+>>      * with this series, QEMU should not trigger any warning
+>> or error except something like "vhost_vdpa_net_load() =3D 8697 us"
+>>      * without this series, QEMU should not trigger any warning
+>> or error except something like "vhost_vdpa_net_load() =3D 10023 us"
+>>
+>> ChangeLog
+>> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> v3:
+>>    - refactor vhost_svq_poll() to accept cmds_in_flight
+>> suggested by Jason and Eugenio
+>>    - refactor vhost_vdpa_net_cvq_add() to make control commands buffers
+>> is not tied to `s->cvq_cmd_out_buffer` and `s->status`, so we can reuse
+>> it suggested by Eugenio
+>>    - poll and check when SVQ is full or control commands shadow buffers =
+is
+>> full
+>>
+>> v2: https://lore.kernel.org/all/cover.1683371965.git.yin31149@gmail.com/
+>>    - recover accidentally deleted rows
+>>    - remove extra newline
+>>    - refactor `need_poll_len` to `cmds_in_flight`
+>>    - return -EINVAL when vhost_svq_poll() return 0 or check
+>> on buffers written by device fails
+>>    - change the type of `in_cursor`, and refactor the
+>> code for updating cursor
+>>    - return directly when vhost_vdpa_net_load_{mac,mq}()
+>> returns a failure in vhost_vdpa_net_load()
+>>
+>> v1: https://lore.kernel.org/all/cover.1681732982.git.yin31149@gmail.com/
+>>
+>> Hawkins Jiawei (8):
+>>    vhost: Add argument to vhost_svq_poll()
+>>    vdpa: Use iovec for vhost_vdpa_net_cvq_add()
+>>    vhost: Expose vhost_svq_available_slots()
+>>    vdpa: Avoid using vhost_vdpa_net_load_*() outside
+>>      vhost_vdpa_net_load()
+>>    vdpa: Check device ack in vhost_vdpa_net_load_rx_mode()
+>>    vdpa: Move vhost_svq_poll() to the caller of vhost_vdpa_net_cvq_add()
+>>    vdpa: Add cursors to vhost_vdpa_net_loadx()
+>>    vdpa: Send cvq state load commands in parallel
+>>
+>>   hw/virtio/vhost-shadow-virtqueue.c |  38 ++--
+>>   hw/virtio/vhost-shadow-virtqueue.h |   3 +-
+>>   net/vhost-vdpa.c                   | 354 ++++++++++++++++++-----------
+>>   3 files changed, 249 insertions(+), 146 deletions(-)
+>>
+>> --
+>> 2.25.1
+>
 
