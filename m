@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1375759208
+	by mail.lfdr.de (Postfix) with ESMTPS id D5AAD759209
 	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 11:50:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM3ly-0003IT-Ix; Wed, 19 Jul 2023 05:47:06 -0400
+	id 1qM3lx-0003AH-1q; Wed, 19 Jul 2023 05:47:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qM3lS-0002eJ-RK; Wed, 19 Jul 2023 05:46:36 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1qM3lR-0002dv-3c; Wed, 19 Jul 2023 05:46:34 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qM3lQ-0002tW-D1; Wed, 19 Jul 2023 05:46:34 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ id 1qM3lP-0002sx-BN; Wed, 19 Jul 2023 05:46:32 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36J9bVQR004156; Wed, 19 Jul 2023 09:46:29 GMT
+ 36J9c8X2008388; Wed, 19 Jul 2023 09:46:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=wuewFn9+mjftNlQVoEU9jSk2WVLqt3pAE8L0Y9tE4GA=;
- b=D4SUBlYY67AipQtoI+oQjMcIDF/Zt9/44TiGnZP7l3oiRUmOHCdsFsegdbctqJJzKIKM
- VzZgsaYMPniV2eUWG+1dp8ipXhiONjr1FwKw0wZANGUqmswM5pg5RCCRfuqmEodt9dOW
- Dv1Rwq+XO+Tt4BKwISq24joFjHeo9hZHWs7/2LHLIrzqVjP+hUm/EipN6MzwUEjDMUP1
- tjhLuEia9tR+FzT1Exsxn5kT/vfV1KDR1jgt8ghFYugLO8z8mzJ3s6S/CUJACpxkIrq0
- 72jjste7/Kq+HyMwXoPj8F71ma+dwdWIf4KrwpzSHPtU5ze78AU35l8tehJoH8/ri1Oa aw== 
+ bh=2aqWHsUW9csB6lutHv/SGm+KWj8k2t1oqI4jbWggXKE=;
+ b=UCw92kZbIrZg2SSpgaAklBS9r+63/x8z+ALPd5xRcFxgUEk+o61G8o44p/rQ1M8n0EGg
+ VjMIZkPCewZvZMjk9MpNr/O5/2eZpCDWTSNAylEuOWDg+4eiupL+/IF8AYEg8qxlfq/W
+ UkyVbBWS7otzemQRog4hVPADuSw2Jo/i/PNdbL6RnctAmxZBJt5hPHUt7Gr5r03OdAo5
+ ygjj7mdR5z+wfNn0lKRQ4VSyaV4hChnApMhNejn25eseIM80ApLrGgst6zcvNI7EwmsH
+ JDKD7l8fwooUIX1p+mYmR2Cr0OuaWVa+187MyChWq02sp6UQkjBehC1oq9IifZb26NiN nA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxcs41jbt-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxc8e1syc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 09:46:28 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36J9bf9I004648;
+ Wed, 19 Jul 2023 09:46:29 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36J9degF019207;
  Wed, 19 Jul 2023 09:46:28 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxcs41jbc-1
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxc8e1sxv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 19 Jul 2023 09:46:28 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36J90o7I004149; Wed, 19 Jul 2023 09:46:27 GMT
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36J8O7EB003394; Wed, 19 Jul 2023 09:46:27 GMT
 Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv8g11s1q-1
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv65xh2qc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 19 Jul 2023 09:46:27 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
  by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36J9kPId40632744
+ 36J9kPad43778762
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Wed, 19 Jul 2023 09:46:25 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A0C8820040;
+ by IMSVA (Postfix) with ESMTP id C954D20040;
  Wed, 19 Jul 2023 09:46:25 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8030C2004B;
+ by IMSVA (Postfix) with ESMTP id A7B9520049;
  Wed, 19 Jul 2023 09:46:25 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.200.166])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -68,28 +68,28 @@ To: Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 11/14] tests/tcg/s390x: Test ICM
-Date: Wed, 19 Jul 2023 11:44:21 +0200
-Message-ID: <20230719094620.363206-12-iii@linux.ibm.com>
+Subject: [PATCH v2 12/14] tests/tcg/s390x: Test MC
+Date: Wed, 19 Jul 2023 11:44:22 +0200
+Message-ID: <20230719094620.363206-13-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230719094620.363206-1-iii@linux.ibm.com>
 References: <20230719094620.363206-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qQ4GYiAMSfTHOJwx47jj6B_M7Q9JRFe_
-X-Proofpoint-GUID: X3B5TcvTwOR2W3j3RtNzU6u2oUeGjsVB
+X-Proofpoint-GUID: 8kGqZ3ZUAWZFdFTCk00K1-6NJR-ayZgY
+X-Proofpoint-ORIG-GUID: xD8Vw86yKzhI4CKz8NN-RToJocsIb_ok
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-19_06,2023-07-18_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0
- bulkscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=809
- impostorscore=0 mlxscore=0 suspectscore=0 priorityscore=1501
- malwarescore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2306200000 definitions=main-2307190087
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ mlxlogscore=822
+ malwarescore=0 phishscore=0 priorityscore=1501 clxscore=1015
+ suspectscore=0 adultscore=0 impostorscore=0 mlxscore=0 lowpriorityscore=0
+ bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307190087
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -117,60 +117,84 @@ Add a small test to prevent regressions.
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
  tests/tcg/s390x/Makefile.softmmu-target |  1 +
- tests/tcg/s390x/icm.S                   | 32 +++++++++++++++++++++++++
- 2 files changed, 33 insertions(+)
- create mode 100644 tests/tcg/s390x/icm.S
+ tests/tcg/s390x/mc.S                    | 56 +++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+)
+ create mode 100644 tests/tcg/s390x/mc.S
 
 diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
-index 062d8e368aa..58684d7da71 100644
+index 58684d7da71..145e0bfde16 100644
 --- a/tests/tcg/s390x/Makefile.softmmu-target
 +++ b/tests/tcg/s390x/Makefile.softmmu-target
-@@ -19,6 +19,7 @@ ASM_TESTS =                                                                    \
-     cksm                                                                       \
-     clm                                                                        \
-     exrl-ssm-early                                                             \
-+    icm                                                                        \
-     sam                                                                        \
+@@ -24,6 +24,7 @@ ASM_TESTS =                                                                    \
      lpsw                                                                       \
      lpswe-early                                                                \
-diff --git a/tests/tcg/s390x/icm.S b/tests/tcg/s390x/icm.S
+     lra                                                                        \
++    mc                                                                         \
+     ssm-early                                                                  \
+     stosm-early                                                                \
+     unaligned-lowcore
+diff --git a/tests/tcg/s390x/mc.S b/tests/tcg/s390x/mc.S
 new file mode 100644
-index 00000000000..d24d1f52fb8
+index 00000000000..e7466bb4b57
 --- /dev/null
-+++ b/tests/tcg/s390x/icm.S
-@@ -0,0 +1,32 @@
++++ b/tests/tcg/s390x/mc.S
+@@ -0,0 +1,56 @@
++    .org 0x8d
++ilc:
 +    .org 0x8e
 +program_interruption_code:
-+    .org 0x1d0                         /* program new PSW */
-+    .quad 0,pgm
-+    .org 0x200                         /* lowcore padding */
++    .org 0x94
++monitor_class:
++    .org 0xb0
++monitor_code:
++    .org 0x150
++program_old_psw:
++    .org 0x1d0                              /* program new PSW */
++    .quad 0x180000000,pgm                   /* 64-bit mode */
++    .org 0x200                              /* lowcore padding */
 +    .globl _start
 +_start:
-+    lgrl %r0,op1
-+    icm %r0,10,op2
-+    cg %r0,exp
-+    jne failure
-+    lgrl %r1,bad_addr
-+    icm %r0,0,0(%r1)
-+failure:
-+    lpswe failure_psw
++    stctg %c8,%c8,c8                        /* enable only monitor class 1 */
++    mvhhi c8+6,0x4000
++    lctlg %c8,%c8,c8
++mc_nop:
++    mc 123,0
++mc_monitor_event:
++    mc 321,1
++    j failure
++mc_specification:
++    mc 333,16
++    j failure
 +pgm:
-+    chhsi program_interruption_code,5  /* addressing exception? */
++    lgrl %r0,program_old_psw+8              /* ilc adjustment */
++    llgc %r1,ilc
++    sgr %r0,%r1
++    larl %r1,mc_monitor_event               /* dispatch based on old PSW */
++    cgrje %r0,%r1,pgm_monitor_event
++    larl %r1,mc_specification
++    cgrje %r0,%r1,pgm_specification
++    j failure
++pgm_monitor_event:
++    chhsi program_interruption_code,0x40    /* monitor event? */
++    jne failure
++    chhsi monitor_class,1                   /* class from mc_monitor_event? */
++    jne failure
++    cghsi monitor_code,321                  /* code from mc_monitor_event? */
++    jne failure
++    j mc_specification                      /* next test */
++pgm_specification:
++    chhsi program_interruption_code,6       /* specification exception? */
 +    jne failure
 +    lpswe success_psw
++failure:
++    lpswe failure_psw
 +    .align 8
-+op1:
-+    .quad 0x1234567887654321
-+op2:
-+    .quad 0x0011223344556677
-+exp:
-+    .quad 0x1234567800651121
-+bad_addr:
-+    .quad 0xffffffff00000000
++c8:
++    .quad 0
 +success_psw:
-+    .quad 0x2000000000000,0xfff        /* see is_special_wait_psw() */
++    .quad 0x2000000000000,0xfff             /* see is_special_wait_psw() */
 +failure_psw:
-+    .quad 0x2000000000000,0            /* disabled wait */
++    .quad 0x2000000000000,0                 /* disabled wait */
 -- 
 2.41.0
 
