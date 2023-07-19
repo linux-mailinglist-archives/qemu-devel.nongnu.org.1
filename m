@@ -2,85 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2D27594D4
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 14:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C97175952E
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 14:32:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM61n-0001lb-EL; Wed, 19 Jul 2023 08:11:35 -0400
+	id 1qM6KN-0005is-CP; Wed, 19 Jul 2023 08:30:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qM61a-0001ik-Dz
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:11:26 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qM61Y-0005wt-FU
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:11:22 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-3fbc12181b6so70178305e9.2
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 05:11:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689768678; x=1692360678;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4eG5HrjOwOwpEoPTM3ItrXqX3vvF/6gEiV2pCreO6zE=;
- b=UGOtkKp56HEI7fGNV2ZflZdSAUB4jcTStv/fw+relF1L5rPKP/2LQpt0HoZrTV8t98
- pXwWKhSveBfZmTaNkfUrM0liJCYYBMf2cNKNU0FENbO3UsESMGQz6GKlSytEEY2+VsNI
- tSMPmXaPAdFgpW9IlodNpGntYcTh1XSQq/1WZY2dYPkUSWlck5HncTN5v9aCV7XRzK2Q
- Dj/obj+5D/7/t5z7pRANztHaQAiBA4i5kq1eYqdFoQIvwZwLgqVDhygzRXQp3r5s4Dz1
- kCt7aTTetIXTtofXofaZeBUF9uRR4cQKjSfk3NKOowMG0YpRgsbqJWl9jp3wk4w+GlMO
- tkDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689768678; x=1692360678;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4eG5HrjOwOwpEoPTM3ItrXqX3vvF/6gEiV2pCreO6zE=;
- b=SeGm3O6hcvtBLvF1vfHEEkpPfu4uJY8/qOdjIFSrbfL7sODpQFagiK1tl79Sxq+KbG
- t/wFoLCsGiB0bPpCvatnqHDAWZljh7O250ZG3fX21D3UnYcduj3t0EvI7pjhbWC33jpe
- G8OETBLexkHcnwd4oGr7Q1AWHC8kwyLbVnbWr0rZbnvdFSKCV2b6xK4OHXPPDjKBQZw+
- 3R6MZ4EYtMdBxAOw33fNE+9Iqx3gaesCdRvC/PhgwH1ggf60/lHizK+birT+kNy92qlN
- +5GuqJwUqeOcoxaSxvdZUiLVDasOhu9tjbdhTHEG8rEqjkObVPrlgbQFiYSQ62/90gqy
- 8RSA==
-X-Gm-Message-State: ABy/qLa27unGkIBUu+VqmQDzJueIdTiMSg40HhAq0PX40fOeDelXbR63
- 2yoEABeTkIpHmHLxriPl96Mvog==
-X-Google-Smtp-Source: APBJJlH6qqmtLzaJ/58iCj/hvyp4udR7vmwycXMzwN96yz/1cjE6TbhmC7cfkJx06nvx+epDeN8YHg==
-X-Received: by 2002:a5d:6ace:0:b0:315:8a86:cf7f with SMTP id
- u14-20020a5d6ace000000b003158a86cf7fmr14247646wrw.70.1689768678323; 
- Wed, 19 Jul 2023 05:11:18 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.201.220])
- by smtp.gmail.com with ESMTPSA id
- t14-20020a5d460e000000b0030fb4b55c13sm5125518wrq.96.2023.07.19.05.11.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Jul 2023 05:11:17 -0700 (PDT)
-Message-ID: <d31d0747-82e4-9a29-6a55-c859d2c19f42@linaro.org>
-Date: Wed, 19 Jul 2023 14:11:15 +0200
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qM6KB-0005gV-G8; Wed, 19 Jul 2023 08:30:35 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qM6K5-0004VX-Uw; Wed, 19 Jul 2023 08:30:33 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36JC8xIb019566; Wed, 19 Jul 2023 12:30:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=vaVQSOXN6VLR1MjHv8EYevnK0jBbur+ueDu1DIVZ0Kg=;
+ b=jTRU6yVWuakKUktTgj92Rx4cA9zX6WVcrb1RQnOTyizEsaCIuxsQflHSur/hT25l8iEs
+ dmWWHJZ2bJkvedfnDSd9LVv7xFGVk7mPYm8o5dObjNlRll1BbToFUtKEBidkOsWbPP2N
+ io2/nJI3CX3Y1x/pP3lyd+tzhPrCsgf0XeXvh9ARJ+44ND2hM3sTtUFKJxRtl771p5na
+ K7HXsMIQZvnrps2xfWteckeOCImMrwoKVevJr3x01iCo4fI0yrtK4iJKbvhZqlKfJ+ch
+ dJMh8mEAajpr1S6QZFjGmYnPEPIyD02kay0ZkokpkV4p1VR0Z03Y3r6YkrSkIkgGcn8y dA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxesh1med-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 Jul 2023 12:30:27 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36JC9NLE023108;
+ Wed, 19 Jul 2023 12:30:26 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxesh1me1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 Jul 2023 12:30:26 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36J8O7LA003362; Wed, 19 Jul 2023 12:30:25 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv65xhm9v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 Jul 2023 12:30:25 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36JCUN2h26018406
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 19 Jul 2023 12:30:23 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7795A2004B;
+ Wed, 19 Jul 2023 12:30:23 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3F87520040;
+ Wed, 19 Jul 2023 12:30:23 +0000 (GMT)
+Received: from [9.155.200.166] (unknown [9.155.200.166])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 19 Jul 2023 12:30:23 +0000 (GMT)
+Message-ID: <ddf29fdedb5dbbe10a0204ed0d3714315e33174d.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 06/14] tcg/{i386, s390x}: Add earlyclobber to the
+ op_add2's first output
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Richard
+ Henderson <richard.henderson@linaro.org>, David Hildenbrand
+ <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Date: Wed, 19 Jul 2023 14:30:23 +0200
+In-Reply-To: <61be191f-c1b1-cfbc-d50a-1ee9cdd7d667@linaro.org>
+References: <20230719094620.363206-1-iii@linux.ibm.com>
+ <20230719094620.363206-7-iii@linux.ibm.com>
+ <61be191f-c1b1-cfbc-d50a-1ee9cdd7d667@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH v3 8/8] hw/ide/ahci: fix broken SError handling
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, Niklas Cassel <nks@flawful.org>,
- John Snow <jsnow@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
-References: <20230609140844.202795-1-nks@flawful.org>
- <20230609140844.202795-9-nks@flawful.org>
- <e1966f41-5e65-7cd8-d558-46b11a0eb553@linaro.org>
- <fbf8507f-1475-c724-5fde-97d11fb7d61c@tls.msk.ru>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <fbf8507f-1475-c724-5fde-97d11fb7d61c@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: d6Nb2X5bBpD3LpY_3SumL3saPx4T1OPz
+X-Proofpoint-GUID: wzhE5gfUB1oH4noLZ8eAv8mpMwCXC_xR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-19_08,2023-07-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0
+ lowpriorityscore=0 priorityscore=1501 mlxlogscore=999 clxscore=1015
+ malwarescore=0 spamscore=0 impostorscore=0 suspectscore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307190108
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,35 +116,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/7/23 14:06, Michael Tokarev wrote:
-> 19.07.2023 14:59, Philippe Mathieu-Daudé wrote:
->> On 9/6/23 16:08, Niklas Cassel wrote:
->>> From: Niklas Cassel <niklas.cassel@wdc.com>
->>>
->>> When encountering an NCQ error, you should not write the NCQ tag to the
->>> SError register. This is completely wrong.
->>>
->>> The SError register has a clear definition, where each bit represents a
->>> different error, see PxSERR definition in AHCI 1.3.1.
->>>
->>> If we write a random value (like the NCQ tag) in SError, e.g. Linux will
->>> read SError, and will trigger arbitrary error handling depending on the
->>> NCQ tag that happened to be executing.
->>>
->>> In case of success, ncq_cb() will call ncq_finish().
->>> In case of error, ncq_cb() will call ncq_err() (which will clear
->>> ncq_tfs->used), and then call ncq_finish(), thus using ncq_tfs->used is
->>> sufficient to tell if finished should get set or not.
->>>
->>
->> Cc: qemu-stable@nongnu.org
->> Fixes: f6ad2e32f8 ("ahci: add ahci emulation")
-> 
-> If going this route, it feels like 7/8 "hw/ide/ahci: fix 
-> ahci_write_fis_sdb()"
-> should be there (-stable) too.
+On Wed, 2023-07-19 at 14:08 +0200, Philippe Mathieu-Daud=C3=A9 wrote:
+> Hi Ilya,
+>=20
+> On 19/7/23 11:44, Ilya Leoshkevich wrote:
+> > i386 and s390x implementations of op_add2 require an earlyclobber,
+> > which is currently missing. This breaks VCKSM in s390x guests.
+> > E.g., on
+> > x86_64 the following op:
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0 add2_i32 tmp2,tmp3,tmp2,tmp3,tmp3,tmp2=C2=A0=
+=C2=A0 dead: 0 2 3 4 5=C2=A0
+> > pref=3Dnone,0xffff
+> >=20
+> > is translated to:
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0 addl=C2=A0=C2=A0=C2=A0=C2=A0 %ebx, %r12d
+> > =C2=A0=C2=A0=C2=A0=C2=A0 adcl=C2=A0=C2=A0=C2=A0=C2=A0 %r12d, %ebx
+> >=20
+> > Introduce a new C_N1_O1_I4 constraint, and make sure that
+> > earlyclobber
+> > of aliased outputs is honored.
+> >=20
+> > Cc: qemu-stable@nongnu.org
+> > Fixes: 82790a870992 ("tcg: Add markup for output requires new
+> > register")
+> > Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> > ---
+> > =C2=A0 tcg/i386/tcg-target-con-set.h=C2=A0 | 2 +-
+> > =C2=A0 tcg/i386/tcg-target.c.inc=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
+> > =C2=A0 tcg/s390x/tcg-target-con-set.h | 5 ++---
+> > =C2=A0 tcg/s390x/tcg-target.c.inc=C2=A0=C2=A0=C2=A0=C2=A0 | 4 ++--
+> > =C2=A0 tcg/tcg.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
+8 +++++++-
+> > =C2=A0 5 files changed, 13 insertions(+), 8 deletions(-)
+>=20
+>=20
+> > diff --git a/tcg/tcg.c b/tcg/tcg.c
+> > index 652e8ea6b93..ddfe9a96cb7 100644
+> > --- a/tcg/tcg.c
+> > +++ b/tcg/tcg.c
+> > @@ -648,6 +648,7 @@ static void tcg_out_movext3(TCGContext *s,
+> > const TCGMovExtend *i1,
+> > =C2=A0 #define C_O2_I2(O1, O2, I1, I2)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 C_PFX4(c_o2_i2_, O1, O2,
+> > I1, I2),
+> > =C2=A0 #define C_O2_I3(O1, O2, I1, I2, I3)=C2=A0=C2=A0=C2=A0=C2=A0 C_PF=
+X5(c_o2_i3_, O1, O2,
+> > I1, I2, I3),
+> > =C2=A0 #define C_O2_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_o2_i4_, O1, O2,
+> > I1, I2, I3, I4),
+> > +#define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_n1_o1_i4_, O1,
+> > O2, I1, I2, I3, I4),
+>=20
+> No need for O2. Also can you place it earlier just after C_N1_I2?
 
-Certainly; I realized this deserve to be in stable at this final
-patch :/
+Shouldn't it still be a 6-argument constraint?
+INDEX_op_add2_i32 and friends take 6 arguments after all.
+
+> -- >8 --
+> @@ -643,6 +643,7 @@ static void tcg_out_movext3(TCGContext *s, const=20
+> TCGMovExtend *i1,
+> =C2=A0 #define C_O1_I4(O1, I1, I2, I3, I4)=C2=A0=C2=A0=C2=A0=C2=A0 C_PFX5=
+(c_o1_i4_, O1, I1,
+> I2,=20
+> I3, I4),
+>=20
+> =C2=A0 #define C_N1_I2(O1, I1, I2)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 C_PFX3(c_n1_i2_, O1, I1,
+> I2),
+> +#define C_N1_O1_I4(O1, I1, I2, I3, I4)=C2=A0 C_PFX5(c_n1_o1_i4_, O1, I1,
+> I2,=20
+> I3, I4),
+>=20
+> =C2=A0 #define C_O2_I1(O1, O2, I1)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 C_PFX3(c_o2_i1_, O1, O2,
+> I1),
+> =C2=A0 #define C_O2_I2(O1, O2, I1, I2)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 C_PFX4(c_o2_i2_, O1, O2,
+> I1, I2),
+> ---
+>=20
+> Thanks,
+>=20
+> Phil.
 
 
