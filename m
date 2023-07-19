@@ -2,70 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247BE759A3C
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03324759A39
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:53:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM9Tx-00071x-TJ; Wed, 19 Jul 2023 11:52:53 -0400
+	id 1qM9Tw-00070P-Bx; Wed, 19 Jul 2023 11:52:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>)
- id 1qM9Tu-0006zu-Re; Wed, 19 Jul 2023 11:52:50 -0400
-Received: from mout.gmx.net ([212.227.15.19])
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qM9Tr-0006zK-5r
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:52:47 -0400
+Received: from mout.gmx.net ([212.227.15.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>)
- id 1qM9Ts-0006Pg-4s; Wed, 19 Jul 2023 11:52:50 -0400
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qM9Tp-0006P3-2N
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:52:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
  s=s31663417; t=1689781958; x=1690386758; i=deller@gmx.de;
- bh=QndR1JShYxuIGvq9fxtuUmSM0VG5DS7IN52I1fXIGAw=;
+ bh=GcJX0PwH05RXdjGqj9MYbykoFQSW3eaMaUjhr3sxux0=;
  h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=PDhuruxvCMI4wtWeqFx584ShHaLCzSfB9KGcwAdSOTrnxti6S7KphnAERJORfhInjpx7WCg
- JeTEzU3lEyg4QkvIwEv12qxTSNh0nCnrvGyKlbqh+zOSEh3GRjiutc6fEMim9EssfKjmJbQFC
- uF3zGjn/Yu5aSS5S8pp0zIAHyFDw5wI0MmS0shcbCQDywaNyN/md/dsKjEtUmV/FD+eDhGc1j
- ZwDxjdB38JlLcpgW7chLjizSQfzrHoySzWQdReDa3komXOhnH15kB16yaEJROLJiWEp7YqMvH
- j9tFxE/+LtQXMVZOMafn+ZArF1XUxKWCgGKWB5SKmU3r9hYUkt2g==
+ b=h2Ev3lR7zClEULiUowIBb2hHYJVVWGzvNMh13FKfNHFvRKlYzqe4+op5XykQXOL3hx7aVBQ
+ 5j2fIxAxWS1hKHFjWv+TV6/P1pWf++Qum/1gKSyDE6aLcqJNfI8t+fDWlrNtQhGql4ZTtxDee
+ cKjqCE2X4TE8gvlWTcEhd0PucP73lsef+hBmtUNt5+J8EhKsA0VjPWePUtMPeiTgCuQDArLgz
+ 0NJ3NplQ+c8a7ZKtmNLl1oL4IHPzCXcz0nvuwwaBHhko2rGZza21tp9UuGPOkwhbjrIhh56LU
+ lGDxVqX0fmQhjbWvumgRMubaz7YNILSxvLkfhv3PgeJIGFZl6nMw==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from p100.fritz.box ([94.134.145.157]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MulqD-1q5aAH04FH-00rtX3; Wed, 19
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N2V4P-1pvioL0w8N-013wkL; Wed, 19
  Jul 2023 17:52:38 +0200
 From: Helge Deller <deller@gmx.de>
 To: Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, Andreas Schwab <schwab@suse.de>,
  Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
- "Markus F.X.J. Oberhumer" <markus@oberhumer.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-stable@nongnu.org
-Subject: [PULL 3/5] linux-user: Fix signed math overflow in brk() syscall
-Date: Wed, 19 Jul 2023 17:52:33 +0200
-Message-ID: <20230719155235.244478-4-deller@gmx.de>
+	John Reiser <jreiser@BitWagon.com>
+Subject: [PULL 4/5] linux-user: Fix strace output for old_mmap
+Date: Wed, 19 Jul 2023 17:52:34 +0200
+Message-ID: <20230719155235.244478-5-deller@gmx.de>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230719155235.244478-1-deller@gmx.de>
 References: <20230719155235.244478-1-deller@gmx.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:K9yOMTZJBZEDnsKu1NePC5D43Rgn+8cvnQEPGDA1qDySEKSpsQy
- FUQDdqHmGy2nShdYhfniAfig+iZL9u0dos/nPIqQVH80Kb/IDw6jp66pgk/m4yNM52zPdUP
- 57k1BHvt9WYKJwK/4XnGRx47vfpdSO6BC51EOJCK67IM8GKYbUEsR0iDL6GLwbPUxt9jPaM
- YVD5M94w+5UFZf8ppHxZg==
-UI-OutboundReport: notjunk:1;M01:P0:vOP6zqKiwGU=;rthfAxYtLngh3PHj4zZUw+vuIKI
- FcPznh4oazHhxlWUlq7ArTwoGU3v07qaQSW+hNgZPcpYkqMJh6VSGv4/MNw/oHOM12RBFZJeO
- 7GShiCu2Xy0Y9738jkBuXlicNk0dLJ1YZ85oN7LbDfqwPOLgpkn3nAQh2/wLBMaPnLiIhg4Rw
- Ct3w98yA1XRx25lGXsxPsJ1gw1dAyzLUkVs5DclVOcw34+FP+dm4e6z3q1bVSvFfA6lFW+mjT
- uZAKRD0Pxt15lL34HvDdPxYmHrLUmbihM6m3EU+DJMc1lMxDhqNKW7SQc82LYgoptHuYN4S7e
- n2nb4Noh9BiqtOHJbK9GiXPrIaYnjEtl2nxp6Ouh9mZOGt6C2MSllrObzVlY+N41KQbKxCIxz
- u5YT5miOGMEhObiR4JEtHvW4UWxTWgnyapVTKQcpATDoF2nuksI7RpRT2eSK5M07TqH5P++BA
- jb2du38DF/VqS2HPHPOMQ4rK7QiY1obZUmuHoh7TRGpg+k9Do/qrLMHOXmEZIKxi/ZSHfhcrD
- AkPyMQE/jYLdz6ZkmcK4Ltq33a6lOUqNLgkMx2/UBEfaKLt/4gPkbNcEacI+WcltgLRkv1lks
- jDOpZeT24wNfcZR/mYXQHG4GQDWUHbU8D1W3tBDv95XS65xGdeYD79+DU97GjUOxmlhwxjdXt
- uEAJGKejiAbI+urLgCBRdYu2l3l70o0zMrMS5kqOjFHutXmcGOBlcF6LZ4MqehRUEiiEV6poF
- Pfpd0+0ax6rSv7few05wbcgWsBIWjd+Hk62XiaJbaAE2uyMtMbMHseSmW1euSeGY7GEcqYsGp
- 2AvR0ASd6H9ise+9u/c7U+KDSzns9YqJan4a6FaNjJ7uwjlWAjWFTR0iXoFV2GrDJPb6plXJk
- xnsKOOsa5zNk1wPYkp7MBST5XHclxu1ywn87SNCITlBUCnuYuuoFs8cTDPNd3p7T7MsWbpvRG
- KRjraqSP0K+lVaS33ZyuvvpmmIQ=
-Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
+X-Provags-ID: V03:K1:IjwP9qap1dfkmxXafXQiVDTU6A4wuDEgQGVHIsNr46Ol6CII3GR
+ NHujKO22hgF7NH59OlolTL1615+6MXmyDm/7FEjut79iF2yvwVVgyvyysv1fzB5ZCuqd8qm
+ 5lsr/fTV3ohDxQMzZFRdWyKnJwXiV3kUT7tCt9thDN4bn3doXNEcsReTLPy/Drza7dQMCW6
+ 77EKtU9+bW7zfzTDaHHpw==
+UI-OutboundReport: notjunk:1;M01:P0:w2N/4v1U7Ng=;9PeK4cJlWoftt8e91+EQ2Fm4vuI
+ 3vhBNaatb7pVNJjtTMJQn/lWnnxo0AfRKyT5DbyGEKaeo4J/gBL0NiA1vYoeI8T1nZi3rGpSr
+ 0Q4eMOMg6CMhzN/grhnWAH1Mz77AXe97vPeDQynxgDfD7ySM7IEE/M72Um/dcRKfYNshfWUXj
+ g/tExCquaSFx6mtCzRt2y4kkj6l0i+B2O7DfSlUUjS4aUHX+F/Dq1MaPqUiQctFKqvlSl0yE6
+ rYf8ij0LysvEjqe0SRxfIVErd8sqz5SK69tN5XoBJvlD9jdrOYdyPAAU5XvpsSlpWf5q7CP5A
+ mBnp5UfiEf9vD1WF1oHPk1WVfsP3j7dVqIS1tTpkWjIcJLBqF64nUWFBDb++1lxqAMxJ1iGwE
+ vde/mZMvjPIB4d3UDC7qiiSKGdVptomkfxt8OOoRGTi3E3aVHlAVkmlb0TeJUqd+VNbG6PsOw
+ Gw4N31Y3H+MavHC9iChY7aiUFTPTBSUI4ipos1Rso4bOWGpiyWCJMnWrALm4CcMt12KKXq/kr
+ 5WBGXpMjyivxBV/Oe5jjSnZuIfTi+/vmZGk+cu/3VHfY7CDgJW4Vwy/TV8IxMDMMxC0xhFbqq
+ p7tdqarihAgP4ks65cvYZM4ezzs0rHmL2rZUPus3gOgWpEhL+4OwC0DFbR/4IcIKQGPFPDhG9
+ Ooy9b24r7FT/FTnflwaqqD6LCrJk2RUspcEAOvCCjmhacU80yrAXOLP2BDq5SnkFpZLiacOID
+ UI6wPba1XYwOl1xYW4VAy581DE625xsr4QfB2fVH/q10751zxjahAexnXLk5t9vnm6Ub9bcqf
+ BPT7NmF++yX0FJOq/+vT6AnzOEXfYjysHsQVitvfXTfHodribQt8sttzHWMwPO5u9OxXNGrxd
+ WCThxj5/tj5eDLuw61lhYoXw1kOfSj5AzpIqFmvUE8Xq8Iy363hORSKBVEFD+SFUb+5Xv1tI3
+ JS1EB428jrHxMIj41ZKCX+yVkEg=
+Received-SPF: pass client-ip=212.227.15.15; envelope-from=deller@gmx.de;
  helo=mout.gmx.net
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -89,44 +86,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix the math overflow when calculating the new_malloc_size.
-
-new_host_brk_page and brk_page are unsigned integers. If userspace
-reduces the heap, new_host_brk_page is lower than brk_page which results
-in a huge positive number (but should actually be negative).
-
-Fix it by adding a proper check and as such make the code more readable.
+The old_mmap syscall (e.g. on i386) hands over the parameters in
+a struct. Adjust the strace output to print the correct values.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Tested-by: "Markus F.X.J. Oberhumer" <markus@oberhumer.com>
-Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-Fixes: 86f04735ac ("linux-user: Fix brk() to release pages")
-Cc: qemu-stable@nongnu.org
-Buglink: https://github.com/upx/upx/issues/683
+Reported-by: John Reiser <jreiser@BitWagon.com>
+Closes: https://gitlab.com/qemu-project/qemu/-/issues/1760
 =2D--
- linux-user/syscall.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ linux-user/strace.c | 49 +++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 45 insertions(+), 4 deletions(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 125fcbe423..95727a816a 100644
-=2D-- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -860,12 +860,13 @@ abi_long do_brk(abi_ulong brk_val)
-      * itself); instead we treat "mapped but at wrong address" as
-      * a failure and unmap again.
-      */
--    new_alloc_size =3D new_host_brk_page - brk_page;
--    if (new_alloc_size) {
-+    if (new_host_brk_page > brk_page) {
-+        new_alloc_size =3D new_host_brk_page - brk_page;
-         mapped_addr =3D get_errno(target_mmap(brk_page, new_alloc_size,
-                                         PROT_READ|PROT_WRITE,
-                                         MAP_ANON|MAP_PRIVATE, 0, 0));
-     } else {
-+        new_alloc_size =3D 0;
-         mapped_addr =3D brk_page;
-     }
+diff --git a/linux-user/strace.c b/linux-user/strace.c
+index bbd29148d4..e0ab8046ec 100644
+=2D-- a/linux-user/strace.c
++++ b/linux-user/strace.c
+@@ -3767,10 +3767,24 @@ print_utimensat(CPUArchState *cpu_env, const struc=
+t syscallname *name,
 
+ #if defined(TARGET_NR_mmap) || defined(TARGET_NR_mmap2)
+ static void
+-print_mmap(CPUArchState *cpu_env, const struct syscallname *name,
++print_mmap_both(CPUArchState *cpu_env, const struct syscallname *name,
+            abi_long arg0, abi_long arg1, abi_long arg2,
+-           abi_long arg3, abi_long arg4, abi_long arg5)
+-{
++           abi_long arg3, abi_long arg4, abi_long arg5,
++           bool is_old_mmap)
++{
++    if (is_old_mmap) {
++            abi_ulong *v;
++            abi_ulong argp =3D arg0;
++            if (!(v =3D lock_user(VERIFY_READ, argp, 6 * sizeof(abi_ulong=
+), 1)))
++                return;
++            arg0 =3D tswapal(v[0]);
++            arg1 =3D tswapal(v[1]);
++            arg2 =3D tswapal(v[2]);
++            arg3 =3D tswapal(v[3]);
++            arg4 =3D tswapal(v[4]);
++            arg5 =3D tswapal(v[5]);
++            unlock_user(v, argp, 0);
++        }
+     print_syscall_prologue(name);
+     print_pointer(arg0, 0);
+     print_raw_param("%d", arg1, 0);
+@@ -3780,7 +3794,34 @@ print_mmap(CPUArchState *cpu_env, const struct sysc=
+allname *name,
+     print_raw_param("%#x", arg5, 1);
+     print_syscall_epilogue(name);
+ }
+-#define print_mmap2     print_mmap
++#endif
++
++#if defined(TARGET_NR_mmap)
++static void
++print_mmap(CPUArchState *cpu_env, const struct syscallname *name,
++           abi_long arg0, abi_long arg1, abi_long arg2,
++           abi_long arg3, abi_long arg4, abi_long arg5)
++{
++    return print_mmap_both(cpu_env, name, arg0, arg1, arg2, arg3,
++                           arg4, arg5,
++#if defined(TARGET_NR_mmap2)
++                            true
++#else
++                            false
++#endif
++                            );
++}
++#endif
++
++#if defined(TARGET_NR_mmap2)
++static void
++print_mmap2(CPUArchState *cpu_env, const struct syscallname *name,
++           abi_long arg0, abi_long arg1, abi_long arg2,
++           abi_long arg3, abi_long arg4, abi_long arg5)
++{
++    return print_mmap_both(cpu_env, name, arg0, arg1, arg2, arg3,
++                           arg4, arg5, false);
++}
+ #endif
+
+ #ifdef TARGET_NR_mprotect
 =2D-
 2.41.0
 
