@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E679758F86
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 09:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 352ED758F7C
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 09:49:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM1up-00007q-FX; Wed, 19 Jul 2023 03:48:07 -0400
+	id 1qM1up-00007p-Gj; Wed, 19 Jul 2023 03:48:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qM1uU-0008UA-QK
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 03:47:52 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1qM1uY-0008UM-Dn
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 03:47:53 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qM1uS-00027L-J4
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 03:47:45 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-666ed230c81so6629383b3a.0
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 00:47:44 -0700 (PDT)
+ id 1qM1uW-00027u-Ph
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 03:47:50 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1b9ecf0cb4cso40906745ad.2
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 00:47:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689752863; x=1692344863;
+ d=gmail.com; s=20221208; t=1689752867; x=1692344867;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=749c16VfFqHXoK3rBi9xwn3HY6BMtdWqslVMXDL704I=;
- b=hjJXtBkl31jAZULG8qkGzePGbSQ+D+v/lEmWBQ9KwdMAnhUA2ghwHEZh5GnK6ofi3L
- ccrX/Z/BT72J1oRFr4Ysu0eVqJv0J1HPt0kX1RUqNMZFqam7dTQ9hF/bBGjDyDuivDSv
- j6ri8IdTLVBZG9kLQKAFEOhrTyFJ5Ed7QiVd+7MhVQ6qiU492VkuTtppZpJfdGvcI6HK
- OC/QWnL7UTK3++HfRBwvKBDpq3BThGN19HMwz/FY7/0WZGE2eMKTPym19tjw302crfDN
- q6efgD0pesI16am2nmQbpY5rxzk6MKZhWO7J8ehVpyuhYaPCdh7kimRsw7owy0j/6ZH1
- T94A==
+ bh=OQXPMit78wxXOLwUXAdy/5EGNJNucIHi6SIpfnSqqAI=;
+ b=WvhYJEm27ZNlSgl7NGonGEMJ7Lsgu+4o+UsrZueMrdvsVUrUVZ3PLtJTyspR8AxDdz
+ pCROssillsbTAIw0nhajuoy+KGA0MGQ8yMhd8qSZKkCYHiVHop70jvtbISHx27BJ/Nzb
+ 0w2MyWs8+f8uPVmnRmPEgy9KfvW6hzUZdcftHYTuW2GiE4YTK7yynLm8nLtJeIuQRa80
+ E2wGRfKH+HKaU/xOJtntNiOQeCRK8oiXLR0NcQfjG2CniPw5JHoTiVIKj/3dtL2E8DK6
+ 0LE05dprL0Xx1XL5i8vMkutfgiGBIbDxRiM7aB8MV3IzURtZ0h0E31g6f5jBjznWE60Z
+ dICg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689752863; x=1692344863;
+ d=1e100.net; s=20221208; t=1689752867; x=1692344867;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=749c16VfFqHXoK3rBi9xwn3HY6BMtdWqslVMXDL704I=;
- b=mF5Iib6ZDBlzVv3nGPZdvQd6barNg7dSwJDjO3xixzggoXd1hexLG70AHK6GfcxHRy
- F+N+4H+DOdkegj6tmQLzh20WVB9fFBXjxn33i51SoAjoQ3nhZjQrQIYJLYxMMBr5zL7n
- ho1zri4sQTVHCAYrahw7JT+fjmuQD/C+/YAMUqOtKtl9qwQp2kllbSHheZhh+GwjN6y+
- cgqnqbL0mFFtiyvb3pSbOxkFpP7Pi9KespMa5r+CKFwEFPqCTJ4oOSgieSZQ9w5Rszgg
- S36akNdhfYZEJEalUH7/JurMyhZT52TGEYnfgwuFhxslUMFd+p6/ExuaS9e7RLrCJBaH
- a8Sw==
-X-Gm-Message-State: ABy/qLYnk1EWsP+eXFKx+HCERVyeyshFn+hgtcEnNiPj/uSRVXpwvjg9
- /uLq2oI21V9+S7RV3gaguXY=
-X-Google-Smtp-Source: APBJJlFPaJsaEVOHIq1Wo/xF2GhxvGVjfO7pyikRY3NOdDZ2S6QstFQQWRyzIzX3m1DOnwH0riKocw==
-X-Received: by 2002:a05:6a21:3393:b0:137:3b34:93e5 with SMTP id
- yy19-20020a056a21339300b001373b3493e5mr1551631pzb.59.1689752862961; 
- Wed, 19 Jul 2023 00:47:42 -0700 (PDT)
+ bh=OQXPMit78wxXOLwUXAdy/5EGNJNucIHi6SIpfnSqqAI=;
+ b=gI8orso0gjZCH+65P7jnZGvqElXOEysNBYAcErsk+HjqSpla24enVh1j3fER7Pi0hV
+ GyVS0o+WGFSlmX0ebUdqqdMw8PrRIhzqrG8R4sL+R3FxO3yYO0CL3OcdS6rWDzd0JEaO
+ bZfBLLitWM1xH30yVT5p7TpCN3hvAzJjFMZj4kqfRvDgj3EWm7Msv1FM0d8pcSLqJEz8
+ +cgthy8I1etQ6f7Dx3/G2iSvAwlizyw4viKS+vvQEWOeOyIpP3l0QElnPAE3CzQTu2fI
+ JelG99ZNEb2b5CcvVNK4q7JwjFJ03aaLQSAT7K8kxato/nW2PwTqYr/qnjIUFU9SmUza
+ dbtQ==
+X-Gm-Message-State: ABy/qLYHD2OGcTWbw9Ox/xUwLsuoQGAAhLObh9qE99o4p/bPAHzTCTYA
+ BOEJh6s14W+oBwk+mCO7RkM=
+X-Google-Smtp-Source: APBJJlGgBiyU96KqNmR6NqfgWimiqfVkl/pvQM77pvJz7i2mGAZruMCwfTbwuKFm/fv+tdiLIwkKQw==
+X-Received: by 2002:a17:902:e810:b0:1b6:8a99:4979 with SMTP id
+ u16-20020a170902e81000b001b68a994979mr2307598plg.22.1689752867339; 
+ Wed, 19 Jul 2023 00:47:47 -0700 (PDT)
 Received: from localhost ([183.242.254.166]) by smtp.gmail.com with ESMTPSA id
- i15-20020aa787cf000000b0067a6e48b720sm2667962pfo.181.2023.07.19.00.47.41
+ je19-20020a170903265300b001b8528da516sm3216400plb.116.2023.07.19.00.47.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jul 2023 00:47:42 -0700 (PDT)
+ Wed, 19 Jul 2023 00:47:47 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
 To: jasowang@redhat.com,
 	mst@redhat.com,
@@ -62,17 +62,17 @@ To: jasowang@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	yin31149@gmail.com,
 	18801353760@163.com
-Subject: [PATCH 1/4] virtio-net: do not reset vlan filtering at set_features
-Date: Wed, 19 Jul 2023 15:47:28 +0800
-Message-Id: <966bd98eb6efe1754165f497e44f2de09c64e077.1689690854.git.yin31149@gmail.com>
+Subject: [PATCH 2/4] virtio-net: Expose MAX_VLAN
+Date: Wed, 19 Jul 2023 15:47:29 +0800
+Message-Id: <9106e247646f3808d0b0c4be948f2217bbfd8fd1.1689690854.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1689690854.git.yin31149@gmail.com>
 References: <cover.1689690854.git.yin31149@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=yin31149@gmail.com; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=yin31149@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,37 +96,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eugenio Pérez <eperezma@redhat.com>
+vhost-vdpa shadowed CVQ needs to know the maximum number of
+vlans supported by the virtio-net device, so QEMU can restore
+the VLAN state in a migration.
 
-This function is called after virtio_load, so all vlan configuration is
-lost in migration case.
-
-Just allow all the vlan-tagged packets if vlan is not configured, and
-trust device reset to clear all filtered vlans.
-
-Fixes: 0b1eaa8803 ("virtio-net: Do not filter VLANs without F_CTRL_VLAN")
+Co-developed-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Reviewed-by: Hawkins Jiawei <yin31149@gmail.com>
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 ---
- hw/net/virtio-net.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ hw/net/virtio-net.c            | 2 --
+ include/hw/virtio/virtio-net.h | 6 ++++++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 7102ec4817..d20d5a63cd 100644
+index d20d5a63cd..a32672039d 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -1006,9 +1006,7 @@ static void virtio_net_set_features(VirtIODevice *vdev, uint64_t features)
-         vhost_net_save_acked_features(nc->peer);
-     }
+@@ -49,8 +49,6 @@
  
--    if (virtio_has_feature(features, VIRTIO_NET_F_CTRL_VLAN)) {
--        memset(n->vlans, 0, MAX_VLAN >> 3);
--    } else {
-+    if (!virtio_has_feature(features, VIRTIO_NET_F_CTRL_VLAN)) {
-         memset(n->vlans, 0xff, MAX_VLAN >> 3);
-     }
+ #define VIRTIO_NET_VM_VERSION    11
  
+-#define MAX_VLAN    (1 << 12)   /* Per 802.1Q definition */
+-
+ /* previously fixed value */
+ #define VIRTIO_NET_RX_QUEUE_DEFAULT_SIZE 256
+ #define VIRTIO_NET_TX_QUEUE_DEFAULT_SIZE 256
+diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
+index 5f5dcb4572..93f3bb5d97 100644
+--- a/include/hw/virtio/virtio-net.h
++++ b/include/hw/virtio/virtio-net.h
+@@ -38,6 +38,12 @@ OBJECT_DECLARE_SIMPLE_TYPE(VirtIONet, VIRTIO_NET)
+ /* Maximum VIRTIO_NET_CTRL_MAC_TABLE_SET unicast + multicast entries. */
+ #define MAC_TABLE_ENTRIES    64
+ 
++/*
++ * The maximum number of VLANs in the VLAN filter table
++ * added by VIRTIO_NET_CTRL_VLAN_ADD
++ */
++#define MAX_VLAN    (1 << 12)   /* Per 802.1Q definition */
++
+ typedef struct virtio_net_conf
+ {
+     uint32_t txtimer;
 -- 
 2.25.1
 
