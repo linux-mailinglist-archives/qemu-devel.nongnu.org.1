@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3DF758D17
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 07:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42467758D1F
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 07:30:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLzhz-0002B1-Tg; Wed, 19 Jul 2023 01:26:43 -0400
+	id 1qLzko-0002zA-GQ; Wed, 19 Jul 2023 01:29:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qLzhx-00029G-6B
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 01:26:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qLzhv-0003CN-F1
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 01:26:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689744398;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Tiq7wgASk5lFBCl91791cs0r6ITeYNv4MkzlMeh6e/8=;
- b=h2LfFJiEOU0icALSF49oinI1X2kUlBkp97HlpYrfxNkud9nY/luLQMGF+kvUbW2DWJML5B
- WyY8JtdmOa9zpJ+SoSxhCf7hosvfDW1S5Gs25D80icTKcBxkTB7ioe0wj1s5n+UYI0RhEO
- jGzLDr5UnUL1Hm60oe9F9pd25bma8N4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-54-iRufqK5-OfqpwbvYKohL0A-1; Wed, 19 Jul 2023 01:26:34 -0400
-X-MC-Unique: iRufqK5-OfqpwbvYKohL0A-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4C3ED800CAF;
- Wed, 19 Jul 2023 05:26:34 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.37])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CFEA6F66D6;
- Wed, 19 Jul 2023 05:26:33 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C70F221E6608; Wed, 19 Jul 2023 07:26:32 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Yong Huang <yong.huang@smartx.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>,  Peter Xu <peterx@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,  Juan Quintela
- <quintela@redhat.com>,  "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Eric Blake <eblake@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Laurent
- Vivier <lvivier@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH QEMU v8 4/9] migration: Introduce dirty-limit capability
-References: <168870305868.29142.5121604177475325995-4@git.sr.ht>
- <875y6oj80i.fsf@pond.sub.org>
- <CAK9dgmZ73F2qrD-iM-EBSiARRmwGPPorsLdt8NqmkOSyYaRCVw@mail.gmail.com>
- <87zg3tjxb2.fsf@pond.sub.org>
- <CAK9dgmYyxZC_6CPZcgudXVpRXKcdd6kXTsYLhZ_PTiOh=c4-2g@mail.gmail.com>
-Date: Wed, 19 Jul 2023 07:26:32 +0200
-In-Reply-To: <CAK9dgmYyxZC_6CPZcgudXVpRXKcdd6kXTsYLhZ_PTiOh=c4-2g@mail.gmail.com>
- (Yong Huang's message of "Wed, 19 Jul 2023 12:10:09 +0800")
-Message-ID: <87a5vsh3p3.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qLzkh-0002yj-GL; Wed, 19 Jul 2023 01:29:31 -0400
+Received: from mail-il1-x12b.google.com ([2607:f8b0:4864:20::12b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qLzkf-0003WU-Qn; Wed, 19 Jul 2023 01:29:31 -0400
+Received: by mail-il1-x12b.google.com with SMTP id
+ e9e14a558f8ab-3487d75e4c5so20490765ab.0; 
+ Tue, 18 Jul 2023 22:29:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1689744567; x=1692336567;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+ bh=BetQAi4Kgo9qw84/AJp0GPgPwc6E5Envqce3B3ENuT8=;
+ b=hWuLuIrSx4zLsj+p0iUaogxNiTYzl7jbM0VbFnzHnp/Nwr5ZVdig5KW1OjqcnovwaU
+ 4pUtOIwBlUUSeiDcrsJfIjrCMNVlQZB9ywlJSRp1wRQCamZ9TY/II5vsF1sJVO0fzli2
+ tqcvQ2G9TfPv2FXBkLJiSbQyCVntW5/EJeHoYUAJXXXxuBnOIyHUMpMwJF8tsR4ZpIIP
+ awq1pulXkzrVmqV/6hf7FdJMQtMnYQgg19pc2WxKOv/z5caVIiXCvkNzj/69tgHA+j39
+ tcmKhftZSkNhTpo5E0+8E06xu1QoXaSMH1AMNin53xX6FvjjGhNIlStup0RmtL/f2ipJ
+ ODbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689744567; x=1692336567;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BetQAi4Kgo9qw84/AJp0GPgPwc6E5Envqce3B3ENuT8=;
+ b=BmJYlqrDES1KR9HGTtLut/ahKo4hcutBbAZ0sxudmbbe+zwBeI0x4J5ys3+8GZMmuG
+ 2hbDRsFPZ9JCAUvCgxY4hXIEg8ykMLbZ2EqHOmwlAfT26pmMF/ZUN41EVnGcQYClpc+d
+ KBGHtyfrIAvbRCGWgjhzljltsz6sleE5dFkwQhf9q3Z4E+JWnKmy4WeulpxRp26Ub9ho
+ QS9/WZkY625EQvj9oy9yhUdNI9G9wEOAxK5WQlgQMMyzUl73GbMNxElq9aWEbiCwv8CZ
+ 1hnhc0R8mV2s1ns3YD1j2cvAgIxWI+7emCfVmxqfGo99S6MXgeB2loAWf8vaB9lW5CLd
+ W/zw==
+X-Gm-Message-State: ABy/qLYZ8zov9l4Ufb/JRFBQJwqPjJBu8LW4uP/2UEB5L+lF5hUNTZnc
+ hipqLh3jG3fRBtUFjjS2Te0=
+X-Google-Smtp-Source: APBJJlEASijRMTaZPy5dIHY+x7rOyRs0OX2UWnVbfRU9cYUI5pMMSPp638S8P2rFQDyzvrAtvQGfPg==
+X-Received: by 2002:a92:c568:0:b0:348:8da5:a53c with SMTP id
+ b8-20020a92c568000000b003488da5a53cmr5182874ilj.22.1689744567401; 
+ Tue, 18 Jul 2023 22:29:27 -0700 (PDT)
+Received: from voyager.lan ([45.124.203.19]) by smtp.gmail.com with ESMTPSA id
+ 27-20020a17090a005b00b00263c8b33bcfsm476322pjb.14.2023.07.18.22.29.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 18 Jul 2023 22:29:26 -0700 (PDT)
+From: Joel Stanley <joel@jms.id.au>
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Subject: [PATCH] ppc: Add stub implementation of TRIG SPRs
+Date: Wed, 19 Jul 2023 14:59:20 +0930
+Message-Id: <20230719052920.162673-1-joel@jms.id.au>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12b;
+ envelope-from=joel.stan@gmail.com; helo=mail-il1-x12b.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,140 +87,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Yong Huang <yong.huang@smartx.com> writes:
+Linux sets these to control cache flush behaviour on Power9. Supervisor
+and hypervisor are allowed to write, and reads are noops.
 
-> On Tue, Jul 18, 2023 at 7:04=E2=80=AFPM Markus Armbruster <armbru@redhat.=
-com> wrote:
->
->> Yong Huang <yong.huang@smartx.com> writes:
->>
->> > On Thu, Jul 13, 2023 at 8:44=E2=80=AFPM Markus Armbruster <armbru@redh=
-at.com>
->> wrote:
->> >
->> >> ~hyman <hyman@git.sr.ht> writes:
->> >>
->> >> > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
->> >> >
->> >> > Introduce migration dirty-limit capability, which can
->> >> > be turned on before live migration and limit dirty
->> >> > page rate durty live migration.
->> >> >
->> >> > Introduce migrate_dirty_limit function to help check
->> >> > if dirty-limit capability enabled during live migration.
->> >> >
->> >> > Meanwhile, refactor vcpu_dirty_rate_stat_collect
->> >> > so that period can be configured instead of hardcoded.
->> >> >
->> >> > dirty-limit capability is kind of like auto-converge
->> >> > but using dirty limit instead of traditional cpu-throttle
->> >> > to throttle guest down. To enable this feature, turn on
->> >> > the dirty-limit capability before live migration using
->> >> > migrate-set-capabilities, and set the parameters
->> >> > "x-vcpu-dirty-limit-period", "vcpu-dirty-limit" suitably
->> >> > to speed up convergence.
->> >> >
->> >> > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.c=
-om>
->> >> > Acked-by: Peter Xu <peterx@redhat.com>
->> >> > Reviewed-by: Juan Quintela <quintela@redhat.com>
->> >>
->> >> [...]
->> >>
->> >> > diff --git a/qapi/migration.json b/qapi/migration.json
->> >> > index e43371955a..031832cde5 100644
->> >> > --- a/qapi/migration.json
->> >> > +++ b/qapi/migration.json
->> >> > @@ -497,6 +497,15 @@
->> >> >  #     are present.  'return-path' capability must be enabled to use
->> >> >  #     it.  (since 8.1)
->> >> >  #
->> >> > +# @dirty-limit: If enabled, migration will use the dirty-limit
->> >> > +#     algorithm to throttle down guest instead of auto-converge
->> >> > +#     algorithm. This algorithm only works when vCPU's dirtyrate
->> >>
->> >> Two spaces after sentence-ending punctuation, please.
->> >>
->> >> "dirty rate" with a space, because that's how we spell it elsewhere.
->> >>
->> >> > +#     greater than 'vcpu-dirty-limit', read processes in guest os
->> >> > +#     aren't penalized any more, so the algorithm can improve
->> >> > +#     performance of vCPU during live migration. This is an option=
-al
->> >> > +#     performance feature and should not affect the correctness of
->> the
->> >> > +#     existing auto-converge algorithm. (since 8.1)
->> >> > +#
->> >>
->> >> I'm still confused.
->> >>
->> >> The text suggests there are two separate algorithms "to throttle down
->> >> guest": "auto converge" and "dirty limit", and we get to pick one.
->> >> Correct?
->> >>
->> > Yes, indeed !
->> >
->> >>
->> >> If it is correct, then the last sentence feels redundant: picking
->> >> another algorithm can't affect the algorithm we're *not* using.  What
->> >> are you trying to express here?
->> >>
->> > What i want to express is that the new algorithm implementation does
->> > not affect the original algorithm, leaving it in the comments seems
->> > redundant indeed.  I'll drop this in the next version.
->>
->> Works for me.
->>
->> >> When do we use "auto converge", and when do we use "dirty limit"?
->> >>
->> >> What does the user really need to know about these algorithms?  Enough
->> >> to pick one, I guess.  That means advantages and disadvantages of the
->> >> two algorithms.  Which are?
->> >
->> > 1. The implementation of dirty-limit is based on dirty-ring, which is
->> > qualified
->> >    to big systems with huge memories and can improve huge guest VM
->> >     responsiveness remarkably during live migration. As a consequence,
->> > dirty-limit
->> >     is recommended on platforms with huge guest VMs as is the way with
->> > dirty-ring.
->> > 2. dirty-limit convergence algorithm does not affect the "read-process"
->> in
->> > guest
->> >    VM, so guest VM gains the equal read performance nearly as it runs =
-on
->> > host
->> >    during the live migration. As a result, dirty-limit is recommended =
-if
->> > the guest
->> >     VM requires a stable read performance.
->> > The above explanation is about the recommendation of dirty-limit, plea=
-se
->> > review,
->> > if it's ok, i'll place it in the comment of the dirty-limit capability.
->>
->> Yes, please.  But before that, I have still more questions.  "This
->> algorithm only works when vCPU's dirtyrate greater than
->> 'vcpu-dirty-limit'" is a condition: "FEATURE only works when CONDITION".
->>
-> I failed to express my meaning again : ( .  "Throttle algo only works when
-> vCPU's  dirtyrate greater than 'vcpu-dirty-limit' " should change to
-> "vCPU throttle only works when vCPU's dirtyrate greater than
-> 'vcpu-dirty-limit'".
-> Not the whole "algo" !
+Add implementations to avoid noisy messages when booting Linux under the
+pseries machine with guest_errors enabled.
 
-Let me paraphrase to make sure I got it...  The vCPU is throttled as
-needed to keep its dirty rate within the limit set with
-set-vcpu-dirty-limit.  Correct?
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+---
+ target/ppc/cpu.h      |  2 ++
+ target/ppc/cpu_init.c | 10 ++++++++++
+ 2 files changed, 12 insertions(+)
 
-What happens when I enable the dirty limit convergence algorithm without
-setting a limit with set-vcpu-dirty-limit?
-
->> What happens when the condition is not met?  How can the user ensure the
->> condition is met?
->>
->> [...]
->>
->>
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 25fac9577aa4..6826702ea658 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -1897,7 +1897,9 @@ void ppc_compat_add_property(Object *obj, const char *name,
+ #define SPR_PSSCR             (0x357)
+ #define SPR_440_INV0          (0x370)
+ #define SPR_440_INV1          (0x371)
++#define SPR_TRIG1             (0x371)
+ #define SPR_440_INV2          (0x372)
++#define SPR_TRIG2             (0x372)
+ #define SPR_440_INV3          (0x373)
+ #define SPR_440_ITV0          (0x374)
+ #define SPR_440_ITV1          (0x375)
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 02b7aad9b0e3..3b6ccb5ea4e6 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -5660,6 +5660,16 @@ static void register_power_common_book4_sprs(CPUPPCState *env)
+                  SPR_NOACCESS, SPR_NOACCESS,
+                  &spr_read_tfmr, &spr_write_tfmr,
+                  0x00000000);
++    spr_register_hv(env, SPR_TRIG1, "TRIG1",
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 &spr_access_nop, &spr_write_generic,
++                 &spr_access_nop, &spr_write_generic,
++                 0x00000000);
++    spr_register_hv(env, SPR_TRIG2, "TRIG2",
++                 SPR_NOACCESS, SPR_NOACCESS,
++                 &spr_access_nop, &spr_write_generic,
++                 &spr_access_nop, &spr_write_generic,
++                 0x00000000);
+ #endif
+ }
+ 
+-- 
+2.40.1
 
 
