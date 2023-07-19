@@ -2,74 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A58759A3B
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE44759A83
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 18:12:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM9Tv-0006zp-Ok; Wed, 19 Jul 2023 11:52:51 -0400
+	id 1qM9lZ-000429-GE; Wed, 19 Jul 2023 12:11:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>)
- id 1qM9Tr-0006zL-5q; Wed, 19 Jul 2023 11:52:47 -0400
-Received: from mout.gmx.net ([212.227.15.19])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>)
- id 1qM9To-0006NH-Dl; Wed, 19 Jul 2023 11:52:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1689781958; x=1690386758; i=deller@gmx.de;
- bh=Rx4B0JKQX5xnCv8PHKKcBOIyM5MzrsGvZF5tbMB77Mo=;
- h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
- b=Yfct0ElBCLZPjmBFZls/XSvz8i6rQB68EnqDpWLKSXuXZxC4/+wF7QR/6LjOdbeDCGOnmPk
- 8M/fQ/9K8UvaGMuS+DkeH+CpXXi5HMA3vz15SvCsIytgDYb6EeDOhnwspToCQTL/EWdeKuomN
- UAFsuwuzUUz0hhE9/XAC7fGFo1QQylDFZJOvUZeWg7qdJW9Ks/YHKRUMgpZAYZifF/Rs8kv9f
- rAv6zXi975opSyfHE+Xui73L7iFXorBYswCKs5pESL5diY3DR1Ucw5BwlZhNDsLkWKaAPRoc8
- JBThkS4tvElgx2/FpSAgsfVln0L/GWVZno1+ihmYTo9HiZyrtf8A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100.fritz.box ([94.134.145.157]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MA7GS-1qBkA01hV4-00BZZk; Wed, 19
- Jul 2023 17:52:38 +0200
-From: Helge Deller <deller@gmx.de>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Andreas Schwab <schwab@suse.de>,
- Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
-	qemu-stable@nongnu.org
-Subject: [PULL 5/5] linux-user: Fix qemu-arm to run static armhf binaries
-Date: Wed, 19 Jul 2023 17:52:35 +0200
-Message-ID: <20230719155235.244478-6-deller@gmx.de>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230719155235.244478-1-deller@gmx.de>
-References: <20230719155235.244478-1-deller@gmx.de>
+ (Exim 4.90_1) (envelope-from <apatel@ventanamicro.com>)
+ id 1qM9lX-00040Z-W0
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 12:11:04 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <apatel@ventanamicro.com>)
+ id 1qM9lV-0007oM-4w
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 12:11:03 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-666eb03457cso4661126b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 09:10:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1689783058; x=1690387858;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vDnockqCjuUtWDtt9m6NLD5AOJAc/aICjOMxuN5auOU=;
+ b=PGAjKq16ed3XnLGPKbgX8lD1nTEFkygjLsoF3vkYI2XTba2TQl0nEfUZKIcQLYeCCk
+ mn0bzEAnNjaEscCh7nVLKaniveaS19SkvdAaFVz2B4Q3Km/42xXsjW5QRFNpv6SdY8AD
+ NkYO1IGUxL3SAmsXJ7U4GSVXRiFPPBxKxj7voA7Hb4nlChCn0eni/ENnoFxcUf+OVjlB
+ lMCm96dI0orhRdcsFDWtBfRvUus6z55nIQ5A3ONSxcDTItMyp5+lodfk+TV5rY3xIG5K
+ NYfuS2J/8cfoRm3aq2F829qAkOQRRHOD2qxk9qxTga+SwV/KqQmSld2hsY3dpT9ebjsW
+ +ZFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689783058; x=1690387858;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vDnockqCjuUtWDtt9m6NLD5AOJAc/aICjOMxuN5auOU=;
+ b=hF2IS62xxcTzmXG3+yCSm4xjUT4xCoKFF0lxvEjDwSKkWIxZtLPiSGrGTst11Idkfu
+ Y257Jpc0LlQ9nc8W4TXqw2y7LlWEMsHsc494TFfMTd2L9RwAPdB2MuwqcEipRwkARIBq
+ VGlDWwRNCTy7wTmacfvRcz7N/ufIaNO/d18onHKJ1SwieXI0ektEFP67KHyx33FlxITX
+ IbefxKlWCiuoGhxP/JH5bA29GC7tr9cVMwHiaSHxMho4u+OfagbtDIQrEEppJKIMj9g0
+ C6tHuhf9TOBHS0OLURz9RJfxflUv1NmM1ofdOJpQkALn2hY03FizQ7c5MREmZwYeUfFU
+ Euzw==
+X-Gm-Message-State: ABy/qLYzuQsE5O/LyKiBCZsikrEUqr21y/pnYSbV4UgZtJwEpZjd8FPF
+ OIsKug642LXZlCc2JqDUmhbP7N0tRpbQ/n9/ZUdnBw==
+X-Google-Smtp-Source: APBJJlGlqROpmylx6ZeJGAQM0d+577+BShgsi+LYOq8rTU6sd/D32i+ivQ2O5fGVo0D/QEBXybH1dB+1O633pwRd2No=
+X-Received: by 2002:a17:90a:ac17:b0:263:f5a5:fb98 with SMTP id
+ o23-20020a17090aac1700b00263f5a5fb98mr14681855pjq.28.1689783058349; Wed, 19
+ Jul 2023 09:10:58 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230712-stench-happiness-40c2ea831257@spud>
+ <3e9b5be8-d3ca-3a17-bef9-4a6a5bdc0ad0@ventanamicro.com>
+ <20230712-tulip-replica-0322e71c3e81@spud>
+ <744cbde6-7ce5-c327-3c5a-3858e994cc39@ventanamicro.com>
+ <20230712-superhero-rabid-578605f52927@spud>
+ <5dd3366d-13ba-c7fb-554f-549d97e7d4f9@ventanamicro.com>
+ <20230712-fancied-aviator-270f51166407@spud>
+ <20230713-craziness-lankiness-8aec3db24993@spud>
+ <CAAhSdy3J5HUoVP21jo11FBuAFSPSxHNKtuL7amn-5t7n_smoSg@mail.gmail.com>
+ <20230714-reoccur-confined-4b37494b1201@spud>
+ <20230714-hash-handwrite-339817b93ba1@spud>
+ <CAOnJCUL3=G_yV5cP5OjCGQKNvciNgXWnoQGUU4Bqh4iwnx6C4A@mail.gmail.com>
+ <CAKmqyKO3O87ETntm7pzMPedKW19ANpEp5nM4jFiHXO76K9saTQ@mail.gmail.com>
+ <CAAhSdy1+wRpqoTFmBRNF7uFnc_fFCyCnt5ctoMu7zhTiu2GcTg@mail.gmail.com>
+ <CAKmqyKOTik3tUa1MyHAyc5jOWcPDY=seHuR-VurHbSKaCKQFpw@mail.gmail.com>
+ <CAAhSdy1vkk6xj7HSyPHKN0d0qgYrq_rn-+iw_rxkdDBKqpC2yw@mail.gmail.com>
+ <CAEUhbmVoYnOMEi_Hqi7iX0__jTjbEnaxrHjCJHuMVaUAcMiACA@mail.gmail.com>
+In-Reply-To: <CAEUhbmVoYnOMEi_Hqi7iX0__jTjbEnaxrHjCJHuMVaUAcMiACA@mail.gmail.com>
+From: Anup Patel <apatel@ventanamicro.com>
+Date: Wed, 19 Jul 2023 21:40:46 +0530
+Message-ID: <CAK9=C2WG8Ro9kUCWBCDVtTYQwoTGbxo=hNgkK9y5HdAqhL=DHg@mail.gmail.com>
+Subject: Re: Boot failure after QEMU's upgrade to OpenSBI v1.3 (was Re: [PATCH
+ for-8.2 6/7] target/riscv: add 'max' CPU type)
+To: Bin Meng <bmeng.cn@gmail.com>
+Cc: Anup Patel <anup@brainfault.org>, Alistair Francis <alistair23@gmail.com>, 
+ Atish Patra <atishp@atishpatra.org>,
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Conor Dooley <conor@kernel.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org, 
+ qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org, 
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, 
+ opensbi@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0iW520w2ysnszSIoacfznsSvEkeo+Q6oqBt4+/1hANdDSf/6GDB
- w8nWTS4gwIg6dT+1cTgeTqD+L7ZqPK7ScHJ59ZP2Q5RDd1g0GnOd3lQhptNy/KMbSpjEr5D
- t3+06M1to8J1mLLFmDjCWczEVu8gkLEyck77b97hOYTv59mQjb3GVaT3Q8IZhXwPxRxjbsb
- P4WTWpJej2oWK7/EQx/kQ==
-UI-OutboundReport: notjunk:1;M01:P0:cRBrKvJQuvE=;FRjQWX3LK2tdwONyyfnhQ1od/rW
- FET+t6XnyJ55UdiFyqEJiU+u/Of407AuwJea0hD1Kg7shE2ObF8eP7wcKnrqxK+Tz0DgJowBD
- wYymor7AAgI4nXMFNKLD0Dn0CHZiK/6s41zT5JejFXTjqh/V+yuyV9z7UZcCG2jHfHTF+Lvn2
- 0YvinGjmX0r6p6+aou4ezGeqqeMVi6u39SpVRW1T/tfSSu8k6osvsi1fX0NNojlC/S8bn+vev
- FwP9T7JeoagW7oH3UZy3I/Fpedr/i6ImJWsCNXSvRbe5TPzG6CLwVzNDivDYVlDl0SXdF214r
- 93+gfh8w0+Mc+qraKY2jmZviN8hOO5P//aLjIkXqz+YjzKBr8D10Hl6YPNoEX1iO80DsDCzG4
- X71aDZ/eQLLzETNNHiKSjxvnJZinBO/OfzBEBl/3CZ3Mkdxc6uTQPz1UDAqcSOJn/NJygg2en
- upIH+64KrsKVZofdA9JOfPsd6CvJNdz9/ZFsXJj7N0SzsMpI9u6Amxk4bMLdtLqA1N+jvidns
- V4rLkRppi+cxhkSwByk3umMwcFKXy3tKiv+K/U1ExZhMxpDoatBC2/4weAXNsaJRR8ZITwD+u
- TdVetndfiYai4+qXhfedNfJ1NTp51kYd0hQNW05olbs8MKUtvb1zWQ/WStNpDqfHRhcLtNSaw
- CIiabRivt9wx4VW/pYlVRJ1hK9Wqm6YlgKqnAS+QO2CzDgQW5pX0m8BK8HY2Phc6NJQc3KIhG
- JbPKnM4rIF4qLzfJy4cXlhn8UZNjzc2gogcrOllGtE/gSql/15575wwObTMuuVjiAp+Is2WiZ
- tc9L8ukka272Uls4AwCy3MLzUFj8RjGHNavZWBx7/Ynq6JcY3KtolwnCp/UF4+wrRvaBu5BZ7
- xsNcv+vp8pJdVHkc/B3CsFzQtupuZiu3sGGwAwtjhKzVyzoRi2MH+6GXnpK/Hu4EqwLwiKtHK
- f3vgY6B2VrAXEOgv167mRMVB1xs=
-Received-SPF: pass client-ip=212.227.15.19; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=apatel@ventanamicro.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,45 +110,188 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu-user crashes immediately when running static binaries on the armhf
-architecture. The problem is the memory layout where the executable is
-loaded before the interpreter library, in which case the reserved brk
-region clashes with the interpreter code and is released before qemu
-tries to start the program.
+Hi Bin,
 
-At load time qemu calculates a brk value for interpreter and executable
-each.  The fix is to choose the higher one of both.
+On Wed, Jul 19, 2023 at 9:15=E2=80=AFPM Bin Meng <bmeng.cn@gmail.com> wrote=
+:
+>
+> On Wed, Jul 19, 2023 at 11:22=E2=80=AFPM Anup Patel <anup@brainfault.org>=
+ wrote:
+> >
+> > On Wed, Jul 19, 2023 at 3:23=E2=80=AFPM Alistair Francis <alistair23@gm=
+ail.com> wrote:
+> > >
+> > > On Wed, Jul 19, 2023 at 3:39=E2=80=AFPM Anup Patel <anup@brainfault.o=
+rg> wrote:
+> > > >
+> > > > On Wed, Jul 19, 2023 at 7:03=E2=80=AFAM Alistair Francis <alistair2=
+3@gmail.com> wrote:
+> > > > >
+> > > > > On Sat, Jul 15, 2023 at 7:14=E2=80=AFPM Atish Patra <atishp@atish=
+patra.org> wrote:
+> > > > > >
+> > > > > > On Fri, Jul 14, 2023 at 5:29=E2=80=AFAM Conor Dooley <conor@ker=
+nel.org> wrote:
+> > > > > > >
+> > > > > > > On Fri, Jul 14, 2023 at 11:19:34AM +0100, Conor Dooley wrote:
+> > > > > > > > On Fri, Jul 14, 2023 at 10:00:19AM +0530, Anup Patel wrote:
+> > > > > > > >
+> > > > > > > > > > > OpenSBI v1.3
+> > > > > > > > > > >    ____                    _____ ____ _____
+> > > > > > > > > > >   / __ \                  / ____|  _ \_   _|
+> > > > > > > > > > >  | |  | |_ __   ___ _ __ | (___ | |_) || |
+> > > > > > > > > > >  | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+> > > > > > > > > > >  | |__| | |_) |  __/ | | |____) | |_) || |_
+> > > > > > > > > > >   \____/| .__/ \___|_| |_|_____/|___/_____|
+> > > > > > > > > > >         | |
+> > > > > > > > > > >         |_|
+> > > > > > > > > > >
+> > > > > > > > > > > init_coldboot: ipi init failed (error -1009)
+> > > > > > > > > > >
+> > > > > > > > > > > Just to note, because we use our own firmware that ve=
+ndors in OpenSBI
+> > > > > > > > > > > and compiles only a significantly cut down number of =
+files from it, we
+> > > > > > > > > > > do not use the fw_dynamic etc flow on our hardware. A=
+s a result, we have
+> > > > > > > > > > > not tested v1.3, nor do we have any immediate plans t=
+o change our
+> > > > > > > > > > > platform firmware to vendor v1.3 either.
+> > > > > > > > > > >
+> > > > > > > > > > > I unless there's something obvious to you, it sounds =
+like I will need to
+> > > > > > > > > > > go and bisect OpenSBI. That's a job for another day t=
+hough, given the
+> > > > > > > > > > > time.
+> > > > > > > > > > >
+> > > > > > > > >
+> > > > > > > > > The real issue is some CPU/HART DT nodes marked as disabl=
+ed in the
+> > > > > > > > > DT passed to OpenSBI 1.3.
+> > > > > > > > >
+> > > > > > > > > This issue does not exist in any of the DTs generated by =
+QEMU but some
+> > > > > > > > > of the DTs in the kernel (such as microchip and SiFive bo=
+ard DTs) have
+> > > > > > > > > the E-core disabled.
+> > > > > > > > >
+> > > > > > > > > I had discovered this issue in a totally different contex=
+t after the OpenSBI 1.3
+> > > > > > > > > release happened. This issue is already fixed in the late=
+st OpenSBI by the
+> > > > > > > > > following commit c6a35733b74aeff612398f274ed19a74f81d1f37=
+ ("lib: utils:
+> > > > > > > > > Fix sbi_hartid_to_scratch() usage in ACLINT drivers").
+> > > > > > > >
+> > > > > > > > Great, thanks Anup! I thought I had tested tip-of-tree too,=
+ but
+> > > > > > > > obviously not.
+> > > > > > > >
+> > > > > > > > > I always assumed that Microchip hss.bin is the preferred =
+BIOS for the
+> > > > > > > > > QEMU microchip-icicle-kit machine but I guess that's not =
+true.
+> > > > > > > >
+> > > > > > > > Unfortunately the HSS has not worked in QEMU for a long tim=
+e, and while
+> > > > > > > > I would love to fix it, but am pretty stretched for spare t=
+ime to begin
+> > > > > > > > with.
+> > > > > > > > I usually just do direct kernel boots, which use the OpenSB=
+I that comes
+> > > > > > > > with QEMU, as I am sure you already know :)
+> > > > > > > >
+> > > > > > > > > At this point, you can either:
+> > > > > > > > > 1) Use latest OpenSBI on QEMU microchip-icicle-kit machin=
+e
+> > > > > > >
+> > > > > > > I forgot to reply to this point, wondering what should be don=
+e with
+> > > > > > > QEMU. Bumping to v1.3 in QEMU introduces a regression here, r=
+egardless
+> > > > > > > of whether I can go and build a fixed version of OpenSBI.
+> > > > > > >
+> > > > > > FYI: The no-map fix went in OpenSBI v1.3. Without the upgrade, =
+any
+> > > > > > user using the latest kernel (> v6.4)
+> > > > > > may hit those random linear map related issues (in hibernation =
+or EFI
+> > > > > > booting path).
+> > > > > >
+> > > > > > There are three possible scenarios:
+> > > > > >
+> > > > > > 1. Upgrade to OpenSBI v1.3: Any user of microchip-icicle-kit ma=
+chine
+> > > > > > or sifive fu540 machine users
+> > > > > > may hit this issue if the device tree has the disabled hart (e =
+core).
+> > > > > > 2. No upgrade to OpenSBI v1.2. Any user using hibernation or UE=
+FI may
+> > > > > > have issues [1]
+> > > > > > 3. Include a non-release version OpenSBI in Qemu with the fix a=
+s an exception.
+> > > > > >
+> > > > > > #3 probably deviates from policy and sets a bad precedent. So I=
+ am not
+> > > > > > advocating for it though ;)
+> > > > > > For both #1 & #2, the solution would be to use the latest OpenS=
+BI in
+> > > > > > -bios argument instead of the stock one.
+> > > > > > I could be wrong but my guess is the number of users facing #2 =
+would
+> > > > > > be higher than #1.
+> > > > >
+> > > > > Thanks for that info Atish!
+> > > > >
+> > > > > We are stuck in a bad situation.
+> > > > >
+> > > > > The best solution would be if OpenSBI can release a 1.3.1, @Anup =
+Patel
+> > > > > do you think you could do that?
+> > > >
+> > > > OpenSBI has a major number and minor number in the version but it d=
+oes
+> > > > not have release/patch number so best would be to treat OpenSBI vX.=
+Y.Z
+> > > > as bug fixes on-top-of OpenSBI vX.Y. In other words, supervisor sof=
+tware
+> > > > won't be able to differentiate between OpenSBI vX.Y.Z and OpenSBI v=
+X.Y
+> > > > using sbi_get_impl_version().
+> > > >
+> > > > There are only three commits between the ACLINT fix and OpenSBI v1.=
+3
+> > > > so as one-of case I will go ahead create OpenSBI v1.3.1 containing =
+only
+> > > > four commits on-top of OpenSBI v1.3
+> > > >
+> > > > Does this sound okay ?
+> > >
+> > > That sounds fine to me. It fixes the issue for the Microsemi board an=
+d
+> > > it's a very small change between 1.3 and 1.3.1
+> >
+> > Please check
+> > https://github.com/riscv-software-src/opensbi/releases/tag/v1.3.1
+> >
+> > I hope this helps.
+>
+> Hi Alistair,
+>
+> Do we need to update QEMU's opensbi binaries to v1.3.1?
+>
+> Hi Anup,
+>
+> Somehow I cannot see the 'tag' v1.3.1 being populated in the opensbi
+> git repo. Am I missing anything?
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Andreas Schwab <schwab@suse.de>
-Cc: qemu-stable@nongnu.org
-Reported-by:  Venkata.Pyla@toshiba-tsip.com
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1040981
-=2D--
- linux-user/elfload.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+There is a v1.3.1 tag in https://github.com/riscv-software-src/opensbi
+(Try cloning the repo again?)
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index a26200d9f3..94951630b1 100644
-=2D-- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3615,6 +3615,13 @@ int load_elf_binary(struct linux_binprm *bprm, stru=
-ct image_info *info)
+The commit history of v1.3.1 is v1.3 tag + 5 cherry picked commits
+which means the commit history of the master branch is not the same
+as the commit history of v1.3.1.
 
-     if (elf_interpreter) {
-         load_elf_interp(elf_interpreter, &interp_info, bprm->buf);
-+        /*
-+         * adjust brk address if the interpreter was loaded above the mai=
-n
-+         * executable, e.g. happens with static binaries on armhf
-+         */
-+        if (interp_info.brk > info->brk) {
-+            info->brk =3D interp_info.brk;
-+        }
-
-         /* If the program interpreter is one of these two, then assume
-            an iBCS2 image.  Otherwise assume a native linux image.  */
-=2D-
-2.41.0
-
+Regards,
+Anup
 
