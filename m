@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16E075A187
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 00:14:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C9E75A196
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 00:16:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMFQJ-0006zY-LK; Wed, 19 Jul 2023 18:13:31 -0400
+	id 1qMFQM-00073j-8w; Wed, 19 Jul 2023 18:13:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qMFQF-0006xj-AZ; Wed, 19 Jul 2023 18:13:27 -0400
+ id 1qMFQH-0006yC-68; Wed, 19 Jul 2023 18:13:30 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qMFQB-0002BZ-IQ; Wed, 19 Jul 2023 18:13:26 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ id 1qMFQB-0002Bn-TS; Wed, 19 Jul 2023 18:13:27 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36JLiu4K018565; Wed, 19 Jul 2023 22:13:21 GMT
+ 36JM92Xh006122; Wed, 19 Jul 2023 22:13:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=Ykrc4dOZQALD3J5jf6KaeY3bcelzmaap4L3nT7ClW4o=;
- b=FTbqA9EdtQIpx5kDzf7GQAjMZioTWGUMuFp2GBNGclAk5GjAsIaAx2fLl5j9xPQ712Xn
- c1iSt2EUSgXSOW0in48Yo8yOl8x1j4ICExuwB4gAzVfSIz2kDqUfa/ScZhX3evevXNyP
- WXX4DhrT/SbpquTW6gOka3K0EXFdLToHxfHCvL4P8ADIspZt2M1JwEddowslS/RDbecm
- 1TUdtmvn3l8gG/Vpb0l45utOF1H4wFT1EIqxP3Q70voG4inUY7Xbp5BGObHa7igMSYvg
- gKj1Pr2RrD/CbxL+q/q0cgJhOdxkf0I0QN+uhtyDIwXt8YkbEpSmKC/hAv2jpw4tFwkQ cw== 
+ bh=E2O2Vx1sgPSmd0zYDeJ50n20inJ9g6Hx/t+25K6E5E4=;
+ b=OQHTapVubZq5nmPZuuJj2aoQ2LfFU5SBitje18RCctoMXWlmLArUjDJ8IAzZSABpNiJU
+ nrPOFarifOp/QRYzVUeTgpzefOiBYtX1zxMjFcYP6SnsqKcXJCQY5TcA76hZT+pn5kHE
+ SfhHWXAWulWnciTt0dNXdIxr7Ijl49tquP7EuXYcu+ZL2/Y0zvGt6h1vIporqGmrXVWe
+ 3EErwXFBi+3Cf81qKIbBbsGZce2Gi4rqsrQtaOcm9FjIHpwohFjvz5UyfxKbygqR1JZ8
+ 0FOrL936/QENAFSV2j5MEAL4FIDeK8w5551XyHlPBWSWZHNzXW6cme2hB7h3hNLfNLsA +A== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxjx97u1f-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxpska2tf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 22:13:20 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36JM7wer015782;
+ Wed, 19 Jul 2023 22:13:21 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36JMANsf010686;
  Wed, 19 Jul 2023 22:13:20 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxjx97u18-1
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxpska2t6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Wed, 19 Jul 2023 22:13:20 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36JL9EcP004156; Wed, 19 Jul 2023 22:13:19 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv8g14hhq-1
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36JKLZQG016875; Wed, 19 Jul 2023 22:13:20 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv5srvr7c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 22:13:19 +0000
+ Wed, 19 Jul 2023 22:13:20 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36JMDHfD1901142
+ by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36JMDIcf20841008
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jul 2023 22:13:17 GMT
+ Wed, 19 Jul 2023 22:13:18 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9363520065;
- Wed, 19 Jul 2023 22:13:17 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4D93A20065;
+ Wed, 19 Jul 2023 22:13:18 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 06D792005A;
+ by IMSVA (Postfix) with ESMTP id B08862005A;
  Wed, 19 Jul 2023 22:13:17 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.5.152])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 19 Jul 2023 22:13:16 +0000 (GMT)
+ Wed, 19 Jul 2023 22:13:17 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org
-Subject: [PATCH v3 05/14] target/s390x: Make MC raise specification exception
- when class >= 16
-Date: Thu, 20 Jul 2023 00:11:17 +0200
-Message-ID: <20230719221310.1968845-6-iii@linux.ibm.com>
+Subject: [PATCH v3 06/14] tcg/{i386,
+ s390x}: Add earlyclobber to the op_add2's first output
+Date: Thu, 20 Jul 2023 00:11:18 +0200
+Message-ID: <20230719221310.1968845-7-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230719221310.1968845-1-iii@linux.ibm.com>
 References: <20230719221310.1968845-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PPpGg8V-Z7eoYhYjWHRSLpf-Ip7I2cS-
-X-Proofpoint-ORIG-GUID: 8Fb6UT3Fztz3StHr8jndLo-49sVTtbIN
+X-Proofpoint-GUID: USIU3lML0-5RALXZtcDZhy5HvacqJCtO
+X-Proofpoint-ORIG-GUID: e59rda8zGQzxMepJi3qb25e7ErppRDRi
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-19_16,2023-07-19_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- mlxlogscore=967 priorityscore=1501 impostorscore=0 spamscore=0
- malwarescore=0 adultscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ spamscore=0 mlxscore=0
+ priorityscore=1501 clxscore=1015 bulkscore=0 suspectscore=0 malwarescore=0
+ impostorscore=0 adultscore=0 phishscore=0 lowpriorityscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2306200000 definitions=main-2307190199
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
@@ -113,47 +113,159 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MC requires bit positions 8-11 (upper 4 bits of class) to be zeros,
-otherwise it must raise a specification exception.
+i386 and s390x implementations of op_add2 require an earlyclobber,
+which is currently missing. This breaks VCKSM in s390x guests. E.g., on
+x86_64 the following op:
+
+    add2_i32 tmp2,tmp3,tmp2,tmp3,tmp3,tmp2   dead: 0 2 3 4 5  pref=none,0xffff
+
+is translated to:
+
+    addl     %ebx, %r12d
+    adcl     %r12d, %ebx
+
+Introduce a new C_N1_O1_I4 constraint, and make sure that earlyclobber
+of aliased outputs is honored.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 20d143e2cab8 ("s390x/tcg: Implement MONITOR CALL")
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Fixes: 82790a870992 ("tcg: Add markup for output requires new register")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- target/s390x/tcg/excp_helper.c | 2 +-
- target/s390x/tcg/translate.c   | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ tcg/i386/tcg-target-con-set.h  | 5 ++++-
+ tcg/i386/tcg-target.c.inc      | 2 +-
+ tcg/s390x/tcg-target-con-set.h | 8 +++++---
+ tcg/s390x/tcg-target.c.inc     | 4 ++--
+ tcg/tcg.c                      | 8 +++++++-
+ 5 files changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
-index 228aa9f2373..3da337f7c72 100644
---- a/target/s390x/tcg/excp_helper.c
-+++ b/target/s390x/tcg/excp_helper.c
-@@ -639,7 +639,7 @@ void monitor_event(CPUS390XState *env,
- void HELPER(monitor_call)(CPUS390XState *env, uint64_t monitor_code,
-                           uint32_t monitor_class)
- {
--    g_assert(monitor_class <= 0xff);
-+    g_assert(monitor_class <= 0xf);
+diff --git a/tcg/i386/tcg-target-con-set.h b/tcg/i386/tcg-target-con-set.h
+index 91ceb0e1da2..5ea3a292f0f 100644
+--- a/tcg/i386/tcg-target-con-set.h
++++ b/tcg/i386/tcg-target-con-set.h
+@@ -11,6 +11,9 @@
+  *
+  * C_N1_Im(...) defines a constraint set with 1 output and <m> inputs,
+  * except that the output must use a new register.
++ *
++ * C_Nn_Om_Ik(...) defines a constraint set with <n + m> outputs and <k>
++ * inputs, except that the first <n> outputs must use new registers.
+  */
+ C_O0_I1(r)
+ C_O0_I2(L, L)
+@@ -53,4 +56,4 @@ C_O2_I1(r, r, L)
+ C_O2_I2(a, d, a, r)
+ C_O2_I2(r, r, L, L)
+ C_O2_I3(a, d, 0, 1, r)
+-C_O2_I4(r, r, 0, 1, re, re)
++C_N1_O1_I4(r, r, 0, 1, re, re)
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index ab997b5fb39..77482da0709 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -3335,7 +3335,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_add2_i64:
+     case INDEX_op_sub2_i32:
+     case INDEX_op_sub2_i64:
+-        return C_O2_I4(r, r, 0, 1, re, re);
++        return C_N1_O1_I4(r, r, 0, 1, re, re);
  
-     if (env->cregs[8] & (0x8000 >> monitor_class)) {
-         monitor_event(env, monitor_code, monitor_class, GETPC());
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 2f193339709..9a4fd3d8911 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -3184,9 +3184,9 @@ static DisasJumpType op_lcbb(DisasContext *s, DisasOps *o)
+     case INDEX_op_ctz_i32:
+     case INDEX_op_ctz_i64:
+diff --git a/tcg/s390x/tcg-target-con-set.h b/tcg/s390x/tcg-target-con-set.h
+index cbad91b2b56..9a420374999 100644
+--- a/tcg/s390x/tcg-target-con-set.h
++++ b/tcg/s390x/tcg-target-con-set.h
+@@ -8,6 +8,9 @@
+  * C_On_Im(...) defines a constraint set with <n> outputs and <m> inputs.
+  * Each operand should be a sequence of constraint letters as defined by
+  * tcg-target-con-str.h; the constraint combination is inclusive or.
++ *
++ * C_Nn_Om_Ik(...) defines a constraint set with <n + m> outputs and <k>
++ * inputs, except that the first <n> outputs must use new registers.
+  */
+ C_O0_I1(r)
+ C_O0_I2(r, r)
+@@ -41,6 +44,5 @@ C_O2_I1(o, m, r)
+ C_O2_I2(o, m, 0, r)
+ C_O2_I2(o, m, r, r)
+ C_O2_I3(o, m, 0, 1, r)
+-C_O2_I4(r, r, 0, 1, rA, r)
+-C_O2_I4(r, r, 0, 1, ri, r)
+-C_O2_I4(r, r, 0, 1, r, r)
++C_N1_O1_I4(r, r, 0, 1, ri, r)
++C_N1_O1_I4(r, r, 0, 1, rA, r)
+diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
+index a878acd8ca6..a94f7908d64 100644
+--- a/tcg/s390x/tcg-target.c.inc
++++ b/tcg/s390x/tcg-target.c.inc
+@@ -3229,11 +3229,11 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
  
- static DisasJumpType op_mc(DisasContext *s, DisasOps *o)
- {
--    const uint16_t monitor_class = get_field(s, i2);
-+    const uint8_t monitor_class = get_field(s, i2);
+     case INDEX_op_add2_i32:
+     case INDEX_op_sub2_i32:
+-        return C_O2_I4(r, r, 0, 1, ri, r);
++        return C_N1_O1_I4(r, r, 0, 1, ri, r);
  
--    if (monitor_class & 0xff00) {
-+    if (monitor_class & 0xf0) {
-         gen_program_exception(s, PGM_SPECIFICATION);
-         return DISAS_NORETURN;
-     }
+     case INDEX_op_add2_i64:
+     case INDEX_op_sub2_i64:
+-        return C_O2_I4(r, r, 0, 1, rA, r);
++        return C_N1_O1_I4(r, r, 0, 1, rA, r);
+ 
+     case INDEX_op_st_vec:
+         return C_O0_I2(v, r);
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 652e8ea6b93..ddfe9a96cb7 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -648,6 +648,7 @@ static void tcg_out_movext3(TCGContext *s, const TCGMovExtend *i1,
+ #define C_O2_I2(O1, O2, I1, I2)         C_PFX4(c_o2_i2_, O1, O2, I1, I2),
+ #define C_O2_I3(O1, O2, I1, I2, I3)     C_PFX5(c_o2_i3_, O1, O2, I1, I2, I3),
+ #define C_O2_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_o2_i4_, O1, O2, I1, I2, I3, I4),
++#define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_n1_o1_i4_, O1, O2, I1, I2, I3, I4),
+ 
+ typedef enum {
+ #include "tcg-target-con-set.h"
+@@ -668,6 +669,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
+ #undef C_O2_I2
+ #undef C_O2_I3
+ #undef C_O2_I4
++#undef C_N1_O1_I4
+ 
+ /* Put all of the constraint sets into an array, indexed by the enum. */
+ 
+@@ -687,6 +689,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
+ #define C_O2_I2(O1, O2, I1, I2)         { .args_ct_str = { #O1, #O2, #I1, #I2 } },
+ #define C_O2_I3(O1, O2, I1, I2, I3)     { .args_ct_str = { #O1, #O2, #I1, #I2, #I3 } },
+ #define C_O2_I4(O1, O2, I1, I2, I3, I4) { .args_ct_str = { #O1, #O2, #I1, #I2, #I3, #I4 } },
++#define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) { .args_ct_str = { "&" #O1, #O2, #I1, #I2, #I3, #I4 } },
+ 
+ static const TCGTargetOpDef constraint_sets[] = {
+ #include "tcg-target-con-set.h"
+@@ -706,6 +709,7 @@ static const TCGTargetOpDef constraint_sets[] = {
+ #undef C_O2_I2
+ #undef C_O2_I3
+ #undef C_O2_I4
++#undef C_N1_O1_I4
+ 
+ /* Expand the enumerator to be returned from tcg_target_op_def(). */
+ 
+@@ -725,6 +729,7 @@ static const TCGTargetOpDef constraint_sets[] = {
+ #define C_O2_I2(O1, O2, I1, I2)         C_PFX4(c_o2_i2_, O1, O2, I1, I2)
+ #define C_O2_I3(O1, O2, I1, I2, I3)     C_PFX5(c_o2_i3_, O1, O2, I1, I2, I3)
+ #define C_O2_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_o2_i4_, O1, O2, I1, I2, I3, I4)
++#define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_n1_o1_i4_, O1, O2, I1, I2, I3, I4)
+ 
+ #include "tcg-target.c.inc"
+ 
+@@ -4703,7 +4708,8 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
+                  * dead after the instruction, we must allocate a new
+                  * register and move it.
+                  */
+-                if (temp_readonly(ts) || !IS_DEAD_ARG(i)) {
++                if (temp_readonly(ts) || !IS_DEAD_ARG(i)
++                    || def->args_ct[arg_ct->alias_index].newreg) {
+                     allocate_new_reg = true;
+                 } else if (ts->val_type == TEMP_VAL_REG) {
+                     /*
 -- 
 2.41.0
 
