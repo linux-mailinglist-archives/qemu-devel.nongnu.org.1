@@ -2,89 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486C47595D6
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 14:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7CC759622
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 15:04:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM6Zm-0005ge-9G; Wed, 19 Jul 2023 08:46:42 -0400
+	id 1qM6p7-0008Qw-Kv; Wed, 19 Jul 2023 09:02:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qM6Zf-0005ZB-An
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:46:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qM6oz-0008Pi-KA
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 09:02:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qM6Zd-0005ol-63
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:46:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qM6ox-0001yz-Sw
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 09:02:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689770792;
+ s=mimecast20190719; t=1689771740;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ULjEyzOlOgB/MvbtHc6sz31NCku2LxnkCuP17QRXnC0=;
- b=HcpJ9I5dvL/voja1YKQuFQs4u6KMFw7+fpZwQSSCmW5+bNIlWq19FmKAUx+l/q9BuoL44o
- NQq6eo4Rb+zf4pawDAtCcbpTwHPvWQRQd1ZLyHGIaeYPdHHYtiU/eeRLfrS7DbY4+t6Yk+
- Tq1MQB7vZB+Wm+vBJcvKSP4BTUnV4I8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lHvW96hFNQVWGMpTYLUDmDMiBAO9ZROfHRUwTiA239s=;
+ b=TPVRmIt8QHZEs1X0AcRIkKJOELY7b0KKUGbCXHe3+jSUcpkgvANI3Wl3/YpCgw1p6WKUyE
+ /fowwJqrg2KWOYQ0BeT+Se6Xf9UzdProawkupRIa4tHpYybSs9DtIvOHuKEjCkibw5PZTb
+ L74sUcTcA/pxU4vfsPz41zHbBRJ4t0E=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-551-S8kq1dpPN3SMvmBMKhYh4A-1; Wed, 19 Jul 2023 08:46:30 -0400
-X-MC-Unique: S8kq1dpPN3SMvmBMKhYh4A-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fbdf34184eso36903735e9.1
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 05:46:30 -0700 (PDT)
+ us-mta-517-NUhZFp1SP5uD2d8Qu2QVvQ-1; Wed, 19 Jul 2023 09:02:17 -0400
+X-MC-Unique: NUhZFp1SP5uD2d8Qu2QVvQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-31429e93f26so4157141f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 06:02:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689770789; x=1692362789;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20221208; t=1689771734; x=1692363734;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ULjEyzOlOgB/MvbtHc6sz31NCku2LxnkCuP17QRXnC0=;
- b=Oz2J+qg7BX4RUhKP5K3bYdY14PlD4MJxXrWGwbCbysB2F/gptJJ/eGjK2UqyixOOp0
- gVg6EGqKqiyOMs88X8oibJQngov5JWTR0xs4VZ+S7ar1yzGMW8OVVUqLRvy+bu0Vg3qd
- lbAH29WPVHgBJFnQ3DKxwBMDXbqQAJO2E9SS+6kEkf6OoB+tXXRAkBCxPRcLj7V+P/CF
- HDf2xHhcO2wRmOMfVCCt8ZHTc89l/lIGivt+mRA2RLRXuepZyz9NvOW6uChEerSSt6Uz
- JstbMw+9ArIFQCPWZa0P2TIi6NVmsQUHyHdHGWNPgByz/hdVBMDNp+AgOB5JfvF6pcdT
- zdCg==
-X-Gm-Message-State: ABy/qLYot0EK5Ox9eUnTmPwFNhpBzJVi9OCJspZaSjCUjVrzN4G72m8s
- pR3cftPk1YyuTgsOmEsJ/JL5n0WYL8pcPtU3h5gLOEsZjG7y1TtOG2pb5j7OM7b/hiipQg8OHX3
- oNuiuTRcetOQxMiw=
-X-Received: by 2002:a7b:c019:0:b0:3fb:b890:128e with SMTP id
- c25-20020a7bc019000000b003fbb890128emr1821978wmb.33.1689770789351; 
- Wed, 19 Jul 2023 05:46:29 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEdMcRD+vFvcJSLh0TKStlMD+KUqEtIL9ly7s4VODtKxHJbxSm/ZG2Kgaj1yI++FPcDGGQW8g==
-X-Received: by 2002:a7b:c019:0:b0:3fb:b890:128e with SMTP id
- c25-20020a7bc019000000b003fbb890128emr1821965wmb.33.1689770788984; 
- Wed, 19 Jul 2023 05:46:28 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:173:b04e:7ffc:40d6:ae85:fe35])
- by smtp.gmail.com with ESMTPSA id
- y9-20020a7bcd89000000b003fbb1a9586esm1662408wmj.15.2023.07.19.05.46.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jul 2023 05:46:28 -0700 (PDT)
-Date: Wed, 19 Jul 2023 08:46:24 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, eperezma@redhat.com, qemu-devel@nongnu.org,
- 18801353760@163.com
-Subject: Re: [PATCH v3 0/8] vdpa: Send all CVQ state load commands in parallel
-Message-ID: <20230719083730-mutt-send-email-mst@kernel.org>
-References: <cover.1689748694.git.yin31149@gmail.com>
- <20230719045858-mutt-send-email-mst@kernel.org>
- <CAKrof1Nu+Y26=ubQKNmjdSaHTUM7Q5HRwwN_BqG4mZTsAY=CiA@mail.gmail.com>
+ bh=lHvW96hFNQVWGMpTYLUDmDMiBAO9ZROfHRUwTiA239s=;
+ b=cdB5xQLX72bssq5U/EZ5swhVydC0F/SXyKhoL5cr3sEtmnGlvx2A3w3dsfqkEw8/qd
+ YVpHbhB1aDCIi443II6JGobYV3n71/cnEHKfg2Ts3AjkV1630eUjx6Wy1vhYwIPUlCS1
+ ILGKd8eweQA3Xny1Z1d+/2yiHYuzfQqdCorFggoqD1kSyOkgSSZoW+wxhBxY7aJBf2qu
+ NiKqvVGCSUu9DKwYHpRochUKvImbQcT+bu8kCaRg6ofsonLKQnzYbEpkOP6mrSNiwDrl
+ BjxsMsNrXZqhwR1VxUERZZkRx7KFOR1/Ia6Dy1a3MUgWjKFDe5PDphj72bUeCST5g9XS
+ yCEA==
+X-Gm-Message-State: ABy/qLbmsFLrCI+zIh2QeW1lsN9zRI0S+CcMFQ24Wy0g43vFqk8BoDE0
+ R9cdkG+Qj7uBOG6kRGgaJkRuni8PZACdsb/Q/gUiV5iXmmsGkhooKfaliEPj+IPdmIx/e0W+Qtr
+ K6A1f5bD0zvjaOvI=
+X-Received: by 2002:a5d:60c6:0:b0:315:9de4:92f0 with SMTP id
+ x6-20020a5d60c6000000b003159de492f0mr15260352wrt.5.1689771734661; 
+ Wed, 19 Jul 2023 06:02:14 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGPyxSfg4E0Tsggy3a8qzsnLNyd+GdsJvpIhEGB2+pu7QzDeWJ4JUwnhNAjR/9lVLkY6jYaww==
+X-Received: by 2002:a5d:60c6:0:b0:315:9de4:92f0 with SMTP id
+ x6-20020a5d60c6000000b003159de492f0mr15260312wrt.5.1689771733971; 
+ Wed, 19 Jul 2023 06:02:13 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-177-60.web.vodafone.de.
+ [109.43.177.60]) by smtp.gmail.com with ESMTPSA id
+ q22-20020a7bce96000000b003fbca05faa9sm1663716wmj.24.2023.07.19.06.02.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 19 Jul 2023 06:02:13 -0700 (PDT)
+Message-ID: <373f7d28-788b-99d1-1606-b73db45720c1@redhat.com>
+Date: Wed, 19 Jul 2023 15:02:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKrof1Nu+Y26=ubQKNmjdSaHTUM7Q5HRwwN_BqG4mZTsAY=CiA@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To: Milan Zamazal <mzamazal@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>, Laurent Vivier
+ <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <cover.1689030052.git.mst@redhat.com>
+ <b6f53ae005a1c05034769beebf799e861b82d48a.1689030052.git.mst@redhat.com>
+ <22589b2f-8dcf-b86b-2d77-bf27bf81ce27@redhat.com> <87pm4pcrbe.fsf@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PULL 10/66] tests/qtest: enable tests for virtio-scmi
+In-Reply-To: <87pm4pcrbe.fsf@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,213 +105,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 19, 2023 at 08:35:50PM +0800, Hawkins Jiawei wrote:
-> 在 2023/7/19 17:11, Michael S. Tsirkin 写道:
-> > On Wed, Jul 19, 2023 at 03:53:45PM +0800, Hawkins Jiawei wrote:
-> >> This patchset allows QEMU to delay polling and checking the device
-> >> used buffer until either the SVQ is full or control commands shadow
-> >> buffers are full, instead of polling and checking immediately after
-> >> sending each SVQ control command, so that QEMU can send all the SVQ
-> >> control commands in parallel, which have better performance improvement.
-> >>
-> >> I use vp_vdpa device to simulate vdpa device, and create 4094 VLANS in
-> >> guest to build a test environment for sending multiple CVQ state load
-> >> commands. This patch series can improve latency from 10023 us to
-> >> 8697 us for about 4099 CVQ state load commands, about 0.32 us per command.
-> >
-> > Looks like a tiny improvement.
-> > At the same time we have O(n^2) behaviour with memory mappings.
+On 18/07/2023 14.55, Milan Zamazal wrote:
+> Thomas Huth <thuth@redhat.com> writes:
 > 
-> Hi Michael,
+>> On 11/07/2023 01.02, Michael S. Tsirkin wrote:
+>>> From: Milan Zamazal <mzamazal@redhat.com>
+>>> We don't have a virtio-scmi implementation in QEMU and only support
+>>
+>>> a
+>>> vhost-user backend.  This is very similar to virtio-gpio and we add the same
+>>> set of tests, just passing some vhost-user messages over the control socket.
+>>> Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
+>>> Acked-by: Thomas Huth <thuth@redhat.com>
+>>> Message-Id: <20230628100524.342666-4-mzamazal@redhat.com>
+>>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+>>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+>>> ---
+>>>    tests/qtest/libqos/virtio-scmi.h |  34 ++++++
+>>>    tests/qtest/libqos/virtio-scmi.c | 174 +++++++++++++++++++++++++++++++
+>>>    tests/qtest/vhost-user-test.c    |  44 ++++++++
+>>>    MAINTAINERS                      |   1 +
+>>>    tests/qtest/libqos/meson.build   |   1 +
+>>>    5 files changed, 254 insertions(+)
+>>>    create mode 100644 tests/qtest/libqos/virtio-scmi.h
+>>>    create mode 100644 tests/qtest/libqos/virtio-scmi.c
+>>
+>>   Hi!
+>>
+>> I'm seeing some random failures with this new scmi test, so far only
+>> on non-x86 systems, e.g.:
+>>
+>>   https://app.travis-ci.com/github/huth/qemu/jobs/606246131#L4774
+>>
+>> It also reproduces on a s390x host here, but only if I run "make check
+>> -j$(nproc)" - if I run the tests single-threaded, the qos-test passes
+>> there. Seems like there is a race somewhere in this test?
 > 
-> Thanks for your review.
-> 
-> I wonder why you say "we have O(n^2) behaviour on memory mappings" here?
+> Hmm, it's basically the same as virtio-gpio.c test, so it should be OK.
+> Is it possible that the two tests (virtio-gpio.c & virtio-scmi.c)
+> interfere with each other in some way?  Is there possibly a way to
+> serialize them to check?
 
-it's not specific to virtio - it's related to device init.
-generally each device has some memory. during boot bios
-enables each individually O(n) where n is # of devices.
-memory maps has to be updated and in qemu this update
-is at least superlinear with n (more like O(n log n) I think).
-This gets up > O(n^2) with n number of devices.
+I think within one qos-test, the sub-tests are already run serialized. But there might be multiple qos-tests running in parallel, e.g. one for the aarch64 target and one for the ppc64 target. And indeed, I can reproduce the problem on my x86 laptop by running this in one terminal window:
 
->  From my understanding, QEMU maps two page-size buffers as control
-> commands shadow buffers at device startup. These buffers then are used
-> to cache SVQ control commands, where QEMU fills them with multiple SVQ control
-> commands bytes, flushes them when SVQ descriptors are full or these
-> control commands shadow buffers reach their capacity.
-> 
-> QEMU repeats this process until all CVQ state load commands have been
-> sent in loading.
-> 
-> In this loading process, only control commands shadow buffers
-> translation should be relative to memory mappings, which should be
-> O(log n) behaviour to my understanding(Please correct me if I am wrong).
-> 
-> > Not saying we must not do this but I think it's worth
-> > checking where the bottleneck is. My guess would be
-> > vp_vdpa is not doing things in parallel. Want to try fixing that
-> 
-> As for "vp_vdpa is not doing things in parallel.", do you mean
-> the vp_vdpa device cannot process QEMU's SVQ control commands
-> in parallel?
-> 
-> In this situation, I will try to use real vdpa hardware to
-> test the patch series performance.
+for ((x=0;x<1000;x++)); do \
+  QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon \
+  G_TEST_DBUS_DAEMON=.tests/dbus-vmstate-daemon.sh \
+  QTEST_QEMU_BINARY=./qemu-system-ppc64 \
+  MALLOC_PERTURB_=188 QTEST_QEMU_IMG=./qemu-img \
+  tests/qtest/qos-test -p \
+  /ppc64/pseries/spapr-pci-host-bridge/pci-bus-spapr/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile \
+  || break ; \
+done
 
-yea, pls do that.
+And this in another terminal window at the same time:
 
-> > to see how far it can be pushed?
-> 
-> Currently, I am involved in the "Add virtio-net Control Virtqueue state
-> restore support" project in Google Summer of Code now. Because I am
-> uncertain about the time it will take to fix that problem in the vp_vdpa
-> device, I prefer to complete the gsoc project first.
-> 
-> Thanks!
-> 
-> 
-> >
-> >
-> >> Note that this patch should be based on
-> >> patch "Vhost-vdpa Shadow Virtqueue VLAN support" at [1].
-> >>
-> >> [1]. https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg03719.html
-> >>
-> >> TestStep
-> >> ========
-> >> 1. regression testing using vp-vdpa device
-> >>    - For L0 guest, boot QEMU with two virtio-net-pci net device with
-> >> `ctrl_vq`, `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
-> >>        -device virtio-net-pci,disable-legacy=on,disable-modern=off,
-> >> iommu_platform=on,mq=on,ctrl_vq=on,guest_announce=off,
-> >> indirect_desc=off,queue_reset=off,ctrl_rx=on,ctrl_rx_extra=on,...
-> >>
-> >>    - For L1 guest, apply the patch series and compile the source code,
-> >> start QEMU with two vdpa device with svq mode on, enable the `ctrl_vq`,
-> >> `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
-> >>        -netdev type=vhost-vdpa,x-svq=true,...
-> >>        -device virtio-net-pci,mq=on,guest_announce=off,ctrl_vq=on,
-> >> ctrl_rx=on,ctrl_rx_extra=on...
-> >>
-> >>    - For L2 source guest, run the following bash command:
-> >> ```bash
-> >> #!/bin/sh
-> >>
-> >> for idx1 in {0..9}
-> >> do
-> >>    for idx2 in {0..9}
-> >>    do
-> >>      for idx3 in {0..6}
-> >>      do
-> >>        ip link add macvlan$idx1$idx2$idx3 link eth0
-> >> address 4a:30:10:19:$idx1$idx2:1$idx3 type macvlan mode bridge
-> >>        ip link set macvlan$idx1$idx2$idx3 up
-> >>      done
-> >>    done
-> >> done
-> >> ```
-> >>    - Execute the live migration in L2 source monitor
-> >>
-> >>    - Result
-> >>      * with this series, QEMU should not trigger any error or warning.
-> >>
-> >>
-> >>
-> >> 2. perf using vp-vdpa device
-> >>    - For L0 guest, boot QEMU with two virtio-net-pci net device with
-> >> `ctrl_vq`, `ctrl_vlan` features on, command line like:
-> >>        -device virtio-net-pci,disable-legacy=on,disable-modern=off,
-> >> iommu_platform=on,mq=on,ctrl_vq=on,guest_announce=off,
-> >> indirect_desc=off,queue_reset=off,ctrl_vlan=on,...
-> >>
-> >>    - For L1 guest, apply the patch series, then apply an addtional
-> >> patch to record the load time in microseconds as following:
-> >> ```diff
-> >> diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-> >> index 6b958d6363..501b510fd2 100644
-> >> --- a/hw/net/vhost_net.c
-> >> +++ b/hw/net/vhost_net.c
-> >> @@ -295,7 +295,10 @@ static int vhost_net_start_one(struct vhost_net *net,
-> >>       }
-> >>
-> >>       if (net->nc->info->load) {
-> >> +        int64_t start_us = g_get_monotonic_time();
-> >>           r = net->nc->info->load(net->nc);
-> >> +        error_report("vhost_vdpa_net_load() = %ld us",
-> >> +                     g_get_monotonic_time() - start_us);
-> >>           if (r < 0) {
-> >>               goto fail;
-> >>           }
-> >> ```
-> >>
-> >>    - For L1 guest, compile the code, and start QEMU with two vdpa device
-> >> with svq mode on, enable the `ctrl_vq`, `ctrl_vlan` features on,
-> >> command line like:
-> >>        -netdev type=vhost-vdpa,x-svq=true,...
-> >>        -device virtio-net-pci,mq=on,guest_announce=off,ctrl_vq=on,
-> >> ctrl_vlan=on...
-> >>
-> >>    - For L2 source guest, run the following bash command:
-> >> ```bash
-> >> #!/bin/sh
-> >>
-> >> for idx in {1..4094}
-> >> do
-> >>    ip link add link eth0 name vlan$idx type vlan id $idx
-> >> done
-> >> ```
-> >>
-> >>    - wait for some time, then execute the live migration in L2 source monitor
-> >>
-> >>    - Result
-> >>      * with this series, QEMU should not trigger any warning
-> >> or error except something like "vhost_vdpa_net_load() = 8697 us"
-> >>      * without this series, QEMU should not trigger any warning
-> >> or error except something like "vhost_vdpa_net_load() = 10023 us"
-> >>
-> >> ChangeLog
-> >> =========
-> >> v3:
-> >>    - refactor vhost_svq_poll() to accept cmds_in_flight
-> >> suggested by Jason and Eugenio
-> >>    - refactor vhost_vdpa_net_cvq_add() to make control commands buffers
-> >> is not tied to `s->cvq_cmd_out_buffer` and `s->status`, so we can reuse
-> >> it suggested by Eugenio
-> >>    - poll and check when SVQ is full or control commands shadow buffers is
-> >> full
-> >>
-> >> v2: https://lore.kernel.org/all/cover.1683371965.git.yin31149@gmail.com/
-> >>    - recover accidentally deleted rows
-> >>    - remove extra newline
-> >>    - refactor `need_poll_len` to `cmds_in_flight`
-> >>    - return -EINVAL when vhost_svq_poll() return 0 or check
-> >> on buffers written by device fails
-> >>    - change the type of `in_cursor`, and refactor the
-> >> code for updating cursor
-> >>    - return directly when vhost_vdpa_net_load_{mac,mq}()
-> >> returns a failure in vhost_vdpa_net_load()
-> >>
-> >> v1: https://lore.kernel.org/all/cover.1681732982.git.yin31149@gmail.com/
-> >>
-> >> Hawkins Jiawei (8):
-> >>    vhost: Add argument to vhost_svq_poll()
-> >>    vdpa: Use iovec for vhost_vdpa_net_cvq_add()
-> >>    vhost: Expose vhost_svq_available_slots()
-> >>    vdpa: Avoid using vhost_vdpa_net_load_*() outside
-> >>      vhost_vdpa_net_load()
-> >>    vdpa: Check device ack in vhost_vdpa_net_load_rx_mode()
-> >>    vdpa: Move vhost_svq_poll() to the caller of vhost_vdpa_net_cvq_add()
-> >>    vdpa: Add cursors to vhost_vdpa_net_loadx()
-> >>    vdpa: Send cvq state load commands in parallel
-> >>
-> >>   hw/virtio/vhost-shadow-virtqueue.c |  38 ++--
-> >>   hw/virtio/vhost-shadow-virtqueue.h |   3 +-
-> >>   net/vhost-vdpa.c                   | 354 ++++++++++++++++++-----------
-> >>   3 files changed, 249 insertions(+), 146 deletions(-)
-> >>
-> >> --
-> >> 2.25.1
-> >
+for ((x=0;x<1000;x++)); do \
+  QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon \
+  G_TEST_DBUS_DAEMON=.tests/dbus-vmstate-daemon.sh \
+  QTEST_QEMU_BINARY=./qemu-system-aarch64 \
+  MALLOC_PERTURB_=188 QTEST_QEMU_IMG=./qemu-img \
+  tests/qtest/qos-test -p \
+  /aarch64/virt/generic-pcihost/pci-bus-generic/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile \
+  || break ; \
+done
+
+After a while, the aarch64 test broke with:
+
+/aarch64/virt/generic-pcihost/pci-bus-generic/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile: qemu-system-aarch64: Failed to set msg fds.
+qemu-system-aarch64: Failed to set msg fds.
+qemu-system-aarch64: vhost VQ 0 ring restore failed: -22: Invalid argument (22)
+qemu-system-aarch64: Failed to set msg fds.
+qemu-system-aarch64: vhost VQ 1 ring restore failed: -22: Invalid argument (22)
+qemu-system-aarch64: Failed to set msg fds.
+qemu-system-aarch64: vhost_set_vring_call failed 22
+qemu-system-aarch64: Failed to set msg fds.
+qemu-system-aarch64: vhost_set_vring_call failed 22
+qemu-system-aarch64: Failed to write msg. Wrote -1 instead of 20.
+qemu-system-aarch64: Failed to set msg fds.
+qemu-system-aarch64: vhost VQ 0 ring restore failed: -22: Invalid argument (22)
+qemu-system-aarch64: Failed to set msg fds.
+qemu-system-aarch64: vhost VQ 1 ring restore failed: -22: Invalid argument (22)
+qemu-system-aarch64: ../../devel/qemu/hw/pci/msix.c:659: msix_unset_vector_notifiers: Assertion `dev->msix_vector_use_notifier && dev->msix_vector_release_notifier' failed.
+../../devel/qemu/tests/qtest/libqtest.c:200: kill_qemu() detected QEMU death from signal 6 (Aborted) (core dumped)
+**
+ERROR:../../devel/qemu/tests/qtest/qos-test.c:191:subprocess_run_one_test: child process (/aarch64/virt/generic-pcihost/pci-bus-generic/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile/subprocess [488457]) failed unexpectedly
+Aborted (core dumped)
+
+Can you also reproduce it this way?
+
+  Thomas
 
 
