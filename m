@@ -2,108 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A22497599B8
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E85759A4A
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:58:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM95M-0008V3-NB; Wed, 19 Jul 2023 11:27:28 -0400
+	id 1qM9Y1-0003BI-Vc; Wed, 19 Jul 2023 11:57:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qM95I-0008Ts-OH; Wed, 19 Jul 2023 11:27:24 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qM95G-00051u-Bs; Wed, 19 Jul 2023 11:27:24 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36JF8o6p001764; Wed, 19 Jul 2023 15:27:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=8oo7A0inLRaxr7LZEN+fwDAqfcY0UW9iU2yfFqBsVIs=;
- b=U8V9XflZr0+DKC9lbbKpLwuH9hP/YM3Vklbl2wb+I5yxM41qZcwm3PWbBz8VOGbMkbO3
- tuIfL3sKEebEUq7wuf3H6yVOF2TwoqvNmc4O58Ms/orBEMOR0uGqwwbbpXTy6ThCOyLk
- wmtBewfoCw8bAqzFVDZhkLF4JR07hW/y+BRIxx6DadIPf8JNicYb2MYuE7/X7HyQq+YD
- gYpBtNzjOP/jKUTLY537zwN/4qglGWwWices/7mpsFN3aHCp6yj0eOTxYd2DVZQrFuQw
- na3QWOscEw/6WvltLeV4o43sHSvVRiEuqKR8MwGdmxHlOz4jK5Td2GloivUDpjy0rbiI UQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxf7rx5hq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 15:27:12 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36JF9Suv004530;
- Wed, 19 Jul 2023 15:27:12 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxf7rx5hg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 15:27:12 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36JDLY75004183; Wed, 19 Jul 2023 15:27:11 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv8g132a9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 15:27:11 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36JFR7uL1311448
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jul 2023 15:27:07 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 971AD20040;
- Wed, 19 Jul 2023 15:27:07 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3446620043;
- Wed, 19 Jul 2023 15:27:07 +0000 (GMT)
-Received: from [9.155.200.205] (unknown [9.155.200.205])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Wed, 19 Jul 2023 15:27:07 +0000 (GMT)
-Message-ID: <d4869bcf-56b8-c273-fa8a-18d6d667626f@linux.ibm.com>
-Date: Wed, 19 Jul 2023 17:27:06 +0200
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1qM9Xs-00037m-2t
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:56:56 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1qM9Xl-0007IR-7W
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:56:55 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2b93fba1f62so58236941fa.1
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:56:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689782205; x=1690387005;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=JuHkd755TxaRlWG5RlSsbScpQRuzOZpdpHhnh7Tq8Bo=;
+ b=il98BA0FoIm/w5G8f7ZCiE11M+cfZsGcff0ybwbYZCIA1/NGinxOyETlFzoiswdkj3
+ s4TYHYKEz9T6h/26L+vG/NJOHRYJWY+U5XVXJVopNFjTrpXcy/ijFFKfKWISdQrBECvM
+ l5/XLZHHMPM01GhI7DgsFTHVl7hsXMEZIWOmHNeOvaeSbF69lUsGp085C42orBOfhdBC
+ EFYlqGGdOyOU7Lwck3eJly0TwlesCpR/aB7NlBU5vsE2Ky7dHO9hrnQAqx8vDUFjaFx8
+ 0Kt3UKAHDN3wfIxoLGx6HtKwiqOoLCRdnmG3VEws/RxryoO0sWUJAXetsc07Xq5tVe1T
+ GFCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689782205; x=1690387005;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JuHkd755TxaRlWG5RlSsbScpQRuzOZpdpHhnh7Tq8Bo=;
+ b=Pv5r9IYe5cAmFIp3gKxik5WCgT3huCmNeTrGiBdEk9VF+gyEc3OQH/m5wnPgJYfmNl
+ FpUV4G/be7WFwH3qjr9Mn4/rv2ioUnLt2PbJQJhkDCIa0xSR/WO9v02574AhfoMNJ3wa
+ eKlXdyUfFCI8v4qOKTEz/eQkr3OltaczirgMXom+jD9ZRepUUpNMWyjbbr+LcmLIQ+Zh
+ AC4K6ptSbyZJAf12EO3HmDZoNG17unYfOYcYhyMTzhF5meXtbQS3Rd0u/jmJpzNhCF1t
+ NnmZ9lKCboBLkqHMsYjKKJRb7QBplM1YDj8H3xkTQnUGlYR2giRSCE12bmZtWfwrFptO
+ NIdg==
+X-Gm-Message-State: ABy/qLYXfVDRn3dg2nQNWHR0ADtXXj0meFe2FIfkBrizebQpaMUTViMS
+ x138WcEvg11Q8lBgqKsxgGlMSA==
+X-Google-Smtp-Source: APBJJlHE8Kbr/OFiTQNOd/A/TShsOsSdxKkgPGnB4Pmz6ERujWGmjJeaVDqEap8RoFWvTlSESNNZGg==
+X-Received: by 2002:a2e:9919:0:b0:2b6:fe3c:c3af with SMTP id
+ v25-20020a2e9919000000b002b6fe3cc3afmr274730lji.27.1689782205210; 
+ Wed, 19 Jul 2023 08:56:45 -0700 (PDT)
+Received: from localhost.localdomain ([2.219.138.198])
+ by smtp.gmail.com with ESMTPSA id
+ l14-20020a1c790e000000b003fc3b03caa4sm2351006wme.0.2023.07.19.08.56.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 19 Jul 2023 08:56:44 -0700 (PDT)
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: peter.maydell@linaro.org
+Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: [PATCH 0/5] target/arm: Fixes for RME
+Date: Wed, 19 Jul 2023 16:30:14 +0100
+Message-ID: <20230719153018.1456180-2-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v21 00/20] s390x: CPU Topology
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
- mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
- armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
- nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
-References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <e5387fc9-f8b0-3905-8b48-88409c251710@redhat.com>
-From: Pierre Morel <pmorel@linux.ibm.com>
-In-Reply-To: <e5387fc9-f8b0-3905-8b48-88409c251710@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3S-MMX65tSyInQutiASIlpIJzWJTOPj-
-X-Proofpoint-GUID: DazukLw-NYmHn6JaW8TR6dYjJLWBpgku
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-19_10,2023-07-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 mlxscore=0 phishscore=0
- bulkscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 clxscore=1015
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307190135
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=pmorel@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=jean-philippe@linaro.org; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,43 +89,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+With these patches I'm able to boot a Realm guest under
+"-cpu max,x-rme=on". They are based on Peter's series which fixes
+handling of NSTable:
+https://lore.kernel.org/qemu-devel/20230714154648.327466-1-peter.maydell@linaro.org/
 
-On 7/5/23 12:02, Thomas Huth wrote:
-> On 30/06/2023 11.17, Pierre Morel wrote:
-> ...
->> Testing
->> =======
->>
->> To use the QEMU patches, you will need Linux V6-rc1 or newer,
->> or use the following Linux mainline patches:
->>
->> f5ecfee94493 2022-07-20 KVM: s390: resetting the Topology-Change-Report
->> 24fe0195bc19 2022-07-20 KVM: s390: guest support for topology function
->> 0130337ec45b 2022-07-20 KVM: s390: Cleanup ipte lock access and SIIF 
->> fac..
->>
->> Currently this code is for KVM only, I have no idea if it is interesting
->> to provide a TCG patch. If ever it will be done in another series.
->>
->> This series provide 12 avocado tests using Fedora-35 kernel and initrd
->> image.
->
->  Hi Pierre,
->
-> the new avocado tests currently fail if you run them on a x86 host. 
-> Could you please add a check that they are properly skipped instead if 
-> the environment does not match? I guess a
->
->  self.require_accelerator('kvm')
->
-> should do the job...
->
->  Thomas
->
-Yes, thanks, I add this during initialization of the VM.
 
-Regards,
+Running a Realm guest requires components at EL3 and R-EL2. Some rough
+support for TF-A and RMM is available here:
+https://jpbrucker.net/git/tf-a/log/?h=qemu-rme
+https://jpbrucker.net/git/rmm/log/?h=qemu-rme
+I'll clean this up before sending it out.
 
-Pierre
+I also need to manually disable FEAT_SME in QEMU in order to boot this,
+otherwise the Linux host fails to boot because hyp-stub accesses to SME
+regs are trapped to EL3, which doesn't support RME+SME at the moment.
+The right fix is probably in TF-A but I haven't investigated yet.
+
+Jean-Philippe Brucker (5):
+  target/arm/ptw: Load stage-2 tables from realm physical space
+  target/arm/helper: Fix vae2_tlbmask()
+  target/arm: Skip granule protection checks for AT instructions
+  target/arm: Pass security space rather than flag for AT instructions
+  target/arm/helper: Implement CNTHCTL_EL2.CNT[VP]MASK
+
+ target/arm/internals.h | 25 ++++++++------
+ target/arm/helper.c    | 78 ++++++++++++++++++++++++++++--------------
+ target/arm/ptw.c       | 19 ++++++----
+ 3 files changed, 79 insertions(+), 43 deletions(-)
+
+-- 
+2.41.0
 
 
