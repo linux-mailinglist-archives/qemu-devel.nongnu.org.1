@@ -2,80 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0055475993E
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 261CB759980
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:22:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM8qd-0006lW-JB; Wed, 19 Jul 2023 11:12:15 -0400
+	id 1qM8zo-0001AN-EH; Wed, 19 Jul 2023 11:21:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qM8qb-0006lF-3O
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:12:13 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ (Exim 4.90_1) (envelope-from <anup@brainfault.org>)
+ id 1qM8zk-00018O-Lb
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:21:41 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qM8qY-0005M6-NJ
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:12:12 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2b703a0453fso114346111fa.3
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:12:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <anup@brainfault.org>)
+ id 1qM8zi-00033C-9b
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:21:40 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-51e429e1eabso9891615a12.2
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:21:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689779529; x=1692371529;
+ d=brainfault-org.20221208.gappssmtp.com; s=20221208; t=1689780097; x=1692372097;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SydZG41XiMgTddoYtv03apSidvUujJWDayi7uqS0zW4=;
- b=jwRbalezvEyIxXvmU4vDwIjegEBSq7KmsaytP2V/905n6B+zLzymR7Jpkin6cw/PD+
- wMHJDBwU+iiUFqUa7jKOkXr5/NMzR87jM9691cop23qYGzd054IoNAt8mb0IpwitqwCl
- P1t0VpEdflBexRuPqgvrCTwcOQQgJBRBu5bEQCSQ/wPDaZ1GPF4jN+xhbNGRbquUCB+n
- 8dVxvLq8Pr9wreTWvueE1HahuuWZuw5gcO4shhb5s/+vjiTYG1zHtz6MppJsx0JKU/2z
- oqdaJIaN6AEgZKRw2E+pLEnETbk+ksweLpDvD+hRH9pZkCe9qdL8rtGxzpAzTN1AXpjl
- Drdw==
+ bh=0Du35sRawTS/q/ie9oa5Ev2NXy25Q2A+SBKOuZhitjE=;
+ b=lJ4PDte8yRgKrLvmTOQUbS2o03oz/OIArEQjK5uT1nwnmBprPLrnk8LM+kQpBb9bdz
+ 6aqYsoKD4V0Sj2axpRNwqNaDM0JDqOM+KlX5c9O2EqjjaS3AHWS7T9CpA+uuw/GQ1kw+
+ 7jK8Id7wHMMzM1wumGjlMVyWiMyR0mVs4ftIdjj9hd1yE4X10ZwqiCMWMmHllJ+aGgUN
+ FP26iE3CiT9wv/y+bj543Nv5M5PEXPymVTIxrCabZFVfGnzxrPDARx991JGI5WuKAJQy
+ BxoS0ju3VJw0fZTbT0S5yI9KCOye5vlf3qZusAc9O3BjH0SuWroWfJosgiuEc4h5nzY1
+ IlKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689779529; x=1692371529;
+ d=1e100.net; s=20221208; t=1689780097; x=1692372097;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SydZG41XiMgTddoYtv03apSidvUujJWDayi7uqS0zW4=;
- b=BxxZJrCfqOm3uul4/rnyb7ZoC9EkrwjVnAZZlN/zA6W5mKeU7Ij1TAFFcOPUAKrNmY
- Dh5qFYtyp20kxOgo9Zz25+rASjX15j3ekSLCTze6WnzPIg66k0i4oEEZ9HiPDfNo+q2U
- 99i3usTeEIAYzAAtFJQwQs0M6+wiMFG5rK9KB1wdvMd3PMXQOrKL3gIoTJ+S8EhSzzvx
- ERCuoAeWEG1LM1rmmoSr3J9nBmTcVNjtdWZJyOsaktsbJnxFNMhvTq/E4ELgO4fe0Rb1
- XZX+Usly8PnXhxLSFGCX9vFWUZZCwbOCbWmVxAOBRfuob/g5eD59O+2U/I6olpm4L31L
- 0aCw==
-X-Gm-Message-State: ABy/qLbMgAkSoyFkdsv361I/v0N0waNvzplyV8thY97GsgZ/OMcb8y+7
- B/Fn5jlGOdsWLNUK/RQEld4jGAcvVpbgnr941dQ=
-X-Google-Smtp-Source: APBJJlFfOeCHC1EJTXzEfV3mnDCg16N5JZ5TiFomYTJSn8tOJ7d6bOYMH0PrqDCIDOD7AxqMnJ9uLFtl/3qebeEubD4=
-X-Received: by 2002:a2e:93d7:0:b0:2b9:4492:1226 with SMTP id
- p23-20020a2e93d7000000b002b944921226mr141331ljh.11.1689779528114; Wed, 19 Jul
- 2023 08:12:08 -0700 (PDT)
+ bh=0Du35sRawTS/q/ie9oa5Ev2NXy25Q2A+SBKOuZhitjE=;
+ b=FBKLSJUiE5AWOu74fWl4PS9Pbb0QmALxztAaiZ/yQRN0Wj7nvIwaQZTqPYTlzxw5nB
+ CsgdPfpPxi05l8odBpcbLR+VpJalHQ+EhgIYY0TEHmQLxHTMS4xsKhWAq3uxeU8FS55S
+ Am5foqnYf+wrq+C7ywZlQaObSMaqxYaPV77ZNu+3mOUT0xndM4gMxikFUpU/Bz5X9voh
+ DM6JqjI3joI+ofaENbLd4RtrQZY57vxAq8zFM38uQ/xbUieWa9kPz50128zLXiRKJ2kl
+ HHNEW2W4+pVHO6/9vuGEPc+LM7LWB7mng2GZcY99GkHLAvOsmGkgtnruh3GDC++9hmCI
+ Y7bg==
+X-Gm-Message-State: ABy/qLYqUaIbniLIsJjpFyCXDiH14GeWS/EKdtMmO+17/ETV5u5iZgIm
+ o1bcc5//cr9605JEb+wovH5XPAlh7zZIvINhhRk0kA==
+X-Google-Smtp-Source: APBJJlF7tb50/RB6aPzqyrRF1+NLi2z4hK52+zwW7DaWi2XQcsZkA8ubPlu3IiTflsIkzkIM+NTlcQw4FLwmxUeMW34=
+X-Received: by 2002:a17:906:1098:b0:99b:49a6:952d with SMTP id
+ u24-20020a170906109800b0099b49a6952dmr89009eju.65.1689780096603; Wed, 19 Jul
+ 2023 08:21:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1689748694.git.yin31149@gmail.com>
- <20230719045858-mutt-send-email-mst@kernel.org>
- <CAKrof1Nu+Y26=ubQKNmjdSaHTUM7Q5HRwwN_BqG4mZTsAY=CiA@mail.gmail.com>
- <20230719083730-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20230719083730-mutt-send-email-mst@kernel.org>
-From: Hawkins Jiawei <yin31149@gmail.com>
-Date: Wed, 19 Jul 2023 23:11:56 +0800
-Message-ID: <CAKrof1Mj3qYxa2a0woH+O5fjCLRTznXjTzR0wmfL7BeZOii+LA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] vdpa: Send all CVQ state load commands in parallel
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: jasowang@redhat.com, eperezma@redhat.com, qemu-devel@nongnu.org, 
- 18801353760@163.com
+References: <20230712-stench-happiness-40c2ea831257@spud>
+ <3e9b5be8-d3ca-3a17-bef9-4a6a5bdc0ad0@ventanamicro.com>
+ <20230712-tulip-replica-0322e71c3e81@spud>
+ <744cbde6-7ce5-c327-3c5a-3858e994cc39@ventanamicro.com>
+ <20230712-superhero-rabid-578605f52927@spud>
+ <5dd3366d-13ba-c7fb-554f-549d97e7d4f9@ventanamicro.com>
+ <20230712-fancied-aviator-270f51166407@spud>
+ <20230713-craziness-lankiness-8aec3db24993@spud>
+ <CAAhSdy3J5HUoVP21jo11FBuAFSPSxHNKtuL7amn-5t7n_smoSg@mail.gmail.com>
+ <20230714-reoccur-confined-4b37494b1201@spud>
+ <20230714-hash-handwrite-339817b93ba1@spud>
+ <CAOnJCUL3=G_yV5cP5OjCGQKNvciNgXWnoQGUU4Bqh4iwnx6C4A@mail.gmail.com>
+ <CAKmqyKO3O87ETntm7pzMPedKW19ANpEp5nM4jFiHXO76K9saTQ@mail.gmail.com>
+ <CAAhSdy1+wRpqoTFmBRNF7uFnc_fFCyCnt5ctoMu7zhTiu2GcTg@mail.gmail.com>
+ <CAKmqyKOTik3tUa1MyHAyc5jOWcPDY=seHuR-VurHbSKaCKQFpw@mail.gmail.com>
+In-Reply-To: <CAKmqyKOTik3tUa1MyHAyc5jOWcPDY=seHuR-VurHbSKaCKQFpw@mail.gmail.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Wed, 19 Jul 2023 20:51:25 +0530
+Message-ID: <CAAhSdy1vkk6xj7HSyPHKN0d0qgYrq_rn-+iw_rxkdDBKqpC2yw@mail.gmail.com>
+Subject: Re: Boot failure after QEMU's upgrade to OpenSBI v1.3 (was Re: [PATCH
+ for-8.2 6/7] target/riscv: add 'max' CPU type)
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Atish Patra <atishp@atishpatra.org>, Anup Patel <apatel@ventanamicro.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, Conor Dooley <conor@kernel.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, 
+ alistair.francis@wdc.com, bmeng@tinylab.org, liweiwei@iscas.ac.cn, 
+ zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, 
+ opensbi@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=yin31149@gmail.com; helo=mail-lj1-x230.google.com
+Received-SPF: none client-ip=2a00:1450:4864:20::52f;
+ envelope-from=anup@brainfault.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,240 +106,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=E5=9C=A8 2023/7/19 20:46, Michael S. Tsirkin =E5=86=99=E9=81=93:
-> On Wed, Jul 19, 2023 at 08:35:50PM +0800, Hawkins Jiawei wrote:
->> =E5=9C=A8 2023/7/19 17:11, Michael S. Tsirkin =E5=86=99=E9=81=93:
->>> On Wed, Jul 19, 2023 at 03:53:45PM +0800, Hawkins Jiawei wrote:
->>>> This patchset allows QEMU to delay polling and checking the device
->>>> used buffer until either the SVQ is full or control commands shadow
->>>> buffers are full, instead of polling and checking immediately after
->>>> sending each SVQ control command, so that QEMU can send all the SVQ
->>>> control commands in parallel, which have better performance improvemen=
-t.
->>>>
->>>> I use vp_vdpa device to simulate vdpa device, and create 4094 VLANS in
->>>> guest to build a test environment for sending multiple CVQ state load
->>>> commands. This patch series can improve latency from 10023 us to
->>>> 8697 us for about 4099 CVQ state load commands, about 0.32 us per comm=
-and.
->>>
->>> Looks like a tiny improvement.
->>> At the same time we have O(n^2) behaviour with memory mappings.
->>
->> Hi Michael,
->>
->> Thanks for your review.
->>
->> I wonder why you say "we have O(n^2) behaviour on memory mappings" here?
+On Wed, Jul 19, 2023 at 3:23=E2=80=AFPM Alistair Francis <alistair23@gmail.=
+com> wrote:
 >
-> it's not specific to virtio - it's related to device init.
-> generally each device has some memory. during boot bios
-> enables each individually O(n) where n is # of devices.
-> memory maps has to be updated and in qemu this update
-> is at least superlinear with n (more like O(n log n) I think).
-> This gets up > O(n^2) with n number of devices.
-
-Thanks for your explanation.
-
-
->
->>   From my understanding, QEMU maps two page-size buffers as control
->> commands shadow buffers at device startup. These buffers then are used
->> to cache SVQ control commands, where QEMU fills them with multiple SVQ c=
-ontrol
->> commands bytes, flushes them when SVQ descriptors are full or these
->> control commands shadow buffers reach their capacity.
->>
->> QEMU repeats this process until all CVQ state load commands have been
->> sent in loading.
->>
->> In this loading process, only control commands shadow buffers
->> translation should be relative to memory mappings, which should be
->> O(log n) behaviour to my understanding(Please correct me if I am wrong).
->>
->>> Not saying we must not do this but I think it's worth
->>> checking where the bottleneck is. My guess would be
->>> vp_vdpa is not doing things in parallel. Want to try fixing that
->>
->> As for "vp_vdpa is not doing things in parallel.", do you mean
->> the vp_vdpa device cannot process QEMU's SVQ control commands
->> in parallel?
->>
->> In this situation, I will try to use real vdpa hardware to
->> test the patch series performance.
->
-> yea, pls do that.
->
->>> to see how far it can be pushed?
->>
->> Currently, I am involved in the "Add virtio-net Control Virtqueue state
->> restore support" project in Google Summer of Code now. Because I am
->> uncertain about the time it will take to fix that problem in the vp_vdpa
->> device, I prefer to complete the gsoc project first.
->>
->> Thanks!
->>
->>
->>>
->>>
->>>> Note that this patch should be based on
->>>> patch "Vhost-vdpa Shadow Virtqueue VLAN support" at [1].
->>>>
->>>> [1]. https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg03719.ht=
-ml
->>>>
->>>> TestStep
->>>> =3D=3D=3D=3D=3D=3D=3D=3D
->>>> 1. regression testing using vp-vdpa device
->>>>     - For L0 guest, boot QEMU with two virtio-net-pci net device with
->>>> `ctrl_vq`, `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
->>>>         -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Dof=
-f,
->>>> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
->>>> indirect_desc=3Doff,queue_reset=3Doff,ctrl_rx=3Don,ctrl_rx_extra=3Don,=
-...
->>>>
->>>>     - For L1 guest, apply the patch series and compile the source code=
-,
->>>> start QEMU with two vdpa device with svq mode on, enable the `ctrl_vq`=
-,
->>>> `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
->>>>         -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
->>>>         -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3D=
-on,
->>>> ctrl_rx=3Don,ctrl_rx_extra=3Don...
->>>>
->>>>     - For L2 source guest, run the following bash command:
->>>> ```bash
->>>> #!/bin/sh
->>>>
->>>> for idx1 in {0..9}
->>>> do
->>>>     for idx2 in {0..9}
->>>>     do
->>>>       for idx3 in {0..6}
->>>>       do
->>>>         ip link add macvlan$idx1$idx2$idx3 link eth0
->>>> address 4a:30:10:19:$idx1$idx2:1$idx3 type macvlan mode bridge
->>>>         ip link set macvlan$idx1$idx2$idx3 up
->>>>       done
->>>>     done
->>>> done
->>>> ```
->>>>     - Execute the live migration in L2 source monitor
->>>>
->>>>     - Result
->>>>       * with this series, QEMU should not trigger any error or warning=
+> On Wed, Jul 19, 2023 at 3:39=E2=80=AFPM Anup Patel <anup@brainfault.org> =
+wrote:
+> >
+> > On Wed, Jul 19, 2023 at 7:03=E2=80=AFAM Alistair Francis <alistair23@gm=
+ail.com> wrote:
+> > >
+> > > On Sat, Jul 15, 2023 at 7:14=E2=80=AFPM Atish Patra <atishp@atishpatr=
+a.org> wrote:
+> > > >
+> > > > On Fri, Jul 14, 2023 at 5:29=E2=80=AFAM Conor Dooley <conor@kernel.=
+org> wrote:
+> > > > >
+> > > > > On Fri, Jul 14, 2023 at 11:19:34AM +0100, Conor Dooley wrote:
+> > > > > > On Fri, Jul 14, 2023 at 10:00:19AM +0530, Anup Patel wrote:
+> > > > > >
+> > > > > > > > > OpenSBI v1.3
+> > > > > > > > >    ____                    _____ ____ _____
+> > > > > > > > >   / __ \                  / ____|  _ \_   _|
+> > > > > > > > >  | |  | |_ __   ___ _ __ | (___ | |_) || |
+> > > > > > > > >  | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+> > > > > > > > >  | |__| | |_) |  __/ | | |____) | |_) || |_
+> > > > > > > > >   \____/| .__/ \___|_| |_|_____/|___/_____|
+> > > > > > > > >         | |
+> > > > > > > > >         |_|
+> > > > > > > > >
+> > > > > > > > > init_coldboot: ipi init failed (error -1009)
+> > > > > > > > >
+> > > > > > > > > Just to note, because we use our own firmware that vendor=
+s in OpenSBI
+> > > > > > > > > and compiles only a significantly cut down number of file=
+s from it, we
+> > > > > > > > > do not use the fw_dynamic etc flow on our hardware. As a =
+result, we have
+> > > > > > > > > not tested v1.3, nor do we have any immediate plans to ch=
+ange our
+> > > > > > > > > platform firmware to vendor v1.3 either.
+> > > > > > > > >
+> > > > > > > > > I unless there's something obvious to you, it sounds like=
+ I will need to
+> > > > > > > > > go and bisect OpenSBI. That's a job for another day thoug=
+h, given the
+> > > > > > > > > time.
+> > > > > > > > >
+> > > > > > >
+> > > > > > > The real issue is some CPU/HART DT nodes marked as disabled i=
+n the
+> > > > > > > DT passed to OpenSBI 1.3.
+> > > > > > >
+> > > > > > > This issue does not exist in any of the DTs generated by QEMU=
+ but some
+> > > > > > > of the DTs in the kernel (such as microchip and SiFive board =
+DTs) have
+> > > > > > > the E-core disabled.
+> > > > > > >
+> > > > > > > I had discovered this issue in a totally different context af=
+ter the OpenSBI 1.3
+> > > > > > > release happened. This issue is already fixed in the latest O=
+penSBI by the
+> > > > > > > following commit c6a35733b74aeff612398f274ed19a74f81d1f37 ("l=
+ib: utils:
+> > > > > > > Fix sbi_hartid_to_scratch() usage in ACLINT drivers").
+> > > > > >
+> > > > > > Great, thanks Anup! I thought I had tested tip-of-tree too, but
+> > > > > > obviously not.
+> > > > > >
+> > > > > > > I always assumed that Microchip hss.bin is the preferred BIOS=
+ for the
+> > > > > > > QEMU microchip-icicle-kit machine but I guess that's not true=
 .
->>>>
->>>>
->>>>
->>>> 2. perf using vp-vdpa device
->>>>     - For L0 guest, boot QEMU with two virtio-net-pci net device with
->>>> `ctrl_vq`, `ctrl_vlan` features on, command line like:
->>>>         -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Dof=
-f,
->>>> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
->>>> indirect_desc=3Doff,queue_reset=3Doff,ctrl_vlan=3Don,...
->>>>
->>>>     - For L1 guest, apply the patch series, then apply an addtional
->>>> patch to record the load time in microseconds as following:
->>>> ```diff
->>>> diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
->>>> index 6b958d6363..501b510fd2 100644
->>>> --- a/hw/net/vhost_net.c
->>>> +++ b/hw/net/vhost_net.c
->>>> @@ -295,7 +295,10 @@ static int vhost_net_start_one(struct vhost_net *=
-net,
->>>>        }
->>>>
->>>>        if (net->nc->info->load) {
->>>> +        int64_t start_us =3D g_get_monotonic_time();
->>>>            r =3D net->nc->info->load(net->nc);
->>>> +        error_report("vhost_vdpa_net_load() =3D %ld us",
->>>> +                     g_get_monotonic_time() - start_us);
->>>>            if (r < 0) {
->>>>                goto fail;
->>>>            }
->>>> ```
->>>>
->>>>     - For L1 guest, compile the code, and start QEMU with two vdpa dev=
-ice
->>>> with svq mode on, enable the `ctrl_vq`, `ctrl_vlan` features on,
->>>> command line like:
->>>>         -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
->>>>         -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3D=
-on,
->>>> ctrl_vlan=3Don...
->>>>
->>>>     - For L2 source guest, run the following bash command:
->>>> ```bash
->>>> #!/bin/sh
->>>>
->>>> for idx in {1..4094}
->>>> do
->>>>     ip link add link eth0 name vlan$idx type vlan id $idx
->>>> done
->>>> ```
->>>>
->>>>     - wait for some time, then execute the live migration in L2 source=
- monitor
->>>>
->>>>     - Result
->>>>       * with this series, QEMU should not trigger any warning
->>>> or error except something like "vhost_vdpa_net_load() =3D 8697 us"
->>>>       * without this series, QEMU should not trigger any warning
->>>> or error except something like "vhost_vdpa_net_load() =3D 10023 us"
->>>>
->>>> ChangeLog
->>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D
->>>> v3:
->>>>     - refactor vhost_svq_poll() to accept cmds_in_flight
->>>> suggested by Jason and Eugenio
->>>>     - refactor vhost_vdpa_net_cvq_add() to make control commands buffe=
-rs
->>>> is not tied to `s->cvq_cmd_out_buffer` and `s->status`, so we can reus=
+> > > > > >
+> > > > > > Unfortunately the HSS has not worked in QEMU for a long time, a=
+nd while
+> > > > > > I would love to fix it, but am pretty stretched for spare time =
+to begin
+> > > > > > with.
+> > > > > > I usually just do direct kernel boots, which use the OpenSBI th=
+at comes
+> > > > > > with QEMU, as I am sure you already know :)
+> > > > > >
+> > > > > > > At this point, you can either:
+> > > > > > > 1) Use latest OpenSBI on QEMU microchip-icicle-kit machine
+> > > > >
+> > > > > I forgot to reply to this point, wondering what should be done wi=
+th
+> > > > > QEMU. Bumping to v1.3 in QEMU introduces a regression here, regar=
+dless
+> > > > > of whether I can go and build a fixed version of OpenSBI.
+> > > > >
+> > > > FYI: The no-map fix went in OpenSBI v1.3. Without the upgrade, any
+> > > > user using the latest kernel (> v6.4)
+> > > > may hit those random linear map related issues (in hibernation or E=
+FI
+> > > > booting path).
+> > > >
+> > > > There are three possible scenarios:
+> > > >
+> > > > 1. Upgrade to OpenSBI v1.3: Any user of microchip-icicle-kit machin=
 e
->>>> it suggested by Eugenio
->>>>     - poll and check when SVQ is full or control commands shadow buffe=
-rs is
->>>> full
->>>>
->>>> v2: https://lore.kernel.org/all/cover.1683371965.git.yin31149@gmail.co=
-m/
->>>>     - recover accidentally deleted rows
->>>>     - remove extra newline
->>>>     - refactor `need_poll_len` to `cmds_in_flight`
->>>>     - return -EINVAL when vhost_svq_poll() return 0 or check
->>>> on buffers written by device fails
->>>>     - change the type of `in_cursor`, and refactor the
->>>> code for updating cursor
->>>>     - return directly when vhost_vdpa_net_load_{mac,mq}()
->>>> returns a failure in vhost_vdpa_net_load()
->>>>
->>>> v1: https://lore.kernel.org/all/cover.1681732982.git.yin31149@gmail.co=
-m/
->>>>
->>>> Hawkins Jiawei (8):
->>>>     vhost: Add argument to vhost_svq_poll()
->>>>     vdpa: Use iovec for vhost_vdpa_net_cvq_add()
->>>>     vhost: Expose vhost_svq_available_slots()
->>>>     vdpa: Avoid using vhost_vdpa_net_load_*() outside
->>>>       vhost_vdpa_net_load()
->>>>     vdpa: Check device ack in vhost_vdpa_net_load_rx_mode()
->>>>     vdpa: Move vhost_svq_poll() to the caller of vhost_vdpa_net_cvq_ad=
-d()
->>>>     vdpa: Add cursors to vhost_vdpa_net_loadx()
->>>>     vdpa: Send cvq state load commands in parallel
->>>>
->>>>    hw/virtio/vhost-shadow-virtqueue.c |  38 ++--
->>>>    hw/virtio/vhost-shadow-virtqueue.h |   3 +-
->>>>    net/vhost-vdpa.c                   | 354 ++++++++++++++++++--------=
----
->>>>    3 files changed, 249 insertions(+), 146 deletions(-)
->>>>
->>>> --
->>>> 2.25.1
->>>
+> > > > or sifive fu540 machine users
+> > > > may hit this issue if the device tree has the disabled hart (e core=
+).
+> > > > 2. No upgrade to OpenSBI v1.2. Any user using hibernation or UEFI m=
+ay
+> > > > have issues [1]
+> > > > 3. Include a non-release version OpenSBI in Qemu with the fix as an=
+ exception.
+> > > >
+> > > > #3 probably deviates from policy and sets a bad precedent. So I am =
+not
+> > > > advocating for it though ;)
+> > > > For both #1 & #2, the solution would be to use the latest OpenSBI i=
+n
+> > > > -bios argument instead of the stock one.
+> > > > I could be wrong but my guess is the number of users facing #2 woul=
+d
+> > > > be higher than #1.
+> > >
+> > > Thanks for that info Atish!
+> > >
+> > > We are stuck in a bad situation.
+> > >
+> > > The best solution would be if OpenSBI can release a 1.3.1, @Anup Pate=
+l
+> > > do you think you could do that?
+> >
+> > OpenSBI has a major number and minor number in the version but it does
+> > not have release/patch number so best would be to treat OpenSBI vX.Y.Z
+> > as bug fixes on-top-of OpenSBI vX.Y. In other words, supervisor softwar=
+e
+> > won't be able to differentiate between OpenSBI vX.Y.Z and OpenSBI vX.Y
+> > using sbi_get_impl_version().
+> >
+> > There are only three commits between the ACLINT fix and OpenSBI v1.3
+> > so as one-of case I will go ahead create OpenSBI v1.3.1 containing only
+> > four commits on-top of OpenSBI v1.3
+> >
+> > Does this sound okay ?
 >
+> That sounds fine to me. It fixes the issue for the Microsemi board and
+> it's a very small change between 1.3 and 1.3.1
+
+Please check
+https://github.com/riscv-software-src/opensbi/releases/tag/v1.3.1
+
+I hope this helps.
+
+Regards,
+Anup
+
+>
+> Alistair
+>
+> >
+> > >
+> > > Otherwise I think we should stick with OpenSBI 1.3. Considering that
+> > > it fixes UEFI boot issues for the virt board (which would be the most
+> > > used) it seems like a best call to make. People using the other board=
+s
+> > > are unfortunately stuck building their own OpenSBI release.
+> > >
+> > > If there is no OpenSBI 1.3.1 release we should add something to the
+> > > release notes. @Conor Dooley are you able to give a clear sentence on
+> > > how the boot fails?
+> > >
+> > > Alistair
+> > >
+> > > >
+> > > > [1] https://lore.kernel.org/linux-riscv/20230625140931.1266216-1-so=
+ngshuaishuai@tinylab.org/
+> > > > > > > 2) Ensure CPU0 DT node is enabled in DT when booting on QEMU
+> > > > > > >     microchip-icicle-kit machine with OpenSBI 1.3
+> > > > > >
+> > > > > > Will OpenSBI disable it? If not, I think option 2) needs to be =
+remove
+> > > > > > the DT node. I'll just use tip-of-tree myself & up to the
+> > > > >
+> > > > > Clearly didn't finish this comment. It was meant to say "up to th=
+e QEMU
+> > > > > maintainers what they want to do on the QEMU side of things".
+> > > > >
+> > > > > Thanks,
+> > > > > Conor.
+> > > >
+> > > >
+> > > >
+> > > > --
+> > > > Regards,
+> > > > Atish
+> > > >
+> >
+> > Regards,
+> > Anup
 
