@@ -2,98 +2,145 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F10759348
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 12:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D0275936A
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 12:49:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM4c7-0002jY-1T; Wed, 19 Jul 2023 06:40:59 -0400
+	id 1qM4jG-0004le-5r; Wed, 19 Jul 2023 06:48:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qM4bt-0002ir-Jo
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 06:40:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <prvs=55753da1c=Niklas.Cassel@wdc.com>)
+ id 1qM4jC-0004lP-Qe; Wed, 19 Jul 2023 06:48:18 -0400
+Received: from esa6.hgst.iphmx.com ([216.71.154.45])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qM4bq-0004Rc-Bh
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 06:40:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689763240;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iDDEkg05WvjvRHeyNjONWYUO8gqV319CcBTjlMpal88=;
- b=LM4a+w6f2tKalxnAsWeWCmi966xFGhy6fEYjsZBnfLp7OZzg8IOnQZtuMkuh6theqzJfty
- 7dFB7CFGWdrOEoN7wea7ie/GPz371XbHmCT1eqFdZfV+Zz4MTlrnUuxY2qKFq/oUiX3qlT
- n+zXuuz9um5ybGJOiIxlQ7oaSQp2kts=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-S60ABFX3NmmiBsGTDo6OBw-1; Wed, 19 Jul 2023 06:40:39 -0400
-X-MC-Unique: S60ABFX3NmmiBsGTDo6OBw-1
-Received: by mail-yw1-f197.google.com with SMTP id
- 00721157ae682-5704991ea05so62175047b3.1
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 03:40:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689763238; x=1690368038;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iDDEkg05WvjvRHeyNjONWYUO8gqV319CcBTjlMpal88=;
- b=RGItyhxNaT+/F95O2eRRYj7cwifjxhkbzYWtTEB4pnz799Xx5TaLLZLqPjcWjhZRq3
- uxIQHNMOqcHQWK1lD0fD38SZyT6TEj7Ud0vS5FQFXrVBA5h2kMIgGT1U7SnRbKlwS8QD
- zM4msKoNdMRiI0dqphVVHAJPtJzo6WwTzKmnKcvH0HyXMYqnmBpmn3lOMyB+DwhnXWj9
- +sXWpsZ+dhXM/ryOeSG3xocbMVL3PNL9yMoJanbRvTQFAiMf64Znf4a1cYaEJ5YGbA9e
- BLMokSyLCXArPzPzN3jXZbGMa52nbXb0PAQNTbvIL//4QJ50ghxiKdf7ZoTiAwIhA1n+
- 9Nsg==
-X-Gm-Message-State: ABy/qLbUdaUEBej7Jlu1OiZv3L0CAaeJFxuP1RX0LMokxWHOSpErBqE0
- 4qzk28mggaYg0yeGhu9i3A4r804aM9Y6Dcw/NYZEiWMrnMxl/t5zUPWNLkV+2ztXHFa58Dc7wpi
- OvZ+gJYmlciUrNR3zmnzh8ZUaP30j3qk=
-X-Received: by 2002:a25:2b48:0:b0:ccc:55c6:fdae with SMTP id
- r69-20020a252b48000000b00ccc55c6fdaemr1734964ybr.56.1689763238171; 
- Wed, 19 Jul 2023 03:40:38 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlGeBICAggaMTDGf7y2xWMR8sdIAyJ1DlpsY4luj3i8yRoNIbpezf8TNcpi7cbHq8cEewKp1kIxwLA+ZB0rqD98=
-X-Received: by 2002:a25:2b48:0:b0:ccc:55c6:fdae with SMTP id
- r69-20020a252b48000000b00ccc55c6fdaemr1734920ybr.56.1689763237600; Wed, 19
- Jul 2023 03:40:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAJaqyWdV6pKP0SVZciMiu_HN86aJriZh0HBiwHNkO7+yErXnBA@mail.gmail.com>
- <c59d2d67-d31a-b6e6-54c5-5b81c18d9547@oracle.com>
- <CAJaqyWegsVHEVZt2_mf4wA8MuF7UXmU=UbHJfwyzURDRxfRgmg@mail.gmail.com>
- <bff286b8-0103-1698-c77d-736417396405@oracle.com>
- <CAJaqyWcwFgEH3MCOAhHe20P3oy2_aq2BUkTA9_7wePsT8=GoAg@mail.gmail.com>
- <8db2b6cf-1e32-67eb-f6c0-fe3a4175b410@oracle.com>
- <CAJaqyWd_wb5eXcTi2R+-n=AriP=rwKTCwObz1sZ45eRrpLw_wQ@mail.gmail.com>
- <a73797a7-a71d-9ac9-f92b-6bfad2c79058@oracle.com>
- <CAJaqyWcDLG3zG3-4Ht=ebWh-yAXY=srazwuOv1jy3sR-+dPfqg@mail.gmail.com>
- <88be4f76-f03d-fd50-8eaf-c6f7f7d31810@oracle.com>
- <CAJaqyWd-Zbe3dSo_biV7z_gQ=stk738B1qS6R8cnoz2RR_awHg@mail.gmail.com>
- <8f3d011a-457f-a104-e7a8-4a3e430acd5e@oracle.com>
-In-Reply-To: <8f3d011a-457f-a104-e7a8-4a3e430acd5e@oracle.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 19 Jul 2023 12:40:01 +0200
-Message-ID: <CAJaqyWdaHmDHoZ4SuxsJdNgvh18jMoZkEgC8dhCB7NGZM-S5wg@mail.gmail.com>
-Subject: Re: Reducing vdpa migration downtime because of memory pin / maps
-To: Si-Wei Liu <si-wei.liu@oracle.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Jason Wang <jasowang@redhat.com>, 
- Michael Tsirkin <mst@redhat.com>, Longpeng <longpeng2@huawei.com>, 
- "Gonglei (Arei)" <arei.gonglei@huawei.com>, Eli Cohen <elic@nvidia.com>, 
- Parav Pandit <parav@nvidia.com>, Juan Quintela <quintela@redhat.com>, 
- David Gilbert <dgilbert@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
+ (Exim 4.90_1) (envelope-from <prvs=55753da1c=Niklas.Cassel@wdc.com>)
+ id 1qM4j6-0000Tf-RT; Wed, 19 Jul 2023 06:48:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+ t=1689763692; x=1721299692;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-id:content-transfer-encoding: mime-version;
+ bh=HIajBPRntSDVMU4Y9jC9f7c30/6RYnQLVGwsSlJxgJQ=;
+ b=gZ/ReBkqcOkwGupO3BhZ06ll1n54V3ZlgphjkogUXxmfn0fcH1L6Bxjt
+ 939k6hbn5juJlDkDDxFu+3mC4NLV4+cuU95BA6uhVo7+24BfhdZX3gQsO
+ TNIwU/FPQbdp8x8qfkVdtc9ltH6yhLj2WrthAYMJXG3kYd6rrSWK5W/d4
+ bQwE+yvNKSiEFCuy5vya9G9WEz35XPyRnsLnULSGZUUgbDM97ZWXa6P3Y
+ q2bTCO11L0I3mzmBlqL4nuv1uD/xOUCzJetxe7OpqWWocUrGNVU0ECqti
+ 2WI4fmRCnnkoqz4fGuWsm+xfLP3xw9dVEOmrSimbCjDJbgE5egK6eteT2 g==;
+X-IronPort-AV: E=Sophos;i="6.01,216,1684771200"; d="scan'208";a="238859822"
+Received: from mail-dm6nam04lp2049.outbound.protection.outlook.com (HELO
+ NAM04-DM6-obe.outbound.protection.outlook.com) ([104.47.73.49])
+ by ob1.hgst.iphmx.com with ESMTP; 19 Jul 2023 18:47:55 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nIe5YAQJr4tYQVjBt0u7hcCM1Czn6Nj9WegSXcVTk1Pyq4MOxa7g5o3liox2/9FWHidnsSgWrridu2/IlBzHR9rv54/4ikQtwCJARv31DB2h4M6odeO3sfN5JoijMbY64J1V3CqQk8roHd1Fm2ALIM2GBoMlgCOaPaR8ZH14H70earYbulM+asaNWuAN293wnLSn3Gkr6lpwMBdiahw6IRRdcGYOZevooXV+/i/D7fLYyvDbkT2aPy4pNmJ5j5Q8eZTITUDRJBOs+jw1zUPJD7pI3m78dGLhukvY6Ru/M/psyPOJcSjEq/4FswHudRYBEFPvRC9g8AwXGeZsfSz3Tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eNl96zz1EAmuaDMUrsNV+O12PROpwKPPE8VLs8NYtYc=;
+ b=d6f2zQRLV8Iom8LiPRJuvtPDDwAfwYQxJlngXK39Lg/6IVpYbBVjWnWO1s91Y8EkE/nfKoczJOW2HYTRWkc5PtYfyKXmkFwvdKG/mLd6SL/MZnJvKXe6+DVscZASLBkbtbCYzMysNA7Z03iHaJ2erGtlr82eagk47hACrPQ9lFdxhcRvGzPXtHu7Ydv7ierndJAqhHTY7BOfXrlFnxh+cCAuPyWaRxFg1ezALDSG+D6OeVlK+wV+Wqh7GtBCiJuntMPCzf0AtHtvfQdGM7znXFv/kga/g0msM3s0erD8hi8E/2IO2aSnah7tQJBReAoPJPo3xPyTg9u6zdYAV+DVHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
+ header.d=wdc.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eNl96zz1EAmuaDMUrsNV+O12PROpwKPPE8VLs8NYtYc=;
+ b=vF2YW3q2B57gTUfgdOTvbFMfh25mu1J21ByckSCkYc7SHDol+fibGOtSEumNJnjj2YcOa40uN6yMc95BbCXHmwANiJmxgr5TZ3gwi+Blmj08yghUbf7WgM8UNR8oRkbDDsrB07ktZxwZYO7K7JwANiv00p+0bqPW2kPXmTDb/i0=
+Received: from MN2PR04MB6272.namprd04.prod.outlook.com (2603:10b6:208:e0::27)
+ by BL3PR04MB7978.namprd04.prod.outlook.com (2603:10b6:208:341::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.24; Wed, 19 Jul
+ 2023 10:47:52 +0000
+Received: from MN2PR04MB6272.namprd04.prod.outlook.com
+ ([fe80::d093:80b3:59e5:c8a9]) by MN2PR04MB6272.namprd04.prod.outlook.com
+ ([fe80::d093:80b3:59e5:c8a9%6]) with mapi id 15.20.6609.024; Wed, 19 Jul 2023
+ 10:47:52 +0000
+From: Niklas Cassel <Niklas.Cassel@wdc.com>
+To: =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+CC: John Snow <jsnow@redhat.com>, "qemu-block@nongnu.org"
+ <qemu-block@nongnu.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Damien Le Moal <dlemoal@kernel.org>
+Subject: Re: [PATCH v3 0/8] misc AHCI cleanups
+Thread-Topic: [PATCH v3 0/8] misc AHCI cleanups
+Thread-Index: AQHZmtwyWx1FN3NYV0CC4hKYUmTqRa/BJzEA
+Date: Wed, 19 Jul 2023 10:47:52 +0000
+Message-ID: <ZLe/VG5d6TEdp/MT@x1-carbon>
+References: <20230609140844.202795-1-nks@flawful.org>
+In-Reply-To: <20230609140844.202795-1-nks@flawful.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=wdc.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN2PR04MB6272:EE_|BL3PR04MB7978:EE_
+x-ms-office365-filtering-correlation-id: 47e94e92-b16e-4445-8861-08db88459a1c
+wdcipoutbound: EOP-TRUE
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Osg+TSry1TRoGJd6L37/OrKXCwGYu6HzjqtFkuNmT/uhot3yoCk17+aZcUhPBqGOzuwvSfhUcMG8jvXosUQxk0Ervbfuyl3ZSGHaCTbaWAE7GK+wFZEwzlmH5qH/HAfRS2ur5PIaVzIoiK/8Fn7WEa4YvGFePTjDNjrDtUSlKM1MrjUfPeQdSqTfOLFOhtheE/mmMXXP7XYRu89pUKan1HeBo1bKetL2EeOM/kJQY+fPIDuS3K8Y8okg7WdQaWTigJPKcpIJ2+LE/lvtGpdwsPSsEhmu/wreHs/zqlZTx9Pm093mV8TvuZA8IgL9xJrcehIGtlL03FEVQy3DFceP6JZ91dmAHI+EW9zNx8Ds+exYnEUKn0GX7nZc7bV1aJHhgU/gN/WrUgaB452+uUpLwPSPNXzGMjG+Vmakl6472tWoZT0xnk1xAA093GOYOdQvFmp2fM3FXL9ZsHVN5+ktpQuPO2WdIVgJP0eiIrAM2N6LeUdk+Fi9eQcUDDEfekOJLno9FNWSnAgQdzoiikkTXSwfi1x6URW0CMGvSqKf5zIVNCD6QVL0lOIwpyobzsQNC0ZwKz61QDMiti6HOYnZ11B0bvb98D78FkYuNpYwJfSuhzQdUzGgFR3el70VEpz4
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MN2PR04MB6272.namprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230028)(7916004)(4636009)(366004)(346002)(396003)(39860400002)(376002)(136003)(451199021)(41300700001)(54906003)(8936002)(8676002)(5660300002)(6916009)(4326008)(316002)(6486002)(6512007)(33716001)(38100700002)(9686003)(66556008)(66946007)(66476007)(66446008)(76116006)(64756008)(91956017)(83380400001)(71200400001)(2906002)(86362001)(478600001)(38070700005)(82960400001)(122000001)(6506007)(26005)(186003);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?bTlRnPRW8sISb/VeDrVrDJHlpyTGIOfxT8AF7Cl8C190/OJPDLTbizo1GL?=
+ =?iso-8859-1?Q?VclUR+ehNuKBNUk7GtU48q5z1VMOCxojXy+5B3JijUi/uPW0dOOo7ZWxWk?=
+ =?iso-8859-1?Q?26RkLAKET5nGtk8iu2gZBEgoWoaK7ccwAlTDYWVi11l2Pnom9KCHQCRbSG?=
+ =?iso-8859-1?Q?nnna7ynUcklGwUF5rv7i+obwlQUqNHQhEXu9GuySRBP/NfTyM6+cSSyn2y?=
+ =?iso-8859-1?Q?ViMRSc7g3npsgzqac766sOpL/7Oen+6yFkizW3tkhAxdEh4S0vLv33vQdN?=
+ =?iso-8859-1?Q?pZ+BunuLEzncXd7PoyYB0+b2lO9OUDgh8Qhy4fGQXvb553w3EahO5m/3t8?=
+ =?iso-8859-1?Q?l/OMa9iUCK4bnVa9nY8g7a2oMp30qkKsMnALA3iIxrPdR8lku8Yv6tDpop?=
+ =?iso-8859-1?Q?qMGL2XX7i77rm9lVjKfKbr48lRm2jesNHXychn5nDbKofiOoFp7whrCJRg?=
+ =?iso-8859-1?Q?MGuJfi9Qm/nr0fDlb1hxBx7mVySrAka9fEESRJlkpUNF2GB9sStH1bU6ZT?=
+ =?iso-8859-1?Q?PsBCfL7sR4egicZNuea5pIzhkUqmMVsJ4mm+eAvHDo0z4S3LVUxtytDw7B?=
+ =?iso-8859-1?Q?oghWEqnkQ2qfgROF52XvX33zI5GnNEoJ2CzAhFaRqLcmzqnlbMkaCKS5bV?=
+ =?iso-8859-1?Q?FbDae6vFwpFMVePQCmWT5e6F7BR30TyE1FkJggjfdR1q+qknKJDOWIjRZH?=
+ =?iso-8859-1?Q?aDye+pdhWcFVgiiiM7hmfXxz3vGVp1yfS6K96J3VNzrHCl3y+HboBaXCaI?=
+ =?iso-8859-1?Q?uW49lMytTNg8KLJ9Aj63cyBPv46sf5feXbn/JhZKPWkC4ONSEWIIj8K0cp?=
+ =?iso-8859-1?Q?jQbg8LfNrcJSyjh2yrVTR728vtJh/ceNS8y7bNT8baol9JHxcXMw3Stkg1?=
+ =?iso-8859-1?Q?jR1kNMQoH4q1vi+S+Th/lynZjj9XnALseKNPlHFF5ZKF6uuiNfNpJ4noxc?=
+ =?iso-8859-1?Q?hrKxORpJWt4aZIDMA0/W0aFqWy51uK7s2/+UEeffPu9mb1ZzGMEBW7MBG4?=
+ =?iso-8859-1?Q?z6PQ23nejgir+OOvPNWbCSN+khrGBM22dr4L+JJ/o8tCbfBl829fLC36Hh?=
+ =?iso-8859-1?Q?LH7XDgGA9wkYcVfanYbXcSwWCR91cI167P3I6WxmdP2vZVHXp0I4AhuUhS?=
+ =?iso-8859-1?Q?BkPkw+XABm6FJ3hI4TXHfN38TQv4eha9Ip9s2fbMjjTupVCzc70HFy3sMZ?=
+ =?iso-8859-1?Q?mdhccCeG3SicTk8QM0ymSbBxxh1LzxHaQ0EV5HWJzpuv/UmLw82CiNtWMn?=
+ =?iso-8859-1?Q?fCs0P22RrbbG+/r4GAPdB+2idh+mdZNsoR2IYHBnGayQflKv/JH84j1/zp?=
+ =?iso-8859-1?Q?D3dpZx0P//J/riwqzipxnH9GtsgEXFvPNYPEmXT8hT2+gZJOwVt2jlHwT+?=
+ =?iso-8859-1?Q?RKRG+ZuvWAHhqzUt+Rba6FPi3JEg6kDasgyhVHvDO/leznJ5ZVhuurY1wW?=
+ =?iso-8859-1?Q?nWdVKz6GWB0xA+DTER3UY1Nd08tJq1bUdOlffXrCe4HKuUri6rlGdsg+dA?=
+ =?iso-8859-1?Q?z/Wa0+s0litCwzWCCgL3JkZ/56RHWPJ9TcUtMrOSj6PB1/SNMm5+HhPrd5?=
+ =?iso-8859-1?Q?egO7hgPqq+5jEXuacjtuUfF5uVJ/UGz6KscnsEsaZoG6rLIEhDZAbkzAfQ?=
+ =?iso-8859-1?Q?XTUAJSrL9FFc5jKN0JbOWtX42VUbTJ/GjoJwon7iCJAi8qF7g5PVphcA?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <19AA0B04297071418BEEC998EA76ACE6@namprd04.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+MIME-Version: 1.0
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: wY8YWczUD66Dy2WTvvtM29A5OE425ht6nbsIlr50rynQzj9mjyisnK1thzYjiyF8KQoJoxVlCuOSenF0OoTArFfrQt0bGMZpRD72JrD/oSRjDr23tdKX8/3Ulj/VC+vDJaOWRUbgH84k40YP+7dmzBUT2U6J2NpFDI0nFKFWxuZ0jzKC73MxR82YI1reVL/PS+8y5ilbJoaCacQcaTsny9i7aKSJ9qL2hmwGwYfW/Cvc43A0w+2IbTuoBNMmRPLvkTFmmfFIbNI2XCQN2Q/XPCWpewLjZjngolxQfZ4gWUO7Q2bI7U42KIUorH+U6prDyHxqeGNqCDCFFv7oRpQhWeRTRLiXG4+EY+UNf+q/kbHElDCYW6Hu15/Lj0CVGGEQYX1SCYAyllHLyrPhh2bWXblk+01InBww09sGew+36qs2eoOcG6anJDiOiPMZgj/1VINvW473w5SvNR8prRU9eQ9kP6PtOSU0ajuC6aOtyE+rONlraWYSbhN9i9C5MY0jxbNQNcATi0JDFHMDeD3BjoqA24YcVKMKmU/9D67+MYYM3kbrW/p3rkWysHkhxtfhSkkNkDqggfttOnH9ghn7txMY+LcqDDhkqqiLfeVg5OhZufICU5WOVPVAoHffd6P9z5nem1fFVHp/zE1tqtbEEQqCp8ycd5pn6CDWVvGgVrbenzVN5pSdjgJsMdo6ojgWdPaNMMBDIwwTgahWVNrOg4RtA0Dx59fdGqpvOaNxcY2GaTDA2D/0oFx+bWkrM7raTk6kIpiy4ph0XtAI1hVBzPf+zlNyF/jveoBpnkJ+hgN/C53uVq29PGPS+wd4gzbIYnBycnHRBC8HZDk+xA9n6tXeMKi5CLaqNNSzN/ba/XQ=
+X-OriginatorOrg: wdc.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN2PR04MB6272.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47e94e92-b16e-4445-8861-08db88459a1c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jul 2023 10:47:52.2447 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: lRu7si7gtnNbzciEiTFXlcenWiq5TiKPxxg/CoAENz+886DjU5lOFNHWAh1CXh3BywOwr18tNgHbao8lL3idqw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR04MB7978
+Received-SPF: pass client-ip=216.71.154.45;
+ envelope-from=prvs=55753da1c=Niklas.Cassel@wdc.com; helo=esa6.hgst.iphmx.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,472 +156,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Jul 17, 2023 at 9:57=E2=80=AFPM Si-Wei Liu <si-wei.liu@oracle.com> =
-wrote:
->
-> Hey,
->
-> I am now back from the break. Sorry for the delayed response, please see
-> in line.
->
-> On 7/9/2023 11:04 PM, Eugenio Perez Martin wrote:
-> > On Sat, Jul 8, 2023 at 11:14=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.c=
-om> wrote:
-> >>
-> >>
-> >> On 7/5/2023 10:46 PM, Eugenio Perez Martin wrote:
-> >>> On Thu, Jul 6, 2023 at 2:13=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.=
-com> wrote:
-> >>>>
-> >>>> On 7/5/2023 11:03 AM, Eugenio Perez Martin wrote:
-> >>>>> On Tue, Jun 27, 2023 at 8:36=E2=80=AFAM Si-Wei Liu <si-wei.liu@orac=
-le.com> wrote:
-> >>>>>> On 6/9/2023 7:32 AM, Eugenio Perez Martin wrote:
-> >>>>>>> On Fri, Jun 9, 2023 at 12:39=E2=80=AFAM Si-Wei Liu <si-wei.liu@or=
-acle.com> wrote:
-> >>>>>>>> On 6/7/23 01:08, Eugenio Perez Martin wrote:
-> >>>>>>>>> On Wed, Jun 7, 2023 at 12:43=E2=80=AFAM Si-Wei Liu <si-wei.liu@=
-oracle.com> wrote:
-> >>>>>>>>>> Sorry for reviving this old thread, I lost the best timing to =
-follow up
-> >>>>>>>>>> on this while I was on vacation. I have been working on this a=
-nd found
-> >>>>>>>>>> out some discrepancy, please see below.
-> >>>>>>>>>>
-> >>>>>>>>>> On 4/5/23 04:37, Eugenio Perez Martin wrote:
-> >>>>>>>>>>> Hi!
-> >>>>>>>>>>>
-> >>>>>>>>>>> As mentioned in the last upstream virtio-networking meeting, =
-one of
-> >>>>>>>>>>> the factors that adds more downtime to migration is the handl=
-ing of
-> >>>>>>>>>>> the guest memory (pin, map, etc). At this moment this handlin=
-g is
-> >>>>>>>>>>> bound to the virtio life cycle (DRIVER_OK, RESET). In that se=
-nse, the
-> >>>>>>>>>>> destination device waits until all the guest memory / state i=
+On Fri, Jun 09, 2023 at 04:08:36PM +0200, Niklas Cassel wrote:
+> From: Niklas Cassel <niklas.cassel@wdc.com>
+>=20
+> Hello John,
+>=20
+> Here comes some misc AHCI cleanups.
+>=20
+> Most are related to error handling.
+>=20
+> Please review.
+>=20
+> Changes since v2:
+> -Squashed in the test commits that were sent out as a separate series int=
+o
+>  the patch "hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set=
+",
+>  and reordered some of the patches, such that each and every commit passe=
 s
-> >>>>>>>>>>> migrated to start pinning all the memory.
-> >>>>>>>>>>>
-> >>>>>>>>>>> The proposal is to bind it to the char device life cycle (ope=
-n vs
-> >>>>>>>>>>> close),
-> >>>>>>>>>> Hmmm, really? If it's the life cycle for char device, the next=
- guest /
-> >>>>>>>>>> qemu launch on the same vhost-vdpa device node won't make it w=
-ork.
-> >>>>>>>>>>
-> >>>>>>>>> Maybe my sentence was not accurate, but I think we're on the sa=
-me page here.
-> >>>>>>>>>
-> >>>>>>>>> Two qemu instances opening the same char device at the same tim=
-e are
-> >>>>>>>>> not allowed, and vhost_vdpa_release clean all the maps. So the =
-next
-> >>>>>>>>> qemu that opens the char device should see a clean device anywa=
-y.
-> >>>>>>>> I mean the pin can't be done at the time of char device open, wh=
-ere the
-> >>>>>>>> user address space is not known/bound yet. The earliest point po=
-ssible
-> >>>>>>>> for pinning would be until the vhost_attach_mm() call from SET_O=
-WNER is
-> >>>>>>>> done.
-> >>>>>>> Maybe we are deviating, let me start again.
-> >>>>>>>
-> >>>>>>> Using QEMU code, what I'm proposing is to modify the lifecycle of=
- the
-> >>>>>>> .listener member of struct vhost_vdpa.
-> >>>>>>>
-> >>>>>>> At this moment, the memory listener is registered at
-> >>>>>>> vhost_vdpa_dev_start(dev, started=3Dtrue) call for the last vhost=
-_dev,
-> >>>>>>> and is unregistered in both vhost_vdpa_reset_status and
-> >>>>>>> vhost_vdpa_cleanup.
-> >>>>>>>
-> >>>>>>> My original proposal was just to move the memory listener registr=
-ation
-> >>>>>>> to the last vhost_vdpa_init, and remove the unregister from
-> >>>>>>> vhost_vdpa_reset_status. The calls to vhost_vdpa_dma_map/unmap wo=
-uld
-> >>>>>>> be the same, the device should not realize this change.
-> >>>>>> This can address LM downtime latency for sure, but it won't help
-> >>>>>> downtime during dynamic SVQ switch - which still needs to go throu=
-gh the
-> >>>>>> full unmap/map cycle (that includes the slow part for pinning) fro=
-m
-> >>>>>> passthrough to SVQ mode. Be noted not every device could work with=
- a
-> >>>>>> separate ASID for SVQ descriptors. The fix should expect to work o=
-n
-> >>>>>> normal vDPA vendor devices without a separate descriptor ASID, wit=
-h
-> >>>>>> platform IOMMU underneath or with on-chip IOMMU.
-> >>>>>>
-> >>>>> At this moment the SVQ switch is very inefficient mapping-wise, as =
-it
-> >>>>> unmap all the GPA->HVA maps and overrides it. In particular, SVQ is
-> >>>>> allocated in low regions of the iova space, and then the guest memo=
-ry
-> >>>>> is allocated in this new IOVA region incrementally.
-> >>>> Yep. The key to build this fast path for SVQ switching I think is to
-> >>>> maintain the identity mapping for the passthrough queues so that QEM=
-U
-> >>>> can reuse the old mappings for guest memory (e.g. GIOVA identity map=
-ped
-> >>>> to GPA) while incrementally adding new mappings for SVQ vrings.
-> >>>>
-> >>>>> We can optimize that if we place SVQ in a free GPA area instead.
-> >>>> Here's a question though: it might not be hard to find a free GPA ra=
-nge
-> >>>> for the non-vIOMMU case (allocate iova from beyond the 48bit or 52bi=
-t
-> >>>> ranges), but I'm not sure if easy to find a free GIOVA range for the
-> >>>> vIOMMU case - particularly this has to work in the same entire 64bit
-> >>>> IOVA address ranges that (for now) QEMU won't be able to "reserve" a
-> >>>> specific IOVA ranges for SVQ from the vIOMMU. Do you foresee this ca=
-n be
-> >>>> done for every QEMU emulated vIOMMU (intel-iommu amd-iommu, arm smmu=
- and
-> >>>> virito-iommu) so that we can call it out as a generic means for SVQ
-> >>>> switching optimization?
-> >>>>
-> >>> In the case vIOMMU allocates a new block we will use the same algorit=
-hm as now:
-> >>> * Find a new free IOVA chunk of the same size
-> >>> * Map this new SVQ IOVA, that may or may not be the same as SVQ
-> >>>
-> >>> Since we must go through the translation phase to sanitize guest's
-> >>> available descriptors anyway, it has zero added cost.
-> >> Not sure I followed, this can work but doesn't seem able to reuse the
-> >> old host kernel mappings for guest memory, hence still requires remap =
-of
-> >> the entire host IOVA ranges when SVQ IOVA comes along. I think by
-> >> maintaining 1:1 identity map on guest memory, we don't have to bother
-> >> tearing down existing HVA->HPA mappings in kernel thus save the
-> >> expensive pinning calls at large. I don't clearly see under this schem=
-e,
-> >> how the new SVQ IOVA may work with potential conflict on IOVA space fr=
-om
-> >> hotplugged memory - in this case the 1:1 IOVA->GPA identity guest memo=
-ry
-> >> mapping can't be kept.
-> >>
-> > There is no need to maintain the 1:1 for memory mapped after the
-> > pinning. The bigger reason to maintain them is to reduce the downtime
-> > because of pinning.
-> Yes, if guest users don't care about SVQ switching downtime there's no
-> need to maintain 1:1, and SVQ translation like today should work for
-> them. However most live migration users who care about downtime during
-> live migration also care about the downtime for SVQ switching - you
-> don't want to say that brownout time like 300ms or so in the mid of live
-> migration at the cost of complete service loss of 4 to 5 seconds at the
-> start of migration is a win to them. What I said above has the
-> presumption that we both are looking at (the possibility of) a
-> generic/software way to optimize/reduce pinning overhead on the downtime
-> - say what can be done at QEMU level or host kernel to avoid pinning (at
-> SVQ switch) rather than put burden on every hardware vendor to implement
-> a separate ASID for SVQ.
->
+>  the ahci test suite as a separate unit. This way it will be possible to
+>  perform a git bisect without seeing any failures in the ahci test suite.
+>=20
+>=20
+> Kind regards,
+> Niklas
+>=20
+> Niklas Cassel (8):
+>   hw/ide/ahci: remove stray backslash
+>   hw/ide/core: set ERR_STAT in unsupported command completion
+>   hw/ide/ahci: write D2H FIS when processing NCQ command
+>   hw/ide/ahci: simplify and document PxCI handling
+>   hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
+>   hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
+>   hw/ide/ahci: fix ahci_write_fis_sdb()
+>   hw/ide/ahci: fix broken SError handling
+>=20
+>  hw/ide/ahci.c             | 112 +++++++++++++++++++++++++++-----------
+>  hw/ide/core.c             |   2 +-
+>  tests/qtest/libqos/ahci.c | 106 +++++++++++++++++++++++++++---------
+>  tests/qtest/libqos/ahci.h |   8 +--
+>  4 files changed, 164 insertions(+), 64 deletions(-)
+>=20
+> --=20
+> 2.40.1
+>=20
+>=20
 
-Your assumption is right, let's talk in the example as I think it
-would be easier to continue this.
+Hello Philippe,
 
-> > After that, we can reuse the method we're using at
-> > this moment, looking for a new free hole for the new map. ew only need
-> > to pin the new map.
-> Consider this sequence:
-> - initially host device uses original GPA for guest memory mapping
-> - live migration starts off, QEMU's iova tree maps guest memory GPA 1:1
-> to IOVA
+Considering that you picked up my patch,
+"hw/ide/ahci: remove stray backslash" (patch 1/8 in this series),
+and since John seems to have gone silent for 40+ days,
+could you please consider taking this series through your misc tree?
 
-GPA is already mapped & pinned, there is no need to map it again. all
-the remapping is done at the moment, and what I'm proposing is to not
-to do so.
+The series still applies, you just need to skip patch 1/8
+(which has already landed in qemu master).
 
-> - SVQ new maps allocated from a free hole on iova tree that happen to
-> fall just above the IOVA range for guest memory GPA
-> - new memory hot plugged to guest while migration is still going on in
-> source host. although this hot plugged memory region sits right above
-> the guest memory blocks in guest memory space (GPA), it will get new map
-> in a separate range (not 1:1 mapped to GPA any more!) from the QEMU iova
-> tree. Since QEMU mediates and translates virtqueue access to memory via
-> SVQ (all guest memory maps to the same IOVA for SVQ), so far so good
-> - for some reason live migration fails before VM is able to be migrated
-> to the destination host, VM has to resume from the source host immediatel=
-y
-> - since live migration had failed, QEMU will unmap SVQ vrings from the
-> IOVA tree and then stop shadowing virtqueue access
-> - the host vDPA device now has incorrect passthrough GPA mapping for the
-> part of newly plugged guest memory, as that belongs to the IOVA range
-> where SVQ translation is in use
->
 
-I'm assuming we can also support <300ms downtime in that case of
-memory hotplug, and that the pin / unpin of SVQ regions is bearable.
-
-As a first step, we can also move the SVQ vrings IOVA in the event of
-hot-plugging memory. but that would require a restart of the device
-unless RING_RESET is supported. Would that improve the situation?
-
-Another solution is to effectively be smarter in the case of a DMA
-remap, and not unpin memory that is going to be pin anyway.
-
-> Although it might not be easy for SVQ vrings and plugged memory to
-> collide on the same GPA/IOVA range, this is something we should prevent
-> from happening in the first place I'd assume. You can say we only look
-> from higher IOVA ranges to map SVQ so that the lower range can be
-> reserved for latent hot plug memory, but this still needs complicated
-> implementation to deal with IOVA range fragmentation and special
-> collision prevention from breaking the 1:1 map to guest memory space.
->
-> Regards,
-> -Siwei
->
-> >
-> >>> Another option would be to move the SVQ vring to a new region, but I
-> >>> don't see any advantage on maintaining 1:1 mapping at that point.
-> >> See above. For pinning avoidance point of view (i.e. QEMU software
-> >> optimization on SVQ switching downtime), I think it's crucial to
-> >> maintain 1:1 mapping and move SVQ vring to a specific region. But I'm
-> >> not sure how complex it will be for QEMU to get it implemented in a
-> >> clean way.
-> >>
-> >> Thanks,
-> >> -Siwei
-> >>
-> >>>> If this QEMU/vIOMMU "hack" is not universally feasible, I would rath=
-er
-> >>>> build a fast path in the kernel via a new vhost IOTLB command, say
-> >>>> INVALIDATE_AND_UPDATE_ALL, to atomically flush all existing
-> >>>> (passthrough) mappings and update to use the SVQ ones in a single ba=
-tch,
-> >>>> while keeping the pages for guest memory always pinned (the kernel w=
-ill
-> >>>> make this decision). This doesn't expose pinning to userspace, and c=
-an
-> >>>> also fix downtime issue.
-> >>>>
-> >>>>>     All
-> >>>>> of the "translations" still need to be done, to ensure the guest
-> >>>>> doesn't have access to SVQ vring. That way, qemu will not send all =
-the
-> >>>>> unmaps & maps, only the new ones. And vhost/vdpa does not need to c=
-all
-> >>>>> unpin_user_page / pin_user_pages for all the guest memory.
-> >>>>>
-> >>>>> More optimizations include the batching of the SVQ vrings.
-> >>>> Nods.
-> >>>>
-> >>>>>>> One of the concerns was that it could delay VM initialization, an=
-d I
-> >>>>>>> didn't profile it but I think that may be the case.
-> >>>>>> Yes, that's the concern here - we should not introduce regression =
-to
-> >>>>>> normal VM boot process/time. In case of large VM it's very easy to=
- see
-> >>>>>> the side effect if we go this way.
-> >>>>>>
-> >>>>>>>      I'm not sure about
-> >>>>>>> the right fix but I think the change is easy to profile. If that =
-is
-> >>>>>>> the case, we could:
-> >>>>>>> * use a flag (listener->address_space ?) and only register the
-> >>>>>>> listener in _init if waiting for a migration, do it in _start
-> >>>>>>> otherwise.
-> >>>>>> Just doing this alone won't help SVQ mode switch downtime, see the
-> >>>>>> reason stated above.
-> >>>>>>
-> >>>>>>> * something like io_uring, where the map can be done in parallel =
-and
-> >>>>>>> we can fail _start if some of them fails.
-> >>>>>> This can alleviate the problem somehow, but still sub-optimal and =
-not
-> >>>>>> scalable with larger size. I'd like zero or least pinning to be do=
-ne at
-> >>>>>> the SVQ switch or migration time.
-> >>>>>>
-> >>>>> To reduce even further the pinning at SVQ time we would need to
-> >>>>> preallocate SVQ vrings before suspending the device.
-> >>>> Yep. Preallocate SVQ vrings at the start of migration, but before
-> >>>> suspending the device. This will work under the assumption that we c=
-an
-> >>>> reserve or "steal" some ranges from the GPA or GIOVA space...
-> >>>>
-> >>>> Thanks,
-> >>>> -Siwei
-> >>>>
-> >>>>>>>> Actually I think the counterpart vhost_detach_mm() only gets
-> >>>>>>>> handled in vhost_vdpa_release() at device close time is a result=
-ing
-> >>>>>>>> artifact and amiss of today's vhost protocol - the opposite RESE=
-T_OWNER
-> >>>>>>>> call is not made mandatory hence only seen implemented in vhost-=
-net
-> >>>>>>>> device today. One qemu instance could well exec(3) another new q=
-emu
-> >>>>>>>> instance to live upgrade itself while keeping all emulated devic=
-es and
-> >>>>>>>> guest alive. The current vhost design simply prohibits this from=
- happening.
-> >>>>>>>>
-> >>>>>>> Ok, I was not aware of this. Thanks for explaining it!
-> >>>>>>>
-> >>>>>>>>>>>        so all the guest memory can be pinned for all the gues=
-t / qemu
-> >>>>>>>>>>> lifecycle.
-> >>>>>>>>>> I think to tie pinning to guest / qemu process life cycle make=
-s more
-> >>>>>>>>>> sense. Essentially this pinning part needs to be decoupled fro=
-m the
-> >>>>>>>>>> iotlb mapping abstraction layer, and can / should work as a st=
-andalone
-> >>>>>>>>>> uAPI. Such that QEMU at the destination may launch and pin all=
- guest's
-> >>>>>>>>>> memory as needed without having to start the device, while awa=
-iting any
-> >>>>>>>>>> incoming migration request. Though problem is, there's no exis=
-ting vhost
-> >>>>>>>>>> uAPI that could properly serve as the vehicle for that. SET_OW=
-NER /
-> >>>>>>>>>> SET_MEM_TABLE / RESET_OWNER seems a remote fit.. Any objection=
- against
-> >>>>>>>>>> introducing a new but clean vhost uAPI for pinning guest pages=
-, subject
-> >>>>>>>>>> to guest's life cycle?
-> >>>>>>>>>>
-> >>>>>>>>> I think that to pin or not pin memory maps should be a kernel
-> >>>>>>>>> decision, not to be driven by qemu.
-> >>>>>>>> It's kernel decision for sure. I am with this part.
-> >>>>>>>>
-> >>>>>>>>> I'm not against it if needed, but
-> >>>>>>>>> let me know if the current "clean at close" address your concer=
-ns.
-> >>>>>>>> To better facilitate QEMU exec (live update) case, I propose we =
-add new
-> >>>>>>>> vhost uAPI pair for explicit pinning request - which would live =
-with
-> >>>>>>>> user mm's, or more precisely qemu instance's lifecycle.
-> >>>>>>>>
-> >>>>>>> Ok I see your problem better now, but I think it should be solved=
- at
-> >>>>>>> kernel level. Does that live update need to forcefully unpin and =
-pin
-> >>>>>>> the memory again,
-> >>>>>> No, it should avoid the unpin&pin cycle, otherwise it'd defeat the
-> >>>>>> downtime expectation. The exec(3)'d process should inherit the pag=
-e
-> >>>>>> pinning and/or mlock accounting from the original QEMU process, wh=
-ile
-> >>>>>> keeping original page pinning intact. Physical page mappings for D=
-MA can
-> >>>>>> be kept as is to avoid the need of reprogramming device, though in=
- this
-> >>>>>> case the existing vhost iotlb entries should be updated to reflect=
- the
-> >>>>>> new HVA in the exec(3)'d QEMU process.
-> >>>>>>
-> >>>>>>>      or that is just a consequence of how it works the
-> >>>>>>> memory listener right now?
-> >>>>>>>
-> >>>>>>> Why not extend the RESET_OWNER to the rest of devices? It seems t=
-he
-> >>>>>>> most natural way to me.
-> >>>>>> Not sure, I think RESET_OWNER might be too heavy weighted to imple=
-ment
-> >>>>>> live update, and people are not clear what the exact semantics are=
- by
-> >>>>>> using it (which part of the device state is being reset, and how
-> >>>>>> much)... In addition, people working on iommufd intended to make t=
-his a
-> >>>>>> "one-shot" ioctl e.g. CHANGE_OWNER instead of RESET_OWNER+SET_OWNE=
-R:
-> >>>>>>
-> >>>>>> https://lore.kernel.org/kvm/Y5Ibvv9PNMifi0NF@ziepe.ca/
-> >>>>>>
-> >>>>>> New uAPI to just change ownership of mm seems a better fit to me..=
-.
-> >>>>>>
-> >>>>> I'm not sure about the right solution here, but there are other
-> >>>>> proposals to batch ioctls. But maybe creating a new one fits better=
-.
-> >>>>>
-> >>>>> Thanks!
-> >>>>>
-> >>>>>> Thanks,
-> >>>>>> -Siwei
-> >>>>>>
-> >>>>>>> Thanks!
-> >>>>>>>
-> >>>>>>>
-> >>>>>>>>>> Another concern is the use_va stuff, originally it tags to the=
- device
-> >>>>>>>>>> level and is made static at the time of device instantiation, =
-which is
-> >>>>>>>>>> fine. But others to come just find a new home at per-group lev=
-el or
-> >>>>>>>>>> per-vq level struct. Hard to tell whether or not pinning is ac=
-tually
-> >>>>>>>>>> needed for the latter use_va friends, as they are essentially =
-tied to
-> >>>>>>>>>> the virtio life cycle or feature negotiation. While guest / Qe=
-mu starts
-> >>>>>>>>>> way earlier than that. Perhaps just ignore those sub-device le=
-vel use_va
-> >>>>>>>>>> usages? Presumably !use_va at the device level is sufficient t=
-o infer
-> >>>>>>>>>> the need of pinning for device?
-> >>>>>>>>>>
-> >>>>>>>>> I don't follow this. But I have the feeling that the subject of=
- my
-> >>>>>>>>> original mail is way more accurate if I would have said just "m=
-emory
-> >>>>>>>>> maps".
-> >>>>>>>> I think the iotlb layer in vhost-vdpa just provides the abstract=
-ion for
-> >>>>>>>> mapping, not pinning. Although in some case mapping implicitly r=
-elies on
-> >>>>>>>> pinning for DMA purpose, it doesn't have to tie to that in uAPI
-> >>>>>>>> semantics. We can do explicit on-demand pinning for cases for e.=
-g.
-> >>>>>>>> warming up device at live migration destination.
-> >>>>>>>>
-> >>>>>>>>
-> >>>>>>>>> I still consider the way to fix it is to actually delegate that=
- to the
-> >>>>>>>>> kernel vdpa, so it can choose if a particular ASID needs the pi=
-n or
-> >>>>>>>>> not. But let me know if I missed something.
-> >>>>>>>> You can disregard this for now. I will discuss that further with=
- you
-> >>>>>>>> guys while bind_mm and per-group use_va stuffs are landed.
-> >>>>>>>>
-> >>>>>>>> Thanks!
-> >>>>>>>> -Siwei
-> >>>>>>>>
-> >>>>>>>>
-> >>>>>>>>
-> >>>>>>>>> Thanks!
-> >>>>>>>>>
-> >>>>>>>>>> Regards,
-> >>>>>>>>>> -Siwei
-> >>>>>>>>>>
-> >>>>>>>>>>
-> >>>>>>>>>>> This has two main problems:
-> >>>>>>>>>>> * At this moment the reset semantics forces the vdpa device t=
-o unmap
-> >>>>>>>>>>> all the memory. So this change needs a vhost vdpa feature fla=
-g.
-> >>>>>>>>>>> * This may increase the initialization time. Maybe we can del=
-ay it if
-> >>>>>>>>>>> qemu is not the destination of a LM. Anyway I think this shou=
-ld be
-> >>>>>>>>>>> done as an optimization on top.
-> >>>>>>>>>>>
-> >>>>>>>>>>> Any ideas or comments in this regard?
-> >>>>>>>>>>>
-> >>>>>>>>>>> Thanks!
-> >>>>>>>>>>>
->
-
+Kind regards,
+Niklas=
 
