@@ -2,86 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BAC758CC7
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 06:47:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE3DF758D17
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 07:28:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLz59-0001t6-67; Wed, 19 Jul 2023 00:46:35 -0400
+	id 1qLzhz-0002B1-Tg; Wed, 19 Jul 2023 01:26:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qLz4i-0001pA-Kj
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 00:46:09 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qLz4g-0005NS-Lf
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 00:46:08 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1b8b4748fe4so40112265ad.1
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 21:46:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689741965; x=1692333965;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=k5XiVFjyXxETrPBjAjB3APtPMrDa1dtW81Eiy+GFBRc=;
- b=VYxBccMb4Z4fy+QmPTUmB/B9c42tQejLtm+ZS5bzJ9c8SK2USP1Lz8ZAeUsiSrraxy
- p3d2CJm9GuFX61OmlXNz+0l4QsBsbj0v58zjGRyQIFkRGYsJsrJbhBSapZOa0xGDr76H
- JJaEf1HVzU7pEgkCnGm0jcB3WpTGX92BkfybDd4zZVYg0/HrZY8Yig/rqRd0RLc/F2J9
- yzy2WvgBlTuUEUaOu6OqkLaYNtIgKRoiuhEl8dZOt05m9kQ2Ev43afykJfThxRlXoDR1
- lqLIWsco6nh3NEQWOVwrA8weN1V/BL1544CIzvS1BS4gmgVVErIMpHLct3iiwZlPbvD6
- eeow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689741965; x=1692333965;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=k5XiVFjyXxETrPBjAjB3APtPMrDa1dtW81Eiy+GFBRc=;
- b=JitnadF+wx810dcwaTBwvgmV+0/Eg7esP6IeYMwPDywGoaim1ld6Thgh1qbYP0seP4
- W4jrtSVI9ab0e2ogJRSbDfNphjCTvaFnHcU/wXUpoMePQedi5jhbHnDOQKPbjPTN8dny
- pFzT3EtErj4+ldt2llFbXLgWo0k4Bnhi8HYiPvfm+vSkaBUL6vHqMe7yYgE705OscUe/
- 2Z+390w8KaLWBdsHrwjwYZ/uChGAfNsq5inmn1oIrh1Lb5ohkcOTdmCJ7aliiowetpts
- h1JJpliY1N9scI8bv6cASapeJqDkHLrxvyZrJ5gxz6rLVRVTQjYu6z8oGPaXRgxJ3pvN
- K0tQ==
-X-Gm-Message-State: ABy/qLbDoZQWJ6PhsVMLYSCzQzFICFwttN1cVavdwsWyAStew1K34w1y
- QeL+yIUirTbSqudXQ/Wx2cg/Hu5YTJM4JK+d
-X-Google-Smtp-Source: APBJJlF/trm9Zv4eq1vW6wvRKxoIYcoCV4o6t8+0cJyz6DAGFxvXWxYikOoByM6NgNBZCOXMwFj70A==
-X-Received: by 2002:a17:903:2309:b0:1b8:9ba6:b221 with SMTP id
- d9-20020a170903230900b001b89ba6b221mr1775628plh.21.1689741965116; 
- Tue, 18 Jul 2023 21:46:05 -0700 (PDT)
-Received: from toolbox.alistair23.me
- (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
- [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
- by smtp.gmail.com with ESMTPSA id
- e16-20020a17090301d000b001b890009634sm2731080plh.139.2023.07.18.21.46.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jul 2023 21:46:04 -0700 (PDT)
-From: Alistair Francis <alistair23@gmail.com>
-X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
-To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 5/5] target/riscv: Fix LMUL check to use VLEN
-Date: Wed, 19 Jul 2023 14:45:38 +1000
-Message-Id: <20230719044538.2013401-6-alistair.francis@wdc.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230719044538.2013401-1-alistair.francis@wdc.com>
-References: <20230719044538.2013401-1-alistair.francis@wdc.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qLzhx-00029G-6B
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 01:26:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qLzhv-0003CN-F1
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 01:26:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689744398;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Tiq7wgASk5lFBCl91791cs0r6ITeYNv4MkzlMeh6e/8=;
+ b=h2LfFJiEOU0icALSF49oinI1X2kUlBkp97HlpYrfxNkud9nY/luLQMGF+kvUbW2DWJML5B
+ WyY8JtdmOa9zpJ+SoSxhCf7hosvfDW1S5Gs25D80icTKcBxkTB7ioe0wj1s5n+UYI0RhEO
+ jGzLDr5UnUL1Hm60oe9F9pd25bma8N4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-54-iRufqK5-OfqpwbvYKohL0A-1; Wed, 19 Jul 2023 01:26:34 -0400
+X-MC-Unique: iRufqK5-OfqpwbvYKohL0A-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4C3ED800CAF;
+ Wed, 19 Jul 2023 05:26:34 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.37])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CFEA6F66D6;
+ Wed, 19 Jul 2023 05:26:33 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C70F221E6608; Wed, 19 Jul 2023 07:26:32 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Yong Huang <yong.huang@smartx.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,  Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,  Juan Quintela
+ <quintela@redhat.com>,  "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Eric Blake <eblake@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Laurent
+ Vivier <lvivier@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH QEMU v8 4/9] migration: Introduce dirty-limit capability
+References: <168870305868.29142.5121604177475325995-4@git.sr.ht>
+ <875y6oj80i.fsf@pond.sub.org>
+ <CAK9dgmZ73F2qrD-iM-EBSiARRmwGPPorsLdt8NqmkOSyYaRCVw@mail.gmail.com>
+ <87zg3tjxb2.fsf@pond.sub.org>
+ <CAK9dgmYyxZC_6CPZcgudXVpRXKcdd6kXTsYLhZ_PTiOh=c4-2g@mail.gmail.com>
+Date: Wed, 19 Jul 2023 07:26:32 +0200
+In-Reply-To: <CAK9dgmYyxZC_6CPZcgudXVpRXKcdd6kXTsYLhZ_PTiOh=c4-2g@mail.gmail.com>
+ (Yong Huang's message of "Wed, 19 Jul 2023 12:10:09 +0800")
+Message-ID: <87a5vsh3p3.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,57 +91,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rob Bradford <rbradford@rivosinc.com>
+Yong Huang <yong.huang@smartx.com> writes:
 
-The previous check was failing with:
+> On Tue, Jul 18, 2023 at 7:04=E2=80=AFPM Markus Armbruster <armbru@redhat.=
+com> wrote:
+>
+>> Yong Huang <yong.huang@smartx.com> writes:
+>>
+>> > On Thu, Jul 13, 2023 at 8:44=E2=80=AFPM Markus Armbruster <armbru@redh=
+at.com>
+>> wrote:
+>> >
+>> >> ~hyman <hyman@git.sr.ht> writes:
+>> >>
+>> >> > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+>> >> >
+>> >> > Introduce migration dirty-limit capability, which can
+>> >> > be turned on before live migration and limit dirty
+>> >> > page rate durty live migration.
+>> >> >
+>> >> > Introduce migrate_dirty_limit function to help check
+>> >> > if dirty-limit capability enabled during live migration.
+>> >> >
+>> >> > Meanwhile, refactor vcpu_dirty_rate_stat_collect
+>> >> > so that period can be configured instead of hardcoded.
+>> >> >
+>> >> > dirty-limit capability is kind of like auto-converge
+>> >> > but using dirty limit instead of traditional cpu-throttle
+>> >> > to throttle guest down. To enable this feature, turn on
+>> >> > the dirty-limit capability before live migration using
+>> >> > migrate-set-capabilities, and set the parameters
+>> >> > "x-vcpu-dirty-limit-period", "vcpu-dirty-limit" suitably
+>> >> > to speed up convergence.
+>> >> >
+>> >> > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.c=
+om>
+>> >> > Acked-by: Peter Xu <peterx@redhat.com>
+>> >> > Reviewed-by: Juan Quintela <quintela@redhat.com>
+>> >>
+>> >> [...]
+>> >>
+>> >> > diff --git a/qapi/migration.json b/qapi/migration.json
+>> >> > index e43371955a..031832cde5 100644
+>> >> > --- a/qapi/migration.json
+>> >> > +++ b/qapi/migration.json
+>> >> > @@ -497,6 +497,15 @@
+>> >> >  #     are present.  'return-path' capability must be enabled to use
+>> >> >  #     it.  (since 8.1)
+>> >> >  #
+>> >> > +# @dirty-limit: If enabled, migration will use the dirty-limit
+>> >> > +#     algorithm to throttle down guest instead of auto-converge
+>> >> > +#     algorithm. This algorithm only works when vCPU's dirtyrate
+>> >>
+>> >> Two spaces after sentence-ending punctuation, please.
+>> >>
+>> >> "dirty rate" with a space, because that's how we spell it elsewhere.
+>> >>
+>> >> > +#     greater than 'vcpu-dirty-limit', read processes in guest os
+>> >> > +#     aren't penalized any more, so the algorithm can improve
+>> >> > +#     performance of vCPU during live migration. This is an option=
+al
+>> >> > +#     performance feature and should not affect the correctness of
+>> the
+>> >> > +#     existing auto-converge algorithm. (since 8.1)
+>> >> > +#
+>> >>
+>> >> I'm still confused.
+>> >>
+>> >> The text suggests there are two separate algorithms "to throttle down
+>> >> guest": "auto converge" and "dirty limit", and we get to pick one.
+>> >> Correct?
+>> >>
+>> > Yes, indeed !
+>> >
+>> >>
+>> >> If it is correct, then the last sentence feels redundant: picking
+>> >> another algorithm can't affect the algorithm we're *not* using.  What
+>> >> are you trying to express here?
+>> >>
+>> > What i want to express is that the new algorithm implementation does
+>> > not affect the original algorithm, leaving it in the comments seems
+>> > redundant indeed.  I'll drop this in the next version.
+>>
+>> Works for me.
+>>
+>> >> When do we use "auto converge", and when do we use "dirty limit"?
+>> >>
+>> >> What does the user really need to know about these algorithms?  Enough
+>> >> to pick one, I guess.  That means advantages and disadvantages of the
+>> >> two algorithms.  Which are?
+>> >
+>> > 1. The implementation of dirty-limit is based on dirty-ring, which is
+>> > qualified
+>> >    to big systems with huge memories and can improve huge guest VM
+>> >     responsiveness remarkably during live migration. As a consequence,
+>> > dirty-limit
+>> >     is recommended on platforms with huge guest VMs as is the way with
+>> > dirty-ring.
+>> > 2. dirty-limit convergence algorithm does not affect the "read-process"
+>> in
+>> > guest
+>> >    VM, so guest VM gains the equal read performance nearly as it runs =
+on
+>> > host
+>> >    during the live migration. As a result, dirty-limit is recommended =
+if
+>> > the guest
+>> >     VM requires a stable read performance.
+>> > The above explanation is about the recommendation of dirty-limit, plea=
+se
+>> > review,
+>> > if it's ok, i'll place it in the comment of the dirty-limit capability.
+>>
+>> Yes, please.  But before that, I have still more questions.  "This
+>> algorithm only works when vCPU's dirtyrate greater than
+>> 'vcpu-dirty-limit'" is a condition: "FEATURE only works when CONDITION".
+>>
+> I failed to express my meaning again : ( .  "Throttle algo only works when
+> vCPU's  dirtyrate greater than 'vcpu-dirty-limit' " should change to
+> "vCPU throttle only works when vCPU's dirtyrate greater than
+> 'vcpu-dirty-limit'".
+> Not the whole "algo" !
 
-VLEN=128 ELEN = 64 SEW = 16 and LMUL = 1/8 which is a
-valid combination.
+Let me paraphrase to make sure I got it...  The vCPU is throttled as
+needed to keep its dirty rate within the limit set with
+set-vcpu-dirty-limit.  Correct?
 
-Fix the check to allow valid combinations when VLEN is a multiple of
-ELEN.
+What happens when I enable the dirty limit convergence algorithm without
+setting a limit with set-vcpu-dirty-limit?
 
-From the specification:
-
-"In general, the requirement is to support LMUL ≥ SEWMIN/ELEN, where
-SEWMIN is the narrowest supported SEW value and ELEN is the widest
-supported SEW value. In the standard extensions, SEWMIN=8. For standard
-vector extensions with ELEN=32, fractional LMULs of 1/2 and 1/4 must be
-supported. For standard vector extensions with ELEN=64, fractional LMULs
-of 1/2, 1/4, and 1/8 must be supported." Elsewhere in the specification
-it makes clear that VLEN>=ELEN.
-
-From inspection this new check allows:
-
-VLEN=ELEN=64 1/2, 1/4, 1/8 for SEW >=8
-VLEN=ELEN=32 1/2, 1/4 for SEW >=8
-
-Fixes: d9b7609a1fb2 ("target/riscv: rvv-1.0: configure instructions")
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Message-Id: <20230718131316.12283-2-rbradford@rivosinc.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
----
- target/riscv/vector_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index cfacf2ebba..4d06754826 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -43,9 +43,9 @@ target_ulong HELPER(vsetvl)(CPURISCVState *env, target_ulong s1,
-                                             xlen - 1 - R_VTYPE_RESERVED_SHIFT);
- 
-     if (lmul & 4) {
--        /* Fractional LMUL. */
-+        /* Fractional LMUL - check LMUL * VLEN >= SEW */
-         if (lmul == 4 ||
--            cpu->cfg.elen >> (8 - lmul) < sew) {
-+            cpu->cfg.vlen >> (8 - lmul) < sew) {
-             vill = true;
-         }
-     }
--- 
-2.40.1
+>> What happens when the condition is not met?  How can the user ensure the
+>> condition is met?
+>>
+>> [...]
+>>
+>>
 
 
