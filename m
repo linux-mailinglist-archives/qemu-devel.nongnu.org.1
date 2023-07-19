@@ -2,63 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537717590A4
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 10:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB6575911C
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 11:05:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM2su-00079O-Qa; Wed, 19 Jul 2023 04:50:12 -0400
+	id 1qM365-0000Qo-HE; Wed, 19 Jul 2023 05:03:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qM2sq-00078t-1b
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:50:09 -0400
-Received: from mout.kundenserver.de ([212.227.126.130])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qM361-0000Qf-HM
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 05:03:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qM2sl-0005K1-JI
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:50:07 -0400
-Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue011 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1MLiTI-1qdiI439LU-00HiV8; Wed, 19 Jul 2023 10:50:00 +0200
-Message-ID: <29cd5218-a9be-1947-e075-b892023213e8@vivier.eu>
-Date: Wed, 19 Jul 2023 10:49:59 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qM360-0002cd-18
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 05:03:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689757422;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1aQn1uREHAvlx0kzncmf8BuIfb2KDvEmDfFRZl4VzBI=;
+ b=cqKKlcD68yHqufpdj2K2rSo79x/tuxEoUcEY2lu267w75q/86NjlIRvsnlPPafqVoqNRww
+ cd6v9lwIe/iXDIZ1d0GXt+kUPrOKjRf0N91d6rT3vGNNpSbeSdM/v3Vgvz1sxaenwouKDY
+ pHyT5HcUT8GHVLdY3PwLeI06t2gLtzg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-548-F6Mao4vjN_GwM-MY6agjfw-1; Wed, 19 Jul 2023 05:03:41 -0400
+X-MC-Unique: F6Mao4vjN_GwM-MY6agjfw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D0201936D23;
+ Wed, 19 Jul 2023 09:03:40 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.37])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7B63340C6F4C;
+ Wed, 19 Jul 2023 09:03:40 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 6E98F21E6608; Wed, 19 Jul 2023 11:03:39 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Yong Huang <yong.huang@smartx.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,  Peter Xu <peterx@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,  Juan Quintela
+ <quintela@redhat.com>,  "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Eric Blake <eblake@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Laurent
+ Vivier <lvivier@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+Subject: Re: [PATCH QEMU v8 4/9] migration: Introduce dirty-limit capability
+References: <168870305868.29142.5121604177475325995-4@git.sr.ht>
+ <875y6oj80i.fsf@pond.sub.org>
+ <CAK9dgmZ73F2qrD-iM-EBSiARRmwGPPorsLdt8NqmkOSyYaRCVw@mail.gmail.com>
+ <87zg3tjxb2.fsf@pond.sub.org>
+ <CAK9dgmYyxZC_6CPZcgudXVpRXKcdd6kXTsYLhZ_PTiOh=c4-2g@mail.gmail.com>
+ <87a5vsh3p3.fsf@pond.sub.org>
+ <CAK9dgmZeJL0M9Lc4S6o5R=GvtyXmKvBeHmTBbcfPiYE7w=uTXQ@mail.gmail.com>
+Date: Wed, 19 Jul 2023 11:03:39 +0200
+In-Reply-To: <CAK9dgmZeJL0M9Lc4S6o5R=GvtyXmKvBeHmTBbcfPiYE7w=uTXQ@mail.gmail.com>
+ (Yong Huang's message of "Wed, 19 Jul 2023 14:14:45 +0800")
+Message-ID: <87bkg8ff2s.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] Wrong unpacked structure for epoll_event on qemu-or1k
- (openrisc user-space)
-Content-Language: fr
-To: Luca Bonissi <qemu@bonslack.org>, Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <750c569e-a922-d3bb-1f97-1698960d5b05@bonslack.org>
- <CAFEAcA9vkyO_kivpSGV7jPW+DCbSD1BNA+SsLixViamXRi61CQ@mail.gmail.com>
- <fa561a63-991a-329e-d9f2-5b334d94516b@bonslack.org>
-From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <fa561a63-991a-329e-d9f2-5b334d94516b@bonslack.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:HK92QWG02fuRnyq6HuWVso5C1vcf5v/yNK2Pmz9PchfbzcnKNkO
- OY1U37BiOC+Ov16JAP7dkRFiUnya2HFNwkL5IQceCZF1TWwoIhNysahXpCZJjlZHZeAp07e
- 68RGQtuvEYB/+2vE5ykY7QJNiu5TiG4OcVWiFWDI8Tr9zYEBwmN1liQ6auDDm4TqeyR2WJ1
- o2+YFrpBbGiwaZncu5wVQ==
-UI-OutboundReport: notjunk:1;M01:P0:7kOdQjBiOmM=;jYZSnZLEmELkDxTQ7yJOvo8bqBF
- SWkPWQtQ+l2p2dZzhZIMnR98eYom4GdNviRFicvGEEuPRBsFqMuWvy6T2hSN+YaoNrePbatmv
- +uQyR0aweTk0MOjVEkqP89j+2vDSwwaTUQn43c9JY8SiLKH1z4qxwocp5CscIrJaTfFTI6XsZ
- 2MRAp29ID2RrVfq4h0dDckt3fy4qU/CtSDC9QNyzOFqMPxyN2kGtyFzo5x+jSXfkBdwVFR4hM
- HaWlHKNXaiE8VX8Uti3YU/KE1iif6BdQmlIxgswSCN2lrh31WfSNAI31IWmc+5rTxGr7MM+Th
- MBCMfp6VzbYtnLE4Wum7y8uW3w+pIG8FAww57HkFzXaloNLVl/WOmfIfmweS0r4hing3NqIWw
- NRfloRkE1uzAZj7Fq1n9MECEhTXsrGDpZkNRjhxdMWcJMn01u0StC+j20lruh4lChjAQdC1xd
- 2YtH0J/k1rNrCBgGeXHWkRxD9b5ASsAOqsPHvoOnbOF8ZOgIrJ1cw9oQy2kicExNBf9eOxryK
- mee0eGStPyBFhHS/LShJGfGDqX4kf3eU33fEVf6vQVrEvv3bfdC0NEFssVtAfY7IV0EtOxONe
- 99zzLXuEX3O/zqmi5nYYGrsmn/Wm5b5yMSRDId4DP8jypy7aw21JdPg0j1Cim7sD8RBVZyEuU
- ZjHtYWpjDv5T8LN1rJpYV5wmbF6AulNzyOS8q+DX5Q==
-Received-SPF: none client-ip=212.227.126.130; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.095,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,55 +93,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 18/07/2023 à 17:06, Luca Bonissi a écrit :
-> On 18/07/23 16:40, Peter Maydell wrote:
->> Hi; thanks for this patch. Unfortunately we need patches
->> to include a Signed-off-by: line that says you're legally
->> OK with it being contributed to QEMU, or we can't take them.
-> 
-> Sorry for the missing "signed-off-by" line, adding it just now:
-> 
-> ==============
-> The or1k epoll_event structure - unlike other architectures - is packed, so we need to define it as 
-> packed in qemu-user, otherwise it leads to infinite loop due to missing file descriptor in the 
-> returned data:
-> 
-> 
-> Signed-off-by: Luca Bonissi <qemu@bonslack.org>
-> ---
-> 
-> diff -up a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-> --- a/linux-user/syscall_defs.h    2023-03-27 15:41:42.000000000 +0200
-> +++ b/linux-user/syscall_defs.h    2023-06-30 17:29:39.034322213 +0200
-> @@ -2714,7 +2709,7 @@
->   #define FUTEX_CMD_MASK          ~(FUTEX_PRIVATE_FLAG | FUTEX_CLOCK_REALTIME)
-> 
->   #ifdef CONFIG_EPOLL
-> -#if defined(TARGET_X86_64)
-> +#if defined(TARGET_X86_64) || defined(TARGET_OPENRISC)
->   #define TARGET_EPOLL_PACKED QEMU_PACKED
->   #else
->   #define TARGET_EPOLL_PACKED
+Yong Huang <yong.huang@smartx.com> writes:
 
-According to linux/glibc sourced, epoll is only packed for x86_64.
+> On Wed, Jul 19, 2023 at 1:26=E2=80=AFPM Markus Armbruster <armbru@redhat.=
+com> wrote:
+>
+>> Yong Huang <yong.huang@smartx.com> writes:
+>>
+>> > On Tue, Jul 18, 2023 at 7:04=E2=80=AFPM Markus Armbruster <armbru@redh=
+at.com>
+>> wrote:
+>> >
+>> >> Yong Huang <yong.huang@smartx.com> writes:
+>> >>
+>> >> > On Thu, Jul 13, 2023 at 8:44=E2=80=AFPM Markus Armbruster <armbru@r=
+edhat.com> wrote:
 
-Did you try to check the alignment of the structure with gdb of a C program using offsetof() in an 
-openrisc VM or linux-user container?
+[...]
 
-Perhaps the default alignment of long is not correctly defined in qemu for openrisc?
+>> >> Yes, please.  But before that, I have still more questions.  "This
+>> >> algorithm only works when vCPU's dirtyrate greater than
+>> >> 'vcpu-dirty-limit'" is a condition: "FEATURE only works when CONDITIO=
+N".
+>> >>
+>> > I failed to express my meaning again : ( .  "Throttle algo only works =
+when
+>> > vCPU's  dirtyrate greater than 'vcpu-dirty-limit' " should change to
+>> > "vCPU throttle only works when vCPU's dirtyrate greater than
+>> > 'vcpu-dirty-limit'".
+>> > Not the whole "algo" !
+>>
+>> Let me paraphrase to make sure I got it...  The vCPU is throttled as
+>> needed to keep its dirty rate within the limit set with
+>> set-vcpu-dirty-limit.  Correct?
+>>
+> Yes. Actually set with the internal function qmp_set_vcpu_dirty_limit.
+>
+> And a parameter called "vcpu-dirty-limit"  of migration provided by
+> dirty-limit
+> aims to be the argument of qmp_set_vcpu_dirty_limit.
 
-You can check with:
+Alright, let me try to craft some documentation:
 
-int main(void)
-{
-         printf("alignof(short) %ld\n", __alignof__(short));
-         printf("alignof(int) %ld\n", __alignof__(int));
-         printf("alignof(long) %ld\n", __alignof__(long));
-         printf("alignof(long long) %ld\n", __alignof__(long long));
-}
+  # @dirty-limit: If enabled, migration will throttle vCPUs as needed to
+  #     keep their dirty page rate within @vcpu-dirty-limit.  This can
+  #     improve responsiveness of large guests during live migration,
+  #     and can result in more stable read performance.  Requires KVM
+  #     with accelerator property "dirty-ring-size" set.  (Since 8.1)
 
-See include/exec/user/abitypes.h to update the value.
+What do you think?
 
-Thanks,
-Laurent
+>> What happens when I enable the dirty limit convergence algorithm without
+>> setting a limit with set-vcpu-dirty-limit?
+>>
+> dirty-limit will use the default value which is defined
+> in migration/options.c:
+> #define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT            1       /* MB/s */
+>
+> So the default of the dirty-limit is 1MB/s.
+
+Is this default documented in the QAPI schema?  Hmm, looks like it isn't
+before this series, but PATCH 3 fixes it.  Okay.
+
+>> >> What happens when the condition is not met?  How can the user ensure =
+the
+>> >> condition is met?
+>> >>
+>> >> [...]
+
 
