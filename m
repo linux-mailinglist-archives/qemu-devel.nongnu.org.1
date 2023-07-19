@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA5E758CC5
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 06:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF2E758CC8
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 06:47:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLz4n-0001oU-IS; Wed, 19 Jul 2023 00:46:15 -0400
+	id 1qLz58-0001se-3i; Wed, 19 Jul 2023 00:46:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qLz4Y-0001nn-Sv
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 00:45:58 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1qLz4f-0001oa-TR
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 00:46:07 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qLz4X-0005Kz-5Z
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 00:45:58 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-66869feb7d1so4373322b3a.3
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 21:45:56 -0700 (PDT)
+ id 1qLz4a-0005LW-JX
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 00:46:02 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6687466137bso4282449b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 21:46:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689741955; x=1692333955;
+ d=gmail.com; s=20221208; t=1689741959; x=1692333959;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ee7keV3IjviyZX4VRwng5LDAR6riQfRkXrQyIDA3/jI=;
- b=fYoizcEx1tLeiYAZtJ8fsA+0Ndcl/7ZwgAsl/JZntJ61JCUVKzUM+lazH9CmMmfvLc
- 9kjSENWIn1fIs01MEaAhWFG52ZY+KwzXl4yiFmSUuXQq69+yXYAxykSLGa53Y1QZw2Ho
- AfE14tPyUfnwji+e3VALmzOhbkbzXONeRZMguss9uiip+5Tym3KPLXoWnP0wGsqN+aot
- DiUVNKqU10Rc1EBsFi0q6tZLE3ZIGPNPuLEHN3uChftlIRewsRqMMqmObBTnBfBRhZO6
- K3P6PQNvZSbOS6EXJhZ4ijDAVU4tkFEUytE0V+8O7bZJa2GepBVqzhmtGBZX5yXAbiB3
- gKkA==
+ bh=8WbUdDwREb7+jUc50QF2GeSoE7i7C921v5vq8Yxj3Pk=;
+ b=QTmCFfMgeiOZ7dgkT4Txy17wJHbKggvqtAKX7MehL2f/XihdqG8lQr6SCjH2yuatLj
+ tBt+tMrFcNALs5Y6woC/pLXVoStfHmTsJVcEYzTVzdLVaeAek0KJz+UoT+b5DCGXYS7E
+ eNdz3UK4SSDzUlIfS+nKKBKy3OY19WxOr48IWY+y0+X41+belpnHN4xgclH3DD6chTrl
+ nNOeRvL1IKWAERk5ggDDey7Oz/89VlifeYlSvgRYR7FakjdhwqweDJooVEg5PU2hyaIj
+ kHkydiveaqmrh3/yYT2H2ZfDqEfWbAN12i73M6nweoHPSHz9k25R1vamC43/0iCG0zLg
+ 0pzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689741955; x=1692333955;
+ d=1e100.net; s=20221208; t=1689741959; x=1692333959;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ee7keV3IjviyZX4VRwng5LDAR6riQfRkXrQyIDA3/jI=;
- b=ly/2+n2fkho8gMambKzGfJAMNcJASjaIHL+QeRpegCmL6rRSpvPflnrXX/HX+LwN3r
- Aw2NBhN8PtBmXs3bvEBjtYWu7ZZGOGHCArLgO8M2YtsEKKSoQC5ajwkuZE4rWKoW1nMQ
- r6tdy+fI5kgpZzx3ASY6EbZ2JAyQfECMHJZobqgOu/cyY2CVAmVcDy+oWiMbwTjoj7wI
- ONWXx9EJXruM9yjF5b3RuqAcUt3cI1xkkGPKDubwar9OjW++Z3tdl48S6pfKEiygWQd7
- XLGrRUAwRn8jM4YhxPkCbLnBCZAnwPixyGTcZlBZ62pX1GZGvbTPecdjQjNwTOo9Bamz
- kFwA==
-X-Gm-Message-State: ABy/qLYp/eW3DlB6v+FzdvJwJ2TYUUG5SZb22wV2stmdPjd2wdBXBQC1
- DwE/lL3DRlYQNqdLNGU2D6Ac7LPA9RzU4VlE
-X-Google-Smtp-Source: APBJJlHpXbAuFsedNut2s8eBCK15L6J+GXm+igTGZNJ1CG9vYJ1BCjMQYU7MUy+nC9db465BGEHTkA==
-X-Received: by 2002:a05:6a20:9484:b0:12c:9518:7899 with SMTP id
- hs4-20020a056a20948400b0012c95187899mr946496pzb.24.1689741955200; 
- Tue, 18 Jul 2023 21:45:55 -0700 (PDT)
+ bh=8WbUdDwREb7+jUc50QF2GeSoE7i7C921v5vq8Yxj3Pk=;
+ b=JFn/t5XS8nXtqc1zKcKnwLEPCQ2Q9Gd5Ede0rUyghkEVwZI2eM7gTKaa/wJBM9YbP/
+ EAhf300CPnGlUnCjpaLgE0MBsTS0ZggQW25ayoayM08Pd0lWkAnmMFbLOkW2pXMgf5E5
+ tiQPFMum748XoiVmEyN29XZGISkprPiqmy+uXV/K6jGuCKvVxekqjrQRFKNKaJ97+Yfc
+ 8Q4vIkFcjuVSSZ2FzZ7/KreBpNe5hkVovCSlRgKcTMbfD8eShIyWPNRni0IhFez39QCu
+ 4fqvFDSSsYjjPP/2IENUFCdRQ2nNLHxZXAvZLdIWXSlMHR3GSxCbmtTe92/SOjRy2fxA
+ VnQQ==
+X-Gm-Message-State: ABy/qLYC0bBVozs+6JOF+pAwPjZEP44He1RwCKO1QhG+JsmMeUVE0stH
+ lDrtEX+Ke7PQCG9cuV33MYnWCSN9MOqPYwL+
+X-Google-Smtp-Source: APBJJlHL1rjQQaiQfSIgkm+IoO0RHZOiaqxB6FOw+vJ6x/Y5HtsK7RHCu8wRxK4U0UP5+bynL5NrJw==
+X-Received: by 2002:a05:6a21:3297:b0:133:c9f0:ce66 with SMTP id
+ yt23-20020a056a21329700b00133c9f0ce66mr1406459pzb.18.1689741958842; 
+ Tue, 18 Jul 2023 21:45:58 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- e16-20020a17090301d000b001b890009634sm2731080plh.139.2023.07.18.21.45.52
+ e16-20020a17090301d000b001b890009634sm2731080plh.139.2023.07.18.21.45.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 18 Jul 2023 21:45:54 -0700 (PDT)
+ Tue, 18 Jul 2023 21:45:58 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
- =?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 2/5] riscv/disas: Fix disas output of upper immediates
-Date: Wed, 19 Jul 2023 14:45:35 +1000
-Message-Id: <20230719044538.2013401-3-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Conor Dooley <conor@kernel.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Conor Dooley <conor.dooley@microchip.com>
+Subject: [PULL 3/5] target/riscv/cpu.c: check priv_ver before auto-enable
+ zca/zcd/zcf
+Date: Wed, 19 Jul 2023 14:45:36 +1000
+Message-Id: <20230719044538.2013401-4-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230719044538.2013401-1-alistair.francis@wdc.com>
 References: <20230719044538.2013401-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,96 +99,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Christoph Müllner <christoph.muellner@vrull.eu>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-The GNU assembler produces the following output for instructions
-with upper immediates:
-    00002597                auipc   a1,0x2
-    000024b7                lui     s1,0x2
-    6409                    lui     s0,0x2 # c.lui
+Commit bd30559568 made changes in how we're checking and disabling
+extensions based on env->priv_ver. One of the changes was to move the
+extension disablement code to the end of realize(), being able to
+disable extensions after we've auto-enabled some of them.
 
-The immediate operands of upper immediates are not shifted.
+An unfortunate side effect of this change started to happen with CPUs
+that has an older priv version, like sifive-u54. Starting on commit
+2288a5ce43e5 we're auto-enabling zca, zcd and zcf if RVC is enabled,
+but these extensions are priv version 1.12.0. When running a cpu that
+has an older priv ver (like sifive-u54) the user is spammed with
+warnings like these:
 
-However, the QEMU disassembler prints them shifted:
-    00002597          auipc                   a1,8192
-    000024b7          lui                     s1,8192
-    6409              lui                     s0,8192 # c.lui
+qemu-system-riscv64: warning: disabling zca extension for hart 0x0000000000000000 because privilege spec version does not match
+qemu-system-riscv64: warning: disabling zcd extension for hart 0x0000000000000000 because privilege spec version does not match
 
-The current implementation extracts the immediate bits and shifts the by 12,
-so the internal representation of the immediate is the actual immediate.
-However, the immediates are later printed using rv_fmt_rd_imm or
-rv_fmt_rd_offset, which don't undo the shift.
+The warnings are part of the code that disables the extension, but in this
+case we're throwing user warnings for stuff that we enabled on our own,
+without user intervention. Users are left wondering what they did wrong.
 
-Let's fix this by using specific output formats for instructions
-with upper immediates, that take care of the shift.
+A quick 8.1 fix for this nuisance is to check the CPU priv spec before
+auto-enabling zca/zcd/zcf. A more appropriate fix will include a more
+robust framework that will account for both priv_ver and user choice
+when auto-enabling/disabling extensions, but for 8.1 we'll make it do
+with this simple check.
 
-Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20230711075051.1531007-1-christoph.muellner@vrull.eu>
+It's also worth noticing that this is the only case where we're
+auto-enabling extensions based on a criteria (in this case RVC) that
+doesn't match the priv spec of the extensions we're enabling. There's no
+need for more 8.1 band-aids.
+
+Cc: Conor Dooley <conor@kernel.org>
+Fixes: 2288a5ce43e5 ("target/riscv: add cfg properties for Zc* extension")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Message-Id: <20230717154141.60898-1-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- disas/riscv.h |  2 ++
- disas/riscv.c | 19 ++++++++++++++++---
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ target/riscv/cpu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/disas/riscv.h b/disas/riscv.h
-index 9cf901fc1e..8abb578b51 100644
---- a/disas/riscv.h
-+++ b/disas/riscv.h
-@@ -227,7 +227,9 @@ enum {
- #define rv_fmt_pred_succ              "O\tp,s"
- #define rv_fmt_rs1_rs2                "O\t1,2"
- #define rv_fmt_rd_imm                 "O\t0,i"
-+#define rv_fmt_rd_uimm                "O\t0,Ui"
- #define rv_fmt_rd_offset              "O\t0,o"
-+#define rv_fmt_rd_uoffset             "O\t0,Uo"
- #define rv_fmt_rd_rs1_rs2             "O\t0,1,2"
- #define rv_fmt_frd_rs1                "O\t3,1"
- #define rv_fmt_frd_rs1_rs2            "O\t3,1,2"
-diff --git a/disas/riscv.c b/disas/riscv.c
-index cd7b6e86a7..3873a69157 100644
---- a/disas/riscv.c
-+++ b/disas/riscv.c
-@@ -1135,8 +1135,8 @@ static const rv_comp_data rvcp_fsgnjx_q[] = {
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 9339c0241d..6b93b04453 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1225,7 +1225,8 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+         }
+     }
  
- const rv_opcode_data rvi_opcode_data[] = {
-     { "illegal", rv_codec_illegal, rv_fmt_none, NULL, 0, 0, 0 },
--    { "lui", rv_codec_u, rv_fmt_rd_imm, NULL, 0, 0, 0 },
--    { "auipc", rv_codec_u, rv_fmt_rd_offset, NULL, 0, 0, 0 },
-+    { "lui", rv_codec_u, rv_fmt_rd_uimm, NULL, 0, 0, 0 },
-+    { "auipc", rv_codec_u, rv_fmt_rd_uoffset, NULL, 0, 0, 0 },
-     { "jal", rv_codec_uj, rv_fmt_rd_offset, rvcp_jal, 0, 0, 0 },
-     { "jalr", rv_codec_i, rv_fmt_rd_rs1_offset, rvcp_jalr, 0, 0, 0 },
-     { "beq", rv_codec_sb, rv_fmt_rs1_rs2_offset, rvcp_beq, 0, 0, 0 },
-@@ -1382,7 +1382,7 @@ const rv_opcode_data rvi_opcode_data[] = {
-       rv_op_addi },
-     { "c.addi16sp", rv_codec_ci_16sp, rv_fmt_rd_rs1_imm, NULL, rv_op_addi,
-       rv_op_addi, rv_op_addi, rvcd_imm_nz },
--    { "c.lui", rv_codec_ci_lui, rv_fmt_rd_imm, NULL, rv_op_lui, rv_op_lui,
-+    { "c.lui", rv_codec_ci_lui, rv_fmt_rd_uimm, NULL, rv_op_lui, rv_op_lui,
-       rv_op_lui, rvcd_imm_nz },
-     { "c.srli", rv_codec_cb_sh6, rv_fmt_rd_rs1_imm, NULL, rv_op_srli,
-       rv_op_srli, rv_op_srli, rvcd_imm_nz },
-@@ -4694,6 +4694,19 @@ static void format_inst(char *buf, size_t buflen, size_t tab, rv_decode *dec)
-                 dec->pc + dec->imm);
-             append(buf, tmp, buflen);
-             break;
-+        case 'U':
-+            fmt++;
-+            snprintf(tmp, sizeof(tmp), "%d", dec->imm >> 12);
-+            append(buf, tmp, buflen);
-+            if (*fmt == 'o') {
-+                while (strlen(buf) < tab * 2) {
-+                    append(buf, " ", buflen);
-+                }
-+                snprintf(tmp, sizeof(tmp), "# 0x%" PRIx64,
-+                    dec->pc + dec->imm);
-+                append(buf, tmp, buflen);
-+            }
-+            break;
-         case 'c': {
-             const char *name = csr_name(dec->imm & 0xfff);
-             if (name) {
+-    if (riscv_has_ext(env, RVC)) {
++    /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
++    if (riscv_has_ext(env, RVC) && env->priv_ver >= PRIV_VERSION_1_12_0) {
+         cpu->cfg.ext_zca = true;
+         if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
+             cpu->cfg.ext_zcf = true;
 -- 
 2.40.1
 
