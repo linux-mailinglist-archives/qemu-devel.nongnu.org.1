@@ -2,110 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AADF758F32
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 09:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E520A758FA9
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 09:54:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM1jT-000471-1t; Wed, 19 Jul 2023 03:36:23 -0400
+	id 1qM20H-0004KL-2W; Wed, 19 Jul 2023 03:53:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qM1jP-00045u-Mt; Wed, 19 Jul 2023 03:36:19 -0400
-Received: from wout3-smtp.messagingengine.com ([64.147.123.19])
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1qM1zy-0004Jw-5c
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 03:53:26 -0400
+Received: from mail-dm6nam10on2085.outbound.protection.outlook.com
+ ([40.107.93.85] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qM1jN-0005Q9-PS; Wed, 19 Jul 2023 03:36:19 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.west.internal (Postfix) with ESMTP id B1DD13200929;
- Wed, 19 Jul 2023 03:36:14 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute4.internal (MEProxy); Wed, 19 Jul 2023 03:36:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:content-type
- :date:date:from:from:in-reply-to:in-reply-to:message-id
- :mime-version:references:reply-to:sender:subject:subject:to:to;
- s=fm2; t=1689752174; x=1689838574; bh=0Ey7Xt/fVOaLXgPSQ3lKxpQcW
- 1sEfvcbitWvyfP36+Q=; b=DJPBy9JTsCmGJ92JX7r/ov+sUUkEbv4yMqNeo9nph
- IfAGKaRRQc1bGAgRVipVqvBM/UW8G+KPJxLdBD3ThWOEpN0xTQmZu+LqpKjkJY1l
- NOY6aVs24+pR96eIugQbRbyPDGAN/AO4vrkYG29hZCA6rlVMuIZuEmf2YSoF1mtP
- r5HR+xsrYh8h+Qy1gSvuuQ1o4GjQGdUfSmhTMgXeKcRl8GWZraI3lrSQFGaVdktS
- am0hE7WJ/fUETnrp6vNOJBLUZuu7Mpjl8FHpbwxRkdjuo3msW8Cx5xVQhMlCB/z3
- NE3RbWoG0SscyPB81BFEkpq4SKSMKMCtFuSk7q6gplzZQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:sender:subject:subject:to:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
- 1689752174; x=1689838574; bh=0Ey7Xt/fVOaLXgPSQ3lKxpQcW1sEfvcbitW
- vyfP36+Q=; b=iroPjDq/0+2uL0M9sTPr9ZGC5CJBG1EJOmR3K4sKxY4I7fNE+5Z
- XITqE5Ith6p06Xn+jk7mag+b+HBMEgxI6JFfsLhc5giuM+w1/s5d0HBW9wTRY5oE
- Bt1zvoFwqJdpgOEEyJ+iRmke1Tvf0K8DMpwbbqtnxX54fq7EM3o4wUyR/EJp57N5
- 9zZaDoTeHXeb6pc0SVoM/Mbg8bexd7JtguYLaBSA6sqmEyi3umtSjZfog6vsC+Ls
- Jpsh5Xr0Dbc5BChb+4u4bmFHhW5hRyDVhNchGPPKq0BUFGlX2bU+k2aztbN7CZuJ
- 7wqGfJF8YxmOFuw/cH7Jq6tQlec4ldcRACA==
-X-ME-Sender: <xms:bpK3ZMiRzHuvB8lCEHoCGJBkDRWXPO0BzYdjJO_vg3QaBjcSYAR8Ow>
- <xme:bpK3ZFDeaZ1O9Mjy6kpT30d14EvVCki28qNajg4GbEe_tSr9v1nNFn2nUJqS8as8D
- DR_jUSgLcVb-Oq0MVI>
-X-ME-Received: <xmr:bpK3ZEHg72xIk8CwKqqm8ji_1VZ3r5_N-d4D44-xIVMMCJQ6i1a2vhNGOFX4og20irzEHjyeaws8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgeehgdduvddtucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpefmlhgr
- uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
- htthgvrhhnpeevvdegieetieejjeejudeljefhkeevjeegveduueekvddvtdfgveeuteeh
- geetveenucffohhmrghinhepghhithhlrggsrdgtohhmnecuvehluhhsthgvrhfuihiivg
- eptdenucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgu
- kh
-X-ME-Proxy: <xmx:bpK3ZNRNbESWZ5xnK3Hk3r1XBGFA_Sn4QjFsToPR986mos-VkcpoCA>
- <xmx:bpK3ZJxfvUPBEi3tZuDsZ1lfLq7cDBgxE67nFI-i3xwWL9-swNbNzg>
- <xmx:bpK3ZL55PuhyupRhI7ITDYhGCiwg40gZdaW90PXr4qSgjbSOCzkNsg>
- <xmx:bpK3ZMrOmfkGyrsuYpVJjv-4TsB_refLKL60xMJU7lJyTqeMWtBJJA>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 19 Jul 2023 03:36:12 -0400 (EDT)
-From: Klaus Jensen <its@irrelevant.dk>
-To: Peter Maydell <peter.maydell@linaro.org>,
-	qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <its@irrelevant.dk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org, Fam Zheng <fam@euphon.net>,
- Klaus Jensen <k.jensen@samsung.com>, qemu-stable@nongnu.org,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 1/1] hw/nvme: fix endianness issue for shadow doorbells
-Date: Wed, 19 Jul 2023 09:36:07 +0200
-Message-ID: <20230719073605.98222-4-its@irrelevant.dk>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230719073605.98222-3-its@irrelevant.dk>
-References: <20230719073605.98222-3-its@irrelevant.dk>
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1qM1zu-0003AX-0j
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 03:53:23 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HnsHFoBwbuvIInDPegzUJ4OHYiZdMcVUsBQtsBEN44xI1Gd28z+H0b3IGM0Vfh/hOko6UQu3mQC6gChalYYxsxd29Gl8jE7itfaK/ad+yxS7/qWGc2d7tP2VsGJ9pn+8yzVM96TD80p7J4TkFSEgKlWK83NvslaCE6jhy+KPUNzDt8SFKk/9v17fAKc0FjPL07gAoyHueYEH53PRVvXesKFoNGfYbPIOQ3l9M6vXIcDU2vpWN86ch9Bzrhd9W+T/j++QLAL0IGOe9St/n4XeKKkPspbnGkFl4G8bqmbcwqJ6WNDfszw72jrySxUlgRjjg2TRJtwYNhvK3NKd0gFDgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=D7zgi8Bt9cY/BXVe0Fdk4OXXzcNBsCIpdX5aoRfuoIM=;
+ b=O0H1rKyWaOyrOzc9UxJR+V/URyJCTLUsgLMbCYYg6/dGMvgg3Sf6c33usM5T//0xwNYpVaRRr6fYBp79o2RmuxhyJ3Dw3y5SPfVN5NK5i21IDi63PsXPKGfavaMOS80B42HxUpCwk2ebVQcxPans84gn8agWtn+TEgREmDkx5G1zILllft31WaYcnDHHNSOZ831y/zl3GV6HP+OUfR2YEnptUPP4bsSf2EPc1PUcXI6xWeVEdKeYocutS0WM8qF8851v21WDE86EJltdDVuTIMQMIk40cZjySEGItvNWHJyBhQFdKgDhtGN9n/bnHrYQ6bv+Xqqhj4KFNdWzlKjVWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=D7zgi8Bt9cY/BXVe0Fdk4OXXzcNBsCIpdX5aoRfuoIM=;
+ b=T+Ln31+AohLUDyOQK7QuOIKmgd+E8xjThpSoGWn+yipTLbeiHFjY1AkwHORaaAL5YaqpLwPh56EB1Ony2OdrryI0v2+bJ7yPsIFhdr77zkqeVAjCuVLECtrat0xWNzsvpQbYjo8XP0yTKCzJv2nTfoQpzkiej8jRJDIsQMUx4bk=
+Received: from MW4PR04CA0189.namprd04.prod.outlook.com (2603:10b6:303:86::14)
+ by MN0PR12MB5786.namprd12.prod.outlook.com (2603:10b6:208:375::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Wed, 19 Jul
+ 2023 07:48:14 +0000
+Received: from CO1NAM11FT067.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:303:86:cafe::6) by MW4PR04CA0189.outlook.office365.com
+ (2603:10b6:303:86::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.23 via Frontend
+ Transport; Wed, 19 Jul 2023 07:48:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT067.mail.protection.outlook.com (10.13.174.212) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6588.34 via Frontend Transport; Wed, 19 Jul 2023 07:48:14 +0000
+Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Wed, 19 Jul
+ 2023 02:48:08 -0500
+From: Jiqian Chen <Jiqian.Chen@amd.com>
+To: Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?=
+ <marcandre.lureau@gmail.com>, "Michael S . Tsirkin" <mst@redhat.com>, "Robert
+ Beckett" <bob.beckett@collabora.com>, <qemu-devel@nongnu.org>
+CC: <xen-devel@lists.xenproject.org>, Stefano Stabellini
+ <sstabellini@kernel.org>, Anthony PERARD <anthony.perard@citrix.com>,
+ =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>, "Dr . David Alan
+ Gilbert" <dgilbert@redhat.com>, Alex Deucher <Alexander.Deucher@amd.com>,
+ Christian Koenig <Christian.Koenig@amd.com>, Stewart Hildebrand
+ <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
+ Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>,
+ Huang Rui <Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
+Subject: [QEMU PATCH v3 0/1] S3 support
+Date: Wed, 19 Jul 2023 15:47:25 +0800
+Message-ID: <20230719074726.1613088-1-Jiqian.Chen@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4384; i=k.jensen@samsung.com;
- h=from:subject; bh=9IUIeoiXHPaJVS+2v/ZI0RVKRAKPNwYuUGiTInjaOXc=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGS3kmW8JN4x3g1eSClcVlreehsR7tk8avpuw
- JVG2wSWubKz2okBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJkt5JlAAoJEE3hrzFt
- Tw3pOl0H/imRwH31XdaXNCrn5pzQTWjpc49TGUquZ437Z4XFXSLbDh0drKa8HvU5T0GuSBBB7d5
- EvTAcY42Ni7gm4MU+vKCjxMEgtmy07iKPl1ds6ITOW/vRg1v39ZgsdwTjniXzZ2U46gr3K7eV6C
- RdeD5M/GlSBn/YN9WB1915M1rXjELM1VtW1b0HQZRFVG2R+6JBGy0Bifzz3pwK/U1g88zCw/rVn
- 3/EDmTWvFtIvVk3B72iYzZ++44xS37duxWD5OcDr25Mvy+RAfFGlwyh01pSHpMBEKBwCrZyySoq
- YQxm2cw1sFZw0qULoAbxnXIQMPkV+CXFriwf9lo4YrySj70O2ehLOqyl
-X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
- fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=64.147.123.19; envelope-from=its@irrelevant.dk;
- helo=wout3-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT067:EE_|MN0PR12MB5786:EE_
+X-MS-Office365-Filtering-Correlation-Id: 600726fa-98aa-45a8-9c5b-08db882c8235
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: lCMM/3zVKpIRkTmXC79h4uY1TCnAgrZL60cmgfIdnQQTMdzXrdeKsTZ/GxH7M7WhcedbVyXCE7/kypc9e46iQxMXIc73IUfWYp/4MiL8x+uDAcVNxv399/m1IwWfie+cRlkNCGV2I9SVLN7JMjoGx0LjVu/nv+PV/HfHBKeQz5/l8x1WLCtRyCOfwYqvkw2vZvQ8m7WIX5z9GsF30Db6o/dmpAuxGrMSZqjSuqjNFtqaL8cZ1qpHg9wHNULHcmjs3GpUGtUrLiSEZl0uDOOFJMn1eAybfwMqFmg9SoiWaYJX4VsvCJE2SEKcHMK6R9xsS0Qx36TaCPn9UMe6LMXKQ2weju1iC6w6qFRbh+NwXXzkV80TUiYIwA6YwhuLp2w+Y6aRC3TOtETreMB8LJ7oJu4kL2iCnODap5mK2nscsoO58ymfOkJ/K/yyKsuadAxRMe6bx82uPD5UJu7ZOFa0oRY6b6qk4pCIf4gryES4sF0BWqPyKS4bpAekgquxUoiDRzPaDs0q3+xBSUt1Wl6+Dsa65hR5qwtExCk4mtd0vIX/VC1UxkxIQhXlNjOaMtFp+gUXZwLGn+rv1U3R+S4133oLVMUIyiKzBb3I5XautCzWBv+w1y+Hhj1t53df04yBgXOeJ6KkgkWff+hHVdYMQOPnMcaCnXxVYlcFolrakqS70Xhi1P+L07iIRvAqP5EM6py9nWmxCxn9V/uRgh0m6BtOXj5zSkPxA8UYIS20qAzlUb1NWh9r3762jKfLmOvQqUXmgiu8dapT2fKzSSKrfAW/agxdyNxsp9DDrctontA=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230028)(4636009)(396003)(376002)(39860400002)(346002)(136003)(451199021)(82310400008)(40470700004)(46966006)(36840700001)(7696005)(1076003)(26005)(966005)(40460700003)(36860700001)(47076005)(83380400001)(336012)(86362001)(426003)(2616005)(16526019)(82740400003)(186003)(81166007)(356005)(36756003)(54906003)(110136005)(478600001)(40480700001)(41300700001)(5660300002)(70586007)(4326008)(70206006)(7416002)(8676002)(316002)(8936002)(6666004)(2906002)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2023 07:48:14.5984 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 600726fa-98aa-45a8-9c5b-08db882c8235
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT067.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5786
+Received-SPF: softfail client-ip=40.107.93.85;
+ envelope-from=Jiqian.Chen@amd.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,108 +127,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Klaus Jensen <k.jensen@samsung.com>
+v3:
+Hi all,
+Thanks for Michael S. Tsirkin's advice. V3 makes below changes:
+* Remove changes in file include/standard-headers/linux/virtio_gpu.h
+  I am not supposed to edit this file and it will be imported after
+  the patches of linux kernel was merged.
 
-In commit 2fda0726e514 ("hw/nvme: fix missing endian conversions for
-doorbell buffers"), we fixed shadow doorbells for big-endian guests
-running on little endian hosts. But I did not fix little-endian guests
-on big-endian hosts. Fix this.
+Best regards,
+Jiqian Chen.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1765
-Fixes: 3f7fe8de3d49 ("hw/nvme: Implement shadow doorbell buffer support")
-Cc: qemu-stable@nongnu.org
-Reported-by: Thomas Huth <thuth@redhat.com>
-Tested-by: Cédric Le Goater <clg@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
----
- hw/nvme/ctrl.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+v2:
+link,
+https://lore.kernel.org/qemu-devel/20230630070016.841459-1-Jiqian.Chen@amd.com/T/#t
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 8e8e870b9a80..dadc2dc7da10 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -6801,6 +6801,7 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
-     PCIDevice *pci = PCI_DEVICE(n);
-     uint64_t dbs_addr = le64_to_cpu(req->cmd.dptr.prp1);
-     uint64_t eis_addr = le64_to_cpu(req->cmd.dptr.prp2);
-+    uint32_t v;
-     int i;
- 
-     /* Address should be page aligned */
-@@ -6818,6 +6819,8 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
-         NvmeCQueue *cq = n->cq[i];
- 
-         if (sq) {
-+            v = cpu_to_le32(sq->tail);
-+
-             /*
-              * CAP.DSTRD is 0, so offset of ith sq db_addr is (i<<3)
-              * nvme_process_db() uses this hard-coded way to calculate
-@@ -6825,7 +6828,7 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
-              */
-             sq->db_addr = dbs_addr + (i << 3);
-             sq->ei_addr = eis_addr + (i << 3);
--            pci_dma_write(pci, sq->db_addr, &sq->tail, sizeof(sq->tail));
-+            pci_dma_write(pci, sq->db_addr, &v, sizeof(sq->tail));
- 
-             if (n->params.ioeventfd && sq->sqid != 0) {
-                 if (!nvme_init_sq_ioeventfd(sq)) {
-@@ -6835,10 +6838,12 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
-         }
- 
-         if (cq) {
-+            v = cpu_to_le32(cq->head);
-+
-             /* CAP.DSTRD is 0, so offset of ith cq db_addr is (i<<3)+(1<<2) */
-             cq->db_addr = dbs_addr + (i << 3) + (1 << 2);
-             cq->ei_addr = eis_addr + (i << 3) + (1 << 2);
--            pci_dma_write(pci, cq->db_addr, &cq->head, sizeof(cq->head));
-+            pci_dma_write(pci, cq->db_addr, &v, sizeof(cq->head));
- 
-             if (n->params.ioeventfd && cq->cqid != 0) {
-                 if (!nvme_init_cq_ioeventfd(cq)) {
-@@ -7587,7 +7592,7 @@ static uint64_t nvme_mmio_read(void *opaque, hwaddr addr, unsigned size)
- static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
- {
-     PCIDevice *pci = PCI_DEVICE(n);
--    uint32_t qid;
-+    uint32_t qid, v;
- 
-     if (unlikely(addr & ((1 << 2) - 1))) {
-         NVME_GUEST_ERR(pci_nvme_ub_db_wr_misaligned,
-@@ -7654,7 +7659,8 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
-         start_sqs = nvme_cq_full(cq) ? 1 : 0;
-         cq->head = new_head;
-         if (!qid && n->dbbuf_enabled) {
--            pci_dma_write(pci, cq->db_addr, &cq->head, sizeof(cq->head));
-+            v = cpu_to_le32(cq->head);
-+            pci_dma_write(pci, cq->db_addr, &v, sizeof(cq->head));
-         }
-         if (start_sqs) {
-             NvmeSQueue *sq;
-@@ -7714,6 +7720,8 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
- 
-         sq->tail = new_tail;
-         if (!qid && n->dbbuf_enabled) {
-+            v = cpu_to_le32(sq->tail);
-+
-             /*
-              * The spec states "the host shall also update the controller's
-              * corresponding doorbell property to match the value of that entry
-@@ -7727,7 +7735,7 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
-              * including ones that run on Linux, are not updating Admin Queues,
-              * so we can't trust reading it for an appropriate sq tail.
-              */
--            pci_dma_write(pci, sq->db_addr, &sq->tail, sizeof(sq->tail));
-+            pci_dma_write(pci, sq->db_addr, &v, sizeof(sq->tail));
-         }
- 
-         qemu_bh_schedule(sq->bh);
+Hi all,
+Thanks to Marc-André Lureau, Robert Beckett and Gerd Hoffmann for
+their advice and guidance. V2 makes below changes:
+
+* Change VIRTIO_CPU_CMD_STATUS_FREEZING to 0x0400 (<0x1000)
+* Add virtio_gpu_device_unrealize to destroy resources to solve
+  potential memory leak problem. This also needs hot-plug support.
+* Add a new feature flag VIRTIO_GPU_F_FREEZING, so that guest and
+  host can negotiate whenever freezing is supported or not.
+
+v1:
+link,
+https://lore.kernel.org/qemu-devel/20230608025655.1674357-1-Jiqian.Chen@amd.com/
+
+Hi all,
+I am working to implement virtgpu S3 function on Xen.
+
+Currently on Xen, if we start a guest who enables virtgpu, and then
+run "echo mem > /sys/power/state" to suspend guest. And run
+"sudo xl trigger <guest id> s3resume" to resume guest. We can find that
+the guest kernel comes back, but the display doesn't. It just shown a
+black screen.
+
+Through reading codes, I founded that when guest was during suspending,
+it called into Qemu to call virtio_gpu_gl_reset. In virtio_gpu_gl_reset,
+it destroyed all resources and reset renderer. This made the display
+gone after guest resumed.
+
+I think we should keep resources or prevent they being destroyed when
+guest is suspending. So, I add a new status named freezing to virtgpu,
+and add a new ctrl message VIRTIO_GPU_CMD_STATUS_FREEZING to get
+notification from guest. If freezing is set to true, and then Qemu will
+realize that guest is suspending, it will not destroy resources and will
+not reset renderer. If freezing is set to false, Qemu will do its origin
+actions, and has no other impaction.
+
+And now, display can come back and applications can continue their
+status after guest resumes.
+
+Jiqian Chen (1):
+  virtgpu: do not destroy resources when guest suspend
+
+ hw/display/virtio-gpu-base.c   |  3 ++
+ hw/display/virtio-gpu-gl.c     |  9 +++++-
+ hw/display/virtio-gpu-virgl.c  |  7 +++++
+ hw/display/virtio-gpu.c        | 52 ++++++++++++++++++++++++++++++++--
+ hw/virtio/virtio.c             |  3 ++
+ include/hw/virtio/virtio-gpu.h |  6 ++++
+ 6 files changed, 77 insertions(+), 3 deletions(-)
+
 -- 
-2.41.0
+2.34.1
 
 
