@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE7575997F
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7780A7599A1
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:25:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM908-0001GM-2n; Wed, 19 Jul 2023 11:22:04 -0400
+	id 1qM93E-0006nl-04; Wed, 19 Jul 2023 11:25:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1qM905-0001FJ-EM
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:22:01 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qM93B-0006kh-NF
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:25:13 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
- id 1qM903-00038I-LR
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:22:01 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-313e742a787so639553f8f.1
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:21:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qM939-0004Yf-D4
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:25:13 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2b6f0508f54so107146841fa.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:25:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1689780118; x=1690384918;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1689780309; x=1692372309;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FRF2E6P7sVcLvP4wqSAFGPs7SegT5a73p9SOCWkZw+Y=;
- b=BJX/Ch7OhFKm4hvg5hFojXGwAaXOZkD9mwYZAeTfDtPlVOa+tGekBwLkGKi8YUMdFk
- nrv7XsgvSM/ClRSvgVUPNK+GWgkLUq938+jOdbBtCKInZPTq4HMVVYkIzUK9bOuv51OA
- NV6GkzVTgQkDjB/z1e7+fhJKNU+MbZU1Dlr9Kc84rwvBHDYZqeXHvF/M9pwmT4ROQya3
- KTpEjukybyZPNjrO2GlWV23tIgxDZdt0H2ju0UIqdttB8PflsxrAWvmfWs3FKV/pEAaL
- 0CoInBfv/mLfRwXrFsa3kuzzhcmQBJj4sP+cNRrWnjz0pNh4ouOnGTfcrFlTsan6fFlg
- qzAw==
+ bh=LIroSphErKMdsvdFLk6t6evVoPscR5P4T8zO4VwupUc=;
+ b=WFg1V/LZiIDV0iz/F30Xgrg1sqWUQIu5eW9nNEV9+/fi4uVIu1lQKPuDfq5orKdgQv
+ aSWbgA3899jQEkBZS9hCr7Y2WiYVJke2k/l6xAd3vpX2gbpom2RSzcxkhZUucbyeTZpU
+ 6JQxyseH723eN18N6oRV0sweutkNMQqXDvbf/WK9m4WLdMsfJmmVWLsBxbWBqDsBk7up
+ 5XHx3sgnY/838FRcXMK0NjsbDf4Xke8x4qQI//mf7pdyYqhnc5SFcXne775VuFOyFw+M
+ TeE5LUR7uXnztTC9y7i9g30FkjzWbNyB5CCDsjhhnk7FdUUeZ/M3rVYiM08ePwoek6mN
+ SS4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689780118; x=1690384918;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1689780309; x=1692372309;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FRF2E6P7sVcLvP4wqSAFGPs7SegT5a73p9SOCWkZw+Y=;
- b=gHoynl3X6lJlR1yvlNxB46PS3i7EsZ2G+K3lXPAOKZgLtmegaRRgf/OLWjkyKXQtTv
- 9tg5TTQx3qpfZTP+G97/O/00/U1CDe+OCyDw3U/CwQFJyM41Kar7/10NE09pKtA3AKgR
- Jb81pwd3L6sUaW4o753paXoAY0a2ApTzb+nxQmTgE6TCU/mcvcN9E+dNm4i6dq7nOLou
- 9Hjkf24z1zze836FPJMGYcTnqhaNFo/Eejhc400cwkNh6PyFpjkxsl78UhXDM0lmlM6k
- Zg4HCCOL8vh79/36eS1p4n8T8t+xlyn19f8nMYrynHMSuw1gX8QkAkGV4+Qoi6AnywIY
- Hfzg==
-X-Gm-Message-State: ABy/qLYIrZZ5FN7UJqcpC93mefvtGXGQRY0N19eTk564HR8S20c0wXGS
- I7fEYZ19bzwgBnkJ/cHqXNWhRNP0l6PZjrhwRLQ=
-X-Google-Smtp-Source: APBJJlH0X7OEHgMJO/MxwVYOHRguDkp+w2L1kZCbjBW7k5Jvjycx4TJjVAwF4iVC0cIsAGiohBofeA==
-X-Received: by 2002:a05:6000:a:b0:313:df09:acfb with SMTP id
- h10-20020a056000000a00b00313df09acfbmr86310wrx.11.1689780118392; 
- Wed, 19 Jul 2023 08:21:58 -0700 (PDT)
-Received: from localhost.localdomain
- ([2a06:c701:46e6:7e00:c5bb:d943:dc1b:8245])
- by smtp.gmail.com with ESMTPSA id
- b9-20020a5d6349000000b0030e52d4c1bcsm5626775wrw.71.2023.07.19.08.21.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jul 2023 08:21:58 -0700 (PDT)
-From: Yuri Benditovich <yuri.benditovich@daynix.com>
-To: Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>, mst@redhat.com,
- Stefan Weil <sw@weilnetz.de>, qemu-devel@nongnu.org
-Cc: yan@daynix.com,
-	andrew@daynix.com
-Subject: [PATCH 4/4] virtio-net: Added uso check
-Date: Wed, 19 Jul 2023 18:21:39 +0300
-Message-Id: <20230719152139.1316570-5-yuri.benditovich@daynix.com>
-X-Mailer: git-send-email 2.34.3
-In-Reply-To: <20230719152139.1316570-1-yuri.benditovich@daynix.com>
-References: <20230719152139.1316570-1-yuri.benditovich@daynix.com>
+ bh=LIroSphErKMdsvdFLk6t6evVoPscR5P4T8zO4VwupUc=;
+ b=hhA7Y/4CQBylvtnhaKJslalRxR7iIhYBCWFSpGJbkkB00d5lA9vu07Rf6ZJD7p1Azb
+ PFa14ltBq6pQ9t/LoCXpAYOhPFdSsgl+x2qPSoZR79zyB9IQMmmKHEFelehqGaC/JOcJ
+ U1xunnb2mLbU0UKqxNr7eh2r0z7Xwc2VZWtUnG5/zTGTRJ01SoUN23BlVDT24EOsm36j
+ E67ZtKDjljZcsKOgQW7HmjUeYh0EIz6DiK79vTdPahHKwXlHLT3FPZjy4Wl7oRv+5rwE
+ H6C6lfRpJFFstyufDPB5hg9Se/G5pjA9eUgUSxE+kFfLKvJVYTXC4mKd/vvV+OWoMZcs
+ 3KZg==
+X-Gm-Message-State: ABy/qLYgiugBGs80ZvjrFU1/V092ZNcyhW82Kt4siDASelIcuC8pvVoc
+ yd2hbUKA18EmT/GMelWgBnpyZWOgeVsyLrYfUWDFbhX2kTXbVM2q
+X-Google-Smtp-Source: APBJJlGwza/3HoIaH20ux4uf97s4tC6l/i0Yp6/u5Oef6lpAPk/XRNQvPwFC5EAIes9FXDnTMMon628rRDGZheWCInY=
+X-Received: by 2002:a2e:b6d0:0:b0:2b6:9afe:191c with SMTP id
+ m16-20020a2eb6d0000000b002b69afe191cmr179775ljo.7.1689780308947; Wed, 19 Jul
+ 2023 08:25:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2a00:1450:4864:20::42e;
- envelope-from=yuri.benditovich@daynix.com; helo=mail-wr1-x42e.google.com
+References: <cover.1689748694.git.yin31149@gmail.com>
+ <20230719045858-mutt-send-email-mst@kernel.org>
+ <CAKrof1Nu+Y26=ubQKNmjdSaHTUM7Q5HRwwN_BqG4mZTsAY=CiA@mail.gmail.com>
+ <CAPpAL=xwDgafOGf_W+oduR0FKJMKYYz+KWyouNPyGWbzNZEnsw@mail.gmail.com>
+In-Reply-To: <CAPpAL=xwDgafOGf_W+oduR0FKJMKYYz+KWyouNPyGWbzNZEnsw@mail.gmail.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Wed, 19 Jul 2023 23:24:57 +0800
+Message-ID: <CAKrof1PV=d5thAMW2cPcEuu2jQF4ohw=mLp9qh8p2shOj=BYWw@mail.gmail.com>
+Subject: Re: [PATCH v3 0/8] vdpa: Send all CVQ state load commands in parallel
+To: Lei Yang <leiyang@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: jasowang@redhat.com, eperezma@redhat.com, qemu-devel@nongnu.org, 
+ 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=yin31149@gmail.com; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,233 +91,253 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrew Melnychenko <andrew@daynix.com>
+=E5=9C=A8 2023/7/19 20:44, Lei Yang =E5=86=99=E9=81=93:
+> Hello Hawkins and Michael
+>
+> Looks like there are big changes about vp_vdpa, therefore, if needed,
+> QE can test this series in QE's environment before the patch is
 
-Added tap uso check with stubs for non-Linux systems.
+Hi Lei,
 
-Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
-Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+This patch series does not modify the code of vp_vdpa. Instead, it only
+modifies how QEMU sends SVQ control commands to the vdpa device.
+
+Considering that the behavior of the vp_vdpa device differs from that
+of real vdpa hardware, would it be possible for you to test this patch
+series on a real vdpa device?
+
+Thanks!
+
+
+> merged, and provide the result.
+>
+> BR
+> Lei
+>
+>
+> On Wed, Jul 19, 2023 at 8:37=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.co=
+m> wrote:
+>>
+>> =E5=9C=A8 2023/7/19 17:11, Michael S. Tsirkin =E5=86=99=E9=81=93:
+>>> On Wed, Jul 19, 2023 at 03:53:45PM +0800, Hawkins Jiawei wrote:
+>>>> This patchset allows QEMU to delay polling and checking the device
+>>>> used buffer until either the SVQ is full or control commands shadow
+>>>> buffers are full, instead of polling and checking immediately after
+>>>> sending each SVQ control command, so that QEMU can send all the SVQ
+>>>> control commands in parallel, which have better performance improvemen=
+t.
+>>>>
+>>>> I use vp_vdpa device to simulate vdpa device, and create 4094 VLANS in
+>>>> guest to build a test environment for sending multiple CVQ state load
+>>>> commands. This patch series can improve latency from 10023 us to
+>>>> 8697 us for about 4099 CVQ state load commands, about 0.32 us per comm=
+and.
+>>>
+>>> Looks like a tiny improvement.
+>>> At the same time we have O(n^2) behaviour with memory mappings.
+>>
+>> Hi Michael,
+>>
+>> Thanks for your review.
+>>
+>> I wonder why you say "we have O(n^2) behaviour on memory mappings" here?
+>>
+>>   From my understanding, QEMU maps two page-size buffers as control
+>> commands shadow buffers at device startup. These buffers then are used
+>> to cache SVQ control commands, where QEMU fills them with multiple SVQ c=
+ontrol
+>> commands bytes, flushes them when SVQ descriptors are full or these
+>> control commands shadow buffers reach their capacity.
+>>
+>> QEMU repeats this process until all CVQ state load commands have been
+>> sent in loading.
+>>
+>> In this loading process, only control commands shadow buffers
+>> translation should be relative to memory mappings, which should be
+>> O(log n) behaviour to my understanding(Please correct me if I am wrong).
+>>
+>>> Not saying we must not do this but I think it's worth
+>>> checking where the bottleneck is. My guess would be
+>>> vp_vdpa is not doing things in parallel. Want to try fixing that
+>>
+>> As for "vp_vdpa is not doing things in parallel.", do you mean
+>> the vp_vdpa device cannot process QEMU's SVQ control commands
+>> in parallel?
+>>
+>> In this situation, I will try to use real vdpa hardware to
+>> test the patch series performance.
+>>
+>>> to see how far it can be pushed?
+>>
+>> Currently, I am involved in the "Add virtio-net Control Virtqueue state
+>> restore support" project in Google Summer of Code now. Because I am
+>> uncertain about the time it will take to fix that problem in the vp_vdpa
+>> device, I prefer to complete the gsoc project first.
+>>
+>> Thanks!
+>>
+>>
+>>>
+>>>
+>>>> Note that this patch should be based on
+>>>> patch "Vhost-vdpa Shadow Virtqueue VLAN support" at [1].
+>>>>
+>>>> [1]. https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg03719.ht=
+ml
+>>>>
+>>>> TestStep
+>>>> =3D=3D=3D=3D=3D=3D=3D=3D
+>>>> 1. regression testing using vp-vdpa device
+>>>>     - For L0 guest, boot QEMU with two virtio-net-pci net device with
+>>>> `ctrl_vq`, `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
+>>>>         -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Dof=
+f,
+>>>> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
+>>>> indirect_desc=3Doff,queue_reset=3Doff,ctrl_rx=3Don,ctrl_rx_extra=3Don,=
+...
+>>>>
+>>>>     - For L1 guest, apply the patch series and compile the source code=
+,
+>>>> start QEMU with two vdpa device with svq mode on, enable the `ctrl_vq`=
+,
+>>>> `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
+>>>>         -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
+>>>>         -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3D=
+on,
+>>>> ctrl_rx=3Don,ctrl_rx_extra=3Don...
+>>>>
+>>>>     - For L2 source guest, run the following bash command:
+>>>> ```bash
+>>>> #!/bin/sh
+>>>>
+>>>> for idx1 in {0..9}
+>>>> do
+>>>>     for idx2 in {0..9}
+>>>>     do
+>>>>       for idx3 in {0..6}
+>>>>       do
+>>>>         ip link add macvlan$idx1$idx2$idx3 link eth0
+>>>> address 4a:30:10:19:$idx1$idx2:1$idx3 type macvlan mode bridge
+>>>>         ip link set macvlan$idx1$idx2$idx3 up
+>>>>       done
+>>>>     done
+>>>> done
+>>>> ```
+>>>>     - Execute the live migration in L2 source monitor
+>>>>
+>>>>     - Result
+>>>>       * with this series, QEMU should not trigger any error or warning=
+.
+>>>>
+>>>>
+>>>>
+>>>> 2. perf using vp-vdpa device
+>>>>     - For L0 guest, boot QEMU with two virtio-net-pci net device with
+>>>> `ctrl_vq`, `ctrl_vlan` features on, command line like:
+>>>>         -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Dof=
+f,
+>>>> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
+>>>> indirect_desc=3Doff,queue_reset=3Doff,ctrl_vlan=3Don,...
+>>>>
+>>>>     - For L1 guest, apply the patch series, then apply an addtional
+>>>> patch to record the load time in microseconds as following:
+>>>> ```diff
+>>>> diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+>>>> index 6b958d6363..501b510fd2 100644
+>>>> --- a/hw/net/vhost_net.c
+>>>> +++ b/hw/net/vhost_net.c
+>>>> @@ -295,7 +295,10 @@ static int vhost_net_start_one(struct vhost_net *=
+net,
+>>>>        }
+>>>>
+>>>>        if (net->nc->info->load) {
+>>>> +        int64_t start_us =3D g_get_monotonic_time();
+>>>>            r =3D net->nc->info->load(net->nc);
+>>>> +        error_report("vhost_vdpa_net_load() =3D %ld us",
+>>>> +                     g_get_monotonic_time() - start_us);
+>>>>            if (r < 0) {
+>>>>                goto fail;
+>>>>            }
+>>>> ```
+>>>>
+>>>>     - For L1 guest, compile the code, and start QEMU with two vdpa dev=
+ice
+>>>> with svq mode on, enable the `ctrl_vq`, `ctrl_vlan` features on,
+>>>> command line like:
+>>>>         -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
+>>>>         -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3D=
+on,
+>>>> ctrl_vlan=3Don...
+>>>>
+>>>>     - For L2 source guest, run the following bash command:
+>>>> ```bash
+>>>> #!/bin/sh
+>>>>
+>>>> for idx in {1..4094}
+>>>> do
+>>>>     ip link add link eth0 name vlan$idx type vlan id $idx
+>>>> done
+>>>> ```
+>>>>
+>>>>     - wait for some time, then execute the live migration in L2 source=
+ monitor
+>>>>
+>>>>     - Result
+>>>>       * with this series, QEMU should not trigger any warning
+>>>> or error except something like "vhost_vdpa_net_load() =3D 8697 us"
+>>>>       * without this series, QEMU should not trigger any warning
+>>>> or error except something like "vhost_vdpa_net_load() =3D 10023 us"
+>>>>
+>>>> ChangeLog
+>>>> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+>>>> v3:
+>>>>     - refactor vhost_svq_poll() to accept cmds_in_flight
+>>>> suggested by Jason and Eugenio
+>>>>     - refactor vhost_vdpa_net_cvq_add() to make control commands buffe=
+rs
+>>>> is not tied to `s->cvq_cmd_out_buffer` and `s->status`, so we can reus=
+e
+>>>> it suggested by Eugenio
+>>>>     - poll and check when SVQ is full or control commands shadow buffe=
+rs is
+>>>> full
+>>>>
+>>>> v2: https://lore.kernel.org/all/cover.1683371965.git.yin31149@gmail.co=
+m/
+>>>>     - recover accidentally deleted rows
+>>>>     - remove extra newline
+>>>>     - refactor `need_poll_len` to `cmds_in_flight`
+>>>>     - return -EINVAL when vhost_svq_poll() return 0 or check
+>>>> on buffers written by device fails
+>>>>     - change the type of `in_cursor`, and refactor the
+>>>> code for updating cursor
+>>>>     - return directly when vhost_vdpa_net_load_{mac,mq}()
+>>>> returns a failure in vhost_vdpa_net_load()
+>>>>
+>>>> v1: https://lore.kernel.org/all/cover.1681732982.git.yin31149@gmail.co=
+m/
+>>>>
+>>>> Hawkins Jiawei (8):
+>>>>     vhost: Add argument to vhost_svq_poll()
+>>>>     vdpa: Use iovec for vhost_vdpa_net_cvq_add()
+>>>>     vhost: Expose vhost_svq_available_slots()
+>>>>     vdpa: Avoid using vhost_vdpa_net_load_*() outside
+>>>>       vhost_vdpa_net_load()
+>>>>     vdpa: Check device ack in vhost_vdpa_net_load_rx_mode()
+>>>>     vdpa: Move vhost_svq_poll() to the caller of vhost_vdpa_net_cvq_ad=
+d()
+>>>>     vdpa: Add cursors to vhost_vdpa_net_loadx()
+>>>>     vdpa: Send cvq state load commands in parallel
+>>>>
+>>>>    hw/virtio/vhost-shadow-virtqueue.c |  38 ++--
+>>>>    hw/virtio/vhost-shadow-virtqueue.h |   3 +-
+>>>>    net/vhost-vdpa.c                   | 354 ++++++++++++++++++--------=
 ---
- hw/net/virtio-net.c | 15 +++++++++++++++
- include/net/net.h   |  3 +++
- net/net.c           |  9 +++++++++
- net/tap-bsd.c       |  5 +++++
- net/tap-linux.c     | 12 ++++++++++++
- net/tap-solaris.c   |  5 +++++
- net/tap-stub.c      |  5 +++++
- net/tap.c           | 12 ++++++++++++
- net/tap_int.h       |  1 +
- 9 files changed, 67 insertions(+)
-
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index e76cad923b..d950d3a77f 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -659,6 +659,15 @@ static int peer_has_ufo(VirtIONet *n)
-     return n->has_ufo;
- }
- 
-+static int peer_has_uso(VirtIONet *n)
-+{
-+    if (!peer_has_vnet_hdr(n)) {
-+        return 0;
-+    }
-+
-+    return qemu_has_uso(qemu_get_queue(n->nic)->peer);
-+}
-+
- static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, int mergeable_rx_bufs,
-                                        int version_1, int hash_report)
- {
-@@ -808,6 +817,12 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
-         virtio_clear_feature(&features, VIRTIO_NET_F_HOST_UFO);
-     }
- 
-+    if (!peer_has_uso(n)) {
-+        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
-+    }
-+
-     if (!get_vhost_net(nc->peer)) {
-         return features;
-     }
-diff --git a/include/net/net.h b/include/net/net.h
-index b5ccfbbffb..330d285930 100644
---- a/include/net/net.h
-+++ b/include/net/net.h
-@@ -54,6 +54,7 @@ typedef void (LinkStatusChanged)(NetClientState *);
- typedef void (NetClientDestructor)(NetClientState *);
- typedef RxFilterInfo *(QueryRxFilter)(NetClientState *);
- typedef bool (HasUfo)(NetClientState *);
-+typedef bool (HasUso)(NetClientState *);
- typedef bool (HasVnetHdr)(NetClientState *);
- typedef bool (HasVnetHdrLen)(NetClientState *, int);
- typedef bool (GetUsingVnetHdr)(NetClientState *);
-@@ -84,6 +85,7 @@ typedef struct NetClientInfo {
-     QueryRxFilter *query_rx_filter;
-     NetPoll *poll;
-     HasUfo *has_ufo;
-+    HasUso *has_uso;
-     HasVnetHdr *has_vnet_hdr;
-     HasVnetHdrLen *has_vnet_hdr_len;
-     GetUsingVnetHdr *get_using_vnet_hdr;
-@@ -187,6 +189,7 @@ void qemu_set_info_str(NetClientState *nc,
-                        const char *fmt, ...) G_GNUC_PRINTF(2, 3);
- void qemu_format_nic_info_str(NetClientState *nc, uint8_t macaddr[6]);
- bool qemu_has_ufo(NetClientState *nc);
-+bool qemu_has_uso(NetClientState *nc);
- bool qemu_has_vnet_hdr(NetClientState *nc);
- bool qemu_has_vnet_hdr_len(NetClientState *nc, int len);
- bool qemu_get_using_vnet_hdr(NetClientState *nc);
-diff --git a/net/net.c b/net/net.c
-index 543e6dec43..b110e61f66 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -495,6 +495,15 @@ bool qemu_has_ufo(NetClientState *nc)
-     return nc->info->has_ufo(nc);
- }
- 
-+bool qemu_has_uso(NetClientState *nc)
-+{
-+    if (!nc || !nc->info->has_uso) {
-+        return false;
-+    }
-+
-+    return nc->info->has_uso(nc);
-+}
-+
- bool qemu_has_vnet_hdr(NetClientState *nc)
- {
-     if (!nc || !nc->info->has_vnet_hdr) {
-diff --git a/net/tap-bsd.c b/net/tap-bsd.c
-index abd16a2ad2..274ea7bd2c 100644
---- a/net/tap-bsd.c
-+++ b/net/tap-bsd.c
-@@ -212,6 +212,11 @@ int tap_probe_has_ufo(int fd)
-     return 0;
- }
- 
-+int tap_probe_has_uso(int fd)
-+{
-+    return 0;
-+}
-+
- int tap_probe_vnet_hdr_len(int fd, int len)
- {
-     return 0;
-diff --git a/net/tap-linux.c b/net/tap-linux.c
-index 30fcca1bc2..c7e514ecb0 100644
---- a/net/tap-linux.c
-+++ b/net/tap-linux.c
-@@ -173,6 +173,18 @@ int tap_probe_has_ufo(int fd)
-     return 1;
- }
- 
-+int tap_probe_has_uso(int fd)
-+{
-+    unsigned offload;
-+
-+    offload = TUN_F_CSUM | TUN_F_USO4 | TUN_F_USO6;
-+
-+    if (ioctl(fd, TUNSETOFFLOAD, offload) < 0) {
-+        return 0;
-+    }
-+    return 1;
-+}
-+
- /* Verify that we can assign given length */
- int tap_probe_vnet_hdr_len(int fd, int len)
- {
-diff --git a/net/tap-solaris.c b/net/tap-solaris.c
-index a617a10e5c..08b13af512 100644
---- a/net/tap-solaris.c
-+++ b/net/tap-solaris.c
-@@ -216,6 +216,11 @@ int tap_probe_has_ufo(int fd)
-     return 0;
- }
- 
-+int tap_probe_has_uso(int fd)
-+{
-+    return 0;
-+}
-+
- int tap_probe_vnet_hdr_len(int fd, int len)
- {
-     return 0;
-diff --git a/net/tap-stub.c b/net/tap-stub.c
-index ac8dfc03b4..4b24f61e3a 100644
---- a/net/tap-stub.c
-+++ b/net/tap-stub.c
-@@ -47,6 +47,11 @@ int tap_probe_has_ufo(int fd)
-     return 0;
- }
- 
-+int tap_probe_has_uso(int fd)
-+{
-+    return 0;
-+}
-+
- int tap_probe_vnet_hdr_len(int fd, int len)
- {
-     return 0;
-diff --git a/net/tap.c b/net/tap.c
-index 14ea4ef26f..bcea8d03f9 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -57,6 +57,7 @@ typedef struct TAPState {
-     bool write_poll;
-     bool using_vnet_hdr;
-     bool has_ufo;
-+    bool has_uso;
-     bool enabled;
-     VHostNetState *vhost_net;
-     unsigned host_vnet_hdr_len;
-@@ -237,6 +238,15 @@ static bool tap_has_ufo(NetClientState *nc)
-     return s->has_ufo;
- }
- 
-+static bool tap_has_uso(NetClientState *nc)
-+{
-+    TAPState *s = DO_UPCAST(TAPState, nc, nc);
-+
-+    assert(nc->info->type == NET_CLIENT_DRIVER_TAP);
-+
-+    return s->has_uso;
-+}
-+
- static bool tap_has_vnet_hdr(NetClientState *nc)
- {
-     TAPState *s = DO_UPCAST(TAPState, nc, nc);
-@@ -384,6 +394,7 @@ static NetClientInfo net_tap_info = {
-     .poll = tap_poll,
-     .cleanup = tap_cleanup,
-     .has_ufo = tap_has_ufo,
-+    .has_uso = tap_has_uso,
-     .has_vnet_hdr = tap_has_vnet_hdr,
-     .has_vnet_hdr_len = tap_has_vnet_hdr_len,
-     .get_using_vnet_hdr = tap_get_using_vnet_hdr,
-@@ -413,6 +424,7 @@ static TAPState *net_tap_fd_init(NetClientState *peer,
-     s->host_vnet_hdr_len = vnet_hdr ? sizeof(struct virtio_net_hdr) : 0;
-     s->using_vnet_hdr = false;
-     s->has_ufo = tap_probe_has_ufo(s->fd);
-+    s->has_uso = tap_probe_has_uso(s->fd);
-     s->enabled = true;
-     tap_set_offload(&s->nc, 0, 0, 0, 0, 0, 0, 0);
-     /*
-diff --git a/net/tap_int.h b/net/tap_int.h
-index d8861d81ba..9a2175655b 100644
---- a/net/tap_int.h
-+++ b/net/tap_int.h
-@@ -37,6 +37,7 @@ void tap_set_sndbuf(int fd, const NetdevTapOptions *tap, Error **errp);
- int tap_probe_vnet_hdr(int fd, Error **errp);
- int tap_probe_vnet_hdr_len(int fd, int len);
- int tap_probe_has_ufo(int fd);
-+int tap_probe_has_uso(int fd);
- void tap_fd_set_offload(int fd, int csum, int tso4, int tso6, int ecn, int ufo,
-                         int uso4, int uso6);
- void tap_fd_set_vnet_hdr_len(int fd, int len);
--- 
-2.34.3
-
+>>>>    3 files changed, 249 insertions(+), 146 deletions(-)
+>>>>
+>>>> --
+>>>> 2.25.1
+>>>
+>>
+>
 
