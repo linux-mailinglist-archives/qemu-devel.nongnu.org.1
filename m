@@ -2,73 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C314975997C
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C0575997E
 	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:22:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM8zi-00016a-2K; Wed, 19 Jul 2023 11:21:38 -0400
+	id 1qM904-0001Eu-C8; Wed, 19 Jul 2023 11:22:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qM8zf-00014U-U2
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:21:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qM8ze-00032l-9T
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:21:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689780093;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=6p89ZWy5m0GMj+w9jARQtFPEHYgTBBbpyssEMWvHqxU=;
- b=G3wc5edkEU7AxLwuQtoXcNsS1D6V9F7WRRmOROzopSkhSihbND8qAQIDQ1CBWx9lr1IWeE
- igxvhKsP+d1/05zh/BTWnf7p0h11O4JwF2CUK2b67izNX9siqenmetEscRDL1tZ6LsHi6u
- sBTVX2G0tsQFCtMRZyuth50Kv30c4/U=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-623-ewAgYYEsNMyDNgjDmEQAxw-1; Wed, 19 Jul 2023 11:21:30 -0400
-X-MC-Unique: ewAgYYEsNMyDNgjDmEQAxw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 90E47185A78F;
- Wed, 19 Jul 2023 15:21:29 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.67])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 517D01454142;
- Wed, 19 Jul 2023 15:21:28 +0000 (UTC)
-Date: Wed, 19 Jul 2023 16:21:26 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Het Gala <het.gala@nutanix.com>
-Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
- dgilbert@redhat.com, pbonzini@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-Subject: Re: [PATCH v8 3/9] migration: convert socket backend to accept
- MigrateAddress
-Message-ID: <ZLf/dqkLhkqALTEA@redhat.com>
-References: <20230713105713.236883-1-het.gala@nutanix.com>
- <20230713105713.236883-4-het.gala@nutanix.com>
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qM902-0001ES-GG
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:21:58 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yuri.benditovich@daynix.com>)
+ id 1qM900-00037C-0p
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:21:58 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-31297125334so644737f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:21:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1689780114; x=1690384914;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=H+xVImpKU6HqvfIrhNXVCI2bYevO88CMC+Dvv3jYGHE=;
+ b=xCnBef44l2It/IOVg9ZhHYi1VATPIrHtG7Mzspms+l7iRhapVOB2Zy8tsvnSwqih0B
+ GejYnzMCReEh8qjkZeWYgwQDmQSUK+HxIBEBWLNuSVzKkc4Jry1/iOCqh1xs1p7pYmdv
+ xgiPrJLRWxcINLArYwp18Lvn5piAuqpXNEoL7v0QqPfxFxIFzaePb7lGELFmxUAs7u4j
+ kPh7hNqBSooAwbQ45s4n9rb8jq/esN2kSTqrliyreWAwzrMf+Kw0rsZO/NJCko5X+ifJ
+ 9+Epsw07cLhSbCdHNonyAroUmDQkgruIgE8c/Nl77OZNTCN32NNW+ROWqptQBWtMZzqP
+ g5aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689780114; x=1690384914;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=H+xVImpKU6HqvfIrhNXVCI2bYevO88CMC+Dvv3jYGHE=;
+ b=JRVqMGiz5bTuNSgJCoRMzRVJ5k6FNLfLHPAT3rsqHXnuGHvjCf5aHN38ko5TPMiIrS
+ owetvou5FriJ1I2FddyzOv+mrFuzzyyprG6QQ0mb9o4uqtNwnzGU7zg4cuGhQ5Ig6Lit
+ mVg2gC9r6odbx+e7fF3UVGoXtRCfRTIo1nJxlIKEKNIetYKUpzFabnJKBRkcS+AnGQAf
+ 8ZgmgImdy4LUwzgYHdVdVgA0TYri253YSyEvjgMedHy96NqcGtmLruI8u0/LPUUV4yax
+ CbgftGY0iKseCRMAOnAUHO1lS4I+4wydXDyUP7+BwWqqtSClc6hy2cc4aALTV1t9VnAg
+ 2p8A==
+X-Gm-Message-State: ABy/qLYzwGailaPqcqogKZbXqx3n8VNPgNKjdCtFCoUdcPi+u9Ltnuip
+ 7ZUWfDoYx9r4METajWOkte8W0Q==
+X-Google-Smtp-Source: APBJJlEG9LXnktKht3U4OMsfQnGVVxwtuXt4O3TPaDhZaD6m4Xj4eDjMu2UW0HHgrvVXIs0sMD7lDw==
+X-Received: by 2002:a5d:664f:0:b0:317:6c3:c94d with SMTP id
+ f15-20020a5d664f000000b0031706c3c94dmr75760wrw.14.1689780113650; 
+ Wed, 19 Jul 2023 08:21:53 -0700 (PDT)
+Received: from localhost.localdomain
+ ([2a06:c701:46e6:7e00:c5bb:d943:dc1b:8245])
+ by smtp.gmail.com with ESMTPSA id
+ b9-20020a5d6349000000b0030e52d4c1bcsm5626775wrw.71.2023.07.19.08.21.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 19 Jul 2023 08:21:53 -0700 (PDT)
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
+To: Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>, mst@redhat.com,
+ Stefan Weil <sw@weilnetz.de>, qemu-devel@nongnu.org
+Cc: yan@daynix.com,
+	andrew@daynix.com
+Subject: [PATCH 0/4] virtio-net: add USO feature (UDP segmentation offload)
+Date: Wed, 19 Jul 2023 18:21:35 +0300
+Message-Id: <20230719152139.1316570-1-yuri.benditovich@daynix.com>
+X-Mailer: git-send-email 2.34.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230713105713.236883-4-het.gala@nutanix.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2a00:1450:4864:20::429;
+ envelope-from=yuri.benditovich@daynix.com; helo=mail-wr1-x429.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,74 +89,40 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 13, 2023 at 10:57:07AM +0000, Het Gala wrote:
-> Socket transport backend for 'migrate'/'migrate-incoming' QAPIs accept
-> new wire protocol of MigrateAddress struct.
-> 
-> It is achived by parsing 'uri' string and storing migration parameters
-> required for socket connection into well defined SocketAddress struct.
-> 
-> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> ---
->  migration/migration.c | 32 +++++++++++++++++++-------------
->  migration/socket.c    | 34 +++++-----------------------------
->  migration/socket.h    |  7 ++++---
->  3 files changed, 28 insertions(+), 45 deletions(-)
-
-> diff --git a/migration/socket.c b/migration/socket.c
-> index 1b6f5baefb..8e7430b266 100644
-> --- a/migration/socket.c
-> +++ b/migration/socket.c
-> @@ -108,10 +108,9 @@ out:
->      object_unref(OBJECT(sioc));
->  }
->  
-> -static void
-> -socket_start_outgoing_migration_internal(MigrationState *s,
-> -                                         SocketAddress *saddr,
-> -                                         Error **errp)
-> +void socket_start_outgoing_migration(MigrationState *s,
-> +                                     SocketAddress *saddr,
-> +                                     Error **errp)
->  {
->      QIOChannelSocket *sioc = qio_channel_socket_new();
->      struct SocketConnectData *data = g_new0(struct SocketConnectData, 1);
-> @@ -135,18 +134,6 @@ socket_start_outgoing_migration_internal(MigrationState *s,
->                                       NULL);
->  }
->  
-> -void socket_start_outgoing_migration(MigrationState *s,
-> -                                     const char *str,
-> -                                     Error **errp)
-> -{
-> -    Error *err = NULL;
-> -    SocketAddress *saddr = socket_parse(str, &err);
-> -    if (!err) {
-> -        socket_start_outgoing_migration_internal(s, saddr, &err);
-> -    }
-> -    error_propagate(errp, err);
-> -}
-
-In this original code, socket_start_outgoing_migration would allocate
-the SocketAddress, and then call socket_start_outgoing_migration_internal
-which would take ownership of it. This is fine.
-
-In the new code, the caller of socket_start_outgoing_migration
-owns the SocketAddress. So socket_start_outgoing_migration must
-create its own copy. IOW, this patch is where the QAPI_CLONE
-additions from patch 8 must be put.
+Starting from 6.2 the kernel supports UDP segmentation offload, the
+kernel uses GSO_UDP_L4 to mark packets with USB sermentation request 
 
 
-With regards,
-Daniel
+Andrew Melnychenko (3):
+  tap: Added USO support to tap device.
+  virtio-net: Added USO flags to vhost support.
+  virtio-net: Added uso check
+
+Yuri Benditovich (1):
+  virtio-net: added USO support
+
+ hw/net/e1000e_core.c |  2 +-
+ hw/net/igb_core.c    |  2 +-
+ hw/net/vhost_net.c   |  3 +++
+ hw/net/virtio-net.c  | 35 ++++++++++++++++++++++++++++++++---
+ hw/net/vmxnet3.c     |  2 ++
+ include/net/net.h    |  7 +++++--
+ net/net.c            | 13 +++++++++++--
+ net/tap-bsd.c        |  7 ++++++-
+ net/tap-linux.c      | 27 ++++++++++++++++++++++++---
+ net/tap-linux.h      |  2 ++
+ net/tap-solaris.c    |  7 ++++++-
+ net/tap-stub.c       |  7 ++++++-
+ net/tap-win32.c      |  2 +-
+ net/tap.c            | 18 +++++++++++++++---
+ net/tap_int.h        |  4 +++-
+ net/vhost-vdpa.c     |  3 +++
+ 16 files changed, 121 insertions(+), 20 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.3
 
 
