@@ -2,76 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9A375A039
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 22:52:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB26F75A197
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 00:16:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qME8z-0001ze-Fd; Wed, 19 Jul 2023 16:51:33 -0400
+	id 1qMFQO-00075g-Ks; Wed, 19 Jul 2023 18:13:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qME8x-0001zW-7r
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:51:31 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qME8v-0006yp-3X
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:51:31 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 406F2221CC;
- Wed, 19 Jul 2023 20:51:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1689799886; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=kqMg/wlXGha42WQXQCKIfwS5MQ9jpGN6yBaaz1IugJw=;
- b=u97Pqz0GqLmMhQ5oQBHQOzCR8HZe5KXbjh62bRuRJ8IxnKNogIeYqfiX5iMCiQUApUCoSm
- T1iD98hOL3ibe0MJNC4iB8E9QhIEPdoorCBaOzWSVX2SKIX1oLOA5mzQCLu4svapeOPY3Z
- f3DFJ6ia5P2kKOqgvou8CQNQSZkWc94=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1689799886;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=kqMg/wlXGha42WQXQCKIfwS5MQ9jpGN6yBaaz1IugJw=;
- b=XSZI3CIyFVcHzh3MzO3058ZeOHekgcEPCW6YeVQ0P86zWEINLY2tioCy+f3GKhhQE1201M
- emvx9mkwVnnbwTAw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C55401361C;
- Wed, 19 Jul 2023 20:51:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id lQbuI81MuGRZAgAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 19 Jul 2023 20:51:25 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Thomas Huth <thuth@redhat.com>, Milan Zamazal <mzamazal@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org, Peter
- Maydell <peter.maydell@linaro.org>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>
-Subject: Re: [PULL 10/66] tests/qtest: enable tests for virtio-scmi
-In-Reply-To: <373f7d28-788b-99d1-1606-b73db45720c1@redhat.com>
-References: <cover.1689030052.git.mst@redhat.com>
- <b6f53ae005a1c05034769beebf799e861b82d48a.1689030052.git.mst@redhat.com>
- <22589b2f-8dcf-b86b-2d77-bf27bf81ce27@redhat.com>
- <87pm4pcrbe.fsf@redhat.com>
- <373f7d28-788b-99d1-1606-b73db45720c1@redhat.com>
-Date: Wed, 19 Jul 2023 17:51:23 -0300
-Message-ID: <87wmyvr5f8.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qMFQH-0006yE-7M; Wed, 19 Jul 2023 18:13:30 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1qMFQB-0002BV-Ir; Wed, 19 Jul 2023 18:13:28 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36JM7iAF031496; Wed, 19 Jul 2023 22:13:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=wHh3H6emH8WxW3O1tpyBKo+r7Tu9dTCcI8847oTnD5s=;
+ b=qTCd0RtIxdFkZqwmG5FbcsNS1i5qe+PyZKVz7/DwONXTlWl7ZLcRxdMlOCV5F92ozQ7p
+ Ok+MCJS47nMKgIYlUd/OQ1XUPxGQUJ0NVLcWtqR072dwXsNz2cwOzDoIMM8SnXvkzRw8
+ eH1gK0rUesgeG4xtbuHYmUJV4QUV8BGl12n1AMqJkLv/WO00ShEe2ZV/74/ZeKV8HQva
+ bNinRVNdb6toY8kRiDHhXOqxFBhC6jjQv+U5vcRHw+99A4B983NDVCWaM5oKsIps6lVf
+ aNpDaZLBZKapkGYccebwG9tZGx8Ji7TfelIPExzo+kwhpd1VVm4S5G7WeEhLrCrYicuz 2Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxnbn4fn2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 Jul 2023 22:13:17 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36JM8r8Q004145;
+ Wed, 19 Jul 2023 22:13:17 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxnbn4fms-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 Jul 2023 22:13:17 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36JK0Yjh029098; Wed, 19 Jul 2023 22:13:15 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv6smktjw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 19 Jul 2023 22:13:15 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
+ [10.20.54.105])
+ by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36JMDD3d32112976
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 19 Jul 2023 22:13:13 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C3F9520065;
+ Wed, 19 Jul 2023 22:13:13 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 49C822005A;
+ Wed, 19 Jul 2023 22:13:13 +0000 (GMT)
+Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.5.152])
+ by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 19 Jul 2023 22:13:13 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v3 00/14] target/s390x: Miscellaneous TCG fixes, part 2
+Date: Thu, 20 Jul 2023 00:11:12 +0200
+Message-ID: <20230719221310.1968845-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 3KR0gCk9623QTKLZDxIdY7VtfzdDig-v
+X-Proofpoint-ORIG-GUID: u9Kixow_Ozq38vxq9Dg8fJceyVk5iaf7
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-19_16,2023-07-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0
+ spamscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=971 phishscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2307190199
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,116 +110,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+v2: https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg03762.html
+v2 -> v3: Document the new constraint set (Philippe).
+          Fix clang build (Thomas).
+          Add T-bs.
 
-> On 18/07/2023 14.55, Milan Zamazal wrote:
->> Thomas Huth <thuth@redhat.com> writes:
->> 
->>> On 11/07/2023 01.02, Michael S. Tsirkin wrote:
->>>> From: Milan Zamazal <mzamazal@redhat.com>
->>>> We don't have a virtio-scmi implementation in QEMU and only support
->>>
->>>> a
->>>> vhost-user backend.  This is very similar to virtio-gpio and we add the same
->>>> set of tests, just passing some vhost-user messages over the control socket.
->>>> Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
->>>> Acked-by: Thomas Huth <thuth@redhat.com>
->>>> Message-Id: <20230628100524.342666-4-mzamazal@redhat.com>
->>>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
->>>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->>>> ---
->>>>    tests/qtest/libqos/virtio-scmi.h |  34 ++++++
->>>>    tests/qtest/libqos/virtio-scmi.c | 174 +++++++++++++++++++++++++++++++
->>>>    tests/qtest/vhost-user-test.c    |  44 ++++++++
->>>>    MAINTAINERS                      |   1 +
->>>>    tests/qtest/libqos/meson.build   |   1 +
->>>>    5 files changed, 254 insertions(+)
->>>>    create mode 100644 tests/qtest/libqos/virtio-scmi.h
->>>>    create mode 100644 tests/qtest/libqos/virtio-scmi.c
->>>
->>>   Hi!
->>>
->>> I'm seeing some random failures with this new scmi test, so far only
->>> on non-x86 systems, e.g.:
->>>
->>>   https://app.travis-ci.com/github/huth/qemu/jobs/606246131#L4774
->>>
->>> It also reproduces on a s390x host here, but only if I run "make check
->>> -j$(nproc)" - if I run the tests single-threaded, the qos-test passes
->>> there. Seems like there is a race somewhere in this test?
->> 
->> Hmm, it's basically the same as virtio-gpio.c test, so it should be OK.
->> Is it possible that the two tests (virtio-gpio.c & virtio-scmi.c)
->> interfere with each other in some way?  Is there possibly a way to
->> serialize them to check?
->
-> I think within one qos-test, the sub-tests are already run serialized. But there might be multiple qos-tests running in parallel, e.g. one for the aarch64 target and one for the ppc64 target. And indeed, I can reproduce the problem on my x86 laptop by running this in one terminal window:
->
-> for ((x=0;x<1000;x++)); do \
->   QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon \
->   G_TEST_DBUS_DAEMON=.tests/dbus-vmstate-daemon.sh \
->   QTEST_QEMU_BINARY=./qemu-system-ppc64 \
->   MALLOC_PERTURB_=188 QTEST_QEMU_IMG=./qemu-img \
->   tests/qtest/qos-test -p \
->   /ppc64/pseries/spapr-pci-host-bridge/pci-bus-spapr/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile \
->   || break ; \
-> done
->
-> And this in another terminal window at the same time:
->
-> for ((x=0;x<1000;x++)); do \
->   QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon \
->   G_TEST_DBUS_DAEMON=.tests/dbus-vmstate-daemon.sh \
->   QTEST_QEMU_BINARY=./qemu-system-aarch64 \
->   MALLOC_PERTURB_=188 QTEST_QEMU_IMG=./qemu-img \
->   tests/qtest/qos-test -p \
->   /aarch64/virt/generic-pcihost/pci-bus-generic/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile \
->   || break ; \
-> done
->
-> After a while, the aarch64 test broke with:
->
-> /aarch64/virt/generic-pcihost/pci-bus-generic/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile: qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost VQ 0 ring restore failed: -22: Invalid argument (22)
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost VQ 1 ring restore failed: -22: Invalid argument (22)
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost_set_vring_call failed 22
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost_set_vring_call failed 22
-> qemu-system-aarch64: Failed to write msg. Wrote -1 instead of 20.
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost VQ 0 ring restore failed: -22: Invalid argument (22)
-> qemu-system-aarch64: Failed to set msg fds.
-> qemu-system-aarch64: vhost VQ 1 ring restore failed: -22: Invalid argument (22)
-> qemu-system-aarch64: ../../devel/qemu/hw/pci/msix.c:659: msix_unset_vector_notifiers: Assertion `dev->msix_vector_use_notifier && dev->msix_vector_release_notifier' failed.
-> ../../devel/qemu/tests/qtest/libqtest.c:200: kill_qemu() detected QEMU death from signal 6 (Aborted) (core dumped)
+v1: https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg03648.html
+v1 -> v2: Move the case in 04/14 (David).
+          Simplify the reserved type checking in 07/14 (David).
+          Add R-bs.
 
-If it helps,
+Hi,
 
-it looks like msix_unset_vector_notifiers is being called twice, once
-from vu_scmi_set_status() and another from vu_scmi_disconnect():
+Here is another set of fixes for issues found by randomized testing.
 
-msix_unset_vector_notifiers
-virtio_pci_set_guest_notifiers
-vu_scmi_stop
-vu_scmi_disconnect   <-
-vu_scmi_event
-chr_be_event
-qemu_chr_be_event
-tcp_chr_disconnect_locked
-tcp_chr_write
-qemu_chr_write_buffer
+Most of them have to do with simple insufficient error handling or
+corner cases, but 3/14 and 6/14 took a while to figure out, and
+hopefully I got the fixes right. 13/14 is a test for an issue that
+Richard has already fixed, but I thought it would be helpful to have it
+anyway.
 
-msix_unset_vector_notifiers
-virtio_pci_set_guest_notifiers
-vu_scmi_stop
-vu_scmi_set_status   <-
-virtio_set_status
-virtio_vmstate_change
-vm_state_notify
-do_vm_stop
-vm_shutdown
-qemu_cleanup
+Best regards,
+Ilya
+
+Ilya Leoshkevich (14):
+  target/s390x: Make CKSM raise an exception if R2 is odd
+  target/s390x: Fix CLM with M3=0
+  target/s390x: Fix CONVERT TO LOGICAL/FIXED with out-of-range inputs
+  target/s390x: Fix ICM with M3=0
+  target/s390x: Make MC raise specification exception when class >= 16
+  tcg/{i386,s390x}: Add earlyclobber to the op_add2's first output
+  target/s390x: Fix assertion failure in VFMIN/VFMAX with type 13
+  tests/tcg/s390x: Test CKSM
+  tests/tcg/s390x: Test CLGEBR and CGEBRA
+  tests/tcg/s390x: Test CLM
+  tests/tcg/s390x: Test ICM
+  tests/tcg/s390x: Test MC
+  tests/tcg/s390x: Test STPQ
+  tests/tcg/s390x: Test VCKSM
+
+ target/s390x/tcg/excp_helper.c          |  2 +-
+ target/s390x/tcg/fpu_helper.c           |  3 +-
+ target/s390x/tcg/mem_helper.c           |  5 +++
+ target/s390x/tcg/translate.c            | 21 ++++++++--
+ target/s390x/tcg/translate_vx.c.inc     |  2 +-
+ tcg/i386/tcg-target-con-set.h           |  5 ++-
+ tcg/i386/tcg-target.c.inc               |  2 +-
+ tcg/s390x/tcg-target-con-set.h          |  8 ++--
+ tcg/s390x/tcg-target.c.inc              |  4 +-
+ tcg/tcg.c                               |  8 +++-
+ tests/tcg/s390x/Makefile.softmmu-target |  5 +++
+ tests/tcg/s390x/Makefile.target         |  6 +++
+ tests/tcg/s390x/cgebra.c                | 32 ++++++++++++++
+ tests/tcg/s390x/cksm.S                  | 29 +++++++++++++
+ tests/tcg/s390x/clgebr.c                | 32 ++++++++++++++
+ tests/tcg/s390x/clm.S                   | 29 +++++++++++++
+ tests/tcg/s390x/icm.S                   | 32 ++++++++++++++
+ tests/tcg/s390x/mc.S                    | 56 +++++++++++++++++++++++++
+ tests/tcg/s390x/stpq.S                  | 20 +++++++++
+ tests/tcg/s390x/vcksm.c                 | 31 ++++++++++++++
+ tests/tcg/s390x/vx.h                    |  2 +
+ 21 files changed, 319 insertions(+), 15 deletions(-)
+ create mode 100644 tests/tcg/s390x/cgebra.c
+ create mode 100644 tests/tcg/s390x/cksm.S
+ create mode 100644 tests/tcg/s390x/clgebr.c
+ create mode 100644 tests/tcg/s390x/clm.S
+ create mode 100644 tests/tcg/s390x/icm.S
+ create mode 100644 tests/tcg/s390x/mc.S
+ create mode 100644 tests/tcg/s390x/stpq.S
+ create mode 100644 tests/tcg/s390x/vcksm.c
+
+-- 
+2.41.0
+
 
