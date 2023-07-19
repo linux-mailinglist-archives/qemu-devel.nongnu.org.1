@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5AAF758AB9
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 03:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 961B0758ABA
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 03:16:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLvk3-0006ZG-7Q; Tue, 18 Jul 2023 21:12:35 -0400
+	id 1qLvmo-0007s1-3T; Tue, 18 Jul 2023 21:15:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <flwu@google.com>) id 1qLvk0-0006W2-OE
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 21:12:32 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qLvmb-0007nw-65; Tue, 18 Jul 2023 21:15:13 -0400
+Received: from mail-vs1-xe2b.google.com ([2607:f8b0:4864:20::e2b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <flwu@google.com>) id 1qLvjy-0006UN-J6
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 21:12:32 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3110ab7110aso6550754f8f.3
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 18:12:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qLvmY-0007Ed-Vt; Tue, 18 Jul 2023 21:15:12 -0400
+Received: by mail-vs1-xe2b.google.com with SMTP id
+ ada2fe7eead31-440b66adc81so2022976137.1; 
+ Tue, 18 Jul 2023 18:15:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20221208; t=1689729148; x=1692321148;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=e5xo6xIZLxdssYcj6bep4g/ZKjYf5/MfO9s1aF+hfT8=;
- b=VkvxhMm0QcG+prZewF5m6bsH1PIJbwqNugq/3nB6KC/qB+Rh1I4o4FRfBTJAwqXinJ
- OXTzsIpNOS0BcLOERkMFNUheeV73wDOXrN+lmT9TOrU/NPll+WJH+LcoDm7seq+N/T6l
- cVfWdFroAJC9YlpoI8uRfgdqP8tfE+1iO3mo73E0OJFXMmpQofBLMcoLrA6uEmrut5th
- 0nocDm5x2H+LEw/fjWewG/DI+2/MgL6/ssJ1IFqhAeol01krNGPSj81oA0zvUK3JJO7E
- zRIsz0I0ggom6nwa726sXRMYpqouH8kcWfK36Mj5LD5ubyIRWEhC26gfPArykD5MZw2c
- JjNg==
+ d=gmail.com; s=20221208; t=1689729307; x=1692321307;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=lFAlC7fXrrCSlGtmryoxZgIoJSPdYuNY2L7RMOLWW60=;
+ b=aMFA4/ZAeLAr13zlQW2z/+0IwAZP5nEhiZ5TGb7wTp/O5KbFCWpvWB2LgZl7ccNPNg
+ OiRzihlzLEpb5V2SSXJsEF5W/ot/5CYdTJs2YTHjdYctKY2wu9Eqe57xTO4sdLaajksv
+ L7pf7KShLf9bpwZj9jc8TrrFB/JfzXsMIEb/Oi5g0m30cmHU8rZ/4rbD7x9KJj8Dn2JV
+ suHPValODNjvQ/pLx5qa4uwJanGJJmEeaYT3WY0odwXBPiJrw1xozYOZoZUmDfd1tDuR
+ r48+gocj91+5wHqb1xsqwnrgXFNKuGhkFRvUKnmF6KB7cdT8edBZSf4VEDb0t2Wa+KZg
+ m+eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689729148; x=1692321148;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=e5xo6xIZLxdssYcj6bep4g/ZKjYf5/MfO9s1aF+hfT8=;
- b=RqELvyXvQugXTY7cLMgGxBeUlf1qZhVQnManID0TCd9UYElJNQnvchKU2ygHDB0pny
- qwqQg5unoF2QGVK9m++aunMoncD3b6Bp2a4cg3SD3hiHUT/AfYGQ/rSA3mcM+CQHdWAh
- b6B0frytA3nUQtX3bZv/IwrVpv6TLFuTERcCrvDYvXU09E6ao+E59xwx6q4w1meoDFJN
- Y8oojDpM7MAMM6tnkma6P4mRBqtrgTVpmnco+KYJG8k78joMWNqv3EUUVhzizFlKkjJI
- NGl7M7PA5qa6xErWvzV59teAnbwC9Arn9h3P7THfR70GoJfV1C24nnz4ehrAJ+ywBI9l
- DdYA==
-X-Gm-Message-State: ABy/qLYtSuL/pkO7zXaI2KGfKqkXfuqiL/1rsMGW0eYh/6FQZPj8cql9
- xXxWqOvchfmTmUCHYtVuYkidLEUERPoLtG17L9nTaQ==
-X-Google-Smtp-Source: APBJJlExHC3fQVzAkttjFVwyckKV4jqTEb+YphVSmug1MUP10/S4yl8kbk2xRhFI1JfSjFzrpaUo0bahJ6+GTGdg+TI=
-X-Received: by 2002:a05:6000:1cce:b0:314:2568:7c9a with SMTP id
- bf14-20020a0560001cce00b0031425687c9amr13850131wrb.17.1689729147784; Tue, 18
- Jul 2023 18:12:27 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689729307; x=1692321307;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lFAlC7fXrrCSlGtmryoxZgIoJSPdYuNY2L7RMOLWW60=;
+ b=fumXx2Mrynp1VYNwezniG7md4+qGpTputuS4yH13omdntiQydXFIytIYBmpcjwCW2X
+ sZ65ne0/pcPw2NpVvgQJxuuvDh1Zi8v07ByyIMIj6NpL4tH+vBS7c7DtuAwV+jZNQWfU
+ gH1Up0666rlrDSGKpSNnKnmo1Ii99X+rjEkzXRCQfEHo5ijBi88WL2pOfx8GW7NQor/4
+ CLl3MzvQ4PFPjB/ObgtZBwaByWLuBbAjU8krjqNueIczSAG05aHQziiYOkroEyEAbsgY
+ u2UFkxA91bJyVZwIztUlDcIoDR1uZuZJJOJ4ZTMzkrce55gSHJz6NXuZiPTV6ASxEuD6
+ NtAg==
+X-Gm-Message-State: ABy/qLZ7fQZf5xawAu3uv3FEz9azymY4xJ3D/aS0HxF3TDiZImRDYDRr
+ SncW857Q/1qqqDv2/k5Jxp7aZCkIDfirWsqXaYM=
+X-Google-Smtp-Source: APBJJlHjp/qgB85gmZrO1k7OHDf8ShDlmzgy6t9bYgdbb2LJzPd3hrT4v+GaD/w3arcWyTast+T+lD8/8d7jg1n8Hzo=
+X-Received: by 2002:a67:db8e:0:b0:443:ef68:1f06 with SMTP id
+ f14-20020a67db8e000000b00443ef681f06mr783389vsk.18.1689729307574; Tue, 18 Jul
+ 2023 18:15:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAJt6XFoT2irgOwtMB2qpgr3Yj6Q-zij_fpD9BL24QvFG7w3zOg@mail.gmail.com>
- <20230626114916.45355529@mobian.usb.local>
- <20230626100819.vtkuuvzg376hktk2@begin>
-In-Reply-To: <20230626100819.vtkuuvzg376hktk2@begin>
-From: Felix Wu <flwu@google.com>
-Date: Tue, 18 Jul 2023 18:12:16 -0700
-Message-ID: <CAJt6XFpDwuim-FF7a5MMibQvJa1YJ=X165n43XEtQaF4356r9w@mail.gmail.com>
-Subject: Re: Tips for local testing guestfwd
-To: Samuel Thibault <samuel.thibault@gnu.org>
-Cc: Lukas Straub <lukasstraub2@web.de>, qemu-devel@nongnu.org, 
- Jason Wang <jasowang@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000009ff2320600ccb92a"
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=flwu@google.com; helo=mail-wr1-x42e.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+References: <20230717154141.60898-1-dbarboza@ventanamicro.com>
+ <f0f0b1fb-327b-abb8-0262-027c75c76520@linux.alibaba.com>
+ <67f0569b-ffe4-5e4c-78eb-73a25aa414fb@ventanamicro.com>
+In-Reply-To: <67f0569b-ffe4-5e4c-78eb-73a25aa414fb@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 19 Jul 2023 11:14:41 +1000
+Message-ID: <CAKmqyKO_ozMqU28PVkBZXpmu3e-NLRR51zmXRJD8teny7uWbng@mail.gmail.com>
+Subject: Re: [PATCH] target/riscv/cpu.c: check priv_ver before auto-enable
+ zca/zcd/zcf
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org, 
+ qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org, 
+ liweiwei@iscas.ac.cn, palmer@rivosinc.com, Conor Dooley <conor@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2b;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,235 +90,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000009ff2320600ccb92a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi all,
-
-I am continuing debugging the ipv6 guestfwd feature, and I would like to
-understand the behavior of slirp better.
-
-Progress I've made:
-Let QEMU take parameter like following:
-guestfwd=3Dtcp:[fec0::105]:54322-tcp:[::1]:6655
-For slirp side, I basically searched for the appearance of gfwd_list and
-made all code traverse the fwd list compatible with ipv6.
-With these change, now I can see the packets coming out of the guest OS to
-the assigned guest server port via tcpdump:
-```
-00:38:18.831831 IP6 fdb5:481:10ce:0:8c41:aaff:fea9:f674.52190 >
-fec0::105.54322: tcp 0
-        0x0000:  600a 1f94 0028 0640 fdb5 0481 10ce 0000  `....(.@........
-        0x0010:  8c41 aaff fea9 f674 fec0 0000 0000 0000  .A.....t........
-        0x0020:  0000 0000 0000 0105 cbde d432 df6d 8332  ...........2.m.2
-        0x0030:  0000 0000 a0*02* fd20 535f 0000 0204 05a0  ........S_.....=
-.
-        0x0040:  0402 080a b87b fd3b 0000 0000 0103 0307  .....{.;........
-```
-02 =3D=3D SYN so it looks good. But both tcpdump and wireshark (looking int=
-o
-packet dump provided by QEMU invocation) didn't see any response and this
-packet never reached the host.
-I added multiple prints inside slirp and confirmed the ipv6 version of [1]
-was reached.
-in tcp_output function [2], I got following print:
-qemu-system-aarch64: info: Slirp: AF_INET6 out dst ip =3D
-fdb5:481:10ce:0:8c41:aaff:fea9:f674, port =3D 52190
-qemu-system-aarch64: info: Slirp: AF_INET6 out src ip =3D fec0::105, port =
-=3D
-54322
-It looks like there should be something being sent back to the guest,
-unless my understanding of tcp_output is wrong.
-
-To understand the datapath of guestfwd better, I have the following
-questions:
-1. What's the meaning of tcp_input and tcp_output? My guess is the
-following graph, but I would like to confirm.
-           tcp_input     tcp_output
-QEMU --------> slirp ----------> host
-            <--------       <----------
-         tcp_output   tcp_input
-
-2. I don't see port 6655 in the above process. How does slirp know 6655 is
-the port that needs to be visited on the host side?
-
-Thanks in advance, Felix
-[1].
-https://gitlab.freedesktop.org/slirp/libslirp/-/blob/master/src/tcp_input.c=
-#L630
-[2].
-https://gitlab.freedesktop.org/slirp/libslirp/-/blob/master/src/tcp_output.=
-c#L477
-
-
-On Mon, Jun 26, 2023 at 3:08=E2=80=AFAM Samuel Thibault <samuel.thibault@gn=
-u.org>
-wrote:
-
-> Hello,
+On Tue, Jul 18, 2023 at 7:50=E2=80=AFPM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> Felix Wu <flwu@google.com> wrote:
-> > 2. I want to understand what ip I should use. Currently I have followin=
-g
-> > formats for the QEMU invocation in ipv6:
-> > ```
-> > guestfwd=3Dtcp:[::1]:1234-tcp:[my:host:ip:from:ifconfig]:22
-> > ```
-> > I know the general form is `guestfwd=3Dtcp:server:port-dev`, where
-> > server:port is for guest,
 >
-> Yes, the address to be used within the guest network. So it needs to be
-> within the guest network.
 >
-> > Is the aforementioned invocation correct?
+> On 7/17/23 22:36, LIU Zhiwei wrote:
+> >
+> > On 2023/7/17 23:41, Daniel Henrique Barboza wrote:
+> >> Commit bd30559568 made changes in how we're checking and disabling
+> >> extensions based on env->priv_ver. One of the changes was to move the
+> >> extension disablement code to the end of realize(), being able to
+> >> disable extensions after we've auto-enabled some of them.
+> >>
+> >> An unfortunate side effect of this change started to happen with CPUs
+> >> that has an older priv version, like sifive-u54. Starting on commit
+> >> 2288a5ce43e5 we're auto-enabling zca, zcd and zcf if RVC is enabled,
+> >> but these extensions are priv version 1.12.0. When running a cpu that
+> >> has an older priv ver (like sifive-u54) the user is spammed with
+> >> warnings like these:
+> >>
+> >> qemu-system-riscv64: warning: disabling zca extension for hart 0x00000=
+00000000000 because privilege spec version does not match
+> >> qemu-system-riscv64: warning: disabling zcd extension for hart 0x00000=
+00000000000 because privilege spec version does not match
+> >>
+> >> The warnings are part of the code that disables the extension, but in =
+this
+> >> case we're throwing user warnings for stuff that we enabled on our own=
+,
+> >> without user intervention. Users are left wondering what they did wron=
+g.
+> >>
+> >> A quick 8.1 fix for this nuisance is to check the CPU priv spec before
+> >> auto-enabling zca/zcd/zcf. A more appropriate fix will include a more
+> >> robust framework that will account for both priv_ver and user choice
+> >> when auto-enabling/disabling extensions, but for 8.1 we'll make it do
+> >> with this simple check.
+> >>
+> >> It's also worth noticing that this is the only case where we're
+> >> auto-enabling extensions based on a criteria (in this case RVC) that
+> >> doesn't match the priv spec of the extensions we're enabling. There's =
+no
+> >> need for more 8.1 band-aids.
+> >>
+> >> Cc: Conor Dooley <conor@kernel.org>
+> >> Fixes: 2288a5ce43e5 ("target/riscv: add cfg properties for Zc* extensi=
+on")
+> >> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> >> ---
+> >>   target/riscv/cpu.c | 3 ++-
+> >>   1 file changed, 2 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> >> index 9339c0241d..6b93b04453 100644
+> >> --- a/target/riscv/cpu.c
+> >> +++ b/target/riscv/cpu.c
+> >> @@ -1225,7 +1225,8 @@ void riscv_cpu_validate_set_extensions(RISCVCPU =
+*cpu, Error **errp)
+> >>           }
+> >>       }
+> >> -    if (riscv_has_ext(env, RVC)) {
+> >> +    /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
+> >
+> > I think the Zca/zcd/zcf doesn't have much relationship with the privile=
+ge specification. The privilege specification doesn't define any
+> > CSR or rules that Zca/zcd/zcf depend on. Maybe I missed something.  Doe=
+s anyone  know why we should check PRIV_VERSION_1_12_0 for zca/zcf/zcd?
 >
-> No, because ::1 isn't in the guest network.
->
-> > Or in this case [::1] is the local host address and I should put qemu
-> > address for it instead?
->
-> You can use whatever IP you want, as long as it's in the guest network.
-> e.g. [fec0::1234] if you're with the default fec0::/64 network.
->
-> > 3. Is there a default ipv6 address for QEMU instance? I think I need it
-> in
-> > the invocation.
->
-> By default it's address 2 within the prefix, i.e. fec0::2 with the
-> default fec0::/64 network.
->
-> Samuel
->
+> I always thought about this priv spec filter as a way to determine the ti=
+me
+> window that the extension was ratified/defined. In this example it's been=
+ used
+> to filter out zca/zcd/zcf from the sifive-u54 chip because this chip is o=
+lder
+> than those extensions, so it doesn't make sense to enable them.
 
---0000000000009ff2320600ccb92a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+That's true. The priv spec check is also there because we needed newer
+versions of the priv spec for some extensions, and if we are going to
+check some it's simpler to just check all of them.
 
-<div dir=3D"ltr">Hi all,<div><br></div><div>I am continuing debugging the i=
-pv6 guestfwd feature, and I would like to understand the behavior of slirp =
-better.</div><div><br></div><div>Progress=C2=A0I&#39;ve made:</div><div>Let=
- QEMU take parameter like following:<br></div><div>guestfwd=3Dtcp:[fec0::10=
-5]:54322-tcp:[::1]:6655<br></div><div>For slirp side, I basically searched =
-for the appearance=C2=A0of gfwd_list and made all code traverse the fwd lis=
-t compatible with ipv6.<br></div><div>With these change, now I can see the =
-packets coming out of the guest OS to the assigned guest server port via tc=
-pdump:</div><div><span style=3D"color:rgb(32,33,36);font-family:Roboto,Aria=
-l,sans-serif;font-size:13px;letter-spacing:0.185714px">```</span></div><div=
-><span style=3D"color:rgb(32,33,36);font-family:Roboto,Arial,sans-serif;fon=
-t-size:13px;letter-spacing:0.185714px">00:38:18.831831 IP6 fdb5:481:10ce:0:=
-8c41:aaff:fea9:f674.52190 &gt; fec0::105.54322: tcp 0</span><br style=3D"co=
-lor:rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font-size:13px;letter=
--spacing:0.185714px"><span style=3D"color:rgb(32,33,36);font-family:Roboto,=
-Arial,sans-serif;font-size:13px;letter-spacing:0.185714px">=C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 0x0000: =C2=A0600a 1f94 0028 0640 fdb5 0481 10ce 0000 =C2=A0`=
-....(.@........</span><br style=3D"color:rgb(32,33,36);font-family:Roboto,A=
-rial,sans-serif;font-size:13px;letter-spacing:0.185714px"><span style=3D"co=
-lor:rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font-size:13px;letter=
--spacing:0.185714px">=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x0010: =C2=A08c41 aaff fe=
-a9 f674 fec0 0000 0000 0000 =C2=A0.A.....t........</span><br style=3D"color=
-:rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font-size:13px;letter-sp=
-acing:0.185714px"><span style=3D"color:rgb(32,33,36);font-family:Roboto,Ari=
-al,sans-serif;font-size:13px;letter-spacing:0.185714px">=C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 0x0020: =C2=A00000 0000 0000 0105 cbde d432 df6d 8332 =C2=A0....=
-.......2.m.2</span><br style=3D"color:rgb(32,33,36);font-family:Roboto,Aria=
-l,sans-serif;font-size:13px;letter-spacing:0.185714px"><span style=3D"color=
-:rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font-size:13px;letter-sp=
-acing:0.185714px">=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x0030: =C2=A00000 0000 a0*02=
-* fd20 535f 0000 0204 05a0 =C2=A0........S_......</span><br style=3D"color:=
-rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font-size:13px;letter-spa=
-cing:0.185714px"><span style=3D"color:rgb(32,33,36);font-family:Roboto,Aria=
-l,sans-serif;font-size:13px;letter-spacing:0.185714px">=C2=A0 =C2=A0 =C2=A0=
- =C2=A0 0x0040: =C2=A00402 080a b87b fd3b 0000 0000 0103 0307 =C2=A0.....{.=
-;........</span><br></div><div>```</div><div>02 =3D=3D SYN so it looks good=
-. But both tcpdump and wireshark (looking into packet dump provided by QEMU=
- invocation) didn&#39;t see any response and this packet never reached the =
-host.</div><div>I added multiple prints inside slirp and confirmed the ipv6=
- version of [1] was reached.</div><div>in tcp_output function [2], I got fo=
-llowing print:</div><div><span style=3D"color:rgb(32,33,36);font-family:Rob=
-oto,Arial,sans-serif;font-size:13px;letter-spacing:0.185714px">qemu-system-=
-aarch64: info: Slirp: AF_INET6 out dst ip =3D fdb5:481:10ce:0:8c41:aaff:fea=
-9:f674, port =3D 52190</span><br style=3D"color:rgb(32,33,36);font-family:R=
-oboto,Arial,sans-serif;font-size:13px;letter-spacing:0.185714px"><span styl=
-e=3D"color:rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font-size:13px=
-;letter-spacing:0.185714px">qemu-system-aarch64: info: Slirp: AF_INET6 out =
-src ip =3D fec0::105, port =3D 54322</span><br></div><div>It looks like the=
-re should be something being sent back to the guest, unless my understandin=
-g of tcp_output is wrong.</div><div><br></div><div>To understand the datapa=
-th of guestfwd better, I have the following questions:</div><div><span styl=
-e=3D"color:rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font-size:13px=
-;letter-spacing:0.185714px">1. What&#39;s the meaning of tcp_input and tcp_=
-output? My guess is the following graph, but I would like to confirm.</span=
-><br style=3D"color:rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font-=
-size:13px;letter-spacing:0.185714px"><span style=3D"color:rgb(32,33,36);fon=
-t-family:Roboto,Arial,sans-serif;font-size:13px;letter-spacing:0.185714px">=
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tcp_input =C2=A0 =C2=A0 tcp_output=
-</span><br style=3D"color:rgb(32,33,36);font-family:Roboto,Arial,sans-serif=
-;font-size:13px;letter-spacing:0.185714px"><span style=3D"color:rgb(32,33,3=
-6);font-family:Roboto,Arial,sans-serif;font-size:13px;letter-spacing:0.1857=
-14px">QEMU --------&gt; slirp ----------&gt; host</span><br style=3D"color:=
-rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font-size:13px;letter-spa=
-cing:0.185714px"><span style=3D"color:rgb(32,33,36);font-family:Roboto,Aria=
-l,sans-serif;font-size:13px;letter-spacing:0.185714px">=C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 &lt;-------- =C2=A0 =C2=A0 =C2=A0 &lt;----------</spa=
-n><br style=3D"color:rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font=
--size:13px;letter-spacing:0.185714px"><span style=3D"color:rgb(32,33,36);fo=
-nt-family:Roboto,Arial,sans-serif;font-size:13px;letter-spacing:0.185714px"=
->=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0tcp_output =C2=A0 tcp_input</span><br></=
-div><div><br></div><div>2.=C2=A0<span style=3D"color:rgb(32,33,36);font-fam=
-ily:Roboto,Arial,sans-serif;font-size:13px;letter-spacing:0.185714px">I don=
-&#39;t see port 6655 in the above=C2=A0process. How does slirp know 6655 is=
- the port that needs to be visited on the host side?</span></div><div><span=
- style=3D"color:rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font-size=
-:13px;letter-spacing:0.185714px"><br></span></div><div><span style=3D"color=
-:rgb(32,33,36);font-family:Roboto,Arial,sans-serif;font-size:13px;letter-sp=
-acing:0.185714px">Thanks in advance, Felix</span></div><div>[1].<a href=3D"=
-https://gitlab.freedesktop.org/slirp/libslirp/-/blob/master/src/tcp_input.c=
-#L630">https://gitlab.freedesktop.org/slirp/libslirp/-/blob/master/src/tcp_=
-input.c#L630</a></div><div>[2].<a href=3D"https://gitlab.freedesktop.org/sl=
-irp/libslirp/-/blob/master/src/tcp_output.c#L477">https://gitlab.freedeskto=
-p.org/slirp/libslirp/-/blob/master/src/tcp_output.c#L477</a></div><div><br>=
-</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_=
-attr">On Mon, Jun 26, 2023 at 3:08=E2=80=AFAM Samuel Thibault &lt;<a href=
-=3D"mailto:samuel.thibault@gnu.org">samuel.thibault@gnu.org</a>&gt; wrote:<=
-br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hello,<br>
-<br>
-Felix Wu &lt;<a href=3D"mailto:flwu@google.com" target=3D"_blank">flwu@goog=
-le.com</a>&gt; wrote:<br>
-&gt; 2. I want to understand what ip I should use. Currently I have followi=
-ng<br>
-&gt; formats for the QEMU invocation in ipv6:<br>
-&gt; ```<br>
-&gt; guestfwd=3Dtcp:[::1]:1234-tcp:[my:host:ip:from:ifconfig]:22<br>
-&gt; ```<br>
-&gt; I know the general form is `guestfwd=3Dtcp:server:port-dev`, where<br>
-&gt; server:port is for guest,<br>
-<br>
-Yes, the address to be used within the guest network. So it needs to be<br>
-within the guest network.<br>
-<br>
-&gt; Is the aforementioned invocation correct?<br>
-<br>
-No, because ::1 isn&#39;t in the guest network.<br>
-<br>
-&gt; Or in this case [::1] is the local host address and I should put qemu<=
-br>
-&gt; address for it instead?<br>
-<br>
-You can use whatever IP you want, as long as it&#39;s in the guest network.=
-<br>
-e.g. [fec0::1234] if you&#39;re with the default fec0::/64 network.<br>
-<br>
-&gt; 3. Is there a default ipv6 address for QEMU instance? I think I need i=
-t in<br>
-&gt; the invocation.<br>
-<br>
-By default it&#39;s address 2 within the prefix, i.e. fec0::2 with the<br>
-default fec0::/64 network.<br>
-<br>
-Samuel<br>
-</blockquote></div>
+>
+> >
+> > I think we should remove the check for priv_ver for many user mode exte=
+nsions. We should set the checking privilege specification version for thes=
+e extensions to PRIV_VERSION_1_10_0.
+>
+> I think it's hard to pick and choose which extensions will have a priv ve=
+rsion check
+> or not. If we're bothered with the priv spec check per se then we should =
+remove it
 
---0000000000009ff2320600ccb92a--
+Agreed
+
+> entirely. Here's my plan to do it:
+
+I think that'll work
+
+>
+> - remove cfg.priv_ver. This is a very old attribute that allow users to s=
+et the priv_ver
+> for generic CPUs like rv64. I'm doing changes in the user options for TCG=
+ flags and the
+> very existence of this option forces me to make priv checks for all exten=
+sions we're
+> auto-enabling during realize() (because I can't be sure whether the user =
+changed the
+> priv_ver of rv64 to something older);
+
+I'm not sure about that though. As we see more CPUs being released and
+then future spec changes I feel like differentiating between priv
+specs is a useful feature.
+
+Alistair
+
+>
+> - split the realize() functions between generic and vendor CPUs again. It=
+ was merged together
+> earlier this year (I did it) because, back then, we were doing too much s=
+tuff during
+> realize() that was needed for named CPUs, but the side effect is what we'=
+re seeing now:
+> the common code is enabling unwanted extensions for vendor CPUs. The code=
+ is very different
+> now, and I believe that we can at least skip validate_set_extensions() fo=
+r vendor CPUs;
+>
+> - at this point, vendor CPUs aren't auto-enabling any features and generi=
+c CPUs are always
+> set to PRIV_VER_LATEST. This means that we can remove all code related to=
+ disable extensions
+> via priv spec, and then all artifacts related to priv spec.
+>
+>
+> However, even if we're all onboard with removing it, this is still 8.2 wo=
+rk. For 8.1 I believe
+> this patch is a good fix to relief users from these warnings.
+>
+>
+> Thanks,
+>
+> Daniel
+>
+>
+>
+> >
+> > Zhiwei
+> >
+> >> +    if (riscv_has_ext(env, RVC) && env->priv_ver >=3D PRIV_VERSION_1_=
+12_0) {
+> >>           cpu->cfg.ext_zca =3D true;
+> >>           if (riscv_has_ext(env, RVF) && env->misa_mxl_max =3D=3D MXL_=
+RV32) {
+> >>               cpu->cfg.ext_zcf =3D true;
+>
 
