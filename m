@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CD2759926
+	by mail.lfdr.de (Postfix) with ESMTPS id D21FD759925
 	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:07:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM8kL-0004dJ-Gh; Wed, 19 Jul 2023 11:05:45 -0400
+	id 1qM8kt-000525-R9; Wed, 19 Jul 2023 11:06:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qM8kG-0004bb-Vm
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:05:41 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qM8kr-0004x0-Gu
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:06:17 -0400
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qM8kF-0003Xv-7s
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:05:40 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-3fbfa811667so5936975e9.1
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:05:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qM8kp-0003dD-Kp
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:06:17 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-1b0249f1322so5301995fac.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:06:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689779136; x=1692371136;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=m5fidQ4YGykwofCDWsNPXQXLHM4Q8nH0nVVR3QjspZE=;
- b=BOwH85ldTJQDng+qDJcxxfRgFoSLZBcIMoHEmhtn5VE5dFtnujnPMfii2JL1AWi48e
- vXvhj129UQel5yZHoF+rCYZecHFaCOeJ8gIKgaU3KAuGbyxKJJo4n9oWh2q6K8pfZ6V0
- PMqOUnRan3UUQ2S+3ZMrGIRlM00/0by2hA6XAFwT/j7K1jAJI0CExJN90zl12r72h4b4
- SpMd+LGmYJEuqqqNE6uAIFzBM8XHm7MNZCc/AJ8/ug6rZTLzwB0d3N2S9FITera7I7JZ
- lpKn7C3yZxZVriJNe3GjokRt+4R+0E8TB5XE23q2tkpiIqYYlPhbuQOdByvjSqu6JUA3
- Y3+g==
+ d=gmail.com; s=20221208; t=1689779174; x=1690383974;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=k7m11GWqv1S0maEtX067fxtJsV5kkSay0znnC3lOix8=;
+ b=A3y0YfTYVF9eYO2T31krXE8kXR7Ud5E/kFr0HqV/s/lb4/G46dDZ+elzDMBaGrhOLT
+ oeL5qvxRJnpPwLEchhYzdS+tcMy52mdR80VArcCoKvWDi5E0ZFYF8hT1JHsbaKDc1yvp
+ lrGpbsHZbW0mgXXtEHzSm1wrMlQEIaL4DVM3ZLNsO5QMUl/+yrmsaozM4AMYWHOrKHQ1
+ FolfAld6KR7dhq1rnrZzJIiVfGfA+eXfTa2eobvYM6GQ/Q8yl3iyiZfthNIb3Zx2HbtG
+ pBAacqPbPpHhfhfbHwcj5QFf84G2ZrWz7YZRpCSNTTlf8jsDqh96Ll2PAb9fp1xLPlAp
+ p1cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689779136; x=1692371136;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=m5fidQ4YGykwofCDWsNPXQXLHM4Q8nH0nVVR3QjspZE=;
- b=h3qXb2M3OVc79RgKxjD3b8ut1qQeWMfWiyBuZn6orAH0H4yTFHe4aoO7eI1/2KgE0U
- P3Wjlz4VGneKhFEjndE0fEmvEtMYWXGb7WaTi55/VlEk0CQf3fsoMN+Nr2xACkOAsjwC
- kt1gUIjc0d6Mvj6+MDNyq7p5M470QKJO2e/aH31lhFZ03EOKEPsLSmM8/IOhlAqifTzI
- ye5A0imZv0rsfMm+QvGVGLJOhPros0OSORXpMDbXbHnYjEl5XXvJoGe9sCCblNMSp1PP
- IzYbGYBPoCkp/1yNqxmIyLTD66WmDK4/8IvcMRRgd84mDuPUNGulZQ+axzxi2rHSJRUM
- jpJA==
-X-Gm-Message-State: ABy/qLbvb/WLt+bItrqKm/E9xt1MWNOoX6D9R6zIZfgiQfXE2FFrEI/9
- CviXmEy2W1b57OWqkeMUkrKWjQ==
-X-Google-Smtp-Source: APBJJlHulmRIdt9PODZUM7Tp73gfzLjYnrt2l9pj8kBq5jrDAlSla4BN9Xf0S7ecy8do4nd9lXh5NQ==
-X-Received: by 2002:a5d:484d:0:b0:314:d00:7352 with SMTP id
- n13-20020a5d484d000000b003140d007352mr1165wrs.32.1689779136085; 
- Wed, 19 Jul 2023 08:05:36 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.201.220])
- by smtp.gmail.com with ESMTPSA id
- n6-20020a5d67c6000000b0030e5bd253aasm5547761wrw.39.2023.07.19.08.05.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Jul 2023 08:05:35 -0700 (PDT)
-Message-ID: <6feba081-811a-527a-4188-124b0494f6fa@linaro.org>
-Date: Wed, 19 Jul 2023 17:05:33 +0200
+ d=1e100.net; s=20221208; t=1689779174; x=1690383974;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=k7m11GWqv1S0maEtX067fxtJsV5kkSay0znnC3lOix8=;
+ b=dPhgX8Zf6sOtZW4Ez1aiHQXKt/JJpBJtmE+hQqoduzsbqbQS/aGTo0ku6wjtHWXV9J
+ c4Dpvc3rqgN6p/uuEQAnx5GqKXbYqvKTG6iEvqllDCS8Giacn+JzBsBrTQc5mExnGs9o
+ xItC5GSRm6zQjjlo9zpA6fACgaZj7q8ykbfmo+ZJ1JjCT/WrKAA8wJCQ1J3weNtcqQTP
+ mdHQJK8/PO+mMaWJvsUFsoEPnVPM5WjTRCdIUHZDJ2v5zTFJzfaFemBsdJ4mMNHVEmbM
+ t+iourQlzWtklO2No6nICOCm+gJdx/ob3IWoBmbggyp+R0U4uUbCASUBRaGN/TAppr9X
+ 5GPw==
+X-Gm-Message-State: ABy/qLbZRo+rsUFPCCmFo9hr4gzCsteT9yOKqndpo0/q2k/bVeahNRDx
+ ymG6azxtWiYEtTXn9BkUJFGT2xLY+TTqLoQwiO4=
+X-Google-Smtp-Source: APBJJlGh7UzkeqGOvzQ/zfcSk/CSfRyemwcKFuVmfC7Tl/NT97WGZDboAlrDzb7f68D4ngbd1uS6dnqdSt5LXsnZLEs=
+X-Received: by 2002:a05:6870:96a6:b0:1b3:8d35:c85f with SMTP id
+ o38-20020a05687096a600b001b38d35c85fmr2605795oaq.1.1689779174307; Wed, 19 Jul
+ 2023 08:06:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PULL 0/8] s390x, qtest and misc patches for QEMU 8.1 rc1
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20230718093040.172145-1-thuth@redhat.com>
- <CAFEAcA_AkKFnTCHEe+3Ah6sLrOdcuLOS+WtYV8RkQhA6z=T-yg@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA_AkKFnTCHEe+3Ah6sLrOdcuLOS+WtYV8RkQhA6z=T-yg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230711155230.64277-1-hreitz@redhat.com>
+ <20230711155230.64277-6-hreitz@redhat.com>
+ <20230718145032.GF44841@fedora>
+ <82796f23-c9a7-7a52-96c4-f70d10a06d0a@redhat.com>
+In-Reply-To: <82796f23-c9a7-7a52-96c4-f70d10a06d0a@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 19 Jul 2023 11:06:02 -0400
+Message-ID: <CAJSP0QWd4nSL=M8Yb59dMbrO8Lj7YXgh72=Wn9THXDQ90wLQsg@mail.gmail.com>
+Subject: Re: [PATCH 5/6] vhost-vdpa: Match vhost-user's status reset
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ German Maglione <gmaglione@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=stefanha@gmail.com; helo=mail-oa1-x32.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,32 +92,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/7/23 14:40, Peter Maydell wrote:
-> On Tue, 18 Jul 2023 at 10:31, Thomas Huth <thuth@redhat.com> wrote:
->>
->> The following changes since commit 361d5397355276e3007825cc17217c1e4d4320f7:
->>
->>    Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-07-17 15:49:27 +0100)
->>
->> are available in the Git repository at:
->>
->>    https://gitlab.com/thuth/qemu.git tags/pull-request-2023-07-18
->>
->> for you to fetch changes up to a5754847e0fc2bc08a414dd381803009e8bca390:
->>
->>    tests/avocado: Disable the test_sbsaref_edk2_firmware by default (2023-07-18 11:22:51 +0200)
->>
->> ----------------------------------------------------------------
->> * Fix s390x KVM guests when compiling with --without-default-devices
->> * Fix /proc/cpuinfo features list in s390x linux-user emulation
->> * Generate FreeBSD VM package list via lcitool
->> * Disable the flaky test_sbsaref_edk2_firmware avocado test by default
->>
-> 
-> 
-> 
-> Applied to target-arm.next, thanks.
+On Wed, 19 Jul 2023 at 10:10, Hanna Czenczek <hreitz@redhat.com> wrote:
+>
+> On 18.07.23 16:50, Stefan Hajnoczi wrote:
+> > On Tue, Jul 11, 2023 at 05:52:27PM +0200, Hanna Czenczek wrote:
+> >> vhost-vdpa and vhost-user differ in how they reset the status in their
+> >> respective vhost_reset_status implementations: vhost-vdpa zeroes it,
+> >> then re-adds the S_ACKNOWLEDGE and S_DRIVER config bits.  S_DRIVER_OK =
+is
+> >> then set in vhost_vdpa_dev_start().
+> >>
+> >> vhost-user in contrast just zeroes the status, and does no re-add any
+> >> config bits until vhost_user_dev_start() (where it does re-add all of
+> >> S_ACKNOWLEDGE, S_DRIVER, and S_DRIVER_OK).
+> >>
+> >> There is no documentation for vhost_reset_status, but its only caller =
+is
+> >> vhost_dev_stop().  So apparently, the device is to be stopped after
+> >> vhost_reset_status, and therefore it makes more sense to keep the stat=
+us
+> >> field fully cleared until the back-end is re-started, which is how
+> >> vhost-user does it.  Make vhost-vdpa do the same -- if nothing else it=
+'s
+> >> confusing to have both vhost implementations handle this differently.
+> >>
+> >> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> >> ---
+> >>   hw/virtio/vhost-vdpa.c | 6 +++---
+> >>   1 file changed, 3 insertions(+), 3 deletions(-)
+> > Hi Hanna,
+> > The VIRTIO spec lists the Device Initialization sequence including the
+> > bits set in the Device Status Register here:
+> > https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.=
+html#x1-1070001
+> >
+> > ACKNOWLEDGE and DRIVER must be set before FEATURES_OK. DRIVER_OK is set
+> > after FEATURES_OK.
+> >
+> > The driver may read the Device Configuration Space once ACKNOWLEDGE and
+> > DRIVER are set.
+> >
+> > QEMU's vhost code should follow this sequence (especially for vDPA wher=
+e
+> > full VIRTIO devices are implemented).
+> >
+> > vhost-user is not faithful to the VIRTIO spec here. That's probably due
+> > to the fact that vhost-user didn't have the concept of the Device Statu=
+s
+> > Register until recently and back-ends mostly ignore it.
+> >
+> > Please do the opposite of this patch: bring vhost-user in line with the
+> > VIRTIO specification so that the Device Initialization sequence is
+> > followed correctly. I think vhost-vdpa already does the right thing.
+>
+> Hm.  This sounds all very good, but what leaves me lost is the fact that
+> we never actually expose the status field to the guest, as far as I can
+> see.  We have no set_status callback, and as written in the commit
+> message, the only caller of reset_status is vhost_dev_stop().  So the
+> status field seems completely artificial in vhost right now.  That is
+> why I=E2=80=99m wondering what the flags even really mean.
 
-s/target-arm.next/master/ ;)
+vhost (including vDPA and vhost-user) is not a 100% passthrough
+solution. The VMM emulates a VIRTIO device (e.g. virtio-fs-pci) that
+has some separate state from the vhost back-end, including the Device
+Status Register. This is analogous to how passthrough PCI devices
+still have emulated PCI registers that are not passed through to the
+physical PCI device.
 
+However, just because the vDPA, and now vhost-user with the SET_STATUS
+message, back-end is not directly exposed to the guest does not mean
+it should diverge from the VIRTIO specification for no reason.
+
+> Another point I made in the commit message is that it is strange that we
+> reset the status to 0, and then add the ACKNOWLEDGE and DRIVER while the
+> VM is still stopped.  It doesn=E2=80=99t make sense to me to set these fl=
+ags
+> while the guest driver is not operative.
+
+While there is no harm in setting those bits, I agree that leaving the
+Device Status Register at 0 while the VM is stopped would be nicer.
+
+> If what you=E2=80=99re saying is that we must set FEATURES_OK only after
+> ACKNOWLEDGE and DRIVER, wouldn=E2=80=99t it be still better to set all of=
+ these
+> flags only in vhost_*_dev_start(), but do it in two separate SET_STATUS
+> calls?
+
+The device initialization sequence could be put into vhost_dev_start():
+1. ACKNOWLEDGE | DRIVER
+2. FEATURES_OK via vhost_dev_set_features()
+3. DRIVER_OK via ->vhost_dev_start()
+
+But note that the ->vhost_dev_start() callback is too late to set
+ACKNOWLEDGE | DRIVER because feature negotiation happens earlier.
+
+> (You mentioned the configuration space =E2=80=93 is that accessed while b=
+etween
+> vhost_dev_stop and vhost_dev_start?)
+
+I don't think so.
+
+>
+> Hanna
+>
+> >> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+> >> index f7fd19a203..0cde8b40de 100644
+> >> --- a/hw/virtio/vhost-vdpa.c
+> >> +++ b/hw/virtio/vhost-vdpa.c
+> >> @@ -1294,8 +1294,6 @@ static void vhost_vdpa_reset_status(struct vhost=
+_dev *dev)
+> >>       }
+> >>
+> >>       vhost_vdpa_reset_device(dev);
+> >> -    vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
+> >> -                               VIRTIO_CONFIG_S_DRIVER);
+> >>       memory_listener_unregister(&v->listener);
+> >>   }
+> >>
+> >> @@ -1334,7 +1332,9 @@ static int vhost_vdpa_dev_start(struct vhost_dev=
+ *dev, bool started)
+> >>           }
+> >>           memory_listener_register(&v->listener, dev->vdev->dma_as);
+> >>
+> >> -        return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_DRIVER_OK);
+> >> +        return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE=
+ |
+> >> +                                          VIRTIO_CONFIG_S_DRIVER |
+> >> +                                          VIRTIO_CONFIG_S_DRIVER_OK);
+> >>       }
+> >>
+> >>       return 0;
+> >> --
+> >> 2.41.0
+> >>
+>
+>
 
