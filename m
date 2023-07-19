@@ -2,53 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B1775A002
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 22:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3FAA759FFA
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 22:38:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMDv3-0005t9-2L; Wed, 19 Jul 2023 16:37:09 -0400
+	id 1qMDv6-0005un-Ck; Wed, 19 Jul 2023 16:37:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMDv1-0005sr-7J
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:37:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMDv3-0005tg-W9
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:37:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMDuz-0001mC-H4
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:37:07 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMDv1-0001mj-WD
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:37:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689799024;
+ s=mimecast20190719; t=1689799027;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=4KoObbCppHnLld26AG0lzcvkStP8T6j5j8Zb9xKSOSk=;
- b=HV5q0+Zr5Explk89sN059vR97D0Bxi7rAIWCXn3xIptLuU90OzbjYIlmt43waR7Q6jwUwF
- DL3IFqJAKAv8HKFubXANNMmKbehsGoHDgp4r3Rh70gOZy4gtSG1SZXRLd8uKAVxK7hGlDq
- h+89W7J4qHLZNBcErI/Dv3naeq24NTY=
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=W7YLu/P/YgajFgHCKNUtyzQmvJdgtGqjZP1FgSzTZDg=;
+ b=CFaofVJaEu06HBs9cklbR07Kue4liNL1OhsYcZVi3eBPY7VhCFGh7J+NJ80Ya5onVMhtxW
+ c3JN1pSzTD+7n0JkcTfu2+bHTTg5SXxYgxo5xuhOTYHCgNqnWdZKY776EWeyl9sqQd5NBI
+ atojCtHP4PmjmFbw/jnTLkiI0G8V6UA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-255-3CtEAjWsPqy8ogJxJREFXQ-1; Wed, 19 Jul 2023 16:37:02 -0400
-X-MC-Unique: 3CtEAjWsPqy8ogJxJREFXQ-1
+ us-mta-466-WIbhMaecOK2MN_p9jeuGiQ-1; Wed, 19 Jul 2023 16:37:03 -0400
+X-MC-Unique: WIbhMaecOK2MN_p9jeuGiQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2FB6380123E
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 20:37:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 065EE185A795;
+ Wed, 19 Jul 2023 20:37:03 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.192])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F07684CD0F5
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 20:37:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 62C964CD0FB;
+ Wed, 19 Jul 2023 20:37:02 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/14] NBD patches for 2023-07-19
-Date: Wed, 19 Jul 2023 15:27:37 -0500
-Message-ID: <20230719202736.2675295-16-eblake@redhat.com>
+Cc: "Denis V. Lunev" <den@openvz.org>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-stable@nongnu.org,
+ qemu-block@nongnu.org (open list:Network Block Dev...)
+Subject: [PULL 01/14] qemu-nbd: pass structure into nbd_client_thread instead
+ of plain char*
+Date: Wed, 19 Jul 2023 15:27:38 -0500
+Message-ID: <20230719202736.2675295-17-eblake@redhat.com>
+In-Reply-To: <20230719202736.2675295-16-eblake@redhat.com>
+References: <20230719202736.2675295-16-eblake@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -57,7 +65,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,53 +81,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 2c27fdc7a626408ee2cf30d791aa0b63027c7404:
+From: "Denis V. Lunev" <den@openvz.org>
 
-  Update version for v8.1.0-rc0 release (2023-07-19 20:31:43 +0100)
+We are going to pass additional flag inside next patch.
 
-are available in the Git repository at:
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+CC: Eric Blake <eblake@redhat.com>
+CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+CC: <qemu-stable@nongnu.org>
+Message-ID: <20230717145544.194786-2-den@openvz.org>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Signed-off-by: Eric Blake <eblake@redhat.com>
+---
+ qemu-nbd.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-  https://repo.or.cz/qemu/ericb.git tags/pull-nbd-2023-07-19
+diff --git a/qemu-nbd.c b/qemu-nbd.c
+index 4276163564b..77f98c736bb 100644
+--- a/qemu-nbd.c
++++ b/qemu-nbd.c
+@@ -272,9 +272,13 @@ static void *show_parts(void *arg)
+     return NULL;
+ }
 
-for you to fetch changes up to bfe04d0a7d5e8a4f4c9014ee7622af2056685974:
++struct NbdClientOpts {
++    char *device;
++};
++
+ static void *nbd_client_thread(void *arg)
+ {
+-    char *device = arg;
++    struct NbdClientOpts *opts = arg;
+     NBDExportInfo info = { .request_sizes = false, .name = g_strdup("") };
+     QIOChannelSocket *sioc;
+     int fd = -1;
+@@ -298,10 +302,10 @@ static void *nbd_client_thread(void *arg)
+         goto out;
+     }
 
-  nbd: Use enum for various negotiation modes (2023-07-19 15:26:13 -0500)
+-    fd = open(device, O_RDWR);
++    fd = open(opts->device, O_RDWR);
+     if (fd < 0) {
+         /* Linux-only, we can use %m in printf.  */
+-        error_report("Failed to open %s: %m", device);
++        error_report("Failed to open %s: %m", opts->device);
+         goto out;
+     }
 
-----------------------------------------------------------------
-NBD patches through 2023-07-19
+@@ -311,11 +315,11 @@ static void *nbd_client_thread(void *arg)
+     }
 
-- Denis V. Lunev: fix hang with 'ssh ... "qemu-nbd -c"'
-- Eric Blake: preliminary work towards NBD 64-bit extensions
+     /* update partition table */
+-    pthread_create(&show_parts_thread, NULL, show_parts, device);
++    pthread_create(&show_parts_thread, NULL, show_parts, opts->device);
 
-----------------------------------------------------------------
-Denis V. Lunev (6):
-      qemu-nbd: pass structure into nbd_client_thread instead of plain char*
-      qemu-nbd: fix regression with qemu-nbd --fork run over ssh
-      qemu-nbd: properly report error if qemu_daemon() is failed
-      qemu-nbd: properly report error on error in dup2() after qemu_daemon()
-      qemu-nbd: handle dup2() error when qemu-nbd finished setup process
-      qemu-nbd: make verbose bool and local variable in main()
+     if (verbose) {
+         fprintf(stderr, "NBD device %s is now connected to %s\n",
+-                device, srcpath);
++                opts->device, srcpath);
+     } else {
+         /* Close stderr so that the qemu-nbd process exits.  */
+         dup2(STDOUT_FILENO, STDERR_FILENO);
+@@ -1125,8 +1129,11 @@ int main(int argc, char **argv)
+     if (device) {
+ #if HAVE_NBD_DEVICE
+         int ret;
++        struct NbdClientOpts opts = {
++            .device = device,
++        };
 
-Eric Blake (8):
-      nbd/client: Use smarter assert
-      nbd: Consistent typedef usage in header
-      nbd/server: Prepare for alternate-size headers
-      nbd/server: Refactor to pass full request around
-      nbd: s/handle/cookie/ to match NBD spec
-      nbd/client: Simplify cookie vs. index computation
-      nbd/client: Add safety check on chunk payload length
-      nbd: Use enum for various negotiation modes
-
- include/block/nbd.h |  61 +++++++-------
- block/nbd.c         |  96 +++++++++++-----------
- nbd/client.c        |  79 ++++++++++--------
- nbd/common.c        |  17 ++++
- nbd/server.c        | 224 +++++++++++++++++++++++++++++-----------------------
- qemu-nbd.c          |  68 +++++++++++-----
- nbd/trace-events    |  22 +++---
- 7 files changed, 332 insertions(+), 235 deletions(-)
-
-base-commit: 2c27fdc7a626408ee2cf30d791aa0b63027c7404
+-        ret = pthread_create(&client_thread, NULL, nbd_client_thread, device);
++        ret = pthread_create(&client_thread, NULL, nbd_client_thread, &opts);
+         if (ret != 0) {
+             error_report("Failed to create client thread: %s", strerror(ret));
+             exit(EXIT_FAILURE);
 -- 
 2.41.0
 
