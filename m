@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FFC75A008
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 22:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E74759FFF
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 22:38:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMDv7-0005w2-ED; Wed, 19 Jul 2023 16:37:13 -0400
+	id 1qMDvC-00060y-SX; Wed, 19 Jul 2023 16:37:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMDv6-0005ut-C9
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:37:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMDvA-0005za-U3
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:37:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMDv3-0001nG-6Q
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:37:11 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMDv7-0001pF-5t
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:37:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689799028;
+ s=mimecast20190719; t=1689799032;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=M1slwJypsxvWGbXrv0IClYQG31cRevtPkcGQKEXS2jQ=;
- b=IKDyXIN6YE7DRgIi8x4sapnWUg08fs7gKJbVg5UaqABBwBLrOokKP91JPLxKgwWaK8jAVI
- 66eN7XZelhs8OyFd4n6rmgfj/hLdXylSLsZqdEyBvHgfUMxKtAGb3dAL9dq5wUfMYr2Cdg
- CMyjn13eucDdwI8pUbCD5QFz5bO/t7o=
+ bh=+HSua0glv6omXPYPqDBvcJm6W/GVewwaPN6YObGDpfs=;
+ b=cPRXX5NiaZiYlR0+U/xuZTPlS0DQrjHuLLoJFpel3c6cKAjq4sKPtriDyhy9E6jjEBbgXa
+ G7Y0sZBukIiLQBzQBIWuseBBwCRqLd47dTsgqLYOjQRqNURGCgWlSr88FyzmJ9mXm/3+SV
+ HYTp/59oE+F8zZ4wwLaF1x/YdHbf6Yw=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-493-803jD7I-MleZbFy093sW9Q-1; Wed, 19 Jul 2023 16:37:06 -0400
-X-MC-Unique: 803jD7I-MleZbFy093sW9Q-1
+ us-mta-576-ZqdwJBYhOSaqCSrPUVolew-1; Wed, 19 Jul 2023 16:37:07 -0400
+X-MC-Unique: ZqdwJBYhOSaqCSrPUVolew-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C72A185A7A4;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C5BA2185A7AE;
  Wed, 19 Jul 2023 20:37:06 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.192])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BC06A4CD0F8;
- Wed, 19 Jul 2023 20:37:05 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 57DB14CD0F5;
+ Wed, 19 Jul 2023 20:37:06 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: "Denis V. Lunev" <den@openvz.org>,
+Cc: "Dr . David Alan Gilbert" <dave@treblig.org>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  qemu-block@nongnu.org (open list:Network Block Dev...)
-Subject: [PULL 06/14] qemu-nbd: make verbose bool and local variable in main()
-Date: Wed, 19 Jul 2023 15:27:43 -0500
-Message-ID: <20230719202736.2675295-22-eblake@redhat.com>
+Subject: [PULL 07/14] nbd/client: Use smarter assert
+Date: Wed, 19 Jul 2023 15:27:44 -0500
+Message-ID: <20230719202736.2675295-23-eblake@redhat.com>
 In-Reply-To: <20230719202736.2675295-16-eblake@redhat.com>
 References: <20230719202736.2675295-16-eblake@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -63,7 +63,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,75 +79,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Denis V. Lunev" <den@openvz.org>
+Assigning strlen() to a uint32_t and then asserting that it isn't too
+large doesn't catch the case of an input string 4G in length.
+Thankfully, the incoming strings can never be that large: if the
+export name or query is reflecting a string the client got from the
+server, we already guarantee that we dropped the NBD connection if the
+server sent more than 32M in a single reply to our NBD_OPT_* request;
+if the export name is coming from qemu, nbd_receive_negotiate()
+asserted that strlen(info->name) <= NBD_MAX_STRING_SIZE; and
+similarly, a query string via x->dirty_bitmap coming from the user was
+bounds-checked in either qemu-nbd or by the limitations of QMP.
+Still, it doesn't hurt to be more explicit in how we write our
+assertions to not have to analyze whether inadvertent wraparound is
+possible.
 
-Pass 'verbose' to nbd_client_thread() inside NbdClientOpts which looks
-a little bit cleaner and make it bool as it is used as bool actually.
-
-Signed-off-by: Denis V. Lunev <den@openvz.org>
-CC: Eric Blake <eblake@redhat.com>
-CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-ID: <20230717202520.236999-1-den@openvz.org>
-Reviewed-by: Eric Blake <eblake@redhat.com>
+Fixes: 93676c88 ("nbd: Don't send oversize strings", v4.2.0)
+Reported-by: Dr. David Alan Gilbert <dave@treblig.org>
 Signed-off-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-ID: <20230608135653.2918540-2-eblake@redhat.com>
 ---
- qemu-nbd.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ nbd/client.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/qemu-nbd.c b/qemu-nbd.c
-index e30c9ac1793..5b2757920c1 100644
---- a/qemu-nbd.c
-+++ b/qemu-nbd.c
-@@ -73,7 +73,6 @@
+diff --git a/nbd/client.c b/nbd/client.c
+index 30d5383cb19..ff75722e487 100644
+--- a/nbd/client.c
++++ b/nbd/client.c
+@@ -650,19 +650,20 @@ static int nbd_send_meta_query(QIOChannel *ioc, uint32_t opt,
+                                Error **errp)
+ {
+     int ret;
+-    uint32_t export_len = strlen(export);
++    uint32_t export_len;
+     uint32_t queries = !!query;
+     uint32_t query_len = 0;
+     uint32_t data_len;
+     char *data;
+     char *p;
 
- #define MBR_SIZE 512
-
--static int verbose;
- static char *srcpath;
- static SocketAddress *saddr;
- static int persistent = 0;
-@@ -275,6 +274,7 @@ static void *show_parts(void *arg)
- struct NbdClientOpts {
-     char *device;
-     bool fork_process;
-+    bool verbose;
- };
-
- static void *nbd_client_thread(void *arg)
-@@ -318,7 +318,7 @@ static void *nbd_client_thread(void *arg)
-     /* update partition table */
-     pthread_create(&show_parts_thread, NULL, show_parts, opts->device);
-
--    if (verbose && !opts->fork_process) {
-+    if (opts->verbose && !opts->fork_process) {
-         fprintf(stderr, "NBD device %s is now connected to %s\n",
-                 opts->device, srcpath);
++    assert(strnlen(export, NBD_MAX_STRING_SIZE + 1) <= NBD_MAX_STRING_SIZE);
++    export_len = strlen(export);
+     data_len = sizeof(export_len) + export_len + sizeof(queries);
+-    assert(export_len <= NBD_MAX_STRING_SIZE);
+     if (query) {
++        assert(strnlen(query, NBD_MAX_STRING_SIZE + 1) <= NBD_MAX_STRING_SIZE);
+         query_len = strlen(query);
+         data_len += sizeof(query_len) + query_len;
+-        assert(query_len <= NBD_MAX_STRING_SIZE);
      } else {
-@@ -582,6 +582,7 @@ int main(int argc, char **argv)
-     const char *tlshostname = NULL;
-     bool imageOpts = false;
-     bool writethrough = false; /* Client will flush as needed. */
-+    bool verbose = false;
-     bool fork_process = false;
-     bool list = false;
-     unsigned socket_activation;
-@@ -746,7 +747,7 @@ int main(int argc, char **argv)
-             }
-             break;
-         case 'v':
--            verbose = 1;
-+            verbose = true;
-             break;
-         case 'V':
-             version(argv[0]);
-@@ -1147,6 +1148,7 @@ int main(int argc, char **argv)
-         struct NbdClientOpts opts = {
-             .device = device,
-             .fork_process = fork_process,
-+            .verbose = verbose,
-         };
-
-         ret = pthread_create(&client_thread, NULL, nbd_client_thread, &opts);
+         assert(opt == NBD_OPT_LIST_META_CONTEXT);
+     }
 -- 
 2.41.0
 
