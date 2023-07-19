@@ -2,97 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C636759D32
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 20:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758A2759D60
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 20:34:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMBoS-0001Pt-7j; Wed, 19 Jul 2023 14:22:12 -0400
+	id 1qMByn-0002uS-Tk; Wed, 19 Jul 2023 14:32:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qMBoP-0001Ow-Rt; Wed, 19 Jul 2023 14:22:10 -0400
-Received: from out5-smtp.messagingengine.com ([66.111.4.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qMBoL-0002mS-Va; Wed, 19 Jul 2023 14:22:09 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.nyi.internal (Postfix) with ESMTP id 364CF5C00D0;
- Wed, 19 Jul 2023 14:22:01 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute4.internal (MEProxy); Wed, 19 Jul 2023 14:22:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:date:date:from
- :from:in-reply-to:message-id:mime-version:reply-to:sender
- :subject:subject:to:to; s=fm2; t=1689790921; x=1689877321; bh=UT
- vE79+coNlITXdMzqCP0LqEJhZ3o8pM1gaCxPzEnIs=; b=KxepFlYS7q72Nd6+pD
- w7MXQexZXH6WToMq/rKS5BvWk0UsabbpvrJ41Ddv4C196Bbif5Nk8xxVXgUsfxPI
- +Al6Cke/u3/g0grwE43V57iZzBTF+CbAwxl/Q+RJdXrbuL8sEFzuuNP/lm8Wnwjn
- 33o3z50p+ZwJA/Q1iQgWLbzP2HXTXVIsp25EHKkwjMhyyQoBDfoeYYkAkR8ubEk4
- UfhkO0/Hf2RKr/E/vATqhTsHx8Y65NlkAPUGiVXmo0A4vlrg4YN6qfYYpmr/WgjQ
- +hRo1riz2CVp4h91fk2xptEi8GT5nGzFaUBJvK7tS3sAchZFoNbYpc8aaGqwOW4C
- sz+Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:message-id:mime-version:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm3; t=1689790921; x=1689877321; bh=UTvE79+coNlIT
- XdMzqCP0LqEJhZ3o8pM1gaCxPzEnIs=; b=3GwtKoakFiIphDdF2dH1bnqNt74OA
- HkybDe4TvgGdXgkXDmPbeAHxEFBYAIbUs7Cwy/8mhq5UNFPuiFMr+CoKnQrkcr67
- zZC5IvM+x7PeDeQYBF31xA4+S225f9hBxHEyJ25diwSCDp6wYtT1MbkWDJDQx7wL
- crpk6IEDslrWt1Xt2mV06qEpClcGIOwMVwXGTNZC5GwLODKcIlQFxcgt8WE6H22k
- 0c/cHfZfs8U+s/zQn9rglNg9H+KvC2NKH2OUZewRPLCtSnIRMv6OZO/GLJvJ2nmo
- jhUTAaSx6//Lo/5sWtj42t1H/UJNykiVQBeyx92+HaHX7rzYzHP130OFw==
-X-ME-Sender: <xms:yCm4ZNPe8IpPhvx8x1Zi84UZ5w-uEIceVWzXkIwo3LQWNu55t7OA5w>
- <xme:yCm4ZP-NOj1iiFFPkkJx6lItx4lHi3FtE-d0UYG9YBaSPvXHzcOx0myWHsCbSCGlV
- KjclrlZYFlVtIRL6F8>
-X-ME-Received: <xmr:yCm4ZMTn9a07wyl6GQngTWHvGhDuSB6mkw75LqOrpyEqQ9ONz99Y6ekiSJQfzUw27aZBSRoJRjI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrgeekgddutdejucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepmfhlrghushcu
- lfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrthhtvg
- hrnhepjeevheevhffhvdegveetjeevgfevgeeuueehffeuvedvjeejjeduheeiueffkefh
- necuffhomhgrihhnpehgihhtlhgrsgdrtghomhenucevlhhushhtvghrufhiiigvpedtne
- curfgrrhgrmhepmhgrihhlfhhrohhmpehithhssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:yCm4ZJsygeW64dLu8qmg2D0NM3ndNWNbem_wm1j39Nxhb_z5FqTBwA>
- <xmx:yCm4ZFeSoRil89C70_sg6ToV8MrRdNLbVH6-QkuBmVOPVUNt3f6k-A>
- <xmx:yCm4ZF0VYIHTPUzSnfrB1pl96eySXd1VzoNMUC_00EzK7CAhOqugfw>
- <xmx:ySm4ZJ7pwBkvOW6T-DfSpMhudQMrahjJESOSaOP6zVO_1Sj4uQ3QqA>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 19 Jul 2023 14:21:59 -0400 (EDT)
-From: Klaus Jensen <its@irrelevant.dk>
+ (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
+ id 1qMByb-0002ry-Mq
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 14:32:42 -0400
+Received: from mail-yb1-xb43.google.com ([2607:f8b0:4864:20::b43])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
+ id 1qMByZ-00053B-Al
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 14:32:41 -0400
+Received: by mail-yb1-xb43.google.com with SMTP id
+ 3f1490d57ef6-ca9804dc6e4so53621276.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 11:32:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1689791557; x=1690396357;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=dZNO0lAS38XkkxRCJG38vZhvleKkSXD1W1EGlNTFzi0=;
+ b=FwyxyfwUr5gOA738WI6fOV/88x+fPhoGOBrTexUy9nm/zDNuYc1d86UfARRShePJoI
+ kDQWpM44BNxm+NyIQd7O6x1b9lFQW19b+nlubzJVuj3lAC83o+5k0YjjTxZPk0dhZdnK
+ y7ithA3VVqGp92AYBemfDrBqfni8YG27PLNDZYVnFgOGdIhnVxdbizNLOfPo7SNHKkKW
+ 3Tjd3yiGIhbA5IjDBcnWpjqZWREMAMVkafoLHLB2f1buEsTHdzFYemrQUvDB9AV4g4I7
+ dT9TBqdj/35Tn1YLT+P8tq4C4CA+EDK9cmhXBAPwmSwRnHe/AtwMhdqfy4FUPEcsMSwh
+ JntQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689791557; x=1690396357;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=dZNO0lAS38XkkxRCJG38vZhvleKkSXD1W1EGlNTFzi0=;
+ b=lfYWXdhtDjGxJy4lQlQ9BQpxZEO+l/C6qnC2RTyG0axnxlVLNv7m5OvTFN6JYrD8vB
+ PLr3qKkCQN011QcnQzO8eqk2xshz6d+8WCW5Y0jpmHUYmeuNX45TEMMWBLcL1/nC32yw
+ WI+ZqlRfeFXmdKGIBTJlgvJb6Sb81iwyCPb0QWsqTG2fZt+N34sNfIwz9RluH3PwiEn7
+ IpvcUutCXfnDFYJ/Zq63ecX1+YcYp5tki+B99baP8a2U8v5p3/Bj/fTNslEiM/24R2SZ
+ vw6Ubr6ChIdIVnYif2CTM5pHyljdxtTK5CEfypxZKXuFFbT0h1hhOkn1Jo1s2LgQ/Hw2
+ b9Cg==
+X-Gm-Message-State: ABy/qLZIjKbGb6mLBq2DWsaTyEYYgNXWK5qJamzCAyK8It1aB1fMf0QL
+ Qwu9R/WH2PRdpAvIWnRQVmNvN1PJbnpM
+X-Google-Smtp-Source: APBJJlEi7akNhCM3CYRV5xw0Zp3j+/QfKtdWXhZWOIxpeR376H/0vtRvBRppO6iC0Jl/tHxUM/Pi+Q==
+X-Received: by 2002:a25:abec:0:b0:c75:593f:d4ab with SMTP id
+ v99-20020a25abec000000b00c75593fd4abmr3309559ybi.22.1689791557375; 
+ Wed, 19 Jul 2023 11:32:37 -0700 (PDT)
+Received: from fedora.mshome.net (pool-173-79-56-208.washdc.fios.verizon.net.
+ [173.79.56.208]) by smtp.gmail.com with ESMTPSA id
+ y80-20020a253253000000b00c4e1589475esm1005053yby.27.2023.07.19.11.32.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 19 Jul 2023 11:32:36 -0700 (PDT)
+From: Gregory Price <gourry.memverge@gmail.com>
+X-Google-Original-From: Gregory Price <gregory.price@memverge.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Klaus Jensen <its@irrelevant.dk>,
- Keith Busch <kbusch@kernel.org>, Klaus Jensen <k.jensen@samsung.com>
-Subject: [PATCH for-8.1] hw/nvme: fix compliance issue wrt. iosqes/iocqes
-Date: Wed, 19 Jul 2023 20:21:58 +0200
-Message-ID: <20230719182157.18545-2-its@irrelevant.dk>
-X-Mailer: git-send-email 2.41.0
+Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
+ Gregory Price <gregory.price@memverge.com>
+Subject: [RFC] cxl/type3: minimum MHD cci support
+Date: Wed, 19 Jul 2023 14:32:19 -0400
+Message-Id: <20230719183219.8093-1-gregory.price@memverge.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6869; i=k.jensen@samsung.com;
- h=from:subject; bh=98MeWUj3WPRznMsiQSMPsNjn3urU4o+2cLj2l+oVWlM=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGS4KcXP8R63IzFn4FKzE4PkpY7SRgUP6TUi5
- sZ3/IECVDnW7YkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJkuCnFAAoJEE3hrzFt
- Tw3pND8H/2znyYy0BrYosej8M0mfMZV5kBsxu/tGQK31Qlv+VwxTX/P4+LHFEborSXWY8JHb5H6
- GJvsRgcGTGFSF0hC21HjC8WVIHmX1haVSAIn4VaHI2Ta9oOevLdQLbtpMjkj7SUkE4LoOVOWoKv
- 1abHv0uOnv6VCYmxh9KMiYNlfoAIE/usmDkz4FY1L/HQ3Qoj1ad45wvqwsa6aZKriqRGuPDjQr9
- wogQ9ktQ50hn4wuAMDb4+knj4b/MBd+6DfvF1FL9aoSG3adu3L9+QHX6VXUJ/daOn1vF93BFzE0
- 5u0WFnpcHJXhbo7vHS6au5HibUzmojAp+W+3iW7YaNniRcvniJ+8wa6L
-X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
- fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=66.111.4.29; envelope-from=its@irrelevant.dk;
- helo=out5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b43;
+ envelope-from=gourry.memverge@gmail.com; helo=mail-yb1-xb43.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,164 +90,354 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Klaus Jensen <k.jensen@samsung.com>
+Implement the MHD GET_INFO cci command and add a shared memory
+region to the type3 device to host the information.
 
-As of prior to this patch, the controller checks the value of CC.IOCQES
-and CC.IOSQES prior to enabling the controller. As reported by Ben in
-GitLab issue #1691, this is not spec compliant. The controller should
-only check these values when queues are created.
+Add a helper program to initialize this shared memory region.
 
-This patch moves these checks to nvme_create_cq(). We do not need to
-check it in nvme_create_sq() since that will error out if the completion
-queue is not already created.
+For now, limit the number of LD's to the number of heads. Later,
+this limitation will need to be lifted for MH-MLDs.
 
-Also, since the controlle exclusively supports SQEs of size 64 bytes and
-CQEs of size 16 bytes, hard code that.
+Intended use case:
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1691
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+1. Create the shared memory region
+2. Format the shared memory region
+3. Launch QEMU with `is_mhd=true,mhd_head=N,mhd_shmid=$shmid`
+
+shmid=`ipcmk -M 4096 | grep -o -E '[0-9]+' | head -1`
+cxl_mhd_init 4 $shmid
+qemu-system-x86_64 \
+  -nographic \
+  -accel kvm \
+  -drive file=./mhd.qcow2,format=qcow2,index=0,media=disk,id=hd \
+  -m 4G,slots=4,maxmem=8G \
+  -smp 4 \
+  -machine type=q35,cxl=on,hmat=on \
+  -device pxb-cxl,id=cxl.0,bus=pcie.0,bus_nr=52 \
+  -device cxl-rp,id=rp0,bus=cxl.0,chassis=0,port=0,slot=0 \
+  -object memory-backend-file,id=mem0,mem-path=/tmp/mem0,size=4G,share=true \
+  -device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0,sn=66666,is_mhd=true,mhd_head=0,mhd_shmid=$shmid \
+  -M cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.size=4G
+
+
+
+
+Comments:
+
+base repo: https://gitlab.com/jic23/qemu
+base branch: cxl-2023-07-17
+
+Originally I wanted to add this as a separate CCI, but I realized this
+wouldn't work as intended because that would require a separate pci/cxl
+device in /dev/ to tunnel messages though.  This is not how this will
+present on real devices, so I went away from that.
+
+Next I wanted to simply *dynamically* add the command to the existing
+CCI in the type3 device, but these are statically defined in
+cxl-mailbox.
+
+I settled for simply adding the cci command to the type 3 device by
+default, and checking for whether `is_mhd` is set in the command.
+
+Ultimately, for MHD, they are likely to have a bunch of vendor specific
+commands associated with them *and* a bunch of vendor specific state. It
+would be nice to able to have something like "cci_add_command_set()" to
+the cci-mailbox, and an interface to override certain type3 functions
+such as read/write (but this is an exercise for a later patch set).
+
 ---
- hw/nvme/ctrl.c       | 46 ++++++++++++--------------------------------
- hw/nvme/nvme.h       |  9 +++++++--
- hw/nvme/trace-events |  1 +
- 3 files changed, 20 insertions(+), 36 deletions(-)
+ hw/cxl/cxl-mailbox-utils.c  | 53 +++++++++++++++++++++++++++++++
+ hw/mem/cxl_type3.c          | 50 +++++++++++++++++++++++++++++
+ include/hw/cxl/cxl_device.h | 12 +++++++
+ tools/cxl/cxl_mhd_init.c    | 63 +++++++++++++++++++++++++++++++++++++
+ tools/cxl/meson.build       |  3 ++
+ tools/meson.build           |  1 +
+ 6 files changed, 182 insertions(+)
+ create mode 100644 tools/cxl/cxl_mhd_init.c
+ create mode 100644 tools/cxl/meson.build
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 8e8e870b9a80..414e9ea60e05 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -1511,7 +1511,7 @@ static void nvme_post_cqes(void *opaque)
-         req->cqe.status = cpu_to_le16((req->status << 1) | cq->phase);
-         req->cqe.sq_id = cpu_to_le16(sq->sqid);
-         req->cqe.sq_head = cpu_to_le16(sq->head);
--        addr = cq->dma_addr + cq->tail * n->cqe_size;
-+        addr = cq->dma_addr + (cq->tail << NVME_CQES);
-         ret = pci_dma_write(PCI_DEVICE(n), addr, (void *)&req->cqe,
-                             sizeof(req->cqe));
-         if (ret) {
-@@ -5299,10 +5299,18 @@ static uint16_t nvme_create_cq(NvmeCtrl *n, NvmeRequest *req)
-     uint16_t qsize = le16_to_cpu(c->qsize);
-     uint16_t qflags = le16_to_cpu(c->cq_flags);
-     uint64_t prp1 = le64_to_cpu(c->prp1);
-+    uint32_t cc = ldq_le_p(&n->bar.cc);
-+    uint8_t iocqes = NVME_CC_IOCQES(cc);
-+    uint8_t iosqes = NVME_CC_IOSQES(cc);
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 2819914e8d..9ef4d7f5e0 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -84,6 +84,8 @@ enum {
+         #define GET_PHYSICAL_PORT_STATE     0x1
+     TUNNEL = 0x53,
+         #define MANAGEMENT_COMMAND     0x0
++    MHD = 0x55,
++        #define GET_MHD_INFO     0x0
+ };
  
-     trace_pci_nvme_create_cq(prp1, cqid, vector, qsize, qflags,
-                              NVME_CQ_FLAGS_IEN(qflags) != 0);
+ /* CCI Message Format CXL r3.0 Figure 7-19 */
+@@ -1155,6 +1157,56 @@ static CXLRetCode cmd_media_clear_poison(const struct cxl_cmd *cmd,
+     return CXL_MBOX_SUCCESS;
+ }
  
-+    if (iosqes != NVME_SQES || iocqes != NVME_CQES) {
-+        trace_pci_nvme_err_invalid_create_cq_entry_size(iosqes, iocqes);
-+        return NVME_MAX_QSIZE_EXCEEDED | NVME_DNR;
++static CXLRetCode cmd_mhd_get_info(const struct cxl_cmd *cmd,
++                                   uint8_t *payload_in,
++                                   size_t len_in,
++                                   uint8_t *payload_out,
++                                   size_t *len_out,
++                                   CXLCCI *cci)
++{
++    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
++    struct {
++        uint8_t start_ld;
++        uint8_t ldmap_len;
++    } QEMU_PACKED *input = (void *)payload_in;
++
++    struct {
++        uint8_t nr_lds;
++        uint8_t nr_heads;
++        uint16_t resv1;
++        uint8_t start_ld;
++        uint8_t ldmap_len;
++        uint16_t resv2;
++        uint8_t ldmap[];
++    } QEMU_PACKED *output = (void *)payload_out;
++
++    uint8_t start_ld = input->start_ld;
++    uint8_t ldmap_len = input->ldmap_len;
++    uint8_t i;
++
++    if (!ct3d->is_mhd) {
++        return CXL_MBOX_UNSUPPORTED;
 +    }
 +
-     if (unlikely(!cqid || cqid > n->conf_ioqpairs || n->cq[cqid] != NULL)) {
-         trace_pci_nvme_err_invalid_create_cq_cqid(cqid);
-         return NVME_INVALID_QID | NVME_DNR;
-@@ -7003,7 +7011,7 @@ static void nvme_process_sq(void *opaque)
-     }
- 
-     while (!(nvme_sq_empty(sq) || QTAILQ_EMPTY(&sq->req_list))) {
--        addr = sq->dma_addr + sq->head * n->sqe_size;
-+        addr = sq->dma_addr + (sq->head << NVME_SQES);
-         if (nvme_addr_read(n, addr, (void *)&cmd, sizeof(cmd))) {
-             trace_pci_nvme_err_addr_read(addr);
-             trace_pci_nvme_err_cfs();
-@@ -7228,34 +7236,6 @@ static int nvme_start_ctrl(NvmeCtrl *n)
-                     NVME_CAP_MPSMAX(cap));
-         return -1;
-     }
--    if (unlikely(NVME_CC_IOCQES(cc) <
--                 NVME_CTRL_CQES_MIN(n->id_ctrl.cqes))) {
--        trace_pci_nvme_err_startfail_cqent_too_small(
--                    NVME_CC_IOCQES(cc),
--                    NVME_CTRL_CQES_MIN(cap));
--        return -1;
--    }
--    if (unlikely(NVME_CC_IOCQES(cc) >
--                 NVME_CTRL_CQES_MAX(n->id_ctrl.cqes))) {
--        trace_pci_nvme_err_startfail_cqent_too_large(
--                    NVME_CC_IOCQES(cc),
--                    NVME_CTRL_CQES_MAX(cap));
--        return -1;
--    }
--    if (unlikely(NVME_CC_IOSQES(cc) <
--                 NVME_CTRL_SQES_MIN(n->id_ctrl.sqes))) {
--        trace_pci_nvme_err_startfail_sqent_too_small(
--                    NVME_CC_IOSQES(cc),
--                    NVME_CTRL_SQES_MIN(cap));
--        return -1;
--    }
--    if (unlikely(NVME_CC_IOSQES(cc) >
--                 NVME_CTRL_SQES_MAX(n->id_ctrl.sqes))) {
--        trace_pci_nvme_err_startfail_sqent_too_large(
--                    NVME_CC_IOSQES(cc),
--                    NVME_CTRL_SQES_MAX(cap));
--        return -1;
--    }
-     if (unlikely(!NVME_AQA_ASQS(aqa))) {
-         trace_pci_nvme_err_startfail_asqent_sz_zero();
-         return -1;
-@@ -7268,8 +7248,6 @@ static int nvme_start_ctrl(NvmeCtrl *n)
-     n->page_bits = page_bits;
-     n->page_size = page_size;
-     n->max_prp_ents = n->page_size / sizeof(uint64_t);
--    n->cqe_size = 1 << NVME_CC_IOCQES(cc);
--    n->sqe_size = 1 << NVME_CC_IOSQES(cc);
-     nvme_init_cq(&n->admin_cq, n, acq, 0, 0, NVME_AQA_ACQS(aqa) + 1, 1);
-     nvme_init_sq(&n->admin_sq, n, asq, 0, 0, NVME_AQA_ASQS(aqa) + 1);
- 
-@@ -8238,8 +8216,8 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
-     id->wctemp = cpu_to_le16(NVME_TEMPERATURE_WARNING);
-     id->cctemp = cpu_to_le16(NVME_TEMPERATURE_CRITICAL);
- 
--    id->sqes = (0x6 << 4) | 0x6;
--    id->cqes = (0x4 << 4) | 0x4;
-+    id->sqes = (NVME_SQES << 4) | NVME_SQES;
-+    id->cqes = (NVME_CQES << 4) | NVME_CQES;
-     id->nn = cpu_to_le32(NVME_MAX_NAMESPACES);
-     id->oncs = cpu_to_le16(NVME_ONCS_WRITE_ZEROES | NVME_ONCS_TIMESTAMP |
-                            NVME_ONCS_FEATURES | NVME_ONCS_DSM |
-diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
-index 209e8f5b4c08..5f2ae7b28b9c 100644
---- a/hw/nvme/nvme.h
-+++ b/hw/nvme/nvme.h
-@@ -30,6 +30,13 @@
- #define NVME_FDP_MAX_EVENTS 63
- #define NVME_FDP_MAXPIDS 128
- 
-+/*
-+ * The controller only supports Submission and Completion Queue Entry Sizes of
-+ * 64 and 16 bytes respectively.
-+ */
-+#define NVME_SQES 6
-+#define NVME_CQES 4
++    if (start_ld >= ct3d->mhd_state->nr_lds) {
++        return CXL_MBOX_INVALID_INPUT;
++    }
 +
- QEMU_BUILD_BUG_ON(NVME_MAX_NAMESPACES > NVME_NSID_BROADCAST - 1);
++    output->nr_lds = ct3d->mhd_state->nr_lds;
++    output->nr_heads = ct3d->mhd_state->nr_heads;
++    output->resv1 = 0;
++    output->start_ld = start_ld;
++    output->resv2 = 0;
++
++    for (i = 0; i < ldmap_len && (start_ld + i) < output->nr_lds; i++) {
++        output->ldmap[i] = ct3d->mhd_state->ldmap[start_ld + i];
++    }
++    output->ldmap_len = i;
++
++    *len_out = sizeof(*output) + output->ldmap_len;
++    return CXL_MBOX_SUCCESS;
++}
++
+ #define IMMEDIATE_CONFIG_CHANGE (1 << 1)
+ #define IMMEDIATE_DATA_CHANGE (1 << 2)
+ #define IMMEDIATE_POLICY_CHANGE (1 << 3)
+@@ -1195,6 +1247,7 @@ static const struct cxl_cmd cxl_cmd_set[256][256] = {
+         cmd_media_inject_poison, 8, 0 },
+     [MEDIA_AND_POISON][CLEAR_POISON] = { "MEDIA_AND_POISON_CLEAR_POISON",
+         cmd_media_clear_poison, 72, 0 },
++    [MHD][GET_MHD_INFO] = {"GET_MULTI_HEADED_INFO", cmd_mhd_get_info, 2, 0},
+ };
  
- typedef struct NvmeCtrl NvmeCtrl;
-@@ -530,8 +537,6 @@ typedef struct NvmeCtrl {
-     uint32_t    page_size;
-     uint16_t    page_bits;
-     uint16_t    max_prp_ents;
--    uint16_t    cqe_size;
--    uint16_t    sqe_size;
-     uint32_t    max_q_ents;
-     uint8_t     outstanding_aers;
-     uint32_t    irq_status;
-diff --git a/hw/nvme/trace-events b/hw/nvme/trace-events
-index 9afddf3b951c..3a67680c6ad1 100644
---- a/hw/nvme/trace-events
-+++ b/hw/nvme/trace-events
-@@ -168,6 +168,7 @@ pci_nvme_err_invalid_create_cq_size(uint16_t size) "failed creating completion q
- pci_nvme_err_invalid_create_cq_addr(uint64_t addr) "failed creating completion queue, addr=0x%"PRIx64""
- pci_nvme_err_invalid_create_cq_vector(uint16_t vector) "failed creating completion queue, vector=%"PRIu16""
- pci_nvme_err_invalid_create_cq_qflags(uint16_t qflags) "failed creating completion queue, qflags=%"PRIu16""
-+pci_nvme_err_invalid_create_cq_entry_size(uint8_t iosqes, uint8_t iocqes) "iosqes %"PRIu8" iocqes %"PRIu8""
- pci_nvme_err_invalid_identify_cns(uint16_t cns) "identify, invalid cns=0x%"PRIx16""
- pci_nvme_err_invalid_getfeat(int dw10) "invalid get features, dw10=0x%"PRIx32""
- pci_nvme_err_invalid_setfeat(uint32_t dw10) "invalid set features, dw10=0x%"PRIx32""
+ static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index efb7dece80..98282aabab 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -18,6 +18,7 @@
+ #include "hw/cxl/cxl.h"
+ #include "hw/pci/msix.h"
+ #include "hw/pci/spdm.h"
++#include <sys/shm.h>
+ 
+ #define DWORD_BYTE 4
+ 
+@@ -794,6 +795,45 @@ static DOEProtocol doe_spdm_prot[] = {
+     { }
+ };
+ 
++static bool cxl_setup_mhd(CXLType3Dev *ct3d, Error **errp)
++{
++    if (ct3d->is_mhd && (!ct3d->mhd_shmid || (ct3d->mhd_head == ~(0)))) {
++        error_setg(errp, "is_mhd requires a shared memory region (mhd_shmid) and mhd_head < 32");
++        return false;
++    } else if (!ct3d->is_mhd && (ct3d->mhd_shmid || (ct3d->mhd_head == ~(0)))) {
++        error_setg(errp, "(is_mhd,mhd_head,mhd_shmid) fields must be used together");
++        return false;
++    } else if (!ct3d->is_mhd) {
++        return true;
++    }
++
++    if (ct3d->mhd_head >= 32) {
++        error_setg(errp, "MHD Head ID must be between 0-31");
++        return false;
++    }
++
++    ct3d->mhd_state = shmat(ct3d->mhd_shmid, NULL, 0);
++    if (ct3d->mhd_state == (void*)-1) {
++        ct3d->mhd_state = NULL;
++        error_setg(errp, "Unable to attach MHD State. Check ipcs is valid");
++        return false;
++    }
++
++    /* For now, limit the number of heads to the number of LD's (SLD) */
++    if (ct3d->mhd_state->nr_heads <= ct3d->mhd_head) {
++        error_setg(errp, "Invalid head ID for multiheaded device.");
++        return false;
++    }
++
++    if (ct3d->mhd_state->nr_lds <= ct3d->mhd_head) {
++        error_setg(errp, "MHD Shared state does not have sufficient lds.");
++        return false;
++    }
++
++    ct3d->mhd_state->ldmap[ct3d->mhd_head] = ct3d->mhd_head;
++    return true;
++}
++
+ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+ {
+     CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
+@@ -806,6 +846,10 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+ 
+     QTAILQ_INIT(&ct3d->error_list);
+ 
++    if (!cxl_setup_mhd(ct3d, errp)) {
++        return;
++    }
++
+     if (!cxl_setup_memory(ct3d, errp)) {
+         return;
+     }
+@@ -910,6 +954,9 @@ static void ct3_exit(PCIDevice *pci_dev)
+     if (ct3d->hostvmem) {
+         address_space_destroy(&ct3d->hostvmem_as);
+     }
++    if (ct3d->mhd_state) {
++        shmdt(ct3d->mhd_state);
++    }
+ }
+ 
+ static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
+@@ -1067,6 +1114,9 @@ static Property ct3_props[] = {
+     DEFINE_PROP_UINT64("sn", CXLType3Dev, sn, UI64_NULL),
+     DEFINE_PROP_STRING("cdat", CXLType3Dev, cxl_cstate.cdat.filename),
+     DEFINE_PROP_UINT16("spdm", CXLType3Dev, spdm_port, 0),
++    DEFINE_PROP_BOOL("is_mhd", CXLType3Dev, is_mhd, false),
++    DEFINE_PROP_UINT32("mhd_head", CXLType3Dev, mhd_head, 0),
++    DEFINE_PROP_UINT32("mhd_shmid", CXLType3Dev, mhd_shmid, 0),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index c68981b618..ebaa613c7b 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -406,6 +406,12 @@ typedef struct CXLPoison {
+ typedef QLIST_HEAD(, CXLPoison) CXLPoisonList;
+ #define CXL_POISON_LIST_LIMIT 256
+ 
++struct CXLMHD_SharedState {
++    uint8_t nr_heads;
++    uint8_t nr_lds;
++    uint8_t ldmap[];
++};
++
+ struct CXLType3Dev {
+     /* Private */
+     PCIDevice parent_obj;
+@@ -440,6 +446,12 @@ struct CXLType3Dev {
+     unsigned int poison_list_cnt;
+     bool poison_list_overflowed;
+     uint64_t poison_list_overflow_ts;
++
++    /* Multi-headed Device */
++    bool is_mhd;
++    uint32_t mhd_head;
++    uint32_t mhd_shmid;
++    struct CXLMHD_SharedState *mhd_state;
+ };
+ 
+ #define TYPE_CXL_TYPE3 "cxl-type3"
+diff --git a/tools/cxl/cxl_mhd_init.c b/tools/cxl/cxl_mhd_init.c
+new file mode 100644
+index 0000000000..1303aa9494
+--- /dev/null
++++ b/tools/cxl/cxl_mhd_init.c
+@@ -0,0 +1,63 @@
++#include <signal.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ipc.h>
++#include <sys/shm.h>
++#include <sys/types.h>
++#include <unistd.h>
++
++struct mhd_state {
++    uint8_t nr_heads;
++    uint8_t nr_lds;
++    uint8_t ldmap[];
++};
++
++int main(int argc, char *argv[]) {
++    int shmid = 0;
++    uint32_t heads = 0;
++    struct mhd_state* mhd_state = 0;
++    uint8_t i;
++
++    if (argc != 3) {
++        printf("usage: cxl_mhd_init <heads> <shmid>\n"
++                "\theads         : number of heads on the device\n"
++                "\tshmid         : /tmp/mytoken.tmp\n");
++        return -1;
++    }
++
++    // must have at least 1 head
++    heads = (uint32_t)atoi(argv[1]);
++    if (heads == 0 || heads > 32) {
++        printf("bad heads argument (1-32)\n");
++        return -1;
++    }
++
++    shmid = (uint32_t)atoi(argv[2]);
++    if (shmid== 0) {
++        printf("bad shmid argument\n");
++        return -1;
++    }
++
++    mhd_state = shmat(shmid, NULL, 0);
++    if (mhd_state == (void*)-1) {
++        printf("Unable to attach to shared memory\n");
++        return -1;
++    }
++
++    // Initialize the mhd_state
++    size_t mhd_state_size = sizeof(struct mhd_state) + (sizeof(uint8_t) * heads);
++    memset(mhd_state, 0, mhd_state_size);
++    mhd_state->nr_heads = heads;
++    mhd_state->nr_lds = heads;
++
++    // Head ID == LD ID for now
++    for (i = 0; i < heads; i++)
++        mhd_state->ldmap[i] = i;
++
++    printf("mhd initialized\n");
++    shmdt(mhd_state);
++    return 0;
++}
+diff --git a/tools/cxl/meson.build b/tools/cxl/meson.build
+new file mode 100644
+index 0000000000..218658fe69
+--- /dev/null
++++ b/tools/cxl/meson.build
+@@ -0,0 +1,3 @@
++executable('cxl_mhd_init', files('cxl_mhd_init.c'),
++  install: true,
++  install_dir: get_option('libexecdir'))
+diff --git a/tools/meson.build b/tools/meson.build
+index e69de29bb2..91a1d788cb 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -0,0 +1 @@
++subdir('cxl')
 -- 
-2.41.0
+2.39.1
 
 
