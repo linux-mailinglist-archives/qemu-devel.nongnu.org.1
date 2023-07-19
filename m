@@ -2,95 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261CB759980
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:22:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C314975997C
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:22:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM8zo-0001AN-EH; Wed, 19 Jul 2023 11:21:44 -0400
+	id 1qM8zi-00016a-2K; Wed, 19 Jul 2023 11:21:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anup@brainfault.org>)
- id 1qM8zk-00018O-Lb
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:21:41 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <anup@brainfault.org>)
- id 1qM8zi-00033C-9b
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:21:40 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-51e429e1eabso9891615a12.2
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:21:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=brainfault-org.20221208.gappssmtp.com; s=20221208; t=1689780097; x=1692372097;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0Du35sRawTS/q/ie9oa5Ev2NXy25Q2A+SBKOuZhitjE=;
- b=lJ4PDte8yRgKrLvmTOQUbS2o03oz/OIArEQjK5uT1nwnmBprPLrnk8LM+kQpBb9bdz
- 6aqYsoKD4V0Sj2axpRNwqNaDM0JDqOM+KlX5c9O2EqjjaS3AHWS7T9CpA+uuw/GQ1kw+
- 7jK8Id7wHMMzM1wumGjlMVyWiMyR0mVs4ftIdjj9hd1yE4X10ZwqiCMWMmHllJ+aGgUN
- FP26iE3CiT9wv/y+bj543Nv5M5PEXPymVTIxrCabZFVfGnzxrPDARx991JGI5WuKAJQy
- BxoS0ju3VJw0fZTbT0S5yI9KCOye5vlf3qZusAc9O3BjH0SuWroWfJosgiuEc4h5nzY1
- IlKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689780097; x=1692372097;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0Du35sRawTS/q/ie9oa5Ev2NXy25Q2A+SBKOuZhitjE=;
- b=FBKLSJUiE5AWOu74fWl4PS9Pbb0QmALxztAaiZ/yQRN0Wj7nvIwaQZTqPYTlzxw5nB
- CsgdPfpPxi05l8odBpcbLR+VpJalHQ+EhgIYY0TEHmQLxHTMS4xsKhWAq3uxeU8FS55S
- Am5foqnYf+wrq+C7ywZlQaObSMaqxYaPV77ZNu+3mOUT0xndM4gMxikFUpU/Bz5X9voh
- DM6JqjI3joI+ofaENbLd4RtrQZY57vxAq8zFM38uQ/xbUieWa9kPz50128zLXiRKJ2kl
- HHNEW2W4+pVHO6/9vuGEPc+LM7LWB7mng2GZcY99GkHLAvOsmGkgtnruh3GDC++9hmCI
- Y7bg==
-X-Gm-Message-State: ABy/qLYqUaIbniLIsJjpFyCXDiH14GeWS/EKdtMmO+17/ETV5u5iZgIm
- o1bcc5//cr9605JEb+wovH5XPAlh7zZIvINhhRk0kA==
-X-Google-Smtp-Source: APBJJlF7tb50/RB6aPzqyrRF1+NLi2z4hK52+zwW7DaWi2XQcsZkA8ubPlu3IiTflsIkzkIM+NTlcQw4FLwmxUeMW34=
-X-Received: by 2002:a17:906:1098:b0:99b:49a6:952d with SMTP id
- u24-20020a170906109800b0099b49a6952dmr89009eju.65.1689780096603; Wed, 19 Jul
- 2023 08:21:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qM8zf-00014U-U2
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:21:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qM8ze-00032l-9T
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:21:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689780093;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=6p89ZWy5m0GMj+w9jARQtFPEHYgTBBbpyssEMWvHqxU=;
+ b=G3wc5edkEU7AxLwuQtoXcNsS1D6V9F7WRRmOROzopSkhSihbND8qAQIDQ1CBWx9lr1IWeE
+ igxvhKsP+d1/05zh/BTWnf7p0h11O4JwF2CUK2b67izNX9siqenmetEscRDL1tZ6LsHi6u
+ sBTVX2G0tsQFCtMRZyuth50Kv30c4/U=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-623-ewAgYYEsNMyDNgjDmEQAxw-1; Wed, 19 Jul 2023 11:21:30 -0400
+X-MC-Unique: ewAgYYEsNMyDNgjDmEQAxw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 90E47185A78F;
+ Wed, 19 Jul 2023 15:21:29 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.67])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 517D01454142;
+ Wed, 19 Jul 2023 15:21:28 +0000 (UTC)
+Date: Wed, 19 Jul 2023 16:21:26 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Het Gala <het.gala@nutanix.com>
+Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
+ dgilbert@redhat.com, pbonzini@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+Subject: Re: [PATCH v8 3/9] migration: convert socket backend to accept
+ MigrateAddress
+Message-ID: <ZLf/dqkLhkqALTEA@redhat.com>
+References: <20230713105713.236883-1-het.gala@nutanix.com>
+ <20230713105713.236883-4-het.gala@nutanix.com>
 MIME-Version: 1.0
-References: <20230712-stench-happiness-40c2ea831257@spud>
- <3e9b5be8-d3ca-3a17-bef9-4a6a5bdc0ad0@ventanamicro.com>
- <20230712-tulip-replica-0322e71c3e81@spud>
- <744cbde6-7ce5-c327-3c5a-3858e994cc39@ventanamicro.com>
- <20230712-superhero-rabid-578605f52927@spud>
- <5dd3366d-13ba-c7fb-554f-549d97e7d4f9@ventanamicro.com>
- <20230712-fancied-aviator-270f51166407@spud>
- <20230713-craziness-lankiness-8aec3db24993@spud>
- <CAAhSdy3J5HUoVP21jo11FBuAFSPSxHNKtuL7amn-5t7n_smoSg@mail.gmail.com>
- <20230714-reoccur-confined-4b37494b1201@spud>
- <20230714-hash-handwrite-339817b93ba1@spud>
- <CAOnJCUL3=G_yV5cP5OjCGQKNvciNgXWnoQGUU4Bqh4iwnx6C4A@mail.gmail.com>
- <CAKmqyKO3O87ETntm7pzMPedKW19ANpEp5nM4jFiHXO76K9saTQ@mail.gmail.com>
- <CAAhSdy1+wRpqoTFmBRNF7uFnc_fFCyCnt5ctoMu7zhTiu2GcTg@mail.gmail.com>
- <CAKmqyKOTik3tUa1MyHAyc5jOWcPDY=seHuR-VurHbSKaCKQFpw@mail.gmail.com>
-In-Reply-To: <CAKmqyKOTik3tUa1MyHAyc5jOWcPDY=seHuR-VurHbSKaCKQFpw@mail.gmail.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Wed, 19 Jul 2023 20:51:25 +0530
-Message-ID: <CAAhSdy1vkk6xj7HSyPHKN0d0qgYrq_rn-+iw_rxkdDBKqpC2yw@mail.gmail.com>
-Subject: Re: Boot failure after QEMU's upgrade to OpenSBI v1.3 (was Re: [PATCH
- for-8.2 6/7] target/riscv: add 'max' CPU type)
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Atish Patra <atishp@atishpatra.org>, Anup Patel <apatel@ventanamicro.com>, 
- Conor Dooley <conor.dooley@microchip.com>, Conor Dooley <conor@kernel.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, 
- alistair.francis@wdc.com, bmeng@tinylab.org, liweiwei@iscas.ac.cn, 
- zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, 
- opensbi@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: none client-ip=2a00:1450:4864:20::52f;
- envelope-from=anup@brainfault.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230713105713.236883-4-het.gala@nutanix.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,202 +81,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 19, 2023 at 3:23=E2=80=AFPM Alistair Francis <alistair23@gmail.=
-com> wrote:
->
-> On Wed, Jul 19, 2023 at 3:39=E2=80=AFPM Anup Patel <anup@brainfault.org> =
-wrote:
-> >
-> > On Wed, Jul 19, 2023 at 7:03=E2=80=AFAM Alistair Francis <alistair23@gm=
-ail.com> wrote:
-> > >
-> > > On Sat, Jul 15, 2023 at 7:14=E2=80=AFPM Atish Patra <atishp@atishpatr=
-a.org> wrote:
-> > > >
-> > > > On Fri, Jul 14, 2023 at 5:29=E2=80=AFAM Conor Dooley <conor@kernel.=
-org> wrote:
-> > > > >
-> > > > > On Fri, Jul 14, 2023 at 11:19:34AM +0100, Conor Dooley wrote:
-> > > > > > On Fri, Jul 14, 2023 at 10:00:19AM +0530, Anup Patel wrote:
-> > > > > >
-> > > > > > > > > OpenSBI v1.3
-> > > > > > > > >    ____                    _____ ____ _____
-> > > > > > > > >   / __ \                  / ____|  _ \_   _|
-> > > > > > > > >  | |  | |_ __   ___ _ __ | (___ | |_) || |
-> > > > > > > > >  | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
-> > > > > > > > >  | |__| | |_) |  __/ | | |____) | |_) || |_
-> > > > > > > > >   \____/| .__/ \___|_| |_|_____/|___/_____|
-> > > > > > > > >         | |
-> > > > > > > > >         |_|
-> > > > > > > > >
-> > > > > > > > > init_coldboot: ipi init failed (error -1009)
-> > > > > > > > >
-> > > > > > > > > Just to note, because we use our own firmware that vendor=
-s in OpenSBI
-> > > > > > > > > and compiles only a significantly cut down number of file=
-s from it, we
-> > > > > > > > > do not use the fw_dynamic etc flow on our hardware. As a =
-result, we have
-> > > > > > > > > not tested v1.3, nor do we have any immediate plans to ch=
-ange our
-> > > > > > > > > platform firmware to vendor v1.3 either.
-> > > > > > > > >
-> > > > > > > > > I unless there's something obvious to you, it sounds like=
- I will need to
-> > > > > > > > > go and bisect OpenSBI. That's a job for another day thoug=
-h, given the
-> > > > > > > > > time.
-> > > > > > > > >
-> > > > > > >
-> > > > > > > The real issue is some CPU/HART DT nodes marked as disabled i=
-n the
-> > > > > > > DT passed to OpenSBI 1.3.
-> > > > > > >
-> > > > > > > This issue does not exist in any of the DTs generated by QEMU=
- but some
-> > > > > > > of the DTs in the kernel (such as microchip and SiFive board =
-DTs) have
-> > > > > > > the E-core disabled.
-> > > > > > >
-> > > > > > > I had discovered this issue in a totally different context af=
-ter the OpenSBI 1.3
-> > > > > > > release happened. This issue is already fixed in the latest O=
-penSBI by the
-> > > > > > > following commit c6a35733b74aeff612398f274ed19a74f81d1f37 ("l=
-ib: utils:
-> > > > > > > Fix sbi_hartid_to_scratch() usage in ACLINT drivers").
-> > > > > >
-> > > > > > Great, thanks Anup! I thought I had tested tip-of-tree too, but
-> > > > > > obviously not.
-> > > > > >
-> > > > > > > I always assumed that Microchip hss.bin is the preferred BIOS=
- for the
-> > > > > > > QEMU microchip-icicle-kit machine but I guess that's not true=
-.
-> > > > > >
-> > > > > > Unfortunately the HSS has not worked in QEMU for a long time, a=
-nd while
-> > > > > > I would love to fix it, but am pretty stretched for spare time =
-to begin
-> > > > > > with.
-> > > > > > I usually just do direct kernel boots, which use the OpenSBI th=
-at comes
-> > > > > > with QEMU, as I am sure you already know :)
-> > > > > >
-> > > > > > > At this point, you can either:
-> > > > > > > 1) Use latest OpenSBI on QEMU microchip-icicle-kit machine
-> > > > >
-> > > > > I forgot to reply to this point, wondering what should be done wi=
-th
-> > > > > QEMU. Bumping to v1.3 in QEMU introduces a regression here, regar=
-dless
-> > > > > of whether I can go and build a fixed version of OpenSBI.
-> > > > >
-> > > > FYI: The no-map fix went in OpenSBI v1.3. Without the upgrade, any
-> > > > user using the latest kernel (> v6.4)
-> > > > may hit those random linear map related issues (in hibernation or E=
-FI
-> > > > booting path).
-> > > >
-> > > > There are three possible scenarios:
-> > > >
-> > > > 1. Upgrade to OpenSBI v1.3: Any user of microchip-icicle-kit machin=
-e
-> > > > or sifive fu540 machine users
-> > > > may hit this issue if the device tree has the disabled hart (e core=
-).
-> > > > 2. No upgrade to OpenSBI v1.2. Any user using hibernation or UEFI m=
-ay
-> > > > have issues [1]
-> > > > 3. Include a non-release version OpenSBI in Qemu with the fix as an=
- exception.
-> > > >
-> > > > #3 probably deviates from policy and sets a bad precedent. So I am =
-not
-> > > > advocating for it though ;)
-> > > > For both #1 & #2, the solution would be to use the latest OpenSBI i=
-n
-> > > > -bios argument instead of the stock one.
-> > > > I could be wrong but my guess is the number of users facing #2 woul=
-d
-> > > > be higher than #1.
-> > >
-> > > Thanks for that info Atish!
-> > >
-> > > We are stuck in a bad situation.
-> > >
-> > > The best solution would be if OpenSBI can release a 1.3.1, @Anup Pate=
-l
-> > > do you think you could do that?
-> >
-> > OpenSBI has a major number and minor number in the version but it does
-> > not have release/patch number so best would be to treat OpenSBI vX.Y.Z
-> > as bug fixes on-top-of OpenSBI vX.Y. In other words, supervisor softwar=
-e
-> > won't be able to differentiate between OpenSBI vX.Y.Z and OpenSBI vX.Y
-> > using sbi_get_impl_version().
-> >
-> > There are only three commits between the ACLINT fix and OpenSBI v1.3
-> > so as one-of case I will go ahead create OpenSBI v1.3.1 containing only
-> > four commits on-top of OpenSBI v1.3
-> >
-> > Does this sound okay ?
->
-> That sounds fine to me. It fixes the issue for the Microsemi board and
-> it's a very small change between 1.3 and 1.3.1
+On Thu, Jul 13, 2023 at 10:57:07AM +0000, Het Gala wrote:
+> Socket transport backend for 'migrate'/'migrate-incoming' QAPIs accept
+> new wire protocol of MigrateAddress struct.
+> 
+> It is achived by parsing 'uri' string and storing migration parameters
+> required for socket connection into well defined SocketAddress struct.
+> 
+> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+> ---
+>  migration/migration.c | 32 +++++++++++++++++++-------------
+>  migration/socket.c    | 34 +++++-----------------------------
+>  migration/socket.h    |  7 ++++---
+>  3 files changed, 28 insertions(+), 45 deletions(-)
 
-Please check
-https://github.com/riscv-software-src/opensbi/releases/tag/v1.3.1
+> diff --git a/migration/socket.c b/migration/socket.c
+> index 1b6f5baefb..8e7430b266 100644
+> --- a/migration/socket.c
+> +++ b/migration/socket.c
+> @@ -108,10 +108,9 @@ out:
+>      object_unref(OBJECT(sioc));
+>  }
+>  
+> -static void
+> -socket_start_outgoing_migration_internal(MigrationState *s,
+> -                                         SocketAddress *saddr,
+> -                                         Error **errp)
+> +void socket_start_outgoing_migration(MigrationState *s,
+> +                                     SocketAddress *saddr,
+> +                                     Error **errp)
+>  {
+>      QIOChannelSocket *sioc = qio_channel_socket_new();
+>      struct SocketConnectData *data = g_new0(struct SocketConnectData, 1);
+> @@ -135,18 +134,6 @@ socket_start_outgoing_migration_internal(MigrationState *s,
+>                                       NULL);
+>  }
+>  
+> -void socket_start_outgoing_migration(MigrationState *s,
+> -                                     const char *str,
+> -                                     Error **errp)
+> -{
+> -    Error *err = NULL;
+> -    SocketAddress *saddr = socket_parse(str, &err);
+> -    if (!err) {
+> -        socket_start_outgoing_migration_internal(s, saddr, &err);
+> -    }
+> -    error_propagate(errp, err);
+> -}
 
-I hope this helps.
+In this original code, socket_start_outgoing_migration would allocate
+the SocketAddress, and then call socket_start_outgoing_migration_internal
+which would take ownership of it. This is fine.
 
-Regards,
-Anup
+In the new code, the caller of socket_start_outgoing_migration
+owns the SocketAddress. So socket_start_outgoing_migration must
+create its own copy. IOW, this patch is where the QAPI_CLONE
+additions from patch 8 must be put.
 
->
-> Alistair
->
-> >
-> > >
-> > > Otherwise I think we should stick with OpenSBI 1.3. Considering that
-> > > it fixes UEFI boot issues for the virt board (which would be the most
-> > > used) it seems like a best call to make. People using the other board=
-s
-> > > are unfortunately stuck building their own OpenSBI release.
-> > >
-> > > If there is no OpenSBI 1.3.1 release we should add something to the
-> > > release notes. @Conor Dooley are you able to give a clear sentence on
-> > > how the boot fails?
-> > >
-> > > Alistair
-> > >
-> > > >
-> > > > [1] https://lore.kernel.org/linux-riscv/20230625140931.1266216-1-so=
-ngshuaishuai@tinylab.org/
-> > > > > > > 2) Ensure CPU0 DT node is enabled in DT when booting on QEMU
-> > > > > > >     microchip-icicle-kit machine with OpenSBI 1.3
-> > > > > >
-> > > > > > Will OpenSBI disable it? If not, I think option 2) needs to be =
-remove
-> > > > > > the DT node. I'll just use tip-of-tree myself & up to the
-> > > > >
-> > > > > Clearly didn't finish this comment. It was meant to say "up to th=
-e QEMU
-> > > > > maintainers what they want to do on the QEMU side of things".
-> > > > >
-> > > > > Thanks,
-> > > > > Conor.
-> > > >
-> > > >
-> > > >
-> > > > --
-> > > > Regards,
-> > > > Atish
-> > > >
-> >
-> > Regards,
-> > Anup
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
