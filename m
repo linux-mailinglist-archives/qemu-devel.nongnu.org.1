@@ -2,97 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E612759084
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 10:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 537717590A4
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 10:50:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM2ma-0005kn-Ud; Wed, 19 Jul 2023 04:43:40 -0400
+	id 1qM2su-00079O-Qa; Wed, 19 Jul 2023 04:50:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qM2mW-0005kU-1Y
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:43:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qM2sq-00078t-1b
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:50:09 -0400
+Received: from mout.kundenserver.de ([212.227.126.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qM2mU-0002Jk-D7
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:43:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689756213;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NLGNbIzsLPoMz4a9R4y33c4wUSjqsYp99tFJaLePP2k=;
- b=KhxYLva+Vg0Q2+8LEAKT2uJNdeLI51mpy7NZBS7J2kyURxughagpWMXZTl+ih2PaWKX/ae
- gQPAMEi95qD49mk6s9+O0TmsNBcGTfzGuYI1pSvY/aY/YS/wgj8sKE9djN+jJ0jOlw428j
- 1nWzJMg7wBgytLWuvXYTXJvdExC0XKs=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-MjK5c3M9MDy4RIw5SEn7FA-1; Wed, 19 Jul 2023 04:43:32 -0400
-X-MC-Unique: MjK5c3M9MDy4RIw5SEn7FA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fbe4cecd66so37680325e9.1
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 01:43:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689756211; x=1692348211;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NLGNbIzsLPoMz4a9R4y33c4wUSjqsYp99tFJaLePP2k=;
- b=ZDsYaFAHtG+4Kinxyk6CrtSj2XG1nAMkM2ypblZ6BxCw6JxYzk9wOqePDweSj5NVAC
- et96TRAmxPXK9fob1m5+APRbHrz7iLpo1yKr8q2Ce6da2OAvOHmsFaaWUcuGmNNKmqJT
- 6ImBVVt/+xL1y107/9sJjx+emSymfLQ2sxxGM//gi3x6FeSX8vbscQUqsyQ+/4H0TK4E
- QrpuiZdXizXX4W4b9KnCCizl6ykX/JD9MOrDy+04qMZWkk07jFB2FaiYXfNvIRUnHj6D
- uFgZ5dVRigy4HccxQ1gUPvb5qmHLVfVUWK2PpjBu6zetzhYf0InQyb4TrjbOZjI5n6sm
- gA5w==
-X-Gm-Message-State: ABy/qLaqEasKSDL+yLAy6nHkGhpt013Uk3/ellOCYKLf1cdLzA8clVpr
- CItFhKXmBV+pwy/DGgSiAPxCftHGBUb+V2JPDY45ox1R8B3CCGdghjf8HTP+HgKsxLra6yYdCTZ
- KPHFA1qflSqdf1tS+/mIt590=
-X-Received: by 2002:a05:600c:b41:b0:3fc:85c:5ed2 with SMTP id
- k1-20020a05600c0b4100b003fc085c5ed2mr1340938wmr.11.1689756211238; 
- Wed, 19 Jul 2023 01:43:31 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlEfCbHDs337j5oHQZNSzZsQZmGNVoNa9wMjwm0zw8UH14wHdVK/hFcrI052INwm+ijZWCRQAQ==
-X-Received: by 2002:a05:600c:b41:b0:3fc:85c:5ed2 with SMTP id
- k1-20020a05600c0b4100b003fc085c5ed2mr1340924wmr.11.1689756210863; 
- Wed, 19 Jul 2023 01:43:30 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c74b:4f00:b030:1632:49f2:63?
- (p200300cbc74b4f00b030163249f20063.dip0.t-ipconnect.de.
- [2003:cb:c74b:4f00:b030:1632:49f2:63])
- by smtp.gmail.com with ESMTPSA id
- y26-20020a05600c365a00b003fbb5506e54sm1111611wmq.29.2023.07.19.01.43.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Jul 2023 01:43:30 -0700 (PDT)
-Message-ID: <5058bda7-94f4-8001-eb8d-7b770c09a5bf@redhat.com>
-Date: Wed, 19 Jul 2023 10:43:29 +0200
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qM2sl-0005K1-JI
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:50:07 -0400
+Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
+ (mreue011 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1MLiTI-1qdiI439LU-00HiV8; Wed, 19 Jul 2023 10:50:00 +0200
+Message-ID: <29cd5218-a9be-1947-e075-b892023213e8@vivier.eu>
+Date: Wed, 19 Jul 2023 10:49:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 05/14] target/s390x: Make MC raise specification exception
- when class >= 16
-Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-References: <20230718213531.117976-1-iii@linux.ibm.com>
- <20230718213531.117976-6-iii@linux.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230718213531.117976-6-iii@linux.ibm.com>
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] Wrong unpacked structure for epoll_event on qemu-or1k
+ (openrisc user-space)
+Content-Language: fr
+To: Luca Bonissi <qemu@bonslack.org>, Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+References: <750c569e-a922-d3bb-1f97-1698960d5b05@bonslack.org>
+ <CAFEAcA9vkyO_kivpSGV7jPW+DCbSD1BNA+SsLixViamXRi61CQ@mail.gmail.com>
+ <fa561a63-991a-329e-d9f2-5b334d94516b@bonslack.org>
+From: Laurent Vivier <laurent@vivier.eu>
+In-Reply-To: <fa561a63-991a-329e-d9f2-5b334d94516b@bonslack.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:HK92QWG02fuRnyq6HuWVso5C1vcf5v/yNK2Pmz9PchfbzcnKNkO
+ OY1U37BiOC+Ov16JAP7dkRFiUnya2HFNwkL5IQceCZF1TWwoIhNysahXpCZJjlZHZeAp07e
+ 68RGQtuvEYB/+2vE5ykY7QJNiu5TiG4OcVWiFWDI8Tr9zYEBwmN1liQ6auDDm4TqeyR2WJ1
+ o2+YFrpBbGiwaZncu5wVQ==
+UI-OutboundReport: notjunk:1;M01:P0:7kOdQjBiOmM=;jYZSnZLEmELkDxTQ7yJOvo8bqBF
+ SWkPWQtQ+l2p2dZzhZIMnR98eYom4GdNviRFicvGEEuPRBsFqMuWvy6T2hSN+YaoNrePbatmv
+ +uQyR0aweTk0MOjVEkqP89j+2vDSwwaTUQn43c9JY8SiLKH1z4qxwocp5CscIrJaTfFTI6XsZ
+ 2MRAp29ID2RrVfq4h0dDckt3fy4qU/CtSDC9QNyzOFqMPxyN2kGtyFzo5x+jSXfkBdwVFR4hM
+ HaWlHKNXaiE8VX8Uti3YU/KE1iif6BdQmlIxgswSCN2lrh31WfSNAI31IWmc+5rTxGr7MM+Th
+ MBCMfp6VzbYtnLE4Wum7y8uW3w+pIG8FAww57HkFzXaloNLVl/WOmfIfmweS0r4hing3NqIWw
+ NRfloRkE1uzAZj7Fq1n9MECEhTXsrGDpZkNRjhxdMWcJMn01u0StC+j20lruh4lChjAQdC1xd
+ 2YtH0J/k1rNrCBgGeXHWkRxD9b5ASsAOqsPHvoOnbOF8ZOgIrJ1cw9oQy2kicExNBf9eOxryK
+ mee0eGStPyBFhHS/LShJGfGDqX4kf3eU33fEVf6vQVrEvv3bfdC0NEFssVtAfY7IV0EtOxONe
+ 99zzLXuEX3O/zqmi5nYYGrsmn/Wm5b5yMSRDId4DP8jypy7aw21JdPg0j1Cim7sD8RBVZyEuU
+ ZjHtYWpjDv5T8LN1rJpYV5wmbF6AulNzyOS8q+DX5Q==
+Received-SPF: none client-ip=212.227.126.130; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-0.095, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.095,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,53 +74,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18.07.23 23:21, Ilya Leoshkevich wrote:
-> MC requires bit positions 8-11 (upper 4 bits of class) to be zeros,
-> otherwise it must raise a specification exception.
+Le 18/07/2023 à 17:06, Luca Bonissi a écrit :
+> On 18/07/23 16:40, Peter Maydell wrote:
+>> Hi; thanks for this patch. Unfortunately we need patches
+>> to include a Signed-off-by: line that says you're legally
+>> OK with it being contributed to QEMU, or we can't take them.
 > 
-> Cc: qemu-stable@nongnu.org
-> Fixes: 20d143e2cab8 ("s390x/tcg: Implement MONITOR CALL")
-> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> Sorry for the missing "signed-off-by" line, adding it just now:
+> 
+> ==============
+> The or1k epoll_event structure - unlike other architectures - is packed, so we need to define it as 
+> packed in qemu-user, otherwise it leads to infinite loop due to missing file descriptor in the 
+> returned data:
+> 
+> 
+> Signed-off-by: Luca Bonissi <qemu@bonslack.org>
 > ---
->   target/s390x/tcg/excp_helper.c | 2 +-
->   target/s390x/tcg/translate.c   | 4 ++--
->   2 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
-> index 228aa9f2373..3da337f7c72 100644
-> --- a/target/s390x/tcg/excp_helper.c
-> +++ b/target/s390x/tcg/excp_helper.c
-> @@ -639,7 +639,7 @@ void monitor_event(CPUS390XState *env,
->   void HELPER(monitor_call)(CPUS390XState *env, uint64_t monitor_code,
->                             uint32_t monitor_class)
->   {
-> -    g_assert(monitor_class <= 0xff);
-> +    g_assert(monitor_class <= 0xf);
->   
->       if (env->cregs[8] & (0x8000 >> monitor_class)) {
->           monitor_event(env, monitor_code, monitor_class, GETPC());
-> diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-> index 2d7cc8963b4..4b32c2333c2 100644
-> --- a/target/s390x/tcg/translate.c
-> +++ b/target/s390x/tcg/translate.c
-> @@ -3184,9 +3184,9 @@ static DisasJumpType op_lcbb(DisasContext *s, DisasOps *o)
->   
->   static DisasJumpType op_mc(DisasContext *s, DisasOps *o)
->   {
-> -    const uint16_t monitor_class = get_field(s, i2);
-> +    const uint8_t monitor_class = get_field(s, i2);
->   
-> -    if (monitor_class & 0xff00) {
-> +    if (monitor_class & 0xf0) {
->           gen_program_exception(s, PGM_SPECIFICATION);
->           return DISAS_NORETURN;
->       }
+> diff -up a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
+> --- a/linux-user/syscall_defs.h    2023-03-27 15:41:42.000000000 +0200
+> +++ b/linux-user/syscall_defs.h    2023-06-30 17:29:39.034322213 +0200
+> @@ -2714,7 +2709,7 @@
+>   #define FUTEX_CMD_MASK          ~(FUTEX_PRIVATE_FLAG | FUTEX_CLOCK_REALTIME)
+> 
+>   #ifdef CONFIG_EPOLL
+> -#if defined(TARGET_X86_64)
+> +#if defined(TARGET_X86_64) || defined(TARGET_OPENRISC)
+>   #define TARGET_EPOLL_PACKED QEMU_PACKED
+>   #else
+>   #define TARGET_EPOLL_PACKED
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+According to linux/glibc sourced, epoll is only packed for x86_64.
 
--- 
-Cheers,
+Did you try to check the alignment of the structure with gdb of a C program using offsetof() in an 
+openrisc VM or linux-user container?
 
-David / dhildenb
+Perhaps the default alignment of long is not correctly defined in qemu for openrisc?
 
+You can check with:
+
+int main(void)
+{
+         printf("alignof(short) %ld\n", __alignof__(short));
+         printf("alignof(int) %ld\n", __alignof__(int));
+         printf("alignof(long) %ld\n", __alignof__(long));
+         printf("alignof(long long) %ld\n", __alignof__(long long));
+}
+
+See include/exec/user/abitypes.h to update the value.
+
+Thanks,
+Laurent
 
