@@ -2,101 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484857591F4
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 11:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F2475920E
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 11:50:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM3ld-0002tw-R0; Wed, 19 Jul 2023 05:46:45 -0400
+	id 1qM3mt-00053z-Ee; Wed, 19 Jul 2023 05:48:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qM3lS-0002eO-SA; Wed, 19 Jul 2023 05:46:36 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qM3mW-0004ph-Fl
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 05:47:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qM3lR-0002u2-37; Wed, 19 Jul 2023 05:46:34 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36J9eIRW010132; Wed, 19 Jul 2023 09:46:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=Dy97RmEP1rH6BkWOws0g2ZoPPbyHVVdARrzNn1bWBgE=;
- b=oShXXN/zXvNNtXFvE5F+SR3fXPj3YyZ6XsSJUBLb3acTqscZXriO5fR+GtFHPjO101Cs
- kmwrxIdCmGcLOpwTJSIS4WOSuCaD35XkGNo5WWfRZZA5tLLHOvIIO7W9rvRCWnCXh5Aw
- B1oNM/RbCKuBnqUSZgZAIONpckbLglomxcJb5dYAxym3jQLZrWgSzRju8tcyKx/edIAN
- 3TtEcbyHQ+V8iqsM4oGEJE3mYMaI4X/wRWVWv2/SUtW2GtmTt31LYN3/YLfvZ/sDNIW2
- LMyXjbLFCoZwsB6urT1M/3WF7Evkpwypp16Ah5AKpVybA+xCiGkrQTNMW55yLEbJe4bl tg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxd4rgshf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 09:46:30 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36J9e0tE008430;
- Wed, 19 Jul 2023 09:46:29 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxd4rgsh0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 09:46:29 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36J70AC3030687; Wed, 19 Jul 2023 09:46:28 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv79jpqgx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 09:46:28 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
- [10.20.54.105])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36J9kQ7s54067666
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jul 2023 09:46:26 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 25C0B20049;
- Wed, 19 Jul 2023 09:46:26 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 042A220040;
- Wed, 19 Jul 2023 09:46:26 +0000 (GMT)
-Received: from heavy.boeblingen.de.ibm.com (unknown [9.155.200.166])
- by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 19 Jul 2023 09:46:25 +0000 (GMT)
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v2 14/14] tests/tcg/s390x: Test VCKSM
-Date: Wed, 19 Jul 2023 11:44:24 +0200
-Message-ID: <20230719094620.363206-15-iii@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230719094620.363206-1-iii@linux.ibm.com>
-References: <20230719094620.363206-1-iii@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qM3mU-00034Y-DS
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 05:47:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689760056;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=l5lpPxOlivmRQjLmCiz86pz7TBlkqYFVgXEk8xbx6y0=;
+ b=ekDkPS5sBdAtZahITNDPOBe4FHXk2z2UARp4rBm0OBfwQPYPOqp4D9zCQMjUTC/afFiPoC
+ eWYClEUI2njuFgYmWkZIYg3gu9EnEL2d3IbE9KHziczQ3VQ6NYxRA/8PXOT/RSNti0mOuG
+ Jg+58x+YJqg8QvDKECK65P4wNXUi0F4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-223-PTnHW2a-NE2PgsR4YE8gzA-1; Wed, 19 Jul 2023 05:47:35 -0400
+X-MC-Unique: PTnHW2a-NE2PgsR4YE8gzA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-30e4943ca7fso3722927f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 02:47:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689760054; x=1692352054;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=l5lpPxOlivmRQjLmCiz86pz7TBlkqYFVgXEk8xbx6y0=;
+ b=A/h8nr/xM5fge/CXIle9951Ho3lhpUzCpj/kD5fEA0R22NunQkx25gV/yhxzPDajrY
+ 9jkuxtjde0JV0Rkfj+3t8921hCrgrk+mUokv18rYzRcMDAtwAqJDvad/n2S53oiu9zVX
+ PlgePS37tSKEdxwokuO2tFeAgvE1AxF/9MpzjgjtE42hgIdUDPHHVdvS+PsBRhuscj2C
+ N1mMn7UdpKhuu0u3/rZujZnz+6xA8e1xP80SQEDkXdprfJYimxWesa0im9yQ/lkHiP66
+ 6XKwV5H+EY9FVe7YtNRo/QTWe3sfKGsFsVnJQWg8h+NziUxkCTn0SXhkydwat6DXDg38
+ 4rHw==
+X-Gm-Message-State: ABy/qLYUHCa6UuXLJCgFFv89TKyECvmHwB6D0UAhUEhmqWVE9tX5+pdv
+ Mx14CeoABTivYAKnYBeY+qutPM/GDurP9VHUvMj7U09ZD1urlIm8oId9m+/kmFuk8SkHkIQeGWy
+ zCMeiInma3vjKDYs=
+X-Received: by 2002:adf:fe49:0:b0:314:1ca4:dbd9 with SMTP id
+ m9-20020adffe49000000b003141ca4dbd9mr13720533wrs.27.1689760054516; 
+ Wed, 19 Jul 2023 02:47:34 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEhQameE1MFxsKiq7aZp7eGiQPCIcfoaO3mLHlXEKQMszeTviqRSuG0hwOlrNcTP7xnF8mvwQ==
+X-Received: by 2002:adf:fe49:0:b0:314:1ca4:dbd9 with SMTP id
+ m9-20020adffe49000000b003141ca4dbd9mr13720520wrs.27.1689760054179; 
+ Wed, 19 Jul 2023 02:47:34 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c74b:4f00:b030:1632:49f2:63?
+ (p200300cbc74b4f00b030163249f20063.dip0.t-ipconnect.de.
+ [2003:cb:c74b:4f00:b030:1632:49f2:63])
+ by smtp.gmail.com with ESMTPSA id
+ b9-20020a5d6349000000b0030e52d4c1bcsm4862825wrw.71.2023.07.19.02.47.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 19 Jul 2023 02:47:33 -0700 (PDT)
+Message-ID: <62807a3b-f341-52dc-fa79-e8f72754752c@redhat.com>
+Date: Wed, 19 Jul 2023 11:47:32 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: CQggep_dPQwBjKg5DBri3OK9ELvIjyVs
-X-Proofpoint-GUID: Fa7eTTo_nHRjeLYVY46vSdQdkDtdCJpq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-19_06,2023-07-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015
- lowpriorityscore=0 phishscore=0 suspectscore=0 spamscore=0 adultscore=0
- bulkscore=0 priorityscore=1501 mlxlogscore=902 malwarescore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307190087
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 07/14] target/s390x: Fix assertion failure in
+ VFMIN/VFMAX with type 13
+Content-Language: en-US
+To: Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
+References: <20230719094620.363206-1-iii@linux.ibm.com>
+ <20230719094620.363206-8-iii@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230719094620.363206-8-iii@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.095, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,79 +108,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a small test to prevent regressions.
+On 19.07.23 11:44, Ilya Leoshkevich wrote:
+> Type 13 is reserved, so using it should result in specification
+> exception. Due to an off-by-1 error the code triggers an assertion at a
+> later point in time instead.
+> 
+> Cc: qemu-stable@nongnu.org
+> Fixes: da4807527f3b ("s390x/tcg: Implement VECTOR FP (MAXIMUM|MINIMUM)")
+> Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+> ---
+>   target/s390x/tcg/translate_vx.c.inc | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/s390x/tcg/translate_vx.c.inc b/target/s390x/tcg/translate_vx.c.inc
+> index 43dfbfd03f6..f8df121d3d3 100644
+> --- a/target/s390x/tcg/translate_vx.c.inc
+> +++ b/target/s390x/tcg/translate_vx.c.inc
+> @@ -3047,7 +3047,7 @@ static DisasJumpType op_vfmax(DisasContext *s, DisasOps *o)
+>       const uint8_t m5 = get_field(s, m5);
+>       gen_helper_gvec_3_ptr *fn;
+>   
+> -    if (m6 == 5 || m6 == 6 || m6 == 7 || m6 > 13) {
+> +    if (m6 == 5 || m6 == 6 || m6 == 7 || m6 >= 13) {
+>           gen_program_exception(s, PGM_SPECIFICATION);
+>           return DISAS_NORETURN;
+>       }
 
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
----
- tests/tcg/s390x/Makefile.target |  1 +
- tests/tcg/s390x/vcksm.c         | 31 +++++++++++++++++++++++++++++++
- tests/tcg/s390x/vx.h            |  2 ++
- 3 files changed, 34 insertions(+)
- create mode 100644 tests/tcg/s390x/vcksm.c
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
-index 71bf39b78d3..1fc98099070 100644
---- a/tests/tcg/s390x/Makefile.target
-+++ b/tests/tcg/s390x/Makefile.target
-@@ -58,6 +58,7 @@ TESTS += $(PGM_SPECIFICATION_TESTS)
- Z13_TESTS=vistr
- Z13_TESTS+=lcbb
- Z13_TESTS+=locfhr
-+Z13_TESTS+=vcksm
- $(Z13_TESTS): CFLAGS+=-march=z13 -O2
- TESTS+=$(Z13_TESTS)
- 
-diff --git a/tests/tcg/s390x/vcksm.c b/tests/tcg/s390x/vcksm.c
-new file mode 100644
-index 00000000000..452daaae6ce
---- /dev/null
-+++ b/tests/tcg/s390x/vcksm.c
-@@ -0,0 +1,31 @@
-+/*
-+ * Test the VCKSM instruction.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <assert.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include "vx.h"
-+
-+int main(void)
-+{
-+    S390Vector v1;
-+    S390Vector v2 = {
-+        .d[0] = 0xb2261c8140edce49ULL,
-+        .d[1] = 0x387bf5a433af39d1ULL,
-+    };
-+    S390Vector v3 = {
-+        .d[0] = 0x73b03d2c7f9e654eULL,
-+        .d[1] = 0x23d74e51fb479877ULL,
-+    };
-+    S390Vector exp = {.d[0] = 0xdedd7f8eULL, .d[1] = 0ULL};
-+
-+    asm volatile("vcksm %[v1],%[v2],%[v3]"
-+                 : [v1] "=v" (v1.v)
-+                 : [v2] "v" (v2.v)
-+                 , [v3] "v" (v3.v));
-+    assert(memcmp(&v1, &exp, sizeof(v1)) == 0);
-+
-+    return EXIT_SUCCESS;
-+}
-diff --git a/tests/tcg/s390x/vx.h b/tests/tcg/s390x/vx.h
-index 02e7fd518a8..00701dbe35f 100644
---- a/tests/tcg/s390x/vx.h
-+++ b/tests/tcg/s390x/vx.h
-@@ -1,6 +1,8 @@
- #ifndef QEMU_TESTS_S390X_VX_H
- #define QEMU_TESTS_S390X_VX_H
- 
-+#include <stdint.h>
-+
- typedef union S390Vector {
-     uint64_t d[2];  /* doubleword */
-     uint32_t w[4];  /* word */
 -- 
-2.41.0
+Cheers,
+
+David / dhildenb
 
 
