@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6E7759490
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 13:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A80307594A8
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 13:52:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM5bC-0007Sz-P7; Wed, 19 Jul 2023 07:44:06 -0400
+	id 1qM5hm-0001eL-GB; Wed, 19 Jul 2023 07:50:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qM5b7-0007Rb-8J
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 07:44:03 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qM5hl-0001eB-5A
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 07:50:53 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qM5b3-00079z-DV
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 07:44:00 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-31297125334so468569f8f.0
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 04:43:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qM5hd-0001Rl-50
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 07:50:52 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3142970df44so6400886f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 04:50:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689767035; x=1692359035;
+ d=linaro.org; s=google; t=1689767443; x=1692359443;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=RVB0pvAN5vdtoP2giPv9r7me79eOAmONKWvmiY0mMJM=;
- b=H8eYlrDM8qoEBT2oHuezZuNY96pOENyaCZbt2EFL8Ge77BAO30UKKs3fC4SXPn6HLe
- xZOqh7wgz1dq0NDW3spF5Hdq7+Gq4q26fPyPzYQ+poTRUv9U2QmpiUZTjlpc6z07Lpxl
- SAktsU1Mu0BMmJ9USr8zImvoIJmNvyUytnUyDQQvpB78p0wgGazRVve/CwehXB9sjSUl
- pIe81SyJblrKFLxSzS/Auel5p1m+jb/YjzV8wpTEACWbYKsoRu+1IN2zoiFL9n57UT9t
- hvecqfOyXeHjYHUIVbi+AndPvRbX2LkP77dSomKkC7SEQmBM/aPrMIFxrsC1T/j5dUi/
- kkXA==
+ bh=pkDWq1rvTFtoMklrEy7kTR/2aOapnMiZOTkDhARIyJ0=;
+ b=fZgYAp2wYw6OtmD65mmQT1xwV7ZI6BMeJm9f7oPikWx6IyRSb5OdLRFUMts2wVchSk
+ L+Wc24131DY6zMt7vRaZiLZQV6OSdjhIUxsJDv8KT0ehHyQORicD8UPoWijYeC1d6/ag
+ Yeeaj3F2RJJn2KPoj9lpse0b0+1F5btORDhSlr+w+uDiRHlBcLKYZ1sJmTQj0pZtAify
+ I0hdeIyVL9LiJTraSyV/TsLqRSni5RYocCrkTTKwbNpnmjzwbCTFUxHGlBiV1SRrLVqo
+ AjYZmUBuEwwIRARs3OrFGR5aPacqR8XYKR46Vi59wG2ZO9w+jGY+sNsS1CtHaJ9UNr67
+ 0A4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689767035; x=1692359035;
+ d=1e100.net; s=20221208; t=1689767443; x=1692359443;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RVB0pvAN5vdtoP2giPv9r7me79eOAmONKWvmiY0mMJM=;
- b=hnZj4HEhLZnmjzNaT71CxXVxV2WUcZCnZLg3zlLK4Dm3yci6DZtOuTokeQLGHSEaN2
- 5x/1hn6W/guWXjKU833PRNUDoGcTJXmohEXkhhza1QLG26vDgTfidDcz4+/VngAOPjrd
- Ob1lmPZJ7qatVp9hs54rgUbUrBUIEz55pxRcva2EB4CislGInKhdCNkwq0kiwA7AY/1v
- iQupKXMK4/FKaFnd4AMObnOsC7T4Gy4skFqIBtSEzsSorOh8jUksxfTCIGjDeF+rJXTD
- GZ5YhnFjwmlCAxpmS49ChZ1A6xMY0DvoA8G1+aMrM2egAl8f8FfrI2KFeVXn+56YFsR2
- fVWA==
-X-Gm-Message-State: ABy/qLZzRIsIDRRdm4/H7cM8xZfx3kyideywa5e/gvV6R4Yh54IcDQDB
- CEZdo7s+w5V7SA/HJOVgoEUo+w==
-X-Google-Smtp-Source: APBJJlHh7/UNryd8AXcREbSgGdhwbqFXLOjZhkR8Q5/vx/564id7S+AqHZ37dSHbXLdDMA+6i9bHAg==
-X-Received: by 2002:adf:dd0e:0:b0:313:ee8b:8489 with SMTP id
- a14-20020adfdd0e000000b00313ee8b8489mr1701993wrm.10.1689767035427; 
- Wed, 19 Jul 2023 04:43:55 -0700 (PDT)
+ bh=pkDWq1rvTFtoMklrEy7kTR/2aOapnMiZOTkDhARIyJ0=;
+ b=JfgyMTV7Nt+mqwCskRFNT//pwSGFaPbLh2YzXmI9ESX4CCVXL39CfgWznPPuYBRQyV
+ Uvv7zDlsr0Id1KDZSo5tk4o7/GUcaKARGQ17NrzT0rYXutChefHcyRk9JGpEBd2MaPp+
+ LQKACr1MXS+9YQUSOgPBAaazLlXhDLzH+MFon00P4uuH5Zg+ykTQ0aQLtKnx9wYov9Xw
+ tNrW1FbmUMNV+m1We+JmoIx94DM7LPxbYYNdKo0K6PjpDSnznDC7OprNdu7PAvpJVEyn
+ kPWf3meQwyb+fxNJdig4okea9AEpSje4CQw1T6yl4SuQdi19aC2TAjGhwvi+GL/f2HYd
+ L0SA==
+X-Gm-Message-State: ABy/qLZGDwQYGuPWM7huntqmQDwbYs9GXymIG9/DFnbK/AmHRr+SnFYK
+ NTOztKRuXcpyY2zbp4lAa2EQYw==
+X-Google-Smtp-Source: APBJJlEr8QNsKnJfbEfANdSuhrWtKE77frgdIzLv1SzYUszhzOu6q3mncwmFNdPkdLPex/wDJ8wlMQ==
+X-Received: by 2002:a5d:6d4b:0:b0:313:e9dc:44d5 with SMTP id
+ k11-20020a5d6d4b000000b00313e9dc44d5mr14035270wri.61.1689767443573; 
+ Wed, 19 Jul 2023 04:50:43 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.201.220])
  by smtp.gmail.com with ESMTPSA id
- e13-20020a056000120d00b00316eb7770b8sm5170348wrx.5.2023.07.19.04.43.53
+ c25-20020a05600c0ad900b003f9bd9e3226sm1556931wmr.7.2023.07.19.04.50.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Jul 2023 04:43:55 -0700 (PDT)
-Message-ID: <7823960a-b1bf-071d-1452-586f6f0e9c84@linaro.org>
-Date: Wed, 19 Jul 2023 13:43:51 +0200
+ Wed, 19 Jul 2023 04:50:43 -0700 (PDT)
+Message-ID: <7f0e59a5-aafe-55b8-d78d-a2e9bf7a68e9@linaro.org>
+Date: Wed, 19 Jul 2023 13:50:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH v3 2/8] hw/ide/core: set ERR_STAT in unsupported command
- completion
+Subject: Re: [PATCH v3 5/8] hw/ide/ahci: PxSACT and PxCI is cleared when
+ PxCMD.ST is cleared
 Content-Language: en-US
 To: Niklas Cassel <nks@flawful.org>, John Snow <jsnow@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
  Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <niklas.cassel@wdc.com>
 References: <20230609140844.202795-1-nks@flawful.org>
- <20230609140844.202795-3-nks@flawful.org>
+ <20230609140844.202795-6-nks@flawful.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230609140844.202795-3-nks@flawful.org>
+In-Reply-To: <20230609140844.202795-6-nks@flawful.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,35 +98,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 9/6/23 16:08, Niklas Cassel wrote:
 > From: Niklas Cassel <niklas.cassel@wdc.com>
 > 
-> Currently, the first time sending an unsupported command
-> (e.g. READ LOG DMA EXT) will not have ERR_STAT set in the completion.
-> Sending the unsupported command again, will correctly have ERR_STAT set.
+> According to AHCI 1.3.1 definition of PxSACT:
+> This field is cleared when PxCMD.ST is written from a '1' to a '0' by
+> software. This field is not cleared by a COMRESET or a software reset.
+
+Interesting, since its origin in commit f6ad2e32f8 ("ahci: add ahci
+emulation") PxSACT is reset unconditionally in ahci_reset_port().
+
+As for this patch:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> According to AHCI 1.3.1 definition of PxCI:
+> This field is also cleared when PxCMD.ST is written from a '1' to a '0'
+> by software.
 > 
-> When ide_cmd_permitted() returns false, it calls ide_abort_command().
-> ide_abort_command() first calls ide_transfer_stop(), which will call
-> ide_transfer_halt() and ide_cmd_done(), after that ide_abort_command()
-> sets ERR_STAT in status.
+> Clearing PxCMD.ST is part of the error recovery procedure, see
+> AHCI 1.3.1, section "6.2 Error Recovery".
 > 
-> ide_cmd_done() for AHCI will call ahci_write_fis_d2h() which writes the
-> current status in the FIS, and raises an IRQ. (The status here will not
-> have ERR_STAT set!).
-> 
-> Thus, we cannot call ide_transfer_stop() before setting ERR_STAT, as
-> ide_transfer_stop() will result in the FIS being written and an IRQ
-> being raised.
-> 
-> The reason why it works the second time, is that ERR_STAT will still
-> be set from the previous command, so when writing the FIS, the
-> completion will correctly have ERR_STAT set.
-> 
-> Set ERR_STAT before writing the FIS (calling cmd_done), so that we will
-> raise an error IRQ correctly when receiving an unsupported command.
+> If we don't clear PxCI on error recovery, the previous command will
+> incorrectly still be marked as pending after error recovery.
 > 
 > Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
 > ---
->   hw/ide/core.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>   hw/ide/ahci.c | 5 +++++
+>   1 file changed, 5 insertions(+)
 
 
