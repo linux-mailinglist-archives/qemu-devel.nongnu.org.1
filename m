@@ -2,55 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7272759F62
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 22:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B1775A002
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 22:39:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMDY4-0001bA-9D; Wed, 19 Jul 2023 16:13:24 -0400
+	id 1qMDv3-0005t9-2L; Wed, 19 Jul 2023 16:37:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qMDXz-0001Xp-Cm; Wed, 19 Jul 2023 16:13:19 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMDv1-0005sr-7J
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:37:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qMDXw-0001ct-N4; Wed, 19 Jul 2023 16:13:18 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5B61015166;
- Wed, 19 Jul 2023 23:13:13 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 733E7181F7;
- Wed, 19 Jul 2023 23:13:11 +0300 (MSK)
-Message-ID: <437f0e05-f052-cb78-418f-054378c6ae68@tls.msk.ru>
-Date: Wed, 19 Jul 2023 23:13:11 +0300
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMDuz-0001mC-H4
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 16:37:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689799024;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=4KoObbCppHnLld26AG0lzcvkStP8T6j5j8Zb9xKSOSk=;
+ b=HV5q0+Zr5Explk89sN059vR97D0Bxi7rAIWCXn3xIptLuU90OzbjYIlmt43waR7Q6jwUwF
+ DL3IFqJAKAv8HKFubXANNMmKbehsGoHDgp4r3Rh70gOZy4gtSG1SZXRLd8uKAVxK7hGlDq
+ h+89W7J4qHLZNBcErI/Dv3naeq24NTY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-255-3CtEAjWsPqy8ogJxJREFXQ-1; Wed, 19 Jul 2023 16:37:02 -0400
+X-MC-Unique: 3CtEAjWsPqy8ogJxJREFXQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2FB6380123E
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 20:37:02 +0000 (UTC)
+Received: from green.redhat.com (unknown [10.2.16.192])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F07684CD0F5
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 20:37:01 +0000 (UTC)
+From: Eric Blake <eblake@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/14] NBD patches for 2023-07-19
+Date: Wed, 19 Jul 2023 15:27:37 -0500
+Message-ID: <20230719202736.2675295-16-eblake@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PULL 1/1] hw/nvme: fix endianness issue for shadow doorbells
-Content-Language: en-US
-To: Klaus Jensen <its@irrelevant.dk>, Peter Maydell
- <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Keith Busch <kbusch@kernel.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org, Fam Zheng <fam@euphon.net>,
- Klaus Jensen <k.jensen@samsung.com>, qemu-stable@nongnu.org,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@redhat.com>
-References: <20230719073605.98222-3-its@irrelevant.dk>
- <20230719073605.98222-4-its@irrelevant.dk>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230719073605.98222-4-its@irrelevant.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -69
-X-Spam_score: -7.0
-X-Spam_bar: -------
-X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,95 +73,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-19.07.2023 10:36, Klaus Jensen wrote:
-pu(req->cmd.dptr.prp2);
-> +    uint32_t v;
+The following changes since commit 2c27fdc7a626408ee2cf30d791aa0b63027c7404:
 
->           if (sq) {
-> +            v = cpu_to_le32(sq->tail);
+  Update version for v8.1.0-rc0 release (2023-07-19 20:31:43 +0100)
 
-> -            pci_dma_write(pci, sq->db_addr, &sq->tail, sizeof(sq->tail));
-> +            pci_dma_write(pci, sq->db_addr, &v, sizeof(sq->tail));
+are available in the Git repository at:
 
-This and similar cases hurts my eyes.
+  https://repo.or.cz/qemu/ericb.git tags/pull-nbd-2023-07-19
 
-Why we pass address of v here, but use sizeof(sq->tail) ?
+for you to fetch changes up to bfe04d0a7d5e8a4f4c9014ee7622af2056685974:
 
-Yes, I know both in theory should be of the same size, but heck,
-this is puzzling at best, and confusing in a regular case.
+  nbd: Use enum for various negotiation modes (2023-07-19 15:26:13 -0500)
 
-Dunno how it slipped in the review, it instantly catched my eye
-in a row of applied patches..
+----------------------------------------------------------------
+NBD patches through 2023-07-19
 
-Also, why v is computed a few lines before it is used, with
-some expressions between the assignment and usage?
+- Denis V. Lunev: fix hang with 'ssh ... "qemu-nbd -c"'
+- Eric Blake: preliminary work towards NBD 64-bit extensions
 
-How about the following patch:
+----------------------------------------------------------------
+Denis V. Lunev (6):
+      qemu-nbd: pass structure into nbd_client_thread instead of plain char*
+      qemu-nbd: fix regression with qemu-nbd --fork run over ssh
+      qemu-nbd: properly report error if qemu_daemon() is failed
+      qemu-nbd: properly report error on error in dup2() after qemu_daemon()
+      qemu-nbd: handle dup2() error when qemu-nbd finished setup process
+      qemu-nbd: make verbose bool and local variable in main()
 
-From: Michael Tokarev <mjt@tls.msk.ru>
-Date: Wed, 19 Jul 2023 23:10:53 +0300
-Subject: [PATCH trivial] hw/nvme: fix sizeof() misuse and move endianness conversions
-  closer to users
+Eric Blake (8):
+      nbd/client: Use smarter assert
+      nbd: Consistent typedef usage in header
+      nbd/server: Prepare for alternate-size headers
+      nbd/server: Refactor to pass full request around
+      nbd: s/handle/cookie/ to match NBD spec
+      nbd/client: Simplify cookie vs. index computation
+      nbd/client: Add safety check on chunk payload length
+      nbd: Use enum for various negotiation modes
 
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Fixes: ea3c76f1494d0
----
-  hw/nvme/ctrl.c | 17 +++++++----------
-  1 file changed, 7 insertions(+), 10 deletions(-)
+ include/block/nbd.h |  61 +++++++-------
+ block/nbd.c         |  96 +++++++++++-----------
+ nbd/client.c        |  79 ++++++++++--------
+ nbd/common.c        |  17 ++++
+ nbd/server.c        | 224 +++++++++++++++++++++++++++++-----------------------
+ qemu-nbd.c          |  68 +++++++++++-----
+ nbd/trace-events    |  22 +++---
+ 7 files changed, 332 insertions(+), 235 deletions(-)
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index dadc2dc7da..e33b28cf66 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -6820,6 +6820,4 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
-
-          if (sq) {
--            v = cpu_to_le32(sq->tail);
--
-              /*
-               * CAP.DSTRD is 0, so offset of ith sq db_addr is (i<<3)
-@@ -6829,5 +6827,6 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
-              sq->db_addr = dbs_addr + (i << 3);
-              sq->ei_addr = eis_addr + (i << 3);
--            pci_dma_write(pci, sq->db_addr, &v, sizeof(sq->tail));
-+            v = cpu_to_le32(sq->tail);
-+            pci_dma_write(pci, sq->db_addr, &v, sizeof(v));
-
-              if (n->params.ioeventfd && sq->sqid != 0) {
-@@ -6839,10 +6838,9 @@ static uint16_t nvme_dbbuf_config(NvmeCtrl *n, const NvmeRequest *req)
-
-          if (cq) {
--            v = cpu_to_le32(cq->head);
--
-              /* CAP.DSTRD is 0, so offset of ith cq db_addr is (i<<3)+(1<<2) */
-              cq->db_addr = dbs_addr + (i << 3) + (1 << 2);
-              cq->ei_addr = eis_addr + (i << 3) + (1 << 2);
--            pci_dma_write(pci, cq->db_addr, &v, sizeof(cq->head));
-+            v = cpu_to_le32(cq->head);
-+            pci_dma_write(pci, cq->db_addr, &v, sizeof(v));
-
-              if (n->params.ioeventfd && cq->cqid != 0) {
-@@ -7661,5 +7659,5 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
-          if (!qid && n->dbbuf_enabled) {
-              v = cpu_to_le32(cq->head);
--            pci_dma_write(pci, cq->db_addr, &v, sizeof(cq->head));
-+            pci_dma_write(pci, cq->db_addr, &v, sizeof(v));
-          }
-          if (start_sqs) {
-@@ -7721,6 +7719,4 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
-          sq->tail = new_tail;
-          if (!qid && n->dbbuf_enabled) {
--            v = cpu_to_le32(sq->tail);
--
-              /*
-               * The spec states "the host shall also update the controller's
-@@ -7736,5 +7732,6 @@ static void nvme_process_db(NvmeCtrl *n, hwaddr addr, int val)
-               * so we can't trust reading it for an appropriate sq tail.
-               */
--            pci_dma_write(pci, sq->db_addr, &v, sizeof(sq->tail));
-+            v = cpu_to_le32(sq->tail);
-+            pci_dma_write(pci, sq->db_addr, &v, sizeof(v));
-          }
-
+base-commit: 2c27fdc7a626408ee2cf30d791aa0b63027c7404
+-- 
+2.41.0
 
 
