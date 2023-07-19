@@ -2,60 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00118759543
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 14:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D7977595AB
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 14:42:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM6Rp-0000wP-2B; Wed, 19 Jul 2023 08:38:29 -0400
+	id 1qM6UR-0002JM-BI; Wed, 19 Jul 2023 08:41:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <qemu@bonslack.org>) id 1qM6Rl-0000wD-KF
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:38:25 -0400
-Received: from [2a00:dcc0:1ea5:31f2::1] (helo=bonnix2.bonnix.it)
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <qemu@bonslack.org>) id 1qM6Rj-00016g-Ck
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:38:25 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 bonnix2.bonnix.it 7D4AAAE230
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bonslack.org;
- s=20220805; t=1689770296;
- bh=Tc9O+HlzBIFoqgdf5Yi5RQez8hsjfignEIpISwOM0W4=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To;
- b=O+wwh7qSChSx/jtf3NXlKIwytOJ6KyLXCv4iNlbXZZzvmjKjrMQIdbNmLrMe7s6oK
- z5ZToQ+KYA/Kj4xoZPoDabfftH94plpb9bPGShxZ5M1H6liunm3IbCzmi6hbbXpfA5
- G8TmAmfv8TS44W01PPYb6q7GyZAywmN/3qEUVIaE=
-Received: from [10.0.0.152] (unknown [82.84.102.14])
- by bonnix2.bonnix.it (Postfix) with ESMTPSA id 7D4AAAE230;
- Wed, 19 Jul 2023 14:38:16 +0200 (CEST)
-Message-ID: <38f8621c-98e7-53c4-ac1b-7ff4c569ed18@bonslack.org>
-Date: Wed, 19 Jul 2023 14:38:16 +0200
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qM6UO-0002Ir-OW
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:41:08 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qM6UK-0002dW-1j
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:41:08 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-51e526e0fe4so10288036a12.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 05:41:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689770462; x=1690375262;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=kgINxQ44Lkn5q5s4dVRIDFjUaWTWUQSoNszyGKlnNOM=;
+ b=e9c76F6xNkBjwE4+ahllYh1/QBIvWAbjBwE/qeHmWl50hW85qd5ltn2GluSJSJWrJ5
+ R0Xdip6KxXWsz9s/k5QJEdS8vEquxyxyGL8uXm1vA5Jrt4jH//3ZCdyCYblTKa/4cuGN
+ ALWjQqE41HRnsoD19ABPXdPY482AVc+ir243jRfSnCih16+tHJCEQYpupA2r1/f8Y5uP
+ AqMGui19m05cVzNdJ6/gFPdbgCyhaazPgeA0d2z0p6vKB8ok/GASB8U+cROJfmhbPNFh
+ OUfcSvHl4MeXdUPO2nmxyq3XJx0UcZDQdzSHUoSjzuNgiWOQGq+pQueAgnZRf/YiqSaw
+ hwUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689770462; x=1690375262;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kgINxQ44Lkn5q5s4dVRIDFjUaWTWUQSoNszyGKlnNOM=;
+ b=UMdkO6P9GzYahcPe9ZZ2HKTU8/IlJOnTjW97q/dYrEppYFJBe2tRu/zdttH8ueJanU
+ 8UTD8BcHN5gRWnREXVjRWgIS0r9ujeQ0XdsSeJCdD80Gs9giAWtyF8wf2YcB/VWDTuk9
+ +bJccmgN+Sk2mUzZHOTa6HT9fBINYQFOJ4qfnJKv7aS4yIPbarFriQiEUIzqQoR0xYuS
+ xCcYn3ktPhh/9IPhWfas/WTPcl3F7akXRLI3P429uIW9ySIcCvssyhxQjVG1CPMer4a2
+ Kyue0BRpC0C4xY+u4GbMSEPbMr65SBiKl6qzn2gPV/zDdM/gLqwVKxu29dX58VUPuPGe
+ oC/w==
+X-Gm-Message-State: ABy/qLZVcfJIHJHTA4zHvpp7exjE1kd3HDuE2t4qHrriAuWeLGyOGzIT
+ DavNpsrvNMqrzo3K4fcVKMGI0u8qA58FJhRxhlJUbA==
+X-Google-Smtp-Source: APBJJlFT3//33FeSjHI0JQ0yyQMIT2oiwnZSLkZNhwzEzfWG94hjVCX41mWapyQCFFTjI2h1pf8HMvoTtDJTVVJJ+a0=
+X-Received: by 2002:aa7:d791:0:b0:51e:24fd:d34d with SMTP id
+ s17-20020aa7d791000000b0051e24fdd34dmr2425311edq.20.1689770461690; Wed, 19
+ Jul 2023 05:41:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] Wrong unpacked structure for epoll_event on qemu-or1k
- (openrisc user-space)
-Content-Language: it, en-US
-To: Laurent Vivier <laurent@vivier.eu>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <750c569e-a922-d3bb-1f97-1698960d5b05@bonslack.org>
- <CAFEAcA9vkyO_kivpSGV7jPW+DCbSD1BNA+SsLixViamXRi61CQ@mail.gmail.com>
- <fa561a63-991a-329e-d9f2-5b334d94516b@bonslack.org>
- <29cd5218-a9be-1947-e075-b892023213e8@vivier.eu>
-From: Luca Bonissi <qemu@bonslack.org>
-In-Reply-To: <29cd5218-a9be-1947-e075-b892023213e8@vivier.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 2a00:dcc0:1ea5:31f2::1
- (failed)
-Received-SPF: pass client-ip=2a00:dcc0:1ea5:31f2::1;
- envelope-from=qemu@bonslack.org; helo=bonnix2.bonnix.it
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RDNS_NONE=0.793, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20230718093040.172145-1-thuth@redhat.com>
+In-Reply-To: <20230718093040.172145-1-thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 19 Jul 2023 13:40:50 +0100
+Message-ID: <CAFEAcA_AkKFnTCHEe+3Ah6sLrOdcuLOS+WtYV8RkQhA6z=T-yg@mail.gmail.com>
+Subject: Re: [PULL 0/8] s390x, qtest and misc patches for QEMU 8.1 rc1
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,62 +84,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/07/23 10:49, Laurent Vivier wrote:
-> 
-> According to linux/glibc sourced, epoll is only packed for x86_64.
-
-And, in recent glibc, also for i386, even it seems not necessary: even 
-if the __alignof__(long long) is 8, structures like epoll_event are only 
-12 bytes, maybe "packed" for historical reasons. Ancient i386 gcc[s] 
-(<3.0.0) have 4 bytes for __alignof__(long long).
-
-> Perhaps the default alignment of long is not correctly defined in qemu 
-> for openrisc?
-
-__alignof__(long long):
-- 8 bytes: all 64 bit targets + arm, hppa, mips, ppc, sparc, xtensa, x86
-- 4 bytes: microblaze, nios2, or1k, sh4
-- 2 bytes: m68k
-- 1 byte : cris
-
-offsetof(struct epoll_event,data):
-- 8: all 64 bit targets + arm, hppa, mips, ppc, sparc, xtensa
-- 4: cris, m68k, microblaze, nios2, or1k, sh4, x86
-
-So, epoll_event is "naturally" packed on the following targets (checked 
-in linux-user container and/or with cross-compiler):
-- cris, m68k, microblaze, nios2, or1k, sh4, x86 (32bit)
-
-> See include/exec/user/abitypes.h to update the value.
-
-OK, abitypes.h should be updated with the following patch (discard the 
-previous patch on syscall_defs.h):
-
-Signed-off-by: Luca Bonissi <qemu@bonslack.org>
----
-
-diff -up a/include/exec/user/abitypes.h b/include/exec/user/abitypes.h
---- a/include/exec/user/abitypes.h	2023-03-27 15:41:42.511916232 +0200
-+++ b/include/exec/user/abitypes.h	2023-07-19 12:09:03.001687788 +0200
-@@ -15,7 +15,15 @@
-  #define ABI_LLONG_ALIGNMENT 2
-  #endif
-
-+#ifdef TARGET_CRIS
-+#define ABI_SHORT_ALIGNMENT 1
-+#define ABI_INT_ALIGNMENT 1
-+#define ABI_LONG_ALIGNMENT 1
-+#define ABI_LLONG_ALIGNMENT 1
-+#endif
-+
--#if (defined(TARGET_I386) && !defined(TARGET_X86_64)) || 
-defined(TARGET_SH4)
-+#if (defined(TARGET_I386) && !defined(TARGET_X86_64)) || 
-defined(TARGET_SH4) || \
-+    defined(TARGET_OPENRISC) || defined(TARGET_NIOS2) || 
-defined(TARGET_MICROBLAZE)
-  #define ABI_LLONG_ALIGNMENT 4
-  #endif
+On Tue, 18 Jul 2023 at 10:31, Thomas Huth <thuth@redhat.com> wrote:
+>
+> The following changes since commit 361d5397355276e3007825cc17217c1e4d4320f7:
+>
+>   Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-07-17 15:49:27 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/thuth/qemu.git tags/pull-request-2023-07-18
+>
+> for you to fetch changes up to a5754847e0fc2bc08a414dd381803009e8bca390:
+>
+>   tests/avocado: Disable the test_sbsaref_edk2_firmware by default (2023-07-18 11:22:51 +0200)
+>
+> ----------------------------------------------------------------
+> * Fix s390x KVM guests when compiling with --without-default-devices
+> * Fix /proc/cpuinfo features list in s390x linux-user emulation
+> * Generate FreeBSD VM package list via lcitool
+> * Disable the flaky test_sbsaref_edk2_firmware avocado test by default
+>
 
 
+
+Applied to target-arm.next, thanks.
+
+-- PMM
 
