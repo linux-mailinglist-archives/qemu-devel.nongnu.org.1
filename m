@@ -2,84 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1F7758FBD
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 09:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABC7759023
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 10:21:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM21E-0005aK-G9; Wed, 19 Jul 2023 03:54:44 -0400
+	id 1qM2Py-0007GK-AN; Wed, 19 Jul 2023 04:20:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qM21A-0005VV-4U
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 03:54:42 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qM218-0003Qc-3X
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 03:54:39 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-55b0e7efb1cso3806342a12.1
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 00:54:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689753276; x=1692345276;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9hVkRZxgxwyHhUOFXwXUro/N/dlyZ2PieUblJXKdidQ=;
- b=i1afV9QtspKjBN0XBDmMR2ylTNo5KzTBnqB7wlR7T8F4vPZoiY12F4NyqiFuZc8l8L
- l47O5uZfmvytnFqjwAVQBDTIkLK1YzbU6TaRymFbCGBACeGcfSYKrtUnmls0YWkNR1iQ
- pwp9fqGDj5CNydXUPTtRPVtogP4/v7IsPeC4fYBWJz3fYJjqVhHtv0wul053GOODhPF1
- qyNsM8ImpuPta7yEtI+TyfQ6M28JQilCg0GFr/MkoHgwrxItdLEc/9WHWYy2EzBppDS5
- 6UMIwx7hDzE4UDRijagJNfMIctnEJFC7oi5t5YGTixmxoeUyxXpmK09IGSnyrazkrtnx
- PRgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689753276; x=1692345276;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9hVkRZxgxwyHhUOFXwXUro/N/dlyZ2PieUblJXKdidQ=;
- b=bcZsW4Rqo0fGTAq3KDQDjXkYJSqCzwn1rn1zLKxtl+u++MANdEcP7NNLeTXphfjTrl
- RPvfbFJ8pax5MvSnCs6iaBloGo7i7AetXO11Zu40SC+pM4Hpqqaa+5d34xw5z/pziaPl
- lO4tWvB3Hii+hOOK0S1Y5LejABdwe5/XGakXeXNJMtffe+y+ZiU628nLY7b0bKcXWDSN
- 3Wxjj08zU0zgymAJaAskavqsYgbsOCr6fTezkfuisP0cz+a/KnR0Cvjyz6VLPXFbT8qE
- bamCUV/pAipEJVKoWWFlq8ESKUvEbB6KbMmJQnailvoh5DZ6HrsidjZ5SEqLZglkgdNj
- p5WA==
-X-Gm-Message-State: ABy/qLY+lE+7IDXzdix7Fqe2hDQzFXPlfDM46V7qu8zwR+OzmfIHq2+v
- StNEd4Fo0HL5ZWxZ1Jd2rBc=
-X-Google-Smtp-Source: APBJJlEdvkFVmDs7pgwnbs4ZmWJw4NMHDL2M0vvwwuKUjuB4sVUKXnTbyKcOcsoZyG+ObPzeR4WQBw==
-X-Received: by 2002:a17:90a:990e:b0:267:6586:f39a with SMTP id
- b14-20020a17090a990e00b002676586f39amr15089251pjp.47.1689753276475; 
- Wed, 19 Jul 2023 00:54:36 -0700 (PDT)
-Received: from localhost ([183.242.254.166]) by smtp.gmail.com with ESMTPSA id
- y10-20020a17090a1f4a00b0026094c23d0asm736822pjy.17.2023.07.19.00.54.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jul 2023 00:54:36 -0700 (PDT)
-From: Hawkins Jiawei <yin31149@gmail.com>
-To: jasowang@redhat.com,
-	mst@redhat.com,
-	eperezma@redhat.com
-Cc: qemu-devel@nongnu.org,
-	yin31149@gmail.com,
-	18801353760@163.com
-Subject: [PATCH v3 8/8] vdpa: Send cvq state load commands in parallel
-Date: Wed, 19 Jul 2023 15:53:53 +0800
-Message-Id: <3a002790e6c880af928c6470ecbf03e7c65a68bb.1689748694.git.yin31149@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1689748694.git.yin31149@gmail.com>
-References: <cover.1689748694.git.yin31149@gmail.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qM2Ps-0007G6-JG
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:20:13 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qM2Po-0000tw-0K
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 04:20:12 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4R5TFR5VQPz6H6lp;
+ Wed, 19 Jul 2023 16:17:15 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 19 Jul
+ 2023 09:19:48 +0100
+Date: Wed, 19 Jul 2023 09:19:47 +0100
+To: Gregory Price <gregory.price@memverge.com>
+CC: <linux-cxl@vger.kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ <qemu-devel@nongnu.org>, <linuxarm@huawei.com>, Alison Schofield
+ <alison.schofield@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dave Jiang
+ <dave.jiang@intel.com>, Davidlohr Bueso <dave@stgolabs.net>, "Viacheslav
+ Dubeyko" <slava@dubeyko.com>, Shesha Bhushan Sreenivasamurthy
+ <sheshas@marvell.com>, Fan Ni <fan.ni@samsung.com>, Michael Tsirkin
+ <mst@redhat.com>, Jonathan Zhang <jonzhang@meta.com>, Klaus Jensen
+ <k.jensen@samsung.com>
+Subject: Re: [RFC PATCH 10/17] misc/i2c_mctp_cxl: Initial device emulation
+Message-ID: <20230719091947.000043ac@Huawei.com>
+In-Reply-To: <ZLcEkSLAj5yXVOVc@memverge.com>
+References: <20230717171646.8972-1-Jonathan.Cameron@huawei.com>
+ <20230717171646.8972-11-Jonathan.Cameron@huawei.com>
+ <ZLcEkSLAj5yXVOVc@memverge.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=yin31149@gmail.com; helo=mail-pg1-x52b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,284 +70,88 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch enables sending CVQ state load commands
-in parallel at device startup by following steps:
+On Tue, 18 Jul 2023 17:30:57 -0400
+Gregory Price <gregory.price@memverge.com> wrote:
 
-  * Refactor vhost_vdpa_net_load_cmd() to iterate through
-the control commands shadow buffers. This allows different
-CVQ state load commands to use their own unique buffers.
+> On Mon, Jul 17, 2023 at 06:16:39PM +0100, Jonathan Cameron wrote:
+> > @@ -397,8 +401,9 @@ struct CXLType3Dev {
+> >      AddressSpace hostpmem_as;
+> >      CXLComponentState cxl_cstate;
+> >      CXLDeviceState cxl_dstate;
+> > -    CXLCCI cci;
+> > -    
+> > +    CXLCCI cci; /* Primary PCI mailbox CCI */
+> > +    CXLCCI oob_mctp_cci; /* Initialized only if targetted */
+> > +  
+> 
+> I've been humming and hawing over this on the MHD stuff because I wanted
+> to figure out how to "add a CCI command" to a type-3 device without
+> either having a billion definitions for CCI command sets - or doing
+> something like this.
+> 
+> I don't hate this design pattern, I just want to ask whether your
+> intent is to end up with CXLType3Dev hosting many CXLCCI's based on what
+> wrapper types you have. 
+> 
+> Example: a type-3 device with mctp pass through and the MHD command set
+> 
+> CXLType3Dev {
+>     ...
+>     CXLCCI cci;
+>     CXLCCI oob_mctp_cci;
+>     CXLCCI mhd_cci;
+>     ...
+> }
 
-  * Delay the polling and checking of buffers until either
-the SVQ is full or control commands shadow buffers are full.
+Yes - that's what I was thinking.  In some cases a CCI may be accessed by
+tunneling on a different CCI on the same device as well as the option
+of tunneling to different devices.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1578
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
----
- net/vhost-vdpa.c | 157 +++++++++++++++++++++++++++++------------------
- 1 file changed, 96 insertions(+), 61 deletions(-)
+So far the set that we'll end up with isn't too large. And if some aren't
+used for a given instantiation that's fine if it keeps the code simple.
+We may end up with other MCTP buses and to keep things consistent each one
+will need it's own target CXLCCI. If we need to rethink and make it dynamic
+to some degree we can look at it later.
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 795c9c1fd2..1ebb58f7f6 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -633,6 +633,26 @@ static uint16_t vhost_vdpa_net_svq_available_slots(VhostVDPAState *s)
-     return vhost_svq_available_slots(svq);
- }
- 
-+/*
-+ * Poll SVQ for multiple pending control commands and check the device's ack.
-+ *
-+ * Caller should hold the BQL when invoking this function.
-+ */
-+static ssize_t vhost_vdpa_net_svq_flush(VhostVDPAState *s,
-+                                        size_t cmds_in_flight)
-+{
-+    vhost_vdpa_net_svq_poll(s, cmds_in_flight);
-+
-+    /* Device should and must use only one byte ack each control command */
-+    assert(cmds_in_flight < vhost_vdpa_net_cvq_cmd_page_len());
-+    for (int i = 0; i < cmds_in_flight; ++i) {
-+        if (s->status[i] != VIRTIO_NET_OK) {
-+            return -EIO;
-+        }
-+    }
-+    return 0;
-+}
-+
- static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, void **out_cursor,
-                                        void **in_cursor, uint8_t class,
-                                        uint8_t cmd, const struct iovec *data_sg,
-@@ -642,19 +662,41 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, void **out_cursor,
-         .class = class,
-         .cmd = cmd,
-     };
--    size_t data_size = iov_size(data_sg, data_num);
-+    size_t data_size = iov_size(data_sg, data_num),
-+           left_bytes = vhost_vdpa_net_cvq_cmd_page_len() -
-+                        (*out_cursor - s->cvq_cmd_out_buffer);
-     /* Buffers for the device */
-     struct iovec out = {
--        .iov_base = *out_cursor,
-         .iov_len = sizeof(ctrl) + data_size,
-     };
-     struct iovec in = {
--        .iov_base = *in_cursor,
-         .iov_len = sizeof(*s->status),
-     };
-     ssize_t r;
- 
--    assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl));
-+    if (sizeof(ctrl) > left_bytes || data_size > left_bytes - sizeof(ctrl) ||
-+        vhost_vdpa_net_svq_available_slots(s) < 2) {
-+        /*
-+         * It is time to flush all pending control commands if SVQ is full
-+         * or control commands shadow buffers are full.
-+         *
-+         * We can poll here since we've had BQL from the time
-+         * we sent the descriptor.
-+         */
-+        r = vhost_vdpa_net_svq_flush(s, *in_cursor - (void *)s->status);
-+        if (unlikely(r < 0)) {
-+            return r;
-+        }
-+
-+        *out_cursor = s->cvq_cmd_out_buffer;
-+        *in_cursor = s->status;
-+        left_bytes = vhost_vdpa_net_cvq_cmd_page_len();
-+    }
-+
-+    out.iov_base = *out_cursor;
-+    in.iov_base = *in_cursor;
-+
-+    assert(data_size <= left_bytes - sizeof(ctrl));
-     /* Each CVQ command has one out descriptor and one in descriptor */
-     assert(vhost_vdpa_net_svq_available_slots(s) >= 2);
- 
-@@ -670,11 +712,11 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, void **out_cursor,
-         return r;
-     }
- 
--    /*
--     * We can poll here since we've had BQL from the time
--     * we sent the descriptor.
--     */
--    return vhost_vdpa_net_svq_poll(s, 1);
-+    /* iterate the cursors */
-+    *out_cursor += out.iov_len;
-+    *in_cursor += in.iov_len;
-+
-+    return 0;
- }
- 
- static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-@@ -685,15 +727,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-             .iov_base = (void *)n->mac,
-             .iov_len = sizeof(n->mac),
-         };
--        ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                                  VIRTIO_NET_CTRL_MAC,
--                                                  VIRTIO_NET_CTRL_MAC_ADDR_SET,
--                                                  &data, 1);
--        if (unlikely(dev_written < 0)) {
--            return dev_written;
--        }
--        if (*s->status != VIRTIO_NET_OK) {
--            return -EIO;
-+        ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                               VIRTIO_NET_CTRL_MAC,
-+                                               VIRTIO_NET_CTRL_MAC_ADDR_SET,
-+                                               &data, 1);
-+        if (unlikely(r < 0)) {
-+            return r;
-         }
-     }
- 
-@@ -738,15 +777,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n,
-             .iov_len = mul_macs_size,
-         },
-     };
--    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+    ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-                                 VIRTIO_NET_CTRL_MAC,
-                                 VIRTIO_NET_CTRL_MAC_TABLE_SET,
-                                 data, ARRAY_SIZE(data));
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -757,7 +793,7 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-                                   void **out_cursor, void **in_cursor)
- {
-     struct virtio_net_ctrl_mq mq;
--    ssize_t dev_written;
-+    ssize_t r;
- 
-     if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_MQ)) {
-         return 0;
-@@ -768,15 +804,12 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
-         .iov_base = &mq,
-         .iov_len = sizeof(mq),
-     };
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_MQ,
--                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
--                                          &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                   VIRTIO_NET_CTRL_MQ,
-+                                   VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
-+                                   &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -787,7 +820,7 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-                                         void **out_cursor, void **in_cursor)
- {
-     uint64_t offloads;
--    ssize_t dev_written;
-+    ssize_t r;
- 
-     if (!virtio_vdev_has_feature(&n->parent_obj,
-                                  VIRTIO_NET_F_CTRL_GUEST_OFFLOADS)) {
-@@ -815,15 +848,12 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAState *s,
-         .iov_base = &offloads,
-         .iov_len = sizeof(offloads),
-     };
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS,
--                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
--                                          &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                   VIRTIO_NET_CTRL_GUEST_OFFLOADS,
-+                                   VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
-+                                   &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -838,15 +868,12 @@ static int vhost_vdpa_net_load_rx_mode(VhostVDPAState *s,
-         .iov_base = &on,
-         .iov_len = sizeof(on),
-     };
--    ssize_t dev_written;
-+    ssize_t r;
- 
--    dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                          VIRTIO_NET_CTRL_RX, cmd, &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (*s->status != VIRTIO_NET_OK) {
--        return -EIO;
-+    r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                VIRTIO_NET_CTRL_RX, cmd, &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -1001,15 +1028,12 @@ static int vhost_vdpa_net_load_single_vlan(VhostVDPAState *s,
-         .iov_base = &vid,
-         .iov_len = sizeof(vid),
-     };
--    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
--                                                  VIRTIO_NET_CTRL_VLAN,
--                                                  VIRTIO_NET_CTRL_VLAN_ADD,
--                                                  &data, 1);
--    if (unlikely(dev_written < 0)) {
--        return dev_written;
--    }
--    if (unlikely(*s->status != VIRTIO_NET_OK)) {
--        return -EIO;
-+    ssize_t r = vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-+                                           VIRTIO_NET_CTRL_VLAN,
-+                                           VIRTIO_NET_CTRL_VLAN_ADD,
-+                                           &data, 1);
-+    if (unlikely(r < 0)) {
-+        return r;
-     }
- 
-     return 0;
-@@ -1078,6 +1102,17 @@ static int vhost_vdpa_net_load(NetClientState *nc)
-         return r;
-     }
- 
-+    /*
-+     * We need to poll and check all pending device's used buffers.
-+     *
-+     * We can poll here since we've had BQL from the time
-+     * we sent the descriptor.
-+     */
-+    r = vhost_vdpa_net_svq_flush(s, in_cursor - (void *)s->status);
-+    if (unlikely(r)) {
-+        return r;
-+    }
-+
-     return 0;
- }
- 
--- 
-2.25.1
+> 
+> Instantiate:
+> -device cxl-type3,bus=swport0,memdev=cxl-mem1,id=cxl-pmem1,lsa=cxl-lsa1,sn=3 
+> -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=5,target=cxl-pmem1
+> -device cxl-mhd,target=cxl-pmem1,...whatever else...
+
+Not sure on this - it may be implicit in creating an MHD rather than requiring
+a command line to target through.  Depends on what the MHD creation code
+looks like - but this is definitely a possibility.
+
+> 
+> where the MHD code is contained within its own type/file, and the type3
+> device hosts the CCI for it.  Similar to how you've implemented the MTCP
+> stuff here.
+> 
+> The reason I ask is because certain CCI's don't necessarily get
+> associated with "a bus" so much as "a device".  the MHD example - it's
+> still part of "the device", but it's optional.   
+
+For emulation I don't think we care if it's optional. I think we implement
+it whatever and if it is not accessed that is fine.
+
+> So does it make sense
+> to create this wrapper without a bus association, or to just pile it on
+> top CXLType3Dev and have to duplicate the code across any other
+> multi-headed devices that folks may conjur up?
+
+Piling it on top of CXLType3Dev was what I was thinking. We can rethink if
+there other multi-headed devices using similar interfaces.
+
+Jonathan
+
+
+> 
+> ~Gregory
 
 
