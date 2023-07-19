@@ -2,78 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC7475953D
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 14:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00118759543
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 14:38:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM6PZ-00085V-63; Wed, 19 Jul 2023 08:36:09 -0400
+	id 1qM6Rp-0000wP-2B; Wed, 19 Jul 2023 08:38:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qM6PW-00085L-KQ
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:36:06 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qM6PU-0000iA-9f
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:36:06 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2b71ae5fa2fso102160741fa.0
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 05:36:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689770162; x=1692362162;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HhO0MwuFVt6bGt/ZGk+Vd46SBoS4IeTqL4JU5yzxfEw=;
- b=qyRXNHSd8j32GYRZfjP4LBGNMf2objdZJmbL7gV4stDAy0l+QhIwOTrCdlusEDxitC
- BRUUGugK6CPwgatowIH681l1BdthaBHSMkxlM0lk4fjzv7amV+itthGj+dpQxBMo6/+V
- rtsBz5iYe2/2al+bKFc+47K0hzJ1iEVFxuqvAUMqYOlVYrgMeKK3y7bpJ4Y+XPxAlmF0
- 6IhG9KyCUBm79HeZDtQ1dGu0Q8SFHYKiT/fSqqHXU27Q8Q5otNubZFj3It8Tlduf1eYd
- 2yBg7Hxmj8femtuamfbVgbJswxUpkReQGT/AOc0EwiQqcOEYGrEj1CEtwmwaPSr4jpYU
- xdzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689770162; x=1692362162;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HhO0MwuFVt6bGt/ZGk+Vd46SBoS4IeTqL4JU5yzxfEw=;
- b=V3P1aMIEr9IUFEmiZIO1Pbr1uJz7eaLSjpiYT/B1EtXMkdhgTCg2qDKZrwtl2a/1No
- zU1q5nV/0VmokAylDDk6pS3Vt+Wrv/49tiODRrKUUdckKfyddO00yrDL6q9twfg+VAc+
- GlcCZ9hGCjcNgLDDSBogM5qLvPpjIYbRSI/gSagCIEBMy6rEKbQIXdD7+rrIUg81NHTI
- EeF6I5fOG34GydY1BxmyTtfnuyj6mcMADjP30Yl5JCKnVVtLeo0IUL0XvhMrIWtF543A
- YewLYJUX1C1/guxbdbmK7wopys5BVQm2jBV2mqBihP1IAB+1N+g6cMOZXMUQ3SD3e8RU
- dkqw==
-X-Gm-Message-State: ABy/qLayqPx2JCkj0nh2nxlu+YcqLiLnyFHMajONXJ5cIi//Xge7Exlr
- /3/taWoCJt+/HyhlzBmNhMuGzos9yXeaHRWp0bk=
-X-Google-Smtp-Source: APBJJlEHj01JOyuBosNerxFXEzkQmwlqZcfInMQF5QbkcL8MyRg99h+zIi22iBbc8uLKUxuTksID0Krxs09d0mZNgjM=
-X-Received: by 2002:a05:651c:94:b0:2b9:5d2e:7f9 with SMTP id
- 20-20020a05651c009400b002b95d2e07f9mr920145ljq.29.1689770161779; Wed, 19 Jul
- 2023 05:36:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <qemu@bonslack.org>) id 1qM6Rl-0000wD-KF
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:38:25 -0400
+Received: from [2a00:dcc0:1ea5:31f2::1] (helo=bonnix2.bonnix.it)
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <qemu@bonslack.org>) id 1qM6Rj-00016g-Ck
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 08:38:25 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 bonnix2.bonnix.it 7D4AAAE230
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bonslack.org;
+ s=20220805; t=1689770296;
+ bh=Tc9O+HlzBIFoqgdf5Yi5RQez8hsjfignEIpISwOM0W4=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=O+wwh7qSChSx/jtf3NXlKIwytOJ6KyLXCv4iNlbXZZzvmjKjrMQIdbNmLrMe7s6oK
+ z5ZToQ+KYA/Kj4xoZPoDabfftH94plpb9bPGShxZ5M1H6liunm3IbCzmi6hbbXpfA5
+ G8TmAmfv8TS44W01PPYb6q7GyZAywmN/3qEUVIaE=
+Received: from [10.0.0.152] (unknown [82.84.102.14])
+ by bonnix2.bonnix.it (Postfix) with ESMTPSA id 7D4AAAE230;
+ Wed, 19 Jul 2023 14:38:16 +0200 (CEST)
+Message-ID: <38f8621c-98e7-53c4-ac1b-7ff4c569ed18@bonslack.org>
+Date: Wed, 19 Jul 2023 14:38:16 +0200
 MIME-Version: 1.0
-References: <cover.1689748694.git.yin31149@gmail.com>
- <20230719045858-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20230719045858-mutt-send-email-mst@kernel.org>
-From: Hawkins Jiawei <yin31149@gmail.com>
-Date: Wed, 19 Jul 2023 20:35:50 +0800
-Message-ID: <CAKrof1Nu+Y26=ubQKNmjdSaHTUM7Q5HRwwN_BqG4mZTsAY=CiA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] vdpa: Send all CVQ state load commands in parallel
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: jasowang@redhat.com, eperezma@redhat.com, qemu-devel@nongnu.org, 
- 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=yin31149@gmail.com; helo=mail-lj1-x22f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH] Wrong unpacked structure for epoll_event on qemu-or1k
+ (openrisc user-space)
+Content-Language: it, en-US
+To: Laurent Vivier <laurent@vivier.eu>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+References: <750c569e-a922-d3bb-1f97-1698960d5b05@bonslack.org>
+ <CAFEAcA9vkyO_kivpSGV7jPW+DCbSD1BNA+SsLixViamXRi61CQ@mail.gmail.com>
+ <fa561a63-991a-329e-d9f2-5b334d94516b@bonslack.org>
+ <29cd5218-a9be-1947-e075-b892023213e8@vivier.eu>
+From: Luca Bonissi <qemu@bonslack.org>
+In-Reply-To: <29cd5218-a9be-1947-e075-b892023213e8@vivier.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Host-Lookup-Failed: Reverse DNS lookup failed for 2a00:dcc0:1ea5:31f2::1
+ (failed)
+Received-SPF: pass client-ip=2a00:dcc0:1ea5:31f2::1;
+ envelope-from=qemu@bonslack.org; helo=bonnix2.bonnix.it
+X-Spam_score_int: -13
+X-Spam_score: -1.4
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
+ RDNS_NONE=0.793, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,208 +71,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-=E5=9C=A8 2023/7/19 17:11, Michael S. Tsirkin =E5=86=99=E9=81=93:
-> On Wed, Jul 19, 2023 at 03:53:45PM +0800, Hawkins Jiawei wrote:
->> This patchset allows QEMU to delay polling and checking the device
->> used buffer until either the SVQ is full or control commands shadow
->> buffers are full, instead of polling and checking immediately after
->> sending each SVQ control command, so that QEMU can send all the SVQ
->> control commands in parallel, which have better performance improvement.
->>
->> I use vp_vdpa device to simulate vdpa device, and create 4094 VLANS in
->> guest to build a test environment for sending multiple CVQ state load
->> commands. This patch series can improve latency from 10023 us to
->> 8697 us for about 4099 CVQ state load commands, about 0.32 us per comman=
-d.
->
-> Looks like a tiny improvement.
-> At the same time we have O(n^2) behaviour with memory mappings.
+On 19/07/23 10:49, Laurent Vivier wrote:
+> 
+> According to linux/glibc sourced, epoll is only packed for x86_64.
 
-Hi Michael,
+And, in recent glibc, also for i386, even it seems not necessary: even 
+if the __alignof__(long long) is 8, structures like epoll_event are only 
+12 bytes, maybe "packed" for historical reasons. Ancient i386 gcc[s] 
+(<3.0.0) have 4 bytes for __alignof__(long long).
 
-Thanks for your review.
+> Perhaps the default alignment of long is not correctly defined in qemu 
+> for openrisc?
 
-I wonder why you say "we have O(n^2) behaviour on memory mappings" here?
+__alignof__(long long):
+- 8 bytes: all 64 bit targets + arm, hppa, mips, ppc, sparc, xtensa, x86
+- 4 bytes: microblaze, nios2, or1k, sh4
+- 2 bytes: m68k
+- 1 byte : cris
 
- From my understanding, QEMU maps two page-size buffers as control
-commands shadow buffers at device startup. These buffers then are used
-to cache SVQ control commands, where QEMU fills them with multiple SVQ cont=
-rol
-commands bytes, flushes them when SVQ descriptors are full or these
-control commands shadow buffers reach their capacity.
+offsetof(struct epoll_event,data):
+- 8: all 64 bit targets + arm, hppa, mips, ppc, sparc, xtensa
+- 4: cris, m68k, microblaze, nios2, or1k, sh4, x86
 
-QEMU repeats this process until all CVQ state load commands have been
-sent in loading.
+So, epoll_event is "naturally" packed on the following targets (checked 
+in linux-user container and/or with cross-compiler):
+- cris, m68k, microblaze, nios2, or1k, sh4, x86 (32bit)
 
-In this loading process, only control commands shadow buffers
-translation should be relative to memory mappings, which should be
-O(log n) behaviour to my understanding(Please correct me if I am wrong).
+> See include/exec/user/abitypes.h to update the value.
 
-> Not saying we must not do this but I think it's worth
-> checking where the bottleneck is. My guess would be
-> vp_vdpa is not doing things in parallel. Want to try fixing that
+OK, abitypes.h should be updated with the following patch (discard the 
+previous patch on syscall_defs.h):
 
-As for "vp_vdpa is not doing things in parallel.", do you mean
-the vp_vdpa device cannot process QEMU's SVQ control commands
-in parallel?
+Signed-off-by: Luca Bonissi <qemu@bonslack.org>
+---
 
-In this situation, I will try to use real vdpa hardware to
-test the patch series performance.
+diff -up a/include/exec/user/abitypes.h b/include/exec/user/abitypes.h
+--- a/include/exec/user/abitypes.h	2023-03-27 15:41:42.511916232 +0200
++++ b/include/exec/user/abitypes.h	2023-07-19 12:09:03.001687788 +0200
+@@ -15,7 +15,15 @@
+  #define ABI_LLONG_ALIGNMENT 2
+  #endif
 
-> to see how far it can be pushed?
++#ifdef TARGET_CRIS
++#define ABI_SHORT_ALIGNMENT 1
++#define ABI_INT_ALIGNMENT 1
++#define ABI_LONG_ALIGNMENT 1
++#define ABI_LLONG_ALIGNMENT 1
++#endif
++
+-#if (defined(TARGET_I386) && !defined(TARGET_X86_64)) || 
+defined(TARGET_SH4)
++#if (defined(TARGET_I386) && !defined(TARGET_X86_64)) || 
+defined(TARGET_SH4) || \
++    defined(TARGET_OPENRISC) || defined(TARGET_NIOS2) || 
+defined(TARGET_MICROBLAZE)
+  #define ABI_LLONG_ALIGNMENT 4
+  #endif
 
-Currently, I am involved in the "Add virtio-net Control Virtqueue state
-restore support" project in Google Summer of Code now. Because I am
-uncertain about the time it will take to fix that problem in the vp_vdpa
-device, I prefer to complete the gsoc project first.
 
-Thanks!
-
-
->
->
->> Note that this patch should be based on
->> patch "Vhost-vdpa Shadow Virtqueue VLAN support" at [1].
->>
->> [1]. https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg03719.html
->>
->> TestStep
->> =3D=3D=3D=3D=3D=3D=3D=3D
->> 1. regression testing using vp-vdpa device
->>    - For L0 guest, boot QEMU with two virtio-net-pci net device with
->> `ctrl_vq`, `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
->>        -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Doff,
->> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
->> indirect_desc=3Doff,queue_reset=3Doff,ctrl_rx=3Don,ctrl_rx_extra=3Don,..=
-.
->>
->>    - For L1 guest, apply the patch series and compile the source code,
->> start QEMU with two vdpa device with svq mode on, enable the `ctrl_vq`,
->> `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
->>        -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
->>        -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3Don,
->> ctrl_rx=3Don,ctrl_rx_extra=3Don...
->>
->>    - For L2 source guest, run the following bash command:
->> ```bash
->> #!/bin/sh
->>
->> for idx1 in {0..9}
->> do
->>    for idx2 in {0..9}
->>    do
->>      for idx3 in {0..6}
->>      do
->>        ip link add macvlan$idx1$idx2$idx3 link eth0
->> address 4a:30:10:19:$idx1$idx2:1$idx3 type macvlan mode bridge
->>        ip link set macvlan$idx1$idx2$idx3 up
->>      done
->>    done
->> done
->> ```
->>    - Execute the live migration in L2 source monitor
->>
->>    - Result
->>      * with this series, QEMU should not trigger any error or warning.
->>
->>
->>
->> 2. perf using vp-vdpa device
->>    - For L0 guest, boot QEMU with two virtio-net-pci net device with
->> `ctrl_vq`, `ctrl_vlan` features on, command line like:
->>        -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Doff,
->> iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
->> indirect_desc=3Doff,queue_reset=3Doff,ctrl_vlan=3Don,...
->>
->>    - For L1 guest, apply the patch series, then apply an addtional
->> patch to record the load time in microseconds as following:
->> ```diff
->> diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
->> index 6b958d6363..501b510fd2 100644
->> --- a/hw/net/vhost_net.c
->> +++ b/hw/net/vhost_net.c
->> @@ -295,7 +295,10 @@ static int vhost_net_start_one(struct vhost_net *ne=
-t,
->>       }
->>
->>       if (net->nc->info->load) {
->> +        int64_t start_us =3D g_get_monotonic_time();
->>           r =3D net->nc->info->load(net->nc);
->> +        error_report("vhost_vdpa_net_load() =3D %ld us",
->> +                     g_get_monotonic_time() - start_us);
->>           if (r < 0) {
->>               goto fail;
->>           }
->> ```
->>
->>    - For L1 guest, compile the code, and start QEMU with two vdpa device
->> with svq mode on, enable the `ctrl_vq`, `ctrl_vlan` features on,
->> command line like:
->>        -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
->>        -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3Don,
->> ctrl_vlan=3Don...
->>
->>    - For L2 source guest, run the following bash command:
->> ```bash
->> #!/bin/sh
->>
->> for idx in {1..4094}
->> do
->>    ip link add link eth0 name vlan$idx type vlan id $idx
->> done
->> ```
->>
->>    - wait for some time, then execute the live migration in L2 source mo=
-nitor
->>
->>    - Result
->>      * with this series, QEMU should not trigger any warning
->> or error except something like "vhost_vdpa_net_load() =3D 8697 us"
->>      * without this series, QEMU should not trigger any warning
->> or error except something like "vhost_vdpa_net_load() =3D 10023 us"
->>
->> ChangeLog
->> =3D=3D=3D=3D=3D=3D=3D=3D=3D
->> v3:
->>    - refactor vhost_svq_poll() to accept cmds_in_flight
->> suggested by Jason and Eugenio
->>    - refactor vhost_vdpa_net_cvq_add() to make control commands buffers
->> is not tied to `s->cvq_cmd_out_buffer` and `s->status`, so we can reuse
->> it suggested by Eugenio
->>    - poll and check when SVQ is full or control commands shadow buffers =
-is
->> full
->>
->> v2: https://lore.kernel.org/all/cover.1683371965.git.yin31149@gmail.com/
->>    - recover accidentally deleted rows
->>    - remove extra newline
->>    - refactor `need_poll_len` to `cmds_in_flight`
->>    - return -EINVAL when vhost_svq_poll() return 0 or check
->> on buffers written by device fails
->>    - change the type of `in_cursor`, and refactor the
->> code for updating cursor
->>    - return directly when vhost_vdpa_net_load_{mac,mq}()
->> returns a failure in vhost_vdpa_net_load()
->>
->> v1: https://lore.kernel.org/all/cover.1681732982.git.yin31149@gmail.com/
->>
->> Hawkins Jiawei (8):
->>    vhost: Add argument to vhost_svq_poll()
->>    vdpa: Use iovec for vhost_vdpa_net_cvq_add()
->>    vhost: Expose vhost_svq_available_slots()
->>    vdpa: Avoid using vhost_vdpa_net_load_*() outside
->>      vhost_vdpa_net_load()
->>    vdpa: Check device ack in vhost_vdpa_net_load_rx_mode()
->>    vdpa: Move vhost_svq_poll() to the caller of vhost_vdpa_net_cvq_add()
->>    vdpa: Add cursors to vhost_vdpa_net_loadx()
->>    vdpa: Send cvq state load commands in parallel
->>
->>   hw/virtio/vhost-shadow-virtqueue.c |  38 ++--
->>   hw/virtio/vhost-shadow-virtqueue.h |   3 +-
->>   net/vhost-vdpa.c                   | 354 ++++++++++++++++++-----------
->>   3 files changed, 249 insertions(+), 146 deletions(-)
->>
->> --
->> 2.25.1
->
 
