@@ -2,109 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FCB9759471
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 13:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0576F759478
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 13:40:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM5Vm-0005Rd-FL; Wed, 19 Jul 2023 07:38:30 -0400
+	id 1qM5XN-00064H-36; Wed, 19 Jul 2023 07:40:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qM5Vj-0005Qq-Fr; Wed, 19 Jul 2023 07:38:27 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qM5XJ-00062p-6F
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 07:40:05 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pmorel@linux.ibm.com>)
- id 1qM5Vh-0001h2-OS; Wed, 19 Jul 2023 07:38:27 -0400
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36JBc7LC022109; Wed, 19 Jul 2023 11:38:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=vA8xvwX/UYILXisCC0P2rH+jNGD4JXabH+q3bQTHmGA=;
- b=OKWommihtHfPSSZwjR939gn7jbPvTQJjxufk3sxSOF0C1QGL1f5PgTw29GN9nx5jL5sr
- Yd+hfd3N4xghnYvvS3MditkLTOUzFH7sUKq/91B3Mo5uDe/zpWWIsK9guAGEY62eVAF9
- UvSNk2EcCzHq4WyXyjuckzKNV4paQLk+9uVn05XdT8FXo8ypxPI0swNK4SVuXp3xE6pu
- XwLhz7aJsJ6yPu2ULs9i4/UdkgWnNhHgvuLAtZ2G9FPFZbtBbZTCHFHhuprfQBV0nY7V
- H2EV3s6Tnd/Y9EVc/NalGw8c93kY3Bg/lY+E6aYXvK7pHqYThxdJHqmNbmZnldPLm6aj Dg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxcen4cwe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 11:38:15 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36JBV2Y4002782;
- Wed, 19 Jul 2023 11:38:14 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxcen4cav-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 11:38:14 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36JBK9RJ031282; Wed, 19 Jul 2023 11:35:55 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv79jq2rh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 11:35:55 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36JBZosV44106138
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jul 2023 11:35:50 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CF39B20043;
- Wed, 19 Jul 2023 11:35:50 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 58A5E20040;
- Wed, 19 Jul 2023 11:35:50 +0000 (GMT)
-Received: from [9.155.200.205] (unknown [9.155.200.205])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
- Wed, 19 Jul 2023 11:35:50 +0000 (GMT)
-Message-ID: <378b9e60-906d-9c02-c165-7cccfa688c28@linux.ibm.com>
-Date: Wed, 19 Jul 2023 13:35:49 +0200
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qM5XG-0001qR-P0
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 07:40:04 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 116CA14CE8;
+ Wed, 19 Jul 2023 14:39:51 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id EA392180D4;
+ Wed, 19 Jul 2023 14:39:49 +0300 (MSK)
+Message-ID: <6764475b-c83e-3e77-b057-0cd3c3d8afdb@tls.msk.ru>
+Date: Wed, 19 Jul 2023 14:39:49 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v21 15/20] tests/avocado: s390x cpu topology polarisation
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 0/6] linux-user: brk() syscall fixes and armhf static
+ binary fix
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, cohuck@redhat.com,
- mst@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
- ehabkost@redhat.com, marcel.apfelbaum@gmail.com, eblake@redhat.com,
- armbru@redhat.com, seiden@linux.ibm.com, nrb@linux.ibm.com,
- nsg@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
-References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-16-pmorel@linux.ibm.com>
- <eb088f47-6b16-d8fc-cddc-b3a8f0e53ffe@redhat.com>
-From: Pierre Morel <pmorel@linux.ibm.com>
-In-Reply-To: <eb088f47-6b16-d8fc-cddc-b3a8f0e53ffe@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: Song Gao <gaosong@loongson.cn>, Helge Deller <deller@gmx.de>,
+ Richard Henderson <richard.henderson@linaro.org>
+Cc: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
+References: <20230717213545.142598-1-deller@gmx.de>
+ <703ab494-1778-c50a-d46f-988fab846da3@loongson.cn>
+ <774e9287-87df-f45a-f6a5-e257de0eb058@tls.msk.ru>
+In-Reply-To: <774e9287-87df-f45a-f6a5-e257de0eb058@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: EAdDmiuXszZbA6VQFWfMgURDBJAB2d1E
-X-Proofpoint-ORIG-GUID: 30Jv-Nzx_NCIcFaSDVSxHdPk_nZDCdug
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-19_07,2023-07-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 mlxlogscore=999
- adultscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 malwarescore=0
- priorityscore=1501 suspectscore=0 clxscore=1015 mlxscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307190104
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=pmorel@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.089,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -69
+X-Spam_score: -7.0
+X-Spam_bar: -------
+X-Spam_report: (-7.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.089,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -120,69 +63,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 7/5/23 10:53, Thomas Huth wrote:
-> On 30/06/2023 11.17, Pierre Morel wrote:
->> Polarization is changed on a request from the guest.
->> Let's verify the polarization is accordingly set by QEMU.
+18.07.2023 11:30, Michael Tokarev wrote:
+> 18.07.2023 06:03, Song Gao пишет:
+>> Hi,  Helge
 >>
->> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
->> ---
->>   tests/avocado/s390_topology.py | 46 ++++++++++++++++++++++++++++++++++
->>   1 file changed, 46 insertions(+)
+>> Could you see the following bugs:
+>> https://gitlab.com/qemu-project/qemu/-/issues/1707
 >>
->> diff --git a/tests/avocado/s390_topology.py 
->> b/tests/avocado/s390_topology.py
->> index 1758ec1f13..2cf731cb1d 100644
->> --- a/tests/avocado/s390_topology.py
->> +++ b/tests/avocado/s390_topology.py
->> @@ -40,6 +40,7 @@ class S390CPUTopology(QemuSystemTest):
->>       The polarization is changed on a request from the guest.
->>       """
->>       timeout = 90
->> +    event_timeout = 1
->
-> When running tests in CI and the machines are very loaded, the tests 
-> can be stalled easily by multiple seconds. So using a timeout of 1 
-> seconds sounds way too low for me. Please use at least 5 seconds, or 
-> maybe even 10.
+>> This issue is also caused by  the commit  86f04735ac.
+> 
+> This issue has been fixed in master already and even in 8.0.3 stable release
+> (I haven't checked which commit did that, though).
 
+This claim turned out to be false: the prob is fixed in *debian* build of
+qemu v8.0.3, which includes an additional change on top of qemu v8.0.3,
+"linux-user: Make sure initial brk(0) is page-aligned" - the one which is being
+reverted in this patchset, apparenly incorrectly.
 
-OK
+So, in short, https://gitlab.com/qemu-project/qemu/-/issues/1707 is fixed
+in qemu master but not in qemu v8.0.3 stable. Hopefully the fix will be in v8.0.4
+(together with other fixes from this thread).
 
+Thanks,  and sorry for my mistake.
 
->
->>       KERNEL_COMMON_COMMAND_LINE = ('printk.time=0 '
->>                                     'root=/dev/ram '
->> @@ -99,6 +100,15 @@ def kernel_init(self):
->>                            '-initrd', initrd_path,
->>                            '-append', kernel_command_line)
->>   +    def system_init(self):
->> +        self.log.info("System init")
->> +        exec_command(self, 'mount proc -t proc /proc')
->> +        time.sleep(0.2)
->> +        exec_command(self, 'mount sys -t sysfs /sys')
->> +        time.sleep(0.2)
->
-> Hard coded sleeps are ugly... they are prone to race conditions (e.g. 
-> on loaded test systems), and they artificially slow down the test 
-> duration.
->
-> What about doing all three commands in one statement instead:
->
->     exec_command_and_wait_for_pattern(self,
->            """mount proc -t proc /proc ;
->               mount sys -t sysfs /sys ;
->               /bin/cat /sys/devices/system/cpu/dispatching""",
->            '0')
->
-> ?
->
-OK , I use this. thx.
-
-Regards,
-
-Pierre
-
-
+/mjt
 
