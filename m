@@ -2,64 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37BD175A194
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 00:15:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 836A175A18F
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 00:15:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMFQM-00073Z-0W; Wed, 19 Jul 2023 18:13:34 -0400
+	id 1qMFQQ-00077S-Aj; Wed, 19 Jul 2023 18:13:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qMFQJ-00070d-Le; Wed, 19 Jul 2023 18:13:31 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1qMFQL-00072L-1M; Wed, 19 Jul 2023 18:13:33 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
- id 1qMFQH-0002Cs-8N; Wed, 19 Jul 2023 18:13:31 -0400
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ id 1qMFQH-0002DT-QB; Wed, 19 Jul 2023 18:13:32 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36JM7VDl019817; Wed, 19 Jul 2023 22:13:26 GMT
+ 36JM7jYE031592; Wed, 19 Jul 2023 22:13:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=ul3IF/d5nba7piaEwPQNpCC0i0guLJDOXOrkksZ3t7A=;
- b=bWSPgmTqgTPzXvdwjnmJMFvrIFRbYimvqSqF1b7lGdD7Y86etg7Sdj884Yp1+HD+UtKK
- WE1J72lSl6YWEmQKBGNjxVKZc7BCLYVCj42PqCu9tu+u1ID/9l1n/GvFb+BYuyjYf6Tj
- 73Vc3qCE6YOz8RshlU6/5s5+0ytp780zLCf7oTv2uAOohi100rdPRhZCCNdqbfv8zDkK
- MdDYzguFrRyt5MDl6KEi1+PfdPLrv1zISueffGIIsOmZdr5NxN3h4S0pQcKqW0Ynl75R
- dZXMAwjaICBpe/J325vImYbUBzXj12uCJeRF+KDG0KfDA0Q4e/6IvCae61+MPEjwcWnM SA== 
+ bh=rulbBhCzSFCkQrgpbY0rWyJX2Jx/EbYB7vax9vi63hE=;
+ b=gHlLo/ZuNFFt0U0GUTcXEf0FaJkVbbT0IereiU5wumk9Rnn9o7mhB7NgdieqCtV6+EDg
+ UafzPMh8um2LXag9rBdlubd86u3AN8aA4TF7mzfh6Vz1vhD+T+ciJuUyddIOYOk+r0t9
+ u74i87D2jfSMVm/TjZxA4uhOXQOsHS4ThLYL8Qc9HV+eP8RQLxJmKvdrIgzI6liqqt5D
+ utNhavtM79z5eH6TDpf66gb6KrmdReWRt75Kj+HEbUbi4AhxOrrwu/dGJ0ZuwR8r6Dx/
+ VZTNr+iboGIji88eHAspV9dbEEtamCvLNOjP3SykwOi3KsdOzuaOjcYZYf/MN8s+Rag7 Xg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxpc0ttqn-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxnbn4fr4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 22:13:25 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36JM7doe020766;
- Wed, 19 Jul 2023 22:13:25 GMT
+ Wed, 19 Jul 2023 22:13:26 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36JMATnJ008471;
+ Wed, 19 Jul 2023 22:13:26 GMT
 Received: from ppma11.dal12v.mail.ibm.com
  (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxpc0ttqc-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxnbn4fqt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 22:13:25 +0000
+ Wed, 19 Jul 2023 22:13:26 +0000
 Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
  by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36JL2N3w004179; Wed, 19 Jul 2023 22:13:24 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv8g14hj3-1
+ 36JLHwXh004455; Wed, 19 Jul 2023 22:13:25 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3rv8g14hj6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 19 Jul 2023 22:13:24 +0000
+ Wed, 19 Jul 2023 22:13:25 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com
  [10.20.54.105])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36JMDNZZ14418478
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36JMDNnF41025968
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Wed, 19 Jul 2023 22:13:23 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E338520067;
- Wed, 19 Jul 2023 22:13:22 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 85F6420065;
+ Wed, 19 Jul 2023 22:13:23 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 680822005A;
- Wed, 19 Jul 2023 22:13:22 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0BB632005A;
+ Wed, 19 Jul 2023 22:13:23 +0000 (GMT)
 Received: from heavy.boeblingen.de.ibm.com (unknown [9.171.5.152])
  by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
  Wed, 19 Jul 2023 22:13:22 +0000 (GMT)
@@ -68,28 +68,28 @@ To: Richard Henderson <richard.henderson@linaro.org>,
  David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH v3 13/14] tests/tcg/s390x: Test STPQ
-Date: Thu, 20 Jul 2023 00:11:25 +0200
-Message-ID: <20230719221310.1968845-14-iii@linux.ibm.com>
+Subject: [PATCH v3 14/14] tests/tcg/s390x: Test VCKSM
+Date: Thu, 20 Jul 2023 00:11:26 +0200
+Message-ID: <20230719221310.1968845-15-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230719221310.1968845-1-iii@linux.ibm.com>
 References: <20230719221310.1968845-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: TPsBjyi8hmNh0P75XZ38Tb1P--N2EcoJ
-X-Proofpoint-ORIG-GUID: wqtnLUzGFuZRdNhbhwGNi07kaHacXX8l
+X-Proofpoint-GUID: O-SBR3FC2bMwKy_tW1oMAaTAGOu01KLt
+X-Proofpoint-ORIG-GUID: G0qU6mSULJAb06a-BtMIdDNj_ShHlVSP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
  definitions=2023-07-19_16,2023-07-19_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 mlxscore=0
- bulkscore=0 spamscore=0 priorityscore=1501 suspectscore=0 adultscore=0
- malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 mlxlogscore=927
+ clxscore=1015 impostorscore=0
+ spamscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=935 phishscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 adultscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
  definitions=main-2307190199
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -117,49 +117,74 @@ Add a small test to prevent regressions.
 Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- tests/tcg/s390x/Makefile.softmmu-target |  1 +
- tests/tcg/s390x/stpq.S                  | 20 ++++++++++++++++++++
- 2 files changed, 21 insertions(+)
- create mode 100644 tests/tcg/s390x/stpq.S
+ tests/tcg/s390x/Makefile.target |  1 +
+ tests/tcg/s390x/vcksm.c         | 31 +++++++++++++++++++++++++++++++
+ tests/tcg/s390x/vx.h            |  2 ++
+ 3 files changed, 34 insertions(+)
+ create mode 100644 tests/tcg/s390x/vcksm.c
 
-diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
-index 145e0bfde16..76345b6e643 100644
---- a/tests/tcg/s390x/Makefile.softmmu-target
-+++ b/tests/tcg/s390x/Makefile.softmmu-target
-@@ -27,6 +27,7 @@ ASM_TESTS =                                                                    \
-     mc                                                                         \
-     ssm-early                                                                  \
-     stosm-early                                                                \
-+    stpq                                                                       \
-     unaligned-lowcore
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 71bf39b78d3..1fc98099070 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -58,6 +58,7 @@ TESTS += $(PGM_SPECIFICATION_TESTS)
+ Z13_TESTS=vistr
+ Z13_TESTS+=lcbb
+ Z13_TESTS+=locfhr
++Z13_TESTS+=vcksm
+ $(Z13_TESTS): CFLAGS+=-march=z13 -O2
+ TESTS+=$(Z13_TESTS)
  
- include $(S390X_SRC)/pgm-specification.mak
-diff --git a/tests/tcg/s390x/stpq.S b/tests/tcg/s390x/stpq.S
+diff --git a/tests/tcg/s390x/vcksm.c b/tests/tcg/s390x/vcksm.c
 new file mode 100644
-index 00000000000..687a52eafa7
+index 00000000000..452daaae6ce
 --- /dev/null
-+++ b/tests/tcg/s390x/stpq.S
-@@ -0,0 +1,20 @@
-+    .org 0x200                         /* lowcore padding */
-+    .globl _start
-+_start:
-+    lgrl %r0,value
-+    lgrl %r1,value+8
-+    stpq %r0,stored_value
-+    clc stored_value(16),value
-+    jne failure
-+    lpswe success_psw
-+failure:
-+    lpswe failure_psw
-+    .align 16
-+value:
-+    .quad 0x1234567887654321, 0x8765432112345678
-+stored_value:
-+    .quad 0, 0
-+success_psw:
-+    .quad 0x2000000000000,0xfff        /* see is_special_wait_psw() */
-+failure_psw:
-+    .quad 0x2000000000000,0            /* disabled wait */
++++ b/tests/tcg/s390x/vcksm.c
+@@ -0,0 +1,31 @@
++/*
++ * Test the VCKSM instruction.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <stdlib.h>
++#include <string.h>
++#include "vx.h"
++
++int main(void)
++{
++    S390Vector v1;
++    S390Vector v2 = {
++        .d[0] = 0xb2261c8140edce49ULL,
++        .d[1] = 0x387bf5a433af39d1ULL,
++    };
++    S390Vector v3 = {
++        .d[0] = 0x73b03d2c7f9e654eULL,
++        .d[1] = 0x23d74e51fb479877ULL,
++    };
++    S390Vector exp = {.d[0] = 0xdedd7f8eULL, .d[1] = 0ULL};
++
++    asm volatile("vcksm %[v1],%[v2],%[v3]"
++                 : [v1] "=v" (v1.v)
++                 : [v2] "v" (v2.v)
++                 , [v3] "v" (v3.v));
++    assert(memcmp(&v1, &exp, sizeof(v1)) == 0);
++
++    return EXIT_SUCCESS;
++}
+diff --git a/tests/tcg/s390x/vx.h b/tests/tcg/s390x/vx.h
+index 02e7fd518a8..00701dbe35f 100644
+--- a/tests/tcg/s390x/vx.h
++++ b/tests/tcg/s390x/vx.h
+@@ -1,6 +1,8 @@
+ #ifndef QEMU_TESTS_S390X_VX_H
+ #define QEMU_TESTS_S390X_VX_H
+ 
++#include <stdint.h>
++
+ typedef union S390Vector {
+     uint64_t d[2];  /* doubleword */
+     uint32_t w[4];  /* word */
 -- 
 2.41.0
 
