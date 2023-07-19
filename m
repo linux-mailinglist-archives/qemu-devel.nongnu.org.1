@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53294759A4E
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C54759A4F
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 17:58:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM9Y1-0003AA-7P; Wed, 19 Jul 2023 11:57:05 -0400
+	id 1qM9Y1-00039j-0b; Wed, 19 Jul 2023 11:57:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qM9Xv-000392-RU
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:57:00 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ id 1qM9Xr-00037S-OA
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:56:55 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qM9Xl-0007Ib-7X
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:56:59 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-4fbb281eec6so11519698e87.1
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:56:47 -0700 (PDT)
+ id 1qM9Xl-0007In-8B
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 11:56:55 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-4fb863edcb6so11964035e87.0
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 08:56:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689782206; x=1690387006;
+ d=linaro.org; s=google; t=1689782207; x=1690387007;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1ZtPVN3lBHeAgdj1nKPqBU2sV0M1JQVXfLkLVtYjNIk=;
- b=LcMW5US7HuKk425kIMl9dpCMTAV07lLJ+lgPGYmwTXVYLGs1RH2m7Hdsa2tTeWOxtF
- nDI2OGPOLD7apiSTFojae0QsOAzshIbf9rbz0pKJLvZ6SXzL4IZmA1RRbIR+iUEpwV+N
- HG+aTkIY7GKJEPzDNS3/HGj6y355LlNJYQy/WQzCdfo0QLf/4sqhlZrzj0TOXcwdAxng
- MrprCfYEpVKyzqoyTj/detLhIPO6h3xzrBKypEUbTR7oXCaXsfK5AlHlNxqTvhuH5iEC
- q4HL7JjzD01QQqXAXikG8KdCSxy+zzkdfK/TAMegAj+IrcMmG/z0yZb6cjRWFbSrd8uZ
- MT1g==
+ bh=gGmNjom1dWAWIl07haN1UV6R0kEmVNpwwthNJP86YHc=;
+ b=yc3U8vt2vXQK75uiC3aDqfTR6BF9hOFQCZ2Qz6hdQlQHpPvknydPCn303pSPVXxxl7
+ xR6gnjZwtJK3HCGgZBxhvUGJDD711Kw/8XRlKjAFgJkItCjT9o62gBe9YnIiWLCjKgE5
+ B5/uSG6ZXMXlY6cnHbF38VgSkwsSm+r5DmQHxWqU4cGjjoip9sFbECzjdr6DtR8mW0W8
+ WuwqSXKqHApzyQoYj+SaXtYlU46h1FaR+6ohGA0BP1UDZDS/nCVvxPRWwnaozGQ0gRfm
+ xfw3viTwua33px84TKOYCYU7VPz7cTDSoFpYXO1+YhpunEk0vMdPUDpsckCm2KjIYKob
+ gKSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689782206; x=1690387006;
+ d=1e100.net; s=20221208; t=1689782207; x=1690387007;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1ZtPVN3lBHeAgdj1nKPqBU2sV0M1JQVXfLkLVtYjNIk=;
- b=VQgjjnAx/FypqutZtSrlaWP6M0W7SDF7kh7R50ZpBF2yakMmTcte21765MzqhWS32u
- SE4oz6E2oGEniJ8bNC44M3fgz5OaiCYo+cMNfVxFumnqPvy5SANIuoD7uyhO0/dpWcjC
- n+xYnTevAQu/DIWhCt1fV8XepyeW2HFuDPLooJzatmkBbVaF/QYCvX/kIRj52C4GRqGc
- L7NI2wr4Cnw7O7EIHcr68Vn9/76Fke20ztQXE4E7vdPPJedTNpgNRFhfUessfgWx/sIz
- ezxSTU7dhZT9AhjvDeCf6arxq5D0rN1GhwLQVugxewT3nj8hSNJ1QKYyuJGsRgcfRgeF
- 9p4Q==
-X-Gm-Message-State: ABy/qLY2pJWjDW9LUGzlqH6Mqp0Yoi3ced2zI+MPHa+9b4/yCJezBKHw
- PyyVVhPyKYHgi2hfyBHn2EenHQ==
-X-Google-Smtp-Source: APBJJlHlNlvRMSlc4Jll7HQ3YuakKyBdn6wh9me28DhBP/VzLFQloZaifSj3owUsPv+6jW3DbC93ag==
-X-Received: by 2002:a05:6512:2507:b0:4f8:46e9:9f19 with SMTP id
- be7-20020a056512250700b004f846e99f19mr312891lfb.1.1689782206107; 
+ bh=gGmNjom1dWAWIl07haN1UV6R0kEmVNpwwthNJP86YHc=;
+ b=BU2jHgHy83lseabIuk1fqZcEmUruaTrgLj9DMGVOeciln3IICxso8Gv36VITLGlqwQ
+ q9an7afc2RfTnA23Tc2DLcmg5Fdzq2+nDIB35WuVmuuwsu7/YiaxiZQ0+d5qzR1kr0Hk
+ ociz6u8LMS3VVUdcV4ODrO65gglilIEZLX5BOnf+cIK2SRGHLfRXxMbbsqgH101DMCeZ
+ lYg5esRnze7a9UB8jC5j6A+Jacffyx0dx7CvF+6A25yeuolsCAVXWDphA3FnzgKZ3KbI
+ OTZ0SUYHO3hZ/EXmQAtJAV/aJskJEx+h/q40hCT3n2kageQApTnKzcL9QX5X/bETttlj
+ cyng==
+X-Gm-Message-State: ABy/qLbvq8hi/Lsxaju6WR+9FRJ4HNKgTvpj1MRtrYmhFs643mPZ+CYe
+ xsCBkaTZMxOul8m810iywHkGIefSTsoofWJaxJ8=
+X-Google-Smtp-Source: APBJJlEsvKEjObiAu0mLYDIg+oFDcHy5L43RMfRLXvMnB3UzOu2kYjm/JizryaMbwuG8b+6BfMq8oA==
+X-Received: by 2002:a05:6512:3b8b:b0:4fb:89f2:594c with SMTP id
+ g11-20020a0565123b8b00b004fb89f2594cmr253129lfv.56.1689782206633; 
  Wed, 19 Jul 2023 08:56:46 -0700 (PDT)
 Received: from localhost.localdomain ([2.219.138.198])
  by smtp.gmail.com with ESMTPSA id
- l14-20020a1c790e000000b003fc3b03caa4sm2351006wme.0.2023.07.19.08.56.45
+ l14-20020a1c790e000000b003fc3b03caa4sm2351006wme.0.2023.07.19.08.56.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 19 Jul 2023 08:56:45 -0700 (PDT)
+ Wed, 19 Jul 2023 08:56:46 -0700 (PDT)
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 To: peter.maydell@linaro.org
 Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org,
  Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH 2/5] target/arm/helper: Fix vae2_tlbmask()
-Date: Wed, 19 Jul 2023 16:30:16 +0100
-Message-ID: <20230719153018.1456180-4-jean-philippe@linaro.org>
+Subject: [PATCH 3/5] target/arm: Skip granule protection checks for AT
+ instructions
+Date: Wed, 19 Jul 2023 16:30:17 +0100
+Message-ID: <20230719153018.1456180-5-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230719153018.1456180-2-jean-philippe@linaro.org>
 References: <20230719153018.1456180-2-jean-philippe@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=jean-philippe@linaro.org; helo=mail-lf1-x132.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=jean-philippe@linaro.org; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,82 +93,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When HCR_EL2.E2H is enabled, TLB entries are formed using the EL2&0
-translation regime, instead of the EL2 translation regime. The TLB VAE2*
-instructions invalidate the regime that corresponds to the current value
-of HCR_EL2.E2H.
+GPC checks are not performed on the output address for AT instructions,
+as stated by ARM DDI 0487J in D8.12.2:
 
-At the moment we only invalidate the EL2 translation regime. This causes
-problems with RMM, which issues TLBI VAE2IS instructions with
-HCR_EL2.E2H enabled. Update vae2_tlbmask() to take HCR_EL2.E2H into
-account.
+  When populating PAR_EL1 with the result of an address translation
+  instruction, granule protection checks are not performed on the final
+  output address of a successful translation.
+
+Rename get_phys_addr_with_secure(), since it's only used to handle AT
+instructions.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- target/arm/helper.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+This incidentally fixes a problem with AT S1E1 instructions which can
+output an IPA and should definitely not cause a GPC.
+---
+ target/arm/internals.h | 25 ++++++++++++++-----------
+ target/arm/helper.c    |  8 ++++++--
+ target/arm/ptw.c       | 11 ++++++-----
+ 3 files changed, 26 insertions(+), 18 deletions(-)
 
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 0f01bc32a8..fc90c364f7 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1190,12 +1190,11 @@ typedef struct GetPhysAddrResult {
+ } GetPhysAddrResult;
+ 
+ /**
+- * get_phys_addr_with_secure: get the physical address for a virtual address
++ * get_phys_addr: get the physical address for a virtual address
+  * @env: CPUARMState
+  * @address: virtual address to get physical address for
+  * @access_type: 0 for read, 1 for write, 2 for execute
+  * @mmu_idx: MMU index indicating required translation regime
+- * @is_secure: security state for the access
+  * @result: set on translation success.
+  * @fi: set to fault info if the translation fails
+  *
+@@ -1212,26 +1211,30 @@ typedef struct GetPhysAddrResult {
+  *  * for PSMAv5 based systems we don't bother to return a full FSR format
+  *    value.
+  */
+-bool get_phys_addr_with_secure(CPUARMState *env, target_ulong address,
+-                               MMUAccessType access_type,
+-                               ARMMMUIdx mmu_idx, bool is_secure,
+-                               GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
++bool get_phys_addr(CPUARMState *env, target_ulong address,
++                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
++                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
+     __attribute__((nonnull));
+ 
+ /**
+- * get_phys_addr: get the physical address for a virtual address
++ * get_phys_addr_with_secure_nogpc: get the physical address for a virtual
++ *                                  address
+  * @env: CPUARMState
+  * @address: virtual address to get physical address for
+  * @access_type: 0 for read, 1 for write, 2 for execute
+  * @mmu_idx: MMU index indicating required translation regime
++ * @is_secure: security state for the access
+  * @result: set on translation success.
+  * @fi: set to fault info if the translation fails
+  *
+- * Similarly, but use the security regime of @mmu_idx.
++ * Similar to get_phys_addr, but use the given security regime and don't perform
++ * a Granule Protection Check on the resulting address.
+  */
+-bool get_phys_addr(CPUARMState *env, target_ulong address,
+-                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
+-                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
++bool get_phys_addr_with_secure_nogpc(CPUARMState *env, target_ulong address,
++                                     MMUAccessType access_type,
++                                     ARMMMUIdx mmu_idx, bool is_secure,
++                                     GetPhysAddrResult *result,
++                                     ARMMMUFaultInfo *fi)
+     __attribute__((nonnull));
+ 
+ bool pmsav8_mpu_lookup(CPUARMState *env, uint32_t address,
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index e1b3db6f5f..07a9ac70f5 100644
+index 07a9ac70f5..3ee2bb5fe1 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -4663,6 +4663,21 @@ static int vae1_tlbmask(CPUARMState *env)
-     return mask;
+@@ -3365,8 +3365,12 @@ static uint64_t do_ats_write(CPUARMState *env, uint64_t value,
+     ARMMMUFaultInfo fi = {};
+     GetPhysAddrResult res = {};
+ 
+-    ret = get_phys_addr_with_secure(env, value, access_type, mmu_idx,
+-                                    is_secure, &res, &fi);
++    /*
++     * I_MXTJT: Granule protection checks are not performed on the final address
++     * of a successful translation.
++     */
++    ret = get_phys_addr_with_secure_nogpc(env, value, access_type, mmu_idx,
++                                          is_secure, &res, &fi);
+ 
+     /*
+      * ATS operations only do S1 or S1+S2 translations, so we never
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 6318e13b98..1aef2b8cef 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -3412,16 +3412,17 @@ static bool get_phys_addr_gpc(CPUARMState *env, S1Translate *ptw,
+     return false;
  }
  
-+static int vae2_tlbmask(CPUARMState *env)
-+{
-+    uint64_t hcr = arm_hcr_el2_eff(env);
-+    uint16_t mask;
-+
-+    if (hcr & HCR_E2H) {
-+        mask = ARMMMUIdxBit_E20_2 |
-+               ARMMMUIdxBit_E20_2_PAN |
-+               ARMMMUIdxBit_E20_0;
-+    } else {
-+        mask = ARMMMUIdxBit_E2;
-+    }
-+    return mask;
-+}
-+
- /* Return 56 if TBI is enabled, 64 otherwise. */
- static int tlbbits_for_regime(CPUARMState *env, ARMMMUIdx mmu_idx,
-                               uint64_t addr)
-@@ -4781,7 +4796,7 @@ static void tlbi_aa64_vae2_write(CPUARMState *env, const ARMCPRegInfo *ri,
-      * flush-last-level-only.
-      */
-     CPUState *cs = env_cpu(env);
--    int mask = e2_tlbmask(env);
-+    int mask = vae2_tlbmask(env);
-     uint64_t pageaddr = sextract64(value << 12, 0, 56);
- 
-     tlb_flush_page_by_mmuidx(cs, pageaddr, mask);
-@@ -4838,11 +4853,11 @@ static void tlbi_aa64_vae2is_write(CPUARMState *env, const ARMCPRegInfo *ri,
-                                    uint64_t value)
+-bool get_phys_addr_with_secure(CPUARMState *env, target_ulong address,
+-                               MMUAccessType access_type, ARMMMUIdx mmu_idx,
+-                               bool is_secure, GetPhysAddrResult *result,
+-                               ARMMMUFaultInfo *fi)
++bool get_phys_addr_with_secure_nogpc(CPUARMState *env, target_ulong address,
++                                     MMUAccessType access_type,
++                                     ARMMMUIdx mmu_idx, bool is_secure,
++                                     GetPhysAddrResult *result,
++                                     ARMMMUFaultInfo *fi)
  {
-     CPUState *cs = env_cpu(env);
-+    int mask = vae2_tlbmask(env);
-     uint64_t pageaddr = sextract64(value << 12, 0, 56);
-     int bits = tlbbits_for_regime(env, ARMMMUIdx_E2, pageaddr);
- 
--    tlb_flush_page_bits_by_mmuidx_all_cpus_synced(cs, pageaddr,
--                                                  ARMMMUIdxBit_E2, bits);
-+    tlb_flush_page_bits_by_mmuidx_all_cpus_synced(cs, pageaddr, mask, bits);
+     S1Translate ptw = {
+         .in_mmu_idx = mmu_idx,
+         .in_space = arm_secure_to_space(is_secure),
+     };
+-    return get_phys_addr_gpc(env, &ptw, address, access_type, result, fi);
++    return get_phys_addr_nogpc(env, &ptw, address, access_type, result, fi);
  }
  
- static void tlbi_aa64_vae3is_write(CPUARMState *env, const ARMCPRegInfo *ri,
-@@ -5014,11 +5029,6 @@ static void tlbi_aa64_rvae1is_write(CPUARMState *env,
-     do_rvae_write(env, value, vae1_tlbmask(env), true);
- }
- 
--static int vae2_tlbmask(CPUARMState *env)
--{
--    return ARMMMUIdxBit_E2;
--}
--
- static void tlbi_aa64_rvae2_write(CPUARMState *env,
-                                   const ARMCPRegInfo *ri,
-                                   uint64_t value)
+ bool get_phys_addr(CPUARMState *env, target_ulong address,
 -- 
 2.41.0
 
