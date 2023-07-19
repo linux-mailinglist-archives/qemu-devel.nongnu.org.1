@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44535758A96
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 03:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13068758A9A
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 03:04:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLvbD-0001gq-0s; Tue, 18 Jul 2023 21:03:27 -0400
+	id 1qLvbi-00020g-5Q; Tue, 18 Jul 2023 21:03:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
- id 1qLvbA-0001ga-Sm
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 21:03:24 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qLvbe-00020I-Pm; Tue, 18 Jul 2023 21:03:54 -0400
+Received: from mail-vs1-xe32.google.com ([2607:f8b0:4864:20::e32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
- id 1qLvb7-0007mI-NG
- for qemu-devel@nongnu.org; Tue, 18 Jul 2023 21:03:24 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1b8ad8383faso50486615ad.0
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 18:03:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qLvbb-0007xW-RS; Tue, 18 Jul 2023 21:03:54 -0400
+Received: by mail-vs1-xe32.google.com with SMTP id
+ ada2fe7eead31-446e8355203so425440137.3; 
+ Tue, 18 Jul 2023 18:03:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689728599; x=1692320599;
- h=content-transfer-encoding:content-language:in-reply-to:mime-version
- :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
- :subject:date:message-id:reply-to;
- bh=X0+hzjhf/6kFNClrXPkoMZpxOT3umf0pZ79hCNj18lI=;
- b=nJL1hlV2wdup4xF9wP+vNBP4n4pkfdajB77iv6Uj16R5u9jHSiaRQAoYAsgryZiTUm
- i39FvopoDArRRHIKCvggDnVKZ1OOSRY56S7Q/vF61Tw+HjMt4Ly32qKMQ+IhNuTMD/tE
- FrpIfFiPWP600nwbyXPRCrjBg5X2yBQ4M4+hPw0+YWH9dkza94E34W1P5SYSdcAeW8RO
- TR3CjGXMb6ZOBTnJb0gvL3REJlZ4gbKFz65nf0Iqf60P3xkEIFcP0O7+nb84Us3Hgpyu
- Z7OTIt2Yc93NuA0gdn+nVFUYyDY5gZzAHwLxEoWpU41pKUlWx62KHd1icFbAmIepvYRX
- h3AQ==
+ d=gmail.com; s=20221208; t=1689728630; x=1692320630;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=q74qDzO1rVoFNt1s44E7atU8GlOTUQvVA8eYLXCeC6k=;
+ b=OGzrZV+Q5NUn/ISe9ufNBuvT4XGe4MDa/V7bEfHpbRqkZ1kRgK50RLblKuYscKDShZ
+ sqVtDbO/JOZAzHbpfYzj7+duqrMto5GE6/C0gfsYLnNmxVEGZs2kPUiYNfwsxOabPaeU
+ QLVih4wQzDRU48RpDAUc2cK/l4eqlmxgK16c+k+fZ8PoIFDUjLkyHzV6+qVXW3vedEmp
+ FVGyB92LsNOVHK78ugLnArYhYEswjhHu3a5iT4LSRnndbDkhI3pl5370L2+pZQ80peIA
+ 38+qLkpnA3a0VYNvcEZLoPR5vVXzXv8sg5lY7YSVUitp25qw3KCuar8DNadRVSXD8L8z
+ UCLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689728599; x=1692320599;
- h=content-transfer-encoding:content-language:in-reply-to:mime-version
- :user-agent:date:message-id:from:references:cc:to:subject
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=X0+hzjhf/6kFNClrXPkoMZpxOT3umf0pZ79hCNj18lI=;
- b=c56FUEZ/1bwdKhHHJ52S1NB0Isp0fzisZRIJS6vSatgHhBRE7XigLSG3KGKhlp4lqv
- SzMjXJthyVZ7nM9d++ID2qcplNiRYkHWDWkxxjNMmzUL4oAosbXud+9txFyGQY5k+8yF
- yuWFBhJXbEL7Gh0zdtkSGE4XLLQtvr+GzQ4ZhrTgF7dGmm5hi7pYgHBVHD880Z82GOHw
- M/ch2GS0w87v2BXUI4dwT9BY0LPw6CFgFONz5MJaxoMB/ew3OZAz5fYlbPhN9xRLVIP1
- YbeLk6BVp1h2FCWUDhna7tpSwmSsym/qe63LuEflkr3rbTQv9gXvJLFOkU3XAJjODTCe
- icRw==
-X-Gm-Message-State: ABy/qLY14pbrr2VmN9XN3XX7tT35ZOhJLhFh0mvva421bI/qv7JQv92Z
- mnVJy0ivLmlXZsy2Lk4URWc=
-X-Google-Smtp-Source: APBJJlHBLQ8XNn2k6yRpwy6emIp4zu4sQ3UN9p3RRPuMEeivGzDjVgJchkCYOS9BVowv8/1bzFp5Iw==
-X-Received: by 2002:a17:902:c3c6:b0:1b8:1c9e:444e with SMTP id
- j6-20020a170902c3c600b001b81c9e444emr16551314plj.25.1689728598625; 
- Tue, 18 Jul 2023 18:03:18 -0700 (PDT)
-Received: from localhost.localdomain ([146.112.118.69])
- by smtp.gmail.com with ESMTPSA id
- p12-20020a170902e74c00b001bb515e6b39sm193517plf.306.2023.07.18.18.03.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 18 Jul 2023 18:03:18 -0700 (PDT)
-Subject: Re: [PATCH for-8.0] tcg/sparc64: Disable direct linking for goto_tb
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, philmd@linaro.org
-References: <20230404150435.1571646-1-richard.henderson@linaro.org>
-From: Jordan Niethe <jniethe5@gmail.com>
-Message-ID: <d9644b89-6ddf-8569-3ff8-b0c0b4f9dbe3@gmail.com>
-Date: Wed, 19 Jul 2023 11:03:13 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+ d=1e100.net; s=20221208; t=1689728630; x=1692320630;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=q74qDzO1rVoFNt1s44E7atU8GlOTUQvVA8eYLXCeC6k=;
+ b=VcMXzY6IoqsbEbMLnaraQN/6C2BsJ1rrhEtcQerYP1btIC9RFUZ8ufga8K6LXjAAG5
+ sUVAQprSoMXMygU8rdx8hwVonNxrTQ2t2p17eb5LE/jHq+fXMorFW2Dbq6480otFAtAf
+ IhqiGW94bU6MEGt1qcEXk4QaWLjDGfW/p6y09iRCB0Uezzdv4yM2+HXzDhhmIn4n4N87
+ q2xzlmlP/TyCQpAbT7zSUoaNbs/wxMFtvZyAjRkTfWLfb3RnbSLzaUtKOCW5F52cA9/C
+ Ma+RItT1lpe4KerLAqsum/tOyx2ZBl/nELp3EZRZnTN+bBzUKD16U2osA1M3me44+Aq3
+ 9JxQ==
+X-Gm-Message-State: ABy/qLbozAxvp6mL44nE3UgWPwy2Q7eMDc1/3+EIVZ5F205Zvmd1q9ds
+ XkILLSoOeEOVGtPUMd6fbNOO44+8yCByd4bDIfU=
+X-Google-Smtp-Source: APBJJlEZLi+dfdsKQpYNeHRQ3nhhFvkxtu4AmRyjCRvURy2bld4FfqYJY/GEnwtUziF8WuNlnep/9y8bLq5416CkcJM=
+X-Received: by 2002:a67:f84d:0:b0:443:a4d2:86b9 with SMTP id
+ b13-20020a67f84d000000b00443a4d286b9mr10145498vsp.0.1689728630521; Tue, 18
+ Jul 2023 18:03:50 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20230404150435.1571646-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=jniethe5@gmail.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20230711121453.59138-1-philmd@linaro.org>
+ <20230711121453.59138-11-philmd@linaro.org>
+In-Reply-To: <20230711121453.59138-11-philmd@linaro.org>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Wed, 19 Jul 2023 11:03:24 +1000
+Message-ID: <CAKmqyKOcVm0+Dux3WcFqhWj4pD-urt68+ds7ofh3NEjOMEV0aA@mail.gmail.com>
+Subject: Re: [PATCH v3 10/16] target/riscv: Extract TCG-specific code from
+ debug.c
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e32;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe32.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.095,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,75 +88,413 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Jul 11, 2023 at 10:21=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> Extract TCG-specific code from debug.c to tcg/sysemu/debug.c,
+> restrict the prototypes to TCG, adapt meson rules.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 
-On 5/4/23 1:04 am, Richard Henderson wrote:
-> Something is wrong with this code, and also wrong with gdb on the
-> sparc systems to which I have access, so I cannot debug it either.
-> Disable for now, so the release is not broken.
+Alistair
 
-I'm not sure if it is the entire problem but it looks like the broken 
-code had the same race as on ppc [1] between loading TCG_REG_TB and 
-patching and executing the direct branch.
-
-[1] 
-https://lore.kernel.org/qemu-devel/20230717093001.13167-1-jniethe5@gmail.com/#t
-
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   tcg/sparc64/tcg-target.c.inc | 30 ++++--------------------------
->   1 file changed, 4 insertions(+), 26 deletions(-)
-> 
-> diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
-> index ccc4144f7c..694f2b9dd4 100644
-> --- a/tcg/sparc64/tcg-target.c.inc
-> +++ b/tcg/sparc64/tcg-target.c.inc
-> @@ -1445,12 +1445,12 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
->   {
->       ptrdiff_t off = tcg_tbrel_diff(s, (void *)get_jmp_target_addr(s, which));
->   
-> -    /* Direct branch will be patched by tb_target_set_jmp_target. */
-> +    /* Load link and indirect branch. */
->       set_jmp_insn_offset(s, which);
-> -    tcg_out32(s, CALL);
-> -    /* delay slot */
-> -    tcg_debug_assert(check_fit_ptr(off, 13));
->       tcg_out_ld(s, TCG_TYPE_PTR, TCG_REG_TB, TCG_REG_TB, off);
-> +    tcg_out_arithi(s, TCG_REG_G0, TCG_REG_TB, 0, JMPL);
-> +    /* delay slot */
-> +    tcg_out_nop(s);
->       set_jmp_reset_offset(s, which);
->   
->       /*
-> @@ -1469,28 +1469,6 @@ static void tcg_out_goto_tb(TCGContext *s, int which)
->   void tb_target_set_jmp_target(const TranslationBlock *tb, int n,
->                                 uintptr_t jmp_rx, uintptr_t jmp_rw)
->   {
-> -    uintptr_t addr = tb->jmp_target_addr[n];
-> -    intptr_t br_disp = (intptr_t)(addr - jmp_rx) >> 2;
-> -    tcg_insn_unit insn;
+>  target/riscv/debug.h                |   2 +
+>  target/riscv/debug.c                | 148 -------------------------
+>  target/riscv/tcg/sysemu/debug.c     | 165 ++++++++++++++++++++++++++++
+>  target/riscv/tcg/meson.build        |   2 +
+>  target/riscv/tcg/sysemu/meson.build |   3 +
+>  5 files changed, 172 insertions(+), 148 deletions(-)
+>  create mode 100644 target/riscv/tcg/sysemu/debug.c
+>  create mode 100644 target/riscv/tcg/sysemu/meson.build
+>
+> diff --git a/target/riscv/debug.h b/target/riscv/debug.h
+> index 65cd45b8f3..0b3bdd5be1 100644
+> --- a/target/riscv/debug.h
+> +++ b/target/riscv/debug.h
+> @@ -139,9 +139,11 @@ void tdata_csr_write(CPURISCVState *env, int tdata_i=
+ndex, target_ulong val);
+>
+>  target_ulong tinfo_csr_read(CPURISCVState *env);
+>
+> +#ifdef CONFIG_TCG
+>  void riscv_cpu_debug_excp_handler(CPUState *cs);
+>  bool riscv_cpu_debug_check_breakpoint(CPUState *cs);
+>  bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp);
+> +#endif
+>
+>  void riscv_trigger_init(CPURISCVState *env);
+>
+> diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+> index 5676f2c57e..45a2605d8a 100644
+> --- a/target/riscv/debug.c
+> +++ b/target/riscv/debug.c
+> @@ -754,154 +754,6 @@ target_ulong tinfo_csr_read(CPURISCVState *env)
+>             BIT(TRIGGER_TYPE_AD_MATCH6);
+>  }
+>
+> -void riscv_cpu_debug_excp_handler(CPUState *cs)
+> -{
+> -    RISCVCPU *cpu =3D RISCV_CPU(cs);
+> -    CPURISCVState *env =3D &cpu->env;
 > -
-> -    br_disp >>= 2;
-> -    if (check_fit_ptr(br_disp, 19)) {
-> -        /* ba,pt %icc, addr */
-> -        insn = deposit32(INSN_OP(0) | INSN_OP2(1) | INSN_COND(COND_A)
-> -                         | BPCC_ICC | BPCC_PT, 0, 19, br_disp);
-> -    } else if (check_fit_ptr(br_disp, 22)) {
-> -        /* ba addr */
-> -        insn = deposit32(INSN_OP(0) | INSN_OP2(2) | INSN_COND(COND_A),
-> -                         0, 22, br_disp);
+> -    if (cs->watchpoint_hit) {
+> -        if (cs->watchpoint_hit->flags & BP_CPU) {
+> -            do_trigger_action(env, DBG_ACTION_BP);
+> -        }
 > -    } else {
-> -        /* The code_gen_buffer can't be larger than 2GB.  */
-> -        tcg_debug_assert(check_fit_ptr(br_disp, 30));
-> -        /* call addr */
-> -        insn = deposit32(CALL, 0, 30, br_disp);
+> -        if (cpu_breakpoint_test(cs, env->pc, BP_CPU)) {
+> -            do_trigger_action(env, DBG_ACTION_BP);
+> -        }
+> -    }
+> -}
+> -
+> -bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
+> -{
+> -    RISCVCPU *cpu =3D RISCV_CPU(cs);
+> -    CPURISCVState *env =3D &cpu->env;
+> -    CPUBreakpoint *bp;
+> -    target_ulong ctrl;
+> -    target_ulong pc;
+> -    int trigger_type;
+> -    int i;
+> -
+> -    QTAILQ_FOREACH(bp, &cs->breakpoints, entry) {
+> -        for (i =3D 0; i < RV_MAX_TRIGGERS; i++) {
+> -            trigger_type =3D get_trigger_type(env, i);
+> -
+> -            switch (trigger_type) {
+> -            case TRIGGER_TYPE_AD_MATCH:
+> -                /* type 2 trigger cannot be fired in VU/VS mode */
+> -                if (env->virt_enabled) {
+> -                    return false;
+> -                }
+> -
+> -                ctrl =3D env->tdata1[i];
+> -                pc =3D env->tdata2[i];
+> -
+> -                if ((ctrl & TYPE2_EXEC) && (bp->pc =3D=3D pc)) {
+> -                    /* check U/S/M bit against current privilege level *=
+/
+> -                    if ((ctrl >> 3) & BIT(env->priv)) {
+> -                        return true;
+> -                    }
+> -                }
+> -                break;
+> -            case TRIGGER_TYPE_AD_MATCH6:
+> -                ctrl =3D env->tdata1[i];
+> -                pc =3D env->tdata2[i];
+> -
+> -                if ((ctrl & TYPE6_EXEC) && (bp->pc =3D=3D pc)) {
+> -                    if (env->virt_enabled) {
+> -                        /* check VU/VS bit against current privilege lev=
+el */
+> -                        if ((ctrl >> 23) & BIT(env->priv)) {
+> -                            return true;
+> -                        }
+> -                    } else {
+> -                        /* check U/S/M bit against current privilege lev=
+el */
+> -                        if ((ctrl >> 3) & BIT(env->priv)) {
+> -                            return true;
+> -                        }
+> -                    }
+> -                }
+> -                break;
+> -            default:
+> -                /* other trigger types are not supported or irrelevant *=
+/
+> -                break;
+> -            }
+> -        }
 > -    }
 > -
-> -    qatomic_set((uint32_t *)jmp_rw, insn);
-> -    flush_idcache_range(jmp_rx, jmp_rw, 4);
->   }
->   
->   static void tcg_out_op(TCGContext *s, TCGOpcode opc,
-> 
+> -    return false;
+> -}
+> -
+> -bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
+> -{
+> -    RISCVCPU *cpu =3D RISCV_CPU(cs);
+> -    CPURISCVState *env =3D &cpu->env;
+> -    target_ulong ctrl;
+> -    target_ulong addr;
+> -    int trigger_type;
+> -    int flags;
+> -    int i;
+> -
+> -    for (i =3D 0; i < RV_MAX_TRIGGERS; i++) {
+> -        trigger_type =3D get_trigger_type(env, i);
+> -
+> -        switch (trigger_type) {
+> -        case TRIGGER_TYPE_AD_MATCH:
+> -            /* type 2 trigger cannot be fired in VU/VS mode */
+> -            if (env->virt_enabled) {
+> -                return false;
+> -            }
+> -
+> -            ctrl =3D env->tdata1[i];
+> -            addr =3D env->tdata2[i];
+> -            flags =3D 0;
+> -
+> -            if (ctrl & TYPE2_LOAD) {
+> -                flags |=3D BP_MEM_READ;
+> -            }
+> -            if (ctrl & TYPE2_STORE) {
+> -                flags |=3D BP_MEM_WRITE;
+> -            }
+> -
+> -            if ((wp->flags & flags) && (wp->vaddr =3D=3D addr)) {
+> -                /* check U/S/M bit against current privilege level */
+> -                if ((ctrl >> 3) & BIT(env->priv)) {
+> -                    return true;
+> -                }
+> -            }
+> -            break;
+> -        case TRIGGER_TYPE_AD_MATCH6:
+> -            ctrl =3D env->tdata1[i];
+> -            addr =3D env->tdata2[i];
+> -            flags =3D 0;
+> -
+> -            if (ctrl & TYPE6_LOAD) {
+> -                flags |=3D BP_MEM_READ;
+> -            }
+> -            if (ctrl & TYPE6_STORE) {
+> -                flags |=3D BP_MEM_WRITE;
+> -            }
+> -
+> -            if ((wp->flags & flags) && (wp->vaddr =3D=3D addr)) {
+> -                if (env->virt_enabled) {
+> -                    /* check VU/VS bit against current privilege level *=
+/
+> -                    if ((ctrl >> 23) & BIT(env->priv)) {
+> -                        return true;
+> -                    }
+> -                } else {
+> -                    /* check U/S/M bit against current privilege level *=
+/
+> -                    if ((ctrl >> 3) & BIT(env->priv)) {
+> -                        return true;
+> -                    }
+> -                }
+> -            }
+> -            break;
+> -        default:
+> -            /* other trigger types are not supported */
+> -            break;
+> -        }
+> -    }
+> -
+> -    return false;
+> -}
+> -
+>  void riscv_trigger_init(CPURISCVState *env)
+>  {
+>      target_ulong tdata1 =3D build_tdata1(env, TRIGGER_TYPE_AD_MATCH, 0, =
+0);
+> diff --git a/target/riscv/tcg/sysemu/debug.c b/target/riscv/tcg/sysemu/de=
+bug.c
+> new file mode 100644
+> index 0000000000..cdd6744b3a
+> --- /dev/null
+> +++ b/target/riscv/tcg/sysemu/debug.c
+> @@ -0,0 +1,165 @@
+> +/*
+> + * QEMU RISC-V Native Debug Support (TCG specific)
+> + *
+> + * Copyright (c) 2022 Wind River Systems, Inc.
+> + *
+> + * Author:
+> + *   Bin Meng <bin.meng@windriver.com>
+> + *
+> + * This provides the native debug support via the Trigger Module, as def=
+ined
+> + * in the RISC-V Debug Specification:
+> + * https://github.com/riscv/riscv-debug-spec/raw/master/riscv-debug-stab=
+le.pdf
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "cpu.h"
+> +
+> +void riscv_cpu_debug_excp_handler(CPUState *cs)
+> +{
+> +    RISCVCPU *cpu =3D RISCV_CPU(cs);
+> +    CPURISCVState *env =3D &cpu->env;
+> +
+> +    if (cs->watchpoint_hit) {
+> +        if (cs->watchpoint_hit->flags & BP_CPU) {
+> +            do_trigger_action(env, DBG_ACTION_BP);
+> +        }
+> +    } else {
+> +        if (cpu_breakpoint_test(cs, env->pc, BP_CPU)) {
+> +            do_trigger_action(env, DBG_ACTION_BP);
+> +        }
+> +    }
+> +}
+> +
+> +bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
+> +{
+> +    RISCVCPU *cpu =3D RISCV_CPU(cs);
+> +    CPURISCVState *env =3D &cpu->env;
+> +    CPUBreakpoint *bp;
+> +    target_ulong ctrl;
+> +    target_ulong pc;
+> +    int trigger_type;
+> +    int i;
+> +
+> +    QTAILQ_FOREACH(bp, &cs->breakpoints, entry) {
+> +        for (i =3D 0; i < RV_MAX_TRIGGERS; i++) {
+> +            trigger_type =3D get_trigger_type(env, i);
+> +
+> +            switch (trigger_type) {
+> +            case TRIGGER_TYPE_AD_MATCH:
+> +                /* type 2 trigger cannot be fired in VU/VS mode */
+> +                if (env->virt_enabled) {
+> +                    return false;
+> +                }
+> +
+> +                ctrl =3D env->tdata1[i];
+> +                pc =3D env->tdata2[i];
+> +
+> +                if ((ctrl & TYPE2_EXEC) && (bp->pc =3D=3D pc)) {
+> +                    /* check U/S/M bit against current privilege level *=
+/
+> +                    if ((ctrl >> 3) & BIT(env->priv)) {
+> +                        return true;
+> +                    }
+> +                }
+> +                break;
+> +            case TRIGGER_TYPE_AD_MATCH6:
+> +                ctrl =3D env->tdata1[i];
+> +                pc =3D env->tdata2[i];
+> +
+> +                if ((ctrl & TYPE6_EXEC) && (bp->pc =3D=3D pc)) {
+> +                    if (env->virt_enabled) {
+> +                        /* check VU/VS bit against current privilege lev=
+el */
+> +                        if ((ctrl >> 23) & BIT(env->priv)) {
+> +                            return true;
+> +                        }
+> +                    } else {
+> +                        /* check U/S/M bit against current privilege lev=
+el */
+> +                        if ((ctrl >> 3) & BIT(env->priv)) {
+> +                            return true;
+> +                        }
+> +                    }
+> +                }
+> +                break;
+> +            default:
+> +                /* other trigger types are not supported or irrelevant *=
+/
+> +                break;
+> +            }
+> +        }
+> +    }
+> +
+> +    return false;
+> +}
+> +
+> +bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
+> +{
+> +    RISCVCPU *cpu =3D RISCV_CPU(cs);
+> +    CPURISCVState *env =3D &cpu->env;
+> +    target_ulong ctrl;
+> +    target_ulong addr;
+> +    int trigger_type;
+> +    int flags;
+> +    int i;
+> +
+> +    for (i =3D 0; i < RV_MAX_TRIGGERS; i++) {
+> +        trigger_type =3D get_trigger_type(env, i);
+> +
+> +        switch (trigger_type) {
+> +        case TRIGGER_TYPE_AD_MATCH:
+> +            /* type 2 trigger cannot be fired in VU/VS mode */
+> +            if (env->virt_enabled) {
+> +                return false;
+> +            }
+> +
+> +            ctrl =3D env->tdata1[i];
+> +            addr =3D env->tdata2[i];
+> +            flags =3D 0;
+> +
+> +            if (ctrl & TYPE2_LOAD) {
+> +                flags |=3D BP_MEM_READ;
+> +            }
+> +            if (ctrl & TYPE2_STORE) {
+> +                flags |=3D BP_MEM_WRITE;
+> +            }
+> +
+> +            if ((wp->flags & flags) && (wp->vaddr =3D=3D addr)) {
+> +                /* check U/S/M bit against current privilege level */
+> +                if ((ctrl >> 3) & BIT(env->priv)) {
+> +                    return true;
+> +                }
+> +            }
+> +            break;
+> +        case TRIGGER_TYPE_AD_MATCH6:
+> +            ctrl =3D env->tdata1[i];
+> +            addr =3D env->tdata2[i];
+> +            flags =3D 0;
+> +
+> +            if (ctrl & TYPE6_LOAD) {
+> +                flags |=3D BP_MEM_READ;
+> +            }
+> +            if (ctrl & TYPE6_STORE) {
+> +                flags |=3D BP_MEM_WRITE;
+> +            }
+> +
+> +            if ((wp->flags & flags) && (wp->vaddr =3D=3D addr)) {
+> +                if (env->virt_enabled) {
+> +                    /* check VU/VS bit against current privilege level *=
+/
+> +                    if ((ctrl >> 23) & BIT(env->priv)) {
+> +                        return true;
+> +                    }
+> +                } else {
+> +                    /* check U/S/M bit against current privilege level *=
+/
+> +                    if ((ctrl >> 3) & BIT(env->priv)) {
+> +                        return true;
+> +                    }
+> +                }
+> +            }
+> +            break;
+> +        default:
+> +            /* other trigger types are not supported */
+> +            break;
+> +        }
+> +    }
+> +
+> +    return false;
+> +}
+> diff --git a/target/riscv/tcg/meson.build b/target/riscv/tcg/meson.build
+> index a615aafd9a..933d340799 100644
+> --- a/target/riscv/tcg/meson.build
+> +++ b/target/riscv/tcg/meson.build
+> @@ -18,3 +18,5 @@ riscv_ss.add(when: 'CONFIG_TCG', if_true: files(
+>    'crypto_helper.c',
+>    'zce_helper.c',
+>  ), if_false: files('tcg-stub.c'))
+> +
+> +subdir('sysemu')
+> diff --git a/target/riscv/tcg/sysemu/meson.build b/target/riscv/tcg/sysem=
+u/meson.build
+> new file mode 100644
+> index 0000000000..e8e61e5784
+> --- /dev/null
+> +++ b/target/riscv/tcg/sysemu/meson.build
+> @@ -0,0 +1,3 @@
+> +riscv_system_ss.add(when: 'CONFIG_TCG', if_true: files(
+> +  'debug.c',
+> +))
+> --
+> 2.38.1
+>
+>
 
