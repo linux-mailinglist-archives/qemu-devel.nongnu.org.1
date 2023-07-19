@@ -2,93 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 952C3758D45
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 07:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BE8758DA6
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 08:19:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qLzuc-0004lr-L0; Wed, 19 Jul 2023 01:39:46 -0400
+	id 1qM0V3-00039R-Og; Wed, 19 Jul 2023 02:17:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anup@brainfault.org>)
- id 1qLzuR-0004jr-As
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 01:39:37 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qM0Uo-00036s-D8
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 02:17:11 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <anup@brainfault.org>)
- id 1qLzuN-00020k-5a
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 01:39:35 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-51e48e1f6d1so8805578a12.1
- for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 22:39:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qM0Uk-0001Mc-LQ
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 02:17:10 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-26304be177fso3582213a91.1
+ for <qemu-devel@nongnu.org>; Tue, 18 Jul 2023 23:15:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=brainfault-org.20221208.gappssmtp.com; s=20221208; t=1689745168; x=1692337168;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=W5d/i/dGDjP7U09IXayOr3fCVVtIO7R7WGnAxr59wNc=;
- b=KDukS+uZQKvAS8X5pXTiuWSQMFndxLo/Vfp8FLFqxAtCZnhjgSyUKP7ohFzo/txUZe
- k7S9ASKYmsR9RZ4DM60gJZ/vaL+7QiWug3QtumrueRFNJ8a3pUOPDLV8/GK8pH5+vQUn
- 9OkBrDJGmiCVMo0vicDJLlj3tC0+KvpH32kWsGOrXbqCaqZ0Cmqrjaxatpyf7ITimhQ5
- gktIpgvFbXDksT9mZVVwvOqL9obd79pgLiWAu78bNs1qe1zxvaUQn4Nai4ZVeyS7aK3u
- kLqI3mOlgz6yZNSxZduztaOXD3BsmY2N0XEaiyNntLJEyTzSbV8CDZeTISWmNDU5cBef
- DGZw==
+ d=smartx-com.20221208.gappssmtp.com; s=20221208; t=1689747302; x=1692339302;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=GyyBMOErd6EeuTwPQC8uB82OXwLJxFVedS46dVL9Z2Y=;
+ b=zj0sriF8ZXf2AlYLED2gFBfYPZfKhgKjgXgYPTWT3/RFJlQjfzOeMW5skhoIrcvDVy
+ H+1M98e7i2DTygBJ90i6sTYenCNHYDnPKOV4mFnXI9EwNFNfa78IddgxGavZKE59i9o8
+ 9RhnmTJhKD/XJHAoFL2pwwTgAOj+wpwFbhHvyXVKVmvw7CM7fpNHTWGZLnZgoPjxq47W
+ AJziWwoDCfvuHJuyGjPpW6G9XbK8N0VjPH2SfMlQoNyJK1MXzlkjecDjW4tYzjwBqA00
+ dhSN19avbR2MjgcbhM9U8vdvUWsa+lxO2JtzCyOvuQzAHL2szl6/bvtka7i3dCmt8fR8
+ el4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689745168; x=1692337168;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=W5d/i/dGDjP7U09IXayOr3fCVVtIO7R7WGnAxr59wNc=;
- b=jJidbncabf7u6nelZbjpd3nRRmbaToYLFk2IaPEFy6oATRDDAF1pMe9PE9HVi3nW+C
- X4P7Vkv2UZeqgmd/zBHO5aKZb0B0wdCz7DoC7Ka9m2AupmCSfVkkHtUn4ni8LM5oQRXB
- Qa8ElrUwYm1+b91oCbTg0vMah+oCN5rcK6uEcBbFyeG/UcH2ceSjDzKR6u3bPIWr8Ed0
- I93kcb94K5xozj2T2uQ+yuzdb3r9gV/V17vOzoe1b3kGGfev20aEIKVDtzQD5opxs2T4
- 0SAw8Tpob+YQN3MZs4NW0p6ONq0pFSErCup78EZdxMPolhHA6DaMhLh+fZyPHFordfbD
- VDHA==
-X-Gm-Message-State: ABy/qLbxbY/vC7jtanjESRchKqtwdDLtMqOOFFCeLURn3Wrz35Drebyi
- 8nnTBsmPemrcwxQ076lImBnn0GBFQcMNx+ipiJlBKA==
-X-Google-Smtp-Source: APBJJlH/GlG+OaY0TYtmINaM4/zxWvfhdaxOMwLYIqwf8jboX8rLirpqHIJK6G8cVG0vTx1esNxSjFfReIK4pv3jjKg=
-X-Received: by 2002:a05:6402:345:b0:51e:d76:25b2 with SMTP id
- r5-20020a056402034500b0051e0d7625b2mr1503473edw.29.1689745168074; Tue, 18 Jul
- 2023 22:39:28 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689747302; x=1692339302;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GyyBMOErd6EeuTwPQC8uB82OXwLJxFVedS46dVL9Z2Y=;
+ b=OuSq6GSlZp48KyJ9V/qLHPJyVidfa//W6JggSsRLuhFPBPJFPdQebPozB7DOGvyQVw
+ FmsZmL/+Qd601LDi+CsN56lS6ND7DogNSndVFVlpEFcnTpj4fsEetjG4t0+9vOWvDsnD
+ ZJuwgqTpOtE8/00kPvgGWtFEr7qJcYTJuzGGP8fpkFPJOKhK7X+a01jFwEiY9rfze0J5
+ 5syRpgIq0Aec+qyx9MrFO/qINig1JH5+b/OoNnmH4ScqXXSwW3X671XSiH+8AtddhqHk
+ cCSnxvGUVQbCbPYij3EwFZSunPyVikSlzKDI573ZeYwQIC5gLpvI8bqHGTNjP2KDs8Qg
+ pDrw==
+X-Gm-Message-State: ABy/qLaBLsxCAHQufGtHRDgESId9B+9MHyBNEj0SGPntjoVMkPndbt9Z
+ xINFwbCFoyqTcAZ52aKGr+NxGBqJMaWMzFW17fzPmg==
+X-Google-Smtp-Source: APBJJlHRdufVsWd1BmU5Y+6BqEMKjjt49NpbUsNdkYyLOzRsXl3HlmluV2pE+Ja5sFy8IdeomCc7wy/MpmGQnA9WUew=
+X-Received: by 2002:a17:90a:7444:b0:259:10a8:2389 with SMTP id
+ o4-20020a17090a744400b0025910a82389mr12826424pjk.35.1689747301945; Tue, 18
+ Jul 2023 23:15:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230712-stench-happiness-40c2ea831257@spud>
- <3e9b5be8-d3ca-3a17-bef9-4a6a5bdc0ad0@ventanamicro.com>
- <20230712-tulip-replica-0322e71c3e81@spud>
- <744cbde6-7ce5-c327-3c5a-3858e994cc39@ventanamicro.com>
- <20230712-superhero-rabid-578605f52927@spud>
- <5dd3366d-13ba-c7fb-554f-549d97e7d4f9@ventanamicro.com>
- <20230712-fancied-aviator-270f51166407@spud>
- <20230713-craziness-lankiness-8aec3db24993@spud>
- <CAAhSdy3J5HUoVP21jo11FBuAFSPSxHNKtuL7amn-5t7n_smoSg@mail.gmail.com>
- <20230714-reoccur-confined-4b37494b1201@spud>
- <20230714-hash-handwrite-339817b93ba1@spud>
- <CAOnJCUL3=G_yV5cP5OjCGQKNvciNgXWnoQGUU4Bqh4iwnx6C4A@mail.gmail.com>
- <CAKmqyKO3O87ETntm7pzMPedKW19ANpEp5nM4jFiHXO76K9saTQ@mail.gmail.com>
-In-Reply-To: <CAKmqyKO3O87ETntm7pzMPedKW19ANpEp5nM4jFiHXO76K9saTQ@mail.gmail.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Wed, 19 Jul 2023 11:09:16 +0530
-Message-ID: <CAAhSdy1+wRpqoTFmBRNF7uFnc_fFCyCnt5ctoMu7zhTiu2GcTg@mail.gmail.com>
-Subject: Re: Boot failure after QEMU's upgrade to OpenSBI v1.3 (was Re: [PATCH
- for-8.2 6/7] target/riscv: add 'max' CPU type)
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Atish Patra <atishp@atishpatra.org>, Anup Patel <apatel@ventanamicro.com>, 
- Conor Dooley <conor.dooley@microchip.com>, Conor Dooley <conor@kernel.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, 
- alistair.francis@wdc.com, bmeng@tinylab.org, liweiwei@iscas.ac.cn, 
- zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com, 
- opensbi@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: none client-ip=2a00:1450:4864:20::536;
- envelope-from=anup@brainfault.org; helo=mail-ed1-x536.google.com
+References: <168870305868.29142.5121604177475325995-4@git.sr.ht>
+ <875y6oj80i.fsf@pond.sub.org>
+ <CAK9dgmZ73F2qrD-iM-EBSiARRmwGPPorsLdt8NqmkOSyYaRCVw@mail.gmail.com>
+ <87zg3tjxb2.fsf@pond.sub.org>
+ <CAK9dgmYyxZC_6CPZcgudXVpRXKcdd6kXTsYLhZ_PTiOh=c4-2g@mail.gmail.com>
+ <87a5vsh3p3.fsf@pond.sub.org>
+In-Reply-To: <87a5vsh3p3.fsf@pond.sub.org>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Wed, 19 Jul 2023 14:14:45 +0800
+Message-ID: <CAK9dgmZeJL0M9Lc4S6o5R=GvtyXmKvBeHmTBbcfPiYE7w=uTXQ@mail.gmail.com>
+Subject: Re: [PATCH QEMU v8 4/9] migration: Introduce dirty-limit capability
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Peter Xu <peterx@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Juan Quintela <quintela@redhat.com>, 
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000b16ac50600d0f389"
+Received-SPF: none client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=yong.huang@smartx.com; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,166 +94,415 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 19, 2023 at 7:03=E2=80=AFAM Alistair Francis <alistair23@gmail.=
-com> wrote:
+--000000000000b16ac50600d0f389
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Jul 19, 2023 at 1:26=E2=80=AFPM Markus Armbruster <armbru@redhat.co=
+m> wrote:
+
+> Yong Huang <yong.huang@smartx.com> writes:
 >
-> On Sat, Jul 15, 2023 at 7:14=E2=80=AFPM Atish Patra <atishp@atishpatra.or=
-g> wrote:
+> > On Tue, Jul 18, 2023 at 7:04=E2=80=AFPM Markus Armbruster <armbru@redha=
+t.com>
+> wrote:
 > >
-> > On Fri, Jul 14, 2023 at 5:29=E2=80=AFAM Conor Dooley <conor@kernel.org>=
- wrote:
-> > >
-> > > On Fri, Jul 14, 2023 at 11:19:34AM +0100, Conor Dooley wrote:
-> > > > On Fri, Jul 14, 2023 at 10:00:19AM +0530, Anup Patel wrote:
-> > > >
-> > > > > > > OpenSBI v1.3
-> > > > > > >    ____                    _____ ____ _____
-> > > > > > >   / __ \                  / ____|  _ \_   _|
-> > > > > > >  | |  | |_ __   ___ _ __ | (___ | |_) || |
-> > > > > > >  | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
-> > > > > > >  | |__| | |_) |  __/ | | |____) | |_) || |_
-> > > > > > >   \____/| .__/ \___|_| |_|_____/|___/_____|
-> > > > > > >         | |
-> > > > > > >         |_|
-> > > > > > >
-> > > > > > > init_coldboot: ipi init failed (error -1009)
-> > > > > > >
-> > > > > > > Just to note, because we use our own firmware that vendors in=
- OpenSBI
-> > > > > > > and compiles only a significantly cut down number of files fr=
-om it, we
-> > > > > > > do not use the fw_dynamic etc flow on our hardware. As a resu=
-lt, we have
-> > > > > > > not tested v1.3, nor do we have any immediate plans to change=
- our
-> > > > > > > platform firmware to vendor v1.3 either.
-> > > > > > >
-> > > > > > > I unless there's something obvious to you, it sounds like I w=
-ill need to
-> > > > > > > go and bisect OpenSBI. That's a job for another day though, g=
-iven the
-> > > > > > > time.
-> > > > > > >
-> > > > >
-> > > > > The real issue is some CPU/HART DT nodes marked as disabled in th=
-e
-> > > > > DT passed to OpenSBI 1.3.
-> > > > >
-> > > > > This issue does not exist in any of the DTs generated by QEMU but=
- some
-> > > > > of the DTs in the kernel (such as microchip and SiFive board DTs)=
- have
-> > > > > the E-core disabled.
-> > > > >
-> > > > > I had discovered this issue in a totally different context after =
-the OpenSBI 1.3
-> > > > > release happened. This issue is already fixed in the latest OpenS=
-BI by the
-> > > > > following commit c6a35733b74aeff612398f274ed19a74f81d1f37 ("lib: =
-utils:
-> > > > > Fix sbi_hartid_to_scratch() usage in ACLINT drivers").
-> > > >
-> > > > Great, thanks Anup! I thought I had tested tip-of-tree too, but
-> > > > obviously not.
-> > > >
-> > > > > I always assumed that Microchip hss.bin is the preferred BIOS for=
- the
-> > > > > QEMU microchip-icicle-kit machine but I guess that's not true.
-> > > >
-> > > > Unfortunately the HSS has not worked in QEMU for a long time, and w=
-hile
-> > > > I would love to fix it, but am pretty stretched for spare time to b=
-egin
-> > > > with.
-> > > > I usually just do direct kernel boots, which use the OpenSBI that c=
-omes
-> > > > with QEMU, as I am sure you already know :)
-> > > >
-> > > > > At this point, you can either:
-> > > > > 1) Use latest OpenSBI on QEMU microchip-icicle-kit machine
-> > >
-> > > I forgot to reply to this point, wondering what should be done with
-> > > QEMU. Bumping to v1.3 in QEMU introduces a regression here, regardles=
+> >> Yong Huang <yong.huang@smartx.com> writes:
+> >>
+> >> > On Thu, Jul 13, 2023 at 8:44=E2=80=AFPM Markus Armbruster <armbru@re=
+dhat.com>
+> >> wrote:
+> >> >
+> >> >> ~hyman <hyman@git.sr.ht> writes:
+> >> >>
+> >> >> > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
+> >> >> >
+> >> >> > Introduce migration dirty-limit capability, which can
+> >> >> > be turned on before live migration and limit dirty
+> >> >> > page rate durty live migration.
+> >> >> >
+> >> >> > Introduce migrate_dirty_limit function to help check
+> >> >> > if dirty-limit capability enabled during live migration.
+> >> >> >
+> >> >> > Meanwhile, refactor vcpu_dirty_rate_stat_collect
+> >> >> > so that period can be configured instead of hardcoded.
+> >> >> >
+> >> >> > dirty-limit capability is kind of like auto-converge
+> >> >> > but using dirty limit instead of traditional cpu-throttle
+> >> >> > to throttle guest down. To enable this feature, turn on
+> >> >> > the dirty-limit capability before live migration using
+> >> >> > migrate-set-capabilities, and set the parameters
+> >> >> > "x-vcpu-dirty-limit-period", "vcpu-dirty-limit" suitably
+> >> >> > to speed up convergence.
+> >> >> >
+> >> >> > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx=
+.com>
+> >> >> > Acked-by: Peter Xu <peterx@redhat.com>
+> >> >> > Reviewed-by: Juan Quintela <quintela@redhat.com>
+> >> >>
+> >> >> [...]
+> >> >>
+> >> >> > diff --git a/qapi/migration.json b/qapi/migration.json
+> >> >> > index e43371955a..031832cde5 100644
+> >> >> > --- a/qapi/migration.json
+> >> >> > +++ b/qapi/migration.json
+> >> >> > @@ -497,6 +497,15 @@
+> >> >> >  #     are present.  'return-path' capability must be enabled to
+> use
+> >> >> >  #     it.  (since 8.1)
+> >> >> >  #
+> >> >> > +# @dirty-limit: If enabled, migration will use the dirty-limit
+> >> >> > +#     algorithm to throttle down guest instead of auto-converge
+> >> >> > +#     algorithm. This algorithm only works when vCPU's dirtyrate
+> >> >>
+> >> >> Two spaces after sentence-ending punctuation, please.
+> >> >>
+> >> >> "dirty rate" with a space, because that's how we spell it elsewhere=
+.
+> >> >>
+> >> >> > +#     greater than 'vcpu-dirty-limit', read processes in guest o=
 s
-> > > of whether I can go and build a fixed version of OpenSBI.
-> > >
-> > FYI: The no-map fix went in OpenSBI v1.3. Without the upgrade, any
-> > user using the latest kernel (> v6.4)
-> > may hit those random linear map related issues (in hibernation or EFI
-> > booting path).
-> >
-> > There are three possible scenarios:
-> >
-> > 1. Upgrade to OpenSBI v1.3: Any user of microchip-icicle-kit machine
-> > or sifive fu540 machine users
-> > may hit this issue if the device tree has the disabled hart (e core).
-> > 2. No upgrade to OpenSBI v1.2. Any user using hibernation or UEFI may
-> > have issues [1]
-> > 3. Include a non-release version OpenSBI in Qemu with the fix as an exc=
-eption.
-> >
-> > #3 probably deviates from policy and sets a bad precedent. So I am not
-> > advocating for it though ;)
-> > For both #1 & #2, the solution would be to use the latest OpenSBI in
-> > -bios argument instead of the stock one.
-> > I could be wrong but my guess is the number of users facing #2 would
-> > be higher than #1.
+> >> >> > +#     aren't penalized any more, so the algorithm can improve
+> >> >> > +#     performance of vCPU during live migration. This is an
+> optional
+> >> >> > +#     performance feature and should not affect the correctness =
+of
+> >> the
+> >> >> > +#     existing auto-converge algorithm. (since 8.1)
+> >> >> > +#
+> >> >>
+> >> >> I'm still confused.
+> >> >>
+> >> >> The text suggests there are two separate algorithms "to throttle do=
+wn
+> >> >> guest": "auto converge" and "dirty limit", and we get to pick one.
+> >> >> Correct?
+> >> >>
+> >> > Yes, indeed !
+> >> >
+> >> >>
+> >> >> If it is correct, then the last sentence feels redundant: picking
+> >> >> another algorithm can't affect the algorithm we're *not* using.  Wh=
+at
+> >> >> are you trying to express here?
+> >> >>
+> >> > What i want to express is that the new algorithm implementation does
+> >> > not affect the original algorithm, leaving it in the comments seems
+> >> > redundant indeed.  I'll drop this in the next version.
+> >>
+> >> Works for me.
+> >>
+> >> >> When do we use "auto converge", and when do we use "dirty limit"?
+> >> >>
+> >> >> What does the user really need to know about these algorithms?
+> Enough
+> >> >> to pick one, I guess.  That means advantages and disadvantages of t=
+he
+> >> >> two algorithms.  Which are?
+> >> >
+> >> > 1. The implementation of dirty-limit is based on dirty-ring, which i=
+s
+> >> > qualified
+> >> >    to big systems with huge memories and can improve huge guest VM
+> >> >     responsiveness remarkably during live migration. As a consequenc=
+e,
+> >> > dirty-limit
+> >> >     is recommended on platforms with huge guest VMs as is the way wi=
+th
+> >> > dirty-ring.
+> >> > 2. dirty-limit convergence algorithm does not affect the
+> "read-process"
+> >> in
+> >> > guest
+> >> >    VM, so guest VM gains the equal read performance nearly as it run=
+s
+> on
+> >> > host
+> >> >    during the live migration. As a result, dirty-limit is recommende=
+d
+> if
+> >> > the guest
+> >> >     VM requires a stable read performance.
+> >> > The above explanation is about the recommendation of dirty-limit,
+> please
+> >> > review,
+> >> > if it's ok, i'll place it in the comment of the dirty-limit
+> capability.
+> >>
+> >> Yes, please.  But before that, I have still more questions.  "This
+> >> algorithm only works when vCPU's dirtyrate greater than
+> >> 'vcpu-dirty-limit'" is a condition: "FEATURE only works when CONDITION=
+".
+> >>
+> > I failed to express my meaning again : ( .  "Throttle algo only works
+> when
+> > vCPU's  dirtyrate greater than 'vcpu-dirty-limit' " should change to
+> > "vCPU throttle only works when vCPU's dirtyrate greater than
+> > 'vcpu-dirty-limit'".
+> > Not the whole "algo" !
 >
-> Thanks for that info Atish!
+> Let me paraphrase to make sure I got it...  The vCPU is throttled as
+> needed to keep its dirty rate within the limit set with
+> set-vcpu-dirty-limit.  Correct?
 >
-> We are stuck in a bad situation.
->
-> The best solution would be if OpenSBI can release a 1.3.1, @Anup Patel
-> do you think you could do that?
+Yes. Actually set with the internal function qmp_set_vcpu_dirty_limit.
 
-OpenSBI has a major number and minor number in the version but it does
-not have release/patch number so best would be to treat OpenSBI vX.Y.Z
-as bug fixes on-top-of OpenSBI vX.Y. In other words, supervisor software
-won't be able to differentiate between OpenSBI vX.Y.Z and OpenSBI vX.Y
-using sbi_get_impl_version().
+And a parameter called "vcpu-dirty-limit"  of migration provided by
+dirty-limit
+aims to be the argument of qmp_set_vcpu_dirty_limit.
 
-There are only three commits between the ACLINT fix and OpenSBI v1.3
-so as one-of case I will go ahead create OpenSBI v1.3.1 containing only
-four commits on-top of OpenSBI v1.3
 
-Does this sound okay ?
+> What happens when I enable the dirty limit convergence algorithm without
+> setting a limit with set-vcpu-dirty-limit?
+>
+dirty-limit will use the default value which is defined
+in migration/options.c:
+#define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT            1       /* MB/s */
+
+So the default of the dirty-limit is 1MB/s.
 
 >
-> Otherwise I think we should stick with OpenSBI 1.3. Considering that
-> it fixes UEFI boot issues for the virt board (which would be the most
-> used) it seems like a best call to make. People using the other boards
-> are unfortunately stuck building their own OpenSBI release.
+> >> What happens when the condition is not met?  How can the user ensure t=
+he
+> >> condition is met?
+> >>
+> >> [...]
+> >>
+> >>
 >
-> If there is no OpenSBI 1.3.1 release we should add something to the
-> release notes. @Conor Dooley are you able to give a clear sentence on
-> how the boot fails?
 >
-> Alistair
->
-> >
-> > [1] https://lore.kernel.org/linux-riscv/20230625140931.1266216-1-songsh=
-uaishuai@tinylab.org/
-> > > > > 2) Ensure CPU0 DT node is enabled in DT when booting on QEMU
-> > > > >     microchip-icicle-kit machine with OpenSBI 1.3
-> > > >
-> > > > Will OpenSBI disable it? If not, I think option 2) needs to be remo=
-ve
-> > > > the DT node. I'll just use tip-of-tree myself & up to the
-> > >
-> > > Clearly didn't finish this comment. It was meant to say "up to the QE=
-MU
-> > > maintainers what they want to do on the QEMU side of things".
-> > >
-> > > Thanks,
-> > > Conor.
-> >
-> >
-> >
-> > --
-> > Regards,
-> > Atish
-> >
 
-Regards,
-Anup
+--=20
+Best regards
+
+--000000000000b16ac50600d0f389
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jul 19, 20=
+23 at 1:26=E2=80=AFPM Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat=
+.com">armbru@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-=
+style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">Yong Huang=
+ &lt;<a href=3D"mailto:yong.huang@smartx.com" target=3D"_blank">yong.huang@=
+smartx.com</a>&gt; writes:<br>
+<br>
+&gt; On Tue, Jul 18, 2023 at 7:04=E2=80=AFPM Markus Armbruster &lt;<a href=
+=3D"mailto:armbru@redhat.com" target=3D"_blank">armbru@redhat.com</a>&gt; w=
+rote:<br>
+&gt;<br>
+&gt;&gt; Yong Huang &lt;<a href=3D"mailto:yong.huang@smartx.com" target=3D"=
+_blank">yong.huang@smartx.com</a>&gt; writes:<br>
+&gt;&gt;<br>
+&gt;&gt; &gt; On Thu, Jul 13, 2023 at 8:44=E2=80=AFPM Markus Armbruster &lt=
+;<a href=3D"mailto:armbru@redhat.com" target=3D"_blank">armbru@redhat.com</=
+a>&gt;<br>
+&gt;&gt; wrote:<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt;&gt; ~hyman &lt;<a href=3D"mailto:hyman@git.sr.ht" target=3D"_=
+blank">hyman@git.sr.ht</a>&gt; writes:<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;&gt; &gt; From: Hyman Huang(=E9=BB=84=E5=8B=87) &lt;<a href=3D=
+"mailto:yong.huang@smartx.com" target=3D"_blank">yong.huang@smartx.com</a>&=
+gt;<br>
+&gt;&gt; &gt;&gt; &gt;<br>
+&gt;&gt; &gt;&gt; &gt; Introduce migration dirty-limit capability, which ca=
+n<br>
+&gt;&gt; &gt;&gt; &gt; be turned on before live migration and limit dirty<b=
+r>
+&gt;&gt; &gt;&gt; &gt; page rate durty live migration.<br>
+&gt;&gt; &gt;&gt; &gt;<br>
+&gt;&gt; &gt;&gt; &gt; Introduce migrate_dirty_limit function to help check=
+<br>
+&gt;&gt; &gt;&gt; &gt; if dirty-limit capability enabled during live migrat=
+ion.<br>
+&gt;&gt; &gt;&gt; &gt;<br>
+&gt;&gt; &gt;&gt; &gt; Meanwhile, refactor vcpu_dirty_rate_stat_collect<br>
+&gt;&gt; &gt;&gt; &gt; so that period can be configured instead of hardcode=
+d.<br>
+&gt;&gt; &gt;&gt; &gt;<br>
+&gt;&gt; &gt;&gt; &gt; dirty-limit capability is kind of like auto-converge=
+<br>
+&gt;&gt; &gt;&gt; &gt; but using dirty limit instead of traditional cpu-thr=
+ottle<br>
+&gt;&gt; &gt;&gt; &gt; to throttle guest down. To enable this feature, turn=
+ on<br>
+&gt;&gt; &gt;&gt; &gt; the dirty-limit capability before live migration usi=
+ng<br>
+&gt;&gt; &gt;&gt; &gt; migrate-set-capabilities, and set the parameters<br>
+&gt;&gt; &gt;&gt; &gt; &quot;x-vcpu-dirty-limit-period&quot;, &quot;vcpu-di=
+rty-limit&quot; suitably<br>
+&gt;&gt; &gt;&gt; &gt; to speed up convergence.<br>
+&gt;&gt; &gt;&gt; &gt;<br>
+&gt;&gt; &gt;&gt; &gt; Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) &lt;<=
+a href=3D"mailto:yong.huang@smartx.com" target=3D"_blank">yong.huang@smartx=
+.com</a>&gt;<br>
+&gt;&gt; &gt;&gt; &gt; Acked-by: Peter Xu &lt;<a href=3D"mailto:peterx@redh=
+at.com" target=3D"_blank">peterx@redhat.com</a>&gt;<br>
+&gt;&gt; &gt;&gt; &gt; Reviewed-by: Juan Quintela &lt;<a href=3D"mailto:qui=
+ntela@redhat.com" target=3D"_blank">quintela@redhat.com</a>&gt;<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;&gt; [...]<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;&gt; &gt; diff --git a/qapi/migration.json b/qapi/migration.js=
+on<br>
+&gt;&gt; &gt;&gt; &gt; index e43371955a..031832cde5 100644<br>
+&gt;&gt; &gt;&gt; &gt; --- a/qapi/migration.json<br>
+&gt;&gt; &gt;&gt; &gt; +++ b/qapi/migration.json<br>
+&gt;&gt; &gt;&gt; &gt; @@ -497,6 +497,15 @@<br>
+&gt;&gt; &gt;&gt; &gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0are present.=C2=A0 &#39;r=
+eturn-path&#39; capability must be enabled to use<br>
+&gt;&gt; &gt;&gt; &gt;=C2=A0 #=C2=A0 =C2=A0 =C2=A0it.=C2=A0 (since 8.1)<br>
+&gt;&gt; &gt;&gt; &gt;=C2=A0 #<br>
+&gt;&gt; &gt;&gt; &gt; +# @dirty-limit: If enabled, migration will use the =
+dirty-limit<br>
+&gt;&gt; &gt;&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0algorithm to throttle down gue=
+st instead of auto-converge<br>
+&gt;&gt; &gt;&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0algorithm. This algorithm only=
+ works when vCPU&#39;s dirtyrate<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;&gt; Two spaces after sentence-ending punctuation, please.<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;&gt; &quot;dirty rate&quot; with a space, because that&#39;s h=
+ow we spell it elsewhere.<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0greater than &#39;vcpu-dirty-l=
+imit&#39;, read processes in guest os<br>
+&gt;&gt; &gt;&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0aren&#39;t penalized any more,=
+ so the algorithm can improve<br>
+&gt;&gt; &gt;&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0performance of vCPU during liv=
+e migration. This is an optional<br>
+&gt;&gt; &gt;&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0performance feature and should=
+ not affect the correctness of<br>
+&gt;&gt; the<br>
+&gt;&gt; &gt;&gt; &gt; +#=C2=A0 =C2=A0 =C2=A0existing auto-converge algorit=
+hm. (since 8.1)<br>
+&gt;&gt; &gt;&gt; &gt; +#<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;&gt; I&#39;m still confused.<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;&gt; The text suggests there are two separate algorithms &quot=
+;to throttle down<br>
+&gt;&gt; &gt;&gt; guest&quot;: &quot;auto converge&quot; and &quot;dirty li=
+mit&quot;, and we get to pick one.<br>
+&gt;&gt; &gt;&gt; Correct?<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt; Yes, indeed !<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;&gt; If it is correct, then the last sentence feels redundant:=
+ picking<br>
+&gt;&gt; &gt;&gt; another algorithm can&#39;t affect the algorithm we&#39;r=
+e *not* using.=C2=A0 What<br>
+&gt;&gt; &gt;&gt; are you trying to express here?<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt; What i want to express is that the new algorithm implementati=
+on does<br>
+&gt;&gt; &gt; not affect the original algorithm, leaving it in the comments=
+ seems<br>
+&gt;&gt; &gt; redundant indeed.=C2=A0 I&#39;ll drop this in the next versio=
+n.<br>
+&gt;&gt;<br>
+&gt;&gt; Works for me.<br>
+&gt;&gt;<br>
+&gt;&gt; &gt;&gt; When do we use &quot;auto converge&quot;, and when do we =
+use &quot;dirty limit&quot;?<br>
+&gt;&gt; &gt;&gt;<br>
+&gt;&gt; &gt;&gt; What does the user really need to know about these algori=
+thms?=C2=A0 Enough<br>
+&gt;&gt; &gt;&gt; to pick one, I guess.=C2=A0 That means advantages and dis=
+advantages of the<br>
+&gt;&gt; &gt;&gt; two algorithms.=C2=A0 Which are?<br>
+&gt;&gt; &gt;<br>
+&gt;&gt; &gt; 1. The implementation of dirty-limit is based on dirty-ring, =
+which is<br>
+&gt;&gt; &gt; qualified<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 to big systems with huge memories and can improv=
+e huge guest VM<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0responsiveness remarkably during live migr=
+ation. As a consequence,<br>
+&gt;&gt; &gt; dirty-limit<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0is recommended on platforms with huge gues=
+t VMs as is the way with<br>
+&gt;&gt; &gt; dirty-ring.<br>
+&gt;&gt; &gt; 2. dirty-limit convergence algorithm does not affect the &quo=
+t;read-process&quot;<br>
+&gt;&gt; in<br>
+&gt;&gt; &gt; guest<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 VM, so guest VM gains the equal read performance=
+ nearly as it runs on<br>
+&gt;&gt; &gt; host<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 during the live migration. As a result, dirty-li=
+mit is recommended if<br>
+&gt;&gt; &gt; the guest<br>
+&gt;&gt; &gt;=C2=A0 =C2=A0 =C2=A0VM requires a stable read performance.<br>
+&gt;&gt; &gt; The above explanation is about the recommendation of dirty-li=
+mit, please<br>
+&gt;&gt; &gt; review,<br>
+&gt;&gt; &gt; if it&#39;s ok, i&#39;ll place it in the comment of the dirty=
+-limit capability.<br>
+&gt;&gt;<br>
+&gt;&gt; Yes, please.=C2=A0 But before that, I have still more questions.=
+=C2=A0 &quot;This<br>
+&gt;&gt; algorithm only works when vCPU&#39;s dirtyrate greater than<br>
+&gt;&gt; &#39;vcpu-dirty-limit&#39;&quot; is a condition: &quot;FEATURE onl=
+y works when CONDITION&quot;.<br>
+&gt;&gt;<br>
+&gt; I failed to express my meaning again : ( .=C2=A0 &quot;Throttle algo o=
+nly works when<br>
+&gt; vCPU&#39;s=C2=A0 dirtyrate greater than &#39;vcpu-dirty-limit&#39; &qu=
+ot; should change to<br>
+&gt; &quot;vCPU throttle only works when vCPU&#39;s dirtyrate greater than<=
+br>
+&gt; &#39;vcpu-dirty-limit&#39;&quot;.<br>
+&gt; Not the whole &quot;algo&quot; !<br>
+<br>
+Let me paraphrase to make sure I got it...=C2=A0 The vCPU is throttled as<b=
+r>
+needed to keep its dirty rate within the limit set with<br>
+set-vcpu-dirty-limit.=C2=A0 Correct?<br></blockquote><div class=3D"gmail_de=
+fault" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">Yes. Actu=
+ally set with the internal function qmp_set_vcpu_dirty_limit.</div><div cla=
+ss=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-se=
+rif"><br></div><div class=3D"gmail_default" style=3D"font-family:&quot;comi=
+c sans ms&quot;,sans-serif">And a parameter called &quot;vcpu-dirty-limit&q=
+uot; =C2=A0of migration provided by dirty-limit</div><div class=3D"gmail_de=
+fault" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">aims to b=
+e the argument of=C2=A0qmp_set_vcpu_dirty_limit.</div><div class=3D"gmail_d=
+efault" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif"><br></di=
+v><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;borde=
+r-left-width:1px;border-left-style:solid;border-left-color:rgb(204,204,204)=
+;padding-left:1ex">
+<br>
+What happens when I enable the dirty limit convergence algorithm without<br=
+>
+setting a limit with set-vcpu-dirty-limit?<br></blockquote><div class=3D"gm=
+ail_default" style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">dir=
+ty-limit will use the default value which is defined in=C2=A0migration/opti=
+ons.c:</div><div class=3D"gmail_default" style=3D"font-family:&quot;comic s=
+ans ms&quot;,sans-serif">#define DEFAULT_MIGRATE_VCPU_DIRTY_LIMIT =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A01 =C2=A0 =C2=A0 =C2=A0 /* MB/s */<br></di=
+v><div class=3D"gmail_default" style=3D"font-family:&quot;comic sans ms&quo=
+t;,sans-serif"><br></div><div class=3D"gmail_default" style=3D"font-family:=
+&quot;comic sans ms&quot;,sans-serif">So the default of the dirty-limit is =
+1MB/s.=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px=
+ 0px 0.8ex;border-left-width:1px;border-left-style:solid;border-left-color:=
+rgb(204,204,204);padding-left:1ex">
+<br>
+&gt;&gt; What happens when the condition is not met?=C2=A0 How can the user=
+ ensure the<br>
+&gt;&gt; condition is met?<br>
+&gt;&gt;<br>
+&gt;&gt; [...]<br>
+&gt;&gt;<br>
+&gt;&gt;<br>
+<br>
+</blockquote></div><br clear=3D"all"><div><br></div><span class=3D"gmail_si=
+gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
+iv dir=3D"ltr"><font face=3D"comic sans ms, sans-serif">Best regards</font>=
+</div></div></div>
+
+--000000000000b16ac50600d0f389--
 
