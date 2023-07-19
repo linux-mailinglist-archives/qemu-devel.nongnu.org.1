@@ -2,135 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C072D759DE1
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 20:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4EE759E99
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 21:32:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMCEl-0007ox-CT; Wed, 19 Jul 2023 14:49:23 -0400
+	id 1qMCsq-0006iM-PZ; Wed, 19 Jul 2023 15:30:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qMCEj-0007oe-M0
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 14:49:21 -0400
-Received: from mail-bn1nam02on2060d.outbound.protection.outlook.com
- ([2a01:111:f400:7eb2::60d]
- helo=NAM02-BN1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qMCEh-0002mQ-UL
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 14:49:21 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nSMU+PnD08jm8vwp+VyUbrrw3SSbRY0vw9u17ztfuH0ofCgbN8wIBmNGyqLu4IosHpmxQ6lfZqhCq1N35SLBdnbeylk74Iqt97SzJXn7Iqn+zPqa2dkQqAQdv5m0slvgFnW+ZQypZ6DTeA4qp12txapBBGO+xYoiI/ekYFGPirca9Ga3kjl6pgqBExN3jiUP8CB4PBFIvkiPWuvg+7R97X/CJM82OcsUOX1kQKrqJQo0BEQ0Dc2KYl4L7JqemxawD0hbO/qmIk/r7XOwMyP0GlM88or8cuph73vlTZw91Zku0WjlBrf9dewhBWM06sgATeeX5DZVjJWC9vRcbhHqMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uvUSnJq40NvTtZaWvtK8QOy/aitNrXeG/1bi9fAS/IM=;
- b=BgatGs2DBL4jT42UpgiS6ulNN9FkFFBgfFT73IIUScSbP9cFzh7J7Q/1gzch22a43D1XEMpv3/jfFVoghY57oNRGqrzEuPxp6uIZK0eXcdIinTETX8P2pxORX1n/3JiZnkvtEbRxx8fKORbh6ZwUqiS/7We1qWA9jfgPn3yjhNKtRT4wb7ixy1hIr2yCsjKzEJ9ZDm3W0EG07KaEDBl93fDgo6izLahyLwxR3UIEjfqn5JI2O9lqcK9oxaHdXQW2zbalvNx/ThA722Xo40EwXp1SDXIsSLrwZob3jrXIeHSBVEMU8spj9ZsbcqDQJ6dGEu3UQPTSTL3BfzEBB5SKCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
- dkim=pass header.d=memverge.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uvUSnJq40NvTtZaWvtK8QOy/aitNrXeG/1bi9fAS/IM=;
- b=kyxBuxQTPWCa12myQrzGebZ4aM5TWiFly8CrhETHBI3H+mMhjNiufuBXvXRp5aqImO+mGKTiChWq5Sje5P8PnHqOI+H+boixgIBqeAcAlLqKYYR+xXUZ21yHL9MkKc2j60Z33j2ZLENhRHX9R6IZJYa9UGdlEcD//eg5ut+4bmU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=memverge.com;
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
- by CO6PR17MB4900.namprd17.prod.outlook.com (2603:10b6:5:357::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.23; Wed, 19 Jul
- 2023 18:49:15 +0000
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::d6a5:10ea:ff7d:9578]) by SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::d6a5:10ea:ff7d:9578%7]) with mapi id 15.20.6609.024; Wed, 19 Jul 2023
- 18:49:15 +0000
-Date: Wed, 19 Jul 2023 14:49:07 -0400
-From: Gregory Price <gregory.price@memverge.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-cxl@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
- qemu-devel@nongnu.org, linuxarm@huawei.com,
- Alison Schofield <alison.schofield@intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Viacheslav Dubeyko <slava@dubeyko.com>,
- Shesha Bhushan Sreenivasamurthy <sheshas@marvell.com>,
- Fan Ni <fan.ni@samsung.com>, Michael Tsirkin <mst@redhat.com>,
- Jonathan Zhang <jonzhang@meta.com>, Klaus Jensen <k.jensen@samsung.com>
-Subject: Re: [RFC PATCH 10/17] misc/i2c_mctp_cxl: Initial device emulation
-Message-ID: <ZLgwI5N/4RV2kpq1@memverge.com>
-References: <20230717171646.8972-1-Jonathan.Cameron@huawei.com>
- <20230717171646.8972-11-Jonathan.Cameron@huawei.com>
- <ZLcEkSLAj5yXVOVc@memverge.com>
- <20230719091947.000043ac@Huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230719091947.000043ac@Huawei.com>
-X-ClientProxiedBy: BYAPR04CA0020.namprd04.prod.outlook.com
- (2603:10b6:a03:40::33) To SJ0PR17MB5512.namprd17.prod.outlook.com
- (2603:10b6:a03:394::19)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMCsh-0006g4-9W
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 15:30:39 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMCsd-0001fE-MA
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 15:30:37 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-51e57870becso9655821a12.2
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 12:30:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689795032; x=1690399832;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=8sZKxKxkUef7QA6XAWQT1AIq7ODq+rKc1RUUSb0TP2k=;
+ b=qLYG42Tw+brymMcewhkNrC2u4CX01KrT1+Rva3WUgPjaQmV8FHs4ou7dsko+aamnYB
+ QtTjQxaFQTFwapqjiBHD3irKG+ukB8H95ruR0C6QNyYdnjOinyfCKPWEUQs6iY5NZAzg
+ gKVT8Y2W0Se4ItI9RAdpDpb9NobLb6apsbKWCAxxqUCOlCMprE+Akl5PWPfVYfR6x7/v
+ 88+CCQMoW0xSvibV7HonmA+UIFIUTqHudEvAmd1grifTM+NVsJD07scXBcha68Z5rpFj
+ IfQHASMKVnJqh/8grNTKhmFt99VD+JhwXKLH5J6p54McDBzM957nlKfDc4eAGVDbCaP/
+ 5cXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689795032; x=1690399832;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8sZKxKxkUef7QA6XAWQT1AIq7ODq+rKc1RUUSb0TP2k=;
+ b=a3A7vyF4svodZ+Uw8apUFxd01pnM1KfryjFOV6ueC5ccX6MVTjTkodhwNyzd84zkTw
+ +6H+37WhKlxW0ux6U2BcP5/6ZEul5LSg09CBc00ytkgRM4ce/Li+kqzYQERFO8R4TrRN
+ fz5eg76QWr8GwzjPkYnvcgzhboR3mYdh1m5p9gI/offg0SjlRg83bw4vjeXbJzLYcG8Q
+ yOWU6S7LSnd+v0tcQA9aZUm/phVUU/PBKAYETs6Ey/snHlRISu1ZnEfiYOe/iHnxOIb1
+ ejzat4SrBdyhOsj1o3WuyhNOOM3/yZcCto0a1ue+QpC4qckRjXh2++8eRv5DDaUmnCmC
+ FMQA==
+X-Gm-Message-State: ABy/qLYHNkgelZXaEJHTRIZLkVTr2eObo9DQzDus3MmAaPDFWGm9Iwru
+ gBtCSjylmZWMJJ7SjZgAdOSn1NFK4Lnoqax9L7RBduS9VW+ZGyNs
+X-Google-Smtp-Source: APBJJlG2ZVcCTIjvhfFrThmU74MBq415t4t7F+8LZM/xQAyzoSQMvYu6AzxW37lfkWusSxOxbp9GEN8HB+d7VSMBWiU=
+X-Received: by 2002:aa7:d9d2:0:b0:521:a4bb:374f with SMTP id
+ v18-20020aa7d9d2000000b00521a4bb374fmr255856eds.5.1689795032362; Wed, 19 Jul
+ 2023 12:30:32 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|CO6PR17MB4900:EE_
-X-MS-Office365-Filtering-Correlation-Id: ad39d734-1373-4efc-30df-08db8888d9c0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: gmVpddtOzCwaTPxuxkORPbNN14I1Iwp+zkkSfSHYjOIl9ejR2LtZQbEnZGMBz3JPtNRCRzHOplCPxT7qqcUdJgjVms4ITEiZoAlfPXDqHP0R8iRiKcON5IuflT0zQKKTyI5oSdb0tomS4xH3ONnrHeVmbw5TJ7UUB0Y2cZ/zsd8Q4d1/bNt4lYbx6teOOz9SLeCfiYrUH9KD2gQ3v/3i5U755HmdVQpLjta90ohPJ5xM7IPU+X0HOt7HfFZalsv7J4e4Qi7fvu4N9jAaSIronAyV1wFxa2pfFtbFgWg1uqcrCDD8TZ36dqemr42kH/kuTZbIYoPIMctjn8RBTzQBkd5vpKSf00LkvnlvGPsHe01rKqTsGE/miQ6NovoqnJuMJpvoyWvqU2+AmV/IgYjc6ZwlQOFxXMP0jbW/0GlmVy3zW8k3gTw/+/A74NZUPmcxijymJ2z1tuiFWA3sn94nH5AlN/SUuK9vZO/z8vd1Dtb5HXAzewixWeQbPcfdpLuRhOi77zyG5dU9vvYzMEKYVQW54mPvQVH0hPgqU4o7DMIb9H9t2I+pxlr88L9TBLdA
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230028)(396003)(39830400003)(366004)(346002)(136003)(376002)(451199021)(2906002)(44832011)(7416002)(8936002)(8676002)(66556008)(66476007)(6916009)(66946007)(4326008)(41300700001)(316002)(5660300002)(6512007)(6486002)(6506007)(186003)(26005)(36756003)(478600001)(54906003)(6666004)(83380400001)(2616005)(86362001)(38100700002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Q0+LYk1KoEhNMzQogYPl4xZJmbZrUl7jx2/phKLKnRvi1XpfB9nXaK2xv8Rf?=
- =?us-ascii?Q?0+AGCboTf+IjirAwbu0O4uAy1x5sjPfXV+8EkgWMacjDfpsUbFd7UPQwU2Jy?=
- =?us-ascii?Q?EOk2yNdx+1Fr8gvuU5apIGmFreEMl99z82YwLKXUl4IkbfLncZ+gPVz0DUF+?=
- =?us-ascii?Q?5w5/RsgsgSvosBCTBqJrOaSvAPydYZJoGRTLpXetZ/UpkGEXeo0p3gVaIb3n?=
- =?us-ascii?Q?1MulKEVe9cV0xrsquKgZ5w99/0obNi9eZQi7GegolhIBjK282bXOO7ORgSd+?=
- =?us-ascii?Q?hRKZDwvc9lc4i8v25B/Q/vNXwVPsFTLa6wbnmqoT/bLojA9vNjKNDLtJuj/j?=
- =?us-ascii?Q?njxMWA9urW2ZFmIV02KsUDHQn1WXU27FcdkjFnx/0s4dfIF2xQUSGUAg4NHR?=
- =?us-ascii?Q?fQVXYlmD3hpbIs6Gpuajvdqp+ubEq53ekiq3Czy+ss5UFGI3zx7g020VmWQA?=
- =?us-ascii?Q?geJdMs9rVyLOjdX0x38rH159QKYVj3C/MCXQqNiiiLnUX2Ly1Dbpsrf/hGJf?=
- =?us-ascii?Q?MIFeDSc9+C8rh6rTxUluUTptTT6DToQQbwWEJ6hPfSMoUcPl5KR9xNRZsttt?=
- =?us-ascii?Q?8FTFO5hVfWc1VNoo8o0Uy970Cao9qqXYKXDOmmv0v1LzXXBEMmCWqaPp7I/6?=
- =?us-ascii?Q?NvpPvQVNNtjPD8TgjvXc5TliXo7sXd5ZxHNqiy2qqbuAC40NhSzC14zAaVzQ?=
- =?us-ascii?Q?nbKMQi0sAPeMBIfp7uA3chzwfHE9606HQ/3sY+3r9caYWcllR4navosJOsPp?=
- =?us-ascii?Q?hpRddgtWsZD0n9+LxEvOXb4U+Hkq9PT6ds8vxIWYEAPFaEybc2HQlOsz2ibu?=
- =?us-ascii?Q?78Y4WlkcK5izJj+dqE+muiVKFBvTj4ot6jTm1XaAgUHZtvNtVJT5xmfcD0Aa?=
- =?us-ascii?Q?i870jbcoh/CEGuAsUoOM1jCx/Fj/ZCI3Vci+XsP96LOmVmvQ1zcgVWiTCWxz?=
- =?us-ascii?Q?I1/6c1e0aguns7tNGj6RWInCQYeoFn03tNshRPcHYvaTM4a4g+OaP+FjcBih?=
- =?us-ascii?Q?QOST7LNzwTEBF76srcqg7hT35xrjPcN6f2tYqG+FvOITe/zAVGcFhKtUINYR?=
- =?us-ascii?Q?2rpGf/mtMEIJzttbtvPXGU6/iTkgWH5qhf5jxx2gdTEPXOoyImTJS4ed1sqj?=
- =?us-ascii?Q?bDyOBPDt7+rl+n50P6teGOkFFt1Gg+odrqjXpzbuFZZdyutX64ReXHLJZrUw?=
- =?us-ascii?Q?0lid0ZSc67snXGyXdtj9jCSXkFRZJVjvOwf7Qtu6LXXC3zPhiQsf1Ti37Kg6?=
- =?us-ascii?Q?f5/pJLjQDQoybxmcO312auuH5wn6wIMbCx38SBikkTKa7qEJZ61c8m6DWJ6C?=
- =?us-ascii?Q?7aHEwhXa0ipyUjGptaafiyObzhrCT6/cvJkfW9oEIi4YUrIRsfCzq4ELo4Ll?=
- =?us-ascii?Q?O01S/dBChqjJyOdZ+oXcWMe8x2BLtXdif95tQEoM/j2dIOaaN6XD6PsJRC0z?=
- =?us-ascii?Q?amYJCmAtnb2vx/Yo1bOumD3gmCvaLwWdUXTFuBbEjvkoVKMvP6L4/KqfGTqg?=
- =?us-ascii?Q?iCAVMitK+omQsXxGQDJm6D8wrH/En2oiQFXMObjCBM3esAwRFZzHwdC+uD//?=
- =?us-ascii?Q?/cIWBsQJIdA5ZfjisDMvfqEY9trGuwpfcVRmx8CI10T3pbQdBdZUd6ITL03W?=
- =?us-ascii?Q?4Q=3D=3D?=
-X-OriginatorOrg: memverge.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad39d734-1373-4efc-30df-08db8888d9c0
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2023 18:49:15.4766 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6NaL1Z2K3SrB+MwkKsOvtsWvNCQohCgutr/K8zhGYKJap7yL0bhm8RyKMXzcfzBgYZk1RHNUv62k1fwMl9IB1rTVgQ1+gjx0hBmOCsp8oGI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR17MB4900
-Received-SPF: none client-ip=2a01:111:f400:7eb2::60d;
- envelope-from=gregory.price@memverge.com;
- helo=NAM02-BN1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=1,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+References: <20230719044538.2013401-1-alistair.francis@wdc.com>
+In-Reply-To: <20230719044538.2013401-1-alistair.francis@wdc.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 19 Jul 2023 20:30:21 +0100
+Message-ID: <CAFEAcA__KiWdB_c2pXsj1hiQEtXp=xykzaVZqkFuLFR2iEetyQ@mail.gmail.com>
+Subject: Re: [PULL 0/5] riscv-to-apply queue
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,85 +84,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 19, 2023 at 09:19:47AM +0100, Jonathan Cameron wrote:
-> On Tue, 18 Jul 2023 17:30:57 -0400
-> Gregory Price <gregory.price@memverge.com> wrote:
-> 
-> > On Mon, Jul 17, 2023 at 06:16:39PM +0100, Jonathan Cameron wrote:
-> > > @@ -397,8 +401,9 @@ struct CXLType3Dev {
-> > >      AddressSpace hostpmem_as;
-> > >      CXLComponentState cxl_cstate;
-> > >      CXLDeviceState cxl_dstate;
-> > > -    CXLCCI cci;
-> > > -    
-> > > +    CXLCCI cci; /* Primary PCI mailbox CCI */
-> > > +    CXLCCI oob_mctp_cci; /* Initialized only if targetted */
-> > > +  
-> > 
-> > I've been humming and hawing over this on the MHD stuff because I wanted
-> > to figure out how to "add a CCI command" to a type-3 device without
-> > either having a billion definitions for CCI command sets - or doing
-> > something like this.
-> > 
-> > I don't hate this design pattern, I just want to ask whether your
-> > intent is to end up with CXLType3Dev hosting many CXLCCI's based on what
-> > wrapper types you have. 
-> > 
-> > Example: a type-3 device with mctp pass through and the MHD command set
-> > 
-> > CXLType3Dev {
-> >     ...
-> >     CXLCCI cci;
-> >     CXLCCI oob_mctp_cci;
-> >     CXLCCI mhd_cci;
-> >     ...
-> > }
-> 
-> Yes - that's what I was thinking.  In some cases a CCI may be accessed by
-> tunneling on a different CCI on the same device as well as the option
-> of tunneling to different devices.
-> 
-> So far the set that we'll end up with isn't too large. And if some aren't
-> used for a given instantiation that's fine if it keeps the code simple.
-> We may end up with other MCTP buses and to keep things consistent each one
-> will need it's own target CXLCCI. If we need to rethink and make it dynamic
-> to some degree we can look at it later.
-> 
+On Wed, 19 Jul 2023 at 05:46, Alistair Francis <alistair23@gmail.com> wrote:
+>
+> The following changes since commit 361d5397355276e3007825cc17217c1e4d4320f7:
+>
+>   Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-07-17 15:49:27 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20230719-1
+>
+> for you to fetch changes up to 32be32509987fbe42cf5c2fd3cea3c2ad6eae179:
+>
+>   target/riscv: Fix LMUL check to use VLEN (2023-07-19 14:37:26 +1000)
+>
+> ----------------------------------------------------------------
+> Fourth RISC-V PR for 8.1
+>
+> * Fix LMUL check to use VLEN
+> * Fix typo field in NUMA error_report
+> * check priv_ver before auto-enable zca/zcd/zcf
+> * Fix disas output of upper immediates
+> * tidy CPU firmware section
+>
 
-Maybe a dangerous suggestion.  Right now the CCI's are static:
 
-static const struct cxl_cmd cxl_cmd_set[256][256]
+Applied, thanks.
 
-how difficult might it be to allow these tables to be dynamic instead?
-Then we could add an interface like this:
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.1
+for any user-visible changes.
 
-void cxl_add_cmd_set(CXLCCI *cci, CXLCCI *cmd_set, payload_max) {
-	copy(cci, cmd_set);
-}
-
-This would enable not just adding sub-components piece-meal, but also if
-someone wants to model a real device with custom CCI commands, they can
-simply define a CCI set and pass it in via
-
-cxl_add_cmd_set(&ct3d->cci, my_cmd_set, payload_max);
-
-Which lets the existing /dev/cxl/memN device dispatch those commands,
-and makes modeling real devices an easier endeavor.
-
-Only downside is that this may require changing the command structure to
-include a callback type and pointer per cci function. The upside is this
-would also allow commands to be written somewhat agnostic to the device
-they're being inherited by and allow for device nesting like...
-
--device cxl-type3, id=ct3d
--device cxl-mhd, target=ct3d
--device my_vendor_cxl_type3, target=ct3d
-etc etc
-
-otherwise we're probably going to end up with a cxl-type3 -device line
-300 characters long.
-
-Maybe that's over-generalizing a bit much n.n;
-
-~Gregory
+-- PMM
 
