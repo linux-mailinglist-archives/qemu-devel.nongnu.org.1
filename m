@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB6575970F
-	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 15:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6EC4759723
+	for <lists+qemu-devel@lfdr.de>; Wed, 19 Jul 2023 15:38:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qM7Kq-0003aM-1W; Wed, 19 Jul 2023 09:35:20 -0400
+	id 1qM7NI-0004TZ-F6; Wed, 19 Jul 2023 09:37:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qM7Kg-0003W0-Pb
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 09:35:12 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qM7NE-0004SV-Ho
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 09:37:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qM7Kf-00024T-9J
- for qemu-devel@nongnu.org; Wed, 19 Jul 2023 09:35:10 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qM7ND-0002nO-2h
+ for qemu-devel@nongnu.org; Wed, 19 Jul 2023 09:37:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689773707;
+ s=mimecast20190719; t=1689773866;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qmfLof4hkZInWsFq1Sc9Uu54h/4rP7r4z9gaA7w6s5w=;
- b=KD5RwzT7i94IcccZ7jPuzTdNYuGiz2+l9wHd5hJa1bRHy3JGGN6XJic/jNF0tRxLmPPXnu
- YcrvyHU98xF3B/aV9yEEEKL292vT64yzdPIS7n1A7jCwytrDyKHHmsg17//uSkxZXaVGjA
- xLq/BpaKH0USqFfMW+aYT24oxpLjkN8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cz4+f+KIMtsW6wq8hQt9Rh7365exwgzjl+yduZhGTAY=;
+ b=Zyf6M1UZBPagLLlhoW8XEYCRO7ZH93Oxwmv0lVh+P4yjHjStTU8gaKgLnTh+NkMkFXAU9e
+ RDXJ5Z3QRzxUIfX6vjFK1iBRS/PpVsx4xTsiq4CVOhcofZO0d/lRAVKVktddK3aSW0p5E2
+ f8oXik4z8BxX7ziKZJVi3BUzQWd6wDs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-231-1UItkt3yNei9Thffp5SQDQ-1; Wed, 19 Jul 2023 09:35:05 -0400
-X-MC-Unique: 1UItkt3yNei9Thffp5SQDQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3faabd8fd33so37295335e9.0
- for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 06:35:05 -0700 (PDT)
+ us-mta-365-eq7Tt5LcPUW6eyevJUeAXg-1; Wed, 19 Jul 2023 09:37:12 -0400
+X-MC-Unique: eq7Tt5LcPUW6eyevJUeAXg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3fbdde92299so36448425e9.3
+ for <qemu-devel@nongnu.org>; Wed, 19 Jul 2023 06:37:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689773704; x=1692365704;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1689773825; x=1692365825;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qmfLof4hkZInWsFq1Sc9Uu54h/4rP7r4z9gaA7w6s5w=;
- b=JzfzGG1c70drf/7XQoI6HtmUTUuzjV0zL6EiA2QY9YgztxUNvAmUQiw8ZQDPglPZne
- AZb5VG9aElssNf+j0+tb4rOALWLoNHizAdMriU3AsdpL3WBqA313ZuEIl1IHhSiMqUen
- XzMwRocrh726Y6kkN+kogMXm0aJo+5ouiZWNydHaxvvMb28sg4MeCecOX7lf6n6Tbws+
- kocbqQpx4iim9+oljbfuiytlb0XDezBRA9ipITCt5cwctJrefUOcGX6zGfmJsS4w2TEA
- 89Z/azWHSUXx3M8d5P53YEdiPDzDlJOI2AUCrBBeSQZauirqnozoUGXIFY1tfSyDq6RW
- tOBA==
-X-Gm-Message-State: ABy/qLZxrybnKEbNyPdvwP/rc9d3YVpMZPnSnaNs9YMgBTaeWLDCqOHN
- WuyGANqg36dCqqHIahL50K47iqz1W2edPMjJ/GEmK2uF3W0koM7u/JdgtrhpiY79Z18cZzE5J+L
- 0MLs/UhTA6zlHoBg=
-X-Received: by 2002:a05:600c:22d2:b0:3fb:5dad:1392 with SMTP id
- 18-20020a05600c22d200b003fb5dad1392mr2030264wmg.17.1689773704696; 
- Wed, 19 Jul 2023 06:35:04 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHbQrq9ObB1wlACvtFA/UcPtrc11olAZBvh9fHG8mO4xgkPZf3vmIjlgUkMH94mcLTTnGRShQ==
-X-Received: by 2002:a05:600c:22d2:b0:3fb:5dad:1392 with SMTP id
- 18-20020a05600c22d200b003fb5dad1392mr2030245wmg.17.1689773704430; 
- Wed, 19 Jul 2023 06:35:04 -0700 (PDT)
+ bh=cz4+f+KIMtsW6wq8hQt9Rh7365exwgzjl+yduZhGTAY=;
+ b=RoSd4RB5ovLg4YU1QrZRPOxc8G2Vk1iiqK4UzkwCLjXsbKR3TZAyWfPNZVVT/JO4nq
+ 4L6wJSShUJBiFb/9VynBdumZP+va4oq9B91978Fw/k1enHd7zHRrsWMSq7/9bPoSq194
+ fKhVCoCq+HzI7DnqFYrI3qiJJorsjc1kg1W+e34cUA0QWq/dICSJtXQTlOoXvPs+m7AK
+ /cefluAA0fAFLjKHuzDBlsuBWSQVg/dwioxX/OcC34vh9/eyAXXZHOp4GvqnYv63CMDC
+ dASW9hin4cF5NdGydJn10mDatasUEmofjebzSh5kXLAHpRpjnt8CSz3/+FfvyBvJTwPV
+ BGkQ==
+X-Gm-Message-State: ABy/qLYyXfnN0Wx/rcg4MV993ef+7dNrIclyybEMphb4MAqEFLwoKMqK
+ 6n/oGI62Wm4yYh6tc3MbfolXNwkZht2+arlZYxfby5nxJuzoYDC9sHHr17NVfP/MGYMjVHXBqOW
+ IO0FTb4irjsNgJKc=
+X-Received: by 2002:a7b:c7c5:0:b0:3f8:2777:15e with SMTP id
+ z5-20020a7bc7c5000000b003f82777015emr4377519wmk.31.1689773825410; 
+ Wed, 19 Jul 2023 06:37:05 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEHvaGKlGVf9q38Yica4/pLqBZ2SrAymYZNHSGx+kZYIUCE8xWFEmrkCuu65bhN+LtKgxe+rA==
+X-Received: by 2002:a7b:c7c5:0:b0:3f8:2777:15e with SMTP id
+ z5-20020a7bc7c5000000b003f82777015emr4377500wmk.31.1689773825058; 
+ Wed, 19 Jul 2023 06:37:05 -0700 (PDT)
 Received: from [192.168.0.3] (ip-109-43-177-60.web.vodafone.de.
  [109.43.177.60]) by smtp.gmail.com with ESMTPSA id
- f14-20020a7bcd0e000000b003fc01f7b415sm1728251wmj.39.2023.07.19.06.35.03
+ v22-20020a1cf716000000b003fbc9371193sm1769797wmh.13.2023.07.19.06.37.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 19 Jul 2023 06:35:03 -0700 (PDT)
-Message-ID: <9deaed7a-4930-8802-f9f6-b047e5c975fe@redhat.com>
-Date: Wed, 19 Jul 2023 15:35:02 +0200
+ Wed, 19 Jul 2023 06:37:04 -0700 (PDT)
+Message-ID: <587fc88c-1b56-67f7-cfb1-58cea57df1a6@redhat.com>
+Date: Wed, 19 Jul 2023 15:37:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v2 10/12] qtest: bump aspeed_smc-test timeout to 4 minutes
+Subject: Re: [PATCH v2 07/12] qtest: bump prom-env-test timeout to 3 minutes
 Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
 To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
 References: <20230717182859.707658-1-berrange@redhat.com>
- <20230717182859.707658-11-berrange@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230717182859.707658-11-berrange@redhat.com>
+ <20230717182859.707658-8-berrange@redhat.com>
+ <7fd24e86-46ae-28d1-912a-eb7a42ea6493@redhat.com>
+In-Reply-To: <7fd24e86-46ae-28d1-912a-eb7a42ea6493@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -104,28 +105,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/07/2023 20.28, Daniel P. Berrangé wrote:
-> On a reasonably old laptop this test takes 2 minutes 20 seconds with the
-> arm emulator. Raising the timeout to 4 minutes gives greater headroom for
-> slowdown.
+On 19/07/2023 15.22, Thomas Huth wrote:
+> On 17/07/2023 20.28, Daniel P. Berrangé wrote:
+>> The prom-env-test takes about 1 + 1/2 minutes in a --enable-debug
+>> build. Bumping to 3 minutes will give more headroom.
+>>
+>> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+>> ---
+>>   tests/qtest/meson.build | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+>> index c6da428dc5..095c98820e 100644
+>> --- a/tests/qtest/meson.build
+>> +++ b/tests/qtest/meson.build
+>> @@ -5,6 +5,7 @@ slow_qtests = {
+>>     'qom-test' : 900,
+>>     'test-hmp' : 240,
+>>     'pxe-test': 180,
+>> +  'prom-env-test': 180,
+>>   }
+>>   qtests_generic = [
 > 
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   tests/qtest/meson.build | 1 +
->   1 file changed, 1 insertion(+)
+> I tested your patches, and initially, everything looked good now. But this 
+> prom-env-test them reminded me that we run some additional tests in the 
+> "SPEED=slow" mode ... I guess we have to take these into consideration, too?
 > 
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index 3df9a51b03..25732a1cdb 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -1,4 +1,5 @@
->   slow_qtests = {
-> +  'aspeed_smc-test': 240,
->     'bios-tables-test' : 120,
->     'migration-test' : 300,
->     'npcm7xx_pwm-test': 300,
+> I now did a "configure --enable-debug" build and then ran:
+> 
+>   make -j$(nproc) check-qtest-ppc64 SPEED=slow
+> 
+> and indeed, this prom-env-test is now timing out there. Also the 
+> device-introspect-test was timing out in SPEED=slow mode. Should we bump the 
+> timeout for those, or could this maybe be handled via the TIMEOUT_MULTIPLIER 
+> in the final patch?
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+I've now done a full check-qtest run with SPEED=slow and --enable-debug,
+and these tests are timing out:
+
+  14/131 qemu:qtest+qtest-aarch64 / qtest-aarch64/migration-test            TIMEOUT        300.02s   killed by signal 15 SIGTERM
+  89/131 qemu:qtest+qtest-s390x / qtest-s390x/device-introspect-test        TIMEOUT         60.01s   killed by signal 15 SIGTERM
+103/131 qemu:qtest+qtest-ppc64 / qtest-ppc64/device-introspect-test        TIMEOUT         60.02s   killed by signal 15 SIGTERM
+108/131 qemu:qtest+qtest-ppc64 / qtest-ppc64/pxe-test                      TIMEOUT        180.02s   killed by signal 15 SIGTERM
+129/131 qemu:qtest+qtest-x86_64 / qtest-x86_64/device-introspect-test      TIMEOUT         60.05s   killed by signal 15 SIGTERM
+130/131 qemu:qtest+qtest-aarch64 / qtest-aarch64/device-introspect-test    TIMEOUT         60.01s   killed by signal 15 SIGTERM
+
+  Thomas
 
 
