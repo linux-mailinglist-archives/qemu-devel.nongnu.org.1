@@ -2,66 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BFDC75B5EE
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 19:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D054375B5FD
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 19:58:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMXqP-0005zG-RN; Thu, 20 Jul 2023 13:53:41 -0400
+	id 1qMXuc-0006y7-Bf; Thu, 20 Jul 2023 13:58:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qMXqN-0005yn-Hk
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 13:53:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qMXuY-0006xd-9p
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 13:57:59 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qMXqL-0005AY-RU
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 13:53:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689875616;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=lbd131qExcx8tyLjunx6NzblLuINQtv9qi729KKpceA=;
- b=DMG1QDDRb6/IP+9puT2jVb+dCRO5lEFXpC2lOzrCrxvn+4PbvihthSNCNWx38SiFS4WAWw
- WuECHq7JLxX/km1HubrmpsNHeJ29qTLNjOklaFgRl4oj2/mP1Te4QapoAB7AfWE7HHzPHO
- /VslV68ls71JVoDQ7AeXo3C9ijupSRY=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-248--lY5Ql9eOCGtavOAohOVEw-1; Thu, 20 Jul 2023 13:53:34 -0400
-X-MC-Unique: -lY5Ql9eOCGtavOAohOVEw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5115D28040C1;
- Thu, 20 Jul 2023 17:53:34 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.192.100])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 07C191121314;
- Thu, 20 Jul 2023 17:53:32 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH] target/loongarch: Fix the CSRRD CPUID instruction on big
- endian hosts
-Date: Thu, 20 Jul 2023 19:53:07 +0200
-Message-Id: <20230720175307.854460-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qMXuS-0006zE-12
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 13:57:54 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36KHk0hc002982; Thu, 20 Jul 2023 17:57:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=LwwLKyd4vhR/oBiEAuhvXTtw+g//Sv5HYUaMXIB4I7E=;
+ b=fsEQSTe5hibsrrMaUxmftZNROxRfB+PigiG3ttSUbNw2hDeQy7o67fSM36/9vqrOYRc4
+ hkdqsALnQyjL1g6itz1szWIBgYOo6JCKOSl6OoodwzJjwJ9og8NDCL2U3F6LhmJb5qW2
+ 0N1ycR137YwlhavNlwroYc3GIGVq1qqp8pw8Md6iEnGjEfOndyW0XvVSaHxgZL0cSXrr
+ 4GlbkFL+uK21eqOhUYDeTykfAj5sJZ3ikT3I/PDykn3YsXXqCBcowcNqErfOGVRQW/DS
+ cJZxNJJIISby2OyCp/dO36rhvW02ELZ+vssUZ6zjGOrLQ88z0/UpeKvz9X346V2Bhf7A FQ== 
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rxqs40xbb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 20 Jul 2023 17:57:44 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36KHLGTk029098; Thu, 20 Jul 2023 17:57:44 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3rv6smqy92-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 20 Jul 2023 17:57:44 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36KHvhIG36700666
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 20 Jul 2023 17:57:43 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 13B7E58050;
+ Thu, 20 Jul 2023 17:57:43 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A27BB58045;
+ Thu, 20 Jul 2023 17:57:42 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Thu, 20 Jul 2023 17:57:42 +0000 (GMT)
+Message-ID: <51616167-319e-aadd-4033-042c180b797e@linux.ibm.com>
+Date: Thu, 20 Jul 2023 13:57:42 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2 08/11] hw/loongarch/virt: add plug handler for TPM on
+ SysBus
+Content-Language: en-US
+To: Joelle van Dyne <j@getutm.app>, qemu-devel@nongnu.org
+Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>
+References: <20230714070931.23476-1-j@getutm.app>
+ <20230714070931.23476-9-j@getutm.app>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20230714070931.23476-9-j@getutm.app>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: H-gDRDquneaK7tK3T2_cHb6SYIbqp983
+X-Proofpoint-ORIG-GUID: H-gDRDquneaK7tK3T2_cHb6SYIbqp983
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-20_09,2023-07-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
+ phishscore=0 mlxlogscore=912 spamscore=0 mlxscore=0 clxscore=1015
+ bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2307200148
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,94 +110,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The test in tests/avocado/machine_loongarch.py is currently failing
-on big endian hosts like s390x. By comparing the traces between running
-the QEMU_EFI.fd bios on a s390x and on a x86 host, it's quickly obvious
-that the CSRRD instruction for the CPUID is behaving differently. And
-indeed: The code currently does a long read (i.e. 64 bit) from the
-address that points to the CPUState->cpu_index field (with tcg_gen_ld_tl()
-in the trans_csrrd() function). But this cpu_index field is only an "int"
-(i.e. 32 bit). While this dirty pointer magic works on little endian hosts,
-it of course fails on big endian hosts. Fix it by using a proper helper
-function instead.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- Note: There is another bug preventing tests/avocado/machine_loongarch.py
- from working correctly on big endian hosts (Linux fails to run the shell)
- but that problem is harder to debug since it happens way later in the boot
- process...
 
- target/loongarch/cpu.h                             | 1 +
- target/loongarch/helper.h                          | 1 +
- target/loongarch/csr_helper.c                      | 9 +++++++++
- target/loongarch/insn_trans/trans_privileged.c.inc | 8 +-------
- 4 files changed, 12 insertions(+), 7 deletions(-)
+On 7/14/23 03:09, Joelle van Dyne wrote:
+> TPM needs to know its own base address in order to generate its DSDT
+> device entry.
+> 
+> Signed-off-by: Joelle van Dyne <j@getutm.app>
 
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index ed04027af1..fa371ca8ba 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -342,6 +342,7 @@ typedef struct CPUArchState {
-     uint64_t CSR_DBG;
-     uint64_t CSR_DERA;
-     uint64_t CSR_DSAVE;
-+    uint64_t CSR_CPUID;
- 
- #ifndef CONFIG_USER_ONLY
-     LoongArchTLB  tlb[LOONGARCH_TLB_MAX];
-diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-index b9de77d926..ffb1e0b0bf 100644
---- a/target/loongarch/helper.h
-+++ b/target/loongarch/helper.h
-@@ -98,6 +98,7 @@ DEF_HELPER_1(rdtime_d, i64, env)
- #ifndef CONFIG_USER_ONLY
- /* CSRs helper */
- DEF_HELPER_1(csrrd_pgd, i64, env)
-+DEF_HELPER_1(csrrd_cpuid, i64, env)
- DEF_HELPER_1(csrrd_tval, i64, env)
- DEF_HELPER_2(csrwr_estat, i64, env, tl)
- DEF_HELPER_2(csrwr_asid, i64, env, tl)
-diff --git a/target/loongarch/csr_helper.c b/target/loongarch/csr_helper.c
-index 6526367946..55341551a5 100644
---- a/target/loongarch/csr_helper.c
-+++ b/target/loongarch/csr_helper.c
-@@ -35,6 +35,15 @@ target_ulong helper_csrrd_pgd(CPULoongArchState *env)
-     return v;
- }
- 
-+target_ulong helper_csrrd_cpuid(CPULoongArchState *env)
-+{
-+    LoongArchCPU *lac = env_archcpu(env);
-+
-+    env->CSR_CPUID = CPU(lac)->cpu_index;
-+
-+    return env->CSR_CPUID;
-+}
-+
- target_ulong helper_csrrd_tval(CPULoongArchState *env)
- {
-     LoongArchCPU *cpu = env_archcpu(env);
-diff --git a/target/loongarch/insn_trans/trans_privileged.c.inc b/target/loongarch/insn_trans/trans_privileged.c.inc
-index 02bca7ca23..9c9de090f0 100644
---- a/target/loongarch/insn_trans/trans_privileged.c.inc
-+++ b/target/loongarch/insn_trans/trans_privileged.c.inc
-@@ -99,13 +99,7 @@ static const CSRInfo csr_info[] = {
-     CSR_OFF(PWCH),
-     CSR_OFF(STLBPS),
-     CSR_OFF(RVACFG),
--    [LOONGARCH_CSR_CPUID] = {
--        .offset = (int)offsetof(CPUState, cpu_index)
--                  - (int)offsetof(LoongArchCPU, env),
--        .flags = CSRFL_READONLY,
--        .readfn = NULL,
--        .writefn = NULL
--    },
-+    CSR_OFF_FUNCS(CPUID, CSRFL_READONLY, gen_helper_csrrd_cpuid, NULL),
-     CSR_OFF_FLAGS(PRCFG1, CSRFL_READONLY),
-     CSR_OFF_FLAGS(PRCFG2, CSRFL_READONLY),
-     CSR_OFF_FLAGS(PRCFG3, CSRFL_READONLY),
--- 
-2.39.3
 
+It would be great to also cover the crb-device  with tests:
+
+from tests/qtest/meson.build:
+
+   (config_all.has_key('CONFIG_TCG') and config_all_devices.has_key('CONFIG_TPM_TIS_SYSBUS') ?            \
+     ['tpm-tis-device-test', 'tpm-tis-device-swtpm-test'] : []) +                                         \
+
+It should be easy to make a copy of these two tis-device tests and rename them to crb-device tests, adapt them, and run them at least on aarch64.
+
+Regards,
+    Stefan
 
