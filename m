@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E260A75B65B
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 20:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C30D75B662
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 20:16:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMYBL-0004DH-GU; Thu, 20 Jul 2023 14:15:19 -0400
+	id 1qMYBe-0004L7-8z; Thu, 20 Jul 2023 14:15:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qMYBE-0004CN-J2
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:12 -0400
+ id 1qMYBJ-0004Dm-QY
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qMYBD-0003Gn-4w
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:12 -0400
+ id 1qMYBG-0003I3-O4
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689876907;
+ s=mimecast20190719; t=1689876913;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=409EOOckyGprOXBiPYJE6nLyFod7nNzqMkRIEKlNrxM=;
- b=EsMw1hHaKQsYscE5NCpavDK6SINTvy3DBDXxCZOoSz6HSxXsgbj9ComEXUDNGCe8GGogVO
- O8XIUsmUHEo0SA7c3jgt/hV16qTjYwaLMWSSjB1qD/2wBshrgMW+gPtFDn92+YKNUOss/O
- kEgQv1vRnxMxJb480pPfbVMdJKhLHK8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-209-A191j2kRPru0XieQfzgcvw-1; Thu, 20 Jul 2023 14:15:05 -0400
-X-MC-Unique: A191j2kRPru0XieQfzgcvw-1
+ bh=Nag6baYm1KG8EZBPsQkKS/2lJrXvwaihqgRRI4ssZX8=;
+ b=dhs0iUJbeqFqq/xqo/nOrHKxGPhatKk33+YPRrfQ4AhC6NbnQVuiSHKyEgNjdgPQCy9kvi
+ 7Fdt0mqthXaXYAJXBeFQIrThwciimpF2x5po08kjZ09MhTBWMCwo9wwTYlJqMD/GBmo6AD
+ ehNjp+N2B3mdy/Sq4tab/WfGsshO1HY=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-83-o2SLo1nhMSC3D4TIvPaW6g-1; Thu, 20 Jul 2023 14:15:07 -0400
+X-MC-Unique: o2SLo1nhMSC3D4TIvPaW6g-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DEC6088D1A0;
- Thu, 20 Jul 2023 18:15:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 79D851C04356;
+ Thu, 20 Jul 2023 18:15:06 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.193.122])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8E9D72166B25;
- Thu, 20 Jul 2023 18:15:03 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 28D012166B25;
+ Thu, 20 Jul 2023 18:15:05 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: yvugenfi@redhat.com,
@@ -49,9 +49,9 @@ Cc: yvugenfi@redhat.com,
  si-wei.liu@oracle.com, Jason Wang <jasowang@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Dragos Tatulea <dtatulea@nvidia.com>, Shannon Nelson <snelson@pensando.io>
-Subject: [RFC PATCH 01/12] vhost: add vhost_reset_queue_op
-Date: Thu, 20 Jul 2023 20:14:48 +0200
-Message-Id: <20230720181459.607008-2-eperezma@redhat.com>
+Subject: [RFC PATCH 02/12] vhost: add vhost_restart_queue_op
+Date: Thu, 20 Jul 2023 20:14:49 +0200
+Message-Id: <20230720181459.607008-3-eperezma@redhat.com>
 In-Reply-To: <20230720181459.607008-1-eperezma@redhat.com>
 References: <20230720181459.607008-1-eperezma@redhat.com>
 MIME-Version: 1.0
@@ -83,7 +83,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-So different vhost backends can perform custom actions at queue reset.
+So different vhost backends can perform custom actions at queue restart.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
@@ -91,23 +91,23 @@ Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
  1 file changed, 3 insertions(+)
 
 diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
-index 31a251a9f5..37e05fa1f9 100644
+index 37e05fa1f9..651402af10 100644
 --- a/include/hw/virtio/vhost-backend.h
 +++ b/include/hw/virtio/vhost-backend.h
-@@ -133,6 +133,8 @@ typedef int (*vhost_set_config_call_op)(struct vhost_dev *dev,
+@@ -135,6 +135,8 @@ typedef void (*vhost_reset_status_op)(struct vhost_dev *dev);
  
- typedef void (*vhost_reset_status_op)(struct vhost_dev *dev);
+ typedef void (*vhost_reset_queue_op)(struct vhost_dev *dev, int idx);
  
-+typedef void (*vhost_reset_queue_op)(struct vhost_dev *dev, int idx);
++typedef int (*vhost_restart_queue_op)(struct vhost_dev *dev, int idx);
 +
  typedef struct VhostOps {
      VhostBackendType backend_type;
      vhost_backend_init vhost_backend_init;
-@@ -181,6 +183,7 @@ typedef struct VhostOps {
-     vhost_force_iommu_op vhost_force_iommu;
+@@ -184,6 +186,7 @@ typedef struct VhostOps {
      vhost_set_config_call_op vhost_set_config_call;
      vhost_reset_status_op vhost_reset_status;
-+    vhost_reset_queue_op vhost_reset_queue;
+     vhost_reset_queue_op vhost_reset_queue;
++    vhost_restart_queue_op vhost_restart_queue;
  } VhostOps;
  
  int vhost_backend_update_device_iotlb(struct vhost_dev *dev,
