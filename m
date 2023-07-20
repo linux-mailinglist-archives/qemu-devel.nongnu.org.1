@@ -2,44 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4287E75B410
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 18:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF7175B431
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 18:29:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMWQ2-0005Mw-Jo; Thu, 20 Jul 2023 12:22:22 -0400
+	id 1qMWW0-0004KU-Ep; Thu, 20 Jul 2023 12:28:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qMWPp-0005M7-Ff
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:22:10 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qMWPn-0001w1-FE
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:22:09 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id AC7F211EE69;
- Thu, 20 Jul 2023 16:22:05 +0000 (UTC)
-From: ~hyman <hyman@git.sr.ht>
-Date: Thu, 20 Jul 2023 16:22:05 +0000
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMWVz-0004K6-0u
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:28:31 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMWVw-0003f7-J7
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:28:30 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-51e56749750so1372398a12.0
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 09:28:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689870506; x=1690475306;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=NmG4z32DKSrMHBIzEuBhLqUfjW/cR/ysKSc5rHDmPNM=;
+ b=Tn9hholpY9DmEQbrqfqM3sSiTQiYYKHo3vLEYM3gsrUifodYq3/ncVgUCeOyP2jAr0
+ 010LZdTRIjNheTCY4r4Fuw4OaCAiR60+YI2dEiDVtuf+LPg3xn1nElBTBvrpPWfcEDPm
+ HbpSDA9mfYG5vechdR8lZIcY5X33J1vEmJ8kFNqjmDDHyDhiiAojBYhniUlYI7RuiOtV
+ jo2mih1E6Zbr82dMAYUwcd5IuQnZZZ0tr/Hdz+jdd1AVZoQU12k4Ry2zrBPoYGDifxHK
+ y6sysGa7C7sElFRWecdB5vRsWhfTttzz++EOVPmbdvlGeJrOJIdurPsyBAzo9AMkms4D
+ 4bBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689870506; x=1690475306;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NmG4z32DKSrMHBIzEuBhLqUfjW/cR/ysKSc5rHDmPNM=;
+ b=KJ4yQ5Mq4hojoU+NIY6RJFf1oPNuILCq5sUaS8GFtmVXP0cSID8896VCSBpMYTqSB3
+ 15mQqHojAGGwR66b2jC5FPg6CCeqvt462SjqY3KBFzInJRmex7sB1WrdGZ8HN945PXmG
+ QHgM33SF3TK41ZuqUeE2EtPKf3FD1pi7gQtL6ECOiHJKZJEQQpl5a0flfnQfkGwN5QVD
+ Ha9cRqBJ1hVaL09dWKcoJyBPBWVLc6sSSNMJXpcrcafJD19Q/T+MYnEybkax8nH98nPN
+ qD2Hyi+yAs/qo3B+/cBya3RO7i8zGd/z0TN2+/K4awYHbxANSvNOyILfVz7y74oQJfFR
+ 1bHw==
+X-Gm-Message-State: ABy/qLb0YNwY5i9sw6CgJjGRLmX7YS0Y39jmPJ12Pyiin/RksUcau7Xu
+ zQzWJM9s1/ABrP3vXZ7kI/ZVv7sl//gRx8kpbDMHCA==
+X-Google-Smtp-Source: APBJJlG7dK6iHavjpYiSQ6IgZkb2CuIdtEJ7UDXkGBZaBVG6PLqRDud2Z/0oyXP1w3bJSwGCKc/kpIciFOwLiZop5ug=
+X-Received: by 2002:aa7:d54e:0:b0:521:d770:4753 with SMTP id
+ u14-20020aa7d54e000000b00521d7704753mr2145797edr.13.1689870506685; Thu, 20
+ Jul 2023 09:28:26 -0700 (PDT)
 MIME-Version: 1.0
-Subject: [PATCH QEMU v9 0/9] migration: introduce dirtylimit capability
-Message-ID: <168987012554.14797.8679831725383645706-0@git.sr.ht>
-X-Mailer: git.sr.ht
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20230719153018.1456180-2-jean-philippe@linaro.org>
+ <20230719153018.1456180-3-jean-philippe@linaro.org>
+In-Reply-To: <20230719153018.1456180-3-jean-philippe@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 20 Jul 2023 17:28:15 +0100
+Message-ID: <CAFEAcA-qPRSrLievcUZsCJQ3MO0AzdfrkMM6gs+PHK-mZq51fw@mail.gmail.com>
+Subject: Re: [PATCH 1/5] target/arm/ptw: Load stage-2 tables from realm
+ physical space
+To: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -52,118 +83,62 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~hyman <yong.huang@smartx.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus, thank Markus for crafting the comments
-please review the latest version.
+On Wed, 19 Jul 2023 at 16:56, Jean-Philippe Brucker
+<jean-philippe@linaro.org> wrote:
+>
+> In realm state, stage-2 translation tables are fetched from the realm
+> physical address space (R_PGRQD).
+>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> ---
+>  target/arm/ptw.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+> index d1de934702..6318e13b98 100644
+> --- a/target/arm/ptw.c
+> +++ b/target/arm/ptw.c
+> @@ -164,7 +164,11 @@ static ARMMMUIdx ptw_idx_for_stage_2(CPUARMState *env, ARMMMUIdx stage2idx)
+>       * an NS stage 1+2 lookup while the NS bit is 0.)
+>       */
+>      if (!arm_is_secure_below_el3(env) || !arm_el_is_aa64(env, 3)) {
+> -        return ARMMMUIdx_Phys_NS;
+> +        if (arm_security_space_below_el3(env) == ARMSS_Realm) {
+> +            return ARMMMUIdx_Phys_Realm;
+> +        } else {
+> +            return ARMMMUIdx_Phys_NS;
+> +        }
+>      }
+>      if (stage2idx == ARMMMUIdx_Stage2_S) {
+>          s2walk_secure = !(env->cp15.vstcr_el2 & VSTCR_SW);
 
-Yong
+This isn't wrong, but arm_is_secure_below_el3()
+calls arm_security_space_below_el3(), so we kinda
+duplicate work there. I think we should instead have:
 
-v7~v9:
-Rebase on master, fix conflicts and craft the docs suggested by Markus
+    if (!arm_el_is_aa64(env, 3)) {
+        return ARMMMUIdx_Phys_NS;
+    }
 
-v6:
-1. Rebase on master
-2. Split the commit "Implement dirty-limit convergence algo" into two as
-    Juan suggested as the following:
-    a. Put the detection logic before auto-converge checking
-    b. Implement dirty-limit convergence algo
-3. Put the detection logic before auto-converge checking
-4. Sort the migrate_dirty_limit function in commit
-    "Introduce dirty-limit capability" suggested by Juan
-5. Substitute the the int64_t to uint64_t in the last 2 commits
-6. Fix the comments spell mistake
-7. Add helper function in the commit
-    "Implement dirty-limit convergence algo" suggested by Juan
+    switch (arm_security_space_below_el3(env)) {
+    case ARMSS_NonSecure:
+        return ARMMUIdx_Phys_NS;
+    case ARMSS_Realm:
+        return ARMMMUIdx_Phys_Realm;
+    case ARMSS_Secure:
+        [existing code to look at the SW/NSW bits]
+        return s2walk_secure ? ...;
+    default:
+        g_assert_not_reached();
+    }
 
-v5:
-1. Rebase on master and enrich the comment for "dirty-limit" capability,
-    suggesting by Markus.
-2. Drop commits that have already been merged.
+The comment above the function also needs tweaking
+to say "SCR_EL3.NS or SCR_EL3.NSE bits" (we do already
+do the TLB flush in scr_write).
 
-v4:
-1. Polish the docs and update the release version suggested by Markus
-2. Rename the migrate exported info "dirty-limit-throttle-time-per-
-round"
-   to "dirty-limit-throttle-time-per-full".
-
-v3(resend):
-- fix the syntax error of the topic.
-
-v3:
-This version make some modifications inspired by Peter and Markus
-as following:
-1. Do the code clean up in [PATCH v2 02/11] suggested by Markus
-2. Replace the [PATCH v2 03/11] with a much simpler patch posted by
-   Peter to fix the following bug:
-   https://bugzilla.redhat.com/show_bug.cgi?id=3D2124756
-3. Fix the error path of migrate_params_check in [PATCH v2 04/11]
-   pointed out by Markus. Enrich the commit message to explain why
-   x-vcpu-dirty-limit-period an unstable parameter.
-4. Refactor the dirty-limit convergence algo in [PATCH v2 07/11]
-   suggested by Peter:
-   a. apply blk_mig_bulk_active check before enable dirty-limit
-   b. drop the unhelpful check function before enable dirty-limit
-   c. change the migration_cancel logic, just cancel dirty-limit
-      only if dirty-limit capability turned on.
-   d. abstract a code clean commit [PATCH v3 07/10] to adjust
-      the check order before enable auto-converge
-5. Change the name of observing indexes during dirty-limit live
-   migration to make them more easy-understanding. Use the
-   maximum throttle time of vpus as "dirty-limit-throttle-time-per-full"
-6. Fix some grammatical and spelling errors pointed out by Markus
-   and enrich the document about the dirty-limit live migration
-   observing indexes "dirty-limit-ring-full-time"
-   and "dirty-limit-throttle-time-per-full"
-7. Change the default value of x-vcpu-dirty-limit-period to 1000ms,
-   which is optimal value pointed out in cover letter in that
-   testing environment.
-8. Drop the 2 guestperf test commits [PATCH v2 10/11],
-   [PATCH v2 11/11] and post them with a standalone series in the
-   future.
-
-v2:
-This version make a little bit modifications comparing with
-version 1 as following:
-1. fix the overflow issue reported by Peter Maydell
-2. add parameter check for hmp "set_vcpu_dirty_limit" command
-3. fix the racing issue between dirty ring reaper thread and
-   Qemu main thread.
-4. add migrate parameter check for x-vcpu-dirty-limit-period
-   and vcpu-dirty-limit.
-5. add the logic to forbid hmp/qmp commands set_vcpu_dirty_limit,
-   cancel_vcpu_dirty_limit during dirty-limit live migration when
-   implement dirty-limit convergence algo.
-6. add capability check to ensure auto-converge and dirty-limit
-   are mutually exclusive.
-7. pre-check if kvm dirty ring size is configured before setting
-   dirty-limit migrate parameter
-
-Hyman Huang(=E9=BB=84=E5=8B=87) (9):
-  softmmu/dirtylimit: Add parameter check for hmp "set_vcpu_dirty_limit"
-  qapi/migration: Introduce x-vcpu-dirty-limit-period parameter
-  qapi/migration: Introduce vcpu-dirty-limit parameters
-  migration: Introduce dirty-limit capability
-  migration: Refactor auto-converge capability logic
-  migration: Put the detection logic before auto-converge checking
-  migration: Implement dirty-limit convergence algorithm
-  migration: Extend query-migrate to provide dirty-limit info
-  tests: Add migration dirty-limit capability test
-
- include/sysemu/dirtylimit.h    |   2 +
- migration/migration-hmp-cmds.c |  26 ++++++
- migration/migration.c          |  13 +++
- migration/options.c            |  73 ++++++++++++++++
- migration/options.h            |   1 +
- migration/ram.c                |  61 ++++++++++---
- migration/trace-events         |   1 +
- qapi/migration.json            |  72 +++++++++++++--
- softmmu/dirtylimit.c           |  91 +++++++++++++++++--
- tests/qtest/migration-test.c   | 155 +++++++++++++++++++++++++++++++++
- 10 files changed, 470 insertions(+), 25 deletions(-)
-
---=20
-2.38.5
+thanks
+-- PMM
 
