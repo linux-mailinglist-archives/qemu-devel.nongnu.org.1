@@ -2,81 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AFC075A7D6
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 09:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A61F75A7D7
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 09:31:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMO6N-0003UF-3T; Thu, 20 Jul 2023 03:29:31 -0400
+	id 1qMO7R-0003sX-8H; Thu, 20 Jul 2023 03:30:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qMO6L-0003Ts-6a
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 03:29:29 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qMO6H-0002zP-MN
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 03:29:28 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1b8a44ee159so2809355ad.3
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 00:29:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1689838164; x=1690442964;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Zu0o/wcEkbfTyvDOhAFRVRnQlN6I6R0hj4RBolX2hdg=;
- b=oVH5QTZbrvnHyydotdMaw7OEyZnGgENiFoLjcYkF94dYXXrP5cCqtMYTXhtgwnqgtU
- 1laKHVI6VGEr6FAFlMN6eCvT87ouu1pt/yFRJ+HeiTET0IsHJeWKomR5VOcrFpYla+1a
- jkveSDT7ASJdJ9zykl1PY+3ByvNl2O5gcHPqXgUP//cd40PUzYI3GoDX2oDfAsDk2RD2
- z2vGArKL7EXDROz/73thV/lkO9tEGscXjjc1EhPW9FGRX4+AYPnUjSfcTonBmPgPNo0z
- wWaBza1jE6vXrOs1I2SOiTdnE4em5RZ4a0SxZWsk7P6iWAGK3W8lTWrARYT3G2OJfmWH
- FuBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689838164; x=1690442964;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Zu0o/wcEkbfTyvDOhAFRVRnQlN6I6R0hj4RBolX2hdg=;
- b=klaiu356g0pm82+MgWS5g8Giu0J3wu7KXP8BcXCih2PODltfGldBe3v+fEmSvnuxsf
- kLgspaY2rLkbt7FeAvjBK55ypFAsv5wPfET9ft1kLWKIhjm9Ea0m+RC2oedCq0E3mClZ
- pqukTQy+TFjfHLsp+mh5KbLWaCY9uEMmy5HbEjddwT8OiAQ3UfMf6grwPHytbVfb8+hk
- Ka25x6QiwbWhY8gtjcrTIqWFfa5cRHPEHq4UcA6oQ3Nb1yf03LjAhhGM+ZkK3rNlf55m
- 3K1UWpRKTXonPRswTaL5638WGH39aTbf6SO6fMOnroxfd0RoLam7JkAHJ9KROWTiCepP
- YK8A==
-X-Gm-Message-State: ABy/qLYLfMF6NYiw/sTaOvWUNbOqa9C+n6KtxvYH5p0KBBNQ3RLvtKvP
- LV9hQ3kAu8kicSg4/dxv3E5c/kKCA9MWEU71mUk=
-X-Google-Smtp-Source: APBJJlFhGOYHcvYIXC/iflDORll+mgeCYw2iOdPaeX9f8sxzj4VRPaKE5N19hcP12/8zHpBL9WY1cA==
-X-Received: by 2002:a17:902:ab57:b0:1b8:59f0:c748 with SMTP id
- ij23-20020a170902ab5700b001b859f0c748mr1160084plb.2.1689838163988; 
- Thu, 20 Jul 2023 00:29:23 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- jh5-20020a170903328500b001bb3beb2bc6sm548433plb.65.2023.07.20.00.29.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Jul 2023 00:29:23 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org,
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qMO7P-0003sH-Fx
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 03:30:35 -0400
+Received: from mo4-p01-ob.smtp.rzone.de ([81.169.146.167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qMO7L-0003LS-AB
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 03:30:35 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1689838208; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=nt++gSxgDWjDASW5mySw0msxmOyJhB94ESyZz0s+G+0wn36MBPl1KahtSAsuqP1LpQ
+ zlBaKgmSxfQrOQT2iNzOm/tbYXnafVaKU/pFVoAnhJnZyReosysoSVI6kGX/rp/ltB0N
+ n1j3IEUzg9V9udc1hv3mPlvQ3g426ZKbDoDp5RHWpDQNfGGcCfPBdox6xsTFmIYpDIOU
+ OiX0NE3zei7k7s/DH8jyGjyqe/cij2QC+KUEtq4jg1OhQl83czWWvv7FjpC1zlaaiM9j
+ 4NEF+NffHQrFEC6ODWwnCRagcj9VVLfyzeT2IbZB4Lm52Bq4Id5g7HnQjfaJmjREf+vX
+ yL4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1689838208;
+ s=strato-dkim-0002; d=strato.com;
+ h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+ bh=s6JOIe6z0BGLizUkWvs50G1BxwJlwHY/usYL8TDGJJQ=;
+ b=tkPOSQ+XGulCL7l9K5Y0Dj5foshApchvDzcawRfRn5xVYz2feIgCS132sO8jkWsn3U
+ k/RUMfIWgMfLnaso/R55MJBagC7oMaL2mMjwU/FJhTn8XtYmLd4bh9juRjyrYTMdcJn0
+ eMwjVE3hITcYH1BMcFb+UyPjU5mOOPEzEkGJ2aeHdwXXU5FPj+vX6YIbza0DqxPWhpD/
+ lE9iqnSjtlkP7CbVuIIenvRVMks9ay79+AvGixTJTGTrG/GKrCDNeb3SCMBOuyTmfkVU
+ k70HSXkWXbczh9G2kbxU23XFOuE2XyKSA5I1yJo6wIJsJAL7mn9+4N4p7t5AFj45Vge+
+ R7EA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1689838208;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+ bh=s6JOIe6z0BGLizUkWvs50G1BxwJlwHY/usYL8TDGJJQ=;
+ b=Pg7dl3uOyiwb2WHUo+moHH8AJJcRqvG9mps45rimReWmosvCr9pZ+D9EebcxPx01Ol
+ Jm5mfVu7p1WRrhgCmXs32f8LnTI2Q03s3iAX91gNq3s6tXrDQp5L8FzVta50unLx5O9w
+ 4mw8IFmGaAfzqSIZvQpfbdveXIpBeZ0a79zyke6ycv0pYqDp5SZ7nV+Aw0HwBQkjbXDD
+ pnHs2JuGj0BrMoV/AU0BXpv0q0c+hYGPosmNnYJpUrh/IDR2Py4uz0HuziSStfxUQwcI
+ P9d7iqMJUFEAQSRUQ/ReJMS87zYIGd29GZlEG7WEa65uJdeG9JdPyuAVzEB5whdqTYHd
+ 8oeA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1689838208;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+ bh=s6JOIe6z0BGLizUkWvs50G1BxwJlwHY/usYL8TDGJJQ=;
+ b=kuvg1FQIiKO2T3hQYBSyRc34OLOFcuLX7vZClxpNLskQOgIeBhhw7/heBXSLDwd9OS
+ rakpphXSHdyjVlmcZvCQ==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QXkBR9MXjAuzpIG0mv9coXAg4x/Q77Ep0tacRDpd3C7x0fRU/XAhBUWjct55BrKA=="
+Received: from sender by smtp.strato.de (RZmta 49.6.4 AUTH)
+ with ESMTPSA id m4dd28z6K7U787t
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Thu, 20 Jul 2023 09:30:07 +0200 (CEST)
+From: Olaf Hering <olaf@aepfle.de>
+To: xen-devel@lists.xenproject.org,
+	qemu-devel@nongnu.org
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH RESEND] accel/kvm: Specify default IPA size for arm64
-Date: Thu, 20 Jul 2023 16:29:01 +0900
-Message-ID: <20230720072903.21390-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v1] xen-platform: do full PCI reset during unplug of IDE
+ devices
+Date: Thu, 20 Jul 2023 09:29:50 +0200
+Message-Id: <20230720072950.20198-1-olaf@aepfle.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="us-ascii"
+Received-SPF: none client-ip=81.169.146.167; envelope-from=olaf@aepfle.de;
+ helo=mo4-p01-ob.smtp.rzone.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,70 +103,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-libvirt uses "none" machine type to test KVM availability. Before this
-change, QEMU used to pass 0 as machine type when calling KVM_CREATE_VM.
+The IDE unplug function needs to reset the entire PCI device, to make
+sure all state is initialized to defaults. This is done by calling
+pci_device_reset, which resets not only the chip specific registers, but
+also all PCI state. This fixes "unplug" in a Xen HVM domU with the
+modular legacy xenlinux PV drivers.
 
-The kernel documentation says:
-> On arm64, the physical address size for a VM (IPA Size limit) is
-> limited to 40bits by default. The limit can be configured if the host
-> supports the extension KVM_CAP_ARM_VM_IPA_SIZE. When supported, use
-> KVM_VM_TYPE_ARM_IPA_SIZE(IPA_Bits) to set the size in the machine type
-> identifier, where IPA_Bits is the maximum width of any physical
-> address used by the VM. The IPA_Bits is encoded in bits[7-0] of the
-> machine type identifier.
->
-> e.g, to configure a guest to use 48bit physical address size::
->
->     vm_fd = ioctl(dev_fd, KVM_CREATE_VM, KVM_VM_TYPE_ARM_IPA_SIZE(48));
->
-> The requested size (IPA_Bits) must be:
->
->  ==   =========================================================
->   0   Implies default size, 40bits (for backward compatibility)
->   N   Implies N bits, where N is a positive integer such that,
->       32 <= N <= Host_IPA_Limit
->  ==   =========================================================
+Commit ee358e919e38 ("hw/ide/piix: Convert reset handler to
+DeviceReset") changed the way how the the disks are unplugged. Prior
+this commit the PCI device remained unchanged. After this change,
+piix_ide_reset is exercised after the "unplug" command, which was not
+the case prior that commit. This function resets the command register.
+As a result the ata_piix driver inside the domU will see a disabled PCI
+device. The generic PCI code will reenable the PCI device. On the qemu
+side, this runs pci_default_write_config/pci_update_mappings. Here a
+changed address is returned by pci_bar_address, this is the address
+which was truncated in piix_ide_reset. In case of a Xen HVM domU, the
+address changes from 0xc120 to 0xc100. This truncation was a bug in
+piix_ide_reset, which was fixed in commit 230dfd9257 ("hw/ide/piix:
+properly initialize the BMIBA register"). If pci_xen_ide_unplug had used
+pci_device_reset, the PCI registers would have been properly reset, and
+commit ee358e919e38 would have not introduced a regression for this
+specific domU environment.
 
-> Host_IPA_Limit is the maximum possible value for IPA_Bits on the host
-> and is dependent on the CPU capability and the kernel configuration.
-> The limit can be retrieved using KVM_CAP_ARM_VM_IPA_SIZE of the
-> KVM_CHECK_EXTENSION ioctl() at run-time.
->
-> Creation of the VM will fail if the requested IPA size (whether it is
-> implicit or explicit) is unsupported on the host.
-https://docs.kernel.org/virt/kvm/api.html#kvm-create-vm
+While the unplug is supposed to hide the IDE disks, the changed BMIBA
+address broke the UHCI device. In case the domU has an USB tablet
+configured, to recive absolute pointer coordinates for the GUI, it will
+cause a hang during device discovery of the partly discovered USB hid
+device. Reading the USBSTS word size register will fail. The access ends
+up in the QEMU piix-bmdma device, instead of the expected uhci device.
+Here a byte size request is expected, and a value of ~0 is returned. As
+a result the UCHI driver sees an error state in the register, and turns
+off the UHCI controller.
 
-So if Host_IPA_Limit < 40, such KVM_CREATE_VM will fail, and libvirt
-incorrectly thinks KVM is not available. This actually happened on M2
-MacBook Air.
-
-Fix this by specifying 32 for IPA_Bits as any arm64 system should
-support the value according to the documentation.
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Olaf Hering <olaf@aepfle.de>
 ---
-Resending due to inactivity.
+ hw/i386/xen/xen_platform.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
- accel/kvm/kvm-all.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 373d876c05..3bd362e346 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2458,7 +2458,11 @@ static int kvm_init(MachineState *ms)
-     KVMState *s;
-     const KVMCapabilityInfo *missing_cap;
-     int ret;
-+#ifdef TARGET_AARCH64
-+    int type = 32;
-+#else
-     int type = 0;
-+#endif
-     uint64_t dirty_log_manual_caps;
+diff --git a/hw/i386/xen/xen_platform.c b/hw/i386/xen/xen_platform.c
+index 57f1d742c1..17457ff3de 100644
+--- a/hw/i386/xen/xen_platform.c
++++ b/hw/i386/xen/xen_platform.c
+@@ -164,8 +164,9 @@ static void pci_unplug_nics(PCIBus *bus)
+  *
+  * [1] https://xenbits.xen.org/gitweb/?p=xen.git;a=blob;f=docs/misc/hvm-emulated-unplug.pandoc
+  */
+-static void pci_xen_ide_unplug(DeviceState *dev, bool aux)
++static void pci_xen_ide_unplug(PCIDevice *d, bool aux)
+ {
++    DeviceState *dev = DEVICE(d);
+     PCIIDEState *pci_ide;
+     int i;
+     IDEDevice *idedev;
+@@ -195,7 +196,7 @@ static void pci_xen_ide_unplug(DeviceState *dev, bool aux)
+             blk_unref(blk);
+         }
+     }
+-    device_cold_reset(dev);
++    pci_device_reset(d);
+ }
  
-     qemu_mutex_init(&kml_slots_lock);
--- 
-2.41.0
+ static void unplug_disks(PCIBus *b, PCIDevice *d, void *opaque)
+@@ -210,7 +211,7 @@ static void unplug_disks(PCIBus *b, PCIDevice *d, void *opaque)
+ 
+     switch (pci_get_word(d->config + PCI_CLASS_DEVICE)) {
+     case PCI_CLASS_STORAGE_IDE:
+-        pci_xen_ide_unplug(DEVICE(d), aux);
++        pci_xen_ide_unplug(d, aux);
+         break;
+ 
+     case PCI_CLASS_STORAGE_SCSI:
 
 
