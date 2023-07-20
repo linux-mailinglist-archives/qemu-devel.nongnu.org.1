@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9016A75B03C
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 392F575B034
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:40:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMTsq-0007MR-Oe; Thu, 20 Jul 2023 09:39:56 -0400
+	id 1qMTsP-0006ql-Ga; Thu, 20 Jul 2023 09:39:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qMTs8-0006iq-5z
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:39:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qMTs6-0006hp-OS
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:39:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qMTs4-0007XS-2D
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:39:11 -0400
+ id 1qMTs2-0007WR-Er
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:39:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689860347;
+ s=mimecast20190719; t=1689860345;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bdnQ4i99keqsikSk4aQNplYdG8+36ADsqY1J4Xq3ovk=;
- b=QNs8tUzZQ3/WUcDXpAk9bAbBPnCnedb5Lz7pZzxKr9Hi2JXbMEE9KxDZuGipsCNnWwZvBL
- TFWgveXR9XRXgUc71MaFlBX/aAC5OUPfhWQaw9XdeR3OzJtAqYhzVIn0KuwFVtiQp1hJOh
- YOhI4Gbxqqvc/0UDbzqUpHKzhx+WswE=
+ bh=jzMNYsmpSSZFcpUP3iC+N9RXlHH3VNA2UmQh/CesDEY=;
+ b=dzSbttoZGm6bBp66PEyQw92nQdrHvCu81OVsJ1fJYdRTvV96SN5HQdyZBLRRGEtKEruj7G
+ tKCnTVv/WJ8nqRJcOQGvwD6GNRxj86IKVpDGLFLUxcDM3DkfeHW7CrNTKbOnqRNAaRtNe0
+ udDRS0vSl5SO6T4lJYBySsERFY9n9S0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-638-c788kvMJOuiYl06dHclIjQ-1; Thu, 20 Jul 2023 09:39:03 -0400
-X-MC-Unique: c788kvMJOuiYl06dHclIjQ-1
+ us-mta-587-mLpWJkyfM96zFrc05F39jw-1; Thu, 20 Jul 2023 09:39:03 -0400
+X-MC-Unique: mLpWJkyfM96zFrc05F39jw-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BAC3988D545
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 13:39:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8129F88D552
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 13:39:03 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 305F24A9004;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EBB184CD0E3;
  Thu, 20 Jul 2023 13:39:02 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com,
 	anisinha@redhat.com
-Subject: [PATCH for-8.1 1/6] tests: acpi: x86: whitelist expected blobs
-Date: Thu, 20 Jul 2023 15:38:53 +0200
-Message-Id: <20230720133858.1974024-2-imammedo@redhat.com>
+Subject: [PATCH for-8.1 2/6] x86: acpi: workaround Windows not handling name
+ references in Package properly
+Date: Thu, 20 Jul 2023 15:38:54 +0200
+Message-Id: <20230720133858.1974024-3-imammedo@redhat.com>
 In-Reply-To: <20230720133858.1974024-1-imammedo@redhat.com>
 References: <20230720133858.1974024-1-imammedo@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,31 +82,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+it seems that Windows is unable to handle variable references
+making it choke up when accessing ASUN during _DSM call
+when device is hotplugged (it lists package elements as DataAlias
+but despite that later on it misbehaves) with following error
+shown up in AMLI debugger (WS2012r2):
+    Store(ShiftLeft(One,Arg1="ASUN",) AMLI_ERROR(c0140008): Unexpected argument type
+    ValidateArgTypes: expected Arg1 to be type Integer (Type=String)
+Similar outcome with WS2022.
+
+Issue is not fatal but as result acpi-index/"PCI Label ID" property
+is either not shown in device details page or shows incorrect value.
+
+Fix it by doing assignment of BSEL/ASUN values to package
+elements manually after package declaration.
+
+Fix was tested with: WS2012r2, WS2022, RHEL9
+
+Fixes: 467d099a2985 (x86: acpi: _DSM: use Package to pass parameters)
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ hw/i386/acpi-build.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..1983fa596b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,15 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/pc/DSDT",
-+"tests/data/acpi/pc/DSDT.acpierst",
-+"tests/data/acpi/pc/DSDT.acpihmat",
-+"tests/data/acpi/pc/DSDT.bridge",
-+"tests/data/acpi/pc/DSDT.cphp",
-+"tests/data/acpi/pc/DSDT.dimmpxm",
-+"tests/data/acpi/pc/DSDT.hpbridge",
-+"tests/data/acpi/pc/DSDT.ipmikcs",
-+"tests/data/acpi/pc/DSDT.memhp",
-+"tests/data/acpi/pc/DSDT.nohpet",
-+"tests/data/acpi/pc/DSDT.numamem",
-+"tests/data/acpi/pc/DSDT.roothp",
-+"tests/data/acpi/q35/DSDT.bridge",
-+"tests/data/acpi/q35/DSDT.multi-bridge",
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 9c74fa17ad..19d268ff59 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -362,9 +362,13 @@ Aml *aml_pci_device_dsm(void)
+     {
+         Aml *params = aml_local(0);
+         Aml *pkg = aml_package(2);
+-        aml_append(pkg, aml_name("BSEL"));
+-        aml_append(pkg, aml_name("ASUN"));
++        aml_append(pkg, aml_int(0));
++        aml_append(pkg, aml_int(0));
+         aml_append(method, aml_store(pkg, params));
++        aml_append(method,
++            aml_store(aml_name("BSEL"), aml_index(params, aml_int(0))));
++        aml_append(method,
++            aml_store(aml_name("ASUN"), aml_index(params, aml_int(1))));
+         aml_append(method,
+             aml_return(aml_call5("PDSM", aml_arg(0), aml_arg(1),
+                                  aml_arg(2), aml_arg(3), params))
 -- 
 2.39.3
 
