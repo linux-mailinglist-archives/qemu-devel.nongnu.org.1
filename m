@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 715E475B65F
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 20:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3213D75B664
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 20:16:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMYBl-00059Q-KP; Thu, 20 Jul 2023 14:15:46 -0400
+	id 1qMYBo-0005I6-49; Thu, 20 Jul 2023 14:15:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qMYBR-0004L8-UT
+ id 1qMYBR-0004Kw-AC
  for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qMYBQ-0003Lx-JC
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:25 -0400
+ id 1qMYBP-0003Lr-Nu
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1689876923;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+ytfb3HXV+wFwSIUmTNAnsUHTHuXBYfLCvZ0GHbLF5w=;
- b=ijUGZ9Pc19Q8ABUrYNU8psEVXzZzCJI7ZvSdO1AgtBZ1VpIoxiptJb14x2/waq4NazacCB
- MDPmrojVfJLSC2i2ALiW9kpyBgGrtlQdmXhoZFTckl6ytzxEjgeNfWwuZaE+Ofjx1DGdE+
- warKu/aCorz4gJRKepCgBi7aG0Zgmy8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-372-di8aBrTNMa6DgL5B80uODA-1; Thu, 20 Jul 2023 14:15:18 -0400
-X-MC-Unique: di8aBrTNMa6DgL5B80uODA-1
+ bh=P9CKyKCD2Asr59YwlxOKNQ11bPRWkSiQVn9Bq1tQZj4=;
+ b=KLn7TfdEvq6fy0GnsWdkHZD2msllcmqxdmQ6GClw8AW9fmLfTobEYM/dyOhnXWKWzb6f5w
+ bxUsRL0AfjVrG+9b8lZZlW4rcEwGeak8VtgvFYQfXyM0EqTYavwrQDr79uoM78bUIf+lY0
+ PftdPFjZymcvZw6oq0ihLumJBZSFTeM=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-414-qCsMew6hOeqEtO4NXk0sKQ-1; Thu, 20 Jul 2023 14:15:19 -0400
+X-MC-Unique: qCsMew6hOeqEtO4NXk0sKQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8CFAC88D196;
- Thu, 20 Jul 2023 18:15:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3032F3C01DF3;
+ Thu, 20 Jul 2023 18:15:19 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.193.122])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3A7222166B25;
- Thu, 20 Jul 2023 18:15:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CABA32166B25;
+ Thu, 20 Jul 2023 18:15:17 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: yvugenfi@redhat.com,
@@ -49,9 +49,10 @@ Cc: yvugenfi@redhat.com,
  si-wei.liu@oracle.com, Jason Wang <jasowang@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Dragos Tatulea <dtatulea@nvidia.com>, Shannon Nelson <snelson@pensando.io>
-Subject: [RFC PATCH 09/12] vdpa: add vhost_vdpa_restart_queue
-Date: Thu, 20 Jul 2023 20:14:56 +0200
-Message-Id: <20230720181459.607008-10-eperezma@redhat.com>
+Subject: [RFC PATCH 10/12] vdpa: enable all vqs if the device support
+ RING_RESET feature
+Date: Thu, 20 Jul 2023 20:14:57 +0200
+Message-Id: <20230720181459.607008-11-eperezma@redhat.com>
 In-Reply-To: <20230720181459.607008-1-eperezma@redhat.com>
 References: <20230720181459.607008-1-eperezma@redhat.com>
 MIME-Version: 1.0
@@ -83,54 +84,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split out vq restart operation in its own function, as it may be called
-with ring reset.
+Prefer the ring reset approach against the late enable, as it is more
+aligned with the standard.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
- hw/virtio/vhost-vdpa.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ net/vhost-vdpa.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 7248072989..7b24fa3e12 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -562,6 +562,29 @@ static void vhost_vdpa_reset_queue(struct vhost_dev *dev, int idx)
-     }
- }
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 52415d7e0c..af83de92f8 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -840,8 +840,14 @@ static const VhostShadowVirtqueueOps vhost_vdpa_net_svq_ops = {
+  */
+ static bool vhost_vdpa_should_enable(const struct vhost_vdpa *v)
+ {
++    VhostVDPAState *s = container_of(v, VhostVDPAState, vhost_vdpa);
+     struct vhost_dev *dev = v->dev;
  
-+/* TODO: Properly reorder static functions */
-+static bool vhost_vdpa_svq_start(struct vhost_dev *dev, unsigned i,
-+                                 Error **errp);
-+static int vhost_vdpa_restart_queue(struct vhost_dev *dev, int idx)
-+{
-+    struct vhost_vdpa *v = dev->opaque;
-+
-+    if (v->shadow_vqs_enabled) {
-+        Error *err = NULL;
-+        bool ok = vhost_vdpa_svq_start(dev, idx, &err);
-+        if (unlikely(!ok)) {
-+            error_report_err(err);
-+            return -1;
-+        }
++    if (dev->features & VIRTIO_F_RING_RESET && !s->always_svq) {
++        /* Preventing dataplane processing exposing fake SVQ vring */
++        return true;
 +    }
 +
-+    if (dev->features & VIRTIO_F_RING_RESET) {
-+        return vhost_vdpa_set_vring_ready_internal(v, idx, true);
-+    }
-+
-+    return 0;
-+}
-+
- /*
-  * The use of this function is for requests that only need to be
-  * applied once. Typically such request occurs at the beginning
-@@ -1574,4 +1597,5 @@ const VhostOps vdpa_ops = {
-         .vhost_set_config_call = vhost_vdpa_set_config_call,
-         .vhost_reset_status = vhost_vdpa_reset_status,
-         .vhost_reset_queue = vhost_vdpa_reset_queue,
-+        .vhost_restart_queue = vhost_vdpa_restart_queue,
- };
+     if (!dev->vq_index_end % 2) {
+         /* vDPA device does not have CVQ */
+         return true;
 -- 
 2.39.3
 
