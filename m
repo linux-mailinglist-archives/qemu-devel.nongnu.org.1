@@ -2,72 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B9875B0A5
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 16:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E491A75B118
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 16:21:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMUE1-0001mj-Hb; Thu, 20 Jul 2023 10:01:49 -0400
+	id 1qMUVu-0000xj-Ex; Thu, 20 Jul 2023 10:20:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qMUDx-0001hC-MQ
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 10:01:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <weijiang.yang@intel.com>)
+ id 1qMUVU-0000sV-Fg
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 10:19:53 -0400
+Received: from mga01.intel.com ([192.55.52.88])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qMUDt-0005hQ-0D
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 10:01:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689861689;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=3v2i7hSwfPauKoi32xWw0dN9nfYg0IKm9MmkfblrMNc=;
- b=T0F63PyjM3rkWFIsjiHiOCGpQHCrvWVYKMivsy7JLNe4WQklRuFuAoFYzfvVx16Lqehj52
- l67vyASYmEhFF0hSr2SPvoqfL2c1ZKEd/xnlgsxPNKR+W1bkqgrpP1WmL2Qi1Qt87wxxVK
- Q9VqzqxPD2u8pAodfUVNyAU+zC6n91w=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-551-eYHPtwFDM_eDWtircT0V4w-1; Thu, 20 Jul 2023 10:01:26 -0400
-X-MC-Unique: eYHPtwFDM_eDWtircT0V4w-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4A8593C1A6E7;
- Thu, 20 Jul 2023 14:01:25 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.86])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 42CBF1121314;
- Thu, 20 Jul 2023 14:01:24 +0000 (UTC)
-Date: Thu, 20 Jul 2023 15:01:22 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Beraldo Leal <bleal@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Cleber Rosa <crosa@redhat.com>
-Subject: Re: [PATCH 2/4] python/console_socket: accept existing FD in
- initializer
-Message-ID: <ZLk+Mg5F8QnOuU1d@redhat.com>
-References: <20230720130448.921356-1-jsnow@redhat.com>
- <20230720130448.921356-3-jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <weijiang.yang@intel.com>)
+ id 1qMUVS-0004Ur-9d
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 10:19:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1689862789; x=1721398789;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=aJKqAgRWdUOMC97LhTdm7nitnjY3ECOh03U/NV5Ta9A=;
+ b=LLW4ukoHOjt27oJvhgndg9X8+w6i/A58le924na9Yhs4Ei6Q6Hal5TmH
+ f698hNpWjPlcJZTNDrS6OhtF8Af5v1iwPqtRESPQqWab4T58oklCR+sJQ
+ Qo27zV4X8J/x8Pe0Ju0wsvd0FdmPx29NEyC73l9/Rj9S9BgWCJMEpeOOy
+ 4ERV0C2+8kg1A3Jt97rBGxnkOfDi25TGWR+su8bA2ARwgWY12Fczzhkan
+ 5jIm/jWyocS7Li/4bbIhahqKD7WnYXwBvyp4+IPdQ4/jhNEjuYnHYhmep
+ IE4HxP34OgFFyFEzOQdZ/QnDNtIdlbcr7wedeszwgvk7EQardz5csz5S9 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="397629154"
+X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; d="scan'208";a="397629154"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jul 2023 07:19:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10777"; a="898295616"
+X-IronPort-AV: E=Sophos;i="6.01,219,1684825200"; d="scan'208";a="898295616"
+Received: from embargo.jf.intel.com ([10.165.9.183])
+ by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jul 2023 07:19:29 -0700
+From: Yang Weijiang <weijiang.yang@intel.com>
+To: pbonzini@redhat.com, mtosatti@redhat.com, seanjc@google.com,
+ qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org,
+	weijiang.yang@intel.com
+Subject: [PATCH v2 0/4] Enable CET userspace support
+Date: Thu, 20 Jul 2023 07:14:41 -0400
+Message-Id: <20230720111445.99509-1-weijiang.yang@intel.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230720130448.921356-3-jsnow@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=192.55.52.88;
+ envelope-from=weijiang.yang@intel.com; helo=mga01.intel.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+ DKIMWL_WL_HIGH=-0.001, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,88 +74,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Jul 20, 2023 at 09:04:46AM -0400, John Snow wrote:
-> Useful if we want to use ConsoleSocket() for a socket created by
-> socketpair().
-> 
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  python/qemu/machine/console_socket.py | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/python/qemu/machine/console_socket.py b/python/qemu/machine/console_socket.py
-> index 4e28ba9bb2..42bfa12411 100644
-> --- a/python/qemu/machine/console_socket.py
-> +++ b/python/qemu/machine/console_socket.py
-> @@ -17,7 +17,7 @@
->  import socket
->  import threading
->  import time
-> -from typing import Deque, Optional
-> +from typing import Deque, Optional, Union
->  
->  
->  class ConsoleSocket(socket.socket):
-> @@ -30,13 +30,16 @@ class ConsoleSocket(socket.socket):
->      Optionally a file path can be passed in and we will also
->      dump the characters to this file for debugging purposes.
->      """
-> -    def __init__(self, address: str, file: Optional[str] = None,
-> +    def __init__(self, address: Union[str, int], file: Optional[str] = None,
->                   drain: bool = False):
+CET virtualization requires VMM userspace setup for CET feature
+bits enumeration, this series enables all related settings.
 
-IMHO calling the pre-opened FD an "address" is pushing the
-interpretation a bit.
+Guest CET user and kernel mode SHSTK/IBT are both supported.
 
-It also makes the behaviour non-obvious from a caller. Seeing a
-caller, you have to work backwards to find out what type it has,
-to figure out the semantics of the method call.
+Changes in v2:
+1. Added supervisor CET states support.
+2. Consolidated all CET states in a struct of vmstate.
 
-IOW, I'd prefer to see
-
-   address: Optional[str], sock_fd: Optional[int]
-
-and then just do a check
-
-   if (address is not None and sock_fd is not None) or
-      (address is None and sock_fd is None):
-      raise Exception("either 'address' or 'sock_fd' is required")
-
-thus when you see
-
-   ConsoleSocket(sock_fd=xxx)
-
-it is now obvious it has different behaviour to
-
-   ConsoleSocket(address=yyy)
+v1 link:
+https://lore.kernel.org/all/20230421041227.90915-1-weijiang.yang@intel.com/
 
 
->          self._recv_timeout_sec = 300.0
->          self._sleep_time = 0.5
->          self._buffer: Deque[int] = deque()
-> -        socket.socket.__init__(self, socket.AF_UNIX, socket.SOCK_STREAM)
-> -        self.connect(address)
-> +        if isinstance(address, str):
-> +            socket.socket.__init__(self, socket.AF_UNIX, socket.SOCK_STREAM)
-> +            self.connect(address)
-> +        else:
-> +            socket.socket.__init__(self, fileno=address)
->          self._logfile = None
->          if file:
->              # pylint: disable=consider-using-with
-> -- 
-> 2.41.0
-> 
+Yang Weijiang (4):
+  target/i386: Enable XSAVES support for CET states
+  target/i386: Add CET MSRs access interface
+  target/i386: Add CET states to vmstate
+  target/i386: Advertise CET related flags in feature words
 
-With regards,
-Daniel
+ target/i386/cpu.c     | 54 +++++++++++++++++++++++++++++----------
+ target/i386/cpu.h     | 41 ++++++++++++++++++++++++++++++
+ target/i386/kvm/kvm.c | 59 +++++++++++++++++++++++++++++++++++++++++++
+ target/i386/machine.c | 28 ++++++++++++++++++++
+ 4 files changed, 169 insertions(+), 13 deletions(-)
+
+
+base-commit: a342ce9dfeed8088c426e5d51d4a7e47f3764b84
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.27.0
 
 
