@@ -2,118 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6359A75ADE9
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 14:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2AD75AE0A
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 14:14:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMSSn-0001yn-Mj; Thu, 20 Jul 2023 08:08:57 -0400
+	id 1qMSXr-0003g4-60; Thu, 20 Jul 2023 08:14:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qMSSi-0001yN-E1
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:08:52 -0400
-Received: from mail-sn1nam02on2062e.outbound.protection.outlook.com
- ([2a01:111:f400:7ea9::62e]
- helo=NAM02-SN1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <hao.xu@linux.dev>) id 1qMSXi-0003fn-2X
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:14:02 -0400
+Received: from out-16.mta0.migadu.com ([91.218.175.16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qMSSf-00074v-PD
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:08:52 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Wv/vP5fJoQUUG85kjDRgI4xLWpu3IFwMh71uXQBSIGXonUsAha6h6VnjkV1domcETkFF333vKLcapmSr0Xbtnv4FMDvt6hfkJfEjt2/NoCq/Qn9oVPQzjlqk0gN3GhBqwRrxKwmE+6qRDm5SMn1lmHQQefRARdW5e10VTrry3q6XNoIe8iZ8W02e3MPpQ+3qnieSd/v7ncn9b9AzWqobzTrG6eAE6dgH3B47WMwx+640u3pP+/iweF1IzXmCBCwCf6gs3JEUMsMJ7Aj1nZdn/7ux+cWONCqyno8Hjuyj5otLFlVFb4DvjT3pqu+nfQ4cv1tOXx0CzXZDX+qrekgd+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/2nnIzFAg5lffgYdIkGPf2VATfRWsO0f+lxrVhiSw00=;
- b=GwvAlVIbDlHKuR3mLgeISOneSAm3+hPhEHZK0KsQkNRSMykSN6smo1XPTITrk0713/0IEbEuMbsEYtbc+oDAruN7C0mVgmYsO1DfN1dYXJawVB69D8XxgFEsJVLkz66TxyLBQ/R39BPRvTDl3uW8ZRHGLNqPEiQOVBAb5ZiIQ1BqqzIEsme1oFeDVYgCmTrOtGVK+xxo3cRfsm+1aKP+E4b1bTjtOXmccs6PGIbtH/bZRJQS0y4AmbZk4ULftI964Sgbn5XaNitsr+K06dCkDnea9A2sRzoqQfH3HRsEp2To8yXpHo9GIANtYh+VNAt84w75wJiguWEsPRfFD6sYGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/2nnIzFAg5lffgYdIkGPf2VATfRWsO0f+lxrVhiSw00=;
- b=X2/DGAlTg4kfcBGC6UaO5nhV4i4vKwG/6L3Ny5sBSLiPGazriJV9SaYAXi8ibAPQf75f/GDuuKmT/GkCwudU+O50lkSCtd3h/zKttg+lAutulRbhAP+ntymzSbrIAqcndYQ2xA/5iQ45vOxGBSFmm4zReryv/yEIp7s3gFxyOS4=
-Received: from MW3PR06CA0005.namprd06.prod.outlook.com (2603:10b6:303:2a::10)
- by SJ0PR12MB6759.namprd12.prod.outlook.com (2603:10b6:a03:44b::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.28; Thu, 20 Jul
- 2023 12:08:41 +0000
-Received: from CO1NAM11FT108.eop-nam11.prod.protection.outlook.com
- (2603:10b6:303:2a:cafe::44) by MW3PR06CA0005.outlook.office365.com
- (2603:10b6:303:2a::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.20 via Frontend
- Transport; Thu, 20 Jul 2023 12:08:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1NAM11FT108.mail.protection.outlook.com (10.13.175.226) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6588.34 via Frontend Transport; Thu, 20 Jul 2023 12:08:41 +0000
-Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.23; Thu, 20 Jul
- 2023 07:08:36 -0500
-From: Jiqian Chen <Jiqian.Chen@amd.com>
-To: Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?=
- <marcandre.lureau@gmail.com>, "Michael S . Tsirkin" <mst@redhat.com>, "Robert
- Beckett" <bob.beckett@collabora.com>, <qemu-devel@nongnu.org>
-CC: <xen-devel@lists.xenproject.org>, Stefano Stabellini
- <sstabellini@kernel.org>, Anthony PERARD <anthony.perard@citrix.com>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>, "Dr . David Alan
- Gilbert" <dgilbert@redhat.com>, Alex Deucher <Alexander.Deucher@amd.com>,
- Christian Koenig <Christian.Koenig@amd.com>, Stewart Hildebrand
- <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
- Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>,
- Huang Rui <Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
-Subject: [QEMU PATCH v4 1/1] virtgpu: do not destroy resources when guest
- suspend
-Date: Thu, 20 Jul 2023 20:08:16 +0800
-Message-ID: <20230720120816.8751-2-Jiqian.Chen@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230720120816.8751-1-Jiqian.Chen@amd.com>
-References: <20230720120816.8751-1-Jiqian.Chen@amd.com>
+ (Exim 4.90_1) (envelope-from <hao.xu@linux.dev>) id 1qMSXa-0000OD-Bk
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:14:01 -0400
+Message-ID: <d5fc7e82-3bd5-deeb-b506-5a8d10bd7112@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+ t=1689855229;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2bakeTI+gagck4M5EUwFUmezf10gmavqKh68Ty1NQA0=;
+ b=WBhlvziJ4KXgLnRJ4OhFDCTrpqYthD1WAPPsZbpUaUuE89bkwhipSbID9iOunIrjT9r8Hx
+ Rm3Mti9fb3qfrALyJiEn1pjZsvqEyZg161nlMBQRDFyLyYKIMaa5gvU2IkVUHwaNqavGMA
+ ZNeAkRIbqbPCeDpzzyksZqt1dDq97No=
+Date: Thu, 20 Jul 2023 20:13:42 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1NAM11FT108:EE_|SJ0PR12MB6759:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3979add2-85d1-4123-2c6d-08db891a0ec0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TF5z2fHXpX3G1PUvhTgnKFcm7zBBlcAfMCjwljsCBLPmS2vC6EK5OGnuLlXVcxtfxdhWb2YPOErx5b7TVO6Ji1x/EdknXN/t7r7jaHW2i2eCkVF/+W5lYMzb0VbReNvxHJq+xWrgSKWfIm/qcYCTNvYqdvmf84fu+2NX8cs0Bg3UMYoRrzgu3eajLsCEG5qYtao6+Q48vv9vSOHkc5Zo2RQ/PNl2m9fGvBGBciVEdntGmbNkLlvwYgPRaAD6cWi+0II7HcTZbAqctywaMf74lyMpWB+yioDFO8X2XUEaB6J+UgBXNq5CwJMjjsQK+7e2awudwxPTcf87vMvyMUfnUZaeJ0IgP67CqCpvRaCXvtLuQRRN4TWBttiC758i3u5qULMXOxgLtjs8v6SQwsmm4ye9LL3Wvod95MYtUwXlO9Wcrz+evbHaf00SoKkCHUjab/h2B39FhKS8a6kV564h6LLzd1ODs89hT49NCPs3IuKPPKfPJSUjMFk6PsGgJgs/Pe/a0FNd1++cPkdc6lCFgHDp1wfVY4ndbmcvowXSzWgISckBgWhAspuMghWPJxB1hMv4sbrxcuTL2aDms6Zl7jB3l4yUi/C2vkUE1Jheo70+vzfqCRC5s7X0d/qMWPfF/Vatt2+XbKzlvarVBgl2gvH97Vwq1QSf5GWJ8LxGt+wwuB2pheZnbA5SPWl8p1fHprsqmeVlMhajUy8f9yaxVmBVV2rARclk/dAy0pP6K1qmAxfWAVvfTwJ2EARgriHzYt7Com6rE2uLfwAyXhJl3g==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230028)(4636009)(39860400002)(136003)(346002)(376002)(396003)(451199021)(82310400008)(46966006)(36840700001)(40470700004)(40480700001)(356005)(82740400003)(86362001)(81166007)(36756003)(47076005)(2906002)(426003)(8936002)(478600001)(8676002)(7416002)(2616005)(36860700001)(40460700003)(83380400001)(5660300002)(6666004)(7696005)(16526019)(15650500001)(1076003)(186003)(26005)(336012)(54906003)(316002)(4326008)(110136005)(70206006)(70586007)(41300700001)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2023 12:08:41.1281 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3979add2-85d1-4123-2c6d-08db891a0ec0
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT108.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6759
-Received-SPF: softfail client-ip=2a01:111:f400:7ea9::62e;
- envelope-from=Jiqian.Chen@amd.com;
- helo=NAM02-SN1-obe.outbound.protection.outlook.com
+Subject: Re: [Virtio-fs] [PATCH v2 2/4] vhost-user: Interface for migration
+ state transfer
+Content-Language: en-US
+To: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org,
+ virtio-fs@redhat.com
+Cc: =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
+References: <20230712111703.28031-1-hreitz@redhat.com>
+ <20230712111703.28031-3-hreitz@redhat.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+From: Hao Xu <hao.xu@linux.dev>
+In-Reply-To: <20230712111703.28031-3-hreitz@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+Received-SPF: pass client-ip=91.218.175.16; envelope-from=hao.xu@linux.dev;
+ helo=out-16.mta0.migadu.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -130,246 +68,408 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After suspending and resuming guest VM, you will get
-a black screen, and the display can't come back.
 
-This is because when guest did suspending, it called
-into qemu to call virtio_gpu_gl_reset. In function
-virtio_gpu_gl_reset, it destroyed resources and reset
-renderer, which were used for display. As a result,
-guest's screen can't come back to the time when it was
-suspended and only showed black.
+On 7/12/23 19:17, Hanna Czenczek wrote:
+> Add the interface for transferring the back-end's state during migration
+> as defined previously in vhost-user.rst.
+>
+> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> ---
+>   include/hw/virtio/vhost-backend.h |  24 +++++
+>   include/hw/virtio/vhost.h         |  79 ++++++++++++++++
+>   hw/virtio/vhost-user.c            | 147 ++++++++++++++++++++++++++++++
+>   hw/virtio/vhost.c                 |  37 ++++++++
+>   4 files changed, 287 insertions(+)
+>
+> diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
+> index 31a251a9f5..e59d0b53f8 100644
+> --- a/include/hw/virtio/vhost-backend.h
+> +++ b/include/hw/virtio/vhost-backend.h
+> @@ -26,6 +26,18 @@ typedef enum VhostSetConfigType {
+>       VHOST_SET_CONFIG_TYPE_MIGRATION = 1,
+>   } VhostSetConfigType;
+>   
+> +typedef enum VhostDeviceStateDirection {
+> +    /* Transfer state from back-end (device) to front-end */
+> +    VHOST_TRANSFER_STATE_DIRECTION_SAVE = 0,
+> +    /* Transfer state from front-end to back-end (device) */
+> +    VHOST_TRANSFER_STATE_DIRECTION_LOAD = 1,
+> +} VhostDeviceStateDirection;
+> +
+> +typedef enum VhostDeviceStatePhase {
+> +    /* The device (and all its vrings) is stopped */
+> +    VHOST_TRANSFER_STATE_PHASE_STOPPED = 0,
+> +} VhostDeviceStatePhase;
+> +
+>   struct vhost_inflight;
+>   struct vhost_dev;
+>   struct vhost_log;
+> @@ -133,6 +145,15 @@ typedef int (*vhost_set_config_call_op)(struct vhost_dev *dev,
+>   
+>   typedef void (*vhost_reset_status_op)(struct vhost_dev *dev);
+>   
+> +typedef bool (*vhost_supports_migratory_state_op)(struct vhost_dev *dev);
+> +typedef int (*vhost_set_device_state_fd_op)(struct vhost_dev *dev,
+> +                                            VhostDeviceStateDirection direction,
+> +                                            VhostDeviceStatePhase phase,
+> +                                            int fd,
+> +                                            int *reply_fd,
+> +                                            Error **errp);
+> +typedef int (*vhost_check_device_state_op)(struct vhost_dev *dev, Error **errp);
+> +
+>   typedef struct VhostOps {
+>       VhostBackendType backend_type;
+>       vhost_backend_init vhost_backend_init;
+> @@ -181,6 +202,9 @@ typedef struct VhostOps {
+>       vhost_force_iommu_op vhost_force_iommu;
+>       vhost_set_config_call_op vhost_set_config_call;
+>       vhost_reset_status_op vhost_reset_status;
+> +    vhost_supports_migratory_state_op vhost_supports_migratory_state;
+> +    vhost_set_device_state_fd_op vhost_set_device_state_fd;
+> +    vhost_check_device_state_op vhost_check_device_state;
+>   } VhostOps;
+>   
+>   int vhost_backend_update_device_iotlb(struct vhost_dev *dev,
+> diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+> index 69bf59d630..d8877496e5 100644
+> --- a/include/hw/virtio/vhost.h
+> +++ b/include/hw/virtio/vhost.h
+> @@ -346,4 +346,83 @@ int vhost_dev_set_inflight(struct vhost_dev *dev,
+>   int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t queue_size,
+>                              struct vhost_inflight *inflight);
+>   bool vhost_dev_has_iommu(struct vhost_dev *dev);
+> +
+> +/**
+> + * vhost_supports_migratory_state(): Checks whether the back-end
+> + * supports transferring internal state for the purpose of migration.
+> + * Support for this feature is required for vhost_set_device_state_fd()
+> + * and vhost_check_device_state().
+> + *
+> + * @dev: The vhost device
+> + *
+> + * Returns true if the device supports these commands, and false if it
+> + * does not.
+> + */
+> +bool vhost_supports_migratory_state(struct vhost_dev *dev);
+> +
+> +/**
+> + * vhost_set_device_state_fd(): Begin transfer of internal state from/to
+> + * the back-end for the purpose of migration.  Data is to be transferred
+> + * over a pipe according to @direction and @phase.  The sending end must
+> + * only write to the pipe, and the receiving end must only read from it.
+> + * Once the sending end is done, it closes its FD.  The receiving end
+> + * must take this as the end-of-transfer signal and close its FD, too.
+> + *
+> + * @fd is the back-end's end of the pipe: The write FD for SAVE, and the
+> + * read FD for LOAD.  This function transfers ownership of @fd to the
+> + * back-end, i.e. closes it in the front-end.
+> + *
+> + * The back-end may optionally reply with an FD of its own, if this
+> + * improves efficiency on its end.  In this case, the returned FD is
 
-So, this patch adds a new ctrl message
-VIRTIO_GPU_CMD_SET_FREEZE_MODE to get notifications from
-guest. If guest is during suspending, it sets freeze mode
-of virtgpu to freeze_S3, this will prevent destroying
-resources and resetting renderer when guest calls into
-virtio_gpu_gl_reset. If guest is during resuming, it sets
-freeze mode to unfreeze, and then virtio_gpu_gl_reset
-will keep its origin actions and has no other impaction.
 
-Due to this implemention needs cooperation with guest,
-so it added a new feature flag VIRTIO_GPU_F_FREEZE_S3, so
-that guest and host can negotiate whenever freeze_S3 is
-supported or not.
+Hi Hanna,
 
-Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
----
- hw/display/virtio-gpu-base.c   |  3 ++
- hw/display/virtio-gpu-gl.c     | 10 ++++++-
- hw/display/virtio-gpu-virgl.c  |  7 +++++
- hw/display/virtio-gpu.c        | 55 ++++++++++++++++++++++++++++++++--
- hw/virtio/virtio.c             |  3 ++
- include/hw/virtio/virtio-gpu.h |  6 ++++
- 6 files changed, 81 insertions(+), 3 deletions(-)
+In what case/situation, the back-end will have a more efficient fd?
 
-diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
-index a29f191aa8..40ae4f9678 100644
---- a/hw/display/virtio-gpu-base.c
-+++ b/hw/display/virtio-gpu-base.c
-@@ -215,6 +215,9 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, uint64_t features,
-     if (virtio_gpu_blob_enabled(g->conf)) {
-         features |= (1 << VIRTIO_GPU_F_RESOURCE_BLOB);
-     }
-+    if (virtio_gpu_freeze_S3_enabled(g->conf)) {
-+        features |= (1 << VIRTIO_GPU_F_FREEZE_S3);
-+    }
- 
-     return features;
- }
-diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
-index e06be60dfb..cb418dae9a 100644
---- a/hw/display/virtio-gpu-gl.c
-+++ b/hw/display/virtio-gpu-gl.c
-@@ -100,7 +100,15 @@ static void virtio_gpu_gl_reset(VirtIODevice *vdev)
-      */
-     if (gl->renderer_inited && !gl->renderer_reset) {
-         virtio_gpu_virgl_reset_scanout(g);
--        gl->renderer_reset = true;
-+        /*
-+         * If guest is suspending, we shouldn't reset renderer,
-+         * otherwise, the display can't come back to the time when
-+         * it was suspended after guest was resumed.
-+         */
-+        if (!virtio_gpu_freeze_S3_enabled(g->parent_obj.conf) ||
-+            g->freeze_mode == VIRTIO_GPU_FREEZE_MODE_UNFREEZE) {
-+            gl->renderer_reset = true;
-+        }
-     }
- }
- 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 73cb92c8d5..fc1971be70 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -464,6 +464,13 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
-     case VIRTIO_GPU_CMD_GET_EDID:
-         virtio_gpu_get_edid(g, cmd);
-         break;
-+    case VIRTIO_GPU_CMD_SET_FREEZE_MODE:
-+        if (virtio_gpu_freeze_S3_enabled(g->parent_obj.conf)) {
-+            virtio_gpu_cmd_set_freeze_mode(g, cmd);
-+        } else {
-+            cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
-+        }
-+        break;
-     default:
-         cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
-         break;
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index 5e15c79b94..dcf83379a8 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -373,6 +373,16 @@ static void virtio_gpu_resource_create_blob(VirtIOGPU *g,
-     QTAILQ_INSERT_HEAD(&g->reslist, res, next);
- }
- 
-+void virtio_gpu_cmd_set_freeze_mode(VirtIOGPU *g,
-+                         struct virtio_gpu_ctrl_command *cmd)
-+{
-+    struct virtio_gpu_set_freeze_mode sf;
-+
-+    VIRTIO_GPU_FILL_CMD(sf);
-+    virtio_gpu_bswap_32(&sf, sizeof(sf));
-+    g->freeze_mode = sf.freeze_mode;
-+}
-+
- static void virtio_gpu_disable_scanout(VirtIOGPU *g, int scanout_id)
- {
-     struct virtio_gpu_scanout *scanout = &g->parent_obj.scanout[scanout_id];
-@@ -986,6 +996,13 @@ void virtio_gpu_simple_process_cmd(VirtIOGPU *g,
-     case VIRTIO_GPU_CMD_RESOURCE_DETACH_BACKING:
-         virtio_gpu_resource_detach_backing(g, cmd);
-         break;
-+    case VIRTIO_GPU_CMD_SET_FREEZE_MODE:
-+        if (virtio_gpu_freeze_S3_enabled(g->parent_obj.conf)) {
-+            virtio_gpu_cmd_set_freeze_mode(g, cmd);
-+        } else {
-+            cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_PARAMETER;
-+        }
-+        break;
-     default:
-         cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
-         break;
-@@ -1344,6 +1361,29 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
-     QTAILQ_INIT(&g->reslist);
-     QTAILQ_INIT(&g->cmdq);
-     QTAILQ_INIT(&g->fenceq);
-+
-+    g->freeze_mode = VIRTIO_GPU_FREEZE_MODE_UNFREEZE;
-+}
-+
-+static void virtio_gpu_device_unrealize(DeviceState *qdev)
-+{
-+    VirtIOGPU *g = VIRTIO_GPU(qdev);
-+    struct virtio_gpu_simple_resource *res, *tmp;
-+
-+    /*
-+     * This is to prevent memory leak in the situation that qemu is
-+     * destroyed when guest is suspended. This also need hot-plug
-+     * support.
-+     */
-+    if (virtio_gpu_freeze_S3_enabled(g->parent_obj.conf) &&
-+        g->freeze_mode == VIRTIO_GPU_FREEZE_MODE_FREEZE_S3) {
-+        QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
-+            virtio_gpu_resource_destroy(g, res);
-+        }
-+        virtio_gpu_virgl_reset(g);
-+        g->freeze_mode = VIRTIO_GPU_FREEZE_MODE_UNFREEZE;
-+    }
-+
- }
- 
- void virtio_gpu_reset(VirtIODevice *vdev)
-@@ -1352,8 +1392,16 @@ void virtio_gpu_reset(VirtIODevice *vdev)
-     struct virtio_gpu_simple_resource *res, *tmp;
-     struct virtio_gpu_ctrl_command *cmd;
- 
--    QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
--        virtio_gpu_resource_destroy(g, res);
-+    /*
-+     * If guest is suspending, we shouldn't destroy resources,
-+     * otherwise, the display can't come back to the time when
-+     * it was suspended after guest was resumed.
-+     */
-+    if (!virtio_gpu_freeze_S3_enabled(g->parent_obj.conf) ||
-+        g->freeze_mode == VIRTIO_GPU_FREEZE_MODE_UNFREEZE) {
-+        QTAILQ_FOREACH_SAFE(res, &g->reslist, next, tmp) {
-+            virtio_gpu_resource_destroy(g, res);
-+        }
-     }
- 
-     while (!QTAILQ_EMPTY(&g->cmdq)) {
-@@ -1425,6 +1473,8 @@ static Property virtio_gpu_properties[] = {
-                      256 * MiB),
-     DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
-+    DEFINE_PROP_BIT("freeze_S3", VirtIOGPU, parent_obj.conf.flags,
-+                    VIRTIO_GPU_FLAG_FREEZE_S3_ENABLED, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-@@ -1441,6 +1491,7 @@ static void virtio_gpu_class_init(ObjectClass *klass, void *data)
-     vgbc->gl_flushed = virtio_gpu_handle_gl_flushed;
- 
-     vdc->realize = virtio_gpu_device_realize;
-+    vdc->unrealize = virtio_gpu_device_unrealize;
-     vdc->reset = virtio_gpu_reset;
-     vdc->get_config = virtio_gpu_get_config;
-     vdc->set_config = virtio_gpu_set_config;
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index eb6347ab5d..2a3c54f2c4 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -240,6 +240,9 @@ qmp_virtio_feature_map_t virtio_gpu_feature_map[] = {
-     FEATURE_ENTRY(VIRTIO_GPU_F_CONTEXT_INIT, \
-             "VIRTIO_GPU_F_CONTEXT_INIT: Context types and synchronization "
-             "timelines supported"),
-+    FEATURE_ENTRY(VIRTIO_GPU_F_FREEZE_S3, \
-+            "VIRTIO_GPU_F_FREEZE_S3: Freezing virtio-gpu and keeping resources"
-+            "alive is supported."),
-     FEATURE_ENTRY(VHOST_F_LOG_ALL, \
-             "VHOST_F_LOG_ALL: Logging write descriptors supported"),
-     FEATURE_ENTRY(VHOST_USER_F_PROTOCOL_FEATURES, \
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 2e28507efe..141c48080f 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -90,6 +90,7 @@ enum virtio_gpu_base_conf_flags {
-     VIRTIO_GPU_FLAG_EDID_ENABLED,
-     VIRTIO_GPU_FLAG_DMABUF_ENABLED,
-     VIRTIO_GPU_FLAG_BLOB_ENABLED,
-+    VIRTIO_GPU_FLAG_FREEZE_S3_ENABLED,
- };
- 
- #define virtio_gpu_virgl_enabled(_cfg) \
-@@ -102,6 +103,8 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_DMABUF_ENABLED))
- #define virtio_gpu_blob_enabled(_cfg) \
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_BLOB_ENABLED))
-+#define virtio_gpu_freeze_S3_enabled(_cfg) \
-+    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_FREEZE_S3_ENABLED))
- 
- struct virtio_gpu_base_conf {
-     uint32_t max_outputs;
-@@ -173,6 +176,7 @@ struct VirtIOGPU {
- 
-     uint64_t hostmem;
- 
-+    virtio_gpu_freeze_mode_t freeze_mode;
-     bool processing_cmdq;
-     QEMUTimer *fence_poll;
-     QEMUTimer *print_stats;
-@@ -284,5 +288,7 @@ void virtio_gpu_virgl_reset_scanout(VirtIOGPU *g);
- void virtio_gpu_virgl_reset(VirtIOGPU *g);
- int virtio_gpu_virgl_init(VirtIOGPU *g);
- int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g);
-+void virtio_gpu_cmd_set_freeze_mode(VirtIOGPU *g,
-+                         struct virtio_gpu_ctrl_command *cmd);
- 
- #endif
--- 
-2.34.1
+Here my understanding of this "FD of its own" is as same type as
 
+the given fd(e.g. both pipe files), why the fd from back-end makes
+
+difference? Do I miss anything here?
+
+
+Regards,
+
+Hao
+
+
+> + * stored in *reply_fd.  The back-end will discard the FD sent to it,
+> + * and the front-end must use *reply_fd for transferring state to/from
+> + * the back-end.
+> + *
+> + * @dev: The vhost device
+> + * @direction: The direction in which the state is to be transferred.
+> + *             For outgoing migrations, this is SAVE, and data is read
+> + *             from the back-end and stored by the front-end in the
+> + *             migration stream.
+> + *             For incoming migrations, this is LOAD, and data is read
+> + *             by the front-end from the migration stream and sent to
+> + *             the back-end to restore the saved state.
+> + * @phase: Which migration phase we are in.  Currently, there is only
+> + *         STOPPED (device and all vrings are stopped), in the future,
+> + *         more phases such as PRE_COPY or POST_COPY may be added.
+> + * @fd: Back-end's end of the pipe through which to transfer state; note
+> + *      that ownership is transferred to the back-end, so this function
+> + *      closes @fd in the front-end.
+> + * @reply_fd: If the back-end wishes to use a different pipe for state
+> + *            transfer, this will contain an FD for the front-end to
+> + *            use.  Otherwise, -1 is stored here.
+> + * @errp: Potential error description
+> + *
+> + * Returns 0 on success, and -errno on failure.
+> + */
+> +int vhost_set_device_state_fd(struct vhost_dev *dev,
+> +                              VhostDeviceStateDirection direction,
+> +                              VhostDeviceStatePhase phase,
+> +                              int fd,
+> +                              int *reply_fd,
+> +                              Error **errp);
+> +
+> +/**
+> + * vhost_set_device_state_fd(): After transferring state from/to the
+> + * back-end via vhost_set_device_state_fd(), i.e. once the sending end
+> + * has closed the pipe, inquire the back-end to report any potential
+> + * errors that have occurred on its side.  This allows to sense errors
+> + * like:
+> + * - During outgoing migration, when the source side had already started
+> + *   to produce its state, something went wrong and it failed to finish
+> + * - During incoming migration, when the received state is somehow
+> + *   invalid and cannot be processed by the back-end
+> + *
+> + * @dev: The vhost device
+> + * @errp: Potential error description
+> + *
+> + * Returns 0 when the back-end reports successful state transfer and
+> + * processing, and -errno when an error occurred somewhere.
+> + */
+> +int vhost_check_device_state(struct vhost_dev *dev, Error **errp);
+> +
+>   #endif
+> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> index 53a881ec2a..8e6b5485e8 100644
+> --- a/hw/virtio/vhost-user.c
+> +++ b/hw/virtio/vhost-user.c
+> @@ -76,6 +76,7 @@ enum VhostUserProtocolFeature {
+>       VHOST_USER_PROTOCOL_F_STATUS = 16,
+>       /* Feature 17 reserved for VHOST_USER_PROTOCOL_F_XEN_MMAP. */
+>       VHOST_USER_PROTOCOL_F_SUSPEND = 18,
+> +    VHOST_USER_PROTOCOL_F_MIGRATORY_STATE = 19,
+>       VHOST_USER_PROTOCOL_F_MAX
+>   };
+>   
+> @@ -125,6 +126,8 @@ typedef enum VhostUserRequest {
+>       VHOST_USER_GET_STATUS = 40,
+>       VHOST_USER_SUSPEND = 41,
+>       VHOST_USER_RESUME = 42,
+> +    VHOST_USER_SET_DEVICE_STATE_FD = 43,
+> +    VHOST_USER_CHECK_DEVICE_STATE = 44,
+>       VHOST_USER_MAX
+>   } VhostUserRequest;
+>   
+> @@ -216,6 +219,12 @@ typedef struct {
+>       uint32_t size; /* the following payload size */
+>   } QEMU_PACKED VhostUserHeader;
+>   
+> +/* Request payload of VHOST_USER_SET_DEVICE_STATE_FD */
+> +typedef struct VhostUserTransferDeviceState {
+> +    uint32_t direction;
+> +    uint32_t phase;
+> +} VhostUserTransferDeviceState;
+> +
+>   typedef union {
+>   #define VHOST_USER_VRING_IDX_MASK   (0xff)
+>   #define VHOST_USER_VRING_NOFD_MASK  (0x1 << 8)
+> @@ -230,6 +239,7 @@ typedef union {
+>           VhostUserCryptoSession session;
+>           VhostUserVringArea area;
+>           VhostUserInflight inflight;
+> +        VhostUserTransferDeviceState transfer_state;
+>   } VhostUserPayload;
+>   
+>   typedef struct VhostUserMsg {
+> @@ -2838,6 +2848,140 @@ static void vhost_user_reset_status(struct vhost_dev *dev)
+>       }
+>   }
+>   
+> +static bool vhost_user_supports_migratory_state(struct vhost_dev *dev)
+> +{
+> +    return virtio_has_feature(dev->protocol_features,
+> +                              VHOST_USER_PROTOCOL_F_MIGRATORY_STATE);
+> +}
+> +
+> +static int vhost_user_set_device_state_fd(struct vhost_dev *dev,
+> +                                          VhostDeviceStateDirection direction,
+> +                                          VhostDeviceStatePhase phase,
+> +                                          int fd,
+> +                                          int *reply_fd,
+> +                                          Error **errp)
+> +{
+> +    int ret;
+> +    struct vhost_user *vu = dev->opaque;
+> +    VhostUserMsg msg = {
+> +        .hdr = {
+> +            .request = VHOST_USER_SET_DEVICE_STATE_FD,
+> +            .flags = VHOST_USER_VERSION,
+> +            .size = sizeof(msg.payload.transfer_state),
+> +        },
+> +        .payload.transfer_state = {
+> +            .direction = direction,
+> +            .phase = phase,
+> +        },
+> +    };
+> +
+> +    *reply_fd = -1;
+> +
+> +    if (!vhost_user_supports_migratory_state(dev)) {
+> +        close(fd);
+> +        error_setg(errp, "Back-end does not support migration state transfer");
+> +        return -ENOTSUP;
+> +    }
+> +
+> +    ret = vhost_user_write(dev, &msg, &fd, 1);
+> +    close(fd);
+> +    if (ret < 0) {
+> +        error_setg_errno(errp, -ret,
+> +                         "Failed to send SET_DEVICE_STATE_FD message");
+> +        return ret;
+> +    }
+> +
+> +    ret = vhost_user_read(dev, &msg);
+> +    if (ret < 0) {
+> +        error_setg_errno(errp, -ret,
+> +                         "Failed to receive SET_DEVICE_STATE_FD reply");
+> +        return ret;
+> +    }
+> +
+> +    if (msg.hdr.request != VHOST_USER_SET_DEVICE_STATE_FD) {
+> +        error_setg(errp,
+> +                   "Received unexpected message type, expected %d, received %d",
+> +                   VHOST_USER_SET_DEVICE_STATE_FD, msg.hdr.request);
+> +        return -EPROTO;
+> +    }
+> +
+> +    if (msg.hdr.size != sizeof(msg.payload.u64)) {
+> +        error_setg(errp,
+> +                   "Received bad message size, expected %zu, received %" PRIu32,
+> +                   sizeof(msg.payload.u64), msg.hdr.size);
+> +        return -EPROTO;
+> +    }
+> +
+> +    if ((msg.payload.u64 & 0xff) != 0) {
+> +        error_setg(errp, "Back-end did not accept migration state transfer");
+> +        return -EIO;
+> +    }
+> +
+> +    if (!(msg.payload.u64 & VHOST_USER_VRING_NOFD_MASK)) {
+> +        *reply_fd = qemu_chr_fe_get_msgfd(vu->user->chr);
+> +        if (*reply_fd < 0) {
+> +            error_setg(errp,
+> +                       "Failed to get back-end-provided transfer pipe FD");
+> +            *reply_fd = -1;
+> +            return -EIO;
+> +        }
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +static int vhost_user_check_device_state(struct vhost_dev *dev, Error **errp)
+> +{
+> +    int ret;
+> +    VhostUserMsg msg = {
+> +        .hdr = {
+> +            .request = VHOST_USER_CHECK_DEVICE_STATE,
+> +            .flags = VHOST_USER_VERSION,
+> +            .size = 0,
+> +        },
+> +    };
+> +
+> +    if (!vhost_user_supports_migratory_state(dev)) {
+> +        error_setg(errp, "Back-end does not support migration state transfer");
+> +        return -ENOTSUP;
+> +    }
+> +
+> +    ret = vhost_user_write(dev, &msg, NULL, 0);
+> +    if (ret < 0) {
+> +        error_setg_errno(errp, -ret,
+> +                         "Failed to send CHECK_DEVICE_STATE message");
+> +        return ret;
+> +    }
+> +
+> +    ret = vhost_user_read(dev, &msg);
+> +    if (ret < 0) {
+> +        error_setg_errno(errp, -ret,
+> +                         "Failed to receive CHECK_DEVICE_STATE reply");
+> +        return ret;
+> +    }
+> +
+> +    if (msg.hdr.request != VHOST_USER_CHECK_DEVICE_STATE) {
+> +        error_setg(errp,
+> +                   "Received unexpected message type, expected %d, received %d",
+> +                   VHOST_USER_CHECK_DEVICE_STATE, msg.hdr.request);
+> +        return -EPROTO;
+> +    }
+> +
+> +    if (msg.hdr.size != sizeof(msg.payload.u64)) {
+> +        error_setg(errp,
+> +                   "Received bad message size, expected %zu, received %" PRIu32,
+> +                   sizeof(msg.payload.u64), msg.hdr.size);
+> +        return -EPROTO;
+> +    }
+> +
+> +    if (msg.payload.u64 != 0) {
+> +        error_setg(errp, "Back-end failed to process its internal state");
+> +        return -EIO;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+>   const VhostOps user_ops = {
+>           .backend_type = VHOST_BACKEND_TYPE_USER,
+>           .vhost_backend_init = vhost_user_backend_init,
+> @@ -2874,4 +3018,7 @@ const VhostOps user_ops = {
+>           .vhost_set_inflight_fd = vhost_user_set_inflight_fd,
+>           .vhost_dev_start = vhost_user_dev_start,
+>           .vhost_reset_status = vhost_user_reset_status,
+> +        .vhost_supports_migratory_state = vhost_user_supports_migratory_state,
+> +        .vhost_set_device_state_fd = vhost_user_set_device_state_fd,
+> +        .vhost_check_device_state = vhost_user_check_device_state,
+>   };
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index 2e28e58da7..756b6d55a8 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -2091,3 +2091,40 @@ int vhost_net_set_backend(struct vhost_dev *hdev,
+>   
+>       return -ENOSYS;
+>   }
+> +
+> +bool vhost_supports_migratory_state(struct vhost_dev *dev)
+> +{
+> +    if (dev->vhost_ops->vhost_supports_migratory_state) {
+> +        return dev->vhost_ops->vhost_supports_migratory_state(dev);
+> +    }
+> +
+> +    return false;
+> +}
+> +
+> +int vhost_set_device_state_fd(struct vhost_dev *dev,
+> +                              VhostDeviceStateDirection direction,
+> +                              VhostDeviceStatePhase phase,
+> +                              int fd,
+> +                              int *reply_fd,
+> +                              Error **errp)
+> +{
+> +    if (dev->vhost_ops->vhost_set_device_state_fd) {
+> +        return dev->vhost_ops->vhost_set_device_state_fd(dev, direction, phase,
+> +                                                         fd, reply_fd, errp);
+> +    }
+> +
+> +    error_setg(errp,
+> +               "vhost transport does not support migration state transfer");
+> +    return -ENOSYS;
+> +}
+> +
+> +int vhost_check_device_state(struct vhost_dev *dev, Error **errp)
+> +{
+> +    if (dev->vhost_ops->vhost_check_device_state) {
+> +        return dev->vhost_ops->vhost_check_device_state(dev, errp);
+> +    }
+> +
+> +    error_setg(errp,
+> +               "vhost transport does not support migration state transfer");
+> +    return -ENOSYS;
+> +}
 
