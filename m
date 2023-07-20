@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3CD75B656
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 20:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9B175B65A
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 20:16:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMYBL-0004DK-OV; Thu, 20 Jul 2023 14:15:21 -0400
+	id 1qMYBg-0004gE-DA; Thu, 20 Jul 2023 14:15:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qMYBG-0004CZ-MX
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qMYBJ-0004Dl-QV
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qMYBE-0003HJ-6r
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:13 -0400
+ id 1qMYBH-0003JV-2z
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689876910;
+ s=mimecast20190719; t=1689876914;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8f4eu9n15Kw63ow2RmMKDIC50OvvS8TO7HOPVAUm5P8=;
- b=P5Cw2Xn/NY4MEjCjbIamTtCdJUJEW1Kj0Zofb4VWwaYvo97fcksCxiJ/3f0j+hYt+WciOW
- xB3CgzvbB2fjNvtGcWEG6ZHOjwDZ3oT2UmkJtmZLwNwN0xwEuD8RHKl3WwaYiq3GAORXtg
- RhROBaEmBSizvZ/dlAT6OinY8+MrLc0=
+ bh=eu4qTpdtrX2d/XYLxdli0lOHKKZpEE/V8SV9u/E5FGY=;
+ b=Sa3GCj/NHyltQXVg8ieX62RiL34tlQwL8/R6CSLJMZDRkU7Rr2axQOIbcA6Ou54pRwGsx2
+ M2w1z5M6NwUiUXKuRhRPSLdpssGsZo3ym/LGMKsuDas5tuOddRAPmV4mXQ/iWS7NqcVf4d
+ DQyhtumC+l3/OBrAnfxZqMxUzi/mAI8=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-189-G4igimKGNB6CjPl4WvApKA-1; Thu, 20 Jul 2023 14:15:08 -0400
-X-MC-Unique: G4igimKGNB6CjPl4WvApKA-1
+ us-mta-46-p-byukaQP0-7Ei2lchxz0w-1; Thu, 20 Jul 2023 14:15:10 -0400
+X-MC-Unique: p-byukaQP0-7Ei2lchxz0w-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 147A32804601;
- Thu, 20 Jul 2023 18:15:08 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A35833C01DFA;
+ Thu, 20 Jul 2023 18:15:09 +0000 (UTC)
 Received: from eperezma.remote.csb (unknown [10.39.193.122])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B6FDA2166B25;
- Thu, 20 Jul 2023 18:15:06 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 52A252166B25;
+ Thu, 20 Jul 2023 18:15:08 +0000 (UTC)
 From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: yvugenfi@redhat.com,
@@ -49,17 +49,17 @@ Cc: yvugenfi@redhat.com,
  si-wei.liu@oracle.com, Jason Wang <jasowang@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Dragos Tatulea <dtatulea@nvidia.com>, Shannon Nelson <snelson@pensando.io>
-Subject: [RFC PATCH 03/12] vhost_net: Use ops->vhost_restart_queue in
- vhost_net_virtqueue_restart
-Date: Thu, 20 Jul 2023 20:14:50 +0200
-Message-Id: <20230720181459.607008-4-eperezma@redhat.com>
+Subject: [RFC PATCH 04/12] vhost_net: Use ops->vhost_reset_queue in
+ vhost_net_virtqueue_reset
+Date: Thu, 20 Jul 2023 20:14:51 +0200
+Message-Id: <20230720181459.607008-5-eperezma@redhat.com>
 In-Reply-To: <20230720181459.607008-1-eperezma@redhat.com>
 References: <20230720181459.607008-1-eperezma@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,39 +84,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Actually use vhost_restart_queue operation at restart.
+Actually use vhost_reset_queue operation at queue reset.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 ---
- hw/net/vhost_net.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ hw/net/vhost_net.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index 6b958d6363..416b7d8132 100644
+index 416b7d8132..5516b7a5aa 100644
 --- a/hw/net/vhost_net.c
 +++ b/hw/net/vhost_net.c
-@@ -608,14 +608,16 @@ int vhost_net_virtqueue_restart(VirtIODevice *vdev, NetClientState *nc,
-         goto err_start;
-     }
+@@ -571,7 +571,9 @@ void vhost_net_virtqueue_reset(VirtIODevice *vdev, NetClientState *nc,
+ 
+     idx = vhost_ops->vhost_get_vq_index(&net->dev, vq_index);
  
 -    if (net->nc->info->type == NET_CLIENT_DRIVER_TAP) {
-+    if (vhost_ops->vhost_restart_queue) {
-+        r = vhost_ops->vhost_restart_queue(&net->dev, idx);
++    if (vhost_ops->vhost_reset_queue) {
++        vhost_ops->vhost_reset_queue(&net->dev, idx);
 +    } else if (net->nc->info->type == NET_CLIENT_DRIVER_TAP) {
          file.index = idx;
-         file.fd = net->backend;
-         r = vhost_net_set_backend(&net->dev, &file);
--        if (r < 0) {
--            r = -errno;
--            goto err_start;
--        }
-+    }
-+    if (r < 0) {
-+        r = -errno;
-+        goto err_start;
-     }
- 
-     return 0;
+         int r = vhost_net_set_backend(&net->dev, &file);
+         assert(r >= 0);
 -- 
 2.39.3
 
