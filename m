@@ -2,61 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913C675B518
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 18:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D03E475B525
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 19:02:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMWzc-0000OV-IJ; Thu, 20 Jul 2023 12:59:08 -0400
+	id 1qMX24-0001cv-Ok; Thu, 20 Jul 2023 13:01:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=2hVk=DG=kaod.org=clg@ozlabs.org>)
- id 1qMWzb-0000OM-5p
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:59:07 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMX20-0001cb-J2
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 13:01:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=2hVk=DG=kaod.org=clg@ozlabs.org>)
- id 1qMWzW-00059I-41
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:59:06 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4R6Jmx496lz4wy8;
- Fri, 21 Jul 2023 02:58:57 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qMX1u-000613-EH
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 13:01:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689872487;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=SCeioRL7CtT7Uki18AKHzjN2rsoSE83JqlP1xySD7Qg=;
+ b=ixkfOA9TnthHqX37oLW4MYkpZvEF7II4Q42zsKJcyQ5vmWxSH+ksE1o7unQtuq5YTsha0t
+ PTlnuP/732xRh/s+LniNfBLMKt6J6GBUdLWVVzWbnDPeAuGtfvBphBDGc0ml6+Gw7tkcoo
+ S0ZuqcRfA9RSMhqi6Du9ZijbG0hyMoY=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-529-v7KKZ8ukNfSFiew6wefdfA-1; Thu, 20 Jul 2023 13:01:23 -0400
+X-MC-Unique: v7KKZ8ukNfSFiew6wefdfA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4R6Jmv5c3Tz4wxx;
- Fri, 21 Jul 2023 02:58:55 +1000 (AEST)
-Message-ID: <d0980c1a-0a0f-b0e0-01e1-3ffe6b0c77c9@kaod.org>
-Date: Thu, 20 Jul 2023 18:58:54 +0200
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0AC613C0E206;
+ Thu, 20 Jul 2023 17:01:23 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.192])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1D7CF2166B25;
+ Thu, 20 Jul 2023 17:01:22 +0000 (UTC)
+Date: Thu, 20 Jul 2023 12:01:20 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, 
+ Kevin Wolf <kwolf@redhat.com>
+Subject: Re: [PATCH] block: Be more verbose in create fallback
+Message-ID: <aq2akzsoub74l3h7lwwhvdjqjabqanbwtmqceyt2bgjvxdp72t@366jljylr4wn>
+References: <20230720140024.46836-1-hreitz@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2 3/4] hw/rtc/aspeed_rtc: Use 64-bit offset for
- holding time_t difference
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Andrew Jeffery <andrew@aj.id.au>,
- Joel Stanley <joel@jms.id.au>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Herv=c3=a9_Poussineau?= <hpoussin@reactos.org>
-References: <20230720155902.1590362-1-peter.maydell@linaro.org>
- <20230720155902.1590362-4-peter.maydell@linaro.org>
- <e15250a2-3d21-d70b-980f-38d8165f0e30@kaod.org>
- <CAFEAcA9SmC+oN3wfoEfO-j6pms_0k-dmuuYCdLwVsHcQk_=hDA@mail.gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CAFEAcA9SmC+oN3wfoEfO-j6pms_0k-dmuuYCdLwVsHcQk_=hDA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=2hVk=DG=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.096, SPF_HELO_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230720140024.46836-1-hreitz@redhat.com>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,42 +78,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/20/23 18:45, Peter Maydell wrote:
-> On Thu, 20 Jul 2023 at 17:42, Cédric Le Goater <clg@kaod.org> wrote:
->>
->> On 7/20/23 17:59, Peter Maydell wrote:
->>> In the aspeed_rtc device we store a difference between two time_t
->>> values in an 'int'. This is not really correct when time_t could
->>> be 64 bits. Enlarge the field to 'int64_t'.
->>>
->>> This is a migration compatibility break for the aspeed boards.
->>> While we are changing the vmstate, remove the accidental
->>> duplicate of the offset field.
->>
->> Ah yes. Thanks.
->>
->>>
->>> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->>
->>
->> Reviewed-by: Cédric Le Goater <clg@kaod.org>
->>
->>
->>> ---
->>> I took "bump the migration version" as the simplest approach
->>> here, because I don't think we care about migration compat
->>> in this case. If we do I can write the alternate version of
->>> the patch...
->>
->>
->> I don't think we care much about migration compat and fyi, migration
->> of aspeed machines broke a while ago. It still migrates if done before
->> Linux is loaded.
+On Thu, Jul 20, 2023 at 04:00:24PM +0200, Hanna Czenczek wrote:
+> For image creation code, we have central fallback code for protocols
+> that do not support creating new images (like NBD or iscsi).  So for
+> them, you can only specify existing paths/exports that are overwritten
+> to make clean new images.  In such a case, if the given path cannot be
+> opened (assuming a pre-existing image there), we print an error message
+> that tries to describe what is going on: That with this protocol, you
+> cannot create new images, but only overwrite existing ones; and the
+> given path could not be opened as a pre-existing image.
 > 
-> Is that the "migration of AArch32 Secure state doesn't work
-> properly" bug, or am I misremembering?
+> However, the current message is confusing, because it does not say that
+> the protocol in question does not support creating new images, but
+> instead that "image creation" is unsupported.  This can be interpreted
+> to mean that `qemu-img create` will not work in principle, which is not
+> true.  Be more verbose for clarity.
+> 
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2217204
+> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> ---
+>  block.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
-probably, arm926 is not impacted, arm1176 and cortex-a7 are.
+Definitely more vebose, but I don't see that as a bad thing.
 
-C.
+Reviewed-by: Eric Blake <eblake@redhat.com>
+
+> 
+> diff --git a/block.c b/block.c
+> index a307c151a8..f530dd9c02 100644
+> --- a/block.c
+> +++ b/block.c
+> @@ -661,8 +661,10 @@ int coroutine_fn bdrv_co_create_opts_simple(BlockDriver *drv,
+>      blk = blk_co_new_open(filename, NULL, options,
+>                            BDRV_O_RDWR | BDRV_O_RESIZE, errp);
+>      if (!blk) {
+> -        error_prepend(errp, "Protocol driver '%s' does not support image "
+> -                      "creation, and opening the image failed: ",
+> +        error_prepend(errp, "Protocol driver '%s' does not support creating "
+> +                      "new images, so an existing image must be selected as "
+> +                      "the target; however, opening the given target as an "
+> +                      "existing image failed: ",
+>                        drv->format_name);
+>          return -EINVAL;
+>      }
+> -- 
+> 2.41.0
+> 
+> 
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.           +1-919-301-3266
+Virtualization:  qemu.org | libvirt.org
+
 
