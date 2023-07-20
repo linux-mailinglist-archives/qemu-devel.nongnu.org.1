@@ -2,57 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2AD75AE0A
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 14:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EC7B75AE2B
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 14:19:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMSXr-0003g4-60; Thu, 20 Jul 2023 08:14:11 -0400
+	id 1qMSc3-0005fO-2z; Thu, 20 Jul 2023 08:18:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xu@linux.dev>) id 1qMSXi-0003fn-2X
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:14:02 -0400
-Received: from out-16.mta0.migadu.com ([91.218.175.16])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hao.xu@linux.dev>) id 1qMSXa-0000OD-Bk
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:14:01 -0400
-Message-ID: <d5fc7e82-3bd5-deeb-b506-5a8d10bd7112@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1689855229;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2bakeTI+gagck4M5EUwFUmezf10gmavqKh68Ty1NQA0=;
- b=WBhlvziJ4KXgLnRJ4OhFDCTrpqYthD1WAPPsZbpUaUuE89bkwhipSbID9iOunIrjT9r8Hx
- Rm3Mti9fb3qfrALyJiEn1pjZsvqEyZg161nlMBQRDFyLyYKIMaa5gvU2IkVUHwaNqavGMA
- ZNeAkRIbqbPCeDpzzyksZqt1dDq97No=
-Date: Thu, 20 Jul 2023 20:13:42 +0800
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMSbn-0005f2-93
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:18:16 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMSbl-00018u-6A
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:18:14 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5217ad95029so888885a12.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 05:18:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689855490; x=1690460290;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=YAEOlkP2Oa5Qo8r0YV9dMc40Loi3P9Ig+H6nILNIY6U=;
+ b=DcmkGtbSNmSODRyy4MROYFz0Nu/1uS2QpkW3i7RUmdpJonHWKAsmGC9AK5gGOEqr3V
+ M46iY4DAPK/V8Zp87sqTKD78/ZUgQhX5SGl2xJD4LicOpvd0fu/fsdfDElvdRJY4ILJ0
+ +CFVtsI1BrJ7MHeqIi93oNPXicWZdKPSvsN5wAFDC3uNWvUEuU+5vbIy75n4DQsMrsUM
+ HWUHVSaSNQTCiNipdf56QQJ6x+JiZKVWqSFawo3AjDkotmhphtsNxViM3qzyA8DD4/NW
+ JHNljL2A69b3PrvwYVCLnOXg1Pxz5jj8mOILeVf8zfrTv5CjPhsZ03FqKJ0R/8cNF2Rz
+ UKCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689855490; x=1690460290;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=YAEOlkP2Oa5Qo8r0YV9dMc40Loi3P9Ig+H6nILNIY6U=;
+ b=gUoyogZY02xX8AgdnFgHTuU7qj6d16NNREnUuGkpXVvYmVQkewQnkXXaaiHpo+JKbX
+ alJurS7cm2i+mCkqpZIiS1H8WUyHfYU98ZdApCl1FQEjGrghNrxdCJ8BB57a6rq7fONZ
+ RuNdumVI2PoW+oZlMmmFdkax9UvsG207T+lgw+k7jnBT8k5lqLVSUbZEOzPTjNPxowKp
+ NT6YdZWnkQiSyG0/xoDYQeUmYUBE5VeB8XRTNDzB4kTO7Pdze94q8hjZy3PaWab/DMGL
+ hbtTYCR1CBa1wGI12UiepBnQ0mHNHhz0ydEJoP5WCbiOCXZKXKGJyI+PIDT6MITOU5aR
+ Pa9A==
+X-Gm-Message-State: ABy/qLYwnKbKnNez/ZztBiqif0f9JMG0CUsvjoArBQ/MZ27bwRLmWJ8R
+ MiDmzu8W8VUlVY6gpSiOY0WAaBzDE7L+0/sK+KxeoQ==
+X-Google-Smtp-Source: APBJJlEMy4OJSL4BEkBiRtUTSQcuQzGoNCL6ZKUO7pt0xeq99H8ofoat2Y6LzD5LqEH9kjYy3YXG48mRJtLSnxQoJZw=
+X-Received: by 2002:aa7:d392:0:b0:50b:c085:1991 with SMTP id
+ x18-20020aa7d392000000b0050bc0851991mr4916092edq.19.1689855489670; Thu, 20
+ Jul 2023 05:18:09 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [Virtio-fs] [PATCH v2 2/4] vhost-user: Interface for migration
- state transfer
-Content-Language: en-US
-To: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org,
- virtio-fs@redhat.com
-Cc: =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
-References: <20230712111703.28031-1-hreitz@redhat.com>
- <20230712111703.28031-3-hreitz@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
- include these headers.
-From: Hao Xu <hao.xu@linux.dev>
-In-Reply-To: <20230712111703.28031-3-hreitz@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=91.218.175.16; envelope-from=hao.xu@linux.dev;
- helo=out-16.mta0.migadu.com
+References: <20230716170150.22398-1-richard.henderson@linaro.org>
+ <CAFEAcA9dD8SmAFQrt9eRfsMuG3vEh03ex9b+LsgTjg2TRcbiJQ@mail.gmail.com>
+ <60ac1fd4-f58f-361e-6b37-3226862f296a@linaro.org>
+In-Reply-To: <60ac1fd4-f58f-361e-6b37-3226862f296a@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 20 Jul 2023 13:17:58 +0100
+Message-ID: <CAFEAcA_6+gALRGH3Uk-LS5_DtmLXwPSZGu_kGRUOA4ZW+UQveA@mail.gmail.com>
+Subject: Re: [PATCH for-8.1] accel/tcg: Take mmap_lock in load_atomic16_or_exit
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,408 +86,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 7/12/23 19:17, Hanna Czenczek wrote:
-> Add the interface for transferring the back-end's state during migration
-> as defined previously in vhost-user.rst.
+On Mon, 17 Jul 2023 at 19:25, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> ---
->   include/hw/virtio/vhost-backend.h |  24 +++++
->   include/hw/virtio/vhost.h         |  79 ++++++++++++++++
->   hw/virtio/vhost-user.c            | 147 ++++++++++++++++++++++++++++++
->   hw/virtio/vhost.c                 |  37 ++++++++
->   4 files changed, 287 insertions(+)
+> On 7/17/23 11:12, Peter Maydell wrote:
+> > On Sun, 16 Jul 2023 at 18:03, Richard Henderson
+> > <richard.henderson@linaro.org> wrote:
+> >>
+> >> For user-only, the probe for page writability may race with another
+> >> thread's mprotect.  Take the mmap_lock around the operation.  This
+> >> is still faster than the start/end_exclusive fallback.
+> >>
+> >> Remove the write probe in load_atomic8_or_exit.  There we don't have
+> >> the same machinery for testing the existance of an 8-byte cmpxchg.
+> >
+> > "existence"
+> >
+> >>
+> >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> >> ---
+> >>   accel/tcg/ldst_atomicity.c.inc | 54 +++++++++++++++-------------------
+> >>   1 file changed, 24 insertions(+), 30 deletions(-)
+> >>
+> >> diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
+> >> index 4de0a80492..e7170f8ba2 100644
+> >> --- a/accel/tcg/ldst_atomicity.c.inc
+> >> +++ b/accel/tcg/ldst_atomicity.c.inc
+> >> @@ -152,19 +152,6 @@ static uint64_t load_atomic8_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
+> >>           return load_atomic8(pv);
+> >>       }
+> >>
+> >> -#ifdef CONFIG_USER_ONLY
+> >> -    /*
+> >> -     * If the page is not writable, then assume the value is immutable
+> >> -     * and requires no locking.  This ignores the case of MAP_SHARED with
+> >> -     * another process, because the fallback start_exclusive solution
+> >> -     * provides no protection across processes.
+> >> -     */
+> >> -    if (page_check_range(h2g(pv), 8, PAGE_WRITE_ORG)) {
+> >> -        uint64_t *p = __builtin_assume_aligned(pv, 8);
+> >> -        return *p;
+> >> -    }
+> >> -#endif
+> >
+> > I don't really understand the comment in the commit message:
+> > why would it be wrong to wrap this "test writeability and
+> > do the operation" in the mmap-lock, the same way we do for the
+> > 16-byte case?
 >
-> diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
-> index 31a251a9f5..e59d0b53f8 100644
-> --- a/include/hw/virtio/vhost-backend.h
-> +++ b/include/hw/virtio/vhost-backend.h
-> @@ -26,6 +26,18 @@ typedef enum VhostSetConfigType {
->       VHOST_SET_CONFIG_TYPE_MIGRATION = 1,
->   } VhostSetConfigType;
->   
-> +typedef enum VhostDeviceStateDirection {
-> +    /* Transfer state from back-end (device) to front-end */
-> +    VHOST_TRANSFER_STATE_DIRECTION_SAVE = 0,
-> +    /* Transfer state from front-end to back-end (device) */
-> +    VHOST_TRANSFER_STATE_DIRECTION_LOAD = 1,
-> +} VhostDeviceStateDirection;
-> +
-> +typedef enum VhostDeviceStatePhase {
-> +    /* The device (and all its vrings) is stopped */
-> +    VHOST_TRANSFER_STATE_PHASE_STOPPED = 0,
-> +} VhostDeviceStatePhase;
-> +
->   struct vhost_inflight;
->   struct vhost_dev;
->   struct vhost_log;
-> @@ -133,6 +145,15 @@ typedef int (*vhost_set_config_call_op)(struct vhost_dev *dev,
->   
->   typedef void (*vhost_reset_status_op)(struct vhost_dev *dev);
->   
-> +typedef bool (*vhost_supports_migratory_state_op)(struct vhost_dev *dev);
-> +typedef int (*vhost_set_device_state_fd_op)(struct vhost_dev *dev,
-> +                                            VhostDeviceStateDirection direction,
-> +                                            VhostDeviceStatePhase phase,
-> +                                            int fd,
-> +                                            int *reply_fd,
-> +                                            Error **errp);
-> +typedef int (*vhost_check_device_state_op)(struct vhost_dev *dev, Error **errp);
-> +
->   typedef struct VhostOps {
->       VhostBackendType backend_type;
->       vhost_backend_init vhost_backend_init;
-> @@ -181,6 +202,9 @@ typedef struct VhostOps {
->       vhost_force_iommu_op vhost_force_iommu;
->       vhost_set_config_call_op vhost_set_config_call;
->       vhost_reset_status_op vhost_reset_status;
-> +    vhost_supports_migratory_state_op vhost_supports_migratory_state;
-> +    vhost_set_device_state_fd_op vhost_set_device_state_fd;
-> +    vhost_check_device_state_op vhost_check_device_state;
->   } VhostOps;
->   
->   int vhost_backend_update_device_iotlb(struct vhost_dev *dev,
-> diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-> index 69bf59d630..d8877496e5 100644
-> --- a/include/hw/virtio/vhost.h
-> +++ b/include/hw/virtio/vhost.h
-> @@ -346,4 +346,83 @@ int vhost_dev_set_inflight(struct vhost_dev *dev,
->   int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t queue_size,
->                              struct vhost_inflight *inflight);
->   bool vhost_dev_has_iommu(struct vhost_dev *dev);
-> +
-> +/**
-> + * vhost_supports_migratory_state(): Checks whether the back-end
-> + * supports transferring internal state for the purpose of migration.
-> + * Support for this feature is required for vhost_set_device_state_fd()
-> + * and vhost_check_device_state().
-> + *
-> + * @dev: The vhost device
-> + *
-> + * Returns true if the device supports these commands, and false if it
-> + * does not.
-> + */
-> +bool vhost_supports_migratory_state(struct vhost_dev *dev);
-> +
-> +/**
-> + * vhost_set_device_state_fd(): Begin transfer of internal state from/to
-> + * the back-end for the purpose of migration.  Data is to be transferred
-> + * over a pipe according to @direction and @phase.  The sending end must
-> + * only write to the pipe, and the receiving end must only read from it.
-> + * Once the sending end is done, it closes its FD.  The receiving end
-> + * must take this as the end-of-transfer signal and close its FD, too.
-> + *
-> + * @fd is the back-end's end of the pipe: The write FD for SAVE, and the
-> + * read FD for LOAD.  This function transfers ownership of @fd to the
-> + * back-end, i.e. closes it in the front-end.
-> + *
-> + * The back-end may optionally reply with an FD of its own, if this
-> + * improves efficiency on its end.  In this case, the returned FD is
+> It would not be wrong.  I was just thinking of the cmpxchg8 part, for which we do not have
+> a configure probe, and for which I *think* there's no call, because there are no 32-bit
+> hosts that have cmpxchg8 but not the full CONFIG_ATOMIC64.
 
+But this piece of code the patch deletes isn't doing a
+cmpxchg8, it just does a plain load. If "take the lock
+and do the operation" is faster than always using the
+fallback code for the atomic16 case, why don't we make
+the same tradeoff choice in atomic8  ?
 
-Hi Hanna,
-
-In what case/situation, the back-end will have a more efficient fd?
-
-Here my understanding of this "FD of its own" is as same type as
-
-the given fd(e.g. both pipe files), why the fd from back-end makes
-
-difference? Do I miss anything here?
-
-
-Regards,
-
-Hao
-
-
-> + * stored in *reply_fd.  The back-end will discard the FD sent to it,
-> + * and the front-end must use *reply_fd for transferring state to/from
-> + * the back-end.
-> + *
-> + * @dev: The vhost device
-> + * @direction: The direction in which the state is to be transferred.
-> + *             For outgoing migrations, this is SAVE, and data is read
-> + *             from the back-end and stored by the front-end in the
-> + *             migration stream.
-> + *             For incoming migrations, this is LOAD, and data is read
-> + *             by the front-end from the migration stream and sent to
-> + *             the back-end to restore the saved state.
-> + * @phase: Which migration phase we are in.  Currently, there is only
-> + *         STOPPED (device and all vrings are stopped), in the future,
-> + *         more phases such as PRE_COPY or POST_COPY may be added.
-> + * @fd: Back-end's end of the pipe through which to transfer state; note
-> + *      that ownership is transferred to the back-end, so this function
-> + *      closes @fd in the front-end.
-> + * @reply_fd: If the back-end wishes to use a different pipe for state
-> + *            transfer, this will contain an FD for the front-end to
-> + *            use.  Otherwise, -1 is stored here.
-> + * @errp: Potential error description
-> + *
-> + * Returns 0 on success, and -errno on failure.
-> + */
-> +int vhost_set_device_state_fd(struct vhost_dev *dev,
-> +                              VhostDeviceStateDirection direction,
-> +                              VhostDeviceStatePhase phase,
-> +                              int fd,
-> +                              int *reply_fd,
-> +                              Error **errp);
-> +
-> +/**
-> + * vhost_set_device_state_fd(): After transferring state from/to the
-> + * back-end via vhost_set_device_state_fd(), i.e. once the sending end
-> + * has closed the pipe, inquire the back-end to report any potential
-> + * errors that have occurred on its side.  This allows to sense errors
-> + * like:
-> + * - During outgoing migration, when the source side had already started
-> + *   to produce its state, something went wrong and it failed to finish
-> + * - During incoming migration, when the received state is somehow
-> + *   invalid and cannot be processed by the back-end
-> + *
-> + * @dev: The vhost device
-> + * @errp: Potential error description
-> + *
-> + * Returns 0 when the back-end reports successful state transfer and
-> + * processing, and -errno when an error occurred somewhere.
-> + */
-> +int vhost_check_device_state(struct vhost_dev *dev, Error **errp);
-> +
->   #endif
-> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-> index 53a881ec2a..8e6b5485e8 100644
-> --- a/hw/virtio/vhost-user.c
-> +++ b/hw/virtio/vhost-user.c
-> @@ -76,6 +76,7 @@ enum VhostUserProtocolFeature {
->       VHOST_USER_PROTOCOL_F_STATUS = 16,
->       /* Feature 17 reserved for VHOST_USER_PROTOCOL_F_XEN_MMAP. */
->       VHOST_USER_PROTOCOL_F_SUSPEND = 18,
-> +    VHOST_USER_PROTOCOL_F_MIGRATORY_STATE = 19,
->       VHOST_USER_PROTOCOL_F_MAX
->   };
->   
-> @@ -125,6 +126,8 @@ typedef enum VhostUserRequest {
->       VHOST_USER_GET_STATUS = 40,
->       VHOST_USER_SUSPEND = 41,
->       VHOST_USER_RESUME = 42,
-> +    VHOST_USER_SET_DEVICE_STATE_FD = 43,
-> +    VHOST_USER_CHECK_DEVICE_STATE = 44,
->       VHOST_USER_MAX
->   } VhostUserRequest;
->   
-> @@ -216,6 +219,12 @@ typedef struct {
->       uint32_t size; /* the following payload size */
->   } QEMU_PACKED VhostUserHeader;
->   
-> +/* Request payload of VHOST_USER_SET_DEVICE_STATE_FD */
-> +typedef struct VhostUserTransferDeviceState {
-> +    uint32_t direction;
-> +    uint32_t phase;
-> +} VhostUserTransferDeviceState;
-> +
->   typedef union {
->   #define VHOST_USER_VRING_IDX_MASK   (0xff)
->   #define VHOST_USER_VRING_NOFD_MASK  (0x1 << 8)
-> @@ -230,6 +239,7 @@ typedef union {
->           VhostUserCryptoSession session;
->           VhostUserVringArea area;
->           VhostUserInflight inflight;
-> +        VhostUserTransferDeviceState transfer_state;
->   } VhostUserPayload;
->   
->   typedef struct VhostUserMsg {
-> @@ -2838,6 +2848,140 @@ static void vhost_user_reset_status(struct vhost_dev *dev)
->       }
->   }
->   
-> +static bool vhost_user_supports_migratory_state(struct vhost_dev *dev)
-> +{
-> +    return virtio_has_feature(dev->protocol_features,
-> +                              VHOST_USER_PROTOCOL_F_MIGRATORY_STATE);
-> +}
-> +
-> +static int vhost_user_set_device_state_fd(struct vhost_dev *dev,
-> +                                          VhostDeviceStateDirection direction,
-> +                                          VhostDeviceStatePhase phase,
-> +                                          int fd,
-> +                                          int *reply_fd,
-> +                                          Error **errp)
-> +{
-> +    int ret;
-> +    struct vhost_user *vu = dev->opaque;
-> +    VhostUserMsg msg = {
-> +        .hdr = {
-> +            .request = VHOST_USER_SET_DEVICE_STATE_FD,
-> +            .flags = VHOST_USER_VERSION,
-> +            .size = sizeof(msg.payload.transfer_state),
-> +        },
-> +        .payload.transfer_state = {
-> +            .direction = direction,
-> +            .phase = phase,
-> +        },
-> +    };
-> +
-> +    *reply_fd = -1;
-> +
-> +    if (!vhost_user_supports_migratory_state(dev)) {
-> +        close(fd);
-> +        error_setg(errp, "Back-end does not support migration state transfer");
-> +        return -ENOTSUP;
-> +    }
-> +
-> +    ret = vhost_user_write(dev, &msg, &fd, 1);
-> +    close(fd);
-> +    if (ret < 0) {
-> +        error_setg_errno(errp, -ret,
-> +                         "Failed to send SET_DEVICE_STATE_FD message");
-> +        return ret;
-> +    }
-> +
-> +    ret = vhost_user_read(dev, &msg);
-> +    if (ret < 0) {
-> +        error_setg_errno(errp, -ret,
-> +                         "Failed to receive SET_DEVICE_STATE_FD reply");
-> +        return ret;
-> +    }
-> +
-> +    if (msg.hdr.request != VHOST_USER_SET_DEVICE_STATE_FD) {
-> +        error_setg(errp,
-> +                   "Received unexpected message type, expected %d, received %d",
-> +                   VHOST_USER_SET_DEVICE_STATE_FD, msg.hdr.request);
-> +        return -EPROTO;
-> +    }
-> +
-> +    if (msg.hdr.size != sizeof(msg.payload.u64)) {
-> +        error_setg(errp,
-> +                   "Received bad message size, expected %zu, received %" PRIu32,
-> +                   sizeof(msg.payload.u64), msg.hdr.size);
-> +        return -EPROTO;
-> +    }
-> +
-> +    if ((msg.payload.u64 & 0xff) != 0) {
-> +        error_setg(errp, "Back-end did not accept migration state transfer");
-> +        return -EIO;
-> +    }
-> +
-> +    if (!(msg.payload.u64 & VHOST_USER_VRING_NOFD_MASK)) {
-> +        *reply_fd = qemu_chr_fe_get_msgfd(vu->user->chr);
-> +        if (*reply_fd < 0) {
-> +            error_setg(errp,
-> +                       "Failed to get back-end-provided transfer pipe FD");
-> +            *reply_fd = -1;
-> +            return -EIO;
-> +        }
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +static int vhost_user_check_device_state(struct vhost_dev *dev, Error **errp)
-> +{
-> +    int ret;
-> +    VhostUserMsg msg = {
-> +        .hdr = {
-> +            .request = VHOST_USER_CHECK_DEVICE_STATE,
-> +            .flags = VHOST_USER_VERSION,
-> +            .size = 0,
-> +        },
-> +    };
-> +
-> +    if (!vhost_user_supports_migratory_state(dev)) {
-> +        error_setg(errp, "Back-end does not support migration state transfer");
-> +        return -ENOTSUP;
-> +    }
-> +
-> +    ret = vhost_user_write(dev, &msg, NULL, 0);
-> +    if (ret < 0) {
-> +        error_setg_errno(errp, -ret,
-> +                         "Failed to send CHECK_DEVICE_STATE message");
-> +        return ret;
-> +    }
-> +
-> +    ret = vhost_user_read(dev, &msg);
-> +    if (ret < 0) {
-> +        error_setg_errno(errp, -ret,
-> +                         "Failed to receive CHECK_DEVICE_STATE reply");
-> +        return ret;
-> +    }
-> +
-> +    if (msg.hdr.request != VHOST_USER_CHECK_DEVICE_STATE) {
-> +        error_setg(errp,
-> +                   "Received unexpected message type, expected %d, received %d",
-> +                   VHOST_USER_CHECK_DEVICE_STATE, msg.hdr.request);
-> +        return -EPROTO;
-> +    }
-> +
-> +    if (msg.hdr.size != sizeof(msg.payload.u64)) {
-> +        error_setg(errp,
-> +                   "Received bad message size, expected %zu, received %" PRIu32,
-> +                   sizeof(msg.payload.u64), msg.hdr.size);
-> +        return -EPROTO;
-> +    }
-> +
-> +    if (msg.payload.u64 != 0) {
-> +        error_setg(errp, "Back-end failed to process its internal state");
-> +        return -EIO;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
->   const VhostOps user_ops = {
->           .backend_type = VHOST_BACKEND_TYPE_USER,
->           .vhost_backend_init = vhost_user_backend_init,
-> @@ -2874,4 +3018,7 @@ const VhostOps user_ops = {
->           .vhost_set_inflight_fd = vhost_user_set_inflight_fd,
->           .vhost_dev_start = vhost_user_dev_start,
->           .vhost_reset_status = vhost_user_reset_status,
-> +        .vhost_supports_migratory_state = vhost_user_supports_migratory_state,
-> +        .vhost_set_device_state_fd = vhost_user_set_device_state_fd,
-> +        .vhost_check_device_state = vhost_user_check_device_state,
->   };
-> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-> index 2e28e58da7..756b6d55a8 100644
-> --- a/hw/virtio/vhost.c
-> +++ b/hw/virtio/vhost.c
-> @@ -2091,3 +2091,40 @@ int vhost_net_set_backend(struct vhost_dev *hdev,
->   
->       return -ENOSYS;
->   }
-> +
-> +bool vhost_supports_migratory_state(struct vhost_dev *dev)
-> +{
-> +    if (dev->vhost_ops->vhost_supports_migratory_state) {
-> +        return dev->vhost_ops->vhost_supports_migratory_state(dev);
-> +    }
-> +
-> +    return false;
-> +}
-> +
-> +int vhost_set_device_state_fd(struct vhost_dev *dev,
-> +                              VhostDeviceStateDirection direction,
-> +                              VhostDeviceStatePhase phase,
-> +                              int fd,
-> +                              int *reply_fd,
-> +                              Error **errp)
-> +{
-> +    if (dev->vhost_ops->vhost_set_device_state_fd) {
-> +        return dev->vhost_ops->vhost_set_device_state_fd(dev, direction, phase,
-> +                                                         fd, reply_fd, errp);
-> +    }
-> +
-> +    error_setg(errp,
-> +               "vhost transport does not support migration state transfer");
-> +    return -ENOSYS;
-> +}
-> +
-> +int vhost_check_device_state(struct vhost_dev *dev, Error **errp)
-> +{
-> +    if (dev->vhost_ops->vhost_check_device_state) {
-> +        return dev->vhost_ops->vhost_check_device_state(dev, errp);
-> +    }
-> +
-> +    error_setg(errp,
-> +               "vhost transport does not support migration state transfer");
-> +    return -ENOSYS;
-> +}
+thanks
+-- PMM
 
