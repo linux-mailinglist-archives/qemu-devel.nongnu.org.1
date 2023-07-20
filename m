@@ -2,88 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE4E75B8CF
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 22:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5388C75B8E3
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 22:48:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMaPi-0000mC-Bq; Thu, 20 Jul 2023 16:38:18 -0400
+	id 1qMaYx-0000Xe-2K; Thu, 20 Jul 2023 16:47:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qMaPg-0000m0-A8
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 16:38:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qMaYu-0000XG-QI
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 16:47:48 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.161])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qMaPe-0006CC-LU
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 16:38:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689885491;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=nIsBIssIRgwegln3SGbmDiBER5KLf/xLQEoqAd3kXhk=;
- b=B0HJJVL0dABhfEwr5O+2IxJyUAx/5/UktrQ5BrUIlv1n7OVw8xABNMpa8dDEwSjGrFs1k7
- wqZdhwPQ9hgJMyKtz6pQ57qfBy8XkIlxLFGC7d7aqzFhnn5qOskp/ZoTWrxVJ2nKPB6vv/
- Knm4Zswdyj/OZATGeqfPKJq/GzmbbbA=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-125-FgDVs728OByaHokAf7aNMw-1; Thu, 20 Jul 2023 16:38:09 -0400
-X-MC-Unique: FgDVs728OByaHokAf7aNMw-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-635de6f75e0so3006036d6.1
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 13:38:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689885488; x=1690490288;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nIsBIssIRgwegln3SGbmDiBER5KLf/xLQEoqAd3kXhk=;
- b=gvioY4tsZDX4K1u+M2I3Fh0yh3vjDHIy1PhpsFBBD814LVLMwMt/J+crLaRtZsaQl2
- jv7idle+7HDH0U08Ds0Xy/qbAlH7nsFp6gj9qesvGVSIJaSVE8yI+3gcbC6ugRHBlBZ2
- Ed785hNOQgOzAyG0fa51jkKshKyBrLmsFbZx8yzVLOvirdywWbEWekgxGJyYqvJkYWyq
- M8lsqSe12dwjtIIWy5NNG8lQImHUYxcYKGpiONONbn/4xm+GOhXm0r2699dYie59MSl5
- YlasUFElY36jRyWcvDmwAlQGO8ShZkIf5lBhUK599nzSsV7dqp47hekZaPEStkH4gVXM
- 13Ig==
-X-Gm-Message-State: ABy/qLYODikZwiGdKngyTKC9w9t1hx649H4TvNI6Y/uEiKg9iVVOn+mS
- LVqSKsCcfTa4BKNyKOrcP3lBDOCu5KT3LkthsKK4bgDhw21MwKOYRQfApT/V+IAz22rn3TAHNYH
- HhQnM0e9sIq+GKt4=
-X-Received: by 2002:a05:6214:528d:b0:62d:fdc4:1e8b with SMTP id
- kj13-20020a056214528d00b0062dfdc41e8bmr210782qvb.2.1689885488575; 
- Thu, 20 Jul 2023 13:38:08 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHwcyFj9Z0eoch7vUmGVYBR7S9DmZ1gsKTW18s8kg8l/rTgAfbwu66GGyoVjnw3bFHSesXAuQ==
-X-Received: by 2002:a05:6214:528d:b0:62d:fdc4:1e8b with SMTP id
- kj13-20020a056214528d00b0062dfdc41e8bmr210766qvb.2.1689885488305; 
- Thu, 20 Jul 2023 13:38:08 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- j2-20020a0cae82000000b00635e9db359bsm707457qvd.82.2023.07.20.13.38.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Jul 2023 13:38:07 -0700 (PDT)
-Date: Thu, 20 Jul 2023 16:38:01 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Wang, Wei W" <wei.w.wang@intel.com>
-Cc: Isaku Yamahata <isaku.yamahata@gmail.com>,
- "quintela@redhat.com" <quintela@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v1] migration: refactor migration_completion
-Message-ID: <ZLmbKSqrDvg7Tx4A@x1n>
-References: <20230714124823.25142-1-wei.w.wang@intel.com>
- <20230718054425.GA1807130@ls.amr.corp.intel.com>
- <DS0PR11MB6373E417A60B2DEF9EFE3697DC38A@DS0PR11MB6373.namprd11.prod.outlook.com>
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qMaYs-0000mq-Ns
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 16:47:48 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1689886064; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=SNtqMi9f9xEUg/1twffsIHBiK787aBED9XybHBybrRCWHcFUKTKaOxHXXKotLVQHh/
+ YoztPViV3fULGrQL4++r/eGfERtSIyfh4gCs3jTOwvfaqdwKBqbXQKXOaeINlKPMv4IP
+ LNX+HDCZlvqDlHA+95riBtfKQrZbIBQ2Ie7yuA3unnLa3EcyIwJI6POA0aB1z5Nk66s4
+ 46RRaMsM/nfR3aFieo07uIo/OCkwWg9Cq/STIhN5oXDcyWn4BWSYrXQXHz69y6sohG7C
+ QUl4td28Lxm3H21StghovLrwxI++lAZS9o+3Mr9agoVNGhN6FQDH5P6PWusS/w5Y/q0e
+ yrdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1689886064;
+ s=strato-dkim-0002; d=strato.com;
+ h=Message-ID:Subject:To:From:Date:Cc:Date:From:Subject:Sender;
+ bh=fDxGq/zTpIHEsnKf3ZwL5uuK6qEBg2yWkWt/CrvBXxE=;
+ b=Gw9tKL4HIQsqKiQsW080ZtZUg+hWR4OemPxRyn8/gt5lr139goGfFDJa6C9kVz7CYx
+ l3pUkcKnDhdRaj9PtSAwLGJwT0y17oWWWjilW981iu8av9Cb1hEClwGkE/0Ab1OTDJIR
+ uiQ7JvuD3jic/4quQstXHiAVDvoAAoAhbN/govXBHQ1MuJsRWer55KphqDSJEiAQndIT
+ xTHKqvD88lXDaHqLFxDEJmudSPRa8MB1W3VHIT2DtbvVy3GIz1tubaBMpj32FNWy6JQ3
+ F8remHpog9x8EecH1PIJK0O7vjP0F6nu+NTN2Y9PXN2v1/WQfvhbpKDWOEAZd4e4KJap
+ v4cA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1689886064;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=Message-ID:Subject:To:From:Date:Cc:Date:From:Subject:Sender;
+ bh=fDxGq/zTpIHEsnKf3ZwL5uuK6qEBg2yWkWt/CrvBXxE=;
+ b=pFaoqmVh/j1EuZ76XN9EitvtMWZlzlpMxSrBRg0Il3LPzl6mp4Mpwu3VghbiSRebqV
+ dbz9IQYAUPQ3YYBiSufUM0ZuiQYemIRll6Ck3jhDh1RdH9VNPCals2jKqffaZKlQCWC7
+ a0wsP751ouYdyBHy+6+mO4p1FluRkbX1YBlJ5ASOK3RbQXUJ8vSuKV5QRfEJ/8IkunqK
+ 1GdKaii101Yd1KJ1D/G5O+bD44xvE0oAfUY3fO4piuzVUXG7rj74/DBlk+MbN8umMl7e
+ wc/v2GiEuD1pdm9k2xhBNfuoPJua+peL/equ+aVR5DOtgXSSs9xO/dfgSN38K+L/m+H7
+ VzWw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1689886064;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=Message-ID:Subject:To:From:Date:Cc:Date:From:Subject:Sender;
+ bh=fDxGq/zTpIHEsnKf3ZwL5uuK6qEBg2yWkWt/CrvBXxE=;
+ b=PArftSyPrjUXRjV2T1QHeBrfcA88uufzR3ks0ZMy5g7Hffyj0546GBUErHr2DFVFbs
+ U+Y5cby6Nj5BpWfoHpCQ==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4U0aIaxvssIT1j+tCLlX5OhVr5AfLfzW6HQdmLA=="
+Received: from sender by smtp.strato.de (RZmta 49.6.4 AUTH)
+ with ESMTPSA id m4dd28z6KKliBFJ
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate) for <qemu-devel@nongnu.org>;
+ Thu, 20 Jul 2023 22:47:44 +0200 (CEST)
+Date: Thu, 20 Jul 2023 22:47:15 +0200
+From: Olaf Hering <olaf@aepfle.de>
+To: qemu-devel@nongnu.org
+Subject: 8.1-rc0 testfloat fails to compile
+Message-ID: <20230720224656.2841ff5f.olaf@aepfle.de>
+X-Mailer: Claws Mail 20230717T091608.783b4195 hat ein Softwareproblem,
+ kann man nichts machen.
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <DS0PR11MB6373E417A60B2DEF9EFE3697DC38A@DS0PR11MB6373.namprd11.prod.outlook.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; boundary="Sig_/Vx5_7=Ms4My0ZqracPJKnlV";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=81.169.146.161; envelope-from=olaf@aepfle.de;
+ helo=mo4-p00-ob.smtp.rzone.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,95 +96,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 18, 2023 at 01:25:12PM +0000, Wang, Wei W wrote:
-> On Tuesday, July 18, 2023 1:44 PM, Isaku Yamahata wrote:
-> > > --- a/migration/migration.c
-> > > +++ b/migration/migration.c
-> > > @@ -2058,6 +2058,21 @@ static int
-> > await_return_path_close_on_source(MigrationState *ms)
-> > >      return ms->rp_state.error;
-> > >  }
-> > >
-> > > +static int close_return_path_on_source(MigrationState *ms) {
-> > > +    int ret;
-> > > +
-> > > +    if (!ms->rp_state.rp_thread_created) {
-> > > +        return 0;
-> > > +    }
-> > > +
-> > > +    trace_migration_return_path_end_before();
-> > > +    ret = await_return_path_close_on_source(ms);
-> > > +    trace_migration_return_path_end_after(ret);
-> > > +
-> > > +    return ret;
-> > > +}
-> > > +
-> > 
-> > There is only one caller, migration_completion().  We can consolidate two
-> > functions, await_return_path_close_on_source() and
-> > close_return_path_on_source(), into single function.
-> 
-> Sounds good, thanks.
-> 
-> > > +static int migration_completion_postcopy(MigrationState *s) {
-> > > +    trace_migration_completion_postcopy_end();
-> > > +
-> > > +    qemu_mutex_lock_iothread();
-> > > +    qemu_savevm_state_complete_postcopy(s->to_dst_file);
-> > > +    qemu_mutex_unlock_iothread();
-> > > +
-> > > +    /*
-> > > +     * Shutdown the postcopy fast path thread.  This is only needed when
-> > dest
-> > > +     * QEMU binary is old (7.1/7.2).  QEMU 8.0+ doesn't need this.
-> > > +     */
-> > > +    if (migrate_postcopy_preempt() && s->preempt_pre_7_2) {
-> > > +        postcopy_preempt_shutdown_file(s);
-> > > +    }
-> > > +
-> > > +    trace_migration_completion_postcopy_end_after_complete();
-> > > +
-> > > +    return 0;
-> > 
-> > Always return 0?  Make it void.
-> 
-> OK.
-> 
-> > > +static void migration_completion(MigrationState *s) {
-> > > +    int ret = -1;
-> > > +    int current_active_state = s->state;
-> > > +
-> > > +    if (s->state == MIGRATION_STATUS_ACTIVE) {
-> > > +        ret = migration_completion_precopy(s, &current_active_state);
-> > > +    } else if (s->state == MIGRATION_STATUS_POSTCOPY_ACTIVE) {
-> > > +        ret = migration_completion_postcopy(s);
-> > 
-> > Here we can set ret = 0.
-> 
-> Yes, after migration_completion_postcopy is made "void".
+--Sig_/Vx5_7=Ms4My0ZqracPJKnlV
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Looks good to me, after addressing Isaku's comments.
+This is going on since a few weeks. I guess there is no check in CI to see =
+if qemu.git#master compiles in Tumbleweed.
 
-The current_active_state is very unfortunate, along with most of the calls
-to migrate_set_state() - I bet most of the code will definitely go wrong if
-that cmpxchg didn't succeed inside of migrate_set_state(), IOW in most
-cases we simply always want:
+Since the switch to meson submodules, berkeley-testfloat-3 became mandatory=
+. I think in the past I was able to ignore this submodule and not export it=
+, so the following error did not show up:
 
-  migrate_set_state(&s->state, s->state, XXX);
+[  141s] ../subprojects/berkeley-testfloat-3/source/genCases_f64.c: In func=
+tion 'f64Random':
+[  141s] ../subprojects/berkeley-testfloat-3/source/genCases_f64.c:559:1: e=
+rror: control reaches end of non-void function [-Werror=3Dreturn-type]
+[  141s]   559 | }
+[  141s]       | ^
+[  141s] cc1: some warnings being treated as errors
 
-Not sure whether one pre-requisite patch is good to have so we can rename
-migrate_set_state() to something like __migrate_set_state(), then:
+Apparently this is a known issue, 3ac1f81329f attempted to ignore such erro=
+rs.
+Do I need to tweak the global, system-provided CFLAGS myself, or can the so=
+urce be fixed to address this? Disabling this error globally will hide erro=
+rs elsewhere.
 
-  migrate_set_state(s, XXX) {
-    __migrate_set_state(&s->state, s->state, XXX);
-  }
+Maybe there is a way to append something to tests/fp/meson.build:libtestflo=
+at.c_args? Right now it is apparently set to tfcflags+fpcflags+CFLAGS.
 
-I don't even know whether there's any call site that will need
-__migrate_set_state() for real..
 
-Thanks,
+Olaf
 
--- 
-Peter Xu
+--Sig_/Vx5_7=Ms4My0ZqracPJKnlV
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmS5nVMACgkQ86SN7mm1
+DoAGSA/+LNfbeR3DA7rEiyGOMgzGigl5oI1R+VYS4w0fz/NAuYlL8OYd8IjDGQwM
+GlYsqwmZmlKo6fZOzCT/Z4OyCk2xza97zlkpA8S8O/m1QL+qTsqM4I52bCnKqOmR
+2yuWPKDMXLjuOyg6+3KtSf/Ut9beAEnK7qQ+kgb0N/E5fHeYAaWdRUPAFIzfPyN9
+IgH0e/DGFS7jZs4R5HxMgKmAXkyDBMQ3ShH455VBf4DFOsMzhMqnmDaZ2yQvUmG0
+9dxWZLa3xq7YUtja788jfYH/lP37BSIWDacU9T7MQaGpmRmux3JXVccRAJhJj87o
+Ni/gbHMb2JcndHGf015x/dsRRiddYfy1IvX+96bwSROb2ix690D0qbxu9X0nFTbX
+qegAB0e455oCZvYwLQ3BHeaB6dchEP5Z8FaZbLYXgy7FB+yoDuCoJusOukTDr7vV
+L3OqOxbOK2OhEZAD2Q1mLfzbry2zUYAO+2KQ/LCzah6yW8S5GdgfkH/WQfLttx7S
+wkG55b6llsgCtZ67ItjbeIHZ5BUFlayy07WYoJcb6+G35vDWwOi3vU3HsyP2UsiO
+MUAaI5edbbVndjtHL3W2DKxQrepeUswrhUrctTwnkUvtfp+9U34JZHn+7GySJnSo
+dG9rG/3eS0l+UYcK0sY8REJC3eL9IGQoQPRqIWuSHMvZH4BlX1s=
+=VZtv
+-----END PGP SIGNATURE-----
+
+--Sig_/Vx5_7=Ms4My0ZqracPJKnlV--
 
