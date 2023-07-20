@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123A475B81B
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 21:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 310C575B869
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 22:00:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMZRe-0003u5-Da; Thu, 20 Jul 2023 15:36:14 -0400
+	id 1qMZni-0000BM-9F; Thu, 20 Jul 2023 15:59:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qMZRb-0003rX-6w
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 15:36:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qMZRZ-0007Y1-LO
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 15:36:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689881769;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gBMnzG4MebFIf16BpkbQyP0Yw4tKPK9x1cMKc+CNT+k=;
- b=SOv/3Cgz26a4G9cq11pQzRv2Jrymh15zTRrQuMP9saA5bYAunC92ATezJOacOLT2PTUN0p
- T9O+aPZeU8fyhU+piz7QW1v7smNMpyro/MSI7e22lmE/9peGoK5lK10IXiE44/gcDhV1vi
- G7DQEXQvKgs4j9amLTQR7Sev+bz1vlU=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-296-sTKFDoLzPx6EJnvZT2Gw4g-1; Thu, 20 Jul 2023 15:36:04 -0400
-X-MC-Unique: sTKFDoLzPx6EJnvZT2Gw4g-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 093EB3C160E4;
- Thu, 20 Jul 2023 19:36:03 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.253])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 61A3740C6F4C;
- Thu, 20 Jul 2023 19:36:02 +0000 (UTC)
-Date: Thu, 20 Jul 2023 15:36:01 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org, virtio-dev@lists.oasis-open.org,
- slp@redhat.com, mst@redhat.com, marcandre.lureau@redhat.com,
- viresh.kumar@linaro.org, takahiro.akashi@linaro.org,
- erik.schilling@linaro.org, manos.pitsidianakis@linaro.org,
- mathieu.poirier@linaro.org
-Subject: Re: [virtio-dev] [RFC PATCH] docs/interop: define STANDALONE
- protocol feature for vhost-user
-Message-ID: <20230720193601.GI210977@fedora>
-References: <20230704123600.1808604-1-alex.bennee@linaro.org>
- <3ogh7u3ezp7vlrp3ticquoajgsnpnglplm44osrsd7gvxv2lyn@g22qgf4vwgp5>
- <87o7krg0sn.fsf@linaro.org>
- <qmwvywoy7lfkgr7kcc6cxghulgd5g2gvnv76mvkuxbqclbwmti@4qyiktfiu2ej>
+ (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
+ id 1qMZnf-0000Ay-Qh
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 15:58:59 -0400
+Received: from mail-qt1-x842.google.com ([2607:f8b0:4864:20::842])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
+ id 1qMZne-0004Wt-83
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 15:58:59 -0400
+Received: by mail-qt1-x842.google.com with SMTP id
+ d75a77b69052e-403c653d934so10131911cf.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 12:58:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1689883136; x=1690487936;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Fa8bJb04ZvnnRNi76wtYTjDMEYPR/K0aZDQRNb+Huq4=;
+ b=YCf8bPc1cYh8csFGHCDH5OgYzlhnTh+TGOKxMOeVLCJxWAP9h/MRTI0ESXIXjN0yIv
+ cHVx5O7Cod0KWsjpXauEuYW1F1l3XbA5xVMbGyik34vh227IcEUTRZIQO2nx6BAB2Ihu
+ +1rvcwA16fJb1KIzJS0MCitSdtZ8/5NQLTWvv6DoiQ9cxzkXgGMgbsMvCFLJNldilCbv
+ jKWoRpx4SOfOxOxDL9C9aESAPpRabVDogid7MJRyl2GFo3yOdr9ofIJ4B7nOV0oam4Ci
+ ofL270lFrBkAx27TIQNwK63jxaEFRk6rY29gjQ+HPWQbhkVEi2g6tbu4gxWGNcBPRKvV
+ GpEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689883136; x=1690487936;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Fa8bJb04ZvnnRNi76wtYTjDMEYPR/K0aZDQRNb+Huq4=;
+ b=MK4HDtnge16Ubym5EBlOnCFclLi9j2lwQWtjNFJ97DkEhkLHeK7Fkb5Ph6dERp7GAu
+ PCk/FfTQESNxFLnfdM/jg3bdF3EzZe1PBV5aXdEuOT5dxaLCkIQnMLYvRNmO241ibvYB
+ TIv+SiKDOfDpTHRB2N6iUj1a+JRyJzjuDD2V9B3abc1VEvHH8kYLA0TP+mndvb06+KWF
+ iKvO0h6GXCGlb4Do/t5cCRZdwzEfMftp4xVYM5kgptVLe1sd+nNobrmK5DBhkrnBW36y
+ YMnRcHO2mQQigcJ9KjmArBsFhB8LdS8jLdbJgL8XQwPM7nHfYAPWsv7eNxYz3Q0COS29
+ tLww==
+X-Gm-Message-State: ABy/qLZEGflT/qnOzX3uaT3oEZYl2s+c7ms59TY5zEhs1dTn6fS0FxSA
+ uoxsFToq5FfMRjfLhhoX8tPz4VbutuhE
+X-Google-Smtp-Source: APBJJlETfN33UWv770rWJnBpgm1Ey0TWkso52q9W88hXKhV4uCHLE0X7bAen/XT3I4DSAIpG8/x/+g==
+X-Received: by 2002:a05:622a:647:b0:403:b86d:f10e with SMTP id
+ a7-20020a05622a064700b00403b86df10emr129479qtb.10.1689883136587; 
+ Thu, 20 Jul 2023 12:58:56 -0700 (PDT)
+Received: from fedora.mshome.net (pool-173-79-56-208.washdc.fios.verizon.net.
+ [173.79.56.208]) by smtp.gmail.com with ESMTPSA id
+ bw14-20020a05622a098e00b00404e686bcd1sm672078qtb.72.2023.07.20.12.58.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Jul 2023 12:58:56 -0700 (PDT)
+From: Gregory Price <gourry.memverge@gmail.com>
+X-Google-Original-From: Gregory Price <gregory.price@memverge.com>
+To: qemu-devel@nongnu.org
+Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
+ Gregory Price <gregory.price@memverge.com>
+Subject: [RFC 0/2] Modify CCI cmd sets to be mutable
+Date: Thu, 20 Jul 2023 15:58:18 -0400
+Message-Id: <20230720195819.17905-1-gregory.price@memverge.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="PJgjM68U1AKlFxoJ"
-Content-Disposition: inline
-In-Reply-To: <qmwvywoy7lfkgr7kcc6cxghulgd5g2gvnv76mvkuxbqclbwmti@4qyiktfiu2ej>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::842;
+ envelope-from=gourry.memverge@gmail.com; helo=mail-qt1-x842.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,74 +90,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is on top of the proposed CCI changes by Jonathan.
 
---PJgjM68U1AKlFxoJ
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Base repo: https://gitlab.com/jic23/qemu
+Base branch: cxl-2023-07-17
 
-On Fri, Jul 07, 2023 at 12:27:39PM +0200, Stefano Garzarella wrote:
-> On Tue, Jul 04, 2023 at 04:02:42PM +0100, Alex Benn=E9e wrote:
-> >=20
-> > Stefano Garzarella <sgarzare@redhat.com> writes:
-> >=20
-> > > On Tue, Jul 04, 2023 at 01:36:00PM +0100, Alex Benn=E9e wrote:
-> > > > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.=
-rst
-> > > > index 5a070adbc1..85b1b1583a 100644
-> > > > --- a/docs/interop/vhost-user.rst
-> > > > +++ b/docs/interop/vhost-user.rst
-> > > > @@ -275,6 +275,21 @@ Inflight description
-> > > >=20
-> > > > :queue size: a 16-bit size of virtqueues
-> > > >=20
-> > > > +Backend specifications
-> > > > +^^^^^^^^^^^^^^^^^^^^^^
-> > > > +
-> > > > ++-----------+-------------+------------+------------+
-> > > > +| device id | config size |   min_vqs  |   max_vqs  |
-> > > > ++-----------+-------------+------------+------------+
-> > > > +
-> > > > +:device id: a 32-bit value holding the VirtIO device ID
-> > > > +
-> > > > +:config size: a 32-bit value holding the config size (see ``VHOST_=
-USER_GET_CONFIG``)
-> > > > +
-> > > > +:min_vqs: a 32-bit value holding the minimum number of vqs support=
-ed
-> > >=20
-> > > Why do we need the minimum?
-> >=20
-> > We need to know the minimum number because some devices have fixed VQs
-> > that must be present.
->=20
-> But does QEMU need to know this?
->=20
-> Or is it okay that the driver will then fail in the guest if there
-> are not the right number of queues?
 
-I don't understand why min_vqs is needed either. It's not the
-front-end's job to ensure that the device will be used properly. A
-spec-compliant driver will work with a spec-compliant device, so it's
-not clear why the front-end needs this information.
+A proposal to make the CCI cmd sets full members of their device,
+and copy the const struct entries instead of referencing them.
+This would allow child devices to inherit the parent device default
+behavior, but with the flexibility to override without changing the
+core device.
 
-Stefan
+This also enables the base device to receive the commands via the
+same /dev/cxl/XXXX device, simplifying testing.
 
---PJgjM68U1AKlFxoJ
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+An example of how one might override/add commands (paraphrased):
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmS5jKAACgkQnKSrs4Gr
-c8iL2QgAqCc6gx0y20MWAVkqX4M5cONVtaHUBQz26ZTaU20ipQ1qS4HYsgGW67hX
-fthNJsVS3gGpAhkjOf3bWMB5s20sjAEdifjqZe8C2HL2AxRJsNYBZwH/btA3aWbC
-0w7uxLUcXv1ccqsE4CMp+DPIHOnKwA5ewlbg7P04ya4kNjzx5WM2EMJhlJ9vbybx
-+7UuPukQDV/TG3yBJOz61wCQQ/ABt0njwxXJakMVyRj0O6aHbZDPs09ibFmc9jDW
-O+35GNYVSdvN3/cd8J6Vc2ikJ4q+jEK0/E8jbh6+jc7OOQ3BKnluKhwkGYvouSDK
-Ia7ziZJnl7n7fzghOOdSpPu8/a63RQ==
-=dGKO
------END PGP SIGNATURE-----
 
---PJgjM68U1AKlFxoJ--
+instantiating:
+
+-device cxl-type3,bus=rp0,volatile-memdev=mem0,id=cxl-mem0
+-device cxl-my-cmds,target=cxl-mem0
+
+
+simple code:
+
+static const struct cxl_cmd cxl_cmd_set_my_cmds[256][256] = {
+    [MY_CMDS][GET_INFO] = { "SPECIAL_GET_INFO",
+      cmd_my_cmds_get_info, 0, 0 },}
+
+static void cxl_my_cmds_realize(DeviceState *d, Error **errp)
+{
+    CXL_MyCmds_State *s = CXL_MyCmds(d);
+
+    if (object_dynamic_cast(OBJECT(s->target), TYPE_CXL_TYPE3)) {
+        CXLType3Dev *ct3d = CXL_TYPE3(s->target);
+
+        s->type = cxl_type3;
+        s->cci = &ct3d->cci;
+
+        cxl_add_cci_commands(&ct3d->cci, cxl_cmd_set_my_cmds, 512);
+        return;
+    }
+    error_setg(errp, "Unhandled target type for CXL MHDSLD");
+}
+
+#define TYPE_CXL_Niagara "cxl-my-cmds"
+static const TypeInfo cxl_my_cmds_info = {
+    .name = TYPE_CXL_MyCmds,
+    .parent = TYPE_CXL_TYPE3,
+    .class_size = sizeof(struct CXL_MyCmdsClass),
+    .class_init = cxl_my_cmds_class_init,
+    .instance_size = sizeof(CXL_MyCmds_State),
+    .interfaces = (InterfaceInfo[]) {
+        { INTERFACE_CXL_DEVICE },
+        { INTERFACE_PCIE_DEVICE },
+        {}
+    },
+};
+
+Signed-off-by: Gregory Price <gregory.price@memverge.com>
+
+---
+Gregory Price (2):
+  cxl/mailbox: change CCI cmd set structure to be a member, not a
+    refernce
+  cxl/mailbox: interface to add CCI commands to an existing CCI
+
+ hw/cxl/cxl-mailbox-utils.c  | 37 +++++++++++++++++++++++++++++++++----
+ include/hw/cxl/cxl_device.h |  4 +++-
+ 2 files changed, 36 insertions(+), 5 deletions(-)
+
+-- 
+2.39.1
 
 
