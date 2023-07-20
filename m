@@ -2,58 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F8675B03A
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9016A75B03C
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:40:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMTsk-00072y-Go; Thu, 20 Jul 2023 09:39:52 -0400
+	id 1qMTsq-0007MR-Oe; Thu, 20 Jul 2023 09:39:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qMTs7-0006hv-Ds
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:39:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qMTs8-0006iq-5z
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:39:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qMTs1-0007Vv-L8
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:39:09 -0400
+ id 1qMTs4-0007XS-2D
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:39:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689860343;
+ s=mimecast20190719; t=1689860347;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=SRuakU3+08O8Smp7TbuocnrPScngGYbY/YYX8l1EPtA=;
- b=UBtXJ3HWBez1xecsXg4NKctalOj1AMcr8OTWu6tPSDD/EtkCS4dK+U1rGren3pIK7FBsLI
- jXy11XpjndI5SDuuOrGNzLcleK2Yh1EP5wWkuQL4tNCQpKG+Aikm5+U2aK+gi97mHNGdKe
- ycOfOtY5Yj2S1ak65kAatCbPJe0sogc=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bdnQ4i99keqsikSk4aQNplYdG8+36ADsqY1J4Xq3ovk=;
+ b=QNs8tUzZQ3/WUcDXpAk9bAbBPnCnedb5Lz7pZzxKr9Hi2JXbMEE9KxDZuGipsCNnWwZvBL
+ TFWgveXR9XRXgUc71MaFlBX/aAC5OUPfhWQaw9XdeR3OzJtAqYhzVIn0KuwFVtiQp1hJOh
+ YOhI4Gbxqqvc/0UDbzqUpHKzhx+WswE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-495-LHgH9xoGO96-w32XqGbrhA-1; Thu, 20 Jul 2023 09:39:02 -0400
-X-MC-Unique: LHgH9xoGO96-w32XqGbrhA-1
+ us-mta-638-c788kvMJOuiYl06dHclIjQ-1; Thu, 20 Jul 2023 09:39:03 -0400
+X-MC-Unique: c788kvMJOuiYl06dHclIjQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F2BD7800CB2
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 13:39:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BAC3988D545
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 13:39:02 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 651FB4A9005;
- Thu, 20 Jul 2023 13:39:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 305F24A9004;
+ Thu, 20 Jul 2023 13:39:02 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com,
 	anisinha@redhat.com
-Subject: [PATCH for-8.1 0/6] x86: acpi pci fixes
-Date: Thu, 20 Jul 2023 15:38:52 +0200
-Message-Id: <20230720133858.1974024-1-imammedo@redhat.com>
+Subject: [PATCH for-8.1 1/6] tests: acpi: x86: whitelist expected blobs
+Date: Thu, 20 Jul 2023 15:38:53 +0200
+Message-Id: <20230720133858.1974024-2-imammedo@redhat.com>
+In-Reply-To: <20230720133858.1974024-1-imammedo@redhat.com>
+References: <20230720133858.1974024-1-imammedo@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -78,68 +81,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Working on PXB acpi-index support takes unexpectedly long so
-pushing out self sufficient fixes from my PXB queue that do not
-have dependency on other patches.
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+---
+ tests/qtest/bios-tables-test-allowed-diff.h | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-patch 2/6 is regression fix for making acpi-index work with Windows guests
-patch 5/6 is ACPI spec compliance fix
-
-tested with rhel9, WS2012R2, WS2022, WinXPsp3
-
-PS:
- WinXP boots (but it doesn't expose device properties so I have no idea
- how to check 'PCI Label Id' or if it's even supported there)
- 
-Igor Mammedov (6):
-  tests: acpi: x86: whitelist expected blobs
-  x86: acpi: workaround Windows not handling name references in Package
-    properly
-  tests: acpi: x86: update expected blobs
-  tests: acpi: whitelist expected blobs
-  acpi: x86: remove _ADR on host bridges
-  tests: acpi: update expected blobs
-
- hw/i386/acpi-build.c                          |  11 ++++++-----
- tests/data/acpi/pc/DSDT                       | Bin 6488 -> 6830 bytes
- tests/data/acpi/pc/DSDT.acpierst              | Bin 6411 -> 6741 bytes
- tests/data/acpi/pc/DSDT.acpihmat              | Bin 7813 -> 8155 bytes
- tests/data/acpi/pc/DSDT.bridge                | Bin 12615 -> 13701 bytes
- tests/data/acpi/pc/DSDT.cphp                  | Bin 6952 -> 7294 bytes
- tests/data/acpi/pc/DSDT.dimmpxm               | Bin 8142 -> 8484 bytes
- tests/data/acpi/pc/DSDT.hpbridge              | Bin 6451 -> 6781 bytes
- tests/data/acpi/pc/DSDT.hpbrroot              | Bin 3343 -> 3337 bytes
- tests/data/acpi/pc/DSDT.ipmikcs               | Bin 6560 -> 6902 bytes
- tests/data/acpi/pc/DSDT.memhp                 | Bin 7847 -> 8189 bytes
- tests/data/acpi/pc/DSDT.nohpet                | Bin 6346 -> 6688 bytes
- tests/data/acpi/pc/DSDT.numamem               | Bin 6494 -> 6836 bytes
- tests/data/acpi/pc/DSDT.roothp                | Bin 9873 -> 10623 bytes
- tests/data/acpi/q35/DSDT                      | Bin 8361 -> 8355 bytes
- tests/data/acpi/q35/DSDT.acpierst             | Bin 8378 -> 8372 bytes
- tests/data/acpi/q35/DSDT.acpihmat             | Bin 9686 -> 9680 bytes
- tests/data/acpi/q35/DSDT.acpihmat-noinitiator | Bin 8640 -> 8634 bytes
- tests/data/acpi/q35/DSDT.applesmc             | Bin 8407 -> 8401 bytes
- tests/data/acpi/q35/DSDT.bridge               | Bin 11590 -> 11968 bytes
- tests/data/acpi/q35/DSDT.core-count2          | Bin 32501 -> 32495 bytes
- tests/data/acpi/q35/DSDT.cphp                 | Bin 8825 -> 8819 bytes
- tests/data/acpi/q35/DSDT.cxl                  | Bin 9673 -> 9655 bytes
- tests/data/acpi/q35/DSDT.dimmpxm              | Bin 10015 -> 10009 bytes
- tests/data/acpi/q35/DSDT.ipmibt               | Bin 8436 -> 8430 bytes
- tests/data/acpi/q35/DSDT.ipmismbus            | Bin 8449 -> 8443 bytes
- tests/data/acpi/q35/DSDT.ivrs                 | Bin 8378 -> 8372 bytes
- tests/data/acpi/q35/DSDT.memhp                | Bin 9720 -> 9714 bytes
- tests/data/acpi/q35/DSDT.mmio64               | Bin 9491 -> 9485 bytes
- tests/data/acpi/q35/DSDT.multi-bridge         | Bin 12770 -> 13208 bytes
- tests/data/acpi/q35/DSDT.noacpihp             | Bin 8241 -> 8235 bytes
- tests/data/acpi/q35/DSDT.nohpet               | Bin 8219 -> 8213 bytes
- tests/data/acpi/q35/DSDT.numamem              | Bin 8367 -> 8361 bytes
- tests/data/acpi/q35/DSDT.pvpanic-isa          | Bin 8462 -> 8456 bytes
- tests/data/acpi/q35/DSDT.tis.tpm12            | Bin 8967 -> 8961 bytes
- tests/data/acpi/q35/DSDT.tis.tpm2             | Bin 8993 -> 8987 bytes
- tests/data/acpi/q35/DSDT.viot                 | Bin 9470 -> 9464 bytes
- tests/data/acpi/q35/DSDT.xapic                | Bin 35724 -> 35718 bytes
- 38 files changed, 6 insertions(+), 5 deletions(-)
-
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8b..1983fa596b 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,15 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/pc/DSDT",
++"tests/data/acpi/pc/DSDT.acpierst",
++"tests/data/acpi/pc/DSDT.acpihmat",
++"tests/data/acpi/pc/DSDT.bridge",
++"tests/data/acpi/pc/DSDT.cphp",
++"tests/data/acpi/pc/DSDT.dimmpxm",
++"tests/data/acpi/pc/DSDT.hpbridge",
++"tests/data/acpi/pc/DSDT.ipmikcs",
++"tests/data/acpi/pc/DSDT.memhp",
++"tests/data/acpi/pc/DSDT.nohpet",
++"tests/data/acpi/pc/DSDT.numamem",
++"tests/data/acpi/pc/DSDT.roothp",
++"tests/data/acpi/q35/DSDT.bridge",
++"tests/data/acpi/q35/DSDT.multi-bridge",
 -- 
 2.39.3
 
