@@ -2,73 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A88B75B54E
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 19:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B639575B56B
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 19:18:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMXDk-0005Qz-4R; Thu, 20 Jul 2023 13:13:44 -0400
+	id 1qMXHT-0006rZ-KV; Thu, 20 Jul 2023 13:17:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMXDi-0005Qi-EV
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 13:13:42 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMXDg-0001VE-Ug
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 13:13:42 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-51e28cac164so4576729a12.1
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 10:13:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689873219; x=1690478019;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=oYIdy46tK3NI6A6O2BGDVkdFa1vfkDkDHQQqK46fJxU=;
- b=QZrkwbWu9J3p8tKVQx5vLqOo24jX+ysGsKC78CmVysh7q8Td3HHP03OZd7M2duYeGP
- RSzKXJhWJnJuU5Sx/1dC2VQdWH1o+KwqETMv+mQce8mpQnK9dDnAaofdgfKC8TImYf/G
- 77/MNZCmyU5ZvOuAiucBqH1wzPM8zLpnHCNwvx8d55mCG1hWt/zpG08EMYI0eONPvuVe
- 5Lo96rN+4h/VH8uaS77nUA28VREPaHrC+hcmwFdF1+dKe0QtHeuOFvIw4Xim0J8Hz5mu
- E5ztWxCLjHhC1j6UxzLfCBIkBGSmJZ7bts8FjbLSEYpHnUKslgL0W3jscFeN1CZfsWv3
- oTng==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qMXHQ-0006r3-Jl
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 13:17:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qMXHP-0002Nt-1j
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 13:17:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689873449;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7acksfJCYmAawygVVNzpNTWtLypXaRLI4nb1XfBAty8=;
+ b=T9Jr/ZsaGqIJXTIwDOrGHX0XpnKgVvRPpolBdJ0wMJhjxIv3mwv8JVrpxzZeQx/G4xwPXl
+ HdIZ9Hi9nd1qoztppUDJ4ZGo5C0sGbit8Qtu/g3B8QwTo3NZmw9W+iB60qY/jY1eh3ze3r
+ grjHmVrv8cFZDOyR9ifqI51lTTfU37U=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-543-XiCIPMOrN5SzB-VOefNYWg-1; Thu, 20 Jul 2023 13:17:27 -0400
+X-MC-Unique: XiCIPMOrN5SzB-VOefNYWg-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-31444df0fafso608885f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 10:17:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689873219; x=1690478019;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=oYIdy46tK3NI6A6O2BGDVkdFa1vfkDkDHQQqK46fJxU=;
- b=Oy9dQkjMYZ7H2LF9unGjt6exDXj4Dp7rkiKvugFivl+ut7EBJyVjQcowK3N6UdYnP4
- 81z4pAzu79gfTis8ZGYggRsx9HDeQIg4V+jABaawZ98FIeGsDXttkOYi3MLnBMQtIxFr
- GiBczU0ylUhiG8z4Gc3p3H34KbYZ0y52JDppVpRoS/06Ibt46yvY/oG6IhqqEsS9XwCT
- TceCWAvBFlvc95cyz6y4rC8ERLEX8McpkwdHJxCUOQI8r5oivlFhYQUMdGxIgXRyNu0I
- pIq/dk63sP8smjURBZNqwbxTr26ZzF3y+oX9XijRpT4JYTfq2LfQh5o9nVYfmUhC01YH
- pbCg==
-X-Gm-Message-State: ABy/qLaVgbeiaKPKJ3f2HxhJkUfbKd96MGvIKWysJPnRirB7CbOmAHDw
- ZUVc/oKq/b7AwSF5FXDwrGBn+7GXsfNbNv3dwqmurQ==
-X-Google-Smtp-Source: APBJJlGVihVvP2hvuf2oY/M0pWHOIXmJ+k0NKk9jQuyZADNp4dD8pAObUKqveZlzafCinZT8/TLWbbZcZeAvKPHa49c=
-X-Received: by 2002:a05:6402:42c6:b0:51e:5206:d69e with SMTP id
- i6-20020a05640242c600b0051e5206d69emr6810004edc.10.1689873219465; Thu, 20 Jul
- 2023 10:13:39 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689873446; x=1690478246;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7acksfJCYmAawygVVNzpNTWtLypXaRLI4nb1XfBAty8=;
+ b=c8+iikNazC8f82KpNa08gcIdJZQ/n5/i1InZV8dQwt4/1YMs2VQ0nGrjRevEWT7QPA
+ GZhZi3JIYmFqqtsy3qEPGJtQycyuHc68XyeA0CZ7LYcpp+woPpTWHd3pBfoSTPOv3gye
+ byYYd1A01f80c9rOhoxP/5NN1yTVG8Z0V+7xsm00c9x6ag+Usx/fhV1s0SouQ7SOA//T
+ G/8n/WMc2gbWj8oEkL0CQPmDTpG/6vvUaop8EV/LPAd4THENEDV9zWPB3JHIRE3yW52s
+ iKuWc13l2s2Iprq5Ym4HL8yRpx3ZTTZC9QMHSyfAaVz6+T+rFIYVSe3A3JlxylkG8wxn
+ PajA==
+X-Gm-Message-State: ABy/qLZkUTd+aWuewPOsDRi1zqzuG0CQZpD/WRqdJ7esAqoa+U+HLM4b
+ Nc+Y414A66vvd6MsLKTo/OrDtDzYXJL0iswiQvIRIj2RIg6MCfR8h1TXb0IHERDZEMBKFFZbsxC
+ arHN414WoyhBo4AA=
+X-Received: by 2002:a5d:4388:0:b0:314:36c5:e4c0 with SMTP id
+ i8-20020a5d4388000000b0031436c5e4c0mr3051858wrq.11.1689873446491; 
+ Thu, 20 Jul 2023 10:17:26 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGj/5VL62DzjH9ZmDl2BY18l7bWopG9Y63dqBrr92XaSBjtpVwRfP91NL8kTklBF5DdiJjLVg==
+X-Received: by 2002:a5d:4388:0:b0:314:36c5:e4c0 with SMTP id
+ i8-20020a5d4388000000b0031436c5e4c0mr3051849wrq.11.1689873446191; 
+ Thu, 20 Jul 2023 10:17:26 -0700 (PDT)
+Received: from redhat.com ([2.52.16.41]) by smtp.gmail.com with ESMTPSA id
+ u18-20020a5d5152000000b00314326c91e2sm1861531wrt.28.2023.07.20.10.17.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Jul 2023 10:17:25 -0700 (PDT)
+Date: Thu, 20 Jul 2023 13:17:22 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Yuri Benditovich <yuri.benditovich@daynix.com>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>,
+ Stefan Weil <sw@weilnetz.de>, qemu-devel@nongnu.org, yan@daynix.com,
+ andrew@daynix.com
+Subject: Re: [PATCH 3/4] virtio-net: added USO support
+Message-ID: <20230720131646-mutt-send-email-mst@kernel.org>
+References: <20230719152139.1316570-1-yuri.benditovich@daynix.com>
+ <20230719152139.1316570-4-yuri.benditovich@daynix.com>
+ <73d6c937-07fe-f1fd-db8c-6cf13e9dcf4b@daynix.com>
+ <CAOEp5OcWzZ9+EvsE=cgfUyj11ifTjZ-Lpm_BAxPX_gqxiYMang@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230719153018.1456180-2-jean-philippe@linaro.org>
- <20230719153018.1456180-7-jean-philippe@linaro.org>
-In-Reply-To: <20230719153018.1456180-7-jean-philippe@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 20 Jul 2023 18:13:28 +0100
-Message-ID: <CAFEAcA-2Sd6OvM5eYfGPaCSwZcu+oQkCqXgdkV-=YM2SkyYQmg@mail.gmail.com>
-Subject: Re: [PATCH 5/5] target/arm/helper: Implement CNTHCTL_EL2.CNT[VP]MASK
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOEp5OcWzZ9+EvsE=cgfUyj11ifTjZ-Lpm_BAxPX_gqxiYMang@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,68 +105,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 19 Jul 2023 at 16:56, Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
->
-> When FEAT_RME is implemented, these bits override the value of
-> CNT[VP]_CTL_EL0.IMASK in Realm and Root state.
->
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> ---
->  target/arm/helper.c | 21 +++++++++++++++++++--
->  1 file changed, 19 insertions(+), 2 deletions(-)
->
-> diff --git a/target/arm/helper.c b/target/arm/helper.c
-> index 2017b11795..5b173a827f 100644
-> --- a/target/arm/helper.c
-> +++ b/target/arm/helper.c
-> @@ -2608,6 +2608,23 @@ static uint64_t gt_get_countervalue(CPUARMState *env)
->      return qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) / gt_cntfrq_period_ns(cpu);
->  }
->
-> +static bool gt_is_masked(CPUARMState *env, int timeridx)
-> +{
-> +    ARMSecuritySpace ss = arm_security_space(env);
-> +
-> +    /*
-> +     * If bits CNTHCTL_EL2.CNT[VP]MASK are set, they override
-> +     * CNT[VP]_CTL_EL0.IMASK. They are RES0 in Secure and NonSecure state.
-> +     */
-> +    if ((ss == ARMSS_Root || ss == ARMSS_Realm) &&
-> +        ((timeridx == GTIMER_VIRT && extract64(env->cp15.cnthctl_el2, 18, 1)) ||
-> +         (timeridx == GTIMER_PHYS && extract64(env->cp15.cnthctl_el2, 19, 1)))) {
-> +        return true;
-> +    }
-> +
-> +    return env->cp15.c14_timer[timeridx].ctl & 2;
-> +}
-> +
->  static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
->  {
->      ARMGenericTimer *gt = &cpu->env.cp15.c14_timer[timeridx];
-> @@ -2627,7 +2644,7 @@ static void gt_recalc_timer(ARMCPU *cpu, int timeridx)
->
->          gt->ctl = deposit32(gt->ctl, 2, 1, istatus);
->
-> -        irqstate = (istatus && !(gt->ctl & 2));
-> +        irqstate = (istatus && !gt_is_masked(&cpu->env, timeridx));
->          qemu_set_irq(cpu->gt_timer_outputs[timeridx], irqstate);
->
->          if (istatus) {
-> @@ -2759,7 +2776,7 @@ static void gt_ctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
->           * IMASK toggled: don't need to recalculate,
->           * just set the interrupt line based on ISTATUS
->           */
-> -        int irqstate = (oldval & 4) && !(value & 2);
-> +        int irqstate = (oldval & 4) && !gt_is_masked(env, timeridx);
->
->          trace_arm_gt_imask_toggle(timeridx, irqstate);
->          qemu_set_irq(cpu->gt_timer_outputs[timeridx], irqstate);
+On Thu, Jul 20, 2023 at 07:05:40PM +0300, Yuri Benditovich wrote:
+> 
+> 
+> On Thu, Jul 20, 2023 at 3:37 AM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> 
+>     On 2023/07/20 0:21, Yuri Benditovich wrote:
+>     > virtio-net can suggest USO features TX, RX v4 and RX v6,
+>     > depending on kernel TUN ability to support them. These
+>     > features require explicit enable in command-line.
+> 
+>     Shouldn't we enable these by default as the other offload features are?
+> 
+> 
+> My suggestion is to add these features as disabled by default and reevaluate
+> the
+> possibility to enable later.
+> If we enable them by default we'll also need to disable them by default in
+> previous
+> generations of machine types.
 
-If these CNTHCTL bits now affect whether the timer interrupts
-are masked, then we need to update the timer irq state
-on writes to CNTHCTL that change the bits.
+Yea, let's do that, that's how we always did it traditionally.
 
-thanks
--- PMM
+> 
+> 
+>     >
+>     > Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
+>     > ---
+>     >   hw/net/virtio-net.c | 16 ++++++++++++++--
+>     >   1 file changed, 14 insertions(+), 2 deletions(-)
+>     >
+>     > diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+>     > index d2311e7d6e..e76cad923b 100644
+>     > --- a/hw/net/virtio-net.c
+>     > +++ b/hw/net/virtio-net.c
+>     > @@ -796,6 +796,10 @@ static uint64_t virtio_net_get_features(VirtIODevice
+>     *vdev, uint64_t features,
+>     >           virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_TSO6);
+>     >           virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_ECN);
+>     >   
+>     > +        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
+>     > +        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
+>     > +        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
+>     > +
+>     >           virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
+>     >       }
+>     >   
+>     > @@ -864,14 +868,16 @@ static void virtio_net_apply_guest_offloads
+>     (VirtIONet *n)
+>     >               !!(n->curr_guest_offloads & (1ULL <<
+>     VIRTIO_NET_F_GUEST_USO6)));
+>     >   }
+>     >   
+>     > -static uint64_t virtio_net_guest_offloads_by_features(uint32_t features)
+>     > +static uint64_t virtio_net_guest_offloads_by_features(uint64_t features)
+>     >   {
+>     >       static const uint64_t guest_offloads_mask =
+>     >           (1ULL << VIRTIO_NET_F_GUEST_CSUM) |
+>     >           (1ULL << VIRTIO_NET_F_GUEST_TSO4) |
+>     >           (1ULL << VIRTIO_NET_F_GUEST_TSO6) |
+>     >           (1ULL << VIRTIO_NET_F_GUEST_ECN)  |
+>     > -        (1ULL << VIRTIO_NET_F_GUEST_UFO);
+>     > +        (1ULL << VIRTIO_NET_F_GUEST_UFO)  |
+>     > +        (1ULL << VIRTIO_NET_F_GUEST_USO4) |
+>     > +        (1ULL << VIRTIO_NET_F_GUEST_USO6);
+>     >   
+>     >       return guest_offloads_mask & features;
+>     >   }
+>     > @@ -3924,6 +3930,12 @@ static Property virtio_net_properties[] = {
+>     >       DEFINE_PROP_INT32("speed", VirtIONet, net_conf.speed,
+>     SPEED_UNKNOWN),
+>     >       DEFINE_PROP_STRING("duplex", VirtIONet, net_conf.duplex_str),
+>     >       DEFINE_PROP_BOOL("failover", VirtIONet, failover, false),
+>     > +    DEFINE_PROP_BIT64("guest_uso4", VirtIONet, host_features,
+>     > +                      VIRTIO_NET_F_GUEST_USO4, false),
+>     > +    DEFINE_PROP_BIT64("guest_uso6", VirtIONet, host_features,
+>     > +                      VIRTIO_NET_F_GUEST_USO6, false),
+>     > +    DEFINE_PROP_BIT64("host_uso", VirtIONet, host_features,
+>     > +                      VIRTIO_NET_F_HOST_USO, false),
+>     >       DEFINE_PROP_END_OF_LIST(),
+>     >   };
+>     >   
+> 
+
 
