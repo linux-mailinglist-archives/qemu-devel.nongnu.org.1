@@ -2,81 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0D375B870
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 22:00:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AFAB75B86B
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 22:00:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMZpC-00020m-GX; Thu, 20 Jul 2023 16:00:34 -0400
+	id 1qMZnk-0000Br-M9; Thu, 20 Jul 2023 15:59:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
- id 1qMZp9-0001yC-TH
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 16:00:32 -0400
-Received: from mail-qt1-x841.google.com ([2607:f8b0:4864:20::841])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
- id 1qMZot-0004pA-E1
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 16:00:31 -0400
-Received: by mail-qt1-x841.google.com with SMTP id
- d75a77b69052e-403a840dc64so10219391cf.1
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 13:00:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689883214; x=1690488014;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Cc7pj30bTxLw0j0LdD/dx5vc6B2y0c1dIX3RAge2zGQ=;
- b=MhPtZfspe98Z5FjY84L2agwJW4mLahG43rZSzUxq9/nWL6guqXbe+lmjw3DzxvkSwT
- 561IcwXMqbDraxXSEyz/tP8bhN+8Q+YHHIFI6lB9+CVAabQ0Z0Q4RQ/H2SxFGxAZMSxR
- oLOjA9/O/8N9OU/PhxmRBAKaQKRJDPjy4RYfQcJLexMYQ2vyOTpLOdGUSp7PWz13lAVp
- jmX67SXx+qrK+tW6ry5FkNmdOyTKRwNzHe24X69jA+hIBqK34Jc+JjvS5MRMECZxD/Ht
- DDGsdTywzRno8IFRy76lgmMe/KyyC33Dmep6YlRkYRIZBSx6/7yoO5QKb1RKxCGbufLg
- 1REQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689883214; x=1690488014;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Cc7pj30bTxLw0j0LdD/dx5vc6B2y0c1dIX3RAge2zGQ=;
- b=XS/eUaGE1kCRmn9bjgWczY29DFS9Iz0Xa06VFVkvhqmpPOfnY8wSnsE7b/RKG963uA
- kh6PXvhpUraQePbNBsgUckKaKmFSeWaFRyhFe9wp2KoBBE8YKHIpQl5lMIqJs7ZGpeFR
- JVLiuhNJuMuxr6EJKMoptao3/ziX1G0L9W236ZD6nugq+no05iRwCk2ZyygMBd6DGxy3
- 5vDABkWqGQRpjN0+Rfnr5sTJess6IA2mlfPyyTsuNLagZfOMJLqMUfZdbaPcOZpIPO1S
- xkg1M3Yy9eD13OiJHxNHss/e4vNfppvG747lfh1Y///536uCgsdA8LxqdHKALqC25gSH
- +jyQ==
-X-Gm-Message-State: ABy/qLaJLUtO0nVGaObRO6IGgacPN1GzjoN2kFCcaFWw8kKIlwxo3okM
- fNpyMSSbaYzIEWLL5y57uf2yukQcfOJN
-X-Google-Smtp-Source: APBJJlEa3Gz7M8cibwn+2MsRuW/pbHQd2K77Ts4q6iKe+7yiwi/XqBkvyUtMyBfV+Vx/5FlwsbuUcA==
-X-Received: by 2002:ac8:59c6:0:b0:404:c430:650b with SMTP id
- f6-20020ac859c6000000b00404c430650bmr88133qtf.33.1689883214087; 
- Thu, 20 Jul 2023 13:00:14 -0700 (PDT)
-Received: from fedora.mshome.net (pool-173-79-56-208.washdc.fios.verizon.net.
- [173.79.56.208]) by smtp.gmail.com with ESMTPSA id
- bw14-20020a05622a098e00b00404e686bcd1sm672078qtb.72.2023.07.20.13.00.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Jul 2023 13:00:13 -0700 (PDT)
-From: Gregory Price <gourry.memverge@gmail.com>
-X-Google-Original-From: Gregory Price <gregory.price@memverge.com>
-To: qemu-devel@nongnu.org
-Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
- Gregory Price <gregory.price@memverge.com>
-Subject: [RFC 2/2] cxl/mailbox: interface to add CCI commands to an existing
- CCI
-Date: Thu, 20 Jul 2023 15:58:22 -0400
-Message-Id: <20230720195819.17905-3-gregory.price@memverge.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230720195819.17905-1-gregory.price@memverge.com>
-References: <20230720195819.17905-1-gregory.price@memverge.com>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qMZni-0000BO-J0
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 15:59:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qMZnh-0004X2-26
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 15:59:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689883139;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HYVMeM6kZVR+OlIn6wXPChfp1WxiF2Vf8eMU13lCAEM=;
+ b=avhWMeuYEE+4y9E7lCuNKUJmubPqvZEGkpSPZsm3Pf8I9L+wDc4Gjoa7buR5nIHFYmZMzQ
+ dxY+QpQgQZRZAYzk8u24+9ZxXKYjfQvxKibgAD7dT9zpbTKEWqmiABdXMphuCXG/H3ks2G
+ hTqFYi0shExmBPx98CfxSy8b0pWWZew=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-422-rOCc9eh6MjmAnkY4mda72A-1; Thu, 20 Jul 2023 15:58:54 -0400
+X-MC-Unique: rOCc9eh6MjmAnkY4mda72A-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0C2BB185A78B;
+ Thu, 20 Jul 2023 19:58:40 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.253])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 69EB51454142;
+ Thu, 20 Jul 2023 19:58:39 +0000 (UTC)
+Date: Thu, 20 Jul 2023 15:58:37 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, virtio-dev@lists.oasis-open.org,
+ slp@redhat.com, marcandre.lureau@redhat.com,
+ viresh.kumar@linaro.org, sgarzare@redhat.com,
+ takahiro.akashi@linaro.org, erik.schilling@linaro.org,
+ manos.pitsidianakis@linaro.org, mathieu.poirier@linaro.org
+Subject: Re: [RFC PATCH] docs/interop: define STANDALONE protocol feature for
+ vhost-user
+Message-ID: <20230720195837.GJ210977@fedora>
+References: <20230704123600.1808604-1-alex.bennee@linaro.org>
+ <20230706124347-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::841;
- envelope-from=gourry.memverge@gmail.com; helo=mail-qt1-x841.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="y3Pyr4rpz3fA5NCs"
+Content-Disposition: inline
+In-Reply-To: <20230706124347-mutt-send-email-mst@kernel.org>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,65 +86,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This enables wrapper devices to customize the base device's CCI
-(for example, with custom commands outside the specification)
-without the need to change the base device.
 
-The also enabled the base device to dispatch those commands without
-requiring additional driver support.
+--y3Pyr4rpz3fA5NCs
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Gregory Price <gregory.price@memverge.com>
+On Thu, Jul 06, 2023 at 12:48:20PM -0400, Michael S. Tsirkin wrote:
+> On Tue, Jul 04, 2023 at 01:36:00PM +0100, Alex Benn=E9e wrote:
+> > Currently QEMU has to know some details about the back-end to be able
+> > to setup the guest. While various parts of the setup can be delegated
+> > to the backend (for example config handling) this is a very piecemeal
+> > approach.
+>=20
+> > This patch suggests a new feature flag (VHOST_USER_PROTOCOL_F_STANDALON=
+E)
+> > which the back-end can advertise which allows a probe message to be
+> > sent to get all the details QEMU needs to know in one message.
+>=20
+> The reason we do piecemeal is that these existing pieces can be reused
+> as others evolve or fall by wayside.
+>=20
+> For example, I can think of instances where you want to connect
+> specifically to e.g. networking backend, and specify it
+> on command line. Reasons could be many, e.g. for debugging,
+> or to prevent connecting to wrong device on wrong channel
+> (kind of like type safety).
+>=20
+> What is the reason to have 1 message? startup latency?
+> How about we allow pipelining several messages then?
+> Will be easier.
 
----
- hw/cxl/cxl-mailbox-utils.c         |  19 +++++++++++++++++++
- include/hw/cxl/cxl_device.h        |   2 ++
- 2 files changed, 21 insertions(+)
+This flag effectively says that the back-end is a full VIRTIO device
+with a Device Status Register, Configuration Space, Virtqueues, the
+device type, etc. This is different from previous vhost-user devices
+which sometimes just offloaded certain virtqueues without providing the
+full VIRTIO device (parts were emulated in the VMM).
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index ddee3f1718..cad0cd0adb 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1383,6 +1383,25 @@ static void cxl_copy_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmds)[
-     }
- }
- 
-+void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)[256], size_t payload_max)
-+{
-+    cci->payload_max = payload_max > cci->payload_max ? payload_max : cci->payload_max;
-+    for (int set = 0; set < 256; set++) {
-+        for (int cmd = 0; cmd < 256; cmd++) {
-+            if (cxl_cmd_set[set][cmd].handler) {
-+                const struct cxl_cmd *c = &cxl_cmd_set[set][cmd];
-+                cci->cxl_cmd_set[set][cmd] = *c;
-+                struct cel_log *log =
-+                    &cci->cel_log[cci->cel_size];
-+
-+                log->opcode = (set << 8) | cmd;
-+                log->effect = c->effect;
-+                cci->cel_size++;
-+            }
-+        }
-+    }
-+}
-+
- void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf, DeviceState *d, size_t payload_max)
- {
-     cxl_copy_cci_commands(cci, cxl_cmd_set_sw);
+So for example, a vhost-user-net device does not support the controlq.
+Alex's "standalone" device is a mode where the vhost-user protocol is
+used but the back-end must implement a full virtio-net device.
+Standalone devices are like vDPA device in this respect.
 
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index 9a3c8b2dfa..abc8405cc5 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -297,6 +297,8 @@ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max);
- void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf,
-                                   DeviceState *d, size_t payload_max);
- void cxl_init_cci(CXLCCI *cci, size_t payload_max);
-+void cxl_add_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmd_set)[256],
-+                          size_t payload_max);
- int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
-                             size_t len_in, uint8_t *pl_in,
-                             size_t *len_out, uint8_t *pl_out,
--- 
-2.39.1
+I think it is important to have a protocol feature bit that advertises
+that this is a standalone device, since the semantics are different for
+traditional vhost-user-net devices.
+
+However, I think having a single message is inflexible and duplicates
+existing vhost-user protocol messages like VHOST_USER_GET_QUEUE_NUM. I
+would prefer VHOST_USER_GET_DEVICE_ID and other messages.
+
+Stefan
+
+--y3Pyr4rpz3fA5NCs
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmS5ke0ACgkQnKSrs4Gr
+c8hj3wf+OxDIxO3gPzNYxNljVy5Q+tGdkNsGXwheOv7mDLm3fRfKUpJLlFbUz7uG
+lgx9e/arw5qy885ZkOA9ElHVuAEA283hk2WpnGGhW8oh3pSN9aZHx2p/cNRWBSx/
+XsjghkSF0GwDXOWfhACGwVySezmpIU7lmp52XfyPNKn06u6PA6psRBQsJpr1HuHx
+wt8Mck6AvhETrpBG9kzJgqFK3EDxdN4sBvbh3Yi1v+Z1AaQfWMNsmWgU1v/B+NYz
+0PDGcHAlrBvIBNWRQrE/PcUf7163Mn/5XLDKaavN2udfNi/BUhifTpso9q4Jbd+J
+Oezp7UpOgKRdFAcw/JOssBQJ+WfU9w==
+=XMod
+-----END PGP SIGNATURE-----
+
+--y3Pyr4rpz3fA5NCs--
 
 
