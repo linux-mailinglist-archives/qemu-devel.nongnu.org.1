@@ -2,81 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7348775B036
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:40:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F8675B03A
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:40:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMTrU-0005w2-OO; Thu, 20 Jul 2023 09:38:32 -0400
+	id 1qMTsk-00072y-Go; Thu, 20 Jul 2023 09:39:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMTrP-0005rv-DH
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:38:27 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMTrN-0007OY-OL
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:38:27 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-3fbea14706eso6623015e9.2
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 06:38:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689860302; x=1690465102;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FwJXtC43HTdKQOj1/DgtALKsBOiNOFU+5HbJKGdNxdU=;
- b=E0nzM0gFnO6RsJQn7AiWzT0g3ZXcluliRty1EU/Ad3d0gZlNwTDC7EWWS3XECPzxFj
- mZxcIfJhKlc5LNq4sPN4rQGEqwMudcvcsE0qJJsv+OO2zpBdHjuCUPMSYBrwpg5ee8op
- kKdR+MeV07g1v+u/yxAVmSeKRgUt65X+LFnD5u01nMoUaFeEaGVeY4WzGzeupFVY7GuK
- SkesWQpzXNi2frgR48CM2dZlRHLfduHje8As2e+59QflVWXugyb1oXEhSHJ1Jn3dFMq4
- eWvZivf9Z/LS8hRyf20tBxuVDaCRKwHipvdZU0j6cFxTm1T8WdKEkToGo7ZhFG2Rqfi1
- Y93A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689860302; x=1690465102;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FwJXtC43HTdKQOj1/DgtALKsBOiNOFU+5HbJKGdNxdU=;
- b=Mf4g7Ekg/GcvCQtA9ougt0wWg1x3jygeDJa4dQY8LX1AKCIz1jg8aN3c+uuDlY4GVQ
- h/w3dVdN1g6qVlAyK447w/OnxcF/EBde/hrSRbsfamm+xy8n9hXjEM53fcajbPghh0m2
- yhVKZRndS01B/ADF3zBD25tzLPgB8o6S62AyxFwTX3EZyteZa/A/leG/S+A4IeAlX6x4
- CFl05YQ+uD3CaXMqA9gSkI2465ct+wGSpK7XQ3VGGE+G8gSKOArQLaD+3tADKVTJX4fs
- Xk7q6kFyv4lNqkV4zY9ehJEF7h+57dShl82Uk2I1BhbCKtRbW99iwV12pvcmAg0EcKuN
- LdGg==
-X-Gm-Message-State: ABy/qLbOcVp8f4vMHLDmul9V2DMvJvKe9geGHbaSlB0xz7Zsq9M8lsLm
- +GM4LpPKZXQdS2BZEieMtU4p+w==
-X-Google-Smtp-Source: APBJJlGbP6iaIVFu4R0wCoX/OmTL6ArR9jsmMuySyvrrSgUHBib/HA6v0UGvAcVQIGFnfOhBVKS0Bg==
-X-Received: by 2002:a5d:618b:0:b0:314:182a:3d96 with SMTP id
- j11-20020a5d618b000000b00314182a3d96mr2040922wru.28.1689860302099; 
- Thu, 20 Jul 2023 06:38:22 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.214.178])
- by smtp.gmail.com with ESMTPSA id
- a18-20020a5d5712000000b0030c4d8930b1sm1370380wrv.91.2023.07.20.06.38.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Jul 2023 06:38:21 -0700 (PDT)
-Message-ID: <96da4078-d3c3-7c64-f681-7ebe1df50f85@linaro.org>
-Date: Thu, 20 Jul 2023 15:38:18 +0200
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qMTs7-0006hv-Ds
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:39:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qMTs1-0007Vv-L8
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:39:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689860343;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=SRuakU3+08O8Smp7TbuocnrPScngGYbY/YYX8l1EPtA=;
+ b=UBtXJ3HWBez1xecsXg4NKctalOj1AMcr8OTWu6tPSDD/EtkCS4dK+U1rGren3pIK7FBsLI
+ jXy11XpjndI5SDuuOrGNzLcleK2Yh1EP5wWkuQL4tNCQpKG+Aikm5+U2aK+gi97mHNGdKe
+ ycOfOtY5Yj2S1ak65kAatCbPJe0sogc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-495-LHgH9xoGO96-w32XqGbrhA-1; Thu, 20 Jul 2023 09:39:02 -0400
+X-MC-Unique: LHgH9xoGO96-w32XqGbrhA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F2BD7800CB2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 13:39:01 +0000 (UTC)
+Received: from dell-r430-03.lab.eng.brq2.redhat.com
+ (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 651FB4A9005;
+ Thu, 20 Jul 2023 13:39:01 +0000 (UTC)
+From: Igor Mammedov <imammedo@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com,
+	anisinha@redhat.com
+Subject: [PATCH for-8.1 0/6] x86: acpi pci fixes
+Date: Thu, 20 Jul 2023 15:38:52 +0200
+Message-Id: <20230720133858.1974024-1-imammedo@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH] tests/decode: Suppress "error: " string for
- expected-failure tests
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-References: <20230720131521.1325905-1-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230720131521.1325905-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,33 +78,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/7/23 15:15, Peter Maydell wrote:
-> The "expected failure" tests for decodetree result in the
-> error messages from decodetree ending up in logs and in
-> V=1 output:
-> 
->>>> MALLOC_PERTURB_=226 /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/pyvenv/bin/python3 /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/scripts/decodetree.py --output-null --test-for-error /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/../../tests/decode/err_argset1.decode
-> ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/../../tests/decode/err_argset1.decode:5: error: duplicate argument "a"
-> ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
->   1/44 qemu:decodetree / err_argset1                OK              0.05s
-> 
-> This then produces false positives when scanning the
-> logfiles for strings like "error: ".
-> 
-> For the expected-failure tests, make decodetree print
-> "detected:" instead of "error:".
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
-> My initial thought was "just get meson to suppress stderr for these
-> tests", but AFAICT meson has no way to do that, and we already have a
-> command line option to decodetree to request specific behaviour for
-> the tests that expect failure, so this seemed simplest.
-> 
->   scripts/decodetree.py | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
+Working on PXB acpi-index support takes unexpectedly long so
+pushing out self sufficient fixes from my PXB queue that do not
+have dependency on other patches.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+patch 2/6 is regression fix for making acpi-index work with Windows guests
+patch 5/6 is ACPI spec compliance fix
+
+tested with rhel9, WS2012R2, WS2022, WinXPsp3
+
+PS:
+ WinXP boots (but it doesn't expose device properties so I have no idea
+ how to check 'PCI Label Id' or if it's even supported there)
+ 
+Igor Mammedov (6):
+  tests: acpi: x86: whitelist expected blobs
+  x86: acpi: workaround Windows not handling name references in Package
+    properly
+  tests: acpi: x86: update expected blobs
+  tests: acpi: whitelist expected blobs
+  acpi: x86: remove _ADR on host bridges
+  tests: acpi: update expected blobs
+
+ hw/i386/acpi-build.c                          |  11 ++++++-----
+ tests/data/acpi/pc/DSDT                       | Bin 6488 -> 6830 bytes
+ tests/data/acpi/pc/DSDT.acpierst              | Bin 6411 -> 6741 bytes
+ tests/data/acpi/pc/DSDT.acpihmat              | Bin 7813 -> 8155 bytes
+ tests/data/acpi/pc/DSDT.bridge                | Bin 12615 -> 13701 bytes
+ tests/data/acpi/pc/DSDT.cphp                  | Bin 6952 -> 7294 bytes
+ tests/data/acpi/pc/DSDT.dimmpxm               | Bin 8142 -> 8484 bytes
+ tests/data/acpi/pc/DSDT.hpbridge              | Bin 6451 -> 6781 bytes
+ tests/data/acpi/pc/DSDT.hpbrroot              | Bin 3343 -> 3337 bytes
+ tests/data/acpi/pc/DSDT.ipmikcs               | Bin 6560 -> 6902 bytes
+ tests/data/acpi/pc/DSDT.memhp                 | Bin 7847 -> 8189 bytes
+ tests/data/acpi/pc/DSDT.nohpet                | Bin 6346 -> 6688 bytes
+ tests/data/acpi/pc/DSDT.numamem               | Bin 6494 -> 6836 bytes
+ tests/data/acpi/pc/DSDT.roothp                | Bin 9873 -> 10623 bytes
+ tests/data/acpi/q35/DSDT                      | Bin 8361 -> 8355 bytes
+ tests/data/acpi/q35/DSDT.acpierst             | Bin 8378 -> 8372 bytes
+ tests/data/acpi/q35/DSDT.acpihmat             | Bin 9686 -> 9680 bytes
+ tests/data/acpi/q35/DSDT.acpihmat-noinitiator | Bin 8640 -> 8634 bytes
+ tests/data/acpi/q35/DSDT.applesmc             | Bin 8407 -> 8401 bytes
+ tests/data/acpi/q35/DSDT.bridge               | Bin 11590 -> 11968 bytes
+ tests/data/acpi/q35/DSDT.core-count2          | Bin 32501 -> 32495 bytes
+ tests/data/acpi/q35/DSDT.cphp                 | Bin 8825 -> 8819 bytes
+ tests/data/acpi/q35/DSDT.cxl                  | Bin 9673 -> 9655 bytes
+ tests/data/acpi/q35/DSDT.dimmpxm              | Bin 10015 -> 10009 bytes
+ tests/data/acpi/q35/DSDT.ipmibt               | Bin 8436 -> 8430 bytes
+ tests/data/acpi/q35/DSDT.ipmismbus            | Bin 8449 -> 8443 bytes
+ tests/data/acpi/q35/DSDT.ivrs                 | Bin 8378 -> 8372 bytes
+ tests/data/acpi/q35/DSDT.memhp                | Bin 9720 -> 9714 bytes
+ tests/data/acpi/q35/DSDT.mmio64               | Bin 9491 -> 9485 bytes
+ tests/data/acpi/q35/DSDT.multi-bridge         | Bin 12770 -> 13208 bytes
+ tests/data/acpi/q35/DSDT.noacpihp             | Bin 8241 -> 8235 bytes
+ tests/data/acpi/q35/DSDT.nohpet               | Bin 8219 -> 8213 bytes
+ tests/data/acpi/q35/DSDT.numamem              | Bin 8367 -> 8361 bytes
+ tests/data/acpi/q35/DSDT.pvpanic-isa          | Bin 8462 -> 8456 bytes
+ tests/data/acpi/q35/DSDT.tis.tpm12            | Bin 8967 -> 8961 bytes
+ tests/data/acpi/q35/DSDT.tis.tpm2             | Bin 8993 -> 8987 bytes
+ tests/data/acpi/q35/DSDT.viot                 | Bin 9470 -> 9464 bytes
+ tests/data/acpi/q35/DSDT.xapic                | Bin 35724 -> 35718 bytes
+ 38 files changed, 6 insertions(+), 5 deletions(-)
+
+-- 
+2.39.3
 
 
