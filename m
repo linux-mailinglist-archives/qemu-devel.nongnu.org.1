@@ -2,61 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB8F475A78E
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 09:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58AE875A790
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 09:17:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMNtF-0000cL-71; Thu, 20 Jul 2023 03:15:58 -0400
+	id 1qMNtk-0000qD-6r; Thu, 20 Jul 2023 03:16:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1qMNsz-0000Yy-Cn
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 03:15:42 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1qMNsu-0007RL-8s
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 03:15:39 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxFvEW37hkoZEHAA--.19442S3;
- Thu, 20 Jul 2023 15:15:34 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bx3yMB37hkIlg1AA--.41433S10; 
- Thu, 20 Jul 2023 15:15:33 +0800 (CST)
-From: xianglai li <lixianglai@loongson.cn>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qMNtY-0000fS-EY
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 03:16:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qMNtW-0007Ug-Sp
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 03:16:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689837373;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=mLQPiQbIlSzmjlhzkrdPCwfrFqhIwkEwOHQrRGmB9oM=;
+ b=HVY1ViMPK1NNUZsjguJ/bmEHBgK2w6AC31sbXsR2f1ZTPJqIbBgfTWyGlZi7OwlQW/NfNZ
+ 0f2vYv9IL0tHIprhBcGS0RKz4JfnbJmBc5jQ4Pavp56P+aOSTQOBFWoDyRohO3v3TTsNn3
+ a4RVNd1iB41kSpYWhXvHVzT2DCykY8Q=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-103-pAMc26K5NUK6In1YQbwDww-1; Thu, 20 Jul 2023 03:16:11 -0400
+X-MC-Unique: pAMc26K5NUK6In1YQbwDww-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3E014936D2E
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 07:16:11 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.37])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1D24FF77AD
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 07:16:11 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 065E521E6608; Thu, 20 Jul 2023 09:16:10 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: [PATCH 8/8] Turn on CPU hot-(un)plug customization for loongarch
-Date: Thu, 20 Jul 2023 15:15:13 +0800
-Message-Id: <bd2121db4e4a54b408f2cfef82132fcccd972257.1689837093.git.lixianglai@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1689837093.git.lixianglai@loongson.cn>
-References: <cover.1689837093.git.lixianglai@loongson.cn>
+Cc: eblake@redhat.com
+Subject: [PATCH 0/6] qapi: Tidy up doc comments
+Date: Thu, 20 Jul 2023 09:16:03 +0200
+Message-ID: <20230720071610.1096458-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bx3yMB37hkIlg1AA--.41433S10
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,37 +76,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Turn on CPU hot-(un)plug custom for loongarch in the configuration file
+This series only affects generated documentation.  Generated code does
+not change.  Would be nice to get it into the release.
 
-Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
-Cc: Song Gao <gaosong@loongson.cn>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Eduardo Habkost <eduardo@habkost.net>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
-Cc: Yanan Wang <wangyanan55@huawei.com>
-Cc: "Daniel P. Berrangé" <berrange@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>
-Signed-off-by: xianglai li <lixianglai@loongson.cn>
----
- configs/devices/loongarch64-softmmu/default.mak | 1 +
- 1 file changed, 1 insertion(+)
+Markus Armbruster (6):
+  qapi/block-core: Tidy up BlockLatencyHistogramInfo documentation
+  qapi/block: Tidy up block-latency-histogram-set documentation
+  qapi/qdev: Tidy up device_add documentation
+  qapi/trace: Tidy up trace-event-get-state, -set-state documentation
+  qapi: Correct "eg." to "e.g." in documentation
+  qapi: Reformat recent doc comments to conform to current conventions
 
-diff --git a/configs/devices/loongarch64-softmmu/default.mak b/configs/devices/loongarch64-softmmu/default.mak
-index 928bc117ef..e596706fab 100644
---- a/configs/devices/loongarch64-softmmu/default.mak
-+++ b/configs/devices/loongarch64-softmmu/default.mak
-@@ -1,3 +1,4 @@
- # Default configuration for loongarch64-softmmu
- 
- CONFIG_LOONGARCH_VIRT=y
-+CONFIG_ACPI_CPU_HOTPLUG=y
+ qapi/block-core.json     | 85 +++++++++++++++++++---------------------
+ qapi/block.json          | 12 +++---
+ qapi/char.json           |  2 +-
+ qapi/cxl.json            |  4 +-
+ qapi/machine-target.json |  2 +-
+ qapi/migration.json      | 10 ++---
+ qapi/misc.json           |  2 +-
+ qapi/net.json            |  1 -
+ qapi/qdev.json           |  6 +--
+ qapi/qom.json            |  9 +++--
+ qapi/trace.json          |  9 ++---
+ qapi/ui.json             |  2 +-
+ 12 files changed, 68 insertions(+), 76 deletions(-)
+
 -- 
-2.39.1
+2.41.0
 
 
