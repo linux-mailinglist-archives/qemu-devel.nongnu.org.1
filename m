@@ -2,73 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC1075B4EA
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 18:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0211075B517
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 18:58:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMWmR-0003YJ-EJ; Thu, 20 Jul 2023 12:45:31 -0400
+	id 1qMWwx-0006uN-NQ; Thu, 20 Jul 2023 12:56:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMWmO-0003Xk-60
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:45:28 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ id 1qMWwu-0006u3-Rh
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:56:20 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMWmL-0001oW-ML
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:45:27 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-98377c5d53eso170106566b.0
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 09:45:25 -0700 (PDT)
+ id 1qMWwt-0004at-4k
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:56:20 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-5216569f9e3so1456807a12.0
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 09:56:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689871524; x=1690476324;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nYiwNN2mTchLvDbaV5uU+SGhDyT4rTj5DSA5zxilECw=;
- b=uCKGtPBTvKtRpPX5YmUNZlblA5tpJl8PlgIEbFPiiSE2lHfTJR4oQNXz5WZ+UqtzH4
- 9xn0230QrF9NcgFLT24QtWwxCUBy4Ako3g2mIxq6Bikrk3GSfaAsQPiCM+Q8RrXKbEQ1
- 4FY7A4+cepPCixl1GT0LO4J5a5CzExegFz7CjbtSccfYcZXaEoLvcvYRi40bbNSGL5Ll
- d1OCFW5MNRSnWjk/7m/1WQCWijocp+YG4jSH13nNDlRRg/aS5jGJPjKnx4SDjRQAZuW1
- C4Ye8e0BpoAVgeXm0YU4trCfucsJt/hKn2R5MLJz0BmrtyY8FeVqYTl9/4N7DBOGHFdf
- B+Eg==
+ d=linaro.org; s=google; t=1689872177; x=1690476977;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=TrIYzqALrOSGanJz4cMckuEd1b5FwV1mYa1dVb0hydg=;
+ b=aYftpLTk1LafghUNVzV+TgYQR31Amuu33FlhWHhWcZqxBDRyyx+C055SXz874/vCLj
+ hWVEbT/E7RHhkWuV/FpgkvGcmAtyQLtvMXX6dcmvlq2XmFle342y1moLe2bsdS9uAh1T
+ 9BZNmSyVYIlMrMwr24S6sltx9nQfjxnMBGcyh1Ocyv4q6k5KbXfyvr/ePVAbmqyOM41g
+ gWe4BTl1hYRp3yIpPMhlBO/NojSTThlaEwte3LoZKBpsP6caSEpn/KP/gkAloTgqq0L0
+ hYD3GTACB2H+Btzg4XvlDpAV6eJnB3MqWLZP0NR5Bw+A0brzyTimUKTredP4YYkll6hX
+ rbZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689871524; x=1690476324;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nYiwNN2mTchLvDbaV5uU+SGhDyT4rTj5DSA5zxilECw=;
- b=Gn3raZ8zfl4mjV29dzsH8CsjnOFfhBo2ifM1WOZBrvHHRw/lAQAeRvhILYtfmhlFih
- wzO5dNRBA3VniuryrKqDQDuDUXy3W83ewwFGCMBNvAqyroRy3yqSoh+PzxdMSSJEEu8d
- ZlG7K9TRZ10Eqsu/Qp/dkRSbu1B0l13Kn0rqiqFwE2WoVDtasRM6pN7AR7OIjdMxsR2F
- RwJDOooQL95YWx0AXEvz8MRZirpa1CPmJ99MiZlqXnsYO8bdroUvxcVl5CfvZ7+jKlk5
- LKIKzeFkeHtTg5DQynsiAtR7/76TM910m5CfErrplnwnngUF49W3672+N/hThGdMdnix
- 4SLA==
-X-Gm-Message-State: ABy/qLYAqrUSs/nFTUu2rZgai1bFYCLw3ioqCr05VEXtAwDVUebSPVzL
- H8is3u6Niqmxe4yYvCSTZ1qRZWSkkf6YnOFmOnx5MA==
-X-Google-Smtp-Source: APBJJlHlAgbBQ9sc282o8VspJZN5K4NCPz2kSrfNJ7BNlylTCo+ny9JZPbpFTOTqvRyWP8g7RWVplXNwyW651DZV708=
-X-Received: by 2002:a17:907:6da7:b0:988:d6ca:ea72 with SMTP id
- sb39-20020a1709076da700b00988d6caea72mr6521903ejc.71.1689871523913; Thu, 20
- Jul 2023 09:45:23 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689872177; x=1690476977;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TrIYzqALrOSGanJz4cMckuEd1b5FwV1mYa1dVb0hydg=;
+ b=NctFd83vqmman0Vne1Oce62f7TfHBpYQIxHlaV1Vt3CwaMbCdPThZzbrc4SpIXTZs7
+ WjTemKlm4cDFdJnrkJWZxMS2Ifvid3Eqc9YMXFpE5S8IuWnYTk3Mv28NTT0MqSk50hJX
+ xTJ3kYV46dSVdQI7nZKN8qqw7fa5kVRES8Cs4o9sllKMYdA+D/yCDviScxPAmhy6jbSv
+ TYClXGLT/l4sNLc23fg2MSZ7y58FFPa6FCcgD0N+vsdG5z5Ft96NkZp7+IbsN0bdCyNV
+ ZtiXShpddxbUAdkvsahTavef4jdhSPDmqKPRhaE1Nn9N0of832f/+WrM2G56fe0CvxuN
+ TVLw==
+X-Gm-Message-State: ABy/qLbMDfKOtOyNR7LE05ktp2rNCQocFvmjV6Cs4ubBQzHArbmTGjdl
+ fhqO3yUppwYqY8E2C9Ys5zI7bczS0S2xkQEm4fgK1A==
+X-Google-Smtp-Source: APBJJlH3BTKSLNRn8PRzSCVxqAs/lkWiQl1RATy5OTITXRJ9SztPx/kft3bFB1txmNbe/dO3jowf4B5BOqA0O51ssXY=
+X-Received: by 2002:aa7:cd63:0:b0:51d:979d:623a with SMTP id
+ ca3-20020aa7cd63000000b0051d979d623amr5428827edb.28.1689872177419; Thu, 20
+ Jul 2023 09:56:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230720155902.1590362-1-peter.maydell@linaro.org>
- <20230720155902.1590362-4-peter.maydell@linaro.org>
- <e15250a2-3d21-d70b-980f-38d8165f0e30@kaod.org>
-In-Reply-To: <e15250a2-3d21-d70b-980f-38d8165f0e30@kaod.org>
+References: <20230719153018.1456180-2-jean-philippe@linaro.org>
+ <20230719153018.1456180-5-jean-philippe@linaro.org>
+ <CAFEAcA8e_-r6b4iaeDUv64iydFe7iAb4Y0eObyO4tUYizcYLVA@mail.gmail.com>
+In-Reply-To: <CAFEAcA8e_-r6b4iaeDUv64iydFe7iAb4Y0eObyO4tUYizcYLVA@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 20 Jul 2023 17:45:13 +0100
-Message-ID: <CAFEAcA9SmC+oN3wfoEfO-j6pms_0k-dmuuYCdLwVsHcQk_=hDA@mail.gmail.com>
-Subject: Re: [PATCH for-8.2 3/4] hw/rtc/aspeed_rtc: Use 64-bit offset for
- holding time_t difference
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Cc: qemu-devel@nongnu.org, Andrew Jeffery <andrew@aj.id.au>,
- Joel Stanley <joel@jms.id.au>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>
+Date: Thu, 20 Jul 2023 17:56:06 +0100
+Message-ID: <CAFEAcA-ja9Wfwr2w+iue976FbQ-FTF3yL9WS7t9zDeo-FEo0iw@mail.gmail.com>
+Subject: Re: [PATCH 3/5] target/arm: Skip granule protection checks for AT
+ instructions
+To: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,39 +87,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 20 Jul 2023 at 17:42, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
+On Thu, 20 Jul 2023 at 17:39, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
-> On 7/20/23 17:59, Peter Maydell wrote:
-> > In the aspeed_rtc device we store a difference between two time_t
-> > values in an 'int'. This is not really correct when time_t could
-> > be 64 bits. Enlarge the field to 'int64_t'.
+> On Wed, 19 Jul 2023 at 16:56, Jean-Philippe Brucker
+> <jean-philippe@linaro.org> wrote:
 > >
-> > This is a migration compatibility break for the aspeed boards.
-> > While we are changing the vmstate, remove the accidental
-> > duplicate of the offset field.
->
-> Ah yes. Thanks.
->
+> > GPC checks are not performed on the output address for AT instructions,
+> > as stated by ARM DDI 0487J in D8.12.2:
 > >
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
->
->
-> Reviewed-by: C=C3=A9dric Le Goater <clg@kaod.org>
->
->
+> >   When populating PAR_EL1 with the result of an address translation
+> >   instruction, granule protection checks are not performed on the final
+> >   output address of a successful translation.
+> >
+> > Rename get_phys_addr_with_secure(), since it's only used to handle AT
+> > instructions.
+> >
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 > > ---
-> > I took "bump the migration version" as the simplest approach
-> > here, because I don't think we care about migration compat
-> > in this case. If we do I can write the alternate version of
-> > the patch...
+> > This incidentally fixes a problem with AT S1E1 instructions which can
+> > output an IPA and should definitely not cause a GPC.
+> > ---
+> >  target/arm/internals.h | 25 ++++++++++++++-----------
+> >  target/arm/helper.c    |  8 ++++++--
+> >  target/arm/ptw.c       | 11 ++++++-----
+> >  3 files changed, 26 insertions(+), 18 deletions(-)
+> >
+> > diff --git a/target/arm/internals.h b/target/arm/internals.h
+> > index 0f01bc32a8..fc90c364f7 100644
+> > --- a/target/arm/internals.h
+> > +++ b/target/arm/internals.h
+> > @@ -1190,12 +1190,11 @@ typedef struct GetPhysAddrResult {
+> >  } GetPhysAddrResult;
+> >
+> >  /**
+> > - * get_phys_addr_with_secure: get the physical address for a virtual address
+> > + * get_phys_addr: get the physical address for a virtual address
+> >   * @env: CPUARMState
+> >   * @address: virtual address to get physical address for
+> >   * @access_type: 0 for read, 1 for write, 2 for execute
+> >   * @mmu_idx: MMU index indicating required translation regime
+> > - * @is_secure: security state for the access
+> >   * @result: set on translation success.
+> >   * @fi: set to fault info if the translation fails
+> >   *
+> > @@ -1212,26 +1211,30 @@ typedef struct GetPhysAddrResult {
+> >   *  * for PSMAv5 based systems we don't bother to return a full FSR format
+> >   *    value.
+> >   */
+> > -bool get_phys_addr_with_secure(CPUARMState *env, target_ulong address,
+> > -                               MMUAccessType access_type,
+> > -                               ARMMMUIdx mmu_idx, bool is_secure,
+> > -                               GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
+> > +bool get_phys_addr(CPUARMState *env, target_ulong address,
+> > +                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
+> > +                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
+> >      __attribute__((nonnull));
 >
 >
-> I don't think we care much about migration compat and fyi, migration
-> of aspeed machines broke a while ago. It still migrates if done before
-> Linux is loaded.
+> What is going on in this bit of the patch ? We already
+> have a prototype for get_phys_addr() with a doc comment.
+> Is this git's diff-output producing something silly
+> for a change that is not logically touching get_phys_addr()'s
+> prototype and comment at all?
 
-Is that the "migration of AArch32 Secure state doesn't work
-properly" bug, or am I misremembering?
+Looking more closely, that does seem to be what's happened, so
 
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+thanks
 -- PMM
 
