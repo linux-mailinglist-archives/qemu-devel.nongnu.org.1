@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B7175AE73
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 14:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB45575AED0
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 14:54:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMSnh-00005n-3D; Thu, 20 Jul 2023 08:30:33 -0400
+	id 1qMT9w-0003n8-KY; Thu, 20 Jul 2023 08:53:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qMSnf-00005W-2V
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:30:31 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1qMT9u-0003mm-W4
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:53:31 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qMSnd-00048a-9l
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:30:30 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 054F822C38;
- Thu, 20 Jul 2023 12:30:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1689856226; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PvfhhWzH+nzN+rg6WjWnXAqD36xvocKzShf6FP5vJxc=;
- b=nV6q8D5eHgRSeK3/t2ZkFKzNlsryBT9cm8SKNzhQDDR41j7PoOmmlnNUItGtI6XlyG7IIn
- tjsvU4WJgysBf7I0+H7cSEb0W8dWCfS/dYm3EOQTpNUImR82C3VYaBt54YI+OE1ceMYJbO
- SuQeZCuoMZr4ltM6R8Rll9G+dluaFgc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1689856226;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PvfhhWzH+nzN+rg6WjWnXAqD36xvocKzShf6FP5vJxc=;
- b=U9A3iWpoQ1iSCO+gjt5W5ceOhSoXkMJhur1rGnypV62IPdH3M+E0/SY9PETfyVVdBmyDkG
- QDxJ4cDBHUyD2fBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8A4D1138EC;
- Thu, 20 Jul 2023 12:30:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id Wpz7FeEouWTkLQAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 20 Jul 2023 12:30:25 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Milan Zamazal <mzamazal@redhat.com>, qemu-devel@nongnu.org
-Cc: Milan Zamazal <mzamazal@redhat.com>, Thomas Huth <thuth@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Laurent Vivier <lvivier@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-Subject: Re: [PATCH] hw/virtio: Add a protection against duplicate
- vu_scmi_stop calls
-In-Reply-To: <20230720101037.2161450-1-mzamazal@redhat.com>
-References: <20230720101037.2161450-1-mzamazal@redhat.com>
-Date: Thu, 20 Jul 2023 09:30:23 -0300
-Message-ID: <87edl2sr34.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1qMT9t-0002j0-78
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 08:53:30 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbea14700bso5837315e9.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 05:53:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689857607; x=1690462407;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=9bybHgMXv13RWEb0qTGEFUV7z6cklckcq2Ahk9N/jGM=;
+ b=bjfOidPbRP9NWOX5ykNT2gD8DyvVPxDd6xOrp+SCINyHvJMRU3dUby76qyzVLbj5ba
+ AjDn10ynnD7gzPr0rmuFHq+46YDg4vx4h/dDi1biCHZ93De5gwXIkP4WZaVjKNY07K5F
+ 5Byz4tXPagdEF98X6C0kebg9rrzBb6Dy9lsf9JxpTWtiTBbs85xKKCmdGZ1Rpurusl0O
+ V/oOM5ewPs/hXgWXkjq7DMyVreWIe3nS0KqDPlCm8KnpVjHWio5O7YNxUcvRk37j/dgp
+ u12SipBquK2lpoIdxxWjCDj2yy3U4+VsgYDbD2r3RgdbwYKOfiyCzH/iTkspH03KhN06
+ TQ0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689857607; x=1690462407;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=9bybHgMXv13RWEb0qTGEFUV7z6cklckcq2Ahk9N/jGM=;
+ b=Yl8gLniBiWty1yWQQ64QT5bFcYn8hnmdVZ7bHgkJ9o4IAB6UFGH9zhq8F7BkGRXb9R
+ GoYGHduPYWmHzr167y71cJNQXYAbLzM32NGgikaKRZLE1sr5ZUKz6QDmNCq16TyqqHfe
+ z78CqdzWf4YAQA6pQ7Pqs9SeBucoX2QudtoMNEXKSBfNvbldDcNYUWpVVDEqSNhK7RAz
+ B+A5L0OvHK7DHLbwjWs+hy6BqB4f/QDWtcuYEmiyMNg/x/bCi27lmVZPmIwmB5PkPpKk
+ NyKHUAPMuCo6M2jahe/e+ecZ+N6yav+RSTV3pZ32jOyz0Pd1p/oG3aJEvKlRTY/rf1kz
+ YEnw==
+X-Gm-Message-State: ABy/qLZmHxS/izhB828DIS2ZBdYqQ1WQtOebXCJQFASqaOjbgSngCoLm
+ Re3zv661cbutQQlbm9gMxc1bww==
+X-Google-Smtp-Source: APBJJlHa+X86YwtwblzY3T94YA6d5QHL9Ml9+qxM5S5loYlPhyfvapvocfjFZjHnM9707PLK8zhQBA==
+X-Received: by 2002:a05:600c:ad9:b0:3fc:1bd:95a6 with SMTP id
+ c25-20020a05600c0ad900b003fc01bd95a6mr1676956wmr.31.1689857607287; 
+ Thu, 20 Jul 2023 05:53:27 -0700 (PDT)
+Received: from myrica ([2.219.138.198]) by smtp.gmail.com with ESMTPSA id
+ m14-20020a7bcb8e000000b003fbc9371193sm1147093wmi.13.2023.07.20.05.53.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Jul 2023 05:53:27 -0700 (PDT)
+Date: Thu, 20 Jul 2023 13:53:30 +0100
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: Re: [PATCH 0/5] target/arm: Fixes for RME
+Message-ID: <20230720125330.GB59402@myrica>
+References: <20230719153018.1456180-2-jean-philippe@linaro.org>
+ <CAFEAcA9sfezZEHVXFT1bTA=1oiEy_ayc0xePJHPKVf87P3E-Mg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA9sfezZEHVXFT1bTA=1oiEy_ayc0xePJHPKVf87P3E-Mg@mail.gmail.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,41 +91,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Milan Zamazal <mzamazal@redhat.com> writes:
+On Thu, Jul 20, 2023 at 01:05:58PM +0100, Peter Maydell wrote:
+> On Wed, 19 Jul 2023 at 16:56, Jean-Philippe Brucker
+> <jean-philippe@linaro.org> wrote:
+> >
+> > With these patches I'm able to boot a Realm guest under
+> > "-cpu max,x-rme=on". They are based on Peter's series which fixes
+> > handling of NSTable:
+> > https://lore.kernel.org/qemu-devel/20230714154648.327466-1-peter.maydell@linaro.org/
+> 
+> Thanks for testing this -- this is a lot closer to
+> working out of the box than I thought we might be :-)
+> I'm tempted to try to put these fixes (and my ptw patchset)
+> into 8.1, but OTOH I suspect work on Realm guests will probably
+> still want to use a bleeding-edge QEMU for other bugs we're
+> going to discover over the next few months, so IDK. We'll
+> see how code review goes on those, I guess.
+> 
+> > Running a Realm guest requires components at EL3 and R-EL2. Some rough
+> > support for TF-A and RMM is available here:
+> > https://jpbrucker.net/git/tf-a/log/?h=qemu-rme
+> > https://jpbrucker.net/git/rmm/log/?h=qemu-rme
+> > I'll clean this up before sending it out.
+> >
+> > I also need to manually disable FEAT_SME in QEMU in order to boot this,
+> 
+> Do you mean you needed to do something more invasive than
+> '-cpu max,x-rme=on,sme=off' ?
 
-> The QEMU CI fails in virtio-scmi test occasionally.  As reported by
-> Thomas Huth, this happens most likely when the system is loaded and it
-> fails with the following error:
->
->   qemu-system-aarch64: ../../devel/qemu/hw/pci/msix.c:659:
->   msix_unset_vector_notifiers: Assertion `dev->msix_vector_use_notifier && dev->msix_vector_release_notifier' failed.
->   ../../devel/qemu/tests/qtest/libqtest.c:200: kill_qemu() detected QEMU death from signal 6 (Aborted) (core dumped)
->
-> As discovered by Fabiano Rosas, the cause is a duplicate invocation of
-> msix_unset_vector_notifiers via duplicate vu_scmi_stop calls:
->
->   msix_unset_vector_notifiers
->   virtio_pci_set_guest_notifiers
->   vu_scmi_stop
->   vu_scmi_disconnect
->   ...
->   qemu_chr_write_buffer
->
->   msix_unset_vector_notifiers
->   virtio_pci_set_guest_notifiers
->   vu_scmi_stop
->   vu_scmi_set_status
->   ...
->   qemu_cleanup
->
-> While vu_scmi_stop calls are protected by vhost_dev_is_started()
-> check, it's apparently not enough.  vhost-user-blk and vhost-user-gpio
-> use an extra protection, see f5b22d06fb (vhost: recheck dev state in
-> the vhost_migration_log routine) for the motivation.  Let's use the
-> same in vhost-user-scmi, which fixes the failure above.
->
-> Fixes: a5dab090e142 ("hw/virtio: Add boilerplate for vhost-user-scmi device")
-> Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
+Ah no, I hadn't noticed there was a sme=off switch, that's much better
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Thanks,
+Jean
+
+> 
+> > otherwise the Linux host fails to boot because hyp-stub accesses to SME
+> > regs are trapped to EL3, which doesn't support RME+SME at the moment.
+> > The right fix is probably in TF-A but I haven't investigated yet.
+> 
+> thanks
+> -- PMM
 
