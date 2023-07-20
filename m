@@ -2,69 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8B275AF26
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1B575AF58
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:11:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMTLH-0005o6-0v; Thu, 20 Jul 2023 09:05:15 -0400
+	id 1qMTQP-0001vd-38; Thu, 20 Jul 2023 09:10:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qMTL1-0005lc-24
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:04:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qMTKx-00064f-It
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:04:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689858294;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HGDdiyZFTeDU5P1FXRF8bWWCTt195umPtU7bV4rV+dA=;
- b=erEIR49AqvT8zgaOWVqnfaOinbgsbyaLB8C5n6mI/jkj/h36s6mDQLrsARqphlMpXZrV1Y
- WyuoH5+2GnnXgXYhquDybzhHyEGrZKVKDljBWVVT1VoiBEBMezDKk4YO5oktNBQS0rDVqL
- t8jyDPi0oCTJL69HPnR/X3ngdwyqCUA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-653-NDOAPCJ_OKm9ADU4-QoGRg-1; Thu, 20 Jul 2023 09:04:51 -0400
-X-MC-Unique: NDOAPCJ_OKm9ADU4-QoGRg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C2624936D2D;
- Thu, 20 Jul 2023 13:04:50 +0000 (UTC)
-Received: from scv.redhat.com (unknown [10.22.18.126])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6E7391121314;
- Thu, 20 Jul 2023 13:04:50 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: John Snow <jsnow@redhat.com>, qemu-block@nongnu.org,
- Beraldo Leal <bleal@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Daniel Berrange <berrange@redhat.com>, Cleber Rosa <crosa@redhat.com>
-Subject: [PATCH 4/4] python/machine: remove unused console socket
- configuration arguments
-Date: Thu, 20 Jul 2023 09:04:48 -0400
-Message-ID: <20230720130448.921356-5-jsnow@redhat.com>
-In-Reply-To: <20230720130448.921356-1-jsnow@redhat.com>
-References: <20230720130448.921356-1-jsnow@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMTQN-0001vQ-D8
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:10:31 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMTQL-0007Us-Nl
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:10:31 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5216f713f8bso993924a12.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 06:10:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689858627; x=1690463427;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=tce7LxmT+9iDKMC66LdCB7K+6vfSGeSlWQ3D4NXM/Js=;
+ b=v9E44yYuNtV8SQO/zfdVfgmSsCRIZsg9DUNb8xx7wv3Sq6Y0Q51PdAXXjAtCyu1d+l
+ GRlzgpQIzwHF/zGIGLNT8Vl5dWejt11L8eFqsHLkLnPCXW/jvho5cR7GYG8+a4kRRbmK
+ 4Iz4iaRfy5ICgasnMsBG5F3HZDJoCpwB3+CJoDS+2gcp79LmRwbtGYQGyUTPPwdSRKZr
+ ommfXWt5ns0jz3rIaXEZ0pJJytzgZoGdg1Q6Ssw+Edh0nGHiN75CE1pK1gHDSyGK+olk
+ V1Zcf08wduLKkYIrsxmgVtZW3SHdBBE9+0qzHO94bxMosYOk9LluwRXJrOVz/rs1MRrG
+ Z2Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689858627; x=1690463427;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tce7LxmT+9iDKMC66LdCB7K+6vfSGeSlWQ3D4NXM/Js=;
+ b=IrpQgvftZAX84WfrQemu6/Z6tjiKM1IPAJflI8sOQzGDOol7N23VE+C5AuCsOJPXKa
+ gvRwAeVSOD19pzBjZZgt3mhNI2QluC8ieFCqPRpttjneOCAnaWpWFkEVfqqixA5Nx1Za
+ CxAEEXktszDH7myKoqUa4A4YhMnZOjVWz6TbHzhQ3AEHG9Qb2kvG3RGRTML0SpzzDwHo
+ 6Qn3LmSHOqufFuPMA1eJm5RwtMn6HoXJjGR+NrHCoo49J6b9fbq+QtBdCPuzqkFhsgKv
+ t6nPs3E7HtWRUkX22yGUIXQzoLl11ugynFe0xpSiJwKie4ugKs8icmZhHa1D8kMFDp3m
+ mWWg==
+X-Gm-Message-State: ABy/qLanmP/vwou0Ivh8q2CN89kj7pPIYXb9694V46Y4tbm0nXF+LSYO
+ FQZNv1vWLFdTJaPu42tMzbTK2faUnTiFWluhW1MybA==
+X-Google-Smtp-Source: APBJJlGG5B4NicIZnu0DIXLqhaaHGMjLXkjOxrln0OM4AsJKp8/g6NaV4iMpTxNFGL6kF9JskIOhLA6wKcybfOJnyn8=
+X-Received: by 2002:a05:6402:1a41:b0:51d:d27a:6d3 with SMTP id
+ bf1-20020a0564021a4100b0051dd27a06d3mr5045714edb.11.1689858627547; Thu, 20
+ Jul 2023 06:10:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230626111445.163573-1-pbonzini@redhat.com>
+ <20230626111445.163573-4-pbonzini@redhat.com>
+In-Reply-To: <20230626111445.163573-4-pbonzini@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 20 Jul 2023 14:10:16 +0100
+Message-ID: <CAFEAcA9jbgVHnQdJyKUdbRJmtRwnKP+=gMUCozy8-ExmZL6gPg@mail.gmail.com>
+Subject: Re: [PULL 03/18] numa: Validate cluster and NUMA node boundary if
+ required
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Gavin Shan <gshan@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Igor Mammedov <imammedo@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,121 +88,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-By using a socketpair for the console, we don't need the sock_dir
-argument for the base class anymore, remove it.
+On Mon, 26 Jun 2023 at 12:15, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> From: Gavin Shan <gshan@redhat.com>
+>
+> For some architectures like ARM64, multiple CPUs in one cluster can be
+> associated with different NUMA nodes, which is irregular configuration
+> because we shouldn't have this in baremetal environment. The irregular
+> configuration causes Linux guest to misbehave, as the following warning
+> messages indicate.
+>
+>   -smp 6,maxcpus=6,sockets=2,clusters=1,cores=3,threads=1 \
+>   -numa node,nodeid=0,cpus=0-1,memdev=ram0                \
+>   -numa node,nodeid=1,cpus=2-3,memdev=ram1                \
+>   -numa node,nodeid=2,cpus=4-5,memdev=ram2                \
 
-The qtest subclass still uses the argument for the qtest socket for now.
+Hi. This new warning shows up a lot in "make check" output:
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- python/qemu/machine/machine.py             | 18 ------------------
- python/qemu/machine/qtest.py               |  6 +++---
- tests/qemu-iotests/tests/copy-before-write |  3 +--
- 3 files changed, 4 insertions(+), 23 deletions(-)
+$ grep -c 'can cause OSes' /tmp/parn3ofA.par
+44
 
-diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
-index ef9b2dc02e..350aa8bb26 100644
---- a/python/qemu/machine/machine.py
-+++ b/python/qemu/machine/machine.py
-@@ -127,7 +127,6 @@ def __init__(self,
-                  name: Optional[str] = None,
-                  base_temp_dir: str = "/var/tmp",
-                  monitor_address: Optional[SocketAddrT] = None,
--                 sock_dir: Optional[str] = None,
-                  drain_console: bool = False,
-                  console_log: Optional[str] = None,
-                  log_dir: Optional[str] = None,
-@@ -141,7 +140,6 @@ def __init__(self,
-         @param name: prefix for socket and log file names (default: qemu-PID)
-         @param base_temp_dir: default location where temp files are created
-         @param monitor_address: address for QMP monitor
--        @param sock_dir: where to create socket (defaults to base_temp_dir)
-         @param drain_console: (optional) True to drain console socket to buffer
-         @param console_log: (optional) path to console log file
-         @param log_dir: where to create and keep log files
-@@ -163,7 +161,6 @@ def __init__(self,
-             Tuple[socket.socket, socket.socket]] = None
-         self._temp_dir: Optional[str] = None
-         self._base_temp_dir = base_temp_dir
--        self._sock_dir = sock_dir
-         self._log_dir = log_dir
- 
-         self._monitor_address = monitor_address
-@@ -189,9 +186,6 @@ def __init__(self,
-         self._console_index = 0
-         self._console_set = False
-         self._console_device_type: Optional[str] = None
--        self._console_address = os.path.join(
--            self.sock_dir, f"{self._name}.con"
--        )
-         self._console_socket: Optional[socket.socket] = None
-         self._remove_files: List[str] = []
-         self._user_killed = False
-@@ -334,9 +328,6 @@ def args(self) -> List[str]:
-         return self._args
- 
-     def _pre_launch(self) -> None:
--        if self._console_set:
--            self._remove_files.append(self._console_address)
--
-         if self._qmp_set:
-             if self._monitor_address is None:
-                 self._sock_pair = socket.socketpair()
-@@ -900,15 +891,6 @@ def temp_dir(self) -> str:
-                                               dir=self._base_temp_dir)
-         return self._temp_dir
- 
--    @property
--    def sock_dir(self) -> str:
--        """
--        Returns the directory used for sockfiles by this machine.
--        """
--        if self._sock_dir:
--            return self._sock_dir
--        return self.temp_dir
--
-     @property
-     def log_dir(self) -> str:
-         """
-diff --git a/python/qemu/machine/qtest.py b/python/qemu/machine/qtest.py
-index 1c46138bd0..22f8045ef6 100644
---- a/python/qemu/machine/qtest.py
-+++ b/python/qemu/machine/qtest.py
-@@ -115,8 +115,8 @@ def __init__(self,
-                  wrapper: Sequence[str] = (),
-                  name: Optional[str] = None,
-                  base_temp_dir: str = "/var/tmp",
--                 sock_dir: Optional[str] = None,
--                 qmp_timer: Optional[float] = None):
-+                 qmp_timer: Optional[float] = None,
-+                 sock_dir: Optional[str] = None):
-         # pylint: disable=too-many-arguments
- 
-         if name is None:
-@@ -125,7 +125,7 @@ def __init__(self,
-             sock_dir = base_temp_dir
-         super().__init__(binary, args, wrapper=wrapper, name=name,
-                          base_temp_dir=base_temp_dir,
--                         sock_dir=sock_dir, qmp_timer=qmp_timer)
-+                         qmp_timer=qmp_timer)
-         self._qtest: Optional[QEMUQtestProtocol] = None
-         self._qtest_path = os.path.join(sock_dir, name + "-qtest.sock")
- 
-diff --git a/tests/qemu-iotests/tests/copy-before-write b/tests/qemu-iotests/tests/copy-before-write
-index 2ffe092b31..d3987db942 100755
---- a/tests/qemu-iotests/tests/copy-before-write
-+++ b/tests/qemu-iotests/tests/copy-before-write
-@@ -44,8 +44,7 @@ class TestCbwError(iotests.QMPTestCase):
- 
-         opts = ['-nodefaults', '-display', 'none', '-machine', 'none']
-         self.vm = QEMUMachine(iotests.qemu_prog, opts,
--                              base_temp_dir=iotests.test_dir,
--                              sock_dir=iotests.sock_dir)
-+                              base_temp_dir=iotests.test_dir)
-         self.vm.launch()
- 
-     def do_cbw_error(self, on_cbw_error):
--- 
-2.41.0
+Looks like this is all in the qtest-aarch64/numa-test test.
 
+Please can you investigate and either:
+ (1) fix the test not to do the bad thing that's causing the warning
+ (2) change the warning so it doesn't show up in stderr when
+     running a correct and passing test
+?
+
+thanks
+-- PMM
 
