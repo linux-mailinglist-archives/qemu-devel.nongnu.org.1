@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402E675B049
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D97475B054
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:46:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMTuz-0005AJ-1Y; Thu, 20 Jul 2023 09:42:09 -0400
+	id 1qMTyh-0006QJ-EZ; Thu, 20 Jul 2023 09:46:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMTux-0005AB-PP
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:42:07 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMTyf-0006Oj-7e
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:45:57 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMTuw-0008PM-0J
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:42:07 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-314313f127fso664229f8f.1
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 06:42:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMTyd-0001KX-HO
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:45:57 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-4fb77f21c63so1257364e87.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 06:45:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689860524; x=1690465324;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5AP2a3aQD1ezBtQvvxdghTzMceec+8NRpztRBjesZ4c=;
- b=iiOd3PSTPL6KZWC7qNvXEnx/IUzlejhQd1JrZLhylfJfSztA3+PU2xAyOjCnRZ6Bgq
- eHEUxyiKFAjYDm6hpKf4AfzxBTY3mdyIp35pejzG11K/XuGwxpBcRJM5WsX0OXWUXb6E
- IzcENcnSUAzfMywkMzjmsay1qte0vXMEtVFBA5Vfi6mnYxAl5AV8zXmsNRYlM1EOOCOL
- dL3rwh7T+BDxmUqe2niX4APGQvkVRDL2irAYiXkrM6CukBxUqTxjDse4jl9nBKAXkzrd
- SDYuby+K3w65Xy6vOV6OA5Iu2bMOJRz90SKCYoXC6zRkrrRtZrrI8S33Y4C6HFm5okRd
- pfSA==
+ d=linaro.org; s=google; t=1689860753; x=1690465553;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=8OP3T8Sfy8ldl+StOm3bD/k6Sme2E/M3Uve6FFMgIMo=;
+ b=nFhxtERzL4BCPLTNqdb4xn5Pdpt6IgDktU0QT4TNBYTGyIuqymChsPY118LrcoYPEc
+ L29kpTBM89BejGMjUmOlHCD2U5MtBLfS8vpCInfzfFu6x/y39AOccQvee4Ya+13W2zpt
+ C0uKY59iigy//uPIUGIHM9XmZNnn1coCI25Rz95PqEPz9DCYOtDmdF8n7tV3xvWticgB
+ h/ROf0GPrBhQCqqMlvWMWeTZyzsCQ4uxGGtyF/cMMEZgMvcmQ1ddG4toM42/LHwWxU8P
+ GEL7w9le5+KM0gabcMzdAMiTY5C73japmpKZKYF6QWlOsYJV84BNIPaCw+4OdtcdOdP4
+ jqWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689860524; x=1690465324;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5AP2a3aQD1ezBtQvvxdghTzMceec+8NRpztRBjesZ4c=;
- b=Mdzn/IYHVR/zzloLBplpXMVoHOGclyc/O+6VoPMNoW2hRtQbtEhTbh1LRjZbZyrMs1
- rq+4uBw508Zf0gLX34ToZj+jn7bQ9gLs42QygLRjEuOjyITZo8iUCkIbspfZ8HtastiF
- 2zmCUINyq6ZL94Em2U8ck77dMtSEHMhGfavAhYi39wekioKXCZpWA84TlDcpof9iM9Ud
- 3lsuaGRdPjHcBLuRb073mqkqbJSx3Wrc/OygEXEDyeGL2784EznI0f5m7ufnaMu0JYCv
- n/ZLVfd85fYZj1LouILvyGic4xG7jbW2K2R6outIxkoo3AKmrPn0wjqT6EnLsWHRSGiw
- M0Ww==
-X-Gm-Message-State: ABy/qLbZaM2+7WG8m3OVxp/cLHv3yIxawLjCwDi8EI6whiqZqxIZzb+q
- c2fvRCgdeGGNIjVAgqgoA1HB6Q==
-X-Google-Smtp-Source: APBJJlGEINK81l24hnY8wBnbY3qH83frglNHRc7nEAfFeDd0zZ2ywU+RFSBW+nIc4Nf6IMq9PJBBvQ==
-X-Received: by 2002:a5d:6905:0:b0:313:f22c:7549 with SMTP id
- t5-20020a5d6905000000b00313f22c7549mr2053846wru.66.1689860524409; 
- Thu, 20 Jul 2023 06:42:04 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.214.178])
- by smtp.gmail.com with ESMTPSA id
- v13-20020a1cf70d000000b003fc080acf68sm3991429wmh.34.2023.07.20.06.42.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 20 Jul 2023 06:42:03 -0700 (PDT)
-Message-ID: <c8b31bc5-fbe8-f4d9-c3d4-d1014355639a@linaro.org>
-Date: Thu, 20 Jul 2023 15:42:02 +0200
+ d=1e100.net; s=20221208; t=1689860753; x=1690465553;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8OP3T8Sfy8ldl+StOm3bD/k6Sme2E/M3Uve6FFMgIMo=;
+ b=b7czTkMasCqg//L4nLDMMVo2rwFIDXgeSQyElzrkzCe6hk/RVwIp/O3RI4EKCBQL0Z
+ bICICfruI9BmmN4WN5bnXJpxD2EFsUTYS7a4+jcBoT0TiOXu8TjCwQtL5lqEHcUlpkVO
+ 1rO3QVjK4TWAUmHbNKlpzLD5P8KJn8xN0QOmEwkZI9LQuDmGCI+ozmwwNHM992aqSWHE
+ tIkBk1nz67cEqWw144gguQPxd45i33CvygQz2dG0rg9TztDS2XWJMQeYkAMa/sBTImrD
+ 9v3IGQ+LPsAYyI/Q/AamGOdKyuZGgklFWCZtpI3mkdqss7ZU/C5QoqF4z2xQ2ufNX7yZ
+ /ksg==
+X-Gm-Message-State: ABy/qLaT20sULwTICkvHGMjVZGm9NLbBfS9/yU+Li+jeUxn2hwiBW5J3
+ R+ghLlyG9dVWq1rxabe09632as0+CVoiKEczlKQErA==
+X-Google-Smtp-Source: APBJJlHOkjx6E7h+d697HBlUa0zDRBT6FTHAzhg/B4NPYhMo/RgnKuS4tXGeA1+bplaMwLE1UkPbqjXYNei7gBbJtlY=
+X-Received: by 2002:ac2:5b05:0:b0:4f8:5cde:a44f with SMTP id
+ v5-20020ac25b05000000b004f85cdea44fmr2144646lfn.10.1689860752614; Thu, 20 Jul
+ 2023 06:45:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH 3/6] qapi/qdev: Tidy up device_add documentation
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: eblake@redhat.com
-References: <20230720071610.1096458-1-armbru@redhat.com>
- <20230720071610.1096458-4-armbru@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230720071610.1096458-4-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230720130448.921356-1-jsnow@redhat.com>
+In-Reply-To: <20230720130448.921356-1-jsnow@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 20 Jul 2023 14:45:41 +0100
+Message-ID: <CAFEAcA-ZjYUKFM7FiDb_NcQ7L=gG8TSjipThgD9JC26DBP4zVQ@mail.gmail.com>
+Subject: Re: [PATCH 0/4] python/machine: use socketpair() for console socket
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Beraldo Leal <bleal@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, 
+ Daniel Berrange <berrange@redhat.com>, Cleber Rosa <crosa@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ WEIRD_PORT=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,36 +88,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/7/23 09:16, Markus Armbruster wrote:
-> The notes section comes out like this:
-> 
->      Notes
-> 
->      Additional arguments depend on the type.
-> 
->      1. For detailed information about this command, please refer to the
->         ‘docs/qdev-device-use.txt’ file.
-> 
->      2. It’s possible to list device properties by running QEMU with the
->         “-device DEVICE,help” command-line argument, where DEVICE is the
->         device’s name
-> 
-> The first item isn't numbered.  Fix that:
-> 
->      1. Additional arguments depend on the type.
-> 
->      2. For detailed information about this command, please refer to the
->         ‘docs/qdev-device-use.txt’ file.
-> 
->      3. It’s possible to list device properties by running QEMU with the
->         “-device DEVICE,help” command-line argument, where DEVICE is the
->         device’s name
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->   qapi/qdev.json | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+On Thu, 20 Jul 2023 at 14:04, John Snow <jsnow@redhat.com> wrote:
+>
+> Like we did for the QMP socket, use socketpair() for the console socket
+> so that hopefully there isn't a race condition during early boot where
+> data might get dropped on the floor.
+>
+> "lightly tested"; passes local tests and gitlab CI. Doesn't seem to make
+> anything worse.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I tried this on the s390 linux box and the test failed because
+of a python exception:
 
+__init__() got an unexpected keyword argument 'sock_dir'
+
+  $ QEMU_TEST_FLAKY_TESTS=1 ./build/aarch64/tests/venv/bin/avocado run
+./build/aarch64/tests/avocado/machine_aarch64_sbsaref.py:Aarch64SbsarefMachine.test_sbsaref_edk2_firmware
+JOB ID     : 8392ba37b5a825ed75278f85f686364d181c01d3
+JOB LOG    : /home/linux1/avocado/job-results/job-2023-07-20T13.41-8392ba3/job.log
+ (1/1) ./build/aarch64/tests/avocado/machine_aarch64_sbsaref.py:Aarch64SbsarefMachine.test_sbsaref_edk2_firmware:
+ERROR: __init__() got an unexpected keyword argument 'sock_dir' (3.64
+s)
+RESULTS    : PASS 0 | ERROR 1 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0
+| CANCEL 0
+JOB TIME   : 6.92 s
+
+Backtrace etc from in the job.log:
+
+2023-07-20 13:41:49,125 stacktrace       L0041 ERROR| Reproduced
+traceback from:
+/home/linux1/qemu/build/aarch64/tests/venv/lib/python3.8/site-package
+s/avocado/core/test.py:770
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR| Traceback (most
+recent call last):
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
+"/home/linux1/qemu/build/aarch64/tests/venv/lib/python3.8/site-packages/avocado/core/decorators.py",
+line 90, in wrapper
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|     return
+function(obj, *args, **kwargs)
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
+"/home/linux1/qemu/build/aarch64/tests/avocado/machine_aarch64_sbsaref.py",
+line 84, in test_sbsaref_edk2_firmware
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|     self.fetch_firmware()
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
+"/home/linux1/qemu/build/aarch64/tests/avocado/machine_aarch64_sbsaref.py",
+line 66, in fetch_firmware
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|     self.vm.set_console()
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
+"/home/linux1/qemu/build/aarch64/tests/avocado/avocado_qemu/__init__.py",
+line 348, in vm
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|     return
+self.get_vm(name='default')
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
+"/home/linux1/qemu/build/aarch64/tests/avocado/avocado_qemu/__init__.py",
+line 354, in get_vm
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|
+self._vms[name] = self._new_vm(name, *args)
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
+"/home/linux1/qemu/build/aarch64/tests/avocado/avocado_qemu/__init__.py",
+line 324, in _new_vm
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|     vm =
+QEMUMachine(self.qemu_bin, base_temp_dir=self.workdir,
+2023-07-20 13:41:49,147 stacktrace       L0045 ERROR| TypeError:
+__init__() got an unexpected keyword argument 'sock_dir'
+2023-07-20 13:41:49,147 stacktrace       L0046 ERROR|
+2023-07-20 13:41:49,147 test             L0775 DEBUG| Local variables:
+2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> obj <class
+'machine_aarch64_sbsaref.Aarch64SbsarefMachine'>:
+1-./build/aarch64/tests/avocado/machine_aarch64_sbsaref.py:Aarch64SbsarefMachine.test_sbsaref_edk2_firmware
+2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> args <class
+'tuple'>: ()
+2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> kwargs
+<class 'dict'>: {}
+2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> condition
+<class 'str'>: 1
+2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> function
+<class 'function'>: <function
+Aarch64SbsarefMachine.test_sbsaref_edk2_firmware at 0x3ff814d9700>
+2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> message
+<class 'str'>: Test is not reliable
+2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> negate
+<class 'bool'>: True
+
+thanks
+-- PMM
 
