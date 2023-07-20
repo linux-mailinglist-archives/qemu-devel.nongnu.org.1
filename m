@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D81975B655
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 20:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7EC475B658
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 20:16:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMYB9-0004C1-O5; Thu, 20 Jul 2023 14:15:07 -0400
+	id 1qMYBg-0004ge-DW; Thu, 20 Jul 2023 14:15:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qMYB6-0004An-4N
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qMYBL-0004Ea-N4
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qMYB4-00034L-OZ
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:03 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qMYBK-0003KT-AA
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 14:15:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689876902;
+ s=mimecast20190719; t=1689876917;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6aji4AUo/q3xcVp5i8vFfPFEaMhEyNTec2z203O2Wh8=;
- b=IOJqlBW01r2MEkQxNgAkbgWEarErsi45x6KZtW/LsHZfazgVRGwQ47AZv15n77fFpo4ljf
- StsTpdtYyHw6RJw/OwtyylM0LmnsHhfd1jBm5uH+2ggaF/EqrKDKZLPGB8rFA6ydDAImaE
- XIyoHYTjTXRiMxhWLg0OK6feu8K1yjA=
+ bh=qg88jCdQgB4EKRvwYnaU1oPtFH+EzvWegO2XUblXAbg=;
+ b=Fu7XIyI80xWgoAC8p6hh2+IxORpS7R84hfrSUNcGT+VCfDpCYSwrX/vwY+DTFB3y1u95w5
+ 5C1TDSLI1jaBBvDE7R660RfDjV84KuJjI5WuP2zpB0FV/WLIkOaxrBkKpf+PYYpJrxOU2d
+ BcZBvG/4zCHVeB/xmEBP4RT5hL88q9M=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-138-mrhjCRWMOdeiNFrB4Pw43w-1; Thu, 20 Jul 2023 14:14:56 -0400
-X-MC-Unique: mrhjCRWMOdeiNFrB4Pw43w-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ us-mta-543-xQZg8CVsMICA-mX4k1V5pQ-1; Thu, 20 Jul 2023 14:15:14 -0400
+X-MC-Unique: xQZg8CVsMICA-mX4k1V5pQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A2CD858EED;
- Thu, 20 Jul 2023 18:14:56 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.253])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 63280C57969;
- Thu, 20 Jul 2023 18:14:55 +0000 (UTC)
-Date: Thu, 20 Jul 2023 14:14:53 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Mattias Nissler <mnissler@rivosinc.com>
-Cc: qemu-devel@nongnu.org, Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, john.levon@nutanix.com
-Subject: Re: [PATCH 1/3] softmmu: Support concurrent bounce buffers
-Message-ID: <20230720181453.GC210977@fedora>
-References: <20230704080628.852525-1-mnissler@rivosinc.com>
- <20230704080628.852525-2-mnissler@rivosinc.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C9AE6858EED;
+ Thu, 20 Jul 2023 18:15:12 +0000 (UTC)
+Received: from eperezma.remote.csb (unknown [10.39.193.122])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 79ECE2166B26;
+ Thu, 20 Jul 2023 18:15:11 +0000 (UTC)
+From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: yvugenfi@redhat.com,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+ si-wei.liu@oracle.com, Jason Wang <jasowang@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Dragos Tatulea <dtatulea@nvidia.com>, Shannon Nelson <snelson@pensando.io>
+Subject: [RFC PATCH 06/12] vdpa: add vhost_vdpa_svq_stop
+Date: Thu, 20 Jul 2023 20:14:53 +0200
+Message-Id: <20230720181459.607008-7-eperezma@redhat.com>
+In-Reply-To: <20230720181459.607008-1-eperezma@redhat.com>
+References: <20230720181459.607008-1-eperezma@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="G6F2Gdz6QWgAblRO"
-Content-Disposition: inline
-In-Reply-To: <20230704080628.852525-2-mnissler@rivosinc.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,36 +83,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+To split each SVQ stop in its own stop routine let's us to reset a VQ
+individually, and to keep future vhost_vdpa_reset_queue symmetrical
+with vhost_vdpa_reset_queue.
 
---G6F2Gdz6QWgAblRO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+---
+ hw/virtio/vhost-vdpa.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-On Tue, Jul 04, 2023 at 01:06:25AM -0700, Mattias Nissler wrote:
-> +        if (qatomic_dec_fetch(&bounce_buffers_in_use) == 1) {
-> +            cpu_notify_map_clients();
->          }
-
-About my comment regarding removing this API: I see the next patch does
-that.
-
-Stefan
-
---G6F2Gdz6QWgAblRO
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmS5eZ0ACgkQnKSrs4Gr
-c8jNewf/dKmABPNzhBZEA7NaT1/DFNP2kqEAy5g8VW0D3S8BHGbroDToxSQMzmXz
-JSdnEW7dnusFBGFc3UCtk7ZPqWCYYWg4pVb1VmnOfN1Wx0BgcVu2HvbJ5EAvlh2N
-Nm90Y3pVxFUb6B9ht69k6mSCAzmtEtyMyb0XWEMrrbYTcZX298hl04FFIZs0jFmd
-SNz49R1N9Popxjgj0OhpznRUDksVh85SEknprCey5oA6FFb3dGBxXoSEbbmLfdrr
-pR0Ttb1VlLMMe52P9IIbTRnU7aucmoXh8ZOgIUxyhaaeDHm0GZhhMMbnXNRbUhUh
-1R3/M30ctAhCV1toavX+ZV/t4XG0nA==
-=aYr3
------END PGP SIGNATURE-----
-
---G6F2Gdz6QWgAblRO--
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index e7ab69165c..6ae276ccde 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -1263,6 +1263,18 @@ err:
+     return false;
+ }
+ 
++static void vhost_vdpa_svq_stop(struct vhost_dev *dev, unsigned idx)
++{
++    struct vhost_vdpa *v = dev->opaque;
++    VhostShadowVirtqueue *svq = g_ptr_array_index(v->shadow_vqs, idx);
++
++    vhost_svq_stop(svq);
++    vhost_vdpa_svq_unmap_rings(dev, svq);
++
++    event_notifier_cleanup(&svq->hdev_kick);
++    event_notifier_cleanup(&svq->hdev_call);
++}
++
+ static void vhost_vdpa_svqs_stop(struct vhost_dev *dev)
+ {
+     struct vhost_vdpa *v = dev->opaque;
+@@ -1272,13 +1284,7 @@ static void vhost_vdpa_svqs_stop(struct vhost_dev *dev)
+     }
+ 
+     for (unsigned i = 0; i < v->shadow_vqs->len; ++i) {
+-        VhostShadowVirtqueue *svq = g_ptr_array_index(v->shadow_vqs, i);
+-
+-        vhost_svq_stop(svq);
+-        vhost_vdpa_svq_unmap_rings(dev, svq);
+-
+-        event_notifier_cleanup(&svq->hdev_kick);
+-        event_notifier_cleanup(&svq->hdev_call);
++        vhost_vdpa_svq_stop(dev, i);
+     }
+ }
+ 
+-- 
+2.39.3
 
 
