@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5B575A795
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 09:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB06B75A798
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 09:18:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMNtj-0000nr-98; Thu, 20 Jul 2023 03:16:27 -0400
+	id 1qMNtj-0000nl-71; Thu, 20 Jul 2023 03:16:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qMNtZ-0000fV-PM
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qMNtZ-0000fW-Q1
  for qemu-devel@nongnu.org; Thu, 20 Jul 2023 03:16:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qMNtX-0007Uk-0a
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qMNtW-0007Uf-TJ
  for qemu-devel@nongnu.org; Thu, 20 Jul 2023 03:16:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1689837373;
@@ -22,39 +22,39 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=A3WNb5Y5mes3xNMT00lRJt/+3zF9YM9fuUJojah5pm8=;
- b=IwrRw/TjhlRkTIZrA0TrRDungPgCy79pV5Lh4NlXuwAnhQ38j5wYDFefn4JXhEcWElQpr9
- Kn1g/2bmM1mFk2CyCbdh4+GBgsd18iZUTcudDlVctoDAb6mfbinysOOB9Nq3DRX1i5mEP8
- uzfNpSX9M2HYmGfsXxAq1Y2nGQyfkR0=
+ bh=XpOJGuS1jqrtLNbih9X78d4vyNoiUN5qW48IyvM/zEU=;
+ b=RRLd8HOI0vGK/krk2KsWoONxsI/8v0uBsR3aMlzAi8kVXFy3VTLH8UBUzT3kzhLdlUZHiC
+ Qv6/PYpBVEZKGpVu1LPIqYBJoc72+KtQXmcKwi+8aVD+iYODBhly/vP1P86cQaXhP5+OWE
+ GLzFM/D469W/BKVKdIY/8KaaaZkcqf8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-83-pvpxTIREMHK1G7oqXVsCSw-1; Thu, 20 Jul 2023 03:16:12 -0400
-X-MC-Unique: pvpxTIREMHK1G7oqXVsCSw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-659-Fk8-xcGJNrKuQvlYC0KAUw-1; Thu, 20 Jul 2023 03:16:11 -0400
+X-MC-Unique: Fk8-xcGJNrKuQvlYC0KAUw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BD5F2936D2F;
- Thu, 20 Jul 2023 07:16:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3CAE287321E
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 07:16:11 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.37])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1D1944CD0E3;
- Thu, 20 Jul 2023 07:16:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1D0E7492CAC
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 07:16:11 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 07B8021E5A0D; Thu, 20 Jul 2023 09:16:10 +0200 (CEST)
+ id 09B4121E5A0E; Thu, 20 Jul 2023 09:16:10 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: eblake@redhat.com, Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH 1/6] qapi/block-core: Tidy up BlockLatencyHistogramInfo
+Cc: eblake@redhat.com
+Subject: [PATCH 2/6] qapi/block: Tidy up block-latency-histogram-set
  documentation
-Date: Thu, 20 Jul 2023 09:16:04 +0200
-Message-ID: <20230720071610.1096458-2-armbru@redhat.com>
+Date: Thu, 20 Jul 2023 09:16:05 +0200
+Message-ID: <20230720071610.1096458-3-armbru@redhat.com>
 In-Reply-To: <20230720071610.1096458-1-armbru@redhat.com>
 References: <20230720071610.1096458-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -80,45 +80,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Documentation for member @bin comes out like
+Examples come out like
 
-    list of io request counts corresponding to histogram intervals.
-    len("bins") = len("boundaries") + 1 For the example above, "bins"
-    may be something like [3, 1, 5, 2], and corresponding histogram
-    looks like:
+    Example
 
-Note how the equation and the sentence following it run together.
-Replace the equation:
+       set new histograms for all io types with intervals [0, 10), [10,
+       50), [50, 100), [100, +inf):
 
-    list of io request counts corresponding to histogram intervals,
-    same number of elements as "boundaries".  For the example above,
-    "bins" may be something like [3, 1, 5, 2], and corresponding
-    histogram looks like:
+The sentence "set new histograms ..." starts with a lower case letter.
+Capitalize it.  Same for the other examples.
 
-Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/block-core.json | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ qapi/block.json | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 5dd5f7e4b0..6ca448b6e6 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -652,10 +652,9 @@
- #     10), [10, 50), [50, 100), [100, +inf).
+diff --git a/qapi/block.json b/qapi/block.json
+index 0f25ce3961..535892fddc 100644
+--- a/qapi/block.json
++++ b/qapi/block.json
+@@ -547,7 +547,7 @@
  #
- # @bins: list of io request counts corresponding to histogram
--#     intervals.
--#     len(@bins) = len(@boundaries) + 1
--#     For the example above, @bins may be something like [3, 1, 5, 2],
--#     and corresponding histogram looks like:
-+#     intervals, same number of elements as @boundaries.  For the
-+#     example above, @bins may be something like [3, 1, 5, 2], and
-+#     corresponding histogram looks like:
+ # Example:
  #
- # ::
+-# set new histograms for all io types with intervals [0, 10), [10,
++# Set new histograms for all io types with intervals [0, 10), [10,
+ # 50), [50, 100), [100, +inf):
  #
+ # -> { "execute": "block-latency-histogram-set",
+@@ -557,7 +557,7 @@
+ #
+ # Example:
+ #
+-# set new histogram only for write, other histograms will remain not
++# Set new histogram only for write, other histograms will remain not
+ # changed (or not created):
+ #
+ # -> { "execute": "block-latency-histogram-set",
+@@ -567,7 +567,7 @@
+ #
+ # Example:
+ #
+-# set new histograms with the following intervals:   read, flush: [0,
++# Set new histograms with the following intervals:   read, flush: [0,
+ # 10), [10, 50), [50, 100), [100, +inf)   write: [0, 1000), [1000,
+ # 5000), [5000, +inf)
+ #
+@@ -579,7 +579,7 @@
+ #
+ # Example:
+ #
+-# remove all latency histograms:
++# Remove all latency histograms:
+ #
+ # -> { "execute": "block-latency-histogram-set",
+ #      "arguments": { "id": "drive0" } }
 -- 
 2.41.0
 
