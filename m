@@ -2,74 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A02975B4BA
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 18:41:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6EF75B4C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 18:43:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMWhi-0000dC-4d; Thu, 20 Jul 2023 12:40:38 -0400
+	id 1qMWk2-0001rM-J4; Thu, 20 Jul 2023 12:43:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMWha-0000bn-EZ
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:40:32 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMWhH-0008AN-6Y
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:40:20 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-4fba1288bbdso1588435e87.1
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 09:40:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689871207; x=1690476007;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=PO4Fi4YWodYZUA5UitbRNAl4v58seTuH9vn83Yaei7I=;
- b=Skie1lD5tVlVC/CSKUqp15zXsg3wGKgBtFTa0G5Ur5Y6e012hIn0IoFBiJH8dAXGdC
- o3LJYvyT8cLCAm1LH2fqJy2yltE9FWp7F6LqqE4L2A1Ieqc/Z6dtlpLa+x2061fCR4ST
- Ur06jLANWy7FzdmlWZaMMtznJfT6f4RagqCR3nHtckpzlLTqG0fEiQ6KP2Uu5Liey27s
- yi2LODhzFt1JsoofwxR2WcmnwpCu4s7r3BKawODaUaTiB3EsuNuHyJUavbzFgV9ctOn8
- DXd5ezvksII03i0S77TO5xLNNFNQ03hvhZL4VV9eS0JMsDtMlbaeBfZSC6I3BFxFGc5B
- /Hzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689871207; x=1690476007;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=PO4Fi4YWodYZUA5UitbRNAl4v58seTuH9vn83Yaei7I=;
- b=EWAKHphQbpKCw3NjM0BloYfgeSCMDH+PYsHkDnOUX7HGIkwo3iRqbZxES2X1TzSuPQ
- 8WTvACyK2fc0tJ5dKDKGqP+NktXogHRxQS0+lFQOWrF5UfAWbqSLZ7K4QGpWKJU47+PJ
- svUKL57gcI7b0CQ2xzotR1URuGSqHZNwxi2tgQUwZC+pybEXCvvoz/LxH8pY75CBXmpu
- Fbeb6/jEfGXg7NZsJZ3rHwe5dzi/A/oqi/PXxliKBC/b2Fdd+7GMFm2V/UDioZ+Tf+am
- e93MzOAUkN0Ob6y5UFexpGhSkGEPbIWqmG96r8BmQG7JAs0tSLIanik78Gy5Ycsifiy5
- 67xw==
-X-Gm-Message-State: ABy/qLbjFckMQI65MheTJFTXsR878ZOA6t2JoCJasi+yjq2cGqqMxd9z
- lXkxDQemNXICwPZNon2M0IsS1jQd76JcmbN2YaguWw==
-X-Google-Smtp-Source: APBJJlEOiyVFnaVbLBWsy2yeonuLyG9hF4QIMEhyXUl6RZSz/GuHbZJDHcHiJdhDRj2eVn/PmI8g5DG0aCYUQbEEPD0=
-X-Received: by 2002:a19:7418:0:b0:4f7:3ee8:eede with SMTP id
- v24-20020a197418000000b004f73ee8eedemr2441017lfe.61.1689871207299; Thu, 20
- Jul 2023 09:40:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <SRS0=2hVk=DG=kaod.org=clg@ozlabs.org>)
+ id 1qMWk1-0001r7-C7
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:43:01 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=2hVk=DG=kaod.org=clg@ozlabs.org>)
+ id 1qMWjz-0000WR-FX
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 12:43:01 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4R6JQJ2KZrz4wy9;
+ Fri, 21 Jul 2023 02:42:48 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4R6JQF5ftNz4wxx;
+ Fri, 21 Jul 2023 02:42:45 +1000 (AEST)
+Message-ID: <e15250a2-3d21-d70b-980f-38d8165f0e30@kaod.org>
+Date: Thu, 20 Jul 2023 18:42:40 +0200
 MIME-Version: 1.0
-References: <20230719153018.1456180-2-jean-philippe@linaro.org>
- <20230719153018.1456180-5-jean-philippe@linaro.org>
-In-Reply-To: <20230719153018.1456180-5-jean-philippe@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 20 Jul 2023 17:39:56 +0100
-Message-ID: <CAFEAcA8e_-r6b4iaeDUv64iydFe7iAb4Y0eObyO4tUYizcYLVA@mail.gmail.com>
-Subject: Re: [PATCH 3/5] target/arm: Skip granule protection checks for AT
- instructions
-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.2 3/4] hw/rtc/aspeed_rtc: Use 64-bit offset for
+ holding time_t difference
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Herv=c3=a9_Poussineau?=
+ <hpoussin@reactos.org>
+References: <20230720155902.1590362-1-peter.maydell@linaro.org>
+ <20230720155902.1590362-4-peter.maydell@linaro.org>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230720155902.1590362-4-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=2hVk=DG=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.096,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,93 +71,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 19 Jul 2023 at 16:56, Jean-Philippe Brucker
-<jean-philippe@linaro.org> wrote:
->
-> GPC checks are not performed on the output address for AT instructions,
-> as stated by ARM DDI 0487J in D8.12.2:
->
->   When populating PAR_EL1 with the result of an address translation
->   instruction, granule protection checks are not performed on the final
->   output address of a successful translation.
->
-> Rename get_phys_addr_with_secure(), since it's only used to handle AT
-> instructions.
->
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+On 7/20/23 17:59, Peter Maydell wrote:
+> In the aspeed_rtc device we store a difference between two time_t
+> values in an 'int'. This is not really correct when time_t could
+> be 64 bits. Enlarge the field to 'int64_t'.
+> 
+> This is a migration compatibility break for the aspeed boards.
+> While we are changing the vmstate, remove the accidental
+> duplicate of the offset field.
+
+Ah yes. Thanks.
+
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+
 > ---
-> This incidentally fixes a problem with AT S1E1 instructions which can
-> output an IPA and should definitely not cause a GPC.
+> I took "bump the migration version" as the simplest approach
+> here, because I don't think we care about migration compat
+> in this case. If we do I can write the alternate version of
+> the patch...
+
+
+I don't think we care much about migration compat and fyi, migration
+of aspeed machines broke a while ago. It still migrates if done before
+Linux is loaded.
+
+
+C.
+
+
 > ---
->  target/arm/internals.h | 25 ++++++++++++++-----------
->  target/arm/helper.c    |  8 ++++++--
->  target/arm/ptw.c       | 11 ++++++-----
->  3 files changed, 26 insertions(+), 18 deletions(-)
->
-> diff --git a/target/arm/internals.h b/target/arm/internals.h
-> index 0f01bc32a8..fc90c364f7 100644
-> --- a/target/arm/internals.h
-> +++ b/target/arm/internals.h
-> @@ -1190,12 +1190,11 @@ typedef struct GetPhysAddrResult {
->  } GetPhysAddrResult;
->
->  /**
-> - * get_phys_addr_with_secure: get the physical address for a virtual address
-> + * get_phys_addr: get the physical address for a virtual address
->   * @env: CPUARMState
->   * @address: virtual address to get physical address for
->   * @access_type: 0 for read, 1 for write, 2 for execute
->   * @mmu_idx: MMU index indicating required translation regime
-> - * @is_secure: security state for the access
->   * @result: set on translation success.
->   * @fi: set to fault info if the translation fails
->   *
-> @@ -1212,26 +1211,30 @@ typedef struct GetPhysAddrResult {
->   *  * for PSMAv5 based systems we don't bother to return a full FSR format
->   *    value.
->   */
-> -bool get_phys_addr_with_secure(CPUARMState *env, target_ulong address,
-> -                               MMUAccessType access_type,
-> -                               ARMMMUIdx mmu_idx, bool is_secure,
-> -                               GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
-> +bool get_phys_addr(CPUARMState *env, target_ulong address,
-> +                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
-> +                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
->      __attribute__((nonnull));
+>   include/hw/rtc/aspeed_rtc.h | 2 +-
+>   hw/rtc/aspeed_rtc.c         | 5 ++---
+>   2 files changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/hw/rtc/aspeed_rtc.h b/include/hw/rtc/aspeed_rtc.h
+> index df61e46059e..596dfebb46c 100644
+> --- a/include/hw/rtc/aspeed_rtc.h
+> +++ b/include/hw/rtc/aspeed_rtc.h
+> @@ -18,7 +18,7 @@ struct AspeedRtcState {
+>       qemu_irq irq;
+>   
+>       uint32_t reg[0x18];
+> -    int offset;
+> +    int64_t offset;
+>   
+>   };
+>   
+> diff --git a/hw/rtc/aspeed_rtc.c b/hw/rtc/aspeed_rtc.c
+> index f6da7b666d6..fa861e2d494 100644
+> --- a/hw/rtc/aspeed_rtc.c
+> +++ b/hw/rtc/aspeed_rtc.c
+> @@ -136,11 +136,10 @@ static const MemoryRegionOps aspeed_rtc_ops = {
+>   
+>   static const VMStateDescription vmstate_aspeed_rtc = {
+>       .name = TYPE_ASPEED_RTC,
+> -    .version_id = 1,
+> +    .version_id = 2,
+>       .fields = (VMStateField[]) {
+>           VMSTATE_UINT32_ARRAY(reg, AspeedRtcState, 0x18),
+> -        VMSTATE_INT32(offset, AspeedRtcState),
+> -        VMSTATE_INT32(offset, AspeedRtcState),
+> +        VMSTATE_INT64(offset, AspeedRtcState),
+>           VMSTATE_END_OF_LIST()
+>       }
+>   };
 
-
-What is going on in this bit of the patch ? We already
-have a prototype for get_phys_addr() with a doc comment.
-Is this git's diff-output producing something silly
-for a change that is not logically touching get_phys_addr()'s
-prototype and comment at all?
-
->  /**
-> - * get_phys_addr: get the physical address for a virtual address
-> + * get_phys_addr_with_secure_nogpc: get the physical address for a virtual
-> + *                                  address
->   * @env: CPUARMState
->   * @address: virtual address to get physical address for
->   * @access_type: 0 for read, 1 for write, 2 for execute
->   * @mmu_idx: MMU index indicating required translation regime
-> + * @is_secure: security state for the access
->   * @result: set on translation success.
->   * @fi: set to fault info if the translation fails
->   *
-> - * Similarly, but use the security regime of @mmu_idx.
-> + * Similar to get_phys_addr, but use the given security regime and don't perform
-> + * a Granule Protection Check on the resulting address.
->   */
-> -bool get_phys_addr(CPUARMState *env, target_ulong address,
-> -                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
-> -                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
-> +bool get_phys_addr_with_secure_nogpc(CPUARMState *env, target_ulong address,
-> +                                     MMUAccessType access_type,
-> +                                     ARMMMUIdx mmu_idx, bool is_secure,
-> +                                     GetPhysAddrResult *result,
-> +                                     ARMMMUFaultInfo *fi)
->      __attribute__((nonnull));
-
-thanks
--- PMM
 
