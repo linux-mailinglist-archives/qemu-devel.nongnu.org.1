@@ -2,80 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67C475AC6C
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 12:53:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0B675AC76
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 12:56:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMRFx-00085q-7M; Thu, 20 Jul 2023 06:51:37 -0400
+	id 1qMRJy-0000ZV-72; Thu, 20 Jul 2023 06:55:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qMRFu-00085H-2R
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 06:51:34 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1qMRFr-00061B-9Z
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 06:51:33 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3144098df56so573953f8f.2
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 03:51:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689850289; x=1690455089;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=eE30xErk1nLgA4oFLynpssqb3i6CEkxKkfn4xlkSUdg=;
- b=ukZUiqQZT6WJrlvJnr/FtNq0xk8fKhOeJl3g2VZGKl+74YkSpeOB/rhSOiw+E37Swm
- uB9UmXcWTIqcK3imakGrO1F/Qv6hbgl2RKT24KeaAn1ca0n9bi6hMZ2a1i0RWlGeNLVR
- YwWaYVCSbkPYhXqhElxEGJgVj2HT6a8VrYLCqtf58Xpit7l7wAmROrkHfF6ZNVaHJyA+
- 3PSxvPrFCdYooCrBDBy/82fO8zrahzyZ31Mo0+rEd/f5HF4sg+lYiCYCzyWYJL53LMDu
- 8TTzzUSR4i7nqcri/Pmma1htN9EEeJ1qfcN/WgvDoWIoB+q1dw8oNevCcmODGeTf52Md
- agaQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qMRJu-0000ZE-JT
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 06:55:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qMRJs-0000a0-Ti
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 06:55:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689850538;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jMiOZ/IRqYl4J4vf5/8YM0eWI+Wn2wKvfRNv3UjaJ94=;
+ b=Pau8eGG+IBt8Bm6JvDefzcN8LcfiznUYzu8FvvyoAAaYm8Ey1nqWQfBFwJO4+Ry0obPwUW
+ QOwZGAmRsu6lh8HTjiaL0NDVXhPcOZEIbQD5mzYbbtk1d9Ogi6bykHGMXs4575hqCMEo/k
+ wXW9HXqcAR9qcIRqIN6dqJ6VpD0zgpE=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-47-zwNTtDbHNWGUgG8jwnFRJw-1; Thu, 20 Jul 2023 06:55:34 -0400
+X-MC-Unique: zwNTtDbHNWGUgG8jwnFRJw-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2b83988c45bso6457951fa.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 03:55:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689850289; x=1690455089;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eE30xErk1nLgA4oFLynpssqb3i6CEkxKkfn4xlkSUdg=;
- b=JP31Ya8KLZ62M2K7zA4uhcuIqTxfjVUdb+7wsIm3GtnfstcQDZW2etaCSYwNUkdWRR
- x+qlCJ5SaGJ8nooq/7xg2mthUYPR1e+FPQGi05cRwp3t5bllQHnv3TIE8rg6dJmUf3Lx
- ZPJEzW7j7D+mPrK0BdtD1HCLIisnvNdrGk3bo0E+yb1k3K/DVJc+gsWI8jT1aHckXmxw
- G1JUpqTczWrw17/cIUBHs6766OCBaWVzsanm4aguLxipXCbUZdaiBg18FqbmBiNP5Yrp
- QSjGR38MDWzp8th3RW6ov04l0zgz9//e/Z84YlYfROfIF0ZGcvdt1vNBrgjF3bYhkOTo
- Gwcw==
-X-Gm-Message-State: ABy/qLZep6M8u0MfwRXdpPmpMgAYIChPPEMfST4B+7nENy/JM2bzurhI
- eh3Rb43ieso+K+8edl/g/UFkNQ==
-X-Google-Smtp-Source: APBJJlFSdppm/FaaIGvqQFsf7r2zJPYURTmuglNrEIQuX5JgMgQk19+o6qjFWvyz9pUvaQ5y5DaKmQ==
-X-Received: by 2002:adf:ef4c:0:b0:314:4a15:e557 with SMTP id
- c12-20020adfef4c000000b003144a15e557mr1998802wrp.5.1689850289388; 
- Thu, 20 Jul 2023 03:51:29 -0700 (PDT)
-Received: from myrica ([2.219.138.198]) by smtp.gmail.com with ESMTPSA id
- q6-20020adff506000000b003141e629cb6sm972878wro.101.2023.07.20.03.51.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Jul 2023 03:51:28 -0700 (PDT)
-Date: Thu, 20 Jul 2023 11:51:32 +0100
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-To: Eric Auger <eric.auger@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- mst@redhat.com, peter.maydell@linaro.org
-Subject: Re: [PATCH for-8.1] virtio-iommu: Standardize granule extraction and
- formatting
-Message-ID: <20230720105132.GA59402@myrica>
-References: <20230718182136.40096-1-eric.auger@redhat.com>
+ d=1e100.net; s=20221208; t=1689850533; x=1690455333;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jMiOZ/IRqYl4J4vf5/8YM0eWI+Wn2wKvfRNv3UjaJ94=;
+ b=cA4KDrDAfBXoY2iQC9AYgbbz7/8W2w3FouZhZ1scDgK/TIV5AwqAH19oUVsu2YBBPN
+ 3gwSAGEHqtZn2uxwhoEpdAbg6FfrBEe8twh2XAZYrvbOSS9qTQpVQtNs8o8OBPlxkf+z
+ qdUlLQQgN2swTmT6lKyzGKXow2dcu8TNr5ZxxuY5mQ5SrG5Qs1dM2e3gvCgERefzmVOS
+ uIMzQEEnWnJmH3f92Ud0s6mcCBeSCw9kTUQHsf94lMWgNmQ1K9e9oqz/yVrxE/jxrndf
+ I0cy8K2LkwLGjZVGYTlXdL13vQIH0MmGeX3KlHi/eeszujYsK2RwSW79nPLv/vFKMPwv
+ 23tw==
+X-Gm-Message-State: ABy/qLb3AKkOldeyrpUoQDJYNtbWicqNpyJt17k/TazOvE9iwfOBKI1n
+ lsTvvYIWCBCizl5y+Nbg+vlhdqnX6nAUZoL09g/TBPB7Fik5qazbvDTR534iB4+yP1Qsj0JWdXu
+ K9zj2oIfLpAt1TMIX1GJQvDA=
+X-Received: by 2002:a2e:9b17:0:b0:2b6:a05a:c5c with SMTP id
+ u23-20020a2e9b17000000b002b6a05a0c5cmr2009486lji.1.1689850533231; 
+ Thu, 20 Jul 2023 03:55:33 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEpojkb7Ts5SUb/jVzThEBpOx2UGV/OyEzm8FnSPc1lJJN2N1BD9USFX5Ya99LmWTj1mRo5+Q==
+X-Received: by 2002:a2e:9b17:0:b0:2b6:a05a:c5c with SMTP id
+ u23-20020a2e9b17000000b002b6a05a0c5cmr2009470lji.1.1689850532884; 
+ Thu, 20 Jul 2023 03:55:32 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-177-60.web.vodafone.de.
+ [109.43.177.60]) by smtp.gmail.com with ESMTPSA id
+ l8-20020a7bc448000000b003fb40ec9475sm898910wmi.11.2023.07.20.03.55.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 20 Jul 2023 03:55:32 -0700 (PDT)
+Message-ID: <655d66c7-9f42-0610-d1f8-224687e29761@redhat.com>
+Date: Thu, 20 Jul 2023 12:55:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230718182136.40096-1-eric.auger@redhat.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] hw/virtio: Add a protection against duplicate
+ vu_scmi_stop calls
+Content-Language: en-US
+To: Milan Zamazal <mzamazal@redhat.com>, qemu-devel@nongnu.org
+Cc: Fabiano Rosas <farosas@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Laurent Vivier
+ <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20230720101037.2161450-1-mzamazal@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230720101037.2161450-1-mzamazal@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.089, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,75 +105,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 18, 2023 at 08:21:36PM +0200, Eric Auger wrote:
-> At several locations we compute the granule from the config
-> page_size_mask using ctz() and then format it in traces using
-> BIT(). As the page_size_mask is 64b we should use ctz64 and
-> BIT_ULL() for formatting. We failed to be consistent.
+On 20/07/2023 12.10, Milan Zamazal wrote:
+> The QEMU CI fails in virtio-scmi test occasionally.  As reported by
+> Thomas Huth, this happens most likely when the system is loaded and it
+> fails with the following error:
 > 
-> Note the page_size_mask is garanteed to be non null. The spec
-> mandates the device to set at least one bit, so ctz64 cannot
-> return 64. This is garanteed by the fact the device
-> initializes the page_size_mask to qemu_target_page_mask()
-> and then the page_size_mask is further constrained by
-> virtio_iommu_set_page_size_mask() callback which can't
-> result in a new mask being null. So if Coverity complains
-> round those ctz64/BIT_ULL with CID 1517772 this is a false
-> positive
+>    qemu-system-aarch64: ../../devel/qemu/hw/pci/msix.c:659:
+>    msix_unset_vector_notifiers: Assertion `dev->msix_vector_use_notifier && dev->msix_vector_release_notifier' failed.
+>    ../../devel/qemu/tests/qtest/libqtest.c:200: kill_qemu() detected QEMU death from signal 6 (Aborted) (core dumped)
 > 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Fixes: 94df5b2180 ("virtio-iommu: Fix 64kB host page size VFIO device assignment")
-
-Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-
+> As discovered by Fabiano Rosas, the cause is a duplicate invocation of
+> msix_unset_vector_notifiers via duplicate vu_scmi_stop calls:
+> 
+>    msix_unset_vector_notifiers
+>    virtio_pci_set_guest_notifiers
+>    vu_scmi_stop
+>    vu_scmi_disconnect
+>    ...
+>    qemu_chr_write_buffer
+> 
+>    msix_unset_vector_notifiers
+>    virtio_pci_set_guest_notifiers
+>    vu_scmi_stop
+>    vu_scmi_set_status
+>    ...
+>    qemu_cleanup
+> 
+> While vu_scmi_stop calls are protected by vhost_dev_is_started()
+> check, it's apparently not enough.  vhost-user-blk and vhost-user-gpio
+> use an extra protection, see f5b22d06fb (vhost: recheck dev state in
+> the vhost_migration_log routine) for the motivation.  Let's use the
+> same in vhost-user-scmi, which fixes the failure above.
+> 
+> Fixes: a5dab090e142 ("hw/virtio: Add boilerplate for vhost-user-scmi device")
+> Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
 > ---
->  hw/virtio/virtio-iommu.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/virtio/virtio-iommu.c b/hw/virtio/virtio-iommu.c
-> index 201127c488..c6ee4d7a3c 100644
-> --- a/hw/virtio/virtio-iommu.c
-> +++ b/hw/virtio/virtio-iommu.c
-> @@ -852,17 +852,19 @@ static IOMMUTLBEntry virtio_iommu_translate(IOMMUMemoryRegion *mr, hwaddr addr,
->      VirtIOIOMMUEndpoint *ep;
->      uint32_t sid, flags;
->      bool bypass_allowed;
-> +    int granule;
->      bool found;
->      int i;
->  
->      interval.low = addr;
->      interval.high = addr + 1;
-> +    granule = ctz64(s->config.page_size_mask);
->  
->      IOMMUTLBEntry entry = {
->          .target_as = &address_space_memory,
->          .iova = addr,
->          .translated_addr = addr,
-> -        .addr_mask = (1 << ctz32(s->config.page_size_mask)) - 1,
-> +        .addr_mask = BIT_ULL(granule) - 1,
->          .perm = IOMMU_NONE,
->      };
->  
-> @@ -1115,7 +1117,7 @@ static int virtio_iommu_set_page_size_mask(IOMMUMemoryRegion *mr,
->      if (s->granule_frozen) {
->          int cur_granule = ctz64(cur_mask);
->  
-> -        if (!(BIT(cur_granule) & new_mask)) {
-> +        if (!(BIT_ULL(cur_granule) & new_mask)) {
->              error_setg(errp, "virtio-iommu %s does not support frozen granule 0x%llx",
->                         mr->parent_obj.name, BIT_ULL(cur_granule));
->              return -1;
-> @@ -1161,7 +1163,7 @@ static void virtio_iommu_freeze_granule(Notifier *notifier, void *data)
->      }
->      s->granule_frozen = true;
->      granule = ctz64(s->config.page_size_mask);
-> -    trace_virtio_iommu_freeze_granule(BIT(granule));
-> +    trace_virtio_iommu_freeze_granule(BIT_ULL(granule));
->  }
->  
->  static void virtio_iommu_device_realize(DeviceState *dev, Error **errp)
-> -- 
-> 2.38.1
-> 
+>   hw/virtio/vhost-user-scmi.c         | 7 +++++++
+>   include/hw/virtio/vhost-user-scmi.h | 1 +
+>   2 files changed, 8 insertions(+)
+
+Thanks, that fixes the problem for me!
+
+Tested-by: Thomas Huth <thuth@redhat.com>
+
+
 
