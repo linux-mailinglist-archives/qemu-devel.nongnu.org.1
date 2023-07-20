@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D97475B054
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B691F75B08A
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 15:57:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMTyh-0006QJ-EZ; Thu, 20 Jul 2023 09:46:00 -0400
+	id 1qMU8F-0007yt-S7; Thu, 20 Jul 2023 09:55:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMTyf-0006Oj-7e
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:45:57 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMTyd-0001KX-HO
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:45:57 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-4fb77f21c63so1257364e87.2
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 06:45:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689860753; x=1690465553;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=8OP3T8Sfy8ldl+StOm3bD/k6Sme2E/M3Uve6FFMgIMo=;
- b=nFhxtERzL4BCPLTNqdb4xn5Pdpt6IgDktU0QT4TNBYTGyIuqymChsPY118LrcoYPEc
- L29kpTBM89BejGMjUmOlHCD2U5MtBLfS8vpCInfzfFu6x/y39AOccQvee4Ya+13W2zpt
- C0uKY59iigy//uPIUGIHM9XmZNnn1coCI25Rz95PqEPz9DCYOtDmdF8n7tV3xvWticgB
- h/ROf0GPrBhQCqqMlvWMWeTZyzsCQ4uxGGtyF/cMMEZgMvcmQ1ddG4toM42/LHwWxU8P
- GEL7w9le5+KM0gabcMzdAMiTY5C73japmpKZKYF6QWlOsYJV84BNIPaCw+4OdtcdOdP4
- jqWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689860753; x=1690465553;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8OP3T8Sfy8ldl+StOm3bD/k6Sme2E/M3Uve6FFMgIMo=;
- b=b7czTkMasCqg//L4nLDMMVo2rwFIDXgeSQyElzrkzCe6hk/RVwIp/O3RI4EKCBQL0Z
- bICICfruI9BmmN4WN5bnXJpxD2EFsUTYS7a4+jcBoT0TiOXu8TjCwQtL5lqEHcUlpkVO
- 1rO3QVjK4TWAUmHbNKlpzLD5P8KJn8xN0QOmEwkZI9LQuDmGCI+ozmwwNHM992aqSWHE
- tIkBk1nz67cEqWw144gguQPxd45i33CvygQz2dG0rg9TztDS2XWJMQeYkAMa/sBTImrD
- 9v3IGQ+LPsAYyI/Q/AamGOdKyuZGgklFWCZtpI3mkdqss7ZU/C5QoqF4z2xQ2ufNX7yZ
- /ksg==
-X-Gm-Message-State: ABy/qLaT20sULwTICkvHGMjVZGm9NLbBfS9/yU+Li+jeUxn2hwiBW5J3
- R+ghLlyG9dVWq1rxabe09632as0+CVoiKEczlKQErA==
-X-Google-Smtp-Source: APBJJlHOkjx6E7h+d697HBlUa0zDRBT6FTHAzhg/B4NPYhMo/RgnKuS4tXGeA1+bplaMwLE1UkPbqjXYNei7gBbJtlY=
-X-Received: by 2002:ac2:5b05:0:b0:4f8:5cde:a44f with SMTP id
- v5-20020ac25b05000000b004f85cdea44fmr2144646lfn.10.1689860752614; Thu, 20 Jul
- 2023 06:45:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230720130448.921356-1-jsnow@redhat.com>
-In-Reply-To: <20230720130448.921356-1-jsnow@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 20 Jul 2023 14:45:41 +0100
-Message-ID: <CAFEAcA-ZjYUKFM7FiDb_NcQ7L=gG8TSjipThgD9JC26DBP4zVQ@mail.gmail.com>
-Subject: Re: [PATCH 0/4] python/machine: use socketpair() for console socket
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qMU8B-0007yH-7v
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:55:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qMU89-0004Ly-QP
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 09:55:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689861344;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ovHmntJxZLZtRQjwClU9tdI/Ky6TWqt6hA8mC5jFOWE=;
+ b=O4yyKc3t4oe0V2QUXc7sqYwN2CFLR9h6JnPNjJHoeHgE60u2pl9EGIIpAz7jleB30YvUjg
+ hSyFeR+N49bndGCFPcPvpQximlzsx1q4zirLCi3wDi97x442HWU2UFJFMyadN7L++jKK+k
+ YUDfnvCa8hxlSWxcaQU+MY03Yil1dDI=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-557-iX9WcODAN0aRsUr92kacjg-1; Thu, 20 Jul 2023 09:55:41 -0400
+X-MC-Unique: iX9WcODAN0aRsUr92kacjg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B4B963810D45;
+ Thu, 20 Jul 2023 13:55:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.86])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7E5791454143;
+ Thu, 20 Jul 2023 13:55:39 +0000 (UTC)
+Date: Thu, 20 Jul 2023 14:55:37 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Beraldo Leal <bleal@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, 
- Daniel Berrange <berrange@redhat.com>, Cleber Rosa <crosa@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
+ Kevin Wolf <kwolf@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>
+Subject: Re: [PATCH 1/4] python/machine: move socket setup out of _base_args
+ property
+Message-ID: <ZLk82eqhit15QmWm@redhat.com>
+References: <20230720130448.921356-1-jsnow@redhat.com>
+ <20230720130448.921356-2-jsnow@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230720130448.921356-2-jsnow@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- WEIRD_PORT=0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,91 +84,27 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 20 Jul 2023 at 14:04, John Snow <jsnow@redhat.com> wrote:
->
-> Like we did for the QMP socket, use socketpair() for the console socket
-> so that hopefully there isn't a race condition during early boot where
-> data might get dropped on the floor.
->
-> "lightly tested"; passes local tests and gitlab CI. Doesn't seem to make
-> anything worse.
+On Thu, Jul 20, 2023 at 09:04:45AM -0400, John Snow wrote:
+> This property isn't meant to do much else besides return a list of
+> strings, so move this setup back out into _pre_launch().
+> 
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>  python/qemu/machine/machine.py | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 
-I tried this on the s390 linux box and the test failed because
-of a python exception:
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-__init__() got an unexpected keyword argument 'sock_dir'
 
-  $ QEMU_TEST_FLAKY_TESTS=1 ./build/aarch64/tests/venv/bin/avocado run
-./build/aarch64/tests/avocado/machine_aarch64_sbsaref.py:Aarch64SbsarefMachine.test_sbsaref_edk2_firmware
-JOB ID     : 8392ba37b5a825ed75278f85f686364d181c01d3
-JOB LOG    : /home/linux1/avocado/job-results/job-2023-07-20T13.41-8392ba3/job.log
- (1/1) ./build/aarch64/tests/avocado/machine_aarch64_sbsaref.py:Aarch64SbsarefMachine.test_sbsaref_edk2_firmware:
-ERROR: __init__() got an unexpected keyword argument 'sock_dir' (3.64
-s)
-RESULTS    : PASS 0 | ERROR 1 | FAIL 0 | SKIP 0 | WARN 0 | INTERRUPT 0
-| CANCEL 0
-JOB TIME   : 6.92 s
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-Backtrace etc from in the job.log:
-
-2023-07-20 13:41:49,125 stacktrace       L0041 ERROR| Reproduced
-traceback from:
-/home/linux1/qemu/build/aarch64/tests/venv/lib/python3.8/site-package
-s/avocado/core/test.py:770
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR| Traceback (most
-recent call last):
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/aarch64/tests/venv/lib/python3.8/site-packages/avocado/core/decorators.py",
-line 90, in wrapper
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|     return
-function(obj, *args, **kwargs)
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/aarch64/tests/avocado/machine_aarch64_sbsaref.py",
-line 84, in test_sbsaref_edk2_firmware
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|     self.fetch_firmware()
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/aarch64/tests/avocado/machine_aarch64_sbsaref.py",
-line 66, in fetch_firmware
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|     self.vm.set_console()
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/aarch64/tests/avocado/avocado_qemu/__init__.py",
-line 348, in vm
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|     return
-self.get_vm(name='default')
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/aarch64/tests/avocado/avocado_qemu/__init__.py",
-line 354, in get_vm
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|
-self._vms[name] = self._new_vm(name, *args)
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|   File
-"/home/linux1/qemu/build/aarch64/tests/avocado/avocado_qemu/__init__.py",
-line 324, in _new_vm
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR|     vm =
-QEMUMachine(self.qemu_bin, base_temp_dir=self.workdir,
-2023-07-20 13:41:49,147 stacktrace       L0045 ERROR| TypeError:
-__init__() got an unexpected keyword argument 'sock_dir'
-2023-07-20 13:41:49,147 stacktrace       L0046 ERROR|
-2023-07-20 13:41:49,147 test             L0775 DEBUG| Local variables:
-2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> obj <class
-'machine_aarch64_sbsaref.Aarch64SbsarefMachine'>:
-1-./build/aarch64/tests/avocado/machine_aarch64_sbsaref.py:Aarch64SbsarefMachine.test_sbsaref_edk2_firmware
-2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> args <class
-'tuple'>: ()
-2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> kwargs
-<class 'dict'>: {}
-2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> condition
-<class 'str'>: 1
-2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> function
-<class 'function'>: <function
-Aarch64SbsarefMachine.test_sbsaref_edk2_firmware at 0x3ff814d9700>
-2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> message
-<class 'str'>: Test is not reliable
-2023-07-20 13:41:49,160 test             L0778 DEBUG|  -> negate
-<class 'bool'>: True
-
-thanks
--- PMM
 
