@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A9E75B3BC
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B86475B3BD
 	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 18:03:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMW3t-0000Yl-Kc; Thu, 20 Jul 2023 11:59:29 -0400
+	id 1qMW3t-0000Yj-9V; Thu, 20 Jul 2023 11:59:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMW3X-0000Ww-R3
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 11:59:07 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1qMW3Y-0000XI-9P
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 11:59:08 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMW3V-00053Q-I9
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 11:59:07 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fbc5d5742eso8466985e9.3
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 08:59:05 -0700 (PDT)
+ id 1qMW3W-00054E-Ln
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 11:59:08 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3fbc0609cd6so7825175e9.1
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 08:59:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689868744; x=1690473544;
+ d=linaro.org; s=google; t=1689868745; x=1690473545;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SzNtfI3TP/wA6vffJRkjpFoMkJ0EgXW2e/UYOIIB1hM=;
- b=RDhqxn/2Q8IIgM96ul0f8XeG+GNYAYGHkTKcTCuTclukKJy0YzZUFmukxxrMJ2iLQW
- KInMu+vYFsFOavLudpWtGeKdO7ONrBneD4h9eBgsXeUWL6ANlFrHdN+61XeOJw78r+GV
- T13xNY9zBbRSxC03xX5xzo3/zF8qcas/CdLEEK00WmSvCJjMfGVmbQpxPns9B5KfG4SI
- v+kMUjqKkbL40cehsJjWlS5XYgNYlztpTty6bzm7EDeeCqgeLWqIIvV7w8itFQHcKJgO
- cJ6XEHk5q9BeYG2DG9gfX6Wa6MzGVdTgyEmeuQgQXngM3TMQ1LTtZFUH/x/mEgrzjYPo
- YhKQ==
+ bh=p+fu3Hdhlxf6MgJgkEAusairljl/PpUC4pvYOeOu/ZE=;
+ b=Ao525uJK2+OHzTfjR94YhIfsPC4vVvIYQP5BPwxLczfgvHgSPskJq6hrJUv/dexQr9
+ dd31SY3nbLcSEcg3Dqs9ZjLvTmka1P2EuOZHC8cw6bCBoEDqVuDUQ7aM4KbDu5lo2diU
+ 0AGGdV5cnY/A4ICk688uZQXOHtcFvUmi29vM8tspQIhp8Cko83N5X4aM3XAOyUbKGQRH
+ F+BUTGObiBsU/di/sWONylNDFhRwC+MIk9YfMUEqEouf/9rGQ6FJrpqr/O+nakCvdKH1
+ RLT3D72YG50eqtWzJM4R0PBmeBJo9Rkjpv1O/76dFU21njLqOHVDNZikL0KAK4yLGd8F
+ RHpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689868744; x=1690473544;
+ d=1e100.net; s=20221208; t=1689868745; x=1690473545;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SzNtfI3TP/wA6vffJRkjpFoMkJ0EgXW2e/UYOIIB1hM=;
- b=LVbTueV7rnqIZYXi02WWrHdhslHbSsFN/r1si7Ww08DT08kEH2qfMMtkOZESvS80wX
- 59j+4n4mkM2puSTw8+tjbgGw8WoHA7INdus/vwHy+xCW0yZ6JLCvjRdX3zuvxSYZnKiv
- Ue4vQDnngzEzscVruG93G5PXUouB4qtLtzQl5Wt6q1xnIuVJQRURMB2k3chMttFudJec
- HV+v47LV22s9NXtBZDeXW40+Jp34G0UAXhJa7GjPmbLNrOuCO0FkipQozcyGdV0qYLYE
- mxPx14WO+pkZeoI7FyS+MJLczHcX2mKSnckfUMO8jnYK7NXTw+Na/ycP7wYibzqS/vBm
- UPTg==
-X-Gm-Message-State: ABy/qLacjLYULK9gIpBQ4Nhgz/24ppd0kv8shiHMEClWbXU0tH1HqqXD
- g5Stdt3rhTnHUuIOr/Q1iMBo0K77+9numoSxRak=
-X-Google-Smtp-Source: APBJJlH5USkAaP37iXPEdZz7u+4OcjyttG7pJV8ELRUo1QoflntYpcGrXZqTodbc3sa/1hQVLQ4auQ==
-X-Received: by 2002:a1c:f30e:0:b0:3fa:91d2:55b6 with SMTP id
- q14-20020a1cf30e000000b003fa91d255b6mr2251865wmq.9.1689868744058; 
- Thu, 20 Jul 2023 08:59:04 -0700 (PDT)
+ bh=p+fu3Hdhlxf6MgJgkEAusairljl/PpUC4pvYOeOu/ZE=;
+ b=QwSCD333t6niRyzNbBaV6p8Ad6++ucKWbq4hwsCJSvGt+lzgSLS2XWiOsXGAvLdfHD
+ 1XjOTUdK4XgSrLE+JQe3e4So1MJrverDD6GDKVl7MCBVoW54U0sGrxbyo0NGDeVilGcP
+ WY3Nj5Hzq7ROG7RqA3ey5oTdOAdyPW+CypiQm5PT4Yd4tkMNVxNna47qIC6RFp2zY7OX
+ prF06z2fYD8NyY6cZfSAVBpzOxo0Te0uKtpxQ103MHL1Pk6PrV0bUtv3ZsdpqD66e9Ub
+ HhqlpA7x1uYTq6Y/jI1vuw2wQZZceZvE9flg7joxS3r+lGo+HmpaLKH09GFFZd7QPZQ5
+ ZaNQ==
+X-Gm-Message-State: ABy/qLbUUeexpGexKCv6Z2RAaThDwgp9B5EjWGwfdFW4sOomJ/3bKuN0
+ /KcQH8M2XJCiD/sxfZG1bNvG/ndacXZkJELHVJs=
+X-Google-Smtp-Source: APBJJlFF+EU571plm4fQ3YtZZjUDXajpFnaY2l0+FSX9l4LyINyuY9HX1jNYiH6R94KGtgzdHHOyew==
+X-Received: by 2002:a05:600c:d5:b0:3fb:b890:128b with SMTP id
+ u21-20020a05600c00d500b003fbb890128bmr5148407wmm.27.1689868745257; 
+ Thu, 20 Jul 2023 08:59:05 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- z5-20020a05600c220500b003fc02a410d0sm4187572wml.48.2023.07.20.08.59.03
+ z5-20020a05600c220500b003fc02a410d0sm4187572wml.48.2023.07.20.08.59.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 20 Jul 2023 08:59:03 -0700 (PDT)
+ Thu, 20 Jul 2023 08:59:04 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>
-Subject: [PATCH for-8.2 1/4] hw/rtc/m48t59: Use 64-bit arithmetic in
- set_alarm()
-Date: Thu, 20 Jul 2023 16:58:59 +0100
-Message-Id: <20230720155902.1590362-2-peter.maydell@linaro.org>
+Subject: [PATCH for-8.2 3/4] hw/rtc/aspeed_rtc: Use 64-bit offset for holding
+ time_t difference
+Date: Thu, 20 Jul 2023 16:59:01 +0100
+Message-Id: <20230720155902.1590362-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230720155902.1590362-1-peter.maydell@linaro.org>
 References: <20230720155902.1590362-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,30 +95,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the m48t59 device we almost always use 64-bit arithmetic when
-dealing with time_t deltas.  The one exception is in set_alarm(),
-which currently uses a plain 'int' to hold the difference between two
-time_t values.  Switch to int64_t instead to avoid any possible
-overflow issues.
+In the aspeed_rtc device we store a difference between two time_t
+values in an 'int'. This is not really correct when time_t could
+be 64 bits. Enlarge the field to 'int64_t'.
+
+This is a migration compatibility break for the aspeed boards.
+While we are changing the vmstate, remove the accidental
+duplicate of the offset field.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/rtc/m48t59.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I took "bump the migration version" as the simplest approach
+here, because I don't think we care about migration compat
+in this case. If we do I can write the alternate version of
+the patch...
+---
+ include/hw/rtc/aspeed_rtc.h | 2 +-
+ hw/rtc/aspeed_rtc.c         | 5 ++---
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/hw/rtc/m48t59.c b/hw/rtc/m48t59.c
-index ec3e56e84fd..2e2c849985c 100644
---- a/hw/rtc/m48t59.c
-+++ b/hw/rtc/m48t59.c
-@@ -133,7 +133,7 @@ static void alarm_cb (void *opaque)
+diff --git a/include/hw/rtc/aspeed_rtc.h b/include/hw/rtc/aspeed_rtc.h
+index df61e46059e..596dfebb46c 100644
+--- a/include/hw/rtc/aspeed_rtc.h
++++ b/include/hw/rtc/aspeed_rtc.h
+@@ -18,7 +18,7 @@ struct AspeedRtcState {
+     qemu_irq irq;
  
- static void set_alarm(M48t59State *NVRAM)
- {
--    int diff;
-+    int64_t diff;
-     if (NVRAM->alrm_timer != NULL) {
-         timer_del(NVRAM->alrm_timer);
-         diff = qemu_timedate_diff(&NVRAM->alarm) - NVRAM->time_offset;
+     uint32_t reg[0x18];
+-    int offset;
++    int64_t offset;
+ 
+ };
+ 
+diff --git a/hw/rtc/aspeed_rtc.c b/hw/rtc/aspeed_rtc.c
+index f6da7b666d6..fa861e2d494 100644
+--- a/hw/rtc/aspeed_rtc.c
++++ b/hw/rtc/aspeed_rtc.c
+@@ -136,11 +136,10 @@ static const MemoryRegionOps aspeed_rtc_ops = {
+ 
+ static const VMStateDescription vmstate_aspeed_rtc = {
+     .name = TYPE_ASPEED_RTC,
+-    .version_id = 1,
++    .version_id = 2,
+     .fields = (VMStateField[]) {
+         VMSTATE_UINT32_ARRAY(reg, AspeedRtcState, 0x18),
+-        VMSTATE_INT32(offset, AspeedRtcState),
+-        VMSTATE_INT32(offset, AspeedRtcState),
++        VMSTATE_INT64(offset, AspeedRtcState),
+         VMSTATE_END_OF_LIST()
+     }
+ };
 -- 
 2.34.1
 
