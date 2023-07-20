@@ -2,76 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B0E75AA5D
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 11:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA7E75AAA0
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 11:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMPZ1-0008CP-3s; Thu, 20 Jul 2023 05:03:11 -0400
+	id 1qMPul-00066x-Qw; Thu, 20 Jul 2023 05:25:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1qMPYy-0008C2-8V
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 05:03:08 -0400
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1qMPuS-00066d-V5
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 05:25:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <leiyang@redhat.com>)
- id 1qMPYw-00075A-GM
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 05:03:08 -0400
+ (Exim 4.90_1) (envelope-from <mzamazal@redhat.com>)
+ id 1qMPuO-0005YC-SQ
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 05:25:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689843785;
+ s=mimecast20190719; t=1689845115;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AILHHx55pTnATXsXTaW+6GTijwbcfUt62rHvQUeYZjc=;
- b=T059R8JsmiBEU60FbdgR4uYHSgqt4qpZBQpHpMRqsnF+2l4Mx+zYLCvloUbUZ5QwiF+YpP
- D+7yZxXYkvQicD2tL4xVPikPF1dNp6XoOsASwiKxY8/UAONWCI3Hbj8dajHoX+8TaSx0E6
- pPNdUJCR+mkX8qKaCmqVmdvtep94b3o=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DvyVPj5UGVgAQU0s/QoN5hre3cr3wvfsYEF1gFC5DWw=;
+ b=Wf1JcuDRuBXZhNKX7CJxPAo+PkzvRp3LdfFq95AusIwfOhazZJra+QiWk0t9RCsx2oqGrQ
+ INtd8HptXvTPi1HelwCj/5f0MXNd1srXvQO+8VJwD8rtweCrtmz7dXf8VAD0t3clNt6Pna
+ 1KMSoYFMs11JntlsX2mPOWgFm+/LDtc=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-gUBcfHKlPiy03mHNpZKj8Q-1; Thu, 20 Jul 2023 05:03:04 -0400
-X-MC-Unique: gUBcfHKlPiy03mHNpZKj8Q-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-4fb76659d6cso574408e87.2
- for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 02:03:03 -0700 (PDT)
+ us-mta-652-X7rgOL1pM6iWnYFev23_2w-1; Thu, 20 Jul 2023 05:25:13 -0400
+X-MC-Unique: X7rgOL1pM6iWnYFev23_2w-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-94a355cf318so52529166b.2
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 02:25:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689843782; x=1690448582;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AILHHx55pTnATXsXTaW+6GTijwbcfUt62rHvQUeYZjc=;
- b=AjkeEiNkDySqNjVWO9vqm2sjuJiLBYZV3ekeSiVTEhCGOLaKRZTLXLQE6ad1DBBHh6
- 5KcyUYeg6qgzehB5Sfm1sFYvB02z/UYhtNCHCbmz/UfVRUGVyXsIE+NUJtu3TWQkRQGl
- IkRrXp3DWMM3mPyUWqL5toUSMLlJG74IukxGT2Px0Fp1B6qVk7UmIygSv2lrD1+aX/RW
- 3k6+vckJU74OMAJqK7VDgBy4mHf20AlsoD/MFCEcUAjTmfkKhXF5A3pjcrDImblUz/94
- AEsUoB8kROt0RAdRrin4wGPZ5zpfHkVBEy9SOMlibrBJYA4APT1R48z4Lpb15DlGORZN
- o13A==
-X-Gm-Message-State: ABy/qLYqsGDt3zYIviK0yoAFabLsqKa6vS0Gr2JLw16Br+LMk8NLnNPg
- FtwJ745bwDaCgvoiooreyNEnsnHUVxpiUBk9xqlVghhrxminBW5ih1JHykPHOWulgrdotflBYg0
- cqHAmd/W52x7bVGEmHy3RHdK14yA4R6Y=
-X-Received: by 2002:a19:5f57:0:b0:4fd:d517:fbd8 with SMTP id
- a23-20020a195f57000000b004fdd517fbd8mr1783862lfj.9.1689843782730; 
- Thu, 20 Jul 2023 02:03:02 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFg1RnrYmC6uabVeOS5CE3NcpbhvK7TbQ3963uYNrY2XsANhyfhYPXZUxcb+swcE3D8rKNIsh4zYfsSCvhqRkU=
-X-Received: by 2002:a19:5f57:0:b0:4fd:d517:fbd8 with SMTP id
- a23-20020a195f57000000b004fdd517fbd8mr1783842lfj.9.1689843782330; Thu, 20 Jul
- 2023 02:03:02 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689845112; x=1690449912;
+ h=mime-version:user-agent:message-id:in-reply-to:date:references
+ :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DvyVPj5UGVgAQU0s/QoN5hre3cr3wvfsYEF1gFC5DWw=;
+ b=Z8/7vhWmn5aEQyQSntBbh2RWFf7QRO/2w4CLw9zUidbf0vvC4QJ+hr8LeC5ex0Sh/E
+ YAnIVEePO/S0+A6WUKInvwBsW4VrBpst+/qaRaFtAm3CC4U00q0tUEoCeMr0FmnEc47X
+ 5V59PasRcKHJs5SjUrL+REc99l8wfWPalzQVmUiZRphFUmWcJadWyfcmdvhvVhvIxEXC
+ G3trOYm1fwoSszCR+8FqqZ9N29xEFZAowxP7xHL3AtHowX5SEV7opzvS8lwG54Yom0+2
+ kwFrufc6Y7h/XOaspqKdSxDwalsiJ2LEQiMroLZVWy1SGuFRxAKuzqz2KnOxtWpT+mwT
+ O96A==
+X-Gm-Message-State: ABy/qLa1024Ua49PaxCiFUAln8UCh1H4UP/WmbzYgwHlS0yTJf5oZKFX
+ Tn7sw3DFVxuat6Ly3BTmgQjgweirUa7aoy1+TXsl0bU9Cvfdltq56eOIpIF3aKL8GduRTZZhJm4
+ 662PJaOoznrigJEg=
+X-Received: by 2002:a17:906:2403:b0:98e:1484:5954 with SMTP id
+ z3-20020a170906240300b0098e14845954mr4063240eja.71.1689845112027; 
+ Thu, 20 Jul 2023 02:25:12 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHFVmazhjrBB2hYWPzeKrQDHWgySuGQIYK1VqpEVa6X9PtIGeJ6HiRIUIXnemB99g0kGFLpjA==
+X-Received: by 2002:a17:906:2403:b0:98e:1484:5954 with SMTP id
+ z3-20020a170906240300b0098e14845954mr4063225eja.71.1689845111705; 
+ Thu, 20 Jul 2023 02:25:11 -0700 (PDT)
+Received: from nuthatch (ip-77-48-47-2.net.vodafone.cz. [77.48.47.2])
+ by smtp.gmail.com with ESMTPSA id
+ bt16-20020a170906b15000b00993159ce075sm402866ejb.210.2023.07.20.02.25.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 20 Jul 2023 02:25:11 -0700 (PDT)
+From: Milan Zamazal <mzamazal@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,  qemu-devel@nongnu.org,  Peter
+ Maydell <peter.maydell@linaro.org>,  Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>
+Subject: Re: [PULL 10/66] tests/qtest: enable tests for virtio-scmi
+References: <cover.1689030052.git.mst@redhat.com>
+ <b6f53ae005a1c05034769beebf799e861b82d48a.1689030052.git.mst@redhat.com>
+ <22589b2f-8dcf-b86b-2d77-bf27bf81ce27@redhat.com>
+ <87pm4pcrbe.fsf@redhat.com>
+ <373f7d28-788b-99d1-1606-b73db45720c1@redhat.com>
+ <87mszrptes.fsf@redhat.com>
+ <3d058944-263d-adb3-8f76-e64388574b48@redhat.com>
+Date: Thu, 20 Jul 2023 11:25:10 +0200
+In-Reply-To: <3d058944-263d-adb3-8f76-e64388574b48@redhat.com> (Thomas Huth's
+ message of "Thu, 20 Jul 2023 10:40:07 +0200")
+Message-ID: <871qh3exzd.fsf@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <cover.1689690854.git.yin31149@gmail.com>
- <CAKrof1Nn83WbjHgBPjYXtxMOC_OC44Si4-J+HsmRu7yF1+gfNw@mail.gmail.com>
-In-Reply-To: <CAKrof1Nn83WbjHgBPjYXtxMOC_OC44Si4-J+HsmRu7yF1+gfNw@mail.gmail.com>
-From: Lei Yang <leiyang@redhat.com>
-Date: Thu, 20 Jul 2023 17:02:25 +0800
-Message-ID: <CAPpAL=z5wkx5X-wbvx8mTL_h7fhUuHC4V57Cqt63gnFHtFbbUA@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Vhost-vdpa Shadow Virtqueue VLAN support
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, eperezma@redhat.com, 
- qemu-devel@nongnu.org, 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=leiyang@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mzamazal@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,91 +108,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QE tested this series patch with real hardware, it can support setup
-vlan for the nic, and the vlan id still can be found after finished
-migrate. In addition, this series patch also help to test another
-patch, can got the expect result.
+Thomas Huth <thuth@redhat.com> writes:
 
-Tested-by: Lei Yang <leiyang@redhat.com>
+> On 19/07/2023 21.56, Milan Zamazal wrote:
+>> Thomas Huth <thuth@redhat.com> writes:
+>> 
+>
+>>> On 18/07/2023 14.55, Milan Zamazal wrote:
+>>>> Thomas Huth <thuth@redhat.com> writes:
+>>>>
+>>>
+>>>>> On 11/07/2023 01.02, Michael S. Tsirkin wrote:
+>>>>>> From: Milan Zamazal <mzamazal@redhat.com>
+>>>>>> We don't have a virtio-scmi implementation in QEMU and only support
+>>>>>
+>>>>>> a
+>>>>>> vhost-user backend.  This is very similar to virtio-gpio and we add the same
+>>>>>> set of tests, just passing some vhost-user messages over the control socket.
+>>>>>> Signed-off-by: Milan Zamazal <mzamazal@redhat.com>
+>>>>>> Acked-by: Thomas Huth <thuth@redhat.com>
+>>>>>> Message-Id: <20230628100524.342666-4-mzamazal@redhat.com>
+>>>>>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+>>>>>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+>>>>>> ---
+>>>>>>     tests/qtest/libqos/virtio-scmi.h |  34 ++++++
+>>>>>>     tests/qtest/libqos/virtio-scmi.c | 174 +++++++++++++++++++++++++++++++
+>>>>>>     tests/qtest/vhost-user-test.c    |  44 ++++++++
+>>>>>>     MAINTAINERS                      |   1 +
+>>>>>>     tests/qtest/libqos/meson.build   |   1 +
+>>>>>>     5 files changed, 254 insertions(+)
+>>>>>>     create mode 100644 tests/qtest/libqos/virtio-scmi.h
+>>>>>>     create mode 100644 tests/qtest/libqos/virtio-scmi.c
+>>>>>
+>>>>>    Hi!
+>>>>>
+>>>>> I'm seeing some random failures with this new scmi test, so far only
+>>>>> on non-x86 systems, e.g.:
+>>>>>
+>>>>>    https://app.travis-ci.com/github/huth/qemu/jobs/606246131#L4774
+>>>>>
+>>>>> It also reproduces on a s390x host here, but only if I run "make check
+>>>>> -j$(nproc)" - if I run the tests single-threaded, the qos-test passes
+>>>>> there. Seems like there is a race somewhere in this test?
+>>>> Hmm, it's basically the same as virtio-gpio.c test, so it should be
+>>>> OK.
+>>>> Is it possible that the two tests (virtio-gpio.c & virtio-scmi.c)
+>>>> interfere with each other in some way?  Is there possibly a way to
+>>>> serialize them to check?
+>>>
+>>> I think within one qos-test, the sub-tests are already run
+>>> serialized.
+>> I see, OK.
+>> 
+>>> But there might be multiple qos-tests running in parallel, e.g. one
+>>> for the aarch64 target and one for the ppc64 target. And indeed, I can
+>>> reproduce the problem on my x86 laptop by running this in one terminal
+>>> window:
+>>>
+>>> for ((x=0;x<1000;x++)); do \
+>>>   QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon \
+>>>   G_TEST_DBUS_DAEMON=.tests/dbus-vmstate-daemon.sh \
+>>>   QTEST_QEMU_BINARY=./qemu-system-ppc64 \
+>>>   MALLOC_PERTURB_=188 QTEST_QEMU_IMG=./qemu-img \
+>>>   tests/qtest/qos-test -p \
+>>>   /ppc64/pseries/spapr-pci-host-bridge/pci-bus-spapr/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile
+>>> \
+>>>   || break ; \
+>>> done
+>>>
+>>> And this in another terminal window at the same time:
+>>>
+>>> for ((x=0;x<1000;x++)); do \
+>>>   QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon \
+>>>   G_TEST_DBUS_DAEMON=.tests/dbus-vmstate-daemon.sh \
+>>>   QTEST_QEMU_BINARY=./qemu-system-aarch64 \
+>>>   MALLOC_PERTURB_=188 QTEST_QEMU_IMG=./qemu-img \
+>>>   tests/qtest/qos-test -p \
+>>>   /aarch64/virt/generic-pcihost/pci-bus-generic/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile
+>>> \
+>>>   || break ; \
+>>> done
+>>>
+>>> After a while, the aarch64 test broke with:
+>>>
+>>> /aarch64/virt/generic-pcihost/pci-bus-generic/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile:
+>>> qemu-system-aarch64: Failed to set msg fds.
+>>> qemu-system-aarch64: Failed to set msg fds.
+>>> qemu-system-aarch64: vhost VQ 0 ring restore failed: -22: Invalid argument (22)
+>>> qemu-system-aarch64: Failed to set msg fds.
+>>> qemu-system-aarch64: vhost VQ 1 ring restore failed: -22: Invalid argument (22)
+>>> qemu-system-aarch64: Failed to set msg fds.
+>>> qemu-system-aarch64: vhost_set_vring_call failed 22
+>>> qemu-system-aarch64: Failed to set msg fds.
+>>> qemu-system-aarch64: vhost_set_vring_call failed 22
+>>> qemu-system-aarch64: Failed to write msg. Wrote -1 instead of 20.
+>>> qemu-system-aarch64: Failed to set msg fds.
+>>> qemu-system-aarch64: vhost VQ 0 ring restore failed: -22: Invalid argument (22)
+>>> qemu-system-aarch64: Failed to set msg fds.
+>>> qemu-system-aarch64: vhost VQ 1 ring restore failed: -22: Invalid argument (22)
+>>> qemu-system-aarch64: ../../devel/qemu/hw/pci/msix.c:659:
+>>> msix_unset_vector_notifiers: Assertion `dev->msix_vector_use_notifier
+>>> && dev->msix_vector_release_notifier' failed.
+>>> ../../devel/qemu/tests/qtest/libqtest.c:200: kill_qemu() detected QEMU
+>>> death from signal 6 (Aborted) (core dumped)
+>>> **
+>>> ERROR:../../devel/qemu/tests/qtest/qos-test.c:191:subprocess_run_one_test:
+>>> child process
+>>> (/aarch64/virt/generic-pcihost/pci-bus-generic/pci-bus/vhost-user-scmi-pci/vhost-user-scmi/vhost-user-scmi-tests/scmi/read-guest-mem/memfile/subprocess
+>>> [488457]) failed unexpectedly
+>>> Aborted (core dumped)
+>> Interesting, good discovery.
+>> 
+>>> Can you also reproduce it this way?
+>> Unfortunately not.  I ran the loops several times and everything
+>> passed.
+>> I tried to compile and run it in a different distro container and it
+>> passed too.  I also haven't been successful in getting any idea how the
+>> processes could influence each other.
+>> What OS and what QEMU configure flags did you use to compile and run
+>> it?
+>
+> I'm using RHEL 8 on an older laptop ... and maybe the latter is
+> related: I just noticed that I can also reproduce the problem by just
+> running one of the above two for-loop while putting a lot of load on
+> the machine otherwise, e.g. by running a "make -j$(nproc)" to rebuild
+> the whole QEMU sources. So it's definitely a race *within* one QEMU
+> process.
 
-On Wed, Jul 19, 2023 at 6:54=E2=80=AFPM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
->
-> =E5=9C=A8 2023/7/19 15:47, Hawkins Jiawei =E5=86=99=E9=81=93:
-> > This series enables shadowed CVQ to intercept VLAN commands
-> > through shadowed CVQ, update the virtio NIC device model
-> > so qemu send it in a migration, and the restore of that
-> > VLAN state in the destination.
->
-> This patch series is based on
-> "[PATCH 0/3] Vhost-vdpa Shadow Virtqueue VLAN support" at [1],
-> with these changes:
->
->   - move `MAX_VLAN` macro to include/hw/virtio/virtio-net.h
-> instead of net/vhost-vdpa.c
->   - fix conflicts with the master branch
->
-> Thanks!
->
-> [1]. https://lists.gnu.org/archive/html/qemu-devel/2022-09/msg01016.html
->
->
-> >
-> > TestStep
-> > =3D=3D=3D=3D=3D=3D=3D=3D
-> > 1. test the migration using vp-vdpa device
-> >    - For L0 guest, boot QEMU with two virtio-net-pci net device with
-> > `ctrl_vq`, `ctrl_vlan` features on, command line like:
-> >        -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Doff,
-> > iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
-> > indirect_desc=3Doff,queue_reset=3Doff,ctrl_vlan=3Don,...
-> >
-> >    - For L1 guest, apply the patch series and compile the source code,
-> > start QEMU with two vdpa device with svq mode on, enable the `ctrl_vq`,
-> > `ctrl_vlan` features on, command line like:
-> >        -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
-> >        -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3Don=
-,
-> > ctrl_vlan=3Don,...
-> >
-> >    - For L2 source guest, run the following bash command:
-> > ```bash
-> > #!/bin/sh
-> >
-> > for idx in {1..4094}
-> > do
-> >    ip link add link eth0 name vlan$idx type vlan id $idx
-> > done
-> > ```
-> >
-> >    - gdb attaches the L2 dest VM and break at the
-> > vhost_vdpa_net_load_single_vlan(), and execute the following
-> > gdbscript
-> > ```gdbscript
-> > ignore 1 4094
-> > c
-> > ```
-> >
-> >    - Execute the live migration in L2 source monitor
-> >
-> >    - Result
-> >      * with this series, gdb can hit the breakpoint and continue
-> > the executing without triggering any error or warning.
-> >
-> > Eugenio P=C3=A9rez (1):
-> >    virtio-net: do not reset vlan filtering at set_features
-> >
-> > Hawkins Jiawei (3):
-> >    virtio-net: Expose MAX_VLAN
-> >    vdpa: Restore vlan filtering state
-> >    vdpa: Allow VIRTIO_NET_F_CTRL_VLAN in SVQ
-> >
-> >   hw/net/virtio-net.c            |  6 +---
-> >   include/hw/virtio/virtio-net.h |  6 ++++
-> >   net/vhost-vdpa.c               | 50 +++++++++++++++++++++++++++++++++=
-+
-> >   3 files changed, 57 insertions(+), 5 deletions(-)
-> >
->
+Ah, great, now I can easily reproduce it by running kernel compilation
+in the background.  And I could also check that the supposed fix
+remedies the problem.  I'll post the patch soon.
+
+Thank you,
+Milan
 
 
