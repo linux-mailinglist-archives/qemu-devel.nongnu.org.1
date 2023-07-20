@@ -2,63 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C8675B810
-	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 21:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 123A475B81B
+	for <lists+qemu-devel@lfdr.de>; Thu, 20 Jul 2023 21:37:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMZPs-0002XC-30; Thu, 20 Jul 2023 15:34:24 -0400
+	id 1qMZRe-0003u5-Da; Thu, 20 Jul 2023 15:36:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qMZPm-0002UB-MN
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 15:34:19 -0400
+ id 1qMZRb-0003rX-6w
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 15:36:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qMZPl-00071P-AE
- for qemu-devel@nongnu.org; Thu, 20 Jul 2023 15:34:18 -0400
+ id 1qMZRZ-0007Y1-LO
+ for qemu-devel@nongnu.org; Thu, 20 Jul 2023 15:36:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689881656;
+ s=mimecast20190719; t=1689881769;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=eG6jlyoUZ5qzdNUtskdrDodZ/+VJIJ2pNFORLB3W/5U=;
- b=BJEDJsf11M9DQllge+Zl+40oeFqRLW65HzZq4RbU6kngMkq6UkC9NOhAs00dpixRPwh5VE
- iTRXoMF+vAaQC3HQHWdk3yNXpf6JUH9/0rvh6gh8b6AsSDGd62d6OgLi4JqChA6GFiE3J8
- O57R2S1EtDHkSpeJp0WYLU+lt3HG2ok=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-82-3m7NbuOyMTm3RYJBjmG3XQ-1; Thu, 20 Jul 2023 15:34:09 -0400
-X-MC-Unique: 3m7NbuOyMTm3RYJBjmG3XQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ bh=gBMnzG4MebFIf16BpkbQyP0Yw4tKPK9x1cMKc+CNT+k=;
+ b=SOv/3Cgz26a4G9cq11pQzRv2Jrymh15zTRrQuMP9saA5bYAunC92ATezJOacOLT2PTUN0p
+ T9O+aPZeU8fyhU+piz7QW1v7smNMpyro/MSI7e22lmE/9peGoK5lK10IXiE44/gcDhV1vi
+ G7DQEXQvKgs4j9amLTQR7Sev+bz1vlU=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-296-sTKFDoLzPx6EJnvZT2Gw4g-1; Thu, 20 Jul 2023 15:36:04 -0400
+X-MC-Unique: sTKFDoLzPx6EJnvZT2Gw4g-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CC757185A791;
- Thu, 20 Jul 2023 19:34:07 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 093EB3C160E4;
+ Thu, 20 Jul 2023 19:36:03 +0000 (UTC)
 Received: from localhost (unknown [10.39.194.253])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2FFC140C2070;
- Thu, 20 Jul 2023 19:34:06 +0000 (UTC)
-Date: Thu, 20 Jul 2023 15:34:05 -0400
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 61A3740C6F4C;
+ Thu, 20 Jul 2023 19:36:02 +0000 (UTC)
+Date: Thu, 20 Jul 2023 15:36:01 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, virtio-dev@lists.oasis-open.org, slp@redhat.com,
- mst@redhat.com, marcandre.lureau@redhat.com,
- viresh.kumar@linaro.org, sgarzare@redhat.com,
- takahiro.akashi@linaro.org, erik.schilling@linaro.org,
- manos.pitsidianakis@linaro.org, mathieu.poirier@linaro.org
-Subject: Re: [RFC PATCH] docs/interop: define STANDALONE protocol feature for
- vhost-user
-Message-ID: <20230720193405.GH210977@fedora>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, virtio-dev@lists.oasis-open.org,
+ slp@redhat.com, mst@redhat.com, marcandre.lureau@redhat.com,
+ viresh.kumar@linaro.org, takahiro.akashi@linaro.org,
+ erik.schilling@linaro.org, manos.pitsidianakis@linaro.org,
+ mathieu.poirier@linaro.org
+Subject: Re: [virtio-dev] [RFC PATCH] docs/interop: define STANDALONE
+ protocol feature for vhost-user
+Message-ID: <20230720193601.GI210977@fedora>
 References: <20230704123600.1808604-1-alex.bennee@linaro.org>
+ <3ogh7u3ezp7vlrp3ticquoajgsnpnglplm44osrsd7gvxv2lyn@g22qgf4vwgp5>
+ <87o7krg0sn.fsf@linaro.org>
+ <qmwvywoy7lfkgr7kcc6cxghulgd5g2gvnv76mvkuxbqclbwmti@4qyiktfiu2ej>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="j9wh8nmrelTh7uLo"
+ protocol="application/pgp-signature"; boundary="PJgjM68U1AKlFxoJ"
 Content-Disposition: inline
-In-Reply-To: <20230704123600.1808604-1-alex.bennee@linaro.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+In-Reply-To: <qmwvywoy7lfkgr7kcc6cxghulgd5g2gvnv76mvkuxbqclbwmti@4qyiktfiu2ej>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -85,45 +89,73 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---j9wh8nmrelTh7uLo
+--PJgjM68U1AKlFxoJ
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 04, 2023 at 01:36:00PM +0100, Alex Benn=E9e wrote:
-> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-> index c4e0cbd702..28b021d5d3 100644
-> --- a/hw/virtio/vhost-user.c
-> +++ b/hw/virtio/vhost-user.c
-> @@ -202,6 +202,13 @@ typedef struct VhostUserInflight {
->      uint16_t queue_size;
->  } VhostUserInflight;
-> =20
-> +typedef struct VhostUserBackendSpecs {
-> +    uint32_t device_id;
-> +    uint32_t config_size;
-> +    uint32_t min_vqs;
+On Fri, Jul 07, 2023 at 12:27:39PM +0200, Stefano Garzarella wrote:
+> On Tue, Jul 04, 2023 at 04:02:42PM +0100, Alex Benn=E9e wrote:
+> >=20
+> > Stefano Garzarella <sgarzare@redhat.com> writes:
+> >=20
+> > > On Tue, Jul 04, 2023 at 01:36:00PM +0100, Alex Benn=E9e wrote:
+> > > > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.=
+rst
+> > > > index 5a070adbc1..85b1b1583a 100644
+> > > > --- a/docs/interop/vhost-user.rst
+> > > > +++ b/docs/interop/vhost-user.rst
+> > > > @@ -275,6 +275,21 @@ Inflight description
+> > > >=20
+> > > > :queue size: a 16-bit size of virtqueues
+> > > >=20
+> > > > +Backend specifications
+> > > > +^^^^^^^^^^^^^^^^^^^^^^
+> > > > +
+> > > > ++-----------+-------------+------------+------------+
+> > > > +| device id | config size |   min_vqs  |   max_vqs  |
+> > > > ++-----------+-------------+------------+------------+
+> > > > +
+> > > > +:device id: a 32-bit value holding the VirtIO device ID
+> > > > +
+> > > > +:config size: a 32-bit value holding the config size (see ``VHOST_=
+USER_GET_CONFIG``)
+> > > > +
+> > > > +:min_vqs: a 32-bit value holding the minimum number of vqs support=
+ed
+> > >=20
+> > > Why do we need the minimum?
+> >=20
+> > We need to know the minimum number because some devices have fixed VQs
+> > that must be present.
+>=20
+> But does QEMU need to know this?
+>=20
+> Or is it okay that the driver will then fail in the guest if there
+> are not the right number of queues?
 
-You already answered my question about min_vqs in another sub-thread.
-I'll continue there. Please ignore my question.
+I don't understand why min_vqs is needed either. It's not the
+front-end's job to ensure that the device will be used properly. A
+spec-compliant driver will work with a spec-compliant device, so it's
+not clear why the front-end needs this information.
 
 Stefan
 
---j9wh8nmrelTh7uLo
+--PJgjM68U1AKlFxoJ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmS5jC0ACgkQnKSrs4Gr
-c8iN6AgAxdqz+9Xcn0x06RFaLDFhDZZIKyQMS5xX2hORkjyy4/elj76lqsL3LWp3
-hg2YULCGZR2aKklkTi0ru6GZ+sHCHgK5b5Jc4mIZv+J9bxxKvPipRfuxaAbax8zp
-32swpPC5FMIl+LtM7YT4+DaJo8xggwqXlDMtQ1jIKZI68hqE7gM8DXQBg/XKHNcI
-Cb0BFC+up8UgVEE5NhdZKZiHU18ibcTs7B0VilMIrB6E6ca7qZyX0LS6rWAV7QyT
-Wfi8eeNpzKnY6ol08simZf+6aSyVLu7cO9MK5PlbpMQMtUUofe8pz55GaBK9Odme
-rDiX1BP4ycHowZZ3/W1ItQK2iT1urA==
-=zdi6
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmS5jKAACgkQnKSrs4Gr
+c8iL2QgAqCc6gx0y20MWAVkqX4M5cONVtaHUBQz26ZTaU20ipQ1qS4HYsgGW67hX
+fthNJsVS3gGpAhkjOf3bWMB5s20sjAEdifjqZe8C2HL2AxRJsNYBZwH/btA3aWbC
+0w7uxLUcXv1ccqsE4CMp+DPIHOnKwA5ewlbg7P04ya4kNjzx5WM2EMJhlJ9vbybx
++7UuPukQDV/TG3yBJOz61wCQQ/ABt0njwxXJakMVyRj0O6aHbZDPs09ibFmc9jDW
+O+35GNYVSdvN3/cd8J6Vc2ikJ4q+jEK0/E8jbh6+jc7OOQ3BKnluKhwkGYvouSDK
+Ia7ziZJnl7n7fzghOOdSpPu8/a63RQ==
+=dGKO
 -----END PGP SIGNATURE-----
 
---j9wh8nmrelTh7uLo--
+--PJgjM68U1AKlFxoJ--
 
 
