@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BABB475CFB2
+	by mail.lfdr.de (Postfix) with ESMTPS id E03BA75CFB4
 	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 18:37:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMt70-0002q3-3m; Fri, 21 Jul 2023 12:36:14 -0400
+	id 1qMt7u-00031T-0X; Fri, 21 Jul 2023 12:37:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
- id 1qMt6y-0002pq-L0
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 12:36:12 -0400
-Received: from mail-yw1-x1142.google.com ([2607:f8b0:4864:20::1142])
+ id 1qMt7r-0002xf-Gn
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 12:37:07 -0400
+Received: from mail-yb1-xb43.google.com ([2607:f8b0:4864:20::b43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
- id 1qMt6w-00056D-Uf
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 12:36:12 -0400
-Received: by mail-yw1-x1142.google.com with SMTP id
- 00721157ae682-57712d00cc1so23610387b3.3
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 09:36:10 -0700 (PDT)
+ id 1qMt7p-00059s-Qp
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 12:37:07 -0400
+Received: by mail-yb1-xb43.google.com with SMTP id
+ 3f1490d57ef6-cefa8fe4cbeso2044316276.3
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 09:37:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689957369; x=1690562169;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=4rQeMRhVWs0eiVqTBZAihMyI0OBjLqk1MiSDA6bw+so=;
- b=GxoaygpJp4E71e5V5mMh0Kl+CGi7YLTC1mvll0v6YWmm+tCnStH6BXxjbKvxXTBqrm
- UgkqW0OTlO5ZUmR62MOHprzWHaThMLbwR+XvLtUmYhyEE+ahm/BJY1Tlchj//PricvC/
- 5UPSfIq/v2+ajTgyDK18T3qZOfCdf5WqaVP+abqlnbyJSWisqt6QZMycj4fg6/ShiOi7
- L8LgzV3muOYA+sGvNJ5sP5rwlftTD3WCshVlkPiueBDR59aTPFoRKWu8Y9wU0T2oOYwX
- TQbPT7bHRN595duFohjfbNDoZapzfICKjeVcX3THVMJVMnYlHW4mhdLrGcQ2O6uHswYa
- 2p4A==
+ d=gmail.com; s=20221208; t=1689957424; x=1690562224;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ijmrvsQ+xZzl5dG2FfioPPf11zWI2IrXAZmlY53iqe8=;
+ b=kBBkXWLAIposs8Vvw5ryzVTR1Y5pX6ZV7oyHb+pESXSHL7AchAD9QYsuxt1mDozKhL
+ BFPUJ8WyAY6FL8Ukz3Z+d6DeeOmlNwskzdHr5QvoAeeJK3/NPUwV8NSmE13y+EZ9Uegh
+ qG+t/aMvbf11Yr39J9dHsfQDJZEUbguWsc0fthH9ETQ4zEj39HfUM+jk1dfqd9a8SrWc
+ AQoX2CN+jlF8vQPhRnn0cIBB3d8zApUzIZ6sivbJai8cOMGPtKX+Pd9Pr8kGtY3dPUz1
+ 05D7CTIYt5e6k1UPG0DvFEimHNVwyhimoaD+EUj39D+lLDBxSw/iCBajmnMbGxcYGQbn
+ b7Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689957369; x=1690562169;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4rQeMRhVWs0eiVqTBZAihMyI0OBjLqk1MiSDA6bw+so=;
- b=PVz3gSbLvc+BmnQR70N/zMdIoJGsEemxuWfi0TOMJouQGNUHTs/G7IsHx8YdSHD2lE
- UHKCNgNNy66tLImviezCazECXVRS+EvcrIFjR/0DuzTrq4G79MJ2rKy5/VmqFgHQrbbn
- rr04D9W16pI9tBjivS/ho8uHUhGjzOpyZdJxFruBQjq+HEDqqfemAE3K78bxm8jCpKk6
- 7fm583B/7Dv9siW5IGtCJcyOC6xlt1djPRmJqOR80pkYzyd7N7E7ocUsTEWonaw4iqh2
- VP6ApYYDWIghBED+bOJ2iKyhjXKPkbCuNVSyQoh5BAjKpT/k0rjvsW5UOH25w4vhchFX
- XRlA==
-X-Gm-Message-State: ABy/qLZBNCCZ53W1sQylS5/+fXCfY0FG//vNHzEDKplPH4dHSfi59RTd
- jsZKsKgMnrfrVnzvDFPqWo++/d3gx123
-X-Google-Smtp-Source: APBJJlHUwggFGGQBNgvYjfw2hrMIRSMQZokR92BRP0PjgSI962CclfYmAsRmDEbH7rHCELzioUlPAg==
-X-Received: by 2002:a25:8e0d:0:b0:ced:ab16:15ee with SMTP id
- p13-20020a258e0d000000b00cedab1615eemr2050006ybl.17.1689957369466; 
- Fri, 21 Jul 2023 09:36:09 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689957424; x=1690562224;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ijmrvsQ+xZzl5dG2FfioPPf11zWI2IrXAZmlY53iqe8=;
+ b=OfLxSNjGauYl/nrNDE8l1YJtkJVWDcUWipp5tOz80sM5py6UeRSGXbX5tE4/oum/1U
+ 8TrqoJgza655Mwt7nvev3bDUvZ1e5i2woVs7qwrJVx1GQZCSbOJpQQ0lozpiLZjNFzui
+ 3AxHIX2O+3jsB6T1ixRtX9G1tIp2rkujwbxEwBf4HzJYULyivn+p0fWnU+Imwq96Ily2
+ H5++g3KFan9Y7cn5PL+c06iiPDY5lBeQlg88JxIr4ugSuW4JEZoH2iZzXAyeme1cCtku
+ gYrKyPmamJ0VnAfuQInEBtp2lOUzv/hkY1fjUj4ekodS7MYmWQWfDV7QKCG8BE89DWKe
+ 93Aw==
+X-Gm-Message-State: ABy/qLYdFDQPWMd1riEVTNunglAkeDryu0IvbssDol/wlkqxM3DEl+5D
+ O28ZTUOARccOLnmxZSvvAqjf4/7B1pbK
+X-Google-Smtp-Source: APBJJlH7vPrqdLJ+4kAEg7wrCo+qdg3fckTPJsNsGcsEVRnLliRkT0tHqhNEr0Ra/nP60EGHAvE9aA==
+X-Received: by 2002:a25:d003:0:b0:cec:821a:e20b with SMTP id
+ h3-20020a25d003000000b00cec821ae20bmr2141726ybg.2.1689957424576; 
+ Fri, 21 Jul 2023 09:37:04 -0700 (PDT)
 Received: from fedora.mshome.net (pool-173-79-56-208.washdc.fios.verizon.net.
  [173.79.56.208]) by smtp.gmail.com with ESMTPSA id
- v196-20020a25c5cd000000b00c62e0df7ca8sm863822ybe.24.2023.07.21.09.36.08
+ v196-20020a25c5cd000000b00c62e0df7ca8sm863822ybe.24.2023.07.21.09.37.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jul 2023 09:36:09 -0700 (PDT)
+ Fri, 21 Jul 2023 09:37:04 -0700 (PDT)
 From: Gregory Price <gourry.memverge@gmail.com>
 X-Google-Original-From: Gregory Price <gregory.price@memverge.com>
 To: qemu-devel@nongnu.org
 Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org, junhee.ryu@sk.com,
  kwangjin.ko@sk.com, Gregory Price <gregory.price@memverge.com>
-Subject: [PATCH 0/4] CXL: SK hynix Niagara MHSLD Device
-Date: Fri, 21 Jul 2023 12:35:02 -0400
-Message-Id: <20230721163505.1910-1-gregory.price@memverge.com>
+Subject: [PATCH 1/4] cxl/mailbox: change CCI cmd set structure to be a member,
+ not a refernce
+Date: Fri, 21 Jul 2023 12:35:04 -0400
+Message-Id: <20230721163505.1910-2-gregory.price@memverge.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230721163505.1910-1-gregory.price@memverge.com>
+References: <20230721163505.1910-1-gregory.price@memverge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1142;
- envelope-from=gourry.memverge@gmail.com; helo=mail-yw1-x1142.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b43;
+ envelope-from=gourry.memverge@gmail.com; helo=mail-yb1-xb43.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,64 +94,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Base repo: https://gitlab.com/jic23/qemu
-Base branch: cxl-2023-07-17
-
-This patch set includes an emulation of the SK hynix Niagara MHSLD
-platform with custom CCI commands that allow for isolation of memory
-blocks between attached hosts.
-
-There are 4 total patches in this set:
-1 & 2: Modifications to the CCI interface to allow the addition of
-       custom CCI commands to an existing CCI command set.
-3: Minimum MHD cci support for a type-3 device
-4: The SK hynix Niagara Device
-
-The changes to the core device and cci interface are very limited,
-and this provides a clean way for developers to add custom CCI commands
-to a device while retaining the possiblity to upstream the model.
-
-This device allows hosts to request memory blocks directly from the
-device, rather than requiring full the DCD command set.  As a matter of
-simplicity, this is beneficial to for testing and applications of 
-dynamic memory pooling on top of the 1.1 and 2.0 specification.
-
-Note that these CCI commands are not servicable without the kernel
-allowing raw CXL commands to be passed through the mailbox driver,
-so users should enable `CONFIG_CXL_MEM_RAW_COMMANDS=y` on the kernel
-of their QEMU instance.
+This allows devices to have fully customized CCIs, along with complex
+devices where wrapper devices can override or add additional CCI
+commands without having to replicate full command structures or
+pollute a base device with every command that might ever be used.
 
 Signed-off-by: Gregory Price <gregory.price@memverge.com>
+---
+ hw/cxl/cxl-mailbox-utils.c  | 18 ++++++++++++++----
+ include/hw/cxl/cxl_device.h |  2 +-
+ 2 files changed, 15 insertions(+), 5 deletions(-)
 
-Gregory Price (4):
-  cxl/mailbox: change CCI cmd set structure to be a member, not a
-    refernce
-  cxl/mailbox: interface to add CCI commands to an existing CCI
-  cxl/type3: minimum MHD cci support
-  cxl/vendor: SK hynix Niagara Multi-Headed SLD Device
-
- hw/cxl/Kconfig                          |   4 +
- hw/cxl/cxl-mailbox-utils.c              |  90 +++-
- hw/cxl/meson.build                      |   2 +
- hw/cxl/vendor/meson.build               |   1 +
- hw/cxl/vendor/skhynix/.gitignore        |   1 +
- hw/cxl/vendor/skhynix/init_niagara.c    |  99 +++++
- hw/cxl/vendor/skhynix/meson.build       |   1 +
- hw/cxl/vendor/skhynix/skhynix_niagara.c | 521 ++++++++++++++++++++++++
- hw/mem/cxl_type3.c                      |  67 +++
- include/hw/cxl/cxl_device.h             |  18 +-
- tools/cxl/cxl_mhd_init.c                |  63 +++
- tools/cxl/meson.build                   |   3 +
- tools/meson.build                       |   1 +
- 13 files changed, 866 insertions(+), 5 deletions(-)
- create mode 100644 hw/cxl/vendor/meson.build
- create mode 100644 hw/cxl/vendor/skhynix/.gitignore
- create mode 100644 hw/cxl/vendor/skhynix/init_niagara.c
- create mode 100644 hw/cxl/vendor/skhynix/meson.build
- create mode 100644 hw/cxl/vendor/skhynix/skhynix_niagara.c
- create mode 100644 tools/cxl/cxl_mhd_init.c
- create mode 100644 tools/cxl/meson.build
-
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 2819914e8d..ddee3f1718 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -1373,9 +1373,19 @@ void cxl_init_cci(CXLCCI *cci, size_t payload_max)
+                                  bg_timercb, cci);
+ }
+ 
++static void cxl_copy_cci_commands(CXLCCI *cci, const struct cxl_cmd (*cxl_cmds)[256]) {
++    for (int set = 0; set < 256; set++) {
++        for (int cmd = 0; cmd < 256; cmd++) {
++            if (cxl_cmds[set][cmd].handler) {
++                cci->cxl_cmd_set[set][cmd] = cxl_cmds[set][cmd];
++            }
++        }
++    }
++}
++
+ void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf, DeviceState *d, size_t payload_max)
+ {
+-    cci->cxl_cmd_set = cxl_cmd_set_sw;
++    cxl_copy_cci_commands(cci, cxl_cmd_set_sw);
+     cci->d = d;
+     cci->intf = intf;
+     cxl_init_cci(cci, payload_max);
+@@ -1383,7 +1393,7 @@ void cxl_initialize_mailbox_swcci(CXLCCI *cci, DeviceState *intf, DeviceState *d
+ 
+ void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payload_max)
+ {
+-    cci->cxl_cmd_set = cxl_cmd_set;
++    cxl_copy_cci_commands(cci, cxl_cmd_set);
+     cci->d = d;
+  
+     /* No separation for PCI MB as protocol handled in PCI device */
+@@ -1398,7 +1408,7 @@ static const struct cxl_cmd cxl_cmd_set_t3_mctp[256][256] = {
+ void cxl_initialize_t3_mctpcci(CXLCCI *cci, DeviceState *d, DeviceState *intf,
+                                size_t payload_max)
+ {
+-    cci->cxl_cmd_set = cxl_cmd_set_t3_mctp;
++    cxl_copy_cci_commands(cci, cxl_cmd_set_t3_mctp);
+     cci->d = d;
+     cci->intf = intf;
+     cxl_init_cci(cci, payload_max);
+@@ -1414,7 +1424,7 @@ static const struct cxl_cmd cxl_cmd_set_usp_mctp[256][256] = {
+ 
+ void cxl_initialize_usp_mctpcci(CXLCCI *cci, DeviceState *d, DeviceState *intf, size_t payload_max)
+ {
+-    cci->cxl_cmd_set = cxl_cmd_set_usp_mctp;
++    cxl_copy_cci_commands(cci, cxl_cmd_set_usp_mctp);
+     cci->d = d;
+     cci->intf = intf;
+     cxl_init_cci(cci, payload_max);
+diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+index c68981b618..9a3c8b2dfa 100644
+--- a/include/hw/cxl/cxl_device.h
++++ b/include/hw/cxl/cxl_device.h
+@@ -163,7 +163,7 @@ typedef struct CXLEventLog {
+ } CXLEventLog;
+ 
+ typedef struct CXLCCI {
+-    const struct cxl_cmd (*cxl_cmd_set)[256];
++    struct cxl_cmd cxl_cmd_set[256][256];
+     struct cel_log {
+         uint16_t opcode;
+         uint16_t effect;
 -- 
 2.39.1
 
