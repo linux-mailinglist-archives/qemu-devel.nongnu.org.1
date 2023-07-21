@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1923F75C355
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B6275C36C
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:47:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMmhc-0004Gq-R8; Fri, 21 Jul 2023 05:45:36 -0400
+	id 1qMmj5-00053M-IA; Fri, 21 Jul 2023 05:47:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMmhQ-0004GO-FP
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:45:24 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1qMmj3-000539-67
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:47:05 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMmhO-000625-Da
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:45:24 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-4fbc0314a7bso2704957e87.2
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:45:21 -0700 (PDT)
+ id 1qMmj1-0006Vu-O1
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:47:04 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-51e48e1f6d1so2314037a12.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:47:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689932719; x=1690537519;
+ d=linaro.org; s=google; t=1689932822; x=1690537622;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=91ZuaDNZJpmOzGYssGRQyQUE5RVgb//So/d76+L1vn4=;
- b=nLI/TXPy21FhbcPpLXTymLFE7JWoihke40rsASdc3AEiHcfy5j9kCt8VbZDjG+iaKy
- 4iMxjeLwQwTqFpNjkvlCSNdRNhVY9wt7Qeg4eSb/kkYc+HMMuCfmwT9jpnany8XnzRIw
- Ro+9ic+VMkKLOywEY7u8rA1rMNcZfDnjMB/2jyq8UQMb/7wANqERN8wo3hnxdxAk8ouH
- EXYw3o5JMx93DRn7J9VwsmnuR5J7U1fdcy+r7eF8ab0tFNhQwR15PUIrfrwZgas7a/7r
- fIO7TZcXVdz5YtX4mggwcVhAQjR/tNElrp9HFzVm3CwBM3AHoHwqtFDcph7HENfKgU4f
- u4ow==
+ bh=0LkB4qAbX8qD6aPTIgZcKWZkBkaMQgVISUYSs7eRc+g=;
+ b=f6K03DGWQORR3Q7W5DdiZ9NzvfT5brywfi3kpsivMcuqhBiDRQPJX3zlbs1W5LS4xJ
+ HUQTkT9yq0ZGr1gHN3aRvx287Wr5wVjG5FFtK7RS0qmmr1tNKiTv1DUAg8jaZS5lzr7/
+ X8ScBEtKUOb7PGejxb1yy2mJ0qd/akuzZy3d0tDe6hQBTEJm1nxhCr/WVIQTbvlWUwSE
+ KBKUIhtbcgeoWiB2MOM5Q+9gSq4g2Koyf19cLcCNAQqxX8K3bnzq/+N41JZ5n986JzCF
+ 0YWiMFIzy5MhMCNM+GPOodhZjPfcyq03Tu0ZFc8ISoo15t+fPr90lMbF6Y4Hzr+S/I1L
+ AUiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689932719; x=1690537519;
+ d=1e100.net; s=20221208; t=1689932822; x=1690537622;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=91ZuaDNZJpmOzGYssGRQyQUE5RVgb//So/d76+L1vn4=;
- b=lDEXSvH7qI1qsCc2UOFqrzVCVsQm18aPMjDi+nrFFbAgVI3qzgFl8NmgS6mz0vS4ZB
- h+ZnRFOupUbuhRm0P9/1BunDsfAtgjsq5MNln56pGIcr6UY6HmNQRqeUqHZEDzLgyPDA
- wvJkMbevT1Kq2zwrRf9IVN3jPZF5qW2DggnohXpfE7y5jY+Sdnm+72mHgSe1sT+6196S
- 0TPzWTIkuD8kj4fPCA+xZwST8eS5W/F1VBYveh8ViT3h92Jf/iKmiWXyGyRo1q9NpfNw
- N1ZR37Gik7T8g7e1m1R4FhWCnWlV5utZYk1g1cbgLsNe9nFm9K7ytlvFlixeln87NFp7
- P67g==
-X-Gm-Message-State: ABy/qLbiqepB1McxxwFTVfahqqRT7Aj7y8pVnHwHBGZs6ivs7i32bMGb
- UBeGNmKhpG9M5Jxd+099zCbTfKTj7QM6q6Uv+ilRqw==
-X-Google-Smtp-Source: APBJJlEUzh0cfaKf/h6eJumIuNICgiW9BxZFnkAHneg/fltZ7zpI9QFneiwLFInhiG6DKfhlVPGQoR2aDRZp2DIe0bY=
-X-Received: by 2002:a19:4359:0:b0:4f8:6abe:5249 with SMTP id
- m25-20020a194359000000b004f86abe5249mr930980lfj.3.1689932718734; Fri, 21 Jul
- 2023 02:45:18 -0700 (PDT)
+ bh=0LkB4qAbX8qD6aPTIgZcKWZkBkaMQgVISUYSs7eRc+g=;
+ b=angC/GRxYdXxo+F5XqN3yGYW2kZI5K5sPwgXkkDeI6b6jgov4llXFaJbc9HsGk5qN0
+ giBpHLlaGGvkVHB65RChQoAwPRJYxsdvgnli/jf8RcYAwuDRrXu2Hw5T1FBPvXRx3/in
+ 5XGI/cxZL9DW8Qtx0fUd27ig/EHAuqaqaMAC0ZgYQ9+N5BCU+9VW2e3lW4tdnhMej99x
+ t/NquQRa0MItJ9vZ9QPy4SWSw9Zt1sK6v4en1764l6ck1CDqLd1gj985xtM4uePNi2DJ
+ lplXAOxmGWTc3z7082ozLVmogm77RgsejX+ffGZAivYTob8xZqMoJBlX9mQCcQvk5oOx
+ qe5w==
+X-Gm-Message-State: ABy/qLZiP6HSA1njQmXbu782PgwaO32Z6M7HkbQgDCLBk4FgmBQ+RBRT
+ /Kbw0eOYTGcX75IUuBTtTh98tNh87lH7HIqonF4X8w==
+X-Google-Smtp-Source: APBJJlH17VaE2892AeDjVINmTckUjHMVJ7c9h8zvP9SQx3lRLoQcQzRfR0XPNgXCag48hhkpSV4z+UBM8xAbr3jLo6s=
+X-Received: by 2002:aa7:d80b:0:b0:51e:5ec8:d2f6 with SMTP id
+ v11-20020aa7d80b000000b0051e5ec8d2f6mr1059350edq.25.1689932822192; Fri, 21
+ Jul 2023 02:47:02 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230720155902.1590362-1-peter.maydell@linaro.org>
- <7089eb6c-3b1f-278e-01d7-073e8bc516fe@linaro.org>
-In-Reply-To: <7089eb6c-3b1f-278e-01d7-073e8bc516fe@linaro.org>
+ <1d7fc618-fb10-4990-dbda-5fd610655a66@linaro.org>
+In-Reply-To: <1d7fc618-fb10-4990-dbda-5fd610655a66@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 21 Jul 2023 10:45:07 +0100
-Message-ID: <CAFEAcA_xWsNOROQqeLcuPX2XLOjbwKdEA75WcKn2qdTAHdVBGg@mail.gmail.com>
+Date: Fri, 21 Jul 2023 10:46:51 +0100
+Message-ID: <CAFEAcA8MuzfV2cREitZ4uJGQVAQut-8r_M_xd4cpmUdv+HZjVw@mail.gmail.com>
 Subject: Re: [PATCH for-8.2 0/4] rtc devices: Avoid putting time_t in 32-bit
  variables
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
  Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
  Paolo Bonzini <pbonzini@redhat.com>, 
  =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,10 +91,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 21 Jul 2023 at 10:03, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+On Fri, 21 Jul 2023 at 10:16, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
 g> wrote:
 >
-> +Markus
+> Hi Peter,
 >
 > On 20/7/23 17:58, Peter Maydell wrote:
 > > This patchset was prompted by a couple of Coverity warnings
@@ -118,43 +117,12 @@ g> wrote:
 > > fixes the rtc.c functions. If I missed any callsites in devices
 > > then hopefully Coverity will point them out.
 >
-> Do we need to change the type of the RTC_CHANGE event?
->
-> This is wrong, but to give an idea:
->
-> --- a/qapi/misc.json
-> +++ b/qapi/misc.json
-> @@ -553,47 +553,47 @@
->   ##
->   # @RTC_CHANGE:
->   #
->   # Emitted when the guest changes the RTC time.
->   #
->   # @offset: offset in seconds between base RTC clock (as specified by
->   #     -rtc base), and new RTC clock value
->   #
->   # @qom-path: path to the RTC object in the QOM tree
->   #
->   # Note: This event is rate-limited.  It is not guaranteed that the RTC
->   #     in the system implements this event, or even that the system has
->   #     an RTC at all.
->   #
->   # Since: 0.13
->   #
->   # Example:
->   #
->   # <- { "event": "RTC_CHANGE",
->   #      "data": { "offset": 78 },
->   #      "timestamp": { "seconds": 1267020223, "microseconds": 435656 } }
->   ##
->   { 'event': 'RTC_CHANGE',
-> -  'data': { 'offset': 'int', 'qom-path': 'str' } }
-> +  'data': { 'offset': 'int64', 'qom-path': 'str' } }
-> ---
+> PL031State::tick_offset is uint32_t, and pl031_get_count() also
+> returns that type. Is that expected?
 
-If I understand the 'Built-in Types' section in
-docs/devel/qapi-code-gen.rst correctly, the QAPI 'int'
-type is already 64 bits.
+I think those fall into the category of "the device we are
+modelling does not support 64-bit timestamps" -- the PL031
+RTC_DR register is only 32 bits.
 
 thanks
 -- PMM
