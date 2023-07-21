@@ -2,69 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5EC75C3B9
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EBAC75C3BA
 	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:53:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMmnb-0000yX-Tn; Fri, 21 Jul 2023 05:51:47 -0400
+	id 1qMmo9-00013q-NH; Fri, 21 Jul 2023 05:52:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMmnY-0000y7-AE
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:51:44 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1qMmo3-00012w-Hm
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:52:17 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMmnW-0007cE-J5
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:51:44 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-521dbe5e09bso2103650a12.2
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:51:42 -0700 (PDT)
+ id 1qMmo1-0007gw-UN
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:52:15 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-521dd3d93bbso1970358a12.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:52:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689933101; x=1690537901;
+ d=linaro.org; s=google; t=1689933132; x=1690537932;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=mCcIJV0jCghcwTQpOwiGRWcIThtGCcPD5i1NUvp8FI4=;
- b=flI86UKuA/iVXyAyYDX4UoIvX0+q6WbzMSzfnZAdyty8r+ltEo6gdz7yRhQ8+5266P
- P1pjF5jRU/S9Wc1+jwxXbX4Q24UubNSwdQ01Ri56+tNuQRfg3GZmGpriyqZ4+aNjLPpm
- npql+VBmjgDOYA5TszgSdeo4I3F87IHFmPjeoDmb/jaC+nLR8jmTdE4z3IjvTtcHc7xf
- ip15RhtDZwYggJfqwu972vZXYYxy5ZQ2xVMaIsBjVELCHIL2THxY8yE7MoGGaHD5h66s
- ETYZWz8NSDPVc1hE/G+JZCUdP4tAn8ozSSbFfohBfTTLb41kx/7XTQoiGsrXtbUCBVIU
- YP4Q==
+ bh=OariUAiKLVy0UUCuomeEEFFlFh5Ez/oIy3/WwbxvAiM=;
+ b=mBQUnOEuMiy+L0m6CNzpvyycfKBD/07hfDF8sAgrdBv3RS7NHCYKOyv1dHMPQYqH24
+ vQojG9ahA1rzVidL3O1lN4arT8iVrdW602D42t3cLogdV1UdexeHYnIRXMSDNyCFduo4
+ WQK3IIExIJgOs3CCrIAkQxc3OnaLkUe+l3ubA+Ckh550vg8KEpGlwU6bvq7/pZ6qYg27
+ 1MInR5Qub3t+juf4FoRnB96NNXtnUyA+ccAv7HbZHdmugF+dJV0bEq+y61GHzdfLX3S0
+ OYeVKWeZm3MoPmoCJW6NSNxmmDqFxY3Qzt0IAgcZqXUyRbRIo45RsDBC3OAeABoH/yHJ
+ sucQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689933101; x=1690537901;
+ d=1e100.net; s=20221208; t=1689933132; x=1690537932;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=mCcIJV0jCghcwTQpOwiGRWcIThtGCcPD5i1NUvp8FI4=;
- b=Cf+iqYgi//J2p6eveQM9wJXNLo6el6umoWYyW0oD8BGX/3BlFroQq5bGiuv1crSGh9
- bGNZYsQWSk9h7vwsYJLeAtw6HsmbozGqMmlMkwjVFrtDBPM1sK1yXogRVZzMq459GrMb
- e3yd6iDA5Fsy9KgbBhofvVy1eoVM2BMnbfNoU/UPLExmdCS8h0S4w55mQpGJS7FKcgMh
- spnD/ZO/PD17TdJYDTPm070DqFYnzY3pbsT6eL19J9MI6CNBl02FX4txWb/TAXQKH6iJ
- gkCin0/RlFSJNcCKt4l7Q5zLczact2tBWJMNE84T2WT+MQdluM/KVhs9MY59abUDwwMf
- lnQw==
-X-Gm-Message-State: ABy/qLYRs4UMUm9aopRUuKV0DYXkoQBw8EJ4Cvu177Y5/oDlhYyzXs7W
- uynjpejxKhirmFr6G+GqqCXjXm18aqnXlH7CMnx1eA==
-X-Google-Smtp-Source: APBJJlGTzhDHootOSRj2XdPCmyzc23gdvH5yRq3n0V0/JofNDLIz+0N6HiY9KZuPn4rCxvHkD8uFFqSNpQb27BBSvm4=
-X-Received: by 2002:a05:6402:1646:b0:51d:7fa6:62ca with SMTP id
- s6-20020a056402164600b0051d7fa662camr1261075edx.14.1689933100954; Fri, 21 Jul
- 2023 02:51:40 -0700 (PDT)
+ bh=OariUAiKLVy0UUCuomeEEFFlFh5Ez/oIy3/WwbxvAiM=;
+ b=ZelHn8TFeG556ktXL+EgT2ckjEyUvQwNVy5ZxDo+RC58GtN2H9vMdYHxkKc50MCFMY
+ lVNN9REvtr/A9NLrkrstDhwJYAPr06hKpsr/R8j0EiQk2uDZ7BAAna6WD/8HBL4ECFqw
+ HzVhLyAIBdU+CKvOS18HuLImChjVHQeWIpCNQKHQ/PoVCkP3tBk1+l7WblUDaH1B67tu
+ HYwYwJRPe52hZfKNUm5/GrS1JX4YDkAEJHNhvJsjAKIqkDJrla5I7RkIm8EytO8TxJ3q
+ vBKuCn3u0cJJFLoUuLuEilIb+buLGHxsiAukYmihmlvsG6921pogW9esyQpuMnYW0F0a
+ IHfQ==
+X-Gm-Message-State: ABy/qLaMgUZIAxBSZrRIui/H7VPiuwCAwif+9ClIUCTqLgNHPgByd3qd
+ ty4KOaLLrDLaMDaj+Wfbpl/l+TKVnf6HefXYmh4dEWXEYakaJw9Q
+X-Google-Smtp-Source: APBJJlHPvQiYdZxFxA+xrftWZnZ9JTzdlfvFNu2iOWdOabjw5MMTWSBs6K1dHlqOhdcZWK9BNOXowEJUuVvOcs2IRhM=
+X-Received: by 2002:a05:6402:60c:b0:51e:1bf3:f4ac with SMTP id
+ n12-20020a056402060c00b0051e1bf3f4acmr1203866edv.27.1689933132717; Fri, 21
+ Jul 2023 02:52:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230719155235.244478-1-deller@gmx.de>
-In-Reply-To: <20230719155235.244478-1-deller@gmx.de>
+References: <20230719202736.2675295-16-eblake@redhat.com>
+In-Reply-To: <20230719202736.2675295-16-eblake@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 21 Jul 2023 10:51:30 +0100
-Message-ID: <CAFEAcA-Aw7qM-oTXVCfDVBdxgK12Y8_B=V+wdjvwM2g8X__V_w@mail.gmail.com>
-Subject: Re: [PULL 0/5] Linux user brk fixes patches
-To: Helge Deller <deller@gmx.de>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, 
- Andreas Schwab <schwab@suse.de>, Michael Tokarev <mjt@tls.msk.ru>,
- qemu-devel@nongnu.org
+Date: Fri, 21 Jul 2023 10:52:01 +0100
+Message-ID: <CAFEAcA9g1Yw32gZbRPYiXRnNgkxTVaXSAYoR7VSzj3znba8pAQ@mail.gmail.com>
+Subject: Re: [PULL 00/14] NBD patches for 2023-07-19
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,48 +84,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 19 Jul 2023 at 16:53, Helge Deller <deller@gmx.de> wrote:
+On Wed, 19 Jul 2023 at 21:39, Eric Blake <eblake@redhat.com> wrote:
 >
-> The following changes since commit 361d5397355276e3007825cc17217c1e4d4320f7:
+> The following changes since commit 2c27fdc7a626408ee2cf30d791aa0b63027c7404:
 >
->   Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-07-17 15:49:27 +0100)
+>   Update version for v8.1.0-rc0 release (2023-07-19 20:31:43 +0100)
 >
 > are available in the Git repository at:
 >
->   https://github.com/hdeller/qemu-hppa.git tags/linux-user-brk-fixes-pull-request
+>   https://repo.or.cz/qemu/ericb.git tags/pull-nbd-2023-07-19
 >
-> for you to fetch changes up to 518f32221af759a29500ac172c4c857bef142067:
+> for you to fetch changes up to bfe04d0a7d5e8a4f4c9014ee7622af2056685974:
 >
->   linux-user: Fix qemu-arm to run static armhf binaries (2023-07-18 20:42:05 +0200)
+>   nbd: Use enum for various negotiation modes (2023-07-19 15:26:13 -0500)
 >
 > ----------------------------------------------------------------
-> linux-user: brk() syscall fixes and armhf static binary fix
+> NBD patches through 2023-07-19
 >
-> Commit 86f04735ac ("linux-user: Fix brk() to release pages") introduced
-> the possibility for userspace applications to reduce memory footprint by
-> calling brk() with a lower address and as such free up memory, the same
-> way as the Linux kernel allows on physical machines.
+> - Denis V. Lunev: fix hang with 'ssh ... "qemu-nbd -c"'
+> - Eric Blake: preliminary work towards NBD 64-bit extensions
 >
-> This change introduced some failures for applications with errors like
-> - accesing bytes above the brk heap address on the same page,
-> - freeing memory below the initial brk address,
-> and introduced a behaviour which isn't done by the kernel (e.g. zeroing
-> memory above brk).
->
-> This patch series fixes those issues and has been tested with existing
-> programs (e.g. upx).
->
-> Additionally one patch fixes running static armhf executables (e.g. fstype)
-> which was broken since qemu-8.0.
->
-> Changes in v2:
-> - dropped patch to revert d28b3c90cfad ("linux-user: Make sure initial brk(0)
->   is page-aligned")
-> - rephrased some commit messages
-> - fixed Cc email addresses, added new ones
-> - added R-b tags
->
-> Helge
 
 
 Applied, thanks.
