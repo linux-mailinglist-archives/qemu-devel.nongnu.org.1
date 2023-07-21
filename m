@@ -2,86 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4342D75C641
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 13:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF0075C7A7
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 15:22:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMomA-0004GG-3Z; Fri, 21 Jul 2023 07:58:26 -0400
+	id 1qMq49-0004PG-OM; Fri, 21 Jul 2023 09:21:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qMom7-0004Fo-PM
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 07:58:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <chunfu.jian@shingroup.cn>)
+ id 1qMklO-0002F6-1C; Fri, 21 Jul 2023 03:41:22 -0400
+Received: from smtpbg150.qq.com ([18.132.163.193])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qMom6-0003GD-9D
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 07:58:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689940701;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2Zyqp+RNJwQANpb3SX38nWDfhDU7pNYc4znhX5MrKiE=;
- b=KUp0YctswCmDBUiADKtEy/ZesXGhmV8dqJxk5w5WpOJBzOrsbfTqyX3urfqPCy4jjz71r3
- mJ3iRvlRv1TcQMsQU2dMbTEimVTOyF0+aR9Z2o8han/xkqhh4ahXq3A435nFcwn1y75ByX
- Wai8SrlzSVUrqRMP+v37tFsVDPFzhaE=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-jvAp1irkPg-h3rtOB_6nVA-1; Fri, 21 Jul 2023 07:58:19 -0400
-X-MC-Unique: jvAp1irkPg-h3rtOB_6nVA-1
-Received: by mail-yw1-f199.google.com with SMTP id
- 00721157ae682-577323ba3d5so48369307b3.0
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 04:58:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689940698; x=1690545498;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2Zyqp+RNJwQANpb3SX38nWDfhDU7pNYc4znhX5MrKiE=;
- b=YzYMSue6G2UWF52JWQiUzaLf/oqH6JTci6s6EUY0UnYoh2DpsvOTBwGm8OXd77ZVGM
- 1D9IlkYn4ehQlaC9k0BztrMDgmevQXKushARQUHXHYRsSZHYALPtGJo0TRtk2H6gtSRQ
- TZC5Pdb3eWASzF+ug8KVqPkK8clon0/nmUOPDjKmieHS40ggJJlERKSG7LSeD+puxZKP
- MgPP07T81EPbByrGk/7YYoT8M15marypH06NXL0l426/VVFXTpt55XQYHIMrgaDLB4eE
- UZOq2gaKImA4UnrFFr90CRmB6Ooom+Kz3DEz/Nwk31w6U2fL8DAH39sW11gqzQvNVUQN
- bebg==
-X-Gm-Message-State: ABy/qLbOM45oxpw+vJWyhgICkbXBwojzCW1pTylXdI8ES6dYTui/XiVV
- iIz4BIHvppwVSuoNxvgeWZyHvPYnYN2Xx6x6Sd7zLJX9E16QqPWJsTreoWYeL640LE7/2P3Dhyn
- dyGpGPe6krdKLxIcoL9tuw0G8xf6el0U=
-X-Received: by 2002:a25:4cc9:0:b0:cee:80e:23af with SMTP id
- z192-20020a254cc9000000b00cee080e23afmr1482012yba.11.1689940698559; 
- Fri, 21 Jul 2023 04:58:18 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlG6Pd3uQSGkVvs2cDCzfuv6mFTwNDSLGt1/Cf465itw188rro5VVcyRrScX3jhSdP9ZZwqZ3AWKzZhY83UkC98=
-X-Received: by 2002:a25:4cc9:0:b0:cee:80e:23af with SMTP id
- z192-20020a254cc9000000b00cee080e23afmr1482003yba.11.1689940698323; Fri, 21
- Jul 2023 04:58:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <chunfu.jian@shingroup.cn>)
+ id 1qMklE-0004B5-BJ; Fri, 21 Jul 2023 03:41:21 -0400
+X-QQ-mid: bizesmtp72t1689925100t40s55wu
+Received: from localhost.localdomain ( [183.211.218.24])
+ by bizesmtp.qq.com (ESMTP) with 
+ id ; Fri, 21 Jul 2023 15:38:09 +0800 (CST)
+X-QQ-SSF: 01400000000000307000000A0000000
+X-QQ-FEAT: XxEUBkUQ637FQkaMIf0yuIdnFjpC+Qyu8h77Ct/tw+Tgnc45dLsqHW2wfCvQ0
+ 0Mao8ZLaKhhfoS0G8N9+3fKeC45CfQNsIg3je2Du3vYc12df1waC9lturnVZ5dnZDLC4Mmv
+ v4YII90yoLxJNrYGQXEn1JdneYTelkQwiFg77iNCPhA80FFywVeJ+cqdXTfzN8zdOwDxxNg
+ BV5lgb3MJqzv+AZafps31XFPHhbV22P8gOoawa1JJDipoWeVOqhcm1jx1NknCNT5mcKGRcR
+ Ub3cuvTXynoKp3hIPa5hRArxyc8h38uqG6c13rFvL3FnD64F2J6auZVsJgnjuG0GTOABDQV
+ 3Z+cQN7dui9W8GqMkzsuFopoVsNNazjqISFy6gaOUIXkyhF4PS6PBBD+fC5EA==
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 18072465582763847322
+From: jianchunfu <chunfu.jian@shingroup.cn>
+To: danielhb413@gmail.com, clg@kaod.org, david@gibson.dropbear.id.au,
+ groug@kaod.org, npiggin@gmail.com, pbonzini@redhat.com
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
+ jianchunfu <chunfu.jian@shingroup.cn>
+Subject: [PATCH] target/ppc: Fix the order of kvm_enable judgment about
+ kvmppc_set_interrupt()
+Date: Fri, 21 Jul 2023 15:37:34 +0800
+Message-Id: <20230721073734.219027-1-chunfu.jian@shingroup.cn>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <cover.1689690854.git.yin31149@gmail.com>
- <0a568cc8a8d2b750c2e09b2237e9f05cece07c3f.1689690854.git.yin31149@gmail.com>
-In-Reply-To: <0a568cc8a8d2b750c2e09b2237e9f05cece07c3f.1689690854.git.yin31149@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 21 Jul 2023 13:57:42 +0200
-Message-ID: <CAJaqyWf1ZP6G91skDx4rai=xArkdvPZj8g3-UXC2dHc0iUN3-w@mail.gmail.com>
-Subject: Re: [PATCH 3/4] vdpa: Restore vlan filtering state
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
+Received-SPF: pass client-ip=18.132.163.193;
+ envelope-from=chunfu.jian@shingroup.cn; helo=smtpbg150.qq.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 21 Jul 2023 09:20:58 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,97 +68,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 19, 2023 at 9:48=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
->
-> This patch introduces vhost_vdpa_net_load_single_vlan()
-> and vhost_vdpa_net_load_vlan() to restore the vlan
-> filtering state at device's startup.
->
-> Co-developed-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> ---
->  net/vhost-vdpa.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 49 insertions(+)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 9795306742..0787dd933b 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -965,6 +965,51 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
->      return 0;
->  }
->
-> +static int vhost_vdpa_net_load_single_vlan(VhostVDPAState *s,
-> +                                           const VirtIONet *n,
-> +                                           uint16_t vid)
-> +{
-> +    const struct iovec data =3D {
-> +        .iov_base =3D &vid,
-> +        .iov_len =3D sizeof(vid),
-> +    };
-> +    ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_V=
-LAN,
-> +                                                  VIRTIO_NET_CTRL_VLAN_A=
-DD,
-> +                                                  &data, 1);
-> +    if (unlikely(dev_written < 0)) {
-> +        return dev_written;
-> +    }
-> +    if (unlikely(*s->status !=3D VIRTIO_NET_OK)) {
-> +        return -EIO;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +static int vhost_vdpa_net_load_vlan(VhostVDPAState *s,
-> +                                    const VirtIONet *n)
-> +{
-> +    int r;
-> +
-> +    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_VLAN)=
-) {
-> +        return 0;
-> +    }
-> +
-> +    for (int i =3D 0; i < MAX_VLAN >> 5; i++) {
-> +        for (int j =3D 0; n->vlans[i] && j <=3D 0x1f; j++) {
-> +            if (n->vlans[i] & (1U << j)) {
-> +                r =3D vhost_vdpa_net_load_single_vlan(s, n, (i << 5) + j=
-);
-> +                if (unlikely(r !=3D 0)) {
-> +                    return r;
-> +                }
-> +            }
-> +        }
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +
+It's unnecessary for non-KVM accelerators(TCG, for example),
+to call this function, so change the order of kvm_enable() judgment.
 
-Nit: I'm not sure if it was here originally, but there is an extra newline =
-here.
+The static inline function that returns -1 directly does not work
+ in TCG's situation.
 
->  static int vhost_vdpa_net_load(NetClientState *nc)
->  {
->      VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
-> @@ -995,6 +1040,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
->      if (unlikely(r)) {
->          return r;
->      }
-> +    r =3D vhost_vdpa_net_load_vlan(s, n);
-> +    if (unlikely(r)) {
-> +        return r;
-> +    }
->
->      return 0;
->  }
-> --
-> 2.25.1
->
+Signed-off-by: jianchunfu <chunfu.jian@shingroup.cn>
+---
+ hw/ppc/ppc.c     | 8 ++++++--
+ target/ppc/kvm.c | 2 +-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index 0e0a3d93c3..3e96b24487 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -58,7 +58,9 @@ void ppc_set_irq(PowerPCCPU *cpu, int irq, int level)
+ 
+     if (old_pending != env->pending_interrupts) {
+         ppc_maybe_interrupt(env);
+-        kvmppc_set_interrupt(cpu, irq, level);
++        if (kvm_enabled()) {
++            kvmppc_set_interrupt(cpu, irq, level);
++        }
+     }
+ 
+     trace_ppc_irq_set_exit(env, irq, level, env->pending_interrupts,
+@@ -1465,5 +1467,7 @@ void ppc_irq_reset(PowerPCCPU *cpu)
+     CPUPPCState *env = &cpu->env;
+ 
+     env->irq_input_state = 0;
+-    kvmppc_set_interrupt(cpu, PPC_INTERRUPT_EXT, 0);
++    if (kvm_enabled()) {
++        kvmppc_set_interrupt(cpu, PPC_INTERRUPT_EXT, 0);
++    }
+ }
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index a8a935e267..11a1fbc244 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -1315,7 +1315,7 @@ int kvmppc_set_interrupt(PowerPCCPU *cpu, int irq, int level)
+         return 0;
+     }
+ 
+-    if (!kvm_enabled() || !cap_interrupt_unset) {
++    if (!cap_interrupt_unset) {
+         return 0;
+     }
+ 
+-- 
+2.27.0
 
 
