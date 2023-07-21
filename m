@@ -2,86 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF2175C2D0
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF96E75C2EB
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:22:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMmHN-000846-Kc; Fri, 21 Jul 2023 05:18:29 -0400
+	id 1qMmKl-0000Ud-Jf; Fri, 21 Jul 2023 05:21:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMmHL-00083k-IO
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:18:27 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMmHK-0008Hg-2r
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:18:27 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fbfcc6daa9so13911385e9.3
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:18:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689931103; x=1690535903;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dema8Xz8jryCDsFPSR71+BeBY5Jr1OifP866Zes038A=;
- b=fnPU0VgTOSVb3aI0szOd91VvIKStLK12/PbHdTudTlNswFa1M3ycDJHF2rRCxtsGUJ
- 2jv2/s+sR4K92OOytGcnCToIQTHQdzZdAtUezLvflNmFZVMLo4RRcrl7Q/Hyh7E6wVH4
- TxtUqug2uuqTseUgGmz+pzBxA/+UQsWEnQ+GS7jsLvBBGl5rCsaqbhPi9YpRKP+/2ruJ
- 4zfigbIPgdhBy2/qTDkZZXEYI7/Ay15UNtzuikdTeWadzxzWcKu7w5FhyuRRFRyDtJ2O
- NNCk7zDLVlH5j9md3/FWw7S8TY+nUtH8Xx1aGzMmzz5mA5DACGyTuBlyejphT8rn7I13
- jVpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689931103; x=1690535903;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dema8Xz8jryCDsFPSR71+BeBY5Jr1OifP866Zes038A=;
- b=c+Ba7FAbSLUfdEp9PROMIntWTZ9yndG0bd2/+quw4HHQZTxI1hU/rw/didDNz2KxTs
- /sJ/1SNNdDgQ9Imjg4Dn56TBYRkOLD4bb1Xs5fxshhhIpaO1kFcmbsWJG3qUwOc3nhdp
- SUcIplxZHwhn9YgMGorrAAOaQbjCb3SPb8vt80N5uyMYgVOSP3xfZMc/DyB9pCSmDe/0
- M3i9n9/oShshx7PtHWuM9chyi6XFIItAyhzORNOWNS1dwcE7OqQ0NGnefTnob+7APCnw
- JhVlm1XPeAevqtvB26OJE/FsIP4UrKXGvXEEVOD6TIaCuoBNDqtXMKRa+Rnt7TCiGaph
- EIAw==
-X-Gm-Message-State: ABy/qLYoT6KLzhU4rG9ojA9AcaotYt54aTYRyBMTVTY0Jv40zvKa3A4y
- fTxhAwz5CLtjZK+iUnKqjmV8YA==
-X-Google-Smtp-Source: APBJJlHmx0CPqyuVazTJdch3HTlBTwMr477QOCqHAqCQfgNxNZW/WmdUPj3vEG3g9Nrw7Aa1ZOyfZA==
-X-Received: by 2002:a05:600c:446:b0:3fb:fda1:710c with SMTP id
- s6-20020a05600c044600b003fbfda1710cmr846014wmb.2.1689931103685; 
- Fri, 21 Jul 2023 02:18:23 -0700 (PDT)
-Received: from [192.168.69.115] ([176.187.192.5])
- by smtp.gmail.com with ESMTPSA id
- u19-20020a05600c211300b003fbc30825fbsm2947299wml.39.2023.07.21.02.18.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 21 Jul 2023 02:18:23 -0700 (PDT)
-Message-ID: <e701b036-52fd-0746-d5f0-e2b858010824@linaro.org>
-Date: Fri, 21 Jul 2023 11:18:20 +0200
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1qMmKj-0000UV-I2
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:21:57 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1qMmKf-0000zh-Vq
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:21:57 -0400
+Received: from loongson.cn (unknown [10.20.42.32])
+ by gateway (Coremail) with SMTP id _____8BxnuslTrpk8vUHAA--.18005S3;
+ Fri, 21 Jul 2023 17:21:42 +0800 (CST)
+Received: from [10.20.42.32] (unknown [10.20.42.32])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxB80lTrpkSBE2AA--.10610S3; 
+ Fri, 21 Jul 2023 17:21:41 +0800 (CST)
+To: qemu-devel@nongnu.org
+From: lixianglai <lixianglai@loongson.cn>
+Subject: [BUG][CPU hot-plug]CPU hot-plugs cause the qemu process to coredump
+Message-ID: <f3cd66ab-9680-0873-8f2c-9893a91c59fa@loongson.cn>
+Date: Fri, 21 Jul 2023 17:20:56 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.2 4/4] rtc: Use time_t for passing and returning
- time offsets
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
- Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Herv=c3=a9_Poussineau?=
- <hpoussin@reactos.org>
-References: <20230720155902.1590362-1-peter.maydell@linaro.org>
- <20230720155902.1590362-5-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230720155902.1590362-5-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8BxB80lTrpkSBE2AA--.10610S3
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7Xr18Kw48ArWrJryxCr47Jrc_yoWkJFg_Wr
+ 1vyF98Xr48Ja42vF1jyw15Aws3WF1akFZYqw4fXwsF93WxGrZ8XFykAr1qqr17trn7KrnI
+ qwnrJ3Zxua129osvyTuYvTs0mTUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvT
+ s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+ cSsGvfJTRUUUbI8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+ vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+ w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+ WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
+ Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE
+ 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
+ AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
+ rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUJVWUXw
+ CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
+ 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
+ 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzsqW
+ UUUUU
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,29 +76,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/7/23 17:59, Peter Maydell wrote:
-> The functions qemu_get_timedate() and qemu_timedate_diff() take
-> and return a time offset as an integer. Coverity points out that
-> means that when an RTC device implementation holds an offset
-> as a time_t, as the m48t59 does, the time_t will get truncated.
-> (CID 1507157, 1517772).
-> 
-> The functions work with time_t internally, so make them use that type
-> in their APIs.
-> 
-> Note that this won't help any Y2038 issues where either the device
-> model itself is keeping the offset in a 32-bit integer, or where the
-> hardware under emulation has Y2038 or other rollover problems.  If we
-> missed any cases of the former then hopefully Coverity will warn us
-> about them since after this patch we'd be truncating a time_t in
-> assignments from qemu_timedate_diff().)
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   include/sysemu/rtc.h | 4 ++--
->   softmmu/rtc.c        | 4 ++--
->   2 files changed, 4 insertions(+), 4 deletions(-)
+Hello,Recently, when I was developing CPU hot-plugs under the loongarch 
+architecture,
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I found that there was a problem with qemu cpu hot-plugs under x86 
+architecture,
+
+which caused the qemu process coredump when repeatedly inserting and 
+unplugging
+
+the CPU when the TCG was accelerated.
+
+
+The specific operation process is as follows:
+
+1.Use the following command to start the virtual machine
+
+qemu-system-x86_64 \
+-machine q35  \
+-cpu Broadwell-IBRS \
+-smp 1,maxcpus=4,sockets=4,cores=1,threads=1 \
+-m 4G \
+-drive file=~/anolis-8.8.qcow2  \
+-serial stdio   \
+-monitor telnet:localhost:4498,server,nowait
+
+
+2.Enter QEMU Monitor via telnet for repeated CPU insertion and unplugging
+
+telnet 127.0.0.1 4498
+
+(qemu) device_add 
+Broadwell-IBRS-x86_64-cpu,socket-id=1,core-id=0,thread-id=0,id=cpu1
+
+(qemu) device_del cpu1
+(qemu) device_add 
+Broadwell-IBRS-x86_64-cpu,socket-id=1,core-id=0,thread-id=0,id=cpu1
+
+
+3.You will notice that the QEMU process has a coredump
+
+# malloc(): unsorted double linked list corrupted
+Aborted (core dumped)
 
 
