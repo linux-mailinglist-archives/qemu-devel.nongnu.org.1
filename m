@@ -2,72 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219AA75C280
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:09:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDAA75C282
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:09:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMm7h-0001t8-Bz; Fri, 21 Jul 2023 05:08:29 -0400
+	id 1qMm7e-0001sg-P7; Fri, 21 Jul 2023 05:08:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qMm7f-0001sw-34
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:08:27 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1qMm7c-0001s9-85
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:08:24 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qMm7c-0006Ky-Qd
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:08:26 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 81FB01F86B;
- Fri, 21 Jul 2023 09:08:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1689930502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=cQd6OWRku+CeCbGSVJNmdOAfkTSdwrKrrpPUFOtaJow=;
- b=dpWlMCGfJCVzTrm0I0E9F7DwkPcSLVg7TScPwrbn8/wEIdF4/8XcUMgA3TzaC02tnHl8d0
- Ns7c2ZzstYOTWTR9dTzrdoZkF8ELaaL/DYGWSV+BBEtjh4CfED3F4R7B7n7xPkknDpqfID
- YVh/G0tZU0/mQBmXDIFYQY8PbjdKZyE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1689930502;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=cQd6OWRku+CeCbGSVJNmdOAfkTSdwrKrrpPUFOtaJow=;
- b=v/f+Jht/UzwPlw7g4/nd6Q7Wo6SYhRVtcEiA5AIO0DLMt7k9Uh1+LYfeBYs60+OZ9eWttL
- AqhC8XWQjSacYNCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 53E29134B0;
- Fri, 21 Jul 2023 09:08:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id fxpyEgZLumSMZwAAMHmgww
- (envelope-from <cfontana@suse.de>); Fri, 21 Jul 2023 09:08:22 +0000
-Message-ID: <eaec32e3-d56a-e6a7-fcbe-860948e79658@suse.de>
-Date: Fri, 21 Jul 2023 11:08:21 +0200
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1qMm7a-0006Kl-Gi
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:08:24 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3fbef8ad9bbso15055395e9.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:08:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689930501; x=1690535301;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=tXIcYzdjDyy1XFml4B0cFbaDdW32iu3U6rR5Cpot3Ig=;
+ b=vzbUxzL51qFikedb8eCc/ToB1aTV7vL4/GW2xscrFe8S9lVPS+qyLZWD4zqWFnRVuX
+ vtpAGvuEWJ5G1EkzBMakv87JjOeXcN89yhDFttwg2gYyZt8x2SKSoKylAGVBFh7jOCcB
+ C0oJWqfHKJ0GssJ5qMcmJPnL3P7GtuCJXJNwY/Rj5aM8GS9MakYLu84XV4IYSomAetom
+ m1A8pu3UEjnu/07ArNqu1//Zso+KS4ME6hF0zHuAY/y/zBKOt1XN4nC2dGD6XanEuuMZ
+ 5OsZBdpWs02qUaG2ITYmKq8a+0b/6JMLT/22SuJ49yYBc0b2tcCcwTq/0lnw8QAIf8Hp
+ TOQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689930501; x=1690535301;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=tXIcYzdjDyy1XFml4B0cFbaDdW32iu3U6rR5Cpot3Ig=;
+ b=KYCMpbOsASv+7QwxNlXFiyAVhhRaisnmLi2xdGc7QfeR/MEMcvTKNJISWXsviefDbN
+ coarrQdpw9TpmfwWK++gaA9y6Bn+JGCN2aqZHZzCLtcQZVtJ+D0l6btYR3SQ7gDsta0G
+ 2QsE2FBdTatowPpAjc8BA/FV7PVJjOgrgMQEpWJ5xV+KkVSnbj29qKQRZyF5a5nLOb/m
+ 3qyJ97YcpfwZNCihrJqX/tDnL6TMF7BAFmxRCfqX5VABuDKSLDUTnlkfCbLhyCGcLXeW
+ BvCFZ1nrYcbfDDuUqIBPIlwE9O33KM9T4T5HIcoHlFD3PkXM6XQJ+6+7jw0zXjJRe6sV
+ rlhg==
+X-Gm-Message-State: ABy/qLZCMGI8nnCkrOQ2NcWfmS/Y0y84CC1XT5JKgrqgx4xcux4n91hE
+ 7egusEDXX6nPOGfL7mB3D6bvtrPi3CLmh7w5QUg=
+X-Google-Smtp-Source: APBJJlFAHJQjepACUymK4HWTsnqAvDyh5mQZbtgKSOGZwuBGo96euZZMY4p40Av5YGhZG9gBvP5ZGw==
+X-Received: by 2002:a05:600c:204:b0:3fb:e1ed:7f83 with SMTP id
+ 4-20020a05600c020400b003fbe1ed7f83mr901544wmi.33.1689930501144; 
+ Fri, 21 Jul 2023 02:08:21 -0700 (PDT)
+Received: from myrica ([2.219.138.198]) by smtp.gmail.com with ESMTPSA id
+ c16-20020a7bc010000000b003fbe36a4ce6sm5829157wmb.10.2023.07.21.02.08.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 21 Jul 2023 02:08:20 -0700 (PDT)
+Date: Fri, 21 Jul 2023 10:08:24 +0100
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: richard.henderson@linaro.org, qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: Re: [PATCH 3/5] target/arm: Skip granule protection checks for AT
+ instructions
+Message-ID: <20230721090824.GB778079@myrica>
+References: <20230719153018.1456180-2-jean-philippe@linaro.org>
+ <20230719153018.1456180-5-jean-philippe@linaro.org>
+ <CAFEAcA8e_-r6b4iaeDUv64iydFe7iAb4Y0eObyO4tUYizcYLVA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Content-Language: en-US
-To: Cornelia Huck <cohuck@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>
-From: Claudio Fontana <cfontana@suse.de>
-Subject: assert fails in s390x TCG
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1d;
- envelope-from=cfontana@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA8e_-r6b4iaeDUv64iydFe7iAb4Y0eObyO4tUYizcYLVA@mail.gmail.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x330.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,196 +93,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, Jul 20, 2023 at 05:39:56PM +0100, Peter Maydell wrote:
+> On Wed, 19 Jul 2023 at 16:56, Jean-Philippe Brucker
+> <jean-philippe@linaro.org> wrote:
+> >
+> > GPC checks are not performed on the output address for AT instructions,
+> > as stated by ARM DDI 0487J in D8.12.2:
+> >
+> >   When populating PAR_EL1 with the result of an address translation
+> >   instruction, granule protection checks are not performed on the final
+> >   output address of a successful translation.
+> >
+> > Rename get_phys_addr_with_secure(), since it's only used to handle AT
+> > instructions.
+> >
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > ---
+> > This incidentally fixes a problem with AT S1E1 instructions which can
+> > output an IPA and should definitely not cause a GPC.
+> > ---
+> >  target/arm/internals.h | 25 ++++++++++++++-----------
+> >  target/arm/helper.c    |  8 ++++++--
+> >  target/arm/ptw.c       | 11 ++++++-----
+> >  3 files changed, 26 insertions(+), 18 deletions(-)
+> >
+> > diff --git a/target/arm/internals.h b/target/arm/internals.h
+> > index 0f01bc32a8..fc90c364f7 100644
+> > --- a/target/arm/internals.h
+> > +++ b/target/arm/internals.h
+> > @@ -1190,12 +1190,11 @@ typedef struct GetPhysAddrResult {
+> >  } GetPhysAddrResult;
+> >
+> >  /**
+> > - * get_phys_addr_with_secure: get the physical address for a virtual address
+> > + * get_phys_addr: get the physical address for a virtual address
+> >   * @env: CPUARMState
+> >   * @address: virtual address to get physical address for
+> >   * @access_type: 0 for read, 1 for write, 2 for execute
+> >   * @mmu_idx: MMU index indicating required translation regime
+> > - * @is_secure: security state for the access
+> >   * @result: set on translation success.
+> >   * @fi: set to fault info if the translation fails
+> >   *
+> > @@ -1212,26 +1211,30 @@ typedef struct GetPhysAddrResult {
+> >   *  * for PSMAv5 based systems we don't bother to return a full FSR format
+> >   *    value.
+> >   */
+> > -bool get_phys_addr_with_secure(CPUARMState *env, target_ulong address,
+> > -                               MMUAccessType access_type,
+> > -                               ARMMMUIdx mmu_idx, bool is_secure,
+> > -                               GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
+> > +bool get_phys_addr(CPUARMState *env, target_ulong address,
+> > +                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
+> > +                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
+> >      __attribute__((nonnull));
+> 
+> 
+> What is going on in this bit of the patch ? We already
+> have a prototype for get_phys_addr() with a doc comment.
+> Is this git's diff-output producing something silly
+> for a change that is not logically touching get_phys_addr()'s
+> prototype and comment at all?
 
-Hello Cornelia, Richard,
+I swapped the two prototypes in order to make the new comment for
+get_phys_addr_with_secure_nogpc() more clear. Tried to convey that
+get_phys_addr() is the normal function and
+get_phys_addr_with_secure_nogpc() is special. So git is working as
+expected and this is a style change, I can switch them back if you prefer.
 
-I had some strange behavior in an s390x TCG VM that I am debugging,
+Thanks,
+Jean
 
-and configured latest upstream QEMU with --enable-debug --enable-debug-tcg
-
-and I am running the qemu binary with -d unimp,guest_errors .
-
-I get:
-
-/usr/bin/qemu-system-s390x -nodefaults -no-reboot -nographic -vga none -cpu qemu -d unimp,guest_errors -object rng-random,filename=/dev/random,id=rng0 -device virtio-rng-ccw,rng=rng0 -runas qemu -net none -kernel /var/tmp/boot/kernel -initrd /var/tmp/boot/initrd -append root=/dev/disk/by-id/virtio-0 rootfstype=ext3 rootflags=data=writeback,nobarrier,commit=150,noatime elevator=noop nmi_watchdog=0 rw oops=panic panic=1 quiet elevator=noop console=hvc0 init=build -m 2048 -drive file=/var/tmp/img,format=raw,if=none,id=disk,cache=unsafe -device virtio-blk-ccw,drive=disk,serial=0 -drive file=/var/tmp/swap,format=raw,if=none,id=swap,cache=unsafe -device virtio-blk-ccw,drive=swap,serial=1 -device virtio-serial-ccw -device virtconsole,chardev=virtiocon0 -chardev stdio,id=virtiocon0 -chardev socket,id=monitor,server=on,wait=off,path=/var/tmp/img.qemu/monitor -mon chardev=monitor,mode=readline -smp 8
-
-unimplemented opcode 0xb9ab
-unimplemented opcode 0xb2af
-
-ERROR:../accel/tcg/tb-maint.c:348:page_unlock__debug: assertion failed: (page_is_locked(pd))
-Bail out! ERROR:../accel/tcg/tb-maint.c:348:page_unlock__debug: assertion failed: (page_is_locked(pd))
-
-Thread 3 "qemu-system-s39" received signal SIGABRT, Aborted.
-[Switching to Thread 0x7ffff53516c0 (LWP 215975)]
-(gdb) bt
-#0  0x00007ffff730dabc in __pthread_kill_implementation () at /lib64/libc.so.6
-#1  0x00007ffff72bc266 in raise () at /lib64/libc.so.6
-#2  0x00007ffff72a4897 in abort () at /lib64/libc.so.6
-#3  0x00007ffff76f0eee in  () at /lib64/libglib-2.0.so.0
-#4  0x00007ffff775649a in g_assertion_message_expr () at /lib64/libglib-2.0.so.0
-#5  0x0000555555b96134 in page_unlock__debug (pd=0x7ffee8680440) at ../accel/tcg/tb-maint.c:348
-#6  0x0000555555b962a9 in page_unlock (pd=0x7ffee8680440) at ../accel/tcg/tb-maint.c:397
-#7  0x0000555555b96580 in tb_unlock_pages (tb=0x7fffefffeb00) at ../accel/tcg/tb-maint.c:483
-#8  0x0000555555b94698 in cpu_exec_longjmp_cleanup (cpu=0x555556566a30) at ../accel/tcg/cpu-exec.c:556
-#9  0x0000555555b954e0 in cpu_exec_setjmp (cpu=0x555556566a30, sc=0x7ffff5350540) at ../accel/tcg/cpu-exec.c:1054
-#10 0x0000555555b9557a in cpu_exec (cpu=0x555556566a30) at ../accel/tcg/cpu-exec.c:1083
-#11 0x0000555555bb9af6 in tcg_cpus_exec (cpu=0x555556566a30) at ../accel/tcg/tcg-accel-ops.c:75
-#12 0x0000555555bba1ae in mttcg_cpu_thread_fn (arg=0x555556566a30) at ../accel/tcg/tcg-accel-ops-mttcg.c:95
-#13 0x0000555555dc0af3 in qemu_thread_start (args=0x5555565ba150) at ../util/qemu-thread-posix.c:541
-#14 0x00007ffff730bc64 in start_thread () at /lib64/libc.so.6
-#15 0x00007ffff7393550 in clone3 () at /lib64/libc.so.6
-
-(gdb) frame 5
-#5  0x0000555555b96134 in page_unlock__debug (pd=0x7ffee8680440) at ../accel/tcg/tb-maint.c:348
-348         g_assert(page_is_locked(pd));
-(gdb) list 348
-343     static void page_unlock__debug(const PageDesc *pd)
-344     {
-345         bool removed;
-346
-347         ht_pages_locked_debug_init();
-348         g_assert(page_is_locked(pd));
-349         removed = g_hash_table_remove(ht_pages_locked_debug, pd);
-350         g_assert(removed);
-351     }
-352
-
-(gdb) info threads
-  Id   Target Id                                            Frame 
-  1    Thread 0x7ffff63bef40 (LWP 215971) "qemu-system-s39" 0x00007ffff7385596 in ppoll () from /lib64/libc.so.6
-  2    Thread 0x7ffff63bb6c0 (LWP 215974) "qemu-system-s39" 0x00007ffff738b41d in syscall () from /lib64/libc.so.6
-* 3    Thread 0x7ffff53516c0 (LWP 215975) "qemu-system-s39" 0x00007ffff730dabc in __pthread_kill_implementation () from /lib64/libc.so.6
-  4    Thread 0x7ffff4b506c0 (LWP 215976) "qemu-system-s39" 0x00007ffff730820e in __futex_abstimed_wait_common () from /lib64/libc.so.6
-  5    Thread 0x7ffeefdff6c0 (LWP 215977) "qemu-system-s39" 0x00007ffff730820e in __futex_abstimed_wait_common () from /lib64/libc.so.6
-  6    Thread 0x7ffeef5fe6c0 (LWP 215978) "qemu-system-s39" 0x00007ffff730820e in __futex_abstimed_wait_common () from /lib64/libc.so.6
-  7    Thread 0x7ffeeedfd6c0 (LWP 215979) "qemu-system-s39" 0x00007ffff730820e in __futex_abstimed_wait_common () from /lib64/libc.so.6
-  8    Thread 0x7ffeee5fc6c0 (LWP 215980) "qemu-system-s39" 0x00007ffff730820e in __futex_abstimed_wait_common () from /lib64/libc.so.6
-  9    Thread 0x7ffeeddfb6c0 (LWP 215981) "qemu-system-s39" 0x00007ffff730820e in __futex_abstimed_wait_common () from /lib64/libc.so.6
-  10   Thread 0x7ffeed5fa6c0 (LWP 215982) "qemu-system-s39" 0x00007ffff730820e in __futex_abstimed_wait_common () from /lib64/libc.so.6
-
-(gdb) thread apply all bt
-
-Thread 10 (Thread 0x7ffeed5fa6c0 (LWP 215982) "qemu-system-s39"):
-#0  0x00007ffff730820e in __futex_abstimed_wait_common () at /lib64/libc.so.6
-#1  0x00007ffff730af50 in pthread_cond_wait@@GLIBC_2.3.2 () at /lib64/libc.so.6
-#2  0x0000555555dc02ab in qemu_cond_wait_impl (cond=0x555556803f30, mutex=0x55555632aac0 <qemu_global_mutex>, file=0x555555f05d6b "../softmmu/cpus.c", line=424) at ../util/qemu-thread-posix.c:225
-#3  0x00005555559d78fb in qemu_wait_io_event (cpu=0x5555567b0600) at ../softmmu/cpus.c:424
-#4  0x0000555555bba27a in mttcg_cpu_thread_fn (arg=0x5555567b0600) at ../accel/tcg/tcg-accel-ops-mttcg.c:123
-#5  0x0000555555dc0af3 in qemu_thread_start (args=0x555556803f70) at ../util/qemu-thread-posix.c:541
-#6  0x00007ffff730bc64 in start_thread () at /lib64/libc.so.6
-#7  0x00007ffff7393550 in clone3 () at /lib64/libc.so.6
-
-Thread 9 (Thread 0x7ffeeddfb6c0 (LWP 215981) "qemu-system-s39"):
-#0  0x00007ffff730820e in __futex_abstimed_wait_common () at /lib64/libc.so.6
-#1  0x00007ffff730af50 in pthread_cond_wait@@GLIBC_2.3.2 () at /lib64/libc.so.6
-#2  0x0000555555dc02ab in qemu_cond_wait_impl (cond=0x5555567b0340, mutex=0x55555632aac0 <qemu_global_mutex>, file=0x555555f05d6b "../softmmu/cpus.c", line=424) at ../util/qemu-thread-posix.c:225
-#3  0x00005555559d78fb in qemu_wait_io_event (cpu=0x55555675cb10) at ../softmmu/cpus.c:424
-#4  0x0000555555bba27a in mttcg_cpu_thread_fn (arg=0x55555675cb10) at ../accel/tcg/tcg-accel-ops-mttcg.c:123
-#5  0x0000555555dc0af3 in qemu_thread_start (args=0x5555567b0380) at ../util/qemu-thread-posix.c:541
-#6  0x00007ffff730bc64 in start_thread () at /lib64/libc.so.6
-#7  0x00007ffff7393550 in clone3 () at /lib64/libc.so.6
-
-Thread 8 (Thread 0x7ffeee5fc6c0 (LWP 215980) "qemu-system-s39"):
-#0  0x00007ffff730820e in __futex_abstimed_wait_common () at /lib64/libc.so.6
-#1  0x00007ffff730af50 in pthread_cond_wait@@GLIBC_2.3.2 () at /lib64/libc.so.6
-#2  0x0000555555dc02ab in qemu_cond_wait_impl (cond=0x55555675c850, mutex=0x55555632aac0 <qemu_global_mutex>, file=0x555555f05d6b "../softmmu/cpus.c", line=424) at ../util/qemu-thread-posix.c:225
-#3  0x00005555559d78fb in qemu_wait_io_event (cpu=0x5555567090f0) at ../softmmu/cpus.c:424
-#4  0x0000555555bba27a in mttcg_cpu_thread_fn (arg=0x5555567090f0) at ../accel/tcg/tcg-accel-ops-mttcg.c:123
-#5  0x0000555555dc0af3 in qemu_thread_start (args=0x55555675c890) at ../util/qemu-thread-posix.c:541
-#6  0x00007ffff730bc64 in start_thread () at /lib64/libc.so.6
-#7  0x00007ffff7393550 in clone3 () at /lib64/libc.so.6
-
-Thread 7 (Thread 0x7ffeeedfd6c0 (LWP 215979) "qemu-system-s39"):
-#0  0x00007ffff730820e in __futex_abstimed_wait_common () at /lib64/libc.so.6
-#1  0x00007ffff730af50 in pthread_cond_wait@@GLIBC_2.3.2 () at /lib64/libc.so.6
-#2  0x0000555555dc02ab in qemu_cond_wait_impl (cond=0x555556708e50, mutex=0x55555632aac0 <qemu_global_mutex>, file=0x555555f05d6b "../softmmu/cpus.c", line=424) at ../util/qemu-thread-posix.c:225
-#3  0x00005555559d78fb in qemu_wait_io_event (cpu=0x5555566b5490) at ../softmmu/cpus.c:424
-#4  0x0000555555bba27a in mttcg_cpu_thread_fn (arg=0x5555566b5490) at ../accel/tcg/tcg-accel-ops-mttcg.c:123
-#5  0x0000555555dc0af3 in qemu_thread_start (args=0x555556708e90) at ../util/qemu-thread-posix.c:541
-#6  0x00007ffff730bc64 in start_thread () at /lib64/libc.so.6
-#7  0x00007ffff7393550 in clone3 () at /lib64/libc.so.6
-
-Thread 6 (Thread 0x7ffeef5fe6c0 (LWP 215978) "qemu-system-s39"):
-#0  0x00007ffff730820e in __futex_abstimed_wait_common () at /lib64/libc.so.6
-#1  0x00007ffff730af50 in pthread_cond_wait@@GLIBC_2.3.2 () at /lib64/libc.so.6
-#2  0x0000555555dc02ab in qemu_cond_wait_impl (cond=0x5555566b51d0, mutex=0x55555632aac0 <qemu_global_mutex>, file=0x555555f05d6b "../softmmu/cpus.c", line=424) at ../util/qemu-thread-posix.c:225
-#3  0x00005555559d78fb in qemu_wait_io_event (cpu=0x5555566619a0) at ../softmmu/cpus.c:424
-#4  0x0000555555bba27a in mttcg_cpu_thread_fn (arg=0x5555566619a0) at ../accel/tcg/tcg-accel-ops-mttcg.c:123
-#5  0x0000555555dc0af3 in qemu_thread_start (args=0x5555566b5210) at ../util/qemu-thread-posix.c:541
-#6  0x00007ffff730bc64 in start_thread () at /lib64/libc.so.6
-#7  0x00007ffff7393550 in clone3 () at /lib64/libc.so.6
-
-Thread 5 (Thread 0x7ffeefdff6c0 (LWP 215977) "qemu-system-s39"):
-#0  0x00007ffff730820e in __futex_abstimed_wait_common () at /lib64/libc.so.6
-#1  0x00007ffff730af50 in pthread_cond_wait@@GLIBC_2.3.2 () at /lib64/libc.so.6
-#2  0x0000555555dc02ab in qemu_cond_wait_impl (cond=0x5555566616e0, mutex=0x55555632aac0 <qemu_global_mutex>, file=0x555555f05d6b "../softmmu/cpus.c", line=424) at ../util/qemu-thread-posix.c:225
-#3  0x00005555559d78fb in qemu_wait_io_event (cpu=0x55555660deb0) at ../softmmu/cpus.c:424
-#4  0x0000555555bba27a in mttcg_cpu_thread_fn (arg=0x55555660deb0) at ../accel/tcg/tcg-accel-ops-mttcg.c:123
-#5  0x0000555555dc0af3 in qemu_thread_start (args=0x555556661720) at ../util/qemu-thread-posix.c:541
-#6  0x00007ffff730bc64 in start_thread () at /lib64/libc.so.6
-#7  0x00007ffff7393550 in clone3 () at /lib64/libc.so.6
-
-Thread 4 (Thread 0x7ffff4b506c0 (LWP 215976) "qemu-system-s39"):
-#0  0x00007ffff730820e in __futex_abstimed_wait_common () at /lib64/libc.so.6
-#1  0x00007ffff730af50 in pthread_cond_wait@@GLIBC_2.3.2 () at /lib64/libc.so.6
-#2  0x0000555555dc02ab in qemu_cond_wait_impl (cond=0x55555660dbf0, mutex=0x55555632aac0 <qemu_global_mutex>, file=0x555555f05d6b "../softmmu/cpus.c", line=424) at ../util/qemu-thread-posix.c:225
-#3  0x00005555559d78fb in qemu_wait_io_event (cpu=0x5555565ba3d0) at ../softmmu/cpus.c:424
-#4  0x0000555555bba27a in mttcg_cpu_thread_fn (arg=0x5555565ba3d0) at ../accel/tcg/tcg-accel-ops-mttcg.c:123
-#5  0x0000555555dc0af3 in qemu_thread_start (args=0x55555660dc30) at ../util/qemu-thread-posix.c:541
-#6  0x00007ffff730bc64 in start_thread () at /lib64/libc.so.6
-#7  0x00007ffff7393550 in clone3 () at /lib64/libc.so.6
-
-Thread 3 (Thread 0x7ffff53516c0 (LWP 215975) "qemu-system-s39"):
-#0  0x00007ffff730dabc in __pthread_kill_implementation () at /lib64/libc.so.6
-#1  0x00007ffff72bc266 in raise () at /lib64/libc.so.6
-#2  0x00007ffff72a4897 in abort () at /lib64/libc.so.6
-#3  0x00007ffff76f0eee in  () at /lib64/libglib-2.0.so.0
-#4  0x00007ffff775649a in g_assertion_message_expr () at /lib64/libglib-2.0.so.0
-#5  0x0000555555b96134 in page_unlock__debug (pd=0x7ffee8680440) at ../accel/tcg/tb-maint.c:348
-#6  0x0000555555b962a9 in page_unlock (pd=0x7ffee8680440) at ../accel/tcg/tb-maint.c:397
-#7  0x0000555555b96580 in tb_unlock_pages (tb=0x7fffefffeb00) at ../accel/tcg/tb-maint.c:483
-#8  0x0000555555b94698 in cpu_exec_longjmp_cleanup (cpu=0x555556566a30) at ../accel/tcg/cpu-exec.c:556
-#9  0x0000555555b954e0 in cpu_exec_setjmp (cpu=0x555556566a30, sc=0x7ffff5350540) at ../accel/tcg/cpu-exec.c:1054
-#10 0x0000555555b9557a in cpu_exec (cpu=0x555556566a30) at ../accel/tcg/cpu-exec.c:1083
-#11 0x0000555555bb9af6 in tcg_cpus_exec (cpu=0x555556566a30) at ../accel/tcg/tcg-accel-ops.c:75
-#12 0x0000555555bba1ae in mttcg_cpu_thread_fn (arg=0x555556566a30) at ../accel/tcg/tcg-accel-ops-mttcg.c:95
-#13 0x0000555555dc0af3 in qemu_thread_start (args=0x5555565ba150) at ../util/qemu-thread-posix.c:541
-#14 0x00007ffff730bc64 in start_thread () at /lib64/libc.so.6
-#15 0x00007ffff7393550 in clone3 () at /lib64/libc.so.6
-
-Thread 2 (Thread 0x7ffff63bb6c0 (LWP 215974) "qemu-system-s39"):
-#0  0x00007ffff738b41d in syscall () at /lib64/libc.so.6
-#1  0x0000555555dc0759 in qemu_futex_wait (f=0x555556352818 <rcu_call_ready_event>, val=4294967295) at /root/git/qemu/include/qemu/futex.h:29
-#2  0x0000555555dc0940 in qemu_event_wait (ev=0x555556352818 <rcu_call_ready_event>) at ../util/qemu-thread-posix.c:464
-#3  0x0000555555dcd228 in call_rcu_thread (opaque=0x0) at ../util/rcu.c:278
-#4  0x0000555555dc0af3 in qemu_thread_start (args=0x5555563bdf20) at ../util/qemu-thread-posix.c:541
-#5  0x00007ffff730bc64 in start_thread () at /lib64/libc.so.6
-#6  0x00007ffff7393550 in clone3 () at /lib64/libc.so.6
-
-Thread 1 (Thread 0x7ffff63bef40 (LWP 215971) "qemu-system-s39"):
-#0  0x00007ffff7385596 in ppoll () at /lib64/libc.so.6
-#1  0x0000555555dde228 in qemu_poll_ns (fds=0x55555680ae50, nfds=75, timeout=9378142) at ../util/qemu-timer.c:351
-#2  0x0000555555dd9b50 in os_host_main_loop_wait (timeout=9378142) at ../util/main-loop.c:308
-#3  0x0000555555dd9c7f in main_loop_wait (nonblocking=0) at ../util/main-loop.c:592
-#4  0x00005555559e5c3e in qemu_main_loop () at ../softmmu/runstate.c:732
-#5  0x0000555555bbff42 in qemu_default_main () at ../softmmu/main.c:37
-#6  0x0000555555bbff78 in main (argc=46, argv=0x7fffffffe278) at ../softmmu/main.c:48
-
-----
-
-If I build normally without debug-tcg I don't seem to incur in this assertion.
-
-Since I have some strange misbehavior at runtime, with processes dying with segfaults and the guest kernel complaining:
-
- [ 2269s] [ 2243.901667][ T8318] User process fault: interruption code 0011 ilc:2 in libc.so.6[3ff87a80000+1c9000]
- [ 2269s] [ 2243.904433][ T8318] Failing address: 000002aa0f73f000 TEID: 000002aa0f73f800
- [ 2269s] [ 2243.904952][ T8318] Fault in primary space mode while using user ASCE.
- [ 2269s] [ 2243.905405][ T8318] AS:00000000057841c7 R3:0000000001fdc007 S:000000000398c000 P:0000000000000400 
-
-I thought they might possibly be related..
-
-Thanks for any suggestion,
-
-Claudio
-
+> 
+> >  /**
+> > - * get_phys_addr: get the physical address for a virtual address
+> > + * get_phys_addr_with_secure_nogpc: get the physical address for a virtual
+> > + *                                  address
+> >   * @env: CPUARMState
+> >   * @address: virtual address to get physical address for
+> >   * @access_type: 0 for read, 1 for write, 2 for execute
+> >   * @mmu_idx: MMU index indicating required translation regime
+> > + * @is_secure: security state for the access
+> >   * @result: set on translation success.
+> >   * @fi: set to fault info if the translation fails
+> >   *
+> > - * Similarly, but use the security regime of @mmu_idx.
+> > + * Similar to get_phys_addr, but use the given security regime and don't perform
+> > + * a Granule Protection Check on the resulting address.
+> >   */
+> > -bool get_phys_addr(CPUARMState *env, target_ulong address,
+> > -                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
+> > -                   GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
+> > +bool get_phys_addr_with_secure_nogpc(CPUARMState *env, target_ulong address,
+> > +                                     MMUAccessType access_type,
+> > +                                     ARMMMUIdx mmu_idx, bool is_secure,
+> > +                                     GetPhysAddrResult *result,
+> > +                                     ARMMMUFaultInfo *fi)
+> >      __attribute__((nonnull));
+> 
+> thanks
+> -- PMM
 
