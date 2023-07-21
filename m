@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B20775C29E
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02EAE75C2CC
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:18:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMmAG-00055p-EE; Fri, 21 Jul 2023 05:11:08 -0400
+	id 1qMmFn-0007Kr-UZ; Fri, 21 Jul 2023 05:16:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMmAE-00055S-L1
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:11:06 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMmFY-0007Kf-9m
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:16:36 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMmAD-0006zN-6a
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:11:06 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-3144bf65ce9so1319225f8f.3
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:11:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMmFW-00084X-M3
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:16:36 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3158a5e64b6so1367523f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:16:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689930664; x=1690535464;
+ d=linaro.org; s=google; t=1689930993; x=1690535793;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=MrFtdmRslbDY72kZyGkBS8s7GgtzRF3MN+Vz2yGDNk0=;
- b=SHE9E2G0KPcLWdwZMag5bIJ9ulcb8NauZmG32kP/J6vkCXOQ6fsssY5Kh9H6Piv3hR
- PYV2r1nia532KqWK1UH62C3B1se2+079l0ngCLGCh1wGMm7IdVZ++e8eZ52ImsuSfBAY
- lLmToUeMgyahBpPuntszEKFhlekBMpdwHKlPxXF2Pj5pRAuDc6BUyqXaPKQLEg56Z8xW
- LC/+bO1j3xp5yjQ4QsUd0v32oXT6DDPYq16FisnJpdKtV45kT8GmtZ7LoDzqHuaGhqc8
- NCvPLL59SvIakKxhGKr2DOLDw3iT14iEau+q6pFYktud6Jvtfs14rl2tn7zC1SdHxVzF
- IlGg==
+ bh=c9zYKZRRDPlrZ7D3x51o3zBFDwMkW36wIKK9QSvJLWo=;
+ b=aGbu+FmjkufQFYKF/rk2l0o4oz9xFhzY1NespIGb9xKLo+Ulqyh2eh2eUUI4LQAkx7
+ uhT60BJtjYDzqkSd8yK3Mm1Z64eBB2vCqR7mF7hpakrk6r1VsMNYGK/eECR8YLtjg9Cy
+ pI0wqDfGC76pcgIpI+yHeRyauzkzuUaKFiGv0KvLJ5uPrybq8/cAkJLSsmBQ6kMq+GpC
+ n0w9fMs5g0uf3DftSfnTjpTW++yTnWqkwoFd2YW03LBclRn6NWHgPJyXksgA2qu5f4NO
+ VTI4AbNuftw+OYHyhWJ25ioBASo3GsxPP+a5QjRRoJnSUxOtQFKVHySUEt8QOSc6eMrx
+ FLDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689930664; x=1690535464;
+ d=1e100.net; s=20221208; t=1689930993; x=1690535793;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MrFtdmRslbDY72kZyGkBS8s7GgtzRF3MN+Vz2yGDNk0=;
- b=S6O3M2HiKeT8Pah7a26XU0jswmps34TOsVVwEk2RDM47FQIB1te2KHxp6uHaGVAfZI
- 27jaE2g7gAdltsX5TlsE10nVKEX+5wdImhn2pk2RcHkItZN1zUOo2cmupL8zGSDNYoby
- O/FEc8+x4ro/I/mucjK5TMOJ92ejLitIwwr0zghRbyA1fg2FvLvZd+9Er2qvflW0hD3S
- OKZmCdhdPsa9YjgytZbpb1altS6wqyPzLTOo6SLES7Eevfte0PFWD/qGn1x3htNKaVco
- dbBy/bFefxVxeFyuQASkZG92u/kUKVIaRmxIm0mHk5+PQc/GoxKwa1/lzVMKbzQp0raw
- 8X1A==
-X-Gm-Message-State: ABy/qLYiNp4hsmG2KmZuGXVaibwRFiFeu/gjCWUNA2Sex/MnduLnbb/7
- wPumHW0Y66mBFq6ix27tbcLACw==
-X-Google-Smtp-Source: APBJJlGQfYl67ALUxzRDPibN8I4GIZOkH3IwJPMSRXTmnsYnGPRBG4FCBFqvBAuYFx/S23ON1bvMxA==
-X-Received: by 2002:a5d:58ea:0:b0:314:34dd:aaec with SMTP id
- f10-20020a5d58ea000000b0031434ddaaecmr977196wrd.8.1689930663924; 
- Fri, 21 Jul 2023 02:11:03 -0700 (PDT)
+ bh=c9zYKZRRDPlrZ7D3x51o3zBFDwMkW36wIKK9QSvJLWo=;
+ b=YN9ypdVSud+iny/XlxcPqZ6N5/QArzhJ/hi9+12LKhoqK8nuTvr/TglL/nbvMLeivM
+ LOTP8YWYJ4AW56r6wx4uwvJbqURs7d1XyVFCntfv/q9ejBs3s9EifjbQ41l1pZqM8hdk
+ ulOfFGPWf+TsiXqeek2p8JWthDsPprmF92+p8I5tnzPOPQUNPwneea1Eil8Iq5xZWQPX
+ NwGvfugWJ6ysPcb2ZQYS2BMFWqObXwSNBkYioTtPGwzsDu5gmANjO45qr+k9KY+yqL8H
+ qPa1HiMRGPGf6NAoJ4mXF/GeENt0Leya5kxOtGE0OKH3wxE04sRw7kVu9UyLTq4dWbc3
+ JWZg==
+X-Gm-Message-State: ABy/qLax8NKbIdg7KYVF84TOHAUgfY/ttIVz/9HQD+jDpEm6nNiKFIiV
+ rcTc7FZRkkTcTyGKcXT4wcmD3Q==
+X-Google-Smtp-Source: APBJJlF2VvTmc7E0lRHLmDJIrC9wv2d26YmE4irmV3uLmtuHn78TG9nvFYCJ6KtYsoe/oGMzjloK0w==
+X-Received: by 2002:a5d:534e:0:b0:316:f34d:68bb with SMTP id
+ t14-20020a5d534e000000b00316f34d68bbmr1022250wrv.54.1689930992983; 
+ Fri, 21 Jul 2023 02:16:32 -0700 (PDT)
 Received: from [192.168.69.115] ([176.187.192.5])
  by smtp.gmail.com with ESMTPSA id
- g15-20020a5d554f000000b0031417fd473csm3623019wrw.78.2023.07.21.02.11.02
+ r6-20020adff106000000b0031424950a99sm3635240wro.81.2023.07.21.02.16.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 21 Jul 2023 02:11:03 -0700 (PDT)
-Message-ID: <d74789ed-6c18-e802-9393-db545b1d7e18@linaro.org>
-Date: Fri, 21 Jul 2023 11:11:01 +0200
+ Fri, 21 Jul 2023 02:16:32 -0700 (PDT)
+Message-ID: <1d7fc618-fb10-4990-dbda-5fd610655a66@linaro.org>
+Date: Fri, 21 Jul 2023 11:16:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.13.0
-Subject: Re: [PATCH for-8.1] scripts/git-submodule.sh: Don't rely on non-POSIX
- 'read' behaviour
+Subject: Re: [PATCH for-8.2 0/4] rtc devices: Avoid putting time_t in 32-bit
+ variables
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-References: <20230720153038.1587196-1-peter.maydell@linaro.org>
+Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Herv=c3=a9_Poussineau?=
+ <hpoussin@reactos.org>
+References: <20230720155902.1590362-1-peter.maydell@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230720153038.1587196-1-peter.maydell@linaro.org>
+In-Reply-To: <20230720155902.1590362-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,23 +96,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/7/23 17:30, Peter Maydell wrote:
-> The POSIX definition of the 'read' utility requires that you
-> specify the variable name to set; omitting the name and
-> having it default to 'REPLY' is a bashism. If your system
-> sh is dash, then it will print an error message during build:
-> 
-> qemu/pc-bios/s390-ccw/../../scripts/git-submodule.sh: 106: read: arg count
-> 
-> Specify the variable name explicitly.
-> 
-> Fixes: fdb8fd8cb915647b ("git-submodule: allow partial update of .git-submodule-status")
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   scripts/git-submodule.sh | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Peter,
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 20/7/23 17:58, Peter Maydell wrote:
+> This patchset was prompted by a couple of Coverity warnings
+> (CID 1507157, 1517772) which note that in the m48t59 RTC device model
+> we keep an offset in a time_t variable but then truncate it by
+> passing it to qemu_get_timedate(), which currently uses an 'int'
+> argument for its offset parameter.
+> 
+> We can fix the Coverity complaint by making qemu_get_timedate()
+> take a time_t; we should also correspondingly make the
+> qemu_timedate_diff() function return a time_t. However this
+> will only push the issue out to callers of qemu_timedate_diff()
+> if they are putting the result in a 32-bit variable or doing
+> 32-bit arithmetic on it.
+> 
+> Luckily there aren't that many callers of qemu_timedate_diff()
+> and most of them already use either time_t or int64_t for the
+> calculations they do on its return value. The first three
+> patches fix devices which weren't doing that; patch four then
+> fixes the rtc.c functions. If I missed any callsites in devices
+> then hopefully Coverity will point them out.
 
-
+PL031State::tick_offset is uint32_t, and pl031_get_count() also
+returns that type. Is that expected?
 
