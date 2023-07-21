@@ -2,65 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC2875BBDA
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 03:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2041E75BC5B
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 04:40:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMf5j-0002Qe-2A; Thu, 20 Jul 2023 21:37:59 -0400
+	id 1qMg22-0002Bu-6v; Thu, 20 Jul 2023 22:38:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1qMf5h-0002Q3-6C; Thu, 20 Jul 2023 21:37:57 -0400
-Received: from smtp21.cstnet.cn ([159.226.251.21] helo=cstnet.cn)
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <liweiwei@iscas.ac.cn>)
- id 1qMf5f-0003WV-BC; Thu, 20 Jul 2023 21:37:56 -0400
-Received: from [192.168.0.120] (unknown [180.175.26.191])
- by APP-01 (Coremail) with SMTP id qwCowADn7wtq4blk5FWGDA--.6263S2;
- Fri, 21 Jul 2023 09:37:47 +0800 (CST)
-Message-ID: <3c08bab9-bbd7-aa00-1f42-08172c5e9e9e@iscas.ac.cn>
-Date: Fri, 21 Jul 2023 09:37:46 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Cc: liweiwei@iscas.ac.cn, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
-Subject: Re: [PATCH 2/2] target/riscv/cpu.c: add smepmp isa string
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-References: <20230720132424.371132-1-dbarboza@ventanamicro.com>
- <20230720132424.371132-3-dbarboza@ventanamicro.com>
-From: Weiwei Li <liweiwei@iscas.ac.cn>
-In-Reply-To: <20230720132424.371132-3-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: qwCowADn7wtq4blk5FWGDA--.6263S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Gr1xCw13Zr47Kw1fuw1Dtrb_yoWkGFg_Gw
- naqFn7ZryUXFyftaykWw1rK347tryrJa10gw4xtFWUWaykW3W5X3WxK3ZY9r4q93yxXFs8
- Cr93JF17G3yDAjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
- 9fnUUIcSsGvfJTRUUUb48FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
- 6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
- A2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
- 6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
- Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
- I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
- 4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCYjI0SjxkI62AI1cAE67vI
- Y487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
- 0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
- 0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
- W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
- IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbKsjUUUUU
- U==
-X-Originating-IP: [180.175.26.191]
-X-CM-SenderInfo: 5olzvxxzhlqxpvfd2hldfou0/
-Received-SPF: pass client-ip=159.226.251.21; envelope-from=liweiwei@iscas.ac.cn;
- helo=cstnet.cn
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.096,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qMg1z-0002AW-9M; Thu, 20 Jul 2023 22:38:11 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qMg1x-00089b-OT; Thu, 20 Jul 2023 22:38:10 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1b89b75dc1cso17603555ad.1; 
+ Thu, 20 Jul 2023 19:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1689907087; x=1690511887;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=22iOZWbqkY0fMtxqMk/un3xve+/Xn6gFKzq79D4sUKM=;
+ b=bsSI0pH2yLePDmW7l0w0zAK3sB3zLuLTn+EoKtT7gLle3ozBarZOLmRNZ38laN0OS9
+ S3A31z3aUMP8iKb90QvtK6tNyTlkLy4FZGkXCK0Zcd9AOrbMxmTrOqMZ4p36mnmC/AwW
+ YC2WuUaaViobUL1dxnO0+0adBWvuGzSevUenQgb1G0GZ1vzV6mGirZ5fSiIIWvpQ8qRr
+ IjA2KBxqhTOqBl437NFao76q6ugP8F6enoTc128yPxRHjTC3xGE/2nMoAARJBTFofu69
+ 7huTyAB8pzAAAzBvoyTCwy1txwYYb4e/FLIEd4Wo6XcrxxspJ+7geer2uzZgUUh6Bj0M
+ vKPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689907087; x=1690511887;
+ h=in-reply-to:references:cc:to:from:subject:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=22iOZWbqkY0fMtxqMk/un3xve+/Xn6gFKzq79D4sUKM=;
+ b=j4ypTRyELzIOT7Lolaw46qGOThHpdUbIQajvICPIIGChYvmsphTAVx4iGCsFMPmtt5
+ WKhDUIfKJlQuKLMOvFqiLdYlkZxGMODDJLfWYz3MITqAqVWXsnrhpBO56ZtrTFdOUJbQ
+ tVSMF+8YUleknoL4aAC7V6uDG9R6oIT7nwkIFY654P6EZceYDPgG90yC35St3NZjJtBZ
+ 4l47a4xpwa8gsqDVjSSiVtDnpknYDob6XdaBNACe6P8mwNc9+r0TWbDVinhuYdg0A3/S
+ piHVQi7H0FyDWoaVfIqH8oT7ABX5G1FbyMkRHQD3UGjzwtj9m3CJWfvi54rwBmX8+bHU
+ EVaQ==
+X-Gm-Message-State: ABy/qLbtInb+XTCHYSPH7uc87rTkog+2HknGUE6vUqpwdkDjzop2XHhQ
+ S9q0g/2WPqraKWkB3/CIVBc=
+X-Google-Smtp-Source: APBJJlGDqMHYLdFxNfCZWoy67zuqi7t0C07oPtpMqbRGntbiF7q4Dn4ao/vPkmwap5oBACH4M+atPw==
+X-Received: by 2002:a17:902:d2c7:b0:1b8:5a42:5145 with SMTP id
+ n7-20020a170902d2c700b001b85a425145mr1715591plc.31.1689907087412; 
+ Thu, 20 Jul 2023 19:38:07 -0700 (PDT)
+Received: from localhost (193-116-195-56.tpgi.com.au. [193.116.195.56])
+ by smtp.gmail.com with ESMTPSA id
+ a17-20020a170902ecd100b001ba066c589dsm2128799plh.137.2023.07.20.19.38.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 20 Jul 2023 19:38:07 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 21 Jul 2023 12:38:01 +1000
+Message-Id: <CU7I2BT516P3.1NJPQWALJTVR@wheely>
+Subject: Re: [PATCH v2] target/ppc: Generate storage interrupts for radix RC
+ changes
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Shawn Anastasio" <sanastasio@raptorengineering.com>,
+ =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, <qemu-ppc@nongnu.org>
+Cc: <qemu-devel@nongnu.org>, "Greg Kurz" <groug@kaod.org>, "David Gibson"
+ <david@gibson.dropbear.id.au>, "Daniel Henrique Barboza"
+ <danielhb413@gmail.com>, "Timothy Pearson"
+ <tpearson@raptorengineering.com>, "Frederic Barrat" <fbarrat@linux.ibm.com>
+X-Mailer: aerc 0.15.2
+References: <20230712161322.2729950-1-sanastasio@raptorengineering.com>
+ <c76c0d05-4c69-aa4f-5d20-3dfdb165a765@kaod.org>
+ <1004ffbe-8855-75d1-45e7-65360bfd1807@raptorengineering.com>
+In-Reply-To: <1004ffbe-8855-75d1-45e7-65360bfd1807@raptorengineering.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,32 +97,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 2023/7/20 21:24, Daniel Henrique Barboza wrote:
-> The cpu->cfg.epmp extension is still experimental, but it already has a
-> 'smepmp' riscv,isa string. Add it.
+On Thu Jul 13, 2023 at 3:35 AM AEST, Shawn Anastasio wrote:
+> On 7/12/23 11:56 AM, C=C3=A9dric Le Goater wrote:
+> > Hello Shawn,
+> >=20
+> > On 7/12/23 18:13, Shawn Anastasio wrote:
+> >> Change radix model to always generate a storage interrupt when the R/C
+> >> bits are not set appropriately in a PTE instead of setting the bits
+> >> itself.  According to the ISA both behaviors are valid, but in practic=
+e
+> >> this change more closely matches behavior observed on the POWER9 CPU.
+> >=20
+> > How did you spotted this dark corner case in emulation ? Do you have
+> > MMU unit tests ?
 >
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
+> I'm currently porting Xen to Power and have been using QEMU's powernv
+> model extensively for early bring up. I noticed the issue when my radix
+> implementation worked in QEMU but failed on actual hardware since I
+> didn't have a proper storage interrupt handler implemented.
 
-Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
+Cool. This was on my todo list because we rely on it for nested HV
+KVM too.
 
-Weiwei Li
+I actually didn't know about that odd effLIPD=3D0 exception, but it
+looks right. How did you test that, by running with MSR[HV]=3D0 and
+LPIDR=3D0 ?
 
->   target/riscv/cpu.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index d64ac07558..8c9acadd3b 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -130,6 +130,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
->       ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
->       ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
->       ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
-> +    ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, epmp),
->       ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
->       ISA_EXT_DATA_ENTRY(ssaia, PRIV_VERSION_1_12_0, ext_ssaia),
->       ISA_EXT_DATA_ENTRY(sscofpmf, PRIV_VERSION_1_12_0, ext_sscofpmf),
+For the patch,
 
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+Thanks,
+Nick
 
