@@ -2,99 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D69375C148
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 10:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A7575C17D
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 10:24:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMlMB-0004oF-Gl; Fri, 21 Jul 2023 04:19:23 -0400
+	id 1qMlQd-0006kG-Kd; Fri, 21 Jul 2023 04:23:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qMlM9-0004o7-VG
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 04:19:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <hao.xu@linux.dev>) id 1qMlQO-0006jo-0K
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 04:23:44 -0400
+Received: from out-59.mta0.migadu.com ([91.218.175.59])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qMlM7-0003Wk-RC
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 04:19:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689927558;
+ (Exim 4.90_1) (envelope-from <hao.xu@linux.dev>) id 1qMlQI-0004k9-Nc
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 04:23:42 -0400
+Message-ID: <130f1169-7ff6-1f8d-c416-90a0bfa3a6dd@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+ t=1689927815;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pRJy7Tbp08IAiIaPCUWlUMndjI8xNFqSlJ0wmYaxmPo=;
- b=KrmhDlDjMi9HiMGeLoizIXkEa4NuRK/nyDLjS5TbV96C+HkVvSClRaN54x5y3uaDU5/zZv
- she4yVBO2snsNpllun52t/M26OX97SaZ/+/GhjjuIDuO4dAZS8cSnzwmwDGQzyHuRV94jr
- +PxazUSj7weHA3+eFqbaRggBdRjDRxk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-Z0klMpyRNz6WSNXkQDUTCA-1; Fri, 21 Jul 2023 04:19:16 -0400
-X-MC-Unique: Z0klMpyRNz6WSNXkQDUTCA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fd0fa4d08cso9128365e9.1
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 01:19:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689927555; x=1690532355;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pRJy7Tbp08IAiIaPCUWlUMndjI8xNFqSlJ0wmYaxmPo=;
- b=LCrjF22ymkbIGsWRxJjcVF6qh4rO9BzTDnIP2VE3ReeClfC/1LdIlL12dof919bf9V
- NQJ7ElZDJJtLMOnTNPD2Aastva2UNRtXWsS+XudvNhlqH9L/Um0T/fpZfkWOTpa0haqh
- FddO27jAHo13PYodeU2HFeXtuZxbJzvR0SzwKYsrcTI83f2rvTHZKFecrMNK26UuXXxF
- 7ttAt04UyQKcAwwp+2Qg6nh6YJqJcZ+7KaSIK8p2LRYiB62wrVA1QlHe+zR1T3ru651u
- q0qE3lAwfTGnYgEQsbNDO+4/RY2n7j0C505CxPQmsjNSGXA0nQ3WgLbApGjMLXeK1smx
- 1UVw==
-X-Gm-Message-State: ABy/qLZ59kfgJajdA4ApvNYNYmsBxR7T79P0XJCs4DZ7XCseA73GWDQe
- zIDdXryuaZKmVCAsgKGMsfXn3K+Fj7mHLKN4gGXtzIjpyVEHh5/otXqMS6dtB0wFdqj9Y+PrY+g
- jVbLolEeejfXRx5c=
-X-Received: by 2002:a7b:c40a:0:b0:3fc:5d2:1f47 with SMTP id
- k10-20020a7bc40a000000b003fc05d21f47mr809768wmi.20.1689927555239; 
- Fri, 21 Jul 2023 01:19:15 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlF+/fsGZgpDXGVtF94oXr1Uy2Dol3ulQMMaKW0QsOidKUfcfORgz3hLBv94AsmUVwVh/aPP+g==
-X-Received: by 2002:a7b:c40a:0:b0:3fc:5d2:1f47 with SMTP id
- k10-20020a7bc40a000000b003fc05d21f47mr809754wmi.20.1689927554832; 
- Fri, 21 Jul 2023 01:19:14 -0700 (PDT)
-Received: from redhat.com ([2.52.16.41]) by smtp.gmail.com with ESMTPSA id
- a1-20020adfdd01000000b0031411e46af3sm3490086wrm.97.2023.07.21.01.19.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jul 2023 01:19:14 -0700 (PDT)
-Date: Fri, 21 Jul 2023 04:19:08 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Cornelia Huck <cohuck@redhat.com>
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org
-Subject: Re: [PATCH] hw: Add compat machines for 8.2
-Message-ID: <20230721041901-mutt-send-email-mst@kernel.org>
-References: <20230718142235.135319-1-cohuck@redhat.com>
+ bh=fUDUWK+so5TMLl2RSbEHrsL6g7/lD6FkvaTpUyXuIKU=;
+ b=lqG38qNnKP1yCSjwbNwwBXSlWIYYALKbaJgplO0ukeXBxWhfmxxcsAEf+AIQafNFVs593b
+ sqNrQzzNWd+wNwFTURQ5nzo/WeUZ/2mJ6gYr2c0ruuKcBAC/erQt51RVatD8zVsJHPckf0
+ LM8vnAhCFE7SBxjemNe4OeoGF+Omvng=
+Date: Fri, 21 Jul 2023 16:23:23 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230718142235.135319-1-cohuck@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Subject: Re: [Virtio-fs] [PATCH v2 2/4] vhost-user: Interface for migration
+ state transfer
+To: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org,
+ virtio-fs@redhat.com
+Cc: =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
+References: <20230712111703.28031-1-hreitz@redhat.com>
+ <20230712111703.28031-3-hreitz@redhat.com>
+ <d5fc7e82-3bd5-deeb-b506-5a8d10bd7112@linux.dev>
+ <14677814-9707-6a08-7b07-4532fad5f7a1@redhat.com>
+ <d3d992ff-3d3d-1282-cdbc-f7ec1ad175cb@linux.dev>
+ <f07af821-a667-f2c5-3cec-a2f3e2b31ee2@redhat.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+From: Hao Xu <hao.xu@linux.dev>
+In-Reply-To: <f07af821-a667-f2c5-3cec-a2f3e2b31ee2@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+Received-SPF: pass client-ip=91.218.175.59; envelope-from=hao.xu@linux.dev;
+ helo=out-59.mta0.migadu.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,271 +72,247 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 18, 2023 at 04:22:35PM +0200, Cornelia Huck wrote:
-> Add 8.2 machine types for arm/i440fx/m68k/q35/s390x/spapr.
-> 
-> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+On 7/21/23 16:07, Hanna Czenczek wrote:
+> On 20.07.23 17:05, Hao Xu wrote:
+>>
+>> On 7/20/23 21:20, Hanna Czenczek wrote:
+>>> On 20.07.23 14:13, Hao Xu wrote:
+>>>>
+>>>> On 7/12/23 19:17, Hanna Czenczek wrote:
+>>>>> Add the interface for transferring the back-end's state during 
+>>>>> migration
+>>>>> as defined previously in vhost-user.rst.
+>>>>>
+>>>>> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+>>>>> ---
+>>>>>   include/hw/virtio/vhost-backend.h |  24 +++++
+>>>>>   include/hw/virtio/vhost.h         |  79 ++++++++++++++++
+>>>>>   hw/virtio/vhost-user.c            | 147 
+>>>>> ++++++++++++++++++++++++++++++
+>>>>>   hw/virtio/vhost.c                 |  37 ++++++++
+>>>>>   4 files changed, 287 insertions(+)
+>>>>>
+>>>>> diff --git a/include/hw/virtio/vhost-backend.h 
+>>>>> b/include/hw/virtio/vhost-backend.h
+>>>>> index 31a251a9f5..e59d0b53f8 100644
+>>>>> --- a/include/hw/virtio/vhost-backend.h
+>>>>> +++ b/include/hw/virtio/vhost-backend.h
+>>>>> @@ -26,6 +26,18 @@ typedef enum VhostSetConfigType {
+>>>>>       VHOST_SET_CONFIG_TYPE_MIGRATION = 1,
+>>>>>   } VhostSetConfigType;
+>>>>>   +typedef enum VhostDeviceStateDirection {
+>>>>> +    /* Transfer state from back-end (device) to front-end */
+>>>>> +    VHOST_TRANSFER_STATE_DIRECTION_SAVE = 0,
+>>>>> +    /* Transfer state from front-end to back-end (device) */
+>>>>> +    VHOST_TRANSFER_STATE_DIRECTION_LOAD = 1,
+>>>>> +} VhostDeviceStateDirection;
+>>>>> +
+>>>>> +typedef enum VhostDeviceStatePhase {
+>>>>> +    /* The device (and all its vrings) is stopped */
+>>>>> +    VHOST_TRANSFER_STATE_PHASE_STOPPED = 0,
+>>>>> +} VhostDeviceStatePhase;
+>>>>> +
+>>>>>   struct vhost_inflight;
+>>>>>   struct vhost_dev;
+>>>>>   struct vhost_log;
+>>>>> @@ -133,6 +145,15 @@ typedef int 
+>>>>> (*vhost_set_config_call_op)(struct vhost_dev *dev,
+>>>>>     typedef void (*vhost_reset_status_op)(struct vhost_dev *dev);
+>>>>>   +typedef bool (*vhost_supports_migratory_state_op)(struct 
+>>>>> vhost_dev *dev);
+>>>>> +typedef int (*vhost_set_device_state_fd_op)(struct vhost_dev *dev,
+>>>>> + VhostDeviceStateDirection direction,
+>>>>> + VhostDeviceStatePhase phase,
+>>>>> +                                            int fd,
+>>>>> +                                            int *reply_fd,
+>>>>> +                                            Error **errp);
+>>>>> +typedef int (*vhost_check_device_state_op)(struct vhost_dev *dev, 
+>>>>> Error **errp);
+>>>>> +
+>>>>>   typedef struct VhostOps {
+>>>>>       VhostBackendType backend_type;
+>>>>>       vhost_backend_init vhost_backend_init;
+>>>>> @@ -181,6 +202,9 @@ typedef struct VhostOps {
+>>>>>       vhost_force_iommu_op vhost_force_iommu;
+>>>>>       vhost_set_config_call_op vhost_set_config_call;
+>>>>>       vhost_reset_status_op vhost_reset_status;
+>>>>> +    vhost_supports_migratory_state_op 
+>>>>> vhost_supports_migratory_state;
+>>>>> +    vhost_set_device_state_fd_op vhost_set_device_state_fd;
+>>>>> +    vhost_check_device_state_op vhost_check_device_state;
+>>>>>   } VhostOps;
+>>>>>     int vhost_backend_update_device_iotlb(struct vhost_dev *dev,
+>>>>> diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+>>>>> index 69bf59d630..d8877496e5 100644
+>>>>> --- a/include/hw/virtio/vhost.h
+>>>>> +++ b/include/hw/virtio/vhost.h
+>>>>> @@ -346,4 +346,83 @@ int vhost_dev_set_inflight(struct vhost_dev 
+>>>>> *dev,
+>>>>>   int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t 
+>>>>> queue_size,
+>>>>>                              struct vhost_inflight *inflight);
+>>>>>   bool vhost_dev_has_iommu(struct vhost_dev *dev);
+>>>>> +
+>>>>> +/**
+>>>>> + * vhost_supports_migratory_state(): Checks whether the back-end
+>>>>> + * supports transferring internal state for the purpose of 
+>>>>> migration.
+>>>>> + * Support for this feature is required for 
+>>>>> vhost_set_device_state_fd()
+>>>>> + * and vhost_check_device_state().
+>>>>> + *
+>>>>> + * @dev: The vhost device
+>>>>> + *
+>>>>> + * Returns true if the device supports these commands, and false 
+>>>>> if it
+>>>>> + * does not.
+>>>>> + */
+>>>>> +bool vhost_supports_migratory_state(struct vhost_dev *dev);
+>>>>> +
+>>>>> +/**
+>>>>> + * vhost_set_device_state_fd(): Begin transfer of internal state 
+>>>>> from/to
+>>>>> + * the back-end for the purpose of migration.  Data is to be 
+>>>>> transferred
+>>>>> + * over a pipe according to @direction and @phase.  The sending 
+>>>>> end must
+>>>>> + * only write to the pipe, and the receiving end must only read 
+>>>>> from it.
+>>>>> + * Once the sending end is done, it closes its FD.  The receiving 
+>>>>> end
+>>>>> + * must take this as the end-of-transfer signal and close its FD, 
+>>>>> too.
+>>>>> + *
+>>>>> + * @fd is the back-end's end of the pipe: The write FD for SAVE, 
+>>>>> and the
+>>>>> + * read FD for LOAD.  This function transfers ownership of @fd to 
+>>>>> the
+>>>>> + * back-end, i.e. closes it in the front-end.
+>>>>> + *
+>>>>> + * The back-end may optionally reply with an FD of its own, if this
+>>>>> + * improves efficiency on its end.  In this case, the returned FD is
+>>>>
+>>>>
+>>>> Hi Hanna,
+>>>>
+>>>> In what case/situation, the back-end will have a more efficient fd?
+>>>
+>>> Hi Hao,
+>>>
+>>> There is no example yet.
+>>>
+>>>> Here my understanding of this "FD of its own" is as same type as
+>>>>
+>>>> the given fd(e.g. both pipe files), why the fd from back-end makes
+>>>>
+>>>> difference? Do I miss anything here?
+>>>
+>>> Maybe it makes more sense in the context of how we came up with the 
+>>> idea: Specifically, Stefan and me were asking which end should 
+>>> provide the FD.  In the context of vhost-user, it makes sense to 
+>>> have it be the front-end, because it controls vhost-user 
+>>> communication, but that’s just the natural protocol choice, not 
+>>> necessarily the most efficient one.
+>>>
+>>> It is imaginable that the front-end (e.g. qemu) could create a file 
+>>> descriptor whose data is directly spliced (automatically) into the 
+>>> migration stream, and then hand this FD to the back-end. In 
+>>> practice, this doesn’t work for qemu (at this point), because it 
+>>> doesn’t use simple read/write into the migration stream, but has an 
+>>> abstraction layer for that.  It might be possible to make this work 
+>>> in some cases, depending on what is used as a transport, but (1) not 
+>>> generally, and (2) not now.  But this would be efficient.
+>>
+>>
+>> I'm thinking one thing, we now already have a channel(a unix domain 
+>> socket) between front-end and back-end, why not delivering the state 
+>> file (as an fd) to/from back-end directly rathen than negotiating
+>>
+>> a new pipe as data channel.(since we already assume they can share fd 
+>> of pipe, why not fd of normal file?)
+>
+> I don’t quite understand.  We do deliver the FD to the back-end 
+> through this new command to the back-end, rather directly.  The 
+> back-end can disagree and send another FD back, but it doesn’t have 
+> to.  It can just simply always take the FD that it’s been given.
+>
+> The FD also doesn’t need to be a pipe, it can be any FD that the 
+> back-end can read the state from (see my discussion with Stefan on 
+> patch 1).  In the practical implementation, it’s difficult for qemu to 
+> provide anything that is not a pipe, because the migration state can 
+> be sent over many channels, and the respective FD (if any) is not 
+> exposed on the high level (for devices).
+>
+>>
+>>>
+>>> The model we’d implement in qemu with this series is comparatively 
+>>> not efficient, because it manually copies data from the FD (which by 
+>>> default is a pipe) into the migration stream.
+>>>
+>>> But it is possible that the front-end can provide a zero-copy FD 
+>>> into the migration stream, and for that reason we want to allow the 
+>>> front-end to provide the transfer FD.
+>>>
+>>> In contrast, the back-end might have a more efficient implementation 
+>>> on its side, too, though.  It is difficult to imagine, but it may be 
+>>> possible that it has an FD already where the data needs to written 
+>>> to/read from, e.g. because it’s connected to a physical device that 
+>>> wants to get/send its state this way.  Admittedly, we have 
+>>> absolutely no concrete example for such a back-end at this point, 
+>>> but it’s hard to rule out that it is possible that there will be 
+>>> back-ends that could make use of zero-copy if only they are allowed 
+>>> to dictate the transfer FD.
+>>>
+>>> So because we in qemu can’t (at least not generally) provide an 
+>>> efficient (zero-copy) implementation, we don’t want to rule out that 
+>>> the back-end might be able to, so we also want to allow it to 
+>>> provide the transfer FD.
+>>>
+>>> In the end, we decided that we don’t want to preclude either side of 
+>>> providing the FD.  If one side knows it can do better than a plain 
+>>> pipe with copying on both ends, it should provide the FD. That 
+>>> doesn’t complicate the implementation much.
+>>>
+>>> (So, notably, we measure “improves efficiency” based on “is it 
+>>> better than a plain pipe with copying on both ends”.  A pipe with 
+>>> copying is the default implementation, but as Stefan has pointed out 
+>>> in his review, it doesn’t need to be a pipe.  More efficient FDs, 
+>>> like the back-end can provide in its reply, would actually likely 
+>>> not be pipes.)
+>>
+>>
+>> Yea, but the vhost-user protocol in this patchset defines these FDs 
+>> as data transfer channel not the data itself, how about the latter?
+>
+> I don’t quite understand this either.  Perhaps you’re suggesting that 
+> we should just transfer the data over the vhost-user socket. There are 
+> two reasons why I don’t think we should do that: First, the vhost-user 
+> socket is currently only used for a small amount of data.  For 
+> example, the Rust vhost crate will reject any message longer than 4096 
+> bytes.  So if I were to use it for more data, I feel like I’d be 
+> abusing it.  Second, if/when we add other transfer phases (i.e. while 
+> the VM is still running, to transfer larger amounts of state), it will 
+> be important that the vhost-user socket is open for messages from the 
+> front-end at any time.  So then, at the latest, would we need a 
+> separate data channel.  I don’t feel like there is harm in making the 
+> interface have this separate channel now already.
+>
+> Or maybe you suggest that the separate FD is OK, but it shouldn’t be 
+> defined to be a data transfer channel, but just data, i.e. not 
+> necessarily a pipe.  I think that’s basically the discussion I had 
+> with Stefan on patch 1: That the important thing is just that the 
+> receiving end can read data out of the FD until EOF, and the writing 
+> end can write data and close the FD to signal the end of data. Whether 
+> they actually do that is not important, only that anything they do 
+> will let the other end do that.
 
-> ---
->  hw/arm/virt.c              |  9 ++++++++-
->  hw/core/machine.c          |  3 +++
->  hw/i386/pc.c               |  3 +++
->  hw/i386/pc_piix.c          | 16 +++++++++++++---
->  hw/i386/pc_q35.c           | 14 ++++++++++++--
->  hw/m68k/virt.c             |  9 ++++++++-
->  hw/ppc/spapr.c             | 15 +++++++++++++--
->  hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
->  include/hw/boards.h        |  3 +++
->  include/hw/i386/pc.h       |  3 +++
->  10 files changed, 79 insertions(+), 10 deletions(-)
-> 
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 7d9dbc26633a..2a560271b5fc 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -3170,10 +3170,17 @@ static void machvirt_machine_init(void)
->  }
->  type_init(machvirt_machine_init);
->  
-> +static void virt_machine_8_2_options(MachineClass *mc)
-> +{
-> +}
-> +DEFINE_VIRT_MACHINE_AS_LATEST(8, 2)
-> +
->  static void virt_machine_8_1_options(MachineClass *mc)
->  {
-> +    virt_machine_8_2_options(mc);
-> +    compat_props_add(mc->compat_props, hw_compat_8_1, hw_compat_8_1_len);
->  }
-> -DEFINE_VIRT_MACHINE_AS_LATEST(8, 1)
-> +DEFINE_VIRT_MACHINE(8, 1)
->  
->  static void virt_machine_8_0_options(MachineClass *mc)
->  {
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index f0d35c640184..da699cf4e147 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -39,6 +39,9 @@
->  #include "hw/virtio/virtio.h"
->  #include "hw/virtio/virtio-pci.h"
->  
-> +GlobalProperty hw_compat_8_1[] = {};
-> +const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
-> +
->  GlobalProperty hw_compat_8_0[] = {
->      { "migration", "multifd-flush-after-each-section", "on"},
->      { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index 3109d5e0e035..54838c0c411d 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -114,6 +114,9 @@
->      { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
->      { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
->  
-> +GlobalProperty pc_compat_8_1[] = {};
-> +const size_t pc_compat_8_1_len = G_N_ELEMENTS(pc_compat_8_1);
-> +
->  GlobalProperty pc_compat_8_0[] = {
->      { "virtio-mem", "unplugged-inaccessible", "auto" },
->  };
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index ac72e8f5bee1..ce1ac9527493 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
-> @@ -504,13 +504,25 @@ static void pc_i440fx_machine_options(MachineClass *m)
->      machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
->  }
->  
-> -static void pc_i440fx_8_1_machine_options(MachineClass *m)
-> +static void pc_i440fx_8_2_machine_options(MachineClass *m)
->  {
->      pc_i440fx_machine_options(m);
->      m->alias = "pc";
->      m->is_default = true;
->  }
->  
-> +DEFINE_I440FX_MACHINE(v8_2, "pc-i440fx-8.2", NULL,
-> +                      pc_i440fx_8_2_machine_options);
-> +
-> +static void pc_i440fx_8_1_machine_options(MachineClass *m)
-> +{
-> +    pc_i440fx_8_2_machine_options(m);
-> +    m->alias = NULL;
-> +    m->is_default = false;
-> +    compat_props_add(m->compat_props, hw_compat_8_1, hw_compat_8_1_len);
-> +    compat_props_add(m->compat_props, pc_compat_8_1, pc_compat_8_1_len);
-> +}
-> +
->  DEFINE_I440FX_MACHINE(v8_1, "pc-i440fx-8.1", NULL,
->                        pc_i440fx_8_1_machine_options);
->  
-> @@ -519,8 +531,6 @@ static void pc_i440fx_8_0_machine_options(MachineClass *m)
->      PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
->  
->      pc_i440fx_8_1_machine_options(m);
-> -    m->alias = NULL;
-> -    m->is_default = false;
->      compat_props_add(m->compat_props, hw_compat_8_0, hw_compat_8_0_len);
->      compat_props_add(m->compat_props, pc_compat_8_0, pc_compat_8_0_len);
->  
-> diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> index dc27a9e223a2..37c4814bedf2 100644
-> --- a/hw/i386/pc_q35.c
-> +++ b/hw/i386/pc_q35.c
-> @@ -379,12 +379,23 @@ static void pc_q35_machine_options(MachineClass *m)
->      machine_class_allow_dynamic_sysbus_dev(m, TYPE_VMBUS_BRIDGE);
->  }
->  
-> -static void pc_q35_8_1_machine_options(MachineClass *m)
-> +static void pc_q35_8_2_machine_options(MachineClass *m)
->  {
->      pc_q35_machine_options(m);
->      m->alias = "q35";
->  }
->  
-> +DEFINE_Q35_MACHINE(v8_2, "pc-q35-8.2", NULL,
-> +                   pc_q35_8_2_machine_options);
-> +
-> +static void pc_q35_8_1_machine_options(MachineClass *m)
-> +{
-> +    pc_q35_8_2_machine_options(m);
-> +    m->alias = NULL;
-> +    compat_props_add(m->compat_props, hw_compat_8_1, hw_compat_8_1_len);
-> +    compat_props_add(m->compat_props, pc_compat_8_1, pc_compat_8_1_len);
-> +}
-> +
->  DEFINE_Q35_MACHINE(v8_1, "pc-q35-8.1", NULL,
->                     pc_q35_8_1_machine_options);
->  
-> @@ -393,7 +404,6 @@ static void pc_q35_8_0_machine_options(MachineClass *m)
->      PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
->  
->      pc_q35_8_1_machine_options(m);
-> -    m->alias = NULL;
->      compat_props_add(m->compat_props, hw_compat_8_0, hw_compat_8_0_len);
->      compat_props_add(m->compat_props, pc_compat_8_0, pc_compat_8_0_len);
->  
-> diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-> index 731205b215b2..a0813f75c060 100644
-> --- a/hw/m68k/virt.c
-> +++ b/hw/m68k/virt.c
-> @@ -347,10 +347,17 @@ type_init(virt_machine_register_types)
->      } \
->      type_init(machvirt_machine_##major##_##minor##_init);
->  
-> +static void virt_machine_8_2_options(MachineClass *mc)
-> +{
-> +}
-> +DEFINE_VIRT_MACHINE(8, 2, true)
-> +
->  static void virt_machine_8_1_options(MachineClass *mc)
->  {
-> +    virt_machine_8_2_options(mc);
-> +    compat_props_add(mc->compat_props, hw_compat_8_1, hw_compat_8_1_len);
->  }
-> -DEFINE_VIRT_MACHINE(8, 1, true)
-> +DEFINE_VIRT_MACHINE(8, 1, false)
->  
->  static void virt_machine_8_0_options(MachineClass *mc)
->  {
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index 1c8b8d57a70a..622fea825605 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -4752,15 +4752,26 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
->      }                                                                \
->      type_init(spapr_machine_register_##suffix)
->  
-> +/*
-> + * pseries-8.2
-> + */
-> +static void spapr_machine_8_2_class_options(MachineClass *mc)
-> +{
-> +    /* Defaults for the latest behaviour inherited from the base class */
-> +}
-> +
-> +DEFINE_SPAPR_MACHINE(8_2, "8.2", true);
-> +
->  /*
->   * pseries-8.1
->   */
->  static void spapr_machine_8_1_class_options(MachineClass *mc)
->  {
-> -    /* Defaults for the latest behaviour inherited from the base class */
-> +    spapr_machine_8_2_class_options(mc);
-> +    compat_props_add(mc->compat_props, hw_compat_8_1, hw_compat_8_1_len);
->  }
->  
-> -DEFINE_SPAPR_MACHINE(8_1, "8.1", true);
-> +DEFINE_SPAPR_MACHINE(8_1, "8.1", false);
->  
->  /*
->   * pseries-8.0
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index 4516d73ff5fc..c52a1fcf6700 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -828,14 +828,26 @@ bool css_migration_enabled(void)
->      }                                                                         \
->      type_init(ccw_machine_register_##suffix)
->  
-> +static void ccw_machine_8_2_instance_options(MachineState *machine)
-> +{
-> +}
-> +
-> +static void ccw_machine_8_2_class_options(MachineClass *mc)
-> +{
-> +}
-> +DEFINE_CCW_MACHINE(8_2, "8.2", true);
-> +
->  static void ccw_machine_8_1_instance_options(MachineState *machine)
->  {
-> +    ccw_machine_8_2_instance_options(machine);
->  }
->  
->  static void ccw_machine_8_1_class_options(MachineClass *mc)
->  {
-> +    ccw_machine_8_2_class_options(mc);
-> +    compat_props_add(mc->compat_props, hw_compat_8_1, hw_compat_8_1_len);
->  }
-> -DEFINE_CCW_MACHINE(8_1, "8.1", true);
-> +DEFINE_CCW_MACHINE(8_1, "8.1", false);
->  
->  static void ccw_machine_8_0_instance_options(MachineState *machine)
->  {
-> diff --git a/include/hw/boards.h b/include/hw/boards.h
-> index ed8336019801..3b541ffd2472 100644
-> --- a/include/hw/boards.h
-> +++ b/include/hw/boards.h
-> @@ -390,6 +390,9 @@ struct MachineState {
->      } \
->      type_init(machine_initfn##_register_types)
->  
-> +extern GlobalProperty hw_compat_8_1[];
-> +extern const size_t hw_compat_8_1_len;
-> +
->  extern GlobalProperty hw_compat_8_0[];
->  extern const size_t hw_compat_8_0_len;
->  
-> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-> index d54e8b1101e4..0fabece236cf 100644
-> --- a/include/hw/i386/pc.h
-> +++ b/include/hw/i386/pc.h
-> @@ -200,6 +200,9 @@ void pc_madt_cpu_entry(int uid, const CPUArchIdList *apic_ids,
->  /* sgx.c */
->  void pc_machine_init_sgx_epc(PCMachineState *pcms);
->  
-> +extern GlobalProperty pc_compat_8_1[];
-> +extern const size_t pc_compat_8_1_len;
-> +
->  extern GlobalProperty pc_compat_8_0[];
->  extern const size_t pc_compat_8_0_len;
->  
-> -- 
-> 2.41.0
 
+I re-read the discussion of patch1, I now see what I suggested is 
+already included in the protocol design.
+
+
+>
+> Hanna
+>
 
