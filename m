@@ -2,79 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29AEA75BF95
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 09:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 283F875BFB7
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 09:28:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMkTX-0003LE-Fb; Fri, 21 Jul 2023 03:22:55 -0400
+	id 1qMkYe-0004hC-PS; Fri, 21 Jul 2023 03:28:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qMkTJ-0003He-8l; Fri, 21 Jul 2023 03:22:43 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qMkTH-0000nW-Of; Fri, 21 Jul 2023 03:22:41 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1bb119be881so12080135ad.3; 
- Fri, 21 Jul 2023 00:22:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689924153; x=1690528953;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=8QbrWNix0Xwr3iBIObSC03PruTplJcrQIiQ2PQqASzw=;
- b=r0El7MnC6Ci8l33PebymWKSXvXIERPbbq3Zn42ywDszgLBatK3qLIy+jek/NJdcsZf
- w0tWfnJ0yicYsg3oPOoI+WlnY2onL6uo6b3IVpGh6gxZWIkOJ72zMM6LCikio/j+ho8j
- 1i31kePveSNq2pTpon8wHlDy2Q+f/Ai2uJ+EaVDp2oBPdevPpMaZKF+kH8ji0ODiisck
- ekZUMq6aHzU/hjfR7z+jbRWEJuJHYVfK80XwkyzhmT1vcADQA3pwoQOhRfgtcVKeUlK3
- iCROzrGBX1X/ZdPuiDJM9BEsg1rTpkC1ruCf2PShfGchvKcWn2QvwyLeY1n/YDielaUy
- J93g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689924153; x=1690528953;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8QbrWNix0Xwr3iBIObSC03PruTplJcrQIiQ2PQqASzw=;
- b=Tfbrg4ucAPtX5aGhKv9hV7y8JFspot2AeNHpLjgmKwjdsv2sDYjSToLypaFN5Z0r74
- wJeotrJ86gZ2KWuvkuGP5Uyx/Q6vQPM20bMNedaKBca2dw+1FylzRMYlDnNFS7SK4kyi
- RJUibulaSh8H23JGczFOHghw/YdXbt4lFkLwgurPAZ6XpnPsdGyP/veRZW4HE/A5CHJ6
- +SkbYI+fWCsmeku7KRAdfgpiGEFNe+sgMvuETmVXkdVkUO3CYCy0MEeWCmx9AotCGZS9
- oR3A1mw1M4FCJkOxREYwLneg4iNFKcmfb9rrYaopklYulrLlQpPCA+aLQ2Ez+B8UhDs/
- NczQ==
-X-Gm-Message-State: ABy/qLZhBe18tFW6en2qeaJf4rYEE5nSRqWUI3Tj3qPkqjqx7fCGEiFV
- Hr62ZZss3R319L4LBNfv1tg=
-X-Google-Smtp-Source: APBJJlHnz8Rc5dyWyFpZKWu7gBOjegsVlfGzLiD62SGU2Q91ALGI/jpKF6/jYUOLD5lRP170/Ei4Ag==
-X-Received: by 2002:a17:902:ba85:b0:1b5:91:4693 with SMTP id
- k5-20020a170902ba8500b001b500914693mr1198051pls.1.1689924152932; 
- Fri, 21 Jul 2023 00:22:32 -0700 (PDT)
-Received: from wheely.local0.net ([1.146.51.97])
- by smtp.gmail.com with ESMTPSA id
- b2-20020a170902d50200b001b896d0eb3dsm2703274plg.8.2023.07.21.00.22.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jul 2023 00:22:32 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Barrat?= <fbarrat@linux.ibm.com>,
+ (Exim 4.90_1) (envelope-from <SRS0=m9Dp=DH=kaod.org=clg@ozlabs.org>)
+ id 1qMkYb-0004gr-GZ; Fri, 21 Jul 2023 03:28:09 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=m9Dp=DH=kaod.org=clg@ozlabs.org>)
+ id 1qMkYZ-0001bs-8d; Fri, 21 Jul 2023 03:28:09 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4R6h3Z5PJKz4wy7;
+ Fri, 21 Jul 2023 17:27:54 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4R6h3W4cqsz4wZp;
+ Fri, 21 Jul 2023 17:27:51 +1000 (AEST)
+Message-ID: <1ca45add-ef4a-db03-f033-e3fafd6203eb@kaod.org>
+Date: Fri, 21 Jul 2023 09:27:47 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 0/2] target/ppc: Fixes for hash MMU for ISA v3.0
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
  David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Subject: [PATCH] target/ppc: Fix pending HDEC when entering PM state
-Date: Fri, 21 Jul 2023 17:22:13 +1000
-Message-Id: <20230721072213.101081-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.40.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <20230721050255.100090-1-npiggin@gmail.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230721050255.100090-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=m9Dp=DH=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-0.096,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,35 +69,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-HDEC is defined to not wake from PM state. There is a check in the HDEC
-timer to avoid setting the interrupt if we are in a PM state, but no
-check on PM entry to lower HDEC if it already fired. This can cause a
-HDECR wake up and  QEMU abort with unsupported exception in Power Save
-mode.
+Hello Nick,
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- target/ppc/excp_helper.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+On 7/21/23 07:02, Nicholas Piggin wrote:
+> This fixes a couple of deficiencies in the v3.0 and later (POWER9, 10)
+> HPT MMU implementation. With these fixes, KVM is unable to boot hash
+> guests on powernv9/10 machines. Bare metal hash or pseries machine with
+> hash works, because VRMA is only used when a real hypervisor is
+> virtualizing a hash guest's real mode addressing.
+> 
+> Thanks,
+> Nick
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 003805b202..9aa8e46566 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -2685,6 +2685,12 @@ void helper_pminsn(CPUPPCState *env, uint32_t insn)
-     env->resume_as_sreset = (insn != PPC_PM_STOP) ||
-         (env->spr[SPR_PSSCR] & PSSCR_EC);
- 
-+    /* HDECR is not to wake from PM state, it may have already fired */
-+    if (env->resume_as_sreset) {
-+        PowerPCCPU *cpu = env_archcpu(env);
-+        ppc_set_irq(cpu, PPC_INTERRUPT_HDECR, 0);
-+    }
-+
-     ppc_maybe_interrupt(env);
- }
- #endif /* defined(TARGET_PPC64) */
--- 
-2.40.1
+Could please add Fixes tags to your 'fix' patches ? No need to resend
+just reply on the mailing list with :
+
+   Fixes: <commit> "subject"
+
+Also for the "target/ppc: Fix pending HDEC when entering PM state" patch.
+
+Thanks,
+
+C.
+
+  
+> Nicholas Piggin (2):
+>    target/ppc: Implement ASDR register for ISA v3.0 for HPT
+>    target/ppc: Fix VRMA page size for ISA v3.0
+> 
+>   target/ppc/mmu-hash64.c | 68 ++++++++++++++++++++++++++++++-----------
+>   1 file changed, 51 insertions(+), 17 deletions(-)
+> 
 
 
