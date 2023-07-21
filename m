@@ -2,56 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8F775BF24
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 08:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F9C75BF25
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 08:54:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMk1E-0004Xo-5y; Fri, 21 Jul 2023 02:53:40 -0400
+	id 1qMk23-0005AB-8S; Fri, 21 Jul 2023 02:54:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qMk1C-0004Xg-BR
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 02:53:38 -0400
-Received: from mailout10.t-online.de ([194.25.134.21])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qMk21-0005A2-An
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 02:54:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qMk1A-0002T6-Ar
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 02:53:38 -0400
-Received: from fwd85.dcpf.telekom.de (fwd85.aul.t-online.de [10.223.144.111])
- by mailout10.t-online.de (Postfix) with SMTP id 12A49430C0;
- Fri, 21 Jul 2023 08:53:31 +0200 (CEST)
-Received: from [192.168.211.200] ([79.208.26.246]) by fwd85.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1qMk14-0i2ZeL0; Fri, 21 Jul 2023 08:53:30 +0200
-Message-ID: <b0edec9a-e3a4-edad-c492-a71dc78d7253@t-online.de>
-Date: Fri, 21 Jul 2023 08:53:29 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qMk1z-0002g5-Ox
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 02:54:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689922467;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DLzCBMpUiHQ0KGS74hdXoJ+W3DCKIodv85ArHmbFIoE=;
+ b=BN0sfq+TUcnIHSV2rrprYs9RYOI7e+HRdn4a26WpqgYXTL49wR+mdENcbqM2rY6ZNG9Bni
+ JlE0+Cq411dprOWw22zgf+Nnyvzb5g/IhYic8XDVRPMm/Lo5AuTFCRdh+mR5XiSKb5oBvT
+ qFpNv2nw97vIl1+9zsi7fupAOj0JB9U=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-422-AO9FH6oOPh2bN4QML1rs9Q-1; Fri, 21 Jul 2023 02:54:25 -0400
+X-MC-Unique: AO9FH6oOPh2bN4QML1rs9Q-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-316f24a72e9so979521f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 20 Jul 2023 23:54:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689922464; x=1690527264;
+ h=content-transfer-encoding:in-reply-to:subject:from:cc:references:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DLzCBMpUiHQ0KGS74hdXoJ+W3DCKIodv85ArHmbFIoE=;
+ b=GuuJLtlzHylVjGADZ/N8HTXamh/nnVLsn79HJrVnuO4QlhggqQEdcYYWiX273W1Wmn
+ s3A7R8izD6/+j6hzaEOHsiNCdZXKNzJ6FJhQiOEy23+U2W5V2ioXrsWvyqB6xw9q/yY8
+ QfsOUA7JuGhUOnYF8RMEeREGy1uVh3tBjvSMlpdEe+0/VABnJhjz8nGHsS+kXoCxRr1Q
+ tskfhGbozBmH1WfhkEZTesCJOActTlTMmH0K9ccU1/w/cx4s/iBRorN2L68eTB70ptay
+ IorZgRu42W2tlpNfmXmjdXu2Kc/sVobeDfL7Zr5fBvptKoBnqbrlsKEKbdNSzKEoWARn
+ iZ2w==
+X-Gm-Message-State: ABy/qLaxJJoHTvM6pMcHcTXZCm+O3UKWVqqSbm5E2RAC6KmrnKW7Vg7j
+ JXdYfyRiplmd1MANupP3J7O/qn27tjWI/WpvElIxwoCri3dalj0fL4Bhzgu+tA6tvp+YqVDju7u
+ seBrCvVjVFIhj3D4=
+X-Received: by 2002:a5d:6847:0:b0:314:46cd:66c5 with SMTP id
+ o7-20020a5d6847000000b0031446cd66c5mr686407wrw.27.1689922464239; 
+ Thu, 20 Jul 2023 23:54:24 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFk1M2cFGicEDpyM1L1rvQEdPU8kRNjAjm5sGTg5gjLE9CHrlW7D+wTcswpRvVi96OtYXtnBQ==
+X-Received: by 2002:a5d:6847:0:b0:314:46cd:66c5 with SMTP id
+ o7-20020a5d6847000000b0031446cd66c5mr686398wrw.27.1689922463917; 
+ Thu, 20 Jul 2023 23:54:23 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-177-165.web.vodafone.de.
+ [109.43.177.165]) by smtp.gmail.com with ESMTPSA id
+ c16-20020adfe750000000b0030fb828511csm3316871wrn.100.2023.07.20.23.54.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 20 Jul 2023 23:54:23 -0700 (PDT)
+Message-ID: <74d1ee57-04a7-37f7-2c85-6ce49b4ded3a@redhat.com>
+Date: Fri, 21 Jul 2023 08:54:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-From: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>
-Subject: Re: [PULL 06/19] ui/gtk: set scanout-mode right before scheduling draw
-To: Dongwon Kim <dongwon.kim@intel.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-References: <20230717124545.177236-1-marcandre.lureau@redhat.com>
- <20230717124545.177236-7-marcandre.lureau@redhat.com>
+ Thunderbird/102.12.0
 Content-Language: en-US
-In-Reply-To: <20230717124545.177236-7-marcandre.lureau@redhat.com>
+To: Olaf Hering <olaf@aepfle.de>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230720224656.2841ff5f.olaf@aepfle.de>
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: 8.1-rc0 testfloat fails to compile
+In-Reply-To: <20230720224656.2841ff5f.olaf@aepfle.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1689922410-BEFF6EAB-96F702E7/0/0 CLEAN NORMAL
-X-TOI-MSGID: 43f35918-433d-4acd-bddb-8896b886a98b
-Received-SPF: none client-ip=194.25.134.21; envelope-from=vr_qemu@t-online.de;
- helo=mailout10.t-online.de
-X-Spam_score_int: -26
-X-Spam_score: -2.7
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,80 +102,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 17.07.23 um 14:45 schrieb marcandre.lureau@redhat.com:
-> From: Dongwon Kim<dongwon.kim@intel.com>
->
-> Setting scanout mode is better to be done very last minute
-> right because the mode can be reset anytime after it is set in
-> dpy_gl_scanout_texture by any asynchronouse dpy_refresh call,
-> which eventually cancels drawing of the guest scanout texture.
+On 20/07/2023 22.47, Olaf Hering wrote:
+> This is going on since a few weeks. I guess there is no check in CI to see if qemu.git#master compiles in Tumbleweed.
 
-Hi Dongwon,
+We only have a check for openSUSE leap ...
+Which compiler version is causing trouble for you?
 
-this patch breaks the QEMU guest display on my system. QEMU was started 
-with ./qemu-system-x86_64 -machine q35 -device 
-virtio-vga-gl,xres=1280,yres=768 -display gtk,zoom-to-fit=off,gl=on. I 
-can see the OVMF boot screen and then GRUB. After Linux was started, 
-plymouth normally shows the OVMF boot logo and a rotating spinner. With 
-your patch the guest screen stays black and I see a text cursor in the 
-upper left corner. It seems the guest works without issues. I can use 
-ssh to log in and I can't find any obvious errors in the guest log 
-files. I tested on a host GNOME desktop under X11 and again under 
-Wayland. In both cases the result is a black guest screen.
+> Since the switch to meson submodules, berkeley-testfloat-3 became mandatory. I think in the past I was able to ignore this submodule and not export it, so the following error did not show up:
+> 
+> [  141s] ../subprojects/berkeley-testfloat-3/source/genCases_f64.c: In function 'f64Random':
+> [  141s] ../subprojects/berkeley-testfloat-3/source/genCases_f64.c:559:1: error: control reaches end of non-void function [-Werror=return-type]
+> [  141s]   559 | }
+> [  141s]       | ^
+> [  141s] cc1: some warnings being treated as errors
+> 
+> Apparently this is a known issue, 3ac1f81329f attempted to ignore such errors.
 
-With best regards,
-Volker
+Seems like the flag got lost in commit d2dfe0b506e47e14 ... Paolo, any ideas?
 
-> Cc: Gerd Hoffmann<kraxel@redhat.com>
-> Cc: Marc-André Lureau<marcandre.lureau@redhat.com>
-> Cc: Vivek Kasireddy<vivek.kasireddy@intel.com>
-> Signed-off-by: Dongwon Kim<dongwon.kim@intel.com>
-> Acked-by: Marc-André Lureau<marcandre.lureau@redhat.com>
-> Message-ID:<20230706183355.29361-1-dongwon.kim@intel.com>
-> ---
->   ui/gtk-egl.c     | 2 +-
->   ui/gtk-gl-area.c | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
-> index eee821d73a..98b3a116bf 100644
-> --- a/ui/gtk-egl.c
-> +++ b/ui/gtk-egl.c
-> @@ -242,7 +242,6 @@ void gd_egl_scanout_texture(DisplayChangeListener *dcl,
->       eglMakeCurrent(qemu_egl_display, vc->gfx.esurface,
->                      vc->gfx.esurface, vc->gfx.ectx);
->   
-> -    gtk_egl_set_scanout_mode(vc, true);
->       egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
->                            backing_id, false);
->   }
-> @@ -353,6 +352,7 @@ void gd_egl_flush(DisplayChangeListener *dcl,
->       if (vc->gfx.guest_fb.dmabuf && !vc->gfx.guest_fb.dmabuf->draw_submitted) {
->           graphic_hw_gl_block(vc->gfx.dcl.con, true);
->           vc->gfx.guest_fb.dmabuf->draw_submitted = true;
-> +        gtk_egl_set_scanout_mode(vc, true);
->           gtk_widget_queue_draw_area(area, x, y, w, h);
->           return;
->       }
-> diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
-> index 4513d3d059..28d9e49888 100644
-> --- a/ui/gtk-gl-area.c
-> +++ b/ui/gtk-gl-area.c
-> @@ -264,7 +264,6 @@ void gd_gl_area_scanout_texture(DisplayChangeListener *dcl,
->           return;
->       }
->   
-> -    gtk_gl_area_set_scanout_mode(vc, true);
->       egl_fb_setup_for_tex(&vc->gfx.guest_fb, backing_width, backing_height,
->                            backing_id, false);
->   }
-> @@ -284,6 +283,7 @@ void gd_gl_area_scanout_flush(DisplayChangeListener *dcl,
->       if (vc->gfx.guest_fb.dmabuf && !vc->gfx.guest_fb.dmabuf->draw_submitted) {
->           graphic_hw_gl_block(vc->gfx.dcl.con, true);
->           vc->gfx.guest_fb.dmabuf->draw_submitted = true;
-> +        gtk_gl_area_set_scanout_mode(vc, true);
->       }
->       gtk_gl_area_queue_render(GTK_GL_AREA(vc->gfx.drawing_area));
->   }
+> Do I need to tweak the global, system-provided CFLAGS myself, or can the source be fixed to address this? Disabling this error globally will hide errors elsewhere.
+
+We are using a forked version of the berkeley-testfloat repository, and it's 
+possible to add patches there:
+
+  https://gitlab.com/qemu-project/berkeley-testfloat-3
+
+The f64Random function that you mentioned above could easily be fixed by 
+adding a "default:" case to the switch statement, I think. Are there any 
+other additional warnings/errors after fixing this?
+
+Feel free to send a patch and CC: the people from 
+https://gitlab.com/qemu-project/berkeley-testfloat-3/-/project_members
+
+  Thanks,
+   Thomas
+
+
+> Maybe there is a way to append something to tests/fp/meson.build:libtestfloat.c_args? Right now it is apparently set to tfcflags+fpcflags+CFLAGS.
+> 
+> 
+> Olaf
 
 
