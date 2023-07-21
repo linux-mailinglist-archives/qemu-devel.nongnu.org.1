@@ -2,87 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CCC75CC66
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 17:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A306D75CD1C
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 18:05:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMsMm-00030B-91; Fri, 21 Jul 2023 11:48:28 -0400
+	id 1qMsbf-0000Yb-Ru; Fri, 21 Jul 2023 12:03:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qMsMf-0002zm-Bc
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 11:48:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qMsba-0000Sv-Hh
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 12:03:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qMsMc-0001m1-N9
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 11:48:20 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qMsbX-0005ve-9X
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 12:03:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689954497;
+ s=mimecast20190719; t=1689955421;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fS03YZ4r5e7oaCPO9ogre6tpyaCKYMyGY7O8UMFzvhg=;
- b=VCKc6OfBPtrA0H3mi8EMQOb1EdLBx0laQISNVk4NJELHxRNcO/HrOxSzPjXGwqKOVoEBJE
- +xRIs4N916W2zSESl8Nu8RiXpxKhfyUtCRd226bK9Zkv9GxNDrcZJ1XY3X8bCIKbeE+Erq
- QTwvsUGmldinuifVte/IJlaD7vD5Ugk=
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tRMLVhFOooTCIj9VXUc3/ml+7iqjzNRXoHoeE7aNh/w=;
+ b=DsWd4bRs2X870dLmXxRb9UaHBPmUnq744kTYb08Xy3lT5qPSOl9qzsdnswLZ1ODhbZlFph
+ gAHZD7WYKM2GvYxT/4PG0aY2mXC+NcaCMa/84YGbzqU03HxW2IViOW3MRxcuaR4sfGrUr6
+ PAmltv/FmWHr2+0xeM9LzpXv/Tx7SYM=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-272-uee8pUqrOR-eMHYjm96EfA-1; Fri, 21 Jul 2023 11:48:15 -0400
-X-MC-Unique: uee8pUqrOR-eMHYjm96EfA-1
-Received: by mail-yb1-f197.google.com with SMTP id
- 3f1490d57ef6-d06d36b49f9so15868276.1
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 08:48:15 -0700 (PDT)
+ us-mta-665-q4dCVeenNWejOK-Z8m1f-g-1; Fri, 21 Jul 2023 12:03:40 -0400
+X-MC-Unique: q4dCVeenNWejOK-Z8m1f-g-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-51e10b6148cso2582882a12.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 09:03:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689954494; x=1690559294;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=fS03YZ4r5e7oaCPO9ogre6tpyaCKYMyGY7O8UMFzvhg=;
- b=KzZ5nEUz7/AsSZxGuTNWf0qyEAqQERu6uyep1fyRGE6gmE5QAG5VMsLWOiF9GaDnTN
- +hDO2vZYII8rLEflkR25/1eSEnkawNR/f0j/gkorbF+AG1YvJQ67eUKst6VAauq0e2B3
- owtj52aVQdxz40Lmj/vqwyq0lhIs0WtGdf5IqhXi3pqspFrdOsYTYaIObB3z2A5TS12i
- 776KMThhkRGR0tZDhPEK/L82ylypveYbRTJxXy2SS/CpzIGhTyBi/1dv8ZK4rFyHdGf1
- mtxV7DK+hjbn1Ott5S3Dpht8ypJhOyzYbQtZBGC10SdAfbOhIfNRaePLwJyd54B4r31r
- Km3Q==
-X-Gm-Message-State: ABy/qLbW6RFFjnlm+GBPfLWKBE3XDcJ8PByg5Qrg4AWm8eBKT58dMLD2
- 5OVB0K9HjqbK1WewUgh5OCt3hACs2SecCFx3p4YgE08txIaVgIqNBOW4wA5DrYBPJAoO3DXBAgy
- wMaNv5kOSfc5NkuNyqs06ucKpWBII7vI=
-X-Received: by 2002:a25:ae1e:0:b0:cfe:4254:c3cb with SMTP id
- a30-20020a25ae1e000000b00cfe4254c3cbmr2162188ybj.23.1689954494104; 
- Fri, 21 Jul 2023 08:48:14 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHdVY7NJULYK9/Radi5mALBQSFV6jqFAg9SZF8u4xMZ8RvXcgTUhS/0EkvMRhDt9caiog6yAKpMU9hY2D2g0OQ=
-X-Received: by 2002:a25:ae1e:0:b0:cfe:4254:c3cb with SMTP id
- a30-20020a25ae1e000000b00cfe4254c3cbmr2162174ybj.23.1689954493822; Fri, 21
- Jul 2023 08:48:13 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1689955419; x=1690560219;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tRMLVhFOooTCIj9VXUc3/ml+7iqjzNRXoHoeE7aNh/w=;
+ b=hsutdusjdwSWi1p22tEg808lYAEIoiWvHy6aHUHrX6RTt7j2q+0B9TJmqDc7X8vBq3
+ KmNicriZAkWaskNBEJSmrgobQaBDHUU24y5JDTM7FtD/2eL0SbaQjFajtdXEl1KhNKTM
+ oyYV2TkDpxHtFTfQ0Fs5vDiUJoHAncPrO05aRroZLcjtdOAKkQepnQBgbb1rymfBS+T6
+ VlFC+MiortahuVEJlwqrgM/muhjOooJnW5fEKxw0q/Bv/OO0JYwMgTb3MrTB+SvN+dOL
+ VUL0wvOq4tlYt8b42C1HjZm+66VM/nl8T5pAH7q1pF2jzFuNXq0QCRATpB462ccf41zo
+ XRsw==
+X-Gm-Message-State: ABy/qLY47Rdc1UnOoJK2ZSnKXTaDBobkuHDzX8kRTkGggegP7tZiq5Tw
+ gfMo6tuZjQLhXTf7OD6y5ZzGmJNlNzen/MpcEm6v0sJ+SbGfc7vsvPqD4UCQrLO9cnho6X5Gky9
+ erSwSclhTqbMb/Kk=
+X-Received: by 2002:a50:ee97:0:b0:51e:1c5c:b97f with SMTP id
+ f23-20020a50ee97000000b0051e1c5cb97fmr2693373edr.2.1689955418792; 
+ Fri, 21 Jul 2023 09:03:38 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEMznlUctBhFTVaBaDTA0YC2FICmDuHOy6ZJ0EdMNVH+RJ3NqzGU3fSaKEeFZGf8P6oRPZEQQ==
+X-Received: by 2002:a50:ee97:0:b0:51e:1c5c:b97f with SMTP id
+ f23-20020a50ee97000000b0051e1c5cb97fmr2693342edr.2.1689955418408; 
+ Fri, 21 Jul 2023 09:03:38 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d71a:f311:3075:1f38:7e25:e17a?
+ (p200300cfd71af31130751f387e25e17a.dip0.t-ipconnect.de.
+ [2003:cf:d71a:f311:3075:1f38:7e25:e17a])
+ by smtp.gmail.com with ESMTPSA id
+ c18-20020aa7c752000000b00521830574c1sm2310124eds.2.2023.07.21.09.03.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Jul 2023 09:03:37 -0700 (PDT)
+Message-ID: <60cc355f-1ea4-5f96-e3c6-d9f1a8c768da@redhat.com>
+Date: Fri, 21 Jul 2023 18:03:36 +0200
 MIME-Version: 1.0
-References: <20230711155230.64277-1-hreitz@redhat.com>
- <20230711155230.64277-6-hreitz@redhat.com>
- <20230718145032.GF44841@fedora>
- <82796f23-c9a7-7a52-96c4-f70d10a06d0a@redhat.com>
-In-Reply-To: <82796f23-c9a7-7a52-96c4-f70d10a06d0a@redhat.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 21 Jul 2023 17:47:37 +0200
-Message-ID: <CAJaqyWe9SSUonCm5hm=-MLha6n_7rjunTfkRgrn+-tdBLMcnhA@mail.gmail.com>
-Subject: Re: [PATCH 5/6] vhost-vdpa: Match vhost-user's status reset
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- "Michael S . Tsirkin" <mst@redhat.com>, German Maglione <gmaglione@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 6/6] throttle: use enum ThrottleType instead of bool
+ is_write
+Content-Language: en-US
+To: zhenwei pi <pizhenwei@bytedance.com>, berto@igalia.com, kwolf@redhat.com, 
+ groug@kaod.org, qemu_oss@crudebyte.com
+Cc: arei.gonglei@huawei.com, qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ berrange@redhat.com
+References: <20230713064111.558652-1-pizhenwei@bytedance.com>
+ <20230713064111.558652-7-pizhenwei@bytedance.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230713064111.558652-7-pizhenwei@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-0.094, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,126 +106,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Jul 19, 2023 at 4:10=E2=80=AFPM Hanna Czenczek <hreitz@redhat.com> =
-wrote:
+On 13.07.23 08:41, zhenwei pi wrote:
+> enum ThrottleType is already there, use ThrottleType instead of
+> 'bool is_write' for throttle API, also modify related codes from
+> block, fsdev, cryptodev and tests.
 >
-> On 18.07.23 16:50, Stefan Hajnoczi wrote:
-> > On Tue, Jul 11, 2023 at 05:52:27PM +0200, Hanna Czenczek wrote:
-> >> vhost-vdpa and vhost-user differ in how they reset the status in their
-> >> respective vhost_reset_status implementations: vhost-vdpa zeroes it,
-> >> then re-adds the S_ACKNOWLEDGE and S_DRIVER config bits.  S_DRIVER_OK =
-is
-> >> then set in vhost_vdpa_dev_start().
-> >>
-> >> vhost-user in contrast just zeroes the status, and does no re-add any
-> >> config bits until vhost_user_dev_start() (where it does re-add all of
-> >> S_ACKNOWLEDGE, S_DRIVER, and S_DRIVER_OK).
-> >>
-> >> There is no documentation for vhost_reset_status, but its only caller =
-is
-> >> vhost_dev_stop().  So apparently, the device is to be stopped after
-> >> vhost_reset_status, and therefore it makes more sense to keep the stat=
-us
-> >> field fully cleared until the back-end is re-started, which is how
-> >> vhost-user does it.  Make vhost-vdpa do the same -- if nothing else it=
-'s
-> >> confusing to have both vhost implementations handle this differently.
-> >>
+> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+> ---
+>   backends/cryptodev.c        |  9 +++++----
+>   block/throttle-groups.c     |  6 ++++--
+>   fsdev/qemu-fsdev-throttle.c |  8 +++++---
+>   include/qemu/throttle.h     |  4 ++--
+>   tests/unit/test-throttle.c  |  4 ++--
+>   util/throttle.c             | 30 ++++++++++++++++--------------
+>   6 files changed, 34 insertions(+), 27 deletions(-)
 
-Ok now I understand better why you moved the call to vhost_vdpa_reset_statu=
-s.
+Something not addressed in this patch that I would like to see: 
+schedule_next_request() in block/throttle-groups.c runs 
+`timer_mod(tt->timers[is_write], now)`.  I think that at least should be 
+`tt->timers[is_write ? THROTTLE_WRITE : THROTTLE_READ]`.  Even better 
+would be to have it take a `ThrottleType` instead of `bool is_write`, 
+too, and use this enum throughout throttle-groups.c, too (i.e. for 
+ThrottleGroupMember.throttled_reqs[], 
+ThrottleGroupMember.pending_reqs[], ThrottleGroup.tokens[], and 
+ThrottleGroup.any_timer_armed[]).  Then throttle_group_schedule_timer() 
+could also take a `ThrottleType`.
 
-Maybe we can move the vhost_vdpa_add_status(dev, _S_ACKNOWLEDGE |
-_S_DRIVER) to vhost_vdpa_set_features then, and let reset_status call
-vhost_vdpa_reset_device directly. But I'm not 100% sure if I'm missing
-something, it would need testing.
+But I understand asking for throttle-groups.c to be ThrottleType-ified 
+is very much, so this is just a suggestion.  But I do ask for that one 
+`timer_mod()` call to use THROTTLE_READ and THROTTLE_WRITE to index 
+`tt->timers[]` instead of `is_write` directly.
 
-Thanks!
+[...]
 
-> >> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> >> ---
-> >>   hw/virtio/vhost-vdpa.c | 6 +++---
-> >>   1 file changed, 3 insertions(+), 3 deletions(-)
-> > Hi Hanna,
-> > The VIRTIO spec lists the Device Initialization sequence including the
-> > bits set in the Device Status Register here:
-> > https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.=
-html#x1-1070001
-> >
-> > ACKNOWLEDGE and DRIVER must be set before FEATURES_OK. DRIVER_OK is set
-> > after FEATURES_OK.
-> >
-> > The driver may read the Device Configuration Space once ACKNOWLEDGE and
-> > DRIVER are set.
-> >
-> > QEMU's vhost code should follow this sequence (especially for vDPA wher=
-e
-> > full VIRTIO devices are implemented).
-> >
-> > vhost-user is not faithful to the VIRTIO spec here. That's probably due
-> > to the fact that vhost-user didn't have the concept of the Device Statu=
-s
-> > Register until recently and back-ends mostly ignore it.
-> >
-> > Please do the opposite of this patch: bring vhost-user in line with the
-> > VIRTIO specification so that the Device Initialization sequence is
-> > followed correctly. I think vhost-vdpa already does the right thing.
->
-> Hm.  This sounds all very good, but what leaves me lost is the fact that
-> we never actually expose the status field to the guest, as far as I can
-> see.  We have no set_status callback, and as written in the commit
-> message, the only caller of reset_status is vhost_dev_stop().  So the
-> status field seems completely artificial in vhost right now.  That is
-> why I=E2=80=99m wondering what the flags even really mean.
->
-> Another point I made in the commit message is that it is strange that we
-> reset the status to 0, and then add the ACKNOWLEDGE and DRIVER while the
-> VM is still stopped.  It doesn=E2=80=99t make sense to me to set these fl=
-ags
-> while the guest driver is not operative.
->
-> If what you=E2=80=99re saying is that we must set FEATURES_OK only after
-> ACKNOWLEDGE and DRIVER, wouldn=E2=80=99t it be still better to set all of=
- these
-> flags only in vhost_*_dev_start(), but do it in two separate SET_STATUS
-> calls?
->
-> (You mentioned the configuration space =E2=80=93 is that accessed while b=
-etween
-> vhost_dev_stop and vhost_dev_start?)
->
-> Hanna
->
-> >> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> >> index f7fd19a203..0cde8b40de 100644
-> >> --- a/hw/virtio/vhost-vdpa.c
-> >> +++ b/hw/virtio/vhost-vdpa.c
-> >> @@ -1294,8 +1294,6 @@ static void vhost_vdpa_reset_status(struct vhost=
-_dev *dev)
-> >>       }
-> >>
-> >>       vhost_vdpa_reset_device(dev);
-> >> -    vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE |
-> >> -                               VIRTIO_CONFIG_S_DRIVER);
-> >>       memory_listener_unregister(&v->listener);
-> >>   }
-> >>
-> >> @@ -1334,7 +1332,9 @@ static int vhost_vdpa_dev_start(struct vhost_dev=
- *dev, bool started)
-> >>           }
-> >>           memory_listener_register(&v->listener, dev->vdev->dma_as);
-> >>
-> >> -        return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_DRIVER_OK);
-> >> +        return vhost_vdpa_add_status(dev, VIRTIO_CONFIG_S_ACKNOWLEDGE=
- |
-> >> +                                          VIRTIO_CONFIG_S_DRIVER |
-> >> +                                          VIRTIO_CONFIG_S_DRIVER_OK);
-> >>       }
-> >>
-> >>       return 0;
-> >> --
-> >> 2.41.0
-> >>
->
+> diff --git a/block/throttle-groups.c b/block/throttle-groups.c
+> index fb203c3ced..429b9d1dae 100644
+> --- a/block/throttle-groups.c
+> +++ b/block/throttle-groups.c
+> @@ -270,6 +270,7 @@ static bool throttle_group_schedule_timer(ThrottleGroupMember *tgm,
+>       ThrottleState *ts = tgm->throttle_state;
+>       ThrottleGroup *tg = container_of(ts, ThrottleGroup, ts);
+>       ThrottleTimers *tt = &tgm->throttle_timers;
+> +    ThrottleType throttle = is_write ? THROTTLE_WRITE : THROTTLE_READ;
+
+Again, another stylistic suggestion (for all similar places in this 
+patch): It isn’t clear what just `throttle` means. `throttle_direction` 
+for example would be clear, or maybe just `direction`, this is throttle 
+code, so it’s clear that everything that isn’t given a context is about 
+throttling (it wasn’t `is_throttled_write` either, after all, but just 
+`is_write`).
+
+>       bool must_wait;
+>   
+>       if (qatomic_read(&tgm->io_limits_disabled)) {
+
+[...]
+
+> diff --git a/util/throttle.c b/util/throttle.c
+> index c0bd0c26c3..5e4dc0bfdd 100644
+> --- a/util/throttle.c
+> +++ b/util/throttle.c
+> @@ -136,11 +136,11 @@ int64_t throttle_compute_wait(LeakyBucket *bkt)
+>   
+>   /* This function compute the time that must be waited while this IO
+>    *
+> - * @is_write:   true if the current IO is a write, false if it's a read
+> + * @throttle:   throttle type
+
+I’m not too happy about “throttle type” as a description here, because 
+“type” can be anything (naïvely, I’d rather interpret it to mean the 
+algorithm used for throttling, or whether we’re throttling on bytes or 
+IOPS).  “throttle direction” would be better.  This also applies to 
+other functions’ interface documentation.
+
+(Yes, this also means that I don’t like the type name ThrottleType very 
+much, and would prefer it to be ThrottleDirection, but that would be an 
+invasive change all over this series (when Berto has already reviewed 
+it), so I’m not really asking for a change there.)
+
+>    * @ret:        time to wait
+>    */
+>   static int64_t throttle_compute_wait_for(ThrottleState *ts,
+> -                                         bool is_write)
+> +                                         ThrottleType throttle)
+>   {
+>       BucketType to_check[2][4] = { {THROTTLE_BPS_TOTAL,
+
+Since we’re now using a ThrottleType to index the first dimension of 
+this array, I’d prefer to make this to_check[THROTTLE_MAX][4].
+
+(Also, but very much unrelated to this patch: Why isn’t this lookup 
+table a `const static`?)
+
+>                                      THROTTLE_OPS_TOTAL,
+
+[...]
+
+> @@ -460,10 +461,10 @@ bool throttle_schedule_timer(ThrottleState *ts,
+>   
+>   /* do the accounting for this operation
+>    *
+> - * @is_write: the type of operation (read/write)
+> + * @throttle: throttle type
+>    * @size:     the size of the operation
+>    */
+> -void throttle_account(ThrottleState *ts, bool is_write, uint64_t size)
+> +void throttle_account(ThrottleState *ts, ThrottleType throttle, uint64_t size)
+>   {
+>       const BucketType bucket_types_size[2][2] = {
+>           { THROTTLE_BPS_TOTAL, THROTTLE_BPS_READ },
+
+Like in throttle_compute_wait_for(), I’d prefer bucket_types_size and 
+bucket_types_units to have [THROTTLE_MAX] in the first dimension.
+
+(Interesting that these lookup tables are const, but not static.  I 
+think they should be static, too.)
+
+Hanna
 
 
