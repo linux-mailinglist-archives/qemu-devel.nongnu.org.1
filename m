@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C814075D615
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 22:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FFA75D618
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 22:59:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMxDC-0006aX-Ns; Fri, 21 Jul 2023 16:58:54 -0400
+	id 1qMxDF-0006bz-Cw; Fri, 21 Jul 2023 16:58:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qMxDB-0006a2-2H
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 16:58:53 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qMxDD-0006ai-4h
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 16:58:55 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qMxD9-0004R0-QA
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 16:58:52 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qMxDB-0004RL-OZ
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 16:58:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=IyRUaUrZmROjsZyb/fgnX9P/cehJ9xeR6m1pZL2X7bw=; b=dQE1PHaZyB+utiSxRCl/Yv+pMT
- QfP9G+4m4DAt26fTmLOIgNYiakkX98xeBCzNGj6jC7OwbwcVHIqfHk6MkjAZ6wAqGgzLL83au0/ph
- LwOYxrQROq1mBxMFTZ5TqNSPxsTwOF3QVSDwjbipBSUVm06fnrYPs4KQKGpxVpguHYq8=;
+ bh=XPPHiGmBwZAaiBJ88wQREhEnhlllZfO+BHiYOfFP/4I=; b=jeoIKJE1iLqjlajfwSZfE7OR3C
+ mEsEvx+tbDIyST2dnJoftXT7sshTqRCWMe8SBoS2l2tAgx609MlsMu/ul9rHi7BcOkIu3YGpCT7je
+ AgyLZ+gvtFz3OKjndkHRr95lc+9W0m3w/MKhQ16Xo9+QnWZwtkoKEuMekgSQkc4sx+G8=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, richard.henderson@linaro.org, pbonzini@redhat.com,
  philmd@linaro.org, agraf@csgraf.de, dirty@apple.com, rbolshakov@ddn.com,
  anielhb413@gmail.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
  palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  ysato@users.sourceforge.jp, peter.maydell@linaro.org
-Subject: [PATCH 8/9] accel/tcg: Widen address arg. in tlb_compare_set()
-Date: Fri, 21 Jul 2023 22:58:26 +0200
-Message-ID: <20230721205827.7502-9-anjo@rev.ng>
+Subject: [PATCH 9/9] accel/tcg: Update run_on_cpu_data static assert
+Date: Fri, 21 Jul 2023 22:58:27 +0200
+Message-ID: <20230721205827.7502-10-anjo@rev.ng>
 In-Reply-To: <20230721205827.7502-1-anjo@rev.ng>
 References: <20230721205827.7502-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -62,24 +62,30 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+As we are now using vaddr for representing guest addresses, update the
+static assert to check that vaddr fits in the run_on_cpu_data union.
+
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- accel/tcg/cputlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ accel/tcg/cputlb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 8e9dc51cd1..2f97ae2fda 100644
+index 2f97ae2fda..b558da04af 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -1108,7 +1108,7 @@ static void tlb_add_large_page(CPUArchState *env, int mmu_idx,
- }
+@@ -74,8 +74,9 @@
+     } while (0)
  
- static inline void tlb_set_compare(CPUTLBEntryFull *full, CPUTLBEntry *ent,
--                                   target_ulong address, int flags,
-+                                   vaddr address, int flags,
-                                    MMUAccessType access_type, bool enable)
- {
-     if (enable) {
+ /* run_on_cpu_data.target_ptr should always be big enough for a
+- * target_ulong even on 32 bit builds */
+-QEMU_BUILD_BUG_ON(sizeof(target_ulong) > sizeof(run_on_cpu_data));
++ * vaddr even on 32 bit builds
++ */
++QEMU_BUILD_BUG_ON(sizeof(vaddr) > sizeof(run_on_cpu_data));
+ 
+ /* We currently can't handle more than 16 bits in the MMUIDX bitmask.
+  */
 -- 
 2.41.0
 
