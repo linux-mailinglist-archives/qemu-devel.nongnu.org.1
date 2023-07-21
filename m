@@ -2,93 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B861775BF51
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 09:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE2075BF76
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 09:19:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMkBa-0007sZ-P4; Fri, 21 Jul 2023 03:04:24 -0400
+	id 1qMkP5-0001pn-Oo; Fri, 21 Jul 2023 03:18:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qMkBT-0007q8-EK
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 03:04:15 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.162])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qMkP2-0001pU-Rj
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 03:18:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qMkBR-0004za-7C
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 03:04:15 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1689923047; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=HTxZ2Faqn6sGaWni6TAHTpHX38X0fG8iKelCndIoL7WtOjFM67C+oDr2ybnXun4hOY
- pmXrlypyD1qp+ZJwrEnMzhinVzz7mLGnTvzfqH0VN+4PWMX4A/OtsgD7AclpCA90nef+
- eU1Bhm7wm4ITiKCsxl6rorokcjGiWcvopbQvjbDDydA5qqvEbFDluoJUghBBUfcfor9T
- 06Bb3oN5A8209fxoz07y7jmHEFXfknfRRNEVoapEYAGcpdtHCuLRqc8kUdaLwHcYqqTp
- wNSYzVnoDbpHZQBUBmX73XF/OUoukOucjy8UepHL9TZAQK0H4tQhUGQoCYu4CPwzBAx1
- rsGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1689923047;
- s=strato-dkim-0002; d=strato.com;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=Rt1qDQTiPWLOqlpCcRM4WvzS/gw1Lj50G4YsZBsNP80=;
- b=F0ijfGMpkguNGvwPmWaMBhxAZ5LE3viSAN6SyJxSABI8Vx/y8/MSdDoAnpH/F3KlNv
- vg/PYi/ERU0kYyO4a8sSXdfA1RHAwBwAlCC9ItAuMxXZ2QxUUiqi/i5QjEUm9xUlvWAD
- tsqXL0iFCbln+o57sm3zKLZQBwOd6DUTUvoZHQF55Z//h3hpM+4xh/WzYegBBxQbssfg
- Ys/e/0cbJHL/TGTU/RWMnIpNdLg+k25o6obvzvKip/40FHmUACdFppn2MyM60SpHMehl
- MEjwG+HqkmSr2n7C2uWD1K9tKp3EXPq3xE+XIKNrqGWNuMBS6nhUK8a/KfQO16GFKfg+
- TNlQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1689923047;
- s=strato-dkim-0002; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=Rt1qDQTiPWLOqlpCcRM4WvzS/gw1Lj50G4YsZBsNP80=;
- b=e1YI0bk5ux9RZfZthVxZo4nLhcW0ib6lWxqmlNhlsUKzbLgosHntrx6MSpUZIhGI0m
- oeLSfDBzKGhh82WCZks5qslP1ziaLnfZbG+3TBUGPcdLN19FurOcCh1IiXQm/vc4HRfo
- xUQ3tXZTJJ9mTDJpF2kB5zalrC6vcnc39sgBYT2vK6JFz4Gva51gRJqo1ZSVv3NuHkcA
- qxoBjZPcpXzpJy7AgkHR7kSKAEiBUonyWtvWqTuCg4KVjAbcIOUzBb1bBEXN0/Fxqr0D
- OAxySn3Fic7rJShfG1WJxIyIQaAsV6apCcohOJLGfFqC0BEAVyfHuqtSn0Z8RmA3kvqJ
- KN7g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1689923047;
- s=strato-dkim-0003; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=Rt1qDQTiPWLOqlpCcRM4WvzS/gw1Lj50G4YsZBsNP80=;
- b=fC02nywa9wtadWRbYfNf/xdRr/eW7DgQtDCIwFJtSKveE6UPIeL4qOcPpCCakU3fvq
- PBEFaXLIqy6GjODl58CQ==
-X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4U0aIaxvssIT1j+tCLlX5OhVr5AfLfzW6HQdmLA=="
-Received: from sender by smtp.strato.de (RZmta 49.6.4 AUTH)
- with ESMTPSA id m4dd28z6L747C7Q
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Fri, 21 Jul 2023 09:04:07 +0200 (CEST)
-Date: Fri, 21 Jul 2023 09:03:59 +0200
-From: Olaf Hering <olaf@aepfle.de>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, Alex
- =?UTF-8?B?QmVubsOpZQ==?= <alex.bennee@linaro.org>, Peter Maydell
- <peter.maydell@linaro.org>
-Subject: Re: 8.1-rc0 testfloat fails to compile
-Message-ID: <20230721090359.1b9797cd.olaf@aepfle.de>
-In-Reply-To: <74d1ee57-04a7-37f7-2c85-6ce49b4ded3a@redhat.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qMkP1-00081Y-9w
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 03:18:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689923893;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=T+sKueytx6/c0IwkQbujw/2jDYdfcDf+0aW82JbPAJk=;
+ b=FvtBmOO978X3YiUEoBNW8EUZ8JB6pwXdsHCVoXJw/OfcwQWUsuJAfE4cUxfO50PXy1IM5T
+ OL2HLmH1JPrdSKCBkYMO9qPZJgcAngGAiFAVtDi5E6kqc6nwfkUkeHzod2MnbTh4qIaWG7
+ TYn4JXF+sSinvPG7DEJ/oNW9DrNZYFg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-628-ZYU-gnLtMq6eqPPcdxMBKg-1; Fri, 21 Jul 2023 03:18:11 -0400
+X-MC-Unique: ZYU-gnLtMq6eqPPcdxMBKg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f42bcef2acso9045785e9.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 00:18:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689923890; x=1690528690;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=T+sKueytx6/c0IwkQbujw/2jDYdfcDf+0aW82JbPAJk=;
+ b=gzVd2TXcfiqMmX1fv9VpkhZtOzyVoqu5grcVhG1Giy1/eVrMtIIM6wMkIYreesad86
+ HIUtH1fcXZt2rsQ5n4+6S0OFZCfEtIupH7fU8j4UgAIQnDrZWgC5Cy0Rwr99cOLyu8yp
+ CuAACpkm70xWkU345MnJFuAt4B5bmOqOIFyWMlpEhgx9ydWJIO1obEwwH84fA44hXj6I
+ KYOo1e9szjbQUcTTM0XGmF8TQLIP4ntR7kADszlOx+olPAkefjBiqg8J1iC7jr255Y97
+ 10Xb2qVeB6oAtww/b2JpsBf1g0NtDnQuS//e7RUeozVboW+63luWNLHiG/sImIoooQmi
+ i3Jg==
+X-Gm-Message-State: ABy/qLbW7xkwxv0toAx4EZR4zRU8UDVGteqZObGwBjiAFL7LycXBkh4p
+ WitADRXD9275yRbqIsa+E8KDZCGfyhhOFCYcDZIK9lKcEIITjgxKHMEcRgSTgM3BUpt2xvWNsAK
+ 9sFV6NAOf826eTQg=
+X-Received: by 2002:a05:600c:11cf:b0:3fc:4d7:a960 with SMTP id
+ b15-20020a05600c11cf00b003fc04d7a960mr670555wmi.12.1689923890642; 
+ Fri, 21 Jul 2023 00:18:10 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlEfdbeK3Z/E4Q1ZYhbtnzRVLNDK46yYUTpWWWnGvQ2I/qF56sXAhmHTPcVhAsMoiPmnZzksng==
+X-Received: by 2002:a05:600c:11cf:b0:3fc:4d7:a960 with SMTP id
+ b15-20020a05600c11cf00b003fc04d7a960mr670541wmi.12.1689923890324; 
+ Fri, 21 Jul 2023 00:18:10 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-177-165.web.vodafone.de.
+ [109.43.177.165]) by smtp.gmail.com with ESMTPSA id
+ v13-20020a1cf70d000000b003fc080acf68sm5567706wmh.34.2023.07.21.00.18.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Jul 2023 00:18:09 -0700 (PDT)
+Message-ID: <10e95d52-109a-d683-a9ea-2ab9b52e795d@redhat.com>
+Date: Fri, 21 Jul 2023 09:18:08 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To: Olaf Hering <olaf@aepfle.de>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
 References: <20230720224656.2841ff5f.olaf@aepfle.de>
  <74d1ee57-04a7-37f7-2c85-6ce49b4ded3a@redhat.com>
-X-Mailer: Claws Mail 20230717T091608.783b4195 hat ein Softwareproblem,
- kann man nichts machen.
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/8J5JGTRo6KppNXZ8Xbd98zi";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+ <20230721090359.1b9797cd.olaf@aepfle.de>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: 8.1-rc0 testfloat fails to compile
+In-Reply-To: <20230721090359.1b9797cd.olaf@aepfle.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=81.169.146.162; envelope-from=olaf@aepfle.de;
- helo=mo4-p00-ob.smtp.rzone.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.096, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,45 +104,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/8J5JGTRo6KppNXZ8Xbd98zi
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 21/07/2023 09.03, Olaf Hering wrote:
+> Fri, 21 Jul 2023 08:54:21 +0200 Thomas Huth <thuth@redhat.com>:
+> 
+>> Which compiler version is causing trouble for you?
+> 
+> Right now it is gcc 13, hopefully every compiler will error out with -Werror=return-type.
 
-Fri, 21 Jul 2023 08:54:21 +0200 Thomas Huth <thuth@redhat.com>:
+I don't think this will happen - otherwise we would have seen this already. 
+It rather looks like your compiler version is missing something here - have 
+a look at the affected function:
 
-> Which compiler version is causing trouble for you?
+static float64_t f64Random( void )
+{
 
-Right now it is gcc 13, hopefully every compiler will error out with -Werro=
-r=3Dreturn-type.
+     switch ( random_ui8() & 7 ) {
+      case 0:
+      case 1:
+      case 2:
+         return f64RandomQOutP3();
+      case 3:
+         return f64RandomQOutPInf();
+      case 4:
+      case 5:
+      case 6:
+         return f64RandomQInfP3();
+      case 7:
+         return f64RandomQInfPInf();
+     }
 
-I think it makes sense to replace Leap with Tumbleweed. We already know it =
-compiles fine with Leap, because the submission compiled fine on the submit=
-ters laptop. Where is the repository that needs to be adjusted to make this=
- replacement?
+}
+
+The argument in the switch statement is limited with "& 7" to the range of 0 
+... 7 , so there is no way the control flow can really reach the bottom of 
+the function. I wonder why your GCC 13 gets that wrong, all other versions 
+seem to be fine.
+Or are you compiling with -O0 or something similar?
+
+> I think it makes sense to replace Leap with Tumbleweed. 
+
+IIRC we wanted to avoid rolling releases in the CI since this would rather 
+force us to deal with distro bugs on a regular basis instead of focusing on 
+bugs in QEMU.
+
+  Thomas
 
 
-Olaf
-
---Sig_/8J5JGTRo6KppNXZ8Xbd98zi
-Content-Type: application/pgp-signature
-Content-Description: Digitale Signatur von OpenPGP
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmS6Ld8ACgkQ86SN7mm1
-DoAB/g//Tgxmtc9RYIVaHWKrBQq7KT0vGHVeo5WSjQR+rwJwtUgEXh1hP3SYSC/7
-thRc9WuHlikEKROnbrrn7u43RpZiDzm5QCNyNvzc4Chn6AmrCILSGbgTI7veS9gQ
-fjZXfJ6wKq5utiY4nYY+cUDpdls2k8+A64I/vCdqyT8smLY2UHNv1+7hcnGtkyiX
-WtmOWOQFGvGNhmLAElaL/EMxllZ9VVqDQbhrZQKXO+piLrLgPCFlfklO1cs7AzId
-cXcQWgAO67eYJHhehmwsTmCocyYLjjnevUvQloENND7BhX6eVIHaiGhEXjt8lKnl
-ZyQr8O4nPIoctQzRZ/a6OPKMiLYXU0o4FKK4hPHITnLppVuqBGUp1hZMc6SEg7Pm
-nzggGqb5Dt7bZos2Fu9dgjN/iwnyMD430jJ9cnzw5hJUyX0ztsQUypBDHS++IcfX
-XGpzw2TQLHlda6uXy9troZDKFHnaEn9w2xPQ7vM60MnpukexvGTBR3X4N8JluT01
-l6g5yaUtoLJauSH1y3Mf6Y6F8lVyKlBwqQL8ApzKTqb58OPWZmdJxeP6DYHJrvFl
-Ay/H/PpIk7dyRR+O78IppSMkDkpHLLpClcyUePFHx5u4o6+wJH3HgRmHVd8uB99W
-0f4yjuICKPkm5bXDGHyVDCGqlnVaNdVNbqRtcXu8E+9W6uu3ydY=
-=tTie
------END PGP SIGNATURE-----
-
---Sig_/8J5JGTRo6KppNXZ8Xbd98zi--
 
