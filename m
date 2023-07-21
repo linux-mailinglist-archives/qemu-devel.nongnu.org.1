@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F0775C37D
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F5EC75C3B9
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:53:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMmjp-0005ov-NH; Fri, 21 Jul 2023 05:47:53 -0400
+	id 1qMmnb-0000yX-Tn; Fri, 21 Jul 2023 05:51:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qMmjn-0005oF-6B
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:47:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qMmjY-0006bx-GU
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:47:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689932855;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=IyqG/kgcZTvr5bpBhu31pUNPGXnlZGiR/9HMe/ytHwk=;
- b=c23J/Gz6wylPOzhnToKNglhN0M0AhyARtsGzQF0BKGRo3OYwIA8TuNfB+b4uD1IajLLuX6
- r8ebjXaciA8KuHs2nWLk82YfyLeweViiQ/YtQwKMtLwfaLwwaP08DKHsk9+L9mvCYY4OTp
- C+A234FPaHMaYIQtBeGd/ayFJHKbqUA=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-516-woTNg4ZvOC2xWXJOdB52eA-1; Fri, 21 Jul 2023 05:47:33 -0400
-X-MC-Unique: woTNg4ZvOC2xWXJOdB52eA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C21932A59562;
- Fri, 21 Jul 2023 09:47:32 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.192.193])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EFEA7492C13;
- Fri, 21 Jul 2023 09:47:30 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-riscv@nongnu.org, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 2/2] hw/char/riscv_htif: Fix the console syscall on big endian
- hosts
-Date: Fri, 21 Jul 2023 11:47:20 +0200
-Message-Id: <20230721094720.902454-3-thuth@redhat.com>
-In-Reply-To: <20230721094720.902454-1-thuth@redhat.com>
-References: <20230721094720.902454-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMmnY-0000y7-AE
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:51:44 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qMmnW-0007cE-J5
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:51:44 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-521dbe5e09bso2103650a12.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:51:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689933101; x=1690537901;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=mCcIJV0jCghcwTQpOwiGRWcIThtGCcPD5i1NUvp8FI4=;
+ b=flI86UKuA/iVXyAyYDX4UoIvX0+q6WbzMSzfnZAdyty8r+ltEo6gdz7yRhQ8+5266P
+ P1pjF5jRU/S9Wc1+jwxXbX4Q24UubNSwdQ01Ri56+tNuQRfg3GZmGpriyqZ4+aNjLPpm
+ npql+VBmjgDOYA5TszgSdeo4I3F87IHFmPjeoDmb/jaC+nLR8jmTdE4z3IjvTtcHc7xf
+ ip15RhtDZwYggJfqwu972vZXYYxy5ZQ2xVMaIsBjVELCHIL2THxY8yE7MoGGaHD5h66s
+ ETYZWz8NSDPVc1hE/G+JZCUdP4tAn8ozSSbFfohBfTTLb41kx/7XTQoiGsrXtbUCBVIU
+ YP4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689933101; x=1690537901;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mCcIJV0jCghcwTQpOwiGRWcIThtGCcPD5i1NUvp8FI4=;
+ b=Cf+iqYgi//J2p6eveQM9wJXNLo6el6umoWYyW0oD8BGX/3BlFroQq5bGiuv1crSGh9
+ bGNZYsQWSk9h7vwsYJLeAtw6HsmbozGqMmlMkwjVFrtDBPM1sK1yXogRVZzMq459GrMb
+ e3yd6iDA5Fsy9KgbBhofvVy1eoVM2BMnbfNoU/UPLExmdCS8h0S4w55mQpGJS7FKcgMh
+ spnD/ZO/PD17TdJYDTPm070DqFYnzY3pbsT6eL19J9MI6CNBl02FX4txWb/TAXQKH6iJ
+ gkCin0/RlFSJNcCKt4l7Q5zLczact2tBWJMNE84T2WT+MQdluM/KVhs9MY59abUDwwMf
+ lnQw==
+X-Gm-Message-State: ABy/qLYRs4UMUm9aopRUuKV0DYXkoQBw8EJ4Cvu177Y5/oDlhYyzXs7W
+ uynjpejxKhirmFr6G+GqqCXjXm18aqnXlH7CMnx1eA==
+X-Google-Smtp-Source: APBJJlGTzhDHootOSRj2XdPCmyzc23gdvH5yRq3n0V0/JofNDLIz+0N6HiY9KZuPn4rCxvHkD8uFFqSNpQb27BBSvm4=
+X-Received: by 2002:a05:6402:1646:b0:51d:7fa6:62ca with SMTP id
+ s6-20020a056402164600b0051d7fa662camr1261075edx.14.1689933100954; Fri, 21 Jul
+ 2023 02:51:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230719155235.244478-1-deller@gmx.de>
+In-Reply-To: <20230719155235.244478-1-deller@gmx.de>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 21 Jul 2023 10:51:30 +0100
+Message-ID: <CAFEAcA-Aw7qM-oTXVCfDVBdxgK12Y8_B=V+wdjvwM2g8X__V_w@mail.gmail.com>
+Subject: Re: [PULL 0/5] Linux user brk fixes patches
+To: Helge Deller <deller@gmx.de>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, 
+ Andreas Schwab <schwab@suse.de>, Michael Tokarev <mjt@tls.msk.ru>,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,45 +87,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Values that have been read via cpu_physical_memory_read() from the
-guest's memory have to be swapped in case the host endianess differs
-from the guest.
+On Wed, 19 Jul 2023 at 16:53, Helge Deller <deller@gmx.de> wrote:
+>
+> The following changes since commit 361d5397355276e3007825cc17217c1e4d4320f7:
+>
+>   Merge tag 'block-pull-request' of https://gitlab.com/stefanha/qemu into staging (2023-07-17 15:49:27 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/hdeller/qemu-hppa.git tags/linux-user-brk-fixes-pull-request
+>
+> for you to fetch changes up to 518f32221af759a29500ac172c4c857bef142067:
+>
+>   linux-user: Fix qemu-arm to run static armhf binaries (2023-07-18 20:42:05 +0200)
+>
+> ----------------------------------------------------------------
+> linux-user: brk() syscall fixes and armhf static binary fix
+>
+> Commit 86f04735ac ("linux-user: Fix brk() to release pages") introduced
+> the possibility for userspace applications to reduce memory footprint by
+> calling brk() with a lower address and as such free up memory, the same
+> way as the Linux kernel allows on physical machines.
+>
+> This change introduced some failures for applications with errors like
+> - accesing bytes above the brk heap address on the same page,
+> - freeing memory below the initial brk address,
+> and introduced a behaviour which isn't done by the kernel (e.g. zeroing
+> memory above brk).
+>
+> This patch series fixes those issues and has been tested with existing
+> programs (e.g. upx).
+>
+> Additionally one patch fixes running static armhf executables (e.g. fstype)
+> which was broken since qemu-8.0.
+>
+> Changes in v2:
+> - dropped patch to revert d28b3c90cfad ("linux-user: Make sure initial brk(0)
+>   is page-aligned")
+> - rephrased some commit messages
+> - fixed Cc email addresses, added new ones
+> - added R-b tags
+>
+> Helge
 
-Fixes: a6e13e31d5 ("riscv_htif: Support console output via proxy syscall")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- hw/char/riscv_htif.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/hw/char/riscv_htif.c b/hw/char/riscv_htif.c
-index f96df40124..40de6b8b77 100644
---- a/hw/char/riscv_htif.c
-+++ b/hw/char/riscv_htif.c
-@@ -30,6 +30,7 @@
- #include "qemu/timer.h"
- #include "qemu/error-report.h"
- #include "exec/address-spaces.h"
-+#include "exec/tswap.h"
- #include "sysemu/dma.h"
- 
- #define RISCV_DEBUG_HTIF 0
-@@ -209,11 +210,11 @@ static void htif_handle_tohost_write(HTIFState *s, uint64_t val_written)
-             } else {
-                 uint64_t syscall[8];
-                 cpu_physical_memory_read(payload, syscall, sizeof(syscall));
--                if (syscall[0] == PK_SYS_WRITE &&
--                    syscall[1] == HTIF_DEV_CONSOLE &&
--                    syscall[3] == HTIF_CONSOLE_CMD_PUTC) {
-+                if (tswap64(syscall[0]) == PK_SYS_WRITE &&
-+                    tswap64(syscall[1]) == HTIF_DEV_CONSOLE &&
-+                    tswap64(syscall[3]) == HTIF_CONSOLE_CMD_PUTC) {
-                     uint8_t ch;
--                    cpu_physical_memory_read(syscall[2], &ch, 1);
-+                    cpu_physical_memory_read(tswap64(syscall[2]), &ch, 1);
-                     qemu_chr_fe_write(&s->chr, &ch, 1);
-                     resp = 0x100 | (uint8_t)payload;
-                 } else {
--- 
-2.39.3
+Applied, thanks.
 
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.1
+for any user-visible changes.
+
+-- PMM
 
