@@ -2,58 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF0075C7A7
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 15:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA61075C6A0
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 14:11:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMq49-0004PG-OM; Fri, 21 Jul 2023 09:21:05 -0400
+	id 1qMows-00085T-DW; Fri, 21 Jul 2023 08:09:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chunfu.jian@shingroup.cn>)
- id 1qMklO-0002F6-1C; Fri, 21 Jul 2023 03:41:22 -0400
-Received: from smtpbg150.qq.com ([18.132.163.193])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qMown-000817-FM
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 08:09:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chunfu.jian@shingroup.cn>)
- id 1qMklE-0004B5-BJ; Fri, 21 Jul 2023 03:41:21 -0400
-X-QQ-mid: bizesmtp72t1689925100t40s55wu
-Received: from localhost.localdomain ( [183.211.218.24])
- by bizesmtp.qq.com (ESMTP) with 
- id ; Fri, 21 Jul 2023 15:38:09 +0800 (CST)
-X-QQ-SSF: 01400000000000307000000A0000000
-X-QQ-FEAT: XxEUBkUQ637FQkaMIf0yuIdnFjpC+Qyu8h77Ct/tw+Tgnc45dLsqHW2wfCvQ0
- 0Mao8ZLaKhhfoS0G8N9+3fKeC45CfQNsIg3je2Du3vYc12df1waC9lturnVZ5dnZDLC4Mmv
- v4YII90yoLxJNrYGQXEn1JdneYTelkQwiFg77iNCPhA80FFywVeJ+cqdXTfzN8zdOwDxxNg
- BV5lgb3MJqzv+AZafps31XFPHhbV22P8gOoawa1JJDipoWeVOqhcm1jx1NknCNT5mcKGRcR
- Ub3cuvTXynoKp3hIPa5hRArxyc8h38uqG6c13rFvL3FnD64F2J6auZVsJgnjuG0GTOABDQV
- 3Z+cQN7dui9W8GqMkzsuFopoVsNNazjqISFy6gaOUIXkyhF4PS6PBBD+fC5EA==
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 18072465582763847322
-From: jianchunfu <chunfu.jian@shingroup.cn>
-To: danielhb413@gmail.com, clg@kaod.org, david@gibson.dropbear.id.au,
- groug@kaod.org, npiggin@gmail.com, pbonzini@redhat.com
-Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
- jianchunfu <chunfu.jian@shingroup.cn>
-Subject: [PATCH] target/ppc: Fix the order of kvm_enable judgment about
- kvmppc_set_interrupt()
-Date: Fri, 21 Jul 2023 15:37:34 +0800
-Message-Id: <20230721073734.219027-1-chunfu.jian@shingroup.cn>
-X-Mailer: git-send-email 2.27.0
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qMowk-0005Y7-OC
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 08:09:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689941361;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=05yRIha2VU2TGof5BPaVUS8odmqGjgyox9V6hqBe0u8=;
+ b=aTI0ZjBPGyBOOkiRw94QzBtzJVelIqNtVbkume1FKirOvvOAAnDKRYgBKFA4XoQXycs6dB
+ hM1ShHsSLb7tJ5h1hs8V8sux+6FmEonxMEGk6ZE48POVrQxOgvbIvzhU7Zjg1SIoEx6AOr
+ MMnKw2gZjyWJHrECEYwUMA78o6P1S+k=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-574-HcuSyl8KPXiRQR9k6sfjNw-1; Fri, 21 Jul 2023 08:09:20 -0400
+X-MC-Unique: HcuSyl8KPXiRQR9k6sfjNw-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-5eee6742285so23077006d6.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 05:09:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689941359; x=1690546159;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=05yRIha2VU2TGof5BPaVUS8odmqGjgyox9V6hqBe0u8=;
+ b=jUoHD9pgKY6UFzMuz6k4+xiXIkZLxZbPz3I5jDEw9C7QrJiWoUOJpqswdn5BRD2ktw
+ zlocNbliE8KmtGzWHpr/H2MJBM+D416+48vSUS5dwVfJAKVh/mln2XWIBA7ymrqqrbGa
+ 4iHvYITQRGNuUaRni0jM4PFWF8k+l4E3+EdUBBeGnrvmNV6FIcGfNAxMKo+Kr9em7K2e
+ mWZKgdIuhhZiaOGr3i5EB8ny2qYyAAegy8bdofAGEnq9akS5tmeNvNJTqb9/wleZGZ5R
+ rAtmymH8ynXhmKOadaOQhiRhwqjbE+vlnDLbDtBO5eWmu1YhId9fueXo2nk9d3bbpUiy
+ GqDw==
+X-Gm-Message-State: ABy/qLZrYYSIs975XC9njaz7/szk/Kq/nF9AGFDXPLYQoSkJl2veT8BE
+ ojxHATeIFN9hwd/h2s22IhLo0Y9NbKc0fIqMwEJrTIhpITM0ocLF6/PIqaz07Uk+Olg1XqtP26q
+ GpVC81op4Bk2NlhU=
+X-Received: by 2002:a05:622a:15c1:b0:403:dba5:4266 with SMTP id
+ d1-20020a05622a15c100b00403dba54266mr1949133qty.32.1689941359558; 
+ Fri, 21 Jul 2023 05:09:19 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGVitI+ISDD4JawQkizEAjabWCukr5OlO2y/XI7HjTlcW1Vv0g5tchXWlb2YvFh238mhw419A==
+X-Received: by 2002:a05:622a:15c1:b0:403:dba5:4266 with SMTP id
+ d1-20020a05622a15c100b00403dba54266mr1949112qty.32.1689941359282; 
+ Fri, 21 Jul 2023 05:09:19 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:9e2:9000:9283:b79f:cbb3:327a?
+ ([2a01:e0a:9e2:9000:9283:b79f:cbb3:327a])
+ by smtp.gmail.com with ESMTPSA id
+ e7-20020ac81307000000b004053d6d7a26sm1169092qtj.40.2023.07.21.05.09.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Jul 2023 05:09:18 -0700 (PDT)
+Message-ID: <be007d5b-1679-3389-8d6b-daee5be72c63@redhat.com>
+Date: Fri, 21 Jul 2023 14:09:15 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
-Received-SPF: pass client-ip=18.132.163.193;
- envelope-from=chunfu.jian@shingroup.cn; helo=smtpbg150.qq.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.2 6/6] vfio/migration: Allow migration of multiple
+ P2P supporting devices
+Content-Language: en-US
+To: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Joao Martins
+ <joao.m.martins@oracle.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Maor Gottlieb <maorg@nvidia.com>,
+ Kirti Wankhede <kwankhede@nvidia.com>, Tarun Gupta <targupta@nvidia.com>
+References: <20230716081541.27900-1-avihaih@nvidia.com>
+ <20230716081541.27900-7-avihaih@nvidia.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20230716081541.27900-7-avihaih@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.094, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 21 Jul 2023 09:20:58 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,56 +107,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's unnecessary for non-KVM accelerators(TCG, for example),
-to call this function, so change the order of kvm_enable() judgment.
+On 7/16/23 10:15, Avihai Horon wrote:
+> Now that P2P support has been added to VFIO migration, allow migration
+> of multiple devices if all of them support P2P migration.
+> 
+> Single device migration is allowed regardless of P2P migration support.
+> 
+> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+> ---
+>   hw/vfio/common.c | 26 ++++++++++++++++++--------
+>   1 file changed, 18 insertions(+), 8 deletions(-)
+> 
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 7c3d636025..753b320739 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -363,21 +363,31 @@ bool vfio_mig_active(void)
+>   
+>   static Error *multiple_devices_migration_blocker;
+>   
+> -static unsigned int vfio_migratable_device_num(void)
+> +/*
+> + * Multiple devices migration is allowed only if all devices support P2P
+> + * migration. Single device migration is allowed regardless of P2P migration
+> + * support.
+> + */
+> +static bool vfio_should_block_multiple_devices_migration(void)
 
-The static inline function that returns -1 directly does not work
- in TCG's situation.
+Could we revert the logic and call the routine :
 
-Signed-off-by: jianchunfu <chunfu.jian@shingroup.cn>
----
- hw/ppc/ppc.c     | 8 ++++++--
- target/ppc/kvm.c | 2 +-
- 2 files changed, 7 insertions(+), 3 deletions(-)
+   vfio_multiple_devices_migration_is_supported()
 
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index 0e0a3d93c3..3e96b24487 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -58,7 +58,9 @@ void ppc_set_irq(PowerPCCPU *cpu, int irq, int level)
- 
-     if (old_pending != env->pending_interrupts) {
-         ppc_maybe_interrupt(env);
--        kvmppc_set_interrupt(cpu, irq, level);
-+        if (kvm_enabled()) {
-+            kvmppc_set_interrupt(cpu, irq, level);
-+        }
-     }
- 
-     trace_ppc_irq_set_exit(env, irq, level, env->pending_interrupts,
-@@ -1465,5 +1467,7 @@ void ppc_irq_reset(PowerPCCPU *cpu)
-     CPUPPCState *env = &cpu->env;
- 
-     env->irq_input_state = 0;
--    kvmppc_set_interrupt(cpu, PPC_INTERRUPT_EXT, 0);
-+    if (kvm_enabled()) {
-+        kvmppc_set_interrupt(cpu, PPC_INTERRUPT_EXT, 0);
-+    }
- }
-diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-index a8a935e267..11a1fbc244 100644
---- a/target/ppc/kvm.c
-+++ b/target/ppc/kvm.c
-@@ -1315,7 +1315,7 @@ int kvmppc_set_interrupt(PowerPCCPU *cpu, int irq, int level)
-         return 0;
-     }
- 
--    if (!kvm_enabled() || !cap_interrupt_unset) {
-+    if (!cap_interrupt_unset) {
-         return 0;
-     }
- 
--- 
-2.27.0
+I think it would be clearer in the callers.  This is minor.
+
+Thanks,
+
+C.
+
+>   {
+>       VFIOGroup *group;
+>       VFIODevice *vbasedev;
+>       unsigned int device_num = 0;
+> +    bool all_support_p2p = true;
+>   
+>       QLIST_FOREACH(group, &vfio_group_list, next) {
+>           QLIST_FOREACH(vbasedev, &group->device_list, next) {
+>               if (vbasedev->migration) {
+>                   device_num++;
+> +
+> +                if (!(vbasedev->migration->mig_flags & VFIO_MIGRATION_P2P)) {
+> +                    all_support_p2p = false;
+> +                }
+>               }
+>           }
+>       }
+>   
+> -    return device_num;
+> +    return !all_support_p2p && device_num > 1;
+>   }
+>   
+>   int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
+> @@ -385,19 +395,19 @@ int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
+>       int ret;
+>   
+>       if (multiple_devices_migration_blocker ||
+> -        vfio_migratable_device_num() <= 1) {
+> +        !vfio_should_block_multiple_devices_migration()) {
+>           return 0;
+>       }
+>   
+>       if (vbasedev->enable_migration == ON_OFF_AUTO_ON) {
+> -        error_setg(errp, "Migration is currently not supported with multiple "
+> -                         "VFIO devices");
+> +        error_setg(errp, "Multiple VFIO devices migration is supported only if "
+> +                         "all of them support P2P migration");
+>           return -EINVAL;
+>       }
+>   
+>       error_setg(&multiple_devices_migration_blocker,
+> -               "Migration is currently not supported with multiple "
+> -               "VFIO devices");
+> +               "Multiple VFIO devices migration is supported only if all of "
+> +               "them support P2P migration");
+>       ret = migrate_add_blocker(multiple_devices_migration_blocker, errp);
+>       if (ret < 0) {
+>           error_free(multiple_devices_migration_blocker);
+> @@ -410,7 +420,7 @@ int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
+>   void vfio_unblock_multiple_devices_migration(void)
+>   {
+>       if (!multiple_devices_migration_blocker ||
+> -        vfio_migratable_device_num() > 1) {
+> +        vfio_should_block_multiple_devices_migration()) {
+>           return;
+>       }
+>   
 
 
