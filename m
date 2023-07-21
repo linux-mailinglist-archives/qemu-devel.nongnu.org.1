@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A27375D614
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 22:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9427C75D617
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 22:59:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMxD9-0006YJ-Ev; Fri, 21 Jul 2023 16:58:51 -0400
+	id 1qMxDB-0006a8-Jc; Fri, 21 Jul 2023 16:58:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qMxD6-0006MU-KP
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 16:58:48 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qMxD7-0006TP-Rr
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 16:58:49 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qMxD3-0004Q0-VE
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 16:58:48 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qMxD5-0004Q4-MH
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 16:58:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
  Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=sGnqufgoauuHGtPkq1UwjlQLPW0+8ZgFaT887U6mb4M=; b=i+IqiY1y9mMEESz5ytW51K4Psv
- Ue1YpHcKoQfjz+P6jrgfw0h9YDMPoYdnaPZoKP/d2ug4TWVmAYRkDXDexT9zUb1vpCoilGskc57ui
- 7zmzuhAlkFdlltcAgoAKUB+Rw5q4zk6zYtcRPhaw+oNWiJXE4YSna9fTySJLwB8goLq0=;
+ bh=mcGIZbvmv9lqtj6M5QUBRbrC0zoPNWLSCrzz+dAM9CE=; b=guECfnwZGa0HVq1bFoMpO06vas
+ 4/5o8aLEhD37KfmYkHDaq4ugl4VOiP+HdNF4e1MsHD77wOkUQou4hSKXgQWEE3JvwcN2gyZI/sn5I
+ Q5rHSu2Z1BNQ2Q6swqc56G/mxJ8a5FKwOW5WMxYvZLnfhR9eAWOwx1ZVCBGZG9oVr0K8=;
 To: qemu-devel@nongnu.org
 Cc: ale@rev.ng, richard.henderson@linaro.org, pbonzini@redhat.com,
  philmd@linaro.org, agraf@csgraf.de, dirty@apple.com, rbolshakov@ddn.com,
  anielhb413@gmail.com, pasic@linux.ibm.com, borntraeger@linux.ibm.com,
  palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
  ysato@users.sourceforge.jp, peter.maydell@linaro.org
-Subject: [PATCH 4/9] target: Use vaddr for
- hvf_arch_[insert|remove]_hw_breakpoint
-Date: Fri, 21 Jul 2023 22:58:22 +0200
-Message-ID: <20230721205827.7502-5-anjo@rev.ng>
+Subject: [PATCH 5/9] Replace target_ulong with abi_ptr in cpu_[st|ld]*()
+Date: Fri, 21 Jul 2023 22:58:23 +0200
+Message-ID: <20230721205827.7502-6-anjo@rev.ng>
 In-Reply-To: <20230721205827.7502-1-anjo@rev.ng>
 References: <20230721205827.7502-1-anjo@rev.ng>
 MIME-Version: 1.0
@@ -63,96 +62,246 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes the signature of the target-defined functions for
-inserting/removing hvf hw breakpoints. The address and length arguments
-are now of vaddr type, which both matches the type used internally in
-accel/hvf/hvf-all.c and makes the api target-agnostic.
+Changes the address type of the guest memory read/write functions from
+target_ulong to abi_ptr. (abi_ptr is currently typedef'd to target_ulong
+but that will change in a following commit.) This will reduce the
+coupling between accel/ and target/.
+
+Note: Function pointers that point to cpu_[st|ld]*() in target/riscv and
+target/rx are also updated in this commit.
 
 Signed-off-by: Anton Johansson <anjo@rev.ng>
 ---
- include/sysemu/hvf.h  |  6 ++----
- target/arm/hvf/hvf.c  | 14 ++++++++------
- target/i386/hvf/hvf.c |  4 ++--
- 3 files changed, 12 insertions(+), 12 deletions(-)
+ accel/tcg/atomic_template.h  | 16 ++++++++--------
+ include/exec/cpu_ldst.h      | 24 ++++++++++++------------
+ accel/tcg/cputlb.c           | 10 +++++-----
+ target/riscv/vector_helper.c |  2 +-
+ target/rx/op_helper.c        |  6 +++---
+ 5 files changed, 29 insertions(+), 29 deletions(-)
 
-diff --git a/include/sysemu/hvf.h b/include/sysemu/hvf.h
-index 4cbae87ced..4037cd6a73 100644
---- a/include/sysemu/hvf.h
-+++ b/include/sysemu/hvf.h
-@@ -51,10 +51,8 @@ int hvf_sw_breakpoints_active(CPUState *cpu);
+diff --git a/accel/tcg/atomic_template.h b/accel/tcg/atomic_template.h
+index e312acd16d..84c08b1425 100644
+--- a/accel/tcg/atomic_template.h
++++ b/accel/tcg/atomic_template.h
+@@ -69,7 +69,7 @@
+ # define END  _le
+ #endif
  
- int hvf_arch_insert_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
- int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp);
--int hvf_arch_insert_hw_breakpoint(target_ulong addr, target_ulong len,
--                                  int type);
--int hvf_arch_remove_hw_breakpoint(target_ulong addr, target_ulong len,
--                                  int type);
-+int hvf_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
-+int hvf_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
- void hvf_arch_remove_all_hw_breakpoints(void);
- 
- /*
-diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
-index 8fce64bbf6..f8649bdb1b 100644
---- a/target/arm/hvf/hvf.c
-+++ b/target/arm/hvf/hvf.c
-@@ -2063,29 +2063,31 @@ int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp)
-     return 0;
- }
- 
--int hvf_arch_insert_hw_breakpoint(target_ulong addr, target_ulong len, int type)
-+int hvf_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type)
+-ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, target_ulong addr,
++ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, abi_ptr addr,
+                               ABI_TYPE cmpv, ABI_TYPE newv,
+                               MemOpIdx oi, uintptr_t retaddr)
  {
-     switch (type) {
-     case GDB_BREAKPOINT_HW:
--        return insert_hw_breakpoint(addr);
-+        return insert_hw_breakpoint((target_ulong) addr);
-     case GDB_WATCHPOINT_READ:
-     case GDB_WATCHPOINT_WRITE:
-     case GDB_WATCHPOINT_ACCESS:
--        return insert_hw_watchpoint(addr, len, type);
-+        return insert_hw_watchpoint((target_ulong) addr,
-+                                    (target_ulong) len, type);
-     default:
-         return -ENOSYS;
-     }
+@@ -87,7 +87,7 @@ ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, target_ulong addr,
  }
  
--int hvf_arch_remove_hw_breakpoint(target_ulong addr, target_ulong len, int type)
-+int hvf_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type)
+ #if DATA_SIZE < 16
+-ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
++ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, abi_ptr addr, ABI_TYPE val,
+                            MemOpIdx oi, uintptr_t retaddr)
  {
-     switch (type) {
-     case GDB_BREAKPOINT_HW:
--        return delete_hw_breakpoint(addr);
-+        return delete_hw_breakpoint((target_ulong) addr);
-     case GDB_WATCHPOINT_READ:
-     case GDB_WATCHPOINT_WRITE:
-     case GDB_WATCHPOINT_ACCESS:
--        return delete_hw_watchpoint(addr, len, type);
-+        return delete_hw_watchpoint((target_ulong) addr,
-+                                    (target_ulong) len, type);
-     default:
-         return -ENOSYS;
-     }
-diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
-index b9cbcc02a8..cb2cd0b02f 100644
---- a/target/i386/hvf/hvf.c
-+++ b/target/i386/hvf/hvf.c
-@@ -690,12 +690,12 @@ int hvf_arch_remove_sw_breakpoint(CPUState *cpu, struct hvf_sw_breakpoint *bp)
-     return -ENOSYS;
+     DATA_TYPE *haddr = atomic_mmu_lookup(env, addr, oi, DATA_SIZE, retaddr);
+@@ -100,7 +100,7 @@ ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
  }
  
--int hvf_arch_insert_hw_breakpoint(target_ulong addr, target_ulong len, int type)
-+int hvf_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type)
+ #define GEN_ATOMIC_HELPER(X)                                        \
+-ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, target_ulong addr,       \
++ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
+                         ABI_TYPE val, MemOpIdx oi, uintptr_t retaddr) \
+ {                                                                   \
+     DATA_TYPE *haddr, ret;                                          \
+@@ -131,7 +131,7 @@ GEN_ATOMIC_HELPER(xor_fetch)
+  * of CF_PARALLEL's value, we'll trace just a read and a write.
+  */
+ #define GEN_ATOMIC_HELPER_FN(X, FN, XDATA_TYPE, RET)                \
+-ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, target_ulong addr,       \
++ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
+                         ABI_TYPE xval, MemOpIdx oi, uintptr_t retaddr) \
+ {                                                                   \
+     XDATA_TYPE *haddr, cmp, old, new, val = xval;                   \
+@@ -172,7 +172,7 @@ GEN_ATOMIC_HELPER_FN(umax_fetch, MAX,  DATA_TYPE, new)
+ # define END  _be
+ #endif
+ 
+-ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, target_ulong addr,
++ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, abi_ptr addr,
+                               ABI_TYPE cmpv, ABI_TYPE newv,
+                               MemOpIdx oi, uintptr_t retaddr)
  {
-     return -ENOSYS;
+@@ -190,7 +190,7 @@ ABI_TYPE ATOMIC_NAME(cmpxchg)(CPUArchState *env, target_ulong addr,
  }
  
--int hvf_arch_remove_hw_breakpoint(target_ulong addr, target_ulong len, int type)
-+int hvf_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type)
+ #if DATA_SIZE < 16
+-ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
++ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, abi_ptr addr, ABI_TYPE val,
+                            MemOpIdx oi, uintptr_t retaddr)
  {
-     return -ENOSYS;
+     DATA_TYPE *haddr = atomic_mmu_lookup(env, addr, oi, DATA_SIZE, retaddr);
+@@ -203,7 +203,7 @@ ABI_TYPE ATOMIC_NAME(xchg)(CPUArchState *env, target_ulong addr, ABI_TYPE val,
  }
+ 
+ #define GEN_ATOMIC_HELPER(X)                                        \
+-ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, target_ulong addr,       \
++ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
+                         ABI_TYPE val, MemOpIdx oi, uintptr_t retaddr) \
+ {                                                                   \
+     DATA_TYPE *haddr, ret;                                          \
+@@ -231,7 +231,7 @@ GEN_ATOMIC_HELPER(xor_fetch)
+  * of CF_PARALLEL's value, we'll trace just a read and a write.
+  */
+ #define GEN_ATOMIC_HELPER_FN(X, FN, XDATA_TYPE, RET)                \
+-ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, target_ulong addr,       \
++ABI_TYPE ATOMIC_NAME(X)(CPUArchState *env, abi_ptr addr,            \
+                         ABI_TYPE xval, MemOpIdx oi, uintptr_t retaddr) \
+ {                                                                   \
+     XDATA_TYPE *haddr, ldo, ldn, old, new, val = xval;              \
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index 645476f0e5..da10ba1433 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -223,31 +223,31 @@ void cpu_stq_mmu(CPUArchState *env, abi_ptr ptr, uint64_t val,
+ void cpu_st16_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
+                   MemOpIdx oi, uintptr_t ra);
+ 
+-uint32_t cpu_atomic_cmpxchgb_mmu(CPUArchState *env, target_ulong addr,
++uint32_t cpu_atomic_cmpxchgb_mmu(CPUArchState *env, abi_ptr addr,
+                                  uint32_t cmpv, uint32_t newv,
+                                  MemOpIdx oi, uintptr_t retaddr);
+-uint32_t cpu_atomic_cmpxchgw_le_mmu(CPUArchState *env, target_ulong addr,
++uint32_t cpu_atomic_cmpxchgw_le_mmu(CPUArchState *env, abi_ptr addr,
+                                     uint32_t cmpv, uint32_t newv,
+                                     MemOpIdx oi, uintptr_t retaddr);
+-uint32_t cpu_atomic_cmpxchgl_le_mmu(CPUArchState *env, target_ulong addr,
++uint32_t cpu_atomic_cmpxchgl_le_mmu(CPUArchState *env, abi_ptr addr,
+                                     uint32_t cmpv, uint32_t newv,
+                                     MemOpIdx oi, uintptr_t retaddr);
+-uint64_t cpu_atomic_cmpxchgq_le_mmu(CPUArchState *env, target_ulong addr,
++uint64_t cpu_atomic_cmpxchgq_le_mmu(CPUArchState *env, abi_ptr addr,
+                                     uint64_t cmpv, uint64_t newv,
+                                     MemOpIdx oi, uintptr_t retaddr);
+-uint32_t cpu_atomic_cmpxchgw_be_mmu(CPUArchState *env, target_ulong addr,
++uint32_t cpu_atomic_cmpxchgw_be_mmu(CPUArchState *env, abi_ptr addr,
+                                     uint32_t cmpv, uint32_t newv,
+                                     MemOpIdx oi, uintptr_t retaddr);
+-uint32_t cpu_atomic_cmpxchgl_be_mmu(CPUArchState *env, target_ulong addr,
++uint32_t cpu_atomic_cmpxchgl_be_mmu(CPUArchState *env, abi_ptr addr,
+                                     uint32_t cmpv, uint32_t newv,
+                                     MemOpIdx oi, uintptr_t retaddr);
+-uint64_t cpu_atomic_cmpxchgq_be_mmu(CPUArchState *env, target_ulong addr,
++uint64_t cpu_atomic_cmpxchgq_be_mmu(CPUArchState *env, abi_ptr addr,
+                                     uint64_t cmpv, uint64_t newv,
+                                     MemOpIdx oi, uintptr_t retaddr);
+ 
+-#define GEN_ATOMIC_HELPER(NAME, TYPE, SUFFIX)         \
+-TYPE cpu_atomic_ ## NAME ## SUFFIX ## _mmu            \
+-    (CPUArchState *env, target_ulong addr, TYPE val,  \
++#define GEN_ATOMIC_HELPER(NAME, TYPE, SUFFIX)   \
++TYPE cpu_atomic_ ## NAME ## SUFFIX ## _mmu      \
++    (CPUArchState *env, abi_ptr addr, TYPE val, \
+      MemOpIdx oi, uintptr_t retaddr);
+ 
+ #ifdef CONFIG_ATOMIC64
+@@ -293,10 +293,10 @@ GEN_ATOMIC_HELPER_ALL(xchg)
+ #undef GEN_ATOMIC_HELPER_ALL
+ #undef GEN_ATOMIC_HELPER
+ 
+-Int128 cpu_atomic_cmpxchgo_le_mmu(CPUArchState *env, target_ulong addr,
++Int128 cpu_atomic_cmpxchgo_le_mmu(CPUArchState *env, abi_ptr addr,
+                                   Int128 cmpv, Int128 newv,
+                                   MemOpIdx oi, uintptr_t retaddr);
+-Int128 cpu_atomic_cmpxchgo_be_mmu(CPUArchState *env, target_ulong addr,
++Int128 cpu_atomic_cmpxchgo_be_mmu(CPUArchState *env, abi_ptr addr,
+                                   Int128 cmpv, Int128 newv,
+                                   MemOpIdx oi, uintptr_t retaddr);
+ 
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index e0079c9a9d..8e9dc51cd1 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -3038,14 +3038,14 @@ static void plugin_store_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
+     qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
+ }
+ 
+-void cpu_stb_mmu(CPUArchState *env, target_ulong addr, uint8_t val,
++void cpu_stb_mmu(CPUArchState *env, abi_ptr addr, uint8_t val,
+                  MemOpIdx oi, uintptr_t retaddr)
+ {
+     helper_stb_mmu(env, addr, val, oi, retaddr);
+     plugin_store_cb(env, addr, oi);
+ }
+ 
+-void cpu_stw_mmu(CPUArchState *env, target_ulong addr, uint16_t val,
++void cpu_stw_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
+                  MemOpIdx oi, uintptr_t retaddr)
+ {
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
+@@ -3053,7 +3053,7 @@ void cpu_stw_mmu(CPUArchState *env, target_ulong addr, uint16_t val,
+     plugin_store_cb(env, addr, oi);
+ }
+ 
+-void cpu_stl_mmu(CPUArchState *env, target_ulong addr, uint32_t val,
++void cpu_stl_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
+                     MemOpIdx oi, uintptr_t retaddr)
+ {
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
+@@ -3061,7 +3061,7 @@ void cpu_stl_mmu(CPUArchState *env, target_ulong addr, uint32_t val,
+     plugin_store_cb(env, addr, oi);
+ }
+ 
+-void cpu_stq_mmu(CPUArchState *env, target_ulong addr, uint64_t val,
++void cpu_stq_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
+                  MemOpIdx oi, uintptr_t retaddr)
+ {
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
+@@ -3069,7 +3069,7 @@ void cpu_stq_mmu(CPUArchState *env, target_ulong addr, uint64_t val,
+     plugin_store_cb(env, addr, oi);
+ }
+ 
+-void cpu_st16_mmu(CPUArchState *env, target_ulong addr, Int128 val,
++void cpu_st16_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
+                   MemOpIdx oi, uintptr_t retaddr)
+ {
+     tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 4d06754826..bf7e0029a1 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -235,7 +235,7 @@ static inline int vext_elem_mask(void *v0, int index)
+ }
+ 
+ /* elements operations for load and store */
+-typedef void vext_ldst_elem_fn(CPURISCVState *env, target_ulong addr,
++typedef void vext_ldst_elem_fn(CPURISCVState *env, abi_ptr addr,
+                                uint32_t idx, void *vd, uintptr_t retaddr);
+ 
+ #define GEN_VEXT_LD_ELEM(NAME, ETYPE, H, LDSUF)            \
+diff --git a/target/rx/op_helper.c b/target/rx/op_helper.c
+index dc0092ca99..691a12b2be 100644
+--- a/target/rx/op_helper.c
++++ b/target/rx/op_helper.c
+@@ -216,19 +216,19 @@ void helper_scmpu(CPURXState *env)
+ }
+ 
+ static uint32_t (* const cpu_ldufn[])(CPUArchState *env,
+-                                     target_ulong ptr,
++                                     abi_ptr ptr,
+                                      uintptr_t retaddr) = {
+     cpu_ldub_data_ra, cpu_lduw_data_ra, cpu_ldl_data_ra,
+ };
+ 
+ static uint32_t (* const cpu_ldfn[])(CPUArchState *env,
+-                                     target_ulong ptr,
++                                     abi_ptr ptr,
+                                      uintptr_t retaddr) = {
+     cpu_ldub_data_ra, cpu_lduw_data_ra, cpu_ldl_data_ra,
+ };
+ 
+ static void (* const cpu_stfn[])(CPUArchState *env,
+-                                 target_ulong ptr,
++                                 abi_ptr ptr,
+                                  uint32_t val,
+                                  uintptr_t retaddr) = {
+     cpu_stb_data_ra, cpu_stw_data_ra, cpu_stl_data_ra,
 -- 
 2.41.0
 
