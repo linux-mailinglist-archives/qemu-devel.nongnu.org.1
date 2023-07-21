@@ -2,96 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A19175CBF5
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 17:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F1DC75CC37
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 17:43:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMsA1-0004mq-NK; Fri, 21 Jul 2023 11:35:17 -0400
+	id 1qMsGw-0007Jc-37; Fri, 21 Jul 2023 11:42:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1qMs9x-0004jO-Eb
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 11:35:14 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1qMs9t-0006y7-Gi
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 11:35:12 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1b89bc52cd1so12615055ad.1
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 08:35:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1689953707; x=1690558507;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MgHBUUmrL3W122zNbz7sMFASpNnrgLXhmpTzyN0221Q=;
- b=VBDGWyZ1TjiMiL6ExH1Tgphvj3gP6GkKWG4MrMKOw3AfyWUT87xmrFUm/cxZ+S/dd7
- tXv+wZv8ikiSyH8lfahONVvofxLSxNw79RAWhsGf0B6G4GqJy3QliGy4Epyz/4i7XsQz
- 0Q+0wItUmgpZYW4dhJI9enlhVVmVjQ31Ms1Iw8ljb0IXM245w7i99FCwwy9kGajxSP00
- L2uHcAwDuyXr4T+EmWbOgcDO35BHBHG4ez65MQfRJRDJUbo3uuud79MLLcmFRRna/URs
- +IrDSWkkEpuKlKQEQ1VjoWwXp3TuopaoaAMDZqEQtslSt3p0Nn83XKuQqrwJXS9YjmYF
- 1mxA==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qMsGu-0007JB-2Q
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 11:42:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qMsGs-000051-Oo
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 11:42:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1689954141;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7Y5/wx8l9jPDtXh1LgRXQZ2RV4q+qkqCcpSND4Ya8KA=;
+ b=h5MtXEAZ1ua6CimSkt+dSy+p/mwkm9Ax+DYeeit6j76t9nS65suDafnseK6GTu3rgiLFdt
+ MHJGK2xC9+v1sLt9ynSL9o0jSaowVQnH21ozs3Mu/DogvX+Mm1VihmyVwBPtok7gmXAu+9
+ ytoLFQhowL5OCAgVRKRDyD38TykmYhU=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-639-M5YxdqhVOVKHs_Dt1ALK1w-1; Fri, 21 Jul 2023 11:42:20 -0400
+X-MC-Unique: M5YxdqhVOVKHs_Dt1ALK1w-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-993d7ca4607so130255366b.1
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 08:42:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689953707; x=1690558507;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1689954137; x=1690558937;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MgHBUUmrL3W122zNbz7sMFASpNnrgLXhmpTzyN0221Q=;
- b=aT+dgLnBUP336D0x8gDFcYp8ELXD02sV03XgSp4DtonnLakwkrBbR8FLhPlI65hnoF
- Ae7o7K2PcQTLFGwnONltvxA4EpnZqVfKfLQT3APlaa2NufJP9EWndGRZaeV9tCeal/s6
- 5Oz6QtCGFrxYTQ5ggpCTxCO18HOP5Xe1JgeUKUj468CWj/9Kyx77BMJ2WNyx+00S4Tr9
- 2CrT0lImo+yH9rUMwVxSDBQgUtqx4onwQ3FxceRXutYnUuusz2gs0iNpDOKy5kjD3s85
- ELHbnw60LXVpq7nLMTu2c0cxmx+7QDxY3M3KtYvizJo1Yuz9XOFFtLYAzeNucaeDV85j
- MFpA==
-X-Gm-Message-State: ABy/qLakepo/a1MHOQzAAu14vFFP7x0ENX6+bnqONio3eDnVJ2vfPDyb
- vDigldyBZ1NKNb3BZOBsFII=
-X-Google-Smtp-Source: APBJJlFPS07X4twZ1A57VaG14Q0ahIhuj5mloGtczFzBEmDNEbIYdLcR8xNt8q6UW6Cdoe4w/t3q6A==
-X-Received: by 2002:a17:902:ab1b:b0:1b9:d2fc:ba9f with SMTP id
- ik27-20020a170902ab1b00b001b9d2fcba9fmr1586904plb.11.1689953707113; 
- Fri, 21 Jul 2023 08:35:07 -0700 (PDT)
-Received: from ?IPV6:2001:ee0:4fb3:b780:83f3:10be:78d8:4fc6?
- ([2001:ee0:4fb3:b780:83f3:10be:78d8:4fc6])
+ bh=7Y5/wx8l9jPDtXh1LgRXQZ2RV4q+qkqCcpSND4Ya8KA=;
+ b=kLEtjKdQ5KGSV7EQuG8Kh/F93tEF6FbTL9IyGtgGPAkfJZz2FzH3mZZG/jpzuRTMyx
+ jQzFW46yI6inv8+mKNcNa3u+2WP0Hd9+9OlY/4+aYVqdu/Uzb4HJX5HSrZMCHzlIwSZk
+ x0w9puLpbfVDGQK06i2HJ47XLJE+V9xuJwl9XrGn16vgtWVy7sVTtFyJJnerQ0SoBDK5
+ Xf0ScGkLxXi4jJA4Tl7YbhfiDf7jFDNXfOaj07VmEgbrxcaqXFG/f4dU5uQYhRgwvOoQ
+ Yi9tT6iX6RSbNH2s5XUw2aHEs/B3ZzM+gtMVfh/Rxl9T+o8s+MSpdepWh4iIXucCIUPc
+ TIMg==
+X-Gm-Message-State: ABy/qLaxyhRZRmOf0MWr+j3wSqEeVdWSPpBDOU/jPEdQqzIu3LVRltUP
+ /Oyq5IEuyUBZLxJyz83wzka7fBqDf6EXnUA6ijmds0mmZ53GfBmBiZVPMvfYnIyGWAR1QxXIyYR
+ EVeZOtbxWdWCI7DQ=
+X-Received: by 2002:a17:906:3042:b0:98e:16b7:e038 with SMTP id
+ d2-20020a170906304200b0098e16b7e038mr1858079ejd.23.1689954137560; 
+ Fri, 21 Jul 2023 08:42:17 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlGQCwZzs0U+UEPP2TWVHUjfwTt8LkPL+PNlvsX6sOeue0jhIvIBGIwhCvs7Cha71ehgYUCeeQ==
+X-Received: by 2002:a17:906:3042:b0:98e:16b7:e038 with SMTP id
+ d2-20020a170906304200b0098e16b7e038mr1858062ejd.23.1689954137265; 
+ Fri, 21 Jul 2023 08:42:17 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d71a:f311:3075:1f38:7e25:e17a?
+ (p200300cfd71af31130751f387e25e17a.dip0.t-ipconnect.de.
+ [2003:cf:d71a:f311:3075:1f38:7e25:e17a])
  by smtp.gmail.com with ESMTPSA id
- i5-20020a170902c94500b001bb1f0605b2sm3617010pla.214.2023.07.21.08.35.03
+ d4-20020a17090694c400b009930042510csm2340086ejy.222.2023.07.21.08.42.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 21 Jul 2023 08:35:06 -0700 (PDT)
-Message-ID: <46f648af-095e-b4ec-4fd4-cb9f413cdab2@gmail.com>
-Date: Fri, 21 Jul 2023 22:35:01 +0700
+ Fri, 21 Jul 2023 08:42:16 -0700 (PDT)
+Message-ID: <a1eb5f47-60c4-9d52-7df7-16e0cfc44783@redhat.com>
+Date: Fri, 21 Jul 2023 17:42:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v6 4/5] intel_iommu: allow Extended Interrupt Mode when
- using userspace APIC
-To: Peter Xu <peterx@redhat.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>,
- David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, "Michael S . Tsirkin"
- <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>, qemu-devel@nongnu.org,
- Jason Wang <jasowang@redhat.com>
-References: <20230715152224.54757-1-minhquangbui99@gmail.com>
- <20230715152224.54757-5-minhquangbui99@gmail.com>
- <4f5a644e-8341-798a-bfe3-27eeb5816623@oracle.com>
- <adf436ea-8b4a-be24-4df4-7f018975b1e9@gmail.com> <ZLmdWv0YndpUe9iM@x1n>
+Subject: Re: [PATCH v3 5/6] cryptodev: use NULL throttle timer cb for read
+ direction
 Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <ZLmdWv0YndpUe9iM@x1n>
+To: zhenwei pi <pizhenwei@bytedance.com>, berto@igalia.com, kwolf@redhat.com, 
+ groug@kaod.org, qemu_oss@crudebyte.com
+Cc: arei.gonglei@huawei.com, qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ berrange@redhat.com
+References: <20230713064111.558652-1-pizhenwei@bytedance.com>
+ <20230713064111.558652-6-pizhenwei@bytedance.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230713064111.558652-6-pizhenwei@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.094, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,111 +106,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/21/23 03:47, Peter Xu wrote:
-> On Mon, Jul 17, 2023 at 11:29:56PM +0700, Bui Quang Minh wrote:
->> On 7/17/23 17:47, Joao Martins wrote:
->>> +Peter, +Jason (intel-iommu maintainer/reviewer)
-> 
-> Thanks for copying me, Joan.
-> 
->>>
->>> On 15/07/2023 16:22, Bui Quang Minh wrote:
->>>> As userspace APIC now supports x2APIC, intel interrupt remapping
->>>> hardware can be set to EIM mode when userspace local APIC is used.
->>>>
->>>> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
->>>> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
->>>> ---
->>>>    hw/i386/intel_iommu.c | 11 -----------
->>>>    1 file changed, 11 deletions(-)
->>>>
->>>> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
->>>> index dcc334060c..5e576f6059 100644
->>>> --- a/hw/i386/intel_iommu.c
->>>> +++ b/hw/i386/intel_iommu.c
->>>> @@ -4043,17 +4043,6 @@ static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
->>>>                          && x86_iommu_ir_supported(x86_iommu) ?
->>>>                                                  ON_OFF_AUTO_ON : ON_OFF_AUTO_OFF;
->>>>        }
->>>> -    if (s->intr_eim == ON_OFF_AUTO_ON && !s->buggy_eim) {
->>>> -        if (!kvm_irqchip_is_split()) {
->>>> -            error_setg(errp, "eim=on requires accel=kvm,kernel-irqchip=split");
->>>> -            return false;
->>>> -        }
->>>> -        if (!kvm_enable_x2apic()) {
->>>> -            error_setg(errp, "eim=on requires support on the KVM side"
->>>> -                             "(X2APIC_API, first shipped in v4.7)");
->>>> -            return false;
->>>> -        }
->>>> -    }
->>> Given commit 20ca47429e ('Revert "intel_iommu: Fix irqchip / X2APIC
->>> configuration checks"'), won't we regress behaviour again  for the accel=kvm
->>> case by dropping the kvm_enable_x2apic() call here?
->>>
->>> Perhaps if we support userspace APIC with TCG the check just needs to be redone
->>> to instead avoid always requiring kvm e.g.:
->>>
->>> if (kvm_irqchip_in_kernel()) {
->>>       error_setg(errp, "eim=on requires accel=kvm,kernel-irqchip=split"
->>>                  "(X2APIC_API, first shipped in v4.7)");
->>> }
->>>
->>> if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
->>>       error_setg(errp, "eim=on requires support on the KVM side"
->>>                  "(X2APIC_API, first shipped in v4.7)");
->>>       return false;
->>> }
->>
->> Thank you for your review. I think the check for kvm_irqchip_in_kernel() is
->> not correct, AFAIK, kvm_irqchip_is_split() == true also means
->> kvm_irqchip_in_kernel() == true on x86. To check if kernel-irqchip = on, we
->> need to do something like in x86_iommu_realize
->>
->>      bool irq_all_kernel = kvm_irqchip_in_kernel() &&
->> !kvm_irqchip_is_split();
->>
->> The original check for !kvm_irqchip_is_split means emulated/userspace APIC.
->> It's because to reach that check x86_iommu_ir_supported(...) == true and
->> x86_iommu_ir_supported(...) == true is not supported when kernel-irqchip =
->> on (there is a check for this in x86_iommu_realize)
->>
->> So I think we need to change the check to
->>
->>      if (s->intr_eim == ON_OFF_AUTO_ON && !s->buggy_eim) {
->>          if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
->>              error_setg(errp, "eim=on requires support on the KVM side"
->>                               "(X2APIC_API, first shipped in v4.7)");
->>              return false;
->>          }
->>      }
->>
->> Is it OK?
-> 
-> Mostly to me, except that we may also want to keep failing if all irq chips
-> are in kernel?
+On 13.07.23 08:41, zhenwei pi wrote:
+> Operations on a crytpodev are considered as *write* only, the callback
 
-Yes, that behavior does not change after this patch. x86_iommu_realize 
-in the parent type TYPE_X86_IOMMU_DEVICE fails when interrupt remapping 
-is on and all irq chips are in kernel already.
+s/crytpodev/cryptodev/
 
-     static void x86_iommu_realize(DeviceState *dev, Error **errp)
-     {
-         /* ... */
-         /* Both Intel and AMD IOMMU IR only support "kernel-irqchip 
-{off|split}" */
-         if (x86_iommu_ir_supported(x86_iommu) && irq_all_kernel) {
-             error_setg(errp, "Interrupt Remapping cannot work with "
-                          "kernel-irqchip=on, please use 'split|off'.");
-             return;
-         }
-         /* ... */
-     }
+> of read direction is never invoked. Use NULL instead of an unreachable
+> path(cryptodev_backend_throttle_timer_cb on read direction).
+>
+> Reviewed-by: Alberto Garcia <berto@igalia.com>
+> Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+> ---
+>   backends/cryptodev.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/backends/cryptodev.c b/backends/cryptodev.c
+> index 7d29517843..5cfa25c61c 100644
+> --- a/backends/cryptodev.c
+> +++ b/backends/cryptodev.c
+> @@ -331,8 +331,7 @@ static void cryptodev_backend_set_throttle(CryptoDevBackend *backend, int field,
+>       if (!enabled) {
+>           throttle_init(&backend->ts);
+>           throttle_timers_init(&backend->tt, qemu_get_aio_context(),
+> -                             QEMU_CLOCK_REALTIME,
+> -                             cryptodev_backend_throttle_timer_cb, /* FIXME */
 
+Now it’ll be gone (good), but if you happen to add a FIXME again, it 
+would be nice to explain in the same comment in the code what exactly 
+needs fixing, and why it isn‘t being fixed at this point.
 
-So in case we reach here in with the interrupt remapping is on and 
-decide whether eim is on or not, it cannot be that irq chips are all in 
-kernel.
+> +                             QEMU_CLOCK_REALTIME, NULL,
+>                                cryptodev_backend_throttle_timer_cb, backend);
+>       }
 
-Thanks,
-Quang Minh.
+With the typo in the commit message fixed:
+
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+
 
