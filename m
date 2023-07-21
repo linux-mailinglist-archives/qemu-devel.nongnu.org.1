@@ -2,61 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FEBA75C251
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE2F75C25B
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:04:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMlzM-0006mA-Ha; Fri, 21 Jul 2023 04:59:54 -0400
+	id 1qMm2x-0007oV-FM; Fri, 21 Jul 2023 05:03:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>) id 1qMlzF-0006m0-ED
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 04:59:45 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>) id 1qMlzD-0004Ap-LR
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 04:59:44 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id B7D5A618C9;
- Fri, 21 Jul 2023 08:59:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AEFDC43395;
- Fri, 21 Jul 2023 08:59:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1689929974;
- bh=pgWKEIcZjv6vGbGkavd7YSXM/j3ZePXzRVYASQXO53Q=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=dkmnO2bH0dfWnbO7INDhITweDFOLnzdiNpiQf/9/wi0rrCPrJASNMbd3tBZvow7VX
- PrpGd82SqUH/TIKxvWVmHLUNoYqsMVG8bfa1omEXeNWCmquW5o76ca6jywVPmmCIZf
- MY9Dk4I2yMiguyW4YQlAGc8PyMneTJmu1jN+fqpOxVfirVPGe+MjQTlNyxmkRabGc2
- yqs5ZJniOlkdj7R1IB/Yc4q4Y/PcmE7pui0iv/xOcmlxlMJCJCyI2oztm5XpowS8xf
- +r3cwtDjSdgxiPDzblFp+yBfj6sSwhQ/Hv8VdBvo48Eo1EvzfbgoGH1WxSvzuJn/73
- EGP7hf1DkvF9Q==
-Date: Fri, 21 Jul 2023 09:59:30 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Bin Meng <bmeng@tinylab.org>, Conor Dooley <conor.dooley@microchip.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] roms/opensbi: Upgrade from v1.3 to v1.3.1
-Message-ID: <20230721-barge-bunkmate-efc2284c8aba@spud>
-References: <20230719165817.889465-1-bmeng@tinylab.org>
- <CAKmqyKNPZFyj_nPUcTN1qLmQ1SjuYf=ZwGWj7ao3-2JA1JYBmg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMm2v-0007oD-Q5
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:03:33 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qMm2u-0004we-4b
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:03:33 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbd33a57b6so15205895e9.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:03:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1689930210; x=1690535010;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gvqX3x0korgwKOZIB4u/z9qG+2fKTsOPtiKuQ3U3gY4=;
+ b=pGe7TuADkayIeGbB+kFMOINYl6sIsJ9woMdUGnCI0pxpLDrMYGUUdvqkCwlyPRzF6s
+ TMNNIgajbYm6/MnXrH8cEptqkpPuNIW1EeO73Ym0iB9o8bL9DIYsEm+zQtsHjv5xVU1K
+ 5Hkv2ilf7FU99oYHoXNogIl1zGhT3H3+/Kh7QwBks1AzVO6xNd2jcc/xMV8dFxcG8pAK
+ T2RXKF/QajR5QZM/TUGlnDN+72GTfTK8eEeJhdw0+g4AApBLEKXAzSFVxBMg5dL4gxkt
+ DeIO0aP4TLvywNqu5UJGsroWWROfeVLt7On3fg5EXT8E9wTg0YmA5aS4kGrwLBwAuBJ7
+ 6ZuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689930210; x=1690535010;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=gvqX3x0korgwKOZIB4u/z9qG+2fKTsOPtiKuQ3U3gY4=;
+ b=lw/SvXcYK9xoB/oScCkIyvbdcT2Uy8f85laB6mvfked1G0gar22nSQDhPwY+H+0jnc
+ QmyI36UEL82An8rUTv1r+YkPVqFJKYbwWy7aJzkNrE9Mq2BAcekjT0wg1GQISQMrLxGP
+ 563OR5Fqh7YNJg7Bm3EQQJ6/0vwwHeOFwiYfgby+2Xl9f0pCz1v+nLeYYkxg4wpZ5nIo
+ AanaEPw+2Jqr726YiVYku/YuHso2tU2Zt99DBtnlAxxEJIfbx60CNZQ9o1iWMvqZxZlI
+ hVv/9DIcmEqZeCTvSFAsuJBjHYxlYP/8T1/9xwgPzf24jL0bMti7yGVlBk6QYFoM8hPd
+ ethA==
+X-Gm-Message-State: ABy/qLYkEjlm1ji44M1Lrx96Mmea93wMn2E/SDQzhc3vkSd/jl5uKDY2
+ ze4uUKv5nq6pHmtsRZE7mlyxYA==
+X-Google-Smtp-Source: APBJJlF5N0SH4o8uZ4mxuDVv073K5EaAONqXselXymB67kc1FDXnAd4IauZbCO7M2uyKHi08u8VKng==
+X-Received: by 2002:a7b:c8cc:0:b0:3fb:a100:2581 with SMTP id
+ f12-20020a7bc8cc000000b003fba1002581mr981379wml.14.1689930210350; 
+ Fri, 21 Jul 2023 02:03:30 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.192.5])
+ by smtp.gmail.com with ESMTPSA id
+ c16-20020a7bc850000000b003fa96fe2bd9sm5676103wml.22.2023.07.21.02.03.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Jul 2023 02:03:29 -0700 (PDT)
+Message-ID: <7089eb6c-3b1f-278e-01d7-073e8bc516fe@linaro.org>
+Date: Fri, 21 Jul 2023 11:03:28 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="NJhe1Cm28KY1w0T/"
-Content-Disposition: inline
-In-Reply-To: <CAKmqyKNPZFyj_nPUcTN1qLmQ1SjuYf=ZwGWj7ao3-2JA1JYBmg@mail.gmail.com>
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=conor@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH for-8.2 0/4] rtc devices: Avoid putting time_t in 32-bit
+ variables
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
+ Markus Armbruster <armbru@redhat.com>
+Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Herv=c3=a9_Poussineau?=
+ <hpoussin@reactos.org>
+References: <20230720155902.1590362-1-peter.maydell@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230720155902.1590362-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.096,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -73,52 +97,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
++Markus
 
---NJhe1Cm28KY1w0T/
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 20/7/23 17:58, Peter Maydell wrote:
+> This patchset was prompted by a couple of Coverity warnings
+> (CID 1507157, 1517772) which note that in the m48t59 RTC device model
+> we keep an offset in a time_t variable but then truncate it by
+> passing it to qemu_get_timedate(), which currently uses an 'int'
+> argument for its offset parameter.
+> 
+> We can fix the Coverity complaint by making qemu_get_timedate()
+> take a time_t; we should also correspondingly make the
+> qemu_timedate_diff() function return a time_t. However this
+> will only push the issue out to callers of qemu_timedate_diff()
+> if they are putting the result in a 32-bit variable or doing
+> 32-bit arithmetic on it.
+> 
+> Luckily there aren't that many callers of qemu_timedate_diff()
+> and most of them already use either time_t or int64_t for the
+> calculations they do on its return value. The first three
+> patches fix devices which weren't doing that; patch four then
+> fixes the rtc.c functions. If I missed any callsites in devices
+> then hopefully Coverity will point them out.
 
-On Fri, Jul 21, 2023 at 10:04:02AM +1000, Alistair Francis wrote:
-> On Thu, Jul 20, 2023 at 3:00=E2=80=AFAM Bin Meng <bmeng@tinylab.org> wrot=
-e:
-> >
-> > Upgrade OpenSBI from v1.3 to v1.3.1 and the pre-built bios images
-> > which fixes the boot failure seen when using QEMU to do a direct
-> > kernel boot with Microchip Icicle Kit board machine.
-> >
-> > The v1.3.1 release includes the following commits:
-> >
-> > 0907de3 lib: sbi: fix comment indent
-> > eb736a5 lib: sbi_pmu: Avoid out of bounds access
-> > 7828eeb gpio/desginware: add Synopsys DesignWare APB GPIO support
-> > c6a3573 lib: utils: Fix sbi_hartid_to_scratch() usage in ACLINT drivers
-> > 057eb10 lib: utils/gpio: Fix RV32 compile error for designware GPIO dri=
-ver
-> >
-> > Signed-off-by: Bin Meng <bmeng@tinylab.org>
->=20
-> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
->=20
-> @Conor Dooley @Conor Dooley Any chance you can test this?
+Do we need to change the type of the RTC_CHANGE event?
 
-Sure. I didn't se this patch because I am not subscribed to qemu-devel,
-just qemu-riscv.
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+This is wrong, but to give an idea:
 
-Thanks,
-Conor.
-
---NJhe1Cm28KY1w0T/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZLpI8gAKCRB4tDGHoIJi
-0nwhAQCzBZn1L3QfB4el3G+FcgGDLitLD0Y4rO/FjVm4ZZJBNQEAkFQI9s43+en7
-B62e5Q08DpfZe69NKtbcYhtPGX8PyQ4=
-=rN0Y
------END PGP SIGNATURE-----
-
---NJhe1Cm28KY1w0T/--
+--- a/qapi/misc.json
++++ b/qapi/misc.json
+@@ -553,47 +553,47 @@
+  ##
+  # @RTC_CHANGE:
+  #
+  # Emitted when the guest changes the RTC time.
+  #
+  # @offset: offset in seconds between base RTC clock (as specified by
+  #     -rtc base), and new RTC clock value
+  #
+  # @qom-path: path to the RTC object in the QOM tree
+  #
+  # Note: This event is rate-limited.  It is not guaranteed that the RTC
+  #     in the system implements this event, or even that the system has
+  #     an RTC at all.
+  #
+  # Since: 0.13
+  #
+  # Example:
+  #
+  # <- { "event": "RTC_CHANGE",
+  #      "data": { "offset": 78 },
+  #      "timestamp": { "seconds": 1267020223, "microseconds": 435656 } }
+  ##
+  { 'event': 'RTC_CHANGE',
+-  'data': { 'offset': 'int', 'qom-path': 'str' } }
++  'data': { 'offset': 'int64', 'qom-path': 'str' } }
+---
 
