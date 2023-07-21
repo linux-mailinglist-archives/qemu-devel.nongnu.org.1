@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCC975C351
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1923F75C355
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 11:46:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMmen-0003Kg-Ld; Fri, 21 Jul 2023 05:42:41 -0400
+	id 1qMmhc-0004Gq-R8; Fri, 21 Jul 2023 05:45:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMmek-0003KS-Rt
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:42:38 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ id 1qMmhQ-0004GO-FP
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:45:24 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qMmej-00051r-CY
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:42:38 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-52166c7f77cso2467478a12.2
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:42:36 -0700 (PDT)
+ id 1qMmhO-000625-Da
+ for qemu-devel@nongnu.org; Fri, 21 Jul 2023 05:45:24 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-4fbc0314a7bso2704957e87.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 02:45:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1689932554; x=1690537354;
+ d=linaro.org; s=google; t=1689932719; x=1690537519;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MDBOnjR4oyd0soYaaz8kwF9BKIZ+z9nbg6ix/H6s/xI=;
- b=rfp1dfgUzbFd5ba/rIlbDgA8qWZUmntcxvzj1PT0d2aproYnYQ5DOySoN9qYDbiKQI
- DrBkR66VTqk2zlbZr6WfmgJr/prXTlEbTelG8YheXc6huZ/zKNyzie8C1+5Opp2XvuLe
- u5/uuoaYZlokhsQyhNBC/Q9js5MPKwjejYz4Q6A99oF0HcjrKVKnmPLlhEur1qmqDaCm
- yGgg4bkxX6687CpqgwJC2nFjMckLVHpovAHyMaBfHPD6zNAt/s8kr+t4M9i9CsqlShoY
- Zh7c7ZO2yEV2wnt9aU1rJ0RccIy/2nRh3dqcaJWZfFoXbC9mZBmY6568Sd+Tebc9xAVL
- Y2pQ==
+ bh=91ZuaDNZJpmOzGYssGRQyQUE5RVgb//So/d76+L1vn4=;
+ b=nLI/TXPy21FhbcPpLXTymLFE7JWoihke40rsASdc3AEiHcfy5j9kCt8VbZDjG+iaKy
+ 4iMxjeLwQwTqFpNjkvlCSNdRNhVY9wt7Qeg4eSb/kkYc+HMMuCfmwT9jpnany8XnzRIw
+ Ro+9ic+VMkKLOywEY7u8rA1rMNcZfDnjMB/2jyq8UQMb/7wANqERN8wo3hnxdxAk8ouH
+ EXYw3o5JMx93DRn7J9VwsmnuR5J7U1fdcy+r7eF8ab0tFNhQwR15PUIrfrwZgas7a/7r
+ fIO7TZcXVdz5YtX4mggwcVhAQjR/tNElrp9HFzVm3CwBM3AHoHwqtFDcph7HENfKgU4f
+ u4ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1689932554; x=1690537354;
+ d=1e100.net; s=20221208; t=1689932719; x=1690537519;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MDBOnjR4oyd0soYaaz8kwF9BKIZ+z9nbg6ix/H6s/xI=;
- b=l+M9Qxx9YyDwLXyKO2Snx/cyTlCp8bES7+I8tUIsQxufTBjsQ/7BDa6Oegn2z5ixzB
- HiFd9dGCXVest75Em4C712GvIZqI0uLMhSMA66EdblevpaPPiOEhx3saMBMfPijoJi0V
- SiAP1Ykz5c+kFjaUBf/Sr5vUowvZ6c9q7Z/MFQ5fLPL88UJVLe06ncy0xLMxN9bOUjwl
- 60aqiuupodwS6i86uazu/R/ufE/l0BQDuU1O7CkJhhvhDL6bUpPOsNCzV1dtZX3a3qTS
- ZfELAUTP5s4BKgDOVn7A1pYRSkt6Y5sNm/WSgbgebBLf53a3clN3T53jQiFfZk1imOli
- Vp9A==
-X-Gm-Message-State: ABy/qLbT5hZWL8tvQ43ojfrIeE1OLAIj/jveBa5qM3yZFbEX2lxJXfRl
- aq/CNe4+da6vkszcF5IslAeHjKMxM1KKuUjJpE1DSQ==
-X-Google-Smtp-Source: APBJJlHnuIULWA4VJh179jVCdEHRYAU01AMadwLPiQYFDbxlqUkAUKWZ5Eg3zZma+ii15HhBQqLV9/WaEseUvxlV0co=
-X-Received: by 2002:a50:ed88:0:b0:51e:253e:1e0c with SMTP id
- h8-20020a50ed88000000b0051e253e1e0cmr1319091edr.25.1689932554624; Fri, 21 Jul
- 2023 02:42:34 -0700 (PDT)
+ bh=91ZuaDNZJpmOzGYssGRQyQUE5RVgb//So/d76+L1vn4=;
+ b=lDEXSvH7qI1qsCc2UOFqrzVCVsQm18aPMjDi+nrFFbAgVI3qzgFl8NmgS6mz0vS4ZB
+ h+ZnRFOupUbuhRm0P9/1BunDsfAtgjsq5MNln56pGIcr6UY6HmNQRqeUqHZEDzLgyPDA
+ wvJkMbevT1Kq2zwrRf9IVN3jPZF5qW2DggnohXpfE7y5jY+Sdnm+72mHgSe1sT+6196S
+ 0TPzWTIkuD8kj4fPCA+xZwST8eS5W/F1VBYveh8ViT3h92Jf/iKmiWXyGyRo1q9NpfNw
+ N1ZR37Gik7T8g7e1m1R4FhWCnWlV5utZYk1g1cbgLsNe9nFm9K7ytlvFlixeln87NFp7
+ P67g==
+X-Gm-Message-State: ABy/qLbiqepB1McxxwFTVfahqqRT7Aj7y8pVnHwHBGZs6ivs7i32bMGb
+ UBeGNmKhpG9M5Jxd+099zCbTfKTj7QM6q6Uv+ilRqw==
+X-Google-Smtp-Source: APBJJlEUzh0cfaKf/h6eJumIuNICgiW9BxZFnkAHneg/fltZ7zpI9QFneiwLFInhiG6DKfhlVPGQoR2aDRZp2DIe0bY=
+X-Received: by 2002:a19:4359:0:b0:4f8:6abe:5249 with SMTP id
+ m25-20020a194359000000b004f86abe5249mr930980lfj.3.1689932718734; Fri, 21 Jul
+ 2023 02:45:18 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230720155902.1590362-1-peter.maydell@linaro.org>
- <20230720155902.1590362-2-peter.maydell@linaro.org>
- <af35fc94-f8de-7c7f-6ae1-b84bbe550afb@linaro.org>
-In-Reply-To: <af35fc94-f8de-7c7f-6ae1-b84bbe550afb@linaro.org>
+ <7089eb6c-3b1f-278e-01d7-073e8bc516fe@linaro.org>
+In-Reply-To: <7089eb6c-3b1f-278e-01d7-073e8bc516fe@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 21 Jul 2023 10:42:23 +0100
-Message-ID: <CAFEAcA8cAqVmRdGriOXykozNtzSO09tO3YN8hdFGXgqcuQcU1w@mail.gmail.com>
-Subject: Re: [PATCH for-8.2 1/4] hw/rtc/m48t59: Use 64-bit arithmetic in
- set_alarm()
+Date: Fri, 21 Jul 2023 10:45:07 +0100
+Message-ID: <CAFEAcA_xWsNOROQqeLcuPX2XLOjbwKdEA75WcKn2qdTAHdVBGg@mail.gmail.com>
+Subject: Re: [PATCH for-8.2 0/4] rtc devices: Avoid putting time_t in 32-bit
+ variables
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
  Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
  Paolo Bonzini <pbonzini@redhat.com>, 
  =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,35 +92,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 21 Jul 2023 at 10:09, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+On Fri, 21 Jul 2023 at 10:03, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
 g> wrote:
 >
+> +Markus
+>
 > On 20/7/23 17:58, Peter Maydell wrote:
-> > In the m48t59 device we almost always use 64-bit arithmetic when
-> > dealing with time_t deltas.  The one exception is in set_alarm(),
-> > which currently uses a plain 'int' to hold the difference between two
-> > time_t values.  Switch to int64_t instead to avoid any possible
-> > overflow issues.
+> > This patchset was prompted by a couple of Coverity warnings
+> > (CID 1507157, 1517772) which note that in the m48t59 RTC device model
+> > we keep an offset in a time_t variable but then truncate it by
+> > passing it to qemu_get_timedate(), which currently uses an 'int'
+> > argument for its offset parameter.
 > >
-> > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> > ---
-> >   hw/rtc/m48t59.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > We can fix the Coverity complaint by making qemu_get_timedate()
+> > take a time_t; we should also correspondingly make the
+> > qemu_timedate_diff() function return a time_t. However this
+> > will only push the issue out to callers of qemu_timedate_diff()
+> > if they are putting the result in a 32-bit variable or doing
+> > 32-bit arithmetic on it.
+> >
+> > Luckily there aren't that many callers of qemu_timedate_diff()
+> > and most of them already use either time_t or int64_t for the
+> > calculations they do on its return value. The first three
+> > patches fix devices which weren't doing that; patch four then
+> > fixes the rtc.c functions. If I missed any callsites in devices
+> > then hopefully Coverity will point them out.
 >
-> Similarly:
+> Do we need to change the type of the RTC_CHANGE event?
 >
-> -- >8 --
-> --- a/hw/rtc/m48t59.c
-> +++ b/hw/rtc/m48t59.c
-> @@ -88,7 +88,7 @@ static M48txxInfo m48txx_sysbus_info[] =3D {
->   static void alarm_cb (void *opaque)
->   {
->       struct tm tm;
-> -    uint64_t next_time;
-> +    int64_t next_time;
->       M48t59State *NVRAM =3D opaque;
+> This is wrong, but to give an idea:
+>
+> --- a/qapi/misc.json
+> +++ b/qapi/misc.json
+> @@ -553,47 +553,47 @@
+>   ##
+>   # @RTC_CHANGE:
+>   #
+>   # Emitted when the guest changes the RTC time.
+>   #
+>   # @offset: offset in seconds between base RTC clock (as specified by
+>   #     -rtc base), and new RTC clock value
+>   #
+>   # @qom-path: path to the RTC object in the QOM tree
+>   #
+>   # Note: This event is rate-limited.  It is not guaranteed that the RTC
+>   #     in the system implements this event, or even that the system has
+>   #     an RTC at all.
+>   #
+>   # Since: 0.13
+>   #
+>   # Example:
+>   #
+>   # <- { "event": "RTC_CHANGE",
+>   #      "data": { "offset": 78 },
+>   #      "timestamp": { "seconds": 1267020223, "microseconds": 435656 } }
+>   ##
+>   { 'event': 'RTC_CHANGE',
+> -  'data': { 'offset': 'int', 'qom-path': 'str' } }
+> +  'data': { 'offset': 'int64', 'qom-path': 'str' } }
+> ---
 
-Why? next_time should always be positive here, I think.
+If I understand the 'Built-in Types' section in
+docs/devel/qapi-code-gen.rst correctly, the QAPI 'int'
+type is already 64 bits.
 
+thanks
 -- PMM
 
