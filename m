@@ -2,62 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7654F75C855
-	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 15:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B311175C8A1
+	for <lists+qemu-devel@lfdr.de>; Fri, 21 Jul 2023 15:57:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qMqWA-000445-Lb; Fri, 21 Jul 2023 09:50:02 -0400
+	id 1qMqbz-0005ZZ-4y; Fri, 21 Jul 2023 09:56:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qMqW2-00043k-HM
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 09:49:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qMqW0-0003fZ-Mc
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 09:49:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1689947391;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=B9oswWCqo0/VaVYEh2gJW86L28YMLsF9GHW+bXZcMOI=;
- b=M1q1rV9fFjDngnp7UaE2mt3cNtp/Jjj2BZk+F0hB5+cc+PYIPMKNdXj6rDj66FEV9DucOh
- 8RMUasnVlXF2a1b1I4mcsAqaQtLJreTYOvlHScaVFaeRqpdbOk7/OhRodY4kT+OQx7uGk5
- l10dATDWZK72aU841pTH+nirgvTQ1Y8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-671-JbG9i_4fM2m-JV6t2FhFrg-1; Fri, 21 Jul 2023 09:49:47 -0400
-X-MC-Unique: JbG9i_4fM2m-JV6t2FhFrg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4EB26800B35
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 13:49:47 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.142])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id BDD5C1415115;
- Fri, 21 Jul 2023 13:49:46 +0000 (UTC)
-From: Hanna Czenczek <hreitz@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Hanna Czenczek <hreitz@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
-Subject: [PATCH] virtio: Fix packed virtqueue used_idx mask
-Date: Fri, 21 Jul 2023 15:49:45 +0200
-Message-ID: <20230721134945.26967-1-hreitz@redhat.com>
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qMqbs-0005VA-Eg; Fri, 21 Jul 2023 09:55:56 -0400
+Received: from mail-io1-xd2e.google.com ([2607:f8b0:4864:20::d2e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qMqbo-0005bC-9W; Fri, 21 Jul 2023 09:55:56 -0400
+Received: by mail-io1-xd2e.google.com with SMTP id
+ ca18e2360f4ac-785ccf19489so89853639f.3; 
+ Fri, 21 Jul 2023 06:55:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1689947748; x=1690552548;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HZh2RMyknVQ2Cp5YU6ls6IZQgqPcieG0cJv4JEyb9Ys=;
+ b=kF42gzPASlaEPQqZSCfJFnVW98uB8NiV+XTQqxUw/vEQMw1Hs4IPc5ZqFjqJixAEFw
+ w6tZDiRWv16js30bOFpm/dmUHdrxy6pl/2GSVFofaDAvXOLsg0ZMIQeV5hvdgv3ov9Mc
+ XPSCax3uL5IFIJEodeUXZij20EUjDtKLKqokvY8v2MdHgOCDz1c3ADrKvY+6k26w7NAL
+ Tm5VwO+vNR2lEwR8ZCE/MYLbU2xtnEzNYV/dVKNmkjb3Ih0TDPa65ZHNxw++9U/ymfJw
+ 8mC4RVtNtjVqTp+TBh2I9qIowT7JWT4d4P3+iI4XgO9l8bWRveiOYBXksonVLTgMPvEK
+ H41w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1689947748; x=1690552548;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=HZh2RMyknVQ2Cp5YU6ls6IZQgqPcieG0cJv4JEyb9Ys=;
+ b=bFeCgxmmYlF1KysYC1RvBXJycaXJSf+eWxuJsEw1jkYzvf4kS1R+Atz4llUMKI0PPn
+ n5bFH+q+pMTC4xBqx9n4yLAMsc8xC0W7mXFjs1dpruJKBGiaUnZIN70OzP6NulHH0srA
+ Y9CKcRVEmkQWZmGCqMOEG/SymRn4uZtcDFtuiMuFlSlYSz+fy0CXdQnCqOCHzYNSMgEz
+ avAIxPggAY52eETAFH657ZuJuDe01aHfWUWPyf5yNWQPFldne8y04VDnV6GqCVrurjat
+ slCkqh93wshcAt8afJvn5ywfPQC1rkdJnbr7q9sy3AYD3yH5L/lbIdxnQdFYetakvYA3
+ m6eA==
+X-Gm-Message-State: ABy/qLYyz/ECsytbIWWd/8fmzO4zonAro43rEKTo2rSPSOZRr2zm4Mr7
+ 4Xh1ekvcmEWCghjAaE2wNNs=
+X-Google-Smtp-Source: APBJJlED/EBY3NCpQLJHYrwvQl8G/DSlFvLqS1/vQYIPYYJBJlgVUG1E/bBqpQHoND0WO5ekILrQ2Q==
+X-Received: by 2002:a92:c26e:0:b0:348:8576:15b5 with SMTP id
+ h14-20020a92c26e000000b00348857615b5mr32929ild.3.1689947748405; 
+ Fri, 21 Jul 2023 06:55:48 -0700 (PDT)
+Received: from localhost ([203.220.77.10]) by smtp.gmail.com with ESMTPSA id
+ e23-20020a633717000000b0056368adf5e2sm3118181pga.87.2023.07.21.06.55.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 21 Jul 2023 06:55:47 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Date: Fri, 21 Jul 2023 23:55:38 +1000
+Message-Id: <CU7WH5HTBQET.294VC6U7IATH6@wheely>
+Cc: <qemu-ppc@nongnu.org>, "Daniel Henrique Barboza"
+ <danielhb413@gmail.com>, =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ "David Gibson" <david@gibson.dropbear.id.au>, "Greg Kurz" <groug@kaod.org>,
+ "Harsh Prateek Bora" <harshpb@linux.ibm.com>, "John Snow"
+ <jsnow@redhat.com>, "Cleber Rosa" <crosa@redhat.com>, "Pavel Dovgalyuk"
+ <pavel.dovgaluk@ispras.ru>, "Paolo Bonzini" <pbonzini@redhat.com>,
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, "Wainer dos
+ Santos Moschetta" <wainersm@redhat.com>, "Beraldo Leal" <bleal@redhat.com>,
+ "Peter Maydell" <peter.maydell@linaro.org>, "Richard Henderson"
+ <richard.henderson@linaro.org>
+Subject: Re: [PATCH 7/7] tests/avocado: ppc64 pseries reverse debugging test
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Nicholas Piggin" <npiggin@gmail.com>, "Pavel Dovgalyuk"
+ <pavel.dovgalyuk@ispras.ru>, <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20230623125707.323517-1-npiggin@gmail.com>
+ <20230623125707.323517-8-npiggin@gmail.com>
+ <74691561-c288-abf5-9673-6e230d55b813@ispras.ru>
+ <CTMH98YLMT2F.2C2Q4KXXZMEB1@wheely>
+In-Reply-To: <CTMH98YLMT2F.2C2Q4KXXZMEB1@wheely>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d2e;
+ envelope-from=npiggin@gmail.com; helo=mail-io1-xd2e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,50 +102,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virtio_queue_packed_set_last_avail_idx() is used by vhost devices to set
-the internal queue indices to what has been reported by the vhost
-back-end through GET_VRING_BASE.  For packed virtqueues, this
-32-bit value is expected to contain both the device's internal avail and
-used indices, as well as their respective wrap counters.
+On Mon Jun 26, 2023 at 7:34 PM AEST, Nicholas Piggin wrote:
+> On Mon Jun 26, 2023 at 5:49 PM AEST, Pavel Dovgalyuk wrote:
+> > On 23.06.2023 15:57, Nicholas Piggin wrote:
+> > > pseries can run reverse-debugging well enough to pass basic tests.
+> > >=20
+> > > There is strangeness with reverse-continue possibly relating to a bp
+> > > being set on the first instruction or on a snapshot, that causes
+> > > the PC to be reported on the first instruction rather than last
+> > > breakpoint, so a workaround is added for that for now.
+> >
+> > It means that the test reveals some kind of a bug in PPC debugging=20
+> > server implementation.
+> > In this case it is better to fix that instead of adding workaround.
+>
+> I agree, and I'm trying to find the cause it hasn't been easy. I
+> thought the test was still interesting because it otherwise seems
+> to work well, but hopefully I can find the issue before long.
 
-To get the used index, we shift the 32-bit value right by 16, and then
-apply a mask of 0x7ffff.  That seems to be a typo, because it should be
-0x7fff; first of all, the virtio specification says that the maximum
-queue size for packed virt queues is 2^15, so the indices cannot exceed
-2^15 - 1 anyway, making 0x7fff the correct mask.  Second, the mask
-clearly is wrong from context, too, given that (A) `idx & 0x70000` must
-be 0 at this point (`idx` is 32 bit and was shifted to the right by 16
-already), (B) `idx & 0x8000` is the used_wrap_counter, so should not be
-part of the used index, and (C) `vq->used_idx` is a `uint16_t`, so
-cannot fit the 0x70000 part of the mask anyway.
+I found the problem after too much staring at record-replay. QEMU works
+perfectly, it is the ppc pseries firmware that branches to its own entry
+point address within the recorded trace, and that confuses the test
+script.
 
-This most likely never produced any guest-visible bugs, though, because
-for a vhost device, qemu will probably not evaluate the used index
-outside of virtio_queue_packed_get_last_avail_idx(), where we
-reconstruct the 32-bit value from avail and used indices and their wrap
-counters again.  There, it does not matter whether the highest bit of
-the used_idx is the used index wrap counter, because we put the wrap
-counter exactly in that position anyway.
+I'm not sure the best way to work around it. Initial skip works okay but
+also maybe(?) a good edge case to test a break on the very first
+instruction of the trace even if we don't reverse continue to it.
 
-Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
----
- hw/virtio/virtio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I will send a new series and propose to add the breakpoints before
+seeking to the end of the trace, so we will catch a breakpoint being
+executed again.
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 295a603e58..309038fd46 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -3321,7 +3321,7 @@ static void virtio_queue_packed_set_last_avail_idx(VirtIODevice *vdev,
-     vq->last_avail_wrap_counter =
-         vq->shadow_avail_wrap_counter = !!(idx & 0x8000);
-     idx >>= 16;
--    vq->used_idx = idx & 0x7ffff;
-+    vq->used_idx = idx & 0x7fff;
-     vq->used_wrap_counter = !!(idx & 0x8000);
- }
- 
--- 
-2.41.0
-
+Thanks,
+Nick
 
