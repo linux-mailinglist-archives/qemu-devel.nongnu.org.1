@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470C175DE09
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 20:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7000E75DEA3
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 23:45:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNH4V-0002ic-3U; Sat, 22 Jul 2023 14:11:15 -0400
+	id 1qNKP0-0000J3-QN; Sat, 22 Jul 2023 17:44:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qNH4T-0002iG-4w; Sat, 22 Jul 2023 14:11:13 -0400
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qNKOw-0000HJ-G7
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 17:44:34 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qNH4R-0006or-My; Sat, 22 Jul 2023 14:11:12 -0400
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6b9c57c4d12so2525357a34.1; 
- Sat, 22 Jul 2023 11:11:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qNKOo-00032y-E8
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 17:44:34 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fbef8ad9bbso28861425e9.0
+ for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 14:44:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690049469; x=1690654269;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jc51zulEpLAYWxsFJZO4jgk+o0SF/GRPvL5oAh/xg9M=;
- b=BOzZHwyIxiw1Lnx+JUSZJE34lE69RocuGDX4GTwTBJIoNwDMijwL0j3Tju0pBTngU5
- GKo4QpjCS/hw/TZ8/1THucnmQ4jZLdwiMCMU92HBD2IwTTZuyEyy8aDyfemk8dpuydo2
- 9KEfIgjiEnrKmVCty6s1thgur2GOF/KREiXbrRYohwOHrUkggDXgHjms77xEUR1I35sX
- lySSwIz8kmi9PfSZNlQBpauuVY0thU2arxvq6mib4IkNWeIWWe7To4EioRmnS2EeBANf
- GGIIF13TQi9WL+TnxYfDcl3pz8T7NSBbQyU1/PXut08j5gwgJgoQR9nSRtkISw5p2MpV
- gMEQ==
+ d=linaro.org; s=google; t=1690062264; x=1690667064;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=xEasaoZboN8KJf7SaKtCeZLZ0vIGHvm2h3QG6FL0N38=;
+ b=MZYePx8YKRB54b/rNsyLqlx16uAHZUzlvR1Yq/Lmc4ZifnREG8SEXxX7/3eO1JnK0O
+ PjwnTkF0Xdw5gOle5eTVo/RdGgKI+OiwppRpaBQrPxnkFkfZBDZ96S9LAdtLURE6mcMI
+ Bsuuc0UZ77i5S2a8qNqlgKx+XM2p143TMfp8EoAxkOCsCP9TYDTtb2zlh4BuTtcjd6k0
+ 8iVs2kWVdBR/kOoOkrMoeEUGh9AWMVeBzltwn8q6OryVJEDdhX2ipLrqhtOjwIGqAEoi
+ pstu2Or2FcKKM/46Zk1ccrcT65o90jTBTH2dJbO0ojaCxWv9oXMGgRHisfHvqHXoKamH
+ w2vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690049469; x=1690654269;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jc51zulEpLAYWxsFJZO4jgk+o0SF/GRPvL5oAh/xg9M=;
- b=P4BEv6d+UqgezDSDKEFxxa7gwi4jjgSRDJITfHE+QHHNM0Ee/AcLubLNxjY0hmB/5K
- 53ZZfiB5bwVcLYTagnDUuKj74U/B4f0P+3V1YOC+z52EFAnyJVzUMa+029CBct/Kq94x
- VcPOpCCZQIhR4p+oK+8R/Q6HmOm7UO6Qn/sDb88i8WGoO0ajKZ1RhUOlRO7LmuxXljvH
- k6Y5LDBloY85ZktKuzPK5GnWxkHh+ta8joQXf1t9G7eslM/QCOroY7YhXvU962BzICGx
- dBy4Ik1Bq6yoZ/HHngLDnyry0IFgvnlvewzh3sOzVkq3Gswn69dcoUT7Dcber8TOxwow
- 6UAA==
-X-Gm-Message-State: ABy/qLaQ8kbtuVCvnBs+/LR1tYwoGgg1fEx3OuGImybMRIUdhnKptJtD
- KLR1XKTciTWTaQzFDCLIH3M=
-X-Google-Smtp-Source: APBJJlF6HRQZOuMDbDgELhR/xnQZxLdXOx61LIrv/EDnmw/f8cH8UURaFt6iODf3AC9Ea6TG39TqUw==
-X-Received: by 2002:a05:6870:c110:b0:1a6:4f6a:8a72 with SMTP id
- f16-20020a056870c11000b001a64f6a8a72mr7864538oad.37.1690049469429; 
- Sat, 22 Jul 2023 11:11:09 -0700 (PDT)
-Received: from [192.168.68.108] (201-69-66-211.dial-up.telesp.net.br.
- [201.69.66.211]) by smtp.gmail.com with ESMTPSA id
- m2-20020a056870194200b001a2f7ca6183sm2680926oak.38.2023.07.22.11.11.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 22 Jul 2023 11:11:09 -0700 (PDT)
-Message-ID: <dcb027a3-a41a-eca5-0501-1da68c1010a2@gmail.com>
-Date: Sat, 22 Jul 2023 15:11:06 -0300
+ d=1e100.net; s=20221208; t=1690062264; x=1690667064;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xEasaoZboN8KJf7SaKtCeZLZ0vIGHvm2h3QG6FL0N38=;
+ b=B1yXDvMCaE6bHdsRq2ZeegqmF/1q1Hf63rsuN6WAEWigKfly0xZmOBAegx4IdySrqJ
+ q2TXt1v1h8BuwxxV3N6nMmPRY7bZUPu1sK5BdisNH4QipzNIQQNmBU4xoGnoDBay+bM+
+ i4CHWHnRgQog2IxyAETGjzim01w7kgbX2g5gZFSRFbkfMvshFMpcAuaaHSPJEsLmeyD6
+ u811i28vMFZ2Emj1djDuagEsseOsvaBo449J/8nK2zpz1VJUcgAzsdxQ0E21EkHbCebS
+ 8b1EaIuLnGD83iKyIcJUUvYZHqu7dpJq4rC5JChXyge5MRhMzRxivPbTabCWPDi0X4Lr
+ hCpQ==
+X-Gm-Message-State: ABy/qLbDZnoJ5q5Qrp+Lw9JsAApaIu4BpldjG9HUt54xIVGwI8r6NKrr
+ 0XXvBNCucnxWiT8l7ElI12RD6LUv++yiNnibqz28ZA==
+X-Google-Smtp-Source: APBJJlFp5CF0OvXE+dYZuRAweW7DAFv7Qw6OSEm0bIoP5WiQ7UphcWN6CvfamWFBpdmZ8EPjGsidjQ==
+X-Received: by 2002:a7b:c5d9:0:b0:3f7:f584:5796 with SMTP id
+ n25-20020a7bc5d9000000b003f7f5845796mr4026595wmk.2.1690062263609; 
+ Sat, 22 Jul 2023 14:44:23 -0700 (PDT)
+Received: from stoup.acentic.lan
+ (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
+ by smtp.gmail.com with ESMTPSA id
+ v22-20020a7bcb56000000b003fbb9339b29sm8846384wmj.42.2023.07.22.14.44.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 22 Jul 2023 14:44:23 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PATCH v2 0/4] util/interval-tree: Avoid race conditions without
+ optimization
+Date: Sat, 22 Jul 2023 22:44:18 +0100
+Message-Id: <20230722214422.118743-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 0/3] pegasos2 fixes for 8.1
-Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
-References: <cover.1689725688.git.balaton@eik.bme.hu>
- <e3eee7ac-a6f8-4643-4600-845d6718e1d4@gmail.com>
- <960ab00b-23b9-e1ee-4929-db87fab43e46@eik.bme.hu>
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <960ab00b-23b9-e1ee-4929-db87fab43e46@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,48 +90,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Read the left and right trees once, so that the gating
+tests are meaningful.  This was only a problem at -O0,
+where the compiler didn't CSE the two reads.
+
+Changes for v2:
+  * Use qatomic_read for left/right while searching (pmm)
+  * Use qatomic_set_mb when inserting a new node, so that
+    we're sure that the new node is consistent.
+  * Abundance of caution: Use qatomic_read/set for manipulating parent.
 
 
-On 7/21/23 19:17, BALATON Zoltan wrote:
-> On Fri, 21 Jul 2023, Daniel Henrique Barboza wrote:
->> On 7/18/23 21:32, BALATON Zoltan wrote:
->>> These are some small fixes when using pegasos2 with the QEMU built in
->>> VOF instead of the non-free board firmware that fix bugs in the
->>> generated device tree and matches the board firmware in the reset
->>> state of on-board USB devices. This fixes booting AmigaOS with VOF and
->>> only touches parts that are used with VOF only so I'd like these to be
->>> merged for 8.1.
->>
->> Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
->>
->>
->> And pushed to ppc-next. Thanks,
-> 
-> Thank you. I've just sent another similar one I've found later so was missed from this series but I hope this can still get in. This should be the last one from me for 8.1 now, sorry for sending it so late.
-
-It's fine. It's still a good time to push this kind of fixes. I'll take
-a look at that one.
+r~
 
 
-Daniel
+Richard Henderson (4):
+  util/interval-tree: Use qatomic_read for left/right while searching
+  util/interval-tree: Use qatomic_set_mb in rb_link_node
+  util/interval-tree: Introduce pc_parent
+  util/interval-tree: Use qatomic_read/set for rb_parent_color
 
-> 
-> Regards,
-> BALATON Zoltan
-> 
->> Daniel
->>
->>>
->>> Regards,
->>>
->>> BALATON Zoltan (3):
->>>    ppc/pegasos2: Fix reset state of USB functions
->>>    ppc/pegasos2: Fix reg property of ROM BARs
->>>    ppc/pegasos2: Fix naming of device tree nodes
->>>
->>>   hw/ppc/pegasos2.c | 18 +++++++++++++++++-
->>>   1 file changed, 17 insertions(+), 1 deletion(-)
->>>
->>
->>
+ util/interval-tree.c | 79 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 48 insertions(+), 31 deletions(-)
+
+-- 
+2.34.1
+
 
