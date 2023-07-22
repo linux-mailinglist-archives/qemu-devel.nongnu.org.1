@@ -2,47 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729F675DB06
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 10:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3C275DBA7
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 12:12:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qN7wZ-0000gl-My; Sat, 22 Jul 2023 04:26:27 -0400
+	id 1qN9aN-0006vc-Uo; Sat, 22 Jul 2023 06:11:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qN7wX-0000gR-4T; Sat, 22 Jul 2023 04:26:25 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qN7wV-0004Wp-97; Sat, 22 Jul 2023 04:26:24 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6C57D158D2;
- Sat, 22 Jul 2023 11:26:24 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id DF8FF18A3A;
- Sat, 22 Jul 2023 11:26:17 +0300 (MSK)
-Received: (nullmailer pid 3254054 invoked by uid 1000);
- Sat, 22 Jul 2023 08:26:17 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>,
- Andreas Schwab <schwab@suse.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH] limit brk adjustment wrt interp.brk to arm32 only for now
-Date: Sat, 22 Jul 2023 11:26:16 +0300
-Message-Id: <20230722082616.3254040-1-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qN9aM-0006vS-HR
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 06:11:38 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qN9aK-00068P-3v
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 06:11:38 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3090d3e9c92so2311688f8f.2
+ for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 03:11:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690020692; x=1690625492;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=K4BAaPgT8ZRvaVNwn8PWKkMztRfEZcv/rF2Z/NlCl8g=;
+ b=SrxOUfA5cHX7g2q6eWBI+VOfS9EUyfg3aGEER/spJBvccriVo5KE7rbQxnS98sqtZp
+ Wy5w/skWF/sw8Udr2G/6nSUotAO+lYvWRTsfk0MWqqFSTqheJTYYP4fDPt0339/NECGC
+ 3TKVLmdKrklUSvNxGgLUHLaTSBZLn/Km5IhCSnBMVa6rxrEMWlrljnS8WfLdIfwlhg8A
+ nsemrYS3Nd/dLa49QDpc2RKStt7WUzc5swuogpK6qI5sbJmlo5ECmjsDfThvRJBUH3Ur
+ QE+J07oBtAijc3HUz6IH7dNasoYiYQ1wSVXVnvXroxEbvKgVGp87IFyvdyLdSwsRFu7U
+ h1yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690020692; x=1690625492;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=K4BAaPgT8ZRvaVNwn8PWKkMztRfEZcv/rF2Z/NlCl8g=;
+ b=gk5BXTrVxQoCegf48IESXwU+GDzfor6RBoo/y35RJmRwZHQZCNHb/RahiwVqaQHSdw
+ 8NlwxcjdiL1gzu70dvsdXcw3ECd7dppUg6x7jXsAHd9CGJfCxu8lTKhqxzX2I1LxIMXW
+ 5tPnjH07NUkJccBBCBgZNzfdVrlhBMePGsTWEz5qytVKX8hZE6fKOdkmeBRQKMiT8UMp
+ gocvCK0/KDUd1ZRiZ5Cks6XCpF8QlwrEYQ8reclGvUGUYoFk9jzxGrL1sb0ZBIMRsBnh
+ oZsHY3GHxFfPGwimrBaZ6ntNqcja1Xa0Zuf5OMYtHg43DZWbZD2H6+Z+2h+9Zm5N9IDe
+ l11w==
+X-Gm-Message-State: ABy/qLb/MiJmCu3YOid6MYN3XvFQFd56JTFk6XxQIYcWr6uwG4GCezYS
+ PBxsMq0E5dXmEfVOIxoYuJckog==
+X-Google-Smtp-Source: APBJJlHHTpneNwp+3ohfvbnEbJ1cSr1O86DSIfPrUvjwJVuVhhrC2dv8cHrR9Ntq7z8N8pITr7Oy6w==
+X-Received: by 2002:a5d:404d:0:b0:317:4e25:eaeb with SMTP id
+ w13-20020a5d404d000000b003174e25eaebmr178226wrp.24.1690020692119; 
+ Sat, 22 Jul 2023 03:11:32 -0700 (PDT)
+Received: from [172.20.2.77]
+ (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
+ by smtp.gmail.com with ESMTPSA id
+ u5-20020a05600c138500b003fd2e898aa3sm654659wmf.0.2023.07.22.03.11.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 22 Jul 2023 03:11:31 -0700 (PDT)
+Message-ID: <ffb529cb-2d73-cefd-e6b6-30c0ab7334fa@linaro.org>
+Date: Sat, 22 Jul 2023 11:11:30 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] accel/tcg: Fix guest instruction address in output
+ assembly log
+Content-Language: en-US
+To: Matt Borgerson <contact@mborgerson.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+References: <20230718013531.1669100-1-contact@mborgerson.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230718013531.1669100-1-contact@mborgerson.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -59,44 +96,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 518f32221af7 "linux-user: Fix qemu-arm to run static armhf binaries"
-added brk value adjustment to interpreter brk value after loading the
-interpreter. Unfortunately this broke aarch64, ppc64el and s390x emulation, -
-the error which we had on armhf now happens on at least these 3 architectures.
-For the time being, limit the adjustment to aarch32 case only (where the prob
-originally observed), to be analyzed in more details later.
+On 7/18/23 02:35, Matt Borgerson wrote:
+> If CF_PCREL is enabled, generated host assembly logging (command line
+> option `-d out_asm`) may incorrectly report guest instruction virtual
+> addresses as page offsets instead of absolute addresses. This patch
+> corrects the reported guest address.
+> 
+> Signed-off-by: Matt Borgerson <contact@mborgerson.com>
+> ---
+>   accel/tcg/translate-all.c | 22 ++++++++++++++++++++--
+>   1 file changed, 20 insertions(+), 2 deletions(-)
+> 
+> diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+> index a1782db5dd..859db95cf7 100644
+> --- a/accel/tcg/translate-all.c
+> +++ b/accel/tcg/translate-all.c
+> @@ -283,6 +283,24 @@ static int setjmp_gen_code(CPUArchState *env, TranslationBlock *tb,
+>       return tcg_gen_code(tcg_ctx, tb, pc);
+>   }
+>   
+> +static vaddr get_guest_insn_vaddr(TranslationBlock *tb, vaddr pc, size_t insn)
+> +{
+> +    g_assert(insn < tb->icount);
+> +
+> +    /* FIXME: This replicates the restore_state_to_opc() logic. */
+> +    vaddr addr = tcg_ctx->gen_insn_data[insn * TARGET_INSN_START_WORDS];
+> +
+> +    if (tb_cflags(tb) & CF_PCREL) {
+> +        addr |= (pc & TARGET_PAGE_MASK);
+> +    } else {
+> +#if defined(TARGET_I386)
+> +        addr -= tb->cs_base;
+> +#endif
+> +    }
 
-This is a quick band-aid, not a real fix.
+I disagree with this.  The only bug I see is
 
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
----
- linux-user/elfload.c | 3 +++
- 1 file changed, 3 insertions(+)
+>                       "  -- guest addr 0x%016" PRIx64 " + tb prologue\n",
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 88c6861d7d..08e09b6863 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3617,15 +3617,18 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
-     }
- 
-     if (elf_interpreter) {
-         load_elf_interp(elf_interpreter, &interp_info, bprm->buf);
-+#if defined(TARGET_ARM) && !defined(TARGET_AARCH64)
-+/* FIXME: this breaks aarch64, ppc64el, s390x, hence the #if for now */
-         /*
-          * adjust brk address if the interpreter was loaded above the main
-          * executable, e.g. happens with static binaries on armhf
-          */
-         if (interp_info.brk > info->brk) {
-             info->brk = interp_info.brk;
-         }
-+#endif
- 
-         /* If the program interpreter is one of these two, then assume
-            an iBCS2 image.  Otherwise assume a native linux image.  */
- 
--- 
-2.39.2
+"guest addr", which makes you believe this to be a guest virtual address.
 
+I think it is important to log what is actually in the data structures, which is the page 
+offset.
+
+Why are you so keen to have the virtual address?  Why is this more reasonable than the 
+physical address, or anything else?
+
+
+r~
 
