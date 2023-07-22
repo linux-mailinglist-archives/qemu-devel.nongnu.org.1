@@ -2,85 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D3C275DBA7
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 12:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6A675DBE2
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 13:23:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qN9aN-0006vc-Uo; Sat, 22 Jul 2023 06:11:39 -0400
+	id 1qNAge-0003VL-B8; Sat, 22 Jul 2023 07:22:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qN9aM-0006vS-HR
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 06:11:38 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qNAgb-0003V8-KD
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:22:09 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qN9aK-00068P-3v
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 06:11:38 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3090d3e9c92so2311688f8f.2
- for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 03:11:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qNAgW-0002m7-OI
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:22:09 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-51e344efd75so5838614a12.1
+ for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 04:22:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690020692; x=1690625492;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=K4BAaPgT8ZRvaVNwn8PWKkMztRfEZcv/rF2Z/NlCl8g=;
- b=SrxOUfA5cHX7g2q6eWBI+VOfS9EUyfg3aGEER/spJBvccriVo5KE7rbQxnS98sqtZp
- Wy5w/skWF/sw8Udr2G/6nSUotAO+lYvWRTsfk0MWqqFSTqheJTYYP4fDPt0339/NECGC
- 3TKVLmdKrklUSvNxGgLUHLaTSBZLn/Km5IhCSnBMVa6rxrEMWlrljnS8WfLdIfwlhg8A
- nsemrYS3Nd/dLa49QDpc2RKStt7WUzc5swuogpK6qI5sbJmlo5ECmjsDfThvRJBUH3Ur
- QE+J07oBtAijc3HUz6IH7dNasoYiYQ1wSVXVnvXroxEbvKgVGp87IFyvdyLdSwsRFu7U
- h1yA==
+ d=linaro.org; s=google; t=1690024921; x=1690629721;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=OZgxTaeruVITXYyY97MR+4fyVPteqrsxVDo8I5Va26w=;
+ b=q9b4Vf0XcAzztlyV/coyV4M/lALZJd01g0dbaDE+yD0Jb/e4sU8MYRg7WGCZh9NpV9
+ 1sHn7/C2Yw1ZHnTdiW0atFsieomdCV++5xv2Lil+swBQAyBWORAso75tofKHDf5+Sb1D
+ fH0/bfJcbBMeosEq0ZCtV1jP9Tt32E52oOzyrrD1JMWpFxtAHO656v+n8WcU1/KbjNME
+ +6oiYwoTNc6hDGh9yVHxWkuWgOj3yDIkhDXDbHXqB/nBFsfOVNuSmGeVXBPxqpk1WRpg
+ wjm5lC5SbwIYbR8hDdRgeib6uHKjX6jk3iW8bqf8rxb5y54dRcB8UE6TAuYhoeGS/3YN
+ Qh4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690020692; x=1690625492;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=K4BAaPgT8ZRvaVNwn8PWKkMztRfEZcv/rF2Z/NlCl8g=;
- b=gk5BXTrVxQoCegf48IESXwU+GDzfor6RBoo/y35RJmRwZHQZCNHb/RahiwVqaQHSdw
- 8NlwxcjdiL1gzu70dvsdXcw3ECd7dppUg6x7jXsAHd9CGJfCxu8lTKhqxzX2I1LxIMXW
- 5tPnjH07NUkJccBBCBgZNzfdVrlhBMePGsTWEz5qytVKX8hZE6fKOdkmeBRQKMiT8UMp
- gocvCK0/KDUd1ZRiZ5Cks6XCpF8QlwrEYQ8reclGvUGUYoFk9jzxGrL1sb0ZBIMRsBnh
- oZsHY3GHxFfPGwimrBaZ6ntNqcja1Xa0Zuf5OMYtHg43DZWbZD2H6+Z+2h+9Zm5N9IDe
- l11w==
-X-Gm-Message-State: ABy/qLb/MiJmCu3YOid6MYN3XvFQFd56JTFk6XxQIYcWr6uwG4GCezYS
- PBxsMq0E5dXmEfVOIxoYuJckog==
-X-Google-Smtp-Source: APBJJlHHTpneNwp+3ohfvbnEbJ1cSr1O86DSIfPrUvjwJVuVhhrC2dv8cHrR9Ntq7z8N8pITr7Oy6w==
-X-Received: by 2002:a5d:404d:0:b0:317:4e25:eaeb with SMTP id
- w13-20020a5d404d000000b003174e25eaebmr178226wrp.24.1690020692119; 
- Sat, 22 Jul 2023 03:11:32 -0700 (PDT)
-Received: from [172.20.2.77]
- (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
- by smtp.gmail.com with ESMTPSA id
- u5-20020a05600c138500b003fd2e898aa3sm654659wmf.0.2023.07.22.03.11.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 22 Jul 2023 03:11:31 -0700 (PDT)
-Message-ID: <ffb529cb-2d73-cefd-e6b6-30c0ab7334fa@linaro.org>
-Date: Sat, 22 Jul 2023 11:11:30 +0100
+ d=1e100.net; s=20221208; t=1690024921; x=1690629721;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=OZgxTaeruVITXYyY97MR+4fyVPteqrsxVDo8I5Va26w=;
+ b=ENYIQ0feNS7GttxAqOa4Q0Mrbhfsbgm25STraOYpkUgNIKqNJms9FqSUdPaOP7bFID
+ wWpPwDV3YohOIZMf+XobnO5jgEVKloGEbfWSTwDD+2FduT7U9BEitAH6wBRWWw5g12gT
+ kWIVabNEwS3QygXfeT8fcE45FjDcxXPP9IwIIyPEDZTo3Gpq04Mmq492bfzfhBrmoj/h
+ RYjZoMXX1Li17uQ+N8Gx/DfGO0ZBWfNQJrajMzIXBCut4XZLiwQjVhg35j4YuNkZEAoJ
+ 0YNKwWxwmMa8MxojWcwDRmaHVeByXkRor5Vxjo5i/GaSi6jxpVF0+5X9C3Yvo3cHNZWw
+ gOJg==
+X-Gm-Message-State: ABy/qLaGv5Qnr1K43vmNn4mOLzv/Y4W9YP59Lo6648bvsYsEmfz/VRmQ
+ RXANvA9o1Sr7hPP1dST9IEwQxj4zCi3bFzKjvzwU6Q==
+X-Google-Smtp-Source: APBJJlHQ9q3KuceC34tpD3cFpjd4C/8Savbv/NR0r9WijLfFk2+eWO3QP7Gwa8CH8dmj2o5Gp5vFASn4ODwCgQVIfew=
+X-Received: by 2002:a05:6402:752:b0:521:d2ab:e4df with SMTP id
+ p18-20020a056402075200b00521d2abe4dfmr4782240edy.19.1690024921302; Sat, 22
+ Jul 2023 04:22:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] accel/tcg: Fix guest instruction address in output
- assembly log
-Content-Language: en-US
-To: Matt Borgerson <contact@mborgerson.com>, qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-References: <20230718013531.1669100-1-contact@mborgerson.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230718013531.1669100-1-contact@mborgerson.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20230722082616.3254040-1-mjt@tls.msk.ru>
+In-Reply-To: <20230722082616.3254040-1-mjt@tls.msk.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Sat, 22 Jul 2023 12:21:50 +0100
+Message-ID: <CAFEAcA_b5NfO3ijyDQufaLhQ8kvAmctNz+BrPTt=6SxNOJy9vQ@mail.gmail.com>
+Subject: Re: [PATCH] limit brk adjustment wrt interp.brk to arm32 only for now
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>,
+ Andreas Schwab <schwab@suse.de>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.094,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,52 +87,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/18/23 02:35, Matt Borgerson wrote:
-> If CF_PCREL is enabled, generated host assembly logging (command line
-> option `-d out_asm`) may incorrectly report guest instruction virtual
-> addresses as page offsets instead of absolute addresses. This patch
-> corrects the reported guest address.
-> 
-> Signed-off-by: Matt Borgerson <contact@mborgerson.com>
-> ---
->   accel/tcg/translate-all.c | 22 ++++++++++++++++++++--
->   1 file changed, 20 insertions(+), 2 deletions(-)
-> 
-> diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-> index a1782db5dd..859db95cf7 100644
-> --- a/accel/tcg/translate-all.c
-> +++ b/accel/tcg/translate-all.c
-> @@ -283,6 +283,24 @@ static int setjmp_gen_code(CPUArchState *env, TranslationBlock *tb,
->       return tcg_gen_code(tcg_ctx, tb, pc);
->   }
->   
-> +static vaddr get_guest_insn_vaddr(TranslationBlock *tb, vaddr pc, size_t insn)
-> +{
-> +    g_assert(insn < tb->icount);
-> +
-> +    /* FIXME: This replicates the restore_state_to_opc() logic. */
-> +    vaddr addr = tcg_ctx->gen_insn_data[insn * TARGET_INSN_START_WORDS];
-> +
-> +    if (tb_cflags(tb) & CF_PCREL) {
-> +        addr |= (pc & TARGET_PAGE_MASK);
-> +    } else {
-> +#if defined(TARGET_I386)
-> +        addr -= tb->cs_base;
-> +#endif
-> +    }
+On Sat, 22 Jul 2023 at 09:26, Michael Tokarev <mjt@tls.msk.ru> wrote:
+>
+> Commit 518f32221af7 "linux-user: Fix qemu-arm to run static armhf binaries"
+> added brk value adjustment to interpreter brk value after loading the
+> interpreter. Unfortunately this broke aarch64, ppc64el and s390x emulation, -
+> the error which we had on armhf now happens on at least these 3 architectures.
+> For the time being, limit the adjustment to aarch32 case only (where the prob
+> originally observed), to be analyzed in more details later.
+>
+> This is a quick band-aid, not a real fix.
 
-I disagree with this.  The only bug I see is
+I think if 518f32221af7 broke things we should revert it,
+not put in ifdefs.
 
->                       "  -- guest addr 0x%016" PRIx64 " + tb prologue\n",
-
-"guest addr", which makes you believe this to be a guest virtual address.
-
-I think it is important to log what is actually in the data structures, which is the page 
-offset.
-
-Why are you so keen to have the virtual address?  Why is this more reasonable than the 
-physical address, or anything else?
-
-
-r~
+thanks
+-- PMM
 
