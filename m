@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6A675DBE2
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 13:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7761475DBED
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 13:36:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNAge-0003VL-B8; Sat, 22 Jul 2023 07:22:12 -0400
+	id 1qNAtN-00061s-Ln; Sat, 22 Jul 2023 07:35:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNAgb-0003V8-KD
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:22:09 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qNAtJ-00061H-01
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:35:17 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNAgW-0002m7-OI
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:22:09 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-51e344efd75so5838614a12.1
- for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 04:22:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qNAtG-0000hk-5T
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:35:16 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fc02a92dcfso22977515e9.0
+ for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 04:35:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690024921; x=1690629721;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=OZgxTaeruVITXYyY97MR+4fyVPteqrsxVDo8I5Va26w=;
- b=q9b4Vf0XcAzztlyV/coyV4M/lALZJd01g0dbaDE+yD0Jb/e4sU8MYRg7WGCZh9NpV9
- 1sHn7/C2Yw1ZHnTdiW0atFsieomdCV++5xv2Lil+swBQAyBWORAso75tofKHDf5+Sb1D
- fH0/bfJcbBMeosEq0ZCtV1jP9Tt32E52oOzyrrD1JMWpFxtAHO656v+n8WcU1/KbjNME
- +6oiYwoTNc6hDGh9yVHxWkuWgOj3yDIkhDXDbHXqB/nBFsfOVNuSmGeVXBPxqpk1WRpg
- wjm5lC5SbwIYbR8hDdRgeib6uHKjX6jk3iW8bqf8rxb5y54dRcB8UE6TAuYhoeGS/3YN
- Qh4Q==
+ d=linaro.org; s=google; t=1690025709; x=1690630509;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=INqOnPLZqSMtROwuX5yxRREghns2EQI4fhnRTubU2b8=;
+ b=lwYjo8pvyntXBiUx8Z654pE6RF5AkbmsMtl99heNwRgb87ZiTw2R9fgyfdf/UyyciH
+ YlfZQYzM04odIOfYXjWXWIzYKi8d4MGR8NwyxSMDNScpIgTBLYTx6zT6exrfrL6e3S3g
+ Aa+AhOna/1fTPOV4Gu0wYCJmOcj0o212AAElLXax7ygj4xE+CwFQHml/VAOOtLqCEiHr
+ 5e3Gu32LNI6cVtaqA1UGSygUIduKOoJAOdpoH974/nV09YRjR60yxlJjlz1M33d7mrFM
+ rx3j7DGouWn0TvD0DJ/F9ErT47znPOhSrXjLoOFuq3z1nI+fWeX1WN5Afh8YwVrZklyB
+ nyrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690024921; x=1690629721;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1690025709; x=1690630509;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=OZgxTaeruVITXYyY97MR+4fyVPteqrsxVDo8I5Va26w=;
- b=ENYIQ0feNS7GttxAqOa4Q0Mrbhfsbgm25STraOYpkUgNIKqNJms9FqSUdPaOP7bFID
- wWpPwDV3YohOIZMf+XobnO5jgEVKloGEbfWSTwDD+2FduT7U9BEitAH6wBRWWw5g12gT
- kWIVabNEwS3QygXfeT8fcE45FjDcxXPP9IwIIyPEDZTo3Gpq04Mmq492bfzfhBrmoj/h
- RYjZoMXX1Li17uQ+N8Gx/DfGO0ZBWfNQJrajMzIXBCut4XZLiwQjVhg35j4YuNkZEAoJ
- 0YNKwWxwmMa8MxojWcwDRmaHVeByXkRor5Vxjo5i/GaSi6jxpVF0+5X9C3Yvo3cHNZWw
- gOJg==
-X-Gm-Message-State: ABy/qLaGv5Qnr1K43vmNn4mOLzv/Y4W9YP59Lo6648bvsYsEmfz/VRmQ
- RXANvA9o1Sr7hPP1dST9IEwQxj4zCi3bFzKjvzwU6Q==
-X-Google-Smtp-Source: APBJJlHQ9q3KuceC34tpD3cFpjd4C/8Savbv/NR0r9WijLfFk2+eWO3QP7Gwa8CH8dmj2o5Gp5vFASn4ODwCgQVIfew=
-X-Received: by 2002:a05:6402:752:b0:521:d2ab:e4df with SMTP id
- p18-20020a056402075200b00521d2abe4dfmr4782240edy.19.1690024921302; Sat, 22
- Jul 2023 04:22:01 -0700 (PDT)
+ bh=INqOnPLZqSMtROwuX5yxRREghns2EQI4fhnRTubU2b8=;
+ b=M1I5D+oe+PdyqdcebCb7HEBSYT7XRA1v9aqnXL2yPCM2TsC7g3lUBXsbDxetrmhKAX
+ xEEuLH+7iUFCWkWl/s7iphD8tsvG48u2bPRvcy5koxRlQnF+zm5iPnCxvClyTfmOqO+6
+ 2BQNk2dLXJZ/sbL8GDtfmZR+DMFeDnE1zqxjvj4pVOhSYEl88jI5R7tcoEpIh58WSmh4
+ vY4MxaFE8yj9B8xXcxzXwt1pq+4m3O5qwuR37g4AqwwC+/r+h4qehGHe+/SdBvfwLx4q
+ 2lkBL9ORN43jN44JZaw2j7ZrbSnU6uwbt5ewcstQzvzgJLQ3fUjXditBh0EiP3WBRs+7
+ NMpA==
+X-Gm-Message-State: ABy/qLbLn2XQgikgVFfr59LSV21kkCch1aaM++at5f3VJrxDl24BQEUb
+ 3ruek4UFBJ9h5v2vBQh2fLYp/dqDFI3lD3xCDnrQNA==
+X-Google-Smtp-Source: APBJJlFH2Yswul1IvLg+ABxURxtZCZ435JFSYXRm5myreBpFHrilW/GgIhNdFSY54czUf2BNdvxqfw==
+X-Received: by 2002:a7b:cb8e:0:b0:3fc:27:7e46 with SMTP id
+ m14-20020a7bcb8e000000b003fc00277e46mr3680694wmi.3.1690025709042; 
+ Sat, 22 Jul 2023 04:35:09 -0700 (PDT)
+Received: from stoup.acentic.lan
+ (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
+ by smtp.gmail.com with ESMTPSA id
+ y15-20020a7bcd8f000000b003fbdd5d0758sm5130938wmj.22.2023.07.22.04.35.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 22 Jul 2023 04:35:08 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+Subject: [PATCH for-8.1 v2 0/3] accel/tcg: Take mmap_lock in
+ load_atomic*_or_exit
+Date: Sat, 22 Jul 2023 12:35:04 +0100
+Message-Id: <20230722113507.78332-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230722082616.3254040-1-mjt@tls.msk.ru>
-In-Reply-To: <20230722082616.3254040-1-mjt@tls.msk.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sat, 22 Jul 2023 12:21:50 +0100
-Message-ID: <CAFEAcA_b5NfO3ijyDQufaLhQ8kvAmctNz+BrPTt=6SxNOJy9vQ@mail.gmail.com>
-Subject: Re: [PATCH] limit brk adjustment wrt interp.brk to arm32 only for now
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>,
- Andreas Schwab <schwab@suse.de>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,20 +90,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 22 Jul 2023 at 09:26, Michael Tokarev <mjt@tls.msk.ru> wrote:
->
-> Commit 518f32221af7 "linux-user: Fix qemu-arm to run static armhf binaries"
-> added brk value adjustment to interpreter brk value after loading the
-> interpreter. Unfortunately this broke aarch64, ppc64el and s390x emulation, -
-> the error which we had on armhf now happens on at least these 3 architectures.
-> For the time being, limit the adjustment to aarch32 case only (where the prob
-> originally observed), to be analyzed in more details later.
->
-> This is a quick band-aid, not a real fix.
+For user-only, the probe for page writability may race with another
+thread's mprotect.  Take the mmap_lock around the operation.  This
+is still faster than the start/end_exclusive fallback.
 
-I think if 518f32221af7 broke things we should revert it,
-not put in ifdefs.
+Changes for v2:
+  * Introduce WITH_MMAP_LOCK_GUARD, to simplify the changes.
+  * Fix the probes for not-writable.
+  * Handle load_atomic8_or_exit and load_atomic16_or_exit similarly.
 
-thanks
--- PMM
+
+r~
+
+
+Richard Henderson (3):
+  include/exec: Add WITH_MMAP_LOCK_GUARD
+  accel/tcg: Fix sense of read-only probes in ldst_atomicity
+  accel/tcg: Take mmap_lock in load_atomic*_or_exit
+
+ include/exec/exec-all.h        | 10 ++++++++++
+ bsd-user/mmap.c                |  1 +
+ linux-user/mmap.c              |  1 +
+ accel/tcg/ldst_atomicity.c.inc | 32 ++++++++++++++++++--------------
+ 4 files changed, 30 insertions(+), 14 deletions(-)
+
+-- 
+2.34.1
+
 
