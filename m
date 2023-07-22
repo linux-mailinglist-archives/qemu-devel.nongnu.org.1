@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDC575DBFD
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 13:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C7675DC7D
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 14:26:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNB4r-0001Ss-Dh; Sat, 22 Jul 2023 07:47:13 -0400
+	id 1qNBfN-0007pE-SC; Sat, 22 Jul 2023 08:24:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNB4o-0001SQ-VE
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:47:11 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1qNBfL-0007ow-Aa
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 08:24:55 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNB4n-0004lK-56
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:47:10 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-31751d7d96eso13554f8f.1
- for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 04:47:08 -0700 (PDT)
+ id 1qNBfJ-0006tw-NU
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 08:24:55 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3128fcd58f3so2427609f8f.1
+ for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 05:24:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690026427; x=1690631227;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1690028691; x=1690633491;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=xTnh49j03+UFmLnHyoaIEmCaZnJMGNY5vU+4DQW1iDY=;
- b=ygzyOfQWzh7dnofI9PRUpqtswZlHP93lQM+0dbnz+lpnvNePWGqOb0GjH/riha8Ufg
- pqqXhqd/dkwda4p0HqKHq6gll0nclVSv9qpr9RDxdQa7p1034jAc2kDSK9adqLYVdJ9Y
- GAwBcFc2FPpCtG5b4yomfEyhZfDJGcmccwbd5vY48hcPuXcNFqQi7YhrG+s9NSqC14Oo
- mSWzdcVA3SxTCHlic4yDmDMGddIpP7Yvs2MHzW07gqfC/4tkP9K6N57zU+lKQdwNacoW
- egDzZOf4b3PHroq4ONax9NQHPytpDzmRYyCSSyeWra+hQMw+EjRGkdNwk9+JvtRex0+Z
- RQsQ==
+ bh=wBcOGahZGfdliLehbzWt2unvNLAElDDgYZkKFFMq6yg=;
+ b=sd2RpIBwog1T0qNNMqmivBpAzqra7N9xGKO7stKEah+zfNANyNz1KkXkydeeTruajN
+ kjcNmrl316koNk7A8A2G4WC+098PdFZJ5CGYMgBVKI42Kre8ZRqkUHAjs3BUHZJvb401
+ c6EJNdU/dmlWlF7AZY2R3JG8PDl4zn90OZ7CIwQ+46VQR8fwPgeHE/OFx0SFqJ1Vb5As
+ ylae4000hVIsrWKPCfntfurHpQboK8cEDNF92b6uQqMK9y26+a91msY6gXHTpZLfDs0X
+ 16LWYpfmn19VbDUK4SQ4NeeFqlLQIZujo3Fjeu6vo+YDgnKrpgYyB3ILWcSkA+IEctlj
+ mOEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690026427; x=1690631227;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1690028691; x=1690633491;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xTnh49j03+UFmLnHyoaIEmCaZnJMGNY5vU+4DQW1iDY=;
- b=SFcJjeFUTPSdgIl0DNzKmeCdeDHKZfZtzHCs80f96ZI3LmGQsNk7tpDjfT7EkDmXv7
- Akc4zctqhVaSsi3NT05exR4m5JTWla64+Dmrxuo+c8g+QTiHeO2EVPGB0z2rOd2vG0Rn
- CyoGJ3YPf3b0sGunrVqmpI4tOZrj7HSYCoMAKevFQYz5Y6GV1c8AbS3Lct3M18DFr0Nc
- F845WMy9vfDtcVQ4ZG8fTE8NMH4e7oclzLVLU121oHFCt5MNfTDh3K9s/0S2bsPVxNcr
- YZd1enQHBe2MYzprOLBLeEM9Rw96CNfTHJ5ZmGhokoKuHZjsrJjZ1IiK7TPFXr+6DUZ1
- ldTg==
-X-Gm-Message-State: ABy/qLbBGJYQAWsFcp9PNyACPRknLIl+vTRp/YavLxNtuPOIZLC8lrVS
- dOtp8vDRMapu2yIx6L4RACFhfqKSWjkdhXNPXdzGmg==
-X-Google-Smtp-Source: APBJJlGWkYi32esrTykg0YHWZBpJ/2c/0dawyhRR+3Ogoedp+G3SOZWqFhZk5XOYQFfRevOYKPX6SQ==
-X-Received: by 2002:a5d:4e8f:0:b0:314:2ea7:af4a with SMTP id
- e15-20020a5d4e8f000000b003142ea7af4amr3816770wru.13.1690026427232; 
- Sat, 22 Jul 2023 04:47:07 -0700 (PDT)
-Received: from [172.20.1.187]
+ bh=wBcOGahZGfdliLehbzWt2unvNLAElDDgYZkKFFMq6yg=;
+ b=ZKPsiyR5dkOGw8jCFdnrmk9jHrIQdB1AjXlScs7WEkbI6od+3tFPHWP8LwRCAZOv9X
+ YNZDrMf9cmuJTxzYeGQrwHIOmo44JgHyerI3yfeIawbKAHaL2b7IU+H7vtcDT7YeNd38
+ WQUuIXP19IscO831SdRerI/nlpYw791y6zEWTwJKI+rbj0DUbTVC6gLg2TCAIaC6bGu2
+ tjNDnBpQ3n5GW3tzR8x5U5Wr0OHVhxrZ/j2dKEYJg+6moK0PvDfH3sYWveFUSROtHk/V
+ qy0mhZXrDJW2ikm075GzTBs+4B3OED9AvLIF2YltcVCYMGMOTh9FZ/mysSnIOE7UOq8i
+ oPYA==
+X-Gm-Message-State: ABy/qLbXAt9UvxVQt8Myl6FDG1ZTySiI+88pKI3J/7AKA3OAcFeg6229
+ dBA3ve1yPmLi5TP3XkpoBq8vmA==
+X-Google-Smtp-Source: APBJJlE+kt63/ehTlQonKjamJwxodkG3LD4VlUheIlqwpQxEiH5hlSxX7RojJEefNcgqOyzr8I//Sg==
+X-Received: by 2002:adf:d849:0:b0:313:eb29:4436 with SMTP id
+ k9-20020adfd849000000b00313eb294436mr3889038wrl.67.1690028690700; 
+ Sat, 22 Jul 2023 05:24:50 -0700 (PDT)
+Received: from [172.20.4.173]
  (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
  by smtp.gmail.com with ESMTPSA id
- u6-20020a05600c00c600b003fbb5142c4bsm8028431wmm.18.2023.07.22.04.47.06
+ v4-20020adff684000000b0031431fb40fasm6799115wrp.89.2023.07.22.05.24.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 22 Jul 2023 04:47:06 -0700 (PDT)
-Message-ID: <270eee6c-8917-5697-80be-0b8aa390ff25@linaro.org>
-Date: Sat, 22 Jul 2023 12:47:05 +0100
+ Sat, 22 Jul 2023 05:24:50 -0700 (PDT)
+Message-ID: <5504bea2-92ea-a146-beb3-1a13e4499dda@linaro.org>
+Date: Sat, 22 Jul 2023 13:24:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 17/18] host/include/i386: Implement clmul.h
+Subject: Re: [PATCH] tests/decode: Suppress "error: " string for
+ expected-failure tests
 Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: berrange@redhat.com, ardb@kernel.org
-References: <20230713211435.13505-1-richard.henderson@linaro.org>
- <20230713211435.13505-18-richard.henderson@linaro.org>
- <e55cdccbd4bee15a091ae47b99a3d98c9d2654f5.camel@linux.ibm.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+References: <20230720131521.1325905-1-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <e55cdccbd4bee15a091ae47b99a3d98c9d2654f5.camel@linux.ibm.com>
+In-Reply-To: <20230720131521.1325905-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,44 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/19/23 12:52, Ilya Leoshkevich wrote:
-> On Thu, 2023-07-13 at 22:14 +0100, Richard Henderson wrote:
->> Detect PCLMUL in cpuinfo; implement the accel hooks.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   host/include/i386/host/cpuinfo.h        |   1 +
->>   host/include/i386/host/crypto/clmul.h   | 187
->> ++++++++++++++++++++++++
->>   host/include/x86_64/host/crypto/clmul.h |   1 +
->>   util/cpuinfo-i386.c                     |   1 +
->>   4 files changed, 190 insertions(+)
->>   create mode 100644 host/include/i386/host/crypto/clmul.h
->>   create mode 100644 host/include/x86_64/host/crypto/clmul.h
+On 7/20/23 14:15, Peter Maydell wrote:
+> The "expected failure" tests for decodetree result in the
+> error messages from decodetree ending up in logs and in
+> V=1 output:
 > 
-> ...
+>>>> MALLOC_PERTURB_=226 /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/pyvenv/bin/python3 /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/scripts/decodetree.py --output-null --test-for-error /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/../../tests/decode/err_argset1.decode
+> ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/../../tests/decode/err_argset1.decode:5: error: duplicate argument "a"
+> ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
+>   1/44 qemu:decodetree / err_argset1                OK              0.05s
 > 
->> diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
->> index 3a7b7e0ad1..c6f6364826 100644
->> --- a/util/cpuinfo-i386.c
->> +++ b/util/cpuinfo-i386.c
->> @@ -39,6 +39,7 @@ unsigned __attribute__((constructor))
->> cpuinfo_init(void)
->>           info |= (c & bit_SSE4_1 ? CPUINFO_SSE4 : 0);
->>           info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
->>           info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
->> +        info |= (c & bit_PCLMULQDQ ? CPUINFO_PCLMUL : 0);
+> This then produces false positives when scanning the
+> logfiles for strings like "error: ".
 > 
-> I wanted to give this a try, but my cpuid.h has only
-> bit_VPCLMULQDQ, and I don't see it in [1] either.
+> For the expected-failure tests, make decodetree print
+> "detected:" instead of "error:".
+> 
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+> My initial thought was "just get meson to suppress stderr for these
+> tests", but AFAICT meson has no way to do that, and we already have a
+> command line option to decodetree to request specific behaviour for
+> the tests that expect failure, so this seemed simplest.
 
-Should have been bit_PCLMUL (VPCLMULQDQ is for the 256- and 512-bit inputs).  I'll have to 
-track down why this compiled for me.
-
-> Where is this supposed to come from? Does qemu/cpuid.h need an update?
-
-Yes, an update is required.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
