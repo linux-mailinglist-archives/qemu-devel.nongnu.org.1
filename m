@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463FC75DAEC
+	by mail.lfdr.de (Postfix) with ESMTPS id 4707B75DAED
 	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 09:54:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qN7QV-0001md-5j; Sat, 22 Jul 2023 03:53:19 -0400
+	id 1qN7QY-0001nQ-5c; Sat, 22 Jul 2023 03:53:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qN7QT-0001lu-2U
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 03:53:17 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qN7QV-0001mh-6J
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 03:53:19 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qN7QR-0005PP-C2
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 03:53:16 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1bb775625e2so4900305ad.1
- for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 00:53:15 -0700 (PDT)
+ id 1qN7QT-0005Pf-Dj
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 03:53:18 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-51b4ef5378bso1836961a12.1
+ for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 00:53:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690012394; x=1690617194;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=bN+VKWG1+IOztgVSANu62XflYn5gYOmAgQC0VPwsiCw=;
- b=jQon0Yf7szj552v/VCJW+ipTm6W/fJ6WLkXV8j6S/O5zS6i6eBpUB1zltCWR3QiNfB
- 3DrbDOokD6olH0pQTQRiXfI2jXguQGmNIozBjB4OdQqQUyLANxYCFNp/KJXzYhUVRwGe
- 7nddYdqd0KTVHc6IN/VboBxvHON3PJW8Cti8wkAgHELYJrYaf8izW6o6IpGP+YGWQRmD
- OBctte/l2ulLpFKFFfoSJi0hRhfm/F0oxcgJUy5ibrz9j3D2rFkyuSGTNG+nsmK9zf8u
- gOt0jl94wFNZoatpSFDff3gvwAO+PHyyOqeocpyHadlfr7Vpk23eqeOe4bEMWvvUwcqt
- a6Og==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690012396; x=1690617196;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kND/sAP1+EQqRnqZy1RjucLWpLyH8kHXjE52zNB0+ZU=;
+ b=Moy59jSUR5Q5FfApC1LIDlkWsmSk+YrGjB3x+mEpsBzx5LtkqYZmv37L91WTkgV3QR
+ 6f84OPD0bRyh1ORn2Q6env+y3s28e3hps0HQ/o/N08pTh9R+jP2VB8TkdE3ao5l1KgLx
+ +aWZSpE+XAO8Z9VEKWFt8aoIos/eH2FfdTo23jn6Y5qmofOtz0ZaUOargx8DiAiK8qGf
+ NlfyD34mLhDuvRKmSRcWJcnEQnHIid/KV2rNnjPx5DhB1inRsMIuGRuLmwIcYaR59wAF
+ 1GcCw3cgFH/rUU71eyVo+m1YRQ3Bw18VWseSB7Zf8g4n37nXwm0kruY7r2D9XTDdz02N
+ xjRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690012394; x=1690617194;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=bN+VKWG1+IOztgVSANu62XflYn5gYOmAgQC0VPwsiCw=;
- b=JBVTZ4snHJ2gWun1LxMJiDAUqFT781JaKKDWrNZBH7Auo0x91vTf2chK0dEOKkTTTk
- jgayFvzG14WsuRsFZ6iw0PSpFPfNzjzck7315FwoGYDllF/ksA01fTTPlYoCNZcVrq2D
- FIbKwJKQLnHqoC6YxtFVoBNMJVcOGTP13Jcb9LCyK6jQxNh6CPmfMxpEDSqrVLYQ4kUe
- mHzUgAPJR1wAqRfQ7dfM0y6aT6Kq7lhOin7XoSyhBgjGOjgxNryFI1OasUJ7gTn/tw9t
- B8YZHF/0137wPuMvahdgQfHkhphBFrLwbKyoQsrNNqorEKl+dy0U886POddFBCkGAoNO
- IJgg==
-X-Gm-Message-State: ABy/qLYDiYPAt1NHMDTTpsMuKVF7Heyn6sMlfr5H6q+Zbh1uOBnFj+Qi
- BBO9cEkk0ryxrY/L4rMc5xamKVet7qZAG6EvCWE=
-X-Google-Smtp-Source: APBJJlGa5lYO3zvqjWaxdvLxHQCwPfMohLqfWOXm43zeaW4njVX59Op2uErrSdHR/A53vZa2JwjCcA==
-X-Received: by 2002:a17:902:f7d1:b0:1b8:76d1:f1e8 with SMTP id
- h17-20020a170902f7d100b001b876d1f1e8mr4644921plw.28.1690012393834; 
- Sat, 22 Jul 2023 00:53:13 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690012396; x=1690617196;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=kND/sAP1+EQqRnqZy1RjucLWpLyH8kHXjE52zNB0+ZU=;
+ b=KKxO2HsMpqFwaxe5XDd+OHjurGpPh8+gbUj5Ui1hg6OFcJ3dyIyS++R2B6XgVXga1W
+ utE+Gk6r8yeji6qDpLqpXgqXU65LjQrD6V79OlAzipZVUjSC508YAdFm3pT3Z672yQc1
+ 0lrU+K8CCFNILSsJoP/xdPnU4T+DjyjxwmvnsFCesP9lVMCcBKP3P9CUKlCTPXFe+q9A
+ VeUNHPCC519O/gVeGvADu31+o9KOZ3ccJqm5CiyYopEpZFcvTP6BE32HjQ7VglB/hp4E
+ pn2eRO1FRVUP/3tnA0UYFU4n/exnbrkhtEbVKi5ElgQe92ITLJPSTHKRMuCruSItXnKr
+ djgA==
+X-Gm-Message-State: ABy/qLad2Bx0C/GaoY6f3FFZwrWwhvjk3qEVKyTLCtZvzbLFPAnDuTiX
+ aU1Ca9bUbEoq66UUEtu4H1xeGL2CetUAOlDA3ek=
+X-Google-Smtp-Source: APBJJlGhrffeFgp/eUmNMdD/FDTaf+VpGUAzUGGWFSfWygzljANFOq6Jmpu/R5I6ZwXnWmL+lZ9DCg==
+X-Received: by 2002:a17:902:70c3:b0:1bb:59da:77f8 with SMTP id
+ l3-20020a17090270c300b001bb59da77f8mr3910422plt.48.1690012395965; 
+ Sat, 22 Jul 2023 00:53:15 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- i17-20020a17090332d100b001b86dd825e7sm4753119plr.108.2023.07.22.00.53.11
+ i17-20020a17090332d100b001b86dd825e7sm4753119plr.108.2023.07.22.00.53.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 22 Jul 2023 00:53:13 -0700 (PDT)
+ Sat, 22 Jul 2023 00:53:15 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org,
@@ -62,14 +63,16 @@ Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org,
  Peter Maydell <peter.maydell@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v4 0/2] accel/kvm: Specify default IPA size for arm64
-Date: Sat, 22 Jul 2023 16:53:04 +0900
-Message-ID: <20230722075308.26560-1-akihiko.odaki@daynix.com>
+Subject: [PATCH v4 1/2] kvm: Introduce kvm_arch_get_default_type hook
+Date: Sat, 22 Jul 2023 16:53:05 +0900
+Message-ID: <20230722075308.26560-2-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230722075308.26560-1-akihiko.odaki@daynix.com>
+References: <20230722075308.26560-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,30 +94,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some Arm systems such as Apple Silicon Macs have IPA size smaller than the
-default used by KVM. Introduce our own default IPA size that fits on such a
-system.
+kvm_arch_get_default_type() returns the default KVM type. This hook is
+particularly useful to derive a KVM type that is valid for "none"
+machine model, which is used by libvirt to probe the availability of
+KVM.
 
-V3 -> V4: Removed an inclusion of kvm_mips.h that is no longer needed.
-V2 -> V3: Changed to use the maximum IPA size as the default.
-V1 -> V2: Introduced an arch hook
+For MIPS, the existing mips_kvm_type() is reused. This function ensures
+the availability of VZ which is mandatory to use KVM on the current
+QEMU.
 
-Akihiko Odaki (2):
-  kvm: Introduce kvm_arch_get_default_type hook
-  accel/kvm: Specify default IPA size for arm64
-
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
  include/sysemu/kvm.h     | 2 ++
  target/mips/kvm_mips.h   | 9 ---------
  accel/kvm/kvm-all.c      | 4 +++-
  hw/mips/loongson3_virt.c | 2 --
- target/arm/kvm.c         | 7 +++++++
+ target/arm/kvm.c         | 5 +++++
  target/i386/kvm/kvm.c    | 5 +++++
  target/mips/kvm.c        | 2 +-
  target/ppc/kvm.c         | 5 +++++
  target/riscv/kvm.c       | 5 +++++
  target/s390x/kvm/kvm.c   | 5 +++++
- 10 files changed, 33 insertions(+), 13 deletions(-)
+ 10 files changed, 31 insertions(+), 13 deletions(-)
 
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index 115f0cca79..ccaf55caf7 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -369,6 +369,8 @@ int kvm_arch_get_registers(CPUState *cpu);
+ 
+ int kvm_arch_put_registers(CPUState *cpu, int level);
+ 
++int kvm_arch_get_default_type(MachineState *ms);
++
+ int kvm_arch_init(MachineState *ms, KVMState *s);
+ 
+ int kvm_arch_init_vcpu(CPUState *cpu);
+diff --git a/target/mips/kvm_mips.h b/target/mips/kvm_mips.h
+index 171d53dbe1..c711269d0a 100644
+--- a/target/mips/kvm_mips.h
++++ b/target/mips/kvm_mips.h
+@@ -25,13 +25,4 @@ void kvm_mips_reset_vcpu(MIPSCPU *cpu);
+ int kvm_mips_set_interrupt(MIPSCPU *cpu, int irq, int level);
+ int kvm_mips_set_ipi_interrupt(MIPSCPU *cpu, int irq, int level);
+ 
+-#ifdef CONFIG_KVM
+-int mips_kvm_type(MachineState *machine, const char *vm_type);
+-#else
+-static inline int mips_kvm_type(MachineState *machine, const char *vm_type)
+-{
+-    return 0;
+-}
+-#endif
+-
+ #endif /* KVM_MIPS_H */
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 373d876c05..d591b5079c 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2458,7 +2458,7 @@ static int kvm_init(MachineState *ms)
+     KVMState *s;
+     const KVMCapabilityInfo *missing_cap;
+     int ret;
+-    int type = 0;
++    int type;
+     uint64_t dirty_log_manual_caps;
+ 
+     qemu_mutex_init(&kml_slots_lock);
+@@ -2523,6 +2523,8 @@ static int kvm_init(MachineState *ms)
+         type = mc->kvm_type(ms, kvm_type);
+     } else if (mc->kvm_type) {
+         type = mc->kvm_type(ms, NULL);
++    } else {
++        type = kvm_arch_get_default_type(ms);
+     }
+ 
+     do {
+diff --git a/hw/mips/loongson3_virt.c b/hw/mips/loongson3_virt.c
+index 4018b8c1d3..a2c56f7a21 100644
+--- a/hw/mips/loongson3_virt.c
++++ b/hw/mips/loongson3_virt.c
+@@ -29,7 +29,6 @@
+ #include "qemu/datadir.h"
+ #include "qapi/error.h"
+ #include "elf.h"
+-#include "kvm_mips.h"
+ #include "hw/char/serial.h"
+ #include "hw/intc/loongson_liointc.h"
+ #include "hw/mips/mips.h"
+@@ -612,7 +611,6 @@ static void loongson3v_machine_class_init(ObjectClass *oc, void *data)
+     mc->max_cpus = LOONGSON_MAX_VCPUS;
+     mc->default_ram_id = "loongson3.highram";
+     mc->default_ram_size = 1600 * MiB;
+-    mc->kvm_type = mips_kvm_type;
+     mc->minimum_page_bits = 14;
+     mc->default_nic = "virtio-net-pci";
+ }
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index b4c7654f49..40f577bfd5 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -247,6 +247,11 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
+     return ret > 0 ? ret : 40;
+ }
+ 
++int kvm_arch_get_default_type(MachineState *ms)
++{
++    return 0;
++}
++
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
+     int ret = 0;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index ebfaf3d24c..b45ce20fd8 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2556,6 +2556,11 @@ static void register_smram_listener(Notifier *n, void *unused)
+                                  &smram_address_space, 1, "kvm-smram");
+ }
+ 
++int kvm_arch_get_default_type(MachineState *ms)
++{
++    return 0;
++}
++
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
+     uint64_t identity_base = 0xfffbc000;
+diff --git a/target/mips/kvm.c b/target/mips/kvm.c
+index c14e8f550f..e98aad01bd 100644
+--- a/target/mips/kvm.c
++++ b/target/mips/kvm.c
+@@ -1266,7 +1266,7 @@ int kvm_arch_msi_data_to_gsi(uint32_t data)
+     abort();
+ }
+ 
+-int mips_kvm_type(MachineState *machine, const char *vm_type)
++int kvm_arch_get_default_type(MachineState *machine)
+ {
+ #if defined(KVM_CAP_MIPS_VZ)
+     int r;
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index a8a935e267..dc1182cd37 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -108,6 +108,11 @@ static int kvm_ppc_register_host_cpu_type(void);
+ static void kvmppc_get_cpu_characteristics(KVMState *s);
+ static int kvmppc_get_dec_bits(void);
+ 
++int kvm_arch_get_default_type(MachineState *ms)
++{
++    return 0;
++}
++
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
+     cap_interrupt_unset = kvm_check_extension(s, KVM_CAP_PPC_UNSET_IRQ);
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index 9d8a8982f9..4266dce092 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -907,6 +907,11 @@ int kvm_arch_add_msi_route_post(struct kvm_irq_routing_entry *route,
+     return 0;
+ }
+ 
++int kvm_arch_get_default_type(MachineState *ms)
++{
++    return 0;
++}
++
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
+     return 0;
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index a9e5880349..9117fab6e8 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -340,6 +340,11 @@ static void ccw_machine_class_foreach(ObjectClass *oc, void *opaque)
+     mc->default_cpu_type = S390_CPU_TYPE_NAME("host");
+ }
+ 
++int kvm_arch_get_default_type(MachineState *ms)
++{
++    return 0;
++}
++
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
+     object_class_foreach(ccw_machine_class_foreach, TYPE_S390_CCW_MACHINE,
 -- 
 2.41.0
 
