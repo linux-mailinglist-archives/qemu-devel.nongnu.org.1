@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0559675DCAF
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 14:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9CE75DCDB
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 16:08:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNC3Q-0004O4-Is; Sat, 22 Jul 2023 08:49:48 -0400
+	id 1qNDG8-00018B-Rb; Sat, 22 Jul 2023 10:07:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNC3N-0004Np-Qm
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 08:49:45 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qNDFo-000149-9V
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 10:06:41 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNC3M-00070X-71
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 08:49:45 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-3fbc59de0e2so23111205e9.3
- for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 05:49:43 -0700 (PDT)
+ id 1qNDFm-0001gx-NC
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 10:06:40 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-3fc0aecf107so22742465e9.2
+ for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 07:06:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690030182; x=1690634982;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1690034796; x=1690639596;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=hit/cGv4qMF9DxRtZzXy2dYJTyhiE1yhNWb3b5eWiHM=;
- b=kZ0EaQ23iKGJK1i8dbIDvCn8D5FSG0J9+CZCdGh7wKOO5OCscg6rNxA5KOlbZMI6eD
- sujcQpUlYuYnRGSXQWcKbGdLoZtT2EA/9hVOqThuZLj+EoahcfjCIzmp0IVBjJykRYjm
- X4NXw7X7Z/ov7MnE179xW0mf1zJuofGSlt+vdUx5PdQFciY+xmaez1X7eoUj3yKONy3F
- vU2fkm/FI6jAs1nJl4abdOAYonojDnqhigL/ClvD4r1P1C+fxlmVsyTAdmMIui7XaRRW
- P23XASKslEhCGnUroLETN6KNQ+TzqeWDSL+s7pFvzKPTf2j3kthuhDzGMV3KqSTAd+GL
- Hw+w==
+ bh=J2FD2DJf0a/VP0RYOPU0CVDYFMhjJWhEaHNFT8pA9kw=;
+ b=YcT0MM1lkzJl0d+NXEq520wiYBHBRQOrsSYIPJ2LH1fE9U7dInn5friEandlUW4FuV
+ R6dkK1DEl+/2JRrU+4mdOIOJPx2vt3xM5QbwRKDbp0ImZtcFjDHeW8qgKhhtINBMkU3x
+ MAI1wy4CPec0zbTkZUi8AP7P1kWkyMMF0Mh6KjYjeKffHG376F7lDpmg0UKctALbBXfE
+ 2a4sJz7db1MnrOtisZJWM277TOTYh+4KUfZMyt/SnpGy/AeCnzxP4MNEdrO8rKqnQstk
+ 7FKgMvU1SpiGYVKnOjgrCjmEQ6QUPfmN4xjGYVNy5nizZWIklO04C6tZIXQ4qL7rw3yr
+ 9Gzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690030182; x=1690634982;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1690034796; x=1690639596;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hit/cGv4qMF9DxRtZzXy2dYJTyhiE1yhNWb3b5eWiHM=;
- b=LuBwwVe22N84ZmReCh8WpRfQEEgtjUtrTCUT+9Qq0T+7RJQJQYkON85Ck8Xu+F4Kym
- T8Gb+C9nECHsHCiEA7bokX/fLSOrCQiTFoimHrFih/TZE4WybWhe7ctB3ZoLaoaHT/BU
- 0ABiBjDQQGQLoLnhYchEIlMiPHcsru0/KkNFlEA7Ppb1jk8q5tMN/d6kMJ5LA8rUxVDO
- KkDEPKRBpZP0fTFMXJjSJNInEqYEEN7WAAzaIF6rmK23iLK5M3J2SGZlADWx+9sJbyb8
- +5SvwiJ1P8r80E7puQd6hN612TFAyPklD5unvfXqGIShOhi3GCfLpdPiMFvqmNBXg/BD
- lTdA==
-X-Gm-Message-State: ABy/qLbh3vAPtFhEWxKT3M3kPVkOIfULQN1uWA8PUWXwwiIb8nkZNydZ
- S3HG50k1n6J4Z8J8JusbNiE2JQ==
-X-Google-Smtp-Source: APBJJlFA1VATQL/JROKb6FNOPt8CVVK7xaACzC/T9Z6PzCy8XXKGQbEJM8z6Z5ADIL3WVff+zRdNjQ==
-X-Received: by 2002:a7b:c3cb:0:b0:3fd:45b:45f8 with SMTP id
- t11-20020a7bc3cb000000b003fd045b45f8mr3581568wmj.23.1690030182524; 
- Sat, 22 Jul 2023 05:49:42 -0700 (PDT)
-Received: from [172.20.13.195]
+ bh=J2FD2DJf0a/VP0RYOPU0CVDYFMhjJWhEaHNFT8pA9kw=;
+ b=WgGX2nzF27j+WOd1ntexTiG5UozhLLCjRBjJRSPUP4ipP7f3vDcZOeHdKzpM8G5Ws+
+ gPp7+9ZxMHIQ1bBPNnPB/EgpN19UNHs8psKtfrBElgXThv89WsMPaf8P0/8X/TL9x0NX
+ DYw6pQq6koewYXomsjPOReCfmmeIVqxeVFGN6VuGPuRT4Rfi1U7GcGB3KmUS+O3QIB0n
+ WyFLiO2+LeWXeb3UT3Zi5G1yLPGRH8kNbVSzSTI4A7vZVgugdvsr9gMCJSE+hzuK8Z9r
+ nNdNYfXQejZ4OBM9+KbwtNNOR7eHj5bjOHQseBbkNcGO/7CVRdyI5jdwNeHlmC7+qMLr
+ Ru4w==
+X-Gm-Message-State: ABy/qLYzyz5uAPURT2NonlEwrkhnhf46HjF0eH9tJnDijDjo2hMrAs52
+ v677lhDcSfkhEcqMO/kXCd2GhJvZN6iGHOb3C6EYcQ==
+X-Google-Smtp-Source: APBJJlG5MMZ5YgHM/aGPzZsl69xr0mphe7hRarmUaOoRDpmrvDR2fxeoCO6exe66Ay37Km+ZXahJFQ==
+X-Received: by 2002:adf:e285:0:b0:314:11ea:480d with SMTP id
+ v5-20020adfe285000000b0031411ea480dmr3544867wri.9.1690034796326; 
+ Sat, 22 Jul 2023 07:06:36 -0700 (PDT)
+Received: from [172.20.15.195]
  (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
  by smtp.gmail.com with ESMTPSA id
- g9-20020a7bc4c9000000b003fbca05faa9sm5263710wmk.24.2023.07.22.05.49.41
+ w10-20020adfd4ca000000b003140f47224csm7029578wrk.15.2023.07.22.07.06.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 22 Jul 2023 05:49:42 -0700 (PDT)
-Message-ID: <f2beeb1e-fc2d-9fdd-303f-d1722aeaf63d@linaro.org>
-Date: Sat, 22 Jul 2023 13:49:40 +0100
+ Sat, 22 Jul 2023 07:06:35 -0700 (PDT)
+Message-ID: <d433a38a-ffe5-fb2d-faa4-6b537aecfdf9@linaro.org>
+Date: Sat, 22 Jul 2023 15:06:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: 8.1-rc0 testfloat fails to compile
+Subject: Re: [PATCH for-8.1] target/arm: Special case M-profile in
+ debug_helper.c code
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Olaf Hering <olaf@aepfle.de>,
- qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230720224656.2841ff5f.olaf@aepfle.de>
- <74d1ee57-04a7-37f7-2c85-6ce49b4ded3a@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230721143239.1753066-1-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <74d1ee57-04a7-37f7-2c85-6ce49b4ded3a@redhat.com>
+In-Reply-To: <20230721143239.1753066-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,48 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/21/23 07:54, Thomas Huth wrote:
-> On 20/07/2023 22.47, Olaf Hering wrote:
->> This is going on since a few weeks. I guess there is no check in CI to see if 
->> qemu.git#master compiles in Tumbleweed.
+On 7/21/23 15:32, Peter Maydell wrote:
+> A lot of the code called from helper_exception_bkpt_insn() is written
+> assuming A-profile, but we will also call this helper on M-profile
+> CPUs when they execute a BKPT insn.  This used to work by accident,
+> but recent changes mean that we will hit an assert when some of this
+> code calls down into lower level functions that end up calling
+> arm_security_space_below_el3(), arm_el_is_aa64(), and other functions
+> that now explicitly assert that the guest CPU is not M-profile.
 > 
-> We only have a check for openSUSE leap ...
-> Which compiler version is causing trouble for you?
+> Handle M-profile directly to avoid the assertions:
+>   * in arm_debug_target_el(), M-profile debug exceptions always
+>     go to EL1
+>   * in arm_debug_exception_fsr(), M-profile always uses the short
+>     format FSR (compare commit d7fe699be54b2, though in this case
+>     the code in arm_v7m_cpu_do_interrupt() does not need to
+>     look at the FSR value at all)
 > 
->> Since the switch to meson submodules, berkeley-testfloat-3 became mandatory. I think in 
->> the past I was able to ignore this submodule and not export it, so the following error 
->> did not show up:
->>
->> [  141s] ../subprojects/berkeley-testfloat-3/source/genCases_f64.c: In function 
->> 'f64Random':
->> [  141s] ../subprojects/berkeley-testfloat-3/source/genCases_f64.c:559:1: error: control 
->> reaches end of non-void function [-Werror=return-type]
->> [  141s]   559 | }
->> [  141s]       | ^
->> [  141s] cc1: some warnings being treated as errors
->>
->> Apparently this is a known issue, 3ac1f81329f attempted to ignore such errors.
-> 
-> Seems like the flag got lost in commit d2dfe0b506e47e14 ... Paolo, any ideas?
-> 
->> Do I need to tweak the global, system-provided CFLAGS myself, or can the source be fixed 
->> to address this? Disabling this error globally will hide errors elsewhere.
-> 
-> We are using a forked version of the berkeley-testfloat repository, and it's possible to 
-> add patches there:
-> 
->   https://gitlab.com/qemu-project/berkeley-testfloat-3
-> 
-> The f64Random function that you mentioned above could easily be fixed by adding a 
-> "default:" case to the switch statement, I think. Are there any other additional 
-> warnings/errors after fixing this?
-> 
-> Feel free to send a patch and CC: the people from 
-> https://gitlab.com/qemu-project/berkeley-testfloat-3/-/project_members
+> Cc:qemu-stable@nongnu.org
+> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/1775
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+> Not sure exactly when this assert() got in (probably in the
+> semi-recent refactorings for realm support), but it won't hurt
+> to backport the fix even if the older QEMU doesn't assert().
+> ---
 
-If this is with optimization enabled, the bug should be reported to gcc bugzilla.
-The compiler should easily prove the default case is unreachable.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
