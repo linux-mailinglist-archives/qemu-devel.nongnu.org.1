@@ -2,62 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3A275D888
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 03:12:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA6975DA4C
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 08:22:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qN19D-0007e0-39; Fri, 21 Jul 2023 21:11:04 -0400
+	id 1qN5zY-00010B-Do; Sat, 22 Jul 2023 02:21:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qN196-0007dN-FZ
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 21:10:56 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1qN194-0003vV-QA
- for qemu-devel@nongnu.org; Fri, 21 Jul 2023 21:10:56 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 4146461DBB;
- Sat, 22 Jul 2023 01:10:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90B8C433CA;
- Sat, 22 Jul 2023 01:10:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1689988250;
- bh=0jy3DhgLsjglKa3CfNfoSJ9ChE2daVAu+4prkRCdmVE=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Zz9Uzgu1JpyH1cbDaMo8scSTBdrkJjB1YZjvaRJTTmShGvOBY7O9R3KBzFn4xxid6
- 7H6HMMud6ZV01BKFA+WeBvOaPS7+Ixi+z8cW21avPtA+Z9ioAdyhMFR4Oygmuczt6Q
- hv3nfVvedWgVEbTchBeKK838OxThp+hj+dvFHC0pzylj9pIZZ+OJerMCeds8VjFtw3
- kKwNFNgCirgms26iA0uo1poEMZ4M98WpYA+MeF6z+7CwKXbYTXlQDS8fzWO1mVVQMc
- Yeaoy5i8TCa+vIGjhUq5CmdU2g0ZoeJw2lb1GWTSvxrSb4vPEpRfXr7jXmYJ7/vBIp
- qOzaTnkpBcmoQ==
-From: Stefano Stabellini <sstabellini@kernel.org>
-To: peter.maydell@linaro.org,
-	richard.henderson@linaro.org
-Cc: sstabellini@kernel.org, qemu-devel@nongnu.org, vikram.garhwal@amd.com,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Subject: [PULL 2/2] xen_arm: Initialize RAM and add hi/low memory regions
-Date: Fri, 21 Jul 2023 18:10:45 -0700
-Message-Id: <20230722011045.3740256-2-sstabellini@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <alpine.DEB.2.22.394.2307211804380.3118466@ubuntu-linux-20-04-desktop>
-References: <alpine.DEB.2.22.394.2307211804380.3118466@ubuntu-linux-20-04-desktop>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qN5zW-000101-2z
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 02:21:22 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qN5zS-0004Uc-Td
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 02:21:21 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3159d5e409dso2357581f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 23:21:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1690006877; x=1690611677;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=sCKadz1sa7B+pPByWCa2eSUlHWWYau2xZhNN+fFvTSE=;
+ b=amHkH59ENGCnN2jKxyb6WgmweGcYn163+m+oXmMs6VrHrew3J0/0q6zB7Ot3PG37u/
+ CdIhwag54P2tJ14WmHKqpEw9Ie2mH4xeDr/KC+m6Bo5EThX43H+ePqcVOnkHZn7uWHja
+ WP0HJFHgzz3O5r9OkuQoaXMfQx1JRESri2TBZWWUlSLpEDbptXZMPA5CfZVDY1CUx05x
+ HF6rdNR/7N7QEEWhYRjVsd40DzchLpK/GMOyG1bK5LDS4OkE/A0Arqh0jph8NeJHfm5g
+ rAZO2WSgaWyzJekgH6FtrdWh3TjKf8uSwWrpXdSBQkJp8r2JiahS5xY0OhlrbbFGodli
+ Kd2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690006877; x=1690611677;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sCKadz1sa7B+pPByWCa2eSUlHWWYau2xZhNN+fFvTSE=;
+ b=LSCoDrRNQRlCNZAeygf8FH23H/lP19GEt8sXaeFyisJ0mNJZ0MiMXy581nkdMMmnFx
+ OKQG/Zruo4M82X2nnrxparL6kHg6zQX5YjR5jYA0igXXaNK0JQTn0eGJV4Guk086GCZI
+ FKqRDfzzv4qFLyj2UNCcy1XYcQ1pgxwZhGRGdQJ/NbbaBP0MOgzjzcmIdbgq7GUYNGcg
+ DjYxS3IBaXQAvCEF2eNgx2hCqI3BnumrQThRETlW8TI3yvcXKQ3WK8y8PGiVURB1AQOB
+ xqQp9l0KBvzojvz1boRgfbMLtkdpKlOPVt2UNxoS/58w5hsUCHjEUUeoKGQYrztIciVo
+ dMdg==
+X-Gm-Message-State: ABy/qLYMvs3A2ErgOAnoLsRzTWhCUJQNedbz7eN90ZgXrI8RCfh455iA
+ PNlJZVZmEozcBE1m8rJR+SOX/U4gn8yklUHxrm8=
+X-Google-Smtp-Source: APBJJlFg4BQVD/+fq5gDSBUNLzcoGaF27jAYI8khDVD0RfKWE/sHDbCxU7NomcQSUxgsp99BdzQ82Q==
+X-Received: by 2002:adf:e9c7:0:b0:311:360e:ea3a with SMTP id
+ l7-20020adfe9c7000000b00311360eea3amr7111321wrn.34.1690006876834; 
+ Fri, 21 Jul 2023 23:21:16 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ t16-20020a5d6a50000000b0030ae901bc54sm5983854wrw.62.2023.07.21.23.21.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 21 Jul 2023 23:21:16 -0700 (PDT)
+From: Andrew Jones <ajones@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, peter.maydell@linaro.org,
+ pasic@linux.ibm.com, borntraeger@linux.ibm.com, thuth@redhat.com,
+ dbarboza@ventanamicro.com, kvm@vger.kernel.org, qemu-arm@nongnu.org,
+ qemu-s390x@nongnu.org
+Subject: [PATCH] kvm: Remove KVM_CREATE_IRQCHIP support assumption
+Date: Sat, 22 Jul 2023 08:21:16 +0200
+Message-ID: <20230722062115.11950-2-ajones@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=sstabellini@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,106 +92,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Since Linux commit 00f918f61c56 ("RISC-V: KVM: Skeletal in-kernel AIA
+irqchip support") checking KVM_CAP_IRQCHIP returns non-zero when the
+RISC-V platform has AIA. The cap indicates KVM supports at least one
+of the following ioctls:
 
-In order to use virtio backends we need to initialize RAM for the
-xen-mapcache (which is responsible for mapping guest memory using foreign
-mapping) to work. Calculate and add hi/low memory regions based on
-machine->ram_size.
+  KVM_CREATE_IRQCHIP
+  KVM_IRQ_LINE
+  KVM_GET_IRQCHIP
+  KVM_SET_IRQCHIP
+  KVM_GET_LAPIC
+  KVM_SET_LAPIC
 
-Use the constants defined in public header arch-arm.h to be aligned with the xen
-toolstack.
+but the cap doesn't imply that KVM must support any of those ioctls
+in particular. However, QEMU was assuming the KVM_CREATE_IRQCHIP
+ioctl was supported. Stop making that assumption by introducing a
+KVM parameter that each architecture which supports KVM_CREATE_IRQCHIP
+sets. Adding parameters isn't awesome, but given how the
+KVM_CAP_IRQCHIP isn't very helpful on its own, we don't have a lot of
+options.
 
-While using this machine, the toolstack should then pass real ram_size using
-"-m" arg. If "-m" is not given, create a QEMU machine without IOREQ and other
-emulated devices like TPM and VIRTIO. This is done to keep this QEMU machine
-usable for /etc/init.d/xencommons.
-
-Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- hw/arm/xen_arm.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
 
-diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-index e700829654..ec8de00cf5 100644
---- a/hw/arm/xen_arm.c
-+++ b/hw/arm/xen_arm.c
-@@ -60,6 +60,8 @@ struct XenArmState {
-     } cfg;
+While this fixes booting guests on riscv KVM with AIA it's unlikely
+to get merged before the QEMU support for KVM AIA[1] lands, which
+would also fix the issue. I think this patch is still worth considering
+though since QEMU's assumption is wrong.
+
+[1] https://lore.kernel.org/all/20230714084429.22349-1-yongxuan.wang@sifive.com/
+
+
+ accel/kvm/kvm-all.c    | 5 ++++-
+ include/sysemu/kvm.h   | 1 +
+ target/arm/kvm.c       | 3 +++
+ target/i386/kvm/kvm.c  | 2 ++
+ target/s390x/kvm/kvm.c | 3 +++
+ 5 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 373d876c0580..0f5ff8630502 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -86,6 +86,7 @@ struct KVMParkedVcpu {
  };
  
-+static MemoryRegion ram_lo, ram_hi;
-+
- /*
-  * VIRTIO_MMIO_DEV_SIZE is imported from tools/libs/light/libxl_arm.c under Xen
-  * repository.
-@@ -92,6 +94,39 @@ static void xen_create_virtio_mmio_devices(XenArmState *xam)
+ KVMState *kvm_state;
++bool kvm_has_create_irqchip;
+ bool kvm_kernel_irqchip;
+ bool kvm_split_irqchip;
+ bool kvm_async_interrupts_allowed;
+@@ -2377,8 +2378,10 @@ static void kvm_irqchip_create(KVMState *s)
+         if (s->kernel_irqchip_split == ON_OFF_AUTO_ON) {
+             error_report("Split IRQ chip mode not supported.");
+             exit(1);
+-        } else {
++        } else if (kvm_has_create_irqchip) {
+             ret = kvm_vm_ioctl(s, KVM_CREATE_IRQCHIP);
++        } else {
++            return;
+         }
      }
+     if (ret < 0) {
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index 115f0cca79d1..84b1bb3dc91e 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -32,6 +32,7 @@
+ #ifdef CONFIG_KVM_IS_POSSIBLE
+ 
+ extern bool kvm_allowed;
++extern bool kvm_has_create_irqchip;
+ extern bool kvm_kernel_irqchip;
+ extern bool kvm_split_irqchip;
+ extern bool kvm_async_interrupts_allowed;
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index b4c7654f4980..2fa87b495d68 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -250,6 +250,9 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
+ int kvm_arch_init(MachineState *ms, KVMState *s)
+ {
+     int ret = 0;
++
++    kvm_has_create_irqchip = kvm_check_extension(s, KVM_CAP_IRQCHIP);
++
+     /* For ARM interrupt delivery is always asynchronous,
+      * whether we are using an in-kernel VGIC or not.
+      */
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index ebfaf3d24c79..6363e67f092d 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2771,6 +2771,8 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         }
+     }
+ 
++    kvm_has_create_irqchip = kvm_check_extension(s, KVM_CAP_IRQCHIP);
++
+     return 0;
  }
  
-+static void xen_init_ram(MachineState *machine)
-+{
-+    MemoryRegion *sysmem = get_system_memory();
-+    ram_addr_t block_len, ram_size[GUEST_RAM_BANKS];
-+
-+    if (machine->ram_size <= GUEST_RAM0_SIZE) {
-+        ram_size[0] = machine->ram_size;
-+        ram_size[1] = 0;
-+        block_len = GUEST_RAM0_BASE + ram_size[0];
-+    } else {
-+        ram_size[0] = GUEST_RAM0_SIZE;
-+        ram_size[1] = machine->ram_size - GUEST_RAM0_SIZE;
-+        block_len = GUEST_RAM1_BASE + ram_size[1];
-+    }
-+
-+    memory_region_init_ram(&ram_memory, NULL, "xen.ram", block_len,
-+                           &error_fatal);
-+
-+    memory_region_init_alias(&ram_lo, NULL, "xen.ram.lo", &ram_memory,
-+                             GUEST_RAM0_BASE, ram_size[0]);
-+    memory_region_add_subregion(sysmem, GUEST_RAM0_BASE, &ram_lo);
-+    DPRINTF("Initialized region xen.ram.lo: base 0x%llx size 0x%lx\n",
-+            GUEST_RAM0_BASE, ram_size[0]);
-+
-+    if (ram_size[1] > 0) {
-+        memory_region_init_alias(&ram_hi, NULL, "xen.ram.hi", &ram_memory,
-+                                 GUEST_RAM1_BASE, ram_size[1]);
-+        memory_region_add_subregion(sysmem, GUEST_RAM1_BASE, &ram_hi);
-+        DPRINTF("Initialized region xen.ram.hi: base 0x%llx size 0x%lx\n",
-+                GUEST_RAM1_BASE, ram_size[1]);
-+    }
-+}
-+
- void arch_handle_ioreq(XenIOState *state, ioreq_t *req)
- {
-     hw_error("Invalid ioreq type 0x%x\n", req->type);
-@@ -141,6 +176,14 @@ static void xen_arm_init(MachineState *machine)
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index a9e5880349d9..c053304adf94 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -391,6 +391,9 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+     }
  
-     xam->state =  g_new0(XenIOState, 1);
- 
-+    if (machine->ram_size == 0) {
-+        DPRINTF("ram_size not specified. QEMU machine started without IOREQ"
-+                "(no emulated devices including Virtio)\n");
-+        return;
-+    }
+     kvm_set_max_memslot_size(KVM_SLOT_MAX_BYTES);
 +
-+    xen_init_ram(machine);
++    kvm_has_create_irqchip = kvm_check_extension(s, KVM_CAP_S390_IRQCHIP);
 +
-     xen_register_ioreq(xam->state, machine->smp.cpus, xen_memory_listener);
+     return 0;
+ }
  
-     xen_create_virtio_mmio_devices(xam);
-@@ -188,6 +231,8 @@ static void xen_arm_machine_class_init(ObjectClass *oc, void *data)
-     mc->init = xen_arm_init;
-     mc->max_cpus = 1;
-     mc->default_machine_opts = "accel=xen";
-+    /* Set explicitly here to make sure that real ram_size is passed */
-+    mc->default_ram_size = 0;
- 
- #ifdef CONFIG_TPM
-     object_class_property_add(oc, "tpm-base-addr", "uint64_t",
 -- 
-2.25.1
+2.41.0
 
 
