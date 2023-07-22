@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7761475DBED
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A9175DBEC
 	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 13:36:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNAtN-00061s-Ln; Sat, 22 Jul 2023 07:35:21 -0400
+	id 1qNAtR-000655-68; Sat, 22 Jul 2023 07:35:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNAtJ-00061H-01
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:35:17 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1qNAtL-00062D-UY
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:35:21 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNAtG-0000hk-5T
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:35:16 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-3fc02a92dcfso22977515e9.0
+ id 1qNAtI-0000hm-PA
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 07:35:19 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-3fb4146e8deso25798485e9.0
  for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 04:35:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1690025709; x=1690630509;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=INqOnPLZqSMtROwuX5yxRREghns2EQI4fhnRTubU2b8=;
- b=lwYjo8pvyntXBiUx8Z654pE6RF5AkbmsMtl99heNwRgb87ZiTw2R9fgyfdf/UyyciH
- YlfZQYzM04odIOfYXjWXWIzYKi8d4MGR8NwyxSMDNScpIgTBLYTx6zT6exrfrL6e3S3g
- Aa+AhOna/1fTPOV4Gu0wYCJmOcj0o212AAElLXax7ygj4xE+CwFQHml/VAOOtLqCEiHr
- 5e3Gu32LNI6cVtaqA1UGSygUIduKOoJAOdpoH974/nV09YRjR60yxlJjlz1M33d7mrFM
- rx3j7DGouWn0TvD0DJ/F9ErT47znPOhSrXjLoOFuq3z1nI+fWeX1WN5Afh8YwVrZklyB
- nyrw==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6bjcssZxr7dS2LvruC06Zhi+kFpRW6MiPOiHl1L5fio=;
+ b=trBYRYC4hHGNhuO8RKCgYeL8mKYly7pnjYb+ESKHg0nVsasvFOX2TQFb/BujsjGOFT
+ KZlwrYd6gXsbnPVIcX+CQFHHqSERBkE4i/jHptexRZ1wS/DX8AaDCudETI4A+qmHL2n8
+ q8BLHi+6Bt9XKbYCoBrAAjjCtovl3TPzSrEJQVlwVSJlLHeK/CYkcxhoySLn+RwiGNgy
+ sJW3UAMSKTf8wH5JDpcLiuJO/sSNm6sfAWAI35lZ/5/HQoOd551HQ51WpA8y/VKIK780
+ GL/96swu8fvUjXf/pEiseaik2hugB7xh036E59tjPukiCM+iqzW0c05yRL+t6GtwFMP6
+ f44g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20221208; t=1690025709; x=1690630509;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=INqOnPLZqSMtROwuX5yxRREghns2EQI4fhnRTubU2b8=;
- b=M1I5D+oe+PdyqdcebCb7HEBSYT7XRA1v9aqnXL2yPCM2TsC7g3lUBXsbDxetrmhKAX
- xEEuLH+7iUFCWkWl/s7iphD8tsvG48u2bPRvcy5koxRlQnF+zm5iPnCxvClyTfmOqO+6
- 2BQNk2dLXJZ/sbL8GDtfmZR+DMFeDnE1zqxjvj4pVOhSYEl88jI5R7tcoEpIh58WSmh4
- vY4MxaFE8yj9B8xXcxzXwt1pq+4m3O5qwuR37g4AqwwC+/r+h4qehGHe+/SdBvfwLx4q
- 2lkBL9ORN43jN44JZaw2j7ZrbSnU6uwbt5ewcstQzvzgJLQ3fUjXditBh0EiP3WBRs+7
- NMpA==
-X-Gm-Message-State: ABy/qLbLn2XQgikgVFfr59LSV21kkCch1aaM++at5f3VJrxDl24BQEUb
- 3ruek4UFBJ9h5v2vBQh2fLYp/dqDFI3lD3xCDnrQNA==
-X-Google-Smtp-Source: APBJJlFH2Yswul1IvLg+ABxURxtZCZ435JFSYXRm5myreBpFHrilW/GgIhNdFSY54czUf2BNdvxqfw==
-X-Received: by 2002:a7b:cb8e:0:b0:3fc:27:7e46 with SMTP id
- m14-20020a7bcb8e000000b003fc00277e46mr3680694wmi.3.1690025709042; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6bjcssZxr7dS2LvruC06Zhi+kFpRW6MiPOiHl1L5fio=;
+ b=GBM5G2SCFPIbTAwGSsYjm4wlXN34FiJLyQY8D0CMeN+KYsjbehkbBLnkc3N5Wn3+dY
+ MP40c51lOHp7gCzvDQvUIf8mORIoHOgQX+8vn4KH6lopmkSJ9a/aKaYqcxG2ZJejLFkL
+ GC9gp8Ok11yoXhgyYfwEji8W/4yZWnVPt5lI3Rcvo1Ce9Mjnjj6PoUXHEu8uuzGeu9uX
+ 6yh5RxHypuogO/OMK/a+yV0vbRgqCvnZL21aUgq58D7dQ++TaWNqpeObip30jTQVcTf0
+ UFbQvkpRTb9a39LUCeaIZaTPY1sY8mhsgpc//j5MrKyEFstSdJArjrJIuAoXIRl19Rzv
+ lZwA==
+X-Gm-Message-State: ABy/qLajDhE4bHEqoaHfmo50gCZDYvvA/UHMPR9AvidHsig2bOYfjvfi
+ DGNmd5LyDzXcazIKzb4RheWRCPWV7kpX4QhaXQRJsw==
+X-Google-Smtp-Source: APBJJlEsxKF26tIBUsLD4ZIWWUVaXu+wRfMD007GRtVI8EYs2zugz1wfXLYfco3FzDr6PmOi6GQAHw==
+X-Received: by 2002:a05:600c:204:b0:3f9:b748:ff37 with SMTP id
+ 4-20020a05600c020400b003f9b748ff37mr3569835wmi.20.1690025709510; 
  Sat, 22 Jul 2023 04:35:09 -0700 (PDT)
 Received: from stoup.acentic.lan
  (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
  by smtp.gmail.com with ESMTPSA id
- y15-20020a7bcd8f000000b003fbdd5d0758sm5130938wmj.22.2023.07.22.04.35.08
+ y15-20020a7bcd8f000000b003fbdd5d0758sm5130938wmj.22.2023.07.22.04.35.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 22 Jul 2023 04:35:08 -0700 (PDT)
+ Sat, 22 Jul 2023 04:35:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PATCH for-8.1 v2 0/3] accel/tcg: Take mmap_lock in
- load_atomic*_or_exit
-Date: Sat, 22 Jul 2023 12:35:04 +0100
-Message-Id: <20230722113507.78332-1-richard.henderson@linaro.org>
+Subject: [PATCH v2 1/3] include/exec: Add WITH_MMAP_LOCK_GUARD
+Date: Sat, 22 Jul 2023 12:35:05 +0100
+Message-Id: <20230722113507.78332-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230722113507.78332-1-richard.henderson@linaro.org>
+References: <20230722113507.78332-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,30 +92,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For user-only, the probe for page writability may race with another
-thread's mprotect.  Take the mmap_lock around the operation.  This
-is still faster than the start/end_exclusive fallback.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/exec/exec-all.h | 10 ++++++++++
+ bsd-user/mmap.c         |  1 +
+ linux-user/mmap.c       |  1 +
+ 3 files changed, 12 insertions(+)
 
-Changes for v2:
-  * Introduce WITH_MMAP_LOCK_GUARD, to simplify the changes.
-  * Fix the probes for not-writable.
-  * Handle load_atomic8_or_exit and load_atomic16_or_exit similarly.
-
-
-r~
-
-
-Richard Henderson (3):
-  include/exec: Add WITH_MMAP_LOCK_GUARD
-  accel/tcg: Fix sense of read-only probes in ldst_atomicity
-  accel/tcg: Take mmap_lock in load_atomic*_or_exit
-
- include/exec/exec-all.h        | 10 ++++++++++
- bsd-user/mmap.c                |  1 +
- linux-user/mmap.c              |  1 +
- accel/tcg/ldst_atomicity.c.inc | 32 ++++++++++++++++++--------------
- 4 files changed, 30 insertions(+), 14 deletions(-)
-
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index 5fa0687cd2..d02517e95f 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -629,6 +629,15 @@ void TSA_NO_TSA mmap_lock(void);
+ void TSA_NO_TSA mmap_unlock(void);
+ bool have_mmap_lock(void);
+ 
++static inline void mmap_unlock_guard(void *unused)
++{
++    mmap_unlock();
++}
++
++#define WITH_MMAP_LOCK_GUARD()                                            \
++    for (int _mmap_lock_iter __attribute__((cleanup(mmap_unlock_guard)))  \
++         = (mmap_lock(), 0); _mmap_lock_iter == 0; _mmap_lock_iter = 1)
++
+ /**
+  * adjust_signal_pc:
+  * @pc: raw pc from the host signal ucontext_t.
+@@ -683,6 +692,7 @@ G_NORETURN void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
+ #else
+ static inline void mmap_lock(void) {}
+ static inline void mmap_unlock(void) {}
++#define WITH_MMAP_LOCK_GUARD()
+ 
+ void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
+ void tlb_set_dirty(CPUState *cpu, vaddr addr);
+diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
+index aca8764356..74ed00b9fe 100644
+--- a/bsd-user/mmap.c
++++ b/bsd-user/mmap.c
+@@ -32,6 +32,7 @@ void mmap_lock(void)
+ 
+ void mmap_unlock(void)
+ {
++    assert(mmap_lock_count > 0);
+     if (--mmap_lock_count == 0) {
+         pthread_mutex_unlock(&mmap_mutex);
+     }
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 44b53bd446..a5dfb56545 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -36,6 +36,7 @@ void mmap_lock(void)
+ 
+ void mmap_unlock(void)
+ {
++    assert(mmap_lock_count > 0);
+     if (--mmap_lock_count == 0) {
+         pthread_mutex_unlock(&mmap_mutex);
+     }
 -- 
 2.34.1
 
