@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C7675DC7D
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 14:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0559675DCAF
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 14:51:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNBfN-0007pE-SC; Sat, 22 Jul 2023 08:24:57 -0400
+	id 1qNC3Q-0004O4-Is; Sat, 22 Jul 2023 08:49:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNBfL-0007ow-Aa
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 08:24:55 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1qNC3N-0004Np-Qm
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 08:49:45 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNBfJ-0006tw-NU
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 08:24:55 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3128fcd58f3so2427609f8f.1
- for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 05:24:53 -0700 (PDT)
+ id 1qNC3M-00070X-71
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 08:49:45 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-3fbc59de0e2so23111205e9.3
+ for <qemu-devel@nongnu.org>; Sat, 22 Jul 2023 05:49:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690028691; x=1690633491;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1690030182; x=1690634982;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=wBcOGahZGfdliLehbzWt2unvNLAElDDgYZkKFFMq6yg=;
- b=sd2RpIBwog1T0qNNMqmivBpAzqra7N9xGKO7stKEah+zfNANyNz1KkXkydeeTruajN
- kjcNmrl316koNk7A8A2G4WC+098PdFZJ5CGYMgBVKI42Kre8ZRqkUHAjs3BUHZJvb401
- c6EJNdU/dmlWlF7AZY2R3JG8PDl4zn90OZ7CIwQ+46VQR8fwPgeHE/OFx0SFqJ1Vb5As
- ylae4000hVIsrWKPCfntfurHpQboK8cEDNF92b6uQqMK9y26+a91msY6gXHTpZLfDs0X
- 16LWYpfmn19VbDUK4SQ4NeeFqlLQIZujo3Fjeu6vo+YDgnKrpgYyB3ILWcSkA+IEctlj
- mOEg==
+ bh=hit/cGv4qMF9DxRtZzXy2dYJTyhiE1yhNWb3b5eWiHM=;
+ b=kZ0EaQ23iKGJK1i8dbIDvCn8D5FSG0J9+CZCdGh7wKOO5OCscg6rNxA5KOlbZMI6eD
+ sujcQpUlYuYnRGSXQWcKbGdLoZtT2EA/9hVOqThuZLj+EoahcfjCIzmp0IVBjJykRYjm
+ X4NXw7X7Z/ov7MnE179xW0mf1zJuofGSlt+vdUx5PdQFciY+xmaez1X7eoUj3yKONy3F
+ vU2fkm/FI6jAs1nJl4abdOAYonojDnqhigL/ClvD4r1P1C+fxlmVsyTAdmMIui7XaRRW
+ P23XASKslEhCGnUroLETN6KNQ+TzqeWDSL+s7pFvzKPTf2j3kthuhDzGMV3KqSTAd+GL
+ Hw+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690028691; x=1690633491;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20221208; t=1690030182; x=1690634982;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wBcOGahZGfdliLehbzWt2unvNLAElDDgYZkKFFMq6yg=;
- b=ZKPsiyR5dkOGw8jCFdnrmk9jHrIQdB1AjXlScs7WEkbI6od+3tFPHWP8LwRCAZOv9X
- YNZDrMf9cmuJTxzYeGQrwHIOmo44JgHyerI3yfeIawbKAHaL2b7IU+H7vtcDT7YeNd38
- WQUuIXP19IscO831SdRerI/nlpYw791y6zEWTwJKI+rbj0DUbTVC6gLg2TCAIaC6bGu2
- tjNDnBpQ3n5GW3tzR8x5U5Wr0OHVhxrZ/j2dKEYJg+6moK0PvDfH3sYWveFUSROtHk/V
- qy0mhZXrDJW2ikm075GzTBs+4B3OED9AvLIF2YltcVCYMGMOTh9FZ/mysSnIOE7UOq8i
- oPYA==
-X-Gm-Message-State: ABy/qLbXAt9UvxVQt8Myl6FDG1ZTySiI+88pKI3J/7AKA3OAcFeg6229
- dBA3ve1yPmLi5TP3XkpoBq8vmA==
-X-Google-Smtp-Source: APBJJlE+kt63/ehTlQonKjamJwxodkG3LD4VlUheIlqwpQxEiH5hlSxX7RojJEefNcgqOyzr8I//Sg==
-X-Received: by 2002:adf:d849:0:b0:313:eb29:4436 with SMTP id
- k9-20020adfd849000000b00313eb294436mr3889038wrl.67.1690028690700; 
- Sat, 22 Jul 2023 05:24:50 -0700 (PDT)
-Received: from [172.20.4.173]
+ bh=hit/cGv4qMF9DxRtZzXy2dYJTyhiE1yhNWb3b5eWiHM=;
+ b=LuBwwVe22N84ZmReCh8WpRfQEEgtjUtrTCUT+9Qq0T+7RJQJQYkON85Ck8Xu+F4Kym
+ T8Gb+C9nECHsHCiEA7bokX/fLSOrCQiTFoimHrFih/TZE4WybWhe7ctB3ZoLaoaHT/BU
+ 0ABiBjDQQGQLoLnhYchEIlMiPHcsru0/KkNFlEA7Ppb1jk8q5tMN/d6kMJ5LA8rUxVDO
+ KkDEPKRBpZP0fTFMXJjSJNInEqYEEN7WAAzaIF6rmK23iLK5M3J2SGZlADWx+9sJbyb8
+ +5SvwiJ1P8r80E7puQd6hN612TFAyPklD5unvfXqGIShOhi3GCfLpdPiMFvqmNBXg/BD
+ lTdA==
+X-Gm-Message-State: ABy/qLbh3vAPtFhEWxKT3M3kPVkOIfULQN1uWA8PUWXwwiIb8nkZNydZ
+ S3HG50k1n6J4Z8J8JusbNiE2JQ==
+X-Google-Smtp-Source: APBJJlFA1VATQL/JROKb6FNOPt8CVVK7xaACzC/T9Z6PzCy8XXKGQbEJM8z6Z5ADIL3WVff+zRdNjQ==
+X-Received: by 2002:a7b:c3cb:0:b0:3fd:45b:45f8 with SMTP id
+ t11-20020a7bc3cb000000b003fd045b45f8mr3581568wmj.23.1690030182524; 
+ Sat, 22 Jul 2023 05:49:42 -0700 (PDT)
+Received: from [172.20.13.195]
  (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
  by smtp.gmail.com with ESMTPSA id
- v4-20020adff684000000b0031431fb40fasm6799115wrp.89.2023.07.22.05.24.50
+ g9-20020a7bc4c9000000b003fbca05faa9sm5263710wmk.24.2023.07.22.05.49.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 22 Jul 2023 05:24:50 -0700 (PDT)
-Message-ID: <5504bea2-92ea-a146-beb3-1a13e4499dda@linaro.org>
-Date: Sat, 22 Jul 2023 13:24:48 +0100
+ Sat, 22 Jul 2023 05:49:42 -0700 (PDT)
+Message-ID: <f2beeb1e-fc2d-9fdd-303f-d1722aeaf63d@linaro.org>
+Date: Sat, 22 Jul 2023 13:49:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] tests/decode: Suppress "error: " string for
- expected-failure tests
+Subject: Re: 8.1-rc0 testfloat fails to compile
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
-References: <20230720131521.1325905-1-peter.maydell@linaro.org>
+To: Thomas Huth <thuth@redhat.com>, Olaf Hering <olaf@aepfle.de>,
+ qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20230720224656.2841ff5f.olaf@aepfle.de>
+ <74d1ee57-04a7-37f7-2c85-6ce49b4ded3a@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230720131521.1325905-1-peter.maydell@linaro.org>
+In-Reply-To: <74d1ee57-04a7-37f7-2c85-6ce49b4ded3a@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -95,31 +98,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/20/23 14:15, Peter Maydell wrote:
-> The "expected failure" tests for decodetree result in the
-> error messages from decodetree ending up in logs and in
-> V=1 output:
+On 7/21/23 07:54, Thomas Huth wrote:
+> On 20/07/2023 22.47, Olaf Hering wrote:
+>> This is going on since a few weeks. I guess there is no check in CI to see if 
+>> qemu.git#master compiles in Tumbleweed.
 > 
->>>> MALLOC_PERTURB_=226 /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/pyvenv/bin/python3 /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/scripts/decodetree.py --output-null --test-for-error /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/../../tests/decode/err_argset1.decode
-> ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― ✀  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
-> /mnt/nvmedisk/linaro/qemu-from-laptop/qemu/build/x86/../../tests/decode/err_argset1.decode:5: error: duplicate argument "a"
-> ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――
->   1/44 qemu:decodetree / err_argset1                OK              0.05s
+> We only have a check for openSUSE leap ...
+> Which compiler version is causing trouble for you?
 > 
-> This then produces false positives when scanning the
-> logfiles for strings like "error: ".
+>> Since the switch to meson submodules, berkeley-testfloat-3 became mandatory. I think in 
+>> the past I was able to ignore this submodule and not export it, so the following error 
+>> did not show up:
+>>
+>> [  141s] ../subprojects/berkeley-testfloat-3/source/genCases_f64.c: In function 
+>> 'f64Random':
+>> [  141s] ../subprojects/berkeley-testfloat-3/source/genCases_f64.c:559:1: error: control 
+>> reaches end of non-void function [-Werror=return-type]
+>> [  141s]   559 | }
+>> [  141s]       | ^
+>> [  141s] cc1: some warnings being treated as errors
+>>
+>> Apparently this is a known issue, 3ac1f81329f attempted to ignore such errors.
 > 
-> For the expected-failure tests, make decodetree print
-> "detected:" instead of "error:".
+> Seems like the flag got lost in commit d2dfe0b506e47e14 ... Paolo, any ideas?
 > 
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
-> ---
-> My initial thought was "just get meson to suppress stderr for these
-> tests", but AFAICT meson has no way to do that, and we already have a
-> command line option to decodetree to request specific behaviour for
-> the tests that expect failure, so this seemed simplest.
+>> Do I need to tweak the global, system-provided CFLAGS myself, or can the source be fixed 
+>> to address this? Disabling this error globally will hide errors elsewhere.
+> 
+> We are using a forked version of the berkeley-testfloat repository, and it's possible to 
+> add patches there:
+> 
+>   https://gitlab.com/qemu-project/berkeley-testfloat-3
+> 
+> The f64Random function that you mentioned above could easily be fixed by adding a 
+> "default:" case to the switch statement, I think. Are there any other additional 
+> warnings/errors after fixing this?
+> 
+> Feel free to send a patch and CC: the people from 
+> https://gitlab.com/qemu-project/berkeley-testfloat-3/-/project_members
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+If this is with optimization enabled, the bug should be reported to gcc bugzilla.
+The compiler should easily prove the default case is unreachable.
+
 
 r~
 
