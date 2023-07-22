@@ -2,84 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8A375DA54
-	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 08:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1271C75DA59
+	for <lists+qemu-devel@lfdr.de>; Sat, 22 Jul 2023 08:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qN61n-0001o5-BV; Sat, 22 Jul 2023 02:23:43 -0400
+	id 1qN656-0003zy-IE; Sat, 22 Jul 2023 02:27:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qN61f-0001n3-6P
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 02:23:36 -0400
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ id 1qN64o-0003zX-Lh
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 02:26:50 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qN61c-0004gS-C2
- for qemu-devel@nongnu.org; Sat, 22 Jul 2023 02:23:34 -0400
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6b9f47214a3so2391333a34.0
- for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 23:23:11 -0700 (PDT)
+ id 1qN64m-0005PX-Sm
+ for qemu-devel@nongnu.org; Sat, 22 Jul 2023 02:26:50 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-666ecf9a0ceso1658859b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 21 Jul 2023 23:26:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690006990; x=1690611790;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=aiO61RFWQc576A2x8jBmto7Eq50nA+0j/FFgWXdA55I=;
- b=hgwh4xKwD6Cu9z8Rs6iTIcQTBX5rYYn71p9QkLR9APikor7gEDD/qjke1FXbNnmBBb
- yz/6yGgg2hmz3nsJRUKsMeKrnosf8i9Dqlp5AQoVrMJDDS1xzziNIDm5rPEuuCr62frx
- mBrrhE+ODRiwmsjt4NudoC0PRpebzUISSExHamYBQzfmd3QTs2Kr7MLkpts3wbclBb6I
- /HWPPU853maBPTYhnDtPyhhQ5OTXU9QsK8boN37SQj0jb6QP1wX0SN8QdUh0iDw3Kmia
- Ng9+IRGnIQFZRTNzCxgGBxYcR0juQ1NTUoa/5kFdLWGtcUxzzr6WxR9D9/KvZsbDTgK0
- 7UpQ==
+ d=daynix-com.20221208.gappssmtp.com; s=20221208; t=1690007206; x=1690612006;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=igkg25D9DpaLjmRPnKedm/HR+c3ExF/v30NY6pfyyvw=;
+ b=DH18i8EB6KCP1kW0KRaDB1TNdpIXrwOyzJpHT+LhqTjlT1rpiMC4NhJH6UWl3L8JBV
+ qEfQTHtYh5aOqL7uBc+eoixAj/x5P+lO6jyM3+v2jEqHecDAEEA+HBa17TF9xT1QgsS7
+ 2fcps0IK3oMzD9/Nd4JvI2Kzj+UubYslEyUOa60RuLlPZxOdH97v3m3NjLX8Iq4tQuXi
+ pILeXqqrUt/VoNK2S1rM2hU/qZSEHCr15JWtw2PsjmsVHpwxwIE3GfoZqy6RnKlWtEA/
+ 3rGqWRtfxtsvdVM7Vil4m8tjvW8M8FR7lBkrm90NNdNry6C9xRibYSA47iVZxIOuTLhN
+ GHew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690006990; x=1690611790;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aiO61RFWQc576A2x8jBmto7Eq50nA+0j/FFgWXdA55I=;
- b=PTTUS9bItX1ZrBX+dL8R+3nyytKJM0x4Lh47HzjdyE0RdmhJBjWuLsrpedu4VMp1FK
- PorjFH793b3W2UeVXYzvFbuSJNalsCbwF9ohke3zw6kGb5eFv60O9bPoLe4zEFvugux7
- n3Uru1ii/u37pPNZ8+XELH1LNNbtS/1NX/SAeAZ19l3JlpYg5iUkDNvhgpiTwUUzemUe
- +ektsLu0MaN5kc49I/WUL05JieCS28zkWDNYgQrq5b0uwp3bdHLHWRGYIFPs+lfNlZJB
- dIJXnhiJ3k6b8azWBARW+0oelsho/kw6w99KeMI0JIMVVkHf5p7wSj+N+OIzjRxZcNdO
- aV4g==
-X-Gm-Message-State: ABy/qLZaExQagxh4bgXuRFqXgmEOKFgzLQqkD0hE+ysKjJ5KDYBjoj/M
- lLH/1O2qGNP9DCbn+o6lEMvFcMKwXkxFUC8+gFw=
-X-Google-Smtp-Source: APBJJlFx/BbAL9U7L3DQNcKdMjgZcUpugIrT9Drk1prgfJT3bAqq+laqFqqlYxqRm8MHiE7gs+Kq7A==
-X-Received: by 2002:a9d:7319:0:b0:6b5:e816:b64d with SMTP id
- e25-20020a9d7319000000b006b5e816b64dmr2450464otk.37.1690006990385; 
- Fri, 21 Jul 2023 23:23:10 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690007206; x=1690612006;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=igkg25D9DpaLjmRPnKedm/HR+c3ExF/v30NY6pfyyvw=;
+ b=HmseJpqthzQDfH+bpJ6MuauVLTDYhMnkWmIcDDnXtvQ4IW+Md0CnCW1hs4u5Y30XsM
+ ijZGjHjSluQaaDMWe1EB14Zc8f7wc67++HCcmcnIPwKZsc0GhLzk2Cbo2VQY3wEYCAGN
+ trM+UbN0OzJfW8iBVF58et0rkm+A9zvtLsGy7lU0VWO7vIexCxMi0Ellua6OQ7k7ci2a
+ /fl1w+tXLOzd5RoLiY1v/7nO1T42Y9ZHCxEN+6isX72wRPuGUUrOi1kXeNGqXbx8FoQH
+ iUzACL58tn9TRSSaqU/QLtqGrmKlLEGkVjBbJSGhF4eFlkqt+X08zR22yCCkH16mFafZ
+ oO3g==
+X-Gm-Message-State: ABy/qLbzy1irqXRMis0V7FjjYbgjzYHrMFdH9PjQ+SuaoJhuyD0aD7OQ
+ mZRZKtFEnsleoK5wUdS2Zf5DtQF+v8VMMQEu5Is=
+X-Google-Smtp-Source: APBJJlGrx6G+/hEI6KVhpKdysGeaJZB7dZQBMjVbZvX3NGGV87/etE37Ggm//r3nAON2E8FzL4OikA==
+X-Received: by 2002:a05:6a00:2492:b0:673:5d1e:6654 with SMTP id
+ c18-20020a056a00249200b006735d1e6654mr2696331pfv.33.1690007206446; 
+ Fri, 21 Jul 2023 23:26:46 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- s16-20020a170902989000b001b9be3b94e5sm4509198plp.303.2023.07.21.23.23.08
+ d16-20020aa78e50000000b006827d86ca0csm3941014pfr.55.2023.07.21.23.26.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 21 Jul 2023 23:23:10 -0700 (PDT)
+ Fri, 21 Jul 2023 23:26:46 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v3 2/2] accel/kvm: Specify default IPA size for arm64
-Date: Sat, 22 Jul 2023 15:22:48 +0900
-Message-ID: <20230722062250.18111-3-akihiko.odaki@daynix.com>
+Subject: [PATCH] vl: Free machine list
+Date: Sat, 22 Jul 2023 15:26:40 +0900
+Message-ID: <20230722062641.18505-1-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230722062250.18111-1-akihiko.odaki@daynix.com>
-References: <20230722062250.18111-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::32e;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::431;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,66 +88,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Before this change, the default KVM type, which is used for non-virt
-machine models, was 0.
-
-The kernel documentation says:
-> On arm64, the physical address size for a VM (IPA Size limit) is
-> limited to 40bits by default. The limit can be configured if the host
-> supports the extension KVM_CAP_ARM_VM_IPA_SIZE. When supported, use
-> KVM_VM_TYPE_ARM_IPA_SIZE(IPA_Bits) to set the size in the machine type
-> identifier, where IPA_Bits is the maximum width of any physical
-> address used by the VM. The IPA_Bits is encoded in bits[7-0] of the
-> machine type identifier.
->
-> e.g, to configure a guest to use 48bit physical address size::
->
->     vm_fd = ioctl(dev_fd, KVM_CREATE_VM, KVM_VM_TYPE_ARM_IPA_SIZE(48));
->
-> The requested size (IPA_Bits) must be:
->
->  ==   =========================================================
->   0   Implies default size, 40bits (for backward compatibility)
->   N   Implies N bits, where N is a positive integer such that,
->       32 <= N <= Host_IPA_Limit
->  ==   =========================================================
-
-> Host_IPA_Limit is the maximum possible value for IPA_Bits on the host
-> and is dependent on the CPU capability and the kernel configuration.
-> The limit can be retrieved using KVM_CAP_ARM_VM_IPA_SIZE of the
-> KVM_CHECK_EXTENSION ioctl() at run-time.
->
-> Creation of the VM will fail if the requested IPA size (whether it is
-> implicit or explicit) is unsupported on the host.
-https://docs.kernel.org/virt/kvm/api.html#kvm-create-vm
-
-So if Host_IPA_Limit < 40, specifying 0 as the type will fail. This
-actually confused libvirt, which uses "none" machine model to probe the
-KVM availability, on M2 MacBook Air.
-
-Fix this by using Host_IPA_Limit as the default type when
-KVM_CAP_ARM_VM_IPA_SIZE is available.
+Free machine list and make LeakSanitizer happy.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- target/arm/kvm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ softmmu/vl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 40f577bfd5..23aeb09949 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -249,7 +249,9 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
+diff --git a/softmmu/vl.c b/softmmu/vl.c
+index b0b96f67fa..802f728298 100644
+--- a/softmmu/vl.c
++++ b/softmmu/vl.c
+@@ -1484,7 +1484,8 @@ static gint machine_class_cmp(gconstpointer a, gconstpointer b)
  
- int kvm_arch_get_default_type(MachineState *ms)
+ static void machine_help_func(const QDict *qdict)
  {
--    return 0;
-+    bool fixed_ipa;
-+    int size = kvm_arm_get_max_vm_ipa_size(ms, &fixed_ipa);
-+    return fixed_ipa ? 0 : size;
- }
+-    GSList *machines, *el;
++    g_autoptr(GSList) machines = NULL;
++    GSList *el;
+     const char *type = qdict_get_try_str(qdict, "type");
  
- int kvm_arch_init(MachineState *ms, KVMState *s)
+     machines = object_class_get_list(TYPE_MACHINE, false);
 -- 
 2.41.0
 
