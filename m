@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA41275E0FA
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 11:35:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F5075E0F9
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 11:35:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNVTx-0005FO-Ia; Sun, 23 Jul 2023 05:34:29 -0400
+	id 1qNVU7-0005GM-NJ; Sun, 23 Jul 2023 05:34:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qNVTv-0005Ei-St
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:34:27 -0400
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ id 1qNVU5-0005Fy-9H
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:34:37 -0400
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qNVTu-0003Kw-C0
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:34:27 -0400
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-1b03ec2015fso2495717fac.3
- for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 02:34:26 -0700 (PDT)
+ id 1qNVU3-0003Lf-RU
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:34:37 -0400
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-1bb575a6ed3so308167fac.2
+ for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 02:34:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690104865; x=1690709665;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=F01cjutPSexbn9f5LLBdof2a7Xg4vGD8NgTtjy+HYfI=;
- b=mLgrXCqbcaqGajX88pBPXAW6VeB6arenMtnBWsItqa3UAvleS13CrPzJUb0U1ynMgl
- oioXJZQLp2j+X4g2FtBjUSZ63GrlzZOLtZY83XqMzZVR7uM13QGVvkviw/CKnm+qSCL3
- CGNc7y+vMpSTKDLckytesKU3EPQk4i4Ny6RfdRIjm+SenYQZflCkGU8HWbyLm2EoLI2/
- U4EQYtojwbjMgDUMWCnIomUn00y0q7Ajd43yoXQvDlN2n0K/mq+Eubn+PP7Dyi38+f6x
- Gi+y5rthnmbNurOIutl53m2HseduDCknFi3mUAyQLsxN6ZJ0Vndw7R/My76SfDsDgnUv
- 4sVQ==
+ d=gmail.com; s=20221208; t=1690104874; x=1690709674;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=KbS+mDv2rQgCbAJdkRQhhFil4mhfQwAqCKHTDyG+nCg=;
+ b=YUkpoFsoWxSTamK9ZIt/4PGYW1QCraGu+q1Iq3OtgExVNMTYlPHHRRr+wHhzlYcy7z
+ sSTEYFfc4uXs+s9f9kLAqyJErl+a1zZ7XWe6QEfjsYPTRFXAPbTYLQJLoYkBOu2Bv15+
+ AP3pDonX7AjEtbfZoXnl2PKWb2BKQLPTGIuwPTSw1b2UyqCyxkwsF0fvb0nA9fMysKv2
+ bedNPNxSdgRI3kaNhWP+tGsjzjTUr2i2Vlh9MhsOqRDSsKA/rLq5WH3mMalB5WZowGhl
+ vezJKA1UdeG0xIZizJ0Y8OAZl2bEuqAWraEdMIND9X0KNg8xFDfZl9mciktzP/3j+gR1
+ YHEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690104865; x=1690709665;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=F01cjutPSexbn9f5LLBdof2a7Xg4vGD8NgTtjy+HYfI=;
- b=GBfTlGnhKNW54qo8DtA6HPlJd5PpmmJkJSLBlBTlh08GGmv66dp4ZzCb29D8wslrPO
- aa95EDXzbJvZtAhXkejFn3ssSkNbMKZPvIBKNVpMp6LoZDOAXyMXon+UzY7G1ToAQI8X
- n1wMwkOoZcWc+8muBDqHTyjvXlXaF+738moQvL2h0eWg2WDGgTPWJBwQzQYxZMxMdrS0
- 0cSFbOMbG16IOOivgIKbP5TPlLX28Pf/yJwIE4XVjlJNZ1BolzlDaUet9GIooVGwRFQj
- SJO8ykm902F40ZnGzVNfSm/qNUBrcHiBLURiy8mSJBy2rSySnITIqFPngvP6/DEpawLY
- Qbkg==
-X-Gm-Message-State: ABy/qLYAZRQTSqgTosue/EY03UtpEvriMMbeMnLvyUCGINRw5osU8YtL
- DQBJLJc7ZSCuUxe+aP42kWVy4n4E9pOaTQ==
-X-Google-Smtp-Source: APBJJlFKL6i+P5HgcOmVxfCX70B42CxzXukwWGrCn2B5eiUlfAAOC/ib2ol9PfXjti8B77dD1iJY8g==
-X-Received: by 2002:a05:6871:10c:b0:1b0:7c30:7baf with SMTP id
- y12-20020a056871010c00b001b07c307bafmr8337077oab.42.1690104864825; 
- Sun, 23 Jul 2023 02:34:24 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690104874; x=1690709674;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=KbS+mDv2rQgCbAJdkRQhhFil4mhfQwAqCKHTDyG+nCg=;
+ b=YKKe1Gbj8dk3XhXC9NULLJjkXcH5vHIX98KAIRahCBqFvJhupRnJKyP2Q2fiQ9Vjmp
+ JDew9p1S0Jp0a3pYJenXsS59PNrwgs3sdYKQtHtg4JKY9vpdA1n3vrsEAUd2VgC/Cknl
+ DYMciF8WT/p29UMObCYKNOSfMDzLBpYjomtYn13NfgzpeQbaV/hssdSNicYGA8dAiO+F
+ IzpZa92BRGwMdnjZX6ikiJuOrEeA7VU+y20+8Y7+IPROxB0E5KGWo6UUHTzLssvrXAsC
+ ynKY6+G9DqqVTNsRA9DE/UmtTGi4DpDktD4RUv/bq7uzJ2h7sZ/sIDc+brrLzHogmA2N
+ xPDg==
+X-Gm-Message-State: ABy/qLZ7Eo9Ag1c6/y8krgka+HUZA9PjqAugp/G52BVIANcBlbqnHV/g
+ tcFFqS5GVMUb7tamlJO3nUOSd4HWaupZqA==
+X-Google-Smtp-Source: APBJJlE2Rx6iSmS8DWtts+lYS0m4eb9sbGM9YHsE+FbmfpnqJuhLzC7S+0k5vsxCGzLCuAoA+nZ8xg==
+X-Received: by 2002:a05:6871:299:b0:19f:9495:95ff with SMTP id
+ i25-20020a056871029900b0019f949595ffmr7927781oae.27.1690104874086; 
+ Sun, 23 Jul 2023 02:34:34 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- a5-20020aa78645000000b0064f76992905sm5647475pfo.202.2023.07.23.02.34.22
+ a5-20020aa78645000000b0064f76992905sm5647475pfo.202.2023.07.23.02.34.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 23 Jul 2023 02:34:24 -0700 (PDT)
+ Sun, 23 Jul 2023 02:34:33 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com,
-	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 0/1] riscv-to-apply queue
-Date: Sun, 23 Jul 2023 19:34:13 +1000
-Message-Id: <20230723093414.859532-1-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Bin Meng <bmeng@tinylab.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Conor Dooley <conor.dooley@microchip.com>
+Subject: [PULL 1/1] roms/opensbi: Upgrade from v1.3 to v1.3.1
+Date: Sun, 23 Jul 2023 19:34:14 +1000
+Message-Id: <20230723093414.859532-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230723093414.859532-1-alistair.francis@wdc.com>
+References: <20230723093414.859532-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=alistair23@gmail.com; helo=mail-oa1-x35.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2c;
+ envelope-from=alistair23@gmail.com; helo=mail-oa1-x2c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -93,29 +97,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit d1181d29370a4318a9f11ea92065bea6bb159f83:
+From: Bin Meng <bmeng@tinylab.org>
 
-  Merge tag 'pull-nbd-2023-07-19' of https://repo.or.cz/qemu/ericb into staging (2023-07-20 09:54:07 +0100)
+Upgrade OpenSBI from v1.3 to v1.3.1 and the pre-built bios images
+which fixes the boot failure seen when using QEMU to do a direct
+kernel boot with Microchip Icicle Kit board machine.
 
-are available in the Git repository at:
+The v1.3.1 release includes the following commits:
 
-  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20230723-3
+0907de3 lib: sbi: fix comment indent
+eb736a5 lib: sbi_pmu: Avoid out of bounds access
+7828eeb gpio/desginware: add Synopsys DesignWare APB GPIO support
+c6a3573 lib: utils: Fix sbi_hartid_to_scratch() usage in ACLINT drivers
+057eb10 lib: utils/gpio: Fix RV32 compile error for designware GPIO driver
 
-for you to fetch changes up to dcaaf2bf9bfd2c664dbeff0069fcab3d75c924d3:
-
-  roms/opensbi: Upgrade from v1.3 to v1.3.1 (2023-07-23 19:32:02 +1000)
-
-----------------------------------------------------------------
-Fifth RISC-V PR for 8.1
-
-* roms/opensbi: Upgrade from v1.3 to v1.3.1
-
-----------------------------------------------------------------
-Bin Meng (1):
-      roms/opensbi: Upgrade from v1.3 to v1.3.1
-
- pc-bios/opensbi-riscv32-generic-fw_dynamic.bin | Bin 135344 -> 135376 bytes
- pc-bios/opensbi-riscv64-generic-fw_dynamic.bin | Bin 138304 -> 138368 bytes
- roms/opensbi                                   |   2 +-
+Signed-off-by: Bin Meng <bmeng@tinylab.org>
+Message-Id: <20230719165817.889465-1-bmeng@tinylab.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ .../opensbi-riscv32-generic-fw_dynamic.bin    | Bin 135344 -> 135376 bytes
+ .../opensbi-riscv64-generic-fw_dynamic.bin    | Bin 138304 -> 138368 bytes
+ roms/opensbi                                  |   2 +-
  3 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin b/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin
+index 7b6c67e0ae..9a2ba3f2a4 100644
+Binary files a/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin and b/pc-bios/opensbi-riscv32-generic-fw_dynamic.bin differ
+diff --git a/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin b/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin
+index 1b831b412c..5d4e812819 100644
+Binary files a/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin and b/pc-bios/opensbi-riscv64-generic-fw_dynamic.bin differ
+diff --git a/roms/opensbi b/roms/opensbi
+index 2552799a1d..057eb10b6d 160000
+--- a/roms/opensbi
++++ b/roms/opensbi
+@@ -1 +1 @@
+-Subproject commit 2552799a1df30a3dcd2321a8b75d61d06f5fb9fc
++Subproject commit 057eb10b6d523540012e6947d5c9f63e95244e94
+-- 
+2.40.1
+
 
