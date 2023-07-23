@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929B775E0E9
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 11:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA41275E0FA
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 11:35:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNVNf-0001hQ-L9; Sun, 23 Jul 2023 05:27:59 -0400
+	id 1qNVTx-0005FO-Ia; Sun, 23 Jul 2023 05:34:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qNVNe-0001hH-5J
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:27:58 -0400
-Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qNVTv-0005Ei-St
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:34:27 -0400
+Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qNVNa-0001X4-Co
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:27:57 -0400
-Received: by mail-oa1-x34.google.com with SMTP id
- 586e51a60fabf-1bb5f78b30dso91625fac.1
- for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 02:27:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qNVTu-0003Kw-C0
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:34:27 -0400
+Received: by mail-oa1-x35.google.com with SMTP id
+ 586e51a60fabf-1b03ec2015fso2495717fac.3
+ for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 02:34:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690104473; x=1690709273;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lqDYe0wtYfLpN2tqp42QO/VtGC9R8rwe6ys1M/nbgpg=;
- b=fULkiA3qFelc4c5X8wZOSnw7GrJzc8129ArM2M5dYiBcWdBXRodnnr0YvQZFeVUYPj
- ib/fykJJuJZo/m//jYbLC+MCq3XsuRjAti8czPrefmbMULmXRMijeBh2BHvCxZOkUGYh
- MoOCynN7hyFwqulQ4O7bVu0C1tt2lqnM/T+xqWJKWyy6uB8bFUWl4loICv6GadAlYA7t
- BJvgojOspq/SpxQ8loxNBSEtAKUjy9TNEmPEditmPszs/PjnuExn4wO3kIWcSinYJcIz
- JO5gYf4yMRyiwEo0WEFWpby5GACL8c6qu22C1knQHoAOnv+MHeu+It8z89QKkJMICw8g
- dD0w==
+ d=gmail.com; s=20221208; t=1690104865; x=1690709665;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=F01cjutPSexbn9f5LLBdof2a7Xg4vGD8NgTtjy+HYfI=;
+ b=mLgrXCqbcaqGajX88pBPXAW6VeB6arenMtnBWsItqa3UAvleS13CrPzJUb0U1ynMgl
+ oioXJZQLp2j+X4g2FtBjUSZ63GrlzZOLtZY83XqMzZVR7uM13QGVvkviw/CKnm+qSCL3
+ CGNc7y+vMpSTKDLckytesKU3EPQk4i4Ny6RfdRIjm+SenYQZflCkGU8HWbyLm2EoLI2/
+ U4EQYtojwbjMgDUMWCnIomUn00y0q7Ajd43yoXQvDlN2n0K/mq+Eubn+PP7Dyi38+f6x
+ Gi+y5rthnmbNurOIutl53m2HseduDCknFi3mUAyQLsxN6ZJ0Vndw7R/My76SfDsDgnUv
+ 4sVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690104473; x=1690709273;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lqDYe0wtYfLpN2tqp42QO/VtGC9R8rwe6ys1M/nbgpg=;
- b=GPg4yzwVSxFSYEBWOi3eSa/CCQvkl7tbyC9Mb5ZWkx4Hx7OB4W6R4ovKl8Ouuitydb
- xrLg2MSC1+/39WOUCi+mrn3VPt4Idk4fdd4mvehTsyDLCoxRCaP5dgOnjRcOkTTUgDv4
- 8Pt3DTmfxFJ04lJNDtqdpaR2BE7BV44ztqg2RqM7Ya8mCKcL9l3oAWIvNV0bVd0k6TYN
- 4qX+T+P6bvGbD8ltbOa+tPkTs0dMSWfmkVova0fCQaJF/Gb30gAzFxf8ckiQ66CYN/Hf
- vJynsvcNX5ExJC1wjP0kvQx2XSiGSWLVZnWWnBguxjiytrWpyNOuL+bpLVgNrWEppDNA
- kpSA==
-X-Gm-Message-State: ABy/qLaMAfOBLDM1Vq69e8w/aTBSQ7CE/g/smGTwAmEcBOqqxtzMif1k
- ubxvTV0etuRByNX5GG+5AKQ=
-X-Google-Smtp-Source: APBJJlFgR7zSjLZJnFfT85js8lc2AkclerUTOd4L0vSRp9agwotZKJCFlDXArfR/jRV0WzKiP8nj9g==
-X-Received: by 2002:a05:6871:112:b0:1a0:85d3:3d70 with SMTP id
- y18-20020a056871011200b001a085d33d70mr7788428oab.28.1690104472723; 
- Sun, 23 Jul 2023 02:27:52 -0700 (PDT)
-Received: from localhost ([123.117.183.65]) by smtp.gmail.com with ESMTPSA id
- z129-20020a633387000000b005633c9493d0sm6179518pgz.21.2023.07.23.02.27.51
+ d=1e100.net; s=20221208; t=1690104865; x=1690709665;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=F01cjutPSexbn9f5LLBdof2a7Xg4vGD8NgTtjy+HYfI=;
+ b=GBfTlGnhKNW54qo8DtA6HPlJd5PpmmJkJSLBlBTlh08GGmv66dp4ZzCb29D8wslrPO
+ aa95EDXzbJvZtAhXkejFn3ssSkNbMKZPvIBKNVpMp6LoZDOAXyMXon+UzY7G1ToAQI8X
+ n1wMwkOoZcWc+8muBDqHTyjvXlXaF+738moQvL2h0eWg2WDGgTPWJBwQzQYxZMxMdrS0
+ 0cSFbOMbG16IOOivgIKbP5TPlLX28Pf/yJwIE4XVjlJNZ1BolzlDaUet9GIooVGwRFQj
+ SJO8ykm902F40ZnGzVNfSm/qNUBrcHiBLURiy8mSJBy2rSySnITIqFPngvP6/DEpawLY
+ Qbkg==
+X-Gm-Message-State: ABy/qLYAZRQTSqgTosue/EY03UtpEvriMMbeMnLvyUCGINRw5osU8YtL
+ DQBJLJc7ZSCuUxe+aP42kWVy4n4E9pOaTQ==
+X-Google-Smtp-Source: APBJJlFKL6i+P5HgcOmVxfCX70B42CxzXukwWGrCn2B5eiUlfAAOC/ib2ol9PfXjti8B77dD1iJY8g==
+X-Received: by 2002:a05:6871:10c:b0:1b0:7c30:7baf with SMTP id
+ y12-20020a056871010c00b001b07c307bafmr8337077oab.42.1690104864825; 
+ Sun, 23 Jul 2023 02:34:24 -0700 (PDT)
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
+ [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
+ by smtp.gmail.com with ESMTPSA id
+ a5-20020aa78645000000b0064f76992905sm5647475pfo.202.2023.07.23.02.34.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 23 Jul 2023 02:27:52 -0700 (PDT)
-From: Hawkins Jiawei <yin31149@gmail.com>
-To: jasowang@redhat.com,
-	mst@redhat.com,
-	eperezma@redhat.com
-Cc: qemu-devel@nongnu.org,
-	yin31149@gmail.com,
-	18801353760@163.com
-Subject: [PATCH v2 4/4] vdpa: Allow VIRTIO_NET_F_CTRL_VLAN in SVQ
-Date: Sun, 23 Jul 2023 17:26:37 +0800
-Message-Id: <38dc63102a42c31c72fd293d0e6e2828fd54c86e.1690100802.git.yin31149@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1690100802.git.yin31149@gmail.com>
-References: <cover.1690100802.git.yin31149@gmail.com>
+ Sun, 23 Jul 2023 02:34:24 -0700 (PDT)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 0/1] riscv-to-apply queue
+Date: Sun, 23 Jul 2023 19:34:13 +1000
+Message-Id: <20230723093414.859532-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::34;
- envelope-from=yin31149@gmail.com; helo=mail-oa1-x34.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::35;
+ envelope-from=alistair23@gmail.com; helo=mail-oa1-x35.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,28 +93,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable SVQ with VIRTIO_NET_F_CTRL_VLAN feature.
+The following changes since commit d1181d29370a4318a9f11ea92065bea6bb159f83:
 
-Co-developed-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
----
- net/vhost-vdpa.c | 1 +
- 1 file changed, 1 insertion(+)
+  Merge tag 'pull-nbd-2023-07-19' of https://repo.or.cz/qemu/ericb into staging (2023-07-20 09:54:07 +0100)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 347241796d..73e9063fa0 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -111,6 +111,7 @@ static const uint64_t vdpa_svq_device_features =
-     BIT_ULL(VIRTIO_NET_F_STATUS) |
-     BIT_ULL(VIRTIO_NET_F_CTRL_VQ) |
-     BIT_ULL(VIRTIO_NET_F_CTRL_RX) |
-+    BIT_ULL(VIRTIO_NET_F_CTRL_VLAN) |
-     BIT_ULL(VIRTIO_NET_F_CTRL_RX_EXTRA) |
-     BIT_ULL(VIRTIO_NET_F_MQ) |
-     BIT_ULL(VIRTIO_F_ANY_LAYOUT) |
--- 
-2.25.1
+are available in the Git repository at:
 
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20230723-3
+
+for you to fetch changes up to dcaaf2bf9bfd2c664dbeff0069fcab3d75c924d3:
+
+  roms/opensbi: Upgrade from v1.3 to v1.3.1 (2023-07-23 19:32:02 +1000)
+
+----------------------------------------------------------------
+Fifth RISC-V PR for 8.1
+
+* roms/opensbi: Upgrade from v1.3 to v1.3.1
+
+----------------------------------------------------------------
+Bin Meng (1):
+      roms/opensbi: Upgrade from v1.3 to v1.3.1
+
+ pc-bios/opensbi-riscv32-generic-fw_dynamic.bin | Bin 135344 -> 135376 bytes
+ pc-bios/opensbi-riscv64-generic-fw_dynamic.bin | Bin 138304 -> 138368 bytes
+ roms/opensbi                                   |   2 +-
+ 3 files changed, 1 insertion(+), 1 deletion(-)
 
