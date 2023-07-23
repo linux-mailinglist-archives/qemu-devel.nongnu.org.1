@@ -2,72 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71A275E299
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 16:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FBAF75E2C4
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 17:03:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNZz1-0001Nh-Np; Sun, 23 Jul 2023 10:22:51 -0400
+	id 1qNaao-0006iO-Cb; Sun, 23 Jul 2023 11:01:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNZz0-0001NZ-9H
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 10:22:50 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qNaak-0006i0-S2
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:01:50 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNZyy-0002Tx-Ob
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 10:22:50 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-98377c5d53eso566434366b.0
- for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 07:22:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qNaaj-0003Vg-9M
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:01:50 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-3fbc5d5742eso32698115e9.3
+ for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 08:01:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690122167; x=1690726967;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Fd2MZ9DmCBSHGcW2VWwKiypeKtl8OXjtkASqTPjr7QQ=;
- b=JvkvX6HEnPwTiyeKsWKvSTa6eCP+WWqJkrVrfGBALCOi38C5Aq5FErgYXLrk3qCa2F
- hZYgudhlZDC8VILa/7SFXgvMM/QgiNj5cPPCyicLoTNke4CFRCvz448XZfWEZzmEEjnj
- l7BUOfG73PcSz3pNLwT8NunvXN00J/6RtTFAKG8EAQ94o5XpbXpeyZ7L4pJh03ebshm8
- +k9bgp1R0wOVY452Vx9pBRl7jMAFCdb2Gvz7qRlYeajhfvCpA80lIRGsEUj5cB3fVfV4
- HKCqxz958UBKkLQvdyPcU8Eny5tgA6u8QM1YgewVbe7yFE9rmy1n2CHVG1Q3nr0jmHEq
- I78Q==
+ d=linaro.org; s=google; t=1690124507; x=1690729307;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=DQh/9IFaX20bWV04gvARogqUgIV64wzBvQuFvvlmxmE=;
+ b=CNRb8SQd/FL8G7lIhaby/NI7hFCgbIFg2OGYNwDpq7GBc+i42iap8i7r8qZvUHW/tv
+ /uh57Mmy5Bv7opwJkhpGnIdQBdQSFgk4Jv11Sn54qBU5TYAyW2g4B1WHeJ8rG9ty8GzP
+ 3s7hWx4EtR98kIX731EZEjZt+ToWJ1eFpepDycyk+kod1EomnofJpSCzlXSfqgCzJzPT
+ wxLxHMQRrn4bhcSRFRhpWCllD1iw/rgQHE7LWQWximypJO60WWk8b11MOWx50kSVJXGJ
+ Lnpj44soKqXWhdOrxgmCt2DvhidpJnApWtx8YOb2UdI8DLeWFC6S0GcCQlmpSBUAFuH8
+ uJKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690122167; x=1690726967;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Fd2MZ9DmCBSHGcW2VWwKiypeKtl8OXjtkASqTPjr7QQ=;
- b=lRVbt+8iiCVpJt7CuY+nHP3kzOv2S/wT+imcTRM1AC5cc5ZRfvi6NZnPaIiruVKBA8
- baa7QEhxyC+Yt9XJZrWYE8spv7UcPVHss27Wv0VGn0j7R9BXB0lez6j4YEjTXXrhuyK7
- AVMfRJkmEoT/F4+cMLbWlMsz3c7KtlPPqnY/vD+KO8gSgwrTGyX3qQhDRwsTGh/QhTs+
- NQZ/GG2e3NCXJ5jHznTLlIR+ASPIFhFB1zVLlC1+X3eNymoCyJ4ilTF1igEBdxJu3Bu7
- lcv9OXjUF2JRfxhMCUQMIob08VlcCrcEdHFWukz4rFh+BqANAVDIJfd/ZsfQXarxDRnm
- ai7A==
-X-Gm-Message-State: ABy/qLYuaN+/nUQWNA/9+y1glhxed+DSFXiM//mdN8O3/ryb3jlFr8mj
- CYNO55x64UlES9bsebEqCZqk/cKkTeoEIS79s3o72Z6U8VVqVTgn
-X-Google-Smtp-Source: APBJJlFQQl/BOPZwOQWDBT+D/Hih5lK+7MLVYF7vCL82DWezvrICL5o1oPkZdL3TOnGggxjemP/NYg6QQhFsyVkbN38=
-X-Received: by 2002:a17:906:64cf:b0:994:4be4:a106 with SMTP id
- p15-20020a17090664cf00b009944be4a106mr6567132ejn.10.1690122167093; Sun, 23
- Jul 2023 07:22:47 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690124507; x=1690729307;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DQh/9IFaX20bWV04gvARogqUgIV64wzBvQuFvvlmxmE=;
+ b=FNnPXtjq9xKshTTAmrpj3gju6i9ijJ0lJ05yEfJMtXQsodzxWXaAZcJU1+j0k8+o/m
+ zahqZpzXLgxHAQ5vZljY88fTCWv/IaxGXRKnveJTKzUYKsVvhcbkbIPCoDSecAul2opO
+ z4VLu41jmoRqMininT/J3fEV/vkP/jkDOc5K/dv3JM/5wX3cA3uJF2Pb0DgJ5iWqoOQm
+ RmJs67BlBEToOT/f5rZOhynDpX6H3hSMM0Budxo/JWbRwuTtoUWRakhyIJZt8jzxyNCy
+ MlGD3SvFB7wPRnpGNVVzsJLWtwzlffkxff+bK0FGZSNDe4czShzz/MiLgprGwgnyQiVw
+ lV5w==
+X-Gm-Message-State: ABy/qLYn+bSre1DOlqYzAqGzFOrGVhpsN/bxAVpoo2NAqc3OVAirnmMX
+ Z7cmweP1latfyPRYKYz5EfE6EA==
+X-Google-Smtp-Source: APBJJlG+Z8g5wHr9x/Mcpl3Wut3XcVwGSTfFYa2t66S8Ta2aGabsmZd08OSUI+OXUBJKt+oYle+VbQ==
+X-Received: by 2002:adf:ce11:0:b0:313:f29f:5eb3 with SMTP id
+ p17-20020adfce11000000b00313f29f5eb3mr6543267wrn.32.1690124507087; 
+ Sun, 23 Jul 2023 08:01:47 -0700 (PDT)
+Received: from [172.20.9.211]
+ (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
+ by smtp.gmail.com with ESMTPSA id
+ s18-20020a05600c045200b003fc01495383sm10486965wmb.6.2023.07.23.08.01.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 23 Jul 2023 08:01:46 -0700 (PDT)
+Message-ID: <52b4072c-7f8b-6de3-76df-a42898e96a65@linaro.org>
+Date: Sun, 23 Jul 2023 16:01:45 +0100
 MIME-Version: 1.0
-References: <20230722113507.78332-1-richard.henderson@linaro.org>
- <20230722113507.78332-4-richard.henderson@linaro.org>
-In-Reply-To: <20230722113507.78332-4-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sun, 23 Jul 2023 15:22:36 +0100
-Message-ID: <CAFEAcA8jdpiCuTtDfo7rKD=fQUgo7SZFuGLZ8UXe-7PdaaASKg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] accel/tcg: Take mmap_lock in load_atomic*_or_exit
-To: Richard Henderson <richard.henderson@linaro.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 1/3] include/exec: Add WITH_MMAP_LOCK_GUARD
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
 Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20230722113507.78332-1-richard.henderson@linaro.org>
+ <20230722113507.78332-2-richard.henderson@linaro.org>
+ <CAFEAcA_G1TCCUiCTKN4JGBvMji5YFpUn74P+uEeXsSnCUJbJ=A@mail.gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA_G1TCCUiCTKN4JGBvMji5YFpUn74P+uEeXsSnCUJbJ=A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,20 +97,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 22 Jul 2023 at 12:35, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> For user-only, the probe for page writability may race with another
-> thread's mprotect.  Take the mmap_lock around the operation.  This
-> is still faster than the start/end_exclusive fallback.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  accel/tcg/ldst_atomicity.c.inc | 32 ++++++++++++++++++--------------
->  1 file changed, 18 insertions(+), 14 deletions(-)
+On 7/23/23 15:18, Peter Maydell wrote:
+> On Sat, 22 Jul 2023 at 12:35, Richard Henderson
+> <richard.henderson@linaro.org> wrote:
+>>
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   include/exec/exec-all.h | 10 ++++++++++
+>>   bsd-user/mmap.c         |  1 +
+>>   linux-user/mmap.c       |  1 +
+>>   3 files changed, 12 insertions(+)
+>>
+>> diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+>> index 5fa0687cd2..d02517e95f 100644
+>> --- a/include/exec/exec-all.h
+>> +++ b/include/exec/exec-all.h
+>> @@ -629,6 +629,15 @@ void TSA_NO_TSA mmap_lock(void);
+>>   void TSA_NO_TSA mmap_unlock(void);
+>>   bool have_mmap_lock(void);
+>>
+>> +static inline void mmap_unlock_guard(void *unused)
+>> +{
+>> +    mmap_unlock();
+>> +}
+>> +
+>> +#define WITH_MMAP_LOCK_GUARD()                                            \
+>> +    for (int _mmap_lock_iter __attribute__((cleanup(mmap_unlock_guard)))  \
+>> +         = (mmap_lock(), 0); _mmap_lock_iter == 0; _mmap_lock_iter = 1)
+> 
+> All our other WITH_FOO macros seem to use g_autoptr rather than
+> a raw attribute((cleanup)); is it worth being consistent?
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+I didn't think it worthwhile, no, since that requires even more boilerplate.
 
-thanks
--- PMM
+> (This one also doesn't allow nested uses, I think.)
+
+It does, since each variable will shadow the next within each context.
+
+
+r~
 
