@@ -2,86 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBAF75E2C4
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 17:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDDB75E2DA
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 17:26:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNaao-0006iO-Cb; Sun, 23 Jul 2023 11:01:54 -0400
+	id 1qNaxF-0002NG-Ij; Sun, 23 Jul 2023 11:25:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNaak-0006i0-S2
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:01:50 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1qNaxD-0002My-Uk
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:25:03 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNaaj-0003Vg-9M
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:01:50 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-3fbc5d5742eso32698115e9.3
- for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 08:01:48 -0700 (PDT)
+ id 1qNaxC-0000wa-AN
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:25:03 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-3fbc244d384so27259915e9.0
+ for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 08:25:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690124507; x=1690729307;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1690125899; x=1690730699;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=DQh/9IFaX20bWV04gvARogqUgIV64wzBvQuFvvlmxmE=;
- b=CNRb8SQd/FL8G7lIhaby/NI7hFCgbIFg2OGYNwDpq7GBc+i42iap8i7r8qZvUHW/tv
- /uh57Mmy5Bv7opwJkhpGnIdQBdQSFgk4Jv11Sn54qBU5TYAyW2g4B1WHeJ8rG9ty8GzP
- 3s7hWx4EtR98kIX731EZEjZt+ToWJ1eFpepDycyk+kod1EomnofJpSCzlXSfqgCzJzPT
- wxLxHMQRrn4bhcSRFRhpWCllD1iw/rgQHE7LWQWximypJO60WWk8b11MOWx50kSVJXGJ
- Lnpj44soKqXWhdOrxgmCt2DvhidpJnApWtx8YOb2UdI8DLeWFC6S0GcCQlmpSBUAFuH8
- uJKQ==
+ bh=k+WZx93ROD0Vq+2YBnGkjgBZcWyjAkdqdaYO8lRSlLw=;
+ b=SKaa5nNa3nLzJs+p9en1blLcldoh0tVJAbZAFJ4j7GyvND4c4JU6m9TzImf9RAqSq7
+ kXpizbv0he/tKeWrXfPUZ7IV9HLsSeVfAwAWc0j71AImjT8ne0XL0uqSl07zN+Li2nui
+ dXYEK3KuKhGmOa5VytSts9mbiiaX0U+OMd6oiC6pp2IhDX4lFUvi6uFqA+LaQlpzEZnx
+ dyJsvxflfpX13Es8Rl8RLx3YM4zIj8mTgL/NsQH7DQavy5eIDEcQPdVh4P6BWXoNSuhh
+ TDAqgpgbEMB/gwjp+TpN6cJGWjEVyJlgUzCEZstGtA3WC6xPaVoC3zkP8j9DMXN6jxxH
+ f8ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690124507; x=1690729307;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20221208; t=1690125899; x=1690730699;
+ h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DQh/9IFaX20bWV04gvARogqUgIV64wzBvQuFvvlmxmE=;
- b=FNnPXtjq9xKshTTAmrpj3gju6i9ijJ0lJ05yEfJMtXQsodzxWXaAZcJU1+j0k8+o/m
- zahqZpzXLgxHAQ5vZljY88fTCWv/IaxGXRKnveJTKzUYKsVvhcbkbIPCoDSecAul2opO
- z4VLu41jmoRqMininT/J3fEV/vkP/jkDOc5K/dv3JM/5wX3cA3uJF2Pb0DgJ5iWqoOQm
- RmJs67BlBEToOT/f5rZOhynDpX6H3hSMM0Budxo/JWbRwuTtoUWRakhyIJZt8jzxyNCy
- MlGD3SvFB7wPRnpGNVVzsJLWtwzlffkxff+bK0FGZSNDe4czShzz/MiLgprGwgnyQiVw
- lV5w==
-X-Gm-Message-State: ABy/qLYn+bSre1DOlqYzAqGzFOrGVhpsN/bxAVpoo2NAqc3OVAirnmMX
- Z7cmweP1latfyPRYKYz5EfE6EA==
-X-Google-Smtp-Source: APBJJlG+Z8g5wHr9x/Mcpl3Wut3XcVwGSTfFYa2t66S8Ta2aGabsmZd08OSUI+OXUBJKt+oYle+VbQ==
-X-Received: by 2002:adf:ce11:0:b0:313:f29f:5eb3 with SMTP id
- p17-20020adfce11000000b00313f29f5eb3mr6543267wrn.32.1690124507087; 
- Sun, 23 Jul 2023 08:01:47 -0700 (PDT)
-Received: from [172.20.9.211]
+ bh=k+WZx93ROD0Vq+2YBnGkjgBZcWyjAkdqdaYO8lRSlLw=;
+ b=OAiwR79kruGOxpGgKBjb7wilqjsk8VMg0KueQHSDLCLqAAfC7LknqzD86glxTJL5JK
+ GQhCKGrZzcK+t8KyPiyw/INKE3Rqh4/VQgZHNhJMOoNrIrREEMmISgjNyWjAmhMXj93T
+ zCooGD0EdYHrMD4DBv6c16SK2WfC+aQEawcO9zpNkY+XWU6x/zoN1ASDoVyQ3G/yS5nf
+ kyMVk/50otrU4ujURMtt3ptV6j4k+R9/mh4BVGP/jzXDPtfGN5HMxBdq7o4R7au79Ovl
+ NpeTk+uNM+5df8/UWbgTpQZMdu4mzwoie+2x4xbMcVR/wFRng72o7nfm1TuIx9G9hEvD
+ 2Dqg==
+X-Gm-Message-State: ABy/qLZlZNBo/s7iaE4TBBhWtFefrkDZV5I1/AVBoxdwCJRSG4gCaOZl
+ GHy8aMfQ4r1sw2GJt15qG1A6GTvesWuy+X8bWipOnQ==
+X-Google-Smtp-Source: APBJJlFk3tOhqE7J8AZcfEzy943o1z60xYs7EPbx+LgDbUmD3B8ucVUxu8nPQp7hctjRH056XQ95eQ==
+X-Received: by 2002:a05:600c:114c:b0:3fa:97ad:2ba5 with SMTP id
+ z12-20020a05600c114c00b003fa97ad2ba5mr5428462wmz.31.1690125898991; 
+ Sun, 23 Jul 2023 08:24:58 -0700 (PDT)
+Received: from [172.20.15.116]
  (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
  by smtp.gmail.com with ESMTPSA id
- s18-20020a05600c045200b003fc01495383sm10486965wmb.6.2023.07.23.08.01.46
+ z4-20020a1c4c04000000b003fba94c9e18sm7951265wmf.4.2023.07.23.08.24.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 23 Jul 2023 08:01:46 -0700 (PDT)
-Message-ID: <52b4072c-7f8b-6de3-76df-a42898e96a65@linaro.org>
-Date: Sun, 23 Jul 2023 16:01:45 +0100
+ Sun, 23 Jul 2023 08:24:58 -0700 (PDT)
+Message-ID: <230dd650-846f-7105-7add-43fa2d03dad7@linaro.org>
+Date: Sun, 23 Jul 2023 16:24:57 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 1/3] include/exec: Add WITH_MMAP_LOCK_GUARD
+Subject: Re: [PATCH 06/14] target/arm/ptw: Pass an ARMSecuritySpace to
+ arm_hcr_el2_eff_secstate()
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-References: <20230722113507.78332-1-richard.henderson@linaro.org>
- <20230722113507.78332-2-richard.henderson@linaro.org>
- <CAFEAcA_G1TCCUiCTKN4JGBvMji5YFpUn74P+uEeXsSnCUJbJ=A@mail.gmail.com>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230714154648.327466-1-peter.maydell@linaro.org>
+ <20230714154648.327466-7-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CAFEAcA_G1TCCUiCTKN4JGBvMji5YFpUn74P+uEeXsSnCUJbJ=A@mail.gmail.com>
+In-Reply-To: <20230714154648.327466-7-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,43 +97,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/23/23 15:18, Peter Maydell wrote:
-> On Sat, 22 Jul 2023 at 12:35, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   include/exec/exec-all.h | 10 ++++++++++
->>   bsd-user/mmap.c         |  1 +
->>   linux-user/mmap.c       |  1 +
->>   3 files changed, 12 insertions(+)
->>
->> diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
->> index 5fa0687cd2..d02517e95f 100644
->> --- a/include/exec/exec-all.h
->> +++ b/include/exec/exec-all.h
->> @@ -629,6 +629,15 @@ void TSA_NO_TSA mmap_lock(void);
->>   void TSA_NO_TSA mmap_unlock(void);
->>   bool have_mmap_lock(void);
->>
->> +static inline void mmap_unlock_guard(void *unused)
->> +{
->> +    mmap_unlock();
->> +}
->> +
->> +#define WITH_MMAP_LOCK_GUARD()                                            \
->> +    for (int _mmap_lock_iter __attribute__((cleanup(mmap_unlock_guard)))  \
->> +         = (mmap_lock(), 0); _mmap_lock_iter == 0; _mmap_lock_iter = 1)
+On 7/14/23 16:46, Peter Maydell wrote:
+> arm_hcr_el2_eff_secstate() takes a bool secure, which it uses to
+> determine whether EL2 is enabled in the current security state.
+> With the advent of FEAT_RME this is no longer sufficient, because
+> EL2 can be enabled for Secure state but not for Root, and both
+> of those will pass 'secure == true' in the callsites in ptw.c.
 > 
-> All our other WITH_FOO macros seem to use g_autoptr rather than
-> a raw attribute((cleanup)); is it worth being consistent?
+> As it happens in all of our callsites in ptw.c we either avoid making
+> the call or else avoid using the returned value if we're doing a
+> translation for Root, so this is not a behaviour change even if the
+> experimental FEAT_RME is enabled.  But it is less confusing in the
+> ptw.c code if we avoid the use of a bool secure that duplicates some
+> of the information in the ArmSecuritySpace argument.
+> 
+> Make arm_hcr_el2_eff_secstate() take an ARMSecuritySpace argument
+> instead.
+> 
+> Note that since arm_hcr_el2_eff() uses the return value from
+> arm_security_space_below_el3() for the 'space' argument, its
+> behaviour does not change even when at EL3 (Root security state) and
+> it continues to tell you what EL2 would be if you were in it.
+> 
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+>   target/arm/cpu.h    |  2 +-
+>   target/arm/helper.c |  7 ++++---
+>   target/arm/ptw.c    | 13 +++++--------
+>   3 files changed, 10 insertions(+), 12 deletions(-)
+> 
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index 4d6c0f95d59..3743a9e2f8a 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -2555,7 +2555,7 @@ static inline bool arm_is_el2_enabled(CPUARMState *env)
+>    * "for all purposes other than a direct read or write access of HCR_EL2."
+>    * Not included here is HCR_RW.
+>    */
+> -uint64_t arm_hcr_el2_eff_secstate(CPUARMState *env, bool secure);
+> +uint64_t arm_hcr_el2_eff_secstate(CPUARMState *env, ARMSecuritySpace space);
+>   uint64_t arm_hcr_el2_eff(CPUARMState *env);
+>   uint64_t arm_hcrx_el2_eff(CPUARMState *env);
+>   
+> diff --git a/target/arm/helper.c b/target/arm/helper.c
+> index d08c058e424..1e45fdb47c9 100644
+> --- a/target/arm/helper.c
+> +++ b/target/arm/helper.c
+> @@ -5731,11 +5731,12 @@ static void hcr_writelow(CPUARMState *env, const ARMCPRegInfo *ri,
+>    * Bits that are not included here:
+>    * RW       (read from SCR_EL3.RW as needed)
+>    */
+> -uint64_t arm_hcr_el2_eff_secstate(CPUARMState *env, bool secure)
+> +uint64_t arm_hcr_el2_eff_secstate(CPUARMState *env, ARMSecuritySpace space)
+>   {
+>       uint64_t ret = env->cp15.hcr_el2;
+>   
+> -    if (!arm_is_el2_enabled_secstate(env, secure)) {
+> +    if (space == ARMSS_Root ||
+> +        !arm_is_el2_enabled_secstate(env, arm_space_is_secure(space))) {
+>           /*
 
-I didn't think it worthwhile, no, since that requires even more boilerplate.
+This is confusing, as without any larger context it certainly looks wrong.
 
-> (This one also doesn't allow nested uses, I think.)
+> @@ -230,7 +230,7 @@ static bool regime_translation_disabled(CPUARMState *env, ARMMMUIdx mmu_idx,
+>          }
+>      }
+>  
+> -    hcr_el2 = arm_hcr_el2_eff_secstate(env, is_secure);
+> +    hcr_el2 = arm_hcr_el2_eff_secstate(env, space);
 
-It does, since each variable will shadow the next within each context.
+Here, it's not clear, and could produce an "incorrect" result, though of course the value 
+is not actually used unless mmu_idx requires it.
+
+It might be better to sink the computation down into the two cases that require it.  With 
+that, a local definition like
+
+static inline uint64_t arm_hcr_el2_ptwspace(...)
+{
+     assert(space != ARMSS_Root);
+     return arm_hcr_el2_eff_secstate(env, arm_space_is_secure(space));
+}
+
+could be the thing.
 
 
 r~
+
 
