@@ -2,76 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE23675E443
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 21:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B5675E523
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 23:59:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNeJH-0000WK-00; Sun, 23 Jul 2023 15:00:03 -0400
+	id 1qNh5f-0004r3-Jo; Sun, 23 Jul 2023 17:58:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nospam@kota.moe>) id 1qNeJE-0000VY-FV
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 15:00:00 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ (Exim 4.90_1) (envelope-from <4strangepeople@gmail.com>)
+ id 1qNgFL-0007U5-LJ
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 17:04:07 -0400
+Received: from mail-wr1-f53.google.com ([209.85.221.53])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nospam@kota.moe>) id 1qNeJC-0006cG-45
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 15:00:00 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-267fc19280bso537818a91.1
- for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 11:59:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=kota.moe; s=google; t=1690138794; x=1690743594;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=o8Zsu5BEMsZfOFamOKMzDItIQGLRnp+yNVQzEHQIOMY=;
- b=IfULfF1Z2daSRnNfKJRcRIV2Uc+BJhLV9alBdNMemf2nfJD2y16eNNWKdNMBZnXcOr
- E6k3D3NMTpfQJ9B001msYakn491juFI8o7vGOHJWosmwGbGyFw/mF5mP9aPFekjQ1StN
- fXOvzV+voDw0PyyAQ9sy5fbFg6p65C6GP/leY=
+ (Exim 4.90_1) (envelope-from <4strangepeople@gmail.com>)
+ id 1qNgFK-00014M-09
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 17:04:07 -0400
+Received: by mail-wr1-f53.google.com with SMTP id
+ ffacd0b85a97d-31757edd9edso354818f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 14:04:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690138794; x=1690743594;
+ d=1e100.net; s=20221208; t=1690146243; x=1690751043;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=o8Zsu5BEMsZfOFamOKMzDItIQGLRnp+yNVQzEHQIOMY=;
- b=D0vkAZikUUJf3Z44Bhk4MR2cM/QvpzcF7zENiH+maWIic2zFVzoANFx98WQySq97kI
- mZ87URoEnlkoLiT5j3iRBUFt8MyD/UR4geUsOfRHzm+zQFge4SLW6zkDBs5ZjibsGvkg
- /b1uCscFvsMxonXp5T5zB4Mx1uPhcE2ol6CIjORWdKJ+7joCdzpaPIJBxpsKbkbW3MBC
- HvChGaCCvOYwe6VDIj3UmAUJI1KdBpnvNdCQcecnq9BYUcPKpS0V1rNI+Wd/h++Dn0ZK
- CejPt1fZCxq4K/lk83p/O2O+IlUUwEiytKeVp6sQF2tSf1OpU/vlT00sbdSjaX7eVOEL
- oMEA==
-X-Gm-Message-State: ABy/qLaTomu/QUckTvWuabsjH7PFC83cuwDHz18iaU37vqyeJ9AlcaXX
- b/1ghLLVn6qu+O05TOi8AsnAz9HW/a7BNdSLhHA=
-X-Google-Smtp-Source: APBJJlGnNkpBO6lxG9DrMwzbSGmvR+G7tI1PdrrXSgfFOxo3STa/NlE05VEnOVKPA3wCL/DAWKBUhA==
-X-Received: by 2002:a17:90b:615:b0:268:abf:6431 with SMTP id
- gb21-20020a17090b061500b002680abf6431mr2813960pjb.24.1690138794548; 
- Sun, 23 Jul 2023 11:59:54 -0700 (PDT)
-Received: from home.home.kota.moe ([2404:bf40:8181:20:4206:cfeb:365e:302e])
+ bh=DFv8PboMD59YwLs+wHdPDanYAqXjRATO16wSPfSHkHc=;
+ b=bPOcMN1NdIQvWZOJ6NR6j4rf1ONanCc5C1IHn6m4RP1afeKf+RYPuFnho7amGQuZm2
+ WngKcksxU+7tTqzS+AnFehfx6tT1V7VArlvTQVjEb1GU19G8MBbA7gDokiHG65f9sD8q
+ engd6LcTnZrLaVbBhmDRjoA1/pf7lPqHbPYpVOfg1Boza63Kzunsf5brwtE7P1ZjQM8h
+ RLJEU3AGP0pY/18Y0Rz3q6/+qYBJswsitc03i4TaWvUJbWuhyvMwoWEG/nFgaiv4m3gd
+ S058DDKSNY5OvIvrnJOGaueGv+OO7qZeDe1Mtg+65PXiNNZ7O0SrObuwXK9zmuwFCgYL
+ HcIg==
+X-Gm-Message-State: ABy/qLbWcieX4jonRwuMkfZqvo7sy+7jQ61CB02Z0JIzS8jQdibUMzvt
+ YNkXiTe+PST5Boq2Wj+1HZ0XvRiL6OE=
+X-Google-Smtp-Source: APBJJlH+EK+BIln1QofaCdhqX5OYCOc3i/aVEjRlCLCgRIsmPlTxAzPBvfv837A0OqZTsNmscmUMHA==
+X-Received: by 2002:a7b:ce98:0:b0:3fb:ba04:6d5d with SMTP id
+ q24-20020a7bce98000000b003fbba046d5dmr4817588wmj.12.1690146243302; 
+ Sun, 23 Jul 2023 14:04:03 -0700 (PDT)
+Received: from kotebook.zasenko.name ([91.123.151.221])
  by smtp.gmail.com with ESMTPSA id
- 23-20020a17090a19d700b00262fc3d911esm7656882pjj.28.2023.07.23.11.59.52
+ s19-20020a1cf213000000b003fbaade072dsm8410243wmc.23.2023.07.23.14.04.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 23 Jul 2023 11:59:54 -0700 (PDT)
-From: =?UTF-8?q?=E5=B0=8F=E5=A4=AA?= <nospam@kota.moe>
+ Sun, 23 Jul 2023 14:04:02 -0700 (PDT)
+From: Sergii Zasenko <sergii@zasenko.name>
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, babu.moger@amd.com,
- =?UTF-8?q?=E5=B0=8F=E5=A4=AA?= <nospam@kota.moe>
-Subject: [PATCH] target/i386: Fix reporting of CPU dies when
- nr_cores=nr_threads=1
-Date: Mon, 24 Jul 2023 04:59:09 +1000
-Message-Id: <20230723185909.441455-1-nospam@kota.moe>
+Cc: Sergii Zasenko <sergii@zasenko.name>
+Subject: [PATCH] Allow UNIX socket for VNC websocket
+Date: Mon, 24 Jul 2023 00:03:56 +0300
+Message-Id: <20230723210355.28717-1-sergii@zasenko.name>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=nospam@kota.moe; helo=mail-pj1-x1030.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=209.85.221.53;
+ envelope-from=4strangepeople@gmail.com; helo=mail-wr1-f53.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Sun, 23 Jul 2023 17:58:07 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,92 +79,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When QEMU is started with `-smp D,sockets=1,dies=D,cores=1,threads=1` (that
-is, 1 socket with D dies but each die contains just a single thread), both
-Linux and Windows guests incorrectly interprets the system as having D
-sockets with 1 die each
-
-Ultimately this is caused by various CPUID leaves not being die-aware in
-their "threads per socket" calculations, so this patch fixes that
-
-These changes are referenced to the AMD PPR for Family 19h Model 01h (Milan)
-and Family 17h Model 01h (Naples) manuals:
- - CPUID_Fn00000001_EBX[23:16]: Number of threads in the processor
-                                (Core::X86::Cpuid::SizeId[NC] + 1)
- - CPUID_Fn0000000B_EBX_x01[15:0]: Number of logical cores in processor
-                                   socket (not present until Rome)
- - CPUID_Fn80000001_ECX[1]: Multi core product
-                            (Core::X86::Cpuid::SizeId[NC] != 0)
- - CPUID_Fn80000008_ECX[7:0]: The number of threads in the package - 1
-                              (Core::X86::Cpuid::SizeId[NC])
-
-Note there are two remaining occurences that I didn't touch:
- - CPUID_Fn8000001E_ECX[10:8]: Always 0 (1 node per processor) for Milan.
-                               But for Naples, it can also be 2 or 4 nodes
-                               where each node is defined as one or two
-                               CCXes (CCD?). But Milan also has multiple
-                               CCXes, so clearly the definition of a node is
-                               different from model to model, so I've left
-                               it untouched. (QEMU seems to use the Naples
-                               definition)
- - MSR_CORE_THREAD_COUNT: This MSR doesn't exist on Milan or Naples
-
-Signed-off-by: 小太 <nospam@kota.moe>
+Signed-off-by: Sergii Zasenko <sergii@zasenko.name>
 ---
- target/i386/cpu.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ ui/vnc.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 97ad229d8b..6ff23fa590 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6049,8 +6049,8 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             *ecx |= CPUID_EXT_OSXSAVE;
-         }
-         *edx = env->features[FEAT_1_EDX];
--        if (cs->nr_cores * cs->nr_threads > 1) {
--            *ebx |= (cs->nr_cores * cs->nr_threads) << 16;
-+        if (env->nr_dies * cs->nr_cores * cs->nr_threads > 1) {
-+            *ebx |= (env->nr_dies * cs->nr_cores * cs->nr_threads) << 16;
-             *edx |= CPUID_HT;
-         }
-         if (!cpu->enable_pmu) {
-@@ -6230,7 +6230,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             break;
-         case 1:
-             *eax = apicid_pkg_offset(&topo_info);
--            *ebx = cs->nr_cores * cs->nr_threads;
-+            *ebx = env->nr_dies * cs->nr_cores * cs->nr_threads;
-             *ecx |= CPUID_TOPOLOGY_LEVEL_CORE;
-             break;
-         default:
-@@ -6496,7 +6496,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-          * discards multiple thread information if it is set.
-          * So don't set it here for Intel to make Linux guests happy.
-          */
--        if (cs->nr_cores * cs->nr_threads > 1) {
-+        if (env->nr_dies * cs->nr_cores * cs->nr_threads > 1) {
-             if (env->cpuid_vendor1 != CPUID_VENDOR_INTEL_1 ||
-                 env->cpuid_vendor2 != CPUID_VENDOR_INTEL_2 ||
-                 env->cpuid_vendor3 != CPUID_VENDOR_INTEL_3) {
-@@ -6562,7 +6562,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-              *eax |= (cpu_x86_virtual_addr_width(env) << 8);
-         }
-         *ebx = env->features[FEAT_8000_0008_EBX];
--        if (cs->nr_cores * cs->nr_threads > 1) {
-+        if (env->nr_dies * cs->nr_cores * cs->nr_threads > 1) {
-             /*
-              * Bits 15:12 is "The number of bits in the initial
-              * Core::X86::Apic::ApicId[ApicId] value that indicate
-@@ -6570,7 +6570,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-              * Bits 7:0 is "The number of threads in the package is NC+1"
-              */
-             *ecx = (apicid_pkg_offset(&topo_info) << 12) |
--                   ((cs->nr_cores * cs->nr_threads) - 1);
-+                   ((env->nr_dies * cs->nr_cores * cs->nr_threads) - 1);
-         } else {
-             *ecx = 0;
-         }
+diff --git a/ui/vnc.c b/ui/vnc.c
+index 92964dc..dea1414 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -3715,11 +3715,6 @@ static int vnc_display_get_address(const char *addrstr,
+         addr->type = SOCKET_ADDRESS_TYPE_UNIX;
+         addr->u.q_unix.path = g_strdup(addrstr + 5);
+ 
+-        if (websocket) {
+-            error_setg(errp, "UNIX sockets not supported with websock");
+-            goto cleanup;
+-        }
+-
+         if (to) {
+             error_setg(errp, "Port range not support with UNIX socket");
+             goto cleanup;
 -- 
 2.39.2
 
