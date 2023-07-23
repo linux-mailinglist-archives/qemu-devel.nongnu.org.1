@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF75075E2EE
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 17:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A878175E2F2
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 17:59:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNbMG-0001FG-N8; Sun, 23 Jul 2023 11:50:56 -0400
+	id 1qNbTW-0002sZ-87; Sun, 23 Jul 2023 11:58:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNbME-0001E2-53
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:50:54 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1qNbTS-0002rj-LQ
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:58:23 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNbMC-000814-MM
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:50:53 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3172144c084so3104313f8f.1
- for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 08:50:52 -0700 (PDT)
+ id 1qNbTR-0002DR-8K
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:58:22 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3143ccb0f75so3122921f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 08:58:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690127451; x=1690732251;
+ d=linaro.org; s=google; t=1690127899; x=1690732699;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=k252XPH4PZA8/tNLIs5R1Pmualb7PIAO7yTHlkQMoS8=;
- b=C9llMhHI1f/Ag4mVnZt0uoYyc7yP58+rt5AZY1ulATaULIfM1v//kZ6ue9//cV3udw
- xxZYARpVYXzTJD/YKJBdNW1bDGLm3uwzrrLRqH9kah7eY95pWBqiT11l57/1D11BKTxs
- RofGsDM0yuU58LFLiwqdWa8FF51wqzMkCvaF5MSoS3aEnd8tkEUD+ZVyP/lKFgGtaDma
- dbVO6dyJoLIG9XpiOu2idkujIN0febhF9TbEIf92o/T3XHGNRJePERUrxFeQBP3w9ZQz
- U4g03nc1OHKvSArFAZT0kPjGbSkNApqNv9YNqTo05BU+lNozwvv1gOb70s6DgKCKnSgh
- cMJQ==
+ bh=9IuWwTITZuejK1toXLD7lL6imMzLV/pyvVxYHAVJSXg=;
+ b=TvIFjD+0wGEVngBBvjzLL1LlzJYgzcjHX/cJIwedQfvhpTlqEr80+fqhw1YVVG0EJm
+ IhErWVJchP6/KoU974eljtTT2Z+6LwV+nfD/gaF1bECq+BVQ7Xk/nuBFKyLzm3fNTrC0
+ R9L8iQVDIFStpoIwjJxuK7YxYJFZGvAchEoA8XKgCBTg7KMOqTMOWSU52Fn2FI1WAdpQ
+ 0oWwVfHTPOjl/PMSKQ8voon991ROJDbwxASwVgE7F3t5TVhSulEVwvIKZXhryjUnIVWd
+ s/JFTbbmzDJnB4aOtAFkgZ4ykdVcjJHarwldVjkbWWfHxoMHnY6C0B2iWV3buCDscCdT
+ tGfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690127451; x=1690732251;
+ d=1e100.net; s=20221208; t=1690127899; x=1690732699;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=k252XPH4PZA8/tNLIs5R1Pmualb7PIAO7yTHlkQMoS8=;
- b=d2GS2ibzjjgYXR5okN9PlOXcn4Uc99u1ReyMeEKd2n8Kq300BTsNQE7Ka388i2quF3
- XW+Y9Eq8Rbh3aV9cGHo9bbT+gtWs4GiXJg5hJmnXIWhXjJZUSNEYya9JMK2uMVqQlsuo
- HbcAZZPJOhIkqlpqHXu1ostPnH51cpmXuaYJJp9QDos1IyA1e60qIMTIFtW3lU1Nd5vU
- IcwXhWWlN7SxSiE9vkybQyhQz0DdIubei2pAqD4Kgp3K2vCFpzpeos9LQWAuJc9gaTGj
- G9DlJRpjFURCmW8rpcH4t2yrCA3NOVwc/L1qo3g+yFGTjDEATWBhxwR7RGvTAHy3RWFe
- MuCg==
-X-Gm-Message-State: ABy/qLbKE89CK3ahJQZFjMVLFruAsOfziGUIzhitBbtDjpWBBH5iQVc5
- KAZZfxChN+aT23eLIXWLW9+atg==
-X-Google-Smtp-Source: APBJJlEHYmHEMSCLyN3v5jWx2YngAfnDwJzEsR8dOza8l/pe9zogJ66FutfSNuWkN63WyrdCk7wDDg==
-X-Received: by 2002:a5d:5112:0:b0:313:e8bf:a6f with SMTP id
- s18-20020a5d5112000000b00313e8bf0a6fmr6016725wrt.23.1690127451261; 
- Sun, 23 Jul 2023 08:50:51 -0700 (PDT)
-Received: from [172.20.15.116]
+ bh=9IuWwTITZuejK1toXLD7lL6imMzLV/pyvVxYHAVJSXg=;
+ b=YhGLpV3WA3PUtiFKZQYQnz7c8+VHA/Xiq8pvwzIcjbCx9FVG5BEwd+XXGBHkGAZ6qT
+ tU+g8io7FCYcx/TvkG++t3rNgtCNQLwliBUowey+u+uXTBa4rV+gG0y3exnjr+l6I/Oo
+ MNHXm3UEh99eNeJ1klmqaVNGeRZVpamDWFGCfDQAYOW2sCmnUbSdy0MX9obLysFIRppt
+ wLjFS5F0yBRhraQumWWohl52Bnj6Xo25R17HPu9zeadbkxALQl3XoIaDmnRaZOw7e6NX
+ flkhjje1ipMYXnUXHZ4vB1oYosVRjYPXWJ4dMJ+e7PbWq6YTfD1GgVPydQqXze6NUWWM
+ e88Q==
+X-Gm-Message-State: ABy/qLbKl9PHLiATlgwYklJJQwNp9obmuFk+Rde2QTjyTxHzUo2oW7MU
+ 60ASSH1wJw76W4UQg8CkzJFpkhIvgEtJOkyKDm+S7w==
+X-Google-Smtp-Source: APBJJlEkPcL/Oypq6odHBPzJaYxEwhCl4IczjKv552Q/PyWd0axeHjzjK0qGRk1TpwjtIB+1XIkVqA==
+X-Received: by 2002:a05:6000:180e:b0:313:dfa3:4f7b with SMTP id
+ m14-20020a056000180e00b00313dfa34f7bmr6321866wrh.20.1690127898975; 
+ Sun, 23 Jul 2023 08:58:18 -0700 (PDT)
+Received: from [172.20.2.224]
  (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
  by smtp.gmail.com with ESMTPSA id
- a18-20020a5d5712000000b0030c4d8930b1sm9957280wrv.91.2023.07.23.08.50.50
+ h17-20020adffd51000000b0030fa3567541sm10038512wrs.48.2023.07.23.08.58.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 23 Jul 2023 08:50:51 -0700 (PDT)
-Message-ID: <9e869fd2-94c6-54f4-f4b7-2bc700a49daf@linaro.org>
-Date: Sun, 23 Jul 2023 16:50:49 +0100
+ Sun, 23 Jul 2023 08:58:18 -0700 (PDT)
+Message-ID: <47134d04-e8d2-b8ee-88f1-09096d77e7f2@linaro.org>
+Date: Sun, 23 Jul 2023 16:58:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 11/14] target/arm/ptw: Set attributes correctly for MMU
- disabled data accesses
+Subject: Re: [PATCH 12/14] target/arm/ptw: Check for block descriptors at
+ invalid levels
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20230714154648.327466-1-peter.maydell@linaro.org>
- <20230714154648.327466-12-peter.maydell@linaro.org>
+ <20230714154648.327466-13-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230714154648.327466-12-peter.maydell@linaro.org>
+In-Reply-To: <20230714154648.327466-13-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,17 +98,20 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/14/23 16:46, Peter Maydell wrote:
-> When the MMU is disabled, data accesses should be Device nGnRnE,
-> Outer Shareable, Untagged.  We handle the other cases from
-> AArch64.S1DisabledOutput() correctly but missed this one.
-> Device nGnRnE is memattr == 0, so the only part we were missing
-> was that shareability should be set to 2 for both insn fetches
-> and data accesses.
+> The architecture doesn't permit block descriptors at any arbitrary
+> level of the page table walk; it depends on the granule size which
+> levels are permitted.  We implemented only a partial version of this
+> check which assumes that block descriptors are valid at all levels
+> except level 3, which meant that we wouldn't deliver the Translation
+> fault for all cases of this sort of guest page table error.
+> 
+> Implement the logic corresponding to the pseudocode
+> AArch64.DecodeDescriptorType() and AArch64.BlockDescSupported().
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/ptw.c | 12 +++++++-----
->   1 file changed, 7 insertions(+), 5 deletions(-)
+>   target/arm/ptw.c | 25 +++++++++++++++++++++++--
+>   1 file changed, 23 insertions(+), 2 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
