@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B31A75E2ED
+	by mail.lfdr.de (Postfix) with ESMTPS id 3231C75E2EC
 	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 17:50:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNbK3-00083N-P7; Sun, 23 Jul 2023 11:48:39 -0400
+	id 1qNbKk-0008Lc-1k; Sun, 23 Jul 2023 11:49:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNbK2-00082s-Al
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:48:38 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1qNbKi-0008IL-LH
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:49:20 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNbK0-0006qw-Ox
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:48:38 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fbc63c2e84so33539055e9.3
- for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 08:48:36 -0700 (PDT)
+ id 1qNbKh-0007Wf-8U
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:49:20 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-3fbc5d5746cso32922735e9.2
+ for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 08:49:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690127315; x=1690732115;
+ d=linaro.org; s=google; t=1690127358; x=1690732158;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Q+kr7SLHmjKHPZehm34/UP6SZCQ7koEyHzzD7U3bLCU=;
- b=Gfc5cFdEf10FitylbTLMLliSD9L3SaV8Buo+dccE11UZfAYhnVblUMbMcQ9Kbn1TzO
- EssrGDv4qXavNCfMEysZePS+Daoc9beW9y/x5mTlLnSMPNswxmW/oylb4wuaiMg/8jGK
- DlYPkBVFC2e+1tUS5FZieTkvMQYd4sWfNuSahPfLnyWGafpr/3cFhScFJbv1vkALp0Sb
- gz/uB2fRxFcyzBEoRRn2kHTqQN2BSUF2OC6vivZsL0nUKfNPQEdymVKrGfmcJLRUv3Wd
- yEguhKusflngfUalNOFmn9Xaop7LWctEd20fzvQ98HlCfW3vw5wfnnQECoXX9Ur0Gzyd
- Yyiw==
+ bh=DlvtnA0BBPcZVGQ/t30apURmyYPjD6OUZRJY9NzOoSM=;
+ b=q98xLx6gCOi2JCpf0BR5JlfEkZIi5KFy5qaMrLQPe+ZiZc7uZjzNIOAPpg9bedhlV/
+ z3EYwngRqE9DLZC8uh3oAu1c1cGf0liAlUUEv5GGSuEUc5W2LHI+B7Zlyj9SDLYs4CdP
+ 7drS0wV7zELZVHjUkO4vMhU5vSL0QYsiamhNLIcS6HIvaHNRVwEx8PcBONGHQybBg91n
+ AYXs9glRxOkY5SaCAbYZ+UT9UZbzCMwrkSn9UL5HZNoApfYxFJwgN/B7MAZ2Lz97UkR1
+ UYuKpOTfcs05i04YgYp8CpTXDfMV9JNlHC0Zn9HQvjPgfmB0Rq9k85nua4yiR9McrMkt
+ RkPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690127315; x=1690732115;
+ d=1e100.net; s=20221208; t=1690127358; x=1690732158;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Q+kr7SLHmjKHPZehm34/UP6SZCQ7koEyHzzD7U3bLCU=;
- b=DiiUbaTkd9reiHCIg9e8ByaUaZv7FbF3xoTPKdbxbrKM565vO1sUARTc3CpqHoJ/zg
- TWywl52xu+xYG1Mam09F0yjqhrcqDUhvBgXUsCPpscKzvsn1rs95CDXmFVWa0zum57vd
- KPQz5BMHGUXRVV60qxMRHpKxX5fhhdop/WyUnAoi2V/TCQH4hrpnKOLegdLIYSQ1G1GH
- H9PzlqgNp8PbteGXNJuF4BhHY/iTZImcwKlhz7ZEJOxxcAOM1DOxlPukdrfRsTrY279f
- O1y0KV3Jf1Hxj0fefp57F6LTFZG47NodtWHscoQxNiMsIltq/yyN1nW1yYCZFOEWBXX0
- rvTg==
-X-Gm-Message-State: ABy/qLaojuBLHX4D2dOn9FX23VGoHb9r28OjprzukH8RlzKWG1/xkBoH
- RTkaiCuypkfg0tTh/991+rJjaQ==
-X-Google-Smtp-Source: APBJJlEHxLq73otlW5NZAWxAc+zTr++0iTppMKbaf6RqDy/TIsKazNxHKdjVi/baTWy6K+rUaKdlIw==
-X-Received: by 2002:a05:600c:c3:b0:3fb:b67b:7f15 with SMTP id
- u3-20020a05600c00c300b003fbb67b7f15mr5718076wmm.21.1690127315101; 
- Sun, 23 Jul 2023 08:48:35 -0700 (PDT)
+ bh=DlvtnA0BBPcZVGQ/t30apURmyYPjD6OUZRJY9NzOoSM=;
+ b=flcvEgQY1h5KNLrmX5GUM7Icq3hHKW1F1tOrLkrFi0v3/kfZD1/sQ6qsvMOjBqcNpt
+ sQfncSf4FqJWI5mVfcc6ZhDmK6siHN0xlLUJ1IX+a7kxEDC9SonFDBzNXG60IXPa0f9m
+ bUopGAOTs5WtLGo+wqPR5up7xY6kKTeDZbcNnuikRDq51S62CjSbv+DIaMrFrQgEMqhH
+ G6xOZ1gc1ULeytZ2MDRh+Xfq8Nxa4rDmxvLo5GnbDW7SQweUOiVRX8+336Ypcpzhi7Xz
+ 82gc3n8I4gjwlTSJS0h0Y95IMxAPMV62aOOco/vaSsivhhW2MblpsopYZTiclIJMscp0
+ uiYA==
+X-Gm-Message-State: ABy/qLbglgpHXG13yJo4uz04DhHWwFphxJmhaoXFJY6Hpda9F8T7BAIW
+ COLvtzGsK6/xMU5cudT/KvqT6Q==
+X-Google-Smtp-Source: APBJJlGdtV4jShanrqIDJvQ4qBJ3qzJdQl4V+crMHPCQ+Ns+LaNKxxrtA5xnnUZ7OC+P6YVOWPd8mw==
+X-Received: by 2002:a05:600c:22cf:b0:3fd:2dd9:6d58 with SMTP id
+ 15-20020a05600c22cf00b003fd2dd96d58mr3366864wmg.26.1690127357954; 
+ Sun, 23 Jul 2023 08:49:17 -0700 (PDT)
 Received: from [172.20.15.116]
  (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
  by smtp.gmail.com with ESMTPSA id
- t8-20020a1c7708000000b003fa74bff02asm7871508wmi.26.2023.07.23.08.48.34
+ g8-20020a7bc4c8000000b003fa8158135esm10767030wmk.11.2023.07.23.08.49.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 23 Jul 2023 08:48:34 -0700 (PDT)
-Message-ID: <179ce2a7-a15a-1af9-a4a3-4adfd2b329bc@linaro.org>
-Date: Sun, 23 Jul 2023 16:48:33 +0100
+ Sun, 23 Jul 2023 08:49:17 -0700 (PDT)
+Message-ID: <0537f995-9b7a-5b76-724b-30eb201e671f@linaro.org>
+Date: Sun, 23 Jul 2023 16:49:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 09/14] target/arm/ptw: Remove S1Translate::in_secure
+Subject: Re: [PATCH 10/14] target/arm/ptw: Drop S1Translate::out_secure
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20230714154648.327466-1-peter.maydell@linaro.org>
- <20230714154648.327466-10-peter.maydell@linaro.org>
+ <20230714154648.327466-11-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230714154648.327466-10-peter.maydell@linaro.org>
+In-Reply-To: <20230714154648.327466-11-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -97,13 +97,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/14/23 16:46, Peter Maydell wrote:
-> We no longer look at the in_secure field of the S1Translate struct
-> anyway, so we can remove it and all the code which sets it.
+> We only use S1Translate::out_secure in two places, where we are
+> setting up MemTxAttrs for a page table load. We can use
+> arm_space_is_secure(ptw->out_space) instead, which guarantees
+> that we're setting the MemTxAttrs secure and space fields
+> consistently, and allows us to drop the out_secure field in
+> S1Translate entirely.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/ptw.c | 13 -------------
->   1 file changed, 13 deletions(-)
+>   target/arm/ptw.c | 7 ++-----
+>   1 file changed, 2 insertions(+), 5 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
