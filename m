@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6985B75E405
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 19:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABC175E412
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 19:40:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNcpo-00062f-Nm; Sun, 23 Jul 2023 13:25:32 -0400
+	id 1qNd2x-000863-Dy; Sun, 23 Jul 2023 13:39:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNcpm-00062Q-6C
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 13:25:30 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1qNd2s-00085A-VW
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 13:39:03 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNcpj-0000ED-M6
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 13:25:28 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3163eb69487so2859470f8f.1
- for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 10:25:26 -0700 (PDT)
+ id 1qNd2r-0002mz-8B
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 13:39:02 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fba8e2aa52so33754295e9.1
+ for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 10:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690133125; x=1690737925;
+ d=linaro.org; s=google; t=1690133939; x=1690738739;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=X1hFIWlZw/Lg5W/4p4kfui4BJlEV0CNNkx7phlj8cBE=;
- b=Ut76xmoYiDzGZqMg3LXd57UQNvUmERC44kg3Ca/SRzIltyEuBfm6iwGORAYCwiuctQ
- rhj9hmG5aV0KXD9VumfmvGmTQ0bL/hL2PeHR++XXLu+NVN7DDyppT0Ud3WU05cyEGofU
- pQvbv1Q04pp9XhnuQ16Kr9pnDor2Pb90UZGtW+m8D/vLmR/7/2AuhStlIE1uCUe/6d28
- vU2X3jVd7rblMedyiq0PNiI3gQudaVlZjZ2D87wVTrNKEQJzIbS/FoRJM8lz13RKcp5H
- 6ATYZ5dWOnSuOSXKKxqhiKmNjxe3UoC/zodvOoH1gLI395VMtZ5EUcauTszyNqB+uTyz
- dwQw==
+ bh=P5kFkx/PlNQ11zizEsBYeaCwvcarm9zN5uffFSA8z2Y=;
+ b=XSoVOdnide3ufZShWaSSMBHxaUlCFy4EQgRps9VN1qpWYtrFqU4o7WIUCbpTIwytjY
+ a1lVJDq05l4DdhgHwy3UQJ0pTrIef1FzZAPfmi2rvD4BCQL8dec2nQdZoB1uOeP7NKdo
+ a/MCDnKE0T418Mo+16JF7qbdXw8pI3D+0cP/XCZco7jcspAfgNmSrnw9A728/BjZAZvA
+ EZMTBHit8qlz3xidnChXTcilazLLyI4st7PAPpy1O9HEqcqhDU0V0AqMULdLasESSND1
+ bEPPkzZjNVzdVnDMQQKAfbD4HTCkHzkUp7ZwXRdyc/nmj4niMBMK5IX94yE5wDKK1a7P
+ zBMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690133125; x=1690737925;
+ d=1e100.net; s=20221208; t=1690133939; x=1690738739;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=X1hFIWlZw/Lg5W/4p4kfui4BJlEV0CNNkx7phlj8cBE=;
- b=Mg1whYMrkaRhTYokwOhVizuLOgYR7/xO5qk5tp6eSo/RIoXv7HHiE9bEW1j2W8nsq8
- lmJUYAXcPSvHQ03mnkysP3D+gBo+cwUdKSthey63Vin2J20aCKAAWeMDpDEBuFvQrITE
- pT7Ye7KpM0KJAZgvKjsD7dj++bfEeqHyky46CXXZSCtp1D8uq7qM3EUdCY5uq/Q1kFWn
- v2a0/3Dn7pNqMHAfsPnVrBpAuTfEFzTDeJVb2JfLsYjz1Cwr+97Bxx9LT2+o6kffVAMY
- 7Y433/5ZRa9O08QDWDRHB3RnNh8vo9cj1xeN98P+tmJ+HKjCN84/Ck8yrkljT3M4JDdl
- pPaw==
-X-Gm-Message-State: ABy/qLYkmjCQozH7Bm82hocunrzF8ej2/949t1d8CilowZ2d8aRDvNfL
- 6QNnHXgwU5MvgK66SGXZAUFgNw==
-X-Google-Smtp-Source: APBJJlF+vdvLBvgv96dH3XrL7VuuWnUA0uRtjEEptFzuJH9/Zitu/z4PRw8W2qfIXm1zVLBJKaKT2A==
-X-Received: by 2002:adf:f242:0:b0:315:a235:8aa8 with SMTP id
- b2-20020adff242000000b00315a2358aa8mr10201657wrp.2.1690133125581; 
- Sun, 23 Jul 2023 10:25:25 -0700 (PDT)
+ bh=P5kFkx/PlNQ11zizEsBYeaCwvcarm9zN5uffFSA8z2Y=;
+ b=OQGhWWIdevJeFnajWAj3T6zlGTOY56T42WkDHMtMzWjW8RGoIxr6FtoZveNux0Kpi7
+ t1WFXiRyevVtlGd5jXEzATLbMDs5bZ8IwxME2DCbivEl7LTZUAW+l30RzxJ8Avy9oEc9
+ vP7rMvRaLjPQN0S3OUvkF6/YwDyjzLi246jjtDFYSLaqLlyXJPQt3Z8FWhgAxVBg/8Y4
+ M79WHYb+VmHjKQFOfwdf5pXoLhfvtyJSPx0Sn5wiRpKNYR6H9+APpymUkkC9BndIp8lR
+ cHbB/C5ewOs//1ZJE41u4C9UWMUQ0BSz5HCq1mDCvCi4TF9iqMwARlrg/v3YfEvrwmnu
+ Ds4A==
+X-Gm-Message-State: ABy/qLYiTJQsQyOLAZujfGC+HtXZjiDv/pvkp139PISC2oWF5nI9BazS
+ 04KpNebprcW8Bf8D23LqVSCPKg==
+X-Google-Smtp-Source: APBJJlHOxR7mLDVAFNRub/hafz2yv7AOxoujFDoqFM2ljzMcMo5tBtPlU+2vI82zMKAKQ8owuJkFTQ==
+X-Received: by 2002:a05:600c:b58:b0:3fb:b1fd:4183 with SMTP id
+ k24-20020a05600c0b5800b003fbb1fd4183mr5867765wmr.12.1690133938795; 
+ Sun, 23 Jul 2023 10:38:58 -0700 (PDT)
 Received: from [172.20.2.0] (179.181-106-213.static.virginmediabusiness.co.uk.
  [213.106.181.179]) by smtp.gmail.com with ESMTPSA id
- p15-20020adfce0f000000b00301a351a8d6sm10243936wrn.84.2023.07.23.10.25.25
+ t7-20020a5d6a47000000b00313f7b077fesm10255665wrw.59.2023.07.23.10.38.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 23 Jul 2023 10:25:25 -0700 (PDT)
-Message-ID: <3af8bb3f-75a6-ec68-7560-e8113ed4acf5@linaro.org>
-Date: Sun, 23 Jul 2023 18:25:23 +0100
+ Sun, 23 Jul 2023 10:38:58 -0700 (PDT)
+Message-ID: <6285fd1f-da31-abda-296a-2f67363c5b78@linaro.org>
+Date: Sun, 23 Jul 2023 18:38:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] accel/tcg: Zero-pad vaddr in tlb_debug output
+Subject: Re: [PATCH] Wrong signed data type on pageflags_* functions - limit
+ to 2GB memory allocation
 Content-Language: en-US
-To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-References: <20230713120746.26897-1-anjo@rev.ng>
+To: Luca Bonissi <qemu@bonslack.org>, qemu-devel@nongnu.org
+Cc: Riku Voipio <riku.voipio@iki.fi>, Paolo Bonzini <pbonzini@redhat.com>
+References: <4e1b1c75-8f00-83cc-86c3-0401c8bd0b2a@bonslack.org>
+ <327460e2-0ebd-9edb-426b-1df80d16c32a@bonslack.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230713120746.26897-1-anjo@rev.ng>
+In-Reply-To: <327460e2-0ebd-9edb-426b-1df80d16c32a@bonslack.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -94,20 +96,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/13/23 13:07, Anton Johansson wrote:
-> In replacing target_ulong with vaddr and TARGET_FMT_lx with VADDR_PRIx,
-> the zero-padding of TARGET_FMT_lx got lost.  Readd 16-wide zero-padding
-> for logging consistency.
+On 7/18/23 15:50, Luca Bonissi wrote:
+> On 32bit qemu-user targets, memory allocation failed after about 2GB due to incorrect 
+> signed (instead of the correct unsigned) "last" parameter in pageflags_find and 
+> pageflags_next functions (file accel/tcg/user-exec.c).
 > 
-> Suggested-by: Peter Maydell<peter.maydell@linaro.org>
-> Signed-off-by: Anton Johansson<anjo@rev.ng>
-> ---
->   accel/tcg/cputlb.c | 20 ++++++++++----------
->   1 file changed, 10 insertions(+), 10 deletions(-)
+> The parameter, on 32bit targets, will be signed-extent to the 64bit final uint64_t 
+> parameters, leading to incorrect comparison on the RBTree (only the first call to mmap on 
+> the upper 2GB memory will be successful).
+> 
+> Following the patch to fix the bug (re-submit to add "signed-off-by"):
+> 
+> Signed-off-by: Luca Bonissi <qemu@bonslack.org>
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-And queued, thanks.
+Don't reply to previous patches with a new patch -- tooling doesn't handle it.
+I've applied this by hand.
+
 
 r~
 
