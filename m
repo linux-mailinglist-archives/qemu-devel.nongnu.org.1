@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A878175E2F2
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 17:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16CE275E2F4
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 18:03:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNbTW-0002sZ-87; Sun, 23 Jul 2023 11:58:26 -0400
+	id 1qNbVd-0003oL-O3; Sun, 23 Jul 2023 12:00:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNbTS-0002rj-LQ
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:58:23 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ id 1qNbVb-0003na-A7
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 12:00:35 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNbTR-0002DR-8K
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 11:58:22 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-3143ccb0f75so3122921f8f.0
- for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 08:58:20 -0700 (PDT)
+ id 1qNbVZ-0002j6-QI
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 12:00:35 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-3163eb69487so2832512f8f.1
+ for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 09:00:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690127899; x=1690732699;
+ d=linaro.org; s=google; t=1690128032; x=1690732832;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9IuWwTITZuejK1toXLD7lL6imMzLV/pyvVxYHAVJSXg=;
- b=TvIFjD+0wGEVngBBvjzLL1LlzJYgzcjHX/cJIwedQfvhpTlqEr80+fqhw1YVVG0EJm
- IhErWVJchP6/KoU974eljtTT2Z+6LwV+nfD/gaF1bECq+BVQ7Xk/nuBFKyLzm3fNTrC0
- R9L8iQVDIFStpoIwjJxuK7YxYJFZGvAchEoA8XKgCBTg7KMOqTMOWSU52Fn2FI1WAdpQ
- 0oWwVfHTPOjl/PMSKQ8voon991ROJDbwxASwVgE7F3t5TVhSulEVwvIKZXhryjUnIVWd
- s/JFTbbmzDJnB4aOtAFkgZ4ykdVcjJHarwldVjkbWWfHxoMHnY6C0B2iWV3buCDscCdT
- tGfg==
+ bh=LktNimRU9OwO6Zs5tm9aqCj3B/sEkQe0Lm4USeY7rUU=;
+ b=lbALk+uWq9hjF6z62BCeAyIhshISXUkUAxvwFthM4CmjuLzrMhAeqdXPvSfPXEjqj8
+ XdsMkb+z9KR5BVpnyv8vUykwoP4Jc1OEa4CD91u/HU+PpROb1DuzUA0gPtbds+U0cqru
+ IosMzRQ4oV/GHiPpggBB5hXTVeVpdzgQF4pH/ZQc1N6n0p/vFAXlscgd1DInfniqsFTv
+ PnDHbmHnaHyM+xrw08ZySQbpTlSAW/79vVgZLrhWD0PpJGZ4ecos8OudqttAYokRe5sw
+ Zx2MCotsbJ94xsty0SCFJvgav3zdpGcY3OQ+EBkLOQozE5ZkRlvZa702xDfBFaLIjXSP
+ fmDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690127899; x=1690732699;
+ d=1e100.net; s=20221208; t=1690128032; x=1690732832;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9IuWwTITZuejK1toXLD7lL6imMzLV/pyvVxYHAVJSXg=;
- b=YhGLpV3WA3PUtiFKZQYQnz7c8+VHA/Xiq8pvwzIcjbCx9FVG5BEwd+XXGBHkGAZ6qT
- tU+g8io7FCYcx/TvkG++t3rNgtCNQLwliBUowey+u+uXTBa4rV+gG0y3exnjr+l6I/Oo
- MNHXm3UEh99eNeJ1klmqaVNGeRZVpamDWFGCfDQAYOW2sCmnUbSdy0MX9obLysFIRppt
- wLjFS5F0yBRhraQumWWohl52Bnj6Xo25R17HPu9zeadbkxALQl3XoIaDmnRaZOw7e6NX
- flkhjje1ipMYXnUXHZ4vB1oYosVRjYPXWJ4dMJ+e7PbWq6YTfD1GgVPydQqXze6NUWWM
- e88Q==
-X-Gm-Message-State: ABy/qLbKl9PHLiATlgwYklJJQwNp9obmuFk+Rde2QTjyTxHzUo2oW7MU
- 60ASSH1wJw76W4UQg8CkzJFpkhIvgEtJOkyKDm+S7w==
-X-Google-Smtp-Source: APBJJlEkPcL/Oypq6odHBPzJaYxEwhCl4IczjKv552Q/PyWd0axeHjzjK0qGRk1TpwjtIB+1XIkVqA==
-X-Received: by 2002:a05:6000:180e:b0:313:dfa3:4f7b with SMTP id
- m14-20020a056000180e00b00313dfa34f7bmr6321866wrh.20.1690127898975; 
- Sun, 23 Jul 2023 08:58:18 -0700 (PDT)
+ bh=LktNimRU9OwO6Zs5tm9aqCj3B/sEkQe0Lm4USeY7rUU=;
+ b=RNjpKo6orjWcuvtFOM8mFExIp3L0m2JZ8sLIbCbVAOblPvsD9RbztW2DWg5l6kuJTx
+ 617rT2BrsnrFcIPgKWSq46jd8sD7x7i6VB2wJmL0EM0WxKpzwuhvFtN29UPzKizq1n5b
+ 4H/7AKIVJSiQJ1HWlcZfnC/lZUonRVFesJSSFgroVQFS3b+U/c7mYmW0FJ/soDmOqszo
+ n2nydeerHBYC9/7NWGgr3AfX7O8C4WV3AMzfIU1j7SGrnO6gVmlpC5scGYAbZOaRlY2N
+ AUaanmw43/mCKTa1+qSkckO5KChtpLP87gaaVZtGUG99n3IFHJlvh+Df6/3jGQ2BCUjV
+ jUIA==
+X-Gm-Message-State: ABy/qLY8DoA92LFFNrRVSPMwOHBV2rSQLbPWXSKbDFhmOQnkwLJqgkKi
+ RNE4dDMeuagJ4cbaSC6WTGc9NQ==
+X-Google-Smtp-Source: APBJJlFr3Ksj2BzFu9OOzZF3vbg8VeAV6WE9Sm395uNSDS81gPb8YRJxOrPmVbjeNPluZRlQTnjHmw==
+X-Received: by 2002:a5d:460a:0:b0:313:df09:acfb with SMTP id
+ t10-20020a5d460a000000b00313df09acfbmr6364699wrq.11.1690128032441; 
+ Sun, 23 Jul 2023 09:00:32 -0700 (PDT)
 Received: from [172.20.2.224]
  (179.181-106-213.static.virginmediabusiness.co.uk. [213.106.181.179])
  by smtp.gmail.com with ESMTPSA id
- h17-20020adffd51000000b0030fa3567541sm10038512wrs.48.2023.07.23.08.58.18
+ o5-20020adfcf05000000b003172510d19dsm10094909wrj.73.2023.07.23.09.00.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 23 Jul 2023 08:58:18 -0700 (PDT)
-Message-ID: <47134d04-e8d2-b8ee-88f1-09096d77e7f2@linaro.org>
-Date: Sun, 23 Jul 2023 16:58:17 +0100
+ Sun, 23 Jul 2023 09:00:31 -0700 (PDT)
+Message-ID: <58f041c7-8240-3fda-d099-a29cc3b20639@linaro.org>
+Date: Sun, 23 Jul 2023 17:00:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 12/14] target/arm/ptw: Check for block descriptors at
- invalid levels
+Subject: Re: [PATCH 13/14] target/arm/ptw: Report stage 2 fault level for
+ stage 2 faults on stage 1 ptw
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20230714154648.327466-1-peter.maydell@linaro.org>
- <20230714154648.327466-13-peter.maydell@linaro.org>
+ <20230714154648.327466-14-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230714154648.327466-13-peter.maydell@linaro.org>
+In-Reply-To: <20230714154648.327466-14-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
 X-Spam_bar: --
@@ -98,20 +98,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/14/23 16:46, Peter Maydell wrote:
-> The architecture doesn't permit block descriptors at any arbitrary
-> level of the page table walk; it depends on the granule size which
-> levels are permitted.  We implemented only a partial version of this
-> check which assumes that block descriptors are valid at all levels
-> except level 3, which meant that we wouldn't deliver the Translation
-> fault for all cases of this sort of guest page table error.
-> 
-> Implement the logic corresponding to the pseudocode
-> AArch64.DecodeDescriptorType() and AArch64.BlockDescSupported().
+> When we report faults due to stage 2 faults during a stage 1
+> page table walk, the 'level' parameter should be the level
+> of the walk in stage 2 that faulted, not the level of the
+> walk in stage 1. Correct the reporting of these faults.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/ptw.c | 25 +++++++++++++++++++++++--
->   1 file changed, 23 insertions(+), 2 deletions(-)
+>   target/arm/ptw.c | 10 +++++++---
+>   1 file changed, 7 insertions(+), 3 deletions(-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
