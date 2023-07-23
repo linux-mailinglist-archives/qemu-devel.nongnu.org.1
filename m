@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C844975E0E6
-	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 11:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 929B775E0E9
+	for <lists+qemu-devel@lfdr.de>; Sun, 23 Jul 2023 11:28:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNVNY-0001gj-Gz; Sun, 23 Jul 2023 05:27:52 -0400
+	id 1qNVNf-0001hQ-L9; Sun, 23 Jul 2023 05:27:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qNVNW-0001gZ-7R
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:27:50 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1qNVNe-0001hH-5J
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:27:58 -0400
+Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
- id 1qNVNU-0001WV-LD
- for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:27:49 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-666eec46206so3217959b3a.3
- for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 02:27:48 -0700 (PDT)
+ id 1qNVNa-0001X4-Co
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 05:27:57 -0400
+Received: by mail-oa1-x34.google.com with SMTP id
+ 586e51a60fabf-1bb5f78b30dso91625fac.1
+ for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 02:27:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690104467; x=1690709267;
+ d=gmail.com; s=20221208; t=1690104473; x=1690709273;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=j6MNpmpr0JlX5y+mb1RZNWk8OhHa3Y3TekRln1LZnlY=;
- b=bQhbdbFV1iCTYj41SXJoA2LJ9blIhXO4jJ3bKnuV0g8EtsBJsNy4IFVBQFi5XuF97v
- dYkaEPr1SQEkajFBJiUlvsyQBOF+FlUDgDqRZfGCABOOWcTyLPCHjAIceAvp0Xz2Apk0
- F5ZJYliZUf9ALMGacUgLec4dZ/YArW/GnrKRSIZNfE0F8KnYq0h0WGm5U52dUhGoKieP
- nOY+8W50uXSiDlO5r4HrJZep0x3pGDQV+l1pYp68ycb+mUaTWGdcNGrF+FvJFOvQL+vY
- dHY6YoBhjSJbdD7bn8zUeMM0nAjkQ5jIKWkfXA8FymDe65An7aH/muTQyTKkqHe1zPu4
- DTVg==
+ bh=lqDYe0wtYfLpN2tqp42QO/VtGC9R8rwe6ys1M/nbgpg=;
+ b=fULkiA3qFelc4c5X8wZOSnw7GrJzc8129ArM2M5dYiBcWdBXRodnnr0YvQZFeVUYPj
+ ib/fykJJuJZo/m//jYbLC+MCq3XsuRjAti8czPrefmbMULmXRMijeBh2BHvCxZOkUGYh
+ MoOCynN7hyFwqulQ4O7bVu0C1tt2lqnM/T+xqWJKWyy6uB8bFUWl4loICv6GadAlYA7t
+ BJvgojOspq/SpxQ8loxNBSEtAKUjy9TNEmPEditmPszs/PjnuExn4wO3kIWcSinYJcIz
+ JO5gYf4yMRyiwEo0WEFWpby5GACL8c6qu22C1knQHoAOnv+MHeu+It8z89QKkJMICw8g
+ dD0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690104467; x=1690709267;
+ d=1e100.net; s=20221208; t=1690104473; x=1690709273;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=j6MNpmpr0JlX5y+mb1RZNWk8OhHa3Y3TekRln1LZnlY=;
- b=D4srzvXcRNod20sARmv001WtOgBqjuYGB4jV8GqQ2hIZBAlelnmW+aCVq6hOvUVBl9
- pD3co80yn7ZmMzfWJLXni6U3DN6QT9saZLfbwuYz5SgTSUlcMscEzcjH2W7ad1OXoDBW
- ZN5FPvHhrOyEvxFhrlVrfvv79EoBlZMoVhkWyjLs6d15x3Ttty7M+rpNXhnFRqW/kY2E
- B2TMlSsCKh3KtlHtw+cFeA2wV01cMxZ44xUcs8je5ER+bphfX1ZiMRVcQkDzROvcxltH
- bsT/xPix3cCOYHl5OfOtidsUO8p7R5PXojNI778cqNiuUv+XkndGxXZ1QYJ0LCKHzpy+
- pD6w==
-X-Gm-Message-State: ABy/qLZ9uLhqRSX8uZHp+aFOucwKFRTbYqzMPRmLUh62/KRzczdabgtm
- jY3X5QrUTBJiuHWwx7jvgeY=
-X-Google-Smtp-Source: APBJJlGiITRtHHRWgb1EnSVoPaf03qBuz4xy3Wu27lts0o3Vm9+pY25UJnIN1sUXt9ejqzVCLVOCZQ==
-X-Received: by 2002:a05:6a00:84c:b0:67a:b045:e290 with SMTP id
- q12-20020a056a00084c00b0067ab045e290mr7006332pfk.4.1690104466992; 
- Sun, 23 Jul 2023 02:27:46 -0700 (PDT)
+ bh=lqDYe0wtYfLpN2tqp42QO/VtGC9R8rwe6ys1M/nbgpg=;
+ b=GPg4yzwVSxFSYEBWOi3eSa/CCQvkl7tbyC9Mb5ZWkx4Hx7OB4W6R4ovKl8Ouuitydb
+ xrLg2MSC1+/39WOUCi+mrn3VPt4Idk4fdd4mvehTsyDLCoxRCaP5dgOnjRcOkTTUgDv4
+ 8Pt3DTmfxFJ04lJNDtqdpaR2BE7BV44ztqg2RqM7Ya8mCKcL9l3oAWIvNV0bVd0k6TYN
+ 4qX+T+P6bvGbD8ltbOa+tPkTs0dMSWfmkVova0fCQaJF/Gb30gAzFxf8ckiQ66CYN/Hf
+ vJynsvcNX5ExJC1wjP0kvQx2XSiGSWLVZnWWnBguxjiytrWpyNOuL+bpLVgNrWEppDNA
+ kpSA==
+X-Gm-Message-State: ABy/qLaMAfOBLDM1Vq69e8w/aTBSQ7CE/g/smGTwAmEcBOqqxtzMif1k
+ ubxvTV0etuRByNX5GG+5AKQ=
+X-Google-Smtp-Source: APBJJlFgR7zSjLZJnFfT85js8lc2AkclerUTOd4L0vSRp9agwotZKJCFlDXArfR/jRV0WzKiP8nj9g==
+X-Received: by 2002:a05:6871:112:b0:1a0:85d3:3d70 with SMTP id
+ y18-20020a056871011200b001a085d33d70mr7788428oab.28.1690104472723; 
+ Sun, 23 Jul 2023 02:27:52 -0700 (PDT)
 Received: from localhost ([123.117.183.65]) by smtp.gmail.com with ESMTPSA id
- e21-20020aa78255000000b0065da94fe917sm5706154pfn.36.2023.07.23.02.27.45
+ z129-20020a633387000000b005633c9493d0sm6179518pgz.21.2023.07.23.02.27.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 23 Jul 2023 02:27:46 -0700 (PDT)
+ Sun, 23 Jul 2023 02:27:52 -0700 (PDT)
 From: Hawkins Jiawei <yin31149@gmail.com>
 To: jasowang@redhat.com,
 	mst@redhat.com,
@@ -62,17 +62,17 @@ To: jasowang@redhat.com,
 Cc: qemu-devel@nongnu.org,
 	yin31149@gmail.com,
 	18801353760@163.com
-Subject: [PATCH v2 3/4] vdpa: Restore vlan filtering state
-Date: Sun, 23 Jul 2023 17:26:36 +0800
-Message-Id: <e76a29f77bb3f386e4a643c8af94b77b775d1752.1690100802.git.yin31149@gmail.com>
+Subject: [PATCH v2 4/4] vdpa: Allow VIRTIO_NET_F_CTRL_VLAN in SVQ
+Date: Sun, 23 Jul 2023 17:26:37 +0800
+Message-Id: <38dc63102a42c31c72fd293d0e6e2828fd54c86e.1690100802.git.yin31149@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1690100802.git.yin31149@gmail.com>
 References: <cover.1690100802.git.yin31149@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=yin31149@gmail.com; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::34;
+ envelope-from=yin31149@gmail.com; helo=mail-oa1-x34.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,88 +96,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch introduces vhost_vdpa_net_load_single_vlan()
-and vhost_vdpa_net_load_vlan() to restore the vlan
-filtering state at device's startup.
+Enable SVQ with VIRTIO_NET_F_CTRL_VLAN feature.
 
 Co-developed-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 ---
-v2:
- - remove the extra line pointed out by Eugenio
-
-v1: https://lore.kernel.org/all/0a568cc8a8d2b750c2e09b2237e9f05cece07c3f.1689690854.git.yin31149@gmail.com/
-
- net/vhost-vdpa.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 48 insertions(+)
+ net/vhost-vdpa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 9795306742..347241796d 100644
+index 347241796d..73e9063fa0 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -965,6 +965,50 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
-     return 0;
- }
- 
-+static int vhost_vdpa_net_load_single_vlan(VhostVDPAState *s,
-+                                           const VirtIONet *n,
-+                                           uint16_t vid)
-+{
-+    const struct iovec data = {
-+        .iov_base = &vid,
-+        .iov_len = sizeof(vid),
-+    };
-+    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_VLAN,
-+                                                  VIRTIO_NET_CTRL_VLAN_ADD,
-+                                                  &data, 1);
-+    if (unlikely(dev_written < 0)) {
-+        return dev_written;
-+    }
-+    if (unlikely(*s->status != VIRTIO_NET_OK)) {
-+        return -EIO;
-+    }
-+
-+    return 0;
-+}
-+
-+static int vhost_vdpa_net_load_vlan(VhostVDPAState *s,
-+                                    const VirtIONet *n)
-+{
-+    int r;
-+
-+    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_VLAN)) {
-+        return 0;
-+    }
-+
-+    for (int i = 0; i < MAX_VLAN >> 5; i++) {
-+        for (int j = 0; n->vlans[i] && j <= 0x1f; j++) {
-+            if (n->vlans[i] & (1U << j)) {
-+                r = vhost_vdpa_net_load_single_vlan(s, n, (i << 5) + j);
-+                if (unlikely(r != 0)) {
-+                    return r;
-+                }
-+            }
-+        }
-+    }
-+
-+    return 0;
-+}
-+
- static int vhost_vdpa_net_load(NetClientState *nc)
- {
-     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
-@@ -995,6 +1039,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
-     if (unlikely(r)) {
-         return r;
-     }
-+    r = vhost_vdpa_net_load_vlan(s, n);
-+    if (unlikely(r)) {
-+        return r;
-+    }
- 
-     return 0;
- }
+@@ -111,6 +111,7 @@ static const uint64_t vdpa_svq_device_features =
+     BIT_ULL(VIRTIO_NET_F_STATUS) |
+     BIT_ULL(VIRTIO_NET_F_CTRL_VQ) |
+     BIT_ULL(VIRTIO_NET_F_CTRL_RX) |
++    BIT_ULL(VIRTIO_NET_F_CTRL_VLAN) |
+     BIT_ULL(VIRTIO_NET_F_CTRL_RX_EXTRA) |
+     BIT_ULL(VIRTIO_NET_F_MQ) |
+     BIT_ULL(VIRTIO_F_ANY_LAYOUT) |
 -- 
 2.25.1
 
