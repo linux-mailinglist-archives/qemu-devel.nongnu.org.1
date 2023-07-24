@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C4B75FCAC
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E7A75FCB7
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:56:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNyp9-0001Ki-FB; Mon, 24 Jul 2023 12:54:19 -0400
+	id 1qNypA-0001Lc-0l; Mon, 24 Jul 2023 12:54:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyoy-0001G2-GY
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyp2-0001HG-6G
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyow-0006vL-T5
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyoy-0006vw-TU
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690217646;
+ s=mimecast20190719; t=1690217648;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nFJNxFMoP1z0Pyr8y71Psk7wgz0h6JymgTyC9s0CgXs=;
- b=YhC8/9/gByy38UAGxoOwWDaFitnwr4rrhEIzgBlDq0FVg7rn5yqXL2htsKpq6lIFFdZSCm
- hg9qk6wIIMI7/s6w0uOaojuuY67f8qHSMNPS/cx0R7QdYWzPkNlplP8Uo1uz/eTcZxQUiK
- EezYMi+W+8gEBUsVJzht+rBA3RhhtEw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-169-nOXxmH_XPS2jPX0-8IbyXg-1; Mon, 24 Jul 2023 12:54:04 -0400
-X-MC-Unique: nOXxmH_XPS2jPX0-8IbyXg-1
+ bh=V1FPmqMhfqcrnIQOop+duFFFielJgMHsobOJxQfZPCY=;
+ b=C4uHGok9dfTdNXIwUzCDHvblPYRrigWtsat6245o2b1twUV5n/Hm0uIhj6Nl5GRX8HVgkU
+ 2x4OVd2QR9Fjnb6//5RivnwohDKWBZetvvvilYTF2iTAKdjKBbVFCbh/YT8ATK4QK1gSO3
+ SWyMWknuAFTzxa4nwEDApE187Lb2Mmw=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-688-l-D2fkk8N4G7TYTQOdIc_A-1; Mon, 24 Jul 2023 12:54:05 -0400
+X-MC-Unique: l-D2fkk8N4G7TYTQOdIc_A-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 50B8F8030AC;
- Mon, 24 Jul 2023 16:54:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 851161C0E0C4;
+ Mon, 24 Jul 2023 16:54:05 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.60])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 781B7492CAC;
- Mon, 24 Jul 2023 16:54:03 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C32F2492CAC;
+ Mon, 24 Jul 2023 16:54:04 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 09/16] tests/tcg/s390x: Test CLM
-Date: Mon, 24 Jul 2023 18:53:42 +0200
-Message-Id: <20230724165349.55714-10-thuth@redhat.com>
+Subject: [PULL 10/16] tests/tcg/s390x: Test ICM
+Date: Mon, 24 Jul 2023 18:53:43 +0200
+Message-Id: <20230724165349.55714-11-thuth@redhat.com>
 In-Reply-To: <20230724165349.55714-1-thuth@redhat.com>
 References: <20230724165349.55714-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -83,32 +83,32 @@ Add a small test to prevent regressions.
 
 Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230724082032.66864-11-iii@linux.ibm.com>
+Message-Id: <20230724082032.66864-12-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
  tests/tcg/s390x/Makefile.softmmu-target |  1 +
- tests/tcg/s390x/clm.S                   | 29 +++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
- create mode 100644 tests/tcg/s390x/clm.S
+ tests/tcg/s390x/icm.S                   | 32 +++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
+ create mode 100644 tests/tcg/s390x/icm.S
 
 diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
-index e813e318db..062d8e368a 100644
+index 062d8e368a..58684d7da7 100644
 --- a/tests/tcg/s390x/Makefile.softmmu-target
 +++ b/tests/tcg/s390x/Makefile.softmmu-target
-@@ -17,6 +17,7 @@ LDFLAGS=-nostdlib -static
- ASM_TESTS =                                                                    \
-     bal                                                                        \
+@@ -19,6 +19,7 @@ ASM_TESTS =                                                                    \
      cksm                                                                       \
-+    clm                                                                        \
+     clm                                                                        \
      exrl-ssm-early                                                             \
++    icm                                                                        \
      sam                                                                        \
      lpsw                                                                       \
-diff --git a/tests/tcg/s390x/clm.S b/tests/tcg/s390x/clm.S
+     lpswe-early                                                                \
+diff --git a/tests/tcg/s390x/icm.S b/tests/tcg/s390x/icm.S
 new file mode 100644
-index 0000000000..17156a81f2
+index 0000000000..d24d1f52fb
 --- /dev/null
-+++ b/tests/tcg/s390x/clm.S
-@@ -0,0 +1,29 @@
++++ b/tests/tcg/s390x/icm.S
+@@ -0,0 +1,32 @@
 +    .org 0x8e
 +program_interruption_code:
 +    .org 0x1d0                         /* program new PSW */
@@ -117,10 +117,11 @@ index 0000000000..17156a81f2
 +    .globl _start
 +_start:
 +    lgrl %r0,op1
-+    clm %r0,6,op2
-+    jle failure
++    icm %r0,10,op2
++    cg %r0,exp
++    jne failure
 +    lgrl %r1,bad_addr
-+    clm %r0,0,0(%r1)
++    icm %r0,0,0(%r1)
 +failure:
 +    lpswe failure_psw
 +pgm:
@@ -131,7 +132,9 @@ index 0000000000..17156a81f2
 +op1:
 +    .quad 0x1234567887654321
 +op2:
-+    .quad 0x3456789abcdef012
++    .quad 0x0011223344556677
++exp:
++    .quad 0x1234567800651121
 +bad_addr:
 +    .quad 0xffffffff00000000
 +success_psw:
