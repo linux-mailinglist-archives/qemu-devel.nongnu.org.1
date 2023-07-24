@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B2675FCB5
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0C075FCB4
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:56:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNyp6-0001J0-Vk; Mon, 24 Jul 2023 12:54:16 -0400
+	id 1qNyp6-0001Ik-2e; Mon, 24 Jul 2023 12:54:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyp2-0001HH-6G
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyp4-0001HW-IY
  for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyoz-0006w3-U5
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:11 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyp3-0006wi-33
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690217649;
+ s=mimecast20190719; t=1690217652;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zvEkjxFawxSMsxHLnuRRdzlHwbPPlU/4PabyCVxDysY=;
- b=WoFjejIR8ov9fp1/iqlTL54VUlgrf3GrzGjyxYXwIzhaSTOxXKcFDdv2mV3vuOv8jbAXw+
- Ver1M/l6lCzoENDFwga75z1sRMihKRWyKAyz70sE59VVkWNeoS8T8XGQVoi3XAIQCBSfFz
- dcGwCwwaASKzKzezT5rW4o6yIQiogHE=
+ bh=z0ivgEtnxs0YGV0qRka4zNEb2i4d8MpMhmA/3c8rDJg=;
+ b=PVLgpCQ28356S7iHJIYjM4F+2MXr5PE8X0vsK8rEbW+EN5Q8eTXel7XLkhon/FKjktXIN5
+ gzK8CjOIKoj7E3u2lmAdDQGQ3lh+hrheZ3o995OmAmbE+QwHjhzlULaeYXYWtSzo9jSVEj
+ +aM9TzvQKQ+Qc7fCSbFLtvGHGN5aWV4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-503-c-wL0NRTOLW1uggDTJto_Q-1; Mon, 24 Jul 2023 12:54:07 -0400
-X-MC-Unique: c-wL0NRTOLW1uggDTJto_Q-1
+ us-mta-533-nSpf1lUGO-Gcdn59vnA6eA-1; Mon, 24 Jul 2023 12:54:08 -0400
+X-MC-Unique: nSpf1lUGO-Gcdn59vnA6eA-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9881985A58A;
- Mon, 24 Jul 2023 16:54:06 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7FA8185A793;
+ Mon, 24 Jul 2023 16:54:07 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.60])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CD3AC492CAC;
- Mon, 24 Jul 2023 16:54:05 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DEC2E492CAC;
+ Mon, 24 Jul 2023 16:54:06 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 11/16] tests/tcg/s390x: Test MC
-Date: Mon, 24 Jul 2023 18:53:44 +0200
-Message-Id: <20230724165349.55714-12-thuth@redhat.com>
+Subject: [PULL 12/16] tests/tcg/s390x: Test STPQ
+Date: Mon, 24 Jul 2023 18:53:45 +0200
+Message-Id: <20230724165349.55714-13-thuth@redhat.com>
 In-Reply-To: <20230724165349.55714-1-thuth@redhat.com>
 References: <20230724165349.55714-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -83,88 +83,52 @@ Add a small test to prevent regressions.
 
 Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230724082032.66864-13-iii@linux.ibm.com>
+Message-Id: <20230724082032.66864-14-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
  tests/tcg/s390x/Makefile.softmmu-target |  1 +
- tests/tcg/s390x/mc.S                    | 56 +++++++++++++++++++++++++
- 2 files changed, 57 insertions(+)
- create mode 100644 tests/tcg/s390x/mc.S
+ tests/tcg/s390x/stpq.S                  | 20 ++++++++++++++++++++
+ 2 files changed, 21 insertions(+)
+ create mode 100644 tests/tcg/s390x/stpq.S
 
 diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
-index 58684d7da7..145e0bfde1 100644
+index 145e0bfde1..76345b6e64 100644
 --- a/tests/tcg/s390x/Makefile.softmmu-target
 +++ b/tests/tcg/s390x/Makefile.softmmu-target
-@@ -24,6 +24,7 @@ ASM_TESTS =                                                                    \
-     lpsw                                                                       \
-     lpswe-early                                                                \
-     lra                                                                        \
-+    mc                                                                         \
+@@ -27,6 +27,7 @@ ASM_TESTS =                                                                    \
+     mc                                                                         \
      ssm-early                                                                  \
      stosm-early                                                                \
++    stpq                                                                       \
      unaligned-lowcore
-diff --git a/tests/tcg/s390x/mc.S b/tests/tcg/s390x/mc.S
+ 
+ include $(S390X_SRC)/pgm-specification.mak
+diff --git a/tests/tcg/s390x/stpq.S b/tests/tcg/s390x/stpq.S
 new file mode 100644
-index 0000000000..e7466bb4b5
+index 0000000000..687a52eafa
 --- /dev/null
-+++ b/tests/tcg/s390x/mc.S
-@@ -0,0 +1,56 @@
-+    .org 0x8d
-+ilc:
-+    .org 0x8e
-+program_interruption_code:
-+    .org 0x94
-+monitor_class:
-+    .org 0xb0
-+monitor_code:
-+    .org 0x150
-+program_old_psw:
-+    .org 0x1d0                              /* program new PSW */
-+    .quad 0x180000000,pgm                   /* 64-bit mode */
-+    .org 0x200                              /* lowcore padding */
++++ b/tests/tcg/s390x/stpq.S
+@@ -0,0 +1,20 @@
++    .org 0x200                         /* lowcore padding */
 +    .globl _start
 +_start:
-+    stctg %c8,%c8,c8                        /* enable only monitor class 1 */
-+    mvhhi c8+6,0x4000
-+    lctlg %c8,%c8,c8
-+mc_nop:
-+    mc 123,0
-+mc_monitor_event:
-+    mc 321,1
-+    j failure
-+mc_specification:
-+    mc 333,16
-+    j failure
-+pgm:
-+    lgrl %r0,program_old_psw+8              /* ilc adjustment */
-+    llgc %r1,ilc
-+    sgr %r0,%r1
-+    larl %r1,mc_monitor_event               /* dispatch based on old PSW */
-+    cgrje %r0,%r1,pgm_monitor_event
-+    larl %r1,mc_specification
-+    cgrje %r0,%r1,pgm_specification
-+    j failure
-+pgm_monitor_event:
-+    chhsi program_interruption_code,0x40    /* monitor event? */
-+    jne failure
-+    chhsi monitor_class,1                   /* class from mc_monitor_event? */
-+    jne failure
-+    cghsi monitor_code,321                  /* code from mc_monitor_event? */
-+    jne failure
-+    j mc_specification                      /* next test */
-+pgm_specification:
-+    chhsi program_interruption_code,6       /* specification exception? */
++    lgrl %r0,value
++    lgrl %r1,value+8
++    stpq %r0,stored_value
++    clc stored_value(16),value
 +    jne failure
 +    lpswe success_psw
 +failure:
 +    lpswe failure_psw
-+    .align 8
-+c8:
-+    .quad 0
++    .align 16
++value:
++    .quad 0x1234567887654321, 0x8765432112345678
++stored_value:
++    .quad 0, 0
 +success_psw:
-+    .quad 0x2000000000000,0xfff             /* see is_special_wait_psw() */
++    .quad 0x2000000000000,0xfff        /* see is_special_wait_psw() */
 +failure_psw:
-+    .quad 0x2000000000000,0                 /* disabled wait */
++    .quad 0x2000000000000,0            /* disabled wait */
 -- 
 2.39.3
 
