@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBAAA75F540
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 13:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB2C75F54D
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 13:40:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNttC-0002JG-E4; Mon, 24 Jul 2023 07:38:10 -0400
+	id 1qNtun-0003F4-IT; Mon, 24 Jul 2023 07:39:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNtt8-0002Iw-Og
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 07:38:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNtuj-0003EY-0G
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 07:39:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNtt6-0004Cx-VF
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 07:38:06 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNtuh-0004aP-Hk
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 07:39:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690198683;
+ s=mimecast20190719; t=1690198782;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Bq/XRsipZA1hoAv7qtF+to3SKyhZLboJGz194ks4AwM=;
- b=bLInycWjxpZxKS/Tn7X4WSOro9f328WmvvblRiI0ZKCO1g2aUhGWjfFB0W7Sv5EMOcMiQ1
- Uu3/X2DUEov5Uv5lVhI1hWM4Xsnz5mDIDH/LHVvwFLaPKLCRXnb88MAN0c7TCXY9BTbHQc
- yZg1DckwNhF3Pl46/Zm69z9K4z2HcLQ=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-141-82M4ltLWMuuf0FfX33SDhw-1; Mon, 24 Jul 2023 07:38:00 -0400
-X-MC-Unique: 82M4ltLWMuuf0FfX33SDhw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ bh=Arw+tBVpWohbXWWfvKVW9xAtN5j9Po1FBAz2uH14XKs=;
+ b=KJhbpEB7i84p0pZ/303mPrNRq9VVTIadhjr39wvWLXZ00oPJk/8CLyg0VB5zdYOypX1hXb
+ DPgewSW4EnpBlOIbdBjBLGlfTHL0XeeQuqElTAepwZqFuh8Iq2jKLPlc/Yq3yw7LUCEyVz
+ feKcfbqntzozqm0zeyzFWIv35i2g5zk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-614-PtxZ2W8XOrOv0iGIxCKp1w-1; Mon, 24 Jul 2023 07:39:41 -0400
+X-MC-Unique: PtxZ2W8XOrOv0iGIxCKp1w-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C36F93810D25;
- Mon, 24 Jul 2023 11:37:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CE021802666;
+ Mon, 24 Jul 2023 11:39:40 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9623410E5E;
- Mon, 24 Jul 2023 11:37:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AADBB1454143;
+ Mon, 24 Jul 2023 11:39:40 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 79B2021E64D0; Mon, 24 Jul 2023 13:37:58 +0200 (CEST)
+ id A9D9821E60F2; Mon, 24 Jul 2023 13:39:39 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
@@ -54,19 +54,20 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
  <berrange@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
  <philmd@linaro.org>,  Eric
  Blake <eblake@redhat.com>,  qemu-devel@nongnu.org
-Subject: Re: [PATCH v6 4/6] qapi: Add HvBalloonDeviceInfo sub-type to
- MemoryDeviceInfo
+Subject: Re: [PATCH v6 0/6] Hyper-V Dynamic Memory Protocol driver
+ (hv-balloon =?utf-8?B?8J+OiO+4jyk=?=
 References: <cover.1689786474.git.maciej.szmigiero@oracle.com>
- <a23da090a925e98e98ccc15505345b277bcf393b.1689786474.git.maciej.szmigiero@oracle.com>
-Date: Mon, 24 Jul 2023 13:37:58 +0200
-In-Reply-To: <a23da090a925e98e98ccc15505345b277bcf393b.1689786474.git.maciej.szmigiero@oracle.com>
- (Maciej S. Szmigiero's message of "Thu, 20 Jul 2023 12:13:01 +0200")
-Message-ID: <87zg3lmtex.fsf@pond.sub.org>
+ <87wmypo9wh.fsf@pond.sub.org>
+ <d8f2654d-2464-7cd3-f890-95cd6b8fc2fe@maciej.szmigiero.name>
+Date: Mon, 24 Jul 2023 13:39:39 +0200
+In-Reply-To: <d8f2654d-2464-7cd3-f890-95cd6b8fc2fe@maciej.szmigiero.name>
+ (Maciej S. Szmigiero's message of "Mon, 24 Jul 2023 13:04:55 +0200")
+Message-ID: <87y1j5mtc4.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -93,57 +94,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 "Maciej S. Szmigiero" <mail@maciej.szmigiero.name> writes:
 
-> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+> On 24.07.2023 12:56, Markus Armbruster wrote:
+>> Doesn't apply to master.  Care to rebase?
+>> 
 >
-> Used by the hv-balloon driver to report its provided memory state
-> information.
+> The series is now based on David's virtio-mem-memslots patches
+> (specifically, commit 6769107d1a4f from [1]) since it depends
+> on support for exposing device memory via multiple memslots
+> provided by that series.
 >
-> Co-developed-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-> ---
->  hw/core/machine-hmp-cmds.c | 15 +++++++++++++++
->  qapi/machine.json          | 39 ++++++++++++++++++++++++++++++++++++--
->  2 files changed, 52 insertions(+), 2 deletions(-)
+> I'm sorry if that wasn't clear from the cover letter.
+
+Aha!  I just fetched David's branch, applied your patches on top, and
+rebased to current master.
+
+I recommend to list dependencies like
+
+    Based-on: <message-id>
+
+so Patchew applies them.
+
+
+> Thanks,
+> Maciej
 >
-> diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
-> index c3e55ef9e9cd..7b06ed35decb 100644
-> --- a/hw/core/machine-hmp-cmds.c
-> +++ b/hw/core/machine-hmp-cmds.c
-> @@ -247,6 +247,7 @@ void hmp_info_memory_devices(Monitor *mon, const QDict *qdict)
->      MemoryDeviceInfo *value;
->      PCDIMMDeviceInfo *di;
->      SgxEPCDeviceInfo *se;
-> +    HvBalloonDeviceInfo *hi;
->  
->      for (info = info_list; info; info = info->next) {
->          value = info->value;
-> @@ -304,6 +305,20 @@ void hmp_info_memory_devices(Monitor *mon, const QDict *qdict)
->                  monitor_printf(mon, "  node: %" PRId64 "\n", se->node);
->                  monitor_printf(mon, "  memdev: %s\n", se->memdev);
->                  break;
-> +            case MEMORY_DEVICE_INFO_KIND_HV_BALLOON:
-
-This is the only occurence of MEMORY_DEVICE_INFO_KIND_HV_BALLOON at the
-end of the series.  Where are MemoryDeviceInfo with this union tag
-created?
-
-> +                hi = value->u.hv_balloon.data;
-> +                monitor_printf(mon, "Memory device [%s]: \"%s\"\n",
-> +                               MemoryDeviceInfoKind_str(value->type),
-> +                               hi->id ? hi->id : "");
-> +                if (hi->has_memaddr) {
-> +                    monitor_printf(mon, "  memaddr: 0x%" PRIx64 "\n",
-> +                                   hi->memaddr);
-> +                }
-> +                monitor_printf(mon, "  max-size: %" PRIu64 "\n", hi->max_size);
-> +                if (hi->memdev) {
-> +                    monitor_printf(mon, "  memdev: %s\n", hi->memdev);
-> +                }
-> +                break;
->              default:
->                  g_assert_not_reached();
->              }
-
-[...]
+> [1]: https://github.com/davidhildenbrand/qemu/tree/virtio-mem-memslots
 
 
