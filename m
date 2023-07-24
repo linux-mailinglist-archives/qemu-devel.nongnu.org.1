@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CC475F7EB
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 15:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EFC775F7F6
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 15:13:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNvHT-00046O-FF; Mon, 24 Jul 2023 09:07:19 -0400
+	id 1qNvHX-0004AQ-9L; Mon, 24 Jul 2023 09:07:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qNvHE-00043l-8m
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:07:04 -0400
+ id 1qNvHM-00046l-T9
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:07:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qNvHB-0002ZP-Dy
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:07:03 -0400
+ id 1qNvHK-0002ac-26
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:07:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690204020;
+ s=mimecast20190719; t=1690204028;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=j2QZJCtHhaH7HqI/ypiRvoBO4jcPfMfyKnCvIG4aho8=;
- b=ApvKeRs1kOSuAaFpdTBLi0OOMndm0nyYmvaEb0kIE6T+lBbQLGxjh13ij011NUAarYKmZb
- u4Lcp2tPcA2MIwymu8bDSkpw2zQyCgucVBnmzxzh1AlM346Vd5dNcXmtyn8zwF846zZCsm
- ROz958dB+suyTrJmXMg7IFJ+Qasw8jo=
+ bh=T6NDPnkzHlHMJ2E96BT2L8DNXWr8MPzQrE/ZuIz1ThM=;
+ b=XeyOUwa1NRfBiYtUJdgixOnBitxnLvMv6UT2q4JKGr91UZXwctf4VuyUojleZVWs/SEpDn
+ H024Qh2CED4RvXu/NKXM47MYkhdqeSTwLnerhOjK4WdVq38Gkmr7PjG7ANQ3haowUYwAgx
+ IjhYNfPbyfZeb5NNWZfc+a5M5k1guM0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-306-gDYY5JHCPwGCwHwecH338g-1; Mon, 24 Jul 2023 09:06:59 -0400
-X-MC-Unique: gDYY5JHCPwGCwHwecH338g-1
+ us-mta-450-qYq6qj0gPKad8U-KUuThcA-1; Mon, 24 Jul 2023 09:07:01 -0400
+X-MC-Unique: qYq6qj0gPKad8U-KUuThcA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B77EC10504B1;
- Mon, 24 Jul 2023 13:06:58 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D1D8810504BD;
+ Mon, 24 Jul 2023 13:07:00 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.115])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D7A49F782D;
- Mon, 24 Jul 2023 13:06:56 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 08C65F782E;
+ Mon, 24 Jul 2023 13:06:58 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
@@ -50,9 +50,10 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Eric Blake <eblake@redhat.com>, Juan Quintela <quintela@redhat.com>,
  Leonardo Bras <leobras@redhat.com>,
  =?UTF-8?q?Hyman=20Huang=28=E9=BB=84=E5=8B=87=29?= <yong.huang@smartx.com>
-Subject: [PATCH 07/26] migration: Refactor auto-converge capability logic
-Date: Mon, 24 Jul 2023 15:06:20 +0200
-Message-Id: <20230724130639.93135-8-quintela@redhat.com>
+Subject: [PATCH 08/26] migration: Put the detection logic before auto-converge
+ checking
+Date: Mon, 24 Jul 2023 15:06:21 +0200
+Message-Id: <20230724130639.93135-9-quintela@redhat.com>
 In-Reply-To: <20230724130639.93135-1-quintela@redhat.com>
 References: <20230724130639.93135-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -86,39 +87,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang(黄勇) <yong.huang@smartx.com>
 
-Check if block migration is running before throttling
-guest down in auto-converge way.
+This commit is prepared for the implementation of dirty-limit
+convergence algo.
 
-Note that this modification is kind of like code clean,
-because block migration does not depend on auto-converge
-capability, so the order of checks can be adjusted.
+The detection logic of throttling condition can apply to both
+auto-converge and dirty-limit algo, putting it's position
+before the checking logic for auto-converge feature.
 
 Signed-off-by: Hyman Huang(黄勇) <yong.huang@smartx.com>
-Acked-by: Peter Xu <peterx@redhat.com>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
-Message-Id: <168618975839.6361.17407633874747688653-5@git.sr.ht>
+Message-ID: <168733225273.5845.15871826788879741674-6@git.sr.ht>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/ram.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ migration/ram.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/migration/ram.c b/migration/ram.c
-index 0ada6477e8..f31de47a47 100644
+index f31de47a47..1d9300f4c5 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -995,7 +995,11 @@ static void migration_trigger_throttle(RAMState *rs)
-     /* During block migration the auto-converge logic incorrectly detects
-      * that ram migration makes no progress. Avoid this by disabling the
-      * throttling logic during the bulk phase of block migration. */
--    if (migrate_auto_converge() && !blk_mig_bulk_active()) {
-+    if (blk_mig_bulk_active()) {
-+        return;
-+    }
-+
-+    if (migrate_auto_converge()) {
-         /* The following detection logic can be refined later. For now:
-            Check to see if the ratio between dirtied bytes and the approx.
-            amount of bytes that just got transferred since the last time
+@@ -999,17 +999,18 @@ static void migration_trigger_throttle(RAMState *rs)
+         return;
+     }
+ 
+-    if (migrate_auto_converge()) {
+-        /* The following detection logic can be refined later. For now:
+-           Check to see if the ratio between dirtied bytes and the approx.
+-           amount of bytes that just got transferred since the last time
+-           we were in this routine reaches the threshold. If that happens
+-           twice, start or increase throttling. */
+-
+-        if ((bytes_dirty_period > bytes_dirty_threshold) &&
+-            (++rs->dirty_rate_high_cnt >= 2)) {
++    /*
++     * The following detection logic can be refined later. For now:
++     * Check to see if the ratio between dirtied bytes and the approx.
++     * amount of bytes that just got transferred since the last time
++     * we were in this routine reaches the threshold. If that happens
++     * twice, start or increase throttling.
++     */
++    if ((bytes_dirty_period > bytes_dirty_threshold) &&
++        (++rs->dirty_rate_high_cnt >= 2)) {
++        rs->dirty_rate_high_cnt = 0;
++        if (migrate_auto_converge()) {
+             trace_migration_throttle();
+-            rs->dirty_rate_high_cnt = 0;
+             mig_throttle_guest_down(bytes_dirty_period,
+                                     bytes_dirty_threshold);
+         }
 -- 
 2.40.1
 
