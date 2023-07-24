@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C11B75F252
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D22475F242
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:11:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNsWN-0007qP-Fl; Mon, 24 Jul 2023 06:10:31 -0400
+	id 1qNsWF-0007nj-AR; Mon, 24 Jul 2023 06:10:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qNsW3-0007it-A7
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:10:11 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1qNsVx-0007hl-Aq
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:10:05 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
- id 1qNsVn-0000YK-7F
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:10:10 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-666eb03457cso2207144b3a.1
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 03:09:54 -0700 (PDT)
+ id 1qNsVu-0000Yt-U4
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:10:05 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6686ef86110so2212874b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 03:09:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1690193394; x=1690798194;
+ d=bytedance.com; s=google; t=1690193397; x=1690798197;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Po0gAxAU3dnysaVx2B26/6HXOapX1SQhA8vH8XAjSZc=;
- b=O4ObM1YqaLRcqgXMsAk/mPWpxMJ9/kFTFN54qK71rgylAkjTJHc9PeRKZyGRWvWjdN
- qFpxW3EEFGOeUW0xKxhcqioycyNGW1ZxNgGlHE41Crm1drAHbyGlOMxANmhM4LCdTKf/
- Uh+hYV7XNdcep9bqnMd25eNItVUkjQ7fjleq9aaOdgO79YTVGLnCiboopYne/Q2gvUxy
- xOyy953jxDZpUttE7B6ZKt9U8251w5juZEuOpIPi6Wc3axCmMuSzqqexni0I8MGwFy8Q
- iy9RmpPqYD9eurtS2g/cxdobwVKAdSoXBBJgIsByxYqzdO2f2MAHhBFModHakm/yp5fQ
- UeDA==
+ bh=6y39WsGI6ZaymBhC0tayr2DVImGPxd/56ERoZgkjVfM=;
+ b=Fqs2hvnwuP6PRjyoFYbTqejwA3fyTXgXwkp7qPoiUgbN/iOlgk07+6RHxdJwKczmqe
+ yxVDzqS9z5SYyE/Q9fS6gtM1hTxK/3sBdDzc+Qo4WPRQM3leyLVAiB3PyLPGuEXizZ30
+ /RJaiqZuEtLOCBLH6PC1E69PiG0PhjS0Mnf8COjrM/ibm3KadoDeZu/skh1EE1qWaS2/
+ CbqXXMnJplYeBt8u9JGJ43o4gTxNmLzO6ij/103LRIUafG4McW7ZYEIYPTIdRFCsBv/Y
+ DV5TI8epw+DjpsMr1k8KnQsYdDB+vyfaHp1uY35dyPBGzDfGmLSl9uh9VzP9hy5IL2Mk
+ mpPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690193394; x=1690798194;
+ d=1e100.net; s=20221208; t=1690193397; x=1690798197;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Po0gAxAU3dnysaVx2B26/6HXOapX1SQhA8vH8XAjSZc=;
- b=Nj5iAQqx4Z3FipUceY91ElYYbf9rRVD4jR7M7B25xe5MUT2zBrrE6biDHPSgzvd0yc
- OI0YKJxEC/I8wiMdqF3rukTeMJmhp+3eps0+dgUC1WJJyK8BFcnHGnRL2Bi8L7etQrsM
- gquMauEZhr9fYp5UqTHeD24DoBe8devbSub3PMcyFHbZcH0fOTetjzeEHN3kancTf3+J
- 1x6hrrWPzuxn/U9/60RQydtAKz0M8PzEW2XA0GLrqjmnBqyisclLbQzw9BQ7freYYobE
- WCUUVx+IXmhw8knY9f9hohJjt4DtkhOkpfFc+y95zBKYnTzyC6+HrWoLXaV+G+VovGvX
- RqwA==
-X-Gm-Message-State: ABy/qLYdbHACcfKPMFpX8L70Mk0Uk6iDwnDMuGZtXgPgVek6g0T9e+q3
- ND3HiZrWS6qDw69uY+oSORhG9Q==
-X-Google-Smtp-Source: APBJJlF94MaBNI26y7tn+/z6NVOjE+maGZ1sU09y1mozRAuBKdbXUA0hv8ccufWGuOaHxwOf8ouRvA==
-X-Received: by 2002:a17:903:190:b0:1b8:7618:5414 with SMTP id
- z16-20020a170903019000b001b876185414mr7008517plg.60.1690193393770; 
- Mon, 24 Jul 2023 03:09:53 -0700 (PDT)
+ bh=6y39WsGI6ZaymBhC0tayr2DVImGPxd/56ERoZgkjVfM=;
+ b=QISJkIhyWV1muPDjCYpBA7WeX86PrHwRVd6gxOt+T6EOKXGAqm51MtPzCP1NeQg5/z
+ aFXQhFOe+deJBJ41VH1/o5kwe8Hv6XP2pvk4Fx8LPrhEGgSqDHOtMxMDSwndhuBnxLd9
+ qe66RCac+T7yCfG5bC5RU6HbnIUL8BZXOTb7feBPniOqRkNMgsa5UUukM3uwHABQ100+
+ hPU6oOqWx3BdvYsr7xjrzzhE7h468bp99+P85/SSOLV5z1v+5pbHZ8HDSWiMhERMwVs7
+ HFl2iWBmefj3AlkRkEwFePud254a4WaCXG0vRYZ7Y4GHMIcdwSxe4I1pFVEUoo05ax+n
+ DMyg==
+X-Gm-Message-State: ABy/qLaTAZ03XxU0L9p5RNbj6+Tq4cQ4YzKwmZGLOBZKpUMpVSuseBva
+ ZQBlM66Z66G6gQGNzq3uwlYdug==
+X-Google-Smtp-Source: APBJJlGmcInRLpSEc4uFLn0OSWHE/uUQOLMmjcsUCX7sB0zn1d78pemg7ujnJOU6Kvk6O92qdmxhPA==
+X-Received: by 2002:a05:6a20:7f93:b0:133:8229:196e with SMTP id
+ d19-20020a056a207f9300b001338229196emr9695590pzj.35.1690193397260; 
+ Mon, 24 Jul 2023 03:09:57 -0700 (PDT)
 Received: from libai.bytedance.net ([61.213.176.11])
  by smtp.gmail.com with ESMTPSA id
- je2-20020a170903264200b001bb9d6b1baasm2419124plb.198.2023.07.24.03.09.50
+ je2-20020a170903264200b001bb9d6b1baasm2419124plb.198.2023.07.24.03.09.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jul 2023 03:09:53 -0700 (PDT)
+ Mon, 24 Jul 2023 03:09:56 -0700 (PDT)
 From: zhenwei pi <pizhenwei@bytedance.com>
 To: berto@igalia.com, kwolf@redhat.com, groug@kaod.org, qemu_oss@crudebyte.com,
  hreitz@redhat.com
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, berrange@redhat.com,
  zhenwei pi <pizhenwei@bytedance.com>
-Subject: [PATCH v4 2/9] test-throttle: use enum ThrottleDirection
-Date: Mon, 24 Jul 2023 18:09:32 +0800
-Message-Id: <20230724100939.1022984-3-pizhenwei@bytedance.com>
+Subject: [PATCH v4 3/9] throttle: support read-only and write-only
+Date: Mon, 24 Jul 2023 18:09:33 +0800
+Message-Id: <20230724100939.1022984-4-pizhenwei@bytedance.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230724100939.1022984-1-pizhenwei@bytedance.com>
 References: <20230724100939.1022984-1-pizhenwei@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=pizhenwei@bytedance.com; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=pizhenwei@bytedance.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,39 +93,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use enum ThrottleDirection instead in the throttle test codes.
+Only one direction is necessary in several scenarios:
+- a read-only disk
+- operations on a device are considered as *write* only. For example,
+  encrypt/decrypt/sign/verify operations on a cryptodev use a single
+  *write* timer(read timer callback is defined, but never invoked).
+
+Allow a single direction in throttle, this reduces memory, and uplayer
+does not need a dummy callback any more.
 
 Reviewed-by: Alberto Garcia <berto@igalia.com>
 Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
 ---
- tests/unit/test-throttle.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ util/throttle.c | 42 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
 
-diff --git a/tests/unit/test-throttle.c b/tests/unit/test-throttle.c
-index 7adb5e6652..a60b5fe22e 100644
---- a/tests/unit/test-throttle.c
-+++ b/tests/unit/test-throttle.c
-@@ -169,8 +169,8 @@ static void test_init(void)
+diff --git a/util/throttle.c b/util/throttle.c
+index 5642e61763..0439028d21 100644
+--- a/util/throttle.c
++++ b/util/throttle.c
+@@ -199,12 +199,15 @@ static bool throttle_compute_timer(ThrottleState *ts,
+ void throttle_timers_attach_aio_context(ThrottleTimers *tt,
+                                         AioContext *new_context)
+ {
+-    tt->timers[THROTTLE_READ] =
+-        aio_timer_new(new_context, tt->clock_type, SCALE_NS,
+-                      tt->timer_cb[THROTTLE_READ], tt->timer_opaque);
+-    tt->timers[THROTTLE_WRITE] =
+-        aio_timer_new(new_context, tt->clock_type, SCALE_NS,
+-                      tt->timer_cb[THROTTLE_WRITE], tt->timer_opaque);
++    ThrottleDirection dir;
++
++    for (dir = THROTTLE_READ; dir < THROTTLE_MAX; dir++) {
++        if (tt->timer_cb[dir]) {
++            tt->timers[dir] =
++                aio_timer_new(new_context, tt->clock_type, SCALE_NS,
++                              tt->timer_cb[dir], tt->timer_opaque);
++        }
++    }
+ }
  
-     /* check initialized fields */
-     g_assert(tt->clock_type == QEMU_CLOCK_VIRTUAL);
--    g_assert(tt->timers[0]);
--    g_assert(tt->timers[1]);
-+    g_assert(tt->timers[THROTTLE_READ]);
-+    g_assert(tt->timers[THROTTLE_WRITE]);
+ /*
+@@ -235,6 +238,7 @@ void throttle_timers_init(ThrottleTimers *tt,
+                           QEMUTimerCB *write_timer_cb,
+                           void *timer_opaque)
+ {
++    assert(read_timer_cb || write_timer_cb);
+     memset(tt, 0, sizeof(ThrottleTimers));
  
-     /* check other fields where cleared */
-     g_assert(!ts.previous_leak);
-@@ -191,7 +191,7 @@ static void test_destroy(void)
-     throttle_timers_init(tt, ctx, QEMU_CLOCK_VIRTUAL,
-                          read_timer_cb, write_timer_cb, &ts);
-     throttle_timers_destroy(tt);
--    for (i = 0; i < 2; i++) {
-+    for (i = 0; i < THROTTLE_MAX; i++) {
-         g_assert(!tt->timers[i]);
+     tt->clock_type = clock_type;
+@@ -247,7 +251,9 @@ void throttle_timers_init(ThrottleTimers *tt,
+ /* destroy a timer */
+ static void throttle_timer_destroy(QEMUTimer **timer)
+ {
+-    assert(*timer != NULL);
++    if (*timer == NULL) {
++        return;
++    }
+ 
+     timer_free(*timer);
+     *timer = NULL;
+@@ -256,10 +262,10 @@ static void throttle_timer_destroy(QEMUTimer **timer)
+ /* Remove timers from event loop */
+ void throttle_timers_detach_aio_context(ThrottleTimers *tt)
+ {
+-    int i;
++    ThrottleDirection dir;
+ 
+-    for (i = 0; i < THROTTLE_MAX; i++) {
+-        throttle_timer_destroy(&tt->timers[i]);
++    for (dir = THROTTLE_READ; dir < THROTTLE_MAX; dir++) {
++        throttle_timer_destroy(&tt->timers[dir]);
      }
  }
+ 
+@@ -272,8 +278,12 @@ void throttle_timers_destroy(ThrottleTimers *tt)
+ /* is any throttling timer configured */
+ bool throttle_timers_are_initialized(ThrottleTimers *tt)
+ {
+-    if (tt->timers[0]) {
+-        return true;
++    ThrottleDirection dir;
++
++    for (dir = THROTTLE_READ; dir < THROTTLE_MAX; dir++) {
++        if (tt->timers[dir]) {
++            return true;
++        }
+     }
+ 
+     return false;
+@@ -424,8 +434,12 @@ bool throttle_schedule_timer(ThrottleState *ts,
+ {
+     int64_t now = qemu_clock_get_ns(tt->clock_type);
+     int64_t next_timestamp;
++    QEMUTimer *timer;
+     bool must_wait;
+ 
++    timer = is_write ? tt->timers[THROTTLE_WRITE] : tt->timers[THROTTLE_READ];
++    assert(timer);
++
+     must_wait = throttle_compute_timer(ts,
+                                        is_write,
+                                        now,
+@@ -437,12 +451,12 @@ bool throttle_schedule_timer(ThrottleState *ts,
+     }
+ 
+     /* request throttled and timer pending -> do nothing */
+-    if (timer_pending(tt->timers[is_write])) {
++    if (timer_pending(timer)) {
+         return true;
+     }
+ 
+     /* request throttled and timer not pending -> arm timer */
+-    timer_mod(tt->timers[is_write], next_timestamp);
++    timer_mod(timer, next_timestamp);
+     return true;
+ }
+ 
 -- 
 2.34.1
 
