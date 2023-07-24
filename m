@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8ED75FCC1
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4822275FCAF
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:55:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNyp6-0001Im-Hm; Mon, 24 Jul 2023 12:54:16 -0400
+	id 1qNyp5-0001Id-QU; Mon, 24 Jul 2023 12:54:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyov-0001Fs-Pi
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyow-0001Fx-TR
  for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyot-0006uP-Vd
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:05 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyov-0006ur-Df
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690217643;
+ s=mimecast20190719; t=1690217644;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QQl7HRL94axMnGZRFFRaqybzWgZPGl6KbF3ideB+fxY=;
- b=fSoEo8GJXnl30c7WnapUYlI4o8QU1FpFz/dMqdnfzxf1IjhaZ895CkhzjtJAWmOyZ9nNl8
- JbAC6DZYzL0Mb4PCyXhS08Oo2pZeWhhpw/RZuizwgGFhQ6PSaxj3X7NCVMwGIv7NhDtt8y
- ctZJUEJZJ6HbsKYd2NNXn8ZvsQibCtE=
+ bh=ojy6QdvxUObvLh2yi/UgugXDkK6eWkZAG4LI5UhfOn4=;
+ b=RpGnAuDiDbGaPV2XojI0UYOXjQkDvRFsVK68gFSI8vgi+rMybNBlxagojqVZoQ6nu2DoLe
+ GwV6AT+UZWCn29xOyRTSIzzMzruzJ1y+L7r7ijqNhhfnam+vlNrWhJ8hNIa4CPTluwNJhy
+ BeKbe8EpdC7HlIKfjjKcEvPVjjnGHbs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-692-25g39919OeyuTF0XyvaPpQ-1; Mon, 24 Jul 2023 12:54:00 -0400
-X-MC-Unique: 25g39919OeyuTF0XyvaPpQ-1
+ us-mta-156-q6sHrjtMPpaYVcCwr1dxvw-1; Mon, 24 Jul 2023 12:54:01 -0400
+X-MC-Unique: q6sHrjtMPpaYVcCwr1dxvw-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 97F8C185A792;
- Mon, 24 Jul 2023 16:53:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 12CDF856F66;
+ Mon, 24 Jul 2023 16:54:01 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.60])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 70345492CAC;
- Mon, 24 Jul 2023 16:53:58 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D9D4A492CAC;
+ Mon, 24 Jul 2023 16:53:59 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, qemu-stable@nongnu.org,
  David Hildenbrand <david@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 05/16] target/s390x: Make MC raise specification exception when
- class >= 16
-Date: Mon, 24 Jul 2023 18:53:38 +0200
-Message-Id: <20230724165349.55714-6-thuth@redhat.com>
+Subject: [PULL 06/16] target/s390x: Fix assertion failure in VFMIN/VFMAX with
+ type 13
+Date: Mon, 24 Jul 2023 18:53:39 +0200
+Message-Id: <20230724165349.55714-7-thuth@redhat.com>
 In-Reply-To: <20230724165349.55714-1-thuth@redhat.com>
 References: <20230724165349.55714-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -82,47 +82,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-MC requires bit positions 8-11 (upper 4 bits of class) to be zeros,
-otherwise it must raise a specification exception.
+Type 13 is reserved, so using it should result in specification
+exception. Due to an off-by-1 error the code triggers an assertion at a
+later point in time instead.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 20d143e2cab8 ("s390x/tcg: Implement MONITOR CALL")
+Fixes: da4807527f3b ("s390x/tcg: Implement VECTOR FP (MAXIMUM|MINIMUM)")
 Reviewed-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230724082032.66864-6-iii@linux.ibm.com>
+Message-Id: <20230724082032.66864-8-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/s390x/tcg/excp_helper.c | 2 +-
- target/s390x/tcg/translate.c   | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ target/s390x/tcg/translate_vx.c.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/s390x/tcg/excp_helper.c b/target/s390x/tcg/excp_helper.c
-index 228aa9f237..3da337f7c7 100644
---- a/target/s390x/tcg/excp_helper.c
-+++ b/target/s390x/tcg/excp_helper.c
-@@ -639,7 +639,7 @@ void monitor_event(CPUS390XState *env,
- void HELPER(monitor_call)(CPUS390XState *env, uint64_t monitor_code,
-                           uint32_t monitor_class)
- {
--    g_assert(monitor_class <= 0xff);
-+    g_assert(monitor_class <= 0xf);
+diff --git a/target/s390x/tcg/translate_vx.c.inc b/target/s390x/tcg/translate_vx.c.inc
+index 43dfbfd03f..f8df121d3d 100644
+--- a/target/s390x/tcg/translate_vx.c.inc
++++ b/target/s390x/tcg/translate_vx.c.inc
+@@ -3047,7 +3047,7 @@ static DisasJumpType op_vfmax(DisasContext *s, DisasOps *o)
+     const uint8_t m5 = get_field(s, m5);
+     gen_helper_gvec_3_ptr *fn;
  
-     if (env->cregs[8] & (0x8000 >> monitor_class)) {
-         monitor_event(env, monitor_code, monitor_class, GETPC());
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 244e61ad2e..84d76f1cea 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -3177,9 +3177,9 @@ static DisasJumpType op_lcbb(DisasContext *s, DisasOps *o)
- 
- static DisasJumpType op_mc(DisasContext *s, DisasOps *o)
- {
--    const uint16_t monitor_class = get_field(s, i2);
-+    const uint8_t monitor_class = get_field(s, i2);
- 
--    if (monitor_class & 0xff00) {
-+    if (monitor_class & 0xf0) {
+-    if (m6 == 5 || m6 == 6 || m6 == 7 || m6 > 13) {
++    if (m6 == 5 || m6 == 6 || m6 == 7 || m6 >= 13) {
          gen_program_exception(s, PGM_SPECIFICATION);
          return DISAS_NORETURN;
      }
