@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFE575FCB0
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC6375FCAE
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:55:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNypG-0001O6-N4; Mon, 24 Jul 2023 12:54:26 -0400
+	id 1qNypC-0001N7-Hl; Mon, 24 Jul 2023 12:54:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNypE-0001Nl-QJ
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNypA-0001MR-W8
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNypD-0006yS-AJ
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyp9-0006xm-Ed
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690217662;
+ s=mimecast20190719; t=1690217658;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YiWtFAUzA2SuCKiDe2sa0GXcXSqiDxu6vVONDFunCJE=;
- b=FWluOWDvyGinbwvOCm3oncXXASh6/Kgq82uwuzLRE4TVj0IRGU7NcHxfHeMzb7aqmVxu1c
- U97IYSvAoP0Y/WzzPa7fkpFMSJh610kHesfAjsMsVo8Kvz4mEIn34P34pou3VJWio0jU90
- xkfNRyt2OQ5KMoAscyT2/dWnByMSd4I=
+ bh=GyDnabCQzl6gPHWrtz83iEReskzaxBX9DyQ1sJhD//8=;
+ b=IA4GK91huV/aT/OgEbviSDfd3YH3uCrwyZEV/DqLOX4bwTFZSTUoDEMqnpXIEXIbbiw5bi
+ ETsSrvdpBF5jE0Hd4wFQaPywrz678iO3Od61fY5EIxYxtkjc7kSd30IJ9lFiZb9WdAuQZP
+ tcmcCZZ9djEu4de5fySNAOvaKz/4WdY=
 Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-581-d9K8TNP_OomqOCqcVZWbcg-1; Mon, 24 Jul 2023 12:54:15 -0400
-X-MC-Unique: d9K8TNP_OomqOCqcVZWbcg-1
+ us-mta-371-Zg5cChXnNUy1zhauy-mwdQ-1; Mon, 24 Jul 2023 12:54:15 -0400
+X-MC-Unique: Zg5cChXnNUy1zhauy-mwdQ-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 305B3280BC54;
- Mon, 24 Jul 2023 16:54:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BA7903C1395A;
+ Mon, 24 Jul 2023 16:54:13 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.60])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0C7EA492CAC;
- Mon, 24 Jul 2023 16:54:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C174C48FB01;
+ Mon, 24 Jul 2023 16:54:12 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-stable@nongnu.org,
- Song Gao <gaosong@loongson.cn>
-Subject: [PULL 15/16] target/loongarch: Fix the CSRRD CPUID instruction on big
- endian hosts
-Date: Mon, 24 Jul 2023 18:53:48 +0200
-Message-Id: <20230724165349.55714-16-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 16/16] tests/avocado/machine_s390_ccw_virtio: Skip the flaky
+ virtio-gpu test by default
+Date: Mon, 24 Jul 2023 18:53:49 +0200
+Message-Id: <20230724165349.55714-17-thuth@redhat.com>
 In-Reply-To: <20230724165349.55714-1-thuth@redhat.com>
 References: <20230724165349.55714-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -78,91 +80,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The test in tests/avocado/machine_loongarch.py is currently failing
-on big endian hosts like s390x. By comparing the traces between running
-the QEMU_EFI.fd bios on a s390x and on a x86 host, it's quickly obvious
-that the CSRRD instruction for the CPUID is behaving differently. And
-indeed: The code currently does a long read (i.e. 64 bit) from the
-address that points to the CPUState->cpu_index field (with tcg_gen_ld_tl()
-in the trans_csrrd() function). But this cpu_index field is only an "int"
-(i.e. 32 bit). While this dirty pointer magic works on little endian hosts,
-it of course fails on big endian hosts. Fix it by using a proper helper
-function instead.
+The virtio-gpu test is known to be flaky - that's why we also did
+not enable the test_s390x_fedora in the gitlab CI. However, a flaky
+test can also be annoying when testing locally, so let's rather skip
+this subtest by default and start running the test_s390x_fedora test
+in the gitlab CI again (since the other things that are tested here
+are quite valuable).
 
-Cc: qemu-stable@nongnu.org
-Message-Id: <20230720175307.854460-1-thuth@redhat.com>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20230724084851.24251-1-thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/loongarch/cpu.h                             | 1 +
- target/loongarch/helper.h                          | 1 +
- target/loongarch/csr_helper.c                      | 9 +++++++++
- target/loongarch/insn_trans/trans_privileged.c.inc | 8 +-------
- 4 files changed, 12 insertions(+), 7 deletions(-)
+ tests/avocado/machine_s390_ccw_virtio.py | 51 +++++++++++++-----------
+ 1 file changed, 27 insertions(+), 24 deletions(-)
 
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index ed04027af1..fa371ca8ba 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -342,6 +342,7 @@ typedef struct CPUArchState {
-     uint64_t CSR_DBG;
-     uint64_t CSR_DERA;
-     uint64_t CSR_DSAVE;
-+    uint64_t CSR_CPUID;
+diff --git a/tests/avocado/machine_s390_ccw_virtio.py b/tests/avocado/machine_s390_ccw_virtio.py
+index 78152f2ad1..e7a2a20ba6 100644
+--- a/tests/avocado/machine_s390_ccw_virtio.py
++++ b/tests/avocado/machine_s390_ccw_virtio.py
+@@ -159,7 +159,6 @@ def test_s390x_devices(self):
+                                           'MemTotal:         115640 kB')
  
- #ifndef CONFIG_USER_ONLY
-     LoongArchTLB  tlb[LOONGARCH_TLB_MAX];
-diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-index b9de77d926..ffb1e0b0bf 100644
---- a/target/loongarch/helper.h
-+++ b/target/loongarch/helper.h
-@@ -98,6 +98,7 @@ DEF_HELPER_1(rdtime_d, i64, env)
- #ifndef CONFIG_USER_ONLY
- /* CSRs helper */
- DEF_HELPER_1(csrrd_pgd, i64, env)
-+DEF_HELPER_1(csrrd_cpuid, i64, env)
- DEF_HELPER_1(csrrd_tval, i64, env)
- DEF_HELPER_2(csrwr_estat, i64, env, tl)
- DEF_HELPER_2(csrwr_asid, i64, env, tl)
-diff --git a/target/loongarch/csr_helper.c b/target/loongarch/csr_helper.c
-index 6526367946..55341551a5 100644
---- a/target/loongarch/csr_helper.c
-+++ b/target/loongarch/csr_helper.c
-@@ -35,6 +35,15 @@ target_ulong helper_csrrd_pgd(CPULoongArchState *env)
-     return v;
- }
  
-+target_ulong helper_csrrd_cpuid(CPULoongArchState *env)
-+{
-+    LoongArchCPU *lac = env_archcpu(env);
-+
-+    env->CSR_CPUID = CPU(lac)->cpu_index;
-+
-+    return env->CSR_CPUID;
-+}
-+
- target_ulong helper_csrrd_tval(CPULoongArchState *env)
- {
-     LoongArchCPU *cpu = env_archcpu(env);
-diff --git a/target/loongarch/insn_trans/trans_privileged.c.inc b/target/loongarch/insn_trans/trans_privileged.c.inc
-index 02bca7ca23..9c9de090f0 100644
---- a/target/loongarch/insn_trans/trans_privileged.c.inc
-+++ b/target/loongarch/insn_trans/trans_privileged.c.inc
-@@ -99,13 +99,7 @@ static const CSRInfo csr_info[] = {
-     CSR_OFF(PWCH),
-     CSR_OFF(STLBPS),
-     CSR_OFF(RVACFG),
--    [LOONGARCH_CSR_CPUID] = {
--        .offset = (int)offsetof(CPUState, cpu_index)
--                  - (int)offsetof(LoongArchCPU, env),
--        .flags = CSRFL_READONLY,
--        .readfn = NULL,
--        .writefn = NULL
--    },
-+    CSR_OFF_FUNCS(CPUID, CSRFL_READONLY, gen_helper_csrrd_cpuid, NULL),
-     CSR_OFF_FLAGS(PRCFG1, CSRFL_READONLY),
-     CSR_OFF_FLAGS(PRCFG2, CSRFL_READONLY),
-     CSR_OFF_FLAGS(PRCFG3, CSRFL_READONLY),
+-    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
+     def test_s390x_fedora(self):
+ 
+         """
+@@ -229,31 +228,35 @@ def test_s390x_fedora(self):
+         # writing to the framebuffer. Since the PPM is uncompressed, we then
+         # can simply read the written "magic bytes" back from the PPM file to
+         # check whether the framebuffer is working as expected.
+-        self.log.info("Test screendump of virtio-gpu device")
+-        exec_command_and_wait_for_pattern(self,
++        # Unfortunately, this test is flaky, so we don't run it by default
++        if os.getenv('QEMU_TEST_FLAKY_TESTS'):
++            self.log.info("Test screendump of virtio-gpu device")
++            exec_command_and_wait_for_pattern(self,
+                         'while ! (dmesg | grep gpudrmfb) ; do sleep 1 ; done',
+                         'virtio_gpudrmfb frame buffer device')
+-        exec_command_and_wait_for_pattern(self,
+-            'echo -e "\e[?25l" > /dev/tty0', ':/#')
+-        exec_command_and_wait_for_pattern(self, 'for ((i=0;i<250;i++)); do '
+-            'echo " The  qu ick  fo x j ump s o ver  a  laz y d og" >> fox.txt;'
+-            'done',
+-            ':/#')
+-        exec_command_and_wait_for_pattern(self,
+-            'dd if=fox.txt of=/dev/fb0 bs=1000 oflag=sync,nocache ; rm fox.txt',
+-            '12+0 records out')
+-        with tempfile.NamedTemporaryFile(suffix='.ppm',
+-                                         prefix='qemu-scrdump-') as ppmfile:
+-            self.vm.command('screendump', filename=ppmfile.name)
+-            ppmfile.seek(0)
+-            line = ppmfile.readline()
+-            self.assertEqual(line, b"P6\n")
+-            line = ppmfile.readline()
+-            self.assertEqual(line, b"1280 800\n")
+-            line = ppmfile.readline()
+-            self.assertEqual(line, b"255\n")
+-            line = ppmfile.readline(256)
+-            self.assertEqual(line, b"The quick fox jumps over a lazy dog\n")
++            exec_command_and_wait_for_pattern(self,
++                'echo -e "\e[?25l" > /dev/tty0', ':/#')
++            exec_command_and_wait_for_pattern(self, 'for ((i=0;i<250;i++)); do '
++                'echo " The  qu ick  fo x j ump s o ver  a  laz y d og" >> fox.txt;'
++                'done',
++                ':/#')
++            exec_command_and_wait_for_pattern(self,
++                'dd if=fox.txt of=/dev/fb0 bs=1000 oflag=sync,nocache ; rm fox.txt',
++                '12+0 records out')
++            with tempfile.NamedTemporaryFile(suffix='.ppm',
++                                             prefix='qemu-scrdump-') as ppmfile:
++                self.vm.command('screendump', filename=ppmfile.name)
++                ppmfile.seek(0)
++                line = ppmfile.readline()
++                self.assertEqual(line, b"P6\n")
++                line = ppmfile.readline()
++                self.assertEqual(line, b"1280 800\n")
++                line = ppmfile.readline()
++                self.assertEqual(line, b"255\n")
++                line = ppmfile.readline(256)
++                self.assertEqual(line, b"The quick fox jumps over a lazy dog\n")
++        else:
++            self.log.info("Skipped flaky screendump of virtio-gpu device test")
+ 
+         # Hot-plug a virtio-crypto device and see whether it gets accepted
+         self.log.info("Test hot-plug virtio-crypto device")
 -- 
 2.39.3
 
