@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFC775F7F6
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 15:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 390C475F7D3
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 15:08:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNvHX-0004AQ-9L; Mon, 24 Jul 2023 09:07:23 -0400
+	id 1qNvHg-0004GB-TX; Mon, 24 Jul 2023 09:07:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qNvHM-00046l-T9
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:07:14 -0400
+ id 1qNvHP-00046v-1i
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:07:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qNvHK-0002ac-26
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:07:12 -0400
+ id 1qNvHK-0002ae-2U
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:07:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1690204028;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=T6NDPnkzHlHMJ2E96BT2L8DNXWr8MPzQrE/ZuIz1ThM=;
- b=XeyOUwa1NRfBiYtUJdgixOnBitxnLvMv6UT2q4JKGr91UZXwctf4VuyUojleZVWs/SEpDn
- H024Qh2CED4RvXu/NKXM47MYkhdqeSTwLnerhOjK4WdVq38Gkmr7PjG7ANQ3haowUYwAgx
- IjhYNfPbyfZeb5NNWZfc+a5M5k1guM0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-450-qYq6qj0gPKad8U-KUuThcA-1; Mon, 24 Jul 2023 09:07:01 -0400
-X-MC-Unique: qYq6qj0gPKad8U-KUuThcA-1
+ bh=u51OtPwfPBL7MdDO5U3j5SvZo8pKrPKFjkFTcGk4gTs=;
+ b=IjwJ0BJK/P5GUGKjAHjcM5CggFq5fOr8SqXeEf7rDkrcqikGrF6nd9pNvPWprkYL9kVSpn
+ 6SqTAYBGmGrJeEPJ5qHBTnEROvEZaB0JKXGYsaM+lZOCGheWDOt+opXlW42Rp5Q2AW/Yr3
+ 2ko8JjtyLdNUuyCeBp5RrfDWYIu7dv4=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-398-b7dO1pNMMAGkX7462HzWTA-1; Mon, 24 Jul 2023 09:07:03 -0400
+X-MC-Unique: b7dO1pNMMAGkX7462HzWTA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D1D8810504BD;
- Mon, 24 Jul 2023 13:07:00 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EC5433C0FCA4;
+ Mon, 24 Jul 2023 13:07:02 +0000 (UTC)
 Received: from secure.mitica (unknown [10.39.194.115])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 08C65F782E;
- Mon, 24 Jul 2023 13:06:58 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 22E69F782D;
+ Mon, 24 Jul 2023 13:07:00 +0000 (UTC)
 From: Juan Quintela <quintela@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
@@ -50,10 +50,9 @@ Cc: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Eric Blake <eblake@redhat.com>, Juan Quintela <quintela@redhat.com>,
  Leonardo Bras <leobras@redhat.com>,
  =?UTF-8?q?Hyman=20Huang=28=E9=BB=84=E5=8B=87=29?= <yong.huang@smartx.com>
-Subject: [PATCH 08/26] migration: Put the detection logic before auto-converge
- checking
-Date: Mon, 24 Jul 2023 15:06:21 +0200
-Message-Id: <20230724130639.93135-9-quintela@redhat.com>
+Subject: [PATCH 09/26] migration: Implement dirty-limit convergence algo
+Date: Mon, 24 Jul 2023 15:06:22 +0200
+Message-Id: <20230724130639.93135-10-quintela@redhat.com>
 In-Reply-To: <20230724130639.93135-1-quintela@redhat.com>
 References: <20230724130639.93135-1-quintela@redhat.com>
 MIME-Version: 1.0
@@ -87,54 +86,177 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hyman Huang(黄勇) <yong.huang@smartx.com>
 
-This commit is prepared for the implementation of dirty-limit
-convergence algo.
+Implement dirty-limit convergence algo for live migration,
+which is kind of like auto-converge algo but using dirty-limit
+instead of cpu throttle to make migration convergent.
 
-The detection logic of throttling condition can apply to both
-auto-converge and dirty-limit algo, putting it's position
-before the checking logic for auto-converge feature.
+Enable dirty page limit if dirty_rate_high_cnt greater than 2
+when dirty-limit capability enabled, Disable dirty-limit if
+migration be canceled.
+
+Note that "set_vcpu_dirty_limit", "cancel_vcpu_dirty_limit"
+commands are not allowed during dirty-limit live migration.
 
 Signed-off-by: Hyman Huang(黄勇) <yong.huang@smartx.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <168733225273.5845.15871826788879741674-7@git.sr.ht>
 Reviewed-by: Juan Quintela <quintela@redhat.com>
-Message-ID: <168733225273.5845.15871826788879741674-6@git.sr.ht>
 Signed-off-by: Juan Quintela <quintela@redhat.com>
 ---
- migration/ram.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ migration/migration.c  |  3 +++
+ migration/ram.c        | 36 ++++++++++++++++++++++++++++++++++++
+ softmmu/dirtylimit.c   | 29 +++++++++++++++++++++++++++++
+ migration/trace-events |  1 +
+ 4 files changed, 69 insertions(+)
 
+diff --git a/migration/migration.c b/migration/migration.c
+index ae49d42eab..49332251e8 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -166,6 +166,9 @@ void migration_cancel(const Error *error)
+     if (error) {
+         migrate_set_error(current_migration, error);
+     }
++    if (migrate_dirty_limit()) {
++        qmp_cancel_vcpu_dirty_limit(false, -1, NULL);
++    }
+     migrate_fd_cancel(current_migration);
+ }
+ 
 diff --git a/migration/ram.c b/migration/ram.c
-index f31de47a47..1d9300f4c5 100644
+index 1d9300f4c5..9040d66e61 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -999,17 +999,18 @@ static void migration_trigger_throttle(RAMState *rs)
+@@ -46,6 +46,7 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-types-migration.h"
+ #include "qapi/qapi-events-migration.h"
++#include "qapi/qapi-commands-migration.h"
+ #include "qapi/qmp/qerror.h"
+ #include "trace.h"
+ #include "exec/ram_addr.h"
+@@ -59,6 +60,8 @@
+ #include "multifd.h"
+ #include "sysemu/runstate.h"
+ #include "options.h"
++#include "sysemu/dirtylimit.h"
++#include "sysemu/kvm.h"
+ 
+ #include "hw/boards.h" /* for machine_dump_guest_core() */
+ 
+@@ -984,6 +987,37 @@ static void migration_update_rates(RAMState *rs, int64_t end_time)
+     }
+ }
+ 
++/*
++ * Enable dirty-limit to throttle down the guest
++ */
++static void migration_dirty_limit_guest(void)
++{
++    /*
++     * dirty page rate quota for all vCPUs fetched from
++     * migration parameter 'vcpu_dirty_limit'
++     */
++    static int64_t quota_dirtyrate;
++    MigrationState *s = migrate_get_current();
++
++    /*
++     * If dirty limit already enabled and migration parameter
++     * vcpu-dirty-limit untouched.
++     */
++    if (dirtylimit_in_service() &&
++        quota_dirtyrate == s->parameters.vcpu_dirty_limit) {
++        return;
++    }
++
++    quota_dirtyrate = s->parameters.vcpu_dirty_limit;
++
++    /*
++     * Set all vCPU a quota dirtyrate, note that the second
++     * parameter will be ignored if setting all vCPU for the vm
++     */
++    qmp_set_vcpu_dirty_limit(false, -1, quota_dirtyrate, NULL);
++    trace_migration_dirty_limit_guest(quota_dirtyrate);
++}
++
+ static void migration_trigger_throttle(RAMState *rs)
+ {
+     uint64_t threshold = migrate_throttle_trigger_threshold();
+@@ -1013,6 +1047,8 @@ static void migration_trigger_throttle(RAMState *rs)
+             trace_migration_throttle();
+             mig_throttle_guest_down(bytes_dirty_period,
+                                     bytes_dirty_threshold);
++        } else if (migrate_dirty_limit()) {
++            migration_dirty_limit_guest();
+         }
+     }
+ }
+diff --git a/softmmu/dirtylimit.c b/softmmu/dirtylimit.c
+index 942d876523..a6d854d161 100644
+--- a/softmmu/dirtylimit.c
++++ b/softmmu/dirtylimit.c
+@@ -436,6 +436,23 @@ static void dirtylimit_cleanup(void)
+     dirtylimit_state_finalize();
+ }
+ 
++/*
++ * dirty page rate limit is not allowed to set if migration
++ * is running with dirty-limit capability enabled.
++ */
++static bool dirtylimit_is_allowed(void)
++{
++    MigrationState *ms = migrate_get_current();
++
++    if (migration_is_running(ms->state) &&
++        (!qemu_thread_is_self(&ms->thread)) &&
++        migrate_dirty_limit() &&
++        dirtylimit_in_service()) {
++        return false;
++    }
++    return true;
++}
++
+ void qmp_cancel_vcpu_dirty_limit(bool has_cpu_index,
+                                  int64_t cpu_index,
+                                  Error **errp)
+@@ -449,6 +466,12 @@ void qmp_cancel_vcpu_dirty_limit(bool has_cpu_index,
          return;
      }
  
--    if (migrate_auto_converge()) {
--        /* The following detection logic can be refined later. For now:
--           Check to see if the ratio between dirtied bytes and the approx.
--           amount of bytes that just got transferred since the last time
--           we were in this routine reaches the threshold. If that happens
--           twice, start or increase throttling. */
--
--        if ((bytes_dirty_period > bytes_dirty_threshold) &&
--            (++rs->dirty_rate_high_cnt >= 2)) {
-+    /*
-+     * The following detection logic can be refined later. For now:
-+     * Check to see if the ratio between dirtied bytes and the approx.
-+     * amount of bytes that just got transferred since the last time
-+     * we were in this routine reaches the threshold. If that happens
-+     * twice, start or increase throttling.
-+     */
-+    if ((bytes_dirty_period > bytes_dirty_threshold) &&
-+        (++rs->dirty_rate_high_cnt >= 2)) {
-+        rs->dirty_rate_high_cnt = 0;
-+        if (migrate_auto_converge()) {
-             trace_migration_throttle();
--            rs->dirty_rate_high_cnt = 0;
-             mig_throttle_guest_down(bytes_dirty_period,
-                                     bytes_dirty_threshold);
-         }
++    if (!dirtylimit_is_allowed()) {
++        error_setg(errp, "can't cancel dirty page rate limit while"
++                   " migration is running");
++        return;
++    }
++
+     if (!dirtylimit_in_service()) {
+         return;
+     }
+@@ -499,6 +522,12 @@ void qmp_set_vcpu_dirty_limit(bool has_cpu_index,
+         return;
+     }
+ 
++    if (!dirtylimit_is_allowed()) {
++        error_setg(errp, "can't set dirty page rate limit while"
++                   " migration is running");
++        return;
++    }
++
+     if (!dirty_rate) {
+         qmp_cancel_vcpu_dirty_limit(has_cpu_index, cpu_index, errp);
+         return;
+diff --git a/migration/trace-events b/migration/trace-events
+index 5259c1044b..580895e86e 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -93,6 +93,7 @@ migration_bitmap_sync_start(void) ""
+ migration_bitmap_sync_end(uint64_t dirty_pages) "dirty_pages %" PRIu64
+ migration_bitmap_clear_dirty(char *str, uint64_t start, uint64_t size, unsigned long page) "rb %s start 0x%"PRIx64" size 0x%"PRIx64" page 0x%lx"
+ migration_throttle(void) ""
++migration_dirty_limit_guest(int64_t dirtyrate) "guest dirty page rate limit %" PRIi64 " MB/s"
+ ram_discard_range(const char *rbname, uint64_t start, size_t len) "%s: start: %" PRIx64 " %zx"
+ ram_load_loop(const char *rbname, uint64_t addr, int flags, void *host) "%s: addr: 0x%" PRIx64 " flags: 0x%x host: %p"
+ ram_load_postcopy_loop(int channel, uint64_t addr, int flags) "chan=%d addr=0x%" PRIx64 " flags=0x%x"
 -- 
 2.40.1
 
