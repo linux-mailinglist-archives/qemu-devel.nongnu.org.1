@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3892875EE73
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 10:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C95075EE72
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 10:55:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNrK2-00027k-JJ; Mon, 24 Jul 2023 04:53:42 -0400
+	id 1qNrJy-00021g-0b; Mon, 24 Jul 2023 04:53:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNrJz-00026S-UB
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:53:39 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ id 1qNrJw-00020E-1D
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:53:36 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNrJu-0000eK-I1
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:53:39 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-4fb761efa7aso6133422e87.0
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 01:53:34 -0700 (PDT)
+ id 1qNrJu-0000eP-By
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:53:35 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-3fd190065a8so39351265e9.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 01:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690188812; x=1690793612;
+ d=linaro.org; s=google; t=1690188813; x=1690793613;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Kx8DX46zDkvv/0NYLawLSaPgKsBMt29LaRgzXxGcPGg=;
- b=VJE8bUXXzaJDG06QLiLpqzguQc5+8z6r4khREXBoArNTUdmRHD+xDmV7oqNk00TCjx
- +N1GvQ17YNblLhwLjNaESgbaqqbxhrppHZq62Mbgr8a5gxVBEiMUvzwmgiypNjA/FHCd
- aUdIRdXiP3cykzp9wyt3sI0nD0HsX4cc1GhtatJqNWn6W3JKdVRjK0opmg0MGXWlPmHE
- Z9z2e+p5KmkotbQ2EaJ0FloyrjuhLRDkh9SlyA96VDgMVPcMpn6cL/cFjNy/OdJQ4HXk
- DinHe7b6gekVO5LbYommCNtWHvsuAgs9DD265Yyvs4p7nacYbiqpQ4YE25TMb0LyAcWG
- npEA==
+ bh=FtcjV7RLMVbCUSYkAiLh5IZllixWR3iJOTzr/2oXRS0=;
+ b=cvcAyU+AZgDpWf1Io/RLMTmwARxeWpyv0NX/Qw1BzUK/nboWFkW75BgBrvS6gfvL68
+ eZiPikHTEVYRF2/hSKo6pF9/nyWYc4SSf87FUH0PRnvedIv7xjGJGvGHUF+peQ8hKR8l
+ D/NIUenF5dbkHS0Ck5nyi5DSGanLfaA38FPsqhBNFtdgouBlVDgzpS3+mdFYbMYHV4bi
+ J3yfJkKLSWlZUX6o90n5uRf73Igk9i4Anqy0vo7sIHQJOZLqUFuys4r2RpRAfdKo+/Mm
+ koWuZs08OODB73FfjKc0v5wrHWLfm9TwBYjtIoqxPgwxU9LrSfVGuQ5H6ZmbrHIKQFiM
+ 2llQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690188812; x=1690793612;
+ d=1e100.net; s=20221208; t=1690188813; x=1690793613;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Kx8DX46zDkvv/0NYLawLSaPgKsBMt29LaRgzXxGcPGg=;
- b=H/1ycwMZpCvnzErkdi10KMhqEIdThFtiagtjRKD8Uka3ZvxIjd5szji+mdCrG/qhy8
- 28JUHrFQQguYkCJumyZcuPZtyMyG02IcOfOWEP/DSUjLkSo2Ijf4iLqY5wFPtk14glmb
- xCGWEHuyqW1xs7FBVK3WTkJu0n0F0FW4iH/llU4hN0Taa+rxxCgeIq86Ms3QMBqhP/kg
- 9m8LbUVKF0pEMd7NSc9uqJAFdXAmlDFNwg6aN+mRypZnGXYdUJzwOFG7rO25+n5eyARq
- S2enuLKTF3ZJNZ3D2imCC3ycXP9GzAbfIrJ9EvanmI/5E8+zdVgU9tKVVZRVlcDF0u/W
- w3KA==
-X-Gm-Message-State: ABy/qLYyezK8vYEVgCNR/zcXID26555+vUBF3SJqtBOT8Cr1Umh/waIp
- oK15rOPnkbVtYTlrdtvYIdKnMRtlywX5XmiZcmbwXQ==
-X-Google-Smtp-Source: APBJJlFTKy1KD/f8cL9zmgFIvGcWSep6qfNT14+MSzntnb/uy4trmHQrWjdIphsMYbSTmQ1AnybZjw==
-X-Received: by 2002:a05:6512:e8c:b0:4fd:fabf:b923 with SMTP id
- bi12-20020a0565120e8c00b004fdfabfb923mr578471lfb.14.1690188812140; 
+ bh=FtcjV7RLMVbCUSYkAiLh5IZllixWR3iJOTzr/2oXRS0=;
+ b=G20qr+lFaDf98JRGtTXLtype2CfsXiYOLfFMXiIaobDrRhfV35UrPw16kTLMu9b5sz
+ KUpR92gnng5+/dVjUC+eAbxQ+w9kMJIJCzTeUujM2Ia68TDZbyHEQg2X2blagfR0yf5V
+ Mm9QvDfYuXbO4ajvXAafUd7eGAK4yC/2nGfZWm2w2wXAHwPhkvAdJjl8q9u4eZLr/j2b
+ V+HJCq2THs6sfFewlyGfv9eF8rhS34qxDCDK8Y9wKyEGS1LITcfnMzoAohGHWRI+/jaG
+ zoMYc4Avqh6SlAiEMB3h6Ycbtg8Ijkxzswy+sBM6Q1M7tAfw8reIiSyTfZSK+K0zDNn5
+ QNKw==
+X-Gm-Message-State: ABy/qLY2l7ufELbGztY5wSzpfbqTncRObIEhE3Th0YAkR0j+Fo8L/jw5
+ ZXknYE9ZfJczO4qXnQ4dcIhak9FsIyYnGGs/OGh5kg==
+X-Google-Smtp-Source: APBJJlEGSBOaLZEEzU68QdP5bgZ4Y3aU+n7ai8CGHWjia+YFD3eQB44EwwtEkY4ggIIvaUuW76BZBg==
+X-Received: by 2002:a05:600c:219a:b0:3fb:415f:a85b with SMTP id
+ e26-20020a05600c219a00b003fb415fa85bmr7569973wme.3.1690188812917; 
  Mon, 24 Jul 2023 01:53:32 -0700 (PDT)
 Received: from stoup.. ([62.252.144.58]) by smtp.gmail.com with ESMTPSA id
- t8-20020a1c7708000000b003fa74bff02asm9570994wmi.26.2023.07.24.01.53.31
+ t8-20020a1c7708000000b003fa74bff02asm9570994wmi.26.2023.07.24.01.53.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jul 2023 01:53:31 -0700 (PDT)
+ Mon, 24 Jul 2023 01:53:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PULL 3/7] accel/tcg: Fix sense of read-only probes in ldst_atomicity
-Date: Mon, 24 Jul 2023 09:53:24 +0100
-Message-Id: <20230724085328.4936-4-richard.henderson@linaro.org>
+Subject: [PULL 4/7] accel/tcg: Take mmap_lock in load_atomic*_or_exit
+Date: Mon, 24 Jul 2023 09:53:25 +0100
+Message-Id: <20230724085328.4936-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230724085328.4936-1-richard.henderson@linaro.org>
 References: <20230724085328.4936-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -90,43 +90,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the initial commit, cdfac37be0d, the sense of the test is incorrect,
-as the -1/0 return was confusing.  In bef6f008b981, we mechanically
-invert all callers while changing to false/true return, preserving the
-incorrectness of the test.
-
-Now that the return sense is sane, it's easy to see that if !write,
-then the page is not modifiable (i.e. most likely read-only, with
-PROT_NONE handled via SIGSEGV).
+For user-only, the probe for page writability may race with another
+thread's mprotect.  Take the mmap_lock around the operation.  This
+is still faster than the start/end_exclusive fallback.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/ldst_atomicity.c.inc | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ accel/tcg/ldst_atomicity.c.inc | 32 ++++++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 14 deletions(-)
 
 diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index 4de0a80492..de70531a7a 100644
+index de70531a7a..e5c590a499 100644
 --- a/accel/tcg/ldst_atomicity.c.inc
 +++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -159,7 +159,7 @@ static uint64_t load_atomic8_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
+@@ -159,9 +159,11 @@ static uint64_t load_atomic8_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
       * another process, because the fallback start_exclusive solution
       * provides no protection across processes.
       */
--    if (page_check_range(h2g(pv), 8, PAGE_WRITE_ORG)) {
-+    if (!page_check_range(h2g(pv), 8, PAGE_WRITE_ORG)) {
-         uint64_t *p = __builtin_assume_aligned(pv, 8);
-         return *p;
-     }
-@@ -194,7 +194,7 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
-      * another process, because the fallback start_exclusive solution
-      * provides no protection across processes.
-      */
--    if (page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
-+    if (!page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
-         return *p;
+-    if (!page_check_range(h2g(pv), 8, PAGE_WRITE_ORG)) {
+-        uint64_t *p = __builtin_assume_aligned(pv, 8);
+-        return *p;
++    WITH_MMAP_LOCK_GUARD() {
++        if (!page_check_range(h2g(pv), 8, PAGE_WRITE_ORG)) {
++            uint64_t *p = __builtin_assume_aligned(pv, 8);
++            return *p;
++        }
      }
  #endif
+ 
+@@ -186,25 +188,27 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
+         return atomic16_read_ro(p);
+     }
+ 
+-#ifdef CONFIG_USER_ONLY
+     /*
+      * We can only use cmpxchg to emulate a load if the page is writable.
+      * If the page is not writable, then assume the value is immutable
+      * and requires no locking.  This ignores the case of MAP_SHARED with
+      * another process, because the fallback start_exclusive solution
+      * provides no protection across processes.
++     *
++     * In system mode all guest pages are writable.  For user mode,
++     * we must take mmap_lock so that the query remains valid until
++     * the write is complete -- tests/tcg/multiarch/munmap-pthread.c
++     * is an example that can race.
+      */
+-    if (!page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
+-        return *p;
+-    }
++    WITH_MMAP_LOCK_GUARD() {
++#ifdef CONFIG_USER_ONLY
++        if (!page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
++            return *p;
++        }
+ #endif
+-
+-    /*
+-     * In system mode all guest pages are writable, and for user-only
+-     * we have just checked writability.  Try cmpxchg.
+-     */
+-    if (HAVE_ATOMIC128_RW) {
+-        return atomic16_read_rw(p);
++        if (HAVE_ATOMIC128_RW) {
++            return atomic16_read_rw(p);
++        }
+     }
+ 
+     /* Ultimate fallback: re-execute in serial context. */
 -- 
 2.34.1
 
