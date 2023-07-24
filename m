@@ -2,80 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE7075EE6F
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 10:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF9775EE7E
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 10:56:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNrK0-00026e-V4; Mon, 24 Jul 2023 04:53:41 -0400
+	id 1qNrMR-0005cZ-15; Mon, 24 Jul 2023 04:56:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNrJz-00024g-3n
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:53:39 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ id 1qNrLP-0004yz-HG
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:55:10 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNrJx-0000fh-J9
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:53:38 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-4fb761efa7aso6133489e87.0
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 01:53:37 -0700 (PDT)
+ id 1qNrLN-0000wx-H4
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:55:07 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3143b88faebso3743252f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 01:55:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690188816; x=1690793616;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=T1Y8T/xVALsYcshJKAiwyXKIcg4f5npWahbPLhzxr0I=;
- b=LeSKyAQ1cY7wirUMvIv4NpuHYWyZ6wZ7HC6HZ6ZQAGyBwC/GqN0Iedp8sB74P/z8d7
- nPe12tORKncsgJ/xlByaKUIOERzUD0ALCcHSNDsw6qEg5EkuBw1/KnpU9R6fsmyidg5m
- vK78FnqyEKtF8M94ipXYaP8EVg4fBqr/mZh9W5aTLz9U/enADkaUtgTIP7CrRKSRZSgM
- +6hUuS31pEJ63Hr8yYJFbHQWUhLYUWar2Rgn1u3n0FTQPqfNcH2hn6xq0tHaZeh0xtNZ
- ENmhDZhvgaWP18E3k/oHaLgQGZwmb4Of/ZOokMvRF25+Gw5zQd5nVaPyfGKYYgPvHO8v
- ywxw==
+ d=linaro.org; s=google; t=1690188901; x=1690793701;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2bBG+xPb+o3DQOL6IZ10MUUt+FeXDEGimdn9UVYEtuQ=;
+ b=B5dR4y2jmLrFLHh5kzPFw6QhbVvyAhVKCDRrBTCtC6t6RtjSSCycaDlCZk5zOzzcS1
+ A7+08ZlqPDOiP5gijM8zCvIFjMsejr9/sKbP1Doi/W/+nh7P+y9t8iDfgplD2aPV+r7V
+ hVkIUP2c7FfqGDu8QLD+WF7gK6oXOlY/TNH2O0Dlo/5lpDzu51Ga8PjAu/N6WN5dDK8l
+ wX4ATiVDNm6VuX8fQTNcyjtM3Us+n1Yqm45+dtgxRa/rrCRhwdeLmaIQvFSExxfdckSe
+ LJ90rybhm6M60yok7qI1i2ffSQiC4mzsB4JN8CHfgzbWI0YzPD1T0IUUgPUQf/K/wkPx
+ Ufxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690188816; x=1690793616;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=T1Y8T/xVALsYcshJKAiwyXKIcg4f5npWahbPLhzxr0I=;
- b=QDbe/RCwwZt8lI8OU7R+gv8UGeXuB3Dp3Q5e6yMtIA85xgOBeyODlZr5cP1ntDl5bZ
- RNP5mk1X/T17b5pAl7YXKfhhQz6z1mt2N8RofRIbBopO9PuEsAo+/UqnJleGqV5egAdk
- LyeAMihIc+axtHbxVOaCAoj0nC3sKptHoZ9hzJZ61vsBB45+s3zGPlTYI3IxOMlZyn1m
- EV1f09UXsfQU366awfGeLK80+3brrKTs8DlAu6XA70AOZepMJ49TRsUngX9J1U9ir5Kf
- WPntIkfSmfYJ25+Fmt/mPympYruWhkvUMuIlyKeQVkbWHosj0dW5Y6QYG8uJxQoJyBnJ
- 7Gww==
-X-Gm-Message-State: ABy/qLZDw0OJS7IvKPgsuvidYo9krVYBgbep4GIfOcZBP7CW8cyKChpk
- TzgbJqYm88fR09rwlQ4eqYaNH8Ktyl3TNU3PveaY3w==
-X-Google-Smtp-Source: APBJJlHLNIV/aNYs0N/0vz1Fm0H1dk4BlfuHuyww41rifiV5EevbsSg+ehaXtGWSedw+cmLRi3VNEg==
-X-Received: by 2002:ac2:58e4:0:b0:4f8:7503:2041 with SMTP id
- v4-20020ac258e4000000b004f875032041mr4207696lfo.37.1690188815869; 
- Mon, 24 Jul 2023 01:53:35 -0700 (PDT)
-Received: from stoup.. ([62.252.144.58]) by smtp.gmail.com with ESMTPSA id
- t8-20020a1c7708000000b003fa74bff02asm9570994wmi.26.2023.07.24.01.53.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jul 2023 01:53:35 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	Luca Bonissi <qemu@bonslack.org>
-Subject: [PULL 7/7] accel/tcg: Fix type of 'last' for pageflags_{find,next}
-Date: Mon, 24 Jul 2023 09:53:28 +0100
-Message-Id: <20230724085328.4936-8-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230724085328.4936-1-richard.henderson@linaro.org>
-References: <20230724085328.4936-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20221208; t=1690188901; x=1690793701;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2bBG+xPb+o3DQOL6IZ10MUUt+FeXDEGimdn9UVYEtuQ=;
+ b=ftKOsSOE0laMSo0PXEykqIlpzBQNLOQknaoOeTn6t0ON/gLOsiw72jXfln08fITinh
+ zfXSqOermOtXBoYF/KEBmFH+1GjJ67xMabkPCNYvcmqeK73Ty2Qv6i3NNj3zqgxoCkZ8
+ fcCZ/THNEgc9XhBqyU8edz+4h0kK3Em+TsBf4sf+fU/5zVmmH8HStsdF2VwCbs4Jg5e1
+ DDBLNOcd4s4WxtJYFJvf1ymqoI/N7s7wbRfH2thkJVCIQvvPUFgGF3Wo2fnp3ppz/TxS
+ 5br8dKJH73KHSIvdIqo/xqufCsOxlyFDQOX4Dbav5RQmac8odSCbYWR1Ux7j5h5Pi3WD
+ y9cw==
+X-Gm-Message-State: ABy/qLaX/GLR8jrJ6S4bPiMAdBXYPUP1uMkCq6UJHeEM7oLkYP8eNsl6
+ zGmMiZc4SjTBFEUZbiPQBN5pzg==
+X-Google-Smtp-Source: APBJJlGdOwE68idDquz/Shwgnbfg5L38o3cn6OolVING+0SPrc7aRJm2/3DZtppqfe+V+XqH8g5Sqg==
+X-Received: by 2002:adf:e608:0:b0:317:6175:95fd with SMTP id
+ p8-20020adfe608000000b00317617595fdmr1044692wrm.43.1690188900977; 
+ Mon, 24 Jul 2023 01:55:00 -0700 (PDT)
+Received: from [192.168.224.227] ([62.252.144.58])
+ by smtp.gmail.com with ESMTPSA id
+ o20-20020a5d58d4000000b0031433443265sm12244914wrf.53.2023.07.24.01.55.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 24 Jul 2023 01:55:00 -0700 (PDT)
+Message-ID: <f40545af-4c99-d1ac-834b-f05ed315e5d2@linaro.org>
+Date: Mon, 24 Jul 2023 09:54:58 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=richard.henderson@linaro.org; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 01/14] target/s390x: Make CKSM raise an exception if R2
+ is odd
+To: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand
+ <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, qemu-stable@nongnu.org
+References: <20230724082032.66864-1-iii@linux.ibm.com>
+ <20230724082032.66864-2-iii@linux.ibm.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230724082032.66864-2-iii@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: 11
+X-Spam_score: 1.1
 X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_report: (1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.093,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,44 +97,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Luca Bonissi <qemu@bonslack.org>
+On 7/24/23 09:15, Ilya Leoshkevich wrote:
+> R2 designates an even-odd register pair; the instruction should raise
+> a specification exception when R2 is not even.
+> 
+> Cc:qemu-stable@nongnu.org
+> Fixes: e023e832d0ac ("s390x: translate engine for s390x CPU")
+> Signed-off-by: Ilya Leoshkevich<iii@linux.ibm.com>
+> ---
+>   target/s390x/tcg/insn-data.h.inc | 2 +-
+>   target/s390x/tcg/translate.c     | 6 ++++++
+>   2 files changed, 7 insertions(+), 1 deletion(-)
 
-These should match 'start' as target_ulong, not target_long.
-
-On 32bit targets, the parameter was sign-extended to uint64_t,
-so only the first mmap within the upper 2GB memory can succeed.
-
-Signed-off-by: Luca Bonissi <qemu@bonslack.org>
-Message-Id: <327460e2-0ebd-9edb-426b-1df80d16c32a@bonslack.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- accel/tcg/user-exec.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index ac38c2bf96..ab48cb41e4 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -144,7 +144,7 @@ typedef struct PageFlagsNode {
- 
- static IntervalTreeRoot pageflags_root;
- 
--static PageFlagsNode *pageflags_find(target_ulong start, target_long last)
-+static PageFlagsNode *pageflags_find(target_ulong start, target_ulong last)
- {
-     IntervalTreeNode *n;
- 
-@@ -153,7 +153,7 @@ static PageFlagsNode *pageflags_find(target_ulong start, target_long last)
- }
- 
- static PageFlagsNode *pageflags_next(PageFlagsNode *p, target_ulong start,
--                                     target_long last)
-+                                     target_ulong last)
- {
-     IntervalTreeNode *n;
- 
--- 
-2.34.1
 
+r~
 
