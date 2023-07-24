@@ -2,63 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2983E75FE99
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 19:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4657C75FEC9
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 20:05:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNzmb-0003ri-NA; Mon, 24 Jul 2023 13:55:45 -0400
+	id 1qNzus-0005LM-8b; Mon, 24 Jul 2023 14:04:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qNzmY-0003r6-Pm
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 13:55:43 -0400
+ id 1qNzup-0005L1-EX
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 14:04:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qNzmV-0007Mi-HL
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 13:55:42 -0400
+ id 1qNzun-00012b-7t
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 14:04:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690221337;
+ s=mimecast20190719; t=1690221852;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=vOGDRPGLhUu9C7CUfOeFlnfTDHq3g1h2vLg1TbQZ/R0=;
- b=NMDS060is7TSECXyrC80Le5ke+21CsEly1xYXyspIGfNltQB9HLXJAto/FMlt+aZBVYqTJ
- wA/omvAJqac/2cDwb0aShBq7lMmHzWpw3zRxlDfC/RjE0Ib417ZXFWbvJhMnjGndYxoqVK
- pcT/53BG3Kqv8Hh85vU2AqINMjHInp8=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-636-1XRu9KTRMvWFKmcedZ4AcQ-1; Mon, 24 Jul 2023 13:55:35 -0400
-X-MC-Unique: 1XRu9KTRMvWFKmcedZ4AcQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=McVu5F6FUGRFxvJ8lp6U48z0Y/DlMvZEs0Ec4pejW84=;
+ b=d+YdtSP1wMIq//GgdH9pk8j/Hu/OYFXMxKj35BI2ZPUVEbgTxIY3/rp6DblBwCo7Hkt+dR
+ leOcU3aGA2KGvWtZUKMKVAslRNP3ZYmL+pb8BLlhYB6I+UjZ8syGcNstuN0G5yteW5z8SR
+ eY+9dz5VipzlvNCUG83w6A++yi5eVYU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-218-ch_b6b87PDGG2JdWMSIhQA-1; Mon, 24 Jul 2023 14:04:05 -0400
+X-MC-Unique: ch_b6b87PDGG2JdWMSIhQA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3D801C07242
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 17:55:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2032B805AF6
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 18:04:05 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.142])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 56A9B201EE6E;
- Mon, 24 Jul 2023 17:55:34 +0000 (UTC)
-Date: Mon, 24 Jul 2023 13:55:32 -0400
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4765640D2839;
+ Mon, 24 Jul 2023 18:04:03 +0000 (UTC)
+Date: Mon, 24 Jul 2023 14:04:01 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: Hanna Czenczek <hreitz@redhat.com>
 Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>,
  Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
- German Maglione <gmaglione@redhat.com>
-Subject: Re: [PATCH 1/6] vhost-user.rst: Add suspend/resume
-Message-ID: <20230724175532.GA222590@fedora>
+ German Maglione <gmaglione@redhat.com>,
+ Maxime Coquelin <maxime.coquelin@redhat.com>
+Subject: Re: [PATCH 6/6] vhost-user: Have reset_status fall back to reset
+Message-ID: <20230724180401.GB222590@fedora>
 References: <20230711155230.64277-1-hreitz@redhat.com>
- <20230711155230.64277-2-hreitz@redhat.com>
- <20230718142557.GB44841@fedora>
- <a760479a-f623-1fa9-a557-70a857fe8dcf@redhat.com>
+ <20230711155230.64277-7-hreitz@redhat.com>
+ <20230718151044.GG44841@fedora>
+ <7ba1e055-e513-1735-5e60-eceb06fe877a@redhat.com>
+ <0c8e2902-89a0-a9b6-744d-6ab737a0dbb0@redhat.com>
+ <20230720160300.GG184015@fedora>
+ <269831fe-e237-e28a-a74c-68a6d8fede7b@redhat.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="ycQ+R/7D6MyDxMr5"
+ protocol="application/pgp-signature"; boundary="FmT5AzEODkXCLYxi"
 Content-Disposition: inline
-In-Reply-To: <a760479a-f623-1fa9-a557-70a857fe8dcf@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+In-Reply-To: <269831fe-e237-e28a-a74c-68a6d8fede7b@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -85,249 +89,219 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---ycQ+R/7D6MyDxMr5
+--FmT5AzEODkXCLYxi
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 19, 2023 at 03:59:32PM +0200, Hanna Czenczek wrote:
-> On 18.07.23 16:25, Stefan Hajnoczi wrote:
-> > On Tue, Jul 11, 2023 at 05:52:23PM +0200, Hanna Czenczek wrote:
-> > > When stopping the VM, qemu wants all devices to fully cease any
-> > > operation, too.  Currently, we can only have vhost-user back-ends stop
-> > > processing vrings, but not background operations.  Add the SUSPEND and
-> > > RESUME commands from vDPA, which allow the front-end (qemu) to tell
-> > > back-ends to cease all operations, including those running in the
-> > > background.
+On Fri, Jul 21, 2023 at 04:16:07PM +0200, Hanna Czenczek wrote:
+> On 20.07.23 18:03, Stefan Hajnoczi wrote:
+> > On Wed, Jul 19, 2023 at 04:27:58PM +0200, Hanna Czenczek wrote:
+> > > On 19.07.23 16:11, Hanna Czenczek wrote:
+> > > > On 18.07.23 17:10, Stefan Hajnoczi wrote:
+> > > > > On Tue, Jul 11, 2023 at 05:52:28PM +0200, Hanna Czenczek wrote:
+> > > > > > The only user of vhost_user_reset_status() is vhost_dev_stop(),=
+ which
+> > > > > > only uses it as a fall-back to stop the back-end if it does not=
+ support
+> > > > > > SUSPEND.=C2=A0 However, vhost-user's implementation is a no-op =
+unless the
+> > > > > > back-end supports SET_STATUS.
+> > > > > >=20
+> > > > > > vhost-vdpa's implementation instead just calls
+> > > > > > vhost_vdpa_reset_device(), implying that it's OK to fully reset=
+ the
+> > > > > > device if SET_STATUS is not supported.
+> > > > > >=20
+> > > > > > To be fair, vhost_vdpa_reset_device() does nothing but to set
+> > > > > > the status
+> > > > > > to zero.=C2=A0 However, that may well be because vhost-vdpa has=
+ no method
+> > > > > > besides this to reset a device.=C2=A0 In contrast, vhost-user h=
+as
+> > > > > > RESET_DEVICE and a RESET_OWNER, which can be used instead.
+> > > > > >=20
+> > > > > > While it is not entirely clear from documentation or git logs, =
+=66rom
+> > > > > > discussions and the order of vhost-user protocol features, it
+> > > > > > appears to
+> > > > > > me as if RESET_OWNER originally had no real meaning for vhost-u=
+ser, and
+> > > > > > was thus used to signal a device reset to the back-end.=C2=A0 T=
+hen,
+> > > > > > RESET_DEVICE was introduced, to have a well-defined dedicated r=
+eset
+> > > > > > command.=C2=A0 Finally, vhost-user received full STATUS support=
+, including
+> > > > > > SET_STATUS, so setting the device status to 0 is now the prefer=
+red way
+> > > > > > of resetting a device.=C2=A0 Still, RESET_DEVICE and RESET_OWNE=
+R should
+> > > > > > remain valid as fall-backs.
+> > > > > >=20
+> > > > > > Therefore, have vhost_user_reset_status() fall back to
+> > > > > > vhost_user_reset_device() if the back-end has no STATUS support.
+> > > > > >=20
+> > > > > > Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> > > > > > ---
+> > > > > >  =C2=A0 hw/virtio/vhost-user.c | 2 ++
+> > > > > >  =C2=A0 1 file changed, 2 insertions(+)
+> > > > > >=20
+> > > > > > diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> > > > > > index 4507de5a92..53a881ec2a 100644
+> > > > > > --- a/hw/virtio/vhost-user.c
+> > > > > > +++ b/hw/virtio/vhost-user.c
+> > > > > > @@ -2833,6 +2833,8 @@ static void vhost_user_reset_status(struct
+> > > > > > vhost_dev *dev)
+> > > > > >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (virtio_has_feature(dev->pro=
+tocol_features,
+> > > > > >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 VHOST_USER_PROTOCOL_F_STATUS)) {
+> > > > > >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vhost_u=
+ser_set_status(dev, 0);
+> > > > > > +=C2=A0=C2=A0=C2=A0 } else {
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vhost_user_reset_de=
+vice(dev);
+> > > > > >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > > > > >  =C2=A0 }
+> > > > > Did you check whether DPDK treats setting the status to 0 as equi=
+valent
+> > > > > to RESET_DEVICE?
+> > > > If it doesn=E2=80=99t, what=E2=80=99s even the point of using reset=
+_status?
+> > > Sorry, I=E2=80=99m being unclear, and I think this may be important b=
+ecause it ties
+> > > into the question from patch 1, what qemu is even trying to do by run=
+ning
+> > > SET_STATUS(0) vhost_dev_stop(), so here=E2=80=99s what gave me the im=
+pression that
+> > > SET_STATUS(0) and RESET_DEVICE should be equivalent:
 > > >=20
-> > > qemu's current work-around for this is to reset the back-end instead =
-of
-> > > suspending it, which will not work for back-ends that have internal
-> > > state that must be preserved across e.g. stop/cont.
+> > > vhost-vdpa.c runs SET_STATUS(0) in a function called
+> > > vhost_vdpa_reset_device().=C2=A0 This is one thing that gave me the i=
+mpression
+> > > that this is about an actual full reset.
 > > >=20
-> > > Note that the given specification requires the back-end to delay
-> > > processing kicks (i.e. starting vrings) until the device is resumed,
-> > > instead of requiring the front-end not to send kicks while suspended.
-> > > qemu starts devices (and would just resume them) only when the VM is =
-in
-> > > a running state, so it would be difficult to have qemu delay kicks un=
-til
-> > > the device is resumed, which is why this patch specifies handling of
-> > > kicks as it does.
-> > >=20
-> > > Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> > > ---
-> > >   docs/interop/vhost-user.rst | 35 +++++++++++++++++++++++++++++++++--
-> > >   1 file changed, 33 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-> > > index 5a070adbc1..ac6be34c4c 100644
-> > > --- a/docs/interop/vhost-user.rst
-> > > +++ b/docs/interop/vhost-user.rst
-> > > @@ -381,6 +381,10 @@ readable) on the descriptor specified by ``VHOST=
-_USER_SET_VRING_KICK``
-> > >   or receiving the in-band message ``VHOST_USER_VRING_KICK`` if negot=
-iated,
-> > >   and stop ring upon receiving ``VHOST_USER_GET_VRING_BASE``.
-> > > +While the back-end is suspended (via ``VHOST_USER_SUSPEND``), it must
-> > > +never process rings, and thus also delay handling kicks until the
-> > If you respin this series, I suggest replacing "never" with "not" to
-> > emphasize that ring processing is only skipped while the device is
-> > suspended (rather than forever). "Never" feels too strong to use when
-> > describing a temporary state.
->=20
-> Sure.
->=20
-> > > +back-end is resumed again.
-> > > +
-> > >   Rings can be enabled or disabled by ``VHOST_USER_SET_VRING_ENABLE``.
-> > >   If ``VHOST_USER_F_PROTOCOL_FEATURES`` has not been negotiated, the
-> > > @@ -479,8 +483,9 @@ supplied by ``VhostUserLog``.
-> > >   ancillary data, it may be used to inform the front-end that the log=
- has
-> > >   been modified.
-> > > -Once the source has finished migration, rings will be stopped by the
-> > > -source. No further update must be done before rings are restarted.
-> > > +Once the source has finished migration, the device will be suspended=
- and
-> > > +its rings will be stopped by the source. No further update must be d=
-one
-> > > +before the device and its rings are resumed.
-> > This paragraph is abstract and doesn't directly identify the mechanisms
-> > or who does what:
-> > - "the device will be suspended" via VHOST_USER_SUSPEND (or reset when
-> >    VHOST_USER_SUSPEND is not supported?) or automatically by the device
-> >    itself or some other mechanism?
->=20
-> OK, I=E2=80=99ll add VHOST_USER_SUSPEND.
->=20
-> So far I hadn=E2=80=99t considered making a note of resetting as a fallba=
-ck right in
-> the specification.=C2=A0 I don=E2=80=99t think I would want it in the spe=
-cification, but
-> on the other hand, it is probably important for back-end authors to know
-> that if they do not implement SUSPEND, their device is going to be reset =
-by
-> qemu.
->=20
-> Can we make that a =E2=80=9Dmay=E2=80=9D, i.e.:
->=20
-> ```
-> Once the source has finished migration, the device will be suspended via
-> VHOST_USER_SUSPEND and its rings will be stopped by the source.
-
-I'm not sure what "its rings will be stopped by the source" means
-exactly. Is it summarizing the effect of VHOST_USER_SUSPEND or is there
-an additional action after VHOST_USER_SUSPEND that stops rings? And I'm
-not sure whether "by the source" means by the front-end or back-end on
-the source machine?
-
-> No further
-> update must be done before the device and its rings are resumed.
-
-"Update" to what? Guest RAM? Device state? Rings?
-
-I feel like this text is too vague for a spec. People may interpret it
-differently. Can you make rephrase this to more concrete?
-
-> If and only
-> if the back-end does not support VHOST_USER_SUSPEND, the front-end may re=
-set
-> it instead (via VHOST_USER_SET_STATUS, VHOST_USER_RESET_DEVICE, or
-> VHOST_USER_RESET_OWNER).
-> ```
->=20
-> I=E2=80=99m unsure about the =E2=80=9CIf and only if=E2=80=9D =E2=80=93 o=
-lder qemu versions will break this,
-> but I feel like we must promise back-end writers that if they implement
-> SUSPEND, their back-end is not going to be reset; if it is, and something
-> breaks because of it, it=E2=80=99s the front-end that must be updated to =
-match the
-> specification.
-
-I this the trick is to say "if and only if VHOST_USER_F_SUSPEND has not
-been negotiated". That way really only new front-ends that support
-VHOST_USER_SUSPEND are required to use suspend instead of reset and
-older versions of QEMU will not violate this statement.
-
->=20
-> > - "before the device and its rings are resumed" via VHOST_USER_RESUME?
-> >    And is this referring to the source device?
->=20
-> Yes, via VHOST_USER_RESUME, and restarting the rings by starting them (i.=
-e.
-> a kick).
->=20
-> Whether this is referring to the source device=E2=80=A6=C2=A0 Well, the t=
-ext as it was
-> before begs the exact same question, so honestly, I don=E2=80=99t know fo=
-r sure.=C2=A0
-> =E2=80=9CRestarting=E2=80=9D only makes sense if the rings were stopped b=
-efore, so I assume
-> it=E2=80=99s referring to the source, e.g. for the case of a failed migra=
-tion.=C2=A0
-> RESUME at least definitely will only happen after a prior SUSPEND, so this
-> one will definitely only apply on the source side.
->=20
-> > Please rephrase the paragraph to identify the vhost-user messages
-> > involved.
+> > > Another is the whole discussion that we=E2=80=99ve had.=C2=A0 vhost_d=
+ev_stop() does not
+> > > call a `vhost_reset_device()` function, it calls `vhost_reset_status(=
+)`.
+> > > Still, we were always talking about resetting the device.
+> > There is some hacky stuff with struct vhost_dev's vq_index_end and
+> > multi-queue devices. I think it's because multi-queue vhost-net device
+> > consist of many vhost_devs and NetClientStates, so certain vhost
+> > operations are skipped unless this is the "first" or "last" vhost_dev
+> > from a large aggregate vhost-net device. That might be responsible for
+> > part of the weirdness.
 > >=20
-> > >   In postcopy migration the back-end is started before all the memory=
- has
-> > >   been received from the source host, and care must be taken to avoid
-> > > @@ -885,6 +890,7 @@ Protocol features
-> > >     #define VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS  15
-> > >     #define VHOST_USER_PROTOCOL_F_STATUS               16
-> > >     #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
-> > > +  #define VHOST_USER_PROTOCOL_F_SUSPEND              18
-> > >   Front-end message types
-> > >   -----------------------
-> > > @@ -1440,6 +1446,31 @@ Front-end message types
-> > >     query the back-end for its device status as defined in the Virtio
-> > >     specification.
-> > > +``VHOST_USER_SUSPEND``
-> > > +  :id: 41
-> > > +  :equivalent ioctl: VHOST_VDPA_SUSPEND
-> > > +  :request payload: N/A
-> > > +  :reply payload: N/A
-> > > +
-> > > +  When the ``VHOST_USER_PROTOCOL_F_SUSPEND`` protocol feature has be=
-en
-> > > +  successfully negotiated, this message is submitted by the front-en=
-d to
-> > > +  have the back-end cease all operations except for handling vhost-u=
-ser
-> > > +  requests.  The back-end must stop processing all virt queues, and =
+> > > It doesn=E2=80=99t make sense to me that vDPA would provide no functi=
+on to fully
+> > > reset a device, while vhost-user does.=C2=A0 Being able to reset a de=
+vice sounds
+> > > vital to me.=C2=A0 This also gave me the impression that SET_STATUS(0=
+) on vDPA at
+> > > least is functionally equivalent to a full device reset.
+> > >=20
+> > >=20
+> > > Maybe SET_STATUS(0) does mean a full device reset on vDPA, but not on
+> > > vhost-user.=C2=A0 That would be a real shame, so I assumed this would=
+ not be the
+> > > case; that SET_STATUS(0) does the same thing on both protocols.
+> > Yes, exactly. It has the real VIRTIO spec meaning in vDPA. In vhost-user
+> > it's currently only used by DPDK as a hint for when device
+> > initialization is complete:
+> > https://github.com/DPDK/dpdk/commit/41d201804c4c44738168e2d247d3b178084=
+5faa1
+>=20
+> FWIW, now the code is a bit different.
+> https://github.com/DPDK/dpdk/commit/671cc679a5fcd26705bb20ddc13b93e665719=
+054
+> has added a RESET interpretation for the status field, i.e. when it is 0.=
+=C2=A0
+> It doesn=E2=80=99t do anything, but at least DPDK seems to agree that SET=
+_STATUS(0)
+> is a reset.
+
+That patch adds diagnostics but does not perform any action for
+SET_STATUS 0. DPDK's vhost_user_reset_owner() is still the only place
+where the device is actually reset. QEMU cannot switch to just
+SET_STATUS 0, it still needs to send RESET_DEVICE/RESET_OWNER.
+
+>=20
+> > > The virtio specification says =E2=80=9CWriting 0 into this field rese=
+ts the device.=E2=80=9D
+> > > about the device_status field.
+> > >=20
+> > > This also makes sense, because the device_status field is basically u=
+sed to
+> > > tell the device that a driver has taken control.=C2=A0 If reset, this=
+ indicates
+> > > the driver has given up control, and to me this is a point where a de=
+vice
+> > > should fully reset itself.
+> > >=20
+> > > So all in all, I can=E2=80=99t see the rationale why any implementati=
+on that
+> > > supports SET_STATUS would decide to treat SET_STATUS(0) not as equiva=
+lent or
+> > > a superset of RESET_DEVICE.=C2=A0 I may be wrong, and this might expl=
+ain a whole
+> > > deal about what kind of background operations we hope to stop with
+> > > SET_STATUS(0).
+> > I would like vhost-user devices to implement SET_STATUS according to the
+> > VIRTIO specification in the future and they can do that. But I think
+> > front-ends should continue sending RESET_DEVICE in order to support old
+> > devices.
+>=20
+> Well, yes, exactly.=C2=A0 That is what I meant to address with this patch,
+> vhost-user right now does not send RESET_DEVICE in its vhost_reset_status
+> implementation, so the front-end will not fall back to RESET_DEVICE when =
 it
-> > > +  must not perform any background operations.  It may not resume unt=
-il a
-> > "background operations" are not defined. What does it mean:
-> > - Anything that writes to memory slots
-> > - Anything that changes the visible state of the device
-> > - Anything that changes the non-visible internal state of the device
-> > - etc
-> > ?
+> apparently does intend to reset the device[1].=C2=A0 We do arguably have
+> vhost_reset_device, too, but for vDPA that is just a SET_STATUS(0) (there=
+ is
+> no RESET_DEVICE on vDPA), and it=E2=80=99s also only called by vhost-user=
+-scsi.
 >=20
-> My best answer (honestly) is: You tell me.=C2=A0 This series is introduci=
-ng
-> SUSPEND/RESUME because qemu wants to reset devices to make them stop
-> =E2=80=9Cbackground operations=E2=80=9D, and this would break virtiofsd i=
-f any form of reset
-> were actually implemented.=C2=A0 The implementation of SUSPEND/RESUME in
-> virtiofsd on the other hand is supposed to basically be a no-op (besides
-> delaying ring processing until a RESUME, but even if we processed them
-> before, i.e. really make SUSPEND/RESUME no-ops, it would most likely work
-> out fine), so I have no idea what kind of background operations we are ev=
-en
-> talking about, or whether any such actually exist in practice.
+> So this also begs the question why we even do have vhost_reset_status and
+> vhost_reset_device as two separate things. The commit introducing
+> vhost_reset_status (c3716f260bf) doesn=E2=80=99t say.=C2=A0 Maybe the int=
+ention was that
+> vhost_reset_device would leave the status at 0, while vhost_reset_status
+> would return it to ACKNOWLEDGE | DRIVER, as done by the introducing commi=
+t,
+> but that comes back to patch 5 in this series =E2=80=93 we don=E2=80=99t =
+need to have
+> ACKNOWLEDGE | DRIVER set after vhost_dev_stop(), so we don=E2=80=99t need
+> vhost_reset_status to set those flags.=C2=A0 They should be set in
+> vhost_dev_start().
 >=20
-> I don=E2=80=99t know what anyone had in mind when introducing the RESET.=
-=C2=A0 It comes
-> from vDPA (c3716f260bf moved it from vdpa into the common code), and exis=
-ts
-> since the code was originally added (108a64818e6), so there=E2=80=99s no =
-comment
-> explaining why it exists.=C2=A0 I can=E2=80=99t explain what the back-end=
- is supposed to
-> stop doing, because so far it isn=E2=80=99t explained anywhere in qemu, i=
-ts git log,
-> or in any documentation (there basically is no vdpa documentation).
->=20
-> I can only say what I just completely na=C3=AFvely assumed it to mean so =
-far:
-> That the back-end basically should stop doing anything besides handling a=
-nd
-> replying to vhost-user messages.=C2=A0 If such a message requires changin=
-g any
-> state, visible or not, then this state change is permissible.
+> [1] This is assuming that SET_STATUS(0) is intended to reset the device, =
+but
+> it sounds like you agree on that.
 
-Okay, I suggest the following instead of "background operations":
-
-- Changes to the device state produced by SET_DEVICE_STATE_FD.
-- Writing to memory regions.
-- Signalling that buffers have been used.
-- Signalling that the configuration space has changed.
-
-The goal is to ensure the device state and memory regions are stable and
-that back-end doesn't trigger activity in the front-end.
+I don't know the answers, but I think it's safe to go ahead with a
+SET_STATUS sequence that follows the VIRTIO spec, plus a
+VHOST_USER_RESET_DEVICE/VHOST_USER_RESET_OWNER.
 
 Stefan
 
---ycQ+R/7D6MyDxMr5
+--FmT5AzEODkXCLYxi
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmS+uxQACgkQnKSrs4Gr
-c8ghogf+Opi05pjkQO/xczPYM1yXWF7KLcdsbvHvRwaa6qRiQkqm2i38ujGWNEUA
-/HnNETJflSdQ3r8eXU7vWq7vQL7On5vmTrgBjcmNVeYDw3T2XaVeFWcpIXnRfcHb
-y6ItFq0rHAbvnpm5EEIg/0Flr6FEm5Od2OMaCQRLF6QUIsz4QDhIS4NdH7GOQvi8
-RF/EGNQIG3NxrfcBPHieyqZXtRYjjH7f0Nw1+In1yccom3oI6dxS9YZWFtLvyrUt
-1CbMoRm2FvnIB5e7VXEpoG3656Z9V0sbNHO+FdjCqxzQLF7lbdPjSFWTFwXpbcKz
-w31trXwCBcYiCq/c8LrO0DcgQ+MFCA==
-=DQd7
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmS+vREACgkQnKSrs4Gr
+c8ggswf+KkHNwcZ7u+76nCaa/I1jOa2JnFy1WQ98eLIy2d6ajMeWKHPCoZ356+in
+cmZlbAA6siDQQjj0YEtsSDzokRqW+6YyoAGqxeO5ZZmuNY93JMRjSXqwpCAJFry2
+sjXc9Eu/mJJAbU8bqf8/l7IfiqObwYLJFXeIbsYdQwJis16miX9AsAeWa1nlu9aa
+czDqePcihcHnXZbQQZ3u6hf9VMxEm1G4NnFEogK8Y7G6t0bBDNKJCr3zMdBljU+1
+D2dq4nKq+sRlJXE4gsLMyy/dVcfIVonFhma7WMwV7LcYiGod2BuKdZOwW5g8RyZV
+T6cOWpiMnbPeL/PtYuhE3zICs+1awg==
+=g4SY
 -----END PGP SIGNATURE-----
 
---ycQ+R/7D6MyDxMr5--
+--FmT5AzEODkXCLYxi--
 
 
