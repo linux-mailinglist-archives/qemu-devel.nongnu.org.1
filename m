@@ -2,85 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B8975F5C9
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 14:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECAE75F67B
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 14:39:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNuR3-00056H-Qj; Mon, 24 Jul 2023 08:13:09 -0400
+	id 1qNupc-0003fO-Og; Mon, 24 Jul 2023 08:38:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qNuQj-00054d-J7
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 08:12:51 -0400
-Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qNuQg-0004T7-Dl
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 08:12:48 -0400
-Received: by mail-oo1-xc2c.google.com with SMTP id
- 006d021491bc7-566e793e0a0so2710202eaf.2
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 05:12:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1690200764; x=1690805564;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AvEyxTRTdHkFiRdP6POVuyTxDBpT3CIXiTLocalvLI8=;
- b=P+22xvC+JMxv0R1EexVSo1yLaQKtvyfNxzUVw2dd5jfeNQCvARhHJiLhNneBpXnYyR
- jbluTuR8l8QGxBdm6yyBBQVKns4eMVWSDhWLhsF+ZFYz7a8jsEZe3whVe+YWR9QSpy40
- +FxC7JrbNkrbZUPjBxC+Z0kjzbeEsEfvYn1AMFdkJ2nui1LiuqghwIdeWPUd9PKOZA5V
- 8e/SmbCWbj0H+QAu3PI7H4SUYhn2U+db9Ex4DorqUq5NTuj7FUQf6pMosTCXAfN0fkOA
- 4DgCKMMLOzPwV/5YyLpwbkhZQ1wOFMqh3y6h6z4Bpn8aQaKmKBYctXvq//o4ATOgdsQL
- qXZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690200764; x=1690805564;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AvEyxTRTdHkFiRdP6POVuyTxDBpT3CIXiTLocalvLI8=;
- b=mGhHRUW+n99GFOWwsQAG9M45JanxSDDQzz6NBlYmeOda2tVFK7E2Zcwx+alN7X2ScK
- 9UtGFhryqO5eUNYOgAJi/I8tkyAirCb23FF+h4971jyiSSA6jITytwm7yVmffKpD/11g
- HZERHqL067aLCqTiI2w56AU2Bv1jEm1lSiaieEULL34Ag6hawngsIs+FV2Jiwlv8DDI6
- PLh9KN9Py45RiHtiEJDL2jGnFjBtJHlujnhL1t0fGzdB3WjFvdYaSxW5VKirYNGm6n53
- EdnTdrdR18yN25YPvR+KvMGTckj4qdoT/TF8ZIRpz2lo04KxAEkBMtlZX8yPbxDt51EJ
- YVuQ==
-X-Gm-Message-State: ABy/qLag1MdBtgvn9f7vF/s9WIsfu0hrDv7WqZa6NRGGaGDIMVIxrI2V
- W6fSafa6TZf1XXomBWtxOlj4mg==
-X-Google-Smtp-Source: APBJJlEKlAcZJbf5R9UoEUkh5qut2MP5QzHU0bEf9FmQt/BjtjDxyO0ch9UuAie8EViZl3FpIe+BdA==
-X-Received: by 2002:a4a:344a:0:b0:566:f8ee:fa67 with SMTP id
- n10-20020a4a344a000000b00566f8eefa67mr7309367oof.0.1690200764729; 
- Mon, 24 Jul 2023 05:12:44 -0700 (PDT)
-Received: from [192.168.68.108] (201-69-66-36.dial-up.telesp.net.br.
- [201.69.66.36]) by smtp.gmail.com with ESMTPSA id
- h7-20020a4aa9c7000000b005660b585a00sm3888184oon.22.2023.07.24.05.12.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Jul 2023 05:12:44 -0700 (PDT)
-Message-ID: <5b3bbe94-780e-abe0-cc7b-705b067f337b@ventanamicro.com>
-Date: Mon, 24 Jul 2023 09:12:40 -0300
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qNupX-0003f7-Lu
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 08:38:27 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.216])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1qNupE-0002jK-KZ
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 08:38:27 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1690202284; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=K6zRgf9v5twC+KIc0BGtyZHkdyZWwzfW3QwDcZ8JVOOMHbtg8/VY7w33HXo/d+VJrk
+ 0ZgSf4eRkxDTObwMnhvxJyGnAQvLkUxNUqIQ7nCx8jz3erHrwlIIuGhPbjPwpfUQ/PaE
+ LHLQr6YMBFh0+hpVvdNa1fRDCn9wK9K7yNL0c/3te9VrDVNs0uY2eFxiLCLLrQQQI0aX
+ sSV36M9lRJqLZfi54bYehoDLIrIfRuul4X+sJnUviisDTlkKahrZ7gMonNPzBVLD7wfQ
+ MwTVYamNRuVHyFYSDTt0M7KXHTsmzzD551wTAQIBlYyxoBX3t2+eT7O7fAncPsKldMW/
+ ed/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1690202284;
+ s=strato-dkim-0002; d=strato.com;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=OFBb/lrajuSsWPwiFj2QQpCQGCcOdAkolI85dERVWv8=;
+ b=nilN9FLHBONvYRYWu7PqKf9LCngzdyQX2ScRV3X6z0dRdH8fL/vv0J+jGpAq+QQnP1
+ n+XtJsUHIVw+kN47tGcHlX//+33Ws2MF0kiuCRQN0Xaw+NH4HkHB5IQW2foaYJ4wBvsb
+ Fc3gGGDQr/2aYblW1Gk0Vcxk+ChCT2rLmN1uS1XlfvQnSHbaHtxAyb40H2WRnMxXaKGL
+ Qb6C5ydrR7khgpiADV+Tavc1+oQ8Nldtt/k/ABmLe4tN/S+hICPw5Srg8D4poT7JNHhF
+ snMidgPAZenGWMpEXmev08ABEMk+qd9IpP3xDzX7otvKEgNGZrI1Wb5RCgKXwqks49tj
+ kSsg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1690202284;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=OFBb/lrajuSsWPwiFj2QQpCQGCcOdAkolI85dERVWv8=;
+ b=oBKHY93JjrTIebRy4Ipq7pgj50IuoZ4eXEYNtdem2sfv4+mS3XidP4U8Cd4mHU7P86
+ DcoR5OIkLQszKNIjF4n2dMA95RzASQxAf0Ls/3aP2CFp/qZjfXbUVWG/SQfEXPBke3zq
+ Nxph8y27/6XBs9HkPadSRXbY4WG4DdvltgD/zCo1Pwi6Fqt4U6pl/zTMpLOxU20v4pI1
+ rRJ8MuRa/Tn+n1eHCC60PM3ANB7R1zfeCg4DQlAS9nLsGUISZSXGW5brzLxgc9eBADPN
+ OZ67QJg8lt5O/4m9xFYG3tO7f7B9xR/f4hy3Y9zY9G6cLZ+V1TssnnXoZLW2XCINc5A2
+ rP9g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1690202284;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=OFBb/lrajuSsWPwiFj2QQpCQGCcOdAkolI85dERVWv8=;
+ b=IfrZpKf+ayKqyYD5cXNRWcvqp80flJx15uEdWD8raFsUSGy+kOILXKoi8KzaqeQcpS
+ xBa4D/4zW++ErJqMRcDg==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4U0aIaxvssIT1j+tCLlX5OhVr5AfLfzW6HQdmLA=="
+Received: from sender by smtp.strato.de (RZmta 49.6.4 AUTH)
+ with ESMTPSA id m4dd28z6OCc3MCK
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Mon, 24 Jul 2023 14:38:03 +0200 (CEST)
+Date: Mon, 24 Jul 2023 14:37:53 +0200
+From: Olaf Hering <olaf@aepfle.de>
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, Paolo Bonzini
+ <pbonzini@redhat.com>, Alex =?UTF-8?B?QmVubsOpZQ==?=
+ <alex.bennee@linaro.org>, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: 8.1-rc0 testfloat fails to compile
+Message-ID: <20230724143753.494cd3e8.olaf@aepfle.de>
+In-Reply-To: <f2beeb1e-fc2d-9fdd-303f-d1722aeaf63d@linaro.org>
+References: <20230720224656.2841ff5f.olaf@aepfle.de>
+ <74d1ee57-04a7-37f7-2c85-6ce49b4ded3a@redhat.com>
+ <f2beeb1e-fc2d-9fdd-303f-d1722aeaf63d@linaro.org>
+X-Mailer: Claws Mail 20230717T091608.783b4195 hat ein Softwareproblem,
+ kann man nichts machen.
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 0/2] target/riscv: add missing riscv,isa strings
-Content-Language: en-US
-To: Alistair Francis <alistair23@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20230720132424.371132-1-dbarboza@ventanamicro.com>
- <CAKmqyKPzwDrtSH5_V4n=QR+CCPz6L1YqcSL+Y83fP7Fy70h-kQ@mail.gmail.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <CAKmqyKPzwDrtSH5_V4n=QR+CCPz6L1YqcSL+Y83fP7Fy70h-kQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc2c.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: multipart/signed; boundary="Sig_/l/LtV=WxNsyKmu13t9rA4h9";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=81.169.146.216; envelope-from=olaf@aepfle.de;
+ helo=mo4-p00-ob.smtp.rzone.de
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,50 +106,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+--Sig_/l/LtV=WxNsyKmu13t9rA4h9
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
+Sat, 22 Jul 2023 13:49:40 +0100 Richard Henderson <richard.henderson@linaro=
+.org>:
+
+> If this is with optimization enabled, the bug should be reported to gcc b=
+ugzilla.
+> The compiler should easily prove the default case is unreachable.
+
+This happens also with -O0 or without any -On, or without -Wall.
+
+https://bugzilla.suse.com/show_bug.cgi?id=3D1213600
+
+https://gitlab.com/qemu-project/berkeley-testfloat-3/-/merge_requests/2
 
 
-On 7/23/23 23:51, Alistair Francis wrote:
-> On Thu, Jul 20, 2023 at 11:25 PM Daniel Henrique Barboza
-> <dbarboza@ventanamicro.com> wrote:
->>
->> Hi,
->>
->> Found these 2 instances while working in more 8.2 material.
->>
->> I believe both are safe for freeze but I won't lose my sleep if we
->> decide to postpone it.
-> 
-> I wasn't going to squeeze them into the freeze
-> 
->>
->> Daniel Henrique Barboza (2):
->>    target/riscv/cpu.c: add zmmul isa string
->>    target/riscv/cpu.c: add smepmp isa string
-> 
-> Do you mind rebasing :)
-> https://github.com/alistair23/qemu/tree/riscv-to-apply.next
+Olaf
 
+--Sig_/l/LtV=WxNsyKmu13t9rA4h9
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
 
-:)
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmS+cKEACgkQ86SN7mm1
+DoCXUw/9GqE3i5uGpKRQZXB5N1CbarO/et7r4zO484Pf/41kGCyoDd73ysPWDaXx
+pm0C4GOR9n3Bk0t6z/1Wd9tTrcws4tHa97o+sTAcN0geGtWOEWz8uzvdFCpWRntq
+tykbI0CgT2HitOIZK6/Uh7bIvqLGaQnhvnQLpugNGYXycw4odHhUPb3933BCG9Wm
+VLpn7acjQJ6kT11hTwh/SuYxgdN+sHWq3zhnJTnccH/hkb8DvtCJX9k9T/TTlI61
+YoJZifaQlazc0CjCoVz/v8CsoEM0rVTqrbyOKWs0JPaRlW7x3vhLQcTUtDYdbzga
+bWNl6i4MZkGwr1HIAZ56M0cR4+zFIcrcOHQo6+sMU+MVan8yTVip1EGCjGuE2QdI
+cPPFv9sUsw277P21x1ZtqVXjM6CQ3vXTbJ2ASGWy8iJsRhnI1ziBnGWtITGVLcqJ
+3RM1dylb1XDA5y4TMTbYR7IAJA3jFUSkdxwn/k3cR+sV2mHpYVsHRfp7elyQfZuv
+LmpfPsIk/+7TsqsTB5HKzN9bBUENESWqXCJ35FJ/gVPQUEZIV0DbFtsN99mUSuqH
+DQ4tRR1lDD4NGCKfnhPRb226GWXzxfICXDDcRiwK1kj48Khvw+1BWWOCbRDH4Z26
+5343xk2ZfR0HK/Ti/bHHxOVbSmAXHDHFADDrlGAZz981HXpfMn4=
+=yl86
+-----END PGP SIGNATURE-----
 
-Thanks!
-
-
-Daniel
-
-
-
-
-> 
-> Alistair
-> 
->>
->>   target/riscv/cpu.c | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> --
->> 2.41.0
->>
->>
+--Sig_/l/LtV=WxNsyKmu13t9rA4h9--
 
