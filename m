@@ -2,76 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C41F875E973
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 04:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3AB75E9B2
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 04:28:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNksu-0002gG-8f; Sun, 23 Jul 2023 22:01:16 -0400
+	id 1qNlHT-0005ST-OC; Sun, 23 Jul 2023 22:26:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qNksq-0002fe-Lu; Sun, 23 Jul 2023 22:01:12 -0400
-Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qNkso-0005wd-H8; Sun, 23 Jul 2023 22:01:12 -0400
-Received: by mail-ua1-x92d.google.com with SMTP id
- a1e0cc1a2514c-794c5f60479so1094532241.3; 
- Sun, 23 Jul 2023 19:01:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690164069; x=1690768869;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Gtc1yy9ug3BJc5izjSCEZltDO6Zo7W7YcEuIXxI9fEw=;
- b=l2BDuPWcZX7DVqORqG+O6yWmiDNX16UEZ5nBwTMEKATZByF1MOf3Z7glLfLOeJAkjH
- Jn1HFc9bUItHS//+uMAESxxDJuZqbDPCMlFp5/bZVXciKKK6r24C8oxQ6r4u1XsZ/IJV
- H2OS++pqoAFcXf5kE0mIhuN+PMHDZS4RuBRsJr40zd0HI27vKFCkp++W4Xc5b1YPGQ3S
- fmUDDsro5yR2MLdxK8nYDrsSHPhGc9NPUwSDZLNGwRNRalbvwa9o3lqFUi1C2GmUBs4A
- NhCs8OjX6GcLpGjZBhWuAKUSGHZVZx4s/rhXodqy2VoX/CG2Ip7oj9XmrkmVQYlkFCLa
- Bflw==
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qNlHR-0005Rs-5D
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 22:26:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qNlHN-0002Nq-BB
+ for qemu-devel@nongnu.org; Sun, 23 Jul 2023 22:26:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690165592;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vr63vJsetUCTOqbqYx8iyEflgHvCtl53gxJoykotGzo=;
+ b=Dln+lK0fEvki3MGXWOGyLq/IDy20oJIKLWxh9mFLzkwCc9/EYukt5QMU35+pNdoZrChgnX
+ tmyQXLdmANfmPWc3+zT6PWM0d+RPBIYwO3Yu/iiufsg0qRCjE3kiJB3Ih7JTSrNxFoeOhs
+ 88e+2tT+G8wuzijowBa+FM//RKd2qM0=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-564-xGWX8AzrPhaptLV-mTSiFg-1; Sun, 23 Jul 2023 22:26:26 -0400
+X-MC-Unique: xGWX8AzrPhaptLV-mTSiFg-1
+Received: by mail-oi1-f199.google.com with SMTP id
+ 5614622812f47-3a3df1e1f38so8372489b6e.2
+ for <qemu-devel@nongnu.org>; Sun, 23 Jul 2023 19:26:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690164069; x=1690768869;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Gtc1yy9ug3BJc5izjSCEZltDO6Zo7W7YcEuIXxI9fEw=;
- b=epLY/829az4wlrjezdQUTpP77YjdgAhBv2lOoaS463blOnDxdimPVv2OHhOUtf3f3z
- HYtGlO2S0gEgf8oliopmWXF+YvjubDNmoRo+THgtoB3BGVKY+5ilCVlUH5hjSAQ+ta62
- mWtnp9u4Ze6SEZorHaN+KRRua4D9+afmQxAaKQIVzyJIDZSYw3FshnnAeCpWN+h9QwOg
- e8X+3DS+Zjt3cGlJcPbGEqqERlRanNcVRi4ZI/yTjET4/wG6iF0+osUumcfhk+gRPgjw
- R41sXMfHbG44bqgaHzvz18aG+qQ4WfLw4FfELL3HN0ZhLIrQPn/19bjihw/6qNKvur/U
- p9cw==
-X-Gm-Message-State: ABy/qLZxSO0920fF/lNXc00Nj4ceqYIxO1Fet/8fuXXwu/0KzNNcg7+i
- L7nBUC2gfo6Db+4bSZ1n71BrtJUmI6dD9EKaWQw=
-X-Google-Smtp-Source: APBJJlH5HwVurv7wWN+eQtXUNJWg2TrrN5tmipgP/YeQr6s1w+ksCgnsGbY6z2/uOr03943AXy6IgX0aosEe1Cnznj0=
-X-Received: by 2002:a67:f453:0:b0:443:81a7:63ee with SMTP id
- r19-20020a67f453000000b0044381a763eemr1531450vsn.21.1690164069015; Sun, 23
- Jul 2023 19:01:09 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690165586; x=1690770386;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vr63vJsetUCTOqbqYx8iyEflgHvCtl53gxJoykotGzo=;
+ b=h4SlQYgAH0pWsqUyklLdioaG4OMaQFr8Zydcp92aMAMpkzZBHTLK4nh5UTpKR7NRCT
+ LBrDKjS7IdgGy2pFa0m5+JW0omfS/aOtBfDWDnE+/eHMcZ/GUz0EResS6WR9R2F6IyX4
+ 3CEDsq8VGBNIiCi+T8JGiWwW6R9Uxx2OvivxmeiJFEIkABQo7aVieWWBpc+/UFTTHT5G
+ 5m8uddd+fWndxT85vPVrDGWyyr8eCavhxMZNArYBrFtVcxO983OI5Hs3dgXXQCaUt9ZB
+ t+osiROVEdzFoabjXzXseawsKeXjLe9YAt075dmkikdjU5rJnnFgNYCWR/2IdY4h/MDa
+ Jmwg==
+X-Gm-Message-State: ABy/qLbK5jdBBsopS2MWIgngOErdCA2f+8MfAFJ9tLwBd1+fjwir5aCZ
+ luIvnU6MiyBl1T0lFMLHsECgwbsCoQcx9z/11VXXeZcqvfbNd9eIDItPpK/zOL9zfdDZJ13FVRH
+ nkRfgNiVXP1PGc0I=
+X-Received: by 2002:a05:6358:4285:b0:135:afe6:4f83 with SMTP id
+ s5-20020a056358428500b00135afe64f83mr2526973rwc.29.1690165586087; 
+ Sun, 23 Jul 2023 19:26:26 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFlCrbKs1uXsdVh6cZikEK0WO7UhMRzBI9Nld43goXvN9CF2yN9xdOrCqvQeqoN2yaMH6Ydzw==
+X-Received: by 2002:a05:6358:4285:b0:135:afe6:4f83 with SMTP id
+ s5-20020a056358428500b00135afe64f83mr2526957rwc.29.1690165585704; 
+ Sun, 23 Jul 2023 19:26:25 -0700 (PDT)
+Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
+ ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
+ by smtp.gmail.com with ESMTPSA id
+ p9-20020a639509000000b005633941a547sm7213949pgd.27.2023.07.23.19.26.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 23 Jul 2023 19:26:25 -0700 (PDT)
+Message-ID: <a5b93992-5576-04cf-3af0-2c237831f5c6@redhat.com>
+Date: Mon, 24 Jul 2023 12:26:20 +1000
 MIME-Version: 1.0
-References: <20230717215419.124258-1-dbarboza@ventanamicro.com>
- <20230717215419.124258-3-dbarboza@ventanamicro.com>
-In-Reply-To: <20230717215419.124258-3-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 24 Jul 2023 12:00:43 +1000
-Message-ID: <CAKmqyKN-sK1czTCwBmjb5BArBeWVBuAX+GS7z814+PB4KwKufA@mail.gmail.com>
-Subject: Re: [PATCH for-8.2 2/2] target/riscv/cpu.c: add zihpm extension flag
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92d;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH for-8.2 1/2] arm/kvm: convert to kvm_set_one_reg
+Content-Language: en-US
+To: Cornelia Huck <cohuck@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, kvm@vger.kernel.org
+References: <20230718111404.23479-1-cohuck@redhat.com>
+ <20230718111404.23479-2-cohuck@redhat.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20230718111404.23479-2-cohuck@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-0.093, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,120 +103,263 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Jul 18, 2023 at 7:55=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> zihpm is the Hardware Performance Counters extension described in
-> chapter 12 of the unprivileged spec. It describes support for 29
-> unprivileged performance counters, hpmcounter3-hpmcounter21.
->
-> As with zicntr, QEMU already implements zihpm before it was even an
-> extension. zihpm is also part of the RVA22 profile, so add it to QEMU
-> to complement the future future profile implementation.
->
-> Default it to 'true' since it was always present in the code. Change the
-> realize() time validation to disable it in case 'icsr' isn't present and
-> if there's no hardware counters (cpu->cfg.pmu_num is zero).
->
-> There's a small tweak needed in riscv_cpu_realize_tcg() made:
-> riscv_cpu_validate_set_extensions() must be executed after the block
-> that executes riscv_pmu_init(). The reason is that riscv_pmu_init() will
-> do "cpu->cfg.pmu_num =3D 0" if PMU support cannot be enabled. We want to
-> get the latest, definite value of cfg.pmu_num during the validation() to
-> ensure we do the right thing.
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Hi Connie,
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-
-Alistair
-
+On 7/18/23 21:14, Cornelia Huck wrote:
+> We can neaten the code by switching to the kvm_set_one_reg function.
+> 
+> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
 > ---
->  target/riscv/cpu.c     | 20 +++++++++++++-------
->  target/riscv/cpu_cfg.h |  1 +
->  2 files changed, 14 insertions(+), 7 deletions(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 7ec88659be..5836640d5c 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -89,6 +89,7 @@ static const struct isa_ext_data isa_edata_arr[] =3D {
->      ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
->      ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
->      ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause=
-),
-> +    ISA_EXT_DATA_ENTRY(zihpm, PRIV_VERSION_1_12_0, ext_ihpm),
->      ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
->      ISA_EXT_DATA_ENTRY(zfa, PRIV_VERSION_1_12_0, ext_zfa),
->      ISA_EXT_DATA_ENTRY(zfbfmin, PRIV_VERSION_1_12_0, ext_zfbfmin),
-> @@ -1296,6 +1297,10 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *c=
-pu, Error **errp)
->          cpu->cfg.ext_icntr =3D false;
->      }
->
-> +    if (cpu->cfg.ext_ihpm && (!cpu->cfg.ext_icsr || cpu->cfg.pmu_num =3D=
-=3D 0)) {
-> +        cpu->cfg.ext_ihpm =3D false;
-> +    }
-> +
->      /*
->       * Disable isa extensions based on priv spec after we
->       * validated and set everything we need.
-> @@ -1426,12 +1431,6 @@ static void riscv_cpu_realize_tcg(DeviceState *dev=
-, Error **errp)
->          return;
->      }
->
-> -    riscv_cpu_validate_set_extensions(cpu, &local_err);
-> -    if (local_err !=3D NULL) {
-> -        error_propagate(errp, local_err);
-> -        return;
-> -    }
-> -
->  #ifndef CONFIG_USER_ONLY
->      CPU(dev)->tcg_cflags |=3D CF_PCREL;
->
-> @@ -1446,6 +1445,12 @@ static void riscv_cpu_realize_tcg(DeviceState *dev=
-, Error **errp)
->          }
+>   target/arm/kvm.c   | 13 +++------
+>   target/arm/kvm64.c | 66 +++++++++++++---------------------------------
+>   2 files changed, 21 insertions(+), 58 deletions(-)
+> 
+
+Some wrong replacements to be fixed in kvm_arch_put_fpsimd() as below.
+Apart from that, LGTM:
+
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+
+> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+> index b4c7654f4980..cdbffc3c6e0d 100644
+> --- a/target/arm/kvm.c
+> +++ b/target/arm/kvm.c
+> @@ -561,7 +561,6 @@ bool write_list_to_kvmstate(ARMCPU *cpu, int level)
+>       bool ok = true;
+>   
+>       for (i = 0; i < cpu->cpreg_array_len; i++) {
+> -        struct kvm_one_reg r;
+>           uint64_t regidx = cpu->cpreg_indexes[i];
+>           uint32_t v32;
+>           int ret;
+> @@ -570,19 +569,17 @@ bool write_list_to_kvmstate(ARMCPU *cpu, int level)
+>               continue;
+>           }
+>   
+> -        r.id = regidx;
+>           switch (regidx & KVM_REG_SIZE_MASK) {
+>           case KVM_REG_SIZE_U32:
+>               v32 = cpu->cpreg_values[i];
+> -            r.addr = (uintptr_t)&v32;
+> +            ret = kvm_set_one_reg(cs, regidx, &v32);
+>               break;
+>           case KVM_REG_SIZE_U64:
+> -            r.addr = (uintptr_t)(cpu->cpreg_values + i);
+> +            ret = kvm_set_one_reg(cs, regidx, cpu->cpreg_values + i);
+>               break;
+>           default:
+>               g_assert_not_reached();
+>           }
+> -        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &r);
+>           if (ret) {
+>               /* We might fail for "unknown register" and also for
+>                * "you tried to set a register which is constant with
+> @@ -703,17 +700,13 @@ void kvm_arm_get_virtual_time(CPUState *cs)
+>   void kvm_arm_put_virtual_time(CPUState *cs)
+>   {
+>       ARMCPU *cpu = ARM_CPU(cs);
+> -    struct kvm_one_reg reg = {
+> -        .id = KVM_REG_ARM_TIMER_CNT,
+> -        .addr = (uintptr_t)&cpu->kvm_vtime,
+> -    };
+>       int ret;
+>   
+>       if (!cpu->kvm_vtime_dirty) {
+>           return;
 >       }
->  #endif
-> +
-> +    riscv_cpu_validate_set_extensions(cpu, &local_err);
-> +    if (local_err !=3D NULL) {
-> +        error_propagate(errp, local_err);
-> +        return;
-> +    }
->  }
->
->  static void riscv_cpu_realize(DeviceState *dev, Error **errp)
-> @@ -1784,10 +1789,11 @@ static Property riscv_cpu_extensions[] =3D {
->      DEFINE_PROP_BOOL("svpbmt", RISCVCPU, cfg.ext_svpbmt, false),
->
->      /*
-> -     * Always default true - we'll disable it during
-> +     * Always default true - we'll disable them during
->       * realize() if needed.
->       */
->      DEFINE_PROP_BOOL("zicntr", RISCVCPU, cfg.ext_icntr, true),
-> +    DEFINE_PROP_BOOL("zihpm", RISCVCPU, cfg.ext_ihpm, true),
->
->      DEFINE_PROP_BOOL("zba", RISCVCPU, cfg.ext_zba, true),
->      DEFINE_PROP_BOOL("zbb", RISCVCPU, cfg.ext_zbb, true),
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index d36dc12b92..85c7a71853 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -66,6 +66,7 @@ struct RISCVCPUConfig {
->      bool ext_icsr;
->      bool ext_icbom;
->      bool ext_icboz;
-> +    bool ext_ihpm;
->      bool ext_zicond;
->      bool ext_zihintpause;
->      bool ext_smstateen;
-> --
-> 2.41.0
->
->
+>   
+> -    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +    ret = kvm_set_one_reg(cs, KVM_REG_ARM_TIMER_CNT, &cpu->kvm_vtime);
+>       if (ret) {
+>           error_report("Failed to set KVM_REG_ARM_TIMER_CNT");
+>           abort();
+> diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+> index 94bbd9661fd3..b4d02dff5381 100644
+> --- a/target/arm/kvm64.c
+> +++ b/target/arm/kvm64.c
+> @@ -540,14 +540,10 @@ static int kvm_arm_sve_set_vls(CPUState *cs)
+>   {
+>       ARMCPU *cpu = ARM_CPU(cs);
+>       uint64_t vls[KVM_ARM64_SVE_VLS_WORDS] = { cpu->sve_vq.map };
+> -    struct kvm_one_reg reg = {
+> -        .id = KVM_REG_ARM64_SVE_VLS,
+> -        .addr = (uint64_t)&vls[0],
+> -    };
+>   
+>       assert(cpu->sve_max_vq <= KVM_ARM64_SVE_VQ_MAX);
+>   
+> -    return kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +    return kvm_set_one_reg(cs, KVM_REG_ARM64_SVE_VLS, &vls[0]);
+>   }
+>   
+>   #define ARM_CPU_ID_MPIDR       3, 0, 0, 0, 5
+> @@ -725,19 +721,17 @@ static void kvm_inject_arm_sea(CPUState *c)
+>   static int kvm_arch_put_fpsimd(CPUState *cs)
+>   {
+>       CPUARMState *env = &ARM_CPU(cs)->env;
+> -    struct kvm_one_reg reg;
+>       int i, ret;
+>   
+>       for (i = 0; i < 32; i++) {
+>           uint64_t *q = aa64_vfp_qreg(env, i);
+>   #if HOST_BIG_ENDIAN
+>           uint64_t fp_val[2] = { q[1], q[0] };
+> -        reg.addr = (uintptr_t)fp_val;
+> +        ret = kvm_set_one_reg(cs, AARCH64_SIMD_CORE_REG(fp_regs.vregs[i]),
+> +                                                        &fp_val);
+                                                            ^^^^^^^
+                                                            s/&fp_val/fp_val
+>   #else
+> -        reg.addr = (uintptr_t)q;
+> +        ret = kvm_set_one_reg(cs, AARCH64_SIMD_CORE_REG(fp_regs.vregs[i]), &q);
+                                                                               ^^^
+                                                                              s/&q/q
+                                                                               
+>   #endif
+> -        reg.id = AARCH64_SIMD_CORE_REG(fp_regs.vregs[i]);
+> -        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+>           if (ret) {
+>               return ret;
+>           }
+> @@ -758,14 +752,11 @@ static int kvm_arch_put_sve(CPUState *cs)
+>       CPUARMState *env = &cpu->env;
+>       uint64_t tmp[ARM_MAX_VQ * 2];
+>       uint64_t *r;
+> -    struct kvm_one_reg reg;
+>       int n, ret;
+>   
+>       for (n = 0; n < KVM_ARM64_SVE_NUM_ZREGS; ++n) {
+>           r = sve_bswap64(tmp, &env->vfp.zregs[n].d[0], cpu->sve_max_vq * 2);
+> -        reg.addr = (uintptr_t)r;
+> -        reg.id = KVM_REG_ARM64_SVE_ZREG(n, 0);
+> -        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +        ret = kvm_set_one_reg(cs, KVM_REG_ARM64_SVE_ZREG(n, 0), r);
+>           if (ret) {
+>               return ret;
+>           }
+> @@ -774,9 +765,7 @@ static int kvm_arch_put_sve(CPUState *cs)
+>       for (n = 0; n < KVM_ARM64_SVE_NUM_PREGS; ++n) {
+>           r = sve_bswap64(tmp, r = &env->vfp.pregs[n].p[0],
+>                           DIV_ROUND_UP(cpu->sve_max_vq * 2, 8));
+> -        reg.addr = (uintptr_t)r;
+> -        reg.id = KVM_REG_ARM64_SVE_PREG(n, 0);
+> -        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +        ret = kvm_set_one_reg(cs, KVM_REG_ARM64_SVE_PREG(n, 0), r);
+>           if (ret) {
+>               return ret;
+>           }
+> @@ -784,9 +773,7 @@ static int kvm_arch_put_sve(CPUState *cs)
+>   
+>       r = sve_bswap64(tmp, &env->vfp.pregs[FFR_PRED_NUM].p[0],
+>                       DIV_ROUND_UP(cpu->sve_max_vq * 2, 8));
+> -    reg.addr = (uintptr_t)r;
+> -    reg.id = KVM_REG_ARM64_SVE_FFR(0);
+> -    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +    ret = kvm_set_one_reg(cs, KVM_REG_ARM64_SVE_FFR(0), r);
+>       if (ret) {
+>           return ret;
+>       }
+> @@ -796,7 +783,6 @@ static int kvm_arch_put_sve(CPUState *cs)
+>   
+>   int kvm_arch_put_registers(CPUState *cs, int level)
+>   {
+> -    struct kvm_one_reg reg;
+>       uint64_t val;
+>       uint32_t fpr;
+>       int i, ret;
+> @@ -813,9 +799,8 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+>       }
+>   
+>       for (i = 0; i < 31; i++) {
+> -        reg.id = AARCH64_CORE_REG(regs.regs[i]);
+> -        reg.addr = (uintptr_t) &env->xregs[i];
+> -        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +        ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(regs.regs[i]),
+> +                              &env->xregs[i]);
+>           if (ret) {
+>               return ret;
+>           }
+> @@ -826,16 +811,12 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+>        */
+>       aarch64_save_sp(env, 1);
+>   
+> -    reg.id = AARCH64_CORE_REG(regs.sp);
+> -    reg.addr = (uintptr_t) &env->sp_el[0];
+> -    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +    ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(regs.sp), &env->sp_el[0]);
+>       if (ret) {
+>           return ret;
+>       }
+>   
+> -    reg.id = AARCH64_CORE_REG(sp_el1);
+> -    reg.addr = (uintptr_t) &env->sp_el[1];
+> -    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +    ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(sp_el1), &env->sp_el[1]);
+>       if (ret) {
+>           return ret;
+>       }
+> @@ -846,23 +827,17 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+>       } else {
+>           val = cpsr_read(env);
+>       }
+> -    reg.id = AARCH64_CORE_REG(regs.pstate);
+> -    reg.addr = (uintptr_t) &val;
+> -    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +    ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(regs.pstate), &val);
+>       if (ret) {
+>           return ret;
+>       }
+>   
+> -    reg.id = AARCH64_CORE_REG(regs.pc);
+> -    reg.addr = (uintptr_t) &env->pc;
+> -    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +    ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(regs.pc), &env->pc);
+>       if (ret) {
+>           return ret;
+>       }
+>   
+> -    reg.id = AARCH64_CORE_REG(elr_el1);
+> -    reg.addr = (uintptr_t) &env->elr_el[1];
+> -    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +    ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(elr_el1), &env->elr_el[1]);
+>       if (ret) {
+>           return ret;
+>       }
+> @@ -881,9 +856,8 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+>   
+>       /* KVM 0-4 map to QEMU banks 1-5 */
+>       for (i = 0; i < KVM_NR_SPSR; i++) {
+> -        reg.id = AARCH64_CORE_REG(spsr[i]);
+> -        reg.addr = (uintptr_t) &env->banked_spsr[i + 1];
+> -        ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +        ret = kvm_set_one_reg(cs, AARCH64_CORE_REG(spsr[i]),
+> +                              &env->banked_spsr[i + 1]);
+>           if (ret) {
+>               return ret;
+>           }
+> @@ -898,18 +872,14 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+>           return ret;
+>       }
+>   
+> -    reg.addr = (uintptr_t)(&fpr);
+>       fpr = vfp_get_fpsr(env);
+> -    reg.id = AARCH64_SIMD_CTRL_REG(fp_regs.fpsr);
+> -    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +    ret = kvm_set_one_reg(cs, AARCH64_SIMD_CTRL_REG(fp_regs.fpsr), &fpr);
+>       if (ret) {
+>           return ret;
+>       }
+>   
+> -    reg.addr = (uintptr_t)(&fpr);
+>       fpr = vfp_get_fpcr(env);
+> -    reg.id = AARCH64_SIMD_CTRL_REG(fp_regs.fpcr);
+> -    ret = kvm_vcpu_ioctl(cs, KVM_SET_ONE_REG, &reg);
+> +    ret = kvm_set_one_reg(cs, AARCH64_SIMD_CTRL_REG(fp_regs.fpcr), &fpr);
+>       if (ret) {
+>           return ret;
+>       }
+
+Thanks,
+Gavin
+
 
