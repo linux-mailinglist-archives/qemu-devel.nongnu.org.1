@@ -2,86 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E110975FB2A
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 17:49:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8946175FB91
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:12:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNxnu-0008Gg-NF; Mon, 24 Jul 2023 11:48:58 -0400
+	id 1qNy9F-0005xA-BF; Mon, 24 Jul 2023 12:11:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qNxns-0008GP-6l
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 11:48:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qNxnq-00088N-Ju
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 11:48:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690213733;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lINiZ42RRGjRO+14AWnj19xFSWrp1LAVx7LCIGIhwXQ=;
- b=Y9rVQBqenPw3b3lnuGkf7PhogBzukkS7DUgqNmoFxnLRydbfIZkxaR23cjl7rRDyUL4C1T
- rHGEtWpP3MuOZwvDaP4QCLJ9CH+LI0bgsmRQATKzxfU+KFp0CPQ6Boh2Eue8iVK+lHMDAq
- Y0G56Q0QqO5J4Sq9rYv3l01+Q6RCkSI=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-538-4e41-xGJNoWbM1Skfa1mxA-1; Mon, 24 Jul 2023 11:48:50 -0400
-X-MC-Unique: 4e41-xGJNoWbM1Skfa1mxA-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-d07cb52a768so2705878276.1
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 08:48:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qNy90-0005vd-3L
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:10:47 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qNy8y-0005cz-5p
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:10:45 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-4f95bf5c493so6739419e87.3
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 09:10:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690215042; x=1690819842;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=p4A7HnlNR4y+LiYMI6gxgLeOOWyF7e54galRz7wGSfw=;
+ b=xm9w+aKML9zzBDSeIXkf1KIrAjdJ2b99uCuaMcU7/UK7Yxtt/JkLw+f/8x49F8ZR6Q
+ pzBgQI2bEQzEg8C8sRrf0Eas6xXm9frm43FQM8TLiVZ4qaf3+mT3ABLObGkxV3s1YBdR
+ aWlAFYlxd3dQ8obyVpm8WHGQiSMnL4IRy2+Zl6rYwasTagjiLkZlzaXgAmz/F8eI4y2I
+ 49/6qaDPUBYWGT/nTxT+Nh3CBMhnPmiDkotkg/2sTDxV7jOJsxd8QcjMBtSczRDSVNrv
+ WyvFF9vm8oUFpzs4xTtMZFlZnW1vmb84LOjxO/5DMAONQTG4VxSmnak633EKAHS04/3r
+ P1LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690213730; x=1690818530;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lINiZ42RRGjRO+14AWnj19xFSWrp1LAVx7LCIGIhwXQ=;
- b=jq3zqCOb5Udc+HI2YCfmIHAIL66Eov+1SveEyjPEPk7e1siGe1ZyWep9Zn5nsGUVsY
- IIGUixmiwAYEppqd3gka4KhZ9f38X5gamM05AGDqwgaheU2KCGnxe9GVXG7TixrM5iyE
- ZSraUT0DwZ0i9cg73NhM/qTLSi4UiHMZC/VlLEu2L6Ggtt7TAMBmkaTNCH8AvnZ0pOkD
- EIyG/sykA2EgfZOCzKWS3Q4I7poN8cJSAYgnjdwcPXfpqDqJLv38SvK3264tzzNd1iCF
- e22vmFHsLaXNmzkkuIEHWbct03s/xkxqViD0JN4d8clQauWWWh6DYzq/zhrdomRTInCJ
- aFBA==
-X-Gm-Message-State: ABy/qLbwkV/myioZM5A0vywSIxBtr4RGhk6J3rpYpHOfk07tUG+nQK+c
- HgXI+MVH3nuphqfkKn0jtRp8dA1MzVRUkLcU/UbnNh9pmgT5pr1pSdvnlvS6pt5fcnOFd/a67Uo
- k7KfJelhVJGrKH+3fJg30gEFQ+p6qf7c=
-X-Received: by 2002:a25:40cb:0:b0:d09:7f94:6ea3 with SMTP id
- n194-20020a2540cb000000b00d097f946ea3mr4858013yba.65.1690213730025; 
- Mon, 24 Jul 2023 08:48:50 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlFu8106UFf5eUt4p6ohAjj1pREPTGzz7kF6tPjx8hyAyc1OhU0aAkvA0O+tiDk70nWMpzJ1CuGNyoxhLkhu2JI=
-X-Received: by 2002:a25:40cb:0:b0:d09:7f94:6ea3 with SMTP id
- n194-20020a2540cb000000b00d097f946ea3mr4858004yba.65.1690213729708; Mon, 24
- Jul 2023 08:48:49 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690215042; x=1690819842;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=p4A7HnlNR4y+LiYMI6gxgLeOOWyF7e54galRz7wGSfw=;
+ b=OYVvaAG/QwI4Q4QgKS4k8+Ogal4nKGtgCCBX6fhVec+WB5z31lJLkOYaKO9a6Cg9cR
+ OM7YdLnJmAwqhYFNZnhzb0UxZlRbn+9b3NelhbXnAvSQQAKMU8TFkSoBlpk1s0KgwKDK
+ m+K1HA8ErfyIfQy+jlzCfayru+RROk4XMJ7jlzzPTimBWBYy08R3PJZE73dL0/GgzRSz
+ hlDJqe/zmkC0xWeHoh1KjlWnSvvl4gtYluX41dNQgtYld03Ex1na85tsPakanx/wcg6/
+ prNkNoHLXRyN88LFiXF+cL9wANTtKVHZU5/m/658eo5y6DK1NgiexojAVGxD8F0bKL+G
+ u9hw==
+X-Gm-Message-State: ABy/qLaMd62NDzr3otGp3xuLEJboMgUk5eEcPe2S/aXLS0mqBVo8Uhc5
+ NPGjo1/ZSfE/8khpyiZ6vIKTDvI0JeN8vfj6qI/VIQ==
+X-Google-Smtp-Source: APBJJlGAYoz5dBmMEZqopavMHOnoNmcC5Ds7+lB8C6U4YhR3tc4LjfU7khkDTtKNqR6g2S7eEnu71UfPhYvCTfnQsTQ=
+X-Received: by 2002:a19:6450:0:b0:4f9:607a:6508 with SMTP id
+ b16-20020a196450000000b004f9607a6508mr4434019lfj.50.1690215041844; Mon, 24
+ Jul 2023 09:10:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230711155230.64277-1-hreitz@redhat.com>
- <20230711155230.64277-4-hreitz@redhat.com>
- <CAJaqyWdPjyJF4rijXwpq09E94oR1U4JA3dK4Q1XN4uy+Z6UCLw@mail.gmail.com>
- <720e7cdb-1071-a975-8c63-7d0efe3577d4@redhat.com>
-In-Reply-To: <720e7cdb-1071-a975-8c63-7d0efe3577d4@redhat.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 24 Jul 2023 17:48:13 +0200
-Message-ID: <CAJaqyWc0Eonb=8WDrvp-xLohaDjDSD7j8rD=c0u7guu_Y3O+ow@mail.gmail.com>
-Subject: Re: [PATCH 3/6] vhost: Do not reset suspended devices on stop
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-devel@nongnu.org, "Michael S . Tsirkin" <mst@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, German Maglione <gmaglione@redhat.com>
+References: <20230714232659.76434-1-chris@laplante.io>
+ <20230714232659.76434-2-chris@laplante.io>
+In-Reply-To: <20230714232659.76434-2-chris@laplante.io>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 24 Jul 2023 17:10:30 +0100
+Message-ID: <CAFEAcA9hqBqGWgVXVsxwxSAOUbW1_hsyEC2MqdF=rmPumtbaGw@mail.gmail.com>
+Subject: Re: [PATCH 1/6] hw/gpio/nrf51: implement DETECT signal
+To: Chris Laplante <chris@laplante.io>
+Cc: qemu-devel@nongnu.org, Joel Stanley <joel@jms.id.au>, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,137 +85,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Jul 21, 2023 at 6:07=E2=80=AFPM Hanna Czenczek <hreitz@redhat.com> =
-wrote:
+On Sat, 15 Jul 2023 at 00:27, Chris Laplante <chris@laplante.io> wrote:
 >
-> On 21.07.23 17:25, Eugenio Perez Martin wrote:
-> > On Tue, Jul 11, 2023 at 5:52=E2=80=AFPM Hanna Czenczek <hreitz@redhat.c=
-om> wrote:
-> >> Move the `suspended` field from vhost_vdpa into the global vhost_dev
-> >> struct, so vhost_dev_stop() can check whether the back-end has been
-> >> suspended by `vhost_ops->vhost_dev_start(hdev, false)`.  If it has,
-> >> there is no need to reset it; the reset is just a fall-back to stop
-> >> device operations for back-ends that do not support suspend.
-> >>
-> >> Unfortunately, for vDPA specifically, RESUME is not yet implemented, s=
-o
-> >> when the device is re-started, we still have to do the reset to have i=
-t
-> >> un-suspend.
-> >>
-> >> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> >> ---
-> >>   include/hw/virtio/vhost-vdpa.h |  2 --
-> >>   include/hw/virtio/vhost.h      |  8 ++++++++
-> >>   hw/virtio/vhost-vdpa.c         | 11 +++++++----
-> >>   hw/virtio/vhost.c              |  8 +++++++-
-> >>   4 files changed, 22 insertions(+), 7 deletions(-)
-> >>
-> >> diff --git a/include/hw/virtio/vhost-vdpa.h b/include/hw/virtio/vhost-=
-vdpa.h
-> >> index e64bfc7f98..72c3686b7f 100644
-> >> --- a/include/hw/virtio/vhost-vdpa.h
-> >> +++ b/include/hw/virtio/vhost-vdpa.h
-> >> @@ -42,8 +42,6 @@ typedef struct vhost_vdpa {
-> >>       bool shadow_vqs_enabled;
-> >>       /* Vdpa must send shadow addresses as IOTLB key for data queues,=
- not GPA */
-> >>       bool shadow_data;
-> >> -    /* Device suspended successfully */
-> >> -    bool suspended;
-> >>       /* IOVA mapping used by the Shadow Virtqueue */
-> >>       VhostIOVATree *iova_tree;
-> >>       GPtrArray *shadow_vqs;
-> >> diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-> >> index 6a173cb9fa..69bf59d630 100644
-> >> --- a/include/hw/virtio/vhost.h
-> >> +++ b/include/hw/virtio/vhost.h
-> >> @@ -120,6 +120,14 @@ struct vhost_dev {
-> >>       uint64_t backend_cap;
-> >>       /* @started: is the vhost device started? */
-> >>       bool started;
-> >> +    /**
-> >> +     * @suspended: Whether the vhost device is currently suspended.  =
-Set
-> >> +     * and reset by implementations (vhost-user, vhost-vdpa, ...), wh=
-ich
-> >> +     * are supposed to automatically suspend/resume in their
-> >> +     * vhost_dev_start handlers as required.  Must also be cleared wh=
-en
-> >> +     * the device is reset.
-> >> +     */
-> >> +    bool suspended;
-> >>       bool log_enabled;
-> >>       uint64_t log_size;
-> >>       Error *migration_blocker;
-> >> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> >> index 7b7dee468e..f7fd19a203 100644
-> >> --- a/hw/virtio/vhost-vdpa.c
-> >> +++ b/hw/virtio/vhost-vdpa.c
-> >> @@ -858,13 +858,12 @@ static int vhost_vdpa_get_device_id(struct vhost=
-_dev *dev,
-> >>
-> >>   static int vhost_vdpa_reset_device(struct vhost_dev *dev)
-> >>   {
-> >> -    struct vhost_vdpa *v =3D dev->opaque;
-> >>       int ret;
-> >>       uint8_t status =3D 0;
-> >>
-> >>       ret =3D vhost_vdpa_call(dev, VHOST_VDPA_SET_STATUS, &status);
-> >>       trace_vhost_vdpa_reset_device(dev);
-> >> -    v->suspended =3D false;
-> >> +    dev->suspended =3D false;
-> >>       return ret;
-> >>   }
-> >>
-> >> @@ -1278,7 +1277,7 @@ static void vhost_vdpa_suspend(struct vhost_dev =
-*dev)
-> >>           if (unlikely(r)) {
-> >>               error_report("Cannot suspend: %s(%d)", g_strerror(errno)=
-, errno);
-> >>           } else {
-> >> -            v->suspended =3D true;
-> >> +            dev->suspended =3D true;
-> >>               return;
-> >>           }
-> >>       }
-> >> @@ -1313,6 +1312,10 @@ static int vhost_vdpa_dev_start(struct vhost_de=
-v *dev, bool started)
-> >>               return -1;
-> >>           }
-> >>           vhost_vdpa_set_vring_ready(dev);
-> >> +        if (dev->suspended) {
-> >> +            /* TODO: When RESUME is available, use it instead of rese=
-tting */
-> >> +            vhost_vdpa_reset_status(dev);
-> > How is that we reset the status at each vhost_vdpa_dev_start? That
-> > will clean all the vqs configured, features negotiated, etc. in the
-> > vDPA device. Or am I missing something?
+> Implement nRF51 DETECT signal in the GPIO peripheral.
 >
-> What alternative do you propose?  We don=E2=80=99t have RESUME for vDPA i=
-n qemu,
-> but we somehow need to lift the previous SUSPEND so the device will
-> again respond to guest requests, do we not?
+> The reference manual makes mention of a per-pin DETECT signal, but these
+> are not exposed to the user. See https://devzone.nordicsemi.com/f/nordic-q-a/39858/gpio-per-pin-detect-signal-available
+> for more information. Currently, I don't see a reason to model these.
+
+I agree -- they seem to be internal to the GPIO module,
+so we don't need to model them as qemu_irq lines.
+
+> Signed-off-by: Chris Laplante <chris@laplante.io>
+> ---
+>  hw/arm/nrf51_soc.c           |  1 +
+>  hw/gpio/nrf51_gpio.c         | 14 +++++++++++++-
+>  include/hw/gpio/nrf51_gpio.h |  1 +
+>  3 files changed, 15 insertions(+), 1 deletion(-)
 >
-
-Reset also clears the suspend state in vDPA, and it should be called
-at vhost_dev_stop. So the device should never be in suspended state
-here. Does that solve your concerns?
-
-> But more generally, is this any different from what is done before this
-> patch?  Before this patch, vhost_dev_stop() unconditionally invokes
-> vhost_reset_status(), so the device is reset in every stop/start cycle,
-> that doesn=E2=80=99t change.  And we still won=E2=80=99t reset it on the =
-first
-> vhost_dev_start(), because dev->suspended will be false then, only on
-> subsequent stop/start cycles, as before.  So the only difference is that
-> now the device is reset on start, not on stop.
+> diff --git a/hw/arm/nrf51_soc.c b/hw/arm/nrf51_soc.c
+> index 34da0d62f0..7ae54e18be 100644
+> --- a/hw/arm/nrf51_soc.c
+> +++ b/hw/arm/nrf51_soc.c
+> @@ -150,6 +150,7 @@ static void nrf51_soc_realize(DeviceState *dev_soc, Error **errp)
 >
+>      /* Pass all GPIOs to the SOC layer so they are available to the board */
+>      qdev_pass_gpios(DEVICE(&s->gpio), dev_soc, NULL);
+> +    qdev_pass_gpios(DEVICE(&s->gpio), dev_soc, "detect");
 
-The difference is that vhost_vdpa_dev_start is called after features
-ack (via vhost_dev_start, through vhost_dev_set_features call) and vq
-configuration (using vhost_virtqueue_start). A device reset forces the
-device to forget about all of that, and qemu cannot configure them
-again until qemu acks the features again.
+Is the DETECT line really exposed external to the SoC?
+I had a look at the nRF51822 datasheet and it suggests not.
+For purposes of supporting the wake-up-on-gpio functionality
+we don't need to expose it to the board -- the SoC layer
+can just wire it up to the POWER device. (In fact, exposing
+it to the board makes it harder, because you can't connect
+one qemu_irq to two places, so if we let the board connect
+it somewhere then the SoC can't conveniently connect it
+to the POWER device without doing extra work to split it.)
 
+The logic for calculating DETECT looks good to me.
+
+thanks
+-- PMM
 
