@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5579775F81B
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 15:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D326375F820
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 15:23:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNvVY-0008WI-Cu; Mon, 24 Jul 2023 09:21:52 -0400
+	id 1qNvWu-0001vA-B5; Mon, 24 Jul 2023 09:23:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNvVW-0008W4-UK
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:21:50 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ id 1qNvWq-0001ug-OG
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:23:12 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNvVV-0006c3-8A
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:21:50 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-4fdddf92b05so6156443e87.3
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 06:21:48 -0700 (PDT)
+ id 1qNvWp-0006qu-C3
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:23:12 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-52229d3b8c8so1820977a12.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 06:23:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690204907; x=1690809707;
+ d=linaro.org; s=google; t=1690204990; x=1690809790;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=4q1LlgadzsNkuoYqfXr5kY7/NbopM7zJxUmRzYUpCy4=;
- b=eroBgMoJ5dM6jS+b8vgrzgW7VJ5cKBO++4dwmgK/jDhUgozII6TnL2Gkzj6dhgV7ff
- bVDEDHfAxYCfn5RieoMQhwc+huI/I6Thm27S4xISMKKq6xVjbCPifYkSkPvDEg336HTO
- nQ4SCrucxGmtwIJAKovu0cmrazZ/5wZIuOkUM8SZOXntO3clflAaxkeCm2uU6xZuY6EV
- ZVmpe8A+M5Auf9IHPblDq5TkI20fz/xH7FRW4Z2VdNxIQhj2x3VJYIf48GZAaywOoq7z
- 1UzaHfKvktFDcOuzEnJCr/+mhFiDYu9+W0VGdN/Te6brpf9r/LjHs51GNLTR1yCPfuvo
- Q3cg==
+ bh=ZlVVeA8pxJcSsaXJkjJqU//lud0o163HYU+YUc9VGi0=;
+ b=AbWBVMIqujzxGNcMHsata1Xm0Zb/+N/vBl/fNHtSyNpKTJHlZaMXchV10BA0fCVKLz
+ M896KlbQWuSoSXMZvYSJCrouqtFGoL6MCuYR/fA9+YMhJUpPPutz/m4D6SMev8GJSvIf
+ z4/L3w+jujVFJ0dGr3CrYJU4/KnmK4jPkBuBFqA7IVs5I9js5wi6juY0liYNYRjVdZtZ
+ +e6DOIsqoHkrCLixFNcyipL0GSA+V8D92ikPGVOY9OGSMSb297RygYDHDtPTmgAyylBG
+ CKw1EJLciWMip61yKo5yJnRSvGNa9sV8EEqj84nmLMFJCBFfn7obeIqn31AbdZydfJFR
+ SIIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690204907; x=1690809707;
+ d=1e100.net; s=20221208; t=1690204990; x=1690809790;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=4q1LlgadzsNkuoYqfXr5kY7/NbopM7zJxUmRzYUpCy4=;
- b=Rj3fXFJ9+ASd6dxAIBgu7FEjWjd9uR0IU+WIxhyf1Rz6buPJjiZg3zc4bSLjXxGQlQ
- OShSIsYaSm/usIpHbziL5lELty1bGflCPaPD5NeTbSw7RQ2AcpWGdozlYJQBwAIeibA0
- aAORzGtNao1c5gzMdvWb1wMNAhAbLxRLXx7nxOY1XCnTbGLyDYVfEgMxKrT6DjMuX7nW
- 8E5ZRGsoV8REyNpFulRHGg67BxRNJSdCoNK87WGOiypYlQ4+njhNqf2AJ1A0IH8DTqdA
- dArStijvHvtkBxrUxo36SmKY97Qz6L7x0n1XJla/8h9xe47wDuIwmpRpTdNW0gxgJbPe
- 44Dw==
-X-Gm-Message-State: ABy/qLZZ5yprggdWZqOLds4/mpxgkWpD8/5wkBpZ/sB24hv9fapicqbp
- 0y8sXT/fyeJfb1tHTkzB2Y9k04v7HV3o3dzTEcrJOA==
-X-Google-Smtp-Source: APBJJlFPwArfmWKC5sfGKAu24SD+rBhjJnO2MqPKQuf4PxMLguzBfzugWYLqyp/2YLJiyiF2U/GH6n1KacXGn4c9F5s=
-X-Received: by 2002:a05:6512:3ac:b0:4fd:c84f:30d4 with SMTP id
- v12-20020a05651203ac00b004fdc84f30d4mr5255320lfp.36.1690204907500; Mon, 24
- Jul 2023 06:21:47 -0700 (PDT)
+ bh=ZlVVeA8pxJcSsaXJkjJqU//lud0o163HYU+YUc9VGi0=;
+ b=GymxfYZx5QXLPay6tJEs3DVQzZZTh0MBGt4ywTPVZ+E1QMjHBLQd7CTuavRl9AquIl
+ OXPWsggHADZvrFmKJqQ50rydRm75l9x2lc0Wcv0OZkR2o0uVOkt0AIVjyEy43EVOBqH2
+ aszPrYagu3vKi6pLw57y/jqIPYqEw5Ev7b5RxfTiWgSgkyIFIIqQf3Pr+95BWQot7dQD
+ PxwnaARYeVfwHzkHzo+WlhZ+tCREgtgs2am8Z6aR54hq567ZsTkTQr7vvIIV8PAIYwYQ
+ bQAKMek2oj36xbUVJ+rGQAMtifSb0p0W0rizXcL9dUfmiciwqrdn69sSi8IU2IProrBM
+ SOag==
+X-Gm-Message-State: ABy/qLY7/tetgK/t2C+TDKVV6R5l61zUcn2nFdkIOjKjl/q7UpErLuei
+ eCNCxR7aIS7pwraNQDGv4YtaV2BAMXthglOwcWKoW1eFY84ec1ED
+X-Google-Smtp-Source: APBJJlE/giDOLEKHyWeflVX0hoQEE4K2bs/Wtj9IBxh6nmPq8j9jrB7bRFHN79nsWHK7Yp2aLbLI5G6pxbICVEBT7+c=
+X-Received: by 2002:a05:6402:10cb:b0:51f:f1a4:edc6 with SMTP id
+ p11-20020a05640210cb00b0051ff1a4edc6mr8080045edu.37.1690204989736; Mon, 24
+ Jul 2023 06:23:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230724085328.4936-1-richard.henderson@linaro.org>
-In-Reply-To: <20230724085328.4936-1-richard.henderson@linaro.org>
+References: <20230720131521.1325905-1-peter.maydell@linaro.org>
+In-Reply-To: <20230720131521.1325905-1-peter.maydell@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 24 Jul 2023 14:21:36 +0100
-Message-ID: <CAFEAcA_+ESKNMH-bWbBUCke=42=7N=Dso6vGAp9cEiYHFc1KrQ@mail.gmail.com>
-Subject: Re: [PULL for-8.1-rc1 0/7] tcg patch queue
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
+Date: Mon, 24 Jul 2023 14:22:58 +0100
+Message-ID: <CAFEAcA8BiD6dwVns9DR5R4DyNXV6yheXhJ1vigkvg+WgALTYvQ@mail.gmail.com>
+Subject: Re: [PATCH] tests/decode: Suppress "error: " string for
+ expected-failure tests
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -84,34 +85,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 24 Jul 2023 at 09:53, Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Thu, 20 Jul 2023 at 14:15, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
-> The following changes since commit d1181d29370a4318a9f11ea92065bea6bb159f83:
->
->   Merge tag 'pull-nbd-2023-07-19' of https://repo.or.cz/qemu/ericb into staging (2023-07-20 09:54:07 +0100)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230724
->
-> for you to fetch changes up to 32b120394c578bc824f1db4835b3bffbeca88fae:
->
->   accel/tcg: Fix type of 'last' for pageflags_{find,next} (2023-07-24 09:48:49 +0100)
->
-> ----------------------------------------------------------------
-> accel/tcg: Zero-pad vaddr in tlb debug output
-> accel/tcg: Fix type of 'last' for pageflags_{find,next}
-> accel/tcg: Fix sense of read-only probes in ldst_atomicity
-> accel/tcg: Take mmap_lock in load_atomic*_or_exit
-> tcg: Add earlyclobber to op_add2 for x86 and s390x
-> tcg/ppc: Fix race in goto_tb implementation
+> The "expected failure" tests for decodetree result in the
+> error messages from decodetree ending up in logs and in
+> V=1 output:
 >
 
-Applied, thanks.
+I'll put this in my arm pullreq since it makes pullreq
+handling easier and I see you've just sent a tcg pullreq
+(unless you'd rather take it yourself).
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.1
-for any user-visible changes.
-
+thanks
 -- PMM
 
