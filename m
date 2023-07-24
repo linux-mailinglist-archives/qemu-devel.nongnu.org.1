@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED9775F20A
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0082575F240
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:11:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNsRb-0006j4-0Q; Mon, 24 Jul 2023 06:05:36 -0400
+	id 1qNsWA-0007jl-2g; Mon, 24 Jul 2023 06:10:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qNsRU-0006ie-JE
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:05:28 -0400
-Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
+ (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
+ id 1qNsVw-0007hj-V2
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:10:05 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qNsRP-0007zX-FY
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:05:26 -0400
-Received: by mail-qt1-x833.google.com with SMTP id
- d75a77b69052e-403cb525738so37315791cf.2
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 03:05:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pizhenwei@bytedance.com>)
+ id 1qNsVl-0000XX-Ew
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:10:04 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1bb2468257fso20695985ad.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 03:09:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1690193122; x=1690797922;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Rrc/mf/4kaR1YoH/AJ/koBVXZS5GcKPOfPermIZ8D/c=;
- b=KavbBwEnBGL2qkWp47CdsSwaYyMgJVDdKOQFv8BPlnuuZkxE5SN+2VxXck0SqfVXJ3
- l6cfXarYgGqduENj0ytr6D+23ncTuwIQg2YQo2fYSMugvOCHL+eRgOwrdTP/X2E4MQSD
- qoGTwgwij1pvHlAIcsqhybEAVWaiglTRnWv8fas9FvyD7+2vkQLPziQ/pBrxNcU47L02
- MUevdsFOab9pzWQxkS7Lsr5/PjW9F3YHul5bmX6o6oILi206BcZlMbews8iQ6Jx0CcoW
- NXfCojPw4OaHdL7GFcNsLHi/SX5YqMdJbTLzweLFPqK2WPPNWCNmgraojuMKlFYsNdob
- capg==
+ d=bytedance.com; s=google; t=1690193386; x=1690798186;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Wc7I1mWSNpxFRwbHpc4PW0roReVOcC4gzLLVvJF/AEs=;
+ b=dfDJDEhN2+tHvna/LfG4iCNzU01Pung5Z8GLon5jM+R3YvU3tqRJbJCAoxJwZ0QEAG
+ QW/VPdRzZUvyjI2fk34e/rvItFIqmSCYUjawYTQNR6XxUcHgFIfhT0dkGyGkMfRWAkn+
+ Q6NhTSyKlKZ7d82xNbOX9o9reW9vo51LFOJN9v7zShDa6eozpShKhlCrXeWfNeZCQwMJ
+ nf7Uyy7RuxCmgLttEYo74k8vmwoGbWocpxoJEdMSGRlIMvV/K+x53IZt8ArBm5h4Uzgt
+ Tp11vhUmt/O3sJu1WFomEzoLS8bN09AEV4wRypjXdKfUS1dFpRBC2d/wXascIPwOGNgX
+ qHmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690193122; x=1690797922;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1690193386; x=1690798186;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Rrc/mf/4kaR1YoH/AJ/koBVXZS5GcKPOfPermIZ8D/c=;
- b=GDmCW7LscGU+X4n0gRKeYSOiHOV/PNpbjXmWne3ZigoNQGlch+GZV59gmrV0tZFe1k
- y3x6IT+XpocK7g4xwpoeJob0St6gozW3Udmt8XdJyTUCKSPFAI+QK2r2uFHozQCIp7WU
- rDuLEEXWrXRG1zWmqTy/XyFK7sJeAtlNL+3uH0eTHMihOemSnQh+nk8LnsYz/4YyHmTC
- 5++UnzGuaep0Z1s0qZP17pwooleZryh7Nb6B5WE1GzyGjMyyxK6pXwIpWLtmGXep4/6f
- kukppAI24ixs9K/8CgyyzjrCF2fkpKrWouQgG4eV1XxL2ypGvcprIftDJZUO8A9kQz3m
- Evig==
-X-Gm-Message-State: ABy/qLbVBdfY9eCku8qbTPAJiJxoaeyXVK0+PXD1+jXXlNdOhnK9RkGe
- SUy3PcnV7U/FWOz5WdBKg2uXj7tmSnjRPD7eLwY=
-X-Google-Smtp-Source: APBJJlGlGgbk8NEBMZ5+xarGNSwnb6NrULQFM5iqJtNMWSVyb4SAdG5nmTBej1UjUvD1oh6Q6STAdS6YALm/m5aCvHE=
-X-Received: by 2002:ac8:59d2:0:b0:405:4003:ebbe with SMTP id
- f18-20020ac859d2000000b004054003ebbemr10556874qtf.3.1690193122421; Mon, 24
- Jul 2023 03:05:22 -0700 (PDT)
+ bh=Wc7I1mWSNpxFRwbHpc4PW0roReVOcC4gzLLVvJF/AEs=;
+ b=c6IiHMXHI0z7z9MkRWe+THnfAj2w4HP5gcCfJD7yuPXxopeb93A0wYca5UcFxPZyh5
+ /3vt4VJVPRZ0+DWI11pUTl8NCQPnGxZ74IlbB/rYt0j9CW8xCGcMVoOLNmRXDw1nVuUq
+ abaFhkQWScxeRuYESbNGADYRRhCxHqo9pmiC2Bqra8oPaokCcALWjveye5WzfCm7im1m
+ N9wuaFKxfh7x6LkJulg5x25w8gPHSojKKdSpARfiZDSRyHJqaLaMCe74wjI1AOK288sO
+ J+MRASLJUWl3a9KuUzzxwRuC/a3rIPxls5GyXiKsr/hpQ8CIGSjl3qFy/+SMNl2KoOzn
+ UocQ==
+X-Gm-Message-State: ABy/qLYVoD1cLezPY4YiabW641TIv0yIZUs2UGY87HuAPVqYN/Cn0anx
+ Z8g9D3YJvcaA1Zr/rGI/Vit3Ag==
+X-Google-Smtp-Source: APBJJlEtFKod2+49Kom2GqABFV5R72VSNAs3k/HoOtCAlmMz4RzkYjAspCBd4Smu5GA6gTRwSlTDkw==
+X-Received: by 2002:a17:903:234c:b0:1b8:8b2e:ae36 with SMTP id
+ c12-20020a170903234c00b001b88b2eae36mr8154307plh.3.1690193386693; 
+ Mon, 24 Jul 2023 03:09:46 -0700 (PDT)
+Received: from libai.bytedance.net ([61.213.176.11])
+ by smtp.gmail.com with ESMTPSA id
+ je2-20020a170903264200b001bb9d6b1baasm2419124plb.198.2023.07.24.03.09.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Jul 2023 03:09:46 -0700 (PDT)
+From: zhenwei pi <pizhenwei@bytedance.com>
+To: berto@igalia.com, kwolf@redhat.com, groug@kaod.org, qemu_oss@crudebyte.com,
+ hreitz@redhat.com
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, berrange@redhat.com,
+ zhenwei pi <pizhenwei@bytedance.com>
+Subject: [PATCH v4 0/9] Misc fixes for throttle
+Date: Mon, 24 Jul 2023 18:09:30 +0800
+Message-Id: <20230724100939.1022984-1-pizhenwei@bytedance.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <ZL47B09wgJybWThE@redhat.com>
- <20230724100353.16628-1-sergii@zasenko.name>
-In-Reply-To: <20230724100353.16628-1-sergii@zasenko.name>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 24 Jul 2023 14:05:11 +0400
-Message-ID: <CAJ+F1CJJAsc_YKRXj_=TW=9113MLN94jTZ9khig3wnh6E4VXVQ@mail.gmail.com>
-Subject: Re: [PATCH] Allow UNIX socket option for VNC websocket
-To: Sergii Zasenko <sergii@zasenko.name>
-Cc: qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000a9efd4060138c0d3"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x833.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=pizhenwei@bytedance.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,144 +90,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a9efd4060138c0d3
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+v3 -> v4:
+- Hanna pointed out that 'throttle type' is not clear enough,
+  'throttle direction' would be better in the v3.
+  Use 'ThrottleDirection' instead, also rename 'ThrottleType throttle' to 'ThrottleDirection direction'.
 
-On Mon, Jul 24, 2023 at 2:04=E2=80=AFPM Sergii Zasenko <sergii@zasenko.name=
-> wrote:
+- For patch 'throttle: support read-only and write-only', reduce codes by:
+for (dir = THROTTLE_READ; dir < THROTTLE_MAX; dir++) {
+    ...
+}
 
-> - Remove unix socket option limitation for VNC websocket
-> - Reflect websocket option changes in documentation
->
-> Signed-off-by: Sergii Zasenko <sergii@zasenko.name>
->
+- Add commit message for the removed 'FIXME' tag.
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+- Append 'throttle: use THROTTLE_MAX/ARRAY_SIZE for hard code'
+- Append 'fsdev: Use ThrottleDirection instread of bool is_write'
+- Append 'block/throttle-groups: Use ThrottleDirection instread of bool is_write'
 
+Finally, 'bool is_write' has been fully removed from throttle related codes,
+'type foo[2]' becomes 'type foo[THROTTLE_MAX]'.
 
-> ---
->  qemu-options.hx | 4 ++++
->  ui/vnc.c        | 5 -----
->  2 files changed, 4 insertions(+), 5 deletions(-)
->
-> diff --git a/qemu-options.hx b/qemu-options.hx
-> index 29b98c3..8cc910d 100644
-> --- a/qemu-options.hx
-> +++ b/qemu-options.hx
-> @@ -2451,6 +2451,10 @@ SRST
->          host. It is possible to control the websocket listen address
->          independently, using the syntax ``websocket``\ =3Dhost:port.
->
-> +        Websocket could be allowed over UNIX domain socket, using the
-> syntax
-> +        ``websocket``\ =3Dunix:path, where path is the location of a uni=
-x
-> socket
-> +        to listen for connections on.
-> +
->          If no TLS credentials are provided, the websocket connection
->          runs in unencrypted mode. If TLS credentials are provided, the
->          websocket connection requires encrypted client connections.
-> diff --git a/ui/vnc.c b/ui/vnc.c
-> index 92964dc..dea1414 100644
-> --- a/ui/vnc.c
-> +++ b/ui/vnc.c
-> @@ -3715,11 +3715,6 @@ static int vnc_display_get_address(const char
-> *addrstr,
->          addr->type =3D SOCKET_ADDRESS_TYPE_UNIX;
->          addr->u.q_unix.path =3D g_strdup(addrstr + 5);
->
-> -        if (websocket) {
-> -            error_setg(errp, "UNIX sockets not supported with websock");
-> -            goto cleanup;
-> -        }
-> -
->          if (to) {
->              error_setg(errp, "Port range not support with UNIX socket");
->              goto cleanup;
-> --
-> 2.39.2
->
->
->
+v2 -> v3:
+- patch 1 -> patch 5 are already reviewed by Alberto
+- append patch 6: throttle: use enum ThrottleType instead of bool is_write
 
---=20
-Marc-Andr=C3=A9 Lureau
+v1 -> v2:
+- rename 'ThrottleTimerType' to 'ThrottleType'
+- add assertion to throttle_schedule_timer
 
---000000000000a9efd4060138c0d3
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+v1:
+- introduce enum ThrottleTimerType instead of timers[0], timer[1]...
+- support read-only and write-only for throttle
+- adapt related test codes
+- cryptodev uses a write-only throttle timer
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 24, 2023 at 2:04=E2=80=AF=
-PM Sergii Zasenko &lt;<a href=3D"mailto:sergii@zasenko.name">sergii@zasenko=
-.name</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
-rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
-1ex">- Remove unix socket option limitation for VNC websocket<br>
-- Reflect websocket option changes in documentation<br>
-<br>
-Signed-off-by: Sergii Zasenko &lt;<a href=3D"mailto:sergii@zasenko.name" ta=
-rget=3D"_blank">sergii@zasenko.name</a>&gt;<br></blockquote><div><br></div>=
-<div>Reviewed-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lu=
-reau@redhat.com">marcandre.lureau@redhat.com</a>&gt;</div><div>=C2=A0<br></=
-div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bor=
-der-left:1px solid rgb(204,204,204);padding-left:1ex">
----<br>
-=C2=A0qemu-options.hx | 4 ++++<br>
-=C2=A0ui/vnc.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 | 5 -----<br>
-=C2=A02 files changed, 4 insertions(+), 5 deletions(-)<br>
-<br>
-diff --git a/qemu-options.hx b/qemu-options.hx<br>
-index 29b98c3..8cc910d 100644<br>
---- a/qemu-options.hx<br>
-+++ b/qemu-options.hx<br>
-@@ -2451,6 +2451,10 @@ SRST<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0host. It is possible to control the webso=
-cket listen address<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0independently, using the syntax ``websock=
-et``\ =3Dhost:port.<br>
-<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 Websocket could be allowed over UNIX domain so=
-cket, using the syntax<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 ``websocket``\ =3Dunix:path, where path is the=
- location of a unix socket<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 to listen for connections on.<br>
-+<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0If no TLS credentials are provided, the w=
-ebsocket connection<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0runs in unencrypted mode. If TLS credenti=
-als are provided, the<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0websocket connection requires encrypted c=
-lient connections.<br>
-diff --git a/ui/vnc.c b/ui/vnc.c<br>
-index 92964dc..dea1414 100644<br>
---- a/ui/vnc.c<br>
-+++ b/ui/vnc.c<br>
-@@ -3715,11 +3715,6 @@ static int vnc_display_get_address(const char *addrs=
-tr,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0addr-&gt;type =3D SOCKET_ADDRESS_TYPE_UNI=
-X;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0addr-&gt;u.q_unix.path =3D g_strdup(addrs=
-tr + 5);<br>
-<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (websocket) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error_setg(errp, &quot;UNIX sock=
-ets not supported with websock&quot;);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 goto cleanup;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
--<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (to) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0error_setg(errp, &quot;Port=
- range not support with UNIX socket&quot;);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto cleanup;<br>
--- <br>
-2.39.2<br>
-<br>
-<br>
-</blockquote></div><br clear=3D"all"><br><span class=3D"gmail_signature_pre=
-fix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature">Marc-Andr=C3=
-=A9 Lureau<br></div></div>
+Zhenwei Pi (9):
+  throttle: introduce enum ThrottleDirection
+  test-throttle: use enum ThrottleDirection
+  throttle: support read-only and write-only
+  test-throttle: test read only and write only
+  cryptodev: use NULL throttle timer cb for read direction
+  throttle: use enum ThrottleDirection instead of bool is_write
+  throttle: use THROTTLE_MAX/ARRAY_SIZE for hard code
+  fsdev: Use ThrottleDirection instread of bool is_write
+  block/throttle-groups: Use ThrottleDirection instread of bool is_write
 
---000000000000a9efd4060138c0d3--
+ backends/cryptodev.c            |  12 ++--
+ block/throttle-groups.c         | 107 ++++++++++++++++----------------
+ block/throttle.c                |   8 +--
+ fsdev/qemu-fsdev-throttle.c     |  18 +++---
+ fsdev/qemu-fsdev-throttle.h     |   4 +-
+ hw/9pfs/cofile.c                |   4 +-
+ include/block/throttle-groups.h |   6 +-
+ include/qemu/throttle.h         |  16 +++--
+ tests/unit/test-throttle.c      |  76 +++++++++++++++++++++--
+ util/throttle.c                 |  84 +++++++++++++++----------
+ 10 files changed, 216 insertions(+), 119 deletions(-)
+
+-- 
+2.34.1
+
 
