@@ -2,60 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534C475F3FC
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1D975F400
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:56:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNtEM-0007TL-PR; Mon, 24 Jul 2023 06:55:58 -0400
+	id 1qNtF1-00085B-Cv; Mon, 24 Jul 2023 06:56:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNtEK-0007Sx-7W
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:55:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNtF0-000852-Cs
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:56:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNtEI-0002Q8-OA
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:55:55 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNtEz-0002ef-3w
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:56:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690196153;
+ s=mimecast20190719; t=1690196196;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=HiqmcxvrRpxO4cA5WZfa6GlFaXa7LdVp6lQG0KozCBE=;
- b=VSFpavbfqaKjBM1NzHTa20GaBxGD9z133bdyDII5yfzLBxvpiu2BQrlBY+ixz29ooKs9tp
- sUAonuxlfmR4/aR6yxZXtarLYA/OznJhjJl8JKAi1AiLBagL2P8Xb6JWAbkGEw4nHKIsuP
- 1+qB0gCiyBZkUSFZbjptmpTfX2qqYik=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-79-h1A9UL9zMU-4sNyywmtXXw-1; Mon, 24 Jul 2023 06:55:50 -0400
-X-MC-Unique: h1A9UL9zMU-4sNyywmtXXw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=pPqKaUo8oZgCh9x+Le5K4zFcHVX2J/LCW9XMYAZw1S4=;
+ b=hjbgXAJX7s/m/UtmlrJGOifUw2qAJENqE7O0l9o3dj5o/BODdkuHhH9lBXgBLKecN7wJf8
+ 3s1IgEB5iEpQ1CpUhAbZi8ispCKDDG0ys1oIxy1E6aYoEm7NH3G0xMEMMgCri6FtfIQOd2
+ KDdLqfDODwpFaPoqAlMnbRraaEMlMnY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-84-RnIaoEQMO3mo2OyRige34w-1; Mon, 24 Jul 2023 06:56:32 -0400
+X-MC-Unique: RnIaoEQMO3mo2OyRige34w-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 621BC3806703;
- Mon, 24 Jul 2023 10:55:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 11BE789F4E0;
+ Mon, 24 Jul 2023 10:56:32 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 41B7E200BA63;
- Mon, 24 Jul 2023 10:55:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AC7F110E5E;
+ Mon, 24 Jul 2023 10:56:31 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 27E7721E668C; Mon, 24 Jul 2023 12:55:49 +0200 (CEST)
+ id AB5E521E64D0; Mon, 24 Jul 2023 12:56:30 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: richard.henderson@linaro.org,  qemu-devel@nongnu.org
-Subject: Re: [PULL 0/2] QAPI patches patches for 2023-07-10
-References: <20230710111959.637011-1-armbru@redhat.com>
- <87fs5h3m4s.fsf@pond.sub.org>
-Date: Mon, 24 Jul 2023 12:55:49 +0200
-In-Reply-To: <87fs5h3m4s.fsf@pond.sub.org> (Markus Armbruster's message of
- "Fri, 21 Jul 2023 06:48:51 +0200")
-Message-ID: <87y1j5o9xm.fsf@pond.sub.org>
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  Eduardo Habkost <eduardo@habkost.net>,
+ David Hildenbrand <david@redhat.com>,  "Michael S . Tsirkin"
+ <mst@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Alex
+ =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,  Thomas Huth
+ <thuth@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Daniel
+ P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,  Eric
+ Blake <eblake@redhat.com>,  qemu-devel@nongnu.org
+Subject: Re: [PATCH v6 0/6] Hyper-V Dynamic Memory Protocol driver
+ (hv-balloon =?utf-8?B?8J+OiO+4jyk=?=
+References: <cover.1689786474.git.maciej.szmigiero@oracle.com>
+Date: Mon, 24 Jul 2023 12:56:30 +0200
+In-Reply-To: <cover.1689786474.git.maciej.szmigiero@oracle.com> (Maciej
+ S. Szmigiero's message of "Thu, 20 Jul 2023 12:12:57 +0200")
+Message-ID: <87wmypo9wh.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,10 +90,6 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
-
-> Did this fall through the cracks?
-
-Hmm, looks like Peter is taking care of merging right now.
+Doesn't apply to master.  Care to rebase?
 
 
