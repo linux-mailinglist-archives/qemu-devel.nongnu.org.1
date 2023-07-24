@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4919175F92D
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 16:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3C875F92C
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 16:01:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNw6j-0000sW-A5; Mon, 24 Jul 2023 10:00:17 -0400
+	id 1qNw6i-0000rY-92; Mon, 24 Jul 2023 10:00:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Evanzhang@archeros.com>)
- id 1qNqFd-0004YE-BD; Mon, 24 Jul 2023 03:45:05 -0400
+ id 1qNqFg-0004Yl-JZ; Mon, 24 Jul 2023 03:45:08 -0400
 Received: from [2406:e500:4420:2::628]
  (helo=CHN02-SH0-obe.outbound.protection.partner.outlook.cn)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Evanzhang@archeros.com>)
- id 1qNqFb-000142-3P; Mon, 24 Jul 2023 03:45:05 -0400
+ id 1qNqFe-000142-Ex; Mon, 24 Jul 2023 03:45:07 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R7feiMpnNjPZEOZHxZW+8jEvy5mWL9ntiACBI4j2dVjTqnhZpyt2EQsvZihx5YmWLzfJ3DJdsrnDQJRiH2XW+ZD5yHTEuPxiEzW5Vh3YGVYAAwAZNnfaTh1EKdXl1gqyuLPmOCg0/XPC2Hjqj9J6V+HN4Swb/G58Z4zOg1ldzK/TupzoMlMoMRev4jTRvv+ZvYdYh9njGjGqEsMMsNBim+uhaUhQPySGPRtzHas1sIYlTHiwuMCodmeRvwWMtLvH0bYeGpSXXEXJB4JfN4M5hkG3pD8LkWha/SsKO2stPAAad6z/RjQcl67fqIkz2CaFo8G4CSMw7gKJLibsnhlhLQ==
+ b=Y9/xYR6Tzdt2yXS279cgJl9akZFfUWR0HKbkR3xU2pa30gEhGpNV4qo3PX052c8xS1ZHuZ9yMeKVWoZYPNwUm5gFfqZkrltlDt85dyKF5QgjlFHS76tArDVRhdoPkvFGdhVnbwM4xkclJLiQ8T+x6JFvKDVMv/e4JA41tm985Ytxv0BIkswc/I1uIzbxmQ7tgzPWQ/7nSHD6V0Y+GpRtSgHO72Q4wiLdROXNCNT3KrUZM6ZQo/7IzpCNCpWeIAWg3MAP6C4eNElnk4WGIprWhkkYFba7fa//zTCRmD70XdRxJz6OWNzPMisEbtimEBujFykaEqLziaVKPlwGgIjd9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O9ZZQRMUeC79aHgfGvFtpCD5ZgKxoVGKx59zP4Bm+sg=;
- b=gE77kBGNV3dXat3vZBi0+q2sCa4jWCwtzmS7qIkzGAJUenlhZjKIBRWnkhUTkLlu77uucZWLt3tAtqUg9A3q+dngbcb+eRYpYmzdsAmYFsyRkXwAeQ8OC97kmw5t9Wp4krbZIiPwcT9RWll+5WbNMNHSUTSzm0ME3+MrvnjCrElXUSC40tjRJUBqpwMZ3ARh0aJqHyF7FEjealLI25RPcjxO+fbrh8wtuH1CmH8a9EszfsdDQcGARaaUW7LYRiIzcRf9eUFiq1O0t2BuraofxQdEIguljEvst5DXCsXeZTNCuTnc6VAXXFMZ6nU6cQRVFKH2CwdqjYXCw4injWuXJw==
+ bh=Q7Kg3gYROpMBI46Er87/LWC0w5v9gcnxAJeWClg0BdU=;
+ b=XAYsvrFCp54PKHbzBjASmn3STkEUUosAp4LJT2n8l8qLaxApOu3DNH3m59cQCpsIEFEGbdIO7E/Ai86yF/QkR5LpC45+LGZPwThQkPo9izpQKh9+DcmBDgOBWDycNhA9yzOlEzNwtczLd7ML+FuAeUy4G+xwOmko00H/3jkF6zkhdSBeUqxYh5gaH07+wENybUarisrwWCoUGDpJ8k5PSIoK/osouItkbVjMIAns9nra2yQ47/1evMJv1GYnaz3nEAwSmpmUxcmzdaiRcBYVrf/grgYOgYHbPYUI/jVVITVBml9DBRUncfafpluUzlKN4UnnHY742T3l0rELjC5QNw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=archeros.com; dmarc=pass action=none header.from=archeros.com;
  dkim=pass header.d=archeros.com; arc=none
@@ -33,11 +33,11 @@ Received: from ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c550:e::13) by ZQ0PR01MB1110.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c550:1::6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.31; Mon, 24 Jul
- 2023 07:30:18 +0000
+ 2023 07:30:19 +0000
 Received: from ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn
  ([fe80::801d:e216:d86d:2c4d]) by
  ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn ([fe80::801d:e216:d86d:2c4d%4])
- with mapi id 15.20.6609.026; Mon, 24 Jul 2023 07:30:18 +0000
+ with mapi id 15.20.6609.026; Mon, 24 Jul 2023 07:30:19 +0000
 From: Evanzhang <Evanzhang@archeros.com>
 To: qemu-devel@nongnu.org,
 	qemu-block@nongnu.org
@@ -45,9 +45,11 @@ Cc: jsnow@redhat.com, vsementsov@yandex-team.ru, kwolf@redhat.com,
  hreitz@redhat.com, Evanzhang <Evanzhang@archeros.com>
 Subject: [PATCH v1] block/stream:add flush l2_table_cache,
  ensure data integrity
-Date: Mon, 24 Jul 2023 15:30:03 +0800
-Message-Id: <cover.1690166344.git.Evanzhang@archeros.com>
+Date: Mon, 24 Jul 2023 15:30:04 +0800
+Message-Id: <bce1328c87f7e5d877dead476e9e66036cc4f7d8.1690166344.git.Evanzhang@archeros.com>
 X-Mailer: git-send-email 2.9.5
+In-Reply-To: <cover.1690166344.git.Evanzhang@archeros.com>
+References: <cover.1690166344.git.Evanzhang@archeros.com>
 Content-Type: text/plain
 X-ClientProxiedBy: NT0PR01CA0011.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c510::20) To ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn
@@ -55,53 +57,53 @@ X-ClientProxiedBy: NT0PR01CA0011.CHNPR01.prod.partner.outlook.cn
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: ZQ0PR01MB1015:EE_|ZQ0PR01MB1110:EE_
-X-MS-Office365-Filtering-Correlation-Id: ae6df802-0ab5-4ed8-02c0-08db8c17d473
+X-MS-Office365-Filtering-Correlation-Id: 4853937a-3170-463f-e8d5-08db8c17d589
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: eMTHMsxni2M6h/rBJQHWobPvdskeRVR2qn9D4VHUfERFuotoBEXrag3kC/AqfB2nzLQ5I/UXC2mopk1Zxd4t3z2ZBWTVRBx8hc6zzjvY645Zeuuocx3NGNc0vQ8mr4F1AfrFXJks9efjBF0gIFNvXT6lGdj5vrhZ5w82yTPiMIL1+KSwVJRN/Pss3SmMps7iwazfWoBSqvAnb8dPfYNVXHgaYeXLvqXhZlbw9c+4uJzUzf4sdsmx8lZ5K/bf31aybs/q274tsEtXbi9zQlbYVdR3tcDVxfpg16fahAyv9EYW/19/wCJjyYWQoKc6fodE867ruVoJpNXMsw0fXcC69X0nlNQF0JnrV8thHS+tCIrxE0o6mDAK3+qOpF3mGi5FIzGMY612PvSnbxVp3NYqum8f6OUE41ZYu+s46C93wgWc7TYF9xdc788J8CVEmrsymWv+CYwt1Lh4yIM8QiSzVx9xe905hNjGhOjnFeIzycSNC9uEz/IFw9aceCtNk9W78QJWDyFPHAcaHtjbckjmUaVnrEOiovfDQuitdjjfTwCB8TCr4MkKuEcFXD2hG/rY3JAmxbC5rS+UzXQi2u6tEWXlP04xSHqrAGg2sZ7M3IQ4nic7qIasJL9v5lTKS64cztskNW9oyVKHhRJLWHnp2RxoMBL/hRRac30PVlCiDW4=
+X-Microsoft-Antispam-Message-Info: q/5tcy5iWizqLr1AuFVIJJL+7LqA66piZyp4vCyYiwkfIkaYh5KG5HGy5MvWIuJFp0FN7qhXKNpaBA0b/6Wc+SgRVQmP+D9/VxXmm0r/jTsDyd0QUS8lFFw1QiQ+WEXfbOela99+kszQJy26ddXk2ARQLgP1XRJD1JlccJAlJY97RIzv0zeMYv0515a6Q9qzhoecMMW5x7yiaa6PJlTln55pgqrhQclp/vC54ws7AVOh0qa3B4b3v2Ft/nDoXCErV/2RjJoDol14YCU6fmFHvxXyl3lVWnSJf3c3JlVVG1IybLUQG47EPLzz8EGR30BnyXSIu6cg46xo0q7rMyu1kDtZIdkWBpg8h9NhgRvrLi1VpCjLMDvIHx3nCIeVuN7k6aqajFxZOO5C/PJCOHw2j0lf1kSVvgS6nhNEHl6FjiUWI8TX4BvTzgNaBkt342llzv7SUwYurs2RbAqud//CnhvXyVy5PclXBSfzITsJ6McMYDYhy75v7g0aw4KW+MmPXEnZ8kwhXYZCuNjdG4AF8ZquICsOkcNYeStDhz1LsS3Y1ytMbnIy3hS9K8lpcMOr63noQd0t+9SytBC6rOJZ8vNYU9a3B9Qoe1vqLKi2s6i9zHhGUzVsrLpZHgUpgzQ2r4vsweiZXfFuctIfbO6x/qFon8IFiY+nkdm0eCVPnVs=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn; PTR:;
  CAT:NONE;
  SFS:(13230028)(396003)(136003)(346002)(39830400003)(366004)(451199021)(83380400001)(2616005)(41300700001)(8676002)(8936002)(5660300002)(6666004)(52116002)(508600001)(107886003)(66476007)(66946007)(66556008)(4326008)(41320700001)(186003)(40180700001)(4744005)(86362001)(38100700002)(38350700002)(26005)(2906002)(40160700002)(36756003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?AN716clqdMLs8aAxnoCQSvf7pVJr7sHznV9Al6eF2Xy996g3W4DT1e0Trg/F?=
- =?us-ascii?Q?IaVsHkhMAHf4D5kqlzd9gWUXjfiIN9wNd+T06qDffiKIWfevj7lDdr1hZIx6?=
- =?us-ascii?Q?ByD5U5zqAYdzGzoXjkK9ae0ZRTl9ZgS07jbpVKmoLwLvoNAYCe0hLWLAzZko?=
- =?us-ascii?Q?7F2/CpnSN/e4cDvx9ZREQ5Rg5XPgl8g5qMZ++6IuCpS+JxzRKAvKdVd+h47H?=
- =?us-ascii?Q?O9rJ2LT2Hl8KVdNpB5wBFMnQ3Q7fx/Nzic4OSRv522PlW3+Nm0eTerAuSd9e?=
- =?us-ascii?Q?AZQ9WkPwYkq6Ohx4062KqeIyprS6Pj5IN+t2jNCn6q5CWaEBBKUtE5RGzmT+?=
- =?us-ascii?Q?a3jrVoXTHsjsvny1/3QVjc8C2nxraJQxMyJyUqc+z9kmYbpn7hm2UgEezW+C?=
- =?us-ascii?Q?9BjkkD0GfNPSxDxI9kvG31wrMvRlJzdHNCLwgVAnFeiswbKBzhjl0HEXjPkP?=
- =?us-ascii?Q?WM6y5Qs9KX14komkK/Ag52cnTT7+dp9QxOlrVwuYiQ2g735ZFhZ8BdZnEhYw?=
- =?us-ascii?Q?54s5/WZwFVQxDb6chO4RpQLBA0DWDvzWhF97cL/iSOl79tcLY912RuZgEQ3C?=
- =?us-ascii?Q?BznQtlsGFvlJABU16H07/77wakwvY3awf+ACzPAZ1KBmWRM1E2yJTD+Hg5fi?=
- =?us-ascii?Q?8rXS54plVb4Z5QYZRwiE7LkRxizQtQv4/hVr/Dc3iIbhNCAU+o7rU79FyD/J?=
- =?us-ascii?Q?rVeW9178mPFBUj3I2T1JM8Gjh+j8Wx814hdNFowMRdlm3ApFkdFB8okFt79A?=
- =?us-ascii?Q?koH+1JXxc9+3SdqnlL992rwm3N3HAQp+1qQMu+tNveUCTLaa3PMh3OX826yk?=
- =?us-ascii?Q?+JEX/dTIGO4O8fpDKGMCfe491uedXeQ+56KE5qYB0A5bJCLczjkM511aB5nf?=
- =?us-ascii?Q?9Bmtd9WOUDPgJHY/Dy155PDVVc+G+nL2KxyOLf91mkr6Wc/yBZDBx0R9VI1H?=
- =?us-ascii?Q?NSdZMk3bhQn5LSZoKYt8W0MPKQb8YGm4fi9qyIKrdRlyikyWSi8jZQT77pgG?=
- =?us-ascii?Q?cZ3s9QBUkJjHyCJgVon6yJoV06o4WAp2Mf2Wr3p79735LolDuKCwIZ68qKmm?=
- =?us-ascii?Q?hZj3Xw/LXMve/zbxYTwTspUCN08FuFvX1EaVayZMbz047GgXzfsmLYQ16IR3?=
- =?us-ascii?Q?dGLU/9+zNTFOeZ1Pptw6zvo31n9NQMLW3wd3LXhxXSQB9eeybhPSNrmAodIi?=
- =?us-ascii?Q?FWZfpCP/TZXwe57haKZ/NM9mfm4FFMv9s/Gbh+lY3pDE4uTFjbQwJ1A9gPof?=
- =?us-ascii?Q?E/Ql+Z/N8I+dye3JH4Ie/3huZb9mTGBXoHPMSWJKYSPoUTociay3kvMNv/OO?=
- =?us-ascii?Q?PoGtR8VO/0ciQUZRZuJgxNEmn9YS48LGmdK0kN1umH4pL3Lh6fsfDddu28dm?=
- =?us-ascii?Q?gKSL5xHzYefVYse0sBv9O0Zp1qTy1rC1jMw9Y1XUoTnaLNpKfd5SAlOIsm9N?=
- =?us-ascii?Q?EOIyCC08f4nRY0dlcerW7IcJKtGrshfa/kTRciSj10myO/SwxjofevFunzLD?=
- =?us-ascii?Q?w8KhLz8PrSjz0Zdq35HaT/BSrqMSlsh6PKK1tFj1z85egVz9hQ8TokudQGBq?=
- =?us-ascii?Q?rYHN2dea+Bi/6hktzBqlNdYf2FRFfS0XKKJ7rAoZEPTX4yB7g5CEkyanR+Tf?=
- =?us-ascii?Q?Xg=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FhzNB/s46fPJRSddu7dnXPNxwKmzPM+EcaXMLFWZ0zDxIQvQewGKLM0fFwfE?=
+ =?us-ascii?Q?xMEeW0Zv4zTUxxwmApsKnXUnoVUl4uoAXaJK3GobSRDOmycHILGOgec1JXJm?=
+ =?us-ascii?Q?z7x1AA1/TbfauBhpFAac8Zp5EYiaAVQVmkP66nFnB5SJr1O3BXQL2DGf/2eN?=
+ =?us-ascii?Q?DAqEtdiI8AuJzU9CY1clkuLzigUpKQ0JfEsUM2HnIA6K2WRK0C+w2yAAWAGn?=
+ =?us-ascii?Q?PzZM+OHHIoPQBhdp933hHfGWKM3XoUBnUv7r9RFlWpGGRqaGGoZHrv4mT5DJ?=
+ =?us-ascii?Q?cKqp9wdcZHrQPu+hQzzhDccJtwZMXXvDCAw+B9nKzKhiQeR/rYlx1+RzfSLU?=
+ =?us-ascii?Q?sL3biJ3k/gDtnnI2xpS7RurzHt++JPDuv6dXVX3bEnojlv9+gRxs+Ht2j0ln?=
+ =?us-ascii?Q?/9CVUqpsen8ek+xenxbYkCluuZtJAzCSZAeLftvIHjX8q3zRHYa5uCz8qmId?=
+ =?us-ascii?Q?Z6A225d7t2qEy4CmVYmPjlWd6T2nav6HjMJR1HWFzjT/n+YcxGwnjOeyDfhU?=
+ =?us-ascii?Q?C7Oyi85mgsYNSqazAdUxFKIphLZCoRUEEEDqnVMy3sXWBClukOhQDSdoKdHs?=
+ =?us-ascii?Q?gvZgL3HaAuJmDDFHmH0sbMGWHkPtwWKehH+rlQqIGGYEXv3+hUBBpO+JsjJc?=
+ =?us-ascii?Q?vmSKGXpwWajPlRUqS9wYm31BVHl0/p8MSUuuF8h1rApN7Sdmf0kskFnvlT8S?=
+ =?us-ascii?Q?n+9kr6gRjDm/EjlVCLBdR3VrKKLA+rFgNbPO8ADQdrmjS/urVCUVZoNrSfnA?=
+ =?us-ascii?Q?fijNDMmH4fkuPHrtI9W6AygowqBxhO6NU0q550L54F9ZAxqIecYEL+N6PPVj?=
+ =?us-ascii?Q?6aqYLqYSA3VAAmhj5rLb+Kfa8QQJZXbWoKvIyt+feCxJIee1KA4uQu877kNU?=
+ =?us-ascii?Q?+MRaqjdS2BqB02Ayc37XnFi53eiDdv+qb0GnPeFcZxDc9Kbt0T+LP7SgZQzs?=
+ =?us-ascii?Q?EPTHwLpNrHE5qr118iDduYMgHx4m18JwnFhghR2vR1v+LZYgegEn/LygMXkn?=
+ =?us-ascii?Q?c6QtCsbI+YdWsZPvNmM8Q5QzikGfbJH5OhA9kO//zq09+MtpckFQZl2MhFow?=
+ =?us-ascii?Q?jydDVnajuJUV9RY5hHcaEP+RP0XsIFtPLr1EMAee3s68G7++tw0kHSsSTXqr?=
+ =?us-ascii?Q?QdWeqft/ukXU+HoB1L+gMCN2Hj+LglvYBgF/WXlDqMgcj2BAg3DRQhwgSjxE?=
+ =?us-ascii?Q?cUyIzQE0ogPt9O8Z94Cdj033GsvCYZejzuOcP2PSVN+SWVp8y5mHQEdTRAy/?=
+ =?us-ascii?Q?z8wVPi3Lynr+4J38dn7WUv9gMQen7M6p80aOn8Gl8KAb5BtBTj1NAZ7zkSQj?=
+ =?us-ascii?Q?8TF9tBpKHBz7CLWc6jtZbId/4emcSWEn2dTC88WI2fzxpxMvtbQcIE8yabVR?=
+ =?us-ascii?Q?D7MGElJhE+KiFgdbA5cHhC0hvzAORD8lkCltxiIIPU6iV4FmQ9NY07CMC9Js?=
+ =?us-ascii?Q?xCniHfKpi/q9p9vhV48tUBhaz9IlLSSttz01GV/Be/VYTcOIZLZbQLggdpEy?=
+ =?us-ascii?Q?UCAMppQV4QYppvrO5JF1703Y60pJFyd9rVgXySlFp/wofIVllFcSJkKbXLM+?=
+ =?us-ascii?Q?jaakHzgCfjBF0rmmeEczFmt53XmwsTEfy9UP4mc7kYtwwZSWCWLUzi0x489B?=
+ =?us-ascii?Q?Ig=3D=3D?=
 X-OriginatorOrg: archeros.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae6df802-0ab5-4ed8-02c0-08db8c17d473
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4853937a-3170-463f-e8d5-08db8c17d589
 X-MS-Exchange-CrossTenant-AuthSource: ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2023 07:30:18.0712 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2023 07:30:19.9054 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8387253c-f44a-4a28-8058-3e5c20af6b4d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 51gU0TIecY8pAZjdoz/e8zWYLrgqRo1URFixp7noD8PnquIxbuE7vlvJFzCqYHCJtR0E1rSea1qHddHky4BF0w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: sOP2vuCOzxzxQZy0fvSl6YXX6Azv+KNtw9nqFsH56Me5e8HBN6RzH/XwocXs0qGdLaxZ+t73GXKFW24SlFJcag==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ0PR01MB1110
 X-Host-Lookup-Failed: Reverse DNS lookup failed for 2406:e500:4420:2::628
  (failed)
@@ -130,33 +132,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Verification steps:
-1.qemu-img  create -f  qcow2 data1.img 10M
-  qemu-img  create -f  qcow2 -b data1.img data1.qcow2
+block_stream will not actively flush l2_table_cache,when qemu
+process exception exit,causing disk data loss
 
-2.write 1M data to data1.img
-
-3.create vm  use data1.qcow2 as the data disk
-  /usr/libexec/qemu-kvm -M pc,accel=kvm -smp 4 -cpu host -m 4g -drive
-  file=./centos_7.5_64_20200603.qcow2,if=none,id=drive-virtio0,cache=none,
-  aio=native -device virtio-blk-pci,drive=drive-virtio0,id=virtio0 -drive
-  file=./data1.qcow2,if=none,id=drive-virtio1,cache=none,l2-cache-size=
-  1048576,aio=native -device virtio-blk-pci,drive=drive-virtio1,id=virtio1
-  -vnc :101 -qmp stdio
-
-4.{"execute": "block-stream", "arguments":{"device":"drive-virtio1"}}
-
-5.kill -9 $(pidof qemu-kvm)
-
-6.md5sum data1.img data1.qcow2,check if it is the same
-
-
-Evanzhang (1):
-  block/stream:add flush l2_table_cache,ensure data integrity
-
+Signed-off-by: Evanzhang <Evanzhang@archeros.com>
+---
  block/stream.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
+diff --git a/block/stream.c b/block/stream.c
+index e522bbd..a5e08da 100644
+--- a/block/stream.c
++++ b/block/stream.c
+@@ -207,6 +207,12 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
+         }
+     }
+ 
++    /*
++     * Complete stream_populate,force flush l2_table_cache,to
++     * avoid unexpected termination of process, l2_table loss
++     */
++    qcow2_cache_flush(bs, ((BDRVQcow2State *)bs->opaque)->l2_table_cache);
++
+     /* Do not remove the backing file if an error was there but ignored. */
+     return error;
+ }
 -- 
 2.9.5
 
