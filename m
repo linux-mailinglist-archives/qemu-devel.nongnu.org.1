@@ -2,106 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 963B5760068
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 22:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0379276008B
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 22:32:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qO22P-0008Ee-GU; Mon, 24 Jul 2023 16:20:13 -0400
+	id 1qO2CS-0003Jn-Tl; Mon, 24 Jul 2023 16:30:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qO22M-0008ES-Na; Mon, 24 Jul 2023 16:20:10 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qO2CP-0003JN-8Z
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 16:30:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qO22K-0006hW-QH; Mon, 24 Jul 2023 16:20:10 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36OKJNLM006935; Mon, 24 Jul 2023 20:19:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=PfnL3R+qEZCZVDaIkeGd2c+3Igum6OKlfRNXkvpqkY0=;
- b=gSkCxi7fiuh9Ci62q5gnVxhmh2f6P9M2NyFx1/Oy3dmj7lb13/nf3BroPd/9MkdfLxyS
- ojBwIKFFYfxtYymSYtHXrn1vMkjR8xzTmS7M5rbbH+2cRpiYiw/xZJvCbIo0IdaBq/0b
- 4/53ua5StpncldhIvBQKCv00tUPj0NrbnuKZBG2w8F82kKO85fneSsTWO+MVinLX7Gze
- To1K3ODZk9PrF3e9t34nLkI4AWWGQWmWNXjoi6iMpE7GsL86menQEnp47JQ9+8awMmoq
- 9efTCLExMrJltjna8mNY30NbcOEHvDgoQ/x8N2JR4TY2oB3lEt0FU8yZQ1UQx4cW/MaD tA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s1yfyha6v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Jul 2023 20:19:56 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36OK9mPg032705;
- Mon, 24 Jul 2023 20:19:55 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s1yfyha6h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Jul 2023 20:19:55 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 36OImboO002132; Mon, 24 Jul 2023 20:19:54 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s0unj5s2b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Jul 2023 20:19:54 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
- [10.20.54.104])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 36OKJoAv40305366
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 24 Jul 2023 20:19:50 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4893F20040;
- Mon, 24 Jul 2023 20:19:50 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1497D20043;
- Mon, 24 Jul 2023 20:19:49 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.171.57.141]) by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 24 Jul 2023 20:19:48 +0000 (GMT)
-Message-ID: <0743d96760a7b3d8d79ed1443c26896eac6a1a13.camel@linux.ibm.com>
-Subject: Re: [PATCH v21 02/20] s390x/cpu topology: add topology entries on
- CPU hotplug
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
- richard.henderson@linaro.org, david@redhat.com, thuth@redhat.com,
- cohuck@redhat.com, mst@redhat.com, pbonzini@redhat.com,
- kvm@vger.kernel.org, ehabkost@redhat.com, marcel.apfelbaum@gmail.com,
- eblake@redhat.com, armbru@redhat.com, seiden@linux.ibm.com,
- nrb@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
-Date: Mon, 24 Jul 2023 22:19:48 +0200
-In-Reply-To: <20230630091752.67190-3-pmorel@linux.ibm.com>
-References: <20230630091752.67190-1-pmorel@linux.ibm.com>
- <20230630091752.67190-3-pmorel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qO2CN-0001AN-Qf
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 16:30:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690230630;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PNdJ3UXZv4iS9zG7y9HgySWNJ/gdmtnrvJgCCVdMfSk=;
+ b=JtbmOFk8cB+ex/tcjw8pRYzAZVZVs5Iu4j5IRRgdsxsX7ttdvInaSbX3igpG08aQwbZs/t
+ z4rg1/sabZEZt+AOHZr6rgX5xal3FPTFaU/y1K/7vh7u5PCORRXDaoyTB/5SwHxRVc2EN4
+ 5Iv6JSb4BSHi3wek58vtDRGtHtKU3k0=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-494-qID-VYQ6OiecGK7WetrLhw-1; Mon, 24 Jul 2023 16:30:28 -0400
+X-MC-Unique: qID-VYQ6OiecGK7WetrLhw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-52231fa854aso829919a12.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 13:30:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690230627; x=1690835427;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PNdJ3UXZv4iS9zG7y9HgySWNJ/gdmtnrvJgCCVdMfSk=;
+ b=ONW/OC6ZBnQjwbfnIhyHjE1XY00ArFiKoFZys5VUBKXui0juldYS5IY0JfaLa94KQU
+ Arv8cQjXOvohVpRkHEXoy+8RUH1F1MNgfv7vPBId66n0gGP5psYzvVzXsHNcYouJPmw1
+ rlCbmVrPKiLsA1qWd4JZDzVMnFRTSLA9MU0BBEuo+TB6i5xArKdgy3Apjl4G0gixQcfa
+ eE2+qRFOmkOfVZZim2XggzwGx+/Mcn32I84Z9VBFWgxBfKmIs8ulE5Omd+h45PFQFC3f
+ dB0Y3kH1j8R87PO8p+bvrZaxq1dyNxB3oofkEQ4eXaR2QE0nIyelIZ9akvvsbMhuH017
+ 7GFg==
+X-Gm-Message-State: ABy/qLaGRFRkRAfjqLg0RzUvSCaxP1wJOrwscPbMZYe0oEXFVRPT8r9H
+ tSiKLNYMNFosWIss8m7hhZM4xe46pWaYkwWeiBIHozjHtK+Q03vFwnrgFPG40GxZ3+tokcrE4y1
+ UobGyfr9DlXIinns=
+X-Received: by 2002:a50:fb0f:0:b0:522:1e49:d52f with SMTP id
+ d15-20020a50fb0f000000b005221e49d52fmr6066587edq.8.1690230626887; 
+ Mon, 24 Jul 2023 13:30:26 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlFM9N4TPoPg+ix5drhUNL5043H/TXJZgeZWDyAMu6DMMGhHhBI1BDQjoQyBrP7eYEXPXnE0oQ==
+X-Received: by 2002:a50:fb0f:0:b0:522:1e49:d52f with SMTP id
+ d15-20020a50fb0f000000b005221e49d52fmr6066577edq.8.1690230626566; 
+ Mon, 24 Jul 2023 13:30:26 -0700 (PDT)
+Received: from redhat.com ([2.55.164.187]) by smtp.gmail.com with ESMTPSA id
+ a11-20020aa7d90b000000b005222a38c7b2sm2484126edr.48.2023.07.24.13.30.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Jul 2023 13:30:25 -0700 (PDT)
+Date: Mon, 24 Jul 2023 16:30:22 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Raphael Norwitz <raphael.norwitz@nutanix.com>
+Cc: Li Feng <fengli@smartx.com>, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ "open list:Block layer core" <qemu-block@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>,
+ "lifeng1519@gmail.com" <lifeng1519@gmail.com>
+Subject: Re: [PATCH] vhost-user-scsi: support reconnect to backend
+Message-ID: <20230724162933-mutt-send-email-mst@kernel.org>
+References: <20230721105205.1714449-1-fengli@smartx.com>
+ <DDDB71EA-E549-4325-9CDC-E9C746AE2E9B@nutanix.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Z1gh6oVG4xA0zi_i9CUIXUrgR3h2dohV
-X-Proofpoint-GUID: HUZV-ztbkWY1UQtz6IF0qz6EsRFuX7yu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-24_16,2023-07-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 lowpriorityscore=0 mlxscore=0 clxscore=1015
- priorityscore=1501 malwarescore=0 impostorscore=0 adultscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
- definitions=main-2307240176
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DDDB71EA-E549-4325-9CDC-E9C746AE2E9B@nutanix.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,31 +103,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2023-06-30 at 11:17 +0200, Pierre Morel wrote:
-> The topology information are attributes of the CPU and are
-> specified during the CPU device creation.
->=20
-> On hot plug we:
-> - calculate the default values for the topology for drawers,
-> =C2=A0 books and sockets in the case they are not specified.
-> - verify the CPU attributes
-> - check that we have still room on the desired socket
->=20
-> The possibility to insert a CPU in a mask is dependent on the
-> number of cores allowed in a socket, a book or a drawer, the
-> checking is done during the hot plug of the CPU to have an
-> immediate answer.
->=20
-> If the complete topology is not specified, the core is added
-> in the physical topology based on its core ID and it gets
-> defaults values for the modifier attributes.
->=20
-> This way, starting QEMU without specifying the topology can
-> still get some advantage of the CPU topology.
->=20
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+On Mon, Jul 24, 2023 at 05:21:37PM +0000, Raphael Norwitz wrote:
+> Very excited to see this. High level looks good modulo a few small things.
+> 
+> My major concern is around existing vhost-user-scsi backends which don’t support VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD. IMO we should hide the reconnect behavior behind a VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD check. We may want to do the same for vhost-user-blk.
+> 
+> The question is then what happens if the check is false. IIUC without an inflight FD, if a device processes requests out of order, it’s not safe to continue execution on reconnect, as there’s no way for the backend to know how to replay IO. Should we permanently wedge the device or have QEMU fail out? May be nice to have a toggle for this.
 
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com> if you address
-Thomas' comments.
+No, device itself can store the state somewhere. And if it wants to,
+it can check VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD and fail reconnect.
+
+-- 
+MST
 
 
