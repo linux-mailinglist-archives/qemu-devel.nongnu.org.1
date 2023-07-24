@@ -2,87 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866D276002F
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 22:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 963B5760068
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 22:21:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qO1ic-0004oF-5H; Mon, 24 Jul 2023 15:59:46 -0400
+	id 1qO22P-0008Ee-GU; Mon, 24 Jul 2023 16:20:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qO1iZ-0004nu-K4
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 15:59:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1qO22M-0008ES-Na; Mon, 24 Jul 2023 16:20:10 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qO1iX-0001n3-J8
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 15:59:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690228780;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CsU6x7qiCFJBCuYXC2qALPvxeg2+C71wwHHEUJ0WEEo=;
- b=H7qTAtfQmpDzPJ9WDFzxAm9drN7M97ddKlbcPBB3MLAvuSAuw9tEVbEaE4IaV6tnES+U1D
- 43tocyEHQuVAm8tnMVs4YFSdtTIucZVwZFtXgLEteEqkW2RgHcd8Wi3au6uZm5lf/Y7VeO
- j0yM3HGJyx7+z9ufoHWYT1YT1mBHBXE=
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-wCPu62F2ObOeFu13MEkLbg-1; Mon, 24 Jul 2023 15:59:38 -0400
-X-MC-Unique: wCPu62F2ObOeFu13MEkLbg-1
-Received: by mail-yb1-f197.google.com with SMTP id
- 3f1490d57ef6-d11f35a0d5cso1282431276.1
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 12:59:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690228778; x=1690833578;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CsU6x7qiCFJBCuYXC2qALPvxeg2+C71wwHHEUJ0WEEo=;
- b=jyHEwucXNY6Od3uNZdqy7ujqqxr+Yfu0iTS41eBJQyjT1OuMLQsMUISPuCvCyQyG6q
- Z7m+oP65nP7KoJ52oMLgjCTcA7xuft97dkqiP3/hIZPDVzqJGpyKWuYZXUQfm5VqFfJS
- 4JiIqbfiDN8kV1VE7XwZDVUUewzHmYZI78DBPE3okNTnzB4gDXnNoFZdlf76qYEYH20j
- 5M7MgbzUIF6TYVccqN+VKA1aQvH9RalG0u3I0GlCjvyreI4neL389LM536OKpYW+qkjV
- FZbxhxEgNlrfVwecU9iEizilh2B/mlTqxgEexlJQDJip57nQf1aCVmopj51I3XN5PVSf
- UBSQ==
-X-Gm-Message-State: ABy/qLaiOGTESke0bXIqFjfeBmYEaK9ueWLwgWb2ZivS9Uyg/DS9FOUK
- QulCkDDzVmQD7JalVi5UpJFXecES2yrHoKRCT2hyKO94cu0SRiKkZR9mAVoPWrX8B4B81bIiS+M
- djPV20tzndcYIE5tZzDA/CBUMhLYBxNE=
-X-Received: by 2002:a25:ab12:0:b0:d12:3108:f90f with SMTP id
- u18-20020a25ab12000000b00d123108f90fmr3245205ybi.24.1690228778263; 
- Mon, 24 Jul 2023 12:59:38 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHQCTwpqXrf2dXq7V1oigKtIvaVbd95pGvbHqWcDkalJ5F3p0l/nFk3NxogHthzJKQISjgIiuSlAC3fNT/8moM=
-X-Received: by 2002:a25:ab12:0:b0:d12:3108:f90f with SMTP id
- u18-20020a25ab12000000b00d123108f90fmr3245190ybi.24.1690228777977; Mon, 24
- Jul 2023 12:59:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230720181459.607008-1-eperezma@redhat.com>
- <20230720181459.607008-12-eperezma@redhat.com>
- <95fda9f7-285b-4ff2-f1fa-03f5bc804429@oracle.com>
-In-Reply-To: <95fda9f7-285b-4ff2-f1fa-03f5bc804429@oracle.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 24 Jul 2023 21:59:01 +0200
-Message-ID: <CAJaqyWcb186aNf_=YhxR3nQk03nLHH9s3oiQthjaqeCY2rPJsQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 11/12] vdpa: use SVQ to stall dataplane while NIC
- state is being restored
-To: Si-Wei Liu <si-wei.liu@oracle.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, yvugenfi@redhat.com, 
- Jason Wang <jasowang@redhat.com>, Dragos Tatulea <dtatulea@nvidia.com>, 
- Shannon Nelson <snelson@pensando.io>
+ (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
+ id 1qO22K-0006hW-QH; Mon, 24 Jul 2023 16:20:10 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36OKJNLM006935; Mon, 24 Jul 2023 20:19:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=PfnL3R+qEZCZVDaIkeGd2c+3Igum6OKlfRNXkvpqkY0=;
+ b=gSkCxi7fiuh9Ci62q5gnVxhmh2f6P9M2NyFx1/Oy3dmj7lb13/nf3BroPd/9MkdfLxyS
+ ojBwIKFFYfxtYymSYtHXrn1vMkjR8xzTmS7M5rbbH+2cRpiYiw/xZJvCbIo0IdaBq/0b
+ 4/53ua5StpncldhIvBQKCv00tUPj0NrbnuKZBG2w8F82kKO85fneSsTWO+MVinLX7Gze
+ To1K3ODZk9PrF3e9t34nLkI4AWWGQWmWNXjoi6iMpE7GsL86menQEnp47JQ9+8awMmoq
+ 9efTCLExMrJltjna8mNY30NbcOEHvDgoQ/x8N2JR4TY2oB3lEt0FU8yZQ1UQx4cW/MaD tA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s1yfyha6v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Jul 2023 20:19:56 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36OK9mPg032705;
+ Mon, 24 Jul 2023 20:19:55 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s1yfyha6h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Jul 2023 20:19:55 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 36OImboO002132; Mon, 24 Jul 2023 20:19:54 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3s0unj5s2b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 24 Jul 2023 20:19:54 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 36OKJoAv40305366
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 24 Jul 2023 20:19:50 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4893F20040;
+ Mon, 24 Jul 2023 20:19:50 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1497D20043;
+ Mon, 24 Jul 2023 20:19:49 +0000 (GMT)
+Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
+ [9.171.57.141]) by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 24 Jul 2023 20:19:48 +0000 (GMT)
+Message-ID: <0743d96760a7b3d8d79ed1443c26896eac6a1a13.camel@linux.ibm.com>
+Subject: Re: [PATCH v21 02/20] s390x/cpu topology: add topology entries on
+ CPU hotplug
+From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+To: Pierre Morel <pmorel@linux.ibm.com>, qemu-s390x@nongnu.org
+Cc: qemu-devel@nongnu.org, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+ richard.henderson@linaro.org, david@redhat.com, thuth@redhat.com,
+ cohuck@redhat.com, mst@redhat.com, pbonzini@redhat.com,
+ kvm@vger.kernel.org, ehabkost@redhat.com, marcel.apfelbaum@gmail.com,
+ eblake@redhat.com, armbru@redhat.com, seiden@linux.ibm.com,
+ nrb@linux.ibm.com, frankja@linux.ibm.com, berrange@redhat.com, clg@kaod.org
+Date: Mon, 24 Jul 2023 22:19:48 +0200
+In-Reply-To: <20230630091752.67190-3-pmorel@linux.ibm.com>
+References: <20230630091752.67190-1-pmorel@linux.ibm.com>
+ <20230630091752.67190-3-pmorel@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Z1gh6oVG4xA0zi_i9CUIXUrgR3h2dohV
+X-Proofpoint-GUID: HUZV-ztbkWY1UQtz6IF0qz6EsRFuX7yu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-24_16,2023-07-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0
+ phishscore=0 mlxlogscore=999 lowpriorityscore=0 mlxscore=0 clxscore=1015
+ priorityscore=1501 malwarescore=0 impostorscore=0 adultscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2306200000
+ definitions=main-2307240176
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H5=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,134 +118,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Jul 22, 2023 at 12:59=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com>=
- wrote:
->
->
->
-> On 7/20/2023 11:14 AM, Eugenio P=C3=A9rez wrote:
-> > Some dynamic state of a virtio-net vDPA devices is restored from CVQ in
-> > the event of a live migration.  However, dataplane needs to be disabled
-> > so the NIC does not receive buffers in the invalid ring.
-> >
-> > As a default method to achieve it, let's offer a shadow vring with 0
-> > avail idx.  As a fallback method, we will enable dataplane vqs later, a=
-s
-> > proposed previously.
-> Let's not jump to conclusion too early what will be the default v.s.
-> fallback [1] - as this is on a latency sensitive path, I'm not fully
-> convinced ring reset could perform better than or equally same as the
-> deferred dataplane enablement approach on hardware. At this stage I
-> think ring_reset has no adoption on vendors device, while it's
-> definitely easier with lower hardware overhead for vendor to implement
-> deferred dataplane enabling. If at some point vendor's device has to
-> support RING_RESET for other use cases (MTU change propagation for ex.,
-> a prerequisite for GRO HW) than live migration, defaulting to RING_RESET
-> on this SVQ path has no real benefit but adds complications needlessly
-> to vendor's device.
->
+On Fri, 2023-06-30 at 11:17 +0200, Pierre Morel wrote:
+> The topology information are attributes of the CPU and are
+> specified during the CPU device creation.
+>=20
+> On hot plug we:
+> - calculate the default values for the topology for drawers,
+> =C2=A0 books and sockets in the case they are not specified.
+> - verify the CPU attributes
+> - check that we have still room on the desired socket
+>=20
+> The possibility to insert a CPU in a mask is dependent on the
+> number of cores allowed in a socket, a book or a drawer, the
+> checking is done during the hot plug of the CPU to have an
+> immediate answer.
+>=20
+> If the complete topology is not specified, the core is added
+> in the physical topology based on its core ID and it gets
+> defaults values for the modifier attributes.
+>=20
+> This way, starting QEMU without specifying the topology can
+> still get some advantage of the CPU topology.
+>=20
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
 
-I agree with that. Let's say "*This series* uses RING_RESET as the
-default method, and late vq enablement as fallback".
-
-Michael, given the current HW support, would it work to start merging
-the late enable for vDPA after the feature freeze, and then add the
-use of RING_RESET on top later?
-
-Thanks!
-
-> [1]
-> https://lore.kernel.org/virtualization/bf2164a9-1dfd-14d9-be2a-8bb7620a06=
-19@oracle.com/T/#m15caca6fbb00ca9c00e2b33391297a2d8282ff89
->
-> Thanks,
-> -Siwei
->
-> >
-> > Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> > ---
-> >   net/vhost-vdpa.c | 49 +++++++++++++++++++++++++++++++++++++++++++----=
--
-> >   1 file changed, 44 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> > index af83de92f8..e14ae48f23 100644
-> > --- a/net/vhost-vdpa.c
-> > +++ b/net/vhost-vdpa.c
-> > @@ -338,10 +338,25 @@ static int vhost_vdpa_net_data_start(NetClientSta=
-te *nc)
-> >   {
-> >       VhostVDPAState *s =3D DO_UPCAST(VhostVDPAState, nc, nc);
-> >       struct vhost_vdpa *v =3D &s->vhost_vdpa;
-> > +    bool has_cvq =3D v->dev->vq_index_end % 2;
-> >
-> >       assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
-> >
-> > -    if (s->always_svq ||
-> > +    if (has_cvq && (v->dev->features & VIRTIO_F_RING_RESET)) {
-> > +        /*
-> > +         * Offer a fake vring to the device while the state is restore=
-d
-> > +         * through CVQ.  That way, the guest will not see packets in u=
-nexpected
-> > +         * queues.
-> > +         *
-> > +         * This will be undone after loading all state through CVQ, at
-> > +         * vhost_vdpa_net_load.
-> > +         *
-> > +         * TODO: Future optimizations may skip some SVQ setup and tear=
-down,
-> > +         * like set the right kick and call fd or doorbell maps direct=
-ly, and
-> > +         * the iova tree.
-> > +         */
-> > +        v->shadow_vqs_enabled =3D true;
-> > +    } else if (s->always_svq ||
-> >           migration_is_setup_or_active(migrate_get_current()->state)) {
-> >           v->shadow_vqs_enabled =3D true;
-> >           v->shadow_data =3D true;
-> > @@ -738,10 +753,34 @@ static int vhost_vdpa_net_load(NetClientState *nc=
-)
-> >           return r;
-> >       }
-> >
-> > -    for (int i =3D 0; i < v->dev->vq_index; ++i) {
-> > -        r =3D vhost_vdpa_set_vring_ready(v, i);
-> > -        if (unlikely(r)) {
-> > -            return r;
-> > +    if (v->dev->features & VIRTIO_F_RING_RESET && !s->always_svq &&
-> > +        !migration_is_setup_or_active(migrate_get_current()->state)) {
-> > +        NICState *nic =3D qemu_get_nic(s->nc.peer);
-> > +        int queue_pairs =3D n->multiqueue ? n->max_queue_pairs : 1;
-> > +
-> > +        for (int i =3D 0; i < queue_pairs; ++i) {
-> > +            NetClientState *ncs =3D qemu_get_peer(nic->ncs, i);
-> > +            VhostVDPAState *s_i =3D DO_UPCAST(VhostVDPAState, nc, ncs)=
-;
-> > +
-> > +            for (int j =3D 0; j < 2; ++j) {
-> > +                vhost_net_virtqueue_reset(v->dev->vdev, ncs->peer, j);
-> > +            }
-> > +
-> > +            s_i->vhost_vdpa.shadow_vqs_enabled =3D false;
-> > +
-> > +            for (int j =3D 0; j < 2; ++j) {
-> > +                r =3D vhost_net_virtqueue_restart(v->dev->vdev, ncs->p=
-eer, j);
-> > +                if (unlikely(r < 0)) {
-> > +                    return r;
-> > +                }
-> > +            }
-> > +        }
-> > +    } else {
-> > +        for (int i =3D 0; i < v->dev->vq_index; ++i) {
-> > +            r =3D vhost_vdpa_set_vring_ready(v, i);
-> > +            if (unlikely(r)) {
-> > +                return r;
-> > +            }
-> >           }
-> >       }
-> >
->
+Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com> if you address
+Thomas' comments.
 
 
