@@ -2,121 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81ECF75F92B
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 16:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B8975F5C9
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 14:14:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNw6m-0000t2-6g; Mon, 24 Jul 2023 10:00:20 -0400
+	id 1qNuR3-00056H-Qj; Mon, 24 Jul 2023 08:13:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Evanzhang@archeros.com>)
- id 1qNraM-00045c-1b
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:10:34 -0400
-Received: from mail-shaon0119.outbound.protection.partner.outlook.cn
- ([42.159.164.119] helo=CN01-SHA-obe.outbound.protection.partner.outlook.cn)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Evanzhang@archeros.com>)
- id 1qNraK-00062a-5m
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:10:33 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NlfTykY+sws95O/Yek9UThpFHX3LCNv4YWoCXHtSqMtqOm8yfO3ShoVmIQ3mgGM9WbQGSYz3V0EoSQPLvB7zcaVA7qfQ+YwkqR5xP0mH5YvLAnZOXrsEryluXNAXgrvtcDLUPtC9b3MwHRIGRgjFWAw0dOkeYT9kXBfnyorGcRcutKbdZvglcBMDDwEXuQLvcwDG80DQ9bWjQ5Eh3JexaOw5JU81xiG/hNBO+1/Pyk2hUrZ6/7Y4TVXXn7ItcTSXrezauZDv4Z1FYOs9UPSnMr09yk9D2N2lSYzoHj7wCxJDUEX4p97NSYVL2fIEejPk22vChQrt9iwMGnpOOiZYTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mZNpEg48rq5ntjHJAxetOenIocTK7fc/C3Y3Yse1sbI=;
- b=kxVU8+DbpM/kjV0+dt8jkX5Uhy6gkR+7GcYGpwm7zA+rSe/Gqi/XQ3SEdrbAUwXzfPqqicpPTJCciJyDvPauEfjIhKelO+R1XqQYo/OgEhwc5yZNQjOLs62MaJYqpUIn7n9AdPhNSBofTEozck0EySYwAz34me1zpZ5OiIZ+9tHR8BN+xOi1Q1S98ErJTqrFYWHV8ygDzhyGH2wzkh/qa395vBFIz2LFQByIZ+1zON1nR6WlPQQRiTBMkStHD1Mlp6uU8FrlEb4StEIw+QFNpviZWciTY9wrRsUgVDe8eiNx5F8CwGRAEbjm3W4ugHbcbDiV0Gn0kmroQbRB76cEGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=archeros.com; dmarc=pass action=none header.from=archeros.com;
- dkim=pass header.d=archeros.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=archeros.com;
-Received: from ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:e::13) by ZQ0PR01MB1157.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:1a::7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6609.32; Mon, 24 Jul
- 2023 08:54:38 +0000
-Received: from ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn
- ([fe80::801d:e216:d86d:2c4d]) by
- ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn ([fe80::801d:e216:d86d:2c4d%4])
- with mapi id 15.20.6609.026; Mon, 24 Jul 2023 08:54:38 +0000
-From: Evanzhang <Evanzhang@archeros.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com,
-	pbonzini@redhat.com,
-	Evanzhang <Evanzhang@archeros.com>
-Subject: [PATCH v1] rtc/mc146818rtc: improve rtc performance
-Date: Mon, 24 Jul 2023 16:54:22 +0800
-Message-Id: <4490419ebd87e46adf2294f62c5f3808d2467e40.1690188072.git.Evanzhang@archeros.com>
-X-Mailer: git-send-email 2.9.5
-In-Reply-To: <cover.1690188072.git.Evanzhang@archeros.com>
-References: <cover.1690188072.git.Evanzhang@archeros.com>
-Content-Type: text/plain
-X-ClientProxiedBy: BJSPR01CA0006.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:c::18) To ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:e::13)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qNuQj-00054d-J7
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 08:12:51 -0400
+Received: from mail-oo1-xc2c.google.com ([2607:f8b0:4864:20::c2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qNuQg-0004T7-Dl
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 08:12:48 -0400
+Received: by mail-oo1-xc2c.google.com with SMTP id
+ 006d021491bc7-566e793e0a0so2710202eaf.2
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 05:12:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1690200764; x=1690805564;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=AvEyxTRTdHkFiRdP6POVuyTxDBpT3CIXiTLocalvLI8=;
+ b=P+22xvC+JMxv0R1EexVSo1yLaQKtvyfNxzUVw2dd5jfeNQCvARhHJiLhNneBpXnYyR
+ jbluTuR8l8QGxBdm6yyBBQVKns4eMVWSDhWLhsF+ZFYz7a8jsEZe3whVe+YWR9QSpy40
+ +FxC7JrbNkrbZUPjBxC+Z0kjzbeEsEfvYn1AMFdkJ2nui1LiuqghwIdeWPUd9PKOZA5V
+ 8e/SmbCWbj0H+QAu3PI7H4SUYhn2U+db9Ex4DorqUq5NTuj7FUQf6pMosTCXAfN0fkOA
+ 4DgCKMMLOzPwV/5YyLpwbkhZQ1wOFMqh3y6h6z4Bpn8aQaKmKBYctXvq//o4ATOgdsQL
+ qXZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690200764; x=1690805564;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AvEyxTRTdHkFiRdP6POVuyTxDBpT3CIXiTLocalvLI8=;
+ b=mGhHRUW+n99GFOWwsQAG9M45JanxSDDQzz6NBlYmeOda2tVFK7E2Zcwx+alN7X2ScK
+ 9UtGFhryqO5eUNYOgAJi/I8tkyAirCb23FF+h4971jyiSSA6jITytwm7yVmffKpD/11g
+ HZERHqL067aLCqTiI2w56AU2Bv1jEm1lSiaieEULL34Ag6hawngsIs+FV2Jiwlv8DDI6
+ PLh9KN9Py45RiHtiEJDL2jGnFjBtJHlujnhL1t0fGzdB3WjFvdYaSxW5VKirYNGm6n53
+ EdnTdrdR18yN25YPvR+KvMGTckj4qdoT/TF8ZIRpz2lo04KxAEkBMtlZX8yPbxDt51EJ
+ YVuQ==
+X-Gm-Message-State: ABy/qLag1MdBtgvn9f7vF/s9WIsfu0hrDv7WqZa6NRGGaGDIMVIxrI2V
+ W6fSafa6TZf1XXomBWtxOlj4mg==
+X-Google-Smtp-Source: APBJJlEKlAcZJbf5R9UoEUkh5qut2MP5QzHU0bEf9FmQt/BjtjDxyO0ch9UuAie8EViZl3FpIe+BdA==
+X-Received: by 2002:a4a:344a:0:b0:566:f8ee:fa67 with SMTP id
+ n10-20020a4a344a000000b00566f8eefa67mr7309367oof.0.1690200764729; 
+ Mon, 24 Jul 2023 05:12:44 -0700 (PDT)
+Received: from [192.168.68.108] (201-69-66-36.dial-up.telesp.net.br.
+ [201.69.66.36]) by smtp.gmail.com with ESMTPSA id
+ h7-20020a4aa9c7000000b005660b585a00sm3888184oon.22.2023.07.24.05.12.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 24 Jul 2023 05:12:44 -0700 (PDT)
+Message-ID: <5b3bbe94-780e-abe0-cc7b-705b067f337b@ventanamicro.com>
+Date: Mon, 24 Jul 2023 09:12:40 -0300
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZQ0PR01MB1015:EE_|ZQ0PR01MB1157:EE_
-X-MS-Office365-Filtering-Correlation-Id: a38fc389-39e7-4de5-0678-08db8c239cad
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: qrEKZsHW0IFyqkUbbvfPIXy4qaEmSPUwA8U3EXAdc7aQyhhawIUMe5aR3cV1OMyixcF/OHgLk4Y15e+kZUZ6KOz4m15P2+1LlhSJyIMiy8b7+hV1mxuKqDJ8Bn9mKMrxHiyjfmEhX2ycis2bB45uRKfuuLDbUyErA5JSOX4unNzSVsI378KRL1D/RKuJTczc3LDvwedS7tABg9rSybbu254jNLWAd9ypRDpIQkKtA/Cln9+83Ks4AMzxJY8TEYgX8nctxNoaN6TpFR1jJBKVU0GHjqn8Fy8BJ15VC/Y/P8T1FdSr9ZfAZlIeo0tHuAQh1gRUJTMLMCWWxTOeoBtw/eMHiY5cwTEcpeNYP9+cYTBQStC8icAoSenF5UD0a0zRWiNxWMlwNOIOuEz2tAeXycYWwdxBIoETljXWsoBPO4j+YpS8mwisP6xjFFzwzFYeMyRx8zSEt+9urz3lTKbXiJQKpN9UC4INrnBjugqkY8dgwrooRf9lFdkp8zLfOBW2/iaej03UVjfqceFhYsEQ1nxJUsLilFBYDENUYgbsCNU+TlH7R8bJ4CWuZETGirHYb/Yzy5RyDMr7htjh7Rwxj/u21cGu3Mjpgj5sljz3F/52ci0rxj6uoRjqfnJ0gVTCQzVPEFIHHS4FmuLOx+4bXy6JpLccgbUEeAlgpg2wdNU=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn; PTR:;
- CAT:NONE;
- SFS:(13230028)(39830400003)(136003)(396003)(346002)(366004)(451199021)(86362001)(40160700002)(41320700001)(38100700002)(38350700002)(66556008)(508600001)(41300700001)(6916009)(4326008)(66946007)(5660300002)(8676002)(8936002)(6666004)(2906002)(40180700001)(26005)(186003)(52116002)(66476007)(83380400001)(36756003)(2616005)(107886003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7IndM+MGtTlf+j55V6jIFyw0ZfyjG+guozPZz804QwNxkuO2eLMzzo64Szp0?=
- =?us-ascii?Q?WOoUVJvUm2JwVFarivZ4ep93+f4qePOzNZz57lGYeNddo91oj+O4IC1inX/n?=
- =?us-ascii?Q?jopAtyiO45QvhJfHQBdIqLq22oFRcgjzbvzaPW08L729X7XmNR+HOub2D6bw?=
- =?us-ascii?Q?BEs9Q+iU6J59CQq0/Jz0n9qPl5o2fO8eDvFy0pnrjv+zEQGR27Sf0ixRLMZJ?=
- =?us-ascii?Q?XD6YevE2FqxrduBk2v1RGXeJFEHqvbrmNoLF0fKEUq79/yNOk4aFO1x5MqEJ?=
- =?us-ascii?Q?rezN/zYDXhPw4iWZtmi3Dvc1ugEUjPBZXXBTYk7IW/CN5RVulMy6o+FmNiIz?=
- =?us-ascii?Q?QLM+7WaQ2RNynsWCF+szumC0hBq34XdAbYtCHOHC8Gy+gjMG4YnFXHdpkJJb?=
- =?us-ascii?Q?t1x/VTTxa4xPmFyvgQGd4wVwiIvJudwSb/5BC9544c5NnQXHtu+AoUeLTHq3?=
- =?us-ascii?Q?irYyZLiYWAllqw1OTXXfPUTtl/91w6rgWtjIps9nHMaJ23edPRchy4uff4T9?=
- =?us-ascii?Q?lZuhJLh7gzbzyrjhPXBPv6r0H6hgWr95vGQm4AKPeWhHqStMIohUa8FzW7kM?=
- =?us-ascii?Q?qFg8ceUg/3aJT2hyGJ8xPMOGS+au3cl9fp4qooJ2wz3rZrZ1C2tyUT8K7hIh?=
- =?us-ascii?Q?LY1+GGxXuaOhLNrigYnCyjbaLKpp7WktqSYo7BU+ZOtt1CgMD+784wEq3/gO?=
- =?us-ascii?Q?ppDZBMRi+0r8SENTuUaIyWhb2m/5nbzW08vP0WnWOzwlwl9K9Ylpo/ELiSFx?=
- =?us-ascii?Q?dnXN4jiuKbbKaPrXD9Kshx+skaA9gEpSo/Yf5XxUEY9d1Xu0S4gNzveGggCR?=
- =?us-ascii?Q?K7fBzW20xdrYmfseV7S8HSVs1ktwuiiyctphp1KOimZyFggLUmnr8TaQiU9L?=
- =?us-ascii?Q?v7RAo4XOQ35ZzqbhaBXXavx9X2M77Oj6xiimh5mdi4ydsc1jHb+QTf+/Tfqe?=
- =?us-ascii?Q?Pq3EBQWxbC5H8TnNfSVBNu3HTnbBpqnufk/kcU/yEZWhWvm5qh6N4m2N7diU?=
- =?us-ascii?Q?kSljluM6v/K+RK13nyJ1TMAj6hIRVX4hPoc122E4se/ZAd1Tq0yBleftg3Q9?=
- =?us-ascii?Q?A7T6/qXDNo38dQqwysZVRu5DsFiIZLo85SQo+H178t2I/Y0f/L1pPRN2llUY?=
- =?us-ascii?Q?JtIVPDvqvJwmD/X5wEuyb3gFnSINwkY1lKxH5biEt1c1cncT6jrBMSj2oLMx?=
- =?us-ascii?Q?7d5GoDAwMf/iY7zcEri74HqZSR2ozufmoJr+akaazdMAGmFOQLxJn4jgBF+D?=
- =?us-ascii?Q?eoQNqgj+CQG7Exnz1vGlJfh/ok+/IytGHtlaLCYUIzTzkNOSc3quu3hPffr0?=
- =?us-ascii?Q?/xe2/jAGwtldYVqgDuegUGoMinO9rbM4O+0vWSIB+K61TiLCYAb0gEKH6BsW?=
- =?us-ascii?Q?i4Lhfu4rjXidZZXaUeXLptO5gfv3V7xVlOBjlfoyPaYDCFJWKZgkoErDgJD6?=
- =?us-ascii?Q?eoETDwKe8lICuvHFWC54arCFF+1xmFHMJaO8TlMSv4WwjHvBGIgUA08aaOpJ?=
- =?us-ascii?Q?vuHEDr5b4F3cQk1aLAU92eQMF1Dac0mHLLoZKg0W/MNglroLnPJycrMntZ4G?=
- =?us-ascii?Q?wLCSkKig03wlKLOTyKlI0hgWNssZUKFiQXfByjTwA+EB9h5qKcPKLKqCy0m8?=
- =?us-ascii?Q?aA=3D=3D?=
-X-OriginatorOrg: archeros.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a38fc389-39e7-4de5-0678-08db8c239cad
-X-MS-Exchange-CrossTenant-AuthSource: ZQ0PR01MB1015.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jul 2023 08:54:38.4301 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8387253c-f44a-4a28-8058-3e5c20af6b4d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dwIOYw/Bi+WVAC/G0imZULpbv1CWZ1h/u4FC5fn3JWYZi2JXFoz1LaYRiSy+zhvc2Xqu/7iWBfWqIcTDa4CnDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ0PR01MB1157
-Received-SPF: pass client-ip=42.159.164.119;
- envelope-from=Evanzhang@archeros.com;
- helo=CN01-SHA-obe.outbound.protection.partner.outlook.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FORGED_SPF_HELO=0.024,
- KHOP_HELO_FCRDNS=0.001, SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 0/2] target/riscv: add missing riscv,isa strings
+Content-Language: en-US
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com
+References: <20230720132424.371132-1-dbarboza@ventanamicro.com>
+ <CAKmqyKPzwDrtSH5_V4n=QR+CCPz6L1YqcSL+Y83fP7Fy70h-kQ@mail.gmail.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <CAKmqyKPzwDrtSH5_V4n=QR+CCPz6L1YqcSL+Y83fP7Fy70h-kQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2c;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc2c.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 24 Jul 2023 10:00:13 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -131,52 +97,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-under heavy workloads,irq_coalesced could up to 30+,
-after modification EXTERNAL_INTERRUPT reduce by 40%
 
-before:
-Analyze events for all VMs, all VCPUs:
-             VM-EXIT    Samples  Samples%     Time%
 
-       EPT_VIOLATION    9833984    63.41%    15.96%
-      IO_INSTRUCTION    2160843    13.93%    50.07%
-  EXTERNAL_INTERRUPT    1949267    12.57%     0.89%
-          APIC_WRITE     767795     4.95%     0.55%
-         EOI_INDUCED     615308     3.97%     0.30%
-                 HLT     130821     0.84%    31.77%
+On 7/23/23 23:51, Alistair Francis wrote:
+> On Thu, Jul 20, 2023 at 11:25 PM Daniel Henrique Barboza
+> <dbarboza@ventanamicro.com> wrote:
+>>
+>> Hi,
+>>
+>> Found these 2 instances while working in more 8.2 material.
+>>
+>> I believe both are safe for freeze but I won't lose my sleep if we
+>> decide to postpone it.
+> 
+> I wasn't going to squeeze them into the freeze
+> 
+>>
+>> Daniel Henrique Barboza (2):
+>>    target/riscv/cpu.c: add zmmul isa string
+>>    target/riscv/cpu.c: add smepmp isa string
+> 
+> Do you mind rebasing :)
+> https://github.com/alistair23/qemu/tree/riscv-to-apply.next
 
-after:
-Analyze events for all VMs, all VCPUs:
-             VM-EXIT    Samples  Samples%     Time%
 
-       EPT_VIOLATION    5238031    50.91%     6.44%
-      IO_INSTRUCTION    2257658    21.94%    54.88%
-  EXTERNAL_INTERRUPT    1160086    11.28%     0.61%
-          APIC_WRITE     780454     7.59%     0.54%
-         EOI_INDUCED     615309     5.98%     0.28%
-                 HLT     179703     1.75%    36.87%
+:)
 
-Signed-off-by: Evanzhang <Evanzhang@archeros.com>
----
- hw/rtc/mc146818rtc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
-index c27c362..2995078 100644
---- a/hw/rtc/mc146818rtc.c
-+++ b/hw/rtc/mc146818rtc.c
-@@ -96,8 +96,8 @@ static void rtc_coalesced_timer_update(MC146818RtcState *s)
-     if (s->irq_coalesced == 0) {
-         timer_del(s->coalesced_timer);
-     } else {
--        /* divide each RTC interval to 2 - 8 smaller intervals */
--        int c = MIN(s->irq_coalesced, 7) + 1;
-+        /* divide each RTC interval to 2 - 32 smaller intervals */
-+        int c = MIN(s->irq_coalesced, 31) + 1;
-         int64_t next_clock = qemu_clock_get_ns(rtc_clock) +
-             periodic_clock_to_ns(s->period / c);
-         timer_mod(s->coalesced_timer, next_clock);
--- 
-2.9.5
+Thanks!
 
+
+Daniel
+
+
+
+
+> 
+> Alistair
+> 
+>>
+>>   target/riscv/cpu.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> --
+>> 2.41.0
+>>
+>>
 
