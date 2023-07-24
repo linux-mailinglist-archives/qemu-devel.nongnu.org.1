@@ -2,74 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE66775F3B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDCC75F3EE
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 12:54:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNt2j-0004dC-WB; Mon, 24 Jul 2023 06:43:58 -0400
+	id 1qNtBq-0006fb-Lh; Mon, 24 Jul 2023 06:53:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNt2g-0004cq-Ha
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:43:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNt2e-000875-Dn
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:43:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690195430;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/R/okeuwd7l+Yak8QvYcl4NLz6C4dtJUR8j+C3WADGw=;
- b=EodP7w5LZ42ouKDZkqCZlabPOeTXniwc1Sp0FZaRBKJhZp8PigB1QERfjVmiv9nGiT5Ztq
- Fj4VR7XdGHrkxfT/ETuZC5HJxAlfC8HffLYpWPBcowPQ9WTBpru6sA+MIrO0pdstQ5rE0+
- 95zrnH5YOSshe4H5Fh89k8F0lcttc0U=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-130-dYPIlKuNNnOoLvDwuxduJA-1; Mon, 24 Jul 2023 06:43:47 -0400
-X-MC-Unique: dYPIlKuNNnOoLvDwuxduJA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7FE2895687;
- Mon, 24 Jul 2023 10:43:46 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 52DE04087C68;
- Mon, 24 Jul 2023 10:43:46 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4A38821E668C; Mon, 24 Jul 2023 12:43:45 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: ~hyman <hyman@git.sr.ht>
-Cc: qemu-devel@nongnu.org,  ~hyman <yong.huang@smartx.com>,  Juan Quintela
- <quintela@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
- <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>
-Subject: Re: [PATCH QEMU v9 2/9] qapi/migration: Introduce
- x-vcpu-dirty-limit-period parameter
-References: <168987012554.14797.8679831725383645706-2@git.sr.ht>
-Date: Mon, 24 Jul 2023 12:43:45 +0200
-In-Reply-To: <168987012554.14797.8679831725383645706-2@git.sr.ht>
- (hyman@git.sr.ht's message of "Wed, 07 Jun 2023 21:32:59 +0800")
-Message-ID: <878rb5pp26.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qNtBm-0006dA-U1
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:53:18 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qNtBk-0001Yv-BY
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 06:53:17 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-31743dbf13eso1013465f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 03:53:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690195994; x=1690800794;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=72Vxid4lPGFAPqcNotszz48/hXCNrAO2F4A+SW1VaR4=;
+ b=sQOBzZctSBnZ7py40vFsg1unHyBQ9XXalIA/kbqy75KmENsrvk93LxUJ+U29RWg1d4
+ xbcitWnMCF0PJpsSerM3TbONu3AK3V7XuvbCUVocEukr4E6aTKshGm4weE6UStiXiHbd
+ qFWGlgWo1QwQTjYiwuhMrbIZVYY1ZmaX2CRS/WKKarToYsWIAp1lX2JA73o5ff1Wys/0
+ GIelBcTNJRJcEQ4MVFZjZ8L5iSAO8ujPvr4FaTB/QSqpo2clAsf3Dy2OdjLt4mxz8e+U
+ /yFLgQTHantouv6/oDPS30wN1cmuqrERK8KddLJeAc8XALVdhzin57D5oiwWwZO56Icu
+ jbCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1690195994; x=1690800794;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=72Vxid4lPGFAPqcNotszz48/hXCNrAO2F4A+SW1VaR4=;
+ b=iacKXFwYaCqdE0tuZ/MGA+pXeymp7Dvzji2xIb6Uuaq7rNeQkIm/DT/JTt/Enst8Pp
+ HrbJefNU7c+Ffob5Ye3fgXRufRqmTXcDoWPWIFpcJFoN84ooSa8KmReOj/mTEoadj2j5
+ vXtcbiD2kwNzKOWtAcdkfE7yyogNf/MQ4ysTI/6kqDL9U4zbQTS/WzzcT6KomWbfQQZS
+ 2NwiN2EBiU12OmNknE510+Mv4jkGwpk+G3YsaLwm6GLCToCF84n+rmOfrWfSazgwN7wZ
+ K/A+ndzfjTlHcGo6UfkpxFmFtQQ8Z/WZr0PZVGfO9oW6XMs4bNQFpIvT4ANXIo2TMcga
+ AuiQ==
+X-Gm-Message-State: ABy/qLYGXHBi5AVvJGOP1MEBh67JM5E8WNbBp885+M7K+xupo3jeqNkN
+ Lq2T/78Vn0Jf/0O18OINq0Nomg==
+X-Google-Smtp-Source: APBJJlHzWS1AhRNdK3VZO/1/qUbO0wJi19B0Axc/E2eJFHd2c4kSs0QFE8erw7fzpv/ZsLeSL4Itfg==
+X-Received: by 2002:adf:f185:0:b0:317:50b7:2ce3 with SMTP id
+ h5-20020adff185000000b0031750b72ce3mr3713517wro.51.1690195993963; 
+ Mon, 24 Jul 2023 03:53:13 -0700 (PDT)
+Received: from [192.168.69.115] ([176.187.210.255])
+ by smtp.gmail.com with ESMTPSA id
+ q13-20020adff94d000000b003143c9beeaesm12673051wrr.44.2023.07.24.03.53.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 24 Jul 2023 03:53:13 -0700 (PDT)
+Message-ID: <da9bf5ae-a61e-24da-9d17-6cfd8bdaf4b7@linaro.org>
+Date: Mon, 24 Jul 2023 12:53:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.13.0
+Subject: Re: [PATCH v3 1/2] kvm: Introduce kvm_arch_get_default_type hook
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Richard Henderson <richard.henderson@linaro.org>
+References: <20230722062250.18111-1-akihiko.odaki@daynix.com>
+ <20230722062250.18111-2-akihiko.odaki@daynix.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230722062250.18111-2-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-0.091,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,43 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I missed something...
+On 22/7/23 08:22, Akihiko Odaki wrote:
+> kvm_arch_get_default_type() returns the default KVM type. This hook is
+> particularly useful to derive a KVM type that is valid for "none"
+> machine model, which is used by libvirt to probe the availability of
+> KVM.
+> 
+> For MIPS, the existing mips_kvm_type() is reused. This function ensures
+> the availability of VZ which is mandatory to use KVM on the current
+> QEMU.
 
-~hyman <hyman@git.sr.ht> writes:
+Pre-existing: mips_kvm_type() returns -1. Should we check for
+'type' in kvm_init() before calling kvm_ioctl()?
 
-> From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
->
-> Introduce "x-vcpu-dirty-limit-period" migration experimental
-> parameter, which is in the range of 1 to 1000ms and used to
-> make dirty page rate calculation period configurable.
->
-> Currently with the "x-vcpu-dirty-limit-period" varies, the
-> total time of live migration changes, test results show the
-> optimal value of "x-vcpu-dirty-limit-period" ranges from
-> 500ms to 1000 ms. "x-vcpu-dirty-limit-period" should be made
-> stable once it proves best value can not be determined with
-> developer's experiments.
->
-> Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-> Reviewed-by: Markus Armbruster <armbru@redhat.com>
-> Reviewed-by: Juan Quintela <quintela@redhat.com>
-
-[...]
-
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index 47dfef0278..363055d252 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -789,9 +789,14 @@
->  #     Nodes are mapped to their block device name if there is one, and
->  #     to their node name otherwise.  (Since 5.2)
->  #
-> +# @x-vcpu-dirty-limit-period: Periodic time (in milliseconds) of dirty
-> +#     limit during live migration. Should be in the range 1 to 1000ms,
-> +#     defaults to 1000ms.  (Since 8.1)
-
-You need to adjust all the "Since" tags to 8.2.=20=20
-
-[...]
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   include/sysemu/kvm.h     | 2 ++
+>   target/mips/kvm_mips.h   | 9 ---------
+>   accel/kvm/kvm-all.c      | 4 +++-
+>   hw/mips/loongson3_virt.c | 1 -
+>   target/arm/kvm.c         | 5 +++++
+>   target/i386/kvm/kvm.c    | 5 +++++
+>   target/mips/kvm.c        | 2 +-
+>   target/ppc/kvm.c         | 5 +++++
+>   target/riscv/kvm.c       | 5 +++++
+>   target/s390x/kvm/kvm.c   | 5 +++++
+>   10 files changed, 31 insertions(+), 12 deletions(-)
 
 
