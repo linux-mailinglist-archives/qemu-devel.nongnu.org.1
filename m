@@ -2,93 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FCF75EE9F
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 11:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 379A775EEB0
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 11:07:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNrTf-0001VX-KJ; Mon, 24 Jul 2023 05:03:40 -0400
+	id 1qNrWV-0002g4-Ng; Mon, 24 Jul 2023 05:06:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qNrTN-0001Uf-87
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:03:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qNrTK-0003IC-PW
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:03:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690189397;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=D0m2HnEfV8/Bk0+lssPQY3xWqF2vl37PpW8j6Zcgchc=;
- b=B0lghQLRis9QudBHsuSAfISslZYYv7vvdrWPZ9qWYDpTnhX4/FzTHYftLLQdpMsF6ffqGy
- 77gt0jNhL9vOiC1uzxmJS4QAhUi+UJHkSmtuSOIrHfl+Xk5h/ujfW0k6etN7H0WWGCrKKb
- U3sZiTygtB8QGxDzpzXFLiuRPpim4VM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-yRnbLbfhPPapPbPnZY94pA-1; Mon, 24 Jul 2023 05:03:15 -0400
-X-MC-Unique: yRnbLbfhPPapPbPnZY94pA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fbdf341934so24719005e9.3
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 02:03:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qNrWS-0002ef-G5
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:06:32 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qNrWQ-0004CK-Io
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:06:32 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2b734aea34aso57286821fa.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 02:06:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1690189588; x=1690794388;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=CoHa9O3AzLhhFke7seUSrKurMd4rowVqL/5WTUhNoP0=;
+ b=qDc5dQcjoQl2dgW1WeGxHaHf0D3RqQ44TtkiP2pitCQzKWuRWSq9eQI737QKsS47pu
+ xaAP1uPZlpln6VqUC6QNujX3IJL4wiEa16wUqJ0FXro9/GSChWusUDa38aX8yjCheQ/f
+ SAQKZitmoBYtnw3sTsHNgmdxXH2+D8FykZEzQ1AOEipgLvqOwfc/fCGWoFmW6Sco7qgR
+ GGouZJKS6ChhfMf/pZ6HBB7rZaV00MRxDxtLv4mfgR2uumk2SNLxNBppANjNGIXUZ7I+
+ 4SPNvHB/qSTtFaKDTr4X8Y4ohjrWmV45J7a8A6Vj8u4s8cUO7ShF1qHTIAvsyNDAvf3S
+ r7Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690189394; x=1690794194;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20221208; t=1690189588; x=1690794388;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D0m2HnEfV8/Bk0+lssPQY3xWqF2vl37PpW8j6Zcgchc=;
- b=a9yE/rGgBGC/45ckek6MaXbcz0hAzqOI1zjP0mulzAkToqnO2MrQn+N1nCdSqQfUNV
- aBkGSKtjCuT79+K29bCw2zQM6bgoxSj6ohW4nYVbvyM/AfwjAJwuh+VqwkpL/4BTIRDL
- XXX1dmnEXu2XOv+JpPbZ3/eF8ObbLLGSle3gX42D8Zn8jH+rbwzhL0dUClQ018V+u0jb
- eqRbwkHBjtFf4r3b7Mg5QS2+DVoOUK2KB46i+tKGpTU4H3MSNcpuLeoS6yGoRSPoN4PB
- lhcTbgIUswgbJjRZO73xh1LqgRNovDto2sgdpgygNQzKOquoOw8jzVyqQM6lJDGH4mhI
- pFxw==
-X-Gm-Message-State: ABy/qLZlPyfIcwEePAGoK3PlNfvKsjBYs1mvHfnkvJubbmoYdRn3RRSs
- b3RltkGhO9X2Jg9QOHlFEuB/5jmpP34sbBBBYfQA8MJxqXKrDYrSJCjBGleGV0TJ2ibaJqSf3jz
- 23Bnto9zU4F4Q8CM=
-X-Received: by 2002:a05:600c:2a53:b0:3fb:feb0:6f40 with SMTP id
- x19-20020a05600c2a5300b003fbfeb06f40mr7964423wme.11.1690189394532; 
- Mon, 24 Jul 2023 02:03:14 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlH2ztwUwaJ3vNn1NdsQS7eBAtBn6sL0vhbGApHJxVmoLAGKDsidVg8QvJEefTrwoOkTmTMz5g==
-X-Received: by 2002:a05:600c:2a53:b0:3fb:feb0:6f40 with SMTP id
- x19-20020a05600c2a5300b003fbfeb06f40mr7964408wme.11.1690189394152; 
- Mon, 24 Jul 2023 02:03:14 -0700 (PDT)
-Received: from redhat.com (static-92-120-85-188.ipcom.comunitel.net.
- [188.85.120.92]) by smtp.gmail.com with ESMTPSA id
- n23-20020a7bcbd7000000b003fa999cefc0sm9500999wmi.36.2023.07.24.02.03.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jul 2023 02:03:13 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- qemu-s390x@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Cleber Rosa <crosa@redhat.com>,  Wainer dos Santos
- Moschetta <wainersm@redhat.com>,  Beraldo Leal <bleal@redhat.com>,  Daniel
- P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PATCH] tests/avocado/migration: Remove the malfunctioning
- s390x tests
-In-Reply-To: <20230721164346.10112-1-thuth@redhat.com> (Thomas Huth's message
- of "Fri, 21 Jul 2023 18:43:46 +0200")
-References: <20230721164346.10112-1-thuth@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Mon, 24 Jul 2023 11:03:12 +0200
-Message-ID: <871qgxheb3.fsf@secure.mitica>
+ bh=CoHa9O3AzLhhFke7seUSrKurMd4rowVqL/5WTUhNoP0=;
+ b=Xm0nhgQHZZ7LqYmOei1jR3f5lyg6mS9NwY8H+eL0HtmiQdsSlessUeCvpBFPnr+URt
+ rC2PwoJTGwpYthohzCjchaDIF9wsgounj3wikTemTBQ/5lMRLY4C5JDC4Nt1cuqmU6b+
+ ojg0H/Z/JD2ZewXC875Hkr/NFwOJztjlx/q/YYlp3gUKA9QuqBFKeyrE++DmzyX9RnS1
+ w3cssOuTk48UZpB9CE/WxGom7eEI71FnO4z7W8ELdC5oBf1rvRIlNxRK2PwN892+odc2
+ bVXnIyQ3Po/S1p476dlUk1qH/DuLwfYG5lgtHqWGO4eLloJrSpWPEsWb34rmZhJJYJ8m
+ LxUg==
+X-Gm-Message-State: ABy/qLZVPDcWCLNB+OZxMD7UGO83E15yHmmwKyMowTqWTPfenQVbfvBr
+ 0nY5tqcqdeyNXC83cvaDHWV5nmOakQb+d8O+veplzQ==
+X-Google-Smtp-Source: APBJJlFsZELD5SgrYgzP7aimqzXRZwgy4+0AS6PJYU+/N3ja46BG1LsCPzHvIYscyquGSIToq1eBvwpm1MjgHTqj96Q=
+X-Received: by 2002:a05:6512:3f3:b0:4fb:7c40:9f97 with SMTP id
+ n19-20020a05651203f300b004fb7c409f97mr3701168lfq.27.1690189588623; Mon, 24
+ Jul 2023 02:06:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230716115801.1505288-1-mjt@tls.msk.ru>
+ <69ff1b09-a795-fcbe-ad0d-52f76f25eba7@linaro.org>
+ <c4f93386-688e-3e81-4da5-641b053aad35@tls.msk.ru>
+In-Reply-To: <c4f93386-688e-3e81-4da5-641b053aad35@tls.msk.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 24 Jul 2023 10:06:17 +0100
+Message-ID: <CAFEAcA_f5uD2gKAjnvrKvfy54MNYS_Z_j8Sc6GYenK5AAHz-=A@mail.gmail.com>
+Subject: Re: [PATCH 0/6] trivial-patches for 2023-07-16
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,32 +86,40 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> wrote:
-> The tests from tests/avocado/migration.py do not work at all
-> on s390x - the bios shuts down immediately when it cannot find
-> a boot disk, so there is nothing left to migrate here. For doing
-> a proper migration test, we would need a proper payload, but we
-> already do such tests in the migration *qtest*, so it is unnecessary
-> to redo such a test here, thus let's simply remove this test.
+On Mon, 17 Jul 2023 at 10:50, Michael Tokarev <mjt@tls.msk.ru> wrote:
 >
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> 16.07.2023 18:58, Philippe Mathieu-Daud=C3=A9 wrote:
+> ...
+> >> Michael Tokarev (5):
+> >>    tree-wide spelling fixes in comments and some messages: migration/
+> >>    tree-wide spelling fixes in comments and some messages: s390x
+> >>    tree-wide spelling fixes in comments and some messages: arm
+> >>    tree-wide spelling fixes in comments and some messages: other
+> >>      architectures
+> >>    tree-wide spelling fixes in comments and some messages: hw/9pfs
+> >
+> > FYI patch subject is usually "subsystem: Topic", see
+> > https://www.qemu.org/docs/master/devel/submitting-a-patch.html#write-a-=
+meaningful-commit-message:
+> >
+> >    QEMU follows the usual standard for git commit messages: the first
+> >    line (which becomes the email subject line) is =E2=80=9Csubsystem: s=
+ingle
+> >    line summary of change=E2=80=9D.
+>
+> Yes Philippe, I know. In this case though, it really is "tree-wide". I tr=
+ied
+> to group them by subsystem but it doesn't work that well.  Especially hav=
+ing
+> in mind how many changes there are (about 400 in total).
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+But you have the subsystem name, you just put it on the wrong end
+of the subject line. You could fix this up if you're going
+to send these as a pull request...
 
-
-> ---
->  I'm tempted to remove this file completely - what test coverage do
->  we get here that we don't get by tests/qtest/migration-test.c already?
-
-Nothing new there, just three small tests.  That are included in
-migration-test.c
-
-I agree we can drop it if we want to.
-
-Later, Juan.
-
+thanks
+-- PMM
 
