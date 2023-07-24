@@ -2,74 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF1375FA9F
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 17:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5665475FAA0
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 17:20:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNxKv-0007dT-0R; Mon, 24 Jul 2023 11:19:01 -0400
+	id 1qNxL7-0007fB-75; Mon, 24 Jul 2023 11:19:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNxKr-0007d7-0V
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 11:18:57 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNxKo-0008WE-FB
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 11:18:56 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-51e344efd75so9419645a12.1
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 08:18:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690211932; x=1690816732;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=YPPCWbd44Vruy274om05gXAL+ZBzTj85mAKvwFeVnKc=;
- b=zvTvwigEnWSAzGOnWI35j9gW97gDgATEJ50baYMDhijR+XuArR85RGhMAYZX/x+u90
- wPA9MEqvA9PzUhyV1ixiBz5nUfc7l4OC73FlS/XatGQ/LgYk/8513pwlcqRuA/N6ORHb
- imnlImqxxMArMoeAvXQXOy5BMbf75vyjAoIJSjJulfFfWP4Brm0LmfeYW39ZBZq8U7og
- Q+KVXyXAm5Pu/dVKwKt2GG94tsAZRAmELfNfEghjKm9hYB1NuNfHfcgAduBkwxoT+hb7
- W0zNjUOs1iz/sfIJZ1tdZlnWRvcMRIXbxitij8Gvy5XfbREF5p0adyh8qLHmfLGZ36ls
- Fkog==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qNxL3-0007eS-08
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 11:19:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qNxL0-00005g-14
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 11:19:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1690211944;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cFkGSC/Iz/HR4FnrmtfBFYNqpekVxHiCIy9qVOEzbHk=;
+ b=NqZZmwar78iTkL+6yZqfdaSe80i0yO5y2xjxeJSG0i3c8+xj35bMFuaUm79zdNhO2DuQbf
+ EZXT+9pJMOHOBOrsgQG+wYWXA08D9TjBt7xSFohnY4TSepw5sKApSJqaFXkrTa644Ppl61
+ a94YYas2p83x5u8XAxoe6e7DQfbpgKw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-358-2N0-nm79OISzEsX-F_IJNA-1; Mon, 24 Jul 2023 11:19:02 -0400
+X-MC-Unique: 2N0-nm79OISzEsX-F_IJNA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-315a03cae87so2650636f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 08:19:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690211932; x=1690816732;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YPPCWbd44Vruy274om05gXAL+ZBzTj85mAKvwFeVnKc=;
- b=UvJ/IXLjlc4AEKGZs4uyOTj0HtOAef6YS/vzOVjyBYcsWxC9Ec4qzQ/i0bktOwAlHR
- bWFXfRf2oKdBJUEd+EyTgRMUM6A2r9d/gzspvOHom/Uil1OJemQAUf2PtoQlXJo69uKi
- HbLGBoav4cv6eT8BqC5sNbUjS9kDN31m2ZWf9Qm6Ctp7E7b8TeQsi/6aZde89IrXfYb8
- 9+F6Ql+8UcPosRcM7Kgi1aegxCqBCy25QZEIoe+rpXY8fjmHhP7YaUY1OwUSZSVJJlg5
- Cxax+b8ddfxGhpthX3MKEXzuFi6HSF3xTPwlKabjI59N4AX4WEI37ULAPIM0B6f0Mk37
- OnrQ==
-X-Gm-Message-State: ABy/qLajJdFGY5SVz/TbwDLvox/s8m6xn1k9A6fLaYRgOVXXpBtdC0HB
- zXaYYT2klA1QAwmlqGuNHLwCBqduI6Nc+MCu1TU3hw==
-X-Google-Smtp-Source: APBJJlF/TT5r8kpCXNczfSgr/0C6E8XrrHSO03ZgfDc9xAj5Sauzo9LGd9cklqdH/jqHN4IWO82nqhxJ0HoU0I4Gygs=
-X-Received: by 2002:aa7:d74f:0:b0:51e:421e:d209 with SMTP id
- a15-20020aa7d74f000000b0051e421ed209mr11151976eds.13.1690211932021; Mon, 24
- Jul 2023 08:18:52 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1690211941; x=1690816741;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cFkGSC/Iz/HR4FnrmtfBFYNqpekVxHiCIy9qVOEzbHk=;
+ b=iB2hJ8pBEVGhVb8rsboEsi+jrZ5DlQamTpisdVTmGIM9C3/3Eg/7oWnKm6aYgg8wsJ
+ YnIcXgY5O9FD44mr+3/Xfz+Q+m0AELR2ai++bk8IAMBC7a6+nRlCi5Uu+TFWCmryzhUx
+ tqz/LukLPQW63Z6etsCoyFffF4zsWE+6UufCcTg2sOSImabftie4xOcXu5Dydpm1FHKr
+ EtxUg261dlyRNCTwuHdsA9W6QLcGLHgSsj/kpQg/gRVIlqspEQzVNyF+wH3baJxS2Q0+
+ eOkmkneyOl2uKR1T4z4cz9emZ8yE9Yn3oTAQsDXEnoPMvswm7lDJO6zZVAOiml5q6+6w
+ wceA==
+X-Gm-Message-State: ABy/qLZUvidnKiuZakIZOeSN1sdL4gBSo94vE3oMtFwyh6llXaRe2OWA
+ iGd5iyCUKYWrd4IZkZHF2U7a1rizo/3LBvXRkFSZ/L+DpOtRR7680+guvQuBqETNBaVxHZBzyao
+ SpRRXCOkiAoi+EDY=
+X-Received: by 2002:adf:f641:0:b0:315:acbc:cab6 with SMTP id
+ x1-20020adff641000000b00315acbccab6mr8635101wrp.16.1690211941216; 
+ Mon, 24 Jul 2023 08:19:01 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlHcbvVORSBb89jMCMjCGXcuwiiIChI2JkXI1dIu0qgRMIkVegadF7BSM+TD3qwIU3FM4v2IYg==
+X-Received: by 2002:adf:f641:0:b0:315:acbc:cab6 with SMTP id
+ x1-20020adff641000000b00315acbccab6mr8635077wrp.16.1690211940889; 
+ Mon, 24 Jul 2023 08:19:00 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ a15-20020adfeecf000000b00311d8c2561bsm13181520wrp.60.2023.07.24.08.18.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 24 Jul 2023 08:19:00 -0700 (PDT)
+Date: Mon, 24 Jul 2023 17:18:59 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
+ "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Shannon Zhao
+ <shannon.zhaosl@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, Daniel
+ Henrique Barboza <dbarboza@ventanamicro.com>, Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>, Andrew Jones <ajones@ventanamicro.com>,
+ Anup Patel <apatel@ventanamicro.com>
+Subject: Re: [PATCH 01/10] hw/arm/virt-acpi-build.c: Move fw_cfg and virtio
+ to common location
+Message-ID: <20230724171859.212fec62@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230712163943.98994-2-sunilvl@ventanamicro.com>
+References: <20230712163943.98994-1-sunilvl@ventanamicro.com>
+ <20230712163943.98994-2-sunilvl@ventanamicro.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20230615045241.5838-1-michael.roth@amd.com>
-In-Reply-To: <20230615045241.5838-1-michael.roth@amd.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 24 Jul 2023 16:18:40 +0100
-Message-ID: <CAFEAcA9LGhTehpftazkA1E2apKqQeWby6tJsEyy3air1L5xS+g@mail.gmail.com>
-Subject: Re: [PATCH] docs/devel: Document the tarball publishing/release
- process
-To: Michael Roth <michael.roth@amd.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Michael Tokarev <mjt@tls.msk.ru>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,55 +110,198 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 15 Jun 2023 at 05:54, Michael Roth <michael.roth@amd.com> wrote:
->
-> This hopefully contains most of the information one would need to
-> generate/publish QEMU tarballs and make the related announcements. The
-> main goal is to quickly get others up to speed on the process so we can
-> have multiple people able to handle releases at any point in time.
->
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Peter Maydell <peter.maydell@linaro.org>
-> Cc: Michael Tokarev <mjt@tls.msk.ru>
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
+On Wed, 12 Jul 2023 22:09:34 +0530
+Sunil V L <sunilvl@ventanamicro.com> wrote:
 
-Thanks for writing this up, and apologies for not having
-got around to reading it for so long.
+> The functions which add fw_cfg and virtio to DSDT are same for ARM
+> and RISC-V. So, instead of duplicating in RISC-V, move them from
+> hw/arm/virt-acpi-build.c to common aml-build.c.
+> 
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>  hw/acpi/aml-build.c         | 41 ++++++++++++++++++++++++++++++++++++
+>  hw/arm/virt-acpi-build.c    | 42 -------------------------------------
+>  hw/riscv/virt-acpi-build.c  | 16 --------------
+>  include/hw/acpi/aml-build.h |  6 ++++++
+>  4 files changed, 47 insertions(+), 58 deletions(-)
+> 
+> diff --git a/hw/acpi/aml-build.c b/hw/acpi/aml-build.c
 
-I should probably move the other parts of the process
-currently documented at https://wiki.qemu.org/Merges
-into a docs/devel file at some point.
+patch looks fine modulo,
+I'd put these into respective device files instead of generic
+aml-build.c which was intended for basic AML primitives
+(it 's got polluted over time with device specific functions
+but that's not the reason to continue doing that).
 
-> +Overview
-> +--------
+Also having those functions along with devices models
+goes along with self enumerating ACPI devices (currently
+it works for x86 PCI/ISA device but there is no reason
+that it can't work with other types as well when
+I get there)
+
+> index ea331a20d1..eeb1263c8c 100644
+> --- a/hw/acpi/aml-build.c
+> +++ b/hw/acpi/aml-build.c
+> @@ -2467,3 +2467,44 @@ Aml *aml_i2c_serial_bus_device(uint16_t address, const char *resource_source)
+>  
+>      return var;
+>  }
 > +
-> +Once an official release is tagged in the QEMU git tree by the current
-> +upstream maintainer (for major releases), or current stable maintainer
-> +(for stable releases), additional work is needed to generate/publish a
-> +source tarball for consumption by distros, vendors, and end-users who
-> +may not use git sources directly. A person involved in producing these
-> +tarballs is referred to herein as a "release maintainer" (not to be
-> +confused with the upstream/stable maintainers who are responsible for
-> +managing/tagging the git trees from which the tarballs are generated).
+> +void acpi_dsdt_add_fw_cfg(Aml *scope, const MemMapEntry *fw_cfg_memmap)
+> +{
+> +    Aml *dev = aml_device("FWCF");
+> +    aml_append(dev, aml_name_decl("_HID", aml_string("QEMU0002")));
+> +    /* device present, functioning, decoding, not shown in UI */
+> +    aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
+> +    aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
 > +
-> +This documents provides an overview of this release process and is
+> +    Aml *crs = aml_resource_template();
+> +    aml_append(crs, aml_memory32_fixed(fw_cfg_memmap->base,
+> +                                       fw_cfg_memmap->size, AML_READ_WRITE));
+> +    aml_append(dev, aml_name_decl("_CRS", crs));
+> +    aml_append(scope, dev);
+> +}
+> +
+> +void acpi_dsdt_add_virtio(Aml *scope,
+> +                          const MemMapEntry *virtio_mmio_memmap,
+> +                          uint32_t mmio_irq, int num)
+> +{
+> +    hwaddr base = virtio_mmio_memmap->base;
+> +    hwaddr size = virtio_mmio_memmap->size;
+> +    int i;
+> +
+> +    for (i = 0; i < num; i++) {
+> +        uint32_t irq = mmio_irq + i;
+> +        Aml *dev = aml_device("VR%02u", i);
+> +        aml_append(dev, aml_name_decl("_HID", aml_string("LNRO0005")));
+> +        aml_append(dev, aml_name_decl("_UID", aml_int(i)));
+> +        aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
+> +
+> +        Aml *crs = aml_resource_template();
+> +        aml_append(crs, aml_memory32_fixed(base, size, AML_READ_WRITE));
+> +        aml_append(crs,
+> +                   aml_interrupt(AML_CONSUMER, AML_LEVEL, AML_ACTIVE_HIGH,
+> +                                 AML_EXCLUSIVE, &irq, 1));
+> +        aml_append(dev, aml_name_decl("_CRS", crs));
+> +        aml_append(scope, dev);
+> +        base += size;
+> +    }
+> +}
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index 6b674231c2..fdedb68e2b 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
+> @@ -35,7 +35,6 @@
+>  #include "target/arm/cpu.h"
+>  #include "hw/acpi/acpi-defs.h"
+>  #include "hw/acpi/acpi.h"
+> -#include "hw/nvram/fw_cfg.h"
+>  #include "hw/acpi/bios-linker-loader.h"
+>  #include "hw/acpi/aml-build.h"
+>  #include "hw/acpi/utils.h"
+> @@ -94,21 +93,6 @@ static void acpi_dsdt_add_uart(Aml *scope, const MemMapEntry *uart_memmap,
+>      aml_append(scope, dev);
+>  }
+>  
+> -static void acpi_dsdt_add_fw_cfg(Aml *scope, const MemMapEntry *fw_cfg_memmap)
+> -{
+> -    Aml *dev = aml_device("FWCF");
+> -    aml_append(dev, aml_name_decl("_HID", aml_string("QEMU0002")));
+> -    /* device present, functioning, decoding, not shown in UI */
+> -    aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
+> -    aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
+> -
+> -    Aml *crs = aml_resource_template();
+> -    aml_append(crs, aml_memory32_fixed(fw_cfg_memmap->base,
+> -                                       fw_cfg_memmap->size, AML_READ_WRITE));
+> -    aml_append(dev, aml_name_decl("_CRS", crs));
+> -    aml_append(scope, dev);
+> -}
+> -
+>  static void acpi_dsdt_add_flash(Aml *scope, const MemMapEntry *flash_memmap)
+>  {
+>      Aml *dev, *crs;
+> @@ -133,32 +117,6 @@ static void acpi_dsdt_add_flash(Aml *scope, const MemMapEntry *flash_memmap)
+>      aml_append(scope, dev);
+>  }
+>  
+> -static void acpi_dsdt_add_virtio(Aml *scope,
+> -                                 const MemMapEntry *virtio_mmio_memmap,
+> -                                 uint32_t mmio_irq, int num)
+> -{
+> -    hwaddr base = virtio_mmio_memmap->base;
+> -    hwaddr size = virtio_mmio_memmap->size;
+> -    int i;
+> -
+> -    for (i = 0; i < num; i++) {
+> -        uint32_t irq = mmio_irq + i;
+> -        Aml *dev = aml_device("VR%02u", i);
+> -        aml_append(dev, aml_name_decl("_HID", aml_string("LNRO0005")));
+> -        aml_append(dev, aml_name_decl("_UID", aml_int(i)));
+> -        aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
+> -
+> -        Aml *crs = aml_resource_template();
+> -        aml_append(crs, aml_memory32_fixed(base, size, AML_READ_WRITE));
+> -        aml_append(crs,
+> -                   aml_interrupt(AML_CONSUMER, AML_LEVEL, AML_ACTIVE_HIGH,
+> -                                 AML_EXCLUSIVE, &irq, 1));
+> -        aml_append(dev, aml_name_decl("_CRS", crs));
+> -        aml_append(scope, dev);
+> -        base += size;
+> -    }
+> -}
+> -
+>  static void acpi_dsdt_add_pci(Aml *scope, const MemMapEntry *memmap,
+>                                uint32_t irq, VirtMachineState *vms)
+>  {
+> diff --git a/hw/riscv/virt-acpi-build.c b/hw/riscv/virt-acpi-build.c
+> index 7331248f59..01843e4509 100644
+> --- a/hw/riscv/virt-acpi-build.c
+> +++ b/hw/riscv/virt-acpi-build.c
+> @@ -97,22 +97,6 @@ static void acpi_dsdt_add_cpus(Aml *scope, RISCVVirtState *s)
+>      }
+>  }
+>  
+> -static void acpi_dsdt_add_fw_cfg(Aml *scope, const MemMapEntry *fw_cfg_memmap)
+> -{
+> -    Aml *dev = aml_device("FWCF");
+> -    aml_append(dev, aml_name_decl("_HID", aml_string("QEMU0002")));
+> -
+> -    /* device present, functioning, decoding, not shown in UI */
+> -    aml_append(dev, aml_name_decl("_STA", aml_int(0xB)));
+> -    aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
+> -
+> -    Aml *crs = aml_resource_template();
+> -    aml_append(crs, aml_memory32_fixed(fw_cfg_memmap->base,
+> -                                       fw_cfg_memmap->size, AML_READ_WRITE));
+> -    aml_append(dev, aml_name_decl("_CRS", crs));
+> -    aml_append(scope, dev);
+> -}
+> -
+>  /* RHCT Node[N] starts at offset 56 */
+>  #define RHCT_NODE_ARRAY_OFFSET 56
+>  
+> diff --git a/include/hw/acpi/aml-build.h b/include/hw/acpi/aml-build.h
+> index d1fb08514b..c4a8967310 100644
+> --- a/include/hw/acpi/aml-build.h
+> +++ b/include/hw/acpi/aml-build.h
+> @@ -3,6 +3,7 @@
+>  
+>  #include "hw/acpi/acpi-defs.h"
+>  #include "hw/acpi/bios-linker-loader.h"
+> +#include "hw/nvram/fw_cfg.h"
+>  
+>  #define ACPI_BUILD_APPNAME6 "BOCHS "
+>  #define ACPI_BUILD_APPNAME8 "BXPC    "
+> @@ -497,4 +498,9 @@ void build_fadt(GArray *tbl, BIOSLinker *linker, const AcpiFadtData *f,
+>  
+>  void build_tpm2(GArray *table_data, BIOSLinker *linker, GArray *tcpalog,
+>                  const char *oem_id, const char *oem_table_id);
+> +
+> +void acpi_dsdt_add_fw_cfg(Aml *scope, const MemMapEntry *fw_cfg_memmap);
+> +void acpi_dsdt_add_virtio(Aml *scope, const MemMapEntry *virtio_mmio_memmap,
+> +                          uint32_t mmio_irq, int num);
+> +
+>  #endif
 
-"document"
-
-> +mainly intended as a reference for current/prospective release maintainers
-> +and other individuals involved in the release management process, but it
-> +may also be useful to consumers of these source tarballs.
-
-> +     # Sign the resulting tarballs
-> +     gpg -b qemu-8.0.0.tar.bz2
-> +     gpg -b qemu-8.0.0.tar.xz
-
-Am I right that you currently use your personal GPG key for
-release signing? We should probably think about what would
-we would need to do if we wanted to change who does this
-release process. But I don't know anywhere enough about gpg
-to make sensible suggestions...
-
-thanks
--- PMM
 
