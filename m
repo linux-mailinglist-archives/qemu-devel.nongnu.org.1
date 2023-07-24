@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAADA75EF15
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 11:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6251575EF18
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 11:27:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNroU-0005QC-GQ; Mon, 24 Jul 2023 05:25:10 -0400
+	id 1qNrpz-00061P-Q1; Mon, 24 Jul 2023 05:26:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNroP-0005Pu-8K
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:25:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNrpk-0005zn-M7
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:26:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNroN-00008f-PC
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:25:05 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qNrpj-0000Qu-2X
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 05:26:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690190703;
+ s=mimecast20190719; t=1690190785;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vp7nYK+x5B8iFLwVsHO8+0byOR9o/IQ2qeOrnJYXbyA=;
- b=BG92YKTeaBx7+jqX182u8VFQJVKP2t/m546MyN38AlzhY4+l89y9mYvSVQAYZ5Kg1d3d2k
- yxKHGk4utAblUPOkPJ7w1a7TtsP4NKg565aw6CnxnGVcw3QVe9OB3D7oYH7nXbkEbwkOuA
- az8lRfpX+PovC0ZJaT/j9iS+5Q/LwAE=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-575-FUV2QE-9MJqm4QKsOPCHig-1; Mon, 24 Jul 2023 05:24:59 -0400
-X-MC-Unique: FUV2QE-9MJqm4QKsOPCHig-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=aZw6tdPli47P5uwF70iLRopCCjy/fUSPa93rzmXpqzk=;
+ b=UKB650Ek+EUT22SUoXd/TfAcTBzOVKClieZ8PqO2DFmDyYRIT0HpGjw9sQnUF9NcYo3eMx
+ 640SCQ3QZDermo0HtRtH/f8w3YMsaBQegsAc5XxhO0H77SFyKbaxLc1t3WYcb0gLLPiDy+
+ taGgBTkeLO5ZlokSfdWVk2P/t3hXppA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-400-i_2d5MkROvm2pNSTymp04A-1; Mon, 24 Jul 2023 05:26:22 -0400
+X-MC-Unique: i_2d5MkROvm2pNSTymp04A-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8D7B7280AA22;
- Mon, 24 Jul 2023 09:24:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AD3F1858F1E;
+ Mon, 24 Jul 2023 09:26:21 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.193.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 590631121315;
- Mon, 24 Jul 2023 09:24:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8CD32F7834;
+ Mon, 24 Jul 2023 09:26:21 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 37FE021E64D0; Mon, 24 Jul 2023 11:24:58 +0200 (CEST)
+ id 9275B21E60F2; Mon, 24 Jul 2023 11:26:20 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: ~hyman <hyman@git.sr.ht>
 Cc: qemu-devel@nongnu.org,  ~hyman <yong.huang@smartx.com>,  Juan Quintela
@@ -49,18 +49,19 @@ Cc: qemu-devel@nongnu.org,  ~hyman <yong.huang@smartx.com>,  Juan Quintela
  <leobras@redhat.com>,  Eric Blake <eblake@redhat.com>,  Thomas Huth
  <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,  Paolo Bonzini
  <pbonzini@redhat.com>
-Subject: Re: [PATCH QEMU v9 4/9] migration: Introduce dirty-limit capability
-References: <168987012554.14797.8679831725383645706-4@git.sr.ht>
-Date: Mon, 24 Jul 2023 11:24:58 +0200
-In-Reply-To: <168987012554.14797.8679831725383645706-4@git.sr.ht>
- (hyman@git.sr.ht's message of "Wed, 07 Jun 2023 23:30:50 +0800")
-Message-ID: <874jltr79x.fsf@pond.sub.org>
+Subject: Re: [PATCH QEMU v9 2/9] qapi/migration: Introduce
+ x-vcpu-dirty-limit-period parameter
+References: <168987012554.14797.8679831725383645706-2@git.sr.ht>
+Date: Mon, 24 Jul 2023 11:26:20 +0200
+In-Reply-To: <168987012554.14797.8679831725383645706-2@git.sr.ht>
+ (hyman@git.sr.ht's message of "Wed, 07 Jun 2023 21:32:59 +0800")
+Message-ID: <87351dr77n.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -89,29 +90,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 > From: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
 >
-> Introduce migration dirty-limit capability, which can
-> be turned on before live migration and limit dirty
-> page rate durty live migration.
+> Introduce "x-vcpu-dirty-limit-period" migration experimental
+> parameter, which is in the range of 1 to 1000ms and used to
+> make dirty page rate calculation period configurable.
 >
-> Introduce migrate_dirty_limit function to help check
-> if dirty-limit capability enabled during live migration.
->
-> Meanwhile, refactor vcpu_dirty_rate_stat_collect
-> so that period can be configured instead of hardcoded.
->
-> dirty-limit capability is kind of like auto-converge
-> but using dirty limit instead of traditional cpu-throttle
-> to throttle guest down. To enable this feature, turn on
-> the dirty-limit capability before live migration using
-> migrate-set-capabilities, and set the parameters
-> "x-vcpu-dirty-limit-period", "vcpu-dirty-limit" suitably
-> to speed up convergence.
+> Currently with the "x-vcpu-dirty-limit-period" varies, the
+
+Currently, as the ...
+
+> total time of live migration changes, test results show the
+
+Suggest period instead of comma.
+
+> optimal value of "x-vcpu-dirty-limit-period" ranges from
+> 500ms to 1000 ms. "x-vcpu-dirty-limit-period" should be made
+> stable once it proves best value can not be determined with
+> developer's experiments.
 >
 > Signed-off-by: Hyman Huang(=E9=BB=84=E5=8B=87) <yong.huang@smartx.com>
-> Acked-by: Peter Xu <peterx@redhat.com>
 > Reviewed-by: Markus Armbruster <armbru@redhat.com>
 > Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-Looks good now, thanks!
+This commit message wordsmithing doesn't justify yet another respin by
+itself.  But if you need to respin the series for some other reason,
+please consider my suggestions.
 
 
