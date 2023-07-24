@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C95075EE72
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 10:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB2575EE7B
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 10:56:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNrJy-00021g-0b; Mon, 24 Jul 2023 04:53:38 -0400
+	id 1qNrK1-00026l-HX; Mon, 24 Jul 2023 04:53:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNrJw-00020E-1D
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:53:36 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1qNrJy-00023K-7q
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:53:38 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qNrJu-0000eP-By
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:53:35 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3fd190065a8so39351265e9.3
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 01:53:33 -0700 (PDT)
+ id 1qNrJv-0000er-9Q
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 04:53:37 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-3fbc656873eso39516165e9.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 01:53:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690188813; x=1690793613;
+ d=linaro.org; s=google; t=1690188814; x=1690793614;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FtcjV7RLMVbCUSYkAiLh5IZllixWR3iJOTzr/2oXRS0=;
- b=cvcAyU+AZgDpWf1Io/RLMTmwARxeWpyv0NX/Qw1BzUK/nboWFkW75BgBrvS6gfvL68
- eZiPikHTEVYRF2/hSKo6pF9/nyWYc4SSf87FUH0PRnvedIv7xjGJGvGHUF+peQ8hKR8l
- D/NIUenF5dbkHS0Ck5nyi5DSGanLfaA38FPsqhBNFtdgouBlVDgzpS3+mdFYbMYHV4bi
- J3yfJkKLSWlZUX6o90n5uRf73Igk9i4Anqy0vo7sIHQJOZLqUFuys4r2RpRAfdKo+/Mm
- koWuZs08OODB73FfjKc0v5wrHWLfm9TwBYjtIoqxPgwxU9LrSfVGuQ5H6ZmbrHIKQFiM
- 2llQ==
+ bh=2zCvmEJYFTqfiAcu8CvxN/tos2dn//8Q84Fs7tMAmMg=;
+ b=eT1Sq9I1U+ds2I5KVwn/NwqB0XzltNohvUhzxG19l7HtIdnSmW+HdONq09+CisDR86
+ TOBIUJC88BGjWolDqVYCyVQ5+9NiYRUd3d505OX+i2+5JNPQSA1gytLM6aH7Q6uHoMei
+ Z923hLPKj3zl9oO1p/ZljeO9lSnNpOntMFPBhnv/tuV9cGbSbwRZeG+8JcKEeSF15q5V
+ dbD507D9NMgX9yWt6MJG7798hpPU2u1btQr8pPSn4ijtIajXnEQNxyKISBSesevSTzpA
+ 1Vzo7XiheUmNYsF39UNteTRk+J5MMBFqiSN3seSf9swGnYrBUsv1DIFqolHVRo5oaS5f
+ obPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690188813; x=1690793613;
+ d=1e100.net; s=20221208; t=1690188814; x=1690793614;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FtcjV7RLMVbCUSYkAiLh5IZllixWR3iJOTzr/2oXRS0=;
- b=G20qr+lFaDf98JRGtTXLtype2CfsXiYOLfFMXiIaobDrRhfV35UrPw16kTLMu9b5sz
- KUpR92gnng5+/dVjUC+eAbxQ+w9kMJIJCzTeUujM2Ia68TDZbyHEQg2X2blagfR0yf5V
- Mm9QvDfYuXbO4ajvXAafUd7eGAK4yC/2nGfZWm2w2wXAHwPhkvAdJjl8q9u4eZLr/j2b
- V+HJCq2THs6sfFewlyGfv9eF8rhS34qxDCDK8Y9wKyEGS1LITcfnMzoAohGHWRI+/jaG
- zoMYc4Avqh6SlAiEMB3h6Ycbtg8Ijkxzswy+sBM6Q1M7tAfw8reIiSyTfZSK+K0zDNn5
- QNKw==
-X-Gm-Message-State: ABy/qLY2l7ufELbGztY5wSzpfbqTncRObIEhE3Th0YAkR0j+Fo8L/jw5
- ZXknYE9ZfJczO4qXnQ4dcIhak9FsIyYnGGs/OGh5kg==
-X-Google-Smtp-Source: APBJJlEGSBOaLZEEzU68QdP5bgZ4Y3aU+n7ai8CGHWjia+YFD3eQB44EwwtEkY4ggIIvaUuW76BZBg==
-X-Received: by 2002:a05:600c:219a:b0:3fb:415f:a85b with SMTP id
- e26-20020a05600c219a00b003fb415fa85bmr7569973wme.3.1690188812917; 
- Mon, 24 Jul 2023 01:53:32 -0700 (PDT)
+ bh=2zCvmEJYFTqfiAcu8CvxN/tos2dn//8Q84Fs7tMAmMg=;
+ b=eb8fmleKkyU/r50OZfN8gn4hLT3qJ8RsmTIWPyHBmk5N+TQVdc4QltNSbp3cSfy+ep
+ 5TvHlHUdCm4B7poxhb852Kh2PWJWB6WzTFqewpq86iWOpu0nb2TC6St/or7FGrQ+/MYr
+ MOkxHc+7IutQkjiuzviLqPseaWxrhBX4kULCUPJLQcbjaxUi5y6TrlptUjziGeNXdAqb
+ qIia8rlPxZFKRSkbsafsY0L/vC+NBD+HTjItwBU2WhkFZ0MtOB32L7oUUwOGSHlnod7T
+ 2DdffloBOt2FSAx081qiYsvs9ADiFq8ojtwN4/0og3EhLLbQUonQCuRVsJbx5M9On1ZW
+ Vtsg==
+X-Gm-Message-State: ABy/qLZVzg6SXsowJqKai9HirDOPR6rMnTHJ1d0K3zjDdBh1ve13enDM
+ gNm+xrX3HyBnQ443q/2qOOkxAKicW899dC6Zd58LDg==
+X-Google-Smtp-Source: APBJJlEcGyC7tpTcYe5pyyOqIYHhPbheQpcbI2ETvZPinCHYZujUNmXw8xztyMysX2F90DDESoespA==
+X-Received: by 2002:a7b:c315:0:b0:3fc:80a:cf63 with SMTP id
+ k21-20020a7bc315000000b003fc080acf63mr8085728wmj.38.1690188813866; 
+ Mon, 24 Jul 2023 01:53:33 -0700 (PDT)
 Received: from stoup.. ([62.252.144.58]) by smtp.gmail.com with ESMTPSA id
- t8-20020a1c7708000000b003fa74bff02asm9570994wmi.26.2023.07.24.01.53.32
+ t8-20020a1c7708000000b003fa74bff02asm9570994wmi.26.2023.07.24.01.53.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 24 Jul 2023 01:53:32 -0700 (PDT)
+ Mon, 24 Jul 2023 01:53:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PULL 4/7] accel/tcg: Take mmap_lock in load_atomic*_or_exit
-Date: Mon, 24 Jul 2023 09:53:25 +0100
-Message-Id: <20230724085328.4936-5-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ qemu-stable@nongnu.org
+Subject: [PULL 5/7] tcg/{i386,
+ s390x}: Add earlyclobber to the op_add2's first output
+Date: Mon, 24 Jul 2023 09:53:26 +0100
+Message-Id: <20230724085328.4936-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230724085328.4936-1-richard.henderson@linaro.org>
 References: <20230724085328.4936-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=richard.henderson@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
@@ -90,74 +92,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For user-only, the probe for page writability may race with another
-thread's mprotect.  Take the mmap_lock around the operation.  This
-is still faster than the start/end_exclusive fallback.
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+i386 and s390x implementations of op_add2 require an earlyclobber,
+which is currently missing. This breaks VCKSM in s390x guests. E.g., on
+x86_64 the following op:
+
+    add2_i32 tmp2,tmp3,tmp2,tmp3,tmp3,tmp2   dead: 0 2 3 4 5  pref=none,0xffff
+
+is translated to:
+
+    addl     %ebx, %r12d
+    adcl     %r12d, %ebx
+
+Introduce a new C_N1_O1_I4 constraint, and make sure that earlyclobber
+of aliased outputs is honored.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 82790a870992 ("tcg: Add markup for output requires new register")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230719221310.1968845-7-iii@linux.ibm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/ldst_atomicity.c.inc | 32 ++++++++++++++++++--------------
- 1 file changed, 18 insertions(+), 14 deletions(-)
+ tcg/i386/tcg-target-con-set.h  | 5 ++++-
+ tcg/s390x/tcg-target-con-set.h | 8 +++++---
+ tcg/tcg.c                      | 8 +++++++-
+ tcg/i386/tcg-target.c.inc      | 2 +-
+ tcg/s390x/tcg-target.c.inc     | 4 ++--
+ 5 files changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index de70531a7a..e5c590a499 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -159,9 +159,11 @@ static uint64_t load_atomic8_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
-      * another process, because the fallback start_exclusive solution
-      * provides no protection across processes.
-      */
--    if (!page_check_range(h2g(pv), 8, PAGE_WRITE_ORG)) {
--        uint64_t *p = __builtin_assume_aligned(pv, 8);
--        return *p;
-+    WITH_MMAP_LOCK_GUARD() {
-+        if (!page_check_range(h2g(pv), 8, PAGE_WRITE_ORG)) {
-+            uint64_t *p = __builtin_assume_aligned(pv, 8);
-+            return *p;
-+        }
-     }
- #endif
+diff --git a/tcg/i386/tcg-target-con-set.h b/tcg/i386/tcg-target-con-set.h
+index 91ceb0e1da..5ea3a292f0 100644
+--- a/tcg/i386/tcg-target-con-set.h
++++ b/tcg/i386/tcg-target-con-set.h
+@@ -11,6 +11,9 @@
+  *
+  * C_N1_Im(...) defines a constraint set with 1 output and <m> inputs,
+  * except that the output must use a new register.
++ *
++ * C_Nn_Om_Ik(...) defines a constraint set with <n + m> outputs and <k>
++ * inputs, except that the first <n> outputs must use new registers.
+  */
+ C_O0_I1(r)
+ C_O0_I2(L, L)
+@@ -53,4 +56,4 @@ C_O2_I1(r, r, L)
+ C_O2_I2(a, d, a, r)
+ C_O2_I2(r, r, L, L)
+ C_O2_I3(a, d, 0, 1, r)
+-C_O2_I4(r, r, 0, 1, re, re)
++C_N1_O1_I4(r, r, 0, 1, re, re)
+diff --git a/tcg/s390x/tcg-target-con-set.h b/tcg/s390x/tcg-target-con-set.h
+index cbad91b2b5..9a42037499 100644
+--- a/tcg/s390x/tcg-target-con-set.h
++++ b/tcg/s390x/tcg-target-con-set.h
+@@ -8,6 +8,9 @@
+  * C_On_Im(...) defines a constraint set with <n> outputs and <m> inputs.
+  * Each operand should be a sequence of constraint letters as defined by
+  * tcg-target-con-str.h; the constraint combination is inclusive or.
++ *
++ * C_Nn_Om_Ik(...) defines a constraint set with <n + m> outputs and <k>
++ * inputs, except that the first <n> outputs must use new registers.
+  */
+ C_O0_I1(r)
+ C_O0_I2(r, r)
+@@ -41,6 +44,5 @@ C_O2_I1(o, m, r)
+ C_O2_I2(o, m, 0, r)
+ C_O2_I2(o, m, r, r)
+ C_O2_I3(o, m, 0, 1, r)
+-C_O2_I4(r, r, 0, 1, rA, r)
+-C_O2_I4(r, r, 0, 1, ri, r)
+-C_O2_I4(r, r, 0, 1, r, r)
++C_N1_O1_I4(r, r, 0, 1, ri, r)
++C_N1_O1_I4(r, r, 0, 1, rA, r)
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 652e8ea6b9..ddfe9a96cb 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -648,6 +648,7 @@ static void tcg_out_movext3(TCGContext *s, const TCGMovExtend *i1,
+ #define C_O2_I2(O1, O2, I1, I2)         C_PFX4(c_o2_i2_, O1, O2, I1, I2),
+ #define C_O2_I3(O1, O2, I1, I2, I3)     C_PFX5(c_o2_i3_, O1, O2, I1, I2, I3),
+ #define C_O2_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_o2_i4_, O1, O2, I1, I2, I3, I4),
++#define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_n1_o1_i4_, O1, O2, I1, I2, I3, I4),
  
-@@ -186,25 +188,27 @@ static Int128 load_atomic16_or_exit(CPUArchState *env, uintptr_t ra, void *pv)
-         return atomic16_read_ro(p);
-     }
+ typedef enum {
+ #include "tcg-target-con-set.h"
+@@ -668,6 +669,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
+ #undef C_O2_I2
+ #undef C_O2_I3
+ #undef C_O2_I4
++#undef C_N1_O1_I4
  
--#ifdef CONFIG_USER_ONLY
-     /*
-      * We can only use cmpxchg to emulate a load if the page is writable.
-      * If the page is not writable, then assume the value is immutable
-      * and requires no locking.  This ignores the case of MAP_SHARED with
-      * another process, because the fallback start_exclusive solution
-      * provides no protection across processes.
-+     *
-+     * In system mode all guest pages are writable.  For user mode,
-+     * we must take mmap_lock so that the query remains valid until
-+     * the write is complete -- tests/tcg/multiarch/munmap-pthread.c
-+     * is an example that can race.
-      */
--    if (!page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
--        return *p;
--    }
-+    WITH_MMAP_LOCK_GUARD() {
-+#ifdef CONFIG_USER_ONLY
-+        if (!page_check_range(h2g(p), 16, PAGE_WRITE_ORG)) {
-+            return *p;
-+        }
- #endif
--
--    /*
--     * In system mode all guest pages are writable, and for user-only
--     * we have just checked writability.  Try cmpxchg.
--     */
--    if (HAVE_ATOMIC128_RW) {
--        return atomic16_read_rw(p);
-+        if (HAVE_ATOMIC128_RW) {
-+            return atomic16_read_rw(p);
-+        }
-     }
+ /* Put all of the constraint sets into an array, indexed by the enum. */
  
-     /* Ultimate fallback: re-execute in serial context. */
+@@ -687,6 +689,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
+ #define C_O2_I2(O1, O2, I1, I2)         { .args_ct_str = { #O1, #O2, #I1, #I2 } },
+ #define C_O2_I3(O1, O2, I1, I2, I3)     { .args_ct_str = { #O1, #O2, #I1, #I2, #I3 } },
+ #define C_O2_I4(O1, O2, I1, I2, I3, I4) { .args_ct_str = { #O1, #O2, #I1, #I2, #I3, #I4 } },
++#define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) { .args_ct_str = { "&" #O1, #O2, #I1, #I2, #I3, #I4 } },
+ 
+ static const TCGTargetOpDef constraint_sets[] = {
+ #include "tcg-target-con-set.h"
+@@ -706,6 +709,7 @@ static const TCGTargetOpDef constraint_sets[] = {
+ #undef C_O2_I2
+ #undef C_O2_I3
+ #undef C_O2_I4
++#undef C_N1_O1_I4
+ 
+ /* Expand the enumerator to be returned from tcg_target_op_def(). */
+ 
+@@ -725,6 +729,7 @@ static const TCGTargetOpDef constraint_sets[] = {
+ #define C_O2_I2(O1, O2, I1, I2)         C_PFX4(c_o2_i2_, O1, O2, I1, I2)
+ #define C_O2_I3(O1, O2, I1, I2, I3)     C_PFX5(c_o2_i3_, O1, O2, I1, I2, I3)
+ #define C_O2_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_o2_i4_, O1, O2, I1, I2, I3, I4)
++#define C_N1_O1_I4(O1, O2, I1, I2, I3, I4) C_PFX6(c_n1_o1_i4_, O1, O2, I1, I2, I3, I4)
+ 
+ #include "tcg-target.c.inc"
+ 
+@@ -4703,7 +4708,8 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
+                  * dead after the instruction, we must allocate a new
+                  * register and move it.
+                  */
+-                if (temp_readonly(ts) || !IS_DEAD_ARG(i)) {
++                if (temp_readonly(ts) || !IS_DEAD_ARG(i)
++                    || def->args_ct[arg_ct->alias_index].newreg) {
+                     allocate_new_reg = true;
+                 } else if (ts->val_type == TEMP_VAL_REG) {
+                     /*
+diff --git a/tcg/i386/tcg-target.c.inc b/tcg/i386/tcg-target.c.inc
+index ab997b5fb3..77482da070 100644
+--- a/tcg/i386/tcg-target.c.inc
++++ b/tcg/i386/tcg-target.c.inc
+@@ -3335,7 +3335,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_add2_i64:
+     case INDEX_op_sub2_i32:
+     case INDEX_op_sub2_i64:
+-        return C_O2_I4(r, r, 0, 1, re, re);
++        return C_N1_O1_I4(r, r, 0, 1, re, re);
+ 
+     case INDEX_op_ctz_i32:
+     case INDEX_op_ctz_i64:
+diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
+index a878acd8ca..a94f7908d6 100644
+--- a/tcg/s390x/tcg-target.c.inc
++++ b/tcg/s390x/tcg-target.c.inc
+@@ -3229,11 +3229,11 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+ 
+     case INDEX_op_add2_i32:
+     case INDEX_op_sub2_i32:
+-        return C_O2_I4(r, r, 0, 1, ri, r);
++        return C_N1_O1_I4(r, r, 0, 1, ri, r);
+ 
+     case INDEX_op_add2_i64:
+     case INDEX_op_sub2_i64:
+-        return C_O2_I4(r, r, 0, 1, rA, r);
++        return C_N1_O1_I4(r, r, 0, 1, rA, r);
+ 
+     case INDEX_op_st_vec:
+         return C_O0_I2(v, r);
 -- 
 2.34.1
 
