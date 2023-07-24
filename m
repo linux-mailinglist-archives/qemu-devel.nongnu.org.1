@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D65275FA87
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 17:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF1375FA9F
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 17:19:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNxGs-0005jF-Rp; Mon, 24 Jul 2023 11:14:50 -0400
+	id 1qNxKv-0007dT-0R; Mon, 24 Jul 2023 11:19:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNxGl-0005ik-GF
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 11:14:43 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ id 1qNxKr-0007d7-0V
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 11:18:57 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qNxGj-0007PP-06
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 11:14:43 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-5221ee899a0so2777868a12.1
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 08:14:35 -0700 (PDT)
+ id 1qNxKo-0008WE-FB
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 11:18:56 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-51e344efd75so9419645a12.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 08:18:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1690211673; x=1690816473;
+ d=linaro.org; s=google; t=1690211932; x=1690816732;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+PIm9T+rJycJHWPFWmaK4cVsimJSZoz3kUjvmFUlwh8=;
- b=MnEK+KHgVIAy00MJaSZWLghEnsWU5lVidTrRfYB0N2UmwZKtfMupA14Wvvc2gVkGbb
- kiGxe6ia5uapL1SY4Dq04yb6pRKQ8AYbR0TYHs/NfkBOGz/X2r5oXY2uyiK76ohevFIL
- vJrUip33jVwEY5v3gtc8iJoVR4i2U7us2CqXoX8vu6u6RZlx0A464YRixbpIxyQjLhIQ
- UCPDKk34+tBadlV8bhyheqIVyOWGRqwkCNpMQLi7li8WtubyzPOGp+HzFMeZADIaNwpA
- pEn3Pvv4uZioKQQgjOv7/jUEeny49MsjguxoP1VTdbThOXP6oTG37OG0f1BQVK2tVltE
- HRmw==
+ bh=YPPCWbd44Vruy274om05gXAL+ZBzTj85mAKvwFeVnKc=;
+ b=zvTvwigEnWSAzGOnWI35j9gW97gDgATEJ50baYMDhijR+XuArR85RGhMAYZX/x+u90
+ wPA9MEqvA9PzUhyV1ixiBz5nUfc7l4OC73FlS/XatGQ/LgYk/8513pwlcqRuA/N6ORHb
+ imnlImqxxMArMoeAvXQXOy5BMbf75vyjAoIJSjJulfFfWP4Brm0LmfeYW39ZBZq8U7og
+ Q+KVXyXAm5Pu/dVKwKt2GG94tsAZRAmELfNfEghjKm9hYB1NuNfHfcgAduBkwxoT+hb7
+ W0zNjUOs1iz/sfIJZ1tdZlnWRvcMRIXbxitij8Gvy5XfbREF5p0adyh8qLHmfLGZ36ls
+ Fkog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690211673; x=1690816473;
+ d=1e100.net; s=20221208; t=1690211932; x=1690816732;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=+PIm9T+rJycJHWPFWmaK4cVsimJSZoz3kUjvmFUlwh8=;
- b=PqGdLiGPL8s5Iwkkua0tb7qGfDSqlFVvxE4ELXunH5xxL4gb4q6ecaDzV49DQTC+4S
- 7aY6vd0t6auGptShFhxIT82K35FF7jQ0gM4U17REMHEjhPWEON26Wlml6YJ8SBgaFbUY
- xGyPY7Wd2HT8UfMMWhencjTzJePfEZiJXZt7NhOaclHEjx+BwbUpYxQazYcMl+i07NrU
- 3NrruhI7ZyQTNdpmDtcrm31c9VuZAPeY2XV64sJRgeRBpsR6+H794+7MeJIjZeiJRwTY
- ZBGtl+bAieOKpXGFiFQp7lefsOXHkDRpf2eN3U8t2wGAH5SNO0tvJzBU7zw8Y6rCsgyf
- wwQA==
-X-Gm-Message-State: ABy/qLZDDZ+oCM+gZJiKVJMasfpe8vhFHlA2cbYjQKKgnAcE0bFdJgZU
- amFYQVJgGawOJWldXSYR7s96xbYK4HRSjnTL83PmBQ==
-X-Google-Smtp-Source: APBJJlGvC1ofRU20HZtf4lDx0gm2a6jFDQHG7sxtiw3tynHvVQ7FMCSuWA8Tot1+I0XGXwS1igPYGYrue99yd9YsO3s=
-X-Received: by 2002:a05:6402:31f6:b0:522:3849:48db with SMTP id
- dy22-20020a05640231f600b00522384948dbmr1413115edb.3.1690211673475; Mon, 24
- Jul 2023 08:14:33 -0700 (PDT)
+ bh=YPPCWbd44Vruy274om05gXAL+ZBzTj85mAKvwFeVnKc=;
+ b=UvJ/IXLjlc4AEKGZs4uyOTj0HtOAef6YS/vzOVjyBYcsWxC9Ec4qzQ/i0bktOwAlHR
+ bWFXfRf2oKdBJUEd+EyTgRMUM6A2r9d/gzspvOHom/Uil1OJemQAUf2PtoQlXJo69uKi
+ HbLGBoav4cv6eT8BqC5sNbUjS9kDN31m2ZWf9Qm6Ctp7E7b8TeQsi/6aZde89IrXfYb8
+ 9+F6Ql+8UcPosRcM7Kgi1aegxCqBCy25QZEIoe+rpXY8fjmHhP7YaUY1OwUSZSVJJlg5
+ Cxax+b8ddfxGhpthX3MKEXzuFi6HSF3xTPwlKabjI59N4AX4WEI37ULAPIM0B6f0Mk37
+ OnrQ==
+X-Gm-Message-State: ABy/qLajJdFGY5SVz/TbwDLvox/s8m6xn1k9A6fLaYRgOVXXpBtdC0HB
+ zXaYYT2klA1QAwmlqGuNHLwCBqduI6Nc+MCu1TU3hw==
+X-Google-Smtp-Source: APBJJlF/TT5r8kpCXNczfSgr/0C6E8XrrHSO03ZgfDc9xAj5Sauzo9LGd9cklqdH/jqHN4IWO82nqhxJ0HoU0I4Gygs=
+X-Received: by 2002:aa7:d74f:0:b0:51e:421e:d209 with SMTP id
+ a15-20020aa7d74f000000b0051e421ed209mr11151976eds.13.1690211932021; Mon, 24
+ Jul 2023 08:18:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230713054502.410911-1-gshan@redhat.com>
- <CAFEAcA8197FCwfNZrnxfO-87RveOko0Ju-KcTJOEi0vfjVtDKg@mail.gmail.com>
- <2d21e89f-c965-e8f1-3705-dfea8367fc7e@linaro.org>
- <CAFEAcA-XK0U0bPuAf4K7avdJqnmcibFX_swY1Weo_Tn3wHJ1fw@mail.gmail.com>
- <20230714135004.230c05b2@imammedo.users.ipa.redhat.com>
- <CAFEAcA92QFxN0at+5rk7yrfk1sj3tX-GcfZYYY5_=210np_j4g@mail.gmail.com>
- <20230717144455.6f02fde9@imammedo.users.ipa.redhat.com>
- <527ed3dc-b723-5c37-37e2-58d4266b1f32@redhat.com>
- <20230724170604.74b4ca0a@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230724170604.74b4ca0a@imammedo.users.ipa.redhat.com>
+References: <20230615045241.5838-1-michael.roth@amd.com>
+In-Reply-To: <20230615045241.5838-1-michael.roth@amd.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 24 Jul 2023 16:14:22 +0100
-Message-ID: <CAFEAcA-Tp7_vpGUea4W6cf3rTDqqGKy6VtsguDjiSAbRX=dL=Q@mail.gmail.com>
-Subject: Re: [PATCH 0/3] hw/arm/virt: Use generic CPU invalidation
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: Gavin Shan <gshan@redhat.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org, pbonzini@redhat.com, eduardo@habkost.net, 
- marcel.apfelbaum@gmail.com, philmd@linaro.org, wangyanan55@huawei.com, 
- shan.gavin@gmail.com
+Date: Mon, 24 Jul 2023 16:18:40 +0100
+Message-ID: <CAFEAcA9LGhTehpftazkA1E2apKqQeWby6tJsEyy3air1L5xS+g@mail.gmail.com>
+Subject: Re: [PATCH] docs/devel: Document the tarball publishing/release
+ process
+To: Michael Roth <michael.roth@amd.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Michael Tokarev <mjt@tls.msk.ru>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,36 +86,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 24 Jul 2023 at 16:06, Igor Mammedov <imammedo@redhat.com> wrote:
-> I've seen others asking why you print type name instead of shorter cpu-model
-> used on CLI. To do that would make you write a patch to implement reverse mapping.
-> In some cases it's simple, in others plain impossible unless you can get
-> access to -cpu foo stored somewhere.
+On Thu, 15 Jun 2023 at 05:54, Michael Roth <michael.roth@amd.com> wrote:
 >
-> What I don't particularity like about adding reverse type->cpu_model mapping,
-> is that it would complicate code to carter to QEMU's interface inconsistencies.
-> And if you do it easy way (instead of fixing every target) touching only ARM,
-> it will be spotty at best and just add to technical debt elsewhere ->
-> more inconsistencies.
+> This hopefully contains most of the information one would need to
+> generate/publish QEMU tarballs and make the related announcements. The
+> main goal is to quickly get others up to speed on the process so we can
+> have multiple people able to handle releases at any point in time.
 >
-> What I'm proposing is for you to keep printing type names.
-> So if others won't object to type names I'm more or less fine with your
-> current approach.
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Peter Maydell <peter.maydell@linaro.org>
+> Cc: Michael Tokarev <mjt@tls.msk.ru>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 
-I do object to type names, because the UI for choosing
-a CPU ("-cpu whatever") does not take type names, it
-takes CPU names. The QOM type names that those end up
-being under the hood are a detail of QEMU's implementation
-that we shouldn't expose to users in the help messages.
+Thanks for writing this up, and apologies for not having
+got around to reading it for so long.
 
-> Instead of adding type->cpu_model mapping (it's not the first time
-> this particular question had arisen - there were similar patches before
-> on qemu-devel), get rid of shortened cpu_model in user interface (-cpu)
-> altogether and use CPU type name there.
+I should probably move the other parts of the process
+currently documented at https://wiki.qemu.org/Merges
+into a docs/devel file at some point.
 
-I also think we should not do this, because it will break
-a ton of existing command lines, and it's not clear it
-has any benefit to users.
+> +Overview
+> +--------
+> +
+> +Once an official release is tagged in the QEMU git tree by the current
+> +upstream maintainer (for major releases), or current stable maintainer
+> +(for stable releases), additional work is needed to generate/publish a
+> +source tarball for consumption by distros, vendors, and end-users who
+> +may not use git sources directly. A person involved in producing these
+> +tarballs is referred to herein as a "release maintainer" (not to be
+> +confused with the upstream/stable maintainers who are responsible for
+> +managing/tagging the git trees from which the tarballs are generated).
+> +
+> +This documents provides an overview of this release process and is
+
+"document"
+
+> +mainly intended as a reference for current/prospective release maintainers
+> +and other individuals involved in the release management process, but it
+> +may also be useful to consumers of these source tarballs.
+
+> +     # Sign the resulting tarballs
+> +     gpg -b qemu-8.0.0.tar.bz2
+> +     gpg -b qemu-8.0.0.tar.xz
+
+Am I right that you currently use your personal GPG key for
+release signing? We should probably think about what would
+we would need to do if we wanted to change who does this
+release process. But I don't know anywhere enough about gpg
+to make sensible suggestions...
 
 thanks
 -- PMM
