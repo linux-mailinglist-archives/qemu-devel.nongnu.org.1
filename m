@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F35175FCC2
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8691975FCB8
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 18:56:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNyp6-0001Il-Ex; Mon, 24 Jul 2023 12:54:16 -0400
+	id 1qNyp7-0001Js-Hl; Mon, 24 Jul 2023 12:54:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyox-0001Fy-D9
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyoz-0001G3-S8
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyow-0006uu-1U
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:07 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNyox-0006ve-NN
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 12:54:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690217645;
+ s=mimecast20190719; t=1690217647;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Pmz9Qpoovh22tNLepJxxJ6o/buzGYcVypZvG43zOmhQ=;
- b=NUok/y50cUVtf3pZVpnjCi7xv8NlHnbiCGWMmAN9agXr8Z4xuA542aG3xbyOlh5t6h8q8G
- xtXsT+41VIJmyJmB3oSX4s2wVNus1QoSZimP3au1IKy0r7K4RxsXIrAb0n5Pjz4sl3U7Jx
- sLYBtzjVc51Daao3zWs91GwVumLepyM=
+ bh=1gKAXEgra0HgR6HbcyPx5/kEbB9cmaWV7cNn3wXt68Q=;
+ b=gSXj+3Wdgp/zkWKqWM3z1IEQd5HVWJWPPnQv+ZoKYrdKI1nfIq8DwPlCTR8J50hdTYycVE
+ qlMn5uDXJN0i9vRnFYd9AP7IWoEha21GYBwLYojo9Sl9caHzJ4Xwy4APW0d42Gk78E+Ifi
+ d9AVzgx6w7wdNVhy23AOq1T5OaUB2H4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-17-BQOMgNejNvO7kDSCKFIYsw-1; Mon, 24 Jul 2023 12:54:02 -0400
-X-MC-Unique: BQOMgNejNvO7kDSCKFIYsw-1
+ us-mta-378-qgduR8boOLuuFpNW7hEr8Q-1; Mon, 24 Jul 2023 12:54:03 -0400
+X-MC-Unique: qgduR8boOLuuFpNW7hEr8Q-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1DF37104458D;
- Mon, 24 Jul 2023 16:54:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 33956881B27;
+ Mon, 24 Jul 2023 16:54:03 +0000 (UTC)
 Received: from thuth.com (unknown [10.39.192.60])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 57FA148FB01;
- Mon, 24 Jul 2023 16:54:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 65CEB492CAC;
+ Mon, 24 Jul 2023 16:54:02 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 07/16] tests/tcg/s390x: Test CKSM
-Date: Mon, 24 Jul 2023 18:53:40 +0200
-Message-Id: <20230724165349.55714-8-thuth@redhat.com>
+Subject: [PULL 08/16] tests/tcg/s390x: Test CLGEBR and CGEBRA
+Date: Mon, 24 Jul 2023 18:53:41 +0200
+Message-Id: <20230724165349.55714-9-thuth@redhat.com>
 In-Reply-To: <20230724165349.55714-1-thuth@redhat.com>
 References: <20230724165349.55714-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,62 +81,116 @@ From: Ilya Leoshkevich <iii@linux.ibm.com>
 
 Add a small test to prevent regressions.
 
+Tested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230724082032.66864-9-iii@linux.ibm.com>
+Message-Id: <20230724082032.66864-10-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/tcg/s390x/Makefile.softmmu-target |  1 +
- tests/tcg/s390x/cksm.S                  | 29 +++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
- create mode 100644 tests/tcg/s390x/cksm.S
+ tests/tcg/s390x/cgebra.c        | 32 ++++++++++++++++++++++++++++++++
+ tests/tcg/s390x/clgebr.c        | 32 ++++++++++++++++++++++++++++++++
+ tests/tcg/s390x/Makefile.target |  5 +++++
+ 3 files changed, 69 insertions(+)
+ create mode 100644 tests/tcg/s390x/cgebra.c
+ create mode 100644 tests/tcg/s390x/clgebr.c
 
-diff --git a/tests/tcg/s390x/Makefile.softmmu-target b/tests/tcg/s390x/Makefile.softmmu-target
-index 242c7b0f83..e813e318db 100644
---- a/tests/tcg/s390x/Makefile.softmmu-target
-+++ b/tests/tcg/s390x/Makefile.softmmu-target
-@@ -16,6 +16,7 @@ LDFLAGS=-nostdlib -static
- 
- ASM_TESTS =                                                                    \
-     bal                                                                        \
-+    cksm                                                                       \
-     exrl-ssm-early                                                             \
-     sam                                                                        \
-     lpsw                                                                       \
-diff --git a/tests/tcg/s390x/cksm.S b/tests/tcg/s390x/cksm.S
+diff --git a/tests/tcg/s390x/cgebra.c b/tests/tcg/s390x/cgebra.c
 new file mode 100644
-index 0000000000..563fd3d233
+index 0000000000..f91e10d2d3
 --- /dev/null
-+++ b/tests/tcg/s390x/cksm.S
-@@ -0,0 +1,29 @@
-+    .org 0x8e
-+program_interruption_code:
-+    .org 0x1d0                         /* program new PSW */
-+    .quad 0,pgm
-+    .org 0x200                         /* lowcore padding */
-+    .globl _start
-+_start:
-+    lmg %r0,%r1,cksm_args
-+    cksm %r2,%r0
-+    c %r2,cksm_exp
-+    jne failure
-+    .insn rre,0xb2410000,%r2,%r15      /* cksm %r2,%r15 */
-+failure:
-+    lpswe failure_psw
-+pgm:
-+    chhsi program_interruption_code,6  /* specification exception? */
-+    jne failure
-+    lpswe success_psw
-+cksm_args:
-+    .quad cksm_buf, 16
-+cksm_buf:
-+    .quad 0xaaaabbbbcccc0000, 0x12345678
-+cksm_exp:
-+    .long 0x89ab1234
-+    .align 8
-+success_psw:
-+    .quad 0x2000000000000,0xfff        /* see is_special_wait_psw() */
-+failure_psw:
-+    .quad 0x2000000000000,0            /* disabled wait */
++++ b/tests/tcg/s390x/cgebra.c
+@@ -0,0 +1,32 @@
++/*
++ * Test the CGEBRA instruction.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <fenv.h>
++#include <stdlib.h>
++
++int main(void)
++{
++    float r2 = 1E+300;
++    long long r1;
++    int cc;
++
++    feclearexcept(FE_ALL_EXCEPT);
++    asm("cgebra %[r1],%[m3],%[r2],%[m4]\n"
++        "ipm %[cc]\n"
++        : [r1] "=r" (r1)
++        , [cc] "=r" (cc)
++        : [m3] "i" (5) /* round toward 0 */
++        , [r2] "f" (r2)
++        , [m4] "i" (8) /* bit 0 is set, but must be ignored; XxC is not set */
++        : "cc");
++    cc >>= 28;
++
++    assert(r1 == 0x7fffffffffffffffLL);
++    assert(cc == 3);
++    assert(fetestexcept(FE_ALL_EXCEPT) == (FE_INVALID | FE_INEXACT));
++
++    return EXIT_SUCCESS;
++}
+diff --git a/tests/tcg/s390x/clgebr.c b/tests/tcg/s390x/clgebr.c
+new file mode 100644
+index 0000000000..d491899b56
+--- /dev/null
++++ b/tests/tcg/s390x/clgebr.c
+@@ -0,0 +1,32 @@
++/*
++ * Test the CLGEBR instruction.
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <fenv.h>
++#include <stdlib.h>
++
++int main(void)
++{
++    float r2 = -1;
++    long long r1;
++    int cc;
++
++    feclearexcept(FE_ALL_EXCEPT);
++    asm("clgebr %[r1],%[m3],%[r2],%[m4]\n"
++        "ipm %[cc]\n"
++        : [r1] "=r" (r1)
++        , [cc] "=r" (cc)
++        : [m3] "i" (5) /* round toward 0 */
++        , [r2] "f" (r2)
++        , [m4] "i" (8) /* bit 0 is set, but must be ignored; XxC is not set */
++        : "cc");
++    cc >>= 28;
++
++    assert(r1 == 0);
++    assert(cc == 3);
++    assert(fetestexcept(FE_ALL_EXCEPT) == (FE_INVALID | FE_INEXACT));
++
++    return EXIT_SUCCESS;
++}
+diff --git a/tests/tcg/s390x/Makefile.target b/tests/tcg/s390x/Makefile.target
+index 19fbbc6e53..71bf39b78d 100644
+--- a/tests/tcg/s390x/Makefile.target
++++ b/tests/tcg/s390x/Makefile.target
+@@ -39,12 +39,17 @@ TESTS+=mxdb
+ TESTS+=epsw
+ TESTS+=larl
+ TESTS+=mdeb
++TESTS+=cgebra
++TESTS+=clgebr
+ 
+ cdsg: CFLAGS+=-pthread
+ cdsg: LDFLAGS+=-pthread
+ 
+ rxsbg: CFLAGS+=-O2
+ 
++cgebra: LDFLAGS+=-lm
++clgebr: LDFLAGS+=-lm
++
+ include $(S390X_SRC)/pgm-specification.mak
+ $(PGM_SPECIFICATION_TESTS): pgm-specification-user.o
+ $(PGM_SPECIFICATION_TESTS): LDFLAGS+=pgm-specification-user.o
 -- 
 2.39.3
 
