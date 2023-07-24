@@ -2,88 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4099C75F82D
-	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 15:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1634F75F84C
+	for <lists+qemu-devel@lfdr.de>; Mon, 24 Jul 2023 15:29:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qNvXi-0002XE-FD; Mon, 24 Jul 2023 09:24:06 -0400
+	id 1qNvcO-0003yS-Pf; Mon, 24 Jul 2023 09:28:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qNvXe-0002Wr-Nk
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:24:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNvcM-0003yH-L9
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:28:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qNvXd-00072f-1Z
- for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:24:02 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qNvcL-0007uP-4Z
+ for qemu-devel@nongnu.org; Mon, 24 Jul 2023 09:28:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1690205039;
+ s=mimecast20190719; t=1690205332;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8OFr16gdY6ZaPBtVaWV/96ym/jxb/lzao24AL0W+UvA=;
- b=WnP8sVAZcOng3+kQPikepGqtuRY8h9A5A+ceivAchzKZdfYMO266c1YYdhjzedqds7mugA
- 9hKAOimLg29ewOnbT0uKxgy8iC//hXkZAb9kb8J1LoH1CulInUT3fZmoAfh+MeHMbW1o4c
- fbLwGEhcQW1Z7qLl8pCp7cgPE/LxySM=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ztoUJJ0VnnJnTfBx7cdvmu8Hiaanr+P6qC3bbwGK8Zk=;
+ b=Nrq37vM0sNI5iRG7AhGO7PHWXUj6v6GhKuD7/RbIWKxxpnUhScSkYOm9hZW2I+xHgaawMK
+ +2r386TqJsvoX8ds4gLEEO5Yt57vbVjvXpNcUSml/+u7PO4q6G+a5NzxJGNGheCs+/RQ0g
+ e0y1thFrYZFU+8gHagHEsccEa/kRdz4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-SAMLBneSMQyYk9r666aMYw-1; Mon, 24 Jul 2023 09:23:58 -0400
-X-MC-Unique: SAMLBneSMQyYk9r666aMYw-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-765ab532883so619852785a.0
- for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 06:23:58 -0700 (PDT)
+ us-mta-558-Jt0a0btbPZ6Y0UdXPMBcng-1; Mon, 24 Jul 2023 09:28:51 -0400
+X-MC-Unique: Jt0a0btbPZ6Y0UdXPMBcng-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fc07d4c2f4so26924165e9.1
+ for <qemu-devel@nongnu.org>; Mon, 24 Jul 2023 06:28:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1690205037; x=1690809837;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1690205329; x=1690810129;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8OFr16gdY6ZaPBtVaWV/96ym/jxb/lzao24AL0W+UvA=;
- b=BV8FE3vKrt3gA4SGwvxoCdEhOMcNqVsRwfanlVKfCB0tnAfGytBaEV2Ijg0Wd9KM7a
- 7qDIZ0P6w9dDTKFJ3FIrxAuftknsbsYRAFgA/NFswa5X9uUTh8YvrU9Hce22qDAYNepc
- SkJI3cY9XmSUJInskyYykua9TdmnmRJJn6Gw1x6zw9wUJwssHTn+Pm6DSpFEC2svNiZC
- dsZRXbT/03JxRTyoBQWuuYKcDqMRiFd5a7HJW7TaFJJx6Rm+aErsL9IfIX61J5y3UPLg
- 5ihGN3FOEjTOSd0d/yclq+A1aeofm56oHR+/Pd8K+ozfdr43uO/vf3CHGXHaNJu1rHsc
- 1Z4A==
-X-Gm-Message-State: ABy/qLa4pOHu1x9cdgNb7lWjbUIAxuytjiqr3H3tqFZn2bygbq2BeNLh
- 1zECRNKMhhkKQikBq7AfxGP/zkp/eT1Wxhkd5YT33ehJA5P1h3QjqcKZUTIyOnkeqjqMMTejZ67
- w1KqP7sPqGB11+5I=
-X-Received: by 2002:a05:620a:2956:b0:767:27c8:968d with SMTP id
- n22-20020a05620a295600b0076727c8968dmr11502711qkp.6.1690205037662; 
- Mon, 24 Jul 2023 06:23:57 -0700 (PDT)
-X-Google-Smtp-Source: APBJJlHltPoEfVvfhOB7giyJbyc/f+ppmdlCsgbeyg6FVVe2Gnq2DhlQbnjdTipo+3p1Bg7OFnssrw==
-X-Received: by 2002:a05:620a:2956:b0:767:27c8:968d with SMTP id
- n22-20020a05620a295600b0076727c8968dmr11502694qkp.6.1690205037389; 
- Mon, 24 Jul 2023 06:23:57 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:9283:b79f:cbb3:327a?
- ([2a01:e0a:9e2:9000:9283:b79f:cbb3:327a])
- by smtp.gmail.com with ESMTPSA id
- g2-20020a05620a108200b00767b07ec8adsm2983283qkk.82.2023.07.24.06.23.55
+ bh=ztoUJJ0VnnJnTfBx7cdvmu8Hiaanr+P6qC3bbwGK8Zk=;
+ b=cBG5F5/1MwE2huCJjxKBJzMPKDdzMH4RbxiICibT4ms2Elg3SpzHTwRjdYIw1PqEMJ
+ SdYW0aGjzDiaj8jbBRj8zZGyRN/LwHe3NzCf8btQfa2aQXrEXJXeIOBo05aXPDxPQvSt
+ bvyj7j6jqhudwy4uq2OHZzredUVRtwl5qkIwtZMGl3VoDrP+YXwvlTBCzP26HEW2s3If
+ dKqe/IUWBD2hn5WFRtvMEJCVjrHdYbbLTQKMJXaj9z/rtXlzaiBmO7hlkatmc1eKR6Tv
+ c0MnYOvXP4ap0VxM7bWtkgHxe7CxI72RBRn8ljXqSyVctswcFe4brBYHeMdc5nFaJIvj
+ TfEw==
+X-Gm-Message-State: ABy/qLZ/IbubtazPhaUmnSVdoipAtl+cM1YGR9V1gkZ0UBlZm42u6e+l
+ 8gjjl9wwiDY8ijl/OMQ1Cyw3CduFVNe04EGf2tdIZxwvRSXoKionyR+auM2O1qNIhB1OWOJ4W+2
+ IoJJB9WBWyhjq1Bs=
+X-Received: by 2002:a7b:cd87:0:b0:3fb:fef3:53f8 with SMTP id
+ y7-20020a7bcd87000000b003fbfef353f8mr7261096wmj.25.1690205329807; 
+ Mon, 24 Jul 2023 06:28:49 -0700 (PDT)
+X-Google-Smtp-Source: APBJJlH2igVJfxUoqxuKMsSntzC3A4fMtqM8+8keloCJdALCRPHO3kxMvafsbeTR0pvyn5O8g9n+0A==
+X-Received: by 2002:a7b:cd87:0:b0:3fb:fef3:53f8 with SMTP id
+ y7-20020a7bcd87000000b003fbfef353f8mr7261082wmj.25.1690205329502; 
+ Mon, 24 Jul 2023 06:28:49 -0700 (PDT)
+Received: from [192.168.0.3] (ip-109-43-177-165.web.vodafone.de.
+ [109.43.177.165]) by smtp.gmail.com with ESMTPSA id
+ f12-20020a7bcc0c000000b003fc0062f0f8sm10507543wmh.9.2023.07.24.06.28.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 24 Jul 2023 06:23:57 -0700 (PDT)
-Message-ID: <144f34b9-c465-0607-15a6-d3114561c04d@redhat.com>
-Date: Mon, 24 Jul 2023 15:23:54 +0200
+ Mon, 24 Jul 2023 06:28:48 -0700 (PDT)
+Message-ID: <30ff28d1-abc5-a416-b44e-59abd3881fa4@redhat.com>
+Date: Mon, 24 Jul 2023 15:28:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] tests/avocado/machine_s390_ccw_virtio: Skip the flaky
- virtio-gpu test by default
+ Thunderbird/102.12.0
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-s390x@nongnu.org
-Cc: qemu-devel@nongnu.org, Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Eric Farman <farman@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-References: <20230724084851.24251-1-thuth@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
-In-Reply-To: <20230724084851.24251-1-thuth@redhat.com>
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <lvivier@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, libvir-list@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Leonardo Bras <leobras@redhat.com>
+References: <20230724130639.93135-1-quintela@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH 00/26] Migration PULL 2023-07-24
+In-Reply-To: <20230724130639.93135-1-quintela@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -108,98 +103,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/24/23 10:48, Thomas Huth wrote:
-> The virtio-gpu test is known to be flaky - that's why we also did
-> not enable the test_s390x_fedora in the gitlab CI. However, a flaky
-> test can also be annoying when testing locally, so let's rather skip
-> this subtest by default and start running the test_s390x_fedora test
-> in the gitlab CI again (since the other things that are tested here
-> are quite valuable).
+On 24/07/2023 15.06, Juan Quintela wrote:
+> Hi
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> This is the migration PULL request.
 
+Maybe it would better to use "PULL" instead of "PATCH" in the subject?
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
-> ---
->   tests/avocado/machine_s390_ccw_virtio.py | 51 +++++++++++++-----------
->   1 file changed, 27 insertions(+), 24 deletions(-)
+> Now a not on CI, thas has been really bad.  After too many problems
+> with last PULLS, I decided to learn to use qemu CI.  On one hand, it
+> is not so difficult, even I can use it O:-)
 > 
-> diff --git a/tests/avocado/machine_s390_ccw_virtio.py b/tests/avocado/machine_s390_ccw_virtio.py
-> index 78152f2ad1..e7a2a20ba6 100644
-> --- a/tests/avocado/machine_s390_ccw_virtio.py
-> +++ b/tests/avocado/machine_s390_ccw_virtio.py
-> @@ -159,7 +159,6 @@ def test_s390x_devices(self):
->                                             'MemTotal:         115640 kB')
->   
->   
-> -    @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
->       def test_s390x_fedora(self):
->   
->           """
-> @@ -229,31 +228,35 @@ def test_s390x_fedora(self):
->           # writing to the framebuffer. Since the PPM is uncompressed, we then
->           # can simply read the written "magic bytes" back from the PPM file to
->           # check whether the framebuffer is working as expected.
-> -        self.log.info("Test screendump of virtio-gpu device")
-> -        exec_command_and_wait_for_pattern(self,
-> +        # Unfortunately, this test is flaky, so we don't run it by default
-> +        if os.getenv('QEMU_TEST_FLAKY_TESTS'):
-> +            self.log.info("Test screendump of virtio-gpu device")
-> +            exec_command_and_wait_for_pattern(self,
->                           'while ! (dmesg | grep gpudrmfb) ; do sleep 1 ; done',
->                           'virtio_gpudrmfb frame buffer device')
-> -        exec_command_and_wait_for_pattern(self,
-> -            'echo -e "\e[?25l" > /dev/tty0', ':/#')
-> -        exec_command_and_wait_for_pattern(self, 'for ((i=0;i<250;i++)); do '
-> -            'echo " The  qu ick  fo x j ump s o ver  a  laz y d og" >> fox.txt;'
-> -            'done',
-> -            ':/#')
-> -        exec_command_and_wait_for_pattern(self,
-> -            'dd if=fox.txt of=/dev/fb0 bs=1000 oflag=sync,nocache ; rm fox.txt',
-> -            '12+0 records out')
-> -        with tempfile.NamedTemporaryFile(suffix='.ppm',
-> -                                         prefix='qemu-scrdump-') as ppmfile:
-> -            self.vm.command('screendump', filename=ppmfile.name)
-> -            ppmfile.seek(0)
-> -            line = ppmfile.readline()
-> -            self.assertEqual(line, b"P6\n")
-> -            line = ppmfile.readline()
-> -            self.assertEqual(line, b"1280 800\n")
-> -            line = ppmfile.readline()
-> -            self.assertEqual(line, b"255\n")
-> -            line = ppmfile.readline(256)
-> -            self.assertEqual(line, b"The quick fox jumps over a lazy dog\n")
-> +            exec_command_and_wait_for_pattern(self,
-> +                'echo -e "\e[?25l" > /dev/tty0', ':/#')
-> +            exec_command_and_wait_for_pattern(self, 'for ((i=0;i<250;i++)); do '
-> +                'echo " The  qu ick  fo x j ump s o ver  a  laz y d og" >> fox.txt;'
-> +                'done',
-> +                ':/#')
-> +            exec_command_and_wait_for_pattern(self,
-> +                'dd if=fox.txt of=/dev/fb0 bs=1000 oflag=sync,nocache ; rm fox.txt',
-> +                '12+0 records out')
-> +            with tempfile.NamedTemporaryFile(suffix='.ppm',
-> +                                             prefix='qemu-scrdump-') as ppmfile:
-> +                self.vm.command('screendump', filename=ppmfile.name)
-> +                ppmfile.seek(0)
-> +                line = ppmfile.readline()
-> +                self.assertEqual(line, b"P6\n")
-> +                line = ppmfile.readline()
-> +                self.assertEqual(line, b"1280 800\n")
-> +                line = ppmfile.readline()
-> +                self.assertEqual(line, b"255\n")
-> +                line = ppmfile.readline(256)
-> +                self.assertEqual(line, b"The quick fox jumps over a lazy dog\n")
-> +        else:
-> +            self.log.info("Skipped flaky screendump of virtio-gpu device test")
->   
->           # Hot-plug a virtio-crypto device and see whether it gets accepted
->           self.log.info("Test hot-plug virtio-crypto device")
+> On the other hand, the amount of problems that I got is inmense.  Some
+> of them dissapear when I rerun the checks, but I never know if it is
+> my PULL request, the CI system or the tests themselves.
+
+I normally peek at https://gitlab.com/qemu-project/qemu/-/pipelines to see 
+whether the problem occurred in one of the last staging CI runs already ... 
+or I push the master branch to my own repo to see whether it reproduces with 
+a clean state. That often helps in judging whether it's a new problem or a 
+pre-existing one.
+
+> This (last) patch is not part of the PULL request, but I have found
+> that it _always_ makes gcov fail.  I had to use bisect to find where
+> the problem was.
+> 
+> https://gitlab.com/juan.quintela/qemu/-/jobs/4571878922
+> 
+> I could use help to know how a change in test/qtest/migration-test.c
+> can break block layer tests, I am all ears.
+> 
+> Yes, I tried several times.  It always fails on that patch.  The
+> passes with flying colors.
+
+Can you reproduce it locally by running "make check-block"?
+
+The tests/qemu-iotests/tests/copy-before-write test seems to be doing some 
+things with snapshots ... maybe that's related?
+
+  Thomas
 
 
